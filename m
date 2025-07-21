@@ -2,121 +2,118 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 213F4C83F1A
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Jul 2025 23:00:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B892C83F25
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Jul 2025 23:16:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B430A6B00A2; Mon, 21 Jul 2025 19:00:27 -0400 (EDT)
+	id 1C3D78E0003; Mon, 21 Jul 2025 19:16:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF3876B00A3; Mon, 21 Jul 2025 19:00:27 -0400 (EDT)
+	id 19B878E0001; Mon, 21 Jul 2025 19:16:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E2536B00A4; Mon, 21 Jul 2025 19:00:27 -0400 (EDT)
+	id 08AE08E0003; Mon, 21 Jul 2025 19:16:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 898116B00A2
-	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 19:00:27 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0AFB15714C
-	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 23:00:27 +0000 (UTC)
-X-FDA: 83689792494.30.AA90579
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E31B1C0011
-	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 23:00:24 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=O7YnXLuC;
-	spf=pass (imf22.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EC66C8E0001
+	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 19:16:27 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 54D7810E085
+	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 23:16:27 +0000 (UTC)
+X-FDA: 83689832814.15.5636E8C
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 34FBA14000D
+	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 23:16:25 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YAfHi6Ln;
+	spf=pass (imf23.hostedemail.com: domain of airlied@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=airlied@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753139785; a=rsa-sha256;
+	cv=none;
+	b=ZlocWP+u7c8ZE2p6AuFhIa4zXUdkwfAMk8I6QD9fzBUPSrFSQBprcWlVTKd+xrC0fq9ZAn
+	sGuV0ImxNCloBDjrcX3E7w6BJfYg/ufKs6qG05IrwfcxNfEKrHj6ELxVm15w97vYVvt6xs
+	kTBrT/hDxaCeDAgESZ0Y+1uZUYxQvZM=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YAfHi6Ln;
+	spf=pass (imf23.hostedemail.com: domain of airlied@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=airlied@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753138825;
+	s=arc-20220608; t=1753139785;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I50g8CBYTAJgx5jeL63ocp0XmC4ojzYZYl9cwyXAxL0=;
-	b=x9pjSfVXVw5sNpBWAbRPrf5SehlzLM2jrssb+xQ+b3QUE7VL2X1pQbjtVGuZzUUjXz3bnS
-	r9dznN6LdQ5J04iV+TGds7FCU34NtWBN0eTg0jPFYbuilD5A4TfACDgdzMzuqkMmbWyiRC
-	rth90yAYJuOASPJFy1fEsgMzBShLMA8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753138825; a=rsa-sha256;
-	cv=none;
-	b=CGATG7rYOca4Jlf7Aqm2N1W6q0+H/gOa3NFLBQDK+5cPmwAEb/Av9r84Qz+YDQqDgU1IT1
-	zgLW+BcVkoQ6/YNVwQUqBVgazuUiox1i7LUQGZN0PPJW7bpr/6SXw0IOC7qvD7rqk9MoVd
-	+7VtqfU1VmhYEbh2fFwUH3hpJ8+yoMg=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=O7YnXLuC;
-	spf=pass (imf22.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ae3a4a773e1so67162666b.1
-        for <linux-mm@kvack.org>; Mon, 21 Jul 2025 16:00:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753138823; x=1753743623; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=I50g8CBYTAJgx5jeL63ocp0XmC4ojzYZYl9cwyXAxL0=;
-        b=O7YnXLuCzi3BzHxHMmRcxWX7eEtTnaeeEIHG9UJXLuzUQc/uYzfFVGEA27vTpMwAaf
-         hLpWVqQ9ruBeFYzmfoWtAJKexu087GLlE8tVfJj4Bq3GKZpNqil1euxMd5fyfQCaptDV
-         6+ktCX6gUQ5xxIartFA98VMebp23XCNc+22Z2qu/o7fyZGXVILo9S5HzQzSfIXpo/vFS
-         wbBU2698uJsTAsSPl7TV4X4+FUCFX+11rZNQQb2I0i+TSLJ2nBCt4PrxDqUSjl1KUOAN
-         xgzQ4jV8d78lOPlaxWIwaUtpwQxVI6mpKInz02HiY8YScFXeVPBogu10V1yb2CpKAGNF
-         j4wg==
+	bh=0RANPUwLK/+IsiZ6Dm52cZEYEBOxN8znQ9xRdG6vVQQ=;
+	b=X5swYnQ5FO5/J3dX/3g7x4CFQ6AYCZR1bzGYCnhD24tkzEz7GyOOkTyF2j+bhv++GE65fn
+	w3xr8hEBRCbHgd7lTJwkR674Mp3GKKat0i/w57C+2ZUVdA9RnYP7O+IupBe0ZG+4QlydGv
+	zDbAxWs2FRv0zufrYRvIXZyiyNwmYz4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1753139784;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0RANPUwLK/+IsiZ6Dm52cZEYEBOxN8znQ9xRdG6vVQQ=;
+	b=YAfHi6LneK6RXr+V49CyVENa+PXy8i/hZezwgabSIo9ZgKQ0MrEDwSLpVogeM8E2cTcAUB
+	Mp54ZIxmlUPxp8EvSclVohLMlTw934FGlf2LMxQFjipu+BqEQIh5RgaXw8bY+HGGVtdwJ0
+	eh41QCvdDVoXvu7Qe9cVxRAd73ui0Tk=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-28-WDITMwKLP3a0CsQf7k4S7g-1; Mon, 21 Jul 2025 19:16:23 -0400
+X-MC-Unique: WDITMwKLP3a0CsQf7k4S7g-1
+X-Mimecast-MFC-AGG-ID: WDITMwKLP3a0CsQf7k4S7g_1753139782
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-313f702d37fso5101862a91.3
+        for <linux-mm@kvack.org>; Mon, 21 Jul 2025 16:16:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753138823; x=1753743623;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=I50g8CBYTAJgx5jeL63ocp0XmC4ojzYZYl9cwyXAxL0=;
-        b=vQCsC+OOIQ15MM26tJiQOkG94pFfK3TjyfLnHkpcf1wOC3ezA1+JOAEhMFPijU6NWv
-         46w/bNTGWCBUIUnoKGTAPXASTbP4ZLhIxG41EAVuY5lc6pag6XjLS/wejRFwi1jC5bNn
-         qIwnZWK+5dkhrDAgT/6xJH58TNqWtzYEDQmU7VkCYLkggJ2VYhwTqJ7L7YgEO/6uI7W6
-         6FfS1DOkGk2TFBT+DJVW4xpThrWreOwewR9yO7LlVAMi9CRvUCQfNWQ8P9T0+g1AtFeu
-         Bb2CkB0FLcodqx45tQvVl/lV5dynaoXh+x0genRXhHHMMlCnfC1IcEDqaZT0Q69kOyf2
-         S2+A==
-X-Forwarded-Encrypted: i=1; AJvYcCVcSxUvvjOX6fbQcfdB1vUVtUXU44sq0HqpNiuJFw8WOxqhzpNtW1QZstJBlRkNMJvn3aT8FG4//g==@kvack.org
-X-Gm-Message-State: AOJu0Yww7ovr4ARA8iORunnK4/MLsiADgs35rLhU/f4w5tKmFdGyRTVa
-	x2nw/sx8l8rHKPWOS82cMCinxwHHnSEWHIBlkP4TyrgpLvdck/ZA379T
-X-Gm-Gg: ASbGnctywzYzmrQUqNV8WQxwMiPpdIN73qWGNxSxTI93la7RYp3VPBbZ3GEvd/+6TPh
-	bKi8V2rgsLKbPpCSCSyQgT5TeX1soIkb8sNvMAbptTKJEss8rX2Ulxsfax69snJeNA/3x+BmH3o
-	ea3lpl3Li8+D6bjOPU2YqOSMKMMXP2paAnNVzfix5aH5KNXLie6RzK//zlRBbJXgcJcqfqmBvnH
-	oVVDLN8bpjrFR8373+Px76lFIZjnLcuwdzUvQ3+13JFQHV630BK0txWDbkcYztfN+di2xlTq9JW
-	LEPVI33L7D5S8kkV/FOpk16UmVyM/8rkDDoNkqe0hANqdx/cPtrP2tSCsPaGArgHCgJRJsMMQ/y
-	WbgeOHobqym/rhQbE0VLph3OkMHEU9D/qyJI3kFdX4URkgOKRy4Afg8sdwhlZn6H7ltrT
-X-Google-Smtp-Source: AGHT+IGYzqj0kH8wn480kr3FBbj99pmKP5/Eu4pwQHjyBRT16VOhkTt/2Q3FevKH1201wdR/kcGe2g==
-X-Received: by 2002:a17:907:db15:b0:ad8:882e:38a with SMTP id a640c23a62f3a-ae9c9b8e572mr853708966b.14.1753138823178;
-        Mon, 21 Jul 2025 16:00:23 -0700 (PDT)
-Received: from [192.168.0.18] (cable-94-189-142-142.dynamic.sbb.rs. [94.189.142.142])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aec6c7d8357sm753164466b.52.2025.07.21.16.00.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Jul 2025 16:00:22 -0700 (PDT)
-Message-ID: <85de2e1f-a787-4862-87e4-2681e749cef0@gmail.com>
-Date: Tue, 22 Jul 2025 01:00:03 +0200
+        d=1e100.net; s=20230601; t=1753139782; x=1753744582;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0RANPUwLK/+IsiZ6Dm52cZEYEBOxN8znQ9xRdG6vVQQ=;
+        b=ESqDhadhoK+nk+/8ba1VnvhDoI7ycjnuHATSnvw2NktWXuGkLz+amjhVNLKVyMFlBU
+         UswZIGlgjJjnFsUJe0hIcuWzqusAWW7CwiHVgndT+qDRVJO+U9Og+juo9WhoSMaxNdyT
+         wvEafxxCsk/PQjZhWLvX/jZg5wLLWopE+i2OPaTNsixzqDa64yErSMqi/IUpPZgYtrlL
+         +BTSp3JqM2rHkufWcBVRtNkNeX9n1gFIyAvUp63kUoMCaGDk7tyhhZtdN9sTpBY7JjgX
+         qSjg6v0Utg6Td/bvWwnVngbAnKKfIpz22CXC/ilRjlX1H9Cio751MbgaBjhDFIxysoCy
+         pNUw==
+X-Forwarded-Encrypted: i=1; AJvYcCWi9FrxqZTkQAoxWZYWgfI+0WrJMIHZfbDHqIEyaS/PSYcxBe5oAcfQBmUgGm3o2UGuqywdjyUcDw==@kvack.org
+X-Gm-Message-State: AOJu0YwIr30ayw5IP9pghZpJY55wmQjPUw//zXCAX8ElbbBRUSKYqp4C
+	fVCJrYXv/KCr/YBhrrNGgBK/QEeQaZIcrAlvl0Bhki7gqMFB0F90+kMPPFhuvwKir3vWH3WSGu2
+	4fVTD0J5gIGxtEDA2nw8sx69l449CWb3RQvTW4S7PfVXxb+viDM5IlJ9lHfXFD+z5S7uFjKqqxN
+	khFzJuSr2Ri6QQsACuEybMMpU9CM/HDcFmmE0=
+X-Gm-Gg: ASbGncuO40GmbNIShTatkd6qHgsSt4Hu4jUc6Louvx06/L7mteqymxwB1QBzsG+3jVy
+	Hto2xIE4Br6/Y/p27gpCK9sj7TORY7l0mWXIptRHua13pK50jpEPrq3pvoohYH/zcYR1ztl8Tmz
+	WFVUrAIADMn78DSstOcXM=
+X-Received: by 2002:a17:90a:f945:b0:31e:4112:4031 with SMTP id 98e67ed59e1d1-31e4112423fmr346195a91.30.1753139782045;
+        Mon, 21 Jul 2025 16:16:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFVllUE0kmokZ1rSFDEaxeK1PBlFYNYGMDZAa5DZKKR/0uMFkT3Ygqlo2cbqSkCQZHg5Z+MdCRteXwtLMA85Cc=
+X-Received: by 2002:a17:90a:f945:b0:31e:4112:4031 with SMTP id
+ 98e67ed59e1d1-31e4112423fmr346163a91.30.1753139781564; Mon, 21 Jul 2025
+ 16:16:21 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 08/12] kasan/um: select ARCH_DEFER_KASAN and call
- kasan_init_generic
-To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>, hca@linux.ibm.com,
- christophe.leroy@csgroup.eu, andreyknvl@gmail.com, agordeev@linux.ibm.com,
- akpm@linux-foundation.org
-Cc: glider@google.com, dvyukov@google.com, kasan-dev@googlegroups.com,
- linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-um@lists.infradead.org, linux-mm@kvack.org
-References: <20250717142732.292822-1-snovitoll@gmail.com>
- <20250717142732.292822-9-snovitoll@gmail.com>
-Content-Language: en-US
-From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-In-Reply-To: <20250717142732.292822-9-snovitoll@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: E31B1C0011
+References: <20250714052243.1149732-1-airlied@gmail.com> <20250714052243.1149732-14-airlied@gmail.com>
+ <77949b3a-201d-4e7d-a51f-e77274e4a4be@amd.com> <CAMwc25qP-42wMX4UYhZWiYfvf_1dBVNL9TU9i_Wq7uZPqjQL5Q@mail.gmail.com>
+In-Reply-To: <CAMwc25qP-42wMX4UYhZWiYfvf_1dBVNL9TU9i_Wq7uZPqjQL5Q@mail.gmail.com>
+From: David Airlie <airlied@redhat.com>
+Date: Tue, 22 Jul 2025 09:16:10 +1000
+X-Gm-Features: Ac12FXyYV-2PTuPjVu6efxxbgIVKXXIhFVKn9Tqb1n6SV0qyL72jNnhdrGWhJXc
+Message-ID: <CAMwc25pyqhcq-8ubGZT5UX5AYroewBYP6oFN-JmjzEkHgFLTrg@mail.gmail.com>
+Subject: Re: [PATCH 13/18] ttm/pool: enable memcg tracking and shrinker. (v2)
+To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+Cc: Dave Airlie <airlied@gmail.com>, dri-devel@lists.freedesktop.org, linux-mm@kvack.org, 
+	Johannes Weiner <hannes@cmpxchg.org>, Dave Chinner <david@fromorbit.com>, 
+	Kairui Song <kasong@tencent.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: jWmUtk4uiqzmEWG7FIWx3ix-f4LIxlFsiYLD1zPPVoU_1753139782
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 7ooyacps8x6conyyfr8ugwihi5ktse3z
-X-HE-Tag: 1753138824-803525
-X-HE-Meta: U2FsdGVkX18lB29Ld+NWqkCJu81GSyU5EXhxLXfzbx2hpeJ4T1PfALTI7DBKZftUePoXZzGVL+41T8ws6afrnBk4uN5IMbspPw5iFuTqbJhMZfnGrPRB33ynZFgC+p7T1lBoYfwRbcKKzPDxknVIZ2PIbHKLKj6gKQoUu/TBe9VppPgtVA3ZR1ug54b5CCcU73um2dAlY0n3FrXHNejTaLP3glAjZUj9PIzIW1JepMsc7i0JdxCWwu8RH2X+oBz/Iq+Uz9smXCcLYuqgayInpaW5cVwlm4+liMFED9yOYyyO3MsHaPiOWGoQYu2L187Kimk8H1UR/HiRp1iFtERkJHt9H2J78+npzJzU5zKEiSq1Yno5XSBvLqGIVt0E4hkCxEZ1w8wJNaT8YpCGA8mzW/1j6Pxx88pgNH7dsGvqcMKrw0Glx9HFxFbE+CBfnsA00mAoc7fg1pnxwkh4urSa87YH6AUm1miz6KsifKxXiEBXvk6I0xPzrQzpgYq9OtmawXh73QSOurWdUxqlxVtYyL8zU/2fGYMUWGN2AsCJ3S08a4ujilLPMXil6mRoqkl0nQT64IkiakwVGrUuLFGkl0keVO4UmIpgUDIzo7R5jlkGDsN6vDO26PVNWmzk82KXd0yWN0awK9/Hw/4+0fCm7r3bDj9b5k6/JEkv5r9+dnMocAWP+mo7twoAlp2bt+mnlDPCpxtH5h7T+ifupZz1S8pGY7CqXwBn9W/a5Jcm6up3FisVqfpPelmbOMTE6yAEhXy7rUTXIwVEAIzP0pQFKr3a6JR1N6+flfkG5HHymifZFHOaqwbAH5L4W37wrzdwx/9gA4nYpkRYdKovvZW0Fk8aeGRi8NQZiw7y7mv8UsbSeYrAVxHFxvfCqINTHU2ygloV4HkOyztbFI+5Ykf4RBpXcmJarWLdai2NRWO1JyjqR6LUYeiUER7BrQvEtXVvL6T728vMUyL9tZ9hbmp
- TgvjhC1B
- s89q4bZd/4/7QVC/u6Yj8NR3ZZdfqALhZA4ME+NxKoDzM+uydAQGjNJ9vXB5agfKPV69IC3SIZ16BlWUKeX3UkoW/NBoaKjkQwz+hztFgyC5jKGAH68pUi76/yXF3fX2vmv9rf5/WNG7smnlh7NPL0YwRBR5XC+abB7IOoutn7Pxd6d1KB4K66pXqaRg8DKhAbeBWZQThXNU1uXYHWi/XaNkjr4ve8TOXJV41B3OP5YGgdn5HtI0Br+OMSawqwnuJ+epsd48NDwH5piNh9ghlGQqNRZASW3sxLRGX9E5MXl6AQt/O364jUqc1CShAGdNtRA9jzA1yZFoww8OpTYVVZ4so8qfTLn+uvkT5MsZKzzjfcoIWEBky8C0GlgOs+Ah6wkKRB5rypv7QNFajp664vsjcW27VfIrbvBKe2iuDLrzCbXjm28b6PN/xfvcUoqh3osH3MJabM0g9R1zi8pnL1ejdOUtvFlqIgaRRNE6KTqPdJHxQJWTPnux2x5WT3Y8dX8arqmqHjyh/2XFBmiVRbeRXBj+RoWQBkOQ2JcMll9QRxeZH1fDQabC0qQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 34FBA14000D
+X-Stat-Signature: nwjso3d6m3ebouqogzufkhufbuopq46o
+X-HE-Tag: 1753139785-633152
+X-HE-Meta: U2FsdGVkX18BUeGoykdPBebcDeG2D9OD83X1fpTRIX+JysmE9qFd89upCqODZcRUWh8JyL94t2heaJiPfW+Gc6v17TogctPkJ73Kbys+x7iSwTQ5ZwPRvh+HDQ8/cuWTcD484culpR22o4NxnrknB6N9u0SODUpcOuNRFj3VoTjbrmGyMXG8dmImsVzeFt7+9O2nOPYaU2uEWJ2Fl3zS+Ln5ghFaJ2PCQoNex0hYU7XHQE25/LvXmTPB48UvD+srtvkTAhzGRJOmv0x2d7AQZW6ZSyIFrYvYA4GjUymRn8nEQ3e/xdYOQu9+xymOP4gfqM5Zq9iX4B870vE2WsQMpjJhA5vd2A8OH5n5g2bspJVB9ZzouQcgsoQ+sKxR7BrKKwpcySQvOP3q1J+QGJQvwIAqH7aEx5z9Pwqj16q4rJg8Bsv2WU7k/2EjD8+Za1CCuM7mqchXjGbfU4ufAruN6bVtqAWZQvTcWjQvEREvGa/v1wC98eT27EXQ+0Sqh96NzphOV4STeohzsbTix4sTCDW0zHyxjAX3Jn/v28o3cvvBMN9UxriSORj6CqOT69xQIRkLnvU9ksckVbnl0FCkytsLxKd1jVrDeOsMZPMR78dlZwJt+VQcLqL5baRhp6yseMo8xZd72r8oNxsLHM4FMb1SpjXJ1Nqbe6WW8Dir931UbCQnF+kYG46zuIqr+0CXk+MZagXTHn6Go5nnYOblg4m60TmwSzU8XSdInC55BoMSDPEirFwmX5ufcB2usTYNDEC1zKOstM3T9Q8l/G8s1KgQDBuWVTQeBQfEuzH97Ct2T5NInrUOToLklVGITLgip071Fw07fAUyUvd3SBRXan8WLYOlPWlqNDVZzjrtAU+cTqMGgFG3F+TzhKdVGQsqDceU3xFyztnUXEzMPIyirZG2uvHrNQEH1/52auHQZaTrwAO92Wyw2GikDi2VfKc3gowc5Q68wGefqIXUyoc
+ A7Tbc5rZ
+ xqI83uDyphh+DpdUCAS04Jtv/Dwtz61C9xPLkcG/bFsiKLbBpWzWkWXfWGjVZMTVQl2SfZDgle2o9Ee1lm8BfWZzhXb15vJo1/PJIjPdqUkc9ssmkAHPEHuYB187xrzVTeks5B8NN4ZOc+2Cp+iOZdZcA72CzpaCZLrnjzh7HlC/iFatvdphxv8CwfihMtpK3xY2uxlAUYiIdGHgwV8nxYJyp7sZvFNHvEkWcqeT7GMopt2hOu48xffb3g38fqpwBVRaULPamsZX3qIRu6/wA41zFWw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,86 +122,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+> > On 14.07.25 07:18, Dave Airlie wrote:
+> > > From: Dave Airlie <airlied@redhat.com>
+> > >
+> > > This enables all the backend code to use the list lru in memcg mode,
+> > > and set the shrinker to be memcg aware.
+> > >
+> > > It adds the loop case for when pooled pages end up being reparented
+> > > to a higher memcg group, that newer memcg can search for them there
+> > > and take them back.
+> > >
+> > > Signed-off-by: Dave Airlie <airlied@redhat.com>
+> > >
+> > > ---
+> > > v2: just use the proper stats.
+> > > ---
+> > >  drivers/gpu/drm/ttm/ttm_pool.c | 126 ++++++++++++++++++++++++++-------
+> > >  1 file changed, 102 insertions(+), 24 deletions(-)
+> > >
+> > > diff --git a/drivers/gpu/drm/ttm/ttm_pool.c b/drivers/gpu/drm/ttm/ttm_pool.c
+> > > index a4f4e27c6a1f..1e6da2cc1f06 100644
+> > > --- a/drivers/gpu/drm/ttm/ttm_pool.c
+> > > +++ b/drivers/gpu/drm/ttm/ttm_pool.c
+> > > @@ -142,7 +142,9 @@ static int ttm_pool_nid(struct ttm_pool *pool) {
+> > >  }
+> > >
+> > >  /* Allocate pages of size 1 << order with the given gfp_flags */
+> > > -static struct page *ttm_pool_alloc_page(struct ttm_pool *pool, gfp_t gfp_flags,
+> > > +static struct page *ttm_pool_alloc_page(struct ttm_pool *pool,
+> > > +                                     struct obj_cgroup *objcg,
+> > > +                                     gfp_t gfp_flags,
+> > >                                       unsigned int order)
+> > >  {
+> > >       unsigned long attr = DMA_ATTR_FORCE_CONTIGUOUS;
+> > > @@ -162,7 +164,10 @@ static struct page *ttm_pool_alloc_page(struct ttm_pool *pool, gfp_t gfp_flags,
+> > >               p = alloc_pages_node(pool->nid, gfp_flags, order);
+> > >               if (p) {
+> > >                       p->private = order;
+> > > -                     mod_node_page_state(NODE_DATA(page_to_nid(p)), NR_GPU_ACTIVE, (1 << order));
+> > > +                     if (!mem_cgroup_charge_gpu_page(objcg, p, order, gfp_flags, false)) {
+> >
+> > Thinking more about it that is way to late. At this point we can't fail the allocation any more.
+> >
+>
+> I've tested it at least works, but there is a bit of a problem with
+> it, because if we fail a 10 order allocation, it tries to fallback
+> down the order hierarchy, when there is no point since it can't
+> account the maximum size.
+>
+> > Otherwise we either completely break suspend or don't account system allocations to the correctly any more after resume.
+>
+> When you say suspend here, do you mean for VRAM allocations, normal
+> system RAM allocations which are accounted here shouldn't have any
+> effect on suspend/resume since they stay where they are. Currently it
+> also doesn't try account for evictions at all.
 
+I've just traced the global swapin/out paths as well and those seem
+fine for memcg at this point, since they are called only after
+populate/unpopulate. Now I haven't addressed the new xe swap paths,
+because I don't have a test path, since amdgpu doesn't support those,
+I was thinking I'd leave it on the list for when amdgpu goes to that
+path, or I can spend some time on xe.
 
-On 7/17/25 4:27 PM, Sabyrzhan Tasbolatov wrote:
-> UserMode Linux needs deferred KASAN initialization as it has a custom
-> kasan_arch_is_ready() implementation that tracks shadow memory readiness
-> via the kasan_um_is_ready flag.
-> 
-> Select ARCH_DEFER_KASAN to enable the unified static key mechanism
-> for runtime KASAN control. Call kasan_init_generic() which handles
-> Generic KASAN initialization and enables the static key.
-> 
-> Delete the key kasan_um_is_ready in favor of the unified kasan_enabled()
-> interface.
-> 
-> Note that kasan_init_generic has __init macro, which is called by
-> kasan_init() which is not marked with __init in arch/um code.
-> 
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217049
-> Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-> ---
-> Changes in v3:
-> - Added CONFIG_ARCH_DEFER_KASAN selection for proper runtime control
-> ---
->  arch/um/Kconfig             | 1 +
->  arch/um/include/asm/kasan.h | 5 -----
->  arch/um/kernel/mem.c        | 4 ++--
->  3 files changed, 3 insertions(+), 7 deletions(-)
-> 
-> diff --git a/arch/um/Kconfig b/arch/um/Kconfig
-> index f08e8a7fac9..fd6d78bba52 100644
-> --- a/arch/um/Kconfig
-> +++ b/arch/um/Kconfig
-> @@ -8,6 +8,7 @@ config UML
->  	select ARCH_WANTS_DYNAMIC_TASK_STRUCT
->  	select ARCH_HAS_CPU_FINALIZE_INIT
->  	select ARCH_HAS_FORTIFY_SOURCE
-> +	select ARCH_DEFER_KASAN
->  	select ARCH_HAS_GCOV_PROFILE_ALL
->  	select ARCH_HAS_KCOV
->  	select ARCH_HAS_STRNCPY_FROM_USER
-> diff --git a/arch/um/include/asm/kasan.h b/arch/um/include/asm/kasan.h
-> index f97bb1f7b85..81bcdc0f962 100644
-> --- a/arch/um/include/asm/kasan.h
-> +++ b/arch/um/include/asm/kasan.h
-> @@ -24,11 +24,6 @@
->  
->  #ifdef CONFIG_KASAN
->  void kasan_init(void);
-> -extern int kasan_um_is_ready;
-> -
-> -#ifdef CONFIG_STATIC_LINK
-> -#define kasan_arch_is_ready() (kasan_um_is_ready)
-> -#endif
->  #else
->  static inline void kasan_init(void) { }
->  #endif /* CONFIG_KASAN */
-> diff --git a/arch/um/kernel/mem.c b/arch/um/kernel/mem.c
-> index 76bec7de81b..058cb70e330 100644
-> --- a/arch/um/kernel/mem.c
-> +++ b/arch/um/kernel/mem.c
-> @@ -21,9 +21,9 @@
->  #include <os.h>
->  #include <um_malloc.h>
->  #include <linux/sched/task.h>
-> +#include <linux/kasan.h>
->  
->  #ifdef CONFIG_KASAN
-> -int kasan_um_is_ready;
->  void kasan_init(void)
->  {
->  	/*
-> @@ -32,7 +32,7 @@ void kasan_init(void)
->  	 */
->  	kasan_map_memory((void *)KASAN_SHADOW_START, KASAN_SHADOW_SIZE);
->  	init_task.kasan_depth = 0;
-> -	kasan_um_is_ready = true;
-> +	kasan_init_generic();
+Dave.
 
-I think this runs before jump_label_init(), and static keys shouldn't be switched before that.>  }
->  
->  static void (*kasan_init_ptr)(void)
+> >
+> > What we need is to reserve the memory on BO allocation and commit it when the TT backend is populated.
+>
+> I'm not sure what reserve vs commit is here, mem cgroup is really just
+> reserve until you can reserve no more, it's just a single
+> charge/uncharge stage. If we try and charge and we are over the limit,
+> bad things will happen, either fail allocation or reclaim for the
+> cgroup.
+>
+> Regards,
+> Dave.
 
 
