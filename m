@@ -2,99 +2,99 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1717CC83F1A
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Jul 2025 23:00:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 213F4C83F1A
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Jul 2025 23:00:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA62A6B00A0; Mon, 21 Jul 2025 19:00:21 -0400 (EDT)
+	id B430A6B00A2; Mon, 21 Jul 2025 19:00:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A57426B00A1; Mon, 21 Jul 2025 19:00:21 -0400 (EDT)
+	id AF3876B00A3; Mon, 21 Jul 2025 19:00:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 96D0B6B00A2; Mon, 21 Jul 2025 19:00:21 -0400 (EDT)
+	id 9E2536B00A4; Mon, 21 Jul 2025 19:00:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 873AB6B00A0
-	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 19:00:21 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 49930801ED
-	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 23:00:21 +0000 (UTC)
-X-FDA: 83689792242.06.DCFD38F
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 33D7C20014
-	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 23:00:18 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=iFSbKRBD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 898116B00A2
+	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 19:00:27 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0AFB15714C
+	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 23:00:27 +0000 (UTC)
+X-FDA: 83689792494.30.AA90579
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	by imf22.hostedemail.com (Postfix) with ESMTP id E31B1C0011
+	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 23:00:24 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=O7YnXLuC;
+	spf=pass (imf22.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753138819;
+	s=arc-20220608; t=1753138825;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qL9A0aUIl8Uddr//bj642F7utZi72l2outni4topsME=;
-	b=bBS7UZ7MOpWqf7L59XQMu3iC6pjMneiv7NxwNfs/23f16JvVthPVRC0PXCyhQ948OicWhA
-	3V5e4TGe3f4xD9uRpYkoWccnItqXXFHUxaLn9RVIlaSClfcR72SWMBhcCUH5K0M1sKxH90
-	FH1hMOXLt6jH11z3QcvLLkL1pNjf7aQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753138819; a=rsa-sha256;
+	bh=I50g8CBYTAJgx5jeL63ocp0XmC4ojzYZYl9cwyXAxL0=;
+	b=x9pjSfVXVw5sNpBWAbRPrf5SehlzLM2jrssb+xQ+b3QUE7VL2X1pQbjtVGuZzUUjXz3bnS
+	r9dznN6LdQ5J04iV+TGds7FCU34NtWBN0eTg0jPFYbuilD5A4TfACDgdzMzuqkMmbWyiRC
+	rth90yAYJuOASPJFy1fEsgMzBShLMA8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753138825; a=rsa-sha256;
 	cv=none;
-	b=gVyFHGSeAx2xAO+ooUXL1GbNratwU14KEOFk1g75Zt8VdPjqDddyylm3SnPrCgIGRrNiWW
-	SeaSz68ouEUUfwe/Sz6rCqjYFzuY3NePqORa6CtdhR2p7IcF32Jj0Ho2g9/QABsRkgYoKV
-	EJ6XTwafy5URE9wf/ydD0xIK/eFFaEQ=
+	b=CGATG7rYOca4Jlf7Aqm2N1W6q0+H/gOa3NFLBQDK+5cPmwAEb/Av9r84Qz+YDQqDgU1IT1
+	zgLW+BcVkoQ6/YNVwQUqBVgazuUiox1i7LUQGZN0PPJW7bpr/6SXw0IOC7qvD7rqk9MoVd
+	+7VtqfU1VmhYEbh2fFwUH3hpJ8+yoMg=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=iFSbKRBD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6075ca6d617so943984a12.0
-        for <linux-mm@kvack.org>; Mon, 21 Jul 2025 16:00:18 -0700 (PDT)
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=O7YnXLuC;
+	spf=pass (imf22.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ae3a4a773e1so67162666b.1
+        for <linux-mm@kvack.org>; Mon, 21 Jul 2025 16:00:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753138818; x=1753743618; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1753138823; x=1753743623; darn=kvack.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=qL9A0aUIl8Uddr//bj642F7utZi72l2outni4topsME=;
-        b=iFSbKRBDprE/KU5j2AcHfKce6J/GXJIkOCt7ZkvJ3gMt7OMeNuyhwVshlCCJWHGye1
-         61mgbqbWSObYYfTvR8nP+FYyT3iEUB/GPEERmV+MklwLjynOY7nl+5FjXSVNULUgIKqB
-         zQuaiFLmUWnOGiQiqthqx3Z6QtV/SeBirhy6/8OzU1W1D+SYwd2tktIgH3vwBy2isFCM
-         OOzHInBLGF+5nR4arvN1rYD2I5MIDnuJSSgIGe9+OaAE34nodI0bVxcMVdE4YLdPZJPV
-         Q42SIBuZEem5MWcjNGHpzse1iQZi64955fusmA/qvBcpXj3ltG0BuBrZeEHbJ1FrM/kj
-         KMfg==
+        bh=I50g8CBYTAJgx5jeL63ocp0XmC4ojzYZYl9cwyXAxL0=;
+        b=O7YnXLuCzi3BzHxHMmRcxWX7eEtTnaeeEIHG9UJXLuzUQc/uYzfFVGEA27vTpMwAaf
+         hLpWVqQ9ruBeFYzmfoWtAJKexu087GLlE8tVfJj4Bq3GKZpNqil1euxMd5fyfQCaptDV
+         6+ktCX6gUQ5xxIartFA98VMebp23XCNc+22Z2qu/o7fyZGXVILo9S5HzQzSfIXpo/vFS
+         wbBU2698uJsTAsSPl7TV4X4+FUCFX+11rZNQQb2I0i+TSLJ2nBCt4PrxDqUSjl1KUOAN
+         xgzQ4jV8d78lOPlaxWIwaUtpwQxVI6mpKInz02HiY8YScFXeVPBogu10V1yb2CpKAGNF
+         j4wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753138818; x=1753743618;
+        d=1e100.net; s=20230601; t=1753138823; x=1753743623;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qL9A0aUIl8Uddr//bj642F7utZi72l2outni4topsME=;
-        b=jVhXzkfEwnh79ONMPHOkLkPzOSV3YGeF2CTB+NAs1+LE2su0bh2a1xo3bdeLIXZ/7d
-         jYdfzNvjyBqjefS5lGnI2QVIH2RgKEmBafnYK12bJucYg7H0t47gAidMdUM2ag5oUbwL
-         17oexxS/CJSwy67KmuZrS+paM/29TmUNyzjFy+h8ACXM3xN/vxgJlJZ2mHARSd3z7D9x
-         hutBdB+Sg/AJx5+tmJF7+RGlOA/D3+U0bKOJBRXTh3Ct3pK/W4EPeApOZqnEjkM7OsOh
-         3I1tBfrnzQuTxUDeHRfrQdJ8wIO1Lie6wTo7h63pZS1+0zTsZl7zILYJbfT93js4A56+
-         Y0SA==
-X-Forwarded-Encrypted: i=1; AJvYcCXQ7z7blb2A/9156yBkCZt5fPwWIgB7zIA7LPHQTriPqRJMR45AsrUwFcwKEhCpZiBB1pdIpnTdsw==@kvack.org
-X-Gm-Message-State: AOJu0Yxy0KfjU1R07nxqIxN5vkIrbZbn4uoYRUGSpaznoujnpGOITchC
-	CBYwueTULVD0M0+Ye3ssyjrT/OZiA80C6OXL01G+/LnrCVArRm6cTAZY
-X-Gm-Gg: ASbGncu5QTpWAD9POARIjYhxpAdIghtrWWtefZIVXIlw8bqSB8rvRBgRUJTOvM8qwQ3
-	nH4ANqEeW9vvzNg5hNr8S60zRcS9TMZgz1UDUt7lfmQ/0+ic7sjdzhh/Thg2zZLlNBDF9J/Ybf6
-	rTlhI5Ze2ARXTO33zp4KMA8lj6ZQvXLTyq2G+qOqTj+/9B0Xv5VPvdxkWHXaPlrS8rE8N+iF3AQ
-	JntPdUP47iZtzMx1Hpc6zMvbgS/3JQX4Ee+5nWU0QkYosdikfnlUlvtI5+T9fhdtxcnFu0GhZw4
-	a6TCXW3lmeD7v/2UFR0JFiAfvnKHICZNOsJiq6ict9dW3W63pMLJM1fzAgk9B40hgODz85wONNJ
-	ELClSkYjs1BjKDaGs0RI5bOyhtYqf5oMX3QUUmkLzs7SODolAz12Pc/miuHt+rAbLLxFI
-X-Google-Smtp-Source: AGHT+IHckuXEWvfAMpSzjjL6pEsgi7MWI7yYCMOiqpAqEO5gMn0ATvaVtw0/vmnoItEaOlX4DlEKBQ==
-X-Received: by 2002:a17:907:7fa1:b0:ae6:c555:8dbb with SMTP id a640c23a62f3a-ae9c9af98e3mr887526166b.11.1753138817353;
-        Mon, 21 Jul 2025 16:00:17 -0700 (PDT)
+        bh=I50g8CBYTAJgx5jeL63ocp0XmC4ojzYZYl9cwyXAxL0=;
+        b=vQCsC+OOIQ15MM26tJiQOkG94pFfK3TjyfLnHkpcf1wOC3ezA1+JOAEhMFPijU6NWv
+         46w/bNTGWCBUIUnoKGTAPXASTbP4ZLhIxG41EAVuY5lc6pag6XjLS/wejRFwi1jC5bNn
+         qIwnZWK+5dkhrDAgT/6xJH58TNqWtzYEDQmU7VkCYLkggJ2VYhwTqJ7L7YgEO/6uI7W6
+         6FfS1DOkGk2TFBT+DJVW4xpThrWreOwewR9yO7LlVAMi9CRvUCQfNWQ8P9T0+g1AtFeu
+         Bb2CkB0FLcodqx45tQvVl/lV5dynaoXh+x0genRXhHHMMlCnfC1IcEDqaZT0Q69kOyf2
+         S2+A==
+X-Forwarded-Encrypted: i=1; AJvYcCVcSxUvvjOX6fbQcfdB1vUVtUXU44sq0HqpNiuJFw8WOxqhzpNtW1QZstJBlRkNMJvn3aT8FG4//g==@kvack.org
+X-Gm-Message-State: AOJu0Yww7ovr4ARA8iORunnK4/MLsiADgs35rLhU/f4w5tKmFdGyRTVa
+	x2nw/sx8l8rHKPWOS82cMCinxwHHnSEWHIBlkP4TyrgpLvdck/ZA379T
+X-Gm-Gg: ASbGnctywzYzmrQUqNV8WQxwMiPpdIN73qWGNxSxTI93la7RYp3VPBbZ3GEvd/+6TPh
+	bKi8V2rgsLKbPpCSCSyQgT5TeX1soIkb8sNvMAbptTKJEss8rX2Ulxsfax69snJeNA/3x+BmH3o
+	ea3lpl3Li8+D6bjOPU2YqOSMKMMXP2paAnNVzfix5aH5KNXLie6RzK//zlRBbJXgcJcqfqmBvnH
+	oVVDLN8bpjrFR8373+Px76lFIZjnLcuwdzUvQ3+13JFQHV630BK0txWDbkcYztfN+di2xlTq9JW
+	LEPVI33L7D5S8kkV/FOpk16UmVyM/8rkDDoNkqe0hANqdx/cPtrP2tSCsPaGArgHCgJRJsMMQ/y
+	WbgeOHobqym/rhQbE0VLph3OkMHEU9D/qyJI3kFdX4URkgOKRy4Afg8sdwhlZn6H7ltrT
+X-Google-Smtp-Source: AGHT+IGYzqj0kH8wn480kr3FBbj99pmKP5/Eu4pwQHjyBRT16VOhkTt/2Q3FevKH1201wdR/kcGe2g==
+X-Received: by 2002:a17:907:db15:b0:ad8:882e:38a with SMTP id a640c23a62f3a-ae9c9b8e572mr853708966b.14.1753138823178;
+        Mon, 21 Jul 2025 16:00:23 -0700 (PDT)
 Received: from [192.168.0.18] (cable-94-189-142-142.dynamic.sbb.rs. [94.189.142.142])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aec6c7d8357sm753164466b.52.2025.07.21.16.00.16
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aec6c7d8357sm753164466b.52.2025.07.21.16.00.21
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Jul 2025 16:00:16 -0700 (PDT)
-Message-ID: <c8b0be89-6c89-46ed-87c3-8905b6ccbbeb@gmail.com>
-Date: Tue, 22 Jul 2025 00:59:56 +0200
+        Mon, 21 Jul 2025 16:00:22 -0700 (PDT)
+Message-ID: <85de2e1f-a787-4862-87e4-2681e749cef0@gmail.com>
+Date: Tue, 22 Jul 2025 01:00:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 07/12] kasan/loongarch: select ARCH_DEFER_KASAN and
- call kasan_init_generic
+Subject: Re: [PATCH v3 08/12] kasan/um: select ARCH_DEFER_KASAN and call
+ kasan_init_generic
 To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>, hca@linux.ibm.com,
  christophe.leroy@csgroup.eu, andreyknvl@gmail.com, agordeev@linux.ibm.com,
  akpm@linux-foundation.org
@@ -103,20 +103,20 @@ Cc: glider@google.com, dvyukov@google.com, kasan-dev@googlegroups.com,
  linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
  linux-s390@vger.kernel.org, linux-um@lists.infradead.org, linux-mm@kvack.org
 References: <20250717142732.292822-1-snovitoll@gmail.com>
- <20250717142732.292822-8-snovitoll@gmail.com>
+ <20250717142732.292822-9-snovitoll@gmail.com>
 Content-Language: en-US
 From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-In-Reply-To: <20250717142732.292822-8-snovitoll@gmail.com>
+In-Reply-To: <20250717142732.292822-9-snovitoll@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 33D7C20014
-X-Stat-Signature: ikh8qfbdmfoig5kktiiwj4z7cht35shj
+X-Rspamd-Queue-Id: E31B1C0011
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1753138818-286643
-X-HE-Meta: U2FsdGVkX1+rcNp+PW06rpIT7HgxEbLkc93un9Rm4CkFpGrLAzk2SBbeYXWySQ8xBDkByZyY8yVLvf4kA+lA9JLL0JcUqlgteaC5AQqQXB8EIMpcjLAXE3oOufFkM62Shbe07i5f1d+blSe5iXLm9P7u9HFNnm38mthHGOoCKICmWUXgSuc9Wk5m//ohSAdkgJIowCqkTcfO5maVMpxUJy7PxeQHoo0ux7GDlBYmwBmqNPn36fw9gFx69h0vdpdhkYUDI9kibr5a/rBLofrZkSGFRXKRoHWpqzIU0GG2DgPilmhbsRUBwG5dPHAMysJ6lWnLQBYzVJEFvVTJL/xJ600TKDNtmMuvFgE0x5dk6sRc88sSDbc4TCzr6k6mcvt7a+h7q/Ot7u5hhmy+X4E/bs6w0YHo7nEd4Tdpu1QvGIycSX6yw8ckOuJpyupmZTPe4jORJY4ERA90bBJSexR36GyIaf5NydlFJQv9ZQfaiWw9gL5VzQzagN+vMuBVEPXPb9rdRit7YrN96WxvWvsnUw+lUYUlDpQsuA+vHLC5RR1s+c+IWQ1Q5/Qi4bGsBLkaS9CEEddDBG2uqzQ1VxlgHwuOWEh9yMneF+J0pS5bCQvpPBZeiD9yHqkuX0oRZoJSigl6C156nGzQswtIIpspqqcjGtBQUJhx5zkyIIO+3UZG96qAT394YMLTCuXhG8liUAtzT8karjRYFnmGhqTSqfHdQSZL5bQ7s4PvcRFZtM/CQe9kYeSzS9p2ffnwlAYhK4LCYfrN8wRKH5xPUU14jTVbM90fLeCkEpN/t+WE1sMw58sbCbVK7SVLOLU4LKceD0pea5M5lcCSVji7A9Mc/pPOKm3Tv+GL3eUlk9wcsYHdF32zJA6jV6XN7rVTFZDBItoGWyKE4B6KHhWPgV8EE4d6agA8FivDpO+Na2pupTrlMiSg9eNTwjvuv01XBgDmujwhlFVhh3irhbKBvZA
- Iq606LWE
- moM7Ht38NauAOIL1cWGPJ7zSQJIl2huGRLrQBlStZAkWW+P803n1xbWIsSWUDcbdo6cVpQGhm1cj0MGSY3tdwH2g4qGf6NGh6HRHC8Gp+hH/FwpB7quCBbGTX+i9pZlDZmQm9V2yGvQemJ3nopg9PGujyfmcEww9iGUBPfmXCCpcTauzSuIAIPCh78iqRYA8p5edL12SKAgpBEVvLZcRcZ60sXfqQOaSaqWTFKdqNnaUG0yhkfQWV539btl1xN26muOjvtsNxlW28o6GVfIxtQpGSrXBlIFwjddPJtmtGXQHhVe0eGMPZE0trF0CaVXFnTOZPcQ5Kza5ubmFi+jXRidenbz995YVvshfRgQtgLEh8neYhOTEYK5nngNKcjdK3ZX7EFq+wT57lFBowb81rDBRAT0l9ioLfn67maSd4RnbDJX6KIuV0dZeYBjSqEVUtxuLRntRtkRzLP8Yt3O5xTwAAx4AYjdXmRsqV0CYWFLOjX7pVfM8QkPYFe7N2PTzB/Q+fNhRvX0v/YNQ=
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 7ooyacps8x6conyyfr8ugwihi5ktse3z
+X-HE-Tag: 1753138824-803525
+X-HE-Meta: U2FsdGVkX18lB29Ld+NWqkCJu81GSyU5EXhxLXfzbx2hpeJ4T1PfALTI7DBKZftUePoXZzGVL+41T8ws6afrnBk4uN5IMbspPw5iFuTqbJhMZfnGrPRB33ynZFgC+p7T1lBoYfwRbcKKzPDxknVIZ2PIbHKLKj6gKQoUu/TBe9VppPgtVA3ZR1ug54b5CCcU73um2dAlY0n3FrXHNejTaLP3glAjZUj9PIzIW1JepMsc7i0JdxCWwu8RH2X+oBz/Iq+Uz9smXCcLYuqgayInpaW5cVwlm4+liMFED9yOYyyO3MsHaPiOWGoQYu2L187Kimk8H1UR/HiRp1iFtERkJHt9H2J78+npzJzU5zKEiSq1Yno5XSBvLqGIVt0E4hkCxEZ1w8wJNaT8YpCGA8mzW/1j6Pxx88pgNH7dsGvqcMKrw0Glx9HFxFbE+CBfnsA00mAoc7fg1pnxwkh4urSa87YH6AUm1miz6KsifKxXiEBXvk6I0xPzrQzpgYq9OtmawXh73QSOurWdUxqlxVtYyL8zU/2fGYMUWGN2AsCJ3S08a4ujilLPMXil6mRoqkl0nQT64IkiakwVGrUuLFGkl0keVO4UmIpgUDIzo7R5jlkGDsN6vDO26PVNWmzk82KXd0yWN0awK9/Hw/4+0fCm7r3bDj9b5k6/JEkv5r9+dnMocAWP+mo7twoAlp2bt+mnlDPCpxtH5h7T+ifupZz1S8pGY7CqXwBn9W/a5Jcm6up3FisVqfpPelmbOMTE6yAEhXy7rUTXIwVEAIzP0pQFKr3a6JR1N6+flfkG5HHymifZFHOaqwbAH5L4W37wrzdwx/9gA4nYpkRYdKovvZW0Fk8aeGRi8NQZiw7y7mv8UsbSeYrAVxHFxvfCqINTHU2ygloV4HkOyztbFI+5Ykf4RBpXcmJarWLdai2NRWO1JyjqR6LUYeiUER7BrQvEtXVvL6T728vMUyL9tZ9hbmp
+ TgvjhC1B
+ s89q4bZd/4/7QVC/u6Yj8NR3ZZdfqALhZA4ME+NxKoDzM+uydAQGjNJ9vXB5agfKPV69IC3SIZ16BlWUKeX3UkoW/NBoaKjkQwz+hztFgyC5jKGAH68pUi76/yXF3fX2vmv9rf5/WNG7smnlh7NPL0YwRBR5XC+abB7IOoutn7Pxd6d1KB4K66pXqaRg8DKhAbeBWZQThXNU1uXYHWi/XaNkjr4ve8TOXJV41B3OP5YGgdn5HtI0Br+OMSawqwnuJ+epsd48NDwH5piNh9ghlGQqNRZASW3sxLRGX9E5MXl6AQt/O364jUqc1CShAGdNtRA9jzA1yZFoww8OpTYVVZ4so8qfTLn+uvkT5MsZKzzjfcoIWEBky8C0GlgOs+Ah6wkKRB5rypv7QNFajp664vsjcW27VfIrbvBKe2iuDLrzCbXjm28b6PN/xfvcUoqh3osH3MJabM0g9R1zi8pnL1ejdOUtvFlqIgaRRNE6KTqPdJHxQJWTPnux2x5WT3Y8dX8arqmqHjyh/2XFBmiVRbeRXBj+RoWQBkOQ2JcMll9QRxeZH1fDQabC0qQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,50 +128,83 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 On 7/17/25 4:27 PM, Sabyrzhan Tasbolatov wrote:
-
-> diff --git a/arch/loongarch/include/asm/kasan.h b/arch/loongarch/include/asm/kasan.h
-> index 62f139a9c87..0e50e5b5e05 100644
-> --- a/arch/loongarch/include/asm/kasan.h
-> +++ b/arch/loongarch/include/asm/kasan.h
-> @@ -66,7 +66,6 @@
->  #define XKPRANGE_WC_SHADOW_OFFSET	(KASAN_SHADOW_START + XKPRANGE_WC_KASAN_OFFSET)
->  #define XKVRANGE_VC_SHADOW_OFFSET	(KASAN_SHADOW_START + XKVRANGE_VC_KASAN_OFFSET)
+> UserMode Linux needs deferred KASAN initialization as it has a custom
+> kasan_arch_is_ready() implementation that tracks shadow memory readiness
+> via the kasan_um_is_ready flag.
+> 
+> Select ARCH_DEFER_KASAN to enable the unified static key mechanism
+> for runtime KASAN control. Call kasan_init_generic() which handles
+> Generic KASAN initialization and enables the static key.
+> 
+> Delete the key kasan_um_is_ready in favor of the unified kasan_enabled()
+> interface.
+> 
+> Note that kasan_init_generic has __init macro, which is called by
+> kasan_init() which is not marked with __init in arch/um code.
+> 
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217049
+> Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+> ---
+> Changes in v3:
+> - Added CONFIG_ARCH_DEFER_KASAN selection for proper runtime control
+> ---
+>  arch/um/Kconfig             | 1 +
+>  arch/um/include/asm/kasan.h | 5 -----
+>  arch/um/kernel/mem.c        | 4 ++--
+>  3 files changed, 3 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/um/Kconfig b/arch/um/Kconfig
+> index f08e8a7fac9..fd6d78bba52 100644
+> --- a/arch/um/Kconfig
+> +++ b/arch/um/Kconfig
+> @@ -8,6 +8,7 @@ config UML
+>  	select ARCH_WANTS_DYNAMIC_TASK_STRUCT
+>  	select ARCH_HAS_CPU_FINALIZE_INIT
+>  	select ARCH_HAS_FORTIFY_SOURCE
+> +	select ARCH_DEFER_KASAN
+>  	select ARCH_HAS_GCOV_PROFILE_ALL
+>  	select ARCH_HAS_KCOV
+>  	select ARCH_HAS_STRNCPY_FROM_USER
+> diff --git a/arch/um/include/asm/kasan.h b/arch/um/include/asm/kasan.h
+> index f97bb1f7b85..81bcdc0f962 100644
+> --- a/arch/um/include/asm/kasan.h
+> +++ b/arch/um/include/asm/kasan.h
+> @@ -24,11 +24,6 @@
 >  
-> -extern bool kasan_early_stage;
->  extern unsigned char kasan_early_shadow_page[PAGE_SIZE];
->  
->  #define kasan_mem_to_shadow kasan_mem_to_shadow
-> @@ -75,12 +74,6 @@ void *kasan_mem_to_shadow(const void *addr);
->  #define kasan_shadow_to_mem kasan_shadow_to_mem
->  const void *kasan_shadow_to_mem(const void *shadow_addr);
->  
-> -#define kasan_arch_is_ready kasan_arch_is_ready
-> -static __always_inline bool kasan_arch_is_ready(void)
-> -{
-> -	return !kasan_early_stage;
-> -}
+>  #ifdef CONFIG_KASAN
+>  void kasan_init(void);
+> -extern int kasan_um_is_ready;
 > -
->  #define addr_has_metadata addr_has_metadata
->  static __always_inline bool addr_has_metadata(const void *addr)
->  {
-> diff --git a/arch/loongarch/mm/kasan_init.c b/arch/loongarch/mm/kasan_init.c
-> index d2681272d8f..cf8315f9119 100644
-> --- a/arch/loongarch/mm/kasan_init.c
-> +++ b/arch/loongarch/mm/kasan_init.c
-> @@ -40,11 +40,9 @@ static pgd_t kasan_pg_dir[PTRS_PER_PGD] __initdata __aligned(PAGE_SIZE);
->  #define __pte_none(early, pte) (early ? pte_none(pte) : \
->  ((pte_val(pte) & _PFN_MASK) == (unsigned long)__pa(kasan_early_shadow_page)))
+> -#ifdef CONFIG_STATIC_LINK
+> -#define kasan_arch_is_ready() (kasan_um_is_ready)
+> -#endif
+>  #else
+>  static inline void kasan_init(void) { }
+>  #endif /* CONFIG_KASAN */
+> diff --git a/arch/um/kernel/mem.c b/arch/um/kernel/mem.c
+> index 76bec7de81b..058cb70e330 100644
+> --- a/arch/um/kernel/mem.c
+> +++ b/arch/um/kernel/mem.c
+> @@ -21,9 +21,9 @@
+>  #include <os.h>
+>  #include <um_malloc.h>
+>  #include <linux/sched/task.h>
+> +#include <linux/kasan.h>
 >  
-> -bool kasan_early_stage = true;
-> -
->  void *kasan_mem_to_shadow(const void *addr)
+>  #ifdef CONFIG_KASAN
+> -int kasan_um_is_ready;
+>  void kasan_init(void)
 >  {
-> -	if (!kasan_arch_is_ready()) {
-> +	if (!kasan_enabled()) {
+>  	/*
+> @@ -32,7 +32,7 @@ void kasan_init(void)
+>  	 */
+>  	kasan_map_memory((void *)KASAN_SHADOW_START, KASAN_SHADOW_SIZE);
+>  	init_task.kasan_depth = 0;
+> -	kasan_um_is_ready = true;
+> +	kasan_init_generic();
 
-This doesn't make sense, !kasan_enabled() is compile-time check which is always false here.
+I think this runs before jump_label_init(), and static keys shouldn't be switched before that.>  }
+>  
+>  static void (*kasan_init_ptr)(void)
 
->  		return (void *)(kasan_early_shadow_page);
->  	} else {
->  		unsigned long maddr = (unsigned long)addr;
 
