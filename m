@@ -2,90 +2,90 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C1127C83F1A
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Jul 2025 20:36:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 29AEAC83F1A
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Jul 2025 20:36:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A02E8E0009; Mon, 21 Jul 2025 16:36:45 -0400 (EDT)
+	id E79858E000A; Mon, 21 Jul 2025 16:36:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 54F468E0001; Mon, 21 Jul 2025 16:36:45 -0400 (EDT)
+	id E29A98E0001; Mon, 21 Jul 2025 16:36:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 43FB08E0009; Mon, 21 Jul 2025 16:36:45 -0400 (EDT)
+	id D18DA8E000A; Mon, 21 Jul 2025 16:36:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 314F38E0001
-	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 16:36:45 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DCE6D1D873F
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BCDD78E0001
+	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 16:36:46 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7EBE712DFFC
+	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 20:36:46 +0000 (UTC)
+X-FDA: 83689430412.21.15106A2
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 93E14C000B
 	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 20:36:44 +0000 (UTC)
-X-FDA: 83689430328.08.ECB2C55
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 10F0520018
-	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 20:36:42 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=rpTelwqR;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf03.hostedemail.com: domain of 32aR-aAYKCGgQaTOeaMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--kuniyu.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=32aR-aAYKCGgQaTOeaMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--kuniyu.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753130203; a=rsa-sha256;
-	cv=none;
-	b=DkmlG+HYfZ/zokzbKWwKLCIi0xzESX4girbJikp+UvmD9m55H2Ss/1VxMPk1v3l2iBQOJZ
-	UVUtPVhd2UpIw8Rcj/DPquS3bCz2xyQJQD3mBCdjHxc46VcC+16rZM5IqmOnSo4VoPGrBM
-	kxyH4BmC+mu8ZAPES0jyq/e048A11CY=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=rpTelwqR;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf03.hostedemail.com: domain of 32aR-aAYKCGgQaTOeaMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--kuniyu.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=32aR-aAYKCGgQaTOeaMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--kuniyu.bounces.google.com
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=wBlBLava;
+	spf=pass (imf22.hostedemail.com: domain of 326R-aAYKCGoScVQgcOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--kuniyu.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=326R-aAYKCGoScVQgcOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--kuniyu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753130203;
+	s=arc-20220608; t=1753130204;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ssPdZm4XAVciTYPYdUcIXie5OXrS2r8M4cSNBMi+lG4=;
-	b=7pZSXpuizDsm/aYTBSVC/ZI5JLNlJ9YlGf7jdYBm3RTtBW/er+XijwYfzAb6lOuVz3tdRC
-	GVOqjLsD8s97D9rrq6uF63fjJKoV2BJJ7mc66Q22du2HWzytW4Tt1yi2MGIVdsAviqqvbf
-	gpqcA6Fz8JiW1OLWfsZniNQ4+pWHMWY=
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b115fb801bcso5208596a12.3
-        for <linux-mm@kvack.org>; Mon, 21 Jul 2025 13:36:42 -0700 (PDT)
+	bh=gOvDOtNuHuKEQ0AG8licv0sCiHFkG4hjeCZ8hfYKZ/g=;
+	b=Jdc2zwZ0GCfxwhMSrCaRlxJqdwFbJensEMYug/uSq1wHmLr9HxyVUqqyr1hQb9d27l0y88
+	fWBxF43jbDhX72izjKLQE+BEch7fUDNfvAtt93mJwUFGt8vYJdaecChC7h6sPsmpWyC9Jw
+	6w2NUBmpT9brNIirpFajct2+QTD0ue8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753130204; a=rsa-sha256;
+	cv=none;
+	b=YjT7LpJCbLSKdeIvb1Q99ZkjcYyq3Oszacy5OU+KyWH1tN3MmrdwRYRE0783XYr65TmJvi
+	AdMIw6H4gVUh/JVjg/G62X6Kx4zykqELpiq1h3xz96o/767rg3pfqHFlnvEPVwiXdr35DQ
+	D5Jr6EnMn+lr5cs1Qe5cN6y15IXPOrk=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=wBlBLava;
+	spf=pass (imf22.hostedemail.com: domain of 326R-aAYKCGoScVQgcOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--kuniyu.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=326R-aAYKCGoScVQgcOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--kuniyu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-748d96b974cso4403258b3a.2
+        for <linux-mm@kvack.org>; Mon, 21 Jul 2025 13:36:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753130202; x=1753735002; darn=kvack.org;
+        d=google.com; s=20230601; t=1753130203; x=1753735003; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ssPdZm4XAVciTYPYdUcIXie5OXrS2r8M4cSNBMi+lG4=;
-        b=rpTelwqRdPxCPh75wMTLNNxzOSXSkkKEzMa5B9HBWTlH9G/Qftr54imWTPUKV+enlA
-         RsaQdXMkgWHa04AbUChGjqqfWu/+2h4cumocKNUgsbGv/Amls13cQ9pyCtwJ7Jg04YZa
-         kh9YlzPMel2Cobjc2hd2zhUvnDjq+UWGlxemGqcjHyEm6aVHrN91KT1s3ZGUtdKF7iYz
-         apj/xrfWNwa69ffLwsnOSk7sLG2HbDUfS2FGHPTNK3OVyuCBd+w0mfIkzWAEDLzfQYmF
-         2wnqowvz6mOXY22m69bQAPp8r3xEKjzV953cUS4Z3iY61vaBj71E21tDNMr0ts5pcD0o
-         n2aw==
+        bh=gOvDOtNuHuKEQ0AG8licv0sCiHFkG4hjeCZ8hfYKZ/g=;
+        b=wBlBLavaI2D7eFYWMkXBj/RWAVd/ncFLDRMUuXZ74Hv1dow79v34nv05X+tuS0l4hO
+         MAUsxng4+4v6awWqPJxD6vWHXz+ty3EvJXjOUmvF2JTuxJ9mMGlcVqPpkiCzryzvoWNu
+         WoRUhiQ9TDUlWMk5Ldvm6sLIJfmCXpPqnlajS9/kYHtHMvIvKTziE3iMxx33PBNIrAEC
+         0s0mlEmfIouLCcah4hztoa9Ldii/AA/H0yQa+lgnhEftvrP2uNn6ra3UACYEblHeD/sa
+         KOwddRy3HiewP/df/k3MwIM2nA9GmayHOIya7nAHLFTKrcjkrKL6oICaPaI4r2Hm7YHS
+         OP6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753130202; x=1753735002;
+        d=1e100.net; s=20230601; t=1753130203; x=1753735003;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ssPdZm4XAVciTYPYdUcIXie5OXrS2r8M4cSNBMi+lG4=;
-        b=L4fcNSord6WrlYp9EMkrs8UaYEGVZB7nGFPozvIS3AB8qLq1CmkqeHf2WpD6PBw8JH
-         0vcEynHfj6st+cr7KW0UkPtytLwK51zRrUN+PFwvedj5M+Cn+YjoXEQ2bRH7DZwEGsa4
-         wb/2DPG4/yxs9Y+xi4odbvpdAyeDBkbrHy7ZXsySRUbfMNzvOAOnEtZ62mcutzn7eTKa
-         txz6Nj8g0BqnozL6ctg4WCiQVDIwUdWSjjypfR7xYKB2xx91B7pBhcMdRJB3wzInFit2
-         nidwvdbbsTRakNFq6qZJCg0RQoQOFwHbBNta2jRSmffKvWj01qwz0zql1xFREqDqJBks
-         SSJw==
-X-Forwarded-Encrypted: i=1; AJvYcCX4rxBkfFe8/D+/bS+4NnlyAnPzyubr0r2qX209V3wh28ZXlUdo93fMr1lenlohTdOdIXA2Q2IgjQ==@kvack.org
-X-Gm-Message-State: AOJu0YxPRENYFOTuQyJGxq50w09SirmUwc7d+wwd6l0N6omgYRt95y7T
-	VRLfconyWT0u511ejcQBgttC/v6yk+9HOw3C/nBjJpLoCtdvq/z97ikufmh1mD5LndsQ53pZxYJ
-	gUb71Yg==
-X-Google-Smtp-Source: AGHT+IH0bPuHNRYQE3IBCaVT7B1b82DZOEQMUavwyW5ZrY7G02YZ/hUnE3IIWK5LKSPidRIy8Lw1sZSx8D4=
-X-Received: from pfblj15.prod.google.com ([2002:a05:6a00:71cf:b0:746:18ec:d11a])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:9188:b0:233:f0c6:a8a4
- with SMTP id adf61e73a8af0-2390dc51bc4mr34981014637.31.1753130201882; Mon, 21
- Jul 2025 13:36:41 -0700 (PDT)
-Date: Mon, 21 Jul 2025 20:35:29 +0000
+        bh=gOvDOtNuHuKEQ0AG8licv0sCiHFkG4hjeCZ8hfYKZ/g=;
+        b=O2QBsHMhPekFJP1ykI0vW0v5VTawf9C0NCpdpeUJtcM71aPgHUJlYSyS6uV3eTzB1P
+         HgAQE4j7sZNnokM2Zv6/oH3IscyJB6EYriSHPt5Z2hIhM/OaszApaxw8ao3S0q+cstxt
+         a7AKNEjzsw20twBmfTGBWwk/XP1XI1Du/gsghoS6ilxbYusYeA5QxdBPTcjSCXbY5MW6
+         /18AljoTR1nVU3dUA5Bjm8PjQ3Da39TJBfcxA4ol7/lcAVNoIqesieAgQ3SvLhztz+vC
+         2fwrHRt3Fu0JenWbAOBkGBI0KA/c5k/bJvP1hAryhzUEAvkXisrirBcYhtush733uqrM
+         sIrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX5Wq5xG4m6YdSf/crMjuUd7ZK+Kt8hgz0yfc1ZlqN5fdvsW09mowddAY0Q8tq1bp/ocPRltyGuYQ==@kvack.org
+X-Gm-Message-State: AOJu0Yyq4N3Pb3YaddD50egDrlkfJOsvpwmsFF7kCYrOBj8Tfl+0oYKq
+	edtlF1fdgovqTrGiKYyz/8hwhIGNj3Zc/2RV6f1mHBXjIscm08n5GIcJGtiolHddXsF1zocg783
+	xBgbarQ==
+X-Google-Smtp-Source: AGHT+IFVGe379XDWUF+9CY2yjFXvtKB+09OD1v073Z06Drs+S2iB6DNfmLq4LLNVW9Zv/pSwEo/nmwsHGbs=
+X-Received: from pfbkx24.prod.google.com ([2002:a05:6a00:6f18:b0:747:7188:c30])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:9150:b0:234:4f62:9b3e
+ with SMTP id adf61e73a8af0-237d701a40cmr37381983637.27.1753130203466; Mon, 21
+ Jul 2025 13:36:43 -0700 (PDT)
+Date: Mon, 21 Jul 2025 20:35:30 +0000
 In-Reply-To: <20250721203624.3807041-1-kuniyu@google.com>
 Mime-Version: 1.0
 References: <20250721203624.3807041-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
-Message-ID: <20250721203624.3807041-11-kuniyu@google.com>
-Subject: [PATCH v1 net-next 10/13] net: Define sk_memcg under CONFIG_MEMCG.
+Message-ID: <20250721203624.3807041-12-kuniyu@google.com>
+Subject: [PATCH v1 net-next 11/13] net-memcg: Add memory.socket_isolated knob.
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
 	Jakub Kicinski <kuba@kernel.org>, Neal Cardwell <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>, 
@@ -98,14 +98,14 @@ Cc: Simon Horman <horms@kernel.org>, Geliang Tang <geliang@kernel.org>,
 	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, mptcp@lists.linux.dev, 
 	cgroups@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: snh8mn7wco7mpikzm1e9midnhdram8d3
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 93E14C000B
+X-Stat-Signature: c7hhswkmazxgknu6j4i8jsaqhd4an6j9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 10F0520018
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1753130202-964217
-X-HE-Meta: U2FsdGVkX18Bv5VUD/y4orICz4LcZK8qzTJ85uK+C1KVooFSwI7isg4o+/laYk5aihYpd7gCheVGYriVVyUQaWXkQ5OGgMlI0wSguCCfaWlT1pdEmV7s3Duwo0/xYbUUOA/d1L1wzyiN7+P225cAzLryBxn/ZI6XA3CD2p8jrTiv22FmP1sHB49egN9Fx/p8nolBdWssQ7LcbE5iPK2X1Q1mqrtUmVyiXG2u8MhqPaw8BOUZUXhjyk9AMzwS7e6G3rWfOT2OBemdXX+c+winDnvU7UcrG1OzDHh4tby/TeSOkNcJwQJQiWpchKdENE55Tcvzlu82+DeSQVDn+q2NrXu+AW60mmgJV7/lyUw512yD9YQyIC8E/V2FtGGyz3vinVEgZkKNqDCl/Ws6/ko/czqSI9JWPpL6eY9Vc9xDxIzGRZCJfyAA9xzhD1NXkhMgr3Yx7NssYmROr4TJTUpzGdOuVk5zEkPjxXYSccKXv4XCa97css3QSeVyMR1/JfNAKjDLrW1etlMQTcmDlZu+P9YAkUPWVwUaGvSC2NwX7FTDPLKwn9Z78Ne9asAJqOgyWpzcg2A8v6bnikevxG/TFrlfpIaJABlDeB4YVj3PQJO+oNr55nlpmjWS1TTFdz3FFt5/BRe7z6KED+Xr3NgQ2Qsw+nqyKzipYdYKFhM/OoPlOTe6F6craOEdyuglq8eQcd5lX/CgYboxs9IxBvdCoCxCeyTS4Z+nf2BI2vFDaHuUD47T7tWYdTfiUE37B+UL0jV+VGfP9KWMGapSxYu/6UArM73ojdlaY64d7K3VpFvjsv7CDPOgRrGS8/mx4F/A/WJXk/pdJT35FJhC6RMDlBBnMtBPJd/NBUrKOIhGcH3MZMHK5Vj6qM3mK+JGYZsyovAuxRJ7NGPjHjHy8ZvAPbCZ4N5nse5OvJHzxYTkRLTumIr8ckIMw3MpOhQJT/eVBOe2qoCm0fNlwIR+rGn
- Ff3Mq1XC
- G+ORHNwJbFIn9Ee9i+OjTIoSttcfgB/4nLvzR/sjbV7/sxWXKGjNn4JNte4d+JIqiE9iGEyf/oMtfxXZxNfsPD8M1ufwXhKZp218u61ChsfXo5r3pRLjqapyOdpX017A1h9+nBNN1sBoHBjkbW6M5tmGF8kJFIvQ9NDhQ9AuubDFonndNFiggOjbDMhzHkm6NjZ3oMigs4/kKAjI93EIvUVRwiJyRr273MBgqEI74KOXErH7N2hSjIvpun7k3t/cFw12wXX00KldAQhZQyIm5YeWQBEFOu5oyjCA1Dqs7g2gJLWreWA+lrQd8X5oAkC6uGQPWhrEG9t2ZbYaDLKQr3drnKK/MZf2qyYCWe6UxlrUyZ4NiciI91vNGk1Wj4rz2/k8ZJCQcfpImyAIg6N173BIP/p0jSq5nry6oEM1PZPSuVJG8lKd5WzH73L77+dpcLATKWyXcolwDQGF8IZDXWhvueooECUoHHnIM8X1+P8T0L/L5EdO41FQsUb4B2d6Ll5BxIGU4wqRDhEM2xzkSnTDjLNu8gu1QgF1WoL6EA3rpX0ItwJjWw2BTYziex/qlm/8NG+JKDvOXYgqkO0BjTDm5Eg==
+X-HE-Tag: 1753130204-952693
+X-HE-Meta: U2FsdGVkX19P8xfYL1+ME3vIfO8WT47AvYLI/OIvEfWSBinF2HMZKonIq017MvUgVSBunks4rqBC+tiRQpaEaTwD+Zl6VlADGJJQX0lvLb5Zsc2OV00ytbDO0ASj1OqbVPeeXTJ5IB/izLsZhshwywG3TtkrwJiyNXTsYP+pytDhNG091mtW5MrYPWTj5NX1xKyGS4QO8w1b/Uxm30aZ9V+F0qCwV+FTyopeYTMD2iRt6P+Mp5vJeKaRFQ0Q0EZx4m2LCbD/QMiJVpFpeSKdR+r+brfy95GKm5mo5ks1oGpaZfgOimTP2vxIOcfoRNpVgzVGzk/mxOcEm40FxUtHTq6rhNFl+a0WpAekmbloYikyJxj4ZZNrk9bvtZMH7OtmIttbpcZl44LULzAEJOjSo/jIFtKb36BAZM82R60xzIzBFY4CAqusxOMzr4LmIuFBLHwDC5nEe0BhQcuA4SsjDkqzM4wiSMXcrkPKxYWTK1BHrM0Arcx9EiDO4snv3ePopuuk0Ejp6fHOA0VpNS07ouy/i8kv/W6rLmCEGGYPxXbjZHc4mwoN55DH0AkDYMd1EF5rOrsXC8KVfPCSJPNbP90m5eQR/V5ZEgnw5KYbZIpboh9yBvc7976eImAxjuRuMerU4u/xozqwOTVWZLnX+h0w6Ht/iDbBhTYF82a20ChkazrFe5kAjpAZ1tU9gaXFDEPJAiQfXNOBz3hqA+YCs6am2CBYXKXwyqjQmOPz5hqIguSUCnMTATqWZY6SjL8HI3aIH7aL4g7T0uljIvVX9nnEOnC7mjZBa/x0iPdUhtBD74rZGvHV+K3CiU7NGfF7b9yZbLTKiZCe2EcrLf84XgSktZeDUeKK4Ah0v3USD7lRjDuu87Eri54M9OMvSmq2n0YDA1FK8G5y/UO0uT7QO8LLbNzb6ZlP9YwDMAmleAghlEUqLvavAOOuBjtbSXdfCAHReN2HP+/GdMate6f
+ 9HmBdhet
+ yEQLdvg9SsvrLQ8po9W0HQDLOEU4eDZIdzZ+y0Z7W4hYgm5nqQ8IvGHtPSZNKsYGQTmJOnS9esxEUEmQXWT+IaRS1f2bBY5Zpv/shSFL8XWTJx4+/1HTGWOqBptC4ygD/9l5ThYBipOxw5uEv4OKs8UIvhbPogzPASronbXpugyple2VU41jIbslwaVy53wDOPr4zuAJP19l7OmnDpFlWFw9IM0bLG3FKAfRu1UrGhYG3vICiSkte1EJ5rkaqc7ivck/fpo2zyMi1L9QvHyVY9/SiPPtl12n5MDVjxxNRtVmpEaMJ+Clc/pkkXJhj/uD78rxgPRxBZBg1eYcCG1USAbtTJyZ+Zp8Ge0WHZxmPrNYchprvNGO1ROoRJ1Q1lZ6XjBrFppEKJ+axH1qkiVHWVvxACPvfo35c9S5xtb5kPj2hOeJnKuUy/Sl0EIaprk2343RiT3AVvW7y6bqPWTfjvCyDarcaBvFQ39b+mXCl3/XHynIWLzGkuzKuf3yVBpk3Kfrqhx+V/Ds1v7DRebWpuS7vNNbY08rC7DjgE8IDorWC7hq8zD0UREORjLfAt5XZnQ/SfvpbPGCauGTqHNQkZudzdw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,56 +114,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Except for sk_clone_lock(), all accesses to sk->sk_memcg
-is done under CONFIG_MEMCG.
+Some networking protocols have their own global memory accounting,
+and such memory is also charged to memcg as sock in memory.stat.
 
-As a bonus, let's define sk->sk_memcg under CONFIG_MEMCG.
+Such sockets are subject to the global limit, thus affected by a
+noisy neighbour outside the cgroup.
+
+We will decouple the global memory accounting if configured.
+
+Let's add a per-memcg knob to control that.
+
+The value will be saved in each socket when created and will
+persist through the socket's lifetime.
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
- include/net/sock.h | 2 ++
- net/core/sock.c    | 4 ++++
- 2 files changed, 6 insertions(+)
+ Documentation/admin-guide/cgroup-v2.rst | 16 +++++++++++
+ include/linux/memcontrol.h              |  6 ++++
+ include/net/sock.h                      |  3 ++
+ mm/memcontrol.c                         | 37 +++++++++++++++++++++++++
+ 4 files changed, 62 insertions(+)
 
+diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
+index bd98ea3175ec1..2428707b7d27d 100644
+--- a/Documentation/admin-guide/cgroup-v2.rst
++++ b/Documentation/admin-guide/cgroup-v2.rst
+@@ -1878,6 +1878,22 @@ The following nested keys are defined.
+ 	Shows pressure stall information for memory. See
+ 	:ref:`Documentation/accounting/psi.rst <psi>` for details.
+ 
++  memory.socket_isolated
++	A read-write single value file which exists on non-root cgroups.
++	The default value is "0".
++
++	Some networking protocols (e.g., TCP, UDP) implement their own memory
++	accounting for socket buffers.
++
++	This memory is also charged to a non-root cgroup as sock in memory.stat.
++
++	Since per-protocol limits such as /proc/sys/net/ipv4/tcp_mem and
++	/proc/sys/net/ipv4/udp_mem are global, memory allocation for socket
++	buffers may fail even when the cgroup has available memory.
++
++	Sockets created with socket_isolated set to 1 are no longer subject
++	to these global protocol limits.
++
+ 
+ Usage Guidelines
+ ~~~~~~~~~~~~~~~~
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 211712ec57d1a..7d5d43e3b49e6 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -226,6 +226,12 @@ struct mem_cgroup {
+ 	 */
+ 	bool oom_group;
+ 
++	/*
++	 * If set, MEMCG_SOCK memory is charged on memcg only,
++	 * otherwise, memcg and sk->sk_prot->memory_allocated.
++	 */
++	bool socket_isolated;
++
+ 	int swappiness;
+ 
+ 	/* memory.events and memory.events.local */
 diff --git a/include/net/sock.h b/include/net/sock.h
-index efb2f659236d4..16fe0e5afc587 100644
+index 16fe0e5afc587..5e8c73731531c 100644
 --- a/include/net/sock.h
 +++ b/include/net/sock.h
-@@ -443,7 +443,9 @@ struct sock {
- 	__cacheline_group_begin(sock_read_rxtx);
- 	int			sk_err;
- 	struct socket		*sk_socket;
-+#ifdef CONFIG_MEMCG
- 	struct mem_cgroup	*sk_memcg;
-+#endif
- #ifdef CONFIG_XFRM
- 	struct xfrm_policy __rcu *sk_policy[2];
- #endif
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 5537ca2638588..ab6953d295dfa 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2512,8 +2512,10 @@ struct sock *sk_clone_lock(const struct sock *sk, const gfp_t priority)
+@@ -2597,6 +2597,9 @@ static inline gfp_t gfp_memcg_charge(void)
+ }
  
- 	sock_reset_flag(newsk, SOCK_DONE);
+ #ifdef CONFIG_MEMCG
++
++#define MEMCG_SOCK_ISOLATED	1UL
++
+ static inline struct mem_cgroup *mem_cgroup_from_sk(const struct sock *sk)
+ {
+ 	return sk->sk_memcg;
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index d7f4e31f4e625..0a55c12a6679b 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -4645,6 +4645,37 @@ static ssize_t memory_reclaim(struct kernfs_open_file *of, char *buf,
+ 	return nbytes;
+ }
  
-+#ifdef CONFIG_MEMCG
- 	/* sk->sk_memcg will be populated at accept() time */
- 	newsk->sk_memcg = NULL;
-+#endif
++static int memory_socket_isolated_show(struct seq_file *m, void *v)
++{
++	struct mem_cgroup *memcg = mem_cgroup_from_seq(m);
++
++	seq_printf(m, "%d\n", READ_ONCE(memcg->socket_isolated));
++
++	return 0;
++}
++
++static ssize_t memory_socket_isolated_write(struct kernfs_open_file *of,
++					    char *buf, size_t nbytes, loff_t off)
++{
++	struct mem_cgroup *memcg = mem_cgroup_from_css(of_css(of));
++	int ret, socket_isolated;
++
++	buf = strstrip(buf);
++	if (!buf)
++		return -EINVAL;
++
++	ret = kstrtoint(buf, 0, &socket_isolated);
++	if (ret)
++		return ret;
++
++	if (socket_isolated != 0 && socket_isolated != MEMCG_SOCK_ISOLATED)
++		return -EINVAL;
++
++	WRITE_ONCE(memcg->socket_isolated, socket_isolated);
++
++	return nbytes;
++}
++
+ static struct cftype memory_files[] = {
+ 	{
+ 		.name = "current",
+@@ -4716,6 +4747,12 @@ static struct cftype memory_files[] = {
+ 		.flags = CFTYPE_NS_DELEGATABLE,
+ 		.write = memory_reclaim,
+ 	},
++	{
++		.name = "socket_isolated",
++		.flags = CFTYPE_NOT_ON_ROOT,
++		.seq_show = memory_socket_isolated_show,
++		.write = memory_socket_isolated_write,
++	},
+ 	{ }	/* terminate */
+ };
  
- 	cgroup_sk_clone(&newsk->sk_cgrp_data);
- 
-@@ -4452,7 +4454,9 @@ static int __init sock_struct_check(void)
- 
- 	CACHELINE_ASSERT_GROUP_MEMBER(struct sock, sock_read_rxtx, sk_err);
- 	CACHELINE_ASSERT_GROUP_MEMBER(struct sock, sock_read_rxtx, sk_socket);
-+#ifdef CONFIG_MEMCG
- 	CACHELINE_ASSERT_GROUP_MEMBER(struct sock, sock_read_rxtx, sk_memcg);
-+#endif
- 
- 	CACHELINE_ASSERT_GROUP_MEMBER(struct sock, sock_write_rxtx, sk_lock);
- 	CACHELINE_ASSERT_GROUP_MEMBER(struct sock, sock_write_rxtx, sk_reserved_mem);
 -- 
 2.50.0.727.gbf7dc18ff4-goog
 
