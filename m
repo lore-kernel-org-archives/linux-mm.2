@@ -2,122 +2,106 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 00AC2C83F25
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Jul 2025 19:09:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 49389C83F1A
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Jul 2025 19:36:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6363D6B007B; Mon, 21 Jul 2025 15:09:25 -0400 (EDT)
+	id AAC906B007B; Mon, 21 Jul 2025 15:36:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 60EA26B0089; Mon, 21 Jul 2025 15:09:25 -0400 (EDT)
+	id A84DE6B0089; Mon, 21 Jul 2025 15:36:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54B266B008A; Mon, 21 Jul 2025 15:09:25 -0400 (EDT)
+	id 9C0DB6B008A; Mon, 21 Jul 2025 15:36:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4611A6B007B
-	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 15:09:25 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EC04980190
-	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 19:09:24 +0000 (UTC)
-X-FDA: 83689210248.27.C47EF61
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 3AFC11C0005
-	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 19:09:23 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=dTC2L2wP;
-	spf=pass (imf20.hostedemail.com: domain of 3YZB-aAYKCMY4qmzvos00sxq.o0yxuz69-yyw7mow.03s@flex--seanjc.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3YZB-aAYKCMY4qmzvos00sxq.o0yxuz69-yyw7mow.03s@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D9156B007B
+	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 15:36:06 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EF967C017E
+	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 19:36:05 +0000 (UTC)
+X-FDA: 83689277490.09.FBC3A63
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 3055840002
+	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 19:36:03 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R6aBBL1v;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753124963;
+	s=arc-20220608; t=1753126564;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Si1iE2iNBG/ks3WLyUfkQmiowbypc4vWR85emDi8O7c=;
-	b=syeXrQtGZ8f8TJcZrnfrk7b89h1zFd2XJ9iICJwSkV1FITC28teqK5tJcW+awawNjdOMlH
-	XTLa+rDRO0hy02vqKwThlB2otAi72Ka1S1BiINuuslRY274BFVuZpqdO0VkgQKe9uPSDs4
-	SY9y6NqD9PfFxzoYXyFEZljP5QK8N20=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=dTC2L2wP;
-	spf=pass (imf20.hostedemail.com: domain of 3YZB-aAYKCMY4qmzvos00sxq.o0yxuz69-yyw7mow.03s@flex--seanjc.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3YZB-aAYKCMY4qmzvos00sxq.o0yxuz69-yyw7mow.03s@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753124963; a=rsa-sha256;
+	bh=+CWknxHCijqZvGBkW1s6DuIkr6nwbH/RGvL06OTQ/W0=;
+	b=5kag0f044gmPgLAXuKRd82sFQmXPVN8+kREKLVqy0oLwvLBEuRUlEt3FdK2TiHP/+Q/Ux5
+	wIESSilhS0A9yciOijMyzD9vTgkh9nohAKCqkKjJ7RLpQ5UHDWYRAb+b0xq8XWKUz1N5yB
+	rhdpkaMuWOxgxg61Z1fMIEgbtcyu6bg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753126564; a=rsa-sha256;
 	cv=none;
-	b=SFWYwrFDnSAgL+uIhXaWyc8Z/DKl12HJFPF0ZjKLNs6ctWCtoJZw2PXgxweoRFAwioGQVE
-	2G3fUdMVNlJpn4Hc5/kvIbs7hd9ADjr/MotmBNBEAQlxtuxa7fi+Of2EMitDSbyK+2uoq+
-	Jwe+YX4DYqAcrPgec725TT/aaJIcC9I=
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-31327b2f8e4so4155681a91.1
-        for <linux-mm@kvack.org>; Mon, 21 Jul 2025 12:09:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753124962; x=1753729762; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Si1iE2iNBG/ks3WLyUfkQmiowbypc4vWR85emDi8O7c=;
-        b=dTC2L2wPKhvxOUXTL9hSTBNv+CoXhd4/+ulbImYWVBJOddRZjL8LHXUAxVZ3Qs2EIq
-         LseVKzdQA/nLXzB8AszcGTAh+ucjZjIW9u/h1Zmrq9s2t0NWAgPeo41QJ68xULhqxNcE
-         ps0xZ7K6WK8jvGj+K0REqzfIcrAX1S8zQw2Hr2Dqdxl58wziGqbh0i/Q/Z4DkwsLpqri
-         p/WE21e09PCmKLHUfU03bVYdHx9DzG1trc0DEFVUChgfY4bygbmzxIpNRZOprtideUxi
-         N9w4g8aOXLBvlWj8T1M+WxBRatxqarvrPjLJpjmcULSla8cju7Bp2Z8LotTdOl7AmDFG
-         2BMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753124962; x=1753729762;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Si1iE2iNBG/ks3WLyUfkQmiowbypc4vWR85emDi8O7c=;
-        b=niFGTTEKwbYQfcupWRujmVlBmyF0m1aJcvCns0JW+W/fmltyd7q6Nh2ZE9wzEGw5Ze
-         hNy+TZJPBZ1uZWHN6V1vDeSDm9/ctjNflOy3JDLbY55lrck/pAN2DSVpuXinjHvtYn71
-         LI5Cm7BdqB75Epo6hyxdukcuWo6Etyi8fsgaC+cXd0JM1y+4c99NUwwyJCxVOD0Y1Qzd
-         nF23GHCpXKjJZsvyMHmEZXiExOrvh2YJU22Fqo999IM7/rqSg6LDYWCEcxGHMdlCM/Sx
-         fCXIaWF3/ka1MvmIaXlApduFg6Qq8pCZUEWI0gYlxbYQpDYpP5pMSuwVDQTalgJjpJPx
-         Co+g==
-X-Forwarded-Encrypted: i=1; AJvYcCVELOJ+ShlwrqZUIMe3dRjuQr/MV23oDXe+c6UJNkIxYXcHZ0dpfjyQgysP2VMti1nVXmYeStwgUQ==@kvack.org
-X-Gm-Message-State: AOJu0YzzKWB2KyFJdFtWZ01BmWq9axyNsLHhgU6r1N5QZ2eZ+VnjOXCa
-	e0yfAn5+iWX5h8ntkQEyB7SqVF2+3sw4vMbAGvoINdO878tPlBNt9Nbip42GxL5C2YPu7WmuiyA
-	lYDiwfA==
-X-Google-Smtp-Source: AGHT+IGbFJhpUQREKI8MWV2U6QwjTBevOOYx6cNDrdGaRxBnZH6BAHAIN1v9eC/o9N2pBUnhgExVswlyNEw=
-X-Received: from pjbqo12.prod.google.com ([2002:a17:90b:3dcc:b0:31c:2fe4:33ba])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3c4b:b0:311:fde5:c4be
- with SMTP id 98e67ed59e1d1-31c9f45c8e9mr24240317a91.35.1753124961668; Mon, 21
- Jul 2025 12:09:21 -0700 (PDT)
-Date: Mon, 21 Jul 2025 12:09:20 -0700
-In-Reply-To: <CA+EHjTw766UKoLVoxGWDS2adq4m0TWsxwTWMGsjMK=qkSx4iCQ@mail.gmail.com>
-Mime-Version: 1.0
-References: <20250717162731.446579-1-tabba@google.com> <20250717162731.446579-5-tabba@google.com>
- <aH5uqeQqvzgJOCN0@google.com> <CA+EHjTw766UKoLVoxGWDS2adq4m0TWsxwTWMGsjMK=qkSx4iCQ@mail.gmail.com>
-Message-ID: <aH6QYFTKoDqnxrW8@google.com>
-Subject: Re: [PATCH v15 04/21] KVM: x86: Introduce kvm->arch.supports_gmem
-From: Sean Christopherson <seanjc@google.com>
-To: Fuad Tabba <tabba@google.com>
-Cc: kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, 
-	kvmarm@lists.linux.dev, pbonzini@redhat.com, chenhuacai@kernel.org, 
-	mpe@ellerman.id.au, anup@brainfault.org, paul.walmsley@sifive.com, 
-	palmer@dabbelt.com, aou@eecs.berkeley.edu, viro@zeniv.linux.org.uk, 
-	brauner@kernel.org, willy@infradead.org, akpm@linux-foundation.org, 
-	xiaoyao.li@intel.com, yilun.xu@intel.com, chao.p.peng@linux.intel.com, 
-	jarkko@kernel.org, amoorthy@google.com, dmatlack@google.com, 
-	isaku.yamahata@intel.com, mic@digikod.net, vbabka@suse.cz, 
-	vannapurve@google.com, ackerleytng@google.com, mail@maciej.szmigiero.name, 
-	david@redhat.com, michael.roth@amd.com, wei.w.wang@intel.com, 
-	liam.merwick@oracle.com, isaku.yamahata@gmail.com, 
-	kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com, steven.price@arm.com, 
-	quic_eberman@quicinc.com, quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, 
-	quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com, 
-	quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com, 
-	james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev, 
-	maz@kernel.org, will@kernel.org, qperret@google.com, keirf@google.com, 
-	roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, 
-	rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com, 
-	jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com, 
-	ira.weiny@intel.com
-Content-Type: text/plain; charset="us-ascii"
+	b=fG5ZANZ4N8WVgr46d+O4P2tgB/STYktf/43cm+zbcUrV7jbKrProYn0CuxdESTHB0Uhewb
+	ePc0Ut9v9yg1kpZ1JYFJw4kiuFqp0o4sanfzdZL2HXlx/nUdV89Nju2TEbbY3oMS+nazMY
+	3jkFvgmjPe3QXNjQ22j6eHN9YGXdMEQ=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R6aBBL1v;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id DAB21417A1;
+	Mon, 21 Jul 2025 19:36:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DBD3C4CEED;
+	Mon, 21 Jul 2025 19:36:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753126562;
+	bh=TB7rn67MajC8Jyg5Da1lj9LyQ2ZybUzjBr843rmIh84=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=R6aBBL1v+Jac/gTJPVwUGLOuSxcdUoTjM2CZ0uHsM6v9ZtbEbYxfIYf3qgS8fVdUZ
+	 jjoin8kV/LPRelW8iVxYtHZ1GWxY8bRcxOX4IoqWoMZ25zTcAEAyuG+y3Q6WwJpGuK
+	 dDOWrQVmRWMH3+eFy80/am9w0icD0VsV2fsCXK79EiOmYEfVRrSjAnmeztcZe7ahg8
+	 Rwq84sT6xhO598gnhxIGq9EIQSJdzhdPQdX8NbO0H4Mcax2rh46R80iAY2gZWVT6qW
+	 rXIUTfbsa+ti4Wor7QjDIVUWVPClj0iVQVyordX1wm2QctV3JrhWCl8CTyidLs2YfC
+	 wyID6ZM3jpR8g==
+From: SeongJae Park <sj@kernel.org>
+To: Usama Arif <usamaarif642@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	Jonathan Corbet <corbet@lwn.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jann Horn <jannh@google.com>,
+	Yafang Shao <laoar.shao@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH POC] prctl: extend PR_SET_THP_DISABLE to optionally exclude VM_HUGEPAGE
+Date: Mon, 21 Jul 2025 12:35:59 -0700
+Message-Id: <20250721193559.11503-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <4a8b70b1-7ba0-4d60-a3a0-04ac896a672d@gmail.com>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 3055840002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3AFC11C0005
-X-Rspamd-Server: rspam06
-X-Stat-Signature: eghh5oc4ndzikiudffrfdd3b98m9jr8t
-X-HE-Tag: 1753124963-104721
-X-HE-Meta: U2FsdGVkX18B3HzCglnJqRUAH+HOk7+zM53Ku1yX3a+P4KrTH4iGg6tBtab2yAXQEBrhorCcE2waYjA8Wy+IVNBueCQze4kQiJBOkIwSiu0l0JJ+Dhi6XFwUOvZ6CVCVJGyIg3FIjrHI1HWuaeeZtje068sHeikDddzTqEgZvUTywl9qc+JhSW58KzNW5Os960hmdW2uwp0K4wgNVCp/+EHVeOovzHKyLMjnaMQEI5MKpqg4t9Mk7BfgfEQyTfIFmw+48vsczuUj/i7GWoGFHmHKTIm/Z0bfOUTpYGdrEx+SfcONiFOebu6+mHFWzfXwg44kuewpgDMYJfkmMpDTQmqlITCLglgSxQRBT7lRM0A+wGG3aLrqRna6UbASWHGM7OzX1xm4VSe30AwoRWZ1PAqMgIzFu1YKHnoFBcI+gwZahK8UIKkIb+3qyqN7/M2Prgt/NvZk1c4NRQYVKfertBMiwbFjJgDl3lpZAjvSaH4TGgXP1tjnniwHGqbNIZimEVOsrGlneeuN5mKldML+dC7XEoQDu6CuUvVIA2W6FLtjZGsvzFFXUPKUziu/RiUZNkMB0Ukhz97lvRomPva+B1ogOHz4WVGRayyBOajLLizff6Y4F57kk43ypK3Z7iwWoMPkWP+uVj11p8svBGCsrIWo3YMu0+bEL+edhcQUcNhBN9hoejjVVRAOz0186Iw2HO6OSSAA7NGJCD6uEv18P2Zw/dnbuz6T+qx/2RdNW1V0m8weoKZIxWZLGkHu0AhIDQQvVFUJUUW5urwq59HFfVZtrW9grysO1Ey8JnPTIPjufJ2hk4xCt8PhJJj49NdPMoO135DuItuYrpNu1cyq0hBNl31Lelta+BnPrPX86kA4/PQDYZ1St52+W/2gtAftDEfnQZvCr+ojTHVJ4lMOjB5cjT6kckWhRxCo5zsDYqOJgnE58NStQcqPXlYdO8Ux5TOC8sL4DpgJsYpltVG
- kInYFWDT
- ElzGKzsGegXzo7ypq/lhabA9NGdpiqyGCBgkf7FVPgAEA/MUgaeM64lU5VaB2dXddUIUrB9ej0qS9KbJTAEf6N1nxMgvc+PVyaY+t0CZL/+vyf2jUsxm72/WEa7ng1IgIMSEb5+jcIRZM94xGkTF7eIePxAUY4ZJwELAppDObv4LtUrtgPtzHofE8Fr5geK8NN/HUqT+1wd4GALO1PZXtVpkf5pBGt1JvX6DoZ/z9wMSHaohg6w0E9JsUopy0wUXlpdisY5ELjsnqVpIw0HBuXn2zBZk4UE+aOGndUyXfJEH5Cm3bDw7JSSMatkc9Z+1VlVgGuWlXWvVkccIRrnewIZJmgFYLfsFeNJ/d1rHk0MepDWGRDZTVOsRrk7R0D9X/rAOdvOFshRHtPkQ9/dFwk1L8CClKkCH36Qe4mPtFTdqFXb6zJ4G29Vv3o4bcIp1my2dH5zrwjJREjjhUkaGtexGiQiGZ0JLA1Za5yi92OcEN8Aa3dOz3BIeOFwkTvIgNp9JvrfuOWR4N9ped9lNX7eCltVR1E7orzS2kIeXl9wB0REoBt3xGqRld8bobLXh4yy19Bu+mofgn7a1q5DpERPnJAkngjLN6biaMZzQRNSwoB2HmjfxlJzRb4UxCSlZUGP7+7fIgFohJWhzFavtH/n+Vfhnh6RuC5iIbS25H9hZRpZIon0dUT1nKJuLh1z5s4lgoYdvDiduBn7O7APrK/BxbMpyo9xKBcsnilCayrAGX3uU/19gyM0+/FYIwQeeh23SMjvjTquse6qwvrHc5tHdGFVOIicTa33D3
+X-Rspamd-Server: rspam09
+X-Stat-Signature: b8s77mf6fscb51bzcj6z5wx9nn3beaiy
+X-HE-Tag: 1753126563-448424
+X-HE-Meta: U2FsdGVkX19I7NI/gVF2CDP2qFnsVJJRmK5q/AmYfUr6G97e1jAMQvcyA904mwDAvOdIZqwCkFNzRgfRh57eUZQQBjsTSRTs0LvRlLi5fqgOLH2VFEjQ01JDQMz4jy7CELzx02gjHRlwhsDPq5LirUvotVeoR1ZplY2CYVtOmnhiEaxQ+TNMsVm9T3g7gGJNzPNnyF8J+T3pm4mJhcFMjIOIVe/BXtdpyJpqFHluKJyAfZeFzyys9dJIqo2qiT2uUmO4Gdy7QX1BHLnfgF6dTRBovnIJAPmOTQaoBiFc27kSZf7dbnqn+CDh0pUe2q4SGmzrpqBGOS26kF/Whm+mv2rpFxzcaWnTIwnJ/1UytktouJI+ayt15OFK5U6ONxvPSwk/DC9ZGQ8/WoYWsCkqnDaBRGydxJhC6NfRpr4WqT6GvTb7+NoZkV+JmyOvictzNopgP2zRRB60wZ5BC7075SScBYtE+sp0C+5UcHdbTuJ6dNl5iIgTXoK+RcfdtKrBNPs3wSpevun9uitPh8le5wbVq8S4LnNiOpsGtGKfU/VqI2orE0TnhCcazkYB0/stxHMKLi244B4AiSCgXwmfMAq2n3eXj3CC+5dYPIlS/+oBLI44rLPX7UA13WCetm/EZL/4s10vCwVoNGuhtISilYG1xLhzIXUOn1mhWFL6KBqxeIPDa9iqIXtBIQQqUom7SoadmWR6kpyVGxGmyaJfE5wdweVWldkxWP3sfM8A8z3gAzzjKLB0f1rIsAsc8TLKpyMChb7geC6NLVKiwVXRafkLlUWUcfidvT+Cbo0hepBV5vwy2Kp/STIPWTQbKvMI9NWHZ6WvC6W4/UR0H163Khyp7w9p61Xuy0qm98rDUY5LwvgZtteVpMtj6wRjxSbSYMo8Bq5JrCV1lAsJ27Yj2VwRpLB0NqcXBQDoNqbOY5IRoenEjkanC0uJh017O6KYZXNnL4MSA1/bIE7dLav
+ gxt5ss+h
+ UkLYMjhfUgv/gmf0bpz8JdFzPxyiPfJ+tSOnt2Ld1/p2UuNZMBDPa/6xVIxq/jQsMKSEg8X2U/Foc1u5zcVLbkywxjH/dCTvlKsFRREMfEAOKhwGYZUtcz8Y6bcl77G2Blk3J2J7kqVgyklr0HlB9K4dFx0HmOYJ3iC8/4rWa9nOUIGVNjr0iGniqFNrm8wcI8BiI5/RuocJBJP7T0NooL4a40ZpMRNwU9wWpuX45REE9RaHxbdSYFUtOmmalD+m3xMKyx4zwgVsHqMBhtf4BobxYzAmsLzgg2M6+vCGrzY1A3DoSurm+R/epm7BEHeRNZoSwUozisVforg+WulTvkaSc2bqz2Iyf60KJVfkAFurZ6trBJT3vfpd/JQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,56 +110,320 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 21, 2025, Fuad Tabba wrote:
-> Hi Sean,
+On Mon, 21 Jul 2025 18:27:38 +0100 Usama Arif <usamaarif642@gmail.com> wrote:
+
+[...]
+> >From ee9004e7d34511a79726ee1314aec0503e6351d4 Mon Sep 17 00:00:00 2001
+> From: Usama Arif <usamaarif642@gmail.com>
+> Date: Thu, 15 May 2025 14:33:33 +0100
+> Subject: [PATCH] selftests: prctl: introduce tests for
+>  PR_THP_DISABLE_EXCEPT_ADVISED
 > 
-> On Mon, 21 Jul 2025 at 17:45, Sean Christopherson <seanjc@google.com> wrote:
-> >
-> > On Thu, Jul 17, 2025, Fuad Tabba wrote:
-> > > Introduce a new boolean member, supports_gmem, to kvm->arch.
-> > >
-> > > Previously, the has_private_mem boolean within kvm->arch was implicitly
-> > > used to indicate whether guest_memfd was supported for a KVM instance.
-> > > However, with the broader support for guest_memfd, it's not exclusively
-> > > for private or confidential memory. Therefore, it's necessary to
-> > > distinguish between a VM's general guest_memfd capabilities and its
-> > > support for private memory.
-> > >
-> > > This new supports_gmem member will now explicitly indicate guest_memfd
-> > > support for a given VM, allowing has_private_mem to represent only
-> > > support for private memory.
-> > >
-> > > Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-> > > Reviewed-by: Gavin Shan <gshan@redhat.com>
-> > > Reviewed-by: Shivank Garg <shivankg@amd.com>
-> > > Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-> > > Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> > > Co-developed-by: David Hildenbrand <david@redhat.com>
-> > > Signed-off-by: David Hildenbrand <david@redhat.com>
-> > > Signed-off-by: Fuad Tabba <tabba@google.com>
-> >
-> > NAK, this introduces unnecessary potential for bugs, e.g. KVM will get a false
-> > negative if kvm_arch_supports_gmem() is invoked before kvm_x86_ops.vm_init().
-> >
-> > Patch 2 makes this a moot point because kvm_arch_supports_gmem() can simply go away.
+> The test is limited to 2M PMD THPs. It does not modify the system
+> settings in order to not disturb other process running in the system.
+> It checks if the PMD size is 2M, if the 2M policy is set to inherit
+> and if the system global THP policy is set to "always", so that
+> the change in behaviour due to PR_THP_DISABLE_EXCEPT_ADVISED can
+> be seen.
 > 
-> Just to reiterate, this is a NAK to the whole patch
+> This tests if:
+> - the process can successfully set the policy
+> - carry it over to the new process with fork
+> - if no hugepage is gotten when the process doesn't MADV_HUGEPAGE
+> - if hugepage is gotten when the process does MADV_HUGEPAGE
+> - the process can successfully reset the policy to PR_THP_POLICY_SYSTEM
+> - if hugepage is gotten after the policy reset
 
-Ya, in effect.  Well, more specifically to adding arch.supports_gmem, not to the
-idea of support guest_memfd broadly.
+Nice!  I added a few trivial comments below, though.
 
-> (which if I recall correctly, you had suggested),
+> 
+> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
 
-Sort of[*].  In that thread, I was reacting to the (ab)use of has_private_mem.
-And FWIW, I was envisioning supports_gmem being set in common x86.c super early
-on, though what pushed me into NAK territory was seeing the final usage, where
-"optimizing" kvm_arch_supports_gmem() isn't worth any amount of complexity.
+Acked-by: SeongJae Park <sj@kernel.org>
 
- : And then rather than rename has_private_mem, either add supports_gmem or do what
- : you did for kvm_arch_supports_gmem_shared_mem() and explicitly check the VM type.
+> ---
+>  tools/testing/selftests/prctl/Makefile      |   2 +-
+>  tools/testing/selftests/prctl/thp_disable.c | 207 ++++++++++++++++++++
 
-[*] https://lore.kernel.org/all/aEyLlbyMmNEBCAVj@google.com
+I once thought this might better fit on selftests/mm/, but I found we already
+have selftests/prctl/set-anon-vma-name-tests.c, no no strong opinion from my
+side.
 
-> since the newer patch that you propose makes this patch, and the function
-> kvm_arch_supports_gmem() unnecessary.
+>  2 files changed, 208 insertions(+), 1 deletion(-)
+>  create mode 100644 tools/testing/selftests/prctl/thp_disable.c
+> 
+> diff --git a/tools/testing/selftests/prctl/Makefile b/tools/testing/selftests/prctl/Makefile
+> index 01dc90fbb509..a3cf76585c48 100644
+> --- a/tools/testing/selftests/prctl/Makefile
+> +++ b/tools/testing/selftests/prctl/Makefile
+> @@ -5,7 +5,7 @@ ARCH ?= $(shell echo $(uname_M) | sed -e s/i.86/x86/ -e s/x86_64/x86/)
+>  
+>  ifeq ($(ARCH),x86)
+>  TEST_PROGS := disable-tsc-ctxt-sw-stress-test disable-tsc-on-off-stress-test \
+> -		disable-tsc-test set-anon-vma-name-test set-process-name
+> +		disable-tsc-test set-anon-vma-name-test set-process-name thp_disable
+>  all: $(TEST_PROGS)
+>  
+>  include ../lib.mk
+> diff --git a/tools/testing/selftests/prctl/thp_disable.c b/tools/testing/selftests/prctl/thp_disable.c
+> new file mode 100644
+> index 000000000000..e524723b3313
+> --- /dev/null
+> +++ b/tools/testing/selftests/prctl/thp_disable.c
+> @@ -0,0 +1,207 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * This test covers the PR_GET/SET_THP_DISABLE functionality of prctl calls
+> + * for PR_THP_DISABLE_EXCEPT_ADVISED
+> + */
+> +#include <stdio.h>
+> +#include <stdlib.h>
+> +#include <string.h>
+> +#include <unistd.h>
+> +#include <sys/mman.h>
+> +#include <sys/prctl.h>
+> +#include <sys/wait.h>
+> +
+> +#ifndef PR_THP_DISABLE_EXCEPT_ADVISED
+> +#define PR_THP_DISABLE_EXCEPT_ADVISED (1 << 1)
+> +#endif
+> +
+> +#define CONTENT_SIZE 256
+> +#define BUF_SIZE (12 * 2 * 1024 * 1024) // 12 x 2MB pages
+> +
+> +enum system_policy {
+> +	SYSTEM_POLICY_ALWAYS,
+> +	SYSTEM_POLICY_MADVISE,
+> +	SYSTEM_POLICY_NEVER,
+> +};
+> +
+> +int system_thp_policy;
+> +
+> +/* check if the sysfs file contains the expected substring */
+> +static int check_file_content(const char *file_path, const char *expected_substring)
+> +{
+> +	FILE *file = fopen(file_path, "r");
+> +	char buffer[CONTENT_SIZE];
+> +
+> +	if (!file) {
+> +		perror("Failed to open file");
+> +		return -1;
+> +	}
+> +	if (fgets(buffer, CONTENT_SIZE, file) == NULL) {
+> +		perror("Failed to read file");
+> +		fclose(file);
+> +		return -1;
+> +	}
+> +	fclose(file);
+> +	// Remove newline character from the buffer
+
+Nit.  I'd suggest using "/* */" consisetntly.
+
+> +	buffer[strcspn(buffer, "\n")] = '\0';
+> +	if (strstr(buffer, expected_substring))
+> +		return 0;
+> +	else
+> +		return 1;
+> +}
+> +
+> +/*
+> + * The test is designed for 2M hugepages only.
+> + * Check if hugepage size is 2M, if 2M size inherits from global
+> + * setting, and if the global setting is always.
+> + */
+> +static int sysfs_check(void)
+> +{
+> +	int res = 0;
+> +
+> +	res = check_file_content("/sys/kernel/mm/transparent_hugepage/hpage_pmd_size", "2097152");
+> +	if (res) {
+> +		printf("hpage_pmd_size is not set to 2MB. Skipping test.\n");
+> +		return -1;
+
+Nit.  Skipping is done by the caller, right?  I think it is more natural to say
+"Skipping test" from the caller.
+
+> +	}
+> +	res |= check_file_content("/sys/kernel/mm/transparent_hugepage/hugepages-2048kB/enabled",
+> +				  "[inherit]");
+
+Nit.  I think we can drop '|' and just do 'res = '.
+
+> +	if (res) {
+> +		printf("hugepages-2048kB does not inherit global setting. Skipping test.\n");
+> +		return -1;
+> +	}
+> +
+> +	res = check_file_content("/sys/kernel/mm/transparent_hugepage/enabled", "[always]");
+> +	if (!res) {
+
+Seems 'res' is being used for only checking whether it is zero.  Maybe doing
+'if (check_file_content(...))' and removing 'res' can make code simpler?
+
+> +		system_thp_policy = SYSTEM_POLICY_ALWAYS;
+> +		return 0;
+> +	}
+
+Also, system_thp_policy is set only here, so we know 'system_thp_policy ==
+SYSTEM_POLICY_ALWAYS' if sysfs_check() returned zero.  Maybe system_thp_policy
+is not really required?
+
+> +	printf("Global THP policy not set to always. Skipping test.\n");
+> +	return -1;
+> +}
+> +
+> +static int check_smaps_for_huge(void)
+> +{
+> +	FILE *file = fopen("/proc/self/smaps", "r");
+> +	int is_anonhuge = 0;
+> +	char line[256];
+> +
+> +	if (!file) {
+> +		perror("fopen");
+> +		return -1;
+> +	}
+> +
+> +	while (fgets(line, sizeof(line), file)) {
+> +		if (strstr(line, "AnonHugePages:") && strstr(line, "24576 kB")) {
+> +			is_anonhuge = 1;
+> +			break;
+> +		}
+> +	}
+> +	fclose(file);
+> +	return is_anonhuge;
+> +}
+> +
+> +static int test_mmap_thp(int madvise_buffer)
+> +{
+> +	int is_anonhuge;
+> +
+> +	char *buffer = (char *)mmap(NULL, BUF_SIZE, PROT_READ | PROT_WRITE,
+> +				    MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+> +	if (buffer == MAP_FAILED) {
+> +		perror("mmap");
+> +		return -1;
+> +	}
+> +	if (madvise_buffer)
+> +		madvise(buffer, BUF_SIZE, MADV_HUGEPAGE);
+> +
+> +	// set memory to ensure it's allocated
+
+'/* */' for consistency?
+
+> +	memset(buffer, 0, BUF_SIZE);
+> +	is_anonhuge = check_smaps_for_huge();
+> +	munmap(buffer, BUF_SIZE);
+> +	return is_anonhuge;
+> +}
+> +
+> +/* Global policy is always, process is changed to "madvise only" */
+> +static int test_global_always_process_madvise(void)
+> +{
+> +	int is_anonhuge = 0, res = 0, status = 0;
+> +	pid_t pid;
+> +
+> +	if (prctl(PR_SET_THP_DISABLE, 1, PR_THP_DISABLE_EXCEPT_ADVISED, NULL, NULL) != 0) {
+
+Nit.  '!= 0' can be dropped.
+
+> +		perror("prctl failed to set policy to madvise");
+> +		return -1;
+> +	}
+> +
+> +	/* Make sure prctl changes are carried across fork */
+> +	pid = fork();
+> +	if (pid < 0) {
+> +		perror("fork");
+> +		exit(EXIT_FAILURE);
+> +	}
+> +
+> +	res = prctl(PR_GET_THP_DISABLE, NULL, NULL, NULL, NULL);
+> +	if (res != 3) {
+> +		printf("prctl PR_GET_THP_POLICY returned %d pid %d\n", res, pid);
+> +		goto err_out;
+> +	}
+> +
+> +	/* global = always, process = madvise, we shouldn't get HPs without madvise */
+> +	is_anonhuge = test_mmap_thp(0);
+> +	if (is_anonhuge) {
+> +		printf(
+> +		"PR_THP_POLICY_DEFAULT_NOHUGE set but still got hugepages without MADV_HUGEPAGE\n");
+> +		goto err_out;
+> +	}
+> +
+> +	is_anonhuge = test_mmap_thp(1);
+> +	if (!is_anonhuge) {
+> +		printf(
+> +		"PR_THP_POLICY_DEFAULT_NOHUGE set but did't get hugepages with MADV_HUGEPAGE\n");
+> +		goto err_out;
+> +	}
+> +
+> +	/* Reset to system policy */
+> +	if (prctl(PR_SET_THP_DISABLE, 0, NULL, NULL, NULL) != 0) {
+> +		perror("prctl failed to set policy to system");
+> +		goto err_out;
+> +	}
+> +
+> +	is_anonhuge = test_mmap_thp(0);
+> +	if (!is_anonhuge) {
+> +		printf("global policy is always but we still didn't get hugepages\n");
+> +		goto err_out;
+> +	}
+> +
+> +	is_anonhuge = test_mmap_thp(1);
+> +	if (!is_anonhuge) {
+> +		printf("global policy is always but we still didn't get hugepages\n");
+> +		goto err_out;
+> +	}
+
+Seems is_anonhugepage is used for only whether it is zero or not, just after
+being assigned from test_mmap_thp().  How about removing the variable?
+
+> +	printf("PASS\n");
+> +
+> +	if (pid == 0) {
+> +		exit(EXIT_SUCCESS);
+> +	} else {
+> +		wait(&status);
+> +		if (WIFEXITED(status))
+> +			return 0;
+> +		else
+> +			return -1;
+> +	}
+> +
+> +err_out:
+> +	if (pid == 0)
+> +		exit(EXIT_FAILURE);
+> +	else
+> +		return -1;
+> +}
+> +
+> +int main(void)
+> +{
+> +	if (sysfs_check())
+> +		return 0;
+
+May better to return KSFT_SKIP insted of 0?
+
+> +
+> +	if (system_thp_policy == SYSTEM_POLICY_ALWAYS)
+
+This should be always true, since sysfs_check() returned zero, right?  I think
+we can remove this check.
+
+> +		return test_global_always_process_madvise();
+> +
+
+Nit.  Unnecessary blank line.
+
+> +}
+> -- 
+> 2.47.1
+> 
+> 
+> 
+
+
+Thanks,
+SJ
 
