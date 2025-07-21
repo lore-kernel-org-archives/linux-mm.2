@@ -2,133 +2,107 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 31A59C83F1A
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Jul 2025 20:33:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B8310C83F1A
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Jul 2025 20:36:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F4A76B008A; Mon, 21 Jul 2025 16:33:27 -0400 (EDT)
+	id 466106B0089; Mon, 21 Jul 2025 16:36:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CC2D6B008C; Mon, 21 Jul 2025 16:33:27 -0400 (EDT)
+	id 416C56B008C; Mon, 21 Jul 2025 16:36:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BAF56B0092; Mon, 21 Jul 2025 16:33:27 -0400 (EDT)
+	id 354996B0092; Mon, 21 Jul 2025 16:36:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D4876B008A
-	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 16:33:27 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EB4FD1A012F
-	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 20:33:26 +0000 (UTC)
-X-FDA: 83689422012.17.2CF4D7E
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 056B040004
-	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 20:33:24 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Ws53Efg3;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf17.hostedemail.com: domain of vannapurve@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=vannapurve@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753130005; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 267E76B0089
+	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 16:36:30 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CA7851D870F
+	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 20:36:29 +0000 (UTC)
+X-FDA: 83689429698.13.CCB5105
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2562B100005
+	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 20:36:27 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=zRxvKcXe;
+	spf=pass (imf05.hostedemail.com: domain of 3y6R-aAYKCFoCMFAQM8GG8D6.4GEDAFMP-EECN24C.GJ8@flex--kuniyu.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3y6R-aAYKCFoCMFAQM8GG8D6.4GEDAFMP-EECN24C.GJ8@flex--kuniyu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753130188; a=rsa-sha256;
 	cv=none;
-	b=6DqRZEiY5TlxFg4ubEluTb5PKWGhi9ADw5piSetcAdlQ8vNUbfrSulQvNsa9cbALGKJ1j6
-	/Fe6dOz6MgkSKe7tW5lBxu2+VhzguPdC8pLkrZx9VEp3AOo5k/R+XfKbflKciU1ghJ4AVy
-	z+yMgCx/gRL5xGKyX6vVZjyZa1L0EqA=
+	b=bGjQKJ7n9Bs3WzQ1NSK7St1H6aLqTou6Ew489rTixP3ebxqOqZMVW0OwSjn8dpOUG14gaV
+	1E375xfd18ZOdKBMgZ7XcwbiVVw0QVQENzHQkL9rmNI6kPdZhWsCVP/bMRvpeI+bma+ISP
+	H3P3ZnQFntdzgIupPTiTyVvVG4aVrS8=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Ws53Efg3;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf17.hostedemail.com: domain of vannapurve@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=vannapurve@google.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=zRxvKcXe;
+	spf=pass (imf05.hostedemail.com: domain of 3y6R-aAYKCFoCMFAQM8GG8D6.4GEDAFMP-EECN24C.GJ8@flex--kuniyu.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3y6R-aAYKCFoCMFAQM8GG8D6.4GEDAFMP-EECN24C.GJ8@flex--kuniyu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753130005;
+	s=arc-20220608; t=1753130188;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tsRkrVSZ79KFOrHUZnkYB8zyV0FovPAw/7nSbgdf9SA=;
-	b=1HqRwnrsvoCl571V+DeoPKQmrttkfbT6lwkM6E/p7wlP5wSHmiW7MFq1X8LvZRkdJLIraX
-	YU9XHv4VMQEHSsCSOoZAvdrudmSbT0Yn6/euRplHhecKD+itEK5REErjHXSwOcFrCFvk+0
-	H8T3+uEztm5lcYNsWOG0Y2txjLkmluk=
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-23dd9ae5aacso14185ad.1
-        for <linux-mm@kvack.org>; Mon, 21 Jul 2025 13:33:24 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=51pOOLX0fQOfAGdnQSkiq2EVyVpnq9ZJH4RYM8SkY+0=;
+	b=Nq+l7iXx5s9gUTDSkIyIJpNnSMzl4BZoSQWwCzZmvQXaBu4m0mY2SIj/B9RJd/hS5PJsL6
+	oxO+94A1a6rd2WcmU2qz2JZOnR4vCfFb9YNllGBd87FXR0Uw6Wxqmvy8RtQk2LvYjdHDJb
+	uzJMBTC+K0Coe5ehd1ID4LfFMoK5Q7Q=
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-747ddba7c90so3943186b3a.0
+        for <linux-mm@kvack.org>; Mon, 21 Jul 2025 13:36:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753130004; x=1753734804; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tsRkrVSZ79KFOrHUZnkYB8zyV0FovPAw/7nSbgdf9SA=;
-        b=Ws53Efg3SaQl7sXkCwWBwg9eidPxRiGYPNjpEj3Gf2/ZIxxMW3gdb2gYi8+4dD35ju
-         dY6nxWgDOIfH2iwc2FKMXa9LtS12bXtSKR3wnXllxGB/yAdvTDAiHE/1fhiDPnumX462
-         T4t/IudFK+/zMvN9CcpLtxRhxblMw27b+QxWwXyPNGZTINMRa2hIPPHPdsZRWfZSF0MB
-         OBaByNvH3Y+NeQ416pp4sCqCYcLoUTHOXPHa4lTU8Pehmn2DlBTSHOQKBoAomtXMd5eL
-         z66oyic/BGTQdWlz45sqcLSdXRUjPJdcsZl7Sp/7YrRnlCuABWMk7E0/EhCanO2MKTqC
-         JIXw==
+        d=google.com; s=20230601; t=1753130187; x=1753734987; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=51pOOLX0fQOfAGdnQSkiq2EVyVpnq9ZJH4RYM8SkY+0=;
+        b=zRxvKcXeJ7xCoJw32n0Iw3/8Y2enIOfKgS0/xQXN0nipF1TcqvH9gYpne6Mkrf8xUE
+         M96aDQcN7A3vYgsDtOl68hCg+TNfWS/KA4f37ofy3nBv8wgi9oJ6ppkrFwWRWXmtwopH
+         Y6zk3Iw2zfQNV/Kn2s74PTmjli89XZZFOTA+BJUn0kGqnglHoS+yz9ESGjauIYi42s+3
+         nHSyB7QOaI/2ggoKMcA+kiUC0nKOBMLkptODfnX3dKHL/4T4yG/Nh/MX3oIJvD/oZZ/2
+         sJPTwdElgQujh5IkSZ8rEqfGZGlEGbUzRDsnbaZ3dzyu4vRseVAUhmwMSX5ogQ/vPLrt
+         VOgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753130004; x=1753734804;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tsRkrVSZ79KFOrHUZnkYB8zyV0FovPAw/7nSbgdf9SA=;
-        b=BVZlcjgAXBkY1kl0vtZNAFOFmBbOMttjsv2/upRa2U7gxNsUav+5za/mw02rMOYNCh
-         1lOHOtvkrjDsL+cPftDB01zcDY48TxHhj/7otayi7y8rNGzi8ZS5vWLkd3YVkVPz4cdi
-         GkaLoAuxmMWI5NwalNJAJEwggenNvMqvQ7M/s7Qz2Iewc6Ifv3/t14qDUl8c03ObfTRr
-         FC/tBQ5A/j2tbTMRPHA4Mn2FDS/pS/rFB0QWsX+CwoChlslylP135OEluRF3RE+WWwTZ
-         NzYVL7KDwSMENCzJfACCzPx7jnghSdiUTYliAY+Or7ZI7xQaci7yH5EGtulk5OSaVqks
-         aKEw==
-X-Forwarded-Encrypted: i=1; AJvYcCXhGjpOYbuwsYfmc0x1mFVUVZM7KOGoeeBrKNgXcdh2+iw+UcUtf9sViTqMJfON0BqP5egn6ihFxw==@kvack.org
-X-Gm-Message-State: AOJu0YyuUSvW0zq3+y5E9ZnWr86pkX4P5/OBrMW0A4QFYkmoFrx5xfoY
-	hZU8A3BPq5grf9aebVtojNyWqkbSlnzZWe6nrQFtTikp9gEN2NDoJpazWqreh/EAmdokV7Bjb5X
-	xOQ1QyvY9m7fQaB11W/BLKL/Utob7nE9LzcyI3yHU
-X-Gm-Gg: ASbGncsULgtSmkRclJSMQh5s8OmgvDTP824Lk4vonjz8rCny0Hv5QtoUOS3IUeB2sMz
-	a81mqmf0X1aF0BWDDh9ZHQBoY8CzY3h8XrCkj073FHHVkIJfYfeHgjAO+W5tuBKhnB6L9SAXgWX
-	qmtdWPciomtJ7fvpW8x2ehNr8xLjCZKkQMrVRFRevNJLYSnkOoez1+So3vh+kisVhZoV1RQFKOq
-	2CroKcCSzuQ6gtFcnAB1FpzajQS35OFvjUtKgm3oqcS3s7d
-X-Google-Smtp-Source: AGHT+IFkWHBx/fnOdJ0fH9ksHzfcdY6F8RTAu24ALLaPBJXK759V2xcE3RRWajNRHJ7uflgEVtUatOGBWMqwE9pCFGw=
-X-Received: by 2002:a17:902:fc47:b0:235:e1d6:5343 with SMTP id
- d9443c01a7336-23f8b60e3e9mr699005ad.20.1753130002979; Mon, 21 Jul 2025
- 13:33:22 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250717162731.446579-1-tabba@google.com> <20250717162731.446579-15-tabba@google.com>
- <505a30a3-4c55-434c-86a5-f86d2e9dc78a@intel.com> <CAGtprH8swz6GjM57DBryDRD2c6VP=Ayg+dUh5MBK9cg1-YKCDg@mail.gmail.com>
- <aH5RxqcTXRnQbP5R@google.com> <1fe0f46a-152a-4b5b-99e2-2a74873dafdc@intel.com>
- <aH55BLkx7UkdeBfT@google.com>
-In-Reply-To: <aH55BLkx7UkdeBfT@google.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Mon, 21 Jul 2025 13:33:10 -0700
-X-Gm-Features: Ac12FXygamzg8jas5GHmqT107kji5KSuvRb10tflFD6TWTFWMXuoj12Xx7V3ojk
-Message-ID: <CAGtprH8H2c=bK-7rA1wC1-9f=g8mK3PNXja54bucZ8DnWF7z3g@mail.gmail.com>
-Subject: Re: [PATCH v15 14/21] KVM: x86: Enable guest_memfd mmap for default
- VM type
-To: Sean Christopherson <seanjc@google.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, kvmarm@lists.linux.dev, 
-	pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au, 
-	anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com, 
-	aou@eecs.berkeley.edu, viro@zeniv.linux.org.uk, brauner@kernel.org, 
-	willy@infradead.org, akpm@linux-foundation.org, yilun.xu@intel.com, 
-	chao.p.peng@linux.intel.com, jarkko@kernel.org, amoorthy@google.com, 
-	dmatlack@google.com, isaku.yamahata@intel.com, mic@digikod.net, 
-	vbabka@suse.cz, ackerleytng@google.com, mail@maciej.szmigiero.name, 
-	david@redhat.com, michael.roth@amd.com, wei.w.wang@intel.com, 
-	liam.merwick@oracle.com, isaku.yamahata@gmail.com, 
-	kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com, steven.price@arm.com, 
-	quic_eberman@quicinc.com, quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, 
-	quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com, 
-	quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com, 
-	james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev, 
-	maz@kernel.org, will@kernel.org, qperret@google.com, keirf@google.com, 
-	roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, 
-	rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com, 
-	jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com, 
-	ira.weiny@intel.com
+        d=1e100.net; s=20230601; t=1753130187; x=1753734987;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=51pOOLX0fQOfAGdnQSkiq2EVyVpnq9ZJH4RYM8SkY+0=;
+        b=v2G60uvLsU/UTcvpForEAU5qNhLEtA39Mzwm36+WxpNQp+Y5Arp/Dfb8yj4xItOm0R
+         4OLYG9+U7wMCz5Wt/Tnx1Fflpso9GLpGwgxmYO/dpZDYCyKhc/ZPBP38rQBlmTcqcVLK
+         7rKgUutCnUvXYoKHEXxO7LEpYqkseHvVNmWNN2L0XpzL+I1qdvItLRwrAaEl0MZsRXa+
+         gqMX1sI2PFRrp4Y/H681cDDpVnHHDXSSCQ76FDQEot+khk6g2dRYKgfvHrwKKP5fj4Vu
+         /RBdN3U6WUGZe/E1D+qH878SfQ6X74sviGj57woFSN6lZAR2enC1NdCFeUh0xZFFC5hp
+         k/wA==
+X-Forwarded-Encrypted: i=1; AJvYcCUhP4PX3QpmcJL76x0CRGxd09Sj0fxl9xk2HZTbKO3/vddEwtdjRhLA+GpNWBpAYNiknVbMJFUkmQ==@kvack.org
+X-Gm-Message-State: AOJu0YykMIq3jAi7udXIh3ipkTetKgyZUWVbzPtx4z07ZaKsDfMKviYC
+	KUBOdhPd5lS8dNB+oKXJ5Ib+O2t4l7wkmuN9sEdzmuyiuk4BSLZ3H0vHZgMcr5KLgvDFlD0slVC
+	A79botw==
+X-Google-Smtp-Source: AGHT+IGVZNNr93fPRWqdHxWab0gu7wbq9VcEZmziUgmJKmb9TSvPtgxLvPeY0lMsvl6TgzUysEMGklwL2vA=
+X-Received: from pfbjc22.prod.google.com ([2002:a05:6a00:6c96:b0:747:b6ba:35b6])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:ae0a:b0:238:f875:6261
+ with SMTP id adf61e73a8af0-238f875633dmr23007475637.23.1753130187000; Mon, 21
+ Jul 2025 13:36:27 -0700 (PDT)
+Date: Mon, 21 Jul 2025 20:35:19 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
+Message-ID: <20250721203624.3807041-1-kuniyu@google.com>
+Subject: [PATCH v1 net-next 00/13] net-memcg: Allow decoupling memcg from sk->sk_prot->memory_allocated.
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Neal Cardwell <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, Matthieu Baerts <matttbe@kernel.org>, 
+	Mat Martineau <martineau@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Simon Horman <horms@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+	cgroups@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: g5btcmh963joqh7r6f4hbuxdei61hxyy
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 056B040004
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1753130004-628374
-X-HE-Meta: U2FsdGVkX1/GdpaPz+/I7F/b2sDDR0LbAHae3+85KiZZeWIkbR/r/ceRPSIDUfiFPP6msXTdR5I3xwAWDoh7CFNSftVZ9EbM63WMykOkDo/kNT8TtdRN2hX8mw/4Lq8kwr1pVy029MWzC+XsFhSQ+AzVZvh5l4DDzxU3Zs/bWf36BSgw4zgclK77+4Ogi9Xdfv9JfFY+j5e207KGNSk2Jpy7Vq5SNbX/aguwk6CEtRLER2LB8fk1B1tZW0oj15UtyOZQwRDLuMXjqNyvoEA+viHvcwy2ZQEhYLpoWBnkVR6qRl83NtVjewDcqmlVcJGQw6SArn/Fs4FD0lGCUZ9qJ794LWYH3xrVa0ig5Mu2D0Ad8VEnlULGao41T22z0Oh1gxVQ1GI8FK3qbEybJSKBRMWtWgCMYuCMQ2ajuY4SdsqikCjp8lruCRFmgTvJ6JhF+/MPUVn81wCXDvH2vXGi8Bc9l/xGO27v8MElMyARTWjVqwMyR0q2fF/ozOrNV1cJ2XoqeovduhotKh1u6mhNFgO8nPms20Hh06PADfqv0d2oC6wwj2fMGskKTX8dIaKO0eK/EJzJLQMFhKHSKz2QTSfrOFjVxKgU+Wdg3VeFAv27qv73nZqZeZY2+IzvPgGesVf2eQ0FzBVnemIvOvf0prFDmQw3wBmKp2d9RCjiVeytkFSf4q6FgUmGP2MvzpgORscXDFrSykVl3WyfamNJxGviwofeC/2iUzJuNDeAUWj3ZfnV5TcQgfhSwhmPnvK7yrEE4BOKpuLL9vMXD/PB2Un1zy/3N3+TctjCGEsoHSLbDRzd8BLBEy5LakgWnlWJfHcDIRh+s/U8WDm4oeolFg8WGlKTfXxkMRSVVcFMbOZq2lNVVlUbUbdcqb57xNc5wRUlnF4nswKp1O5vLKhrZTnDt2HWPQtEyZZFQh0uWEIyyZ+Xx3XZbQZnKE40ip48OdCuQvKLIhrjhNBr0I7
- i6goa5YJ
- zXP1GQyy/Z3/ppyV3YGP7v9R6aM6ItSu3ME5XtjRsRqObJ+MlfDxvQvx9OzYXdGFDDfPpcuMDQKyKgGEFANHVUhRjQUk6aq0pHZZF1PdmDeBAt1MszkyPQA7U1Yp2m2JNr5yUJhvVskbU1X9sIRsc5LKQZjzfXOdIFzXw4QMCFkgVsA/lUyZy+hBttqwHuW3dB50qRqqIfliBT5PzniJtDYs9PpR/+qhBkkWuaDOJiiwsnoLK+TTHmQaqmOmw7aXo4xyNv3nBOPqzIm2CBvVJ/d7i5jfEXomK+dL+TNks3C1QbN3v5eGKbrpqWKslLqv8BTzn+FnVe4emkiwyy7s2jSgPsl8udB7H/ELSgLDqxupem1E=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2562B100005
+X-Stat-Signature: k691byj49gi15p3hykfw5qju8wpiotgm
+X-HE-Tag: 1753130187-244639
+X-HE-Meta: U2FsdGVkX191yM6p402S3NBSghchPwSLXLHufm+/p/ku4Cqp28GTUwyqKObMh/JgkOWCXLnXeJYdkVx5N4BzyM+mjby57IHTans3qsJ1DTA98j3+rp5xvCMNbxem9MepmgdplSEt6WRq7Z7rE7GYpAF+YQXGetnQc+0YEhxwun90z7HwpjLBOpN4TS8Afijim8BLC0xVah5+X4YCHzDGuawEgQbMjxpqZ8OhtcKSYEHfOhB8dbL2iPNXnEHQZdinU/ClKPEg+MOzNrjN+kJCLvtCDLOe0io9ujG/V75qtFIdPiiyPpMfdJoKN/Xk7scr4PqkfvsKGdEEq7zahlTivtaeuD8kQvGYJ0NRde8PP0GIyHWPA8qM5zuDHwuN/CKUFOGyJSuuJI2ke10wVRchQFIqQqphPpOVmiZJAMEF4VnB4zWf8M4e0UCGqzqpECeP0VSOxBHQpA6l7kY4S4kl0uqONq49lOyOBJ37VD6SfbFEyy9by04f/TW1Ik4/NcfeexwP4D3zvIOtMNayTerBIPLCfWYVLkEKtRSRaVMG6d3JiKcV5kXCLtMAiRHVXQb4v82s+CuMajKz1xlSOiOpS8KxAyYBYFvDT8Tje63dHevZzw5ktWH/GY9aPo6Uc+Y0JQI30bZ80LG7sWzKrhgJhIEdTQK+9mtjMJU15vXfeoJ2FwjSEnmN6w4A+wH8nvygkRJWHeJTi3sBUyynDsrSXHXIIFcyakDzlQxQxfWdlbgsshf21lWEqtkx+1kg1rwATCnnl4k4ocO9yxou7GiNl8UI6WFP92B+Lr/oV/l+Wg9BMTMqwyUyJdyo0y3dwSOGfrxHQIw2QFg51vtP6+J9VeZLLZUdkOPUoR9nsr+5G+J4YTNZ8vgCLbgwlJHMDg3VFPaloIwkSPZsT0TOfg3/sT0vQG88WZppa+c2y7XlaFWNvShZ5zgT9RCUABhicvA0No6zeQNM3Hhz+6rFEj3
+ jidv+JCB
+ QUQvUCIw62Y/BGQFposzHeEjqhtaLelMIJDpH4gRWtVIgzuC/0m//v0K9tlzFTqT9hix+yR2yBkeKU5F/ph0EHespHDQjMlsurwzJ5xmQtb/KXZqRAbOzHgOIbO2pvKsM0BBMwA+WW4a2V2kjKc+rEquRKISaT4GLORmPruue9rA6lo3M6DEO4lEjCv9W4Si5nITtK6Zi5YFZMRtp4C8WIqUSQVqRno+I83wO7r6Z0zomLKz13JMN/66WO4izukzFoh75ZueDtmWCI8owEyRmji04saZYIDcEC01k3wExzWFAEnH2y9P2X1gKs7icInOy7uaCCj1LqU0ZRvEJUnJ6spuqCbzjEqXjH8liRZEXZHI3Yv5S4hlIk0Uj4YQVReTXiCTRqShbTVJF9QuryHFYgzComTLOCRGt3whKDnuRDJPmtA87IFNWyILpsUGtoFLW0LpdR3cNHFm/DBVKxk0Wn4JRFKmNcAFtS5LrnpxvdXEPJcfxWTae2auxKoJL2V90NfVZ4ka96Z0PDsDT7DSGFmBUrKAwPKAuKyJvhLkYPiZL7w3j9xwqYgYBtKp0VCk6QPM2ij/LzbG4ye7cMISJXPTCKw1kVvCZ9SR/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,57 +111,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 21, 2025 at 10:29=E2=80=AFAM Sean Christopherson <seanjc@google=
-.com> wrote:
->
-> >
-> > > > 2) KVM fetches shared faults through userspace page tables and not
-> > > > guest_memfd directly.
-> > >
-> > > This is also irrelevant.  KVM _already_ supports resolving shared fau=
-lts through
-> > > userspace page tables.  That support won't go away as KVM will always=
- need/want
-> > > to support mapping VM_IO and/or VM_PFNMAP memory into the guest (even=
- for TDX).
+Some protocols (e.g., TCP, UDP) has their own memory accounting for
+socket buffers and charge memory to global per-protocol counters such
+as /proc/net/ipv4/tcp_mem.
 
-As a combination of [1] and [2], I believe we are saying that for
-memslots backed by mappable guest_memfd files, KVM will always serve
-both shared/private faults using kvm_gmem_get_pfn(). And I think the
-same story will be carried over when we get the stage2 i.e.
-mmap+conversion support.
+When running under a non-root cgroup, this memory is also charged to
+the memcg as sock in memory.stat.
 
-[1] https://lore.kernel.org/kvm/20250717162731.446579-10-tabba@google.com/
-[2] https://lore.kernel.org/kvm/20250717162731.446579-14-tabba@google.com/
+Sockets using such protocols are still subject to the global limits,
+thus affected by a noisy neighbour outside cgroup.
 
-> > >
-> > > > I don't see value in trying to go out of way to support such a usec=
-ase.
-> > >
-> > > But if/when KVM gains support for tracking shared vs. private in gues=
-t_memfd
-> > > itself, i.e. when TDX _does_ support mmap() on guest_memfd, KVM won't=
- have to go
-> > > out of its to support using guest_memfd for the @userspace_addr backi=
-ng store.
-> > > Unless I'm missing something, the only thing needed to "support" this=
- scenario is:
-> >
-> > As above, we need 1) mentioned by Vishal as well, to prevent userspace =
-from
-> > passing mmapable guest_memfd to serve as private memory.
->
-> Ya, I'm talking specifically about what the world will look like once KVM=
- tracks
-> private vs. shared in guest_memfd.  I'm not in any way advocating we do t=
-his
-> right now.
+This makes it difficult to accurately estimate and configure appropriate
+global limits.
 
-I think we should generally strive to go towards single memory backing
-for all the scenarios, unless there is a real world usecase that can't
-do without dual memory backing (We should think hard before committing
-to supporting it).
+If all workloads were guaranteed to be controlled under memcg, the issue
+can be worked around by setting tcp_mem[0~2] to UINT_MAX.
 
-Dual memory backing was just a stopgap we needed until the *right*
-solution came along.
+However, this assumption does not always hold, and a single workload that
+opts out of memcg can consume memory up to the global limit, which is
+problematic.
+
+This series introduces a new per-memcg know to allow decoupling memcg
+from the global memory accounting, which simplifies the memcg
+configuration while keeping the global limits within a reasonable range.
+
+Overview of the series:
+
+  patch 1 is a bug fix for MPTCP
+  patch 2 ~ 9 move sk->sk_memcg accesses to a single place
+  patch 10 moves sk_memcg under CONFIG_MEMCG
+  patch 11 & 12 introduces a flag and stores it to the lowest bit of sk->sk_memcg
+  patch 13 decouples memcg from sk_prot->memory_allocated based on the flag
+
+
+Kuniyuki Iwashima (13):
+  mptcp: Fix up subflow's memcg when CONFIG_SOCK_CGROUP_DATA=n.
+  mptcp: Use tcp_under_memory_pressure() in mptcp_epollin_ready().
+  tcp: Simplify error path in inet_csk_accept().
+  net: Call trace_sock_exceed_buf_limit() for memcg failure with
+    SK_MEM_RECV.
+  net: Clean up __sk_mem_raise_allocated().
+  net-memcg: Introduce mem_cgroup_from_sk().
+  net-memcg: Introduce mem_cgroup_sk_enabled().
+  net-memcg: Pass struct sock to mem_cgroup_sk_(un)?charge().
+  net-memcg: Pass struct sock to mem_cgroup_sk_under_memory_pressure().
+  net: Define sk_memcg under CONFIG_MEMCG.
+  net-memcg: Add memory.socket_isolated knob.
+  net-memcg: Store memcg->socket_isolated in sk->sk_memcg.
+  net-memcg: Allow decoupling memcg from global protocol memory
+    accounting.
+
+ Documentation/admin-guide/cgroup-v2.rst | 16 +++++
+ include/linux/memcontrol.h              | 50 ++++++++-----
+ include/net/proto_memory.h              | 10 ++-
+ include/net/sock.h                      | 66 +++++++++++++++++
+ include/net/tcp.h                       | 10 ++-
+ mm/memcontrol.c                         | 84 +++++++++++++++++++---
+ net/core/sock.c                         | 95 ++++++++++++++++---------
+ net/ipv4/inet_connection_sock.c         | 35 +++++----
+ net/ipv4/tcp_output.c                   | 13 ++--
+ net/mptcp/protocol.h                    |  4 +-
+ net/mptcp/subflow.c                     | 11 +--
+ 11 files changed, 299 insertions(+), 95 deletions(-)
+
+-- 
+2.50.0.727.gbf7dc18ff4-goog
+
 
