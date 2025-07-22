@@ -2,67 +2,67 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D8DFC83F26
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 01:50:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 28CB4C83F1A
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 01:50:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 41B648E0006; Mon, 21 Jul 2025 21:50:17 -0400 (EDT)
+	id BE36C8E0007; Mon, 21 Jul 2025 21:50:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F3668E0001; Mon, 21 Jul 2025 21:50:17 -0400 (EDT)
+	id B94188E0001; Mon, 21 Jul 2025 21:50:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26C738E0006; Mon, 21 Jul 2025 21:50:17 -0400 (EDT)
+	id AD19E8E0007; Mon, 21 Jul 2025 21:50:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 16A6D8E0001
-	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 21:50:17 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DA2D157688
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 01:50:16 +0000 (UTC)
-X-FDA: 83690220432.01.D37B684
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B6F98E0001
+	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 21:50:26 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0634757688
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 01:50:26 +0000 (UTC)
+X-FDA: 83690220852.05.8FC686F
 Received: from us-smtp-delivery-44.mimecast.com (us-smtp-delivery-44.mimecast.com [207.211.30.44])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E8427140003
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 01:50:14 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 230BA40004
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 01:50:23 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
 	dkim=none;
-	spf=softfail (imf26.hostedemail.com: 207.211.30.44 is neither permitted nor denied by domain of airlied@gmail.com) smtp.mailfrom=airlied@gmail.com;
-	dmarc=fail reason="No valid SPF, No valid DKIM" header.from=gmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753149015; a=rsa-sha256;
-	cv=none;
-	b=P8ak9kFsM9Q7s2UsCq0yPtLKkHs2wO95qXkk8fCvJd05HsAaBbSYuIB2YJNnwS9CDsO1ov
-	M7nbCGK4uxTKiXNwDZ2hS7oz2dMOedl2oaAdC+KVu9eHxHhjkN3PHtYUFNTjRxC0MV84Xw
-	QU90g2bbmeXny2+ZokUxHiKgnMW87sY=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=none;
-	spf=softfail (imf26.hostedemail.com: 207.211.30.44 is neither permitted nor denied by domain of airlied@gmail.com) smtp.mailfrom=airlied@gmail.com;
-	dmarc=fail reason="No valid SPF, No valid DKIM" header.from=gmail.com (policy=none)
+	dmarc=fail reason="No valid SPF, No valid DKIM" header.from=gmail.com (policy=none);
+	spf=softfail (imf07.hostedemail.com: 207.211.30.44 is neither permitted nor denied by domain of airlied@gmail.com) smtp.mailfrom=airlied@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753149015;
+	s=arc-20220608; t=1753149024;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YdZ8c53DlLP/PA3w9snsouag/raCgAyok4AUO9m1QKc=;
-	b=u/bJAwotUXqPG0lnoVp79CvUpCrAO4unfD7DJNtAJl5kiSsRiQcWqOSoFYkykrWWjJke2N
-	fPEC98Sh+Ec9hFYTxSvr6P5Ud4gHzklzcdZQ5CHEgK+de5pFto76G7yDvyfldIvYAyg9F4
-	gg36aV+7CsAhQIclSv1oL2d31y0WsSE=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	bh=U0e3+Mfz+b5PCyr5+j+ZJ2H7zjr+wW2onyWPgiR3N7c=;
+	b=gG39NFABBrzSoPEu4X0lnwCuIPq2OAm7Pqfgt+z6Ciouzc53D+LW0aZ/qvWyeaSd4cFuZX
+	ho69xD513Z8nsCEZmbh1ZhnanFK+b4QTrDc2x6Z13fGZkYSVlWoYy6kinjIdbY27PQ3BAo
+	kqEfAdVAgzd0fggn6EsN/gvxgB03Vw0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753149024; a=rsa-sha256;
+	cv=none;
+	b=8Ydd0odII7dFQ41aXcsQHEFfCJWsnUlLRJvQCJ9UhrjflX7qJWxd/WnPGw+OY+rrHjfMN8
+	PAlKOiMr5A6mcd1hBXH9UPMJykjANnhj3zEGvNKU1hPk/B2JvDAnL5EeRh37LjKZtoRaPK
+	hiEfCXY0LT4thQzW4PsSD1YpE6E3cqc=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="No valid SPF, No valid DKIM" header.from=gmail.com (policy=none);
+	spf=softfail (imf07.hostedemail.com: 207.211.30.44 is neither permitted nor denied by domain of airlied@gmail.com) smtp.mailfrom=airlied@gmail.com
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-99-A8-KVLFcM-qJqcP3VMlFUw-1; Mon,
- 21 Jul 2025 21:50:12 -0400
-X-MC-Unique: A8-KVLFcM-qJqcP3VMlFUw-1
-X-Mimecast-MFC-AGG-ID: A8-KVLFcM-qJqcP3VMlFUw_1753149011
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-681-6nhiMGY7PWyQYpz-GQZsRQ-1; Mon,
+ 21 Jul 2025 21:50:17 -0400
+X-MC-Unique: 6nhiMGY7PWyQYpz-GQZsRQ-1
+X-Mimecast-MFC-AGG-ID: 6nhiMGY7PWyQYpz-GQZsRQ_1753149016
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 345C11956096;
-	Tue, 22 Jul 2025 01:50:11 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 632A719560AD;
+	Tue, 22 Jul 2025 01:50:16 +0000 (UTC)
 Received: from dreadlord.redhat.com (unknown [10.67.32.7])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id ECF6019560A3;
-	Tue, 22 Jul 2025 01:50:06 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1D0FB19560A3;
+	Tue, 22 Jul 2025 01:50:11 +0000 (UTC)
 From: Dave Airlie <airlied@gmail.com>
 To: dri-devel@lists.freedesktop.org,
 	linux-mm@kvack.org,
@@ -71,26 +71,26 @@ To: dri-devel@lists.freedesktop.org,
 Cc: Dave Chinner <david@fromorbit.com>,
 	Kairui Song <kasong@tencent.com>,
 	Dave Airlie <airlied@redhat.com>
-Subject: [PATCH 03/15] ttm/pool: port to list_lru. (v2)
-Date: Tue, 22 Jul 2025 11:43:16 +1000
-Message-ID: <20250722014942.1878844-4-airlied@gmail.com>
+Subject: [PATCH 04/15] ttm/pool: drop numa specific pools
+Date: Tue, 22 Jul 2025 11:43:17 +1000
+Message-ID: <20250722014942.1878844-5-airlied@gmail.com>
 In-Reply-To: <20250722014942.1878844-1-airlied@gmail.com>
 References: <20250722014942.1878844-1-airlied@gmail.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: mHXTM3hsYhj6vM92itPdRv67Mzx0xl_U2j5qlZfn2Qk_1753149011
+X-Mimecast-MFC-PROC-ID: 9N0ei4qLoy4X-1yujKrHtm_L3NUnBgAQtvS896rVlA8_1753149016
 X-Mimecast-Originator: gmail.com
 Content-Transfer-Encoding: quoted-printable
 content-type: text/plain; charset=WINDOWS-1252; x-default=true
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E8427140003
-X-Stat-Signature: qdy1egaxtzfpxxd3mgm91jdw8bbmzstt
+X-Rspamd-Queue-Id: 230BA40004
+X-Stat-Signature: cid3zei3pmckxa33magan5iuwcjnn7i1
 X-Rspam-User: 
-X-HE-Tag: 1753149014-68767
-X-HE-Meta: U2FsdGVkX185HilW9CJgXOx/VOmQzqVnD1WUVSZAoYFT/38OzxMdgUX6LHna3PFMeHTG43i9Wf1hT3S+GmsybhheRfs8MK1ZNxgTTG/KF4J6vbfVChdBJMSpVRlgTGO3KvM0wI16BNGc6rm6lmwShPzKuhx2ilaLwSBlk9bUbKpGfVrELJL+DcQh0m0uIvKctc9ZADJTJuXYmhiFus/GXP+9TZIC0C/hJ12OncFjIwZW6VZoHYd8vCgoEwfhCmTf/LfMM2k1uNxyPxSK8n2M/S8qoU2Jn7VsRriet0GdMIWzqkbZgF3BLGUiTVHwBkB0cs63Ma1PO0KOyg2GH3FDoRFKr+TKNQbG5wlIr2EiYEgRQKjv0gzEAmAGmxP6GjX/xkDMMUZdbt9keh6tAkCGgX/YVO6mBVV7nIrw05U1X/xIOM2fZnobGUnjL276pT/9Ls3/lMhXSPNpZ+Hqar0c4kYEYNzo3jJnnrnDL9Jp1HU2f5SYFBb9pZ/N3gEix3wO/OX41imhhHsGo4XhaPzHX6gKRJ9G4K650hAQKmtR47Ql8O4ELyHIcQbvt8aB1Holospp9K4o3u3SK9q37KX43UATG7KX6cD7FZL3RV74tFsQZPcmz13CBcP/LICcEsvagw9ZU0E4124IizW9hOfNMwjRIcXF+2zcafrRaPmtix8kwyTh+cJW7m1mnOQbrFuUnZw2wOFd0QjfQNvRh2TPLaHeXvAQEwyIhgXedw+IRO3wjHTf7kr/gtpsrMg5FoOCcp8PENFk129v/+GLL7krqkzF0q4CTr61za/S4rZ3XtZeC62oCr+Qvl/bDWvJGse9WC/tMkH+eJ2qDcmZWuG+tTqf1O3Cl9xJXLtV31BKZUVGHLpeKtyfn7jEFlxXjbts+rw3GE2fAGg7TrqkBIF93Eq+OPVNndzw6QzNPU5VWbz9lzj4mgchlih0inaKaOxqFJ2WuoPcgK22H50k4Q+
- VOLC+mML
- plkdEW2fj++aFky0kvVNLI+ZblXUtdxjxqGhbW27JOUSAbuvyEPIoK6E9j9DHC0RwCaSDqMqMlAxLx1n4yel2TOIrN0pTa0vivM3v33xFBODrOntWzdPFrO0gqC4kMCvMeh615OdnoNYFfiA1eQABak41F5eU/zWtYwUD0dxXH0+ZNqU7yQwx5oqFWdMSEYXcrT0juFR90zBN8ZA1cUzGoQZ2RscgJWaEwRsDCIciNn5LXC9f8Qlc7IykmzKiyqczk6bmwRaAJhZxaOoLp5Fv5EFOMlJblS6XtAzQhfA3kvmz3LkEAV/fzXIwctPbDykZ1SuNP+90LBBVJguzsLZCasqXOmV4VncyYtI+rUBGeKCm/ssUA4NJpjUfJ/+7tGFelur6T185bNAAP1FRNEbmYdLXSCnfa8ryHlmrFkg8t0035fU7sE+cEYmi33XolasB72oW0NUQ7MvqXhCtKYEUFgLcwcF/4IAKZ3ip42xv71c7p1XMcx/NzUN9WmdOsMpbaOfuQ37Fgb+itm8wVfKBZAKpU0679yFMFR7ZWNIbXWIl3qQebV6CmTUBHcMeK1hyAYXW8exO697mk7ks9X/Aw+/6W2S/YCaV/1jB8MPgZF5JKIE=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1753149023-952310
+X-HE-Meta: U2FsdGVkX1+rApw11+hfNjvw2Z3HnFAn1FQ3/HHb/QzBV0DjgqyU1KhiAFsOcqA/9t9JrhRiLNE2vPaGqAzOOfkKWh4K73K+K7GKs8wFYD40MJSQXbkUqtuKvH5dM6uOTU9CBJq1NKOqAfw4sBs+055SUPHHxckQoIAwBPm0d46B8zLMeOxhIHct+wIHozTShernqwsQ5pvzqxySq+2qEfEUz7sybhV8xrjoJ8ErE7GjcDaGk8iZ2lcLNDPTW7fPo7NV93mHZArdf7QdJ0XFSN6ODl1OI73qYj2K7lSs02ziY0d4+HzZqC74NhBc0RwzJa+esYAPcKqVjHG6VTW/f7dDSawno95kQHGkFg+7qnTj6VrPkwV1fEtDOL74urvq9DjU+ZMTqvxCih9jsoym4w3Cvi+0XHlv4peiwwAcia6xb+z5PHHo4TWFpBC4gZji+NQSrXMmnR3SS1hUO03oAqCRV4GPmcZuiBAy0wif4tRY7sVU6oqDBBmNtMiP4ek1IpbipzALdMy97tvCBUhvSJhvjApT9KfI4RE4mo06c+b8o0mzQu1eKxVHoZo+g4T2tcIanluEt7sAdiHDJq2MqO8M2TobydlybCs96JI9EOPHwiTJOsE90bvocV0gp0I/xni9KAGQFuJRaXd9iLweSUm+Eyb7Ip4fHZXG1jrRQ6CPQybxKJ6XzZlqcwCUCKe3TScGc6JOPCLM/15gs76ZWIW4CpfmKCl/oQQiTgl3LkELHZLPhFaMXzkq7iob1LUKncwwlc7sgfLa/WYoWrdjWbJxScfD4T4JN6nX6aXRPMBRJxGP4DyMomwU1kFB42VdNhJRVWMKzbJpaey94epUr6xyQJzQGmeFBWbmgCdnmvwPV9d/JnpdKk/3H+b46M+GMVZPcJZeChW0iMxHI9q7NqmNSUp36m1cyg2yaEPQ7VStu5aK1pK75BMTyM6BqQoYLTu8m1Gk+MjjaEnIcqg
+ 9+k8BP5H
+ zsl6abhbJz/VWr9dsaOvs2psm65IuKYPR0GYoAsRLrvkwWAyqU3YO7Sq82G3lQGzNbQ6tV+lrXWwNb4CmCQGmNsfuLfM7p5FBtE/iqNU5qMVeRotmZiEuXNACv7OhUlOT6H9TDQW7h99gAogP23DjMbwWsKfdJmGMxM2zlunrFjzJ1zgZwpW0HGYJzNutdEFJOvYuPq9denOKUf82KfGpmzaWxc81j07Shr8CKxP8I7zC9YtDnXuyiBY+qbGPeIVCpTaRNtDd5K3WvEpl8N3YU17bLc5zILgaPFKZ9aKvLQj51pTU2fzNaZ5Dbe81gNMQhDboSVmlgsywgGBpPE3plXYstPsedj2Tyqd9BGQr/CQNt6zl74DdqQ+vSMo16bMjvtNRxS1qp9FKAqRbGCwu4y+yHAOPNWjK5ktrgB/g2kz86c+p7tLuV7WDW1JpHCad9uO1X6YF5UE6xEuZY5ryYqn/pDARDKGzG1bxS7PlqsQWSDwXSk6slT1Qfv6ELp02O57KtWpvb5eOux5/KQMcQcovolynNgK7wLHT6F7MgRMoj5kp7jPSglqkaqQE5bo3Un35kiygxjP6gBu05R9j4rPbFQ8rTOipvxNuWjarUobKg6Tu/duwud6J2brnN5zSPkye1A3B3sYmJYPtXeqLEOdJrw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,370 +101,66 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Dave Airlie <airlied@redhat.com>
 
-This is an initial port of the TTM pools for
-write combined and uncached pages to use the list_lru.
+The list_lru will now handle numa for us, so need to keep
+separate pool types for it. Just consoldiate into the global ones.
 
-This makes the pool's more NUMA aware and avoids
-needing separate NUMA pools (later commit enables this).
+This adds a debugfs change to avoid dumping non-existant orders due
+to this change.
 
 Cc: Christian Koenig <christian.koenig@amd.com>
 Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Dave Chinner <david@fromorbit.com>
 Signed-off-by: Dave Airlie <airlied@redhat.com>
-
 ---
-v2: drop the pt->lock, lru list has it's own lock which is sufficent.
-rearrange list isolates to fix bad locking orders.
----
- drivers/gpu/drm/ttm/tests/ttm_device_test.c |  2 +-
- drivers/gpu/drm/ttm/tests/ttm_pool_test.c   | 32 ++++----
- drivers/gpu/drm/ttm/ttm_pool.c              | 91 ++++++++++++++-------
- include/drm/ttm/ttm_pool.h                  |  6 +-
- mm/list_lru.c                               |  1 +
- 5 files changed, 82 insertions(+), 50 deletions(-)
+ drivers/gpu/drm/ttm/ttm_pool.c | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/ttm/tests/ttm_device_test.c b/drivers/gpu/drm/=
-ttm/tests/ttm_device_test.c
-index 1621903818e5..1f207fd222bc 100644
---- a/drivers/gpu/drm/ttm/tests/ttm_device_test.c
-+++ b/drivers/gpu/drm/ttm/tests/ttm_device_test.c
-@@ -183,7 +183,7 @@ static void ttm_device_init_pools(struct kunit *test)
-=20
- =09=09=09=09if (params->use_dma_alloc)
- =09=09=09=09=09KUNIT_ASSERT_FALSE(test,
--=09=09=09=09=09=09=09   list_empty(&pt.pages));
-+=09=09=09=09=09=09=09   !list_lru_count(&pt.pages));
- =09=09=09}
- =09=09}
- =09}
-diff --git a/drivers/gpu/drm/ttm/tests/ttm_pool_test.c b/drivers/gpu/drm/tt=
-m/tests/ttm_pool_test.c
-index 8ade53371f72..39234a3e98c4 100644
---- a/drivers/gpu/drm/ttm/tests/ttm_pool_test.c
-+++ b/drivers/gpu/drm/ttm/tests/ttm_pool_test.c
-@@ -248,7 +248,7 @@ static void ttm_pool_alloc_order_caching_match(struct k=
-unit *test)
- =09pool =3D ttm_pool_pre_populated(test, size, caching);
-=20
- =09pt =3D &pool->caching[caching].orders[order];
--=09KUNIT_ASSERT_FALSE(test, list_empty(&pt->pages));
-+=09KUNIT_ASSERT_FALSE(test, !list_lru_count(&pt->pages));
-=20
- =09tt =3D ttm_tt_kunit_init(test, 0, caching, size);
- =09KUNIT_ASSERT_NOT_NULL(test, tt);
-@@ -256,7 +256,7 @@ static void ttm_pool_alloc_order_caching_match(struct k=
-unit *test)
- =09err =3D ttm_pool_alloc(pool, tt, &simple_ctx);
- =09KUNIT_ASSERT_EQ(test, err, 0);
-=20
--=09KUNIT_ASSERT_TRUE(test, list_empty(&pt->pages));
-+=09KUNIT_ASSERT_TRUE(test, !list_lru_count(&pt->pages));
-=20
- =09ttm_pool_free(pool, tt);
- =09ttm_tt_fini(tt);
-@@ -282,8 +282,8 @@ static void ttm_pool_alloc_caching_mismatch(struct kuni=
-t *test)
- =09tt =3D ttm_tt_kunit_init(test, 0, tt_caching, size);
- =09KUNIT_ASSERT_NOT_NULL(test, tt);
-=20
--=09KUNIT_ASSERT_FALSE(test, list_empty(&pt_pool->pages));
--=09KUNIT_ASSERT_TRUE(test, list_empty(&pt_tt->pages));
-+=09KUNIT_ASSERT_FALSE(test, !list_lru_count(&pt_pool->pages));
-+=09KUNIT_ASSERT_TRUE(test, !list_lru_count(&pt_tt->pages));
-=20
- =09err =3D ttm_pool_alloc(pool, tt, &simple_ctx);
- =09KUNIT_ASSERT_EQ(test, err, 0);
-@@ -291,8 +291,8 @@ static void ttm_pool_alloc_caching_mismatch(struct kuni=
-t *test)
- =09ttm_pool_free(pool, tt);
- =09ttm_tt_fini(tt);
-=20
--=09KUNIT_ASSERT_FALSE(test, list_empty(&pt_pool->pages));
--=09KUNIT_ASSERT_FALSE(test, list_empty(&pt_tt->pages));
-+=09KUNIT_ASSERT_FALSE(test, !list_lru_count(&pt_pool->pages));
-+=09KUNIT_ASSERT_FALSE(test, !list_lru_count(&pt_tt->pages));
-=20
- =09ttm_pool_fini(pool);
- }
-@@ -316,8 +316,8 @@ static void ttm_pool_alloc_order_mismatch(struct kunit =
-*test)
- =09tt =3D ttm_tt_kunit_init(test, 0, caching, snd_size);
- =09KUNIT_ASSERT_NOT_NULL(test, tt);
-=20
--=09KUNIT_ASSERT_FALSE(test, list_empty(&pt_pool->pages));
--=09KUNIT_ASSERT_TRUE(test, list_empty(&pt_tt->pages));
-+=09KUNIT_ASSERT_FALSE(test, !list_lru_count(&pt_pool->pages));
-+=09KUNIT_ASSERT_TRUE(test, !list_lru_count(&pt_tt->pages));
-=20
- =09err =3D ttm_pool_alloc(pool, tt, &simple_ctx);
- =09KUNIT_ASSERT_EQ(test, err, 0);
-@@ -325,8 +325,8 @@ static void ttm_pool_alloc_order_mismatch(struct kunit =
-*test)
- =09ttm_pool_free(pool, tt);
- =09ttm_tt_fini(tt);
-=20
--=09KUNIT_ASSERT_FALSE(test, list_empty(&pt_pool->pages));
--=09KUNIT_ASSERT_FALSE(test, list_empty(&pt_tt->pages));
-+=09KUNIT_ASSERT_FALSE(test, !list_lru_count(&pt_pool->pages));
-+=09KUNIT_ASSERT_FALSE(test, !list_lru_count(&pt_tt->pages));
-=20
- =09ttm_pool_fini(pool);
- }
-@@ -352,12 +352,12 @@ static void ttm_pool_free_dma_alloc(struct kunit *tes=
-t)
- =09ttm_pool_alloc(pool, tt, &simple_ctx);
-=20
- =09pt =3D &pool->caching[caching].orders[order];
--=09KUNIT_ASSERT_TRUE(test, list_empty(&pt->pages));
-+=09KUNIT_ASSERT_TRUE(test, !list_lru_count(&pt->pages));
-=20
- =09ttm_pool_free(pool, tt);
- =09ttm_tt_fini(tt);
-=20
--=09KUNIT_ASSERT_FALSE(test, list_empty(&pt->pages));
-+=09KUNIT_ASSERT_FALSE(test, !list_lru_count(&pt->pages));
-=20
- =09ttm_pool_fini(pool);
- }
-@@ -383,12 +383,12 @@ static void ttm_pool_free_no_dma_alloc(struct kunit *=
-test)
- =09ttm_pool_alloc(pool, tt, &simple_ctx);
-=20
- =09pt =3D &pool->caching[caching].orders[order];
--=09KUNIT_ASSERT_TRUE(test, list_is_singular(&pt->pages));
-+=09KUNIT_ASSERT_TRUE(test, list_lru_count(&pt->pages) =3D=3D 1);
-=20
- =09ttm_pool_free(pool, tt);
- =09ttm_tt_fini(tt);
-=20
--=09KUNIT_ASSERT_TRUE(test, list_is_singular(&pt->pages));
-+=09KUNIT_ASSERT_TRUE(test, list_lru_count(&pt->pages) =3D=3D 1);
-=20
- =09ttm_pool_fini(pool);
- }
-@@ -404,11 +404,11 @@ static void ttm_pool_fini_basic(struct kunit *test)
- =09pool =3D ttm_pool_pre_populated(test, size, caching);
- =09pt =3D &pool->caching[caching].orders[order];
-=20
--=09KUNIT_ASSERT_FALSE(test, list_empty(&pt->pages));
-+=09KUNIT_ASSERT_FALSE(test, !list_lru_count(&pt->pages));
-=20
- =09ttm_pool_fini(pool);
-=20
--=09KUNIT_ASSERT_TRUE(test, list_empty(&pt->pages));
-+=09KUNIT_ASSERT_TRUE(test, !list_lru_count(&pt->pages));
- }
-=20
- static struct kunit_case ttm_pool_test_cases[] =3D {
 diff --git a/drivers/gpu/drm/ttm/ttm_pool.c b/drivers/gpu/drm/ttm/ttm_pool.=
 c
-index 148c7530738d..8b0fe7a0164a 100644
+index 8b0fe7a0164a..bc8a796201b4 100644
 --- a/drivers/gpu/drm/ttm/ttm_pool.c
 +++ b/drivers/gpu/drm/ttm/ttm_pool.c
-@@ -131,6 +131,15 @@ static struct list_head shrinker_list;
- static struct shrinker *mm_shrinker;
- static DECLARE_RWSEM(pool_shrink_rwsem);
+@@ -396,17 +396,11 @@ static struct ttm_pool_type *ttm_pool_select_type(str=
+uct ttm_pool *pool,
+ #ifdef CONFIG_X86
+ =09switch (caching) {
+ =09case ttm_write_combined:
+-=09=09if (pool->nid !=3D NUMA_NO_NODE)
+-=09=09=09return &pool->caching[caching].orders[order];
+-
+ =09=09if (pool->use_dma32)
+ =09=09=09return &global_dma32_write_combined[order];
 =20
-+static int ttm_pool_nid(struct ttm_pool *pool) {
-+=09int nid =3D NUMA_NO_NODE;
-+=09if (pool)
-+=09=09nid =3D pool->nid;
-+=09if (nid =3D=3D NUMA_NO_NODE)
-+=09=09nid =3D numa_node_id();
-+=09return nid;
-+}
-+
- /* Allocate pages of size 1 << order with the given gfp_flags */
- static struct page *ttm_pool_alloc_page(struct ttm_pool *pool, gfp_t gfp_f=
-lags,
- =09=09=09=09=09unsigned int order)
-@@ -288,30 +297,41 @@ static void ttm_pool_type_give(struct ttm_pool_type *=
-pt, struct page *p)
- =09=09=09clear_page(page_address(p + i));
+ =09=09return &global_write_combined[order];
+ =09case ttm_uncached:
+-=09=09if (pool->nid !=3D NUMA_NO_NODE)
+-=09=09=09return &pool->caching[caching].orders[order];
+-
+ =09=09if (pool->use_dma32)
+ =09=09=09return &global_dma32_uncached[order];
+=20
+@@ -1281,7 +1275,7 @@ int ttm_pool_debugfs(struct ttm_pool *pool, struct se=
+q_file *m)
+ {
+ =09unsigned int i;
+=20
+-=09if (!pool->use_dma_alloc && pool->nid =3D=3D NUMA_NO_NODE) {
++=09if (!pool->use_dma_alloc) {
+ =09=09seq_puts(m, "unused\n");
+ =09=09return 0;
  =09}
-=20
--=09spin_lock(&pt->lock);
--=09list_add(&p->lru, &pt->pages);
--=09spin_unlock(&pt->lock);
-+=09INIT_LIST_HEAD(&p->lru);
-+=09rcu_read_lock();
-+=09list_lru_add(&pt->pages, &p->lru, page_to_nid(p), NULL);
-+=09rcu_read_unlock();
- =09atomic_long_add(1 << pt->order, &allocated_pages);
-=20
- =09mod_lruvec_page_state(p, NR_GPU_ACTIVE, -num_pages);
- =09mod_lruvec_page_state(p, NR_GPU_RECLAIM, num_pages);
- }
-=20
-+static enum lru_status take_one_from_lru(struct list_head *item,
-+=09=09=09=09=09 struct list_lru_one *list,
-+=09=09=09=09=09 void *cb_arg)
-+{
-+=09struct page **out_page =3D cb_arg;
-+=09struct page *p =3D container_of(item, struct page, lru);
-+=09list_lru_isolate(list, item);
-+
-+=09*out_page =3D p;
-+=09return LRU_REMOVED;
-+}
-+
- /* Take pages from a specific pool_type, return NULL when nothing availabl=
-e */
--static struct page *ttm_pool_type_take(struct ttm_pool_type *pt)
-+static struct page *ttm_pool_type_take(struct ttm_pool_type *pt, int nid)
- {
--=09struct page *p;
-+=09int ret;
-+=09struct page *p =3D NULL;
-+=09unsigned long nr_to_walk =3D 1;
-=20
--=09spin_lock(&pt->lock);
--=09p =3D list_first_entry_or_null(&pt->pages, typeof(*p), lru);
--=09if (p) {
-+=09ret =3D list_lru_walk_node(&pt->pages, nid, take_one_from_lru, (void *)=
-&p, &nr_to_walk);
-+=09if (ret =3D=3D 1 && p) {
- =09=09atomic_long_sub(1 << pt->order, &allocated_pages);
- =09=09mod_lruvec_page_state(p, NR_GPU_ACTIVE, (1 << pt->order));
--=09=09mod_lruvec_page_state(p, NR_GPU_RECLAIM, -(1 << pt->order));
--=09=09list_del(&p->lru);
-+=09=09mod_lruvec_page_state(p, NR_GPU_RECLAIM, -(1 << pt->order));=09=09
- =09}
--=09spin_unlock(&pt->lock);
--
- =09return p;
- }
-=20
-@@ -322,25 +342,47 @@ static void ttm_pool_type_init(struct ttm_pool_type *=
-pt, struct ttm_pool *pool,
- =09pt->pool =3D pool;
- =09pt->caching =3D caching;
- =09pt->order =3D order;
--=09spin_lock_init(&pt->lock);
--=09INIT_LIST_HEAD(&pt->pages);
-+=09list_lru_init(&pt->pages);
-=20
- =09spin_lock(&shrinker_lock);
- =09list_add_tail(&pt->shrinker_list, &shrinker_list);
- =09spin_unlock(&shrinker_lock);
- }
-=20
-+static enum lru_status pool_move_to_dispose_list(struct list_head *item,
-+=09=09=09=09=09=09 struct list_lru_one *list,
-+=09=09=09=09=09=09 void *cb_arg)
-+{
-+=09struct list_head *dispose =3D cb_arg;
-+
-+=09list_lru_isolate_move(list, item, dispose);
-+
-+=09return LRU_REMOVED;
-+}
-+
-+static void ttm_pool_dispose_list(struct ttm_pool_type *pt,
-+=09=09=09=09  struct list_head *dispose)
-+{
-+=09while (!list_empty(dispose)) {
-+=09=09struct page *p;
-+=09=09p =3D list_first_entry(dispose, struct page, lru);
-+=09=09list_del_init(&p->lru);
-+=09=09atomic_long_sub(1 << pt->order, &allocated_pages);
-+=09=09ttm_pool_free_page(pt->pool, pt->caching, pt->order, p, true);
-+=09}
-+}
-+
- /* Remove a pool_type from the global shrinker list and free all pages */
- static void ttm_pool_type_fini(struct ttm_pool_type *pt)
- {
--=09struct page *p;
-+=09LIST_HEAD(dispose);
-=20
- =09spin_lock(&shrinker_lock);
- =09list_del(&pt->shrinker_list);
- =09spin_unlock(&shrinker_lock);
-=20
--=09while ((p =3D ttm_pool_type_take(pt)))
--=09=09ttm_pool_free_page(pt->pool, pt->caching, pt->order, p, true);
-+=09list_lru_walk(&pt->pages, pool_move_to_dispose_list, &dispose, LONG_MAX=
-);
-+=09ttm_pool_dispose_list(pt, &dispose);
- }
-=20
- /* Return the pool_type to use for the given caching and order */
-@@ -390,7 +432,7 @@ static unsigned int ttm_pool_shrink(void)
- =09list_move_tail(&pt->shrinker_list, &shrinker_list);
- =09spin_unlock(&shrinker_lock);
-=20
--=09p =3D ttm_pool_type_take(pt);
-+=09p =3D ttm_pool_type_take(pt, ttm_pool_nid(pt->pool));
- =09if (p) {
- =09=09ttm_pool_free_page(pt->pool, pt->caching, pt->order, p, true);
- =09=09num_pages =3D 1 << pt->order;
-@@ -744,7 +786,7 @@ static int __ttm_pool_alloc(struct ttm_pool *pool, stru=
-ct ttm_tt *tt,
- =09=09p =3D NULL;
- =09=09pt =3D ttm_pool_select_type(pool, page_caching, order);
- =09=09if (pt && allow_pools)
--=09=09=09p =3D ttm_pool_type_take(pt);
-+=09=09=09p =3D ttm_pool_type_take(pt, ttm_pool_nid(pool));
- =09=09/*
- =09=09 * If that fails or previously failed, allocate from system.
- =09=09 * Note that this also disallows additional pool allocations using
-@@ -1173,16 +1215,7 @@ static unsigned long ttm_pool_shrinker_count(struct =
-shrinker *shrink,
- /* Count the number of pages available in a pool_type */
- static unsigned int ttm_pool_type_count(struct ttm_pool_type *pt)
- {
--=09unsigned int count =3D 0;
--=09struct page *p;
--
--=09spin_lock(&pt->lock);
--=09/* Only used for debugfs, the overhead doesn't matter */
--=09list_for_each_entry(p, &pt->pages, lru)
--=09=09++count;
--=09spin_unlock(&pt->lock);
--
--=09return count;
-+=09return list_lru_count(&pt->pages);
- }
-=20
- /* Print a nice header for the order */
-diff --git a/include/drm/ttm/ttm_pool.h b/include/drm/ttm/ttm_pool.h
-index 54cd34a6e4c0..df56527c4853 100644
---- a/include/drm/ttm/ttm_pool.h
-+++ b/include/drm/ttm/ttm_pool.h
-@@ -45,8 +45,7 @@ struct ttm_tt;
-  * @order: the allocation order our pages have
-  * @caching: the caching type our pages have
-  * @shrinker_list: our place on the global shrinker list
-- * @lock: protection of the page list
-- * @pages: the list of pages in the pool
-+ * @pages: the lru_list of pages in the pool
-  */
- struct ttm_pool_type {
- =09struct ttm_pool *pool;
-@@ -55,8 +54,7 @@ struct ttm_pool_type {
-=20
- =09struct list_head shrinker_list;
-=20
--=09spinlock_t lock;
--=09struct list_head pages;
-+=09struct list_lru pages;
- };
-=20
- /**
-diff --git a/mm/list_lru.c b/mm/list_lru.c
-index 490473af3122..315362e3df3d 100644
---- a/mm/list_lru.c
-+++ b/mm/list_lru.c
-@@ -175,6 +175,7 @@ bool list_lru_add(struct list_lru *lru, struct list_hea=
-d *item, int nid,
- =09unlock_list_lru(l, false);
- =09return false;
- }
-+EXPORT_SYMBOL_GPL(list_lru_add);
-=20
- bool list_lru_add_obj(struct list_lru *lru, struct list_head *item)
- {
+@@ -1292,10 +1286,7 @@ int ttm_pool_debugfs(struct ttm_pool *pool, struct s=
+eq_file *m)
+ =09for (i =3D 0; i < TTM_NUM_CACHING_TYPES; ++i) {
+ =09=09if (!ttm_pool_select_type(pool, i, 0))
+ =09=09=09continue;
+-=09=09if (pool->use_dma_alloc)
+-=09=09=09seq_puts(m, "DMA ");
+-=09=09else
+-=09=09=09seq_printf(m, "N%d ", pool->nid);
++=09=09seq_puts(m, "DMA ");
+ =09=09switch (i) {
+ =09=09case ttm_cached:
+ =09=09=09seq_puts(m, "\t:");
 --=20
 2.49.0
 
