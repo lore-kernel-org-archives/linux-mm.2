@@ -2,107 +2,107 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 67252C83F27
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 15:20:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 85A61C83F27
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 15:22:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF8F48E0007; Tue, 22 Jul 2025 11:20:32 -0400 (EDT)
+	id 1B39F8E0008; Tue, 22 Jul 2025 11:22:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E80038E0001; Tue, 22 Jul 2025 11:20:32 -0400 (EDT)
+	id 163C08E0001; Tue, 22 Jul 2025 11:22:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D213C8E0007; Tue, 22 Jul 2025 11:20:32 -0400 (EDT)
+	id 02AF38E0008; Tue, 22 Jul 2025 11:22:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B8E208E0001
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 11:20:32 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6AF0958EFB
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 15:20:32 +0000 (UTC)
-X-FDA: 83692262304.28.B9C4DA5
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf30.hostedemail.com (Postfix) with ESMTP id E84C98000A
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 15:20:29 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="BCyM/fJT";
-	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DFD978E0001
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 11:22:03 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9D32314044B
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 15:22:03 +0000 (UTC)
+X-FDA: 83692266126.24.C17766E
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf25.hostedemail.com (Postfix) with ESMTP id B41C8A0002
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 15:22:00 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GAdbTJ5r;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753197720; a=rsa-sha256;
+	cv=none;
+	b=W6C6rvkPdhj0p14cQCH486rj1MPrhsAZ795+iYTzGlc/O6BNhoDUeWd6k08jhZis6DXH67
+	YZSLyzu34RVERqfKa0TNPECFij1WJFAScEF8KdC14ItIdQNOL+SN9ICD7VHAaWitrpm5wb
+	/JTJBcK2Ads3UzOvZhmdUWRGhHjwxJA=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GAdbTJ5r;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753197630;
+	s=arc-20220608; t=1753197720;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UR686UB6W95T3RcYAhWHnco9tSypYtrsdOEb8UEkv7E=;
-	b=eFs6MFKMmqE3eHwp6iJAP6lOWU1kU+pUhfwYd3xfdZxJO2sl5YguULOXmWWB5+isIWL716
-	VKhczb2+o8N7QCj0E+2HPqe2Aucp2J6Cmu56xkkZ4faWH+UT3e/OJ8fyZwWhZorSqHUA8P
-	zbHs0Bj3bAxPCmtDuwbyh1OZcHJP9aI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753197630; a=rsa-sha256;
-	cv=none;
-	b=lG43yzZtz3aurDRphpQ/yTQ65mpVle344GdKleIetZ8TizUY1q/ySv1+nXnsQQ/246VZVn
-	JL1ZbtM/jQETxg07nVH4748TsQrNGFxNc9jUmRv7lmQlyzx11qL2OlZk0Cqd3If4XDHfzy
-	rZzEYwvgFyvdDhiFa7g5gVOizn+O8hg=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="BCyM/fJT";
-	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	bh=3lGVCvSvU+dwTTyQ/1aMBu54ELfXmjnvHtRzgY3JvgA=;
+	b=68F8v9ldXLrRfd6IfQghkXqcbf7G5kPaLTkXaCFALirZh7uatpyj9341fcnvcj2DpnngUJ
+	RyCbhdPO7nmvv9Pw85Oog7RCGoveCxvJlO2XdzhYqQfQu8Y4ZTZqoqfN0t7kh3SFGClYxZ
+	EOl+XCV3vQAGtGUk83109nYqwCAe65A=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753197629;
+	s=mimecast20190719; t=1753197720;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UR686UB6W95T3RcYAhWHnco9tSypYtrsdOEb8UEkv7E=;
-	b=BCyM/fJTLec8DSK8VlC5rTRXteotCE2s9QEgC5jdDd1sPCMSlZywGQrq2/OyL4ojVjDlG+
-	x56L7Kiwxovn+Ty5zAqyzIP0YObOlD3a9oFywJY0q4etj+VWjwc2+xdEOG6UyuUKBEBLs9
-	lTu5OVpBd224x+nNP3sGNB6/CkTZJxg=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=3lGVCvSvU+dwTTyQ/1aMBu54ELfXmjnvHtRzgY3JvgA=;
+	b=GAdbTJ5rBPVuZOebhxxLWx8vx/4BKM/W2aTjJY4uwPIPxwwqC/ZOCRWAsmR9jAIJ6SokbZ
+	2H+BlUyp+PmYWhAvJxQ1pDt/LgJAeFJkjgw00CAg778UvIgRWvIDD60SMxCtNiatXasERC
+	g8ka0fgIi0O3jNPvehPaSyFUvrEnJLI=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-523-2PcJ03kMOaWMi4iLQOWN6w-1; Tue, 22 Jul 2025 11:20:28 -0400
-X-MC-Unique: 2PcJ03kMOaWMi4iLQOWN6w-1
-X-Mimecast-MFC-AGG-ID: 2PcJ03kMOaWMi4iLQOWN6w_1753197627
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-455ea9cb0beso43468545e9.0
-        for <linux-mm@kvack.org>; Tue, 22 Jul 2025 08:20:27 -0700 (PDT)
+ us-mta-134-4hqFulM0N0OhRkiaOGZLEg-1; Tue, 22 Jul 2025 11:21:58 -0400
+X-MC-Unique: 4hqFulM0N0OhRkiaOGZLEg-1
+X-Mimecast-MFC-AGG-ID: 4hqFulM0N0OhRkiaOGZLEg_1753197717
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-451ac1b43c4so35282825e9.0
+        for <linux-mm@kvack.org>; Tue, 22 Jul 2025 08:21:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753197627; x=1753802427;
+        d=1e100.net; s=20230601; t=1753197717; x=1753802517;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=UR686UB6W95T3RcYAhWHnco9tSypYtrsdOEb8UEkv7E=;
-        b=SwfxcxCLGuJBQNnwrycxOY+uM8ggjMSy0OQ6+Al9q9dbEtZsgvCGDiJn/6Qbxp3ENv
-         Q6Jz4uFLFRKj0P4M2cQY0rOmidjkNWUtAr67d1/QRd5/xuet+h2Vw6NfpnsnuwKMRl6Z
-         V5g5ZMr2RvoK5w4wz8xEGjJoHeBHqAMVyiZC77luZk/4aPrQR6Z3DDj3iOlkf98ukFO8
-         2D8DZviedSKd5Vil/R9Ilm51UrU6vtcpD0npGJjsZPBgOZFaEiW3RvzLrMNYbBcBYHln
-         FQfEisO4bE3ep5Lm0QeQYDkok8XHn7HQ4qsHLMu5HXNRxvpCYQjtHDRb4zwEinXpMTIG
-         iBnw==
-X-Forwarded-Encrypted: i=1; AJvYcCUuRZYbOP/SPNUpX/LhHfiYfUkL6j4iftmtFto4WMlWqiwC26N5DnIPkfIFbUbcfbsNiKXMOIs7ew==@kvack.org
-X-Gm-Message-State: AOJu0YzX75t5woDRTCI9ds8fYX2cgf0yYAz8KjJHXzmQvOKJWW68o8Ih
-	v+yr41pNedclvYhRgE4CdH749dhT7hEACi+QMCZxlkphD0Tpy48jJENQWvfuF9/B7zWfpK/v+rv
-	042AuP2YPBiF5fHjJi4vE58V9sYjnGeuD18XP019mtCfDpwxnJ6Ai
-X-Gm-Gg: ASbGncuVK2t3D9xjkLPfoDMFPl1nBmGqoHnPsgUmnrVv9DjLsnTyi/DWT/GMzS3PEWp
-	eijeVvlhQR0YLm4G9p8vtpGBgqxYJ6xCBnhsdGU+ljOyXto5ylLCegApdSZ1Au+i29YrKE+CjNc
-	0ziw/1Zm6+g6U9mS/hua5FUEIzpu1M+6PYDO80cqknmbmVVjAawLFfeSyomqqxiZK2gxHZbev7d
-	CZV/EDux3IW+pKvdZgMfagBEPaZISzk8iZebIZCOqxaxciqjCeWUCTZ/zoDi7WsIgRmBnCBPfS1
-	jmkTp+g2bSYZ1BPXBy1q+Ps+jA2g8O4I56TP9B9itQOhUZb+zHqtwK1jdI7HbEZ5W5634bx5+/9
-	AZzEjSKVffu0y1lN45F3SSz6ZUK9R5d19TWkTxVg1NzVfyp/tH7PnRjU4kNGsFh1+DQY=
-X-Received: by 2002:a05:600c:4f4b:b0:450:d01f:de6f with SMTP id 5b1f17b1804b1-456340160d3mr221374545e9.15.1753197626668;
-        Tue, 22 Jul 2025 08:20:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHa43nqfLMQERCC1j/wmVHQ7UtK8l0NZCMFbPH2YHsoDOoAl1UMnjReWSKUBgR3S4TG9WNPmw==
-X-Received: by 2002:a05:600c:4f4b:b0:450:d01f:de6f with SMTP id 5b1f17b1804b1-456340160d3mr221373905e9.15.1753197625794;
-        Tue, 22 Jul 2025 08:20:25 -0700 (PDT)
+        bh=3lGVCvSvU+dwTTyQ/1aMBu54ELfXmjnvHtRzgY3JvgA=;
+        b=q4ysoXhzOQA/qUzhw3ihs4tf3aAW+eC7ttAVvUt/426NKm1hCg7beGnoCCQ4511CZ3
+         m4MGLaYYTDe9A6aIHrGjY8phKlj3tggK4IMK4yjN8Vtr1xuiWP8NfZsMmqz8OYYMTCy2
+         yTn6728koaHTPixsnwesk5mNzr3fEhkSj6EhgomW1eMZTxN8Ou1t879ObMi9IKOj2sMx
+         29jJPZyEN6fC5BVdr7jwvagJdMf6t80FLf69s03jQCmuY87OvtyPgZbQg92QYTA/Bjvb
+         cLO1Eowl5gYuP7MJ0ineYbj6QMOz/Ff6waPTjPsPKH9IulWt40dFT54gOKzpzRkgwoIx
+         uWWw==
+X-Forwarded-Encrypted: i=1; AJvYcCW1/V3KWHR1adX/3rXU9DreGtJ2N0A0ELqFO0RvScsU7HXI4ba/bwOgwSMV7+26+8y+w+XeyuAWxA==@kvack.org
+X-Gm-Message-State: AOJu0Ywp/gbfOfhkVZUVzufbgPGdDACNCuFnJDs4+benN5QefwyQ0CIq
+	J3ck/Z/JxJ3vkrkrX4l2LSHOIkhPXcOGQa+NaOffyER4DPmZRpxnYJ48mqjajboFZDcIlgl1b9Q
+	QiKKpyUJPTwOMl/5GCxNKjkr68ja8Ed8g0WU9OtZ8y57X3gTwk4EV
+X-Gm-Gg: ASbGncup9an1AhSrVLNMtYmr3Q16RxqT+ARwOZ74lBbG4cEOa/aXmyjmDqGLRgymFit
+	J/ZBD1WBizoahzseXQ5k5RKqLDf8hUX8jZ+F5pQgtJAcJF4WJfLLkLf8GAG1U9j6w3REMuquF45
+	EBSUJISdT97MXt6kyzaa1CAEAreG+5jPbSiQPqjcR2b253DghB032GIuXQpNP0ZcBZ4HD7zEGXz
+	qmqOvuMROgfeR4GfCFp9nzVmei7uvExxgULrnTkqWZoqLX2nIogxZwc5ayx6fjdhmXEjvyEd1/i
+	038riQu1wM1XmBkxq1u421BvxES4HntNSPpukRJUxsFSuUB2mZehP4M9mUEKyUgODMyDPLaN3c6
+	oD3WS+pPOrcWi/c/zEjSOw+XCPJXwQyoojzlf4GHVrPf/u2nyNUTV3w1AWPP7v3tIYd0=
+X-Received: by 2002:a05:600c:1389:b0:456:26a1:a0c1 with SMTP id 5b1f17b1804b1-456437a59efmr137997005e9.17.1753197716959;
+        Tue, 22 Jul 2025 08:21:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF5enLdCYgzjySAx4ybbYU0jMVafZgCttcr6BLFjBoC3XlTsR3XaXP1SUNWMbt7hDHDm6g3EA==
+X-Received: by 2002:a05:600c:1389:b0:456:26a1:a0c1 with SMTP id 5b1f17b1804b1-456437a59efmr137995965e9.17.1753197716277;
+        Tue, 22 Jul 2025 08:21:56 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f28:de00:1efe:3ea4:63ba:1713? (p200300d82f28de001efe3ea463ba1713.dip0.t-ipconnect.de. [2003:d8:2f28:de00:1efe:3ea4:63ba:1713])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4586144f80asm38163855e9.1.2025.07.22.08.20.22
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4562e802ae4sm192273375e9.13.2025.07.22.08.21.52
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Jul 2025 08:20:25 -0700 (PDT)
-Message-ID: <2dae19aa-7913-4350-b031-38d00a20057f@redhat.com>
-Date: Tue, 22 Jul 2025 17:20:22 +0200
+        Tue, 22 Jul 2025 08:21:55 -0700 (PDT)
+Message-ID: <33da1127-f00e-446f-891f-01ccbd53efd6@redhat.com>
+Date: Tue, 22 Jul 2025 17:21:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V9 2/7] mm/filemap: Add NUMA mempolicy support to
- filemap_alloc_folio()
+Subject: Re: [PATCH V9 3/7] mm/filemap: Extend __filemap_get_folio() to
+ support NUMA memory policies
 To: Shivank Garg <shivankg@amd.com>, seanjc@google.com, vbabka@suse.cz,
  willy@infradead.org, akpm@linux-foundation.org, shuah@kernel.org,
  pbonzini@redhat.com, brauner@kernel.org, viro@zeniv.linux.org.uk
@@ -126,7 +126,7 @@ Cc: ackerleytng@google.com, paul@paul-moore.com, jmorris@namei.org,
  linux-security-module@vger.kernel.org, kvm@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-coco@lists.linux.dev
 References: <20250713174339.13981-2-shivankg@amd.com>
- <20250713174339.13981-5-shivankg@amd.com>
+ <20250713174339.13981-6-shivankg@amd.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -173,21 +173,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  WBe5lqcozu9LpNDH/brVSzHCSb7vjNGvvSVESDuoiHK8gNlf0v+epy5WYd7CGAgODPvDShGN
  g3eXuA==
 Organization: Red Hat
-In-Reply-To: <20250713174339.13981-5-shivankg@amd.com>
+In-Reply-To: <20250713174339.13981-6-shivankg@amd.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: qiT5nq_OFf-nUbZOhq_HpzDWqZf51fdpBKL_iVEnLFQ_1753197627
+X-Mimecast-MFC-PROC-ID: sgQ09yognxfMx_pO3R5iWn4kZuVclsDHY5DGSOg8gto_1753197717
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: E84C98000A
-X-Stat-Signature: bb3yk5k7jxjcp1b7ebtuy87xmozj9fbg
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B41C8A0002
+X-Stat-Signature: 1hxh6m68csore5kb9g8yp8t1faej4mqh
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1753197629-316207
-X-HE-Meta: U2FsdGVkX1+81ACr4keJCqm/vrrqlk6d19ugGKIX2BAGEJ4vLW0gotmg3Lqdc49TivUA2oOFn/Z3jhB4pqkZWay8VYFofoAWvspMmhGLTK0YOf3UZvgVJ6LSaAJpuj7T1LAqBg+tvJegLeYctS+J1yR4FwSJFmtNqnzN3OV6V/dBuW+6sKwb5EhdCcf90h12fsXKvo6XBKi6hbO4URy7QmO72qoL526JPzEtOlQ15nkmovEvDTaRPjvituo/WwB1o2tSrvKfY04qQOTC0WhyHJLN8K3CyC8wGA/IkwDmuMJYcru0nJYY3mkNfNNfqzQWV4hT2Sl7mE+MKKAPouC9mSTChF9vvKjlwXSn6aZ1p7N3barfB5teb2Yokflbl+685zjaAFXUiK6mYTw7ewls59ORqbtofMvVnGQCJYuvNkEXEDeAF/O7XbfdPyM29hsLOEP7ST+HRwpr6VoYGp/RoEgUcrQC3L+bEL/eZr2z1fa0dZiBjZcdkggYphQarV7vMbmF69hyEZcBR3KGb4MBmrIl21W14oDEbD87YxQlpSdk1TGXDkm4RaskDqWQKcxj9oTQgjUfogEnKOYE3TfxZ9nEESDV9LUepYvrETYZNrvy7VlpeSX/YdWnC7OoSwj/LJv88SY5pq4SpzK0sm4qQjoVrmjrxaUzpDRznwWtGGCNopRM+886fNaWgHGal7J0hp3wVDTOmXtE9TNGATIJWm1vShoxBwDkLThzAdQ0zz8raUYF6Y1BppYr11fG2s4gkczR5tesx+qV7ql1vlKTuC839DSAjYDaJ0OZ0HRTvjA+ZLqGxYzKJ2OOBmMgqYC4sMOXAYua4rych15KtUf2KQ6hdjWTkcSBgEja2LWnBVscziSaA4Db4aEV/+gJQ8YJeesxmD7L/QDNcyx0hikuzGI42gQsmk8+Ky/7OjkyGgSvlzPGgQcWKjRrSQKFfn/6rYNnHFWNkRvZqu1qhGT
- Vs+x5VuN
- vjsMd/bXTeFHXSb9Vx0onD/qaPZC1uv1OsateIYzoQf8rhXiXSa5z6825+SRLB0OP/3tvT2c/bTaqA62sbyjKNfAAE1uHiiCzQasVuPKNfKKh3T0/sQP9HhkbdT3oA2g97L1nwwW6gzxtuBENFqt3/TU8cjVinnZ/yKHQ/26Q25bfjcuzUeOw7IUhTEHNi7lRVF/ueae/3sIK7aNhOXOr2KTNSdXtZaazUE1IXTRwP7SODNMrQRUudPRs3APWzavDxRmAFQte+kWhXSidedQQK+6aE/kszPTYFuMVnXJzry4rfDyikAKPzV/5uVniJqTqsgwfDm/idiD4gP7TQBj1Lzc95l/0EmFSLq74//+ga4ok+pkxvCcb11yJPHkjrJknt63x68010lYH6MmQOVHd1/h7E65ntlib6imTks70bAa6QApS4jsou7h5mfqKBwdd0AipQ9uYSk+TqrD9x7fbq8I4R4a8rF2yNi2ep9e0vfjxf5jJGWJH9ADOWH5o8Jo21rPw6qH+A4/yvAPjXrzUfqCrMX8MmN69ynf3iSFmHcHYGXQXohhmDLEfrv4mE2/stVv7CT9Buf4Hw+O4h9UK02gFhGpi+8bNaxeqkF/iwkwAAc99MLKZq8/am2FtMOymtCGB6TJzojM9iJw=
+X-HE-Tag: 1753197720-94676
+X-HE-Meta: U2FsdGVkX1+4VnXRsVwRRIv/1U+bgxSMBd/wrdgzMY5lgWXvs/BnGeV2zQO51/v5wn4s3mH7gNOMWgRYu1ZVlaA3jcCr/Tvw9Y+GyxcClEqENLv2+7w9q2aCdnWMBSQBiOMdH6lee8R1hT1IoDwv0uq/0+2cALCLq+kYkAzfDKCTUAoD/qsTC2+YNexfXV0rkg3/BJakgMt000WQqyQCPN6rG/D/ax10lrpM2j2DtddSDFyMzDgtcGc69CuuUghrRRb9907tgd7VgxsjvKEyDT3j5hmnFc2GO3aOska7zUaDFbcZpWgSMPsZpos4LaM1t4NsdiHkGCeVqBKH4hhgRqUzQlKo0+wlb9AjWUwzBMkvrGGClQBscth0OP3UXn4L6SmCZnmY1pg2VKVK0yXhEOIq5i/UM9KciIY+tsgE4qVJhnDjPm3gznSOd6NUcUT480OYcU4Jf/5za6XN9oNvTNnOVRM8L39PYOJgCXBpOYEinD62waJtaV2GBVQ54sA0Q3sejr9cptALLDaWbYchGcA7eozgR5xZxPO/ilnkYQ8AZd2aHp0lKH2X+i9KVb5DHremkqTxv9ZP3+H0syLtYKghlXqM37JPcHgmP/tJoAv3DASUj9vYqu2KNu/NXEeuwHZLOv8ZuTyHqUYLfthkFrIerZsGtDf6vwwCdA6rWmcoyzLxBUt+CFoV4HBuFisL7P48JIp7aHlzwlcL8AidRmofUrwJsfpgRCAOn5XaWQRsJOO+fZ/48aVhPqFXNNgtuVo3tpqSaL0SF9Ken3OxrDjkTX0DSuPcDdPAbt81EQ2WHZIJurM8bK0VdMdWZqneVldiYxTnrsVUqCGCwa0boJ24N1Ppf+JCTJ3TOPwLh3AVC82J+xaRAL2bZHoNKLNkrWU+SwP4nPd1vlQzTVM3phzVZAiWkNYlwA0Al/trfo0IcRl3UBeQ7s3qM7yAE102d4pH26Z+2OJiOhmO1E3
+ cCMf48IS
+ F6VaOMX/WJqAr0o1EIh8FjO1rEZF2jTM7LvnDikhfmCZR0nlwUbcnw2sjpdKHA53d03x9NXVKgG6E3bR8/I74VqX5tMP6X2nrORS8vsTXOrxPMCjY94MRIU2wyuEu1UhJ3sT/oSaW59ETN0dEQoGlPs/yZT9B2kb0Z3juhg9cUtAp7U6R25KENYh7t2XZVb/D8aCzgdn0YLVsQ16fdT/wiTyjm0mr6GM6EzCFCSVDpn5VESkFyWHb10rDZ93zaOAa4qm5o0vHd+sSM1xIGQUSD4cIuaR+qSi/uZv4hCxVbBL3dcjR7MmA0nytdfDTLxcM8/o39heqtZQp24s67qNMi5vV6JFuk+NaxlQ3vN172UIo9EeKmGc3eJOSyxacaLliicMqyBVY7J00nWT0RK9puuIAMx1VQrv9leiJLxrEbEKDB2z0rKW83FGmUDRRDJVx2PKC+9jeENH4qMpH4Oxd6ofO0FZ7AW1/iumnPINn+O7IWW5kTrjQqBtHxcmmVbSvXt7M6rdzx6f6iSAjoNt1HuYKI/drAsci65b7gqqLHtVcUH366OZrlq+QbTkPyoCVxggg1vG0sXUwGD8l1sgRKVdp3YLUaiqOZbkLHW300/hge8zHh6keHVbKmJQhoH2bP6lQJhPpadmMzJQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -199,12 +199,13 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 13.07.25 19:43, Shivank Garg wrote:
 > From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 > 
-> Add a mempolicy parameter to filemap_alloc_folio() to enable NUMA-aware
-> page cache allocations. This will be used by upcoming changes to
-> support NUMA policies in guest-memfd, where guest_memory need to be
-> allocated NUMA policy specified by VMM.
+> Extend __filemap_get_folio() to support NUMA memory policies by
+> renaming the implementation to __filemap_get_folio_mpol() and adding
+> a mempolicy parameter. The original function becomes a static inline
+> wrapper that passes NULL for the mempolicy.
 > 
-> All existing users pass NULL maintaining current behavior.
+> This infrastructure will enable future support for NUMA-aware page cache
+> allocations in guest_memfd memory backend KVM guests.
 > 
 > Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
 > Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
