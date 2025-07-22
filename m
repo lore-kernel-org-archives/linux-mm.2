@@ -2,96 +2,227 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A767C83F27
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 15:52:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 35952C83F1A
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 15:53:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE4D16B0098; Tue, 22 Jul 2025 11:52:38 -0400 (EDT)
+	id C70DD6B009C; Tue, 22 Jul 2025 11:53:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBC916B009B; Tue, 22 Jul 2025 11:52:38 -0400 (EDT)
+	id C48406B00A4; Tue, 22 Jul 2025 11:53:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD2986B009C; Tue, 22 Jul 2025 11:52:38 -0400 (EDT)
+	id B0FB26B00A5; Tue, 22 Jul 2025 11:53:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id ABDEB6B0098
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 11:52:38 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8A0A8B980B
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 15:52:38 +0000 (UTC)
-X-FDA: 83692343196.18.948DDD0
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 8576A1C0014
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 15:52:36 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ljxgpn9A;
-	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753199556;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9AC2E6B009C
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 11:53:00 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2181C140449
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 15:53:00 +0000 (UTC)
+X-FDA: 83692344120.01.C64E786
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 9422120014
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 15:52:55 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=aFd8LJZR;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=eOJt7hbb;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf03.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753199575; a=rsa-sha256;
+	cv=pass;
+	b=O3id2bCbMaCGxSoz+pq8LIsYELDivLqHSubRry7Cnrk+JWHm39p7pN4XReqBI77jOwAl5e
+	6wfB+MIxyBtZyTox52ChS1l7tpemr/LvzAnGui2XrE3ewL7g4ka13mtEf5RjeG+mdK0jGS
+	w6kRYen/q92CfAKti+d5WFIxRzSzMbA=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=aFd8LJZR;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=eOJt7hbb;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf03.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753199575;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c3XocA49nvohXItD3mzL5WPudh9EWNp7gI9bByeR0sQ=;
-	b=lViLLB0ZMdgkEtyXDiUoULy9pFX3cQ82aTv8Q6NL+rDFZ4I1NCSZwMCvm77gVBhbRPSZxf
-	drnkixmwzFeT8IZAnjVEdH/M2JfFEq4I6kO9mdZju6ZYNJGydR1F/XOanBxtGBvOxAIUKf
-	WETebvIddFnUFQbDkRx1w6MRZd3AJyI=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ljxgpn9A;
-	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753199556; a=rsa-sha256;
-	cv=none;
-	b=wENKrYzwTQdqk4JlyTQuIOTMXCVAipIDBRbFjm9BcbBqoImH16vzJWsyA3fthL1530OcvJ
-	JmGybKNn0dXkWe6SICmB4aRllbSjQYLCGbNtdiC7mTCuxsM3HlDodQpa5aKUOrrziMFJc9
-	4MNLQ3u0G+Q8niKxE4dy/pXBgMEwpgM=
-Date: Tue, 22 Jul 2025 08:52:25 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1753199554;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=c3XocA49nvohXItD3mzL5WPudh9EWNp7gI9bByeR0sQ=;
-	b=Ljxgpn9AGU0hD67ioPTX6Wihgl2buBotwbluc/8RHH3rd1Bffik+N1YJ7tgTdUxM5u+pmV
-	N1YRZmLvBRdjDW+LNf/fJEUgtgOUIJFW5q6OTGSye3qVuNaHdB28buqAJKgnPY5kUY9B64
-	0UKNcb59Rvn+QH/FM3LtF/KDSQWr8Zg=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Eric Dumazet <edumazet@google.com>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Neal Cardwell <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>, Matthieu Baerts <matttbe@kernel.org>, 
-	Mat Martineau <martineau@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Simon Horman <horms@kernel.org>, 
-	Geliang Tang <geliang@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, mptcp@lists.linux.dev, 
-	cgroups@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v1 net-next 13/13] net-memcg: Allow decoupling memcg from
- global protocol memory accounting.
-Message-ID: <jc6z5d7d26zunaf6b4qtwegdoljz665jjcigb4glkb6hdy6ap2@2gn6s52s6vfw>
-References: <20250721203624.3807041-1-kuniyu@google.com>
- <20250721203624.3807041-14-kuniyu@google.com>
- <z7kkbenhkndwyghwenwk6c4egq3ky4zl36qh3gfiflfynzzojv@qpcazlpe3l7b>
- <CANn89iLg-VVWqbWvLg__Zz=HqHpQzk++61dbOyuazSah7kWcDg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+	bh=MDcB5pvWi/iSlkIofV9NKDViIgXCXvvrmB2kzI8Udpw=;
+	b=qYgg7N8eJ0ErXR+yHpTjvVom18+WIPOPMVVDVlPukqk+fKu9I2gNP0yZK77IN0/hmDCapV
+	uSVODzWfUrdpd+U0t5pSUYkSqREKVNfBR4APzy4egYL+1cKG7ZYxaVcXrpyCPy6ZgFWnO4
+	jRiXkAv/o0eTckP819dxGgVtyOSrqOM=
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56MFXqYg012095;
+	Tue, 22 Jul 2025 15:52:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=MDcB5pvWi/iSlkIofV
+	9NKDViIgXCXvvrmB2kzI8Udpw=; b=aFd8LJZRXUbIcbovyPsUg6vXQDbSSeCqjg
+	JYumWDOJSKOQ76qpZIxG+K55YlrDx0L4Hv3sXqXQ8FJBa6VcN0SDrqDcA/1T1nLT
+	iVjePtrTYwVAwjOyEEbxmgsjHk8FeAGD0DW8nVEZ/D8Vs9WmGJv+B/gdjkjaovnP
+	lL17wZp1Sq7R8wcawuH7ON8CsiIbzldi9IFmbrOE2f7nqVWIhGa/z82OlO0yGH/V
+	BAs5QdHW4BIhm8bt7TGQKEcK/uhKfxPZP4RDjNxqAgHE5HxI48itB2hA9PO/PmEW
+	5pOvyzqKHKBEsrKrYqeopAdxI6kZfu1YW3Pe45X53GnodJGIBkhQ==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48056edp2p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 22 Jul 2025 15:52:43 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 56MFn53f011336;
+	Tue, 22 Jul 2025 15:52:43 GMT
+Received: from nam02-dm3-obe.outbound.protection.outlook.com (mail-dm3nam02on2070.outbound.protection.outlook.com [40.107.95.70])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4801t9fq52-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 22 Jul 2025 15:52:42 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JVbSefeGAf0wDJWqsquvj+BImzhNi32h86kyEJTbKEXWn/081w34yDSgMdUUGZ7B5sqQQhvDyqKnw2gpO1zVkdJDktvOuXuWQEGKC4YmZT9apnf/+t/ZsQIX8elBv2UEPErN9TdKdoKx8AwwYQLpEi6q+OFoxlIQedTio/FJqHaRYBn3jdR4Ee1Y3JWJW1pqlquBIg8LJ2sAYRiU8TgezNGhDvFQFkksK4Zau7hzufrKA4Eh2PVg3HlvPEp+PL+LLu4QMDa9mtIrqrmrhd+mPEho5PldQKtp+WIbN8SSCampVj+9ISjqxHEHnuqW3Uhv3Kld0dwPUsl+TSdjXhlCQg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MDcB5pvWi/iSlkIofV9NKDViIgXCXvvrmB2kzI8Udpw=;
+ b=gRgH6mMck+cHMxxVOwLVy5iPiTss9fwEdeBQOaklXy8I736Ari9kLkkyXzPX8QjGwPQikv8xurn2HiOEQb3Bgx52sjtEW9g4qIwDqdY3FtNstu6Rm3s9wyD8gjk4RH/SNQHPGuECUmctHDGt+CesIvkLT5jw2kbm8QetCJnxaOGXFkNXgi5uGqhr2igRNNM7Vipi3YFhXL5tX+3XR6hKSlS1g59ob1mlhHQxdTiiIPNnuG1nTrdfezxW9GWxH+m7zyqcwPI/+7+N3awlxTckThqVwfNj8KiLUjIypSnyRyOQV3e6EwtLQbREdzlltf1jygw2ELOzlQJtHAysd62Otw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MDcB5pvWi/iSlkIofV9NKDViIgXCXvvrmB2kzI8Udpw=;
+ b=eOJt7hbb2TS18sTZ7jyefsFdTKrYst8CxAT4uavRAxzKa7i5O2uihYHvW+qRTOW30aEVKMXNOqjasqxI/3Pnq1xUlRQMakypyUDrPEwDdlZ/LkoNma4L0YsVa0K8CFXMhs4xdbbgwxUfWtSGsy1dxb50m+06FsaF8TGKJxGhdrY=
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
+ by SA2PR10MB4444.namprd10.prod.outlook.com (2603:10b6:806:11f::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8943.30; Tue, 22 Jul
+ 2025 15:52:40 +0000
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::c2a4:fdda:f0c2:6f71%4]) with mapi id 15.20.8943.029; Tue, 22 Jul 2025
+ 15:52:39 +0000
+Date: Wed, 23 Jul 2025 00:52:21 +0900
+From: Harry Yoo <harry.yoo@oracle.com>
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: bpf@vger.kernel.org, linux-mm@kvack.org, vbabka@suse.cz,
+        shakeel.butt@linux.dev, mhocko@suse.com, bigeasy@linutronix.de,
+        andrii@kernel.org, memxor@gmail.com, akpm@linux-foundation.org,
+        peterz@infradead.org, rostedt@goodmis.org, hannes@cmpxchg.org
+Subject: Re: [PATCH v4 6/6] slab: Introduce kmalloc_nolock() and
+ kfree_nolock().
+Message-ID: <aH-ztTONTcgjU7xl@hyeyoo>
+References: <20250718021646.73353-1-alexei.starovoitov@gmail.com>
+ <20250718021646.73353-7-alexei.starovoitov@gmail.com>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANn89iLg-VVWqbWvLg__Zz=HqHpQzk++61dbOyuazSah7kWcDg@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 65ap95fowznzwqw4mmhrf8osdonifqbc
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8576A1C0014
+In-Reply-To: <20250718021646.73353-7-alexei.starovoitov@gmail.com>
+X-ClientProxiedBy: SL2PR04CA0004.apcprd04.prod.outlook.com
+ (2603:1096:100:2d::16) To CH3PR10MB7329.namprd10.prod.outlook.com
+ (2603:10b6:610:12c::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|SA2PR10MB4444:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9b1f2a4b-d9fc-4571-ebda-08ddc937c8d6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?uGUa5Xt/idfQLbQPzrk+Ay8vczo/0gRVl6R+nHjUwmfGdSGZjIhzeIb6+xuQ?=
+ =?us-ascii?Q?IS5Ez/a8S+YyQa3vcgn03hV/RK8hhaszKMn27fZl5+COvQvcoag/h56WKOV3?=
+ =?us-ascii?Q?jsBu8dN/hgz6PJNWkZQsDTdTC6cTJkpTUjSfsCJGdjZcUuXfyr3zY+UMa3W6?=
+ =?us-ascii?Q?zlD6spQpFGVihGWZjp0PhIZm/9OHfdAvR8yL/gjN+LCqf0RJhOhmWQdGQxJJ?=
+ =?us-ascii?Q?sOU1Ht+zNR17RqgbDkc5s29iZ7JBFjQw3tsHwqBX+jym+3rFdCB4+LhkR2gn?=
+ =?us-ascii?Q?9EJKdFDUBhtiAUyWzVJKAyluUnnpqptzwa2mJKtYI9sssulMzRv1nPgOcwih?=
+ =?us-ascii?Q?Dm2KEEo55URbgIs0kKdKtc6VniHti4x6AsAsMJebF3V0CIJiEaC8Q1eL5BgG?=
+ =?us-ascii?Q?3ZSd1UtIhy95fE3hmSfexSGjbUTycm3pbCPhJyG4P4ihEqMpDBDfoJx8j5ou?=
+ =?us-ascii?Q?0fez3UJE3nJtiaSmS7zD2WIG1TCG3xb91fAeWYOPSqOmROl3I95pkMgCwI1B?=
+ =?us-ascii?Q?6q9X6Oi540NkYo2lZXdiVg24V6pxy71d9eT0gykyuD1W02uKfuN59df6SvVj?=
+ =?us-ascii?Q?dPdK9yK4osyu/EeCTd4/BvnE2Ys+SwTsvKywd+634U0AslCYV3UT/5j88jvN?=
+ =?us-ascii?Q?cLXfuFKeDbEkPA3lGI8J7X0XnpxC5B3IEi7qZMm1tHALLzd7LmWttlMPXg59?=
+ =?us-ascii?Q?ZDHN9JNlFUiXdp9YNi0kHOcozweV5CeFYWu6uleVVlsWn8rIIR/MYhUUE9DI?=
+ =?us-ascii?Q?+xIE9wb1aBgCrTQ9YoGmyy9Ke5F4DDZ9a1gNwbiWvbJiO7EZF/cC2T4JE9QX?=
+ =?us-ascii?Q?T8JRPeuMsgzcrmqnJrnWiEYzaOT9sy6ELttfTRlGn3qAR5I9CKcgRK0Nh+jP?=
+ =?us-ascii?Q?pOj0hYN84VI8EFWAW5uWm5jyU11I+s6AOnEWZwdrgtUxtxHOzlcp7jjFc3IM?=
+ =?us-ascii?Q?2y3oaXNiH5BvIpF4AJG9gI2LUl/lxm/PzRg6xSpNXhLmiA25O85r4kErs3lE?=
+ =?us-ascii?Q?E69lvqolNKJ3lVe6qeJDM2qlpPKqp8bzHP9WJWLTBCFnnmHbr9XOXVLEC06G?=
+ =?us-ascii?Q?Dwvu2Tml1+PAo37i+n0xznGXrS7fFtmTLhZaaxAQD2biBHKNr23M1FTMXUUi?=
+ =?us-ascii?Q?ISGfHDRjbDDyiqLL5Z3uVMVgoVoSdS/y24Wr/QfJssC1unEK3bpcBO4dpf8k?=
+ =?us-ascii?Q?JaLuY3ekwhyW8x32WHxJ5iEJSBwVYqL36GbTrxnxPzndmdW9q5iKX1gJB+vy?=
+ =?us-ascii?Q?j+6NmF51jPb2pAx/ivFXK++a89c3MkL/cbgza9Kfpw8fqdxcBjKV/LiR2xbi?=
+ =?us-ascii?Q?6c5o1LrJEqdch+80b/3wo70rvuT23Mow7zPcudujuysvqZE7JfZT5hHeb/HJ?=
+ =?us-ascii?Q?u7C782Qgp85xRp827YybjY37XLb+jOvs6Rg7h7Bm8KPADyWn2psZ9XANYOda?=
+ =?us-ascii?Q?qmBqFbj2MaM=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Fg7jak+Y42Lw4ohQNbwrcuQGSBLbWG4E5Wcn2vtKEBdXZJVNZVKJJnDfvY6j?=
+ =?us-ascii?Q?1eSGvF0t8laX2AWwTXUyxUiciEKjDY7O3w34d+yFYdnOFKNE7bjqDM1VaUwU?=
+ =?us-ascii?Q?5bwjhQiA+e8U7ryVNQ33dwQ7gqdwbR4FJp68gQV3dPF29ymPSKB7eTmZPsuc?=
+ =?us-ascii?Q?bWUuAcDwfuGujdvN1FRq//mfFIiecZGnE1UiNHCnxYCd5nTJDBZEomkQbeNW?=
+ =?us-ascii?Q?oHr9uGC8afvhehbYHVPQh6GzmUJM6+b+yQzaKcjZj0i93IkLXr8IVA3iHCsG?=
+ =?us-ascii?Q?bEvXTdBpYaU1v6rm+7oGOLafXR7uOfYIi6nwybMLcGPD7vIV6//ukhp+jprp?=
+ =?us-ascii?Q?l7u4TVlpbje7JnuBJZvjDIoumdnkXtmVV38cMLX8FN9uL5FIZ8iNdJq/NJgJ?=
+ =?us-ascii?Q?1nAh9wdA5WV44/n7qy2k4s5PJF/VynTewIfQc68RQtzyaW4RnX1uMrsfELG0?=
+ =?us-ascii?Q?MTaXiI9uJqBdd4fsFoKRd7ERMtpwWkjGLP8JqVA6t/9/5LrbZg6vsrAK+5mS?=
+ =?us-ascii?Q?2LDHRYE3b7XNbPE9D2zy4TjFaXhlQheQTEI+d22HGySYUC2KA45QvG9BPAk5?=
+ =?us-ascii?Q?hbM5lbYi15R/duKdt+VTjpwVCScxEhHxtsEcmkDCjY5cgMLei5ggh0Ut/ivr?=
+ =?us-ascii?Q?kv0qLFISGIR8JXZmua6GdVQKjw9G0Bodh7Pl+4dS+SHjnjqd8iFTgqXrmx4V?=
+ =?us-ascii?Q?fTo3wgvFAKqFVsDcSmMgExEREDPjj4lHSaKvte5uusqCdj4+aSIKS294Ztev?=
+ =?us-ascii?Q?AQjhOC/8CLBcAq7+r51YO6f0C6RRhfC8lhDruE2N5VQfByBjYcuFrYucdktn?=
+ =?us-ascii?Q?reYtieuxuTmGIvKXeE3uK8ejNlAbDVuHld9QYLNcInf1IC8OAIC+FOk6Z8Kk?=
+ =?us-ascii?Q?2mXRQXNGvOhpHncFiegXTL8nhG2NZGz0dB4XaPwGMezwz5WvHn2b/ovjP4jL?=
+ =?us-ascii?Q?Uh+GK6VER2MZIck5KtfBHh1I46nFgSO369tXtdWj8yofFdVN9N3AAgW8yvmz?=
+ =?us-ascii?Q?tctuYhfFS2MYPg09Xs45jX3cmeYtBPxiER1Dc7VMRNHDLub4L1v6IALF4pdm?=
+ =?us-ascii?Q?A2K+79X+cM0fqYvVN2dIuicJ7e12DLHyOrS22cQDD0Q7iDq+GA/W1R9QXG3j?=
+ =?us-ascii?Q?mgy/CyZVykFUPqqnGI+uLibAyLw4/jKtoUdirs6XdN//6Rmpeat36eEUpEc1?=
+ =?us-ascii?Q?H0lflrDOm0RJjqgq1+SBV7IdRGdcvKl74RuUGW3NATluxwR6wD3/WXLAcq+v?=
+ =?us-ascii?Q?SmGdJygCy2tfuweNfvn+48KV5J6qfOxm7YsfH5v7KEOaaEiJlZlV+AO1Kk++?=
+ =?us-ascii?Q?2Z0tIipksqiYWa/oyWlrqFHd4bi5WrtiNWrxHvrkQDRSsXCaXX7WhwbOT7Y+?=
+ =?us-ascii?Q?nuaiGovHkW770OC/NsUlvWnFgxS1kzQ2Qve6bX1T4g70p/y5AmO9f3Z9+I3a?=
+ =?us-ascii?Q?iM4xtv6BgmkM9cxbZbaMvx48vvbmXFUR1xu+G8a1tdcklM6AptospY7EdHPX?=
+ =?us-ascii?Q?fmp7FtWnL4fvNzcOisOxkQ3KB5xFJlzVggFdXIYTMqmWJ2hg+fHb12qrnS+7?=
+ =?us-ascii?Q?gvZRneLJFiYYSyLdBS2GIoRAH1T/JiVPrriQlLXh?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	WOOpLaz33vGc9bugILoXrguSz7HYT5fYDBk5ITy4zayZWwW78pHyuYkfmZuKf2i6K0R+O0K6GTSKRCaBgJNLqwi7zxmQ/1ilEwhnEGAqK9S52YLtZ+bihrv2Xv4tcjg0fwnFFS0hsaU4/bGQHkmJ93Y1JeweIdU+RIJoQeVIa1McTk2gG+nYQYCSLNnlc8wvS4tnTsclNBykjcloHXoE7nORnHKoFzOxHoWGCReDxP8UqKu7GlhLVYUuJgbLdSufWTkUe/zc01Q9HbBq8pBKBzqGhRP0kQubT7hf1HVh8MmqsTfZk5pQCbtiDVnSxxQ27cN4jq2luTN4khjyB5iz8GSiThffNX5nCq7qFSsfyCbVLh6+Y5TJ9EC0wbJtd32YttfRZz1tvQombhAzf8NIPshJp27Y54B9RVJHVlVwVXEGzCLBtuOLuFc8hKzFda1e2uipIAaPxWhq5ib5qEh3+fRHpy9vIK1lPC2FGt6FoXtslbO+cktGk7ImXzy/kSesf2HSer7/K803ZhlKkExhsJHV0cgcdacVZoJoTS8Y5p2/E3i0wcCDby8FJw2MrQlmWGQJg1CtnURwX3zL06Wvb9aPhSoXeclZpRA2eJtDBnU=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9b1f2a4b-d9fc-4571-ebda-08ddc937c8d6
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2025 15:52:39.0260
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HWBUeuGSJzj3/l6fus+j9QGxftzfJJLJfrNNjJ9bW70NSWHZJKo1/HDFu1hgiELTtkN1Jzo7xxxDN0uBRjtC+Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR10MB4444
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-22_02,2025-07-21_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0
+ mlxlogscore=999 bulkscore=0 adultscore=0 suspectscore=0 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2505160000 definitions=main-2507220132
+X-Proofpoint-ORIG-GUID: WdkcDZgEx2JtIaHZy84jBua8JbxD6Bg4
+X-Proofpoint-GUID: WdkcDZgEx2JtIaHZy84jBua8JbxD6Bg4
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIyMDEzMiBTYWx0ZWRfX7/Ri7he4OdyE
+ fAn4umQ1isei2ARnNOCcEkV9VkGZMGi9Y5S+XxpmpOCUUpFoBMT3bm1c85MqXC7W5tMzYiurDyA
+ k8e+ViMWONHGsWWxduJZYqeqb/2wPLvmZuX6QE/MJjsHhaOY8WaGHHzr9XFid4aUQIDMON9O4+w
+ gmZhgh6AYG7Rda2xhKN4efM/9fJeeqmWpZS4df7CYEU8ourqmBTDyOU8Whaj8/4WhOrRqe1Rjhq
+ Lk2acPpGCDmvDq4xtjHZr7QXBqnHyCZpn9r+aiPRac2arb+xe0FiljuUDKzJSNsj61sTtFEZx9G
+ +hcACiY6N3UnnA0eFkl5agx9C7iVBkFuRwaq56JEqZM2hhMca9laRWfPhCrL8Y5E/6W+mnXx5xE
+ Qp26Bgcb0UrbD55BLYBvQmC71OXqI6VEyvu5I0tWHRnAXf7+Esxi//yKljQLnQoFelurMce7
+X-Authority-Analysis: v=2.4 cv=Ef3IQOmC c=1 sm=1 tr=0 ts=687fb3cb b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
+ a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10 a=Wb1JkmetP80A:10 a=GoEa3M9JfhUA:10
+ a=VwQbUJbxAAAA:8 a=9DrY-jTiF6E8YAaknh0A:9 a=CjuIK1q_8ugA:10
+X-Stat-Signature: gnz4jrxmdaofzwenboyne9on8bbzeq9s
 X-Rspam-User: 
-X-HE-Tag: 1753199556-176348
-X-HE-Meta: U2FsdGVkX18VKLgZT6Yt62Nf9yhEi8qA3hd3DbutQKXYflqLxHUhOP0wHG1bY12v829E64K/hMAA/Lr7isHjuSdqed6NcCh45ZI4XQUvX3fmzWQg+t6m+6ZZ2DqG4kJOko4NaPsfUc/7rQrSsCOS5SSZzmonkDtVK+ZSr61+YyYvKUki+hPZEZbhXuUJQej4jBo3x0DO+2lhXH1zjc9IqODcpytUsM3uc6tQaM2QAk9cVDY/YgfCbyFzNd/B8fZRx7brBrUjYPyJKdaih1LI8MJHVJETOw42no9GwlbybQJ6xGmRtXjyVBD6/CbRbeFfwgfvJXGrnTaRKidRqvmYaO87DaoK6uMYJjrK/3wxryqWC3dXjGnTNScgcgkCfC6XEZyGGW21g+3UzSC8vtOgZ3xd17cye/SQfJLxiwbbyVltFnIh4XU7PO1C9uIsZW7vmf3UGuS31kwChJ1gaFbdhRqU6fYMPIiTu/lhcBUuAQqNJDZelxLNrlbsp5YRn7jcmWl7VrNs0X3S8GoW/WRz/ekJDgu0ddtx7LbgZZvBHvV2ujC/OrfvXfIOu05nuKm8y8stV/+8cDAEZAAmw+92Nj7/GWamJXzV9ZLtnDjg5YDfgcTZTUJxiIj8aq89AxE1+s8XeRT1k54cnn5ltvVlerZB5a4iVcmM9u3QMQ+HB5YnCZ5FO2pcohqtTxs6ddRrbfh1nY4pmApCdQn2iQLc2CfyiYAdNu+kYtxea0vF8NxAiuRJAusXTZv/hgTVkwvg+sGSsH1Vvbv9oyUwNutOSMF1eK9M/ybXrcEgeS39/q8mPDkImMqJtn+fBY+iCVXVIHbHzIdNg+6ZH1cjTws8mRqGHMUVxN05eY2Cq3gb7TP74EiFaaHgnDrgGYMNhhwelZU2p26hCwVvtZIz7xNS+VAuSUlhsJqchE9Cpe9QgMAW1yKpk+pRBFtfdJ84bWrAYuu61QXQ80vP9snBtgP
- LHDMSm84
- S4OOaK6R6Oe7OoLSq4ZsZlYLE6VhnPkSX3QgVyIJiElhbLMrAnvWRQFat4gQWddi/CiVNh99bG3+GyMbgibU3oHiQFCpff+mRJ+FU2Q8Tby63pz2I1ttHAuZ5iUJKegxIvhkmu3KrSB32+PrNyIskM5BbdMMv1NqncG8DAkIqprZWGVAUZa/4DisSMcKIth4JRRQ/8fOCIBaSNJVbGFLACqd2+OS/GxdullTMiwAw8Llyj7pgU4ib9U12yA==
+X-Rspamd-Queue-Id: 9422120014
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1753199575-707592
+X-HE-Meta: U2FsdGVkX1/cx1PT74nt+YiV8/+fFptUwc7CW7WmFMy2WvoFJTYmI1wzdmk3Evxio5OSVQiZYaSFsFDRhTl0JWRA6Eyg/g3JZCQcgOUeTGRc4UcBuPXqZ6GWKPBRVEmiW8+iBpZNKSEvrJMCa/w/Hhi7ve1k+70fNS9Pe13tUElBwxuC6nr7uHGzhgRsE+use1nTk5m9CUb4CCPoAj0NNTsC84jGnyldpfUA96DWrlwV216u1TtgD2+uG7+zaxfM3MBVB7fgzAy8wAFA/oLP1HorAFYULCbkkDwO8f+mNvMmnkDmv4G7wnZdrv1W3KtJLpo6aB5ZsQTrcBFA+D/q5TYzBtZpXSIilwVx4Rwr4NFJo8gWXEuTZAMvwAoLahvJeEY7TVZXHg/a+/dfK/jRi+3ecKbN2xfU+miB/csbMyiqaypT2nKJllZeXER4T/NQKrzEFpSJoRe4E6GeWMqlgsMW38M63AyK5xDsokWUlT5HsK2gvPWe941rWaoLQoc+o0puw4WnKtcak9LUvdo5rJ+5wn8/KCfJXdmJx0HiAGXMa5nQXLMmRKF1evuvZNSz5IOwJOEpm9rX9BbWsDx2l0u1kmfAkHUrxhZ69KGUmu7QxK4toEBI4P9gH0qxGDA8I99n1mDwq6XjlGiskEZRkEcBPWcggCO0bifVoxH61LBuKo9fwQD2BqayeRZdJBobGTAuQl0tshH2T7PqugVG6CDWPX2GVRAvu2i1jieydG6yexzScpFMcuPWFOJmHTJRlTqFZrnPjRcKp+1O9XZTgzVlqmsVVBNCHI8VO9TqVT5szi7Jc/3xOQYvw68JEjg+9QC2ik+vnCkPdPtI+mbysq1Ksos+4v4cHRP8vWAnvqbh0cv5CYaTutL4LaJSBmsKZNDj0eotSU5fTaY4WanmwBhNCw9WM4xb9OS67ykbYrngfPd3hFC+5e3TpByKMO/vzDcrBu/FxHuY++hfiVf
+ SM1QVs58
+ o5cf4OKG1WoyA2qF4IMVOq4JPPxTHfkmVNPO9gVqBjaQmPITdw1JcNxjigbXMF1vblsib6rGEDzFW4omdDrmbX24V79En70+kJVrDbl8DzrGj9aA2UVznmzXjRLR+To2DYYQtk7RgbpZVufK3tFB40jurMEc+QlKMP2yXiRSN690hLBLptY0xaANbYjlGT1i5a5ucqol24NkVyCIffIYY3+XiQ2KjnqfblvSIMgs9rt6n7gBRPynOvdy9C2wilYmPDRy47WnUq2aKWuq74yXzackKnp6sW+iRH8k0/osmJhI2syCBK+gatxMM6roBa1ztCSUDzfCs9wOg/9t2bpP4BW0V98JtWiRCbgk1b9MPlYfYYSp9HCaX1hVI5XNN61uYkjkLd1wVdJqLa1QX8F9r/BxqAuwvJSCKYDSMAkhkR4zBP8+l5DyqT5r/4sz84e1BIKj8qjmsFdBB67gJ3HBnHonRW+cDiImW4tX1+dTcJx4SFmCcuRyiN/2T8Ltyl+UnwAnrUtELGfkjb5XA3F2o4u4zj7b364aj+bol2o9vlLqe2tBqNHn2uGPtdTtI1Tu1/uF22r7eoUcXhZyO1jUREPlNiAtX1EavQHRchGsfJVS1g+pmSqUUHKreecLq60BLtSvk476ONLNhBpJkedqeZsLELu7CQ302FD7JOrpxdyG6+JCJkveg8YcvNyE78WOQnRQS/25hL5rugcOa5/riewpsJ2V0Mo/L8ctG1gnm0npV5KDMNW7LmlgA4GG8f7S2Kw5xZzlGrqbM5x5LBcTofAYBXBCnkbzPb62h6yHxrWtc9uK778sEHKZieM2dNDkP6DotUFnayPrvr66TpdUTldm1NhGo3TZg5ME456ofhTzstx4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,84 +231,371 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 22, 2025 at 08:24:23AM -0700, Eric Dumazet wrote:
-> On Tue, Jul 22, 2025 at 8:14 AM Shakeel Butt <shakeel.butt@linux.dev> wrote:
-> >
-> > On Mon, Jul 21, 2025 at 08:35:32PM +0000, Kuniyuki Iwashima wrote:
-> > > Some protocols (e.g., TCP, UDP) implement memory accounting for socket
-> > > buffers and charge memory to per-protocol global counters pointed to by
-> > > sk->sk_proto->memory_allocated.
-> > >
-> > > When running under a non-root cgroup, this memory is also charged to the
-> > > memcg as sock in memory.stat.
-> > >
-> > > Even when memory usage is controlled by memcg, sockets using such protocols
-> > > are still subject to global limits (e.g., /proc/sys/net/ipv4/tcp_mem).
-> > >
-> > > This makes it difficult to accurately estimate and configure appropriate
-> > > global limits, especially in multi-tenant environments.
-> > >
-> > > If all workloads were guaranteed to be controlled under memcg, the issue
-> > > could be worked around by setting tcp_mem[0~2] to UINT_MAX.
-> > >
-> > > In reality, this assumption does not always hold, and a single workload
-> > > that opts out of memcg can consume memory up to the global limit,
-> > > becoming a noisy neighbour.
-> > >
-> >
-> > Sorry but the above is not reasonable. On a multi-tenant system no
-> > workload should be able to opt out of memcg accounting if isolation is
-> > needed. If a workload can opt out then there is no guarantee.
+On Thu, Jul 17, 2025 at 07:16:46PM -0700, Alexei Starovoitov wrote:
+> From: Alexei Starovoitov <ast@kernel.org>
+>
+> kmalloc_nolock() relies on ability of local_trylock_t to detect
+> the situation when per-cpu kmem_cache is locked.
+
+I think kmalloc_nolock() should be kmalloc_node_nolock() because
+it has `node` parameter?
+
+# Don't specify NUMA node	# Specify NUMA node
+kmalloc(size, gfp)		kmalloc_nolock(size, gfp)
+kmalloc_node(size, gfp, node)	kmalloc_node_nolock(size, gfp, node)
+
+...just like kmalloc() and kmalloc_node()?
+
+> In !PREEMPT_RT local_(try)lock_irqsave(&s->cpu_slab->lock, flags)
+> disables IRQs and marks s->cpu_slab->lock as acquired.
+> local_lock_is_locked(&s->cpu_slab->lock) returns true when
+> slab is in the middle of manipulating per-cpu cache
+> of that specific kmem_cache.
 > 
-> Deployment issue ?
+> kmalloc_nolock() can be called from any context and can re-enter
+> into ___slab_alloc():
+>   kmalloc() -> ___slab_alloc(cache_A) -> irqsave -> NMI -> bpf ->
+>     kmalloc_nolock() -> ___slab_alloc(cache_B)
+> or
+>   kmalloc() -> ___slab_alloc(cache_A) -> irqsave -> tracepoint/kprobe -> bpf ->
+>     kmalloc_nolock() -> ___slab_alloc(cache_B)
+
+> Hence the caller of ___slab_alloc() checks if &s->cpu_slab->lock
+> can be acquired without a deadlock before invoking the function.
+> If that specific per-cpu kmem_cache is busy the kmalloc_nolock()
+> retries in a different kmalloc bucket. The second attempt will
+> likely succeed, since this cpu locked different kmem_cache.
 > 
-> In a multi-tenant system you can not suddenly force all workloads to
-> be TCP memcg charged. This has caused many OMG.
+> Similarly, in PREEMPT_RT local_lock_is_locked() returns true when
+> per-cpu rt_spin_lock is locked by current _task_. In this case
+> re-entrance into the same kmalloc bucket is unsafe, and
+> kmalloc_nolock() tries a different bucket that is most likely is
+> not locked by the current task. Though it may be locked by a
+> different task it's safe to rt_spin_lock() and sleep on it.
+>
+> Similar to alloc_pages_nolock() the kmalloc_nolock() returns NULL
+> immediately if called from hard irq or NMI in PREEMPT_RT.
 
-Let's discuss the above at the end.
+A question; I was confused for a while thinking "If it can't be called
+from NMI and hard irq on PREEMPT_RT, why it can't just spin?"
 
+And I guess it's because even in process context, when kmalloc_nolock()
+is called by bpf, it can be called by the task that is holding the local lock
+and thus spinning is not allowed. Is that correct?
+
+> kfree_nolock() defers freeing to irq_work when local_lock_is_locked()
+> and (in_nmi() or in PREEMPT_RT).
 > 
-> Also, the current situation of maintaining two limits (memcg one, plus
-> global tcp_memory_allocated) is very inefficient.
-
-Agree.
-
+> SLUB_TINY config doesn't use local_lock_is_locked() and relies on
+> spin_trylock_irqsave(&n->list_lock) to allocate,
+> while kfree_nolock() always defers to irq_work.
 > 
-> If we trust memcg, then why have an expensive safety belt ?
+> Note, kfree_nolock() must be called _only_ for objects allocated
+> with kmalloc_nolock(). Debug checks (like kmemleak and kfence)
+> were skipped on allocation, hence obj = kmalloc(); kfree_nolock(obj);
+> will miss kmemleak/kfence book keeping and will cause false positives.
+> large_kmalloc is not supported by either kmalloc_nolock()
+> or kfree_nolock().
 > 
-> With this series, we can finally use one or the other limit. This
-> should have been done from day-0 really.
-
-Same, I agree.
-
+> Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+> ---
+>  include/linux/kasan.h |  13 +-
+>  include/linux/slab.h  |   4 +
+>  mm/Kconfig            |   1 +
+>  mm/kasan/common.c     |   5 +-
+>  mm/slab.h             |   6 +
+>  mm/slab_common.c      |   3 +
+>  mm/slub.c             | 466 +++++++++++++++++++++++++++++++++++++-----
+>  7 files changed, 445 insertions(+), 53 deletions(-)
 > 
-> >
-> > In addition please avoid adding a per-memcg knob. Why not have system
-> > level setting for the decoupling. I would say start with a build time
-> > config setting or boot parameter then if really needed we can discuss if
-> > system level setting is needed which can be toggled at runtime though
-> > there might be challenges there.
-> 
-> Built time or boot parameter ? I fail to see how it can be more convenient.
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 54444bce218e..7de6da4ee46d 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -1982,6 +1983,7 @@ static inline void init_slab_obj_exts(struct slab *slab)
+>  int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+>  		        gfp_t gfp, bool new_slab)
+>  {
+> +	bool allow_spin = gfpflags_allow_spinning(gfp);
+>  	unsigned int objects = objs_per_slab(s, slab);
+>  	unsigned long new_exts;
+>  	unsigned long old_exts;
+> @@ -1990,8 +1992,14 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+>  	gfp &= ~OBJCGS_CLEAR_MASK;
+>  	/* Prevent recursive extension vector allocation */
+>  	gfp |= __GFP_NO_OBJ_EXT;
+> -	vec = kcalloc_node(objects, sizeof(struct slabobj_ext), gfp,
+> -			   slab_nid(slab));
+> +	if (unlikely(!allow_spin)) {
+> +		size_t sz = objects * sizeof(struct slabobj_ext);
+> +
+> +		vec = kmalloc_nolock(sz, __GFP_ZERO, slab_nid(slab));
 
-I think we agree on decoupling the global and memcg accounting of
-network memory. I am still not clear on the need of per-memcg knob. From
-the earlier comment, it seems like you want mix of jobs with memcg
-limited network memory accounting and with global network accounting
-running concurrently on a system. Is that correct?
+In free_slab_obj_exts(), how do you know slabobj_ext is allocated via
+kmalloc_nolock() or kcalloc_node()?
 
-I expect this state of jobs with different network accounting config
-running concurrently is temporary while the migrationg from one to other
-is happening. Please correct me if I am wrong.
+I was going to say "add a new flag to enum objext_flags",
+but all lower 3 bits of slab->obj_exts pointer are already in use? oh...
 
-My main concern with the memcg knob is that it is permanent and it
-requires a hierarchical semantics. No need to add a permanent interface
-for a temporary need and I don't see a clear hierarchical semantic for
-this interface.
+Maybe need a magic trick to add one more flag,
+like always align the size with 16?
 
-I am wondering if alternative approches for per-workload settings are
-explore starting with BPF.
+In practice that should not lead to increase in memory consumption
+anyway because most of the kmalloc-* sizes are already at least
+16 bytes aligned.
 
+> +	} else {
+> +		vec = kcalloc_node(objects, sizeof(struct slabobj_ext), gfp,
+> +				   slab_nid(slab));
+> +	}
+>  	if (!vec) {
+>  		/* Mark vectors which failed to allocate */
+>  		if (new_slab)
+> +static void defer_deactivate_slab(struct slab *slab, void *flush_freelist);
+> +
+>  /*
+>   * Called only for kmem_cache_debug() caches to allocate from a freshly
+>   * allocated slab. Allocate a single object instead of whole freelist
+>   * and put the slab to the partial (or full) list.
+>   */
+> -static void *alloc_single_from_new_slab(struct kmem_cache *s,
+> -					struct slab *slab, int orig_size)
+> +static void *alloc_single_from_new_slab(struct kmem_cache *s, struct slab *slab,
+> +					int orig_size, gfp_t gfpflags)
+>  {
+> +	bool allow_spin = gfpflags_allow_spinning(gfpflags);
+>  	int nid = slab_nid(slab);
+>  	struct kmem_cache_node *n = get_node(s, nid);
+>  	unsigned long flags;
+>  	void *object;
+>  
+> +	if (!allow_spin && !spin_trylock_irqsave(&n->list_lock, flags)) {
 
+I think alloc_debug_processing() doesn't have to be called under
+n->list_lock here because it is a new slab?
 
+That means the code can be something like:
+
+/* allocate one object from slab */
+object = slab->freelist;
+slab->freelist = get_freepointer(s, object);
+slab->inuse = 1;
+
+/* Leak slab if debug checks fails */
+if (!alloc_debug_processing())
+	return NULL;
+
+/* add slab to per-node partial list */
+if (allow_spin) {
+	spin_lock_irqsave();
+} else if (!spin_trylock_irqsave()) {
+	slab->frozen = 1;
+	defer_deactivate_slab();
+}
+
+> +		/* Unlucky, discard newly allocated slab */
+> +		slab->frozen = 1;
+> +		defer_deactivate_slab(slab, NULL);
+> +		return NULL;
+> +	}
+>  
+>  	object = slab->freelist;
+>  	slab->freelist = get_freepointer(s, object);
+>  	slab->inuse = 1;
+>  
+> -	if (!alloc_debug_processing(s, slab, object, orig_size))
+> +	if (!alloc_debug_processing(s, slab, object, orig_size)) {
+>  		/*
+>  		 * It's not really expected that this would fail on a
+>  		 * freshly allocated slab, but a concurrent memory
+>  		 * corruption in theory could cause that.
+> +		 * Leak memory of allocated slab.
+>  		 */
+> +		if (!allow_spin)
+> +			spin_unlock_irqrestore(&n->list_lock, flags);
+>  		return NULL;
+> +	}
+>  
+> -	spin_lock_irqsave(&n->list_lock, flags);
+> +	if (allow_spin)
+> +		spin_lock_irqsave(&n->list_lock, flags);
+>  
+>  	if (slab->inuse == slab->objects)
+>  		add_full(s, n, slab);
+> @@ -3164,6 +3201,44 @@ static void deactivate_slab(struct kmem_cache *s, struct slab *slab,
+>  	}
+>  }
+>  
+> +/*
+> + * ___slab_alloc()'s caller is supposed to check if kmem_cache::kmem_cache_cpu::lock
+> + * can be acquired without a deadlock before invoking the function.
+> + *
+> + * Without LOCKDEP we trust the code to be correct. kmalloc_nolock() is
+> + * using local_lock_is_locked() properly before calling local_lock_cpu_slab(),
+> + * and kmalloc() is not used in an unsupported context.
+> + *
+> + * With LOCKDEP, on PREEMPT_RT lockdep does its checking in local_lock_irqsave().
+> + * On !PREEMPT_RT we use trylock to avoid false positives in NMI, but
+> + * lockdep_assert() will catch a bug in case:
+> + * #1
+> + * kmalloc() -> ___slab_alloc() -> irqsave -> NMI -> bpf -> kmalloc_nolock()
+> + * or
+> + * #2
+> + * kmalloc() -> ___slab_alloc() -> irqsave -> tracepoint/kprobe -> bpf -> kmalloc_nolock()
+> + *
+> + * On PREEMPT_RT an invocation is not possible from IRQ-off or preempt
+> + * disabled context. The lock will always be acquired and if needed it
+> + * block and sleep until the lock is available.
+> + * #1 is possible in !PREEMP_RT only.
+
+s/PREEMP_RT/PREEMPT_RT/
+
+> + * #2 is possible in both with a twist that irqsave is replaced with rt_spinlock:
+> + * kmalloc() -> ___slab_alloc() -> rt_spin_lock(kmem_cache_A) ->
+> + *    tracepoint/kprobe -> bpf -> kmalloc_nolock() -> rt_spin_lock(kmem_cache_B)
+> + *
+> + * local_lock_is_locked() prevents the case kmem_cache_A == kmem_cache_B
+> + */
+> +#if defined(CONFIG_PREEMPT_RT) || !defined(CONFIG_LOCKDEP)
+> +#define local_lock_cpu_slab(s, flags)	\
+> +	local_lock_irqsave(&(s)->cpu_slab->lock, flags)
+> +#else
+> +#define local_lock_cpu_slab(s, flags)	\
+> +	lockdep_assert(local_trylock_irqsave(&(s)->cpu_slab->lock, flags))
+> +#endif
+> +
+> +#define local_unlock_cpu_slab(s, flags)	\
+> +	local_unlock_irqrestore(&(s)->cpu_slab->lock, flags)
+> +
+>  #ifdef CONFIG_SLUB_CPU_PARTIAL
+>  static void __put_partials(struct kmem_cache *s, struct slab *partial_slab)
+>  {
+> @@ -3732,9 +3808,13 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+>  	if (unlikely(!node_match(slab, node))) {
+>  		/*
+>  		 * same as above but node_match() being false already
+> -		 * implies node != NUMA_NO_NODE
+> +		 * implies node != NUMA_NO_NODE.
+> +		 * Reentrant slub cannot take locks necessary to
+> +		 * deactivate_slab, hence ignore node preference.
+
+Now that we have defer_deactivate_slab(), we need to either update the
+code or comment?
+
+1. Deactivate slabs when node / pfmemalloc mismatches
+or 2. Update comments to explain why it's still undesirable
+
+> +		 * kmalloc_nolock() doesn't allow __GFP_THISNODE.
+>  		 */
+> -		if (!node_isset(node, slab_nodes)) {
+> +		if (!node_isset(node, slab_nodes) ||
+> +		    !allow_spin) {
+>  			node = NUMA_NO_NODE;
+>  		} else {
+>  			stat(s, ALLOC_NODE_MISMATCH);
+
+> @@ -4572,6 +4769,98 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
+>  	discard_slab(s, slab);
+>  }
+>  
+> +/*
+> + * In PREEMPT_RT irq_work runs in per-cpu kthread, so it's safe
+> + * to take sleeping spin_locks from __slab_free() and deactivate_slab().
+> + * In !PREEMPT_RT irq_work will run after local_unlock_irqrestore().
+> + */
+> +static void free_deferred_objects(struct irq_work *work)
+> +{
+> +	struct defer_free *df = container_of(work, struct defer_free, work);
+> +	struct llist_head *objs = &df->objects;
+> +	struct llist_head *slabs = &df->slabs;
+> +	struct llist_node *llnode, *pos, *t;
+> +
+> +	if (llist_empty(objs) && llist_empty(slabs))
+> +		return;
+> +
+> +	llnode = llist_del_all(objs);
+> +	llist_for_each_safe(pos, t, llnode) {
+> +		struct kmem_cache *s;
+> +		struct slab *slab;
+> +		void *x = pos;
+> +
+> +		slab = virt_to_slab(x);
+> +		s = slab->slab_cache;
+> +
+> +		/*
+> +		 * We used freepointer in 'x' to link 'x' into df->objects.
+> +		 * Clear it to NULL to avoid false positive detection
+> +		 * of "Freepointer corruption".
+> +		 */
+> +		*(void **)x = NULL;
+> +
+> +		/* Point 'x' back to the beginning of allocated object */
+> +		x -= s->offset;
+> +		/*
+> +		 * memcg, kasan_slab_pre are already done for 'x'.
+> +		 * The only thing left is kasan_poison.
+> +		 */
+> +		kasan_slab_free(s, x, false, false, true);
+> +		__slab_free(s, slab, x, x, 1, _THIS_IP_);
+> +	}
+> +
+> +	llnode = llist_del_all(slabs);
+> +	llist_for_each_safe(pos, t, llnode) {
+> +		struct slab *slab = container_of(pos, struct slab, llnode);
+> +
+> +#ifdef CONFIG_SLUB_TINY
+> +		discard_slab(slab->slab_cache, slab);
+
+...and with my comment on alloc_single_from_new_slab(),
+The slab may not be empty anymore?
+
+> +#else
+> +		deactivate_slab(slab->slab_cache, slab, slab->flush_freelist);
+> +#endif
+> +	}
+> +}
+> @@ -4610,10 +4901,30 @@ static __always_inline void do_slab_free(struct kmem_cache *s,
+>  	barrier();
+>  
+>  	if (unlikely(slab != c->slab)) {
+> -		__slab_free(s, slab, head, tail, cnt, addr);
+> +		if (unlikely(!allow_spin)) {
+> +			/*
+> +			 * __slab_free() can locklessly cmpxchg16 into a slab,
+> +			 * but then it might need to take spin_lock or local_lock
+> +			 * in put_cpu_partial() for further processing.
+> +			 * Avoid the complexity and simply add to a deferred list.
+> +			 */
+> +			defer_free(s, head);
+> +		} else {
+> +			__slab_free(s, slab, head, tail, cnt, addr);
+> +		}
+>  		return;
+>  	}
+>  
+> +	if (unlikely(!allow_spin)) {
+> +		if ((in_nmi() || !USE_LOCKLESS_FAST_PATH()) &&
+> +		    local_lock_is_locked(&s->cpu_slab->lock)) {
+> +			defer_free(s, head);
+> +			return;
+> +		}
+> +		cnt = 1; /* restore cnt. kfree_nolock() frees one object at a time */
+> +		kasan_slab_free(s, head, false, false, /* skip quarantine */true);
+> +	}
+
+I'm not sure what prevents below from happening
+
+1. slab == c->slab && !allow_spin -> call kasan_slab_free()
+2. preempted by something and resume
+3. after acquiring local_lock, slab != c->slab, release local_lock, goto redo
+4. !allow_spin, so defer_free() will call kasan_slab_free() again later
+
+Perhaps kasan_slab_free() should be called before do_slab_free()
+just like normal free path and do not call kasan_slab_free() in deferred
+freeing (then you may need to disable KASAN while accessing the deferred
+list)?
+
+-- 
+Cheers,
+Harry / Hyeonggon
 
