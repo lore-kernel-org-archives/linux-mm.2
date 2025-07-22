@@ -2,118 +2,121 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 29073C83F27
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 19:36:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 66C24C83F1A
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 19:39:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3BCD6B0089; Tue, 22 Jul 2025 15:36:05 -0400 (EDT)
+	id 030F88E0002; Tue, 22 Jul 2025 15:39:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9EC5A6B0099; Tue, 22 Jul 2025 15:36:05 -0400 (EDT)
+	id 008AE8E0001; Tue, 22 Jul 2025 15:39:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DB156B009B; Tue, 22 Jul 2025 15:36:05 -0400 (EDT)
+	id E62038E0002; Tue, 22 Jul 2025 15:39:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 791336B0099
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 15:36:05 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 186CF111C8F
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 19:36:05 +0000 (UTC)
-X-FDA: 83692906290.03.67043FA
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E0F674000B
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 19:36:02 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=KK23oON5;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf27.hostedemail.com: domain of francois.dugast@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=francois.dugast@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753212963; a=rsa-sha256;
-	cv=none;
-	b=2C8UrUeLltfzLsqSXGcjiXI6Tm4LnM4O0Oc/ksCG8fs7hf0e2XEVcEMu/HymDOntg2PRdd
-	yC2uzdbrlQ84q81z/lymfdO3aYCgnXkzmZPW/e/KNI13PDUUZZHAJZqytKS4hpj0ffy+qb
-	a8IDhT5h0ymOfRVQ0UZdbwBhcyln2yM=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=KK23oON5;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf27.hostedemail.com: domain of francois.dugast@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=francois.dugast@intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D5CE58E0001
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 15:39:46 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 50F7C1403F9
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 19:39:46 +0000 (UTC)
+X-FDA: 83692915572.04.768CD44
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4A05920008
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 19:39:44 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DT6Grg7B;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf03.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.52 as permitted sender) smtp.mailfrom=urezki@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753212963;
+	s=arc-20220608; t=1753213184;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d1h84Vgi+SSeAt9fCMN4AkwcLNqlNR+0yiJ6EzHvvPU=;
-	b=d/d3Lj2fWENnivWQrP8UcOEpN6esIryP8cXVDseUbnE4UcwO2Xd+0GLlprOCp5qTJhx4Hw
-	zjH1P+6iDuKiaHlSHPA2iCtaD0178hG1wRrLfcCncKt4EHuVl2jW4GYd4bO6l7ea+ZKVdm
-	i2Wsu53BP/U8+5hsfp6osQkvwyb7SgA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753212963; x=1784748963;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=0IlvhvfDrw5+9DTE/LPj4HOX+CjBvksRT2GhOo67isk=;
-  b=KK23oON5ZBRVX7J5X+n/DhHiVXv36Fn3G0D+FMnA8XE4eE2SdZQYzbcb
-   fa4PnL7RmFIVG9aUme678W5rDMPLzZ40SQKUM+bkcDO0XnYlLiFYoHFZm
-   RmJddAb409DL3affePHQkGfrKS2F8GsUZcZqhwvDazbqNAOdGlCfLpU6V
-   DCV9Eph14GxhqPRwFbKvJIj+Gwme7vOkSTXXq9etP+SnnZpOeSY7LJVOh
-   b2IDD91QRFLfD73G9ni5W1PNV7cz4dUkHxGz9dS7kpj+FwWC0c9CgIwL3
-   LCHKPQGdqjvtkrNbHBxr9eR4U2dlm1A/tN7D3udIC+7bljY7hbabdSh09
-   A==;
-X-CSE-ConnectionGUID: KD8n28TTToGygXgHDpi3Ig==
-X-CSE-MsgGUID: 77LHUf1hQB6KuZd/NVff0A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11500"; a="59137000"
-X-IronPort-AV: E=Sophos;i="6.16,332,1744095600"; 
-   d="scan'208";a="59137000"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 12:36:01 -0700
-X-CSE-ConnectionGUID: sgG2HkpsSwKu61a54UBRDw==
-X-CSE-MsgGUID: /Knu5S8VQyuatVyQZle/zQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,332,1744095600"; 
-   d="scan'208";a="164694647"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO fdugast-desk.intel.com) ([10.245.244.157])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 12:35:56 -0700
-From: Francois Dugast <francois.dugast@intel.com>
-To: balbirs@nvidia.com
-Cc: airlied@gmail.com,
-	akpm@linux-foundation.org,
-	apopple@nvidia.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	dakr@kernel.org,
-	david@redhat.com,
-	donettom@linux.ibm.com,
-	francois.dugast@intel.com,
-	jane.chu@oracle.com,
-	jglisse@redhat.com,
-	kherbst@redhat.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	lyude@redhat.com,
-	matthew.brost@intel.com,
-	peterx@redhat.com,
-	ryan.roberts@arm.com,
-	shuah@kernel.org,
-	simona@ffwll.ch,
-	wangkefeng.wang@huawei.com,
-	willy@infradead.org,
-	ziy@nvidia.com
-Subject: [PATCH] mm/hmm: Do not fault in device private pages owned by the caller
-Date: Tue, 22 Jul 2025 21:34:45 +0200
-Message-ID: <20250722193445.1588348-1-francois.dugast@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <9ae3e014-c7d0-4d58-af0e-925bcd9e4cfd@nvidia.com>
-References: <9ae3e014-c7d0-4d58-af0e-925bcd9e4cfd@nvidia.com>
+	bh=oWwanWZIN6VJqRUWaw2x8mt5qLkeBEti+V7m7T7sRfo=;
+	b=skVjwpqKJLAvHeVCJ5sSXD2RN2adkMfgnTMlXu4MwmfswP6J5csDX950ELzCakY5fxJ8It
+	p0eidmBLrxJb7Ni0fFwK3dKk4deT8Hl+1R/8dXzs6S+raUGr5lu7QlZT0DSkqSYKxRgWNG
+	Q0XHN+leDjW8/IIW/p6eBy7gMojnILo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753213184; a=rsa-sha256;
+	cv=none;
+	b=s5jIWIxMwdsMBBQJi4icNF/jtJ6nJKUxHxiCDNA9u7a+LrMhhf7gvkx8AzVAP9ezZoJf3H
+	PtNAEmQOpMzD7s5DNMPFrrjF38as1gY24BRAinRm1Zom5wOrjIc0pg3kMDtfIVFPLutKnK
+	MvBYjCNXRFmM01zpCXpXbOdB667/S+Q=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DT6Grg7B;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf03.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.52 as permitted sender) smtp.mailfrom=urezki@gmail.com
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-55622414cf4so5145469e87.3
+        for <linux-mm@kvack.org>; Tue, 22 Jul 2025 12:39:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753213182; x=1753817982; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oWwanWZIN6VJqRUWaw2x8mt5qLkeBEti+V7m7T7sRfo=;
+        b=DT6Grg7B2yxNuKGHhAk0kO2o95vVq5m4LECT6ysKsVWwhJdxhQFxJOVhQ6qXJyBy4i
+         DbMnO568E34Gu8+V9RJDiRWDdtu3AQ75yOv/cw/teHbfyOJO3O3oZj8hub+e1zO0ePRP
+         WqAVhk/JMR1yabaM0wVUF3giP851Xn3uq/RhP+3RPeSEqQ4oUYNvIclKZ77MaxS1aweA
+         JEgMGuCHmIOyD1zuc3Ow/nvBVVPuNf/dbr+fcpdqogE5cs6yjeplMqSQMlhBfjpgP0qe
+         dlZSrDNt9zst7cUg5nFGaVi1YHqMpksYuONYM9X0SPjTbkSx+ymEPfoj7qLCKdWY/mrC
+         dpIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753213182; x=1753817982;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oWwanWZIN6VJqRUWaw2x8mt5qLkeBEti+V7m7T7sRfo=;
+        b=TTuaGhbkvUmt/z2rlZp3vg3jyRuflgLvnHVC0nOnyl5aR9BNAMRQBgutKyWi6QtiG9
+         SqrGZUXrixEhCtS/pf5pkDXNE5+pNAHH0KQ2OC2EBbFDxzNZ1zflvEwBejMgcc2oWawC
+         jHZdVilMl88WJN6ofTFyQIQLwrTnC5Ugqm6Js0i0qj53x0o+UnJl7vCmgjjCv68DVXLI
+         mxrQFhH4Xacqy2MRmtpc4HPw6s2Vuo9gsK37CcMAu0Yj8GvEoaQAftTS2OhSuMb21jv5
+         x2tauYbetrJ9NSuMwp/7p9Fvdwq5tjgzuIjc42wXusaK/tIiN/YFTyRyVAFLLftZQx69
+         4ZsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCURoK84/vbocUOO1BPwB8potz5Ugw+xm3+J+Vnxq0rLYYPiE/SFYKWpzGZZeJEH3dFsoibI5yS8IQ==@kvack.org
+X-Gm-Message-State: AOJu0YyLFooTjhJ0zIU0wxYg7rZ/nvn0VS4uz6FHbolEWMGLMknHRIRh
+	IwYnLKLZdupEgde9CjlDFEhYzeS9IRdfANzWjpjzc3r0UUFEgn9BqezK
+X-Gm-Gg: ASbGncsSB02vRm4DJkZav0ShcZ3xr91DOwzew9EK8RMlGJM8pE3AeLOqlFA0WbSAcjw
+	cETZOMfCjMeCR6HACujhVi/X4l8Fqvx3t9aJD4OQcKE29ZuFz93ogd8Q7MaqOwlIi1GS76VNrU4
+	sXe3fMjdrl5c2km2ur8UcMs9FGkJSBs1pkpQsF4hWAdNhtXWEV7SBW4o4rLX1qRaVS3t8gv72po
+	Xfjvh2ExQ6jSNmSJjuFq7R0wf/DWgDfudqI0Wehcqo6D8XMGY3tZvX1rC18Y8z2bKaImLxs7no0
+	5kfEnkhFpbhyIVuHRUJpWdzfTzqyUgr65lm9gq6avvnFFLPhN8ZHrouHcucD59Yg
+X-Google-Smtp-Source: AGHT+IFbHt2xpyOsVVT8UPF6x/qDC9IiOeFqzRPNDED4QfUqrtireW40AQuhtFawGjwFKenKZbGixg==
+X-Received: by 2002:a05:6512:3daa:b0:553:2f50:5dff with SMTP id 2adb3069b0e04-55a5136aab3mr87983e87.17.1753213182060;
+        Tue, 22 Jul 2025 12:39:42 -0700 (PDT)
+Received: from pc636 ([2001:9b1:d5a0:a500::800])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55a4eb36cf9sm139815e87.222.2025.07.22.12.39.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Jul 2025 12:39:41 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Tue, 22 Jul 2025 21:39:39 +0200
+To: Jia He <justin.he@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, Peter Xu <peterx@redhat.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] mm: vmalloc: use VMALLOC_EARLY_START boundary for early
+ vmap area
+Message-ID: <aH_o-85T-EexGWrg@pc636>
+References: <20250722040850.2017769-1-justin.he@arm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E0F674000B
-X-Stat-Signature: 89g8yyk8inpsgnj4hc7m69659thws9ua
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250722040850.2017769-1-justin.he@arm.com>
+X-Stat-Signature: q7mi6y5fsrabpk5q85nk87idcy1znsj4
+X-Rspamd-Queue-Id: 4A05920008
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1753212962-661419
-X-HE-Meta: U2FsdGVkX19mrtTxtrQNzg6xcbR95iDYxkgYPYnzvJ8WmHsY7CoIoJNIKnLXVM194o0FsLdeqh75VT0KzAZFF2HO4XX7bSFqyvYAnNGMpBdShCI6IsxW6zT5X8KdSYqbECCbzRFhNEwfH9JRsE8LSDi7AT8kKRxeNga5w2Govv8LakWMPnVvLmRATLih4j3Y+kg/+FQKRVDglcoA0AYWAUrH0lMNfyWJeG1g/jV5FITtIJ39qo9QnKBX4ojF8FUq3ARS/9IfdeayRRbATd7ynf8rtepXrDVJcC7JhrTFanvMmYuOV+dl0rsrc1iy52SypY9TxiAWs67AQy9ppSQJbwPaOwFMPbmzpLrrgi2Afy7NKXl4PCOMgpZlINbX1YzpYgueyn3IHSYskLPH63utKubQlKZjI5RQwkkIXgq96ho0QwoPXnfFrRxBa0bj9GECtsahmv7OeDqSBRDZPe5EamishoG5DvmwJkDJbiCyz+ZM8WqzLC1n+lGv7e+1d1lF93DlHybQUhO5+MnDQXXTWLh7sTyQ3pD9rr6u8rPUwvldxc3Bly+d0FcB8gQqk7jxlxcPZUjYr1a753hpiuSMT0wK5L8XRJnv6OPgJwE/eeCN1p3lsTcena0zK7jikFsivgI+Wis0B1Ig/56WvRSdyUhqbJAXmXpFg2/J5fKHegm+AM4EmBvfRpfd5167f7GuEK77mlwh/yszF40AgEBOPoA/UoChE+/VD8RPX28pKKyb6Gq4mqDuv7FqYHT4gDWY9syYMi6zSOR6rvseDCCqhE5W/GAPIdPa6Xe+1Ozj8o9a2oEFvStiDMosl+JWm3Wby+vVox/0yB8t52i88ALAzxk0+Ht0mo2PiHb9auigSlSPXFReN/icxyX9TupmIrMiEYf2+TXojc9VYkks32WJ/2KNWaL6teLmUSULJ9DmDj6vTRegXIfC1eFjnk+2s9t9+DVtKJtlL/bUMoryokc
- wW5sPmM2
- omiHFTsGzar+33cA5BoI1llgx7/IJHRErMzXiKvOM86zh5efEwYrewZ4y35H1L1j8ZvJ8A9xrU3rvL3sK/3vPebHz3n1uFcPqs9dbF8nQJyMH1HCoWcskgKoNP2S8ae/N2cMF1ZTtLHf4P69L2M7OsAST0lcF6YKObPc6MdAVSyYYeNZwTqGmtSOlMbp7goIU6yBgxmSTKLIfcsr4tqQ+2624Cg==
+X-HE-Tag: 1753213184-602077
+X-HE-Meta: U2FsdGVkX19AMSCZKwXKrnBy4C/1L8mBtswzMu6pP5m/Mx9qJ/tBac5Oi7AXESrgDwWnzLaSLHsbEYzNEsWwK28kcTdLEl8xiuCY3hbhxcF+PhdKDLzNA+AsIY7Su5TGUWt8lcKK68NbJQkBMufJZJSIe+foz48hYNY2Nocx139GTgN3zlVYJGRftkrKgBdVZ9Vd4wMxkgWizPg34ZulLZXtzhT5RFF8sl5GqMPSj6qkLP1lZZQ43tzGs01SfpIoKQYOqsED34NaarWhSQefMvjm+aHpSp+0ODjTKvJ1Ag6EY+ZqjphWZWdMHIDBiSnlVqQLPEltux0YvEhAi4BuP1jyXSlm5Kp+NQNtysraC/PB00JAe4dmmu/Rgax7oRxQs+88qGn+ILVZaRORU+5VwallAYU60J+MYGZtTmjTn7XH3T9YoWXmxUIBPUWbfjN7aGszTxChOPsg9ypSwZgPwsyJKK7qluQmTh1Y2z38HyvHyG+1QMR8OJ4VgMwXRdB+t8Hd+h1pSh1KzE+nGm8JW8VWkT+vo2p8T/EIKc3ui31rQnxyJSZh2qxJF2z3xDhlo/BSAPGuocI3WSbCtL97O4ES9Y23Z/QDnbN1CVGVy/2Nf6Zdx9B5J11Df5DhWbe5zJz7KEMh2gnHojmitzyDTw1lOZty+/WS4J4SrtmzYWzqrRyB3z1rCfm8zD4WVC8hUyqDWuiyzrZzXip2M5iwaTGnJA4h0rd3S1JuLJj3EdV7TWu//KE4v9QWjA85UOK4EqWOlPM/BxD7UbfKzaWHCH389DnnXTVD6lVjwk15QyqgHxa+KKVe59YL00YeAYs64r8PGFPOEerG3UOpSqyT9siUmnJp3L3IcIxYz71yL08HsGsw8b5+LsNxMId92DQ7q0V8LzuH6Pd4j0xcJp3sFBoOVzZWaF6yoj6m7Dz49+KTfk4xgESo66XN8SLgptFrvdkXlUSLLYQ6HYnKo28
+ RcYe08Gf
+ J7Gkl6om6VkRLBWJE/GQPaCkew9Dr/ePv+9mUj6MBe8XlwxsQVZ09A2XjzWm9PhTRN7u3W+H1jONvpKiwdwp7/6JGjg95P3Z3EWKacpiJ284uCG+/C4KC2Ydrdr69rh/KOv+WFnlKoeNAxKCAmxbd+/Gf0QdGg1Zxr54bgr56F3gAqCTMbM5QPwWTbU+VB75fYrLSWrzi+ma0Ola4T5uZVPbwlS0emb+erCQVjs/pWn7EnuWsNuXMeVt80evgvooLK+mJ1WfHLsU3JRA5WNxNeWQHVWkiJMCZmcK8i2fHaV0O1le3803a568P0CDafxtf/dWp3DJa8jbFv1+nirdZpvi2ok4mtbQfl1tvo6VIttgBs+VLvwRj/PoxHm1Rk/MjnhTPeJQbPjZaxVuAPYB5+hitjqE9QuRXpaKtY+TDTea5SGwf1b0Akz0PGW68w+xUtQm3pWCYCfGnY2U8GM3V23CF4Qhk2DnxVhHjwanVvf/suAps2Mh9cyyA119KQycsoI/UR9mfF+CqWXQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,57 +125,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When the PMD swap entry is device private and owned by the caller,
-skip the range faulting and instead just set the correct HMM PFNs.
-This is similar to the logic for PTEs in hmm_vma_handle_pte().
+On Tue, Jul 22, 2025 at 04:08:50AM +0000, Jia He wrote:
+> When VMALLOC_START is redefined to a new boundary, most subsystems
+> continue to function correctly. However, vm_area_register_early()
+> assumes the use of the global _vmlist_ structure before vmalloc_init()
+> is invoked. This assumption can lead to issues during early boot.
+> 
+But we just should not redefine the macro. If there are such places
+those are should be fixed, IMO.
 
-For now, each hmm_pfns[i] entry is populated as it is currently done
-in hmm_vma_handle_pmd() but this might not be necessary. A follow-up
-optimization could be to make use of the order and skip populating
-subsequent PFNs.
-
-Signed-off-by: Francois Dugast <francois.dugast@intel.com>
----
- mm/hmm.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
-
-diff --git a/mm/hmm.c b/mm/hmm.c
-index f2415b4b2cdd..63ec1b18a656 100644
---- a/mm/hmm.c
-+++ b/mm/hmm.c
-@@ -355,6 +355,31 @@ static int hmm_vma_walk_pmd(pmd_t *pmdp,
- 	}
- 
- 	if (!pmd_present(pmd)) {
-+		swp_entry_t entry = pmd_to_swp_entry(pmd);
-+
-+		/*
-+		 * Don't fault in device private pages owned by the caller,
-+		 * just report the PFNs.
-+		 */
-+		if (is_device_private_entry(entry) &&
-+		    pfn_swap_entry_folio(entry)->pgmap->owner ==
-+		    range->dev_private_owner) {
-+			unsigned long cpu_flags = HMM_PFN_VALID |
-+				hmm_pfn_flags_order(PMD_SHIFT - PAGE_SHIFT);
-+			unsigned long pfn = swp_offset_pfn(entry);
-+			unsigned long i;
-+
-+			if (is_writable_device_private_entry(entry))
-+				cpu_flags |= HMM_PFN_WRITE;
-+
-+			for (i = 0; addr < end; addr += PAGE_SIZE, i++, pfn++) {
-+				hmm_pfns[i] &= HMM_PFN_INOUT_FLAGS;
-+				hmm_pfns[i] |= pfn | cpu_flags;
-+			}
-+
-+			return 0;
-+		}
-+
- 		if (hmm_range_need_fault(hmm_vma_walk, hmm_pfns, npages, 0))
- 			return -EFAULT;
- 		return hmm_pfns_fill(start, end, range, HMM_PFN_ERROR);
--- 
-2.43.0
-
+--
+Uladzislau Rezki
 
