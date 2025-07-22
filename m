@@ -2,132 +2,99 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EB5FFC83F1A
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 11:59:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A8F4C83F1A
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 12:01:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 783458E0003; Tue, 22 Jul 2025 07:59:13 -0400 (EDT)
+	id 082676B0088; Tue, 22 Jul 2025 08:01:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 733D98E0001; Tue, 22 Jul 2025 07:59:13 -0400 (EDT)
+	id 032A16B00AB; Tue, 22 Jul 2025 08:01:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6233A8E0003; Tue, 22 Jul 2025 07:59:13 -0400 (EDT)
+	id EB18B6B00AC; Tue, 22 Jul 2025 08:01:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B3DB8E0001
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 07:59:13 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2B8F3111DFE
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 11:59:13 +0000 (UTC)
-X-FDA: 83691754986.02.066AA10
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6CF78A0006
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 11:59:10 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=qcXUYXMn;
-	spf=pass (imf25.hostedemail.com: domain of japo@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=japo@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753185550; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D84E16B0088
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 08:01:38 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A3A861303CB
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 12:01:38 +0000 (UTC)
+X-FDA: 83691761076.17.1909E11
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf29.hostedemail.com (Postfix) with ESMTP id A223612000B
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 12:01:36 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf29.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753185696; a=rsa-sha256;
 	cv=none;
-	b=fDJWpMhisV/nMpGpj/TJ/oriYosjYtLEoGWtjUfjOxxZNoyvJqODb1gYM6AdJwQ1MWJSXE
-	q+sa642/WsXN2/tma1eeNUYmN9pNCqQ7TdzgN7UmX8MAYu7I7DfM0h9AbUAuX63Z7UGpNG
-	2WtHh+K3JELpeBJDyU8F1HttezUMgd8=
+	b=uP14rlQhlUbgsNdA4jzRCTAVRWyt+KCyT/d8j4utZeo5ctpOqebqok3tQQDWaQ8WqdyR5x
+	HmAhgL4ni2bdV8SYy+RCHUaNw6dG5jlzIJVqJP3/RXNCD+dorS7HqYUq5ObVft1DJPi5AM
+	pLnIID+fQFCptHJg9/n+KqaNb64GqzA=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=qcXUYXMn;
-	spf=pass (imf25.hostedemail.com: domain of japo@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=japo@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	imf29.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf29.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753185550;
+	s=arc-20220608; t=1753185696;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=07sal+LSUKC53pofptuH5OfIwrIxqEu7QpiNeAF+TpI=;
-	b=GzwWA4n5NLQ97twreoz2V8+iL/YCCt5o1QYkxT5zBxmEXitB3Rp82L2wCj8eCKqzPhCTyC
-	ULHXaKFI4WP5lhQjA4VGyrd+N3TvEIkbMbzLopzzY4d2aOUj1HfTCuqXdeW8upGiSiawiF
-	1+qqPrV3wabbE4tiEmmk1QIsmUZLr9s=
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56M9XabX004841
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 11:59:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=07sal+
-	LSUKC53pofptuH5OfIwrIxqEu7QpiNeAF+TpI=; b=qcXUYXMneqguDNIB3rddLm
-	55Ib2kmGQfpp4i6b9c7d9ShJyC+S6RA2i1MhS7r16X9xhi/y1jMyBHfoi9MqtkPA
-	3PcARI2PtM+e59oMssfJ9TS2kWkcLH+Hzd64KyyylJZlwJsVTtOqdjeUdxqyMXHu
-	VzDW97EWbRrj6ARVewxxxY2JdlkM6Fif2ZOQZM0YdSAndJkJMXNdrCtNKtgnxFb5
-	7DBulfxzZ+va1V6Bm6C57VgOVbLfd/mrXIwGSaPQDjPRFr84Dn7urrCMS+jzrcTg
-	xk89ZQW4w9x86CNjGAtGGSNotaOfYCK5HGQ3nEQ/TpuKjsJjRcKAWprs9d1P6Y+g
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 481v6x3f40-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 11:59:09 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56M82iIp024704
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 11:59:07 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 480rd2ad7c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 11:59:07 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 56MBx4uC20250882
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 22 Jul 2025 11:59:04 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 29F4820049;
-	Tue, 22 Jul 2025 11:59:04 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 09A2920040;
-	Tue, 22 Jul 2025 11:59:04 +0000 (GMT)
-Received: from li-276bd24c-2dcc-11b2-a85c-945b6f05615c.boeblingen.de.ibm.com (unknown [9.155.201.149])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 22 Jul 2025 11:59:03 +0000 (GMT)
-From: Jan Polensky <japo@linux.ibm.com>
-To: japo@linux.ibm.com
-Cc: linux-mm@kvack.org
-Subject: [REGRESSION] mremap() returns EFAULT instead of EPERM in LTP mseal01
-Date: Tue, 22 Jul 2025 13:58:45 +0200
-Message-ID: <20250722115856.47821-1-japo@linux.ibm.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <aHjjhXSAyFN_bkuY@li-276bd24c-2dcc-11b2-a85c-945b6f05615c.ibm.com>
-References: <aHjjhXSAyFN_bkuY@li-276bd24c-2dcc-11b2-a85c-945b6f05615c.ibm.com>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NQKEvBAhBMZ92+P0CAKQzNN26DGtLry7WS05D5lDTQU=;
+	b=SSFxBk7uBEmV+7cikrS0spkmQBZq+6nuYPqt0z0hcfyasNPHzKjHQtUANgREo4dlKbsscH
+	nhEOoBsOKFAjeyUi5ZgKEeNa8la5U+yUBhbmnjSfAIBGlGkXAJxuc0LZsSLpADZkwAzrYD
+	EQjUcIBKYyeGw1Cag1OyywmcR2wRykI=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 547C41F797;
+	Tue, 22 Jul 2025 12:01:35 +0000 (UTC)
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 89D2413A32;
+	Tue, 22 Jul 2025 12:01:34 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id FnhVHp59f2hsUQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 22 Jul 2025 12:01:34 +0000
+Date: Tue, 22 Jul 2025 13:01:32 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: kernel test robot <oliver.sang@intel.com>, 
+	Bernard Metzler <bmt@zurich.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Leon Romanovsky <leon@kernel.org>, "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>, 
+	oe-lkp@lists.linux.dev, lkp@intel.com, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Harry Yoo <harry.yoo@oracle.com>, David Howells <dhowells@redhat.com>, linux-mm@kvack.org
+Subject: Re: [linux-next:master] [mm, slab] 5660ee54e7:
+ BUG:KASAN:stack-out-of-bounds_in_copy_from_iter
+Message-ID: <22ohbihitxnnvgugbp34x7tlsdlvcdrji7h6unlgpxqy3golrb@ha4ywpuyo5ro>
+References: <202507220801.50a7210-lkp@intel.com>
+ <jehx7y7mwer77d2rrx323qixc456ffod3qrcssemkebjotstbh@fpklsa72lzky>
+ <05001622-737d-40e7-8adc-5dd23e6b9bcb@suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 1UA-t_iu79ZJEVVVdJx9HnImeQxmm2uH
-X-Proofpoint-GUID: 1UA-t_iu79ZJEVVVdJx9HnImeQxmm2uH
-X-Authority-Analysis: v=2.4 cv=MK1gmNZl c=1 sm=1 tr=0 ts=687f7d0d cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8
- a=5tHPDUVrD0ePMM0Tgt0A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=RUiq-r-Y-5EA:10 a=zZCYzV9kfG8A:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIyMDA5NSBTYWx0ZWRfX3u5ZkH/L4Jce
- tcaP12aDUiNoGE0E2uedLOb9laAK48SwxKbc2c205bDQ5ASzuu6hziFlF8OMjHMj4kp6cd6uBdf
- D7896g+xlCMpUe0uqtYsbApzpxceThRZiVs0Shskz+sZiPeJEejR0tCDG6hI4DaOTrjVro3sY/W
- 3jue7bQmwvlMjyzrMPt/ZQYKoX0X6/dEL4iAzGDWSjla9tjpVqsTMvFvTqXeAu0Ga3TzTVXGqSu
- On9ANIzC15jNtLMoI2Tom5I2/HRuixNM76G4ftTzA7GjQnU6skVN93DBishfu9FUH2cbkSjbHLS
- LZzc4J6eboDbZEIJJwfYgTqXLjpFmRLJDGPMosCQDCoj07wqvO5K3Lhix+gwl+Ym785s+xpd9cL
- 1AQGAv5XBolQqxqPSGUXYRvRQqswMBz4qKdHuyabetMfsnp+QUxoEnDvxnfPdqpQZzXJ+nOQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-22_02,2025-07-21_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=1
- priorityscore=1501 bulkscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0
- clxscore=1015 mlxscore=1 suspectscore=0 phishscore=0 impostorscore=0
- spamscore=1 mlxlogscore=184 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507220095
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <05001622-737d-40e7-8adc-5dd23e6b9bcb@suse.cz>
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
+X-Stat-Signature: 67idcgiwp8gjuo3rj7oxb9zjf6sb3dip
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6CF78A0006
-X-Stat-Signature: xw7f3ukfnui5du9qnjgjyorhjow1dzc1
-X-HE-Tag: 1753185550-96524
-X-HE-Meta: U2FsdGVkX1+eJzMZl7w2Ka3uloEbxG4ERNDZkb6jCntT810l11829KzolsQxKRowQChPqp/7PcdHHmAe7Hn/avCg6pL7fFrki+u4DEXA9hrpAQW1OZ8Sbnj5Pmq07OH5jCvo70MqGjsri20i0TOgqqkevst5ocJUjfN1vymzDaI+2Xsw078MlwwbeDkgP5ElnkzgnD6++X4WPZITjrV8e3Buil0toV1/EJSzjeGsceGqLZcjiYGq99tZt9LDnw4i6l9lYN23MWnBWHNzgoQUf/tVAe9rg+GvA4c17Yaxjdai5z8fdtjOYW+yc07Cw5LfEPW2+uz936QctIxPZF+uXpqXKGsZK1xLMoHBu6BCI+zdJ9oxe0sV6xJls1LmhX5tTOKAptlGAjwWcDgaFajRLyBAamCWKAoQje2cci1sBjJUTIKkQydtN0/1x/hRjEIEo3i0pCoMx01aO61kmrV3jcTV9TBaceQBRWbcwdQaP+u7dskgDCog6xQSzxa+veHTgvah4IaBf8JyE5QpSLYte+6z9XyvJ11LHXLUySgn3SM/dddziP0H0O9mTSw9K1Z6dwQN7LLTERhZ0Dyq/KRV0G+xXNP9PyB6t3VyAi+Qyp8OYkwLApxtps4GNO2NszhYiNC5E+rGYmTLShvaFVgSOloVvYTbsCKNv+WxH8Es0tKik0N+Ym++bOQ6rv7Qq+LtTbK4Ie1UrhlvOi2VtWml41wecjfd5bRMgTYv93rmw8HOmyA0C1DWMCtshhiy5dsXQHZQpeQ20Rq1BnABZK6ZGiT3Z7P2cUJw9EvLg1g5JeNR2NZNrxDkkX+pt6ncqEltcMpYslBooYA8cIM3X68LkxCmf9vIgXVNGgwEZ5pPPp139qyKwxrigABvCWb2bun4WglzmpdBZQTkX9actvWRAQkmlCFryVDsQcqh/JyZc0bQIy8ch8p1n+LwMWSG2um07JIbdRJYZiByipGICPG
- iW9pV12M
- Vkdq3tVlScCqgfQXFLQ4XXWvwVn8n0hZQ3J/lH0L8wboh5bjj+4ZCyCLTxV05D96TOIf8dWnA/MxpeYcBaY5ZiY2CtHYrTYX6aDj+Kzv2wG/SfK3Cknx2wcd6m5MMNQomiql5u/q3GtNMSQpgAQcghMeZfuolEKwy6QmIq0UzhuXOK0sRYYFmn8pcatr8umEtWBA8us2ljJ2Vl3BMYBI93oEfpZghN5bucNH9oChJ8zq++j+3KO0BaQ7IyDI9i96noeI7pawgBSUiPOe4IRyZzwu4ezuLVoRiVxMzzgPjEkGUshgir2TwiFWR1lmLl/JkuAgWPPXYeRfEt+E+S+zjzXOB4wqj67o1fGIuimNgOyvX8mkykOXaphDBMLikvhHHTDdKCFMrOKb8X75HCeBHc8WUZPT5Y/o4+3t9wfZIEjmLElY=
+X-Rspamd-Queue-Id: A223612000B
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1753185696-147194
+X-HE-Meta: U2FsdGVkX1/4qW7KU9CeYjkLM5PwDOYHSxucDHCdXQNM51P6T8exkEHJDnLq1Tn12ExsDsJTlmT+GQD6r4fpOnFPnwKkf//VwJH1oUg8nvHdjpfOEs1YPtooNFC0Z+5OEY16RDVcihpIHQJ/4Vw8JSlDL6mCmOCIdeG/rp/FpaIMi22w1Vp/WdHH39GakORvWH+dLTB+l0Z/zVG5OTtF2rlI6ESAfBY/UO6nbhzDqlXOYz3yquxw4M2kLbXARVTU8M1ojrI1Gq1Kq1b7AnoCkrnY8m7vdMwsoyZzyHtHNxfDtakQJZBg0Jh7Vfp5AzlwumaDePSPYmxqZ9CnkaRzjb5ya8Y2MIYM4RD19KkiE9CHmO9zXIs3Mao7W/ozEJhpgkyFTImGjdfX/1geI1vGRCD8NBG53NnqEM/iDYF1iHPp2f0qaEJSFR4zMWVaahFp4piX7jTETxUljZvUs0ImhmZHNwafYXHjixx+sKsrrYaBFvVU+lRrQuVA0/f1W46NYXVHO1uSgyXvvK0PPy60BkErjl7Vp55zG1xIQ5K/HIBMjOFeWqtzjmDsvyRoPAsdySZmZ2oT8J7vFiyJm19hWUPIFnViiaZH2wLYMm8ftzRMtIZE6c8DbKDuGVbHgNORLzsvtpLEvIg2Orf5zPGa2rrPeWTGvhdtO6lNmvEWZvKk3DQntfsdHkByLUE3dNCVU7euSVthkffi+vFfQtNxodXf3bfjSDSRGqWxc7XwQE7zEiWoyVwzS+ZLyrZAEjDwnC98uvowV0uooQIY9Y8w4YFbZO9zoqC6BgFb3BDkru4Zjk2dQXY+H7CGIZRVxt2Qrjs9pDELmBYGRi+nMrmIkbTPR0Aq7c2bq+l0YfX6R0iMu/94EWFx4mnQG4bUL1OPpD3rn+cn8QCzDhNYycibc0MW4A7r9UzP6wpvLdHbyTldz6ekrjWOog9LFZokCOgE0B2YAli1CmF1GVFDBJi
+ W0JruyRF
+ j5e3NK4ySfv5I9r4OElUmXkZavebaAlmikPOqb5PZrzG7JrpoFMC4Va1BW1CsWgKG9T2L23CvncdNsuCSE4Ig5MRP2HogsYmfHk7jPkh5cBxAY0ONi0gF6osNbIbN6TM0C5f6qXlVRxBfe47osSOC+v3EcYIKQkNwpsANiOpJNdGpppTmAGaAIpESzTZLIf0JjU9fwlcF0Q8x8IXDKwSYCYlEHOKANzFkN4DQskJyfZrSNduHISrRo7niWB4+iEAfKrLQ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,8 +103,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Message:
-It seems this issue has already been analyzed and addressed independently in the following thread:
-https://lore.kernel.org/oe-lkp/202507201002.69144b74-lkp@intel.com/
-To avoid duplication, I’ll defer to that discussion. Thanks to everyone involved!
+On Tue, Jul 22, 2025 at 01:32:09PM +0200, Vlastimil Babka wrote:
+> On 7/22/25 12:52, Pedro Falcato wrote:
+> > +cc dhowells
+> 
+> +Cc siw+infiniband maintainers too.
+> 
+> Thanks Pedro. Hope there can be either a hotfix for 6.16, or the fix is part
+> of 6.17 merge window (and I tell Linus to merge slab only afterwards), or I
+> get the blessing to include it in my tree preceding commit 5660ee54e798 (to
+> be merged in 6.17 merge window).
+> 
+> Also would you submit the fix formally?
+
+Yep, I'll send it out as soon as we figure out the tree situation
+(I was also waiting for comments from David, if any).
+
+-- 
+Pedro
 
