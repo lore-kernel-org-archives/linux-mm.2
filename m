@@ -2,102 +2,124 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C3C1AC83F1A
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 21:19:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 84F56C83F1A
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 21:59:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 188E88E0006; Tue, 22 Jul 2025 17:19:50 -0400 (EDT)
+	id CA8D48E0006; Tue, 22 Jul 2025 17:59:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1399B8E0001; Tue, 22 Jul 2025 17:19:50 -0400 (EDT)
+	id C806B8E0001; Tue, 22 Jul 2025 17:59:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 027B48E0006; Tue, 22 Jul 2025 17:19:49 -0400 (EDT)
+	id BBD558E0006; Tue, 22 Jul 2025 17:59:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E0AB68E0001
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 17:19:49 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 482221604D7
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 21:19:49 +0000 (UTC)
-X-FDA: 83693167698.18.EFDF95D
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 42B671A0006
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 21:19:47 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=B68YggWD;
-	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AEFDA8E0001
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 17:59:48 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0C5D3593D2
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 21:59:48 +0000 (UTC)
+X-FDA: 83693268456.24.F553BCD
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2C67220002
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 21:59:45 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=eQbmiBJV;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf13.hostedemail.com: domain of kuniyu@google.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=kuniyu@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753219187;
+	s=arc-20220608; t=1753221586;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0WYuFCynX/yZVbZlJ1Nso8NAa6qhfdENcyCuMKWYQSQ=;
-	b=19bspaGpG4FkI7siGbzwnkRmGl9INEPxIzNgFUt4moPc+48rXrsUlBeu5nKTa8u8G1rV5x
-	OUHoYhElO1Cp2Xl4mnns/6GdJkQiU0UOc4NQaU9qDZnTQ3Ek1ZJUyY65PRWg9qMR0TODa0
-	obohKgHbjeCwP65wvVkGSeFuVbh1nHY=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=B68YggWD;
-	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753219187; a=rsa-sha256;
+	bh=LldVhMiyy8Uo7zeXym650NXpGCC96+eEkfNEoQyfQ7Q=;
+	b=0TPP/1aBQV66VkmnLOy9eJ/v6Td69IfnzPl8esAbxSf0x9YY7GjCSIjkMol/RDzM2WvvUz
+	T5Oxvs6OfWaq1FcIWIX0UI+PD78VbYJ/bdwcUzSRE9Hxooasjq0oeXiQlXFgy4guLVCM7M
+	+gTe9oUTXP4Nkx6TBx8vAgcDo7JwdFw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753221586; a=rsa-sha256;
 	cv=none;
-	b=aOC9GY+9zS4jM3vcEBvfVQ+ZQ8Dozcwey0kp2HP9L9xnDgpfjPnQhN4DPFJ/Yby9KQIxLq
-	nRdYpM+0C+gzXd7BV489prvxrnAhKBrLnnBlTK7ZAwq2AZYSTGJoorm99+OYCFK9C7O6x6
-	wurbja/lCLks8FzdaSdS4vl7VyBxNfo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753219188; x=1784755188;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=VAFhRCJQknowV+AypDyaME1Ab2ilgI4tc2/Wbqr0Ux0=;
-  b=B68YggWDuPpolK0rp2pSFGGJADj69vLqhCmXvt7kuIfk/MlIaazVmf07
-   SSnLsccWbHvv/IePxu6lNCja9mRg0mKGKiTrNLriaiPU3FW7BT2bT6knn
-   7Tesh3rt0RryAaz3Me22Pb1jbsY0lnmi8s7aaWPx3v7maJr3H5WVsWeMZ
-   AtHWHxeFJjAFNtmq9Ga9lL83oQNL045itWq5xg4/HjUdyafRI2Wgr3xnf
-   x586rgks7pKusaYANCtG5jgIZF40bnYD518z00i6KUOO7t1S7hxBkBht3
-   4RimUUSYh8VPLewHIiqM88lrqZr2v0EB2j7RNJAv7AOaSj5RCeu8+RcDZ
-   Q==;
-X-CSE-ConnectionGUID: gcZ8Am9+Te6I3u72F7Ix+w==
-X-CSE-MsgGUID: riti+nMgSbuhBkB8zBWcyg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11500"; a="59286780"
-X-IronPort-AV: E=Sophos;i="6.16,332,1744095600"; 
-   d="scan'208";a="59286780"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 14:19:46 -0700
-X-CSE-ConnectionGUID: QPx254goTECh3UVjxe55jg==
-X-CSE-MsgGUID: BMGHljmHRY+SotKzCX9Gdw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,332,1744095600"; 
-   d="scan'208";a="190217200"
-Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 22 Jul 2025 14:19:44 -0700
-Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1ueKOj-000IiB-05;
-	Tue, 22 Jul 2025 21:19:41 +0000
-Date: Wed, 23 Jul 2025 05:19:40 +0800
-From: kernel test robot <lkp@intel.com>
-To: Dave Airlie <airlied@gmail.com>, dri-devel@lists.freedesktop.org,
-	linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
-	Christian Koenig <christian.koenig@amd.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Dave Chinner <david@fromorbit.com>,
-	Kairui Song <kasong@tencent.com>, Dave Airlie <airlied@redhat.com>
-Subject: Re: [PATCH 11/15] ttm/pool: enable memcg tracking and shrinker. (v2)
-Message-ID: <202507230300.pUkL5SQT-lkp@intel.com>
-References: <20250722014942.1878844-12-airlied@gmail.com>
+	b=MeuXVuoOpDwJ7jlGqGJV1+baBRbDfNd7466kxVqZfzHSEf2RmnLUKuSPoWvp/CoREaAnUQ
+	aIzq2o5AJ0YSR25YXrfmsRPNpv9JgHxXVBHJZYL1m9r/alYP1ESLQLjzjtNGwkliKPInSq
+	CIF7INNKfDdrkjpqFNJZPEQ5XeKPB6g=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=eQbmiBJV;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf13.hostedemail.com: domain of kuniyu@google.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=kuniyu@google.com
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-31a93a4b399so327272a91.0
+        for <linux-mm@kvack.org>; Tue, 22 Jul 2025 14:59:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753221585; x=1753826385; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LldVhMiyy8Uo7zeXym650NXpGCC96+eEkfNEoQyfQ7Q=;
+        b=eQbmiBJVvxXAosfMmYtUc5d8h6CO66RXsELyjLHQZ8N4wK9aXmpJ5x/h3J29Zpa0AH
+         fT8sehOGz4RBUPI3vOv0bZZXng3xnmDjXYFw0A1PhWt05Aftz6mYEbkTm3LXCTeOPaPq
+         UJXXNxBE4X//40k9/MqnZP2cTFnh75VLwIedmNGSX4mmGOBFbGBKNEFJurgCE6r4wnud
+         rKggBvBHyWlWg0Z+oo3Eedbu/yZ6fzHpp4mVbcuurtR+eCNcDZgJHmgmDEiFz3TYB/61
+         eE9dx630kXB9q1ihvzqaIsZzoFT0427nBJHc15heOyI5hEe92UDTLpOh+hr5jycArtfk
+         +7qA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753221585; x=1753826385;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LldVhMiyy8Uo7zeXym650NXpGCC96+eEkfNEoQyfQ7Q=;
+        b=nrpu4TN3gRnHL6BeDkuHQOGosOaZTU/Pa55IQ+tdEfz2E7nGGuwNhDnS0XTZukD8+i
+         HPxGZEhl7clzawyyVmLHhSprqZv8EUUZ09A1pzucMPZkwWIw/3X3l3Lof6lRQhkvTJ6c
+         YjTJBiVC1eCPQpUT6/qsH4k5aQI+BaEdhBtstUjos+rYKvXE5dRrBYifwliIQPh8SRzB
+         JL5jwI2ZgZUTQPXV/GXbJl+K920I/j/a70K9SO9gKUEqrX17asqqXgWPp2VUPchS+Lz2
+         pqf7mzAalWiHIFKwwTyu3eXUYiv81r48NzUHRkGTP8NLleaRURkqCVSU7tr0G+9vk0CJ
+         mE3w==
+X-Forwarded-Encrypted: i=1; AJvYcCUNJtSTPWJWt7MVkPs1J8Aku6B224iLUwthDgd1ESGyF4rWklr+Qg74UiwbS1bzBf1iaQjxjebf4Q==@kvack.org
+X-Gm-Message-State: AOJu0YxKu1jD3v8X4vSj39Ff64dxnVES8ux7hmnwP+DKA5xUNy7hfvb6
+	RpFuyTO2x+MIMeHrnjFeZLaU9mxzM4wqLz3eY32g+QhgqtK2nvlbJfaEVYfolLIdc7B+tuj8XET
+	pQfN6mDsDHMfGZtgg1GKFYIVObm76aQg3CHY9qPk6
+X-Gm-Gg: ASbGncvXsG69puyV630a85K1KPedQnplj9wqJCnkWoZ1bbY/dKNn/cj0p8/AHo05U6o
+	q4M6WB04CRqCawDWqLdCclTWQ/o5DG1a/9dTeJSXzlXSXcS3kw4jgAyP1vuBfgT6MJwE9p/TJsB
+	N0NvIqzvvT5SFgout2YjvamQI8YIznoJYqFHXhUxI5+JMCZGs8A8BHNL0LxhLd7dNDHKErLvCVT
+	0gZD/uyeVLmpIH81kYkPRvEq7fj1AVscwO6ug==
+X-Google-Smtp-Source: AGHT+IFnCzaQCuLRDF3T0KDY0acjrNgQBMDeia5n8p9ebzIE1pRoGMSM83/YyDyRP/0W/eit+e8D1RvW/dQ4YjOCLbk=
+X-Received: by 2002:a17:90b:4c4f:b0:313:d7ec:b7b7 with SMTP id
+ 98e67ed59e1d1-31e3e1f0b58mr7413618a91.13.1753221584666; Tue, 22 Jul 2025
+ 14:59:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250722014942.1878844-12-airlied@gmail.com>
-X-Stat-Signature: km6dmf7r1ucqit5h8m4o3865b1yjznzj
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 42B671A0006
+References: <20250721203624.3807041-1-kuniyu@google.com> <20250721203624.3807041-14-kuniyu@google.com>
+ <z7kkbenhkndwyghwenwk6c4egq3ky4zl36qh3gfiflfynzzojv@qpcazlpe3l7b>
+ <CANn89iLg-VVWqbWvLg__Zz=HqHpQzk++61dbOyuazSah7kWcDg@mail.gmail.com>
+ <jc6z5d7d26zunaf6b4qtwegdoljz665jjcigb4glkb6hdy6ap2@2gn6s52s6vfw>
+ <CAAVpQUAJCLaOr7DnOH9op8ySFN_9Ky__easoV-6E=scpRaUiJQ@mail.gmail.com>
+ <p4fcser5zrjm4ut6lw4ejdr7gn2gejrlhy2u2btmhajiiheoax@ptacajypnvlw>
+ <CAAVpQUAk4F__D7xdWpt0SEE4WEM_-6V1P7DUw9TGaV=pxZ+tgw@mail.gmail.com> <xjtbk6g2a3x26sqqrdxbm2vxgxmm3nfaryxlxwipwohsscg7qg@64ueif57zont>
+In-Reply-To: <xjtbk6g2a3x26sqqrdxbm2vxgxmm3nfaryxlxwipwohsscg7qg@64ueif57zont>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Tue, 22 Jul 2025 14:59:33 -0700
+X-Gm-Features: Ac12FXzmS2q9uiW4v2Mh3ddunncGvq7rXqTatxuc1vnyDKWf2gVdVrW60Nf_-Q8
+Message-ID: <CAAVpQUAL09OGKZmf3HkjqqkknaytQ59EXozAVqJuwOZZucLR0Q@mail.gmail.com>
+Subject: Re: [PATCH v1 net-next 13/13] net-memcg: Allow decoupling memcg from
+ global protocol memory accounting.
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Eric Dumazet <edumazet@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Neal Cardwell <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, Matthieu Baerts <matttbe@kernel.org>, 
+	Mat Martineau <martineau@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Simon Horman <horms@kernel.org>, 
+	Geliang Tang <geliang@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+	cgroups@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: ey5rhppwgkx6oiidcyek985k4ztgzf9g
+X-Rspamd-Queue-Id: 2C67220002
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1753219187-823645
-X-HE-Meta: U2FsdGVkX19FEWM4T6VVvjDm9X0+SKk4/iQOm688opLHHtoMxW6PtFzSWoARHXIgpb791kZUpiwMc968vu1GaSJdIVYo6+QaNaTFmWH7lSS3WzxBhYIAVCIAdkukgKmeYvzw1aByHw8id0yBISq8l4JYMoCCgZEXbjaEPXauQeutT6NASVD3wzWnJ1iYPgvQQZHwOmhHTnKJmMAwHUiO7tAwSYFUeGbU2CSkGW8bHOmPkubci6F1vtJ+0KXRI2tC+sT4AdqcwkS1/jpVDvrWZjAhMWYRT2eJG4J4TIEEhqatGwBSSLA+DJdkQEAUaQ7zheXK8a4w/0iUUEygkyxr1AL/CeQ1MXWVgljxi7zMoUFAOHb3ntem3pkNb5iXthukZv+I0Gvc9XLIfc6nDpN8BZFMigaNSuaouGGylZLAdJtFVhP2AMrQpRlbZIbIiSXRMpM+kNkbeh6K1EIuZ7kcy/W0KvdireqZfqmMLX+KDuPuLWyw02BCWK1q97100XYIw4pIpX7OTX/kehNDwFlOu1jY5emq5fz1sFLvalEnepkQDZuVd1I0m3ZZIpqBYHD6s15yrpEw/RHZbw6kcbg8MZZeqPGfHZ2rbd0ii8uZm51pPqIfwP3j7/Ei4REjbnR1RsyGB1iJ1hJMFxRn0rTTgjRJLN+poNRpln5W3lX+hE9MTwK2YrboG1d+9EpLyM+LVjHOUS/mfR7cMsdQovhRHRQD0heZccRTWDeHMQ+33WmEWFxufo4t0pJcDBMC75lQp8yD/Ea1vRYHYeJCjWMKz8jfH2+JYTZdvZxkN3NDa+1PuRL30Um9iSz5VYruqzsKuGj0gAVd3dkTMyt0XZZUNV5E8uIzupe2pyy16PK66D5qVMB6oAXhGg==
+X-HE-Tag: 1753221585-689539
+X-HE-Meta: U2FsdGVkX1/QK2cjrQnTGpCcqNLA+6+HKgSxSEgdu5MW0NWzYMAdH2uERPnivAXuBulT5jO4STD+q8jrREt3SMmFwCUWC/H/vZxasLzAQQInrPxqpRO1wQ4kV2GmeGZiCz9U9hlrfahsI5xMdLu7fS8fmJnPzr/AO7Z9HPBZ47sGMFROLp+v5o7YENttyYu9gmAgleWk7mKAZsNkMcp2KLFGtgPUxFbeeGdSwGwfIxa4qP6JIuR2PQ2XsASmL+sUf/j7IyVSvkahauVXrqUWQDWYk0ihrE5D/QFJnjYK6603/ASihde9ltpdkNsEREPQ/KIyWk4Zwc/J+ELO+DxD/4cPzPKUPzvbyf/M3DO/wkWzFp+H1DCZRdBArBXZQofRoupK6JuJ9nXd1ipunHpZOSZBC1p9c/XXe54G50YeYBg02zc8EEua5ZOhn1d7Id1BkfnA2wSc1Y+SSzPj/ln1A6+2tM/vmbZ2wEbxvfwjB+/K3HourjJ23esI/Gl11C6okikCjvKb2TVL41rWHAEJrrYv0jCh5RLhkaIIQgElo94v80WIdXvPaSuFAXmFz0/FnWznMbZioHOIz4Jh+nxdB9sQSmdOpsszFkh8tfYuSL1n/ze5FMpRo2aemFZVKfnOcVoOZH0CSaKGHjK5U/bdi4/CBQli1s7/K2JdA7Za0BVTQeFgZIIF84puW27iaHGqKfatn0ovqr48orJL4RH6hjXNRNjnx37Io3uXh16T3mjeegZmrGhgihuXlEqWfTO6W/8usfsqD9xNKSI57ceLLeki8Wx7xXc5s2IKQLd7vGEQle/D6r5k3033Q5RCCOnY8vgPWCEROHCccVhokHVaaU11Fvhwj2xN1nMZNvxGHVt99j4jEuEZernIeFhC0SPVz2nS1FwuTGLp9UXph50BtEKaQ7lbKs7dPvYuOMxklLvEB5hrwRX8kbNthMh+pUJfpfbD9jqEhbuy95p9krK
+ VKn8t+up
+ 19gkcsyR/ZhWZ7oEquB8M3fzNa5I1NQqc/twQtPmiXe+kcyfy9tZBNtK+lSx3U8b8BpEf7166XoJLy2YOWvA+f5fGnKnoWjCxal6P58SnFtGhWCRxB/QXkjemitr4jdAhubQFOV9YFFgY98YwQQVt4qX+KkU6UABFLTHcy6He+1NsdlP4q52T5aVnuC54PtGVLu98
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,121 +128,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Dave,
+On Tue, Jul 22, 2025 at 12:56=E2=80=AFPM Shakeel Butt <shakeel.butt@linux.d=
+ev> wrote:
+>
+> On Tue, Jul 22, 2025 at 12:03:48PM -0700, Kuniyuki Iwashima wrote:
+> > On Tue, Jul 22, 2025 at 11:48=E2=80=AFAM Shakeel Butt <shakeel.butt@lin=
+ux.dev> wrote:
+> > >
+> > > On Tue, Jul 22, 2025 at 11:18:40AM -0700, Kuniyuki Iwashima wrote:
+> > > > >
+> > > > > I expect this state of jobs with different network accounting con=
+fig
+> > > > > running concurrently is temporary while the migrationg from one t=
+o other
+> > > > > is happening. Please correct me if I am wrong.
+> > > >
+> > > > We need to migrate workload gradually and the system-wide config
+> > > > does not work at all.  AFAIU, there are already years of effort spe=
+nt
+> > > > on the migration but it's not yet completed at Google.  So, I don't=
+ think
+> > > > the need is temporary.
+> > > >
+> > >
+> > > From what I remembered shared borg had completely moved to memcg
+> > > accounting of network memory (with sys container as an exception) yea=
+rs
+> > > ago. Did something change there?
+> >
+> > AFAICS, there are some workloads that opted out from memcg and
+> > consumed too much tcp memory due to tcp_mem=3DUINT_MAX, triggering
+> > OOM and disrupting other workloads.
+> >
+>
+> What were the reasons behind opting out? We should fix those
+> instead of a permanent opt-out option.
+>
+> > >
+> > > > >
+> > > > > My main concern with the memcg knob is that it is permanent and i=
+t
+> > > > > requires a hierarchical semantics. No need to add a permanent int=
+erface
+> > > > > for a temporary need and I don't see a clear hierarchical semanti=
+c for
+> > > > > this interface.
+> > > >
+> > > > I don't see merits of having hierarchical semantics for this knob.
+> > > > Regardless of this knob, hierarchical semantics is guaranteed
+> > > > by other knobs.  I think such semantics for this knob just complica=
+tes
+> > > > the code with no gain.
+> > > >
+> > >
+> > > Cgroup interfaces are hierarchical and we want to keep it that way.
+> > > Putting non-hierarchical interfaces just makes configuration and setu=
+p
+> > > hard to reason about.
+> >
+> > Actually, I tried that way in the initial draft version, but even if th=
+e
+> > parent's knob is 1 and child one is 0, a harmful scenario didn't come
+> > to my mind.
+> >
+>
+> It is not just about harmful scenario but more about clear semantics.
+> Check memory.zswap.writeback semantics.
 
-kernel test robot noticed the following build errors:
+zswap checks all parent cgroups when evaluating the knob, but
+this is not an option for the networking fast path as we cannot
+check them for every skb, which will degrade the performance.
 
-[auto build test ERROR on drm/drm-next]
-[cannot apply to akpm-mm/mm-everything linus/master v6.16-rc7 next-20250722]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Dave-Airlie/drm-ttm-use-gpu-mm-stats-to-track-gpu-memory-allocations-v4/20250722-104402
-base:   git://anongit.freedesktop.org/drm/drm drm-next
-patch link:    https://lore.kernel.org/r/20250722014942.1878844-12-airlied%40gmail.com
-patch subject: [PATCH 11/15] ttm/pool: enable memcg tracking and shrinker. (v2)
-config: i386-buildonly-randconfig-006-20250722 (https://download.01.org/0day-ci/archive/20250723/202507230300.pUkL5SQT-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250723/202507230300.pUkL5SQT-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202507230300.pUkL5SQT-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/gpu/drm/ttm/ttm_pool.c:665:7: error: no member named 'memcg_data' in 'struct page'
-     665 |                         p->memcg_data = 0;
-         |                         ~  ^
-   drivers/gpu/drm/ttm/ttm_pool.c:1132:11: error: no member named 'memcg_data' in 'struct page'
-    1132 |                                 page->memcg_data = 0;
-         |                                 ~~~~  ^
-   2 errors generated.
+Also, we don't track which sockets were created with the knob
+enabled and how many such sockets are still left under the cgroup,
+there is no way to keep options consistent throughout the hierarchy
+and no need to try hard to make the option pretend to be consistent
+if there's no real issue.
 
 
-vim +665 drivers/gpu/drm/ttm/ttm_pool.c
+>
+> >
+> > >
+> > > >
+> > > > >
+> > > > > I am wondering if alternative approches for per-workload settings=
+ are
+> > > > > explore starting with BPF.
+> > > > >
+> > >
+> > > Any response on the above? Any alternative approaches explored?
+> >
+> > Do you mean flagging each socket by BPF at cgroup hook ?
+>
+> Not sure. Will it not be very similar to your current approach? Each
+> socket is associated with a memcg and the at the place where you need to
+> check which accounting method to use, just check that memcg setting in
+> bpf and you can cache the result in socket as well.
 
-   617	
-   618	/*
-   619	 * When restoring, restore backed-up content to the newly allocated page and
-   620	 * if successful, populate the page-table and dma-address arrays.
-   621	 */
-   622	static int ttm_pool_restore_commit(struct ttm_pool_tt_restore *restore,
-   623					   struct file *backup,
-   624					   const struct ttm_operation_ctx *ctx,
-   625					   struct ttm_pool_alloc_state *alloc)
-   626	
-   627	{
-   628		pgoff_t i, nr = 1UL << restore->order;
-   629		struct page **first_page = alloc->pages;
-   630		struct page *p;
-   631		int ret = 0;
-   632	
-   633		for (i = restore->restored_pages; i < nr; ++i) {
-   634			p = first_page[i];
-   635			if (ttm_backup_page_ptr_is_handle(p)) {
-   636				unsigned long handle = ttm_backup_page_ptr_to_handle(p);
-   637	
-   638				if (IS_ENABLED(CONFIG_FAULT_INJECTION) && ctx->interruptible &&
-   639				    should_fail(&backup_fault_inject, 1)) {
-   640					ret = -EINTR;
-   641					break;
-   642				}
-   643	
-   644				if (handle == 0) {
-   645					restore->restored_pages++;
-   646					continue;
-   647				}
-   648	
-   649				ret = ttm_backup_copy_page(backup, restore->alloced_page + i,
-   650							   handle, ctx->interruptible);
-   651				if (ret)
-   652					break;
-   653	
-   654				ttm_backup_drop(backup, handle);
-   655			} else if (p) {
-   656				/*
-   657				 * We could probably avoid splitting the old page
-   658				 * using clever logic, but ATM we don't care, as
-   659				 * we prioritize releasing memory ASAP. Note that
-   660				 * here, the old retained page is always write-back
-   661				 * cached.
-   662				 */
-   663				ttm_pool_split_for_swap(restore->pool, p);
-   664				copy_highpage(restore->alloced_page + i, p);
- > 665				p->memcg_data = 0;
-   666				__free_pages(p, 0);
-   667			}
-   668	
-   669			restore->restored_pages++;
-   670			first_page[i] = ttm_backup_handle_to_page_ptr(0);
-   671		}
-   672	
-   673		if (ret) {
-   674			if (!restore->restored_pages) {
-   675				dma_addr_t *dma_addr = alloc->dma_addr ? &restore->first_dma : NULL;
-   676	
-   677				ttm_pool_unmap_and_free(restore->pool, restore->alloced_page,
-   678							dma_addr, restore->page_caching);
-   679				restore->restored_pages = nr;
-   680			}
-   681			return ret;
-   682		}
-   683	
-   684		ttm_pool_allocated_page_commit(restore->alloced_page, restore->first_dma,
-   685					       alloc, nr);
-   686		if (restore->page_caching == alloc->tt_caching || PageHighMem(restore->alloced_page))
-   687			alloc->caching_divide = alloc->pages;
-   688		restore->snapshot_alloc = *alloc;
-   689		restore->alloced_pages += nr;
-   690	
-   691		return 0;
-   692	}
-   693	
+The socket pointer is not writable by default, thus we need to add
+a bpf helper or kfunc just for flipping a single bit.  As said, this is
+overkill, and per-memcg knob is much simpler.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+
+>
+> >
+> > I think it's overkill and we don't need such finer granularity.
+> >
+> > Also it sounds way too hacky to use BPF to correct the weird
+> > behaviour from day0.
+>
+> What weird behavior? Two accounting mechanisms. Yes I agree but memcgs
+> with different accounting mechanisms concurrently is also weird.
+
+Not that weird given the root cgroup does not allocate sk->sk_memcg
+and are subject to the global tcp memory accounting.  We already have
+a mixed set of memcgs.
+
+Also, not every cgroup sets memory limits.  systemd puts some
+processes to a non-root cgroup by default without setting memory.max.
+In such a case we definitely want the global memory accounting to take
+place.
+
+Having to set memory.max to every non-root cgroup is less flexible
+and too restricted.
 
