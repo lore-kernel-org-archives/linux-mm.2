@@ -2,117 +2,123 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5F532C83F34
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 14:30:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 384D8C83F1A
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 14:32:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C24FA6B008C; Tue, 22 Jul 2025 10:30:24 -0400 (EDT)
+	id C02996B00B0; Tue, 22 Jul 2025 10:32:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFCE26B0092; Tue, 22 Jul 2025 10:30:24 -0400 (EDT)
+	id BDAB76B00B1; Tue, 22 Jul 2025 10:32:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B39B96B00AE; Tue, 22 Jul 2025 10:30:24 -0400 (EDT)
+	id B17A36B00B2; Tue, 22 Jul 2025 10:32:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A3D236B008C
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 10:30:24 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 567D71DA6CE
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 14:30:24 +0000 (UTC)
-X-FDA: 83692135968.01.289229A
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 61E3B8000F
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 14:30:22 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=3mZJ8nDu;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A2D3C6B00B0
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 10:32:27 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3B4991603EF
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 14:32:27 +0000 (UTC)
+X-FDA: 83692141134.29.0B0F39D
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 5B5E91C000F
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 14:32:25 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=UbI1Dbe+;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf30.hostedemail.com: domain of edumazet@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=edumazet@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753194622; a=rsa-sha256;
+	spf=pass (imf20.hostedemail.com: domain of 3-KB_aAYKCIMzlhuqjnvvnsl.jvtspu14-ttr2hjr.vyn@flex--seanjc.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3-KB_aAYKCIMzlhuqjnvvnsl.jvtspu14-ttr2hjr.vyn@flex--seanjc.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753194745; a=rsa-sha256;
 	cv=none;
-	b=Xwc2upZTsnDeeYmawwzDr4ZqpoKNpzdZIhCO0XxFMHku17w6mScVEBb8qXYK9VuNFlupSj
-	tfbsFbVDJA9nO3wpmRI2/o/K/Wl/ksTLk81Frr20/8oVdWkwADCeqGrqhZBIwy8YI0Esai
-	VstvjIbbcnwlSBaGp497HA3lQiQfagM=
+	b=AyHOx3xQDU+uzHVIJVhp/KZ4/qDJE/2vN1/XwEX2AvPJ8LxgHQqKNfTN+2Q3z63QT9b8Ld
+	jugpRMxuEwWMwTuvYUCK0PlLEURWKmtwYmNJO/deUZP8xCCUHJK+A8RC3TmDRWJHz+oxOW
+	y6x85AEkc2T172dlqZlj34kNTQl8oFQ=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=3mZJ8nDu;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=UbI1Dbe+;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf30.hostedemail.com: domain of edumazet@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=edumazet@google.com
+	spf=pass (imf20.hostedemail.com: domain of 3-KB_aAYKCIMzlhuqjnvvnsl.jvtspu14-ttr2hjr.vyn@flex--seanjc.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3-KB_aAYKCIMzlhuqjnvvnsl.jvtspu14-ttr2hjr.vyn@flex--seanjc.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753194622;
+	s=arc-20220608; t=1753194745;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zs6B7ByVFqNhd4M7cO2OVqmSjId/nOtkp1oMTcQiG7s=;
-	b=7ZwCXnfhlOYZe4/X+odhToO9IRoZrnktSpTbdOEC1ZjXpC1TftZ6p4veneakbWo7PVSofm
-	IqXxaPsgRmvCkJsIBg2rHkddY622PG2PTzT4gjXDB9+aDGlnmEAV4SQtcrhvPZ3b8MhGjG
-	I0kjDcg+d0hamaiVd495bFpE33TsAf8=
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4ab81d016c8so77044111cf.1
-        for <linux-mm@kvack.org>; Tue, 22 Jul 2025 07:30:22 -0700 (PDT)
+	bh=se7GGG6+kEUdCY1BG7ucwwvP5WO24MC0HMwFM3DCv0c=;
+	b=PfZu/ae7g963ICOe33HKpdrGNiyohAZk5zZ4/0dV9jJ7tpK6u7G4nNHNeLXkHMtrLviRUC
+	0rjr21ZAi85YebOUKICrULJqq8ahmYkPGSThKGBm9UBIWbwfQAwQWgloKHG+4Q2q+dKA90
+	5+a/pdob/yk6nJg08pXDm17FwI2w/PI=
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3132c1942a1so7674547a91.2
+        for <linux-mm@kvack.org>; Tue, 22 Jul 2025 07:32:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753194621; x=1753799421; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Zs6B7ByVFqNhd4M7cO2OVqmSjId/nOtkp1oMTcQiG7s=;
-        b=3mZJ8nDudyIhDS2C0HRb/2dqw7fxT0XO4aFBfLaCWZlsUA17KWr+D+iGuOVNiF+nOe
-         B4Mk2zogkWR/0cxGYcQgNbmB+atR5HXgJBKI79OSRkhqRXcPG4Cy7INR55RS5Mgn/5dr
-         zNvT5VNaWrKUzrQfGoZ3nY31lIolm9+k2Br4xodlWVgFX9hYqywiyYlhXPZLnw51OpGz
-         99Z0UQfFS8jyHU1oJ5KV9GGVyVmRhPPyKe/Dg/R5vmnHB9Q9vOB2/H989nkANiOKKJUY
-         uqtp5fCZaOLYtF/7cz02cNeorbp44UiWw1tSpv/oEDex0JLpXt1/mfUnAecBGjPF/IHF
-         +1zg==
+        d=google.com; s=20230601; t=1753194744; x=1753799544; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=se7GGG6+kEUdCY1BG7ucwwvP5WO24MC0HMwFM3DCv0c=;
+        b=UbI1Dbe+swDa0rOTn8i4ZH3ZBxvNXjbUy8tRhJ3nl4j4UTSuM+moWkJqoSyJLcLOPr
+         BrIJzOqgoFTTYZObTZNfI7w8MgxKoY1zpLpe4hNeIfCCHXS9C6dijFrGngPX5hM7ZlTM
+         4QzQpuP99HcpyvyyBx1waXpUST2oZDPb9V2nCxloEAz1ETHbcDL9/K2Xw2WtP3MOQdDR
+         pyzZX8D1mcqpiaJqSr3rgDXb4hAiXuWab5K0PkAtUl24tketjGcozzBNRxU62CSRQNx9
+         b0wTTrjM+PCmkNpamG4AJBt8g3J1AgTN08ki3Vcp8xJ1Rra/msKaQ3JmYmibITF7E+cN
+         WP7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753194621; x=1753799421;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Zs6B7ByVFqNhd4M7cO2OVqmSjId/nOtkp1oMTcQiG7s=;
-        b=IaHwAi6qbvaSfo/WwHLZAdEfuXyYRpuOmBXO8IwDPRd7IeUdbmizTGzOrplgVbvsRb
-         lxy7o8vRKBg80My0+K6UZ+UVB/f+0lDBBgorNatHGbnYQT5X150Qe1laem+pTfX+m0Ec
-         1eFNiT5HNw97V5gJFrMgI+zLhd8LNkQmJdmU2uhCRSSDJniBroBdFURbC0+qqlE5JQUy
-         bSTZJS9ioCmoYQtMzrc00iEnZVrdtXpgLbJD3LAzwEESOufkOP8X2YImuXgLWcAn9Cyz
-         YsdNqgoUlVTIyXtjtfTd/TKqIJAsGM/H/65FOTPp2Fg2XaykSy128kLsXYtQ9rUOjsUv
-         l9Vw==
-X-Forwarded-Encrypted: i=1; AJvYcCWRRHN7i/vsCnhGtWluP4wxXwcQG9XVtCnL6eRYUvJFIjJDxaR+NTn46k33id9lSheO2SnmX07BzA==@kvack.org
-X-Gm-Message-State: AOJu0YxIaElANG5Du31ydYVeq+SK75z04P+YaaaO2G1Bh+vfGxHFFrnL
-	DABSBOxCmURRPjMY9V+yxE6nwgrQb2cq1Lr3pHrFn48glde/YAfy+jX8Qxz5V8bpz5iz9D9MkWQ
-	inZTUC3Zo1f9No/zC6cAsB1wN0rxyuoTT/S8/aPkd
-X-Gm-Gg: ASbGnct4y9B4bJm85jzba4hhR8pOqy6607c49nA+cs1Fey/9e3RT4rlB24hlpvFiXbW
-	2TGu04HprDTR0rsjdbKfT2Z57T5j76kk9P726J6XK33Zk1XeLFg2QL6eDkglfcgBCy0Axnhv/DY
-	5FChoWHQpl6ReF4NOZ6FkZmY6HmexkdFsdQdLUcuTkaVsGJ5AqPkwe/uONBz62KgSpxKEIkTJry
-	Sct+5qvJXmKQyLL
-X-Google-Smtp-Source: AGHT+IHQ1F/XNS6EEtYUtpk/olOEZA/Va6cGJiS4hiBQzXMnDQFWPRfhrIeUbeCE+v3wAGiJbMRJO1Xiv4/aKrsvrGs=
-X-Received: by 2002:ac8:5d4c:0:b0:49b:eb1d:18ad with SMTP id
- d75a77b69052e-4ab93dbed7cmr383658691cf.41.1753194620995; Tue, 22 Jul 2025
- 07:30:20 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250721203624.3807041-1-kuniyu@google.com> <20250721203624.3807041-2-kuniyu@google.com>
-In-Reply-To: <20250721203624.3807041-2-kuniyu@google.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 22 Jul 2025 07:30:09 -0700
-X-Gm-Features: Ac12FXzou9QrF6H0tl3cLlJlr49JVeNU-g_6k8oOer2kAmc56xaiC2vvAezaFAw
-Message-ID: <CANn89iJQ_CDgAsDQ_cZC=fJJ9Vk5+Yk=RmmS=r3ds9abOqr-nw@mail.gmail.com>
-Subject: Re: [PATCH v1 net-next 01/13] mptcp: Fix up subflow's memcg when CONFIG_SOCK_CGROUP_DATA=n.
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Neal Cardwell <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>, Matthieu Baerts <matttbe@kernel.org>, 
-	Mat Martineau <martineau@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Simon Horman <horms@kernel.org>, Geliang Tang <geliang@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
-	mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        d=1e100.net; s=20230601; t=1753194744; x=1753799544;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=se7GGG6+kEUdCY1BG7ucwwvP5WO24MC0HMwFM3DCv0c=;
+        b=pw7s5NzqrRZ8gS1IsEDBZ6JeXOSghM/YxCHdHR3NVJiOEsDnF/QLe00uyGIpNBlYX/
+         bSTKLqRQ9dCVwyzHa5K0Xl6e9dfdOK9VSi79FFI+gr9OOcDJsgD1cXVldVY5Fu3AlG5s
+         SVVE6jBGVjydiA684Ynb+CLXBTt4OozS0Z8bvuGEpVMBDp4/P6WmSU10yp5SkbSkiZkT
+         BqbUD18FV43biYn6bmMW7gpH4qyuDVuee7LFKknd1KoNYLddKSQEw99tJI33wIpcD/K6
+         Err5wrXc9s2g77yRe/OQhBr6MqUjOPvALbpN14Ko1hkGmTrpV7ygfqoLaX8eNoIrI0qz
+         ythg==
+X-Forwarded-Encrypted: i=1; AJvYcCWfxbuNCdOA+FtpvQtRzECuNVQ5jDAKU0jyPvc4E9HEsvU8ATaUFkqgMiqaYXRxMENNVMA1cJjPaQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw8LM5wUeHJBp7VV5HJXwuEyi5gP97y89mGYoQtL44SoEsSlfFa
+	B7h+uJXnytZSNHpU5cgIty7fKh+aYWJ5yGBM7uH+Xfh7/SMoB50L35/XRdu+qv2vHQHpDNgVPe6
+	XW4Dzrw==
+X-Google-Smtp-Source: AGHT+IFIvlEtw+vvXuklNdKzQemd9/qAa+tLiT5GFxA8ZHdhEreiJmuSQiQSjn9cwR/4RhPfN9d6Db/7dsE=
+X-Received: from pjbqd16.prod.google.com ([2002:a17:90b:3cd0:b0:31c:15e1:d04])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:134f:b0:312:639:a064
+ with SMTP id 98e67ed59e1d1-31c9f43748bmr36022174a91.28.1753194744117; Tue, 22
+ Jul 2025 07:32:24 -0700 (PDT)
+Date: Tue, 22 Jul 2025 07:32:22 -0700
+In-Reply-To: <CA+EHjTzNDrwzdpoEuiqvzk3-A7LAsdJ-6y-Gcj7h7+dUTh=6pw@mail.gmail.com>
+Mime-Version: 1.0
+References: <20250717162731.446579-1-tabba@google.com> <20250717162731.446579-12-tabba@google.com>
+ <8340ec70-1c44-47a7-8c48-89e175501e89@intel.com> <aH7KghhsjaiIL3En@google.com>
+ <c35b8c34-2736-45fe-8a97-bfedbf72537e@intel.com> <CA+EHjTzNDrwzdpoEuiqvzk3-A7LAsdJ-6y-Gcj7h7+dUTh=6pw@mail.gmail.com>
+Message-ID: <aH-g9o5hSMvVRxAP@google.com>
+Subject: Re: [PATCH v15 11/21] KVM: x86/mmu: Allow NULL-able fault in kvm_max_private_mapping_level
+From: Sean Christopherson <seanjc@google.com>
+To: Fuad Tabba <tabba@google.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, kvm@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, kvmarm@lists.linux.dev, 
+	pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au, 
+	anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com, 
+	aou@eecs.berkeley.edu, viro@zeniv.linux.org.uk, brauner@kernel.org, 
+	willy@infradead.org, akpm@linux-foundation.org, yilun.xu@intel.com, 
+	chao.p.peng@linux.intel.com, jarkko@kernel.org, amoorthy@google.com, 
+	dmatlack@google.com, isaku.yamahata@intel.com, mic@digikod.net, 
+	vbabka@suse.cz, vannapurve@google.com, ackerleytng@google.com, 
+	mail@maciej.szmigiero.name, david@redhat.com, michael.roth@amd.com, 
+	wei.w.wang@intel.com, liam.merwick@oracle.com, isaku.yamahata@gmail.com, 
+	kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com, steven.price@arm.com, 
+	quic_eberman@quicinc.com, quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, 
+	quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com, 
+	quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com, 
+	james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev, 
+	maz@kernel.org, will@kernel.org, qperret@google.com, keirf@google.com, 
+	roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, 
+	rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com, 
+	jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com, 
+	ira.weiny@intel.com
+Content-Type: text/plain; charset="us-ascii"
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 61E3B8000F
-X-Stat-Signature: yt4rcno11qgctttwuoebjh759hz8edxs
-X-HE-Tag: 1753194622-789934
-X-HE-Meta: U2FsdGVkX1/NJEpzhitBTUq3Me927PzQG2DHdiuCRHpy9Ak+Wxln01/NyUSwCa589sBGwjpe4GBZ/e1LPSxGcyi/VgVugWqO8lCdRIfgHCqaDzK6jw05uGdTQkQDsU68vcU3kr5IforkAS6bqhmU0dNwNv9YF/B87v2RWQpagw+KtiEYQnEJBqDbG0rjDOyIiQgCO32dynSfCy2FSbvNxIc15STW3UGYkTOvwYphCVnJRGcUC7ylW4BuvR/7G/BvWdIfZT3B0hlDxLHbm7XNuAIARyV4uM+84hiqQbdXHocWDS+TM8NG6n+S3msKzMLL7aW28MxaqFVj0o2nc2Xp7II4eQ4ChTi1FsokwNtEdtiAoLjjDvBqfgo/OgLnDb5MAhTOw7T4tX4nThtPbAW7U7KjyzEd3Par2JJ7R5H625WOdjwBEYiFirf67VUDLv0+fGpLYrWJnN7LcVoQGvqECDL4tgWcBfp7bM74xnL20H7FypaKyiRiWiJwpFxNwPx63OLBULoc2kTGqJ6JKBDr4NBrYj2dDHzzIhlrKPmQ2Mr8ZmJQexrGtIKl+rVTl61FfjEW0w5pZSbvP+V4+BIx5b1typx2FXgNdeHxfxE9mMGHZKNfV5WRT2Q8BahEYqs+K0DximSgoedtzsJQwlpRGMA+qyBUBjK8Pp2UVXaMCaQSTm8ucee/xz+6lgnI4tI4OeQ+IQ6nMqGLSldR9EDVIbvI2b5FQ3aDLgX7f5MNbPI1gowGSF+LBGPm0F9011a3rVqOVEl78wp0LUFH6j8Sjuiw2grlT44vPvPujbhvDAEYJ/bWAmIv4nB/NWkma+xAjoEjF4WRvrHnv8j2/gFcioBPi7v0zr4Zbqb23t5FZRkiE5gGPIiC9RhA7J6fnnLO48eJGYDaQEN7hRqH5vEPWqbWFIbnf+tpLptjX/ABWIgPhhlxb6ln5QtogA8SocaCgAkB8cU1G4DgvwGy3zM
- c6aik6IB
- w6XXcZ/6+EK75plTMDewLmDjQHAUxGDgjo1IPgpPnXEK/grSLcCXF02KQ4WQjTfw0aZHWsujiYU/37tz78TGIbIj98LN5gkd0xeDQyr7w8vQ3OMGFTIcYaaYEzPzxGMOp5raX0SlSFkB/LBGHuQzybDG0Blm10Z1Atrw969MK+e2FjHCNs2Rzzuo+jNa0x7FTC6kGAqKBfgKgzCQNyOkya1ojtIcYpTvlu1ujJt7YZOPcElVIUk5a+qkfbD8uqPWXh7d3aUstdXAFvhE=
+X-Rspamd-Queue-Id: 5B5E91C000F
+X-Stat-Signature: ztaakob9ajjeswm5xzbofftdpknd8zam
+X-HE-Tag: 1753194745-453892
+X-HE-Meta: U2FsdGVkX18E5y/IU2KQVW84jNA35t6HaV4VdpWQex28hVY/NFn5W4JV354bk4YninXDru8qC+PBOnx5ryfvznmIsHhd+y1LupCdrmAl4QZdNJv19hz6sMuCR6lSiZ4Uf1w24RJR9SN1Hlh4dWU0cfrlk6IX6/mGrTkDc9Mqg1hqoRgQSEVIb76yun2LWB2vlMM+gQUishaaIzIP0Mu8QID9KaHzuRbKka7p/Wrgr2/bYf5YIta7/Cr7PoQQua83g/WnYgHdGbCAqL4D00d8Wb/O9cnxPzOnQANhj5VXDDrNvl7tgQ72vmRsRixdCSG74U59bcP3/En8sGkboBsbd8nSBMi9B8ywNV3s4Ml36WZ4Te+mFq34F/WlrO5YFxQpnTVdAocHFrslU+iPoOPhhnxISbM6UMn4tVSrBgqcfpo7a+yLWJyxXp0gnz/6I9ge5TK+OT6RetEQJNgx6aWL8/ZV4Bw5LqZkX5qSCtbtSUA8kggGnfZ8RYf9U3KcEeORA7PI+5OpnmJz0vevLavvQL6RYR3T4fRKhPYtHumynxVIyH8U9HLwfNPMAGNGW+ulPMe01Du46BRCePkq4OVK1Z/2s1c0aFaVMAXs9WSMdUjRxJR6YPpS9g/WTTx+JCmvfNvMm/ZH/qrQ4yES51n2qJuqVsOHQn1PF6s6xP+cL7mHhMnpT1EnddrCoc2FEEZS5uFZBiU+tagj09muWpylj9NAByJ9cRgqoY8Ke8dtaH32LskZD63EpeZih0KBeyHpCML0CAu1YGYUni1pl5IBS1kZO0hEHS1c2jY8G/ptvQ9QI07GOwPj6av8paFus7IMlv9dku+3ctXhMYXRBBa/4rOXgW1yjjm3XrDp1u6re0EKjAQz4NFd+2d1HLXjdCHCzTEBPxXDmraaf9j8qyUJBcFFiCgCe4LJURR8+MAte9E9FLLakDiAeVQV+ARHoBp5qI/ORAGD3W3T50BjoRW
+ pAOPPG32
+ j1Vd8Io5xmelAhN4Qwxe6Q8ZW0lrxoN5yZrGSLh6YzANR0lcBo/Dph4MiT+KbQc3gkXjprmzR95gTeIoU16EPr/6xH57SzAXFbGapF1PxpULx2+8p+8HXFOhp7kfvos74hycX/Pzwmad1A1+LKUMo5BIR9qYs0LEtIBZb3+rowbRf6LECrPqWoDSb+yE4LG9YFP3gRxzhNCFIOVfRu1l0q+0rcSO7yMKmP+QwkRA1SUj7GTVLM6AjaD4katuea5Jen4mgBstF39wLxeSFFUA1AKosgVLCQMeV+sBoUuGLV1xT+AhpE4bUtiHDczrI8crd7hwTJPGKeO4WczF69iIl6QIfYFvtrYmIUpNmtTK8A4tIiXLk+4xxdWOiXMqn5lgR9A2JUrLG47nUflE8uoJdjr87Zo8B9NrXpYrMh51JTe1moyRcKLX17ilyEgOnWfEhOv2+XsEUQO/AwhD7SGVnqIZcx22umy8l7Uf2RueTjWhFBArlK2ud+PJ2OplG5SeOKu2rjbkp0fHDpi1fIvxynUta3l0wSANZfTX2QrxgrIbY+fNBALcDYCn2aY7lvAT8Aha0lI5s0jQra8hr7oh/gX2xRLEFLJg8WU9Io3xgRDtxFfZvsGu2P1RWlm7NoQxesjSTo/BhM0/OipcLcVlRuZkFbbCmfPX18pMrGXUSq9kEtkjbJEzli6C8xvzWsUfg1EWjGiildGuaMBmAZ2i5mGgnBjSNeNk/f4p3
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,33 +127,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 21, 2025 at 1:36=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.co=
-m> wrote:
->
-> When sk_alloc() allocates a socket, mem_cgroup_sk_alloc() sets
-> sk->sk_memcg based on the current task.
->
-> MPTCP subflow socket creation is triggered from userspace or
-> an in-kernel worker.
->
-> In the latter case, sk->sk_memcg is not what we want.  So, we fix
-> it up from the parent socket's sk->sk_memcg in mptcp_attach_cgroup().
->
-> Although the code is placed under #ifdef CONFIG_MEMCG, it is buried
-> under #ifdef CONFIG_SOCK_CGROUP_DATA.
->
-> The two configs are orthogonal.  If CONFIG_MEMCG is enabled without
-> CONFIG_SOCK_CGROUP_DATA, the subflow's memory usage is not charged
-> correctly.
->
-> Let's move the code out of the wrong ifdef guard.
->
-> Note that sk->sk_memcg is freed in sk_prot_free() and the parent
-> sk holds the refcnt of memcg->css here, so we don't need to use
-> css_tryget().
->
-> Fixes: 3764b0c5651e3 ("mptcp: attach subflow socket to parent cgroup")
-> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+On Tue, Jul 22, 2025, Fuad Tabba wrote:
+> On Tue, 22 Jul 2025 at 06:36, Xiaoyao Li <xiaoyao.li@intel.com> wrote:
+> > - In 0010-KVM-x86-mmu-Rename-.private_max_mapping_level-to-.gm.patch,
+> > there is double gmem in the name of vmx/vt 's callback implementation:
+> >
+> >      vt_gmem_gmem_max_mapping_level
+> >      tdx_gmem_gmem_max_mapping_level
+> >      vt_op_tdx_only(gmem_gmem_max_mapping_level)
+> 
+> Sean's patches do that, then he fixes it in a later patch. I'll fix
+> this at the source.
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+Dagnabbit.  I goofed a search+replace, caught it when re-reading things, and
+fixed-up the wrong commit.  Sorry :-(
+
+> > - In 0013-KVM-x86-mmu-Extend-guest_memfd-s-max-mapping-level-t.patch,
+> >    kvm_x86_call(gmem_max_mapping_level)(...) returns 0 for !private case.
+> >    It's not correct though it works without issue currently.
+> >
+> >    Because current gmem doesn't support hugepage so that the max_level
+> >    gotten from gmem is always PG_LEVEL_4K and it returns early in
+> >    kvm_gmem_max_mapping_level() on
+> >
+> >         if (max_level == PG_LEVEL_4K)
+> >                 return max_level;
+> >
+> >    But just look at the following case:
+> >
+> >      return min(max_level,
+> >         kvm_x86_call(gmem_max_mapping_level)(kvm, pfn, is_private));
+> >
+> >    For non-TDX case and non-SNP case, it will return 0, i.e.
+> >    PG_LEVEL_NONE eventually.
+> >
+> >    so either 1) return PG_LEVEL_NUM/PG_LEVEL_1G for the cases where
+> >    .gmem_max_mapping_level callback doesn't have specific restriction.
+> >
+> >    or 2)
+> >
+> >         tmp = kvm_x86_call(gmem_max_mapping_level)(kvm, pfn, is_private);
+> >         if (tmp)
+> >                 return min(max_level, tmp);
+> >
+> >         return max-level;
+> 
+> Sean? What do you think?
+
+#2, because KVM uses a "ret0" static call when TDX is disabled (and KVM should
+do the same when SEV is disabled, but the SEV #ifdefs are still a bit messy).
+Switching to any other value would require adding a VMX stubs for the !TDX case.
+
+I think it makes sense to explicitly call that out as the "CoCo level", to help
+unfamiliar readers understand why vendor code has any say in the max
+mapping level.
+
+And I would say we adjust max_level instead of having an early return, e.g. to
+reduce the probability of future bugs due to adding code between the call to
+.gmem_max_mapping_level() and the final return.
+
+This as fixup? 
+
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index eead5dca6f72..a51013e0992a 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -3279,9 +3279,9 @@ static u8 kvm_gmem_max_mapping_level(struct kvm *kvm, struct kvm_page_fault *fau
+                                     const struct kvm_memory_slot *slot, gfn_t gfn,
+                                     bool is_private)
+ {
++       u8 max_level, coco_level;
+        struct page *page;
+        kvm_pfn_t pfn;
+-       u8 max_level;
+ 
+        /* For faults, use the gmem information that was resolved earlier. */
+        if (fault) {
+@@ -3305,8 +3305,16 @@ static u8 kvm_gmem_max_mapping_level(struct kvm *kvm, struct kvm_page_fault *fau
+        if (max_level == PG_LEVEL_4K)
+                return max_level;
+ 
+-       return min(max_level,
+-                  kvm_x86_call(gmem_max_mapping_level)(kvm, pfn, is_private));
++       /*
++        * CoCo may influence the max mapping level, e.g. due to RMP or S-EPT
++        * restrictions.  A return of '0' means "no additional restrictions",
++        * to allow for using an optional "ret0" static call.
++        */
++       coco_level = kvm_x86_call(gmem_max_mapping_level)(kvm, pfn, is_private);
++       if (coco_level)
++               max_level = min(max_level, coco_level);
++
++       return max_level;
+ }
+ 
+ int kvm_mmu_max_mapping_level(struct kvm *kvm, struct kvm_page_fault *fault,
 
