@@ -2,67 +2,68 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 96476C83F25
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 09:42:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B00E8C83F27
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 09:42:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C35B6B00A3; Tue, 22 Jul 2025 05:42:33 -0400 (EDT)
+	id 218996B0092; Tue, 22 Jul 2025 05:42:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14D756B00A4; Tue, 22 Jul 2025 05:42:33 -0400 (EDT)
+	id 19B856B00A5; Tue, 22 Jul 2025 05:42:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03BBD6B00A5; Tue, 22 Jul 2025 05:42:32 -0400 (EDT)
+	id 08AAB6B00A7; Tue, 22 Jul 2025 05:42:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E054E6B00A3
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 05:42:32 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 646D41A02EA
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 09:42:32 +0000 (UTC)
-X-FDA: 83691410544.19.CF6B075
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9439A40003
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 09:42:30 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b="FeLF/FsA";
-	spf=pass (imf11.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.161 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
-	dmarc=pass (policy=quarantine) header.from=pankajraghav.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753177351; a=rsa-sha256;
-	cv=none;
-	b=0Um+mKMuxXBmXH2hJcGcIzsLG/P2AuSzQ7yk0KdVj5k4ffjdITEpXfZqDsZ1dkbN5ephAQ
-	vwgx0Mf9AFAMGGgqJC3qwhXi1h4EsM6qc8mLZmu2BOyInZCcSz0nNiW3WnMxRElVJuyj0Q
-	X/zgx8cmyWWzIvuD3zRYLbXO0Zioui4=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b="FeLF/FsA";
-	spf=pass (imf11.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.161 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E6C086B0092
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 05:42:40 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 71E1AC0303
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 09:42:40 +0000 (UTC)
+X-FDA: 83691410880.27.2E18A57
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+	by imf18.hostedemail.com (Postfix) with ESMTP id D5D9D1C000B
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 09:42:38 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=o+kgP4wN;
+	spf=pass (imf18.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.152 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
 	dmarc=pass (policy=quarantine) header.from=pankajraghav.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753177351;
+	s=arc-20220608; t=1753177359;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Urh8HRRY5Gk+UX/47pqglCk6rC9DKpiGj+KUTBX7+cY=;
-	b=1OK1N+TnszlaeWmoiUjlE6xXFMqz7lgCwMTW6Zx4GpBCzp11MGnAZgXW28/bPMFbxkqr+1
-	mu4LeZHo4SUPIn8iTlexoSqw+y/Xy3II20PtSlDHvkkHmHCWY+PORbMdoAupqIsCmV1uLf
-	urhwAa7njKI4BnTsnqyShyJg9ama1X0=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=EkFrb5mCNuui7GC4+ZivqwyBFvkydagw0IS4O3GFosI=;
+	b=zVW6J2MNiBa5YARDYKbGxlHZPdDX+pbUtRxsn4EsACsgLQVpUZjAdN4BQ+otSdk7Wm7tfy
+	KtUPlVW40qxE8yXJUtJ27KW90G7PIU+fjgVLM8ubKcLv/7C9F87QJ0ZhCRCzl1jPIVQ1Zq
+	wHGJpbUWQCeD7xm6ScEgNplpAaIlzK4=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=o+kgP4wN;
+	spf=pass (imf18.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.152 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
+	dmarc=pass (policy=quarantine) header.from=pankajraghav.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753177359; a=rsa-sha256;
+	cv=none;
+	b=uoMBU6+bbLhlixC7t+JkmimqqiYC0dlhlvaKSPrMAHJ3AS9bzw4WPCbY1+Qqb5xXX3OwGf
+	7so98lX2XPe3wbWt2g3ZSMoCN4Je0iMXzH4RjKjNXVwILUi+/4WDaq57FnaIZ2CZhmuB3J
+	pNw5FpyGUKHxbswqfzFK60YF82k9fh4=
 Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4bmXNx6blwz9svV;
-	Tue, 22 Jul 2025 11:42:25 +0200 (CEST)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4bmXP73Zcvz9tht;
+	Tue, 22 Jul 2025 11:42:35 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pankajraghav.com;
-	s=MBO0001; t=1753177346;
+	s=MBO0001; t=1753177355;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Urh8HRRY5Gk+UX/47pqglCk6rC9DKpiGj+KUTBX7+cY=;
-	b=FeLF/FsA3wnqiSqMvPDYZwXjDYrax7X5skBfXJfI2kZXS7eGNxN50IorUfg0OnPD8REeJr
-	LlX25h8JS22JeTq2p1zSBtLPDoufAANC7db1oLf2E547fIr+pD/dv/sNpk+CW6NQf0MMep
-	hWP9OyYnFugTJKRMkt/yEN7Ob8j2Enk4C6fnWfMBFEBwQm8IduHD7fzxaKLoWi2iPOF6z2
-	lz4w8/FflPazzxv3QZfINLJ4nOxXv4qfS6Ty74WbcbWUpcHC3zEPnzIUYagnD8R8tnDDIp
-	odpa1i++gPK91rL1aDstJtoL+LwOPBrs8Zh1aFZ6Ba84rXirsSBm00q5k76Sbg==
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EkFrb5mCNuui7GC4+ZivqwyBFvkydagw0IS4O3GFosI=;
+	b=o+kgP4wNhjY5eTyH7SsHPA0QXxHdjIPiezXWmhC17Cq39gi1RTU/DViRyyO4gZBs1eDlDj
+	bkyxR9N6PPTIxJ35WqsTG6weGH3Cq1UMyjWi7RdYgXSOiG8jD7QttpM1zBIZDsBf63gLXc
+	wbMweJJgqFDYkrqrwhJ3jDdaHtdV49VqQ9m2K+j4vBfxQy9c1dukZo43RO+EV1AkfK6wPI
+	1WqlZYmcUR8TCjVDYkT0Y+oToapzDlviBNpKRRX6XmbDChlHx6Kazo8Sjpks98hEAv1BmW
+	E6kXuxgNyr6hUQkxQlq6BMNBvks5SX8dfuX8zWp7h9Ao/Pof61HJwc7QPcg3mw==
 From: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>
 To: Suren Baghdasaryan <surenb@google.com>,
 	Ryan Roberts <ryan.roberts@arm.com>,
@@ -95,18 +96,21 @@ Cc: linux-kernel@vger.kernel.org,
 	kernel@pankajraghav.com,
 	hch@lst.de,
 	Pankaj Raghav <p.raghav@samsung.com>
-Subject: [RFC 0/4] add static huge zero folio support
-Date: Tue, 22 Jul 2025 11:42:11 +0200
-Message-ID: <20250722094215.448132-1-kernel@pankajraghav.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [RFC 1/4] mm: rename huge_zero_page_shrinker to huge_zero_folio_shrinker
+Date: Tue, 22 Jul 2025 11:42:12 +0200
+Message-ID: <20250722094215.448132-2-kernel@pankajraghav.com>
+In-Reply-To: <20250722094215.448132-1-kernel@pankajraghav.com>
+References: <20250722094215.448132-1-kernel@pankajraghav.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 6d8txj6ojrbaty8wix1cnu11hd3qimn4
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D5D9D1C000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9439A40003
-X-Stat-Signature: gcih9ywa3d3z3oznhtk9ag6eac4itn6j
-X-HE-Tag: 1753177350-471263
-X-HE-Meta: U2FsdGVkX18wnHsgBb36c0YmofiGxmOFeJfVWKHy14rA7d9+N2UbFE07g20ie1gR5W0L1cjd1vU2RYSGONV988zigm6vOJfZUMSwDgsIG5NBNzy6shoZVmP6CRYUcd6HS+bUHqBLPPB3BLWcjbwqwgelkbRvPDvsl9L5tslCU14DZbzvKaN9/T6o7HWzazhheBBVPfFRUBzuG7PvWadcXCyQxzElalCI407DHntqPI6vx+eotpZHA1DSE8IODqI2feqWfsckeXWRI5CMOmN5w6csj8v4MSlJIPENKx1TRD9YbnVwq6DVYdJPCR+NoysItQiIcsZYPjTGj4tMdAuwAeRubPNryEJ5bBH0Xb6IJ82Q5ALKqKraBTd070I4ObQF2cXPe5mgLI716slbMOjikGxCPglKAd5ZTqBFz/3I4A/iP9knrBRoZtUGvi2ZAVGFPcpNPp/LNElrPCAOXIhtoHHfwfCj8t0uLgJnm888waJF7iSN1cXfyHPsBi4zZxiyVlj9bjn8dC9+Xv9CTot9PuvaxAX/I6QwQZwYuiXvgeFrc/bv/CnsbJMZ5KrWCPxaAVRc1YXM+/pL/saomcmBwIVQxw4kav0dTg8GdIFKqxx0IKAgYRIKE/tB2yJ8qIBTG9BtcBPfLbt2ZArHTrK7YjsDOYQB3JCkPNmchgW5Aabx3e+IwfR2MEOZuLnvTGd5z8EEQ8k11yenH6puaKl+675CuL4SdgvH5p9kWGEL0maD8XhktS2XQ12JiZLpYId7P2LjzQJJ7a9U7F12WWUdZ31vO1+cjPWzbqoSZMY03NEmDnmodMrwgwSoTpoXEFPXYi68IFgfeUg5P4T8qNSOyCzkwIJMO64Mjvz1R08RPEvvMMJJTx9W433zGK3lGtA1OmE+vFlIiUNTAtUXmPgaFu36lQptaQ2r
+X-HE-Tag: 1753177358-543849
+X-HE-Meta: U2FsdGVkX1+R4YLXVcfJcWvI15zO874isFw1jpK2TVzn/X5t+dQT3v4/pS1dWJPabMVn/ij19wrY7Rvr/zrjGqqA4Sc4ipUw+wQwrLp6CFudNOdj0VFK+gkC7LVflZp+TBy1mjob9eLMiUkZ56qp8bXXzCm5gMV5Ba3JsPnXUNgO5mUU+bkaFpH4KLX7u/bNcvlNR3mgiKWUspnkJepL4HwKlzYyG/YvnF3yeqUlfW9NgfJyMD/bQQM1SIRLNcNwK+b2dkiOlltwLJ1sO4Esq/2EfWE+5nrze4gCjzV5wVz3FMs6Pmirma6V7LwXdW+xRytJKVFcWo9J6zVHuL2uHEey8meeWqCtHt6vwXZuTJNdRYusrNNS75K1tyBICCJwmvB3fUxTdoR360KeROIurJFxSlkkN1U7RI1PlHtL7sK1TtO98ABq37URaFI4o7WkRVkz/qjYwknfQvjFJrQuYjZI6/iePgbP0nWzn0wsZqu+FJlrMZR7wcn2F2yqvs0PLEqTg1FiakF5RG9+PRrflTACBxN1IJepEwK6eOp/KLhNPsSKK4tqnl3B8agtohfCSktAoCxXNl0oRVhX/944k2uqPpFYncVRE5GTi5yG0eZNtt2oy8iFJ6iaNqki+Br6VlrwVzmlQL7DVCdhwzBUXhJxJBRc+3vyM8eqL37YY3LKuTdjKw3Z0a3eW4UOdD1h9jZ9rJiJR6LBpTNs4edTHtWPUrr3AwVtE7+wU/oTO82kQYw5Z/Mx5ac9berhhegZVx4dfdIa2rTedT6bFq5iT1UYq5oAsqpm1jTgXFDlsgXMCU/B6VW7HxD2EAWwaiEmfitdjLwfDEbaBqMSjByQ9PYqXVfqP3FBbPk/9bOfQKYtnhvc5YWc3cEGawarySHmC3oFkC2CG8yiW8Lq3Je3PhYP4EXQF5Ouot41y0rhYAtoWDnrsrWx/5HVEy1Pvv3NsglYYQEp3qALrm4WZXE
+ Ap6Q6FhU
+ rs+MbNs8SwY2spFRHIdMn4UAEsdu/N2EjjDSUoWbHGrYhKMC7nk0qZO0HxQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,78 +121,88 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Pankaj Raghav <p.raghav@samsung.com>
 
-NOTE: I am resending as an RFC again based on Lorenzo's feedback. The
-old series can be found here [1].
+As we already moved from exposing huge_zero_page to huge_zero_folio,
+change the name of the shrinker to reflect that.
 
-There are many places in the kernel where we need to zeroout larger
-chunks but the maximum segment we can zeroout at a time by ZERO_PAGE
-is limited by PAGE_SIZE.
+No functional changes.
 
-This concern was raised during the review of adding Large Block Size support
-to XFS[2][3].
+Suggested-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Pankaj Raghav <p.raghav@samsung.com>
+---
+ mm/huge_memory.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-This is especially annoying in block devices and filesystems where we
-attach multiple ZERO_PAGEs to the bio in different bvecs. With multipage
-bvec support in block layer, it is much more efficient to send out
-larger zero pages as a part of a single bvec.
-
-Some examples of places in the kernel where this could be useful:
-- blkdev_issue_zero_pages()
-- iomap_dio_zero()
-- vmalloc.c:zero_iter()
-- rxperf_process_call()
-- fscrypt_zeroout_range_inline_crypt()
-- bch2_checksum_update()
-...
-
-Usually huge_zero_folio is allocated on demand, and it will be
-deallocated by the shrinker if there are no users of it left. At the moment,
-huge_zero_folio infrastructure refcount is tied to the process lifetime
-that created it. This might not work for bio layer as the completions
-can be async and the process that created the huge_zero_folio might no
-longer be alive. And, one of the main point that came during discussion
-is to have something bigger than zero page as a drop-in replacement.
-
-Add a config option STATIC_HUGE_ZERO_FOLIO that will always allocate
-the huge_zero_folio, and it will never drop the reference. This makes
-using the huge_zero_folio without having to pass any mm struct and does
-not tie the lifetime of the zero folio to anything, making it a drop-in
-replacement for ZERO_PAGE.
-
-I have converted blkdev_issue_zero_pages() as an example as a part of
-this series. I also noticed close to 4% performance improvement just by
-replacing ZERO_PAGE with static huge_zero_folio.
-
-I will send patches to individual subsystems using the huge_zero_folio
-once this gets upstreamed.
-
-Looking forward to some feedback.
-
-[1] https://lore.kernel.org/linux-mm/20250707142319.319642-1-kernel@pankajraghav.com/
-[2] https://lore.kernel.org/linux-xfs/20231027051847.GA7885@lst.de/
-[3] https://lore.kernel.org/linux-xfs/ZitIK5OnR7ZNY0IG@infradead.org/
-
-Changes since last series[1]:
-- Instead of allocating a new page through memblock, use the same
-  infrastructure as huge_zero_folio but raise the reference and never
-  drop it. (David)
-- And some minor cleanups based on Lorenzo's feedback.
-
-Pankaj Raghav (4):
-  mm: rename huge_zero_page_shrinker to huge_zero_folio_shrinker
-  mm: add static huge zero folio
-  mm: add largest_zero_folio() routine
-  block: use largest_zero_folio in __blkdev_issue_zero_pages()
-
- arch/x86/Kconfig        |  1 +
- block/blk-lib.c         | 15 ++++++------
- include/linux/huge_mm.h | 24 +++++++++++++++++++
- mm/Kconfig              | 12 ++++++++++
- mm/huge_memory.c        | 52 +++++++++++++++++++++++++++++++----------
- 5 files changed, 85 insertions(+), 19 deletions(-)
-
-
-base-commit: 1b0686bd18c1aa9d7f01943829faa5befe6ab3d1
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 2b4ea5a2ce7d..5d8365d1d3e9 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -266,15 +266,15 @@ void mm_put_huge_zero_folio(struct mm_struct *mm)
+ 		put_huge_zero_page();
+ }
+ 
+-static unsigned long shrink_huge_zero_page_count(struct shrinker *shrink,
+-					struct shrink_control *sc)
++static unsigned long shrink_huge_zero_folio_count(struct shrinker *shrink,
++						  struct shrink_control *sc)
+ {
+ 	/* we can free zero page only if last reference remains */
+ 	return atomic_read(&huge_zero_refcount) == 1 ? HPAGE_PMD_NR : 0;
+ }
+ 
+-static unsigned long shrink_huge_zero_page_scan(struct shrinker *shrink,
+-				       struct shrink_control *sc)
++static unsigned long shrink_huge_zero_folio_scan(struct shrinker *shrink,
++						 struct shrink_control *sc)
+ {
+ 	if (atomic_cmpxchg(&huge_zero_refcount, 1, 0) == 1) {
+ 		struct folio *zero_folio = xchg(&huge_zero_folio, NULL);
+@@ -287,7 +287,7 @@ static unsigned long shrink_huge_zero_page_scan(struct shrinker *shrink,
+ 	return 0;
+ }
+ 
+-static struct shrinker *huge_zero_page_shrinker;
++static struct shrinker *huge_zero_folio_shrinker;
+ 
+ #ifdef CONFIG_SYSFS
+ static ssize_t enabled_show(struct kobject *kobj,
+@@ -849,8 +849,8 @@ static inline void hugepage_exit_sysfs(struct kobject *hugepage_kobj)
+ 
+ static int __init thp_shrinker_init(void)
+ {
+-	huge_zero_page_shrinker = shrinker_alloc(0, "thp-zero");
+-	if (!huge_zero_page_shrinker)
++	huge_zero_folio_shrinker = shrinker_alloc(0, "thp-zero");
++	if (!huge_zero_folio_shrinker)
+ 		return -ENOMEM;
+ 
+ 	deferred_split_shrinker = shrinker_alloc(SHRINKER_NUMA_AWARE |
+@@ -858,13 +858,13 @@ static int __init thp_shrinker_init(void)
+ 						 SHRINKER_NONSLAB,
+ 						 "thp-deferred_split");
+ 	if (!deferred_split_shrinker) {
+-		shrinker_free(huge_zero_page_shrinker);
++		shrinker_free(huge_zero_folio_shrinker);
+ 		return -ENOMEM;
+ 	}
+ 
+-	huge_zero_page_shrinker->count_objects = shrink_huge_zero_page_count;
+-	huge_zero_page_shrinker->scan_objects = shrink_huge_zero_page_scan;
+-	shrinker_register(huge_zero_page_shrinker);
++	huge_zero_folio_shrinker->count_objects = shrink_huge_zero_folio_count;
++	huge_zero_folio_shrinker->scan_objects = shrink_huge_zero_folio_scan;
++	shrinker_register(huge_zero_folio_shrinker);
+ 
+ 	deferred_split_shrinker->count_objects = deferred_split_count;
+ 	deferred_split_shrinker->scan_objects = deferred_split_scan;
+@@ -875,7 +875,7 @@ static int __init thp_shrinker_init(void)
+ 
+ static void __init thp_shrinker_exit(void)
+ {
+-	shrinker_free(huge_zero_page_shrinker);
++	shrinker_free(huge_zero_folio_shrinker);
+ 	shrinker_free(deferred_split_shrinker);
+ }
+ 
 -- 
 2.49.0
 
