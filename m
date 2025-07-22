@@ -2,94 +2,114 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 03F67C83F26
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 01:51:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C24B3C83F25
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 02:23:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 974536B00A4; Mon, 21 Jul 2025 21:51:20 -0400 (EDT)
+	id 3BEF06B00A1; Mon, 21 Jul 2025 22:23:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 924E56B00A5; Mon, 21 Jul 2025 21:51:20 -0400 (EDT)
+	id 397426B00A3; Mon, 21 Jul 2025 22:23:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 814896B00A7; Mon, 21 Jul 2025 21:51:20 -0400 (EDT)
+	id 2AD676B00A4; Mon, 21 Jul 2025 22:23:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E2986B00A4
-	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 21:51:20 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4681DB6B4E
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 01:51:20 +0000 (UTC)
-X-FDA: 83690223120.04.DAA7FF1
-Received: from us-smtp-delivery-44.mimecast.com (us-smtp-delivery-44.mimecast.com [207.211.30.44])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 891FC1A0005
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 01:51:18 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 18D936B00A1
+	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 22:23:54 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5DDD4110C76
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 02:23:53 +0000 (UTC)
+X-FDA: 83690305146.09.27ECFE3
+Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
+	by imf19.hostedemail.com (Postfix) with ESMTP id B08691A0005
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 02:23:51 +0000 (UTC)
 Authentication-Results: imf19.hostedemail.com;
-	dkim=none;
-	spf=softfail (imf19.hostedemail.com: 207.211.30.44 is neither permitted nor denied by domain of airlied@gmail.com) smtp.mailfrom=airlied@gmail.com;
-	dmarc=fail reason="No valid SPF, No valid DKIM" header.from=gmail.com (policy=none)
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=fHSRFZs7;
+	spf=pass (imf19.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.221.171 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753149078;
+	s=arc-20220608; t=1753151031;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cr1/IBE9qJF/adnUURO/L7mzpRGG/7ebUn8XxXtRK10=;
-	b=T4kY1jf9Jm+dKJRUSbSw+FZ9JH1D4Y0ZA8F8IJUgXKc8QytgRqGFA9MtJqCxN74ASlaRzx
-	trbBzyV00rFc3YLOtuhp8PUo9JfwVW7xx04PqNyVq1u3dvvRf3gFwNX2Hwli/FUFh3KOsR
-	4a866fnCkqDhjOH+mtOkRg/3Dn3OBmA=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=b/C+U2K3/i43umoAQCo3nc2pCSOMDyoCKEEcB2BDhGM=;
+	b=z61Mmy/Kk+dju2WzrqsZC78fdEYdqOOZjWSH1S6A0ZJgbDxj5dgqFkD7bOtHWJFsN9KJCv
+	1AZ0ZXbH6dq7wSiKEuIeRswlA0bavx6+Yb192LbkPNB+Ons4UwISZU4aghonFhjm1SoIgd
+	EM7/79zzJZA6Ui8fZGGQjtQNmad/YqM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753151031; a=rsa-sha256;
+	cv=none;
+	b=q3TXqfDlX9ONMnvQhIpl/5IABkuC5/96ZTM0U9FNNdkQN8WZ3r+glT2l+h8Zb40LUMiRn/
+	nqGyCtxXYh9v4LLfqp8jdBmRRbto2NeKOimfBFLSdVN526C/hHg8JCTdEqVh8/1hcJZWf2
+	S+wCthQmH9s1X+40WJbDQakbdxUVyLM=
 ARC-Authentication-Results: i=1;
 	imf19.hostedemail.com;
-	dkim=none;
-	spf=softfail (imf19.hostedemail.com: 207.211.30.44 is neither permitted nor denied by domain of airlied@gmail.com) smtp.mailfrom=airlied@gmail.com;
-	dmarc=fail reason="No valid SPF, No valid DKIM" header.from=gmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753149078; a=rsa-sha256;
-	cv=none;
-	b=psNZwIoqw3EqVkOmTL8jqriTmK1hpwxfqTo7fS70N3LLEhyXAQPanU+WqTyWB/BKqLxTAW
-	EvjHkz9LWr/aDEUft+T+iA2AQE7r8tbtZTdMfOdy0ZNufa1fLAv1fihMnrY5qdRUlnQKMO
-	RfIsawofaugWHsy0vaaQPAHqmj9mA7w=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-483-u27LP2rOO2yuSOYVIUlimw-1; Mon,
- 21 Jul 2025 21:51:14 -0400
-X-MC-Unique: u27LP2rOO2yuSOYVIUlimw-1
-X-Mimecast-MFC-AGG-ID: u27LP2rOO2yuSOYVIUlimw_1753149073
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7161E195FD02;
-	Tue, 22 Jul 2025 01:51:13 +0000 (UTC)
-Received: from dreadlord.redhat.com (unknown [10.67.32.7])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 488FC19560A3;
-	Tue, 22 Jul 2025 01:51:08 +0000 (UTC)
-From: Dave Airlie <airlied@gmail.com>
-To: dri-devel@lists.freedesktop.org,
-	linux-mm@kvack.org,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Christian Koenig <christian.koenig@amd.com>
-Cc: Dave Chinner <david@fromorbit.com>,
-	Kairui Song <kasong@tencent.com>,
-	Dave Airlie <airlied@redhat.com>
-Subject: [PATCH 15/15] ttm: add support for a module option to disable memcg integration
-Date: Tue, 22 Jul 2025 11:43:28 +1000
-Message-ID: <20250722014942.1878844-16-airlied@gmail.com>
-In-Reply-To: <20250722014942.1878844-1-airlied@gmail.com>
-References: <20250722014942.1878844-1-airlied@gmail.com>
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=fHSRFZs7;
+	spf=pass (imf19.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.221.171 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-52d9a275c27so2663084e0c.0
+        for <linux-mm@kvack.org>; Mon, 21 Jul 2025 19:23:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753151031; x=1753755831; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=b/C+U2K3/i43umoAQCo3nc2pCSOMDyoCKEEcB2BDhGM=;
+        b=fHSRFZs7llYzZzBJ+Dp+jdjKbfETJxPxq66r5KpJ7jslmuCAogdCRbMb6bDqehL7Am
+         7zFfsMyKkDofHR7KFafloNdNgl6p1qImYSGScO4W7kbIjrB5TazAY03Wczg6YjnjpmtJ
+         PS0pe8wZHLaS0AuFPCLWECKp0ngHlmdhzXovwLD4BNVqnRMPO3JFVS36rn2PB1Sp8On/
+         84RmXzrdgP/9JBAwc/4u6BexUWmA56qZIrthvFlIVbq98LZNvXkh6vroZFH0pc8BMYBs
+         T6YMSMoX2ZB4VTjE6c2NerHtB4VXDbn1WC4V7C+B/GP60M/1MCmH8eX4Z+jBYgLJ5OA6
+         M4Qg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753151031; x=1753755831;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=b/C+U2K3/i43umoAQCo3nc2pCSOMDyoCKEEcB2BDhGM=;
+        b=d8vO7xOq0qpvLJaBuvY04IStl4fZHm6El9su77gdlYsQtSzR0QZn7e+ztPyOEOXL+b
+         gr7RmI9GNuTAxpM9zbOxOpO3ulzNd6vJI/VAiI7kZVic/9YRC3pWN9l35mG89dG8UPyT
+         gEvyR/h2pd0mPvZlXMXed+tJYop7GQ13CiB1GuHDrCZWXAORQvrfzwU87Y2U/ZVfAC7H
+         1UbGA9qrWhi1RZ44ZFxU9unHz854BSnNvW16/HUCas70lkKpQprjyiO8aJpbqihyhlnT
+         hW/DPA57vhP4p4uh+ASWXzf5sLZJXDd3T9r/+ZFyhp+4JghexB1bPH8DqNQulsmaxFGR
+         3DWg==
+X-Forwarded-Encrypted: i=1; AJvYcCV+OxgcZf5OtEARxygdALhvCFmQ2z+06hX+I7HzBK49fkPvT+9/NOgTXflDUnv1bwUb5CKqqBl8TA==@kvack.org
+X-Gm-Message-State: AOJu0YzRd4KHQKll9gufcrSIHJl1Q1D8BptSpsodE1Wb+fe1+3G3pa5Y
+	hVVRcOyaZkgq8TC0q3K85VLJ/HvgKxD/cvH/1NkxiKDdmz4l3JKnEx3LGbR84SzEFPp/xppeXNp
+	JV7UvyLhhTduoOOvCR45NN/qWaYOnJFw=
+X-Gm-Gg: ASbGncvPFN+7dQAD2JcxkSltrmjINQ5J9mYF/ttlAagQYMuWh8lZJN2rvuHWdadgRzn
+	ksAlKouoR2WzYnXcFJ/o5jnY2c9LYkSGV8RSR13fR5ThN+XCWJkbO2YI2GMZNcFIUo27ZlCLg8u
+	dSXlxAwuU9kkv41Ydj/g1gKpkOUTCzFgdLmnnO1mOEz6MUONQ/8zgEXY43vKyI6pDqkkUffTe+B
+	CXPDxs=
+X-Google-Smtp-Source: AGHT+IGesNlr5e/sM49NBb9K/B4x7qfIWHZWh698rKyBwCLi7wWon4ZhVCgWQfP34NW6TE1MplcctXDbbJZ71bGMN64=
+X-Received: by 2002:a05:6122:3286:b0:535:e35d:49f4 with SMTP id
+ 71dfb90a1353d-5373fcbc0d3mr10995191e0c.11.1753151030620; Mon, 21 Jul 2025
+ 19:23:50 -0700 (PDT)
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: LftguH5XuJ4sbp6LGKiTQQZ4CD951_JcANCpX-SiID4_1753149073
-X-Mimecast-Originator: gmail.com
+References: <20250721155530.75944-1-lorenzo.stoakes@oracle.com> <35df32ae-dc95-48e1-bdb1-90f17bfd4d5c@linux.alibaba.com>
+In-Reply-To: <35df32ae-dc95-48e1-bdb1-90f17bfd4d5c@linux.alibaba.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Tue, 22 Jul 2025 10:23:39 +0800
+X-Gm-Features: Ac12FXx4o5zzStPLAnFL7QFhqYq_Lgoa4m8TQ4nfuZBMUKJ2dVDoDaKYQTkIF2I
+Message-ID: <CAGsJ_4yMLi_+yxJYebTbEALujcVmeqbfHh=ArkZRxMwE+OBWgQ@mail.gmail.com>
+Subject: Re: [PATCH] docs: update THP documentation to clarify sysfs "never" setting
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-content-type: text/plain; charset=WINDOWS-1252; x-default=true
-X-Stat-Signature: qgogzo8egwy9gim5o4b454iy1boc177u
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 891FC1A0005
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B08691A0005
+X-Stat-Signature: x5uccid6jj9r57h3e51ggrphunr3iqqu
 X-Rspam-User: 
-X-HE-Tag: 1753149078-103143
-X-HE-Meta: U2FsdGVkX18mJ2+JJPN9I02rsSyuk1r8qVXWT8tmbGe0uzFTAzCsDRjaKwRes+59ZBlmrtOmFZxMp9V3VN+NQB5O7rcZSx+sPkTH7np431d+NexklPYjz8SGvKqlBsn26Zr4j2AXGwL+GVx26eXYZK0D/Mo8sedLU9eKo6Uh/dBn053CMOzstquSJ42N2nsD1gmhXoRmLrr2nq8iRH9H7grVF76gMblDVpq9Nb6Wbt7YvuYxB4K2/0rfKIgKZjdf8RVSTZvMDFpJcOUoe8rYzM8+tZQkaODvuebbJ6Lbd/dVkUtuPyKoMp6mOzGRgCxlQyz3iWVimhUjeFEkVwwZ+YGW+8UwR9rxT28dfKvJ//QPYMIvrTt0QAdP2HaZdayRW4OKaolm3otOVbSHaKTkgFWJ3V4URpJ5+M6mk0Xx71SK2nhrGcpkjjLGeDVYS/KeaGcAcQe2MsZ1t3ODZM55TxOboR6Saf2fMr0oLZqLpEhKNlLLNj2WMHgvIMsIOzvucuS2jhYKzeg6WGcZHkOsElxug+h1FOsFbO8O302QhIZFac3HXU+a+7h9OaBEedOGcYXdTxBZx/xKEH4PrOe4v/6Rs3X4MUsEtYmM2cx0fn+OJtoSDWj3mZ42FAuQAk2r4qMU3z9uatf//jnNWuMnKImg2sv76tBZuRjAFVozjuxmRSL4f4bB4VOGstZOqg6T+LFjUn2prluPF8E29lHfJM1uApP4N/S5SBn4fwzm738Es7IHULNOc6Cb4rzeXh7TimnIIFa8+ETpSUXSuToXWNmugPHyDcaHs8/Mwsdt+zYk3DdDqkHJBHwH80bDWMZhAGjIQBQ3HOTWv/LR/TiI6xkVXBk7IqgK7zbJ98pCHd7ZYPKNOz1HXrZ5ToaXiYKV9m+aEOGyDtwB0WIUrH+bgdPfXIdmgqhAX1+SroByQlkggQWWWYqPyahsekELajjjtbo9Llx+kZonB6jzCbC
- p+w==
+X-HE-Tag: 1753151031-484374
+X-HE-Meta: U2FsdGVkX19x2jaWX3lyNW3IB/pTfG7aXbhIvfV9/9YfWFF85FfirONhgazatXMkTyVspihLZrrJegxWvaVZyrYhw6v+2cT8MglbTCCT7QbYmfrfWvMRCvjyWefaOjvVWK0YXl0XIM4S94d9W8m3PbWSybeGNyYL3KJr+D+rKrdyxsQCcc9JOZF8zs0X3AnMhnh6+qNqMbg/ciQ0c0IeeEUCJF8gs8Ej3+LsGq/2UexOPBh1tZ25tcR+otWlBcKFKd2pWJkgMdtV683H8gxlXs/2td7DzJYgUeOHe8WtIqLulhiLTHt2zFTwqPDJCrX2469HeSHLg/ClhApEZuggrktXhlXs7+m2PkWmihlfggZ2HOjz8dPGOL3MWSFPv5Z0NL75ioiEkuUkQuH98vVWi0UlbTnRbuXxiU0XLPaALi5Sab9tANerqJxtAWM9zJMAB5r5I75mMt8y7ApvhwC9XIC0Z4axzRzncV1WeFgc3qa/kmV3J0bWYP8zkERYeLJhWXp5oGc1Tu64IHWnN9urVdqJLurD4zDFD6nyJd2saA6keHiPweybvgdDt2ldhIEwH15bcqe/WOM85Mf4pDUZ2VLcR9bjJuHzAyLsxg0RKze5rTzQjEJIVMSvD//aR0RpYezo8zNVUvP2YgMH8Nt6UkTQeRknX5iLRQ7l9/lYeaX6eoiwlia7fD1tPrjMooVKOnChesSE3YjdBh50lvHVzh+unp9DlWU60r1pDgrXcKMwkYaA3tQoF2VB1A3MsyRyfGCYZn+N2iMn8iLq+k3LDj5iYF6Ezewq/6zMv9MjQJtl84b+//57GFQKrxD2l4JxpLL1vOj4JwEDjHBioYlBY20pVsM1fLjJbc3+mXxWbBRGY8Txow0+YdhYzb9N62KDVy/NEQRqfNgbYpwWazg0LOhJ7gm1JKdmPAgPnQTIZA//6Pi8kZajvy0EQ0wCXc/iZuaCspjyGtHfADJMDWY
+ DgOQzPpU
+ tCqVE3yfIWL+wq0M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,115 +118,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Dave Airlie <airlied@redhat.com>
+On Tue, Jul 22, 2025 at 9:30=E2=80=AFAM Baolin Wang
+<baolin.wang@linux.alibaba.com> wrote:
+>
+>
+>
+> On 2025/7/21 23:55, Lorenzo Stoakes wrote:
+> > Rather confusingly, setting all Transparent Huge Page sysfs settings to
+> > "never" does not in fact result in THP being globally disabled.
+> >
+> > Rather, it results in khugepaged being disabled, but one can still obta=
+in
+> > THP pages using madvise(..., MADV_COLLAPSE).
+> >
+> > This is something that has remained poorly documented for some time, an=
+d it
+> > is likely the received wisdom of most users of THP that never does, in
+> > fact, mean never.
+> >
+> > It is therefore important to highlight, very clearly, that this is not =
+the
+> > ase.
+> >
+> > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > ---
+> >   Documentation/admin-guide/mm/transhuge.rst | 11 +++++++++--
+> >   1 file changed, 9 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation=
+/admin-guide/mm/transhuge.rst
+> > index dff8d5985f0f..182519197ef7 100644
+> > --- a/Documentation/admin-guide/mm/transhuge.rst
+> > +++ b/Documentation/admin-guide/mm/transhuge.rst
+> > @@ -107,7 +107,7 @@ sysfs
+> >   Global THP controls
+> >   -------------------
+> >
+> > -Transparent Hugepage Support for anonymous memory can be entirely disa=
+bled
+> > +Transparent Hugepage Support for anonymous memory can be disabled
+> >   (mostly for debugging purposes) or only enabled inside MADV_HUGEPAGE
+> >   regions (to avoid the risk of consuming more memory resources) or ena=
+bled
+> >   system wide. This can be achieved per-supported-THP-size with one of:=
+:
+> > @@ -119,6 +119,11 @@ system wide. This can be achieved per-supported-TH=
+P-size with one of::
+> >   where <size> is the hugepage size being addressed, the available size=
+s
+> >   for which vary by system.
+> >
+> > +.. note:: Setting "never" in all sysfs THP controls does **not** disab=
+le
+> > +          Transparent Huge Pages globally. This is because ``madvise(.=
+..,
+> > +          MADV_COLLAPSE)`` ignores these settings and collapses ranges=
+ to
+> > +          PMD-sized huge pages unconditionally.
+> > +
+> >   For example::
+> >
+> >       echo always >/sys/kernel/mm/transparent_hugepage/hugepages-2048kB=
+/enabled
+> > @@ -187,7 +192,9 @@ madvise
+> >       behaviour.
+> >
+> >   never
+> > -     should be self-explanatory.
+> > +     should be self-explanatory. Note that ``madvise(...,
+> > +     MADV_COLLAPSE)`` can still cause transparent huge pages to be
+> > +     obtained even if this mode is specified everywhere.
+>
+> I hope this part of the explanation is also copy-pasted into the
+> 'Hugepages in tmpfs/shmem' section. Otherwise look good to me. Thanks.
 
-This adds a kconfig and a module option to turn off ttm memcg
-integration completely.
+Apologies if this is a silly question, but regarding this patchset:
+https://lore.kernel.org/linux-mm/cover.1750815384.git.baolin.wang@linux.ali=
+baba.com/
 
-When this is used, no object will ever end up using memcg aware
-paths.
+It looks like the intention is to disable hugepages even for
+`MADV_COLLAPSE` when the user has set the policy to 'never'. However,
+based on Lorenzo's documentation update, it seems we still want to allow
+hugepages for `MADV_COLLAPSE` even if 'never' is set?
 
-There is an existing workload that cgroup support might regress,
-the systems are setup to allocate 1GB of uncached pages at system
-startup to prime the pool, then any further users will take them
-from the pool. The current cgroup code might handle that, but
-it also may regress, so add an option to ttm to avoid using
-memcg for the pool pages.
+Could you clarify what the intended behavior is? It seems we've decided
+to keep the existing behavior unchanged=E2=80=94am I understanding that
+correctly?
 
-Signed-off-by: Dave Airlie <airlied@redhat.com>
----
- drivers/gpu/drm/Kconfig        |  7 +++++++
- drivers/gpu/drm/ttm/ttm_pool.c | 24 +++++++++++++++++++++---
- 2 files changed, 28 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
-index f7ea8e895c0c..4a1501b05e7c 100644
---- a/drivers/gpu/drm/Kconfig
-+++ b/drivers/gpu/drm/Kconfig
-@@ -239,6 +239,13 @@ config DRM_TTM_HELPER
- =09help
- =09  Helpers for ttm-based gem objects
-=20
-+config DRM_TTM_MEMCG
-+=09bool "Enable TTM mem cgroup by default"
-+=09depends on DRM_TTM
-+=09depends on MEMCG
-+=09help
-+=09  Enable the memcg intergration by default
-+
- config DRM_GEM_DMA_HELPER
- =09tristate
- =09depends on DRM
-diff --git a/drivers/gpu/drm/ttm/ttm_pool.c b/drivers/gpu/drm/ttm/ttm_pool.=
-c
-index 1e6da2cc1f06..375858b84fb2 100644
---- a/drivers/gpu/drm/ttm/ttm_pool.c
-+++ b/drivers/gpu/drm/ttm/ttm_pool.c
-@@ -118,6 +118,24 @@ static unsigned long page_pool_size;
- MODULE_PARM_DESC(page_pool_size, "Number of pages in the WC/UC/DMA pool pe=
-r NUMA node");
- module_param(page_pool_size, ulong, 0644);
-=20
-+/*
-+ * Don't use the memcg aware lru for pooled pages.
-+ *
-+ * There are use-cases where for example one application in a cgroup will =
-preallocate 1GB
-+ * of uncached pages, and immediately release them into the pool, for othe=
-r consumers
-+ * to use. This use-case could be handled with a proper cgroup hierarchy, =
-but to allow
-+ * that use case to continue to operate as-is, add a module option.
-+ *
-+ * This still stores the pages in the list_lru, it just doesn't use the me=
-mcg when
-+ * adding/removing them.
-+ */
-+#define DEFAULT_TTM_MEMCG CONFIG_DRM_TTM_MEMCG
-+static bool ttm_memcg =3D DEFAULT_TTM_MEMCG;
-+
-+MODULE_PARM_DESC(ttm_memcg, "Allow using cgroups with TTM "
-+=09=09 "[default=3D" __stringify(DEFAULT_TTM_MEMCG) "])");
-+module_param(ttm_memcg, bool, 0444);
-+
- static unsigned long pool_node_limit[MAX_NUMNODES];
- static atomic_long_t allocated_pages[MAX_NUMNODES];
-=20
-@@ -305,7 +323,7 @@ static void ttm_pool_type_give(struct ttm_pool_type *pt=
-, struct page *p)
-=20
- =09INIT_LIST_HEAD(&p->lru);
- =09rcu_read_lock();
--=09list_lru_add(&pt->pages, &p->lru, nid, page_memcg_check(p));
-+=09list_lru_add(&pt->pages, &p->lru, nid, ttm_memcg ? page_memcg_check(p) =
-: NULL);
- =09rcu_read_unlock();
-=20
- =09atomic_long_add(num_pages, &allocated_pages[nid]);
-@@ -354,7 +372,7 @@ static struct page *ttm_pool_type_take(struct ttm_pool_=
-type *pt, int nid,
- =09struct page *page_out =3D NULL;
- =09int ret;
- =09struct mem_cgroup *orig_memcg =3D orig_objcg ? get_mem_cgroup_from_objc=
-g(orig_objcg) : NULL;
--=09struct mem_cgroup *memcg =3D orig_memcg;
-+=09struct mem_cgroup *memcg =3D ttm_memcg ? orig_memcg : NULL;
-=20
- =09/*
- =09 * Attempt to get a page from the current memcg, but if it hasn't got a=
-ny in it's level,
-@@ -824,7 +842,7 @@ static int __ttm_pool_alloc(struct ttm_pool *pool, stru=
-ct ttm_tt *tt,
- =09bool allow_pools;
- =09struct page *p;
- =09int r;
--=09struct obj_cgroup *objcg =3D memcg_account ? tt->objcg : NULL;
-+=09struct obj_cgroup *objcg =3D (ttm_memcg && memcg_account) ? tt->objcg :=
- NULL;
-=20
- =09WARN_ON(!alloc->remaining_pages || ttm_tt_is_populated(tt));
- =09WARN_ON(alloc->dma_addr && !pool->dev);
---=20
-2.49.0
-
+Thanks
+Barry
 
