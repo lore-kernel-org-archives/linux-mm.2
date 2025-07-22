@@ -2,122 +2,123 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 20B96C83F27
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 22:20:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8548EC83F27
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 23:07:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFAC36B009E; Tue, 22 Jul 2025 18:20:21 -0400 (EDT)
+	id E12DA6B009C; Tue, 22 Jul 2025 19:07:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD2866B009F; Tue, 22 Jul 2025 18:20:21 -0400 (EDT)
+	id DC2E96B009E; Tue, 22 Jul 2025 19:07:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0F996B00A0; Tue, 22 Jul 2025 18:20:21 -0400 (EDT)
+	id CB24C6B009F; Tue, 22 Jul 2025 19:07:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 926486B009E
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 18:20:21 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3DF61160466
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 22:20:21 +0000 (UTC)
-X-FDA: 83693320242.01.3E213D3
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 3E7944000C
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 22:20:19 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=SEJtZTD7;
-	spf=pass (imf04.hostedemail.com: domain of almasrymina@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=almasrymina@google.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B5EE46B009C
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 19:07:39 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8A7041A0540
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 23:07:39 +0000 (UTC)
+X-FDA: 83693439438.23.71209B5
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	by imf17.hostedemail.com (Postfix) with ESMTP id C213040003
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 23:07:37 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="DjV7/uHB";
+	spf=pass (imf17.hostedemail.com: domain of 3uBmAaAYKCDclXTgcVZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--seanjc.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3uBmAaAYKCDclXTgcVZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--seanjc.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753222819; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753225657; a=rsa-sha256;
 	cv=none;
-	b=xi5xDTbKgdX+VZ55wONfOryYnK5nErBVP5LcQdyYPDNdJG/cY/zAZFTviaYj7BjLSivJxH
-	nogBXwhC1wn4BPhIpWGmrZ5Ox8a1bp5nBH8TWVq4Df9dUosizsrAzEvmvhTmWElMocgXn7
-	xrnRb2Bcj6RaDfi4Eay4tteWRZdI1Eo=
+	b=6K4m3phPjuKVYPo5TeTP8j5DJ+cOBxwjOzSni/v42NHKXaLUsIfklGYMC19MmxZ1n93pPB
+	kIXtMhwbxIEMt25iqax0uQRck43jMWkOOUFdew/G0vZ1lgybUmhWLiStHjR+0YHb6dltVl
+	uq7gZakBA+b5tCgb7z/Y7wWBHGKdpgI=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=SEJtZTD7;
-	spf=pass (imf04.hostedemail.com: domain of almasrymina@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=almasrymina@google.com;
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="DjV7/uHB";
+	spf=pass (imf17.hostedemail.com: domain of 3uBmAaAYKCDclXTgcVZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--seanjc.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3uBmAaAYKCDclXTgcVZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--seanjc.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753222819;
+	s=arc-20220608; t=1753225657;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EUgAXknrynl1PVAEbmko9jsFy37xoKt232CbGC5xnSo=;
-	b=DVocDdPWLBqbSYI+HB9UHftpOxyL3lcstnbrXkxKe4Nnk7fPCBcJaWw/i6qnniuDLH+vcu
-	Q8NNsD0pVkMbggYSUzw36SSye6rCEprBHTg7Xrrply5Fj9TQSgZSh7aftVodw8Kq323vYz
-	+ju9hTLTjqO+mPsjer3GtxksCxuD1os=
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-235e389599fso88125ad.0
-        for <linux-mm@kvack.org>; Tue, 22 Jul 2025 15:20:18 -0700 (PDT)
+	bh=f+m6qI30JHvrm3ONaGCpQMi0L8lxI7PYDb1Mu/Pb3F4=;
+	b=UxOEB/CCkNFfwB9iW9OKhsysU3T+Jw67TzekxTsQh5lGSEV0iNUQnCr4VM8c6VH2ozRe/+
+	H5NYvTDYwXt+1TUafGLeH1eL8S0R2osR5sZXhjZcMGgPqGjexDD2EqQZiheSF4m9mRyR5X
+	9NUlntqD6pRwOa0U1xyKvfyOUpVd0NE=
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b31c38d4063so4242687a12.3
+        for <linux-mm@kvack.org>; Tue, 22 Jul 2025 16:07:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753222818; x=1753827618; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EUgAXknrynl1PVAEbmko9jsFy37xoKt232CbGC5xnSo=;
-        b=SEJtZTD7jK5QKfoQNrudF8t7T4QMorZjcCBxgH1Zu1xmGerqZOppQxk/JeQpzS+Em2
-         1YATUR18MxQCYmuMxdlg5NzMiY70V+Xy9+PwopXsKL1ngABxqODZ6T5MbU+E1WeR8SNG
-         kunlGmbreX+bXhSaxN0hVdm0qjx7l89O4t9K6uiybN/JEFn74ZfMQRZxTlv3SqZt9E7S
-         8rXfDl8zIueaxGqYrSVIJFXhD3kOxlRJpw9wTeNmRRqp/b4TuhZ+8eVJogbUjTp/uWEE
-         s9ym+1WWC42TsVGrKGk80uk+SDHNWGHaPx7bYhlj3tVPwOpZlhOYg4qmlgZA73S9vy7j
-         i7Ww==
+        d=google.com; s=20230601; t=1753225656; x=1753830456; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=f+m6qI30JHvrm3ONaGCpQMi0L8lxI7PYDb1Mu/Pb3F4=;
+        b=DjV7/uHBOJP4yAG/VtqFU6VyiYroNHy00sBy96IJtO49yIl2Kj554OU4/fQHNm17/J
+         t65UymrGu2pCEmnUvYEOWEKrN6EWfaMjGWN4r8VcqfxBJ4fDfqM5gb1HIG1Q0nEXODnb
+         kt6E3bIqOEcGkAAGFXTisqxvIPoNx8EK3WOUVzT847Zn8sJ7OkxFBOvaokxcGS4+KZLB
+         wu0J/al3f9p7X8VpBW/SWbd493VUWDUdBkJ5F1gVLpuyru396ZVioOlYI3hPgVio3DCa
+         G4mxVmlkjn0ESQuAPgQQqrIDSVf4SKI2hd06610zmqBx2Ba03uTEAoR9qVGvlReKd6wX
+         EpXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753222818; x=1753827618;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EUgAXknrynl1PVAEbmko9jsFy37xoKt232CbGC5xnSo=;
-        b=UmxyO2mHShQHZ357mLOG6DZE98jjuVI3KX+iQlEUC3uv56827mdCPqhXAfK/k5uRSf
-         hdtO44keClhY/vY+86cptF4Sgu/9ifFqbTHXMsLKSsR26QEhCQ7z5WkN0WohTPG9s58V
-         cpcdIh4thgEaNCGtbTDqcDPv39DfIU4qiE5NRrnVLLXIX1FCHu1p+TghawEymGoC7GqP
-         zLkb3+g/0sJVwphIM9yfJMK+awl3pD2RJnZ+uyWSGI6H7H+Tc0vGQd8XvdAMfeB3v8SN
-         cjE5t/w9EH+80j2BoKw5DNhn7ehKUqo+zQveFexTCX1VWX5NLWyZiSqFBVDbCqkWcmHb
-         fKGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWcUEg82mmnxolHfIbt7XETTXAPeFEbbo7zxKLqGBJvXrFOI2F+Xb+jzcqQMWbtbqeVRBCFYH1VJQ==@kvack.org
-X-Gm-Message-State: AOJu0YwLuOh+n0neS6bVuBb1p6b8FnG1Eytv7wkY10vzBW1Mr9z2TEtp
-	FytWbvsxOC4qFH0CsbBs9jnrp31w50W2rBVAFIp5rdFF3GHajG5dXCZ4VTo8Ou3BfxcKQl3Cqep
-	FaswU8iXpOd0hohYU6cQT6fOdMaNcQIT8ef0tz9zp
-X-Gm-Gg: ASbGncuIgcFgFnQU2+36sORSmooG84RcoQayF1vb88sjrJ29gDd2S6pSLV9s6GCRw1l
-	r7fJ7T4en9j8R/Nf3kasDhMIM1z7fQP3QFwu2oeud5D269QsSa91gcdw2IY4qvS143d3tFN9r6B
-	sQm9hKfvAUjMSF89QhNs0JkyCrIbWNaQ1XTTtdg85xYTFahLMyjdyk2/i7347hNLVEJPEc2Fnsh
-	Z7rOBqpmn0T6RgjXs2SzuCkRidt7iSOIKqCvlzejrrjGt14
-X-Google-Smtp-Source: AGHT+IEJT44DyruhFdmOQYM4W96ZZ3Rqdwh8/66PV5JlsG3oxzJ17BtYsAJ9a8lIS9JPty9YbWXGIDpfJrmGPSXLLK4=
-X-Received: by 2002:a17:903:b4f:b0:234:bca7:2934 with SMTP id
- d9443c01a7336-23f9774a735mr1113195ad.6.1753222817810; Tue, 22 Jul 2025
- 15:20:17 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250721054903.39833-1-byungchul@sk.com> <77ee68c4-f265-4e55-9889-43ab08f26efd@gmail.com>
-In-Reply-To: <77ee68c4-f265-4e55-9889-43ab08f26efd@gmail.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Tue, 22 Jul 2025 15:20:04 -0700
-X-Gm-Features: Ac12FXzc1yuJwF_iFb86CzQvJ9VHTzSRxkDhmv6GFozlbXOI8GKQHpDpguZKYVU
-Message-ID: <CAHS8izM6h1_qoPnWDHmPiiFj5e_mcJqQFTTLJT9dgBymJuk8rw@mail.gmail.com>
-Subject: Re: [PATCH] mm, page_pool: introduce a new page type for page pool in
- page type
-To: Pavel Begunkov <asml.silence@gmail.com>
-Cc: Byungchul Park <byungchul@sk.com>, linux-mm@kvack.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kernel_team@skhynix.com, harry.yoo@oracle.com, 
-	ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org, 
-	hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com, 
-	leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com, andrew+netdev@lunn.ch, 
-	edumazet@google.com, pabeni@redhat.com, akpm@linux-foundation.org, 
-	david@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, 
-	vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	horms@kernel.org, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, 
-	ilias.apalodimas@linaro.org, willy@infradead.org, brauner@kernel.org, 
-	kas@kernel.org, yuzhao@google.com, usamaarif642@gmail.com, 
-	baolin.wang@linux.alibaba.com, toke@redhat.com, bpf@vger.kernel.org, 
-	linux-rdma@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        d=1e100.net; s=20230601; t=1753225656; x=1753830456;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=f+m6qI30JHvrm3ONaGCpQMi0L8lxI7PYDb1Mu/Pb3F4=;
+        b=B2K1kjhftFq79Z2qJ4GBrFjvMQpq40RJR6DoJvfX5CNTui9vogpttUjjgXeI7UKXg8
+         oqc4IddFnF0lGsstgiFlodOVr5w7A/YWcbP5MW5LdSo4HuTcebPrltqp66AZLA6gIFsD
+         oQE407i2KkJ174shgKmb8UkT+bW4s9S56RyQtO05HJzjU23kJMd7g1BL8yHRl57LQ1on
+         kkMI6rtasM7NtCvg5KIdmcIpCOJtBrBJunbUG95n9jmQyVjDUOGHwldq6t7nVyEaoEVK
+         CgY7+Q0KU7qbTj1gP0zqcCQ1mUlLgP9Aonj+bCty5Djj3KZeRRpLX6bfZymeH5Z/0Uv7
+         292g==
+X-Forwarded-Encrypted: i=1; AJvYcCV+Y6suzI+QR884ahQzr72mGuR8fjUobrY6cLkjV9ZXyce7UICt4Zyjf4wYwA/7rq7bErPoIIjLiA==@kvack.org
+X-Gm-Message-State: AOJu0YyB+2Gs1CEFEe273gPPI+GBdCJ0PtJDAs12ympohkuCuGPAstwN
+	GjOfF0M7A0uoQcvBNAD5OVo09+25qPy8HOgi4YlvJ2N2HeIjLeayWjdyo8Jw2k4Ts0cBDD8E4Ya
+	SDm0oeg==
+X-Google-Smtp-Source: AGHT+IFOb8KYXXobVAAvvjW+Fe1YbH8mwfp6V2E801ROWDybd0+20juthdBHS5x4qZEtLjQQN6CpBVqzr4M=
+X-Received: from pjuj4.prod.google.com ([2002:a17:90a:d004:b0:313:242b:1773])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5647:b0:311:fc8b:31b5
+ with SMTP id 98e67ed59e1d1-31e507abbc6mr1697551a91.14.1753225656408; Tue, 22
+ Jul 2025 16:07:36 -0700 (PDT)
+Date: Tue, 22 Jul 2025 16:07:34 -0700
+In-Reply-To: <80a047e2-e0fb-40cd-bb88-cce05ca017ac@redhat.com>
+Mime-Version: 1.0
+References: <20250713174339.13981-2-shivankg@amd.com> <bdce1a12-ab73-4de1-892b-f8e849a8ab51@redhat.com>
+ <aH-j8bOXMfOKdpHp@google.com> <80a047e2-e0fb-40cd-bb88-cce05ca017ac@redhat.com>
+Message-ID: <aIAZtgtdy5Fw1OOi@google.com>
+Subject: Re: [PATCH V9 0/7] Add NUMA mempolicy support for KVM guest-memfd
+From: Sean Christopherson <seanjc@google.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: Shivank Garg <shivankg@amd.com>, vbabka@suse.cz, willy@infradead.org, 
+	akpm@linux-foundation.org, shuah@kernel.org, pbonzini@redhat.com, 
+	brauner@kernel.org, viro@zeniv.linux.org.uk, ackerleytng@google.com, 
+	paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com, pvorel@suse.cz, 
+	bfoster@redhat.com, tabba@google.com, vannapurve@google.com, 
+	chao.gao@intel.com, bharata@amd.com, nikunj@amd.com, michael.day@amd.com, 
+	shdhiman@amd.com, yan.y.zhao@intel.com, Neeraj.Upadhyay@amd.com, 
+	thomas.lendacky@amd.com, michael.roth@amd.com, aik@amd.com, jgg@nvidia.com, 
+	kalyazin@amazon.com, peterx@redhat.com, jack@suse.cz, rppt@kernel.org, 
+	hch@infradead.org, cgzones@googlemail.com, ira.weiny@intel.com, 
+	rientjes@google.com, roypat@amazon.co.uk, ziy@nvidia.com, 
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
+	byungchul@sk.com, gourry@gourry.net, kent.overstreet@linux.dev, 
+	ying.huang@linux.alibaba.com, apopple@nvidia.com, chao.p.peng@intel.com, 
+	amit@infradead.org, ddutile@redhat.com, dan.j.williams@intel.com, 
+	ashish.kalra@amd.com, gshan@redhat.com, jgowans@amazon.com, 
+	pankaj.gupta@amd.com, papaluri@amd.com, yuzhao@google.com, 
+	suzuki.poulose@arm.com, quic_eberman@quicinc.com, 
+	aneeshkumar.kizhakeveetil@arm.com, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 3E7944000C
-X-Stat-Signature: m3pdwa7w8wfb9xzzysotm168kxt36cwk
-X-HE-Tag: 1753222819-139120
-X-HE-Meta: U2FsdGVkX19CBUVZwLm0C9P2jGMMeqTM7H1Yzd+tIPFXXNUfHSJoNHbGlyEzA90QxAG+QokuqYMs5UnXaz2ItRHudxy+eeMNlYP4kwp2xkuCrejopXNxbTEG174g3PXB9pCfigIKBXeULq/1b5CFVi2dZgVK0MORRW/GAWeQjedgBts89YL5JPqvNp6QEL0rxwnfIfbzw8fZ5F8Jqmf96kLl+/VtVh0lrehkJJaV+UD8hxW1lTPg/dtmcAJlw9kHqDD8zqqugtXbxXFayVXXfwRkA1yM23xa7RfSnO5zFWPFoeSsq5svQQs0RbxpWx0HLbecrxam7EcxpSAt52lUxcHv+1GZULimGAMP4yqaA5nbUKErX1UNZGFSi6c0tSbTx27GvcBB9ZZiZJpdGT/IRDQmDvkJM9oGcSA8BV6HcJWx6v+oPt/Kz9IQnXeFYvV+s4+DzTMWCXnRoQfuMuKWjtTPQxnA2BMoZXSu1xRwB2obZ2ZgEyyudlVjOsEj/IZp8r6CbF5tWl8hIbQNA828d0dCiNLvt/dPzYU/+IiGXrgcszevXtbfjthmC62/kXEb6j8wkNbWeAYHpRcSH+k51nJfMWkQe0zKuZ58o61+2M5IMy9i+0a5SrP/3HXSGZ8u0c4XBEZNdkktWbNO8lhmcyQSIDp12TSMdtfowJj8Lb9Ea8IskVOpF6RIXwI4onsOSAwYr6f0NZC2+3C3UabT1Ez84WIAlicQuAdRz76ff7JAzD0VlzfY2/HBF8Oga1wRCFEbgPzSLTCQBfQ5basRNnJ1M9aandtLKNMyV6SQ4ZeSAUGlEXdVYcPX77wGm27sD562gBdIwLlnv7U3ns4aZf8Pp2uJTIeue7P8DJqr9nejaRqANh9lWnphJcKw8L0dXpJKDqly+5UiKSYM8WOXHufu1x2QS4C+9rjRECQFsttwiO8VId4SYv6TpxO+leVoyseVX3aj3LzZY8BKLP0
- F+SmwN7N
- 846lhL2gQ/UMZyb5ZoaUOQu37dpIqxjgWDSrPecuu99Pyr2CJN9ITeh69CmGkwFNDkutXqHMBLsC+LpY1fIvgg7UQzrjtUDYo5fcrgGLqKkNbw34hJMHuHL4ZtHLrqIhXDNcKO6xE7JmBfY82qVKS2v5byAM2iA0q2XT6gCql3Yi+B9VrA6iu2wTI2Ozu0joKxDKGYdV26yRN/2REhAliRUafWC4BFXE6uCSZe1GloWWuHVuDKs3JvAomEubXLddiqfr8+kpbfYCDgUzaVwSA5lXhHANSgKKaEsg6wv6wf+vgMVak1wYnHazHY5gLyBkI1r22ohOZEZGLpqTsfOF8tOvxodirz/0TfiKZ69K+9rsm5LIqcG9GkN1XnnomgqAxKIUcpjN0bLpTnyc=
+X-Rspamd-Queue-Id: C213040003
+X-Stat-Signature: pqgneaa7i7bbsnfnp15bnniuh6bapfpd
+X-HE-Tag: 1753225657-765539
+X-HE-Meta: U2FsdGVkX1/8SVn8GPHsg7K74PhArP9aS2a3A2KG47k2/I+7E1AVLxqSCYpuZ0DZoiP4lrcrzy+XDOpafmyj4pOHqm+34w29saxvi9AO4KpgTkKs1+tKH2X+JwkKuV/9d4uL9JQLsiYLuouBhYC1xiApePlsj2uuuPmx7iYqhA/xRMeg7vO51RFlzm4sgRf6+YaC8GKJq896ADaYCaP9sMZd/fFujvKduLoVw4fhu3oVDtySeXYKUgQF9fEnHGPPkY9bG7Q/GY3iuHHayki0jGPE8UTACmWUizrFORzScQm526HjR+KZ1eSqrBleE8OiViPtS41/8De+/DpGxvc9hX+yUHbFTbEStDLNJHu3Xr8G0EUZCwksYPZN0Euk6uLtvmfhGQj440F7KNNssSQ1dbxeGCDzy8ykETGQnKrbjeZwFWP4/qLKwOOpYB1uqISe07QWWkqzk5ox23z0A3RWsmC2/dnwof1loHZ3FdXIsk7sUser3paBrOvzo6C+WA5knufHF/7qvrGturW1b7GEk6Ii2hHBpKuvDdhtpAFAxGbA5s5INE/R2SnVOMEF9rUmUdau8PUfD0/xZMnZCV1PxPplrNFuS2PuKKcleyTb1e2UWblpXO7FC2RNoCtfS/AoUOsMYniOG3h6e1ZWJb9T5VjMlbMfteVfCpUjs43HInjBb3Nmi+nbCKYZf6EDYJ/7bQeMBlfnQdETxjDFfjlhi1+ONuTI+tgYtysK4PK2N1mxlfCjFK00yA1LbRnZpfLmI1DZje1DspWxkpziJX6GUAnfK6L1zbcFVZbL/vGBm9o98XLrbEjovKKwMlDUlr7IC3zoKBNUP6QnVe+FFfpA4mFxPCznVAExPjALgfqs3IAbr9qWZtlRwbMQ8MCp8p/jHIMij64jLPtmUtGKA86QLQarrvHfS47M6ZoRpBfPDZ5PCuKm3Dyj+BrAwmnwQFFZXndBKrgB+rk5m/lhmvo
+ qKCkU96y
+ XdukLHqYrYHwdFBHFOlvM3ZnAwRl3cnh93oN/neaXJCCUo69CuVYoEaC8GaSz7OXAe+TE/j7XL1aJdpXAHJN4aZfyEWVV4KLraQohbPO5p/7ZKWCGL7TFgjMS9mIcE3Acsl/LsrSNyXl6LgKOPtTU/ngkjLj+Xvu9KDZC0VvWMA3fKGHmZX//S3U4rwg7XXfVoJrbdgxnQc3rzmBH2QizYYJP6qX9JvuM4pcOKs13opMesaBoV/fXNygo943WaytofUNR9UtrMxVv8sHgMDLf8leApuTH+ZkeKI8N598U3aEAUlGt+2eJuhjO9DR4xA/SefQG++h389k0rY3VNiYA93e7GzGq32PHQO4+dyrsRz7gdIQmCdl3gc/2ehtmx9yt1S9l9epuLY0or5Q/mTrWGg4Pjvjq5wM0JXLNcQ/nzJCGYn6CG97j/LIG0T5cQsVhaYmNES8qg2giViuqJZhnFvwjpQPhY844FnumkEftPIuiYiiixa4kMSMPf5twZ1mpt686n3taBHPRQAiEdzpLUBPqKToTMKCsGUI4qyt8ch96FqfdPJVQNIMdMnzdsnFZvwsaYJsNXtvBSTlRmNK11Mt4LIxAwpyfH1JaxHIBl2m4WtNHtXic2Co/pQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,54 +127,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 21, 2025 at 4:11=E2=80=AFAM Pavel Begunkov <asml.silence@gmail.=
-com> wrote:
->
-> On 7/21/25 06:49, Byungchul Park wrote:
-> > Hi,
-> >
-> > I focused on converting the existing APIs accessing ->pp_magic field to
-> > page type APIs.  However, yes.  Additional works would better be
-> > considered on top like:
-> >
-> >     1. Adjust how to store and retrieve dma index.  Maybe network guys
-> >        can work better on top.
-> >
-> >     2. Move the sanity check for page pool in mm/page_alloc.c to on fre=
-e.
->
-> Don't be in a hurry, I've got a branch, but as mentioned before,
-> it'll be for-6.18. And there will also be more time for testing.
->
-> > This work was inspired by the following link by Pavel:
->
-> The idea came from David, let's add
->
-> Suggested-by: David Hildenbrand <david@redhat.com>
->
-> ...> -
-> >   static inline bool netmem_is_pp(netmem_ref netmem)
-> >   {
-> > -     return (netmem_get_pp_magic(netmem) & PP_MAGIC_MASK) =3D=3D PP_SI=
-GNATURE;
-> > +     if (netmem_is_net_iov(netmem))
->
-> This needs to return false for tx niovs. Seems like all callers are
-> gated on ->pp_recycle, so maybe it's fine, but we can at least
-> check pp. Mina, you've been checking tx doesn't mix with rx, any
-> opinion on that?
->
-> Question to net maintainers, can a ->pp_recycle marked skb contain
-> not page pool originated pages or a mix?
->
+On Tue, Jul 22, 2025, David Hildenbrand wrote:
+> On 22.07.25 16:45, Sean Christopherson wrote:
+> > On Tue, Jul 22, 2025, David Hildenbrand wrote:
+> > > Just to clarify: this is based on Fuad's stage 1 and should probably still be
+> > > tagged "RFC" until stage-1 is finally upstream.
+> > > 
+> > > (I was hoping stage-1 would go upstream in 6.17, but I am not sure yet if that is
+> > > still feasible looking at the never-ending review)
+> > 
+> > 6.17 is very doable.
+> 
+> I like your optimism :)
 
-IIRC last I looked at the code ->pp_recycle technically means it could
-be a mix. Technically it means "consider this netmem for pp recycling
-when the skb is freed." and non-pp netmems don't get recycled to the
-pp obviously, because napi_pp_put_page rejects recycling them.
-
-
---=20
-Thanks,
-Mina
+I'm not optimistic, just incompetent.  I forgot what kernel we're on.  **6.18**
+is very doable, 6.17 not so much.
 
