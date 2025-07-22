@@ -2,256 +2,128 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 60E92C83F25
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 11:06:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 85792C83F25
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 11:08:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C9AA08E0002; Tue, 22 Jul 2025 07:06:50 -0400 (EDT)
+	id 216FA6B00A4; Tue, 22 Jul 2025 07:08:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4AED8E0001; Tue, 22 Jul 2025 07:06:50 -0400 (EDT)
+	id 1C7FE6B00A5; Tue, 22 Jul 2025 07:08:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B12A98E0002; Tue, 22 Jul 2025 07:06:50 -0400 (EDT)
+	id 0B6E96B00A7; Tue, 22 Jul 2025 07:08:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B27C8E0001
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 07:06:50 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4A1DF1DA12A
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 11:06:50 +0000 (UTC)
-X-FDA: 83691622980.17.F03DB60
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013054.outbound.protection.outlook.com [52.101.83.54])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 2896C1A0005
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 11:06:45 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=MGMtWmIZ;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=MGMtWmIZ;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf19.hostedemail.com: domain of Dev.Jain@arm.com designates 52.101.83.54 as permitted sender) smtp.mailfrom=Dev.Jain@arm.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2")
-ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753182406;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E95EA6B00A4
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 07:08:46 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B5733160354
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 11:08:46 +0000 (UTC)
+X-FDA: 83691627852.12.5849ADD
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	by imf23.hostedemail.com (Postfix) with ESMTP id C7991140011
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 11:08:44 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=2WqSUhkp;
+	spf=pass (imf23.hostedemail.com: domain of tabba@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=tabba@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753182524;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/smGhozUKh9Sn4umKEpeiV3rcrzopNO7Negpfjy0zOA=;
-	b=Q2Y/6kY+3MXXXt9F5iYqBymFtPF3Hzm5+BLiAj/O333BULx0RWLadxYiiGxAYqhuF8d5HN
-	l1UtJWGTqmYqu4VFL6jP2wLZvlC0l+T08Drd3e/jz8EO7l+W1eJ6kf3RFx5fRMeTVNEa2z
-	2HpiQLurRqB9mpQdDJ+0KZNRr+Kmq/4=
-ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1753182406; a=rsa-sha256;
-	cv=pass;
-	b=SyFtu3LSUzj40uestKLxARUrxEKVvp0TG1oJs9KgaAa6XTax9XFU4o02N/xMZMmpa2wvwv
-	ay3FILUY7QNLtxNbF4s9ii7gdzColvamxLli/R0wkaO2s8bJgr6cyHswGZBlbdiGxiKqef
-	UAZYzEL4fKTTZ7Xw1cE76R9lZ85OFgU=
-ARC-Authentication-Results: i=3;
-	imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=MGMtWmIZ;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=MGMtWmIZ;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf19.hostedemail.com: domain of Dev.Jain@arm.com designates 52.101.83.54 as permitted sender) smtp.mailfrom=Dev.Jain@arm.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2")
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=OZvDw7q3OdpKHOiM7+7DSdRtuF4HDGElmW6wWPOQTkKvISpsCBd0gaE+uLC4q2/lDYPPtuO5aJEuJ46XW1DvOLjMKfilufBe7TFxVibeEdWxkCJZhdzAEWJuuPwmhf29PBgM2KBri0WwzcAAJkwyqoZpqbttZdxutkkzgpnyfFaLzueQ40p76uuDrzVfcmGGCrT/2loGWE+jjNvo6g0pgc/w2h5xd96cILwEAoM+OnFvYF/trE3fGSbVyN3e3j1YGe9oPtq1soT/xWJyTKXiz7oGHrru0oAhgKltmbs1Y+ANpf8j9liKJaeS3/Hq+wSgKWkyK61NwEeqQ1mer3f7qw==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/smGhozUKh9Sn4umKEpeiV3rcrzopNO7Negpfjy0zOA=;
- b=NSp3lo6OXJv4/T6OKeJ78pJSk/R0ATUX4KvDgc/+/TTfGVjPSNLPzEjKWMVe0GABe4+OSMEhnSd2Sm3ADMMJ9j0UjkRtBBG+GzzH+viA6pFYMYtEQVXoLqOt++4zTYK4It37I+XUkQGOhP2OL4phO6mHEen+ZlWCrll2dePA30AVYebD7ZQ5tN69pmOs7PM/Xjid5O+Vq5ZxQEiTFAzBoYUT1Y8DDHYLic7LzgPnTB9Y31dtVyyGC9+uclC2Q/Cow8jxgiaoZ1/C5scxOrkC2K2slJnDXtjX7NK8vtH0POvU2AM0ljDrQ39T0Xt99f5xmlE51LCo7zyVxm8StdK5xQ==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=gmail.com smtp.mailfrom=arm.com; dmarc=pass
- (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
- (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/smGhozUKh9Sn4umKEpeiV3rcrzopNO7Negpfjy0zOA=;
- b=MGMtWmIZyjMBUARJP8qzdqAtPkgDuEBqbFZsbIutcs0xIRLuuYmagxhINzDlEVQY1MEJNJzC2YmjsrX8acKm+EK7PGbZ9oD4DXLrKFu92YzcyPkZ0q0pcJJa3E4RLx0YwSqKAJ6wz+bRRvbiRnB4k6Zyto0r5lO/ShKufuFqd3I=
-Received: from AM6P191CA0083.EURP191.PROD.OUTLOOK.COM (2603:10a6:209:8a::24)
- by GVXPR08MB11010.eurprd08.prod.outlook.com (2603:10a6:150:1f8::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8943.30; Tue, 22 Jul
- 2025 11:06:37 +0000
-Received: from AM3PEPF0000A798.eurprd04.prod.outlook.com
- (2603:10a6:209:8a:cafe::d2) by AM6P191CA0083.outlook.office365.com
- (2603:10a6:209:8a::24) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8943.29 via Frontend Transport; Tue,
- 22 Jul 2025 11:06:37 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- AM3PEPF0000A798.mail.protection.outlook.com (10.167.16.103) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8964.20
- via Frontend Transport; Tue, 22 Jul 2025 11:06:36 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yVVSsMSZumWFrulmO+GmvEaJ3yYAf3qyEe2PFX4xdYCfhBgao0faVGxMa6tCjTHLwlhlyfiNRr72RAI0gSUIlguV5f3iZSVMJO/31ZemKpSEvG+f6yN5vZecc33YOf5p6fQmK+5bVJO24UNU6SUC4q9eCLYKfhLMcCa3mcpKvcepIpsg8C5gp1oncSQH60+gDhNoQN/Rrs8La+cPKAbJBj620f2ikN/KaVulDbIsozzHsO9gbmIj7tW1wtYn98wQFsiGWNHglVqCOWtCOObzyl8Isr67uj8uOubVHvuyXE7mWNisnNdpPlJtJDR/83dB3MmAskHwdY3jdEfOd2S6xA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/smGhozUKh9Sn4umKEpeiV3rcrzopNO7Negpfjy0zOA=;
- b=Los1TM2AUzMVMextKR2NaVs4ddsBDDnyKL0TwQYLO+l47ok5adiJAT/UQL9eWSSXZK2O0UUwnVQTRySizTG+9hEzUxNPkGWjG8zKkRCxIn+Q3/QTySbI87j4KRatPacBdxDPihpisG4grcXviegKWApN0qIHoJkrHnS44NQTduPFLnbQqHDNKYCO8P7y9UAlbHYeAzE7i3OaC+5SQtjB3PoMgCPY76sS+JXTmAJI6n5PpiuNHNgMPXWYv+iqpBRFQMGgQYv+etofBEOOrIqDa2JH3iXJ+SWjaEweDuj/ERwRcmuoFL9C2fa2lc9IehwMsO8+8rFuEu3o7zBAUUjIbw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/smGhozUKh9Sn4umKEpeiV3rcrzopNO7Negpfjy0zOA=;
- b=MGMtWmIZyjMBUARJP8qzdqAtPkgDuEBqbFZsbIutcs0xIRLuuYmagxhINzDlEVQY1MEJNJzC2YmjsrX8acKm+EK7PGbZ9oD4DXLrKFu92YzcyPkZ0q0pcJJa3E4RLx0YwSqKAJ6wz+bRRvbiRnB4k6Zyto0r5lO/ShKufuFqd3I=
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from AM9PR08MB7120.eurprd08.prod.outlook.com (2603:10a6:20b:3dc::22)
- by DU2PR08MB10264.eurprd08.prod.outlook.com (2603:10a6:10:49b::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8943.30; Tue, 22 Jul
- 2025 11:06:02 +0000
-Received: from AM9PR08MB7120.eurprd08.prod.outlook.com
- ([fe80::2933:29aa:2693:d12e]) by AM9PR08MB7120.eurprd08.prod.outlook.com
- ([fe80::2933:29aa:2693:d12e%5]) with mapi id 15.20.8964.019; Tue, 22 Jul 2025
- 11:06:02 +0000
-Message-ID: <476c1978-af9a-4d25-8e5c-02f23de0b5b4@arm.com>
-Date: Tue, 22 Jul 2025 16:35:54 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/7] mm: Refactor MM_CP_PROT_NUMA skipping case into
- new function
-From: Dev Jain <dev.jain@arm.com>
-To: Barry Song <21cnbao@gmail.com>
-Cc: akpm@linux-foundation.org, ryan.roberts@arm.com, david@redhat.com,
- willy@infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- catalin.marinas@arm.com, will@kernel.org, Liam.Howlett@oracle.com,
- lorenzo.stoakes@oracle.com, vbabka@suse.cz, jannh@google.com,
- anshuman.khandual@arm.com, peterx@redhat.com, joey.gouly@arm.com,
- ioworker0@gmail.com, kevin.brodsky@arm.com, quic_zhenhuah@quicinc.com,
- christophe.leroy@csgroup.eu, yangyicong@hisilicon.com,
- linux-arm-kernel@lists.infradead.org, hughd@google.com,
- yang@os.amperecomputing.com, ziy@nvidia.com
-References: <20250718090244.21092-1-dev.jain@arm.com>
- <20250718090244.21092-2-dev.jain@arm.com>
- <CAGsJ_4y1rJ7Omv-8ADk-cZdkAA37bxOxaeM3-vpz1MMaT_G04A@mail.gmail.com>
- <d0163616-eacc-4ca2-9816-c577e710c5bd@arm.com>
-Content-Language: en-US
-In-Reply-To: <d0163616-eacc-4ca2-9816-c577e710c5bd@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA1PR01CA0158.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a00:71::28) To AM9PR08MB7120.eurprd08.prod.outlook.com
- (2603:10a6:20b:3dc::22)
+	bh=Q4OlHSsQD8Q3GzLrFxGBtNoCw1qRv1k2dQlrD5QI9ZA=;
+	b=eXzoVSGA4J4Eefn74uDYzEGn5shdlG0TX2GHfa7tW1MKsqR7FDvO+fD/d07eumigM8Ay9O
+	6+DVMmZEuq5VoiY9hZ5tX6XugefXa/ffeSiJkgyKgUny+TF5Fk9GKIuGD/qxUJKX+sHm69
+	mENenvx5Qe06AE9P5IVnlLmaKDloaCM=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=2WqSUhkp;
+	spf=pass (imf23.hostedemail.com: domain of tabba@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=tabba@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753182524; a=rsa-sha256;
+	cv=none;
+	b=I8m/fsQzPlwuNIq765lxFVQrVuL+dh+tpl5XcTSXULWR84kXCbiD2iXQrHQ5ruMLDEN4yr
+	ClTA6+4XCpHTtUhHEjRDqvRBmtknqzA8oVp4q1ZE1k287HaQGNyiysxibMz4oqwIdfRECO
+	KgmeKCdhjI2osr46+xBqGPaJQY6BkzM=
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4aaf43cbbdcso147631cf.1
+        for <linux-mm@kvack.org>; Tue, 22 Jul 2025 04:08:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753182524; x=1753787324; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q4OlHSsQD8Q3GzLrFxGBtNoCw1qRv1k2dQlrD5QI9ZA=;
+        b=2WqSUhkpMP1N20MYnP7cL3V4rsQdXKfmvcdc0xzHnencsnxAiGiP8f/O93IQk5DPeR
+         u5gxfdRsHZeWSGpejgvMMtEewhxfvERR5HfDt2jDelS8MHLpLuROcWP+aqpNPWgPUJLB
+         jnPx4XBjG+19JnubZ1N1t15glFmQlkz8cizc9Alio9L3nmQLYo4FpwEEjvrIMhSV4rHg
+         lRex2EVXpnp69cQ1vxGMvzUBgIFIC+utAbMo/pZb95vnhkgZJZBk45PFS9LhuKv5elqs
+         G4rHwB8q6JivmpxOnkwQIIH+Y+JCqMTicfU5/jVZCRXbzy9ZkneriTKCa7Mr2Adzc9xD
+         EyBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753182524; x=1753787324;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Q4OlHSsQD8Q3GzLrFxGBtNoCw1qRv1k2dQlrD5QI9ZA=;
+        b=K/7UADli5sWn77QqrCcAx0haydXvdv1LBgjynzTWGF2Gc99Nz3E7ytmOli9Ute5bR7
+         mcOw3ynHnM8XUWgx7QIF0dTPYmr1VbNQa7H702TUza5iyi8hl0oa5d+Mz6qjPeTkgAeW
+         9owrCl24mYfpM4KYV8J12FNTZ3NDXkolrcrb7bjJc/uViAgUz1w8pL1vVCGFeEY7qSCD
+         BviwRMA7yL5Kjxv1By345p0pYQ9wbG5OuKN5X66FTnyYjz6GmH7I+rW2dQs1fX8KOPtX
+         leTzVop8DfPRaC892BJVs1DSt+iwykcqHODHtoweRXblO8HSt3dVPQtiAydVc8UiZYlp
+         MR0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU7HE8iuEL+Sp4azfq4b2pVA0xfrAxNKg3yP7XvOZAkTYr/7GEokNTSWtzY6S9MZlyt+qNZEgErPw==@kvack.org
+X-Gm-Message-State: AOJu0YwnLlaGKx0nCTWV/8ovs2OEwM5DIT32t1z8CaL/YIS7NfaakQPz
+	0rT/1J6MoOBy02tBDN0+v2YihVPoneTZHJubboVuBEjbAylrFgDgFLClDxmjVwgFrFaAo6+ut/e
+	IEUu0EBZwWXbaqmrZMfMkxuROHftx0WfSzj8b3CuZ
+X-Gm-Gg: ASbGncsuX3Y9zwvajO/YK4e+ZehCInbE+TBdQhAl9d4U0qzPpxsN8q+EXjGKulIGu/B
+	lJwCLQwSKC4YPLpTzlyNiycqY9i/MmS9OzxixPYPm3x/7SbHSCIsyyQ+xA35HnRFJtMRHqDttWe
+	XTQpKv7VzxhrVTe3jUW0zTZPF7eNvId4ITr06Mmzg257hCuPTnQt+T/8u70Q9h4QA5Ky/H2wP5A
+	QROLlA0oRYJ3yCpo3P/S2GmSIa5HyvkXTaL
+X-Google-Smtp-Source: AGHT+IGUb3iz4a5qMCYNx1u6U7GTJFpP1c5NB9X/RTiomiZ52K/XsGtaFjte5gDNRBdO8xNk6Dmgs2XbsK+QW4EU7aI=
+X-Received: by 2002:a05:622a:8359:b0:494:b4dd:befd with SMTP id
+ d75a77b69052e-4ae5e2ca83dmr2714601cf.8.1753182523270; Tue, 22 Jul 2025
+ 04:08:43 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	AM9PR08MB7120:EE_|DU2PR08MB10264:EE_|AM3PEPF0000A798:EE_|GVXPR08MB11010:EE_
-X-MS-Office365-Filtering-Correlation-Id: 86e6d9f0-bf01-4b18-974a-08ddc90fd342
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info-Original:
- =?utf-8?B?OVAvRHNObEdJdzZRMUNLL3VrN0ZBWmpkNEx1clgzTExzUUxzVytidUpjcGhU?=
- =?utf-8?B?Z0xrR2xyOUdYc1V3ODNPMnBlVG1KZlZ2dWZrRGRyVXNEa1JlRDRmVTJ0ZTg5?=
- =?utf-8?B?NkZTeEg2cGdiMTNFdE0xTUM2WC9ra2twMXgxYUZzVjNYSDRCR0ZFYTkweC81?=
- =?utf-8?B?eldLd3lUNnJXNzByc1lYNnBFOFpSWURNeW9sVVNnSDN5MUR4Vk40NUdJb1ky?=
- =?utf-8?B?bG1ZTVlhZS9IaFNId29xM1RrcCt4YUFZbFZxckkrL1FXMjNQREQzdDc0aUpV?=
- =?utf-8?B?OGFnS2pRL04yd0EyZWx1azYwVU8zUStDcC96VlBKY1ZnZ3BTUDI2d3R2ZFVv?=
- =?utf-8?B?NmFQbGplZFZrSy9WY1BpcUtNVFh5OGNqUEo0MllkZWVQUlErU2JFdjYwNkJJ?=
- =?utf-8?B?cnZDWCszenRRSHIwSlU2ZitoRDFLaDJHRjg2QXA1eFlHTnd6bXNRajBiSGxX?=
- =?utf-8?B?SVk2OFpVV2p1K2R0Q2lMcHpMZGRXQ2c3N1N5Wm5Qd3BSOWwxSEdoL01uU0pL?=
- =?utf-8?B?R1Q5dXhUaklWSDVXazZHMC8vc2FxZ1ZTWGhOaTgvaFZIWVRFZ05TM1Z2Ritx?=
- =?utf-8?B?UDZ2ZXhnQkYrZjBpcE50ZmtpRko4Qi9uNGtnTjRUcDIwRldqK2d6MU9jZEt6?=
- =?utf-8?B?RDBDRVV2bCtkdm01ZGU3MTc1NU8rWFJIY0Q5bXNGNStwaEFZb3c3Mm43TlNQ?=
- =?utf-8?B?Q0lyZ3BVelpldGM1aDliN253OVBrZFdxb1pOeEIyTVpzTW40b011ZlZCUkh3?=
- =?utf-8?B?WkNYYUtBQ2RMMWVKTStST3I4Qk1JVmRSY21oZUdxRm1GeUJnRXN2M3FmWnhB?=
- =?utf-8?B?Y3dsbCtGZXhnYWgweGFyMWZXV0M3cHl0dVhra3UvQXd2Ynh2TXZjd3Z6Z2hS?=
- =?utf-8?B?MERTYzRiSGFiRm1lRkloUUxoakRPVkZ4UnBCZVZ5ZTlhT0tpR2RjdG14THA5?=
- =?utf-8?B?a0RFb2JETHdCZjh4dytUZVRyUmRxWHZQSG1aRFFCemRZSTFlTkdVRlQvTGw0?=
- =?utf-8?B?U0Z2ckNjU0VLYlBFTjN1T3F5SlFvVEJmZzhTRXNUdklyemxxZi9leGtjUktv?=
- =?utf-8?B?c21FZFp5VnVES3pUMkx4OEE5Vnd1WGNrVWllTm96MlNKUXV0Wm9TNHBYY2Nh?=
- =?utf-8?B?cTdNTnRYdS9ScDdtOVZCOXE0cXdTcXNlTis2ajBEcThFM3lHSkpzK1ZEd2xs?=
- =?utf-8?B?T0hEQkk1MGFEUGJwYlJINXJCRm55bWJHUXBsME1wNDhTMndvMjN0RXh3TG5M?=
- =?utf-8?B?ek9VRTF2a0hYV2g5bGRtV1g2aEJWdFpUTlZnK3AwK2VpMkZBWWVnQ3RJL3NZ?=
- =?utf-8?B?VldLYkNuaEd6Q2pKMDRHQWcxVWFiWllmS2lVaUx4YkRwc1IrVWRnZE9La3BJ?=
- =?utf-8?B?TmdBWmhKOW1sM1Q1ZlVsdVNxY2pDMzlIOW03RkVMbytyL1hLVVczT0FJZ09v?=
- =?utf-8?B?T0xzR1BaSTIrempqb29OOXVwdTFTT3ppK3pLdGVDQnR2Ylg3eE91dzlyWGdh?=
- =?utf-8?B?NUFlMHQ1RUpSRWdHeWlEbUFXSVF2bUlqU01iblpmVXk2NjhEcS9yOTZad2hy?=
- =?utf-8?B?SGVkV1lNdjV0UWlRRzQ4YU92NHBlNSt4R2NIYTVVM0VDeWFBRG5nMU9pdGtq?=
- =?utf-8?B?V2NZVE5hcWo5bUhiaVlEcFk4VXpoUGJRM2tJWUNKbU9ia0VvcTBHUHZHSzV0?=
- =?utf-8?B?dXN2allzYkVvRDVReEtEazFzL2FWak8rRUIxNVUzRm1OQ3NpM204YXJ0SkN5?=
- =?utf-8?B?TkMzWTdOZjVmS2xFT0xPVTF1eXdVNnNuRUVxOWY3alY0cGpkQmpaR29POFJE?=
- =?utf-8?B?TndYRTk4WDdtUFBOMTJCb1RjUk5UbmRDZ1hYL2ZIMVFLaUVuRHNGcDlhSWdV?=
- =?utf-8?B?eHNDVldWSExDSVVSMFhSUFZkckpLUmR0ckFSZlk5RWtWNWUzSFBiWjlDbHRV?=
- =?utf-8?Q?f70uO0BrT18=3D?=
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR08MB7120.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR08MB10264
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- AM3PEPF0000A798.eurprd04.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	eb3cb385-4134-4ab4-69f4-08ddc90fbf0f
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|14060799003|36860700013|376014|7416014|35042699022|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bkNpMWV6cnZqRVpJbTM3TlA2OW9LSTNXb0krMmV6TlBMZ2tWZzhkRExGOStD?=
- =?utf-8?B?Y1ZBTCtyMTRkbWx4TWluTFRHdm51MnpqMEZNcXF4ZEF1MGhGbGNEeW5uaWti?=
- =?utf-8?B?Q3AyZ3dVZEdxSkpMdWxyM0RBZzVJOVVUbDdXWGxqREUvQTQvcUliUk9aRlhE?=
- =?utf-8?B?OUxXSUZKV0d5VTJpYVdIdndqNE9RcThLVEJNTWk1bEcwai8raUFJbHEzdDRI?=
- =?utf-8?B?Mkp3Yzl2YmphaW03V3ZtbEFtaWJFT2E5RFlpU2pNb0JFSFZqYTZHRHl2SFJr?=
- =?utf-8?B?bWpLMkFEU1dhTDVGTFNIYS9BT1V5M1ZBVnJCNlZaNTVCb1FRc3ViNldmbDVX?=
- =?utf-8?B?QmJ2RkxNQ2tHNnBLbDFYVWhuVFZydks4UVordmhIeEMwSlJKcWJ3MmVLS2o2?=
- =?utf-8?B?QjJ0RVozaWk4ZTdwaG1nSE5VZUhDWXlhNDdWOUh0K2dVblJrby9RRVMvTjJP?=
- =?utf-8?B?M0FndEdnQW5LQXFheXFxV1VYa00ycXJSSC9EUFNyZENWT2hpeDdHR3IvRkU3?=
- =?utf-8?B?aUtTdUkyVFkxMjNGS1hLQk9oMWRZbk83L1BtY2JnVTB3dzJ4a083VzBlcFZI?=
- =?utf-8?B?dzk1TXlLUG0rUlRKNGovZTJqNVJRb0lVMUV3V1NYZU1sS2tkYmxURFFBT0Q2?=
- =?utf-8?B?ZU5Xbzc5QWppaVQ1RnI1MmdDNHgzTXF5SGczamc4aDdhZHdnVlhyclJDbWxv?=
- =?utf-8?B?TjQwRkdQbGljWTZtSkprYmJMSzRjYkovZm5kZHY0ZkxkRjY4b1dYeVZVazNl?=
- =?utf-8?B?S0kxYzBoaWJVQTZSZEdvZUw5RkhFaXpOVTRSL1hLMTZmU2lMWjdSaHE5R210?=
- =?utf-8?B?QTUzRkIycFdWb3Ewd0IvRGdTeXEyNUZGYU5vNWlDU1pCVG1LUFJEMDl4T0VQ?=
- =?utf-8?B?d3kyc0xsVUJQZ2ZZTExoV2FOQkV2NVRKcHdkb0Z3N1pRSGtoMHVEdEVVRVha?=
- =?utf-8?B?NlB0OUlsU2NsY2xxY2kwbHNxUi9DS3N6U1ppazBzMmNGeVdFeW9YczRYWU14?=
- =?utf-8?B?eUhZRmhJb3R6UmpXOGJvMlZIYzBkaUNjRW54SzMrNnBkL0EvcDJ0NG0ydjdx?=
- =?utf-8?B?elJPNkMrbUphOWNXd0FCRHVtdUJaV1g2dWNzWkFOTkM4TjVSbjlKM01UVFRR?=
- =?utf-8?B?eEFoMjQ2azJvelQxd3AyVXRDVVZ2YTJXOHlIb3dJOWFlSkdzVElSaGd5elJQ?=
- =?utf-8?B?T1lld2hqN3VxeXlUeE9HMFlDYlNld1VpdUllTWl0QU9EZDNUdzRBbUMwRmUx?=
- =?utf-8?B?Uy9jYzl0ZGprRWRXSmcwYmdvZXM3d2lKQXRnanlFSEZ4bGZRWW9JQlVtSXhv?=
- =?utf-8?B?ZHIwc2hPalBRb3JEdmdzSXlYVTA4ZjlPTHBaZHdVbE11K1QwTmQxeksrUDAr?=
- =?utf-8?B?U1duTGtFcmgzbDU1RmtXZnBEV2I1YTQrczkxUFIxazJ3MFNoYnpHa1FOWXRM?=
- =?utf-8?B?TzlXcTluUW1xcmo5TWJPQTF4Z3JoR0F5U0lEWXZWZTY4c0htTHZUMU9jMm11?=
- =?utf-8?B?NWs1MFBsc2hsV3NCQmRCUjBMOWNUbHQ4YW9hZW4wMnNjNlExN1NrTkJycFEw?=
- =?utf-8?B?ZHFHSnVWR2h6dThhK2xtbU9OeGhnN013SHkwb0cyWTd4MlM4K3NWaWhYNTNv?=
- =?utf-8?B?YUU1N3VRTTN0TXEwS2pXOURrZTlwTjhaQzB3K1ZmdVBaZUdZN1pRcEJuS05X?=
- =?utf-8?B?MGtkV0VyU2ZUTnBpaXVSczE4bWtFcllvT1pieHZoNTBuY1h0aE9wdGRjRmxJ?=
- =?utf-8?B?MWROYW1ueEhhRkJnbUhhQi9YYmQ2aStoZzJTVzJaeGdvaVozZlkvanBZZThu?=
- =?utf-8?B?cDY3U1NXN05nYUZvU0VyR1pyOWpvMy9YQ1FqZEkvUmRFZVpMenJPZHlXMlpl?=
- =?utf-8?B?TTdqMjBCakUxTk5LWmxoS3ltekdaZUt0c1JLR29aV0tBVE9xaW5kMFVMUTVG?=
- =?utf-8?B?ZnFxRk82T0hNQXhuUkxQREZJZEszd3U2c29ISzhLNWZWSElyUmtUR0V6MzEv?=
- =?utf-8?B?cTFkN3ZvUWVWMkJEZ3FlYzliS0VhTzhtdHFGMGVOSEZ1SDN4QnZjTzlrWjVT?=
- =?utf-8?Q?qSmLX0?=
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(14060799003)(36860700013)(376014)(7416014)(35042699022)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2025 11:06:36.1645
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 86e6d9f0-bf01-4b18-974a-08ddc90fd342
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AM3PEPF0000A798.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR08MB11010
-X-Stat-Signature: iat86aep3fmtc5uhjqafg3mhjpaizzt1
-X-Rspamd-Queue-Id: 2896C1A0005
-X-Rspamd-Server: rspam10
+References: <20250717162731.446579-1-tabba@google.com> <20250717162731.446579-12-tabba@google.com>
+ <8340ec70-1c44-47a7-8c48-89e175501e89@intel.com> <aH7KghhsjaiIL3En@google.com>
+ <c35b8c34-2736-45fe-8a97-bfedbf72537e@intel.com>
+In-Reply-To: <c35b8c34-2736-45fe-8a97-bfedbf72537e@intel.com>
+From: Fuad Tabba <tabba@google.com>
+Date: Tue, 22 Jul 2025 12:08:06 +0100
+X-Gm-Features: Ac12FXz9tmJwpwAgcImOsShRgOCpw0ZxfeluqVRurIjOexvh31HNQ0n432YkfPI
+Message-ID: <CA+EHjTzNDrwzdpoEuiqvzk3-A7LAsdJ-6y-Gcj7h7+dUTh=6pw@mail.gmail.com>
+Subject: Re: [PATCH v15 11/21] KVM: x86/mmu: Allow NULL-able fault in kvm_max_private_mapping_level
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-mm@kvack.org, kvmarm@lists.linux.dev, pbonzini@redhat.com, 
+	chenhuacai@kernel.org, mpe@ellerman.id.au, anup@brainfault.org, 
+	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
+	viro@zeniv.linux.org.uk, brauner@kernel.org, willy@infradead.org, 
+	akpm@linux-foundation.org, yilun.xu@intel.com, chao.p.peng@linux.intel.com, 
+	jarkko@kernel.org, amoorthy@google.com, dmatlack@google.com, 
+	isaku.yamahata@intel.com, mic@digikod.net, vbabka@suse.cz, 
+	vannapurve@google.com, ackerleytng@google.com, mail@maciej.szmigiero.name, 
+	david@redhat.com, michael.roth@amd.com, wei.w.wang@intel.com, 
+	liam.merwick@oracle.com, isaku.yamahata@gmail.com, 
+	kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com, steven.price@arm.com, 
+	quic_eberman@quicinc.com, quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, 
+	quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com, 
+	quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com, 
+	james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev, 
+	maz@kernel.org, will@kernel.org, qperret@google.com, keirf@google.com, 
+	roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, 
+	rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com, 
+	jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com, 
+	ira.weiny@intel.com
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: jrorp465uk1j8y7t5kt9uu9dgngpj7gx
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C7991140011
 X-Rspam-User: 
-X-HE-Tag: 1753182405-3847
-X-HE-Meta: U2FsdGVkX189Qecx3N35blf0wqzfVvM9Q5luJyAg1Tf2eZiePY3TNGVOPHXH8z2TRva+7A288gECnrzk29orbVMcIEXY310gpk1tY9TogbkzV5PZSqv/LjaV/lRoZk83Sjtdg82XPg4uA61yl/EVM5dW2EucbqZMlQsldaE5vdvyDrVWAAY84RhMabUYEHNGQm+TV7gOel3LeFOYQ/JDw+Fc7Pz6td0QfWac9DqpjjG54qPkVFL7AvWII/NVCCD8DaWZP0YbNFQcJEBDP93Raxo1OkmYuvA+vM6Sz4Zd189qIkhjpsQDf9csAdRPmuKrrX0kJztHN9Z2BC3VQgyHtZun4JMbDebqI4yl4XsThzVvyqLJLDYMwmlIjCC0b6kFFLY7NraPkzs7b6m0PC+Zchhalv+uLREpNgTJC87vJzkR1z89LNlOilVozoEktEN/ZEmficUBuweSu8VynpmNhl6Gz41EBhKIKRAugZBzbfNeIyzpT6e5FphTkDudPdj0LR+qapceyIOE4Bekwt+ToRGSNGUfzUBOVimnoMJDUG6KBWS2lviVyUJoT6EVVYXKvHCC7fuj3ygAXn6sLG7oZDblqdeyzo+8YAkUxs3nrAcomw6NjJQhsNXg1GdqT99qMTdPSRB5awDO/fCz2yNBG9zl1zSVToSEsZciGLoK8iaC29tnTP6vafkrSXsq1A/3H1OcY735R59zfCR3MyTXvLCVfjqPamPQ0utaCsb5U8ZazXMJQspFW1+JrtZuvBjGIloaIBwyEghs7zBF+rlp6AtrH4WOTO10yR2Nd17P3xwZ19E6O1xYoxqqXoWGPCoEhccQMecUIHAhzQRPZ0f2WSKN95V5z9ph2atppjybMKzfE0juZ+80aT7hrAXtthGa+Qaf2kjB8A7cRWY9IfUCvcCWnARd/NgDnPnNUF/dDiThv3FuVaVWC7FU28Vb1KNWQpMXSkCC6uAQRAh9Esv
- hRz/oiOL
- ffOdaKVCMXpKfeI+hpSevRModTrq1ykPaeXS8ljzZEd2SOjHC22LVl/jxI/gIq9MwkiaGN8R3q8X+10FHdOyoR0FqK1RpT/Ex9ka35EnBwJ0wMKMWC4PLVtKBMnzcFaUSh0UDaIAV4F9kYQmCiqfno6QD0UTOTbMJ4TQOoBkzbc/vaT1qzi4GbwDmueHaR5xxo/u9gCb9CuQxX5hMsGvZgylfo1+Aa+VNL6d/6itGXpus+grfpJ65OXXa7i/qltU0P4xo2f8qx3dNcKdmHliYXCa7S0vH37h2swoAyqE8cFSmzhmdUUYAKB9WWv/xgt6FOOvgoLCTdnWNTw2/Ntdt0AenfEbB0u5sFXopclu7XiS90uTivIlYdgU4LUsLS8hIyXyLmbInR/V4saZ+bcNPE+AILbW8FHsmhdS+agxOZvSJsyz4b74G+GIJi0tbg52B4nSoepH8YAExt8/zoMrIJPIsR9BiVSS/nC1y0LoqVJ5OxR8gkXOECSBrI/3vo8liw1kPQ32SgFYjS0bma767WdIhb8mBP7VvYsas87qogPQkO8g1ErS8okB+IhWJqTfqCna/QmbYjVo6ytaOL7iWbX3MIC8WEfd1S8HR8tJp4DF/10nP/K0o5foxYiZcC6cm3WM1rMEuT5UK2PH+RdAHz4Xa8Cb9msyRNAJH
+X-HE-Tag: 1753182524-913290
+X-HE-Meta: U2FsdGVkX18IQ6xu0I+9RkWmUS7hPiDGenCkDiZvTwaRg4VUuQ7EWpa89sJF9W2X9nGtr4Rurk93AhiVMEiVlyb7eXqjBuq3o6nVIevsSWRqofPjsd763hQRVjgTBHfgNFYZAuShUUb2YWSS26lVbSwR6ud6XOl3tCsg++xs+Z2Jj2pQzMhSmtF/RtDhU5ytnqMJr4nMFS+hgeAX4rKgvt6nUbnGvz44I+ZJdcBiEb0/VqP6HydxmID44zxRHrhY1gezf8KvMymZwoFkn1RgUOo1MBQkIi4lyLl9Orw2uiN/JOJszSbp1YiqUyIA7QV1E/EZoubrX4+0CdiJjOlVHt4TgeaWmdWu9L6h+Rcl7WK1nTkAGiEenSRQu45+talDRwxI+nhrZqlNuGc2ZPkcLg3fZOa6+rTG6cMZCOaluB/I67aw4m9LqguJvE0mPh306RUPiEtnk+wCvHDcu0nmGQeR7czp37E71bDXw3BMm/Ufb4yYQidQkxf731WIHZ8+/tVURXDgrWwp/mDJaZnr7eotzJnUGFiDIYEClPthDWfuXf6RJLwwZS+YKpalbWG9MkQg85AgvvgbXahxFDp3EehgnUD8F1w3yIHx1fgnO2Y36R+OwpP0xUIPBoPDzTxl1c2Jolg2Kgxe+WEXSrouaq9JZ7G/WiNEVki3EpiN8uAVQCzi2j6GTo86wqDsevmtikmy14iDqVloQkTOrhh5KhDNfPAoh50cfTf4HS1pvo52NJuWT4ctREFg/p8xmVlZaxPuBXwh8emgh/j509cpQdfSCILbBSYEA7FK/RFr4slTPkmQXX1DSCT5ncJJ//PZzPVpQbqvBXEeTIVd+KiuAbetMl1Aelvnkk2wnmndoivl+WcrqfD07deT6WSDZZLhf9CYxi0R2Xy0WErg9LHNQKiHmYnC2TLDCS2OjscqYOmTmwnYavFV9ONIFjXaH9nCVWIBt9WCo+vYUpdjr9W
+ BceTqwrG
+ AKa3+6Lx+/VR5g10ulB7s78R0+tf+mzOARTOGBBAaamTdoD2QUmyr8/s1LmnyRIj3TBVZTiFkTIFYSwTaRX+EHIoTBtDMXguVBc3cwO4D5QFLspsbgRiwdcNIqh9NXWEtuIX1akWDQBMA81tkomkwycWf75nLy/FzZSHNU8VQrisFaiGsvx7MsXiNYa4sN72nRgjsjmEy1MdBh6Dmjsi1OXTM9Gw2JHZwEFE/NSr9gbnDWnKSsJTDwBEAuQdZgwekdLhbt/VSoIS2DlxSHHUzv355qZYmzuZyNR8YtPafvOJTUgbzUyn2IPoQBZ+GVSGFmrjxJI/kPRbAFrWa+7up54pl7JuovhqY9Uvzx/IozSw36AXStVva/jLkIgUFO8nbeO0f
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -260,68 +132,170 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On 21/07/25 9:14 am, Dev Jain wrote:
+On Tue, 22 Jul 2025 at 06:36, Xiaoyao Li <xiaoyao.li@intel.com> wrote:
 >
-> On 21/07/25 5:14 am, Barry Song wrote:
->> On Fri, Jul 18, 2025 at 5:03 PM Dev Jain <dev.jain@arm.com> wrote:
->>> Reduce indentation by refactoring the prot_numa case into a new 
->>> function.
->>> No functional change intended.
->>>
->>> Signed-off-by: Dev Jain <dev.jain@arm.com>
->> Reviewed-by: Barry Song <baohua@kernel.org>
->>
->>> ---
->>>   mm/mprotect.c | 101 
->>> +++++++++++++++++++++++++++-----------------------
->>>   1 file changed, 55 insertions(+), 46 deletions(-)
->>>
->>> diff --git a/mm/mprotect.c b/mm/mprotect.c
->>> index 88709c01177b..2a9c73bd0778 100644
->>> --- a/mm/mprotect.c
->>> +++ b/mm/mprotect.c
->>> @@ -83,6 +83,59 @@ bool can_change_pte_writable(struct 
->>> vm_area_struct *vma, unsigned long addr,
->>>          return pte_dirty(pte);
->>>   }
->>>
->>> +static bool prot_numa_skip(struct vm_area_struct *vma, unsigned 
->>> long addr,
->>> +                          pte_t oldpte, pte_t *pte, int target_node)
->>> +{
->> [...]
->>
->>> +       /*
->>> +        * Skip scanning top tier node if normal numa
->>> +        * balancing is disabled
->>> +        */
->>> +       if (!(sysctl_numa_balancing_mode & NUMA_BALANCING_NORMAL) && 
->>> toptier)
->>> +               return true;
->>> +
->>> +       if (folio_use_access_time(folio))
->>> +               folio_xchg_access_time(folio, 
->>> jiffies_to_msecs(jiffies));
->> Nit: I wonder if this should be moved elsewhere, since this isn't
->> actually about 'skipping', even though the function is named
->> `prot_numa_skip()`.
+> On 7/22/2025 7:17 AM, Sean Christopherson wrote:
+> > On Fri, Jul 18, 2025, Xiaoyao Li wrote:
+> >> On 7/18/2025 12:27 AM, Fuad Tabba wrote:
+> >>> From: Ackerley Tng <ackerleytng@google.com>
+> >>>
+> >>> Refactor kvm_max_private_mapping_level() to accept a NULL kvm_page_fault
+> >>> pointer and rename it to kvm_gmem_max_mapping_level().
+> >>>
+> >>> The max_mapping_level x86 operation (previously private_max_mapping_level)
+> >>> is designed to potentially be called without an active page fault, for
+> >>> instance, when kvm_mmu_max_mapping_level() is determining the maximum
+> >>> mapping level for a gfn proactively.
+> >>>
+> >>> Allow NULL fault pointer: Modify kvm_max_private_mapping_level() to
+> >>> safely handle a NULL fault argument. This aligns its interface with the
+> >>> kvm_x86_ops.max_mapping_level operation it wraps, which can also be
+> >>> called with NULL.
+> >>
+> >> are you sure of it?
+> >>
+> >> The patch 09 just added the check of fault->is_private for TDX and SEV.
+> >
+> > +1, this isn't quite right.  That's largely my fault (no pun intended) though, as
+> > I suggested the basic gist of the NULL @fault handling, and it's a mess.  More at
+> > the bottom.
+> >
+> >>> Rename function to kvm_gmem_max_mapping_level(): This reinforces that
+> >>> the function's scope is for guest_memfd-backed memory, which can be
+> >>> either private or non-private, removing any remaining "private"
+> >>> connotation from its name.
+> >>>
+> >>> Optimize max_level checks: Introduce a check in the caller to skip
+> >>> querying for max_mapping_level if the current max_level is already
+> >>> PG_LEVEL_4K, as no further reduction is possible.
+> >>>
+> >>> Acked-by: David Hildenbrand <david@redhat.com>
+> >>> Suggested-by: Sean Christoperson <seanjc@google.com>
+> >>> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> >>> Signed-off-by: Fuad Tabba <tabba@google.com>
+> >>> ---
+> >>>    arch/x86/kvm/mmu/mmu.c | 16 +++++++---------
+> >>>    1 file changed, 7 insertions(+), 9 deletions(-)
+> >>>
+> >>> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> >>> index bb925994cbc5..6bd28fda0fd3 100644
+> >>> --- a/arch/x86/kvm/mmu/mmu.c
+> >>> +++ b/arch/x86/kvm/mmu/mmu.c
+> >>> @@ -4467,17 +4467,13 @@ static inline u8 kvm_max_level_for_order(int order)
+> >>>     return PG_LEVEL_4K;
+> >>>    }
+> >>> -static u8 kvm_max_private_mapping_level(struct kvm *kvm,
+> >>> -                                   struct kvm_page_fault *fault,
+> >>> -                                   int gmem_order)
+> >>> +static u8 kvm_gmem_max_mapping_level(struct kvm *kvm, int order,
+> >>> +                                struct kvm_page_fault *fault)
+> >>>    {
+> >>> -   u8 max_level = fault->max_level;
+> >>>     u8 req_max_level;
+> >>> +   u8 max_level;
+> >>> -   if (max_level == PG_LEVEL_4K)
+> >>> -           return PG_LEVEL_4K;
+> >>> -
+> >>> -   max_level = min(kvm_max_level_for_order(gmem_order), max_level);
+> >>> +   max_level = kvm_max_level_for_order(order);
+> >>>     if (max_level == PG_LEVEL_4K)
+> >>>             return PG_LEVEL_4K;
+> >>> @@ -4513,7 +4509,9 @@ static int kvm_mmu_faultin_pfn_private(struct kvm_vcpu *vcpu,
+> >>>     }
+> >>>     fault->map_writable = !(fault->slot->flags & KVM_MEM_READONLY);
+> >>> -   fault->max_level = kvm_max_private_mapping_level(vcpu->kvm, fault, max_order);
+> >>> +   if (fault->max_level >= PG_LEVEL_4K)
+> >>> +           fault->max_level = kvm_gmem_max_mapping_level(vcpu->kvm,
+> >>> +                                                         max_order, fault);
+> >>
+> >> I cannot understand why this change is required. In what case will
+> >> fault->max_level < PG_LEVEL_4K?
+> >
+> > Yeah, I don't get this code either.  I also don't think KVM should call
+> > kvm_gmem_max_mapping_level() *here*.  That's mostly a problem with my suggested
+> > NULL @fault handling.  Dealing with kvm_gmem_max_mapping_level() here leads to
+> > weirdness, because kvm_gmem_max_mapping_level() also needs to be invoked for the
+> > !fault path, and then we end up with multiple call sites and the potential for a
+> > redundant call (gmem only, is private).
+> >
+> > Looking through surrounding patches, the ordering of things is also "off".
+> > "Generalize private_max_mapping_level x86 op to max_mapping_level" should just
+> > rename the helper; reacting to !is_private memory in TDX belongs in "Consult
+> > guest_memfd when computing max_mapping_level", because that's where KVM plays
+> > nice with non-private memory.
+> >
+> > But that patch is also doing too much, e.g. shuffling code around and short-circuting
+> > the non-fault case, which makes it confusing and hard to review.  Extending gmem
+> > hugepage support to shared memory should be "just" this:
+> >
+> > @@ -3335,8 +3336,9 @@ int kvm_mmu_max_mapping_level(struct kvm *kvm, struct kvm_page_fault *fault,
+> >          if (max_level == PG_LEVEL_4K)
+> >                  return PG_LEVEL_4K;
+> >
+> > -       if (is_private)
+> > -               host_level = kvm_max_private_mapping_level(kvm, fault, slot, gfn);
+> > +       if (is_private || kvm_memslot_is_gmem_only(slot))
+> > +               host_level = kvm_gmem_max_mapping_level(kvm, fault, slot, gfn,
+> > +                                                       is_private);
+> >          else
+> >                  host_level = host_pfn_mapping_level(kvm, gfn, slot);
+> >          return min(host_level, max_level);
+> >
+> > plus the plumbing and the small TDX change.  All the renames and code shuffling
+> > should be done in prep patches.
+> >
+> > The attached patches are compile-tested only, but I think they get use where we
+> > want to be, and without my confusing suggestion to try and punt on private mappings
+> > in the hugepage recovery paths.  They should slot it at the right patch numbers
+> > (relative to v15).
+> >
+> > Holler if the patches don't work, I'm happy to help sort things out so that v16
+> > is ready to go.
 >
-> Agreed, thanks. We can use prot_numa_skip() only to return true
-> or false, and if returned false, we can call folio_xchg_access_time.
-> I will wait for 2-3 days for any more comments and respin.
-
-Since Andrew has already pulled this and we are quite late into the
-
-release cycle, I'll do this cleanup in the next cycle.
-
-
+> I have some feedback though the attached patches function well.
 >
->>
->>> +       return false;
->>> +}
->>> +
->> Thanks
->> Barry
+> - In 0010-KVM-x86-mmu-Rename-.private_max_mapping_level-to-.gm.patch,
+> there is double gmem in the name of vmx/vt 's callback implementation:
 >
+>      vt_gmem_gmem_max_mapping_level
+>      tdx_gmem_gmem_max_mapping_level
+>      vt_op_tdx_only(gmem_gmem_max_mapping_level)
+
+Sean's patches do that, then he fixes it in a later patch. I'll fix
+this at the source.
+
+> - In 0013-KVM-x86-mmu-Extend-guest_memfd-s-max-mapping-level-t.patch,
+>    kvm_x86_call(gmem_max_mapping_level)(...) returns 0 for !private case.
+>    It's not correct though it works without issue currently.
+>
+>    Because current gmem doesn't support hugepage so that the max_level
+>    gotten from gmem is always PG_LEVEL_4K and it returns early in
+>    kvm_gmem_max_mapping_level() on
+>
+>         if (max_level == PG_LEVEL_4K)
+>                 return max_level;
+>
+>    But just look at the following case:
+>
+>      return min(max_level,
+>         kvm_x86_call(gmem_max_mapping_level)(kvm, pfn, is_private));
+>
+>    For non-TDX case and non-SNP case, it will return 0, i.e.
+>    PG_LEVEL_NONE eventually.
+>
+>    so either 1) return PG_LEVEL_NUM/PG_LEVEL_1G for the cases where
+>    .gmem_max_mapping_level callback doesn't have specific restriction.
+>
+>    or 2)
+>
+>         tmp = kvm_x86_call(gmem_max_mapping_level)(kvm, pfn, is_private);
+>         if (tmp)
+>                 return min(max_level, tmp);
+>
+>         return max-level;
+
+Sean? What do you think?
+
+Thanks!
+/fuad
 
