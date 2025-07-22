@@ -2,120 +2,106 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D9131C83F1A
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 12:17:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CA355C83F27
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 12:32:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0EDBC8E0003; Tue, 22 Jul 2025 08:17:02 -0400 (EDT)
+	id 662598E0005; Tue, 22 Jul 2025 08:32:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09E178E0001; Tue, 22 Jul 2025 08:17:02 -0400 (EDT)
+	id 612748E0001; Tue, 22 Jul 2025 08:32:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA8738E0003; Tue, 22 Jul 2025 08:17:01 -0400 (EDT)
+	id 501658E0005; Tue, 22 Jul 2025 08:32:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D75578E0001
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 08:17:01 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 95A371603A4
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 12:17:01 +0000 (UTC)
-X-FDA: 83691799842.12.A9F383D
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6B8E040005
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 12:16:59 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gVrmMhvx;
-	spf=pass (imf12.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753186619; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A8908E0001
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 08:32:34 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F180D111D0B
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 12:32:33 +0000 (UTC)
+X-FDA: 83691838986.27.4F9F10D
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+	by imf25.hostedemail.com (Postfix) with ESMTP id EFD53A0002
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 12:32:31 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WeLHgmXx;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of kunwu.chan@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753187552; a=rsa-sha256;
 	cv=none;
-	b=wLGOV+SS7d7uucft9X/EqIk78pdakk5YVdz4mfvuf7NzhS1rY7Vezofq/H4/dQs/xh4yZT
-	MIt1fX8qZi3mypjyxt4KytXvOI013V8alT/mwKs4a0wiskuW/wuJfPTrnK8p8MgoD2rRTG
-	+g7iENgcC1L/Q4qQsd8NhWrFBVQaj84=
+	b=v0jmdku2TNwRk+dl+fxeN28WDi+l6VgtSKY3EFsMwydztFLLbHz3rkyKKoyH8eBuPEhIvW
+	yLG6E2fW/3LqhMB1kuY/CjUhmNRMmDEP/rZlggEk86vx411laR58NnZ24pnGZm6asvAcUM
+	p15qVhOWTWNWVMT/74Irkigbx57wPOc=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gVrmMhvx;
-	spf=pass (imf12.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WeLHgmXx;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of kunwu.chan@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753186619;
+	s=arc-20220608; t=1753187552;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d2dh4GvcIefc0hFeVr2+yL7P2gWg4zPcsSe2xE6W3bs=;
-	b=gqFUR7NneuVzq61sNa6WPFQszhX7jHuM3DQ/LhCrEgOh6Ud4diea3uIbR1LWCOIcWF5Q4N
-	1/DJ27QOtajPTkN+BUhhF8if8In7/Ym55IfbV4/0chYuwq0VqEF24z6bUrhsV3FDUsmPrk
-	WwyIaKe0f1AY0XptFay+CaxeWqS7YpU=
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6fad3400ea3so50408366d6.0
-        for <linux-mm@kvack.org>; Tue, 22 Jul 2025 05:16:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753186618; x=1753791418; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d2dh4GvcIefc0hFeVr2+yL7P2gWg4zPcsSe2xE6W3bs=;
-        b=gVrmMhvxwGItvhTubkIalH/3xxBj1IQyxnuw4wbNzVMp0Pxu2aRdWhn6UkLTGHILJ0
-         /O05sUV0BDoeb9+40OHqJ0klarhaXynVThbKP9VjKg8jsQEE/FZsHgyocJWC7DyfUdRH
-         LOPyNzAAUMxgS64EeMiS7AgCLb59V7ogkxRP8BuQEO5PBXYfZG/iGrs/JT0QUTn16VLP
-         CXvy/w6yibFUMFDSUzj7VdZ9uTDYACsgdxMQ1+daukfRbokWnPnLE1Gh682SOCDUHxIW
-         rA0QqzMSshZ2LdjhC86WJt4YHZaqg5qu7OJQH9c2Kiwo7Kwx1PHAnnFl5aI+ZxMdsSQ5
-         qYBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753186618; x=1753791418;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=d2dh4GvcIefc0hFeVr2+yL7P2gWg4zPcsSe2xE6W3bs=;
-        b=ioWJg2AJsZavKbiExWQ8rLoAXsPGAEkhVi6jkyDYVI1nzq2AbWNr9FmaZWuqjQ0/Dz
-         KTtGxexwX3Xxa5Z2E3scbB7lNiwomzAr1YOWOc6XsL+R0Pk6hNH+wg9Anbp9IgoA3BpW
-         aNcNJJIGou6viEC0RMaPzHnMt47Km3B1qeTl0Sa5E42xTubFKCJ6gTOHWMaarNV4MDMp
-         dalxeeOcIEbFZDsPOaL3eq/Sx7VCqkFgwyNH6DD/ilTOPfUA3V2+6mAg+7oUyTTGMNb4
-         mycxeFMGn+0RUstvQCE4uGY5wdysZuJprtH5PLNVjxFMpClw50WXdlDryquOWhVHTr+T
-         jycQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXZkC49VPMUf9QudCuvXRiTnk8dqrGNkdjcoDwGBqoLKd1yxLIBdCMhvk6WgVvEdABi3jv52t8y9w==@kvack.org
-X-Gm-Message-State: AOJu0Yx1GQ3h1qJumNu+mvEPwtAggYrVTSsU8HOKBaem37gTP4OJn+YF
-	K0vL7kW9TePUkAYHuzfZEYO2BwC7+FlVyxCUdYXH40eU7igO2yhJoQ1xa+5fx6MjoIceuLNCfE/
-	r3b2a+5sRU55o3c64M13ugxnQq6eE6SY=
-X-Gm-Gg: ASbGnctbzF8VqdiVRECcDxsJH9V3sskjhWPlu8Lnp5joEHRxmYkUM9sC2GgxUZGZs0Y
-	6uJ4SFUbLxwPwTp/Bu6NNW0kEY/9BIljPDE8e8xCd6tb50KfpMWNIBt6e4JGCv/U5AGbOekRGFe
-	QphEvx/wATuOpmJFPJ9TGyuCTCZVhlV0mnkp/uo5Zi52V1RBT6UkJbbbwrFtgYDOHsMDVXPYc0p
-	ewp/100
-X-Google-Smtp-Source: AGHT+IHobXtgKhcXxKs5zE1UVYtEi4Qw+CLzI/vVtT8yLXo7N7RF6680jlqb/8T5JSOGZWQ0LwDWzc6hojOUMno0Hh4=
-X-Received: by 2002:a05:6214:dc7:b0:6f8:a978:d46 with SMTP id
- 6a1803df08f44-7050722961cmr354570346d6.19.1753186618099; Tue, 22 Jul 2025
- 05:16:58 -0700 (PDT)
+	bh=7MMMOAOPjOBlhMHrulLMPV/ml/XegyxT79zgI8vdaQc=;
+	b=v5TlwYLInkq/zDGm6wg7CvdzU3N46o9RFrHGRokpvEfjW8DKfo/Y/u2xf9yrL/G4miAsjp
+	v9RvXh+F4aQ9YbV8KMqtju0N6I8kQ5NAdMzql3NZGoFdasjrVr1PJff99fD/xomlAdt4f1
+	mFIIqrNrQKIGp706lkbN07dVmHOOyxc=
+Message-ID: <07976427-e5a4-4ca4-93e9-a428a962b0b2@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1753187549;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7MMMOAOPjOBlhMHrulLMPV/ml/XegyxT79zgI8vdaQc=;
+	b=WeLHgmXx0r97gR/zn1eWenIdriuOSpYVj9Enitmu+wk6hPYUCHXPbtDMke+K2iZ8CfIEli
+	L2PPPUlUHtpcnh+fY+glHgeelj+WuvAribXpZM+k/8swY851tIbGWUVGWzbcfzmko35xvp
+	bSykaR5ROyJfWZ7ZJwWd2TTVDWbPsEs=
+Date: Tue, 22 Jul 2025 20:31:34 +0800
 MIME-Version: 1.0
-References: <20250608073516.22415-1-laoar.shao@gmail.com> <b2fc85fb-1c7b-40ab-922b-9351114aa994@redhat.com>
- <CALOAHbD2-f5CRXJy6wpXuCC5P9gqqsbVbjBzgAF4e+PqWv0xNg@mail.gmail.com>
- <9bc57721-5287-416c-aa30-46932d605f63@redhat.com> <CALOAHbBoZpAartkb-HEwxJZ90Zgn+u6G4fCC0_Wq-shKqnb6iQ@mail.gmail.com>
- <87a54cdb-1e13-4f6f-9603-14fb1210ae8a@redhat.com> <CALOAHbA5NUHXPs+DbQWaKUfMeMWY3SLCxHWK_dda9K1Orqi=WA@mail.gmail.com>
- <404de270-6d00-4bb7-b84b-ae3b1be1dba8@redhat.com> <694a8b10-6082-44ac-8239-2c28b4ba8640@lucifer.local>
- <CALOAHbBepZiORN2yLvDDQWbvom38HHvCyqAqvS7uKzQqy8zgjg@mail.gmail.com> <dda67ea5-2943-497c-a8e5-d81f0733047d@lucifer.local>
-In-Reply-To: <dda67ea5-2943-497c-a8e5-d81f0733047d@lucifer.local>
-From: Yafang Shao <laoar.shao@gmail.com>
-Date: Tue, 22 Jul 2025 20:16:20 +0800
-X-Gm-Features: Ac12FXyMzY-ryTl9mU_SERXrlYB3V2uAa7Zc3M0QA5uuO-MZVuqrYonrF1COTzI
-Message-ID: <CALOAHbDxjQrk4qjd4PouxfS=ZpR=HtL6Su53vsxvJWHckKoM_g@mail.gmail.com>
-Subject: Re: [RFC PATCH v3 0/5] mm, bpf: BPF based THP adjustment
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: David Hildenbrand <david@redhat.com>, Alexei Starovoitov <alexei.starovoitov@gmail.com>, 
-	Matthew Wilcox <willy@infradead.org>, akpm@linux-foundation.org, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, hannes@cmpxchg.org, 
-	usamaarif642@gmail.com, gutierrez.asier@huawei-partners.com, ast@kernel.org, 
-	daniel@iogearbox.net, andrii@kernel.org, bpf@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v15 16/21] KVM: arm64: Handle guest_memfd-backed guest
+ page faults
+Content-Language: en-US
+To: Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, kvmarm@lists.linux.dev
+Cc: pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au,
+ anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, seanjc@google.com, viro@zeniv.linux.org.uk,
+ brauner@kernel.org, willy@infradead.org, akpm@linux-foundation.org,
+ xiaoyao.li@intel.com, yilun.xu@intel.com, chao.p.peng@linux.intel.com,
+ jarkko@kernel.org, amoorthy@google.com, dmatlack@google.com,
+ isaku.yamahata@intel.com, mic@digikod.net, vbabka@suse.cz,
+ vannapurve@google.com, ackerleytng@google.com, mail@maciej.szmigiero.name,
+ david@redhat.com, michael.roth@amd.com, wei.w.wang@intel.com,
+ liam.merwick@oracle.com, isaku.yamahata@gmail.com,
+ kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com,
+ steven.price@arm.com, quic_eberman@quicinc.com, quic_mnalajal@quicinc.com,
+ quic_tsoni@quicinc.com, quic_svaddagi@quicinc.com,
+ quic_cvanscha@quicinc.com, quic_pderrin@quicinc.com,
+ quic_pheragu@quicinc.com, catalin.marinas@arm.com, james.morse@arm.com,
+ yuzenghui@huawei.com, oliver.upton@linux.dev, maz@kernel.org,
+ will@kernel.org, qperret@google.com, keirf@google.com, roypat@amazon.co.uk,
+ shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, rientjes@google.com,
+ jhubbard@nvidia.com, fvdl@google.com, hughd@google.com,
+ jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com,
+ ira.weiny@intel.com
+References: <20250717162731.446579-1-tabba@google.com>
+ <20250717162731.446579-17-tabba@google.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kunwu Chan <kunwu.chan@linux.dev>
+In-Reply-To: <20250717162731.446579-17-tabba@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6B8E040005
-X-Stat-Signature: 8cxfsjx33wrauhusb7jzqzptyc4n54dt
-X-HE-Tag: 1753186619-768226
-X-HE-Meta: U2FsdGVkX19YgIi786nZxt1885WKL7gVEsNnOZ4L6QbyQ+JJsLgUM0hgu5zhQQkID4vqFL+A5KgvuydC+AtTGDwU9IQOL7uHQhQoX4hSdY4Jem5QBB3B1g8r7uMcTwJ7djqenf7qyPkQ4hNI+w55ZyfLMwGWjepQBfZBk1DZhWZEimUCzuTKV8Fqr2Jn9PoFsRvojHI0+5e31HG8ueLRpimThahu29pzvxgEnjqjomUH7KNoNX4UEPSKRzsztKn8ffzxZuZZAxrdrZnAsSZSIAvrBxxKi0kiG9YgRTQ/w2zRB5z3IWEbBd5REB/kSt8J9oXJzXJFajckCx8EuMM5kpTEL1/qs22Rh0kNXTnxB0nlmkhjJdUqaRh4tDZV/YrmNlbOIZZWeG+ydB1wXyFfspm3xDC5slV4zOFhMBRZB8AwI+vM9n+vH2lwGOkSJCGFW4CUtm8FOZ97O4x1J5WBG0uqTg49AY3LwunLqK5TXdYAaxTHQRcF+fLdK5aS4p7x+1cFmN2KMeHVpifSQnaq8Qn+5/+ELRR7D6ypcb5SnBeewcAsCY3BrzWZBDqIzgR4xjFe1iXU1hd+BvDdKJJpMxZ9Y/PMhx56q3aXDOq4m56L+7G4k7Cj2u6arCmEoQwrZTSi6QnxjDbe2Hj6z1qOT24vJsY1fHi1CjwGg7Ea377SdZ/XxEHhtwpWL+Uc0kf19Q6c7OV81ynVuxjVWK9ESYmgllKV7ZZlNvuZqiB1ajkx3uotTAMq7UgZ9JNurT+0/m1vT7kOt8r1qcUvMJ9Fl6Spo3THZ21Q+5464DHpO8Sxuo+RCE8CQv9gi+fC90L17I7SJK21JNSeT04dxWis3wouA84jph9v7Np5NCPgWPVOZ9JY8WHxvDXpvR7GrMelbNWwiag3MAVLP7x1NrJn5NvQhgZ50TEha07sK0dC1WRSE4X12jU520ycrvuVuLHZ+UMuIaC3W+Eyz0cuvn9
- ebI+qd3P
- n6Soymf2OF+IUKoQqdsE18rN+EOUQGtXYeg4AxuxdBOTs0hbpBPFmQZ+0MpaxjnEolb9l3DWyeMdN4RRZDVfFoPHwAhA8Cj37HUhbgVylXPwhF/qfu0/APuzX8ZDOTjLY0sMp9yS6JUEXY7FlGF3Gc0vhOzurjO44u15l1/Mb/5AhHHzqOGBVSpH87K3QxWloLfLZAHmkdv2SxW+0Hm5R/qgtovrozQlDfTExCHAe9Wz0kazKonUQBPHr0GipYsXhIXgxowsSA/YazPOqOzATqglEMM3tcmQgIiatNGzs78bHy0C3nYb8L2Y3+n4Wbz5tbWKheKdG5i375eeCNH6kJK71pAS5dLfyuXXWsT+JZ+vyhlokePKRim4W0cn0p7pGvRwHOLrqG/WGBJ+Ptk6YtS308gNxWD2nA9DDEdcWXOMdDp99U6d+Fl93rz/tDunPFE2jyfaLGc9Mxv1qVIidchv5Iw==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: EFD53A0002
+X-Stat-Signature: 6uc791ie4pz51zw7m39qan66ht41wggb
+X-HE-Tag: 1753187551-798053
+X-HE-Meta: U2FsdGVkX185j0+i3cxy5UAt1XmnicVy8op8b3Ux17gIxQS6wxbQAw+nSp/mxRgr54BkI1bwF3h6awVgf8HcHMpCAbxtHcdnhTbWx7GheJ99Uit0wjzjFandyFeni+3EfyoGM0IWFt6W6yobf+nEZF6mpeSJYSD8jy7xB4ZHhwEN475S6JbtjN7kJJWmaoU7ISFDxeQVcIVwNbMNwApgRWUKOsrG1X3SXfCtWVW3hWp5r4HtUCRUUNEG4c6HuPz4k505veRMHp+ozB57NQCGI1ccQbwlEeYBs/lmTVHmt/HQxJplggqCw6HqbQgehwgLFO8yf0xQPQtWiCQGwIqxN+/HgtWTZws47OhH3Paonxmgfznuag4/aMe2o8XV+J7JPMZbHWx6NjAxcg7UahTMTvmjmX6p8UKQZCBNWcqXyG6NB1hNhHLf7KsozQZyYSAKcLa+6ISqqgNKycbFYcIyrKoJOVdTzL6wrpkO9ZoGGIFmcsJra+QH273a0vfrqLlbumicghN2vvNbTzdDL5rkZnCIBxP6zjy7Xg7SpZSH3Tv4msILSadraqK2uk0Wqg/020mqKFzZJA9MVqcV2T1DMEkD79FkPQoMibtUwMvcFqZ2dFjS6mV8oMYXMetBxpuoNMyGVMRoawdvZN9Ti3DXyVMSAr+6k8KlSjqhabh5iKmH9oaKuI02ednIQV0ZrxMYRG6lNpP3b1UvAyFrRnpOZ9LOe6gV3jKAdd4/jAh6bKNpaiAKC4zpKc7x/YKQ2nC9Xzx81zpJsGhUf2BLz4GF+xkMZcWoX+PxMXmLldXzLSE0Y7ORoCxPlh47LySJs11qWxJBW1FU4bXN/11/DGOCZm0Ug5JOjqOC8SiOpmvDiO3H3Q+g/oetAqewcQY2iL/Pv2w0H8v42racAF/buRhUaAAkSHu0vMokYE4+CUYRkQcFEs6hmJUO+usDGS1I3y2GiFYDbBmq+Y2hRqcAaUt
+ SEB/fkqE
+ 9R1lxhviD5AvKqW+Rpz7Bmham9GkTBMVqVNYKY/YmtdZRSJ9Qg35yaVZ6imHkM2ETb15O3YHKaF3pYvK9QlXjsCeGYK7l5GV3kRhLy1I74jpblDyscaEE1jizgzacadOjJsT90o7tXsKrkGEFhbz8aTFBKpfgTncuJ5ne86GZa22FgAPYAsTH4U2I9wgeE+WOJCXU8kbTEhkMUvONe++2RHNW2rqGx6wrElUy0RuOOsnyVczdg1CUtop3idqZXx6uWIwBXVHY18tfZIiP7JoKKMii602PpPJ/uswEyRCOqY8mVMu3AVKwyou/orGS6CT9pr+Jt90XqNMxhA64zOtif/OZ5krNMzSX/mLREs9bdSTAJQnQLkhKIc3KFRNE63QUszsh//Xx773n2145M18FenWBwLLgqBUBga7B
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,138 +110,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 22, 2025 at 8:05=E2=80=AFPM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
+On 2025/7/18 00:27, Fuad Tabba wrote:
+> Add arm64 architecture support for handling guest page faults on memory
+> slots backed by guest_memfd.
 >
-> On Tue, Jul 22, 2025 at 07:56:21PM +0800, Yafang Shao wrote:
-> > On Tue, Jul 22, 2025 at 6:09=E2=80=AFPM Lorenzo Stoakes
-> > <lorenzo.stoakes@oracle.com> wrote:
-> > >
-> > > On Tue, Jul 22, 2025 at 09:28:02AM +0200, David Hildenbrand wrote:
-> > > > On 22.07.25 04:40, Yafang Shao wrote:
-> > > > > On Sun, Jul 20, 2025 at 11:56=E2=80=AFPM David Hildenbrand <david=
-@redhat.com> wrote:
-> > > > > >
-> > > > > > > >
-> > > > > > > > We discussed this yesterday at a THP upstream meeting, and =
-what we
-> > > > > > > > should look into is:
-> > > > > > > >
-> > > > > > > > (1) Having a callback like
-> > > > > > > >
-> > > > > > > > unsigned int (*get_suggested_order)(.., bool in_pagefault);
-> > > > > > >
-> > > > > > > This interface meets our needs precisely, enabling allocation=
- orders
-> > > > > > > of either 0 or 9 as required by our workloads.
-> > >
-> > > That's great to hear, and to be clear my views align with David on th=
-is - I
-> > > feel like having a _carefully chosen_ BPF interface could be valuable=
- here,
-> > > especially in the short to medium term where it will allow us to more
-> > > rapidly iterate on an automated [m]THP mechanism.
-> > >
-> > > I think one key question here is - do we want to retain a _permanent_=
- BPF
-> > > hook here?
-> > >
-> > > In any cae, for the first experiments with this we absolutely _must_ =
-be
-> > > able to express that this is going away, NO, not based on whether it'=
-s
-> > > widely used, it IS going away.
-> >
-> > If this BPF kfunc provides clear user value with minimal maintenance
-> > overhead, what would be the rationale for removing it? That said, if
-> > you and David both agree it should be deprecated, I won't object -
-> > though I'd suggest following the standard deprecation process.
+> This change introduces a new function, gmem_abort(), which encapsulates
+> the fault handling logic specific to guest_memfd-backed memory. The
+> kvm_handle_guest_abort() entry point is updated to dispatch to
+> gmem_abort() when a fault occurs on a guest_memfd-backed memory slot (as
+> determined by kvm_slot_has_gmem()).
 >
-> You see herein lies the problem... :) from my point of view we want to ha=
-ve
-> the ability to choose, fundamentally.
->
-> We may find out the proposed interface is unworkable, or sets assumptions
-> we don't want to make.
->
-> So I think hiding ehhind a CONFIG_ flag is the best idea here to really
-> enforce that and make it clear.
->
-> Personally I have a sense that we _will_ introduce something permanent. W=
-e
-> just need to have the 'space' to positively decide to do that once the
-> experimentation is complete.
+> Until guest_memfd gains support for huge pages, the fault granule for
+> these memory regions is restricted to PAGE_SIZE.
 
-Thanks for your explanation.
+Since huge pages are not currently supported, would it be more friendly 
+to define  sth like
 
->
-> > > I find this documentation super contradictory. I'm sorry but you can'=
-t
-> > > have:
-> > >
-> > > "...can therefore be modified or removed by a maintainer of the subsy=
-stem
-> > >  they=E2=80=99re defined in when it=E2=80=99s deemed necessary."
-> > >
-> > > And:
-> > >
-> > > "kfuncs that are widely used or have been in the kernel for a long ti=
-me
-> > > will be more difficult to justify being changed or removed by a
-> > > maintainer."
-> > >
-> > > At the same time. Let alone:
-> > >
-> > > "A kfunc will never have any hard stability guarantees. BPF APIs cann=
-ot and
-> > > will not ever hard-block a change in the kernel purely for stability
-> > > reasons"
-> > >
-> > > Make your mind up!!
-> > >
-> > > I mean the EXPORT_SYMBOL_GPL() example isn't accurate AT ALL - we can
-> > > _absolutely_ change or remove those _at will_ as we don't care about
-> > > external modules.
-> > >
-> > > Really this seems to be saying, in not so many words, that this is
-> > > basically a kAPI and you can't change it.
-> > >
-> > > So this strictly violates what we need here.
-> >
-> > The maintainers have the authority to make the final determination ;-)
->
-> Well the kernel doesn't entirely work this way... pressure can come which
-> impacts what others may do.
->
-> If you have people saying 'hey we rely on this and removing it will break
-> our cloud deployment' and 'hey I checked the docs and it says you guys ha=
-ve
-> to take this into account', I am not so sure Andrew or Linus will accept
-> the patch.
+"#define GMEM_PAGE_GRANULE PAGE_SIZE" at the top (rather than hardcoding 
+PAGE_SIZE)
 
-understood.
+  and make it easier to switch to huge page support later?
 
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Reviewed-by: James Houghton <jthoughton@google.com>
+> Signed-off-by: Fuad Tabba <tabba@google.com>
+> ---
+>   arch/arm64/kvm/mmu.c | 86 ++++++++++++++++++++++++++++++++++++++++++--
+>   1 file changed, 83 insertions(+), 3 deletions(-)
 >
-> > > I wonder if we can use a CONFIG_xxx and put this behind that, which
-> > > specifically says 'WE WILL REMOVE THIS'
-> > > CONFIG_EXPERIMENTAL_DO_NOT_USE_THP_THINGY :P
-> >
-> > That's a reasonable suggestion. We could implement this function under
-> > CONFIG_EXPERIMENTAL to mark it as experimental infrastructure.
->
-> Thanks! Yes, I was looking for this flag :P didn't know if we still had
-> that or not actually...
->
-> But, yeah, putting it behind that explicitly also makes it very clearly.
->
-> CONFIG_EXPERIMENTAL_BPF_FAULT_ORDER relies on CONFIG_EXPERIMENTAL makes i=
-t
-> you know... pretty clear ;)
+> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> index b3eacb400fab..8c82df80a835 100644
+> --- a/arch/arm64/kvm/mmu.c
+> +++ b/arch/arm64/kvm/mmu.c
+> @@ -1512,6 +1512,82 @@ static void adjust_nested_fault_perms(struct kvm_s2_trans *nested,
+>   	*prot |= kvm_encode_nested_level(nested);
+>   }
+>   
+> +#define KVM_PGTABLE_WALK_MEMABORT_FLAGS (KVM_PGTABLE_WALK_HANDLE_FAULT | KVM_PGTABLE_WALK_SHARED)
+> +
+> +static int gmem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
+> +		      struct kvm_s2_trans *nested,
+> +		      struct kvm_memory_slot *memslot, bool is_perm)
+> +{
+> +	bool write_fault, exec_fault, writable;
+> +	enum kvm_pgtable_walk_flags flags = KVM_PGTABLE_WALK_MEMABORT_FLAGS;
+> +	enum kvm_pgtable_prot prot = KVM_PGTABLE_PROT_R;
+> +	struct kvm_pgtable *pgt = vcpu->arch.hw_mmu->pgt;
+> +	unsigned long mmu_seq;
+> +	struct page *page;
+> +	struct kvm *kvm = vcpu->kvm;
+> +	void *memcache;
+> +	kvm_pfn_t pfn;
+> +	gfn_t gfn;
+> +	int ret;
+> +
+> +	ret = prepare_mmu_memcache(vcpu, true, &memcache);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (nested)
+> +		gfn = kvm_s2_trans_output(nested) >> PAGE_SHIFT;
+> +	else
+> +		gfn = fault_ipa >> PAGE_SHIFT;
+> +
+> +	write_fault = kvm_is_write_fault(vcpu);
+> +	exec_fault = kvm_vcpu_trap_is_exec_fault(vcpu);
+> +
+> +	VM_WARN_ON_ONCE(write_fault && exec_fault);
+> +
+> +	mmu_seq = kvm->mmu_invalidate_seq;
+> +	/* Pairs with the smp_wmb() in kvm_mmu_invalidate_end(). */
+> +	smp_rmb();
+> +
+> +	ret = kvm_gmem_get_pfn(kvm, memslot, gfn, &pfn, &page, NULL);
+> +	if (ret) {
+> +		kvm_prepare_memory_fault_exit(vcpu, fault_ipa, PAGE_SIZE,
+> +					      write_fault, exec_fault, false);
+> +		return ret;
+> +	}
+> +
+> +	writable = !(memslot->flags & KVM_MEM_READONLY);
+> +
+> +	if (nested)
+> +		adjust_nested_fault_perms(nested, &prot, &writable);
+> +
+> +	if (writable)
+> +		prot |= KVM_PGTABLE_PROT_W;
+> +
+> +	if (exec_fault ||
+> +	    (cpus_have_final_cap(ARM64_HAS_CACHE_DIC) &&
+> +	     (!nested || kvm_s2_trans_executable(nested))))
+> +		prot |= KVM_PGTABLE_PROT_X;
+> +
+> +	kvm_fault_lock(kvm);
+> +	if (mmu_invalidate_retry(kvm, mmu_seq)) {
+> +		ret = -EAGAIN;
+> +		goto out_unlock;
+> +	}
+> +
+> +	ret = KVM_PGT_FN(kvm_pgtable_stage2_map)(pgt, fault_ipa, PAGE_SIZE,
+> +						 __pfn_to_phys(pfn), prot,
+> +						 memcache, flags);
+> +
+> +out_unlock:
+> +	kvm_release_faultin_page(kvm, page, !!ret, writable);
+> +	kvm_fault_unlock(kvm);
+> +
+> +	if (writable && !ret)
+> +		mark_page_dirty_in_slot(kvm, memslot, gfn);
+> +
+> +	return ret != -EAGAIN ? ret : 0;
+> +}
+> +
+>   static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
+>   			  struct kvm_s2_trans *nested,
+>   			  struct kvm_memory_slot *memslot, unsigned long hva,
+> @@ -1536,7 +1612,7 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
+>   	enum kvm_pgtable_prot prot = KVM_PGTABLE_PROT_R;
+>   	struct kvm_pgtable *pgt;
+>   	struct page *page;
+> -	enum kvm_pgtable_walk_flags flags = KVM_PGTABLE_WALK_HANDLE_FAULT | KVM_PGTABLE_WALK_SHARED;
+> +	enum kvm_pgtable_walk_flags flags = KVM_PGTABLE_WALK_MEMABORT_FLAGS;
+>   
+>   	if (fault_is_perm)
+>   		fault_granule = kvm_vcpu_trap_get_perm_fault_granule(vcpu);
+> @@ -1961,8 +2037,12 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
+>   	VM_WARN_ON_ONCE(kvm_vcpu_trap_is_permission_fault(vcpu) &&
+>   			!write_fault && !kvm_vcpu_trap_is_exec_fault(vcpu));
+>   
+> -	ret = user_mem_abort(vcpu, fault_ipa, nested, memslot, hva,
+> -			     esr_fsc_is_permission_fault(esr));
+> +	if (kvm_slot_has_gmem(memslot))
+> +		ret = gmem_abort(vcpu, fault_ipa, nested, memslot,
+> +				 esr_fsc_is_permission_fault(esr));
+> +	else
+> +		ret = user_mem_abort(vcpu, fault_ipa, nested, memslot, hva,
+> +				     esr_fsc_is_permission_fault(esr));
+>   	if (ret == 0)
+>   		ret = 1;
+>   out:
+LGTM!
 
-Agreed. Let's move forward with the CONFIG_EXPERIMENTAL_BPF_FAULT_ORDER opt=
-ion.
+-- 
+Thanks,
+   Kunwu.Chan(Tao.Chan)
 
---=20
-Regards
-Yafang
 
