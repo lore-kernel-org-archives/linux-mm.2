@@ -2,120 +2,115 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D7C73C83F1A
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 18:18:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B398EC83F27
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 18:21:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 73E738E0008; Tue, 22 Jul 2025 14:18:56 -0400 (EDT)
+	id 40DFC6B0092; Tue, 22 Jul 2025 14:21:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 715038E0001; Tue, 22 Jul 2025 14:18:56 -0400 (EDT)
+	id 3E6376B0093; Tue, 22 Jul 2025 14:21:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62B668E0008; Tue, 22 Jul 2025 14:18:56 -0400 (EDT)
+	id 322866B0095; Tue, 22 Jul 2025 14:21:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 52AA38E0001
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 14:18:56 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BF5E359163
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 18:18:55 +0000 (UTC)
-X-FDA: 83692711830.07.F0FAAD4
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D3D3BA0003
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 18:18:53 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 2308E6B0092
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 14:21:35 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E5A53B99A2
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 18:21:34 +0000 (UTC)
+X-FDA: 83692718508.05.B6D4851
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	by imf25.hostedemail.com (Postfix) with ESMTP id F1965A0003
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 18:21:32 +0000 (UTC)
 Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=dbvlGwn7;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of kuniyu@google.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=kuniyu@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753208333; a=rsa-sha256;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=J8I5MNY5;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of snovitoll@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=snovitoll@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753208493; a=rsa-sha256;
 	cv=none;
-	b=q9O6s+lJN3NvB+vUP0kCRzVVMEboWP1Kjo4whtGtSoM61ut00XmvpBev60IFU0doXMVHy3
-	Q23WPTC/YVxHjQz8vw5MuWWm3JjaLO8/Ft+y5rloj4rDW6WztcmMvh4XpD289ABsFbDUgy
-	AZPtHjzhOStIJZEbN39Xs9+7m5iwNeI=
+	b=mJJqPVKvWL6j8yxPH6hKSjzQEbddQTqUMv2kC5LgpbgplEqAq3u5uBYNTbtIUNb/UnnLsX
+	QidNJ59EQVTL3J28qRTamuEUfaxllaQ8U7gtu/x/8dA9Ohc/ETJXcXkh4TGGFo7M/xVN5N
+	ogQUJYmqsQuRJygksKL7rPe/um67IeM=
 ARC-Authentication-Results: i=1;
 	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=dbvlGwn7;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of kuniyu@google.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=kuniyu@google.com
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=J8I5MNY5;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of snovitoll@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=snovitoll@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753208333;
+	s=arc-20220608; t=1753208493;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IMYTSLLBkiKddq/FquIPU9bbzQYOdbjhg+lBLqMyOag=;
-	b=VUWO6VsT9qh4KG/FXOQXwxydcUeo6pqpFm2IuuZuGj1D0GQ4jPp0V/0SyeNkvUbpaG5cTe
-	vUKkfY/jNfgYlfraDJXrluHbwpsawiemdb+EmZS93n6rw5lFjH02Yvn86rXhlYUpJitoPE
-	sCSnQrRyZTi4L5P3pSSEvkrZ7ildYaM=
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-31332cff2d5so4951073a91.1
-        for <linux-mm@kvack.org>; Tue, 22 Jul 2025 11:18:53 -0700 (PDT)
+	bh=s1bfHAcPl/XMz8xDguK3teTl09r5v0kLVciBst2DtbI=;
+	b=BhlsU1NwoFUzy3w2PVbcz93rvJuhDA+px6GgbZBas8wpE6RKNCkyNTGhrJOvbXEMLJDoHa
+	p8FP51yenCYSS0KwORboHMjPm1Mwtat9RRCkwO7iLEGKcr+m3/dVX2O8j1eiXkm/spRVDx
+	rJ0MLuZt4FnMOfodukcYpKl5rM2c668=
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-55a2604ebc1so5096786e87.0
+        for <linux-mm@kvack.org>; Tue, 22 Jul 2025 11:21:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753208333; x=1753813133; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1753208491; x=1753813291; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IMYTSLLBkiKddq/FquIPU9bbzQYOdbjhg+lBLqMyOag=;
-        b=dbvlGwn7cuBu837a1Xz7hxjrQuhKDn6hv8aWqgiV2egVUuLsbBNQj1apiebkP8ag2y
-         9qQCJEvhOwa3WfiswW11/nFM/vO+xBrdqgqJ/q6KbbSMTjXFSNm0b5m8Rc000FFMnRgO
-         5HaRAVP1aDTK4nZSVtrOaG+pyyAgpKYHFBA41ceo6YLI+L6ddI9SJfyFvEm5lyZWwif8
-         3gUuBsn49Dj1Nj5UiiYm3cBOLF1mOJeBtYSaLnY+Dkp3HZWlIX67bQsVtAu3etl+VBQc
-         C4l3hziSAYioV1jti9oJsK9F3YteE4e4kTIZt90WHGFoZxM8fv1nvi+N1Zz8l4GeTowQ
-         njYg==
+        bh=s1bfHAcPl/XMz8xDguK3teTl09r5v0kLVciBst2DtbI=;
+        b=J8I5MNY5SEKjTSjQIqYav/SjaiOxvm/tzZGrS1nTGz1BOod/lszSxFkKb+mDo9+uaa
+         yk88NI+emU4gFf2wbXI0O7fplS4CvMnlRKD1TygmfdlskPaLPxZaL5lFA4Ocw0wogg9N
+         BMwGYGAlN2rg9UREQrSrdKsWAzzGhMG2hwNo29mQp3JOVtKoW7ZuWrG2NnOWXSKnTpcw
+         nog5MSB/Y7EUc602IhsgnkeDX6HBhEMT1+fIVKSkEis+plSy+bwTkmuelRGxoxnO2btB
+         FBkHyy8FPWVgYH27M9znciP0khDgfquzLcG3MwhvFllosY7TXSvcWRRHpDkyCuvZYNyK
+         rQcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753208333; x=1753813133;
+        d=1e100.net; s=20230601; t=1753208491; x=1753813291;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=IMYTSLLBkiKddq/FquIPU9bbzQYOdbjhg+lBLqMyOag=;
-        b=oxru5Ko+ByEPTVYd9Rd9xjZXCNEKIBQW2sn3lXVh/K0XczjQdaFZFF1fTkYR5S+OYI
-         e03ThgZVgo/DUE8eTMsBMFZqZwUDBS+lkDS4qCqyKV7h+CNm/JjRv/k+yuU5omxqqyl4
-         UwQzVRmrvGl7fVRtpEhe0bMowwQi2Kx8kSlI/PjSoHXu+HSO5iqKZQHqIKCyz186PM6i
-         gKfBgonyArHcCTPvHQ8dqcpfMSQPHt85fBXjVg1FmaPxqGK9eNo8I86pwXpDJjBtvKtT
-         GPn6kDbt/1yqusb5JA2U2Kj+uQnqfLS4gZX8KBAaVWVW4vHkY7JLQQAMHbz4CTKEo97s
-         Ghhw==
-X-Forwarded-Encrypted: i=1; AJvYcCUHD0/IAiwMfyzMf5OCsBbP6kjlmhHwPU0fvzBgnhhXdTRTH1+TxQ6gtU+qVSLzApwaGdSmmu5I8w==@kvack.org
-X-Gm-Message-State: AOJu0YwIJFOVN1pdjQP3cDYsmdUKBfUHor8zf1vkGGr7BaRmpw4vOHa6
-	uj/+pjAjetklUqB3KFYcx88MxEXb6+UnMm9iA4dVOFfTet83FTMVWyyk4V76p/dWmYJg9Q1r6Ty
-	C1GGkgq3GiYk8XQIXW/QTcw5SB+V1PhFa21Z1kz0B
-X-Gm-Gg: ASbGncv7JjebkxZmYtDuKLADr+/fXzmtNrRAThDXdfqrylscBHjiUz2NgGq7X9dRH9j
-	7ygwgh69ULDhS0MtS1aqTEYcNs7Euz8DAhMGe0zP7SJOLhjdJGDemghQ0m0ehBSov677S7Fhl+H
-	zGA3+HsYCCOsg05ldnSTy5/DavkH7nqpAA8Z2pSTyToHkyv/eMYacVflRjkuwa96SgcY3aqVcy8
-	DBkyu6TShk4SW7kQJwv7x3Giyr5ySfn8JtKtQ==
-X-Google-Smtp-Source: AGHT+IElD1kikSWPb5qZUh/ZHziKPEue1huHVJC1qTZlxH2csGDvjAg3/+9RMCHo3B1QUGheaFDPmjpYlxgxHDS4A9I=
-X-Received: by 2002:a17:90b:2f8b:b0:312:db8:dbd2 with SMTP id
- 98e67ed59e1d1-31e507c49c4mr448802a91.19.1753208332393; Tue, 22 Jul 2025
- 11:18:52 -0700 (PDT)
+        bh=s1bfHAcPl/XMz8xDguK3teTl09r5v0kLVciBst2DtbI=;
+        b=QdYRybJD60+ZjYT8AOQ4/OjrbFD81mWdEgy2+33HcmNtusoTvagwSO8D2wjz8Yi+s6
+         BcBGbeYgcoudIOAZBFNLrTbUCqc2eWKcJFG0YrNYmkAkgqR4K6HVpa0Tf5z2+9+rzB4b
+         dT2j0MFAl0SkZ2vytrzLwNftyEWb8TtRjdOLhsRl2gnStp+zXJpobotWLQAsTntdhef4
+         TIzkze/uZlGJiiMUuMRWNcqSBB7Ythb76/l5VSKjJD42pBPkRBztDl3AIkESpa3Kv95N
+         GYIENzXZCZ8qVCaGha585Q70SU3hREvrbbQSnJpkOHtH1U2ajdSeODKix/xbiYMco1kW
+         NG9g==
+X-Forwarded-Encrypted: i=1; AJvYcCW2p6u4f4djEshNNeKjqSyL4lsj9MS2vQgUt9Vr8gvW1qGf5V8hgf4HpxFPjMdsnmD/aDcbEaQIJA==@kvack.org
+X-Gm-Message-State: AOJu0Yy/GzUAD7rtLNRKqwut22052ujEkaba98MW5hl2eM2NuiNy0Ek7
+	XGMhI8l8bWOV6Bzjo0zop6fN+dLPWwYmUgxCF2u/NIQcNS3RvalXqMXsJgn/KROtwZFUOiJ6Dlz
+	To4bZ4WwC90pCqumkIVcTgtMXk7R90kA=
+X-Gm-Gg: ASbGncv5YU4+PrzcrHzjc5/Ru/aEn+w3eINfeYtMAeW+4oBMVPpXS5XXTGx6JqrOe2+
+	Ifz+PavkMq2wLsu7i4iIZlBeCQA9RSX2k8cEpwTokXoKvwVtmlnYrXY4e6JQpL+qObUJrrErsCn
+	xX1uzQwcZrFgAKgdqOiGEWTngFVO5IADUlqTk+CVafzNraSi052KmXeOiz/SUEsiYn80f8cWcLP
+	ZkdCpc=
+X-Google-Smtp-Source: AGHT+IHgqZRO4CHZDXwO8i4qviF6GOSHLcIqgaK9MAu32BIYgiKkWD327bPslpy0X0mdn5DHRJd+TcwlCu2XTW4y0IA=
+X-Received: by 2002:a05:6512:4021:b0:553:2190:fef8 with SMTP id
+ 2adb3069b0e04-55a513998a5mr31899e87.7.1753208490745; Tue, 22 Jul 2025
+ 11:21:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250721203624.3807041-1-kuniyu@google.com> <20250721203624.3807041-14-kuniyu@google.com>
- <z7kkbenhkndwyghwenwk6c4egq3ky4zl36qh3gfiflfynzzojv@qpcazlpe3l7b>
- <CANn89iLg-VVWqbWvLg__Zz=HqHpQzk++61dbOyuazSah7kWcDg@mail.gmail.com> <jc6z5d7d26zunaf6b4qtwegdoljz665jjcigb4glkb6hdy6ap2@2gn6s52s6vfw>
-In-Reply-To: <jc6z5d7d26zunaf6b4qtwegdoljz665jjcigb4glkb6hdy6ap2@2gn6s52s6vfw>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Tue, 22 Jul 2025 11:18:40 -0700
-X-Gm-Features: Ac12FXzC5_as3QVdk60aGP4lct3yePOviOeUXVs_xi0EDMGbnYX0I8xvyKuP3Lc
-Message-ID: <CAAVpQUAJCLaOr7DnOH9op8ySFN_9Ky__easoV-6E=scpRaUiJQ@mail.gmail.com>
-Subject: Re: [PATCH v1 net-next 13/13] net-memcg: Allow decoupling memcg from
- global protocol memory accounting.
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Eric Dumazet <edumazet@google.com>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Neal Cardwell <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>, Matthieu Baerts <matttbe@kernel.org>, 
-	Mat Martineau <martineau@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Simon Horman <horms@kernel.org>, 
-	Geliang Tang <geliang@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, mptcp@lists.linux.dev, 
-	cgroups@vger.kernel.org, linux-mm@kvack.org
+References: <20250717142732.292822-1-snovitoll@gmail.com> <f10f3599-509d-4455-94a3-fcbeeffd8219@gmail.com>
+In-Reply-To: <f10f3599-509d-4455-94a3-fcbeeffd8219@gmail.com>
+From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+Date: Tue, 22 Jul 2025 23:21:13 +0500
+X-Gm-Features: Ac12FXzOVMCIvnTEhZltt3TS4XKarYeDIkGkWcMAqG0GgJ62pPTw9Xni6fYiOgs
+Message-ID: <CACzwLxjD0oXGGm2dkDdXjX0sxoNC2asQbjigkDWGCn48bitxSw@mail.gmail.com>
+Subject: Re: [PATCH v3 00/12] kasan: unify kasan_arch_is_ready() and remove
+ arch-specific implementations
+To: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: hca@linux.ibm.com, christophe.leroy@csgroup.eu, andreyknvl@gmail.com, 
+	agordeev@linux.ibm.com, akpm@linux-foundation.org, glider@google.com, 
+	dvyukov@google.com, kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, 
+	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-um@lists.infradead.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 83dmitj9oiyg1o6ffom4irihybwut83x
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: F1965A0003
+X-Stat-Signature: gpjnsi18c1xyt4ey8jx5prmfwwmr946t
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D3D3BA0003
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1753208333-149749
-X-HE-Meta: U2FsdGVkX18e7FyukUinqq5m89rfXp6/hgRhWTb6T3uabS06ot+u63TBCfoispF6h1GzS3TR7ajefUh4RaRuSObqobzz/GmgmO2UA7qeijEMGdt60wUPpMK79ZGH33WjlzUtiOiBY3Ewc4tN6iWYGM5AZ3t+Jsq4ulxfua60HbVGX02uPTXokKvN5FDs70TlqR29wXJzLdECeyBaC7gJEKqDyVyUPoGnKHvpIi4Uz1syiY5T45p9r8lxeakI+9Zi8IIwVTiE5W2Fpa6MjDv8F/aZnTJ7eBSFUUOPiK8wtpbSe7XRvm+/ukI0XP2EiMzT0D9SIf049drv3kXKCCP1wTuCB77EDiEQLDyna9cW5eoCvL5ewqFaHDqBEakjwZDzlkKmi/c1jwjmZfT6euumlLScb4J0sAi+YmS5imSOUf0zuFVVW7SNZDwHCDN0A3tPrUn9kHJIZMu4R0RgxjZz9XtjHFuA7o9xl2QL4F28doUENPlgVRQsB74yJGDeRkRus8GRtJX25sHhG5VlbT3dA98s+4rTbh8kryI68xWI/CX2ySizhj8U6k4AwCFfm7ULUWN07rkbcaOuA2uae0+0hAKPzO5mPgsrr/64d2fX5WeyParVQVVJJQ3F3R5BsL1fDvZoJdi+YsP0SUatju4k51AUkAhNhbhV8LphKQruZyaBISb+pC5mNkYmeNda7LbZEA/7NeIrgWQAU7rsDUwY+T0ugKuQfzXj0hTmWK9kkzx6rD9ydqq5+OeFroSPNPrzaWOS/zO/JdnAGEbg4rQRkRfUzlgYULrHoYsJl0FgQH9MYfgGezCUeFtDoxRNMTwYSWONVzZV31Bs/1+V847d9/8YGFBh9ja8KhFp9XXY6jY4gx5MOZ7cLHHRP03jFEhdjef5OWHj8wbOn6/nbVA96hYjeO8wexdjjyLqLqT4n1bCFwDK7II5GYjjbzzooWSDW30kZMKQRR7DNfl7dhZ
- TqQ/2jEa
- zz0pVWt+M2TfksE3FC6I1GuP7fqK3nVw9Ts2NjK1Ld3qf2m1OotPOkV0UeZLicYJSYEiBfC1ZOoYPceDr4aM91tcGEBUPhX/ppO6BKw+4jb4u7fOsw7GM60AnuhTppAfUBMoCORSl9DZeprh9ZkG0W6+OHl1Z3Rwbd5u/nA5tpyVO9zB05feyVOcQYuqx421YcQVZ
+X-HE-Tag: 1753208492-203523
+X-HE-Meta: U2FsdGVkX1+WcMCySTbihoVWaWwEmxo9xo2sLdrS+PVQ7sT2rZ97dJRa0Gfp/SvHMiqP9men0hWZBUggq6z00qpQULibHJACCpINgIr11aof2fHhYcl6eM6hwvxdGqQpNgeInsWQciKBbecUmHJ3q09dZOMc77lVV4Ylu/SXwzCFRFFpaq3+LGekW0T2EiyQjZScMlQl6yi7mUAbfa+xykL28VrmhdgWLArdusFiXOMUB3nxTNT5lSdqY15P6iCSEZjJ740mmFuVUKBzmbXhW22L27uwk/9KQYeAFaXdG+ObWaY7axkX8rr7S1yxw8l7fuNtom9ueabJnYgQw/r8dlFumZxzm96o0zU9uepPtP6q4GOV/ey6CezJwWxmdvLPCQYso/Q7qSG+zhY3S1ZVopRm1Vz/ZSMlY99n4lczFEWQCJgmcPrYxcnwvlwQepuxwXgNjN3V4ffJleVE6AyGsS90EjPNYax9Hhqnj+IqupbV68depYouiR170Yxch0zIE2Qo5Lu43ler1CmO0Uo3J0qYFf5/QWUUgkH1ZdO8T7l0KyEgF+Stb0wXHATuqPn8LAqbT4mIyS1pcGvdTeDlNTOtg7ARRAY5YDeOVxtgx3q2fFbLEOo8Wx97AiOJ/EB1vHQZIVxcmVue0/EVr0Pa8SRPegcF1trwdquLS6vTwplOWEG3S/wjLDrBvxJqY9GnucuiHzLFZDSxJ14cJxh4ZSKylDMO1wdlSGyUPzEKmRXWnfxgEtyZYeR7j3pzFyy/Fk/J9j7jMde6ZTMbYKDmcVfX2jFVIZ+hzl1+FaSXkMsySaWvaZry3OK78lQwWmn3rGxt9YtHJtaZv4H1h96nIIOn9adjY5en7WX3LgBSWaTU2XEHQnvbtbCN7aB03d+x/D5lYokOTi004ryURDqs7bWSoeyEt2sh5a8zIxY3XqvwA9hpVwozv1l9gHj6txrsQN4+WtH476bFlAx/8Kg
+ Ot5MFi3r
+ jcDnXfMC/+n86jBlTTQEIvTbfswd7SJUaLSUROuDNs032H+9UyLoKQg3v3TlbqfDn+0Bq2oCPHn6SXRhqAYZyignGt7mtkBFbZxVo69BCwZoJnuo7/hon7XcA/7MS7xhgdzdaNAYVoOdHD5ROqIZJo6c72DgYD2MqKp1DXf2Ur52hUzeyBxSkemVTbA80/2M+ovb2NMFtLyXlTRZHG4kdr296ZuLalGKOyCAjG32aq346mAwRN6oko5wg2j7v7undDM7J5tgyOst8C/DCFAqIqocR2rWMfD5ubJ536xpj/dzC6q/HeyeiqSyFyD0IcOtr6c/scSQ2FZ2VQJ3qsKm0sjOixoHEkFXgedLBiomP+gXCNnbfhknxTu9buHL+lli9ndZKtOzQ2aTUd2yNSMJESshFsjOSDADON2ls2yqDhqiSIvoWRzSJp/y29KoAF64SOgGqJJpzZx05ps1GgdhHb5mszP1BXTIOrKK4psnbshrza00R0yUNroPtCw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,116 +119,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 22, 2025 at 8:52=E2=80=AFAM Shakeel Butt <shakeel.butt@linux.de=
-v> wrote:
+On Tue, Jul 22, 2025 at 3:59=E2=80=AFAM Andrey Ryabinin <ryabinin.a.a@gmail=
+.com> wrote:
 >
-> On Tue, Jul 22, 2025 at 08:24:23AM -0700, Eric Dumazet wrote:
-> > On Tue, Jul 22, 2025 at 8:14=E2=80=AFAM Shakeel Butt <shakeel.butt@linu=
-x.dev> wrote:
-> > >
-> > > On Mon, Jul 21, 2025 at 08:35:32PM +0000, Kuniyuki Iwashima wrote:
-> > > > Some protocols (e.g., TCP, UDP) implement memory accounting for soc=
-ket
-> > > > buffers and charge memory to per-protocol global counters pointed t=
-o by
-> > > > sk->sk_proto->memory_allocated.
-> > > >
-> > > > When running under a non-root cgroup, this memory is also charged t=
-o the
-> > > > memcg as sock in memory.stat.
-> > > >
-> > > > Even when memory usage is controlled by memcg, sockets using such p=
-rotocols
-> > > > are still subject to global limits (e.g., /proc/sys/net/ipv4/tcp_me=
-m).
-> > > >
-> > > > This makes it difficult to accurately estimate and configure approp=
-riate
-> > > > global limits, especially in multi-tenant environments.
-> > > >
-> > > > If all workloads were guaranteed to be controlled under memcg, the =
-issue
-> > > > could be worked around by setting tcp_mem[0~2] to UINT_MAX.
-> > > >
-> > > > In reality, this assumption does not always hold, and a single work=
-load
-> > > > that opts out of memcg can consume memory up to the global limit,
-> > > > becoming a noisy neighbour.
-> > > >
-> > >
-> > > Sorry but the above is not reasonable. On a multi-tenant system no
-> > > workload should be able to opt out of memcg accounting if isolation i=
-s
-> > > needed. If a workload can opt out then there is no guarantee.
+>
+>
+> On 7/17/25 4:27 PM, Sabyrzhan Tasbolatov wrote:
+>
+> > =3D=3D=3D Testing with patches
 > >
-> > Deployment issue ?
+> > Testing in v3:
 > >
-> > In a multi-tenant system you can not suddenly force all workloads to
-> > be TCP memcg charged. This has caused many OMG.
->
-> Let's discuss the above at the end.
->
+> > - Compiled every affected arch with no errors:
 > >
-> > Also, the current situation of maintaining two limits (memcg one, plus
-> > global tcp_memory_allocated) is very inefficient.
->
-> Agree.
->
+> > $ make CC=3Dclang LD=3Dld.lld AR=3Dllvm-ar NM=3Dllvm-nm STRIP=3Dllvm-st=
+rip \
+> >       OBJCOPY=3Dllvm-objcopy OBJDUMP=3Dllvm-objdump READELF=3Dllvm-read=
+elf \
+> >       HOSTCC=3Dclang HOSTCXX=3Dclang++ HOSTAR=3Dllvm-ar HOSTLD=3Dld.lld=
+ \
+> >       ARCH=3D$ARCH
 > >
-> > If we trust memcg, then why have an expensive safety belt ?
+> > $ clang --version
+> > ClangBuiltLinux clang version 19.1.4
+> > Target: x86_64-unknown-linux-gnu
+> > Thread model: posix
 > >
-> > With this series, we can finally use one or the other limit. This
-> > should have been done from day-0 really.
->
-> Same, I agree.
->
+> > - make ARCH=3Dum produces the warning during compiling:
+> >       MODPOST Module.symvers
+> >       WARNING: modpost: vmlinux: section mismatch in reference: \
+> >               kasan_init+0x43 (section: .ltext) -> \
+> >               kasan_init_generic (section: .init.text)
 > >
-> > >
-> > > In addition please avoid adding a per-memcg knob. Why not have system
-> > > level setting for the decoupling. I would say start with a build time
-> > > config setting or boot parameter then if really needed we can discuss=
- if
-> > > system level setting is needed which can be toggled at runtime though
-> > > there might be challenges there.
+> > AFAIU, it's due to the code in arch/um/kernel/mem.c, where kasan_init()
+> > is placed in own section ".kasan_init", which calls kasan_init_generic(=
+)
+> > which is marked with "__init".
 > >
-> > Built time or boot parameter ? I fail to see how it can be more conveni=
-ent.
+> > - Booting via qemu-system- and running KUnit tests:
+> >
+> > * arm64  (GENERIC, HW_TAGS, SW_TAGS): no regression, same above results=
+.
+> > * x86_64 (GENERIC): no regression, no errors
+> >
 >
-> I think we agree on decoupling the global and memcg accounting of
-> network memory. I am still not clear on the need of per-memcg knob. From
-> the earlier comment, it seems like you want mix of jobs with memcg
-> limited network memory accounting and with global network accounting
-> running concurrently on a system. Is that correct?
-
-Correct.
-
-
+> It would be interesting to see whether ARCH_DEFER_KASAN=3Dy arches work.
+> These series add static key into __asan_load*()/_store*() which are calle=
+d
+> from everywhere, including the code patching static branches during the s=
+witch.
 >
-> I expect this state of jobs with different network accounting config
-> running concurrently is temporary while the migrationg from one to other
-> is happening. Please correct me if I am wrong.
+> I have suspicion that the code patching static branches during static key=
+ switch
+> might not be prepared to the fact the current CPU might try to execute th=
+is static
+> branch in the middle of switch.
 
-We need to migrate workload gradually and the system-wide config
-does not work at all.  AFAIU, there are already years of effort spent
-on the migration but it's not yet completed at Google.  So, I don't think
-the need is temporary.
+AFAIU, you're referring to this function in mm/kasan/generic.c:
 
->
-> My main concern with the memcg knob is that it is permanent and it
-> requires a hierarchical semantics. No need to add a permanent interface
-> for a temporary need and I don't see a clear hierarchical semantic for
-> this interface.
+static __always_inline bool check_region_inline(const void *addr,
 
-I don't see merits of having hierarchical semantics for this knob.
-Regardless of this knob, hierarchical semantics is guaranteed
-by other knobs.  I think such semantics for this knob just complicates
-the code with no gain.
+      size_t size, bool write,
 
+      unsigned long ret_ip)
+{
+        if (!kasan_shadow_initialized())
+                return true;
+...
+}
 
->
-> I am wondering if alternative approches for per-workload settings are
-> explore starting with BPF.
->
->
->
+and particularly, to architectures that selects ARCH_DEFER_KASAN=3Dy, which=
+ are
+loongarch, powerpc, um. So when these arch try to enable the static key:
+
+1. static_branch_enable(&kasan_flag_enabled) called
+2. Kernel patches code - changes jump instructions
+3. Code patching involves memory writes
+4. Memory writes can trigger any KASAN wrapper function
+5. Wrapper calls kasan_shadow_initialized()
+6. kasan_shadow_initialized() calls static_branch_likely(&kasan_flag_enable=
+d)
+7. This reads the static key being patched --- this is the potential issue?
+
+The current runtime check is following in tis v3 patch series:
+
+#ifdef CONFIG_ARCH_DEFER_KASAN
+...
+static __always_inline bool kasan_shadow_initialized(void)
+{
+        return static_branch_likely(&kasan_flag_enabled);
+}
+...
+#endif
+
+I wonder, if I should add some protection only for KASAN_GENERIC,
+where check_region_inline() is called (or for all KASAN modes?):
+
+#ifdef CONFIG_ARCH_DEFER_KASAN
+...
+static __always_inline bool kasan_shadow_initialized(void)
+{
+        /* Avoid recursion (?) during static key patching */
+        if (static_key_count(&kasan_flag_enabled.key) < 0)
+                return false;
+        return static_branch_likely(&kasan_flag_enabled);
+}
+...
+#endif
+
+Please suggest where the issue is and if I understood the problem.
+I might try to run QEMU on powerpc with KUnits to see if I see any logs.
 
