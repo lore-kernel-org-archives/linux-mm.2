@@ -2,88 +2,177 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 09D2DC83F25
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 11:26:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D82ACC83F27
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 11:32:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98C716B00A9; Tue, 22 Jul 2025 07:26:15 -0400 (EDT)
+	id 4688E8E0002; Tue, 22 Jul 2025 07:32:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93D286B00AA; Tue, 22 Jul 2025 07:26:15 -0400 (EDT)
+	id 419468E0001; Tue, 22 Jul 2025 07:32:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87A706B00AB; Tue, 22 Jul 2025 07:26:15 -0400 (EDT)
+	id 2E13B8E0002; Tue, 22 Jul 2025 07:32:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 794BF6B00A9
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 07:26:15 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 26008130B35
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 11:26:15 +0000 (UTC)
-X-FDA: 83691671910.28.6E09980
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 70A9740007
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 11:26:13 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf01.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 195D18E0001
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 07:32:14 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9BB63160314
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 11:32:13 +0000 (UTC)
+X-FDA: 83691686946.14.D5C51B0
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 4348C100005
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 11:32:11 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pc577WtV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ePnRo2H7;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pc577WtV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ePnRo2H7;
+	spf=pass (imf14.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753183573;
+	s=arc-20220608; t=1753183931;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PglEKky0Wq+mNsm8+6+40YWPaya7WhWv4c9+SwC7MWI=;
-	b=QUIywmi9u0w1zcX9Nv604HefQler1GJkW2Ueler4D+7PAkR+8vXSvXkPGbUZdcuhSZuukI
-	+Nzp+u58fb167wS0vymNUBOMUWdN9BnUlVHZ5xqv/dArnGAlvvVhdsRzec0a8WJn71soCk
-	UZfJBA8yJjWGL+OwJQD6kGffpgjQa1w=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753183573; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+PrCtUSn/haYuYkpVBJwpmXTnwMGxVaYRe8rwgXZQwo=;
+	b=WZr+x44bVscehihFGQaVoEe667cKL6qPKzBhrUVmxtNFMIxjy/yhSv5i+9vw7AIHOBl8KO
+	vmy0AqjkcQHIbvtkztmeTi1u93l1/hDukZ3l6AWpYgCfG46B2mug2ch2qCA4JjSIvp/A0V
+	xm+w72uaVvIQ5pM7GyDmc8ZhVJFytMc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753183931; a=rsa-sha256;
 	cv=none;
-	b=1Gj/finj9fXhN/bIRFfOuyqNL/B1AIBe70z3uvyzkrJTY1bD+0QvtAWLhsxRvwpgh1USEF
-	uYB4Hv380tHFQEZW/dDKXEhPLbU9junIu7uzIOw53VfQeCXdiFAWzasFv99n774rjdyDqO
-	RLE6C8AN0dMAxUvStmgevmHQ8mtoLt4=
+	b=psg/NY9QEGjcdwzH5Raus0c6RA9X+QulHEl2cu+8apJdUE+1IcqEDJcSH6CA1XzzQHwlP9
+	rxyDX6cV/j995ajM5EBGTLc949xKlhCAvmgHBFns1Vhf6qmkfG5YsJlUAeLu1e3/rIpDbc
+	r2FhHeQhdhGLhLzpgH+yVk65QLjVSsY=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf01.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5BE64152B;
-	Tue, 22 Jul 2025 04:26:07 -0700 (PDT)
-Received: from [10.1.30.167] (XHFQ2J9959.cambridge.arm.com [10.1.30.167])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CD9293F66E;
-	Tue, 22 Jul 2025 04:26:09 -0700 (PDT)
-Message-ID: <3b105623-95c2-4d4b-b49f-dd087eaa652b@arm.com>
-Date: Tue, 22 Jul 2025 12:26:08 +0100
+	imf14.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pc577WtV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ePnRo2H7;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pc577WtV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ePnRo2H7;
+	spf=pass (imf14.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B032E21ADD;
+	Tue, 22 Jul 2025 11:32:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1753183929; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+PrCtUSn/haYuYkpVBJwpmXTnwMGxVaYRe8rwgXZQwo=;
+	b=pc577WtVL7G6sJjw/qnXpFmcTso5YQxMyKr294WPC/AJ45E8989bUE8RJFxsMeZmYGeoRv
+	ociaP11ZECEkMR3aQprMthEo5tgw2Y85hhvK1lv1ApXc/+P+8oLAeTLDUIvLd4ISEd++rr
+	iDQbAdI7xSQO79dzWB1oVaHTDqe3uik=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1753183929;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+PrCtUSn/haYuYkpVBJwpmXTnwMGxVaYRe8rwgXZQwo=;
+	b=ePnRo2H7njgiuQC1z+MdaSf+6jyzYLOklvo2166JbpyuU72+frNUahBhXuJbCuEDbNCAWt
+	pbU4zkZGsyDb9pDQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1753183929; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+PrCtUSn/haYuYkpVBJwpmXTnwMGxVaYRe8rwgXZQwo=;
+	b=pc577WtVL7G6sJjw/qnXpFmcTso5YQxMyKr294WPC/AJ45E8989bUE8RJFxsMeZmYGeoRv
+	ociaP11ZECEkMR3aQprMthEo5tgw2Y85hhvK1lv1ApXc/+P+8oLAeTLDUIvLd4ISEd++rr
+	iDQbAdI7xSQO79dzWB1oVaHTDqe3uik=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1753183929;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+PrCtUSn/haYuYkpVBJwpmXTnwMGxVaYRe8rwgXZQwo=;
+	b=ePnRo2H7njgiuQC1z+MdaSf+6jyzYLOklvo2166JbpyuU72+frNUahBhXuJbCuEDbNCAWt
+	pbU4zkZGsyDb9pDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 97F8713A32;
+	Tue, 22 Jul 2025 11:32:09 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id sdLEJLl2f2jiRwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 22 Jul 2025 11:32:09 +0000
+Message-ID: <05001622-737d-40e7-8adc-5dd23e6b9bcb@suse.cz>
+Date: Tue, 22 Jul 2025 13:32:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/7] mm: Optimize mprotect() for MM_CP_PROT_NUMA by
- batch-skipping PTEs
-Content-Language: en-GB
-To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org
-Cc: david@redhat.com, willy@infradead.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, catalin.marinas@arm.com, will@kernel.org,
- Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com, vbabka@suse.cz,
- jannh@google.com, anshuman.khandual@arm.com, peterx@redhat.com,
- joey.gouly@arm.com, ioworker0@gmail.com, baohua@kernel.org,
- kevin.brodsky@arm.com, quic_zhenhuah@quicinc.com,
- christophe.leroy@csgroup.eu, yangyicong@hisilicon.com,
- linux-arm-kernel@lists.infradead.org, hughd@google.com,
- yang@os.amperecomputing.com, ziy@nvidia.com
-References: <20250718090244.21092-1-dev.jain@arm.com>
- <20250718090244.21092-3-dev.jain@arm.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20250718090244.21092-3-dev.jain@arm.com>
+Subject: Re: [linux-next:master] [mm, slab] 5660ee54e7:
+ BUG:KASAN:stack-out-of-bounds_in_copy_from_iter
+Content-Language: en-US
+To: Pedro Falcato <pfalcato@suse.de>,
+ kernel test robot <oliver.sang@intel.com>,
+ Bernard Metzler <bmt@zurich.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Leon Romanovsky <leon@kernel.org>,
+ "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>
+Cc: oe-lkp@lists.linux.dev, lkp@intel.com,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ David Howells <dhowells@redhat.com>, linux-mm@kvack.org
+References: <202507220801.50a7210-lkp@intel.com>
+ <jehx7y7mwer77d2rrx323qixc456ffod3qrcssemkebjotstbh@fpklsa72lzky>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <jehx7y7mwer77d2rrx323qixc456ffod3qrcssemkebjotstbh@fpklsa72lzky>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 70A9740007
+X-Rspamd-Queue-Id: 4348C100005
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Stat-Signature: ysn93w9qmo6sg9n6pco5npixt8i4hgpn
-X-HE-Tag: 1753183573-395179
-X-HE-Meta: U2FsdGVkX197D+cJeOCw4Fiy4GZzNrZhcA26C2b2AkmCgymT1MiL+sI7M6z3jHTVlfyjkdGFf0SGVPqdpG5UMZKQK6+RUSrYt8fDkrdlIlVtBdElKPdYpDWHtEPKs+oJO+aplVWCRbTQw+p+/dT6mV/rTgcOsM7vfB79I3IyGhM1Dx18P8jAoiSBeIpiK21/P3EeDBwjVW5z8p/H7Y7LcFrWnNW4319PPXEArvrJ9gUqn4su7sB5Qvfh1w7/IApNSB6ajsxzn+1CmYAm8fmBl+h0Rx2z+6QVsTjZASB6SPL0fywgNJIPG4369DkmK8uHpI6wFZZjs8nNwW2JICagdHfLxZ7/DnaWLw4XGRo7CKCEgqnFZp88RGSXZl0DQDgO3quJmjvYW5syDJROXXf5EX+spLBsQeebmX06cgGlJSPNByhjYCASgwXwdBwefTv2/z8IY0b01ye3zjekrDFL/WnYNLxGYaD9g806Z945GHe/luEyGVAVLKBq4ylq6YQ4yj5NoylU5x7Tmukx4qlkKw8k+RGylo/d2NBqfkloL7tuU4dSV14gRIcGIICSTxXAl+X8XqGaKewb/X5Qstck2y6dAdHD+vTcKmi5aV3cxt2wXiHLsix++NyzSLKPHb1djAka/eQo/E2G/unqNZtNXaJwkwHuSWueopax+VQRG34zrIlCaaRdHy9r3BXywu0L1NJJSC3dPRaFIoIf4mXByn/xRCI17LWqpZ+IIpX22N9eRF3dLZH4aejxJRzYU4Ztg4aUaKA+pMbuzwLFy75iKMIyUrsdx9CoU3lRMBPymP88Qvo4Cy3T5XEYVbN0d7SbFAKCZ6TVGQ6jVlY7vq93IE0WfijKSCn/qLTW/NzG9y4KzN3fSk8ac9j2zQ/8C9hZHqJu8bZbVfGIxJ6I8IkIJyGNaLRhYmWJuN3sEr5b70HQN5kpI7T3kgtAzMiBKxH7tAnrs/+T/bTrXYLmlGW
- yqUNUfRT
- 0hYoltBUKyxl7tzO082BNeVqNY/QZF0rckBQNmeVp9xL/nelQs5Hk6fsZmsPFP3Zz20Usq4XkUH7Oui7sA2HwvHtHW6/DMhZrTqX5iZmL80SPPLFncvBp7iUIXLPMRCN6LCrwL98A63ZliShn1DHWDcQUY3k3lhi8+/kbXItfgVqxtYogTofpfSknk4JzKleIxixJh1JEsAFbpyeQ3jR+paFNWAH/eyMp0X+TyA0ZZVyDuzWJK/lEA+WxpQ==
+X-Stat-Signature: 8fqphpugc6zud4qtjgywictd8xkaquku
+X-HE-Tag: 1753183931-365755
+X-HE-Meta: U2FsdGVkX1/4U6utWwfuqybTawtRoYW5/xEwTY+c1tTU0CgDdGAwSf04SKvMrqY8EiYtH/E7XBJAXh9v6O+mD8de/2dlayphw84fLn/Ky0cbDOQhBdIP25TdXof09Cee4xXyNi5AbZf0v820dq8J1S87VnRH474exQ7rwRyEzNLj3XEsbm3OPDn1pNLi05C543PfJ7B2oHrcsNh71jgwH3w5n7QBo7mlHr6IUhfBx+y0d+lR46Vuzy2G3lJahFJbtNSFt8w6Ld2YIGRCFHKIvDc4MCbfVYQhUK3hJ3cDgI1MMpYSd11gyHdRYsWdOWeDfcM7vBBwV1PMQXma/FlB8BIdguDxmd7XGLtQcl5QzqpKiUH5hsfejDZeQaqrcpi9/C8NdTrOmQkcrkofJfz7R3NH3hqHQ8W5q+4QfqgZZzGBHxP4bx1aIe42wvQxg0pVytOofCSkl2CHq8labcfmWuDwDZ82RcmN/rhsYknG0xnDho+oeaWxM5SLimkeHsKILRhH4CXAD8Xw/wyFDwvB6b/4rc0dt3WsCyuisovad7cqBJqiSj10ECYPTgj3GtJncx01v4/gmdp9JmVQ9ObxCNmKFbNiIiIlFMPIJlfPtFtYjs2HYB4/nSGijAfRCikGazRNs1/s2/omFQAplkfdMt2sg1Az7pUgKOxMl+IetBGFzZ1RHU0nxeUbju85JwJ0uDwMYVPjoAGU1d2F+N9SjrcFrJwABcdgVkqpcFh6mkABWq+n97sFnrT5+vRZeLVko22AUE9AO6cHf17Oi7YH7B7Ha8hNdgWSj5/B9pGKbOsNkRkxFm4xaqnDctYOg/u/dNq2n+bfQSKu58+2wi3/oIW+T1eDFzsVQHhsfBgfeIzAe1jRhK/2veSsOgZj56izcHx32CHTBpzGYXLSRhC8SYOmG+S7t/nBDfVjK6dwkEUJpkXXVyhQDEpdV8xwwD3/sVqKWlDJfq0+FqK2EJc
+ WJ6z/YBu
+ r7yEMtbIZWsjEAiVAWqr6v4s48Z7DvaRbUYOFTEN06wIL+DErf2cfmwc/6+aPcfU97eBG1wix9ffQChRutDTB2YG9U6hUt8QQjymupqsyx9POno/WiC38jaFbqM+Ul4Xkrn6E4TebJdz7bQRds+dic6dsxI16kXA3uBxC+7EWZ4dJWBGxMocgmwpXlm6a4rVK5EizpqrDqXbno8Beu/KAjq6tOOHwUYQe04khheZp0Lr5yl2xhbYkojGfF2kZmNBoT7mtIxK/0lMqok28eBcPXwoENb7ob/irgrvE8bkkZM0s8bEtsQMJPVSU68LxjXLCK7ryq3s1sIOIVvJq0jqfjv/RT1ho97wpQr+6QPJDlQEhYpPRPdjpe3gcTgiR2sc/KD+iN6SyUh7dFpVnyWCjQkWUnxcQQh/oacpd5ENwthEAsS7ISGSQa1FpmizHaLcLmzAd9iGCUqLQB+BBQy4xk5gq+MoxK2Ygv8qJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,164 +181,164 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 18/07/2025 10:02, Dev Jain wrote:
-> For the MM_CP_PROT_NUMA skipping case, observe that, if we skip an
-> iteration due to the underlying folio satisfying any of the skip
-> conditions, then for all subsequent ptes which map the same folio, the
-> iteration will be skipped for them too. Therefore, we can optimize
-> by using folio_pte_batch() to batch skip the iterations.
-> 
-> Use prot_numa_skip() introduced in the previous patch to determine whether
-> we need to skip the iteration. Change its signature to have a double
-> pointer to a folio, which will be used by mprotect_folio_pte_batch() to
-> determine the number of iterations we can safely skip.
-> 
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
+On 7/22/25 12:52, Pedro Falcato wrote:
+> +cc dhowells
 
-LGTM:
++Cc siw+infiniband maintainers too.
 
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Thanks Pedro. Hope there can be either a hotfix for 6.16, or the fix is part
+of 6.17 merge window (and I tell Linus to merge slab only afterwards), or I
+get the blessing to include it in my tree preceding commit 5660ee54e798 (to
+be merged in 6.17 merge window).
 
-> ---
->  mm/mprotect.c | 55 +++++++++++++++++++++++++++++++++++++++------------
->  1 file changed, 42 insertions(+), 13 deletions(-)
+Also would you submit the fix formally?
+
+Thanks,
+Vlastimil
+
+> On Tue, Jul 22, 2025 at 03:07:44PM +0800, kernel test robot wrote:
+>> 
+>> 
+>> Hello,
+>> 
+>> kernel test robot noticed "BUG:KASAN:stack-out-of-bounds_in_copy_from_iter" on:
+>> 
+>> commit: 5660ee54e7982f9097ddc684e90f15bdcc7fef4b ("mm, slab: use frozen pages for large kmalloc")
+>> https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git master
+>> 
+>> [test failed on linux-next/master d086c886ceb9f59dea6c3a9dae7eb89e780a20c9]
+>> 
+>> in testcase: blktests
+>> version: blktests-x86_64-5d9ef47-1_20250709
+>> with following parameters:
+>> 
+>> 	disk: 1SSD
+>> 	test: nvme-group-00
+>> 	nvme_trtype: rdma
+>> 	use_siw: true
+>> 
+>> 
+>> 
+>> config: x86_64-rhel-9.4-func
+>> compiler: gcc-12
+>> test machine: 8 threads Intel(R) Core(TM) i7-6700 CPU @ 3.40GHz (Skylake) with 28G memory
+>> 
+>> (please refer to attached dmesg/kmsg for entire log/backtrace)
+>> 
+>> 
+>> 
+>> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+>> the same patch/commit), kindly add following tags
+>> | Reported-by: kernel test robot <oliver.sang@intel.com>
+>> | Closes: https://lore.kernel.org/oe-lkp/202507220801.50a7210-lkp@intel.com
+>> 
+>> 
+>> [ 232.729908][ T3003] BUG: KASAN: stack-out-of-bounds in _copy_from_iter (include/linux/iov_iter.h:117 include/linux/iov_iter.h:304 include/linux/iov_iter.h:328 lib/iov_iter.c:249 lib/iov_iter.c:260) 
+>> [  232.737608][ T3003] Read of size 4 at addr ffffc90002527694 by task siw_tx/2/3003
+>> [  232.745045][ T3003]
+>> [  232.747222][ T3003] CPU: 2 UID: 0 PID: 3003 Comm: siw_tx/2 Not tainted 6.16.0-rc2-00002-g5660ee54e798 #1 PREEMPT(voluntary)
+>> [  232.747226][ T3003] Hardware name: Dell Inc. OptiPlex 7040/0Y7WYT, BIOS 1.2.8 01/26/2016
+>> [  232.747228][ T3003] Call Trace:
+>> [  232.747230][ T3003]  <TASK>
+>> [ 232.747231][ T3003] dump_stack_lvl (lib/dump_stack.c:123 (discriminator 1)) 
+>> [ 232.747236][ T3003] print_address_description+0x2c/0x3b0 
+>> [ 232.747241][ T3003] ? _copy_from_iter (include/linux/iov_iter.h:117 include/linux/iov_iter.h:304 include/linux/iov_iter.h:328 lib/iov_iter.c:249 lib/iov_iter.c:260) 
+>> [ 232.747244][ T3003] print_report (mm/kasan/report.c:522) 
+>> [ 232.747247][ T3003] ? kasan_addr_to_slab (mm/kasan/common.c:37) 
+>> [ 232.747250][ T3003] ? _copy_from_iter (include/linux/iov_iter.h:117 include/linux/iov_iter.h:304 include/linux/iov_iter.h:328 lib/iov_iter.c:249 lib/iov_iter.c:260) 
+>> [ 232.747252][ T3003] kasan_report (mm/kasan/report.c:636) 
+>> [ 232.747255][ T3003] ? _copy_from_iter (include/linux/iov_iter.h:117 include/linux/iov_iter.h:304 include/linux/iov_iter.h:328 lib/iov_iter.c:249 lib/iov_iter.c:260) 
+>> [ 232.747259][ T3003] _copy_from_iter (include/linux/iov_iter.h:117 include/linux/iov_iter.h:304 include/linux/iov_iter.h:328 lib/iov_iter.c:249 lib/iov_iter.c:260) 
+>> [ 232.747263][ T3003] ? __pfx__copy_from_iter (lib/iov_iter.c:254) 
+>> [ 232.747266][ T3003] ? __pfx_tcp_current_mss (net/ipv4/tcp_output.c:1873) 
+>> [ 232.747270][ T3003] ? check_heap_object (arch/x86/include/asm/bitops.h:206 arch/x86/include/asm/bitops.h:238 include/asm-generic/bitops/instrumented-non-atomic.h:142 include/linux/page-flags.h:867 include/linux/page-flags.h:888 include/linux/mm.h:992 include/linux/mm.h:2050 mm/usercopy.c:199) 
+>> [  232.747274][ T3003]  ? 0xffffffff81000000
+>> [ 232.747276][ T3003] ? __check_object_size (mm/memremap.c:421) 
+>> [ 232.747280][ T3003] skb_do_copy_data_nocache (include/linux/uio.h:228 include/linux/uio.h:245 include/net/sock.h:2243) 
+>> [ 232.747284][ T3003] ? __pfx_skb_do_copy_data_nocache (include/net/sock.h:2234) 
+>> [ 232.747286][ T3003] ? __sk_mem_schedule (net/core/sock.c:3403) 
+>> [ 232.747291][ T3003] tcp_sendmsg_locked (include/net/sock.h:2271 net/ipv4/tcp.c:1254) 
+>> [ 232.747297][ T3003] ? sock_sendmsg (net/socket.c:712 net/socket.c:727 net/socket.c:750) 
+>> [ 232.747300][ T3003] ? __pfx_tcp_sendmsg_locked (net/ipv4/tcp.c:1061) 
+>> [ 232.747303][ T3003] ? __pfx_sock_sendmsg (net/socket.c:739) 
+>> [ 232.747306][ T3003] ? _raw_spin_lock_bh (arch/x86/include/asm/atomic.h:107 include/linux/atomic/atomic-arch-fallback.h:2170 include/linux/atomic/atomic-instrumented.h:1302 include/asm-generic/qspinlock.h:111 include/linux/spinlock.h:187 include/linux/spinlock_api_smp.h:127 kernel/locking/spinlock.c:178) 
+>> [ 232.747312][ T3003] siw_tcp_sendpages+0x1f1/0x4f0 siw 
 > 
-> diff --git a/mm/mprotect.c b/mm/mprotect.c
-> index 2a9c73bd0778..97adc62c50ab 100644
-> --- a/mm/mprotect.c
-> +++ b/mm/mprotect.c
-> @@ -83,28 +83,43 @@ bool can_change_pte_writable(struct vm_area_struct *vma, unsigned long addr,
->  	return pte_dirty(pte);
->  }
->  
-> +static int mprotect_folio_pte_batch(struct folio *folio, pte_t *ptep,
-> +				    pte_t pte, int max_nr_ptes)
-> +{
-> +	/* No underlying folio, so cannot batch */
-> +	if (!folio)
-> +		return 1;
-> +
-> +	if (!folio_test_large(folio))
-> +		return 1;
-> +
-> +	return folio_pte_batch(folio, ptep, pte, max_nr_ptes);
-> +}
-> +
->  static bool prot_numa_skip(struct vm_area_struct *vma, unsigned long addr,
-> -			   pte_t oldpte, pte_t *pte, int target_node)
-> +			   pte_t oldpte, pte_t *pte, int target_node,
-> +			   struct folio **foliop)
->  {
-> -	struct folio *folio;
-> +	struct folio *folio = NULL;
-> +	bool ret = true;
->  	bool toptier;
->  	int nid;
->  
->  	/* Avoid TLB flush if possible */
->  	if (pte_protnone(oldpte))
-> -		return true;
-> +		goto skip;
->  
->  	folio = vm_normal_folio(vma, addr, oldpte);
->  	if (!folio)
-> -		return true;
-> +		goto skip;
->  
->  	if (folio_is_zone_device(folio) || folio_test_ksm(folio))
-> -		return true;
-> +		goto skip;
->  
->  	/* Also skip shared copy-on-write pages */
->  	if (is_cow_mapping(vma->vm_flags) &&
->  	    (folio_maybe_dma_pinned(folio) || folio_maybe_mapped_shared(folio)))
-> -		return true;
-> +		goto skip;
->  
->  	/*
->  	 * While migration can move some dirty pages,
-> @@ -112,7 +127,7 @@ static bool prot_numa_skip(struct vm_area_struct *vma, unsigned long addr,
->  	 * context.
->  	 */
->  	if (folio_is_file_lru(folio) && folio_test_dirty(folio))
-> -		return true;
-> +		goto skip;
->  
->  	/*
->  	 * Don't mess with PTEs if page is already on the node
-> @@ -120,7 +135,7 @@ static bool prot_numa_skip(struct vm_area_struct *vma, unsigned long addr,
->  	 */
->  	nid = folio_nid(folio);
->  	if (target_node == nid)
-> -		return true;
-> +		goto skip;
->  
->  	toptier = node_is_toptier(nid);
->  
-> @@ -129,11 +144,15 @@ static bool prot_numa_skip(struct vm_area_struct *vma, unsigned long addr,
->  	 * balancing is disabled
->  	 */
->  	if (!(sysctl_numa_balancing_mode & NUMA_BALANCING_NORMAL) && toptier)
-> -		return true;
-> +		goto skip;
->  
-> +	ret = false;
->  	if (folio_use_access_time(folio))
->  		folio_xchg_access_time(folio, jiffies_to_msecs(jiffies));
-> -	return false;
-> +
-> +skip:
-> +	*foliop = folio;
-> +	return ret;
->  }
->  
->  static long change_pte_range(struct mmu_gather *tlb,
-> @@ -147,6 +166,7 @@ static long change_pte_range(struct mmu_gather *tlb,
->  	bool prot_numa = cp_flags & MM_CP_PROT_NUMA;
->  	bool uffd_wp = cp_flags & MM_CP_UFFD_WP;
->  	bool uffd_wp_resolve = cp_flags & MM_CP_UFFD_WP_RESOLVE;
-> +	int nr_ptes;
->  
->  	tlb_change_page_size(tlb, PAGE_SIZE);
->  	pte = pte_offset_map_lock(vma->vm_mm, pmd, addr, &ptl);
-> @@ -161,8 +181,11 @@ static long change_pte_range(struct mmu_gather *tlb,
->  	flush_tlb_batched_pending(vma->vm_mm);
->  	arch_enter_lazy_mmu_mode();
->  	do {
-> +		nr_ptes = 1;
->  		oldpte = ptep_get(pte);
->  		if (pte_present(oldpte)) {
-> +			int max_nr_ptes = (end - addr) >> PAGE_SHIFT;
-> +			struct folio *folio;
->  			pte_t ptent;
->  
->  			/*
-> @@ -170,9 +193,15 @@ static long change_pte_range(struct mmu_gather *tlb,
->  			 * pages. See similar comment in change_huge_pmd.
->  			 */
->  			if (prot_numa) {
-> -				if (prot_numa_skip(vma, addr, oldpte, pte,
-> -						   target_node))
-> +				int ret = prot_numa_skip(vma, addr, oldpte, pte,
-> +							 target_node, &folio);
-> +				if (ret) {
-> +
-> +					/* determine batch to skip */
-> +					nr_ptes = mprotect_folio_pte_batch(folio,
-> +						  pte, oldpte, max_nr_ptes);
->  					continue;
-> +				}
->  			}
->  
->  			oldpte = ptep_modify_prot_start(vma, addr, pte);
-> @@ -289,7 +318,7 @@ static long change_pte_range(struct mmu_gather *tlb,
->  				pages++;
->  			}
->  		}
-> -	} while (pte++, addr += PAGE_SIZE, addr != end);
-> +	} while (pte += nr_ptes, addr += nr_ptes * PAGE_SIZE, addr != end);
->  	arch_leave_lazy_mmu_mode();
->  	pte_unmap_unlock(pte - 1, ptl);
->  
+> It seems to me that the change introduced back in 6.4 by David was silently
+> borked (credit to Vlastimil for initially pointing it out to me). Namely:
+> 
+> https://lore.kernel.org/all/20230331160914.1608208-1-dhowells@redhat.com/
+> introduced three changes, where we're inlining tcp_sendpages:
+> 
+> c2ff29e99a76 ("siw: Inline do_tcp_sendpages()")
+> e117dcfd646e ("tls: Inline do_tcp_sendpages()")
+> 7f8816ab4bae ("espintcp: Inline do_tcp_sendpages()")
+> 
+> (there's a separate ebf2e8860eea, but it looks okay)
+> 
+> Taking a closer look into siw (my comments):
+> 
+> static int siw_tcp_sendpages(struct socket *s, struct page **page, int offset,
+> 			     size_t size)
+> [...]
+> 	/* Calculate the number of bytes we need to push, for this page
+> 	 * specifically */
+> 	size_t bytes = min_t(size_t, PAGE_SIZE - offset, size);
+> 	/* If we can't splice it, then copy it in, as normal */
+> 	if (!sendpage_ok(page[i]))
+> 		msg.msg_flags &= ~MSG_SPLICE_PAGES;
+> 	/* Set the bvec pointing to the page, with len $bytes */
+> 	bvec_set_page(&bvec, page[i], bytes, offset);
+> 	/* Set the iter to $size, aka the size of the whole sendpages (!!!) */
+> 	iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, size);
+> try_page_again:
+> 	lock_sock(sk);
+> 	/* Sendmsg with $size size (!!!) */
+> 	rv = tcp_sendmsg_locked(sk, &msg, size);
+> 
+> 
+> Now, (probably) why we didn't see this before: ever since Vlastimil introduced
+> 5660ee54e798("mm, slab: use frozen pages for large kmalloc") into -next, sendpage_ok
+> fails for large kmalloc pages. This makes it so we don't take the MSG_SPLICE_PAGES paths,
+> which have a subtle difference deep into iov_iter paths:
+> 
+> (MSG_SPLICE_PAGES)
+> skb_splice_from_iter
+>   iov_iter_extract_pages
+>     iov_iter_extract_bvec_pages
+>       uses i->nr_segs to correctly stop in its tracks before OoB'ing everywhere
+>   skb_splice_from_iter gets a "short" read
+> 
+> (!MSG_SPLICE_PAGES)
+> skb_copy_to_page_nocache copy=iov_iter_count
+>  [...]
+>    copy_from_iter
+>    	/* this doesn't help */
+>      	if (unlikely(iter->count < len))
+> 		len = iter->count;
+> 	  iterate_bvec
+> 	    ... and we run off the bvecs
+> 
+> Anyway, long-winded analysis just to say:
+> 
+> --- a/drivers/infiniband/sw/siw/siw_qp_tx.c
+> +++ b/drivers/infiniband/sw/siw/siw_qp_tx.c
+> @@ -332,11 +332,11 @@ static int siw_tcp_sendpages(struct socket *s, struct page **page, int offset,
+>                 if (!sendpage_ok(page[i]))
+>                         msg.msg_flags &= ~MSG_SPLICE_PAGES;
+>                 bvec_set_page(&bvec, page[i], bytes, offset);
+> -               iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, size);
+> +               iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, bytes);
+> 
+>  try_page_again:
+>                 lock_sock(sk);
+> -               rv = tcp_sendmsg_locked(sk, &msg, size);
+> +               rv = tcp_sendmsg_locked(sk, &msg, bytes);
+>                 release_sock(sk);
+> 
+>                 if (rv > 0) {
+> 
+> (I had a closer look at the tls, espintcp changes, and they seem correct)
+> 
 
 
