@@ -2,116 +2,115 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 19C7BC83F27
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 14:17:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8767EC83F1A
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 14:17:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5BCE6B008A; Tue, 22 Jul 2025 10:17:01 -0400 (EDT)
+	id 21FC26B00AD; Tue, 22 Jul 2025 10:17:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E5656B00AA; Tue, 22 Jul 2025 10:17:01 -0400 (EDT)
+	id 1D0926B00AE; Tue, 22 Jul 2025 10:17:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 886A96B00AB; Tue, 22 Jul 2025 10:17:01 -0400 (EDT)
+	id 0BFAF6B00AF; Tue, 22 Jul 2025 10:17:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E50E6B008A
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 10:17:01 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 10EA916031B
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 14:17:01 +0000 (UTC)
-X-FDA: 83692102242.02.B065FE4
-Received: from esa3.hc1455-7.c3s2.iphmx.com (esa3.hc1455-7.c3s2.iphmx.com [207.54.90.49])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 0E55D4001A
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 14:16:57 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=fujitsu.com header.s=fj2 header.b=EZ+nMRXs;
-	spf=pass (imf17.hostedemail.com: domain of ruansy.fnst@fujitsu.com designates 207.54.90.49 as permitted sender) smtp.mailfrom=ruansy.fnst@fujitsu.com;
-	dmarc=pass (policy=reject) header.from=fujitsu.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EA3B86B00AD
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 10:17:25 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8AF751403CD
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 14:17:25 +0000 (UTC)
+X-FDA: 83692103250.07.F220716
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 8A844120009
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 14:17:23 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mdXHHlBA;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of snovitoll@gmail.com designates 209.85.208.180 as permitted sender) smtp.mailfrom=snovitoll@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753193843; a=rsa-sha256;
+	cv=none;
+	b=jbj2FHFS7EWWVJAJ1/MJfjs6yi4yN3QMO80RXc8rhOGphRLks0XUHv+pjoTIS2dA2guJS3
+	Hyw/3ShGczSURczdmMFlOZXBChCDgoms1pMeCHJ91i6wkWvmVT9rKjTvDvImOYqzDhrHoG
+	u3fdBZgAoTThMppMMm/0TmqSEb4rT+c=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mdXHHlBA;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of snovitoll@gmail.com designates 209.85.208.180 as permitted sender) smtp.mailfrom=snovitoll@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753193818;
+	s=arc-20220608; t=1753193843;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=8H+61Ndv2tVaP6RRkPxTxO9DwJsSozK3D+J8iVdgpsQ=;
-	b=8DK1ytQSx6HUf0P1lPnNbgA72x5ilOhbOF1TALPmrEjd5foRyssJpAgXgs9tAMQsunCPSy
-	5Ma/I20NSm7j5BmQDEschM1y8/7iQuIAO3UaB94RbmUsNc4L4pmTS8bm1lSVbrxb2WAofA
-	LLrbnEACgImaNUv+R/8iyGxdMc+Ud18=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753193818; a=rsa-sha256;
-	cv=none;
-	b=o32WEzPdzlhYPtYLMdLVlVTflM9H+31H20lJkWYERBXsItpFcc/2AFZ87XQ1pEVfRBxynZ
-	2defGt4T3VotyraPzYfCcClk2CTViC0FQRWzhVMvUu4obUxH17etlFLgHY/jewESdp9XcC
-	iYkSAj5qjHDlUJIt+Itc0RtINmAUviE=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=fujitsu.com header.s=fj2 header.b=EZ+nMRXs;
-	spf=pass (imf17.hostedemail.com: domain of ruansy.fnst@fujitsu.com designates 207.54.90.49 as permitted sender) smtp.mailfrom=ruansy.fnst@fujitsu.com;
-	dmarc=pass (policy=reject) header.from=fujitsu.com
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1753193818; x=1784729818;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=5dNQ6R20gA18sSDnal2PdhhzzD3NLhbrHgMrNWEtiPg=;
-  b=EZ+nMRXsfa/xZmkwq1KEWoieyZZrRRkEB+iTpgw4wH0166CqKSE8asLs
-   AR/gDUB+23gNIFKa8ZLLU1j+prOoggU6GSpH5aR1vt/miqGZaAUf6JS8m
-   WAl0Mj33IOuGuXS7BAXy6yVUTA0np5v2jS0a8Ip2rWVc2YHJQthevQkX+
-   kuiEhz7e7sqvt4dlEec6FBDZjSih8ZvLDs1OTg+cPKFJdWQ2rkhr0H2QY
-   /cHeE4RN+tAu5aU8L+sYRqsNUJW4LSSGph/4ggjfZ1Q0W1YJ28PWpL0Ve
-   x4H7kAtnkUAXRXvUQyrajAGOzsTLxl7P2aE8/Co9Jm7QTB11BrEkKhvjY
-   Q==;
-X-CSE-ConnectionGUID: C7ls8r3BRj2BrrGVX7PZCw==
-X-CSE-MsgGUID: eJaUxOFIQu6IR4LWPYLP6A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11500"; a="207036139"
-X-IronPort-AV: E=Sophos;i="6.16,331,1744038000"; 
-   d="scan'208";a="207036139"
-Received: from unknown (HELO az2uksmgr2.o.css.fujitsu.com) ([52.151.125.128])
-  by esa3.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 23:16:56 +0900
-Received: from az2uksmgm1.o.css.fujitsu.com (unknown [10.151.22.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2uksmgr2.o.css.fujitsu.com (Postfix) with ESMTPS id 275C7820405
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 14:16:56 +0000 (UTC)
-Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2uksmgm1.o.css.fujitsu.com (Postfix) with ESMTPS id 932D68D65E7
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 14:16:55 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.167.135.81])
-	by edo.cn.fujitsu.com (Postfix) with ESMTP id 2C2F11A0071;
-	Tue, 22 Jul 2025 22:16:51 +0800 (CST)
-From: Ruan Shiyang <ruansy.fnst@fujitsu.com>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	lkp@intel.com,
-	ying.huang@linux.alibaba.com,
-	akpm@linux-foundation.org,
-	y-goto@fujitsu.com,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	juri.lelli@redhat.com,
-	vincent.guittot@linaro.org,
-	dietmar.eggemann@arm.com,
-	rostedt@goodmis.org,
-	mgorman@suse.de,
-	vschneid@redhat.com,
-	Li Zhijian <lizhijian@fujitsu.com>,
-	Ben Segall <bsegall@google.com>
-Subject: [PATCH RFC v3] mm: memory-tiering: Fix PGPROMOTE_CANDIDATE counting
-Date: Tue, 22 Jul 2025 22:16:50 +0800
-Message-ID: <20250722141650.1821721-1-ruansy.fnst@fujitsu.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=GboL0eWXtD3fDsEKzgJ1xepA1JQohVF9co6pstDgRM8=;
+	b=RPBUH6tEYVZgkga9zPa3lslyXUOflcsMdlyP9rt5KCwJ85GFPm6VYwQDGg8GLBjrIGiyir
+	mR48abLGud1J36H0qEIkSKVhZoUE2OmOpaEl2cMwabE+GMuF9Whv3q6nHZH/1EtkLa2XqB
+	z/NvFsxCgd6SiBd7Bgc6mcnKP4gG4ZY=
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-32cd0dfbdb8so51051791fa.0
+        for <linux-mm@kvack.org>; Tue, 22 Jul 2025 07:17:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753193842; x=1753798642; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GboL0eWXtD3fDsEKzgJ1xepA1JQohVF9co6pstDgRM8=;
+        b=mdXHHlBA4A5WeDO3Su/RdsUquO6vXUTLGi3zn8cn1SN63gDzeEj95FiCdZynEa2Vx3
+         Dk+c7w5oF3Ujo63ffZdv4fa8J8k5EeJ3ezPnCZ0qKjhK3U5c/sFC34S/08+uK+NUX4eh
+         5gqJGXc4CKYjPSTeYU7+m0K/3eozZ6s9+63VPvfpw3AfB6q7jkfXZmfalJ9rXOVxzhh0
+         GJ4WMZlKH1SRRLz3+Uu9GOkIGVJ84g9Pv4YHh7yDXT6fqT+XzTPh2yTyjbQaSIpraGrz
+         oNZtr7RfhI9EyKSUibt+mUCOWYNEWERWUMBZsIl3lAgwYS5rJnPGCsBsOHJZ/hS1vw+9
+         uIgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753193842; x=1753798642;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GboL0eWXtD3fDsEKzgJ1xepA1JQohVF9co6pstDgRM8=;
+        b=mzzBlef6E46HurvSd/D9JHc+gCCXB+5d5xsU64lR5JdlmWm35wjXKIe4ft4y13coAr
+         fDZp55fcG/l+02M8WZh6AnQed7KP3VEnTfQtOQg3Vt2Pr/chxy5rm96uCn8G9GtfSISz
+         coQnsmkbNN8w3LIk/NAaowE3B0Fw7PdpQdpi6QTZau4bN/IG4u5IshqBvh0Fp4HwBTVb
+         esObNfAhTL33KTCnA2Ve1XVpceLS85DkjLsAnfocUxEVcP7MLkYm7GhC+xzoesnker5s
+         w9fAp181wdDXFxJrur5QjTrWGCEfQbUGF0VMXcmp70zBvBLY/WbPzGt5If7B/LT6djot
+         zX5g==
+X-Forwarded-Encrypted: i=1; AJvYcCVrDG3OXCg/73wfOuelf7dKG2bjUc7NFR8I5DoCDi1wSKliN7rOU4bOC4cyelLgfU7CYdHGPNI9nQ==@kvack.org
+X-Gm-Message-State: AOJu0YwlRw7bDKTG1sje2PupYtJTMyL6t+Vw1zqly+PkBFp+IoSN22/U
+	ImTjHpNZOy6wQ4NFLz/ecJTBsHNj3tBgCHMCKpbi1/jTrgYdSVowR8HmcXe2hCcSNUFtJMpzIq5
+	2ZQFdIDiLkIHLH4/NOsnjxcoJupw4+GI=
+X-Gm-Gg: ASbGncuFP9W7gUu+Af57C7R4lREVsKjYDC+qHjpszJV94Pm4Q3KY6L/8hZIOxFKEhq6
+	DjM8hb6guy5PllPzpOAXtBb8lORNJ+QVNHaLR7vb8b/GeCHX5PiyLz9XIJghDCq+bHfzaUoZG0d
+	cxuVJc3hGGCqDajG4UfXuU/8oK9wZuG0m5jqq8uRqQup+6qORX5ycv/5kaUs4DkMmBzTNPJekpE
+	k/gerM=
+X-Google-Smtp-Source: AGHT+IHWyFSdlAJ08NCU6ABmF9BGYFP4zXRYUy0aJCm6G+P21nbWRd00HVhqfmwkvmBdoun3tyqTRuImHuMXXJuHVwM=
+X-Received: by 2002:a05:651c:110d:b0:32b:75f0:cfa4 with SMTP id
+ 38308e7fff4ca-3308f5c95f9mr70998461fa.25.1753193841372; Tue, 22 Jul 2025
+ 07:17:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0E55D4001A
+References: <20250717142732.292822-1-snovitoll@gmail.com> <20250717142732.292822-9-snovitoll@gmail.com>
+ <85de2e1f-a787-4862-87e4-2681e749cef0@gmail.com>
+In-Reply-To: <85de2e1f-a787-4862-87e4-2681e749cef0@gmail.com>
+From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+Date: Tue, 22 Jul 2025 19:17:03 +0500
+X-Gm-Features: Ac12FXzF_nEInn7KovIF1rCbPeOEkryRpoS2Hx7q1NkLYIXq7eXxsmx3CUCidIg
+Message-ID: <CACzwLxiD98BLmEmPhkJQgv297bP_7qw+Vm_icFhTiDYN7WvLjw@mail.gmail.com>
+Subject: Re: [PATCH v3 08/12] kasan/um: select ARCH_DEFER_KASAN and call kasan_init_generic
+To: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: hca@linux.ibm.com, christophe.leroy@csgroup.eu, andreyknvl@gmail.com, 
+	agordeev@linux.ibm.com, akpm@linux-foundation.org, glider@google.com, 
+	dvyukov@google.com, kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, 
+	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-um@lists.infradead.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 8A844120009
+X-Stat-Signature: gau6oiek3zx9ng3c716wmotf3dkgt9o7
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 33ghqdkk15bymrxrybto1r48ccj7gjkj
-X-HE-Tag: 1753193817-260147
-X-HE-Meta: U2FsdGVkX18rm2x9gNhiwN85amgSyRBJRKjFHIYyddBcLpejKxuHla9cYlu5blQnXo7ySXHIuZ/dNlnhPFWepIIOUpC/2OgYofQujajaShjZoJhySHpQ1neycR+MIhtBYdAJefc94jEL1IOYLwH8OD0f/4Px6dWIM7NIa143OVL1jP/ioG4x/Ea4OsGvXazpxU+2q+H391gSM2ZL7Bj998YsdTqD5Tw2KLOi7iCB74btHG/xOCLKAia9keslpqMS8LNb6d9KgnLeDAu/lCczlW6sKmNBa3L6MADwZ5RROK3/QdL0rFQtWhw/pcJ5G/IzMLvex9JoF02MSsJ+E4/W+e378M+YD2QxtExLkrffsIRaMrXnC0LK6vB/pIyoxOkrduRE8GXwzjjWorffMI6X25vtwxMrJZnh+lpPZv9/Ujc2L8W8YXHj22u0ugFABr8iElC1RagkiHczDSrPPo5sSoL9If4fqXY2I59c0pPBXb3o0d1yOVHpxQDpFfjyCl9qz0WnBQlwvh6AWQEre6qTg2zy9JoTFlDZ9i0L6xXQOAcQ78z3Ym87nsVAjRT+H+AoO3gOKQ9C1jA8cXf5BcLfMfN75K3U21QD5IqXN8TiC2LPP1Keqpu0pV2wHK7CeJTFlvpPyIyDl/HtWyfpCy2PvT1Qx0Z8gL+PmKuxoyvrprDIuLpEraMDxpYpPqpvrZeBqbEcmSut6nMVQIB6U6nabQvhnjIK81DRZprvtp3vfJvNIZs61f82WRu+eOshBERNag4GPwtHOtOi9gLqNxCZw7ydxjemVsgaKM3WbCXe3A2IIvx9uHlYj6HM9gdNWuKgT4w0zOHGj+7WGfFTRVC/FYktqjt1r9adBzkiZM+53XHc9EEKrQVWq2HE6Ha2hnM8xpyCyBQ5HIqGIXEvPo+2GXAaMrx0gvuOYFpwIEsKS2g/lcxJK8LAjft6SQIVpLKMPEWs9SVGPXf7pttQG01
- RRb2MX5J
- xUTHEQR/LiAF7uh+0Pkk/lLj/aJ5/BzKg1y/eXDJGMG7f8mjxBIbAtD5epg==
+X-HE-Tag: 1753193843-684875
+X-HE-Meta: U2FsdGVkX1+d8WXjgz3HD0eggq+o5ssFttT+ow/DV1OL9ZXObhLNLKvvcNGt+yWQsJCovVpbUtY6LvmgMzP/n1NwV4zrbqEbiI53I4I/gZG5F5I1C0FgyR+DSSehmdbNnO/Eju0PXfIxQkhxrSjp/xvzvwZ1JESfXYblKr99rdIR0V4OhoUPBhc6az9pcn5zk9k9HD6iWoYI7yc3SINY9qZ6AJLbSu/pwJpM1DPDnBrl2OrA7AvRxNNbhyORB0yVst2MhlFknp1AZxJLXjMvONQG0g5ipwCSPQsP/N8Fe57+2Cwqhh5/TCcZJFnuTXPT0lhzNi1FuFratyCafNGAi5JNiXnfuFsI57Zbnr1kj0Gi0M1mvsdg7/7EEmlDwTP7MlJG52vAsWQbKm8/+yoAubXtXG/egBsc3YfPBny3k7lJVvapXKI+jUcVjQYtL4E1BjzP7FcdHM46UbrWNf7YgMB2jQwTJ/l+c9I6yFHW8ri/Bs6YTvCrb0qX7DlJ2+R0x+PeEbBJcrKOf8iRAtc43lMHcjdVKVm+G7zsXuNn1iFlwIMpCBngYOq4nNThfKWjNA1KFlv/EcEBvkHK21cMCPfU3OzyMz/1Ug/QsEQKFYzQLCPGSAAFp3kYsAbvnW91gd781YcvpW8Wa8i7BOWl4/B+MUXVLeNbbFdfOLB74jZCxRYtdOKurCIeOTOvUCt+LhAOLDtFHYVkJdWLnQ9lc2eiLFy3UTkXjTGuuSy2uFqzVoxVjh4476I4pHl3L+xLl+C2Kf4NESMm++K6nyq5WhdN2r+DKrOPyiQh4VJoVpBgt8GcisoUxzZ/q7SZQquTVQ8DEGcLTwSUgml0aaKqASR8OTIqAZ3n7IXLEMqPBB0o3FWJsBX9dmhfWo65u56Au4+8WpZLyvLsZNzyXitZE+7lOIcliofAP1g+IVQiIfhcJ9L+iQZ5lwuKOQc0XWJBSvfjPEKWIoN8vaYpFk/
+ i8bfBN9u
+ FQrfchHA3H3Tw1/qRb3F6So6rwdUk7k1uJ7LmY6H247Cz5HiBPTQ2rm13OsnlQIo8IKAbYfTy9ApKQD5Sg98RqxYKxiP0GkKpOuDQ5GAJPtElU0Sv5ZCSuygqzsF1Y1tqy/GIqNxGobJlMrFYYQeQkVHLwZm9o3sug6bvCMvVHeC0WeM22UO4kdKmIA2KKUTUgXPCoI3rZ9vlxUb/3A1hGlkY21XrMLhWxLw+JRcbc02Pvw/arh8vP1MK+mXlkFyxXbhMpwQJRvDAWnMkKYh6r7yV3pfywd/d7HNQS4h6XR69OMtFCL5SSRYNUKgSvXpCKXqPG4FsQbCBvqxaUIjNcZ/R2wXzQuyF8NnGjnlKAhfvSEvEtOfrh59YEfdA2YVDT0spuPcUQcQmxRZB1qnxYlS+b3Gs4C6JqD+HTo94mN9IwrdK0jmtXif+1mKA+i6zcPMcmqh8NO8k+APty3CsgGuAM7aS9lb9O8RWS1SPHhboWBNU9e3kJAHQgMeoSqIdR5g0/JH4vJAEZyA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,124 +119,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Li Zhijian <lizhijian@fujitsu.com>
+On Tue, Jul 22, 2025 at 4:00=E2=80=AFAM Andrey Ryabinin <ryabinin.a.a@gmail=
+.com> wrote:
+>
+>
+>
+> On 7/17/25 4:27 PM, Sabyrzhan Tasbolatov wrote:
+> > UserMode Linux needs deferred KASAN initialization as it has a custom
+> > kasan_arch_is_ready() implementation that tracks shadow memory readines=
+s
+> > via the kasan_um_is_ready flag.
+> >
+> > Select ARCH_DEFER_KASAN to enable the unified static key mechanism
+> > for runtime KASAN control. Call kasan_init_generic() which handles
+> > Generic KASAN initialization and enables the static key.
+> >
+> > Delete the key kasan_um_is_ready in favor of the unified kasan_enabled(=
+)
+> > interface.
+> >
+> > Note that kasan_init_generic has __init macro, which is called by
+> > kasan_init() which is not marked with __init in arch/um code.
+> >
+> > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217049
+> > Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+> > ---
+> > Changes in v3:
+> > - Added CONFIG_ARCH_DEFER_KASAN selection for proper runtime control
+> > ---
+> >  arch/um/Kconfig             | 1 +
+> >  arch/um/include/asm/kasan.h | 5 -----
+> >  arch/um/kernel/mem.c        | 4 ++--
+> >  3 files changed, 3 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/arch/um/Kconfig b/arch/um/Kconfig
+> > index f08e8a7fac9..fd6d78bba52 100644
+> > --- a/arch/um/Kconfig
+> > +++ b/arch/um/Kconfig
+> > @@ -8,6 +8,7 @@ config UML
+> >       select ARCH_WANTS_DYNAMIC_TASK_STRUCT
+> >       select ARCH_HAS_CPU_FINALIZE_INIT
+> >       select ARCH_HAS_FORTIFY_SOURCE
+> > +     select ARCH_DEFER_KASAN
+> >       select ARCH_HAS_GCOV_PROFILE_ALL
+> >       select ARCH_HAS_KCOV
+> >       select ARCH_HAS_STRNCPY_FROM_USER
+> > diff --git a/arch/um/include/asm/kasan.h b/arch/um/include/asm/kasan.h
+> > index f97bb1f7b85..81bcdc0f962 100644
+> > --- a/arch/um/include/asm/kasan.h
+> > +++ b/arch/um/include/asm/kasan.h
+> > @@ -24,11 +24,6 @@
+> >
+> >  #ifdef CONFIG_KASAN
+> >  void kasan_init(void);
+> > -extern int kasan_um_is_ready;
+> > -
+> > -#ifdef CONFIG_STATIC_LINK
+> > -#define kasan_arch_is_ready() (kasan_um_is_ready)
+> > -#endif
+> >  #else
+> >  static inline void kasan_init(void) { }
+> >  #endif /* CONFIG_KASAN */
+> > diff --git a/arch/um/kernel/mem.c b/arch/um/kernel/mem.c
+> > index 76bec7de81b..058cb70e330 100644
+> > --- a/arch/um/kernel/mem.c
+> > +++ b/arch/um/kernel/mem.c
+> > @@ -21,9 +21,9 @@
+> >  #include <os.h>
+> >  #include <um_malloc.h>
+> >  #include <linux/sched/task.h>
+> > +#include <linux/kasan.h>
+> >
+> >  #ifdef CONFIG_KASAN
+> > -int kasan_um_is_ready;
+> >  void kasan_init(void)
+> >  {
+> >       /*
+> > @@ -32,7 +32,7 @@ void kasan_init(void)
+> >        */
+> >       kasan_map_memory((void *)KASAN_SHADOW_START, KASAN_SHADOW_SIZE);
+> >       init_task.kasan_depth =3D 0;
+> > -     kasan_um_is_ready =3D true;
+> > +     kasan_init_generic();
+>
+> I think this runs before jump_label_init(), and static keys shouldn't be =
+switched before that.>  }
 
-===
-Changes since v2:
-  1. According to Huang's suggestion, add a new stat to not count these
-  pages into PGPROMOTE_CANDIDATE, to avoid changing the rate limit
-  mechanism.
-===
+I got the warning in my local compilation and from kernel CI [1].
 
-Goto-san reported confusing pgpromote statistics where the
-pgpromote_success count significantly exceeded pgpromote_candidate.
+arch/um places kasan_init() in own `.kasan_init` section, while
+kasan_init_generic() is called from __init.
+Could you suggest a way how I can verify the functions call order?
 
-On a system with three nodes (nodes 0-1: DRAM 4GB, node 2: NVDIMM 4GB):
- # Enable demotion only
- echo 1 > /sys/kernel/mm/numa/demotion_enabled
- numactl -m 0-1 memhog -r200 3500M >/dev/null &
- pid=$!
- sleep 2
- numactl memhog -r100 2500M >/dev/null &
- sleep 10
- kill -9 $pid # terminate the 1st memhog
- # Enable promotion
- echo 2 > /proc/sys/kernel/numa_balancing
+I need to familiarize myself with how to run arch/um locally and try
+to fix this warning.
 
-After a few seconds, we observeed `pgpromote_candidate < pgpromote_success`
-$ grep -e pgpromote /proc/vmstat
-pgpromote_success 2579
-pgpromote_candidate 0
+[1] https://lore.kernel.org/all/CACzwLxicmky4CRdmABtN8m2cr2EpuMxLPqeF5Hk375=
+cN2Kvu-Q@mail.gmail.com/
 
-In this scenario, after terminating the first memhog, the conditions for
-pgdat_free_space_enough() are quickly met, and triggers promotion.
-However, these migrated pages are only counted for in PGPROMOTE_SUCCESS,
-not in PGPROMOTE_CANDIDATE.
-
-To solve this confusing statistics, introduce this
-PGPROMOTE_CANDIDATE_NOLIMIT to count the missed promotion pages.  And
-also, not counting these pages into PGPROMOTE_CANDIDATE is to avoid
-changing the existing algorithm or performance of the promotion rate
-limit.
-
-Perhaps PGPROMOTE_CANDIDATE_NOLIMIT is not well named, please comment if
-you have a better idea.
-
-
-Cc: Huang Ying <ying.huang@linux.alibaba.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Juri Lelli <juri.lelli@redhat.com>
-Cc: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Ben Segall <bsegall@google.com>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: Valentin Schneider <vschneid@redhat.com>
-Reported-by: Yasunori Gotou (Fujitsu) <y-goto@fujitsu.com>
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Signed-off-by: Ruan Shiyang <ruansy.fnst@fujitsu.com>
----
- include/linux/mmzone.h | 2 ++
- kernel/sched/fair.c    | 6 ++++--
- mm/vmstat.c            | 1 +
- 3 files changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 283913d42d7b..6216e2eecf3b 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -231,6 +231,8 @@ enum node_stat_item {
- #ifdef CONFIG_NUMA_BALANCING
- 	PGPROMOTE_SUCCESS,	/* promote successfully */
- 	PGPROMOTE_CANDIDATE,	/* candidate pages to promote */
-+	PGPROMOTE_CANDIDATE_NOLIMIT,	/* candidate pages without considering
-+					 * hot threshold */
- #endif
- 	/* PGDEMOTE_*: pages demoted */
- 	PGDEMOTE_KSWAPD,
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 7a14da5396fb..12dac3519c49 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -1940,11 +1940,14 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
- 		struct pglist_data *pgdat;
- 		unsigned long rate_limit;
- 		unsigned int latency, th, def_th;
-+		long nr = folio_nr_pages(folio);
- 
- 		pgdat = NODE_DATA(dst_nid);
- 		if (pgdat_free_space_enough(pgdat)) {
- 			/* workload changed, reset hot threshold */
- 			pgdat->nbp_threshold = 0;
-+			mod_node_page_state(pgdat, PGPROMOTE_CANDIDATE_NOLIMIT,
-+					    nr);
- 			return true;
- 		}
- 
-@@ -1958,8 +1961,7 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
- 		if (latency >= th)
- 			return false;
- 
--		return !numa_promotion_rate_limit(pgdat, rate_limit,
--						  folio_nr_pages(folio));
-+		return !numa_promotion_rate_limit(pgdat, rate_limit, nr);
- 	}
- 
- 	this_cpupid = cpu_pid_to_cpupid(dst_cpu, current->pid);
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index a78d70ddeacd..ca44a2dd5497 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -1272,6 +1272,7 @@ const char * const vmstat_text[] = {
- #ifdef CONFIG_NUMA_BALANCING
- 	"pgpromote_success",
- 	"pgpromote_candidate",
-+	"pgpromote_candidate_nolimit",
- #endif
- 	"pgdemote_kswapd",
- 	"pgdemote_direct",
--- 
-2.43.0
-
+> >
+> >  static void (*kasan_init_ptr)(void)
+>
 
