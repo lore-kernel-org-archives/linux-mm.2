@@ -2,122 +2,115 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C4F6BC83F27
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 17:43:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D6763C83F1A
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 17:45:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5EA996B008C; Tue, 22 Jul 2025 13:43:36 -0400 (EDT)
+	id 6FEAD6B008C; Tue, 22 Jul 2025 13:45:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C20B6B0092; Tue, 22 Jul 2025 13:43:36 -0400 (EDT)
+	id 6AFA56B0095; Tue, 22 Jul 2025 13:45:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D7E66B0093; Tue, 22 Jul 2025 13:43:36 -0400 (EDT)
+	id 59ED86B00A3; Tue, 22 Jul 2025 13:45:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D8E66B008C
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 13:43:36 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D879BC045D
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 17:43:35 +0000 (UTC)
-X-FDA: 83692622790.23.AC3FB18
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 92804100002
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 17:43:33 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PUgTL6CJ;
-	spf=pass (imf05.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 470E76B008C
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 13:45:33 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E229DC04A8
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 17:45:31 +0000 (UTC)
+X-FDA: 83692627662.10.41BB976
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+	by imf06.hostedemail.com (Postfix) with ESMTP id B946818000A
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 17:45:29 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Dq4clT+o;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.182 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753206330; a=rsa-sha256;
+	cv=none;
+	b=Rc8yJEK67RbD8Wz3zorkCttr1TTIgwDP/1v8R0XU2Ng/CxKbMZDA6mXnnObpCOTpbnelx0
+	Hj/vV3TC/H3S1nYQikOJYZen+2waSO+YdvGLXssWsfYbIbuymPgyKFRN12iQL4FkwElQFp
+	qjLw+CNcPSJhrQZKgqiQ2Cm2Ufq9WTA=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Dq4clT+o;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.182 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753206213;
+	s=arc-20220608; t=1753206330;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VsDH1uioSNYFyJB6j2gj5W37ON0NSVyJvbRCti5KG5U=;
-	b=xRBdPWrxiR4T2NfS8jfPvVbtd029uLO9xHfYd5JoBVOxs8zN8BDyhTNpvV/Gg5PlC2k9VL
-	hgBUE6y8SizQRDatVIWtnpvZmNvlNsWocrLBjzLlKvoAXs6gt7OvpFGaKj+u5U1LcMUeaP
-	Cj1s8Ld/U9pGfYJJ5JdLsWSzhfjWH3g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753206213; a=rsa-sha256;
-	cv=none;
-	b=c4B+u9sJ5ZTYqKxYIy+2HsGS/mXAY3GnZFMfPB8AfOeYotKlW2t2vQkxm1ckBoMgzYHrRv
-	I6GH4uPyo41GNcpBv7Jc1hd3LsMwQS/+z/1SrpZYr1V4Cy0xcdpnfgYsNsF4Ns/eab7FpE
-	mAKIwWDp73SCtXC+mm8wLlOmfMlFMQg=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PUgTL6CJ;
-	spf=pass (imf05.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753206213;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VsDH1uioSNYFyJB6j2gj5W37ON0NSVyJvbRCti5KG5U=;
-	b=PUgTL6CJ4m+lbxT8rLcPhswDMwWFUrR8MU/4pg+2bueBdtrXHG25V5O703tmK0anuRqukY
-	Mj7yXkG4uRyt9wIhAHCc1iW4BRUsh2rOT8SaxhbZxPASGexMVxiifaZgHp6IajhueKPc00
-	iiODhRrijghXfX4wcn+QGUCfkgv/2R0=
-Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
- [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-650--aFm7RfhM8O8ENlezGtj2Q-1; Tue, 22 Jul 2025 13:43:31 -0400
-X-MC-Unique: -aFm7RfhM8O8ENlezGtj2Q-1
-X-Mimecast-MFC-AGG-ID: -aFm7RfhM8O8ENlezGtj2Q_1753206211
-Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-7194c6b0b8aso74393457b3.2
-        for <linux-mm@kvack.org>; Tue, 22 Jul 2025 10:43:31 -0700 (PDT)
+	bh=XjFuwE8taiWiJN5pZzHXNakG5MTT87qFINxfeX0KwoI=;
+	b=R1p2H5w0EbCx/MVMfCN/ruC56w4mXnwaBI9+MKbW4DTtUOiPhWJuS6vV9X/0WsbtPC1fUz
+	nRhs0MXPZacgyjSA1EdU1H4TruF4S+m9PpVhCjcBCfdyecGnl0s0yJXzs1rzeQPeOqCOMD
+	XOjV0s+dle/HGBY3x9qZNDSa97CHK+o=
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-32b8134ef6aso58119901fa.0
+        for <linux-mm@kvack.org>; Tue, 22 Jul 2025 10:45:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753206328; x=1753811128; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XjFuwE8taiWiJN5pZzHXNakG5MTT87qFINxfeX0KwoI=;
+        b=Dq4clT+ouOo5OenkdPIWYQzt2lcqeab7n4U7Ot/zCr1lKasI5a0gV+cgT1yjtOGC82
+         MANtgzn1nCp9VlgICAJ9Wv8R/GfK0Fh8iqd3w5cXlkOdiGpQVEcZKfS4GZcsYgr7Wi7C
+         cTLbWpdPKnmRFyNcshgMAnWinkAjBmcx1ro84d9yJlLXHLOVDu0sF4BoXImLg6YIHiAM
+         6AFJ+NzCl37d1elRIkzxR83dND8kJK+VuwxdcCqA658iBfaJqPzr3S0HloN4vPEZOFDH
+         EObUx/DiCCvqyUvyGHdMXjcO6DvvqmwS2zpjD6lGOQ9DFGH3fWElDZJd0HGDxovxRk/N
+         gzfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753206211; x=1753811011;
+        d=1e100.net; s=20230601; t=1753206328; x=1753811128;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VsDH1uioSNYFyJB6j2gj5W37ON0NSVyJvbRCti5KG5U=;
-        b=D1XfguLtsyAqsAgvgRdyedN/DBxQcSUhVvyxIIg8cjw+Q/KzOB8f61lUbzwygirxQb
-         rXdEwCk6iOwK5sx+eWNIw66zqO/mkbwA+dG8ps9E0wZlEgYOdxboM/hHNt9MlgMjcdDY
-         +6tArvB1Nn3JX2ZBfVwjeVa5g641cjt/HKy2OZf+v9uOrsZTPD8zqRhhH5vqBPqQ7jkO
-         Kmrjfip5upeqfGSx9L8GPhv823S7HGPAP8mgABc1U1M2syYC175O8g2OGNFmCYJQky4O
-         foVkyhxB5k/HbgFeFI/1ZvOXHo9k/CYhnNDHhX7jxLjuvvOu0EWZ6CyeltSxqtmlTe0+
-         av+g==
-X-Forwarded-Encrypted: i=1; AJvYcCWt5/CuL4nizw3WTsKlaeZTJDjvHTn91z0yuAFairxe+T2H4ghWeugoUIOYwEoY4NY1/XkJMG8S5A==@kvack.org
-X-Gm-Message-State: AOJu0YzfFjwCUW61zeCw85yW1mOpyiAiNnmBLzk/VvieB5C/uHRlPrwp
-	J94kiDXwLzkkfbsfOR3xphGeBTpnSwkMwJE3PfUlGvEvc7zrqh1T1fDnGdfgb13r7GdFLaWoReL
-	0foUf42Nc5mV/IduRB7WhoIY2MSQm16wj0wXqy2cWDDJ+30RG1o1hRk4cFmRYXh3ZaKMUawCKby
-	hjM9LS42kEFU8gg9JnSjsf/7NcSAA=
-X-Gm-Gg: ASbGncuLhhR9AVMaNjDYwsdkmZaibYMNUeB2bxiANKqsc8t5wqZCq9tbOS6XmHBUujf
-	n8bE1xPuqPqxPGcoGHisx+dYK3tq2IqT6hY4/56xQZ6NYjmq6x8Q2qRiGU72fcOZMVM/K1HMqPo
-	mXBhtTYC6ULiFwjGPqsv5+1Ec=
-X-Received: by 2002:a05:690c:dd1:b0:70d:f673:1412 with SMTP id 00721157ae682-719b40e10d0mr713867b3.0.1753206210957;
-        Tue, 22 Jul 2025 10:43:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHJY0nNAxT5tewwnLcCVplQzJwNdk/gKqQRCywyeYDl6NvY1tKvaGB3litrfV1J9rWe/RV38T2/mmZ8Vp3FheU=
-X-Received: by 2002:a05:690c:dd1:b0:70d:f673:1412 with SMTP id
- 00721157ae682-719b40e10d0mr713527b3.0.1753206210605; Tue, 22 Jul 2025
- 10:43:30 -0700 (PDT)
+        bh=XjFuwE8taiWiJN5pZzHXNakG5MTT87qFINxfeX0KwoI=;
+        b=BeZH8qsX2W+I9iaZetdoh79CGZSydPZwF/TPFDQw5zmuquN3nqQlEx/8Fj+X+z49VN
+         tMCsKgQ2RlOw3bUXZYWvVRKRkSjjFvy9kRSIc3E72OqG9Ipo3KXkd0mDjo8jKw6N6Gbi
+         bc/6OZqWy+xke2VQoDQuDv6uvl/4F+pznJM4iKHztbsxvfelDKhy8tFpli+keEGXAAnw
+         GIBmXNSiNhaB/0HlF0PPRhKFy6fcd0db2WsgjhS7XtWXLuIsZNw2jH2814auwlUyShPz
+         wQwP0P4+bpfSogcFBf9ZGGLs2QHr13nioUSSXBJWN6SdDpP5ev45R06fySVTR9ppus8m
+         dqbA==
+X-Forwarded-Encrypted: i=1; AJvYcCX5JKQyfbAnXq3W4ek4QrLmi+31qwYI5Pnn/X/+nXVXBTwW8UFGcKsRTjHMkOCkoGE8APztEaWdgg==@kvack.org
+X-Gm-Message-State: AOJu0Yy/eX7NKLd1FFcYolw/eV7GvJpl5mnusdm2KZ7G5hVel6DEor2P
+	JrpoUwVDtbiDTQ/29v4kQaocUyoPf0L8T3qIV1V8vuI02DfJ3/SbyPh0P6niIiHG9/obCFY6pKE
+	ILYcHNnL/sil1rRff1J9nVSIQdYAmRr8=
+X-Gm-Gg: ASbGncv9V+NEgY1WUzAwtndHMXX4sRVAbjhqc0rVyDBwKsr0U7da20dQoaU8vz8HFk+
+	p0QXjIlkkYZp+RojSMTVqH+rIwc93k8BD4x9KQyHYMs5T50ovfDFnVTN39AEzMXc3FuhF6vz0c1
+	+8KNkPCVGDtPolcFRcpfjI0DVLF1hX3JtAbJt+Idp3/DMZoHQVoW8WWSkYY6Jbvqt+2jB/WsB0Q
+	mn94BA=
+X-Google-Smtp-Source: AGHT+IFDF2mlLYaYBZGWLln98c4PCkofuMMIHb20qfTy6ayrJ+cpDu7CIoPj4/AIk3dXq3Z3l24UI3QC+X31rLhOYGA=
+X-Received: by 2002:a05:651c:211b:b0:32f:1f1b:1e68 with SMTP id
+ 38308e7fff4ca-3309a4fa50bmr65974791fa.18.1753206327200; Tue, 22 Jul 2025
+ 10:45:27 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250722171904.142306-1-lorenzo.stoakes@oracle.com>
-In-Reply-To: <20250722171904.142306-1-lorenzo.stoakes@oracle.com>
-From: Nico Pache <npache@redhat.com>
-Date: Tue, 22 Jul 2025 11:43:04 -0600
-X-Gm-Features: Ac12FXzAodyj834b2REngbgzb2Y6TeaeeWycPt5oGwsuolzLS38sonZX2VsP7wE
-Message-ID: <CAA1CXcBY4rFLkNqJM2Dj-EajPw9TMTHNcYapw9P=U0bo=QNqkw@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: add missing mm_slot.h file THP section
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: t9epUwtaRLvpjV8BNQbmbkLH-PwD01bZD58QMXmXmfI_1753206211
-X-Mimecast-Originator: redhat.com
+References: <20250716202006.3640584-1-youngjun.park@lge.com> <20250716202006.3640584-5-youngjun.park@lge.com>
+In-Reply-To: <20250716202006.3640584-5-youngjun.park@lge.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Wed, 23 Jul 2025 01:44:49 +0800
+X-Gm-Features: Ac12FXzJvzXCImBzHeVF2F_uGI5AlIAZiwACCt3ZAEB8qvt4tn9o8yZaQ-naP_E
+Message-ID: <CAMgjq7COLbfGwd4CYxNBaLTi4UaPDkKQzkLhsV-caoA-xq1V-g@mail.gmail.com>
+Subject: Re: [PATCH 4/4] mm: swap: Per-cgroup per-CPU swap device cache with
+ shared clusters
+To: Youngjun Park <youngjun.park@lge.com>
+Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org, 
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, 
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com, 
+	baohua@kernel.org, chrisl@kernel.org, cgroups@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, gunho.lee@lge.com, 
+	iamjoonsoo.kim@lge.com, taejoon.song@lge.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 92804100002
-X-Stat-Signature: is65n5kcoiuaksx8e3g6o6wtembxy8xt
+X-Stat-Signature: t33ihmiasaohfz1obh6rgweb3yot5nyn
 X-Rspam-User: 
-X-HE-Tag: 1753206213-494738
-X-HE-Meta: U2FsdGVkX1/vt81KO9K5crUAN7FFNTyEumaj1ftC6bv14BOGB9xu7S4yMwrvxJyN0mdj/zCF0o5MlvxLR8vPK+y2KAvhnbJjkD0mzbZfHFB44grtUBKaCKm7tuIr6KFq+HtrXP4xXRXb5Zv2pS617a8xKJUZO2wQn/iLjIPEJM1xmtSXANaagx8Y4uefvn76rid+zojKtf16E9fJCP9GKMVVVFXb1W/mmMQ7rnjWfgIdKaFmetVFHQX2j8YDpih9gZh+3hG+ldaSZnTok924C0wrwZOXVecaNQ/Nfq2VwDAk+TdOqFFqs5sI5xNaQFTiwsyMea4M9CVDsmlnj5rnH1e3BYSk0Vm1/v623eio3yK8XhEG5UoxlwWxNp2P7RhYMe0179BBdAgcAJpt+lU+izE9Mr7h7E+bX8m5cDAAXeheTdMJnObFE2E3Q2G6zE/terbsF2tAKdHh3dDbmNeSXvU/CrrCASfByiKVO8tPYDmWtsofOMEclS7lbCAA/AM0iKf18ROVEvHZFXSUP8aiJn+doK42GJdFkNAU+prEaKEvc5Z84ZGXDiVkJ+sAr2XaHXYBwvjToccQmkPRp+RozDYk06A4pS33Mb0HBKWrHYtHzEx7BDEg0ePQip95NmFXwLIqZWoYtmfh4KfO/K9158TOtyCNCbnSofrylbjTGVhYpRkueBa1acTp29SIfk9xO8eeiwUxKDiUf4AnUMNJ7xcOZz9r3Im2jt/E13joVttTFtmCZpub0mM534nDoKVTd1H2RehRxRUZ+IenLx05iHN023noa4R3mlk8v6lGI/I6raeu4q2zLNwlrXgzyebzhA6SQonuzu6Jv6rC8qv9K5skEH7ZZBuD9FeXssXcCDcjVmxaiioFG8Cze5N2wQpE3EQADD+RTaRn1IeoEQ3Uz4q9HR3FptV2zUEPd4HQ+7JCgVFRIxAV/fHgA4iRYH+WUbkWpRQWh/54XdNFfXB
- gyKljFr9
- /rKwpNtT1AD/Eeiz+sVcjgkAJvRZqxtmmUQL4fHfo7jEFjSkfnXi/TcI+g9GqNNEpf8CponxscnLLqHKAMJ0HZMlvBDgJreTkCQvO9me9OeeQKUDPrenB1p5OFylxKYcof61oGYJHhbxkP/eMVxbN/3Hvx2nUmOc7avUSYF6GKtLCXSHhlfskxQUIOs35KKE1QU8SGJtWECxZ6gt/4BaCIEjUlf/XbGHfGqNU31tuYySTMXdOn062n9aeaXji9Q3O+kXqdkWLHMTaS0UwbmV9PqppYUaJz4Til0/npgHxEH7D9KBBxwFTTGjHyfXUkuENLbAEI4QJCaAY/Zc1DYMOlfWheMpFl4Bx0bA2mp7s8/QswzdmAYL9DsOHYddLx8xv8Zru
+X-Rspamd-Queue-Id: B946818000A
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1753206329-950701
+X-HE-Meta: U2FsdGVkX18rNpecogJne1+ywsjF+PU2VLfqZGaCBqtJIBlryPj2k5D3CyRJn/obqD6s2OvE7G/xu+dPchr/cWNyjCRBuq9iWHzPzbaU4FBj3wSZ2PmFp+SmLuN91C3RatpNV3LZvBr/LLs0Zt2cp2Y4igQVHP7OAaHvS1tfhuSmZhYdr+4XQaDTWoB2y758LNaaZo7HKkXQl1eImpxlSipbF9zO6a9tZy5N6L3h71ZFnv8z8trWSQCcRbTnCms6S15NipNLEUH2OscvXhyhcl3Y8Ro6anIVI0Lfq2axDoVaVU8pZvxAu+BOkkMvnuW9T6cbWAbnaXAsEzduapf5/wFeo5B6aWBFQm1a+J1584ExUHkDx5i9efoaVloS3PMQgOEdgoOBFt/6ISO05ewAZmVxr6GOH455u+s6RKrrN0a3BvJLLM95Yd6GrVQOkWf9kFpYsPPmF8nI++8GOhLUBgd/ryZmpgXnTMDwEdMLQVUhrCNfa8mj3KDTbOqBHAnEv3ipRcbmF4tCaxUlkrHHV46EIHzJNLd3fpyzmtSA98hfDlHWWMpwijr71MKqI0bbKNnhk4xYFkaY36V/4Lfp9OdSAFKxHmIScxRVBbPyxnMsKNxHrzFcfCqgagyZKliiRvrlOXh6nnEpKh1VSUwTZb73fXDJEpslB+qdrhcCk64KykEy5eAOMfdGpTXgI8IuvisWk01E/v5r4KPEqiITCoCPCI6EB73G/f2vR5g+OAw7Ly8HViNj55n6zib9/2mcdIetHhPw+pQ88weuRmG/gulOGOpHe8uWVWcRMZHi4s3ZBz7EE8YABFxdUqk7I+klfeKy16JT4/MgLwQZDPajHFijye2XHUhyVuh+iW6PxKnwFlZzK3QmREl5R0JrN6re9N4Pmexlal7dCormhUut3qPC/QJODJbyK6pmW0IrYERxN77l0tNP32rvpRhKosah49DpejeEACUZqEOs5eb
+ jnAiNyNt
+ SbzSUklRafCxpq/jSeqkWpJyx3ZBZjSr1GjXnlf6oegYxtWrPcaxswObt4faHAZHzdpXXXj/OZZihYwWPgGzkMAzwmIsV/Xc6pbnSqz9iYS/I+qcn+u66ZytdMyRqak4cIdo6KgoqT83cbPD6x9clQf0VSS+dD7xGo/ehR4KjXHiDkAdzlBSTArR3wyzsUd9dL2AEDv+ZfZ/++T0fRVMxZT+p511XIAi8hdqTvIVhdFUmLlamDtBrJFVJPRW25wjzdAp6zlt5FT8EK1ncWtuNeXuMyJYO/I63rXIkV1PLdYTgW/01X9mY6C3T2RfnLeTvXUM7P6/orke3fxiTgsZv2jpP5oZN2QzCi10v3OORVo9VwOCCRdhl/DUfoaaoy13+Bj/mgjMwBukWP9+u3bg+cLEWqjIgLTN3Q1bYmNEeXwIMP3g=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,34 +119,565 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 22, 2025 at 11:19=E2=80=AFAM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
+On Thu, Jul 17, 2025 at 4:21=E2=80=AFAM Youngjun Park <youngjun.park@lge.co=
+m> wrote:
 >
-> This seems to be the most appropriate place for this file.
+> This patch introduces a new swap allocation mechanism that supports
+> per-cgroup per-CPU swap device caches, combined with per-device per-CPU
+> cluster management.
 >
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> The existing global swap allocator uses a per-CPU device cache and
+> cluster, shared by all cgroups. Under this model, per-cgroup swap
+> priorities cannot be effectively honored on the fast path, as allocations
+> do not distinguish between cgroups.
+>
+> To address this, we introduce per-cgroup per-CPU swap device caches.
+> This allows fast-path swap allocations to respect each cgroup=E2=80=99s
+> individual priority settings.
+>
+> To avoid an explosion of cluster structures proportional to the number
+> of cgroups, clusters remain per-device and are shared across cgroups.
+> This strikes a balance between performance and memory overhead.
+>
+> Suggested-by: Nhat Pham <nphamcs@gmail.com>
+> Suggested-by: Kairui Song <kasong@tencent.com>
+> Signed-off-by: Youngjun Park <youngjun.park@lge.com>
 > ---
->  MAINTAINERS | 1 +
->  1 file changed, 1 insertion(+)
+>  include/linux/swap.h      |   7 ++
+>  mm/swap_cgroup_priority.c | 156 +++++++++++++++++++++++++++++++++++++-
+>  mm/swap_cgroup_priority.h |  39 ++++++++++
+>  mm/swapfile.c             |  47 +++++++-----
+>  4 files changed, 228 insertions(+), 21 deletions(-)
 >
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 837bc5cd6166..3f83fb317f51 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -15966,6 +15966,7 @@ F:      include/linux/khugepaged.h
->  F:     include/trace/events/huge_memory.h
->  F:     mm/huge_memory.c
->  F:     mm/khugepaged.c
-> +F:     mm/mm_slot.h
->  F:     tools/testing/selftests/mm/khugepaged.c
->  F:     tools/testing/selftests/mm/split_huge_page_test.c
->  F:     tools/testing/selftests/mm/transhuge-stress.c
+> diff --git a/include/linux/swap.h b/include/linux/swap.h
+> index bfddbec2ee28..ab15f4c103a1 100644
+> --- a/include/linux/swap.h
+> +++ b/include/linux/swap.h
+> @@ -283,6 +283,12 @@ enum swap_cluster_flags {
+>  #define SWAP_NR_ORDERS         1
+>  #endif
+>
+> +#ifdef CONFIG_SWAP_CGROUP_PRIORITY
+> +struct percpu_cluster {
+> +       unsigned int next[SWAP_NR_ORDERS]; /* Likely next allocation offs=
+et */
+> +};
+> +#endif
+> +
+>  /*
+>   * We keep using same cluster for rotational device so IO will be sequen=
+tial.
+>   * The purpose is to optimize SWAP throughput on these device.
+> @@ -341,6 +347,7 @@ struct swap_info_struct {
+>         struct list_head discard_clusters; /* discard clusters list */
+>  #ifdef CONFIG_SWAP_CGROUP_PRIORITY
+>         u64 id;
+> +       struct percpu_cluster __percpu *percpu_cluster; /* per cpu's swap=
+ location */
+>  #endif
+>         struct plist_node avail_lists[]; /*
+>                                            * entries in swap_avail_heads,=
+ one
+> diff --git a/mm/swap_cgroup_priority.c b/mm/swap_cgroup_priority.c
+> index 84e876b77f01..f960c3dcab48 100644
+> --- a/mm/swap_cgroup_priority.c
+> +++ b/mm/swap_cgroup_priority.c
+> @@ -21,6 +21,17 @@
+>  #include "swap_cgroup_priority.h"
+>  #include "memcontrol-v1.h"
+>
+> +/*
+> + * We do maintain a cache on a per-cgroup-per-swap-device basis.
+> + * However, the underlying cluster cache itself is managed
+> + * per-swap-device. This design prevents each individual
+> + * swap_cgroup_priority entry from caching its own cluster data,
+> + * even as the number of such entries increases.
+> + */
+> +struct percpu_swap_device {
+> +       struct swap_info_struct *si[SWAP_NR_ORDERS];
+> +};
+> +
+>  static DEFINE_MUTEX(swap_cgroup_priority_inherit_lck);
+>  static LIST_HEAD(swap_cgroup_priority_list);
+>
+> @@ -49,6 +60,7 @@ static LIST_HEAD(swap_cgroup_priority_list);
+>   * least_priority - Current lowest priority.
+>   * distance - Priority differences from global swap priority.
+>   * default_prio - Default priority for this cgroup.
+> + * pcpu_swapdev - Per-CPU swap device.
+>   * plist - Priority list head.
+>   */
+>  struct swap_cgroup_priority {
+> @@ -64,6 +76,7 @@ struct swap_cgroup_priority {
+>         int least_priority;
+>         s8 distance;
+>         int default_prio;
+> +       struct percpu_swap_device __percpu *pcpu_swapdev;
+>         struct plist_head plist[];
+>  };
+>
+> @@ -132,6 +145,21 @@ static struct swap_cgroup_priority *get_effective_sw=
+ap_cgroup_priority(
+>         return swap_priority->effective;
+>  }
+>
+> +static struct swap_cgroup_priority *get_effective_swap_cgroup_priority_r=
+cu(
+> +       struct mem_cgroup *memcg)
+> +{
+> +       struct swap_cgroup_priority *swap_priority;
+> +
+> +       if (!memcg)
+> +               return NULL;
+> +
+> +       swap_priority =3D rcu_dereference(memcg->swap_priority);
+> +       if (!swap_priority)
+> +               return NULL;
+> +
+> +       return rcu_dereference(swap_priority->effective);
+> +}
+> +
+>  static bool validate_effective_swap_cgroup_priority(
+>         struct mem_cgroup *memcg,
+>         struct swap_cgroup_priority **swap_priority)
+> @@ -172,6 +200,9 @@ static void free_swap_cgroup_priority_pnode(
+>  static void free_swap_cgroup_priority(
+>         struct swap_cgroup_priority *swap_priority)
+>  {
+> +       if (swap_priority->pcpu_swapdev)
+> +               free_percpu(swap_priority->pcpu_swapdev);
+> +
+>         for (int i =3D 0; i < MAX_SWAPFILES; i++)
+>                 free_swap_cgroup_priority_pnode(swap_priority->pnode[i]);
+>
+> @@ -187,6 +218,12 @@ static struct swap_cgroup_priority *alloc_swap_cgrou=
+p_priority(void)
+>         if (!swap_priority)
+>                 return NULL;
+>
+> +       swap_priority->pcpu_swapdev =3D alloc_percpu(struct percpu_swap_d=
+evice);
+> +       if (!swap_priority->pcpu_swapdev) {
+> +               kvfree(swap_priority);
+> +               return NULL;
+> +       }
+> +
+>         /*
+>          * Pre-allocates pnode array up to nr_swapfiles at init.
+>          * Individual pnodes are assigned on swapon, but not freed
+> @@ -326,10 +363,34 @@ bool swap_alloc_cgroup_priority(struct mem_cgroup *=
+memcg,
+>         unsigned long offset;
+>         int node;
+>
+> -       /*
+> -        * TODO: Per-cpu swap cluster cache can't be used directly
+> -        * as cgroup-specific priorities may select different devices.
+> -        */
+> +       rcu_read_lock();
+> +       if (!(swap_priority =3D get_effective_swap_cgroup_priority_rcu(me=
+mcg))) {
+> +               rcu_read_unlock();
+> +               return false;
+> +       }
+> +
+> +       /* Fast path */
+> +       si =3D this_cpu_read(swap_priority->pcpu_swapdev->si[order]);
+> +       if (si && get_swap_device_info(si)) {
+> +               offset =3D cluster_alloc_swap_entry(si, order, SWAP_HAS_C=
+ACHE);
+> +               if (offset) {
+> +                       *entry =3D swp_entry(si->type, offset);
+> +                       /*
+> +                        * Protected by 'percpu_swap_cluster' local_lock;
+> +                        * CPU migration is disabled during this operatio=
+n.
+> +                        */
+> +                       this_cpu_write(swap_priority->pcpu_swapdev->si[or=
+der],
+> +                                      si);
+> +                       put_swap_device(si);
+> +                       rcu_read_unlock();
+> +
+> +                       return true;
+> +               }
+> +               put_swap_device(si);
+> +       }
+> +       rcu_read_unlock();
+> +
+> +       /* Slow path */
+
+Hi Youngjun
+
+One thing I noticed after a quick glance is that this
+swap_alloc_cgroup_priority is bloated and it is doing similar things
+as folio_alloc_swap.
+
+I imagined that we can just have a struct (eg. let's call it struct
+swap_percpu_info / pi) as a closure of what the allocator needs, it
+contains the plist and fast path device.
+
+With slight changes to folio_alloc_swap, it can respect either the
+cgroup's pi or global pi. (might be a horrible name though, feel free
+to change it)
+
+For example first thing swap_alloc_fast do will be:
+
+`struct swap_percpu_info *pi =3D folio_swap_percpu_info(folio);`
+
+folio_swap_percpu_info returns the cgroup's swap_percpu_info or the global =
+one.
+
+swap_alloc_slow can do a similar thing, it then can just use pi->plist
+and pi->pcpu_swapdev, (cluster info will be in si) ignoring all the
+cgroup differences.
+
+Also it is better to check your patches with ./scripts/checkpatch.pl,
+I'm seeing some styling issues.
+
+I'll check your other patches too later this week, thanks for the
+update on this idea.
+
+>         spin_lock(&swap_avail_lock);
+>         node =3D numa_node_id();
+>
+> @@ -350,6 +411,14 @@ bool swap_alloc_cgroup_priority(struct mem_cgroup *m=
+emcg,
+>                 if (get_swap_device_info(si)) {
+>                         offset =3D cluster_alloc_swap_entry(si, order,
+>                                                           SWAP_HAS_CACHE)=
+;
+> +                       /*
+> +                        * Protected by 'percpu_swap_cluster' local_lock;
+> +                        * CPU migration is disabled during this operatio=
+n.
+> +                        */
+> +                       if (memcg->swap_priority =3D=3D swap_priority)
+> +                               this_cpu_write(
+> +                                       swap_priority->pcpu_swapdev->si[o=
+rder],
+> +                                       si);
+>                         put_swap_device(si);
+>                         if (offset) {
+>                                 *entry =3D swp_entry(si->type, offset);
+> @@ -687,6 +756,21 @@ static int __apply_swap_cgroup_priority(
+>         return 0;
+>  }
+>
+> +static int init_swap_cgroup_priority_pcpu_swapdev_cache(
+> +       struct swap_cgroup_priority *swap_priority)
+> +{
+> +       int cpu;
+> +
+> +       for_each_possible_cpu(cpu) {
+> +               struct percpu_swap_device *pcp_swap_dev =3D
+> +                       per_cpu_ptr(swap_priority->pcpu_swapdev, cpu);
+> +               for (int i =3D 0; i < SWAP_NR_ORDERS; i++)
+> +                       pcp_swap_dev->si[i] =3D NULL;
+> +       }
+> +
+> +       return 0;
+> +}
+> +
+>  /*
+>   * If this is the top-level swap_cgroup_priority, propagation is needed.
+>   * We traverse the 'mem_cgroup_tree' using 'for_each_mem_cgroup_tree'.
+> @@ -795,6 +879,8 @@ int apply_swap_cgroup_priority(struct mem_cgroup *mem=
+cg, u64 id, int prio)
+>         for_each_node(nid)
+>                 plist_head_init(&swap_priority->plist[nid]);
+>
+> +       init_swap_cgroup_priority_pcpu_swapdev_cache(swap_priority);
+> +
+>  prio_set:
+>         spin_lock(&swap_lock);
+>         spin_lock(&swap_avail_lock);
+> @@ -843,6 +929,23 @@ int apply_swap_cgroup_priority(struct mem_cgroup *me=
+mcg, u64 id, int prio)
+>
+>         spin_unlock(&swap_avail_lock);
+>         spin_unlock(&swap_lock);
+> +       /*
+> +        * XXX: We cannot fully synchronize with swap_alloc_cgroup_priori=
+ty
+> +        * when updating the next si.
+> +        * Still, we ensure that flush operations inside swap_priority
+> +        * are performed as reliably as possible.
+> +        */
+> +       if (id !=3D DEFAULT_ID &&
+> +           swap_priority =3D=3D swap_priority->effective && !new) {
+> +               int cpu;
+> +               struct swap_info_struct **pcp_si;
+> +               for_each_possible_cpu(cpu) {
+> +                       pcp_si =3D per_cpu_ptr(
+> +                               swap_priority->pcpu_swapdev->si, cpu);
+> +                       for (int i =3D 0; i < SWAP_NR_ORDERS; i++)
+> +                               pcp_si[i] =3D NULL;
+> +               }
+> +       }
+>         mutex_unlock(&swap_cgroup_priority_inherit_lck);
+>         return 0;
+>
+> @@ -886,3 +989,48 @@ void delete_swap_cgroup_priority(struct mem_cgroup *=
+memcg)
+>         spin_unlock(&swap_avail_lock);
+>         mutex_unlock(&swap_cgroup_priority_inherit_lck);
+>  }
+> +
+> +void flush_swap_cgroup_priority_percpu_swapdev(struct swap_info_struct *=
+si)
+> +{
+> +       int cpu, i;
+> +       struct swap_info_struct **pcp_si;
+> +       struct swap_cgroup_priority *swap_priority;
+> +
+> +       rcu_read_lock();
+> +       list_for_each_entry_rcu(swap_priority,
+> +                               &swap_cgroup_priority_list, link) {
+> +               for_each_possible_cpu(cpu) {
+> +                       pcp_si =3D per_cpu_ptr(
+> +                                       swap_priority->pcpu_swapdev->si, =
+cpu);
+> +
+> +                       for (i =3D 0; i < SWAP_NR_ORDERS; i++)
+> +                               cmpxchg(&pcp_si[i], si, NULL);
+> +               }
+> +       }
+> +       rcu_read_unlock();
+> +}
+> +
+> +bool alloc_percpu_swap_cluster(struct swap_info_struct *si)
+> +{
+> +       si->percpu_cluster =3D alloc_percpu(struct percpu_cluster);
+> +       if (!si->percpu_cluster)
+> +               return false;
+> +
+> +       int cpu;
+> +       int i;
+> +       for_each_possible_cpu(cpu) {
+> +               struct percpu_cluster *cluster;
+> +
+> +               cluster =3D per_cpu_ptr(si->percpu_cluster, cpu);
+> +               for (i =3D 0; i < SWAP_NR_ORDERS; i++)
+> +                       cluster->next[i] =3D SWAP_ENTRY_INVALID;
+> +       }
+> +
+> +       return true;
+> +}
+> +
+> +void free_percpu_swap_cluster(struct swap_info_struct *si)
+> +{
+> +       free_percpu(si->percpu_cluster);
+> +       si->percpu_cluster =3D NULL;
+> +}
+> diff --git a/mm/swap_cgroup_priority.h b/mm/swap_cgroup_priority.h
+> index 5d16b63d12e0..815822ebd0d1 100644
+> --- a/mm/swap_cgroup_priority.h
+> +++ b/mm/swap_cgroup_priority.h
+> @@ -47,6 +47,22 @@ struct swap_cgroup_priority *inherit_swap_cgroup_prior=
+ity(
+>  bool swap_alloc_cgroup_priority(struct mem_cgroup *memcg, swp_entry_t *e=
+ntry,
+>                                 int order);
+>  void delete_swap_cgroup_priority(struct mem_cgroup *memcg);
+> +void flush_swap_cgroup_priority_percpu_swapdev(struct swap_info_struct *=
+si);
+> +
+> +bool alloc_percpu_swap_cluster(struct swap_info_struct *si);
+> +void free_percpu_swap_cluster(struct swap_info_struct *si);
+> +static inline void write_percpu_swap_cluster_next(struct swap_info_struc=
+t *si,
+> +                                                 int order,
+> +                                                 unsigned int next)
+> +{
+> +       this_cpu_write(si->percpu_cluster->next[order], next);
+> +}
+> +
+> +static inline unsigned int read_percpu_swap_cluster_next(
+> +       struct swap_info_struct *si, int order)
+> +{
+> +        return __this_cpu_read(si->percpu_cluster->next[order]);
+> +}
+>  #else
+>  int swap_node(struct swap_info_struct *si);
+>  unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si, int =
+order,
+> @@ -85,5 +101,28 @@ static inline bool swap_alloc_cgroup_priority(struct =
+mem_cgroup *memcg,
+>  static inline void delete_swap_cgroup_priority(struct mem_cgroup *memcg)
+>  {
+>  }
+> +static inline void flush_swap_cgroup_priority_percpu_swapdev(
+> +       struct swap_info_struct *si)
+> +{
+> +}
+> +static inline bool alloc_percpu_swap_cluster(struct swap_info_struct *si=
+)
+> +{
+> +       return true;
+> +}
+> +static inline void free_percpu_swap_cluster(struct swap_info_struct *si)
+> +{
+> +}
+> +static inline void write_percpu_swap_cluster_next(struct swap_info_struc=
+t *si,
+> +                                                 int order,
+> +                                                 unsigned int next)
+> +{
+> +       return;
+> +}
+> +
+> +static inline unsigned int read_percpu_swap_cluster_next(
+> +       struct swap_info_struct *si, int order)
+> +{
+> +       return SWAP_ENTRY_INVALID;
+> +}
+>  #endif
+>  #endif
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index bfd0532ad250..6a5ac9962e9f 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -817,12 +817,15 @@ static unsigned int alloc_swap_scan_cluster(struct =
+swap_info_struct *si,
+>  out:
+>         relocate_cluster(si, ci);
+>         unlock_cluster(ci);
+> +
+>         if (si->flags & SWP_SOLIDSTATE) {
+>                 this_cpu_write(percpu_swap_cluster.offset[order], next);
+
+Why not just remove the `percpu_swap_cluster.offset` and just share
+si->percpu_cluster among all cgroups (including root cgroup)?
+
+Otherwise, eg. if rootcg's pcpu cluster and one cgroup's pcpu
+cluster are pointing to one same cluster, they might be in
+contention on allocation of different order, or even in the same order
+the performance might not be good as multiple CPUs will race
+with each other.
+
+It will be easier to implement too.
+
+
+
+
+>                 this_cpu_write(percpu_swap_cluster.si[order], si);
+> +               write_percpu_swap_cluster_next(si, order, next);
+>         } else {
+>                 si->global_cluster->next[order] =3D next;
+>         }
+> +
+>         return found;
+>  }
+>
+> @@ -892,26 +895,29 @@ unsigned long cluster_alloc_swap_entry(struct swap_=
+info_struct *si, int order,
+>         if (order && !(si->flags & SWP_BLKDEV))
+>                 return 0;
+>
+> -       if (!(si->flags & SWP_SOLIDSTATE)) {
+> +       if (si->flags & SWP_SOLIDSTATE) {
+> +               offset =3D read_percpu_swap_cluster_next(si, order);
+> +       } else {
+>                 /* Serialize HDD SWAP allocation for each device. */
+>                 spin_lock(&si->global_cluster_lock);
+>                 offset =3D si->global_cluster->next[order];
+> -               if (offset =3D=3D SWAP_ENTRY_INVALID)
+> -                       goto new_cluster;
+> +       }
+>
+> -               ci =3D lock_cluster(si, offset);
+> -               /* Cluster could have been used by another order */
+> -               if (cluster_is_usable(ci, order)) {
+> -                       if (cluster_is_empty(ci))
+> -                               offset =3D cluster_offset(si, ci);
+> -                       found =3D alloc_swap_scan_cluster(si, ci, offset,
+> -                                                       order, usage);
+> -               } else {
+> -                       unlock_cluster(ci);
+> -               }
+> -               if (found)
+> -                       goto done;
+> +       if (offset =3D=3D SWAP_ENTRY_INVALID)
+> +               goto new_cluster;
+> +
+> +       ci =3D lock_cluster(si, offset);
+> +       /* Cluster could have been used by another order */
+> +       if (cluster_is_usable(ci, order)) {
+> +               if (cluster_is_empty(ci))
+> +                       offset =3D cluster_offset(si, ci);
+> +               found =3D alloc_swap_scan_cluster(si, ci, offset,
+> +                                               order, usage);
+> +       } else {
+> +               unlock_cluster(ci);
+>         }
+> +       if (found)
+> +               goto done;
+>
+>  new_cluster:
+>         ci =3D isolate_lock_cluster(si, &si->free_clusters);
+> @@ -991,6 +997,7 @@ unsigned long cluster_alloc_swap_entry(struct swap_in=
+fo_struct *si, int order,
+>  done:
+>         if (!(si->flags & SWP_SOLIDSTATE))
+>                 spin_unlock(&si->global_cluster_lock);
+> +
+>         return found;
+>  }
+>
+> @@ -2674,6 +2681,8 @@ static void flush_percpu_swap_cluster(struct swap_i=
+nfo_struct *si)
+>                 for (i =3D 0; i < SWAP_NR_ORDERS; i++)
+>                         cmpxchg(&pcp_si[i], si, NULL);
+>         }
+> +
+> +       flush_swap_cgroup_priority_percpu_swapdev(si);
+>  }
+>
+>
+> @@ -2802,6 +2811,7 @@ SYSCALL_DEFINE1(swapoff, const char __user *, speci=
+alfile)
+>         arch_swap_invalidate_area(p->type);
+>         zswap_swapoff(p->type);
+>         mutex_unlock(&swapon_mutex);
+> +       free_percpu_swap_cluster(p);
+>         kfree(p->global_cluster);
+>         p->global_cluster =3D NULL;
+>         vfree(swap_map);
+> @@ -2900,7 +2910,6 @@ static void swap_stop(struct seq_file *swap, void *=
+v)
+>         mutex_unlock(&swapon_mutex);
+>  }
+>
+> -
+>  #ifndef CONFIG_SWAP_CGROUP_PRIORITY
+>  static int swap_show(struct seq_file *swap, void *v)
+>  {
+> @@ -3239,7 +3248,10 @@ static struct swap_cluster_info *setup_clusters(st=
+ruct swap_info_struct *si,
+>         for (i =3D 0; i < nr_clusters; i++)
+>                 spin_lock_init(&cluster_info[i].lock);
+>
+> -       if (!(si->flags & SWP_SOLIDSTATE)) {
+> +       if (si->flags & SWP_SOLIDSTATE) {
+> +               if (!alloc_percpu_swap_cluster(si))
+> +                       goto err_free;
+> +       } else {
+>                 si->global_cluster =3D kmalloc(sizeof(*si->global_cluster=
+),
+>                                      GFP_KERNEL);
+>                 if (!si->global_cluster)
+> @@ -3532,6 +3544,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specia=
+lfile, int, swap_flags)
+>  bad_swap_unlock_inode:
+>         inode_unlock(inode);
+>  bad_swap:
+> +       free_percpu_swap_cluster(si);
+>         kfree(si->global_cluster);
+>         si->global_cluster =3D NULL;
+>         inode =3D NULL;
 > --
-> 2.50.1
-It might also be worth adding it to the KSM section since both of them
-utilize it.
-
-Acked-by: Nico Pache <npache@redhat.com>
+> 2.34.1
 >
-
+>
 
