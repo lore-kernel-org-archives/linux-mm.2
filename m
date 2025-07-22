@@ -2,122 +2,117 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 63931C83F27
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 14:45:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A4A80C83F1A
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 14:57:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3D7C6B00A0; Tue, 22 Jul 2025 10:45:10 -0400 (EDT)
+	id 4433C8E0006; Tue, 22 Jul 2025 10:57:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E15956B00A3; Tue, 22 Jul 2025 10:45:10 -0400 (EDT)
+	id 41AD88E0001; Tue, 22 Jul 2025 10:57:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D2B3E6B00A5; Tue, 22 Jul 2025 10:45:10 -0400 (EDT)
+	id 357DE8E0006; Tue, 22 Jul 2025 10:57:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C306D6B00A0
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 10:45:10 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7B486B91DB
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 14:45:10 +0000 (UTC)
-X-FDA: 83692173180.20.A4EBA6E
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	by imf29.hostedemail.com (Postfix) with ESMTP id BCBDF12000D
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 14:45:08 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Ds4ObM7g;
-	spf=pass (imf29.hostedemail.com: domain of 386N_aAYKCIQ0mivrkowwotm.kwutqv25-uus3iks.wzo@flex--seanjc.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=386N_aAYKCIQ0mivrkowwotm.kwutqv25-uus3iks.wzo@flex--seanjc.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 270558E0001
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 10:57:11 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CE6CF1603E1
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 14:57:10 +0000 (UTC)
+X-FDA: 83692203420.28.39D68EC
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	by imf04.hostedemail.com (Postfix) with ESMTP id F326D40017
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 14:57:08 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=FkhoxPKQ;
+	spf=pass (imf04.hostedemail.com: domain of edumazet@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=edumazet@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753196229; a=rsa-sha256;
+	cv=none;
+	b=jOsJlIDn1gZqqgE9wu/hPUpx0vZfXBfAv7Bw9ZVLh8bNJzK+wa4tVWuE2Muk+HOhx7CHcc
+	HSktZ8arNRGwwMnziVMQr6OOoQ77SzKH4vOFbky1HOd+0YsIQB3GFAgaL2yN4wOG8C/gkE
+	H5cTLZCfoazyUFwsutgPxQ+nr6wTIBA=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=FkhoxPKQ;
+	spf=pass (imf04.hostedemail.com: domain of edumazet@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=edumazet@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753195508;
+	s=arc-20220608; t=1753196229;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nZgPKLrP/qotO+TNh068TYlpA/4yneLkKMwvnezIBBc=;
-	b=grry8KqUy5EYujHqmmb+1xFKSyTfWsXw1VRfKeVbWo/TyeOBqSrxtMcse9L24ao20n8+fq
-	A7EA9KEymYmFQdmiOlK45gZglSwRjykE79fJkn3VxzCxg7W739J3t2AblJUBafOFNgmdEA
-	WjxE+Qz8fYDj5+coEQYSQ1sSgSOkQBg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753195508; a=rsa-sha256;
-	cv=none;
-	b=yieHv1+xoIFrDJn1/QzmciMa/GhBNvN+a1AolCjkcHmMg5K1JBFAxZsgA2Fg/SOY9t9Vo1
-	4OAB4VroV36Fm5x9VH3sGzVDtMk3LSAzosl8qmjKZsKorxt9GFy4qyHmptQM3f6A6UIfBq
-	oFlvMgHaYZy1zf5V3SOr4pzQalUXwfc=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Ds4ObM7g;
-	spf=pass (imf29.hostedemail.com: domain of 386N_aAYKCIQ0mivrkowwotm.kwutqv25-uus3iks.wzo@flex--seanjc.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=386N_aAYKCIQ0mivrkowwotm.kwutqv25-uus3iks.wzo@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b31bc3128fcso7295755a12.0
-        for <linux-mm@kvack.org>; Tue, 22 Jul 2025 07:45:08 -0700 (PDT)
+	bh=m0AktCLJK+ZUuWGfQ+iSpRiQx815PM7rgLaWcjzgcEA=;
+	b=womB/raj8zCayydR+nc1OhM8FiUXad8eNwWVoZE07IWm3oZwL166OZ8/9mxWyGU8sHshKb
+	N3uoLBrlzRuDvWi3yI0F/cbmKAAwMLbf8MmHZq2QCV3sK8iJoFp2KhhO8nPHr+qImKWO1b
+	T/1QHRVgqXjPy6MLgKd5Gc7LduFcGnk=
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4a9bff7fc6dso52722441cf.1
+        for <linux-mm@kvack.org>; Tue, 22 Jul 2025 07:57:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753195507; x=1753800307; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nZgPKLrP/qotO+TNh068TYlpA/4yneLkKMwvnezIBBc=;
-        b=Ds4ObM7gXHCwz8Pcf7oekmQXG4Uj5WCzLmujvTgEgBU9Mz0vgeQzMUCXlmOpBzBsjq
-         RC8XLkWG1Qzma1AMx6m8d0T0oaaiBusl8PRzt7XB8kq2VyBSX/ETujZgZBCznO4yyEX2
-         GoPxIYgHrgtZ1JyEyiQ5txmtkbUCFsSyueNe8q14zxC75ITELja7Ym9wo/q5aAORg9gL
-         +Busx3C73AGioITVnMSLZNyRg30BdWXv/lBdG5PUr50vj+ol4s5xqG8LpbykCwtihNMF
-         yYR9NKo3vqHkR4e6o5Q1RCe7c3DlJenixz0LXgkmSI/JrUOGWovyys8NL6oYNaPF+08j
-         iTNw==
+        d=google.com; s=20230601; t=1753196228; x=1753801028; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=m0AktCLJK+ZUuWGfQ+iSpRiQx815PM7rgLaWcjzgcEA=;
+        b=FkhoxPKQiTQDGWESf0IbtLRzU2zw1wjqdhE9xFgSj67kJQt0V1yev25OajnH9kLyeC
+         F7/PrHsZ8WxK96iqjeNhCMieX8q1ORCCw1Ei6JC1oxJ9Kq71OxfNC4m8oG0wsDxgxGJY
+         S0lC1FBIkqrDcqIp1sCD2YjGpJLaywt6T4co2RnsRH+j1Nzm/Jo5Fl4shFiGX+Hfvhdk
+         MfAxQEMpSPMqgog1V/szELGf8bBg6HVIqKYcXpMpZ9lVWRxZ3rZ9mRDcnEM2rHkbMRhb
+         FEx1X7kbYhI+1L9uemrFvwVCkH9+USDS6sMSzKDlFLT/MnCNZRbFBSTWh44YMAi0o4cJ
+         xUyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753195507; x=1753800307;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nZgPKLrP/qotO+TNh068TYlpA/4yneLkKMwvnezIBBc=;
-        b=cc7Li2K+Q7OWp3yMxr4o1bzw8WVDX2k+WFzdtozgmiGYcPRKi4AZk1zPjmLSCV9a7L
-         0wlFw/GFeZ2u4AdvEMFTeI83WXnGVbZTho7UZ0Ey9/HGvYwLByu8Nodqg0Ydncu6wS9n
-         ZrII51Aj/OHrkY0ubDm1EVYYb1bViZ3LiPKa/Z1fFOX34Z8P6tYd8SR8RKS+GzREgIEz
-         i6ikuDxoHHWVcyHCanqkjmLVqS7PZVLF+LKbO9aPHZhHc0nQ/TCg9VAoGbp3DQRj2AvN
-         MU8TGxxiwbI9+/EZYsglOZiHtrZikIcZl3hDtxFNcIJMmNdLo0lPcOuNZ1lMkGNEMz5z
-         08BA==
-X-Forwarded-Encrypted: i=1; AJvYcCU0qjgbEBXtGeV4lPv1BpU5b3mvs495P/QWeWDWdjvjNfPVcOXlmh5df9qo1bllwgGMkGG7Bfv5sg==@kvack.org
-X-Gm-Message-State: AOJu0YyDJJq9YF0uf4S0Rn8Q0fpAlBJhIcpZXjXzWD76nxVO1c2v8n2Y
-	yVpdddeS5i2x+IUuVg99uUUqygmZA5DBWQ8wI/e31rhKL/IuNSsfB2oF6W7161U1dKFr1iREuqQ
-	Sl5Ozjg==
-X-Google-Smtp-Source: AGHT+IEye6ryF3i4GwrrW44YhrNpbw96+Sg2XleT9SYl1PadbAW/x1ROmWdG2BYhq8vejYeKBT2EUnzq5Ms=
-X-Received: from pgbfm10.prod.google.com ([2002:a05:6a02:498a:b0:b2c:4fcd:fe1b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:1508:b0:220:94b1:f1b8
- with SMTP id adf61e73a8af0-2380db8e8d7mr31142351637.0.1753195507419; Tue, 22
- Jul 2025 07:45:07 -0700 (PDT)
-Date: Tue, 22 Jul 2025 07:45:05 -0700
-In-Reply-To: <bdce1a12-ab73-4de1-892b-f8e849a8ab51@redhat.com>
-Mime-Version: 1.0
-References: <20250713174339.13981-2-shivankg@amd.com> <bdce1a12-ab73-4de1-892b-f8e849a8ab51@redhat.com>
-Message-ID: <aH-j8bOXMfOKdpHp@google.com>
-Subject: Re: [PATCH V9 0/7] Add NUMA mempolicy support for KVM guest-memfd
-From: Sean Christopherson <seanjc@google.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Shivank Garg <shivankg@amd.com>, vbabka@suse.cz, willy@infradead.org, 
-	akpm@linux-foundation.org, shuah@kernel.org, pbonzini@redhat.com, 
-	brauner@kernel.org, viro@zeniv.linux.org.uk, ackerleytng@google.com, 
-	paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com, pvorel@suse.cz, 
-	bfoster@redhat.com, tabba@google.com, vannapurve@google.com, 
-	chao.gao@intel.com, bharata@amd.com, nikunj@amd.com, michael.day@amd.com, 
-	shdhiman@amd.com, yan.y.zhao@intel.com, Neeraj.Upadhyay@amd.com, 
-	thomas.lendacky@amd.com, michael.roth@amd.com, aik@amd.com, jgg@nvidia.com, 
-	kalyazin@amazon.com, peterx@redhat.com, jack@suse.cz, rppt@kernel.org, 
-	hch@infradead.org, cgzones@googlemail.com, ira.weiny@intel.com, 
-	rientjes@google.com, roypat@amazon.co.uk, ziy@nvidia.com, 
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
-	byungchul@sk.com, gourry@gourry.net, kent.overstreet@linux.dev, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, chao.p.peng@intel.com, 
-	amit@infradead.org, ddutile@redhat.com, dan.j.williams@intel.com, 
-	ashish.kalra@amd.com, gshan@redhat.com, jgowans@amazon.com, 
-	pankaj.gupta@amd.com, papaluri@amd.com, yuzhao@google.com, 
-	suzuki.poulose@arm.com, quic_eberman@quicinc.com, 
-	aneeshkumar.kizhakeveetil@arm.com, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
-X-Rspamd-Queue-Id: BCBDF12000D
+        d=1e100.net; s=20230601; t=1753196228; x=1753801028;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=m0AktCLJK+ZUuWGfQ+iSpRiQx815PM7rgLaWcjzgcEA=;
+        b=ZXDewig9FaEwkgs58xXTZEb90bJcoDDLEFubVpufOeAl/ryYm3OVMGTjnvXpaXDATs
+         q7BrAWD8BaEu+ULB7hnDZkkf9/Z1ZPO2sOiQOPm1icB90lCniXH8zyqILdNj59dsIIRi
+         7hBTHFqE/wSTzUEfLTmHE4vA6aO98kGkiMnaIDZfFeH51aoJAAbVgo+5X+R7v0VOKRBU
+         0suuUUjaMBogBitp5cM16qLsuy5HM5J+rrTAn688cPcf1QELUbF9LSHaNBmYlNLLAbm2
+         fmBZthi3Sxmza7uYbCyLVyJtlsdEZg78gH3cva43CoTGNnDaPtcunB2aIZN/LNH1kufy
+         14ZA==
+X-Forwarded-Encrypted: i=1; AJvYcCXff8NnoxmUocW9OeFo95nmaAJrZEdMNlVkbLtw5H+YtNEcrXkuqJP4kYcFQEbYBDK7cUjcgqqqPw==@kvack.org
+X-Gm-Message-State: AOJu0YygGer4kJapxsOopYfigtlJIkcrzu0MbxZOufDaDqnLTInzVBAy
+	YZP0H1QdUBFHWUFG1sSQOFhhHmE9VDhyo33kZBbtP5zabRJAXJP9B1x8cceuVQG0VSkVZGkfQv8
+	VmhGSLJb5WeCR439FvMvMkeV5qrttidFe8lrpyf7j
+X-Gm-Gg: ASbGnct9mcAbLiTiHnAjrn/zdENL5ZpBTEKXqVNL+fg0YR3BBKN7QBcQ/zo8AsOsJJ0
+	e2qji2i0RrUBaxoJLq5oAV1G840Ma8zlBcDYP0QNtDxqhi1luxr2HlTa9dEw1FmVLEMrmaj3nSu
+	EisdE0ykiSqPuKrgAT2tn6PZnxQ2x8VIftTJuwHeyE0AQrrK/E2k5vmc4Pfr0wmZEk5FFwmSSLg
+	lBvLA==
+X-Google-Smtp-Source: AGHT+IEsEV3GGTDTdmiKaik3AqH1VA1TZx7fA6+/n168ze76wf/ZMKc7syZqUWj6LZzqN2/qXmVi5AZltoQwXWaeFfU=
+X-Received: by 2002:a05:622a:5514:b0:4ab:6e3d:49b4 with SMTP id
+ d75a77b69052e-4ae5b776852mr47163651cf.7.1753196227557; Tue, 22 Jul 2025
+ 07:57:07 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250721203624.3807041-1-kuniyu@google.com> <20250721203624.3807041-9-kuniyu@google.com>
+In-Reply-To: <20250721203624.3807041-9-kuniyu@google.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 22 Jul 2025 07:56:56 -0700
+X-Gm-Features: Ac12FXzomuVijK6Zq5KT2dKkSJnghXUcZpgHafRcifrYJKvhd0CQdjVZBQvvh-E
+Message-ID: <CANn89iKC-RJg8Xi1o6Ks4iCgrrwhvYFxDGwtXN0q0KM6HqAs6w@mail.gmail.com>
+Subject: Re: [PATCH v1 net-next 08/13] net-memcg: Pass struct sock to mem_cgroup_sk_(un)?charge().
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Neal Cardwell <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, Matthieu Baerts <matttbe@kernel.org>, 
+	Mat Martineau <martineau@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Simon Horman <horms@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
+	mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: czts8phn3x11sgmt7wcofagbk1cbg3jo
-X-HE-Tag: 1753195508-397814
-X-HE-Meta: U2FsdGVkX1/GlKNK3FS2/iQOFBT8M30/xiJk9aZkzV6LZiJDtWO/kP2tbkKpqgL0KSRtFV1+a1ZhBtcE6TBmD3knZwdn+2t6VrO2tVmVMuYWbZ/fAZhZdSbcnGszirnKOgJzjODdsEbPLf4Lv4ofjrbLEngJNgkk1hgbLrmxAHRtWInufyTt1YBuUwHLdP8hGEgqOnH32Ovgbxfh1lU230kqCjJH4ZfSBZsUkUwvMrz8blax2tae2RZP5Y1DDBEuOJlZVfcpRJ5P7vrcc30DSEW68YYyAJuoIojGtyCtNaOQ2usKJad4GvYkf1Ahtch9GCleNSInuYgqPDgL5mIwmlTM/zxoJe7ddnObaOwKluXYOb61EYBs2D5MRvShkrIM9V8f81YbaU7ZNiMS+qfrPJDYKJq/ZPidfmLekE8I2C9s6oRH9toc+JE/Z9QbUUK7lmE+MNk9HwUimxwgcpJTlXVHm+Gc76CZV2ge+tJJonWiW0kPODWu7X7R05zJ33PwTVpMNLviDOJEkx4SRjjWjv3SrnOG48E6C3pcOPTVuutNiwLXPof0EYswVm7f65o0vZm6IoTqNEXgPDmD9YYAhmvltFxMGQa1slqPCMntbkFCh8pirXtzUrXBOAPWIx6FA9K7NHnlBYLgyH1xyVBRFLzskwdKQL1fXQN2fs9H5+SLfbq/IHWyC/MvWMMjreTj5TRXvCrQVenWT1v6hcIzX+DwuIURjuacqRn7A45cqSCq3x+23E0YK86QoOixLYw+o3f3lxl8aTuLf9c9P8IJWY9Rk3Vg7+nRTcPd2W8tVhSLz33TjDU60GHecXPbq9copQEQxyCgZFbF5Iw1DTKmYb4ppapv8haLyq4+LOi+m52Nb4gVyjwFTx5Fwyby0izQ/eXLajHQOi9W8r7vPdeg8ufxaCjgESXlJU0g7OGbO/g2GE9KxDN+lMuoDqaaMYggdRrAfLawRPamai48VSV
- DlXmZ8HZ
- X04prDpAMKJExOLk6Bsv6CfNWuQMRCHz4B2qG6Ha4BL3Ui8CD5ZmNYbxPaI1SxRQ7MmLUPAaiRO6oQdchfuvsn/J+/O6m0Y3hfIQYf31+3yd/kCta1Hdqez9VhbHHQpDoeR5dk1N1ZQb2pfLoonhKvI39hy+5YCFii4f66Jo6EPTtSczg9JufnpAFlaW4AE+Mibss9bc3XsYnbM4cQF+R/f4fgghj2dhpb2DD0W2Mb0xKvj6RZwobQVcRLLa54QXMSFxW9liwQo3zHZrun0kA0KQnpOKd4SflRlMD0tQFsqk3R9ncsJnuXwoorQCZ7fMfWM2Nifefb6MMccMRBAtBG0ZJTEFmVOzIhKGS92/Da3G+cGPTgoP/Ms0mcFAY7a6E2hAE2dolO8abuOvaNyuZfr6KO70NNTpmHNTqrNi0jXaE++XUaV2QNcL4A99qY3tC/iF7JUY7Xv5e1jCM6ravHSQgQRB26I6/v1jn4IZJeP+dFjfsTpU7/Kca5pMe+ZaogLLB0ZS2D4w7Be2wL0jrdyzQrBHazfsqcUQHK/aQtBNnkxJWEDJSQw7ZdLJtx5SiVGID90BzlVjdbeZD4re5ewN0kkG/R/TDi7f0o6LZ0jnfODtyUrhAx3H4/j68pvaSoeJ5/mBFCEy7mdvGF/O0WRMrCDO81rz09nVk
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: F326D40017
+X-Stat-Signature: 1rqhzdgfte1mqux55tddb6s5pmngw976
+X-HE-Tag: 1753196228-596038
+X-HE-Meta: U2FsdGVkX194wiL3HNh6HAydzEd4qoDWf55zkWzhMlBXcwS0oU7usYEfC+ezNx4Po5cczBcH0YL445ojZeyWqynMHcrbYHS5b9/zofeXQipm1MqqprUhUXCpLDJBkp/J2zVPbZS095b/cwXDGNB0cO2hEsRqIsYDbN+BNoC+ZypCFxEqqBVyPkdWntUz7HBJYB99ClEtmiae1/3ZC0fljnyrN8HQspqsH7REG+sznYEI2aqsIGiAItGRw2nUbjfw5gA2lRr8JiVA+C3de5ubAobVy92TCKZN46SCK5voHUbGMkSH2h8sh3Y65hc2w6Z9LlET+BeXPqiwtvJBPStkwdt3tOQ+LYJoHSzNUUCJoZ603ZYm1DaOwfviuYJYRZSY1meZTqYBkpjKKACM8JfQYXDAlTNzkZjO7R7klLCFlFyrRsQn2mE86Q6ZFjwhw9zEjPla88S/YWsfC2ZQStyboWkY1chhcZoqRxXWNPVp98MbSlV2iRTKXR9qXRtpifM9CfQO8gS9pBCQ+H+Fv0c9IRXw2f3fPWdMUG1JSnBD+T7te/9qRbJ3m1bNMZZuLjgLTcKriO0qCd6lc25fiqvDvRQhlOOLT85uw7+00ZWQVE18eGCEA2pWmij8Su3ZqmZQMQSwb+VVgA2V0XeSyX/ozeT9IprfZOphpCDa495+QXEC9O47rrMHuzecIZL8pAKb4dTYNcajs6YzGiKWBiyiE8rIf6J5zak52kUGSnwe4V00gLgWe0wYm4Uo42fNduAc57TXR8qrJTH0RLV/EQzN3hdpf1ILMPHChNiZJDaEF/2QcqNidpb0kMFy+lhSMfiFG+fkIHslM3OI6t5NGX49Xj1wNfN/FqyTO2yrFgVcqJy/Imlif2/Q3sYra3xb1VWLZp8r7PvVHsvNfPcK78OJrLgGEm4piJ/WXpfM84hPByRFFTtaXtR1yh2/dLDyBP6g/gWhbUD604xsy48gXfI
+ R5fSLKrr
+ h6OVlFad907neHyVQrdOvxudZsy1oBevUKZJ2b06Qsbv52jN0ubE2PLEuLGh6ULrYbvY4Iuwdd2IcY26crgo1zyYtLPoV1vMMeESkjMvO4IGe1bdI3HAYJkWOow2Zkw5PtGB5rykuXfGTp6TyN+GOKUdBnqAN7i+naBTMd8wgQTxe8Dk8MgvaCeQ91IsA0X3VzkvtKCGBQFbQaWCLXsouuM7O0Kh2msDpkzpvaRfZlA9assWi55hXCMOwB4lKWSNWVU/1gLRH05uGTDgH5uUrsBNBBxwm/h7pBcPmEZ28USlSmePw4aiHOM0/yQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,12 +121,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 22, 2025, David Hildenbrand wrote:
-> Just to clarify: this is based on Fuad's stage 1 and should probably still be
-> tagged "RFC" until stage-1 is finally upstream.
-> 
-> (I was hoping stage-1 would go upstream in 6.17, but I am not sure yet if that is
-> still feasible looking at the never-ending review)
+On Mon, Jul 21, 2025 at 1:36=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.co=
+m> wrote:
+>
+> We will store a flag in the lowest bit of sk->sk_memcg.
+>
+> Then, we cannot pass the raw pointer to mem_cgroup_charge_skmem()
+> and mem_cgroup_uncharge_skmem().
+>
+> Let's pass struct sock to the functions.
+>
+> While at it, they are renamed to match other functions starting
+> with mem_cgroup_sk_.
+>
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> ---
 
-6.17 is very doable.
+Reviewed-by: Eric Dumazet <edumazet@google.com>
 
