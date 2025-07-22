@@ -2,129 +2,125 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2569DC83F27
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 15:31:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 747D8C83F27
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 15:31:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 87AE68E0001; Tue, 22 Jul 2025 11:31:27 -0400 (EDT)
+	id 128218E0006; Tue, 22 Jul 2025 11:31:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8526E6B00AC; Tue, 22 Jul 2025 11:31:27 -0400 (EDT)
+	id 1006A6B00AE; Tue, 22 Jul 2025 11:31:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 768B88E0001; Tue, 22 Jul 2025 11:31:27 -0400 (EDT)
+	id 016308E0006; Tue, 22 Jul 2025 11:31:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 640AF6B0093
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 11:31:27 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 10E1F58EA0
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 15:31:27 +0000 (UTC)
-X-FDA: 83692289814.17.A1807FE
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 454BA180012
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 15:31:25 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=NwNWQOTU;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf24.hostedemail.com: domain of tabba@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=tabba@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753198285; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E5DA96B00AC
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 11:31:46 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9BF011A0465
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 15:31:46 +0000 (UTC)
+X-FDA: 83692290612.23.A5CB8BD
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D32A71C0017
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 15:31:43 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=N8lKJN4y;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf21.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753198304; a=rsa-sha256;
 	cv=none;
-	b=KLmaRXq6fPdAmsQct2KTRT7xudvRkaAdGlYQshrGBuI7C2Md5JxtMXoh616MfmFPGr9Iwq
-	kAG00XU8wxcdMp3FiBDlU3y6jKFP/lR7ypfVYaYfAHTQbSDLXclcRa4P1D8MXXdwf7d7/d
-	wN0zeNONs/zolLBTogU8oQ+obal0V2s=
+	b=iYOib4pkTIVppwAEiVn6dkQcKgAYZQzqxbHiog7m4a1g8ey55uIyO6tnxHx4dh4ztmHY3k
+	Hs+ZaHd8wrMvMkHuoty1sEajN1poeVC5CPOtpRLC+Pq2+KbaMIsTUZt9lnusUPih5idsY6
+	TcgIV+GU+L0gukYGUn9x1JH9jSWb+l0=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=NwNWQOTU;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf24.hostedemail.com: domain of tabba@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=tabba@google.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=N8lKJN4y;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf21.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753198285;
+	s=arc-20220608; t=1753198304;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D+k0L961GoqoDjJUTKbSYxRUyR6qX1eP68MhWHVJFbg=;
-	b=rHTmOqbwTw4/ZqaClgeJNadFbi2Tsir2VuNUyR8OJY5abrZ3PiwiiXtzCaylf5zh2NriEg
-	eFd/fJE/znrQyhutnfN6Q94tlnp+yVFVnOuBKtrsN5eRmodUEzrPEVVmBBJXqSYKv75Yav
-	ZFZ9EVRrzkApX/6gYQHOH+o2YQxhSj4=
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4ab86a29c98so409981cf.0
-        for <linux-mm@kvack.org>; Tue, 22 Jul 2025 08:31:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753198284; x=1753803084; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=D+k0L961GoqoDjJUTKbSYxRUyR6qX1eP68MhWHVJFbg=;
-        b=NwNWQOTUoAkbP6DYDS8+0ULM5izG3IpgNmzxayI6PEwbnVUXnuaogYdc0ATMG8NwDT
-         NzlOxFKLsSWu/4m1OiTpDil4jO+pxSybaDBnpWs7wjKsXleX7VQD0hDARaCoXsh5gIRB
-         auSxjSz8Cr8LicTZIjMVRCGyvo98s0GWHjV3/e0gu/yIUROBTgljHE20K1SLqqH49lXL
-         5GZ3HSzbiz8TcfNpVUdRPweDgqrZvoWkkEox+JPmUHAN5xlNNcD4TIpv1nWe+GKcHP/U
-         vCpWzuvTgxZ8UiFl8i2qUzKp0Xs8lQVaOwzJWBAYtVx+PAHo6nUKui+dLkk9371iNCPA
-         pQbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753198284; x=1753803084;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=D+k0L961GoqoDjJUTKbSYxRUyR6qX1eP68MhWHVJFbg=;
-        b=pJV9O+ZZhqWvHzV8OcE6r/LPDoopVSV4wusGIImt+qXpWQXkH849j0YQMjC8eP8W6f
-         PFrMzjYx/AzBkhL8+1BaMcmjf0UNKqzBvJpbJT87taySucf8uOOIpfjS0ZXcIM/YHI37
-         4Mbn3tQDGvzz3nZbf+lTAapwjwqBEAWnrwsOCh9CGgad5bp7JQxEL3wyjKy9rSMhTv1m
-         +dGXxf0XRDZ1ZPn29em8gr6jvwV8J3dAwOYhUIJaDRjjB0Om78m7i4leFOIHAdgDk34o
-         KjJImUrj3Qly+f4tAg7kpjLx5+B+Oezig6/Ab6HTXv7ynP9cfM+hEEC1+Xo2vDLdWIsP
-         sutA==
-X-Forwarded-Encrypted: i=1; AJvYcCVv/2RF5EUK2NdNwmhbickKAU36U+lRP9ZPEr2GP2ICXVADnyXTmvxH6wO+eL3FXf4wxomkwZn7kg==@kvack.org
-X-Gm-Message-State: AOJu0YzWJyTdiDpWlrr1Uao2VTy3QhUV4A921MO+WMxNkXt76I8YfYpS
-	ccG88kSRPaBOj+XUVZNYAqBCEWgu0uzk1FW2gLGlxrIsIb8RjfXRx6EYsRyzoIc/0/Eyu4ufev7
-	ByroZSYhocfiZOLkvZ150hghXRkHAFa9ZylPmbdv9
-X-Gm-Gg: ASbGncvRioaimVeOFgaRrzNKyplpcceF0QUVuh9X7a8hHT+onD5raC4+n8ovgQnsIbC
-	R0BiHdQRPAoVM48/n2eDPLhLjXSYHqRdoK78y6nfnYj/fRfZZwzgExQgAb6tl0qj8VjQYSWZ60F
-	7uX9+c+bZsZXlJDfTufIP4hDYgADNqwNJT84OtJIYnSlP4qwOENoIJMIs4vfoi0/HmGElLROlHH
-	Z1GsJU=
-X-Google-Smtp-Source: AGHT+IGkN/bZLl3GymkOZZTe3VZFknRwnP1HGd5madljrUzwenWrcpSI2BrfChprDgkNjwylakOH9SaFNgyNyjBG86g=
-X-Received: by 2002:a05:622a:cf:b0:4a9:a4ef:35d3 with SMTP id
- d75a77b69052e-4ae5f18c0e2mr4176791cf.7.1753198283442; Tue, 22 Jul 2025
- 08:31:23 -0700 (PDT)
+	bh=oWEgm21Us7QQ4Q7cw8X/XYO7TdjMR8G0w0KgAs4kUbo=;
+	b=HtB8eSS+ZqdeRqjHygQCFBf9h94UJ5lfLaFIcu/PCkmeCUfSfOlJdeabEJRJw90ymvei41
+	0Grt6q6Ely51KkiVwMebbP1VCJTDqsg3jS9I+4zK4apm3/eWNw7rOX8qtTCZeAOmFJ4zCF
+	lbm3NraxOKSTXJrL45waLmeBiWNq17w=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753198304; x=1784734304;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=eMOvJum6/yj2AFgesWxtWNZbW5eBwagvx40YMuSBJSs=;
+  b=N8lKJN4yOrqBa1dUAKVkHyt3m+lNNUGJ3wmrpmx5AVYbOTx6WI5bXOl2
+   RVgacJrsx8KpG8UaQv0JlIldG4d4hFrwaVnlBQ2Dt34elfPUdmIQvqsdX
+   uAAuvekursTavUWB50Ar3HisSRhgbq0lO93yVvIBsVc6lI6yJaO2ac40W
+   rm8qCMWYq4T2EI5lGbIFhDJAhRf5J6aSkq4avKlupQSOhR64vclVFkjmv
+   OAlxVWvVba1o0KInae4SVjzz0uJUeHZ2sTMEBxLk82trlVkzD6loLrGKu
+   KWn+7H1RqbsibH/qOA+IVClgQG83ZTDrU7fF0q4rTc93VVYE5t+t/skhe
+   Q==;
+X-CSE-ConnectionGUID: NRlvMreJQ6OQzU0gbxU3Zg==
+X-CSE-MsgGUID: CbTidWvTSOa0ttvaNlOOlw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11500"; a="59255552"
+X-IronPort-AV: E=Sophos;i="6.16,331,1744095600"; 
+   d="scan'208";a="59255552"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 08:31:36 -0700
+X-CSE-ConnectionGUID: jwBETCkjRh2RI6ObMFZZ4g==
+X-CSE-MsgGUID: nwHPGSaPTBCnDP5i0GeW2w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,331,1744095600"; 
+   d="scan'208";a="182888359"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1]) ([10.124.247.1])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 08:31:20 -0700
+Message-ID: <13654746-3edc-4e4a-ac4f-fa281b83b2ae@intel.com>
+Date: Tue, 22 Jul 2025 23:31:17 +0800
 MIME-Version: 1.0
-References: <20250717162731.446579-1-tabba@google.com> <20250717162731.446579-12-tabba@google.com>
- <8340ec70-1c44-47a7-8c48-89e175501e89@intel.com> <aH7KghhsjaiIL3En@google.com>
- <c35b8c34-2736-45fe-8a97-bfedbf72537e@intel.com> <CA+EHjTzNDrwzdpoEuiqvzk3-A7LAsdJ-6y-Gcj7h7+dUTh=6pw@mail.gmail.com>
- <aH-g9o5hSMvVRxAP@google.com>
-In-Reply-To: <aH-g9o5hSMvVRxAP@google.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Tue, 22 Jul 2025 16:30:46 +0100
-X-Gm-Features: Ac12FXxXDPUsj4cKnzMPyZJq3Wv-mApIfbczPw3W9lV495mX4LQQasFKEUdMPqo
-Message-ID: <CA+EHjTxn0s-HeNcXE7cMxx-xCypE5BtNP5=dvZhyV5u61Pt12Q@mail.gmail.com>
-Subject: Re: [PATCH v15 11/21] KVM: x86/mmu: Allow NULL-able fault in kvm_max_private_mapping_level
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v15 14/21] KVM: x86: Enable guest_memfd mmap for default
+ VM type
 To: Sean Christopherson <seanjc@google.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, kvm@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, kvmarm@lists.linux.dev, 
-	pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au, 
-	anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com, 
-	aou@eecs.berkeley.edu, viro@zeniv.linux.org.uk, brauner@kernel.org, 
-	willy@infradead.org, akpm@linux-foundation.org, yilun.xu@intel.com, 
-	chao.p.peng@linux.intel.com, jarkko@kernel.org, amoorthy@google.com, 
-	dmatlack@google.com, isaku.yamahata@intel.com, mic@digikod.net, 
-	vbabka@suse.cz, vannapurve@google.com, ackerleytng@google.com, 
-	mail@maciej.szmigiero.name, david@redhat.com, michael.roth@amd.com, 
-	wei.w.wang@intel.com, liam.merwick@oracle.com, isaku.yamahata@gmail.com, 
-	kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com, steven.price@arm.com, 
-	quic_eberman@quicinc.com, quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, 
-	quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com, 
-	quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com, 
-	james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev, 
-	maz@kernel.org, will@kernel.org, qperret@google.com, keirf@google.com, 
-	roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, 
-	rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com, 
-	jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com, 
-	ira.weiny@intel.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 454BA180012
-X-Stat-Signature: n4tqaf9u7j15gg75kz4zg9msahkbsk1j
+Cc: Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, kvmarm@lists.linux.dev,
+ pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au,
+ anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, viro@zeniv.linux.org.uk, brauner@kernel.org,
+ willy@infradead.org, akpm@linux-foundation.org, yilun.xu@intel.com,
+ chao.p.peng@linux.intel.com, jarkko@kernel.org, amoorthy@google.com,
+ dmatlack@google.com, isaku.yamahata@intel.com, mic@digikod.net,
+ vbabka@suse.cz, vannapurve@google.com, ackerleytng@google.com,
+ mail@maciej.szmigiero.name, david@redhat.com, michael.roth@amd.com,
+ wei.w.wang@intel.com, liam.merwick@oracle.com, isaku.yamahata@gmail.com,
+ kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com,
+ steven.price@arm.com, quic_eberman@quicinc.com, quic_mnalajal@quicinc.com,
+ quic_tsoni@quicinc.com, quic_svaddagi@quicinc.com,
+ quic_cvanscha@quicinc.com, quic_pderrin@quicinc.com,
+ quic_pheragu@quicinc.com, catalin.marinas@arm.com, james.morse@arm.com,
+ yuzenghui@huawei.com, oliver.upton@linux.dev, maz@kernel.org,
+ will@kernel.org, qperret@google.com, keirf@google.com, roypat@amazon.co.uk,
+ shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, rientjes@google.com,
+ jhubbard@nvidia.com, fvdl@google.com, hughd@google.com,
+ jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com,
+ ira.weiny@intel.com
+References: <20250717162731.446579-1-tabba@google.com>
+ <20250717162731.446579-15-tabba@google.com>
+ <505a30a3-4c55-434c-86a5-f86d2e9dc78a@intel.com>
+ <608cc9a5-cf25-47fe-b4eb-bdaff7406c2e@intel.com>
+ <aH-iGMkP3Ad5yncW@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <aH-iGMkP3Ad5yncW@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1753198285-262632
-X-HE-Meta: U2FsdGVkX1+2KK86/3fgrRsK4pk1WD+M8r5aRaoVNOiGudxRRAKWXoMWEG72u/ZhgIVSybSVSqFhl88WpsJIaq2DH8ijHCFnkvSaAtvGnNCyDq/IJVXjvnx2zU0FQXh2NAtiht+fao1C9D6NTamKOmeJK34BY97x8lnIty7HRzGO+q65P/KeOpKSgY9NpJCjzCxByRI86UsAz2OJs2Dw4afezepkfHxMnda+fzsTj6n4vXRROgIBcLRWJXBhsgIXqQIndK0Raeyj9rGAmn7hMSmsEKM0xVK8UTX5W0MdoRw1k8UrMJZDY23LgaBXV/cXiz+Xg3hLVBtuLX8ajfe19TmGz/ZgOtsvRxbT39HPwL5/nYhW8Z92VIRD7Q76xBqTOPefeFLQKZH/vQKE8XXmDS8iiGtL5V7FZL5sroHTY2pR2++NzB0nDtwwxq9fnb9ZQwBagw/GV62OJf9ZS87bwtTVWSzSvKxCrDSyYObRUeakc6ClzctZwV2FkGBhBHbXMmjS1sl91jYYpiM4MmkG6EfNuT40zzu0k421iv7XRyGM5z3hwyrqaH5Mu/vxMGtr13hhw6ijiRxGoGF1W/6b+Ut1J/SfTSSddqtIqnUtL219L0oI+TKf4FzL00bJLPzCws3I9jNhMKYpXjv00EShHG7UnrYtW06ABwp6pvB+BWUpQ413OW6NFa/svwvZDBrBwtYnEXJnn2CGy5Q7JQEV0OJVhRT/oDx8bgfIyFeFaEJnvrLcO2cTVA1AFlyIx5a6iNQd163fC5V8tv2MAkGm8XKX8eFMPca7Xa+mFMeKcAlCKVQd0+NYnvDmJnZDdNoO0OHRQMFvtcpZAGG4U8Ukqf/cBk8AR3E3hPg7c34ntwWwBzj86NCPoMqcHua8tFu4ou9BRJIScPV+lhrTqrTggXQ3UXLSshAmKCMtCkhss5HYuv6amRx3VmeIlC1sql1MlBsgM15UT8pT73A0le6
- WdAWngV5
- QGRDfkPjmLsvMD/Oy9ZCAZiJLmeTuoW91qVBCt5E+i/tahOKgOlHEK5bf9yY+9fNYqdLBBm4ehCZmd+3wW/CL4aYEIRpaMDuFee0QRq4etVe1AdhJd7Ydd7iFshW2YjgDTZclK8JGM2AWwkOXDE4bweQdUss4syPI5QbzL/r9sfIRtkTOI5pkTF3ZqZGssSpM5CIXsNCES5hgIh71DWifG4lQWMuJxSWfU6RwIPzbGUUwwW1wo0J3a8ZU1Ols5FAuPgHyY5H+QqQocfLQp/jAJ21rlUUfhkPzIJ2idczY9P2tTSCZc/PBVaMdR/Yx978lyNArkVp8Cgxwes78u0pXDy7uBaCZavojvk2ilF/19qXY1Hs=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D32A71C0017
+X-Stat-Signature: wjbiwsb5nbi56r8jrtx5ubs777schmxj
+X-HE-Tag: 1753198303-455283
+X-HE-Meta: U2FsdGVkX18UmlyLiqk/yYWRXPLE/wSpqTTL5wbMebMFjD/DHTD9tE/4U/8+Ryng7F6VR0DaP3IC9iJETO6okITZC8q0tDt5HYCZoIjwehpOL2Hhc0CB8AGBuoFIrPzKgVdDQiBVaRm5qG13J8oMUbNJa9cOwrvi4w2/880DQwXeI2qPJzGTqL8nNQb+OOJJl6wPPUNx8PVlBOGY1xUY+Wr5JX+Q7yOKG6vUrU/++z265paKIOfDXyXQ7NyEntr7bR5TGkT90wE8qO5S0tktFCipJkkrTCCJ9bIUcJKmixLKvwPMAUTwuidF4iVtvkUwFXfdgapPKYF4EaA5wdJpTIZSVw98466AsmBLU0ms8HVYcjpZKiCE1nV1OfBIznkjPGkYyoxJxQ6ujUA9hArOgsujppNGEQc0Ur1ixaomXNI5bDl/fWu7F+81kGMNXEEnhUFkvP22Ri4bCNZEnHpXdCcvMQQR4dfKS5BVK+Crw5R4F/gPrqZVGBP+EOS5cX/XpPb/66IX9e+xBhPJQ3lAPj/ES6DQp5TerIBPmGVT0z2iJL5VYIrnn4/7RKn9ji+IrZRwt6PwIgqoPWoN49wvPLwDrDjdLyJDWiOpf2mphOOnJhFB0EXOT2MqEmAIcxFjaymxISiLkkw+s8u3fuDysiDsYRi6vOYWIJHpX16Yu7Nuym5g0biF3P/u7fpsaWBfeoqVnQH3wUOkeL6JDVvq7pVchA3gkv00Ji2bknGkG3IT705iQ6LGPGJQThgwRjBogQ/gXc/YzRsjl+ZgY2VIYrPEorbGAhVPOW3buEAmx5dImZEy79Uyqj6AH55bgHIVH1l9YcpMfOBYcNUXb3b7UKwoO+oSmaT4NUNA+kApaD7nQ+VKEW0lKzk9fs77NFA9+nuuPVdHmy3tCqreuH0VQT76mnFBitSbdyFQzlh8iQDbr89jyFvyYaamK7nhnmsjMLbK1oO0E2xH8iFiebe
+ GTL028y+
+ rwh1bckHWcX2uNTutzeLDot9mjXDC6n20NrxzZoV93Bnnf8b88iAH5FXVJG4jb2Zztu6kSgAYTeVj0MrzS+cgBBtANaoQ1bIVkrbde2se9l3EBmy28Qa+NDJnKlZ5SLU3ulaSmfsPGk6tNYzJIMysXuzchx/XTabyllIT+jDAggrPN7/EEdeLtFd70UtryRcjvnFSckRENUgWvlF0zSLsxwBlbkHmwdjnFkdbDC2JIn3HiE3X1n1Gh3yZHUZrkLOnysxtSMOIeHqoXn32XuKb8TF8bhkn1Vb/xeKwyJ9Z4MFEVYIsJOGQiZAFtpMoMXtxZZ0bhVpIApVYrIBfYq9g6T2usidUq9YUs0cFkpk62MSSlrDcyP8J7BI4ew==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,104 +129,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 22 Jul 2025 at 15:32, Sean Christopherson <seanjc@google.com> wrote:
->
-> On Tue, Jul 22, 2025, Fuad Tabba wrote:
-> > On Tue, 22 Jul 2025 at 06:36, Xiaoyao Li <xiaoyao.li@intel.com> wrote:
-> > > - In 0010-KVM-x86-mmu-Rename-.private_max_mapping_level-to-.gm.patch,
-> > > there is double gmem in the name of vmx/vt 's callback implementation:
-> > >
-> > >      vt_gmem_gmem_max_mapping_level
-> > >      tdx_gmem_gmem_max_mapping_level
-> > >      vt_op_tdx_only(gmem_gmem_max_mapping_level)
-> >
-> > Sean's patches do that, then he fixes it in a later patch. I'll fix
-> > this at the source.
->
-> Dagnabbit.  I goofed a search+replace, caught it when re-reading things, and
-> fixed-up the wrong commit.  Sorry :-(
->
-> > > - In 0013-KVM-x86-mmu-Extend-guest_memfd-s-max-mapping-level-t.patch,
-> > >    kvm_x86_call(gmem_max_mapping_level)(...) returns 0 for !private case.
-> > >    It's not correct though it works without issue currently.
-> > >
-> > >    Because current gmem doesn't support hugepage so that the max_level
-> > >    gotten from gmem is always PG_LEVEL_4K and it returns early in
-> > >    kvm_gmem_max_mapping_level() on
-> > >
-> > >         if (max_level == PG_LEVEL_4K)
-> > >                 return max_level;
-> > >
-> > >    But just look at the following case:
-> > >
-> > >      return min(max_level,
-> > >         kvm_x86_call(gmem_max_mapping_level)(kvm, pfn, is_private));
-> > >
-> > >    For non-TDX case and non-SNP case, it will return 0, i.e.
-> > >    PG_LEVEL_NONE eventually.
-> > >
-> > >    so either 1) return PG_LEVEL_NUM/PG_LEVEL_1G for the cases where
-> > >    .gmem_max_mapping_level callback doesn't have specific restriction.
-> > >
-> > >    or 2)
-> > >
-> > >         tmp = kvm_x86_call(gmem_max_mapping_level)(kvm, pfn, is_private);
-> > >         if (tmp)
-> > >                 return min(max_level, tmp);
-> > >
-> > >         return max-level;
-> >
-> > Sean? What do you think?
->
-> #2, because KVM uses a "ret0" static call when TDX is disabled (and KVM should
-> do the same when SEV is disabled, but the SEV #ifdefs are still a bit messy).
-> Switching to any other value would require adding a VMX stubs for the !TDX case.
->
-> I think it makes sense to explicitly call that out as the "CoCo level", to help
-> unfamiliar readers understand why vendor code has any say in the max
-> mapping level.
->
-> And I would say we adjust max_level instead of having an early return, e.g. to
-> reduce the probability of future bugs due to adding code between the call to
-> .gmem_max_mapping_level() and the final return.
->
-> This as fixup?
+On 7/22/2025 10:37 PM, Sean Christopherson wrote:
+> On Tue, Jul 22, 2025, Xiaoyao Li wrote:
+>> On 7/21/2025 8:22 PM, Xiaoyao Li wrote:
+>>> On 7/18/2025 12:27 AM, Fuad Tabba wrote:
+>>>> +/*
+>>>> + * CoCo VMs with hardware support that use guest_memfd only for
+>>>> backing private
+>>>> + * memory, e.g., TDX, cannot use guest_memfd with userspace mapping
+>>>> enabled.
+>>>> + */
+>>>> +#define kvm_arch_supports_gmem_mmap(kvm)        \
+>>>> +    (IS_ENABLED(CONFIG_KVM_GMEM_SUPPORTS_MMAP) &&    \
+>>>> +     (kvm)->arch.vm_type == KVM_X86_DEFAULT_VM)
+>>>
+>>> I want to share the findings when I do the POC to enable gmem mmap in QEMU.
+>>>
+>>> Actually, QEMU can use gmem with mmap support as the normal memory even
+>>> without passing the gmem fd to kvm_userspace_memory_region2.guest_memfd
+>>> on KVM_SET_USER_MEMORY_REGION2.
+>>>
+>>> Since the gmem is mmapable, QEMU can pass the userspace addr got from
+>>> mmap() on gmem fd to kvm_userspace_memory_region(2).userspace_addr. It
+>>> works well for non-coco VMs on x86.
+>>
+>> one more findings.
+>>
+>> I tested with QEMU by creating normal (non-private) memory with mmapable
+>> guest memfd, and enforcily passing the fd of the gmem to struct
+>> kvm_userspace_memory_region2 when QEMU sets up memory region.
+>>
+>> It hits the kvm_gmem_bind() error since QEMU tries to back different GPA
+>> region with the same gmem.
+>>
+>> So, the question is do we want to allow the multi-binding for shared-only
+>> gmem?
+> 
+> Can you elaborate, maybe with code?  I don't think I fully understand the setup.
 
-Applied it to my tree. Builds and runs fine. Thanks!
-/fuad
+well, I haven't fully sorted it out. Just share what I get so far.
 
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index eead5dca6f72..a51013e0992a 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
-> @@ -3279,9 +3279,9 @@ static u8 kvm_gmem_max_mapping_level(struct kvm *kvm, struct kvm_page_fault *fau
->                                      const struct kvm_memory_slot *slot, gfn_t gfn,
->                                      bool is_private)
->  {
-> +       u8 max_level, coco_level;
->         struct page *page;
->         kvm_pfn_t pfn;
-> -       u8 max_level;
->
->         /* For faults, use the gmem information that was resolved earlier. */
->         if (fault) {
-> @@ -3305,8 +3305,16 @@ static u8 kvm_gmem_max_mapping_level(struct kvm *kvm, struct kvm_page_fault *fau
->         if (max_level == PG_LEVEL_4K)
->                 return max_level;
->
-> -       return min(max_level,
-> -                  kvm_x86_call(gmem_max_mapping_level)(kvm, pfn, is_private));
-> +       /*
-> +        * CoCo may influence the max mapping level, e.g. due to RMP or S-EPT
-> +        * restrictions.  A return of '0' means "no additional restrictions",
-> +        * to allow for using an optional "ret0" static call.
-> +        */
-> +       coco_level = kvm_x86_call(gmem_max_mapping_level)(kvm, pfn, is_private);
-> +       if (coco_level)
-> +               max_level = min(max_level, coco_level);
-> +
-> +       return max_level;
->  }
->
->  int kvm_mmu_max_mapping_level(struct kvm *kvm, struct kvm_page_fault *fault,
+the problem hit when SMM is enabled (which is enabled by default).
+
+- The trace of "-machine q35,smm=off":
+
+kvm_set_user_memory AddrSpace#0 Slot#0 flags=0x4 gpa=0x0 size=0x80000000 
+ua=0x7f5733fff000 guest_memfd=15 guest_memfd_offset=0x0 ret=0
+kvm_set_user_memory AddrSpace#0 Slot#1 flags=0x4 gpa=0x100000000 
+size=0x80000000 ua=0x7f57b3fff000 guest_memfd=15 
+guest_memfd_offset=0x80000000 ret=0
+kvm_set_user_memory AddrSpace#0 Slot#2 flags=0x2 gpa=0xffc00000 
+size=0x400000 ua=0x7f5840a00000 guest_memfd=-1 guest_memfd_offset=0x0 ret=0
+kvm_set_user_memory AddrSpace#0 Slot#0 flags=0x0 gpa=0x0 size=0x0 
+ua=0x7f5733fff000 guest_memfd=15 guest_memfd_offset=0x0 ret=0
+kvm_set_user_memory AddrSpace#0 Slot#0 flags=0x4 gpa=0x0 size=0xc0000 
+ua=0x7f5733fff000 guest_memfd=15 guest_memfd_offset=0x0 ret=0
+kvm_set_user_memory AddrSpace#0 Slot#3 flags=0x2 gpa=0xc0000 
+size=0x20000 ua=0x7f5841000000 guest_memfd=-1 guest_memfd_offset=0x0 ret=0
+kvm_set_user_memory AddrSpace#0 Slot#4 flags=0x2 gpa=0xe0000 
+size=0x20000 ua=0x7f5840de0000 guest_memfd=-1 
+guest_memfd_offset=0x3e0000 ret=0
+kvm_set_user_memory AddrSpace#0 Slot#5 flags=0x4 gpa=0x100000 
+size=0x7ff00000 ua=0x7f57340ff000 guest_memfd=15 
+guest_memfd_offset=0x100000 ret=0
+
+- The trace of "-machine q35"
+
+kvm_set_user_memory AddrSpace#0 Slot#0 flags=0x4 gpa=0x0 size=0x80000000 
+ua=0x7f8faffff000 guest_memfd=15 guest_memfd_offset=0x0 ret=0
+kvm_set_user_memory AddrSpace#0 Slot#1 flags=0x4 gpa=0x100000000 
+size=0x80000000 ua=0x7f902ffff000 guest_memfd=15 
+guest_memfd_offset=0x80000000 ret=0
+kvm_set_user_memory AddrSpace#0 Slot#2 flags=0x2 gpa=0xffc00000 
+size=0x400000 ua=0x7f90bd000000 guest_memfd=-1 guest_memfd_offset=0x0 ret=0
+kvm_set_user_memory AddrSpace#0 Slot#3 flags=0x4 gpa=0xfeda0000 
+size=0x20000 ua=0x7f8fb009f000 guest_memfd=15 guest_memfd_offset=0xa0000 
+ret=-22
+qemu-system-x86_64: kvm_set_user_memory_region: 
+KVM_SET_USER_MEMORY_REGION2 failed, slot=3, start=0xfeda0000, 
+size=0x20000, flags=0x4, guest_memfd=15, guest_memfd_offset=0xa0000: 
+Invalid argument
+kvm_set_phys_mem: error registering slot: Invalid argument
+
+
+where QEMU tries to setup the memory region for [0xfeda0000, +0x20000], 
+which is back'ed by gmem (fd is 15) allocated for normal RAM, from 
+offset 0xa0000.
+
+What I have tracked down in QEMU is mch_realize(), where it sets up some 
+memory region starting from 0xfeda0000.
+
+If you want to reproduce it yourself, here is my QEMU branch
+
+   https://github.com/intel-staging/qemu-tdx.git lxy/gmem-mmap-poc
+
+To boot a VM with guest memfd:
+
+   -object memory-backend-guest-memfd,id=gmem0,size=$mem
+   -machine memory-backend=gmem0
+
 
