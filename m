@@ -2,140 +2,85 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 10766C83F1A
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 18:41:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F0E5C83F27
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 18:41:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A00C76B0088; Tue, 22 Jul 2025 14:41:46 -0400 (EDT)
+	id 0D9078E0006; Tue, 22 Jul 2025 14:41:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D7766B008A; Tue, 22 Jul 2025 14:41:46 -0400 (EDT)
+	id 0B0968E0001; Tue, 22 Jul 2025 14:41:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C6686B0098; Tue, 22 Jul 2025 14:41:46 -0400 (EDT)
+	id F2F2D8E0006; Tue, 22 Jul 2025 14:41:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A8F06B0088
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 14:41:46 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8BB521A04C6
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 18:41:45 +0000 (UTC)
-X-FDA: 83692769370.08.551ABF1
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 257E94000B
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 18:41:43 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XXaqL0Z5;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf27.hostedemail.com: domain of llong@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=llong@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753209703; a=rsa-sha256;
-	cv=none;
-	b=qPLrPG622yozAEj6J4/gwlQUA554g6Qttl6QcNf7mq+Nd02oRwASj+PiwITXVWnny+VzNu
-	NaBHhRSlHYdDpMjbQbKWiXJuVoBLHVxnZx9RTq0vWwei8PVQ/IAdCufOgOPZ9sRYwb1cfd
-	GXbrbe7CUqMgk2t+2NEBu1RfMnRDEHI=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XXaqL0Z5;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf27.hostedemail.com: domain of llong@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=llong@redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id E1ECF8E0001
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 14:41:53 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B8B0414049C
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 18:41:53 +0000 (UTC)
+X-FDA: 83692769706.06.9C0279E
+Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
+	by imf07.hostedemail.com (Postfix) with ESMTP id BEE6540005
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 18:41:50 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=none;
+	spf=pass (imf07.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753209703;
+	s=arc-20220608; t=1753209711;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yE2tHddyKrIJYsdGOME7S0MXHkPfwwNA1+RUdibZkzI=;
-	b=sCl1p4oL1YHMuoNk4GHG9PFR83ZuK4aSgy2wvT0J+qDMFaVlxhL8nUVrG9dVBMmFFQR2br
-	4rasfS1HBT77bJIhC6KJbkAepH35tr9wcDsMGYz9uWaZkDvl3fjXf/DTOPJHHwon+fF3KS
-	PmDUcgrDsCkYx4edel6Y4T8BlEIgaKo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753209702;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yE2tHddyKrIJYsdGOME7S0MXHkPfwwNA1+RUdibZkzI=;
-	b=XXaqL0Z5XsWhH3xGzQTolJJ67PF75fsbfJFNOPCIINHQ3BA5aPzah3meMQ9q7OQ6OPJkR+
-	yuX/CeXHjiVYXXtlO6Dz1xpDgTOg/pYAVU2psVpXi3u3xT35t80yhEosnYYJW+nLFmWQi5
-	CltGpbRykXq+ZLo6SdLhY9mGE5/svfs=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-630-Ts4vKBMdO96jW9AIU-DOAQ-1; Tue, 22 Jul 2025 14:41:41 -0400
-X-MC-Unique: Ts4vKBMdO96jW9AIU-DOAQ-1
-X-Mimecast-MFC-AGG-ID: Ts4vKBMdO96jW9AIU-DOAQ_1753209701
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-702b5e87d98so105591016d6.0
-        for <linux-mm@kvack.org>; Tue, 22 Jul 2025 11:41:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753209701; x=1753814501;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yE2tHddyKrIJYsdGOME7S0MXHkPfwwNA1+RUdibZkzI=;
-        b=GXW/tL0OD6HM04IURMrKJc8KCaYL4UvY8/OmARdSyXlRyHQJXrY98rgNEp+yVaRUJ3
-         o6dkif2rp8DfVRenGUq/kFZYL6ifVvbkZkRIDB2kiBJJZ54qdmnGskmR4CbCHucOQXlA
-         8FbDctEjNDw4Eu3RK5sgJwVawgYt2a1IhlOgaBuGePTRabq6IMntgYiSbotO1UkOKOEX
-         mcbq6kppHkAjH2cgh5FJYkUBjgP+/MYfvZyXRmSItTZ2e0UjDn7Wj45cAa76l945gN9L
-         uqCytRlehiVTrmw7gMgZW6S7qQhCwEfA124ZeU8xHsMng03jInBMlIdifuVbzefLQVpb
-         kFlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWPo/C1Bfu+o5tM1OAOvrSIlfMmPUCMFup0CRxG1etwIRo7aFgjiDxNic89roz6HkO+BDNKfZEn9w==@kvack.org
-X-Gm-Message-State: AOJu0YzV1hSFxGB3hqYfobK3xKdo2TaSHzKaUH+E5rrD3ro8Uvla6dzw
-	2nCH6qpZ7YVoLDaPc1MeODcYsrIqbw9f3seQVl0KE+TkklZRUczupvr0+PhddlaTL+ynq1TI5xF
-	7wBI7xnqek5nWu001if1/r2andKnUi/xzWd9wNRNzxZJmBblGsRSC
-X-Gm-Gg: ASbGncuJp+Ki+LKD1gmsPiutF7w+raI9Dq1dTW1TJvm/AVkY2vUwuMELqKmSpNAyYQC
-	j7bi7R9QEtrrBV7PKq2uaTeKAabTDZ5QPGr1CjBiBQTx9cZL2BCIF+VVrBVL0BTUBlMjx6uiw8G
-	0oeGX1jkke3IbJHng7OmPyiuhVTkaUqxCrEOszg6vjY/Tsz25WdHbGvJ/T6z4p4Kqf8AtsKKn7D
-	vA/326rcZapLSmodg9TEK+AzJCKFHBNjyTWPQveHpfpz1WjlqgbRsBNqs4/CILfxY/atIhKLiGE
-	PbAR/z7QVlAl5Rkp9utOdLfxYDnPrY/hvz/82PkLaqiC91rEaXLCqvsvkhN/6mU+UOO0qXwZyCr
-	ZZ1BMr1r7WA==
-X-Received: by 2002:a05:6214:528e:b0:6fa:8c15:75c1 with SMTP id 6a1803df08f44-7070058d077mr2886916d6.2.1753209700796;
-        Tue, 22 Jul 2025 11:41:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFyxyagFJsSlRVWyR3oQBKxo8hm4VSSyBCBCDh68tTOQPIpBZKEnj0FI7ZeFaiDUe2jYRvO1g==
-X-Received: by 2002:a05:6214:528e:b0:6fa:8c15:75c1 with SMTP id 6a1803df08f44-7070058d077mr2886596d6.2.1753209700301;
-        Tue, 22 Jul 2025 11:41:40 -0700 (PDT)
-Received: from ?IPV6:2601:188:c180:4250:ecbe:130d:668d:951d? ([2601:188:c180:4250:ecbe:130d:668d:951d])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-7051b90616asm54508526d6.35.2025.07.22.11.41.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Jul 2025 11:41:39 -0700 (PDT)
-From: Waiman Long <llong@redhat.com>
-X-Google-Original-From: Waiman Long <longman@redhat.com>
-Message-ID: <3db01bc9-f6ea-41f7-8cbf-fb33e522694a@redhat.com>
-Date: Tue, 22 Jul 2025 14:41:38 -0400
+	bh=zNijhzVPAXfwFTdPv9HWM2MvChy+xHYpSf07GU5iK7g=;
+	b=dMnH9T7xSKvKj+XOULNv4mS7xXorry0aacNkrIP0cBIlzpnieBlj95eDoWK3++oTwRoArF
+	/5Xbs3fI4t73Mc+VpAY7+ZpjTwBQWQg/mDe55Puhd+6EkGgyXiZfqAonN5YJEUUrBmjGY/
+	klDWpozFq9sSow/dGbrjMI+x1mCCQUg=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=none;
+	spf=pass (imf07.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753209711; a=rsa-sha256;
+	cv=none;
+	b=JL3cgkiuJQb4VAmrSsxrrN0pX0wKx/XlMvoomC3pDNAo0jq5dnRm6CzX4UZQnnlUMD+8uN
+	Uooo+/sXmAs/0to+wvVCYEI/IDhkpgbhBkP/7uDRz0FSe4f8UDaTZGup1rzUY/zJP/vydO
+	moPhi7w+Rb9nYh2WrNxD4TwZKXHh72A=
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.102 with ESMTP; 23 Jul 2025 03:41:47 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Wed, 23 Jul 2025 03:41:47 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>
+Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, shikemeng@huaweicloud.com,
+	kasong@tencent.com, nphamcs@gmail.com, bhe@redhat.com,
+	baohua@kernel.org, chrisl@kernel.org, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, gunho.lee@lge.com,
+	iamjoonsoo.kim@lge.com, taejoon.song@lge.com
+Subject: Re: [PATCH 1/4] mm/swap, memcg: Introduce infrastructure for
+ cgroup-based swap priority
+Message-ID: <aH/baxIgrBI3Z1Hl@yjaykim-PowerEdge-T330>
+References: <20250716202006.3640584-1-youngjun.park@lge.com>
+ <20250716202006.3640584-2-youngjun.park@lge.com>
+ <jrkh2jy2pkoxgsxgsstpmijyhbzzyige6ubltvmvwl6fwkp3s7@kzc24pj2tcko>
+ <aH+apAbBCmkMGPlO@yjaykim-PowerEdge-T330>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] memcg: expose socket memory pressure in a cgroup
-To: Kuniyuki Iwashima <kuniyu@google.com>,
- Shakeel Butt <shakeel.butt@linux.dev>
-Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- Daniel Sedlak <daniel.sedlak@cdn77.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Neal Cardwell <ncardwell@google.com>, David Ahern <dsahern@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org,
- netdev@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
- Matyas Hurtik <matyas.hurtik@cdn77.com>
-References: <20250722071146.48616-1-daniel.sedlak@cdn77.com>
- <ni4axiks6hvap3ixl6i23q7grjbki3akeea2xxzhdlkmrj5hpb@qt3vtmiayvpz>
- <telhuoj5bj5eskhicysxkblc4vr6qlcq3vx7pgi6p34g4zfwxw@6vm2r2hg3my4>
- <CAAVpQUBwS3DFs9BENNNgkKFcMtc7tjZBA0PZ-EZ0WY+dCw8hrA@mail.gmail.com>
-In-Reply-To: <CAAVpQUBwS3DFs9BENNNgkKFcMtc7tjZBA0PZ-EZ0WY+dCw8hrA@mail.gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: x1hqwGQIPLiUZHAh8iF6SaOxDS8dRN7J6D2IQ3ENihQ_1753209701
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <aH+apAbBCmkMGPlO@yjaykim-PowerEdge-T330>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 257E94000B
-X-Stat-Signature: f3woxo6aka4uh1bb86pu8xscrox1bpth
-X-HE-Tag: 1753209703-225020
-X-HE-Meta: U2FsdGVkX1+UiqmIkNorox7PDDI1dcyPisfQsZ/iBsSnNWP0Ngs7Yn9eeBipuo4/+fsdGuqKFAqkJP5xMwaaGvvF4JPAzvMgYdKmvyq8lNR1/9qBmMXo1nE4Y1wmzqwBCmuPb79FKhJbYmopTvw6q4Ec45J+whFWG/kYiAKEddS4Nyaj8yNJWGs1KPygCbNMcDIrA6fsHKJjcBPUT/s3GHfqqHeEs6eg05Lbo75bPl7fWATndcf9bygXixQzzrwQ3inxpE2JFNx6dNsUNe9CYRo8gMg4JyrUmfAY/n9OMkzMjm3QNHZcrk5YOHsv5HVsoCwIookW+/djNtIYwQCaMQ7OIZYsq/0ni09988bCA6l8SWsfzbX3hzhILuzGlDt8ZWVjW91knxJie0xsdENEIR9g0irFFeAeBAqqt2hzF+hcHfHk8smkMBAz6tC53Z766YYd1bR9F1HWq4squGAalx4PHcilcL9AajigViRpuzAn+2xiHZMDL5F82PMTttlTk0QCY4mTjEIjOosqzDSXCUtsDkwRi5YebgpGGig2DXjFgxi3gP2U80+XRBaP7FnVLF7IYWQ4xnS5HGyHC+H6VL6BOSPKKYKY1A2SANeH9uWxVgaVEpL2l0RmXlwyvq5R8FeAGVNWOp5+fw6e2RuC35PCw0mTAsj/rH4qnraV3+uM2YHw4Ae2EuW4xaZ3jW0V4g+GiV11KE9q7CNATI7A6KCbzg4Nd9Rk40ScN1IZP4u4A4GSskd8vHAoIygw5kLKKCifiATX2ZeBQP7psLMc7hV7rABMEmL/3it+l1PgZXv+YH+8TiAPRnz/1CROym1KMq9wSrQ9yAFuEAu7i6X2Que94m0OxFDGpf98uZAinMmbjKoMmsbn2FbouxEf+bFq6LnC2XlASfmugsWdB6Bel8Az66xdROrhZgHkh7jVa3SrNT8VvWDzAZbz3ND4itGf9ATtKsjx2+cciy/+xd+
- Hs0424tT
- A7pfrsvdIaBpHmvbfZ+ccgw6gXvSGIGTvSA8gpFiTDWuNyygcLcqTUSxPzbo36hMXzl24IQkIuNN4aDZesg4ZTXrD5USvZArJMRY2yGnRzGIUH4JPLyGHwz8QVjwnElf2xQti7PGoeqnaYSXwr1wm1wozXfhM6LyPNP6cv72XRJESGc7HTM6VP2mUMDL31+4zHJNcY78qP/352JGuFDfFY1M9NKIFJ4C5n3mlPHPGQQ6YliawHogBONBX6spwmbK9enNSJWREbZgsiwjuAg2U2LBcnWvx/qRVOkDbr3U2DMql90TVW0mr55c4CAUw4QWMRzWXA78TPDoHHIr6LS8IxPB9FihbodGd5i8qtdw/A7gVTPHdEeFs8JsgSa5s5DskikfUl7tO+oeYg16fyhUcExcPaTLdpKC2C1InMh8oU2kyQstmD9SPVARSQctWSe8c4+TEghknA3SrzrqxPM2ksQzfO7xOn+AOG6NlCPPzfgScDJLiJGW9q6niLTSOFuX0WWvO8tfCww8NRikkeK/+WRAB2CSkWDiYU8nQzWgBVOk1GwtxRR/8iFQQ3nWe7a/CFcAyDnFjqi/Sch6ymTWj8CkQBuRaLN7YWFwqWlPKSlRwJ8PfDEx42gXtUFsOB/B3G8N4NmH4XKjU7YB/ybB495U3VsaCg5R1Fur9
+X-Rspamd-Queue-Id: BEE6540005
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 7xi69m5wrokatti35q3ahfojt8q1ehcw
+X-HE-Tag: 1753209710-104889
+X-HE-Meta: U2FsdGVkX1+6iZPXknbJJ6CN33V0vwGFqZ4zAdecMaE0IbwY9qepqhRSLSNvY4m93cwJhVCGsOewhej1ss8enVP3SkV3UXg+1VWWjVH7LFtiKOm5ghwi2+vcZFlWBvcIHXIGGdnxAbekPG7lbvo/q04Fe8MRS0K3aVg7wn+h1eKwcqHnGf9j1mEVWWf9dheVL+v9FV1+VTzkVZeC5WQPuIfy7sFrjApqZXY3vtpTX7gnAAEYNgVxOsfVS4rvO9dSFqvxjX2Cc+VgmH8lzvhgJ3xJIlMNxxVFzxBCgTYVOkNneV1QZqOS/up1Ae5mHd9vo2bSX21XbO5QKDYYchTsGqie7ZWcpkvzzqXEG90lxTQZoO5395aRu7RpMSt0TU0bJ37R7tmDg7bfbwn4YsR1+lapxB1LxsAD/fbsVh65HNcvlQ9jbAxYgyANHB82JpeYRz7fq2i/1UqnqUBXwF3t7XxLAktdaUEiwoGdPZFHQam2wNpQp3vtgY+cHFYeRWQOMEsL8H4d7Cig7Mu04te9IPUiycTb/UQfZVIaks+waaIJG9T8TjoyC0v60lc+yMePQ6O1UQbUo6AHvn/7AhVh7ep7jqdAuzAgNBcuAG4NNm6A5/4w3UOEsPjQv3tos6wbZg/VHPnxU7/rLE57d3d7QfLz5+zr/dzGfWA4HQuzyq+xrXSSS4wcBBnJ36xpzEGvW7PljWUbiAppIY/sxJGS5THl5eqDUYvzZ0ULvzyiXX9fVHjRrg5kT6puUdb8jHfGuTl91DIRbkeWP619OBPMUYg2QH+3qfNxv7BvURTLHmdVq2c2mSgdNpzjpHpnOJTp6OPQuFK+TOFEVYvMl0xcEr7gZPtHHuw8eNwY9vMyA5cZSv+BlYokEiULo2j0Wv+8ef2U1HdJ4MvW2YnUxZYEZBPAxo+Qud5wgZIlIU/bJ9CpKNzBifVOf5gxPK4vi9W4aaMPNhi2v43DU/fuGPO
+ rIiC8mNq
+ jjvWmeX7zw6qjwA3/Kl4GmqNTSHNdyveicY/g0Ms2E7qBiuhWodzxDCDss85MFK2jkO5jlDHNxVC/iFX6PFDPZVfkLD6vSVqCi96JDHy6nSACuxF4x7M/SWysxenzNnQDgdw8BzRR8TRvhAr7eGGV8kIqOPutL3u/oX2JGqIYcVQHUACwT3VG+3cqssKFRGy2kXvaGYAzPGmHEmj2aYtQLZYMCEt4zBxr1c4iLqg7q0ozee5keGpYA1ktr0aCv1mAw+6n4TASmM4xMss=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,45 +89,153 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Jul 22, 2025 at 11:05:24PM +0900, YoungJun Park wrote:
+> On Tue, Jul 22, 2025 at 10:41:20AM +0200, Michal Koutný wrote:
+> > On Thu, Jul 17, 2025 at 05:20:03AM +0900, Youngjun Park <youngjun.park@lge.com> wrote:
+> > > +  memory.swap.priority
+> > > +    A read-write flat-keyed file which exists on non-root cgroups.
+> > > +    This interface allows you to set per-swap-device priorities for the current
+> > > +    cgroup and to define how they differ from the global swap system.
+> > > +
+> > > +    To assign priorities or define specific behaviors for swap devices
+> > > +    in the current cgroup, write one or more lines in the following
+> > > +    formats:
+> > > +
+> > > +     - <swap_device_id> <priority>
+> > > +     - <swap_device_id> disabled
+> > > +     - <swap_device_id> none
+> > > +     - default none
+> > > +     - default disabled
+> > > +
+> > > +    Each <swap_device_id> refers to a unique swap device registered
+> > > +    in the system. You can check the ID, device path, and current
+> > > +    priority of active swap devices through the `/proc/swaps` file.
+> > 
+> > Do you mean row number as the ID? Or does this depend on some other
+> > patches or API?
+> 
+> You're right to ask for clarification. The `<swap_device_id>` refers
+> to a unique identifier added to each swap device entry in `/proc/swaps`.
+> I will revise the documentation to make this clearer.
+> 
+> As a side note, I initially had concerns about breaking the existing ABI.
+> However, the additional ID column does not significantly change the
+> current output format and is gated behind `CONFIG_SWAP_CGROUP_PRIORITY`,
+> so it should be safe and intuitive to expose it through `/proc/swaps
+> 
+> > > +    This provides a clear mapping between swap devices and the IDs
+> > > +    used in this interface.
+> > > +
+> > > +    The 'default' keyword sets the fallback priority behavior rule for
+> > > +    this cgroup. If no specific entry matches a swap device, this default
+> > > +    applies.
+> > > +
+> > > +    * 'default none': This is the default if no configuration
+> > > +      is explicitly written. Swap devices follow the system-wide
+> > > +      swap priorities.
+> > > +
+> > > +    * 'default disabled': All swap devices are excluded from this cgroup’s
+> > > +      swap priority list and will not be used by this cgroup.
+> > 
+> > This duplicates memory.swap.max=0. I'm not sure it's thus necessary.
+> > At the same time you don't accept 'default <priority>' (that's sane).
+> 
+> That's a valid observation. While `memory.swap.max=0` controls the overall
+> swap usage limit, the `default disabled` entry is intended to disable
+> specific swap devices within the scope of this cgroup interface. The
+> motivation was to offer more granular control over device selection
+> rather than total swap usage.
+> 
+> > > +
+> > > +    The priority semantics are consistent with the global swap system:
+> > > +
+> > > +      - Higher numerical values indicate higher preference.
+> > > +      - See Documentation/admin-guide/mm/swap_numa.rst for details on
+> > > +        swap NUMA autobinding and negative priority rules.
+> > > +
+> > > +    The handling of negative priorities in this cgroup interface
+> > > +    has specific behaviors for assignment and restoration:
+> > > +
+> > > +    * Negative Priority Assignment
+> > 
+> > Even in Documentation/admin-guide/mm/swap_numa.rst it's part of "Implementation details".
+> > I admit I'm daunted by this paragraphs. Is it important for this interface?
+> 
+> Thank you for pointing this out. My original philosophy was to preserve
+> as much of the existing swap functionality as possible, including
+> NUMA-aware behaviors.
+> 
+> However, I agree that the explanation is complex and also not be
+> necessary for my proposed usage. After some reflection, I believe the
+> implementation (and documentation) will be clearer and simpler without
+> supporting negative priorities here. 
+> 
+> Unless further objections arise, I plan to drop this behavior in the next
+> version of the patch, as you suggested. If compelling use cases emerge in
+> the future, we can consider reintroducing the support at that time.
+> 
+> Thanks again for your helpful review!
 
-On 7/22/25 2:27 PM, Kuniyuki Iwashima wrote:
-> On Tue, Jul 22, 2025 at 10:50 AM Shakeel Butt <shakeel.butt@linux.dev> wrote:
->> On Tue, Jul 22, 2025 at 10:57:31AM +0200, Michal Koutný wrote:
->>> Hello Daniel.
->>>
->>> On Tue, Jul 22, 2025 at 09:11:46AM +0200, Daniel Sedlak <daniel.sedlak@cdn77.com> wrote:
->>>>    /sys/fs/cgroup/**/<cgroup name>/memory.net.socket_pressure
->>>>
->>>> The output value is an integer matching the internal semantics of the
->>>> struct mem_cgroup for socket_pressure. It is a periodic re-arm clock,
->>>> representing the end of the said socket memory pressure, and once the
->>>> clock is re-armed it is set to jiffies + HZ.
->>> I don't find it ideal to expose this value in its raw form that is
->>> rather an implementation detail.
->>>
->>> IIUC, the information is possibly valid only during one jiffy interval.
->>> How would be the userspace consuming this?
->>>
->>> I'd consider exposing this as a cummulative counter in memory.stat for
->>> simplicity (or possibly cummulative time spent in the pressure
->>> condition).
->>>
->>> Shakeel, how useful is this vmpressure per-cgroup tracking nowadays? I
->>> thought it's kind of legacy.
->>
->> Yes vmpressure is legacy and we should not expose raw underlying number
->> to the userspace. How about just 0 or 1 and use
->> mem_cgroup_under_socket_pressure() underlying? In future if we change
->> the underlying implementation, the output of this interface should be
->> consistent.
-> But this is available only for 1 second, and it will not be useful
-> except for live debugging ?
+I'd like to revisit the NUMA-aware swap priority behavior based on
+further implementation consideration. After refining the idea 
+, I realized there are potential issues
+if we fully remove NUMA autobind behavior when cgroup priorities are
+set.
 
-If the new interface is used mainly for debugging purpose, I will 
-suggest adding the CFTYPE_DEBUG flag so that it will only show up when 
-"cgroup_debug" is specified in the kernel command line.
+For example, suppose the global swap device priorities are configured
+as:
 
-Cheers,
-Longman
+  swapA -2
+  swapB -3
+  swapC -4
 
+If we update the per-cgroup priority of swapA to a positive value, it
+feels natural that only swapA should be affected, and swapB/swapC
+should remain subject to NUMA autobind as configured globally. In other
+words, the presence of one overridden device shouldn't disable autobind
+entirely.
+
+Thus, it seems that we may still need to retain some internal structure
+for honoring NUMA autobind even when swap cgroup priority is enabled,
+at least for the devices not explicitly overridden.
+
+This leaves us with a few design options:
+
+1. Treat negative values as valid priorities. Once any device is
+   assigned via `memory.swap.priority`, the NUMA autobind logic is
+   entirely disabled.
+   - Pros: Simplifies implementation; avoids exposing NUMA autobind via
+     cgroup interface.
+   - Cons: Overrides autobind for all devices even if only one is set.
+
+2. Continue to treat negative values as NUMA autobind weights, without
+   implicit shifting. If a user assigns `-3`, it is stored and used
+   exactly as `-3`, and does not affect other devices.
+   - Pros: Simple and intuitive; matches current implementation
+     semantics.
+   - Cons: Autobind semantics still need to be reasoned about when
+     using the interface.
+
+3. Disallow setting negative values via `memory.swap.priority`.
+   Existing NUMA autobind config is preserved, but no new autobind
+   configuration is possible from cgroup interface.
+   - Pros: Keeps cgroup interface simple; no autobind manipulation.
+   - Cons: Autobind infra remains partially active, increasing code
+     complexity.
+
+4. Keep the current design: allow setting negative values to express
+   NUMA autobind weights explicitly. Devices without overridden values
+   continue to follow NUMA-based dynamic selection.
+   - Pros: Preserves current flexibility; gives users control per device.
+   - Cons: Slightly more complex semantics; NUMA autobind remains a
+     visible part of the interface.
+
+After thinking through these tradeoffs, I'm inclined to think that
+preserving the NUMA autobind option might be the better path forward.
+What are your thoughts on this?
+
+Thank you again for your helpful feedback.
+
+Best regards,
+Youngjun Park
 
