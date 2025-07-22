@@ -2,63 +2,63 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A2F23C83F27
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 11:35:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 64199C83F1A
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 11:38:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 420896B00A7; Tue, 22 Jul 2025 07:35:09 -0400 (EDT)
+	id C63476B00A8; Tue, 22 Jul 2025 07:38:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F8106B00A8; Tue, 22 Jul 2025 07:35:09 -0400 (EDT)
+	id C14006B00AA; Tue, 22 Jul 2025 07:38:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 334EB6B00A9; Tue, 22 Jul 2025 07:35:09 -0400 (EDT)
+	id B50C06B00AB; Tue, 22 Jul 2025 07:38:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 235AF6B00A7
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 07:35:09 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CDD0E140364
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 11:35:08 +0000 (UTC)
-X-FDA: 83691694296.17.2AA18C8
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A61EC6B00A8
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 07:38:02 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 56E591A03AA
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 11:38:02 +0000 (UTC)
+X-FDA: 83691701604.21.4D34245
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 245B81C000A
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 11:35:06 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
+	by imf07.hostedemail.com (Postfix) with ESMTP id D3A2640009
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 11:38:00 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
 	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	spf=pass (imf07.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753184280; a=rsa-sha256;
+	cv=none;
+	b=ikBnOFeb1z6SZz9G5jHGDt2jo7Zsu0c1oGQ3Y3erGu1Z5SfnIssH4mGfpPl0O333n1qUC0
+	nHfTmGNzXxFuuZiQV230RfK5dp2vZ71HawWk2xjVSaP4ZDIzgxPL8TIHKczzyWpnSTDvlo
+	AujTowhs0V2QTyxN79nSn/R+2+TSp28=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=none;
+	spf=pass (imf07.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753184107;
+	s=arc-20220608; t=1753184280;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rCLpGdWUS8REAwOwDqtj2Tc6HRfOgEsVFR54SmJidZ8=;
-	b=hGx57Q8+pXCe/D2/D7fiskbn26LSZalP0ASh0TOvEImWzbWxkyxCxZoF/oaGY0TrKJKtBv
-	xE948oLX81ZqaeB8aipMJlJT9gwq2ItmLcc79O4LXI5xgs/v32nX+t3qBXO4UNohQQdAeU
-	pW0IuxHxk8V5Je2y7YrC/KO1SD+VA1g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753184107; a=rsa-sha256;
-	cv=none;
-	b=iObezRbzJ2GHVSdnk5ZVHVJJOqCntnjn5SOhP6t0zFMiKIe5a9pq7WfKIsTsdhnoP258Uj
-	QnsD9r3yh3E6yT0c5mKa9PTC46S0ObXtNg6Og8oy+C769dGjLusRx8SjVGmT21rst7nFv7
-	/js5AuMekCdi1YH2eX1z46HEBMcAFxc=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	bh=hjvIu0AiEF6PoDheUCu9bA6PNVJuFkAx1z0Y/h5wkUg=;
+	b=IfDDlF3ScI0LFX8LyH3C+Nd9SXTC8KvXDTskl7p9iUBMc1IDlkXj5dlYV08I47qrzCl3kp
+	z+4j6Nfns/LUXR4Lx+IlAueqH7LkpDQQRaXhZCH/zZdn84ZF5g2Dd/TVA7lm5ff2P9HPmV
+	0dWFHRLLAI7b8L2X8H/XBc3MVo5dpkU=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D8A33152B;
-	Tue, 22 Jul 2025 04:35:00 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 852BF152B;
+	Tue, 22 Jul 2025 04:37:54 -0700 (PDT)
 Received: from [10.1.30.167] (XHFQ2J9959.cambridge.arm.com [10.1.30.167])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6488A3F66E;
-	Tue, 22 Jul 2025 04:35:03 -0700 (PDT)
-Message-ID: <8f375e61-1a6d-4d9c-8980-849c0ab29063@arm.com>
-Date: Tue, 22 Jul 2025 12:35:02 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C77853F6A8;
+	Tue, 22 Jul 2025 04:37:56 -0700 (PDT)
+Message-ID: <ac0b2fcd-6f90-4802-be46-dc1c20d55d2e@arm.com>
+Date: Tue, 22 Jul 2025 12:37:55 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/7] mm: Add batched versions of
- ptep_modify_prot_start/commit
+Subject: Re: [PATCH v5 4/7] mm: Introduce FPB_RESPECT_WRITE for PTE batching
+ infrastructure
 Content-Language: en-GB
 To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org
 Cc: david@redhat.com, willy@infradead.org, linux-mm@kvack.org,
@@ -71,17 +71,17 @@ Cc: david@redhat.com, willy@infradead.org, linux-mm@kvack.org,
  linux-arm-kernel@lists.infradead.org, hughd@google.com,
  yang@os.amperecomputing.com, ziy@nvidia.com
 References: <20250718090244.21092-1-dev.jain@arm.com>
- <20250718090244.21092-4-dev.jain@arm.com>
+ <20250718090244.21092-5-dev.jain@arm.com>
 From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20250718090244.21092-4-dev.jain@arm.com>
+In-Reply-To: <20250718090244.21092-5-dev.jain@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 245B81C000A
-X-Stat-Signature: pc1s96x4j851pbyhnd4hd77fsg4d6p3s
 X-Rspam-User: 
-X-HE-Tag: 1753184106-601433
-X-HE-Meta: U2FsdGVkX18lDZTnJUAvaLofjJKBraQjNZ1vxqKgJT8qKdp3I364Nl56jyQoeMm/G+JDe1ffLPckaaFuOzBuF9KxazbvJHYpmE0nvH2wZ+kzeMpYFZ1p1sNuWZkueLDQu4hHDblPC3pEJiBA7W36MAEyD0H8iRvBFf3qfzwDNCwszrMnTLI83Nfi/eT24v9V1KetD5qEK/jf13UUk8bVC3v8s6dF6EaJNOWVe/elWPYVGxday5YjWI0YtTc6XvZiH7S/xNWSUswaCeO6weuuP9mXGe9hXgqSv3m+p0pNJ/CAJvoV3PO4/0dhJ+/QOpR9V3SzJiB9/8Ou6U8ueKbdlleKwT2wK/ZQffnlYm1i4UoskTkxLnrH9xJk72THKeV2LoH8Mn23PIpkEQjHFk2I2r1KFvklHVGASSoydLzDoVFRbQtMAIL1wOEsiyo875Tj/Or646n8PaeBt5DJ8oQExr1lzU9oK5YmUdQZRTKztZcw6FYwoRkkT2KS3Favurpbr/vPLWWrQfHzcQ9f+09dtwxxw4pGndWbzPL9tRmT38oIEso7AD4CtemUELdlQGzhujoIjiTKHso1mLdcE1KuMMTpVsYaHC3mQrvQzNBcbgeRCJRVktIrUkcO37zKglNhrM7auEgff/tDuk7rmnlLUUAfjdmF8wY34j6vrt+ZOze7pZRIxTpkDh6BqUwS0xPOdzUZe9ZqBatClQ4wn+//ZVvc4FECP5MtkYilkMLXtquwTfb4uciDuOSKxC8InYDEW6SqAXsQzu5qYLN0QOit4M7QO7t55KqDDThkHg57haoqYPx4L2lH/4iYtP397EdG2o6S38KXNgN4a8nTMzcO36xh78rwbHtWxsEiG7Sn/F5iiUVDGo3iA4ecHZ98Y+MZY+IYnEf4NC5qvveiYIDTabMeYJeT5f8jt05eLBJkBi4=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D3A2640009
+X-Stat-Signature: fd99xuypokcfgg5sacj5xa165qyirbrt
+X-HE-Tag: 1753184280-891827
+X-HE-Meta: U2FsdGVkX18T1OuN+ib4yXSX6YyB6OTlQPYJNg/5WEttMUwBb4oGF6+B+CSiFyvX2WJ1VUMoy1ycKh1iDveKkxOZy/CbzTXpLrQmcRLuk7csuHPWye386VLEyMG1hXtSNI9tchmDXTVfId5ba4EDkr8FgwiHEUgSrgYkZwtD97cn16Nb4i3H+VIpK2PBSoaNcTKxqT959YiN5R77q8Lww72vtJUeXfYqXLrl3Ea+Y0hhQdPlGEbV1R4yxqOin6g89+YwOztcXxHFXVTfmUCR8wy10mYbWAQw5hMYt7ePOiOEiCHbRmV3MeFlQ0mjDNavt8t8lRS6wZpb8DVRRm+/2/eSzFQDZdtHPVygCL+EOhp0G1ZA2tTZZYS6u6Idej+DDFOIdZzNs0br+p2qenNukWdM4Z1C7YSvfY9VZYehGYoY4YIFPriLP09eKt+VyoGkgzF+rOBLZ2u2h77hLPFGcQ2OejItgmUN+7MxnxCFTHFJh7OSa/Rqz2rQWYjmu9BmxNajeuQLlHkEqvCf+6na4uAQ7UL//aR/7GfD+ab7oTLfpD3AQAv04hIPa3GCoJ5smFSyYbiGPiPp0Tpwz0f1Cxh1PyqkItN+dW+fuCgNjqAobxFsEs+imij9UlHoQTzgRynrnlOwKGJ46uZ48PzJSU88Q23nV+1J3JprjPCKWoF+ZxdflmZrYRQUdBykGTJsMrBFJ2fMRjAyMsC7AwKGt3zOIgh210Ltr1yTOkaQbBB9YMEn5wt5ceq4ez+bQJq3DzurrcZNCt6vC/EBIFkIqGVzSmdge0BpHvW9jcjA1fZ5Z426cYtEzT0NzLyY3PfS1lzcH0CprOvOy4NtUknWeC9JeGcncX2ojhrmhGXEBimqH6MglXBiibgMW9fWWyxpVqZFPtEygFA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,154 +91,61 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 18/07/2025 10:02, Dev Jain wrote:
-> Batch ptep_modify_prot_start/commit in preparation for optimizing mprotect,
-> implementing them as a simple loop over the corresponding single pte
-> helpers. Architecture may override these helpers.
+> Patch 6 optimizes mprotect() by batch clearing the ptes, masking in the new
+> protections, and batch setting the ptes. Suppose that the first pte
+> of the batch is writable - with the current implementation of
+> folio_pte_batch(), it is not guaranteed that the other ptes in the batch
+> are already writable too, so we may incorrectly end up setting the
+> writable bit on all ptes via modify_prot_commit_ptes().
+> 
+> Therefore, introduce FPB_RESPECT_WRITE so that all ptes in the batch
+> are writable or not.
 > 
 > Signed-off-by: Dev Jain <dev.jain@arm.com>
 
 Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
 
 > ---
->  include/linux/pgtable.h | 84 ++++++++++++++++++++++++++++++++++++++++-
->  mm/mprotect.c           |  4 +-
->  2 files changed, 85 insertions(+), 3 deletions(-)
+>  mm/internal.h | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
 > 
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index cf1515c163e2..e3b99920be05 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -1331,7 +1331,9 @@ static inline pte_t ptep_modify_prot_start(struct vm_area_struct *vma,
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 5b0f71e5434b..28d2d5b051df 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -208,17 +208,20 @@ typedef int __bitwise fpb_t;
+>  /* Compare PTEs respecting the soft-dirty bit. */
+>  #define FPB_RESPECT_SOFT_DIRTY		((__force fpb_t)BIT(1))
 >  
+> +/* Compare PTEs respecting the writable bit. */
+> +#define FPB_RESPECT_WRITE		((__force fpb_t)BIT(2))
+> +
 >  /*
->   * Commit an update to a pte, leaving any hardware-controlled bits in
-> - * the PTE unmodified.
-> + * the PTE unmodified. The pte returned from ptep_modify_prot_start() may
-> + * additionally have young and/or dirty bits set where previously they were not,
-> + * so the updated pte may have these additional changes.
-
-nit: I still find this difficult to parse (Although I expect you might tell me
-that this is the text I suggested last time around :) ). I think you mean that
-"it is permissable for young and/or dirty bits to be set in old_pte, despite
-beling clear when originally returned by ptep_modify_prot_start()".
-
-Anyway, no big deal. I think we all know what it's getting at.
-
-Thanks,
-Ryan
-
-
+>   * Merge PTE write bits: if any PTE in the batch is writable, modify the
+>   * PTE at @ptentp to be writable.
 >   */
->  static inline void ptep_modify_prot_commit(struct vm_area_struct *vma,
->  					   unsigned long addr,
-> @@ -1340,6 +1342,86 @@ static inline void ptep_modify_prot_commit(struct vm_area_struct *vma,
->  	__ptep_modify_prot_commit(vma, addr, ptep, pte);
->  }
->  #endif /* __HAVE_ARCH_PTEP_MODIFY_PROT_TRANSACTION */
-> +
-> +/**
-> + * modify_prot_start_ptes - Start a pte protection read-modify-write transaction
-> + * over a batch of ptes, which protects against asynchronous hardware
-> + * modifications to the ptes. The intention is not to prevent the hardware from
-> + * making pte updates, but to prevent any updates it may make from being lost.
-> + * Please see the comment above ptep_modify_prot_start() for full description.
-> + *
-> + * @vma: The virtual memory area the pages are mapped into.
-> + * @addr: Address the first page is mapped at.
-> + * @ptep: Page table pointer for the first entry.
-> + * @nr: Number of entries.
-> + *
-> + * May be overridden by the architecture; otherwise, implemented as a simple
-> + * loop over ptep_modify_prot_start(), collecting the a/d bits from each pte
-> + * in the batch.
-> + *
-> + * Note that PTE bits in the PTE batch besides the PFN can differ.
-> + *
-> + * Context: The caller holds the page table lock.  The PTEs map consecutive
-> + * pages that belong to the same folio. All other PTE bits must be identical for
-> + * all PTEs in the batch except for young and dirty bits.  The PTEs are all in
-> + * the same PMD.
-> + */
-> +#ifndef modify_prot_start_ptes
-> +static inline pte_t modify_prot_start_ptes(struct vm_area_struct *vma,
-> +		unsigned long addr, pte_t *ptep, unsigned int nr)
-> +{
-> +	pte_t pte, tmp_pte;
-> +
-> +	pte = ptep_modify_prot_start(vma, addr, ptep);
-> +	while (--nr) {
-> +		ptep++;
-> +		addr += PAGE_SIZE;
-> +		tmp_pte = ptep_modify_prot_start(vma, addr, ptep);
-> +		if (pte_dirty(tmp_pte))
-> +			pte = pte_mkdirty(pte);
-> +		if (pte_young(tmp_pte))
-> +			pte = pte_mkyoung(pte);
-> +	}
-> +	return pte;
-> +}
-> +#endif
-> +
-> +/**
-> + * modify_prot_commit_ptes - Commit an update to a batch of ptes, leaving any
-> + * hardware-controlled bits in the PTE unmodified.
-> + *
-> + * @vma: The virtual memory area the pages are mapped into.
-> + * @addr: Address the first page is mapped at.
-> + * @ptep: Page table pointer for the first entry.
-> + * @old_pte: Old page table entry (for the first entry) which is now cleared.
-> + * @pte: New page table entry to be set.
-> + * @nr: Number of entries.
-> + *
-> + * May be overridden by the architecture; otherwise, implemented as a simple
-> + * loop over ptep_modify_prot_commit().
-> + *
-> + * Context: The caller holds the page table lock. The PTEs are all in the same
-> + * PMD. On exit, the set ptes in the batch map the same folio. The ptes set by
-> + * ptep_modify_prot_start() may additionally have young and/or dirty bits set
-> + * where previously they were not, so the updated ptes may have these
-> + * additional changes.
-> + */
-> +#ifndef modify_prot_commit_ptes
-> +static inline void modify_prot_commit_ptes(struct vm_area_struct *vma, unsigned long addr,
-> +		pte_t *ptep, pte_t old_pte, pte_t pte, unsigned int nr)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < nr; ++i, ++ptep, addr += PAGE_SIZE) {
-> +		ptep_modify_prot_commit(vma, addr, ptep, old_pte, pte);
-> +
-> +		/* Advance PFN only, set same prot */
-> +		old_pte = pte_next_pfn(old_pte);
-> +		pte = pte_next_pfn(pte);
-> +	}
-> +}
-> +#endif
-> +
->  #endif /* CONFIG_MMU */
+> -#define FPB_MERGE_WRITE			((__force fpb_t)BIT(2))
+> +#define FPB_MERGE_WRITE			((__force fpb_t)BIT(3))
 >  
 >  /*
-> diff --git a/mm/mprotect.c b/mm/mprotect.c
-> index 97adc62c50ab..4977f198168e 100644
-> --- a/mm/mprotect.c
-> +++ b/mm/mprotect.c
-> @@ -204,7 +204,7 @@ static long change_pte_range(struct mmu_gather *tlb,
->  				}
->  			}
+>   * Merge PTE young and dirty bits: if any PTE in the batch is young or dirty,
+>   * modify the PTE at @ptentp to be young or dirty, respectively.
+>   */
+> -#define FPB_MERGE_YOUNG_DIRTY		((__force fpb_t)BIT(3))
+> +#define FPB_MERGE_YOUNG_DIRTY		((__force fpb_t)BIT(4))
 >  
-> -			oldpte = ptep_modify_prot_start(vma, addr, pte);
-> +			oldpte = modify_prot_start_ptes(vma, addr, pte, nr_ptes);
->  			ptent = pte_modify(oldpte, newprot);
+>  static inline pte_t __pte_batch_clear_ignored(pte_t pte, fpb_t flags)
+>  {
+> @@ -226,7 +229,9 @@ static inline pte_t __pte_batch_clear_ignored(pte_t pte, fpb_t flags)
+>  		pte = pte_mkclean(pte);
+>  	if (likely(!(flags & FPB_RESPECT_SOFT_DIRTY)))
+>  		pte = pte_clear_soft_dirty(pte);
+> -	return pte_wrprotect(pte_mkold(pte));
+> +	if (likely(!(flags & FPB_RESPECT_WRITE)))
+> +		pte = pte_wrprotect(pte);
+> +	return pte_mkold(pte);
+>  }
 >  
->  			if (uffd_wp)
-> @@ -230,7 +230,7 @@ static long change_pte_range(struct mmu_gather *tlb,
->  			    can_change_pte_writable(vma, addr, ptent))
->  				ptent = pte_mkwrite(ptent, vma);
->  
-> -			ptep_modify_prot_commit(vma, addr, pte, oldpte, ptent);
-> +			modify_prot_commit_ptes(vma, addr, pte, oldpte, ptent, nr_ptes);
->  			if (pte_needs_flush(oldpte, ptent))
->  				tlb_flush_pte_range(tlb, addr, PAGE_SIZE);
->  			pages++;
+>  /**
 
 
