@@ -2,121 +2,86 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 64D6CC83F25
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 01:23:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 57F40C83F25
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 01:30:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E1316B0092; Mon, 21 Jul 2025 21:23:35 -0400 (EDT)
+	id F19E96B0093; Mon, 21 Jul 2025 21:30:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B8BB6B0093; Mon, 21 Jul 2025 21:23:35 -0400 (EDT)
+	id EF11F6B0095; Mon, 21 Jul 2025 21:30:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D0966B0095; Mon, 21 Jul 2025 21:23:35 -0400 (EDT)
+	id E2DB96B0098; Mon, 21 Jul 2025 21:30:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 58FA66B0092
-	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 21:23:35 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 87F0812F1D9
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 01:23:34 +0000 (UTC)
-X-FDA: 83690153148.21.0D8D5D3
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf07.hostedemail.com (Postfix) with ESMTP id BAF8B40009
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 01:23:31 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	spf=pass (imf07.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+	by kanga.kvack.org (Postfix) with ESMTP id D32F16B0093
+	for <linux-mm@kvack.org>; Mon, 21 Jul 2025 21:30:27 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 87D07160217
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 01:30:27 +0000 (UTC)
+X-FDA: 83690170494.25.0D2B2FF
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf24.hostedemail.com (Postfix) with ESMTP id EC2B9180004
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 01:30:23 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=o4gphrwF;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf24.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753147412;
+	s=arc-20220608; t=1753147825;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VDHlaaw+h+5qMeZOK3070Q1XEhcAqmNAbKNKcPhNJ7w=;
-	b=PQHkiHQ7MaCrdQo+/91aiZFy/W+sJFkZL2DEIOE4xXY6YONV9QScHdVselznInUzoHd+JU
-	8XWVKbLHGPWeQElXezC911fCz1/2ZEUdlKd9gF018HK4Z2xQoJx2Aco5MhTve/KaipLnga
-	vWv5/tQ1zF7yrMKhmS//2ahns5/RhgM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753147412; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=yDsSa2vpjdL6lUQSt7fc1x97fEipTiYa9vEWTQ5DbBQ=;
+	b=VUqNhmk2V3hCBLFQ2FZj9TmCF3DFljN312j62o5zaAMQnXFp0Py9cHktwDMHlNMnFwqzbS
+	2fJZ+4Eow8Jvlgfm/dcx2sTo0uzaNgmUGWZ04V3dSAZFx2ww4gUMzP/hHPzzEet1yzHzRV
+	+Se+uKjztmcy2agEIJhknxGutKvu7Mo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753147825; a=rsa-sha256;
 	cv=none;
-	b=Ie87RGg3UzrSYd9/hRRJkI0Oqsv8I1NocHxYq8vYhYuSgDJiGXkP90KFSCN3TMcZhRNJE0
-	CAg9N1qCtX3vYu4WXoujTCuFlqqwaacHrXq1ZOjP9Me3+4pqJBwlLilNPkQPZN1lrdr/rU
-	mgKVjFg2Br5DsD4nKIYKR3wdL1qWHJI=
+	b=LcwAD+cXgiGFm0Mph0TSieJM3UfYX+WDINsZJzM5+z6Wvm94n0y49jqPwfl7savTewkOf+
+	Vr9MIeiTZZ5/C5I6W75Ah+KBli3mTiQNf3CY19L8L+CnajS542lc5u6BEKqHSgpB1y+6Hh
+	jLTwtnlVIN1Vvhixb5kHQlsmaFzPMn8=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf07.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-X-AuditID: a67dfc5b-681ff7000002311f-c0-687ee811fc6c
-Date: Tue, 22 Jul 2025 10:23:24 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Pavel Begunkov <asml.silence@gmail.com>
-Cc: Mina Almasry <almasrymina@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	"willy@infradead.org" <willy@infradead.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	kernel_team@skhynix.com, kuba@kernel.org,
-	ilias.apalodimas@linaro.org, harry.yoo@oracle.com, hawk@kernel.org,
-	akpm@linux-foundation.org, davem@davemloft.net,
-	john.fastabend@gmail.com, andrew+netdev@lunn.ch, toke@redhat.com,
-	tariqt@nvidia.com, edumazet@google.com, pabeni@redhat.com,
-	saeedm@nvidia.com, leon@kernel.org, ast@kernel.org,
-	daniel@iogearbox.net, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, horms@kernel.org,
-	linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
-	vishal.moola@gmail.com, hannes@cmpxchg.org, ziy@nvidia.com,
-	jackmanb@google.com
-Subject: Re: [PATCH net-next v9 3/8] page_pool: access ->pp_magic through
- struct netmem_desc in page_pool_page_is_pp()
-Message-ID: <20250722012324.GA63367@system.software.com>
-References: <20250710082807.27402-1-byungchul@sk.com>
- <20250710082807.27402-4-byungchul@sk.com>
- <CAHS8izMXkyGvYmf1u6r_kMY_QGSOoSCECkF0QJC4pdKx+DOq0A@mail.gmail.com>
- <20250711011435.GC40145@system.software.com>
- <582f41c0-2742-4400-9c81-0d46bf4e8314@gmail.com>
- <20250717030858.GA26168@system.software.com>
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=o4gphrwF;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf24.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1753147820; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=yDsSa2vpjdL6lUQSt7fc1x97fEipTiYa9vEWTQ5DbBQ=;
+	b=o4gphrwFiXp9nizZMQiw+jqj6vAvh6WC5WSuMc+fux5+3av9CyYTCr2l17kLOpkKVzxMkeQ6dDqSRbGAok6VGNCydL2grKGY+goZAvh1jmxefLiIVEuiTTqHd4DyoJoa15k9kRzKh9s59TqFLGXL16e3cvnuj3F7Hp8vo/m6t/k=
+Received: from 30.74.144.108(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WjTedEk_1753147818 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 22 Jul 2025 09:30:19 +0800
+Message-ID: <35df32ae-dc95-48e1-bdb1-90f17bfd4d5c@linux.alibaba.com>
+Date: Tue, 22 Jul 2025 09:30:18 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250717030858.GA26168@system.software.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTYRjHe897ds5xOTqt25t9iWVURmUR8RQlSRQnQgqCsKLLIQ9tNJds
-	zktlrDQqzRUZpHPBKvIyq8UUnWWWy7xkkBnmSs3Q1OwyTW14Kc0pUd/+/B7+P/4fHg4rs2RB
-	nEYXK+l1olbFyGn598CbK5SfT6tDe67TYHXcZaBgKAFyP7pkYLUXIxgcbmZhoLKagds3fRis
-	r1Jo+OkYwdBZ1c5CgTMC2nK6aCg7X4Kh/XINA+kpoxgeD3tZOOvKo6C+2CyDayN3MJSYPrLw
-	5qGVgQ93x2XQ5U6nodaST0ObeTNU2eaCr+4bgkpHCQW+SzcYyGiwMdCR0oag4Vk7DdlnzAgc
-	5R4ZjA5NOLKff2A3BwvPvvVioSj/HSWUWlpZweY0CoV5IUKqpwELTvtFRnD2X2WFlrdljFCT
-	OUoLpa4BSkhP9jLCj873tNBb3sgIjqJGWnhpq2R3zdwn3xglaTVxkn5V2GG5+ndWD46p2JIw
-	ONyNTah/TSoK4Ai/llwoq2P/5suWC8ifaX4x6fRmTHKGX0I8nmHsz7P55eRrk3uSY76JITnO
-	sFTEcbP4BGKvY/xYwQO5cm+QSkVyTsmXUsTUNUZNHWaS2qxP9FQ3hHjGeih/F/MLSO4Y58cB
-	/HrS2uydnDCHX0SeFldPeghfxpGe5GQ8tXM+qcjz0FcQb/lPa/lPa/mntSFsR0qNLi5a1GjX
-	rlQn6jQJK48cj3aiiYfJSfq134X663e7Ec8hVaBioem0WikT4wyJ0W5EOKyarfA9mkCKKDHx
-	hKQ/fkhv1EoGN1rA0ap5ijW++Cglf1SMlY5JUoyk/3uluIAgEwoPI2JaZH2n+eQXh3jgYPrL
-	dTr9/T7vtIubHgRuUMSEu3b4moL3J41at32PtG7a87oNFf7O39u+s7wwfvv0oWUd+XWatODe
-	s1Wv+rZ2Zxorbp2ruT9irql9YYwNHV/9qSU87UmjQTnmTDSff2y0Tn9duHCFprv5lNYekYR7
-	l86oKlLRBrW4OgTrDeIf+ikpuSwDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTcRjG+Z//2dlxODgus0NG1LpiaSUJbyZmiHgQzC4fggpy6KEt54xt
-	6pYZq4RqeSsjcmmsLKtpjJbpNBWb9/xgLKpVlqJ5K9Eua6gryxlR3x5+D7+H98NLY4mXXEor
-	VFperZIppZSIFO3afiY0YOykfLP72TIos1ZTUDWtgzsDdgGUWWoRuGfeCuFbWycFFTc8GMp6
-	80j4bp3FMNwxKIQqWyL0V46Q0Hi2DsNgURcFBXleDE0zk0I4bb9LQGt5twCe1RYK4PLsbQx1
-	hgEhPG8oo+B99S8BjDgKSOg23SOhvzAGOsxB4OmZQNBmrSPAk19OQYnTTMFQXj8CZ+sgCddO
-	FSKwNrsE4J2e37jW/l4Ys4ZrnZjCXM291wRXb3on5My2TO7h3RDO6HJizmY5T3G2r5eEXN/L
-	RorruuoluXr7N4IrODNJcV+G35DcVPMLiqsY+0xw1poX5G7JAVFUKq9UZPHqTdHJIvnP0nF8
-	7Emszj0zig3oa7gR+dEss5UtMp1Dvkwya9jhyRKhL1PMOtblmsG+HMhsYD+9cixwzLyi2Epb
-	tBHR9CJGx1p6KB8WM8AW33cTRiSiJUw9wRpG5og/RQDbXfqB/OOGsK65ccLnYiaYvTNH+7Af
-	s41993Zy4YTFzCq2pbaTKEZi03+26T/b9M82I2xBgQpVVrpMoYwI06TJ9SqFLiwlI92G5l+i
-	MvfHRTtyP493IIZGUn/xCsNJuUQgy9Lo0x2IpbE0UOx5PI/EqTL9cV6dcVidqeQ1DhRMk9Il
-	4oT9fLKEOSLT8mk8f4xX/20J2m+pAQX2xo/lSx9pG77soFN2XpDGmde3ez5GHtw1pcxpSQmK
-	OpTB74vXX99bHj6bO5bgbexOXPnAnfRUs8qQfSppKKm603mz1Ju91qHbbo3Fe66PXmm1xFWs
-	PkEmRIaOZxst7vJm87S+aXnOLWf48q6ACEKbqN14dJ9xSXvoFf8+byWWkhq5bEsIVmtkvwGE
-	lkgtDgMAAA==
-X-CFilter-Loop: Reflected
-X-Rspamd-Queue-Id: BAF8B40009
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] docs: update THP documentation to clarify sysfs "never"
+ setting
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
+ <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250721155530.75944-1-lorenzo.stoakes@oracle.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20250721155530.75944-1-lorenzo.stoakes@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: EC2B9180004
+X-Stat-Signature: zo97fdqkmrm7xwktita5g9yzxjtq1a44
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: pbyecebx1moerjzn4wm6sumf3p4urytx
-X-HE-Tag: 1753147411-292966
-X-HE-Meta: U2FsdGVkX1+Kei2z+gL2wGgPWo3WL2VaiCOqTxz+X8PILgJZ4k0n23uKnwgLDyJhOpkJazuMt7IYqjq8gXELfSweqJs4cCYj8Z0DnWP+Dz3xh5jVU94Hp4+1VWYpBNUGZJ49Jxo6ZLKwFN6bZpqz5Mr9l30vjzmeufkLwpbR0VM08BF4NYpP/z49+XPxl2eOQNKA974Gzzjo0I3X7zxAwhbIDzF78spu8CPpe/r3FmexoOp+9f7ftNlyjKxbTolYWRCn1dSuF8KNwSQfgMuwzQV+s1UU9kxgoyMprK3uGKrYKdRAjes5LDSNgIl1vcHvazrL1dYqhbY1y+CVrnCPA7gVJiYNDWGx/P6qpwgq/bKhk9w+Pp4QdY4J8uKI6NIlrDJx+B4J9ri0z5GkKzoQSx20KS3Lg9JFBrxom2RDM7wloejLvC9JT7EiBVJFGDd9IgAi5pxQpNODdYWNbo5fySywf9xUUvyn37+I9Kx9PCbmuuxoN/woYh+ArRlcz7TU2Zymys6T5ytd5iwUV0EF6eNQ2Z0l3lHjGaGd3Xb7h3QvCAjDQCJ3IBwmGV2Wp9NH8t1kgrVit94Rtm49QsuR/MRXAaDb2nOSEC1km8XZEeu4w4MtgiSXqAWGFfXR9d0Um2pq/Tds+WzbOCtLbXCuZGqqHORjHtgWR4lsB/21k5hjLiiNy7JflmC18MctOK14+oWdhlt4LgGRTIgYVA4OFvxKvLUzaXOSmTxU8BhXAhBo5dAnxfcxLJVxl4S/A+e/A2gNOI8Lb69ZSe+OJfy4AEIh0Vm9RJcYPPrKW2Y0gs4pBbnXLvVziDksqGKVfj3e2VxM5pclwsn0igGyPPy6w4+J7UOXX/gyabTeL1OOUW048eOag0sw8Vah8xVP1Ut7Vq00JwyeR/v8QK6smOFn2GtVsRHZsVbTTnwN29gJpKCv84kd1BJfEGTgoyIUpTC+GJDwIbg6WIY9Bv6N/AP
- C3NaWzNu
- HhFgNpG0DwhDMgIKNvkjoT/fTyCYO+obRrg3G0K7QWRQ6OdZ3CTyMwPmm06QtGKKHRAEU8J+WdIJjRmQq4nlE4pFeIuvuCajGILT5WhrawKD0naC+hu6EBQgxylOfbGcnHPsyWarYme6yiJ4=
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1753147823-943899
+X-HE-Meta: U2FsdGVkX18Rb1N9mMED1mi5rXmEgEVn7iFuXlY01iSl5ykxpZRpZoiLN20zYUPS5baZ30gRW8X48jZA4LbrcEvV00huwytLqsWtg0AeBc548Whrs0B4yCOJbnoeGmM09w5Vej1wOan/KqKi2/EaVn9fMhEjExcOYlnKrUS6L4RleA+QrBzZguqCvGY4HGZmhyP5dqldjS5MjJ6QyGhmxikEgXeoPAKKLK6Bmd9J360AdTZzJG8vd82rUGrEU/djgtPjo5FhmHvs/h/7Qi7/dI8qdkPpmSQJf4Hfr20uHl5Ox59G3dnMiZsMAiKW366e4+20i7IKzUbuhJpeBKPmVWA0cgmFSruvZfkQU+JPdgDXrpjzhF6q+CF0T10+M48r4b68gV4zdsAMWPQGqElgm68ZV1SBXyquZwMydcGZpKR0Sl1ERi6EYHCLlbOmHtx/8Rf3cpL8wAONdC5bH4vA03Q3G8E5riT5LuUzhxxbWRszWj4xaWvw6bPZBp+S4YRjXFrDvzvb2CjBKpPgMR967+ZsmU40o8ZSNTphmuUC9ManLcO+HbrJe+COEhklzVio0pN+9GGo1Jojgs7i7i092kmKYWXm/yBZlkz1ebfyzu0UjLBBe8RXVn73JQ3qE2ac6WZiRVLxVUUHlklQ4flPsRR0laOtpk3KSzoD0HMgWnSOrYhaQsvpM5LvJf6USnNbg0YEnmOw3dYPq8uvdk6gz/3q11nui2apvn/nthvX/8XoOYEeqDXHNcPTbF35v/SSJXGTlbxsO6CGm4m/XnbOiC716HPdCgL0ficIl3q1mcsmXx/wqMGAEZgA2+KkobYffP3sGCWttwBVsolZjr/r4kBsYWpLlyTmURNJjIj/7d1eKYzVNWreffnN2yRVq18889So4I898RzRZSmFG2zCl4FA5NH00MeD2ujDcYiU6N0/I4ECOmwh/gzt4H8q+ehZqdkXnviF42zqmN04+9Y
+ yTrA80lz
+ cKQhbkexk2pY370Or+Fgef40P9JJsaUFUvFOcoxSKjo5mtm+D+zmRyKyCnVCgzzRIatagk4304rn/Nn+1MtkVS+kviNoCx+l3uO+JAOx6Z5+55Cw2Vdl8MWSVoe2NiEyBOCIxOyRzh7diYTeWKIdPNwY6MuO8JsklUb1wBk2FmDBSr158ExF8RyP0UcfoA7FDydEJ5N0+rj1FZy8QUXzsJa2fGYde1rmcvOBzZ+LcRqjnxTE6qfpcyoop0l3l+I/wftLE2FX2jKSg+4jhH8D/nQO9nsns7zc2zl/Yzi5tmZB5ws5qnTEyHYbSTAClh/ILA7GWPS4jFHKCypurZOiaw9j/7LwxklSUZQBT
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,208 +90,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 17, 2025 at 12:08:58PM +0900, Byungchul Park wrote:
-> On Sat, Jul 12, 2025 at 02:58:14PM +0100, Pavel Begunkov wrote:
-> > On 7/11/25 02:14, Byungchul Park wrote:
-> > ...>>> +#ifdef CONFIG_PAGE_POOL
-> > > > > +/* XXX: This would better be moved to mm, once mm gets its way to
-> > > > > + * identify the type of page for page pool.
-> > > > > + */
-> > > > > +static inline bool page_pool_page_is_pp(struct page *page)
-> > > > > +{
-> > > > > +       struct netmem_desc *desc = page_to_nmdesc(page);
-> > > > > +
-> > > > > +       return (desc->pp_magic & PP_MAGIC_MASK) == PP_SIGNATURE;
-> > > > > +}
-> > > > 
-> > > > pages can be pp pages (where they have pp fields inside of them) or
-> > > > non-pp pages (where they don't have pp fields inside them, because
-> > > > they were never allocated from the page_pool).
-> > > > 
-> > > > Casting a page to a netmem_desc, and then checking if the page was a
-> > > > pp page doesn't makes sense to me on a fundamental level. The
-> > > > netmem_desc is only valid if the page was a pp page in the first
-> > > > place. Maybe page_to_nmdesc should reject the cast if the page is not
-> > > > a pp page or something.
-> > > 
-> > > Right, as you already know, the current mainline code already has the
-> > > same problem but we've been using the werid way so far, in other words,
-> > > mm code is checking if it's a pp page or not by using ->pp_magic, but
-> > > it's ->lur, ->buddy_list, or ->pcp_list if it's not a pp page.
-> > > 
-> > > Both the mainline code and this patch can make sense *only if* it's
-> > > actually a pp page.  It's unevitable until mm provides a way to identify
-> > > the type of page for page pool.  Thoughts?
-> > Question to mm folks, can we add a new PGTY for page pool and use
-> > that to filter page pool originated pages? Like in the incomplete
-> > and untested diff below?
-> > 
-> > 
-> > commit 8fc2347fb3ff4a3fc7929c70a5a21e1128935d4a
-> > Author: Pavel Begunkov <asml.silence@gmail.com>
-> > Date:   Sat Jul 12 14:29:52 2025 +0100
-> > 
-> >     net/mm: use PGTY for tracking page pool pages
-> > 
-> >     Currently, we use page->pp_magic to determine whether a page belongs to
-> >     a page pool. It's not ideal as the field is aliased with other page
-> >     types, and thus needs to to rely on elaborated rules to work. Add a new
-> >     page type for page pool.
-> 
-> Hi Pavel,
-> 
-> I need this work to be done to remove ->pp_magic in struct page.  Will
-> you let me work on this work?  Or can you please refine and post this
 
-No response I got.  Thus, I started.  I hope you understand.
 
-	Byungchul
+On 2025/7/21 23:55, Lorenzo Stoakes wrote:
+> Rather confusingly, setting all Transparent Huge Page sysfs settings to
+> "never" does not in fact result in THP being globally disabled.
+> 
+> Rather, it results in khugepaged being disabled, but one can still obtain
+> THP pages using madvise(..., MADV_COLLAPSE).
+> 
+> This is something that has remained poorly documented for some time, and it
+> is likely the received wisdom of most users of THP that never does, in
+> fact, mean never.
+> 
+> It is therefore important to highlight, very clearly, that this is not the
+> ase.
+> 
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> ---
+>   Documentation/admin-guide/mm/transhuge.rst | 11 +++++++++--
+>   1 file changed, 9 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
+> index dff8d5985f0f..182519197ef7 100644
+> --- a/Documentation/admin-guide/mm/transhuge.rst
+> +++ b/Documentation/admin-guide/mm/transhuge.rst
+> @@ -107,7 +107,7 @@ sysfs
+>   Global THP controls
+>   -------------------
+>   
+> -Transparent Hugepage Support for anonymous memory can be entirely disabled
+> +Transparent Hugepage Support for anonymous memory can be disabled
+>   (mostly for debugging purposes) or only enabled inside MADV_HUGEPAGE
+>   regions (to avoid the risk of consuming more memory resources) or enabled
+>   system wide. This can be achieved per-supported-THP-size with one of::
+> @@ -119,6 +119,11 @@ system wide. This can be achieved per-supported-THP-size with one of::
+>   where <size> is the hugepage size being addressed, the available sizes
+>   for which vary by system.
+>   
+> +.. note:: Setting "never" in all sysfs THP controls does **not** disable
+> +          Transparent Huge Pages globally. This is because ``madvise(...,
+> +          MADV_COLLAPSE)`` ignores these settings and collapses ranges to
+> +          PMD-sized huge pages unconditionally.
+> +
+>   For example::
+>   
+>   	echo always >/sys/kernel/mm/transparent_hugepage/hugepages-2048kB/enabled
+> @@ -187,7 +192,9 @@ madvise
+>   	behaviour.
+>   
+>   never
+> -	should be self-explanatory.
+> +	should be self-explanatory. Note that ``madvise(...,
+> +	MADV_COLLAPSE)`` can still cause transparent huge pages to be
+> +	obtained even if this mode is specified everywhere.
 
-> work?  If you let me, I will go for this as a separate patch from this
-> series.
-> 
-> 	Byungchul
-> 
-> > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > index 0ef2ba0c667a..975a013f1f17 100644
-> > --- a/include/linux/mm.h
-> > +++ b/include/linux/mm.h
-> > @@ -4175,7 +4175,7 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
-> >  #ifdef CONFIG_PAGE_POOL
-> >  static inline bool page_pool_page_is_pp(struct page *page)
-> >  {
-> > -       return (page->pp_magic & PP_MAGIC_MASK) == PP_SIGNATURE;
-> > +       return PageNetpp(page);
-> >  }
-> >  #else
-> >  static inline bool page_pool_page_is_pp(struct page *page)
-> > diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-> > index 4fe5ee67535b..9bd1dfded2fc 100644
-> > --- a/include/linux/page-flags.h
-> > +++ b/include/linux/page-flags.h
-> > @@ -957,6 +957,7 @@ enum pagetype {
-> >        PGTY_zsmalloc           = 0xf6,
-> >        PGTY_unaccepted         = 0xf7,
-> >        PGTY_large_kmalloc      = 0xf8,
-> > +       PGTY_netpp              = 0xf9,
-> > 
-> >        PGTY_mapcount_underflow = 0xff
-> >  };
-> > @@ -1101,6 +1102,11 @@ PAGE_TYPE_OPS(Zsmalloc, zsmalloc, zsmalloc)
-> >  PAGE_TYPE_OPS(Unaccepted, unaccepted, unaccepted)
-> >  FOLIO_TYPE_OPS(large_kmalloc, large_kmalloc)
-> > 
-> > +/*
-> > + * Marks page_pool allocated pages
-> > + */
-> > +PAGE_TYPE_OPS(Netpp, netpp, netpp)
-> > +
-> >  /**
-> >   * PageHuge - Determine if the page belongs to hugetlbfs
-> >   * @page: The page to test.
-> > diff --git a/include/net/netmem.h b/include/net/netmem.h
-> > index de1d95f04076..20f5dbb08149 100644
-> > --- a/include/net/netmem.h
-> > +++ b/include/net/netmem.h
-> > @@ -113,6 +113,8 @@ static inline bool netmem_is_net_iov(const netmem_ref netmem)
-> >   */
-> >  static inline struct page *__netmem_to_page(netmem_ref netmem)
-> >  {
-> > +       DEBUG_NET_WARN_ON_ONCE(netmem_is_net_iov(netmem));
-> > +
-> >        return (__force struct page *)netmem;
-> >  }
-> > 
-> > diff --git a/net/core/netmem_priv.h b/net/core/netmem_priv.h
-> > index cd95394399b4..e38c64da1a78 100644
-> > --- a/net/core/netmem_priv.h
-> > +++ b/net/core/netmem_priv.h
-> > @@ -13,16 +13,11 @@ static inline void netmem_or_pp_magic(netmem_ref netmem, unsigned long pp_magic)
-> >        __netmem_clear_lsb(netmem)->pp_magic |= pp_magic;
-> >  }
-> > 
-> > -static inline void netmem_clear_pp_magic(netmem_ref netmem)
-> > -{
-> > -       WARN_ON_ONCE(__netmem_clear_lsb(netmem)->pp_magic & PP_DMA_INDEX_MASK);
-> > -
-> > -       __netmem_clear_lsb(netmem)->pp_magic = 0;
-> > -}
-> > -
-> >  static inline bool netmem_is_pp(netmem_ref netmem)
-> >  {
-> > -       return (netmem_get_pp_magic(netmem) & PP_MAGIC_MASK) == PP_SIGNATURE;
-> > +       if (netmem_is_net_iov(netmem))
-> > +               return true;
-> > +       return page_pool_page_is_pp(netmem_to_page(netmem));
-> >  }
-> > 
-> >  static inline void netmem_set_pp(netmem_ref netmem, struct page_pool *pool)
-> > diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-> > index 05e2e22a8f7c..52120e2912a6 100644
-> > --- a/net/core/page_pool.c
-> > +++ b/net/core/page_pool.c
-> > @@ -371,6 +371,13 @@ struct page_pool *page_pool_create(const struct page_pool_params *params)
-> >  }
-> >  EXPORT_SYMBOL(page_pool_create);
-> > 
-> > +static void page_pool_set_page_pp_info(struct page_pool *pool,
-> > +                                      struct page *page)
-> > +{
-> > +       __SetPageNetpp(page);
-> > +       page_pool_set_pp_info(page_to_netmem(page));
-> > +}
-> > +
-> >  static void page_pool_return_netmem(struct page_pool *pool, netmem_ref netmem);
-> > 
-> >  static noinline netmem_ref page_pool_refill_alloc_cache(struct page_pool *pool)
-> > @@ -534,7 +541,7 @@ static struct page *__page_pool_alloc_page_order(struct page_pool *pool,
-> >        }
-> > 
-> >        alloc_stat_inc(pool, slow_high_order);
-> > -       page_pool_set_pp_info(pool, page_to_netmem(page));
-> > +       page_pool_set_page_pp_info(pool, page);
-> > 
-> >        /* Track how many pages are held 'in-flight' */
-> >        pool->pages_state_hold_cnt++;
-> > @@ -579,7 +586,7 @@ static noinline netmem_ref __page_pool_alloc_netmems_slow(struct page_pool *pool
-> >                        continue;
-> >                }
-> > 
-> > -               page_pool_set_pp_info(pool, netmem);
-> > +               page_pool_set_page_pp_info(pool, __netmem_to_page(netmem));
-> >                pool->alloc.cache[pool->alloc.count++] = netmem;
-> >                /* Track how many pages are held 'in-flight' */
-> >                pool->pages_state_hold_cnt++;
-> > @@ -654,7 +661,6 @@ s32 page_pool_inflight(const struct page_pool *pool, bool strict)
-> >  void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
-> >  {
-> >        netmem_set_pp(netmem, pool);
-> > -       netmem_or_pp_magic(netmem, PP_SIGNATURE);
-> > 
-> >        /* Ensuring all pages have been split into one fragment initially:
-> >         * page_pool_set_pp_info() is only called once for every page when it
-> > @@ -669,7 +675,6 @@ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
-> > 
-> >  void page_pool_clear_pp_info(netmem_ref netmem)
-> >  {
-> > -       netmem_clear_pp_magic(netmem);
-> >        netmem_set_pp(netmem, NULL);
-> >  }
-> > 
-> > @@ -730,8 +735,11 @@ static void page_pool_return_netmem(struct page_pool *pool, netmem_ref netmem)
-> >        trace_page_pool_state_release(pool, netmem, count);
-> > 
-> >        if (put) {
-> > +               struct page *page = netmem_to_page(netmem);
-> > +
-> >                page_pool_clear_pp_info(netmem);
-> > -               put_page(netmem_to_page(netmem));
-> > +               __ClearPageNetpp(page);
-> > +               put_page(page);
-> >        }
-> >        /* An optimization would be to call __free_pages(page, pool->p.order)
-> >         * knowing page is not part of page-cache (thus avoiding a
-> > 
-> > --
-> > Pavel Begunkov
+I hope this part of the explanation is also copy-pasted into the 
+'Hugepages in tmpfs/shmem' section. Otherwise look good to me. Thanks.
 
