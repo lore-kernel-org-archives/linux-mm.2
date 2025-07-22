@@ -2,68 +2,68 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D38BC83F25
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 09:43:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 55038C83F27
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 09:43:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E47C46B00AA; Tue, 22 Jul 2025 05:43:03 -0400 (EDT)
+	id DFB536B00AC; Tue, 22 Jul 2025 05:43:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD1686B00AB; Tue, 22 Jul 2025 05:43:03 -0400 (EDT)
+	id DAB226B00AD; Tue, 22 Jul 2025 05:43:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C72176B00AC; Tue, 22 Jul 2025 05:43:03 -0400 (EDT)
+	id C9A5C6B00AE; Tue, 22 Jul 2025 05:43:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B2C386B00AA
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 05:43:03 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 873D51601B6
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 09:43:03 +0000 (UTC)
-X-FDA: 83691411846.27.A6ECE8D
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
-	by imf05.hostedemail.com (Postfix) with ESMTP id DF3C0100005
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 09:43:01 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=Y0wFAmYk;
-	spf=pass (imf05.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.161 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
+	by kanga.kvack.org (Postfix) with ESMTP id B357E6B00AC
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 05:43:12 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 842E41A0348
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 09:43:12 +0000 (UTC)
+X-FDA: 83691412224.13.E008058
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+	by imf21.hostedemail.com (Postfix) with ESMTP id EEAD51C0008
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 09:43:10 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=Efis9zG2;
+	spf=pass (imf21.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.171 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
 	dmarc=pass (policy=quarantine) header.from=pankajraghav.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753177382;
+	s=arc-20220608; t=1753177391;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OYyp+w22l9XbkRdarGqCeCGaqwERoFSGzuOGfuq7M5s=;
-	b=D9eJv/ffLlqvRlheqqsF2KxdOHPsA6O4QLBMtFn54ARq57dg9GuTvdaQWDTNAQnaB1uh6C
-	89o0tzTyH8BECjZQqqZT956HisHXRWG0lBtoYjda58YsBRXo+MZAa/6VAvi9eWt3lGsqIC
-	LDUJKXurrMwIvfMoOei+UxZ374p36q8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753177382; a=rsa-sha256;
+	bh=aUm65lZP53PD6UFdCNM0FQrwo2MXNsuP3026Ad+nKaE=;
+	b=my9MNCxSs+VmQBwgF6WcHHtPydlHLLZoJSe3l6U6nMbcI2MvGqmo4QhGwWrGTbtlc8cF98
+	2pJuagq3q+cclRGsijhd2nnXsuW0agIvlZVfgm2QojSnLijaAA1oSBT719xvxEVL/xiUp4
+	vA6Sl1QwMCM7dA0PjzhIlLzIEOAnlIg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753177391; a=rsa-sha256;
 	cv=none;
-	b=iWGQOlyV2DK6G+nthsgqmK5qtdk4MgXHf4Dfw5jDUGfK3ZndoHaHPFd+jWOtA40ub1aFoQ
-	MlnY3Aj4z82poFz722AvcFeTriwruKH3IVjAxh7HXeiuSSagDFg9lqEByWx+uVnkdfxPHH
-	rhDoygHqr10RYvjzOzJEbHrKeN+eDhc=
+	b=aB4xwUaEgaDfDH+Srac0sqP8KR4qet0a359iamCEhTEyyAoAYI939FXaHG9cIhVJEHeb1d
+	2IAjDE1EsxtF4rsxWqE0vFYjYqIGcTZGGgAIAX1L8gk1K7Q81dvVbyQ/A3I3BKuTnF8W7I
+	5adCrpaUJZOYmcQ3PQRorsS7vM3w13E=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=Y0wFAmYk;
-	spf=pass (imf05.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.161 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
+	imf21.hostedemail.com;
+	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=Efis9zG2;
+	spf=pass (imf21.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.171 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
 	dmarc=pass (policy=quarantine) header.from=pankajraghav.com
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4bmXPZ286Kz9t5M;
-	Tue, 22 Jul 2025 11:42:58 +0200 (CEST)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4bmXPl4jqbz9tVG;
+	Tue, 22 Jul 2025 11:43:07 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pankajraghav.com;
-	s=MBO0001; t=1753177378;
+	s=MBO0001; t=1753177387;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OYyp+w22l9XbkRdarGqCeCGaqwERoFSGzuOGfuq7M5s=;
-	b=Y0wFAmYkHydK48RI/Nd8fQWSF3YLrfZXysTNb0HP46ej3v42HL7K1rEDJDXtfe5dfRIcbk
-	A/rSON4SAyXNA0dp8muPL1J6PzEGBPCfOcOaO510oBuVXNfYVQlm6cYq4awQHv9s6J/twP
-	RE5msPFF4rnlpEVMdPKLw6kZxv8p/3DMgzw0KAfGPzhTrH8fRUHFld8xQtNgwd3v69Z7g2
-	0RYfYJuok6e4SS1R6fZbtz+HiSPJgT0o/017lUhkhWMPVAKSXGrCi4Z1gOp3IFixS28WC8
-	NvH4TJJhBGLbUF8Jf/UjucWIrhfZGjDeNg6EFBV079IlPsUWHZawqH9bPpmBdQ==
+	bh=aUm65lZP53PD6UFdCNM0FQrwo2MXNsuP3026Ad+nKaE=;
+	b=Efis9zG2AFhnDaKHNu6VLJAZa0s+JO7PCW+HAmskd6sYfgHM8uOGelqq4Dmm859tfEBNnI
+	7yiHwQA8BCj42OzKWdsvsIUJWjHw7hKsaSr/7YntG04NsVUXJtdgLqEE7/ht1jBTi3oRnP
+	gyv/lAtAEzBsIfkpvABsXRqTtdkI9IHzeDPvXlZtsIZMzxUBVxbS0R4hoKn3UhSs01s+ui
+	lso0abjlhe8Uaek8g8R3/u/umP82veCbh1j60PXUD5QIiEf+i/6zX3BHQwmvl+TGPNi8BA
+	MtoxgdNCFH4NcyrKPOj+vxyjAG09+SlEbAT7NfxFQu8xpNyGmLdfHppSn7eT4Q==
 From: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>
 To: Suren Baghdasaryan <surenb@google.com>,
 	Ryan Roberts <ryan.roberts@arm.com>,
@@ -96,21 +96,21 @@ Cc: linux-kernel@vger.kernel.org,
 	kernel@pankajraghav.com,
 	hch@lst.de,
 	Pankaj Raghav <p.raghav@samsung.com>
-Subject: [RFC 3/4]  mm: add largest_zero_folio() routine
-Date: Tue, 22 Jul 2025 11:42:14 +0200
-Message-ID: <20250722094215.448132-4-kernel@pankajraghav.com>
+Subject: [RFC 4/4] block: use largest_zero_folio in __blkdev_issue_zero_pages()
+Date: Tue, 22 Jul 2025 11:42:15 +0200
+Message-ID: <20250722094215.448132-5-kernel@pankajraghav.com>
 In-Reply-To: <20250722094215.448132-1-kernel@pankajraghav.com>
 References: <20250722094215.448132-1-kernel@pankajraghav.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DF3C0100005
-X-Stat-Signature: uzmmp8j4isn59j6mdroujgwk3i9feddr
+X-Rspamd-Queue-Id: EEAD51C0008
+X-Stat-Signature: q91gphbm6o45f1ya8neerr6m9m9b5qr8
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1753177381-411256
-X-HE-Meta: U2FsdGVkX19Whov79yx97dJkq17V56de02f4/bYZFDjFT5jaWGarF+8tWYVrty0GAeTP+K2vAK5yi8myGoIojkyUITzUtAsHuMqKQTAQsEu8QZl5HoJ1BwTLt0XoZBC3J1ZBzkxmbS7E61pkoNVZItauIqHAOy6C8KfdWi9KJ6r+i6r+eBggZcytGt7RlGQUyBNaItF1OtGRpuMNe3qFm3KFzBl5slkEe2n+t+aI3EY7zeBfm8Bt1OHeOpwev9qwzkGVCrByFguJRRGTS8y0d2uugTc4sIW3Q0aDQVyhaPrO+FTDPilh3POaCMzFoC4QfPnp1rZiqbn6Qa0a4HBx0PYNBPua8y6IZtukL2q4GU6XNeCcm6R1SVIxTOU8dZisHBJn0RRqsYKoKm//sEFBTTMSQjSNDDlxohQUDEhP13MhW0AxZmJvWJT0wxzpA8+JHEP181m3VQlor/7JWd94QLUharZ0pZQmeqsrbCu5lwPGJs0u3Ajn9/iEYYEemsXKSqu4HkvXojdeka0ezURe94L42AjKcBlmksrZLDxz0mbevcyc0mE++SXMABP9CfK9aQMIQsdvohH7fYMteIrbzNqML8pFRvxwCBjXzwaWkPYfdjXIdNQ7hZz8e6Ysj1qAXhl4WpfiVxoZHRWNGUPGeP7pgfTDY24xy0mTA3GYGkwQQLrxRlcZ/dZccpQBGli1Z3pVqk0Hx4yE3zZayCKqLLOEkIRq504ihPmnzcxw5Fh3mBZ8klCf4d1NIszdLPl6EMgUe1jYx+lC2yY2z9l4vS6YhUCTezJnsK/APycLjZQEJ2oB/K4kxC+dklVbPq2e3e3Nkm0FoScDjBh2RVTYxO1rtWkcGDkmYgEM74IR+YfI9jsvzvhzd1CrnMgSHbwSS9sgBgSKcIQFAAFoHyDlP2xKv96bmNiFtNNryoS3PXFVeR5tOjaV6HqibRvBNuKK466aZIzEgNp1YXKd7bH
- VKRD8v2/
- Dgm1mTubJrsC6HTPD28UwhACZbo9uigLMPfesYY18eeZ2QTYRYfASOADyX6AGqmffPeoPpvmuaSn1C7kPPPwE3BEoFfqWfv5nRQG010kz0DoQfOlvZKx3MmiMOzsIq/AGS/xLtSDXleinjXMToFIwAEEPdxEzGo/rYliNAVkoTnl2ypKjwujeNuC2HOOLWFyS7kKA3fajPPIfdJooPZg5OKRpwN+1FiywujsLluUk2OYdZZHuka7+ggF+BbwYwOWJIi4ch0rAfjnCVhFeIjc/s1sD550mPnxJOWDkBhzJ0kl3hfoOeXx2iBgjAG0w9W1iwRZtyZSQOisuU1PsCpW8ynqc2Sdl69Q9l1qfdrxHbyhNOV6AjEfJH4JpnqL8KVdorPvlC4N6qih1xXo/qqS6KIG3Ow==
+X-HE-Tag: 1753177390-202083
+X-HE-Meta: U2FsdGVkX19yNrEUeRN+DZqBXjs5v5tj07bOyrOQ1ZWZVQ8+bO3EKI49XbxYxWgkMtTlM4wHFEmUKI1MvHZ3k7ShvCDZGIo0XTTM5p+J2QJM2ghbogdoUWc3siY75QZEMSPDhyC1XxC+6dlv1eBa3iShuTENk3JBrQoGaTKyVZOyTjA1nKU6CWJ7JRHSCa40QfB2HGpABRnrDroQfu4OWnNHYnrYHQ8mdVVs4HTUWqlCNI2qNOmam2AiRPfccDQ83LekTiQC3Al/muCS7smf8hBf6mJHRQQ3d/3q8gQiSTOYmHX8aEuLyIk729vxbESJlOqNYNe1BaZbB09voDm5qBeRApeGrc5Vp2Suxz8uAv3FRZd7sXO/Q+ZbWMZoIawC68aVLLi023TYEPw3DLzay9+D01uaUn4g3EriAYunJB0ZskUlFZAclMj2yQCqXcYvlXf+FresBZGJh00B6fmylwyQBpPrY0gaoGyFdYzkxkPm5UeGk6lwmb66jxDe1G9EcXGzVYDR8rJixt5b6gFIpM5yFXg6HcCyFFEBU4BPsmomIBNMSpYFUbRbZsG4ArnNq8Ad3N5xlRnj6mTsZLqoO8j7N0wp5yGmDxfHFPpfH0krT2G96ms7llNPgo1iNgh2BfKeES7iF6+VVoHU0P04rrGkgqomRvqTj/iX70XpqeceQEa23y6ACeOvMhTHTMDPvCuU0QddZT57WnFoAOoaiXu4om7JY56Pn8t0fgJPvVuTNapdNQ3UsI6q7rxp80dqSfHVKjQWJxW0kLX2spVv3G74Jk6pTPyD+XojzaRRJvd69VVIZB04dp2xFjenbX1LfuAE/1TdC9NuPeKK5a8sBkwwnr9oIKv1G0D4+wI9ADRrkSqTyq3gWxJMzWQ2XK0tsd9aFLoazioAgcAb8e7X0gjCrv2oQA65TeBEyWxEBBT8JZpT0DsWCabNMA3knaIsYEPJFwfXFSBT3fWaHyY
+ NcSCF4vW
+ 0D1ic2oXGaplLbRHhXZoDgcpyWQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,34 +121,54 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Pankaj Raghav <p.raghav@samsung.com>
 
-Add largest_zero_folio() routine so that huge_zero_folio can be
-used directly when CONFIG_STATIC_HUGE_ZERO_FOLIO is enabled. This will
-return ZERO_PAGE folio if CONFIG_STATIC_HUGE_ZERO_FOLIO is disabled or
-if we failed to allocate a huge_zero_folio.
+Use largest_zero_folio() in __blkdev_issue_zero_pages().
+On systems with CONFIG_STATIC_HUGE_ZERO_FOLIO enabled, we will end up
+sending larger bvecs instead of multiple small ones.
 
-Co-Developed-by: David Hildenbrand <david@redhat.com>
+Noticed a 4% increase in performance on a commercial NVMe SSD which does
+not support OP_WRITE_ZEROES. The device's MDTS was 128K. The performance
+gains might be bigger if the device supports bigger MDTS.
+
 Signed-off-by: Pankaj Raghav <p.raghav@samsung.com>
 ---
- include/linux/huge_mm.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ block/blk-lib.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index 0ddd9c78f9f4..a34c5427aaf6 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -714,4 +714,12 @@ static inline int split_folio_to_order(struct folio *folio, int new_order)
- 	return split_folio_to_list_to_order(folio, NULL, new_order);
- }
- 
-+static inline struct folio *largest_zero_folio(void)
-+{
-+       struct folio *folio = get_static_huge_zero_folio();
+diff --git a/block/blk-lib.c b/block/blk-lib.c
+index 4c9f20a689f7..3030a772d3aa 100644
+--- a/block/blk-lib.c
++++ b/block/blk-lib.c
+@@ -196,6 +196,8 @@ static void __blkdev_issue_zero_pages(struct block_device *bdev,
+ 		sector_t sector, sector_t nr_sects, gfp_t gfp_mask,
+ 		struct bio **biop, unsigned int flags)
+ {
++	struct folio *zero_folio = largest_zero_folio();
 +
-+       if (folio)
-+               return folio;
-+       return page_folio(ZERO_PAGE(0));
-+}
- #endif /* _LINUX_HUGE_MM_H */
+ 	while (nr_sects) {
+ 		unsigned int nr_vecs = __blkdev_sectors_to_bio_pages(nr_sects);
+ 		struct bio *bio;
+@@ -208,15 +210,14 @@ static void __blkdev_issue_zero_pages(struct block_device *bdev,
+ 			break;
+ 
+ 		do {
+-			unsigned int len, added;
++			unsigned int len;
+ 
+-			len = min_t(sector_t,
+-				PAGE_SIZE, nr_sects << SECTOR_SHIFT);
+-			added = bio_add_page(bio, ZERO_PAGE(0), len, 0);
+-			if (added < len)
++			len = min_t(sector_t, folio_size(zero_folio),
++				    nr_sects << SECTOR_SHIFT);
++			if (!bio_add_folio(bio, zero_folio, len, 0))
+ 				break;
+-			nr_sects -= added >> SECTOR_SHIFT;
+-			sector += added >> SECTOR_SHIFT;
++			nr_sects -= len >> SECTOR_SHIFT;
++			sector += len >> SECTOR_SHIFT;
+ 		} while (nr_sects);
+ 
+ 		*biop = bio_chain_and_submit(*biop, bio);
 -- 
 2.49.0
 
