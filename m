@@ -2,117 +2,128 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D7395C83F25
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 08:41:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 94EEAC83F27
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 08:44:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 410D78E0002; Tue, 22 Jul 2025 04:41:27 -0400 (EDT)
+	id 290AC6B008C; Tue, 22 Jul 2025 04:44:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C1408E0001; Tue, 22 Jul 2025 04:41:27 -0400 (EDT)
+	id 247566B0092; Tue, 22 Jul 2025 04:44:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B0248E0002; Tue, 22 Jul 2025 04:41:27 -0400 (EDT)
+	id 108186B0093; Tue, 22 Jul 2025 04:44:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 128658E0001
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 04:41:27 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D2F3C1402EA
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 08:41:26 +0000 (UTC)
-X-FDA: 83691256572.03.BFDAA54
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	by imf27.hostedemail.com (Postfix) with ESMTP id C86D94000B
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 08:41:24 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=XqN9Tsvt;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf27.hostedemail.com: domain of mkoutny@suse.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=mkoutny@suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753173684; a=rsa-sha256;
-	cv=none;
-	b=qvmGTjnOJDIQ08YSQVOdlkv0V9ypBqCUcFCiM4Lhd3n2mvfs3FFYPxH7mAWRxe4Eyl+L3x
-	Ww5coEW132nSE2VajmMhzbvGqmXibGosY9LI4xcD7ud242S3TG5mhIZ7J/4PdPiT+eGNxu
-	SrQ0PYeEVAKC7M7uNxfgbsr2pcVt4pA=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=XqN9Tsvt;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf27.hostedemail.com: domain of mkoutny@suse.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=mkoutny@suse.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E89306B008C
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 04:44:36 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6AA8980311
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 08:44:36 +0000 (UTC)
+X-FDA: 83691264552.30.53F095F
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	by imf19.hostedemail.com (Postfix) with ESMTP id A23851A0006
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 08:44:34 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=obzFlHzi;
+	spf=pass (imf19.hostedemail.com: domain of tabba@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=tabba@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753173684;
+	s=arc-20220608; t=1753173874;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bRjs2dB89iP5QPdZHpfO+IIDPv1Lm2vrEdP8oJ8jq4I=;
-	b=PRBBc2jTMd9FZi+yn6FEmn1AFC/H/hZ+74GQGmFPMnIJZ++2Um7PtEnSeJzHkQg9FaS/uR
-	9IeoGre83wkEz9sz1c4+PCT1DmtbMXRfzDu3Ila5Ej4UnS505s9I6ryyd730y8AE4tYilj
-	Xa/oCvv9v5oKNfh/D2y3XOxPife8zww=
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-ae0dffaa8b2so1049448466b.0
-        for <linux-mm@kvack.org>; Tue, 22 Jul 2025 01:41:24 -0700 (PDT)
+	bh=dPBkvCcfAeL2dNZt7wG4lYGcQyDWbM6vpCIRnJhXb7E=;
+	b=GZEUpTGgINezm/LdBxJIwBuibI/8pWbwlHyA/cWdq773RyDR5BZCtv/y2eHEFZv4R6uZWP
+	GKPKgk/ov+MDkD5f7SxmLo2hujBwSQ0yesvckB3mNzqJ5FYQ6WFRlJaqEhkG380d5DASlr
+	0EH2DEgnQsNHHzsnctruy7MzFhN/Tpw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753173874; a=rsa-sha256;
+	cv=none;
+	b=RLAeyDiclvQatDPLncLIC7DQknV6S3oDe+acUEDR0CyPjr0jeBRC3iLI5ASdBDchmL0P1j
+	VmkOUQQnoX0op0jjgKnQzR883H4UJHBXUV6EfBmBgmBiKWJVA0au0TKx3GV+e6MkGYmaAO
+	ggrQxF1809zE7UmXh6tEzSWJPY8c9Ec=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=obzFlHzi;
+	spf=pass (imf19.hostedemail.com: domain of tabba@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=tabba@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4ab3855fca3so185691cf.1
+        for <linux-mm@kvack.org>; Tue, 22 Jul 2025 01:44:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1753173683; x=1753778483; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bRjs2dB89iP5QPdZHpfO+IIDPv1Lm2vrEdP8oJ8jq4I=;
-        b=XqN9Tsvt6s3cKXR4SRCKpEKggHQ0fGMq+dfnGwX0TRMxr3Ityi2tM0IGrLjqmI+f9W
-         /qLD838EGeq3yJJoCx2bDlBWLTgeL3UFLGuLzUU2QW48uBR1KyYxyWpORs4wgwGrW7wf
-         6b8wWHKqkjs6hhrOprOZE1KYPF1A5IGp25GPlxPBCBjEpveOtM4PIWklfiY+OJF1x4XT
-         aixfV5tEuiAiWbT53J8mpx0+rLmf2b0zBu9o0mqWoGsPKJwSUefX0bRwEYBaLc64sJYA
-         4eQKJdU7oAXmYDOtJ4BERFod6Y9vu0eCtLzzZUQfh1Go0VyblPK6ZRFUI83DvhZWqoeF
-         hyVA==
+        d=google.com; s=20230601; t=1753173874; x=1753778674; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=dPBkvCcfAeL2dNZt7wG4lYGcQyDWbM6vpCIRnJhXb7E=;
+        b=obzFlHzi4qkrg1I1twesIP6QwdEkPAhV0Gvcc+IAnn2a0adBV5OBc1oqRdRI6Gfud0
+         DBCi4GqmRA9UQ60r9YUuGAMbOH8JniUfEzHa+NwkKIxqfqSQYqKiXcxxBmMAxj/Rd5kM
+         fsZNNvaY8qurZyaW0ziI+VwkBFwYmt1XrSThfqyzgNhYSzd7X3YVyts+lJuAx+dhC7aZ
+         n/E9wQabJ8iQhGscKACpgX1XjEQhYaR8CFINQlpm0CUjD2Om5hn3oB9Mi7fbLoyWYDgg
+         Dvibs40tRHhPzSR2fn/+rvUFtOnVq+b6vhyLUpPF+xafJ8QwzB0gjLYrvn3LJAawpmS4
+         7Wmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753173683; x=1753778483;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bRjs2dB89iP5QPdZHpfO+IIDPv1Lm2vrEdP8oJ8jq4I=;
-        b=s3vDa7xBZCMbNKej2Q3yakq4RNiVIRJ/yL6eJZ/WmyCUCS5P1Mf0SxOEf2DHNlymy8
-         75k9QDpCLIGjAGWDyEQe37vYIvSm2hnf3Mzlj1t8Zl0sZo54gUuyBQiNMKHvBeFUY1WJ
-         3MQ3tcntM2NiBNiaz0t0HdbNzUTkNUOy6CcyrL3fwjvKuOjYFQvWUk8+fIcxsXlNfBsW
-         i4TlkwMZe0r8v84ZDYsBh0ELbfZVYuaRy+Hyf9YO6YQHTgk4i6RfutMoWBO/f/cmtTWp
-         GJdsul6gZFEB5D2SDlv/QeM/QhvNbgLW4vLguEc6SBZYLCqrZwz3cJ5jSd31hL/JhVff
-         FnyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWnfPiF8loSCoGtKswEmaBOnmuB0RPragWw2CfkramJpZQPqEq/vOj2k1dIjZFWnU1qQUKz/O5pNg==@kvack.org
-X-Gm-Message-State: AOJu0YylT7TjOZJPsyT3PGrtP1p0ybKhBNM8nibkcOaZQPKr4tEugVtM
-	7qxKt0T9J1E21EvME/1T9IVHX3NngGFqmlbqsrCPIwTok2agkG6y7gdkN3oD8I5NOvc=
-X-Gm-Gg: ASbGncsFHaLk6PDeAJ/gh7gk9ZGMgxnMrHMStQxEstrcF6s9SairK+kDKVPNJxDIrjO
-	SRXhARgUfw0+2WmgV/zyreXQC4hGNqJYTUsPZZ5cu7EEK1tJ+2e6E5asPKniGfosOwrrlb+8eHH
-	ciXiCj1FW6raT8w+tFRBIsuwJ/V9amLZ3KAU0y3pOPsaJcn5BzE5YTr1QCJ/tN7a4bVkHKcVN4H
-	MY7UmuCycyiPDliiLCUby8ZbyzLgKmMWG9Hm9SWS+G29kilRGIkrh4JsGSCD7fPt1Vq4f52UYdU
-	HzeQCqaQkzU/Joz2ZQHhOWVE5WcsRrgJ44t3SXVuMu0T2HMlLPrnuF/AP0iqMu+gku9gAYhZxc+
-	MN/6sKM8jfy0Fi0FRfFw1nWBJUFGUCTLcGriVtkDd522CJ9gkcMYt
-X-Google-Smtp-Source: AGHT+IGVTq5jQfcMBSU2EE35kS23f3MVVY0rKBzXyZk98SKg1l8+dLktQWM4sm1V77E9tsRIzM2T8Q==
-X-Received: by 2002:a17:907:d89:b0:ad2:4b0c:ee8c with SMTP id a640c23a62f3a-aec4fbea8d9mr1823014466b.35.1753173683000;
-        Tue, 22 Jul 2025 01:41:23 -0700 (PDT)
-Received: from blackdock.suse.cz (nat2.prg.suse.com. [195.250.132.146])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aec6caf733fsm829032866b.159.2025.07.22.01.41.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Jul 2025 01:41:22 -0700 (PDT)
-Date: Tue, 22 Jul 2025 10:41:20 +0200
-From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-To: Youngjun Park <youngjun.park@lge.com>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org, 
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, 
-	shikemeng@huaweicloud.com, kasong@tencent.com, nphamcs@gmail.com, bhe@redhat.com, 
-	baohua@kernel.org, chrisl@kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, gunho.lee@lge.com, iamjoonsoo.kim@lge.com, taejoon.song@lge.com
-Subject: Re: [PATCH 1/4] mm/swap, memcg: Introduce infrastructure for
- cgroup-based swap priority
-Message-ID: <jrkh2jy2pkoxgsxgsstpmijyhbzzyige6ubltvmvwl6fwkp3s7@kzc24pj2tcko>
-References: <20250716202006.3640584-1-youngjun.park@lge.com>
- <20250716202006.3640584-2-youngjun.park@lge.com>
+        d=1e100.net; s=20230601; t=1753173874; x=1753778674;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dPBkvCcfAeL2dNZt7wG4lYGcQyDWbM6vpCIRnJhXb7E=;
+        b=qeAREhFYOUuhyzOerNhzdMkyeOpoXeDldYktM38DcTvjWfYZKA7nSmwtiELhLSmIrm
+         ZpTjL3m3SLvPHvXKfi12vObp/EO32VphK9I2RhucognM/denZgXfpnEBW303HvTR+/Ze
+         jnTkbfvHcHunAr3H12jeUTNVmbZKAfqiOcrLR2GQqZ3AJAG/dxYDSASW5TS+4mXc8hV1
+         32pEADACgyr880ZJWUebvzpLnKG1OXxPbYZ5XWC9WQrP4S+EBpVKan612xYy7yz+KRN5
+         ec/25cfA16GSZLoHxNmk2ZC0QgOSJ58ARarDiBHEHBl5zhv/ZYFJSehKcH65K32bz9Vy
+         jOSw==
+X-Forwarded-Encrypted: i=1; AJvYcCV3qB0ICMKIIw07XR3k1Gx0DnKVJAtJHvFLrwM/JwwEAk02VN2FG6kJD6yKl/wgsecyNPwAydgQLw==@kvack.org
+X-Gm-Message-State: AOJu0YxZaqfpnoqGpGBmoZxYam0LTr32qEKkKggmaC0sBYYPibPo73z9
+	n1iFS3oqb74+JTo0BaQxUa4U0jDNaQTeLOdW/G885PCO5upbLLSIJyWzX/tnFpB2s0Z4VALgbu2
+	5FkQaHijaZ1BLaM26RCGGygU3rRmZaW+XsDXq0ssI
+X-Gm-Gg: ASbGncuraEOIbXuSXEEWW6AbRrF98xQ04CeNyu3SLyBTKrsEfR1PO0qYNh57f1AxwLu
+	coHzQ6bwzHuDRIVRjKztoI4D5m8SUP1SOxKjO15geO+sc1Mj4yAWgtBVRWBFnTMZ0cq7PqYBhGm
+	Y7J5loIwIF8DfNYO4GL/DYSnCDCMJLga+4tUrDRNeWv3Vignw+Wwu7YDl07b2XzH3B1sSZMeJHc
+	6wgy0k1lxAeALGTK4Ruk8R024JJiSxzYOvX
+X-Google-Smtp-Source: AGHT+IHY1bLajV8cSDSr07UxvUVPof2BdmEX/z7/v1iwlDELsaBXQa7JYlT3T+HwWsQDpoA/9fVIqN/RA0gQKf3OZbM=
+X-Received: by 2002:a05:622a:a916:b0:4aa:cba2:2e67 with SMTP id
+ d75a77b69052e-4ae5f1c81b8mr2062111cf.21.1753173873334; Tue, 22 Jul 2025
+ 01:44:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="qlnvw6uygziqhfah"
-Content-Disposition: inline
-In-Reply-To: <20250716202006.3640584-2-youngjun.park@lge.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C86D94000B
-X-Stat-Signature: ya561ec57zebon7x1c9kyefrr43capau
+References: <20250717162731.446579-1-tabba@google.com> <20250717162731.446579-14-tabba@google.com>
+ <aH5vNqPrUFgtZCqU@google.com> <27ac6ed0-f58a-4926-a069-8d9d7d61a41c@intel.com>
+In-Reply-To: <27ac6ed0-f58a-4926-a069-8d9d7d61a41c@intel.com>
+From: Fuad Tabba <tabba@google.com>
+Date: Tue, 22 Jul 2025 09:43:56 +0100
+X-Gm-Features: Ac12FXwo4G2roOXpkeQ9Jh58vNuaACeOHbQjO2y_a9aub1RVWWMkoayleVat1V8
+Message-ID: <CA+EHjTzUr4K8SsvwANTkg7yd5mFZLbY1aSUB85zvd7wooizf_A@mail.gmail.com>
+Subject: Re: [PATCH v15 13/21] KVM: x86/mmu: Handle guest page faults for
+ guest_memfd with shared memory
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-mm@kvack.org, kvmarm@lists.linux.dev, pbonzini@redhat.com, 
+	chenhuacai@kernel.org, mpe@ellerman.id.au, anup@brainfault.org, 
+	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
+	viro@zeniv.linux.org.uk, brauner@kernel.org, willy@infradead.org, 
+	akpm@linux-foundation.org, yilun.xu@intel.com, chao.p.peng@linux.intel.com, 
+	jarkko@kernel.org, amoorthy@google.com, dmatlack@google.com, 
+	isaku.yamahata@intel.com, mic@digikod.net, vbabka@suse.cz, 
+	vannapurve@google.com, ackerleytng@google.com, mail@maciej.szmigiero.name, 
+	david@redhat.com, michael.roth@amd.com, wei.w.wang@intel.com, 
+	liam.merwick@oracle.com, isaku.yamahata@gmail.com, 
+	kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com, steven.price@arm.com, 
+	quic_eberman@quicinc.com, quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, 
+	quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com, 
+	quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com, 
+	james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev, 
+	maz@kernel.org, will@kernel.org, qperret@google.com, keirf@google.com, 
+	roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, 
+	rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com, 
+	jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com, 
+	ira.weiny@intel.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: A23851A0006
+X-Stat-Signature: 9spfii6x77bztps8aj34msdwqqw3ujwo
 X-Rspam-User: 
-X-HE-Tag: 1753173684-862332
-X-HE-Meta: U2FsdGVkX19KXYrVYZinRrEV7a+FLcu/vjNiUuUJy/nSdaL2lKCPJ5R+KZEkafcjEDDfbjzdcrwDmLyAzj0Hjf/8r4WFHIzaiNBX7PhBzO/XyxDRxOSYm+mUetDlsNBoi/5V6+JCP88VzYe6tsvGgZ2wBbIjEBB9zZtprjJzlpFH2UOPOnGeSFj+pakbF0/le0DFIkT/ValJGxeG77uuF9VNqDHxZ5ROdcXu2gApa6jF4EVBXSeO8+rYkyCZXSIV70nyqifNftZnQZbEm77hU3Okj/U9sQSVrQMLGfC09i94pbkDpE/O9BpAWlVeDgxW1hd3ilPAidwXnAwd6kPHSDB+niByoqcQy2LvLtr7GLEapwx46IckvEIQPk/OvU9MYrwW07NnNrqD3K/y+zQLIJG2WB00DgWqvVSgsZEvmgCJMY2k4b8GZ4tzkxRHdV5XMdg42iNNEe4rjAUF9XhjYePx7TVX5IjsbHJSNxYkqr+3hYCBHTyZ43MdekuBeh3tFNIBGx1YO/fyFJljCDExfIHu8p63hfKAn2piQxNpFvEbxw5+xcZUlftMKN4zyzJD0g0CX+cPZbNYI5X1UpRr1XEWCo8z3/COIt8ppMJOZH/d0x8pkIQOmLTi7sNmczGm9Q+3J+nYTv9guS9G6ovBIQILovOXtNXdJ36p+BdevAJ34TsDj537r9S6oyj3uoaJJyTKRUsr/E9jwOg1L9Nw9CgAmcFZpf4WXQv3UkJJeH8DNK902ej2lC4D4RsRalgg0YzaOv30rCQXP46tcID9k9nePHSIT/U5n6bnd2LHq7JtbUTjd6xeRAQrAtpGJMqgEzdBJW8yc3JUFwKyEY/NAI1PLXE6euVS949r70iC7MrPmmAb70rG90WPnMx2hbWWFUn0JrxYdgMmwEcN9HoOqP5pFU2YnsONDJgzRW48Qu7KN5CeTh3tWtpGhllA11OE+a4shYzdCNSMi1BEhTR
- FOhX0Dos
- 69+qAJZx78J5ACzDAw/7IVDltHRt+3qKSModTwmeHYfnmkK+XfPy2LI5wsizJQWsyyLiVXKTISrUHGEHIPeLW3XToUkEBr3jDBNvmdlVveAmWyfUNj1wSEdSZsawzLpMqYRcScNGow3fTQmEuhl3deahSSucb1rKdz90E7L6xI5jBvK3wWAmNBiHlCNXWqkZM8l+nOD7xeLgIiusdkS++Y/fSr1OT3z/oItwTo/eSkTO6dyZo4xmFf39AGUQ5sf0H/Pr28CP8dX1uFFwtu0V9O2JnGE8/IMMm2I90uPCctzQs/jxDKdlMh1cxtXDsVb2GtKfOQZSX8swwLgcUQVHcfXpXp7ilxfQIMbrdfeKrsVXpHMzgXauJjO++IXGGmKxr9FSOI2V5oVVFSvwup/jszg0GZ7UysAg967OTropIiH6TU72YrijxhZD7t3ukni8+dPJ5rp/TG7uvBcw=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1753173874-190829
+X-HE-Meta: U2FsdGVkX19EpMHy5GL3laq7p3bGSNLzrZNfD7ZaM/fex3H+SuSSc6f7CVWrCFkF+r5KlCUOZxt3noYZc3mnNdwGRcAWRpZlZpt9EvRK44ul+6dWWv2oK49i92CJmHcGlDDl/QOjQtaM9+xquA3LBHGdRb3+zNyhCJHqh8hiMyAhoJim3/QkA+kLYLUXojlHP3WqitqclNz9L/IqoT3xbR16oZ7dYaM4pdTqXFIbUkPhvGp61SOwXKvWLRkL6ixmxjUyZPxxYDPad6MlbYwBLqSUhjc9yawdhhQZTVu935WJdJIgaxVofT2MzslIE6F4iu5Up0800tvE2CpKwSR3Lz+8dgSsnAr71VFf+KjikPSFgHeEN1dYwY0DguVwavIp2RA8lRdkRNpqR6B3lQgsnIDqI1Y8kF+PQorO/NUDtup3DuyoB/Kvtkj+FYTCsKTP8thNwZe7rAvOAoYZ6escEh6UwhR+4wJTVWb59y/r6MADPjfjsNA6+frzzTI4h1Onezd9gnl9RneYYq0gUdmDjSAKG4webigIqkZUAIFCeD7NH14En1tb30qmzmAvR5hs6/OSD4l00NehlHWkc71WaJ5t1neqCrlBt4B0oNPUD8Ve7TG5n+dY3s9/UQ1qLOAibYaYU2p4SFYqPsOWeYCRB0INLdITTtYUMtYEPuKJ5rvAhxrhH4rCFF830+VQ/bbdiQeL07FuEZp1ollybKodn62BkBeDSB6NKKsxXn0lqUgg+A2d0Zuzof5PxINYMWtgUCunKLMFMnsMun36ZdhWvWSLrfLRkDTP/3ZKf1qlVuJpwVgq6CaSmwFkvouDBh3JyD9Rv/jioLbrHcHGsERGrYUl2nRGeSvaVZ+kp8JjQonMi5x1U0vefD6m/uzz6Gw65oiOluGvVhkPcPb04ogasGHUtNsIR+S4Zq00nRvjKFQ6PXrhWIixEHHeltaVP9z+AGgNucYmzzCRAR6ms7q
+ jM/g2x1B
+ PSK95DxWPxfWBO6KlUyQhxSc6W22rCSSfhbTzhURqJZbfYVk0KsS1E9ttjEuNoMS9ckm2qrgcUPesgprnmhR9DLTN0u08rys+B8nJVgJbJVqhu98Qn1OFRiIYo/SmBK6Ol9PUR2sfUkoVjohQ+iueJqbkw9y4uLDSmUqQeKF4ILAVVTwa8PLVeAOlTsWWsJroDV2cRHftuC3QT8GNR5lJLgJt4DkxQ5s+ARjqvyheFhXpsxxKkOeytm67vQFOlbCmXgzSsWiMuA+rSBzQeZzzp+mqnlF51kZlaDDwAGkb3nYw8IVwv7cEtszcxhavZ7vwsjWamAm9EZddNBD3BvIm0lLX879wG5p9pF/zZR91+KUKTP/NtWIQnN97ys4xzAuqDQfYkvnypLnq0zgdpJpyVBD+WA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,90 +132,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, 22 Jul 2025 at 06:41, Xiaoyao Li <xiaoyao.li@intel.com> wrote:
+>
+> On 7/22/2025 12:47 AM, Sean Christopherson wrote:
+> > On Thu, Jul 17, 2025, Fuad Tabba wrote:
+> >> From: Ackerley Tng <ackerleytng@google.com>
+> >>
+> >> Update the KVM MMU fault handler to service guest page faults
+> >> for memory slots backed by guest_memfd with mmap support. For such
+> >> slots, the MMU must always fault in pages directly from guest_memfd,
+> >> bypassing the host's userspace_addr.
+> >>
+> >> This ensures that guest_memfd-backed memory is always handled through
+> >> the guest_memfd specific faulting path, regardless of whether it's for
+> >> private or non-private (shared) use cases.
+> >>
+> >> Additionally, rename kvm_mmu_faultin_pfn_private() to
+> >> kvm_mmu_faultin_pfn_gmem(), as this function is now used to fault in
+> >> pages from guest_memfd for both private and non-private memory,
+> >> accommodating the new use cases.
+> >>
+> >> Co-developed-by: David Hildenbrand <david@redhat.com>
+> >> Signed-off-by: David Hildenbrand <david@redhat.com>
+> >> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> >> Co-developed-by: Fuad Tabba <tabba@google.com>
+> >> Signed-off-by: Fuad Tabba <tabba@google.com>
+> >> ---
+> >>   arch/x86/kvm/mmu/mmu.c | 13 +++++++++----
+> >>   1 file changed, 9 insertions(+), 4 deletions(-)
+> >>
+> >> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> >> index 94be15cde6da..ad5f337b496c 100644
+> >> --- a/arch/x86/kvm/mmu/mmu.c
+> >> +++ b/arch/x86/kvm/mmu/mmu.c
+> >> @@ -4511,8 +4511,8 @@ static void kvm_mmu_finish_page_fault(struct kvm_vcpu *vcpu,
+> >>                               r == RET_PF_RETRY, fault->map_writable);
+> >>   }
+> >>
+> >> -static int kvm_mmu_faultin_pfn_private(struct kvm_vcpu *vcpu,
+> >> -                                   struct kvm_page_fault *fault)
+> >> +static int kvm_mmu_faultin_pfn_gmem(struct kvm_vcpu *vcpu,
+> >> +                                struct kvm_page_fault *fault)
+> >>   {
+> >>      int max_order, r;
+> >>
+> >> @@ -4536,13 +4536,18 @@ static int kvm_mmu_faultin_pfn_private(struct kvm_vcpu *vcpu,
+> >>      return RET_PF_CONTINUE;
+> >>   }
+> >>
+> >> +static bool fault_from_gmem(struct kvm_page_fault *fault)
+> >
+> > Drop the helper.  It has exactly one caller, and it makes the code *harder* to
+> > read, e.g. raises the question of what "from gmem" even means.  If a separate
+> > series follows and needs/justifies this helper, then it can/should be added then.
+>
+> there is another place requires the same check introduced by your
+> "KVM: x86/mmu: Extend guest_memfd's max mapping level to shared
+> mappings" provided in [*]
+>
+> [*] https://lore.kernel.org/kvm/aH7KghhsjaiIL3En@google.com/
 
---qlnvw6uygziqhfah
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 1/4] mm/swap, memcg: Introduce infrastructure for
- cgroup-based swap priority
-MIME-Version: 1.0
-
-On Thu, Jul 17, 2025 at 05:20:03AM +0900, Youngjun Park <youngjun.park@lge.=
-com> wrote:
-> +  memory.swap.priority
-> +    A read-write flat-keyed file which exists on non-root cgroups.
-> +    This interface allows you to set per-swap-device priorities for the =
-current
-> +    cgroup and to define how they differ from the global swap system.
-> +
-> +    To assign priorities or define specific behaviors for swap devices
-> +    in the current cgroup, write one or more lines in the following
-> +    formats:
-> +
-> +     - <swap_device_id> <priority>
-> +     - <swap_device_id> disabled
-> +     - <swap_device_id> none
-> +     - default none
-> +     - default disabled
-> +
-> +    Each <swap_device_id> refers to a unique swap device registered
-> +    in the system. You can check the ID, device path, and current
-> +    priority of active swap devices through the `/proc/swaps` file.
-
-Do you mean row number as the ID? Or does this depend on some other
-patches or API?
-
-
-> +    This provides a clear mapping between swap devices and the IDs
-> +    used in this interface.
-> +
-> +    The 'default' keyword sets the fallback priority behavior rule for
-> +    this cgroup. If no specific entry matches a swap device, this default
-> +    applies.
-> +
-> +    * 'default none': This is the default if no configuration
-> +      is explicitly written. Swap devices follow the system-wide
-> +      swap priorities.
-> +
-> +    * 'default disabled': All swap devices are excluded from this cgroup=
-=E2=80=99s
-> +      swap priority list and will not be used by this cgroup.
-
-This duplicates memory.swap.max=3D0. I'm not sure it's thus necessary.
-At the same time you don't accept 'default <priority>' (that's sane).
-
-
-> +
-> +    The priority semantics are consistent with the global swap system:
-> +
-> +      - Higher numerical values indicate higher preference.
-> +      - See Documentation/admin-guide/mm/swap_numa.rst for details on
-> +        swap NUMA autobinding and negative priority rules.
-> +
-> +    The handling of negative priorities in this cgroup interface
-> +    has specific behaviors for assignment and restoration:
-> +
-> +    * Negative Priority Assignment
-
-Even in Documentation/admin-guide/mm/swap_numa.rst it's part of "Implementa=
-tion details".
-I admit I'm daunted by this paragraphs. Is it important for this interface?
-
+I guess this is meant for the patch [*], which as far as I could tell,
+isn't in the latest (-rc7) yet.
 
 Thanks,
-Michal
+/fuad
 
---qlnvw6uygziqhfah
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaH9OrgAKCRB+PQLnlNv4
-CMRBAQDzCszk0ZJDxPwRBr0crrEo5Fn9310kn3KBAiLE3KInXgEA/or1joqEpYNt
-8C29XY1pGwaogm1oWi9Qfn+sSCEoDQI=
-=vEC+
------END PGP SIGNATURE-----
-
---qlnvw6uygziqhfah--
+> ---
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> index 1ff7582d5fae..2d1894ed1623 100644
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
+>
+> @@ -3335,8 +3336,9 @@ int kvm_mmu_max_mapping_level(struct kvm *kvm,
+> struct kvm_page_fault *fault,
+>          if (max_level == PG_LEVEL_4K)
+>                  return PG_LEVEL_4K;
+>
+> -       if (is_private)
+> -               host_level = kvm_max_private_mapping_level(kvm, fault,
+> slot, gfn);
+> +       if (is_private || kvm_memslot_is_gmem_only(slot))
+> +               host_level = kvm_gmem_max_mapping_level(kvm, fault,
+> slot, gfn,
+> +                                                       is_private);
+>          else
+>                  host_level = host_pfn_mapping_level(kvm, gfn, slot);
+>          return min(host_level, max_level);
+>
+> >> +{
+> >> +    return fault->is_private || kvm_memslot_is_gmem_only(fault->slot);
+> >> +}
+> >> +
+> >>   static int __kvm_mmu_faultin_pfn(struct kvm_vcpu *vcpu,
+> >>                               struct kvm_page_fault *fault)
+> >>   {
+> >>      unsigned int foll = fault->write ? FOLL_WRITE : 0;
+> >>
+> >> -    if (fault->is_private)
+> >> -            return kvm_mmu_faultin_pfn_private(vcpu, fault);
+> >> +    if (fault_from_gmem(fault))
+> >> +            return kvm_mmu_faultin_pfn_gmem(vcpu, fault);
+> >>
+> >>      foll |= FOLL_NOWAIT;
+> >>      fault->pfn = __kvm_faultin_pfn(fault->slot, fault->gfn, foll,
+> >> --
+> >> 2.50.0.727.gbf7dc18ff4-goog
+> >>
+>
+>
 
