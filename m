@@ -2,91 +2,129 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 71229C83F27
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 08:23:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 15215C83F27
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 08:27:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F12D56B0098; Tue, 22 Jul 2025 04:23:34 -0400 (EDT)
+	id 9C22D8E0002; Tue, 22 Jul 2025 04:27:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EEAFE6B009A; Tue, 22 Jul 2025 04:23:34 -0400 (EDT)
+	id 972B18E0001; Tue, 22 Jul 2025 04:27:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E282A6B009B; Tue, 22 Jul 2025 04:23:34 -0400 (EDT)
+	id 888F78E0002; Tue, 22 Jul 2025 04:27:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CF8C46B0098
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 04:23:34 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4C5EE802EC
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 08:23:34 +0000 (UTC)
-X-FDA: 83691211548.20.1E69C69
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 99CA6120002
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 08:23:31 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vJKu2eJa;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 72A758E0001
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 04:27:08 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 22F8AC02C4
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 08:27:08 +0000 (UTC)
+X-FDA: 83691220536.27.4A9F90B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 901A74000C
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 08:27:06 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ftIKtFsS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753172826; a=rsa-sha256;
+	cv=none;
+	b=5tyUDf7x8K92VTMNwb302UhcursntjUOmWCBfg4/LbjGeMp3Cz7r5l+ihDTeGV9+evRPaZ
+	+yHDaQiNE8Qbp6Zq+W5KRfCVn1ONXT4/UdM+QXBQNuSVbVHVWUdDIsdASrcc8OHlEOab1J
+	c03A7nwJ8VRnOiho4qB2+/dpwy9Trv0=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ftIKtFsS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753172611;
+	s=arc-20220608; t=1753172826;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+gUg8+TWMw3s84C3Drw4bZY5zwE2HkLTqpAT+GkOi08=;
-	b=pnCU7UMS/FujkcDCBweb1ByyvM2o9UJSEPNgKTkVduokMaHGpiCesJmitDD1oMwWjr9Wyq
-	D3pVpY+mTD54HbJUCZwWP2lwnlDYYCyqgaOIoRLK57vblwMN8Fn5KZMOWCk7n1QuqPI0Gd
-	elZ+53zqFAnGy5TI5w1rLQbbEfEdWkk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753172611; a=rsa-sha256;
-	cv=none;
-	b=CBgfUGPB2+WlnJCB/6BQv3lcwXrw5TaiALblRwtZdeoxSa4ZlKMZzkREm9E5qYEBvDRGXM
-	uU8urhreOMWf8al0o9RTYfkcZFPLRhCyOjtzhydJsqkxz5vj2hz7nQNHf3MdevCmj751dh
-	ropUSqb4uS9xqJ6AMxssJqVoQ5DoEk8=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vJKu2eJa;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=DbOnJHGDVjc2/tyeEkcbXWv/oF5daTXS/lsYhGkGX7g=;
+	b=u3sdrx4JHIh+rrUGyEI3co7qd5/Qda2Om5q2ePwgztPj8aWUIbhphEFRfSzp683Y8486We
+	00svfZH1QsZoRNDePQ3Buv9RGareR+lH4pIOBOU0tTzpxEztNq1177OeNxPIM7NBL+kY6s
+	/pReHiY8vvpoOnEN+DiGjsEw2kyEt/A=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id D7DB8A55E04;
-	Tue, 22 Jul 2025 08:23:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C65EAC4CEF4;
-	Tue, 22 Jul 2025 08:23:28 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 017F7600AC;
+	Tue, 22 Jul 2025 08:27:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A537C4CEF5;
+	Tue, 22 Jul 2025 08:26:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753172610;
-	bh=Y7L/rRO5yyKs2AKEjD3Is669RR4GnyvoU1Va0/d4nes=;
+	s=k20201202; t=1753172825;
+	bh=yGkRA/6qnjLPhMkWmaVYag52FJSXvc8HTUW6Y3Xuzs4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vJKu2eJataVITCVflCr840wmheOuK4XZlYWs6rrrZpZ8f8334JvjTIPjTBtcg9wmK
-	 hR5ceZw2sIh+Bc1ywwL2YvnTVUnnhu5pNNCs4fpc4ayWUqS5XcKkPeUvBsSeB5DxEG
-	 0/CXdshl05qh+Ss1Nmh0QUeiSO3LavlTOlLASQnBZnEMPKLDhte/RyXse9forwWwKE
-	 o1DDCseBL37p9rIcjs59P5Lc6q3DSY6ZZ9ZZTUuzJvC2FesBKpl29GOEAy1h/BDi/T
-	 yLyGxV3knvDunrs7c0b1bDSieX44bXlDNDruNlVmKPYTgNSZqKxMJvWYJOHtQXJgYJ
-	 leAGO78mPSmuQ==
-Date: Tue, 22 Jul 2025 11:23:25 +0300
+	b=ftIKtFsS+75DjkESBKR4C/0fTfhjTO5EAQaosz6bDp0SBtC0xu6jrbFmvS+RKsdrx
+	 f4dMY3bCIrRdjzyHRTqQ2IS3DbC0aaJA20FDQXMOHNRYWFh4FtQSBKE6qcpYZfqwwn
+	 EBlY5p7lMzTdcc4tj5YJJGVzamw8NuZS2DY35/I8OtpLoIXd1OL5/ZeHJymCJvh1YO
+	 fQNqEpJ2tIsXeilrIIv/4unMX0gRI4A5tYLUiPoiE/g7dGzpTCnD1Qfrv0OCm/INtf
+	 +6BTjWwe4qdBcxVcEwQyD1qD72/jVzjC0CRHbF2sbB7CBVIvfoxl37x9XjTdsKkyQI
+	 517UWQRiFJG/g==
+Date: Tue, 22 Jul 2025 11:26:46 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: mawupeng <mawupeng1@huawei.com>
-Cc: akpm@linux-foundation.org, ardb@kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: ignore nomap memory during mirror init
-Message-ID: <aH9KfV8XM5fNsR/Y@kernel.org>
-References: <20250717085723.1875462-1-mawupeng1@huawei.com>
- <aHjQp9zPVPuPyP3B@kernel.org>
- <9688e968-e9af-4143-b550-16c02a0b4ceb@huawei.com>
- <aHj8mfecDhJJZW1Y@kernel.org>
- <8d604308-36d3-4b55-8ddb-b33f8b586c1a@huawei.com>
- <aHzjOxg_oPp06blC@kernel.org>
- <205873c9-b8cd-4aa7-822e-3c1d6a5a5ea7@huawei.com>
+To: Kees Cook <kees@kernel.org>
+Cc: Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Michal Wilczynski <michal.wilczynski@intel.com>,
+	Juergen Gross <jgross@suse.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Roger Pau Monne <roger.pau@citrix.com>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Usama Arif <usama.arif@bytedance.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Thomas Huth <thuth@redhat.com>, Brian Gerst <brgerst@gmail.com>,
+	kvm@vger.kernel.org, ibm-acpi-devel@lists.sourceforge.net,
+	platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+	linux-mm@kvack.org, Ingo Molnar <mingo@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas.schier@linux.dev>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org,
+	kasan-dev@googlegroups.com, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-hardening@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, sparclinux@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: Re: [PATCH v3 04/13] x86: Handle KCOV __init vs inline mismatches
+Message-ID: <aH9LRgiiXQdABrd6@kernel.org>
+References: <20250717231756.make.423-kees@kernel.org>
+ <20250717232519.2984886-4-kees@kernel.org>
+ <aHoHkDvvp4AHIzU1@kernel.org>
+ <202507181541.B8CFAC7E@keescook>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <205873c9-b8cd-4aa7-822e-3c1d6a5a5ea7@huawei.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 99CA6120002
-X-Stat-Signature: 6r5bjhooj6ymwyxtjbtfu3myzf3su6w5
+In-Reply-To: <202507181541.B8CFAC7E@keescook>
+X-Rspamd-Queue-Id: 901A74000C
+X-Stat-Signature: rx6gjebie49aae79htrpoxi4rr81za6f
 X-Rspam-User: 
-X-HE-Tag: 1753172611-972392
-X-HE-Meta: U2FsdGVkX1+Wl1b/g2G2HRcmG3gJ0VPMH0ltyTJ5kSViDsXWKJWo+ZYNNWo/8OJWOkfaenBqupotVX1ganReXZhsOB6VkL95PwKZOTSDYJivYioy8GAyt2EQgEsNPMZmG/fDXH7Ndc2t3GCF0IiCOi+iWNJqivo+DFYCDltVqvkUiakB7JCArZCGi6g6pCnZ4kbdoJ1AqxFnplrzp6UwC5XfUheUCMzP3qIglT7ROIpDOwQM7MbeI5uVpVx9L2RBZu3n7B4rMMX4nBNVF3cDcAq79ippO0aBRR4dO2K4DlzoP8XC6EWymJtifaASEcFeo7YJysXTX1QYloZx0ThK3v/cO+JQUOe+lDi6U18v9MjsE1cD8ndGxKQfKFfmqLJZvJg6LN/M7YXGXl6MDoBOtBZOGsS7aZMayQ6X7WodqO65ipsDjJb+x1hLdt1N9J9uQ/yDIreMdlu/MUNpRtE9HcGbOluskP6DH2ci81zU7IVPmYi909ACD9VjkrhHz8WdmwD2s8pAmCpFO10c6usOKhggFOF1FHVd1aiKFXtwGueaqBVKSChQ+6WfM1xIFjLupzAZZGJGR1xpm7stzdJ6dmOYt1dIXSXHcjYoXIO0V+tBbSUz79dUGEg+mRus9M4LpPSkzlIMywzxrLGEPZlcuu+xKa+5bp7i+ePsL7QGtGkTxNKQi8Jb2pTjnsCGUarV6f6Y7c+iovM96g1bRcfageOKM/1Xbzw7rpL8IiwTwC+aLYe+R9OiydbN6RO9qHQbVUGabEsMpRyT1jK5KScPRijxWFKd7Eqn5n3tZuC5nOA8yDMvgguYPTIqF4xaHHdknC+tIIMz8d8UbERJ7tkkxxYzWUJKtLPrCPmWRNEgkXJsiK8gEEyfmX3FXPttH0XFdPFYuizASfYlopr9whJiqFaBLFf0u84V1Wp2qHzX0UNJBSjYysEk7Lfchd+nqM1BrtLnTnQJmWFb6mWIBVw
- oWxZ3uhX
- EJpqppHF4+wu53Bmi0UB6IqbMwlchHOA3Vm6JjPlAdPhKf2DdmS7IQnqRMXQfHgeoHP0BPZVko7iia48ii8xLfT0sgXfjYDM1AlFaz/TaN+fWN7E/aIYAYlEG35cGfpE16Vv/95yFqvQl2JYnTpkE4jNKcTACJpudz95WSLKrGWqbLh4Z7oPDWRB5wkSp4In3l+H8mVbolkxnakau+Ppicshmf8iBbXQnf2o3VVjaeVs2b266Rob51Zwoqqs8y+8mM5fX
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1753172826-743942
+X-HE-Meta: U2FsdGVkX1+Fir6mPtM/aju/+UZ/f8GQYUWGP6D7sFQ4dbqaR/QMSqVsjj9S5GNaQmcbAlfswq7xebSpZbq+/TstdoUCe8VhXw3wqGR8BdkUv7xM9IqBpFot95FSOEZp5rgHoRMYHErcINPDs9B/D4UyotovdY0KweOtIVRV1LSSxZJFz86IA0PULThfNLNYNDZNQV9CBuXar5vCXX0xGxEWeBRsko4c4Lj8yQ43ynXOUk8OuyaszWnff0VJggDvE3jfSxRXIZBtO7xZo1VEZ56qn4eLhQrEoIg6CN6EHqPYIn0889xua7oS7k5OdFlM9fY31mv878nnI76I+f//EcA37vPm+wr17b0god4T2nWwDFQRnX7bGEtljdWbb5HCLxxYY6FEXoVjixRzSGPen0KY83ObMQ0d3lD5OKe4o68wqPCgdl7kyF+I6BETTOyHK4VQgpRFYN7v3s9ueOG0uzmBmra1htEdHwz97E+sOO+2NLrUiNOs23Q63yppUVnoaaHprh1SNcCzzhUPTGgpWBVN52itFGPVJ+Nid/DrO4zu8gZha797gKyZtN6wLWyARTP8ua0XaeMULLRppjeEtj4KoAXs2wnZLgbxg7i9VycgUet/FAlT5LjetmK1b13D3bm6UNw4rESqVV/Qot+6kXdwG86Gjpm+u1SlTT+t4E1gtFKlSyZrY6OQDjt0HtXHrKOPUr35su6atLd+ah9+I1mJYnsdZ4nbQticjhdqr52PityIGZ7qTFbZ3JsdpIQPm7MFjkwti1DPDtce0Nh6I2C7kBjUYhqa3D28d3pKYxCkOhwaXpTojaeGdrLRay909DSc5sqgyi4c6rBJh8f7TRTuQDQVFEIo7kW+a+E5PxvAmeeh6iXl/tSrKB+YuiknTaM9Ht8npUJycJugO1vb71J4GgbvB9MiNNjIqOkOvEe+2fTLn2aTmlvbbxZXrqvHAsftcRSnEXvgdW8nxPl
+ ilX08GZJ
+ yosuSU+E4P5Fe0klBelTigkZVT9kqBMBG9Cfaa+SuqmMwAwL5YmkamndMxEVDGOBHzTftS1r2JsuDsB543OtnV10eHsvKhe1mbWHLuMQOIWL0M7XN6nOFtcQ7M1pWCRddVr2jeOv67WAOIRe/PMTBurTFaE1QoCLD/J5+moUguWLAlpfe5factPrLouh6A2KMMwcTiFoeg2xbmVMCd+VYBPQoE73kiWcm8R3r+5fF3ds7Yh92R+9K3Kl1/CJVNdMCSEVPbRvmjs0H2uUIvqmgpb7kNwkcAXHNM3eIF9n/qD7KRD2A7BwSVsMdeV2SJfkXKK7o9p1BcZ85FucpuUlvW1wEW9A0X1ycw/xa38xuNEwgGwzB9nTSSeWfsWv1RmznLCOb/scqKpmkpfA+/No2YmAVVQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,94 +133,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 21, 2025 at 10:11:11AM +0800, mawupeng wrote:
-> On 2025/7/20 20:38, Mike Rapoport wrote:
-> > On Fri, Jul 18, 2025 at 09:37:48AM +0800, mawupeng wrote:
-> >>
-> >>
-> >> On 2025/7/17 21:37, Mike Rapoport wrote:
-> >>> On Thu, Jul 17, 2025 at 07:06:52PM +0800, mawupeng wrote:
-> >>>>
-> >>>> On 2025/7/17 18:29, Mike Rapoport wrote:
-> >>>>> On Thu, Jul 17, 2025 at 04:57:23PM +0800, Wupeng Ma wrote:
-> >>>>>> When memory mirroring is enabled, the BIOS may reserve memory regions
-> >>>>>> at the start of the physical address space without the MR flag. This will
-> >>>>>> lead to zone_movable_pfn to be updated to the start of these reserved
-> >>>>>> regions, resulting in subsequent mirrored memory being ignored.
-> >>>>>>
-> >>>>>> Here is the log with efi=debug enabled:
-> >>>>>>   efi:   0x084004000000-0x0842bf37ffff [Conventional|   |  |MR|...|WB|WT|WC|  ]
-> >>>>>>   efi:   0x0842bf380000-0x0842c21effff [Loader Code |   |  |MR|...|WB|WT|WC|  ]
-> >>>>>>   efi:   0x0842c21f0000-0x0847ffffffff [Conventional|   |  |MR|...|WB|WT|WC|  ]
-> >>>>>>   efi:   0x085000000000-0x085fffffffff [Conventional|   |  |  |...|WB|WT|WC|  ]
-> >>>>>> ...
-> >>>>>>   efi:   0x084000000000-0x084003ffffff [Reserved    |   |  |  |...|WB|WT|WC|  ]
-> >>>>>>
-> >>>>>> Since this kind of memory can not be used by kernel. ignore nomap memory to fix
-> >>>>>> this issue.
-> >>>>
-> >>>> Since the first non-mirror pfn of this node is 0x084000000000, then zone_movable_pfn 
-> >>>> for this node will be updated to this. This will lead to Mirror Region 
-> >>>>   - 0x084004000000-0x0842bf37ffff
-> >>>>   - 0x0842bf380000-0x0842c21effff 
-> >>>>   - 0x0842c21f0000-0x0847ffffffff
-> >>>> be seen as non-mirror memory since zone_movable_pfn will be the start_pfn of this node
-> >>>> in adjust_zone_range_for_zone_movable().
-> >>>
-> >>> What do you mean by "seen as non-mirror memory"?
-> >>
-> >> It mean these memory range will be add to movable zone.
-> >>
-> >>>
-> >>> What is the problem with having movable zone on that node start at
-> >>> 0x084000000000?
-> >>>
-> >>> Can you post the kernel log up to "Memory: nK/mK available" line for more
-> >>> context?
-> >>
-> >> Memory: nK/mK available can not see be problem here, since there is nothing wrong
-> >> with the total memory. However this problem can be shown via lsmem --output-all
+On Fri, Jul 18, 2025 at 03:51:28PM -0700, Kees Cook wrote:
+> On Fri, Jul 18, 2025 at 11:36:32AM +0300, Mike Rapoport wrote:
+> > Hi Kees,
 > > 
-> > I didn't ask for that particular line but for *up to that line*.
-> >  
-> >> w/o this patch
-> >> [root@localhost ~]# lsmem --output-all
-> >> RANGE                                  SIZE  STATE REMOVABLE         BLOCK NODE   ZONES
-> >> 0x0000084000000000-0x00000847ffffffff   32G online       yes   67584-67839    0 Movable
-> >> 0x0000085000000000-0x0000085fffffffff   64G online       yes   68096-68607    0 Movable
-> >>
-> >> w/ this patch
-> >> [root@localhost ~]# lsmem --output-all
-> >> RANGE                                  SIZE  STATE REMOVABLE         BLOCK NODE   ZONES
-> >> 0x0000084000000000-0x00000847ffffffff   32G online       yes   8448-8479    0  Normal
-> >> 0x0000085000000000-0x0000085fffffffff   64G online       yes   8512-8575    0 Movable
+> > On Thu, Jul 17, 2025 at 04:25:09PM -0700, Kees Cook wrote:
+> > > When KCOV is enabled all functions get instrumented, unless the
+> > > __no_sanitize_coverage attribute is used. To prepare for
+> > > __no_sanitize_coverage being applied to __init functions, we have to
+> > > handle differences in how GCC's inline optimizations get resolved. For
+> > > x86 this means forcing several functions to be inline with
+> > > __always_inline.
+> > > 
+> > > Signed-off-by: Kees Cook <kees@kernel.org>
 > > 
-> > As I see the problem, you have a problematic firmware that fails to report
-> > memory as mirrored because it reserved for firmware own use. This causes
-> > for non-mirrored memory to appear before mirrored memory. And this breaks
-> > an assumption in find_zone_movable_pfns_for_nodes() that mirrored memory
-> > always has lower addresses than non-mirrored memory and you end up wiht
-> > having all the memory in movable zone.
+> > ...
+> > 
+> > > diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+> > > index bb19a2534224..b96746376e17 100644
+> > > --- a/include/linux/memblock.h
+> > > +++ b/include/linux/memblock.h
+> > > @@ -463,7 +463,7 @@ static inline void *memblock_alloc_raw(phys_addr_t size,
+> > >  					  NUMA_NO_NODE);
+> > >  }
+> > >  
+> > > -static inline void *memblock_alloc_from(phys_addr_t size,
+> > > +static __always_inline void *memblock_alloc_from(phys_addr_t size,
+> > >  						phys_addr_t align,
+> > >  						phys_addr_t min_addr)
+> > 
+> > I'm curious why from all memblock_alloc* wrappers this is the only one that
+> > needs to be __always_inline?
 > 
-> Yes.
+> Thread-merge[1], adding Will Deacon, who was kind of asking the same
+> question.
 > 
-> > 
-> > So to workaround this firmware issue you propose a hack that would skip
-> > NOMAP regions while calculating zone_movable_pfn because your particular
-> > firmware reports the reserved mirrored memory as NOMAP.
-> > 
-> > Why don't you simply pass "kernelcore=32G" on the command line and you'll
-> > get the same result.
+> Based on what I can tell, GCC has kind of fragile inlining logic, in the
+> sense that it can change whether or not it inlines something based on
+> optimizations. It looks like the kcov instrumentation being added (or in
+> this case, removed) from a function changes the optimization results,
+> and some functions marked "inline" are _not_ inlined. In that case, we end up
+> with __init code calling a function not marked __init, and we get the
+> build warnings I'm trying to eliminate.
 > 
-> Since mirrored memory are in each node, not only one, "kernelcore=32G" can
-> not fix this problem.
+> So, to Will's comment, yes, the problem is somewhat fragile (though
+> using either __always_inline or __init will deterministically solve it).
+> We've tripped over this before with GCC and the solution has usually
+> been to just use __always_inline and move on.
+> 
+> For memblock_alloc*, it appears to be that the heuristic GCC uses
+> resulted in only memblock_alloc_from() being a problem in this case. I
+> can certainly mark them all as __always_inline if that is preferred.
 
-I don't see other nodes in lsmem output. And I asked for the kernel log
-exactly to see how kernel sees the memory on the system.
- 
-Another question is do you really need ZONE_MOVABLE? Most of the time MM
-core operates on the pageblock granularity and even if all the memory are
-in ZONE_NORMAL the pageblocks are still movable.
+We had a few of those already converted to __always_inline, so I'm ok with
+continuing to fix them one at at time. Gives a feeling of job security ;-)
+
+> -- 
+> Kees Cook
 
 -- 
 Sincerely yours,
