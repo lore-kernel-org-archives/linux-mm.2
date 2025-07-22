@@ -2,122 +2,95 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E9AAC83F27
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 19:04:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2AA12C83F1A
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 19:05:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E48536B009C; Tue, 22 Jul 2025 15:04:03 -0400 (EDT)
+	id B8C7E6B009F; Tue, 22 Jul 2025 15:05:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1FD76B009E; Tue, 22 Jul 2025 15:04:03 -0400 (EDT)
+	id B64146B00A0; Tue, 22 Jul 2025 15:05:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5D996B009F; Tue, 22 Jul 2025 15:04:03 -0400 (EDT)
+	id AA1346B00A1; Tue, 22 Jul 2025 15:05:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C6F1D6B009C
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 15:04:03 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 74660130BBB
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 19:04:03 +0000 (UTC)
-X-FDA: 83692825566.04.977E7ED
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 766F140019
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 19:04:01 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=AhcYZiPP;
-	spf=pass (imf01.hostedemail.com: domain of kuniyu@google.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=kuniyu@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9BBC26B009F
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 15:05:52 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6AAF3C04A6
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 19:05:52 +0000 (UTC)
+X-FDA: 83692830144.01.6651D2A
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 803E0180005
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 19:05:50 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bsjxRM8W;
+	spf=pass (imf06.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753211041;
+	s=arc-20220608; t=1753211150;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iiA8Ffhznoaz71o6X2Lhv1DU3VKSS1u8j+C6Sx2f3R4=;
-	b=QlOcVY8E3tL1+oUIxz5vJLmhrfHuCoQLtYsgkGO1yWGAsrlf4UjQ3wulW6I+f9RXhmpIIQ
-	AUBhemzDmnD4IU4NandZhc/gLyursma6AWlZv3YBlVxHFxBBtbPVUNzT0Djs5gMRF+YEJD
-	IgFkYxF3qd1fKxeB0L9RT8QIKT870Gw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753211041; a=rsa-sha256;
-	cv=none;
-	b=E4kaKxJAKi2FrEHdTNj3pwnVb7gzUYgyLNp/KgHEyJpVX3RVe9YTrC2n2EpMiAcfnCl0HQ
-	/iPfchvTe55uyvwSIq5yF4FvbzMnzWEQxU1AMU/gR0q/1GNS1CNEiAxFvPMqA/GsFaAtBl
-	Li9WYFgMmkdZjO5IhDMkoLKzzfuPzV4=
+	bh=YR5doc3ubATFIwFqCTAQj7mEB5SIW2AFvm6iIjBaed8=;
+	b=QEThaUmpcydLguOaT5C/aiX0fKpfRSs9oe0JBgxSdDU58HzraleI9EIb+XbU1ntI+iONZk
+	SSIboNqi4MeJ5C83KmZh5fLfoFH8nKuWrt1KHvD1mKhKSmtSXTSsJBfaKIJOSWvlLY5m1Q
+	CsM1O3GW4CYoGXys8ayuu0WZJNz6/wk=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=AhcYZiPP;
-	spf=pass (imf01.hostedemail.com: domain of kuniyu@google.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=kuniyu@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b271f3ae786so4383985a12.3
-        for <linux-mm@kvack.org>; Tue, 22 Jul 2025 12:04:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753211040; x=1753815840; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iiA8Ffhznoaz71o6X2Lhv1DU3VKSS1u8j+C6Sx2f3R4=;
-        b=AhcYZiPPoJzHUU1j5uj0Hqn96bDVmgLMSVSPIzFGj69WfRWhvk0uLnyUkFhK/LojX6
-         r62TD/Q1V0SryouUgaocFzc/lTSI1NIO/HZDoT6w/r88ApeX40CRMWukwMLzA7Ky1QEj
-         nLy7Qz7NT4lnbqOnupM/PfxDOeyy7XXfBpYb2yXvU1AprGmq+OLoowMooTUOKunVtnpn
-         ZBtDnpmiWqA4bedMS8NjNSFxgTJ7siLyoiepWS2mY4xWHpg/KaRqRW4oNjMkcz+iguk6
-         6RUFiBq/2j28Sp/ca2qtFz9QklyL+fMtbXIy7jLZwvHJH5jMg7MfqX+EhtYdsdQ0QFFu
-         W7cQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753211040; x=1753815840;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iiA8Ffhznoaz71o6X2Lhv1DU3VKSS1u8j+C6Sx2f3R4=;
-        b=I58YhavgIZDzAlHcP/phVlbY5c7BGEpm0MAWcHHfIw9x09lIWJ/EMtkjQAnyS9coi+
-         5vI73Xdmo0XbITymIykLDXrBMT7/sdcN9R06kYf26b2CYM5NzsO0IXr86lnr8d2efs5G
-         zsZT1sicQFZO+nJKiajYD7LtGYITf9r6+ZQSFaT9Dlt46HVauk0SxIwABWt1bo5KBlU8
-         4mIvXflWOk9CLc4EXsVD8hJhnnr3Z8qw7qD/B4azZSw5foxCOMY9E3Z07dXyW/2jKiGC
-         rXYLPBGuMUuPdYXbMcc0dRTzCoQYjKL4aM2z4SiTgZF6XPtCMqk6erNmyruuzrs6833y
-         EjEg==
-X-Forwarded-Encrypted: i=1; AJvYcCWBdLSLou1rg8kuJHW1W3GOut01+AxbVg1NxjgNPjfChjCsRV5j4t1d7SjfgMdLj6IbV13UWq3UlQ==@kvack.org
-X-Gm-Message-State: AOJu0YwKB4BlQifGvbKBWaVxurxzrr880bNXk0gL7SjWZR1/jo340voD
-	QOx2+iFlOS1LreVb+FEsFLqj58P5dGOoXV57OCkJc8hIMlS6vYu2hOjYzaoz3D+XLvX5YM757rp
-	nNGhRcf/STB/LVuzjGsCpWd5uxchl33601hkP/083
-X-Gm-Gg: ASbGncv87m079bmpJ9YFcifTkvvGF8/4k3NK/njis94oQEJHzdC33FBZmw87fW+CbcO
-	OMlmGg+WNgU9agX4enXd25j0BZ3ZTJeaJZCGgy+QET7i5ccFvPGY305gkiNHa+6tK2acVMnbyRd
-	SqFJLFSCx4duS32xuAW3wysSEAJEeAiPzSbGtPUBRdQ65Bhpx8Hmk1BU+SUH8yA+DA9EtbCc5gM
-	wEpQqNyrkhNj7LEHzXRsbX4fK0wk0eAjLojeQ==
-X-Google-Smtp-Source: AGHT+IGYBGaRF4+4yiskF7ML1G3zkbt1R2dprHwARsZQ44k60mvIUIP4kGdlv2eHeVBIwzBUJ7cUV3igAXlin7CBAhg=
-X-Received: by 2002:a17:90b:35d1:b0:313:176b:7384 with SMTP id
- 98e67ed59e1d1-31e5076981fmr533620a91.11.1753211040076; Tue, 22 Jul 2025
- 12:04:00 -0700 (PDT)
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bsjxRM8W;
+	spf=pass (imf06.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753211150; a=rsa-sha256;
+	cv=none;
+	b=aVZWYDpABYw5Mv9rBUgMZIxZ8GORS7tFbM5iaiBopACSOlPgqBVVFPaKVkt37hUdE1oKEL
+	iDUP9009a2K1H6ftE18Vg4OEfrwlDSFYfdwVZrNqba7l8Rd48Pz5fx6BOgFOJVrw4BmKTG
+	Q/30rTPpXVMiEfP7pFkSErJQ3wGKXTY=
+Date: Tue, 22 Jul 2025 12:05:41 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1753211148;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YR5doc3ubATFIwFqCTAQj7mEB5SIW2AFvm6iIjBaed8=;
+	b=bsjxRM8WfX6Y/hUmZzPYJH3CThZq9cHvRIsrKdAIOKH6kYfPmQQU3ccX6o8xRli3BDvuGX
+	H1X1NqHpg0kyCmcreBFRHAoB2aeNqGSWfxXWU9nIMgHnMgWk6BPAacJJ2q3d35iSWiDNHp
+	gY0xmbFWlTp6IyWIv9lYzxOQmqBIka0=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Daniel Sedlak <daniel.sedlak@cdn77.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Neal Cardwell <ncardwell@google.com>, 
+	David Ahern <dsahern@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org, netdev@vger.kernel.org, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org, 
+	Matyas Hurtik <matyas.hurtik@cdn77.com>
+Subject: Re: [PATCH v3] memcg: expose socket memory pressure in a cgroup
+Message-ID: <4g63mbix4aut7ye7b7s4m5q7aewfxq542i2vygniow7l5a3zmd@bvis5wmifscy>
+References: <20250722071146.48616-1-daniel.sedlak@cdn77.com>
+ <ni4axiks6hvap3ixl6i23q7grjbki3akeea2xxzhdlkmrj5hpb@qt3vtmiayvpz>
+ <telhuoj5bj5eskhicysxkblc4vr6qlcq3vx7pgi6p34g4zfwxw@6vm2r2hg3my4>
+ <CAAVpQUBwS3DFs9BENNNgkKFcMtc7tjZBA0PZ-EZ0WY+dCw8hrA@mail.gmail.com>
 MIME-Version: 1.0
-References: <20250721203624.3807041-1-kuniyu@google.com> <20250721203624.3807041-14-kuniyu@google.com>
- <z7kkbenhkndwyghwenwk6c4egq3ky4zl36qh3gfiflfynzzojv@qpcazlpe3l7b>
- <CANn89iLg-VVWqbWvLg__Zz=HqHpQzk++61dbOyuazSah7kWcDg@mail.gmail.com>
- <jc6z5d7d26zunaf6b4qtwegdoljz665jjcigb4glkb6hdy6ap2@2gn6s52s6vfw>
- <CAAVpQUAJCLaOr7DnOH9op8ySFN_9Ky__easoV-6E=scpRaUiJQ@mail.gmail.com> <p4fcser5zrjm4ut6lw4ejdr7gn2gejrlhy2u2btmhajiiheoax@ptacajypnvlw>
-In-Reply-To: <p4fcser5zrjm4ut6lw4ejdr7gn2gejrlhy2u2btmhajiiheoax@ptacajypnvlw>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Tue, 22 Jul 2025 12:03:48 -0700
-X-Gm-Features: Ac12FXzbgoBRyeJ7XxGUPxk-8v86WqDVVO-Vj_Jc8u00Jp12117hni6mqwz8B-U
-Message-ID: <CAAVpQUAk4F__D7xdWpt0SEE4WEM_-6V1P7DUw9TGaV=pxZ+tgw@mail.gmail.com>
-Subject: Re: [PATCH v1 net-next 13/13] net-memcg: Allow decoupling memcg from
- global protocol memory accounting.
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Eric Dumazet <edumazet@google.com>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Neal Cardwell <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>, Matthieu Baerts <matttbe@kernel.org>, 
-	Mat Martineau <martineau@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Simon Horman <horms@kernel.org>, 
-	Geliang Tang <geliang@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, mptcp@lists.linux.dev, 
-	cgroups@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 766F140019
-X-Stat-Signature: onbfydjdjizh64urrpsj9brzbfnp3osm
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAVpQUBwS3DFs9BENNNgkKFcMtc7tjZBA0PZ-EZ0WY+dCw8hrA@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: w6wfshk8jpbghbrshdw19tyfz8domsp3
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 803E0180005
 X-Rspam-User: 
-X-HE-Tag: 1753211041-909367
-X-HE-Meta: U2FsdGVkX1+G9z8WwZ7RbPxK/O6Os7I9i97hVSb5z3Lxk4Qd+OxIRoiNjGJ4oy81kjxiQhwl++H7oU/RkfygRNDfxBF42cnempl0942qdeTJgKBjP7bkdNOU2m/oKZJMLUW3yUk1OVQR4r4AaAJjfE7xCqxqbEZ1QyyJqo0+m827VWuhDK9/PK0oJexagGioxBNFbeHY5aSj3UYHn0+jF6Je9Xs6vgWKzSpaHz9+T6Af71OfNXfye1lBCV3tTnbWU9bR8hkBrWOfYuAwQb9gprCyn0JR4lU9WLYzR8p/nlAAYudjEM36kJnF5bVCaMLqtvQhs1rRTM/lqJq8o+/8IstYRaFQT5/LSQropsKvo5p6X0tu+6p1oUsLoTgq+JWgInQ/lMPqkSE9syb7n3zq0zMJUniK+L5QP7uzN1xdmKPHLm2Hh0k2Fed96ahMKsHGi/qaAsaXz5J1/4ayCxj6BiAvv3NZhFudQWM5EzVCGERkJmQDNlPAHeqH7jPZMZHscf+Kc9FrBq4e8KJJ5rtRRfx+/UPgzw4PoffEypUA3B/6ysVJ0F1pcArmkYYACPYEmV+kk9sV2LRD2dVA0zT+J0Ph5QYKi9D31lOELV/pGa376RtmNESoqJysjuwCezZR/9hT8txRVawgrkHqGoJ6g8QvGzUT7+sFOiREo030ntaKWwphexC6d01mrpUqelRsrSpYApXPSYGFb7zvuJ6sCOZz7cvDgIfHkir8ZGhLtoKkTAbkonPxZAhTujbdx1i0HrwJ+NEvyDmPHkv2Ew79Batl8lYYhUzWC4PV1sq8TeS9hQLRCARirKuccjeoYECkTmh3f6FUl08JaoWbsbhIUYWmjrpSiQ5ewKaF3JFcTVhFIJwUphvJIfqa2cd00noHwHODbGcfXlazurHkkJuSlrk64Y2DpM9evhXKhiUt1rwwlzxhxEEVzDKhR1EH1xjPqL1y3g1KIS+Km1OiGk8
- pymB95Ao
- Py2cR9DSoG+Ohgn+jVEZYASwgCB7DJxkLJBU4m8jU4FP/tmXmVwZG+/vy+y48Pfh72U0fR0E/u+60M9KwXEYFeridsXqJT0VauxpseUYUZfCPtbAknM2+f30bXtlkbLNTsQkMzd4G+J8GkVYeoQFSbBPXmxM0tVuDHbj9uCQfIhx+VNspsPKGQNf9r0yjaaxqNRv/
+X-HE-Tag: 1753211150-503562
+X-HE-Meta: U2FsdGVkX19FW3krgZrcMOzVQp7IS2QPCKWMIXbMBbqG8e/sI466BBJ8UZN3CazFws1Xb4UU76MIUKGoUeawfrtw1NC9X88+oDY2Psabm5nnh6Q5vqYCA8opyW93+WY2VcjkXMRsKrmGUD6hRvVN6/+zaJMa0Shj2px1b8/o6b2w7Pj/A4E761ByxqijQMXTIqpgohX7ADod2HLrv2Dy9Nd9il4lGijKWrW+AwtYEj214VO6mVnDGQT1h5qvmbbHXBGhjekd5gpGjCWJePeRBeJscyXDCDUXspy3P4mwlmfW+Wf2jYUu0BCrc9Q6Ut3Lycert221xQwIKPvy3lHKxEkiQ2IuHUxx3AsNVfC1Q9O3BI00u8eoWIekrqXzAnTsIwOCVsmJSgJYFXFig16MVX6WtktW87EPOzNhVdJj6oOZXtw1L+FRJJjtcBukNIO3YjdtVXLQoOuNLTxCC72tSaaAa1nRU72TDwoZ9lFZeNEAdHFUua1jnymR4YtllRZZ1H3ehqQJ28qlzrIBQYKSXp8eZQi+jzTodHF0rk8yUCBY13r6GXv2UPhB1BWgUD/BVVoLIBpegzEHNl/X38F6YrprlrmgSR2IIWT0S8w6jDrD9N4zCyZ3Wbl3RYILlGjq0t0KRlpLNDzmXT86kKn0RMDMAzg3qkA+S26QTbbY/vSXcv3yT1UO4MpKL7fs0kOCjq4bvUNHHQJLuMM6FVmChR/iLh6ao3b8j2JNArg9KpQzKhbRKejl/4ZKfFMwZPr4HI+XAZUFd4lTOKMOZzGSburzdtxV3miTGLsu5L/NVJhMvJRWoHMf83CWuXhxf4fWV4sPODzcR1uPiXW3dPKCGlpr7/f/tjY4+eRG/ifEOrh3PaB0Vo47YUzZFHStDZLqj5yXiaUs0d2NRD5+lA10ANAb5KTNu58zNQKVYrPeGY1G8mbyuK1/Ze0Cj+jDRl/Qb5zcmnxRzu413H4boZA
+ vDxI4YcS
+ QiryHytTMQfxnNByieOiYUMw4tTcipevxQJzaXREWEJkSkyrz89Y3g+Fw+7JV3Jg5Xst309s8IY8z+m8QIt4qmo7cWEyGZ2XXrMnKZ/+sbwBKyQiBSTdVivNv2Fxf0SkqdwhTx9da6jvEXgzCrBq5PviqBY7VDn5O3ya4pB/wqB8HD9CyzTISQn+Ogb7HcitaRZLMzkG3szQIh1AvbZR1MbRwySch28NS16TwhHFvpocIeyaUK+UatROPOo4a6jYKBpz5QvQ4RjA81JRMTGlLIKgR6sE6tKg8ypuIO5Q+HHIhw8uVezFU4pSgz/O9Ey9d8aY2rYPuffa0gY9ktc9fXQ5PK+r9srT4T7gW/23KOn4fPoQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,70 +99,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 22, 2025 at 11:48=E2=80=AFAM Shakeel Butt <shakeel.butt@linux.d=
-ev> wrote:
->
-> On Tue, Jul 22, 2025 at 11:18:40AM -0700, Kuniyuki Iwashima wrote:
+On Tue, Jul 22, 2025 at 11:27:39AM -0700, Kuniyuki Iwashima wrote:
+> On Tue, Jul 22, 2025 at 10:50 AM Shakeel Butt <shakeel.butt@linux.dev> wrote:
+> >
+> > On Tue, Jul 22, 2025 at 10:57:31AM +0200, Michal Koutný wrote:
+> > > Hello Daniel.
 > > >
-> > > I expect this state of jobs with different network accounting config
-> > > running concurrently is temporary while the migrationg from one to ot=
-her
-> > > is happening. Please correct me if I am wrong.
-> >
-> > We need to migrate workload gradually and the system-wide config
-> > does not work at all.  AFAIU, there are already years of effort spent
-> > on the migration but it's not yet completed at Google.  So, I don't thi=
-nk
-> > the need is temporary.
-> >
->
-> From what I remembered shared borg had completely moved to memcg
-> accounting of network memory (with sys container as an exception) years
-> ago. Did something change there?
-
-AFAICS, there are some workloads that opted out from memcg and
-consumed too much tcp memory due to tcp_mem=3DUINT_MAX, triggering
-OOM and disrupting other workloads.
-
->
+> > > On Tue, Jul 22, 2025 at 09:11:46AM +0200, Daniel Sedlak <daniel.sedlak@cdn77.com> wrote:
+> > > >   /sys/fs/cgroup/**/<cgroup name>/memory.net.socket_pressure
+> > > >
+> > > > The output value is an integer matching the internal semantics of the
+> > > > struct mem_cgroup for socket_pressure. It is a periodic re-arm clock,
+> > > > representing the end of the said socket memory pressure, and once the
+> > > > clock is re-armed it is set to jiffies + HZ.
 > > >
-> > > My main concern with the memcg knob is that it is permanent and it
-> > > requires a hierarchical semantics. No need to add a permanent interfa=
-ce
-> > > for a temporary need and I don't see a clear hierarchical semantic fo=
-r
-> > > this interface.
-> >
-> > I don't see merits of having hierarchical semantics for this knob.
-> > Regardless of this knob, hierarchical semantics is guaranteed
-> > by other knobs.  I think such semantics for this knob just complicates
-> > the code with no gain.
-> >
->
-> Cgroup interfaces are hierarchical and we want to keep it that way.
-> Putting non-hierarchical interfaces just makes configuration and setup
-> hard to reason about.
-
-Actually, I tried that way in the initial draft version, but even if the
-parent's knob is 1 and child one is 0, a harmful scenario didn't come
-to my mind.
-
-
->
-> >
+> > > I don't find it ideal to expose this value in its raw form that is
+> > > rather an implementation detail.
 > > >
-> > > I am wondering if alternative approches for per-workload settings are
-> > > explore starting with BPF.
+> > > IIUC, the information is possibly valid only during one jiffy interval.
+> > > How would be the userspace consuming this?
 > > >
->
-> Any response on the above? Any alternative approaches explored?
+> > > I'd consider exposing this as a cummulative counter in memory.stat for
+> > > simplicity (or possibly cummulative time spent in the pressure
+> > > condition).
+> > >
+> > > Shakeel, how useful is this vmpressure per-cgroup tracking nowadays? I
+> > > thought it's kind of legacy.
+> >
+> >
+> > Yes vmpressure is legacy and we should not expose raw underlying number
+> > to the userspace. How about just 0 or 1 and use
+> > mem_cgroup_under_socket_pressure() underlying? In future if we change
+> > the underlying implementation, the output of this interface should be
+> > consistent.
+> 
+> But this is available only for 1 second, and it will not be useful
+> except for live debugging ?
 
-Do you mean flagging each socket by BPF at cgroup hook ?
-
-I think it's overkill and we don't need such finer granularity.
-
-Also it sounds way too hacky to use BPF to correct the weird
-behaviour from day0.  We should have more generic way to
-control that.  I know this functionality is helpful for some workloads
-at Amazon as well.
+1 second is the current implementation and it can be more if the memcg
+remains in memory pressure. Regarding usefullness I think the periodic
+stat collectors (like cadvisor or Google's internal borglet+rumbo) would
+be interested in scraping this interface. If this is still not useful,
+what will be better? Some kind of trace which tracks the state of socket
+pressure state of a memcg (i.e. going into and out of pressure)?
 
