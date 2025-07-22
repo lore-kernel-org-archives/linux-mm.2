@@ -2,89 +2,90 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3991EC83F1A
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 06:03:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C21EEC83F27
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 06:05:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD8166B00A3; Tue, 22 Jul 2025 02:03:37 -0400 (EDT)
+	id 5D2198E0002; Tue, 22 Jul 2025 02:05:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A890C6B00A4; Tue, 22 Jul 2025 02:03:37 -0400 (EDT)
+	id 5AACF8E0001; Tue, 22 Jul 2025 02:05:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CB376B00A5; Tue, 22 Jul 2025 02:03:37 -0400 (EDT)
+	id 4C0828E0002; Tue, 22 Jul 2025 02:05:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D0D26B00A3
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 02:03:37 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3DD6DB746A
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 06:03:37 +0000 (UTC)
-X-FDA: 83690858874.15.90DED66
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3DEC48E0001
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 02:05:12 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C3FEBB785C
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 06:05:11 +0000 (UTC)
+X-FDA: 83690862822.01.504C43F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B740B20016
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 06:03:35 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eUrC06TE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753164215; a=rsa-sha256;
-	cv=none;
-	b=MZDV+cs1mHkns6BlmVaeqo0w7hYlPpk/K9jl9IHwwRjpVWUay9tXDw8Y64iQQHobtMUVCq
-	D4aMrj+xIo1d+O8w0ArYXtpA4Xxyrl+HG6LY2DFBtg2xhtqDN+uJf5uNOEYmerOXCDMwqm
-	u/ylOrpH81NpL4eJBmB95l6zeEQ8g5Y=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eUrC06TE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf22.hostedemail.com (Postfix) with ESMTP id 418DAC0005
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 06:05:10 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZYfk9ddf;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753164215;
+	s=arc-20220608; t=1753164310;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Rh61Fpfk7x8alVtQZYfRDCDiLhqaFxLESFyrmgc3CN0=;
-	b=M39bMia4pCIsYeDoNrVTFlEe1EgzU9XVsGWQGChcwHsg6DiPfAhHRga64FP3UzbQISoDIY
-	WKst0eczX8pvNDsj6hT681kkqBBzyR+PwF+v76/r6Erg/oUjkJ9ZKiJp7QnZTGnRyj5pTG
-	wbjSoh+LCVBcffbm6wz8HGsJ2rWpoWA=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=b9BWsXCxaef2ts99/bTOYj35C5lR2CsLaB/EDZjhpEM=;
+	b=skdnn9jb+ywesLLLrRlhyWgYX1PES2WGB9FWr3VRq2lqlnlrLiDiyubJmPzL5aAP+OhO8p
+	jRHfWdRre6uT0Mlgnx4LM1xkVExEjDjcHzKAZp4QtJ2ADeBTnoaRzHizP99R2jrbuEMh2+
+	EVYrR3Y3ndJpRHetFWlZulHCmfS3PFA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753164310; a=rsa-sha256;
+	cv=none;
+	b=nx1e9kjckM9/OvGEuaixE3KSIUcafQe657qLQxDfKTWryq7/uHAnIliv+acSjdQ1BGVYXp
+	xJ92dyNUgNXKK22YWsZb2YDnnzuBgDvrA0kLtIQKThosQ53Bc8EelmikhjeVu1ySIULW45
+	ogsOwayb6on3cZlGJ99So4J3II3fuzM=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZYfk9ddf;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 06D6B600AC;
-	Tue, 22 Jul 2025 06:03:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 922B8C4CEEB;
-	Tue, 22 Jul 2025 06:03:34 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B4FE3600AC;
+	Tue, 22 Jul 2025 06:05:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 432BBC4CEEB;
+	Tue, 22 Jul 2025 06:05:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753164214;
-	bh=D/8nQwpw1b4H3c6iBDsuwHR1cmui2Awzlsl6JSLf2cE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=eUrC06TEQlGMy2kSlY2ON+CcOM15LY+UWEDecYscx6zBjbB1vWYLhf9hdZTosoff3
-	 7z9uor+42noAHiZcLcXBcow+G6NmSlQm8Hs9CxzDrik6W9JSAlP7pazM/BegB3PuMR
-	 LKNd+hgEWUY05EdZE9DgsFlZgUEKh8pa6BD2rYG54SF+lU7phQiDkexwSC0zfqDUIT
-	 vFIF3Dh+4iSe+VGF2vdo3VWAcsLojbUdatKsj03CIS3GtDsnVK7z9uxpyT4iKg8bCx
-	 Z1QW8FUIQT1v58OPndF/p9/SyXdf+W9NJ8tRoPJFQV9OotUz3PjFKjN+Ok3pxy5y3p
-	 lzR1G/9jxqhFQ==
+	s=k20201202; t=1753164309;
+	bh=F134i57yThMGkReks3hjElxUss2HLVKAnAIFuY7jQ0c=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ZYfk9ddfFwsuAZUSdq0PnLLV9IqxxB3vO44fsKlyRJ3eK5koOvZ5xVgpsHhmBIMI5
+	 yMoKPCcjyyyRAdDelkmmPF2gpBoAmIeH9Rf+Vaw1KozDPOkUDbFeCTUE2iZXRwPE0i
+	 NVB+aZ5WyeEK7QO1dDEcRLbCEbl9iZRXpxZuKagZcjzPbNG3XphQPCQb9dkttTsSvp
+	 MpInKMkZ3Rut53qZAVHQxpqAWZyKfimTVZdtXDkwom23jSg9eTsgJDtn8Kj4UqiHg4
+	 0YO+b93RQuwYPThTPwdkH8pz2bq9bkdmYHkm2nkErTJ1G9lmqTAZgG4MNH0a8trm/3
+	 0mR7uQAu2Jknw==
 From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
+To: kernel test robot <oliver.sang@intel.com>
 Cc: SeongJae Park <sj@kernel.org>,
+	oe-lkp@lists.linux.dev,
+	lkp@intel.com,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Shuah Khan <shuah@kernel.org>,
 	damon@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	kernel-team@meta.com,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH mm-stable] selftests/damon/sysfs.py: stop DAMON for dumping failures
-Date: Mon, 21 Jul 2025 23:03:30 -0700
-Message-Id: <20250722060330.56068-1-sj@kernel.org>
+Subject: Re: [linux-next:master] [selftests/damon]  4ece018976: kernel-selftests.damon.sysfs.py.fail
+Date: Mon, 21 Jul 2025 23:05:06 -0700
+Message-Id: <20250722060506.56112-1-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <202507220707.9c5d6247-lkp@intel.com>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: efxxtksmb6iuzwpw937q1ro5igbfibnk
+X-Rspamd-Queue-Id: 418DAC0005
+X-Stat-Signature: wwnk38aeta9ihcq4a1o8xaj7xij6m9j4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B740B20016
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1753164215-377241
-X-HE-Meta: U2FsdGVkX1+cuWvoJ+LEc7hBx9ICmZeN2RFoX0m9bKEmH1UoJNTY400Hx8bWEWoAuDxgwSBwCFexf8k8YqK5ibtYBGkLCLChT3nwZX9F6HfkIg2Nu3Cb1HXJwq12GoKZORMnA9lr10IzySddi4vXv7Q5Q2scM6Ia8HCNueyh/ep/zXnQ9XvKJJcMncBkQf1rus/Z9TZp0mrKfYNSEyfW69V7AChTF2zEDUXHwXJqKS2ANjV+xusBmtAgFj42zAQ6GcT/Ji2iZjM/OOCp8ZivrETKMMo51GZGcJZJ2QUXyFWH5JfBoOmDR+zZVELUMQ1YRtBelcN48WiIg++nDFv3zb7m8ZVdKDGcgkbSb7a1zzUTZ7R8gwabgr/bMD8hUdmlk8R5cqmkUickY0qcjszTeY/5mm43rUDDkhQSs4MXnNoB2789djxw0Y9xfMZ8A2N+hzcF3zbi3C/qEVDEQedQUKxdCzcKwZ4+OI5/Dlv0A6I9EfQ5bWYEJ8QF3Tn14xPt0rbYhu/2cCL5a+3GCDrkQ62hfDn7yGp0pDzX1DjErCkMUu4pR7iu231v/ZZBQS8lSqJcq7VqTs7Ns8GVqA/Gx1IZ6q9d8iZOdqbngEHIBhs71odQtAt4/edCSVTrtGDXZko9jfsDFmgUInTpmY+9tkMZhTahj490vUZpLy4mECJ2VFyEdAN4AA58mWiTv4R7LCRYjk4g/bgO2+3kCaZHKLuoTJbaBxD9Eo3TXb3/K4UvyFgA8z7iK2SzFZX54XOqgdUUq7VAYOT3Be/KMSuZHfuTZRDB26bZUP9GEFCzWt+f/fY3P8m8vLRjBZ285MTnra1USNvKbUS75wwDbtKtsA9OhjqtrXKMlsibkGi2DG7wIc9Mkd87scXhwBJ+qRWJ1JIduILB202GIQTFK5mPHQiKcn15duMXYf0zO3+Kh2uClLZKVDy/NidErzwDYWJFNNuVag5ChTfy7vQnvg7
- xBmxTy68
- SGmqSYA3xqMlw4FjadoTAKjpLFJT+9Kem5souiKpTntlFvgQPxXj/4WV4HGLn5q2LdPq+71f3Q437HjZK1PTvHI5vN9soPjz841u8l82n7BIr4VVATnyG4idDw3+Q4KwMPbmUU/tzDRgbB8/gLwkxxxoFY7TPOg8s7Ipoe3S7oOlmRPpvfk1HaQMVT3hkyBmuS7xubgUDmvMoCBTIsrzIuRmrlD9e81ghMLgT3wWkF1R5Ff/vD31xUwpAxX70Sk3uwTh2
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1753164310-522484
+X-HE-Meta: U2FsdGVkX19kuY+9tw0IhDUbfUw9xSDahtFmI/JfKA9WfO7gbSZGViDri6qWACXQLcQe+9RhFw+LyiSFOkOBme94dkL/W+0DsdqCCmvBCD+xVWzXTKJ9i0G5X7/fGfm1LKtZIeL5pjbxN0pFqYZUcq/7o7/T6Dt+wRf+3mMV7B4uU+iyB4xVChvyKwLd2cONr8f/6gr0Z2c1xB0ZxZa5bpsRwf4xPMDhaTwDKP16TxT7I72yG6x6f1DBcLwKVik/tP6Poixz6HkqWrMYMLw2jHm3Un/OJki6QmniduRqHBrb+Ta/uklYRXbLa0VtdnBDEi2MuvGzASMXe2STXyGk+J//yIGD05or0sDar4pZhVA9Z7x5uEfTYvW3mf05Ek5dYOvpSR4NOEObnr6LxgWkCKyolqxKv/Bz/6bQWQUtkeePPq0dvQAeQJCU5eSWYPKl+eVL0oIvwHqpee1Lksed/kjMenIxTEMuZhIu6OkKEnTruwj0Ipeex3VJz7pf+k15MOYqZuYE9mrXTX7OiPe2W+T7aj26lyDZPn2KQR6cBNpr0Lq0XBaAN1Ff1X3K0etPg/egot/n5prS3Scz0gKsY02Nh7F9AZUX3PB8qSEPjCNUghyJT/TJOosq3lfIINj2YWfA0qqb1pJGFf2PjrMyEYdkhd9nXOr/+n1bVQIzFaaK89hc8Z48HCehEXYIvBm2KRSipve1z3WbKHIoPx8SX9YHc1XmrV5atmWXuPMuNhOR/MeZjaosWXrQ7HSWq7+QZrqsE4r8eiElV4Q2z3yf+3YO9RAoxCQNEIC/PDIEZzUG9rLeA/GtA80Ufju6DySAxlK7tnyF/IaJV+m+HC82GFyxkXof/JOQU+pY9mHdf/aRR1TLF28gI1H1FWP/OA0U+19tPxcWTQnoj1v41pGUfl4wik4H5v/StKoBmhg+v8012reyoQ53Kf5gNhoxdftbj+8iR6c3evNGZ47tR57
+ ZqI3W0yT
+ ZqPerh41wcAnLpzakV7/3EyiOr2SfQ6+ZtbpNPWXQ2jnpXdpQBhyAcOYrTU2NoUPkoBYfBMCb6a1Y4bMgVuTjv3qN8+RJ/nCsgulBDJO8GVhIphLUn9eULx5NXNwKFkIDKHTr5ss8+CcuHCAvpTHBXhYa9OUnFZZ4WYB6ksLVJ9qFjiIjZZN8StqyZRqg/G8S6PSOU/Lvp8pIoXvVeGriDrJEZCDDnIU5yISWgwdcuDCWhykz6IzO2XBvjyaimwLZ9fTO
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,47 +94,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 4ece01897627 ("selftests/damon: add python and drgn-based DAMON
-sysfs test") in mm-stable tree introduced sysfs.py that runs drgn for
-dumping DAMON status.  When the DAMON status dumping fails for reasons
-including drgn uninstalled environment, the test fails without stopping
-DAMON.  Following DAMON selftests that assumes DAMON is not running when
-they executed therefore fail.  Catch dumping failures and stop DAMON for
-that case.
+On Tue, 22 Jul 2025 13:36:02 +0800 kernel test robot <oliver.sang@intel.com> wrote:
 
-Fixes: 4ece01897627 ("selftests/damon: add python and drgn-based DAMON sysfs test") # mm-stable
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202507220707.9c5d6247-lkp@intel.com
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- tools/testing/selftests/damon/sysfs.py | 5 +++++
- 1 file changed, 5 insertions(+)
+> 
+> 
+> Hello,
+> 
+> kernel test robot noticed "kernel-selftests.damon.sysfs.py.fail" on:
+> 
+> commit: 4ece01897627ddeefcede4ac709cd99763994dc4 ("selftests/damon: add python and drgn-based DAMON sysfs test")
+> https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git master
+> 
+> [test failed on linux-next/master d086c886ceb9f59dea6c3a9dae7eb89e780a20c9]
+> 
+> in testcase: kernel-selftests
+> version: kernel-selftests-x86_64-7ff71e6d9239-1_20250215
+> with following parameters:
+> 
+> 	group: damon
+> 
+> 
+> config: x86_64-rhel-9.4-kselftests
+> compiler: gcc-12
+> test machine: 36 threads 1 sockets Intel(R) Core(TM) i9-9980XE CPU @ 3.00GHz (Skylake) with 32G memory
+> 
+> (please refer to attached dmesg/kmsg for entire log/backtrace)
+> 
+> 
+> besides the failure of this new added test, we also noticed below tests failed
+> while passing on parent.
+> 
+> e227472ebf00b6b5 4ece01897627ddeefcede4ac709
+> ---------------- ---------------------------
+>        fail:runs  %reproduction    fail:runs
+>            |             |             |
+>            :6          100%           6:6     kernel-selftests.damon.damon_nr_regions.py.fail
+>            :6          100%           6:6     kernel-selftests.damon.damos_quota.py.fail
+>            :6          100%           6:6     kernel-selftests.damon.damos_quota_goal.py.fail
+>            :6          100%           6:6     kernel-selftests.damon.damos_tried_regions.py.fail
+> 
+> 
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <oliver.sang@intel.com>
+> | Closes: https://lore.kernel.org/oe-lkp/202507220707.9c5d6247-lkp@intel.com
+> 
+> 
+> 
+> # timeout set to 300
+> # selftests: damon: sysfs.py
+> # Traceback (most recent call last):
+> #   File "/usr/src/perf_selftests-x86_64-rhel-9.4-kselftests-4ece01897627ddeefcede4ac709cd99763994dc4/tools/testing/selftests/damon/./sysfs.py", line 42, in <module>
+> #     main()
+> #   File "/usr/src/perf_selftests-x86_64-rhel-9.4-kselftests-4ece01897627ddeefcede4ac709cd99763994dc4/tools/testing/selftests/damon/./sysfs.py", line 31, in main
+> #     status, err = dump_damon_status_dict(kdamonds.kdamonds[0].pid)
+> #                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> #   File "/usr/src/perf_selftests-x86_64-rhel-9.4-kselftests-4ece01897627ddeefcede4ac709cd99763994dc4/tools/testing/selftests/damon/./sysfs.py", line 13, in dump_damon_status_dict
+> #     rc = subprocess.call(['drgn', dump_script, pid, 'damon_dump_output'],
+> #          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> #   File "/usr/lib/python3.11/subprocess.py", line 389, in call
+> #     with Popen(*popenargs, **kwargs) as p:
+> #          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> #   File "/usr/lib/python3.11/subprocess.py", line 1024, in __init__
+> #     self._execute_child(args, executable, preexec_fn, close_fds,
+> #   File "/usr/lib/python3.11/subprocess.py", line 1901, in _execute_child
+> #     raise child_exception_type(errno_num, err_msg, err_filename)
+> # FileNotFoundError: [Errno 2] No such file or directory: 'drgn'
+> not ok 2 selftests: damon: sysfs.py # exit=1
 
-diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
-index 4ff99db0d247..dbf6613529bd 100755
---- a/tools/testing/selftests/damon/sysfs.py
-+++ b/tools/testing/selftests/damon/sysfs.py
-@@ -8,6 +8,10 @@ import subprocess
- import _damon_sysfs
- 
- def dump_damon_status_dict(pid):
-+    try:
-+        subprocess.check_output(['which', 'drgn'], stderr=subprocess.DEVNULL)
-+    except:
-+        return None, 'drgn not found'
-     file_dir = os.path.dirname(os.path.abspath(__file__))
-     dump_script = os.path.join(file_dir, 'drgn_dump_damon_status.py')
-     rc = subprocess.call(['drgn', dump_script, pid, 'damon_dump_output'],
-@@ -31,6 +35,7 @@ def main():
-     status, err = dump_damon_status_dict(kdamonds.kdamonds[0].pid)
-     if err is not None:
-         print(err)
-+        kdamonds.stop()
-         exit(1)
- 
-     if len(status['contexts']) != 1:
+Thank you for this report!  I just posted a fix:
+https://lore.kernel.org/20250722060330.56068-1-sj@kernel.org
 
-base-commit: 49c3f600a9088332b3c1a6db2dc6f3516f273609
--- 
-2.39.5
+
+Thanks,
+SJ
+
+[...]
 
