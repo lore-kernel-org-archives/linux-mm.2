@@ -2,87 +2,89 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 03EACC83F27
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 05:59:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3991EC83F1A
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 06:03:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 700856B0098; Tue, 22 Jul 2025 01:59:52 -0400 (EDT)
+	id AD8166B00A3; Tue, 22 Jul 2025 02:03:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D8546B009A; Tue, 22 Jul 2025 01:59:52 -0400 (EDT)
+	id A890C6B00A4; Tue, 22 Jul 2025 02:03:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6156F6B009B; Tue, 22 Jul 2025 01:59:52 -0400 (EDT)
+	id 9CB376B00A5; Tue, 22 Jul 2025 02:03:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 508BB6B0098
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 01:59:52 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EEBDE1A02A7
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 05:59:51 +0000 (UTC)
-X-FDA: 83690849382.11.631024A
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 8BCC518000A
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 05:59:48 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="vuIvF/Ua";
-	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D0D26B00A3
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 02:03:37 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3DD6DB746A
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 06:03:37 +0000 (UTC)
+X-FDA: 83690858874.15.90DED66
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id B740B20016
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 06:03:35 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eUrC06TE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753164215; a=rsa-sha256;
+	cv=none;
+	b=MZDV+cs1mHkns6BlmVaeqo0w7hYlPpk/K9jl9IHwwRjpVWUay9tXDw8Y64iQQHobtMUVCq
+	D4aMrj+xIo1d+O8w0ArYXtpA4Xxyrl+HG6LY2DFBtg2xhtqDN+uJf5uNOEYmerOXCDMwqm
+	u/ylOrpH81NpL4eJBmB95l6zeEQ8g5Y=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eUrC06TE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753163990;
+	s=arc-20220608; t=1753164215;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ySiCGZAtj55OzR0IrY3iVRy0mm6ioSQe3uf0JRqArwE=;
-	b=sl2dLodqBu6F4PFpZCZCWXB586j4+dpuDNui6kltkgMswXJjD/ndbk5X3dtpXsPxDWueQz
-	vIOrgm4PS41GRMfbzB798W1v3DFVb/3k9MjfCEk2LnEzvE6PEuOSrja2JGBxh/eD8L35QW
-	khi/vN/4gzSLhnJz+vSuzM+d6jqoABk=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="vuIvF/Ua";
-	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753163990; a=rsa-sha256;
-	cv=none;
-	b=69KOMj3JWfNU2lkAlZrjo7maF9LL5gFJeWKgPAiHq8rgoBtHJKT3iY4qcWNieQhrrhQW7x
-	cHTtdeu5WXLOygRcv/cNwIKyN51BV4G1yT/nB0KaZwbeWXg/UxO98dt7QhY94Q8kl5uqbO
-	6Zcu24OIrljqF6q4AJSCzfyP8h4qpJY=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1753163985; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=ySiCGZAtj55OzR0IrY3iVRy0mm6ioSQe3uf0JRqArwE=;
-	b=vuIvF/UaQTc3wtsY4ytJ4jHFV4tEjqPsCWdejektLv/z4kx7PpRpsHDI0r+VlgnAPlm4v+SEh/Z4fXM50uyAYqV8KH8fRas6WuAoNkaJOjpHyap/+dXBiyeSw7D27v6w4SSg+bT2r4mQTZ6oaKDiJsvLVjyw5lXkQK7UzoB6t54=
-Received: from 30.74.144.108(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WjUhTET_1753163982 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 22 Jul 2025 13:59:43 +0800
-Message-ID: <bea04294-3302-42f1-ade1-e4ec6aa80b99@linux.alibaba.com>
-Date: Tue, 22 Jul 2025 13:59:42 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Rh61Fpfk7x8alVtQZYfRDCDiLhqaFxLESFyrmgc3CN0=;
+	b=M39bMia4pCIsYeDoNrVTFlEe1EgzU9XVsGWQGChcwHsg6DiPfAhHRga64FP3UzbQISoDIY
+	WKst0eczX8pvNDsj6hT681kkqBBzyR+PwF+v76/r6Erg/oUjkJ9ZKiJp7QnZTGnRyj5pTG
+	wbjSoh+LCVBcffbm6wz8HGsJ2rWpoWA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 06D6B600AC;
+	Tue, 22 Jul 2025 06:03:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 922B8C4CEEB;
+	Tue, 22 Jul 2025 06:03:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753164214;
+	bh=D/8nQwpw1b4H3c6iBDsuwHR1cmui2Awzlsl6JSLf2cE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=eUrC06TEQlGMy2kSlY2ON+CcOM15LY+UWEDecYscx6zBjbB1vWYLhf9hdZTosoff3
+	 7z9uor+42noAHiZcLcXBcow+G6NmSlQm8Hs9CxzDrik6W9JSAlP7pazM/BegB3PuMR
+	 LKNd+hgEWUY05EdZE9DgsFlZgUEKh8pa6BD2rYG54SF+lU7phQiDkexwSC0zfqDUIT
+	 vFIF3Dh+4iSe+VGF2vdo3VWAcsLojbUdatKsj03CIS3GtDsnVK7z9uxpyT4iKg8bCx
+	 Z1QW8FUIQT1v58OPndF/p9/SyXdf+W9NJ8tRoPJFQV9OotUz3PjFKjN+Ok3pxy5y3p
+	 lzR1G/9jxqhFQ==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	damon@lists.linux.dev,
+	kernel test robot <oliver.sang@intel.com>,
+	kernel-team@meta.com,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH mm-stable] selftests/damon/sysfs.py: stop DAMON for dumping failures
+Date: Mon, 21 Jul 2025 23:03:30 -0700
+Message-Id: <20250722060330.56068-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] docs: update THP documentation to clarify sysfs "never"
- setting
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
- <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250721155530.75944-1-lorenzo.stoakes@oracle.com>
- <d54d1dfb-f06d-4979-983b-73998f05867e@lucifer.local>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <d54d1dfb-f06d-4979-983b-73998f05867e@lucifer.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: efxxtksmb6iuzwpw937q1ro5igbfibnk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8BCC518000A
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 9wufyhpkoc5ycueu4t4mc67uhcfkcwge
-X-HE-Tag: 1753163988-758075
-X-HE-Meta: U2FsdGVkX1/iFj54DLNYx98KITr49LDug2nXoN3sUvspAcg6sq+XpkuZap4pYBFvQN/1UrhhFOxp4PobENAPCCgxyBXtMP72ZXYI2ZwWIUp6GsD2BOAoezn3zoXTjXrqk6+jzO6lKlKi4ExpP8T2hLYNsnZE3Ang0VPuCF95fClo0t06nOtxr0IxFiopBugvqBf49PIVXm7m/IBeen+P8B3QP46XxxiAH19S7PTcS1Wdx8hEXnYVVdRwQCZC4Vi6FB1QD7VKj+Tl19FsjGH4pjiubz3iShX2tRWPDxX6MK1bWX79p81a7lIHM+F6PLziarKZXJlkTeNEfW3EDqO2OunFK2E8oE75e8PjtB0qhvw1yNjPAdTezI5J9np1rgygxmmPs8f5/18UTeZ2omoBI1uugck+/e/vaqxt0o/p4Xz+PCQQjC+0FVqDljSvhrircFPLnlJNjW3af/kp1hsUE78oKsS0OnYpXfh+fNu52CYulJt2RZ9gT+JuIFJA3ovJaIXV9QVlA1usp3rKTxTM2HAbPXCD4XWuHHJ3nh8W67z1lerDiNL6L4Xgyrf/JGI8OXL+Xqc7mBmhh/elkA7pjzebo8hCBfOycpnCDb37YbzghWqudLPIyH3Bq4+bJUPfuZ/E3P1UbfHEybCsZ+h6Npmjm5vE/YUawFkJN5QeD9emfSKO8m9utG8qPtpmjpgBsFbWtzP0zqZmzVi+JOMT1mpzO8ahYuq8Twh6bYB8s0UnuM0MYHNQbutuswraKl65pWYNWshLl3SjpgluWTEnAxq6gZ+5Ij78AN83PfRL7fppgxR5950UiwpgogYsF1SANXbBMX8ZmrhWictgdnLN4F0rlq5ckTW6/DMCe9HlzMkAt6MjpW5A6mrrEXYQUUcOGpdQFc+hqRFO25g53KxLz9ABDxbj+X72Y1koPlWNmBRGFFi9QGzHlAHhgi2gxCyuexlIwDKzN4UJdKsRT8c
- eC72H63b
- h0cOCzi/edzZ5DPy27acVjqv87ZMY7HPlP5t16FtiAHhqdzXbt/vTx84/Sr0GkdmfS3w6XoqPrZ3VnvQazVceGvzRxFgSUwHzEUql5NX3cvV+aUt66Lrpcyz0wfUbUAXxpc0uWdtRgIIhdWHQTqFb83aS1WodC8TW0YxWIvQfEAVgBklCN1Fv3JEB1r38TsFImN9leSl35SjjXtCng5oh0QhSB+yjYxrwMCXfASEYdtiEN5fV0VOF3SKKu9TsfDqEh1JtwGvrp42JkS2YTOtfJ4BDN3+Vjj9ppXpHarXDSm1uVrOiLtWLP2oYR3WZKFXPR4RfRcdrCSOaov7aWmfnM4M0Dw==
+X-Rspamd-Queue-Id: B740B20016
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1753164215-377241
+X-HE-Meta: U2FsdGVkX1+cuWvoJ+LEc7hBx9ICmZeN2RFoX0m9bKEmH1UoJNTY400Hx8bWEWoAuDxgwSBwCFexf8k8YqK5ibtYBGkLCLChT3nwZX9F6HfkIg2Nu3Cb1HXJwq12GoKZORMnA9lr10IzySddi4vXv7Q5Q2scM6Ia8HCNueyh/ep/zXnQ9XvKJJcMncBkQf1rus/Z9TZp0mrKfYNSEyfW69V7AChTF2zEDUXHwXJqKS2ANjV+xusBmtAgFj42zAQ6GcT/Ji2iZjM/OOCp8ZivrETKMMo51GZGcJZJ2QUXyFWH5JfBoOmDR+zZVELUMQ1YRtBelcN48WiIg++nDFv3zb7m8ZVdKDGcgkbSb7a1zzUTZ7R8gwabgr/bMD8hUdmlk8R5cqmkUickY0qcjszTeY/5mm43rUDDkhQSs4MXnNoB2789djxw0Y9xfMZ8A2N+hzcF3zbi3C/qEVDEQedQUKxdCzcKwZ4+OI5/Dlv0A6I9EfQ5bWYEJ8QF3Tn14xPt0rbYhu/2cCL5a+3GCDrkQ62hfDn7yGp0pDzX1DjErCkMUu4pR7iu231v/ZZBQS8lSqJcq7VqTs7Ns8GVqA/Gx1IZ6q9d8iZOdqbngEHIBhs71odQtAt4/edCSVTrtGDXZko9jfsDFmgUInTpmY+9tkMZhTahj490vUZpLy4mECJ2VFyEdAN4AA58mWiTv4R7LCRYjk4g/bgO2+3kCaZHKLuoTJbaBxD9Eo3TXb3/K4UvyFgA8z7iK2SzFZX54XOqgdUUq7VAYOT3Be/KMSuZHfuTZRDB26bZUP9GEFCzWt+f/fY3P8m8vLRjBZ285MTnra1USNvKbUS75wwDbtKtsA9OhjqtrXKMlsibkGi2DG7wIc9Mkd87scXhwBJ+qRWJ1JIduILB202GIQTFK5mPHQiKcn15duMXYf0zO3+Kh2uClLZKVDy/NidErzwDYWJFNNuVag5ChTfy7vQnvg7
+ xBmxTy68
+ SGmqSYA3xqMlw4FjadoTAKjpLFJT+9Kem5souiKpTntlFvgQPxXj/4WV4HGLn5q2LdPq+71f3Q437HjZK1PTvHI5vN9soPjz841u8l82n7BIr4VVATnyG4idDw3+Q4KwMPbmUU/tzDRgbB8/gLwkxxxoFY7TPOg8s7Ipoe3S7oOlmRPpvfk1HaQMVT3hkyBmuS7xubgUDmvMoCBTIsrzIuRmrlD9e81ghMLgT3wWkF1R5Ff/vD31xUwpAxX70Sk3uwTh2
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,62 +93,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Commit 4ece01897627 ("selftests/damon: add python and drgn-based DAMON
+sysfs test") in mm-stable tree introduced sysfs.py that runs drgn for
+dumping DAMON status.  When the DAMON status dumping fails for reasons
+including drgn uninstalled environment, the test fails without stopping
+DAMON.  Following DAMON selftests that assumes DAMON is not running when
+they executed therefore fail.  Catch dumping failures and stop DAMON for
+that case.
 
+Fixes: 4ece01897627 ("selftests/damon: add python and drgn-based DAMON sysfs test") # mm-stable
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202507220707.9c5d6247-lkp@intel.com
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ tools/testing/selftests/damon/sysfs.py | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-On 2025/7/22 13:34, Lorenzo Stoakes wrote:
-> Hi Andrew,
-> 
-> Could you apply this fix-patch? It adds the caveat regarding MADV_COLLAPSE in a
-> couple other places whwere the sysfs 'never' mode is mentioned.
-> 
-> Thanks, Lorenzo
-> 
-> ----8<----
->  From 7c0bdda6a633bc38e7d5a3b0acf2cef7bdc961af Mon Sep 17 00:00:00 2001
-> From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Date: Tue, 22 Jul 2025 06:32:18 +0100
-> Subject: [PATCH] docs: update admin guide transhuge page to mention
->   MADV_COLLAPSE everywhere
-> 
-> We previously missed a couple places where the 'never' mode was described,
-> put the caveat regarding MADV_COLLAPSE in these locations also.
-> 
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
+index 4ff99db0d247..dbf6613529bd 100755
+--- a/tools/testing/selftests/damon/sysfs.py
++++ b/tools/testing/selftests/damon/sysfs.py
+@@ -8,6 +8,10 @@ import subprocess
+ import _damon_sysfs
+ 
+ def dump_damon_status_dict(pid):
++    try:
++        subprocess.check_output(['which', 'drgn'], stderr=subprocess.DEVNULL)
++    except:
++        return None, 'drgn not found'
+     file_dir = os.path.dirname(os.path.abspath(__file__))
+     dump_script = os.path.join(file_dir, 'drgn_dump_damon_status.py')
+     rc = subprocess.call(['drgn', dump_script, pid, 'damon_dump_output'],
+@@ -31,6 +35,7 @@ def main():
+     status, err = dump_damon_status_dict(kdamonds.kdamonds[0].pid)
+     if err is not None:
+         print(err)
++        kdamonds.stop()
+         exit(1)
+ 
+     if len(status['contexts']) != 1:
 
-Thanks.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-
-> ---
->   Documentation/admin-guide/mm/transhuge.rst | 8 ++++++--
->   1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
-> index 182519197ef7..370fba113460 100644
-> --- a/Documentation/admin-guide/mm/transhuge.rst
-> +++ b/Documentation/admin-guide/mm/transhuge.rst
-> @@ -385,7 +385,9 @@ always
->       Attempt to allocate huge pages every time we need a new page;
-> 
->   never
-> -    Do not allocate huge pages;
-> +    Do not allocate huge pages. Note that ``madvise(..., MADV_COLLAPSE)``
-> +    can still cause transparent huge pages to be obtained even if this mode
-> +    is specified everywhere;
-> 
->   within_size
->       Only allocate huge page if it will be fully within i_size.
-> @@ -441,7 +443,9 @@ inherit
->       have enabled="inherit" and all other hugepage sizes have enabled="never";
-> 
->   never
-> -    Do not allocate <size> huge pages;
-> +    Do not allocate <size> huge pages. Note that ``madvise(...,
-> +    MADV_COLLAPSE)`` can still cause transparent huge pages to be obtained
-> +    even if this mode is specified everywhere;
-> 
->   within_size
->       Only allocate <size> huge page if it will be fully within i_size.
-> --
-> 2.50.1
-
+base-commit: 49c3f600a9088332b3c1a6db2dc6f3516f273609
+-- 
+2.39.5
 
