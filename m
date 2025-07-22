@@ -2,97 +2,87 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 38E95C83F27
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 20:11:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 054E6C83F27
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 20:47:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96C2F6B009E; Tue, 22 Jul 2025 16:11:26 -0400 (EDT)
+	id 2D3038E0006; Tue, 22 Jul 2025 16:47:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 944246B009F; Tue, 22 Jul 2025 16:11:26 -0400 (EDT)
+	id 282878E0001; Tue, 22 Jul 2025 16:47:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8818C6B00A0; Tue, 22 Jul 2025 16:11:26 -0400 (EDT)
+	id 19F068E0006; Tue, 22 Jul 2025 16:47:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 778196B009E
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 16:11:26 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3C5961A04B5
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 20:11:26 +0000 (UTC)
-X-FDA: 83692995372.17.436F36A
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 3B29240010
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 20:11:23 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pvnEYZCf;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf04.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 090A28E0001
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 16:47:21 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 903F9112D9D
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 20:47:20 +0000 (UTC)
+X-FDA: 83693085840.23.C0338A0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id F389320008
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 20:47:18 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="mf+02rr/";
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753215084;
+	s=arc-20220608; t=1753217239;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EPFqfHTW5KnsxiLhz9edf6zd7pMuKzXqFyyNT5kggzo=;
-	b=y2ay840jsicJktSAetKUvrOp+Ys55/pZoPzRlufZnTvKYCpvN3iljBPQQHSR8H92MaPRB3
-	p2hN7pdCjVnTIRxDN1O8bG5BFfW74jDxqvDVQN5l3vWQTLXIhLkJ+Y+xEn6fAH36S5fjYt
-	mSeB9a0aHAcwtc088duG/5DuOoTmc8E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753215084; a=rsa-sha256;
+	bh=7EaXU+pypTZWCPj1iXR2AuVgnBswGufo5suBRYYpMEE=;
+	b=KId3NRxzN4UgNqKpPDIjt425d+RwZUnAvPDXytmBaCgpa1WIAxpUFLT7gzaPu2Z1r7wKcc
+	ahyMXghtJrPULoq+BwHBrrDumI742hOF+vxJtA8bu7RVqwh1OKpga3udceRs0ihdqErf17
+	De0UigYebo2Gxo1SbjHBpI/lGhg3MSw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753217239; a=rsa-sha256;
 	cv=none;
-	b=IeqMRop6BRMXHlF5dfWnFssZs3sX8rgmSwuujsrRHF1dtvcZqozIgsQZatYD3G1W37sjcl
-	ReNVry881yC9nAj/MnHmdqnBFN9LCnJ40rm3RqalmmVpvUHJPPgaq0brrx+HhmXHH9wMLN
-	ZTGX8grLj1ZXfpxepyr3NP5OVfAzPpY=
+	b=XMVcoupZFPlki/wJo8se/PchdfM0YjcGeXzAx7ky3JhdAT4ALhip6VzY36gNhiela3WJ/R
+	eYSCl2pISoHC6hi3iFKenDNTBgtlb+iKsBlJX6iXewEtY34WM3FuJtKpVbv7zQfnXXX2F7
+	w8DLgk6JjAxMPPuj1SAXfUFoyoKF9y8=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pvnEYZCf;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf04.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-Date: Tue, 22 Jul 2025 13:11:05 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1753215082;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EPFqfHTW5KnsxiLhz9edf6zd7pMuKzXqFyyNT5kggzo=;
-	b=pvnEYZCfK3MecfMLXiRT+/VBf/gnC1CrODQcJgLu+gew4ylNM+KkrPU8jIY4fvk1lzJAGb
-	YmlDQBm42VvhBFv25vTXlGEGoO672LgRt4BYCZan0C7xoAqek55/rGXP6r28kd7dP7pmVg
-	G7oAHarBwLNFnoV5Mj1liOV+B1zjRrE=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Daniel Sedlak <daniel.sedlak@cdn77.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Neal Cardwell <ncardwell@google.com>, 
-	David Ahern <dsahern@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org, netdev@vger.kernel.org, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org, 
-	Matyas Hurtik <matyas.hurtik@cdn77.com>
-Subject: Re: [PATCH v3] memcg: expose socket memory pressure in a cgroup
-Message-ID: <jj5w7cpjjyzxasuweiz64jqqxcz23tm75ca22h3wvfj3u4aums@gnjarnf5gpgq>
-References: <20250722071146.48616-1-daniel.sedlak@cdn77.com>
- <ni4axiks6hvap3ixl6i23q7grjbki3akeea2xxzhdlkmrj5hpb@qt3vtmiayvpz>
- <telhuoj5bj5eskhicysxkblc4vr6qlcq3vx7pgi6p34g4zfwxw@6vm2r2hg3my4>
- <CAAVpQUBwS3DFs9BENNNgkKFcMtc7tjZBA0PZ-EZ0WY+dCw8hrA@mail.gmail.com>
- <4g63mbix4aut7ye7b7s4m5q7aewfxq542i2vygniow7l5a3zmd@bvis5wmifscy>
- <CAAVpQUCOwFksmo72p_nkr1uJMLRcRo1VAneADon9OxDLoRH0KA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAVpQUCOwFksmo72p_nkr1uJMLRcRo1VAneADon9OxDLoRH0KA@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 3B29240010
-X-Stat-Signature: t6q1f9qgotf6at9jkaikduo9o335kzoc
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="mf+02rr/";
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 530DB62A39;
+	Tue, 22 Jul 2025 20:47:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB2AFC4CEEB;
+	Tue, 22 Jul 2025 20:47:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1753217238;
+	bh=U4DORizE/f7hNR9eFeDGUav+ZFR1aFMf+KdprGRWYNI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=mf+02rr/c0d3kW1n35vEDCRg28UcNcK336t1EvLB9wFb9F4LIK4EjPkTCxTknAb1h
+	 rwxYJDBgaX+NjVqK+anuV3pRqvn5RtzuwY502sv1cd+A+YNCH0yOskV2D503NB877g
+	 7rRqIsaJ8KyKh/vLrBeURSUbNJXoMkfwgpycjzB4=
+Date: Tue, 22 Jul 2025 13:47:17 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Dev Jain <dev.jain@arm.com>
+Cc: david@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, baohua@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/3] mm: add get_and_clear_ptes() and clear_ptes()
+Message-Id: <20250722134717.b8c9b09b8915b552447cb419@linux-foundation.org>
+In-Reply-To: <20250722150559.96465-2-dev.jain@arm.com>
+References: <20250722150559.96465-1-dev.jain@arm.com>
+	<20250722150559.96465-2-dev.jain@arm.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: xcdrzw5tfsd5oxobfxykpd4am9qtobje
+X-Rspamd-Queue-Id: F389320008
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1753215083-626702
-X-HE-Meta: U2FsdGVkX18E/TpbacSEtgGN/V3ce/Y9F5G4nSZR2Owh1DUfkaI+tlTcX0Dy/kjVE9DCyPii2Zvd93M9Q/wH0anhbJNFQMd3uWm8KVyMdZgvPxbgzskYd4Mk7lDEknoWsZL9fQU5QkoRiiwbQzeH5RjoUSZRajdxbzp6t7R3YQQuiP2ORBFMU6UvZUfCKSvnL75kNRrb6mfJxGzYS1Jtqn2TrLvF+J8VvznzahjuDo5FL86iUFaZsieKFWBE+OKhvOqjXBpCNo+5bxXV57Al1hgCwDk5qUmQVzudpomARujXsxArOxfuPaNgXrIhJxD0+5N8LPX6eyRSdZDNh9lLd1GiHuA19QgETPBhr7/mJY+f5xZkst4RtWq/+6HSH3FE4GGykCkxQN2f2WkVDBzZxHgSjo9XLVFCvEwO6ig0pN8oZuDRjMlM9faMg6dChqvOSyFIZK0V1jBUxrpONkSvp7caNs+J9UX48GCxDmvH0Hv2pwOP7FaUnLMCOj6ZqvIEcHdbStx6QxFbsGkvr/UQ4y871qkK3XGYhAJZRVjDiQ5uuRn83pucG9P/6AsyRXPO3CviD/LnCecAT9T8yGcVXXuzTX6clQe5Z7MS1ucHYyAjDp/t+6T09czXcUnMyB4HfujBMWuwwfAisM3PqWuoc4davxkoyXPffTPzXSI1M487BILd49CB+8QxBc2yooN5q6C+pqxFC7nC2wX9puEFL5UCsuoP0Zf0efFS8q8ulWv/ETIClz/hBf6JzNHdQZjoHz9IxumY+vi+1Hdk9YnG7V4h+xnF8nUA5T602x+5GEB/OWPab6eZpCWgC4nLmVJ1qqMHh2q5TsZhoz47jBR6GLqFU1iuJyJSDfwTsn3H6YXcp9Q2lkQk5FS/z5PdKJyg02SmKJdlkEIqujCXaaHTohPlYnmHkQKeRwHoxZgS85dA3h84TS1MOXQoepVswAcUQRDy0P3+YLXEe/fRjaH
- kmE8dcEu
- grNoVVNMLJ0J16XIDhMRwtOlAxL6GdY/3N5tmz3oItjO2hF2c/vXy+5seEKHHmk7HmTPCpGWoLn5Km3tUHjzSqIkfA5adQc7RyP8xwXLvZUAtSpeT8PGfccZupe1ib3PiCAUNbU0DFU1n23u4PWqRD21611KrQYel2kVzucBEqtwZw9WO6AF1UK/NLHV3fn0XWJPfJhkwqleNWnApmMqmNNmDfzoL8buFGrw2SuLXoqdBa696OHsziRXCoxUjeJRMD0iDOoKtQPghSvEPfNp0+Vpgty+913XIb3gUmssjsvC6bDh6r8Xte4WUWp88pKgIoMXLerbHhGYNBO9Wf/B+A4xZvsXXhxNqN6VxOz27wrLOSMo=
+X-HE-Tag: 1753217238-560182
+X-HE-Meta: U2FsdGVkX19yvI0qYeXlgUe+vvwmyRl0XLpHmaRUZwMc2JzYAbbmpeFYJ4mFIOQAzF+/U7V+FmWVpWzE1iHeFCdq/dApalEN+PtzbRJZvPjWS3NiVYckZVe8B433W+nwicahJJBUwFGTPs76FqHsmQCW6a/hmSRNkq31vqEKeQAc4ymD1xdctmf4h86xuPh7ei0CGdF0eu+RxcvMT2+a/CYXSCcmr3HLk/J+pE/iTBK28emUlLmB4gL8XaFj8RJg4Yl3TdbMEqP5r3sz/kSgaB+mWIZ8sv82wlM8QZVU9pcEte4DA5YEcLBYiL3bdZo0bk1k1eHniEYj0OsEwDarK5C2oufPKxQg2YnG/Plwv+iT7GRDP1W5lrtMlFKsRk8lVXxJ9c+1ATdTv7DNaXMg4OgN2ZroMPwiOB7iA+BKsWMDUfKtdeRN9/HGvoRlz5poMCUHwzR0OCHop60BwHQbBYgGEuUwTlNg5Ozj9z9+l8AxSvLmVXQ9aNycu8LRwpGNpKY2yoH5EMBqboOUbm33wQ461CR2v4tuIQSWftP1RI2IUYA6fMZD2BQSW3fdRUwW8cq94ObPbran5FzrfRrnnady909I/K62WHjhul2ko6NIYIBvs1Hqf35FEIwdcg04RrbTkP3Ro4t3s5bCJeNPYJMXSRc7jN4ARw9vbU86L+KhOcrI4A+alkcgUtdp8ia4N8JWPT+HMZKrGiHSoELuYLzivBfyvCSjd/yW+hBj/Xn2GsC60P42X0hH17Owl4pxea1UuZPLcu1AcI0HUSAnAy6vjkdSZXZl2U9Kmgsiza3AEKt9/xbicxyvEkbiKOWiLLa5++Yv1tDNdE89n58PC2tmtR5oekDP9xMuflCokYHahg2QvB4/tMkJQynuEkAuiQJigMofWa48lorLaBb2UDnR3RmJo3nswxkZp2+fQ2N7NIAafwCyDDSCX4BvXjTvUzmWgUZqDKGMatoGGYG
+ 2sNsL4qF
+ ovDqfzBBLqrev6nJlVWzFYkQKF7owXpFI8cEq52wTu9eh+7tyGmYjPEob1QYgtR6MuaEihpbT2nBfu/ipwxrs4TJjfl8+TiSrNZ3CA0/4CgdBYoq+sWfc05dCNg9SSN8/JG/nKAWXJQThFZ9DtJQFx4FBP9kYQ/qYjBCtuYfxYZdI1ZA1schikXqtolL7HR2x+SHO0lrTMOuFfZuOShz8/s00FqlRxJG5sUksn96KbdXDyGNSyWZXHirFfOd/htw8uP1K5rXNPS1Q1tFMdwsdgZrYOXQijjkbv6ygduvqEbXLeYPQnveBLU6yQGrbnP96qbPOPVU71G8yjc1Mc+6eYpxRJoHf41XIVTKq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,54 +91,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 22, 2025 at 12:58:17PM -0700, Kuniyuki Iwashima wrote:
-> On Tue, Jul 22, 2025 at 12:05 PM Shakeel Butt <shakeel.butt@linux.dev> wrote:
-> >
-> > On Tue, Jul 22, 2025 at 11:27:39AM -0700, Kuniyuki Iwashima wrote:
-> > > On Tue, Jul 22, 2025 at 10:50 AM Shakeel Butt <shakeel.butt@linux.dev> wrote:
-> > > >
-> > > > On Tue, Jul 22, 2025 at 10:57:31AM +0200, Michal Koutný wrote:
-> > > > > Hello Daniel.
-> > > > >
-> > > > > On Tue, Jul 22, 2025 at 09:11:46AM +0200, Daniel Sedlak <daniel.sedlak@cdn77.com> wrote:
-> > > > > >   /sys/fs/cgroup/**/<cgroup name>/memory.net.socket_pressure
-> > > > > >
-> > > > > > The output value is an integer matching the internal semantics of the
-> > > > > > struct mem_cgroup for socket_pressure. It is a periodic re-arm clock,
-> > > > > > representing the end of the said socket memory pressure, and once the
-> > > > > > clock is re-armed it is set to jiffies + HZ.
-> > > > >
-> > > > > I don't find it ideal to expose this value in its raw form that is
-> > > > > rather an implementation detail.
-> > > > >
-> > > > > IIUC, the information is possibly valid only during one jiffy interval.
-> > > > > How would be the userspace consuming this?
-> > > > >
-> > > > > I'd consider exposing this as a cummulative counter in memory.stat for
-> > > > > simplicity (or possibly cummulative time spent in the pressure
-> > > > > condition).
-> > > > >
-> > > > > Shakeel, how useful is this vmpressure per-cgroup tracking nowadays? I
-> > > > > thought it's kind of legacy.
-> > > >
-> > > >
-> > > > Yes vmpressure is legacy and we should not expose raw underlying number
-> > > > to the userspace. How about just 0 or 1 and use
-> > > > mem_cgroup_under_socket_pressure() underlying? In future if we change
-> > > > the underlying implementation, the output of this interface should be
-> > > > consistent.
-> > >
-> > > But this is available only for 1 second, and it will not be useful
-> > > except for live debugging ?
-> >
-> > 1 second is the current implementation and it can be more if the memcg
-> > remains in memory pressure. Regarding usefullness I think the periodic
-> > stat collectors (like cadvisor or Google's internal borglet+rumbo) would
-> > be interested in scraping this interface.
+On Tue, 22 Jul 2025 20:35:57 +0530 Dev Jain <dev.jain@arm.com> wrote:
+
+> Let's add variants to be used where "full" does not apply -- which will
+> be the majority of cases in the future. "full" really only applies if
+> we are about to tear down a full MM.
 > 
-> I think the cumulative counter suggested above is better at least.
+> Use get_and_clear_ptes() in existing code, clear_ptes() users will
+> be added next.
+> 
+> Should we make these inline functions instead and add separate docs?
 
-It is tied to the underlying implementation. If we decide to use, for
-example, PSI in future, what should this interface show?
+inlined functions would be preferable.
 
+> Probably not worth it for now.
+
+Well, as David has called for a v4 I suggest you make that change.
+
+Thanks, I'll queue the series in mm-new for a bit of testing.
 
