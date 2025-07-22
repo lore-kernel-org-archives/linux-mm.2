@@ -2,115 +2,179 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8767EC83F1A
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 14:17:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 28F47C83F34
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Jul 2025 14:23:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 21FC26B00AD; Tue, 22 Jul 2025 10:17:26 -0400 (EDT)
+	id BA05A6B009B; Tue, 22 Jul 2025 10:23:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D0926B00AE; Tue, 22 Jul 2025 10:17:26 -0400 (EDT)
+	id B78206B00A0; Tue, 22 Jul 2025 10:23:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0BFAF6B00AF; Tue, 22 Jul 2025 10:17:26 -0400 (EDT)
+	id A67B86B00A3; Tue, 22 Jul 2025 10:23:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EA3B86B00AD
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 10:17:25 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8AF751403CD
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 14:17:25 +0000 (UTC)
-X-FDA: 83692103250.07.F220716
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 8A844120009
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 14:17:23 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mdXHHlBA;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of snovitoll@gmail.com designates 209.85.208.180 as permitted sender) smtp.mailfrom=snovitoll@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753193843; a=rsa-sha256;
-	cv=none;
-	b=jbj2FHFS7EWWVJAJ1/MJfjs6yi4yN3QMO80RXc8rhOGphRLks0XUHv+pjoTIS2dA2guJS3
-	Hyw/3ShGczSURczdmMFlOZXBChCDgoms1pMeCHJ91i6wkWvmVT9rKjTvDvImOYqzDhrHoG
-	u3fdBZgAoTThMppMMm/0TmqSEb4rT+c=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mdXHHlBA;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of snovitoll@gmail.com designates 209.85.208.180 as permitted sender) smtp.mailfrom=snovitoll@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 968D26B009B
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 10:23:04 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1477D14040F
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 14:23:04 +0000 (UTC)
+X-FDA: 83692117488.28.F80E6D7
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 96C8680004
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 14:23:01 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="oBg/37Lb";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=BNh8C61C;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="oBg/37Lb";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=BNh8C61C;
+	spf=pass (imf02.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753193843;
+	s=arc-20220608; t=1753194182;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GboL0eWXtD3fDsEKzgJ1xepA1JQohVF9co6pstDgRM8=;
-	b=RPBUH6tEYVZgkga9zPa3lslyXUOflcsMdlyP9rt5KCwJ85GFPm6VYwQDGg8GLBjrIGiyir
-	mR48abLGud1J36H0qEIkSKVhZoUE2OmOpaEl2cMwabE+GMuF9Whv3q6nHZH/1EtkLa2XqB
-	z/NvFsxCgd6SiBd7Bgc6mcnKP4gG4ZY=
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-32cd0dfbdb8so51051791fa.0
-        for <linux-mm@kvack.org>; Tue, 22 Jul 2025 07:17:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753193842; x=1753798642; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GboL0eWXtD3fDsEKzgJ1xepA1JQohVF9co6pstDgRM8=;
-        b=mdXHHlBA4A5WeDO3Su/RdsUquO6vXUTLGi3zn8cn1SN63gDzeEj95FiCdZynEa2Vx3
-         Dk+c7w5oF3Ujo63ffZdv4fa8J8k5EeJ3ezPnCZ0qKjhK3U5c/sFC34S/08+uK+NUX4eh
-         5gqJGXc4CKYjPSTeYU7+m0K/3eozZ6s9+63VPvfpw3AfB6q7jkfXZmfalJ9rXOVxzhh0
-         GJ4WMZlKH1SRRLz3+Uu9GOkIGVJ84g9Pv4YHh7yDXT6fqT+XzTPh2yTyjbQaSIpraGrz
-         oNZtr7RfhI9EyKSUibt+mUCOWYNEWERWUMBZsIl3lAgwYS5rJnPGCsBsOHJZ/hS1vw+9
-         uIgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753193842; x=1753798642;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GboL0eWXtD3fDsEKzgJ1xepA1JQohVF9co6pstDgRM8=;
-        b=mzzBlef6E46HurvSd/D9JHc+gCCXB+5d5xsU64lR5JdlmWm35wjXKIe4ft4y13coAr
-         fDZp55fcG/l+02M8WZh6AnQed7KP3VEnTfQtOQg3Vt2Pr/chxy5rm96uCn8G9GtfSISz
-         coQnsmkbNN8w3LIk/NAaowE3B0Fw7PdpQdpi6QTZau4bN/IG4u5IshqBvh0Fp4HwBTVb
-         esObNfAhTL33KTCnA2Ve1XVpceLS85DkjLsAnfocUxEVcP7MLkYm7GhC+xzoesnker5s
-         w9fAp181wdDXFxJrur5QjTrWGCEfQbUGF0VMXcmp70zBvBLY/WbPzGt5If7B/LT6djot
-         zX5g==
-X-Forwarded-Encrypted: i=1; AJvYcCVrDG3OXCg/73wfOuelf7dKG2bjUc7NFR8I5DoCDi1wSKliN7rOU4bOC4cyelLgfU7CYdHGPNI9nQ==@kvack.org
-X-Gm-Message-State: AOJu0YwlRw7bDKTG1sje2PupYtJTMyL6t+Vw1zqly+PkBFp+IoSN22/U
-	ImTjHpNZOy6wQ4NFLz/ecJTBsHNj3tBgCHMCKpbi1/jTrgYdSVowR8HmcXe2hCcSNUFtJMpzIq5
-	2ZQFdIDiLkIHLH4/NOsnjxcoJupw4+GI=
-X-Gm-Gg: ASbGncuFP9W7gUu+Af57C7R4lREVsKjYDC+qHjpszJV94Pm4Q3KY6L/8hZIOxFKEhq6
-	DjM8hb6guy5PllPzpOAXtBb8lORNJ+QVNHaLR7vb8b/GeCHX5PiyLz9XIJghDCq+bHfzaUoZG0d
-	cxuVJc3hGGCqDajG4UfXuU/8oK9wZuG0m5jqq8uRqQup+6qORX5ycv/5kaUs4DkMmBzTNPJekpE
-	k/gerM=
-X-Google-Smtp-Source: AGHT+IHWyFSdlAJ08NCU6ABmF9BGYFP4zXRYUy0aJCm6G+P21nbWRd00HVhqfmwkvmBdoun3tyqTRuImHuMXXJuHVwM=
-X-Received: by 2002:a05:651c:110d:b0:32b:75f0:cfa4 with SMTP id
- 38308e7fff4ca-3308f5c95f9mr70998461fa.25.1753193841372; Tue, 22 Jul 2025
- 07:17:21 -0700 (PDT)
+	bh=eninw5AAsvH1vBycf8vZZytMFVc/miKgnCr/jA/ZvBI=;
+	b=W0InX7XwOVdBFINTqQ9z9OQsL+5lBWhoi0nmi1dvc7Mm5SZ/j3ZPi6faSj2Bs3Hr6GDDaE
+	8AR9d88LB3qm1b3KMskVZG1ffpBMw4VTpQhfRx/8uCMG5xieWNZZRnLOaF0JdrH1B/bGQj
+	a7V9Y0s4ZepWheZKlmkKe4h3qvBpldg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753194182; a=rsa-sha256;
+	cv=none;
+	b=khSYqgTKs/2qnBlmY7EgcotpXQGXQ8lpv02qCTZ9bHk585ab2TtVkIFnWDZGiaOMTlaAku
+	cZBMyAZBeHybIFRetdKBSLLSBdm9jQV57kn50fbzP4yDHS/fZzMDgCJRHwwMRFbrksl6cX
+	cE6mUo57Z5sjWgwWc5BSgRMWhJWORvQ=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="oBg/37Lb";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=BNh8C61C;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="oBg/37Lb";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=BNh8C61C;
+	spf=pass (imf02.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id A27821F78B;
+	Tue, 22 Jul 2025 14:22:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1753194179; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=eninw5AAsvH1vBycf8vZZytMFVc/miKgnCr/jA/ZvBI=;
+	b=oBg/37LbZgaItFV+HeMlDC0tDYPsHGamaFc/OqZ7cAbqfeWvo71/1rz3pv2CCP9jKFvnAN
+	QbmIdgasE3e/8xSkF6QRCZU/6Ps/l11vLqILShD3vfv9FvRp3rGuCh1nuEW6zE9qqIhTg1
+	xZQJJR0pzX45Zieh8rhbb1kL3kd2Kwg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1753194179;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=eninw5AAsvH1vBycf8vZZytMFVc/miKgnCr/jA/ZvBI=;
+	b=BNh8C61Col4domPEVzFlqz1+n0iePtAbK9GcvSTRqUHFVsaAd52h7e/8gKREC3OR9YIDbE
+	n14lQqwYrHyTJADw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1753194179; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=eninw5AAsvH1vBycf8vZZytMFVc/miKgnCr/jA/ZvBI=;
+	b=oBg/37LbZgaItFV+HeMlDC0tDYPsHGamaFc/OqZ7cAbqfeWvo71/1rz3pv2CCP9jKFvnAN
+	QbmIdgasE3e/8xSkF6QRCZU/6Ps/l11vLqILShD3vfv9FvRp3rGuCh1nuEW6zE9qqIhTg1
+	xZQJJR0pzX45Zieh8rhbb1kL3kd2Kwg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1753194179;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=eninw5AAsvH1vBycf8vZZytMFVc/miKgnCr/jA/ZvBI=;
+	b=BNh8C61Col4domPEVzFlqz1+n0iePtAbK9GcvSTRqUHFVsaAd52h7e/8gKREC3OR9YIDbE
+	n14lQqwYrHyTJADw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 81C34132EA;
+	Tue, 22 Jul 2025 14:22:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id uhlVH8Oef2jqJQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 22 Jul 2025 14:22:59 +0000
+Message-ID: <bdca2e2e-acdb-4ea5-9017-6c1a58353452@suse.cz>
+Date: Tue, 22 Jul 2025 16:22:59 +0200
 MIME-Version: 1.0
-References: <20250717142732.292822-1-snovitoll@gmail.com> <20250717142732.292822-9-snovitoll@gmail.com>
- <85de2e1f-a787-4862-87e4-2681e749cef0@gmail.com>
-In-Reply-To: <85de2e1f-a787-4862-87e4-2681e749cef0@gmail.com>
-From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Date: Tue, 22 Jul 2025 19:17:03 +0500
-X-Gm-Features: Ac12FXzF_nEInn7KovIF1rCbPeOEkryRpoS2Hx7q1NkLYIXq7eXxsmx3CUCidIg
-Message-ID: <CACzwLxiD98BLmEmPhkJQgv297bP_7qw+Vm_icFhTiDYN7WvLjw@mail.gmail.com>
-Subject: Re: [PATCH v3 08/12] kasan/um: select ARCH_DEFER_KASAN and call kasan_init_generic
-To: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: hca@linux.ibm.com, christophe.leroy@csgroup.eu, andreyknvl@gmail.com, 
-	agordeev@linux.ibm.com, akpm@linux-foundation.org, glider@google.com, 
-	dvyukov@google.com, kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, 
-	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	linux-um@lists.infradead.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 8A844120009
-X-Stat-Signature: gau6oiek3zx9ng3c716wmotf3dkgt9o7
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] MAINTAINERS: add further core files to mm core
+ section
+Content-Language: en-US
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Christoph Hellwig <hch@infradead.org>
+Cc: David Hildenbrand <david@redhat.com>, Mike Rapoport <rppt@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20250616203844.566056-1-lorenzo.stoakes@oracle.com>
+ <727b5e89-89d7-4abf-a93c-8d6f2cb2c438@redhat.com>
+ <aFDm0YrbSAvXc5Wp@kernel.org>
+ <33c605a6-2b89-4b40-ba80-ed2ca665ef5a@lucifer.local>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <33c605a6-2b89-4b40-ba80-ed2ca665ef5a@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 96C8680004
+X-Stat-Signature: erdhxn84t95j9q9rki3f4gqi3ypnhgua
 X-Rspam-User: 
-X-HE-Tag: 1753193843-684875
-X-HE-Meta: U2FsdGVkX1+d8WXjgz3HD0eggq+o5ssFttT+ow/DV1OL9ZXObhLNLKvvcNGt+yWQsJCovVpbUtY6LvmgMzP/n1NwV4zrbqEbiI53I4I/gZG5F5I1C0FgyR+DSSehmdbNnO/Eju0PXfIxQkhxrSjp/xvzvwZ1JESfXYblKr99rdIR0V4OhoUPBhc6az9pcn5zk9k9HD6iWoYI7yc3SINY9qZ6AJLbSu/pwJpM1DPDnBrl2OrA7AvRxNNbhyORB0yVst2MhlFknp1AZxJLXjMvONQG0g5ipwCSPQsP/N8Fe57+2Cwqhh5/TCcZJFnuTXPT0lhzNi1FuFratyCafNGAi5JNiXnfuFsI57Zbnr1kj0Gi0M1mvsdg7/7EEmlDwTP7MlJG52vAsWQbKm8/+yoAubXtXG/egBsc3YfPBny3k7lJVvapXKI+jUcVjQYtL4E1BjzP7FcdHM46UbrWNf7YgMB2jQwTJ/l+c9I6yFHW8ri/Bs6YTvCrb0qX7DlJ2+R0x+PeEbBJcrKOf8iRAtc43lMHcjdVKVm+G7zsXuNn1iFlwIMpCBngYOq4nNThfKWjNA1KFlv/EcEBvkHK21cMCPfU3OzyMz/1Ug/QsEQKFYzQLCPGSAAFp3kYsAbvnW91gd781YcvpW8Wa8i7BOWl4/B+MUXVLeNbbFdfOLB74jZCxRYtdOKurCIeOTOvUCt+LhAOLDtFHYVkJdWLnQ9lc2eiLFy3UTkXjTGuuSy2uFqzVoxVjh4476I4pHl3L+xLl+C2Kf4NESMm++K6nyq5WhdN2r+DKrOPyiQh4VJoVpBgt8GcisoUxzZ/q7SZQquTVQ8DEGcLTwSUgml0aaKqASR8OTIqAZ3n7IXLEMqPBB0o3FWJsBX9dmhfWo65u56Au4+8WpZLyvLsZNzyXitZE+7lOIcliofAP1g+IVQiIfhcJ9L+iQZ5lwuKOQc0XWJBSvfjPEKWIoN8vaYpFk/
- i8bfBN9u
- FQrfchHA3H3Tw1/qRb3F6So6rwdUk7k1uJ7LmY6H247Cz5HiBPTQ2rm13OsnlQIo8IKAbYfTy9ApKQD5Sg98RqxYKxiP0GkKpOuDQ5GAJPtElU0Sv5ZCSuygqzsF1Y1tqy/GIqNxGobJlMrFYYQeQkVHLwZm9o3sug6bvCMvVHeC0WeM22UO4kdKmIA2KKUTUgXPCoI3rZ9vlxUb/3A1hGlkY21XrMLhWxLw+JRcbc02Pvw/arh8vP1MK+mXlkFyxXbhMpwQJRvDAWnMkKYh6r7yV3pfywd/d7HNQS4h6XR69OMtFCL5SSRYNUKgSvXpCKXqPG4FsQbCBvqxaUIjNcZ/R2wXzQuyF8NnGjnlKAhfvSEvEtOfrh59YEfdA2YVDT0spuPcUQcQmxRZB1qnxYlS+b3Gs4C6JqD+HTo94mN9IwrdK0jmtXif+1mKA+i6zcPMcmqh8NO8k+APty3CsgGuAM7aS9lb9O8RWS1SPHhboWBNU9e3kJAHQgMeoSqIdR5g0/JH4vJAEZyA=
+X-HE-Tag: 1753194181-861914
+X-HE-Meta: U2FsdGVkX1+CIFbLB1k9LjXQTiTLYAY5bZBj8535sxuPWqG/wiN3N6A8jMmcEcKCPxXe5Ds+dBez9FLHVlkGtIfqVn4FI3Xf1U+X5vYjzVZDH/Z47d0zt+3gXlrA/WOD6TNdkdGcAkeTljEspcpYbawdhYbrT5qVnPmkiE/kdUwdenY+yK1co5KxGL/51vdMVY2KateZs2FUDcFsqOX0aypEj96YPjBC0vkjgfG1+HrA4ijBNWQrPrTPtiqcPyxU+WfTstE0QP+Pmi3E9ctwZ5n54QBkBLcNUQSKZU0BwBoOiS5xVoiOp1U8tGlsZfxFQayfQ8OvtDUMV4/BRNKSRIKbVJhpgJGKNci5mN4CMPA9z5x2CxzbedMK0GRbMbC5GAKbN3tBKYyLdLqklxaIjDWKWBpoDIhTPsqGykiHBm4Plfe5naKa2o23PolNVzYE04Yd65sgylEAkVk7G4GU9ZCo905wW3CDAUPiEC0Ye3SeldQBXmK+ffqcnqbVQOktNnBPHyU5B5xMA05nscMQxRzyRUpCAWIaTTiVbDeMZxqnL+rdVXqWRjFvyNoOamaeVl4jfpFmBlNmGAh71zeEFJqHZCTD2Ge5knMpDJ8Yqjj/DteofvG2qMXYVgdMUrudHR01ynQ5JcRGNg8+JItPPl/W621D60pJ+u7X6jWP5RHhoUrkamFyietu/H5YH+VFS94Rc8ThupTgY02qCggjoyq5RrYGv/Y0Jk7HHcS2+st6l0Br8xdq2vx3kr4fr4F/R+NrFlbYNPsp61NbsO5y57HF81Kz21APKU2UudtzBYN3s9FcX4/w0PlHaVeu6EZKPX+S5Vz8T6pZgX1dsFJGuirq83mxM5GPRmV2LwItmu2R6uj1ZhxEXZ+fgKhBZeSOeVGHR0DegUmhMw7bM5wzjygj9yo0cW9P4Wut+RiZA1Yr0X8pmL3wwYVVQEQh9cvl8A1XNw8b6ZJC/3B/tjJ
+ DI/V/VJG
+ YRoWuobI1ns9rApTyKn8kgFg4XChxueqVHUOSrxymkmDcaJvZVlj0spjnmluvCwt06pHkvPFLfQvZBthu9MdulV3iIrMSRL4QcDEijL6Eb+9poJRp4c8jV2GN6a/jqBirG4DvGBMaQAz7r9rP7jEnxQ6YAIR7HWz0+9AAj4j8Mzgw//S8/zQa1OYjhLiH+FO5QMAr0s2eNZkbbteEXzHF0uBqBWlcWwq6SEq69Q653jxtxTkQ9WUpSAqz1Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,105 +183,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 22, 2025 at 4:00=E2=80=AFAM Andrey Ryabinin <ryabinin.a.a@gmail=
-.com> wrote:
->
->
->
-> On 7/17/25 4:27 PM, Sabyrzhan Tasbolatov wrote:
-> > UserMode Linux needs deferred KASAN initialization as it has a custom
-> > kasan_arch_is_ready() implementation that tracks shadow memory readines=
-s
-> > via the kasan_um_is_ready flag.
-> >
-> > Select ARCH_DEFER_KASAN to enable the unified static key mechanism
-> > for runtime KASAN control. Call kasan_init_generic() which handles
-> > Generic KASAN initialization and enables the static key.
-> >
-> > Delete the key kasan_um_is_ready in favor of the unified kasan_enabled(=
-)
-> > interface.
-> >
-> > Note that kasan_init_generic has __init macro, which is called by
-> > kasan_init() which is not marked with __init in arch/um code.
-> >
-> > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217049
-> > Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-> > ---
-> > Changes in v3:
-> > - Added CONFIG_ARCH_DEFER_KASAN selection for proper runtime control
-> > ---
-> >  arch/um/Kconfig             | 1 +
-> >  arch/um/include/asm/kasan.h | 5 -----
-> >  arch/um/kernel/mem.c        | 4 ++--
-> >  3 files changed, 3 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/arch/um/Kconfig b/arch/um/Kconfig
-> > index f08e8a7fac9..fd6d78bba52 100644
-> > --- a/arch/um/Kconfig
-> > +++ b/arch/um/Kconfig
-> > @@ -8,6 +8,7 @@ config UML
-> >       select ARCH_WANTS_DYNAMIC_TASK_STRUCT
-> >       select ARCH_HAS_CPU_FINALIZE_INIT
-> >       select ARCH_HAS_FORTIFY_SOURCE
-> > +     select ARCH_DEFER_KASAN
-> >       select ARCH_HAS_GCOV_PROFILE_ALL
-> >       select ARCH_HAS_KCOV
-> >       select ARCH_HAS_STRNCPY_FROM_USER
-> > diff --git a/arch/um/include/asm/kasan.h b/arch/um/include/asm/kasan.h
-> > index f97bb1f7b85..81bcdc0f962 100644
-> > --- a/arch/um/include/asm/kasan.h
-> > +++ b/arch/um/include/asm/kasan.h
-> > @@ -24,11 +24,6 @@
-> >
-> >  #ifdef CONFIG_KASAN
-> >  void kasan_init(void);
-> > -extern int kasan_um_is_ready;
-> > -
-> > -#ifdef CONFIG_STATIC_LINK
-> > -#define kasan_arch_is_ready() (kasan_um_is_ready)
-> > -#endif
-> >  #else
-> >  static inline void kasan_init(void) { }
-> >  #endif /* CONFIG_KASAN */
-> > diff --git a/arch/um/kernel/mem.c b/arch/um/kernel/mem.c
-> > index 76bec7de81b..058cb70e330 100644
-> > --- a/arch/um/kernel/mem.c
-> > +++ b/arch/um/kernel/mem.c
-> > @@ -21,9 +21,9 @@
-> >  #include <os.h>
-> >  #include <um_malloc.h>
-> >  #include <linux/sched/task.h>
-> > +#include <linux/kasan.h>
-> >
-> >  #ifdef CONFIG_KASAN
-> > -int kasan_um_is_ready;
-> >  void kasan_init(void)
-> >  {
-> >       /*
-> > @@ -32,7 +32,7 @@ void kasan_init(void)
-> >        */
-> >       kasan_map_memory((void *)KASAN_SHADOW_START, KASAN_SHADOW_SIZE);
-> >       init_task.kasan_depth =3D 0;
-> > -     kasan_um_is_ready =3D true;
-> > +     kasan_init_generic();
->
-> I think this runs before jump_label_init(), and static keys shouldn't be =
-switched before that.>  }
+On 7/22/25 15:53, Lorenzo Stoakes wrote:
+> On Tue, Jun 17, 2025 at 06:53:53AM +0300, Mike Rapoport wrote:
+>>
+>> > > +F:	mm/io-mapping.c
+>>
+>> This is an interesting one. There are no in tree users of the only function
+>> it contains.
+> 
+> Hi Christoph,
+> 
+> Was going through and making sure mm files have places in MAINTAINERS and
+> came across this - I see you added this, but it doesn't appear to be being
+> used anywhere. Should it be removed or if not wonder where it ought to go?
 
-I got the warning in my local compilation and from kernel CI [1].
+It seems it only gained its only user in b739f125e4eb ("i915: use
+io_mapping_map_user") but reverted a month later by 0e4fe0c9f2f9 ("Revert
+"i915: use io_mapping_map_user"") all that in 2021.
 
-arch/um places kasan_init() in own `.kasan_init` section, while
-kasan_init_generic() is called from __init.
-Could you suggest a way how I can verify the functions call order?
+Ideally i915 would be converted again with the revert reasons investigated
+properly this time. Otherwise we should remove the thing.
 
-I need to familiarize myself with how to run arch/um locally and try
-to fix this warning.
+> We're contemplating an 'MM MISC' section where it could live potentially.
+> 
+> Cheers, Lorenzo
 
-[1] https://lore.kernel.org/all/CACzwLxicmky4CRdmABtN8m2cr2EpuMxLPqeF5Hk375=
-cN2Kvu-Q@mail.gmail.com/
-
-> >
-> >  static void (*kasan_init_ptr)(void)
->
 
