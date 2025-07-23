@@ -2,102 +2,179 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D83B6C83F1A
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 00:29:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D52E0C83F1A
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 00:30:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 118306B009C; Tue, 22 Jul 2025 20:29:18 -0400 (EDT)
+	id 734276B009F; Tue, 22 Jul 2025 20:30:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A1216B009E; Tue, 22 Jul 2025 20:29:18 -0400 (EDT)
+	id 6E5306B00A0; Tue, 22 Jul 2025 20:30:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E83796B009F; Tue, 22 Jul 2025 20:29:17 -0400 (EDT)
+	id 5AD2F6B00A1; Tue, 22 Jul 2025 20:30:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D3AB36B009C
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 20:29:17 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 367C5591B7
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 00:29:17 +0000 (UTC)
-X-FDA: 83693645154.12.83AF8DB
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 40FD6140005
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 00:29:14 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=B4vsgDXv;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf26.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753230555; a=rsa-sha256;
-	cv=none;
-	b=ou9WwsY78fGWlV4wqW5ctfbhXwqqal6r4sXqAQugA496EbveeoHygJEiPJhIUmkYBEevIJ
-	VtGepbb9aE5+I2iFUxfbWEeh/xzaygA6RkEsYGpRI4amscrpwJW0AhpiVUJSXIIJY6tKA3
-	rFZpYeP5HhXoSZQZSrteQLcpQj40zqE=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=B4vsgDXv;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf26.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753230555;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 446B86B009F
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 20:30:51 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BF1FE132DB0
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 00:30:50 +0000 (UTC)
+X-FDA: 83693649060.09.FD36ED8
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2052.outbound.protection.outlook.com [40.107.93.52])
+	by imf03.hostedemail.com (Postfix) with ESMTP id D160B20011
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 00:30:47 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=uATPlouB;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf03.hostedemail.com: domain of ziy@nvidia.com designates 40.107.93.52 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753230648; a=rsa-sha256;
+	cv=pass;
+	b=HDbmgoWLwHAjfg3uoWFlFcq3KIEK1rZCWc62p3kKOc/FmRRRyDDbmzmhkHZj2Q1Ju8gSj3
+	04eU7iFhzPs3+qttCrW0fd/Q6JptYG5QFKhVVFecNlF1eAYs9PInYF5xUXJRGBzeCcLY5i
+	8bnX594F7hmTEy9gMQ9qa9ZFgBV7Ggg=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=uATPlouB;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf03.hostedemail.com: domain of ziy@nvidia.com designates 40.107.93.52 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753230648;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ya/iMqP+L9J9OUdonPqQ6BajrGRFzQbsY8dxwMUGMDQ=;
-	b=aY5fMrfEl+vuRUYonsYaYWYkJIlbVXVLnOLz6jb8oPcsE0gchy+X3dcUOc++CxQ1CwfF0Z
-	jOuyRoh2slruCKUaL0MvLsO4zkcY494AfaKZpv4MVcG+LkYhtpLIkPDtg96XMRxTE2A4cp
-	pNasvSThpZedTsChyx9HV/DHF92kyC4=
-Date: Tue, 22 Jul 2025 17:29:06 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1753230552;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ya/iMqP+L9J9OUdonPqQ6BajrGRFzQbsY8dxwMUGMDQ=;
-	b=B4vsgDXvvTZuPekKEvlBPO/rcadIYkXZRtK1VWBTBeIq8ySKpTBHPE5nbhUJ8NveiKFnoB
-	AT/Lq/U7xhSK5nAGAUh2GnfvB0/T+yUWCoT3N5eROHXYeL7yJd7UpQh2K5LOZIdKEiz7tH
-	TA5ZtxEMHLFsdhPw43GKQSyLFlJfFfM=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Eric Dumazet <edumazet@google.com>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Neal Cardwell <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>, Matthieu Baerts <matttbe@kernel.org>, 
-	Mat Martineau <martineau@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Simon Horman <horms@kernel.org>, 
-	Geliang Tang <geliang@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, mptcp@lists.linux.dev, 
-	cgroups@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v1 net-next 13/13] net-memcg: Allow decoupling memcg from
- global protocol memory accounting.
-Message-ID: <jmbszz4m7xkw7fzolpusjesbreaczmr4i64kynbs3zcoehrkpj@lwso5soc4dh3>
-References: <20250721203624.3807041-1-kuniyu@google.com>
- <20250721203624.3807041-14-kuniyu@google.com>
- <z7kkbenhkndwyghwenwk6c4egq3ky4zl36qh3gfiflfynzzojv@qpcazlpe3l7b>
- <CANn89iLg-VVWqbWvLg__Zz=HqHpQzk++61dbOyuazSah7kWcDg@mail.gmail.com>
- <jc6z5d7d26zunaf6b4qtwegdoljz665jjcigb4glkb6hdy6ap2@2gn6s52s6vfw>
- <CAAVpQUAJCLaOr7DnOH9op8ySFN_9Ky__easoV-6E=scpRaUiJQ@mail.gmail.com>
- <p4fcser5zrjm4ut6lw4ejdr7gn2gejrlhy2u2btmhajiiheoax@ptacajypnvlw>
- <CAAVpQUAk4F__D7xdWpt0SEE4WEM_-6V1P7DUw9TGaV=pxZ+tgw@mail.gmail.com>
- <xjtbk6g2a3x26sqqrdxbm2vxgxmm3nfaryxlxwipwohsscg7qg@64ueif57zont>
- <CAAVpQUAL09OGKZmf3HkjqqkknaytQ59EXozAVqJuwOZZucLR0Q@mail.gmail.com>
+	bh=jOIggSqQpp3hkNHaPqEmscY1V2tnkTCHPBOCf0O1sr8=;
+	b=b8PF6j2Aa2EQbFF/bC8bFwWbJMsJZYAUNqqMPcLakF6xhIdRCODhRqNMCbg1eWh+8ALfHw
+	RWY0Nvd4tHBpZeljkYGtk7K9A1+OL1ksWFN3U7L8GHRUHfltJpIAinzrpQalhZKvcKTMP5
+	NQzx9ghSbxF/pnGyYTHe8ftJkikmMjs=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oKimfDkFjPPPQEBbtA+on9Jkttv1fmxiAJo5O8m6YfQsOwHaDNZEOJ8Ju5NKIoN3A6XGB1fgzDH2LK9rGEV093GHzAfXHjmydRy4nxTzuocfBTMzwjBhhF61cHiM0zYbIJsq+gX8qx/8lH0B/6DQFI9P1hIiCjTP5xSbcU9eUh/uUdPTNVTouG5jdZVzzzyEGk9tBscfX7YiTKcTdY8mOk1nWVWHBrRv0XjVsOvbkydOV6STC8/ll/uh5UO5Uvt1DDZtvM3Tyi5aGwbiRan2q+G5mpvr0p08NbiwL3AiqTS38CawaVJFFf4JXzN8jjDroN/Hk/OLYY1bAUOn/4bOLg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jOIggSqQpp3hkNHaPqEmscY1V2tnkTCHPBOCf0O1sr8=;
+ b=WrFay5SW+37tHIXh9TJFRAIHXGPgemLugGmUFRtG0GdJs8vtSXWv55qlRXpGbGhaPw/9w83sORWLxCPa7dpl82N2Ii7Q0FKJ130OquKLP5JtOTPgLlgE6/IcM9Y9/FyJszAQvoc38sDFLHZDePS1gCi1T6rTIWECGzSW7x/G575bjEatkpd84ma402LGyGkVi+G0Y+t9hP8ijmBrh5NVr2LARmbSEPUt4+UdeAOT6yTNjnqcRY/y3y2ypOdc8PDoi5uiC2azc1Boyg5wxe1ZhMDn+PVT3PvK+u2A3DW+y5CYWeo7XnazWUvDaia80t4SgMGoQsYiBHgkL9GfpF1zxA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jOIggSqQpp3hkNHaPqEmscY1V2tnkTCHPBOCf0O1sr8=;
+ b=uATPlouBmZEHj8ziGxjfBQeNf9yqqmCcGqAroatDwf72DqDklgdwpBgJERiZMO2XU3gpAV87s64XAdGi9xrKDlQPZ730Bj/TpNyXZpjEorkefG46a5vf0ZH7MvFFZyMQ6UN+4afFIYHNJfvCvpAcZBfcIA1hqXOgzU8j8S3hff2Prgr1OxoM26O+Ugs/EGEJOSJMGtyZ/NxcFiHg9Q7IZ7yAeDIHtbpE1Q71vAALu1npU6HNFjr3yhMMqP+wmtn/eEi/urT4hT24zEK962kc96QNQ9z1Nkgq97mcoKK6ijNszOK56NFqVIevplAK/2H+PLohfrJCA4iXmAIvRU2egA==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ IA0PPF170E97DF1.namprd12.prod.outlook.com (2603:10b6:20f:fc04::bc9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8943.27; Wed, 23 Jul
+ 2025 00:30:43 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a%6]) with mapi id 15.20.8922.037; Wed, 23 Jul 2025
+ 00:30:43 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: wang lian <lianux.mm@gmail.com>
+Cc: akpm@linux-foundation.org, broonie@kernel.org, david@redhat.com,
+ sj@kernel.org, lorenzo.stoakes@oracle.com, linux-kernel@vger.kernel.org,
+ brauner@kernel.org, jannh@google.com, Liam.Howlett@oracle.com,
+ shuah@kernel.org, vbabka@suse.cz, gkwang@linx-info.com, p1ucky0923@gmail.com,
+ ryncsn@gmail.com, zijing.zhang@proton.me, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org
+Subject: Re: [PATCH v6] selftests/mm: add process_madvise() tests
+Date: Tue, 22 Jul 2025 20:30:39 -0400
+X-Mailer: MailMate (2.0r6272)
+Message-ID: <1C468AC6-C55B-41A3-9335-65B03EF65B83@nvidia.com>
+In-Reply-To: <20250721114614.40996-1-lianux.mm@gmail.com>
+References: <20250721114614.40996-1-lianux.mm@gmail.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: SN6PR01CA0012.prod.exchangelabs.com (2603:10b6:805:b6::25)
+ To DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAVpQUAL09OGKZmf3HkjqqkknaytQ59EXozAVqJuwOZZucLR0Q@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|IA0PPF170E97DF1:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3c0a8e65-070f-4d9c-51a6-08ddc98028cc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?MqFLwy4HYV5aJxHYCDJ9hIAcs3TgAR0sMMdZgzIktLd04nENZutsPowjnFyv?=
+ =?us-ascii?Q?yMZb3XqtRfHfaaxhatOIYPQ6IJs2OxJGKqT542dlHRbMVdb+oznEcp19kIou?=
+ =?us-ascii?Q?wN5+quziMWSbv8E5SD67yy2/X6oAGX0l70X+AR0I4JN0gDd6dFNk/628KBkO?=
+ =?us-ascii?Q?bZKGTG3BScvA19hD2b+Ej3RXshJaoIyYcx1gYTgaffMwUVWq63b7oVthog+T?=
+ =?us-ascii?Q?aBzP1FuoYi6qNTKUSelX47mVVJ290Ux/ZNaImxhRlwPkk5iplJBSiWdyop0w?=
+ =?us-ascii?Q?cCEJRYkqJptONz4qziWBDp4A1ZVrQChVYDAJ3R7SnIxAYWSBAxVpcxXpYHQn?=
+ =?us-ascii?Q?FDvpxGBkkCTXduQoxdd4cGb+ZdhBn1ZNjUHxMZLGVfnNyzI/wh4WEqMLIc/N?=
+ =?us-ascii?Q?SWwZ6+Gr65ejx6mpLmvwdGDEUWqpCILfeVs9bCMWds33JXzIcfGwWm9CNRZ/?=
+ =?us-ascii?Q?d100LK8HXwUtB5iHKXDHqisilJwibUvQmQMP3L2R9HI59OSd+sc9uWJbHuVR?=
+ =?us-ascii?Q?mKt2EO8I59LsnTvqJa9KmUxtEUCQNfXrablx51j8Wb794s/LIuaqHcW1lYYa?=
+ =?us-ascii?Q?mOTEIWP6fMbADEY03vJUipNh7QvUuhnPRFTeQliVPGrVy50i1PsAkhL2No/O?=
+ =?us-ascii?Q?u03v6q2f9XuTFn9SpXRjooCqHoJcN9VB1hItWtBwcJO4xm2ga2NbaupYK1sQ?=
+ =?us-ascii?Q?QdTdedoC8poKoufAFtueClJ4ZmWrs2/IXT4U4+PCVdc2K+6dXEg3gEVGaSeK?=
+ =?us-ascii?Q?uFkBJl1tDgWExEMVYZkbTzXAOwfHUw8wJjZG72LCN/1VVR2jzpgJBipf1qq+?=
+ =?us-ascii?Q?xPGCJRqsnGHiydjhO6JUQHpflXXQ2kGJjpAbWRjFoRXUYMQ73sEWXOEGmfDk?=
+ =?us-ascii?Q?HDswU/lOhVc9KKKgmIi3SaffwKRo4lvBXYh47eV7/6OsOn6BLLpr/wlrWRzY?=
+ =?us-ascii?Q?6CaARZCUFXWerwBqWL1GMLYSJ4EIKLcKDy5yPUYWCesInG+MOnjqgKG7lM9I?=
+ =?us-ascii?Q?VfniHgY6qIBSk/L7RMfJ4PhMWK8ho7ZZy60/YcEGoz9pfQ4EhAXvKMAXJUgI?=
+ =?us-ascii?Q?prqrkkK6/VCzPeUgkzQdIyC1iC7Gbxmjk04NTHGrXQxAJBldv86XAnhfK3Fk?=
+ =?us-ascii?Q?WidwyGVoCOVBNe+AI93ZWqUJQ4DVr0lkvvaY93RqsTv5xhGkpS2dAcGJvJ0s?=
+ =?us-ascii?Q?JCwQwUS+VOOBi9UuHuhZY2a9bamidduGH1NsN8kEO6cE8xvDXpLxrWkVSEuK?=
+ =?us-ascii?Q?s41iBYYqIyO0rGMI9nLhHAi+2PlsHMk5g+CiOwtF+NtfpVBJh661ZIej1Fz6?=
+ =?us-ascii?Q?ijQwFynrHaGpMRneOfit/yT5IjTnsD+TeQFeL1GanCgHKtkkhB7IFfjRYwNz?=
+ =?us-ascii?Q?81bPt4rYpWjZvU3+z5LCrNyBQpOTzHgxOPhjUzdXRfpRQUpH5Uh91DzS0smp?=
+ =?us-ascii?Q?TFdR5x1/JH8=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ibWGaCk1Ip1kf8gzlUX5YcaixHzYkgsfegd3hq7216IY66W+ybXvaBMKldQl?=
+ =?us-ascii?Q?qSmy/I1JS2Pbwt0SD4Hy/qBcoq+JkBSE7gNQiATWrpWTPb2pvF7R3043QptT?=
+ =?us-ascii?Q?qf/FYYqFhGsaKcJbTdkYFJkvBMqLYglEzxuE0atsbuGM/3u8BwF+PAIU7pJO?=
+ =?us-ascii?Q?7eyk9S4zCrr3AdG1FFXHvWD+GGtItf9neIbFTnT44cHZPydrm2+Kvo6MFFr1?=
+ =?us-ascii?Q?EQMDwK91nKtV9G4RgMdszHmmwEuhaUZ8ZuD0lStyliefNxLO9MyFwg/Gi3LQ?=
+ =?us-ascii?Q?T1lpFm8BBVi8KPwqTUcyhaViZ/RQah6BUbF7aQrgUDIElUOWFQxIP5GWeJlh?=
+ =?us-ascii?Q?FNndwKWGhNN7NErSfjM4VpwcNfPFJw+I520Me1Dxyjq3wq3B0luRBwj8rnTq?=
+ =?us-ascii?Q?3qJceBaI5MmOE+HnTsumnAv/7J5D/XUEeBus0AQjYZTWWpCaTw1emxdL2vFs?=
+ =?us-ascii?Q?XB58Bcz7CqEjAIjz2yD14l9z5xiqFWJuslLImt86rCU1mEBZL3+PjA55pl4e?=
+ =?us-ascii?Q?+Qvv5SQYKk4+u9ir4+hS+kHxEVnK6HIpOvlYNO8e33aqiWnRc/+meBwM6NxX?=
+ =?us-ascii?Q?hq0pLSTiyCVPg7Fe2MEs92eKy1T3IbEMCMwtYN9qDUBuhR3j7h0+rT1CHYYI?=
+ =?us-ascii?Q?K7m/sB1H7kRBiuQBbM/hEXrehJPMjSd906WzhSxb1oMwvLJzyzDO3y3WS9kB?=
+ =?us-ascii?Q?Eh/e4TNQCFEe/bXpkryjUVRlXLK/vkzxpETguai5dXE5kDP9LfEUyX7fkEAA?=
+ =?us-ascii?Q?nLPVh/tGn44GwJ1doyA/sW/kpZx/ALw+VB2dGFNeEgJerBpYGvgxPSwbpVGJ?=
+ =?us-ascii?Q?9HEQ0JZ7lbX9CBEF42j5sBbbOP0jDJCarIygIuKJr2QrjlR3BtaSkJkQNeJO?=
+ =?us-ascii?Q?DjQFrBVDjcj8Q+V1a6VNYffQokpgNSyBQEotLrcMz+WyXR6oAC6HYiSpHNsH?=
+ =?us-ascii?Q?fo/iRt7yz9Jz5bwAKwHdC/EoWNvPljsgpeqKyW+laAgk9nCHWhspeJgsXJlt?=
+ =?us-ascii?Q?bdvG7DBu8WQt+QmfkdsXHbaMeKDk1047SSmF2umhb9y4sGsAYMtwzCXrGZxQ?=
+ =?us-ascii?Q?4oY36EeJ9vSSnHHeYZmpp4rPOV+jXIJKV4cXaIMJglHK1J+1GasDgqfCXGhV?=
+ =?us-ascii?Q?VnnfO/0dausKmC6gtDAfv9SRFSMQJhP47sH28BDEgndYFPskFqbgOf5tWEZ+?=
+ =?us-ascii?Q?AkCTvx6ys4V1+HY4NvM1WJy+aUb2HXpxQ29xpXjaHQm0VT4ifzD1+uf08HnY?=
+ =?us-ascii?Q?evHXxpR25FDhKUeyOE/cvzVeB63TbKSFoSnMbADq4HHdSTKtGgISkX8XdjEk?=
+ =?us-ascii?Q?ndsP2TdZKjjZlAHi8fKaaXDPftlCZsDW3/fVBPf+IPC5Eug/hp95UIJBioMW?=
+ =?us-ascii?Q?tQkGAhMwHHR/DObWNsVVxOoasmwpI770EmLeIFm30GChWvCGbXdpNYs5nrSO?=
+ =?us-ascii?Q?J6YXMlBnAcjkkRTkunOh8vRrLJOPc/rXPIqSABYRUqNwnN67sYMSLjs5lnpV?=
+ =?us-ascii?Q?rNWMwwYGOnqs3Lmj5frxeADljTmKc5uq1OXpRPzg8OihoGvyDh8ulSQVOjZ4?=
+ =?us-ascii?Q?cOTIi6ZFe5d+47Z77KVrAk4Dh9kccyVTgewszwew?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3c0a8e65-070f-4d9c-51a6-08ddc98028cc
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2025 00:30:43.5503
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: K2mczLwuzoOqm09lznRJud0MblEC7mm7EWWy552HhtbsxhjLvcRZGloKCW92f9Zl
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PPF170E97DF1
+X-Stat-Signature: y3mjk4msewb6fxf54w58gewb1bb7ynii
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 40FD6140005
-X-Stat-Signature: 68r5swntxns9ezbj5o1by5nkah3w99nj
-X-HE-Tag: 1753230554-687993
-X-HE-Meta: U2FsdGVkX1/dZ5p9GOesaft8uQ/BFOxMXZ6lYSKwgFmiR3lhaugHlX6A3IBlx704KvwwtUUXKYT5VJU+0KPhavA+mDDPiVcJt60PrI5eTIRKuu6GYXJP8MEPH3VecdnXjM6QkKX4AYNTYRU9QjwAIxndSKW5JRHY+LPZzNghrujTLDewogyBo4OMhfPywtOo8v+wBTHr2Y4xINz4n5ry+p7Qa8KjXPoRnE3Dgf96p8+bmZ76UmO5IXZZvHFty11YS8kkYuSHJAVaJKAJpHJO9HSmNGW9exqlpAZroFSOFXQsMYlzwmA1dVA+EmLeUgnDo8kBsyZK/XbkVzas+sy1TF3c0+pu/XOyrqNK+THDauT8a2ECKDB84iEDafpv16+EzGDye4GY9/9ZcugoK4AbWFo8+zInFWpqWEn4fdjifGOxGib9E7j4y7lnehWHkBz0CRqbsmFsSOf0m8x0M35zW/Tw4GTuGOg057o7QCizO3f1c9Wda7q+bFIsb4v9Drl/RrW1wRSh7JrSe4xw4vRThlpY/vaNv3BI1sKwwGwSEynMMAjseHqC5VLwIpILzfPtj6EnImwvTES+rl8dvbuw2NyRTCDZLcJDU00PjlD15tojd5Yb1RkfsTXtGTZIVT6h2QpXcqa/geHBLf9eTlYeeRbcH4IacPtqbY5+gWsHVd0H/tB4EeWf3p8oSBj5Nn1po7X1M+7B92nl1XEH5k45IdhaIh2vUTpQakQDUkKOK8FePYHTuQt44Z4l0O0alO/Tk6Rs5ZJLatVbXFNyPLh7tbSwQ0beu9eKr6PFH7h9aMwejw6OPTypnXGYr6HYOqm6bpOKzcsv6cjRK0lnfy5zQdZBmIjfGvsawZ0KwkLoTTmAIOB02vQxDnPD3tkTm7D7DiOtxRMtc3IixXFDM0icHX6wM8GN51x3o4RG3bGrdMhL3JbDz6oxFY0OcA+6NEyQrjmQY3ISsGcCl5SBq7c
- bUIVIYNl
- +/Y/Nn2mCCPy+8ZWQWY3QvLonBA+sAbUCTOy/dvx/AK86CcDwhFufQxDpas59U/x9rnbOfq7dDyL3EtvKI4992340G1y6bk3iQY86Hi8WfbTa9LlV05b9DeDxJpr8x9DZmU5LPA6LP50UKq0wGwhj0PyahpkmZ6WC/ZmbBcxqiPMSwGKfB72U/+aHw/vvYS0Z5uFVDJ6CioJUCzQ7KVincd8INvEP7T+MomNkiBl0mXX1lvdhGOrQOnc6sA==
+X-Rspamd-Queue-Id: D160B20011
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1753230647-285577
+X-HE-Meta: U2FsdGVkX19aRbJbFVFkGBG/1zbPpN2bMTlFIO9pexh3FhDSCDt8GfHhF3sYMUzITCuxFxJpBpqMXPGWOCQk6YVlpyEYVJsKGyDeMOaXW9a+BZXs57MKMunHi35P2zhjfUTawiCTahBpWKV2cEfoQmmwkNeI9cCbC/IEfosdEZRqmkOAq7Evw3tehO5X2euE6PhFRc7TbK4Oyh8Zrg4ufqTImD5CkhyZtG80JZyqyDH74mgdko0TQyfgYih/cFsmdbdlaOyEuDg+hExlG0uEuWXc28EV0LmPjAdnAqRQ87oRM4D8qZppZx/hRTsaqjmLgDs8AIO/Nv3sbaRkEgmeBoTfLT/SzBgLlDQWKdjS4ZGmvlBgqIP9yub6/FUyPJJqNSLX+QCvyNEdDXIz6izDo5JAh2fusFQqpkKsqGcDae/+AD3chptoIJTRn3IZZiZevYpWB9+eYORy0EJ/2JUvssoryJrkUjGSK6kdZ2XGX2Ko9tZBicg+Su6WoxkvMuZegC+lnsCwdbPxxbrajuWv6/fzDjnmxI4IvaqV80vV26BMCV4oTFW2KU4Zrjqi6LavYWj9sw6dziMJchb+MeD+omP0VxGOl91DSEw72IS9QmJazEul5FmxTdn6kyrKVB1xKPK+6xhBS6cYwskMBP48E66djT/IIfz0qmH9abLvC5+j1a4AFVBFBodgFrUyr1wFbD7y2pvP5eYgflHY7/27dmxgoeNShatz2TgsL99bM2xka3oIu3cVAP4DWAUuHMoAPGFuWm3N/VYWpmbbS2aM2c5UFZ3hOXGYKddYD3qm+B8+sXG5u33fPdBV4upwSTCCcXBiV4DBqxpqOOuHMEvPztP+VsPeQV1Y0/c/Inm351NbFGDjyakJEIMy34EFU/+7D1+8FemgT5hTwSBcTP2Ymcwl6NUvvwMBr9uxKL3YFbphfe17pnGte0Vd3NkJHTXzifXWeuZDIDWaXynKS0e
+ EZyvZmQw
+ 2SuJ8VP8L+Nk1oh4CmNhLhBlLV815j0MGoIkPQwK1LzT9uhottJl9vGQjf24pbAeK0rIKkztzdOk0iCx061V+gJfrihKuJkwsCg5NnRsIMXRCzZUeyABwdUqtRjHSsQEwYMYZT43cnkDY7AGuesOat5F5GcJRbzjovM+wmK5O138U820ZL0+WvqS40hXIPo4pbPwDEe383gnpC6B52U9rDoZN0lYEpsYbWXQ+PbdhZBycM2n6578FROi3BfPDFj1Dv3ZmyAGz7q+GSG6zZ1DwYEemQFLJNfT8pVPAKBy+QE2/+PabSAUN/Wv+vFozrj86a91sEOB4i8fGxyhA6z2XDFcjBIZGdQT7y+U9G76c1g17V3jBRWTlt3T2pq6rMYxiIE7tNtNxFBgQLeS1fz45T5wWQLcc5PiPRNX7AQWzoOTRiZOvMNp1QYwN5y8bXTQOt9SLsijxF3w6mQ1oKTC7qERyPUI/5kInYEbYEaJbcwaCBVFCofd2yRYyw4o+TkRCHv0BzAEMV0RN7cMClWbXjt3Ddr6r+oP0fBezGLI6MSSxRToN3qcZ/pYp4BpabK6oy4kvklZOLAq41L+ge/F7pbqjYZoNd7UAdaY+eRJ/0V33PjupiRKnLQvKAiJRYdjQIHVzLGvh8MNgf0g=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,141 +183,358 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 22, 2025 at 02:59:33PM -0700, Kuniyuki Iwashima wrote:
-> On Tue, Jul 22, 2025 at 12:56 PM Shakeel Butt <shakeel.butt@linux.dev> wrote:
-> >
-> > On Tue, Jul 22, 2025 at 12:03:48PM -0700, Kuniyuki Iwashima wrote:
-> > > On Tue, Jul 22, 2025 at 11:48 AM Shakeel Butt <shakeel.butt@linux.dev> wrote:
-> > > >
-> > > > On Tue, Jul 22, 2025 at 11:18:40AM -0700, Kuniyuki Iwashima wrote:
-> > > > > >
-> > > > > > I expect this state of jobs with different network accounting config
-> > > > > > running concurrently is temporary while the migrationg from one to other
-> > > > > > is happening. Please correct me if I am wrong.
-> > > > >
-> > > > > We need to migrate workload gradually and the system-wide config
-> > > > > does not work at all.  AFAIU, there are already years of effort spent
-> > > > > on the migration but it's not yet completed at Google.  So, I don't think
-> > > > > the need is temporary.
-> > > > >
-> > > >
-> > > > From what I remembered shared borg had completely moved to memcg
-> > > > accounting of network memory (with sys container as an exception) years
-> > > > ago. Did something change there?
-> > >
-> > > AFAICS, there are some workloads that opted out from memcg and
-> > > consumed too much tcp memory due to tcp_mem=UINT_MAX, triggering
-> > > OOM and disrupting other workloads.
-> > >
-> >
-> > What were the reasons behind opting out? We should fix those
-> > instead of a permanent opt-out option.
-> >
+On 21 Jul 2025, at 7:46, wang lian wrote:
 
-Any response to the above?
+> Add tests for process_madvise(), focusing on verifying behavior under
+> various conditions including valid usage and error cases.
+>
+> Signed-off-by: wang lian <lianux.mm@gmail.com>
+> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Suggested-by: Zi Yan <ziy@nvidia.com>
+> Suggested-by: Mark Brown <broonie@kernel.org>
+> Acked-by: SeongJae Park <sj@kernel.org>
+>
+> ---
+> Changelog v6:
+> - Refactor child process and pidfd management to use the kselftest
+>   fixture's setup and teardown mechanism. This ensures that child
+>   processes are reliably terminated and file descriptors are closed, ev=
+en
+>   when a test is aborted by an ASSERT or SKIP macro. This resolves the
+>   issue where a failed assertion could lead to a leaked child process.
+>
+> Changelog v5: https://lore.kernel.org/lkml/20250714122533.3135-1-lianux=
+=2Emm@gmail.com/
+> - Refactor the remote_collapse test to concentrate on its primary goal
+>   confirming the successful remote invocation of process_madvise() on a=
+ child process.
+> - Split the validation logic for invalid pidfds out of the remote test =
+and into two new
+>   (`exited_process_pidfd` and `bad_pidfd`).
+> - Based mm-new branch, can ensure clean application
+>
+>
+> Changelog v4: https://lore.kernel.org/lkml/20250710112249.58722-1-lianu=
+x.mm@gmail.com/
+> - Refine resource cleanup logic in test teardown to be more robust.
+> - Improve remote_collapse test to correctly handle different THP
+>   (Transparent Huge Page) policies ('always', 'madvise', 'never'),
+>   including handling race conditions with khugepaged.
+> - Resolve build errors
+>
+> Changelog v3: https://lore.kernel.org/lkml/20250703044326.65061-1-lianu=
+x.mm@gmail.com/
+> - Rebased onto the latest mm-stable branch to ensure clean application.=
 
-> > > >
-> > > > > >
-> > > > > > My main concern with the memcg knob is that it is permanent and it
-> > > > > > requires a hierarchical semantics. No need to add a permanent interface
-> > > > > > for a temporary need and I don't see a clear hierarchical semantic for
-> > > > > > this interface.
-> > > > >
-> > > > > I don't see merits of having hierarchical semantics for this knob.
-> > > > > Regardless of this knob, hierarchical semantics is guaranteed
-> > > > > by other knobs.  I think such semantics for this knob just complicates
-> > > > > the code with no gain.
-> > > > >
-> > > >
-> > > > Cgroup interfaces are hierarchical and we want to keep it that way.
-> > > > Putting non-hierarchical interfaces just makes configuration and setup
-> > > > hard to reason about.
-> > >
-> > > Actually, I tried that way in the initial draft version, but even if the
-> > > parent's knob is 1 and child one is 0, a harmful scenario didn't come
-> > > to my mind.
-> > >
-> >
-> > It is not just about harmful scenario but more about clear semantics.
-> > Check memory.zswap.writeback semantics.
-> 
-> zswap checks all parent cgroups when evaluating the knob, but
-> this is not an option for the networking fast path as we cannot
-> check them for every skb, which will degrade the performance.
+> - Refactor common signal handling logic into vm_util to reduce code dup=
+lication.
+> - Improve test robustness and diagnostics based on community feedback.
+> - Address minor code style and script corrections.
+>
+> Changelog v2: https://lore.kernel.org/lkml/20250630140957.4000-1-lianux=
+=2Emm@gmail.com/
+> - Drop MADV_DONTNEED tests based on feedback.
+> - Focus solely on process_madvise() syscall.
+> - Improve error handling and structure.
+> - Add future-proof flag test.
+> - Style and comment cleanups.
+>
+> -V1: https://lore.kernel.org/lkml/20250621133003.4733-1-lianux.mm@gmail=
+=2Ecom/
+>  tools/testing/selftests/mm/.gitignore     |   1 +
+>  tools/testing/selftests/mm/Makefile       |   1 +
+>  tools/testing/selftests/mm/process_madv.c | 302 ++++++++++++++++++++++=
 
-That's an implementation detail and you can definitely optimize it. One
-possible way might be caching the state in socket at creation time which
-puts some restrictions like to change the config, workload needs to be
-restarted.
+>  tools/testing/selftests/mm/run_vmtests.sh |   5 +
+>  4 files changed, 309 insertions(+)
+>  create mode 100644 tools/testing/selftests/mm/process_madv.c
+>
+> diff --git a/tools/testing/selftests/mm/.gitignore b/tools/testing/self=
+tests/mm/.gitignore
+> index f2dafa0b700b..e7b23a8a05fe
+> --- a/tools/testing/selftests/mm/.gitignore
+> +++ b/tools/testing/selftests/mm/.gitignore
+> @@ -21,6 +21,7 @@ on-fault-limit
+>  transhuge-stress
+>  pagemap_ioctl
+>  pfnmap
+> +process_madv
+>  *.tmp*
+>  protection_keys
+>  protection_keys_32
+> diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selfte=
+sts/mm/Makefile
+> index ae6f994d3add..d13b3cef2a2b 100644
+> --- a/tools/testing/selftests/mm/Makefile
+> +++ b/tools/testing/selftests/mm/Makefile
+> @@ -85,6 +85,7 @@ TEST_GEN_FILES +=3D mseal_test
+>  TEST_GEN_FILES +=3D on-fault-limit
+>  TEST_GEN_FILES +=3D pagemap_ioctl
+>  TEST_GEN_FILES +=3D pfnmap
+> +TEST_GEN_FILES +=3D process_madv
+>  TEST_GEN_FILES +=3D thuge-gen
+>  TEST_GEN_FILES +=3D transhuge-stress
+>  TEST_GEN_FILES +=3D uffd-stress
+> diff --git a/tools/testing/selftests/mm/process_madv.c b/tools/testing/=
+selftests/mm/process_madv.c
+> new file mode 100644
+> index 000000000000..8a83eac3bfab
+> --- /dev/null
+> +++ b/tools/testing/selftests/mm/process_madv.c
+> @@ -0,0 +1,302 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +
+> +#define _GNU_SOURCE
+> +#include "../kselftest_harness.h"
+> +#include <errno.h>
+> +#include <setjmp.h>
+> +#include <signal.h>
+> +#include <stdbool.h>
+> +#include <stdio.h>
+> +#include <stdlib.h>
+> +#include <string.h>
+> +#include <linux/mman.h>
+> +#include <sys/syscall.h>
+> +#include <unistd.h>
+> +#include <sched.h>
+> +#include "vm_util.h"
+> +
+> +#include "../pidfd/pidfd.h"
+> +
+> +FIXTURE(process_madvise)
+> +{
+> +	unsigned long page_size;
+> +	pid_t child_pid;
+> +	int remote_pidfd;
+> +	int pidfd;
+> +};
+> +
+> +FIXTURE_SETUP(process_madvise)
+> +{
+> +	self->page_size =3D (unsigned long)sysconf(_SC_PAGESIZE);
+> +	self->pidfd =3D PIDFD_SELF;
+> +	self->remote_pidfd =3D -1;
+> +	self->child_pid =3D -1;
+> +};
+> +
+> +FIXTURE_TEARDOWN_PARENT(process_madvise)
+> +{
+> +	/* This teardown is guaranteed to run, even if tests SKIP or ASSERT *=
+/
+> +	if (self->child_pid > 0) {
+> +		kill(self->child_pid, SIGKILL);
+> +		waitpid(self->child_pid, NULL, 0);
+> +	}
+> +
+> +	if (self->remote_pidfd >=3D 0)
+> +		close(self->remote_pidfd);
+> +}
+> +
+> +static ssize_t sys_process_madvise(int pidfd, const struct iovec *iove=
+c,
+> +				   size_t vlen, int advice, unsigned int flags)
+> +{
+> +	return syscall(__NR_process_madvise, pidfd, iovec, vlen, advice, flag=
+s);
+> +}
+> +
+> +/*
+> + * This test uses PIDFD_SELF to target the current process. The main
+> + * goal is to verify the basic behavior of process_madvise() with
+> + * a vector of non-contiguous memory ranges, not its cross-process
+> + * capabilities.
+> + */
+> +TEST_F(process_madvise, basic)
+> +{
+> +	const unsigned long pagesize =3D self->page_size;
+> +	const int madvise_pages =3D 4;
+> +	struct iovec vec[madvise_pages];
+> +	int pidfd =3D self->pidfd;
+> +	ssize_t ret;
+> +	char *map;
+> +
+> +	/*
+> +	 * Create a single large mapping. We will pick pages from this
+> +	 * mapping to advise on. This ensures we test non-contiguous iovecs.
+> +	 */
+> +	map =3D mmap(NULL, pagesize * 10, PROT_READ | PROT_WRITE,
+> +		   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+> +	if (map =3D=3D MAP_FAILED)
+> +		SKIP(return, "mmap failed, not enough memory.\n");
+> +
+> +	/* Fill the entire region with a known pattern. */
+> +	memset(map, 'A', pagesize * 10);
+> +
+> +	/*
+> +	 * Setup the iovec to point to 4 non-contiguous pages
+> +	 * within the mapping.
+> +	 */
+> +	vec[0].iov_base =3D &map[0 * pagesize];
+> +	vec[0].iov_len =3D pagesize;
+> +	vec[1].iov_base =3D &map[3 * pagesize];
+> +	vec[1].iov_len =3D pagesize;
+> +	vec[2].iov_base =3D &map[5 * pagesize];
+> +	vec[2].iov_len =3D pagesize;
+> +	vec[3].iov_base =3D &map[8 * pagesize];
+> +	vec[3].iov_len =3D pagesize;
+> +
+> +	ret =3D sys_process_madvise(pidfd, vec, madvise_pages, MADV_DONTNEED,=
+ 0);
+> +	if (ret =3D=3D -1 && errno =3D=3D EPERM)
+> +		SKIP(return,
+> +			   "process_madvise() unsupported or permission denied, try running=
+ as root.\n");
+> +	else if (errno =3D=3D EINVAL)
+> +		SKIP(return,
+> +			   "process_madvise() unsupported or parameter invalid, please chec=
+k arguments.\n");
+> +
+> +	/* The call should succeed and report the total bytes processed. */
+> +	ASSERT_EQ(ret, madvise_pages * pagesize);
+> +
+> +	/* Check that advised pages are now zero. */
+> +	for (int i =3D 0; i < madvise_pages; i++) {
+> +		char *advised_page =3D (char *)vec[i].iov_base;
+> +
+> +		/* Content must be 0, not 'A'. */
+> +		ASSERT_EQ(*advised_page, '\0');
+> +	}
+> +
+> +	/* Check that an un-advised page in between is still 'A'. */
+> +	char *unadvised_page =3D &map[1 * pagesize];
+> +
+> +	for (int i =3D 0; i < pagesize; i++)
+> +		ASSERT_EQ(unadvised_page[i], 'A');
+> +
+> +	/* Cleanup. */
+> +	ASSERT_EQ(munmap(map, pagesize * 10), 0);
+> +}
+> +
+> +/*
+> + * This test deterministically validates process_madvise() with MADV_C=
+OLLAPSE
+> + * on a remote process, other advices are difficult to verify reliably=
+=2E
+> + *
+> + * The test verifies that a memory region in a child process,
+> + * focus on process_madv remote result, only check addresses and lengt=
+hs.
+> + * The correctness of the MADV_COLLAPSE can be found in the relevant t=
+est examples in khugepaged.
+> + */
+> +TEST_F(process_madvise, remote_collapse)
+> +{
+> +	const unsigned long pagesize =3D self->page_size;
+> +	long huge_page_size;
+> +	int pipe_info[2];
+> +	ssize_t ret;
+> +	struct iovec vec;
+> +
+> +	struct child_info {
+> +		pid_t pid;
+> +		void *map_addr;
+> +	} info;
+> +
+> +	huge_page_size =3D default_huge_page_size();
 
-> 
-> Also, we don't track which sockets were created with the knob
-> enabled and how many such sockets are still left under the cgroup,
-> there is no way to keep options consistent throughout the hierarchy
-> and no need to try hard to make the option pretend to be consistent
-> if there's no real issue.
-> 
-> 
-> >
-> > >
-> > > >
-> > > > >
-> > > > > >
-> > > > > > I am wondering if alternative approches for per-workload settings are
-> > > > > > explore starting with BPF.
-> > > > > >
-> > > >
-> > > > Any response on the above? Any alternative approaches explored?
-> > >
-> > > Do you mean flagging each socket by BPF at cgroup hook ?
-> >
-> > Not sure. Will it not be very similar to your current approach? Each
-> > socket is associated with a memcg and the at the place where you need to
-> > check which accounting method to use, just check that memcg setting in
-> > bpf and you can cache the result in socket as well.
-> 
-> The socket pointer is not writable by default, thus we need to add
-> a bpf helper or kfunc just for flipping a single bit.  As said, this is
-> overkill, and per-memcg knob is much simpler.
-> 
+You should use read_pmd_pagesize() here, since default_huge_page_size()
+is used for hugetlb. See Documentation/admin-guide/mm/hugetlbpage.rst.
+MADV_COLLAPSE is for THP. The test passes if HugeTLB size is 2M and
+fails otherwise.
 
-Your simple solution is exposing a stable permanent user facing API
-which I suspect is temporary situation. Let's discuss it at the end.
+> +	if (huge_page_size <=3D 0)
+> +		SKIP(return, "Could not determine a valid huge page size.\n");
+> +
+> +	ASSERT_EQ(pipe(pipe_info), 0);
+> +
+> +	self->child_pid =3D fork();
+> +	ASSERT_NE(self->child_pid, -1);
+> +
+> +	if (self->child_pid =3D=3D 0) {
+> +		char *map;
+> +		size_t map_size =3D 2 * huge_page_size;
+> +
+> +		close(pipe_info[0]);
+> +
+> +		map =3D mmap(NULL, map_size, PROT_READ | PROT_WRITE,
+> +			   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+> +		ASSERT_NE(map, MAP_FAILED);
+> +
+> +		/* Fault in as small pages */
+> +		for (size_t i =3D 0; i < map_size; i +=3D pagesize)
+> +			map[i] =3D 'A';
+> +
+> +		/* Send info and pause */
+> +		info.pid =3D getpid();
+> +		info.map_addr =3D map;
+> +		ret =3D write(pipe_info[1], &info, sizeof(info));
+> +		ASSERT_EQ(ret, sizeof(info));
+> +		close(pipe_info[1]);
+> +
+> +		pause();
+> +		exit(0);
+> +	}
+> +
+> +	close(pipe_info[1]);
+> +
+> +	/* Receive child info */
+> +	ret =3D read(pipe_info[0], &info, sizeof(info));
+> +	if (ret <=3D 0) {
+> +		waitpid(self->child_pid, NULL, 0);
+> +		SKIP(return, "Failed to read child info from pipe.\n");
+> +	}
+> +	ASSERT_EQ(ret, sizeof(info));
+> +	close(pipe_info[0]);
+> +	self->child_pid =3D info.pid;
+> +
+> +	self->remote_pidfd =3D syscall(__NR_pidfd_open, self->child_pid, 0);
+> +	ASSERT_GE(self->remote_pidfd, 0);
+> +
+> +	vec.iov_base =3D info.map_addr;
+> +	vec.iov_len =3D huge_page_size;
+> +
+> +	ret =3D sys_process_madvise(self->remote_pidfd, &vec, 1, MADV_COLLAPS=
+E, 0);
+> +	if (ret =3D=3D -1) {
+> +		if (errno =3D=3D EINVAL)
+> +			SKIP(return, "PROCESS_MADV_ADVISE is not supported.\n");
+> +		else if (errno =3D=3D EPERM)
+> +			SKIP(return,
+> +				   "No process_madvise() permissions, try running as root.\n");
+> +		return;
+> +	}
+> +
+> +	ASSERT_EQ(ret, huge_page_size);
+> +}
+> +
+> +/*
+> + * Test process_madvise() with a pidfd for a process that has already
+> + * exited to ensure correct error handling.
+> + */
+> +TEST_F(process_madvise, exited_process_pidfd)
+> +{
+> +	struct iovec vec;
+> +	ssize_t ret;
+> +	int pidfd;
+> +
+> +	vec.iov_base =3D (void *)0x1234;
+> +	vec.iov_len =3D 4096;
 
-> 
-> >
-> > >
-> > > I think it's overkill and we don't need such finer granularity.
-> > >
-> > > Also it sounds way too hacky to use BPF to correct the weird
-> > > behaviour from day0.
-> >
-> > What weird behavior? Two accounting mechanisms. Yes I agree but memcgs
-> > with different accounting mechanisms concurrently is also weird.
-> 
-> Not that weird given the root cgroup does not allocate sk->sk_memcg
-> and are subject to the global tcp memory accounting.  We already have
-> a mixed set of memcgs.
+Here an invalid address range is provided, since pid is checked before
+address ranges are checked.
 
-Running workloads in root cgroup is not normal and comes with a warning
-of no isolation provided.
+BTW, the size of iovec array cannot be bigger than IOV_MAX. It might be
+worth testing as well, if you want to.
 
-I looked at the patch again to understand the modes you are introducing.
-Initially, I thought the series introduced multiple modes, including an
-option to exclude network memory from memcg accounting. However, if I
-understand correctly, that is not the case—the opt-out applies only to
-the global TCP/UDP accounting. That’s a relief, and I apologize for the
-misunderstanding.
+With default_huge_page_size() -> read_pmd_pagesize() fix, feel free to
+add:
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Tested-by: Zi Yan <ziy@nvidia.com>
 
-If I’m correct, you need a way to exclude a workload from the global
-TCP/UDP accounting, and currently, memcg serves as a convenient
-abstraction for the workload. Please let me know if I misunderstood.
+I am able to compile and run the test on arm64. Thanks.
 
-Now memcg is one way to represent the workload. Another more natural, at
-least to me, is the core cgroup. Basically cgroup.something interface.
-BPF is yet another option.
 
-To me cgroup seems preferrable but let's see what other memcg & cgroup
-folks think. Also note that for cgroup and memcg the interface will need
-to be hierarchical.
+Best Regards,
+Yan, Zi
 
