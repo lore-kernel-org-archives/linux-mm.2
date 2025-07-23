@@ -2,93 +2,93 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 60CA9C83F17
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 14:47:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A16D9C83F1A
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 14:47:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F4546B0111; Wed, 23 Jul 2025 10:47:26 -0400 (EDT)
+	id EDF906B0112; Wed, 23 Jul 2025 10:47:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A5326B0112; Wed, 23 Jul 2025 10:47:26 -0400 (EDT)
+	id E8F926B0114; Wed, 23 Jul 2025 10:47:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F7816B0113; Wed, 23 Jul 2025 10:47:26 -0400 (EDT)
+	id CE31C6B0115; Wed, 23 Jul 2025 10:47:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 109F26B0111
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 10:47:26 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DA9975AD14
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BB3B06B0112
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 10:47:27 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 844E880756
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:47:27 +0000 (UTC)
+X-FDA: 83695807734.17.71E3C9C
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	by imf15.hostedemail.com (Postfix) with ESMTP id B5C93A000B
 	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:47:25 +0000 (UTC)
-X-FDA: 83695807650.04.80B59F9
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 081DD10000B
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:47:23 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=soleen-com.20230601.gappssmtp.com header.s=20230601 header.b=i4XRDvt4;
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=soleen-com.20230601.gappssmtp.com header.s=20230601 header.b=0wqTMIVJ;
 	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753282044; a=rsa-sha256;
+	spf=pass (imf15.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753282045; a=rsa-sha256;
 	cv=none;
-	b=jyZrGcQ+bMB/hiLFTxssPp/Qc25JBfQgD7vcGFp4cn+nGKKZtZVQ77ZthFKqFPlBajjnZH
-	18wciUhHdpt1tRo+hqAch9UvOe+ZYyMFsbugHW/5Q8cgZdpj8r8hheDGz1WASLQXs37AEq
-	qNsEQr+rtXYhn98qgsn8sAIw1qhMbqs=
+	b=0Io1qLM4z8aqN8wO8CZfybSm6672kxSYMkKzqyTwIIe8sKSRDqlbRZSdkd1pyvnDCHyPE9
+	oRyx/GCn68J/jf/zKDv522RdnOMtnObbutyYJ5qeL5hQ/mRurRvY7yHPMHJKb6TyqLxNMG
+	UskDhOgIGwSpfhh6fq46bAHtIjRMB24=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=soleen-com.20230601.gappssmtp.com header.s=20230601 header.b=i4XRDvt4;
+	imf15.hostedemail.com;
+	dkim=pass header.d=soleen-com.20230601.gappssmtp.com header.s=20230601 header.b=0wqTMIVJ;
 	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	spf=pass (imf15.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753282044;
+	s=arc-20220608; t=1753282045;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LimjlICD6sUHgsbY/Y2oVH6YvmC/VDcU5uGtC2pfHEg=;
-	b=wA/CNGoMLECx/32ndLZ9qk+ErUYdhDboIBkKy/GVOUQ6C070GWGQtgOGPwCe8Cp0vMiDzN
-	Iw/bshLaoAvyRmzUPa65rlFzuVFnHNwkNvl26/3PY8dkGyxzgvAeBSzoJNpYxePZWHLVWa
-	zJEOhNJqfP3qeu4Cl8CE3h8j9M5CfmY=
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-70e1d8c2dc2so65664497b3.3
-        for <linux-mm@kvack.org>; Wed, 23 Jul 2025 07:47:23 -0700 (PDT)
+	bh=sk38mGBhqK7qzK3HNwB+80JVX/lHD/SIvkcYryZBkd4=;
+	b=vy1T3VDy7d+8ZeEsqZslh532s6YfvVUdt+8ZoyRiazUGdIMvOHVfyBP9W92WYbNSYikuO/
+	6Bj0ZRVRSeMYHwlR+4mRNwlHb2jBreG7y6oqkzecRxtZT4wLXP9PfviNMsTJh4sr53drki
+	CnIgaz1CcVjq8f2gJ116XnzPk1qs9Pw=
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-70f94fe1e40so11240287b3.1
+        for <linux-mm@kvack.org>; Wed, 23 Jul 2025 07:47:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen-com.20230601.gappssmtp.com; s=20230601; t=1753282043; x=1753886843; darn=kvack.org;
+        d=soleen-com.20230601.gappssmtp.com; s=20230601; t=1753282045; x=1753886845; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=LimjlICD6sUHgsbY/Y2oVH6YvmC/VDcU5uGtC2pfHEg=;
-        b=i4XRDvt4N4Q/q0JhPsBhv23MlhYd9we/Hhr+H92qP3Z4qftdT4adfxJu/4Dl3xcSb2
-         RThQcaOZScKZfy18rXRhgGPj00aV3h/gSG/SrXKO4pZ7pxKOYxx7OUHG7ZH8eN3injml
-         eW43firDD3/uJHlEyqAxdgAp7peTEAIF/XZhJZAjoW0I6lXudDVICqyAF43JN6tdjaB1
-         Y28PDnPYQDdIMRafahKANGgS1TMWNxdKgThWUeWwuIcf2i63sOA+CRlG434oyLJexBI0
-         fJ2QzuAzY4IGFdiJNCv8UaBAhbKESUFVUw4Kao0N/qthnwE4xmzKaNNq7fUWQcpRG+md
-         akwQ==
+        bh=sk38mGBhqK7qzK3HNwB+80JVX/lHD/SIvkcYryZBkd4=;
+        b=0wqTMIVJOThF+a4qNdweGisY6oWxph5jZweXHViSWfWDG2uwJGtvEmoWPlWDJwS/Lb
+         A4tE7an7aQnfvhy1whIIwLYnXYv0GzfhzGO4oeqotzZIkcRoxNfBtxSZ5QfDq77gndNW
+         3z50tHrZVk/ZrA2RVWCoG7OnsNEnmX+M6vf1q8fEXA91GBnKvyOs1l3FWmB2381qN/6L
+         587UHffxCDP/GWMOrVLwMzt7YJx1JaQ0WMA5SCqhv8YtYwjQ9P+Jr49YAxpk+7sf0tVm
+         pNfQsxV2CqBRJKo9eqzYRLT8FBRbHkUL/PpppihMDtBVelv2DWOwC5V8RPb7VMjPM8Im
+         V96Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753282043; x=1753886843;
+        d=1e100.net; s=20230601; t=1753282045; x=1753886845;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=LimjlICD6sUHgsbY/Y2oVH6YvmC/VDcU5uGtC2pfHEg=;
-        b=wzgYP7+kqPcGODN7z+FPPhWuRd+tiYs45x4qbSCu2TzDkCRYZuW2n3lsnTy+xRLGMD
-         72uLD3IcENM+wPTUdnhzFZfIXC3p+/a0Qiws1V5FWgX1xxyRbFyAjz/uPwzpR/vVJWBw
-         o3+YvDJb2E2XwhbInelMq1TdvooXU5wuHQaTgBRdBNjpJ7yBqBnXqkYRk9CfmW+7QOjd
-         MHhQaGqE8jR0VhIqHE8Y8Cq2MRQUTroqXSrrGNlyvurohR2SMF0TxY8OQLnwof6+MmB3
-         5/oh3Y00D46wtPJWhETxpAikOiifb1wYNE7NNCK/2sngVchz4B/qllvYlVLoghohv6Gp
-         nEdw==
-X-Forwarded-Encrypted: i=1; AJvYcCX1AGYe1gD1Tk93gjRhRHCWmALtjl3xMITmm41TmTEMORXq5734cUnpz3jhDa+WUw0ac6asfUmkEg==@kvack.org
-X-Gm-Message-State: AOJu0YwALl9I/IvY+bJfkkdzVKAPDr7E6f9Lmyc0cmlhS3Z93IaN5XJW
-	J7zGDLuJyjzd6CY/bBuvPqPkpCPoZ2cSFi6dI65FuO9aFp3mLpV2X2gNFJPD56ZMVrI=
-X-Gm-Gg: ASbGncs28j+FNDGv+yCIXGUqtjKNi5fmNGtAUTD2hlyyV31kmWVEYuNN7R+XLj7kkEG
-	7jToHK8pP59GQVxwgFjy2F0ESAVqUo8DO6GnLPxeG8gPu82Eq6SbKmNRf2eYyT7HWklkufqrKj9
-	foNa9YPDFvgA3hrhUTy/gQa/abyPDc0QgfTezoXKNvQsqvaCSc1F4/3TRPd0usigAd7Fp0AbPAd
-	2zh/zGvK5XaLBYgF9kSPs8aXDSBDWqZ8JG8y2VTDOUtFo7j6CVUapRvnK50WR7bOMmqsO1rs32o
-	d2H57vwayUkBSEFOLtbf2S/dqbdK//2F0kDLY7w85cwzbL8cTUmkYkfzFrS0SzgsMCahrH8+hgN
-	HjjnaWqh+bfyoTmJ0GNdyggVGWKzXlkvkIltHV6M4s14d3nv14rXjX7jZpcxTXvjafRHjVkHjO/
-	Z9N9XQVIcsUXCbTg==
-X-Google-Smtp-Source: AGHT+IE1KB1/uVE4jUf4IJeel0OlV1177O/VVSuJSc+kWDoCjrMljLQyTiL7urB8xdRJhfIvOcxAhw==
-X-Received: by 2002:a05:690c:6606:b0:712:c14a:a36a with SMTP id 00721157ae682-719b422a7edmr43106877b3.20.1753282042565;
-        Wed, 23 Jul 2025 07:47:22 -0700 (PDT)
+        bh=sk38mGBhqK7qzK3HNwB+80JVX/lHD/SIvkcYryZBkd4=;
+        b=kcecNavPegCd0hXRM5nIbmBfrvFErw37Gs1qtw19DKvQjd8xVnaxfWKpAE3Tb/Xb2L
+         hadhHZew5yh4eSB7DwSD9gGtWXRAFP4ITvcL+qBK8gJntegZ5uSmk0n0sNuj68Np9Stl
+         Og+LImrWMi+yAWnfTneAwgBJVeDuIpcQj/VV0D61op5dpM8Ti9C8S0Z7X156VMNE5xhH
+         XXElZtds+uQdXoVYw9JvahYi/MPmKZy6E950CJGm3QoNQE96iy/4AQrmhoxPO3YYNpKj
+         TEc0dplwxZu8UVGmJYD7wRNX2wUqzQzmYjhthCw1Fx0ThiHDHJ5SY4wsG/m/Lhxk4G2r
+         nDvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVk4FxW4CXs/6DETvFzyKKdXDdM0oqgo3Dai1v7janXf8OeX05KLttPpNnHDGXAqK8z/6Jqzoyvhw==@kvack.org
+X-Gm-Message-State: AOJu0YydBugzrQIGS/4UqBn/22adu9q6IK9BYlSXRk60lJsNRIN3q2zR
+	guhvAMkahz4zaPEGC+CC6ceDz946C2JG2qUSGvNxWGiRTJg9hLcrFSrM5IFw0rxWcOE=
+X-Gm-Gg: ASbGncsACBR9sJobvMe4+jxY4pDrogTctlQCNnKMKlL+GVyjbYkFW4ycdoOVXu5qi6n
+	0/sED9Y4fxwtgnjdLZps1ooIdTq+68B3YL7d9rMfEIIKWlvBhGUI1xX/uSnRZ22DILnYEkRePqp
+	pbrXwDb5s4s8NpEadz9VJPEuYVPLuGr7413otr0jhU4NqqFy5kPifzFh/K1YdYQ+KF/FCTn/fQ1
+	lzsgBlwXYF6dTgqXZurgFXe7S5naXJBpRG92PVXJTfNdSVSEob9CsAEr6t+L276AWumCjbRa4or
+	2z2jyypd5YEgcLGmLmsmHhewOWZgAVuXc2roo72jM2QuksPjmJl/18dHMtD5HfRele17lUtnxLE
+	4rdn9NOtDqIkpydHS11cJjIkL+ZuGAXYxDEYeo7OEWoK4iD8tu1wIf1tZwTI7bKa6uVLRfMtiE7
+	weciUSXfnyDvZkjQ==
+X-Google-Smtp-Source: AGHT+IHGYfjoIy8qo73uD860AaG0pKa+DBLv7UTBP+7WtZjAXyEb/laqBGmfDkMsPVthzLrkCs+A9A==
+X-Received: by 2002:a05:690c:d84:b0:712:c5f7:1f11 with SMTP id 00721157ae682-719a0b52782mr94165947b3.10.1753282044761;
+        Wed, 23 Jul 2025 07:47:24 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (235.247.85.34.bc.googleusercontent.com. [34.85.247.235])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-719532c7e4fsm30482117b3.72.2025.07.23.07.47.20
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-719532c7e4fsm30482117b3.72.2025.07.23.07.47.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Jul 2025 07:47:21 -0700 (PDT)
+        Wed, 23 Jul 2025 07:47:23 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: pratyush@kernel.org,
 	jasonmiu@google.com,
@@ -162,22 +162,22 @@ To: pratyush@kernel.org,
 	parav@nvidia.com,
 	leonro@nvidia.com,
 	witu@nvidia.com
-Subject: [PATCH v2 14/32] liveupdate: luo_files: add infrastructure for FDs
-Date: Wed, 23 Jul 2025 14:46:27 +0000
-Message-ID: <20250723144649.1696299-15-pasha.tatashin@soleen.com>
+Subject: [PATCH v2 15/32] liveupdate: luo_files: implement file systems callbacks
+Date: Wed, 23 Jul 2025 14:46:28 +0000
+Message-ID: <20250723144649.1696299-16-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
 In-Reply-To: <20250723144649.1696299-1-pasha.tatashin@soleen.com>
 References: <20250723144649.1696299-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 081DD10000B
-X-Stat-Signature: 5urz7wun744bw4jwqep5jresj547e3df
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B5C93A000B
+X-Stat-Signature: whso96se4wtauwhbrowy3jc9jr6rjda7
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1753282043-566325
-X-HE-Meta: U2FsdGVkX1/T31U8UqI9atyncFU2AkVXzePrtz0FieGTHQEAsCLEmXDa56QHqu/s16WlQmjmbX7uozQ8N46M+8XQquBIbTR2B/SnMjHVkDukPQUlqnMBA/LfiRDmnn4GU2WUnS7Xvur6JrfGDssiFJ/FFM9a3GSHYwyZl/Nn+GVmDmrPOlNA+GwyiL8Qvo5cw9Nf/r1ikKYftCiSnfWU0lWuLLVBBnR3PYhlusTrZ9ARgRP8QI81GxmElpiW6SZ7+h4HlrhM8CIIwuWLwKzi7l5OIM2sjqu/fFOaEOm1GLOXjPWhy3/VaasSEbmyxOk+ghxdQFlmcuUHrIl5ByF/oOZVoteOqz5DjMEObls/qTg1Bcm7yBOd1tdFNu4wDzP3DGvMwfac91C7t7y/Xn8JFOMC5srzhzc4lIRAdF491THNFxrjHcXOO8brMDyZN17w++LbYjjozCYhfcwMrdsmQd4k66Ng3LN9eAjH3t/XjsuIINW1j7KsUXQ8xCcxVR4sTDxB3SD1mKGCjDQ2H/eBHjwlsHU+nboCJOybakE4zciiPPy+UdJ77nKJ3MZYiOVUNZO+wFCSCPpofDZnCGPF+1FjwBuK2WISUr17HMB4OF1SSDrX+929o/HHypXScsUe2XKM9N+xmjzZKDP7cb3wrBZ0SRWWyV/KfnnjHK9jR2Ir6KkN1o30wM6QF1UP6h91t3K33zVsNCAtJuwhgACr6dzLjqBDKmmnBwZzSIWuqKZ/qhicQ7QXjHQsTnJ9T9MNBkGqveyHJydPB9MgDYJh4KYpCE4aXcggfdYGNGxIBEiiClDmDSUTGP/3hYpOk3iEcStz1aM/X7nGA3kcwxorJfBt1d3LfDzAmj7icnKI6tIcAdk4tHp3sln0AvtdkODk5swNxR4rugYGbBXZgc3ZVTPMPAehpn+8zQTeE8gkPxE9bqybxUbdr+rAp9voh0Walmzj9tyjSldkINDvkYk
- 81OVd8OC
- lpHLe52Se2teviTcoPJZ8BVks8FFB6TTmrEbZJGYl9bZtz5wvzoGbFdvmiv834EWXTLmugTV24SS1krI49uLVBAKfgKQhNVsKxzHphPorHJ40Qrg0YUZkC6YMHeWYZmJFsui85FW8YEt41Vp7ohFkHsuj9O6XsZeYC998CsJdkre9Y/butSORrywP858Fx1wRVxhTHg1G1DgjQ15P8hzV2ND9kepIQBzZWvd/mxiLk8rxtGa+umOiR7uJGCmz6zQLART3QbosksiPw/kHb0PvmFv9yi5BjkDYYPWmQcejMEcB7AS+5NmyelHYGcU2OF7Z4RWnjH7m/zsb+u6bNkXN3HxdkabwYp/vsZaB6mReLqqKkpzWSQSDMmoTTjG8le25Qrq2AqwLMAQKH+rLlAvs/jl886eem0cieWJeokKWfXMQuqhtABYx6s8MxisG76Fm2TxARSRlUXhvEFF81ii3HpiPhArGSktG+ZFaiERozu11iEhWwQ9w5VI6bsCu0MhSiq4Fs8c5rbrbDU53/iM4oy/nI3UlPXC3nAlOqzzsWLCCGcY=
+X-HE-Tag: 1753282045-651920
+X-HE-Meta: U2FsdGVkX1/WALrJCzMONNE6tuvuXgLbLrBLQs7qc5a7yyqQTnorJMOFGjb/QhXXmC3crvAaU5KbqU/fwAGyRkwqSs4p/IyGouaqwZNWbUGgw+9nqIu3T8Fc0A4uOLI70XIL3cY7fkMnjWTE9MHE1OV+Cq21SMFJ9/2UcrYHfaYaJEarNLoM/Eudilfp2duciDk5sDFwH7ynehn50GI++vwWw+t77cjfmE9HLGusn3ODhtiw2eqdBLzUCcNq3Z4tYcmb1fHhvoB1pUSPU7aj6MxTmL+iRgzljI3ETZA1NyocXHo7gDZ64IwA+rCltiOgdEyhK3UTADapiisEgGQvfCYKK9xfVfRYylEvi6p5k/5KPU1a6qZ696F552zHfUgk0sawBKNZeIhcDHSAdyTHKfPG+/8oa71DqUSgK8ZJgbPZv6v7jzG6Ne3d0wJGigrL/J72Z9UvWy11FpDHOOC0fHZ/I26xqvAqjCGY4BSIPHKpPmzKfg+ctJoEGBsY3OgB9L3ClFmveMoLUzsWkNWOVpq83eWSHW5rH3F4uGmcCBJh6VsQKd7Ggdzk2vHSPWbsmn9Dja+XF+HwaKxURzLTvsCdp7S5P1WpmozaA84RmGrkhRoKS86+0TL8LHHv1gVZaNdSw4KB/mvWpxHCtUL72eUDbGE5hehVmz24s8CS064I5Gi245FJfpvvWmccCsskIlYVpAZcCZ/cFfalRHmIWDtcF8DeVzXmT8hwj5Fhw0jnAEdw8066iUrdOMCXvIGMbs7hfMxL4sfYoCm861t67mDq+xD0ixr/oDGAB1YFBGIChR5tqYwHie1WB7FDDTQi8aRmamo5J9ODLFEXsBNE51g72QJ8MhFqXh46ApajdBfzvk4zycG+qYxgjgFQasgQUfb/Us0E7IwW1d7jimjUjFjTivuX9/WtFAABdfwjIzIdb6lcucn4ShVCpDfVQkA0rMVjlPQRBqOjDkEXhVf
+ lArg7tQ0
+ WkqBW0VZJwkHIIh6XN0E/McJxssluXO4Q8LOCVPC0rJLNx/QqHhCIARrPiEQbd8wT3BUMXQB21RDPo4Yw3ac8nzY9+zBvL+Df+yTpY0cvarhB/QXGoKml8dxN8XMtMzGiEPdex5cLuvgzZqih8tFCyJJfvP3qO5p8cGaB8TACZwyNk4Rr8/5r6JTWxkWx/L8ZqDYJXksMzgx/MVhq46rPq1bbYr381o1eoawEAAaP6DopLkPFg8sSQTqbs3kAduDQoFyofLm6JRC6KrC8rKsHiwFxIBCjt4tTMkuxLIWYNyZaDd54M6MgZXMaEquW+ZuvtzbtjKdTXq5ad5b4ybgaSu7GjDDy8B4Nv1Hs+Xt7OZtytM4GxMLgExBvFBwW+q26qvgODLW7GyJsuTIKgr3ipqSogzQZcQq9A7OtXJGWSQlHwa0ZMhFt1OMfUWXk0Q/c74Q2XuHzAr/1SG+jx+TodZMWuXFAFr+Se/vUSkxqE6zx5o7ktO16sxMgaOipsVlV5kW5LIQgwQqYG+l38xkK6HOwdCzjFOSCr9C7aAycV3XvBbM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,811 +186,220 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce the framework within LUO to support preserving specific types
-of file descriptors across a live update transition. This allows
-stateful FDs (like memfds or vfio FDs used by VMs) to be recreated in
-the new kernel.
+Implements the core logic within luo_files.c to invoke the prepare,
+reboot, finish, and cancel callbacks for preserved file instances,
+replacing the previous stub implementations. It also handles
+the persistence and retrieval of the u64 data payload associated with
+each file via the LUO FDT.
 
-Note: The core logic for iterating through the luo_files_list and
-invoking the handler callbacks (prepare, freeze, cancel, finish)
-within luo_do_files_*_calls, as well as managing the u64 data
-persistence via the FDT for individual files, is currently implemented
-as stubs in this patch. This patch sets up the registration, FDT layout,
-and retrieval framework.
+This completes the core mechanism enabling registered files handlers to actively
+manage file state across the live update transition using the LUO framework.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- include/linux/liveupdate.h       |  68 ++++
- kernel/liveupdate/Makefile       |   1 +
- kernel/liveupdate/luo_files.c    | 663 +++++++++++++++++++++++++++++++
- kernel/liveupdate/luo_internal.h |   4 +
- 4 files changed, 736 insertions(+)
- create mode 100644 kernel/liveupdate/luo_files.c
+ kernel/liveupdate/luo_files.c | 166 +++++++++++++++++++++++++++++++++-
+ 1 file changed, 164 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
-index fed68b9ab32b..28a8aa4cafca 100644
---- a/include/linux/liveupdate.h
-+++ b/include/linux/liveupdate.h
-@@ -88,6 +88,61 @@ enum liveupdate_state  {
- 	LIVEUPDATE_STATE_UPDATED = 4,
- };
- 
-+struct file;
-+
-+/**
-+ * struct liveupdate_file_ops - Callbacks for for live-updatable files.
-+ * @prepare:       Optional. Saves state for a specific file instance (@file,
-+ *                 @arg) before update, potentially returning value via @data.
-+ *                 Returns 0 on success, negative errno on failure.
-+ * @freeze:        Optional. Performs final actions just before kernel
-+ *                 transition, potentially reading/updating the handle via
-+ *                 @data.
-+ *                 Returns 0 on success, negative errno on failure.
-+ * @cancel:        Optional. Cleans up state/resources if update is aborted
-+ *                 after prepare/freeze succeeded, using the @data handle (by
-+ *                 value) from the successful prepare. Returns void.
-+ * @finish:        Optional. Performs final cleanup in the new kernel using the
-+ *                 preserved @data handle (by value). Returns void.
-+ * @retrieve:      Retrieve the preserved file. Must be called before finish.
-+ * @can_preserve:  callback to determine if @file with associated context (@arg)
-+ *                 can be preserved by this handler.
-+ *                 Return bool (true if preservable, false otherwise).
-+ */
-+struct liveupdate_file_ops {
-+	int (*prepare)(struct file *file, void *arg, u64 *data);
-+	int (*freeze)(struct file *file, void *arg, u64 *data);
-+	void (*cancel)(struct file *file, void *arg, u64 data);
-+	void (*finish)(struct file *file, void *arg, u64 data, bool reclaimed);
-+	int (*retrieve)(void *arg, u64 data, struct file **file);
-+	bool (*can_preserve)(struct file *file, void *arg);
-+};
-+
-+/**
-+ * struct liveupdate_file_handler - Represents a handler for a live-updatable
-+ * file type.
-+ * @ops:           Callback functions
-+ * @compatible:    The compatibility string (e.g., "memfd-v1", "vfiofd-v1")
-+ *                 that uniquely identifies the file type this handler supports.
-+ *                 This is matched against the compatible string associated with
-+ *                 individual &struct liveupdate_file instances.
-+ * @arg:           An opaque pointer to implementation-specific context data
-+ *                 associated with this file handler registration.
-+ * @list:          used for linking this handler instance into a global list of
-+ *                 registered file handlers.
-+ *
-+ * Modules that want to support live update for specific file types should
-+ * register an instance of this structure. LUO uses this registration to
-+ * determine if a given file can be preserved and to find the appropriate
-+ * operations to manage its state across the update.
-+ */
-+struct liveupdate_file_handler {
-+	const struct liveupdate_file_ops *ops;
-+	const char *compatible;
-+	void *arg;
-+	struct list_head list;
-+};
-+
- /**
-  * struct liveupdate_subsystem_ops - LUO events callback functions
-  * @prepare:      Optional. Called during LUO prepare phase. Should perform
-@@ -154,6 +209,9 @@ int liveupdate_register_subsystem(struct liveupdate_subsystem *h);
- int liveupdate_unregister_subsystem(struct liveupdate_subsystem *h);
- int liveupdate_get_subsystem_data(struct liveupdate_subsystem *h, u64 *data);
- 
-+int liveupdate_register_file_handler(struct liveupdate_file_handler *h);
-+int liveupdate_unregister_file_handler(struct liveupdate_file_handler *h);
-+
- #else /* CONFIG_LIVEUPDATE */
- 
- static inline int liveupdate_reboot(void)
-@@ -197,5 +255,15 @@ static inline int liveupdate_get_subsystem_data(struct liveupdate_subsystem *h,
- 	return -ENODATA;
+diff --git a/kernel/liveupdate/luo_files.c b/kernel/liveupdate/luo_files.c
+index 3582f1ec96c4..cd956ea69f43 100644
+--- a/kernel/liveupdate/luo_files.c
++++ b/kernel/liveupdate/luo_files.c
+@@ -325,31 +325,193 @@ static int luo_files_fdt_setup(void)
+ 	return ret;
  }
  
-+static inline int liveupdate_register_file_handler(struct liveupdate_file_handler *h)
++static int luo_files_prepare_one(struct luo_file *h)
 +{
-+	return 0;
-+}
-+
-+static inline int liveupdate_unregister_file_handler(struct liveupdate_file_handler *h)
-+{
-+	return 0;
-+}
-+
- #endif /* CONFIG_LIVEUPDATE */
- #endif /* _LINUX_LIVEUPDATE_H */
-diff --git a/kernel/liveupdate/Makefile b/kernel/liveupdate/Makefile
-index 999208a1fdbb..b5054140b9a9 100644
---- a/kernel/liveupdate/Makefile
-+++ b/kernel/liveupdate/Makefile
-@@ -6,4 +6,5 @@
- obj-$(CONFIG_KEXEC_HANDOVER)		+= kexec_handover.o
- obj-$(CONFIG_KEXEC_HANDOVER_DEBUG)	+= kexec_handover_debug.o
- obj-$(CONFIG_LIVEUPDATE)		+= luo_core.o
-+obj-$(CONFIG_LIVEUPDATE)		+= luo_files.o
- obj-$(CONFIG_LIVEUPDATE)		+= luo_subsystems.o
-diff --git a/kernel/liveupdate/luo_files.c b/kernel/liveupdate/luo_files.c
-new file mode 100644
-index 000000000000..3582f1ec96c4
---- /dev/null
-+++ b/kernel/liveupdate/luo_files.c
-@@ -0,0 +1,663 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+/*
-+ * Copyright (c) 2025, Google LLC.
-+ * Pasha Tatashin <pasha.tatashin@soleen.com>
-+ */
-+
-+/**
-+ * DOC: LUO file descriptors
-+ *
-+ * LUO provides the infrastructure necessary to preserve
-+ * specific types of stateful file descriptors across a kernel live
-+ * update transition. The primary goal is to allow workloads, such as virtual
-+ * machines using vfio, memfd, or iommufd to retain access to their essential
-+ * resources without interruption after the underlying kernel is  updated.
-+ *
-+ * The framework operates based on handler registration and instance tracking:
-+ *
-+ * 1. Handler Registration: Kernel modules responsible for specific file
-+ * types (e.g., memfd, vfio) register a &struct liveupdate_file_handler
-+ * handler. This handler contains callbacks
-+ * (&liveupdate_file_handler.ops->prepare,
-+ * &liveupdate_file_handler.ops->freeze,
-+ * &liveupdate_file_handler.ops->finish, etc.) and a unique 'compatible' string
-+ * identifying the file type. Registration occurs via
-+ * liveupdate_register_file_handler().
-+ *
-+ * 2. File Instance Tracking: When a potentially preservable file needs to be
-+ * managed for live update, the core LUO logic (luo_register_file()) finds a
-+ * compatible registered handler using its
-+ * &liveupdate_file_handler.ops->can_preserve callback. If found,  an internal
-+ * &struct luo_file instance is created, assigned a unique u64 'token', and
-+ * added to a list.
-+ *
-+ * 3. State Persistence (FDT): During the LUO prepare/freeze phases, the
-+ * registered handler callbacks are invoked for each tracked file instance.
-+ * These callbacks can generate a u64 data payload representing the minimal
-+ * state needed for restoration. This payload, along with the handler's
-+ * compatible string and the unique token, is stored in a dedicated
-+ * '/file-descriptors' node within the main LUO FDT blob passed via
-+ * Kexec Handover (KHO).
-+ *
-+ * 4. Restoration: In the new kernel, the LUO framework parses the incoming
-+ * FDT to reconstruct the list of &struct luo_file instances. When the
-+ * original owner requests the file, luo_retrieve_file() uses the corresponding
-+ * handler's &liveupdate_file_handler.ops->retrieve callback, passing the
-+ * persisted u64 data, to recreate or find the appropriate &struct file object.
-+ */
-+
-+#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-+
-+#include <linux/atomic.h>
-+#include <linux/err.h>
-+#include <linux/file.h>
-+#include <linux/kexec_handover.h>
-+#include <linux/libfdt.h>
-+#include <linux/liveupdate.h>
-+#include <linux/mutex.h>
-+#include <linux/rwsem.h>
-+#include <linux/sizes.h>
-+#include <linux/slab.h>
-+#include <linux/string.h>
-+#include <linux/xarray.h>
-+#include "luo_internal.h"
-+
-+#define LUO_FILES_NODE_NAME	"file-descriptors"
-+#define LUO_FILES_COMPATIBLE	"file-descriptors-v1"
-+
-+static DEFINE_XARRAY(luo_files_xa_in);
-+static DEFINE_XARRAY(luo_files_xa_out);
-+static bool luo_files_xa_in_recreated;
-+
-+/* Registered files. */
-+static DECLARE_RWSEM(luo_register_file_list_rwsem);
-+static LIST_HEAD(luo_register_file_list);
-+
-+static void *luo_file_fdt_out;
-+static void *luo_file_fdt_in;
-+
-+static size_t luo_file_fdt_out_size;
-+
-+static atomic64_t luo_files_count;
-+
-+/**
-+ * struct luo_file - Represents a file descriptor instance preserved
-+ * across live update.
-+ * @fh:            Pointer to the &struct liveupdate_file_handler containing
-+ *                 the implementation of prepare, freeze, cancel, and finish
-+ *                 operations specific to this file's type.
-+ * @file:          A pointer to the kernel's &struct file object representing
-+ *                 the open file descriptor that is being preserved.
-+ * @private_data:  Internal storage used by the live update core framework
-+ *                 between phases.
-+ * @reclaimed:     Flag indicating whether this preserved file descriptor has
-+ *                 been successfully 'reclaimed' (e.g., requested via an ioctl)
-+ *                 by user-space or the owning kernel subsystem in the new
-+ *                 kernel after the live update.
-+ * @state:         The current state of file descriptor, it is allowed to
-+ *                 prepare, freeze, and finish FDs before the global state
-+ *                 switch.
-+ * @mutex:          Lock to protect FD state, and allow independently to change
-+ *                 the FD state compared to global state.
-+ *
-+ * This structure holds the necessary callbacks and context for managing a
-+ * specific open file descriptor throughout the different phases of a live
-+ * update process. Instances of this structure are typically allocated,
-+ * populated with file-specific details (&file, &arg, callbacks, compatibility
-+ * string, token), and linked into a central list managed by the LUO. The
-+ * private_data field is used internally by the core logic to store state
-+ * between phases.
-+ */
-+struct luo_file {
-+	struct liveupdate_file_handler *fh;
-+	struct file *file;
-+	u64 private_data;
-+	bool reclaimed;
-+	enum liveupdate_state state;
-+	struct mutex mutex;
-+};
-+
-+static void luo_files_recreate_luo_files_xa_in(void)
-+{
-+	const char *node_name, *fdt_compat_str;
-+	struct liveupdate_file_handler *fh;
-+	struct luo_file *luo_file;
-+	const void *data_ptr;
-+	int file_node_offset;
 +	int ret = 0;
 +
-+	if (luo_files_xa_in_recreated || !luo_file_fdt_in)
-+		return;
-+
-+	/* Take write in order to guarantee that we re-create list once */
-+	down_write(&luo_register_file_list_rwsem);
-+	if (luo_files_xa_in_recreated)
-+		goto exit_unlock;
-+
-+	fdt_for_each_subnode(file_node_offset, luo_file_fdt_in, 0) {
-+		bool handler_found = false;
-+		u64 token;
-+
-+		node_name = fdt_get_name(luo_file_fdt_in, file_node_offset,
-+					 NULL);
-+		if (!node_name) {
-+			panic("FDT subnode at offset %d: Cannot get name\n",
-+			      file_node_offset);
++	mutex_lock(&h->mutex);
++	if (h->state == LIVEUPDATE_STATE_NORMAL) {
++		if (h->fh->ops->prepare) {
++			ret = h->fh->ops->prepare(h->file, h->fh->arg,
++						  &h->private_data);
 +		}
-+
-+		ret = kstrtou64(node_name, 0, &token);
-+		if (ret < 0) {
-+			panic("FDT node '%s': Failed to parse token\n",
-+			      node_name);
-+		}
-+
-+		if (xa_load(&luo_files_xa_in, token)) {
-+			panic("Duplicate token %llu found in incoming FDT for file descriptors.\n",
-+			      token);
-+		}
-+
-+		fdt_compat_str = fdt_getprop(luo_file_fdt_in, file_node_offset,
-+					     "compatible", NULL);
-+		if (!fdt_compat_str) {
-+			panic("FDT node '%s': Missing 'compatible' property\n",
-+			      node_name);
-+		}
-+
-+		data_ptr = fdt_getprop(luo_file_fdt_in, file_node_offset, "data",
-+				       NULL);
-+		if (!data_ptr) {
-+			panic("Can't recover property 'data' for FDT node '%s'\n",
-+			      node_name);
-+		}
-+
-+		list_for_each_entry(fh, &luo_register_file_list, list) {
-+			if (!strcmp(fh->compatible, fdt_compat_str)) {
-+				handler_found = true;
-+				break;
-+			}
-+		}
-+
-+		if (!handler_found) {
-+			panic("FDT node '%s': No registered handler for compatible '%s'\n",
-+			      node_name, fdt_compat_str);
-+		}
-+
-+		luo_file = kmalloc(sizeof(*luo_file),
-+				   GFP_KERNEL | __GFP_NOFAIL);
-+		luo_file->fh = fh;
-+		luo_file->file = NULL;
-+		memcpy(&luo_file->private_data, data_ptr, sizeof(u64));
-+		luo_file->reclaimed = false;
-+		mutex_init(&luo_file->mutex);
-+		luo_file->state = LIVEUPDATE_STATE_UPDATED;
-+		ret = xa_err(xa_store(&luo_files_xa_in, token, luo_file,
-+				      GFP_KERNEL | __GFP_NOFAIL));
-+		if (ret < 0) {
-+			panic("Failed to store luo_file for token %llu in XArray: %d\n",
-+			      token, ret);
-+		}
-+	}
-+	luo_files_xa_in_recreated = true;
-+
-+exit_unlock:
-+	up_write(&luo_register_file_list_rwsem);
-+}
-+
-+static size_t luo_files_fdt_size(void)
-+{
-+	u64 num_files = atomic64_read(&luo_files_count);
-+
-+	/* Estimate a 1K overhead, + 128 bytes per file entry */
-+	return PAGE_SIZE << get_order(SZ_1K + (num_files * 128));
-+}
-+
-+static void luo_files_fdt_cleanup(void)
-+{
-+	WARN_ON_ONCE(kho_unpreserve_phys(__pa(luo_file_fdt_out),
-+					 luo_file_fdt_out_size));
-+
-+	free_pages((unsigned long)luo_file_fdt_out,
-+		   get_order(luo_file_fdt_out_size));
-+
-+	luo_file_fdt_out_size = 0;
-+	luo_file_fdt_out = NULL;
-+}
-+
-+static int luo_files_to_fdt(struct xarray *files_xa_out)
-+{
-+	const u64 zero_data = 0;
-+	unsigned long token;
-+	struct luo_file *h;
-+	char token_str[19];
-+	int ret = 0;
-+
-+	xa_for_each(files_xa_out, token, h) {
-+		snprintf(token_str, sizeof(token_str), "%#0llx", (u64)token);
-+
-+		ret = fdt_begin_node(luo_file_fdt_out, token_str);
-+		if (ret < 0)
-+			break;
-+
-+		ret = fdt_property_string(luo_file_fdt_out, "compatible",
-+					  h->fh->compatible);
-+		if (ret < 0) {
-+			fdt_end_node(luo_file_fdt_out);
-+			break;
-+		}
-+
-+		ret = fdt_property_u64(luo_file_fdt_out, "data", zero_data);
-+		if (ret < 0) {
-+			fdt_end_node(luo_file_fdt_out);
-+			break;
-+		}
-+
-+		ret = fdt_end_node(luo_file_fdt_out);
-+		if (ret < 0)
-+			break;
-+	}
-+
-+	return ret;
-+}
-+
-+static int luo_files_fdt_setup(void)
-+{
-+	int ret;
-+
-+	luo_file_fdt_out_size = luo_files_fdt_size();
-+	luo_file_fdt_out = (void *)__get_free_pages(GFP_KERNEL | __GFP_ZERO,
-+						    get_order(luo_file_fdt_out_size));
-+	if (!luo_file_fdt_out) {
-+		pr_err("Failed to allocate FDT memory (%zu bytes)\n",
-+		       luo_file_fdt_out_size);
-+		luo_file_fdt_out_size = 0;
-+		return -ENOMEM;
-+	}
-+
-+	ret = kho_preserve_phys(__pa(luo_file_fdt_out), luo_file_fdt_out_size);
-+	if (ret) {
-+		pr_err("Failed to kho preserve FDT memory (%zu bytes)\n",
-+		       luo_file_fdt_out_size);
-+		luo_file_fdt_out_size = 0;
-+		luo_file_fdt_out = NULL;
-+		return ret;
-+	}
-+
-+	ret = fdt_create(luo_file_fdt_out, luo_file_fdt_out_size);
-+	if (ret < 0)
-+		goto exit_cleanup;
-+
-+	ret = fdt_finish_reservemap(luo_file_fdt_out);
-+	if (ret < 0)
-+		goto exit_finish;
-+
-+	ret = fdt_begin_node(luo_file_fdt_out, LUO_FILES_NODE_NAME);
-+	if (ret < 0)
-+		goto exit_finish;
-+
-+	ret = fdt_property_string(luo_file_fdt_out, "compatible",
-+				  LUO_FILES_COMPATIBLE);
-+	if (ret < 0)
-+		goto exit_end_node;
-+
-+	ret = luo_files_to_fdt(&luo_files_xa_out);
-+	if (ret < 0)
-+		goto exit_end_node;
-+
-+	ret = fdt_end_node(luo_file_fdt_out);
-+	if (ret < 0)
-+		goto exit_finish;
-+
-+	ret = fdt_finish(luo_file_fdt_out);
-+	if (ret < 0)
-+		goto exit_cleanup;
-+
-+	return 0;
-+
-+exit_end_node:
-+	fdt_end_node(luo_file_fdt_out);
-+exit_finish:
-+	fdt_finish(luo_file_fdt_out);
-+exit_cleanup:
-+	pr_err("Failed to setup FDT: %s (ret %d)\n", fdt_strerror(ret), ret);
-+	luo_files_fdt_cleanup();
-+
-+	return ret;
-+}
-+
-+static int luo_files_prepare(void *arg, u64 *data)
-+{
-+	int ret;
-+
-+	ret = luo_files_fdt_setup();
-+	if (ret)
-+		return ret;
-+
-+	*data = __pa(luo_file_fdt_out);
-+
-+	return ret;
-+}
-+
-+static int luo_files_freeze(void *arg, u64 *data)
-+{
-+	return 0;
-+}
-+
-+static void luo_files_finish(void *arg, u64 data)
-+{
-+	luo_files_recreate_luo_files_xa_in();
-+}
-+
-+static void luo_files_cancel(void *arg, u64 data)
-+{
-+}
-+
-+static const struct liveupdate_subsystem_ops luo_file_subsys_ops = {
-+	.prepare = luo_files_prepare,
-+	.freeze = luo_files_freeze,
-+	.cancel = luo_files_cancel,
-+	.finish = luo_files_finish,
-+};
-+
-+static struct liveupdate_subsystem luo_file_subsys = {
-+	.ops = &luo_file_subsys_ops,
-+	.name = LUO_FILES_NODE_NAME,
-+};
-+
-+static int __init luo_files_startup(void)
-+{
-+	int ret;
-+
-+	if (!liveupdate_enabled())
-+		return 0;
-+
-+	ret = liveupdate_register_subsystem(&luo_file_subsys);
-+	if (ret) {
-+		pr_warn("Failed to register luo_file subsystem [%d]\n", ret);
-+		return ret;
-+	}
-+
-+	if (liveupdate_state_updated()) {
-+		u64 fdt_pa;
-+
-+		ret = liveupdate_get_subsystem_data(&luo_file_subsys, &fdt_pa);
-+		if (ret)
-+			panic("Failed to retrieve luo_file data [%d]\n", ret);
-+
-+		ret = fdt_node_check_compatible(__va(fdt_pa), 0,
-+						LUO_FILES_COMPATIBLE);
-+		if (ret) {
-+			panic("FDT '%s' is incompatible with '%s' [%d]\n",
-+			      LUO_FILES_NODE_NAME, LUO_FILES_COMPATIBLE, ret);
-+		}
-+		luo_file_fdt_in = __va(fdt_pa);
-+	}
-+
-+	return ret;
-+}
-+late_initcall(luo_files_startup);
-+
-+/**
-+ * luo_register_file - Register a file descriptor for live update management.
-+ * @token: Token value for this file descriptor.
-+ * @fd: file descriptor to be preserved.
-+ *
-+ * Context: Must be called when LUO is in 'normal' state.
-+ *
-+ * Return: 0 on success. Negative errno on failure.
-+ */
-+int luo_register_file(u64 token, int fd)
-+{
-+	struct liveupdate_file_handler *fh;
-+	struct luo_file *luo_file;
-+	bool found = false;
-+	int ret = -ENOENT;
-+	struct file *file;
-+
-+	file = fget(fd);
-+	if (!file) {
-+		pr_err("Bad file descriptor\n");
-+		return -EBADF;
-+	}
-+
-+	luo_state_read_enter();
-+	if (!liveupdate_state_normal() && !liveupdate_state_updated()) {
-+		pr_warn("File can be registered only in normal or updated state\n");
-+		luo_state_read_exit();
-+		fput(file);
-+		return -EBUSY;
-+	}
-+
-+	down_read(&luo_register_file_list_rwsem);
-+	list_for_each_entry(fh, &luo_register_file_list, list) {
-+		if (fh->ops->can_preserve(file, fh->arg)) {
-+			found = true;
-+			break;
-+		}
-+	}
-+
-+	if (!found)
-+		goto exit_unlock;
-+
-+	luo_file = kmalloc(sizeof(*luo_file), GFP_KERNEL);
-+	if (!luo_file) {
-+		ret = -ENOMEM;
-+		goto exit_unlock;
-+	}
-+
-+	luo_file->private_data = 0;
-+	luo_file->reclaimed = false;
-+
-+	luo_file->file = file;
-+	luo_file->fh = fh;
-+	mutex_init(&luo_file->mutex);
-+	luo_file->state = LIVEUPDATE_STATE_NORMAL;
-+
-+	if (xa_load(&luo_files_xa_out, token)) {
-+		ret = -EEXIST;
-+		pr_warn("Token %llu is already taken\n", token);
-+		mutex_destroy(&luo_file->mutex);
-+		kfree(luo_file);
-+		goto exit_unlock;
-+	}
-+
-+	ret = xa_err(xa_store(&luo_files_xa_out, token, luo_file,
-+			      GFP_KERNEL));
-+	if (ret < 0) {
-+		pr_warn("Failed to store file for token %llu in XArray: %d\n",
-+			token, ret);
-+		mutex_destroy(&luo_file->mutex);
-+		kfree(luo_file);
-+		goto exit_unlock;
-+	}
-+	atomic64_inc(&luo_files_count);
-+
-+exit_unlock:
-+	up_read(&luo_register_file_list_rwsem);
-+	luo_state_read_exit();
-+
-+	if (ret)
-+		fput(file);
-+
-+	return ret;
-+}
-+
-+/**
-+ * luo_unregister_file - Unregister a file instance using its token.
-+ * @token: The unique token of the file instance to unregister.
-+ *
-+ * Finds the &struct luo_file associated with the @token in the
-+ * global list and removes it. This function *only* removes the entry from the
-+ * list; it does *not* free the memory allocated for the &struct luo_file
-+ * itself. The caller is responsible for freeing the structure after this
-+ * function returns successfully.
-+ *
-+ * Context: Can be called when a preserved file descriptor is closed or
-+ * no longer needs live update management.
-+ *
-+ * Return: 0 on success. Negative errno on failure.
-+ */
-+int luo_unregister_file(u64 token)
-+{
-+	struct luo_file *luo_file;
-+	int ret = 0;
-+
-+	luo_state_read_enter();
-+	if (!liveupdate_state_normal() && !liveupdate_state_updated()) {
-+		pr_warn("File can be unregistered only in normal or updates state\n");
-+		luo_state_read_exit();
-+		return -EBUSY;
-+	}
-+
-+	luo_file = xa_erase(&luo_files_xa_out, token);
-+	if (luo_file) {
-+		fput(luo_file->file);
-+		mutex_destroy(&luo_file->mutex);
-+		kfree(luo_file);
-+		atomic64_dec(&luo_files_count);
++		if (!ret)
++			h->state = LIVEUPDATE_STATE_PREPARED;
 +	} else {
-+		pr_warn("Failed to unregister: token %llu not found.\n",
-+			token);
-+		ret = -ENOENT;
++		WARN_ON_ONCE(h->state != LIVEUPDATE_STATE_PREPARED &&
++			     h->state != LIVEUPDATE_STATE_FROZEN);
 +	}
-+	luo_state_read_exit();
++	mutex_unlock(&h->mutex);
 +
 +	return ret;
 +}
 +
-+/**
-+ * luo_retrieve_file - Find a registered file instance by its token.
-+ * @token: The unique token of the file instance to retrieve.
-+ * @filep: Output parameter. On success (return value 0), this will point
-+ * to the retrieved "struct file".
-+ *
-+ * Searches the global list for a &struct luo_file matching the @token. Uses a
-+ * read lock, allowing concurrent retrievals.
-+ *
-+ * Return: 0 on success. Negative errno on failure.
-+ */
-+int luo_retrieve_file(u64 token, struct file **filep)
++static int luo_files_freeze_one(struct luo_file *h)
 +{
-+	struct luo_file *luo_file;
 +	int ret = 0;
 +
-+	luo_files_recreate_luo_files_xa_in();
-+	luo_state_read_enter();
-+	if (!liveupdate_state_updated()) {
-+		pr_warn("File can be retrieved only in updated state\n");
-+		luo_state_read_exit();
-+		return -EBUSY;
-+	}
-+
-+	luo_file = xa_load(&luo_files_xa_in, token);
-+	if (luo_file && !luo_file->reclaimed) {
-+		mutex_lock(&luo_file->mutex);
-+		if (!luo_file->reclaimed) {
-+			luo_file->reclaimed = true;
-+			ret = luo_file->fh->ops->retrieve(luo_file->fh->arg,
-+							  luo_file->private_data,
-+							  filep);
-+			if (!ret)
-+				luo_file->file = *filep;
++	mutex_lock(&h->mutex);
++	if (h->state == LIVEUPDATE_STATE_PREPARED) {
++		if (h->fh->ops->freeze) {
++			ret = h->fh->ops->freeze(h->file, h->fh->arg,
++						 &h->private_data);
 +		}
-+		mutex_unlock(&luo_file->mutex);
-+	} else if (luo_file && luo_file->reclaimed) {
-+		pr_err("The file descriptor for token %lld has already been retrieved\n",
-+		       token);
-+		ret = -EINVAL;
++		if (!ret)
++			h->state = LIVEUPDATE_STATE_FROZEN;
 +	} else {
-+		ret = -ENOENT;
++		WARN_ON_ONCE(h->state != LIVEUPDATE_STATE_FROZEN);
 +	}
-+
-+	luo_state_read_exit();
++	mutex_unlock(&h->mutex);
 +
 +	return ret;
 +}
 +
-+/**
-+ * liveupdate_register_file_handler - Register a file handler with LUO.
-+ * @fh: Pointer to a caller-allocated &struct liveupdate_file_handler.
-+ * The caller must initialize this structure, including a unique
-+ * 'compatible' string and a valid 'fh' callbacks. This function adds the
-+ * handler to the global list of supported file handlers.
-+ *
-+ * Context: Typically called during module initialization for file types that
-+ * support live update preservation.
-+ *
-+ * Return: 0 on success. Negative errno on failure.
-+ */
-+int liveupdate_register_file_handler(struct liveupdate_file_handler *fh)
++static void luo_files_finish_one(struct luo_file *h)
 +{
-+	struct liveupdate_file_handler *fh_iter;
-+	int ret = 0;
-+
-+	luo_state_read_enter();
-+	if (!liveupdate_state_normal() && !liveupdate_state_updated()) {
-+		luo_state_read_exit();
-+		return -EBUSY;
-+	}
-+
-+	down_write(&luo_register_file_list_rwsem);
-+	list_for_each_entry(fh_iter, &luo_register_file_list, list) {
-+		if (!strcmp(fh_iter->compatible, fh->compatible)) {
-+			pr_err("File handler registration failed: Compatible string '%s' already registered.\n",
-+			       fh->compatible);
-+			ret = -EEXIST;
-+			goto exit_unlock;
++	mutex_lock(&h->mutex);
++	if (h->state == LIVEUPDATE_STATE_UPDATED) {
++		if (h->fh->ops->finish) {
++			h->fh->ops->finish(h->file, h->fh->arg, h->private_data,
++				      h->reclaimed);
 +		}
++		h->state = LIVEUPDATE_STATE_NORMAL;
++	} else {
++		WARN_ON_ONCE(h->state != LIVEUPDATE_STATE_NORMAL);
 +	}
++	mutex_unlock(&h->mutex);
++}
 +
-+	INIT_LIST_HEAD(&fh->list);
-+	list_add_tail(&fh->list, &luo_register_file_list);
++static void luo_files_cancel_one(struct luo_file *h)
++{
++	int ret;
++
++	mutex_lock(&h->mutex);
++	if (h->state == LIVEUPDATE_STATE_NORMAL)
++		goto exit_unlock;
++
++	ret = WARN_ON_ONCE(h->state != LIVEUPDATE_STATE_PREPARED &&
++			   h->state != LIVEUPDATE_STATE_FROZEN);
++	if (ret)
++		goto exit_unlock;
++
++	if (h->fh->ops->cancel)
++		h->fh->ops->cancel(h->file, h->fh->arg, h->private_data);
++	h->private_data = 0;
++	h->state = LIVEUPDATE_STATE_NORMAL;
 +
 +exit_unlock:
-+	up_write(&luo_register_file_list_rwsem);
-+	luo_state_read_exit();
-+
-+	return ret;
++	mutex_unlock(&h->mutex);
 +}
-+EXPORT_SYMBOL_GPL(liveupdate_register_file_handler);
 +
-+/**
-+ * liveupdate_unregister_file - Unregister a file handler.
-+ * @fh: Pointer to the specific &struct liveupdate_file_handler instance
-+ * that was previously returned by or passed to
-+ * liveupdate_register_file_handler.
-+ *
-+ * Removes the specified handler instance @fh from the global list of
-+ * registered file handlers. This function only removes the entry from the
-+ * list; it does not free the memory associated with @fh itself. The caller
-+ * is responsible for freeing the structure memory after this function returns
-+ * successfully.
-+ *
-+ * Return: 0 on success. Negative errno on failure.
-+ */
-+int liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh)
++static void __luo_files_cancel(struct luo_file *boundary_file)
 +{
 +	unsigned long token;
 +	struct luo_file *h;
-+	int ret = 0;
-+
-+	luo_state_read_enter();
-+	if (!liveupdate_state_normal() && !liveupdate_state_updated()) {
-+		luo_state_read_exit();
-+		return -EBUSY;
-+	}
-+
-+	down_write(&luo_register_file_list_rwsem);
 +
 +	xa_for_each(&luo_files_xa_out, token, h) {
-+		if (h->fh == fh) {
-+			up_write(&luo_register_file_list_rwsem);
-+			luo_state_read_exit();
-+			return -EBUSY;
++		if (h == boundary_file)
++			break;
++
++		luo_files_cancel_one(h);
++	}
++	luo_files_fdt_cleanup();
++}
++
++static int luo_files_commit_data_to_fdt(void)
++{
++	int node_offset, ret;
++	unsigned long token;
++	char token_str[19];
++	struct luo_file *h;
++
++	xa_for_each(&luo_files_xa_out, token, h) {
++		snprintf(token_str, sizeof(token_str), "%#0llx", (u64)token);
++		node_offset = fdt_subnode_offset(luo_file_fdt_out,
++						 0,
++						 token_str);
++		ret = fdt_setprop(luo_file_fdt_out, node_offset, "data",
++				  &h->private_data, sizeof(h->private_data));
++		if (ret < 0) {
++			pr_err("Failed to set data property for token %s: %s\n",
++			       token_str, fdt_strerror(ret));
++			return -ENOSPC;
 +		}
 +	}
 +
-+	list_del_init(&fh->list);
-+	up_write(&luo_register_file_list_rwsem);
-+	luo_state_read_exit();
++	return 0;
++}
++
+ static int luo_files_prepare(void *arg, u64 *data)
+ {
++	unsigned long token;
++	struct luo_file *h;
+ 	int ret;
+ 
+ 	ret = luo_files_fdt_setup();
+ 	if (ret)
+ 		return ret;
+ 
+-	*data = __pa(luo_file_fdt_out);
++	xa_for_each(&luo_files_xa_out, token, h) {
++		ret = luo_files_prepare_one(h);
++		if (ret < 0) {
++			pr_err("Prepare failed for file token %#0llx handler '%s' [%d]\n",
++			       (u64)token, h->fh->compatible, ret);
++			__luo_files_cancel(h);
++
++			return ret;
++		}
++	}
++
++	ret = luo_files_commit_data_to_fdt();
++	if (ret)
++		__luo_files_cancel(NULL);
++	else
++		*data = __pa(luo_file_fdt_out);
+ 
+ 	return ret;
+ }
+ 
+ static int luo_files_freeze(void *arg, u64 *data)
+ {
+-	return 0;
++	unsigned long token;
++	struct luo_file *h;
++	int ret;
++
++	xa_for_each(&luo_files_xa_out, token, h) {
++		ret = luo_files_freeze_one(h);
++		if (ret < 0) {
++			pr_err("Freeze callback failed for file token %#0llx handler '%s' [%d]\n",
++			       (u64)token, h->fh->compatible, ret);
++			__luo_files_cancel(h);
++
++			return ret;
++		}
++	}
++
++	ret = luo_files_commit_data_to_fdt();
++	if (ret)
++		__luo_files_cancel(NULL);
 +
 +	return ret;
-+}
-+EXPORT_SYMBOL_GPL(liveupdate_unregister_file_handler);
-diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
-index 98bf799adb61..f77e8b3044f9 100644
---- a/kernel/liveupdate/luo_internal.h
-+++ b/kernel/liveupdate/luo_internal.h
-@@ -25,4 +25,8 @@ int luo_do_subsystems_freeze_calls(void);
- void luo_do_subsystems_finish_calls(void);
- void luo_do_subsystems_cancel_calls(void);
+ }
  
-+int luo_retrieve_file(u64 token, struct file **filep);
-+int luo_register_file(u64 token, int fd);
-+int luo_unregister_file(u64 token);
+ static void luo_files_finish(void *arg, u64 data)
+ {
++	unsigned long token;
++	struct luo_file *h;
 +
- #endif /* _LINUX_LUO_INTERNAL_H */
+ 	luo_files_recreate_luo_files_xa_in();
++	xa_for_each(&luo_files_xa_in, token, h) {
++		luo_files_finish_one(h);
++		mutex_destroy(&h->mutex);
++		kfree(h);
++	}
++	xa_destroy(&luo_files_xa_in);
+ }
+ 
+ static void luo_files_cancel(void *arg, u64 data)
+ {
++	__luo_files_cancel(NULL);
+ }
+ 
+ static const struct liveupdate_subsystem_ops luo_file_subsys_ops = {
 -- 
 2.50.0.727.gbf7dc18ff4-goog
 
