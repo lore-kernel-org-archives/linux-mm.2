@@ -2,158 +2,119 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DF86AC83F17
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 06:50:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 70772C83F25
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 07:09:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C7336B0093; Wed, 23 Jul 2025 02:50:26 -0400 (EDT)
+	id E192B6B0089; Wed, 23 Jul 2025 03:09:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14F9E6B0095; Wed, 23 Jul 2025 02:50:26 -0400 (EDT)
+	id DC9136B008A; Wed, 23 Jul 2025 03:09:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F2C9F6B0096; Wed, 23 Jul 2025 02:50:25 -0400 (EDT)
+	id CB8986B0093; Wed, 23 Jul 2025 03:09:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DD35C6B0093
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 02:50:25 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8CC571A05B8
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 06:50:25 +0000 (UTC)
-X-FDA: 83694605610.27.264B4B8
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 391D140003
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 06:50:23 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=H0X7b5lP;
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
-	spf=pass (imf04.hostedemail.com: domain of baochen.qiang@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=baochen.qiang@oss.qualcomm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B6D036B0089
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 03:09:29 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0405C1405EF
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 07:09:28 +0000 (UTC)
+X-FDA: 83694653658.11.4A0BB81
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 917D94000D
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 07:09:26 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=FZxoxk6z;
+	spf=pass (imf01.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753253423;
+	s=arc-20220608; t=1753254567;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vIOnuFzxTaTZ2kZliUHt8+E+wNhpF1ajP7gxvaOKN9M=;
-	b=0gchH9fe1iE66cl/EmOKkzoOzbi8NPCuZxC7wGS+52/R491u9wkA6x45E8NMEI6I7IKteO
-	jP5SgCQdSfL7pBgGCfYjsZuREALm2QbwUnx72mqgxtYtBDHBIer+6fks5S1Jpoe4EP1J9Q
-	SojJiRnNLHlIfAzAcOmPVhmdJ16m/W4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753253423; a=rsa-sha256;
+	bh=3xySD9i0zBLuoTU9OsQHvoeq1mQLETgpejNnwDrr/Ak=;
+	b=gevJxedA3iC6bnIcTiMU85eInTWIhuYQ8Yyuyq05A8q3zCofwEKlHBVv7m2G6uGaP00O5p
+	LKXBhibJOYuZiiwVGA/tTlMgQ0IurTXLWEXAZwvRexCQOfXZK0cbXV3bF6BaGuP7VSqT1y
+	fJdjQjn9x1xk+6QeNvRoml8zMbyonN0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753254567; a=rsa-sha256;
 	cv=none;
-	b=IjKzdoffvq7bKsLTCVPCj43lYQKJN2/9A9f1a9AIDP+Eh3a6Z9IdKG1jv79bJ3OcYvMEsb
-	Djjs0NJJAjrmIOjjD4TWcd5E2hcluOuM67NUYsipyiz8P9DEH+0LlRsL7WJMMH1CgI9moY
-	fU+mGx8houR6tMD24LU8uZHq/pEcXU0=
+	b=bszHIfo2Fn36kaUXvVAZNVoQepTbztuz0999Zc8FO8UnLvkIaT8EFNYgbdUBJyJrQp5wAM
+	9EMXSaYCCQTEUjhAJjT0cyiEhO8pat0XSseatTN8fUiqKn+B36MU0xLhsOOWFzUf2y3/bV
+	tYqhR66sdAIAuq7t+L2EC8LVB33wcUw=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=H0X7b5lP;
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
-	spf=pass (imf04.hostedemail.com: domain of baochen.qiang@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=baochen.qiang@oss.qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56MMOBcJ008190
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 06:50:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	vIOnuFzxTaTZ2kZliUHt8+E+wNhpF1ajP7gxvaOKN9M=; b=H0X7b5lPIbttHQUa
-	/nd3/wGmu1spel9ls30pCGoB6/MjAMVzvOBeEgRkJmgucsYZ9KmcB7RrjkoescBO
-	ZuUPSdHP0NnPiJqHcsgZ3soWUmVVlIzbDn52ovyGOpxO9DO8BpXjbb2YAsQS0qnx
-	O2vmupjs+ym+CInPbVTWrnOKsEGmNlEuiDK+IDc5weDIcvl/TMlaVg01D2HvE3uU
-	FBJgr3++dgCMBrT1MZ6taDI2BtMVbQDyeMcvMcR8osiFywF8LcWGZ0dpoVPKeqxh
-	5RvAWkl7VVUMRwaU7zPRtZo5uyZ75yRxFLCoMU82r5F7xe9mrUcWbgBmrNUfT2ix
-	HtbAUA==
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 482d3ht5fj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 06:50:21 +0000 (GMT)
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-235e1d70d67so61674975ad.0
-        for <linux-mm@kvack.org>; Tue, 22 Jul 2025 23:50:21 -0700 (PDT)
+	imf01.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=FZxoxk6z;
+	spf=pass (imf01.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b391ca6146eso5643267a12.3
+        for <linux-mm@kvack.org>; Wed, 23 Jul 2025 00:09:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1753254565; x=1753859365; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3xySD9i0zBLuoTU9OsQHvoeq1mQLETgpejNnwDrr/Ak=;
+        b=FZxoxk6z3nw9ix/MIHU16ujT6UPYA3uXndhpMRIHctQi8ZhdUmn91jYU1SVp8d8p0r
+         VFu9ulROKSQfVDQtF/YpsaL/8lVaQBgYecFoJ4+Q9eKuIEGSNfDYBDhQeuCMCUMA4gdA
+         CkKnlbP6uxwJBMLANivzvN/njqPZv6OhNpIZsz2NH/ufVgoVUs7QzjfxSPlCA53FSDFb
+         AmJEIIWYNaVn2XZbsXvD/isJGsbFV01JyezpNNEJSvTWuI6QHfIJN6PwZvQkIGu7XpYU
+         Z0zfnkPv77c/2YWthkSiRChvJnq39ezTedx9ZNPdo3P8f21b231C/+eamIRgyg8e1kzB
+         45Dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753253421; x=1753858221;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vIOnuFzxTaTZ2kZliUHt8+E+wNhpF1ajP7gxvaOKN9M=;
-        b=XfwmE+E20VzTzd4UFanA7co9rzq98W759WrFYnBZyP/L1HCaMbuMa+xP+9sG3MWp76
-         zvIrTdGnKiPdY8Q6jXRFjSNZpOBQ9p0/8WNkIKzqrEyPzsvi3qxWEflrn15jqScegeSB
-         MT0U2aA+0mBvLt4707B8MKUiWAUMscdf/YQhGqfUXIIcx7JWZG8TdwxQyeHdr1PsOU2+
-         aBZ6uCTNntw0sKMQTrQFaJYZLDCitp87SWxS2imH8phZJqHh1igscOeJ/hf2ddE4jfTe
-         270dBWEXkUxwmP1PSIZ3vBkPt9iD4/CpNSWtNuJ4ZINjTzQ8Zov837cGw9eeIAWnaCqM
-         20ng==
-X-Forwarded-Encrypted: i=1; AJvYcCVjtepdBxToN6tMMIiK7BYmyh9CuF1waH3l7i7JVjkRX8tgECyN1CacdamOPHTrkO6YbvxlylXMVw==@kvack.org
-X-Gm-Message-State: AOJu0YxdDZylMW/jUG0Wt1w1jUhYFoduvNRQ0GUzvm+Ci9g8mw2zkoW7
-	HeVvxmU+7Kwa8zmaAxoPMzFoSeBukgo3F/fuCen1ssyTOf3UI6rfKtHOWGfHWl2cs2Rakn6OvNA
-	DtjDFjnDiw/K7Eczh3Z7GSKOGNuGDZkesE9EGYlsHq+R1gWXzQB5U9w==
-X-Gm-Gg: ASbGncvIbg3V2sEKa9NZ3T3qSlFbO9wFN61pI6i3YR/Nqbol1lL25Se7NzKSndIrffV
-	bcGtJOd37rpiw8mxJrID4fuBbMYDBpsth9tO/JbDUjyHcqvRKPTiLNJc4QBycFK2VEsk+sLnBlX
-	6drjaRho/D2EmsejKXsgQxfeo5ehbZtQ0U5k6DROAaVdYsFnnuHj+WeyK5MyxboT8tQHiE5vlHW
-	efXgIkEWcCnT94A5zPiDQLgUqQACzgXm/eRDM5BFE66ktdC6ifLSCE/hL87lhNajHLcrWn96ORG
-	xp+l7T+qEC+64BGHRXAfAviaVzoFVD9mXwH93b60cpTiTeQTgmdKVDRV4yxjTJzqu8jKjhf5ciE
-	NmdZco3FVfiEfwGbnJ6r5ewTR86/YFRc=
-X-Received: by 2002:a17:902:d501:b0:235:e71e:a37b with SMTP id d9443c01a7336-23f981aed8emr25652335ad.34.1753253420626;
-        Tue, 22 Jul 2025 23:50:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHhrXo7D9/2ndR2uk0h1bpQY6uhlrFldB+Iw+IrNA9vaeHEV+mcRPFxDAlq8umwq1DbFFtE3g==
-X-Received: by 2002:a17:902:d501:b0:235:e71e:a37b with SMTP id d9443c01a7336-23f981aed8emr25651875ad.34.1753253420102;
-        Tue, 22 Jul 2025 23:50:20 -0700 (PDT)
-Received: from [10.133.33.45] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31e519b1494sm891203a91.4.2025.07.22.23.50.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Jul 2025 23:50:19 -0700 (PDT)
-Message-ID: <12a66199-3fe2-49d1-994a-84e4e1d2eba9@oss.qualcomm.com>
-Date: Wed, 23 Jul 2025 14:50:15 +0800
+        d=1e100.net; s=20230601; t=1753254565; x=1753859365;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3xySD9i0zBLuoTU9OsQHvoeq1mQLETgpejNnwDrr/Ak=;
+        b=D0IqC7+qH0W0YEbjvILZyEGBjYXlBdoNLJ3KYpw+qfkKN5m/pWaV2PVv17hfFiFHmm
+         hH5MrzLQvTEBZtmqs+mBvr5RnuCJbl4hF5mzqSO8bDz4DwUyhkI6CtYHNHWlrhhTpCSG
+         GRSQfT1Oc87swwM/UXhnVFUx+UVB+MbCeWF8YWj+iKyZkxzPmGRXVlCeuIaUxQCj35JY
+         De9NEsMteAVRQmx/A+6wEBLkJywm+c1uZqq+peXXb+qpkVLgsci6yE4Czeeq8X0IjinM
+         BlEZDnO2BqI13zTQNXcNY0ijfaJBJAvZp+2WhRypWUgaZ3SkTtMVHeMAqzU6Nn+xwXGt
+         n+Tw==
+X-Forwarded-Encrypted: i=1; AJvYcCWhu63IXF920QQupN5dfHDJy1eAWfDZTMkZ/3PFy2BvoTVZ2GsocGxJXNAoBc7O4zE3UfR5mSIH3g==@kvack.org
+X-Gm-Message-State: AOJu0YzCwqVpH730KgwuFehh9LDoFzS8vK3V9eZPDi9lgNpDSwM47Xeq
+	jWn841kFb5Ctu9E2PbKx9+4zK1phQPhWhdcrymruDiMIhbkvFiTHhvilntSfbbevTPs=
+X-Gm-Gg: ASbGncubtaHA61aE+Dy5XxsSmHh8QAiI+/W5nttuN7VxJm2ZFDWDtVkWl2LveUAB79O
+	RDrG2WVa/tgnJ0yT6a12aASaMEorHdIeKgG3hg21H1aKWfFmWeBv/EI8/Rszk1EgqgSUerGR220
+	LetiowM1PR2Jgl0zxKWL5arK+9pZSvYHxqdNXTkduajKU9alCcRP9Fzgj+NkgiGVw4a5IcCEHfJ
+	HpNI5QdTq7ZxHbohCN5Zo6Cv/KVTDE+FKrQ/mdC0iSCWqUY6nsFmyI23t5FFQF7MixDt9DyCQuH
+	cbWXsLujfcpGpU8rfcVfRAFczhQPvlNSpTRplNMkdG8OhdP0pst9qq4BnBh8NB1tbHkFL8s1Pmv
+	tyTijcWrN9jnWCBzzfLfefsMlpXFO2Dhh7gOYZepYq1zSjBb5QA==
+X-Google-Smtp-Source: AGHT+IHL72T+VBVk7DX9rybYzc3VQsWLM+dttqmKHB3AfYHJ8PTIIAzerLdGDE0eCtPQQd7V723y3g==
+X-Received: by 2002:a05:6a20:cd91:b0:21f:5598:4c2c with SMTP id adf61e73a8af0-23d49032907mr3134107637.13.1753254564948;
+        Wed, 23 Jul 2025 00:09:24 -0700 (PDT)
+Received: from localhost.localdomain ([203.208.189.14])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b3f2ff99ef4sm8307165a12.61.2025.07.23.00.09.21
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 23 Jul 2025 00:09:24 -0700 (PDT)
+From: lizhe.67@bytedance.com
+To: farman@linux.ibm.com
+Cc: akpm@linux-foundation.org,
+	alex.williamson@redhat.com,
+	david@redhat.com,
+	jgg@ziepe.ca,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	lizhe.67@bytedance.com,
+	peterx@redhat.com
+Subject: Re: [PATCH v4 2/5] vfio/type1: optimize vfio_pin_pages_remote()
+Date: Wed, 23 Jul 2025 15:09:17 +0800
+Message-ID: <20250723070917.87657-1-lizhe.67@bytedance.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <1bd50178755535ee0a3b0b2164acf9319079a3d5.camel@linux.ibm.com>
+References: <1bd50178755535ee0a3b0b2164acf9319079a3d5.camel@linux.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Excessive page cache occupies DMA32 memory
-To: Robin Murphy <robin.murphy@arm.com>, Greg KH
- <gregkh@linuxfoundation.org>,
-        Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: Matthew Wilcox <willy@infradead.org>,
-        Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Jeff Johnson <jjohnson@kernel.org>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        kernel@collabora.com, Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, iommu@lists.linux.dev
-References: <766ef20e-7569-46f3-aa3c-b576e4bab4c6@collabora.com>
- <aH51JnZ8ZAqZ6N5w@casper.infradead.org>
- <2025072238-unplanted-movable-7dfb@gregkh>
- <91fc0c41-6d25-4f60-9de3-23d440fc8e00@collabora.com>
- <2025072234-cork-unadvised-24d3@gregkh>
- <c93b34ca-1abf-4db0-90f9-3802ac02c25a@arm.com>
-Content-Language: en-US
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-In-Reply-To: <c93b34ca-1abf-4db0-90f9-3802ac02c25a@arm.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=G8UcE8k5 c=1 sm=1 tr=0 ts=6880862d cx=c_pps
- a=cmESyDAEBpBGqyK7t0alAg==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=RbrrYmC37znnBZKoEx0A:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=1OuFwYUASf3TG4hYMiVC:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIzMDA1NiBTYWx0ZWRfX4MrMwmVQmB42
- enAi0fEpNEx6dymGGWzLu73/rM4B2k/BMhTLR01w63PCdqUVPP9vBXu50vE2nbtlpSNz1Udjfu4
- puA2vKiZwkoNbre7yJD34QBwAy8unpOvrNY74M8xQwYCOKei08YbrSzbffUaUjOpEi2HwO+g7Ec
- WiHxr6XuGFmZl/pRyZSizmz2zjTDZFSMx5YnqUEXm0K5nbIjm0fW7uel9ISzL0GNY5x16sy7Xy7
- nXEM/L3BHUdqqaYKPkZswI4Jzn64jAfJshian+Qb5T1psq3lQVHmWvdPO9EYZVcAKwAorEIkpTI
- uwNrqGe166fGTD0xuDvkKJIqyKE7hWhBAIZv5OrF/l/NUpThhgEGGkiFDITc6eOYpf7RpnvcaB6
- crKqEkqP1L4uYRwF8pDvRhXHLtHKOK1aYlHCVwmHis988oBr/dM4DkMOE08tTiQjULfovVPB
-X-Proofpoint-GUID: zHlR6RKSxoUmM45R6a05BVMbul6e7wLK
-X-Proofpoint-ORIG-GUID: zHlR6RKSxoUmM45R6a05BVMbul6e7wLK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-23_01,2025-07-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 mlxscore=0 suspectscore=0 priorityscore=1501 clxscore=1011
- bulkscore=0 impostorscore=0 phishscore=0 spamscore=0 lowpriorityscore=0
- mlxlogscore=999 adultscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507230056
-X-Rspamd-Queue-Id: 391D140003
-X-Stat-Signature: 3tu4tih88erekbc495ni8ir3ro91fp76
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 917D94000D
+X-Stat-Signature: doqruu5gwdcbxw9frmy7nh78qhfeqcb4
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1753253423-885441
-X-HE-Meta: U2FsdGVkX18DEPHn1S7kmQRn6oFvaD0jSl7ob5K5LHOi/O3p7kfJ6XpD3zZ6yeIAQjm9TsIOApaRIEgbKgzw17lnxhwJhKaPfYzngHJUZxOQUX/7LYGart+wxVW+ADPAl8mKrqbl9fHRDcTGdQalIMgX2s5/uBQJs8KjbSsdQUykSbf/iqrr1K9PVS+8LfSuF6dYmxI36LNJMT/zpdyQzbKrjMilIIQ8jSC0RopXiyyDttPennTun50VYW4SgreyNbAUkDdxLD0cNOIgr27Ao6y7EZIf/gNtvl+eWl5ogx+NUbel5Vp95Q1Qsz+xqhKiQQr2ILCk/hm7U1jLJ0+MaQpL5iIrWUgijnYyw9XBFuY7ixXc0HiME+K7jK76MuRr6BCEnU9V2aLXCp5aLv3FtPlV4TVcmg2Apugba7qu9SpQjTVM6FQV1gksrRAizFVgZeJZ+CqoUDvHCFvk3g1Bv+o64amkArQobfEQFKgdn5eh26jhboemCEvvv8DJp472ZXL3xsbpQEReV00GZTRTha6/4/xClzZfWJzJF24gayJrPG7QjtTk7jUVSOVzXQm5tQGDAQ8jpqxTWfVal5PUkmnSdlNfpU/SkFWzh3EWmlyjjgBf5KNBoqy/+j4PLOa2fLCOGy+wOE3gF6WyWdKm+evRtqhOpi6nI5MCqDis/eRjgIzESPlC1yIfWS13nA8NSdwmylMgoOzaT0K8LG9CjRGJ80A509l1wPRHPKAudKuP5w0qGwP+aPCij8cFmJOVUjqSQ3NCq3c0pcZA0Dhd+peeBinYPnSRfuRSAuUahi3BW7Umh6soET+jYbGFvYfBmTcgVTMJz206ejkae+ta/6oHYBepBFDhXhYCBnJhGUpIdVpyF/jVUFdOYZ3VWrhn9lz6BkYDAqWJje8PL54jl/JyBjapdowj+La8AFl85avBt1OAJ88yn7HPqkRqCTi/n8XszARP3i1n0W7Jjsp
- TkPgHFF8
- Iw7IsWN4NQpYwMU/Nc+I5mH2R0LMt7glm4q9X
+X-HE-Tag: 1753254566-309307
+X-HE-Meta: U2FsdGVkX181/LFC0Kp5rqHtxjntTN0I8dQibD6oh0M3NQyTXRklf0t1ze2XJ2flW44VWcgqJVn2aVgUm/PTH0XoTatGiVtGLAKOwHlqH8wFJIo64EiY9RH8xBL/akUZaPk8B0SvvXWD48BOeJWHZUGsX0yWcdY0/TQ6Q30IHL8/XW4rCXf3H9m/+ed6nzdcAMFkYEtqWBENWt2VrPOkyDQ1z3SYkOjPucX/bDJ7kkKMMvXs1Z1pvdNv36whQ9GQDKf/WwcbKhpVwOjIxHo7kraxEJeasqISRAfSgEAzyOtuCjaJtWCVc5wCueY/K/2ait4CKG33kq1PDyriUdvv5SWOfvhLtwnGSDmAV62QFmu29W5ZbEMomYsWzf8fgju5kWoRCVX0ny+HxhixWAANWCPvQnS3gKss9Fvnnm3HdWm/f0cuPVGmh3KkEj6rxaMRdD2UfH/N/4Z7CPXzNQsYSs0CYDCceHlkU6fNFSlobXsGaOwKk7fd6N7BuDAP87JtT3gvc+hP84UGNBy8gbuBhL70y4lODJPtnWwyasc8SowMA3J7y8B/DMlLHakbA/hzfKAUnex58fziHEhnkxqOvOwDMTE6q+p5pELyFO/ZovzfSgEXhW4Ey9DTUYzbiS9/Gjw0h62WQPvuz0BOVEIgl9ujOaENkDxVZYBC3WBmFeWne84+/GQOv4gVG3anZq4w7yOR88/zDkISmoA5Z5pI+tXfmZheGewUP6lqc0LvT/JhOE4gIuxyy6I14piDMiSmEiJD+zFcotEYexFglYeECizZFkLkWgBfW05qgLrsdlwT9fbtolG7b203pj4kx1sVsZzb84OdPCUF3U4WQQWXaKw7mUKc9Lb0p64SCPXhvdTM3jOEPz4ARvSUhr9XeadXXCBGA6uPVZrVEFZGzbRS26nwNhY8ZljeKKroa0d/ZOZEzkD08ICn3JszLSe6AwURlocstzpyM/K93R3w0hh
+ PChN4NCI
+ +bCEnQWG75XJ06DB9Gq1/9wifl0upbeUFEThitX+wG81RFETA3GmLfPTtbYJV0iaHDClEB46Y35/ONdAvyhgWjB8PLmU94UzB8e5ALQUYmUhehWlXDPNDnJwtQSmEJm7xHgIJ2MZWLcrZGOe4dwYqs5Xe2WsQIyHTJPjvUjrEoKF/k5pCdRwPBSb7QXlrKH0VydtjEl25+psSFz8WJTikxfSEAb870lX3h/2RNsRTi9SqsCRC+9qlD9agvJtRagPbFtlktweD3vxge0jOTqKGo/fZ9a7gO1fZJ04huGmKxm/DOBw3Rc+WWBg6MRuhF/oHJapenIp1apq+slzZa2YcsO2b7Vsu72HrWul0Edyxr1TSdutZpBdMT7o+VobFju31v3CBMFTSrPqzhqnw8XDTV63btw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -162,97 +123,172 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 7/22/2025 6:03 PM, Robin Murphy wrote:
-> On 2025-07-22 8:24 am, Greg KH wrote:
->> On Tue, Jul 22, 2025 at 11:05:11AM +0500, Muhammad Usama Anjum wrote:
->>> Adding ath/mhi and dma API developers to the discussion.
->>>
->>> On 7/22/25 10:32 AM, Greg KH wrote:
->>>> On Mon, Jul 21, 2025 at 06:13:10PM +0100, Matthew Wilcox wrote:
->>>>> On Mon, Jul 21, 2025 at 08:03:12PM +0500, Muhammad Usama Anjum wrote:
->>>>>> Hello,
->>>>>>
->>>>>> When 10-12GB our of total 16GB RAM is being used as page cache
->>>>>> (active_file + inactive_file) at suspend time, the drivers fail to allocate
->>>>>> dma memory at resume as dma memory is either occupied by the page cache or
->>>>>> fragmented. Example:
->>>>>>
->>>>>> kworker/u33:5: page allocation failure: order:7, mode:0xc04(GFP_NOIO|GFP_DMA32),
->>>>>> nodemask=(null),cpuset=/,mems_allowed=0
->>>>>
->>>>> Just to be clear, this is not a page cache problem.  The driver is asking
->>>>> us to do a 512kB allocation without doing I/O!  This is a ridiculous
->>>>> request that should be expected to fail.
->>>>>
->>>>> The solution, whatever it may be, is not related to the page cache.
->>>>> I reject your diagnosis.  Almost all of the page cache is clean and
->>>>> could be dropped (as far as I can tell from the output below).
->>>>>
->>>>> Now, I'm not too familiar with how the page allocator chooses to fail
->>>>> this request.  Maybe it should be trying harder to drop bits of the page
->>>>> cache.  Maybe it should be doing some compaction.
->>> That's very thoughtful. I'll look at the page allocator why isn't it dropping
->>> cache or doing compaction.
->>>
->>>>> I am not inclined to
->>>>> go digging on your behalf, because frankly I'm offended by the suggestion
->>>>> that the page cache is at fault.
->>> I apologize—that wasn't my intention.
->>>
->>>>>
->>>>> Perhaps somebody else will help you, or you can dig into this yourself.
->>>>
->>>> I'm with Matthew, this really looks like a driver bug somehow.  If there
->>>> is page cache memory that is "clean", the driver should be able to
->>>> access it just fine if really required.
->>>>
->>>> What exact driver(s) is having this problem?  What is the exact error,
->>>> and on what lines of code?
->>> The issue occurs on both ath11k and mhi drivers during resume, when
->>> dma_alloc_coherent(GFP_KERNEL) fails and returns -ENOMEM. This failure has
->>> been observed at multiple points in these drivers.
->>>
->>> For example, in the mhi driver, the failure is triggered when the
->>> MHI's st_worker gets scheduled-in at resume.
->>>
->>> mhi_pm_st_worker()
->>> -> mhi_fw_load_handler()
->>>     -> mhi_load_image_bhi()
->>>        -> mhi_alloc_bhi_buffer()
->>>           -> dma_alloc_coherent(GFP_KERNEL) returns -ENOMEM
->>
->> And what is the exact size you are asking for here?
->> What is the dma ops set to for your system?  Are you sure that is
->> working properly for your platform?  What platform is this exactly?
->>
->> The driver isn't asking for DMA32 here, so that shouldn't be the issue,
->> so why do you feel it is?  Have you tried using the tracing stuff for
->> dma allocations to see exactly what is going on for this failure?
+On Tue, 22 Jul 2025 12:32:59 -0400, farman@linux.ibm.com wrote:
+ 
+> On Thu, 2025-07-10 at 16:53 +0800, lizhe.67@bytedance.com wrote:
+> > From: Li Zhe <lizhe.67@bytedance.com>
+> > 
+> > When vfio_pin_pages_remote() is called with a range of addresses that
+> > includes large folios, the function currently performs individual
+> > statistics counting operations for each page. This can lead to significant
+> > performance overheads, especially when dealing with large ranges of pages.
+> > Batch processing of statistical counting operations can effectively enhance
+> > performance.
+> > 
+> > In addition, the pages obtained through longterm GUP are neither invalid
+> > nor reserved. Therefore, we can reduce the overhead associated with some
+> > calls to function is_invalid_reserved_pfn().
+> > 
+> > The performance test results for completing the 16G VFIO IOMMU DMA mapping
+> > are as follows.
+> > 
+> > Base(v6.16-rc4):
+> > ------- AVERAGE (MADV_HUGEPAGE) --------
+> > VFIO MAP DMA in 0.047 s (340.2 GB/s)
+> > ------- AVERAGE (MAP_POPULATE) --------
+> > VFIO MAP DMA in 0.280 s (57.2 GB/s)
+> > ------- AVERAGE (HUGETLBFS) --------
+> > VFIO MAP DMA in 0.052 s (310.5 GB/s)
+> > 
+> > With this patch:
+> > ------- AVERAGE (MADV_HUGEPAGE) --------
+> > VFIO MAP DMA in 0.027 s (602.1 GB/s)
+> > ------- AVERAGE (MAP_POPULATE) --------
+> > VFIO MAP DMA in 0.257 s (62.4 GB/s)
+> > ------- AVERAGE (HUGETLBFS) --------
+> > VFIO MAP DMA in 0.031 s (517.4 GB/s)
+> > 
+> > For large folio, we achieve an over 40% performance improvement.
+> > For small folios, the performance test results indicate a
+> > slight improvement.
+> > 
+> > Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+> > Co-developed-by: Alex Williamson <alex.williamson@redhat.com>
+> > Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+> > Acked-by: David Hildenbrand <david@redhat.com>
+> > ---
+> >  drivers/vfio/vfio_iommu_type1.c | 83 ++++++++++++++++++++++++++++-----
+> >  1 file changed, 71 insertions(+), 12 deletions(-)
 > 
-> I'm guessing the device has a 32-bit DMA mask, and the allocation ends up in
-
-Yeah, the device is capable of 32 bit coherent DMA only.
-
-> __dma_direct_alloc_pages() such that that adds GFP_DMA32 in order to try to satisfy the
-> mask via regular page allocation. How GFP_KERNEL turns into GFP_NOIO, though, given that
-> the DMA layer certainly isn't (knowingly) messing with __GFP_IO or __GFP_FS, is more of a
-> mystery... I suppose "during resume" is the red flag there - is this worker perhaps trying
-> to run too early in some restricted context before the rest of the system has fully woken up?
-
-the worker is running at __resume_early stage.
-
+> Hi,
+> 
+> Our CI started flagging some crashes running vfio-ccw regressions on the -next kernel beginning with
+> next-20250717, and bisect points to this particular commit.
+> 
+> I can reproduce by cherry-picking this series onto 6.16-rc7, so it's not something else lurking.
+> Without panic_on_warn, I get a handful of warnings from vfio_remove_dma() (after starting/stopping
+> guests with an mdev attached), before eventually triggering a BUG() in vfio_dma_do_unmap() running a
+> hotplug test. I've attached an example of a WARNING before the eventual BUG below. I can help debug
+> this if more doc is needed, but admit I haven't looked at this patch in any detail yet.
 > 
 > Thanks,
-> Robin.
+> Eric
 > 
->>
->> I think you need to do a bit more debugging :)
->>
->> thanks,
->>
->> greg k-h
+> [  215.671885] ------------[ cut here ]------------
+> [  215.671893] WARNING: CPU: 10 PID: 6210 at drivers/vfio/vfio_iommu_type1.c:1204
+> vfio_remove_dma+0xda/0xf0 [vfio_iommu_type1]
+> [  215.671902] Modules linked in: vhost_vsock vmw_vsock_virtio_transport_common vsock vhost
+> vhost_iotlb algif_hash af_alg kvm nft_masq nft_ct nft_reject_ipv4 nf_reject_ipv4 nft_reject act_csum
+> cls_u32 sch_htb nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables pkey_pckmo
+> s390_trng pkey_ep11 pkey_cca zcrypt_cex4 zcrypt eadm_sch rng_core vfio_ccw mdev vfio_iommu_type1
+> vfio drm sch_fq_codel i2c_core drm_panel_orientation_quirks dm_multipath loop nfnetlink ctcm fsm
+> zfcp scsi_transport_fc mlx5_ib diag288_wdt mlx5_core ghash_s390 prng aes_s390 des_s390 libdes
+> sha3_512_s390 sha3_256_s390 sha512_s390 sha1_s390 sha_common rpcrdma sunrpc rdma_ucm rdma_cm
+> configfs iw_cm ib_cm ib_uverbs ib_core scsi_dh_rdac scsi_dh_emc scsi_dh_alua pkey autofs4
+> [  215.671946] CPU: 10 UID: 107 PID: 6210 Comm: qemu-system-s39 Kdump: loaded Not tainted 6.16.0-
+> rc7-00005-g4ff8295d8d61 #79 NONE 
+> [  215.671950] Hardware name: IBM 3906 M05 780 (LPAR)
+> [  215.671951] Krnl PSW : 0704c00180000000 000002482f7ee55e (vfio_remove_dma+0xde/0xf0
+> [vfio_iommu_type1])
+> [  215.671956]            R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
+> [  215.671959] Krnl GPRS: 006d010100000000 000000009d8a4c40 000000008f3b1c80 0000000092ffad20
+> [  215.671961]            0000000090b57880 006e010100000000 000000008f3b1c80 000000008f3b1cc8
+> [  215.671963]            0000000085b3ff00 000000008f3b1cc0 000000008f3b1c80 0000000092ffad20
+> [  215.671964]            000003ff867acfa8 000000008f3b1ca0 000001c8b36c3be0 000001c8b36c3ba8
+> [  215.671972] Krnl Code: 000002482f7ee550: c0e53ff9fcc8	brasl	%r14,00000248af72dee0
+>            000002482f7ee556: a7f4ffcf		brc	15,000002482f7ee4f4
+>           #000002482f7ee55a: af000000		mc	0,0
+>           >000002482f7ee55e: a7f4ffa9		brc	15,000002482f7ee4b0
+>            000002482f7ee562: 0707		bcr	0,%r7
+>            000002482f7ee564: 0707		bcr	0,%r7
+>            000002482f7ee566: 0707		bcr	0,%r7
+>            000002482f7ee568: 0707		bcr	0,%r7
+> [  215.672006] Call Trace:
+> [  215.672008]  [<000002482f7ee55e>] vfio_remove_dma+0xde/0xf0 [vfio_iommu_type1] 
+> [  215.672013]  [<000002482f7f03de>] vfio_iommu_type1_detach_group+0x3de/0x5f0 [vfio_iommu_type1] 
+> [  215.672016]  [<000002482f7d4c4e>] vfio_group_detach_container+0x5e/0x180 [vfio] 
+> [  215.672023]  [<000002482f7d2ce0>] vfio_group_fops_release+0x50/0x90 [vfio] 
+> [  215.672027]  [<00000248af25e1ee>] __fput+0xee/0x2e0 
+> [  215.672031]  [<00000248aef19f18>] task_work_run+0x88/0xd0 
+> [  215.672036]  [<00000248aeef559a>] do_exit+0x18a/0x4e0 
+> [  215.672042]  [<00000248aeef5ab0>] do_group_exit+0x40/0xc0 
+> [  215.672045]  [<00000248aeef5b5e>] __s390x_sys_exit_group+0x2e/0x30 
+> [  215.672048]  [<00000248afc81e56>] __do_syscall+0x136/0x340 
+> [  215.672054]  [<00000248afc8da7e>] system_call+0x6e/0x90 
+> [  215.672058] Last Breaking-Event-Address:
+> [  215.672059]  [<000002482f7ee4aa>] vfio_remove_dma+0x2a/0xf0 [vfio_iommu_type1]
+> [  215.672062] ---[ end trace 0000000000000000 ]---
+> [  219.861940] ------------[ cut here ]------------
 > 
+> ...
+> 
+> [  241.164333] ------------[ cut here ]------------
+> [  241.164340] kernel BUG at drivers/vfio/vfio_iommu_type1.c:1480!
+> [  241.164358] monitor event: 0040 ilc:2 [#1]SMP 
+> [  241.164363] Modules linked in: vhost_vsock vmw_vsock_virtio_transport_common vsock vhost
+> vhost_iotlb algif_hash af_alg kvm nft_masq nft_ct nft_reject_ipv4 nf_reject_ipv4 nft_reject act_csum
+> cls_u32 sch_htb nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables pkey_pckmo
+> s390_trng pkey_ep11 pkey_cca zcrypt_cex4 zcrypt eadm_sch rng_core vfio_ccw mdev vfio_iommu_type1
+> vfio drm sch_fq_codel i2c_core drm_panel_orientation_quirks dm_multipath loop nfnetlink ctcm fsm
+> zfcp scsi_transport_fc mlx5_ib diag288_wdt mlx5_core ghash_s390 prng aes_s390 des_s390 libdes
+> sha3_512_s390 sha3_256_s390 sha512_s390 sha1_s390 sha_common rpcrdma sunrpc rdma_ucm rdma_cm
+> configfs iw_cm ib_cm ib_uverbs ib_core scsi_dh_rdac scsi_dh_emc scsi_dh_alua pkey autofs4
+> [  241.164399] CPU: 14 UID: 107 PID: 6581 Comm: qemu-system-s39 Kdump: loaded Tainted: G        W  
+> 6.16.0-rc7-00005-g4ff8295d8d61 #79 NONE 
+> [  241.164403] Tainted: [W]=WARN
+> [  241.164404] Hardware name: IBM 3906 M05 780 (LPAR)
+> [  241.164406] Krnl PSW : 0704e00180000000 000002482f7f132a (vfio_dma_do_unmap+0x4aa/0x4b0
+> [vfio_iommu_type1])
+> [  241.164413]            R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:2 PM:0 RI:0 EA:3
+> [  241.164415] Krnl GPRS: 0000000000000000 000000000000000b 0000000040000000 000000008cfdcb40
+> [  241.164418]            0000000000001001 0000000000000001 0000000000000000 0000000040000000
+> [  241.164419]            0000000000000000 0000000000000000 00000001fbe7f140 000000008cfdcb40
+> [  241.164421]            000003ff97dacfa8 0000000000000000 00000000871582c0 000001c8b4177cd0
+> [  241.164428] Krnl Code: 000002482f7f131e: a7890000		lghi	%r8,0
+>            000002482f7f1322: a7f4feeb		brc	15,000002482f7f10f8
+>           #000002482f7f1326: af000000		mc	0,0
+>           >000002482f7f132a: 0707		bcr	0,%r7
+>            000002482f7f132c: 0707		bcr	0,%r7
+>            000002482f7f132e: 0707		bcr	0,%r7
+>            000002482f7f1330: c0040000803c	brcl	0,000002482f8013a8
+>            000002482f7f1336: eb6ff0480024	stmg	%r6,%r15,72(%r15)
+> [  241.164458] Call Trace:
+> [  241.164459]  [<000002482f7f132a>] vfio_dma_do_unmap+0x4aa/0x4b0 [vfio_iommu_type1] 
+> [  241.164463]  [<000002482f7f1d08>] vfio_iommu_type1_ioctl+0x1c8/0x370 [vfio_iommu_type1] 
+> [  241.164466]  [<00000248af27704e>] vfs_ioctl+0x2e/0x70 
+> [  241.164471]  [<00000248af278610>] __s390x_sys_ioctl+0xe0/0x100 
+> [  241.164474]  [<00000248afc81e56>] __do_syscall+0x136/0x340 
+> [  241.164477]  [<00000248afc8da7e>] system_call+0x6e/0x90 
+> [  241.164481] Last Breaking-Event-Address:
+> [  241.164482]  [<000002482f7f1238>] vfio_dma_do_unmap+0x3b8/0x4b0 [vfio_iommu_type1]
+> [  241.164486] Kernel panic - not syncing: Fatal exception: panic_on_oops
 
+Thanks for the report. After a review of this commit, it appears that
+only the changes to vfio_find_vpfn() could plausibly account for the
+observed issue (I cannot be absolutely certain). Could you kindly test
+whether the issue persists after applying the following patch?
+
+diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
+--- a/drivers/vfio/vfio_iommu_type1.c
++++ b/drivers/vfio/vfio_iommu_type1.c
+@@ -344,7 +344,7 @@ static struct vfio_pfn *vfio_find_vpfn_range(struct vfio_dma *dma,
+ 
+ static inline struct vfio_pfn *vfio_find_vpfn(struct vfio_dma *dma, dma_addr_t iova)
+ {
+-       return vfio_find_vpfn_range(dma, iova, iova + PAGE_SIZE);
++       return vfio_find_vpfn_range(dma, iova, iova + 1);
+ }
+
+Thanks,
+Zhe
 
