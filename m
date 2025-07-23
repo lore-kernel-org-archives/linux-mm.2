@@ -2,123 +2,102 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CB372C83F17
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 21:14:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7CFDDC83F1A
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 21:20:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E7A576B018C; Wed, 23 Jul 2025 17:14:02 -0400 (EDT)
+	id 1B53E6B018E; Wed, 23 Jul 2025 17:20:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2B1F6B018D; Wed, 23 Jul 2025 17:14:02 -0400 (EDT)
+	id 18D096B018F; Wed, 23 Jul 2025 17:20:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF2866B018E; Wed, 23 Jul 2025 17:14:02 -0400 (EDT)
+	id 07BFB6B0190; Wed, 23 Jul 2025 17:20:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B0C386B018C
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 17:14:02 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E45FB571E4
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 21:14:01 +0000 (UTC)
-X-FDA: 83696781882.06.977C77D
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf07.hostedemail.com (Postfix) with ESMTP id AFD0840004
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 21:13:59 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UWmsSVtM;
-	spf=pass (imf07.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id DF3166B018E
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 17:20:26 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8ADE5C01D1
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 21:20:25 +0000 (UTC)
+X-FDA: 83696798010.28.DBB2A30
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C7FE3100005
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 21:20:23 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Zo86CDvs;
+	spf=pass (imf14.hostedemail.com: domain of djwong@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753305239;
+	s=arc-20220608; t=1753305623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KEFFKCC6CirY6Qu+LFOWn/4wjxHopYc9Cu/eHLmtLrk=;
-	b=3TON6rS6tJToF993kmrAVWty7yq0/yFpActUEV1xhjVRkAUME5hsAtGrJWKkLXBczsmeCB
-	Rp9imn3k0PJNoW68NR36lqCQbWk4yPjHfLrAx7fi4NzL4yNFI4lrJ14Y9cBtaVUTOxudaV
-	Dqgl8IYfmfJzU48GwM6JgK0zOh5sA98=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753305239; a=rsa-sha256;
-	cv=none;
-	b=FAHnJbifxAZ0ZpmV4GxhSDabNHElLkgU8Lr2sOZt8EaPKNVZwIDYC4r0vmP1M/XyCNReT9
-	051scGBzgLprS/XOrT4b0YGqvXRnqAuDMpeeDlPJDboz5GaLoCGvETZ4o7fZAwLFdcU4WL
-	vadaSF1OSjv1Zmmp1CoMpY/SLtx5qYE=
+	bh=gr1Yhp+gbhq9rob6z/Dso8wJyQSMr/562AmSGNLB1l4=;
+	b=ULcE1bpeK25Lcx+Ok1Y6zew9NG7LJ9KbipU5QW6deWkoEsJ5oZb4Pl2leTQrLzB5tQqot3
+	EaUpziw5ZYzkKMIYcLR4ZV7kJn8HLyyCpRuRSplhzK20qJ6PdFb+jBJFCKyt+dJien+cIB
+	QeOz6Mof5Fc4FTItnfKcJ7nIyv7xsJ0=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UWmsSVtM;
-	spf=pass (imf07.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753305239;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KEFFKCC6CirY6Qu+LFOWn/4wjxHopYc9Cu/eHLmtLrk=;
-	b=UWmsSVtMTjyVDXMa0TKoOm/8we+PvdI57HvYwhjApAB2RiDlgQX5kzL7G4Io4SCyDhBOoR
-	bCEUWuj4q26sbaPh88P1pyhn8KDWeo7TEo5PzfRdgJ/tIsJQQYWsTnviGTO3maUASC9Ys8
-	7nMGdpbAxTq4Ejnh6gGKUaqbcR4Hhhc=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-348-z4zZdIQ5NBaKtf09sogCEQ-1; Wed, 23 Jul 2025 17:13:57 -0400
-X-MC-Unique: z4zZdIQ5NBaKtf09sogCEQ-1
-X-Mimecast-MFC-AGG-ID: z4zZdIQ5NBaKtf09sogCEQ_1753305237
-Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-70e86a2a1b8so6483067b3.1
-        for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:13:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753305237; x=1753910037;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KEFFKCC6CirY6Qu+LFOWn/4wjxHopYc9Cu/eHLmtLrk=;
-        b=xEVSdpD7UuWI9aqKRz8B4IuC6KfnFGdY48H8V/0IPHvstPkGPgGSknO/ErBXFLAGvF
-         zJGoTJVBq4i7W6GbAPFK5M/WRduhvkkglD5+6bW8mFAIIgLfHU1c1X40YQNy/gT9W48Z
-         6mq79XC3mjXpM3nV+tywL9Xh/JRKYSJ6vMt7RRXwOOFFBtoFV9gIiOovtP1gohPwaSEK
-         5KJ7LpY+tBuApAi90V0nAAFS5X+ISlct0fvGqQYX3qhi5yb2u+c2+thyW0JrTB4bgxgX
-         kJUgz694B7V8ZijfEQM0CdCrCXDlCMFe3FubVG+56eVTrAPbmiAtAiEXjHqs5n0jmaF2
-         WDCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUQ61AQOse3UQyyTgfzJIhqI7gNgNirmzIpxoUx9iD2nJLSGQ64EvaXWXR+OEWpfP+fylPZtcCNVg==@kvack.org
-X-Gm-Message-State: AOJu0YyV6Yq9B8Zr8wcAzdnf6AdxMtosn72N9MD3KmN0hWb1pPly4jJy
-	dtq16SvXZEVs7P+NUIkl7PleAqERJdv6EMbhjbWvfTf/FQ6aFRbGmllYqZshRF4+iJwrt77GtZd
-	0yfOGsN92aVZNS4CmFd+Jo0Cry4xaaew6u5tgPowVggGJEYNKBtedzK6g+GXe/1wpEIJHDhW4x6
-	NlkruxgC9/ptn77Apk54aM8BLHBr0=
-X-Gm-Gg: ASbGncvf0dxq4DHbIvDy2WeYzopNHSxYDritiLjy5u5mufvHyX6k2WFyNvzVvKSPKWN
-	IGi+ewNn4tt0uDvGZ9i0/eh6Z/lymKw/o7S1UP6xE7n93TkHAQ2L7CJUqK7GvRtcIaLJmEkS7Mg
-	bN6cEw+qOhLbHflFNyd8ougtE=
-X-Received: by 2002:a05:690c:600c:b0:710:f39f:a2bc with SMTP id 00721157ae682-719b4208ab4mr60589837b3.8.1753305236964;
-        Wed, 23 Jul 2025 14:13:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGHKu4d3onHAb7X8LWAPu0O+WUZ/aYhsMpnRlh9HgSTUlujJWY4TnCn/IV7CVGxpS2q71+P/Xaq3BIZIvRa+hU=
-X-Received: by 2002:a05:690c:600c:b0:710:f39f:a2bc with SMTP id
- 00721157ae682-719b4208ab4mr60589447b3.8.1753305236584; Wed, 23 Jul 2025
- 14:13:56 -0700 (PDT)
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Zo86CDvs;
+	spf=pass (imf14.hostedemail.com: domain of djwong@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753305623; a=rsa-sha256;
+	cv=none;
+	b=48KrVbHWjAgPnfa6Wky2S8EBjt/OiO0ilx1rUfEaRg0Gsw5+YqmOJL3sFFINBxG1NgP2o7
+	V/QoZ65lZqQrwkXNFF/mkpBqrJ1ZGcZAVFt6y/vtWgg448TyIvxD0wW0+VUtWCdLRRycdR
+	w1Ooj1ZILjKrNrh2b+gxcLrYdRJN35Q=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id AE2CD5C5C5B;
+	Wed, 23 Jul 2025 21:20:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EBE6C4CEE7;
+	Wed, 23 Jul 2025 21:20:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753305622;
+	bh=PWUwu4UTdrQzcA+D0xFyDent9rCL8sKD8yGhG/7mhvM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Zo86CDvs5a3gnDvZN0A1QBPKKEwFF8aVsiRgdi4b86voL3YOwmIy3DDwSMCtsaBBC
+	 glrqcnF26NWXKBiKcpthzcAyLv0hvoKZ8mdtMBuzoIMC5rJRpwwXYs9jOOgaUo9Bgf
+	 sN53k//ZBriBvTSfcTYR9WNdEy41oh/fjwe3Bd+KCxakiYVSZlV22e4JKaNcQ4pUG+
+	 Q21jFtf6ToXzw+cKqyHmkNESP39EmpeM63Bx5WQ2q333zyME/ahmWpf3Pgl4GjaWJn
+	 lnXVOp+emuIBECjfQ+pA5pBHl1rqN4YeaaeP5OTLn7GEIS5NVqw/2z26A/Bo4Dx8b9
+	 3eMLIPSB7WlDw==
+Date: Wed, 23 Jul 2025 14:20:20 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: Naresh Kamboju <naresh.kamboju@linaro.org>,
+	linux-fsdevel@vger.kernel.org, linux-mm <linux-mm@kvack.org>,
+	linux-xfs@vger.kernel.org, open list <linux-kernel@vger.kernel.org>,
+	lkft-triage@lists.linaro.org,
+	Linux Regressions <regressions@lists.linux.dev>,
+	Miklos Szeredi <miklos@szeredi.hu>, Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <liam.howlett@oracle.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Anders Roxell <anders.roxell@linaro.org>,
+	Ben Copeland <benjamin.copeland@linaro.org>
+Subject: Re: next-20250721 arm64 16K and 64K page size WARNING fs fuse file.c
+ at fuse_iomap_writeback_range
+Message-ID: <20250723212020.GY2672070@frogsfrogsfrogs>
+References: <CA+G9fYs5AdVM-T2Tf3LciNCwLZEHetcnSkHsjZajVwwpM2HmJw@mail.gmail.com>
+ <20250723144637.GW2672070@frogsfrogsfrogs>
+ <CAJnrk1Z7wcB8uKWcrAuRAZ8B-f8SKnOuwtEr-=cHa+ApR_sgXQ@mail.gmail.com>
 MIME-Version: 1.0
-References: <20250704040417.63826-1-dev.jain@arm.com>
-In-Reply-To: <20250704040417.63826-1-dev.jain@arm.com>
-From: Nico Pache <npache@redhat.com>
-Date: Wed, 23 Jul 2025 15:13:30 -0600
-X-Gm-Features: Ac12FXwzjaonSZ_XBVSayzqL2leWBYkEuOCfl6SDlX5nA8rmqz_ZykeRteEcbLw
-Message-ID: <CAA1CXcD2fRc-apfDi2UtQ-cvDwazxOu+bAVnKvVj2rgwdHedsA@mail.gmail.com>
-Subject: Re: [PATCH v3] khugepaged: Reduce race probability between migration
- and khugepaged
-To: Dev Jain <dev.jain@arm.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, ryan.roberts@arm.com, baohua@kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Oscar Salvador <osalvador@suse.de>, Anshuman Khandual <anshuman.khandual@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: NnFJH3pFRcpWyg8uhwRB4tpvkuXCS_mlbwHcNZqC11w_1753305237
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: AFD0840004
-X-Stat-Signature: z4b4e6f8hkpjbknqwm6j8fge5mgsg71e
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJnrk1Z7wcB8uKWcrAuRAZ8B-f8SKnOuwtEr-=cHa+ApR_sgXQ@mail.gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1753305239-221462
-X-HE-Meta: U2FsdGVkX1/tfTYtVwzqTz8e5Qc8NaueO/Nde+WMS6A+O7A+U3Z9CbcSCQC5zLPpQ6xPhJPUSUnWai+KUnSUlgQLsS7BeNaqQZXPBF4SG4xNNOUx4Ssfj9iwdU9/vyzua3EykFSN9SKEyA1fs2eCxnYQDJ+aFs/vGmwh5jyOFGyT5epi0eiuwW7+e8UnzHu6sunSL4tyjT7K6YCv5eH5z3a1ZduKt3f8Re9H1KOKli6fsKBfJf8AK4VP4xfu9b8dtuywg7mA8RzZmUTKG3GPrFJpPXMAbXE0seGRk/FVaszuT/Y0KLK7CoUihoqiuOwJin5swSpWLPy8drek0WFapKSe9Q2kL9EaKNAHvW5r7M1obHO3zSu4rs/TxOuvffgUb+9c488KH2/avuzSFDyZ7FENPnlsHrQFxRkGU6WQAOgixxlDBI998TAmYO/kMqXow06TKGGq1DEA9HbXQz9TzKPJbYZtYQAWF34C8fi3Yv+3KdV+K7Z9H5iGY33oaHynsCDgjbVvM3aQqmqxQ/OKAdl+Yg99UFkayDg0R5R4NxVwwvoyjAo6JPKzgEm3GExOAIlaJdQmP9yXXCDxc3Ql7+aOAvRZahOagG/r2b54D4HPrGxhRPMN7qU3cfP+6dGBgaAMXyl49QDLjifJ7kase18HvzemBx5JSXcHpSm0cmW84ISvrWLVsHNUybGvfXWWoRbQCehHtnxdvbCalYO+dsVrWX8dhUhi4cOTbv0qFlGivK4TWxxFe8U/HkBfd0eZ053Vu30Ry96RkaP4AT6gIndMmsXngor9I/KmWIy/vmRN+oHReN0CUsve8QyBtQsrpHl5V2J27MLlyAMbZQ8egJ7e20MvIW4cq3+FA7AKjsYB1wopt+2b/eRiz6beLmplD6AEeysi51cWJyPpvuXXaioTsTuP0OU/WnDYWVGlzmGbLCYOXrTJl8Sja8NyEryoYv9LD7ORru1FKcr16HX
- ofN1ijHl
- H7+1cgZjdnvw1kVTm7x44RzE5C9wJm2I9eG7dPQMXxdTEIPCHZktuPIIdFpUX8kxsJbZK0ruuKo87JAPB5qQVB1jWnNbQxD1Ck3UjlirpS7JqAKKFlqTHe6/sFqrbbQNrwJY4EMpNm0AbZHx3yffs6wETfFw5aaXYOoKeP/iHFmTXpj0FGvx3eZXMWkr2LagLdoY43ZUOq0DVlzB9T0Z8Cf9fGiTm0gNdo0vpKrlASD2KvbLykH9ehQnSdMymDFSWWO2WTaNz9nbyQzbyUPxcwMb9WvIG17XpQnmCw8RmoQ98ljB5u4Bf9MlXlDpKOpAH+2iC9gQCepWJ4lLgwfnNPTgpZVQXOPxjPkh3JXpZpKs8J/5eFjaxUZbpCrhPMgozheaELQIt9n/LIVS1ipXUuSp5jw==
+X-Rspamd-Queue-Id: C7FE3100005
+X-Rspamd-Server: rspam06
+X-Stat-Signature: tih6x9hyazfi8jwuri6z6ff4w9d84hju
+X-HE-Tag: 1753305623-276219
+X-HE-Meta: U2FsdGVkX1+SR4967CIS3qZA3m/2CYIphAN5T4G+ck3xpDFkCpRTx76QPrvX4NFPZCbgOL1FQpWWb5VQNl0Ez68X4ffy8n0ihnmKxwY+KuI8QoXWVnDheFrpveuSIYg1szFhyNHi5YO5dwqQ0tfSreAsGuVTt/PuNNzXGFZie1dDbMG1LwZs0cxP8Sf9ldoxrkSp3J+enDINLJM8Mh9nL49KU+wfTaWoOcXaNLcnhxy+C6HHsQ8/K0i4dIjfBrk0MGd/OcTFgZ69P+b93iNgH3AQI73+HiJ2ST1hfcW62Zz2sMHAXqEDWTMQfPXaqhCN+qcm3MfM5sQnU4f90sqqcN6+mUzpUEW4VDdm5WlHhcb5ZeKMTAxpTzSTVqV7RQ99RYzQXsdkpqyPTTo4uKXTDmsfU3z1sCvDBy0uZwbv+PBuxwSEJWejhOJDaqOijyzuKOhdx3AmFttnZDcEHBcm0sdCnfxaD1SPjKgy5tF/1878t+bXkdqglP9az7OaGYzyjhV5Cnn3ewtFAbKcdRElrfwcQl0050OWfXarMdzpKKxgOjFyBBwKTjhW37MjF1Luq1rUSeVQCjWVAIF1Uv9zp47OXr+JkcYtluwWVQGA9ThNn26R5orBbczqj99WkbJOWq69PWgN39EkJGGRed8bnw/POLnEpZf2GYwXh2T7iLSf+OdhUevHhZ1y6AVW6VvHY+po0UN3QH/oyI5fkCT/TbGvF45xGVa03AONJfoqqhFXiaU5rlg1MZh3H1efVwAWf196Y3Pr/qqahu/2UEXdGMGHn/1OVROrAUZXGMZ6hUIihKLvDxojCUoev5znlMcpZUZlN3A9ek+WP4Q/yxEKriUwtg8/kLMiRXekp0b2nrvjFQKTi7Y4zcy7+sq79FJo14FBEfQOGrmmT4s1cXR9sHcxatGuf+8PpttQF0E5H9bACM/mD+yKLL5DuveUMBLzto8icMkGUY43iCfj7zd
+ 92HRTe81
+ 9kKRz68iT5RwP2VrucrU16YLLtnDjRcsMm+c+iszaqOFgwjgxVzE9ZuDW8eDIo+BT3KP9wvD64TOjCy093TqrenFPBL/dvEz47Lb+t01jdq6UNzhpeIC0EVmm60EQAMdPnpW6NktdVOBtGP1RnaLveWL2/zGFu2maFgXZuuauv2x0HuxHVBTF1moy9Klxv10nT24Taiylv0PnkxQtOITo+GJD/EdNtpzhElqNpr6i7FLrOSi0DBd9nY87tBchZ28EkLkXp8KCJ6Kuq1JfnF2Pd7JudMpSk7zdmX2XnVU0wcoDHUiBJG9KaFBVhBQ5ksEMldPj4KdV7jyVWt32Po6/PhRYEv0gtv82RIHiGfiMjr2tTFDQfRIA5fYx5AeBZDvYIMsqLoOu/V3AFp604vNiiwR9XXhouB7cLoNOUhT5ELBT6JznorL5x9WLOfH8TdYKK1hGTvShYg+zZt3YYa4Q+34B518l4cn+QR7tUC3qJgZSFW1Vf+yJMcm3QHl5O6+ZdTi1VmqNZCZLwNLvHhkZPJ3a6lm9LMAsk57qBbRI28dqb4JNZ5VG4msGfA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,70 +106,191 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 3, 2025 at 10:04=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
->
-> Suppose a folio is under migration, and khugepaged is also trying to
-> collapse it. collapse_pte_mapped_thp() will retrieve the folio from the
-> page cache via filemap_lock_folio(), thus taking a reference on the folio
-> and sleeping on the folio lock, since the lock is held by the migration
-> path. Migration will then fail in
-> __folio_migrate_mapping -> folio_ref_freeze. Reduce the probability of
-> such a race happening (leading to migration failure) by bailing out
-> if we detect a PMD is marked with a migration entry.
->
-> This fixes the migration-shared-anon-thp testcase failure on Apple M3.
->
-> Note that, this is not a "fix" since it only reduces the chance of
-> interference of khugepaged with migration, wherein both the kernel
-> functionalities are deemed "best-effort".
->
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Acked-by: Oscar Salvador <osalvador@suse.de>
-> Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
+On Wed, Jul 23, 2025 at 11:42:42AM -0700, Joanne Koong wrote:
+> On Wed, Jul 23, 2025 at 7:46 AM Darrick J. Wong <djwong@kernel.org> wrote:
+> >
+> > [cc Joanne]
+> >
+> > On Wed, Jul 23, 2025 at 05:14:28PM +0530, Naresh Kamboju wrote:
+> > > Regressions found while running LTP msync04 tests on qemu-arm64 running
+> > > Linux next-20250721, next-20250722 and next-20250723 with 16K and 64K
+> > > page size enabled builds.
+> > >
+> > > CONFIG_ARM64_64K_PAGES=y ( kernel warning as below )
+> > > CONFIG_ARM64_16K_PAGES=y ( kernel warning as below )
+> > >
+> > > No warning noticed with 4K page size.
+> > > CONFIG_ARM64_4K_PAGES=y works as expected
+> >
+> > You might want to cc Joanne since she's been working on large folio
+> > support in fuse.
+> >
+> > > First seen on the tag next-20250721.
+> > > Good: next-20250718
+> > > Bad:  next-20250721 to next-20250723
+> 
+> Thanks for the report. Is there a link to the script that mounts the
+> fuse server for these tests? I'm curious whether this was mounted as a
+> fuseblk filesystem.
+> 
+> > >
+> > > Regression Analysis:
+> > > - New regression? Yes
+> > > - Reproducibility? Yes
+> > >
+> > > Test regression: next-20250721 arm64 16K and 64K page size WARNING fs
+> > > fuse file.c at fuse_iomap_writeback_range
+> > >
+> > > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> > >
+> > > ## Test log
+> > > ------------[ cut here ]------------
+> > > [  343.828105] WARNING: fs/fuse/file.c:2146 at
+> > > fuse_iomap_writeback_range+0x478/0x558 [fuse], CPU#0: msync04/4190
+> >
+> >         WARN_ON_ONCE(len & (PAGE_SIZE - 1));
+> >
+> > /me speculates that this might be triggered by an attempt to write back
+> > some 4k fsblock within a 16/64k base page?
+> >
+> 
+> I think this can happen on 4k base pages as well actually. On the
+> iomap side, the length passed is always block-aligned and in fuse, we
+> set blkbits to be PAGE_SHIFT so theoretically block-aligned is always
+> page-aligned, but I missed that if it's a "fuseblk" filesystem, that
+> isn't true and the blocksize is initialized to a default size of 512
+> or whatever block size is passed in when it's mounted.
 
-LGTM! This is a nice check to have here :)
+<nod> I think you're correct.
 
-Reviewed-by: Nico Pache <npache@redhat.com>
-> ---
->
-> v2->v3:
->  - Improve comment (David)
->
-> v1->v2:
->  - Remove SCAN_PMD_MIGRATION, merge into SCAN_PMD_MAPPED (David, Anshuman=
-)
->  - Add a comment (Lorenzo)
->
-> v1:
->  - https://lore.kernel.org/all/20250630044837.4675-1-dev.jain@arm.com/
->
->  mm/khugepaged.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
->
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 1aa7ca67c756..a55fb1dcd224 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -941,6 +941,14 @@ static inline int check_pmd_state(pmd_t *pmd)
->
->         if (pmd_none(pmde))
->                 return SCAN_PMD_NONE;
-> +
-> +       /*
-> +        * The folio may be under migration when khugepaged is trying to
-> +        * collapse it. Migration success or failure will eventually end
-> +        * up with a present PMD mapping a folio again.
-> +        */
-> +       if (is_pmd_migration_entry(pmde))
-> +               return SCAN_PMD_MAPPED;
->         if (!pmd_present(pmde))
->                 return SCAN_PMD_NULL;
->         if (pmd_trans_huge(pmde))
-> --
-> 2.30.2
->
+> I'll send out a patch to remove this line. It doesn't make any
+> difference for fuse_iomap_writeback_range() logic whether len is
+> page-aligned or not; I had added it as a sanity-check against sketchy
+> ranges.
+> 
+> Also, I just noticed that apparently the blocksize can change
+> dynamically for an inode in fuse through getattr replies from the
+> server (see fuse_change_attributes_common()). This is a problem since
+> the iomap uses inode->i_blkbits for reading/writing to the bitmap. I
+> think we will have to cache the inode blkbits in the iomap_folio_state
+> struct unfortunately :( I'll think about this some more and send out a
+> patch for this.
 
+From my understanding of the iomap code, it's possible to do that if you
+flush and unmap the entire pagecache (whilst holding i_rwsem and
+mmap_invalidate_lock) before you change i_blkbits.  Nobody *does* this
+so I have no idea if it actually works, however.  Note that even I don't
+implement the flush and unmap bit; I just scream loudly and do nothing:
+
+void fuse_iomap_set_i_blkbits(struct inode *inode, u8 new_blkbits)
+{
+	trace_fuse_iomap_set_i_blkbits(inode, new_blkbits);
+
+	if (inode->i_blkbits == new_blkbits)
+		return;
+
+	if (!S_ISREG(inode->i_mode))
+		goto set_it;
+
+	/*
+	 * iomap attaches per-block state to each folio, so we cannot allow
+	 * the file block size to change if there's anything in the page cache.
+	 * In theory, fuse servers should never be doing this.
+	 */
+	if (inode->i_mapping->nrpages > 0) {
+		WARN_ON(inode->i_blkbits != new_blkbits &&
+			inode->i_mapping->nrpages > 0);
+		return;
+	}
+
+set_it:
+	inode->i_blkbits = new_blkbits;
+}
+
+https://git.kernel.org/pub/scm/linux/kernel/git/djwong/xfs-linux.git/commit/?h=fuse-iomap-attrs&id=da9b25d994c1140aae2f5ebf10e54d0872f5c884
+
+--D
+
+> 
+> Thanks,
+> Joanne
+> 
+> > --D
+> >
+> > > [  343.830969] Modules linked in: btrfs blake2b_generic xor xor_neon
+> > > raid6_pq zstd_compress sm3_ce sha3_ce drm fuse backlight ip_tables
+> > > x_tables
+> > > [  343.833830] CPU: 0 UID: 0 PID: 4190 Comm: msync04 Not tainted
+> > > 6.16.0-rc7-next-20250723 #1 PREEMPT
+> > > [  343.834736] Hardware name: linux,dummy-virt (DT)
+> > > [  343.835788] pstate: 03402009 (nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
+> > > [  343.836455] pc : fuse_iomap_writeback_range+0x478/0x558 fuse
+> > > [  343.837294] lr : iomap_writeback_folio (fs/iomap/buffered-io.c:1586
+> > > fs/iomap/buffered-io.c:1710)
+> > > [  343.838178] sp : ffff80008b26f8d0
+> > > [  343.838668] x29: ffff80008b26f8d0 x28: fff00000e7f8c800 x27: 0000000000000000
+> > > [  343.839391] x26: fff00000d4b30000 x25: 0000000000000000 x24: 0000000000000000
+> > > [  343.840305] x23: 0000000000000000 x22: fffffc1fc0334200 x21: 0000000000001000
+> > > [  343.840928] x20: ffff80008b26fa00 x19: 0000000000000000 x18: 0000000000000000
+> > > [  343.841782] x17: 0000000000000000 x16: ffffb8d3b90c67c8 x15: 0000000000000000
+> > > [  343.842565] x14: ffffb8d3ba91e340 x13: 0000ffff8ff3ffff x12: 0000000000000000
+> > > [  343.843002] x11: 1ffe000004b74a21 x10: fff0000025ba510c x9 : ffffb8d3b90c6308
+> > > [  343.843962] x8 : ffff80008b26f788 x7 : ffffb8d365830b90 x6 : ffffb8d3bb6c9000
+> > > [  343.844718] x5 : 0000000000000000 x4 : 000000000000000a x3 : 0000000000001000
+> > > [  343.845333] x2 : fff00000c0b5ecc0 x1 : 000000000000ffff x0 : 0bfffe000000400b
+> > > [  343.846323] Call trace:
+> > > [  343.846767] fuse_iomap_writeback_range+0x478/0x558 fuse (P)
+> > > [  343.847288] iomap_writeback_folio (fs/iomap/buffered-io.c:1586
+> > > fs/iomap/buffered-io.c:1710)
+> > > [  343.847930] iomap_writepages (fs/iomap/buffered-io.c:1762)
+> > > [  343.848494] fuse_writepages+0xa0/0xe8 fuse
+> > > [  343.849112] do_writepages (mm/page-writeback.c:2634)
+> > > [  343.849614] filemap_fdatawrite_wbc (mm/filemap.c:386 mm/filemap.c:376)
+> > > [  343.850202] __filemap_fdatawrite_range (mm/filemap.c:420)
+> > > [  343.850791] file_write_and_wait_range (mm/filemap.c:794)
+> > > [  343.851108] fuse_fsync+0x6c/0x138 fuse
+> > > [  343.851688] vfs_fsync_range (fs/sync.c:188)
+> > > [  343.852002] __arm64_sys_msync (mm/msync.c:96 mm/msync.c:32 mm/msync.c:32)
+> > > [  343.852197] invoke_syscall.constprop.0
+> > > (arch/arm64/include/asm/syscall.h:61 arch/arm64/kernel/syscall.c:54)
+> > > [  343.852914] do_el0_svc (include/linux/thread_info.h:135
+> > > (discriminator 2) arch/arm64/kernel/syscall.c:140 (discriminator 2)
+> > > arch/arm64/kernel/syscall.c:151 (discriminator 2))
+> > > [  343.853389] el0_svc (arch/arm64/include/asm/irqflags.h:82
+> > > (discriminator 1) arch/arm64/include/asm/irqflags.h:123 (discriminator
+> > > 1) arch/arm64/include/asm/irqflags.h:136 (discriminator 1)
+> > > arch/arm64/kernel/entry-common.c:169 (discriminator 1)
+> > > arch/arm64/kernel/entry-common.c:182 (discriminator 1)
+> > > arch/arm64/kernel/entry-common.c:880 (discriminator 1))
+> > > [  343.853829] el0t_64_sync_handler (arch/arm64/kernel/entry-common.c:899)
+> > > [  343.854350] el0t_64_sync (arch/arm64/kernel/entry.S:596)
+> > > [  343.854652] ---[ end trace 0000000000000000 ]---
+> > >
+> > >
+> > >
+> > > ## Source
+> > > * Git tree: https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next.git
+> > > * Project: https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20250723/
+> > > * Git sha: a933d3dc1968fcfb0ab72879ec304b1971ed1b9a
+> > > * Git describe: 6.16.0-rc7-next-20250723
+> > > * kernel version: next-20250723
+> > > * Architectures: arm64
+> > > * Toolchains: gcc-13
+> > > * Kconfigs: defconfig + CONFIG_ARM64_64K_PAGES=y
+> > > * Kconfigs: defconfig + CONFIG_ARM64_16K_PAGES=y
+> > >
+> > > ## Test
+> > > * Test log 1: https://qa-reports.linaro.org/api/testruns/29227309/log_file/
+> > > * Test log 2: https://qa-reports.linaro.org/api/testruns/29227074/log_file/
+> > > * Test run: https://regressions.linaro.org/lkft/linux-next-master/next-20250723/testruns/1713367/
+> > > * Test history:
+> > > https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20250723/testrun/29227309/suite/log-parser-test/test/exception-warning-fsfusefile-at-fuse_iomap_writeback_range/history/
+> > > * Test plan: https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/tests/30G3hpJVVdXkZKnB15v1qoQOL03
+> > > * Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/30G3dvSFyHHQ3E8CvKH7tjU98I6/
+> > > * Kernel config:
+> > > https://storage.tuxsuite.com/public/linaro/lkft/builds/30G3dvSFyHHQ3E8CvKH7tjU98I6/config
+> > >
+> > > --
+> > > Linaro LKFT
+> > > https://lkft.linaro.org
 
