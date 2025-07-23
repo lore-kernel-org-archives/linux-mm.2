@@ -2,128 +2,87 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C182DC83F1A
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 11:31:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C852C83F1A
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 11:31:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 21F9D6B00A7; Wed, 23 Jul 2025 07:31:00 -0400 (EDT)
+	id CD0866B0093; Wed, 23 Jul 2025 07:31:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1CF5D8E0008; Wed, 23 Jul 2025 07:31:00 -0400 (EDT)
+	id C7F736B00B0; Wed, 23 Jul 2025 07:31:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0BEE36B00A9; Wed, 23 Jul 2025 07:31:00 -0400 (EDT)
+	id B6E506B00B1; Wed, 23 Jul 2025 07:31:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id ECA016B00A7
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 07:30:59 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3C8D78069B
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 11:30:59 +0000 (UTC)
-X-FDA: 83695312638.30.1940496
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 5039C80002
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 11:30:57 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OdjM2h0X;
-	spf=pass (imf30.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A0D686B0093
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 07:31:49 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 535DD80695
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 11:31:49 +0000 (UTC)
+X-FDA: 83695314738.16.8AB1747
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 4932440006
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 11:31:47 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="OkXkdk/F";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf01.hostedemail.com: domain of kent.overstreet@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=kent.overstreet@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753270307; a=rsa-sha256;
+	cv=none;
+	b=aovx2M7hLEcpRKrNHlrfRIjAY1Ke1ZHN6ZqWRane9r1gEA0wTl6I/2KTuHx7aqmkpGMjk9
+	nwd5UZ6jYXMpsSe1bN77fMrYCiWpPhfoZtjgpCeJeS1h9Rc+iibVYD7WtPmygR+2ZduYBb
+	YiZ1eaizay/Bfjezw4WKuqdlX7bbllE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="OkXkdk/F";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf01.hostedemail.com: domain of kent.overstreet@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=kent.overstreet@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753270257;
+	s=arc-20220608; t=1753270307;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M9FdRXwfhMMRbD/Zbezab/R43oU6uWy4/YgTXhpJSC8=;
-	b=8gUjXVTn8uY4Q2tlVov354ksCSknO/MMsOs9myVM7FFBzhRSq+Baq99fXVVyAbiqpcZT9I
-	Fml4jr7zVfw8YNmxCa4Z/gDNnhACvGtCH13UeXOKKS6Rd0YJNhVjirzlKPrp3RKEZ4tEwZ
-	+SGBCx6ijsV5A2Zi43ojEBhBYYytNdA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753270257; a=rsa-sha256;
-	cv=none;
-	b=mDk8AJGNJDqJ1mmerdQ41Wyvj1usFoJJZTbmGc8wJLFa8DiVx0asGTWLnlJeXkcBGeNA20
-	hUSZqyAeFhmclRqW7MI93BV/UmdtGMXff+ypDFI6OYpLjz1ARCBu151ugR70Fpn997grjO
-	l1MIeRPy3BxoIgKqnZ9j3GSUZAK5CEE=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OdjM2h0X;
-	spf=pass (imf30.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-234f17910d8so59385295ad.3
-        for <linux-mm@kvack.org>; Wed, 23 Jul 2025 04:30:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753270256; x=1753875056; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=M9FdRXwfhMMRbD/Zbezab/R43oU6uWy4/YgTXhpJSC8=;
-        b=OdjM2h0XbD8rS0AaPa+xuuB5k10s1bTMmTcLb/RPDz7cY/3FbJdLJq/cgWGzcf92Km
-         DOqK0W+KdAJDqK7DaedKWZYMtkjHlgRrHsAiEeok0+hN84zlH8zw7NZKpmtDSCgQU6HI
-         LCebkSrqw+DQRDBnf2/UUgBBxwX027ctSiqIrYZZfdNijsLEusewhV9oSgOUgTpedwDy
-         dFVzJ8bntUxv4mhBWXLCXyAcnnjJDrSuEVdA0oiIFkmPkMISlCXe2hZzFkoyBrOQE4Qo
-         jv5km6+GxFPEN3MMZL51hXClQeU4PUrMVpL1Y9VcByaDZgW3VJ6BJFVOUDn9x1rLpi+I
-         zGZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753270256; x=1753875056;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=M9FdRXwfhMMRbD/Zbezab/R43oU6uWy4/YgTXhpJSC8=;
-        b=rdQeJ0yqd2JtyEjvER/t4K1CHeqSayS6V+fu67lgq8DwLXvt1/KxvVquJfoV2m9blA
-         o5DZxq629QWIgqlRWJ3qCtKMWv5aTbdYSpQZjEtGuEuyo/z1zMsTqNz5Mx5bw5GoeaEg
-         JOmkz9AB+GjA65syYRKdnxOoIH5zGrUrZ0MVZKbC8eyAAZQDk9ZHIMHb+3NOCDukC4tl
-         COmuIAyD24iY6HnjSuoGGL1lSsj+YG8ur3qrwq1qo5TogJH32GWUuGJcAFJfoJ2E7G1J
-         Enn11V5FVvVO4FTX2ZM1GmTvSehRJWxoxQmo6xtkyAvEuyhe0mNjfDk/klU4P9YzHrj4
-         X81g==
-X-Forwarded-Encrypted: i=1; AJvYcCVrqcgBt5qCbaqA6ERZeYXzt01S3nN/qJVxWJfjrbluuHjlDHcFw6IUgoaOKz3cB/YYPVIUBR19Hw==@kvack.org
-X-Gm-Message-State: AOJu0YzPe/XIN8Hc2hexvfs+ayUgWVLqhFe0bxTQDDA6oNQ7dlj9PI5R
-	ZGsqduVxW1hYbxlX9jmj58y1Zh9P9mm+qz9FLTZpQqOBa8tdad8UJz9J
-X-Gm-Gg: ASbGncs2cVtnSHgBrznwiOTrEzXhGo7AYz2FuyRcRVDCx6RUNpkJfbqwLwlk/Os7kBU
-	uYaXowuFIrOCTOhS7t8zi0MZVKVyKim7qyaxgC8pR+gKYcpa/wd0TUj5/UikM3dLj90GuxNCUYI
-	PcEdM9MhLTRwAaaVNDAfBaieatkkEAAhkPyHX+KyNgkPzIzzfIPZmQhy8ZRiVchWUnLFqrNGc2D
-	65WwI28qEZRN5Q189wkxZ5cjYWtY0F6wxLw1WU0kRa5y2iCCrvxj6yqmAD7v83awbY2NcOsgpr0
-	HkQ5WNevv/xMjgvxFsmv7mXDqv6nEqsKt9vJKzqKqQnLSuf7PzxDWNejQeDRopVwfGVRtndhMS+
-	AV9YsCy04SjkR9dst7Y5wSc36/49gd5dpIMpF3FqkuPTwjon8Jb4=
-X-Google-Smtp-Source: AGHT+IFm5D42A8rW7gtmyR7fdzi/MOVmHdHVNS5Z+T+85KD48ZLmyVV+6boqMsrgb0UOxUyG/J0QjA==
-X-Received: by 2002:a17:902:dcc5:b0:23f:9a4d:2764 with SMTP id d9443c01a7336-23f9a4d28bbmr17820135ad.30.1753270256034;
-        Wed, 23 Jul 2025 04:30:56 -0700 (PDT)
-Received: from localhost.localdomain ([114.247.113.178])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23e3b5e2de8sm94712285ad.11.2025.07.23.04.30.50
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 23 Jul 2025 04:30:55 -0700 (PDT)
-From: wang lian <lianux.mm@gmail.com>
-To: ziy@nvidia.com
-Cc: Liam.Howlett@oracle.com,
-	akpm@linux-foundation.org,
-	brauner@kernel.org,
-	broonie@kernel.org,
-	david@redhat.com,
-	gkwang@linx-info.com,
-	jannh@google.com,
-	lianux.mm@gmail.com,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org,
-	lorenzo.stoakes@oracle.com,
-	p1ucky0923@gmail.com,
-	ryncsn@gmail.com,
-	shuah@kernel.org,
-	sj@kernel.org,
-	vbabka@suse.cz,
-	zijing.zhang@proton.me
-Subject: Re: [PATCH v6] selftests/mm: add process_madvise() tests
-Date: Wed, 23 Jul 2025 19:30:44 +0800
-Message-Id: <20250723113044.40876-1-lianux.mm@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <1C468AC6-C55B-41A3-9335-65B03EF65B83@nvidia.com>
-References: <1C468AC6-C55B-41A3-9335-65B03EF65B83@nvidia.com>
+	bh=YMn280ldD7P7MRnOeYtZF4M3wweQEZD57ZL/8Ws818w=;
+	b=pi3ZHJdbbCb9W2yt3Ik0jfsJjHE1ng6uiGERCxNYF4tNxfBGOoRJHsRkF0eW0k3YrHV3BV
+	4UYRYBuoHKaYQSVx2kGpDDYUP0cDIxFtFYMyY1y9SkELJGTEodSkyRzXrWXgzQUC5HpcGf
+	89G2bG7IOn3K21tGfH0a4uaJnWltk9I=
+Date: Wed, 23 Jul 2025 07:31:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1753270305;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YMn280ldD7P7MRnOeYtZF4M3wweQEZD57ZL/8Ws818w=;
+	b=OkXkdk/FtIFnnKaGse7LcZVWp4SopXeSozhXITgV7qc4rKYRGSeqCK0+u1E8ExbwCiPdWm
+	BYD0elvIj5+ElXkmTLbmDqoD3HOaQ8k0Rlx1Ftw56zww+CgMaN3RpbSZn6aEHAbmWsENzN
+	Y5FcFa0vF7hl67O/zBcziDYH050HTeg=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+Cc: rientjes@google.com, vbabka@suse.cz, cl@gentwo.org, 
+	roman.gushchin@linux.dev, harry.yoo@oracle.com, surenb@google.com, 
+	pasha.tatashin@soleen.com, akpm@linux-foundation.org, corbet@lwn.net, linux-mm@kvack.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, quic_tingweiz@quicinc.com
+Subject: Re: [PATCH 1/1] mm: slub: Introduce one knob to control the track of
+ slub object
+Message-ID: <mw52yqm7wfe5afb5ybvfkpdgo4pm4wobmzv3um2cov3amekzmi@ye5drijf7njj>
+References: <20250723080328.4012263-1-quic_zhenhuah@quicinc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 5039C80002
-X-Stat-Signature: 4d5f8m67ypptc7cinbufhb5z848rdkt1
+In-Reply-To: <20250723080328.4012263-1-quic_zhenhuah@quicinc.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4932440006
+X-Stat-Signature: ak6o1x6ja1c7f1gwxx9x4yhzgxu58tza
 X-Rspam-User: 
-X-HE-Tag: 1753270257-328801
-X-HE-Meta: U2FsdGVkX1/B8CP00t2sH3QF3sIz7wOhTGAU/baf2lCwkCisT9pafb46i6O9uqKrDSXGZxgVDP/ADCOKqfuIYXdYHQ3i9ryQQ7tDoEAr2WmneM3O3n+0EG/cOYg5+Ito+kjYvEP8CRV/qW7dLJNB9EoskdyyPKAta3l/EG2MCtCLxNd9XrT+7KjP08TlEEDnqIup2GXufpQomvSPmctEr01eowjDCPB4QxjUojoL1i7kr4CYbKXxZivCcBlmumGuQR0ecbEjvhANL1k463d7VtzYyfuC+QR13XNjsicNb3Sn1IWO59VhkoRmot/Ijz+GaqWCUFQvsYLwMDynEMIRewPXXCIjMS7FyuRaQWmcCiwrSN6DxyHFxcNPBpTpm5bIfiD8fYgdCMMXYADyegYoV8xIIG7GBSFwgYxoC3wf2eL7H22smWwfjP5jW60nd5fBruiUv/KC0ARiDOGquUCQq56EtFC86ZXZMtEMsRlzjPmXKWoR1WthuwSO4wo9npB2fqx4dOWCD1+NY8nCNAoofnGzhj9kHgiMI/pOXKbz9B9J8GxgoQyH5AGwzFBcJ2a1aV0tNNA67d/Hxob7QWn1WMPAw+fyaY2VHeWrvtVECVh096hY4kkcgntU0Jf+UcF39LlFlHI2qoCbOiKChPN8Pa2Q1vfaxvF7jP+7tOIst/TIftSlqFVugZp5PHj2ZU0qZLb7/Nuou+OJSoN4slxgAYMu7f2f5hi2uDT8z28B5nYyi1G52qCKC2ZVAEDHgk4GK9gWoKXV2xhQChS+AlhKepE6upr4rnT3gPP6d6fHJkSeJ+ohwTxmqXAOF23x/HcjWpwY9ifXpPUvI5myFkLXEIAsENljFjU54/ocKsWRnuwyS+FRwmGoDZWLAkrxOHmBrfKuMD+yUlCZwY95lMfWE8vJJrfKb9hxCTbpmIVqjDc+3RxbQnOJoCeHCctt1WS07HhapqwGUmnSSYpE3iA
- 0DIfOTp1
- C2IbBmdKlK9xDuZGy0xCVNBdaHc67oceHepVJzYLqEv9aRCv0r8iHYKjP7QA87s7CcwoXIz0PquxZtHjum+mb56Z3UzIwmCiGG72/yMtXnKEEeCoFRlJ2gSJR7Nhq865klBIhmSNwbbXgcMVFTVxf0bsQEFZBr73jk9r6eq3zyzGTQ+Y8eLwNguheRiuffQ5+36mGoKOSVBE21EfwtlRnwupF+FxkyU7crOosl+cSK1nu0IFHaqw13hf1T4E2EJrf7BK+99Nhh7vllT/PJphV8GeRW6cWeawlOh5YF8PC05jDS6/i4yo7d3TFkg3SBO+0xFt/mqpbSeNrgjCkmzoAI5PGdVNzWpyCyy7ZTgXkxM+0srfUoO4RVOOTc87jGmh1OSSOkSVb5cqbQjtyI5C0Q7i12Cd/Y2AVjMcs+QrAZlYhydZRuEXW9mbmYHLfhnd6Rrs47SEIS1adkLah63P9GG+m0rz8DnXGIEvWxqRiiDwqSOYTC3/AlqW9D6L6ZkgqD6MohX0KpoZOJ7H0pO4fYaJrKKmhej5+3pXG2xShyLv8X7Y8L9jPUYwrIQ==
+X-HE-Tag: 1753270307-185610
+X-HE-Meta: U2FsdGVkX189eL/j9NL5M4hTJmZkXfnHGhrKb96z3gDPuTxGOTXrDQRE6qa1qDFhCWY6Z62NiF8vpFAC7oyJi5eHbD2JkQA+eQNZLXfi2Zr8s7LrBX4UKFkrCbjl3hybcLvHIm71Uby1lLSNWI1yI7ylEYTNil0AZjfaeZn3l/C2e8CfOxo+EpqSWw3lZs0myP3XRdifTFo6UdwiB8VBC2GLsVDS88qWZJJy5xbuCbq519ceK6cpskkDOrjTrupTJWvddfWWOMzJbeKEDlA1RdxE3Nw9D+GuSFRwUsqmzgouz0Er0YKMJdsZ64cRHgiCh5zQlrbJR3lbnYCsJjQCL8X6Pc/d2VIMrqsNZrHRvaywHZ0cA9esUnli/8sZ3nwb91ZpkW1EgBEmCmkSHU5ZGgGYIDvfJ6N2U9P6UEJ+LSea6YzqjfoufM1UWrE18GpKiDJw4vj2YLhxwkQeLkWhEBYfI5Swtw8NFulKZ06kuAjuURyw81LMD30Y073dpI68iGFZEqiQuM/vBzmWyjUghhuiHNYHrqrCLQOYwrrqKnLOYsyYy4PdPp1sFMiqzYbsP0dPuVxXdl2xAgHOTxjSf1mmfoJe13MI8iD5xaiG+qG29n/0PwDq++mLwryGadVTjAe1yGV+WXA6XO6rz68QLwbEvi5Lj+EzLMNefj/TLM6FKvYEHm0qPjJ7vvz3Z+LuGQLaqc6t2WsMKbtI9S/LpxNDDFCc9b1yQPArA+o4FimG8pS6WyqHc2a9bgJD4Ng0exD8OiJjfu/43uHbJdjoSt5Cud/eAKJHaRzOQm03+tNzcjzkKFdrFglPZuhTYTXQMGtcCbszRC+cELs/fuMMwFlfg/TRGL0Qsfy3DA0cRHtC0SV8/yKjJn8tXQkKM6zOZ0253jVn5qE46nwshTm+qsIZecY+DwE7Iwd1UQ7fuwByVRraxUp6Py5YxV/kuwIMAbJ/V3POXRVf1rsZyZj
+ NZUvgKiC
+ +a5VsrFG/8KsXDnXKAbm2dv6LQBWFIeU8FflLMzeZLTSN5nB2zEvYV10Z+mmz5jG9hBzJNUPHyDWE1W9AG5v0HMX3lHrUBnwUjQU+7mPJTE/LuVUAUpVnqOben2pYfI5KKlf75bQwxAyEj7ed4i7Sl7YdwGiMQG86qxtL6h9DfGnjToDSNl7PJSMaBMw7pFb/0tQFi+mxmpdgH8EyPuTvlBnHGu5BL6OAO6BRYS3RaBOpQdq3bMOXDfoATdVKc4pbwlfEhxdpSkIRSJ/v7a+YmbpVQJhszLnRMCKncfx9jHEK8mE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,39 +91,198 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Here an invalid address range is provided, since pid is checked before
-> address ranges are checked.
+On Wed, Jul 23, 2025 at 04:03:28PM +0800, Zhenhua Huang wrote:
+> Mem profiling feature tracks both "alloc_slab_page"(page level) and slub
+> object level allocations. To track object level allocations,
+> slabobj_ext consumes 16 bytes per object for profiling slub object if
+> CONFIG_MEMCG is set.
+> Based on the data I've collected, this overhead accounts for approximately
+> 5.7% of slub memory usage — a considerable cost.
+> w/ noslub  slub_debug=-
+> Slab:              87520 kB
+> w/o noslub slub_debug=-
+> Slab:              92812 kB
+> 
+> While In some scenarios, we may choose not to delve into SLUB allocation
+> details if initial triage indicates that SLUB memory usage is within
+> acceptable limits. To support this, a control knob is introduced to enable
+> or disable SLUB object tracking.
+> The "noslub" knob disables SLUB tracking, preventing further allocation of
+> slabobj_ext structures.
 
-> BTW, the size of iovec array cannot be bigger than IOV_MAX. It might be
-> worth testing as well, if you want to.
+...Have there been actual scenarios where this would be useful?
 
-> With default_huge_page_size() -> read_pmd_pagesize() fix, feel free to
-> add:
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Tested-by: Zi Yan <ziy@nvidia.com>
+We've already got a knob for memory allocation profiling as a whole;
+most allocations are slub allocations, so if you're looking at memory
+allocation profiling you probably want slub.
 
-> I am able to compile and run the test on arm64. Thanks.
-
-> Best Regards,
-> Yan, Zi
-
-
-Hi Zi,
-Thanks a lot for your review and the valuable feedback! The issues you've pointed out are very helpful.
-
-Regarding the logic where the PID is checked before the address ranges, 
-that was an oversight on my part and I will fix it. 
-I'll also add the test case for the iovec array size against IOV_MAX as you suggested.
-
-And thank you for adding your Reviewed-by and Tested-by tags when i fix this.
-
-I plan to collect all the review comments, revise the patches, and send out a new version 
-with your tags included in the next 2-3 days.
-
-Thanks again!
-
-
-
-Best Regards,
-Wang Lian
+> 
+> Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+> ---
+>  Documentation/mm/allocation-profiling.rst |  7 +++++-
+>  include/linux/alloc_tag.h                 |  8 +++++++
+>  lib/alloc_tag.c                           | 26 +++++++++++++++++------
+>  mm/slub.c                                 | 10 ++++-----
+>  4 files changed, 38 insertions(+), 13 deletions(-)
+> 
+> diff --git a/Documentation/mm/allocation-profiling.rst b/Documentation/mm/allocation-profiling.rst
+> index 316311240e6a..9ecae74e0365 100644
+> --- a/Documentation/mm/allocation-profiling.rst
+> +++ b/Documentation/mm/allocation-profiling.rst
+> @@ -18,7 +18,7 @@ kconfig options:
+>    missing annotation
+>  
+>  Boot parameter:
+> -  sysctl.vm.mem_profiling={0|1|never}[,compressed]
+> +  sysctl.vm.mem_profiling={0|1|never}[,compressed][,noslub]
+>  
+>    When set to "never", memory allocation profiling overhead is minimized and it
+>    cannot be enabled at runtime (sysctl becomes read-only).
+> @@ -30,6 +30,11 @@ Boot parameter:
+>    If compression fails, a warning is issued and memory allocation profiling gets
+>    disabled.
+>  
+> +  The optional noslub parameter disables tracking of individual SLUB objects. This
+> +  approach, similar to how page owner tracking works, relies on slub_debug for SLUB
+> +  object insights instead. While this reduces memory overhead, it also limits the
+> +  ability to observe detailed SLUB allocation behavior.
+> +
+>  sysctl:
+>    /proc/sys/vm/mem_profiling
+>  
+> diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
+> index 8f7931eb7d16..af3c139712ce 100644
+> --- a/include/linux/alloc_tag.h
+> +++ b/include/linux/alloc_tag.h
+> @@ -134,6 +134,13 @@ static inline bool mem_alloc_profiling_enabled(void)
+>  				   &mem_alloc_profiling_key);
+>  }
+>  
+> +DECLARE_STATIC_KEY_TRUE(slub_mem_alloc_profiling_key);
+> +
+> +static inline bool slub_mem_alloc_profiling_enabled(void)
+> +{
+> +	return static_key_enabled(&slub_mem_alloc_profiling_key);
+> +}
+> +
+>  static inline struct alloc_tag_counters alloc_tag_read(struct alloc_tag *tag)
+>  {
+>  	struct alloc_tag_counters v = { 0, 0 };
+> @@ -227,6 +234,7 @@ static inline void alloc_tag_sub(union codetag_ref *ref, size_t bytes)
+>  
+>  #define DEFINE_ALLOC_TAG(_alloc_tag)
+>  static inline bool mem_alloc_profiling_enabled(void) { return false; }
+> +static inline bool slub_mem_alloc_profiling_enabled(void) { return false; }
+>  static inline void alloc_tag_add(union codetag_ref *ref, struct alloc_tag *tag,
+>  				 size_t bytes) {}
+>  static inline void alloc_tag_sub(union codetag_ref *ref, size_t bytes) {}
+> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+> index 0142bc916f73..b79b0d987427 100644
+> --- a/lib/alloc_tag.c
+> +++ b/lib/alloc_tag.c
+> @@ -33,6 +33,8 @@ DEFINE_STATIC_KEY_MAYBE(CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT,
+>  EXPORT_SYMBOL(mem_alloc_profiling_key);
+>  
+>  DEFINE_STATIC_KEY_FALSE(mem_profiling_compressed);
+> +DEFINE_STATIC_KEY_TRUE(slub_mem_alloc_profiling_key);
+> +EXPORT_SYMBOL(slub_mem_alloc_profiling_key);
+>  
+>  struct alloc_tag_kernel_section kernel_tags = { NULL, 0 };
+>  unsigned long alloc_tag_ref_mask;
+> @@ -710,6 +712,7 @@ static inline void free_mod_tags_mem(void) {}
+>  static int __init setup_early_mem_profiling(char *str)
+>  {
+>  	bool compressed = false;
+> +	bool noslub = false;
+>  	bool enable;
+>  
+>  	if (!str || !str[0])
+> @@ -725,16 +728,19 @@ static int __init setup_early_mem_profiling(char *str)
+>  		if (kstrtobool(token, &enable))
+>  			return -EINVAL;
+>  
+> -		if (str) {
+> -
+> -			if (strcmp(str, "compressed"))
+> +		while ((token = strsep(&str, ",")) != NULL) {
+> +			if (strcmp(token, "compressed") == 0)
+> +				compressed = true;
+> +			else if (strcmp(token, "noslub") == 0)
+> +				noslub = true;
+> +			else
+>  				return -EINVAL;
+> -
+> -			compressed = true;
+>  		}
+>  		mem_profiling_support = true;
+> -		pr_info("Memory allocation profiling is enabled %s compression and is turned %s!\n",
+> -			compressed ? "with" : "without", enable ? "on" : "off");
+> +		pr_info("Memory allocation profiling is enabled %s compression, %s slub track and is turned %s!\n",
+> +			compressed ? "with" : "without",
+> +			noslub ? "without" : "with",
+> +			enable ? "on" : "off");
+>  	}
+>  
+>  	if (enable != mem_alloc_profiling_enabled()) {
+> @@ -749,6 +755,12 @@ static int __init setup_early_mem_profiling(char *str)
+>  		else
+>  			static_branch_disable(&mem_profiling_compressed);
+>  	}
+> +	if (noslub == static_key_enabled(&slub_mem_alloc_profiling_key)) {
+> +		if (noslub)
+> +			static_branch_disable(&slub_mem_alloc_profiling_key);
+> +		else
+> +			static_branch_enable(&slub_mem_alloc_profiling_key);
+> +	}
+>  
+>  	return 0;
+>  }
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 31e11ef256f9..e8378b092b30 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2093,7 +2093,7 @@ prepare_slab_obj_exts_hook(struct kmem_cache *s, gfp_t flags, void *p)
+>  	return slab_obj_exts(slab) + obj_to_index(s, slab, p);
+>  }
+>  
+> -/* Should be called only if mem_alloc_profiling_enabled() */
+> +/* Should be called only if slub_mem_alloc_profiling_enabled() */
+>  static noinline void
+>  __alloc_tagging_slab_alloc_hook(struct kmem_cache *s, void *object, gfp_t flags)
+>  {
+> @@ -2102,7 +2102,7 @@ __alloc_tagging_slab_alloc_hook(struct kmem_cache *s, void *object, gfp_t flags)
+>  	obj_exts = prepare_slab_obj_exts_hook(s, flags, object);
+>  	/*
+>  	 * Currently obj_exts is used only for allocation profiling.
+> -	 * If other users appear then mem_alloc_profiling_enabled()
+> +	 * If other users appear then slub_mem_alloc_profiling_enabled()
+>  	 * check should be added before alloc_tag_add().
+>  	 */
+>  	if (likely(obj_exts))
+> @@ -2112,11 +2112,11 @@ __alloc_tagging_slab_alloc_hook(struct kmem_cache *s, void *object, gfp_t flags)
+>  static inline void
+>  alloc_tagging_slab_alloc_hook(struct kmem_cache *s, void *object, gfp_t flags)
+>  {
+> -	if (mem_alloc_profiling_enabled())
+> +	if (slub_mem_alloc_profiling_enabled())
+>  		__alloc_tagging_slab_alloc_hook(s, object, flags);
+>  }
+>  
+> -/* Should be called only if mem_alloc_profiling_enabled() */
+> +/* Should be called only if slub_mem_alloc_profiling_enabled() */
+>  static noinline void
+>  __alloc_tagging_slab_free_hook(struct kmem_cache *s, struct slab *slab, void **p,
+>  			       int objects)
+> @@ -2143,7 +2143,7 @@ static inline void
+>  alloc_tagging_slab_free_hook(struct kmem_cache *s, struct slab *slab, void **p,
+>  			     int objects)
+>  {
+> -	if (mem_alloc_profiling_enabled())
+> +	if (slub_mem_alloc_profiling_enabled())
+>  		__alloc_tagging_slab_free_hook(s, slab, p, objects);
+>  }
+>  
+> -- 
+> 2.34.1
+> 
 
