@@ -2,84 +2,130 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D9581C83F17
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 14:34:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 032C6C83F1A
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 14:40:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 614456B00C0; Wed, 23 Jul 2025 10:34:05 -0400 (EDT)
+	id 694776B00B8; Wed, 23 Jul 2025 10:40:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C4F46B00C1; Wed, 23 Jul 2025 10:34:05 -0400 (EDT)
+	id 6446F6B00B9; Wed, 23 Jul 2025 10:40:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B4046B00C2; Wed, 23 Jul 2025 10:34:05 -0400 (EDT)
+	id 50CA86B00BA; Wed, 23 Jul 2025 10:40:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 35A616B00C0
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 10:34:05 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A22E48072C
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:34:04 +0000 (UTC)
-X-FDA: 83695774008.16.3A0417F
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 6A5D24000A
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:34:02 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=sBf234vd
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3AA036B00B8
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 10:40:06 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 91F2F140730
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:40:05 +0000 (UTC)
+X-FDA: 83695789170.10.F341000
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 970621C0015
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:40:03 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=soleen-com.20230601.gappssmtp.com header.s=20230601 header.b=FpCmXgGE;
+	spf=pass (imf18.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753281243;
+	s=arc-20220608; t=1753281603;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2B1Vo0/j3crJLhvogIai1rlzti+SXL6KBl2BvGLFRhs=;
-	b=Twbp762e1xcH9MAnbYYoPoO2YX5Zkb0bpJQCZokMM9FBxVOnD5yLanRL+YEZW0izk+TbQe
-	5tQPitEgyv7OevxJCidG/ifQBvpIAR1um+cLWcuG+QZ2sx8EZ5zYHsOCGR1Ds5CTuNWg8Q
-	/G+z7Sgi8fvN0PS6yR5GscqS51KR7bg=
+	bh=E4VW1A7ZGjSXpn0g5zEan91Zyknv45cf516fxn6sXo4=;
+	b=WPd0WeIeDFduyNpu/5Hf67GpKZLEyskYO8jJ9xQ6gnrT2AAaUr+BadpiDGLehHE+PwHKuF
+	MFCPYcD4D/dlnjn30Q9Ps0nPlvWqb0qVBGwzgJ69yIxbdj9+M9ZEcOEsecM1gP6IHrUuMZ
+	a4/XnhtIX3Bgd5R4BsPAYHcqUhqpXA8=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=sBf234vd;
-	spf=none (imf27.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753281243; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=soleen-com.20230601.gappssmtp.com header.s=20230601 header.b=FpCmXgGE;
+	spf=pass (imf18.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753281603; a=rsa-sha256;
 	cv=none;
-	b=HyMyVFcLMrJpyU0bMgWWS0RpzHYNdWN19p+ZDtPG4/NiZRCmJrQ+ofRm2H+gJXyxz4ezxW
-	7Gij7Y/KbyVCiOM9zG7zXDSaMTOo86VcmPw9+pOTQDbWi+iV0FbV3p1zg8yNeQXoMgP+a4
-	tyrdw5lLDZ49hImsnuH4X25k/oeTOC0=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=2B1Vo0/j3crJLhvogIai1rlzti+SXL6KBl2BvGLFRhs=; b=sBf234vd9tTmtB4mGJO2IwKMol
-	7fb0Xmtgn+nj1hGNM5uxxxgM48aPT4lP6jh+BzTUNLl/GHIKRIoIlO4q2O9aDNEYWk9dYxq6eW43i
-	ul3hjgcdF3aCz+McqDWehRRBtz0f1nR/TklA6RR+RXyGZcwEsFx+d1Lgl+ei2GPnJE+3T+QRD7G6V
-	hYxgjHWh0QO+m6xkekEmgQ4hSV7qxarvVS5nc73ZnLWkKyJnY+ZQlRQWoGXPSlarLeL2r2J7pAJE7
-	N2JqSp+uY+ln2juW+KcTsBjngH55i3LZByWQHqRcn/BQoAiM2ViGbEd3fbmXYD8H38FrMpubaBwtw
-	s34NQXuQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ueaXc-0000000DLA2-0fWm;
-	Wed, 23 Jul 2025 14:33:56 +0000
-Date: Wed, 23 Jul 2025 15:33:55 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Chi Zhiling <chizhiling@163.com>
-Cc: akpm@linux-foundation.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Chi Zhiling <chizhiling@kylinos.cn>
-Subject: Re: [RFC PATCH 2/3] mm/filemap: Avoid modifying iocb->ki_flags for
- AIO in filemap_get_pages()
-Message-ID: <aIDy076Sxt544qja@casper.infradead.org>
-References: <20250723101825.607184-1-chizhiling@163.com>
- <20250723101825.607184-3-chizhiling@163.com>
+	b=ZSWHI4Jb0EUAT/4ZrZoAQZNIfoDeCEhwPOlMr+Z/OPF8QZjKTR4KMCPeWyt7OUiCU27eYM
+	W+JlZLCkNAc/T9psL4E6qp4UlBSsxmvuwu4G5/xB7XjM/QwdxboT930aWzE1jgsU3bbuST
+	UPI0rMbTxqPu9WK/4JX1uFH1muR1Cwc=
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-4aba19f4398so84668011cf.1
+        for <linux-mm@kvack.org>; Wed, 23 Jul 2025 07:40:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen-com.20230601.gappssmtp.com; s=20230601; t=1753281602; x=1753886402; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=E4VW1A7ZGjSXpn0g5zEan91Zyknv45cf516fxn6sXo4=;
+        b=FpCmXgGECMgyhS0yvgqYgWjaKtcBKCKpMr8fQVRWHXD9XC4EPvqBUfmZ287aH1qkFN
+         HiU4fCG1KgxVUdGRsHvbxkc9ex3yQRN6R+E+381aRBiSs/Iq/VvCDr5FYaur7gFlMQ34
+         Rgr0k/3YRRhHN3CNppZi//9H9i9o7jZXtUlWDgspshZUdu8T2hs2473LgllpQ+zmuENy
+         +C+mJclvoHXOtBzcye8b14KIXydg7hijmoWg9BpLORdVPCgTM7bWdxGdN4ct+7sAjfTl
+         ZGtFCI9tT6Mav22qT6NjfTdV+NeTaAN0KHIyGx/z7lal/ocqymSBfzOCayTUdSCCU4a+
+         Kjgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753281602; x=1753886402;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=E4VW1A7ZGjSXpn0g5zEan91Zyknv45cf516fxn6sXo4=;
+        b=YV7RH203nYKKAunWe1qwtTRoRKWEg9JTv7/CT4kc8mhSSL+d5rQsE8tj7ErrXstr57
+         IeXAptVa/4Tv8apNYA/FFtsxY2KwbA7RHM2aeRpfVFY1utQeNusSm3jSgZSBjnrl4XqR
+         gmJgWdUzZ4dxx4YQE89Vyal7onxjqsRNT+1Sm7YF4eGd1ZwfUhgwM7K0pfKOXxOX740b
+         Da2aq5zKSgbr3wxNqnpnK2pvEJUe8eto4qsuYjfN1JOZn+PaVVN23IlWsTaRQ8YWYIun
+         WycbY+YwU1/SLP9BMym4EAWirggRnSBOaGkxp1/45Or1719jEz1GUt8GPZz0kX63Q+r9
+         ZKsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW7YC6nTH1DdHravsVD5M2hwMKUd/Nyuwpz/jIeP7oCwItg5Cks/tE2ogsD08us5r0ed98I2pBu6Q==@kvack.org
+X-Gm-Message-State: AOJu0YyIFpdPxreWARyfkpSZXE5VmvwKHPhYLX4oMLrOPfGw4laeity5
+	OQkDSSvLYQGi7BFXGQ3fRQLqrTs3TVaDVLeAwNmBktjWIhPqAOqYvDykwcVooZSEK4GZZg0lg7M
+	DA0JxbfdxtU5T0GKERMA1M+Bs3kIgzVyX0ItWcvFvyQ==
+X-Gm-Gg: ASbGnctyr3RrwIgg4bFWlREGn9A1AKfdGlU0fYbTwWGZflJCxzpdJEDl0kvWs34wv1f
+	awbVsCdXBEFyoh3QdoQRydH9NhPlOGUSLX0Mzc0kMU1/83w++YGeMA8WsVkzUN50Ei/PONP9M+Q
+	uRBpPegcHaBh2pBP7bvDoF1qUWplSTk2rgC1J1eSpuZ3It+80pA/9ZNBKKjAhK+8TqosSIf1MHr
+	er/
+X-Google-Smtp-Source: AGHT+IHFS+sl5UqmRZOH4YC8rrY1lTn2lhJNlt9MYCWZB3088lrRvjxl69LEe5to8g07iNSRAqNDE0qYJCcj4SAzgKY=
+X-Received: by 2002:ac8:5d14:0:b0:4ab:41a7:852 with SMTP id
+ d75a77b69052e-4ae6df7e0f7mr46630481cf.26.1753281602021; Wed, 23 Jul 2025
+ 07:40:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250723101825.607184-3-chizhiling@163.com>
-X-Stat-Signature: umjino7jp5399sfbonzjr7ne9wztm7xs
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 6A5D24000A
+References: <20250625231838.1897085-1-pasha.tatashin@soleen.com>
+ <20250625231838.1897085-4-pasha.tatashin@soleen.com> <ac8efa08-3f85-4532-8762-573ebd258ca7@infradead.org>
+In-Reply-To: <ac8efa08-3f85-4532-8762-573ebd258ca7@infradead.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Wed, 23 Jul 2025 14:39:25 +0000
+X-Gm-Features: Ac12FXw5a0SPc2DZ1qffEKM0_QNNJkpaMIdscCC70ESios9nqZeZ3FVsbikeuDw
+Message-ID: <CA+CK2bCChNVmGXPN52La1zECBBSRf5SffHFEHwMcJCDaqA+YUQ@mail.gmail.com>
+Subject: Re: [PATCH v1 03/32] kho: warn if KHO is disabled due to an error
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
+	changyuanl@google.com, rppt@kernel.org, dmatlack@google.com, 
+	rientjes@google.com, corbet@lwn.net, ilpo.jarvinen@linux.intel.com, 
+	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com, 
+	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org, 
+	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev, 
+	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com, 
+	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org, 
+	dan.j.williams@intel.com, david@redhat.com, joel.granados@kernel.org, 
+	rostedt@goodmis.org, anna.schumaker@oracle.com, song@kernel.org, 
+	zhangguopeng@kylinos.cn, linux@weissschuh.net, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-mm@kvack.org, gregkh@linuxfoundation.org, 
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, rafael@kernel.org, 
+	dakr@kernel.org, bartosz.golaszewski@linaro.org, cw00.choi@samsung.com, 
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com, Jonathan.Cameron@huawei.com, 
+	quic_zijuhu@quicinc.com, aleksander.lobakin@intel.com, ira.weiny@intel.com, 
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
+	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1753281242-63006
-X-HE-Meta: U2FsdGVkX18yqdPQULBbgi9fIW8+RpdsfQYXLzG1JLosfIYCdwSYT/H8YqwWvS+MtkWxPP++jSrRg461HOo7kmWpZpglBZSmR/+ZXVms2cu+CTbzBpp5XssNdITaLsGP6joTc224wsuGJWdK4TUSvfyFIVjWWhumRghKBuolQjWMysWvEKre6mXwVKNAop7/ZRma2cQNPP70BQbOTFJv5QGBmdnSdZZ1254TWB1VGwyGt2Dyoh4/D9jcAGdYDdpEadLbGfzLMtdQYGO7iQpDwcYoqRTp+la3jL9GhYB4W6p0+RpVTwKzPLIUOQY1paEcsJ3sixHzEzFkH0HdrIhPo9Gvkcp32wQktyUUWXJelwJqLKgM0LuJDCo3Yo89FTIqrsmoyhzahACww78/ewtmDW69kqQKFCj7oRDRMTOS5FDgctPjotKgYwP4/Iiv/3uAHAANdiKtrMPLu2NmSjJETeixUiSktlVLe1donYI8ORrcIGqWJ5PTRH7ST/Y8XBh5of2ssWlDXd4ovTPhJuWgJ4YD33CjNrKY799ryhyKsSGWJtJCUBI0ZjNi67od8fTTiIKKDKs+y48MrUbifF6f0N/VaTOM4pJ9Nawdks7PcINfCHMAB1K9ClxfGXVr9ak1L0zth+pXl6+d/KUBMMnT9w1aqZTFN7aigmqOTx+QZ0m9weVzSJ4owDDX6hcKz1QW4VKSWSn/F3ErF+5Pi/qkL9b3ljkwaDFKAz3JCNFhNd19PQrE66zYQgniig51+HnoyehKKs5533Uk10afv77Vr59PcuY2S24My2e4h9zerJuRi1eprgfA62MwVVHRaFjLp/7N8fSPECpCHrfdejSrVaKUw95ig4G8df6eqVu1g5ACbRyr0b6c7TYCyvZHFjWelkkFz4z8FL7XYFX0o/ENwNQ5T6kq+PfY+26qiTfzUM3WT1w5AWiSxiW3KfxY+ZwHxA+0SqZK6nLUxoD9shK
- H8lNFS31
- WZuSjgOO1RGbzbwTuxbo0/i96qE9a0f2D0k8cia4ffR/U8bxE6RI6u5miL8NZJ1CmiR4M/XNYrUqKfZPZ7u3z8pBVvKhu/OqqsZa0YxQOkRNI7Wd4E/j+9sKd1qenKodFj+fENm9YMuAm0EWfjH/Rq+TDS/lSL8esDmMw9Rc1i5gZ7Nv5MyvvPxKv95CpwrPrRVGSU0azEqoXH+C/RG48E1mPHpJTnGv3UkeR
+X-Rspamd-Queue-Id: 970621C0015
+X-Rspamd-Server: rspam06
+X-Stat-Signature: wjphz618h6eikpatewzxsi58m8zq9ypq
+X-HE-Tag: 1753281603-386975
+X-HE-Meta: U2FsdGVkX18goOXRqlh3CPyd4CicX6HzLnlHvJbhjsLD5W5MckayA2Qro+uLeZsYyaH+m1eiAwVtIW6od25HI01YrPZt8TfoFLZNx+U0atsxFk2HDqcqcj4O2Ziu0Z/vY4GarNUU4DZiNIZK3vA8bDU35naUkHk6MYXw9NtsHNLr7hqG0L9agA7lCjSbKmKfnvS2lXqnxMBWlwGZDaHNEpM9GP+6IiW7gCIyJK+rdccxvhYkvYu88K56bQcva2om23S+/FELcji+xoHRdsoUn2bOBPsw7h6NlEiHtqEkY2/Or04diyt/WZX8MPhEwZW70S5EozZcDzZVGuGAb8gs86xtf8y5MIIOxazF9tGrnoKWH+w0xkf05MNkPX5T372GoUvd3Guv9woCE6qnUFKp+05dIXswH3Fi4hYmBV6PSf7cAh25qkfAn3uQUiE9yeIY+u0f8+2vH5+t/pAZNpj+B6ShQx5TZDIENd0ChUIqKVdpp7/kw6h0+0MeBRsHw3t3KDaJPenpNp/mMLnejckRJi4eoLimwqJvxQE5zYyNRenTpmg6eV7aq2U+W706DQ2wP+5ha6kulaHmqMUpQi4fbwsfV/wgL30mXWsHYAfbbAYSQGZAx5603iS9MwIzcrU3ZVeIYbGQQJpXmiDaNsA0hSY2OK1n98dqGAAzQnREJ1z1NYnohRs8/FozJLIl4Xgo2Y6iKhq5l7WJ+dYTGAv/NjYR+SDY9SRSr/lZ6R3MJk8WFClrQoerT2vEMUd4cqHzGjyf5hUjGZ05ecNgbQYuc4yzMttBA3j/1wHXlCWNeb4y8WXZxQgnX72GP0ZpnWA+liFgXGQW7Qap0SVWXxK8nV1AKRl2+0u5rPRHWmAmRpaYd3CLjM16FZkYC68rbxCsCFYmVoBdqqlX3QFAs+6NGobXZitHMvFptlPhrfJwbUUQBvRYIs+GAdomf30ehfhdqMsEwC11FO0IGsnA/mF
+ G+pebZEv
+ e4ecuOu3C2R6yYFEoMXgHN3VmDvPGQ0rtG6gsahuaQyoICDvT8k33Ge8IIZoZZjRKfo4Y5LMkR+2qi4fCZUKNUuqP6OruHloBGsduC+/ZzM5bIJBa2C0MG9sEXwpvQUZVEzPzfFDFeea2+dU3yO1IErC/hg2GpxJHXU6ptqkVHxkG5h6Ue7xvF3In6x2Fkag84z1tyjdM/1aTMziaVRJOAD+So6QBBzLeW0e9WRTqUKmI2119Bf6z+nZsfRWzK66Vn3EfqcEAj+zrKqmx/zfMVX7EVogyk+H28mfLA2/cEQcOvjbUMoPfyFNg5WwgEGzTv87eE6pOcMNKdhUQ7jbO38rYdzqbhemmynOpER9+DIroqeASEneX24KfqT5QjyraTQdrXhzRrqZdzXK0Tbqjd3dnEv926QAYFAI9Fskr96xjptBvdbwIrw9ecL1NeWrIhV1FGh0LAecTpJ/Ldc7D5Es6OlECRUnVAQM4cLl5Uc/GAemVSQDVacpeU4cbUjNQhuuq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,42 +134,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 23, 2025 at 06:18:24PM +0800, Chi Zhiling wrote:
-> From: Chi Zhiling <chizhiling@kylinos.cn>
-> 
-> Setting IOCB_NOWAIT in filemap_get_pages() for AIO is only used to
-> indicate not to block in the filemap_update_page(), with no other purpose.
-> Moreover, in filemap_read(), IOCB_NOWAIT will be set again for AIO.
-> 
-> Therefore, adding a parameter to the filemap_update_page function to
-> explicitly indicate not to block serves the same purpose as indicating
-> through iocb->ki_flags, thus avoiding modifications to iocb->ki_flags.
-> 
-> This patch does not change the original logic and is preparation for the
-> next patch.
+On Wed, Jun 25, 2025 at 11:57=E2=80=AFPM Randy Dunlap <rdunlap@infradead.or=
+g> wrote:
+>
+>
+>
+> On 6/25/25 4:17 PM, Pasha Tatashin wrote:
+> > During boot scratch area is allocated based on command line
+> > parameters or auto calculated. However, scratch area may fail
+> > to allocate, and in that case KHO is disabled. Currently,
+> > no warning is printed that KHO is disabled, which makes it
+> > confusing for the end user to figure out why KHO is not
+> > available. Add the missing warning message.
+>
+> Are users even going to know what "KHO" means in the warning message?
 
-Passing multiple booleans to a function is an antipattern.
-Particularly in this case, since we could just pass iocb->ki_flags
-to the function.
+Changed warning to: Failed to reserve scratch area, disabling kexec handove=
+r
 
-But I think there's a less complicated way to do what you want.
-Just don't call filemap_update_page() if there are uptodate folios
-in the batch:
-
-+++ b/mm/filemap.c
-@@ -2616,9 +2616,10 @@ static int filemap_get_pages(struct kiocb *iocb, size_t count,
-                        goto err;
-        }
-        if (!folio_test_uptodate(folio)) {
--               if ((iocb->ki_flags & IOCB_WAITQ) &&
--                   folio_batch_count(fbatch) > 1)
--                       iocb->ki_flags |= IOCB_NOWAIT;
-+               if (folio_batch_count(fbatch) > 1) {
-+                       err = -EAGAIN;
-+                       goto err;
-+               }
-                err = filemap_update_page(iocb, mapping, count, folio,
-                                          need_uptodate);
-                if (err)
-
+>
+> >
+> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> > ---
+> >  kernel/kexec_handover.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
+> > index 1ff6b242f98c..069d5890841c 100644
+> > --- a/kernel/kexec_handover.c
+> > +++ b/kernel/kexec_handover.c
+> > @@ -565,6 +565,7 @@ static void __init kho_reserve_scratch(void)
+> >  err_free_scratch_desc:
+> >       memblock_free(kho_scratch, kho_scratch_cnt * sizeof(*kho_scratch)=
+);
+> >  err_disable_kho:
+> > +     pr_warn("Failed to reserve scratch area, disabling KHO\n");
+> >       kho_enable =3D false;
+> >  }
+> >
+>
+> --
+> ~Randy
+>
 
