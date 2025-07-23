@@ -2,117 +2,117 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D503EC83F1A
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 13:35:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 660B2C83F1A
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 13:36:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3113E6B00DC; Wed, 23 Jul 2025 09:35:38 -0400 (EDT)
+	id 3FB3E6B00DF; Wed, 23 Jul 2025 09:35:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 299BE6B00DF; Wed, 23 Jul 2025 09:35:38 -0400 (EDT)
+	id 384836B00E1; Wed, 23 Jul 2025 09:35:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1624E6B00E0; Wed, 23 Jul 2025 09:35:38 -0400 (EDT)
+	id 24C926B00E2; Wed, 23 Jul 2025 09:35:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 025F06B00DC
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:35:38 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BC20D16052A
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E3266B00DF
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:35:40 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D32781406FD
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:35:39 +0000 (UTC)
+X-FDA: 83695626798.04.B7B7FEF
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 902DA180009
 	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:35:37 +0000 (UTC)
-X-FDA: 83695626714.12.EF7E79D
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 80E801C0017
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:35:35 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=XHGdGzm6;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=G7h+Bn4B;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=XHGdGzm6;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=G7h+Bn4B;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=D7xnFeFJ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=W0T4MPEY;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=D7xnFeFJ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=W0T4MPEY;
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753277737; a=rsa-sha256;
+	cv=none;
+	b=lc7+NGVEzVwrwcIzQvolGp72pMG2BTV5+RHQGHp6Tj+fBURXC5xeRkjyaQIvhqLnathxq7
+	xyb3qN7Qb6XliqitkEmpXl5abghfHuUlkq9nPMn+yk+Kw0WQbMkTxwmiNkeG3WZ+/zNnyk
+	xi3SZcJLn3Gv6H1QmMnRemv8+0gC81c=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=D7xnFeFJ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=W0T4MPEY;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=D7xnFeFJ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=W0T4MPEY;
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753277735;
+	s=arc-20220608; t=1753277737;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5fn4jC0LbpW83Xy3GBIO/Fb5+psgfkoknW+IQl2hd0g=;
-	b=bhAoWqzGcTuN+l9SIBRc77c/tyU7r4reKl0iSrHhHbI1Mv5v3IBS5vwphOkDeajLxmbMQM
-	9IIVXPsTqduxnjJcLwFs/FnSPgjVEO+OvKbkA8+QefC5cWO+Y2iTULbxsKVkrIBJO9Yprj
-	KfQGCuHY357W84DI0sOwtpHgf1nQ9e4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753277735; a=rsa-sha256;
-	cv=none;
-	b=Cy8eZ7JVeUQnRR4n2qKBEqjSLXW3ttVDzrUwABivcvljlHU/HMuZsTiyZAvcaNLDJbYBLa
-	o4xW/A9Qr62HKPYhH8wGRnuyNuh9CNSIkuhqOzV2zbDmw4RzyZeNFfgSwnUcAFKA1ACj64
-	svY/U/3wjGewLpRRJd0N7IrCu7umyNY=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=XHGdGzm6;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=G7h+Bn4B;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=XHGdGzm6;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=G7h+Bn4B;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	bh=GMN8ss+JM7ZT/0b+qlebdOQL8dTktv7rSpXSzwpKjiM=;
+	b=D3RUlEkVxd5HvwkbGSiNc4MGPUrozlQXUc/AJLDpH6rq5FgQGMEq1ToViYD+l7HNp2DONb
+	ySGfmnDKHDgAGGiLiq9xyVtP8WUkOjkpiZN0T/Sgy0x7i6fk5kk34kJeVc/twalhh2eN66
+	dCRE+lpokZ/4YOphb+gYfJBFiXlQwSs=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 562FF1F792;
+	by smtp-out1.suse.de (Postfix) with ESMTPS id DF8B6218FD;
 	Wed, 23 Jul 2025 13:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1753277704; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5fn4jC0LbpW83Xy3GBIO/Fb5+psgfkoknW+IQl2hd0g=;
-	b=XHGdGzm6NEY6gd28f42z9hE54zRf3WER4Ee6OsNibRJNSg1JKCmBGAiVHdQ8pyj3o8uMre
-	0TycU1VNl5TxazwOmSBMAi0OG7xykllmaUjOO39kxOUMJqYfxgySAG7HuD2Sx8AO63HOFL
-	ARRI/NOSv/avAcotFJ5D0d/a78XdV7Y=
+	bh=GMN8ss+JM7ZT/0b+qlebdOQL8dTktv7rSpXSzwpKjiM=;
+	b=D7xnFeFJAkpHugq7K+vv5+xSMSSqv3LoNlPVCWeCFQbPAPPqcioyTHfY/fAuH0ah3hc1qm
+	xwLQCk3W5hSFk7qYtX4Dy23J2nmo5zwA00GEuK33qaoGBeHyH77mviLv80FrOEwd1nz8gW
+	JcFlnOtoJyZkUh2CfE0Vp/5gazF0rLQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1753277704;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5fn4jC0LbpW83Xy3GBIO/Fb5+psgfkoknW+IQl2hd0g=;
-	b=G7h+Bn4BySgaHS/bv3XrlBjpXz1UUCb5XfINdztjNigaDxC5+MMDEv/iRV5C+y7+b+fkYb
-	vHgHz+1gN2P9N6CA==
+	bh=GMN8ss+JM7ZT/0b+qlebdOQL8dTktv7rSpXSzwpKjiM=;
+	b=W0T4MPEYaYr+YrCIKUaN1zHTbbptplOPMW3ImnnR4cspWkdh/NgMwtL+HWczth9piHUT82
+	i4k4BTrXlL7fnDCg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1753277704; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5fn4jC0LbpW83Xy3GBIO/Fb5+psgfkoknW+IQl2hd0g=;
-	b=XHGdGzm6NEY6gd28f42z9hE54zRf3WER4Ee6OsNibRJNSg1JKCmBGAiVHdQ8pyj3o8uMre
-	0TycU1VNl5TxazwOmSBMAi0OG7xykllmaUjOO39kxOUMJqYfxgySAG7HuD2Sx8AO63HOFL
-	ARRI/NOSv/avAcotFJ5D0d/a78XdV7Y=
+	bh=GMN8ss+JM7ZT/0b+qlebdOQL8dTktv7rSpXSzwpKjiM=;
+	b=D7xnFeFJAkpHugq7K+vv5+xSMSSqv3LoNlPVCWeCFQbPAPPqcioyTHfY/fAuH0ah3hc1qm
+	xwLQCk3W5hSFk7qYtX4Dy23J2nmo5zwA00GEuK33qaoGBeHyH77mviLv80FrOEwd1nz8gW
+	JcFlnOtoJyZkUh2CfE0Vp/5gazF0rLQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1753277704;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5fn4jC0LbpW83Xy3GBIO/Fb5+psgfkoknW+IQl2hd0g=;
-	b=G7h+Bn4BySgaHS/bv3XrlBjpXz1UUCb5XfINdztjNigaDxC5+MMDEv/iRV5C+y7+b+fkYb
-	vHgHz+1gN2P9N6CA==
+	bh=GMN8ss+JM7ZT/0b+qlebdOQL8dTktv7rSpXSzwpKjiM=;
+	b=W0T4MPEYaYr+YrCIKUaN1zHTbbptplOPMW3ImnnR4cspWkdh/NgMwtL+HWczth9piHUT82
+	i4k4BTrXlL7fnDCg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3F59D13AFC;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C72B713AF2;
 	Wed, 23 Jul 2025 13:35:04 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id eJgwDwjlgGh0IwAAD6G6ig
+	id OCxcMAjlgGh0IwAAD6G6ig
 	(envelope-from <vbabka@suse.cz>); Wed, 23 Jul 2025 13:35:04 +0000
 From: Vlastimil Babka <vbabka@suse.cz>
-Date: Wed, 23 Jul 2025 15:34:39 +0200
-Subject: [PATCH v5 06/14] tools: Add sheaves support to testing
- infrastructure
+Date: Wed, 23 Jul 2025 15:34:46 +0200
+Subject: [PATCH v5 13/14] maple_tree: Add single node allocation support to
+ maple state
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250723-slub-percpu-caches-v5-6-b792cd830f5d@suse.cz>
+Message-Id: <20250723-slub-percpu-caches-v5-13-b792cd830f5d@suse.cz>
 References: <20250723-slub-percpu-caches-v5-0-b792cd830f5d@suse.cz>
 In-Reply-To: <20250723-slub-percpu-caches-v5-0-b792cd830f5d@suse.cz>
 To: Suren Baghdasaryan <surenb@google.com>, 
@@ -124,15 +124,14 @@ Cc: Roman Gushchin <roman.gushchin@linux.dev>,
  maple-tree@lists.infradead.org, vbabka@suse.cz, 
  "Liam R. Howlett" <Liam.Howlett@Oracle.com>
 X-Mailer: b4 0.14.2
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 80E801C0017
-X-Stat-Signature: 8ik98et3e6b994cqebpn1xkr8rwpze4s
 X-Rspam-User: 
-X-HE-Tag: 1753277735-549977
-X-HE-Meta: U2FsdGVkX19QDN+A56H3Qn7LiEGRj8rTGmAZ2i17BP0tnDt6RjZiiJWxqdgKhv8jFuUeIgOCgso+C9BHTc1Db1ag9H0vMGEGEhbdvSFIapT4l5yCemIciQoFyDaw8Q4eDaJcswLKyVrbHiE0Rm1BMfoMNCi0qQ6rg+7CfH7Kac6yTTS023xmdknUcXoB/1XwQkWzQJTrhR6kpKw/gH9S8dukm+cP1MzsvS6uj77+Uwq1C4K/yKsGOTO7VD4CnqTAlWTKktjMW2ia7cXdtZrFI1uRxMxRjn/1JlugTXWUf6BNtwlPE/ofTGmAaYtB5G8PX5Tc/wgcrh4ho+2tF7//m9baICI6rUShtoeAVxQyq42/JOtgg2EvZMTzI4lZp2evPhCkWc9aMKkK6+0vsh6YpMQpe/6vXAThEDjmXVSFMQUJgfjzi6uOECm6o5kY07xdvjWfF+jkekFyga9qAXNKzQ03SMR5hbhxmG0i3SbAGLEvxbn3oXFcQYcTWm8yg61A1+GDYZc6zFFAqRuQgK9N4bKwseuX/y3DMwYIHfkv8ok/GO+rX16QgsWTZ5gX4asyQWcmzIPpX2AwKv3R8b7qD4f8pR4b++U0HY5vP6IntCzLvRhpe/9ZXylkOadehkQ6l+czO36GRQrD2AGqC06+WVdqmBa2xorQKO949WgfvyTXGhrNt9OD7i4Zsf3ii+E1uQjAPq+Khhkb/aQFn3SOAzSAZ1CVqkYDTgVAYNVOXrFA4uv0KSqeiQL+NICU4EkiKr7cfsSzsYyFa3G0wEPvMKS2wAtTMJJrKtaeR0jTL/mZ/vq3WUjXCemihIeoIUATrdy20N8HqnDOZPrXHtEnttdbWkAsJUpmdpticuO8nPhcsCBjpx3WWDzpFit4Xa4ThANyXBRx9LoZwOQzCroXRIoUy/O8d9KmhLTjHKRtiW6kP5vfkJJ2YbE4vHN5FyfWmfsLZku+YaThGMMRHZp
- RRMbQgS1
- iwudTqm5b2mzcvhfHfI8AKAH+OIGv3e/QeqEDQeBziBwg8kwGGPE/NZmkJVgH1V/M4CCdPxwfXY/OnnItvosSxC0ihv8iftM+ViINFecZCa4WqVXBMlR9g6sb3fyqxw3HQqn8aUvMQ1mFbQ08CwHN0vpH3Rmwvjm8w2pV0xqI31hMZ5snzBSapSg168a+rWhwQC0IpXtdfXOiXiI5hI++uacxnGyopvOpF3i+RnRpZ4XCaf+ReUAiksvFdErcQnfx4c55PM8oS15G+PQ=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 902DA180009
+X-Stat-Signature: 8ckh4cuewb4nkyn9rbrso1idnqc1wp77
+X-HE-Tag: 1753277737-637147
+X-HE-Meta: U2FsdGVkX19fX6tEdj+vO+6IU/Z3wtlFAmLlGpQhloR5p1BWnv9BUGrJOlYvQSBWXhuW5ZZdZtFG24cJbBhKwYMdXCBVPqh+KQxGiSqGN/3y+iWdK1Fuk2B9ZWjzYaqSqQ2iUuIdzMk8sVWPFFQbYL5lD3lHGx54XJpKHqe8ko0N8DJItPI3G2qdyFIW4zCEx2j87TwIQmPK4Mu6LnYsbfhkgvCIsjKbzpyjJEvrWbRwlrAr4mYDT7AoE8zwmWH6iEIMSgtWAHR4f2ijaO23Z9LtsAHkdPfgdHPDEX0yxFnHlXvMFLHLK52W7vnCzhhm0rNgCmdvkZKEdFvbWGn03Q/uDYiOFEaU7mfyHuiX8z9ny+sJLhcZtN208Jr2Dl4FAGMixIR8NQboVCHdazXdnMCwWcEGiozoQ8EbMlJ9gcX0eLXzU1MvhUZVDqkhvyt88gKXBF2FF0Qorp5udGwdmSz85NyTjsvRHyK/fbbg2r+rUQVbAY7U9REk8J3X73dbWjoU/hmgGVoA70Hy5AnDH1KxjhvhET9FzWMNgoWxGtYdOENMCV19jsTJB+uPiHD8Jn0/3ptfGaFv1cev+UuRKcR2Hj9gqSpJQRZqPoQitITZBO/TwUQhzzb90c0VlnKkNVdox/ZfoB7qGoh/+F1rXkBeBih4yeGnFrqlxw28QawjJ1qtfQu5+gbFfT3qBdpZBgz+1V+Qv/iKq4Cd2gsoW66HzMLdtsn+bze0VmuvVB1T2H2qBX3t+6iRQlV7buTxI1cGXFeNI/RzsBP5gxux4g5UQB2z9ygksM1xcFJO8o/6G+wwth5ffBwvvLE+6IplTOZT7cFABztpnwTSsMIuWNQgoqBdYXT9i3AR1o11NK5HjCiwEdZIQpbyEFiiK1TsRtsWQdY0Z9B/UZAOHCplJoXAiT3jHWzecn/QOsL9g4p63qHbvVb3Tj3phJ7we0Njg0QPnrYgpP4tT/JI97C
+ DuBGEaGV
+ UYOx14N8k+zwZhW5wvKEf3f0N1YYwKxo8nTVpk3tD/d06/3shjiPbQF7gSJBqSg/c20EwyxnYK4LHtBwx18aecE+dyzKWG/Q8vAUem2ntTc/dHFID3ck5yhWqS5kuFFI6yGcXjbsJTQNywGha3vd/hFir4nvPqUTHEyXYQRTtvUZdOwLdZpV8opX47CvpcBEIzejAofW5jtj41lRv8GFQxf2PtSw0PPo+M4xyQb/zMr/gHEJIG0+U3UcUJBRsRNKhiQz4cwe+KISSDIQfCF3K276cUZY9mlO3oJZx777V47VlBfmUhX8QQ0oTEo0O4mubVP49aEtvzi5A/K0wPYKmAGTKn/bmA0CDRiXr
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,158 +142,130 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Liam R. Howlett" <Liam.Howlett@Oracle.com>
 
-Allocate a sheaf and fill it to the count amount.  Does not fill to the
-sheaf limit to detect incorrect allocation requests.
+The fast path through a write will require replacing a single node in
+the tree.  Using a sheaf (32 nodes) is too heavy for the fast path, so
+special case the node store operation by just allocating one node in the
+maple state.
 
 Signed-off-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
 Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 ---
- tools/include/linux/slab.h   | 24 +++++++++++++
- tools/testing/shared/linux.c | 84 ++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 108 insertions(+)
+ include/linux/maple_tree.h |  4 +++-
+ lib/maple_tree.c           | 47 ++++++++++++++++++++++++++++++++++++++++------
+ 2 files changed, 44 insertions(+), 7 deletions(-)
 
-diff --git a/tools/include/linux/slab.h b/tools/include/linux/slab.h
-index d1444e79f2685edb828adbce8b3fbb500c0f8844..1962d7f1abee154e1cda5dba28aef213088dd198 100644
---- a/tools/include/linux/slab.h
-+++ b/tools/include/linux/slab.h
-@@ -23,6 +23,13 @@ enum slab_state {
- 	FULL
- };
+diff --git a/include/linux/maple_tree.h b/include/linux/maple_tree.h
+index 3cf1ae9dde7ce43fa20ae400c01fefad048c302e..61eb5e7d09ad0133978e3ac4b2af66710421e769 100644
+--- a/include/linux/maple_tree.h
++++ b/include/linux/maple_tree.h
+@@ -443,6 +443,7 @@ struct ma_state {
+ 	unsigned long min;		/* The minimum index of this node - implied pivot min */
+ 	unsigned long max;		/* The maximum index of this node - implied pivot max */
+ 	struct slab_sheaf *sheaf;	/* Allocated nodes for this operation */
++	struct maple_node *alloc;	/* allocated nodes */
+ 	unsigned long node_request;
+ 	enum maple_status status;	/* The status of the state (active, start, none, etc) */
+ 	unsigned char depth;		/* depth of tree descent during write */
+@@ -491,8 +492,9 @@ struct ma_wr_state {
+ 		.status = ma_start,					\
+ 		.min = 0,						\
+ 		.max = ULONG_MAX,					\
+-		.node_request= 0,					\
+ 		.sheaf = NULL,						\
++		.alloc = NULL,						\
++		.node_request= 0,					\
+ 		.mas_flags = 0,						\
+ 		.store_type = wr_invalid,				\
+ 	}
+diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+index 3c3c14a76d98ded3b619c178d64099b464a2ca23..9aa782b1497f224e7366ebbd65f997523ee0c8ab 100644
+--- a/lib/maple_tree.c
++++ b/lib/maple_tree.c
+@@ -1101,16 +1101,23 @@ static int mas_ascend(struct ma_state *mas)
+  *
+  * Return: A pointer to a maple node.
+  */
+-static inline struct maple_node *mas_pop_node(struct ma_state *mas)
++static __always_inline struct maple_node *mas_pop_node(struct ma_state *mas)
+ {
+ 	struct maple_node *ret;
  
-+struct slab_sheaf {
-+	struct kmem_cache *cache;
-+	unsigned int size;
-+	unsigned int capacity;
-+	void *objects[];
-+};
-+
- struct kmem_cache_args {
- 	unsigned int align;
- 	unsigned int sheaf_capacity;
-@@ -80,4 +87,21 @@ void kmem_cache_free_bulk(struct kmem_cache *cachep, size_t size, void **list);
- int kmem_cache_alloc_bulk(struct kmem_cache *cachep, gfp_t gfp, size_t size,
- 			  void **list);
- 
-+struct slab_sheaf *
-+kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int size);
-+
-+void *
-+kmem_cache_alloc_from_sheaf(struct kmem_cache *s, gfp_t gfp,
-+		struct slab_sheaf *sheaf);
-+
-+void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
-+		struct slab_sheaf *sheaf);
-+int kmem_cache_refill_sheaf(struct kmem_cache *s, gfp_t gfp,
-+		struct slab_sheaf **sheafp, unsigned int size);
-+
-+static inline unsigned int kmem_cache_sheaf_size(struct slab_sheaf *sheaf)
-+{
-+	return sheaf->size;
-+}
-+
- #endif		/* _TOOLS_SLAB_H */
-diff --git a/tools/testing/shared/linux.c b/tools/testing/shared/linux.c
-index f998555a1b2af4a899a468a652b04622df459ed3..e0255f53159bd3a1325d49192283dd6790a5e3b8 100644
---- a/tools/testing/shared/linux.c
-+++ b/tools/testing/shared/linux.c
-@@ -181,6 +181,12 @@ int kmem_cache_alloc_bulk(struct kmem_cache *cachep, gfp_t gfp, size_t size,
- 	if (kmalloc_verbose)
- 		pr_debug("Bulk alloc %zu\n", size);
- 
-+	if (cachep->exec_callback) {
-+		if (cachep->callback)
-+			cachep->callback(cachep->private);
-+		cachep->exec_callback = false;
++	if (mas->alloc) {
++		ret = mas->alloc;
++		mas->alloc = NULL;
++		goto out;
 +	}
 +
- 	pthread_mutex_lock(&cachep->lock);
- 	if (cachep->nr_objs >= size) {
- 		struct radix_tree_node *node;
-@@ -270,6 +276,84 @@ __kmem_cache_create_args(const char *name, unsigned int size,
+ 	if (WARN_ON_ONCE(!mas->sheaf))
+ 		return NULL;
+ 
+ 	ret = kmem_cache_alloc_from_sheaf(maple_node_cache, GFP_NOWAIT, mas->sheaf);
+-	memset(ret, 0, sizeof(*ret));
+ 
++out:
++	memset(ret, 0, sizeof(*ret));
  	return ret;
  }
  
-+struct slab_sheaf *
-+kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int size)
-+{
-+	struct slab_sheaf *sheaf;
-+	unsigned int capacity;
-+
-+	if (size > s->sheaf_capacity)
-+		capacity = size;
-+	else
-+		capacity = s->sheaf_capacity;
-+
-+	sheaf = malloc(sizeof(*sheaf) + sizeof(void *) * s->sheaf_capacity * capacity);
-+	if (!sheaf) {
-+		return NULL;
-+	}
-+
-+	memset(sheaf, 0, size);
-+	sheaf->cache = s;
-+	sheaf->capacity = capacity;
-+	sheaf->size = kmem_cache_alloc_bulk(s, gfp, size, sheaf->objects);
-+	if (!sheaf->size) {
-+		free(sheaf);
-+		return NULL;
-+	}
-+
-+	return sheaf;
-+}
-+
-+int kmem_cache_refill_sheaf(struct kmem_cache *s, gfp_t gfp,
-+		 struct slab_sheaf **sheafp, unsigned int size)
-+{
-+	struct slab_sheaf *sheaf = *sheafp;
-+	int refill;
-+
-+	if (sheaf->size >= size)
-+		return 0;
-+
-+	if (size > sheaf->capacity) {
-+		sheaf = kmem_cache_prefill_sheaf(s, gfp, size);
-+		if (!sheaf)
-+			return -ENOMEM;
-+
-+		kmem_cache_return_sheaf(s, gfp, *sheafp);
-+		*sheafp = sheaf;
-+		return 0;
-+	}
-+
-+	refill = kmem_cache_alloc_bulk(s, gfp, size - sheaf->size,
-+				       &sheaf->objects[sheaf->size]);
-+	if (!refill)
-+		return -ENOMEM;
-+
-+	sheaf->size += refill;
-+	return 0;
-+}
-+
-+void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
-+		 struct slab_sheaf *sheaf)
-+{
-+	if (sheaf->size) {
-+		//s->non_kernel += sheaf->size;
-+		kmem_cache_free_bulk(s, sheaf->size, &sheaf->objects[0]);
-+	}
-+	free(sheaf);
-+}
-+
-+void *
-+kmem_cache_alloc_from_sheaf(struct kmem_cache *s, gfp_t gfp,
-+		struct slab_sheaf *sheaf)
-+{
-+	if (sheaf->size == 0) {
-+		printf("Nothing left in sheaf!\n");
-+		return NULL;
-+	}
-+
-+	return sheaf->objects[--sheaf->size];
-+}
-+
- /*
-  * Test the test infrastructure for kem_cache_alloc/free and bulk counterparts.
+@@ -1121,9 +1128,34 @@ static inline struct maple_node *mas_pop_node(struct ma_state *mas)
   */
+ static inline void mas_alloc_nodes(struct ma_state *mas, gfp_t gfp)
+ {
+-	if (unlikely(mas->sheaf)) {
+-		unsigned long refill = mas->node_request;
++	if (!mas->node_request)
++		return;
++
++	if (mas->node_request == 1) {
++		if (mas->sheaf)
++			goto use_sheaf;
++
++		if (mas->alloc)
++			return;
+ 
++		mas->alloc = mt_alloc_one(gfp);
++		if (!mas->alloc)
++			goto error;
++
++		mas->node_request = 0;
++		return;
++	}
++
++use_sheaf:
++	if (unlikely(mas->alloc)) {
++		mt_free_one(mas->alloc);
++		mas->alloc = NULL;
++	}
++
++	if (mas->sheaf) {
++		unsigned long refill;
++
++		refill = mas->node_request;
+ 		if(kmem_cache_sheaf_size(mas->sheaf) >= refill) {
+ 			mas->node_request = 0;
+ 			return;
+@@ -5386,8 +5418,11 @@ void mas_destroy(struct ma_state *mas)
+ 	mas->node_request = 0;
+ 	if (mas->sheaf)
+ 		mt_return_sheaf(mas->sheaf);
+-
+ 	mas->sheaf = NULL;
++
++	if (mas->alloc)
++		mt_free_one(mas->alloc);
++	mas->alloc = NULL;
+ }
+ EXPORT_SYMBOL_GPL(mas_destroy);
+ 
+@@ -6074,7 +6109,7 @@ bool mas_nomem(struct ma_state *mas, gfp_t gfp)
+ 		mas_alloc_nodes(mas, gfp);
+ 	}
+ 
+-	if (!mas->sheaf)
++	if (!mas->sheaf && !mas->alloc)
+ 		return false;
+ 
+ 	mas->status = ma_start;
 
 -- 
 2.50.1
