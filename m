@@ -2,114 +2,100 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 044DAC83F17
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 17:50:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E276C83F17
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 17:54:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 97A9B6B012E; Wed, 23 Jul 2025 13:50:09 -0400 (EDT)
+	id A45C26B0127; Wed, 23 Jul 2025 13:54:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9520D6B0130; Wed, 23 Jul 2025 13:50:09 -0400 (EDT)
+	id A1DC56B0128; Wed, 23 Jul 2025 13:54:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8682D6B0131; Wed, 23 Jul 2025 13:50:09 -0400 (EDT)
+	id 95AA86B012C; Wed, 23 Jul 2025 13:54:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 76FCF6B012E
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:50:09 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2653DB6612
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 17:50:09 +0000 (UTC)
-X-FDA: 83696268138.30.6D800BE
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 2F48F1C000A
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 17:50:06 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=2+g4kEkX;
-	spf=pass (imf20.hostedemail.com: domain of jannh@google.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 852CA6B0127
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:54:26 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4F4BF1601AF
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 17:54:26 +0000 (UTC)
+X-FDA: 83696278932.01.C8D67EE
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 71FF418000E
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 17:54:24 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UO7tdZ57;
+	spf=pass (imf16.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753293007;
+	s=arc-20220608; t=1753293264;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N3CjZ22bo998Gf96yMZtr59wxIw8Kk30KdGo+Ax6K5M=;
-	b=NyHpQzpT2Cotd/DIO6wDuaeA5Ra3fO0XO38OToTLt47BoKCY7yIJseT8luP9XRJGkyqcdL
-	2aJk9H1sV1c0yIqE015GLJqokHz6bLa8rSQ7c6cL1fReCZufzOjaKn1JqxkWHyoWKtr8tm
-	3NvJ7s/T/YN6pmQO4gl1UdHAsaa9ewM=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=2+g4kEkX;
-	spf=pass (imf20.hostedemail.com: domain of jannh@google.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753293007; a=rsa-sha256;
+	bh=4Gwff2VE8d4007wYdTiGPmJ4gJfFC6HAzVdL8zXdtRw=;
+	b=rQWI86F1m3OGAf7ieRuqM4NawEpDH7aE8fJhzkXmtVSeuV93rRsotgrWsd/ReZbGCE+kpO
+	Vv2FsGK7kCce6hcv5uRX6Ot2f0fgwoXRys5kkavHlHXsWRSL7614KMWr4EGVD5eHMF90Ox
+	j0De4PJKonVkniuG/o/FawtLkcLWnNM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753293264; a=rsa-sha256;
 	cv=none;
-	b=ji9VcZG5k+zSsThUDBA2JVr1R/PP92nAHnvch0Pjc4MC2svMLCSSmw5e51PqaUn4WhGbPO
-	GkMK97F8lqZ1lnG4JWLOhm6fHkJmzPGmeqBqKk/URmCmzfUiN0Efniaqn9LEmtIhFLvbKO
-	fHhyPBW2WYK58hv3849aR9/acu+hwRY=
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-609b169834cso1333a12.0
-        for <linux-mm@kvack.org>; Wed, 23 Jul 2025 10:50:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753293005; x=1753897805; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=N3CjZ22bo998Gf96yMZtr59wxIw8Kk30KdGo+Ax6K5M=;
-        b=2+g4kEkXkesTPa4xZVMJDRsGLqxxrVZeKZi9P7k27aRF3CRbm7WyZZ94lPnsAJ8CYK
-         hFTSPyYVyHG4ft8q8ti7Ewuzv+hYpV/vnhenO2W5uiqGel/nryYhtBnO7hXAVzzQsCAd
-         x3IufUBsPlLmgnxDWc7Ak6K/ZJxOZnLb/FrrCvGNmDl38qzHehll8sW0Fh9VLvUEwTag
-         rErSkCntRBBcmCkWSlmjq6zGudPB81Bl0Gho0JV+HR8nXhVsbiPKYeZy256bWzWXuLGB
-         cQAeeBkka6g4ByIG/fOECJesDONkrnCK8nuTLCTegjvUgtaEy5pDfEFVsHVzlWu7Jm6E
-         sHhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753293005; x=1753897805;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=N3CjZ22bo998Gf96yMZtr59wxIw8Kk30KdGo+Ax6K5M=;
-        b=SvgfmrLimxxf7QULH6b4eOkNfuZ9W7rYN6d3ETTU6U6TgCImjh5B8jFePOS2kwh/J6
-         5GGB1d7ipZapFTl1fXgtOHK4VZbM347oQROYCf/A1mlCG4DjdupdK1ZoHOozb+Z7P4jY
-         U5f6yOe7ODWyQ2gEXZXxwx5gdoV55Ao9muistsQYr3lTTWctGa6+07gYT52BazAzuOMn
-         52ai5BdTT75n5RO/aDxDEo+bYUlhbgSdjCRwA8H4M7VEMXrORL1Lcnau2XS0N4Lt5WPG
-         V65YXxuV0EqsHeHcVPM4zzDyUkme9QxK3a5lRPXv8ehnLrvt63XJ+apablhgNSM+Q3wC
-         +4uA==
-X-Forwarded-Encrypted: i=1; AJvYcCWmylEA2uF1fw4sWKiN0uwvnAxhXTfeQ6TfLq2ROB04PL6qOLNAH1Q+B7o/rpMjfLqVcCcSJWq1EQ==@kvack.org
-X-Gm-Message-State: AOJu0YyN0pqEF8mCXnmLCnLcljEvDUDm9LSMy8tUfD+RL/fHtK+OD+cU
-	rt2t0FDc2s99JIc4v1mVgc5f6TjxpCJ/Oshq3HtUED7vXEQ4ePfVPAKylpHGERhuVGvpYvCx6i3
-	SuygsmtBT8Ct/b1XVeGt6mr7u8RQW9YQ/1hXAjUxa
-X-Gm-Gg: ASbGncsP0XF3klFRXI5dnkivIprZW/EU0A8/EGIBdeW7b6i36mAHl/cHRIyTPzkOuaj
-	f4Uv0el9VutOlbqcB5dpj/ao82aTaXjc+R6u6jT3j6TIYVGcjxTjT8AjbphOGAQoiKb1EoH0BBI
-	MxM9YeRcfoll2ocxsSwSjZuGPi8O7gjlENLnYKq/j48mAMxP5DtfFKhRjJGmzuvju1je45BQ/4O
-	wDCNfUHhGBh6lA4oJR8RIV3AT5DXfrjfnE=
-X-Google-Smtp-Source: AGHT+IFZndI4SLY2jTFfc7anANksmXujHTfbPGok6SPCPQiLXDZT+bTXYZL7u6XX3OLnry7gojrC+xg7+iozT5iiYuw=
-X-Received: by 2002:a50:ab0a:0:b0:609:99a7:efdb with SMTP id
- 4fb4d7f45d1cf-614c4e2d68fmr959a12.2.1753293005107; Wed, 23 Jul 2025 10:50:05
- -0700 (PDT)
+	b=p5ptwg0tzufqc4DXy1ZnbFklg4GkGwPWmUul20JAwbupOP0O1BTrGHAhxKU6tY2NTGhMWE
+	HRm2HPUTFH0VI58mRnnutMgNmlNGhm2kSUab2TAGL/jPqpIqfiE4kqE+XPm95iREK4iXB3
+	4bx3SpMFfkzt3pd3jjBA0D7iPeUOwyM=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UO7tdZ57;
+	spf=pass (imf16.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Wed, 23 Jul 2025 10:54:11 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1753293262;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4Gwff2VE8d4007wYdTiGPmJ4gJfFC6HAzVdL8zXdtRw=;
+	b=UO7tdZ57wlRfHAi9qqc4+fBjZIliVIfL8CcZnGE7Dt4F/OxBOsALVh2F/P3WDk69tO2UKS
+	8+Sc7TpBfq+LtvQPupBRgAwJ/feO/lVwEvRhBhkS7ES0uhxldk5zZvH5sUCQBMLqoMrmQ7
+	n4l+H/rXj7gJ/r4fe31yB6uWoKsF45Q=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Daniel Sedlak <daniel.sedlak@cdn77.com>
+Cc: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Neal Cardwell <ncardwell@google.com>, 
+	David Ahern <dsahern@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org, netdev@vger.kernel.org, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org, 
+	Matyas Hurtik <matyas.hurtik@cdn77.com>
+Subject: Re: [PATCH v3] memcg: expose socket memory pressure in a cgroup
+Message-ID: <irvyenjca4czrxfew4c7nc23luo5ybgdw3lquq7aoadmhmfu6h@h4mx532ls26h>
+References: <20250722071146.48616-1-daniel.sedlak@cdn77.com>
+ <ni4axiks6hvap3ixl6i23q7grjbki3akeea2xxzhdlkmrj5hpb@qt3vtmiayvpz>
+ <telhuoj5bj5eskhicysxkblc4vr6qlcq3vx7pgi6p34g4zfwxw@6vm2r2hg3my4>
+ <CAAVpQUBwS3DFs9BENNNgkKFcMtc7tjZBA0PZ-EZ0WY+dCw8hrA@mail.gmail.com>
+ <4g63mbix4aut7ye7b7s4m5q7aewfxq542i2vygniow7l5a3zmd@bvis5wmifscy>
+ <CAAVpQUCOwFksmo72p_nkr1uJMLRcRo1VAneADon9OxDLoRH0KA@mail.gmail.com>
+ <jj5w7cpjjyzxasuweiz64jqqxcz23tm75ca22h3wvfj3u4aums@gnjarnf5gpgq>
+ <yruvlyxyy6gsrf2hhtyja5hqnxi2fmdqr63twzxpjrxgffov32@l7gqvdxijs5c>
+ <878ca484-a045-4abb-a5bd-7d5ae82607de@cdn77.com>
 MIME-Version: 1.0
-References: <CAG48ez0-deFbVH=E3jbkWx=X3uVbd8nWeo6kbJPQ0KoUD+m2tA@mail.gmail.com>
- <16c97e30-19c9-41e8-b73b-c0b3c8eceff3@suse.cz>
-In-Reply-To: <16c97e30-19c9-41e8-b73b-c0b3c8eceff3@suse.cz>
-From: Jann Horn <jannh@google.com>
-Date: Wed, 23 Jul 2025 19:49:29 +0200
-X-Gm-Features: Ac12FXzJzTto75PHjdORYKleZSwPq9-F8zjWYdNYD8vo7sV26qM4zAkWjh6UImY
-Message-ID: <CAG48ez1qhjQNHC+3572udqVWHTANFpQ0ngxn_4ZDC9F8NCXsFA@mail.gmail.com>
-Subject: Re: [BUG] hard-to-hit mm_struct UAF due to insufficiently careful
- vma_refcount_put() wrt SLAB_TYPESAFE_BY_RCU
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Linux-MM <linux-mm@kvack.org>, 
-	kernel list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <878ca484-a045-4abb-a5bd-7d5ae82607de@cdn77.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 71FF418000E
+X-Stat-Signature: 6pipwozxgwk9acozewps6sw7mfkusw7d
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2F48F1C000A
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 4tgtfyd3eg8jt67hup4r3gk71pnp1iuj
-X-HE-Tag: 1753293006-106938
-X-HE-Meta: U2FsdGVkX1+HISHy/6nRvaQB3ECfilmQv9NJ2W1+ScQvvwZjwwmWzTACSeiseWp5NKz/z4elfJy5D6Noml0RgBu9qfG1wMLqcn8e1QyvzmAcT2lZYDBxhOo2+27IgXzZC2kUH1b8nEifv42xm3mTiq0ASHMsDPW4huCW37dZymLOBNTNCLI1UwyfieWKIEXx7JbY/1NCQcgFEgNz2p2eY8EK7r1g9RDxjlWfheaZPU9s+4tGt/x6CI93N9hUqScd6XwRzqDfqm7UV2sBQnlrERbaVqJ3U2qc+L7wZD5sdyXOrYaeb3TUv/CUIdhFVB4MYtgmkGncuw1StmpZgzKQQtuj3NUvqot4XtMQnknOPGFG9P3CqxQEgjZlEBZiHn51RTJKFRLie3QGASjNfKRFCYu0nHYNdrpwr9MYNvHv65IuZkcrGcn+/pOKF/i3NXmrRQ4Hq4qcC8AOnkg+nx/rm15bPg9uzLKhs6y6hVmJvU20WQkFE7ky2g9MFI/sDHFkRfBwNocEdBUrv+2tNLR4QvwariPlbIwD73UN5tu7tbAewAYC/ffTaTcIaTvN3VsrMTZ6cmeOnn8z0n5LmdZl3W3cg6Tyr0X0OtZHopm8X+BH9p8UuL88GltJQFNUCGG0b0vxgVvQuRBT4t/Wab/06RG1YdC9mmR2cqiB1x5W4EjdQgFjTohtkjslbDvMydsi2i0VoqGbSo55t683ZMfr+wxq4huY8kIsPWxeDyCltcNnSFfYcCuier8wFEVu3kL1zzJD8xDnSM1izQXXFPCFMXqMj40jvoSUuzgTOGqFo0qG8WMPnFq1Z295PuXszenZ+gsL5hgqMFo8nBS67HPbNZf90UQo0stc71/vc49kSoIjuTea2vGNKGHFjuI3o0qas+vsH4eqtdTvJ5RmGbsxgqwdnmR1JNN4aGioQEfYqXbmbReyn1iR3OKApyajbX9uL2Yx2zriDtiPqywN1hM
- 3/ZdCq76
- WvZKqv316sXjCk32o9jWPFH3YrdQU290idV/dEIQynU/yfMazc7Iv3WIwZSKpvLsjdYVeFW7oPn9IK+8BE14zoeaZ6S5qpQ/fJ5hGtDhcHx2i8kVLamzv6mMV5FMGnQbKSMT5Ya5sCgglXNwBKhqs8yq8UL9irNXVNo4BQC4okBe28UQaQmfPtcTuCNruM8iAMxseV3sFSYJmzGMlQJE0Bz+RCFoKc46S47/UHZpkknSl6y0=
+X-HE-Tag: 1753293264-465291
+X-HE-Meta: U2FsdGVkX19E5+VBSm7lDQfg2ir3vbmWtDoO5fCYB9j7vz6o10Ry3X1odH7DE5uwWX4+dOrvSGeGRB0ND7jsE42sbLs0C4y9UR+wr5ktVfHxuxxy2Kk+SZRaLyEPd5zZ+Rl6nMFdwn7uyKlkkpEXnTddfB0pW2eUvOIbLwtHddmRd1BlvuEG990wC/8HDKleQ/jzfc7oTbJwHYMzUiuwmanpH8STJzGJfwvZgNT1ECnyqVwra0l90h+PkWPpBCEGI2vgzcrzC/9E3JWScwzyvgWggbR4dANtwG9V2hbcJHMk0my9PXHxm/fx/cBE4H/6w02yuSBC2znMJ2wYCsex2wfTQLkeKf2V80CB5EBrVRybGCRkGlTQa/fqSKS7oFg6bq86jbRlipX7Esp6rb2dx2cEBYjssADOJ4v9zGH1XtxCfMjM8XPbsbzqJzTsQhKUSZnlrd7q56AHfD0Qvoi4UVap/NKZaPTARhFC4i+M2ooDIXvr+q3Yz3NmVb6P9UM+x0MTzZICA5tjyeRs+mTH5jV04FfGuVUQia0L1ohs9boAzg9KYheJX+RbgWmNSKFp6hTRRyJid3Q/ByuZnIs+AIwQuY6IHW1BtpmT8gFOH1WEzRhRt5o71xRrfg57zKUmnMcJk3XHGUUIj49iS7TSS6nELrL0rZWcexVBQs7QpyHx1L171E34HPihhMj8m1Zcs6nODDl+Tt3P3xfA8RBfZdGFDMyjILwGdqaiP5zEIMOI1yMr1Sr+lhQlPLTy7vGLIXtLNIy1n/rEqa7T+nckYrDDLVan0pTKYtZKrvQ5sweRpFA4jItOFznKdNlQ6rXitzo6zPLaAZ9CGUB0SNcWM5ykbcTo0POU0ei5xqSWnO5h6l+FXhyraum+JBmGvIkU5FV4+5Wfdw+r3PUMCxQ52plvHBzLoPbJdfe8Cy449fa9jYv7Mt98dbMpvnWvfHloKQZoj76JySSQLME5lVc
+ /LVnqYi9
+ AhEJeB6ji5N34Pd7mkDPUwpQwYVr7P3PGkaSiMfbec3liCc3Sy7m/pnRkKz31EdMPZ/s8J5mBdyJoDpcUDLHbOkG2UumqhH/I6p6yWLXjhSBePZU65EjAQgXRYlju95CLKDCVs5i73Ip9gUhZa1MSYSVb8ADBx9m66tUS9rl9csyHuJq8hlcnqEtxxjwVM4oJ1XwIz9tqmq29SHoI/UsFyl9QHFGZZDLMD6ZlGOD+1jPhKCXyeDeG4vy8iQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,27 +104,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 23, 2025 at 7:32=E2=80=AFPM Vlastimil Babka <vbabka@suse.cz> wr=
-ote:
-> On 7/23/25 18:26, Jann Horn wrote:
-> > There's a racy UAF in `vma_refcount_put()` when called on the
-> > `lock_vma_under_rcu()` path because `SLAB_TYPESAFE_BY_RCU` is used
-> > without sufficient protection against concurrent object reuse:
->
-> Oof.
->
-> > I'm not sure what the right fix is; I guess one approach would be to
-> > have a special version of vma_refcount_put() for cases where the VMA
-> > has been recycled by another MM that grabs an extra reference to the
-> > MM? But then dropping a reference to the MM afterwards might be a bit
-> > annoying and might require something like mmdrop_async()...
->
-> Would we need mmdrop_async()? Isn't this the case for mmget_not_zero() an=
-d
-> mmput_async()?
+On Wed, Jul 23, 2025 at 10:58:10AM +0200, Daniel Sedlak wrote:
+> On 7/23/25 10:38 AM, Michal Koutný wrote:
+> > On Tue, Jul 22, 2025 at 01:11:05PM -0700, Shakeel Butt <shakeel.butt@linux.dev> wrote:
+> > > > > 1 second is the current implementation and it can be more if the memcg
+> > > > > remains in memory pressure. Regarding usefullness I think the periodic
+> > > > > stat collectors (like cadvisor or Google's internal borglet+rumbo) would
+> > > > > be interested in scraping this interface.
+> > > > 
+> > > > I think the cumulative counter suggested above is better at least.
+> > > 
+> > > It is tied to the underlying implementation. If we decide to use, for
+> > > example, PSI in future, what should this interface show?
+> > 
+> > Actually, if it was exposed as cummulative time under pressure (not
+> > cummulative events), that's quite similar to PSI.
+> 
+> I think overall the cumulative counter is better than just signaling 1 or 0,
+> but it lacks the time information (if not scraped periodically). In
+> addition, it may oscillate between under_pressure=true/false rather quickly
+> so the cumulative counter would catch this.
 
-Now I'm not sure anymore if either of those approaches would work,
-because they rely on the task that's removing the VMA to wait until we
-do __refcount_dec_and_test() before deleting the MM... but I don't
-think we have any such guarantee...
+Yes cumulative counter would not miss small bursts.
+
+> 
+> To me, introducing the new PSI for sockets (like for CPU, IO, memory), would
+> be slightly better than cumulative counter because PSI can have the timing
+> information without frequent periodic scrapes. So it may help with live
+> debugs.
+
+How would this PSI for sockets work? What would be the entry and exit
+points?
+
+> 
+> However, if we were to just add a new counter to the memory.stat in each
+> cgroup, then it would be easier to do so?
 
