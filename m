@@ -2,106 +2,174 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 07904C83F1A
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 09:32:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0DD3EC83F17
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 09:42:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 70D568E0001; Wed, 23 Jul 2025 05:32:21 -0400 (EDT)
+	id 683DF6B007B; Wed, 23 Jul 2025 05:42:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E5C86B0098; Wed, 23 Jul 2025 05:32:21 -0400 (EDT)
+	id 634466B0095; Wed, 23 Jul 2025 05:42:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6223F8E0001; Wed, 23 Jul 2025 05:32:21 -0400 (EDT)
+	id 4FC1B6B0096; Wed, 23 Jul 2025 05:42:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 502E46B0088
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 05:32:21 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id F3AF71DB066
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:32:20 +0000 (UTC)
-X-FDA: 83695013640.23.FA76A99
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9AE5D20009
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:32:17 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 356056B007B
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 05:42:14 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D86821DA097
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:42:13 +0000 (UTC)
+X-FDA: 83695038546.18.F717740
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 789BF20009
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:42:11 +0000 (UTC)
 Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b="hHZd pvL";
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf03.hostedemail.com: domain of liuqiye2025@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=liuqiye2025@163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753263139; a=rsa-sha256;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=q4bEBCj7;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ZrVh1UIE;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Nigw4flJ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Km+OrjSE;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753263731; a=rsa-sha256;
 	cv=none;
-	b=rcA23K4+QaazXCZW5dO1MvcoZbekK5/dF9q6Jik/2U5k3qOmXLrozM2zu70W7Fv2cJZmK/
-	MxdiMHG3qrBm5wkgBBCc/zzvZOgwqdO0DBEYkkPzxw5fMtttwCtzCb58s0STNeF50x26mP
-	eA6nWeT3uZEzpOnJBxOLwc0NvO+xZZg=
+	b=AQxFhFPhk02+ivd7ODnkTdf6zBM2cuSFQXibWtjepPZrm1p+XXPbQQgrYkldbUtdci3nr9
+	kitsFAwvHxGew+zMG3qt2il6EBbizLccRjbw50dGKgr0ucNKNcDtBkjJsf3RW6jUcEbkCQ
+	3L317fZhOSGFiRBWySFERjfwiWLhwko=
 ARC-Authentication-Results: i=1;
 	imf03.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b="hHZd pvL";
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf03.hostedemail.com: domain of liuqiye2025@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=liuqiye2025@163.com
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=q4bEBCj7;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ZrVh1UIE;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Nigw4flJ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Km+OrjSE;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753263139;
+	s=arc-20220608; t=1753263731;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oIe4Smzjsv9oiMD/3VSb2vW3Ngt6hxJltJ6vmcd+YX8=;
-	b=WXuCIFf4PXEiytRrTNsP8X8JP+N17rIo2YIwMchf5PVgjHGqq/JuCncNj3u+KBliyn0BPk
-	9j8OTbYNQ/GlppKmzF+e5giLBuuu+VA0wtkf8lzZBr/EAC7XHKk4GQYUgw+psTWFJdvB+l
-	ryrxxW8GRGpe+bTyYWKBwQQZD/HMshc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Content-Type:Message-ID:Date:MIME-Version:Subject:
-	To:From; bh=oIe4Smzjsv9oiMD/3VSb2vW3Ngt6hxJltJ6vmcd+YX8=; b=hHZd
-	pvLK5BoaEz+ZnkbWm9Hcopaboe2QEiOdYfEx21sWkCogF+Sxkkbg7uneHH8uel7/
-	Zf7/eA8nLUnDIXip1zYAYk9pomP7ShvEcsBqUCD3va0rPr8e2Sd/K6lHEOFbqPaA
-	1pxhXUuWwys/gE15oly3kwFI8THwwgr/taiuBwo=
-Received: from [192.168.22.151] (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wCXBgb+q4Boul3JGw--.7490S2;
-	Wed, 23 Jul 2025 17:31:47 +0800 (CST)
-Content-Type: multipart/alternative;
- boundary="------------FsDPGNLzVDXMymY3XaBDtbuo"
-Message-ID: <b6774d8c-fc7d-4459-b2da-5a5fd7a3a284@163.com>
-Date: Wed, 23 Jul 2025 17:31:41 +0800
+	bh=6e0oYfSmhk1vpAzcB9KYh3w+HHjNFd4D8pmNPbAL1oM=;
+	b=rL/jxLtNwak0goxBENNo/5Rj/kl6Fi+ShcY/F1Rd1binD0CgLasn28mEL1MXg000BGFUhd
+	VlIqoA0yREUm+AgelEh9EXB+9CPgx8kwCC7R6Gk5skMjLvBiW83MEdwGBFqtuJadpYZlOQ
+	IN4FdGWPoz1ma6QSCOHroIXuC/TSoB0=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id BA7E2218D5;
+	Wed, 23 Jul 2025 09:42:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1753263730; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=6e0oYfSmhk1vpAzcB9KYh3w+HHjNFd4D8pmNPbAL1oM=;
+	b=q4bEBCj7AFQW8kjp2rssc7FgHugzBS+u7tKVDL4ySIqhj3lwtisU+pjXcIAi/qu73Ii/5t
+	oezZF8yi+IR9QlIsAMKKcDZDGeAljeI6TNBp960ylpnSOFl303Xrbd9dpaRiX92eS1IhxR
+	Vj1LjkmOQuBM5kAgV65HgkGmOpikDS0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1753263730;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=6e0oYfSmhk1vpAzcB9KYh3w+HHjNFd4D8pmNPbAL1oM=;
+	b=ZrVh1UIE4tjMnrHPbxHDQJNaDB7GDxHnnQtjqebQWWJHP6z+8U39h3soz55gojlagyEBRu
+	k+2D5sScgewOQ8BQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1753263729; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=6e0oYfSmhk1vpAzcB9KYh3w+HHjNFd4D8pmNPbAL1oM=;
+	b=Nigw4flJ+LVggunln2cMQrvb69s+bP0lOmiu5vft09zxqW9w0YlXr9SDlqpI8GZmV0viaw
+	xLlYsHD/DahjA3ndFsg+80iAl7+roRi5juZaqv1y9u2PZnwixiCWakClaWjVl8xRA8yTVW
+	DuoAs2k4y2VonkiOjspz9XRxNSwv4tk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1753263729;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=6e0oYfSmhk1vpAzcB9KYh3w+HHjNFd4D8pmNPbAL1oM=;
+	b=Km+OrjSEay5QPgXIhTrPlZW9fVSTu+OsVHLhsZx3QnxDIq3UJuivZ3NB183qJVLdQTExxj
+	RQLFclycMMwXpeBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A07D613ABE;
+	Wed, 23 Jul 2025 09:42:09 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id cF/BJnGugGgZWwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 23 Jul 2025 09:42:09 +0000
+Message-ID: <66daf9db-ce97-4345-886c-3f8ab111b4fc@suse.cz>
+Date: Wed, 23 Jul 2025 11:42:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: add stack trace when bad rss-counter state is
- detected
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: David Hildenbrand <david@redhat.com>, Kees Cook <kees@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20250723072350.1742071-1-liuqiye2025@163.com>
- <202507230031.52B5C2B53@keescook>
- <c7a32d87-efbd-47bd-9a18-9eb51e441a7f@163.com>
- <119c3422-0bb1-4806-b81c-ccf1c7aeba4d@redhat.com>
- <8dd1e8f6-f96d-4d36-ac2a-c258ac842f75@redhat.com>
- <5cdd3e44-3e3c-4697-905a-ecc61093f7bc@163.com>
- <270d8240-fb64-46e0-a534-80790c4cc905@163.com>
- <9be97451-dfce-4dd2-a034-284da0f19bfd@lucifer.local>
+Subject: Re: [PATCH] MAINTAINERS: rename MM to MM MISC, add missing files
 Content-Language: en-US
-From: Xuanye Liu <liuqiye2025@163.com>
-In-Reply-To: <9be97451-dfce-4dd2-a034-284da0f19bfd@lucifer.local>
-X-CM-TRANSID:_____wCXBgb+q4Boul3JGw--.7490S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxGFy3Zr1xAw4DCr43tF48Xrb_yoW5WF4UpF
-	4rK3ZxGr1vyrWSyrn7Aw40yr15trs5C3y5G3s5W347K3s8WFyIqF4xKF4UCF1jkr9YkFZ2
-	vr4jvr1DCa90vFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UNiSLUUUUU=
-X-Originating-IP: [223.70.160.239]
-X-CM-SenderInfo: 5olx1xd1hsijqv6rljoofrz/1tbiMAqTUGiAp4JxUAAAsV
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ David Hildenbrand <david@redhat.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>
+References: <20250722192704.164758-1-lorenzo.stoakes@oracle.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20250722192704.164758-1-lorenzo.stoakes@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: b4w6ig9mwi39iicy3rg918nkdhb7rb1c
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9AE5D20009
-X-Stat-Signature: qb5me8oakkikq7h3opnr3zhcmuyinsyr
-X-HE-Tag: 1753263137-588135
-X-HE-Meta: U2FsdGVkX1/oWtvoY7/0FlvVwomrsdeHhmfuWpdq3suwwGK9ssy05+s30izkpUW/F2hnbxqxUAdjKHLftIJDenIvg01PZoPGhLf7CZtyz3RecdQFFiUK5G1q4jHQRHdNP8NsJlqkeaaHRgXIC9ogO65hHZaxCPAF0b8PywW/nahpUcydKO/rtv2HKAeN9yZ+g7d1402Qt2AzBiiBSMf9rbQHDhU5opMK4oxuUlnUeL8d1NTRi0hNR34NgCK60a3GUNSEEgqE3TMTijzy1MeGggKPyasi2E4cS01Z5KnREjS/O2TwBEpT3a2vqzvEgn7l/xYpZM0yyeP5Nwf7e8Pi7MUmNQWTDi6jOBdPY1//m7V42rogU1WOr6DYSMwWKo/tqyYlgmjc4y1nnp94v4BvXT7HQOpvQru5gEHJhfxV0T7a8UDuB2tlavQo+V21+lfn5P3o+lpbNtquj3e9OmafOyuNfyp2/bAVEEvMRxFEUSCENxjodZCJ9itMOJC17nKFEZ9m3GhIW9TajwnSIPCv37FKA/KLvZ2AbD9Y1Ov6x/w7opZ6XN3lTgioFg64QvEfdvtfwQ4yImA7ZJ6E7n0o/v18qlMJfcWKndUUvLlDyPgZr+1Vzwq5Aq2wW4JLJENkzjhaQRjdP+q39DYV++7NomejzDQ4iacX3ZN6HBu5ZtFtM3K4xcbbWwx7cBERs1tqugCtAhsuB/3zxFAHnbjX22wDdyVix8gAZlnEpFy90ICXCfn7r24Cmk937T5E2HlijnZCVvCCZgAiJfyW9tqlWBVZRi1zyFVJLepbB//4boBNCo9nkg7WGC5YyPgXjXMH0C4eFzezWZkPVDP9GMsoxyB7b7p7/akj5ki5f0qO6V0nbfypOwkgiafjWIxmgo+MzG0OEoTSA9SrfzMHK71b74U02zdhSfj/Z35oIbXs2FYBdtWoP8UXuS9QJJOS+wkPJoXE/iyPj5xu5ScTntI
- z6eVYc3X
- Bcv8MiAP2JygrbY3kPX5NLR68nyT9qtkdJYgDlk1ce6fWJdicL/mkwqZgTl6Jr4WzvcnWmxI5m1u7CYwacPSTgW7N/8QR3Pm5udLquignFTT9pPEkuzrVjMCkzigozchdc35HP6sO0qKTMiibh9Cs7nBWALTYti2SBYwklbyThtKjYPrW8HJeOke3GLAX03g5ZvbhZvaGGIl/hZ5eLTIyrjH8bZV7E9pcwOPlg4YDbWIbKGMSr0RCk3y/aUdHneVPUIwxzeom4pyn5AsbeE6mtBeV9ieLrUaivzoLAjBNeBd+C5eg1kh3U7S1rV6aIDuAV6dJc5h0sLOAxA+rl+WlGJ/4OZBpq8kAfQPtcAbGhly2asI4SB/4KQa+tfhYAftXi9xNhlxgmVO5VMVkQR/O2HpokajjT1xg+1XLx1Ou5ZJLSbq/2WijyOWDXa5ai2F1io8NP/RjitQ2KxJnzG27jmUtjGFu1JkdyTS9aBJKsoji8dffXj1NrnUTYff3i0Ab/4SrY+duNp0EWRJV3qZGRQhgtE+2Ddhi4rhn1dA82TjtBWbJ+zk7sT/h5sw9EIughZTujmPe/bXnHx2mAKOga8vdpMi9et1NMo2EgL1WKx24kMyyoeLOEV0LEvlWLanN2fuDizV/LqW07w8=
+X-Rspamd-Queue-Id: 789BF20009
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1753263731-947123
+X-HE-Meta: U2FsdGVkX184pus+o5pj7gWqmXU6kPvNSjVTfk8Mfbo8YV5274qXLmQ1/FUxBJ9jeNjmfYwPdPfl6FRBzMcHzlwvjxcteWPEoLheAyWnOt8ySPH20cCw4KQrEmIjumt9MggmHoIUVese9Lrh0aUYxwVTOqEbcjdISSttV8Miw5OschmP4tmGTUoU178i+qMyNtarO9i0t1F6300Veckz9G6Z89jgDpoWzXOdB96O/16ZNrzmlIntqBvMcrIxauvLUcrqk/5Qh/rjQaG+CkeJ2Y8IaPuF1YjXLNIMDIJ1GYvfdp16ZiYdCNGqm5kjN+Y8qpDV8sspd+ylJjX8xFtkK4T0YJ1DWmB47QBD9AU8S+KSJL//6M6/MI8oimpBgOaJMFyIDXS2C6HssPlStw5/FYvAAXd+Yg733LjU5jB0ZLyDjM8EdjNHOl6RGmfiS4/9GFh5mqYrzHUwE9FnfH5cZDnr0z4fCiuisoNOPAe9xHGS1xzctgUaY5N7F6gVDmp7OAuZrBEAijgROYYNnDJjJ1vf+rFDbx6tOEVr7qd16eIH160OUfcvoWisHxnBtmytWDCJVoY41nX5KClAC89TepGFEyNfv0mOmAB2r0HWUDO/5L4N4Dhg5xtlDGy6Y7ASVguoU6M0Ea0Ag6m8QHYUrnox1VxdaOLGsZczb3A0nrbOZGz293oTpnznzn+5PsqNRZTH6m2G2bV34ZEGkXr3ZHcnj6NlPi7Z7jR9q+ElWvaPcwPYuY3/cTSg44LYNrVt7hvUIRtR0DreteXiU+/EgCqR1lZpFNqXUCwgvdvNQgFyngfXonZFXmiJZia4P8ZgQtH/qevcTxSczQDsyxCfZYpSwRrOExlx6LqIgFRZBQ4UFFz6ZIVSxPEn12MzTOeq4lmCFV9yHBX5M8BcY3ya6gSXJ1GjAi5C7u1UE52p1R1nQv8Gwq7xbq6QxMksCYCzkhXiTpdHzaUkCPoreJy
+ 5R1pTjJ0
+ 8SblQIMVqitKPP2Ch52ANv8DcXSsMZUHv4G5dP9LL8Jrunlc9WGG9HthqKa1pGlGCIW7WG9z8yRO88qYmCi+rqUAGasXAsamCLjWuD1zF6rVOfV5ad8HdkgnawY+GAjp2UW+kO5gz3qNPGT+lRECd1ZUS+SsFoI/opwgDfE9H9polSZZelU6g6bFt7Q5edcHLeYMt22Em54Oyng4920zanaYevFBo21o9fJGevZA+RRLA0G+P8HHqduBIskrJ1af+ps2aFa16cOD8WWr7lH3aBVvM7+ePCyxgkUq2CaiWL6wvOwjE5kiMq2YCTF9ZlQsck7kTHKwt4MofjISyk+xuYFNAIBlZoGnKfbcsaS6rs2JOsOCZdUgHyN5HL929M785d57LEmrMz6zY16jnVvTg/fm7Yk9kZX1Mmo8qwhvMezFF4bxt+0BVQ/gyENzFG/5IeALduO6a+06PUaGY6z56w8ReluOP7HNnBWa3lTs1yMADad6gRK9UZ93iAGTZ5N9QPhpAFOH0peaTCERfShPIuFMh6D2Ho0Gb+gr5xwq/SaghcZJcaBsnRKrWMV0g1Q3GgBt8iSIcWJ9Sh1k9MzNhc9UHiEe54/GXB5+9BeoWXPUpkEM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,216 +178,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a multi-part message in MIME format.
---------------FsDPGNLzVDXMymY3XaBDtbuo
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+On 7/22/25 21:27, Lorenzo Stoakes wrote:
+> To fit in with other sections within MAINTAINERS for memory management
+> files, rename the MEMORY MANAGEMENT section to MEMORY MANAGEMENT - MISC to
+> contain files that are not described by other sections.
+> 
+> We also add missing files to MEMORY MANAGEMENT - MISC and MEMORY MANAGEMENT
+> - CORE sections.
+> 
+> Move over appropriate files to the core section, and in both sections add
+> remaining missing files. At this point, with the other recent MAINTAINERS
+> changes, this should now mean that every memory management-related file has
+> a section and assigned maintainers/reviewers.
+> 
+> For the time being, we maintain catch-all mm/ and tools/mm/ entries for MM
 
+This...
 
-在 2025/7/23 17:22, Lorenzo Stoakes 写道:
-> On Wed, Jul 23, 2025 at 05:14:19PM +0800, Xuanye Liu wrote:
->> 在 2025/7/23 17:10, Xuanye Liu 写道:
->>> 在 2025/7/23 16:42, David Hildenbrand 写道:
->>>> On 23.07.25 10:05, David Hildenbrand wrote:
->>>>> On 23.07.25 09:45, Xuanye Liu wrote:
->>>>>> 在 2025/7/23 15:31, Kees Cook 写道:
->>>>>>> On Wed, Jul 23, 2025 at 03:23:49PM +0800, Xuanye Liu wrote:
->>>>>>>> The check_mm() function verifies the correctness of rss counters in
->>>>>>>> struct mm_struct. Currently, it only prints an alert when a bad
->>>>>>>> rss-counter state is detected, but lacks sufficient context for
->>>>>>>> debugging.
->>>>>>>>
->>>>>>>> This patch adds a dump_stack() call to provide a stack trace when
->>>>>>>> the rss-counter state is invalid. This helps developers identify
->>>>>>>> where the corrupted mm_struct is being checked and trace the
->>>>>>>> underlying cause of the inconsistency.
->>>>>>> Why not just convert the pr_alert to a WARN?
->>>>>> Good idea! I'll gather more feedback from others and then update to v2.
->>>>> Makes sense to me.
->>>> After discussion this with Lorenzo off-list, isn't the stack completely misleading/useless in that case?
->>>>
->>>> Whatever caused the RSS counter mismatch (e.g., unmapped the wrong pages, missed to unmap pages) quite possibly happened in different context, way way earlier.
->>>>
->>>> Why would you think the stack trace would be of any value when destroying an MM (__mmdrop)?
->>>>
->>>> Having that said, I really hate these "pr_*("BUG: ...") with passion. Probably we'd want to invoke the panic_on_warn machinery, because something unexpected happened.
->>>>
->>> The stack trace dumped here may indeed not reflect the root cause ——
->>> the actual error could have occurred much earlier, for example during a
->>> failed or missing page map/unmap operation.
->>> The current stack (e.g., in __mmdrop() or exit_mmap()) is merely part
->>> of the cleanup phase.
->> Dumping the stack still has some chance of helping identify the issue — at the very least, it
->> shows which task triggered the check.
-> The stack will be actively misleading because it's highly likely to be totally
-> unrelated.
->
-> if you want to know the task, just output current->comm  :)
->
-> I think it's not only of no value, it's _ACTIVELY_ misleading. So it's
-> definitely a no to a dump_stack().
->
-> I am also not in favour of a WARN_ON() for the same reason.
->
-> Really we should be catching these elsewhere.
->
-> If you want to send the patch just outputting thet ask then all good.
+> - MISC, though in future we may wish to remove these to make it obvious
+> when files don't have assigned entries.
+> 
+> Finally, we copy across the maintainers/reviewers from MEMORY MANAGEMENT -
+> CORE to MEMORY MANAGEMENT - MISC, as it seems the two are sufficiently
+> related for this to be sensible.
 
-we can start by adding |current->comm| and |task_pid_nr(current)| to help identify the triggering task. 
+... together with this means the pre-existing reviewers of CORE will now get
+CC'd on everything under mm/ - I'm not sure if this consequence was apparent
+and wanted, so pointing that out. Myself, as long as whole mm/ is there, I'd
+rather not be one of the R: purely for volume reasons. The misc files
+themselves would have been fine.
 
-As for possible detection or monitoring mechanisms, we can continue the discussion.
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> ---
+> 
+> Andrew - apologies, but there will likely be some small conflicts here
+> given other MAINTAINERS patches move stuff from the MEMORY MANAGEMENT
+> section too.
+> 
+> I kept patches separate in case one ends up having push-back we can still
+> have the rest putting missing files in place.
+> 
+> Note that we also have [0] going through the slab tree, as it seemed a more
+> suitable place to do that change to minimise conflicts on that front.
+> 
+> [0]: https://lore.kernel.org/all/20250722175901.152272-1-lorenzo.stoakes@oracle.com/
+> 
+> REVIEWERS NOTES:
+> 
+> This is based on discussions had in [1] both about this newly renamed
+> section and where David indicated he was open to maintainership of the misc
+> section.
+> 
+> I am sending un-RFC'd as, while a lot of files being moved about, it seems
+> relatively safe to put these files in core/misc and we can move them around
+> later if necessary.
+> 
+> Additionally, on the reviewers being added, these files are broadly files
+> that could have been placed in the 'core' section, so this is more or less
+> an administrative decision to split into two and so it seems reasonable to
+> maintain the same list of people.
+> 
+> Apologies if this is overly presumptuous, the intent here is for us to
+> finally reach a point (with the other patches applied) where (as far as I
+> can tell) every memory management-related file should now have MAINTAINERS
+> entries.
+> 
+> [1]: https://lore.kernel.org/all/20250616203844.566056-1-lorenzo.stoakes@oracle.com/
+> 
+>  MAINTAINERS | 82 +++++++++++++++++++++++++++++++++++++----------------
+>  1 file changed, 57 insertions(+), 25 deletions(-)
+> 
 
+<trim>
 
->
->>> Given that, how should we go about identifying the root cause when such an issue occurs?
->>>
->>> Is there any existing way to trace it more effectively, or could we introduce a new mechanism
->>> to monitor and detect these inconsistencies earlier?
->>>
->>> Let’s brainstorm possible solutions together.
->>>
->> --
->> Thanks,
->> Xuanye
->>
--- 
-Thanks,
-Xuanye
+> +MEMORY MANAGEMENT - MISC
+> +M:	Andrew Morton <akpm@linux-foundation.org>
+> +M:	David Hildenbrand <david@redhat.com>
+> +R:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> +R:	Liam R. Howlett <Liam.Howlett@oracle.com>
+> +R:	Vlastimil Babka <vbabka@suse.cz>
+> +R:	Mike Rapoport <rppt@kernel.org>
+> +R:	Suren Baghdasaryan <surenb@google.com>
+> +R:	Michal Hocko <mhocko@suse.com>
+> +L:	linux-mm@kvack.org
+> +S:	Maintained
+> +W:	http://www.linux-mm.org
+> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> +F:	Documentation/admin-guide/mm/
+> +F:	Documentation/mm/
+> +F:	include/linux/memory-tiers.h
+> +F:	include/linux/mempolicy.h
+> +F:	include/linux/mempool.h
+> +F:	include/linux/memremap.h
 
---------------FsDPGNLzVDXMymY3XaBDtbuo
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Weren't a bunch of these moved to other sections already?
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">在 2025/7/23 17:22, Lorenzo Stoakes 写道:<br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:9be97451-dfce-4dd2-a034-284da0f19bfd@lucifer.local">
-      <pre wrap="" class="moz-quote-pre">On Wed, Jul 23, 2025 at 05:14:19PM +0800, Xuanye Liu wrote:
-</pre>
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre">
-在 2025/7/23 17:10, Xuanye Liu 写道:
-</pre>
-        <blockquote type="cite">
-          <pre wrap="" class="moz-quote-pre">在 2025/7/23 16:42, David Hildenbrand 写道:
-</pre>
-          <blockquote type="cite">
-            <pre wrap="" class="moz-quote-pre">On 23.07.25 10:05, David Hildenbrand wrote:
-</pre>
-            <blockquote type="cite">
-              <pre wrap="" class="moz-quote-pre">On 23.07.25 09:45, Xuanye Liu wrote:
-</pre>
-              <blockquote type="cite">
-                <pre wrap="" class="moz-quote-pre">在 2025/7/23 15:31, Kees Cook 写道:
-</pre>
-                <blockquote type="cite">
-                  <pre wrap="" class="moz-quote-pre">On Wed, Jul 23, 2025 at 03:23:49PM +0800, Xuanye Liu wrote:
-</pre>
-                  <blockquote type="cite">
-                    <pre wrap="" class="moz-quote-pre">The check_mm() function verifies the correctness of rss counters in
-struct mm_struct. Currently, it only prints an alert when a bad
-rss-counter state is detected, but lacks sufficient context for
-debugging.
-
-This patch adds a dump_stack() call to provide a stack trace when
-the rss-counter state is invalid. This helps developers identify
-where the corrupted mm_struct is being checked and trace the
-underlying cause of the inconsistency.
-</pre>
-                  </blockquote>
-                  <pre wrap="" class="moz-quote-pre">Why not just convert the pr_alert to a WARN?
-</pre>
-                </blockquote>
-                <pre wrap="" class="moz-quote-pre">Good idea! I'll gather more feedback from others and then update to v2.
-</pre>
-              </blockquote>
-              <pre wrap="" class="moz-quote-pre">Makes sense to me.
-</pre>
-            </blockquote>
-            <pre wrap="" class="moz-quote-pre">After discussion this with Lorenzo off-list, isn't the stack completely misleading/useless in that case?
-
-Whatever caused the RSS counter mismatch (e.g., unmapped the wrong pages, missed to unmap pages) quite possibly happened in different context, way way earlier.
-
-Why would you think the stack trace would be of any value when destroying an MM (__mmdrop)?
-
-Having that said, I really hate these "pr_*("BUG: ...") with passion. Probably we'd want to invoke the panic_on_warn machinery, because something unexpected happened.
-
-</pre>
-          </blockquote>
-          <pre wrap="" class="moz-quote-pre">The stack trace dumped here may indeed not reflect the root cause ——
-the actual error could have occurred much earlier, for example during a
-failed or missing page map/unmap operation.
-The current stack (e.g., in __mmdrop() or exit_mmap()) is merely part
-of the cleanup phase.
-</pre>
-        </blockquote>
-        <pre wrap="" class="moz-quote-pre">
-Dumping the stack still has some chance of helping identify the issue — at the very least, it
-shows which task triggered the check.
-</pre>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-The stack will be actively misleading because it's highly likely to be totally
-unrelated.
-
-if you want to know the task, just output current-&gt;comm  :)
-
-I think it's not only of no value, it's _ACTIVELY_ misleading. So it's
-definitely a no to a dump_stack().
-
-I am also not in favour of a WARN_ON() for the same reason.
-
-Really we should be catching these elsewhere.
-
-If you want to send the patch just outputting thet ask then all good.</pre>
-    </blockquote>
-    <p>we can start by adding <code data-start="71" data-end="86">current-&gt;comm</code>
-      and <code data-start="91" data-end="113">task_pid_nr(current)</code>
-      to help identify the triggering task. </p>
-    <p>As for possible detection or monitoring mechanisms, we can
-      continue the discussion.</p>
-    <p><br>
-    </p>
-    <blockquote type="cite"
-      cite="mid:9be97451-dfce-4dd2-a034-284da0f19bfd@lucifer.local">
-      <pre wrap="" class="moz-quote-pre">
-
-</pre>
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre">
-</pre>
-        <blockquote type="cite">
-          <pre wrap="" class="moz-quote-pre">
-Given that, how should we go about identifying the root cause when such an issue occurs?
-
-Is there any existing way to trace it more effectively, or could we introduce a new mechanism
-to monitor and detect these inconsistencies earlier?
-
-Let’s brainstorm possible solutions together.
-
-</pre>
-        </blockquote>
-        <pre wrap="" class="moz-quote-pre">--
-Thanks,
-Xuanye
-
-</pre>
-      </blockquote>
-    </blockquote>
-    <pre class="moz-signature" cols="0">-- 
-Thanks,
-Xuanye</pre>
-  </body>
-</html>
-
---------------FsDPGNLzVDXMymY3XaBDtbuo--
+> +F:	include/linux/mmu_notifier.h
+> +F:	include/trace/events/ksm.h
+> +F:	mm/
+> +F:	mm/backing-dev.c
+> +F:	mm/cma.c
+> +F:	mm/cma_debug.c
+> +F:	mm/cma_sysfs.c
+> +F:	mm/dmapool.c
+> +F:	mm/dmapool_test.c
+> +F:	mm/early_ioremap.c
+> +F:	mm/fadvise.c
+> +F:	mm/io-mapping.c
+> +F:	mm/ioremap.c
+> +F:	mm/mapping_dirty_helpers.c
+> +F:	mm/memory-tiers.c
+> +F:	mm/mmu_notifier.c
+> +F:	mm/page_idle.c
+> +F:	mm/pgalloc-track.h
+> +F:	mm/process_vm_access.c
+> +F:	mm/ptdump.c
+> +F:	tools/mm/
+> +F:	tools/testing/selftests/mm/
+> +
+>  MEMORY MANAGEMENT - NUMA MEMBLOCKS AND NUMA EMULATION
+>  M:	Andrew Morton <akpm@linux-foundation.org>
+>  M:	Mike Rapoport <rppt@kernel.org>
+> --
+> 2.50.1
 
 
