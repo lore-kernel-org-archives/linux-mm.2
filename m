@@ -2,121 +2,130 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 357AFC83F1A
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 14:04:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D6B53C83F17
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 14:08:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0CD06B00CE; Wed, 23 Jul 2025 10:04:16 -0400 (EDT)
+	id 65A368E0027; Wed, 23 Jul 2025 10:08:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABD736B00D1; Wed, 23 Jul 2025 10:04:16 -0400 (EDT)
+	id 60B018E0002; Wed, 23 Jul 2025 10:08:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9ACBA6B00D4; Wed, 23 Jul 2025 10:04:16 -0400 (EDT)
+	id 520C68E0027; Wed, 23 Jul 2025 10:08:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8AFCE6B00CE
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 10:04:16 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 574E48070B
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:04:16 +0000 (UTC)
-X-FDA: 83695698912.20.89025E9
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 257A780011
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:04:12 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RjbRfDZj;
-	spf=pass (imf30.hostedemail.com: domain of xiaoyao.li@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 42F368E0002
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 10:08:43 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B718EC0703
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:08:42 +0000 (UTC)
+X-FDA: 83695710084.11.B197E02
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D2EA080010
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:08:40 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=soleen-com.20230601.gappssmtp.com header.s=20230601 header.b=dm4YJesb;
+	spf=pass (imf02.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753279454;
+	s=arc-20220608; t=1753279720;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KNzL+kDc8WDx2KM+GCdUwHyyPTt0NCrzGFF8DO2SMwc=;
-	b=f6bx7cTY10knKH+eQ5fLhXbfWQn+URpRWk1cuY7vhHgcLbZYAn0l/NHg9z1/kuT6wiRGW7
-	5Jbb5YgJEdRC4lAIRxk3csD4txyKVjZzyGtNvMK1Mjhu9vtA2pt30BO12OypGVjbY1sgI7
-	3c1CmXYu/lzitAxo5WT19scYOWz/r7Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753279454; a=rsa-sha256;
+	bh=EYCQ+Y4SGloI9batOxe6eah89jgSfjrOwxOFu5iP0Ok=;
+	b=4rwn9cHADjW1VEktKURbfxqX9OYnk+k/isRyP/Pqr8F2+NDlwZW6p+jFXoVCIdD8UDFTMu
+	bU0ke/R+aA30sa3tc/QCULrJiqJm9WK1QRgnnS7QNmV11vEucCHmLAbcWPhNfWb4Aqp5iW
+	scECZ/DSzGdcBN9pTG/l+sBujfixGD8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753279720; a=rsa-sha256;
 	cv=none;
-	b=wRt7kE0CYqIOv9tsPTFqi+jOex20cOJUHMAskmcz3XlsoOHxE0tMH+4xNFVlKcLCkXpDS6
-	twAMQLnJcQL4mCbCGPq37f/A6K8OsFb19zg/d3dy6HKvysY7RK5W+Pq99gqQshYByk5yBt
-	Z1PjhVEwiCPH3uTvmYBmISlFmSZuTJ0=
+	b=ytlAUu6oS8Zi+UWp+uiyP6L+B4hLXWxiM87uAZtaiFnEpwfdVQZTDf91/fyZ2hkubmlsAZ
+	ztuppz7yhj5/WEy8xMDmt/M9cqXVnz3qfgIotKr9VY6QVrSUg/sk0O1XMj5hB8Dw8osBqB
+	1SF1xmqmw/P7RxmWKGP7rKZP3SsaFp8=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RjbRfDZj;
-	spf=pass (imf30.hostedemail.com: domain of xiaoyao.li@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753279453; x=1784815453;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=lC7D423FBBscRuryASHtu4WfamrsmdENxp22E1bBitw=;
-  b=RjbRfDZjDkP+RNc6ivmE1KmkA4fyJG1VseDY10zVwhs4VcHPa/xEqBqW
-   NEfgGGdl2dmaEWW8nx1dBPLlzKI28ZkPF3YWC0+re09iwyjjYLekhfCb9
-   XmGJqZScHMuOeGbD5G+CxDFkP+uEfF7IrGWpXJv3jiC0h/pENARbrokCz
-   Qxolxb0pJ0PfFutzY4YHG2ixgJssGLBJ7n40khIfakWNMF951EnNTY1pt
-   uKzvElAlIkAADUp4nq8LtyFsiOM8EuofXrVxufvN15IsIFnfOT9qkfrGS
-   bCo6NaYpUzqbaL3TEekEG2+ykP+7cb0WZaAYIs7tWXpZoB8d94/JfI9BS
-   g==;
-X-CSE-ConnectionGUID: +VqM/DzPQQO6jnfcIp3mSA==
-X-CSE-MsgGUID: lgJxHcKnTNqeiaUHLWZ/MQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="55505243"
-X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; 
-   d="scan'208";a="55505243"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2025 07:04:11 -0700
-X-CSE-ConnectionGUID: MEc0+Hk+ToyvuSHaf8ZX5A==
-X-CSE-MsgGUID: agVwp6nNQBG9waDbKb6Pjw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; 
-   d="scan'208";a="190480304"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1]) ([10.124.247.1])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2025 07:03:57 -0700
-Message-ID: <c301ec11-9d24-4cc6-9dc7-46800df4d5a8@intel.com>
-Date: Wed, 23 Jul 2025 22:03:54 +0800
+	imf02.hostedemail.com;
+	dkim=pass header.d=soleen-com.20230601.gappssmtp.com header.s=20230601 header.b=dm4YJesb;
+	spf=pass (imf02.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4ab7082b3f7so85107171cf.3
+        for <linux-mm@kvack.org>; Wed, 23 Jul 2025 07:08:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen-com.20230601.gappssmtp.com; s=20230601; t=1753279720; x=1753884520; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EYCQ+Y4SGloI9batOxe6eah89jgSfjrOwxOFu5iP0Ok=;
+        b=dm4YJesbwuFqMfT7TtztqEvh1lyZnM2EkvPDWDl72gndObUBEPik2M49pC2rJVOwgB
+         +dsosbkEXIJidbA6g/y0hu5DtjX1epvhJthHa1bJaWo23dOV4qNPZGwPuU6XHLrnJw6c
+         WQ+TOC0F+CXgn1ZoC6Fx7P4cBz+ZHcQ3Ts2T5kYu8JiL9TURO1aG95kdIVBnQEayCM9I
+         S9+42Qb0awgTqz4050KH98ZfRWdzuC4UIjul/Dn0kaATq6rY9kiMN+oQxo9zC775GJLu
+         Xe7xMR11bSysvy3GfPrpeh5Xv5IJfFuMD6ogJ0fd7mZYhYHPku0N8Ls/3kMEs7ABIiX/
+         ODng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753279720; x=1753884520;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EYCQ+Y4SGloI9batOxe6eah89jgSfjrOwxOFu5iP0Ok=;
+        b=XtatDo4R8VBzjMOa2dwc1oecUU+87UNXfY22sTI0Y5ojpp9vwdmIKh/0pOdtrZkPbW
+         Fv6xdZBnNasJgd1fJm/8ABJUYemAge60J9E8P/L4Hnu8rN4IbfxWEsOJjJN2kucjz4WG
+         U0/l0ffITRHm1+LtEKCeMnOP+gBPv5atmNZv/SEWLOaDxeS8vyGvRv2zSIitqAcoHrGn
+         zQxbdP/euj88uXR/M8t6BGJ/yqL1I8mdvWWM8KJW4ZLTSa9R/CjngUmQ8D6858X3VWrI
+         ekwrX7e5hODVAXzshLVTxhYel6jDxmh5PdNNPVI5fmO8h6c8ig4P5pccsSt4U3el8YkD
+         p/Kg==
+X-Forwarded-Encrypted: i=1; AJvYcCU0R3SmnhT6BpYsB3vrPyAix5rsfdGGy48jopE5EzcFa81QRCeqKNPDv9PjULCsh10XNcioNspY3Q==@kvack.org
+X-Gm-Message-State: AOJu0Yzuu1adPQdQyQhGTDV2r+w0kp9u26F560f32nrXZdv7gnEvaFIf
+	0QVO9uMYHhH/u8nSw+QU9F5DgfnUnHAOMCiS+D0KGIL70bl27x7K2nMbOdZBO93AAUehssFRmPw
+	EbO+NSTawFikbprj57Rq1om0g0gPjoaqzm4vg3bNkNw==
+X-Gm-Gg: ASbGncukQYft0kQ/J6TYhFXfquELmYgbI5oyeeVYIB0akkp4daq0Yfoyc9y+TRLLO76
+	JxAqfiw6JGy6/+qr6Xp3WwelztQbLH9Ddeo+z/r7m2Y6gvQ1qZTTQDtfdD4XxP+iUXqrbk2Sj9y
+	ceT+2LHZou7+glJARxQ4BVXgsx845d7/deg2Vms81ANAWd/nKzGF0XmWI6np9fca36542xkufpI
+	nWI
+X-Google-Smtp-Source: AGHT+IEZg9+tOdoBN5pipaSz8l0JIXA4kWu5teWmH4MdPQcTJ4hEm9+p/VjHT1EFMtU++w0i7sf5NEh4l/b4T/vp+IU=
+X-Received: by 2002:a05:622a:299b:b0:4aa:d487:594b with SMTP id
+ d75a77b69052e-4ae6df3479fmr44745741cf.35.1753279719903; Wed, 23 Jul 2025
+ 07:08:39 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 10/22] KVM: guest_memfd: Add plumbing to host to map
- guest_memfd pages
-To: Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, kvmarm@lists.linux.dev
-Cc: pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au,
- anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com,
- aou@eecs.berkeley.edu, seanjc@google.com, viro@zeniv.linux.org.uk,
- brauner@kernel.org, willy@infradead.org, akpm@linux-foundation.org,
- yilun.xu@intel.com, chao.p.peng@linux.intel.com, jarkko@kernel.org,
- amoorthy@google.com, dmatlack@google.com, isaku.yamahata@intel.com,
- mic@digikod.net, vbabka@suse.cz, vannapurve@google.com,
- ackerleytng@google.com, mail@maciej.szmigiero.name, david@redhat.com,
- michael.roth@amd.com, wei.w.wang@intel.com, liam.merwick@oracle.com,
- isaku.yamahata@gmail.com, kirill.shutemov@linux.intel.com,
- suzuki.poulose@arm.com, steven.price@arm.com, quic_eberman@quicinc.com,
- quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com,
- quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com,
- quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com,
- james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev,
- maz@kernel.org, will@kernel.org, qperret@google.com, keirf@google.com,
- roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com,
- rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com,
- jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com,
- ira.weiny@intel.com
-References: <20250723104714.1674617-1-tabba@google.com>
- <20250723104714.1674617-11-tabba@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20250723104714.1674617-11-tabba@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250625231838.1897085-1-pasha.tatashin@soleen.com>
+ <20250625231838.1897085-26-pasha.tatashin@soleen.com> <mafs01pr6u06u.fsf@kernel.org>
+In-Reply-To: <mafs01pr6u06u.fsf@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Wed, 23 Jul 2025 14:08:02 +0000
+X-Gm-Features: Ac12FXwWi_rhmMIkdkRxwkl_fKGePVCICDRFX_LJg-BXvjlQMX0IOJ0Ennnr9xw
+Message-ID: <CA+CK2bCHFW35oudOUTykzV4zH6Hv4ChmUq=-BZAtDP_mtOwBjA@mail.gmail.com>
+Subject: Re: [PATCH v1 25/32] mm: shmem: use SHMEM_F_* flags instead of VM_* flags
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: jasonmiu@google.com, graf@amazon.com, changyuanl@google.com, 
+	rppt@kernel.org, dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
+	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
+	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
+	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
+	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
+	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
+	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
+	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
+	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn, 
+	linux@weissschuh.net, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
+	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org, 
+	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com, 
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com, Jonathan.Cameron@huawei.com, 
+	quic_zijuhu@quicinc.com, aleksander.lobakin@intel.com, ira.weiny@intel.com, 
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
+	stuart.w.hayes@gmail.com, lennart@poettering.net, brauner@kernel.org, 
+	linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 257A780011
-X-Stat-Signature: qitu13nxh93narcszehnerftxicmx7op
+X-Rspamd-Queue-Id: D2EA080010
+X-Stat-Signature: iq8mx4pagb6styfy3b1hcgfbym5q97gd
 X-Rspam-User: 
-X-HE-Tag: 1753279452-470249
-X-HE-Meta: U2FsdGVkX19KzUisPfvTrrbu9yfwvmmZ6ZhB4hw0PVS1T3MhtM0XlbHBD0Grdin6/IZee3GI7kuB9Li0Z64CDG1OkaUNFOKZQyr8fN5WPRA1ycyuoB7jDeIsuH3RKKr7nc7EPi2s2B2FtAmy0LvGXPtfdN06T4Nvkq+YMyHfq9MobGxx805p3VVgXkZdc0luqcirHO54sAW+3Ie0R5OGJs9Sa3KAVVhzF7hVcqnGVPDjvjLSvanSsEdoRL0gdsKcYKZIbLvBfmGiV38QEMWyZlKX0QjnRukxccPiiIzJ+7d9Xwg+32Jbzpa8yI9BVW8GD0rlWP+0Fc8U7Ds0mg2bSijtt4saLMlz5xwi+5u0RAESmNRnGZoLp6Kw5bwYN3so0tFOI9oh8SYBOGMHpWo07ehkaXlfPjsmx7DfMOKdpA2z8AG65JJanS6aOdsuaGpewrw1Jb3+/SeHnE336D9gzAIy5dXUdoaZjzPZp2Q1O4P5wJ2EoF5TW0gAbwg8oTZLUPQ0ipWa7okQilbrX8+w3+y2gnDFEcF9vrM24bBqC6432HigXDUKC7lV0qY02EQCH557IhgJwbhN8t2zeruHk4i7mo6zyg6W86+8eh656cNf8d4TJxWVl8SepPbd3AECeOgNmbgCUOls1MosbDnhgTzqqBfev6zjUD8WHmn3YQ+twl91eyfsD9i3Me95geWoudfrvmpCLzsYRnI5cZai8szWlWgfQKH9135tkv5q4jcTsEcx/OKaVv6x1XS1dVjcTr86A6QkBApLiMa1IEWJhlA75ijlUnKGbOx+Cxy0lrx5V+8MvO7FH5HQq7K33m34Y/Drhzj7msQ2gZwBB2hEIMNu6oklTRA2hXK6MUEk0xH62CPP28h6DqSxxBH7zAQMKM6CZhxxWQkY4FyLjG8Qva0ZcYpxk1gd+/voogtMoiNFwYTIMAjDiQvO8vxqdtGdoDxNFVLViEng7ueePpX
- +i/iO234
- GlFQyiNQzw8dI4GOf50HOhSyXEscVuQdbYyd08Od3lTJAoSdtwfTtJvt8FrCim/ykGB0s4E1w27GqcNx47WWayPV7F6zYCHxilWjC8osen4O9KJGEUyPjw0tn1QWJsYoYIFqtiSwIUZ5gk8XCpt1o0+m01AclP3YUOM5nSsLNI+ShbdWQGk9BL0X4xyZ/RTh3w3BG1m4ylz9QedxJM0sAR5wO3VFkiHE0ptSmiJZvA5nW8xKJ+8noMbhqhGKvfUPtAuwWeRLSU8FeOYlDkhXolUjS8wb93aba4g4l6OSG7mBj4Bcr0zmuEXz57FDtvW+2bSiEh0TBHLEDLK3tOXAvAb0AhWJky2qybeC61OgW4HQCdY1aFlEniPKe006GXH6XnYVFLmZqYeGBg3aI9ZuA3EBHP/aL2yy+/aQBkol/jM5o0DppIXw2zJOXqqRTIKWmeG6JY1T4U5HULovZtMsrtcLldfvfG4yuP70l2y/uqnxT8bY=
+X-HE-Tag: 1753279720-708435
+X-HE-Meta: U2FsdGVkX1+GyWfxtGTMTeHGqR/rz8rCrZvdBQOADarp4A6VMRIOg4xWS5gbqkcYnWTcqYwNj2Qwi6BupRAvl5GU3ffsB69JBMPUGpEJyE1daP6p/7oQ2oARf+zaOiUGJtB+vtOub56cmzF+Y0EF1Mc70h+OwtcV/vO/BfBWS4l0/OynAFOIqgy+7ComTSZPN5s7r9NuCq8XrIW3vZsI0RlKtAR3OWEcKs3bONBSn8YJ1dsgzPgW7ImjPuckgapkSoSZJoFHI5ON6EWJimvasPaI0rivknNVeCvX5ROod8Cw06GbMoS8aNI5kk2IeWS3Rl1RYTD82o55aP4422TRUPxT0MEBygV5DdAphx899URbAxAKHJLRFj4Mc0XPqzPt1U4fOyesABVK6kSL63cInGpdQ4s1XUe3iIGoHKa2IlR4TkiSxjcJYjIApuoMeGLe5S33V2QFDYZp9vnV08uG3Slc77E4sWO1ufB5t/okoHzSTH/J3nXsGj5x10kkT58qysLGgi0WYkW51qO8uqTC/hAy1eA7s1fVxyK2fS2/YMqeEuy4CFgYt9kX3ZKLcfsFcGsqnU9rPkfGnJ0qBMF3NXQ2XhpLIHMEtmKfpinCtB29argFtarcWCfkkirdWUi361GCX5U74/ZEpc/Ni2UdTkPlN+yI57dW0c2I04OR04cEGmFKsEMcsbERsP/teuCTJUF6vgC+yocDNYmPyU1xGBPCMAY0X2L4vFdGJufe8ceJDDGI7L6In+T6x6HFs5crDiwgMWiKiTrie4Z/7cNNd42eLQ7cg5PRlWDgCnGhGzcD7iOfnB+Ls+1QnJN2QLQCoku2vgdvHyuRh1Yr4YHhNhlPTfSW147/P0l+UU0Nc8IJYyy4LfOLcuW7xmRfcY55CrO6/BDlO/Wgk97kigFeF4iQVUfSYiGvUbK0nM+Hsxj2c1GbFyUGxgizim1+3TnPG6N76pgaXHgaLGPLtKu
+ jb7NCt20
+ vaSI5vnZwIvfjb8MlAytQFsDpS4iLKtMnzrlafBRfs63OgJ9AG6sj1JqUAdSbHxJ98SGnAczMlo6S10O5WHENFEiyEi3NZz6G93I5aNEwlq900xGKFN948tB/UvpXHKp/Z3IvTTtls2D1ID1PUAuEI8lxK/xAqbeYzevGV2BfyKP0aFc46tE6JkN1yLJ0I03ZYZFiNougvSrzs6H0Bj4Vxzan1mZAcavQPAbaYH81hmUz9gaL8Dg66lgJ3fq9E9PFMwkYLtcJCuUZ5oCkrMKu4SUMttA9JzwPnSnb9ikPbz2TSKP2UzmATTUxBYJv7KRrJqv4PRxp0FDgZgA7WxyzagQGwxweManxqJUUDMmNVBT6POW1/0zm0NlBmZuCdQnwXvuoC/CplwBzpeY+5tv6cozMhj6lnl0FOVY/06PyK70ekLW12Th8tISmvA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,188 +134,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/23/2025 6:47 PM, Fuad Tabba wrote:
-> Introduce the core infrastructure to enable host userspace to mmap()
-> guest_memfd-backed memory. This is needed for several evolving KVM use
-> cases:
-> 
-> * Non-CoCo VM backing: Allows VMMs like Firecracker to run guests
->    entirely backed by guest_memfd, even for non-CoCo VMs [1]. This
->    provides a unified memory management model and simplifies guest memory
->    handling.
-> 
-> * Direct map removal for enhanced security: This is an important step
->    for direct map removal of guest memory [2]. By allowing host userspace
->    to fault in guest_memfd pages directly, we can avoid maintaining host
->    kernel direct maps of guest memory. This provides additional hardening
->    against Spectre-like transient execution attacks by removing a
->    potential attack surface within the kernel.
-> 
-> * Future guest_memfd features: This also lays the groundwork for future
->    enhancements to guest_memfd, such as supporting huge pages and
->    enabling in-place sharing of guest memory with the host for CoCo
->    platforms that permit it [3].
-> 
-> Enable the basic mmap and fault handling logic within guest_memfd, but
-> hold off on allow userspace to actually do mmap() until the architecture
-> support is also in place.
-> 
-> [1] https://github.com/firecracker-microvm/firecracker/tree/feature/secret-hiding
-> [2] https://lore.kernel.org/linux-mm/cc1bb8e9bc3e1ab637700a4d3defeec95b55060a.camel@amazon.com
-> [3] https://lore.kernel.org/all/c1c9591d-218a-495c-957b-ba356c8f8e09@redhat.com/T/#u
-> 
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Reviewed-by: Shivank Garg <shivankg@amd.com>
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> Signed-off-by: Fuad Tabba <tabba@google.com>
+On Thu, Jun 26, 2025 at 1:01=E2=80=AFPM Pratyush Yadav <pratyush@kernel.org=
+> wrote:
+>
+> Hi all,
+>
+> On Wed, Jun 25 2025, Pasha Tatashin wrote:
+>
+> > From: Pratyush Yadav <ptyadav@amazon.de>
+> >
+> > shmem_inode_info::flags can have the VM flags VM_NORESERVE and
+> > VM_LOCKED. These are used to suppress pre-accounting or to lock the
+> > pages in the inode respectively. Using the VM flags directly makes it
+> > difficult to add shmem-specific flags that are unrelated to VM behavior
+> > since one would need to find a VM flag not used by shmem and re-purpose
+> > it.
+> >
+> > Introduce SHMEM_F_NORESERVE and SHMEM_F_LOCKED which represent the same
+> > information, but their bits are independent of the VM flags. Callers ca=
+n
+> > still pass VM_NORESERVE to shmem_get_inode(), but it gets transformed t=
+o
+> > the shmem-specific flag internally.
+> >
+> > No functional changes intended.
+>
+> I was reading through this patch again and just realized that I missed a
+> spot. __shmem_file_setup() passes VM flags to shmem_{un,}acct_size(),
+> even though it now expects SHMEM_F flag. Below fixup patch should fix
+> that.
 
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Added for v2.
 
-> ---
->   arch/x86/kvm/x86.c       | 11 +++++++
->   include/linux/kvm_host.h |  4 +++
->   virt/kvm/guest_memfd.c   | 70 ++++++++++++++++++++++++++++++++++++++++
->   3 files changed, 85 insertions(+)
-> 
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index a1c49bc681c4..e5cd54ba1eaa 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -13518,6 +13518,16 @@ bool kvm_arch_no_poll(struct kvm_vcpu *vcpu)
->   }
->   EXPORT_SYMBOL_GPL(kvm_arch_no_poll);
->   
-> +#ifdef CONFIG_KVM_GUEST_MEMFD
-> +/*
-> + * KVM doesn't yet support mmap() on guest_memfd for VMs with private memory
-> + * (the private vs. shared tracking needs to be moved into guest_memfd).
-> + */
-> +bool kvm_arch_supports_gmem_mmap(struct kvm *kvm)
-> +{
-> +	return !kvm_arch_has_private_mem(kvm);
-> +}
-> +
-
-I think it's better to move the kvm_arch_supports_gmem_mmap() stuff to 
-patch 20. Because we don't know how kvm_arch_supports_gmem_mmap() is 
-going to be used unitll that patch.
-
->   #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE
->   int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_order)
->   {
-> @@ -13531,6 +13541,7 @@ void kvm_arch_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end)
->   	kvm_x86_call(gmem_invalidate)(start, end);
->   }
->   #endif
-> +#endif
->   
->   int kvm_spec_ctrl_test_value(u64 value)
->   {
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 4d1c44622056..26bad600f9fa 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -726,6 +726,10 @@ static inline bool kvm_arch_has_private_mem(struct kvm *kvm)
->   }
->   #endif
->   
-> +#ifdef CONFIG_KVM_GUEST_MEMFD
-> +bool kvm_arch_supports_gmem_mmap(struct kvm *kvm);
-> +#endif
-> +
->   #ifndef kvm_arch_has_readonly_mem
->   static inline bool kvm_arch_has_readonly_mem(struct kvm *kvm)
->   {
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index a99e11b8b77f..67e7cd7210ef 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -312,7 +312,72 @@ static pgoff_t kvm_gmem_get_index(struct kvm_memory_slot *slot, gfn_t gfn)
->   	return gfn - slot->base_gfn + slot->gmem.pgoff;
->   }
->   
-> +static bool kvm_gmem_supports_mmap(struct inode *inode)
-> +{
-> +	return false;
-> +}
-> +
-> +static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
-> +{
-> +	struct inode *inode = file_inode(vmf->vma->vm_file);
-> +	struct folio *folio;
-> +	vm_fault_t ret = VM_FAULT_LOCKED;
-> +
-> +	if (((loff_t)vmf->pgoff << PAGE_SHIFT) >= i_size_read(inode))
-> +		return VM_FAULT_SIGBUS;
-> +
-> +	folio = kvm_gmem_get_folio(inode, vmf->pgoff);
-> +	if (IS_ERR(folio)) {
-> +		int err = PTR_ERR(folio);
-> +
-> +		if (err == -EAGAIN)
-> +			return VM_FAULT_RETRY;
-> +
-> +		return vmf_error(err);
-> +	}
-> +
-> +	if (WARN_ON_ONCE(folio_test_large(folio))) {
-> +		ret = VM_FAULT_SIGBUS;
-> +		goto out_folio;
-> +	}
-> +
-> +	if (!folio_test_uptodate(folio)) {
-> +		clear_highpage(folio_page(folio, 0));
-> +		kvm_gmem_mark_prepared(folio);
-> +	}
-> +
-> +	vmf->page = folio_file_page(folio, vmf->pgoff);
-> +
-> +out_folio:
-> +	if (ret != VM_FAULT_LOCKED) {
-> +		folio_unlock(folio);
-> +		folio_put(folio);
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static const struct vm_operations_struct kvm_gmem_vm_ops = {
-> +	.fault = kvm_gmem_fault_user_mapping,
-> +};
-> +
-> +static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
-> +{
-> +	if (!kvm_gmem_supports_mmap(file_inode(file)))
-> +		return -ENODEV;
-> +
-> +	if ((vma->vm_flags & (VM_SHARED | VM_MAYSHARE)) !=
-> +	    (VM_SHARED | VM_MAYSHARE)) {
-> +		return -EINVAL;
-> +	}
-> +
-> +	vma->vm_ops = &kvm_gmem_vm_ops;
-> +
-> +	return 0;
-> +}
-> +
->   static struct file_operations kvm_gmem_fops = {
-> +	.mmap		= kvm_gmem_mmap,
->   	.open		= generic_file_open,
->   	.release	= kvm_gmem_release,
->   	.fallocate	= kvm_gmem_fallocate,
-> @@ -391,6 +456,11 @@ static const struct inode_operations kvm_gmem_iops = {
->   	.setattr	= kvm_gmem_setattr,
->   };
->   
-> +bool __weak kvm_arch_supports_gmem_mmap(struct kvm *kvm)
-> +{
-> +	return true;
-> +}
-> +
->   static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
->   {
->   	const char *anon_name = "[kvm-gmem]";
-
+Pasha
 
