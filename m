@@ -2,130 +2,134 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 032C6C83F1A
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 14:40:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 37757C83F1A
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 14:41:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 694776B00B8; Wed, 23 Jul 2025 10:40:06 -0400 (EDT)
+	id CFFFA6B00F8; Wed, 23 Jul 2025 10:41:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6446F6B00B9; Wed, 23 Jul 2025 10:40:06 -0400 (EDT)
+	id CD7856B00F9; Wed, 23 Jul 2025 10:41:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50CA86B00BA; Wed, 23 Jul 2025 10:40:06 -0400 (EDT)
+	id BEDF86B00FA; Wed, 23 Jul 2025 10:41:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3AA036B00B8
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 10:40:06 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 91F2F140730
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:40:05 +0000 (UTC)
-X-FDA: 83695789170.10.F341000
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 970621C0015
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:40:03 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=soleen-com.20230601.gappssmtp.com header.s=20230601 header.b=FpCmXgGE;
-	spf=pass (imf18.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+	by kanga.kvack.org (Postfix) with ESMTP id AA7DF6B00F8
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 10:41:50 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7414D8071C
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:41:50 +0000 (UTC)
+X-FDA: 83695793580.18.990F1C4
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 08ED51A0004
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:41:47 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=VRJbOnXj;
+	spf=pass (imf19.hostedemail.com: domain of farman@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=farman@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753281603;
+	s=arc-20220608; t=1753281708;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E4VW1A7ZGjSXpn0g5zEan91Zyknv45cf516fxn6sXo4=;
-	b=WPd0WeIeDFduyNpu/5Hf67GpKZLEyskYO8jJ9xQ6gnrT2AAaUr+BadpiDGLehHE+PwHKuF
-	MFCPYcD4D/dlnjn30Q9Ps0nPlvWqb0qVBGwzgJ69yIxbdj9+M9ZEcOEsecM1gP6IHrUuMZ
-	a4/XnhtIX3Bgd5R4BsPAYHcqUhqpXA8=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=soleen-com.20230601.gappssmtp.com header.s=20230601 header.b=FpCmXgGE;
-	spf=pass (imf18.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753281603; a=rsa-sha256;
+	bh=BsRYrmzERgPOP9TC+SccnJXGvwcImyLF8hTv5G28Y4Y=;
+	b=hctrvN5lA2dfGm5sZjgOtehkha/vBK3qKthE03a6Zjka+mu2dgHPzzwMc7DCoSGnUME23c
+	2lmCrMmP2c+bvXxzekQRdnU+z7tgA8ha1vI7p76E2LpeE5TsaAidj/RP39RE5RGM/OISph
+	q6Pc+H1zhkxGJXLwryKCD46XmKaoKwM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753281708; a=rsa-sha256;
 	cv=none;
-	b=ZSWHI4Jb0EUAT/4ZrZoAQZNIfoDeCEhwPOlMr+Z/OPF8QZjKTR4KMCPeWyt7OUiCU27eYM
-	W+JlZLCkNAc/T9psL4E6qp4UlBSsxmvuwu4G5/xB7XjM/QwdxboT930aWzE1jgsU3bbuST
-	UPI0rMbTxqPu9WK/4JX1uFH1muR1Cwc=
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-4aba19f4398so84668011cf.1
-        for <linux-mm@kvack.org>; Wed, 23 Jul 2025 07:40:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen-com.20230601.gappssmtp.com; s=20230601; t=1753281602; x=1753886402; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=E4VW1A7ZGjSXpn0g5zEan91Zyknv45cf516fxn6sXo4=;
-        b=FpCmXgGECMgyhS0yvgqYgWjaKtcBKCKpMr8fQVRWHXD9XC4EPvqBUfmZ287aH1qkFN
-         HiU4fCG1KgxVUdGRsHvbxkc9ex3yQRN6R+E+381aRBiSs/Iq/VvCDr5FYaur7gFlMQ34
-         Rgr0k/3YRRhHN3CNppZi//9H9i9o7jZXtUlWDgspshZUdu8T2hs2473LgllpQ+zmuENy
-         +C+mJclvoHXOtBzcye8b14KIXydg7hijmoWg9BpLORdVPCgTM7bWdxGdN4ct+7sAjfTl
-         ZGtFCI9tT6Mav22qT6NjfTdV+NeTaAN0KHIyGx/z7lal/ocqymSBfzOCayTUdSCCU4a+
-         Kjgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753281602; x=1753886402;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=E4VW1A7ZGjSXpn0g5zEan91Zyknv45cf516fxn6sXo4=;
-        b=YV7RH203nYKKAunWe1qwtTRoRKWEg9JTv7/CT4kc8mhSSL+d5rQsE8tj7ErrXstr57
-         IeXAptVa/4Tv8apNYA/FFtsxY2KwbA7RHM2aeRpfVFY1utQeNusSm3jSgZSBjnrl4XqR
-         gmJgWdUzZ4dxx4YQE89Vyal7onxjqsRNT+1Sm7YF4eGd1ZwfUhgwM7K0pfKOXxOX740b
-         Da2aq5zKSgbr3wxNqnpnK2pvEJUe8eto4qsuYjfN1JOZn+PaVVN23IlWsTaRQ8YWYIun
-         WycbY+YwU1/SLP9BMym4EAWirggRnSBOaGkxp1/45Or1719jEz1GUt8GPZz0kX63Q+r9
-         ZKsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW7YC6nTH1DdHravsVD5M2hwMKUd/Nyuwpz/jIeP7oCwItg5Cks/tE2ogsD08us5r0ed98I2pBu6Q==@kvack.org
-X-Gm-Message-State: AOJu0YyIFpdPxreWARyfkpSZXE5VmvwKHPhYLX4oMLrOPfGw4laeity5
-	OQkDSSvLYQGi7BFXGQ3fRQLqrTs3TVaDVLeAwNmBktjWIhPqAOqYvDykwcVooZSEK4GZZg0lg7M
-	DA0JxbfdxtU5T0GKERMA1M+Bs3kIgzVyX0ItWcvFvyQ==
-X-Gm-Gg: ASbGnctyr3RrwIgg4bFWlREGn9A1AKfdGlU0fYbTwWGZflJCxzpdJEDl0kvWs34wv1f
-	awbVsCdXBEFyoh3QdoQRydH9NhPlOGUSLX0Mzc0kMU1/83w++YGeMA8WsVkzUN50Ei/PONP9M+Q
-	uRBpPegcHaBh2pBP7bvDoF1qUWplSTk2rgC1J1eSpuZ3It+80pA/9ZNBKKjAhK+8TqosSIf1MHr
-	er/
-X-Google-Smtp-Source: AGHT+IHFS+sl5UqmRZOH4YC8rrY1lTn2lhJNlt9MYCWZB3088lrRvjxl69LEe5to8g07iNSRAqNDE0qYJCcj4SAzgKY=
-X-Received: by 2002:ac8:5d14:0:b0:4ab:41a7:852 with SMTP id
- d75a77b69052e-4ae6df7e0f7mr46630481cf.26.1753281602021; Wed, 23 Jul 2025
- 07:40:02 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250625231838.1897085-1-pasha.tatashin@soleen.com>
- <20250625231838.1897085-4-pasha.tatashin@soleen.com> <ac8efa08-3f85-4532-8762-573ebd258ca7@infradead.org>
-In-Reply-To: <ac8efa08-3f85-4532-8762-573ebd258ca7@infradead.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Wed, 23 Jul 2025 14:39:25 +0000
-X-Gm-Features: Ac12FXw5a0SPc2DZ1qffEKM0_QNNJkpaMIdscCC70ESios9nqZeZ3FVsbikeuDw
-Message-ID: <CA+CK2bCChNVmGXPN52La1zECBBSRf5SffHFEHwMcJCDaqA+YUQ@mail.gmail.com>
-Subject: Re: [PATCH v1 03/32] kho: warn if KHO is disabled due to an error
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
-	changyuanl@google.com, rppt@kernel.org, dmatlack@google.com, 
-	rientjes@google.com, corbet@lwn.net, ilpo.jarvinen@linux.intel.com, 
-	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com, 
-	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org, 
-	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev, 
-	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com, 
-	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org, 
-	dan.j.williams@intel.com, david@redhat.com, joel.granados@kernel.org, 
-	rostedt@goodmis.org, anna.schumaker@oracle.com, song@kernel.org, 
-	zhangguopeng@kylinos.cn, linux@weissschuh.net, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-mm@kvack.org, gregkh@linuxfoundation.org, 
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, rafael@kernel.org, 
-	dakr@kernel.org, bartosz.golaszewski@linaro.org, cw00.choi@samsung.com, 
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com, Jonathan.Cameron@huawei.com, 
-	quic_zijuhu@quicinc.com, aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
-	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org
+	b=qdF/KsqrWIJ4GbHFZoqL8kEAvKA6eY2LtlQlIgfEw6ID5Tzf16zhfkV9dQ/8Pn8vj4EXW8
+	uUSeAN6DPSa/02WGURZfianV6jrLmw9L9i8X6mI3RFp0KIFQro4XiW3S24dZMqXycKB1zB
+	8ZQNkuHbFTGi/Nb/+0LM5IOfaZAUEjI=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=VRJbOnXj;
+	spf=pass (imf19.hostedemail.com: domain of farman@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=farman@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56NAPn7s029171;
+	Wed, 23 Jul 2025 14:41:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=BsRYrm
+	zERgPOP9TC+SccnJXGvwcImyLF8hTv5G28Y4Y=; b=VRJbOnXjrbgBI0by2bkg2K
+	+JuEPLtFD88gSEvRG9S64dN2bHJTCtfElfwP1DmDB+PRBKyrBHOxQj4IVNRXBvqN
+	ImgNVYAaJUs+Xrlz2igBfrJKOSYrQWw2cmzHQn1iBPfNHVKYwwaARPXrrcgYYvzL
+	LNA5hrvaUwq6MVb+7kM7M43/HqfIkrWBi8EKx3dOv0ueXlSulva7GocMnMSNrXLN
+	j2SZARXy3JAPMML8yVqdkEambwygWQC5TPbJ3APATt3r9Rcf2IwOikyMCq6J39Qf
+	PVQ3EebTE5irrTGv5uOcMSgSjMvkqbzBsFa8nGiy4W8XyleZ0cGF0cv0FByAj7ug
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 482kdym50a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 23 Jul 2025 14:41:37 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56NCY7DW014302;
+	Wed, 23 Jul 2025 14:41:36 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 480ppp87m5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 23 Jul 2025 14:41:36 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 56NEfZ5315401652
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 23 Jul 2025 14:41:36 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C76C658065;
+	Wed, 23 Jul 2025 14:41:35 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 053155805A;
+	Wed, 23 Jul 2025 14:41:35 +0000 (GMT)
+Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown [9.61.103.85])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 23 Jul 2025 14:41:34 +0000 (GMT)
+Message-ID: <f22a8b5b50a140339222bed77f4b670d9008f29b.camel@linux.ibm.com>
+Subject: Re: [PATCH v4 2/5] vfio/type1: optimize vfio_pin_pages_remote()
+From: Eric Farman <farman@linux.ibm.com>
+To: lizhe.67@bytedance.com
+Cc: akpm@linux-foundation.org, alex.williamson@redhat.com, david@redhat.com,
+        jgg@ziepe.ca, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, peterx@redhat.com
+Date: Wed, 23 Jul 2025 10:41:34 -0400
+In-Reply-To: <20250723070917.87657-1-lizhe.67@bytedance.com>
+References: <1bd50178755535ee0a3b0b2164acf9319079a3d5.camel@linux.ibm.com>
+	 <20250723070917.87657-1-lizhe.67@bytedance.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: LjxNU6gIq12eLmfrwE13fuT495092aWs
+X-Authority-Analysis: v=2.4 cv=XP0wSRhE c=1 sm=1 tr=0 ts=6880f4a1 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=968KyxNXAAAA:8 a=VnNF1IyMAAAA:8
+ a=20KFwNOVAAAA:8 a=tpwnMQrfUSg4QDc0uBEA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: LjxNU6gIq12eLmfrwE13fuT495092aWs
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIzMDEyNiBTYWx0ZWRfXxcniVq8EcEpC
+ fLRZaRQlxv2Cc0ZgFEvrZu8DOkDS9TER1TtyJ6F3mP4rXoZ7rebwPzrULTrhH2s5B3TR9lvFNvU
+ SodSOjHHKKN1Srf2rHlipoWJK0JuelXrJTXWSWGRtTZoiaHrj0mDT7+LtqhIo0jioWjMO/KxkrQ
+ ivZp1kBlCe+E/TG8U372bkCsjRX6TDowCkAe+c4xgGXHDCutugBBmQukaNeWe0Qdrhqunmwr5wT
+ Fq5eOhJQ/RdABPvBvYK1zqkN6cV2v+9/IEPWgFIfDkbEQJAYT6EeDcNdXA8K99D27f0I5NbN3VE
+ ONB2KvWdCNpZ8dZQTogpQKgX+15GF06JchXFrlqaprgwt636BB1BqaK6NtFm65PPQHkz8fesx0i
+ AShL75hmGrkmtU6MsfF7TL3XhVQIPoqg5ooQZbane29IUf1IsD47Hsa82aib817UNOB2VB/v
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-23_02,2025-07-23_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 bulkscore=0 priorityscore=1501 mlxlogscore=677 spamscore=0
+ suspectscore=0 clxscore=1015 malwarescore=0 impostorscore=0
+ lowpriorityscore=0 adultscore=0 phishscore=0 classifier=spam authscore=0
+ authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2507230126
+X-Rspamd-Queue-Id: 08ED51A0004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 970621C0015
-X-Rspamd-Server: rspam06
-X-Stat-Signature: wjphz618h6eikpatewzxsi58m8zq9ypq
-X-HE-Tag: 1753281603-386975
-X-HE-Meta: U2FsdGVkX18goOXRqlh3CPyd4CicX6HzLnlHvJbhjsLD5W5MckayA2Qro+uLeZsYyaH+m1eiAwVtIW6od25HI01YrPZt8TfoFLZNx+U0atsxFk2HDqcqcj4O2Ziu0Z/vY4GarNUU4DZiNIZK3vA8bDU35naUkHk6MYXw9NtsHNLr7hqG0L9agA7lCjSbKmKfnvS2lXqnxMBWlwGZDaHNEpM9GP+6IiW7gCIyJK+rdccxvhYkvYu88K56bQcva2om23S+/FELcji+xoHRdsoUn2bOBPsw7h6NlEiHtqEkY2/Or04diyt/WZX8MPhEwZW70S5EozZcDzZVGuGAb8gs86xtf8y5MIIOxazF9tGrnoKWH+w0xkf05MNkPX5T372GoUvd3Guv9woCE6qnUFKp+05dIXswH3Fi4hYmBV6PSf7cAh25qkfAn3uQUiE9yeIY+u0f8+2vH5+t/pAZNpj+B6ShQx5TZDIENd0ChUIqKVdpp7/kw6h0+0MeBRsHw3t3KDaJPenpNp/mMLnejckRJi4eoLimwqJvxQE5zYyNRenTpmg6eV7aq2U+W706DQ2wP+5ha6kulaHmqMUpQi4fbwsfV/wgL30mXWsHYAfbbAYSQGZAx5603iS9MwIzcrU3ZVeIYbGQQJpXmiDaNsA0hSY2OK1n98dqGAAzQnREJ1z1NYnohRs8/FozJLIl4Xgo2Y6iKhq5l7WJ+dYTGAv/NjYR+SDY9SRSr/lZ6R3MJk8WFClrQoerT2vEMUd4cqHzGjyf5hUjGZ05ecNgbQYuc4yzMttBA3j/1wHXlCWNeb4y8WXZxQgnX72GP0ZpnWA+liFgXGQW7Qap0SVWXxK8nV1AKRl2+0u5rPRHWmAmRpaYd3CLjM16FZkYC68rbxCsCFYmVoBdqqlX3QFAs+6NGobXZitHMvFptlPhrfJwbUUQBvRYIs+GAdomf30ehfhdqMsEwC11FO0IGsnA/mF
- G+pebZEv
- e4ecuOu3C2R6yYFEoMXgHN3VmDvPGQ0rtG6gsahuaQyoICDvT8k33Ge8IIZoZZjRKfo4Y5LMkR+2qi4fCZUKNUuqP6OruHloBGsduC+/ZzM5bIJBa2C0MG9sEXwpvQUZVEzPzfFDFeea2+dU3yO1IErC/hg2GpxJHXU6ptqkVHxkG5h6Ue7xvF3In6x2Fkag84z1tyjdM/1aTMziaVRJOAD+So6QBBzLeW0e9WRTqUKmI2119Bf6z+nZsfRWzK66Vn3EfqcEAj+zrKqmx/zfMVX7EVogyk+H28mfLA2/cEQcOvjbUMoPfyFNg5WwgEGzTv87eE6pOcMNKdhUQ7jbO38rYdzqbhemmynOpER9+DIroqeASEneX24KfqT5QjyraTQdrXhzRrqZdzXK0Tbqjd3dnEv926QAYFAI9Fskr96xjptBvdbwIrw9ecL1NeWrIhV1FGh0LAecTpJ/Ldc7D5Es6OlECRUnVAQM4cLl5Uc/GAemVSQDVacpeU4cbUjNQhuuq
+X-Rspamd-Server: rspam09
+X-Stat-Signature: r45htqasfe4zidgut4c3fanuzphj4ht7
+X-HE-Tag: 1753281707-194163
+X-HE-Meta: U2FsdGVkX1+lMgZiSGpKt7giJgh/Aj6PzNxKv1xi6dJdZOEjvK1gRVvKeGr3L+Dtij0VYAZ0gRuXMnMOY/SRQYGP6vDqXk+efQg8/Aw2cg2V/eHDdkGW5wvJaObh0KubZtsxNIWSKdb4a0atmmP4tFKjF9stelKQuCtKPH6DxxQq9hmbRNrltEJ0ON7/iZArm+cCymK3ZQ/G2iFucTl6SBaSz40CinbG8jGgDp/MOHPvw0he/8pSPPc0fyQ6+B5obhxamWVhLVGeOTNf7azGla2tfz7o1YHcyuVZBX/ktO4DK/2qD4HfVZ/yCt9LG3i/v1rs0eT32zZjYyN3Xsgh6WnpO+DxdPMAY/upb2N8Z2ydxgNVfVqqLMv+5rqbl+VU8yCgPlPjA5uSE+DkFnp8WoNCPuQviUNG7aJ3zuRntg09soVLLbkhIFnwaxm+fQdVLsCHMr74R1oq+dJFQAKuRGmlrul2IibnXXb2btdhBf//Jlx/GBPNxeQ20fpXlkaX9TGq4503EiO0jzs7aZLE2GZPhER6BeGy4fbu9mHSSSgJn6wQnCjkr8WSL4cxHvoNJ+vHxmnLisOEA0nFp+Sk4dWWccM0ol4LFs9G4Vfp+fFRcY7Ih2hz8xTxLxOV7HQDfISfZi42Fv8nb8NW3rJhFlrEdbTTlCvripoy+1/ICiXlIghnWUrxBx0SRYM+EpiK+b3CTzVAfdldXTD3OlKIPDzc4nGpihpCD2e0MtKTwR3nI0nn6fLMX4GAQCJFdQoNcgEt1tfhcEwMAqibRMkkgnml7QYUT0qrPwd1sjCwCjpeLIezVr6u8hAVEOj3zG6nrAALbYh/hkQR7HNArUwZQvg4lyIUb3JtD+ocwFVjoG1VAJWVCW8XRSADQs3q8uMRGnnVQWWmPg/def3IffSdCZezLymYrLaH1phgCqfCTsXyODkP+kxf0fJruigoYpPlmjA84AiEk+y2kfsKa47
+ OZx8ulcY
+ OTPiOVj5Vnv0Iq9IIPHndycq7jYCr2a0yIPf3SYcsRJCHVFSl8cdqvp4nQRQPmcuY4a3VTK7lU8dI+pErKNq9+dl4KVA/H9GZpIHkzuwi4jQn416eBvHq4HpmelczBFLxHJuElGMwk3mL5G7bjNefdMttgxW1qQPqnLDk+aMBbqWol2c1sXik3wj/DEx8WkH0K5h9Hh8EI4NnBxZJw7ck6oaNtfBUjeS/t2vHBaNd2Naz1ohgWFXAYhA+B8EITE5hpV88AG9DjJoCskv1wm3lrQUXNyztOtJkaVutSY4N4t2bgynGAc20MSM5SQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,46 +138,245 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 25, 2025 at 11:57=E2=80=AFPM Randy Dunlap <rdunlap@infradead.or=
-g> wrote:
->
->
->
-> On 6/25/25 4:17 PM, Pasha Tatashin wrote:
-> > During boot scratch area is allocated based on command line
-> > parameters or auto calculated. However, scratch area may fail
-> > to allocate, and in that case KHO is disabled. Currently,
-> > no warning is printed that KHO is disabled, which makes it
-> > confusing for the end user to figure out why KHO is not
-> > available. Add the missing warning message.
->
-> Are users even going to know what "KHO" means in the warning message?
+On Wed, 2025-07-23 at 15:09 +0800, lizhe.67@bytedance.com wrote:
+> On Tue, 22 Jul 2025 12:32:59 -0400, farman@linux.ibm.com wrote:
+> =20
+> > On Thu, 2025-07-10 at 16:53 +0800, lizhe.67@bytedance.com wrote:
+> > > From: Li Zhe <lizhe.67@bytedance.com>
+> > >=20
+> > > When vfio_pin_pages_remote() is called with a range of addresses that
+> > > includes large folios, the function currently performs individual
+> > > statistics counting operations for each page. This can lead to signif=
+icant
+> > > performance overheads, especially when dealing with large ranges of p=
+ages.
+> > > Batch processing of statistical counting operations can effectively e=
+nhance
+> > > performance.
+> > >=20
+> > > In addition, the pages obtained through longterm GUP are neither inva=
+lid
+> > > nor reserved. Therefore, we can reduce the overhead associated with s=
+ome
+> > > calls to function is_invalid_reserved_pfn().
+> > >=20
+> > > The performance test results for completing the 16G VFIO IOMMU DMA ma=
+pping
+> > > are as follows.
+> > >=20
+> > > Base(v6.16-rc4):
+> > > ------- AVERAGE (MADV_HUGEPAGE) --------
+> > > VFIO MAP DMA in 0.047 s (340.2 GB/s)
+> > > ------- AVERAGE (MAP_POPULATE) --------
+> > > VFIO MAP DMA in 0.280 s (57.2 GB/s)
+> > > ------- AVERAGE (HUGETLBFS) --------
+> > > VFIO MAP DMA in 0.052 s (310.5 GB/s)
+> > >=20
+> > > With this patch:
+> > > ------- AVERAGE (MADV_HUGEPAGE) --------
+> > > VFIO MAP DMA in 0.027 s (602.1 GB/s)
+> > > ------- AVERAGE (MAP_POPULATE) --------
+> > > VFIO MAP DMA in 0.257 s (62.4 GB/s)
+> > > ------- AVERAGE (HUGETLBFS) --------
+> > > VFIO MAP DMA in 0.031 s (517.4 GB/s)
+> > >=20
+> > > For large folio, we achieve an over 40% performance improvement.
+> > > For small folios, the performance test results indicate a
+> > > slight improvement.
+> > >=20
+> > > Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+> > > Co-developed-by: Alex Williamson <alex.williamson@redhat.com>
+> > > Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+> > > Acked-by: David Hildenbrand <david@redhat.com>
+> > > ---
+> > >  drivers/vfio/vfio_iommu_type1.c | 83 ++++++++++++++++++++++++++++---=
+--
+> > >  1 file changed, 71 insertions(+), 12 deletions(-)
+> >=20
+> > Hi,
+> >=20
+> > Our CI started flagging some crashes running vfio-ccw regressions on th=
+e -next kernel beginning with
+> > next-20250717, and bisect points to this particular commit.
+> >=20
+> > I can reproduce by cherry-picking this series onto 6.16-rc7, so it's no=
+t something else lurking.
+> > Without panic_on_warn, I get a handful of warnings from vfio_remove_dma=
+() (after starting/stopping
+> > guests with an mdev attached), before eventually triggering a BUG() in =
+vfio_dma_do_unmap() running a
+> > hotplug test. I've attached an example of a WARNING before the eventual=
+ BUG below. I can help debug
+> > this if more doc is needed, but admit I haven't looked at this patch in=
+ any detail yet.
+> >=20
+> > Thanks,
+> > Eric
+> >=20
+> > [  215.671885] ------------[ cut here ]------------
+> > [  215.671893] WARNING: CPU: 10 PID: 6210 at drivers/vfio/vfio_iommu_ty=
+pe1.c:1204
+> > vfio_remove_dma+0xda/0xf0 [vfio_iommu_type1]
+> > [  215.671902] Modules linked in: vhost_vsock vmw_vsock_virtio_transpor=
+t_common vsock vhost
+> > vhost_iotlb algif_hash af_alg kvm nft_masq nft_ct nft_reject_ipv4 nf_re=
+ject_ipv4 nft_reject act_csum
+> > cls_u32 sch_htb nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_def=
+rag_ipv4 nf_tables pkey_pckmo
+> > s390_trng pkey_ep11 pkey_cca zcrypt_cex4 zcrypt eadm_sch rng_core vfio_=
+ccw mdev vfio_iommu_type1
+> > vfio drm sch_fq_codel i2c_core drm_panel_orientation_quirks dm_multipat=
+h loop nfnetlink ctcm fsm
+> > zfcp scsi_transport_fc mlx5_ib diag288_wdt mlx5_core ghash_s390 prng ae=
+s_s390 des_s390 libdes
+> > sha3_512_s390 sha3_256_s390 sha512_s390 sha1_s390 sha_common rpcrdma su=
+nrpc rdma_ucm rdma_cm
+> > configfs iw_cm ib_cm ib_uverbs ib_core scsi_dh_rdac scsi_dh_emc scsi_dh=
+_alua pkey autofs4
+> > [  215.671946] CPU: 10 UID: 107 PID: 6210 Comm: qemu-system-s39 Kdump: =
+loaded Not tainted 6.16.0-
+> > rc7-00005-g4ff8295d8d61 #79 NONE=20
+> > [  215.671950] Hardware name: IBM 3906 M05 780 (LPAR)
+> > [  215.671951] Krnl PSW : 0704c00180000000 000002482f7ee55e (vfio_remov=
+e_dma+0xde/0xf0
+> > [vfio_iommu_type1])
+> > [  215.671956]            R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:0=
+ PM:0 RI:0 EA:3
+> > [  215.671959] Krnl GPRS: 006d010100000000 000000009d8a4c40 000000008f3=
+b1c80 0000000092ffad20
+> > [  215.671961]            0000000090b57880 006e010100000000 000000008f3=
+b1c80 000000008f3b1cc8
+> > [  215.671963]            0000000085b3ff00 000000008f3b1cc0 000000008f3=
+b1c80 0000000092ffad20
+> > [  215.671964]            000003ff867acfa8 000000008f3b1ca0 000001c8b36=
+c3be0 000001c8b36c3ba8
+> > [  215.671972] Krnl Code: 000002482f7ee550: c0e53ff9fcc8	brasl	%r14,000=
+00248af72dee0
+> >            000002482f7ee556: a7f4ffcf		brc	15,000002482f7ee4f4
+> >           #000002482f7ee55a: af000000		mc	0,0
+> >           >000002482f7ee55e: a7f4ffa9		brc	15,000002482f7ee4b0
+> >            000002482f7ee562: 0707		bcr	0,%r7
+> >            000002482f7ee564: 0707		bcr	0,%r7
+> >            000002482f7ee566: 0707		bcr	0,%r7
+> >            000002482f7ee568: 0707		bcr	0,%r7
+> > [  215.672006] Call Trace:
+> > [  215.672008]  [<000002482f7ee55e>] vfio_remove_dma+0xde/0xf0 [vfio_io=
+mmu_type1]=20
+> > [  215.672013]  [<000002482f7f03de>] vfio_iommu_type1_detach_group+0x3d=
+e/0x5f0 [vfio_iommu_type1]=20
+> > [  215.672016]  [<000002482f7d4c4e>] vfio_group_detach_container+0x5e/0=
+x180 [vfio]=20
+> > [  215.672023]  [<000002482f7d2ce0>] vfio_group_fops_release+0x50/0x90 =
+[vfio]=20
+> > [  215.672027]  [<00000248af25e1ee>] __fput+0xee/0x2e0=20
+> > [  215.672031]  [<00000248aef19f18>] task_work_run+0x88/0xd0=20
+> > [  215.672036]  [<00000248aeef559a>] do_exit+0x18a/0x4e0=20
+> > [  215.672042]  [<00000248aeef5ab0>] do_group_exit+0x40/0xc0=20
+> > [  215.672045]  [<00000248aeef5b5e>] __s390x_sys_exit_group+0x2e/0x30=
+=20
+> > [  215.672048]  [<00000248afc81e56>] __do_syscall+0x136/0x340=20
+> > [  215.672054]  [<00000248afc8da7e>] system_call+0x6e/0x90=20
+> > [  215.672058] Last Breaking-Event-Address:
+> > [  215.672059]  [<000002482f7ee4aa>] vfio_remove_dma+0x2a/0xf0 [vfio_io=
+mmu_type1]
+> > [  215.672062] ---[ end trace 0000000000000000 ]---
+> > [  219.861940] ------------[ cut here ]------------
+> >=20
+> > ...
+> >=20
+> > [  241.164333] ------------[ cut here ]------------
+> > [  241.164340] kernel BUG at drivers/vfio/vfio_iommu_type1.c:1480!
+> > [  241.164358] monitor event: 0040 ilc:2 [#1]SMP=20
+> > [  241.164363] Modules linked in: vhost_vsock vmw_vsock_virtio_transpor=
+t_common vsock vhost
+> > vhost_iotlb algif_hash af_alg kvm nft_masq nft_ct nft_reject_ipv4 nf_re=
+ject_ipv4 nft_reject act_csum
+> > cls_u32 sch_htb nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_def=
+rag_ipv4 nf_tables pkey_pckmo
+> > s390_trng pkey_ep11 pkey_cca zcrypt_cex4 zcrypt eadm_sch rng_core vfio_=
+ccw mdev vfio_iommu_type1
+> > vfio drm sch_fq_codel i2c_core drm_panel_orientation_quirks dm_multipat=
+h loop nfnetlink ctcm fsm
+> > zfcp scsi_transport_fc mlx5_ib diag288_wdt mlx5_core ghash_s390 prng ae=
+s_s390 des_s390 libdes
+> > sha3_512_s390 sha3_256_s390 sha512_s390 sha1_s390 sha_common rpcrdma su=
+nrpc rdma_ucm rdma_cm
+> > configfs iw_cm ib_cm ib_uverbs ib_core scsi_dh_rdac scsi_dh_emc scsi_dh=
+_alua pkey autofs4
+> > [  241.164399] CPU: 14 UID: 107 PID: 6581 Comm: qemu-system-s39 Kdump: =
+loaded Tainted: G        W =20
+> > 6.16.0-rc7-00005-g4ff8295d8d61 #79 NONE=20
+> > [  241.164403] Tainted: [W]=3DWARN
+> > [  241.164404] Hardware name: IBM 3906 M05 780 (LPAR)
+> > [  241.164406] Krnl PSW : 0704e00180000000 000002482f7f132a (vfio_dma_d=
+o_unmap+0x4aa/0x4b0
+> > [vfio_iommu_type1])
+> > [  241.164413]            R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:2=
+ PM:0 RI:0 EA:3
+> > [  241.164415] Krnl GPRS: 0000000000000000 000000000000000b 00000000400=
+00000 000000008cfdcb40
+> > [  241.164418]            0000000000001001 0000000000000001 00000000000=
+00000 0000000040000000
+> > [  241.164419]            0000000000000000 0000000000000000 00000001fbe=
+7f140 000000008cfdcb40
+> > [  241.164421]            000003ff97dacfa8 0000000000000000 00000000871=
+582c0 000001c8b4177cd0
+> > [  241.164428] Krnl Code: 000002482f7f131e: a7890000		lghi	%r8,0
+> >            000002482f7f1322: a7f4feeb		brc	15,000002482f7f10f8
+> >           #000002482f7f1326: af000000		mc	0,0
+> >           >000002482f7f132a: 0707		bcr	0,%r7
+> >            000002482f7f132c: 0707		bcr	0,%r7
+> >            000002482f7f132e: 0707		bcr	0,%r7
+> >            000002482f7f1330: c0040000803c	brcl	0,000002482f8013a8
+> >            000002482f7f1336: eb6ff0480024	stmg	%r6,%r15,72(%r15)
+> > [  241.164458] Call Trace:
+> > [  241.164459]  [<000002482f7f132a>] vfio_dma_do_unmap+0x4aa/0x4b0 [vfi=
+o_iommu_type1]=20
+> > [  241.164463]  [<000002482f7f1d08>] vfio_iommu_type1_ioctl+0x1c8/0x370=
+ [vfio_iommu_type1]=20
+> > [  241.164466]  [<00000248af27704e>] vfs_ioctl+0x2e/0x70=20
+> > [  241.164471]  [<00000248af278610>] __s390x_sys_ioctl+0xe0/0x100=20
+> > [  241.164474]  [<00000248afc81e56>] __do_syscall+0x136/0x340=20
+> > [  241.164477]  [<00000248afc8da7e>] system_call+0x6e/0x90=20
+> > [  241.164481] Last Breaking-Event-Address:
+> > [  241.164482]  [<000002482f7f1238>] vfio_dma_do_unmap+0x3b8/0x4b0 [vfi=
+o_iommu_type1]
+> > [  241.164486] Kernel panic - not syncing: Fatal exception: panic_on_oo=
+ps
+>=20
+> Thanks for the report. After a review of this commit, it appears that
+> only the changes to vfio_find_vpfn() could plausibly account for the
+> observed issue (I cannot be absolutely certain). Could you kindly test
+> whether the issue persists after applying the following patch?
 
-Changed warning to: Failed to reserve scratch area, disabling kexec handove=
-r
+Hi Zhe,
 
->
-> >
-> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> > ---
-> >  kernel/kexec_handover.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
-> > index 1ff6b242f98c..069d5890841c 100644
-> > --- a/kernel/kexec_handover.c
-> > +++ b/kernel/kexec_handover.c
-> > @@ -565,6 +565,7 @@ static void __init kho_reserve_scratch(void)
-> >  err_free_scratch_desc:
-> >       memblock_free(kho_scratch, kho_scratch_cnt * sizeof(*kho_scratch)=
-);
-> >  err_disable_kho:
-> > +     pr_warn("Failed to reserve scratch area, disabling KHO\n");
-> >       kho_enable =3D false;
-> >  }
-> >
->
-> --
-> ~Randy
->
+Thank you for the quick patch! I applied this and ran through a few cycles =
+of the previously-
+problematic tests, and things are holding up great.
+
+It's probably a fixup to the commit here, but FWIW:
+
+Tested-by: Eric Farman <farman@linux.ibm.com>
+
+Thanks,
+Eric
+
+>=20
+> diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_ty=
+pe1.c
+> --- a/drivers/vfio/vfio_iommu_type1.c
+> +++ b/drivers/vfio/vfio_iommu_type1.c
+> @@ -344,7 +344,7 @@ static struct vfio_pfn *vfio_find_vpfn_range(struct v=
+fio_dma *dma,
+> =20
+>  static inline struct vfio_pfn *vfio_find_vpfn(struct vfio_dma *dma, dma_=
+addr_t iova)
+>  {
+> -       return vfio_find_vpfn_range(dma, iova, iova + PAGE_SIZE);
+> +       return vfio_find_vpfn_range(dma, iova, iova + 1);
+>  }
+>=20
+> Thanks,
+> Zhe
 
