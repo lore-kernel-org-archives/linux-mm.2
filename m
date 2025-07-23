@@ -2,128 +2,230 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D793C83F17
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 04:49:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B19F3C83F17
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 04:53:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC9F68E0003; Wed, 23 Jul 2025 00:49:42 -0400 (EDT)
+	id 468788E0006; Wed, 23 Jul 2025 00:53:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA0B18E0001; Wed, 23 Jul 2025 00:49:42 -0400 (EDT)
+	id 419598E0001; Wed, 23 Jul 2025 00:53:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B70A8E0003; Wed, 23 Jul 2025 00:49:42 -0400 (EDT)
+	id 2B96B8E0006; Wed, 23 Jul 2025 00:53:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8ABB18E0001
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 00:49:42 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 511DBBA0DD
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 04:49:42 +0000 (UTC)
-X-FDA: 83694301404.16.3EA41B6
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 4661020002
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 04:49:39 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	spf=pass (imf03.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753246180;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C8AA8E0001
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 00:53:45 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C0B58112DE0
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 04:53:44 +0000 (UTC)
+X-FDA: 83694311568.11.5DB0A96
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf27.hostedemail.com (Postfix) with ESMTP id AC21F40008
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 04:53:41 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=fdeM1G9K;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=oaLBe8Q1;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf27.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753246421;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=svICcUFp7Foycwjpr50igsZko0HoBHtpGo+taHbxAXE=;
-	b=FrFFY9eVRV6UnayCbMf5OUnOA475DBNWJ667ueCsejfrUbpfrn8tadpQeTM+CuV8XFWYmI
-	WP8Zh20O1Jnc97xiekUv6b1h3s9f53610s9Z7WbB0jmy6Gq6U6d6HW1y6nygXttaj6gJOK
-	pWV4H7lX0OMx89eh5gbzwPepi9z1/18=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753246180; a=rsa-sha256;
-	cv=none;
-	b=daePy+tNFUfpAhgqKVEMGbSETJGBFkV1XQ1y/RwipIJrK/A1oXjb9yhAEs1HtjpkchtKPn
-	Fe/5T249ACag7RBvYniOp2EEB7Ga5/NSd+NW7LhB6dfltc1KdfXU1bcTU0//nteQ8z+y5i
-	AA6iPFpgwvz1nwvjiSYynfyD2HwI9rc=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-X-AuditID: a67dfc5b-681ff7000002311f-ec-688069e2743d
-Date: Wed, 23 Jul 2025 13:49:33 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: willy@infradead.org, netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	kernel_team@skhynix.com, almasrymina@google.com,
-	ilias.apalodimas@linaro.org, harry.yoo@oracle.com,
-	akpm@linux-foundation.org, andrew+netdev@lunn.ch,
-	asml.silence@gmail.com, toke@redhat.com, david@redhat.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, linux-rdma@vger.kernel.org,
-	bpf@vger.kernel.org, vishal.moola@gmail.com, hannes@cmpxchg.org,
-	ziy@nvidia.com, jackmanb@google.com, wei.fang@nxp.com,
-	shenwei.wang@nxp.com, xiaoning.wang@nxp.com, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
-	sgoutham@marvell.com, gakula@marvell.com, sbhatta@marvell.com,
-	hkelam@marvell.com, bbhushan2@marvell.com, tariqt@nvidia.com,
-	ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
-	john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
-	leon@kernel.org, mbloch@nvidia.com, danishanwar@ti.com,
-	rogerq@kernel.org, nbd@nbd.name, lorenzo@kernel.org,
-	ryder.lee@mediatek.com, shayne.chen@mediatek.com,
-	sean.wang@mediatek.com, matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	aleksander.lobakin@intel.com, horms@kernel.org, m-malladi@ti.com,
-	krzysztof.kozlowski@linaro.org, matthias.schiffer@ew.tq-group.com,
-	robh@kernel.org, imx@lists.linux.dev,
-	intel-wired-lan@lists.osuosl.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net-next v12 00/12] Split netmem from struct page
-Message-ID: <20250723044933.GA8691@system.software.com>
-References: <20250721021835.63939-1-byungchul@sk.com>
-MIME-Version: 1.0
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=h7Jd/JfGgI2oHckDWVcvYjlmFrn0s6QDC2mixFtDp/8=;
+	b=OZw41JACVGjSdgnmBJXOIBkiAhcYxZCVjAPVgzjCvQvUf9WUNdYoXDvX6KUa7drzXGYb7X
+	uKtUg40kU71NUcPefezXgXQTQ0O6kqP9SSw25qApTMLNm4vjGac89cMjuvrNAStofamXjD
+	qeO/kV3unkDbPG7MfvNvum05N3itHQA=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753246421; a=rsa-sha256;
+	cv=pass;
+	b=ekoetBS2/vi6f5WI+jkVlrMBa02YZ2XzmoZk1RhrF+OVtLVurT/vbpW9Q7KT1rjMX+KQ9F
+	+8mjR+nB9p3HbAAnG+gjCRT8077Lfm9tUwdJ3FiVDrnRXLKn58erDZQ8pzUOvkgL0GrCqd
+	GwGlU81Nk+li12pKYl0K0CTur0lunpM=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=fdeM1G9K;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=oaLBe8Q1;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf27.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56MMQiq9030624;
+	Wed, 23 Jul 2025 04:53:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=h7Jd/JfGgI2oHckDWV
+	cvYjlmFrn0s6QDC2mixFtDp/8=; b=fdeM1G9KmfexxSA1E1/uumrNuxBoKTkNEd
+	ZyMy0VyUVQXaAGI1tlbBze7QUUw0PLZbbWQ4cROT5VyzLCKlRntq814njvbS0lCu
+	ZDfE5i31upVbKDME4nZTR5QYdkvf7Nqe+hFtnP3Lq9Wv++H5T7eeoSjcukn77zDg
+	ufnzyEJGseYfIx9sGf4VEJocmCK6EvnbqSdzRkTC67BIeFoLBkiKm0cvNcRVq5wI
+	xhNvu8wdLno0mdTVIvivPBFYg7jHSkBY0LkJOsya731sVQlVKME5otRgcO0C1Ijk
+	+V7zaeFtuq5jHMCMmXbJNco1pbzl+X4MZDQLpM1R4/ZW+okd5bmA==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4805e2enhe-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 23 Jul 2025 04:53:33 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 56N3RlYK005737;
+	Wed, 23 Jul 2025 04:53:32 GMT
+Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11on2074.outbound.protection.outlook.com [40.107.223.74])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4801ta4rnc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 23 Jul 2025 04:53:32 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tb/Zv4JfRfyPVKchV0Ax4ZwQSfGf2a1gD7S4CF1s37rVcceMNrtSZO6uuE5noIgPQ3DdiiRRFUbXmX6p2fCs9l7Wt4bFTTk+ZpF2W8dk2XzQTzz7zZaDabqtSp4+9cy+A9e4GCGC46rvHKpZcTatr1fbXkmM3wbapuW6rYluoSK7+xgU7VD3lQsNfbc8mafgwXCbypBvEdM2DENx/wOYMoRpjIBS4INDvYXYt7AbmwyYrbeVZ37l1rRIk6DkV+yv2EpCPzRpWbecjGPRlZep55/eBJagFeekK1IgsWgMVRefBxfi3oGtjut1ss1Dr5phjsW8o6Quduc2Iu+fVMRQoA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=h7Jd/JfGgI2oHckDWVcvYjlmFrn0s6QDC2mixFtDp/8=;
+ b=pRwos5Ru/Wu0KFUIAUQQaWaIzT+loGp4e3ZPy27mXceAStoNBM3yL9+Y+/aIS0SdHFpvvZRCTnDop0s1pMW2ojXmxk+7HOFYKE1XdMLPwH8a65ruvSxEUgdNjBXunbYyFQ2bkxMtJbmqgy2lruLJaOligOVDSbdhQa6jSve4kMx2cmNxlVwUEYlK232aTk4l7cTeH7QtT47CNPgNMBCsPi6NtQhys8GPXZdEp7+r1Xo9MHnyZ+ONLzamAw0WeC9ZeLwIBXb3Gg7R6QGdOtmYL2x8KUqHbjQVCnRHgkN0N+ueOZg4BpLnhE9UMkFcpBdEIlgbt1eGpVtePzRWa2B4yw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=h7Jd/JfGgI2oHckDWVcvYjlmFrn0s6QDC2mixFtDp/8=;
+ b=oaLBe8Q1hhk6z8b7hh5mfgnPf0+YfV8PlrxZQUDukXiGTL6+XkNk7kUK77SC7BdSKazEZ9d0bOqEbFK1NQ3ewyfILZ2y/vWjKOJLR94VAZcyuddJmPDUczdHoP5NAv2yEivCWJ7kcAWp6bEEARuEqjoqUnuCS9E6j/pIiR25YK4=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by DS0PR10MB8030.namprd10.prod.outlook.com (2603:10b6:8:1f7::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.21; Wed, 23 Jul
+ 2025 04:53:28 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%4]) with mapi id 15.20.8943.029; Wed, 23 Jul 2025
+ 04:53:28 +0000
+Date: Wed, 23 Jul 2025 05:53:25 +0100
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>
+Subject: Re: [PATCH] MAINTAINERS: add missing mm_slot.h file THP section
+Message-ID: <685747e2-a8cb-4620-a0c0-5cd9048d69b8@lucifer.local>
+References: <20250722171904.142306-1-lorenzo.stoakes@oracle.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250721021835.63939-1-byungchul@sk.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SfUxTZxTG8973frWjyV0n7p2ELOlmlpEA6tSdkfkRN+Pd4jIjicnc4mzG
-	zdoI1RRtgWSjIszZrUjAZbYrGU4sn4opAzqsbBaCnZrxJVj5KA42glpErVQqrqzXzMz/njzn
-	ye85Jzk8Vleyy3i9Yb9kNGizNaySVs4k/JQ6qbfoVnh3g7OpkYW+8AkGGubzoOaGh4H+OgLn
-	eucpcNa3IngQHeHAfWQUQ7jrIgsnT0QwRM/aaHD2FNMw1/QIw9/dExz4ff/Q0OD+AMZdUzR4
-	D7dh6JxbDhNH/SzYihcw2IMlLCwOLzBwPnqHgyJPLQXnb7dw0NtaysCxR6cwtFluxLsmhxgY
-	aHeyMHCoD0GwcZGBKV+8MFQ7ykFpgwOB79c6FoqK34BQywMO7n7XhWG8dCPEjpugu2opRC6H
-	EIycGqRg0evh4I/gGQa6mtoouPpnFEPk20oWrDNHEQza2ym4UnmWgerLV6n4HpkwtPiYgor+
-	KhYmi8cR9HdO0PDDwVIETR0BBu554ycvzDvZjZvEztAsFj1j1Uj8ue46JU6XxSgx0HGJEn9x
-	jHFilfuA2FybIp703qREa6Afi+76I6zovl/OiaNDXlb0H1+gxebqQnG62Y62Je9Uvp0lZetN
-	kjF9/W6lzve9ndpXti4veK0CW1BNuhUpeCKsJm1fVaCneup0JS1rWlhOHn5dwciaFV4jgUAU
-	WxHPLxHSyVD5R1ak5LFwMIFMh2xYzrwgbCYufzsrZ1TCm8QSTpZttbCGhG55nmBUwvPkd/tf
-	T/BYSCGB2E1KjmMhidTEeNlWCGvJRPw/ZJ0ovEJ+a71IyVVEmFKQMxdm/1vzJXKhNkCXIcHx
-	DNbxDNbxP7YK4Xqk1htMOVp99uo0Xb5Bn5f22d4cN4o/reuLxx970P3eTB8SeKRJUFlaCnVq
-	RmvKzc/xIcJjzRJV5NyXOrUqS5tfIBn3fmo8kC3l+lAST2teVK2KmLPUwufa/dIeSdonGZ9O
-	KV6xzIKoolt7fFvL3hteqcw4vYGkHrs3IjWGt3U0JJpnMt9PchUGDyfv2pGyvUSlNy/tDpk+
-	2ZThV8x5pkXbZqvd9m7XW3fuftg6vMJV9GOB25oa3rJr+3ODW8fKC2LmxENrHloMO+Gdktdd
-	PePeb3ZkZM2aS7g0tGVV5OWeAYNkeLUv47qGztVpV6ZgY672X7cHPHiwAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA01Se0xTdxTO7/7ui4Yb7yrDG3FL1sUZSZQtvk6iGybGcLPExYUZnfFBgze2
-	A6procKSYdGazWZUlI3ZUhJQ5K0lRaBCRVeYgJqpFLAqFq0bAVfng4KWsmJrssz/vnPO9zh/
-	fCyWh6mFrFqTK2k1ymwFLSNlX6w9vMyvNqg+vl7yAdjsTTTcmqyioPFVPtQ+cFIwUC9A581X
-	BNga2hAEQ/cYcBwdwTDZ00vD6appDKHmYhJsN4wkTNlnMPx1xc9An/tfEhodm2C0ZowE1w/t
-	GLqnFoP/WB8NxcYwBovvCA1zd8MUXAz9w8AhZx0B3RX90fHvVgZutpkp+HnmDIZ2w4No4KNh
-	CjwdNho8h28h8DXNUTDmjqYG6kYYMDdaEbgv1dNwyLgCAq1BBp790oNh1LweIif1cKUyEaav
-	BRDcOzNEwJzLycAfvnMU9NjbCRh8GMIw/VMFDaYnxxAMWToIuF7RTEH1tUEi+kc6DM/NElA6
-	UEnDI+MogoFuPwnlRWYE9i4vBc9dRnL9BrE78BSLzvvVSDxff4cQx0sihOjtukqIF6z3GbHS
-	kSe21CWLp10ThGjyDmDR0XCUFh0vTjDiyLCLFvtOhkmxpfqgON5iQZvf3y5bt0fKVuslbcpn
-	GTKV+1cLsb/k03zf7VJsQLUpJhTHCvxKYexsBRnDJL9YePljKRXDNL9E8HpD2IRYNoFPEYZP
-	fG1CMhbzRfHCeKAYxzjz+Y1CTV8HHeNw/BrBMPlebC3nVwmBx843Nhz/jtBv+fONPeaTBW9k
-	gojRMZ8k1EbY2DqOXy34o52I4Xf5D4XLbb1ECeKsb6mtb6mt/6srEW5ACWqNPkepzl61XJel
-	KtCo85dn7stxoGgla76fPe5EQU+aG/EsUsRzhtaDKjml1OsKctxIYLEigZvuLFTJuT3Kgu8k
-	7b7d2rxsSedGSSypWMB9vlXKkPN7lblSliTtl7T/XQk2bqEBpS7b9HLBXfztog1lEfNmQ5DD
-	X5Vn2TqbS6fsHbNLf0trMj7ZSeWdO1B28XjeN5nBVI/nam2z/EhNfvnMjR31iUVdZ8eTuLKq
-	das1232ndqf9vmhbYa4ulO5cUljOFMxLjcDjXRnz5Dk7Mh1beqvCienJXw7F09sI/dBlV9nE
-	R/2DClKnUn6SjLU65WsqBJKsjgMAAA==
-X-CFilter-Loop: Reflected
-X-Rspamd-Queue-Id: 4661020002
-X-Stat-Signature: 31o6mcjy6qi1fjc5c7fdntu51i9hnpf9
+In-Reply-To: <20250722171904.142306-1-lorenzo.stoakes@oracle.com>
+X-ClientProxiedBy: LO4P265CA0326.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:390::19) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|DS0PR10MB8030:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5b4222a1-f42f-4c29-6340-08ddc9a4ddb5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|366016|376014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Xb7UoCXicBJMRlnQPXLFQQQvxCXKW58lF/eUAH9wOBK4KxVJKWXwwvyaxN/Z?=
+ =?us-ascii?Q?/wqVeH7z1ivdq7cFUap9ImnXhyKLD3UZcetFkZDEgHuxi4nk7L+eYDZPI0OX?=
+ =?us-ascii?Q?JLpMI4dGe91jm7wfqmOQKMb9gCviQF+vWDZvAnBS/WcfxEGWL8QgwhA4Unan?=
+ =?us-ascii?Q?/11sT9ICcA3cYEREJUj6ngzoxX+7cZtlol3sbxDDWgYSNXQkC0Mq+FzR0wPg?=
+ =?us-ascii?Q?/VA0DFMffaFUSClmiTtxmERyW98Tfme/eMluhV481oxDOkNmm0f4mofNlTQi?=
+ =?us-ascii?Q?RxyyaPtvBAI8uyGSTk4d+ZYPUyq6Uk65mWBBhKA7dJ3ZOzBpWOLuwxmggVzs?=
+ =?us-ascii?Q?LrQxnGBSmiaIJS8F/cmQAnF0YLM8ZWLprNDZwUAH+aJDaNexclBBhlI3MmO/?=
+ =?us-ascii?Q?5j5MNwQRZoNWBODsfarXwxNhwbRVsG51qsHFJeS4rLHN5hPg59zmkmS/iEis?=
+ =?us-ascii?Q?t3sRflyQ4Ks7/XME34O3BdKyr6DlWAy6EPTxP14zOtOJ9okoMH23afJkA9UC?=
+ =?us-ascii?Q?5DSx1ubjD5Sp68F7nYvrJ7yc1m1QH2bNJ3uyCbghZvCJ2FyojeDoBEsxfpxP?=
+ =?us-ascii?Q?x4sx2Ja6xFoVUujfd4fHNb20bnyVZOI1IDzSt00NaeT1UDZRC+f9fU3k5OST?=
+ =?us-ascii?Q?6KlZt4uZVaW/7CRZAnKECJ1liYwXd4qJS//uf9U21W6Q9NCEyyGwBs33cx7/?=
+ =?us-ascii?Q?B9xfwYOon83TXPe05R8sWBUaXFE2e+ufBZI/isqiA5aaR4OYWwXTd9cx2xXO?=
+ =?us-ascii?Q?0MBz7JRQ47nlDr/q+9Aaa1ZB8/i5G/G29TJxTfibklMQOKOjYoQ/rj00cMnD?=
+ =?us-ascii?Q?VCuUIro6vSJ/fAaGpH038Etc4v0qfAlZaQ9G+lLFURI2ELPd9pUotCBWXVHE?=
+ =?us-ascii?Q?sdKpd1x+NwLZAN7hM8bIMsTEty8zVmewHHAvF+3mzXdxdfBl545NZPucxGtN?=
+ =?us-ascii?Q?jsEUw7EbGunhvbeqJtR4ipGIWRtFd4ahlq3jd5ml7JHG13X0HhqmU+byoAm+?=
+ =?us-ascii?Q?BJHLEiz8cs/4w4fqm/+HZfHZzC3UcRHclnm+PvKSMV9P4buIcR1Y61gzEfJF?=
+ =?us-ascii?Q?36Ice23dGBsR8YjtIZCW1qd1V+o6YFRaicvglBn9oqD7BBY5Dho+tG3kRnN/?=
+ =?us-ascii?Q?JpWq7xjbg5c/eKzzuMbdK4i0zOKMaD7oft+RsZQYG3LmIkivFSKAg67YA13a?=
+ =?us-ascii?Q?G3QJWKaxbqawKL8fXl52NOXO6ukDUaSJkpfewbqcTi+ZMESygHjSue//ccA8?=
+ =?us-ascii?Q?kvPEgWy6dTyRrBhKbw4pbe4X/2Uld6Kbm6dEniLtl+iqIEXUHtzwJPe+4Vu7?=
+ =?us-ascii?Q?n4lS/BGbqPisOC9pyUg6GBSSFprRHYC1wMk9Md01R73zYADt8r6Kr6Lh7LRo?=
+ =?us-ascii?Q?yK6LwOpE/ztprgVOE3mp+QDJRb+fI7zaSoVAIooPtIMrNJhf4v1Nmmh7S3nx?=
+ =?us-ascii?Q?FEtjLTKt3MI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?fOS5JhWaVD61pl8FXD0p8tcw/OBU3bLA+0od40IFONLchuE5RhjzBLaRbADZ?=
+ =?us-ascii?Q?N3dqnDYCdqEfX9EDTeL9tbe6ojrPjXOY6DashSaTyT3rOKAIAgVNeh+oCPeP?=
+ =?us-ascii?Q?CxhC4dB70cfRVH46cJVYtdhQZ4aE7tDTvKhcvKI+I1aq4j4iIYVEfA8OPVjK?=
+ =?us-ascii?Q?R8wnB4jixB+ckd2Gd97PtT34WJWFYsYpu9+54dn0tWdy4snXcjCUaSOqGkkN?=
+ =?us-ascii?Q?LvIVAPsUZDMQ0dSoc3DB+P/lJSU7PjkN2oaZm7fd8c/uXN8wDKNpEq84xn4o?=
+ =?us-ascii?Q?KEJfjfIRA2RwibjScXKa4Ikyq3jH+IN/AmP9dwMBrVsTe1w4/yLMjfguHzxP?=
+ =?us-ascii?Q?I5cc6IkUzLyS5wl8bfPJxqMEtzJpegH9fGIs7TTJ/yA1+3UTr2kR46zcPiKL?=
+ =?us-ascii?Q?SX32betWq6KhkbMDyrtp1/yJrGSEWNCjjffULUYJzLO/6fiSk+apOAuJVEdU?=
+ =?us-ascii?Q?OBSkKDttlLbmwSjbUszGG033+/Z/BG92JgcWqVpimoTzpvDUw/Y9v30eiDkn?=
+ =?us-ascii?Q?L82S60d6996qHe4w051suVKqHXRzBqVG7ZD/qelKuSdVN2PdC32+3+8UOYY2?=
+ =?us-ascii?Q?TnWRWn0cZMquc4lu/LxAS/z0gbkqRJuOwdNn7NwZOz0XyiqtCkLrhWiePrgH?=
+ =?us-ascii?Q?8SRNfCuT0G+hXXA6/wtgn1vrjxTIFirn9tdJlGf2DxwebRVeXdpCf3wxoAD/?=
+ =?us-ascii?Q?wNx/hGNUAuzc+9YSwZd/hGaOSjBRjZBgN7peDQbmf/OgI86VA28Wsla6tmDw?=
+ =?us-ascii?Q?wv8C48kBrt88e8dHxkw5qda+FMaYuevYNGnOaFKC9boIB+1MyNG0wmeKpAEA?=
+ =?us-ascii?Q?6kEnOJzM6viD/AMfENmks0pgLR25ohWoHbmpxcfSlEK/COquqrD6ZYASpqfD?=
+ =?us-ascii?Q?WN1e9qvtEVQyuPLiTc5Sm4IkOArV8byczVcNKaYLPQtIxRKPLo1Td/8i1EIa?=
+ =?us-ascii?Q?fGOTWDiET42cDNJRLU9P3G4DbJex7SyvmNp0Ss69l16CvZuomrkd/MSIFS0X?=
+ =?us-ascii?Q?o2rchYtALaybpyEeT6HIYEz9E/MGUynTvneEEq99Fegc9okqAaIuoxJg2tLI?=
+ =?us-ascii?Q?+uciCXddNRWbEIbmlYPa5Zw44dAC4PKQ49a9i03/PCM+wSu9fL07QyMrbpcH?=
+ =?us-ascii?Q?w6C7Nkd9HqoH9BSRQ30hCcYZfaJyoE5//M05yuxwIv4Piewf8b0tA2rWxwpq?=
+ =?us-ascii?Q?E9V4MTzKCbRA2Xc8e9LUXnoiQBOhA5AZGjYESfqhOZ7+jFjZs8wIdNcBDE0t?=
+ =?us-ascii?Q?yIiZqjrxe1AwBRnD0gfMtUpu2QmQIGIq8AgA+bWwxArQ1hiKm4FEjjf5+/dZ?=
+ =?us-ascii?Q?L5PlMcQ4FmSwBBysd9X3CqXoVNMu5lqxpMkegf42/fLvlZ/vC95UucYWhyKA?=
+ =?us-ascii?Q?ILHNAzCPOuxPw7JU0JeEPwoyGi2Lg/SQytdWC6mFE4khKhfMJAWSX0FIKvsS?=
+ =?us-ascii?Q?6nB0QKXr9lClaXuxaXF7S4rf7OTX8gYg9wKyHus9ua8y02Nh1sfzrjcgsQgg?=
+ =?us-ascii?Q?/N1VQNyJbH03aPFI5miK0KVZshOYXlPbCzuAkzyg6GY06PsJCz7bwrwWXoV+?=
+ =?us-ascii?Q?UMScavSQGhFhitGAzMlHzx1ejeSw/KJ6ejj9fVwheEh07nhTqTiFYCeJsvW6?=
+ =?us-ascii?Q?sw=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	hfC0TSFQfAOu48Ug5IjJVjpKMzeocZ7R1hkPvJ5aUr3Yx2NxC6/Y++9m/EHkOKeo1Dq2ypT16aqWguabrs76aRFvxtTMG+6UdslqP/URr1kmd/5srBnurgn2teICJsKn/EcyiDY5jtFgEeCN+kldIo7oHGESTDDWYiCZm5JAMKf8tExyauAw4Cq2sZij0W56iTRRekA7NgXVVMyj494vCO0j9ASfplzrmyyw6JgBT4l0awVuOyOr1o5y7SwzJQnrS6f+VIDDvZanUsbReM2x4J3tdxHUZFtgCTwSk8s8rbvfWRQxgjyJCQ/JV8LLSgEXlLrt4ILPulKNP1VDGWzD6CCX3dp9PgxC9PUYQf4uTUvRXkAgJAG7mIsmUc3A4XicwpvtyV+x5JfZ9kspZsX2qW21m7cMHJ82mwkubbT7THibxz9gNHOnPQJW/T4t7Ah9c1YuU0x04npTO+iGaxZvTSKs6Jhi/yVwHWm5+R4VkMaTvkpB5y90h/mSrHBdHQeg6JJCY6RWwZalDSj4qretl5K5KYmlbfAYJToG6bpsfx8Y0oyTH9RPs/8XeBU111wQl9m89b9qCu/s54KCT9EMPkqAPNXu9bXdQZuBskcMDT4=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5b4222a1-f42f-4c29-6340-08ddc9a4ddb5
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2025 04:53:28.8601
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: A/Oxl3RPWCmaYpjEIsIybTKwgxY92V9CuR7MH9dIvggNYoU/9RMTi825QdeaItr8UMJRHLe0TCHGO8SVv2AoSxkQqdMpvSQ4ZmpobqE9zys=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR10MB8030
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-23_01,2025-07-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=999
+ bulkscore=0 phishscore=0 adultscore=0 suspectscore=0 spamscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2505160000 definitions=main-2507230038
+X-Authority-Analysis: v=2.4 cv=WaYMa1hX c=1 sm=1 tr=0 ts=68806acd cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
+ a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10 a=Wb1JkmetP80A:10 a=GoEa3M9JfhUA:10
+ a=yPCof4ZbAAAA:8 a=Z4Rwk6OoAAAA:8 a=XIY3FidbkUzYwpyLUu0A:9 a=CjuIK1q_8ugA:10
+ a=HkZW87K1Qel5hWWM3VKY:22
+X-Proofpoint-GUID: SKZfuNeLFcYD60h6LWTeMYC3qXSGqJzS
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIzMDAzOCBTYWx0ZWRfXx/mohGPRqyqg
+ 3oyPm5UHbu+olbQLI8A6SFaTXclJOKlRwk2EVqzbYdDkQomIjxhAE6iOfSqjxy0xuYUmPc4Qj+D
+ sBvx48621qPoe/VKyZh8946kA7hE2/PYvisS59BCUM7m5lVPJDbnxg8kMK294NiUMqoKfQWd8D7
+ pjoo8Zyiy9288WrriCmnT2dolaqGrrwpha2Uwb0eUxWFeKJQeD5MYeqIS79JsvBF4v9hdhZSaPu
+ c/SpxtfYOoB38tyIwxufBOocZLloAWHlDqG2dthL/P9ftaX0W+PZUKgUo7dRF3aw4G7fA/Qqj+t
+ wE5OzZ9xpVrgKSQjRtmSWGIz6PPI5cMRpPIUo8yqeaVmdDKi+71LHvwzk4+80GhQuMzrLhESGXD
+ F4y/WxLy0bB6u+RAKLsHdjmlUKxmLl3YXb62+YjTc/2JAG7Nqgksb6RVJnQ4tEf7yWZzNn01
+X-Proofpoint-ORIG-GUID: SKZfuNeLFcYD60h6LWTeMYC3qXSGqJzS
+X-Rspamd-Queue-Id: AC21F40008
+X-Stat-Signature: w5nc8s45hb7w49tbmuq9zyeenunpfmsk
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-HE-Tag: 1753246179-628231
-X-HE-Meta: U2FsdGVkX18wuu/1J5198b1Uyo7n0wZaep/BpGq+nWqvC2xmIjIbVgYPLATFgPqjfgqZ5WpTzUiKDt6gXZtOmaXRkCb/+9ClkIyGat/GSdby2kg2Nc2//EQ85lRs9Rqk36BbuHKQ7Q8TOE/Sv5b1YIpYV/tkhF5n0HvdqV45Wd7Nql/tTEcWi3/0KkmyXMA/LXOpElwfnNNt1GbOo00r0dvZGbWUMzdBmqEAAHjGfSUtE8mNs75EQdMtZOiAGYZAUyE8yYzYEnc2rxGCck3xXPYXXDiMamGlquQ5YwNk3RKemJQMjvCTJfY/WaH4JSPi49icKa2g500GHUFfz1K8TJ1SaZlHxQeiZMMflA69uPAlzbow4ydls1cUg5db1v4OBAA5aEX0lOX7N9cbYTiBOfQoBC6m/wEh6SQ5807kGxcdO171MDtppVC1mXuqWuuRDestANqBM5L9jN1SHTCs2zQ0nYdgBgWZiv0mveVYZCoaWo2CfQIUuISirBP3oPJT8FApYpcfh+r2B2XtI8aYjkzcwZNOlxjrXLGFbZs6FCQYY25+EeinGYkhrL8ud8/UwUlJTgKP0ghd57hA/rSLWOoRy2CkuDHDB9JEAHIe942ZWClWd1pnkuvsgmtm7nxBR9D/gbfdjXLIwPBXFKg3SWNUmthVIFKyZRNfVxxbJwQsX0oEqK2VRGujIDpVDouXiHBjnTofS0Uduz6aM6HmJQ==
+X-HE-Tag: 1753246421-836595
+X-HE-Meta: U2FsdGVkX19nMbdLrPZzmYEjj1d1LBuYwa/4FFsiIYL96UUIq4U9J7XJz1SkOgHj5STXlpmFsXa6GpBTg3dNoyU6gMMi6JqYD4ho0xfPkAsCruFl2ulXopQ7RLhEqeoye8x2stX5YlfS6g8xxPSFt5D4kGmrmizrjbjIi2ekn1Y7/jxW1DsJzB2ynNlmyRz4oiKTajuDlqdurNU/9TrCHKdPGmZm+PaTYY53NmFJtTJi/kEu3V+nntS/PzsY55zVV983IME3wjIFGUJEhHvzyJ98Iq6iI+GqYeohl7nOA2J+l0hzon0cn/tZlwg2NZNZc5KcmCQn7Oq40PMCgYJeUd0c1bFvRUGrcKR8RYoo1Vcv19eeCMUeMd+kDEIxXUd7qHMUoyv2Nk+RAMiQ5nrV7QdhWEVTc6qZDaQdseZGW0LdaBWifsRqtt4W8rZSpHtjYAFQB+fzFPMQcRoQA+8o4euGe/5MV40RLRnKkB9pEJg3VbjLrHMblY+EyZQZ97/PElyPcMbLLAAcWIh/pOPoE7OKPdjetWFWfhNS+E8qac193I8bPGUcpYSsHrrAROZ30JCgr8D7bxtdJk8u+2w6EVCDKYJLeTiRayxFU6zw85AEatuq62Z8dcFVMHr4Q5ee0CwQZ/xNFTOkHzXzvvkCN1SOtKY9uitRjmOKfPNtd9bbiBncJ8PYu6YFR9yZHiFTJrXodI2i0tSLhZiIDJyXEK7K+p31Z9xn+z4aBy7Q5nG+6XTKz3YPXgejOzG7Jj+b3on7GLexYCufK7VyesqawmgUcTLyow4gHr0AXoV2EK7KztAefIk5kMNM5HGrSWEMf1e3YgSSEPue3inEdu/Xs+D/XFjkOS9vzg59pQUkJk2YAeutDDMuNZE/xqICyJe0+D6vg700JgaiGUsDMheh1fk37ZoZ4/BRPNxP7ZdOeoRctzuqQ3xt9McYWq0wGV5P6RU+PEpxXW0Hy6OeiBd
+ tHOgRAJz
+ qWohbDMQbSuUTTfK1O1MH1hKda5gT03knPy0Z7tO38HXyY7KX10kV7FxEmk8ReHspOnWygvM8eTlrFscEwQgZyeZgbw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,180 +234,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 21, 2025 at 11:18:23AM +0900, Byungchul Park wrote:
-> Hi all,
-> 
-> The MM subsystem is trying to reduce struct page to a single pointer.
-> See the following link for your information:
-> 
->    https://kernelnewbies.org/MatthewWilcox/Memdescs/Path
-> 
-> The first step towards that is splitting struct page by its individual
-> users, as has already been done with folio and slab.  This patchset does
-> that for page pool.
-> 
-> Matthew Wilcox tried and stopped the same work, you can see in:
-> 
->    https://lore.kernel.org/linux-mm/20230111042214.907030-1-willy@infradead.org/
-> 
-> I focused on removing the page pool members in struct page this time,
-> not moving the allocation code of page pool from net to mm.  It can be
-> done later if needed.
-> 
-> The final patch that removes the page pool fields will be posted once
-> all the conversions are completed.
-> 
-> 	Byungchul
-> ---
-> Changes from v11:
-> 	1. Rebase on net-next/main as of Jul 21.
-> 	2. Change page_pool_page_is_pp() to check for const type of
-> 	   page.  For now that it's called along with every
-> 	   pp_page_to_nmdesc() call as Pavel suggested,
-> 	   page_pool_page_is_pp() should also cover const type of page.
+Hi Andrew,
 
-I believe the curretn version is good enough.
+This file also contains shared logic with KSM, so we ought to put the file
+in the KSM section also. I include a fix-patch to do this.
 
-	Byungchul
+Thanks, Lorenzo
 
-> Changes from v10:
-> 	1. Introduce __netmem_to_nmdesc() and use it in
-> 	   __netmem_get_pp(). (feedbacked by Mina)
-> 	2. Fix a bug that fails on casting 'const page -> const
-> 	   netmem_desc', by using macros and _Generic. (feedbacked by
-> 	   test robot)
-> 	3. Add comment on pp_page_to_nmdesc() to ask for more attention
-> 	   before using the helper. (feedbacked by Mina)
-> 
-> Changes from v9:
-> 	1. Remove the patch 'page_pool: access ->pp_magic through
-> 	   netmem_desc in page_pool_page_is_pp()' and decide to wait for
-> 	   Pavel's work of PageNetpp() to identify page type for page
-> 	   pool, that doesn't need to access ->pp_magic.
-> 	2. Rename page_to_nmdesc() to pp_page_to_nmdesc() and add
-> 	   DEBUG_NET_WARN_ON_ONCE(!page_pool_page_is_pp(page)) in it,
-> 	   just in case. (feedbacked by Pavel)
-> 	3. Apply just simple casting from page to netmem_desc for
-> 	   accessing ->pp and ->pp_ref_count, instead of full converting
-> 	   page to netmem_ref for network drivers e.g. mlx4, netdevsim,
-> 	   and mt76.
-> 	4. Expand the support for drivers to access ->pp and
-> 	   ->pp_ref_count to fec, octeontx2-pf, iavf, idpf, mlx5, ti,
-> 	   and xdp.
-> 	5. Squash each helper with its first user. (feedbacked by Mina)
-> 
-> Changes from v8:
-> 	1. Rebase on net-next/main as of Jul 10.
-> 	2. Exclude non-controversial patches that have already been
-> 	   merged to net-next.
-> 	3. Re-add the patches that focus on removing accessing the page
-> 	   pool fields in struct page.
-> 	4. Add utility APIs e.g. casting, to use struct netmem_desc as
-> 	   descriptor, to support __netmem_get_pp() that has started to
-> 	   be used again e.g. by libeth.
-> 
-> Changes from v7 (no actual updates):
-> 	1. Exclude "netmem: introduce struct netmem_desc mirroring
-> 	   struct page" that might be controversial.
-> 	2. Exclude "netmem: introduce a netmem API,
-> 	   virt_to_head_netmem()" since there are no users.
-> 
-> Changes from v6 (no actual updates):
-> 	1. Rebase on net-next/main as of Jun 25.
-> 	2. Supplement a comment describing struct net_iov.
-> 	3. Exclude a controversial patch, "page_pool: access ->pp_magic
-> 	   through struct netmem_desc in page_pool_page_is_pp()".
-> 	4. Exclude "netmem: remove __netmem_get_pp()" since the API
-> 	   started to be used again by libeth.
-> 
-> Changes from v5 (no actual updates):
-> 	1. Rebase on net-next/main as of Jun 20.
-> 	2. Add given 'Reviewed-by's and 'Acked-by's, thanks to all.
-> 	3. Add missing cc's.
-> 
-> Changes from v4:
-> 	1. Add given 'Reviewed-by's, thanks to all.
-> 	2. Exclude potentially controversial patches.
-> 
-> Changes from v3:
-> 	1. Relocates ->owner and ->type of net_iov out of netmem_desc
-> 	   and make them be net_iov specific.
-> 	2. Remove __force when casting struct page to struct netmem_desc.
-> 
-> Changes from v2:
-> 	1. Introduce a netmem API, virt_to_head_netmem(), and use it
-> 	   when it's needed.
-> 	2. Introduce struct netmem_desc as a new struct and union'ed
-> 	   with the existing fields in struct net_iov.
-> 	3. Make page_pool_page_is_pp() access ->pp_magic through struct
-> 	   netmem_desc instead of struct page.
-> 	4. Move netmem alloc APIs from include/net/netmem.h to
-> 	   net/core/netmem_priv.h.
-> 	5. Apply trivial feedbacks, thanks to Mina, Pavel, and Toke.
-> 	6. Add given 'Reviewed-by's, thanks to Mina.
-> 
-> Changes from v1:
-> 	1. Rebase on net-next's main as of May 26.
-> 	2. Check checkpatch.pl, feedbacked by SJ Park.
-> 	3. Add converting of page to netmem in mt76.
-> 	4. Revert 'mlx5: use netmem descriptor and APIs for page pool'
-> 	   since it's on-going by Tariq Toukan.  I will wait for his
-> 	   work to be done.
-> 	5. Revert 'page_pool: use netmem APIs to access page->pp_magic
-> 	   in page_pool_page_is_pp()' since we need more discussion.
-> 	6. Revert 'mm, netmem: remove the page pool members in struct
-> 	   page' since there are some prerequisite works to remove the
-> 	   page pool fields from struct page.  I can submit this patch
-> 	   separatedly later.
-> 	7. Cancel relocating a page pool member in struct page.
-> 	8. Modify static assert for offests and size of struct
-> 	   netmem_desc.
-> 
-> Changes from rfc:
-> 	1. Rebase on net-next's main branch.
-> 	   https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git/
-> 	2. Fix a build error reported by kernel test robot.
-> 	   https://lore.kernel.org/all/202505100932.uzAMBW1y-lkp@intel.com/
-> 	3. Add given 'Reviewed-by's, thanks to Mina and Ilias.
-> 	4. Do static_assert() on the size of struct netmem_desc instead
-> 	   of placing place-holder in struct page, feedbacked by
-> 	   Matthew.
-> 	5. Do struct_group_tagged(netmem_desc) on struct net_iov instead
-> 	   of wholly renaming it to strcut netmem_desc, feedbacked by
-> 	   Mina and Pavel.
-> 
-> Byungchul Park (12):
->   netmem: introduce struct netmem_desc mirroring struct page
->   netmem: use netmem_desc instead of page to access ->pp in
->     __netmem_get_pp()
->   netmem, mlx4: access ->pp_ref_count through netmem_desc instead of
->     page
->   netdevsim: access ->pp through netmem_desc instead of page
->   mt76: access ->pp through netmem_desc instead of page
->   net: fec: access ->pp through netmem_desc instead of page
->   octeontx2-pf: access ->pp through netmem_desc instead of page
->   iavf: access ->pp through netmem_desc instead of page
->   idpf: access ->pp through netmem_desc instead of page
->   mlx5: access ->pp through netmem_desc instead of page
->   net: ti: icssg-prueth: access ->pp through netmem_desc instead of page
->   libeth: xdp: access ->pp through netmem_desc instead of page
-> 
->  drivers/net/ethernet/freescale/fec_main.c     |  10 +-
->  drivers/net/ethernet/intel/iavf/iavf_txrx.c   |   2 +-
->  drivers/net/ethernet/intel/idpf/idpf_txrx.c   |   8 +-
->  .../marvell/octeontx2/nic/otx2_txrx.c         |   2 +-
->  drivers/net/ethernet/mellanox/mlx4/en_rx.c    |   4 +-
->  .../net/ethernet/mellanox/mlx5/core/en/xdp.c  |   3 +-
->  .../net/ethernet/ti/icssg/icssg_prueth_sr1.c  |   4 +-
->  drivers/net/netdevsim/netdev.c                |   6 +-
->  drivers/net/wireless/mediatek/mt76/mt76.h     |   3 +-
->  include/linux/mm.h                            |   4 +-
->  include/net/libeth/xdp.h                      |   2 +-
->  include/net/netmem.h                          | 153 +++++++++++++++---
->  12 files changed, 161 insertions(+), 40 deletions(-)
-> 
-> 
-> base-commit: 4701ee5044fb3992f1c910630a9673c2dc600ce5
-> -- 
-> 2.17.1
+----8<----
+From 5ce64eec3514cc7e30afcd9529f73486008f6770 Mon Sep 17 00:00:00 2001
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Date: Wed, 23 Jul 2025 05:50:08 +0100
+Subject: [PATCH] MAINTAINERS: also add mm_slot.h to KSM section
+
+The mm_slot implementation is in fact common between THP and KSM so ought
+to be included in both sections.
+
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+---
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 3f83fb317f51..a77c6677bdbd 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -15821,6 +15821,7 @@ F:	Documentation/mm/ksm.rst
+ F:	include/linux/ksm.h
+ F:	include/trace/events/ksm.h
+ F:	mm/ksm.c
++F:	mm/mm_slot.h
+
+ MEMORY MANAGEMENT - MEMORY POLICY AND MIGRATION
+ M:	Andrew Morton <akpm@linux-foundation.org>
+--
+2.50.1
 
