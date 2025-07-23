@@ -2,99 +2,102 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E46DDC83F25
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 07:31:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 95E6EC83F25
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 07:46:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 58F936B0095; Wed, 23 Jul 2025 03:31:32 -0400 (EDT)
+	id 13FD96B008A; Wed, 23 Jul 2025 03:46:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 519D96B0096; Wed, 23 Jul 2025 03:31:32 -0400 (EDT)
+	id 0F04B6B0093; Wed, 23 Jul 2025 03:46:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E22D6B0098; Wed, 23 Jul 2025 03:31:32 -0400 (EDT)
+	id 005FA6B0095; Wed, 23 Jul 2025 03:46:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 29ED46B0095
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 03:31:32 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BC5BD80611
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 07:31:31 +0000 (UTC)
-X-FDA: 83694709182.21.93B5A79
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 13C2D10000A
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 07:31:29 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qylPVJnd;
-	spf=pass (imf05.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E4BA16B008A
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 03:46:45 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4B10559C91
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 07:46:45 +0000 (UTC)
+X-FDA: 83694747570.25.7E7BD47
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 86EBE1A0006
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 07:46:40 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=VIu3RiMc;
+	spf=pass (imf19.hostedemail.com: domain of liuqiye2025@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=liuqiye2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753256803; a=rsa-sha256;
+	cv=none;
+	b=vQN8RURzoCChNZqc5dXEZ4F7Muy4sa18y736qcckZn/zJ01W6leQIOUOooqNql40ZLXR5F
+	xPaAmY28ZvI7tTKnWweEClImJa/e+9JYVOQbhqJ/e3kRpvnbBAvn3pwrZK5MoxcpGwwD0U
+	2cdu7Ew851WKaDUakDaOqm9qbHCDfWo=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=VIu3RiMc;
+	spf=pass (imf19.hostedemail.com: domain of liuqiye2025@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=liuqiye2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753255890;
+	s=arc-20220608; t=1753256803;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l0pwS/0qwO3mUHXOuArQekwiv6Gr4ejvt921/Tg54XA=;
-	b=nkYwZ6fl27iEhdwq2pklxU29qWUxhu7BY8YvxQyfvA/E+261aV8Zcy9MiI1ldOIxwlhxbJ
-	zYqvR/hHz9JMCazdo8oLHOicKJ3k7/2ogMAY8mzr5KiI5OMcGn/n1YlxhzsgqFfDEqqotA
-	zpBvBwHjUuOhU/NFPHbYMGjr1KoErFw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753255890; a=rsa-sha256;
-	cv=none;
-	b=oiYcjf1Uw8Nz9ldqsvcd8T4QjbyzqZlTLt8v7MRhsNd6w9iz4JCMp05ConkkMKGva9W4jL
-	FwsXLfAybHMlEzFJNWxdINTJv08xGCsmmrKXZOAs4BZ/khE6olXz03Bi8pqCvRC0lrXUrU
-	Ja4ilyTVBwdzlxTlww79JlNgDz5PZm0=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qylPVJnd;
-	spf=pass (imf05.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5446E6691E;
-	Wed, 23 Jul 2025 07:31:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E67BBC4CEE7;
-	Wed, 23 Jul 2025 07:31:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753255889;
-	bh=MPGvewvNycI1DIvPEIiTbeqHEpcxVhIqLFJUB/m7jWc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qylPVJndUKKL8DwoPy3gYpl9fmvTooHAbAQ1daxBPDeDKDCk8SWUMFU1Ti/jVnKyl
-	 mAc74zgzYpJ3AwTa63E7zdNXA6xzOXajAlcIXeaxxm3FkvCWW1Kmff5APHgxYHA+68
-	 kN5yu//7bzB9iZ8GeUCBFaUoGt/gCR23jQa7ofrrOQUuc4UYCBl1Xszn9B3bbEskcT
-	 1H3Q24WJFyTgc6R8GumQq8Pe726lZgf0noazkhGqNA5NfoWBAqNZeSIibXN8vjXnvn
-	 6aZCpI3OSBpx5loAUugrwM/2SoyPhkTjbhB/dtPmousTLLeCm8Mu1pJP9q9fakK4H4
-	 ICSGWIrApgkIw==
-Date: Wed, 23 Jul 2025 00:31:28 -0700
-From: Kees Cook <kees@kernel.org>
-To: Xuanye Liu <liuqiye2025@163.com>
-Cc: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
+	bh=QdwtM+ZTobn78aFin1VxfehR87TJtajIWuTIlJuGaW4=;
+	b=IwY1EVrVv9hccQdcp5EiYajKo83uRAnvwYKDg6msWr5D9YMl3L3YPWAErYuaaLAkgyKsz+
+	enUcBxwE1XbOVOVaXkJW4siULtfPnnFi71HqTZISabSQM4Rw0iX5J+WYUlyuX0UDDHMXxp
+	tacVNTDXrl06hgJeqT7kv/ky8//2o8I=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=QdwtM+ZTobn78aFin1VxfehR87TJtajIWuTIlJuGaW4=;
+	b=VIu3RiMc1TE02syEQwNuBjti6uiptRARgYNN0+LAri/La9G1cMGP9RPykKBftQ
+	z9ILruiFz2VDheTiOQ4mf6oFMMwLNPKWMxMlsyi+HhRQio2xiJxYK0mndl/XLL+D
+	w0ejlh1YcG4mU2C1m/EEfo0PdjrGVsoxhX6krUT+MDnMs=
+Received: from [192.168.22.151] (unknown [])
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wDHPKw3k4Bo1_HrGg--.1050S2;
+	Wed, 23 Jul 2025 15:46:04 +0800 (CST)
+Message-ID: <c7a32d87-efbd-47bd-9a18-9eb51e441a7f@163.com>
+Date: Wed, 23 Jul 2025 15:45:58 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm: add stack trace when bad rss-counter state is
  detected
-Message-ID: <202507230031.52B5C2B53@keescook>
+To: Kees Cook <kees@kernel.org>
+Cc: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
 References: <20250723072350.1742071-1-liuqiye2025@163.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250723072350.1742071-1-liuqiye2025@163.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 13C2D10000A
-X-Stat-Signature: ynh55ixjgp1pprgf61tffs7phbhmj1a1
+ <202507230031.52B5C2B53@keescook>
+Content-Language: en-US
+From: Xuanye Liu <liuqiye2025@163.com>
+In-Reply-To: <202507230031.52B5C2B53@keescook>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDHPKw3k4Bo1_HrGg--.1050S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Ww48uw4kJr48CryDXr4xJFb_yoW8GF45pF
+	n3KF1DJFWkX342gasIva1qyry5tw4qqryag34kA3yfKr9xtF1FqF45Kr4UKF1qkryxK3WS
+	9F4jgrnrAa90vFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jr2-nUUUUU=
+X-Originating-IP: [223.70.160.239]
+X-CM-SenderInfo: 5olx1xd1hsijqv6rljoofrz/1tbiMAGTUGiAiBfEtwABs3
 X-Rspam-User: 
-X-HE-Tag: 1753255889-626461
-X-HE-Meta: U2FsdGVkX18NjwLBg2J8QnDDMMa+YxXP56WLt2aM9RMFnwAY7+kywBk7vd2O/A2hDoz9ikJdx85dEoqf2GRdevUWCXnaBTbAHp+FZHlbT4oGtAnhXLcH57TJfkimlE1cks2Btj7iPiCM64JM2zilX785zsbK8N3zMfNLoStEPA5JcohE+K2R+M1odjklUO0aQAUmztWH43EYKP/sb7YsshS3Rorzt1NZx9HQW6Msigdm3JvfHNw8bUTEcumiXao5makuAZWaWxNycfZ7EuzwiM9bhs5VIY3CZ0EjZx2lX3/WHMaHucgBjh5aOy3DRwsc1enWsWkN60+B435b+TJKfurEvVDsti/wbohEJJzyWUjhHxeHsFTrph+YNldIO7hxB+cVmeHOVbbPNR9fQbHe5WYg2h95sRuSVcoZi/c8XPmNRpiRdy09C6Ih9rqqyAKnNdzNQU318Z7FxemADrxpn6QbE7KPojVpshO9vcNr8mRXuH3GA8F92v1s7wVzhJqfzmpaaQ0ieGrZl5hNFd7kqCcb+iu8BC4sMllGxPOT9hDMrlgkYsGC2XxF6ysP6uHkJxk8dQToJoDAv0eLMmHQoHOFuSKGxdMMqo+2QPHLfJNF5wkxRSyPU7SPj1ckplxF83KwiHJFnRzUovFWqxUglbZWG5/XunEdxKQ5d9+tl8oc6W1o27t6qQGeP14+b0gRmDertW/am9cyryyl0ZiJVGxD/abGzIX0wRbBHQ1g3EGC1EegO2utzlsf+WVkTGK3pDusvOX4cRgXxeMTzy5HaOji1dF5PdeEhIt+ymIKQGoqHdBf9qR1nVm0ewO+rNbYO2uoT3zkz3vEREc2TiUePGS8O60taEPunDiLzkvNe2bRg+LoIHQUMeFsYKmxoft81wVRuhsdJO73EOSoaoREyaDGDbu/xhXyw6aVhQckXmJkjt3BZx2OZ9R1woFGjtapnGXnBFtI6kLo3kxEFfI
- JXJ7cOj5
- UdJ75xyN3FVRU7NbayJEq3EtAJS4zl66HcMg4qrxKAIB0OL7mxDUL7EwMRVmqgkQloTCdhIy1ILdWsa/nB+avBcsA9YIHPVFWBXMCPO7AuPqhOtnPchS4Yiyx6aJqsbMwbxQlyyfCBOQThQSnXZ9U7hkOQ9PjlXHa2Qo8+I4JA/qE3+GkWRMVLPwhz8jMzo4Xb9qkxv7rnQx1hvG1kL1FgBYjxMnD82Rt08K/cERvMxaozCgrurJtvPLoJCE7C7HlF+YY5I+6GmVXcY+ameUAknDjXIiIxGS44SnrwbKJkF0y/h+ZT8oq67qyjTkhe4e61dtzBQ2kVSwM6GzImapLIXu39wuH8cW/EkNLhlTcdBYoa8s=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 86EBE1A0006
+X-Stat-Signature: jq3pshbscubwnn19xoae3y3mqk3awwf6
+X-HE-Tag: 1753256800-879592
+X-HE-Meta: U2FsdGVkX18EcTAkTdF+AWCLd+OwFRC7ktyBh4/R8fcvWbrDCPaMcD0/2sdyA0TDHeGzi3kbl7Z1HoUpXA5QABB8/AG3zsntCloUtZEUj5bLdcSH4MqodaOJfv6Fj1r4KCN0Bgf9ZEU+SCyI4VI/08//TB53poNaMz7DkUuYczBvgw4O3+X/we5w45eZ9UPi8pyhVvq2DoRm9cmkG0NTyH6sC6aFplW6kI0+EdGT7KoyEUPHvtuwAqu/anD/KKlsSUDJPfbT8Ck2DyPGWTWijKM8RWxiYJAKyIwmNs0IaK7QkN3OFDlCAuj+YIa5OwQgLiCphhuOn469kB80Xi4oPYj3GZ+RrP6MjVuEvsPzEkPd2hMh3aLoer8NcQ3xfPZtizT4YbTniZVP8V0FgtiG3qVWYQQSBRvkwWcvnFrcnhPDGwWFUPyyTknlWnyN/GC6FAI2h33KqfcF5l68Pa+STdXxkomAGOdrq6L9PKHemt7TkzfyAR3fRqpoAOlTupMnF1Iv4sgfwOie+pN8ai5Tab/PCPNuIBBa1dm4UCPxvjHCWCVg/VUNEtRMypgyLfLlMYPBXIwhagiLbzhRluVZbxkNzvRuZ1Iyc3aJg4FIo2Li70FrNPN9AgNcHVLnLmHjMVxeez7/7+1UYXeenraLovTBrdxPDrNcOIgWGY+YDK6inU9M68NoPxvOIlpIWOEICSYvwcYwIciI/4vpcXLq91UtTw3LoXDfYogZ0Nq7qoQdsvCh7FlvC3RKYADTpF+JgqyAnp0f8+5Mh8PJVzm9Rj/bL+qKtvmEsHxYwPDQfLsejsLZMM2oOHmgyDXbYKt7rWV24KbFgArWQccrAmTYJCbypI7FT+EQaWslCHT2zxGfU01oHZidJTOFOFBJeAKaWnnR9pwyGyu+0oIlZgI+sTRCBt0lz2+Hnt0e5iIPkFUfTRA5cV6EA0YeU+az4XlG5hRXNLaSw1zT+ra+isv
+ 7mqQ8yXY
+ LGWBgIntDW5/7TAs4Fr5dXqKIY0T59QNj6qrIdI8+YjYkPbWguRYaY5mjr11koWr0exBV+KBw/uY84czjo0WEJ7xcJ6qC0s46HJVfVV1wObfTaHx8o0SWrgBqn4bR/pfDw4+OMEVO1k86JH71VymHVJJzzih2K5DAPj895YwG9S3RBoLn6zTrofMR72j4q54I9y4y9bA/bbbyUUX3YBBYs5nLQq9ro+Z8VTO4bZLov8/K5tb5IaEN/4CeGoxA4/P91rf6CVK40Q6bg5rGXlDRqovRMhwdsBge8jGe5ETXXCGtpVGqT7uIwcrd1Njj5xh3OlIOnTpK7BVY5tCchJH1TQMtDBVrmId4CClJYO2F1jyUv9OELrhS4xPqeGrljuKBT1G4VvjN5S8tN5KBz999EKXC7X3XaRUhlH1peZUlg641oop0CAXR1kjrqsf16/P6QVaYb1DFLIhMQHUutNmElK8olj+jaBhxB2dNSW7Wcsdai/ssrIwcbC6dWDWumiPIj9Zir5CxsU721o+1w23gytiM7d0Dr/PA3iEC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,48 +106,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 23, 2025 at 03:23:49PM +0800, Xuanye Liu wrote:
-> The check_mm() function verifies the correctness of rss counters in
-> struct mm_struct. Currently, it only prints an alert when a bad
-> rss-counter state is detected, but lacks sufficient context for
-> debugging.
-> 
-> This patch adds a dump_stack() call to provide a stack trace when
-> the rss-counter state is invalid. This helps developers identify
-> where the corrupted mm_struct is being checked and trace the
-> underlying cause of the inconsistency.
 
-Why not just convert the pr_alert to a WARN?
-
--Kees
-
-> 
-> Signed-off-by: Xuanye Liu <liuqiye2025@163.com>
-> ---
->  kernel/fork.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/kernel/fork.c b/kernel/fork.c
-> index cfe2f1df5f27..d38f1c5270ea 100644
-> --- a/kernel/fork.c
-> +++ b/kernel/fork.c
-> @@ -584,9 +584,11 @@ static void check_mm(struct mm_struct *mm)
->  	for (i = 0; i < NR_MM_COUNTERS; i++) {
->  		long x = percpu_counter_sum(&mm->rss_stat[i]);
->  
-> -		if (unlikely(x))
-> +		if (unlikely(x)) {
->  			pr_alert("BUG: Bad rss-counter state mm:%p type:%s val:%ld\n",
->  				 mm, resident_page_types[i], x);
-> +			dump_stack();
-> +		}
->  	}
->  
->  	if (mm_pgtables_bytes(mm))
-> -- 
-> 2.43.0
-> 
-
+在 2025/7/23 15:31, Kees Cook 写道:
+> On Wed, Jul 23, 2025 at 03:23:49PM +0800, Xuanye Liu wrote:
+>> The check_mm() function verifies the correctness of rss counters in
+>> struct mm_struct. Currently, it only prints an alert when a bad
+>> rss-counter state is detected, but lacks sufficient context for
+>> debugging.
+>>
+>> This patch adds a dump_stack() call to provide a stack trace when
+>> the rss-counter state is invalid. This helps developers identify
+>> where the corrupted mm_struct is being checked and trace the
+>> underlying cause of the inconsistency.
+> Why not just convert the pr_alert to a WARN?
+Good idea! I'll gather more feedback from others and then update to v2.
+>
+> -Kees
+>
+>> Signed-off-by: Xuanye Liu <liuqiye2025@163.com>
+>> ---
+>>  kernel/fork.c | 4 +++-
+>>  1 file changed, 3 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/kernel/fork.c b/kernel/fork.c
+>> index cfe2f1df5f27..d38f1c5270ea 100644
+>> --- a/kernel/fork.c
+>> +++ b/kernel/fork.c
+>> @@ -584,9 +584,11 @@ static void check_mm(struct mm_struct *mm)
+>>  	for (i = 0; i < NR_MM_COUNTERS; i++) {
+>>  		long x = percpu_counter_sum(&mm->rss_stat[i]);
+>>  
+>> -		if (unlikely(x))
+>> +		if (unlikely(x)) {
+>>  			pr_alert("BUG: Bad rss-counter state mm:%p type:%s val:%ld\n",
+>>  				 mm, resident_page_types[i], x);
+>> +			dump_stack();
+>> +		}
+>>  	}
+>>  
+>>  	if (mm_pgtables_bytes(mm))
+>> -- 
+>> 2.43.0
+>>
 -- 
-Kees Cook
+Thanks,
+Xuanye
+
 
