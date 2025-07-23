@@ -2,93 +2,93 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2401EC83F17
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 14:48:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6807AC83F1A
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 14:48:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A1F96B0126; Wed, 23 Jul 2025 10:47:44 -0400 (EDT)
+	id AE8EC6B012A; Wed, 23 Jul 2025 10:47:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 653516B0128; Wed, 23 Jul 2025 10:47:44 -0400 (EDT)
+	id A98306B012B; Wed, 23 Jul 2025 10:47:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F4166B0129; Wed, 23 Jul 2025 10:47:44 -0400 (EDT)
+	id 939CF6B012C; Wed, 23 Jul 2025 10:47:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C38B6B0126
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 10:47:44 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0D8B8BAE46
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FFFC6B012A
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 10:47:46 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 48FC2160699
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:47:46 +0000 (UTC)
+X-FDA: 83695808532.05.3E7DB26
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 75C96100005
 	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:47:44 +0000 (UTC)
-X-FDA: 83695808448.20.39D2C83
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 629AE40012
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:47:42 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=soleen-com.20230601.gappssmtp.com header.s=20230601 header.b=HDNvWHtC;
-	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753282062; a=rsa-sha256;
-	cv=none;
-	b=Vwm6hWCWLWJYQeJ/CwSwH35PyF2SqM5nOwee/lQXxhPs6AhvrxDxb+ZhWKJvv0c7L3LTFV
-	LY/JF6IhFirNJwQH08KFhgvLO2Z8/Yzf8O/dMcHtD9WoNH4+ySNhWgSR9L0TMnMTyvpOEU
-	4K7AxYA2fnaW6VVu747v451rCoGT4sU=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=soleen-com.20230601.gappssmtp.com header.s=20230601 header.b=HDNvWHtC;
-	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=soleen-com.20230601.gappssmtp.com header.s=20230601 header.b=DsXOahKN;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753282062;
+	s=arc-20220608; t=1753282064;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NC1ayEHkvN6ijinKURZBxrM3hNqjaSgPk5qZ/n3J1rM=;
-	b=oO7iwuGZGBILw+FkOIkQf5hgIdU3Mwy/TednGROXiLv+GDci92aozq2V/bqLNhe3x+B4v8
-	foWn2zycsuZNl1a+yo4zXQMb4tNm9bXwpjtkp+Y8NtpqjOI3ct0GqPERe79WMYiKVi6WPR
-	YXbDSlboJQdhjvVL5Kkz4KF/KXIkanA=
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-7183dae670dso62723507b3.2
-        for <linux-mm@kvack.org>; Wed, 23 Jul 2025 07:47:42 -0700 (PDT)
+	bh=vA7LYlc82x3WwgY57zmotOihPt8s/pKmtJ2MhRkxfkk=;
+	b=KDs3Ps1h/nttjMuAhuXE8F5lhnL8ahIsfi/8Obv/51pyNYMml6dnB6uQOLxajQu80UJA+J
+	DWTEq4KuAxxsrwMkdGSCL1WIplr6fvhHdTmbYk38OPvm/CdBCFksmglUDqTO1jXjaa5noS
+	1iJVjT50q/Lt3wSWyO0b4S14/zhSyQI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753282064; a=rsa-sha256;
+	cv=none;
+	b=ZVjd8S5kxZNlN6PGV/Jx2c7slua373xMvbq6aYxl+Y4E3l8iFKmHXPZbp864R/siMcg6XK
+	YclLpWq5o+sAPEgQ0w92t4P8FQegGEGpNA4MS0zFdJ+fYWCAmK11M+Zti7JJ1rW1O8uE+2
+	L5Qnsk4bUHcKBvz6k+0/DfS20s9ll9Y=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=soleen-com.20230601.gappssmtp.com header.s=20230601 header.b=DsXOahKN;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-71840959355so25947b3.1
+        for <linux-mm@kvack.org>; Wed, 23 Jul 2025 07:47:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen-com.20230601.gappssmtp.com; s=20230601; t=1753282061; x=1753886861; darn=kvack.org;
+        d=soleen-com.20230601.gappssmtp.com; s=20230601; t=1753282063; x=1753886863; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=NC1ayEHkvN6ijinKURZBxrM3hNqjaSgPk5qZ/n3J1rM=;
-        b=HDNvWHtCieg2BZoJ7rjl7mXYBh/deUvxeJ1usNlXTUDwcPmKwI4pcevgA85ewgx8pG
-         rkGymPibqwaaftXY//5ZFAb7282Gh3flWO6876lD3oZSLuSA7MFGK0s62AoBesa3pyBc
-         ESBg40ZMeQulDMVCU5zbo+C96pOQ5G5Lrt9gPjIe1lnm8H6f4v29OAgB6d+nrokqRXnT
-         jMYUNnYYxvpNcG7hVva6EVgKSsydiW0RM+LcdlaBr5nvjmT/phoA4buj35UyCQMMdGEI
-         NbWPDhlAlreA//FrvUxXr5GdjxpAdbVPMNSe8ObbdWQMUwJ5yyH3CgnY08zqJDa1naX0
-         4H+Q==
+        bh=vA7LYlc82x3WwgY57zmotOihPt8s/pKmtJ2MhRkxfkk=;
+        b=DsXOahKNej+wUKIFWmlZsmwMlJVHfhT4i8eseb5mN+vqlcwjGfGsiBNAjJNTkt3zJZ
+         uwEYvMT4Ow7gZMf4apLz+aVsmdHkoFwP2Pyuv3+ywkwLujz5iRkM6Rq8cTSnEO0RxyHH
+         jjuM9H0Y4uft8ZOkr1vUF7IySPkUirrF9P3RYgnKcIKk0ktBp+CR9KnkqyF0fYrWOzr0
+         iVRWEi7rYWX2e6jSdFt3EfbNVw+0/t7T0dwqbw4d/eAJoB03LZbKbUoLpxzwKwl9Y9gV
+         0nXnt8IDLlYk7aH5xFkXrivoqwy3BJayJ97ULbwZ+ZEMANik2nXKnnbN1KiBtbGhTxwM
+         udUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753282061; x=1753886861;
+        d=1e100.net; s=20230601; t=1753282063; x=1753886863;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=NC1ayEHkvN6ijinKURZBxrM3hNqjaSgPk5qZ/n3J1rM=;
-        b=GIfAdMXw8MQknnkXG3jDAOQAtfKBOuObgAUlmqR3byffEMwFEAZ6TH7Gf4jxSH+OSu
-         5jx2+8Cr5Jye5oLC2QDLvNdavm5ZOUARKM46zTf79E/sRAUNgo0cGPyhGcYOIgxFDedM
-         WKOLj/9t1ihYvzgF/vDPwBjBMKoZszc25jZIWf1kiTnU6CE038ghCjlQ4TI2rTUFhJfc
-         eCm4nt3mH4id8ee3AR+de6cR80UUcC0Ame1r8EW1xz9oaQkoHunQrvX2arNXno97PqQ8
-         5sDvwO64+1AkEZCmJqC+v+f6EGxJ2OVUVqo/6L6OnkDvxZugfG6a7Fd8Y/Dx+uIvznIs
-         RfVA==
-X-Forwarded-Encrypted: i=1; AJvYcCX3xwoieKsOTss00Rh1IPxqT14iR0QKDhI/cYfmKVif8lf6G4cpa4drPDd5BNAMzTEEoHujUheKCw==@kvack.org
-X-Gm-Message-State: AOJu0YyDdsE8BqiTKWDW+fbdSJBwpSxlYkr0KLCg4IisH8lpx0SiSvr6
-	AMfwg2bJ6T6l6kF3A8oOdMaeC5G0XS9QISbdpnvYSjIv8yhTvi73bfL+Zye7uqheOKk=
-X-Gm-Gg: ASbGncvXql0Hz32nfM5sEPBsdyTZiJH1KhP7EVljPSM9Fm+Eu/iLKs2NJmGBmIkXjF6
-	io6O6f+NaklWJm7b46sKpYPr0HFNxFWiQkWmNo5rVLAm+emQ9N/7ZkvBnfISDqAq9dxlNStE06a
-	YrOTH3gFP/zN97dykFtatFmx6DdsuhXHUSS5/ykqZUrYa6fbgE9JU6PSmBAqq5CVfy2QTRMVH8S
-	HkHF3dVCp6bz5d3GFqVQb+lUT5WUdo2nmTGS5wYhWP/J4nSNKgmX7byfIqlcwQSM9LI0FPY8chE
-	ZJV3Re2SjxevNxgKw2etoTjwfnp58+8CeBW+WDiNRJcDqMPMA8T6VVY8tSIldux3JrPkLPvNHqb
-	B0T5+JHNX/vLJ5GF7co/z0CUL/lnxkZtIR9DsgF5gEgnNc5gkcGQJaBMVges7qubSc36OUQs0mQ
-	82EvHZF9HqS3Mzuxi7PSCvx27N
-X-Google-Smtp-Source: AGHT+IHtTYkgbLD8Z9PD3xbOoYfvfKs4NkwGaH86Xh5bYMAIlsFdLVYPN6ZxosRwBh+RGdz+VhmZwQ==
-X-Received: by 2002:a05:690c:9681:b0:718:4511:e173 with SMTP id 00721157ae682-719b4185000mr42897137b3.12.1753282061377;
-        Wed, 23 Jul 2025 07:47:41 -0700 (PDT)
+        bh=vA7LYlc82x3WwgY57zmotOihPt8s/pKmtJ2MhRkxfkk=;
+        b=gEkHf69idfXq97M9IQt+/VUflEdhsmgXpyga0p8fQ2K7zN/RJEj2dYqPgSN0pjDd54
+         vtGmdHQXYjQmHe0h7gHdTwpLBEndFLA9HHyrNdxl5QxVpjKGFuqFcxd6rep74or+HB6x
+         Nu8MiLeQa0CEywlGfisn1MZb/2XomUHnROzNYALbgOjYWOmNrUqdaUOWi3N26DC6cwDP
+         cKsRVd8NadN2Mx7bXjK58918aSHmeT4HBfh6IKaIbj5yShEHb3tpGLQSjYPPJBSjbRM0
+         8JpztN4bWD8Lq1FOzTlVkI2za5k3R28PBZZa5KJXlv5R5LiTkIVwb/un9YLJH9e7MWSd
+         Lw3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXOdeDWdS0YQvopzJq2VEybPm7JMHPxkhKP8PVhXwMqBaSzKvA8qX7P//9E7rsIUwy7Vef4Gmu7Ww==@kvack.org
+X-Gm-Message-State: AOJu0YzG9ITIWD8ls8N+dQuqNpFVZ1pk39X/Gj6msXNJgXaCymRcU6yh
+	2D+lBRfAcpOP7tVwHmKLEJ+vwZORMdaY5mcgUN3y3EER8tn6vWrDtVFljqPXuJvH4I4=
+X-Gm-Gg: ASbGnctgDWQemVK3eRS8pZyGwwiYpA8g1vzcxdwtiw+h6bxeikqQ0yOvqIfWBw4/Hnw
+	ORqieDDojV0fpgChrxa4IGe9nB+GNcA1t2LO2jHgbY01JAnHkiVWb/BDFXV1Ia2viWg2CW6n9NF
+	HS5wlNSPSVVqXaf6vmfj3B2zLPRQ4/dlnLwjuNrz397k90h9XXUzGEqOgtWrJzWuxr0g9KG0dv2
+	JcDCqkIaRIE2LsoeXOTZ+iKRdLLr4F84XdSYmKaGwFRK9Q19ZcrGI+C+X+WqkJxnDLiLquutIXd
+	sSlXBt9L5AWLcCtdrbqzpsjn06BKXtSYkCH7UiW5jaaKUpPj4JUouluAo728iO3Of+Xf0arKQW0
+	YvmHe7ue4nmzMYa+ZlATiqsxRFXzBX67FgE6HryZmr1MtD8a2D+rh2XOU/uJgUMcqqXzj8PSoEf
+	vNEYn1Z/Lg7HpFfw==
+X-Google-Smtp-Source: AGHT+IHqS70M03S5he3NvWDhoQuPFBoBKoEYJVBTcn9mZuJ/zrlY+6jXwnz4jOOosBMr5/pOQwUPow==
+X-Received: by 2002:a05:690c:480b:b0:719:4c68:a713 with SMTP id 00721157ae682-719b4b26117mr35918287b3.2.1753282063460;
+        Wed, 23 Jul 2025 07:47:43 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (235.247.85.34.bc.googleusercontent.com. [34.85.247.235])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-719532c7e4fsm30482117b3.72.2025.07.23.07.47.39
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-719532c7e4fsm30482117b3.72.2025.07.23.07.47.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Jul 2025 07:47:40 -0700 (PDT)
+        Wed, 23 Jul 2025 07:47:42 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: pratyush@kernel.org,
 	jasonmiu@google.com,
@@ -162,22 +162,22 @@ To: pratyush@kernel.org,
 	parav@nvidia.com,
 	leonro@nvidia.com,
 	witu@nvidia.com
-Subject: [PATCH v2 23/32] docs: add luo documentation
-Date: Wed, 23 Jul 2025 14:46:36 +0000
-Message-ID: <20250723144649.1696299-24-pasha.tatashin@soleen.com>
+Subject: [PATCH v2 24/32] MAINTAINERS: add liveupdate entry
+Date: Wed, 23 Jul 2025 14:46:37 +0000
+Message-ID: <20250723144649.1696299-25-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
 In-Reply-To: <20250723144649.1696299-1-pasha.tatashin@soleen.com>
 References: <20250723144649.1696299-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 75C96100005
+X-Stat-Signature: 4xnrumfn4hn9skmekeuuaxsxxfz437dr
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 629AE40012
-X-Stat-Signature: gg41tqdqnp4f5kn1g88cut1zqa7etsi9
-X-HE-Tag: 1753282062-698120
-X-HE-Meta: U2FsdGVkX19s4h6vvtc5U27SJCLngIANcdGrwabjphWBmmtW3ZykMvPzBLFpGW9VaFzg8JINzsOxXF8YPm4vyV0E8stO9z28vFUieuhBTV+uxHUn0gXURuStVV0LL6hMxUIHXX4rb3XayTV/+qGUQJvvhGrWBStWO6MrnBvP32pNIHremEj+vC7/G6i2mdvteIoFM8UclBo8kIlrbGq2OD0azdyzef3mSjj4/N9S+jw7dtoRsdd+kS9v0RBSfFreWNlbIQGo9QAAS239IddKfS8OHewLdSXUagzBFud4MiMSZ+P1hh1bZE0sHv4ApmtmwvvW4CE5YnLRzma0nhNsxzX8XkWAnp8JC80ICL7wbHhnh3ovyOfpzOBeZvfjm7YYXseOnCzAFKFrw7a1BaFrtb9vbOtUpyqCCfHBbku6KFq0Ub7F5Mx58ql1XREtqHUAxUXWpFkjkwLBi++84tjOygWLw0EdK2N2lqCpR7egy77OPGZKUhqt9+szCOSmOOoFAtX3cHJT6nBSCUTnHEtbiJcC4pF16kRZFTJkug1z84R+upY1UFZBSB1bt/UyqrpbYOkQGMYPe07dbSjRuKdnpVxqekT7/zwRHHmP36PWVf6jLNIDLXUg3TXlxfvBqpExWsga9Uz39rKUADiARf9fgSRJohunfNae1oXo5btVf++XRZnppO8gojMR/jBoUJGbHi2F3KwqB61/x0jTKVTfXjJYgaZnUvsQWXxdbForXYi/wUfIC0xpFhIhOQWw1uEft+c+fuIHtMezlZ88gIa9XZ6MAP7sXPtBCyjuHwj1wN/6uFOBN+Sr8HwEXWftOJrB8Zs+jqRlTL0SuFbf3xlmX0mvuSHwaxtQCqrt2Fu4NkIpT2TZz9WohT5Vg4592NxQPK1Uhj343GnVtNUbMB61DVykEltbGTsHbUSZ9s6//xjuWm9pR9Yl7idNyCf2kco227gQScWnc5BYilYsE4y
- HxxS8wxX
- OgvJSGY6MWKZsXEKPRprM9blf+8IZRBHTwKsIcRdwZFyrfBEd1dgstClyfVWiAlHH4pvKwwjyWMzIKIa7GZfeJCciHzb5yACZu1q+cNP02w9jGLsp9q0kCHFh7JbuPQoyvZ6/QhojcuNBZjOsOkGn6o4j9zAA0Rr19EfYy5uSMQ1mcdgsBCTPqr1uM1s+qrLa7FDM
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1753282064-16844
+X-HE-Meta: U2FsdGVkX197zJWtwDvBbOUAEQppEy1EAk+PewRpitVT1k1K1lHAYiBqXY0Oe3LRKedjxT3guehHzLkRfieC+PaE4xPxSexiVRKjtehSTI98GidGOJLHo6LMTGMukINiNnCbcjR4mA54ib5bIm3DcJ2/plcHbCYX4NkB7Wh3jyEwKnQPgDHRduKaGQDvY/uGgxroT21MjNqGybnV6tkSJbl2DUxNcxAZ5oxveiQ5F0nClp6+DQspmRyiI2wFTGLOH32XzljRrXwtqfSDUrG8h2ApA7PBjiiXS3I1nNqX9bd+SSt4pk3WZfP0YhpVXPJDIbOU0wxQJXbT9UPQCuTH4stGJJsvqTMlAYiNxtgFCtBqU00btH4Pwy0yl0sHkMGmnG97j5caEgU578HPvX5UymzwrJRUaWXm2LApQfS+Zt6zmkz1vA0aPSzAmJ4wxkdBoF3lVGlpPfZKB80dh76DWZ1ctoqXKkwAKfQjbL3uRWKX2CXr2B3+RO3wAkMegRrzLTJ8lUDq72oybRxpH+BgwYWNMWyXR8uLZpeYCdZmrggXsP1oyA6d6NCstOOk6GljmxFDwhZqaWibCFVZYpw7lzj8OIv++tI+IFrMAir41HmiZYKnFt/aD4LkkbV8Bxkfb6pGgUmLE3jkeI0N5hXWQf62YZNlw3lCLWmRcWj61y/x4y8EX8RH03Z4Jjlk+6FYLZ5gsXgkiT6JEWPQ4uZ+dnqzuft0RtgMGog1Adj5I2TP8seK9W1oxPkoW/bZVZLHw1pZ+nxEvuEDo8FPBDX8oZXcuuGfzyOY5QqwOiDapkV7swRktOQ9vL3UZw2Jafu409KKrQuK4F/hqsd9Ua6g8RZqnlPUocpPkHh7CzZ1QW3BlXzscYpezL6Rdca+qg1OTvMVCLQN499Xsb2o0QEnTawIgL6RFe0mVjOy4xziusEWz1lsisUbE81kDkncpE0y6x4dLVKMbX1jh+inwfa
+ UBz6vm+0
+ wi8IfyDdSiFuWZ7ru7AjxFabw2eQ43CH1OED7CQrlriutQxLFVGKtMNeqJjHgTrCYDZuG5b4bESz36wRmhRqrQZxizt1QNtK51Qj1ZhNMm13gn09992QWq83D4WxNBi5XlMq/n2KKOgq2pbMcYlas9luzR9oMaNRgqT6wVvUBjZsZapnJ8VHE3+Y1v9I5OLQNVbCFvX7e4NfZdHFs6XV5tOBkL+GVwGNstC+eWi/woXJRWqEu/bhDNWqwXRkmlaU1RoTFtWIFNCbMMmZukr6LNlF9dRZO1X1tpFGQ9LQflYQaf8M/rLlqDfC+op9Ar2GiO3a7qV6HNE+se3acL8/Y2+rkGFJEO353/4kJizAU0ePdz+jS0b6JnLsJCjrZd0Z7Chd+8WWJuVV5c+pLAndd+Lk0/Pu7rIypvXk7ztqmc9adc4jSw72oTNdxizN+5tW2YXVQQPdDeCaDidOWpP8ChWlLnSIsN4OE56VkdYwYB021uii58CygDYWmbzBC7KzJuqhKidHIHO/5Bh8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,166 +186,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add the documentation files for the Live Update Orchestrator
+Add a MAINTAINERS file entry for the new Live Update Orchestrator
+introduced in previous patches.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- Documentation/admin-guide/index.rst        |  1 +
- Documentation/admin-guide/liveupdate.rst   | 16 +++++++
- Documentation/core-api/index.rst           |  1 +
- Documentation/core-api/liveupdate.rst      | 50 ++++++++++++++++++++++
- Documentation/userspace-api/index.rst      |  1 +
- Documentation/userspace-api/liveupdate.rst | 25 +++++++++++
- 6 files changed, 94 insertions(+)
- create mode 100644 Documentation/admin-guide/liveupdate.rst
- create mode 100644 Documentation/core-api/liveupdate.rst
- create mode 100644 Documentation/userspace-api/liveupdate.rst
+ MAINTAINERS | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/Documentation/admin-guide/index.rst b/Documentation/admin-guide/index.rst
-index 259d79fbeb94..3f59ccf32760 100644
---- a/Documentation/admin-guide/index.rst
-+++ b/Documentation/admin-guide/index.rst
-@@ -95,6 +95,7 @@ likely to be of interest on almost any system.
-    cgroup-v2
-    cgroup-v1/index
-    cpu-load
-+   liveupdate
-    mm/index
-    module-signing
-    namespaces/index
-diff --git a/Documentation/admin-guide/liveupdate.rst b/Documentation/admin-guide/liveupdate.rst
-new file mode 100644
-index 000000000000..ff05cc1dd784
---- /dev/null
-+++ b/Documentation/admin-guide/liveupdate.rst
-@@ -0,0 +1,16 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+=================
-+Live Update sysfs
-+=================
-+:Author: Pasha Tatashin <pasha.tatashin@soleen.com>
-+
-+LUO sysfs interface
-+===================
-+.. kernel-doc:: kernel/liveupdate/luo_sysfs.c
-+   :doc: LUO sysfs interface
-+
-+See Also
-+========
-+
-+- :doc:`Live Update Orchestrator </core-api/liveupdate>`
-diff --git a/Documentation/core-api/index.rst b/Documentation/core-api/index.rst
-index 7a4ca18ca6e2..a79d806f2c8e 100644
---- a/Documentation/core-api/index.rst
-+++ b/Documentation/core-api/index.rst
-@@ -136,6 +136,7 @@ Documents that don't fit elsewhere or which have yet to be categorized.
-    :maxdepth: 1
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 3b276cfeb038..711cf25d283d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -14012,6 +14012,19 @@ F:	kernel/module/livepatch.c
+ F:	samples/livepatch/
+ F:	tools/testing/selftests/livepatch/
  
-    librs
-+   liveupdate
-    netlink
- 
- .. only:: subproject and html
-diff --git a/Documentation/core-api/liveupdate.rst b/Documentation/core-api/liveupdate.rst
-new file mode 100644
-index 000000000000..41c4b76cd3ec
---- /dev/null
-+++ b/Documentation/core-api/liveupdate.rst
-@@ -0,0 +1,50 @@
-+.. SPDX-License-Identifier: GPL-2.0
++LIVE UPDATE
++M:	Pasha Tatashin <pasha.tatashin@soleen.com>
++L:	linux-kernel@vger.kernel.org
++S:	Maintained
++F:	Documentation/ABI/testing/sysfs-kernel-liveupdate
++F:	Documentation/admin-guide/liveupdate.rst
++F:	Documentation/core-api/liveupdate.rst
++F:	Documentation/userspace-api/liveupdate.rst
++F:	include/linux/liveupdate.h
++F:	include/uapi/linux/liveupdate.h
++F:	kernel/liveupdate/
++F:	tools/testing/selftests/liveupdate/
 +
-+========================
-+Live Update Orchestrator
-+========================
-+:Author: Pasha Tatashin <pasha.tatashin@soleen.com>
-+
-+.. kernel-doc:: kernel/liveupdate/luo_core.c
-+   :doc: Live Update Orchestrator (LUO)
-+
-+LUO Subsystems Participation
-+============================
-+.. kernel-doc:: kernel/liveupdate/luo_subsystems.c
-+   :doc: LUO Subsystems support
-+
-+LUO Preserving File Descriptors
-+===============================
-+.. kernel-doc:: kernel/liveupdate/luo_files.c
-+   :doc: LUO file descriptors
-+
-+Public API
-+==========
-+.. kernel-doc:: include/linux/liveupdate.h
-+
-+.. kernel-doc:: kernel/liveupdate/luo_core.c
-+   :export:
-+
-+.. kernel-doc:: kernel/liveupdate/luo_subsystems.c
-+   :export:
-+
-+.. kernel-doc:: kernel/liveupdate/luo_files.c
-+   :export:
-+
-+Internal API
-+============
-+.. kernel-doc:: kernel/liveupdate/luo_core.c
-+   :internal:
-+
-+.. kernel-doc:: kernel/liveupdate/luo_subsystems.c
-+   :internal:
-+
-+.. kernel-doc:: kernel/liveupdate/luo_files.c
-+   :internal:
-+
-+See Also
-+========
-+
-+- :doc:`Live Update uAPI </userspace-api/liveupdate>`
-+- :doc:`Live Update SysFS </admin-guide/liveupdate>`
-+- :doc:`/core-api/kho/concepts`
-diff --git a/Documentation/userspace-api/index.rst b/Documentation/userspace-api/index.rst
-index b8c73be4fb11..ee8326932cb0 100644
---- a/Documentation/userspace-api/index.rst
-+++ b/Documentation/userspace-api/index.rst
-@@ -62,6 +62,7 @@ Everything else
- 
-    ELF
-    netlink/index
-+   liveupdate
-    sysfs-platform_profile
-    vduse
-    futex2
-diff --git a/Documentation/userspace-api/liveupdate.rst b/Documentation/userspace-api/liveupdate.rst
-new file mode 100644
-index 000000000000..70b5017c0e3c
---- /dev/null
-+++ b/Documentation/userspace-api/liveupdate.rst
-@@ -0,0 +1,25 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+================
-+Live Update uAPI
-+================
-+:Author: Pasha Tatashin <pasha.tatashin@soleen.com>
-+
-+ioctl interface
-+===============
-+.. kernel-doc:: kernel/liveupdate/luo_ioctl.c
-+   :doc: LUO ioctl Interface
-+
-+ioctl uAPI
-+===========
-+.. kernel-doc:: include/uapi/linux/liveupdate.h
-+
-+LUO selftests ioctl
-+===================
-+.. kernel-doc:: kernel/liveupdate/luo_selftests.c
-+   :doc: LUO Selftests
-+
-+See Also
-+========
-+
-+- :doc:`Live Update Orchestrator </core-api/liveupdate>`
+ LLC (802.2)
+ L:	netdev@vger.kernel.org
+ S:	Odd fixes
 -- 
 2.50.0.727.gbf7dc18ff4-goog
 
