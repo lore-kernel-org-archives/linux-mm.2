@@ -2,174 +2,122 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A116C83F1A
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 17:32:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C6AB9C83F17
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 17:33:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A435F6B0165; Wed, 23 Jul 2025 13:32:29 -0400 (EDT)
+	id 5D8C76B0167; Wed, 23 Jul 2025 13:33:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F4686B0166; Wed, 23 Jul 2025 13:32:29 -0400 (EDT)
+	id 588D66B0168; Wed, 23 Jul 2025 13:33:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8BC276B0167; Wed, 23 Jul 2025 13:32:29 -0400 (EDT)
+	id 478E76B0169; Wed, 23 Jul 2025 13:33:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B0446B0165
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:32:29 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E7B3B567F0
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 17:32:28 +0000 (UTC)
-X-FDA: 83696223576.19.60153DC
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 8E81A140014
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 17:32:26 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pzp8XHwa;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=J+Sae5JF;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pzp8XHwa;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=J+Sae5JF;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753291946; a=rsa-sha256;
-	cv=none;
-	b=Sh5deOcPtyFbBWG54Zk69FIMx6WjAOb4gsnvnUcxCZMfluCzVzy3Lb8Q4J0MZ9/dHzLEcL
-	KhaxVBCOonjzIga/sTmuz8zKuUFY3t2MGntGLUqKh4VKj9fCIaLUglTUtACW6IfLA4vNgM
-	igXYY4ifF7e1z1aotV6kgKuGFoSPXXQ=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pzp8XHwa;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=J+Sae5JF;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pzp8XHwa;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=J+Sae5JF;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 359EF6B0167
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:33:22 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 980C480171
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 17:33:21 +0000 (UTC)
+X-FDA: 83696225802.07.749E9ED
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 79B6440008
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 17:33:19 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=R5oTFw98;
+	spf=pass (imf27.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753291946;
+	s=arc-20220608; t=1753291999;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uv9cgSgJNK/4SUviYYqTvJigVNWYVKzTAd2VQDKUkF8=;
-	b=7eGDNzFSZsbTuZ8oLpb7C1QnkVsHkoyPqZan2Tafbqh3/o+ldTRq5zVOOnyMs28dFJOLZh
-	YiJCdMloftauQ5S2nmYGKZr6dE/FvdVrz/2e7SdU5LcfstDg3rOYXOOkFPO1qE3xkQR97Q
-	Uf2GnCPCFZN3xr2Oy/2RgbXxSzwCaHE=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id CE6F31F793;
-	Wed, 23 Jul 2025 17:32:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1753291944; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=uv9cgSgJNK/4SUviYYqTvJigVNWYVKzTAd2VQDKUkF8=;
-	b=pzp8XHwaNXj54Us1LhOKjVEzmk6KLKrTghaeHTchfUuPX+ZIW84zEc8kaFrPFk6wQbAKIW
-	4G7Yb0TsgSA+3hPMR010shZ7pSF7/0gZ6LP2M36cJe/uOtglVbgYtp5domlJMgYACKnnV2
-	2UeEdUdIIeTRo5mhWQyelKVYxYM9C7s=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1753291944;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=uv9cgSgJNK/4SUviYYqTvJigVNWYVKzTAd2VQDKUkF8=;
-	b=J+Sae5JFx6TQ0BGgaEjNIA1HgP+INc/cVdQeNp2B500pIn4IYH5zCfdvCrEU8Ifl62P97L
-	o/s9fnhvCbfuR2AQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1753291944; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=uv9cgSgJNK/4SUviYYqTvJigVNWYVKzTAd2VQDKUkF8=;
-	b=pzp8XHwaNXj54Us1LhOKjVEzmk6KLKrTghaeHTchfUuPX+ZIW84zEc8kaFrPFk6wQbAKIW
-	4G7Yb0TsgSA+3hPMR010shZ7pSF7/0gZ6LP2M36cJe/uOtglVbgYtp5domlJMgYACKnnV2
-	2UeEdUdIIeTRo5mhWQyelKVYxYM9C7s=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1753291944;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=uv9cgSgJNK/4SUviYYqTvJigVNWYVKzTAd2VQDKUkF8=;
-	b=J+Sae5JFx6TQ0BGgaEjNIA1HgP+INc/cVdQeNp2B500pIn4IYH5zCfdvCrEU8Ifl62P97L
-	o/s9fnhvCbfuR2AQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B505513302;
-	Wed, 23 Jul 2025 17:32:24 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id eQWbK6gcgWhlZwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 23 Jul 2025 17:32:24 +0000
-Message-ID: <16c97e30-19c9-41e8-b73b-c0b3c8eceff3@suse.cz>
-Date: Wed, 23 Jul 2025 19:32:24 +0200
+	bh=KBM3XOa1GXkPG7AU5j/kIOwYcdf4HqHkAm2pQZ3zu3U=;
+	b=g3dgCmp1JB7FssHkYwjdFyIknNpmc7RiiWm4Xwlq9iSZbJZuoF7YtPSO1o9mNTvK7tdPLZ
+	9Z/hvvK5vfuT4GjUia3dGrSqoevME8C+eRqitJyNX8X0V0vhcdduHlJzx/MGhyWrShpxyB
+	XJgKsOyMo9/j7Z5TZWKC6ppdFW43wOE=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=R5oTFw98;
+	spf=pass (imf27.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753291999; a=rsa-sha256;
+	cv=none;
+	b=ObwoDz/0zJtDYpHPVvJPa9Xls9Ti5BxwaXVBkXQJlXDu8fv51pGwwSsr6qhd6uRexVM0JE
+	x040LaTNSeOlqvfY/x6izbtJVpdt/E5cr2Y7n6c+0bjlDGMaFUlrKT8NpRj4Vf6aYRkjqi
+	bfCs3q5JQ5ZhEgsQ0xgg+JjAArCHSj8=
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-55a1eced1abso9415e87.3
+        for <linux-mm@kvack.org>; Wed, 23 Jul 2025 10:33:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753291998; x=1753896798; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KBM3XOa1GXkPG7AU5j/kIOwYcdf4HqHkAm2pQZ3zu3U=;
+        b=R5oTFw98ykecPrMiBq2nN9dsDAsCox0VyIrnC3t/uApuDAdLvYDDIabVqKymOtXIn6
+         7Tihu349HP9lBthaNPUoB10eNbdidIjqg7+rWCuIC3yupech3ZohGDlxC9UMttT+DGB+
+         keoMWtiB+nnpNQIDB1PB05UQv4IAA/6qeOLQ5dhRKVN6f30/1VD8gDPWvMXsGmboNPIk
+         fqxsFgTjhSGc6FASTQGcYlsm+mBRCvaDQRxBgrPnAeOh9EuA0Ld2RiDO8wGlHp4M7Ssj
+         jP3pXzmLcnRkz3cnnjsUbSu5wel+e7oryM37sWWF95rOjD3kVWlIxxhWNM8pUQuzgIfs
+         O65Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753291998; x=1753896798;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KBM3XOa1GXkPG7AU5j/kIOwYcdf4HqHkAm2pQZ3zu3U=;
+        b=v5KKO1Lhn+zrUH9M2ZNu1kvhqckWAsK31WgCCM//Mx+HMXlhlKbuGLnuObQjm5GE7r
+         UT1e77iXmG6cKWOBjkcWTZrWc9UK7QF+cr9toFAsYNdFvdHDmxlDv2NlXa0yra5OOXcx
+         C1YLOH0eX/6Qt9pPOBjd9sowuB1QNxsYxJ4a0TnpK2ZENqIu8G8NcTRogsKWREFD8i16
+         UuLQqrGkLorGaHivb3wKJbwQ1EC79WNcfvs0pFeC/a/Qars1XTdByviJp2Ds2reKKOZE
+         N8sGPKoHa9y8GXoWY7BPv3ZiSdMgLPDOwdZhf0lj6R9kG+AsaEu9BSY05+MI/ojV7lJh
+         Aegw==
+X-Forwarded-Encrypted: i=1; AJvYcCV2rpbbowrYFchG9J+UyK8lE8aZVHh23x96nhvTMFWKZEwGUjkaUlvwWcnkgfx5+Et82rtjzZ7idQ==@kvack.org
+X-Gm-Message-State: AOJu0YyFy4xNh+YFIwPbFl+OQmn/sz4vA4UjT6onNAxk1po94JKEgU4S
+	Op0Isa1arzCHpOyXM/K35yU3vraVN8JwEYUX9/7ehRAsJAyU5Td4oI4D
+X-Gm-Gg: ASbGncvxWYJYkmWuSHRcuTUyu0SasaOO8MVDrCPjYbznGq0IkLihn5m25/Ozyh3XzNp
+	yboQYwlbPobhQn1bORbGzrDRoQQH0l+oUnzKsXME9sQwl1ZDGhqw9vt47MGnd6cIB7a6on3nVBt
+	IK9H7Fi7ltSI8TkEUabyCS053dHMiXWOfHEmnjMRw7+g4tyJ88Rwlv3giGdzvnUSqd6+BKBE+KE
+	d67D5G7UkMsjm7FD61zbAKvC6dxIRBWL7r9zzSpsEnmsqi9P1UWst4Pk5QM9yan/qzWQPDrfWm1
+	iCVO9hOa+rc8al7aZhAK9GMP/Qc0IRoJVYS+7c4JAtefW+yREAq3LOK7RG/tyd/JZTkhNBEgTEd
+	gc79z+bho7ozpu9WhYlStAQc48d2RMnqeKo6YarU=
+X-Google-Smtp-Source: AGHT+IEhfKgja72kmMEVu8mg+y0GPA2wBPQGXBF9w7fJkfAZVikcQ8zyKptW1cZk85GIYWtzdxftWQ==
+X-Received: by 2002:a05:6512:3c8b:b0:553:24b4:6492 with SMTP id 2adb3069b0e04-55a5132157emr458860e87.5.1753291997236;
+        Wed, 23 Jul 2025 10:33:17 -0700 (PDT)
+Received: from [10.214.35.248] ([80.93.240.68])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55a31aac980sm2396014e87.74.2025.07.23.10.33.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Jul 2025 10:33:16 -0700 (PDT)
+Message-ID: <f7051d82-559f-420d-a766-6126ba2ed5ab@gmail.com>
+Date: Wed, 23 Jul 2025 19:32:51 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG] hard-to-hit mm_struct UAF due to insufficiently careful
- vma_refcount_put() wrt SLAB_TYPESAFE_BY_RCU
+Subject: Re: [PATCH v3 00/12] kasan: unify kasan_arch_is_ready() and remove
+ arch-specific implementations
+To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+Cc: hca@linux.ibm.com, christophe.leroy@csgroup.eu, andreyknvl@gmail.com,
+ agordeev@linux.ibm.com, akpm@linux-foundation.org, glider@google.com,
+ dvyukov@google.com, kasan-dev@googlegroups.com,
+ linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-um@lists.infradead.org, linux-mm@kvack.org
+References: <20250717142732.292822-1-snovitoll@gmail.com>
+ <f10f3599-509d-4455-94a3-fcbeeffd8219@gmail.com>
+ <CACzwLxjD0oXGGm2dkDdXjX0sxoNC2asQbjigkDWGCn48bitxSw@mail.gmail.com>
 Content-Language: en-US
-To: Jann Horn <jannh@google.com>, Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Suren Baghdasaryan <surenb@google.com>
-Cc: Pedro Falcato <pfalcato@suse.de>, Linux-MM <linux-mm@kvack.org>,
- kernel list <linux-kernel@vger.kernel.org>
-References: <CAG48ez0-deFbVH=E3jbkWx=X3uVbd8nWeo6kbJPQ0KoUD+m2tA@mail.gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <CAG48ez0-deFbVH=E3jbkWx=X3uVbd8nWeo6kbJPQ0KoUD+m2tA@mail.gmail.com>
+From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+In-Reply-To: <CACzwLxjD0oXGGm2dkDdXjX0sxoNC2asQbjigkDWGCn48bitxSw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 8E81A140014
-X-Stat-Signature: oa4cxp4176s6nqd91hbq9zqpq5o3jc4q
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1753291946-46628
-X-HE-Meta: U2FsdGVkX19ygUddCyMMD4juL8gNVOoOAosD07y5p0b5o9dMuIcxaMPPltFlsIS8dYecw5NjMkU+w8I1ed9tsprmeNBQsErQlIJZMfMXL/T/BOumSiJZrlmyu6T8mCvm8AMMmk7IKd3A95ayFxPaD/uHoGUosdgLQUJQV0kRvxbLGUIMezDb8mC9LmvbiFYMvtIT9UFtMrPIVG5ctSCbou78fuVz1i3XzLaZq2yOJwZDOv29JeT5PIQ98FgoqN2+EJnEmkqXqwqh3J0oXNxikw7MZa59459tfoNPiKpfNmtL+MnDZL87/qWPxfyMTeBkn0BXQysDxpzTzSMJbygRUOusE9rhrd1ZQF9zrXeKERAYlpd5jLinvpxkYGPGahmefffLTD6hnDKrZGAtWkWBWrCtuL0fZIPEKRCA07tFbO20fUR81rvgViAx6nVqJSHkBvBo5UG/1Ur4QIbR8+b5qWG3FlAKIP5PTku/5wyBK5i89gHFZ4KYlbUlkvxGB1OoxtLktuP30fkx7a2JVwxFZk02YD4VbqiD0u34aGzVfaipzXxqMFzs2hu/9QLLsSSuFQfY+dyZem7eOLEda5gTiRcBRZe90deoOXxn9365Cuj/TV93Ok5y5fdUxv7VwljcIXgCDqrgvjHt+h9hFKOlLyW39+3s3GthLYBiK0IpVlKlnWEhWqGKIwRy5tjc04OH+SmBDc07QXdcfdMxB3OIag8gEl4Wvn9vIsonCmZOx7rsuLouzD5pfRXcRG3RqGYve5EP3TzARDRSCp8lmwfQ9aV/mG19+3f98iD+YgxpJ47uM53NLEwdpUgblA3+PUxYls3mr4pDRfvAq2/qTev6oM/kynMRY9Fz45JrHEL7nkSmaG2cmaQTSJkmFILQ5R3Jm3c69IrWsEnDJx1KG4Fbbr2f13avHrmd6a5p5x/pND1BVM7KLvHobmmPqEi3LzHs6ZXe8CB9YrjUejeGm+w
- ksSpeasE
- rgIHlC29bnxjVXZkVxB0MycamJAFfJDaFu0jo+C1KDaRixpVTZUDo0LrCr/BdhmGubyPaT1Jd7f0aFa9pM/fsMkk3ceeJflfBDpCmoxoJsctRM4mLl+Ig362OwgNtg7b77RIxTE8YJuERjo9PPENM8Fjr7VZnR05HYVzWoY0iNzwNP8wHeTyqcE0YS1ydtUm5f+bNWWIau2L+Msvwf44tqgAViT+LTNkQGFRcoJqRu37zPu3iHIOd1c+ILGh1caXFgjonUlPZATReAyKbq2cHA58HUNfLFUa2ApTQjeuSzgD6Ag5QiWTc/TH3n3OolcaAWx3UXpgetfnqgJ4=
+X-Rspamd-Queue-Id: 79B6440008
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 4zr7cbywp9junh337q4iafnh7txjzoqk
+X-HE-Tag: 1753291999-288273
+X-HE-Meta: U2FsdGVkX1+BLZ4GkZdtJoEuXIPCABe7sBfOJbRhIOZl9jwMXqoA38gGTzvIVZwyR2xhoDMTYXUw180B2OcCjcMjjpEiBeak15H+FIxShgIgiVO61BenbF13mhiYYVhtxvJ8SYzDYiJdZOYnagPEzfULRj+v3A1IiG/zJF+AqnAsMcWSf9+N/qXToru+i7YH1YdPicL0enVjOv9TrKcM2nYu8e8CFOTpLen1DhblQQaZI9KdGaykbIx3qmGyxzZvrBIIQBCuOlfApBNvHLrUNcUM+ao4h3CMsIqVgUS8Siq+m4mOEmi9wS54pMvUORsfWFHIJijXi1qKKCLdT8wLzdj8zEjO4PIGrsoRlmOu3h1IVyM0kPZHWgk0ZIYX2NbpfIRtjDsDiHsQ9oDc5B2qkz7QOqJoIDZnGfG9A9toQE3fFJTHniCiKHwp/uOf/SplsKgpYu4jvkYODwX5Fsw9sfFASoIK+cZg0RsG+eqIN/t7FvAB4nymdI3UfBhLDGEKSuNQbe5f6h2uHJZVVDPeldFBPRvspMNGYPznkxmCNoxTinjSnooCSrIU9AIUieDcM2XWrTxsdmuRS9TSphMbaKC6lm0LtrMh1h9rxhj4Z9THABDjUWwqC2DRQp528vG3mERs/+o2zGFpkHnxVb6zRdMe201Qs7V9rd7s+LypcKZwHFiSpBVBXdG0HTJPR9/cKljCb67ECopIWmV4FxerPeD99Eq9FIZ9zYT7AQD1z3ufhYOL1NksasybKU49cIcWBOYbOLciS9gUCtjubhLNYohWbO8brtewR/HlR/kinaOEUQaStji7NKRf54tHDGVf68U/UC/boo0Fs8taexcZ/DWDhH4/4VrIRrIf9uCLTZhQy18OPPqq+xSgnKPVps7gCTAdsg/FLqQ9e2jonDbyyB4j5u1gBy6qEhYgVnrO3/68J9TSQekOiQ1baqIOBYnTqwNMO0AqAmNueit+86d
+ BFwmIo3C
+ EhEFC4oO3m37TSMMJ7t2e2Cj3UcsSKbMC/yPmjVMnU0BeeTrRDuZYUDeKrtwyWFQpviMb4lSh/XOxhSc35YkSl8LQe+EyjzHWCqGdkh3YyjZlQXb+T7qglwLxz/5NHRe+rA2zCtsx27a4v9GP6iZoNp7FJMPL9X3UMMq5GHpUc+K5c/ugaRFFAtKWQ6XcEGVgVncnIJht3Wg6mwm326Fn4kubG1NwXcbA4tt7aTijtk2exiAgTDghVDBkPbYohkHSJn+U1WRxm5BwYR/IhOOU2cJtXTGwz0lgCFGV4MjezuxAXBZOdrlTrGNRaOoMyss9qaBD9i5R17i+o+ywAmRLQLJQZHfQy16jEfh1nchDsTUnIHdeuItx6EGoaJ0hJl0lhdw3B1kUvanshj6+6L7cyuMImApSqapFDvP9NQi3O+PkG/bIR3HPza6p+SnPO8U1wcmuoWwjRqdrmsp9fgwnnnpctGeMOrRNEhi/FHH+hj6xO1IUBq+gUqv80tZSu5coKo1IW269/BHEYz0w7stItvT6uyLoed/4ZN6rm4WdUBmvRjEMOmv/veMlTg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -178,20 +126,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/23/25 18:26, Jann Horn wrote:
-> There's a racy UAF in `vma_refcount_put()` when called on the
-> `lock_vma_under_rcu()` path because `SLAB_TYPESAFE_BY_RCU` is used
-> without sufficient protection against concurrent object reuse:
 
-Oof.
 
-> I'm not sure what the right fix is; I guess one approach would be to
-> have a special version of vma_refcount_put() for cases where the VMA
-> has been recycled by another MM that grabs an extra reference to the
-> MM? But then dropping a reference to the MM afterwards might be a bit
-> annoying and might require something like mmdrop_async()...
+On 7/22/25 8:21 PM, Sabyrzhan Tasbolatov wrote:
+> On Tue, Jul 22, 2025 at 3:59 AM Andrey Ryabinin <ryabinin.a.a@gmail.com> wrote:
+>>
+>>
+>>
+>> On 7/17/25 4:27 PM, Sabyrzhan Tasbolatov wrote:
+>>
+>>> === Testing with patches
+>>>
+>>> Testing in v3:
+>>>
+>>> - Compiled every affected arch with no errors:
+>>>
+>>> $ make CC=clang LD=ld.lld AR=llvm-ar NM=llvm-nm STRIP=llvm-strip \
+>>>       OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump READELF=llvm-readelf \
+>>>       HOSTCC=clang HOSTCXX=clang++ HOSTAR=llvm-ar HOSTLD=ld.lld \
+>>>       ARCH=$ARCH
+>>>
+>>> $ clang --version
+>>> ClangBuiltLinux clang version 19.1.4
+>>> Target: x86_64-unknown-linux-gnu
+>>> Thread model: posix
+>>>
+>>> - make ARCH=um produces the warning during compiling:
+>>>       MODPOST Module.symvers
+>>>       WARNING: modpost: vmlinux: section mismatch in reference: \
+>>>               kasan_init+0x43 (section: .ltext) -> \
+>>>               kasan_init_generic (section: .init.text)
+>>>
+>>> AFAIU, it's due to the code in arch/um/kernel/mem.c, where kasan_init()
+>>> is placed in own section ".kasan_init", which calls kasan_init_generic()
+>>> which is marked with "__init".
+>>>
+>>> - Booting via qemu-system- and running KUnit tests:
+>>>
+>>> * arm64  (GENERIC, HW_TAGS, SW_TAGS): no regression, same above results.
+>>> * x86_64 (GENERIC): no regression, no errors
+>>>
+>>
+>> It would be interesting to see whether ARCH_DEFER_KASAN=y arches work.
+>> These series add static key into __asan_load*()/_store*() which are called
+>> from everywhere, including the code patching static branches during the switch.
+>>
+>> I have suspicion that the code patching static branches during static key switch
+>> might not be prepared to the fact the current CPU might try to execute this static
+>> branch in the middle of switch.
+> 
+> AFAIU, you're referring to this function in mm/kasan/generic.c:
+> 
+> static __always_inline bool check_region_inline(const void *addr,
+> 
+>       size_t size, bool write,
+> 
+>       unsigned long ret_ip)
+> {
+>         if (!kasan_shadow_initialized())
+>                 return true;
+> ...
+> }
+> 
+> and particularly, to architectures that selects ARCH_DEFER_KASAN=y, which are
+> loongarch, powerpc, um. So when these arch try to enable the static key:
+> 
+> 1. static_branch_enable(&kasan_flag_enabled) called
+> 2. Kernel patches code - changes jump instructions
+> 3. Code patching involves memory writes
+> 4. Memory writes can trigger any KASAN wrapper function
+> 5. Wrapper calls kasan_shadow_initialized()
+> 6. kasan_shadow_initialized() calls static_branch_likely(&kasan_flag_enabled)
+> 7. This reads the static key being patched --- this is the potential issue?
+> 
 
-Would we need mmdrop_async()? Isn't this the case for mmget_not_zero() and
-mmput_async()?
 
+Yes, that's right.
+
+
+> The current runtime check is following in tis v3 patch series:
+> 
+> #ifdef CONFIG_ARCH_DEFER_KASAN
+> ...
+> static __always_inline bool kasan_shadow_initialized(void)
+> {
+>         return static_branch_likely(&kasan_flag_enabled);
+> }
+> ...
+> #endif
+> 
+> I wonder, if I should add some protection only for KASAN_GENERIC,
+> where check_region_inline() is called (or for all KASAN modes?):
+> 
+> #ifdef CONFIG_ARCH_DEFER_KASAN
+> ...
+> static __always_inline bool kasan_shadow_initialized(void)
+> {
+>         /* Avoid recursion (?) during static key patching */
+>         if (static_key_count(&kasan_flag_enabled.key) < 0)
+>                 return false;
+>         return static_branch_likely(&kasan_flag_enabled);
+> }
+> ...
+> #endif
+> 
+> Please suggest where the issue is and if I understood the problem.
+
+I don't know if it's a real problem or not. I'm just pointing out that we might
+have tricky use case here and maybe that's a problem, because nobody had such use
+case in mind. But maybe it's just fine.
+I think we just need to boot test it, to see if this works.
+
+> I might try to run QEMU on powerpc with KUnits to see if I see any logs.
+powerpc used static key same way before your patches, so powerpc should be fine.
 
