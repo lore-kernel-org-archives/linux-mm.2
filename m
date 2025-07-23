@@ -2,73 +2,73 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 62E70C83F34
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 08:26:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A4E17C83F25
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 08:29:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C86326B008A; Wed, 23 Jul 2025 04:26:48 -0400 (EDT)
+	id 38A896B0096; Wed, 23 Jul 2025 04:29:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C5DC96B0093; Wed, 23 Jul 2025 04:26:48 -0400 (EDT)
+	id 362746B0098; Wed, 23 Jul 2025 04:29:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4CD86B0095; Wed, 23 Jul 2025 04:26:48 -0400 (EDT)
+	id 2784E6B0099; Wed, 23 Jul 2025 04:29:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A20D36B008A
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 04:26:48 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 57BEC8062C
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 08:26:48 +0000 (UTC)
-X-FDA: 83694848496.06.76FE3C7
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 160686B0096
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 04:29:29 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B2B1AC05D3
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 08:29:28 +0000 (UTC)
+X-FDA: 83694855216.18.0DAA35F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 8B91E1C0003
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 08:26:46 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KgxqRpqv;
-	spf=pass (imf21.hostedemail.com: domain of maz@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=maz@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf22.hostedemail.com (Postfix) with ESMTP id E674EC0005
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 08:29:26 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U+NEuPjY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of maz@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=maz@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753259366; a=rsa-sha256;
+	cv=none;
+	b=S/I4Fp8hPS6e4fxDcLhPuBlDiVxjWo8lmx+9AbjJsSFtZ0k/rlCjXErEnWv1Oe1h8U5AQU
+	Gs6Jbq+ixwiAz+G2IDyUm3zY2aUSk6y4l2SvQbiIPsy9MYQXwfpZoOseOnrsiBNzl52V7l
+	1i+wxivsq4UR0JVv8L+GJYFCOQ/xqBQ=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U+NEuPjY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of maz@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=maz@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753259206;
+	s=arc-20220608; t=1753259366;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P1tt9yp1sAWQeXN6daT1C0pUrIG5Yal2NggGgMX3QrM=;
-	b=k7eDZ6QVK7OtQNM/OC/RI40VNFTAA4f6fEqNx1PwW6Ifp7UTe/C2jQIvDy+Nt6aarTFdh/
-	bjBGCtbx2DthWm/hBsCaDe/F+H7UFqlJGQeFCO7iGfVIiqZuGFxX8yzv70jYupEOJMJIEZ
-	r9sp4maM+9hebvbvbEwxiamvCKkdupY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753259206; a=rsa-sha256;
-	cv=none;
-	b=eQ55/v23ha9VMVMopAQ4YjkFiKmoWXBWMnTz58UYG88CX1V/U3Ofrcvyb4ax1qNGGuAL7v
-	bKjXnnlktJ7c+TmUgSxkf8KiOJ+IBK3VC/TigaEQ/hqxTQ0hLqXGKH0BE0woyPgJwaqoP2
-	AdXv0QSczB/WeRNh7vwuNMIC7YGduF8=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KgxqRpqv;
-	spf=pass (imf21.hostedemail.com: domain of maz@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=maz@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=Xp3aRzVN3oPWZc4jXMJoXAT70b7hbTMb87NX+LIvjYA=;
+	b=ZLFOuNzbIX46LL98cyE9KwdraxDaHOYIuMYm9HIYDI6Yt8YZucltdci0eLLXo0eWUeTFYI
+	98AbuWWLvibHnxlBBOp/ws1u/6IGZACOy6Q+xMNni66mgn0nNXrvd2ocXfo0hddzBGIuqy
+	yIVxibG4DfdqX4FCwsCiVvF2ZElkDMY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A2A7C601D5;
-	Wed, 23 Jul 2025 08:26:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47258C4CEE7;
-	Wed, 23 Jul 2025 08:26:45 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2B3FC601D5;
+	Wed, 23 Jul 2025 08:29:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4194C4CEE7;
+	Wed, 23 Jul 2025 08:29:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753259205;
-	bh=JLMV1LDmPmZFwVDJChckhpAPWnT8rA/zGH73/EfWR40=;
+	s=k20201202; t=1753259365;
+	bh=yZzDzspz/hbs+ZI2bARhhg1NrwdEQ/R1WgItfyvWZ64=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=KgxqRpqvnS9XMnEfExsx/b9BIdFFIXT0mgj5tZeBil26sOCmyigBk1hjuKRcMT6NJ
-	 Nho0Fqu0mPadxYBYZTtEdgD5bN12bWlFC0G/LfFDKBXIrbSZAdXvGf1Hgx1U5B+wo1
-	 7p4eRpiuN7E8N0TtwiyZXgNqsDxINXHoBaSaMXPbDowEHo2H3EbjDEuiU3vWVPuqE+
-	 Npekzaz2lgUMsQwzu0Xs7lFV6OsKXpqMI8CHS67s5pu4RgYoW0hxT5HEquoLl+ua1+
-	 ntK0b2+9duh3mwF3uRBl5OKFv3Pty8vbWJpg4mZNOaEU0sFI3Lf9IKPkYLjmrBr2OV
-	 ULmlGb5coiOgw==
+	b=U+NEuPjYVaMphb588UKQdnFGh8jYQIaGAFO5RSZHHS2uTzxjbffJ0wV4RvByDdefU
+	 /yAbktW7knDpaELNN+dmSB3mYqfeH46gUiJQvPoUWU1sRxnpQEcNRc5SovTJQpGxx0
+	 MX5wycFo6RF4QbJ6mD/LrV9SeGtSHRPRI/ZrUiIsxHcf3ofChhVSa5fb/YtRPuuVz4
+	 /NhVhbIKE79+8AeB5pLHK98D1jqVlLWG4xV/X3wBGY4Z2dgXyioYf3DdxMkfhIiKCh
+	 Tdm2s0Mn57hQU+44blC2fsrBL65MJMZlNp9/6m39D/5Bdr7xxK0cFMKlj06FkNGjb6
+	 IintvPIq5gWUg==
 Received: from 82-132-236-66.dab.02.net ([82.132.236.66] helo=lobster-girl.misterjones.org)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.95)
 	(envelope-from <maz@kernel.org>)
-	id 1ueUoE-000bpL-7x;
-	Wed, 23 Jul 2025 09:26:42 +0100
-Date: Wed, 23 Jul 2025 09:26:30 +0100
-Message-ID: <87o6tbtirt.wl-maz@kernel.org>
+	id 1ueUqp-000bs6-Dx;
+	Wed, 23 Jul 2025 09:29:23 +0100
+Date: Wed, 23 Jul 2025 09:29:17 +0100
+Message-ID: <87ms8vtin6.wl-maz@kernel.org>
 From: Marc Zyngier <maz@kernel.org>
 To: Fuad Tabba <tabba@google.com>
 Cc: kvm@vger.kernel.org,
@@ -133,10 +133,10 @@ Cc: kvm@vger.kernel.org,
 	peterx@redhat.com,
 	pankaj.gupta@amd.com,
 	ira.weiny@intel.com
-Subject: Re: [PATCH v15 16/21] KVM: arm64: Handle guest_memfd-backed guest page faults
-In-Reply-To: <20250717162731.446579-17-tabba@google.com>
+Subject: Re: [PATCH v15 17/21] KVM: arm64: nv: Handle VNCR_EL2-triggered faults backed by guest_memfd
+In-Reply-To: <20250717162731.446579-18-tabba@google.com>
 References: <20250717162731.446579-1-tabba@google.com>
-	<20250717162731.446579-17-tabba@google.com>
+	<20250717162731.446579-18-tabba@google.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
  (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -148,14 +148,14 @@ X-SA-Exim-Rcpt-To: tabba@google.com, kvm@vger.kernel.org, linux-arm-msm@vger.ker
  in@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com, james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev, will@kernel.org, qperret@google.com, keirf@google.com, roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com, jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com, ira.weiny@intel.com
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 8B91E1C0003
-X-Stat-Signature: skrryqu84a5to7h36mugncgg98r76xpk
+X-Stat-Signature: 6mq8o7oh88jygcc4ean5h4npe7rtpzem
 X-Rspam-User: 
-X-HE-Tag: 1753259206-465398
-X-HE-Meta: U2FsdGVkX19jRfSv3fnjBfvUE91QH4IqgAko0GGNbDjGiT3/gbjXI9P6bzjV149ZZEw6Z5L/o8sufe/WqkaSrww/22I1eFjn9NJMmK7PqH4M1qLKIx1Zawg1i/zJuw+zejYNr0d+Tt5JCO+bZItvcuCAEYdZ4l01Al9dS0IOPOGTBMtAIOjekKn08V6uMuTHU7hJpSaVK1D/vG+OGCtI0B5MlmqGq6Ij7IqmiQwlSmVqgqbnYbhbzgxkAMW/CgCAfkIgo44GDv1+25tLxPUPmBsYldCJkbu1uZ69ljWEvTALCp1wggkXESyoeWvWtTmJRu5dvKQH2Fr/7lR7Bem4paOoGoCVLxq/L8gYz6YwV/j6OnieWs8hCK1ZNvnqy/yNqcGNEPgBfIh5BatRPJp7127IdQn4X/21VyXBolR8wPYLmbQFvWziI1ds/pjCfMvE6J4dx0zzvqF81uUxff+NrOpFUex6PHDltgAyZYGpUON7DGhsaqbA2LUXIKmVaKCIwfEz6J6kHbNBGZTavzP3Nl5IDFod/oFeBwyC0TJ1VXMtbuNPlB6hTHIJQeapEBBjmdrDtF48QSs55OCHPliDSfYKtAix19lTMjcjrvIz0FtU0JHosLhp/T7cjW/FFD2YRVfavARD02NbLxxs+SP9j9qm8K4fLsWInh8d7vuMLTvR1Dwy80pSjYEElSPJqG1tAtAzTDe04EYwPhsk77n46hKmWvhTIzIvxhgyMc/jKBnTPPhyXYIAaLFCK4+oVGA78CQOV0Ge4JPpLkcCFUtlFjpyWzy5m4Td7yvTdqgwkgT34CPYjJFszW+WOTiFf1zODKa1SWxed9B01vbHebKzFGiCgIE+5kVMD4NZ2LAsHrsilX1t9uHHNnVdYR6kVtNpQrbcCfja61Cu2rwmvcYoNM6TksII/svUCD7kowNPwqQceC3b/8tqamyu60y93941skGYkiV7gFji9ShpstJ
- HZps6tT4
- H5coLJPGhCZWnOs0KKITfLbD4MkuD6FrqCjUd4M07VpUdh7NXB6tcyLfoNz8/ZKDjduTsXmBrXjORPOxgU66LMBd2d15TdhoLaX4ErnKnKfiTwQ48EKFg9y3ay35xljqE27CC9a05Ria44zZTf07bPjcjAo9oLJiQAXosHJPTcCFoj2O15qgR9dfH/NsLdw+QLvzg92GQdelztMjsgtiIj7dcYmplhbQC5QSjvfy5cNkgpSkF2tXU1Gpj8ZSaSWQ9zpUVTgsfRQqpCqGzRaFa/+h6H5U++dUEipLCpRBa5cAvz94qZvEJLJOE/Jz3L5OnFkaOLMns3x+ce4OIbIQgTFF77Rtrwuvi5UkgpRWDj2iEC7NgfDnNJLVX3WHdQvvC6u7Rfp7+yaAtwniO8JBQz2Kivn+RhQol9A9j/vS7BLBLB2hSfVDB3JJkHg==
+X-Rspamd-Queue-Id: E674EC0005
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1753259366-792949
+X-HE-Meta: U2FsdGVkX19dcUzWHKiLteJA+zGrBt9kKcxsRKwmO3Uhup0n+pjfhHAlxhvycx8uLMoA1qolxICfqADsQEuE3xZoE87CUw71fuz+/kSDRYQUSTN/u1viq1ynKGh9Zb+qrn+Ll5x3A40Jh9ddrY0ct3UWgvj5j6fm1evAReRKqKWkrebYHNgXxDZ04Cahbo1BIdepai217wW8h2vR4EVTV0FAlxoCDyJ85D8vrdinHU/k8AEUyLi0+3exzK5PVmTaczbiZu3aIC1tcMtXy5i4ii7MyAVfxQehVXXeOB+NlD0xXTGAZE4KNf50ftVBFP4jjemLQyJPWpL7gi3rE4bLkj+IJ4jJoLjT2DGsi6PWJnHUJpgBbmrrI8RI8Y/erIMVChL2CcNMGimwXngp/X78w/+/JvBC1JEWcxcrMOKvlrSJN6A3k2OGEU5vTp5qi6FFjCOpcHhlos3dob2tOVAsF8nz5mCa3c69QGNRi92QdWB1oR5w6eFNqhri8qtb+RCrgbcfypq+M3uUpB5IRNixlNSnEzJxztp+tAbW0JYx/ZbB9vJhL7oNmLN9vg6naah9gVgDdHYdpL0x76yQL9jtXnNdDgTCHT3bVeiGarfRX5CDB2pOThQQnRIpw2K+aypiaUkeHe8so9yTMTd+Ha2CrUptZm56m0zrWkcJiVsNuOF5lXs6UR4sAwr3Dn4J6QcpClx4n4OptNxfb2jLcatxdzZXAnES2KaliyMAa2DD6wosB/cWIHk08azYVoeVfyzNzpwQrdPPqGlSDfSpgXwJhdIZSDIei/3RceLVNDB5WI8ih58lWwpHFEoqRStftj39xvIrIrdnR/vyYw2YroKLMBl5VodjOLYckpGVYBqfoXp5xjIwun3cHdezBu1xTX6W6n3psFpBnGSAA/MhrB6ZGhOiKSvUKomm4ODAsdnVcMo1RvLOpIgv1IYVQL4DPc5+SUwR1qJh2hPgSSRvooR
+ LZs/8BOf
+ /YNnRuFYyCokhiSdEDPYuqUYdHbDEWsj3JnlCIMlRdWSm+YZYz1QCEaY4njYxmEtX3AFTy6IuS6an1bvujS0i3s3c3eK7aWeAnycen2xemWx2pizCHTpL8/AmB8PC/aU8mFdqNCDsUTBXu14mjHYblF+VuQrliPQtIyS7J3E++c27iPhIc9o3OoySpbb3YvjyYOJRsum+miWLGQU7w3ctDr2DNwenm5bwwH8FTX9/EAnWiK0cYdebJLRi1eNK1SBu0mLvK9Ly1r1YVoUMfHc09qXFNiaQudZ3wdu9qhra2eO91/uU/3g9nL61vTFLq16AxuBglpQ39ZfOSLZIzLalDaYUJQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -164,23 +164,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 17 Jul 2025 17:27:26 +0100,
+On Thu, 17 Jul 2025 17:27:27 +0100,
 Fuad Tabba <tabba@google.com> wrote:
 > 
-> Add arm64 architecture support for handling guest page faults on memory
-> slots backed by guest_memfd.
+> Handle faults for memslots backed by guest_memfd in arm64 nested
+> virtualization triggerred by VNCR_EL2.
 > 
-> This change introduces a new function, gmem_abort(), which encapsulates
-> the fault handling logic specific to guest_memfd-backed memory. The
-> kvm_handle_guest_abort() entry point is updated to dispatch to
-> gmem_abort() when a fault occurs on a guest_memfd-backed memory slot (as
-> determined by kvm_slot_has_gmem()).
+> * Introduce is_gmem output parameter to kvm_translate_vncr(), indicating
+>   whether the faulted memory slot is backed by guest_memfd.
 > 
-> Until guest_memfd gains support for huge pages, the fault granule for
-> these memory regions is restricted to PAGE_SIZE.
+> * Dispatch faults backed by guest_memfd to kvm_gmem_get_pfn().
 > 
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Reviewed-by: James Houghton <jthoughton@google.com>
+> * Update kvm_handle_vncr_abort() to handle potential guest_memfd errors.
+>   Some of the guest_memfd errors need to be handled by userspace,
+>   instead of attempting to (implicitly) retry by returning to the guest.
+> 
+> Suggested-by: Marc Zyngier <maz@kernel.org>
 > Signed-off-by: Fuad Tabba <tabba@google.com>
 
 Reviewed-by: Marc Zyngier <maz@kernel.org>
