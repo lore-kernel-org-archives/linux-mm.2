@@ -2,108 +2,105 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C77FC83F1A
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 11:45:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F8ACC83F1A
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 13:02:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F32466B00B5; Wed, 23 Jul 2025 07:45:08 -0400 (EDT)
+	id A91A48E0003; Wed, 23 Jul 2025 09:02:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EBBC76B00B6; Wed, 23 Jul 2025 07:45:08 -0400 (EDT)
+	id A68DA8E0002; Wed, 23 Jul 2025 09:02:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DAA946B00B7; Wed, 23 Jul 2025 07:45:08 -0400 (EDT)
+	id 97ECB8E0003; Wed, 23 Jul 2025 09:02:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CB9B86B00B5
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 07:45:08 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3EE54C0160
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 11:45:08 +0000 (UTC)
-X-FDA: 83695348296.07.2290996
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id E74D8140002
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 11:45:04 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=V906kXSO;
-	spf=pass (imf23.hostedemail.com: domain of kunwu.chan@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 84BCA8E0002
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:02:00 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 21FE95AB40
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:02:00 +0000 (UTC)
+X-FDA: 83695542000.20.C8234A1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 641D81C0021
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:01:57 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PyvJ2iUl;
+	spf=pass (imf18.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753271106;
+	s=arc-20220608; t=1753275718;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l59cD6t8x/yYppwAMFqjuP0HYW8qoCrV0FHN2nRJB/Y=;
-	b=Q6vutIvVN8E6vhql13UAqx64OOL6gcv2TIat16VQ1pnQoEPKSourjnM3Q7q5N49ocUgY+X
-	6esduMDHgySDcewnCgSmwg5Nngr3hWqk6QKBD9MdQPS88sdTBchcJ8TYvbeoxRV5gvcha+
-	xhPUgSI3MpJEfSl+KRBuK+mW669VGzw=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=V906kXSO;
-	spf=pass (imf23.hostedemail.com: domain of kunwu.chan@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753271106; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=phKzR0U9vdX+OIE2j4TVSoC003PJDnKhnDKfctYSamc=;
+	b=U2cwMaYhtRfw+5MEsTDlKkpMiDsWlily2TVrF8pZAN/xEZEjyq++vUDZMIXoiPCRG9cVgL
+	2Cdw2kNoCP9+zNX3GHYiF3rLg7cmQXjh7GynXxikCtDchNSrg4GNou43qCKX+nniPFDwzh
+	YASOxhYvhzhwsd/c7u5/ax9BTzhqHeg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753275718; a=rsa-sha256;
 	cv=none;
-	b=6HMxHHdspspFIzydUXx+rR0BkuJ+5IiXuAe82UKczRsFhHaxpJO55536p7gh5kc+l152Io
-	RSaWukUgHxegcxKYsDBypqP0dRpDm0Vb/Xw+f8m8oxwEDCbuM8sedZUrY5cde4mZH1Pcn0
-	rJAPtPk7ITTBJSGpg0qvkP1iU51mY2U=
-Message-ID: <63b70aa3-5b20-464f-83ac-97b6a78c99f9@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1753271102;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l59cD6t8x/yYppwAMFqjuP0HYW8qoCrV0FHN2nRJB/Y=;
-	b=V906kXSOWuv2GItOcDK540WJ3tHmdbNrKADl+IxsddBmeLbJQzIDavJMyUe5zJ84UCrZ+p
-	/twn4ph0k0JIHqifJ4/aBEq9tMIzVjHm6gxNN3l5P+YcW81TP0J9XHd+QbgzDbPy/wLKf0
-	EssEmv7nn7aObEElJagRnU4R8JLKNsU=
-Date: Wed, 23 Jul 2025 19:44:09 +0800
+	b=G7OPAk8ukH+zS0lgjUFugRkb2h57r5MGQD+6DpXsjcViS1FWv1TmPxUy6e6icQ0RHuHSvq
+	19kIfA1uMYoUJQUQ0YnMlZchPq2kBzS8V7EawiSTPr7RBGtkRIykkc4TMHjKU+G2s/jw4x
+	QLxGMhiP+VZFBX5Na3rSvL1lD6tvcAY=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PyvJ2iUl;
+	spf=pass (imf18.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0E15646205;
+	Wed, 23 Jul 2025 13:01:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB36AC4CEE7;
+	Wed, 23 Jul 2025 13:01:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753275715;
+	bh=VeEaP0I6Ju84rRyRYaicpp+t8ePJyjkfRFyzhb+AudA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=PyvJ2iUlLMlbGzX5qzJpPwU19z2ZHVNgRRR6I6pgdUocqIvlwyAEVWlzxFVyH+O5B
+	 rgvRUW0KyWJCaIjAWkNSjYQZTjUA8hXt537lM2z1lqW3QLRM+cccx6Wa7AnC47Kdh5
+	 5vyhtPdVK3eYgRSInD6ot6DkzLAf5sTN26YAlVnpeeskZCszqRTW1E/3s1cIFoXbIv
+	 cwHrWiFoDlhJYh6kh2ZXmBFSyLLP1YH2+JOYj0Akmjoq6YhcbZiRr95b4qm1dHfFnN
+	 OpoAwh1yBhmId5vMmQ85Jwdtkwph/jN1NrrSQ24V5bB3R7cAOPmCfMDkPo1fsYxenn
+	 0kqYO1EMHe0rw==
+From: Leon Romanovsky <leon@kernel.org>
+To: Alex Williamson <alex.williamson@redhat.com>
+Cc: Leon Romanovsky <leonro@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	dri-devel@lists.freedesktop.org,
+	iommu@lists.linux.dev,
+	Jens Axboe <axboe@kernel.dk>,
+	=?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
+	Joerg Roedel <joro@8bytes.org>,
+	kvm@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-pci@vger.kernel.org,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 00/10] vfio/pci: Allow MMIO regions to be exported through dma-buf
+Date: Wed, 23 Jul 2025 16:00:01 +0300
+Message-ID: <cover.1753274085.git.leonro@nvidia.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-Subject: Re: [PATCH v15 16/21] KVM: arm64: Handle guest_memfd-backed guest
- page faults
-Content-Language: en-US
-To: Marc Zyngier <maz@kernel.org>
-Cc: Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, kvmarm@lists.linux.dev,
- pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au,
- anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com,
- aou@eecs.berkeley.edu, seanjc@google.com, viro@zeniv.linux.org.uk,
- brauner@kernel.org, willy@infradead.org, akpm@linux-foundation.org,
- xiaoyao.li@intel.com, yilun.xu@intel.com, chao.p.peng@linux.intel.com,
- jarkko@kernel.org, amoorthy@google.com, dmatlack@google.com,
- isaku.yamahata@intel.com, mic@digikod.net, vbabka@suse.cz,
- vannapurve@google.com, ackerleytng@google.com, mail@maciej.szmigiero.name,
- david@redhat.com, michael.roth@amd.com, wei.w.wang@intel.com,
- liam.merwick@oracle.com, isaku.yamahata@gmail.com,
- kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com,
- steven.price@arm.com, quic_eberman@quicinc.com, quic_mnalajal@quicinc.com,
- quic_tsoni@quicinc.com, quic_svaddagi@quicinc.com,
- quic_cvanscha@quicinc.com, quic_pderrin@quicinc.com,
- quic_pheragu@quicinc.com, catalin.marinas@arm.com, james.morse@arm.com,
- yuzenghui@huawei.com, oliver.upton@linux.dev, will@kernel.org,
- qperret@google.com, keirf@google.com, roypat@amazon.co.uk, shuah@kernel.org,
- hch@infradead.org, jgg@nvidia.com, rientjes@google.com, jhubbard@nvidia.com,
- fvdl@google.com, hughd@google.com, jthoughton@google.com, peterx@redhat.com,
- pankaj.gupta@amd.com, ira.weiny@intel.com
-References: <20250717162731.446579-1-tabba@google.com>
- <20250717162731.446579-17-tabba@google.com>
- <07976427-e5a4-4ca4-93e9-a428a962b0b2@linux.dev>
- <87pldrtj1o.wl-maz@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kunwu Chan <kunwu.chan@linux.dev>
-In-Reply-To: <87pldrtj1o.wl-maz@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: hmp3sr4546y54qmxp817axcfrybqnhnp
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E74D8140002
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 641D81C0021
+X-Stat-Signature: h1y7fdorzsm4mtaxzxcgw5uqtereuath
 X-Rspam-User: 
-X-HE-Tag: 1753271104-342852
-X-HE-Meta: U2FsdGVkX1+Au2co5oIZ0I0kQyWKbYhOpnArG8PFAwuHXeL4+wIBWPifUe0oJNlqt7mC1Mi0hb08j+4/8DTFBQTequbUoMk02pVCw/cHjP83io2PFFr3CUSwdsBfBOJR+eTpO8CgkZ1WtMD2htberMJWh6C9DBRUbbrTVns5+yhcv4JkpsSxJvvKzOHzA7ykRxqAbq73hi3PpuDkGER18bkBwa9V4uZejfElqvkkK/BFwKsPU8Kon/so8aQWKxVQTHkbESzyg3dAKh0gtR7yc0rBr1rqUduM1Ox7g5PQXaTwkPXxf02IRd9JdM0dAzeTBaofZN6JLPpfuwqtDnR17c/jWEOskUnLhqUJY6Bw3nc8QgJTbxwhIxgPa8lAFzk/XEVpKAkevg2xAwghPMHwD0uY7LQ4za1DAMDMbU5p4KxZhE0BYxk2AOgsvFE8rfF7NPBeMLikLO4/5IqUKde4sLIFe0/md/SsEkwwqfZ+59Jodgt2PBg3S4y+6z9jegZH2TIUSZDt5gJwtCLVBHhYZVxdMhqNqZun7hgwoFaKW7mXsJrBKgjFBMKCFDXdYB1PZR+lFUVrSC76xGp9nISwXzv9WPV1FfUghUvMieuO1MT6zjsjDeKRxBS9FSI9RIVkSI1vGbr6R2Q+bmlhBRTpaAgtDPwNzp9p7rOeKHdUYdT+vmzlxpqTHFKmJ3I+HTUqT2T3EGmSvwjRlVP61GFvCILc27Jp6vMreZblo9kpzK/hHgyr6jbs0rFt0Ed3m5ShBV7jAPFmImTDcEwZqoYvzNdfZxgfZa5xKANQ9/pvXHMMSUc8YAueK5DCG3G2hT2+EPdZ6EemQWQBFEb9NIDLt1YKX1l+fk5Non/dU2ag2lee7kBxYRp/lrlLVKABWeFo5K0yN+KopwoFY2/onIvc++Haw1OrQtvLeGshK5i6RigUKU8En9cxEwuq0nHcfpk9ZNMKcF9DPUJfhanIr6E
- OiztZpAo
- H1PD0c4jQ7BFhB+A=
+X-HE-Tag: 1753275717-796385
+X-HE-Meta: U2FsdGVkX1//aLWRvJ5fMQrvGVws6TZzir+dXqohAUcUZM3ZPM/PSAYAWQHMoNYjfV/KnpHjRXJEk4fMJP/KAl2+fzCf08NZtfCGEDosSmLxOlqL45FIvaHaAJWHgZ65/nc+myhSUtAoq2lxeU/RNZb/ut/vqov2Bweqqx1qaZXPbS/64jhhv5cYI7vrcV2IqepB6lS9GuFmfP2JHZvN5F4rjgY5PuaPdkUlFJ12RMPIcWs4EcJuU3w2KP0aI1Z/JBOOqKbAm25ANQeeaYdhTcKekhPOBF4mHa3tB3UXLNnYmbgdiy1EtIso74+Ex10GT5RXyrjpeAthaM0kFqHnmV/obexR9MNTl+RlMDgWEqzljjR9rbIQ4vUpaCCputf8jB/Bi+/Wrw5L6Jzr8vOxynfv9YgnJihXoKQ2ksgab3VJOd/pgH2RvrjSAP7z6N4ytN4VGHFSHqjtKyy2oSwvDyofHi4PxanVkYQkcHCyPpd05J0D+nJ2OFdDB4Tmgiz7RXFu26J/yb4BbddGqPlJvw0fk/1HdsZTp4LUpYdW1jr6r+hS+bxISt6YZxyVr99CImu3Sx+OK/VLHsD66G1j57aY+F9gSf4qw5aw1Kk2KM/5CVoUDC2KRjt5bHLZYyTLsZFdTOCvwOKDgdHsm7sPIPE+Cp8y9lEKpNXiIT8xvqGLPahzpnFZkEhz6iYti9M6Ba0g4HfTkCjgz/1qiHi+IGOxVNt880krPJFoqf+HUJvXHVGxeluAaf+580Wq4KJBd2kj8wZLQY7OodEd4xy4Px0yVF1chOCs5tnTDRxPFxr+6vfQ+/o0TwPKisB50PejowSYKmiuu6zoamyh3/z28Vc0N901MGkHF3bu361AdKvsE68d59BR4Sj6tM6LHqn5UsEvbZvB8BVmMDRlvj69/C/38k41FnrX3mjFfdBAvLqgDkiB67JEOc7awPvBvwGQFAbIV2LkESazwKBzZqW
+ Kx8iA6yR
+ 4SA1aS+MAtuHXmtmwaR1VQUjx3510+UvF7a//rRXLynSiWXcKhTj1ODN+BZBpidj4KoBxnkYywKEloWawOZA9yxlwnqKLVYFghtOE+VD1Ji9xwRwCflKVcRrAo0sOka6szPsBJ3coXIDaou35q9DRFkFf6c6aAxwj2aPfXCXYhxD+JvOzeVg4y4Ezxg+ZUdJDk9fklMzovoa32YXPHDykR1JixcU9TvyR7yPNkNowo86PoDs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,44 +109,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025/7/23 16:20, Marc Zyngier wrote:
-> On Tue, 22 Jul 2025 13:31:34 +0100,
-> Kunwu Chan <kunwu.chan@linux.dev> wrote:
->> On 2025/7/18 00:27, Fuad Tabba wrote:
->>> Add arm64 architecture support for handling guest page faults on memory
->>> slots backed by guest_memfd.
->>>
->>> This change introduces a new function, gmem_abort(), which encapsulates
->>> the fault handling logic specific to guest_memfd-backed memory. The
->>> kvm_handle_guest_abort() entry point is updated to dispatch to
->>> gmem_abort() when a fault occurs on a guest_memfd-backed memory slot (as
->>> determined by kvm_slot_has_gmem()).
->>>
->>> Until guest_memfd gains support for huge pages, the fault granule for
->>> these memory regions is restricted to PAGE_SIZE.
->> Since huge pages are not currently supported, would it be more
->> friendly to define  sth like
->>
->> "#define GMEM_PAGE_GRANULE PAGE_SIZE" at the top (rather than
->> hardcoding PAGE_SIZE)
->>
->>   and make it easier to switch to huge page support later?
-> No. PAGE_SIZE always has to be the fallback, no matter what. When (and
-> if) larger mappings get supported, there will be extra code for that
-> purpose, not just flipping a definition.
->
-> Thanks,
->
-> 	M.
+From: Leon Romanovsky <leonro@nvidia.com>
 
-Got it, no questions here. Feel free to add my "Reviewed-by" tag to the 
-patch.
+---------------------------------------------------------------------------
+Based on blk and DMA patches which will be sent during coming merge window.
+---------------------------------------------------------------------------
 
-Reviewed-by: Tao Chan <chentao@kylinos.cn>
+This series extends the VFIO PCI subsystem to support exporting MMIO regions
+from PCI device BARs as dma-buf objects, enabling safe sharing of non-struct
+page memory with controlled lifetime management. This allows RDMA and other
+subsystems to import dma-buf FDs and build them into memory regions for PCI
+P2P operations.
 
-Thanks,
-	TAO.
----
-“Life finds a way.”
+The series supports a use case for SPDK where a NVMe device will be owned
+by SPDK through VFIO but interacting with a RDMA device. The RDMA device
+may directly access the NVMe CMB or directly manipulate the NVMe device's
+doorbell using PCI P2P.
+
+However, as a general mechanism, it can support many other scenarios with
+VFIO. This dmabuf approach can be usable by iommufd as well for generic
+and safe P2P mappings.
+
+In addition to the SPDK use-case mentioned above, the capability added
+in this patch series can also be useful when a buffer (located in device
+memory such as VRAM) needs to be shared between any two dGPU devices or
+instances (assuming one of them is bound to VFIO PCI) as long as they
+are P2P DMA compatible.
+
+The implementation provides a revocable attachment mechanism using dma-buf
+move operations. MMIO regions are normally pinned as BARs don't change
+physical addresses, but access is revoked when the VFIO device is closed
+or a PCI reset is issued. This ensures kernel self-defense against
+potentially hostile userspace.
+
+The series includes significant refactoring of the PCI P2PDMA subsystem
+to separate core P2P functionality from memory allocation features,
+making it more modular and suitable for VFIO use cases that don't need
+struct page support.
+
+-----------------------------------------------------------------------
+This is based on
+https://lore.kernel.org/all/20250307052248.405803-1-vivek.kasireddy@intel.com/
+but heavily rewritten to be based on DMA physical API.
+-----------------------------------------------------------------------
+The WIP branch can be found here:
+https://git.kernel.org/pub/scm/linux/kernel/git/leon/linux-rdma.git/log/?h=dmabuf-vfio
+
+Thanks
+
+Leon Romanovsky (8):
+  PCI/P2PDMA: Remove redundant bus_offset from map state
+  PCI/P2PDMA: Introduce p2pdma_provider structure for cleaner
+    abstraction
+  PCI/P2PDMA: Simplify bus address mapping API
+  PCI/P2PDMA: Refactor to separate core P2P functionality from memory
+    allocation
+  PCI/P2PDMA: Export pci_p2pdma_map_type() function
+  types: move phys_vec definition to common header
+  vfio/pci: Enable peer-to-peer DMA transactions by default
+  vfio/pci: Add dma-buf export support for MMIO regions
+
+Vivek Kasireddy (2):
+  vfio: Export vfio device get and put registration helpers
+  vfio/pci: Share the core device pointer while invoking feature
+    functions
+
+ block/blk-mq-dma.c                 |   7 +-
+ drivers/iommu/dma-iommu.c          |   4 +-
+ drivers/pci/p2pdma.c               | 144 +++++++++----
+ drivers/vfio/pci/Kconfig           |  20 ++
+ drivers/vfio/pci/Makefile          |   2 +
+ drivers/vfio/pci/vfio_pci_config.c |  22 +-
+ drivers/vfio/pci/vfio_pci_core.c   |  59 ++++--
+ drivers/vfio/pci/vfio_pci_dmabuf.c | 321 +++++++++++++++++++++++++++++
+ drivers/vfio/pci/vfio_pci_priv.h   |  23 +++
+ drivers/vfio/vfio_main.c           |   2 +
+ include/linux/dma-buf.h            |   1 +
+ include/linux/pci-p2pdma.h         | 114 +++++-----
+ include/linux/types.h              |   5 +
+ include/linux/vfio.h               |   2 +
+ include/linux/vfio_pci_core.h      |   4 +
+ include/uapi/linux/vfio.h          |  19 ++
+ kernel/dma/direct.c                |   4 +-
+ mm/hmm.c                           |   2 +-
+ 18 files changed, 631 insertions(+), 124 deletions(-)
+ create mode 100644 drivers/vfio/pci/vfio_pci_dmabuf.c
+
+-- 
+2.50.1
 
 
