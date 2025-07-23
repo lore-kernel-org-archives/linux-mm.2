@@ -2,84 +2,84 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 513BCC83F17
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 13:51:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 89BB9C83F1A
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 13:56:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E03758E0023; Wed, 23 Jul 2025 09:51:23 -0400 (EDT)
+	id 2C0E46B00EA; Wed, 23 Jul 2025 09:56:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D8BC18E0002; Wed, 23 Jul 2025 09:51:23 -0400 (EDT)
+	id 271A46B00EB; Wed, 23 Jul 2025 09:56:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C537D8E0023; Wed, 23 Jul 2025 09:51:23 -0400 (EDT)
+	id 160928E0002; Wed, 23 Jul 2025 09:56:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AE24B8E0002
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:51:23 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2F9CBBAB9F
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:51:23 +0000 (UTC)
-X-FDA: 83695666446.27.6B4A0BF
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	by imf15.hostedemail.com (Postfix) with ESMTP id AB0FFA000F
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:51:20 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=WzKGZ8WP;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf15.hostedemail.com: domain of xiaoyao.li@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 0529C6B00EA
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:56:14 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BF75AC06FB
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:56:13 +0000 (UTC)
+X-FDA: 83695678626.20.EB12E47
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 7A50940012
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:56:11 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kq89YRKZ;
+	spf=pass (imf27.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753278681;
+	s=arc-20220608; t=1753278971;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K4zQ+76oJdWedF8P83PLBJIlkekHGBNe0+VBwKXOJ9Y=;
-	b=D86pgQMPOknqppSxXGCezkfgqo6jixJorTvJ2HdHYuel9tNgXFFbO6/Grq23JBTzhy2pUS
-	snzzJcZB5duuACjJZ4kAcxYGqQMhqNlr0R3KFPcI7YmFs+wT/RpKqVQiAorXxYEA7y5fcd
-	zMAKeX7AZY1iAMllFlhy72GlH86WFTk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753278681; a=rsa-sha256;
+	bh=Z/IErEt1WJfSIvUDGJZUa2vOJ7JVthl4LZcTfzRz1Jc=;
+	b=LFNLR5kp/oyuzjLXmZ3JJ7kqU061fSDKlGPRyDZtu1od+n53TVJGjJlfkezJTyUc5lCcQD
+	e0TmWqbHCW/dLDWymou4D7Wgm7OEdbGIGwOD8EBbwqyWj4N8KI6SNGb3XSQYnrbYGA5R04
+	OVt8zu/ptWySXT6joHIAhe34CJr0YuU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753278971; a=rsa-sha256;
 	cv=none;
-	b=l/Mmet5SeRmYNzj2oMEZvJy3CyxqsKgAwCwnGaenwkk7j4Q0/NmMrUgQZw3EpJiqupNHxI
-	1kYqDSWTYAienTPGUxzQAtH5BJgxUJ4BK1RV9KpiRpB2NvLEgjJbEPE73jjIJa3gt1mSID
-	IHBGwQXBXSauT449IcK60dw0jNxCM3s=
+	b=2B8NIBxwp65tD4Bap03dJnH9HlQUnRa9cGT0plysiuSV1CXnDajo44/0k8HOFtkJCrkn+8
+	e6vpN1CWm0zkzwACQC9mmmFd1IkKTxJ7/pIU6QtjsS3CXMm/qQYI5ACr+XFFQjLtQY6V+i
+	lgwJr6dPtg+4gMiqZW7UCPCI2QhcmTs=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=WzKGZ8WP;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf15.hostedemail.com: domain of xiaoyao.li@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com
+	imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kq89YRKZ;
+	spf=pass (imf27.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753278681; x=1784814681;
+  t=1753278971; x=1784814971;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=eQrNVexDn6gUiI8N7okzCFGkwbMEVNClA27i2DhdkWo=;
-  b=WzKGZ8WPpW9p3V8ERMIOCEwcRWp03rYo0cFvu3PY9ZO9qv5TwrvXx01V
-   5sbvBbteKc5A14rfBUf6bZ1ntTNMd5zMxKB5fd4QK3z7spSqdESvTBjJX
-   no038iKqhJaJ7gw3yKOtKG0m4+aiLMLrpvI3NQeQvLMXJO6LNPufXNUa7
-   UkhqaDnFcPualZrTR5R1IvcdMZoB/SbOGytHoWkOz2mvGwlvQQOFdEffe
-   E7AmEbxuNIQUUNcaDIf2/GHSxdTqsSr8bIk1s5mQ+Ulkp5sGhdOdI8nOn
-   PV0Zi/RQiWWx2NmovfBUzrXhtQKlj4+jvpMFdoWcHql5OVbXmpjqDSU4q
-   w==;
-X-CSE-ConnectionGUID: X8LiwWtLQYSV0HcxB0QKJA==
-X-CSE-MsgGUID: tFJQCTlGTS2/cV89ZG+f3Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="55708244"
+  bh=c8kuwhSWCLXC+0Y2fVqX0LnjkpKYcmdlz+rgqy/SZtc=;
+  b=kq89YRKZiQf7+3Co6j0R+yHCiJNOJS+j6XwK3gduamZen0pymSRM88Bw
+   bKTETdsQ25FTg5dHH8S6hWDBQR5QXK5CtQy8w0k69dhEivSqvIwD4yOmB
+   HIP0QbLcGRODgEyOcCLa7Tc6gpzb+ZRITmNFKAxU4F4KPYZhupytbP5up
+   i/Ns0XoTSD/yBaUr0TQdkK+l4MDRwIB9l3Q07IiSHXI6SxYPCH2Nc8jRA
+   xl35k8kzM5VT+G/1m5B05EqSoGxXcAEnYJM2P195q69h5JJZXS0j8GZMT
+   MvEIQyCw6rkKKgrifCQC2rXdirGuo1kYumA/Cayf1ITYl967qWRZ0VIy1
+   g==;
+X-CSE-ConnectionGUID: tHdijQJsTt6ffKJC8CAMnA==
+X-CSE-MsgGUID: sPbd+NDqTMCKGSeI/xs83Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="78098955"
 X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; 
-   d="scan'208";a="55708244"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2025 06:51:19 -0700
-X-CSE-ConnectionGUID: TqfLCK0vTki0sojT2hF0Tw==
-X-CSE-MsgGUID: QVf4ei8jTF2AYxkxP3WBhg==
+   d="scan'208";a="78098955"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2025 06:56:09 -0700
+X-CSE-ConnectionGUID: FUy24KQQTXSLB7tBu314zA==
+X-CSE-MsgGUID: wepDHHHERX67GzCbFIqzPw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; 
-   d="scan'208";a="160067185"
+   d="scan'208";a="158797033"
 Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1]) ([10.124.247.1])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2025 06:51:05 -0700
-Message-ID: <a3602530-1050-4868-814c-19592b215127@intel.com>
-Date: Wed, 23 Jul 2025 21:51:02 +0800
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2025 06:55:56 -0700
+Message-ID: <1ff6a90a-3e03-4104-9833-4b07bb84831f@intel.com>
+Date: Wed, 23 Jul 2025 21:55:52 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 13/22] KVM: x86/mmu: Hoist guest_memfd max level/order
- helpers "up" in mmu.c
+Subject: Re: [PATCH v16 14/22] KVM: x86/mmu: Enforce guest_memfd's max order
+ when recovering hugepages
 To: Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org,
  linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, kvmarm@lists.linux.dev
 Cc: pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au,
@@ -103,20 +103,20 @@ Cc: pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au,
  jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com,
  ira.weiny@intel.com
 References: <20250723104714.1674617-1-tabba@google.com>
- <20250723104714.1674617-14-tabba@google.com>
+ <20250723104714.1674617-15-tabba@google.com>
 Content-Language: en-US
 From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20250723104714.1674617-14-tabba@google.com>
+In-Reply-To: <20250723104714.1674617-15-tabba@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: btg91ibf9wauma8na5op5bouxaebdwys
-X-Rspamd-Queue-Id: AB0FFA000F
-X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7A50940012
 X-Rspam-User: 
-X-HE-Tag: 1753278680-133900
-X-HE-Meta: U2FsdGVkX19XTf3iPbCGHOVnHqLc1VItKDfAkvCXiGOYRrIbao0fnhHO8u2o/3QL1t20K0LulNajAXM8TuWu/CEzP/kg7OmDwOsRM9xWhx+RQ0UQCt0V2tIdjBuWuGRMolOLiaz9KW9+mV7g5OIp+SGawbzzMfwDpfP55Zygy9uqVZdVlsZQrmgZvD4+lVocuEYKLAbYtJ9Dlflz27yDSTsYi7AE1ucaD588SB42Y2T1Dd1FNL78SkZV1zdWsD8RNijPX9st3kkmsUcQE9bEjc3bIQePvvrYaAYaDqqEpqk8KksPqa2s46R+hg2Ll0pjrUxFoKHxhEd7QwQnQbfk2f6maPkIWPfPKZviu6jlMUGQZSdx4ZOZP9yay2uqzvPqIl1PH/RoVbfqvDa9w3DHVqOcD5VeRTRBjnL+iU11KH9x85mLlUyclQmbhpats6xjvOEr3Z52HQYry66QEhuhocU5dhw2/bZqR9PdwK3ygmb6qOAT+bfoD6YDLS37bOwQq8XZHf3QkyueVj1Sl8hEbDbtqDei7BsdUXa19h2uFeZRDpDxBsPwxnBo4a27SGMW9RNjC99BQGpWzIpFGJ2dehn6ZAeawPyLwM/BBHl0F25vwTjyxOXHN4/WaNEYq64wSP6sXAkSKuhVc99vxyl0Yf2ysUsTUN5IoxuzBMiU1VU85QtUjwG+NIK+FTEQRhPERRj7fuvItS8mGYUJkx8VTP/bwi7vtlqkOjUQil2l+5+DFp8effPDCxKCNcO6Cx91qR3TxisID9xTvuQFjw2p5FqMMS+m8ldIvz7J0XL8+w9d/f/ixbGisXnb0QIyiXs9C9KM3ilZ5ycDkPpUn4+iSPrt3OJ0x0II3k1PihdkYVulOCYvSvu0Tcs6ss+1DG+O6a5SUI1J1++sFwD+EhQswZyP3arkkseMHb3ju4dvlnMag5ri7lQZmOHQ9yHSZLF/H5ClCm/shcv7d7g6vuB
- lpNrlVwH
- LZKfRmp5s7ZEflfWLwtt4y2KDbjLCGfl82iKeLkd2XG9KdBQh3AlhRIlpz4cu6+uRs8CT4oKVZONwo4TNwkMveB+Us/60vv2CuBi062TLevUWvkQJR68oApNEjS+j0KNo7FVWt0cJX0W3H+2MVZLO1D9tPayP7hCz7asQrJyUlE85tNniplv0qAqW+Xz+iuhylbuzOpJwF/PdtHCdQQfmSgxpEGYFHeEcNCOjXhza4to3CdofCgqxQ7Wk6HhWabSpf/PpnBBEWhDzHoom7Y9RYWQY6cMj4aKwr/G+amXCuNa1LTwP/oE7L+1sk0KBDpk7w3M7GR3/MMQire6vU9kXsuukeyADbITku2JShSdw6nw8P7svd5Tb+i48Eg==
+X-Rspamd-Server: rspam09
+X-Stat-Signature: u3zcx1buoiq4gjm9w85z7bq9xmn5z7rf
+X-HE-Tag: 1753278971-27167
+X-HE-Meta: U2FsdGVkX1+8S1Mi2BmKslp1YcHqeHcEu+ZpP6o5rIhSeRALqA2EC9zAADGpAyVKrZDNgfyl12p7jOznG6X/jgPvWxonTRvhNa86NxdALPon82dkcHzRYCBfiOxUqLFxEWkx4/UgFKilQOXxyR3AOsP2qkBTeFT050MJfl1laQQkxMi3LTjNQ5BOl0Q6m4QAnNDbzaHL3NqOR+uGc9mQCMwmr1mJiGSO7wh4QsHrWfAg2aVSP8cdWCDO0c8MBA/fATQiE1ZRlqr1o6ZMaaPhZxvDf75p02pSa6k+5vcuNgjW7Pj+SXpCPIHJUshJoX6wgvbxdkrG2ay/9bkmQVpkkvcH45QUePFgGmpJadNqXe4jEL2KIfxBVxG9HEKFqxtfn1oE+ROakJCle+GZaTisotvWSkQsQZaMOGEROE9vRyuYZ4oB17ghu7xcD5ep/fiRt0g/ygvcz8/NP+pCxCT3VYB2WKgYNwPs5puHmrtqEPKoy5gs1POiTZxDz3E/ZwXfjjaXmzURiYJ0JrJSvL2XtyjXWa1Q3vev9jrlp2Zxz+Lvcvl2/Jbw8KLSh4mbgBD8Dx/M6S2BSdhvEY+3CeNuLSSV/r7i/n59EPXWKnWUbFe82i6AARr0MKl2cTmrWjm35+loWFArfZeDiG7zgAL5A/2DlTMkUKIfCzU1XthnzXbxw2nHGZNahNYQjvg+wBZDA/hdX/wWgswY9ep0RLtDlZqxVt9iC4A+PZDR4irdTxzBAY4HY7d3DYlTBUlmIPtftfj5lnAajrCd9bMKAAIk1oTmecqCj8CNFOIdO1STSGYBh3/ag8Fb48d0UvILvYem5uFHWSSKEl0S8sLxfBOEYRhnrONRckp0I7HfhmrsYZY8kas00OFDEfYNp/IpbGVF8UqEMWDuQHQv/Nkkbt50i1DVkyp1+npDPvOytfocZzj4mwAgz4ytgbwiWkJlie/xObPxqs0/5/VmkIebLmN
+ q2pZR2eD
+ SX/sFgdyHYJRGG1dzp6WoC4OTQw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,111 +128,97 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 7/23/2025 6:47 PM, Fuad Tabba wrote:
 > From: Sean Christopherson <seanjc@google.com>
 > 
-> Move kvm_max_level_for_order() and kvm_max_private_mapping_level() up in
-> mmu.c so that they can be used by __kvm_mmu_max_mapping_level().
+> Rework kvm_mmu_max_mapping_level() to consult guest_memfd (and relevant)
+> vendor code when recovering hugepages, e.g. after disabling live migration.
+> The flaw has existed since guest_memfd was originally added, but has gone
+> unnoticed due to lack of guest_memfd hugepage support.
 > 
-> Opportunistically drop the "inline" from kvm_max_level_for_order().
+> Get all information on-demand from the memslot and guest_memfd instance,
+> even though KVM could pull the pfn from the SPTE.  However, the max
+> order/level needs to come from guest_memfd, and using kvm_gmem_get_pfn()
+> avoids adding a new gmem API, and avoids having to retrieve the pfn and
+> plumb it into kvm_mmu_max_mapping_level() (the pfn is needed for SNP to
+> consult the RMP).
 > 
-> No functional change intended.
+> Note, calling kvm_mem_is_private() in the non-fault path is safe, so long
+> as mmu_lock is held, as hugepage recovery operates on shadow-present SPTEs,
+> i.e. calling kvm_mmu_max_mapping_level() with @fault=NULL is mutually
+> exclusive with kvm_vm_set_mem_attributes() changing the PRIVATE attribute
+> of the gfn.
 > 
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 > Signed-off-by: Fuad Tabba <tabba@google.com>
-
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-
 > ---
->   arch/x86/kvm/mmu/mmu.c | 72 +++++++++++++++++++++---------------------
->   1 file changed, 36 insertions(+), 36 deletions(-)
+>   arch/x86/kvm/mmu/mmu.c          | 83 +++++++++++++++++++--------------
+>   arch/x86/kvm/mmu/mmu_internal.h |  2 +-
+>   arch/x86/kvm/mmu/tdp_mmu.c      |  2 +-
+>   3 files changed, 50 insertions(+), 37 deletions(-)
 > 
 > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index b735611e8fcd..20dd9f64156e 100644
+> index 20dd9f64156e..6148cc96f7d4 100644
 > --- a/arch/x86/kvm/mmu/mmu.c
 > +++ b/arch/x86/kvm/mmu/mmu.c
-> @@ -3285,6 +3285,42 @@ static int host_pfn_mapping_level(struct kvm *kvm, gfn_t gfn,
->   	return level;
+> @@ -3302,31 +3302,55 @@ static u8 kvm_max_level_for_order(int order)
+>   	return PG_LEVEL_4K;
 >   }
 >   
-> +static u8 kvm_max_level_for_order(int order)
-> +{
-> +	BUILD_BUG_ON(KVM_MAX_HUGEPAGE_LEVEL > PG_LEVEL_1G);
-> +
-> +	KVM_MMU_WARN_ON(order != KVM_HPAGE_GFN_SHIFT(PG_LEVEL_1G) &&
-> +			order != KVM_HPAGE_GFN_SHIFT(PG_LEVEL_2M) &&
-> +			order != KVM_HPAGE_GFN_SHIFT(PG_LEVEL_4K));
-> +
-> +	if (order >= KVM_HPAGE_GFN_SHIFT(PG_LEVEL_1G))
-> +		return PG_LEVEL_1G;
-> +
-> +	if (order >= KVM_HPAGE_GFN_SHIFT(PG_LEVEL_2M))
-> +		return PG_LEVEL_2M;
-> +
-> +	return PG_LEVEL_4K;
-> +}
-> +
-> +static u8 kvm_max_private_mapping_level(struct kvm *kvm, kvm_pfn_t pfn,
-> +					u8 max_level, int gmem_order)
-> +{
-> +	u8 req_max_level;
-> +
-> +	if (max_level == PG_LEVEL_4K)
-> +		return PG_LEVEL_4K;
-> +
-> +	max_level = min(kvm_max_level_for_order(gmem_order), max_level);
-> +	if (max_level == PG_LEVEL_4K)
-> +		return PG_LEVEL_4K;
-> +
-> +	req_max_level = kvm_x86_call(gmem_max_mapping_level)(kvm, pfn);
-> +	if (req_max_level)
-> +		max_level = min(max_level, req_max_level);
-> +
-> +	return max_level;
-> +}
-> +
->   static int __kvm_mmu_max_mapping_level(struct kvm *kvm,
->   				       const struct kvm_memory_slot *slot,
->   				       gfn_t gfn, int max_level, bool is_private)
-> @@ -4503,42 +4539,6 @@ void kvm_arch_async_page_ready(struct kvm_vcpu *vcpu, struct kvm_async_pf *work)
->   		vcpu->stat.pf_fixed++;
->   }
->   
-> -static inline u8 kvm_max_level_for_order(int order)
-> -{
-> -	BUILD_BUG_ON(KVM_MAX_HUGEPAGE_LEVEL > PG_LEVEL_1G);
-> -
-> -	KVM_MMU_WARN_ON(order != KVM_HPAGE_GFN_SHIFT(PG_LEVEL_1G) &&
-> -			order != KVM_HPAGE_GFN_SHIFT(PG_LEVEL_2M) &&
-> -			order != KVM_HPAGE_GFN_SHIFT(PG_LEVEL_4K));
-> -
-> -	if (order >= KVM_HPAGE_GFN_SHIFT(PG_LEVEL_1G))
-> -		return PG_LEVEL_1G;
-> -
-> -	if (order >= KVM_HPAGE_GFN_SHIFT(PG_LEVEL_2M))
-> -		return PG_LEVEL_2M;
-> -
-> -	return PG_LEVEL_4K;
-> -}
-> -
 > -static u8 kvm_max_private_mapping_level(struct kvm *kvm, kvm_pfn_t pfn,
 > -					u8 max_level, int gmem_order)
-> -{
+> +static u8 kvm_max_private_mapping_level(struct kvm *kvm, struct kvm_page_fault *fault,
+> +					const struct kvm_memory_slot *slot, gfn_t gfn)
+>   {
 > -	u8 req_max_level;
-> -
+> +	struct page *page;
+> +	kvm_pfn_t pfn;
+> +	u8 max_level;
+>   
 > -	if (max_level == PG_LEVEL_4K)
 > -		return PG_LEVEL_4K;
-> -
+> +	/* For faults, use the gmem information that was resolved earlier. */
+> +	if (fault) {
+> +		pfn = fault->pfn;
+> +		max_level = fault->max_level;
+> +	} else {
+> +		/* TODO: Constify the guest_memfd chain. */
+> +		struct kvm_memory_slot *__slot = (struct kvm_memory_slot *)slot;
+> +		int max_order, r;
+>   
 > -	max_level = min(kvm_max_level_for_order(gmem_order), max_level);
 > -	if (max_level == PG_LEVEL_4K)
 > -		return PG_LEVEL_4K;
-> -
+> +		r = kvm_gmem_get_pfn(kvm, __slot, gfn, &pfn, &page, &max_order);
+> +		if (r)
+> +			return PG_LEVEL_4K;
+>   
 > -	req_max_level = kvm_x86_call(gmem_max_mapping_level)(kvm, pfn);
 > -	if (req_max_level)
 > -		max_level = min(max_level, req_max_level);
-> -
+> +		if (page)
+> +			put_page(page);
+>   
 > -	return max_level;
-> -}
-> -
->   static void kvm_mmu_finish_page_fault(struct kvm_vcpu *vcpu,
->   				      struct kvm_page_fault *fault, int r)
->   {
+> +		max_level = kvm_max_level_for_order(max_order);
+> +	}
+> +
+> +	if (max_level == PG_LEVEL_4K)
+> +		return max_level;
+> +
+> +	return min(max_level,
+> +		   kvm_x86_call(gmem_max_mapping_level)(kvm, pfn));
+>   }
 
+I don't mean to want a next version.
+
+But I have to point it out that, the coco_level stuff in the next patch 
+should be put in this patch actually. Because this patch does the wrong 
+thing to change from
+
+	req_max_level = kvm_x86_call(gmem_max_mapping_level)(kvm, pfn);
+	if (req_max_level)
+		max_level = min(max_level, req_max_level);
+
+to
+
+	return min(max_level,
+		   kvm_x86_call(gmem_max_mapping_level)(kvm, pfn));	
 
