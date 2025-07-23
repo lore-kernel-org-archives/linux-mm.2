@@ -2,173 +2,98 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BA138C83F34
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 09:24:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B769AC83F1A
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 09:24:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 552578E0002; Wed, 23 Jul 2025 05:24:42 -0400 (EDT)
+	id 52B4E6B0099; Wed, 23 Jul 2025 05:24:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5298E6B00A2; Wed, 23 Jul 2025 05:24:42 -0400 (EDT)
+	id 503178E0003; Wed, 23 Jul 2025 05:24:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4183D8E0002; Wed, 23 Jul 2025 05:24:42 -0400 (EDT)
+	id 440166B00A2; Wed, 23 Jul 2025 05:24:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 307906B00A1
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 05:24:42 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 351EF6B0099
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 05:24:58 -0400 (EDT)
 Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DCA9C140622
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:24:41 +0000 (UTC)
-X-FDA: 83694994362.15.0C1934F
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 82314C0004
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:24:39 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ccom6Vwe;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1MtR2nQ0;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ccom6Vwe;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1MtR2nQ0;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id F37A81DB1E7
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:24:57 +0000 (UTC)
+X-FDA: 83694995034.15.A94290C
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 0B9EC1A0005
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:24:55 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=PEAbKjiW;
+	dmarc=pass (policy=quarantine) header.from=pankajraghav.com;
+	spf=pass (imf19.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.152 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753262696; a=rsa-sha256;
+	cv=none;
+	b=Qky1ZX5ZPHXtCHEK/bjzW8V0ymOAv9GSsDXIgk+M2KpsreCqj0o4xY16Fqe9YdcBQQCBQ1
+	tp8fGuAMpwGNrNbRZtYqxCB7iPl6ipIigyQ0rG+uqKadhgQezsI6uh38J8J0+GDEV82Uda
+	bQn9f9hauKto+xpFFIpqCeV1zRhcV1M=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=PEAbKjiW;
+	dmarc=pass (policy=quarantine) header.from=pankajraghav.com;
+	spf=pass (imf19.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.152 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753262679;
+	s=arc-20220608; t=1753262696;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HGxCt9KCgX092Wm21+x8qB83HQqiNVWcqGnh8WxE9j8=;
-	b=JNLpKYl50U2hJkIAk3S+tXowtRLVLpsrkTrO2XqhtRPO0UX5mvbBCq4xD1gtJhBRHMXeK6
-	DreNEWmIKiKOFxLQzY6OBOp1AhHudLQXuL/qI7xwLwco3RV3YRF3X0wDWmC6608JxwTY3d
-	gkt194/yUUDGxcZwAlzsrLkgdZyWOfw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753262679; a=rsa-sha256;
-	cv=none;
-	b=7gk9BnMccGG2vU+ofT1lEDtuuEzNI9zxDZnL95Uq2awoz0Obo+1YPs7tWAKXc4vumhXfNh
-	3nQdnX8FqGweJWGz3cPxvjDdweKycNtCXIKBbKYAZYJBV09jWWoIL3KDMmeUMVuK1d3oG2
-	PWEW325tzoTpFPDIIZOJ1hcitiOFMck=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ccom6Vwe;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1MtR2nQ0;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ccom6Vwe;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1MtR2nQ0;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	bh=iJbmUAH3vRKxe2rKHTAfLf2Cof6kOw4q34nGIRQ3JMU=;
+	b=F9U67X1DrtJwQwutBVLkhCccfN0hq1Jcw+HzYWWlCPark+NT7J8NqfSlM4zy+T/rdcpkVe
+	uWk2BqDm1kOKfKYK5sfyQK06etAriqbYefnqfvU5lgh+NN7pdOk3s+ai180GQ3/OB4DbBi
+	0wLAjNtsVFz/WwmAdNk1/RbQc2BVkAo=
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 234151F449;
-	Wed, 23 Jul 2025 09:24:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1753262678; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=HGxCt9KCgX092Wm21+x8qB83HQqiNVWcqGnh8WxE9j8=;
-	b=ccom6Vweafzv6HgsvYFpattF2Eqs+zq+DWVHKrSlRr5b3aipFUf4zj5jQGIi2CGnUy8S1u
-	f4eCuTXbmP16yzbzD0wfeBLpJGt2iyQ/Kug0SY1ydBxxcwp8MiAOsB2Ng8mchhp3Yee91Y
-	6Q/3sb3cZhP6BT58Bo7IIGzoTN4z/FA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1753262678;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=HGxCt9KCgX092Wm21+x8qB83HQqiNVWcqGnh8WxE9j8=;
-	b=1MtR2nQ08XHF4Gm9droZzX/aXdy5fOsKuyTMkQOH+FCmVKZS7v0Au0C6AO5N02jQCokHNC
-	xb3BDjXNw1syzIAQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1753262678; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=HGxCt9KCgX092Wm21+x8qB83HQqiNVWcqGnh8WxE9j8=;
-	b=ccom6Vweafzv6HgsvYFpattF2Eqs+zq+DWVHKrSlRr5b3aipFUf4zj5jQGIi2CGnUy8S1u
-	f4eCuTXbmP16yzbzD0wfeBLpJGt2iyQ/Kug0SY1ydBxxcwp8MiAOsB2Ng8mchhp3Yee91Y
-	6Q/3sb3cZhP6BT58Bo7IIGzoTN4z/FA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1753262678;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=HGxCt9KCgX092Wm21+x8qB83HQqiNVWcqGnh8WxE9j8=;
-	b=1MtR2nQ08XHF4Gm9droZzX/aXdy5fOsKuyTMkQOH+FCmVKZS7v0Au0C6AO5N02jQCokHNC
-	xb3BDjXNw1syzIAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EC17613302;
-	Wed, 23 Jul 2025 09:24:37 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id yvxOOVWqgGgLVgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 23 Jul 2025 09:24:37 +0000
-Message-ID: <d2bfd6ba-191d-4466-858c-bd1731605a87@suse.cz>
-Date: Wed, 23 Jul 2025 11:24:37 +0200
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4bn7yC4Zvzz9tkl;
+	Wed, 23 Jul 2025 11:24:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pankajraghav.com;
+	s=MBO0001; t=1753262691;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iJbmUAH3vRKxe2rKHTAfLf2Cof6kOw4q34nGIRQ3JMU=;
+	b=PEAbKjiWzHtfkjreRjIVdaxfqTNLVSCaWcofOgAwQ9HpHjX8H/Tj9E21Q948J/hUE9/egN
+	wLPM3ig7M27l+9V4qf5jOOyxE4spDW6RIWPHTlmpMaMZLiYyC1K3kcBzumGnQ+Vzpg8W3j
+	bkW4ymZn2X9cJhhfZhI9NZ6l0kVBn37qBEfWZYRc+G0xLl/aMnz0GZIoGSJlsLLVMw+jbF
+	WyglR6/veImYAxH86w/9901c5yN4TvGRgYV3yeaKQNKIN+pm7PKTEFJeldveA1wEFVRxzf
+	ucF4/Dyu4hGTzwNOYdHjnewbs547GIpF9QhI6hj13zkRCZX4N2MoOzR/qB8NNg==
+Date: Wed, 23 Jul 2025 11:24:42 +0200
+From: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: Suren Baghdasaryan <surenb@google.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Nico Pache <npache@redhat.com>, Dev Jain <dev.jain@arm.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@redhat.com>, 
+	"H . Peter Anvin" <hpa@zytor.com>, Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Jens Axboe <axboe@kernel.dk>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	willy@infradead.org, x86@kernel.org, linux-block@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, "Darrick J . Wong" <djwong@kernel.org>, mcgrof@kernel.org, 
+	gost.dev@samsung.com, hch@lst.de, Pankaj Raghav <p.raghav@samsung.com>
+Subject: Re: [RFC 2/4] mm: add static huge zero folio
+Message-ID: <fd7yh3ndu7rvo46sc5hg34ihgy4suer5lwl4llixbn2uhko3b3@vc46kzdyjdi4>
+References: <20250722094215.448132-1-kernel@pankajraghav.com>
+ <20250722094215.448132-3-kernel@pankajraghav.com>
+ <3d935889-fcda-4345-bd57-6c7a84458493@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: add missing files to page alloc section
-Content-Language: en-US
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>
-References: <20250722174143.147143-1-lorenzo.stoakes@oracle.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20250722174143.147143-1-lorenzo.stoakes@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 6kppir6kgp5r95wfjp9pgeakfteufjqn
-X-Rspamd-Queue-Id: 82314C0004
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3d935889-fcda-4345-bd57-6c7a84458493@redhat.com>
 X-Rspam-User: 
-X-HE-Tag: 1753262679-928660
-X-HE-Meta: U2FsdGVkX18Ao5dOIolULUPBo0w6f78DhYllxb9uEbyFSFyOm1YRNIgeKHIGegeV5vMGQcRKAqlZr2yWU76Dg1wwSS15oSoSziX+B+mMUl1PY+6jjWyXh4thoqrDMRG2uTEZfVK+qLV5cySMf3dv6QDolCYgjWTL+wMXV9Vgnj480dUB9NxhD/hHNDlK7E/JwPt2QT93t1aBUKo9rTricrFkbPcxF/mkWyGq+zK/q3qHMHJ0Ny9k9cIBAd5uqehGQwoWv1em8L+JwoDHJEJSLiXMqExTknB9eeOJhsSd8fFjOOAr19t+g8fz0YdKLlrFNN42Lk4KRIJoHmDodIu0n8acGPhhLgUFPUzRjiJLun6iPiSQhqDhGqr27QKWvhorG1M/WGEbpaVh1ccPZ/BoUAyQDzsljDuP+VDf0VmSKBypM+Z73wNp7I8k8Ry/xTQy69VJeKOruwy3tdDzVQzCB5pAYXKKdH7Dn72ZIuc9H1+4Ow908Ul/R0/AOVgg5wLWAHl9ZjudIKo4RYqJ1JurF3tGrTnTqrodkO5LktHjnb43frK3871j9QuGQBR1xbZixm/qARsiudnNiRvVikn3tKPOoda0PrLQLH/OCVK0mnvwO+LMKTRfh4+UdfQejbMH+BLGbqcqL2TBLDCkIaM5ZasewFNyyP3fbiicpsA5aAwJW5rXuHYqTwx6TWRK8WL9dQe1Sp46MudGsz0osoYs/rK3GFgt8mxICTtByMZoWOPYbG6JUsVHi7yrc81M5thIBGG4IL+DnEQ1vDpDdd5LIZUl1pEGyvWHFswDfM0qt3Vvd7LQUwy3Ouv9385ldC/5gElJN3BQLhazynHi69rFRBnHpJ6tTWoeApeaNvIFF8Ss7m4fIFM0uBKZ0FJycpL3+tnaLulZzFP1t6FjPVq8yDmYBt96tp0hZ8bdwompm3v433rHeggSBIr4/DZpX9+NchIzlgttsagfmrb/UCL
- ZDhBmk/n
- dqJgcWqMmXyCVIA2g4ClwKaBiphjJLp2cxLFL+G5dr6B5XdqeZk/ANKQLD3W0itQ4U/vuNFHRa0mlRVKZ8N7cNwjtjXgz6EbJpc7zUHreG7/cV9EIIPitxa1jOHHG84MlYcsSk/xGzbnRw2KoIxLl6V81gsC3yDHI+Fzqgz2MbA9mEYwYG+6pE59v4BMzkSeNwOLcM7Sc3L8YuFFFieZ96NgcHFCTE/eKr5x76ypk0nJs/RA/hKjDl77z4q5cFT2ieTODem+oeuOyT3ZOXkustOpnGDHqAlaeyUFReaPEtvpUTZU9BLDz/VX9hmue1LupWN1VWAOASDkmDQafiRIIpe3gDNHzF80BYWKGVQIg3rUkJ0kV0IDIxEb9FA==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0B9EC1A0005
+X-Stat-Signature: 9yw7yxtkgzpcd8w6teas3cpdk3zzueqc
+X-HE-Tag: 1753262695-772856
+X-HE-Meta: U2FsdGVkX1/WoG42hmbkRQli88i6S2rQpYLOGf7ka+89T4u66WfmR3UCyEZap1Yep10URhPy1xYWN0EtTV/dU82TUcBwBcoOuUy3I+Kgt31l+lnkYsM3OQGO0N7DvJOlOrsW/jxYGb9AAqNh6BwbymvcnLHP+dp2tLhT3kkvWmJwnpfL8Ak4WPU1o53Y1EJY0Rt7nMNPqmzvSbeqjwiT77Tc46ivKO2ph9kCcybpMjD6Ok7wtrSHmYvOeo1C0uQNLPY10OqpT48U0WuiBg6tWyNJkidZM07KPc5DIVpcqSkgZb/96seioxypFvCAE6gWwNTIXSD3xhYASue0pM2Z8LR8xQOKaT3MAx0kyYaq0NhOhhwvPdihmQ3T0ToSwzXUbgIWCfxsZT+4PmSdxisw1/mPKooWkU/ZGnjiRyg4WYAk59YzHhRtY7htZJYiOb1CXMqwj+TftJd4rBnDaDafw1v55zUm9ttgrWsot4HDSjfySmPOnmo1lZg2ukJk0NSWZdJD+QzEAIQQNC98YHz5wc7UuY5NXnsqsfujv8GQLXMUaHG2wWxRYVvCk1f8oXySllRXNmNaT8V3bHHzA/vt3LGIwEg9bGex2J5Xl4G10Try+xH1EcDWQr1DCkRyrbgFjI79BGnHwIfJmSo4ermOCJDkrka0NuL1BisKxixfTzHUM5Pe/ydckL0QJXXr+Wojx72s26T3xokojD1fnn5+N86rZDLS4uIW+V91ZjPajGdplQV57CcrwkjSiY6Qwhm3Pk4lzs+itjwFeRb2TsOq+wru5sR2/braZbhpjEkNZuEyIcOlvGOS9BpdNXn0h52O+7G2HoxYslrdX42/URe4JLMHi8Egy3WgTnIOjRFA1e+fySZnCll+ZiS4qGSAYPPi2LSJpyxZf9YoZZh4hYivOO4oaUPmf4VUD6ScPZpjxbV1ZWtUKte5X3rKNg/ZZ8ehWrElLaL15udUTlkfLm2
+ WxfI7tZ6
+ Kv+5ic9MLmdCzYOdDZNYCFWBaWZxsOi2wwtBupfzUMLBxGYU9nZ82EYr3U1tnJ8gHnHJdi6U5xlY4JDXmZu7EBzW9p2fw1uQ/DQBTJOAGNqQII7liGI4O1vwwB/af48lL3/tXL19Bbl+MXz3Fg+/naKxcahPg/Gk4/9d2SobWtHH0zQk48jyRKSk527S5RmJmMmukiJmPXuN+FZAWDrZrXCKan9UcU3+RWF8mkI4gPz0dE5/g2USdQZCKu5iijoiBVCOwri5T4tpcBQFatongXL7wAIASlFH2rnu5J/+azc5YG8weVFjjdgNGsSUAxqtrQ2BGBMHGvS4/fgN3mjJQfeKzdMoj4UtgAz4MW99slUUaEID6vpmwqjSk8TAK57p2FTZiODPcraZXTHMqQYpwkKPA8qJMpYTjuCPnmB6WVIeNmVAvM51JkgKQib/8dT/ShwmvHRFnhbDMutOmV5f9GrCi2A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -177,13 +102,220 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/22/25 19:41, Lorenzo Stoakes wrote:
-> There are a couple of mm/-specific header files that were accidentally
-> missed previously, and some page ref debug code also that ought to live
-> here.
+On Wed, Jul 23, 2025 at 11:06:05AM +0200, David Hildenbrand wrote:
+> On 22.07.25 11:42, Pankaj Raghav (Samsung) wrote:
+> > From: Pankaj Raghav <p.raghav@samsung.com>
+> > 
+> > There are many places in the kernel where we need to zeroout larger
+> > chunks but the maximum segment we can zeroout at a time by ZERO_PAGE
+> > is limited by PAGE_SIZE.
+> > 
+> > This is especially annoying in block devices and filesystems where we
+> > attach multiple ZERO_PAGEs to the bio in different bvecs. With multipage
+> > bvec support in block layer, it is much more efficient to send out
+> > larger zero pages as a part of single bvec.
+> > 
+> > This concern was raised during the review of adding LBS support to
+> > XFS[1][2].
+> > 
+> > Usually huge_zero_folio is allocated on demand, and it will be
+> > deallocated by the shrinker if there are no users of it left. At moment,
+> > huge_zero_folio infrastructure refcount is tied to the process lifetime
+> > that created it. This might not work for bio layer as the completions
+> > can be async and the process that created the huge_zero_folio might no
+> > longer be alive. And, one of the main point that came during discussion
+> > is to have something bigger than zero page as a drop-in replacement.
+> > 
+> > Add a config option STATIC_HUGE_ZERO_FOLIO that will always allocate
+> > the huge_zero_folio, and it will never drop the reference. This makes
+> > using the huge_zero_folio without having to pass any mm struct and does
+> > not tie the lifetime of the zero folio to anything, making it a drop-in
+> > replacement for ZERO_PAGE.
+> > 
+> > If STATIC_PMD_ZERO_PAGE config option is enabled, then
+> > mm_get_huge_zero_folio() will simply return this page instead of
+> > dynamically allocating a new PMD page.
+> > 
+> > This option can waste memory in small systems or systems with 64k base
+> > page size. So make it an opt-in and also add an option from individual
+> > architecture so that we don't enable this feature for larger base page
+> > size systems.
+> > 
+> > [1] https://lore.kernel.org/linux-xfs/20231027051847.GA7885@lst.de/
+> > [2] https://lore.kernel.org/linux-xfs/ZitIK5OnR7ZNY0IG@infradead.org/
+> > 
+> > Co-Developed-by: David Hildenbrand <david@redhat.com>
 > 
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> "Co-developed-by:"
+> 
+> And must be followed by
+> 
+> Signed-of-by: David Hildenbrand <david@redhat.com>
 
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Sounds good. Actually, I didn't want to add your sign-off without
+your consent. But I will add it to the patch :)
 
+> 
+> As mentioned to the cover letter: spaces vs. tabs.
+> 
+> > Signed-off-by: Pankaj Raghav <p.raghav@samsung.com>
+> > ---
+> >   arch/x86/Kconfig        |  1 +
+> >   include/linux/huge_mm.h | 16 ++++++++++++++++
+> >   mm/Kconfig              | 12 ++++++++++++
+> >   mm/huge_memory.c        | 28 ++++++++++++++++++++++++++++
+> >   4 files changed, 57 insertions(+)
+> > 
+> > diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> > index 0ce86e14ab5e..8e2aa1887309 100644
+> > --- a/arch/x86/Kconfig
+> > +++ b/arch/x86/Kconfig
+> > @@ -153,6 +153,7 @@ config X86
+> >   	select ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP	if X86_64
+> >   	select ARCH_WANT_HUGETLB_VMEMMAP_PREINIT if X86_64
+> >   	select ARCH_WANTS_THP_SWAP		if X86_64
+> > +	select ARCH_WANTS_STATIC_HUGE_ZERO_FOLIO if X86_64
+> >   	select ARCH_HAS_PARANOID_L1D_FLUSH
+> >   	select ARCH_WANT_IRQS_OFF_ACTIVATE_MM
+> >   	select BUILDTIME_TABLE_SORT
+> > diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+> > index 7748489fde1b..0ddd9c78f9f4 100644
+> > --- a/include/linux/huge_mm.h
+> > +++ b/include/linux/huge_mm.h
+> > @@ -476,6 +476,7 @@ vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf);
+> >   extern struct folio *huge_zero_folio;
+> >   extern unsigned long huge_zero_pfn;
+> > +extern atomic_t huge_zero_folio_is_static;
+> >   static inline bool is_huge_zero_folio(const struct folio *folio)
+> >   {
+> > @@ -494,6 +495,16 @@ static inline bool is_huge_zero_pmd(pmd_t pmd)
+> >   struct folio *mm_get_huge_zero_folio(struct mm_struct *mm);
+> >   void mm_put_huge_zero_folio(struct mm_struct *mm);
+> > +struct folio *__get_static_huge_zero_folio(void);
+> > +
+> > +static inline struct folio *get_static_huge_zero_folio(void)
+> > +{
+> > +       if (!IS_ENABLED(CONFIG_STATIC_HUGE_ZERO_FOLIO))
+> > +               return NULL;
+> > +       if (likely(atomic_read(&huge_zero_folio_is_static)))
+> > +               return huge_zero_folio;
+> > +       return __get_static_huge_zero_folio();> +}
+> >   static inline bool thp_migration_supported(void)
+> >   {
+> > @@ -685,6 +696,11 @@ static inline int change_huge_pud(struct mmu_gather *tlb,
+> >   {
+> >   	return 0;
+> >   }
+> > +
+> > +static inline struct folio *get_static_huge_zero_folio(void)
+> > +{
+> > +       return NULL;
+> > +}
+> >   #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+> >   static inline int split_folio_to_list_to_order(struct folio *folio,
+> > diff --git a/mm/Kconfig b/mm/Kconfig
+> > index 0287e8d94aea..14721171846f 100644
+> > --- a/mm/Kconfig
+> > +++ b/mm/Kconfig
+> > @@ -835,6 +835,18 @@ config ARCH_WANT_GENERAL_HUGETLB
+> >   config ARCH_WANTS_THP_SWAP
+> >   	def_bool n
+> > +config ARCH_WANTS_STATIC_HUGE_ZERO_FOLIO
+> > +	def_bool n
+> > +
+> > +config STATIC_HUGE_ZERO_FOLIO
+> > +	bool "Allocate a PMD sized folio for zeroing"
+> > +	depends on ARCH_WANTS_STATIC_HUGE_ZERO_FOLIO
+> > +	help
+> > +	  Typically huge_zero_folio, which is a PMD page of zeroes, is allocated
+> > +	  on demand and deallocated when not in use. This option will
+> > +	  allocate huge_zero_folio but it will never free it.
+> > +	  Not suitable for memory constrained systems.
+> 
+> Maybe something like
+> 
+> "
+> Without this config enabled, the huge zero folio is allocated on demand and
+> freed under memory pressure once no longer in use. To detect remaining users
+> reliably, references to the huge zero folio must be tracked precisely, so it
+> is commonly only available for mapping it into user page tables.
+> 
+> With this config enabled, the huge zero folio can also be used for other
+> purposes that do not implement precise reference counting: it is still
+> allocated on demand, but never freed, allowing for more wide-spread use,
+> for example, when performing I/O similar to the traditional shared
+> zeropage."
+> 
+> Not suitable for memory constrained systems.
+> "
+
+Sounds much better! I will add it.
+
+> 
+> Should we make it clear that this is currently limited to THP configs?
+> 
+> depends on TRANSPARENT_HUGEPAGE
+
+You are right. As we use the existing infrastructure, we do become
+dependent on THP.
+> 
+> > +
+> >   config MM_ID
+> >   	def_bool n
+> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> > index 5d8365d1d3e9..6c890a1482f3 100644
+> > --- a/mm/huge_memory.c
+> > +++ b/mm/huge_memory.c
+> > @@ -75,6 +75,8 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
+> >   static bool split_underused_thp = true;
+> >   static atomic_t huge_zero_refcount;
+> > +static atomic_t huge_zero_static_fail_count __read_mostly;
+> > +atomic_t huge_zero_folio_is_static __read_mostly;
+> >   struct folio *huge_zero_folio __read_mostly;
+> >   unsigned long huge_zero_pfn __read_mostly = ~0UL;
+> >   unsigned long huge_anon_orders_always __read_mostly;
+> > @@ -266,6 +268,32 @@ void mm_put_huge_zero_folio(struct mm_struct *mm)
+> >   		put_huge_zero_page();
+> >   }
+> > +#ifdef CONFIG_STATIC_HUGE_ZERO_FOLIO
+> > +struct folio *__get_static_huge_zero_folio(void)
+> 
+> Do we want to play safe and have a
+> 
+> if (unlikely(!slab_is_available()))
+> 	return NULL;
+> 
+Yes, sounds good.
+
+> > +{
+> > +       /*
+> > +        * If we failed to allocate a huge zero folio multiple times,
+> > +        * just refrain from trying.
+> > +        */
+> 
+> Hmmm, I wonder if we want to retry "some time later" again. Meaning, we'd
+> base it on the jiffies, maybe?
+> 
+> See print_bad_pte() for an example.
+
+That is a good idea. I was thinking somethign like that while I was
+making the changes. This seems more logical.
+
+> 
+> > +       if (atomic_read(&huge_zero_static_fail_count) > 2)
+> > +               return NULL;
+> > +
+> 
+> We could make some smart decision regarding totalram_pages() and just
+> disable it. A bit tricky, we can do that as a follow-up.
+> 
+
+oooh. Yeah, I will add it in my todos to make this as a follow up :)
+
+
+Thanks for all your comments David! Can I send it next series as a normal patch
+series instead of an RFC? It looks like this series is shaping up nicely.
+
+--
+Pankaj
 
