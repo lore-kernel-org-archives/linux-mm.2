@@ -2,114 +2,121 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6510FC83F17
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 16:36:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1CD45C83F17
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 16:39:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E22876B00E1; Wed, 23 Jul 2025 12:36:54 -0400 (EDT)
+	id 9E2AC6B00BB; Wed, 23 Jul 2025 12:39:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD36C6B00E2; Wed, 23 Jul 2025 12:36:54 -0400 (EDT)
+	id 993216B00BE; Wed, 23 Jul 2025 12:39:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE90C6B00E5; Wed, 23 Jul 2025 12:36:54 -0400 (EDT)
+	id 833ED6B00BB; Wed, 23 Jul 2025 12:39:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BC6486B00E1
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 12:36:54 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 67327140120
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 16:36:54 +0000 (UTC)
-X-FDA: 83696083548.08.2913949
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 829B5100008
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 16:36:52 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=AUD9e2oA;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 625736B00B1
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 12:39:39 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 17497140181
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 16:39:39 +0000 (UTC)
+X-FDA: 83696090478.17.E790EBD
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 1A84540010
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 16:39:36 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mYr3Y9uV;
+	spf=pass (imf12.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.52 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753288612;
+	s=arc-20220608; t=1753288777;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fx+A7/q6ZUtKDHiMJp4IBXILWaz8CBy/vW0OU23aX7I=;
-	b=ZoqObHe+Ob++QPgtKi35wg+Gt1wKrA1tZspSGO0WF2C4dNFz6LSzk+NizFxkj63b/j88QL
-	A63fiFeLXlvr8w9YD+ACQQBGcBxdIYqNMFsnB2xYSw51B5WEZrzchbfInRad9GJWClgQDq
-	MrUXK7qsSCnADUmEpZ6VoeHzwt5mBnQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753288612; a=rsa-sha256;
-	cv=none;
-	b=clipVlkkaoDvvxC59Y/jR9jzD9aNP7aJfVLDG8JIEm9kOyAqj3Ey9e64Rf0rft/k0PfpqM
-	/mV77cG47hPJ7L8xyuGI7eBni/3X/SkRqCLmB3kUhuomKTOQiWgMNo9GfyQ+gfZwU6zyWo
-	G4St5DkV5TzHsKEVfqoKWmrOtvyLPkE=
+	bh=iy6jNmLi0JGKHOOGtS88CNydGBMknaXlFXJUCshIh+g=;
+	b=AlapAgU5oBmGh+XD+TkuV6jzRdtqXi440/Zs2EKb0/+ErZJOljg6qZi2Pr5gbjpmYFX731
+	a0pnox1Tw0pFoxhd9wJ1LRYmsiNYX6b60/6hXk2QNEJjx3Jbs9DUg4Q0jahKAfLsK1Xm32
+	K5E9ZDplxgRhQ4FZM1C3ygDyvC/dRaM=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=AUD9e2oA;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-23c8a505177so58155ad.2
-        for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:36:52 -0700 (PDT)
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mYr3Y9uV;
+	spf=pass (imf12.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.52 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753288777; a=rsa-sha256;
+	cv=none;
+	b=syq1fAld1zTRd/IxozvzoNO+8CEv6TwZkAuqp52nQfjjARF0Ol5pcw+77hOJvB4/vOy54b
+	DPjm28Foib9yrU8uvAX5GehouHN5SGmdbFp+qlbNAAQROFz74+Ka9jlFXc9OrncksrTI4u
+	7OLA3tcSZwV6PohmEBKWPU0vnYbJBxA=
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-55a4e55d3a9so27547e87.1
+        for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:39:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753288611; x=1753893411; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1753288775; x=1753893575; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fx+A7/q6ZUtKDHiMJp4IBXILWaz8CBy/vW0OU23aX7I=;
-        b=AUD9e2oAFsqI5rAOh0M9SEhjEMPH8Ngkcx4Bdr+66mKorpXdkiSZYe6zETExMrzhEh
-         4KC/NXAopDBPqLcBdZf3GQYYK3tncnHUBGXasHQhNYPHRc34tk4V8RQTeKOdTujh9hIl
-         0o7ulufupz3hbapnp3BRcGs+wSkm34GRRI5B1URTKF75Gx8RH0AXgWf61tQKSENL6bMM
-         SyOGxaNpmoz22Qw6N77QQJBt2J83j5c60Ve1QvnmDREkBZQ7C5c+Ar6G8TrhZFsAwS75
-         SgpVcY3MCCTX5A7WCUI9h1+d42LHdEqH8OitjeOUMbNpd0AZzgUwG67k9uLAXtgnLa1L
-         7YCA==
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=iy6jNmLi0JGKHOOGtS88CNydGBMknaXlFXJUCshIh+g=;
+        b=mYr3Y9uVcK4OAjHh7FX3YPGeRqE4tPtPVmhqTvpkq4/d5N4R7HNXPrQI7Bo3IKcU6T
+         IfradU3aekU/QTPRKXC3GLGDy6Scz8vunrTBsuV559aIuD1kvgWmBezt9u9IgX0/4pCB
+         ockPJCbcjXL/p4LRJWJNmYH8L2Ec3yviII2uUg5hqrCKliZJMPAoWwsEjyWDiXEiFUyf
+         2lJsKCDi1d2XxLqukmC/uU+T44Jvbs4qKUDOMD8sCWBmDzbtfkVeVI3KRzbMClyKmq0d
+         ClKi1deXZB8pmQ1fGbE8PL3h8wRGTiaKAAFJGY8Z89FWTmLaPuiNZKmuzr/YyWF0vXpk
+         X2Dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753288611; x=1753893411;
+        d=1e100.net; s=20230601; t=1753288775; x=1753893575;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fx+A7/q6ZUtKDHiMJp4IBXILWaz8CBy/vW0OU23aX7I=;
-        b=H0MIY+BJgEu0KEMbtOfudgxfl24OhDr4hQ7gbyA7MjhwPOMSg5bHCbUbGVX7FsmFpj
-         gy72MVNc4Ng6LW2q3FEM+dKYJhlg6fuHnzHvg3EjZkaKO2Edx2qUfXKxZcXMC0SNsF+a
-         oeEki3L2fRa2crUTzGiOs4qhyCowjd5FLLdSHE9F8SflhXRVfAJSui+EdnH+opt6hCk2
-         eewbkuN8QHwK/COb9twlUXMy0/xdEm4UdUBKjUIT4+RT0N+Zh/HprFl8/KaMXolnRpOY
-         wy1PfoJDPlj3r5ACdrCSaxKHUtxFyrWmA1/CyEKMejV0lNS+Xi3ga/jj39x5Z2LTPsbX
-         Co5w==
-X-Forwarded-Encrypted: i=1; AJvYcCWzcq8eya2xfLANgxKolROAlCq3a7dCvX7d/61hDpqBQKPz3xIg4GVW1LdpSS0vHcqz9A7GgbfrNw==@kvack.org
-X-Gm-Message-State: AOJu0YyIH6GB5WajkuAyWc6KT8rVJuJH00aXpqofVFJmxcD6MmQyX5cO
-	piQOiwyLezWgO+6ceCRSoAwSFXpuzBi7Z7F2iDWCwUlan4UqeCjdEtkiZBORDQ==
-X-Gm-Gg: ASbGncuVgqHh66VhWIdtiCFIBhg0v6i3HSUTL/22X4ud2lc7650OQ6ajIbKM4NpI4mn
-	L8WSzf1C4g+aElfopsyLU+Y0juAs8tDwzNTOq1P2teKPzSFGDXOTZIv1uI+MdnlLkBZURqDt+aM
-	XKHdyAuJ6b2+Dtwm6RzccYVyheclZEEsW0rtoKGadlfTcC6g6aqXyu4mJMwaC95kUUqWCKDIYaY
-	N/YwVlX0kk71/NGb3iCLRh31RoDhof77su1ML8Helh8ONmtWtZv1DCOhNXaNHRNkVKwnpU6H0h0
-	7gXGHTA+UJPczG6UV3UdEW2gJMT7h88cpQdn0D7clOWT2I2dlLqxydeze8+DeWuHPhMGbUF3YUQ
-	dQvJZSlbo6w900glGpSmH+X01prH/ZoFNST7taFhmg8/DYR1SuL1BAg==
-X-Google-Smtp-Source: AGHT+IF+7PIFIwxHxFCd3fmVGl5Kwhq6RM7BuCanshOuUY/aXQHU0NqUgVTlYaxJn03calPDpIPI6w==
-X-Received: by 2002:a17:903:b87:b0:235:f45f:ed2b with SMTP id d9443c01a7336-23f981619c9mr51840655ad.1.1753288611270;
-        Wed, 23 Jul 2025 09:36:51 -0700 (PDT)
-Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23e3b6f2306sm99985265ad.213.2025.07.23.09.36.49
+        bh=iy6jNmLi0JGKHOOGtS88CNydGBMknaXlFXJUCshIh+g=;
+        b=ri9fq39POqOpy+e+6kgdcEGZJfJDdaT69Srcy9scIDhk1d07rp5X7DM5J+NDLtRNR3
+         1Xzh9/B/bGuF7yhOQDjT+v23XKTOnxDYtHrekpJT0U4ApDoqCnT7Dz8goXVzhBiowoi3
+         rGkjDm/VuLmbDCgglOWC2BmpLkIo6qEReklREcAvi5P+AlmhzO+u6fDURVgfJsxiArgx
+         sH87vUbn9dPvagYAolOWBdZBcYgzUHbbxy7MHvy1bkDKd+YnRrO+mr214OwJ/MdzIKpt
+         5h/pN3OE5ySFqgI5t50LzP8ujhmDjrJVK6z08ZjKKqj9hIijWusJN8mMA3uQfmOPxNey
+         UwZA==
+X-Forwarded-Encrypted: i=1; AJvYcCUh0RN6fcL1KxGjIFix7DctTJLJdFUSsCA0UoHyvcINVa7nMPUehR4fAn/dgRhDbyTCi4cnSG2FcA==@kvack.org
+X-Gm-Message-State: AOJu0YxlAS/4maEkaBtbYrbtrSL0yel5E3mILsB4xjrPq2eXMjvVFiYk
+	nVXC4Eq3c+/DUOZORTPw5YujUn8kQ2caBiNLkFcUWZC+d77anY+1wm7D
+X-Gm-Gg: ASbGncvTQ01c+SUkPVtePmbkOtdVa+2p/frrFDHjNKFovLsjhDt81f7d3DwPDb0+KBw
+	P5myg7Eada/50EDaJfVlDgpkCoMC90yRrOhlDTLpvEbD7rHb+w0TY7FU7p8rdMrt5V2o5hc1t4B
+	NyYys+LXhM8w2hBXqshGXqjZK74JcFG+ANTKgmOg4HpMz/E9Pa8Boyb4nsdj6a+9iKL/JQaKAAf
+	Qscc08QUbJpVlcM9XDjv9pIsajQboz2B4037ZVCfoslF9anI9eynDjuq+UqZMekQv6u0N0okK0+
+	uiwBlvy7qjN6rjA1qcCmH0uOzvvC9tdvPPRV22kC2/PFi01ob9F6y4AvN4SAOu+llfLA74O9Ed6
+	xUu6i9wjQBWOIOfdYW8TZjCQFqJ8THUsrjGFRFkfyW58vhYFASw==
+X-Google-Smtp-Source: AGHT+IEgFsYIaDXXpqqSqg+UF+6+ocCr6tbdAt8s4+lhPV4mEf+DdO3yWqJnpAxEIZYMblVLFLudNw==
+X-Received: by 2002:a05:6512:239c:b0:55a:2735:fe6a with SMTP id 2adb3069b0e04-55a5126993emr1340990e87.0.1753288774791;
+        Wed, 23 Jul 2025 09:39:34 -0700 (PDT)
+Received: from pc636 (host-95-203-21-188.mobileonline.telia.com. [95.203.21.188])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55a31d9fb6bsm2379029e87.167.2025.07.23.09.39.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Jul 2025 09:36:50 -0700 (PDT)
-Date: Wed, 23 Jul 2025 09:36:47 -0700
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: Colin Ian King <colin.i.king@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, kernel-janitors@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] tools/testing/selftests: Fix spelling mistake
- "unnmap" -> "unmap"
-Message-ID: <aIEPn8O2z4sNB74l@fedora>
-References: <20250723095027.3999094-1-colin.i.king@gmail.com>
+        Wed, 23 Jul 2025 09:39:34 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Wed, 23 Jul 2025 18:39:31 +0200
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Suren Baghdasaryan <surenb@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
+	maple-tree@lists.infradead.org
+Subject: Re: [PATCH v5 02/14] slab: add sheaf support for batching
+ kfree_rcu() operations
+Message-ID: <aIEQQ0MW5e8KMvVL@pc636>
+References: <20250723-slub-percpu-caches-v5-0-b792cd830f5d@suse.cz>
+ <20250723-slub-percpu-caches-v5-2-b792cd830f5d@suse.cz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250723095027.3999094-1-colin.i.king@gmail.com>
-X-Stat-Signature: 8efp5hnj8q66fpages8pwut31cb6fqp5
-X-Rspamd-Queue-Id: 829B5100008
-X-Rspamd-Server: rspam10
+In-Reply-To: <20250723-slub-percpu-caches-v5-2-b792cd830f5d@suse.cz>
+X-Stat-Signature: dw1t56xk8sotsbpqa5cx68fnaga7frsh
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1A84540010
 X-Rspam-User: 
-X-HE-Tag: 1753288612-432835
-X-HE-Meta: U2FsdGVkX1/tswtTOsabBvhEDmmEpC5CbbrasiuSpBmtCKtvn7lOrcmd8NGr6JVIpBPwzxZDwnJizc2ZtatGcL0/zR+Al/HOZA6Z9Uq96HVIQP1cO+noWu8l3W9ZUya6PxuTmzCu37J0OmU0UmoLOh/AVDEMjeo6EjVc7lMqzuM7Dh/L0rt+SMGvlMZMWtnlr8AnFF+jEDVpTyD+TOhPDPf/AC/TPHwgtYyFA/c3cvOhlX/x16UdzTNpKgHPTmSG55FUf/qfeuLFZxUrpJ/Hhd674jVmMiIBMfBpKszUeuRM+Lloinh0ogkMdt3IK6XKjJMhhMtp2Atg2u4OPJHgqK5zMsv/sPGfR6l8GGkEuYz+6aiWtXGcY8fJ8TUvaHVCeWF+YQapM64B2R0a4BHQToA/YaWsbvJX37h/RcTMqrLPBaLJ6gz29sjo1E+794h5DrugI9OmPxqTdssPfYPpueUhEeQheM6/eXCJHlh8rxpD3M6rF8wabcHy5z8+FBEUpi+mWuErlq4421GsnwytfARz5uV2m+Ke7SDyMV7EycFSIcTwqK0jf2xy1YJqtBOdXGByjUvOZa/GL39CW2u3EPy4VTii5HxC2ONVqJueMBOgwDAhPPNYeASEmZ9qr3d00lyMNNyvQ1r6Mqfqf09mU/MbVPb5+ZLT4Vlkvx7o8aV+sCxsE4vWlayWdw5htp18AWudoXyZqKx1HkhoiRAvt07/RUPfdIcGL0j64LrcmmuDtgGIc9F6BXn7UKKbcv0N7x+YuxeQQdq/IGZSeqNM0tn/Bv0EqfXvxv+e3CVTf6P1LE46wsD+IMR2NDyCZYXCs8V7BUP8Ze5NChXIU5Jzzu1DQCzkTMbkDs4QeYuM/Ly2c0lAGBMumgYl8Wl7Ui+sVrahMwAteTRZH45lX8XIoRqSa3PPpB/l3lfO6yd38+jEbBm0qVkCDOozavWHFXYAhNNYQxZcSfcclr+pg/f
- DRzM6M/r
- VYcHqutCQdmJuXYrYPJn6uVGj2yTZ7NHNIrRNU/fY7YL4n/OOhYRQ85QYDjzQY6Uy6B4cZjc/bN9JqGAIx4lQa75fy674smYF8fb0B/c+hrDqewhm1/pskwduxesYslVEK5XlEGwzbFfYs6oKJRILAJiY2HGoDh0iKCuGXCb4fy0myegXU/yvDXgwT5k41TwrnfASKyMsA5GtPjfgalQDaKcfyD13dT4zmeBmpk1tVk2Z658VEW8puBptflNaXGOVphTEp4kmTrbbR1xRC6qKtIv4TtdlSdMB8DU1+ecxgvTNyL2AatWFP3C+8qA+2jgJSLtC1j+vduX0I1w0Xp5sMks75pPiF4TQQLvs+iLWLMhe/LwCuQPCnDEveGMq24Q9jiqXrYDVjFR8ZBi6UpW/eV8Ntlww7AiOFX+Ui1zoLF9+wYIv+T20rJbE389u1AmaNmY6RP0JBsf0H5ai2voCMYxmW0Lm2rzSz3qAJGe3S2fw99ejQRJn0tWfD4gIheoB50VHwHTivIxeImFWk6l2Ga1jJrEh+oNa94VZtrZKJf0azdJbVP7KW9DA6L2mimYSBlS2EO8lwma4EV8=
+X-HE-Tag: 1753288776-840225
+X-HE-Meta: U2FsdGVkX19rYZPGiDBdVoypMTowR8vMvOdwMV85Rx8Xm0J3t6RXrTeSwPvBPrFMgHrgTqC2SrsQDaIrUSdxFyTuXqxdQ6IAqgpusd2FMDHBKjCDTsvLf3xCOcj/YJpRgqIWuW9Dwo28dGIIIfMjqIDAuyhrTvU/v7D7R3v1NZQd3N9AlczG1A3Xe784Z5riDwyXa41mAVv828lYK5bT6WwDkK1uWYto8q2z4e193P2/9VLJ3JgWhJ5gsdBR1r6bN+LtEsQCx70gWeTb3g/ayxY6280nBwGi9NhnnrIIheOtrh6BSb7+0dEOLpWi2gzrGiZmBDJrd9OXIadJ9G+9PAzUg+GYkf2DXCZDXtGk3nCYIvFYG9gWeS4edQkVG8+f2uqHCe5nv5rVsMmrLkf7L14pBIQyWEykzuR4QyhCB61eu+5t/DUTd+kKAncZvmtzL+5SNs5L2zbV2VDDCKXXc/bBCDlr9b4wMHy8ABCZOG2o9UavPmKW6HJr6VhmhSkjT0gFx3lEoYJQ9nte82SS2LJcU9mX5VgbBJHwsQeRD5ixHqrpkKoNd0TtChiEx6QokowWCXNRXPnOaCKab+Y9n+l9vZQ94jH20gKb0lYJN7+BBBU8iJpKXhkKSYI7vYeJhxgWMDgfq0ffqLvzkDJsG/Fr50dRCUcdlxHOMoE54LH6SRM4DjxsEDc6Nk9knS4Usni5OKnQdkJdB8Sc9OHacf3wKLKIOJ2jiWMmfagshToQPRumI5dixbADjw2kU+WKxy2gQzEsXw8159q61uwa19kGLwVEODpLVgwJTiS3lGaQ1NyN5U62rdZnx5iyYaYQ4kuTBw/b9wuGxdd/evftrBDlyapaBhFe9BRWvTvrWfedmxmDgKyUeWp053glJtheDK0bIrbI8qoILIa1BBWoYJVXJkuBE/QJzE2Ruuyj1+xZWLvPdwl2JpVV/XmQ9pziwwMWuYBadXbbDijs8xE
+ oaaxDwCe
+ xCT61wMdo+CM6QdleDZLYtYuhrylTwML5v9zxtRIR2RV4AofKVRUm109R8PVc5jaghtjQtIrpmieQlN0NeUsPMd3yhMrRKVhQ4MOFW9SbCeKh94GO2VV5Sfh1ppeXlkTM8V1/umsgJOrMMPcKH2JLda3j7ffLDMpaVUPhLs7VjPsZ6lf54AFbjjQxElvd8AJiqu3pm1tqLNLQyztKvncISf+sNtHxD5e++7Z1TMgrXVc6gF/ElXy02iAAOsB6ZKQJCvdfjwEF9os4Eo5hEvDOu+P5klRjo/MGHHMdlQzbqdAoaWFsRnL3V5paOsmC3vJ2aZD6R6+d8WhX5M1ILsTgxARDdPAdLxUjGSMliC35PswUoGb1DA10DY2yrSS+XsTdCu7MiEFaUe+ZRGlxh5AFWLL1Dhv6mTupbzwgUIVxgVUfxHZ5KyvZVJnPK1lVHzc/Cq7rP79zWWzZPFFnYPynhLxVvZrjPtpAhYhSU35urtYPWLP0X2rifHP1MZFMMyfHqG4FsSYrfkPzAU98qhLiT42gDw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,11 +125,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 23, 2025 at 10:50:27AM +0100, Colin Ian King wrote:
-> There is a spelling mistake in ksft_test_result_fail messages. Fix them.
+On Wed, Jul 23, 2025 at 03:34:35PM +0200, Vlastimil Babka wrote:
+> Extend the sheaf infrastructure for more efficient kfree_rcu() handling.
+> For caches with sheaves, on each cpu maintain a rcu_free sheaf in
+> addition to main and spare sheaves.
 > 
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+> kfree_rcu() operations will try to put objects on this sheaf. Once full,
+> the sheaf is detached and submitted to call_rcu() with a handler that
+> will try to put it in the barn, or flush to slab pages using bulk free,
+> when the barn is full. Then a new empty sheaf must be obtained to put
+> more objects there.
+> 
+> It's possible that no free sheaves are available to use for a new
+> rcu_free sheaf, and the allocation in kfree_rcu() context can only use
+> GFP_NOWAIT and thus may fail. In that case, fall back to the existing
+> kfree_rcu() implementation.
+> 
+> Expected advantages:
+> - batching the kfree_rcu() operations, that could eventually replace the
+>   existing batching
+> - sheaves can be reused for allocations via barn instead of being
+>   flushed to slabs, which is more efficient
+>   - this includes cases where only some cpus are allowed to process rcu
+>     callbacks (Android)
+> 
+> Possible disadvantage:
+> - objects might be waiting for more than their grace period (it is
+>   determined by the last object freed into the sheaf), increasing memory
+>   usage - but the existing batching does that too.
+> 
+> Only implement this for CONFIG_KVFREE_RCU_BATCHED as the tiny
+> implementation favors smaller memory footprint over performance.
+> 
+> Add CONFIG_SLUB_STATS counters free_rcu_sheaf and free_rcu_sheaf_fail to
+> count how many kfree_rcu() used the rcu_free sheaf successfully and how
+> many had to fall back to the existing implementation.
+> 
+> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 > ---
+>  mm/slab.h        |   2 +
+>  mm/slab_common.c |  24 +++++++
+>  mm/slub.c        | 193 +++++++++++++++++++++++++++++++++++++++++++++++++++++--
+>  3 files changed, 214 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/slab.h b/mm/slab.h
+> index 1980330c2fcb4a4613a7e4f7efc78b349993fd89..44c9b70eaabbd87c06fb39b79dfb791d515acbde 100644
+> --- a/mm/slab.h
+> +++ b/mm/slab.h
+> @@ -459,6 +459,8 @@ static inline bool is_kmalloc_normal(struct kmem_cache *s)
+>  	return !(s->flags & (SLAB_CACHE_DMA|SLAB_ACCOUNT|SLAB_RECLAIM_ACCOUNT));
+>  }
+>  
+> +bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj);
+> +
+>  #define SLAB_CORE_FLAGS (SLAB_HWCACHE_ALIGN | SLAB_CACHE_DMA | \
+>  			 SLAB_CACHE_DMA32 | SLAB_PANIC | \
+>  			 SLAB_TYPESAFE_BY_RCU | SLAB_DEBUG_OBJECTS | \
+> diff --git a/mm/slab_common.c b/mm/slab_common.c
+> index e2b197e47866c30acdbd1fee4159f262a751c5a7..2d806e02568532a1000fd3912db6978e945dcfa8 100644
+> --- a/mm/slab_common.c
+> +++ b/mm/slab_common.c
+> @@ -1608,6 +1608,27 @@ static void kfree_rcu_work(struct work_struct *work)
+>  		kvfree_rcu_list(head);
+>  }
+>  
+> +static bool kfree_rcu_sheaf(void *obj)
+> +{
+> +	struct kmem_cache *s;
+> +	struct folio *folio;
+> +	struct slab *slab;
+> +
+> +	if (is_vmalloc_addr(obj))
+> +		return false;
+> +
+> +	folio = virt_to_folio(obj);
+> +	if (unlikely(!folio_test_slab(folio)))
+> +		return false;
+> +
+> +	slab = folio_slab(folio);
+> +	s = slab->slab_cache;
+> +	if (s->cpu_sheaves)
+> +		return __kfree_rcu_sheaf(s, obj);
+> +
+> +	return false;
+> +}
+> +
+>  static bool
+>  need_offload_krc(struct kfree_rcu_cpu *krcp)
+>  {
+> @@ -1952,6 +1973,9 @@ void kvfree_call_rcu(struct rcu_head *head, void *ptr)
+>  	if (!head)
+>  		might_sleep();
+>  
+> +	if (kfree_rcu_sheaf(ptr))
+> +		return;
+> +
+>
+I have a question here. kfree_rcu_sheaf(ptr) tries to revert freeing
+an object over one more newly introduced path. This patch adds infra
+for such purpose whereas we already have a main path over which we
+free memory.
 
-Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+Why do not we use existing logic? As i see you can do:
+
+   if (unlikely(!slab_free_hook(s, p[i], init, true))) {
+        p[i] = p[--sheaf->size];
+        continue;
+   }
+
+in the kfree_rcu_work() function where we process all ready to free objects.
+I mean, for slab objects we can replace kfree_bulk() and scan all pointers
+and free them over slab_free_hook().
+
+Also we do use a pooled API and other improvements to speed up freeing.
+
+Thanks!
+
+--
+Uladzislau Rezki
 
