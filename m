@@ -2,65 +2,65 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 38B9AC83F1A
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 13:02:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 91166C83F1A
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 13:02:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7C128E0005; Wed, 23 Jul 2025 09:02:03 -0400 (EDT)
+	id 2F05C8E0007; Wed, 23 Jul 2025 09:02:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B53CC8E0002; Wed, 23 Jul 2025 09:02:03 -0400 (EDT)
+	id 27BB08E0002; Wed, 23 Jul 2025 09:02:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F4AB8E0005; Wed, 23 Jul 2025 09:02:03 -0400 (EDT)
+	id 190B18E0007; Wed, 23 Jul 2025 09:02:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A6408E0002
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:02:03 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 217C2C06D9
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:02:03 +0000 (UTC)
-X-FDA: 83695542126.10.85344B5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 59F2380018
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:02:01 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ETK2qZcN;
-	spf=pass (imf02.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A9B88E0002
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:02:07 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CA8371DB5FC
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:02:06 +0000 (UTC)
+X-FDA: 83695542252.16.091F5A7
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 127CF140022
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:02:04 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CMXvNedL;
+	spf=pass (imf09.hostedemail.com: domain of leon@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=leon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753275721;
+	s=arc-20220608; t=1753275725;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9liBMYG/DVS1McmQP1qxIOSzcSVz4iJiBcBOfa6Fc6Y=;
-	b=7iaAU2MmC+gqVb283Rfslvc2zqpn2t9C5g1iLM++E+56nh70Chu/pomKfY75LN1UyUH7zN
-	SjDU7u2weo2pKV0+XJmm+bCx7tvL9aDJK8lm1RUnapsG2K2a9eWP3TIJMsqkwyN7/WSDkS
-	G2Jorkf9MC6ou6Sx/cUz2FbpE5doisw=
+	bh=eFufXXnDD2AzLMk5uZcnI09iyIHnqilnbBLLWqau6fU=;
+	b=TJpx+K1Bll9OuqvYow0Nt1qDncHXGH1FwK2K0XNQpsskPx3juu9C9OjcZX6RjAEqvHhEkR
+	4ow1A6AcxKlvX8at7wtALeJ1nsbola3OkTtlfGI47bXVtPHsaFa0lZauVlkhueeIgyWA7r
+	qjbDCn96TuRpKGPw9w8aZeXjpzucG6Q=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ETK2qZcN;
-	spf=pass (imf02.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CMXvNedL;
+	spf=pass (imf09.hostedemail.com: domain of leon@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=leon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753275721; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753275725; a=rsa-sha256;
 	cv=none;
-	b=U2oYDYAmodrmNi+psWmdLrmUO2W1WxIWJbEjANn+CphVbYIJkKJoGYSxHlE1woBjvCEkhc
-	oR8x7VdnCjRhYVQIfLasgZzbY38LETaYMGo08wAVYTVIbXsfsfKCfpYPDQGbPwA++5JECo
-	Dkjj8VffswYtfaogiisiK9v7TWzWHZA=
+	b=C29ZWbF1oFQem6skaqqHWJE1650ntoYKGK7BWBS8AzxmsW/z/jIdMge9ZiNh6Q5PiD0/tN
+	WU2Fbko+7ohly80Qbv5gzgQJn407HyMl2HEgv7mvWePFUw474U14AM5WVSoE4043TQpNu1
+	rN/DU1SoCfH9iTKb8AfK5KCGFtHmgOI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8FFAD601F3;
-	Wed, 23 Jul 2025 13:02:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 762A9C4CEE7;
-	Wed, 23 Jul 2025 13:01:59 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 4E234A52853;
+	Wed, 23 Jul 2025 13:02:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D21EC4CEF5;
+	Wed, 23 Jul 2025 13:02:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753275720;
-	bh=DdEPBcDoyZyAyQmgxVcA/USPwfaH12G0OefCJEr49ic=;
+	s=k20201202; t=1753275724;
+	bh=uuCb+V2zNc5XSrBnwxrMawyQmHST6eRwzZ5HxKmtUAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ETK2qZcN6+sQYJHSkoLVV0k/yH8twcRhKOYJgr93JPgv0nrXxZCzfFwSW1/G62IK+
-	 dHXoqPt/Wx9t/L3G4sdDyxTDD3f4GLS20xqlO/uiD8S/BJbeMCdXOYPXBGSX5rWv8h
-	 uU36XgMIC3kZdDlUYy2xEFpyQkWd7Ao9AI7MS+qm7TPCbsSNBulQ2TAtVt47DFfyvb
-	 2rHJLTEmxms3qV80raVb15Ef5YlYHRpwCIAejwL3MXphMFCzgKfNnc/M/MphZcoMgV
-	 btntopHEIl6egN2Hxfn87m1H+IhrWppCwky4m3zkIqrXkZG2T894pcTMD+L6pjBS5w
-	 +ULHryOUF5DNQ==
+	b=CMXvNedLSRoRNIwJaHFwymWQJoLQyy5HeCJn+iVUJAlK00FGokYtqVBrXV4haQEzj
+	 4iM1gvpoEs6p9cZdfKk01lySbx1k78BYRLrfwsTbzRoWU+Q+XH+Qd9DgCFFmNzMZs5
+	 L4oDttcRXsp/Ta90c0k8VhrbYHR9/CeOaCy2K7cOOav1SR+AaaCAhZ8YMlUBM1+C3G
+	 YmlkbaQZzVl0iP3yUEOECQOLzv8Tu8kLt0j1LO5zFl7MasnoEyvYAVwA7owgkFzqoV
+	 AkQjTLVdtMNW/QuID+PRdNgGe47BkgzJUFzNMwQOk/GEInoTws1TVgMkin8/vgBYB5
+	 3BbS2oJqswGwA==
 From: Leon Romanovsky <leon@kernel.org>
 To: Alex Williamson <alex.williamson@redhat.com>
 Cc: Leon Romanovsky <leonro@nvidia.com>,
@@ -87,22 +87,22 @@ Cc: Leon Romanovsky <leonro@nvidia.com>,
 	Sumit Semwal <sumit.semwal@linaro.org>,
 	Vivek Kasireddy <vivek.kasireddy@intel.com>,
 	Will Deacon <will@kernel.org>
-Subject: [PATCH 01/10] PCI/P2PDMA: Remove redundant bus_offset from map state
-Date: Wed, 23 Jul 2025 16:00:02 +0300
-Message-ID: <c1a4acd69e040fc2cc7e552849f4d922f5f66325.1753274085.git.leonro@nvidia.com>
+Subject: [PATCH 03/10] PCI/P2PDMA: Simplify bus address mapping API
+Date: Wed, 23 Jul 2025 16:00:04 +0300
+Message-ID: <30640b5e4ec975f928e685b92aaaf3e2e5e08f72.1753274085.git.leonro@nvidia.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1753274085.git.leonro@nvidia.com>
 References: <cover.1753274085.git.leonro@nvidia.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: rxmu1eu37a1jdib4p1czm3jqr4ryn85o
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 59F2380018
 X-Rspam-User: 
-X-HE-Tag: 1753275721-851654
-X-HE-Meta: U2FsdGVkX19LL1MxXbn00t/qOFgAM6mW7knHZYSgKseRBZjiF3d4H1ShZXukoml9duEUkbRdL7dGcRJUXxGX2dGCx2/GQfwDLD62CJSOzX9297VOBxnw1v08zz1uZAdw2/47qj5NpxhlzYp0JWmfF8eIjJA6Q7oFe93X3GSol390fiHMsvkyCJ/3HDD304eMav4Rw95LE1iQYRtb3f8qxAUdeMXwLQuzis+AFUcEWS5g4ddP8G7z/Z/eHVqo1z7CGgUAfRoDKH+s9VNPf9NaUJ5KPoN3g0eUHsagW3yiETwUiwsEYXiNtuXuWnpCE/TYDqze0qfw7Ej+PTWyf3a4YjGAnZWxkc4+xFl2m8uVHt9sAy80SS7YqP8wVDmbrujpGDt/EZrBl4fd/6hZ94PIIVCkp86qt4xByEDD8MBaW/Y4pnCMDPB+m4iY57vHLpl6iome+GIetZcM/tazR2Z3t7TzDY0M+uBsSK+3NhWyuv+PlBJC+eGHmKtSCgLUI6BTsq+YsbtobsK0hmtVALM8C2SdRh6WvMGvSRrUnvbePsj1hy7MynifiDL+ntcWKmxVkkOfK/oO1hwb8yQ8b9jmNkXcAKTdRJcVsHj8oM4IWHzJQwD1CpRUvXdb3e+Dys0cCk5oqITdp4XJIVZFvL75kO4T64c3YhzdilrnTqvjipmkhJ4vBnHXlx6dRnCsh/s1cc5JMy+tpS0LZmhTeWcvXSeYe8ceD15Z94RaEFDZUMzBDXHg/wgtrWAVZroZPUziji+JtFEoDWygHwzH6XvlTJg8qwe2VUU9yFS4qmmpsJIxcnaZ+E/AfFKF+3L2JorQPIriOXhWn4CdA4LrQQgkfOcGpUd7vbhD+6VFsmeZHkvT3mSzCMzwx7VPrZ9GJPTHSZG9GU5uucaOz5O4DPlJBwAw8orUHAgBam4whVyAFeASrK65zTmZeEeQoewlSGlBh2DkwKhO/VqR1/TjlP7
- Mg9T8c6p
- wfn/69ajetTVG0Ijj2iFIeZS8u4+6IJJPg3dhds/tvfcgI/doMIraKY+gqXpySXhApow7mMng5Zj9G4SF4WHGHCx4SZsfQl6tpltgcmUU5YLDN4JgzI+VVZ0pTiWTieisRtbGtvBvEQxmvcHhyxjiTpmAIyDD09QjRk6vRCsCdZgudH3JaTZMFJiTOB+oVowlc6Dw/bSxNj+/NT+f2POBmaPd2IMFq0KMugAG6zh/RZrH7HbI4Nk9nNCfRUuKO/jVLIXtZUcMPBAWnvn64szFlGfQDw==
+X-Rspamd-Queue-Id: 127CF140022
+X-Rspamd-Server: rspam06
+X-Stat-Signature: tfcdmpdihcewircymqy5jd1sbezu6ybo
+X-HE-Tag: 1753275724-354536
+X-HE-Meta: U2FsdGVkX193aywm4JNHsSwoEJP+XWAMeFY95C26Jvvo2c3dwGa+q//TnfX/DwydOfKGnzya2KoEreXi/w/gBUUhC+iskzLelu+dA0Ms0LYHdhLuSH9Dd/grbDANtriM1gPEzo79zbiYcNP/YwbnoawkdO75iZli0JRl3pv+5WE757AqHo/447dixY3/71CZTNQfLOOTA5A/6EiELUoETcdvnoUnIhQpasryc5NxEzKqZWgqRkT7q4xk3wQI/YW0UG2Xs+P1V8A8WcDUILyo6OS73tx7pefvu88uoXj78qVbiqR6DsOf6zQ4wHYpiMoazci8/hEkdQtacY2bbQSOyyuVRO3HFfuHD3y1W553yFMDkFPbbYZvyHEU1TpmdzBsWDw3fnWj8NA2X7xXaWr4e2IKrxZG/242PIhgORuqNHSi7hfhOXyx9VE5qQw7tNEncmX9dAefP0l3pSjF1QxcmTV3LliOJ1yN1SOCyYwnlJbElBiqSx9WwohUdZqbbpYlvO144YwYf0PVarGfqzf5cag73TabWtrwhjH2ExPQ1W64O19Pq/ggHDnZqbAQNAjlru7ee3LQqCbXceP44Mf8R80H1iuvIfIHKdW0v4T4E04njZvDx8SSJK+kyZL5znOLeVFVRJwOLrg6waV3ea4nNYlKeaODxI+vmYLqXmAm18wNwgbwM5claeATpJ8wCjE25ULwiEBTDZrc+Qs959Diwc5rUrRxYarUk9EQ+5bzmcFcZcr9rl9cxIsDwmscMLACx7tC3zDj0kH9+ge2QXtpzMKX92lhTTRL3g++/jfMwuLETYYOS50dpJDPO7NPLG/RKKTYPAmcBcRmB9LnLukGSWPPkchL/wPONoSAUer+jmVTDs2VRNukwTuvWG1icHIXY656swLKbMkjktTpTkgQqZuLsZ5fYUxAgfN71Hq3pmMmbN/6+TQk/ku/LgKn9KLNwiPcQoBGClIY692YKtn
+ Vqxb4oOI
+ QAOVf4mNSXfgMzJ8gDGIWt9zy7tCV5FrBN6xJF7DddxaU24lFkss83ovEg7BqW9t3cLNZaO2YGgzzt/vh0OP5Q6EOZXQntgcW5l1TkhgqU3Ac60BOSb/ok1ByirGz+CYYD/7UbC+A+4Wa4p7YtKIicfTvLUhi7WuUw/ydrdNPvAo+d5pHGZN1ZEd/dAjhUgNHAM2FaNMFr44x4+FMC4lHKwlZbSIatWIrAQR0
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,51 +113,106 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Leon Romanovsky <leonro@nvidia.com>
 
-Remove the bus_off field from pci_p2pdma_map_state since it duplicates
-information already available in the pgmap structure. The bus_offset
-is only used in one location (pci_p2pdma_bus_addr_map) and is always
-identical to pgmap->bus_offset.
+Update the pci_p2pdma_bus_addr_map() function to take a direct pointer
+to the p2pdma_provider structure instead of the pci_p2pdma_map_state.
+This simplifies the API by removing the need for callers to extract
+the provider from the state structure.
 
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+The change updates all callers across the kernel (block layer, IOMMU,
+DMA direct, and HMM) to pass the provider pointer directly, making
+the code more explicit and reducing unnecessary indirection. This
+also removes the runtime warning check since callers now have direct
+control over which provider they use.
+
 Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 ---
- drivers/pci/p2pdma.c       | 1 -
- include/linux/pci-p2pdma.h | 3 +--
- 2 files changed, 1 insertion(+), 3 deletions(-)
+ block/blk-mq-dma.c         | 2 +-
+ drivers/iommu/dma-iommu.c  | 4 ++--
+ include/linux/pci-p2pdma.h | 7 +++----
+ kernel/dma/direct.c        | 4 ++--
+ mm/hmm.c                   | 2 +-
+ 5 files changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
-index 8d955c25aed36..fe347ed7fd8f4 100644
---- a/drivers/pci/p2pdma.c
-+++ b/drivers/pci/p2pdma.c
-@@ -1009,7 +1009,6 @@ void __pci_p2pdma_update_state(struct pci_p2pdma_map_state *state,
- {
- 	state->pgmap = page_pgmap(page);
- 	state->map = pci_p2pdma_map_type(state->pgmap, dev);
--	state->bus_off = to_p2p_pgmap(state->pgmap)->bus_offset;
- }
+diff --git a/block/blk-mq-dma.c b/block/blk-mq-dma.c
+index 37e2142be4f7d..eeac653e3f3bd 100644
+--- a/block/blk-mq-dma.c
++++ b/block/blk-mq-dma.c
+@@ -79,7 +79,7 @@ static inline bool blk_can_dma_map_iova(struct request *req,
  
- /**
+ static bool blk_dma_map_bus(struct blk_dma_iter *iter, struct phys_vec *vec)
+ {
+-	iter->addr = pci_p2pdma_bus_addr_map(&iter->p2pdma, vec->paddr);
++	iter->addr = pci_p2pdma_bus_addr_map(iter->p2pdma.mem, vec->paddr);
+ 	iter->len = vec->len;
+ 	return true;
+ }
+diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+index cd4bc22efa966..1853a969e1978 100644
+--- a/drivers/iommu/dma-iommu.c
++++ b/drivers/iommu/dma-iommu.c
+@@ -1427,8 +1427,8 @@ int iommu_dma_map_sg(struct device *dev, struct scatterlist *sg, int nents,
+ 			 * as a bus address, __finalise_sg() will copy the dma
+ 			 * address into the output segment.
+ 			 */
+-			s->dma_address = pci_p2pdma_bus_addr_map(&p2pdma_state,
+-						sg_phys(s));
++			s->dma_address = pci_p2pdma_bus_addr_map(
++				p2pdma_state.mem, sg_phys(s));
+ 			sg_dma_len(s) = sg->length;
+ 			sg_dma_mark_bus_address(s);
+ 			continue;
 diff --git a/include/linux/pci-p2pdma.h b/include/linux/pci-p2pdma.h
-index 075c20b161d98..b502fc8b49bf9 100644
+index 27a2c399f47da..eef96636c67e6 100644
 --- a/include/linux/pci-p2pdma.h
 +++ b/include/linux/pci-p2pdma.h
-@@ -146,7 +146,6 @@ enum pci_p2pdma_map_type {
- struct pci_p2pdma_map_state {
- 	struct dev_pagemap *pgmap;
- 	enum pci_p2pdma_map_type map;
--	u64 bus_off;
- };
- 
- /* helper for pci_p2pdma_state(), do not use directly */
-@@ -186,7 +185,7 @@ static inline dma_addr_t
- pci_p2pdma_bus_addr_map(struct pci_p2pdma_map_state *state, phys_addr_t paddr)
+@@ -186,16 +186,15 @@ pci_p2pdma_state(struct pci_p2pdma_map_state *state, struct device *dev,
+ /**
+  * pci_p2pdma_bus_addr_map - Translate a physical address to a bus address
+  *			     for a PCI_P2PDMA_MAP_BUS_ADDR transfer.
+- * @state:	P2P state structure
++ * @provider:	P2P provider structure
+  * @paddr:	physical address to map
+  *
+  * Map a physically contiguous PCI_P2PDMA_MAP_BUS_ADDR transfer.
+  */
+ static inline dma_addr_t
+-pci_p2pdma_bus_addr_map(struct pci_p2pdma_map_state *state, phys_addr_t paddr)
++pci_p2pdma_bus_addr_map(struct p2pdma_provider *provider, phys_addr_t paddr)
  {
- 	WARN_ON_ONCE(state->map != PCI_P2PDMA_MAP_BUS_ADDR);
--	return paddr + state->bus_off;
-+	return paddr + to_p2p_pgmap(state->pgmap)->bus_offsetf;
+-	WARN_ON_ONCE(state->map != PCI_P2PDMA_MAP_BUS_ADDR);
+-	return paddr + state->mem->bus_offset;
++	return paddr + provider->bus_offset;
  }
  
  #endif /* _LINUX_PCI_P2P_H */
+diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+index fa75e30700730..de34ee5903766 100644
+--- a/kernel/dma/direct.c
++++ b/kernel/dma/direct.c
+@@ -484,8 +484,8 @@ int dma_direct_map_sg(struct device *dev, struct scatterlist *sgl, int nents,
+ 			}
+ 			break;
+ 		case PCI_P2PDMA_MAP_BUS_ADDR:
+-			sg->dma_address = pci_p2pdma_bus_addr_map(&p2pdma_state,
+-					sg_phys(sg));
++			sg->dma_address = pci_p2pdma_bus_addr_map(
++				p2pdma_state.mem, sg_phys(sg));
+ 			sg_dma_mark_bus_address(sg);
+ 			continue;
+ 		default:
+diff --git a/mm/hmm.c b/mm/hmm.c
+index 9354fae3ae06f..f9970b0e527ed 100644
+--- a/mm/hmm.c
++++ b/mm/hmm.c
+@@ -755,7 +755,7 @@ dma_addr_t hmm_dma_map_pfn(struct device *dev, struct hmm_dma_map *map,
+ 		break;
+ 	case PCI_P2PDMA_MAP_BUS_ADDR:
+ 		pfns[idx] |= HMM_PFN_P2PDMA_BUS | HMM_PFN_DMA_MAPPED;
+-		return pci_p2pdma_bus_addr_map(p2pdma_state, paddr);
++		return pci_p2pdma_bus_addr_map(p2pdma_state->mem, paddr);
+ 	default:
+ 		return DMA_MAPPING_ERROR;
+ 	}
 -- 
 2.50.1
 
