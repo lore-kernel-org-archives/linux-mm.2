@@ -2,123 +2,122 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DDDE0C83F1A
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 17:11:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2DD1DC83F17
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 17:22:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 70EDA6B0150; Wed, 23 Jul 2025 13:11:29 -0400 (EDT)
+	id ACE928E0037; Wed, 23 Jul 2025 13:22:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6BFC16B0151; Wed, 23 Jul 2025 13:11:29 -0400 (EDT)
+	id A7EBB8E0002; Wed, 23 Jul 2025 13:22:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D5BA6B0152; Wed, 23 Jul 2025 13:11:29 -0400 (EDT)
+	id 96DC78E0037; Wed, 23 Jul 2025 13:22:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4ECE96B0150
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:11:29 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0365DB5A3F
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 17:11:28 +0000 (UTC)
-X-FDA: 83696170698.03.B0F75AE
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D998D1C0017
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 17:11:26 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UHYpJlv4;
-	spf=pass (imf18.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.208.176 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753290687;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 840878E0002
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:22:51 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 39EAEC011F
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 17:22:51 +0000 (UTC)
+X-FDA: 83696199342.27.8F6E7F5
+Received: from relay.hostedemail.com (unirelay09 [10.200.18.72])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 5E34F100012
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 17:22:49 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753291369;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h0LUnIOIz73OOlhKmDgw5NN8XNp7rSGUS+XkRlIQ8F4=;
-	b=Ah5XSCqRHbwz8Xtz81yXZTTpmv6Gn/hvGbrUaCpwjnNoT8TB7/hY4LNKymYAFrY8P5BgCH
-	3DtN4t88BtCpBhcJYkJ1TPcG4K5luahsSXn2Y3J2DiS6gKTQbj9CccUCKiBTcwqfIGfcIz
-	lLDIldNjI+Ac6cpSUBYC06BQtSypKi4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753290687; a=rsa-sha256;
+	bh=HWMo6N7DknydD/H3u9J3QQxi5mYUqnkI0qT9deB89w8=;
+	b=l5YOOD0+1pox2WdqviKt7XWxBGLvFtD4g1pUZ7BDFoh3k/KHjYx2z1MvlWPjWxs6a6X5qQ
+	aISZDZ+UMLV7tuOet3wkkmo2WWG0tcuVED5Irhq4WzD8J3QvsNo/To3IORE6nykcuoRt0l
+	NbRvtyGQ0poLn4y71f04v6unasPLCOY=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753291369; a=rsa-sha256;
+	cv=pass;
+	b=1nzqPMvZn6K/PALaKgX3GrVxz6L9asnNw77M9vwcdDZ4aQkE28jQFyeT9ZaZAxIPdqEkjD
+	8xu0HMb//8Hnyh9yUc7hLVh/Odk3KzcMBX9odXgSa8l3dXtMcAAdjCrv1W/AECUySbiFdi
+	mdTlj9RWMmyqJvgkKp+G8eThXugFRW4=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
+Received: from relay.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E31C780179
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 17:22:48 +0000 (UTC)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B90AA160183
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 17:22:48 +0000 (UTC)
+X-FDA: 83696199216.26.5401CCF
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 2641E180004
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 17:22:46 +0000 (UTC)
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753291367;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HWMo6N7DknydD/H3u9J3QQxi5mYUqnkI0qT9deB89w8=;
+	b=3NnrQ0zWJI8EqGX3VutHyVtn+W6aWHrV5/8Fz15/Q8P/jxlESQ1W9+pdVqHLRcihizF+OS
+	vhGx7+FzHSyCpY1zBhOH1faP4cDmfNdOgz5SNlQeI0UluJi52RDhc+XhveIDuAnO+p8/ar
+	GXeGPbaghWxdx2a5qRpZdp0uJ4qKmM0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753291367; a=rsa-sha256;
 	cv=none;
-	b=4aBsVMHI7j/HNYx1RwTYBJK9hDmsZly3ps5OknJhq0evjP0860efyhq0PCW/OAQNaJS1x9
-	vNhxEZf4FZc81CZ0OocP7mNqGz7Q/gTDf1rvSGLbLPuveknndUXdT1TiIPZJoGvDKqhsJX
-	Bft4OhRtMWkhggl+Q3jlwkp1YlloIA0=
+	b=wBHRewj+2b/+dkTEALcgWBvGiD1gi6LRnirF9CySTVuYlrGunThp+U7FGJEFnB7gCaOJPi
+	TgCZTFSpaikYJbkLmiL6B0P2434Is5MloBze6AhDQP0kELKJtG03iWmOkRLDoUbpci7pJt
+	0H2r28bG99YUGM2I3Ig4w5o0mEyN4oY=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UHYpJlv4;
-	spf=pass (imf18.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.208.176 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-32b4eb13e8cso51311fa.1
-        for <linux-mm@kvack.org>; Wed, 23 Jul 2025 10:11:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753290685; x=1753895485; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=h0LUnIOIz73OOlhKmDgw5NN8XNp7rSGUS+XkRlIQ8F4=;
-        b=UHYpJlv4llSG7E3rbtcqdbeOHlNs1oBphYNuc5I3LVRWr2DLAGLQO0Wa7jXLSbsMKB
-         YCPkIAckbm59mULF6z2QU9mAOh2XbYimlCIb2AihgGbCN2FvrfTgEpxvOkj5VaEWCRWy
-         fIHiDdXd/BPVmRvuQPaoGs54sCNHfXGtqTQBu/zKwlxG+1Rso2g13kW/1J1M8nnXaSZR
-         aSJMa4q4IV4qClDocZBtCsk9JyewPx69HzgnonAegf2HZ8YTong1rxeyMC6d93DDJpxf
-         GD9lqhMVantXcdKe6wjvovfLvVc3TmqCrKe6x1SclK5sJy0BCVx9Mr5mIdckcMMvgyTP
-         Rg9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753290685; x=1753895485;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=h0LUnIOIz73OOlhKmDgw5NN8XNp7rSGUS+XkRlIQ8F4=;
-        b=qhLmfyMwyA/SVxWQ6QZ6yRp/T4CzXyZa3NNaIrDW16MtgPFbeFbOyJ7XuIVPFv57Tk
-         RtO9XGjTM3jLXOpbktkqaFvZcsdEIUpJaksuofKZSkOgmJXPDeN0sKzIVUKrPfqywNuW
-         52N0OR82rzfrfsSTfxuKVBv0y34/AeAIORhq7Lm+qZvH5uEtvsrLWLutKyrsmk9rqikH
-         g15a4gp5yfsEq1R+U4frh3BRNi8hqGGtijAoJ0TzwsvBeo4K7s5x34YlWSLf+gz/WIqM
-         oCZ1ybq401q2x4Rpf+Vwh8zWFB6VCr6X5AKGCUqdp3MTllh0ClQHdT4bEMMR2Nr5gyXr
-         IkPA==
-X-Forwarded-Encrypted: i=1; AJvYcCViYivK7g3dRAURr0hMnyW+I+/gpFZ6zIgKchlkWY9o4rAEl/v3FNwYQkf/469NBUrIg3wqgi+pCg==@kvack.org
-X-Gm-Message-State: AOJu0YymmLMROJtGZ9ew6I3vQRdlgYih1TskA8ZX79I35arxb1mIHB4x
-	gOwNtIBesTz6pQHUXooobZFvsxoTKXL5bkFr23ygTyit/ttBAzAoTPM7
-X-Gm-Gg: ASbGncvZ38vXdrqjhVG6iUHw14laf0rsIb4X+HydD2SPRyktex8AFyU56L61CBw7MHB
-	Lsk5D8EP4slfOHI39Vgn/NMp7WKop0ceUvv75eDfwF1NHgl6cx9HDLYGKsVw/HL1ZgWiD6rupd+
-	AGGeXugnx023Mx7JlcC6+P/Akskli8zcL8nZBKPzr2ZCuz0aJMdQwhDZeUM9VNGuBtqQZB5zf8P
-	5grYPP1D7Jo2TKv81uGoJxlC4mGxiwuG0SkO+yQqU5htsAI2Yw5LiJFsxmIiF8q21dhhVZ9Eblf
-	AeYJdKS/kULWl6M/wScMKvxuARfO+Z4BMsGyBubXeChS0O3McWwKLcTdT7ZC8yC2CzBDZTdlTQ9
-	SSqKMI4QvI7kTuHqSx/oFor1ZlTML
-X-Google-Smtp-Source: AGHT+IH2g67FKl5Ss4FX0QBC4tL2LXDPhFaEQPcQJWbHc0FwMHy9whqZBWSEtQi4JTvV5r53QIeSPA==
-X-Received: by 2002:a05:651c:f19:b0:32d:fd8c:7e76 with SMTP id 38308e7fff4ca-330dfd2d969mr3521411fa.7.1753290684563;
-        Wed, 23 Jul 2025 10:11:24 -0700 (PDT)
-Received: from [10.214.35.248] ([80.93.240.68])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-330a91d9eaasm19869811fa.85.2025.07.23.10.11.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Jul 2025 10:11:23 -0700 (PDT)
-Message-ID: <4dd38293-4307-474f-8eb7-0e83f5d3b996@gmail.com>
-Date: Wed, 23 Jul 2025 19:10:59 +0200
+	imf24.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=uTwfdT4g;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=0zsDEKsn;
+	spf=pass (imf24.hostedemail.com: domain of tglx@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=tglx@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1753291364;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HWMo6N7DknydD/H3u9J3QQxi5mYUqnkI0qT9deB89w8=;
+	b=uTwfdT4gS3CIP1z3mkGpl4P8Gf92GQXuhhmIYlvD1xVncO7izDn+jAV4Apa0RGHBKEJKR4
+	vhowu68fJPYIp78+Vl8EvbWe95N/5nHlgLx62Z20l5+2NyF+v0SLrMY5MWzNiKsvI7NZyI
+	93GZKTT6hHfJWxZE7VeUDnSP6Dk6hCxJhLSzMWi3yqnL74T7qBAuZj8v6BLTeCKLEUIrAw
+	YUvxUS+9IkzVfPI+qFCWKMSLDi22FmmBoVzvvjdF68hCXdxT0xWDqx3RzOfvXENFQknH0S
+	oHkK0dkui1r/6esISb5CKAKDKdfR52DLcAnvjsfkBTL6j+gmCX5Q9bZS1+ebCw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1753291364;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HWMo6N7DknydD/H3u9J3QQxi5mYUqnkI0qT9deB89w8=;
+	b=0zsDEKsnDDRc17JusZ6oZ+IxZboqKL/mREeqzblTxb3++XoS5iND//bsgxkB0oMKgADZDg
+	YbYlqM7vHU9zaLBg==
+To: kernel test robot <oliver.sang@intel.com>, Peter Zijlstra
+ <peterz@infradead.org>
+Cc: oe-lkp@lists.linux.dev, lkp@intel.com, linux-kernel@vger.kernel.org,
+ x86@kernel.org, Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ linux-mm@kvack.org, ltp@lists.linux.it, oliver.sang@intel.com
+Subject: Re: [tip:locking/futex] [futex]  56180dd20c:
+ BUG:sleeping_function_called_from_invalid_context_at_kernel/nsproxy.c
+In-Reply-To: <202507231021.dcf24373-lkp@intel.com>
+References: <202507231021.dcf24373-lkp@intel.com>
+Date: Wed, 23 Jul 2025 19:22:43 +0200
+Message-ID: <87a54usty4.ffs@tglx>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 08/12] kasan/um: select ARCH_DEFER_KASAN and call
- kasan_init_generic
-To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Cc: hca@linux.ibm.com, christophe.leroy@csgroup.eu, andreyknvl@gmail.com,
- agordeev@linux.ibm.com, akpm@linux-foundation.org, glider@google.com,
- dvyukov@google.com, kasan-dev@googlegroups.com,
- linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-um@lists.infradead.org, linux-mm@kvack.org
-References: <20250717142732.292822-1-snovitoll@gmail.com>
- <20250717142732.292822-9-snovitoll@gmail.com>
- <85de2e1f-a787-4862-87e4-2681e749cef0@gmail.com>
- <CACzwLxiD98BLmEmPhkJQgv297bP_7qw+Vm_icFhTiDYN7WvLjw@mail.gmail.com>
-Content-Language: en-US
-From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-In-Reply-To: <CACzwLxiD98BLmEmPhkJQgv297bP_7qw+Vm_icFhTiDYN7WvLjw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D998D1C0017
-X-Stat-Signature: 99rwd4mfdign3ph7nhwifho5r8x81mbc
+Content-Type: text/plain
+X-HE-Meta: U2FsdGVkX1/bmH+2XiMTXqNk5BXedb217IpjDVMy7ddbz6GIC+XXmhkCW4Tj9iGGVq+DDK8CeghOav8tn8kTF6dAKIAFao8qBaMMgNSYz1JbcoPijw0RdDSWDmgUz3EHTO4KOjJb5xqSB1QnJVhGpYNcPvZpDfefff1CxAEJn19MUjiC2nz1f8aQ+p5kpVvABjOHS9uqEf+qQ5PGxLeVFeyXPe2/BNiKhNDqXpS9qSAa+/dk8Pk5/GIHk/XgyNaHDoJE24yQGLivEZFDkDX0ow4uDa+gIdamOw6KkhPznX9nkrU1zrpTiIkgHqxe+ROc0wCaPbG+PSzPVJuhEeDf80O0WBZM6JHkCDslw9An4QDGRrrjmd65Tc0/DGcHZHZOlvbaldT2p0OlME3UGnYxWOA1Nn2iuo3cLtCmD2QcfZPPc0wmPSOmp0Bt6ytfhwadlXECGbmsKZx/yPyUVGdrjrIxJTPg36lusfPNPt7clJiEUteQfkQLysl7y3Ec/95vs3XlsoqwcillLhdLy+/QZSsqbtmeXOVNUWZz8Nt4cYiJUbakHRwtJUYYJ/PfTMhrgCJH8kjbSqq1FRuYtu+YXxWyxiW+oBMoC2QMO0kiYgzkKZVcY+VgsYlRoo+J6GrAWzJVs9JRUmmoIvMaR4+VyF5EAWaIx9Rk1FlS/2TPSK08blkSEYZ9g0T/A9nHkwjVwrgr97Sc7Mgq67SCRGRE/lGGR0SHewZ69p4i4ae23wO6Ssev2zwunos5yzE7Sou8bSmIzqfFtjQ75u59D3BNp5f06as6lSQ75+9BeCp9ahcbvmq8Fd5b3QuZsEyXSDbfScUVKwnTMfyYfvzzi52ppWHb/zzbT+CEKNcE4ciHy5KAsP60ICunGWbLYZti6Lb64xKDbeXmOvZUxq6L3fWD/vu8oDsx9Fl7+05aPHvu/Om1lZn69M1hRDACl7K8dfLuKA8qNDafk6vbh98Suo9
+ UmSbRgeI
+ hjVaQQVUM44O5IiY=
+X-Rspamd-Queue-Id: 5E34F100012
+X-Stat-Signature: eg1dparkc7qsyt1irtkd7m8nebkwisdk
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1753290686-750116
-X-HE-Meta: U2FsdGVkX19RGtpH3u2fIPBBPUbZdG84NnZarDBTUkQO7BbbjnRaKTPiBtGvZugaH0xr3jZFFcvw5e3a6ez+dsyMMuOk/f0VL2ydIwJ1G0+QTEaxQ9m6apLYPfpsfLr36DcUSTacKEX6LXJMp5b/MivwcnX9n2lZMzuOXrB0qM6zZ3eLnVedkExaNcI8uKBh+LB7YCV4FLLebEfpqXSA28ph+L9k1glwtw2dUSxNe19ptzdn12/9XtE4gdPt1ZuJuOJ3U1mXTNRwUpmDepSH3sjrBigVozkvA2+KGphDCnx8dUnLk+UBHeik3lJRozAyoI0VJ5ZxoiIe1RxVz4Z6u26mC6g9U77o5LnmT2CBBO32YqgBUZUUdoVn9tWu1gmPrbO9h9eRhdetnsHBOvYfTlRiMzSBzVyspTN4WXDRp6JoGhjc0BO8wg1tfJyCNEE70h7Gn2fAaSLhgqxr6edsv+o/etPjSC265OPYc+U/jj5qTEadV+vdu7psgm+BReNax7A0t/EEHM/HkVKU+SlwBQEP7xsC3nk8i9sJxFDMoNf6CUCk8hxpDaMYUDL3bs7z/IWLHjQwU9B7ssQvS7ehKVpSKaCaOC1zpxL27tTzl84XVQWEdkG9GaZghmZafMw4c3jYQq1GAh0YJlcOCWHv9OC6rsUQtMCMEiPsz5SVC0YnYFPOqVQEZ4sKUf646hNJe3ssnRBGP0fGRA3eFqh22v8CM9TaB/Vc4WZAf9BBlsdBekacwyOOAsHMO8+1qPN4LoWJ/a7i+2NJxrdIad+f7HXIHye9MrLs5iHt/SP9ISa6s1rlqSdS5OXI0FiIyrsVluLXTYwCI5z82gaN5OP+/SyBxZiKTyTnyUvhmItuG3lDBiaB5+c62jAKog0KJNBtD5Ha7qH/CenD4JQXOcDMitrW/OcZbOlX4cG5RA1Wx4xQxeAK6/dH88ChHkraHg4GkIR03OPrAjXk6lw66rx
- cI/2mfGs
- PPG+rbR2iN5hMppaS9Xx+9luOGJ97H6OC1+lOhc2prSWHi4OMg4HeOqr7YlUAmlNiQpX8LQdU2hvP7pveFg0ukPRgLiG7y+GWYv24HFNMeaeHjfPQ4AtJxX9PolyABKnEUwZ7pl6NiBcaLzn3csy+TRcgCMvZI0HmCiQDm52p405pxI02SkIUJOsQMUMyZymGO2i3iOcHBDR1HBZaLKGPjW0Vq6gdfpqbMucUSKSzx+TixAWxHHHWvtNUDL8kRY1eWAB54k8ZiCrBzI/oIJj66+kr2JzYB7w3y0spIgoqVum7QnnueBFacNWZj2225z4WpAUlenId29zGeo6MUjOs7Qaat9jhNN34NJO0Hqu9GRadnZwccoIa/TpoMPszE/ZB2eO8Azt0gSUCZCJKvUoZ6JTo1mHh3tR3tK2DcqI3JV5YiSF35bYdltk8z+watNlKgyPXo9Bu8KXcfVnd20uMbHlUL+0gTC+utoJiFDPbgRF5Lnc2b0SE/Jrdl7m93HU5QztypYYcLE8p7/h5FrZy7jLfWBxmO3n0WrNGADXCkYPeklaFOvTUf8oVtnFsSQyFoeWVbrnUkl0Lg6Q6D0W7+43N9w==
+X-HE-Tag-Orig: 1753291366-839311
+X-HE-Tag: 1753291369-894000
+X-HE-Meta: U2FsdGVkX19780B3HUN2Kir1c0I1XWog5N5memWW58ECUpHAJRuEO+3WYKBYN9M2xYNMSqCuepP5YYxVkUC3okbFA9mZaMVilbv6bwIBUtAAlW9cB6c17EoHkiMKOmu7DHDA0u1yCYG+EWv7ExnF79C8AIL5JlihSVvLmKBM+CHyNdafEBSQxjS7o/qxqrI+4hnHQqSPEdX664gSkmF+iNIU7Xu8mNVrl/XWe6I1Zc88dhXq8UE/f6l0lgtuO+mVG3NKWrIK29mrZpdmax8J0V2HK2+3I0qqmU/U6Hdw2wsSzZ/XU494bPqIdVdqvn/vhd5uobHyi1YmuyS/rXVM03ZXBiF1j1F55Vg632EJ0qlTBo/tZ/WEbDtyzcwhWAl7hvKhQ882PujOV4jxEiWcMQKamL6NB9Svi2unDaGXzo01/43aYWiJs0RDxakfk2yliWxF07HdspvrHaInZmyLSU3zdACzuJGVl+OJ3RVJK5tlYs2n/xnd0LdUlZmpszZ1IRJmeGKR2hba8fmu4kcsZNxOIkocZNobyPj6mfKHfkrvXmay1eUijNxY6dfah442GTTXNnZuKohUBG9TDfDCpiUbsYsqO0SKKV+NEHJ5t+mB0z+qcqltZFlMdsepJkipciYm5Cr421oZ2MNh1xP9an2irQYqPO0ImBperyH862bZiw31tbDZrYMTRUEa+pr8ObFEdv/0/1yuEovnBbGy9m85lCbrAvoQZjZLUHY/sL/oqH59FMtn4VS9sxbU2QXiABiGcN9tTKBitYqlvG/zY8GvYqxyt8mcIGjN5B6u3iZ/zPDjhF/g++qlR3YiZb5gYxA1ojp3aN8Lcx8p48WDMMkbSWp1FHb1gKVJV0GYLIvJl05/Ldk7BlrC2hjpal14BbU6VSFzGRG4Tv/UW5DR+xFG77qadxXIc8GXU+zPvl4lsC6WleYruMddSPp5WDBpeRN61Ulv5iphqvHBToi
+ L/yJAOZP
+ 746pMDZ3IxgjBVF76NDJVVg7GEzVtuM9T1bWj/F7odT/h1sGZyrDNrAeX0Ph/FvPGCLCZMtX9MNYOTvNExTOWbIs1SQq/m0e5j/3wOAwdsSqW3qZsByG/J9hOVe4cmGYeJ/sdmh6UADB4pX3m/PKNCokVFRWdUsz745KMMq7qv+OAbWbD/Bbp0i6PZT2qgjZexYnMR2lqDWZHM0EAH11ayzR5a1gNJQ4fTF3yzb+HkzfZFXTFxhv8JzYWhg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,112 +126,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Jul 23 2025 at 16:46, kernel test robot wrote:
+> kernel test robot noticed "BUG:sleeping_function_called_from_invalid_context_at_kernel/nsproxy.c" on:
+>
+> commit: 56180dd20c19e5b0fa34822997a9ac66b517e7b3 ("futex: Use RCU-based per-CPU reference counting instead of rcuref_t")
+> https://git.kernel.org/cgit/linux/kernel/git/tip/tip.git locking/futex
+>
+> the issue (1)(2) happen randomly upon 56180dd20c.
 
+Hmm.
 
-On 7/22/25 4:17 PM, Sabyrzhan Tasbolatov wrote:
-> On Tue, Jul 22, 2025 at 4:00 AM Andrey Ryabinin <ryabinin.a.a@gmail.com> wrote:
->>
->>
->>
->> On 7/17/25 4:27 PM, Sabyrzhan Tasbolatov wrote:
->>> UserMode Linux needs deferred KASAN initialization as it has a custom
->>> kasan_arch_is_ready() implementation that tracks shadow memory readiness
->>> via the kasan_um_is_ready flag.
->>>
->>> Select ARCH_DEFER_KASAN to enable the unified static key mechanism
->>> for runtime KASAN control. Call kasan_init_generic() which handles
->>> Generic KASAN initialization and enables the static key.
->>>
->>> Delete the key kasan_um_is_ready in favor of the unified kasan_enabled()
->>> interface.
->>>
->>> Note that kasan_init_generic has __init macro, which is called by
->>> kasan_init() which is not marked with __init in arch/um code.
->>>
->>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217049
->>> Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
->>> ---
->>> Changes in v3:
->>> - Added CONFIG_ARCH_DEFER_KASAN selection for proper runtime control
->>> ---
->>>  arch/um/Kconfig             | 1 +
->>>  arch/um/include/asm/kasan.h | 5 -----
->>>  arch/um/kernel/mem.c        | 4 ++--
->>>  3 files changed, 3 insertions(+), 7 deletions(-)
->>>
->>> diff --git a/arch/um/Kconfig b/arch/um/Kconfig
->>> index f08e8a7fac9..fd6d78bba52 100644
->>> --- a/arch/um/Kconfig
->>> +++ b/arch/um/Kconfig
->>> @@ -8,6 +8,7 @@ config UML
->>>       select ARCH_WANTS_DYNAMIC_TASK_STRUCT
->>>       select ARCH_HAS_CPU_FINALIZE_INIT
->>>       select ARCH_HAS_FORTIFY_SOURCE
->>> +     select ARCH_DEFER_KASAN
->>>       select ARCH_HAS_GCOV_PROFILE_ALL
->>>       select ARCH_HAS_KCOV
->>>       select ARCH_HAS_STRNCPY_FROM_USER
->>> diff --git a/arch/um/include/asm/kasan.h b/arch/um/include/asm/kasan.h
->>> index f97bb1f7b85..81bcdc0f962 100644
->>> --- a/arch/um/include/asm/kasan.h
->>> +++ b/arch/um/include/asm/kasan.h
->>> @@ -24,11 +24,6 @@
->>>
->>>  #ifdef CONFIG_KASAN
->>>  void kasan_init(void);
->>> -extern int kasan_um_is_ready;
->>> -
->>> -#ifdef CONFIG_STATIC_LINK
->>> -#define kasan_arch_is_ready() (kasan_um_is_ready)
->>> -#endif
->>>  #else
->>>  static inline void kasan_init(void) { }
->>>  #endif /* CONFIG_KASAN */
->>> diff --git a/arch/um/kernel/mem.c b/arch/um/kernel/mem.c
->>> index 76bec7de81b..058cb70e330 100644
->>> --- a/arch/um/kernel/mem.c
->>> +++ b/arch/um/kernel/mem.c
->>> @@ -21,9 +21,9 @@
->>>  #include <os.h>
->>>  #include <um_malloc.h>
->>>  #include <linux/sched/task.h>
->>> +#include <linux/kasan.h>
->>>
->>>  #ifdef CONFIG_KASAN
->>> -int kasan_um_is_ready;
->>>  void kasan_init(void)
->>>  {
->>>       /*
->>> @@ -32,7 +32,7 @@ void kasan_init(void)
->>>        */
->>>       kasan_map_memory((void *)KASAN_SHADOW_START, KASAN_SHADOW_SIZE);
->>>       init_task.kasan_depth = 0;
->>> -     kasan_um_is_ready = true;
->>> +     kasan_init_generic();
->>
->> I think this runs before jump_label_init(), and static keys shouldn't be switched before that.>  }
-> 
-> I got the warning in my local compilation and from kernel CI [1].
-> 
-> arch/um places kasan_init() in own `.kasan_init` section, while
-> kasan_init_generic() is called from __init.
+> a255b78d14324f8a 56180dd20c19e5b0fa34822997a
+> ---------------- ---------------------------
+>        fail:runs  %reproduction    fail:runs
+>            |             |             |
+>            :50          48%          24:50    dmesg.BUG:scheduling_while_atomic    <---- (2)
+>            :50          48%          24:50    dmesg.BUG:sleeping_function_called_from_invalid_context_at_kernel/nsproxy.c   <---- (1)
+>          50:50           0%          50:50    dmesg.Mem-Info
+>          50:50           0%          50:50    dmesg.invoked_oom-killer:gfp_mask=0x
+>
+>
+>
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <oliver.sang@intel.com>
+> | Closes: https://lore.kernel.org/oe-lkp/202507231021.dcf24373-lkp@intel.com
+>
+>
+> [  286.673775][   C97] BUG: sleeping function called from invalid context at kernel/nsproxy.c:233   <---- (1)
+> [  286.673784][   C97] in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 6748, name: oom03
+> [  286.673787][   C97] preempt_count: 7ffffffe, expected: 0
 
-No, kasan_init() is in text section as the warning says. It's kasan_init_ptr in .kasan_init.
-Adding __init to kasan_init() should fix the warning.
+Ooops. That's a corrupted preempt counter, which has underflown twice.
 
+Can you please enable CONFIG_DEBUG_PREEMPT, so we can see where this
+happens?
 
-> Could you suggest a way how I can verify the functions call order?
-> 
+Thanks,
 
-By code inspection? or run uder gdb.
-
-kasan_init() is initialization routine called before main().
-jump_label_init() called from start_kernel()<-start_kernel_proc()<-... main()
-
-> I need to familiarize myself with how to run arch/um locally 
-
-It's as simple as:
-ARCH=um  make 
-./linux rootfstype=hostfs ro init=/bin/bash
+        tglx
 
 
