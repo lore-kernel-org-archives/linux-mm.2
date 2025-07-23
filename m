@@ -2,65 +2,65 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F8ACC83F1A
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 13:02:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 38B9AC83F1A
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 13:02:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A91A48E0003; Wed, 23 Jul 2025 09:02:00 -0400 (EDT)
+	id B7C128E0005; Wed, 23 Jul 2025 09:02:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A68DA8E0002; Wed, 23 Jul 2025 09:02:00 -0400 (EDT)
+	id B53CC8E0002; Wed, 23 Jul 2025 09:02:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97ECB8E0003; Wed, 23 Jul 2025 09:02:00 -0400 (EDT)
+	id 9F4AB8E0005; Wed, 23 Jul 2025 09:02:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 84BCA8E0002
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:02:00 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 21FE95AB40
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:02:00 +0000 (UTC)
-X-FDA: 83695542000.20.C8234A1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 641D81C0021
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:01:57 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PyvJ2iUl;
-	spf=pass (imf18.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A6408E0002
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:02:03 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 217C2C06D9
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:02:03 +0000 (UTC)
+X-FDA: 83695542126.10.85344B5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 59F2380018
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:02:01 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ETK2qZcN;
+	spf=pass (imf02.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753275718;
+	s=arc-20220608; t=1753275721;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=phKzR0U9vdX+OIE2j4TVSoC003PJDnKhnDKfctYSamc=;
-	b=U2cwMaYhtRfw+5MEsTDlKkpMiDsWlily2TVrF8pZAN/xEZEjyq++vUDZMIXoiPCRG9cVgL
-	2Cdw2kNoCP9+zNX3GHYiF3rLg7cmQXjh7GynXxikCtDchNSrg4GNou43qCKX+nniPFDwzh
-	YASOxhYvhzhwsd/c7u5/ax9BTzhqHeg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753275718; a=rsa-sha256;
-	cv=none;
-	b=G7OPAk8ukH+zS0lgjUFugRkb2h57r5MGQD+6DpXsjcViS1FWv1TmPxUy6e6icQ0RHuHSvq
-	19kIfA1uMYoUJQUQ0YnMlZchPq2kBzS8V7EawiSTPr7RBGtkRIykkc4TMHjKU+G2s/jw4x
-	QLxGMhiP+VZFBX5Na3rSvL1lD6tvcAY=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9liBMYG/DVS1McmQP1qxIOSzcSVz4iJiBcBOfa6Fc6Y=;
+	b=7iaAU2MmC+gqVb283Rfslvc2zqpn2t9C5g1iLM++E+56nh70Chu/pomKfY75LN1UyUH7zN
+	SjDU7u2weo2pKV0+XJmm+bCx7tvL9aDJK8lm1RUnapsG2K2a9eWP3TIJMsqkwyN7/WSDkS
+	G2Jorkf9MC6ou6Sx/cUz2FbpE5doisw=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PyvJ2iUl;
-	spf=pass (imf18.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ETK2qZcN;
+	spf=pass (imf02.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753275721; a=rsa-sha256;
+	cv=none;
+	b=U2oYDYAmodrmNi+psWmdLrmUO2W1WxIWJbEjANn+CphVbYIJkKJoGYSxHlE1woBjvCEkhc
+	oR8x7VdnCjRhYVQIfLasgZzbY38LETaYMGo08wAVYTVIbXsfsfKCfpYPDQGbPwA++5JECo
+	Dkjj8VffswYtfaogiisiK9v7TWzWHZA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0E15646205;
-	Wed, 23 Jul 2025 13:01:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB36AC4CEE7;
-	Wed, 23 Jul 2025 13:01:54 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8FFAD601F3;
+	Wed, 23 Jul 2025 13:02:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 762A9C4CEE7;
+	Wed, 23 Jul 2025 13:01:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753275715;
-	bh=VeEaP0I6Ju84rRyRYaicpp+t8ePJyjkfRFyzhb+AudA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=PyvJ2iUlLMlbGzX5qzJpPwU19z2ZHVNgRRR6I6pgdUocqIvlwyAEVWlzxFVyH+O5B
-	 rgvRUW0KyWJCaIjAWkNSjYQZTjUA8hXt537lM2z1lqW3QLRM+cccx6Wa7AnC47Kdh5
-	 5vyhtPdVK3eYgRSInD6ot6DkzLAf5sTN26YAlVnpeeskZCszqRTW1E/3s1cIFoXbIv
-	 cwHrWiFoDlhJYh6kh2ZXmBFSyLLP1YH2+JOYj0Akmjoq6YhcbZiRr95b4qm1dHfFnN
-	 OpoAwh1yBhmId5vMmQ85Jwdtkwph/jN1NrrSQ24V5bB3R7cAOPmCfMDkPo1fsYxenn
-	 0kqYO1EMHe0rw==
+	s=k20201202; t=1753275720;
+	bh=DdEPBcDoyZyAyQmgxVcA/USPwfaH12G0OefCJEr49ic=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ETK2qZcN6+sQYJHSkoLVV0k/yH8twcRhKOYJgr93JPgv0nrXxZCzfFwSW1/G62IK+
+	 dHXoqPt/Wx9t/L3G4sdDyxTDD3f4GLS20xqlO/uiD8S/BJbeMCdXOYPXBGSX5rWv8h
+	 uU36XgMIC3kZdDlUYy2xEFpyQkWd7Ao9AI7MS+qm7TPCbsSNBulQ2TAtVt47DFfyvb
+	 2rHJLTEmxms3qV80raVb15Ef5YlYHRpwCIAejwL3MXphMFCzgKfNnc/M/MphZcoMgV
+	 btntopHEIl6egN2Hxfn87m1H+IhrWppCwky4m3zkIqrXkZG2T894pcTMD+L6pjBS5w
+	 +ULHryOUF5DNQ==
 From: Leon Romanovsky <leon@kernel.org>
 To: Alex Williamson <alex.williamson@redhat.com>
 Cc: Leon Romanovsky <leonro@nvidia.com>,
@@ -87,20 +87,22 @@ Cc: Leon Romanovsky <leonro@nvidia.com>,
 	Sumit Semwal <sumit.semwal@linaro.org>,
 	Vivek Kasireddy <vivek.kasireddy@intel.com>,
 	Will Deacon <will@kernel.org>
-Subject: [PATCH 00/10] vfio/pci: Allow MMIO regions to be exported through dma-buf
-Date: Wed, 23 Jul 2025 16:00:01 +0300
-Message-ID: <cover.1753274085.git.leonro@nvidia.com>
+Subject: [PATCH 01/10] PCI/P2PDMA: Remove redundant bus_offset from map state
+Date: Wed, 23 Jul 2025 16:00:02 +0300
+Message-ID: <c1a4acd69e040fc2cc7e552849f4d922f5f66325.1753274085.git.leonro@nvidia.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <cover.1753274085.git.leonro@nvidia.com>
+References: <cover.1753274085.git.leonro@nvidia.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 641D81C0021
-X-Stat-Signature: h1y7fdorzsm4mtaxzxcgw5uqtereuath
+X-Stat-Signature: rxmu1eu37a1jdib4p1czm3jqr4ryn85o
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 59F2380018
 X-Rspam-User: 
-X-HE-Tag: 1753275717-796385
-X-HE-Meta: U2FsdGVkX1//aLWRvJ5fMQrvGVws6TZzir+dXqohAUcUZM3ZPM/PSAYAWQHMoNYjfV/KnpHjRXJEk4fMJP/KAl2+fzCf08NZtfCGEDosSmLxOlqL45FIvaHaAJWHgZ65/nc+myhSUtAoq2lxeU/RNZb/ut/vqov2Bweqqx1qaZXPbS/64jhhv5cYI7vrcV2IqepB6lS9GuFmfP2JHZvN5F4rjgY5PuaPdkUlFJ12RMPIcWs4EcJuU3w2KP0aI1Z/JBOOqKbAm25ANQeeaYdhTcKekhPOBF4mHa3tB3UXLNnYmbgdiy1EtIso74+Ex10GT5RXyrjpeAthaM0kFqHnmV/obexR9MNTl+RlMDgWEqzljjR9rbIQ4vUpaCCputf8jB/Bi+/Wrw5L6Jzr8vOxynfv9YgnJihXoKQ2ksgab3VJOd/pgH2RvrjSAP7z6N4ytN4VGHFSHqjtKyy2oSwvDyofHi4PxanVkYQkcHCyPpd05J0D+nJ2OFdDB4Tmgiz7RXFu26J/yb4BbddGqPlJvw0fk/1HdsZTp4LUpYdW1jr6r+hS+bxISt6YZxyVr99CImu3Sx+OK/VLHsD66G1j57aY+F9gSf4qw5aw1Kk2KM/5CVoUDC2KRjt5bHLZYyTLsZFdTOCvwOKDgdHsm7sPIPE+Cp8y9lEKpNXiIT8xvqGLPahzpnFZkEhz6iYti9M6Ba0g4HfTkCjgz/1qiHi+IGOxVNt880krPJFoqf+HUJvXHVGxeluAaf+580Wq4KJBd2kj8wZLQY7OodEd4xy4Px0yVF1chOCs5tnTDRxPFxr+6vfQ+/o0TwPKisB50PejowSYKmiuu6zoamyh3/z28Vc0N901MGkHF3bu361AdKvsE68d59BR4Sj6tM6LHqn5UsEvbZvB8BVmMDRlvj69/C/38k41FnrX3mjFfdBAvLqgDkiB67JEOc7awPvBvwGQFAbIV2LkESazwKBzZqW
- Kx8iA6yR
- 4SA1aS+MAtuHXmtmwaR1VQUjx3510+UvF7a//rRXLynSiWXcKhTj1ODN+BZBpidj4KoBxnkYywKEloWawOZA9yxlwnqKLVYFghtOE+VD1Ji9xwRwCflKVcRrAo0sOka6szPsBJ3coXIDaou35q9DRFkFf6c6aAxwj2aPfXCXYhxD+JvOzeVg4y4Ezxg+ZUdJDk9fklMzovoa32YXPHDykR1JixcU9TvyR7yPNkNowo86PoDs=
+X-HE-Tag: 1753275721-851654
+X-HE-Meta: U2FsdGVkX19LL1MxXbn00t/qOFgAM6mW7knHZYSgKseRBZjiF3d4H1ShZXukoml9duEUkbRdL7dGcRJUXxGX2dGCx2/GQfwDLD62CJSOzX9297VOBxnw1v08zz1uZAdw2/47qj5NpxhlzYp0JWmfF8eIjJA6Q7oFe93X3GSol390fiHMsvkyCJ/3HDD304eMav4Rw95LE1iQYRtb3f8qxAUdeMXwLQuzis+AFUcEWS5g4ddP8G7z/Z/eHVqo1z7CGgUAfRoDKH+s9VNPf9NaUJ5KPoN3g0eUHsagW3yiETwUiwsEYXiNtuXuWnpCE/TYDqze0qfw7Ej+PTWyf3a4YjGAnZWxkc4+xFl2m8uVHt9sAy80SS7YqP8wVDmbrujpGDt/EZrBl4fd/6hZ94PIIVCkp86qt4xByEDD8MBaW/Y4pnCMDPB+m4iY57vHLpl6iome+GIetZcM/tazR2Z3t7TzDY0M+uBsSK+3NhWyuv+PlBJC+eGHmKtSCgLUI6BTsq+YsbtobsK0hmtVALM8C2SdRh6WvMGvSRrUnvbePsj1hy7MynifiDL+ntcWKmxVkkOfK/oO1hwb8yQ8b9jmNkXcAKTdRJcVsHj8oM4IWHzJQwD1CpRUvXdb3e+Dys0cCk5oqITdp4XJIVZFvL75kO4T64c3YhzdilrnTqvjipmkhJ4vBnHXlx6dRnCsh/s1cc5JMy+tpS0LZmhTeWcvXSeYe8ceD15Z94RaEFDZUMzBDXHg/wgtrWAVZroZPUziji+JtFEoDWygHwzH6XvlTJg8qwe2VUU9yFS4qmmpsJIxcnaZ+E/AfFKF+3L2JorQPIriOXhWn4CdA4LrQQgkfOcGpUd7vbhD+6VFsmeZHkvT3mSzCMzwx7VPrZ9GJPTHSZG9GU5uucaOz5O4DPlJBwAw8orUHAgBam4whVyAFeASrK65zTmZeEeQoewlSGlBh2DkwKhO/VqR1/TjlP7
+ Mg9T8c6p
+ wfn/69ajetTVG0Ijj2iFIeZS8u4+6IJJPg3dhds/tvfcgI/doMIraKY+gqXpySXhApow7mMng5Zj9G4SF4WHGHCx4SZsfQl6tpltgcmUU5YLDN4JgzI+VVZ0pTiWTieisRtbGtvBvEQxmvcHhyxjiTpmAIyDD09QjRk6vRCsCdZgudH3JaTZMFJiTOB+oVowlc6Dw/bSxNj+/NT+f2POBmaPd2IMFq0KMugAG6zh/RZrH7HbI4Nk9nNCfRUuKO/jVLIXtZUcMPBAWnvn64szFlGfQDw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,90 +113,51 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Leon Romanovsky <leonro@nvidia.com>
 
----------------------------------------------------------------------------
-Based on blk and DMA patches which will be sent during coming merge window.
----------------------------------------------------------------------------
+Remove the bus_off field from pci_p2pdma_map_state since it duplicates
+information already available in the pgmap structure. The bus_offset
+is only used in one location (pci_p2pdma_bus_addr_map) and is always
+identical to pgmap->bus_offset.
 
-This series extends the VFIO PCI subsystem to support exporting MMIO regions
-from PCI device BARs as dma-buf objects, enabling safe sharing of non-struct
-page memory with controlled lifetime management. This allows RDMA and other
-subsystems to import dma-buf FDs and build them into memory regions for PCI
-P2P operations.
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+---
+ drivers/pci/p2pdma.c       | 1 -
+ include/linux/pci-p2pdma.h | 3 +--
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-The series supports a use case for SPDK where a NVMe device will be owned
-by SPDK through VFIO but interacting with a RDMA device. The RDMA device
-may directly access the NVMe CMB or directly manipulate the NVMe device's
-doorbell using PCI P2P.
-
-However, as a general mechanism, it can support many other scenarios with
-VFIO. This dmabuf approach can be usable by iommufd as well for generic
-and safe P2P mappings.
-
-In addition to the SPDK use-case mentioned above, the capability added
-in this patch series can also be useful when a buffer (located in device
-memory such as VRAM) needs to be shared between any two dGPU devices or
-instances (assuming one of them is bound to VFIO PCI) as long as they
-are P2P DMA compatible.
-
-The implementation provides a revocable attachment mechanism using dma-buf
-move operations. MMIO regions are normally pinned as BARs don't change
-physical addresses, but access is revoked when the VFIO device is closed
-or a PCI reset is issued. This ensures kernel self-defense against
-potentially hostile userspace.
-
-The series includes significant refactoring of the PCI P2PDMA subsystem
-to separate core P2P functionality from memory allocation features,
-making it more modular and suitable for VFIO use cases that don't need
-struct page support.
-
------------------------------------------------------------------------
-This is based on
-https://lore.kernel.org/all/20250307052248.405803-1-vivek.kasireddy@intel.com/
-but heavily rewritten to be based on DMA physical API.
------------------------------------------------------------------------
-The WIP branch can be found here:
-https://git.kernel.org/pub/scm/linux/kernel/git/leon/linux-rdma.git/log/?h=dmabuf-vfio
-
-Thanks
-
-Leon Romanovsky (8):
-  PCI/P2PDMA: Remove redundant bus_offset from map state
-  PCI/P2PDMA: Introduce p2pdma_provider structure for cleaner
-    abstraction
-  PCI/P2PDMA: Simplify bus address mapping API
-  PCI/P2PDMA: Refactor to separate core P2P functionality from memory
-    allocation
-  PCI/P2PDMA: Export pci_p2pdma_map_type() function
-  types: move phys_vec definition to common header
-  vfio/pci: Enable peer-to-peer DMA transactions by default
-  vfio/pci: Add dma-buf export support for MMIO regions
-
-Vivek Kasireddy (2):
-  vfio: Export vfio device get and put registration helpers
-  vfio/pci: Share the core device pointer while invoking feature
-    functions
-
- block/blk-mq-dma.c                 |   7 +-
- drivers/iommu/dma-iommu.c          |   4 +-
- drivers/pci/p2pdma.c               | 144 +++++++++----
- drivers/vfio/pci/Kconfig           |  20 ++
- drivers/vfio/pci/Makefile          |   2 +
- drivers/vfio/pci/vfio_pci_config.c |  22 +-
- drivers/vfio/pci/vfio_pci_core.c   |  59 ++++--
- drivers/vfio/pci/vfio_pci_dmabuf.c | 321 +++++++++++++++++++++++++++++
- drivers/vfio/pci/vfio_pci_priv.h   |  23 +++
- drivers/vfio/vfio_main.c           |   2 +
- include/linux/dma-buf.h            |   1 +
- include/linux/pci-p2pdma.h         | 114 +++++-----
- include/linux/types.h              |   5 +
- include/linux/vfio.h               |   2 +
- include/linux/vfio_pci_core.h      |   4 +
- include/uapi/linux/vfio.h          |  19 ++
- kernel/dma/direct.c                |   4 +-
- mm/hmm.c                           |   2 +-
- 18 files changed, 631 insertions(+), 124 deletions(-)
- create mode 100644 drivers/vfio/pci/vfio_pci_dmabuf.c
-
+diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
+index 8d955c25aed36..fe347ed7fd8f4 100644
+--- a/drivers/pci/p2pdma.c
++++ b/drivers/pci/p2pdma.c
+@@ -1009,7 +1009,6 @@ void __pci_p2pdma_update_state(struct pci_p2pdma_map_state *state,
+ {
+ 	state->pgmap = page_pgmap(page);
+ 	state->map = pci_p2pdma_map_type(state->pgmap, dev);
+-	state->bus_off = to_p2p_pgmap(state->pgmap)->bus_offset;
+ }
+ 
+ /**
+diff --git a/include/linux/pci-p2pdma.h b/include/linux/pci-p2pdma.h
+index 075c20b161d98..b502fc8b49bf9 100644
+--- a/include/linux/pci-p2pdma.h
++++ b/include/linux/pci-p2pdma.h
+@@ -146,7 +146,6 @@ enum pci_p2pdma_map_type {
+ struct pci_p2pdma_map_state {
+ 	struct dev_pagemap *pgmap;
+ 	enum pci_p2pdma_map_type map;
+-	u64 bus_off;
+ };
+ 
+ /* helper for pci_p2pdma_state(), do not use directly */
+@@ -186,7 +185,7 @@ static inline dma_addr_t
+ pci_p2pdma_bus_addr_map(struct pci_p2pdma_map_state *state, phys_addr_t paddr)
+ {
+ 	WARN_ON_ONCE(state->map != PCI_P2PDMA_MAP_BUS_ADDR);
+-	return paddr + state->bus_off;
++	return paddr + to_p2p_pgmap(state->pgmap)->bus_offsetf;
+ }
+ 
+ #endif /* _LINUX_PCI_P2P_H */
 -- 
 2.50.1
 
