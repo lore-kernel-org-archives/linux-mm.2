@@ -2,186 +2,127 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 02B46C83F1A
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 09:17:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 83EAFC83F1A
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 09:19:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8ECCE6B0095; Wed, 23 Jul 2025 05:17:21 -0400 (EDT)
+	id 1EBA86B0099; Wed, 23 Jul 2025 05:19:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89E296B0096; Wed, 23 Jul 2025 05:17:21 -0400 (EDT)
+	id 19C816B009A; Wed, 23 Jul 2025 05:19:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 765BB6B0099; Wed, 23 Jul 2025 05:17:21 -0400 (EDT)
+	id 08C286B009C; Wed, 23 Jul 2025 05:19:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 606356B0095
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 05:17:21 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D2992C0618
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:17:20 +0000 (UTC)
-X-FDA: 83694975840.10.C2A328B
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 8A5AC40009
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:17:18 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="cYvXp/6H";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YPxPU7cX;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="cYvXp/6H";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YPxPU7cX;
-	dmarc=none;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E69906B0099
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 05:19:04 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9D9D8B9E55
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:19:04 +0000 (UTC)
+X-FDA: 83694980208.17.2CAB44D
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D44CEC0007
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:19:02 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=hQ90xZfu;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf28.hostedemail.com: domain of tabba@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=tabba@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753262342; a=rsa-sha256;
+	cv=none;
+	b=dlIVLEc3CHlMPWL9xGtV8fJn41uUCdx92kldhh67nYjTP0nkHZ9R3VQqf1xAh4CSTz14FE
+	bFw9/idYe4UCB9ze6sdv1kf3SyK/0N8TPlyjxfPdT8vqZpaEfLKGFv5E6k3gzgZKPtinib
+	QFDWf29ipDOPTPo1blRCkrOCZZ6pI2Q=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=hQ90xZfu;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf28.hostedemail.com: domain of tabba@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=tabba@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753262238;
+	s=arc-20220608; t=1753262342;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UVlMssvby1yb993DflorYya9fMf7ULYpb5K7ZCVR/QQ=;
-	b=oVvfSVH7voYYIxBDznvPddIl1E9tnxBLq9omXAz/U0v2y9zFon/1OGkzDbBfvKZ9ZogWK2
-	k2mZozPqgb7ziKOG1qFSxwbGdbZlBIv87QEQK8HwNeaoXgwNhQleHFuB3LO9eLf+2NaJJl
-	R05LpFjYc2bnqRea3ISjioMIxjMRppQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753262238; a=rsa-sha256;
-	cv=none;
-	b=ZJtIp6sDv++TeddblT/hsIP5XVNecZt/uRajiB7gN9GRTyN6xEPkNR7GcLE0pY44MvdMv4
-	0QuEYQfuaiVUUWemHOoCn6z9OTgESR5TpN4n5O6rCRRhMYzIxb2l9LmTAOdEuWb1UE9Mmp
-	d7O6fhqs6m/LJOQ1Qh1QAH7HNYn4ZpU=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="cYvXp/6H";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YPxPU7cX;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="cYvXp/6H";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YPxPU7cX;
-	dmarc=none;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id C646B1F449;
-	Wed, 23 Jul 2025 09:17:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1753262236; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UVlMssvby1yb993DflorYya9fMf7ULYpb5K7ZCVR/QQ=;
-	b=cYvXp/6HHgVExIjwjAVxinOeVgIZ30zRsCN2DZO6UBg45M33SS4maL4w4WMcNT0f3NFxP8
-	UJDHKfVb70bodbsNkc8lL8GYEYTYeod8TQh+5q0SyFAsHh2mCetI+4Nw+c9R+QpwvL05CV
-	3pvsKcuNGrCC4+GyEDnKXuXfZwqp4EM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1753262236;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UVlMssvby1yb993DflorYya9fMf7ULYpb5K7ZCVR/QQ=;
-	b=YPxPU7cXW0qfRn6uob62I8yoI1iOKTE501/jCr24E9+QhP3RvDXKS+ESDuSDntaUhDsfYi
-	wZEremmY4d3Cz2BQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1753262236; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UVlMssvby1yb993DflorYya9fMf7ULYpb5K7ZCVR/QQ=;
-	b=cYvXp/6HHgVExIjwjAVxinOeVgIZ30zRsCN2DZO6UBg45M33SS4maL4w4WMcNT0f3NFxP8
-	UJDHKfVb70bodbsNkc8lL8GYEYTYeod8TQh+5q0SyFAsHh2mCetI+4Nw+c9R+QpwvL05CV
-	3pvsKcuNGrCC4+GyEDnKXuXfZwqp4EM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1753262236;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UVlMssvby1yb993DflorYya9fMf7ULYpb5K7ZCVR/QQ=;
-	b=YPxPU7cXW0qfRn6uob62I8yoI1iOKTE501/jCr24E9+QhP3RvDXKS+ESDuSDntaUhDsfYi
-	wZEremmY4d3Cz2BQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9EA5913302;
-	Wed, 23 Jul 2025 09:17:16 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 6NUHJpyogGgQVAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 23 Jul 2025 09:17:16 +0000
-Message-ID: <fb5426c1-c94b-4e79-b09a-fb6b8b1ce03b@suse.cz>
-Date: Wed, 23 Jul 2025 11:17:16 +0200
+	bh=fFB2lKlzZGrzhbM4PzD3lroism4M1bEmsmifGbcd/Mo=;
+	b=ot8zFzjyyaDImYJR8X0W5c7D6KW5xI+Yu9u9APkUOtKTa33beYpkNn3qjBlopZz7ONqHiR
+	lhUQrA4okRrJBcokBnmCIYTd7qu9IHpXHKWLiOpd+w0SFAj/kPP2EjHhVA3aGi/hOgrpX6
+	MUvdLStvGXDNYZs3Ehhwh+AkFnoe7Ss=
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4ab3ad4c61fso348561cf.0
+        for <linux-mm@kvack.org>; Wed, 23 Jul 2025 02:19:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753262342; x=1753867142; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=fFB2lKlzZGrzhbM4PzD3lroism4M1bEmsmifGbcd/Mo=;
+        b=hQ90xZfu9cwV7+zH6YWQFjwx7ISPAtVx3paK243EcJfYBh4Vin8cN38njE85vaongX
+         kVXax0JMOH+ZiTFLZXPlZIWWx4soY2VsjEGJTH+UCl5JL+z8dn+zwmbegC0+zhXD46oW
+         tNj9P0mFXJJB+vJyFHG0oE0mPHKygxm7FXV9vfNNgPM+zgQYjg5clDJJY8UOU0TEj5fb
+         Gsrk8fDsVDWSnw1BEnwUuRncgKn9kUmqbZk84syClq6Xc1b4bM+tU5s2j+FkreiH3GFJ
+         JX+Cavnl2BGjeoIkA/B30sQTVPKz+0gTBPEe/Mg1oyNv9EYTw5pmk+jV+IVbs2h5PgWC
+         6BUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753262342; x=1753867142;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fFB2lKlzZGrzhbM4PzD3lroism4M1bEmsmifGbcd/Mo=;
+        b=DceXKalVKEMYEl0vD0kQjhfO3fpzZrtHsXF2RxU2eDrEgeb4CVYG+qlW0EriDzvW1R
+         sdnD7itLwwadqDg92JFUyEnayu3Ir2jyBVifUlfFOEBJiT4dU/Drznh1FLAojIvjVL6R
+         UMgbPfhBtMEgjOGA/yNP3vr5mgUAnI/SGShBQBbNExY9PEPoeYC/0KRU297Q8gLTiBqe
+         KNUAXR3jt3uZbZDoViYmsnqV7Lk8Vjq5Z2M1AoeGPKsPQgJlsDwOR6Rv19L8705ChIo7
+         0up/ZB6DJZZrni+rYmrYlZVgiLxKaVDwb2wmNdpENN2OdCPED/53mwXy3iyiix2G9AN/
+         qmGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU6A/RHm7DlWwlA/Gfg/1UWp2JZR6kBwnz/2zO2cp+WVGRYaNETmNDWr3Mdtir+yyHnDe/dsWd14A==@kvack.org
+X-Gm-Message-State: AOJu0YyNZ3JUupr3uCguRmdchN4id7MJfTxm7Uwy4PEu0Ajc+KFKzV0o
+	rUiwG0u8OJH3is1tkhOQaSgudLi07xBTXkM8xL9K+nvxNQsCuK1MXUK0r5OuS6A5Cqa1w3n+XeO
+	OO09YCzZYu3cRp1dF7f2SGMTownb4KwxPXuNEMeya
+X-Gm-Gg: ASbGncs0EF91/yMuI8I+XCMkiowDrPpUlmj45bXvPFkv6nOYpbsAdLreHlpg0+MHCfY
+	3X6nWHlMAgVw7IZKCZ0jUZ0dMUL1EB50+OWRGcBPRj3SXb/yOmc64Q0MUPkHY6KerVUPonAyLqF
+	8nAWMXf6hIHBvO9dzEXIsUAMV+CLsB14Ai4FGKbG1FYNvO2K++Yc3Mzw58Unn6BEOSy1Qd7BOEs
+	gj9AphzpQLFBidG5c+BbuTmAltx/AznAbvl
+X-Google-Smtp-Source: AGHT+IHdI2zc5g2uWgDeX7Xhmwb1mpmaFyW9th1coHtjrfDNoMegvkEq3o1bYX03LBqz87TbJvCehtEqjQU8oKdI5oI=
+X-Received: by 2002:a05:622a:a6d1:b0:476:f1a6:d8e8 with SMTP id
+ d75a77b69052e-4ae6f066f1dmr2244731cf.11.1753262341305; Wed, 23 Jul 2025
+ 02:19:01 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: add stack trace when bad rss-counter state is
- detected
-Content-Language: en-US
-To: Xuanye Liu <liuqiye2025@163.com>, David Hildenbrand <david@redhat.com>,
- Kees Cook <kees@kernel.org>
-Cc: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20250723072350.1742071-1-liuqiye2025@163.com>
- <202507230031.52B5C2B53@keescook>
- <c7a32d87-efbd-47bd-9a18-9eb51e441a7f@163.com>
- <119c3422-0bb1-4806-b81c-ccf1c7aeba4d@redhat.com>
- <8dd1e8f6-f96d-4d36-ac2a-c258ac842f75@redhat.com>
- <5cdd3e44-3e3c-4697-905a-ecc61093f7bc@163.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <5cdd3e44-3e3c-4697-905a-ecc61093f7bc@163.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8A5AC40009
-X-Stat-Signature: g9pdc77o4hyckyk4wt1tk67645tn981p
+References: <20250717162731.446579-1-tabba@google.com> <20250717162731.446579-19-tabba@google.com>
+ <87ldoftifr.wl-maz@kernel.org>
+In-Reply-To: <87ldoftifr.wl-maz@kernel.org>
+From: Fuad Tabba <tabba@google.com>
+Date: Wed, 23 Jul 2025 10:18:24 +0100
+X-Gm-Features: Ac12FXyK6HoWGYh74-rCEgCwyYrKUEnXSOccYJU3yg7243P0WML9CgqAKaoNvVc
+Message-ID: <CA+EHjTyD6kXBGF0QitHtALSmX5rVDe7Sew99dwEEPXzjnPzfXQ@mail.gmail.com>
+Subject: Re: [PATCH v15 18/21] KVM: arm64: Enable host mapping of shared
+ guest_memfd memory
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, 
+	kvmarm@lists.linux.dev, pbonzini@redhat.com, chenhuacai@kernel.org, 
+	mpe@ellerman.id.au, anup@brainfault.org, paul.walmsley@sifive.com, 
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, seanjc@google.com, 
+	viro@zeniv.linux.org.uk, brauner@kernel.org, willy@infradead.org, 
+	akpm@linux-foundation.org, xiaoyao.li@intel.com, yilun.xu@intel.com, 
+	chao.p.peng@linux.intel.com, jarkko@kernel.org, amoorthy@google.com, 
+	dmatlack@google.com, isaku.yamahata@intel.com, mic@digikod.net, 
+	vbabka@suse.cz, vannapurve@google.com, ackerleytng@google.com, 
+	mail@maciej.szmigiero.name, david@redhat.com, michael.roth@amd.com, 
+	wei.w.wang@intel.com, liam.merwick@oracle.com, isaku.yamahata@gmail.com, 
+	kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com, steven.price@arm.com, 
+	quic_eberman@quicinc.com, quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, 
+	quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com, 
+	quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com, 
+	james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev, 
+	will@kernel.org, qperret@google.com, keirf@google.com, roypat@amazon.co.uk, 
+	shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, rientjes@google.com, 
+	jhubbard@nvidia.com, fvdl@google.com, hughd@google.com, jthoughton@google.com, 
+	peterx@redhat.com, pankaj.gupta@amd.com, ira.weiny@intel.com
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 9c36ygcqjhwfkfk8ttk3ya9y9mriysy9
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1753262238-887352
-X-HE-Meta: U2FsdGVkX1+vGfeuankIl5A21kDcIUmKLS+XJ3yoxxBYW15pZOmJcYJZF4sT5lsO1T0xIcQjOMWGAh+6taYfTg9Fb2RmcDZnBY3SQyloMFaBTjLbc6kDcnQL3Y0mPu4FSrzAauDV/eCsEJOfxfQJuLaZ47ey+IPEKpGKdDUDZGVUJ6fRGCjeZSJGTAkfulxLkREBjQHaCjuwO2P5zsLkBSahdkyJRY13HWQzQkerpjZKcT3bmMAjf/n05qKOm6rE0lIvE10AkJWbBwPL+B+zCYFnAnlpUKbJfhUfYK8sxn1F5KnxiTbqya2EWhOe6s6vlfJ2jelO/HlVjEqjmuYaAqCPnTS+lMZp2XS2L3rC+UNqxz2ZFxvZhFjYag/2YRnfAu/dbT+j5RB/r6XB6AHo1J1S82+1dptJlw+WHDzQBaZJN1e4AJl9TbtUhsoIfrp1uim8JNx5XXxSEBFjMIpK9DFAQygltD0c6JIMxPkKTXUFEhJHVSI9eWTzFtmqfA5MnupxJsP3qGf4y2A0PhjFsVvKAmuXUz3odRjg0FLIfaQ34Eq3VyYWC+BV5mZKrnHmh4GqJm+If3ai5AuN+VO8n5fUBfx4RcGnzJXRT41ltS1a37D8X53D/Uq9/tF2YcXKBCCIizaBfKjMjoIBPk795Tx5pqO13MgVuSkmbq9QFXsCVgL3grwqPruLFJ47/mVq6Dy1Y3XwHo2Nf1IedX20J10bEVIRcO55FxjQDbpfvuZDBGT/RBHgXm4cWOghpBtQhLbPJHEKPcCxNaD/87GroViYk8jZDyy2VleQWfQu92B3DD23D06jo9L4PUxtkdS8BOu96NOAlmKQNpjVNq+0szpGKwa1W5sFIRavOPd7bv1J9Y0eSQf8qWhYzsuSt/Zx5XqZ7ibijc74VikJXTRqH130xhvkjQqb7nRQyfjnbxle2fYJjQOLTxVeOqe53dmBaIqLg4Xp7Y6ZbkhXdAn
- wj+PPfpz
- 8ZfmTjHKrYGwzOjKOA+7g1AubQn/IYGVkhrLg6KwcemwyTFVgVCc+uNE6oraEWfQFoeJclJAi4tmpqsi/1oWXYGT7fzq//hrGD/4FL++OQFFIU0/T/4QEq1ovjWmlv8h6Ik5vbsVxUkIzKgLuGHUdyf5ZOfMV6vitX5EmY9o1jckbI48giLTtTmyAXbeP9VpxwnFQdTIBMgNiFouGDLq4RtgNNSP6RZp7AYihSX05ukbRkjTH58VzMERvDS7mS8+Ua2OMfUQlwYkjkLswAmEHsEZUFvUiQZf6V3dac4F/ANI0JZ6ErEnL7/mQNA==
+X-Rspamd-Queue-Id: D44CEC0007
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1753262342-338444
+X-HE-Meta: U2FsdGVkX18HN4xIGKoMQ5aPZ2e7XN1pxclVwUpbmXUH89v+STg8npxL8vgq9VUX5ZXGK3uTO4/qAnronCWPmRFOv7iSvyNuYsWs0NDHOKskne0zPWDZOLlRGZ4yshuVG5KFW9mtOVkha1MCD+FP7JbblH54tvBsC/WOYUmK+5avzWTa7gJ1fuX8jVheukKSIEi7+/jwwmqEe2AVWRXU8znnEUHUBWtir0WMN2c+1ac2uwsAVeNlDPG9MxK7zjs11gmSNXqVd5dAhlHDAxO3F4oLXFguszdsqx3a9dNODU+MwLdzmyhvqHhzRpuCuo1y/fbmLtKUSnvkaTkQBvShG/mCN4NdFeEIGCWl6ZpK1R2cuQSEF/eDNu3JBP1HAYO9wWEIaK/uhcWoDwiT/XMLnpWcxuUcSl9GwyU6oMarNmSY2dIcE+vigDu3fb2dLymiCFNScvZS4MLLAjWJHDJArl3y70EgIljHYdoS6ubess2drHBBu4KP7FolbJSwWpA9b8zFcapYPLb18AjrHniRpfOxjRBHS0lQmqtqaboLIXCQ40rTsm8H1rD0vI4uAoOAK+L+8r51KGy7YwJaOp5xm+iNB+pWTN542bvS1VasAK3FzpsAMh68ecGNcZRcFbOvBUBzJf3PjRVirt0jj9VzJB+cNdMdC5X1gOn5EmrbpXJX9sgGWgIEJmv0dtXoDFPDLZGQALkgcaHTVe7kKiQm6KYiA1/NxVjErsuM0c3eZtXjxnkSr+zuuUcia9nZjXPgN3J2Gee/3vwQDjou3G7r3QtYwZbNVhaCB1enwMzFn6CH6LKL5CWQo6wnlGsJTB5SFCd7D3JiXaAuP0GChj89RNp/gkcSXhlXTdKEZaVvzTUhpbd4PH8DaJ31+Nt25suPqye5JbSEnoMymVtErMM77VfCkEUTnzfkh/FLsvuR50+14AeT6YdpTs+tIAHeQBhoXHX0CuXm+8Kv5U5unXw
+ v18Pahyu
+ yn3NuP2UXrJnYR1tqJc/RlcnLcCTzJ7dqq6tvN61paLOWyuT8FRIb9hmHQeSy4cWZCMmMzMdoeFQN1/XLRx4wFIh9NtKXG0KvnkZHHp4bCB8sKd2EVI8KCCNb/eTQHkT0GMjt8Xzrh+XmsuZLiPPdX1EaO8kCkOcF3UMVO8prNxSRbqCyGKNOBJzjLmQ+Htc2Q2wWzXEPwqatjdlrjIVziu0bLblMACCMleHLQsDMj7TUDNsfWSRJAH2BilZyC2Wj+xbKU8E3r0VqcKLXwkk49hBegxeuec0JUHDK/7TflJuiTqkm0Dj2uW+2JD8TBJfi8xcwVNyNWDW6PvhR+rcSHx5ydEsU17TOJzlc7TNw5SnnQPgeApCGNoMOeKBPCiwQJUo2
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -190,51 +131,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/23/25 11:10, Xuanye Liu wrote:
-> 
-> 在 2025/7/23 16:42, David Hildenbrand 写道:
->> On 23.07.25 10:05, David Hildenbrand wrote:
->>> On 23.07.25 09:45, Xuanye Liu wrote:
->>>>
->>>> 在 2025/7/23 15:31, Kees Cook 写道:
->>>>> On Wed, Jul 23, 2025 at 03:23:49PM +0800, Xuanye Liu wrote:
->>>>>> The check_mm() function verifies the correctness of rss counters in
->>>>>> struct mm_struct. Currently, it only prints an alert when a bad
->>>>>> rss-counter state is detected, but lacks sufficient context for
->>>>>> debugging.
->>>>>>
->>>>>> This patch adds a dump_stack() call to provide a stack trace when
->>>>>> the rss-counter state is invalid. This helps developers identify
->>>>>> where the corrupted mm_struct is being checked and trace the
->>>>>> underlying cause of the inconsistency.
->>>>> Why not just convert the pr_alert to a WARN?
->>>> Good idea! I'll gather more feedback from others and then update to v2.
->>>
->>> Makes sense to me.
->>
->> After discussion this with Lorenzo off-list, isn't the stack completely misleading/useless in that case?
->>
->> Whatever caused the RSS counter mismatch (e.g., unmapped the wrong pages, missed to unmap pages) quite possibly happened in different context, way way earlier.
->>
->> Why would you think the stack trace would be of any value when destroying an MM (__mmdrop)?
->>
->> Having that said, I really hate these "pr_*("BUG: ...") with passion. Probably we'd want to invoke the panic_on_warn machinery, because something unexpected happened.
->>
-> The stack trace dumped here may indeed not reflect the root cause ——
-> the actual error could have occurred much earlier, for example during a
-> failed or missing page map/unmap operation.
-> The current stack (e.g., in __mmdrop() or exit_mmap()) is merely part
-> of the cleanup phase.
-> 
-> Given that, how should we go about identifying the root cause when such an issue occurs?
-> 
-> Is there any existing way to trace it more effectively, or could we introduce a new mechanism
-> to monitor and detect these inconsistencies earlier?                                         
-> 
-> Let’s brainstorm possible solutions together.
+Hi Marc,
 
-Excellent idea! How about we introduce a function that walks the whole page
-tables and checks the numbers of individual pte types against the rss
-counters. And if we invoke it before and after every single pte update, we
-can pinpoint much sooner the moment it went wrong and the stack that lead to it?
+On Wed, 23 Jul 2025 at 09:33, Marc Zyngier <maz@kernel.org> wrote:
+>
+> On Thu, 17 Jul 2025 17:27:28 +0100,
+> Fuad Tabba <tabba@google.com> wrote:
+> >
+> > Enable host userspace mmap support for guest_memfd-backed memory on
+> > arm64. This change provides arm64 with the capability to map guest
+> > memory at the host directly from guest_memfd:
+> >
+> > * Define kvm_arch_supports_gmem_mmap() for arm64: The
+> >   kvm_arch_supports_gmem_mmap() macro is defined for arm64 to be true if
+> >   CONFIG_KVM_GMEM_SUPPORTS_MMAP is enabled. For existing arm64 KVM VM
+> >   types that support guest_memfd, this enables them to use guest_memfd
+> >   with host userspace mappings. This provides a consistent behavior as
+> >   there are currently no arm64 CoCo VMs that rely on guest_memfd solely
+> >   for private, non-mappable memory. Future arm64 VM types can override
+> >   or restrict this behavior via the kvm_arch_supports_gmem_mmap() hook
+> >   if needed.
+> >
+> > * Select CONFIG_KVM_GMEM_SUPPORTS_MMAP in arm64 Kconfig.
+> >
+> > * Enforce KVM_MEMSLOT_GMEM_ONLY for guest_memfd on arm64: Checks are
+> >   added to ensure that if guest_memfd is enabled on arm64,
+> >   KVM_GMEM_SUPPORTS_MMAP must also be enabled. This means
+> >   guest_memfd-backed memory slots on arm64 are currently only supported
+> >   if they are intended for shared memory use cases (i.e.,
+> >   kvm_memslot_is_gmem_only() is true). This design reflects the current
+> >   arm64 KVM ecosystem where guest_memfd is primarily being introduced
+> >   for VMs that support shared memory.
+> >
+> > Reviewed-by: James Houghton <jthoughton@google.com>
+> > Reviewed-by: Gavin Shan <gshan@redhat.com>
+> > Acked-by: David Hildenbrand <david@redhat.com>
+> > Signed-off-by: Fuad Tabba <tabba@google.com>
+> > ---
+> >  arch/arm64/include/asm/kvm_host.h | 4 ++++
+> >  arch/arm64/kvm/Kconfig            | 2 ++
+> >  arch/arm64/kvm/mmu.c              | 7 +++++++
+> >  3 files changed, 13 insertions(+)
+> >
+> > diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+> > index 3e41a880b062..63f7827cfa1b 100644
+> > --- a/arch/arm64/include/asm/kvm_host.h
+> > +++ b/arch/arm64/include/asm/kvm_host.h
+> > @@ -1674,5 +1674,9 @@ void compute_fgu(struct kvm *kvm, enum fgt_group_id fgt);
+> >  void get_reg_fixed_bits(struct kvm *kvm, enum vcpu_sysreg reg, u64 *res0, u64 *res1);
+> >  void check_feature_map(void);
+> >
+> > +#ifdef CONFIG_KVM_GMEM
+> > +#define kvm_arch_supports_gmem(kvm) true
+> > +#define kvm_arch_supports_gmem_mmap(kvm) IS_ENABLED(CONFIG_KVM_GMEM_SUPPORTS_MMAP)
+> > +#endif
+>
+> nit: these two lines should be trivially 'true', and the #ifdef-ery
+> removed, since both KVM_GMEM and KVM_GMEM_SUPPORTS_MMAP are always
+> selected, no ifs, no buts.
+
+I'll fix these.
+
+> >
+> >  #endif /* __ARM64_KVM_HOST_H__ */
+> > diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
+> > index 713248f240e0..323b46b7c82f 100644
+> > --- a/arch/arm64/kvm/Kconfig
+> > +++ b/arch/arm64/kvm/Kconfig
+> > @@ -37,6 +37,8 @@ menuconfig KVM
+> >       select HAVE_KVM_VCPU_RUN_PID_CHANGE
+> >       select SCHED_INFO
+> >       select GUEST_PERF_EVENTS if PERF_EVENTS
+> > +     select KVM_GMEM
+> > +     select KVM_GMEM_SUPPORTS_MMAP
+> >       help
+> >         Support hosting virtualized guest machines.
+> >
+> > diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> > index 8c82df80a835..85559b8a0845 100644
+> > --- a/arch/arm64/kvm/mmu.c
+> > +++ b/arch/arm64/kvm/mmu.c
+> > @@ -2276,6 +2276,13 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
+> >       if ((new->base_gfn + new->npages) > (kvm_phys_size(&kvm->arch.mmu) >> PAGE_SHIFT))
+> >               return -EFAULT;
+> >
+> > +     /*
+> > +      * Only support guest_memfd backed memslots with mappable memory, since
+> > +      * there aren't any CoCo VMs that support only private memory on arm64.
+> > +      */
+> > +     if (kvm_slot_has_gmem(new) && !kvm_memslot_is_gmem_only(new))
+> > +             return -EINVAL;
+> > +
+> >       hva = new->userspace_addr;
+> >       reg_end = hva + (new->npages << PAGE_SHIFT);
+> >
+>
+> Otherwise,
+>
+> Reviewed-by: Marc Zyngier <maz@kernel.org>
+
+Thanks for the reviews!
+
+Cheers,
+/fuad
+
+>         M.
+>
+> --
+> Jazz isn't dead. It just smells funny.
 
