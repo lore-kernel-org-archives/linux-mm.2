@@ -2,83 +2,120 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 67559C83F25
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 03:47:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 25D34C83F17
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 03:50:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD6C88E0003; Tue, 22 Jul 2025 23:47:40 -0400 (EDT)
+	id A335C6B008A; Tue, 22 Jul 2025 23:50:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAE8E8E0001; Tue, 22 Jul 2025 23:47:40 -0400 (EDT)
+	id 9E4106B0093; Tue, 22 Jul 2025 23:50:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CEB718E0003; Tue, 22 Jul 2025 23:47:40 -0400 (EDT)
+	id 8FA466B0095; Tue, 22 Jul 2025 23:50:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BDAE68E0001
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 23:47:40 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 73FFA1DA9BB
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 03:47:40 +0000 (UTC)
-X-FDA: 83694145080.08.CD211F3
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A2F8540007
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 03:47:37 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="uPQqcGe/";
-	spf=pass (imf27.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8064D6B008A
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 23:50:56 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 01E201A0588
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 03:50:55 +0000 (UTC)
+X-FDA: 83694153312.30.9666818
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 60F4A1A000A
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 03:50:52 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=Z0qBjRGc;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf19.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753242654; a=rsa-sha256;
+	cv=none;
+	b=rc0Sqta73uhQ++IDfhxJLhF1B0pQhUz7d3ELwKa2qwidS7vcqbLpnH28wtaDL5s/hf1nUU
+	hVN7Lf4GLIMCdbreJ2KsIyzFx9zwieFgHf3nsKTR/3wuaU6h4CMNi3fCR6rQ9SZ+9QJfgS
+	cqqRRdO78RFuKQQbSdwXIDS0KrXaZ+A=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=Z0qBjRGc;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf19.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753242458;
+	s=arc-20220608; t=1753242654;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N/DvoaUV4XUMGi7Qal/jmR/yKHgA90VGC0dhsQsvKMk=;
-	b=2oQY2qgqNs79TQXrNjs1AWm3IZeSr5nEczgUhW139Os8dqYm417McG6BvbZMzRQE457TkN
-	UpL+/Q+wOjDaEbL7/FCx/sH2sRQ64tIO1u4swlVNgiPqy/CppoqyXG5BnhwBiPYu1KKen9
-	NnMaF2OgDm5AptmtiFMY7I879nizqWw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753242458; a=rsa-sha256;
-	cv=none;
-	b=DUWYubJAkkgorIFkX7LTJ5M/7QLj4d9jwdb/09/yKrZ4wA0i52QFfX60rk316tlO/gvsKc
-	A8PTbXpMs4TyaZX5IpOh61B1ZkNlwSAYC3tgE7cUeKRLgQHS+SZUFp8jVOTfpnEXrvdJvg
-	QNqdUWp+DpL3l44utsy6I9HaT5Zzc3o=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="uPQqcGe/";
-	spf=pass (imf27.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1753242454; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=N/DvoaUV4XUMGi7Qal/jmR/yKHgA90VGC0dhsQsvKMk=;
-	b=uPQqcGe/EGy5lWnJqkZWi9fwwkiM+npLlNc5o6t9JHt8I7qt32P7g3SrzVJGz5g7fhoF/h3jrKLy3BuJ5M21EKslv82p4Q75H0ACLRJGw4AHJnn9iX54x0siaaQ0Z3KDfW1XM2C1v0MP4gFiJPF0R9ilg+HFFZG2QUaWWkw2cH0=
-Received: from 30.74.144.116(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WjZl5p9_1753242451 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 23 Jul 2025 11:47:32 +0800
-Message-ID: <65476b79-e493-4f09-ab6b-3748ab679429@linux.alibaba.com>
-Date: Wed, 23 Jul 2025 11:47:31 +0800
+	bh=t+/Pfkit5PFVN0tLEWVs8x9+kRNuxE006f52H9Fa07w=;
+	b=izCUGjk8k08jQyxxNcoDbvnIiw/tBNfH7F1mHTeBRP4Qa6/aqjsplUwGYGqVi2yrDjgHMi
+	E3q+Ad/t7VtYknQj6FrHV6Ldiz6HqE0AinWECnnsyygnjSpVVfTJw5cm8oz1ukduu6Q1/z
+	NZ1+YXH3ihnNimYJ9NCR+IEmV6926V0=
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-234b440afa7so57886995ad.0
+        for <linux-mm@kvack.org>; Tue, 22 Jul 2025 20:50:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1753242651; x=1753847451; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=t+/Pfkit5PFVN0tLEWVs8x9+kRNuxE006f52H9Fa07w=;
+        b=Z0qBjRGc5MalpXiLW+6P9IA/VO8yw5fftHwcrOulXWC1VkuoLHtCRqrhH1sgrBchhk
+         OZtHBxmB9Jjfy9oiyduHPSs1VeuEnvm9huYVPdQwlzPCPWkXmmYLAxc/XQJVq6fC5gRU
+         qQSwewSUh7PJGevYw6fHLHCmOcofblDCVJ76NO4sGIQfEyXTmqQJ/78EQn70ga1e9oj7
+         XqpijJNc5Hm1p5vugwMnirAmtLiplnwZFzh3RlQ4Ll/7EomLjjgpxNEsZE9Qu1kbjDPV
+         6epU51/Etzo5ah3f9FyH9Xj4ukG2UrTrRNZJE/C8ELKm1XyRMjcWBvrpjbzLqMMoIA9j
+         hB4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753242651; x=1753847451;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=t+/Pfkit5PFVN0tLEWVs8x9+kRNuxE006f52H9Fa07w=;
+        b=pw4+uSR7dkPPvASKc23YKqmkaTVfWh7b8ouZiM1BlfIiUFo9bLo9ktNOPXOojpx8nJ
+         bLFR0IuRLWC3OSNGE4uRtwdaYwiVsyqhhTsPoUZWoYXO/tsVNF2LR2Epcp2bqWNJ6Ggd
+         0seDkGltyGwi0dXZpGR97IWm3mgAJ719Ion5iJN1g4VmsCWNoszLQoRTwl8mYTpBF9wb
+         T57Lz+vJ2xoIgLojzh0rxRMXBNjxavNFs9rWJ+r7Svd/JOKmRCUo2r+3V9IoWxFgaOBH
+         5dy0ZcSBtNQIJctQUDF0ujhdsJ+o7kwQreKDTsNHZRWRBCQPlJ941dlnpXi9btutlo0z
+         l4KQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVrTtMPgquofsorjlygL/OcHESza4+L5rtJar0/Wixvq3N0kYCJwMhZXHu2pnPq1yUBP8j5F8vynA==@kvack.org
+X-Gm-Message-State: AOJu0Yzj7+91rb8GjXdGeISfh/uIn0dxnesaWn6UPyjZKy1RusjEwoDI
+	Os2TZKOYJ4/OwsRzW1QJphU2KkxI3474Pq80eJGqOEiznXYVa6PzPwwYnuRcS7ddi9Y=
+X-Gm-Gg: ASbGncspwZVtWwbCoaO2yMh+xZKdQH0ujXmGijQoYcztXIJUDIC5eYlBkM2v2ODgUL8
+	TozZf/wscZNMkzAyAPN6FBL+dFoEOA4TEGs8Se/0nPJjyrNvWzz5rZBYGFo4hLhuV/lxsNvb9WF
+	NrVw+YnOKrbSJtXwLlNOwpjYILaUQNnrBBkWbeyn5qiM/6n4c0Ih11tmYyvjqVST5J6NU7O9ZkP
+	QGMRIdgVMfmla+spNuSCvEnspok6zPyAJH/HpFhLWNrDDeDAHBhQzOsRMMdWbG7YSy+PgiUXRST
+	tymGRv1Hfj3N6HoRzdca2nbHzKjbKpxTUdraGjfe2AyI6AFmie83+Z6VHHGanBvUFzbEHOXO/9Z
+	bFXHpl1aOD/wpUG+9r5A0zHpIIKW3VqAbKq7QRCIMgUFfE1iKLg==
+X-Google-Smtp-Source: AGHT+IGG5xeTiPp46N1+ubIJYLYiw4X+bPRHHusEDQs77QPZ7xG+Gmpi3gyEPNcDXHORzHZYckNp5A==
+X-Received: by 2002:a17:903:f84:b0:234:c5c1:9b84 with SMTP id d9443c01a7336-23f981b4011mr19536245ad.37.1753242651119;
+        Tue, 22 Jul 2025 20:50:51 -0700 (PDT)
+Received: from [10.254.226.168] ([139.177.225.247])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23e3b70868csm86297515ad.229.2025.07.22.20.50.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Jul 2025 20:50:50 -0700 (PDT)
+Message-ID: <6a292069-708e-4f6b-8b0e-95398a9f729c@bytedance.com>
+Date: Wed, 23 Jul 2025 11:50:44 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] khugepaged: Optimize collapse_pte_mapped_thp() by
- PTE batching
-To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, david@redhat.com
-Cc: ziy@nvidia.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- npache@redhat.com, ryan.roberts@arm.com, baohua@kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20250722150559.96465-1-dev.jain@arm.com>
- <20250722150559.96465-4-dev.jain@arm.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20250722150559.96465-4-dev.jain@arm.com>
+Subject: Re: [PATCH] MAINTAINERS: add missing mm_slot.h file THP section
+To: Nico Pache <npache@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, David Hildenbrand <david@redhat.com>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>
+References: <20250722171904.142306-1-lorenzo.stoakes@oracle.com>
+ <CAA1CXcBY4rFLkNqJM2Dj-EajPw9TMTHNcYapw9P=U0bo=QNqkw@mail.gmail.com>
+From: Qi Zheng <zhengqi.arch@bytedance.com>
+In-Reply-To: <CAA1CXcBY4rFLkNqJM2Dj-EajPw9TMTHNcYapw9P=U0bo=QNqkw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: A2F8540007
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ksww8s5wnmninz6mma7iqcfy99y3obgu
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: bsrc8gso1nk13mptu77trfbxnok953id
-X-HE-Tag: 1753242457-578707
-X-HE-Meta: U2FsdGVkX18BomhLQ5sUGm4lTFd/ilVeIr9lJtUPnkVKMM5N+qKNcTdNnD7Gz44xNxws/1T9uHwd0udIFIB3xV6vIQb2cBnAVgixruIGgBrhxFtOLV4IEyx+tbDyW/NfmgPTiSZdJV1HYO37edmqe6saFtlm3+chmOdKu/BEHExAqxzht5maBvIV0Ntzt4DdMOmsc0MOXGfBhv+nKU3gCdnnRNYPDhdUyCkjJnkFn2w0OZhiAVJ+6oBrNWxQ7ViHx5joadSLyAeZcu+SUsLN5rtTpjpdpkg5bmyTvwmwubnY2OuPsUGgN7l5+otIslJbXa9V007tal9d9RcnocQSpe29/LL6796PS3YllUjdSsVn8Gnom3vhD9BDrUIKQYgl8nFnglfi1UHvhpBTTBDy9tlhdjUBDaqne7clWIUMC37sm6RLqj88MKw59xrD4lhqynpxIl/tKSSt2142fNFT2xCmcGQ1NeKSOpJccI5sWn4fsjT55t2/YdQJYTVT6QWHlchvFYjivi4xB2bEqvuQqV8PGmCtNLBCUz7WcTaFGBsI7eRY65ihlspNBld+IDOVAVOCXzKWwxdNhIslJuwad+9TYDm8KS3IZj0YvdRpN19WE4DnQfwFhLdOqCZm+/Kn5QFR2It2k6l6dAIKNRhjseydVl+6r2hNdjCBzhDR8ckDa8aX6h7bSJ8TJafBayt88qYZazvzCE1tMoWGZs2Qc9yVLpB4f5Za13VlO2ih5ZtW/sWN1fe3ocAXteqqosKMgZnuFSEm0lbdzeMDgfohb1tf5nxT1O4Tps2JKnvNjK4aPi5PTQepmvbDEwZ+Z4WoRRvtKP8JgTcinjjbs7NQGWBC3s/+1WZaVdRiWX5PB4iF+18lyVbrRIWaU0AewBgJINIvzlPy+Qn/CIu4ObgK9qigZ5dgaOWyTaPJx1dIssKJUw832zjqXhOoGEfzKudcVk6x5+0SZUCOogeCrnE
- GRAs32sP
- n6DbqeNppZ9/EtTMm/Dv1SWacR7rRogItIZwD94zsL4tvfFqp7SgGUWAdRjmTyEXgFc0YPmrZbv5ZzdMaS1y5Vjmhf68vBNpfvMcVRzfZH2tlYq/Dtai3pLt4mU+ooHqa8ozc756QcQd3B6KHNRdYKTR/xurmj6vQFnfJl11//E4TLxDlxFGvmpWAZKYs1VLP06OtcTtKYW07WUbabTkU4y13QZmRa+mecK3nSh1Aph007qTGFiNtHIECrZL7mmFIqumhB7Lxttd/etE1HMITL/xk8LlW7V92FNeEXGIgXdgSGvxeXWPy+XF3NQrvRuD1ebGZ60l8yUgXGlS6PYx+konGvmoQ1N+E6aHZb0txzU8CzvV2aYrOjzke1A==
+X-Rspamd-Queue-Id: 60F4A1A000A
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1753242652-672723
+X-HE-Meta: U2FsdGVkX1+o8QN6EdetCj42TT15+FpCiKAzYckrnbtwefziUZOFDop17DICo7anxlHkKlsQgPQ/EAHHRcI7JWtgdtzua4imlgmQdQ8Y6hT3fU/A01iNTyJsVYYGFUmftSso0GjUVF2uM1IXFsf6RTH3tDBZvrtkkzD4fkARuklvhycDgWXYXyhpqsgAJPBBSNLOC8y9dKnloNVbEPF+xGRNTvad366wzUl39CoNus5BA11xHXAH/E1oR/C4Bpt2b8Nif+ASEXQ7T/ccBE+F/wiW/lfdQnQaplSJe9lY+F+Zp0/PRcACxLMwsgFYsYINLxUP6d0Sw2QziC6BoMs1m2JVleZMh90xm6nEFPUjqeNyh7N5etDGGq3HXLfx1rMHdmKWl92ZD5Ho/XUSnrK2LzAVtJpbbb3r6FsgU9Gt0kKWhlQrMq+qpvHky6RRxq77GpHyws+qU0WOsATk8TsY8qZFSR7UfwsHy8LTu+8DIBhDriZwssQVVMS59s0/phqLrUtK3oLpBYouI4t5YRZnDDihejffKLZnFHY1NMHDBxiCThBmuLge+LOhHsYqnbRFjx/uenCAzxfSbZRpQ+FAfnpys539ffO4ejU4x/5+UY5agdBDqDBLr84snKknL/VflcYiLi8w1AGhxruYnA3d0+mk31tGNw+oKIE7MZSaUuRjtGKBon9WcyxC11szy4TVHnwvvrAUFnA73XS6WSWQKL4IjSZdsi7wFrYthIqMlaGkQk1Eg8Ll9YE0SuQ/3LvPdpy+7gWQEL1occ/lLhmjayIhT4hKfUn1SU4La2UnUExiJC9+S7MGMHVzRC204d0Pfqt14qS7H3zwO1YtlnLr1FQbR060hBRIqkR149+luPlRFqWpoCbPfEdKO+EbggobXjfop2hoRv0MWvwcMoJiGHwDUHpThguXjmAjk3bX+L9lemzm4jkO1SbU4z4apeXZZ1bCqXreQcwjGUO6nM9
+ S8tpKqiZ
+ N4W5uNLcsL+pMG13y4v9SfUQfuiFJ5/HDdzSsFjCOqvxoeVxoQ8EclqNj86a51rS5HDmqZvL7HSqeeALC3kKEeN+nJe4cDBXVbFgrj6BGhiuJ94wEuhXUsR/bl4wqDSjAOPeb8urBoGqlejADtIXHj9u+ztZy3t9fqgOAQaF3cviUmEAQrHxOzVB3Z22OzIlHebkuVZWuv9WsoWkZU2rdzJ38tNsGOpD9JwpVbXZ/OPSCkqqqq4ntcKBUvRCeoW39QsQksNpIAlPT5w7W4sNOCubuD9JiabISP+lB1BLboV/U918AQ//CxZXajJNm05yS8R1lZXG9dZR+m88Zgt+uxq9UJBfXUSUy6hSwAzvTEtu8JwCU/vB1F2BaMaehT6+bLWqE2vLdxI/zGyMryMKFgK2ND6Cqs2vXVI2krR7ynTDLlyPB6NMdR9xM7hDbJfzWKQVpe95LDqi+7JMVE1DCugc3jfhSk2nqdaotS9jLJQGXt4s=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,26 +126,42 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2025/7/22 23:05, Dev Jain wrote:
-> Use PTE batching to optimize collapse_pte_mapped_thp().
+On 7/23/25 1:43 AM, Nico Pache wrote:
+> On Tue, Jul 22, 2025 at 11:19 AM Lorenzo Stoakes
+> <lorenzo.stoakes@oracle.com> wrote:
+>>
+>> This seems to be the most appropriate place for this file.
+>>
+>> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>> ---
+>>   MAINTAINERS | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index 837bc5cd6166..3f83fb317f51 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -15966,6 +15966,7 @@ F:      include/linux/khugepaged.h
+>>   F:     include/trace/events/huge_memory.h
+>>   F:     mm/huge_memory.c
+>>   F:     mm/khugepaged.c
+>> +F:     mm/mm_slot.h
+>>   F:     tools/testing/selftests/mm/khugepaged.c
+>>   F:     tools/testing/selftests/mm/split_huge_page_test.c
+>>   F:     tools/testing/selftests/mm/transhuge-stress.c
+>> --
+>> 2.50.1
+> It might also be worth adding it to the KSM section since both of them
+> utilize it.
 > 
-> On arm64, suppose khugepaged is scanning a pte-mapped 2MB THP for collapse.
-> Then, calling ptep_clear() for every pte will cause a TLB flush for every
-> contpte block. Instead, clear_ptes() does a contpte_try_unfold_partial()
-> which will flush the TLB only for the (if any) starting and ending contpte
-> block, if they partially overlap with the range khugepaged is looking at.
-> 
-> For all arches, there should be a benefit due to batching atomic operations
-> on mapcounts due to folio_remove_rmap_ptes() and saving some calls.
-> 
-> Note that we do not need to make a change to the check
-> "if (folio_page(folio, i) != page)"; if i'th page of the folio is equal
-> to the first page of our batch, then i + 1, .... i + nr_batch_ptes - 1
-> pages of the folio will be equal to the corresponding pages of our
-> batch mapping consecutive pages.
-> 
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
 
-With David's comments addressed, LGTM. Thanks.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Agree, mm_slot is originally a common part extracted from THP and KSM,
+and it is hoped that it can be reused by other modules in the future.
+
+Acked-by: Qi Zheng <zhengqi.arch@bytedance.com>
+
+Thanks.
+
+> 
+
 
