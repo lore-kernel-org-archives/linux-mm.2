@@ -2,93 +2,93 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D59C9C83F1A
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 14:47:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A9B5C83F1A
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 14:47:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8EB4A6B00B4; Wed, 23 Jul 2025 10:47:03 -0400 (EDT)
+	id 8786A6B00F4; Wed, 23 Jul 2025 10:47:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89B776B00F2; Wed, 23 Jul 2025 10:47:03 -0400 (EDT)
+	id 826F06B00F5; Wed, 23 Jul 2025 10:47:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73C466B00F3; Wed, 23 Jul 2025 10:47:03 -0400 (EDT)
+	id 6EE646B00F6; Wed, 23 Jul 2025 10:47:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 637EB6B00B4
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 10:47:03 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 419131DB6E6
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A2116B00F4
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 10:47:05 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 01BF78075F
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:47:04 +0000 (UTC)
+X-FDA: 83695806810.03.DF9A8FA
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 52C71C0005
 	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:47:03 +0000 (UTC)
-X-FDA: 83695806726.01.64F62DF
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 4EB08140009
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:47:01 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=soleen-com.20230601.gappssmtp.com header.s=20230601 header.b=f8182Ce3;
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=soleen-com.20230601.gappssmtp.com header.s=20230601 header.b=la6csOCJ;
 	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753282023; a=rsa-sha256;
+	cv=none;
+	b=Mp2kse5g0vhc9i6/dqfpCojy4T12gzA4knvVPTmiyvMVGeZ44F3RnSkmOUAx30XW7NyQwX
+	iZfD5sFZaWRV/9WvBHB+hymCOzQJufTsPmyIo5X+KetG5VB0AKMbw+oA97ibQV3BTblT0P
+	VuEC3sYid1Rmd6n4mg2FzxTCwwf+qis=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=soleen-com.20230601.gappssmtp.com header.s=20230601 header.b=la6csOCJ;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753282021;
+	s=arc-20220608; t=1753282023;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gy3J9QeC6eXj3cGR0pgjxNs/6APC+1lztNiCJckBgPA=;
-	b=X4+wMoh6GjjuExFRJfpAHmVeken2XyTBUb6XenD0LQW3F6Lt17IIOnyXxLyyZ5dJJrvoSx
-	Gil58JXX8eS+3Akhm5+Gcdrr7IK0kWNR0NxjoMFihn7ZVgIGv9gPCKB2yuS19iMdUsWS2A
-	FpIA2gvPefjb4aaYTSjgHXR6ESuolVY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753282021; a=rsa-sha256;
-	cv=none;
-	b=XD0Nl1H1C3cOqxnBA/65Ep2tBEGnCN7zVCFl+4jA+VgukDVYyDl91E3m98eMqPpobJzbCv
-	2qc0D3SIt4SHZrCabeEHpUBZdwGSo4vV80zz+pQX8kJY86A2kPJsPHy24LnbOz7SA6ZaIu
-	soSPAV6vdoygff5zGmDyQQVuf3YjD5o=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=soleen-com.20230601.gappssmtp.com header.s=20230601 header.b=f8182Ce3;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-7170344c100so58946457b3.0
-        for <linux-mm@kvack.org>; Wed, 23 Jul 2025 07:47:01 -0700 (PDT)
+	bh=3XYi+jDPzWu41ED2O5U4L0RfTKyUhB75+lmsBNGCN0Q=;
+	b=1YAfrvSyK4YMelS9B4WEiDDVVZvf5XIBL2Sg4XqaoNKRSZbxODZzO6PsT7cTy/PxLDwrP/
+	SKL/3QPS2be3aDNMvWVxrYBiDyOg9UfzuCegqaUOr1pdD367chyYScN+nZeC9PM4q2aIMV
+	AwOGYYmy6QiR+reEcZKGkH7dpa0zclY=
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-7183dae670dso62712237b3.2
+        for <linux-mm@kvack.org>; Wed, 23 Jul 2025 07:47:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen-com.20230601.gappssmtp.com; s=20230601; t=1753282020; x=1753886820; darn=kvack.org;
+        d=soleen-com.20230601.gappssmtp.com; s=20230601; t=1753282022; x=1753886822; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=gy3J9QeC6eXj3cGR0pgjxNs/6APC+1lztNiCJckBgPA=;
-        b=f8182Ce3u4qnRpx3B8V4jXAH2q5GCwhMSZ1qY2wsmyuEVRGNG++z8AO5lW9jXlayqt
-         UGpqY5InD/CaqybMaNWx1T/F+J1ONFod2/2Grhn6ATDLcp5cO8F/73xZflMF2g3PsvQn
-         V3dT3ImM1x64ea85h89bt+UDroNxMRGcJD9Gf0ZoM28uBHUCZyA74lL/QUJHWF1sx30N
-         AtTUT+di5bxtu0SWloWerYC+dWmsF6lP4wJoJJVjtRX7D25Bznx6O0vpSZI05bornevn
-         TBpKHLC+pTEMhswTuFt/W5/Q6BtQP90uGQlt49irQc7V9Mp+y5C9+20IS2ijbDrfmeFD
-         z2FQ==
+        bh=3XYi+jDPzWu41ED2O5U4L0RfTKyUhB75+lmsBNGCN0Q=;
+        b=la6csOCJcFAMx/D6Hst67MFUfsO1hHciPRRS/Oz1iZ6/9ydtn8wXU+4z1RxJ07paUU
+         RYY/GAVeDN3PB7xeCG0Xu/GKY75eKQ+tZjg101PbyaTS3upmYGF1DF6Mcq7rxboZfBow
+         /5tHuaIqqzQ75dVNNck1Tuods7gsQu7e8BX4gWG6aEwkAc4C2qEIsJnqLUJSP3jsWfRk
+         TcgSR3n73x17tiRRO3m9Xm/rjr/TV7/xYNwjG7seYr9HrVtWMymLDCSc6T3a7x0qmrf/
+         gKPbW6vc7LmfZWLF+uxJMu/rNPV2VYGEwBG5FTNF5IIgaO9eZHVyCUXXjSp44UtLSnvt
+         2RxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753282020; x=1753886820;
+        d=1e100.net; s=20230601; t=1753282022; x=1753886822;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=gy3J9QeC6eXj3cGR0pgjxNs/6APC+1lztNiCJckBgPA=;
-        b=dU8TS+TlkcdzBQnpmLX0zHiAUm4JTCxvevHpVkHH+YNFwbDL/JV7S759iNcQxNCosM
-         WMH1irl0zgYjebZBhJDteNqs3SPBBK5iYa2d9kGvuAQvpBrWy7yLjve4S5IZeMoUiSaW
-         uRib9VHLbyyzBs/kQkNTl/C0zUbAwnVUhNGxO/MOIrXnKsPJYjw2rbAIeDbMi95Bbh7w
-         vvPJ1/4pqbKqeWskYRepfI13YaTXxHoIDz+6aLbsaPMW0w+JZF3XnWzW04UidPpUvpU1
-         tdtNmpjbF2Euhn0VDuA7Anohkp5HoI5VutMV+usK0Mlh+xkgNPVTBOmzLI8ja1EjieEx
-         bZqg==
-X-Forwarded-Encrypted: i=1; AJvYcCW4Bt2vcFg/iCOiK2Pcy4r6LuJu3a5uRY8DbdhipvAC6iGjvyFii11MzQaFg/s3yrBuslLsGVNs2A==@kvack.org
-X-Gm-Message-State: AOJu0Yw6Cqf6Ah5tw2HgTHoE8p61zhf/obV+Q7pB8v1JmrUoTw6o9z7F
-	klV894W2WJ77Icp9fcyM584+K42EtTY4Q4wdx8kK7kgs9NqwSqXozlz0jCrNf7yJFgw=
-X-Gm-Gg: ASbGncuefh2Ix6ozt/FUOcSwTV/vZCVIN75idvNWzoXh1cjHRETjtVsuOQROkWXqUsk
-	C8AopCsz7+uDa997D1tD4LAtzek/0Td3plxbrGvcn+UV6AMc1R5sakA467geD2vwlQa7M7SFVVP
-	5Jjf7t6lXLI7YfgE6kOLISKoGMzIGwz4y8R33D29TtkJuFa0RJtZtVPNwQru+yq9Cw8I+3i68+4
-	9ie1c9YbDE2cvDn7YsSrJFoqil2PrwUNLWPnlHMsT/GedhyLz+ZLslnB7aRkNK9h8cTWgPedB+W
-	7uTdDgLBPKkfMG9WIA42jTrsJ1DHicD+kA8zAniGoxwoVsGwD1g8CVisR6HfoC6aD9RbyzQpJlZ
-	Y8DZV7SB/+N+/hsB92liY9EDpfICZcSEZNF1MbBBoW/8gDfRBl9Sd+tDD8xB7W9wSSrjy+3eH9i
-	2FbwfJDpEEMwAuIw==
-X-Google-Smtp-Source: AGHT+IE8V9tRE54MK48zflOS7PSA4HAhDqRjtC0UhDc7I1+H3UGz76R3OVDEkrrQ9nCRF167WfSdiw==
-X-Received: by 2002:a05:690c:74c3:b0:710:f1da:1b5f with SMTP id 00721157ae682-719b424d284mr43181487b3.34.1753282020293;
-        Wed, 23 Jul 2025 07:47:00 -0700 (PDT)
+        bh=3XYi+jDPzWu41ED2O5U4L0RfTKyUhB75+lmsBNGCN0Q=;
+        b=TTu8NN81rDEG8wbMUj0QKV8ZexkuvOWbyTLiE8L3Z4lStq5evBdSHu0QwUsIBWyAO9
+         3D3ZJSom4267dphWbvPJ81RBDwX0LxQUO1KvOceAYGHAMHcb/mQ67ABk8Vz7hSfuHskx
+         hp+Cx+HsB4wDuW/dCAyaiXqG2+zzCXOJ26/SNSQrRAaNVL5aadjA4NOSEagajk53cTzr
+         Z7Yce5V2DJHA4iqDGVj/7LxMtJSxzQ4N8laFnjY2z7j6W9JW5I1B8kNs48yB16p1aIL1
+         mQZpceUiEWhdY0inZpa6qLUrCMKH73efCGieeipAhMQeCG+KzvltKvT54gpXAW65S6BA
+         QpAA==
+X-Forwarded-Encrypted: i=1; AJvYcCWSs6ht9QDQvU95Fl2GNv5Sde/rxTuKP24PwY6ysdZRia+7pit/nPH7NCNJz+TFaUP4qMDOZTVKCQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx8tlxuO/E3WRw9ke7ehzwlrcTEl/vpNeN1Cz8/g7pK+/czy/Zl
+	4cEqP0YQmOtCWa+QA5DksE+uldaRomgfHUPIBq314ozRZ03pztB4bHFzRFjckHuTuSU=
+X-Gm-Gg: ASbGncvfYLutbqND6/y7F3N4jkS353vSSf9lx2c6ziiFge5obUXFb8rHTVZ0LWjhA4H
+	C+9W7YjioJXP43/5QMjECj3NTgq3+WowxRmuRvFUoDwkaiV9kUTlztmCfYhsyUbvw6DHtcUCiSg
+	RyxdW6n7iW7SaUHu/0ZaEf9GpW3EvVdwTi69/BdMHj/+gjjJ+3HCXlgQM/W9v9zmgcIGa/geHOf
+	VWfPWkhywOgtuH0U1ok0hFpsmfJdIUHJM3Rd7ZgKVLXkoSZyiqs6kZFnvhV5H+kDzyHTD0E8JH9
+	i9iqtp/6O0bjgOQ4+kIBsztZH39BvCUh10WnpN3nYcAIJiMsa/9RrcpNXTES5oaXf91hh6GQ9ES
+	FNoL1aOBP7+JgMdkbZIpBAy5aZigAhCC3jtfUAphB4kDrR+hkuNOsMjx8OBWpGnAwsoAKrI5I9k
+	yY1zmxJRuUAT62wg==
+X-Google-Smtp-Source: AGHT+IGIyqUWtaPvswuBOlmOuoZ6Oiu0TyqZMj4g6mxjo7nkGd2imCQgeqT6/0gbrHlbiudRcFkz0w==
+X-Received: by 2002:a05:690c:4911:b0:718:38bd:5433 with SMTP id 00721157ae682-719b427d2cemr38041947b3.42.1753282022224;
+        Wed, 23 Jul 2025 07:47:02 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (235.247.85.34.bc.googleusercontent.com. [34.85.247.235])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-719532c7e4fsm30482117b3.72.2025.07.23.07.46.58
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-719532c7e4fsm30482117b3.72.2025.07.23.07.47.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Jul 2025 07:46:59 -0700 (PDT)
+        Wed, 23 Jul 2025 07:47:01 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: pratyush@kernel.org,
 	jasonmiu@google.com,
@@ -162,22 +162,22 @@ To: pratyush@kernel.org,
 	parav@nvidia.com,
 	leonro@nvidia.com,
 	witu@nvidia.com
-Subject: [PATCH v2 03/32] kho: warn if KHO is disabled due to an error
-Date: Wed, 23 Jul 2025 14:46:16 +0000
-Message-ID: <20250723144649.1696299-4-pasha.tatashin@soleen.com>
+Subject: [PATCH v2 04/32] kho: allow to drive kho from within kernel
+Date: Wed, 23 Jul 2025 14:46:17 +0000
+Message-ID: <20250723144649.1696299-5-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
 In-Reply-To: <20250723144649.1696299-1-pasha.tatashin@soleen.com>
 References: <20250723144649.1696299-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: zyrddodsd5w6fxdqwz9iboxit436msat
-X-Rspamd-Queue-Id: 4EB08140009
-X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 52C71C0005
+X-Stat-Signature: reeosbty65e9uj3yxakc38bdmndh648c
 X-Rspam-User: 
-X-HE-Tag: 1753282021-790248
-X-HE-Meta: U2FsdGVkX18RZQLP94siw1uaEJ8HZT3oszUqovOWObCKc4qdcIu+WqI6H0XJ06/bBXoiZh6pRpIFe+2uw0UT2J1Iw0Iui03ErIC6bNr0huRSI66FoTgj5qDN6Eyklmril+UDjuGRtGHgRdNQ+EA5fQlCpDhaUreeYc/B8E/0cABZ8oRTNngrRrX1HGpG4d/etCk/reKMgM5taex/6FJdRmQvaAsfXgfatAATuXwB8b0qkrRCXl/ujG5ImTC0dGauzsBqLy1CWdSyFF4qttGA3rEicewUCXPLVZnJl3KRRELx9chR07O46gAf49D4jAPFz0Mr0uSZkdItPcBSQBVA73DOlAu9rDcCOH3L1D6YW2ZltOg8qi6VWKElbN5X8If3VpEgMEQcxGyplS668ClRtM4JGRTt+MHqdzsKtdtpyzZ6cyIyVc0sM2S7QxH8W7kaU3gM3CP9JRpKYzZJJ57NxYMNxrZpmszVkvo14jJMVlnNviNr6XJRVg4jiMmaQ8R/e5ompwiMrW8a1hzZnBFqVchHW/p60aA5tzejDrQlo5Vy3ou7OfIVCF6Mm39NagObh0F2reLQNzgv/VO5f6DVfG0TBfA/q7peUiSPpCjFmupWhWMDxJhN1D6kkgS40v6nihlmprZJs7odjKVlL8laeRddHSQ8FJDSbVenwwvObcEew8avUpuxmia6+K+H6RCtI1u/gcYpVtsT6pFQk88Zg6o949RPbeYJwvTI85nFjJehhnpyitXtqf0J4EFnxO7eu9ZgbVNWGEIpGObvEQ4qHBoMAnILNIPzK2SCSQR1YIupIeTl6jAvTVj2p4UcB5aGuTxV6ezNudSxB1coti6CH922xL31ldHXfD6U9quZzcu0kptAWQ+mhF/PqIoDqx2arqOV71V6gFz3hIqVAiAEuYbV7IMQCI7BEBENDbtttDITfjVg2E2JgIrivTEniR8wxr0g8KAcoXFCfUV8qLB
- VfbqZ94H
- J9dnEYryCXrx6pOOB36y5YkCh9CAi+AURkI/Wm+AWriShhh9k6AKm/ANu2rw2qHDKwZUZxAuFBJQ9Raw8qsQkC47OyWvcaNC/6zpGDPUvEg3i7b07gNgIleilCtQ9vFbBDHyUtqlTex0oTzEXGDLH7juBeFGD4cF4qFuUjcz/5H3NgAPrYFSkxHsHxc8V1jDQJh/pqdnktDa6d7FH4Z1AhZ8XEHaCh5rN/MIxmH+U7W2YPCdVNMgssrElgyqhGFcvrAUfMvYTUw7pp9AvJxYUoxYvXam2alASvWEpDkS73eTeUuNohou7vHolanB+WmWaaiUijGea2jzDWBkNYS3x6XjjCFRh2g/0MrsVBBTPzxMgpXKk2rA+N6hEZno1IFZbdG2Y5w9lqK0AC6msu8n4nj6uBDJ6Y46N8q25Br+u97nZUF0NTmiGRBSjgtNEQcoDheSKyEAhZt24uNtNg0g39hYHneWMNWI03oedkmDBxAWakUTYQooDFvaLPPRUr4FMqc7P7sPNvY/RDCe2TGOD22OZcg==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1753282023-596759
+X-HE-Meta: U2FsdGVkX19M2NfcAiaWGd4/AXqgK+vpvxpqn0rpdvkalkSO6L3DpFFe7tohFY2OVVSzaV/FkwRjU9BHhyHo034G9gNkmic1heW1WxS1+zctkgnPlxTODcVwK1fPTACY70G3GTrkGgECHMlV2/Fp4b/uugK4rKvMtX5DAAJt6ThQb9jMddzq4qahbxVz+reFgzWG2RedOREasdEORw5tcoqryLZce9QoX+uTRg2GfPfc4dLzo4ycbhiw32bmA6soEEVbAk5hLf3UwwAgymkkAapWo5OgOzLJbQJ7hwBWv7JPi9UZX8A0ZsbP5sMHr+RD0DL3Nf6HfEzN6QniRFDi/99YG8QYxn5XxI8VljAS9e1T/vIHsCbrjiIlcX1UCWZXiqmagJgdqYtrPNPhRXLY9yNkmcN0lwwalEmGHu8FlomZU0Fh8bLYIIrYGWlWRLeu3lrSdaPddoch6a6hYeXCiwLw0UQLlfAcRtYDuCP44CZmuVUDSaNcLJE4ftRAb7bUxyLxZoy/M4EWwO9pbcdiZ8q1CfAugdqANMZgJNd7NcP2STd+nLJ3JnN3Mv3jxDiYycdmjvcJwOM7CDq+027eQqYLxAOzhRVOcMJB3Jd2slSGQ1+L/AS5fMSWLwtKCQMsjUZ8W3owkyoDIqdvWnOxSHUhwzzUYns8GjSHz7bu8PED43jUOSDrxPzgiwJrUPN9XaG66ggE5jxwRwgpLyp2B7Bc7Z+7+Chlq+3veM6fG5En8e6dTWZY/ucCUt/9Bnc0pN38MAIKBrqL7vTwCBPv/Wo6oATMwF5+mWNHLD01hhxobHCdgXLWDi7PrhZdRCUphHCpkCAT93BdlJl2zreLrIJkCyKpCbEcpgHhrC8QyBl34viXN2pfxShqFn5ZKCWjLN+bBFL0PnEpA7hp+b77fnDEkzbAQ5yd3p/K/AXuOFOAzRksh1tIvEOXKBjpZslzPkSFv+9LCp/8uy5QKHQ
+ zIpqHJQk
+ E2jJM637uIJdqY/VQQMiSX1IyENTdigU92spIrmZ7swUP3PmG/uJ4BPDGOl3PaZ2uPScwf+LbA9LEbZ/xhJVfDW745E29s7kbEu3msLj0VnmMs0jUTfyTSuAqw3kOBbzVfvqCc+dZF5imNIk20k1z4fPWp9sioL8wCAAFBhMSsOj9Zzv/O8dHWhNae8uaSzEXHqcp
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,30 +186,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-During boot scratch area is allocated based on command line
-parameters or auto calculated. However, scratch area may fail
-to allocate, and in that case KHO is disabled. Currently,
-no warning is printed that KHO is disabled, which makes it
-confusing for the end user to figure out why KHO is not
-available. Add the missing warning message.
+Allow to do finalize and abort from kernel modules, so LUO could
+drive the KHO sequence via its own state machine.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- kernel/kexec_handover.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/kexec_handover.h | 15 +++++++++
+ kernel/kexec_handover.c        | 58 ++++++++++++++++++++++++++++++++--
+ 2 files changed, 71 insertions(+), 2 deletions(-)
 
+diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
+index 348844cffb13..f98565def593 100644
+--- a/include/linux/kexec_handover.h
++++ b/include/linux/kexec_handover.h
+@@ -54,6 +54,10 @@ void kho_memory_init(void);
+ 
+ void kho_populate(phys_addr_t fdt_phys, u64 fdt_len, phys_addr_t scratch_phys,
+ 		  u64 scratch_len);
++
++int kho_finalize(void);
++int kho_abort(void);
++
+ #else
+ static inline bool kho_is_enabled(void)
+ {
+@@ -104,6 +108,17 @@ static inline void kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+ 				phys_addr_t scratch_phys, u64 scratch_len)
+ {
+ }
++
++static inline int kho_finalize(void)
++{
++	return -EOPNOTSUPP;
++}
++
++static inline int kho_abort(void)
++{
++	return -EOPNOTSUPP;
++}
++
+ #endif /* CONFIG_KEXEC_HANDOVER */
+ 
+ #endif /* LINUX_KEXEC_HANDOVER_H */
 diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
-index 1ff6b242f98c..368e23db0a17 100644
+index 368e23db0a17..c6ccc8e0705d 100644
 --- a/kernel/kexec_handover.c
 +++ b/kernel/kexec_handover.c
-@@ -565,6 +565,7 @@ static void __init kho_reserve_scratch(void)
- err_free_scratch_desc:
- 	memblock_free(kho_scratch, kho_scratch_cnt * sizeof(*kho_scratch));
- err_disable_kho:
-+	pr_warn("Failed to reserve scratch area, disabling kexec handover\n");
- 	kho_enable = false;
+@@ -757,7 +757,7 @@ static int kho_out_update_debugfs_fdt(void)
+ 	return err;
  }
  
+-static int kho_abort(void)
++static int __kho_abort(void)
+ {
+ 	int err;
+ 	unsigned long order;
+@@ -790,7 +790,34 @@ static int kho_abort(void)
+ 	return err;
+ }
+ 
+-static int kho_finalize(void)
++int kho_abort(void)
++{
++	int ret = 0;
++
++	if (!kho_enable)
++		return -EOPNOTSUPP;
++
++	mutex_lock(&kho_out.lock);
++
++	if (!kho_out.finalized) {
++		ret = -ENOENT;
++		goto unlock;
++	}
++
++	ret = __kho_abort();
++	if (ret)
++		goto unlock;
++
++	kho_out.finalized = false;
++	ret = kho_out_update_debugfs_fdt();
++
++unlock:
++	mutex_unlock(&kho_out.lock);
++	return ret;
++}
++EXPORT_SYMBOL_GPL(kho_abort);
++
++static int __kho_finalize(void)
+ {
+ 	int err = 0;
+ 	u64 *preserved_mem_map;
+@@ -839,6 +866,33 @@ static int kho_finalize(void)
+ 	return err;
+ }
+ 
++int kho_finalize(void)
++{
++	int ret = 0;
++
++	if (!kho_enable)
++		return -EOPNOTSUPP;
++
++	mutex_lock(&kho_out.lock);
++
++	if (kho_out.finalized) {
++		ret = -EEXIST;
++		goto unlock;
++	}
++
++	ret = __kho_finalize();
++	if (ret)
++		goto unlock;
++
++	kho_out.finalized = true;
++	ret = kho_out_update_debugfs_fdt();
++
++unlock:
++	mutex_unlock(&kho_out.lock);
++	return ret;
++}
++EXPORT_SYMBOL_GPL(kho_finalize);
++
+ static int kho_out_finalize_get(void *data, u64 *val)
+ {
+ 	mutex_lock(&kho_out.lock);
 -- 
 2.50.0.727.gbf7dc18ff4-goog
 
