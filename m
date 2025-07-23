@@ -2,251 +2,128 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9021AC83F17
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 04:49:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D793C83F17
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 04:49:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 179696B0088; Wed, 23 Jul 2025 00:49:16 -0400 (EDT)
+	id AC9F68E0003; Wed, 23 Jul 2025 00:49:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 151866B0089; Wed, 23 Jul 2025 00:49:16 -0400 (EDT)
+	id AA0B18E0001; Wed, 23 Jul 2025 00:49:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0197F6B0099; Wed, 23 Jul 2025 00:49:15 -0400 (EDT)
+	id 9B70A8E0003; Wed, 23 Jul 2025 00:49:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E44466B0088
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 00:49:15 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 8ABB18E0001
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 00:49:42 -0400 (EDT)
 Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 866CA8039B
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 04:49:15 +0000 (UTC)
-X-FDA: 83694300270.16.FAF1EF6
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 3AA511A0005
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 04:49:12 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ASZOmamh;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Ytprlpeu;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf19.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753246152;
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 511DBBA0DD
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 04:49:42 +0000 (UTC)
+X-FDA: 83694301404.16.3EA41B6
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4661020002
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 04:49:39 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	spf=pass (imf03.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753246180;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j7mjHLU6Yvmnzok4wYU3L88pVKidK5O51T0kKh/nBRM=;
-	b=liDXS9gJqt1y8yfBbz5jtEFrwJk7PypMKrsxxKLRxFdNKKRNkVLDseqcYsbdfC6EgO+Gcj
-	tx6osTFd8jqlZ52WLwY/LaZll3xJD3O6WtdawU/losfgeP2Xlq1TwfV10xDHa1zuBrw/9V
-	x4GjU4bp+GfL8GcnABs0U9s8nuJG3jM=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753246152; a=rsa-sha256;
-	cv=pass;
-	b=vqKvONzx8zjkBHpEuVmidz34VQLkvbU0k3j2ZI2Mq2NKonUF+uWt5dBGk+Ku8H5QZ4NbgN
-	Ba+zRbUPxx4+TxjEjqPZjTa31b2SRi1RAie+wYfUflLwJPYTR7MxqlJgOSArp5ZDWugFj2
-	bS+CLZcdbC/h6N88LPp3eOqsIgcfSyY=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ASZOmamh;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Ytprlpeu;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf19.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56MMQmKo021733;
-	Wed, 23 Jul 2025 04:49:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=j7mjHLU6Yvmnzok4wYU3L88pVKidK5O51T0kKh/nBRM=; b=
-	ASZOmamhqGt0bMgjtmIuDrkYbdk8nN/VfxXR79IymkIfCyAhoBBC+4HQyXKmmr1M
-	DzYcj7TPv6iDXHyN6FReRG01Ne26F+FxPydx0DQs2tr0yPwGKIFqp2AJYb93U4r3
-	TGZuVb5gPvqGUNJG+oh1kZDkRCdk9ob359FQBQWzDKJukV3eNfXJxUsxtsWrOdrR
-	Ex5GPDA0HK1DdoBqxz77G1SVLfXANlZZBOCD/K8eOqaQ1agp4VX3bAjiUKobmrZz
-	k5Qoza4scxkCrf1USgxOUhduErlxsPwSLyjuc69Fi1UzIron0SJKvE33VaKML2Js
-	Rm7MZLCiczrhlvrrqMgWQQ==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 482cwhs74y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 23 Jul 2025 04:49:05 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 56N4XQBR010475;
-	Wed, 23 Jul 2025 04:49:04 GMT
-Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11on2050.outbound.protection.outlook.com [40.107.220.50])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4801ta4t8m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 23 Jul 2025 04:49:04 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NxqMI3OxuO0xsFlFEOaBehmsp3L3KWGLLyYsnfkjwrfB6AvV8pey9wmkZpghJFCLzbES+FwYhid7/QdZWczxtURR38DtCHvMSbRXpvtuHMOmmhMX+iwrJutbKPLyY0Mb4heF17qChtEnfgps8lX4WrlBOXMOugmLRDABZWcRjICYA8N+9M22nogQsTlAY61/pGWSx+qvMwtWDdHfek7vLwRCDGmrKCb+UzrtwzzG4Lg1uG439R3uX+ez/5k2ujaw39w7Ppn9KgQHKGKihTdHfwMOB3lGVszmIZWRNOh/5UBiV+7wtjoNYkd2hebvIylVkT1wVl2jmwb+yNNG6vjEpQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=j7mjHLU6Yvmnzok4wYU3L88pVKidK5O51T0kKh/nBRM=;
- b=ne7Kwmnx5y/w+H95XiHav3f9l6YOUTuRlpFmCWPHKa+tMgXseBcAKR2WAfuUPUpWRWN9saWXHp9xHqWy1J7GETYEjDZ4ZVi3E5El3ggbHXYVk4r1/jmqGCRbDGitdhj2KxtOeZ8ccdPuPRqb/k03m24UqchpuEdI/FjXdaVVJXGl4OIgldIKACTCp+YhFWLd2oyBv7VBbsTCdDNGE6ZzCUWTjB4UZ83ijKikxFwNa8vvIRl3oyKPZ42s1N2SJNx8ZyOeHHPAHXKjwr/ejmJ248FXjkf9sKMIao4B37fBBjQA7o08hg59gkd5hutyIJIJDdm2kwWob0RSaqDtTa4URw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=j7mjHLU6Yvmnzok4wYU3L88pVKidK5O51T0kKh/nBRM=;
- b=YtprlpeuPtT4X8HTdcOzYxq0bUeUTiUz9XuMK3lbzLW9UBEhO8ITBtpouoDiGT5U+gxj3TVriqUmuM7RIpQO8lzgOfGeBjsQrYGi/lWh5I99br43IJcmwcGVcyIWOpraMKyopbvl5KFTOT44O1Vlz4jXZXzDiW6HUjHlE4DB/tw=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by DS0PR10MB8030.namprd10.prod.outlook.com (2603:10b6:8:1f7::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.21; Wed, 23 Jul
- 2025 04:49:02 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%4]) with mapi id 15.20.8943.029; Wed, 23 Jul 2025
- 04:49:02 +0000
-Date: Wed, 23 Jul 2025 05:48:58 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Nico Pache <npache@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, David Hildenbrand <david@redhat.com>,
-        Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
-        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-        Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-        Barry Song <baohua@kernel.org>
-Subject: Re: [PATCH] MAINTAINERS: add missing mm_slot.h file THP section
-Message-ID: <0712de1f-6a45-42de-ad3e-2522dd437737@lucifer.local>
-References: <20250722171904.142306-1-lorenzo.stoakes@oracle.com>
- <CAA1CXcBY4rFLkNqJM2Dj-EajPw9TMTHNcYapw9P=U0bo=QNqkw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAA1CXcBY4rFLkNqJM2Dj-EajPw9TMTHNcYapw9P=U0bo=QNqkw@mail.gmail.com>
-X-ClientProxiedBy: LO4P123CA0639.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:296::6) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=svICcUFp7Foycwjpr50igsZko0HoBHtpGo+taHbxAXE=;
+	b=FrFFY9eVRV6UnayCbMf5OUnOA475DBNWJ667ueCsejfrUbpfrn8tadpQeTM+CuV8XFWYmI
+	WP8Zh20O1Jnc97xiekUv6b1h3s9f53610s9Z7WbB0jmy6Gq6U6d6HW1y6nygXttaj6gJOK
+	pWV4H7lX0OMx89eh5gbzwPepi9z1/18=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753246180; a=rsa-sha256;
+	cv=none;
+	b=daePy+tNFUfpAhgqKVEMGbSETJGBFkV1XQ1y/RwipIJrK/A1oXjb9yhAEs1HtjpkchtKPn
+	Fe/5T249ACag7RBvYniOp2EEB7Ga5/NSd+NW7LhB6dfltc1KdfXU1bcTU0//nteQ8z+y5i
+	AA6iPFpgwvz1nwvjiSYynfyD2HwI9rc=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+X-AuditID: a67dfc5b-681ff7000002311f-ec-688069e2743d
+Date: Wed, 23 Jul 2025 13:49:33 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: willy@infradead.org, netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	kernel_team@skhynix.com, almasrymina@google.com,
+	ilias.apalodimas@linaro.org, harry.yoo@oracle.com,
+	akpm@linux-foundation.org, andrew+netdev@lunn.ch,
+	asml.silence@gmail.com, toke@redhat.com, david@redhat.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, linux-rdma@vger.kernel.org,
+	bpf@vger.kernel.org, vishal.moola@gmail.com, hannes@cmpxchg.org,
+	ziy@nvidia.com, jackmanb@google.com, wei.fang@nxp.com,
+	shenwei.wang@nxp.com, xiaoning.wang@nxp.com, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
+	sgoutham@marvell.com, gakula@marvell.com, sbhatta@marvell.com,
+	hkelam@marvell.com, bbhushan2@marvell.com, tariqt@nvidia.com,
+	ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+	john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
+	leon@kernel.org, mbloch@nvidia.com, danishanwar@ti.com,
+	rogerq@kernel.org, nbd@nbd.name, lorenzo@kernel.org,
+	ryder.lee@mediatek.com, shayne.chen@mediatek.com,
+	sean.wang@mediatek.com, matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	aleksander.lobakin@intel.com, horms@kernel.org, m-malladi@ti.com,
+	krzysztof.kozlowski@linaro.org, matthias.schiffer@ew.tq-group.com,
+	robh@kernel.org, imx@lists.linux.dev,
+	intel-wired-lan@lists.osuosl.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH net-next v12 00/12] Split netmem from struct page
+Message-ID: <20250723044933.GA8691@system.software.com>
+References: <20250721021835.63939-1-byungchul@sk.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|DS0PR10MB8030:EE_
-X-MS-Office365-Filtering-Correlation-Id: fdf51fe2-9cb7-4869-1264-08ddc9a43eea
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|366016|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ckFDamhpWktKeU9ndEIyRjM2Vy9JVXg0allVN09Vc2FhL3AxdHBHM0xJdTFD?=
- =?utf-8?B?VU5ZOW93M0NWTnkzY3Q5ZG85RUhiWm1xVnBNSDJxS2xKRWEvY2VmL3JtK3hI?=
- =?utf-8?B?VWJVRC9oT0FhZk9SVlBUeFZuRm9PNnVIdTY3bmhwQjF0Z0ZZOEdWWFVxUnZs?=
- =?utf-8?B?ajRzdGpKWnEwRjZ4L2JkeEJ5Q2hHRkVSNUhLejl0RUlMb1lKZVZPRXc2Y3Q1?=
- =?utf-8?B?cFJodHpKUUN6RU5KWUtrS3UwMWlYK3BBY3lpb094allEZXArWXl4VG0zYlB5?=
- =?utf-8?B?djdNZ1ppeW9yWlVIUU5hcjNKL25FZDZQK1dWRmZkZXBCY1VBbTBtS1dXUjZT?=
- =?utf-8?B?aElFbTA1Rmk2V0NPR3JIeXphQVRIZEdNZGZhN2djZk9TbnpSVlJFZWU3ODZr?=
- =?utf-8?B?UDlBaGtUOVFVdFkyallTaEx4UnFPSi94aHZqRWRZRDNYYlY0OXdUU2RSSHY1?=
- =?utf-8?B?ZVdqdXdUVERscU93WGlLMUwvOW1sRHpucGxMN0ZsOWZBYWp3MWoxZnVNTnRp?=
- =?utf-8?B?Qnl5c01reTlRMWhVczhaVGI3MHk2dUlac2VXcndmREd0anZzaGJIYnM3VTNm?=
- =?utf-8?B?QXFYeWZOOURCQ3BpY3c2eTFLa0xGR09DT1MxbVZxTTNqWDNlSU41WkVFUTJ4?=
- =?utf-8?B?UzloSTFLOVJRRWdMR0pYanVrRTlDTzVvZnFWRFhDY3pPRnZFNmExeHZaOVI5?=
- =?utf-8?B?cW5UWlZ5MVVGZDNzN09PYTNNaE9HU09DQ3NjODNYUDNONUM3bXlKU1JKWGtQ?=
- =?utf-8?B?WVEyazM3eHNZbzhySXZ6WndDOHRrUUM0Qk9iRkVPblFXZWJXWXQ1ZUtDditW?=
- =?utf-8?B?QkI1dnBDZnBSK2NNcE9SWTQ1QTNWNmNpM0Q5WEN1cnZYVGltaHd1bEdTSmZJ?=
- =?utf-8?B?MHJwVkNCcGtlNEZERUNndSsvZDIzTXFpN3RlSmQ2MHoxTGYxVkNxaGNlQ1Z1?=
- =?utf-8?B?ak16RmM0Z1BCM3h2Skl1Sk5oY0NzN2pkRDNzQTlkeExvWlArMVN4OHBzTmMy?=
- =?utf-8?B?bDNBNmNMV3ltdEt2M0I0dkdLUDhnM0loaGliMFVJU29wY1NoZjgzdFEvakM4?=
- =?utf-8?B?MFpWNHJ5TUJ3SzJsNnE5MDN5Nmg4a1dyRVVuUUNiWmFSRElWY3F0VW1nZDJr?=
- =?utf-8?B?Z0VxNWU5M1h3ZWFoamtSTWFweHUvVUd5K3BkQ0tZSk03OGxMamNJYlo0dyth?=
- =?utf-8?B?UHpoZkQxQitwZVRlNmlMeDdNc3M5SGJBVHNBQXdDSWlDeitaKzF1ZmdGNGhN?=
- =?utf-8?B?aHF0WEVGc05pK3MxTUI0OENSSUU3TFVLemxGdlNTSHVhS3lCR2d5b1Z1Vzl3?=
- =?utf-8?B?Q3NGZGVaaUhpRkk1WHRDNkZnbXoyZzBhSkZDVVNUVzB3VmNlT05STFB6Rkg4?=
- =?utf-8?B?aFFVNS9Ldm04WkNXVXF5SXpQd243a2lQUEVZVC9Ud2RsK2lQakdqMU01a0Jz?=
- =?utf-8?B?ZmNTUU00NzlEdFJJblFLL0hMNHFNL2xWR0J4RTY2cnJvUXhKbUljVkVQVGJL?=
- =?utf-8?B?bWdTRTM1NXVta2NvZ0RLcjZ2NVhVMDRxRHFCdmpKb3JNcy94b2RsVUhhWDM2?=
- =?utf-8?B?S29kaVBQRjAvY21oTkZld0JDVnJsMUR3Nm1aV0dYT2YyMFRtbzJ0OFZVbFZB?=
- =?utf-8?B?QmxlcmpJYWJwQ2U4TVhEUS9Sais4dGtRZ0p6SGZTTHhoWDEvYVlIbC9oRTF0?=
- =?utf-8?B?cWRCNFJkVTd4aUdCVW5vaHNxeEdQSDBTdUJBbWFleXlCTDJiSE51VzJsQXh4?=
- =?utf-8?B?ZU5SeEhrVytSNHlmekFYR2JETGpIR3gwUmFLeXdUbE5pV2lHdXJsK251TVJX?=
- =?utf-8?B?aDhNeXJaVkpFYnA2VVVQL0gwSkNieTgwQzdQN0d2WmlJZ1M2eHphaU0vclBF?=
- =?utf-8?B?d1VqR2kzOGZaNk1PYmNpT2U4UGpXRi9FWWdaamlOcUVkNFlNa1ZvVzJFZnVO?=
- =?utf-8?Q?BphSlB3A4YA=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aUNiV3RDOXZRYUVHbCtYZG1QWVRwMEVPRG9XY2JCL3d5Qk5KTzVtK0tyNlpq?=
- =?utf-8?B?RGVoMkJoYlJDa1NNaG5tSkI0VjZWMnV2VWErU21RL1Q2MVlPRGg2WWJLNTMy?=
- =?utf-8?B?a3o2cXZwR0NuTGJTSEpLbEVqWGRSa0YxWTI0WjR3WEdPRzEwRHNmVVVOdSti?=
- =?utf-8?B?bmZiZDBYSDA5ZVUydG10SktqQ1oxOXNWN1VzbzFVSCtkM3hTK2NhWUNyRkdp?=
- =?utf-8?B?NDNqZlYyVVptejRIMjJzN2piaWJKV21keUgxUDRFeXp3TXQ3V0pCRnhMZDg0?=
- =?utf-8?B?aEloOVdnWHFxUGJkei9UdjRiMGJNbnlQMFlBaThJKy9taDB1a1dVdjFkMWhk?=
- =?utf-8?B?YUg4VkhJT1BqN1RDZmZHSHJ5TVNFODhOVHhmcFRpMGhoK2pDNHdJcXdibCtT?=
- =?utf-8?B?UmNRb040OXdzYnUvQmxtbEprYlVuSHpjYmdSWWphb2k1Y21uMzFwSlJna2Y3?=
- =?utf-8?B?YmU2NDZQcXFqeG1VMnBmR0pETG1Mc0pheDl6Q0t3amlFRkRZRTBhUDJXai8w?=
- =?utf-8?B?VW9TWUhZUzk4Um8zbk9xLzlYUTBZcHNFeUtzNHVFeFkyVVpUcit3RFFZd2ZJ?=
- =?utf-8?B?QU5VaWJDZXZCekgrOVYzclFaM2hsNDRsSGZsL2dHeDVJbzQvSWx6cUxYbXZT?=
- =?utf-8?B?K0hGV0Vld0c0T0llaDFnTXF4d0R2VGgxWVkzeThPWlZZRzFuRkJwYnlVOENC?=
- =?utf-8?B?S0hSZm8rMFUvSUVCa3lZc0tsTjJYM21qdTZCd3pESi9keUNKZVoyS1ZQRnVm?=
- =?utf-8?B?THVLN2R6MDVrWm5kT2cvYk1zMmZSR2xvNDYxeXptd0tsQUltQUJ2OUE5YlBu?=
- =?utf-8?B?aFNjdU85ZXVkTGROQm80TndocDhLMlNUUjFjd1VVVlRXMWZYQ1ZiWnYxelJR?=
- =?utf-8?B?KzNVQWpLK3NKdllmTG4ybDRlMHo4UEFTaUZ1ZEJZWGQ1Ky9VM1hSVU9vSS9N?=
- =?utf-8?B?Wk43N2RwYk16eGNGeXFxTEVReHBwMTJPazFhOXVDeVJpOFZsNmdHYXlyb2Va?=
- =?utf-8?B?MGRtdE5JMHBLMGhLWnIwbWp4cHREZ2FZRjdrSUpDMXVWZ2pSQzBYTjM1WjFX?=
- =?utf-8?B?ZlFvaStmeUtoWTFEZ1FuVnZzTDF1U1pTbStrVVdmT3ZvWFprc1hXLzVCZWky?=
- =?utf-8?B?eVRlQ2hCbEE3Q0pieUx6MVNTeFc2T2dJSjVDcDZTRlYyb3NhOVNENk1nMy8z?=
- =?utf-8?B?azFvWDFoWURaVjVrK1dDaGpTN1V3NnFYMDFBQSthUjBFeE9RWFdmR3VWOHBO?=
- =?utf-8?B?YkYyMTlrbkpqZUIrMXMxWUc0QTRRUnNuTm9aNm9XV2h1MHN3c29LOVl3YUdZ?=
- =?utf-8?B?TkNsY21sdFJUMjRuSWp3VUZMLzArcDg5TEZLaU9MMHV3ZjhLWVV0OWNNQzNu?=
- =?utf-8?B?VE5CVmtGRER6MUc1b1VxSllvWFArR3FXbGIyNVZxazJ1US9vMUhOTktZQWQw?=
- =?utf-8?B?Nm9rS2x0QVBFSHM2NmV3WkdYL1VEUlhiTnJWeU5hQng5aXR4N0kyR0Z5b3dv?=
- =?utf-8?B?Mis2S2F4RzgrUnRFeDJzdHdTSmR0Nmw0N0Zrbi92eVl5VEJMWjU1ekR5aWtu?=
- =?utf-8?B?ejhnV1UvTk5GRHlIT2tMZk5PczdqNkVPc2crNXpmdmVidEM0Vm1Cdy9QaUJv?=
- =?utf-8?B?Um9DeUF2K2FqSHpyN244djdWLzYxTk95cE40Zy9Xc1RSbkk3dktOSzR6UHdP?=
- =?utf-8?B?cmlKR3BJc2JRREFmbWxxWTVCcFN3YS9neFZDM0czVXk2cndxVENiTFhvdnRn?=
- =?utf-8?B?Vk0rMVBGTFBrMFV6SVlGNUQyS3licXhreXJ2WlY4M2FUZXM2eVZZZzJsZ1Fo?=
- =?utf-8?B?YmdYRWxnTXA2Wko2TEhVTWtjZW5QMittcUxzZ0U4dVBEazR6Q2JtZ1NjWjBm?=
- =?utf-8?B?QUIzcWFrZHZ2YUFyeEEyVXpKMVg4ZHlQZUxXNU5PR0V3cGhDbk5pKzAzcS96?=
- =?utf-8?B?TVR1ZjFaclVBazYzQlZpSFNPbHU2eHRpT2haakRDQkJ5SVVKdi9jSXFxTmxx?=
- =?utf-8?B?dktsSU0wQ3FMYndrWi9ITVFHQS9rL1J5K1ZVV2pUVDgwTmN0NnZuTWtxb08r?=
- =?utf-8?B?NGk1YzNqeU51aE9QVXBRYlBLV1NCbmtyVGppUGo3RWZ5dWVHQUpVVks0d2py?=
- =?utf-8?B?Tk81Y1ova1BJd1lFNW90Y28rRndhU2JBQWJRQUFqckxnNnhxcEVDWkhBcklG?=
- =?utf-8?B?ZVE9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	l+ca7KrtPPQ5ErJYTTYrIRpoXv74JlWyxiOw/6EYW6I18y5x/gi/7w3hY1PcgNaDkvrCwYNuARtuJcXAOombxqaSMFY4Q7YyfGzGoarArPwsz7cLxOHtv1Uu8TsAyG9EKJ75/fP5tOdF+0WBmIkFjCS0AcMi1Jp1IN2FgW0Rmn75facKrJE6SQAxP7UuJ37gWxQ7kbnr5iQeaESPT1GDxHYNYI0LGW4Xb1glfqZ3YgldyA128SDJm8nmvBKla41XMjye/pE4evDa0L+VYYqXI2U+KRdanPg2vva3yF8kjuEA3y/XMNoJMjZ/LoS+GsE4ts/kDYmeH0f7hLtd7Qx+URmMef7fvLmqaiMAOueXErxxBu0u4cpyYgOCtIPYEtAfbvrkdLL/CzEjbTqGaKBwF1gKQCBL9gyENJlv8tDqUEI8W2m37WbzyOY3zfxJtf0wPlDYCSBMlGIPP9I2ansKMTNhPpuT14+eyi+B+9cayyjvkKBafgRUpeT2zhItpxjiiW8KDdWcUf7SP1NAHq6ZXK68NbwI9Q2OWie/wtn482Faik+qZiezKsQwx3fzbGeEUvsiRN9uZKXnDT3duIYKdRaQPUvjPymH1pKSH/92eUA=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fdf51fe2-9cb7-4869-1264-08ddc9a43eea
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2025 04:49:02.4395
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0zVqsq8cYUyDKMsv+QsyFtjiR59T3d6tRFzkc4T/X2jahp7QGzlEh8TOP3eYPxLdwIB2kR7ekeT+hOXZqbgXAAHBvhaDrmZDlYmqdNYuJEM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR10MB8030
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-23_01,2025-07-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 phishscore=0
- mlxscore=0 bulkscore=0 mlxlogscore=999 suspectscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2507230038
-X-Proofpoint-GUID: m4rfa3SoE-NLWgogg_sKsiC0L08LCdJV
-X-Proofpoint-ORIG-GUID: m4rfa3SoE-NLWgogg_sKsiC0L08LCdJV
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIzMDAzNyBTYWx0ZWRfX5d2gbxLtB83p
- xcrV3GGPyYpoGdKWd1ruCQWpzmRZL+wRvIfFZ3GgWdYOGIuh0ulcds6D1CX66sMzzP9Xb1Cc0QB
- 7T8fe1Juwc3yB64BVgn4yA939cFYVT3613Ln2C73g0w9Ooj+CfEuQVvJUlCOdfsYphS15zbJwbF
- 0LabjEcJ2N2vTen4pMjUgXMBforwKn7CTSnQi/UmF8u0ZO+PCuXjXJVGZu+rfDn6Dqa4p2IH8FW
- K/7223na/ygjM/cdHDX1QcgVuDQ7/rZwWgYhhcIvQrV/MYt1+x7D2tfEhESQ2Yel/Ck8eSz2swf
- tqp607JtObGMsHfyo+v1NZd21lqE2lOKNI0eb4iGv8g0PiW4rmzh51fQsNbcMiwu5DcmIzb5vWK
- A19XTKBMz1/doZjLF0ZXhonRmlAvFvRR+vN55x81cISbHA15d6iT9VmctGfYhEluus2WrUh6
-X-Authority-Analysis: v=2.4 cv=IPoCChvG c=1 sm=1 tr=0 ts=688069c1 cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
- a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
- a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=GoEa3M9JfhUA:10
- a=yPCof4ZbAAAA:8 a=20KFwNOVAAAA:8 a=LsFlvV74n0Hn42QnFawA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10
-X-Stat-Signature: idcw554hb16x8xsuwqtfgdd3qu4kipyn
-X-Rspamd-Queue-Id: 3AA511A0005
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250721021835.63939-1-byungchul@sk.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SfUxTZxTG8973frWjyV0n7p2ELOlmlpEA6tSdkfkRN+Pd4jIjicnc4mzG
+	zdoI1RRtgWSjIszZrUjAZbYrGU4sn4opAzqsbBaCnZrxJVj5KA42glpErVQqrqzXzMz/njzn
+	ye85Jzk8Vleyy3i9Yb9kNGizNaySVs4k/JQ6qbfoVnh3g7OpkYW+8AkGGubzoOaGh4H+OgLn
+	eucpcNa3IngQHeHAfWQUQ7jrIgsnT0QwRM/aaHD2FNMw1/QIw9/dExz4ff/Q0OD+AMZdUzR4
+	D7dh6JxbDhNH/SzYihcw2IMlLCwOLzBwPnqHgyJPLQXnb7dw0NtaysCxR6cwtFluxLsmhxgY
+	aHeyMHCoD0GwcZGBKV+8MFQ7ykFpgwOB79c6FoqK34BQywMO7n7XhWG8dCPEjpugu2opRC6H
+	EIycGqRg0evh4I/gGQa6mtoouPpnFEPk20oWrDNHEQza2ym4UnmWgerLV6n4HpkwtPiYgor+
+	KhYmi8cR9HdO0PDDwVIETR0BBu554ycvzDvZjZvEztAsFj1j1Uj8ue46JU6XxSgx0HGJEn9x
+	jHFilfuA2FybIp703qREa6Afi+76I6zovl/OiaNDXlb0H1+gxebqQnG62Y62Je9Uvp0lZetN
+	kjF9/W6lzve9ndpXti4veK0CW1BNuhUpeCKsJm1fVaCneup0JS1rWlhOHn5dwciaFV4jgUAU
+	WxHPLxHSyVD5R1ak5LFwMIFMh2xYzrwgbCYufzsrZ1TCm8QSTpZttbCGhG55nmBUwvPkd/tf
+	T/BYSCGB2E1KjmMhidTEeNlWCGvJRPw/ZJ0ovEJ+a71IyVVEmFKQMxdm/1vzJXKhNkCXIcHx
+	DNbxDNbxP7YK4Xqk1htMOVp99uo0Xb5Bn5f22d4cN4o/reuLxx970P3eTB8SeKRJUFlaCnVq
+	RmvKzc/xIcJjzRJV5NyXOrUqS5tfIBn3fmo8kC3l+lAST2teVK2KmLPUwufa/dIeSdonGZ9O
+	KV6xzIKoolt7fFvL3hteqcw4vYGkHrs3IjWGt3U0JJpnMt9PchUGDyfv2pGyvUSlNy/tDpk+
+	2ZThV8x5pkXbZqvd9m7XW3fuftg6vMJV9GOB25oa3rJr+3ODW8fKC2LmxENrHloMO+Gdktdd
+	PePeb3ZkZM2aS7g0tGVV5OWeAYNkeLUv47qGztVpV6ZgY672X7cHPHiwAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA01Se0xTdxTO7/7ui4Yb7yrDG3FL1sUZSZQtvk6iGybGcLPExYUZnfFBgze2
+	A6procKSYdGazWZUlI3ZUhJQ5K0lRaBCRVeYgJqpFLAqFq0bAVfng4KWsmJrssz/vnPO9zh/
+	fCyWh6mFrFqTK2k1ymwFLSNlX6w9vMyvNqg+vl7yAdjsTTTcmqyioPFVPtQ+cFIwUC9A581X
+	BNga2hAEQ/cYcBwdwTDZ00vD6appDKHmYhJsN4wkTNlnMPx1xc9An/tfEhodm2C0ZowE1w/t
+	GLqnFoP/WB8NxcYwBovvCA1zd8MUXAz9w8AhZx0B3RX90fHvVgZutpkp+HnmDIZ2w4No4KNh
+	CjwdNho8h28h8DXNUTDmjqYG6kYYMDdaEbgv1dNwyLgCAq1BBp790oNh1LweIif1cKUyEaav
+	BRDcOzNEwJzLycAfvnMU9NjbCRh8GMIw/VMFDaYnxxAMWToIuF7RTEH1tUEi+kc6DM/NElA6
+	UEnDI+MogoFuPwnlRWYE9i4vBc9dRnL9BrE78BSLzvvVSDxff4cQx0sihOjtukqIF6z3GbHS
+	kSe21CWLp10ThGjyDmDR0XCUFh0vTjDiyLCLFvtOhkmxpfqgON5iQZvf3y5bt0fKVuslbcpn
+	GTKV+1cLsb/k03zf7VJsQLUpJhTHCvxKYexsBRnDJL9YePljKRXDNL9E8HpD2IRYNoFPEYZP
+	fG1CMhbzRfHCeKAYxzjz+Y1CTV8HHeNw/BrBMPlebC3nVwmBx843Nhz/jtBv+fONPeaTBW9k
+	gojRMZ8k1EbY2DqOXy34o52I4Xf5D4XLbb1ECeKsb6mtb6mt/6srEW5ACWqNPkepzl61XJel
+	KtCo85dn7stxoGgla76fPe5EQU+aG/EsUsRzhtaDKjml1OsKctxIYLEigZvuLFTJuT3Kgu8k
+	7b7d2rxsSedGSSypWMB9vlXKkPN7lblSliTtl7T/XQk2bqEBpS7b9HLBXfztog1lEfNmQ5DD
+	X5Vn2TqbS6fsHbNLf0trMj7ZSeWdO1B28XjeN5nBVI/nam2z/EhNfvnMjR31iUVdZ8eTuLKq
+	das1232ndqf9vmhbYa4ulO5cUljOFMxLjcDjXRnz5Dk7Mh1beqvCienJXw7F09sI/dBlV9nE
+	R/2DClKnUn6SjLU65WsqBJKsjgMAAA==
+X-CFilter-Loop: Reflected
+X-Rspamd-Queue-Id: 4661020002
+X-Stat-Signature: 31o6mcjy6qi1fjc5c7fdntu51i9hnpf9
 X-Rspam-User: 
-X-HE-Tag: 1753246152-583760
-X-HE-Meta: U2FsdGVkX192U5CdmmwzbuslM/Qu+/PvNSpFSymVQIJFrkndS0LwqSwLJPFqb7L/5s6xwvjaYimJ1kCM2PVN6mrNFZ//1XBAjNdI2mWvnNOWXOKqLC3NBRj+c81bescwqa0Gxc+PkU9686vZFdl4bgU3mZrZWXQzW3hgLxagEdSpBWY/v4xlbsIOMTUwO/fbGFnKQO9jPNffoEHSPsiTnN1WhEN7P3Kfog5kStWi40bgz/vxdnXq02Cfa67V/2S/c/nK/KQga3lZKK+Y8adzQCln6T8u3bY2HERqE24sI5sOCSy+xLEGaYRPri+xvubddg0+l7kMUyM7Gg19VoWnTORvipUd5V0QzUr0ohA8NqY8ti1+h8EE9KWhLtHXk9wgosF1NQYiLCfmapTKl3GLbk6QNyuy5cwYL5NMoOUtDMOc+4ViN9R0pDiSx7KqBNX6dYS+T1SdSAhfyOPgW3PjfFkC1mjZHbq+EEJwDgdEKVbhxQGjkgM/l0etkRfF9Dym4rj0jrRI/k/gA7HmpFhqq7N5ogqBD1Er4MvQfBU0QOSzEttl393svHRaBybwZKhdlgS8tZtePhf1bi6tIkYxD/7x86/srpOFoZoB++ClvWnv6Ac6bLvcNA3KXQKr9LtuQ/mqtJ3LJ2aWXSf6PgdBYufa877Oubrrb01bPuyW7yij9eDM7wx/PXDgScvyfULFICSVPr9D46nfOoiYDmO0TvRRan0fPniYzJQl0bO/XTzhYDrVb/QrGVDeGnEJW4iQPNYwQF+2nNGN61xsOndeQs5GKQdQS01eNXnfMdGAkT+2akRkWc2LUbTmfDr8gZ6S9rh2LzGwd13yy2zjcZOmYz22BvNoS2SDKHWCLAdhChfQPydhVkW9IMRRGspiTB1MQS8p6g16xr3wqMiawMVgB1PIyBx5YcAFOCwDqNcPz3cnlrSZsmyfVxpTLIafYN7QZ+ZGjsmQjveETxTgvzR
- g6In1itM
- pVnIb8SdaAPCSyNTVuIlGpH/heRHHLa+BhAb7+8BAPfXVI5KvDEm4wjgNkYLJgwnGfQ1xmu4Vh7xWGlDoSBDzYgoW4IuKxri3zdHo69owj0i1xL3SLQbxIrxnDrS2MRwz2eD8+ngWfHWwSpIlESJxc2KP7xz+I8LGk5jBYXd51jNuYtMAqH5dIdAQhb60DHz0832aKtCY3ly1ybwBKEW8b7Fx4NJBv9JgU4Q73mI/Vd1cH0/2fdPaPslpQ9kqGZyOdzlvKlBNRyV7FFXvjtCtReX4kHQfQSq0r1FRmvlkPfJg1DQgk1Yk/wIvFieRppT8+61wD4hzLpkurBRSjPM5xa8lZBROVWQmwYsErohxeK6Q4NUFccdAh3o77r5r5oT5lK3oQKaxUXM0CF4s8a7x1XmuMdzmYMWx2T5MAo4smEDuiIUvKMenqQemjNBqTa9UGTasmDkXPgJ1Ef0GLK5czcyCnhzi/Yv6ROjEI+TUFMar9kTlTpvwfEGRnIbAs0rdreFU31PDmZWVzx5GN8+8Xje4G2M8bbFSeeIRJXWGctWxZHSHzvRhNI2T5/IfRRtVs/JQamOrVQgGcKiteTUfBxzX58Pl7OgPMWbhxArREFtE4k0bvJDU3MPGhfCwav7S7293uUEQg1uzbFK3toTtHiY41UqGGLu39Lp0CsO0GOBWcHn8HRcYtEUb10pl26i71bylvTS0jmGa2J0+mIeKIsDZ8QGbGl4UPCybX+VGGyEoprGXZnuAa77V6w==
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1753246179-628231
+X-HE-Meta: U2FsdGVkX18wuu/1J5198b1Uyo7n0wZaep/BpGq+nWqvC2xmIjIbVgYPLATFgPqjfgqZ5WpTzUiKDt6gXZtOmaXRkCb/+9ClkIyGat/GSdby2kg2Nc2//EQ85lRs9Rqk36BbuHKQ7Q8TOE/Sv5b1YIpYV/tkhF5n0HvdqV45Wd7Nql/tTEcWi3/0KkmyXMA/LXOpElwfnNNt1GbOo00r0dvZGbWUMzdBmqEAAHjGfSUtE8mNs75EQdMtZOiAGYZAUyE8yYzYEnc2rxGCck3xXPYXXDiMamGlquQ5YwNk3RKemJQMjvCTJfY/WaH4JSPi49icKa2g500GHUFfz1K8TJ1SaZlHxQeiZMMflA69uPAlzbow4ydls1cUg5db1v4OBAA5aEX0lOX7N9cbYTiBOfQoBC6m/wEh6SQ5807kGxcdO171MDtppVC1mXuqWuuRDestANqBM5L9jN1SHTCs2zQ0nYdgBgWZiv0mveVYZCoaWo2CfQIUuISirBP3oPJT8FApYpcfh+r2B2XtI8aYjkzcwZNOlxjrXLGFbZs6FCQYY25+EeinGYkhrL8ud8/UwUlJTgKP0ghd57hA/rSLWOoRy2CkuDHDB9JEAHIe942ZWClWd1pnkuvsgmtm7nxBR9D/gbfdjXLIwPBXFKg3SWNUmthVIFKyZRNfVxxbJwQsX0oEqK2VRGujIDpVDouXiHBjnTofS0Uduz6aM6HmJQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -255,38 +132,180 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 22, 2025 at 11:43:04AM -0600, Nico Pache wrote:
-> On Tue, Jul 22, 2025 at 11:19 AM Lorenzo Stoakes
-> <lorenzo.stoakes@oracle.com> wrote:
-> >
-> > This seems to be the most appropriate place for this file.
-> >
-> > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > ---
-> >  MAINTAINERS | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 837bc5cd6166..3f83fb317f51 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -15966,6 +15966,7 @@ F:      include/linux/khugepaged.h
-> >  F:     include/trace/events/huge_memory.h
-> >  F:     mm/huge_memory.c
-> >  F:     mm/khugepaged.c
-> > +F:     mm/mm_slot.h
-> >  F:     tools/testing/selftests/mm/khugepaged.c
-> >  F:     tools/testing/selftests/mm/split_huge_page_test.c
-> >  F:     tools/testing/selftests/mm/transhuge-stress.c
-> > --
-> > 2.50.1
-> It might also be worth adding it to the KSM section since both of them
-> utilize it.
+On Mon, Jul 21, 2025 at 11:18:23AM +0900, Byungchul Park wrote:
+> Hi all,
+> 
+> The MM subsystem is trying to reduce struct page to a single pointer.
+> See the following link for your information:
+> 
+>    https://kernelnewbies.org/MatthewWilcox/Memdescs/Path
+> 
+> The first step towards that is splitting struct page by its individual
+> users, as has already been done with folio and slab.  This patchset does
+> that for page pool.
+> 
+> Matthew Wilcox tried and stopped the same work, you can see in:
+> 
+>    https://lore.kernel.org/linux-mm/20230111042214.907030-1-willy@infradead.org/
+> 
+> I focused on removing the page pool members in struct page this time,
+> not moving the allocation code of page pool from net to mm.  It can be
+> done later if needed.
+> 
+> The final patch that removes the page pool fields will be posted once
+> all the conversions are completed.
+> 
+> 	Byungchul
+> ---
+> Changes from v11:
+> 	1. Rebase on net-next/main as of Jul 21.
+> 	2. Change page_pool_page_is_pp() to check for const type of
+> 	   page.  For now that it's called along with every
+> 	   pp_page_to_nmdesc() call as Pavel suggested,
+> 	   page_pool_page_is_pp() should also cover const type of page.
 
-Good idea, will send a fix-patch to do so!
+I believe the curretn version is good enough.
 
->
-> Acked-by: Nico Pache <npache@redhat.com>
+	Byungchul
 
-Thanks!
+> Changes from v10:
+> 	1. Introduce __netmem_to_nmdesc() and use it in
+> 	   __netmem_get_pp(). (feedbacked by Mina)
+> 	2. Fix a bug that fails on casting 'const page -> const
+> 	   netmem_desc', by using macros and _Generic. (feedbacked by
+> 	   test robot)
+> 	3. Add comment on pp_page_to_nmdesc() to ask for more attention
+> 	   before using the helper. (feedbacked by Mina)
+> 
+> Changes from v9:
+> 	1. Remove the patch 'page_pool: access ->pp_magic through
+> 	   netmem_desc in page_pool_page_is_pp()' and decide to wait for
+> 	   Pavel's work of PageNetpp() to identify page type for page
+> 	   pool, that doesn't need to access ->pp_magic.
+> 	2. Rename page_to_nmdesc() to pp_page_to_nmdesc() and add
+> 	   DEBUG_NET_WARN_ON_ONCE(!page_pool_page_is_pp(page)) in it,
+> 	   just in case. (feedbacked by Pavel)
+> 	3. Apply just simple casting from page to netmem_desc for
+> 	   accessing ->pp and ->pp_ref_count, instead of full converting
+> 	   page to netmem_ref for network drivers e.g. mlx4, netdevsim,
+> 	   and mt76.
+> 	4. Expand the support for drivers to access ->pp and
+> 	   ->pp_ref_count to fec, octeontx2-pf, iavf, idpf, mlx5, ti,
+> 	   and xdp.
+> 	5. Squash each helper with its first user. (feedbacked by Mina)
+> 
+> Changes from v8:
+> 	1. Rebase on net-next/main as of Jul 10.
+> 	2. Exclude non-controversial patches that have already been
+> 	   merged to net-next.
+> 	3. Re-add the patches that focus on removing accessing the page
+> 	   pool fields in struct page.
+> 	4. Add utility APIs e.g. casting, to use struct netmem_desc as
+> 	   descriptor, to support __netmem_get_pp() that has started to
+> 	   be used again e.g. by libeth.
+> 
+> Changes from v7 (no actual updates):
+> 	1. Exclude "netmem: introduce struct netmem_desc mirroring
+> 	   struct page" that might be controversial.
+> 	2. Exclude "netmem: introduce a netmem API,
+> 	   virt_to_head_netmem()" since there are no users.
+> 
+> Changes from v6 (no actual updates):
+> 	1. Rebase on net-next/main as of Jun 25.
+> 	2. Supplement a comment describing struct net_iov.
+> 	3. Exclude a controversial patch, "page_pool: access ->pp_magic
+> 	   through struct netmem_desc in page_pool_page_is_pp()".
+> 	4. Exclude "netmem: remove __netmem_get_pp()" since the API
+> 	   started to be used again by libeth.
+> 
+> Changes from v5 (no actual updates):
+> 	1. Rebase on net-next/main as of Jun 20.
+> 	2. Add given 'Reviewed-by's and 'Acked-by's, thanks to all.
+> 	3. Add missing cc's.
+> 
+> Changes from v4:
+> 	1. Add given 'Reviewed-by's, thanks to all.
+> 	2. Exclude potentially controversial patches.
+> 
+> Changes from v3:
+> 	1. Relocates ->owner and ->type of net_iov out of netmem_desc
+> 	   and make them be net_iov specific.
+> 	2. Remove __force when casting struct page to struct netmem_desc.
+> 
+> Changes from v2:
+> 	1. Introduce a netmem API, virt_to_head_netmem(), and use it
+> 	   when it's needed.
+> 	2. Introduce struct netmem_desc as a new struct and union'ed
+> 	   with the existing fields in struct net_iov.
+> 	3. Make page_pool_page_is_pp() access ->pp_magic through struct
+> 	   netmem_desc instead of struct page.
+> 	4. Move netmem alloc APIs from include/net/netmem.h to
+> 	   net/core/netmem_priv.h.
+> 	5. Apply trivial feedbacks, thanks to Mina, Pavel, and Toke.
+> 	6. Add given 'Reviewed-by's, thanks to Mina.
+> 
+> Changes from v1:
+> 	1. Rebase on net-next's main as of May 26.
+> 	2. Check checkpatch.pl, feedbacked by SJ Park.
+> 	3. Add converting of page to netmem in mt76.
+> 	4. Revert 'mlx5: use netmem descriptor and APIs for page pool'
+> 	   since it's on-going by Tariq Toukan.  I will wait for his
+> 	   work to be done.
+> 	5. Revert 'page_pool: use netmem APIs to access page->pp_magic
+> 	   in page_pool_page_is_pp()' since we need more discussion.
+> 	6. Revert 'mm, netmem: remove the page pool members in struct
+> 	   page' since there are some prerequisite works to remove the
+> 	   page pool fields from struct page.  I can submit this patch
+> 	   separatedly later.
+> 	7. Cancel relocating a page pool member in struct page.
+> 	8. Modify static assert for offests and size of struct
+> 	   netmem_desc.
+> 
+> Changes from rfc:
+> 	1. Rebase on net-next's main branch.
+> 	   https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git/
+> 	2. Fix a build error reported by kernel test robot.
+> 	   https://lore.kernel.org/all/202505100932.uzAMBW1y-lkp@intel.com/
+> 	3. Add given 'Reviewed-by's, thanks to Mina and Ilias.
+> 	4. Do static_assert() on the size of struct netmem_desc instead
+> 	   of placing place-holder in struct page, feedbacked by
+> 	   Matthew.
+> 	5. Do struct_group_tagged(netmem_desc) on struct net_iov instead
+> 	   of wholly renaming it to strcut netmem_desc, feedbacked by
+> 	   Mina and Pavel.
+> 
+> Byungchul Park (12):
+>   netmem: introduce struct netmem_desc mirroring struct page
+>   netmem: use netmem_desc instead of page to access ->pp in
+>     __netmem_get_pp()
+>   netmem, mlx4: access ->pp_ref_count through netmem_desc instead of
+>     page
+>   netdevsim: access ->pp through netmem_desc instead of page
+>   mt76: access ->pp through netmem_desc instead of page
+>   net: fec: access ->pp through netmem_desc instead of page
+>   octeontx2-pf: access ->pp through netmem_desc instead of page
+>   iavf: access ->pp through netmem_desc instead of page
+>   idpf: access ->pp through netmem_desc instead of page
+>   mlx5: access ->pp through netmem_desc instead of page
+>   net: ti: icssg-prueth: access ->pp through netmem_desc instead of page
+>   libeth: xdp: access ->pp through netmem_desc instead of page
+> 
+>  drivers/net/ethernet/freescale/fec_main.c     |  10 +-
+>  drivers/net/ethernet/intel/iavf/iavf_txrx.c   |   2 +-
+>  drivers/net/ethernet/intel/idpf/idpf_txrx.c   |   8 +-
+>  .../marvell/octeontx2/nic/otx2_txrx.c         |   2 +-
+>  drivers/net/ethernet/mellanox/mlx4/en_rx.c    |   4 +-
+>  .../net/ethernet/mellanox/mlx5/core/en/xdp.c  |   3 +-
+>  .../net/ethernet/ti/icssg/icssg_prueth_sr1.c  |   4 +-
+>  drivers/net/netdevsim/netdev.c                |   6 +-
+>  drivers/net/wireless/mediatek/mt76/mt76.h     |   3 +-
+>  include/linux/mm.h                            |   4 +-
+>  include/net/libeth/xdp.h                      |   2 +-
+>  include/net/netmem.h                          | 153 +++++++++++++++---
+>  12 files changed, 161 insertions(+), 40 deletions(-)
+> 
+> 
+> base-commit: 4701ee5044fb3992f1c910630a9673c2dc600ce5
+> -- 
+> 2.17.1
 
