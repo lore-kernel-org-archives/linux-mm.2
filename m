@@ -2,120 +2,132 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 25D34C83F17
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 03:50:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E16E0C83F17
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 03:51:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A335C6B008A; Tue, 22 Jul 2025 23:50:56 -0400 (EDT)
+	id 79D066B0095; Tue, 22 Jul 2025 23:51:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E4106B0093; Tue, 22 Jul 2025 23:50:56 -0400 (EDT)
+	id 74D5A6B0096; Tue, 22 Jul 2025 23:51:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8FA466B0095; Tue, 22 Jul 2025 23:50:56 -0400 (EDT)
+	id 63CE56B0098; Tue, 22 Jul 2025 23:51:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8064D6B008A
-	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 23:50:56 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 01E201A0588
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 03:50:55 +0000 (UTC)
-X-FDA: 83694153312.30.9666818
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 60F4A1A000A
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 03:50:52 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Z0qBjRGc;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf19.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753242654; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 548976B0095
+	for <linux-mm@kvack.org>; Tue, 22 Jul 2025 23:51:49 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 207BD1DAFF8
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 03:51:49 +0000 (UTC)
+X-FDA: 83694155538.17.CE2534F
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2D4F240005
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 03:51:47 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=IlGGTgzP;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.210.175 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753242707; a=rsa-sha256;
 	cv=none;
-	b=rc0Sqta73uhQ++IDfhxJLhF1B0pQhUz7d3ELwKa2qwidS7vcqbLpnH28wtaDL5s/hf1nUU
-	hVN7Lf4GLIMCdbreJ2KsIyzFx9zwieFgHf3nsKTR/3wuaU6h4CMNi3fCR6rQ9SZ+9QJfgS
-	cqqRRdO78RFuKQQbSdwXIDS0KrXaZ+A=
+	b=yZJS+R/jf6JMlX1xrBy15K1+qVffOUuuIp66nKPTrT1QZUzShskTb3I80EaEGMzXgSKCEd
+	fvULT2zhDehFeySdcizY4dNPz+BPad0MV+KDxy6kMTMupF15czZvnqrf2b6v7Btdd1RRBY
+	IG1gITdXdbz10lXEGerwg5CyvZAkjfc=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Z0qBjRGc;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf19.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=IlGGTgzP;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.210.175 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753242654;
+	s=arc-20220608; t=1753242707;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t+/Pfkit5PFVN0tLEWVs8x9+kRNuxE006f52H9Fa07w=;
-	b=izCUGjk8k08jQyxxNcoDbvnIiw/tBNfH7F1mHTeBRP4Qa6/aqjsplUwGYGqVi2yrDjgHMi
-	E3q+Ad/t7VtYknQj6FrHV6Ldiz6HqE0AinWECnnsyygnjSpVVfTJw5cm8oz1ukduu6Q1/z
-	NZ1+YXH3ihnNimYJ9NCR+IEmV6926V0=
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-234b440afa7so57886995ad.0
-        for <linux-mm@kvack.org>; Tue, 22 Jul 2025 20:50:52 -0700 (PDT)
+	bh=r0yhqhfmgcWd4Boy+yEMxc9KNWgoVjI2gD67+Le01vg=;
+	b=lrqFD79mJ53WsOxQyfQepBNxfFhVhdculkxndX6yrqoXGLn+jfLYmdxdsGk/yk0mou2ltU
+	Bz6JFEKMiMBOs3KLolZy7ohndfpSAHpFmn5mVNTCbcI/m+t0j0rPp6yoevXIIkIuMD0nsf
+	SgUbEwkT9f9wCKPcJQbUggUzvfp8QUM=
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-74931666cbcso5045024b3a.0
+        for <linux-mm@kvack.org>; Tue, 22 Jul 2025 20:51:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1753242651; x=1753847451; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t+/Pfkit5PFVN0tLEWVs8x9+kRNuxE006f52H9Fa07w=;
-        b=Z0qBjRGc5MalpXiLW+6P9IA/VO8yw5fftHwcrOulXWC1VkuoLHtCRqrhH1sgrBchhk
-         OZtHBxmB9Jjfy9oiyduHPSs1VeuEnvm9huYVPdQwlzPCPWkXmmYLAxc/XQJVq6fC5gRU
-         qQSwewSUh7PJGevYw6fHLHCmOcofblDCVJ76NO4sGIQfEyXTmqQJ/78EQn70ga1e9oj7
-         XqpijJNc5Hm1p5vugwMnirAmtLiplnwZFzh3RlQ4Ll/7EomLjjgpxNEsZE9Qu1kbjDPV
-         6epU51/Etzo5ah3f9FyH9Xj4ukG2UrTrRNZJE/C8ELKm1XyRMjcWBvrpjbzLqMMoIA9j
-         hB4w==
+        d=ziepe.ca; s=google; t=1753242706; x=1753847506; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=r0yhqhfmgcWd4Boy+yEMxc9KNWgoVjI2gD67+Le01vg=;
+        b=IlGGTgzPDa5StV1AG+WyibT2aWxUVXge//sULMoSIMLaW6TdlLnzDhQ5YETf/oE0Hz
+         2FGYJH9NqjW6cLDSyE3AzmVSwKNj6gfGl4WqDcLlYqxceNqecYPJqqANgULF3n4B+jWJ
+         /2TC/TC9rtWHbZd9X8tNS16PqoxDJTiHYi9OkWqELC/cOZDUesu8EREEiZWeQZTS9X2f
+         HfFOidRJHrlRW6zOWaXbdfTWQFZjmIP26DvRd8Pwt1pzAEA/AyOjf7JpdUDhgp5MPMzL
+         aWairXMq9Af8GJi5KFufLI8Yh9eqlx66lwBb1d9YOSRUDfdMsWBk43otZssrLZvXNi7I
+         xYkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753242651; x=1753847451;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=t+/Pfkit5PFVN0tLEWVs8x9+kRNuxE006f52H9Fa07w=;
-        b=pw4+uSR7dkPPvASKc23YKqmkaTVfWh7b8ouZiM1BlfIiUFo9bLo9ktNOPXOojpx8nJ
-         bLFR0IuRLWC3OSNGE4uRtwdaYwiVsyqhhTsPoUZWoYXO/tsVNF2LR2Epcp2bqWNJ6Ggd
-         0seDkGltyGwi0dXZpGR97IWm3mgAJ719Ion5iJN1g4VmsCWNoszLQoRTwl8mYTpBF9wb
-         T57Lz+vJ2xoIgLojzh0rxRMXBNjxavNFs9rWJ+r7Svd/JOKmRCUo2r+3V9IoWxFgaOBH
-         5dy0ZcSBtNQIJctQUDF0ujhdsJ+o7kwQreKDTsNHZRWRBCQPlJ941dlnpXi9btutlo0z
-         l4KQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVrTtMPgquofsorjlygL/OcHESza4+L5rtJar0/Wixvq3N0kYCJwMhZXHu2pnPq1yUBP8j5F8vynA==@kvack.org
-X-Gm-Message-State: AOJu0Yzj7+91rb8GjXdGeISfh/uIn0dxnesaWn6UPyjZKy1RusjEwoDI
-	Os2TZKOYJ4/OwsRzW1QJphU2KkxI3474Pq80eJGqOEiznXYVa6PzPwwYnuRcS7ddi9Y=
-X-Gm-Gg: ASbGncspwZVtWwbCoaO2yMh+xZKdQH0ujXmGijQoYcztXIJUDIC5eYlBkM2v2ODgUL8
-	TozZf/wscZNMkzAyAPN6FBL+dFoEOA4TEGs8Se/0nPJjyrNvWzz5rZBYGFo4hLhuV/lxsNvb9WF
-	NrVw+YnOKrbSJtXwLlNOwpjYILaUQNnrBBkWbeyn5qiM/6n4c0Ih11tmYyvjqVST5J6NU7O9ZkP
-	QGMRIdgVMfmla+spNuSCvEnspok6zPyAJH/HpFhLWNrDDeDAHBhQzOsRMMdWbG7YSy+PgiUXRST
-	tymGRv1Hfj3N6HoRzdca2nbHzKjbKpxTUdraGjfe2AyI6AFmie83+Z6VHHGanBvUFzbEHOXO/9Z
-	bFXHpl1aOD/wpUG+9r5A0zHpIIKW3VqAbKq7QRCIMgUFfE1iKLg==
-X-Google-Smtp-Source: AGHT+IGG5xeTiPp46N1+ubIJYLYiw4X+bPRHHusEDQs77QPZ7xG+Gmpi3gyEPNcDXHORzHZYckNp5A==
-X-Received: by 2002:a17:903:f84:b0:234:c5c1:9b84 with SMTP id d9443c01a7336-23f981b4011mr19536245ad.37.1753242651119;
-        Tue, 22 Jul 2025 20:50:51 -0700 (PDT)
-Received: from [10.254.226.168] ([139.177.225.247])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23e3b70868csm86297515ad.229.2025.07.22.20.50.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Jul 2025 20:50:50 -0700 (PDT)
-Message-ID: <6a292069-708e-4f6b-8b0e-95398a9f729c@bytedance.com>
-Date: Wed, 23 Jul 2025 11:50:44 +0800
+        d=1e100.net; s=20230601; t=1753242706; x=1753847506;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=r0yhqhfmgcWd4Boy+yEMxc9KNWgoVjI2gD67+Le01vg=;
+        b=pgj/mxY0RNBjmQwen5/5MyUzCLefL/HvctfUJ/FHSdSu3F2S2fZ8BBAhtlZuTMT+eK
+         QVa6RFdvqaXe6GTwqe7JtNle4ODu+bSE8GGJ2lzOCN5UCI1WOIXp9Wp9VWwg+Fo2Y8IB
+         EFVadFKmqEpOAnklGCudc7Q6Jo1uuPv2zLeaCm6Ku/SY7myLvfwBY5WKZ4+1CMNDXPzA
+         NiCXDffDCClgVNIKrWpiS3kpdm0cRI6wjnaOOLJLmqE0tUwKilSYD7dUhVqG5oGB1ju6
+         Tp0Qr8ZnNZB85/NvGIXJ3azLGDExeqnwsaTawSKTdWw6JoKJc+tdodTg4ZX1THHp61aV
+         UdIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWwt53SozuqkGWmIdvcemlRztcs/O0yDBUi8afnEfSk2iu4+EwvlS0+n/zkpjcumcFrYyfEPxvHtQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz45cdJss158weSvdW7mlKBE6M4aN9CQIUQzKVMx1MAzKfuNHg3
+	gIfg2ZEHQli5k2G9JU09P6aud/krHPcyYOuFW7I4SfPwOuZbFPRMKPCmiG5EZZQRRZY=
+X-Gm-Gg: ASbGncux+S5MqoT0IniNkO1ALWD8Cwir0bRhZqFTCXIIhj+LLLTBeQTUjuc7+e+61QB
+	QCanrD7/bRlTL/2DDmPsquasvVFo+xkRHsna82GL68w3G+QodpzulNeo+M4ZpZYMETcvuqNBTF6
+	ZVXrKtlm9PKFWTjfMuSSGjLtz29hIQz6PYZYk3hhh5J4fLFfReWiURTTp4T+F3MSti1tp9oXxlT
+	tD1/GrevduSA5sd4YFAD5MrSujApHuf7U3j4VEU+H05FJV2h9AuD2r6hNO60l1T01wIHNGnyCsr
+	Fi7VDcCN8OEDtGlaVQjJyaX88bZSLUJIf5NLtQodv0GYt6tcnqIpI1WehnqD8sgWQisRWYjckhj
+	w7D6WpoILSsdFDJThHzIk15DzACwebg3cgl8=
+X-Google-Smtp-Source: AGHT+IFhuc9YoswnVjbx+w6CW5AJc04rjosHA7fJ9MRqxxtRH8l6eukiOU6gxLlrv7CiSglvAulz8g==
+X-Received: by 2002:a05:6a00:1491:b0:748:f406:b09 with SMTP id d2e1a72fcca58-760367de539mr2440550b3a.23.1753242705935;
+        Tue, 22 Jul 2025 20:51:45 -0700 (PDT)
+Received: from ziepe.ca (S010670037e345dea.cg.shawcable.net. [68.146.128.183])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-759c89d3190sm8518497b3a.39.2025.07.22.20.51.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Jul 2025 20:51:43 -0700 (PDT)
+Received: from jgg by jggl with local (Exim 4.95)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1ueQW6-0003Fi-CT;
+	Wed, 23 Jul 2025 00:51:42 -0300
+Date: Wed, 23 Jul 2025 00:51:42 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Alistair Popple <apopple@nvidia.com>
+Cc: Matthew Wilcox <willy@infradead.org>, Yonatan Maman <ymaman@nvidia.com>,
+	=?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Leon Romanovsky <leon@kernel.org>, Lyude Paul <lyude@redhat.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Ben Skeggs <bskeggs@nvidia.com>,
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Or Har-Toov <ohartoov@nvidia.com>,
+	Daisuke Matsuda <dskmtsd@gmail.com>, Shay Drory <shayd@nvidia.com>,
+	linux-mm@kvack.org, linux-rdma@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org, Gal Shalom <GalShalom@nvidia.com>
+Subject: Re: [PATCH v2 1/5] mm/hmm: HMM API to enable P2P DMA for device
+ private pages
+Message-ID: <aIBcTpC9Te7YIe4J@ziepe.ca>
+References: <20250718115112.3881129-1-ymaman@nvidia.com>
+ <20250718115112.3881129-2-ymaman@nvidia.com>
+ <aHpXXKTaqp8FUhmq@casper.infradead.org>
+ <20250718144442.GG2206214@ziepe.ca>
+ <aH4_QaNtIJMrPqOw@casper.infradead.org>
+ <7lvduvov3rvfsgixbkyyinnzz3plpp3szxam46ccgjmh6v5d7q@zoz4k723vs3d>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: add missing mm_slot.h file THP section
-To: Nico Pache <npache@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, David Hildenbrand <david@redhat.com>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>
-References: <20250722171904.142306-1-lorenzo.stoakes@oracle.com>
- <CAA1CXcBY4rFLkNqJM2Dj-EajPw9TMTHNcYapw9P=U0bo=QNqkw@mail.gmail.com>
-From: Qi Zheng <zhengqi.arch@bytedance.com>
-In-Reply-To: <CAA1CXcBY4rFLkNqJM2Dj-EajPw9TMTHNcYapw9P=U0bo=QNqkw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ksww8s5wnmninz6mma7iqcfy99y3obgu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7lvduvov3rvfsgixbkyyinnzz3plpp3szxam46ccgjmh6v5d7q@zoz4k723vs3d>
+X-Stat-Signature: 3d79ed3oefnzy3qnhgqizoqgmdhkn31r
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 60F4A1A000A
+X-Rspamd-Queue-Id: 2D4F240005
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1753242652-672723
-X-HE-Meta: U2FsdGVkX1+o8QN6EdetCj42TT15+FpCiKAzYckrnbtwefziUZOFDop17DICo7anxlHkKlsQgPQ/EAHHRcI7JWtgdtzua4imlgmQdQ8Y6hT3fU/A01iNTyJsVYYGFUmftSso0GjUVF2uM1IXFsf6RTH3tDBZvrtkkzD4fkARuklvhycDgWXYXyhpqsgAJPBBSNLOC8y9dKnloNVbEPF+xGRNTvad366wzUl39CoNus5BA11xHXAH/E1oR/C4Bpt2b8Nif+ASEXQ7T/ccBE+F/wiW/lfdQnQaplSJe9lY+F+Zp0/PRcACxLMwsgFYsYINLxUP6d0Sw2QziC6BoMs1m2JVleZMh90xm6nEFPUjqeNyh7N5etDGGq3HXLfx1rMHdmKWl92ZD5Ho/XUSnrK2LzAVtJpbbb3r6FsgU9Gt0kKWhlQrMq+qpvHky6RRxq77GpHyws+qU0WOsATk8TsY8qZFSR7UfwsHy8LTu+8DIBhDriZwssQVVMS59s0/phqLrUtK3oLpBYouI4t5YRZnDDihejffKLZnFHY1NMHDBxiCThBmuLge+LOhHsYqnbRFjx/uenCAzxfSbZRpQ+FAfnpys539ffO4ejU4x/5+UY5agdBDqDBLr84snKknL/VflcYiLi8w1AGhxruYnA3d0+mk31tGNw+oKIE7MZSaUuRjtGKBon9WcyxC11szy4TVHnwvvrAUFnA73XS6WSWQKL4IjSZdsi7wFrYthIqMlaGkQk1Eg8Ll9YE0SuQ/3LvPdpy+7gWQEL1occ/lLhmjayIhT4hKfUn1SU4La2UnUExiJC9+S7MGMHVzRC204d0Pfqt14qS7H3zwO1YtlnLr1FQbR060hBRIqkR149+luPlRFqWpoCbPfEdKO+EbggobXjfop2hoRv0MWvwcMoJiGHwDUHpThguXjmAjk3bX+L9lemzm4jkO1SbU4z4apeXZZ1bCqXreQcwjGUO6nM9
- S8tpKqiZ
- N4W5uNLcsL+pMG13y4v9SfUQfuiFJ5/HDdzSsFjCOqvxoeVxoQ8EclqNj86a51rS5HDmqZvL7HSqeeALC3kKEeN+nJe4cDBXVbFgrj6BGhiuJ94wEuhXUsR/bl4wqDSjAOPeb8urBoGqlejADtIXHj9u+ztZy3t9fqgOAQaF3cviUmEAQrHxOzVB3Z22OzIlHebkuVZWuv9WsoWkZU2rdzJ38tNsGOpD9JwpVbXZ/OPSCkqqqq4ntcKBUvRCeoW39QsQksNpIAlPT5w7W4sNOCubuD9JiabISP+lB1BLboV/U918AQ//CxZXajJNm05yS8R1lZXG9dZR+m88Zgt+uxq9UJBfXUSUy6hSwAzvTEtu8JwCU/vB1F2BaMaehT6+bLWqE2vLdxI/zGyMryMKFgK2ND6Cqs2vXVI2krR7ynTDLlyPB6NMdR9xM7hDbJfzWKQVpe95LDqi+7JMVE1DCugc3jfhSk2nqdaotS9jLJQGXt4s=
+X-HE-Tag: 1753242707-136966
+X-HE-Meta: U2FsdGVkX1+bPss7rhggACZfopWhoD07Zlg8uN5YTHdL0bTvOEKiUhjGxV1yEdVAQ8XdTrREoK/gG7Ge8EUl44L0iEiHlfRbZ+bft7Wzc38wWVxzyZ/fQS61WACrJuLFVTerIApNufFFMkqCgPLk/ChXgK2lAY8MvilRmyATiDnd7ybCgB26VA9MZYg60OLH9ThbLawPsMu4Aix8q9O/xrZMbvfAy7mD6F1GD3uVhodd164lKgl0699C4d0xjzpYU4TSnMU1mWILcH14+w8F5PdeB+IQyuqoZaqVgaOw1pvM5a9rv498ZaX2sF4NKOEbjOElRZBcDo6aahM1AOQSm6j7x9IuUe+ombJDJ1xM72ZIirdar3ROtnYW1mGbIOjx1KhLS7/maw63CS5Q20hiKPghLSydPQ/g9DLPSKAExcgFegl9lpan9BQdO0C7Cz8+UPChoaCZ7dugWExa1JT+tUj8jGpDieX+U41u7HR58+t2XrFxo9UdiCqf7WisnQempywogERGCe+Yo88iEBgivrnnub5+cfSt1nJx17hNCb2aLtwrnUy84UjMk/HJ2uXpKJNf9ZmUcjQ/gkZ58K4C9u5OYQXIapqsL6HQgSs4Hycwqpw/SJyM+rXYO6vkbxFnABgRhFlm0DNtZqxAxgeEhXJ0WjxM5NEQuMvI4JmGuYRl8Uz46j6XYdEPq79HYjRUVXEHt43t4eM0ada9h/ohTuZmnTHIoKQ1ST6kkQnRegriy+lCHwNR3cbz43G+8rmpEYxl0uWKkCyett/uoTYf2L65xNhaGafYfcHlcVkO75iuGkoO/fSlHsD8ZYO/o0Gg8A+f4h86q9pXZMLS+SKtwGFoX/xgUgzWLOUcyZeKygYL9slu6IC7MHogZty8h/9KoBZXj9qaVeR93GCo/7XsxaW+fUUoKkYPy918GyaFMPP815dQRW1enUqROaeB/vqXbh7jCWpLV19Csfujio2
+ 8sleVSmS
+ HRWI4X5JSeANG6t3K6xWJm4iQKl6MCKVELTlAzSir/Q72FxxEPOWMH0e40PMioDVCQ0xFa77re+L3v0Rs5VAKrxNjfFqbtUumo9OGIZH4wIT2hJ/Pt0sbYI1WkkroWDxobzJNDeQ39uTUd1lnS6IRcEsVlqvV7urlEKNEim6wZeGwmpjdylA1u0Yob5gMa9DROh+gFCMDeNWZ58N511PGz+jK89J4lOiHTXNj5VqfznTy0zf3+NTH7Xp1Fty96x7oDYdn0NiyN51xop8o3L1d8DRlao5EaHOBHalD
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,44 +136,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 7/23/25 1:43 AM, Nico Pache wrote:
-> On Tue, Jul 22, 2025 at 11:19 AM Lorenzo Stoakes
-> <lorenzo.stoakes@oracle.com> wrote:
->>
->> This seems to be the most appropriate place for this file.
->>
->> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->> ---
->>   MAINTAINERS | 1 +
->>   1 file changed, 1 insertion(+)
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index 837bc5cd6166..3f83fb317f51 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -15966,6 +15966,7 @@ F:      include/linux/khugepaged.h
->>   F:     include/trace/events/huge_memory.h
->>   F:     mm/huge_memory.c
->>   F:     mm/khugepaged.c
->> +F:     mm/mm_slot.h
->>   F:     tools/testing/selftests/mm/khugepaged.c
->>   F:     tools/testing/selftests/mm/split_huge_page_test.c
->>   F:     tools/testing/selftests/mm/transhuge-stress.c
->> --
->> 2.50.1
-> It might also be worth adding it to the KSM section since both of them
-> utilize it.
+On Tue, Jul 22, 2025 at 10:49:10AM +1000, Alistair Popple wrote:
+> > So what is it?
 > 
+> IMHO a hack, because obviously we shouldn't require real physical addresses for
+> something the CPU can't actually address anyway and this causes real
+> problems
 
-Agree, mm_slot is originally a common part extracted from THP and KSM,
-and it is hoped that it can be reused by other modules in the future.
+IMHO what DEVICE PRIVATE really boils down to is a way to have swap
+entries that point to some kind of opaque driver managed memory.
 
-Acked-by: Qi Zheng <zhengqi.arch@bytedance.com>
+We have alot of assumptions all over about pfn/phys to page
+relationships so anything that has a struct page also has to come with
+a fake PFN today..
 
-Thanks.
+> (eg. it doesn't actually work on anything other than x86_64). There's no reason
+> the "PFN" we store in device-private entries couldn't instead just be an index
+> into some data structure holding pointers to the struct pages. So instead of
+> using pfn_to_page()/page_to_pfn() we would use device_private_index_to_page()
+> and page_to_device_private_index().
 
-> 
+It could work, but any of the pfn conversions would have to be tracked
+down.. Could be troublesome.
 
+Jason
 
