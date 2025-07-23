@@ -2,68 +2,68 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4490CC83F17
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 13:02:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5F39EC83F1A
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 13:02:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC6976B009D; Wed, 23 Jul 2025 09:02:27 -0400 (EDT)
+	id 059746B00A1; Wed, 23 Jul 2025 09:02:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D9E596B009E; Wed, 23 Jul 2025 09:02:27 -0400 (EDT)
+	id 031346B00A2; Wed, 23 Jul 2025 09:02:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDB4C6B009F; Wed, 23 Jul 2025 09:02:27 -0400 (EDT)
+	id EB06F6B00A3; Wed, 23 Jul 2025 09:02:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BF9A06B009D
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:02:27 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7640A1338B9
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:02:27 +0000 (UTC)
-X-FDA: 83695543134.01.525C304
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C964E1C0020
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:02:25 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=to57+Gtb;
-	spf=pass (imf20.hostedemail.com: domain of leon@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753275745; a=rsa-sha256;
-	cv=none;
-	b=US0CFE09Qcus0/o4APkSRdZl6dG0H4Xb6RhdMauOxkk1nPVbECj6HAI2KRXnP5HLPBqL3U
-	vzz/LTtrUX0O3zJsQb2C6L2Gv7/ZuV3SLGEeiCJKKoqu9BciqPN75v6gPv9xQNYTH+/ZPN
-	Kxh3oRxEUVjnWYYfiQc2SSWnBcC6OlI=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=to57+Gtb;
-	spf=pass (imf20.hostedemail.com: domain of leon@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=leon@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DA73D6B00A1
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:02:31 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AB7255A95F
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:02:31 +0000 (UTC)
+X-FDA: 83695543302.30.30B382F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 159B3140002
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:02:29 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ORtsZg0P;
+	spf=pass (imf23.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753275745;
+	s=arc-20220608; t=1753275750;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1MijpNAvWsHFLvpEkXohMjeQWJQUa1JqvjfkFaT/AOM=;
-	b=Z575sokJwEMNKyoFfUJf/mOOtSDpI30DliMktzqbGqojadCFKrBFxojY57GhvYFE1oZQO9
-	qRlGJaDMVu0bTRfAGRz0Qxv1/4VlQFHwP3aPnphErK9yb+PXR6HLiOzsxvlOaCwBtvTjcR
-	uHas+yq9TgqHTvMPxdHyesjjAEzZvUY=
+	bh=7CSyLUOwakucaJ1yO2MeiumjIZyLma9ef3zSL0qUy1s=;
+	b=ATYIsugD1TXSu5R7GvbYIoQfGYEJC+j50dV5owI9IqOSot+h38r8u7zUKWGfLJS86FkUq5
+	dbKehz6Y8KUIYxTP3c1d5FCQRo6tJf2dUXTB/Ay8Ib2au+9ss2BAyVoI6dS0NWBAAJTkIb
+	t2brSPSCjytibrWrXZ+ZmYlm0KtNRiQ=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ORtsZg0P;
+	spf=pass (imf23.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753275750; a=rsa-sha256;
+	cv=none;
+	b=aOB1rtG/Yl9nA11iEZfj5hXlglZjGUbC/KNjCpLoRvijX40TiYMiCFf5CXzrjnWqa+tFU4
+	ddcNO3Oe8gcNwD/rx+NcgvsEGNkNdwQ/RSPw/g38jvtHCogzXKXWWldrLHsT3r5jdYUQ1z
+	2GkbBkFXzojurKfnTzHMxTq/RKsD5A0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 0D33B5C5F7A;
-	Wed, 23 Jul 2025 13:02:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC426C4CEE7;
-	Wed, 23 Jul 2025 13:02:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 971BB601D7;
+	Wed, 23 Jul 2025 13:02:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9858EC4CEE7;
+	Wed, 23 Jul 2025 13:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753275744;
-	bh=6nRA10ywpK7SSRO/jFMyVT/cEz8hEByS2jaY5xZiXc8=;
+	s=k20201202; t=1753275749;
+	bh=7Kcn9ETUYUd7AsaGO4xG8HMvQRFSS/0rTVnJwHyaiSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=to57+Gtb/kqx61u9wLvouYUY2r3rfu/wxYrNo5FftZKZzUMaadwbeJO7Fvzil43/3
-	 AWa8IK+h1CT0qK5BjiHdWXKAbRXPY8yBWh2yelV64TCR8e7XICKlREhYh5x5HhCzTD
-	 yv7uitdjloEM0UjQRFtyMTUY2BnLpDGa+mOPdgvSC8gki/HU0WdgMJN+OjLqJWiNa1
-	 dfLitFrC/BRt3xcJ+C0G7LPmMwJbLTQUGj/ysphAitQuFV/pKbp8GK9fi3A47SLxl6
-	 perEVWMTCR66ZhAhr2ZD35eqO0aHF3fNBcZl74gC3Yw/qyyElwragyVKfbzDkkcr6N
-	 yZWP5Z2A8oaMQ==
+	b=ORtsZg0Pr0EAkwLD8inVYan9Yg3EV9m8dNuCQ9Ux5gvKaOk5yZ6TjxaLF6k6sc0vG
+	 YMBPpdNF8O0Ok8SDlkDBaz9S2q+nXrhcV/rnHwNZ1OHWD9ijib5veFrX3/OrVL83Ok
+	 GRO1DlD2baQG8S60057KIoBaj1Kf3s06ZAIJKc93i+oCl+L1Z3prFNTNLNw8TfCAOv
+	 6D1qkdw8RkO3tXPvgIdL8vnxk5O76IvcDBmcOCsncwrfQZMZqYa9y5IBKvJNrfRrnw
+	 HoX26giRnsA3Fi0l93YwXsppFVJesaZamwYT9P1qdg8A8iTpLcGFykRtCddZAfq7aU
+	 ss+vvycNBLTvA==
 From: Leon Romanovsky <leon@kernel.org>
 To: Alex Williamson <alex.williamson@redhat.com>
-Cc: Leon Romanovsky <leonro@nvidia.com>,
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>,
 	Christoph Hellwig <hch@lst.de>,
 	Jason Gunthorpe <jgg@nvidia.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
@@ -85,24 +85,23 @@ Cc: Leon Romanovsky <leonro@nvidia.com>,
 	Marek Szyprowski <m.szyprowski@samsung.com>,
 	Robin Murphy <robin.murphy@arm.com>,
 	Sumit Semwal <sumit.semwal@linaro.org>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
 	Will Deacon <will@kernel.org>
-Subject: [PATCH 08/10] vfio/pci: Enable peer-to-peer DMA transactions by default
-Date: Wed, 23 Jul 2025 16:00:09 +0300
-Message-ID: <a55d0868fbf7e9000ed46c6d45928e5b9a5cae1f.1753274085.git.leonro@nvidia.com>
+Subject: [PATCH 09/10] vfio/pci: Share the core device pointer while invoking feature functions
+Date: Wed, 23 Jul 2025 16:00:10 +0300
+Message-ID: <19f71a0f4d1a5db8c712cb4d094ccf2f10dc22c5.1753274085.git.leonro@nvidia.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1753274085.git.leonro@nvidia.com>
 References: <cover.1753274085.git.leonro@nvidia.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C964E1C0020
-X-Stat-Signature: cuwg3yhoks59uq75cgckjisjbh8xu46q
-X-HE-Tag: 1753275745-576978
-X-HE-Meta: U2FsdGVkX1/qXH/HKWxDmoiq4/a9IHf26i6j0P9qNBpa/iC8yoT5qNSC8wVZ/bCjjw2saMTdEJ+uBn4MVFDTqxs+R4wQ0IG9SDp7OHjgWVUwW8aHR7PQHb1EG+Z5culOZWDOSRT2rrLf6bXtwWn0EzGxEz/XFr//BbU2RhJRlQNIxdfgFBXdVxEKabBt1frVnwZqtcli+AaOAtuvuv5jEtXVtel7TGMgch1PXXwDZSwVSP8uWiirsjy44/YMLxTAFRkc1uJuMlNrAlilK13zCzUKm9OGGf1pMQPE3s8yFoZw8pPi1FIqTVDFf/9xx2oOZPzAcJWMALTWHTRlYfX/DxlPxShPnve8nuQsZHpjJH1b3iwsWxOY2xSwGgZw73nlDMVjwTzsnYoAvoJwsHdGNqevSI6yoV3k1ntcsXiwN2oVmfO8CccNcsJuoMzoc8htwlC2EOjXR3/H4xcOZnL4cIr8LXyGjI7FR9SliMwKb2XFGIx5WqMvGy4cnJoB+A3IAmoVWzYW1MuKSu9auS95Y0Ape4Pfrf8FsOQiJqYyo4RBhN7mEgMYeGsBk5ZyL3bYrhM+Hbg0+fFjv+Kt1HgRRkmqXcwS6UBEeNRRqF9DmhwhqJdRAJ4NSpQvIBxYYVsiqEJxJvU1QcHNiG8TaXtGMCnGPVDEthMyVaIPPLAocOgi3UcdMLRxU0zao/C51bghH7fizz6Nb4EfsLnE44bxv1PuCGzj7QETgJo2O+J8alDCtFe7uND2EG/7xCEXF3eNYKjENaMhLenQIkumOOc7bxGEHoyXS4lLEDrhDi7TmBzuLMzLWv9nuEQQ4FLILSUcDuPsvnDpWyCP+L6ONSDt+Z9mNMVBWgCQT3TbJtIuM8TChqBqrhOb4sz3yJ/VVHYFpDgb8k0syaQSUv416y3wdvyM+sgFhV8PaT0FrOIWAURnVOxCALQcoKy7YZA0k7gJwAcYJ/MVXOu3ZcfwWss
- A9mq5u6d
- Y2m2gryYGvm1ujG6ozh95hUCJagSDCpvGbvVEXkEwhbpE6o75Ft6xfBvRvrFL2iE7Re+WE1XHfjvhGEUJ1AROUb8O5pMzoAyejEmr2JGM7my5+Nt5TvrV0mpujjGjR9lrlrkvT19xypJSNiIvbecki22qABjSy9mNjN8PL7VZEcH0s+siEtwE+bXHCInCoqk1LNQECUoRNjp9buBjnpUFsqqhd2O8znuEw8MOto8/flD383aFP7bnUIshDWWRowyMKTwCcet/HKfSvKg=
+X-Rspamd-Queue-Id: 159B3140002
+X-Rspamd-Server: rspam06
+X-Stat-Signature: p1amtnq1jjjejc6wmbq81bi9r5pardq5
+X-HE-Tag: 1753275749-68373
+X-HE-Meta: U2FsdGVkX19RYVBiHikg51Gb2BewyOBfGd/g+bCcCRfsN5gEtKlBzIDZJBTMvL2+Qk7/IrG6vaVacBf5qWvO158D1neXjTRnYRa3yULtUlS2qDvFzEYNVgRz86MUKj9zBUEuvPjjZ4rQ6Kaku+TO+0I4W+Kjo6WuOk+QTwEBL8qBxswpHEUq44tTIAG6lb50CJkHIQKROVYEqtnpjrBoS3RKN+jv+T70UADytJxzqzRm1XRw9Sa1zd83a08IfaIvFFeiQ0ABkoE4GJDvZgBDOD708+ILM6N8TkG1eGmssTNUbR4IwDvpIF9MIIzuICzL2iLPKdQhKVJ6VjOOUgTL3OgwJ6WzOu8OOHJq09tUaqHZwEOtEv3mjB+o7744cMZrzPdSRf1IvZ3suuGiEvp6aJAt8mbd6DIeoYIPlUYgkC+lwoMdR0DGRJW1j/8UXT8RFQruwBzWSg0z7clx86DDor1asQslSplbRLUENkmTlcSE5uzQxUdLTp6t2TcubsRR2qMlO8OfKrTwOgu/KjugCObASRf1uK7iDLrtplp5eAZaqTJuL2Xc4WQZN6eaTzuiWwiUhmDQQoq9gdjJ31/6RFU86o36sHa4LIRLUXX8pMZE6xqH9km4pone7xVgbg/+vwXCI+RIStXwhbqiQHzY6Tc/gX8rE+H1SPZA/4rI0PXwcTkeKn/d1G4koxWm8ANHL5H786nwGZoY/NYvobFuIJmUHidL3YejamsclcQaZoPOOCU/DHTiUhyBch7/ZWrDOlo1xsRWNnCbOaSCZP3FJHiqC1JZh4cp3A2abL9JBGhdWRONbTrItN/dodl3mcTfBuRAhD9siPzn9d7PZ2HTO2RjmxKDQAstkc8n3gj6gRuoUSwqksMi6bSK4EhNjPEciNcvlNOa1yM9j1TU3hHIpgjLQ4cV/lOvyt6wznwTUlX4fECFOeUtmNnTslhgSPhheS/y5qFjll7h232kVZS
+ sKeZXSTi
+ 5QHMpFzlLGEYPNllT0DdAdEmOHh2QHhwNYcj0HdJDH8jIJJ92dKzAY933juReWaQpK10BvDdAeqsw3POAkR9PL3ZjN1yt7oeGl+SgwBZg1sBOnhoqgUYvBpQPo9D87DS8BGZulqEc9s0dK3a9EIzJ35ehNULQY9dWq/xu8vCW9fqofmPtz2nPDuJztpdPX+pus9wwM51sJPh4czKRbAavtEsaZIky/0w2XsJwNKSdS/R7S5eQdpoN1JRodA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,51 +110,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Vivek Kasireddy <vivek.kasireddy@intel.com>
 
-Make sure that all VFIO PCI devices have peer-to-peer capabilities
-enables, so we would be able to export their MMIO memory through DMABUF,
+There is no need to share the main device pointer (struct vfio_device *)
+with all the feature functions as they only need the core device
+pointer. Therefore, extract the core device pointer once in the
+caller (vfio_pci_core_ioctl_feature) and share it instead.
 
+Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
 Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 ---
- drivers/vfio/pci/vfio_pci_core.c | 4 ++++
- include/linux/vfio_pci_core.h    | 1 +
- 2 files changed, 5 insertions(+)
+ drivers/vfio/pci/vfio_pci_core.c | 30 +++++++++++++-----------------
+ 1 file changed, 13 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 6328c3a05bcdd..1e675daab5753 100644
+index 1e675daab5753..5512d13bb8899 100644
 --- a/drivers/vfio/pci/vfio_pci_core.c
 +++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -29,6 +29,7 @@
- #include <linux/nospec.h>
- #include <linux/sched/mm.h>
- #include <linux/iommufd.h>
-+#include <linux/pci-p2pdma.h>
- #if IS_ENABLED(CONFIG_EEH)
- #include <asm/eeh.h>
- #endif
-@@ -2091,6 +2092,9 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
- 	INIT_LIST_HEAD(&vdev->dummy_resources_list);
- 	INIT_LIST_HEAD(&vdev->ioeventfds_list);
- 	INIT_LIST_HEAD(&vdev->sriov_pfs_item);
-+	vdev->provider = pci_p2pdma_enable(vdev->pdev);
-+	if (IS_ERR(vdev->provider))
-+		return PTR_ERR(vdev->provider);
- 	init_rwsem(&vdev->memory_lock);
- 	xa_init(&vdev->ctx);
+@@ -301,11 +301,9 @@ static int vfio_pci_runtime_pm_entry(struct vfio_pci_core_device *vdev,
+ 	return 0;
+ }
  
-diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-index fbb472dd99b36..b017fae251811 100644
---- a/include/linux/vfio_pci_core.h
-+++ b/include/linux/vfio_pci_core.h
-@@ -94,6 +94,7 @@ struct vfio_pci_core_device {
- 	struct vfio_pci_core_device	*sriov_pf_core_dev;
- 	struct notifier_block	nb;
- 	struct rw_semaphore	memory_lock;
-+	struct p2pdma_provider  *provider;
- };
+-static int vfio_pci_core_pm_entry(struct vfio_device *device, u32 flags,
++static int vfio_pci_core_pm_entry(struct vfio_pci_core_device *vdev, u32 flags,
+ 				  void __user *arg, size_t argsz)
+ {
+-	struct vfio_pci_core_device *vdev =
+-		container_of(device, struct vfio_pci_core_device, vdev);
+ 	int ret;
  
- /* Will be exported for vfio pci drivers usage */
+ 	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_SET, 0);
+@@ -322,12 +320,10 @@ static int vfio_pci_core_pm_entry(struct vfio_device *device, u32 flags,
+ }
+ 
+ static int vfio_pci_core_pm_entry_with_wakeup(
+-	struct vfio_device *device, u32 flags,
++	struct vfio_pci_core_device *vdev, u32 flags,
+ 	struct vfio_device_low_power_entry_with_wakeup __user *arg,
+ 	size_t argsz)
+ {
+-	struct vfio_pci_core_device *vdev =
+-		container_of(device, struct vfio_pci_core_device, vdev);
+ 	struct vfio_device_low_power_entry_with_wakeup entry;
+ 	struct eventfd_ctx *efdctx;
+ 	int ret;
+@@ -378,11 +374,9 @@ static void vfio_pci_runtime_pm_exit(struct vfio_pci_core_device *vdev)
+ 	up_write(&vdev->memory_lock);
+ }
+ 
+-static int vfio_pci_core_pm_exit(struct vfio_device *device, u32 flags,
++static int vfio_pci_core_pm_exit(struct vfio_pci_core_device *vdev, u32 flags,
+ 				 void __user *arg, size_t argsz)
+ {
+-	struct vfio_pci_core_device *vdev =
+-		container_of(device, struct vfio_pci_core_device, vdev);
+ 	int ret;
+ 
+ 	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_SET, 0);
+@@ -1475,11 +1469,10 @@ long vfio_pci_core_ioctl(struct vfio_device *core_vdev, unsigned int cmd,
+ }
+ EXPORT_SYMBOL_GPL(vfio_pci_core_ioctl);
+ 
+-static int vfio_pci_core_feature_token(struct vfio_device *device, u32 flags,
+-				       uuid_t __user *arg, size_t argsz)
++static int vfio_pci_core_feature_token(struct vfio_pci_core_device *vdev,
++				       u32 flags, uuid_t __user *arg,
++				       size_t argsz)
+ {
+-	struct vfio_pci_core_device *vdev =
+-		container_of(device, struct vfio_pci_core_device, vdev);
+ 	uuid_t uuid;
+ 	int ret;
+ 
+@@ -1506,16 +1499,19 @@ static int vfio_pci_core_feature_token(struct vfio_device *device, u32 flags,
+ int vfio_pci_core_ioctl_feature(struct vfio_device *device, u32 flags,
+ 				void __user *arg, size_t argsz)
+ {
++	struct vfio_pci_core_device *vdev =
++		container_of(device, struct vfio_pci_core_device, vdev);
++
+ 	switch (flags & VFIO_DEVICE_FEATURE_MASK) {
+ 	case VFIO_DEVICE_FEATURE_LOW_POWER_ENTRY:
+-		return vfio_pci_core_pm_entry(device, flags, arg, argsz);
++		return vfio_pci_core_pm_entry(vdev, flags, arg, argsz);
+ 	case VFIO_DEVICE_FEATURE_LOW_POWER_ENTRY_WITH_WAKEUP:
+-		return vfio_pci_core_pm_entry_with_wakeup(device, flags,
++		return vfio_pci_core_pm_entry_with_wakeup(vdev, flags,
+ 							  arg, argsz);
+ 	case VFIO_DEVICE_FEATURE_LOW_POWER_EXIT:
+-		return vfio_pci_core_pm_exit(device, flags, arg, argsz);
++		return vfio_pci_core_pm_exit(vdev, flags, arg, argsz);
+ 	case VFIO_DEVICE_FEATURE_PCI_VF_TOKEN:
+-		return vfio_pci_core_feature_token(device, flags, arg, argsz);
++		return vfio_pci_core_feature_token(vdev, flags, arg, argsz);
+ 	default:
+ 		return -ENOTTY;
+ 	}
 -- 
 2.50.1
 
