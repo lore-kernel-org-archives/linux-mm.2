@@ -2,203 +2,97 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E5F1C83F17
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 14:46:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D580C83F1A
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 14:46:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EDCA68E0029; Wed, 23 Jul 2025 10:46:24 -0400 (EDT)
+	id 36BE58E002A; Wed, 23 Jul 2025 10:46:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8D3B8E0002; Wed, 23 Jul 2025 10:46:24 -0400 (EDT)
+	id 31C958E0002; Wed, 23 Jul 2025 10:46:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D2E218E0029; Wed, 23 Jul 2025 10:46:24 -0400 (EDT)
+	id 20B6D8E002A; Wed, 23 Jul 2025 10:46:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C1AF88E0002
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 10:46:24 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6E7C1BAE4B
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:46:24 +0000 (UTC)
-X-FDA: 83695805088.12.6A075BC
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 04E4A10000C
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:46:21 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="dzz5oM/+";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753281982; a=rsa-sha256;
-	cv=none;
-	b=CsLF/+u1NrPmEwdupJtq/5RFOZ1vhGin82wnm0GKbTgH+v1bA/yxqo361Q3xnfjuneRt3N
-	UIi7urO7haZfu1RXCs7bg2ChFnV+PUfm/7OowJ2+Uv414+U1MFPuVt7NO9jdhaTjqOUIa2
-	nFhO/GkugAqsGFS6S4mH7BKDqjEf2WY=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="dzz5oM/+";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D8458E0002
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 10:46:41 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BC2D3140724
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:46:40 +0000 (UTC)
+X-FDA: 83695805760.07.6A8C973
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 1603E18000E
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:46:38 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CPmkABex;
+	spf=pass (imf06.hostedemail.com: domain of djwong@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753281982;
+	s=arc-20220608; t=1753281999;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CQGgiEKZ9BLW6U6k5xk1iAQnETQ+XftQ9J9xgQIohlk=;
-	b=wh4sqlbojVOrbSz1d1BRKpfN/TI3RtUAtv0r/G6bk8XtmFNH7OzMc/noOHq7MoVeeaEXNd
-	bPZ7zH+wRC5GiGzctUsNXZEk2JCpnlCqjDcbKe9+ArbFOojU9RbbPcQdfiVLymKAA2+HEm
-	SaUFfNJFzMIgoiE/PufwPUPvNg6EEok=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753281981;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=CQGgiEKZ9BLW6U6k5xk1iAQnETQ+XftQ9J9xgQIohlk=;
-	b=dzz5oM/+V7X+IVJRY4lc8xiKmacNgCF83lt7amG3LlxN2Ik54beNLkkgnoWmyIcGAVQtg/
-	CTcc01ZN39cUZ5sKu7u0zrIFj2jUupJf39d4X+hCdJqbjBbTBq3lvWNu1bQvepJcxOIUXN
-	EdqGOcwqH6x0TjXYuTx7iWn9N79OGaA=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-313-ua4Uf1DbOnmJ9oKRxli1ew-1; Wed, 23 Jul 2025 10:46:19 -0400
-X-MC-Unique: ua4Uf1DbOnmJ9oKRxli1ew-1
-X-Mimecast-MFC-AGG-ID: ua4Uf1DbOnmJ9oKRxli1ew_1753281978
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-43e9b0fd00cso111175e9.0
-        for <linux-mm@kvack.org>; Wed, 23 Jul 2025 07:46:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753281978; x=1753886778;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=CQGgiEKZ9BLW6U6k5xk1iAQnETQ+XftQ9J9xgQIohlk=;
-        b=CAtdTq8PPczZ7AGgNALmSyeL06Bib+sgX41fMQJ7wClcrsREJASlYuUZ8G8c8u491B
-         LErhHeJk6TpqoNDEEP88n1PkY3/R9YkxmPFtkM871DyjzNKMjMrnCEhBPRDqfaynRSyz
-         btFODtQGY0AvzCn7X/BE+nk8uCB6hOeB0lxqMWiXyVcXNLWw4ZrTnRTW3qGFbt2RIiJn
-         cc0qb88xmq1ZVB+EYWqRomSIGBHrUCW303cBDNm/WkBreBG+Kf/QN6kz8s+lehaiXtlI
-         KH0uL7R+0wcwYsbEIx8tT70pFW3leR+WILCRCWg3pGJAojviLIYqDbvSs3pdnvxKljOP
-         q4Wg==
-X-Forwarded-Encrypted: i=1; AJvYcCUE6t7a0Haci2DayBFZOBzWCdVVKjKx6IaNlpUlhsWUKVTyTFgx5ZqUJy7z4Ymo2obIVUCK4KEKCg==@kvack.org
-X-Gm-Message-State: AOJu0Yznz7QdFP4wYJW+9+yWrpWwKHtYO4OCPPPJqPA9EvIWIJ5qPX+6
-	ODtTazOwwcq1v1F/Fb8x9jtVLl+2Yg2SDAZtCif5/JYVRLGMIwQQAMiNXbsuCQzqKEV7gm62OLE
-	GWUn9RjIHtwfpYi4ewyoBnwKz5crlxSvsSmBs0yUyo5x1rQd7aAy8
-X-Gm-Gg: ASbGncv8ExJM6k8Iu/s+CLAjc6PVQ45qqIFwHbj2yaOFqg9pGd5CNhz7YbpUB9PRYLE
-	o4rfQDMk30PUmWa6TXIH3JAIF7DRuyrQRTrXbDkktlOpSgIpZlatKnJyHM127wTfWEpDETmsLf1
-	jdR8gK6O0okGLAeSGQdzUcWPxf/Ln2mcYwnIWqFLvTMlgnbJwN5uUKRq7RVc7/i9UVcjk9HGNmB
-	arbz+zHgALYkhXgAQq5irwR7etjd5+ZBON31Z92ygyFwbUuTADE/nQb+b303TVF+ti1uj0lS+iV
-	pV8Caj9D+XG6Eb8I+G+MLWYtPcKiUi5u72UV6gnwpk6X+XGiGkew0j4EqdMvGYPfUnM/xteOFPv
-	Tnete4py1iTdm3fHocwhv9jDvDCFFoPvS1QbyH1sN/KkuYc2qMSYtM/hk9/hFeQBMyrw=
-X-Received: by 2002:a05:600c:8b71:b0:456:1281:f8dd with SMTP id 5b1f17b1804b1-45868b44016mr26972975e9.12.1753281977805;
-        Wed, 23 Jul 2025 07:46:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG1KNSe2SVxUroDZ225ZV5Nc1b5biPHfGPJZG9qryQi+RFiYP2ispLZdQ4B+jpEa22Ey3+fGQ==
-X-Received: by 2002:a05:600c:8b71:b0:456:1281:f8dd with SMTP id 5b1f17b1804b1-45868b44016mr26972145e9.12.1753281977097;
-        Wed, 23 Jul 2025 07:46:17 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f00:4000:a438:1541:1da1:723a? (p200300d82f004000a43815411da1723a.dip0.t-ipconnect.de. [2003:d8:2f00:4000:a438:1541:1da1:723a])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458691b0f59sm25842795e9.29.2025.07.23.07.46.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Jul 2025 07:46:16 -0700 (PDT)
-Message-ID: <3d310152-34dd-4e44-92e8-a4e94c6480ad@redhat.com>
-Date: Wed, 23 Jul 2025 16:46:14 +0200
+	bh=maOB+H4Zr5tqE5BoVupSOxs08mEDheR6VcZSJ2X5J+4=;
+	b=7Qfe0/Sg3/c3+HBTsAxkyGgaVXW7z+PH1QOI7+oNhhgOM6yJ4Cgi+8JsBY7rSa+/KW8atl
+	qQzC8t42tfnwldtY/GiZJuND1CwPVVJ9pi7GvTt3ALIPWOesMiJcAmfXS16NxwNyyNf+0H
+	j4ETY5ZOg4pZ3h+n2Wmo8PIT6HRgAoo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753281999; a=rsa-sha256;
+	cv=none;
+	b=CXh4sjfT0yEXuWyEcXcglaoTWSB0gEqvbvf5CA+yjWndLv+EtYlIv5S24spcGqFJvdmBPw
+	zoqj6YDAJFXU904lsLbAM4ZEAiI/jq6TE3ei1Kc+v2RMNRtot44gXJslyB9YdWdqtI1NVs
+	U1FfSiRWfVS5KVkBgbxzATbsDwhRhw0=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CPmkABex;
+	spf=pass (imf06.hostedemail.com: domain of djwong@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 86317601DC;
+	Wed, 23 Jul 2025 14:46:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FB37C4CEE7;
+	Wed, 23 Jul 2025 14:46:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753281998;
+	bh=gGlgOle8BYTBsJBazgGXJhWVGajCQhO/jB9JlJx7bKI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CPmkABexxAU563jj7cXZaiWnoX+pnf4iOwVvkCw4AT6U/HSGybCbAbGLwwEGNM6Ai
+	 QJ9n5xUuyavgOf3JmFofdCwrfxivrB2jgdH0a92AvLXnrGHNbx2vZxDU68XhgaVFMw
+	 wt+XI8owSrdHF91Gtd/EdzzhM5+XHQ7jc0eVcKujgraTivRyLqnMgCHKgzlyRKkJyf
+	 QqRSCyB3y65mhvOlJSZbQGhbL+GLrfiUwNZNwun0sDf1ItpaB4GwdQcgClNYIssqpS
+	 x++qS5yONt75+1zkUDnLIB5MGT8bJjuqCr46B3rDyeozd0vfYvZUbe8Oq1GJ07fZUn
+	 69FiRPwbeweQQ==
+Date: Wed, 23 Jul 2025 07:46:37 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Naresh Kamboju <naresh.kamboju@linaro.org>, joannelkoong@gmail.com
+Cc: linux-fsdevel@vger.kernel.org, linux-mm <linux-mm@kvack.org>,
+	linux-xfs@vger.kernel.org, open list <linux-kernel@vger.kernel.org>,
+	lkft-triage@lists.linaro.org,
+	Linux Regressions <regressions@lists.linux.dev>,
+	Miklos Szeredi <miklos@szeredi.hu>, Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <liam.howlett@oracle.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Anders Roxell <anders.roxell@linaro.org>,
+	Ben Copeland <benjamin.copeland@linaro.org>
+Subject: Re: next-20250721 arm64 16K and 64K page size WARNING fs fuse file.c
+ at fuse_iomap_writeback_range
+Message-ID: <20250723144637.GW2672070@frogsfrogsfrogs>
+References: <CA+G9fYs5AdVM-T2Tf3LciNCwLZEHetcnSkHsjZajVwwpM2HmJw@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 14/21] KVM: x86: Enable guest_memfd mmap for default
- VM type
-To: Sean Christopherson <seanjc@google.com>,
- Vishal Annapurve <vannapurve@google.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Fuad Tabba <tabba@google.com>,
- kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-mm@kvack.org,
- kvmarm@lists.linux.dev, pbonzini@redhat.com, chenhuacai@kernel.org,
- mpe@ellerman.id.au, anup@brainfault.org, paul.walmsley@sifive.com,
- palmer@dabbelt.com, aou@eecs.berkeley.edu, viro@zeniv.linux.org.uk,
- brauner@kernel.org, willy@infradead.org, akpm@linux-foundation.org,
- yilun.xu@intel.com, chao.p.peng@linux.intel.com, jarkko@kernel.org,
- amoorthy@google.com, dmatlack@google.com, isaku.yamahata@intel.com,
- mic@digikod.net, vbabka@suse.cz, ackerleytng@google.com,
- mail@maciej.szmigiero.name, michael.roth@amd.com, wei.w.wang@intel.com,
- liam.merwick@oracle.com, isaku.yamahata@gmail.com,
- kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com,
- steven.price@arm.com, quic_eberman@quicinc.com, quic_mnalajal@quicinc.com,
- quic_tsoni@quicinc.com, quic_svaddagi@quicinc.com,
- quic_cvanscha@quicinc.com, quic_pderrin@quicinc.com,
- quic_pheragu@quicinc.com, catalin.marinas@arm.com, james.morse@arm.com,
- yuzenghui@huawei.com, oliver.upton@linux.dev, maz@kernel.org,
- will@kernel.org, qperret@google.com, keirf@google.com, roypat@amazon.co.uk,
- shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, rientjes@google.com,
- jhubbard@nvidia.com, fvdl@google.com, hughd@google.com,
- jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com,
- ira.weiny@intel.com
-References: <505a30a3-4c55-434c-86a5-f86d2e9dc78a@intel.com>
- <CAGtprH8swz6GjM57DBryDRD2c6VP=Ayg+dUh5MBK9cg1-YKCDg@mail.gmail.com>
- <aH5RxqcTXRnQbP5R@google.com>
- <1fe0f46a-152a-4b5b-99e2-2a74873dafdc@intel.com>
- <aH55BLkx7UkdeBfT@google.com>
- <CAGtprH8H2c=bK-7rA1wC1-9f=g8mK3PNXja54bucZ8DnWF7z3g@mail.gmail.com>
- <aH69a_CVJU0-P9wY@google.com>
- <CAGtprH_r+eQjdi8q5LABz7LHEhK-xAMi4ciz83j3GnMm5EZRqQ@mail.gmail.com>
- <aH-hxiD2DwovFpqg@google.com>
- <CAGtprH8QfPU8tByPLHL69MOhG5hNspS6zCjxzB8xM_Tbjgcs1w@mail.gmail.com>
- <aID1JoOGRZ8HIkc9@google.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- g3eXuA==
-Organization: Red Hat
-In-Reply-To: <aID1JoOGRZ8HIkc9@google.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: xw1vs5Ju3z7hdjB0R8Bb4wX9ytRWIdnRDS3Q4Tip06A_1753281978
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 04E4A10000C
-X-Stat-Signature: pdyk4nsse7zyndqo1jr9wqu68muqq6bp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+G9fYs5AdVM-T2Tf3LciNCwLZEHetcnSkHsjZajVwwpM2HmJw@mail.gmail.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 1603E18000E
+X-Stat-Signature: ygtb1n9694t8ctipggr3x5k9is3gzp13
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1753281981-987582
-X-HE-Meta: U2FsdGVkX1+kUCTmzLoSMM8mjmgEIMRl/rch+dEzkQVLHa16fu1NaABdXcw1KGjZIZH1hiJ74bMo78yROEUOPoFf/dkwvF7D6gupF3wceJDmfgGULoXmmxww+xk3jHq46ViJDy2DIM8N/nH+d31ew84NjPyOScDGZ6SJClduqZwHiRhLkWJuYv9KdNwmTaEh75Z01hjOqewW+UajLfL9l4GB2dMaHJvZUvYxZ9L7dibpDMK3Qn65LU2CC3Tk6KFKQcVBtEuN+6YHrJxuUAgz1G8y1Zld+FaF+ZMoy3R7lNBcNnjeyjyfGdKPX8JGn2G2z4EbVUYI7sgwGxj/+BdEqe7easkjhsvIBeDgkIL5brdS0NdVeYjK4sb094Y+O3r0pMnvYae5Ng8oAU98IO6UzpoA0JkrmDNJjY2+VKDpUCClgAfxVxQqtZp0AkuBBZ/TM7nnKiogS8Ua70AUWM+fpEwvPb1hgakQ0fj1fQHhMeY2EBwZw0hjTVU+NfBiQWEvak9RFDZS+27M5cHiRexPMMZGt+Gp2ph0PQq6V3IdN3tDXXZlVr2aHaxs3pO9FnI1ojFiqBWXetBVQ97DvqIggD4e4i+tHApbX8SRcIxu9d0lpynyvnpuML5UrTkN6IW9BOb2CHGbc+vRbohIre5ozGCvDX7tozBwiZ3QOvhxhi7XC/7YJOr011C7R12RKPCqHt7s5W9N+epkA/GGYBIKt9ZT42pJ952NnfMGGWqw4dLlep4mm1iCxxVDjd3hCJh8b/PQ3FWMSVMrcTiyvW6eocB1iCgner+z1rZTveyLAGG8RlsNv4wIgxB6ifjgvnP/w5A5v15D4thfVhMUelU+e/ndSHsGgO/+ps9ryK/eY4aIa+upivysdVibfV2OfN8+rAY5DDZS6tgfZ+pK8bOy1fke5DvABhma84nc88agPKFhG4DKrFuJE4Sh4ns0w6B6MaLzJ+O1DenMJZxA49Q
- VeEe4WZz
- FpHIzWydY6kctTONU7KwMJDDWd6VPnNjCkBioygmKd+PbxiE3df2Ybd4MWeJtr0SIWC94zEW26EmkHQv42odI6KlyHh1GVpzxySgDAaivq+oU+gVwiEu85j8QrFc0pHQ0XxmyAyqJgfYRABc7TdxlVzwwnMNEiP8leLE2KJfN0cFDcZ7RtDuKAI5l7VH/vXGwN9712A+ZyBYHmc0/Kv3p7H/OGAjAaK8kz5/W+d4pPQPagrwIxfRlWxryxMR6RGsd93nQZ/mhtI5n9IQU3POHjPpNcFGTy0phOoxJzLBW2ZFdJhya2XoGV7frEQIbnXxVqNvd/KzZ/j6TgWjwe7Ne+5e2vesul7iI3xUZVgDrAKBmlwjqRcOm4l6QQ6uz+F8g6JzN0sc92bdwuW/h7OIMEQofcSwHw26o7uyQihdsNh3afGwPJtdKz41+Z86u3TY/s7xZ7ZUQZiDJ0+N3/8b9wJ76z3kBpHLETyvLwWOkmkqAwSEivVGtYLR0F6jkLIY4acgBzi824dZANQsqOpr4btzfhCIzt2zP0zFPZXWEHyOQLMc7aCNtYAqb2eOje7q4SD00EShkBZnAnV8=
+X-HE-Tag: 1753281998-348982
+X-HE-Meta: U2FsdGVkX18+D/xtnm7TXyz9qAl01k/xApN3AD/yyx03WcpdZF6JwWlaC3EwUv1It695EvSVRqcouYEKHH9zYQ6vcLECrTcUUwoWiD9dt0gW/70B9YOemSVEBlbsYh8ZoM4OV8s6tXROu+mwiUkHyf/+Zg/duIdVB1jjTauEIDbTXn2htjuMz7BKmhqznfqJRb3MbZ6P3mdTN0eeE70pYuhsF0fNLAyYT+aqRaCfRqGkTqsVbZbPnCGs+9WSF7KkfdECBBD8RsHJdFIgAjKwiWPycf7bUoDJf+AhrQcK7L0SHBdw/tJnlvV+Ne+nm56H0rjm2YeEDR7E+UZvOTt4axhbtEuZ7K5mUr8Ty5RIX6uFWIb4H9H5HnMtPM+B/CM1Pg4n+C+nvJpwVSjFJBmenpcSUKHd0RbHpxcGj87YWTPWSFfx1dV1/uS3yntzBRuBynRFJxI50MHqwsfa9NAsTzSE0PGlSTeMw717gb9PPlLlL8dK1N4qoOzKZDUpLPhWfZkvkCKCLmW8FF+f8knPYMo5i8jIRg9ST0ECZkdRkqTGYRh79m3cqaE71UtYxGJX2BduR3OpsyZKKlvWdT6Bng7Ej1MQ3JBrlm4frs0e4IWKtxe+TedIUWMR1RMYM04nld3AiOE2xkOpE4DTMwEXXgQvrB75uDeoPK1IDqan963XXGg0KvhFxkzmK0T/UQJqJ7tP9BAvAk8Af2+Wc0xkXPvr4uAbgdxS73IO3zx8zbhSIPY7VguftbQ29s0oEli+IGU8v/F++ZquZ9dobmESSg1tO8OKPlUCbo6Wyux1rX6wtX3hW/pZdeCgiFNe9PmiDRlxobvtdOOZIZHLA3u+b65pUknrPOkD8kXN1x7fb5LidjTznHrjIUsEwY5lIz1LAG7/Pd08PrJTuBvIsdJWoD3H4EJKFlRNgD6dGAmo2URyVFEFD1TnQcuRUmjQXfDl82nmd5W/Zb2fDpDp+vQ
+ sTAu7P2w
+ fUublLTcLZb+x5+GU5ietL0/OHrwzSrn2q+tHjHkdpPhkM0A6EH5CeAIBrNJ3QM5r32r0d+7mHpTjKBs+dkNp0l/dwALt2tvouwm2w5UhL1J0kgQ353C8O4sUbXCI6ImPwUFdxSykJvHo27gTL/0bRg0mHXSyNzN0tVMPHSvm5yiEEfBgQA1gR/aN0EII0Raz9/no7dVGNJvZ/OZcgg/dTW7LvmOPN4LZ9nq1af/RG2/d4gweae8feV58i26vpcxjYs45/ePMqjC3W8oOMZt+cG2WsFisJiwvmnHFxBnri6SV8LVOvSTe+HCaxsE9VbhBt6/gDYknbQqm1ezXug8/spUriVykiPEUbsk5/qJRuQEncTw9VXRefW6f3RyjQjWJmDd9fuo2SGMeDqx1K/kvHFAo700q4v0DCpSCTVnMIZ6Q2j8HHZjKbpTbQghGuYtPCcLCMDRi/ymATvVbpyVi9cph+faswA76186fZP1ePdZ5Yguerha21TuswHdyEJ4ii9EP
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -207,23 +101,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 23.07.25 16:43, Sean Christopherson wrote:
-> On Wed, Jul 23, 2025, Vishal Annapurve wrote:
->> 2) Userspace brings a mappable guest_memfd to back guest private
->> memory (passed as guest_memfd field in the
->> KVM_USERSPACE_MEMORY_REGION2): KVM will always fault in all guest
->> faults via guest_memfd so if userspace brings in VMAs that point to
->> different physical memory then there would be a discrepancy between
->> what guest and userspace/KVM (going through HVAs) sees for shared
->> memory ranges. I am not sure if KVM needs to enforce anything here,
+[cc Joanne]
+
+On Wed, Jul 23, 2025 at 05:14:28PM +0530, Naresh Kamboju wrote:
+> Regressions found while running LTP msync04 tests on qemu-arm64 running
+> Linux next-20250721, next-20250722 and next-20250723 with 16K and 64K
+> page size enabled builds.
 > 
-> We agreed (I think in a guest_memfd call?) that KVM won't enforce anything,
-Right. We'll document it but not sanity check it at KVM slot creation 
-time. If the VMM does something stupid, not our problem.
+> CONFIG_ARM64_64K_PAGES=y ( kernel warning as below )
+> CONFIG_ARM64_16K_PAGES=y ( kernel warning as below )
+> 
+> No warning noticed with 4K page size.
+> CONFIG_ARM64_4K_PAGES=y works as expected
 
--- 
-Cheers,
+You might want to cc Joanne since she's been working on large folio
+support in fuse.
 
-David / dhildenb
+> First seen on the tag next-20250721.
+> Good: next-20250718
+> Bad:  next-20250721 to next-20250723
+> 
+> Regression Analysis:
+> - New regression? Yes
+> - Reproducibility? Yes
+> 
+> Test regression: next-20250721 arm64 16K and 64K page size WARNING fs
+> fuse file.c at fuse_iomap_writeback_range
+> 
+> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> 
+> ## Test log
+> ------------[ cut here ]------------
+> [  343.828105] WARNING: fs/fuse/file.c:2146 at
+> fuse_iomap_writeback_range+0x478/0x558 [fuse], CPU#0: msync04/4190
 
+	WARN_ON_ONCE(len & (PAGE_SIZE - 1));
+
+/me speculates that this might be triggered by an attempt to write back
+some 4k fsblock within a 16/64k base page?
+
+--D
+
+> [  343.830969] Modules linked in: btrfs blake2b_generic xor xor_neon
+> raid6_pq zstd_compress sm3_ce sha3_ce drm fuse backlight ip_tables
+> x_tables
+> [  343.833830] CPU: 0 UID: 0 PID: 4190 Comm: msync04 Not tainted
+> 6.16.0-rc7-next-20250723 #1 PREEMPT
+> [  343.834736] Hardware name: linux,dummy-virt (DT)
+> [  343.835788] pstate: 03402009 (nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
+> [  343.836455] pc : fuse_iomap_writeback_range+0x478/0x558 fuse
+> [  343.837294] lr : iomap_writeback_folio (fs/iomap/buffered-io.c:1586
+> fs/iomap/buffered-io.c:1710)
+> [  343.838178] sp : ffff80008b26f8d0
+> [  343.838668] x29: ffff80008b26f8d0 x28: fff00000e7f8c800 x27: 0000000000000000
+> [  343.839391] x26: fff00000d4b30000 x25: 0000000000000000 x24: 0000000000000000
+> [  343.840305] x23: 0000000000000000 x22: fffffc1fc0334200 x21: 0000000000001000
+> [  343.840928] x20: ffff80008b26fa00 x19: 0000000000000000 x18: 0000000000000000
+> [  343.841782] x17: 0000000000000000 x16: ffffb8d3b90c67c8 x15: 0000000000000000
+> [  343.842565] x14: ffffb8d3ba91e340 x13: 0000ffff8ff3ffff x12: 0000000000000000
+> [  343.843002] x11: 1ffe000004b74a21 x10: fff0000025ba510c x9 : ffffb8d3b90c6308
+> [  343.843962] x8 : ffff80008b26f788 x7 : ffffb8d365830b90 x6 : ffffb8d3bb6c9000
+> [  343.844718] x5 : 0000000000000000 x4 : 000000000000000a x3 : 0000000000001000
+> [  343.845333] x2 : fff00000c0b5ecc0 x1 : 000000000000ffff x0 : 0bfffe000000400b
+> [  343.846323] Call trace:
+> [  343.846767] fuse_iomap_writeback_range+0x478/0x558 fuse (P)
+> [  343.847288] iomap_writeback_folio (fs/iomap/buffered-io.c:1586
+> fs/iomap/buffered-io.c:1710)
+> [  343.847930] iomap_writepages (fs/iomap/buffered-io.c:1762)
+> [  343.848494] fuse_writepages+0xa0/0xe8 fuse
+> [  343.849112] do_writepages (mm/page-writeback.c:2634)
+> [  343.849614] filemap_fdatawrite_wbc (mm/filemap.c:386 mm/filemap.c:376)
+> [  343.850202] __filemap_fdatawrite_range (mm/filemap.c:420)
+> [  343.850791] file_write_and_wait_range (mm/filemap.c:794)
+> [  343.851108] fuse_fsync+0x6c/0x138 fuse
+> [  343.851688] vfs_fsync_range (fs/sync.c:188)
+> [  343.852002] __arm64_sys_msync (mm/msync.c:96 mm/msync.c:32 mm/msync.c:32)
+> [  343.852197] invoke_syscall.constprop.0
+> (arch/arm64/include/asm/syscall.h:61 arch/arm64/kernel/syscall.c:54)
+> [  343.852914] do_el0_svc (include/linux/thread_info.h:135
+> (discriminator 2) arch/arm64/kernel/syscall.c:140 (discriminator 2)
+> arch/arm64/kernel/syscall.c:151 (discriminator 2))
+> [  343.853389] el0_svc (arch/arm64/include/asm/irqflags.h:82
+> (discriminator 1) arch/arm64/include/asm/irqflags.h:123 (discriminator
+> 1) arch/arm64/include/asm/irqflags.h:136 (discriminator 1)
+> arch/arm64/kernel/entry-common.c:169 (discriminator 1)
+> arch/arm64/kernel/entry-common.c:182 (discriminator 1)
+> arch/arm64/kernel/entry-common.c:880 (discriminator 1))
+> [  343.853829] el0t_64_sync_handler (arch/arm64/kernel/entry-common.c:899)
+> [  343.854350] el0t_64_sync (arch/arm64/kernel/entry.S:596)
+> [  343.854652] ---[ end trace 0000000000000000 ]---
+> 
+> 
+> 
+> ## Source
+> * Git tree: https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next.git
+> * Project: https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20250723/
+> * Git sha: a933d3dc1968fcfb0ab72879ec304b1971ed1b9a
+> * Git describe: 6.16.0-rc7-next-20250723
+> * kernel version: next-20250723
+> * Architectures: arm64
+> * Toolchains: gcc-13
+> * Kconfigs: defconfig + CONFIG_ARM64_64K_PAGES=y
+> * Kconfigs: defconfig + CONFIG_ARM64_16K_PAGES=y
+> 
+> ## Test
+> * Test log 1: https://qa-reports.linaro.org/api/testruns/29227309/log_file/
+> * Test log 2: https://qa-reports.linaro.org/api/testruns/29227074/log_file/
+> * Test run: https://regressions.linaro.org/lkft/linux-next-master/next-20250723/testruns/1713367/
+> * Test history:
+> https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20250723/testrun/29227309/suite/log-parser-test/test/exception-warning-fsfusefile-at-fuse_iomap_writeback_range/history/
+> * Test plan: https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/tests/30G3hpJVVdXkZKnB15v1qoQOL03
+> * Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/30G3dvSFyHHQ3E8CvKH7tjU98I6/
+> * Kernel config:
+> https://storage.tuxsuite.com/public/linaro/lkft/builds/30G3dvSFyHHQ3E8CvKH7tjU98I6/config
+> 
+> --
+> Linaro LKFT
+> https://lkft.linaro.org
 
