@@ -2,93 +2,93 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B3FBAC83F1A
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 14:48:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2401EC83F17
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 14:48:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB8466B0125; Wed, 23 Jul 2025 10:47:42 -0400 (EDT)
+	id 6A1F96B0126; Wed, 23 Jul 2025 10:47:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E68C36B0126; Wed, 23 Jul 2025 10:47:42 -0400 (EDT)
+	id 653516B0128; Wed, 23 Jul 2025 10:47:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE32D6B0127; Wed, 23 Jul 2025 10:47:42 -0400 (EDT)
+	id 4F4166B0129; Wed, 23 Jul 2025 10:47:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B790E6B0125
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 10:47:42 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8E9B4133799
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C38B6B0126
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 10:47:44 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0D8B8BAE46
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:47:44 +0000 (UTC)
+X-FDA: 83695808448.20.39D2C83
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 629AE40012
 	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:47:42 +0000 (UTC)
-X-FDA: 83695808364.04.FD27771
-Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
-	by imf11.hostedemail.com (Postfix) with ESMTP id AAF4E40003
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:47:40 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=soleen-com.20230601.gappssmtp.com header.s=20230601 header.b=AifVGBGh;
-	spf=pass (imf11.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.178 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=soleen-com.20230601.gappssmtp.com header.s=20230601 header.b=HDNvWHtC;
+	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753282062; a=rsa-sha256;
+	cv=none;
+	b=Vwm6hWCWLWJYQeJ/CwSwH35PyF2SqM5nOwee/lQXxhPs6AhvrxDxb+ZhWKJvv0c7L3LTFV
+	LY/JF6IhFirNJwQH08KFhgvLO2Z8/Yzf8O/dMcHtD9WoNH4+ySNhWgSR9L0TMnMTyvpOEU
+	4K7AxYA2fnaW6VVu747v451rCoGT4sU=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=soleen-com.20230601.gappssmtp.com header.s=20230601 header.b=HDNvWHtC;
+	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753282060;
+	s=arc-20220608; t=1753282062;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oWmBXVjGh1wc/IzDBDeCQXSx4hXhB+JQyCN77jCTWMc=;
-	b=A1vgdMAlKZnqzf8Gf5uVvrNbiOHhn+AWr9JKUZmqwXVGxmL6ezb1T5mmXt2ZHTusJUBYvT
-	dCT5+s2koc0+4nSr8jmvnFWLDPsZHOpy8FrLg9w89awwx2WeZa0wYMovGA3vhJjxXsqFBH
-	yuUZWF9QIhMrBwzI+nRIn7P+RRLSq/A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753282060; a=rsa-sha256;
-	cv=none;
-	b=T29xxJgj+UMgvPxwdiUtA1NK6H+ocyLLW7AAVXzwTrBAHEAIomdkP0Y8E8HMLatvWWofAk
-	0vM03/hstHTtZAYA0ITemYVeM6UMhx7hao9tdzwL+MCHCWdtZ3pevUjl7cLACM/xZBcx2P
-	PtHdxBb+ZKscU8aOwkLhI6vdu6HrPrA=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=soleen-com.20230601.gappssmtp.com header.s=20230601 header.b=AifVGBGh;
-	spf=pass (imf11.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.178 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-e8d7122c3a5so5872691276.1
-        for <linux-mm@kvack.org>; Wed, 23 Jul 2025 07:47:40 -0700 (PDT)
+	bh=NC1ayEHkvN6ijinKURZBxrM3hNqjaSgPk5qZ/n3J1rM=;
+	b=oO7iwuGZGBILw+FkOIkQf5hgIdU3Mwy/TednGROXiLv+GDci92aozq2V/bqLNhe3x+B4v8
+	foWn2zycsuZNl1a+yo4zXQMb4tNm9bXwpjtkp+Y8NtpqjOI3ct0GqPERe79WMYiKVi6WPR
+	YXbDSlboJQdhjvVL5Kkz4KF/KXIkanA=
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-7183dae670dso62723507b3.2
+        for <linux-mm@kvack.org>; Wed, 23 Jul 2025 07:47:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen-com.20230601.gappssmtp.com; s=20230601; t=1753282060; x=1753886860; darn=kvack.org;
+        d=soleen-com.20230601.gappssmtp.com; s=20230601; t=1753282061; x=1753886861; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=oWmBXVjGh1wc/IzDBDeCQXSx4hXhB+JQyCN77jCTWMc=;
-        b=AifVGBGhNtcRl4emuxed0ksSTC8aOMnhT3BrfnbnJjNnasr/AqC+LJzjqKX7p6qKF2
-         E+NgJglQ967DxYFjxQTkKUfAoci+i9n0zdPal1wr+qVfy2D6M1t+K1gK5GMVmW5S2b/q
-         YXlFwWcMeYS//EUQ2jqsbihcvbaH/F0p5dMvr0uY/a6bMOCsMxv1ezrXPdFvraXOkhq2
-         DPxqxbpaFjQayXrva+DZp6JHMB6ptKgmC6B4tfoyWwN9KEkg5WrUF9r44LTujq+R1dj8
-         z8VLidXjVaAonI9rQr36g7DtMybdP1IR5KztGIdOYtz6o0i9ZnDuV3jXHakE08FeA3yZ
-         tIWg==
+        bh=NC1ayEHkvN6ijinKURZBxrM3hNqjaSgPk5qZ/n3J1rM=;
+        b=HDNvWHtCieg2BZoJ7rjl7mXYBh/deUvxeJ1usNlXTUDwcPmKwI4pcevgA85ewgx8pG
+         rkGymPibqwaaftXY//5ZFAb7282Gh3flWO6876lD3oZSLuSA7MFGK0s62AoBesa3pyBc
+         ESBg40ZMeQulDMVCU5zbo+C96pOQ5G5Lrt9gPjIe1lnm8H6f4v29OAgB6d+nrokqRXnT
+         jMYUNnYYxvpNcG7hVva6EVgKSsydiW0RM+LcdlaBr5nvjmT/phoA4buj35UyCQMMdGEI
+         NbWPDhlAlreA//FrvUxXr5GdjxpAdbVPMNSe8ObbdWQMUwJ5yyH3CgnY08zqJDa1naX0
+         4H+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753282060; x=1753886860;
+        d=1e100.net; s=20230601; t=1753282061; x=1753886861;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=oWmBXVjGh1wc/IzDBDeCQXSx4hXhB+JQyCN77jCTWMc=;
-        b=dH3zNIKkIUzTwscHdkpxOFZrsc6DXg6l3vsYmbR1jze98Fk0Z54nOSzdPIQe9QSe27
-         skTuO5mqfVPX+fPtZP9h0fqMkD34eJTF0Y4kRTUPhuE+Rkq6QrGLiI1ydNNxsIEaxyWS
-         XS+u01hDY6zQREsBDUt68lpCkrFcrnl/8W5UEhNJNXlQJ7f6rncMNox+or+QV70crVC2
-         Tf6jvAePj2EOiqq2iUb5c9R88bzo+ucwfR2BU7ElbxcmUv0xBL58pYfXIhqXNdL2bxO9
-         Cr1sRQpI5Zn3V9KLKiuHxFfV3tMC4fgs5WXo9A26wPbgT1uBsyiB6Ne/px86n/6iMPu6
-         hznw==
-X-Forwarded-Encrypted: i=1; AJvYcCWh99OIS/1LIrEcDbkjEuvi2A3x7DhXSymEio5K/9aXMXHfKAG5RLa0rms1zfdagByFFtStFAwodQ==@kvack.org
-X-Gm-Message-State: AOJu0YzFG8oWU50JR5DXTgNotD74MZBwEawUslFD428rM0r/0vdbJJ0w
-	vS/xuuCAAPClVap+ncVQvpOQThbm3keuhKSF9tXXfJlg7PKacqE9wWSdKKHVelcQ6Qs=
-X-Gm-Gg: ASbGncvHPv3Tz+OxXHuc3rZtLel5/g/76uhySNdpmsn38uWNW7BAtR6/yX9GkU9yR3D
-	yhtdEQlYb10qPaGlPAU9r/RPwidEMprmCWWX6+STxe3SNZsKHvRVBeXYKF8/BzWVgnrpCE3zl+N
-	xCtAFsjw6rWmeaRnrKCJyfGpJDjKZJANd7ZrUSHzo4hDtYoub24tZGAnh5GX27Al7VcGC2BP9FC
-	H4SosTYdM8FpQQBpo27a92Yth4YTJcU89zYn2Ie2XCCYa188OmD2rGrjrdPtEPzP1+2hnyCc/7E
-	1C+450cDCd4buEn+zp4AEzaLBdmJ+zOXP2+DIMNVllPcQk/GU/avQkHvufNX13vdHGnnOOkVF0U
-	L8U39n7ImZvu7tcPh63oGmv9ozM7y9KO19DUiMaN5AGBYr/956YVeqjCUUvDjm6hdHTsLNRppke
-	Df7ey/Sg+UgRTtog==
-X-Google-Smtp-Source: AGHT+IEBhojheZGJ6Q8/J2Jc3qfebiDxZt2nYMumXzSS9twbam4ZudlzHL8AvgdpH7YpzOzJmZiVmA==
-X-Received: by 2002:a05:690c:6087:b0:718:a975:d4f6 with SMTP id 00721157ae682-719b424d291mr46021797b3.31.1753282059487;
-        Wed, 23 Jul 2025 07:47:39 -0700 (PDT)
+        bh=NC1ayEHkvN6ijinKURZBxrM3hNqjaSgPk5qZ/n3J1rM=;
+        b=GIfAdMXw8MQknnkXG3jDAOQAtfKBOuObgAUlmqR3byffEMwFEAZ6TH7Gf4jxSH+OSu
+         5jx2+8Cr5Jye5oLC2QDLvNdavm5ZOUARKM46zTf79E/sRAUNgo0cGPyhGcYOIgxFDedM
+         WKOLj/9t1ihYvzgF/vDPwBjBMKoZszc25jZIWf1kiTnU6CE038ghCjlQ4TI2rTUFhJfc
+         eCm4nt3mH4id8ee3AR+de6cR80UUcC0Ame1r8EW1xz9oaQkoHunQrvX2arNXno97PqQ8
+         5sDvwO64+1AkEZCmJqC+v+f6EGxJ2OVUVqo/6L6OnkDvxZugfG6a7Fd8Y/Dx+uIvznIs
+         RfVA==
+X-Forwarded-Encrypted: i=1; AJvYcCX3xwoieKsOTss00Rh1IPxqT14iR0QKDhI/cYfmKVif8lf6G4cpa4drPDd5BNAMzTEEoHujUheKCw==@kvack.org
+X-Gm-Message-State: AOJu0YyDdsE8BqiTKWDW+fbdSJBwpSxlYkr0KLCg4IisH8lpx0SiSvr6
+	AMfwg2bJ6T6l6kF3A8oOdMaeC5G0XS9QISbdpnvYSjIv8yhTvi73bfL+Zye7uqheOKk=
+X-Gm-Gg: ASbGncvXql0Hz32nfM5sEPBsdyTZiJH1KhP7EVljPSM9Fm+Eu/iLKs2NJmGBmIkXjF6
+	io6O6f+NaklWJm7b46sKpYPr0HFNxFWiQkWmNo5rVLAm+emQ9N/7ZkvBnfISDqAq9dxlNStE06a
+	YrOTH3gFP/zN97dykFtatFmx6DdsuhXHUSS5/ykqZUrYa6fbgE9JU6PSmBAqq5CVfy2QTRMVH8S
+	HkHF3dVCp6bz5d3GFqVQb+lUT5WUdo2nmTGS5wYhWP/J4nSNKgmX7byfIqlcwQSM9LI0FPY8chE
+	ZJV3Re2SjxevNxgKw2etoTjwfnp58+8CeBW+WDiNRJcDqMPMA8T6VVY8tSIldux3JrPkLPvNHqb
+	B0T5+JHNX/vLJ5GF7co/z0CUL/lnxkZtIR9DsgF5gEgnNc5gkcGQJaBMVges7qubSc36OUQs0mQ
+	82EvHZF9HqS3Mzuxi7PSCvx27N
+X-Google-Smtp-Source: AGHT+IHtTYkgbLD8Z9PD3xbOoYfvfKs4NkwGaH86Xh5bYMAIlsFdLVYPN6ZxosRwBh+RGdz+VhmZwQ==
+X-Received: by 2002:a05:690c:9681:b0:718:4511:e173 with SMTP id 00721157ae682-719b4185000mr42897137b3.12.1753282061377;
+        Wed, 23 Jul 2025 07:47:41 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (235.247.85.34.bc.googleusercontent.com. [34.85.247.235])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-719532c7e4fsm30482117b3.72.2025.07.23.07.47.37
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-719532c7e4fsm30482117b3.72.2025.07.23.07.47.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Jul 2025 07:47:38 -0700 (PDT)
+        Wed, 23 Jul 2025 07:47:40 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: pratyush@kernel.org,
 	jasonmiu@google.com,
@@ -162,22 +162,22 @@ To: pratyush@kernel.org,
 	parav@nvidia.com,
 	leonro@nvidia.com,
 	witu@nvidia.com
-Subject: [PATCH v2 22/32] selftests/liveupdate: add subsystem/state tests
-Date: Wed, 23 Jul 2025 14:46:35 +0000
-Message-ID: <20250723144649.1696299-23-pasha.tatashin@soleen.com>
+Subject: [PATCH v2 23/32] docs: add luo documentation
+Date: Wed, 23 Jul 2025 14:46:36 +0000
+Message-ID: <20250723144649.1696299-24-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
 In-Reply-To: <20250723144649.1696299-1-pasha.tatashin@soleen.com>
 References: <20250723144649.1696299-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AAF4E40003
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 4ds574x1t9zheefzfwjy13o3hwz3tdw1
-X-HE-Tag: 1753282060-747037
-X-HE-Meta: U2FsdGVkX18FnsnyWejGuXDuX43l0Hd2wGaN2aqPmLyHAlUlAoL374ElR5yQS2Z75ri322uwxrGZbNXu/XBBUFWslwHuR+fTIqNtxacB+lRroFUfE9Y7Sq9h8tYlwfEQcSQt9epwHtaQ2QBB0j5GkvDENcJ8QJv/XrIqrIb0SoiNbHUBSRbMOS7QV76Kpq4i7j9GlsmAPsReEmIYkUGLhUc8I6v4Ll5pmjtX/CsMaOBnZwKEhLc7S3N2Ys/kMCnL2TX8uE4pw3RdEmfPIwHataGjVGghTl/BpSm9cGaadxoAqxuBLGmu6IB3XxnLnlf61FYPmtFZi1yyWGn9jR8Uhu59mgKe1gulQgDM1/kfo+LfM3fspVeczRjTEZBQD/0IKwDs1NVLK9tWz/DEbHVzRz2655HPipC8+xzNyCiWSxppPQxKeN42WwlQq2utWScQalzOtfGF6nYZAk+87h3Ihx1Dsw1ZOg0UJb7yGWeV2Kel8P+XzZ03IyGKr6kpzlxmRExJDpxeUclxc24sxjk3MYiOZsmyFQ3dxf3xWgAy6kKiUvA+kA6osY621c1u2VAIxYU+Q7x74bh67K/pHVs5TFDNmVhCSQVZuIp/Y3Dj4iNjqGyrua/QK/+IAOpvZ9JHOOvXQsyizVa5RGYTUy8hKHb/YCbfZMh1B+LLTC+T+r2D4BCOt/XDzJFpV6y5blMoMclL8pEbJb/hDmGIM6UKh/Y/6g3Fh1aXF8bnqEGETVWKmv3oLMHlXMz0OdYRKleB8o+MjwJa5Y+KqLGIjmm9bWR9ETFhDctT01wcmuVjbgeMorgE3wRKlUX/b79KoHplPJDQvqpxtsPx2EVOwXNUJ4JjCs3XYjyy/7OUjgcoSORcOlX4fCi82jqg5DAVCHcBnVbQCD0o/FYLkSsIxCeYtWdADfqFGnXfAuygUyBA1WUynbX9YyiNihDOBvPufHY5zMDlntqLR4NykWVTlyV
- hMl2zrj+
- L9QMPd/LwLpzuaGbe4IKks1iM08e5hRvFZXObnIurgsxtz1VFiEqUybBfN833xKLtgMJvbjhbL2jk1fqSVvQ7R+jNXR3BIRaofMXhAoQBbb5kKLO7bEFTgAH5belO/EtfG+cOJhGnZgMbGA058nLyfsuVayMNJgoHshEjSfKlDqknRetLz7CErDGIIeYZewOIYZlthuTqjEvdFnfQobL+1xHDSgAsTiD4ntuQHXb0B5HYBqgjAWkpT8dz7HSTH6AVHwE1tMxGqohvHF52h21DEDDHM8IkKffTYKiW7C1l+G0BSG2PGXxelJW5v1aVKk27pMxhmxJLjhYoQnSJdhdgH/zVX4sLXEPtGhtYK9isyBBTLz+dOGlyIfi+8H6O+CKE55YBxkF5il+YTiqkj/vBhXjxBd0G4UhQj0Tx1F04JZFdhG7J7FfAqkhluTjGAvfLAZ8mtrS5/ajOtgrNwSJHMenUCW/Pzl3dLX7NOMfwPumb4adBy4+nWZV8qw==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 629AE40012
+X-Stat-Signature: gg41tqdqnp4f5kn1g88cut1zqa7etsi9
+X-HE-Tag: 1753282062-698120
+X-HE-Meta: U2FsdGVkX19s4h6vvtc5U27SJCLngIANcdGrwabjphWBmmtW3ZykMvPzBLFpGW9VaFzg8JINzsOxXF8YPm4vyV0E8stO9z28vFUieuhBTV+uxHUn0gXURuStVV0LL6hMxUIHXX4rb3XayTV/+qGUQJvvhGrWBStWO6MrnBvP32pNIHremEj+vC7/G6i2mdvteIoFM8UclBo8kIlrbGq2OD0azdyzef3mSjj4/N9S+jw7dtoRsdd+kS9v0RBSfFreWNlbIQGo9QAAS239IddKfS8OHewLdSXUagzBFud4MiMSZ+P1hh1bZE0sHv4ApmtmwvvW4CE5YnLRzma0nhNsxzX8XkWAnp8JC80ICL7wbHhnh3ovyOfpzOBeZvfjm7YYXseOnCzAFKFrw7a1BaFrtb9vbOtUpyqCCfHBbku6KFq0Ub7F5Mx58ql1XREtqHUAxUXWpFkjkwLBi++84tjOygWLw0EdK2N2lqCpR7egy77OPGZKUhqt9+szCOSmOOoFAtX3cHJT6nBSCUTnHEtbiJcC4pF16kRZFTJkug1z84R+upY1UFZBSB1bt/UyqrpbYOkQGMYPe07dbSjRuKdnpVxqekT7/zwRHHmP36PWVf6jLNIDLXUg3TXlxfvBqpExWsga9Uz39rKUADiARf9fgSRJohunfNae1oXo5btVf++XRZnppO8gojMR/jBoUJGbHi2F3KwqB61/x0jTKVTfXjJYgaZnUvsQWXxdbForXYi/wUfIC0xpFhIhOQWw1uEft+c+fuIHtMezlZ88gIa9XZ6MAP7sXPtBCyjuHwj1wN/6uFOBN+Sr8HwEXWftOJrB8Zs+jqRlTL0SuFbf3xlmX0mvuSHwaxtQCqrt2Fu4NkIpT2TZz9WohT5Vg4592NxQPK1Uhj343GnVtNUbMB61DVykEltbGTsHbUSZ9s6//xjuWm9pR9Yl7idNyCf2kco227gQScWnc5BYilYsE4y
+ HxxS8wxX
+ OgvJSGY6MWKZsXEKPRprM9blf+8IZRBHTwKsIcRdwZFyrfBEd1dgstClyfVWiAlHH4pvKwwjyWMzIKIa7GZfeJCciHzb5yACZu1q+cNP02w9jGLsp9q0kCHFh7JbuPQoyvZ6/QhojcuNBZjOsOkGn6o4j9zAA0Rr19EfYy5uSMQ1mcdgsBCTPqr1uM1s+qrLa7FDM
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,430 +186,166 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduces a new set of userspace selftests for the LUO. These tests
-verify the functionality LUO by using the kernel-side selftest ioctls
-provided by the LUO module, primarily focusing on subsystem management
-and basic LUO state transitions.
+Add the documentation files for the Live Update Orchestrator
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- tools/testing/selftests/Makefile              |   1 +
- tools/testing/selftests/liveupdate/.gitignore |   1 +
- tools/testing/selftests/liveupdate/Makefile   |   7 +
- tools/testing/selftests/liveupdate/config     |   6 +
- .../testing/selftests/liveupdate/liveupdate.c | 356 ++++++++++++++++++
- 5 files changed, 371 insertions(+)
- create mode 100644 tools/testing/selftests/liveupdate/.gitignore
- create mode 100644 tools/testing/selftests/liveupdate/Makefile
- create mode 100644 tools/testing/selftests/liveupdate/config
- create mode 100644 tools/testing/selftests/liveupdate/liveupdate.c
+ Documentation/admin-guide/index.rst        |  1 +
+ Documentation/admin-guide/liveupdate.rst   | 16 +++++++
+ Documentation/core-api/index.rst           |  1 +
+ Documentation/core-api/liveupdate.rst      | 50 ++++++++++++++++++++++
+ Documentation/userspace-api/index.rst      |  1 +
+ Documentation/userspace-api/liveupdate.rst | 25 +++++++++++
+ 6 files changed, 94 insertions(+)
+ create mode 100644 Documentation/admin-guide/liveupdate.rst
+ create mode 100644 Documentation/core-api/liveupdate.rst
+ create mode 100644 Documentation/userspace-api/liveupdate.rst
 
-diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
-index 339b31e6a6b5..d8fc84ccac32 100644
---- a/tools/testing/selftests/Makefile
-+++ b/tools/testing/selftests/Makefile
-@@ -53,6 +53,7 @@ TARGETS += kvm
- TARGETS += landlock
- TARGETS += lib
- TARGETS += livepatch
-+TARGETS += liveupdate
- TARGETS += lkdtm
- TARGETS += lsm
- TARGETS += membarrier
-diff --git a/tools/testing/selftests/liveupdate/.gitignore b/tools/testing/selftests/liveupdate/.gitignore
+diff --git a/Documentation/admin-guide/index.rst b/Documentation/admin-guide/index.rst
+index 259d79fbeb94..3f59ccf32760 100644
+--- a/Documentation/admin-guide/index.rst
++++ b/Documentation/admin-guide/index.rst
+@@ -95,6 +95,7 @@ likely to be of interest on almost any system.
+    cgroup-v2
+    cgroup-v1/index
+    cpu-load
++   liveupdate
+    mm/index
+    module-signing
+    namespaces/index
+diff --git a/Documentation/admin-guide/liveupdate.rst b/Documentation/admin-guide/liveupdate.rst
 new file mode 100644
-index 000000000000..af6e773cf98f
+index 000000000000..ff05cc1dd784
 --- /dev/null
-+++ b/tools/testing/selftests/liveupdate/.gitignore
-@@ -0,0 +1 @@
-+/liveupdate
-diff --git a/tools/testing/selftests/liveupdate/Makefile b/tools/testing/selftests/liveupdate/Makefile
++++ b/Documentation/admin-guide/liveupdate.rst
+@@ -0,0 +1,16 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++=================
++Live Update sysfs
++=================
++:Author: Pasha Tatashin <pasha.tatashin@soleen.com>
++
++LUO sysfs interface
++===================
++.. kernel-doc:: kernel/liveupdate/luo_sysfs.c
++   :doc: LUO sysfs interface
++
++See Also
++========
++
++- :doc:`Live Update Orchestrator </core-api/liveupdate>`
+diff --git a/Documentation/core-api/index.rst b/Documentation/core-api/index.rst
+index 7a4ca18ca6e2..a79d806f2c8e 100644
+--- a/Documentation/core-api/index.rst
++++ b/Documentation/core-api/index.rst
+@@ -136,6 +136,7 @@ Documents that don't fit elsewhere or which have yet to be categorized.
+    :maxdepth: 1
+ 
+    librs
++   liveupdate
+    netlink
+ 
+ .. only:: subproject and html
+diff --git a/Documentation/core-api/liveupdate.rst b/Documentation/core-api/liveupdate.rst
 new file mode 100644
-index 000000000000..2a573c36016e
+index 000000000000..41c4b76cd3ec
 --- /dev/null
-+++ b/tools/testing/selftests/liveupdate/Makefile
-@@ -0,0 +1,7 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+CFLAGS += -Wall -O2 -Wno-unused-function
-+CFLAGS += $(KHDR_INCLUDES)
++++ b/Documentation/core-api/liveupdate.rst
+@@ -0,0 +1,50 @@
++.. SPDX-License-Identifier: GPL-2.0
 +
-+TEST_GEN_PROGS += liveupdate
++========================
++Live Update Orchestrator
++========================
++:Author: Pasha Tatashin <pasha.tatashin@soleen.com>
 +
-+include ../lib.mk
-diff --git a/tools/testing/selftests/liveupdate/config b/tools/testing/selftests/liveupdate/config
++.. kernel-doc:: kernel/liveupdate/luo_core.c
++   :doc: Live Update Orchestrator (LUO)
++
++LUO Subsystems Participation
++============================
++.. kernel-doc:: kernel/liveupdate/luo_subsystems.c
++   :doc: LUO Subsystems support
++
++LUO Preserving File Descriptors
++===============================
++.. kernel-doc:: kernel/liveupdate/luo_files.c
++   :doc: LUO file descriptors
++
++Public API
++==========
++.. kernel-doc:: include/linux/liveupdate.h
++
++.. kernel-doc:: kernel/liveupdate/luo_core.c
++   :export:
++
++.. kernel-doc:: kernel/liveupdate/luo_subsystems.c
++   :export:
++
++.. kernel-doc:: kernel/liveupdate/luo_files.c
++   :export:
++
++Internal API
++============
++.. kernel-doc:: kernel/liveupdate/luo_core.c
++   :internal:
++
++.. kernel-doc:: kernel/liveupdate/luo_subsystems.c
++   :internal:
++
++.. kernel-doc:: kernel/liveupdate/luo_files.c
++   :internal:
++
++See Also
++========
++
++- :doc:`Live Update uAPI </userspace-api/liveupdate>`
++- :doc:`Live Update SysFS </admin-guide/liveupdate>`
++- :doc:`/core-api/kho/concepts`
+diff --git a/Documentation/userspace-api/index.rst b/Documentation/userspace-api/index.rst
+index b8c73be4fb11..ee8326932cb0 100644
+--- a/Documentation/userspace-api/index.rst
++++ b/Documentation/userspace-api/index.rst
+@@ -62,6 +62,7 @@ Everything else
+ 
+    ELF
+    netlink/index
++   liveupdate
+    sysfs-platform_profile
+    vduse
+    futex2
+diff --git a/Documentation/userspace-api/liveupdate.rst b/Documentation/userspace-api/liveupdate.rst
 new file mode 100644
-index 000000000000..382c85b89570
+index 000000000000..70b5017c0e3c
 --- /dev/null
-+++ b/tools/testing/selftests/liveupdate/config
-@@ -0,0 +1,6 @@
-+CONFIG_KEXEC_FILE=y
-+CONFIG_KEXEC_HANDOVER=y
-+CONFIG_KEXEC_HANDOVER_DEBUG=y
-+CONFIG_LIVEUPDATE=y
-+CONFIG_LIVEUPDATE_SYSFS_API=y
-+CONFIG_LIVEUPDATE_SELFTESTS=y
-diff --git a/tools/testing/selftests/liveupdate/liveupdate.c b/tools/testing/selftests/liveupdate/liveupdate.c
-new file mode 100644
-index 000000000000..989a9a67d4cf
---- /dev/null
-+++ b/tools/testing/selftests/liveupdate/liveupdate.c
-@@ -0,0 +1,356 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+/*
-+ * Copyright (c) 2025, Google LLC.
-+ * Pasha Tatashin <pasha.tatashin@soleen.com>
-+ */
-+
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <stdbool.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <unistd.h>
-+
-+#include <sys/ioctl.h>
-+#include <sys/mman.h>
-+
-+#include <linux/liveupdate.h>
-+
-+#include "../kselftest.h"
-+#include "../kselftest_harness.h"
-+#include "../../../../kernel/liveupdate/luo_selftests.h"
-+
-+struct subsystem_info {
-+	void *data_page;
-+	void *verify_page;
-+	char test_name[LUO_NAME_LENGTH];
-+	bool registered;
-+};
-+
-+FIXTURE(subsystem) {
-+	int fd;
-+	int fd_dbg;
-+	struct subsystem_info si[LUO_MAX_SUBSYSTEMS];
-+};
-+
-+FIXTURE(state) {
-+	int fd;
-+	int fd_dbg;
-+};
-+
-+#define LUO_DEVICE	"/dev/liveupdate"
-+#define LUO_DBG_DEVICE	"/sys/kernel/debug/liveupdate/luo_selftest"
-+#define LUO_SYSFS_STATE	"/sys/kernel/liveupdate/state"
-+static size_t page_size;
-+
-+const char *const luo_state_str[] = {
-+	[LIVEUPDATE_STATE_UNDEFINED]   = "undefined",
-+	[LIVEUPDATE_STATE_NORMAL]   = "normal",
-+	[LIVEUPDATE_STATE_PREPARED] = "prepared",
-+	[LIVEUPDATE_STATE_FROZEN]   = "frozen",
-+	[LIVEUPDATE_STATE_UPDATED]  = "updated",
-+};
-+
-+static int run_luo_selftest_cmd(int fd_dbg, __u64 cmd_code,
-+				struct luo_arg_subsystem *subsys_arg)
-+{
-+	struct liveupdate_selftest k_arg;
-+
-+	k_arg.cmd = cmd_code;
-+	k_arg.arg = (__u64)(unsigned long)subsys_arg;
-+
-+	return ioctl(fd_dbg, LIVEUPDATE_IOCTL_SELFTESTS, &k_arg);
-+}
-+
-+static int register_subsystem(int fd_dbg, struct subsystem_info *si)
-+{
-+	struct luo_arg_subsystem subsys_arg;
-+	int ret;
-+
-+	memset(&subsys_arg, 0, sizeof(subsys_arg));
-+	snprintf(subsys_arg.name, LUO_NAME_LENGTH, "%s", si->test_name);
-+	subsys_arg.data_page = si->data_page;
-+
-+	ret = run_luo_selftest_cmd(fd_dbg, LUO_CMD_SUBSYSTEM_REGISTER,
-+				   &subsys_arg);
-+	if (!ret)
-+		si->registered = true;
-+
-+	return ret;
-+}
-+
-+static int unregister_subsystem(int fd_dbg, struct subsystem_info *si)
-+{
-+	struct luo_arg_subsystem subsys_arg;
-+	int ret;
-+
-+	memset(&subsys_arg, 0, sizeof(subsys_arg));
-+	snprintf(subsys_arg.name, LUO_NAME_LENGTH, "%s", si->test_name);
-+
-+	ret = run_luo_selftest_cmd(fd_dbg, LUO_CMD_SUBSYSTEM_UNREGISTER,
-+				   &subsys_arg);
-+	if (!ret)
-+		si->registered = false;
-+
-+	return ret;
-+}
-+
-+static int get_sysfs_state(void)
-+{
-+	char buf[64];
-+	ssize_t len;
-+	int fd, i;
-+
-+	fd = open(LUO_SYSFS_STATE, O_RDONLY);
-+	if (fd < 0) {
-+		ksft_print_msg("Failed to open sysfs state file '%s': %s\n",
-+			       LUO_SYSFS_STATE, strerror(errno));
-+		return -errno;
-+	}
-+
-+	len = read(fd, buf, sizeof(buf) - 1);
-+	close(fd);
-+
-+	if (len <= 0) {
-+		ksft_print_msg("Failed to read sysfs state file '%s': %s\n",
-+			       LUO_SYSFS_STATE, strerror(errno));
-+		return -errno;
-+	}
-+	if (buf[len - 1] == '\n')
-+		buf[len - 1] = '\0';
-+	else
-+		buf[len] = '\0';
-+
-+	for (i = 0; i < ARRAY_SIZE(luo_state_str); i++) {
-+		if (!strcmp(buf, luo_state_str[i]))
-+			return i;
-+	}
-+
-+	return -EIO;
-+}
-+
-+FIXTURE_SETUP(state)
-+{
-+	int state;
-+
-+	page_size = sysconf(_SC_PAGE_SIZE);
-+	self->fd = open(LUO_DEVICE, O_RDWR);
-+	if (self->fd < 0)
-+		SKIP(return, "open(%s) failed [%d]", LUO_DEVICE, errno);
-+
-+	self->fd_dbg = open(LUO_DBG_DEVICE, O_RDWR);
-+	ASSERT_GE(self->fd_dbg, 0);
-+
-+	state = get_sysfs_state();
-+	if (state < 0) {
-+		if (state == -ENOENT || state == -EACCES)
-+			SKIP(return, "sysfs state not accessible (%d)", state);
-+	}
-+}
-+
-+FIXTURE_TEARDOWN(state)
-+{
-+	enum liveupdate_state state = LIVEUPDATE_STATE_NORMAL;
-+
-+	ioctl(self->fd, LIVEUPDATE_IOCTL_GET_STATE, &state);
-+	if (state != LIVEUPDATE_STATE_NORMAL)
-+		ioctl(self->fd, LIVEUPDATE_IOCTL_CANCEL, NULL);
-+	close(self->fd);
-+}
-+
-+FIXTURE_SETUP(subsystem)
-+{
-+	int i;
-+
-+	page_size = sysconf(_SC_PAGE_SIZE);
-+	memset(&self->si, 0, sizeof(self->si));
-+	self->fd = open(LUO_DEVICE, O_RDWR);
-+	if (self->fd < 0)
-+		SKIP(return, "open(%s) failed [%d]", LUO_DEVICE, errno);
-+
-+	self->fd_dbg = open(LUO_DBG_DEVICE, O_RDWR);
-+	ASSERT_GE(self->fd_dbg, 0);
-+
-+	for (i = 0; i < LUO_MAX_SUBSYSTEMS; i++) {
-+		snprintf(self->si[i].test_name, LUO_NAME_LENGTH,
-+			 NAME_NORMAL ".%d", i);
-+
-+		self->si[i].data_page = mmap(NULL, page_size,
-+					     PROT_READ | PROT_WRITE,
-+					     MAP_PRIVATE | MAP_ANONYMOUS,
-+					     -1, 0);
-+		ASSERT_NE(MAP_FAILED, self->si[i].data_page);
-+		memset(self->si[i].data_page, 'A' + i, page_size);
-+
-+		self->si[i].verify_page = mmap(NULL, page_size,
-+					       PROT_READ | PROT_WRITE,
-+					       MAP_PRIVATE | MAP_ANONYMOUS,
-+					       -1, 0);
-+		ASSERT_NE(MAP_FAILED, self->si[i].verify_page);
-+		memset(self->si[i].verify_page, 0, page_size);
-+	}
-+}
-+
-+FIXTURE_TEARDOWN(subsystem)
-+{
-+	enum liveupdate_state state = LIVEUPDATE_STATE_NORMAL;
-+	int i;
-+
-+	ioctl(self->fd, LIVEUPDATE_IOCTL_GET_STATE, &state);
-+	if (state != LIVEUPDATE_STATE_NORMAL)
-+		ioctl(self->fd, LIVEUPDATE_IOCTL_CANCEL, NULL);
-+
-+	for (i = 0; i < LUO_MAX_SUBSYSTEMS; i++) {
-+		if (self->si[i].registered)
-+			unregister_subsystem(self->fd_dbg, &self->si[i]);
-+		munmap(self->si[i].data_page, page_size);
-+		munmap(self->si[i].verify_page, page_size);
-+	}
-+
-+	close(self->fd);
-+}
-+
-+TEST_F(state, normal)
-+{
-+	enum liveupdate_state state;
-+
-+	ASSERT_EQ(0, ioctl(self->fd, LIVEUPDATE_IOCTL_GET_STATE, &state));
-+	ASSERT_EQ(state, LIVEUPDATE_STATE_NORMAL);
-+}
-+
-+TEST_F(state, prepared)
-+{
-+	enum liveupdate_state state;
-+
-+	ASSERT_EQ(0, ioctl(self->fd, LIVEUPDATE_IOCTL_PREPARE, NULL));
-+
-+	ASSERT_EQ(0, ioctl(self->fd, LIVEUPDATE_IOCTL_GET_STATE, &state));
-+	ASSERT_EQ(state, LIVEUPDATE_STATE_PREPARED);
-+
-+	ASSERT_EQ(0, ioctl(self->fd, LIVEUPDATE_IOCTL_CANCEL, NULL));
-+
-+	ASSERT_EQ(0, ioctl(self->fd, LIVEUPDATE_IOCTL_GET_STATE, &state));
-+	ASSERT_EQ(state, LIVEUPDATE_STATE_NORMAL);
-+}
-+
-+TEST_F(state, sysfs_normal)
-+{
-+	ASSERT_EQ(LIVEUPDATE_STATE_NORMAL, get_sysfs_state());
-+}
-+
-+TEST_F(state, sysfs_prepared)
-+{
-+	ASSERT_EQ(0, ioctl(self->fd, LIVEUPDATE_IOCTL_PREPARE, NULL));
-+	ASSERT_EQ(LIVEUPDATE_STATE_PREPARED, get_sysfs_state());
-+
-+	ASSERT_EQ(0, ioctl(self->fd, LIVEUPDATE_IOCTL_CANCEL, NULL));
-+	ASSERT_EQ(LIVEUPDATE_STATE_NORMAL, get_sysfs_state());
-+}
-+
-+TEST_F(state, sysfs_frozen)
-+{
-+	ASSERT_EQ(0, ioctl(self->fd, LIVEUPDATE_IOCTL_PREPARE, NULL));
-+
-+	ASSERT_EQ(LIVEUPDATE_STATE_PREPARED, get_sysfs_state());
-+
-+	ASSERT_EQ(0, ioctl(self->fd_dbg, LIVEUPDATE_IOCTL_FREEZE, NULL));
-+	ASSERT_EQ(LIVEUPDATE_STATE_FROZEN, get_sysfs_state());
-+
-+	ASSERT_EQ(0, ioctl(self->fd, LIVEUPDATE_IOCTL_CANCEL, NULL));
-+	ASSERT_EQ(LIVEUPDATE_STATE_NORMAL, get_sysfs_state());
-+}
-+
-+TEST_F(subsystem, register_unregister)
-+{
-+	ASSERT_EQ(0, register_subsystem(self->fd_dbg, &self->si[0]));
-+	ASSERT_EQ(0, unregister_subsystem(self->fd_dbg, &self->si[0]));
-+}
-+
-+TEST_F(subsystem, double_unregister)
-+{
-+	ASSERT_EQ(0, register_subsystem(self->fd_dbg, &self->si[0]));
-+	ASSERT_EQ(0, unregister_subsystem(self->fd_dbg, &self->si[0]));
-+	EXPECT_NE(0, unregister_subsystem(self->fd_dbg, &self->si[0]));
-+	EXPECT_TRUE(errno == EINVAL || errno == ENOENT);
-+}
-+
-+TEST_F(subsystem, register_unregister_many)
-+{
-+	int i;
-+
-+	for (i = 0; i < LUO_MAX_SUBSYSTEMS; i++)
-+		ASSERT_EQ(0, register_subsystem(self->fd_dbg, &self->si[i]));
-+
-+	for (i = 0; i < LUO_MAX_SUBSYSTEMS; i++)
-+		ASSERT_EQ(0, unregister_subsystem(self->fd_dbg, &self->si[i]));
-+}
-+
-+TEST_F(subsystem, getdata_verify)
-+{
-+	enum liveupdate_state state;
-+	int i;
-+
-+	for (i = 0; i < LUO_MAX_SUBSYSTEMS; i++)
-+		ASSERT_EQ(0, register_subsystem(self->fd_dbg, &self->si[i]));
-+
-+	ASSERT_EQ(0, ioctl(self->fd, LIVEUPDATE_IOCTL_PREPARE, NULL));
-+	ASSERT_EQ(0, ioctl(self->fd, LIVEUPDATE_IOCTL_GET_STATE, &state));
-+	ASSERT_EQ(state, LIVEUPDATE_STATE_PREPARED);
-+
-+	for (i = 0; i < LUO_MAX_SUBSYSTEMS; i++) {
-+		struct luo_arg_subsystem subsys_arg;
-+
-+		memset(&subsys_arg, 0, sizeof(subsys_arg));
-+		snprintf(subsys_arg.name, LUO_NAME_LENGTH, "%s",
-+			 self->si[i].test_name);
-+		subsys_arg.data_page = self->si[i].verify_page;
-+
-+		ASSERT_EQ(0, run_luo_selftest_cmd(self->fd_dbg,
-+						  LUO_CMD_SUBSYSTEM_GETDATA,
-+						  &subsys_arg));
-+		ASSERT_EQ(0, memcmp(self->si[i].data_page,
-+				    self->si[i].verify_page,
-+				    page_size));
-+	}
-+
-+	ASSERT_EQ(0, ioctl(self->fd, LIVEUPDATE_IOCTL_CANCEL, NULL));
-+	ASSERT_EQ(0, ioctl(self->fd, LIVEUPDATE_IOCTL_GET_STATE, &state));
-+	ASSERT_EQ(state, LIVEUPDATE_STATE_NORMAL);
-+
-+	for (i = 0; i < LUO_MAX_SUBSYSTEMS; i++)
-+		ASSERT_EQ(0, unregister_subsystem(self->fd_dbg, &self->si[i]));
-+}
-+
-+TEST_F(subsystem, prepare_fail)
-+{
-+	int i;
-+
-+	snprintf(self->si[LUO_MAX_SUBSYSTEMS - 1].test_name, LUO_NAME_LENGTH,
-+		 NAME_PREPARE_FAIL ".%d", LUO_MAX_SUBSYSTEMS - 1);
-+
-+	for (i = 0; i < LUO_MAX_SUBSYSTEMS; i++)
-+		ASSERT_EQ(0, register_subsystem(self->fd_dbg, &self->si[i]));
-+
-+	ASSERT_EQ(-1, ioctl(self->fd, LIVEUPDATE_IOCTL_PREPARE, NULL));
-+
-+	for (i = 0; i < LUO_MAX_SUBSYSTEMS; i++)
-+		ASSERT_EQ(0, unregister_subsystem(self->fd_dbg, &self->si[i]));
-+
-+	snprintf(self->si[LUO_MAX_SUBSYSTEMS - 1].test_name, LUO_NAME_LENGTH,
-+		 NAME_NORMAL ".%d", LUO_MAX_SUBSYSTEMS - 1);
-+
-+	for (i = 0; i < LUO_MAX_SUBSYSTEMS; i++)
-+		ASSERT_EQ(0, register_subsystem(self->fd_dbg, &self->si[i]));
-+
-+	ASSERT_EQ(0, ioctl(self->fd, LIVEUPDATE_IOCTL_PREPARE, NULL));
-+	ASSERT_EQ(0, ioctl(self->fd_dbg, LIVEUPDATE_IOCTL_FREEZE, NULL));
-+	ASSERT_EQ(0, ioctl(self->fd, LIVEUPDATE_IOCTL_CANCEL, NULL));
-+	ASSERT_EQ(LIVEUPDATE_STATE_NORMAL, get_sysfs_state());
-+
-+	for (i = 0; i < LUO_MAX_SUBSYSTEMS; i++)
-+		ASSERT_EQ(0, unregister_subsystem(self->fd_dbg, &self->si[i]));
-+}
-+
-+TEST_HARNESS_MAIN
++++ b/Documentation/userspace-api/liveupdate.rst
+@@ -0,0 +1,25 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++================
++Live Update uAPI
++================
++:Author: Pasha Tatashin <pasha.tatashin@soleen.com>
++
++ioctl interface
++===============
++.. kernel-doc:: kernel/liveupdate/luo_ioctl.c
++   :doc: LUO ioctl Interface
++
++ioctl uAPI
++===========
++.. kernel-doc:: include/uapi/linux/liveupdate.h
++
++LUO selftests ioctl
++===================
++.. kernel-doc:: kernel/liveupdate/luo_selftests.c
++   :doc: LUO Selftests
++
++See Also
++========
++
++- :doc:`Live Update Orchestrator </core-api/liveupdate>`
 -- 
 2.50.0.727.gbf7dc18ff4-goog
 
