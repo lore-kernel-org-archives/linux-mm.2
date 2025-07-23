@@ -2,134 +2,127 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 37757C83F1A
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 14:41:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CBD37C83F17
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 14:43:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CFFFA6B00F8; Wed, 23 Jul 2025 10:41:50 -0400 (EDT)
+	id 33F946B009B; Wed, 23 Jul 2025 10:43:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD7856B00F9; Wed, 23 Jul 2025 10:41:50 -0400 (EDT)
+	id 317C86B00FB; Wed, 23 Jul 2025 10:43:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEDF86B00FA; Wed, 23 Jul 2025 10:41:50 -0400 (EDT)
+	id 1DF998E0002; Wed, 23 Jul 2025 10:43:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AA7DF6B00F8
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 10:41:50 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7414D8071C
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:41:50 +0000 (UTC)
-X-FDA: 83695793580.18.990F1C4
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 08ED51A0004
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:41:47 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=VRJbOnXj;
-	spf=pass (imf19.hostedemail.com: domain of farman@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=farman@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 08D2D6B00FB
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 10:43:55 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 824AC1134E7
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:43:54 +0000 (UTC)
+X-FDA: 83695798788.19.55A58C5
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	by imf04.hostedemail.com (Postfix) with ESMTP id C053740007
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 14:43:52 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=0BdalRkR;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf04.hostedemail.com: domain of 3J_WAaAYKCGAQC8LHAEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--seanjc.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3J_WAaAYKCGAQC8LHAEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--seanjc.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753281832; a=rsa-sha256;
+	cv=none;
+	b=PUy/b7wk65V9j6aW678QtPb/958COLecbvYIU/BH/Shxt5BxqOd9/hjluhjzScZqP/Y71u
+	jKLxzS906+Hwcf+oZBMMcc6vKQC3vN6jWLvRi/Y6YBO2ieGkEUiasvms6eRuTMwcsmK3cc
+	ZRL1N76ZAG3AexswnJnQLoBS+ne5DHo=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=0BdalRkR;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf04.hostedemail.com: domain of 3J_WAaAYKCGAQC8LHAEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--seanjc.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3J_WAaAYKCGAQC8LHAEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--seanjc.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753281708;
+	s=arc-20220608; t=1753281832;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BsRYrmzERgPOP9TC+SccnJXGvwcImyLF8hTv5G28Y4Y=;
-	b=hctrvN5lA2dfGm5sZjgOtehkha/vBK3qKthE03a6Zjka+mu2dgHPzzwMc7DCoSGnUME23c
-	2lmCrMmP2c+bvXxzekQRdnU+z7tgA8ha1vI7p76E2LpeE5TsaAidj/RP39RE5RGM/OISph
-	q6Pc+H1zhkxGJXLwryKCD46XmKaoKwM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753281708; a=rsa-sha256;
-	cv=none;
-	b=qdF/KsqrWIJ4GbHFZoqL8kEAvKA6eY2LtlQlIgfEw6ID5Tzf16zhfkV9dQ/8Pn8vj4EXW8
-	uUSeAN6DPSa/02WGURZfianV6jrLmw9L9i8X6mI3RFp0KIFQro4XiW3S24dZMqXycKB1zB
-	8ZQNkuHbFTGi/Nb/+0LM5IOfaZAUEjI=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=VRJbOnXj;
-	spf=pass (imf19.hostedemail.com: domain of farman@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=farman@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56NAPn7s029171;
-	Wed, 23 Jul 2025 14:41:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=BsRYrm
-	zERgPOP9TC+SccnJXGvwcImyLF8hTv5G28Y4Y=; b=VRJbOnXjrbgBI0by2bkg2K
-	+JuEPLtFD88gSEvRG9S64dN2bHJTCtfElfwP1DmDB+PRBKyrBHOxQj4IVNRXBvqN
-	ImgNVYAaJUs+Xrlz2igBfrJKOSYrQWw2cmzHQn1iBPfNHVKYwwaARPXrrcgYYvzL
-	LNA5hrvaUwq6MVb+7kM7M43/HqfIkrWBi8EKx3dOv0ueXlSulva7GocMnMSNrXLN
-	j2SZARXy3JAPMML8yVqdkEambwygWQC5TPbJ3APATt3r9Rcf2IwOikyMCq6J39Qf
-	PVQ3EebTE5irrTGv5uOcMSgSjMvkqbzBsFa8nGiy4W8XyleZ0cGF0cv0FByAj7ug
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 482kdym50a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Jul 2025 14:41:37 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56NCY7DW014302;
-	Wed, 23 Jul 2025 14:41:36 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 480ppp87m5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Jul 2025 14:41:36 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 56NEfZ5315401652
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 23 Jul 2025 14:41:36 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C76C658065;
-	Wed, 23 Jul 2025 14:41:35 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 053155805A;
-	Wed, 23 Jul 2025 14:41:35 +0000 (GMT)
-Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown [9.61.103.85])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 23 Jul 2025 14:41:34 +0000 (GMT)
-Message-ID: <f22a8b5b50a140339222bed77f4b670d9008f29b.camel@linux.ibm.com>
-Subject: Re: [PATCH v4 2/5] vfio/type1: optimize vfio_pin_pages_remote()
-From: Eric Farman <farman@linux.ibm.com>
-To: lizhe.67@bytedance.com
-Cc: akpm@linux-foundation.org, alex.williamson@redhat.com, david@redhat.com,
-        jgg@ziepe.ca, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, peterx@redhat.com
-Date: Wed, 23 Jul 2025 10:41:34 -0400
-In-Reply-To: <20250723070917.87657-1-lizhe.67@bytedance.com>
-References: <1bd50178755535ee0a3b0b2164acf9319079a3d5.camel@linux.ibm.com>
-	 <20250723070917.87657-1-lizhe.67@bytedance.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
-MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: LjxNU6gIq12eLmfrwE13fuT495092aWs
-X-Authority-Analysis: v=2.4 cv=XP0wSRhE c=1 sm=1 tr=0 ts=6880f4a1 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=968KyxNXAAAA:8 a=VnNF1IyMAAAA:8
- a=20KFwNOVAAAA:8 a=tpwnMQrfUSg4QDc0uBEA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: LjxNU6gIq12eLmfrwE13fuT495092aWs
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIzMDEyNiBTYWx0ZWRfXxcniVq8EcEpC
- fLRZaRQlxv2Cc0ZgFEvrZu8DOkDS9TER1TtyJ6F3mP4rXoZ7rebwPzrULTrhH2s5B3TR9lvFNvU
- SodSOjHHKKN1Srf2rHlipoWJK0JuelXrJTXWSWGRtTZoiaHrj0mDT7+LtqhIo0jioWjMO/KxkrQ
- ivZp1kBlCe+E/TG8U372bkCsjRX6TDowCkAe+c4xgGXHDCutugBBmQukaNeWe0Qdrhqunmwr5wT
- Fq5eOhJQ/RdABPvBvYK1zqkN6cV2v+9/IEPWgFIfDkbEQJAYT6EeDcNdXA8K99D27f0I5NbN3VE
- ONB2KvWdCNpZ8dZQTogpQKgX+15GF06JchXFrlqaprgwt636BB1BqaK6NtFm65PPQHkz8fesx0i
- AShL75hmGrkmtU6MsfF7TL3XhVQIPoqg5ooQZbane29IUf1IsD47Hsa82aib817UNOB2VB/v
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-23_02,2025-07-23_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 bulkscore=0 priorityscore=1501 mlxlogscore=677 spamscore=0
- suspectscore=0 clxscore=1015 malwarescore=0 impostorscore=0
- lowpriorityscore=0 adultscore=0 phishscore=0 classifier=spam authscore=0
- authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2507230126
-X-Rspamd-Queue-Id: 08ED51A0004
+	bh=kYA2UzaJYH+3hGfThkOhnRfE3+sQ12vjUQCuIWpjA0w=;
+	b=vhR0yB9b8SouDxjR9wUnsDQg3bYkvAl1POFfq9GTU79BYAU/XOzxFh5O/ddefuMBgDltSi
+	3x/NGuBFRELtgumnxuJBnioYCYJcsogwVCdaMH4BN1F1jp/LuaAZZksDl8YX+0XcTniE9Z
+	8UmnoBaRe43LxM8Bsz+TxfW5RvFntO0=
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3132e7266d3so6787564a91.2
+        for <linux-mm@kvack.org>; Wed, 23 Jul 2025 07:43:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753281831; x=1753886631; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kYA2UzaJYH+3hGfThkOhnRfE3+sQ12vjUQCuIWpjA0w=;
+        b=0BdalRkR4fohQC3tH6jMyh2MZwfi6QMn+RLklr3jA4Tb8YgjSu9q6RLCKK+K0vjxQG
+         VPo0oPNvhZI3MZgdugybGlLSJqKnS3seaRW/HIbcR156vypn9UL7M9LSA7EnhEAz6tys
+         3kt6Szi9PtBCfzEGMFq0XeLqdWSp6hvnFfE9ECEE5J6nSkvnExBIMm6+KFNwDLtOb/44
+         z4tGeiBflbL35YkAanMRqhqQLKAMd/J8cSrb1zyRKWtHudb3rmPLFSjyI8Ucl1WmQT/D
+         8qmWR80IMi0fxC+zGXUjtvVknZXgpVnHI334fgaC6JhjCEZbD7c5pQGw6xnuV2G+2wNq
+         7b+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753281831; x=1753886631;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kYA2UzaJYH+3hGfThkOhnRfE3+sQ12vjUQCuIWpjA0w=;
+        b=PkFwv4A8bIbrEeUd2qaqWtih575bR+8KAoIQG0c+gK9swofQWWdfm5HFHn2W4G7O85
+         i13IdykEKYxvSeD1miLQooCb9CevbIcJP5a8yr9yYR4JnmQ1tdKFR7+YLY9csejVIxaG
+         7YrqA1gYADTz+7ryktdYKslMxC7XKrGqIVajV6RVOJ5x6a/sQHcp9/s0ugs3m0YNPiAW
+         C/nWrRNNY3p3BkDyJDS+o+KO9iUbcAcb30Ow2KtigwrtkIjWk+RinkLHjn83Sk11SvJP
+         p9Gt/pMzkrqXsqJpJohhIHK1C/0TPpOtv9/gzmy8f2HnYImLWxoby9nzfRv8pYAXd6Lc
+         uGaw==
+X-Forwarded-Encrypted: i=1; AJvYcCUMFg0kuVAVXCOglFfTh+mHdDMAnu3qWrwDz66zxtBvc2jRY3+0IJkHtdhuPzihWVCNrPxgtROHXg==@kvack.org
+X-Gm-Message-State: AOJu0YzVdAq7jL1n/7atHkKKUKcL8MgTWB7zD4gZphSdN/16ESjAE6EF
+	qjN6L5ZhRTpM9yqEzyhMHh2Nwv0UwZE5FFCgH0ByvQfZwEbdA41dApk+R1YtPY8t+ChB6W8R19B
+	lWfcuGQ==
+X-Google-Smtp-Source: AGHT+IGkVA9V8/ZO7g4shvg2UQ6jCg/0h7Ce9RZescp986cCMnBbbliYZnYSjUAkEJw0pSkUoLPPHW3zZ24=
+X-Received: from pjtu6.prod.google.com ([2002:a17:90a:c886:b0:311:d79d:e432])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5242:b0:311:df4b:4b82
+ with SMTP id 98e67ed59e1d1-31e5078f52bmr4726762a91.4.1753281831499; Wed, 23
+ Jul 2025 07:43:51 -0700 (PDT)
+Date: Wed, 23 Jul 2025 07:43:50 -0700
+In-Reply-To: <CAGtprH8QfPU8tByPLHL69MOhG5hNspS6zCjxzB8xM_Tbjgcs1w@mail.gmail.com>
+Mime-Version: 1.0
+References: <505a30a3-4c55-434c-86a5-f86d2e9dc78a@intel.com>
+ <CAGtprH8swz6GjM57DBryDRD2c6VP=Ayg+dUh5MBK9cg1-YKCDg@mail.gmail.com>
+ <aH5RxqcTXRnQbP5R@google.com> <1fe0f46a-152a-4b5b-99e2-2a74873dafdc@intel.com>
+ <aH55BLkx7UkdeBfT@google.com> <CAGtprH8H2c=bK-7rA1wC1-9f=g8mK3PNXja54bucZ8DnWF7z3g@mail.gmail.com>
+ <aH69a_CVJU0-P9wY@google.com> <CAGtprH_r+eQjdi8q5LABz7LHEhK-xAMi4ciz83j3GnMm5EZRqQ@mail.gmail.com>
+ <aH-hxiD2DwovFpqg@google.com> <CAGtprH8QfPU8tByPLHL69MOhG5hNspS6zCjxzB8xM_Tbjgcs1w@mail.gmail.com>
+Message-ID: <aID1JoOGRZ8HIkc9@google.com>
+Subject: Re: [PATCH v15 14/21] KVM: x86: Enable guest_memfd mmap for default
+ VM type
+From: Sean Christopherson <seanjc@google.com>
+To: Vishal Annapurve <vannapurve@google.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, kvmarm@lists.linux.dev, 
+	pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au, 
+	anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com, 
+	aou@eecs.berkeley.edu, viro@zeniv.linux.org.uk, brauner@kernel.org, 
+	willy@infradead.org, akpm@linux-foundation.org, yilun.xu@intel.com, 
+	chao.p.peng@linux.intel.com, jarkko@kernel.org, amoorthy@google.com, 
+	dmatlack@google.com, isaku.yamahata@intel.com, mic@digikod.net, 
+	vbabka@suse.cz, ackerleytng@google.com, mail@maciej.szmigiero.name, 
+	david@redhat.com, michael.roth@amd.com, wei.w.wang@intel.com, 
+	liam.merwick@oracle.com, isaku.yamahata@gmail.com, 
+	kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com, steven.price@arm.com, 
+	quic_eberman@quicinc.com, quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, 
+	quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com, 
+	quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com, 
+	james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev, 
+	maz@kernel.org, will@kernel.org, qperret@google.com, keirf@google.com, 
+	roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, 
+	rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com, 
+	jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com, 
+	ira.weiny@intel.com
+Content-Type: text/plain; charset="us-ascii"
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: r45htqasfe4zidgut4c3fanuzphj4ht7
-X-HE-Tag: 1753281707-194163
-X-HE-Meta: U2FsdGVkX1+lMgZiSGpKt7giJgh/Aj6PzNxKv1xi6dJdZOEjvK1gRVvKeGr3L+Dtij0VYAZ0gRuXMnMOY/SRQYGP6vDqXk+efQg8/Aw2cg2V/eHDdkGW5wvJaObh0KubZtsxNIWSKdb4a0atmmP4tFKjF9stelKQuCtKPH6DxxQq9hmbRNrltEJ0ON7/iZArm+cCymK3ZQ/G2iFucTl6SBaSz40CinbG8jGgDp/MOHPvw0he/8pSPPc0fyQ6+B5obhxamWVhLVGeOTNf7azGla2tfz7o1YHcyuVZBX/ktO4DK/2qD4HfVZ/yCt9LG3i/v1rs0eT32zZjYyN3Xsgh6WnpO+DxdPMAY/upb2N8Z2ydxgNVfVqqLMv+5rqbl+VU8yCgPlPjA5uSE+DkFnp8WoNCPuQviUNG7aJ3zuRntg09soVLLbkhIFnwaxm+fQdVLsCHMr74R1oq+dJFQAKuRGmlrul2IibnXXb2btdhBf//Jlx/GBPNxeQ20fpXlkaX9TGq4503EiO0jzs7aZLE2GZPhER6BeGy4fbu9mHSSSgJn6wQnCjkr8WSL4cxHvoNJ+vHxmnLisOEA0nFp+Sk4dWWccM0ol4LFs9G4Vfp+fFRcY7Ih2hz8xTxLxOV7HQDfISfZi42Fv8nb8NW3rJhFlrEdbTTlCvripoy+1/ICiXlIghnWUrxBx0SRYM+EpiK+b3CTzVAfdldXTD3OlKIPDzc4nGpihpCD2e0MtKTwR3nI0nn6fLMX4GAQCJFdQoNcgEt1tfhcEwMAqibRMkkgnml7QYUT0qrPwd1sjCwCjpeLIezVr6u8hAVEOj3zG6nrAALbYh/hkQR7HNArUwZQvg4lyIUb3JtD+ocwFVjoG1VAJWVCW8XRSADQs3q8uMRGnnVQWWmPg/def3IffSdCZezLymYrLaH1phgCqfCTsXyODkP+kxf0fJruigoYpPlmjA84AiEk+y2kfsKa47
- OZx8ulcY
- OTPiOVj5Vnv0Iq9IIPHndycq7jYCr2a0yIPf3SYcsRJCHVFSl8cdqvp4nQRQPmcuY4a3VTK7lU8dI+pErKNq9+dl4KVA/H9GZpIHkzuwi4jQn416eBvHq4HpmelczBFLxHJuElGMwk3mL5G7bjNefdMttgxW1qQPqnLDk+aMBbqWol2c1sXik3wj/DEx8WkH0K5h9Hh8EI4NnBxZJw7ck6oaNtfBUjeS/t2vHBaNd2Naz1ohgWFXAYhA+B8EITE5hpV88AG9DjJoCskv1wm3lrQUXNyztOtJkaVutSY4N4t2bgynGAc20MSM5SQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C053740007
+X-Stat-Signature: ys3s3qc3citspgyie15zquudctkko84o
+X-HE-Tag: 1753281832-420776
+X-HE-Meta: U2FsdGVkX1/ll77DtmZOYpAG9+PGlXr673irwnjDKP/TCtVaFiG1J3ZA4biY4EWG8QPes9RPOLZPWgKxW4U1rfr8tP/DsCW1z3N8xzpAE4tHGTG41EOD7pfiTWXhrsXem0VK2ZotXchTe69rAaNQIiR1LQUBxuqJGSrx4eBbPTyVdIp7kda5/tFSTmu/s1+0hdI4zjxrnU+KcRWjVUD5GLWKEyTI4OS/INZ3udhKreMRddOei/URrcdEHVLqE5JTF9qe14k4QgwpUZGt7zPHh+e3zTayAT64KcH6Waa9BejnOnYJ5OhARHYuoGnzXfWLlJf7et19XP3IFJ0VA6HNr/0kZhQkeJNmY2aEUu9BKJICH4YwGvO8MgDLajFOakB32cmjphI6nVCR3Bh9ZgfaGWAPaWXirsFRxCr41+YPVBKDsgq/f+1bTzzo4w6D3422m1zr0ouPw1wnnhdOFo7uQdVZPsKtX0YCiTs2WjO8cAEmMW/yjYe+sguUzrNELJchbLZUGGBBL8v9KXPPyu3vEq677+IvEuZuRaFBppMErqa0+rJCnI4itZlx3okscQak3fg4twdSPnhBJRdJyTlWtyR0WabnyqpcGjmnxQJjXAmftoCkgNWUwOZl0YqwowWsVTNosxHFHZ/Q8E48x32TCVvd2QgX8FTZCSHsGvDtYst/SuuY7jUq1An+aKMxHbIEABuM1LHew1OSIo6LtikW0DPRaKlQM7PsRLFlDEbSFQyx/0DmYFXzOcCQZ0nZiFVmjKIefaFS3xx8Sbyj83j8YsHKoNT70iPZ32q6JK+4GMD/G9Ndx1keY4suwpnn5k7akfsgknDdP9c/0i67mu7PzJNC8h2UGGDP+5HuMwXu2dIs6Bs2zSqim8l0lg3UUHT8R56jPYwNF2aJhKwesjwEVQXyT8picxzFQtNTUUq1SUtl8ondZX7Mf9c446Y9/3GxRGJCiWaU/Iy8cEGZjGS
+ P2AcKSW+
+ gpr7zVWjyt/iiGfw0Bn3uiwPE7vcpTulujcEmn5PduJbH7vQdL/7EEJATGCzjINOYFiyck0WXgyOkYhRneluVnNspiW8v/QPzKw3uW3QDvoHtm0fGc+QOcdBAI+WEigTX0uR5hHlWBEmYk7b6AVHGp+oDSc5aAbZ/eD09mzdMm+8qAs8EnzKlyydBBUr2GlNNb7f7wiZba+zGZtz592CVFxVqo8Ga/McO0uOO5tOGAol4lqXoQYrXKbYzDIugxt9p8SD7ImNynBeTIKM5zknh6bnZpz3gMiVBn1w/7R5R8PlL/SW62QdkoqFspAZOwbCPV3/lT7i/vJvaZ8NORbv/7ilOADrKUDfvUGhjXsJXa0MuM9DcKuH8Vc8RgHhGRbEw4N/Yj4mWxaFUVruH+g4yQqfzptX7E9gc38gm4LismUtP84/TgtSVhA5BW+IquZPnOPOXDD2n7UBNBujP9biI2f98u9Eqn+yP3XqSDAiMGFj5DvxbC/7wWGCQTrj/dsg2Fl8LvM5cIWTNCg/frunLmRLf0rSKsjcPlRfWEkpBtBIJYIQ9MY77lVspIbILOlqvbgBBuhEIRwY8OD8qmJgg/zRPOH0nXgSTp4LWdFd9YYOV027aC4pyAPDk9lpNii/vvTCCrsOzH1nHkxFCkktB6KjMMMlzgHCMwIUZITG4gxvrdmpXqJTE8hEHB3qdIQB5pD8G8Fl8FxjMcRo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,245 +131,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 2025-07-23 at 15:09 +0800, lizhe.67@bytedance.com wrote:
-> On Tue, 22 Jul 2025 12:32:59 -0400, farman@linux.ibm.com wrote:
-> =20
-> > On Thu, 2025-07-10 at 16:53 +0800, lizhe.67@bytedance.com wrote:
-> > > From: Li Zhe <lizhe.67@bytedance.com>
-> > >=20
-> > > When vfio_pin_pages_remote() is called with a range of addresses that
-> > > includes large folios, the function currently performs individual
-> > > statistics counting operations for each page. This can lead to signif=
-icant
-> > > performance overheads, especially when dealing with large ranges of p=
-ages.
-> > > Batch processing of statistical counting operations can effectively e=
-nhance
-> > > performance.
-> > >=20
-> > > In addition, the pages obtained through longterm GUP are neither inva=
-lid
-> > > nor reserved. Therefore, we can reduce the overhead associated with s=
-ome
-> > > calls to function is_invalid_reserved_pfn().
-> > >=20
-> > > The performance test results for completing the 16G VFIO IOMMU DMA ma=
-pping
-> > > are as follows.
-> > >=20
-> > > Base(v6.16-rc4):
-> > > ------- AVERAGE (MADV_HUGEPAGE) --------
-> > > VFIO MAP DMA in 0.047 s (340.2 GB/s)
-> > > ------- AVERAGE (MAP_POPULATE) --------
-> > > VFIO MAP DMA in 0.280 s (57.2 GB/s)
-> > > ------- AVERAGE (HUGETLBFS) --------
-> > > VFIO MAP DMA in 0.052 s (310.5 GB/s)
-> > >=20
-> > > With this patch:
-> > > ------- AVERAGE (MADV_HUGEPAGE) --------
-> > > VFIO MAP DMA in 0.027 s (602.1 GB/s)
-> > > ------- AVERAGE (MAP_POPULATE) --------
-> > > VFIO MAP DMA in 0.257 s (62.4 GB/s)
-> > > ------- AVERAGE (HUGETLBFS) --------
-> > > VFIO MAP DMA in 0.031 s (517.4 GB/s)
-> > >=20
-> > > For large folio, we achieve an over 40% performance improvement.
-> > > For small folios, the performance test results indicate a
-> > > slight improvement.
-> > >=20
-> > > Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
-> > > Co-developed-by: Alex Williamson <alex.williamson@redhat.com>
-> > > Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-> > > Acked-by: David Hildenbrand <david@redhat.com>
-> > > ---
-> > >  drivers/vfio/vfio_iommu_type1.c | 83 ++++++++++++++++++++++++++++---=
---
-> > >  1 file changed, 71 insertions(+), 12 deletions(-)
-> >=20
-> > Hi,
-> >=20
-> > Our CI started flagging some crashes running vfio-ccw regressions on th=
-e -next kernel beginning with
-> > next-20250717, and bisect points to this particular commit.
-> >=20
-> > I can reproduce by cherry-picking this series onto 6.16-rc7, so it's no=
-t something else lurking.
-> > Without panic_on_warn, I get a handful of warnings from vfio_remove_dma=
-() (after starting/stopping
-> > guests with an mdev attached), before eventually triggering a BUG() in =
-vfio_dma_do_unmap() running a
-> > hotplug test. I've attached an example of a WARNING before the eventual=
- BUG below. I can help debug
-> > this if more doc is needed, but admit I haven't looked at this patch in=
- any detail yet.
-> >=20
-> > Thanks,
-> > Eric
-> >=20
-> > [  215.671885] ------------[ cut here ]------------
-> > [  215.671893] WARNING: CPU: 10 PID: 6210 at drivers/vfio/vfio_iommu_ty=
-pe1.c:1204
-> > vfio_remove_dma+0xda/0xf0 [vfio_iommu_type1]
-> > [  215.671902] Modules linked in: vhost_vsock vmw_vsock_virtio_transpor=
-t_common vsock vhost
-> > vhost_iotlb algif_hash af_alg kvm nft_masq nft_ct nft_reject_ipv4 nf_re=
-ject_ipv4 nft_reject act_csum
-> > cls_u32 sch_htb nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_def=
-rag_ipv4 nf_tables pkey_pckmo
-> > s390_trng pkey_ep11 pkey_cca zcrypt_cex4 zcrypt eadm_sch rng_core vfio_=
-ccw mdev vfio_iommu_type1
-> > vfio drm sch_fq_codel i2c_core drm_panel_orientation_quirks dm_multipat=
-h loop nfnetlink ctcm fsm
-> > zfcp scsi_transport_fc mlx5_ib diag288_wdt mlx5_core ghash_s390 prng ae=
-s_s390 des_s390 libdes
-> > sha3_512_s390 sha3_256_s390 sha512_s390 sha1_s390 sha_common rpcrdma su=
-nrpc rdma_ucm rdma_cm
-> > configfs iw_cm ib_cm ib_uverbs ib_core scsi_dh_rdac scsi_dh_emc scsi_dh=
-_alua pkey autofs4
-> > [  215.671946] CPU: 10 UID: 107 PID: 6210 Comm: qemu-system-s39 Kdump: =
-loaded Not tainted 6.16.0-
-> > rc7-00005-g4ff8295d8d61 #79 NONE=20
-> > [  215.671950] Hardware name: IBM 3906 M05 780 (LPAR)
-> > [  215.671951] Krnl PSW : 0704c00180000000 000002482f7ee55e (vfio_remov=
-e_dma+0xde/0xf0
-> > [vfio_iommu_type1])
-> > [  215.671956]            R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:0=
- PM:0 RI:0 EA:3
-> > [  215.671959] Krnl GPRS: 006d010100000000 000000009d8a4c40 000000008f3=
-b1c80 0000000092ffad20
-> > [  215.671961]            0000000090b57880 006e010100000000 000000008f3=
-b1c80 000000008f3b1cc8
-> > [  215.671963]            0000000085b3ff00 000000008f3b1cc0 000000008f3=
-b1c80 0000000092ffad20
-> > [  215.671964]            000003ff867acfa8 000000008f3b1ca0 000001c8b36=
-c3be0 000001c8b36c3ba8
-> > [  215.671972] Krnl Code: 000002482f7ee550: c0e53ff9fcc8	brasl	%r14,000=
-00248af72dee0
-> >            000002482f7ee556: a7f4ffcf		brc	15,000002482f7ee4f4
-> >           #000002482f7ee55a: af000000		mc	0,0
-> >           >000002482f7ee55e: a7f4ffa9		brc	15,000002482f7ee4b0
-> >            000002482f7ee562: 0707		bcr	0,%r7
-> >            000002482f7ee564: 0707		bcr	0,%r7
-> >            000002482f7ee566: 0707		bcr	0,%r7
-> >            000002482f7ee568: 0707		bcr	0,%r7
-> > [  215.672006] Call Trace:
-> > [  215.672008]  [<000002482f7ee55e>] vfio_remove_dma+0xde/0xf0 [vfio_io=
-mmu_type1]=20
-> > [  215.672013]  [<000002482f7f03de>] vfio_iommu_type1_detach_group+0x3d=
-e/0x5f0 [vfio_iommu_type1]=20
-> > [  215.672016]  [<000002482f7d4c4e>] vfio_group_detach_container+0x5e/0=
-x180 [vfio]=20
-> > [  215.672023]  [<000002482f7d2ce0>] vfio_group_fops_release+0x50/0x90 =
-[vfio]=20
-> > [  215.672027]  [<00000248af25e1ee>] __fput+0xee/0x2e0=20
-> > [  215.672031]  [<00000248aef19f18>] task_work_run+0x88/0xd0=20
-> > [  215.672036]  [<00000248aeef559a>] do_exit+0x18a/0x4e0=20
-> > [  215.672042]  [<00000248aeef5ab0>] do_group_exit+0x40/0xc0=20
-> > [  215.672045]  [<00000248aeef5b5e>] __s390x_sys_exit_group+0x2e/0x30=
-=20
-> > [  215.672048]  [<00000248afc81e56>] __do_syscall+0x136/0x340=20
-> > [  215.672054]  [<00000248afc8da7e>] system_call+0x6e/0x90=20
-> > [  215.672058] Last Breaking-Event-Address:
-> > [  215.672059]  [<000002482f7ee4aa>] vfio_remove_dma+0x2a/0xf0 [vfio_io=
-mmu_type1]
-> > [  215.672062] ---[ end trace 0000000000000000 ]---
-> > [  219.861940] ------------[ cut here ]------------
-> >=20
-> > ...
-> >=20
-> > [  241.164333] ------------[ cut here ]------------
-> > [  241.164340] kernel BUG at drivers/vfio/vfio_iommu_type1.c:1480!
-> > [  241.164358] monitor event: 0040 ilc:2 [#1]SMP=20
-> > [  241.164363] Modules linked in: vhost_vsock vmw_vsock_virtio_transpor=
-t_common vsock vhost
-> > vhost_iotlb algif_hash af_alg kvm nft_masq nft_ct nft_reject_ipv4 nf_re=
-ject_ipv4 nft_reject act_csum
-> > cls_u32 sch_htb nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_def=
-rag_ipv4 nf_tables pkey_pckmo
-> > s390_trng pkey_ep11 pkey_cca zcrypt_cex4 zcrypt eadm_sch rng_core vfio_=
-ccw mdev vfio_iommu_type1
-> > vfio drm sch_fq_codel i2c_core drm_panel_orientation_quirks dm_multipat=
-h loop nfnetlink ctcm fsm
-> > zfcp scsi_transport_fc mlx5_ib diag288_wdt mlx5_core ghash_s390 prng ae=
-s_s390 des_s390 libdes
-> > sha3_512_s390 sha3_256_s390 sha512_s390 sha1_s390 sha_common rpcrdma su=
-nrpc rdma_ucm rdma_cm
-> > configfs iw_cm ib_cm ib_uverbs ib_core scsi_dh_rdac scsi_dh_emc scsi_dh=
-_alua pkey autofs4
-> > [  241.164399] CPU: 14 UID: 107 PID: 6581 Comm: qemu-system-s39 Kdump: =
-loaded Tainted: G        W =20
-> > 6.16.0-rc7-00005-g4ff8295d8d61 #79 NONE=20
-> > [  241.164403] Tainted: [W]=3DWARN
-> > [  241.164404] Hardware name: IBM 3906 M05 780 (LPAR)
-> > [  241.164406] Krnl PSW : 0704e00180000000 000002482f7f132a (vfio_dma_d=
-o_unmap+0x4aa/0x4b0
-> > [vfio_iommu_type1])
-> > [  241.164413]            R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:2=
- PM:0 RI:0 EA:3
-> > [  241.164415] Krnl GPRS: 0000000000000000 000000000000000b 00000000400=
-00000 000000008cfdcb40
-> > [  241.164418]            0000000000001001 0000000000000001 00000000000=
-00000 0000000040000000
-> > [  241.164419]            0000000000000000 0000000000000000 00000001fbe=
-7f140 000000008cfdcb40
-> > [  241.164421]            000003ff97dacfa8 0000000000000000 00000000871=
-582c0 000001c8b4177cd0
-> > [  241.164428] Krnl Code: 000002482f7f131e: a7890000		lghi	%r8,0
-> >            000002482f7f1322: a7f4feeb		brc	15,000002482f7f10f8
-> >           #000002482f7f1326: af000000		mc	0,0
-> >           >000002482f7f132a: 0707		bcr	0,%r7
-> >            000002482f7f132c: 0707		bcr	0,%r7
-> >            000002482f7f132e: 0707		bcr	0,%r7
-> >            000002482f7f1330: c0040000803c	brcl	0,000002482f8013a8
-> >            000002482f7f1336: eb6ff0480024	stmg	%r6,%r15,72(%r15)
-> > [  241.164458] Call Trace:
-> > [  241.164459]  [<000002482f7f132a>] vfio_dma_do_unmap+0x4aa/0x4b0 [vfi=
-o_iommu_type1]=20
-> > [  241.164463]  [<000002482f7f1d08>] vfio_iommu_type1_ioctl+0x1c8/0x370=
- [vfio_iommu_type1]=20
-> > [  241.164466]  [<00000248af27704e>] vfs_ioctl+0x2e/0x70=20
-> > [  241.164471]  [<00000248af278610>] __s390x_sys_ioctl+0xe0/0x100=20
-> > [  241.164474]  [<00000248afc81e56>] __do_syscall+0x136/0x340=20
-> > [  241.164477]  [<00000248afc8da7e>] system_call+0x6e/0x90=20
-> > [  241.164481] Last Breaking-Event-Address:
-> > [  241.164482]  [<000002482f7f1238>] vfio_dma_do_unmap+0x3b8/0x4b0 [vfi=
-o_iommu_type1]
-> > [  241.164486] Kernel panic - not syncing: Fatal exception: panic_on_oo=
-ps
->=20
-> Thanks for the report. After a review of this commit, it appears that
-> only the changes to vfio_find_vpfn() could plausibly account for the
-> observed issue (I cannot be absolutely certain). Could you kindly test
-> whether the issue persists after applying the following patch?
+On Wed, Jul 23, 2025, Vishal Annapurve wrote:
+> 2) Userspace brings a mappable guest_memfd to back guest private
+> memory (passed as guest_memfd field in the
+> KVM_USERSPACE_MEMORY_REGION2): KVM will always fault in all guest
+> faults via guest_memfd so if userspace brings in VMAs that point to
+> different physical memory then there would be a discrepancy between
+> what guest and userspace/KVM (going through HVAs) sees for shared
+> memory ranges. I am not sure if KVM needs to enforce anything here,
 
-Hi Zhe,
+We agreed (I think in a guest_memfd call?) that KVM won't enforce anything,
+because trying to do so for uaccesses, e.g. via __kvm_read_guest_page(), would
+require grabbing mmap_lock in hot paths, i.e. would be a complete non-starter.
 
-Thank you for the quick patch! I applied this and ran through a few cycles =
-of the previously-
-problematic tests, and things are holding up great.
-
-It's probably a fixup to the commit here, but FWIW:
-
-Tested-by: Eric Farman <farman@linux.ibm.com>
-
-Thanks,
-Eric
-
->=20
-> diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_ty=
-pe1.c
-> --- a/drivers/vfio/vfio_iommu_type1.c
-> +++ b/drivers/vfio/vfio_iommu_type1.c
-> @@ -344,7 +344,7 @@ static struct vfio_pfn *vfio_find_vpfn_range(struct v=
-fio_dma *dma,
-> =20
->  static inline struct vfio_pfn *vfio_find_vpfn(struct vfio_dma *dma, dma_=
-addr_t iova)
->  {
-> -       return vfio_find_vpfn_range(dma, iova, iova + PAGE_SIZE);
-> +       return vfio_find_vpfn_range(dma, iova, iova + 1);
->  }
->=20
-> Thanks,
-> Zhe
+So yeah, it's the VMM's responsibility to not be stupid.
 
