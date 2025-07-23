@@ -2,121 +2,130 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 89BB9C83F1A
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 13:56:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A782C83F1A
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 13:56:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C0E46B00EA; Wed, 23 Jul 2025 09:56:14 -0400 (EDT)
+	id 0C59B8E0024; Wed, 23 Jul 2025 09:56:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 271A46B00EB; Wed, 23 Jul 2025 09:56:14 -0400 (EDT)
+	id 076A68E0002; Wed, 23 Jul 2025 09:56:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 160928E0002; Wed, 23 Jul 2025 09:56:14 -0400 (EDT)
+	id E5A428E0024; Wed, 23 Jul 2025 09:56:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0529C6B00EA
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:56:14 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BF75AC06FB
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:56:13 +0000 (UTC)
-X-FDA: 83695678626.20.EB12E47
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7A50940012
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:56:11 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kq89YRKZ;
-	spf=pass (imf27.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D30578E0002
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:56:36 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7A39D1A070B
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:56:36 +0000 (UTC)
+X-FDA: 83695679592.08.E1A8D33
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8478114000A
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:56:34 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=soleen-com.20230601.gappssmtp.com header.s=20230601 header.b=KX6jUStg;
+	spf=pass (imf23.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753278971;
+	s=arc-20220608; t=1753278994;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z/IErEt1WJfSIvUDGJZUa2vOJ7JVthl4LZcTfzRz1Jc=;
-	b=LFNLR5kp/oyuzjLXmZ3JJ7kqU061fSDKlGPRyDZtu1od+n53TVJGjJlfkezJTyUc5lCcQD
-	e0TmWqbHCW/dLDWymou4D7Wgm7OEdbGIGwOD8EBbwqyWj4N8KI6SNGb3XSQYnrbYGA5R04
-	OVt8zu/ptWySXT6joHIAhe34CJr0YuU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753278971; a=rsa-sha256;
-	cv=none;
-	b=2B8NIBxwp65tD4Bap03dJnH9HlQUnRa9cGT0plysiuSV1CXnDajo44/0k8HOFtkJCrkn+8
-	e6vpN1CWm0zkzwACQC9mmmFd1IkKTxJ7/pIU6QtjsS3CXMm/qQYI5ACr+XFFQjLtQY6V+i
-	lgwJr6dPtg+4gMiqZW7UCPCI2QhcmTs=
+	bh=Neb4DMdHL9YN2qZdu5HnMhnwFlw4q4ExiBgUXTApsC8=;
+	b=qvNn9mlVIG/uDug5N6OYyb3aZmvFfElCExztd40/FdXRrrAR5Zmi4kn6wOUkqK5H1it56X
+	vR0nt5mClcGVTz5u1rTIvhh8RQPmP1LsMli/SsSNogMxkCCdeZEjmRiRae8MeVNFxUXdFh
+	m6+0ea9+kWR9SJDeDe+zUijAg7n0D4g=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kq89YRKZ;
-	spf=pass (imf27.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753278971; x=1784814971;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=c8kuwhSWCLXC+0Y2fVqX0LnjkpKYcmdlz+rgqy/SZtc=;
-  b=kq89YRKZiQf7+3Co6j0R+yHCiJNOJS+j6XwK3gduamZen0pymSRM88Bw
-   bKTETdsQ25FTg5dHH8S6hWDBQR5QXK5CtQy8w0k69dhEivSqvIwD4yOmB
-   HIP0QbLcGRODgEyOcCLa7Tc6gpzb+ZRITmNFKAxU4F4KPYZhupytbP5up
-   i/Ns0XoTSD/yBaUr0TQdkK+l4MDRwIB9l3Q07IiSHXI6SxYPCH2Nc8jRA
-   xl35k8kzM5VT+G/1m5B05EqSoGxXcAEnYJM2P195q69h5JJZXS0j8GZMT
-   MvEIQyCw6rkKKgrifCQC2rXdirGuo1kYumA/Cayf1ITYl967qWRZ0VIy1
-   g==;
-X-CSE-ConnectionGUID: tHdijQJsTt6ffKJC8CAMnA==
-X-CSE-MsgGUID: sPbd+NDqTMCKGSeI/xs83Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="78098955"
-X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; 
-   d="scan'208";a="78098955"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2025 06:56:09 -0700
-X-CSE-ConnectionGUID: FUy24KQQTXSLB7tBu314zA==
-X-CSE-MsgGUID: wepDHHHERX67GzCbFIqzPw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; 
-   d="scan'208";a="158797033"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1]) ([10.124.247.1])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2025 06:55:56 -0700
-Message-ID: <1ff6a90a-3e03-4104-9833-4b07bb84831f@intel.com>
-Date: Wed, 23 Jul 2025 21:55:52 +0800
+	imf23.hostedemail.com;
+	dkim=pass header.d=soleen-com.20230601.gappssmtp.com header.s=20230601 header.b=KX6jUStg;
+	spf=pass (imf23.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753278994; a=rsa-sha256;
+	cv=none;
+	b=uAe76xG2+FNUbhnH3o91Zu/4Wi1sn9FZN+DtvWECY2CoLTtJSdUeTl3+eGM9Y54koRoKnU
+	Z6wqu1yPdpvI4OCPVZuc9wFxXkAau5FSQUHItpUzUD7EL6nXvOJ9Ipq8T8YSsMlIam57u6
+	ZpkqHrghVDGa89w6Nn1V1z8zgSrXA6w=
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4ab5e2ae630so79934951cf.3
+        for <linux-mm@kvack.org>; Wed, 23 Jul 2025 06:56:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen-com.20230601.gappssmtp.com; s=20230601; t=1753278993; x=1753883793; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Neb4DMdHL9YN2qZdu5HnMhnwFlw4q4ExiBgUXTApsC8=;
+        b=KX6jUStgVgeytV0J2gsRWGubgeAMR/raJAv76cTGbXbCIJX39KCu1DTC5p7A3ZhOmL
+         HBTzXocMBo8cRgyZfhjR70plDsVcJLcC9U1zZzysPbA7dVbqeZeNSE5xgfWokwgozrZq
+         60fqZ5/PDb70hZ2Mr5sQe8QsX9rwX6fX4SSOg4kD6qGWREChODAU/1VczAowP/smhz6Z
+         R8NZzBA+Wd2ya/EgQPPRImcep1pCSATy4O1FrKFkpBPNOCFAPBcWXxf5YL2vTCX2vuJ+
+         PB6DcCdxCADnD+6Nu8m3jTFbBLtuBUSYEFjLHdPrXmrIBVusqwX2AWEy47l3h1beq8WP
+         yItQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753278993; x=1753883793;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Neb4DMdHL9YN2qZdu5HnMhnwFlw4q4ExiBgUXTApsC8=;
+        b=fXNE0A4DX1O8GZ7HRHZUAFbbVP6qLckiv/w0mu/xbIbHaXzNgIULErumY31QYWd2Be
+         VBfFyxwORpTxLnGKKKA3+Zm6Oe038biAu7eTCGp0xL+wg73eO6eSFH9XiDCPC7M+D2Ot
+         N7Bt/VElQiTWwvKNO5FQ+Y0TsrUEqlzEGaRNdVw7lr0RFs3zdpYws7D14hPxOSRSUFal
+         rQtnusJVeevBi1MPdvvNGn2h9+S1b2TfuCsnXzLHiMPNcbGBgC+zngLuYb8sFXitToSU
+         jIi17BsPyE18FKb/HIBOSlAHyrhoyyCY9iQNrxAiLvlY5DeQ4rfdCUkn/4x3HMPZY7D8
+         sLxg==
+X-Forwarded-Encrypted: i=1; AJvYcCXpIGft3mXYqylL0LPpkMnMFQKfVNLGae/kB6aaFczb7Tldoy/dpEZg6atR9907nvt/aZBVHwKjJg==@kvack.org
+X-Gm-Message-State: AOJu0Yw2OcK4s5hL6BkxCljxWnPQZ4UQuVx0Vyl3BikU0AzD0NBZx7gp
+	62oWyURssdY6VaCk462vU66tmqbpvYS9NvYDd6rRDKnN2DHTr72k2+EWrm8aGvYf9cUt9QAyG+8
+	k6CqZZwfjHGjCorMAIyz0Heimp45hKu+AdNf/OC11nw==
+X-Gm-Gg: ASbGnctuCWg2LUhH+6uqyP15CiD2dSXR+73K3R1UIM4D0x66AKC0fvsQc+vM0wEGfFe
+	ahGIhJb4XlRJnwzSX/vd1mM9ClTqQksMxkn+nMvJvqSdpvO7/yS2Teo40jGIC6oH5YPNbntXrTb
+	c1xg7Eyx/rV2HR0ZwMY9RoPn4T2UTF7oadK1lmAGUxbpfLZMcUkTr3PnfFhuWnqXQjqVhyAFoVe
+	FqI
+X-Google-Smtp-Source: AGHT+IGrYMZ5lZ4waeYztYzZWeus2W5lvUIGBJomoilBWhgY/xZwdg1u51Z0y6Byizn2RRUk43nSuTfOAFLec5SGqvE=
+X-Received: by 2002:ac8:7fd3:0:b0:4ab:6c5a:1fe7 with SMTP id
+ d75a77b69052e-4ae6dfc4f62mr48555621cf.52.1753278993220; Wed, 23 Jul 2025
+ 06:56:33 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 14/22] KVM: x86/mmu: Enforce guest_memfd's max order
- when recovering hugepages
-To: Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, kvmarm@lists.linux.dev
-Cc: pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au,
- anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com,
- aou@eecs.berkeley.edu, seanjc@google.com, viro@zeniv.linux.org.uk,
- brauner@kernel.org, willy@infradead.org, akpm@linux-foundation.org,
- yilun.xu@intel.com, chao.p.peng@linux.intel.com, jarkko@kernel.org,
- amoorthy@google.com, dmatlack@google.com, isaku.yamahata@intel.com,
- mic@digikod.net, vbabka@suse.cz, vannapurve@google.com,
- ackerleytng@google.com, mail@maciej.szmigiero.name, david@redhat.com,
- michael.roth@amd.com, wei.w.wang@intel.com, liam.merwick@oracle.com,
- isaku.yamahata@gmail.com, kirill.shutemov@linux.intel.com,
- suzuki.poulose@arm.com, steven.price@arm.com, quic_eberman@quicinc.com,
- quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com,
- quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com,
- quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com,
- james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev,
- maz@kernel.org, will@kernel.org, qperret@google.com, keirf@google.com,
- roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com,
- rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com,
- jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com,
- ira.weiny@intel.com
-References: <20250723104714.1674617-1-tabba@google.com>
- <20250723104714.1674617-15-tabba@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20250723104714.1674617-15-tabba@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 7A50940012
+References: <20250625231838.1897085-1-pasha.tatashin@soleen.com>
+ <20250625231838.1897085-22-pasha.tatashin@soleen.com> <829fa3b2-58be-493f-b26c-8d68063b96ed@infradead.org>
+In-Reply-To: <829fa3b2-58be-493f-b26c-8d68063b96ed@infradead.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Wed, 23 Jul 2025 13:55:56 +0000
+X-Gm-Features: Ac12FXwxkGX-ZyVenfoKJwxXGBSrng0apcRfW2jRFbfKFQccJBpZH-g5RuQibpg
+Message-ID: <CA+CK2bDi+urd9FRftrDn3bwp2VCvb1f3rFsD+dhegLrMRPC4Zw@mail.gmail.com>
+Subject: Re: [PATCH v1 21/32] liveupdate: add selftests for subsystems un/registration
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
+	changyuanl@google.com, rppt@kernel.org, dmatlack@google.com, 
+	rientjes@google.com, corbet@lwn.net, ilpo.jarvinen@linux.intel.com, 
+	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com, 
+	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org, 
+	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev, 
+	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com, 
+	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org, 
+	dan.j.williams@intel.com, david@redhat.com, joel.granados@kernel.org, 
+	rostedt@goodmis.org, anna.schumaker@oracle.com, song@kernel.org, 
+	zhangguopeng@kylinos.cn, linux@weissschuh.net, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-mm@kvack.org, gregkh@linuxfoundation.org, 
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, rafael@kernel.org, 
+	dakr@kernel.org, bartosz.golaszewski@linaro.org, cw00.choi@samsung.com, 
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com, Jonathan.Cameron@huawei.com, 
+	quic_zijuhu@quicinc.com, aleksander.lobakin@intel.com, ira.weiny@intel.com, 
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
+	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: bizc3ni5r698gyb4rohoi87r9ythmk6m
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 8478114000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: u3zcx1buoiq4gjm9w85z7bq9xmn5z7rf
-X-HE-Tag: 1753278971-27167
-X-HE-Meta: U2FsdGVkX1+8S1Mi2BmKslp1YcHqeHcEu+ZpP6o5rIhSeRALqA2EC9zAADGpAyVKrZDNgfyl12p7jOznG6X/jgPvWxonTRvhNa86NxdALPon82dkcHzRYCBfiOxUqLFxEWkx4/UgFKilQOXxyR3AOsP2qkBTeFT050MJfl1laQQkxMi3LTjNQ5BOl0Q6m4QAnNDbzaHL3NqOR+uGc9mQCMwmr1mJiGSO7wh4QsHrWfAg2aVSP8cdWCDO0c8MBA/fATQiE1ZRlqr1o6ZMaaPhZxvDf75p02pSa6k+5vcuNgjW7Pj+SXpCPIHJUshJoX6wgvbxdkrG2ay/9bkmQVpkkvcH45QUePFgGmpJadNqXe4jEL2KIfxBVxG9HEKFqxtfn1oE+ROakJCle+GZaTisotvWSkQsQZaMOGEROE9vRyuYZ4oB17ghu7xcD5ep/fiRt0g/ygvcz8/NP+pCxCT3VYB2WKgYNwPs5puHmrtqEPKoy5gs1POiTZxDz3E/ZwXfjjaXmzURiYJ0JrJSvL2XtyjXWa1Q3vev9jrlp2Zxz+Lvcvl2/Jbw8KLSh4mbgBD8Dx/M6S2BSdhvEY+3CeNuLSSV/r7i/n59EPXWKnWUbFe82i6AARr0MKl2cTmrWjm35+loWFArfZeDiG7zgAL5A/2DlTMkUKIfCzU1XthnzXbxw2nHGZNahNYQjvg+wBZDA/hdX/wWgswY9ep0RLtDlZqxVt9iC4A+PZDR4irdTxzBAY4HY7d3DYlTBUlmIPtftfj5lnAajrCd9bMKAAIk1oTmecqCj8CNFOIdO1STSGYBh3/ag8Fb48d0UvILvYem5uFHWSSKEl0S8sLxfBOEYRhnrONRckp0I7HfhmrsYZY8kas00OFDEfYNp/IpbGVF8UqEMWDuQHQv/Nkkbt50i1DVkyp1+npDPvOytfocZzj4mwAgz4ytgbwiWkJlie/xObPxqs0/5/VmkIebLmN
- q2pZR2eD
- SX/sFgdyHYJRGG1dzp6WoC4OTQw==
+X-HE-Tag: 1753278994-902979
+X-HE-Meta: U2FsdGVkX19qBZNPLlZELdE9UirWMj/+0kdw59X8bWEl8AA+DGcIiOrvUBSsMFSr0C+aVlgBS2CMCq0uwdrts1+7rNnyLNRMvXcapf0q1cgCgmjoHEbYw5zDQybodsDBHBEtoKrLjO1fkgf/8oHQhxfl5uqyaPn0JiMltbkO9wbfX+QIWqQGY3cL1s1a8rSaPL/ozw0jU3qNemLCh5iZbPcQyLSAzUGawWJQ+r9qAT2vA7qOVxgwzgQ8LJxzHfj8GxHbCeA8EmMu2GBNLQPvgQ9VRp2g4LedZ+CIoXPvS8CvFRmjujeSA/HxeB/hw5t1Lmt7LRT8jc5rbsZpoIi6gny37WnQxXmjWe1pjgOOWyuLWi4MdQKCFYsz/hIdJtnHrNJ/3IF7QyCQxN7F94K7Y8R54rra1cJhG9G38Ti+341CXGvKVnjGydOKkKncvXZit7Y1xLFuknjkajMj4kJm4fOuFxZlaUXTbhJJTakt44Uco16Zr04qxQKyIAQE6d7/x5lRfrzSmYA1QCZpZSBdohJFkhpaUkmtCWbm2jATmWjHR8rNzo+oP3HbF1cgAYB7M+jZN/a32eTtdpsa5GvBys6mVL85pdnBCF204LmNektkBsX6xJ+tHU5SOSr1b7MDo/U6bMBfGWsNtxSSSz0yRtirxUeZog48cMpUl8fErz957r6hLCnY7Wsgf0DssmG2+7QHs+AUpgGHD06b1KO0GC0Mmu7dK5bkpLRQdItAMPJ2K3Uwn6lDpQemRM62cahO5huUH6pRNxQ7uVvg8aaRFGKbEOPRrO1Rm77VmIjbnomz8rJf5jBEYqLmNQdGWCqGELln5eBIQZMClg9zhSLDY8qRxb2PWfodsY8VeDuQRwiA6dZrBzCOWHJmJSt11GFdwifwCwfevTRIdilpO8VobT5cF1+xCcv6OK0OwE1j3bikK09nDkPHxmraz2EXp8kWMbkePzZmY9OS9ZKJ8f4
+ 7Wp7gX1U
+ XH6/PoEuNtuchvbW/AQGzKEuJKVoHnNuCdrjwePrtxQhlF0S6e6fQoW4w1W5OsKVbH4a3XsF+glO2nVEg2Lg3x11JTaYzBnF3LSVZd0hyCsS1CE+xhLXKxtCBkL8LIyHxNkeOcuDA443TkLo3DSzK7qqaf2r/+NQxS27gdhKjNqFhPcMfUd27Bs7zjW9bWUHZFgqAx3B5+dDdSWFAZGNDK7xd+i29TrHaiSpWH/UgXY/kEBUidaTCgDIAi5phzjDffM0sShSUs5KBYuuaBsNtgueQU85O96ehYR/1xzcBBfzuYAJ6KqIuMEW4qgYF5quUSAvhJ57HoPbHHQZsM6rXC1kAb0P7aELbyjVN8RtRro7IfKE8Y10gJHgY2v3HUMpnFBLspTieU5aOdTsGnVWRClG3Bdy0K+s+4H/273S/aqspfHTIW552EtpizC/KkS7b9jvmEMmq6AyyZPY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,100 +134,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/23/2025 6:47 PM, Fuad Tabba wrote:
-> From: Sean Christopherson <seanjc@google.com>
-> 
-> Rework kvm_mmu_max_mapping_level() to consult guest_memfd (and relevant)
-> vendor code when recovering hugepages, e.g. after disabling live migration.
-> The flaw has existed since guest_memfd was originally added, but has gone
-> unnoticed due to lack of guest_memfd hugepage support.
-> 
-> Get all information on-demand from the memslot and guest_memfd instance,
-> even though KVM could pull the pfn from the SPTE.  However, the max
-> order/level needs to come from guest_memfd, and using kvm_gmem_get_pfn()
-> avoids adding a new gmem API, and avoids having to retrieve the pfn and
-> plumb it into kvm_mmu_max_mapping_level() (the pfn is needed for SNP to
-> consult the RMP).
-> 
-> Note, calling kvm_mem_is_private() in the non-fault path is safe, so long
-> as mmu_lock is held, as hugepage recovery operates on shadow-present SPTEs,
-> i.e. calling kvm_mmu_max_mapping_level() with @fault=NULL is mutually
-> exclusive with kvm_vm_set_mem_attributes() changing the PRIVATE attribute
-> of the gfn.
-> 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Fuad Tabba <tabba@google.com>
-> ---
->   arch/x86/kvm/mmu/mmu.c          | 83 +++++++++++++++++++--------------
->   arch/x86/kvm/mmu/mmu_internal.h |  2 +-
->   arch/x86/kvm/mmu/tdp_mmu.c      |  2 +-
->   3 files changed, 50 insertions(+), 37 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index 20dd9f64156e..6148cc96f7d4 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
-> @@ -3302,31 +3302,55 @@ static u8 kvm_max_level_for_order(int order)
->   	return PG_LEVEL_4K;
->   }
->   
-> -static u8 kvm_max_private_mapping_level(struct kvm *kvm, kvm_pfn_t pfn,
-> -					u8 max_level, int gmem_order)
-> +static u8 kvm_max_private_mapping_level(struct kvm *kvm, struct kvm_page_fault *fault,
-> +					const struct kvm_memory_slot *slot, gfn_t gfn)
->   {
-> -	u8 req_max_level;
-> +	struct page *page;
-> +	kvm_pfn_t pfn;
-> +	u8 max_level;
->   
-> -	if (max_level == PG_LEVEL_4K)
-> -		return PG_LEVEL_4K;
-> +	/* For faults, use the gmem information that was resolved earlier. */
-> +	if (fault) {
-> +		pfn = fault->pfn;
-> +		max_level = fault->max_level;
-> +	} else {
-> +		/* TODO: Constify the guest_memfd chain. */
-> +		struct kvm_memory_slot *__slot = (struct kvm_memory_slot *)slot;
-> +		int max_order, r;
->   
-> -	max_level = min(kvm_max_level_for_order(gmem_order), max_level);
-> -	if (max_level == PG_LEVEL_4K)
-> -		return PG_LEVEL_4K;
-> +		r = kvm_gmem_get_pfn(kvm, __slot, gfn, &pfn, &page, &max_order);
-> +		if (r)
-> +			return PG_LEVEL_4K;
->   
-> -	req_max_level = kvm_x86_call(gmem_max_mapping_level)(kvm, pfn);
-> -	if (req_max_level)
-> -		max_level = min(max_level, req_max_level);
-> +		if (page)
-> +			put_page(page);
->   
-> -	return max_level;
-> +		max_level = kvm_max_level_for_order(max_order);
-> +	}
-> +
-> +	if (max_level == PG_LEVEL_4K)
-> +		return max_level;
-> +
-> +	return min(max_level,
-> +		   kvm_x86_call(gmem_max_mapping_level)(kvm, pfn));
->   }
+On Thu, Jun 26, 2025 at 12:06=E2=80=AFAM Randy Dunlap <rdunlap@infradead.or=
+g> wrote:
+>
+>
+>
+> On 6/25/25 4:18 PM, Pasha Tatashin wrote:
+> > diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
+> > index 75a17ca8a592..db7bbff3edec 100644
+> > --- a/kernel/liveupdate/Kconfig
+> > +++ b/kernel/liveupdate/Kconfig
+> > @@ -47,6 +47,21 @@ config LIVEUPDATE_SYSFS_API
+> >
+> >         If unsure, say N.
+> >
+> > +config LIVEUPDATE_SELFTESTS
+> > +     bool "Live Update Orchestrator - self tests"
+>
+>                                          self-tests"
+>
+> as below...
 
-I don't mean to want a next version.
-
-But I have to point it out that, the coco_level stuff in the next patch 
-should be put in this patch actually. Because this patch does the wrong 
-thing to change from
-
-	req_max_level = kvm_x86_call(gmem_max_mapping_level)(kvm, pfn);
-	if (req_max_level)
-		max_level = min(max_level, req_max_level);
-
-to
-
-	return min(max_level,
-		   kvm_x86_call(gmem_max_mapping_level)(kvm, pfn));	
+Done.
 
