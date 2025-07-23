@@ -2,126 +2,93 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D9E86C83F17
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 08:38:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 320AFC83F1A
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 08:41:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E4986B0095; Wed, 23 Jul 2025 04:38:08 -0400 (EDT)
+	id 9E2D98E0002; Wed, 23 Jul 2025 04:41:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5BC586B0096; Wed, 23 Jul 2025 04:38:08 -0400 (EDT)
+	id 993738E0001; Wed, 23 Jul 2025 04:41:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D21B6B0098; Wed, 23 Jul 2025 04:38:08 -0400 (EDT)
+	id 882708E0002; Wed, 23 Jul 2025 04:41:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 38B2F6B0095
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 04:38:08 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AB9C81405D6
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 08:38:07 +0000 (UTC)
-X-FDA: 83694877014.27.78D6D03
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 970BCA000B
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 08:38:05 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Md8vE+41;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf25.hostedemail.com: domain of mkoutny@suse.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=mkoutny@suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753259885; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 764E08E0001
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 04:41:37 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 30CDC112F2B
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 08:41:37 +0000 (UTC)
+X-FDA: 83694885834.28.14C3BFD
+Received: from mail-internal.sh.cz (mail-internal.sh.cz [95.168.196.40])
+	by imf07.hostedemail.com (Postfix) with ESMTP id F200C40008
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 08:41:34 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=cdn77.com header.s=dkim2019 header.b=BR7ahQgq;
+	dmarc=pass (policy=quarantine) header.from=cdn77.com;
+	spf=pass (imf07.hostedemail.com: domain of daniel.sedlak@cdn77.com designates 95.168.196.40 as permitted sender) smtp.mailfrom=daniel.sedlak@cdn77.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753260095; a=rsa-sha256;
 	cv=none;
-	b=LLLkoLafzzCJ5ySZ18o0y7LQwx91APIw+LSDqJJVLeAMaMWM9Ud9ef7INIojmx4Y0U8z+7
-	kIPcjU0DiDwEFwp/uNLiQM0LI73WVMLxGqfzKSPhWtdSvUiy97pgcb2V3onNizaHN/wj7v
-	uTHP6VjgPDX/hJGscH0Iht5DhkRKXGU=
+	b=r51RCJQgvcX5U4j7WB18xEVr4fnrJltwzv/pKyuACV+MGibSRIfgCSzyiiBCndoiMORR8v
+	YaxVrF21ONOG0O9FiW99fK8qoBRZDY62rCI0SdAbvlhX0+kkO+n7Zdo5Ko1eU2e5dRgotV
+	h59F3qIqidOJfkjweLmNxpPNZRcDtxs=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Md8vE+41;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf25.hostedemail.com: domain of mkoutny@suse.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=mkoutny@suse.com
+	imf07.hostedemail.com;
+	dkim=pass header.d=cdn77.com header.s=dkim2019 header.b=BR7ahQgq;
+	dmarc=pass (policy=quarantine) header.from=cdn77.com;
+	spf=pass (imf07.hostedemail.com: domain of daniel.sedlak@cdn77.com designates 95.168.196.40 as permitted sender) smtp.mailfrom=daniel.sedlak@cdn77.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753259885;
+	s=arc-20220608; t=1753260095;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n3P2VApwyqZcQGgH2xsyRWVJMZr2KQKxV6y9K6HQS9w=;
-	b=LnypC3IaWRdGdCS/pM+hIRHUXwb9JW7HUdkb0BUaa+/C9jfK/GA/YmejgYqiMgevcOkzFq
-	K1OUimFm7+6p12c4G7dzJRrbVhodhWaHyCfXIWWpPU+htu1A1mpD/rpcB46FM8n5nMKQx4
-	U7jWrGiAErtJbzLixujoKsNJlqtqJ1k=
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-606b58241c9so10459417a12.3
-        for <linux-mm@kvack.org>; Wed, 23 Jul 2025 01:38:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1753259884; x=1753864684; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=n3P2VApwyqZcQGgH2xsyRWVJMZr2KQKxV6y9K6HQS9w=;
-        b=Md8vE+413/gd7RuRR++eQ/HkKgouzXHZ9TVoRttgkebwoboEsk7UNgYXoGUxnjSrhV
-         enZ+KJ5xVaQRBb5z7BHC8XkR9AQ8nBjw4sj6QRGYbRGctuoeFPMklwIwsut7xvXTVTAl
-         apQsFqSBno6+6VratEB5XAgiI43c1zFf0EAQCQcpg3HU+jW6FXvbnv+q6fk9dv4Bqip6
-         nBgBIuITWMsmGhM0L4Gr8mNiBpySqqPtUSDFyZ899lTQApd6o4avKhmx8lmY3E3W0b4s
-         386GO3iZfHIh0s9J2ipuoc0fUsmlh+JinNgVVv4bOUl/YHVBN5oSY1hwD7ckYIvPGPzr
-         3UOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753259884; x=1753864684;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=n3P2VApwyqZcQGgH2xsyRWVJMZr2KQKxV6y9K6HQS9w=;
-        b=JgS0aXLsvfKhC35kQBO2M4GI28TKVU+2qio64k+mHNfYGPbtt9nOF8IK8gcycOHAD+
-         IoYsBqbFiSsbsKAjc6Baz9sNiabJ1gzh5FJRIbk+2bPuLAdPIikZW+DmPjgeMovsO5h3
-         jqImutfCG/NPlL0hxEOD3ooxLLF7V26cbAJh7HpzxfkL+rGfi9UEvbvTvlp/VOFyaNUa
-         T71bO7Y7rjgrijBvlOKt57C5d8xwX6OOFYga+MAaZ6uS4tG8Vxf/+DpdSExy7A/GvgJB
-         8+QAQOhN/s4NnIWHsIWMSLnGmKh60If4zIZg5GnBhWm0gdNtwgkb6JbOQ43UJVZicS/V
-         Q2Kw==
-X-Forwarded-Encrypted: i=1; AJvYcCXv0Xa55pFHIsJ+p9VVpCEFuAb9UW+Amm1okk3vJnbfe4ULklBarmkRti2CvYDGd4d4wss9JL90Sg==@kvack.org
-X-Gm-Message-State: AOJu0YxEV1kgSTDYw3SkHFhWqbMsbSuB6qeeVXCcmOrXvHAKbBomZVTC
-	nO4CfxZZpL4yy+yLF7PZzwVKGl2zguLJgTSKiY8sqzp4L8pFPEVqfG51aEMGRb1PSwQ=
-X-Gm-Gg: ASbGncsGtAF75xKQ2hucd0MCpYmpnLeNbBXY+sCL8Ixt+ha/lky1rjUA4hu4VPkP3S6
-	msN9/7+OuO/aGqgIkfI6mXb9kGcYhMWt3E0pc+gnpCQ4zCBgJqj/RiZX/N+fzd50lSsIzu3kQqS
-	SW8n0VrKCGfsS0je316cqe6J71WlLW1l9Wyzm5ghQe1dIr7fhHUKTzO/vvZ7CTckrQEf0muQYC9
-	JD1PRX29IACsyt9DecyhFROjEXL2t6fgxFJxiFObRyXtiwttHE2ek6Wd0cNCF8cxSsYX+9TWYD9
-	95aE5dBkAbs2IumMYSt+lr+hFKEuG8THqhT+OUQSIr313j4gIiaaQylljbgNnxTSxlug3spHHwf
-	TP014Y9lJI97i
-X-Google-Smtp-Source: AGHT+IGfKxkKSgjfuBbrA9aMKGgq6w9CMUJszw4YPTrPg/PbU2Z6gWyowOy29hJBo56zgCZxcn3x3g==
-X-Received: by 2002:a17:907:3d0f:b0:ae3:696c:60a with SMTP id a640c23a62f3a-af2f66c5e04mr165593266b.8.1753259883713;
-        Wed, 23 Jul 2025 01:38:03 -0700 (PDT)
-Received: from blackbook2 ([84.19.86.74])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aec6cab5f53sm1014137866b.136.2025.07.23.01.38.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Jul 2025 01:38:03 -0700 (PDT)
-Date: Wed, 23 Jul 2025 10:38:00 +0200
-From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>, 
-	Daniel Sedlak <daniel.sedlak@cdn77.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Neal Cardwell <ncardwell@google.com>, 
-	David Ahern <dsahern@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org, netdev@vger.kernel.org, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org, 
-	Matyas Hurtik <matyas.hurtik@cdn77.com>
+	bh=Y7eCUOWke4mAzQtpD5jhgOmBpiDVIy3hPcFQXQYgQgc=;
+	b=Wm6xWEfx8GVVJJqdZPfEIs6+0jqWBmc1Dna8DQgUvbTOLRbCcWzoRIjSfKx4Afu8UbbDFc
+	12VAd74mpks0ayS5wLfM8ThaN9D/800wqNZkZQEX+MyNAGvMCWNbXSmZNLMtWKKuDhJ3uN
+	u2nXKvQBq/AlJFjGZyX+Lxa+EpUIE1k=
+DKIM-Signature: a=rsa-sha256; t=1753260092; x=1753864892; s=dkim2019; d=cdn77.com; c=relaxed/relaxed; v=1; bh=Y7eCUOWke4mAzQtpD5jhgOmBpiDVIy3hPcFQXQYgQgc=; h=From:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:References;
+   b=BR7ahQgqu5jB0ylvabvi4zREjcqEqtUDjpslN0Pv3tRrLJNBX9OpvjPjghki2fSxvbakWXxu85HlBksvmrIOdNzs/RzqY+RupdFNNdrziFO3ZwB2r/1Q/GDckKS6rHWATPjKqAfoeV8hpIA5HcL9PMoDrJQly8IOBPZW6o0AQOM=
+Received: from [10.0.5.28] ([95.168.203.222])
+        by mail.sh.cz (14.1.0 build 16 ) with ASMTP (SSL) id 202507231041312250;
+        Wed, 23 Jul 2025 10:41:31 +0200
+Message-ID: <01ab2653-dbff-4a3f-ac91-f3f21a06dd2e@cdn77.com>
+Date: Wed, 23 Jul 2025 10:41:30 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3] memcg: expose socket memory pressure in a cgroup
-Message-ID: <yruvlyxyy6gsrf2hhtyja5hqnxi2fmdqr63twzxpjrxgffov32@l7gqvdxijs5c>
+To: Shakeel Butt <shakeel.butt@linux.dev>,
+ Kuniyuki Iwashima <kuniyu@google.com>
+Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Neal Cardwell <ncardwell@google.com>, David Ahern <dsahern@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org,
+ netdev@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
+ Matyas Hurtik <matyas.hurtik@cdn77.com>
 References: <20250722071146.48616-1-daniel.sedlak@cdn77.com>
  <ni4axiks6hvap3ixl6i23q7grjbki3akeea2xxzhdlkmrj5hpb@qt3vtmiayvpz>
  <telhuoj5bj5eskhicysxkblc4vr6qlcq3vx7pgi6p34g4zfwxw@6vm2r2hg3my4>
  <CAAVpQUBwS3DFs9BENNNgkKFcMtc7tjZBA0PZ-EZ0WY+dCw8hrA@mail.gmail.com>
  <4g63mbix4aut7ye7b7s4m5q7aewfxq542i2vygniow7l5a3zmd@bvis5wmifscy>
- <CAAVpQUCOwFksmo72p_nkr1uJMLRcRo1VAneADon9OxDLoRH0KA@mail.gmail.com>
- <jj5w7cpjjyzxasuweiz64jqqxcz23tm75ca22h3wvfj3u4aums@gnjarnf5gpgq>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="i2zmhp2yhqwmj7st"
-Content-Disposition: inline
-In-Reply-To: <jj5w7cpjjyzxasuweiz64jqqxcz23tm75ca22h3wvfj3u4aums@gnjarnf5gpgq>
-X-Rspamd-Queue-Id: 970BCA000B
-X-Stat-Signature: schn41m45oo734bo1xqjtco8oiukuaxu
+Content-Language: en-US
+From: Daniel Sedlak <daniel.sedlak@cdn77.com>
+In-Reply-To: <4g63mbix4aut7ye7b7s4m5q7aewfxq542i2vygniow7l5a3zmd@bvis5wmifscy>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CTCH: RefID="str=0001.0A00211C.6880A03E.0039,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0"; Spam="Unknown"; VOD="Unknown"
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1753259885-678293
-X-HE-Meta: U2FsdGVkX1/QNYvAqEA+8vzkQniy1dwTjK7CiR5G+7lDstMWUFIq/mwKFzw3F1+oQQHOvo8osvsqbfAIZcl20TG1m8B8nlJRVtdb9s7AX8NvuNouEEFgR6X6HutBFUIGo0kQijvbrviPLj39mCE74liGIgAJTaitqTJscULfo1v/sva9e3SnwULNN6ldRFcNyjQ8QQHs15QFORNDlatmowe2Y5Okoi1RqizrKxZKXarLrkdH3ltsHqs9sE0DLhEbIUA3Ajna3AlbF7eHLe35K8bLCPM3mlQ260Yx7JFG8bhlcKZDqxJ4w3wlAh2uSORSni6cRAtKSE7SfGjocCykP+dADgGyMUmpHsH9rD3WTlMlrHK2mq6Iy15mnaub8Qr396kWlpJpWJ7h9vVnTs6Fdws/TldAP4OiYiyQPz+q6SMKaLcjc26/VVdpl2BrOYjcj7x/NtehUluMG2R2JWWpn+UH4Xtw3pNCTGhCnORE8cbqxfT0dj4B38wsBkDVa2KMTq3CqGk74RYm40gBbGxZoJ20jqotqmT1DtYDjnyh67W/RkWHLmxILxbWZuSVfMwBT78tPxqek9fhfeRBNr/mIfzdU+wCVvVAUf/6QFz7cz4Ued62lCg7hqfuIsFG3AB/MOZWiKMOUtRVlihpzpzPJUbqZI4t2K32U8cgp0cHpc7WME01ahdewm5olpX/PtGTZEBmvcudQYpCTQQOH9lKq3MJ3d9gl4sq1eNST6ydvWNhpEI7AL+hzQdXk5saQk41HgMtUL3LMKCO5ciWJyC1njffqXHgdAxBWnsTki9+SyOBIHLSnUNjxkrpc+GUW8SiD1HSGCOUXfcNDDEP4cOiduZ4BS5i3DKT19D02hL/Oa+jlmJJMKy9cGx6+rHXRsjFUbwQEaNp0biplDzL+0tBZHdUS1j6LpPT2FoigTNALYM7gLcZjB62IFeKOrc5fouMNdbZf4FCr1nyte1D7ww
- UtL6Ht+a
- mz1utln/lXNC215mniRQjC2tf7LEIPJ0w0/3nMe7Aua0wPSdhS1ysgVlwm+jFkD4EoxYpEWqDYpzi0cAAHEnMMH2ETbI0hzsup8sGdk2QpsfiH+Luw6soitA+BFtwC0knnaLHnrb9u3YhQBS6gCmMI8GZ/tr4MN36ygpMFprO1A6PcYpuyekE2IcK2QNyW4CWZPaX3IcQukwn+vs1aOC3yG370F3UllRnrZ/BQbB8uG67hi+GRId5C/v2RFpC3c/I00g3AQRcBWllI/WCqnnP9Q47ifE+vww730Ei8ykIxbyA4587gWGELkOWXEQj1HY13GjpZETGHWDC0SC0Y4nHBNl9IzGR9mwho66DUsJFsI6nsq1yLK9QyJBmrLaXtiz/mgxXm1bUp009YZFLMnZ04GpgZXJwran317D+kRQ4LRNfkFt45gp3Qmkezg==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: F200C40008
+X-Stat-Signature: nerdxz44agmgfn14mge8ttuf7y9xehfs
+X-HE-Tag: 1753260094-80407
+X-HE-Meta: U2FsdGVkX1+vfQa8cRABpGtwLtiI3+fGRqdrxjbJZlYJ0lM4//gGPWm+nbWEikJdKnE/vRCZbOWZ8vG7F/8KJ346JlgYNGJQLk1bALYzn9jBSfIUrE9RHz7d4pr3jNNKXzjSw3ismwp7OS+BbLCWBWMfcQEngHkGv2O7rjHcyzBnHmCmwg0fNgg8Ke4IKRCQdGzk55RpD/nVIz0I/esUX+CJBCcB/NvxArCjMtlBIuyOrbyw8DXdLEBwQGwc33qGOQ4apG1oftChIyCReCs2GsHDA7jj2aqQQkp/ALo2Y5vkOb5Xo8x+JjdheAlxhKj1PdRxBneMCltqwK/8KAdIiA8kHEl+4JtH4sFcZWesGSvhq6Mnjow0tMrEYHJ5mm1wimTIxcB4PLceCMh+IT8H/wnXD+dJuafqvM1iAmkgMmXlcdgdMCy6Qa1n3cBcP/SfD0UhIg6LHGILx7Z0TyX96rNmi5zmPTTPfnwaTZlDNkGm+FY1LOXyXdrj2dXsNXdoilBq8VL9X8M0ih/ckp91GMhUyY7yprH2egD48GdNsE1815EOzw+BVa18BuX3hb3eCzapWLWOEA4bk1iSm0tg89jelZNw0pNQgpsvghiKFUMxW+fcKsE+M0eTobblUIElbp895lxyoBeaJKXyVx1olKSxDMMEvdxHJtXFgdFv8Sss9VPhBK8guLfNHISqx1O7RZedNSyetA6u9PwltSWW5z/vEmUpj0sIzPbsByzQExGNfZ7TUoQyyWN3Ho8fOSEzZ9jiZKxQBhwdViCz6u2QyYA8YslOjH5/cMS6jk4QYcYG3VX941pUlSnY8Ij71PXh3J/XYAkY64uehZdrPN45eufiUPyHkteCUC/lueCNdiwrgoaAztHUevy6kqDpZpFQET0SrcvS3LOUeujeIJnwSXQ19nLh81jIBSPR+tDyIQMeOdsBlHWlimz6dwlVC+DkoBTAKzQQtYw0AhRpk4g
+ 2UpfA3KT
+ Wipwy9EexZ9442/AR5I1w9QSIZnTGLNTnZYospTv8l9DnxmEbhdCYMtB/n6TYjUu+vY5Pl9uWjnbV6EY3r/tMxCRzV+E6/c3W7G99+fayXqovVPAztEC1v4IXUvFeH9zSpuSbkgQaMAANveqsxUeVzKuMcRB1sB3/WRbac1GGjjhDMywURhWgU8/WuSWShf3j2PZ8ap7/ONR0MB6ApuOXjpq7u5jacfw2nsr3nGwp5eLXuHu6DsJeHjzju71zZQogZYkqyrJJ3tFSO4Cyefuwr+flPsKMWtSSiIRR5K1UXEEET7Ujbgyxlqg3sQOPxNljrqPsNFtpNj6rlsdWIK2EqDxt4tHuktMaU2pe
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,48 +97,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 7/22/25 9:05 PM, Shakeel Butt wrote:
+> On Tue, Jul 22, 2025 at 11:27:39AM -0700, Kuniyuki Iwashima wrote:
+>> On Tue, Jul 22, 2025 at 10:50 AM Shakeel Butt <shakeel.butt@linux.dev> wrote:
+>>>
+>>> On Tue, Jul 22, 2025 at 10:57:31AM +0200, Michal Koutný wrote:
+>>>> Hello Daniel.
+>>>>
+>>>> On Tue, Jul 22, 2025 at 09:11:46AM +0200, Daniel Sedlak <daniel.sedlak@cdn77.com> wrote:
+>>>>>    /sys/fs/cgroup/**/<cgroup name>/memory.net.socket_pressure
+>>>>>
+>>>>> The output value is an integer matching the internal semantics of the
+>>>>> struct mem_cgroup for socket_pressure. It is a periodic re-arm clock,
+>>>>> representing the end of the said socket memory pressure, and once the
+>>>>> clock is re-armed it is set to jiffies + HZ.
+>>>>
+>>>> I don't find it ideal to expose this value in its raw form that is
+>>>> rather an implementation detail.
+>>>>
+>>>> IIUC, the information is possibly valid only during one jiffy interval.
+>>>> How would be the userspace consuming this?
+>>>>
+>>>> I'd consider exposing this as a cummulative counter in memory.stat for
+>>>> simplicity (or possibly cummulative time spent in the pressure
+>>>> condition).
+>>>>
+>>>> Shakeel, how useful is this vmpressure per-cgroup tracking nowadays? I
+>>>> thought it's kind of legacy.
+>>>
+>>>
+>>> Yes vmpressure is legacy and we should not expose raw underlying number
+>>> to the userspace. How about just 0 or 1 and use
+>>> mem_cgroup_under_socket_pressure() underlying? In future if we change
+>>> the underlying implementation, the output of this interface should be
+>>> consistent.
+>>
+>> But this is available only for 1 second, and it will not be useful
+>> except for live debugging ?
+> 
+> 1 second is the current implementation and it can be more if the memcg
+> remains in memory pressure.
 
---i2zmhp2yhqwmj7st
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v3] memcg: expose socket memory pressure in a cgroup
-MIME-Version: 1.0
+In our production environment, when this so-called pressure happens, it 
+typically stays under pressure for a few hours straight. So, in our 
+scenario, even a 1 or 0 would be helpful since it does not oscillate.
 
-On Tue, Jul 22, 2025 at 01:11:05PM -0700, Shakeel Butt <shakeel.butt@linux.=
-dev> wrote:
-> > > 1 second is the current implementation and it can be more if the memcg
-> > > remains in memory pressure. Regarding usefullness I think the periodic
-> > > stat collectors (like cadvisor or Google's internal borglet+rumbo) wo=
-uld
-> > > be interested in scraping this interface.
-> >=20
-> > I think the cumulative counter suggested above is better at least.
->=20
-> It is tied to the underlying implementation. If we decide to use, for
-> example, PSI in future, what should this interface show?
 
-Actually, if it was exposed as cummulative time under pressure (not
-cummulative events), that's quite similar to PSI.
-
-My curiosity is whether this can be useful to some responsive actions
-(hence it's worth watching with high frequency or even create
-notification events) or rather like post-hoc examination or low
-frequency adjustments (reason for cummulative). I.e. what can this
-signal to the userspace?
-
-Michal
-
---i2zmhp2yhqwmj7st
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaICfVQAKCRB+PQLnlNv4
-CE5mAQDDOte4EPAzuuoOKqbLKO5Ygkc70z9WHcXnUbPwPcq4swEA8kCX/rxqTORQ
-i9MXibIkSfPBUZjxLcl7kwUmqFoxXQw=
-=1mgK
------END PGP SIGNATURE-----
-
---i2zmhp2yhqwmj7st--
 
