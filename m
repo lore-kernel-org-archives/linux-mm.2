@@ -2,117 +2,94 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 80984C83F17
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 13:17:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9AD8DC83F34
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 13:18:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0ECCC8E001F; Wed, 23 Jul 2025 09:17:28 -0400 (EDT)
+	id 3D4816B009F; Wed, 23 Jul 2025 09:18:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09DAA8E0002; Wed, 23 Jul 2025 09:17:28 -0400 (EDT)
+	id 385336B00A2; Wed, 23 Jul 2025 09:18:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECE6F8E001F; Wed, 23 Jul 2025 09:17:27 -0400 (EDT)
+	id 29B376B00A4; Wed, 23 Jul 2025 09:18:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DD2D48E0002
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:17:27 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6BF421406C4
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:17:27 +0000 (UTC)
-X-FDA: 83695580934.07.6696968
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf22.hostedemail.com (Postfix) with ESMTP id F1C78C0006
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:17:24 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IloeifgX;
-	spf=pass (imf22.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1AA826B009F
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:18:16 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C37EF806ED
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:18:15 +0000 (UTC)
+X-FDA: 83695582950.10.53AD57C
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 26A0240003
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:18:12 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=PMXNajEv;
+	spf=pass (imf11.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753276645;
+	s=arc-20220608; t=1753276693;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QUvOWYi7qqvGYE01TjZyNH5FIGW2BUt0z90QQ23/hCw=;
-	b=s5UY2RRv5JEQ20yf1dA36Wd0uGBD5vwwB1QRE7xT8lzKdyvnWRTnH5D0NrxZ/JegBlE0/S
-	WRC3qgisjsLFtoVK23orbzB3UwuHLDdhhQQ0BoK9pP3fTDfPd8nzpFLSS1R0bHMl+K6chz
-	x+ZC0CrhrBL78Pn7jcDPIvePq2fkBLc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753276645; a=rsa-sha256;
-	cv=none;
-	b=mNI+pQmNbVUxkO9BNH7+2wuXZnu7QvwWNzCScwf54jZ1A1F7V34EoJ7cpSKaio7Zj+VDrM
-	mJjwhP1EQrQQmb/p0jBv2mhoIJjwcuKuI5Eo8mDXF6MRdCZKw7g5G2LwDyM+QE9iw/pabz
-	K39DldpBeXJZRb3wXB82niVe7Shv3n4=
+	bh=nhiYwIebSeScAgaHKIQ/iBJqXSOJiOZNWDMEkjFvm64=;
+	b=2NLNGLTxc7sOD48Q1hrD3tMPMD0jU10K6L1oqUVbNd/HFI6YXLWPEdyUsrr7VFQfZwjr3X
+	YhcJ3n596WOzymDzq9Aplgdqv4ezzfxBRedWE4hO1z+BOJOksGFzTRE9qjejQQLe+4T+gW
+	HnIt/yqtRotfGiFFinDL+LLdU4OYkEk=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IloeifgX;
-	spf=pass (imf22.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753276644;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=QUvOWYi7qqvGYE01TjZyNH5FIGW2BUt0z90QQ23/hCw=;
-	b=IloeifgXgr0NyEqtLyTkbRdBqusVC1S1YCRhWEkND8ym81WGnddH1b0GYpCudRNoDFKY67
-	MK6PpAMTM/106gJdlx5fVPeuNdnGk7rdsSWWB+8lM6enPctTAPQneGihUVWeSbqpZidP9+
-	u8TVzHLIfXJPnUSX3/lKvF8VOwe/EF4=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-677-qK09k8QdMjOUiT8_P2NkMA-1; Wed, 23 Jul 2025 09:17:21 -0400
-X-MC-Unique: qK09k8QdMjOUiT8_P2NkMA-1
-X-Mimecast-MFC-AGG-ID: qK09k8QdMjOUiT8_P2NkMA_1753276640
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3a5780e8137so490572f8f.1
-        for <linux-mm@kvack.org>; Wed, 23 Jul 2025 06:17:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753276640; x=1753881440;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=QUvOWYi7qqvGYE01TjZyNH5FIGW2BUt0z90QQ23/hCw=;
-        b=bpnFmI4Rx/uccpe0OGOsAssuK/PEMtrZxUGD7YrjHv3fjkDyoUdqGvlEaSLwRjIjaE
-         /2wRxKFA68fQG9X8T6bSXhJnxKea50MoOP43lEaDUybP2hPcvgHLq7eFXe2Hwh98IYnc
-         odzOswMv/E+InYWvCWSdLGsOgJB7ii9Wve6+dt2oaVEW3PiwOtVLUprsB7VxSq16LiI0
-         sumIyrx9ImFWxeFTDEQUENhnNm6QCg6JqOf3axLxWyF3K0wbHML1ywI6id33bIN99XaW
-         E3FuDzYL7I0abgkOOSSdDDCsn9ATCrdvhH5YtGT8Nzb00kROdnSKQSOVUS5xLRV5B+mV
-         LuIA==
-X-Forwarded-Encrypted: i=1; AJvYcCXgXmbpTrzMfu0xS6rFggqxq0XdumNQqamUOZxVRLpCtlVg2LTLbBmljpU8IQ3OOxyfumXIMUKSTQ==@kvack.org
-X-Gm-Message-State: AOJu0YymGO7taARqaYstmSEwe+D76VxsMOVkd7KJSXRFKPSxbxSgPOsJ
-	hle0RPYmC38uVvSiP3CgmQLcHSJcFRv01RdFnozukVpAt90zfc+Suvu9jb+Wx5Sd0RO0yv3cKGw
-	i1M8f9zLvQwLhW/nEonrAOEqnSIf7ATyw698OFz+L2QsogN7uTGD/
-X-Gm-Gg: ASbGnct25Y9SLQRZC99/uoIodeiO0b6qeFcX38V76glBb1i/VRHOUkBileVSF/FpMXC
-	FkX5ZT3tT/LBiB1YtzIWffpoHF5u+9w/G0lYJSOPbptEqNwkXx0DqlLXCJ2467OI9yQLmA1o9GF
-	q3e9CE0ONqt/Y8Ed6oF0Sogbyq4urs5roSN3SBUGPBMrPdWa2Q+vFgPZcD+tXqKhupAw0SBn2KQ
-	lzsWlE2oE//pHWUQIlarBw/qiHcZx0yA9wo0mXPa5vVgODpVtyyc6YmROBvzUIBkLk/OQl/X5oG
-	jrLr6gSy3SMOiWQMuasdcramqt9t20zBnpXQgk117PSOq84B4ktbkcE+9aqhAfYZY9H6D9jHQp4
-	HAyjE5J4SjQ/Z9RRZkZt0bUyFYVBfwkkXuF1F6BaEvXdHpLQAIiPMNKmkWlqyxbjf910=
-X-Received: by 2002:a05:6000:1449:b0:3a4:ebfc:8c7 with SMTP id ffacd0b85a97d-3b7694beef4mr2628841f8f.8.1753276639706;
-        Wed, 23 Jul 2025 06:17:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGs9I1KLbQeMu1ajtdHhYyM5hqYLgRpOaRoFft+2iVCe2Ctcg0/AKmdicmyvq7Lk8vhHyXlWw==
-X-Received: by 2002:a05:6000:1449:b0:3a4:ebfc:8c7 with SMTP id ffacd0b85a97d-3b7694beef4mr2628761f8f.8.1753276638372;
-        Wed, 23 Jul 2025 06:17:18 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f00:4000:a438:1541:1da1:723a? (p200300d82f004000a43815411da1723a.dip0.t-ipconnect.de. [2003:d8:2f00:4000:a438:1541:1da1:723a])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b61ca2bb96sm16449200f8f.30.2025.07.23.06.17.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Jul 2025 06:17:17 -0700 (PDT)
-Message-ID: <8ef1ddd4-6597-4897-8e85-e839c1759889@redhat.com>
-Date: Wed, 23 Jul 2025 15:17:14 +0200
+	imf11.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=PMXNajEv;
+	spf=pass (imf11.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753276693; a=rsa-sha256;
+	cv=none;
+	b=Z8wQPD1m29Ax4EA9lhPXB1RBs50uRBOq+bAXTZ2rPNIGUD+AeFcIec1fus8MSl4lZG8D9M
+	bz85kUCyVLnpUipSzEYyUOMTl881BYdVDjSh33gmL9equBCZUUSmyjo9ovVrdZU6XMAEjz
+	eN9bbS3vIJF4Bt8+OXvHp8Y1RIAfCM4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753276693; x=1784812693;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=JuCOMhLM9PT+7bVlHvKxgBRdvL5A5XXp3gxInuZG5+g=;
+  b=PMXNajEv9Vd3XyrmvNWb0qCJJWEtpeB9WVMMsbq+W+MnuEJEog/ACGK0
+   8Vb0QWmtyEqXCy36SE1TVi0LAY1HhWUhfiok+BrL6TFjHp2NyotzDYdAV
+   KJ6XQX5fN7uft/Jah8ljZ3PphWFwXGbtsirYHlpscYjpuaSzxUm5JTzCh
+   rRHFJrziOiSXx7bgII6rs1gVuHetOsoPLblQCrEVwXQcdjquAm000bNyl
+   SrB15Iqsn4DTfay5RCrQ81HrXGFUhOtuTVMadLJheVDi8J5Reg9qM80rn
+   2GsH8A/xWFTTxOVGQ5O4g0TD5wMeAzYTw2BgZnFnP9TQubsPc1zFGs0fH
+   w==;
+X-CSE-ConnectionGUID: phuaqlSlTiW+gbClJM9wiQ==
+X-CSE-MsgGUID: yIuRyPy1QiikPycQj4BlbA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="66629612"
+X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; 
+   d="scan'208";a="66629612"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2025 06:18:11 -0700
+X-CSE-ConnectionGUID: qyogbtXBSYm7LrZ68itXEA==
+X-CSE-MsgGUID: b/X5geGiTVeMbzIzY8ASsA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; 
+   d="scan'208";a="159615523"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1]) ([10.124.247.1])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2025 06:17:56 -0700
+Message-ID: <5cf448d2-ebd5-4a60-b865-a8be7982bbd8@intel.com>
+Date: Wed, 23 Jul 2025 21:17:52 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 09/22] KVM: x86: Enable KVM_GUEST_MEMFD for all 64-bit
- builds
+Subject: Re: [PATCH v16 03/22] KVM: x86: Select KVM_GENERIC_PRIVATE_MEM
+ directly from KVM_SW_PROTECTED_VM
 To: Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org,
  linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, kvmarm@lists.linux.dev
 Cc: pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au,
  anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com,
  aou@eecs.berkeley.edu, seanjc@google.com, viro@zeniv.linux.org.uk,
  brauner@kernel.org, willy@infradead.org, akpm@linux-foundation.org,
- xiaoyao.li@intel.com, yilun.xu@intel.com, chao.p.peng@linux.intel.com,
- jarkko@kernel.org, amoorthy@google.com, dmatlack@google.com,
- isaku.yamahata@intel.com, mic@digikod.net, vbabka@suse.cz,
- vannapurve@google.com, ackerleytng@google.com, mail@maciej.szmigiero.name,
+ yilun.xu@intel.com, chao.p.peng@linux.intel.com, jarkko@kernel.org,
+ amoorthy@google.com, dmatlack@google.com, isaku.yamahata@intel.com,
+ mic@digikod.net, vbabka@suse.cz, vannapurve@google.com,
+ ackerleytng@google.com, mail@maciej.szmigiero.name, david@redhat.com,
  michael.roth@amd.com, wei.w.wang@intel.com, liam.merwick@oracle.com,
  isaku.yamahata@gmail.com, kirill.shutemov@linux.intel.com,
  suzuki.poulose@arm.com, steven.price@arm.com, quic_eberman@quicinc.com,
@@ -126,68 +103,20 @@ Cc: pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au,
  jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com,
  ira.weiny@intel.com
 References: <20250723104714.1674617-1-tabba@google.com>
- <20250723104714.1674617-10-tabba@google.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- g3eXuA==
-Organization: Red Hat
-In-Reply-To: <20250723104714.1674617-10-tabba@google.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: XGWFrDwmzy4BhkD153uVPfsVwO5OAEkgFhyWQRx2hyw_1753276640
-X-Mimecast-Originator: redhat.com
+ <20250723104714.1674617-4-tabba@google.com>
 Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20250723104714.1674617-4-tabba@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: F1C78C0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: cq6yhb8974hokxend86afwka6rre7rh8
-X-HE-Tag: 1753276644-220547
-X-HE-Meta: U2FsdGVkX1+OIzmSfW8zGYI7IOJCEzVx9C4IQN47kLFZqo5y1yLlKiZNH2zLwhRbwU1hN8QVKgjkxj8oBRtCqBKOkdeHBDFKiGyHZazp/0Eo4tl/j/EUqfFNqtoqCZCTYHuukrd3zkp8HSjIJ7pVRrlM2chqUGVoptHLjlDUx6Wtw/5nVH8yOl2EfAgCiiYofa7uOn555sfeGvrcI/jghG5bxyIoMUhSvNgzJPY0+ZiJBbpcWn7YEdl1uO4kk0eel+ZtxH4vvKhXcdn7xXWc7QzzCNi0ecvUneuGTlImIoYIMRtiBAdtOpSXR/4FJHfSO6d15xdjB3tBfHLasvamSPUQrLeh/EmPPwa2N1gNQpmjADSpCpICsZItycMcH4DGeDfCFsZ39Msd6cXh5Q7LtjqJDdg0QlQEs6nKKG2A8jaz+qExaOr9mt6PfiGctMsTc/aPInF/Hi42k2SBeLtcldNgYG38yjaeKczgR2dtG8n/NpdE0P1Pqj2JWexqppwRO5TYt5h+Da+qRv19nBOdaS7CjcK9NvpIpJwGLTjd6DtSCKRh84TG/1DJtWkyh77Nx5nI97TXNU2AzprOHDKAvXycTdIIj5YNy+JzaUToVWmdDlA9SAxnkIsNlu4RAAwc6dbCf9IJNMdBkki7BJuUVOPiz9Plk3rpwiamE3f8wKZoQVZJoJ7N2qZS82g/2sK+EGVhWZInq1PvOAfPnneL4eVALQZ33BLl4KgrM1iEnf7Rv96Fs8yYAmwVeDA3NR2mhMP70udOCjHkUaMMRwXJa+3F3SWzKWoJOVlyOMdt+t+hx6clPNZkJaYxJx449VlYK0G/IkuP9XXv+v5n5rag6iT1m69g8ua++uuk7sCPT32snOY/FRBAWt4FvndQ9gJ5K1OdV4OocKfRPAww6G94awCHRPVz+w3ljbZUIKzPRx6fMij1oJXq3IagYysDy/3PmmrOhzDqnf+6Vh3f6r9
- VxZmQo26
- yqeM5+rAMUVHC4c1bJKdsr2owrLpvEKVofHLYh+p2q8Un6ry6XN8j2fscNxTGB2xQVBAhXvoJDcBSSd+Iq+XrXxcUxcZnxBE1RVCnX7eKv2iV1cxj8iTuQwMIWgvbbrhz4Umaifms+FUc4iOkKBkqDqeP9IJAx0fXpqDEpwe1i48ccjrRRg8p7XWN9h0DA9rcx7rbTViZGISG4foN/15bZKCRRb2yp0JDxcjVz+OpCgLyuL8SQDRrkpzIU9Z2F6JeX9mGEEt0oBRLomnegcsQ8dLV28yv9j8TRAHAoozUukbJ6pvPbVE3Qkr06PmAHXQAyaxwazuMRnJkYB1CD7JVjxSpJ7WovEO2f11r+pjTg7hgjNZfgurYDWBQkgXTfemJ4Hdlk39oCW/zCLMnqOAHOpSHct0cuPS5zPZ7ijJR36ykOJIoNPCTzMmcxrpYfqiCZwer1iNDYh02890mMZpfqPq88cWimGrr7lNTEuwba1cuBBGe+FVdIJsdLthCUUZyqWMEvjzwPwiCK2iCfzWmP87UA9ABhzAmQH5ORF4/Ox3+jFOHtroJDEPSkDQnhzgEx2Aq
+X-Rspamd-Queue-Id: 26A0240003
+X-Rspamd-Server: rspam06
+X-Stat-Signature: dgexrusnd96iwugriimu5wtx88ekwnca
+X-HE-Tag: 1753276692-333528
+X-HE-Meta: U2FsdGVkX18tRcwgoXRmJJ82i04YfD1QN4CR4tdIRQyqzzsPW7nIZ3903C1DpCdUR1u9PNIh4ME0+Ra3AxwIRt9EhtUK8SRjZ6TmfEneXWJJD4/uN17tCkZ4QanviyM4HIjq6f97n0D+k3zuYN8TVaBVuHwrJnmy5Gpr5MWv+utDRCoZU53X3PSArGryRMOAwdM/UvhIewCGU3FyjAlwa8nhyPX+47HrqMSjleXqmKvQtfYvpKyR13fieBnuLCRGDjSgz1Cg+BauGWvX2QGrHDGA5IV6iyTzqm4+jFjLUxAWykSCjQLAAGeZyeG7gzr9hjPJZJG605IR0OsAVSpS2SCoyg8gc4+BIRIeAKwT09dGo6/vReBFebZOwUgas2L44YWb1fsTpRjLKGR2K2zQ+i8mR+0ZNG6mN9+akqJpkm/jinw5UOApislv/wr1c+GzU3poyqnxkaUzfQSNCUsJXSMHv71BI3QF/GOBPM6Kvpa7lyG/q0JhmD2wsKolkEQu6RDtEk9Ec9cKTRFRnsPyG39efh5Oip4lwLXDztTjTFUrWeAMIpaYCMFJq4v6hB3Niiqn+FZWDvTRYN5a2+1TZHdETHylktDBr7YdsDXrtZzpfdrcyOpXwD5pLytJ+roVK1enRntkIMCyO805mzfdkY+OKoupzC8Vghero/TgJA0ddtouV8WUJffueJtalDo2kRdZoDGQraD0eeBAKGUwAwJe4rtc9qPiohNVqp6KlQ1Nm69XoEI4VhoUjOMTHWqZi2U3W0El11/Z3/LwQ2o8BP/vL1mNISKzVnc2ZpSWbIZZm7RHu4/HwU3lwWuDdLgJaLRAOHPSYlhORscTlTXwgSm01P97KRpf16BXHC2sWhewLcqIkncujCh73noZZGzA9THIs0HWITq3pL+s0xU+rY1oWuENojhvkT6NC8lpVDWEyb5jmltNuXOyvMcvRv2iJak+mXJzM7jHSTj+XaI
+ 9eEItoCV
+ aOd0lS/7MMtsBEPSzg9Zl2kDRwqA7gLxfA9vg8yr6K0LkZEd97gQEE4eSIke+NgycGomrMXRajHUQL7tnqeKvjZANxVza+WHlfXkB6r/Gv6phTItewWD5WIiF0xC2zo8C2WsD6bYNuaDQAvZugzqeMeZyxul/pyPFyy+QI/3QQV5YTCXwiBCGwyNsAxw1ArscIPJQvreh1NDakYX/lD2HacO9olmBWItkSszzTIkcXuKBXx4dJzX0XANUVrIwasXiQPFm5wrsmZU2oaDsJeeAA6f0Ym8G4sya0iZjqcu885I6qdPHDVsSKA7PQjIgdI2No7wHxWC+HtsGRFDD9SHW6IttLTRIdgNVbtqbaz6cVIyqcFA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -196,21 +125,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 23.07.25 12:47, Fuad Tabba wrote:
-> Enable KVM_GUEST_MEMFD for all KVM x86 64-bit builds, i.e. for "default"
-> VM types when running on 64-bit KVM.  This will allow using guest_memfd
-> to back non-private memory for all VM shapes, by supporting mmap() on
-> guest_memfd.
+On 7/23/2025 6:46 PM, Fuad Tabba wrote:
+> From: Sean Christopherson <seanjc@google.com>
+> 
+> Now that KVM_SW_PROTECTED_VM doesn't have a hidden dependency on KVM_X86,
+> select KVM_GENERIC_PRIVATE_MEM from within KVM_SW_PROTECTED_VM instead of
+> conditionally selecting it from KVM_X86.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Fuad Tabba <tabba@google.com>
 
-It's a bit weird, because mmap() support gets added in a later patch. 
-But I suspect this is fine.
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
-
-Reviewed-by: David Hildenbrand <david@redhat.com>
-
--- 
-Cheers,
-
-David / dhildenb
+> ---
+>   arch/x86/kvm/Kconfig | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
+> index 9895fc3cd901..402ba00fdf45 100644
+> --- a/arch/x86/kvm/Kconfig
+> +++ b/arch/x86/kvm/Kconfig
+> @@ -46,7 +46,6 @@ config KVM_X86
+>   	select HAVE_KVM_PM_NOTIFIER if PM
+>   	select KVM_GENERIC_HARDWARE_ENABLING
+>   	select KVM_GENERIC_PRE_FAULT_MEMORY
+> -	select KVM_GENERIC_PRIVATE_MEM if KVM_SW_PROTECTED_VM
+>   	select KVM_WERROR if WERROR
+>   
+>   config KVM
+> @@ -84,6 +83,7 @@ config KVM_SW_PROTECTED_VM
+>   	bool "Enable support for KVM software-protected VMs"
+>   	depends on EXPERT
+>   	depends on KVM_X86 && X86_64
+> +	select KVM_GENERIC_PRIVATE_MEM
+>   	help
+>   	  Enable support for KVM software-protected VMs.  Currently, software-
+>   	  protected VMs are purely a development and testing vehicle for
 
 
