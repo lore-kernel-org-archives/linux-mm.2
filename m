@@ -2,137 +2,121 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D5C61C83F17
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 13:36:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B841C83F17
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Jul 2025 13:42:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0522E6B00E6; Wed, 23 Jul 2025 09:35:51 -0400 (EDT)
+	id 2CF9A8E0022; Wed, 23 Jul 2025 09:42:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 001F76B00E8; Wed, 23 Jul 2025 09:35:50 -0400 (EDT)
+	id 2800E8E0002; Wed, 23 Jul 2025 09:42:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0C7E6B00E9; Wed, 23 Jul 2025 09:35:50 -0400 (EDT)
+	id 16F828E0022; Wed, 23 Jul 2025 09:42:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CA2F86B00E6
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:35:50 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8E8A014070E
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:35:50 +0000 (UTC)
-X-FDA: 83695627260.16.6020DD8
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 356944000E
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:35:46 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sn6d6Wfc;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3DXGttR4;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sn6d6Wfc;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3DXGttR4;
-	spf=pass (imf04.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0274F8E0002
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 09:42:55 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A69201406FF
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:42:54 +0000 (UTC)
+X-FDA: 83695645068.24.A89ADF4
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 742F9100009
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 13:42:51 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=KSsXCZDr;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf05.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753277747;
+	s=arc-20220608; t=1753278172;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tzLrbkIiOuwOvdyzKWDx4NnuEyUkSbgCzU8mbhcB3rk=;
-	b=Xve9BwyY/3xi1J87uHHiO9R024Mz1OtiDbJ3QjLHPkIdUF3K5ho6nV7rRq2xXf3R3mK1ln
-	lwsrnsIGSLQUJ5uX/9vRfSr7GsiAmhlNsoNSgctj3v4hmaNR79+3fFI22OaYlFWxS0ezQQ
-	urhAzpjZU035B6/RKmHhCLesJc/KfgQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753277747; a=rsa-sha256;
+	bh=ZkGqpFJ/+zOIN5NKChBcby7PucrJJhjOWfsEGniZOTI=;
+	b=fS7lqGO/avzrkLAW0qWiDiT8IE4nN8SKiWqyLrs76q3pDZbuxrN6ae656UhdHLYd9e+0Ak
+	SGKnDhrjtBrAqMeqw3LZlDwAlQg7AeK7dHQqvbWQiEBpS+1DCYzoGK44mSpyrQqcXrT1Ym
+	vOz5TR5qv9b947oS5YfDD5wfIcfhN1s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753278172; a=rsa-sha256;
 	cv=none;
-	b=hZxU7OO27pRkZYCdqSONmKbcdN9QyJaCR6lDUzM+E74G8iEo1J9lZuwf5g2jSBb8C+q9Ya
-	K+A6QPqcf19crg3NdSWcGDMzYogHG46Jn4drkTMoa1D9UU7Jf5PQR9Y+oHed3TTSY8vRIx
-	fBJe2npcP3nL7KjWr2QYmmqAoIQaI1U=
+	b=BEb/5FCWFhdWtQWYkwiFwM1Mep7lJZASWq5NuGn+owshTI09toKOrwIy3MLmhc0fQijgNo
+	xv6IRL9mVH8JZxuNOyd27BVsYNMZFtFT1Ej9QqqfyKIKi+CkOl+kPHy87UfuT6iRkXY7Ok
+	8/hO1uzPazWcyhk289Ydo2gfVyZUBG8=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sn6d6Wfc;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3DXGttR4;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sn6d6Wfc;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3DXGttR4;
-	spf=pass (imf04.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 0AF611F794;
-	Wed, 23 Jul 2025 13:35:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1753277705; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tzLrbkIiOuwOvdyzKWDx4NnuEyUkSbgCzU8mbhcB3rk=;
-	b=sn6d6WfcnZz0DB5GiAC6bKFdOor9xAUmtBOjzv7UyoUJi3Brgkx5qyprggCv0Jz+3zOEBw
-	VAtyXImFe99kv+r3YDGZME13MuC05nGNUHzdZ4oneFTxPl9nqQx/Ouv962zpAgZk2qzTC4
-	9imwhDfigzZKEOTRlrH+cY08NQ+0Uro=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1753277705;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tzLrbkIiOuwOvdyzKWDx4NnuEyUkSbgCzU8mbhcB3rk=;
-	b=3DXGttR4IxzgIWDb2FW7GeODLV2hRB1+1SJUyMLWvyXK6xe4UaC+7BfWGz+b3dUeL4MiHq
-	BeWT8hkanTBQ29CA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1753277705; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tzLrbkIiOuwOvdyzKWDx4NnuEyUkSbgCzU8mbhcB3rk=;
-	b=sn6d6WfcnZz0DB5GiAC6bKFdOor9xAUmtBOjzv7UyoUJi3Brgkx5qyprggCv0Jz+3zOEBw
-	VAtyXImFe99kv+r3YDGZME13MuC05nGNUHzdZ4oneFTxPl9nqQx/Ouv962zpAgZk2qzTC4
-	9imwhDfigzZKEOTRlrH+cY08NQ+0Uro=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1753277705;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tzLrbkIiOuwOvdyzKWDx4NnuEyUkSbgCzU8mbhcB3rk=;
-	b=3DXGttR4IxzgIWDb2FW7GeODLV2hRB1+1SJUyMLWvyXK6xe4UaC+7BfWGz+b3dUeL4MiHq
-	BeWT8hkanTBQ29CA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DD4CB13ADD;
-	Wed, 23 Jul 2025 13:35:04 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id gCa6NQjlgGh0IwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 23 Jul 2025 13:35:04 +0000
-From: Vlastimil Babka <vbabka@suse.cz>
-Date: Wed, 23 Jul 2025 15:34:47 +0200
-Subject: [PATCH v5 14/14] maple_tree: Convert forking to use the sheaf
- interface
+	imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=KSsXCZDr;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf05.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753278172; x=1784814172;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=aTj4lm8xWfLVsbNbqAfL0zQElnzrlfjF/NquOyDaCJE=;
+  b=KSsXCZDrhn267c3ReT12aVabYTQJMLrAlCQ31c7pm36IAV///VLUuM0I
+   3olAMvQidzXx7r06Pe7lGn5zPXkFdq5ArJiLiBJsex/ss4BIjFi/YVh7N
+   rcxPgbnJFyhdzRwkdPTVZu3Er6nOdR985hB6eG4cg1Gq4uXEvxiOsamBq
+   9pzZmUm9JFGByH65DUYrQ4JXjDMJgJVVZjCgbq+AAh0lKD6Go1ikaF+O5
+   YMWrZc6gitTUJeKHtz82+tnM1/+V+U3SA6fcf1g7aQ7AVWbbb+TuBCcJB
+   rxKn4ECbGCE7tsS7FpQecGTKt3dTkpnfgl/Q5djpfZ1hyI4clXzTQgKTe
+   g==;
+X-CSE-ConnectionGUID: bXn+BjlHQnyiHqJzZSaIoQ==
+X-CSE-MsgGUID: LXRcNDPuQPi3nLiQr9OUbA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="55407411"
+X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; 
+   d="scan'208";a="55407411"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2025 06:42:50 -0700
+X-CSE-ConnectionGUID: yTIVkg39RNaz72vCTkFDrQ==
+X-CSE-MsgGUID: fJ/Nw4uCQcucq0aN5JJTDg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; 
+   d="scan'208";a="196630738"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1]) ([10.124.247.1])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2025 06:42:29 -0700
+Message-ID: <ab349c70-1d16-4203-a63d-3fa48b7286cd@intel.com>
+Date: Wed, 23 Jul 2025 21:42:25 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v16 09/22] KVM: x86: Enable KVM_GUEST_MEMFD for all 64-bit
+ builds
+To: Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, kvmarm@lists.linux.dev
+Cc: pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au,
+ anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, seanjc@google.com, viro@zeniv.linux.org.uk,
+ brauner@kernel.org, willy@infradead.org, akpm@linux-foundation.org,
+ yilun.xu@intel.com, chao.p.peng@linux.intel.com, jarkko@kernel.org,
+ amoorthy@google.com, dmatlack@google.com, isaku.yamahata@intel.com,
+ mic@digikod.net, vbabka@suse.cz, vannapurve@google.com,
+ ackerleytng@google.com, mail@maciej.szmigiero.name, david@redhat.com,
+ michael.roth@amd.com, wei.w.wang@intel.com, liam.merwick@oracle.com,
+ isaku.yamahata@gmail.com, kirill.shutemov@linux.intel.com,
+ suzuki.poulose@arm.com, steven.price@arm.com, quic_eberman@quicinc.com,
+ quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com,
+ quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com,
+ quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com,
+ james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev,
+ maz@kernel.org, will@kernel.org, qperret@google.com, keirf@google.com,
+ roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com,
+ rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com,
+ jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com,
+ ira.weiny@intel.com
+References: <20250723104714.1674617-1-tabba@google.com>
+ <20250723104714.1674617-10-tabba@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20250723104714.1674617-10-tabba@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250723-slub-percpu-caches-v5-14-b792cd830f5d@suse.cz>
-References: <20250723-slub-percpu-caches-v5-0-b792cd830f5d@suse.cz>
-In-Reply-To: <20250723-slub-percpu-caches-v5-0-b792cd830f5d@suse.cz>
-To: Suren Baghdasaryan <surenb@google.com>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>, 
- Harry Yoo <harry.yoo@oracle.com>, Uladzislau Rezki <urezki@gmail.com>, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, rcu@vger.kernel.org, 
- maple-tree@lists.infradead.org, vbabka@suse.cz, 
- "Liam R. Howlett" <Liam.Howlett@Oracle.com>
-X-Mailer: b4 0.14.2
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 356944000E
-X-Stat-Signature: 6gbkbbfiwgcn1ta3dn7j7s445ruhzpi7
+X-Stat-Signature: 175dumx41ekpmftmzgh1e48phf5hua36
+X-Rspamd-Queue-Id: 742F9100009
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1753277746-81126
-X-HE-Meta: U2FsdGVkX1+7Y/rYz7gdd3JhG/uTLxXIIo5di6c0BRtw+UEEv+GAuktAikmPiW0RhwDAqAsKwJ0euJLRIF+MPjpvRadWu0ZYXxJ9DbKOre8TJ5RoNle4SH8ho0CuJZtAZd4TbzCkmrJdKg2Xulyrx11pxshWUcOcp3AzjdF02AM6PcKNEz88aK4qGdcmflPQ5NHo9nIcMa2hCe9khXjhf7OEQJTGrdYQU676eSiSfjveBr0QtUCj407aENr2edziYAHlfWfTdala/GUqmyc7uWLpNrtq99oYgdcvowpZyA3dWaGJoJWr1iZmaVM35iMRG0HEnhAKcPG1H851RL6NsFTHu/3Po7OCPpHksG1tVNvlPu4X8y1yixEhoXvcZ8tMeJgp1r2s56Wsf0nvmB4Ni/hJmUV6p429OQpm0ERmDt8ZsyXK+JgMmMxzLiRNaobG7+4/70ns6+guO8JlKCJn5YCEGgU+J/M+SMwhUTBZPGCPfrS4URyAZD+wuzsYcKTFe0a0BVSRSsyKn4yEA9InQEfqVJx3c7fEUv6esn/bVgOh/TB6pHayWo1Y4QXUnSOGPHM/leu+Xx7lXX/25S/387kJAfT4ObQu8SyJBHGcLFZuoeZ11SbX9sdzd/P6L0MNXRpeOlSoIz2znvAqw42lJBSpCOExmFl06rCmXLT1FxanHYRXgGDW5pfzJqLxGgxyWIaIVuUF5w8RjFe9GIpB84xiTfuNPMxtHaRanWr1Co9u+yfK5t9pTv6nyeu/jXeEJGPX8A3sJCY55KK0RmobIfjLa+EZYHSCJXrnoRPEiEtT2n+D3JTErdfS7Q1YrJAGHJCw/WSUYaAXXHrZjw3PDtm5oMmErf8d3/a3Z0IqSd4ryAxa6Y624lhF9ZMgNjSpDV+cd6FemuApOuVGAJeO3z9a9AqP+5d5iQ63Osj4hu6nh2St91TR1na17uZt9YbU94ralmdb+E/QErr/QV6
- m4h98aL5
- W3zHLz3Uh4/886Fxt/VNHj2u/Sr2hKqGav0ROKQQ6u9iAmIU3v6nYehK7uCp2PQKGQJIaIMQtuAOAQXMilSYHWHT1v0tRovVJcRB0F1+5kEo2e0+dgLdcFuFA+yDhDKA6jE1noxbpJnC9nn1eofTX8T81YiNw76EXjGFcQ01ulvQle/sVMyqMHXOYgUZqqkrbAV1KFJ/+v9N+ud/VVg7T8Y4KbLRgyCdAqy/k/nncdjyf0PW9vresSrEK80O3Q5fWT+tfi+npYQCD6ipYxxv2tpsmorJqSbokURqiX910jGY1p9F6IzTymxhN1086TAkexcfJeiErXeNiUWO2rSwH6KzKHKetiNGI5Rr9d+J8mFq5QzZrhNuhW1c8kJEJ9oikOlQ5QgCeE+FQr1c=
+X-HE-Tag: 1753278171-5910
+X-HE-Meta: U2FsdGVkX19isXRTN50J0aEBj18mPRNdyYn2L42jjjcNzo1LqyQ3ZO9tg0r9YPGcN6L2N8RKal2u/OadNJ0p7HfdqDwbO7u5bwrk5zp4Ia62hzk9bDByxJ17HGW3CW7P2EKvLZ5dz+0kfmqGza/lERcDQZ3Z/JyIauZyd/uaSOBaW1/U770zIZAdulqumjc/RbhICHHZPBcESCZ8/VcWWBwcFEvlWa1rfARIUOc2uc5nuR/g00W6T/RUJ+EzoNr1O0qwfcqRqnTDpAB+xxmek/v9HXZVkUiZ9JMD89AyEDRGFBG4r9bGvl55VAIffpGJ9XX30TSEaRuOrS/ZUB4NS4p5KxyMUHfxhTUEAFOsNBA5Xwu/Lcg1Vsmmp1FklBCAn2MLg2ZQfOYl2ucqpZOzFYSHCJw5vTKBTytuc8H5KydQai04OfiCSOmQDhdqak0qGs6wo9VJD7c/bru3uG7k41U2r+lFqMjG2OuaBInYGLatMKtcbWF6grFHn1MYvsTA7WX9ouQRF8oElqekiXpEwf/LaP2KJoWROCcMmGQ5jwWl6Xeq3nfZHEzKioaB+1V77xYWrUYctNOQDtX443KlHxEeYnJEs+bA8nvmuWL1E6NFbiOEF40OHc/BBw869WkqqqW8qecfTK6pmT8oQuaGmjpAgG4nDmBcq66aMDFA+5X6a3IB4VF/h2ECde0YacRV8EbFh7I2Kj1uaUg73LK4EUPJ8NmWwQLXYEZNcDmx9xQ8dj9fszlZp12LmYvaDLB4xnRCEJTIU34pkdIUsaFx14vIcS5oz40JiSfoRmUs1krBiF8dbJt7DV7R7cY3flHn/0ZwN9WkAsCD+/T1PVAjLycfhRI4HummSt2oJqvwaJMVxPAQa8jGsTYF6VfVyf8Q4BGv25O7YyEhgiTuDWrCYdEj8of7n+aksd1Gg2VfQtEcz1znOLv565jAtJbroRr341zo+M6d/Xs8YYlHFFZ
+ nMzh71d8
+ f/VQBuDmQNjxjStFCJDsS4o+nzrih/QXGMaS70xa0Vi03rLnCZe0kNQGauOGoVdlPS4Pb86hOB55mhz4DtefxTCXwCdpSZCdc1NqEp5a1m01zjsNx/tYGyDGsD8hUlBT1ZRPAXk3vc3WCOceUYLbm5HcUWCwQ7rCBOuBsNmIrn9vf4hGy5hwIeYnWXTaGZVFzNJPLO8DE0xyVLeC4QZcl6tJ6FwP/L7KwuMSsmCWG7p0JbwsE2IhsjiJ610sl3XdW169fYCJjMC2oiZsG/PWEYZAsovLEHCHScT//IwUK54B/3tjyANw+Do0sZtfETpOOrGe2Gq/aaTCdwpdgOD3aL+GFCxR1eT6tHkzAPYmYftOCxNtq+89sF0OTJDB7mGvxy1rNInYEliLnl4Q=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,118 +125,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Liam R. Howlett" <Liam.Howlett@Oracle.com>
+On 7/23/2025 6:47 PM, Fuad Tabba wrote:
+> Enable KVM_GUEST_MEMFD for all KVM x86 64-bit builds, i.e. for "default"
+> VM types when running on 64-bit KVM.  This will allow using guest_memfd
+> to back non-private memory for all VM shapes, by supporting mmap() on
+> guest_memfd.
+> 
+> Opportunistically clean up various conditionals that become tautologies
+> once x86 selects KVM_GUEST_MEMFD more broadly.  Specifically, because
+> SW protected VMs, SEV, and TDX are all 64-bit only, private memory no
+> longer needs to take explicit dependencies on KVM_GUEST_MEMFD, because
+> it is effectively a prerequisite.
+> 
+> Suggested-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Fuad Tabba <tabba@google.com>
 
-Use the generic interface which should result in less bulk allocations
-during a forking.
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
-A part of this is to abstract the freeing of the sheaf or maple state
-allocations into its own function so mas_destroy() and the tree
-duplication code can use the same functionality to return any unused
-resources.
+It matches with my thought on v14 that gmem can be allowed for all x86 
+VM types[*]. Get rid of .supports_gmem and achieve it through 
+CONFIG_KVM_GUEST_MEMFD looks much cleaner!
 
-Signed-off-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
----
- lib/maple_tree.c | 42 +++++++++++++++++++++++-------------------
- 1 file changed, 23 insertions(+), 19 deletions(-)
+[*] 
+https://lore.kernel.org/all/b5fe8f54-64df-4cfa-b86f-eed1cbddca7a@intel.com/
 
-diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-index 9aa782b1497f224e7366ebbd65f997523ee0c8ab..180d5e2ea49440248aaae04a066276406b2537ed 100644
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -1178,6 +1178,19 @@ static inline void mas_alloc_nodes(struct ma_state *mas, gfp_t gfp)
- 	mas_set_err(mas, -ENOMEM);
- }
- 
-+static inline void mas_empty_nodes(struct ma_state *mas)
-+{
-+	mas->node_request = 0;
-+	if (mas->sheaf) {
-+		mt_return_sheaf(mas->sheaf);
-+		mas->sheaf = NULL;
-+	}
-+
-+	if (mas->alloc) {
-+		mt_free_one(mas->alloc);
-+		mas->alloc = NULL;
-+	}
-+}
- 
- /*
-  * mas_free() - Free an encoded maple node
-@@ -5414,15 +5427,7 @@ void mas_destroy(struct ma_state *mas)
- 		mas->mas_flags &= ~MA_STATE_REBALANCE;
- 	}
- 	mas->mas_flags &= ~(MA_STATE_BULK|MA_STATE_PREALLOC);
--
--	mas->node_request = 0;
--	if (mas->sheaf)
--		mt_return_sheaf(mas->sheaf);
--	mas->sheaf = NULL;
--
--	if (mas->alloc)
--		mt_free_one(mas->alloc);
--	mas->alloc = NULL;
-+	mas_empty_nodes(mas);
- }
- EXPORT_SYMBOL_GPL(mas_destroy);
- 
-@@ -6499,7 +6504,7 @@ static inline void mas_dup_alloc(struct ma_state *mas, struct ma_state *new_mas,
- 	struct maple_node *node = mte_to_node(mas->node);
- 	struct maple_node *new_node = mte_to_node(new_mas->node);
- 	enum maple_type type;
--	unsigned char request, count, i;
-+	unsigned char count, i;
- 	void __rcu **slots;
- 	void __rcu **new_slots;
- 	unsigned long val;
-@@ -6507,20 +6512,17 @@ static inline void mas_dup_alloc(struct ma_state *mas, struct ma_state *new_mas,
- 	/* Allocate memory for child nodes. */
- 	type = mte_node_type(mas->node);
- 	new_slots = ma_slots(new_node, type);
--	request = mas_data_end(mas) + 1;
--	count = mt_alloc_bulk(gfp, request, (void **)new_slots);
--	if (unlikely(count < request)) {
--		memset(new_slots, 0, request * sizeof(void *));
--		mas_set_err(mas, -ENOMEM);
-+	count = mas->node_request = mas_data_end(mas) + 1;
-+	mas_alloc_nodes(mas, gfp);
-+	if (unlikely(mas_is_err(mas)))
- 		return;
--	}
- 
--	/* Restore node type information in slots. */
- 	slots = ma_slots(node, type);
- 	for (i = 0; i < count; i++) {
- 		val = (unsigned long)mt_slot_locked(mas->tree, slots, i);
- 		val &= MAPLE_NODE_MASK;
--		((unsigned long *)new_slots)[i] |= val;
-+		new_slots[i] = ma_mnode_ptr((unsigned long)mas_pop_node(mas) |
-+					    val);
- 	}
- }
- 
-@@ -6574,7 +6576,7 @@ static inline void mas_dup_build(struct ma_state *mas, struct ma_state *new_mas,
- 			/* Only allocate child nodes for non-leaf nodes. */
- 			mas_dup_alloc(mas, new_mas, gfp);
- 			if (unlikely(mas_is_err(mas)))
--				return;
-+				goto empty_mas;
- 		} else {
- 			/*
- 			 * This is the last leaf node and duplication is
-@@ -6607,6 +6609,8 @@ static inline void mas_dup_build(struct ma_state *mas, struct ma_state *new_mas,
- 	/* Make them the same height */
- 	new_mas->tree->ma_flags = mas->tree->ma_flags;
- 	rcu_assign_pointer(new_mas->tree->ma_root, root);
-+empty_mas:
-+	mas_empty_nodes(mas);
- }
- 
- /**
-
--- 
-2.50.1
+> ---
+>   arch/x86/include/asm/kvm_host.h |  4 +---
+>   arch/x86/kvm/Kconfig            | 12 ++++--------
+>   include/linux/kvm_host.h        |  9 ++-------
+>   virt/kvm/kvm_main.c             |  4 ++--
+>   4 files changed, 9 insertions(+), 20 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> index 7b0f2b3e492d..50366a1ca192 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -2276,10 +2276,8 @@ void kvm_configure_mmu(bool enable_tdp, int tdp_forced_root_level,
+>   		       int tdp_max_root_level, int tdp_huge_page_level);
+>   
+>   
+> -#ifdef CONFIG_KVM_GUEST_MEMFD
+> +#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+>   #define kvm_arch_has_private_mem(kvm) ((kvm)->arch.has_private_mem)
+> -#else
+> -#define kvm_arch_has_private_mem(kvm) false
+>   #endif
+>   
+>   #define kvm_arch_has_readonly_mem(kvm) (!(kvm)->arch.has_protected_state)
+> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
+> index c763446d9b9f..4e43923656d0 100644
+> --- a/arch/x86/kvm/Kconfig
+> +++ b/arch/x86/kvm/Kconfig
+> @@ -47,6 +47,7 @@ config KVM_X86
+>   	select KVM_GENERIC_HARDWARE_ENABLING
+>   	select KVM_GENERIC_PRE_FAULT_MEMORY
+>   	select KVM_WERROR if WERROR
+> +	select KVM_GUEST_MEMFD if X86_64
+>   
+>   config KVM
+>   	tristate "Kernel-based Virtual Machine (KVM) support"
+> @@ -79,16 +80,11 @@ config KVM_WERROR
+>   
+>   	  If in doubt, say "N".
+>   
+> -config KVM_X86_PRIVATE_MEM
+> -	select KVM_GENERIC_MEMORY_ATTRIBUTES
+> -	select KVM_GUEST_MEMFD
+> -	bool
+> -
+>   config KVM_SW_PROTECTED_VM
+>   	bool "Enable support for KVM software-protected VMs"
+>   	depends on EXPERT
+>   	depends on KVM_X86 && X86_64
+> -	select KVM_X86_PRIVATE_MEM
+> +	select KVM_GENERIC_MEMORY_ATTRIBUTES
+>   	help
+>   	  Enable support for KVM software-protected VMs.  Currently, software-
+>   	  protected VMs are purely a development and testing vehicle for
+> @@ -138,7 +134,7 @@ config KVM_INTEL_TDX
+>   	bool "Intel Trust Domain Extensions (TDX) support"
+>   	default y
+>   	depends on INTEL_TDX_HOST
+> -	select KVM_X86_PRIVATE_MEM
+> +	select KVM_GENERIC_MEMORY_ATTRIBUTES
+>   	select HAVE_KVM_ARCH_GMEM_POPULATE
+>   	help
+>   	  Provides support for launching Intel Trust Domain Extensions (TDX)
+> @@ -162,7 +158,7 @@ config KVM_AMD_SEV
+>   	depends on KVM_AMD && X86_64
+>   	depends on CRYPTO_DEV_SP_PSP && !(KVM_AMD=y && CRYPTO_DEV_CCP_DD=m)
+>   	select ARCH_HAS_CC_PLATFORM
+> -	select KVM_X86_PRIVATE_MEM
+> +	select KVM_GENERIC_MEMORY_ATTRIBUTES
+>   	select HAVE_KVM_ARCH_GMEM_PREPARE
+>   	select HAVE_KVM_ARCH_GMEM_INVALIDATE
+>   	select HAVE_KVM_ARCH_GMEM_POPULATE
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 56ea8c862cfd..4d1c44622056 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -719,11 +719,7 @@ static inline int kvm_arch_vcpu_memslots_id(struct kvm_vcpu *vcpu)
+>   }
+>   #endif
+>   
+> -/*
+> - * Arch code must define kvm_arch_has_private_mem if support for guest_memfd is
+> - * enabled.
+> - */
+> -#if !defined(kvm_arch_has_private_mem) && !IS_ENABLED(CONFIG_KVM_GUEST_MEMFD)
+> +#ifndef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+>   static inline bool kvm_arch_has_private_mem(struct kvm *kvm)
+>   {
+>   	return false;
+> @@ -2505,8 +2501,7 @@ bool kvm_arch_post_set_memory_attributes(struct kvm *kvm,
+>   
+>   static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+>   {
+> -	return IS_ENABLED(CONFIG_KVM_GUEST_MEMFD) &&
+> -	       kvm_get_memory_attributes(kvm, gfn) & KVM_MEMORY_ATTRIBUTE_PRIVATE;
+> +	return kvm_get_memory_attributes(kvm, gfn) & KVM_MEMORY_ATTRIBUTE_PRIVATE;
+>   }
+>   #else
+>   static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index aa86dfd757db..4f57cb92e109 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -1588,7 +1588,7 @@ static int check_memory_region_flags(struct kvm *kvm,
+>   {
+>   	u32 valid_flags = KVM_MEM_LOG_DIRTY_PAGES;
+>   
+> -	if (kvm_arch_has_private_mem(kvm))
+> +	if (IS_ENABLED(CONFIG_KVM_GUEST_MEMFD))
+>   		valid_flags |= KVM_MEM_GUEST_MEMFD;
+>   
+>   	/* Dirty logging private memory is not currently supported. */
+> @@ -4917,7 +4917,7 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
+>   #endif
+>   #ifdef CONFIG_KVM_GUEST_MEMFD
+>   	case KVM_CAP_GUEST_MEMFD:
+> -		return !kvm || kvm_arch_has_private_mem(kvm);
+> +		return 1;
+>   #endif
+>   	default:
+>   		break;
 
 
