@@ -2,83 +2,130 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 207CEC83F1A
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 11:58:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B926AC83F1A
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 12:22:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A75D38E0077; Thu, 24 Jul 2025 07:58:50 -0400 (EDT)
+	id 2B1BB6B02B2; Thu, 24 Jul 2025 08:22:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4CB58E0074; Thu, 24 Jul 2025 07:58:50 -0400 (EDT)
+	id 262306B02B3; Thu, 24 Jul 2025 08:22:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AFBE8E0077; Thu, 24 Jul 2025 07:58:50 -0400 (EDT)
+	id 151D66B02B4; Thu, 24 Jul 2025 08:22:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 902368E0074
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 07:58:50 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3E32BB8D54
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 11:58:50 +0000 (UTC)
-X-FDA: 83699011620.25.86D2F07
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 9F932140006
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 11:58:48 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none);
-	spf=pass (imf23.hostedemail.com: domain of cmarinas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cmarinas@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F34DA6B02B2
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 08:22:33 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C74B01A02F9
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 12:22:33 +0000 (UTC)
+X-FDA: 83699071386.14.FD3FF13
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D4818180011
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 12:22:31 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lhqulrIm;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753359752; a=rsa-sha256;
+	cv=none;
+	b=m+h8cs/Z51/8oOL0fQIxzAyXo6Qbozqq/hEzOpWGNTbA9+Vl39b9FdAM+LzsJOWen4MuIe
+	buZHn8gcU82QIV9Nw6XzsRWmXB5SMvlQrE8JiNBcg+NvV0LLHXbANEMeSUROcInv67N6gx
+	WU+bTNZ9YkGT1iMqVTAaP7YxvM4feto=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lhqulrIm;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753358328;
+	s=arc-20220608; t=1753359751;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CBM71A5r716CRs7y3LydiT/PkH8MS+K3pnvRe4ld0lM=;
-	b=5RLCt8kRGFMKnhcfYztlj4ta8JRxXPpD+CzHIEq6W4pGIsZH6dTROsYrbkWVg+bII5n3tJ
-	R7rUrxfMOl9WD3oZpdvtkIfhY/6mApYJgOmGrru9N/ot65M3XZmtx5fzmxf895veSguFSm
-	WJulD38Nut580l80H77ZrB4ezQEKL0o=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753358328; a=rsa-sha256;
-	cv=none;
-	b=5/JKBXZQBiiXHGx6gC06i3/TXGiqX1ELcNdr0eeSPPO7VmzLZUjeHIgh/U5S0gjKfHU6xS
-	dPlIEJE65CCqqjVjObz2MVfeRXIBGwfDg6yb4G3ardi6n2sKcUyc5X+DDS+oe82vkzrnsG
-	T9uP5RbL8O6Ci51iRsDUCQnAxYTzB3g=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none);
-	spf=pass (imf23.hostedemail.com: domain of cmarinas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cmarinas@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E604E6114F;
-	Thu, 24 Jul 2025 11:58:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A45DC4CEED;
-	Thu, 24 Jul 2025 11:58:44 +0000 (UTC)
-Date: Thu, 24 Jul 2025 12:58:41 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Dev Jain <dev.jain@arm.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, will@kernel.org,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	suzuki.poulose@arm.com, steven.price@arm.com, gshan@redhat.com,
-	linux-arm-kernel@lists.infradead.org, yang@os.amperecomputing.com,
-	ryan.roberts@arm.com, anshuman.khandual@arm.com
-Subject: Re: [PATCH v4] arm64: Enable permission change on arm64 kernel block
- mappings
-Message-ID: <aIIf8Q7EVsQ5MGOX@arm.com>
-References: <20250703151441.60325-1-dev.jain@arm.com>
- <aIHsiPtG0Ycm2DTe@arm.com>
- <b5570f50-8534-444b-8c7d-68d676840eef@arm.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PCH9wMZuCq9rz+O+tflGRTfcHTnRU43/VMnWUAJfNWE=;
+	b=2MK6Z9bno/ryPOx6yCN4N9RL+2xYPKm52yjgUAT9TfkvMy/+doqovZy+DIVyurTyVMQaBc
+	qzLLLBuGBJQ/E2jBk6Ice/8Ile3AD0qpcNFuOCNMMtmbO+B0d+SLsqihPXdCJJ5FG4Venb
+	Kyssvvckwkx/AetZeMq02JpY4UZrMzs=
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-ae3ec622d2fso144966566b.1
+        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 05:22:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753359750; x=1753964550; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PCH9wMZuCq9rz+O+tflGRTfcHTnRU43/VMnWUAJfNWE=;
+        b=lhqulrImphDJnt48qagU++yR572csL7lwdkPJM/RPlwbCdOQ2wjogijxdDyw/vuzoi
+         ddvWMvoWnj7B/hbZX+IadUPIqBCBTOoNKitkS9+2jQlLhdbCRWDJITldxP3XTzw/IJnG
+         eP3Ewnr+51pyd/qqrQBcPi+IZ3+ScQxIK66lAhO7Q8WSxQMmFOHSKW/Uz7llsCIQ60iE
+         XSm/+6uDAWPn5cvGIJ1wHOInPK4xMVEiQvOlakVknnED9pvwmU+ntbYvaTxTG38NdWM9
+         Imd5HkuYbSOcSpAvZcogkMQfe7S9DB+eWULh2CfVW8OlremJPAwB2TceM72HDjo0c1tQ
+         asTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753359750; x=1753964550;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PCH9wMZuCq9rz+O+tflGRTfcHTnRU43/VMnWUAJfNWE=;
+        b=npIXOo6THsNuDKm33InjEO4R1sRXVmUFz1NmnHetk0ABlO3vQP4zz2uF8fjGUJswiF
+         QxyP9IFgHToxVK54G6BdUtO6zft7BK87aWYBYHhYVXubdlumg3LvOb1Jv88Wyex1AuoL
+         RFfbo0abhh+6XcTpXdd6ojJemLkN4LKxE+xe04B7d6D3NmPf3oCn7ZelzSOwIcv+ZVtx
+         K2NI3RKBNRhcUZu0WSKrfpaD6skL3Wx5P7lua6R6ZxPD5HrwuADbiciYn6baMDvioTkn
+         0FuLWASdaKBaYSuqsIDreqx0thLKElnMQdMjDaJypGnSfRxwbNHg9GUjy2gnmF/k9MnX
+         9U3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXgjEOZeXlhCrKBzMqY6GYBHSb0egh/dDcvUxcdY7rCbSscELODQpk2IepVUyfVN4LncQn9qg9txg==@kvack.org
+X-Gm-Message-State: AOJu0YyaHcjm4pgLOmJApuSevfktD1fGHkV/GiKBYKJZHs948u8mNxG5
+	YeXRsT+M0SBRO6GJmf06B3lVkw5EHmMpIMUdsPIDkjwIlT0IDsIffVbbgoQamAWFcuzKZvBHdws
+	M5zp9C0D/3xbN7xwg5TSaUltLRyt9YcQ=
+X-Gm-Gg: ASbGncsnoKc4c1RM2XfFzr18tX3AHJduJrfPDLIGMjWPngCqDhogedA2YOqV9bivsLX
+	jgGQHPWyAlykwn8qKo9+lGEsL3XOtDXNse1QBqag1DIiGT5B46QOiOxGGt24gGuhpYzSYufMtGv
+	lQ9K+z2yPNFGiwEwdQV9C7qUeG0CNzWyQOCzuAx71JFYgzq8PBKcUU15aKJfdqwrvpc9R4OuLDa
+	gnp95JN6g==
+X-Google-Smtp-Source: AGHT+IHK0IoDJ6PED5zWXfzDhpKgh5VZvydISu4XMaUvDPUT/I7krIj8dXVVfHCUqibcmSSRfe/rVr8gG8zy8ado+mw=
+X-Received: by 2002:a17:907:60cb:b0:aec:6600:dbe3 with SMTP id
+ a640c23a62f3a-af2f9385acfmr671282766b.56.1753359749816; Thu, 24 Jul 2025
+ 05:22:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b5570f50-8534-444b-8c7d-68d676840eef@arm.com>
-X-Rspamd-Queue-Id: 9F932140006
-X-Stat-Signature: oboh1gdg5hcahqq4qhhcaeg3yzuoen79
+References: <20250724-pinctrl-gpio-pinfuncs-v3-0-af4db9302de4@linaro.org> <20250724-pinctrl-gpio-pinfuncs-v3-12-af4db9302de4@linaro.org>
+In-Reply-To: <20250724-pinctrl-gpio-pinfuncs-v3-12-af4db9302de4@linaro.org>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Thu, 24 Jul 2025 14:21:53 +0200
+X-Gm-Features: Ac12FXz2KOnsH_foq66JE5xieoDhq1Ik71OykKjuCvc1b-KzV3FeiggPCBwSd4M
+Message-ID: <CAHp75Vc4vsJh_-GbP+YO50veoGoGtfAPL4tjcF+73uophfmnGw@mail.gmail.com>
+Subject: Re: [PATCH v3 12/15] pinctrl: allow to mark pin functions as
+ requestable GPIOs
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
+	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
+	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
+	linux-hardening@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
+	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D4818180011
+X-Stat-Signature: 5jtbzj3seqz5tww11p7b3er6rfe8n3u9
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1753358328-368510
-X-HE-Meta: U2FsdGVkX18rF23OhYwa5/NwHumwE1XwYq3yFwK4H/TEiRJN3vlFh1YfetyBr4ysfE6rRK/VAvg+E2ZznItzfDNWxo1bcKTPBqx1zC+rz6OBoJawf/wr5pcF3dVnLLA1SCLaxt5iAj2dW00ETiY8BN890QVeNR7TNEzYCQMVzmFi7f5jgZfP6HaV1AbJQghcsRea+L2gCv72Ms5S6evlPvCsQb64FPxrvZDmfdjGSwuk59G1yFT69b6LJzURCGs3swWosksNNSiJLG0yNGsKgbQAmk4XNtelrFTRUO05YOviwU49zD0juKtkhVWfruqioOjQcA7zWkWxTuUGvdoDgbaLFoKwpwdBhgDMIU3W2OawThhQLx+uljy+3i2DSw9bRj/74a0Q+DmJFiOcrKr/opdQCnW0VcaEmkurpkjeLh1TO0vhdr6YZQ3tCvu9oBItPB0JDUz6cVGDqn+jGyW+tOlWdQQWMqOHyT7ifWcGIhdr/VIrLvwpixliesBeRiAU1zcYXwTI1rZhHgwY56CnpxGlXIWmiKTz0QuMIOZw9RxvpphOsUI1/Ccs9G5GGX99+9wzr4UDdmIuTblRV+CdxGWHapgfd1/k1A1REy/wF2byRvRRXow5f20Z+tHDC1b3082JeZcv9E+uoWxRvU6I/1EyR6iW2bzqbnNWpPi7/V/wSPpsh942GUzUiai7+Tm1c1bXpyeWJu5+tGzTjJFEatqIsjwwhMixwoVw7rvUpDmxzpowmn2+ixCWy0dFBGMRET4cuhFRrtaWi9VH7Xspefvl7Qxzs/SR892rOiagrSYM0XjUHNO/JGJB3AIGHP/H5bwgvAtg7s6CmaktmwqUlaSYAYqVAzUQEHnZHSvjBSYFbZbFcTIrIbSutOGUExovzXuVx63ZuByRUZL/9tDUyddHpKOfpyI9BI/tJeA2p3HfFWCzlQzklDzjOuAZxX+m4JNDr2/otO43v1UZlPJ
- 17bseHEw
- rX0E0gmEt8lwpau5n7wx6M10rKpRLpMXKbVBJIDj9bmeH296TLBLNe7YTADvLaVmPKnkLFm5pXf5wURiF+FdCPFoUZWeQN38f+i70JX65QhpmnZVa00uQ/iam9pSoswiyvd0HE84Il9Os8AI3DtXTFs16WTxOSqJVOFJoWskH+tOPlqtnCHsP2U93u2DElTjo3TEu+PTG1hSf51rDhxztZeGfPKfq4ESzBRzDdrT46ozuGeNbEiXrOOr2vEPJsWKQmtWClVmgSCZ9J56mTdOMd9PXYbQuOVhqsYUrYJgu384BH4vL2u3c2LsJlKOJ7A5APYhu4h52C7GvttWMRBsjKL5O0t3S+DKEpmQs
+X-HE-Tag: 1753359751-434304
+X-HE-Meta: U2FsdGVkX1/VfHCvSOnBdIOWg5xMechJb0Cwny0/c5OHXcu/BzKa+A7iGsMAukVIwNlhbUWsM1vatCJjsSw65MDiB/y9atlkSVhk7lmX6EPaW5jpiQ11YpAr3KIroyyBfhUP3DDi/CnaxTPVhsi2QJYme/ISfulQeUbao2sk3o8tWsYguGPNVf0Rtt4gKMc8Ds2ZZzT4U/TGO9FgiY4FO1d2KiSOUAsEEOV1F/dvLByUqYK5RNeZRisPE+sQ2CD9ptqlhyh8IYMuddZt9OCcHLAiAUbdFsPsQRcQFkgNetwPHMc5dtg2tyP0uu3UDD2el43WKn7wkq1Xv3IusEYivNFJ9YO9FyzUcWAZX/TWm2dISeykHHqPbULv57P3rzQzMv5W9XE5tb8c0Qjnw+QbMku0zUoGZ5P22qRUdvuULZYu2BDPaiQXOw4TlDcaGhm7JnV4Mb8TyhfFJKt/8vDCLDZtMmYld/zgJPw3hxlDuwecUPmXZsPFBDCW9xIXbyGwi1FycRqI1ToZQkS9/m3njVhVRwinQj51UV0OpYHIKxXJuLdN8iBQV8q/qlC7iBs7WXQuOMcODTVLX2VGLuifOYr5KMzBvUVsjn7zaO1yHcstNAA+cC0uj4DyNLsxFdu004gCd/U6Jb69PUOwElEM42yGGFqZN5Pc5MAZh/WEnzVxIHNuVg0ka/RkLgdP9QNmJwuLO86RLqexQ04JXJuXDQjFV5O+dhpETBrBYBwWXCy9uqaaQBdxObsqqVTOZOchaGnRNpwcfTw733Ab6H0j53tXAqEzOiqjWab3PNgrNrffQX4Ts+YjAMicLphYIOyC+8f5+e1RtJf2ghDsEqp/ZDl5nuRh0mBjeXIoY/Bi1HmbwAh07aOji4M2s0avSvKS6HLNDAw16rF43AD030gx+06gz+BRqHgRQ9XugkDj+kNsu2vZ4+ZphlsasUS3IzctNDVJ/aiGh83frU/bLgp
+ qdbeWvFy
+ /3nBRmSX9TheGt0DxTxhsccPgQiUr/JJnbOAQrcnTfAbdHk6Fnn10BStJSfXSdXNkVx6PtVWg+zEcys4Qsj/K+j46Sg7AMuePaOW/ir3zKL5mGzuIGeCbdAoeykiQn/VTmpR9UoXfrDSCPx6Xk9dmqWgIBwDQ0eimxkbiwgXvA0Hy8cK123/6LphzjeiXjzvATYy6W64isZwxWG12ASHnHv79OsXHJXy2Yd9uNFykyFVWGjz3maWQTi2PLaC0qaNcoCLZF7o33JFP5ZGXSJ+hunOJBqKIR8OfLwLgngcA8aK5vfSOes36F2sshXYghE3FV7aB6Cokvcwbhqfqs1F5mQN3EDyTL9KdJHjAtb680rlLRnyOjFVdt6OORbEYjYKpzO4FIZKCI9Hw53Nj/qprpKQbRilI4NtEjMVoHwD0yoNwRXB2pd59bxpI+FBpIEg/3lUcYKvy3Ej6k5Aj8iGTEqWdUQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -87,35 +134,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 24, 2025 at 04:10:18PM +0530, Dev Jain wrote:
-> On 24/07/25 1:49 pm, Catalin Marinas wrote:
-> > On Thu, Jul 03, 2025 at 08:44:41PM +0530, Dev Jain wrote:
-> > > arm64 currently changes permissions on vmalloc objects locklessly, via
-> > > apply_to_page_range, whose limitation is to deny changing permissions for
-> > > block mappings. Therefore, we move away to use the generic pagewalk API,
-> > > thus paving the path for enabling huge mappings by default on kernel space
-> > > mappings, thus leading to more efficient TLB usage. However, the API
-> > > currently enforces the init_mm.mmap_lock to be held. To avoid the
-> > > unnecessary bottleneck of the mmap_lock for our usecase, this patch
-> > > extends this generic API to be used locklessly, so as to retain the
-> > > existing behaviour for changing permissions.
-> > 
-> > Is it really a significant bottleneck if we take the lock? I suspect if
-> > we want to make this generic and allow splitting, we'll need a lock
-> > anyway (though maybe for shorter intervals if we only split the edges).
-> 
-> The splitting primitive may or may not require a lock, Ryan and Yang had
-> some discussion on the linear map block mapping thread. I am assuming
-> that since we didn't need a lock in the past, there is no need to take it now,
-> since we are only changing the pagetable walk API being used.
+On Thu, Jul 24, 2025 at 11:25=E2=80=AFAM Bartosz Golaszewski <brgl@bgdev.pl=
+> wrote:
+>
+> The name of the pin function has no real meaning to pinctrl core and is
+> there only for human readability of device properties. Some pins are
+> muxed as GPIOs but for "strict" pinmuxers it's impossible to request
+> them as GPIOs if they're bound to a devide - even if their function name
+> explicitly says "gpio". Add a new field to struct pinfunction that
+> allows to pass additional flags to pinctrl core. While we could go with
 
-I vaguely remember Ryan's and Yang's discussion. I'd have to revisit it.
-In the past we were not replacing block/table entries since there was no
-page table splitting. If we are to add some splitting, even at the
-edges, what would prevent some other caller of this API overlapping and
-attempting to do the same split? It's not just vmalloc ranges but the
-linear map as well that's touched by __change_memory_common().
+passing
+to the pinctrl
 
--- 
-Catalin
+> a boolean "is_gpio" field, a flags field is more future-proof.
+>
+> If the PINFUNCTION_FLAG_GPIO is set for a given function, the pin muxed
+> to it can be requested as GPIO even on strict pin controllers. Add a new
+
+"...the pin, which is muxed to it, ..."
+
+> callback to struct pinmux_ops - function_is_gpio() - that allows pinmux
+> core to inspect a function and see if it's a GPIO one. Provide a generic
+> implementation of this callback.
+
+...
+
+> -       if (ops->strict && desc->mux_usecount)
+> +       if (ops->function_is_gpio && mux_setting)
+
+Seems mux_setting presence is prior to the GPIO checks, I would swap
+the parameters of &&.
+
+> +               func_is_gpio =3D ops->function_is_gpio(pctldev,
+> +                                                    mux_setting->func);
+
+One line is okay.
+
+> +       if (ops->strict && desc->mux_usecount && !func_is_gpio)
+>                 return false;
+>
+>         return !(ops->strict && !!desc->gpio_owner);
+
+I think this whole if/return chain can be made slightly more readable,
+but I haven't had something to provide right now. Lemme think about
+it,
+
+...
+
+> +               if (ops->function_is_gpio && mux_setting)
+> +                       func_is_gpio =3D ops->function_is_gpio(pctldev,
+> +                                                            mux_setting-=
+>func);
+> +               if ((!gpio_range || ops->strict) && !func_is_gpio &&
+>                     desc->mux_usecount && strcmp(desc->mux_owner, owner))=
+ {
+
+This is very similar to the above check, I think at bare minimum here
+can be a helper for both cases.
+
+...
+
+> +/**
+> + * pinmux_generic_function_is_gpio() - returns true if given function is=
+ a GPIO
+> + * @pctldev: pin controller device
+> + * @selector: function number
+
+Missing Return section. Please run kernel-doc validator against new kernel-=
+docs.
+
+> + */
+> +bool pinmux_generic_function_is_gpio(struct pinctrl_dev *pctldev,
+> +                                    unsigned int selector)
+> +{
+> +       struct function_desc *function;
+> +
+> +       function =3D radix_tree_lookup(&pctldev->pin_function_tree,
+> +                                    selector);
+
+One line is okay.
+
+> +       if (!function)
+> +               return false;
+> +
+> +       return function->func->flags & PINFUNCTION_FLAG_GPIO;
+> +}
+
+...
+
+>  struct pinfunction {
+>         const char *name;
+>         const char * const *groups;
+>         size_t ngroups;
+> +       unsigned long flags;
+
+Not sure we need this. If the function is GPIO, pin control already
+knows about this. The pin muxing has gpio request / release callbacks
+that change the state. Why do we need an additional flag(s)?
+
+>  };
+
+--=20
+With Best Regards,
+Andy Shevchenko
 
