@@ -2,66 +2,66 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0AE6EC83F26
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 08:07:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 69309C83F26
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 08:13:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 87A558E0050; Thu, 24 Jul 2025 04:07:55 -0400 (EDT)
+	id EE5978E004F; Thu, 24 Jul 2025 04:13:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FCB68E004F; Thu, 24 Jul 2025 04:07:55 -0400 (EDT)
+	id E97076B024D; Thu, 24 Jul 2025 04:13:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6EB308E0050; Thu, 24 Jul 2025 04:07:55 -0400 (EDT)
+	id DACA58E004F; Thu, 24 Jul 2025 04:13:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BFA18E004F
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 04:07:55 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0F55C112022
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 08:07:55 +0000 (UTC)
-X-FDA: 83698429710.24.7241B1D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 51E9220002
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 08:07:53 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VOsjIIeI;
-	spf=pass (imf13.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id CBB6C6B024C
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 04:13:28 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7A71A140305
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 08:13:28 +0000 (UTC)
+X-FDA: 83698443696.04.6321B0F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id E9D7C180008
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 08:13:26 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="GZij/Khf";
+	spf=pass (imf06.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753344473;
+	s=arc-20220608; t=1753344806;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eyk2+QZtM+tWsxbT7v7GQklfKFiQSaulhZCeVLeiKsc=;
-	b=FZ/4SXeEJAXOSZCvf/pzG0Q3HST6wAwF65YZCUvVuaMFz4A7xAJCy9tqK9x/SGZ8jmBQv4
-	NX/omnUG1HWziZTlSoK3k6iMZ8H/0pvCKZmO/DtjwLaIzFScKJ7Bej3oA2rVM6OVhX1lYd
-	2P/Gl3uMcUIgYUI1H9JYj5I7vmThon0=
+	bh=1lh4D7ByKQ17nloH+sYRn/tzYx1k+qXbegq4ryI+hfg=;
+	b=Ni8q/SxmDy2DeR4aMpco1EfJgMy9g2IED6ap/841qcS0zsjb7HY2UjG0cQptjxdMaEoZMT
+	fLEAe5/9CwyzDVuS8oF89YgDrv8l7ZTbiQU5KVu/LZwPYer6BnI+DvCysJ9Icxznnxtdj1
+	MSQmS8ndPfe1PI6KDpja5br4WTxlLJ0=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VOsjIIeI;
-	spf=pass (imf13.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="GZij/Khf";
+	spf=pass (imf06.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753344473; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753344807; a=rsa-sha256;
 	cv=none;
-	b=x0b4vk9l2toNkGO5+8K3TL8MyoZEA81m0QchnC4fIBu0bNQFCIzOrXMjiAuKgMMkU3Xa2Q
-	l3PM5HPQLM8yIit60OaYEt5ThPSbUHh9y6X0v70vv6VM/7Smrfzfoi9qJLKeClJAJzvAoN
-	jxAL7lYZFakM4SahaDaTn0V/8Xe4bEU=
+	b=jxJQV8YbLGusu6aItO1qsjMcyvGwGTggJ/nHCrCKmELDGUEfhZQnNfREspzUfjTjukwz75
+	GnJUKj8sKKc05t0cOitQTjRgyM2FPc6+GUndTLpAdtECO8/rqJkYXTqSHx8gutgHna6iK0
+	T0AWjehWDxhtWwnKWA49mxIwlf3JkHc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DA08B439A2;
-	Thu, 24 Jul 2025 08:07:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0172DC4CEF1;
-	Thu, 24 Jul 2025 08:07:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1FAEF601EE;
+	Thu, 24 Jul 2025 08:13:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 259DEC4CEED;
+	Thu, 24 Jul 2025 08:13:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753344471;
-	bh=1SX+zcqB99cjjB9BCfDjf9tPWG4xWING89rNVeEpf+w=;
+	s=k20201202; t=1753344805;
+	bh=TMHBNschFRg/EXbokl2TnOo376mtUvL9vCgJ968zWc0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VOsjIIeIH9Rm+A+TaQ0V7RH51KmQgYil3OHypDB1K75Vw6Q633ZWqyufs6mpXmjgy
-	 8LsZTfLRMqu8Q3aUECPmaK6fz118qRgZxsQo52X8A22JJasuxKIhK8eiezk8hp9SAc
-	 jHnyZT944fThfEGK02iapsKBQc2GMyceVPsI5Ej6hFz/7GB9hjU2rY3MhXnDmg0Af3
-	 EmVL68MOlWu5/WtcynPwwwXn3gv5bFT1ONKBqH4E10CypSHNangIwHPWApThEuqWtj
-	 gZXy/mzxhxENu2F+hWSPwgeJkrW8aD7ChboSZ9kiIUCIRjgkp5GFEhH5TMyS7SGjaO
-	 J/E2lr1sMS9Pg==
-Date: Thu, 24 Jul 2025 11:07:47 +0300
+	b=GZij/KhfBIUnbU4lbHxjP88/lDFzJVzpN+LpEfBwzehWsDkUfges9TR5IyiZTnUhz
+	 OadLn/vpSTN0knIfMqxk1/W2CkIVAi3gxUO12Curbh72sdoAFUoZHMoQdkblwXYtCK
+	 DBBS15tXdkII8NQBEHBXo5TqCjHgGsdp0FLQhgc8yB1hMi8M7wr3Or6XwNhMDDmE5z
+	 Em/8soyscY18uKVRMTABiIjE1R3FnnTzVaf+jWOosD8zdiT3uo+rw2d6i+cCw9KzmJ
+	 6lq4oh/7XQmhm5eJkFy7pTkaIXNXQvR9uEMZs2rWb31Otvoz0nnuBSZNCxcv8TqFNT
+	 vTyCJMK4plyfw==
+Date: Thu, 24 Jul 2025 11:13:21 +0300
 From: Leon Romanovsky <leon@kernel.org>
 To: Christoph Hellwig <hch@lst.de>
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -82,26 +82,23 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
 	Sumit Semwal <sumit.semwal@linaro.org>,
 	Vivek Kasireddy <vivek.kasireddy@intel.com>,
 	Will Deacon <will@kernel.org>
-Subject: Re: [PATCH 02/10] PCI/P2PDMA: Introduce p2pdma_provider structure
- for cleaner abstraction
-Message-ID: <20250724080747.GS402218@unreal>
+Subject: Re: [PATCH 05/10] PCI/P2PDMA: Export pci_p2pdma_map_type() function
+Message-ID: <20250724081321.GT402218@unreal>
 References: <cover.1753274085.git.leonro@nvidia.com>
- <c2307cb4c3f1af46da138f3410738754691fbb3d.1753274085.git.leonro@nvidia.com>
- <20250724075145.GB30590@lst.de>
- <20250724075533.GR402218@unreal>
- <20250724075922.GD30590@lst.de>
+ <82e62eb59afcd39b68ae143573d5ed113a92344e.1753274085.git.leonro@nvidia.com>
+ <20250724080313.GA31887@lst.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250724075922.GD30590@lst.de>
-X-Stat-Signature: 1ub55fu1p1uddxqkkahane7yd7jk64ug
+In-Reply-To: <20250724080313.GA31887@lst.de>
+X-Stat-Signature: k8pi8bp6ad9k5cqg8rcsgnphmz7tw4qg
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 51E9220002
+X-Rspamd-Queue-Id: E9D7C180008
 X-Rspam-User: 
-X-HE-Tag: 1753344473-179532
-X-HE-Meta: U2FsdGVkX1/NdwZZDmDU5LOZJiWZRmLzz/uMkjdYaJ27//fMN59q6cjy+Z99n3nqucKhuftGu0U778LUnbHRgh3zFyI8n3XDeJwe4/gPeGap/7K0YzlvSp0dCyuZlk02jb573qBuQ1F3qzSsrvW3gztBdv4PZXPMDAUtwrB5vCVg+X9BVYJJJqY0PFLzmCBycjACSvmg6KRSUGj0mwU7gZbtGvy9I55B1vRuYTGdrE9ItkrbcViAbILI8vaKmfa6SunUsjkxfN5JpNr2GmcUwajUHdwdZDbnUeAo5fvXgNmpXMkgRCpseYcSGlTzJfgBWDXDqupc/eM+QAyIEwWPws6Sh4hxqDPdvf5oPMMMe2lEWBWIXl1MkhmwWrwKSlgqlMN/9aEwrcbHQj3/HmpB+GXnZhg/On2ke5B4yjTWqamFarkvseiHazzS9t+VfBBskWMVZYGhx1xqjLJt59DdAZb+dNFSmhIkFnrLrBL6PIZrJWQanNFc8Zlc6d4oRokDuk+fSVmbQsl9WvyRpBYP3jDqbpqBS0/X5Vc0yPbsW87lSxdk3COw+5M+oSvd9PxjINorBY0B2FCTmgpkfx/Ne+lqSraGKA32tTpPMK7XrVwjYNmlMJUZHTHO5GyXB0qzcJ9eKwIsu3+Jdn/S6gYZIweCzPnDKL6N3/Fq1asSfN79K+t1I9OVGU/X8lkn1KDY1AVcY6q0NHxTWYqIRFEX59oGlY4t41NG1fBRDclh3sAAPwtecM8uk8EYObHvCaSBpFRgeg0QAB4b42Z3vUyKIy6tueteOc1LWBojyoBGlJJ3IcSqflOOg09R0sN6vqA1IH1YEq7clCrehoRQdwySnKawE6DzRd3xNudZqJU/IycOOvMaARH0S4F55Xqn1T6exQdEwPGLSfLgqxzZWflHgRpG+ZQCYBhtPcSCbEM8yNaQa6yA3lHgYAMfukxzWEZgP3cbffwKdAJdlx/07SK
- z6Twk9J1
- WQ5n3MWVu4M7ioYUmODDcTTiPXAUjyqVYSA+UIov9zdcXMtjap08hv5oYDPEfURhKFW0O9G69JERRwoJ0HOUkUrn5PgUDX7Doik1DRke5FislCxpkPIqQ2vE/OgHEDxk8r9/xk/d/n0HiiuS/yBS7P6P1sv3a6kFKSA2q3ZTpf6wyxB7SHlZiwYHOXKxLYkJDcvyijmIevbADdEJBBRnDhojOPPVINjA9qZbqtYh8GtGdxWWH+gc0M+MI0WCkobThPDWeFGoyLffZGc8HymgK527kjVkXHCFgZstbUWT3OxT5O1/mKLM3Z7gfewFvDZ9Q4/o/JNH/m+Wsz6hzo9spGi8jKEyo/xJ7mJFN26WI4T8o8pxO4Ct9pm/IrQ==
+X-HE-Tag: 1753344806-43726
+X-HE-Meta: U2FsdGVkX19vKQ9TPBjLybsAPBtugtTc/oEDJAAyjtTBgCm+1FQCb+NlAIJ+3s7w9j8aaosq6zkZy3MKjtQlXfPp9VEKXcgIruEDzINzGxSfidvUYFkjJ/2UwPxhyYxakGzlIworM0UB2xWDM0G3ocRQKvqdmN3dEKk56RZs2YgMUmyu7JUhgyKL4lA6FF59d6/Abu9kHJgvtFw+3rDlc7JC5NE/oGk8R89odB1bwgiFVKWc41eyptjcBGtt0mdqjkIcZngDBGATIlbktNKt0FDXLkxaFtMYOPwmiwD3D3RrehzAawjC5hct6M9omaFDImndaoRrh1weOECiaGN94CxlwcR8Ea4sKD8EgGHeh1SQhcF7PvzGm5guRdzmiZHzbu3NpU+uZOrqPJOQ3oH0Og3m38D7HH+aJFBJXVKi4o7n6jCqggZDt56jDdwsg4+uaZjRAjtpwMOQ7KtIHkkMLdKcRUnIv90M0lTFcqDIG3eMUZsqFs45SJt4iWNC3yDGfKdyQBiEWx1KLHg/OmUBzAw67zcCpO8vZ4PWvL++y8Fm5A4b598h4yZZl75C7XJCMaZ9DpVvQ7sLGTF3ckmzECH4AlRx6ocibvUtm9kRzL3QF/lWJCsnz+MskDs9RHKd+4oIE2OEbYpqEuwB24VaNfuDEziEQXKIGJ/C2CTKsD1gfVm2KSeVg78M6k4I0jXRq3nAkgYYG5QxlpzLj0ztHOdmPyhWW/rCqM+4Dced8CdYu1VVMw8tpa3pbxYhc6aT924tWgu5GFZhD93aDGMtwrDotODzIinqMzmH4ZFL5YBUyq9CMC2+zGCgyQGpss3jD7Fdvs9pIOF+N9VS9WiGJz1lm9NH2oWGMLy8YIwsBTf8c/SxgzTWX0avSRxjeLe4f7TLtrjugJ57S+9CPFdn3oKJGZ/PW+4f4bKTp0CRDKhUvAKQq09jI6iLFhHtSFTTQ2544bDFKA4jEHeWoNL
+ mU4jvopH
+ W3oJbeBNnNnLe20HTHTf8UoOpgvemcxe9sQjN5j5xoJyK3Y1PAUQm21ONzeTpxoDX/ySgUlsTEgWM55ze/tUsjyUNFryUMCfa/Qb2MnN0gNARb/Ulo12LHxQ0koqWkG7uA2ZfXCfLY6JlU2eszpwIsmrYYB8PLm2Njh13P2gSfmYCjF88bj2/Rd240W17f074SoKRjZNnOIQJSdj6PuaJvNEFFXeyEO/ETeYAzLs+gimTuXWuq5KaHMIg8/XmHfrpnZQcKL7ppbOCyu4q79rvdTnaX478DoNjZ+VpqJ9oShaHjA1qzrUpRZ6X2H/ctwPQ34GmdqpHFdlphdU2Xc0sUhsYhQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,42 +107,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 24, 2025 at 09:59:22AM +0200, Christoph Hellwig wrote:
-> On Thu, Jul 24, 2025 at 10:55:33AM +0300, Leon Romanovsky wrote:
-> > Please, see last patch in the series https://lore.kernel.org/all/aea452cc27ca9e5169f7279d7b524190c39e7260.1753274085.git.leonro@nvidia.com
-> > It gives me a way to call p2p code with stable pointer for whole BAR.
+On Thu, Jul 24, 2025 at 10:03:13AM +0200, Christoph Hellwig wrote:
+> On Wed, Jul 23, 2025 at 04:00:06PM +0300, Leon Romanovsky wrote:
+> > From: Leon Romanovsky <leonro@nvidia.com>
 > > 
+> > Export the pci_p2pdma_map_type() function to allow external modules
+> > and subsystems to determine the appropriate mapping type for P2PDMA
+> > transfers between a provider and target device.
 > 
-> That simply can't work.  So I guess you're trying to do the same stupid
-> things shut down before again?  I might as well not waste my time
-> reviewing this.
+> External modules have no business doing this.
 
-I'm not aware of anything that is not acceptable in this series.
-
-This series focused on replacing dma_map_resource() call from v3
-https://lore.kernel.org/all/20250307052248.405803-4-vivek.kasireddy@intel.com/
-to proper API.
-
-   92         if (!state) { 
-   93                 addr = pci_p2pdma_bus_addr_map(provider, phys_vec->paddr); 
-   94         } else if (dma_use_iova(state)) {                                 
-   95                 ret = dma_iova_link(attachment->dev, state, phys_vec->paddr, 0,
-   96                                     phys_vec->len, dir, DMA_ATTR_SKIP_CPU_SYNC); 
-   97                 if (ret)                                                        
-   98                         goto err_free_table;                                   
-   99                                                                               
-  100                 ret = dma_iova_sync(attachment->dev, state, 0, phys_vec->len);
-  101                 if (ret)                                                     
-  102                         goto err_unmap_dma;                                 
-  103                                                                            
-  104                 addr = state->addr;                                       
-  105         } else {                                                         
-  106                 addr = dma_map_phys(attachment->dev, phys_vec->paddr,   
-  107                                     phys_vec->len, dir, DMA_ATTR_SKIP_CPU_SYNC);
-  108                 ret = dma_mapping_error(attachment->dev, addr);                
-  109                 if (ret)                                                      
-  110                         goto err_free_table;                                 
-  111         }            
+VFIO PCI code is built as module. There is no way to access PCI p2p code
+without exporting functions in it.
 
 Thanks
 
