@@ -2,130 +2,115 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B926AC83F1A
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 12:22:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E56BAC83F26
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 12:36:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B1BB6B02B2; Thu, 24 Jul 2025 08:22:34 -0400 (EDT)
+	id 64E4C8E0078; Thu, 24 Jul 2025 08:36:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 262306B02B3; Thu, 24 Jul 2025 08:22:34 -0400 (EDT)
+	id 626228E0074; Thu, 24 Jul 2025 08:36:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 151D66B02B4; Thu, 24 Jul 2025 08:22:34 -0400 (EDT)
+	id 562B58E0078; Thu, 24 Jul 2025 08:36:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F34DA6B02B2
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 08:22:33 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C74B01A02F9
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 12:22:33 +0000 (UTC)
-X-FDA: 83699071386.14.FD3FF13
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	by imf16.hostedemail.com (Postfix) with ESMTP id D4818180011
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 12:22:31 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lhqulrIm;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753359752; a=rsa-sha256;
-	cv=none;
-	b=m+h8cs/Z51/8oOL0fQIxzAyXo6Qbozqq/hEzOpWGNTbA9+Vl39b9FdAM+LzsJOWen4MuIe
-	buZHn8gcU82QIV9Nw6XzsRWmXB5SMvlQrE8JiNBcg+NvV0LLHXbANEMeSUROcInv67N6gx
-	WU+bTNZ9YkGT1iMqVTAaP7YxvM4feto=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lhqulrIm;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4648B8E0074
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 08:36:37 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 03B7558BA4
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 12:36:36 +0000 (UTC)
+X-FDA: 83699106834.06.2C57052
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 2EEFCA0006
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 12:36:34 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=oKKf19rc;
+	spf=pass (imf25.hostedemail.com: domain of bhupesh@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=bhupesh@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753359751;
+	s=arc-20220608; t=1753360595;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PCH9wMZuCq9rz+O+tflGRTfcHTnRU43/VMnWUAJfNWE=;
-	b=2MK6Z9bno/ryPOx6yCN4N9RL+2xYPKm52yjgUAT9TfkvMy/+doqovZy+DIVyurTyVMQaBc
-	qzLLLBuGBJQ/E2jBk6Ice/8Ile3AD0qpcNFuOCNMMtmbO+B0d+SLsqihPXdCJJ5FG4Venb
-	Kyssvvckwkx/AetZeMq02JpY4UZrMzs=
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-ae3ec622d2fso144966566b.1
-        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 05:22:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753359750; x=1753964550; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PCH9wMZuCq9rz+O+tflGRTfcHTnRU43/VMnWUAJfNWE=;
-        b=lhqulrImphDJnt48qagU++yR572csL7lwdkPJM/RPlwbCdOQ2wjogijxdDyw/vuzoi
-         ddvWMvoWnj7B/hbZX+IadUPIqBCBTOoNKitkS9+2jQlLhdbCRWDJITldxP3XTzw/IJnG
-         eP3Ewnr+51pyd/qqrQBcPi+IZ3+ScQxIK66lAhO7Q8WSxQMmFOHSKW/Uz7llsCIQ60iE
-         XSm/+6uDAWPn5cvGIJ1wHOInPK4xMVEiQvOlakVknnED9pvwmU+ntbYvaTxTG38NdWM9
-         Imd5HkuYbSOcSpAvZcogkMQfe7S9DB+eWULh2CfVW8OlremJPAwB2TceM72HDjo0c1tQ
-         asTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753359750; x=1753964550;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PCH9wMZuCq9rz+O+tflGRTfcHTnRU43/VMnWUAJfNWE=;
-        b=npIXOo6THsNuDKm33InjEO4R1sRXVmUFz1NmnHetk0ABlO3vQP4zz2uF8fjGUJswiF
-         QxyP9IFgHToxVK54G6BdUtO6zft7BK87aWYBYHhYVXubdlumg3LvOb1Jv88Wyex1AuoL
-         RFfbo0abhh+6XcTpXdd6ojJemLkN4LKxE+xe04B7d6D3NmPf3oCn7ZelzSOwIcv+ZVtx
-         K2NI3RKBNRhcUZu0WSKrfpaD6skL3Wx5P7lua6R6ZxPD5HrwuADbiciYn6baMDvioTkn
-         0FuLWASdaKBaYSuqsIDreqx0thLKElnMQdMjDaJypGnSfRxwbNHg9GUjy2gnmF/k9MnX
-         9U3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXgjEOZeXlhCrKBzMqY6GYBHSb0egh/dDcvUxcdY7rCbSscELODQpk2IepVUyfVN4LncQn9qg9txg==@kvack.org
-X-Gm-Message-State: AOJu0YyaHcjm4pgLOmJApuSevfktD1fGHkV/GiKBYKJZHs948u8mNxG5
-	YeXRsT+M0SBRO6GJmf06B3lVkw5EHmMpIMUdsPIDkjwIlT0IDsIffVbbgoQamAWFcuzKZvBHdws
-	M5zp9C0D/3xbN7xwg5TSaUltLRyt9YcQ=
-X-Gm-Gg: ASbGncsnoKc4c1RM2XfFzr18tX3AHJduJrfPDLIGMjWPngCqDhogedA2YOqV9bivsLX
-	jgGQHPWyAlykwn8qKo9+lGEsL3XOtDXNse1QBqag1DIiGT5B46QOiOxGGt24gGuhpYzSYufMtGv
-	lQ9K+z2yPNFGiwEwdQV9C7qUeG0CNzWyQOCzuAx71JFYgzq8PBKcUU15aKJfdqwrvpc9R4OuLDa
-	gnp95JN6g==
-X-Google-Smtp-Source: AGHT+IHK0IoDJ6PED5zWXfzDhpKgh5VZvydISu4XMaUvDPUT/I7krIj8dXVVfHCUqibcmSSRfe/rVr8gG8zy8ado+mw=
-X-Received: by 2002:a17:907:60cb:b0:aec:6600:dbe3 with SMTP id
- a640c23a62f3a-af2f9385acfmr671282766b.56.1753359749816; Thu, 24 Jul 2025
- 05:22:29 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=kTMLqhd8ACCARh9s+Oizrnftx6KSLEeKOV2ICyEnYoY=;
+	b=kqNsZBjqiBibZvX1wwhUQZJTZNSzSzyVxwaHVLSEV5mQIL2QxtROVqY3wB6XGjPvwoR6u9
+	VJfVuswvs7ZCvQoNdtEs15MgZTO3DB3LCaB4MT4S/bI82Ygh8zEKBZskFk+OlhgkWl6PKa
+	P/0rpib5vTcnsQWMGnSVXa+fq3iQQNk=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=oKKf19rc;
+	spf=pass (imf25.hostedemail.com: domain of bhupesh@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=bhupesh@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753360595; a=rsa-sha256;
+	cv=none;
+	b=VXcRtw5BsMdzAkeBLVMLVsrKbcUjozW6p2SG0WiEjepIkFDQnhXPboM3EzxFCT/B6gtJcz
+	oirj22gOryVX1del2p4GLDtPUCp+CUP1YXWbwUKW6Ih8OGbO9FVTLCiEG2fZvCxBD3OTAQ
+	pNMLttHgQqvJ7rhgows9reGuo37DaOc=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=kTMLqhd8ACCARh9s+Oizrnftx6KSLEeKOV2ICyEnYoY=; b=oKKf19rcSSkXTmh1MA4PBQ476N
+	Dv3eNo+L1JatFoA7T5mrN2+0OjQpe9OOPJeq+sLXSTrhk1TnBydE5RZQfkN722JNdB79sqWpM/S/k
+	SIBrZlAONRmg1WSKBvqyRC/RxwEYhSxCQF6b6z7TwiE8egFWj/r02JlskgE0vh6BWhOCzakc61IKE
+	e80rAKtvATtYf6XkZ3nbtIbfiRbic7M/JoxsKYtuMxugNwJTADNPT6JCwx44KstSCLVdWH5aqjQcO
+	lHDHjmRULKVLzCGI5kDyND0+Uz8TE5nsLCM1RnktS+EKRpEzC3OIkBNRIAXv+r0HQd3g47yrH9Mv3
+	mn74TWMg==;
+Received: from [223.233.78.24] (helo=localhost.localdomain)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1uevBR-003BPU-D2; Thu, 24 Jul 2025 14:36:25 +0200
+From: Bhupesh <bhupesh@igalia.com>
+To: akpm@linux-foundation.org
+Cc: bhupesh@igalia.com,
+	kernel-dev@igalia.com,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-perf-users@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	oliver.sang@intel.com,
+	lkp@intel.com,
+	laoar.shao@gmail.com,
+	pmladek@suse.com,
+	rostedt@goodmis.org,
+	mathieu.desnoyers@efficios.com,
+	arnaldo.melo@gmail.com,
+	alexei.starovoitov@gmail.com,
+	andrii.nakryiko@gmail.com,
+	mirq-linux@rere.qmqm.pl,
+	peterz@infradead.org,
+	willy@infradead.org,
+	david@redhat.com,
+	viro@zeniv.linux.org.uk,
+	keescook@chromium.org,
+	ebiederm@xmission.com,
+	brauner@kernel.org,
+	jack@suse.cz,
+	mingo@redhat.com,
+	juri.lelli@redhat.com,
+	bsegall@google.com,
+	mgorman@suse.de,
+	vschneid@redhat.com,
+	linux-trace-kernel@vger.kernel.org,
+	kees@kernel.org,
+	torvalds@linux-foundation.org
+Subject: [PATCH v6 0/3] Add support for long task name
+Date: Thu, 24 Jul 2025 18:06:09 +0530
+Message-Id: <20250724123612.206110-1-bhupesh@igalia.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-References: <20250724-pinctrl-gpio-pinfuncs-v3-0-af4db9302de4@linaro.org> <20250724-pinctrl-gpio-pinfuncs-v3-12-af4db9302de4@linaro.org>
-In-Reply-To: <20250724-pinctrl-gpio-pinfuncs-v3-12-af4db9302de4@linaro.org>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 24 Jul 2025 14:21:53 +0200
-X-Gm-Features: Ac12FXz2KOnsH_foq66JE5xieoDhq1Ik71OykKjuCvc1b-KzV3FeiggPCBwSd4M
-Message-ID: <CAHp75Vc4vsJh_-GbP+YO50veoGoGtfAPL4tjcF+73uophfmnGw@mail.gmail.com>
-Subject: Re: [PATCH v3 12/15] pinctrl: allow to mark pin functions as
- requestable GPIOs
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
-	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
-	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
-	linux-hardening@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
-	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D4818180011
-X-Stat-Signature: 5jtbzj3seqz5tww11p7b3er6rfe8n3u9
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1753359751-434304
-X-HE-Meta: U2FsdGVkX1/VfHCvSOnBdIOWg5xMechJb0Cwny0/c5OHXcu/BzKa+A7iGsMAukVIwNlhbUWsM1vatCJjsSw65MDiB/y9atlkSVhk7lmX6EPaW5jpiQ11YpAr3KIroyyBfhUP3DDi/CnaxTPVhsi2QJYme/ISfulQeUbao2sk3o8tWsYguGPNVf0Rtt4gKMc8Ds2ZZzT4U/TGO9FgiY4FO1d2KiSOUAsEEOV1F/dvLByUqYK5RNeZRisPE+sQ2CD9ptqlhyh8IYMuddZt9OCcHLAiAUbdFsPsQRcQFkgNetwPHMc5dtg2tyP0uu3UDD2el43WKn7wkq1Xv3IusEYivNFJ9YO9FyzUcWAZX/TWm2dISeykHHqPbULv57P3rzQzMv5W9XE5tb8c0Qjnw+QbMku0zUoGZ5P22qRUdvuULZYu2BDPaiQXOw4TlDcaGhm7JnV4Mb8TyhfFJKt/8vDCLDZtMmYld/zgJPw3hxlDuwecUPmXZsPFBDCW9xIXbyGwi1FycRqI1ToZQkS9/m3njVhVRwinQj51UV0OpYHIKxXJuLdN8iBQV8q/qlC7iBs7WXQuOMcODTVLX2VGLuifOYr5KMzBvUVsjn7zaO1yHcstNAA+cC0uj4DyNLsxFdu004gCd/U6Jb69PUOwElEM42yGGFqZN5Pc5MAZh/WEnzVxIHNuVg0ka/RkLgdP9QNmJwuLO86RLqexQ04JXJuXDQjFV5O+dhpETBrBYBwWXCy9uqaaQBdxObsqqVTOZOchaGnRNpwcfTw733Ab6H0j53tXAqEzOiqjWab3PNgrNrffQX4Ts+YjAMicLphYIOyC+8f5+e1RtJf2ghDsEqp/ZDl5nuRh0mBjeXIoY/Bi1HmbwAh07aOji4M2s0avSvKS6HLNDAw16rF43AD030gx+06gz+BRqHgRQ9XugkDj+kNsu2vZ4+ZphlsasUS3IzctNDVJ/aiGh83frU/bLgp
- qdbeWvFy
- /3nBRmSX9TheGt0DxTxhsccPgQiUr/JJnbOAQrcnTfAbdHk6Fnn10BStJSfXSdXNkVx6PtVWg+zEcys4Qsj/K+j46Sg7AMuePaOW/ir3zKL5mGzuIGeCbdAoeykiQn/VTmpR9UoXfrDSCPx6Xk9dmqWgIBwDQ0eimxkbiwgXvA0Hy8cK123/6LphzjeiXjzvATYy6W64isZwxWG12ASHnHv79OsXHJXy2Yd9uNFykyFVWGjz3maWQTi2PLaC0qaNcoCLZF7o33JFP5ZGXSJ+hunOJBqKIR8OfLwLgngcA8aK5vfSOes36F2sshXYghE3FV7aB6Cokvcwbhqfqs1F5mQN3EDyTL9KdJHjAtb680rlLRnyOjFVdt6OORbEYjYKpzO4FIZKCI9Hw53Nj/qprpKQbRilI4NtEjMVoHwD0yoNwRXB2pd59bxpI+FBpIEg/3lUcYKvy3Ej6k5Aj8iGTEqWdUQ==
+X-Rspamd-Queue-Id: 2EEFCA0006
+X-Rspamd-Server: rspam06
+X-Stat-Signature: dj377a41pp7en5qjbddc5gnx8sdq8ozs
+X-HE-Tag: 1753360594-484557
+X-HE-Meta: U2FsdGVkX1/5plnFCQU2FCbD8QDOAeIZRZPfsoV8OrxAsWzvVps2v+3Y+sEOdwW2XcUxYQskLwX/VR2yguUOlhpCzYEpnP70dH/rkR4FQl8d4QZtsUl0/Nr+uZXjsIrDbyfU6b3vy059gC7kae6FN5iIgGeprLjDvdNquynILT19O9lVuJTSqucgY8QaqEaJ8FqG4El1uz84/qMMU3UQcfkhgB/QArJHhVmGM+409V+4peXH/Cv/Bvy7QCEJmmiewnVeZ6IHT12R/xUsxgCSG/Zd8MCoIgHr5gCGBnIWR+gi+FnOHRS+6CQp3j8BKGaZ3TH/g333RAGQVEkEfskMLsfAUGRCF7PXbmLhPMYl8GTY5mesID6zinl/ue7p6kkf/yadLn8wjHtdlrasdRvr1R4PdlFwrTmoQWSvpTYTPaSsM2cfydPWmjMFl1oSzmbhSXqaZIhGbrwO31K+3aQSU/sJhi+H8BE4WkNgRlu1J/99I0ghD+TUUZ5LrriKL8/8KS7EDOgLDVo4ryuFglQd1r4gOW25oW0jCpoHXWtvO/bmrUCk7nIT0w8dCDisU0PstK785a5ADT92kV6dHKN0m+JpmzNIVEX8li4FUFd66Jhj4FGkm+kvfuOD7vwPKlR+GuRozIRHRwhjfhFWMLeFNX1RztyUiroaM5bVL+Effh1ERGMsdSb++g9jzQsUfLqQEWKVW3zmbWUiq0L41VKTWX1/XO5iVGSNZzl6ScPyVcP/vCG+f13OV8ks22uCtom2qmwp63REaa+QiNASKYSywTJSgxXAec4zMY8+hwzHzceyjLQWFeHQeU4ehc73NZk3yV7LdwFI59xR2aoZ54/MFqRGxnemAGXZvf5QMMrftfEXEJLnW2u7SLfBsnxQZ866tI97tKdzv5yGB2DqI744DVI4lfs4E0rQ94nx5le+ZK+VqLZZgvq7bOZoa8ie2XZfx4JekduSVeTuWPwfSi7
+ xXBkMlI8
+ nMxE862zX0IExNKg73dva50tPeUEgQYQKMUeS653aLhlXuye6OJr3tFVwlRdYnAjnmTM8LDm0cGAjZcyeWY6on/wKpiW3x8chEYOFqJZKEv/NktDw8NzT1uXi2EENRpzolzLeNTKs0xbm9R9yQdAGwo9DNb9nvn2P/xGZunAQIUNfBSYxAlDqa5YNyqpwJX1Wecp21NSQ4+iNANxlZkfVjpF7emRUyUIORNa4s+INmbLcmOrVRLlT928ukvFPvF++chpb2VGSiOjdJYZf+qEpgdfn25sMn9/0cvy5NzezOtjVJHMneWfzzHpwYduVvQndZo59/CR/7LQ7SgkZQbj9UaCHmZi08LPp1rfXZBnDlPRPtxqmQffnC1B5Gexa9NlPGI3tqjQHW0u36+BTjYHfWxq5K1LAtGXbKb4O
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,108 +119,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 24, 2025 at 11:25=E2=80=AFAM Bartosz Golaszewski <brgl@bgdev.pl=
-> wrote:
->
-> The name of the pin function has no real meaning to pinctrl core and is
-> there only for human readability of device properties. Some pins are
-> muxed as GPIOs but for "strict" pinmuxers it's impossible to request
-> them as GPIOs if they're bound to a devide - even if their function name
-> explicitly says "gpio". Add a new field to struct pinfunction that
-> allows to pass additional flags to pinctrl core. While we could go with
+Changes since v5:
+================
+- v5 can be seen here: https://lore.kernel.org/lkml/20250716123916.511889-1-bhupesh@igalia.com/ 
+- As suggested by Linus, replaced 'tsk->comm' with 'tsk->comm_str' locally, and verified basic
+  thread names and then changed 'tsk->comm_str' back to 'tsk->comm'. So essentially now 'tsk->comm'
+  is TASK_COMM_EXT_LEN i.e. 64-bytes long.
 
-passing
-to the pinctrl
+Changes since v4:
+================
+- v4 can be seen here: https://lore.kernel.org/lkml/20250521062337.53262-1-bhupesh@igalia.com/ 
+- As suggested by Kees, replaced tsk->comm with tsk->comm_str, inside 'task_struct'
+  where TASK_COMM_EXT_LEN is 64-bytes.
 
-> a boolean "is_gpio" field, a flags field is more future-proof.
->
-> If the PINFUNCTION_FLAG_GPIO is set for a given function, the pin muxed
-> to it can be requested as GPIO even on strict pin controllers. Add a new
+Changes since v3:
+================
+- v3 can be seen here: https://lore.kernel.org/lkml/20250507110444.963779-1-bhupesh@igalia.com/
+- As suggested by Petr and Steven, used 'comm_ext' name instead of
+  'real_comm'. Correspondingly the macro name is changed to 'TASK_COMM_EXT_LEN'
+  for the 64-byte extended comm.
+- Rebased this patchset on linux-next/master, which contain the following patch from
+  Steven now:
+       155fd6c3e2f0 ("tracing/sched: Use __string() instead of fixed lengths for task->comm")
+- Accordingly, v4 drops the changes done for 'trace/sched' events in v3,
+  but retains the 'safe' memcpy' changes for other kernel trace users.
 
-"...the pin, which is muxed to it, ..."
+Changes since v2:
+================
+- v2 can be seen here: https://lore.kernel.org/lkml/20250331121820.455916-1-bhupesh@igalia.com/
+- As suggested by Yafang and Kees, picked Linus' suggested approach for
+  this version (see: <https://lore.kernel.org/all/CAHk-=wjAmmHUg6vho1KjzQi2=psR30+CogFd4aXrThr2gsiS4g@mail.gmail.com/>).
+- Dropped kthreads patch from this version. It would be sent out
+  separately, if we have a consensus on this approach.
 
-> callback to struct pinmux_ops - function_is_gpio() - that allows pinmux
-> core to inspect a function and see if it's a GPIO one. Provide a generic
-> implementation of this callback.
+Changes since v1:
+================
+- v1 can be seen here: https://lore.kernel.org/lkml/20250314052715.610377-1-bhupesh@igalia.com/
+- As suggested by Kees, added [PATCH 3/3] to have a consistent
+  'full_name' entry inside 'task_struct' which both tasks and
+  kthreads can use.
+- Fixed the commit message to indicate that the existing ABI
+  '/proc/$pid/task/$tid/comm' remains untouched and a parallel
+  '/proc/$pid/task/$tid/full_name' ABI for new (interested) users.
 
-...
+While working with user-space debugging tools which work especially
+on linux gaming platforms, I found that the task name is truncated due
+to the limitation of TASK_COMM_LEN.
 
-> -       if (ops->strict && desc->mux_usecount)
-> +       if (ops->function_is_gpio && mux_setting)
+Now, during debug tracing, seeing truncated names is not very useful,
+especially on gaming platforms where the number of tasks running can
+be very high.
 
-Seems mux_setting presence is prior to the GPIO checks, I would swap
-the parameters of &&.
+This patchset does not touch 'TASK_COMM_LEN' at all, i.e.
+'TASK_COMM_LEN' and the 16-byte design remains untouched.
 
-> +               func_is_gpio =3D ops->function_is_gpio(pctldev,
-> +                                                    mux_setting->func);
+Via this patchset, Linus suggested 'tsk->comm' is made 64-byte long
+and equal to TASK_COMM_EXT_LEN.
 
-One line is okay.
+To avoid any surprises / bug,s I replaced 'tsk->comm' with
+'tsk->comm_str' locally inside 'task_struct' and checked compilation
+of code and basic working of thread names:
 
-> +       if (ops->strict && desc->mux_usecount && !func_is_gpio)
->                 return false;
->
->         return !(ops->strict && !!desc->gpio_owner);
+       struct task_struct {
+	       ..............
+               char    comm_str[TASK_COMM_EXT_LEN];
+	       ..............
+       };
 
-I think this whole if/return chain can be made slightly more readable,
-but I haven't had something to provide right now. Lemme think about
-it,
+       where TASK_COMM_EXT_LEN is 64-bytes.
 
-...
+Once done, I changed the name back to 'tsk->comm'.
 
-> +               if (ops->function_is_gpio && mux_setting)
-> +                       func_is_gpio =3D ops->function_is_gpio(pctldev,
-> +                                                            mux_setting-=
->func);
-> +               if ((!gpio_range || ops->strict) && !func_is_gpio &&
->                     desc->mux_usecount && strcmp(desc->mux_owner, owner))=
- {
+To ensure that the existing ABI and userspace continues to work
+as intended, we ensure that:
 
-This is very similar to the above check, I think at bare minimum here
-can be a helper for both cases.
+- Existing users of 'get_task_comm'/ 'set_task_comm' will get 'tsk->comm'
+  truncated to a maximum of 'TASK_COMM_LEN' (16-bytes) to maintain ABI,
+- New / Modified users of 'get_task_comm'/ 'set_task_comm' will get
+ 'tsk->comm' supported up to a maximum of 'TASK_COMM_EXT_LEN' (64-bytes).
 
-...
+Note, that the existing users have not been modified to migrate to
+'TASK_COMM_EXT_LEN', in case they have hard-coded expectations of
+dealing with only a 'TASK_COMM_LEN' long 'tsk->comm_str'.
 
-> +/**
-> + * pinmux_generic_function_is_gpio() - returns true if given function is=
- a GPIO
-> + * @pctldev: pin controller device
-> + * @selector: function number
+After this change, gdb is able to show full name of the task, using a
+simple app which generates threads with long names [see 1]:
+  # gdb ./threadnames -ex "run info thread" -ex "detach" -ex "quit" > log
+  # cat log
 
-Missing Return section. Please run kernel-doc validator against new kernel-=
-docs.
+  NameThatIsTooLongForComm[4662]
 
-> + */
-> +bool pinmux_generic_function_is_gpio(struct pinctrl_dev *pctldev,
-> +                                    unsigned int selector)
-> +{
-> +       struct function_desc *function;
-> +
-> +       function =3D radix_tree_lookup(&pctldev->pin_function_tree,
-> +                                    selector);
+[1]. https://github.com/lostgoat/tasknames
 
-One line is okay.
+Bhupesh (3):
+  exec: Remove obsolete comments
+  treewide: Switch memcpy() users of 'task->comm' to a more safer
+    implementation
+  include: Set tsk->comm length to 64 bytes
 
-> +       if (!function)
-> +               return false;
-> +
-> +       return function->func->flags & PINFUNCTION_FLAG_GPIO;
-> +}
+ include/linux/coredump.h       |  3 ++-
+ include/linux/sched.h          | 15 +++++++++------
+ include/trace/events/block.h   |  5 +++++
+ include/trace/events/oom.h     |  1 +
+ include/trace/events/osnoise.h |  1 +
+ include/trace/events/signal.h  |  1 +
+ include/trace/events/task.h    |  2 ++
+ 7 files changed, 21 insertions(+), 7 deletions(-)
 
-...
+-- 
+2.38.1
 
->  struct pinfunction {
->         const char *name;
->         const char * const *groups;
->         size_t ngroups;
-> +       unsigned long flags;
-
-Not sure we need this. If the function is GPIO, pin control already
-knows about this. The pin muxing has gpio request / release callbacks
-that change the state. Why do we need an additional flag(s)?
-
->  };
-
---=20
-With Best Regards,
-Andy Shevchenko
 
