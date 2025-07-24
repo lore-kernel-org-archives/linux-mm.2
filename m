@@ -2,117 +2,113 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E2AB8C83F1A
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 14:46:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AF68DC83F26
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 14:50:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 84FA98E008B; Thu, 24 Jul 2025 10:46:01 -0400 (EDT)
+	id 39C028E008C; Thu, 24 Jul 2025 10:50:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 825E98E007C; Thu, 24 Jul 2025 10:46:01 -0400 (EDT)
+	id 34B188E007C; Thu, 24 Jul 2025 10:50:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 715778E008B; Thu, 24 Jul 2025 10:46:01 -0400 (EDT)
+	id 213EA8E008C; Thu, 24 Jul 2025 10:50:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 638198E007C
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 10:46:01 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1A1A9B973C
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 14:46:01 +0000 (UTC)
-X-FDA: 83699432922.29.BEA01F9
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 31F1C18000B
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 14:45:58 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=oOFxu4GS;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf06.hostedemail.com: domain of jannh@google.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=jannh@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753368359; a=rsa-sha256;
-	cv=none;
-	b=wl3m6OMmI1p5OOeEgqNyqI83EEQoQg09ejPk2kw1sn+yHLshhjrJK+yedaMdTogU85oOWM
-	sgETPJl3Pdf2XXTbeomObVKF4R1qCPOTXTdsNA4Q1rzMO6jIPFDoPaJViG0HbLzzE02/18
-	8ztis7uLPdvCfQ8ARz9w2BauQ7VNALo=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=oOFxu4GS;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf06.hostedemail.com: domain of jannh@google.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=jannh@google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 08E228E007C
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 10:50:21 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C867B112F31
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 14:50:20 +0000 (UTC)
+X-FDA: 83699443800.13.5098B94
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+	by imf19.hostedemail.com (Postfix) with ESMTP id E5AA21A0006
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 14:50:18 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=G3hkixuG;
+	spf=pass (imf19.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.171 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
+	dmarc=pass (policy=quarantine) header.from=pankajraghav.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753368359;
+	s=arc-20220608; t=1753368619;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t9HVJHe+iSRcfFZNFsoaQkuhmI2iPruXvW/Fad+gwuo=;
-	b=vgwjCLu1GJMcc9zLy8nfDnCrEjiqj6YJdgY74Oj6WTa/LA/Hcjsk7rpd/YdOCE0X1w8Yb7
-	3h41v4zzslfbZBSieNMIaMACpBpVt0mH7bju9TZaA+InpjkpCGw/sdSgYRlcY/+3dZgSya
-	TZ5Agv7QN+4oalfF/2rfnqmY1aswC0M=
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-60b86fc4b47so9272a12.1
-        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 07:45:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753368358; x=1753973158; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t9HVJHe+iSRcfFZNFsoaQkuhmI2iPruXvW/Fad+gwuo=;
-        b=oOFxu4GSolt4Rd6wTX9mbYsfVX28EnzRStOna9gQMwbmAFIvGPzGkMm9/yOR0uH6Ck
-         kDe2Vr5SbWhZhfs7Uprj+yYDjv2J/6IRZHr/xGjoK4qZcEzmPNwp1LaXcYfX8XXBe875
-         t/CUJxnPsCpioH/j1GAx0/4fIAyR6URuaJqfEjYtxEHHK+oNnMB0g8eLzKhezGMLJW9W
-         SyRuyWoqHC3oMfaBgFCet67VY/93YaS8j3DGVlxTZXrhbXtxOZkCQMVm4hcX1VPQIauQ
-         3yyWiLMKdje0GOySQkhGD0StcSpwZF7AxkEJ2CrP+krKnxq4bdgGwEEPMTucTFINzOwF
-         zbUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753368358; x=1753973158;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=t9HVJHe+iSRcfFZNFsoaQkuhmI2iPruXvW/Fad+gwuo=;
-        b=afaf9LhmuaFswh5tWaDFZ9J9WCJfWtKJDDSTnPDiMuMzp/x4hElDpBBxPzv+AGMXNV
-         fVB1FBbVgaT/ULrxKMHhSfmj+9EuN7vtAxvlWtg/PUVp9OiTsje1EQV+5msoqFz8+F1H
-         I13lxspg0H2d4dxXTnOoEwapMCc5ujoqZ4e0RZsq+GFR1T15IWOn4BeWMxNMfVFC0L3O
-         A44zxqvgcaSo2fdw1SEHwUfX/prCOc7B2FLGxHnTsx5Ns9/tUTutAHrfBSU3SMjPSWIp
-         D/hcgZNWuIoOcrXO6L+H4YYAXhXt8iLTE0jUnxKo7t85KLSxYOS3RqHfvZgGQ6C5Ydb0
-         RZKA==
-X-Forwarded-Encrypted: i=1; AJvYcCWRR8cRbrOVMhb2Cm1H3m5mRmPMixKGDdrydw6E6GokzU55enox7nXGy1mDsVdgBBHWlYxsfDEjxQ==@kvack.org
-X-Gm-Message-State: AOJu0YwzJ5bByIHeuL01Fpsv1mHJh58J+Ke+B976IqSUJv0gXHe9/0iU
-	waAuec/SLhpFMl+oj91VpnzvVu+KgbqRMEbnn98RFqlsqTnlCvLB0Q71Q5UnGfqWnrPqzpPvnGo
-	3310xdKulKU8UVdBUQhc/Kt09u/tu8nsQSj3DDZF0
-X-Gm-Gg: ASbGnct3KIzdwKU9EPHxmqHwIzsWw3hFf0fWM78/YC8OlbAJvFvWRRkVCbtw1buw5VR
-	DTM4+tsU3KESMCTmWMgANe8jrH51+IWjjIxWzTTLf4DUdjRTR6wDvLPjPNUWJrTzHqWJ+4YKn+L
-	skA8cqfs5y/U1D0r444yRJObImou3MSD0e5ikqd+T7jQu8BTYtpit7o7Mn62U6VtMA2Q3LUsqkU
-	mPFLgnxZKUQXOlGkAf2oDbMmGHJkXSPNQ==
-X-Google-Smtp-Source: AGHT+IGSZpicBm0kzdR09OWL7oNmNSbG5umAWNPq12zXspoqnQ5qSZeuAo6ECOy6+JRbcvDpkNP8nSSArqw3TzmkxV0=
-X-Received: by 2002:a05:6402:c91:b0:612:ce4f:39c with SMTP id
- 4fb4d7f45d1cf-614c452f4f5mr103269a12.0.1753368357273; Thu, 24 Jul 2025
- 07:45:57 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=fS9OWyJbPpEsH/fW6OQdDGwdjRp2ObSHOn87Irzwk8I=;
+	b=phFPVXooC8QVh9P8CH9ur1wdU28emoT+D85UjftMiZ299HTde0JeBjG+WSzDS4Y2/zvH4u
+	qQ/UwgjVsWnrVopQFBBZ7zp2T/6dWrL3iJ0JqghlH600zNebjUMkA4G/1lVkpO3azCDKFG
+	9KNGc8JgGFOn1ACAwO7/6shj5RBFg+I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753368619; a=rsa-sha256;
+	cv=none;
+	b=xNRHf5Vt9lMhgr9Vv36CgQkxQauOUCrSKjaOj+RLhK/CnY6A9Whw8DEJsYS6cS2YG54N/N
+	gK9mLyUY/hxXt8k/wQafD6BpfSnLKyqu/zbEY2HiSEGzAjaB4PI6CpuA/xSPkIWP93riMn
+	tr0joV8HqeBSGiIHZJTzNTFgrRWX5WM=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=G3hkixuG;
+	spf=pass (imf19.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.171 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
+	dmarc=pass (policy=quarantine) header.from=pankajraghav.com
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4bnv7B1KYMz9stm;
+	Thu, 24 Jul 2025 16:50:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pankajraghav.com;
+	s=MBO0001; t=1753368614;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=fS9OWyJbPpEsH/fW6OQdDGwdjRp2ObSHOn87Irzwk8I=;
+	b=G3hkixuGy2iT9/rMJjPGsiha3G3CnlYQ258SFcF29XSWTolRbz4jZV4wDtULRnnf8ZVv6d
+	MXbkidVbRoD/enAOcF/p3E4FHBdMQa+LPl+XBTzAeX9f1D9ec2+09c9p7QSlJ0c7vYOAAn
+	Ykc9ybxvcjQHOD/4a/txSNSF1BlT26NHSh+XhGLWyKR1JpCTHIolM3+rDxZQdy011QkfHG
+	zWOSodQymc01EluSuGV54XQ0edTElbJH5iXfgiaXkdsS0sg8U4bwqUdnm/hEHdugHMkutS
+	Ut0q/B5aP79SLLyeiBZ/SVdcbtIqsfvvTt9DtCIgwktXeawVwV7760597jeDqA==
+From: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>
+To: Suren Baghdasaryan <surenb@google.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Zi Yan <ziy@nvidia.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Michal Hocko <mhocko@suse.com>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Nico Pache <npache@redhat.com>,
+	Dev Jain <dev.jain@arm.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>
+Cc: linux-kernel@vger.kernel.org,
+	willy@infradead.org,
+	linux-mm@kvack.org,
+	x86@kernel.org,
+	linux-block@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	"Darrick J . Wong" <djwong@kernel.org>,
+	mcgrof@kernel.org,
+	gost.dev@samsung.com,
+	kernel@pankajraghav.com,
+	hch@lst.de,
+	Pankaj Raghav <p.raghav@samsung.com>
+Subject: [RFC v2 0/4] add static huge zero folio support
+Date: Thu, 24 Jul 2025 16:49:57 +0200
+Message-ID: <20250724145001.487878-1-kernel@pankajraghav.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <CAG48ez0-deFbVH=E3jbkWx=X3uVbd8nWeo6kbJPQ0KoUD+m2tA@mail.gmail.com>
- <16c97e30-19c9-41e8-b73b-c0b3c8eceff3@suse.cz> <CAG48ez1qhjQNHC+3572udqVWHTANFpQ0ngxn_4ZDC9F8NCXsFA@mail.gmail.com>
- <c53b22c3-9f7f-4793-9d10-f4df861a3e32@suse.cz> <CAG48ez2cGX3e5bqgcw0OEnho29+YhwG2eOrHRgNwGAA_Nb65nw@mail.gmail.com>
- <CAJuCfpEcjH+W83At8WSkgzO=JvZmapg6dPaXmuSRS4ufhSha4w@mail.gmail.com>
- <CAJuCfpHk_k5eVhAZTK=jJvES9311Hyo_YXxY-S56EAYSBuRVRQ@mail.gmail.com> <702ab3bb-db4c-49cb-bb77-4e864cae610e@suse.cz>
-In-Reply-To: <702ab3bb-db4c-49cb-bb77-4e864cae610e@suse.cz>
-From: Jann Horn <jannh@google.com>
-Date: Thu, 24 Jul 2025 16:45:21 +0200
-X-Gm-Features: Ac12FXycbft8xJk_FMasxwKQonXWoLp0FEIYfH4fnR5HmpGPO9P0XjxatL7Ltgw
-Message-ID: <CAG48ez0RrGX-UDhUF+1x5-euJN9z448dsrXMgv4+7-_s=zan_A@mail.gmail.com>
-Subject: Re: [BUG] hard-to-hit mm_struct UAF due to insufficiently careful
- vma_refcount_put() wrt SLAB_TYPESAFE_BY_RCU
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Suren Baghdasaryan <surenb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Linux-MM <linux-mm@kvack.org>, 
-	kernel list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: xq8hrzh3z4gi54fs3az6om6dw1ozafum
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: E5AA21A0006
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 31F1C18000B
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1753368358-938069
-X-HE-Meta: U2FsdGVkX1/Hui0RpCKrmOI68FVBPV3qEwc8Y2QN1itEm5nY2H2LBfPkxqG4u0OKBlwwJKQ4/4KF6b3HpFWlxMj/3kPWTmUUPL3ilXc29yHOjdw8gQ3HIyb4mVkZKiG7bZmml7S7x8TaKLn8Ijb5we7KRziDkto+zQ7xTCDJ+tUPUFDLk7SHrjmtI+ln6mkAsNymADUab1B1vpVpdY6fZdRyzYsCANaUOXOdV76bBNxt54FZJQ16/4oBdq//eqhdZjBZIA1Gj5qwWOdeXAuKOjfx8Kdib8zjUKzhsRK5DXYDAR+hu+JyADu5V/oJ/y08m5KNBDytSik2iHXC9sfEL2XrHXxjivLEnjXsXIJzBJI7QrcVN9UnANk8mYBWA0If/eM7w9hztNUeMhXPzGrqLpJQhjmKLuaN3dXm4TBBpoYO1KHwD7tOgA+cfe3vCnkZDuLvpHrheMEzjkTDmCWbW3wWvHGF3dyzG6yKlD+glikI0FG8E4yOL7vbawT2Rc56Vyjhnq3ViPMySlvSqW8PkGcCcC54XwpKz2ybU3bfumrP93DpD+C2FQWr9GimIqR9OA15jGgE0LnXwrVQLJZKCTKrA4zULZhbuowJ1Ya8l9/fOlX6UaYYe3J2uxVMQsLuIX0B0U4T/Z9XBEvatRJ5wnIqfibQO9RyAQRSffnwe+F6rPWcWZ8cWQbTT6vnbR//rHUo1mK4LyD+rMNJvoaeArUwNOQUjrt0z3vjNT9mphopB7LlZxA7ibu+CQf6NEldMUCYromzwWQD9X+rx0sX1KpTUJnvzoUeYwJRvfsEb+fmPyKotz3Cz+snTZe/fULb45Wqmxkfk1FEAvwF/yppXVTqoNu/q96JRc7gkXaF6BcehKkfSMkdU3PJJd7mVFBCl2LHXQPFbMXdUOnZNdxj7TLirahMmrYeyeaOVbcdmqoTIxzpAUbZ5qhfaF7zdSYeHOS0d/ZPiN/djeT6LUG
- 6X91pFAa
- v0lAyTZLULF5bHS7ATJqIwnURUwhxCSqk6hgyO7adkRPu0BzJxfBB4UBG/Wqhqaj3YKM0H0RRyx+xTqyOGTZzlfh1NTJZ+nC7Gqk6ePf4m+uiC7p8MtgjF/56VKSEQL9YZDWyTQfXNjV1RrYGDlY20BHT3rs3Pi1kCF6AqNvtIAWgGvgS6bWmc1Mxxat5BHw+GWEOavJmjQPVCHemeM5CZF+43J+RKBqKkRSssZwwLExsz7k=
+X-Rspamd-Server: rspam09
+X-Stat-Signature: mmzr37zd93d7c4rx6q71qtm59rdn37kj
+X-HE-Tag: 1753368618-919986
+X-HE-Meta: U2FsdGVkX1/I5IyHExqQe+AYKbOt3q/0VDzqgSPwdu6oBdxQGyVypdDZGzFxJ5gOclHRhtld/9A4JB3BOfNubeJ42cORK5lca3TAqRGeHWioo7Viffy8UjWrZUCtpRtQwy4qvoeNsU7MjM7YBvr+OE6pIagFYJWweTrI6Ok4pbXYcFh5pOt97wwfShD9rnJgAB+MDyfaAZaBJYdSpcmQJcFk8zIIdcsJuGfuLrkhdpTDemCoT513S81B6vYelfZzyTBP5VUWL2EttZBE3Boc2955pOtSU1d6/yaMFGIqvcD2ohTLjLrnaW1u3WhWnyo6dZTLMxLE4YH9uE7nhDOsET5j8m5dxz4SMXxieXyXiTSXq/jVPTPnYu2sAL0PghYYbybqADJJS1TUGDXElVwGDiD9DE8Wc7ioZBArKmNbvvUP9BG+Wdhjb5Z+fldnXbgvlSjz2jXCqMPLHo5Tue9La6cFt0IW2rnNoEU8ka1gs0chG3YunyFhi51IDmQ0v9RnEYmdLzwx3w/RJItT+74Gkdo35+afKJS0goEDJrAi2eA1qULqKuLe/c1k55yLRvidYrWPdewWLeDyYW/2ftnk9JtVJkd7o36A3mxuMBFRM8VsWAX8vMKFaLOY5OJfUoK18b8rhOUxhyqnWhY5Rw4vUBCjhtXjPT/CA4VRtsIx6Ma1JQGOdrBzS+TTRCD8dl9XkxBCVeJuyxM89pXJ7sstbn2kgyEmr60hpVtjNHTwADBIOpE/KUXmZralwqFvMQmM0Bs/3dvrSk6WhyekQhu9A4XwLYj9pDtcDsbckm06UxrTY0B71nydfw4uPiyoKrV7n9+QbjpWkSPi8MzNvwmtNFgCihRIbONd1JA/+F78n7BFeJYEVtiSTn089yRsETtdwKwVdkyELwOAm1nlwYJUYARt3Ro+EbKBkmriZhDXylyd6hkCSkiXXpUV1SXJfGVtdQMjGH/8rnJ/aeI1oqz
+ /ZX6UfME
+ 888DiIVP2z6PDXRedLIiiQ7GoFyRP9f+PJX3s7ygOdyxiKpeteeZV8OR5nOHs3eQJC1f9iyVfyP6OmJGxmC452lWnAzqTkMwdFfiM9nJFAndekzeQt0NHdvYADlytF6own7RNnzvTQ7kZAyHhxe1KISgtA5xpoLbTWO5M7Wld5ZizcRkalRDGMK+y4HyiQBByOLnJdB4b6b3z5kSd7GTiSb6h6UCF60iW3HS2eHnUiVRWwttGZ3zlErJjR0IAIyXAqOAZ2NO22pinae53xsI0Fxhhsf0yLTFn/61et+JnkxSi1h0qnXH7PfVjG7KJ/SCKFuBMZYGAuGVwpHIWOMo07nmdt1URz9jSNqNc8KXPOUg9WyD9h0JWU+59ipGpBvShAGJi48gHytHi3tKiSXar86gvO4Aj598bTYrMAPtw8N7l1pdUTBdx1zM85u6hu9+gGa0K
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,39 +117,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 24, 2025 at 10:38=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> w=
-rote:
-> On 7/24/25 04:30, Suren Baghdasaryan wrote:
-> > So, I think vma_refcount_put() can mmgrab(vma->mm) before calling
-> > __refcount_dec_and_test(), to stabilize that mm and then mmdrop()
-> > after it calls rcuwait_wake_up(). What do you think about this
-> > approach, folks?
->
-> Yeah except it would be wasteful to do for all vma_refcount_put(). Should=
- be
-> enough to have this version (as Jann suggested) for inval_end_read: part =
-of
-> lock_vma_under_rcu. I think we need it also for the vma_refcount_put() do=
-ne
-> in vma_start_read() when we fail the seqcount check? I think in that case
-> the same thing can be happening too, just with different race windows?
->
-> Also as Jann suggested, maybe it's not great (or even safe) to perform
-> __mmdrop() under rcu? And maybe some vma_start_read() users are even more
-> restricted? Maybe then we'd need to make __mmdrop_delayed() not RT-only, =
-and
-> use that.
+From: Pankaj Raghav <p.raghav@samsung.com>
 
-FWIW, I think I have been mixing things up in my head - mmdrop_async()
-exists, but this comment in free_signal_struct() explains that it's
-because __mmdrop() is not softirq-safe because x86's pgd_lock spinlock
-does not disable IRQs.
+NOTE: I am resending as an RFC again based on Lorenzo's feedback. The
+old series can be found here [1].
 
-/*
-* __mmdrop is not safe to call from softirq context on x86 due to
-* pgd_dtor so postpone it to the async context
-*/
+There are many places in the kernel where we need to zeroout larger
+chunks but the maximum segment we can zeroout at a time by ZERO_PAGE
+is limited by PAGE_SIZE.
 
-So I guess using mmdrop() here might actually be fine, since we're
-just in atomic context, not in softirq.
+This concern was raised during the review of adding Large Block Size support
+to XFS[2][3].
+
+This is especially annoying in block devices and filesystems where we
+attach multiple ZERO_PAGEs to the bio in different bvecs. With multipage
+bvec support in block layer, it is much more efficient to send out
+larger zero pages as a part of a single bvec.
+
+Some examples of places in the kernel where this could be useful:
+- blkdev_issue_zero_pages()
+- iomap_dio_zero()
+- vmalloc.c:zero_iter()
+- rxperf_process_call()
+- fscrypt_zeroout_range_inline_crypt()
+- bch2_checksum_update()
+...
+
+Usually huge_zero_folio is allocated on demand, and it will be
+deallocated by the shrinker if there are no users of it left. At the moment,
+huge_zero_folio infrastructure refcount is tied to the process lifetime
+that created it. This might not work for bio layer as the completions
+can be async and the process that created the huge_zero_folio might no
+longer be alive. And, one of the main point that came during discussion
+is to have something bigger than zero page as a drop-in replacement.
+
+Add a config option STATIC_HUGE_ZERO_FOLIO that will always allocate
+the huge_zero_folio, and it will never drop the reference. This makes
+using the huge_zero_folio without having to pass any mm struct and does
+not tie the lifetime of the zero folio to anything, making it a drop-in
+replacement for ZERO_PAGE.
+
+I have converted blkdev_issue_zero_pages() as an example as a part of
+this series. I also noticed close to 4% performance improvement just by
+replacing ZERO_PAGE with static huge_zero_folio.
+
+I will send patches to individual subsystems using the huge_zero_folio
+once this gets upstreamed.
+
+Looking forward to some feedback.
+
+[1] https://lore.kernel.org/linux-mm/20250707142319.319642-1-kernel@pankajraghav.com/
+[2] https://lore.kernel.org/linux-xfs/20231027051847.GA7885@lst.de/
+[3] https://lore.kernel.org/linux-xfs/ZitIK5OnR7ZNY0IG@infradead.org/
+
+Changes since v1:
+- Fixed all warnings.
+- Added a retry feature after a particular time.
+- Added Acked-by and Signed-off-by from David.
+
+Changes since last series[1]:
+- Instead of allocating a new page through memblock, use the same
+  infrastructure as huge_zero_folio but raise the reference and never
+  drop it. (David)
+- And some minor cleanups based on Lorenzo's feedback.
+
+Pankaj Raghav (4):
+  mm: rename huge_zero_page_shrinker to huge_zero_folio_shrinker
+  mm: add static huge zero folio
+  mm: add largest_zero_folio() routine
+  block: use largest_zero_folio in __blkdev_issue_zero_pages()
+
+ arch/x86/Kconfig        |  1 +
+ block/blk-lib.c         | 15 +++++-----
+ include/linux/huge_mm.h | 35 ++++++++++++++++++++++
+ mm/Kconfig              | 21 +++++++++++++
+ mm/huge_memory.c        | 66 +++++++++++++++++++++++++++++++++--------
+ 5 files changed, 119 insertions(+), 19 deletions(-)
+
+
+base-commit: 4c831e7a4b72b7ac16b84e4317dee635b170a663
+-- 
+2.49.0
+
 
