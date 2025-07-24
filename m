@@ -2,175 +2,122 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C449C87FC5
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 22:13:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C93E0C83F26
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 22:16:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A329B6B0343; Thu, 24 Jul 2025 18:13:03 -0400 (EDT)
+	id 508808E00BE; Thu, 24 Jul 2025 18:16:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E3486B0344; Thu, 24 Jul 2025 18:13:03 -0400 (EDT)
+	id 4B8CC8E007C; Thu, 24 Jul 2025 18:16:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8AA986B0345; Thu, 24 Jul 2025 18:13:03 -0400 (EDT)
+	id 3A78C8E00BE; Thu, 24 Jul 2025 18:16:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 739A16B0343
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 18:13:03 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BB15B59739
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 22:13:02 +0000 (UTC)
-X-FDA: 83700559404.07.5AA7CAF
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 4204780002
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 22:13:00 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TU0y+bez;
-	spf=pass (imf02.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753395180; a=rsa-sha256;
-	cv=none;
-	b=qKPBWUDEUCtqxT5eeSZjqdriTDn1AwJSE3WWE37/v7Mv99Gbl6uNwzJBGhHgT+bMyTnnGe
-	SoNoBHaImYCIUkWf2gSTRLapQfAC2LA1YDFXnZvfP6PGZezZpYlanK3/lzg85gmhOhnEfi
-	aGa90GSUm90MjjQKUQYEhF70rQPHcH4=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TU0y+bez;
-	spf=pass (imf02.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 231138E007C
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 18:16:04 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C542780548
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 22:16:03 +0000 (UTC)
+X-FDA: 83700567006.23.3CBBD49
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	by imf06.hostedemail.com (Postfix) with ESMTP id F1B60180005
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 22:16:01 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=QLhlWOj+;
+	spf=pass (imf06.hostedemail.com: domain of 3oLCCaAYKCFcH3zC815DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--seanjc.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3oLCCaAYKCFcH3zC815DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753395180;
+	s=arc-20220608; t=1753395362;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hQB1z3Z5kcaFoXcohwY1QQ7EgSZFnKqwqqs0iiIrZ/g=;
-	b=XmP7zDeM/RsO3jRHQrdSZkVYQ4OI48aav10wXM1zjoBvRIkLrG4K7k5Sk1HmoBJcDGT5E+
-	JJk3A8C2r3Jg9VmfzkM67wOXCbqfVV96SD5OhHGwK0rg4ifu9AEE39iwGBQjYTBhFWATBz
-	OoZ41YYQIUlfJmlJOQ+3G/0DHfGHv/E=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753395179;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=hQB1z3Z5kcaFoXcohwY1QQ7EgSZFnKqwqqs0iiIrZ/g=;
-	b=TU0y+bezeDwejqPkmsFYY170iKdo3sEqikbms+G2PJXl5iynArYOjRYxTdtEKmJ7lorqhp
-	+NJH4bw/BvAzJ/r3eQU94bM6RaIaoKuicBTWJdV4OiCiLFkdx0SnB1Aq9nkWIUVAUjFr5M
-	t7vIyj07iM8tjgkqmBAuLfu5aDgjmRs=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-636-HUQhKvx7PnGimlKbnspSTA-1; Thu, 24 Jul 2025 18:12:58 -0400
-X-MC-Unique: HUQhKvx7PnGimlKbnspSTA-1
-X-Mimecast-MFC-AGG-ID: HUQhKvx7PnGimlKbnspSTA_1753395177
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-455f79a2a16so11221295e9.2
-        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 15:12:58 -0700 (PDT)
+	bh=CSsPv5ePcijvg/eJ9YOOoohsMAUUeLc/JQK+ad+OE5I=;
+	b=r8NSa78tbycGLg0/1Pxub0ykpAbaoGg1R+lNo/hDt9x/h1Aw6Sdpzb4XMmVskWQTD7sEJb
+	13MkFQ4svyIUNPGJ5ShVIftVFfhEd1VUwrgWDbKoJ7jz4rMu3jmxuV2psDyWYRNOglfKVo
+	+YQO2y/Qp8eQWiVvZLFxiLrJphj81FQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753395362; a=rsa-sha256;
+	cv=none;
+	b=5DBCGzK97maXNrZBELqpt5dP0gNhfb+/DM6QSIW539hiSnv2XQ16mwe1O/yXeUYjEIG/Xm
+	JkPBm0498NsOY4g3U3Ao4C0BSBR+9rJnStUhIWhREVsqB6U5CxUK81VBeVB/QIs5fSEFJC
+	tkVjl3iWI79QPVc301ld1MYjyeWRnS8=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=QLhlWOj+;
+	spf=pass (imf06.hostedemail.com: domain of 3oLCCaAYKCFcH3zC815DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--seanjc.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3oLCCaAYKCFcH3zC815DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-235dd77d11fso14684795ad.0
+        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 15:16:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753395361; x=1754000161; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=CSsPv5ePcijvg/eJ9YOOoohsMAUUeLc/JQK+ad+OE5I=;
+        b=QLhlWOj+KAUXqlE3kOkC3oYHMB/Ak81q+xQKLZGlNjk/BdUBdkkdzW7mL4WKaa3qVO
+         Adhm9WILO0Rpsvn6uCJ6XstWELuVRy4lKVOnVD0lnVGADYcgMkcnFSk9Xsh4DMW/lRPm
+         A8izT7XbamApe4wDEeTm6AS6WJkBijwd6CSVeYrSbV4SJRstL/7AuMB2oMpuIi04qLA4
+         OYijIkKwrqTYFGWrOngS3zKeS1KNs8g+TLQh0Uac8QI0MN6538UnoJAbGQ4zr9e8LUUJ
+         lgaXLw/Uk6CbNUnE6HKqUhUxuye169sdL4YjAqDypLstqDwlm3RiQsEzVZDoav0/2rsG
+         cvOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753395177; x=1753999977;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=hQB1z3Z5kcaFoXcohwY1QQ7EgSZFnKqwqqs0iiIrZ/g=;
-        b=laNSf0r7mbOYDSrMDDp3HQqWJpBT+Kl5zT3cFj77zKx3AKimojqzzswNah8gVu+k2z
-         K3Y5HPc3FQwuiMbI+j50+SpGMYDHCfqrxZ4cXaFcc2iuAw8E4IAm2kQIQ3mU9Cu9gNSg
-         ndws+umqbOGIn19ASF4dfvnyNkRLWx2dXL3d+374QQmFRaPN92fR6ywXAfoaZvdQsuX1
-         FqNikYCE+ogSwlM/ho+HG7wIveERXswxB0SKLpyloG9voZYOQnXR8fj8lSBsURynBblb
-         5k0i5cViPYDnVrO43UAeNNJMQdSjRnldXI6u5AsVjoNrBENIdI7SEdyQkxhz9euPlK1h
-         H/IA==
-X-Forwarded-Encrypted: i=1; AJvYcCVXnSzOkMHn/PEpqs4/0s++3PKB/W4jYKQL9qN3SE8IDDmrMpIuikkd4xi33YZYIbzZLsqV/XeoiA==@kvack.org
-X-Gm-Message-State: AOJu0YyMDg3sFrzCBlfnrvPmtdgWJDzHTIzKYTCboW/YtRsGPEqgkVfA
-	WlF8iMg9PIStFmkY14b7l20dYhL5HFXxOcdUvc2/xGqKO66oL99/wLCblASfh2jbz14EHrdjoIi
-	BIvEw04e66/hmCECd3bKRF7+qlk3l3YcVfnLHrS7mPYCOmb6lMljL
-X-Gm-Gg: ASbGncsgMX+19k7TFiPL6QfrpiDxbcBpB+EcG6PJdu2Y7CPkyL0JaFgKPs+mFmJhvgO
-	aKJ+XoRcGdfC+nGC1n/EHlGSFv/yTDifHsUBMAFXdHXqIHy+vQXfDqu1drud2NvG7VCGBSIuuwx
-	CJ55i8ZCNVTC7PP0l2TsHosTSUdj40acM8tuOceYbKCF16hODjgiJfslt28nNcjiUCnl7aPWeMK
-	pFFVsbolQyZimwX0ZNra162XUN0A3R4kpXaoXlmVnHKXdY1tlepjxhZ4uQ091hVBSudhAcUzvVC
-	Z5zXsDmoT26Oh+/yBOuxWxjxVa58zBgmYEYj/nCLfoLxO08X/nBl6BtKc8cl3O+OsOqB7lNh44R
-	uXqjoDn7avKZ2nVR2f3+LApua9Q95SjrCBpMQkLiojUGY+29vxmIpEpvGXR/y8Pp5N74=
-X-Received: by 2002:a05:600c:c1d7:10b0:453:8bc7:5cbb with SMTP id 5b1f17b1804b1-45869ea2734mr42647255e9.25.1753395177215;
-        Thu, 24 Jul 2025 15:12:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEROFhkwgqCWtdtoJL6+oZxLZCC7+h69SF6EW0ZZkD/1W4EzDWnn/aPK3tJVe82t2BNZ84VXg==
-X-Received: by 2002:a05:600c:c1d7:10b0:453:8bc7:5cbb with SMTP id 5b1f17b1804b1-45869ea2734mr42647125e9.25.1753395176734;
-        Thu, 24 Jul 2025 15:12:56 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f01:5500:ba83:3fd7:6836:62f6? (p200300d82f015500ba833fd7683662f6.dip0.t-ipconnect.de. [2003:d8:2f01:5500:ba83:3fd7:6836:62f6])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458705378ffsm32532115e9.1.2025.07.24.15.12.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Jul 2025 15:12:55 -0700 (PDT)
-Message-ID: <4f66d89a-631a-43eb-b4f9-c9a0b44caaae@redhat.com>
-Date: Fri, 25 Jul 2025 00:12:54 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/5] mm/mseal: update madvise() logic
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Jeff Xu <jeffxu@chromium.org>
-References: <cover.1752687069.git.lorenzo.stoakes@oracle.com>
- <ec480dc1fd4ce04bb11c0acac6c6da78dc6f4156.1752687069.git.lorenzo.stoakes@oracle.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- g3eXuA==
-Organization: Red Hat
-In-Reply-To: <ec480dc1fd4ce04bb11c0acac6c6da78dc6f4156.1752687069.git.lorenzo.stoakes@oracle.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: nFKskvGt3wEPC53soE-igGny56m7aYTG9g8AcD-VEqs_1753395177
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        d=1e100.net; s=20230601; t=1753395361; x=1754000161;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CSsPv5ePcijvg/eJ9YOOoohsMAUUeLc/JQK+ad+OE5I=;
+        b=gZdd+FfaKwZxpmgAAkcq4DkNYj6r0YpyzJn738dw2ZZhcHIDhRB7mo2WEhWCiG8Xo6
+         QjVOipq+xw6NyPvfEcu0JwVxvrPQJ5ghWIR/vMVkJaSJ6O/S8hdJAlRc8A8FEnDkJ0d/
+         QjS7Y+c1RtPe9JgDTd61bnSBy1uxTdEo324uDHuDQ5TuBTHGAAeeGb5OwWTnnDxyeuhF
+         RvXhssJUZcINYgeKEmh6c3HSRy0QP5GKLTVdVuCsGQmCO6wMZ/8h7sJC76/iPWJJppV+
+         cSb1hSUDDouJi9yImIRX2+4ZRcqbc5R2pwxUv9SMZaFEAiNnYks1hcFI0EU/4wQi/RK4
+         hZTw==
+X-Forwarded-Encrypted: i=1; AJvYcCUk0EuIfS6cg56klezmRfm43gVpdAfCp2iEC3b3AnLIpMJZwFEZFFsSZH7JCmugAuEEYdzju3Wcuw==@kvack.org
+X-Gm-Message-State: AOJu0YzYIwcEEtszWCAmK9AzyjpsRm+tHzsmfJ4XjzFbXDOEK/iKnb+B
+	BQuRlQwioap/Is5MBoQVQP9dPNM5xJvEGROvJwNYdSbiaJ6R16AwLvpgG2t1GUzI+7iU5jAQIgZ
+	Uh09Nng==
+X-Google-Smtp-Source: AGHT+IH888MaNXPIrGBfFP1YYkrT5keudUQ/WtNaJQtp7BAWAULutMntUODLGK7xo8IWfYkqv91HA01aGjk=
+X-Received: from pjyp3.prod.google.com ([2002:a17:90a:e703:b0:312:4b0b:a94])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f682:b0:237:d25b:8f07
+ with SMTP id d9443c01a7336-23f9823ce8dmr106882785ad.44.1753395360506; Thu, 24
+ Jul 2025 15:16:00 -0700 (PDT)
+Date: Thu, 24 Jul 2025 15:15:59 -0700
+In-Reply-To: <20250723104714.1674617-23-tabba@google.com>
+Mime-Version: 1.0
+References: <20250723104714.1674617-1-tabba@google.com> <20250723104714.1674617-23-tabba@google.com>
+Message-ID: <aIKwn0RJdEXlu5g3@google.com>
+Subject: Re: [PATCH v16 22/22] KVM: selftests: guest_memfd mmap() test when
+ mmap is supported
+From: Sean Christopherson <seanjc@google.com>
+To: Fuad Tabba <tabba@google.com>
+Cc: kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, 
+	kvmarm@lists.linux.dev, pbonzini@redhat.com, chenhuacai@kernel.org, 
+	mpe@ellerman.id.au, anup@brainfault.org, paul.walmsley@sifive.com, 
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, viro@zeniv.linux.org.uk, 
+	brauner@kernel.org, willy@infradead.org, akpm@linux-foundation.org, 
+	xiaoyao.li@intel.com, yilun.xu@intel.com, chao.p.peng@linux.intel.com, 
+	jarkko@kernel.org, amoorthy@google.com, dmatlack@google.com, 
+	isaku.yamahata@intel.com, mic@digikod.net, vbabka@suse.cz, 
+	vannapurve@google.com, ackerleytng@google.com, mail@maciej.szmigiero.name, 
+	david@redhat.com, michael.roth@amd.com, wei.w.wang@intel.com, 
+	liam.merwick@oracle.com, isaku.yamahata@gmail.com, 
+	kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com, steven.price@arm.com, 
+	quic_eberman@quicinc.com, quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, 
+	quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com, 
+	quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com, 
+	james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev, 
+	maz@kernel.org, will@kernel.org, qperret@google.com, keirf@google.com, 
+	roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, 
+	rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com, 
+	jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com, 
+	ira.weiny@intel.com
+Content-Type: text/plain; charset="us-ascii"
+X-Rspamd-Queue-Id: F1B60180005
+X-Stat-Signature: 83jdxa7py4zs5rtfoajgz96pm94iykcg
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4204780002
-X-Stat-Signature: rqpnhf4w9pjsmtt3q3xpcqmagbfrrzsz
-X-HE-Tag: 1753395180-393921
-X-HE-Meta: U2FsdGVkX1846b4PTMIv2dBFnk59rcQeRef3pjlYqEWjRu9oOo9zdhg1hTjCVEzvlB2QpQZ5x7R5kErHqq8ChzcmnAY7kPYde4/10s118fobC3Fe1ygRfKF3WQXSTn+4+h1ZeRDaGKjApnbuBRgH3MuivnNj2GNTlr+nBgrCoKXfxVOt8pFsIun0lymuJi1XWLnQs+vmq7bsv3sFRPGmbapEaLXucOB5o+D5MDeezRIgsniNuGvW2O9kFtVWl/iZHCB++XoohDhNBZs/AuPBkZI3vKtUzkrgk2rTKrqG9Lpyf0K4G+73yOPTQpMY6yhss4TPkxZorIRn1jYRrabLS01rETUQdpC9V9psttb3pgmivutrNKHfFFj9A96CZo4/5YoBJG7sNnVB+WowOue1x3PlKWH+yWbtEiaihpuylb1iQ3EXifFelrZx6x+jAq5Ou+5PUk9S6Rl0VO6gEWyt3xfoXIpQQ0ubbPu9jWDzF+CnnHDm4emwt9sEqUCKf1kaS3q/QoYZNEILJeyFmdSvKaMiKd5/K4xKYpwZCZxDcnPm19IMzWa/ZvXqT98MRuGUskU5ixjdCelfQDsHO5TpUx9bls2oyaPiCZ90sTQUdEvRMsUW9n9NXFlszwOJHLGZ3mGjGxPmkafowT3HHZOrstDcYZg0byYZcdY6gMmlULaj8KnQW1nVq41AIixYw2XofXRoa/8Gh+9Lw9g4+LDkZqGevTFvAYtaSYQVuvB63Sx1FmhXWrJbk6vhH9jo3h6wMxaH5CYdAUsWCNVk2S4KEJ8RgBG2MSqGhhqeHxxNATJU7jm2zY+FdTg/wN4/nZlTx13xXTPynU8Qt57B7soYdJ5dnLGyz6e51wKht7klOwBUhEpPGOfkqC+AaT2H1Ba8/y6MaEtuZ0GRKF/fwBKVD8sjUSp1HojazeYZFwIs9WWwFHJ1eEI3dVF973wDpYW9/wl+h4u91YMfLfD4r1S
- fTsq+MjI
- 6xhiBccNIPDgWQvsjUHDHgogzw65Vsdy+cLX3W3DyCMwOJHzvEIZpUFW5QXr4MIFFO9UZfZAhYXr6CFT+TU3L+HoYMLcc2YZl7X3Vy+gcRxf6PQ3I7wQ35pSdmdM/EGMC6TQbhUxqjiQJm/3dfT57ts9R8rOiVstJyKu9f6xboBBtoLNn4ZV85t1H5/zJMp8rzgKf+gG6+C61Tr1bT7T/JkNQ+iyqzDDk4y2vMo9AT4LEZ91SJ687USgyDhV/FGemgWUZ073UU3GuKg/5MFOobI5dYNMdu3HiyqS527UtZdWVrxL7qg+IKpHTTp5j0u/K8tjS9LeyksoJiRGzGvhz16naQWRHSGBFEWPiY++RQbdmEkbbuvxmt54aH9CuhCSPsnZi6nS6AkQudDrRtN3Jeo9Yx09QQsP56JsbGKATk0DwmNDdmOCihR+xRRyQ9kGaneLD2vVHPg/IdrJMu7MGy6Z2SQ==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1753395361-631583
+X-HE-Meta: U2FsdGVkX188pALJJqOhMc2PKUiY7AzEpkaa/1oEPOduyulZjhWYfXIamo7VVpHO8ggAR+nhn3WntY9aiqDotnKG71DmMEnEuSTPMjkMfM+pwUo6OCHsfIBN2vfkdN3ZN5o8AyTjV6Zlj7twcCuQ0Tjs+x+ubjFHRvWmbxb0rZDZdzHkUixdCdmRgrfaDLZmddV76/Y8h+TwU37Yp+tCWzIakAypbIWsgVBry05k4Jqrr8rvMONcLhuW/osRTroYROblURK+goZJKj/1ZQMfEdzE9DU0HH94b2Ku1pShBLzUsKczlRot80FBGq4kqCdSkzHCurZMYSdl8iabfSEhcTX2Xf0TmtBKaV3kwThNFS486fo5JSDnnsjZdpHO4hy6SR+8kLNyicy4+nbTFVBpapHYYELpIrDIsb0Wcf9Vi3DzTwYC1qoE9cPxDaXTd3tQVyUMzfHDdMqKCvNhPwEwCCOdKb9I25MS9p1KVjlS+8YiLyUonmwZftQo4LLlQkYTAi9aapmf+uiuo+6A3qvbSM+6z3+u2yvqIjx85bBiJG5fJjtgfSTRX7DKtm4ubA61S0gDHtpCcvIuYt2906AtS0UITTJlAdHaAQ+MA0Gy/H3Wf+FSxjmOqujGO9H763Ow68ZU0j95EM/6ader1/A+kgm2R6pNMqzRCO13rt4b9OUZL3bbHc5JrZHD21/ll+Cvz07gJSKOa+au1ZPkWpLtWDf0rs6f2P4zj+4Ddr+GBTQ50JMGo006jWoTHlYPq4DxtHwOmCzQYOz2FRUI05M9FhfAiFYWH8Ec9ujTnUa1hXPNy3CAyWaMaxKDjFAoTqjPrEubYkcUxJ/v+IzOe33reBtPV/eFY2+R2dlmOj5/bNIM14Ge8HiaUV/3HAO/CCMhwJr0fmar3YpGnP9O9DJ/zqGCTHyBzaJj8jKmrmGscBZiVX630pClp3f9140thbp2x6f5o/sBZVs2jX/OTIs
+ c2AkCymB
+ Tp3BE19dIoZiZzk5FVYK9ND3SVKv6nYQHYAP44c/WSYpqU1D3s+CqkHvUHH1hl5z7kp5YACu5PL6D50kWQodRbv1UD3txV8K9TA345iGnPUZJ+tzTwnjPHSjTsypjHWpgNb61h5W1TGCnYCoxd1UCMZIpE7Fax751GLLs22c8dXI1PCdda7YrbRq7V31nSxSSFCpgCIKwMgPauF46zcG1C9W8W2Kml5wKpNc+Nkz2E4PqwHy33I7j4HAokjo9N62EME21FF1zBsTla+CrHr7VOs77Uh6lzmvNlBaiHBk4RKonsg5Qh622uZBFLLgxtRmapYsmqVvgC9TfvjjVEuxGoTXKk0DZjyf9/vySv/B6ojaQHJCxrE3z5pAsUGjR3YhOWV+fZ1u5c9LS45f7zKKzLe1slNxGVzHimnhFUrVi8e+sh+45LKoxGtWm6UDhxfO/O3Qlnhg+jEWO7662qo1KENj6pnowVpbpo7YbyBPpeWa9r8sDv1WsLopWXHNsONxW/+dwjX1xtyKbx0nwvPzhtYB/TL8Shu65BCQaqILyukZgUVD95nLPK7DT1NxA5eygR3RIbLRlBsCLv/kqWRmsey8OvDbepszhqZL4OQ9ifwjfXq1p7YMAreaaXiiB7WY5DY66byhIHBYCi9DD6qG7nDHijma9SHd7iKNhToSaEoHDndVnT3avZU0CjqrJBEi1I0zrvVePlKlJbLDoC0iwxl9/4ep8Qu5wVAwH5TIIin+WjBQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -179,61 +126,356 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 16.07.25 19:38, Lorenzo Stoakes wrote:
-> The madvise() logic is inexplicably performed in mm/mseal.c - this ought
-> to be located in mm/madvise.c.
-> 
-> Additionally can_modify_vma_madv() is inconsistently named and, in
-> combination with is_ro_anon(), is very confusing logic.
-> 
-> Put a static function in mm/madvise.c instead - can_madvise_modify() -
-> that spells out exactly what's happening.  Also explicitly check for an
-> anon VMA.
-> 
-> Also add commentary to explain what's going on.
-> 
-> Essentially - we disallow discarding of data in mseal()'d mappings in
-> instances where the user couldn't otherwise write to that data.
-> 
-> Shared mappings are always backed, so no discard will actually truly
-> discard the data.  Read-only anonymous and MAP_PRIVATE file-backed
-> mappings are the ones we are interested in.
-> 
-> We make a change to the logic here to correct a mistake - we must disallow
-> discard of read-only MAP_PRIVATE file-backed mappings, which previously we
-> were not.
-> 
-> The justification for this change is to account for the case where:
-> 
-> 1. A MAP_PRIVATE R/W file-backed mapping is established.
-> 2. The mapping is written to, which backs it with anonymous memory.
-> 3. The mapping is mprotect()'d read-only.
-> 4. The mapping is mseal()'d.
+On Wed, Jul 23, 2025, Fuad Tabba wrote:
+> Reviewed-by: James Houghton <jthoughton@google.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Reviewed-by: Shivank Garg <shivankg@amd.com>
 
-Thinking about this a bit (should have realized this implication 
-earlier) ... assuming we have:
+These reviews probably should be dropped given that the test fails...
 
-1. A MAP_PRIVATE R/O file-backed mapping.
-2. The mapping is mseal()'d.
+> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Fuad Tabba <tabba@google.com>
+> ---
+> +static bool check_vm_type(unsigned long vm_type)
+>  {
+> -	size_t page_size;
+> +	/*
+> +	 * Not all architectures support KVM_CAP_VM_TYPES. However, those that
+> +	 * support guest_memfd have that support for the default VM type.
+> +	 */
+> +	if (vm_type == VM_TYPE_DEFAULT)
+> +		return true;
+> +
+> +	return kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(vm_type);
+> +}
 
-We only really have anon folios in there with things like (a) uprobe (b) 
-debugger access (c) similarly weird FOLL_FORCE stuff.
+...
 
-Now, most executables/libraries are mapped that way. If someone would 
-rely on MADV_DONTNEED to zap pages in there (to free up memory), that 
-would get rejected.
+> ++static void test_gmem_flag_validity(void)
+> +{
+> +	uint64_t non_coco_vm_valid_flags = 0;
+> +
+> +	if (kvm_has_cap(KVM_CAP_GUEST_MEMFD_MMAP))
+> +		non_coco_vm_valid_flags = GUEST_MEMFD_FLAG_MMAP;
+> +
+> +	test_vm_type_gmem_flag_validity(VM_TYPE_DEFAULT, non_coco_vm_valid_flags);
+> +
+> +#ifdef __x86_64__
+> +	test_vm_type_gmem_flag_validity(KVM_X86_SW_PROTECTED_VM, 0);
+> +	test_vm_type_gmem_flag_validity(KVM_X86_SEV_VM, 0);
+> +	test_vm_type_gmem_flag_validity(KVM_X86_SEV_ES_VM, 0);
+> +	test_vm_type_gmem_flag_validity(KVM_X86_SNP_VM, 0);
+> +	test_vm_type_gmem_flag_validity(KVM_X86_TDX_VM, 0);
+> +#endif
 
-Does something like that rely on MADV_DONTNEED working? Good question.
+mmap() support has nothing to do with CoCo, it's all about KVM's lack of support
+for VM types that use guest_memfd  for private memory.  This causes failures on 
+x86 due to MMAP being supported on everything except SNP_VM and TDX_VM.
 
-Checking for anon_vma in addition, ad mentioned in the other thread, 
-would be a "cheap" check to rule out that there are currently anon vmas 
-in there.
+All of this code is quite ridiculous.  KVM allows KVM_CHECK_EXTENSION on a VM FD
+specifically so that userspace can query whether or not a feature is supported for
+a given VM.  Just use that, don't hardcode whether or not the flag is valid.
 
-Well, not 100% reliable, because MADV_DONTNEED can race with page faults ...
+If we want to validate that a specific VM type does/doesn't support
+KVM_CAP_GUEST_MEMFD_MMAP, then we should add a test for _that_ (though IMO it'd
+be a waste of time).
 
--- 
-Cheers,
+> +}
+> +
+> +int main(int argc, char *argv[])
+> +{
+> +	TEST_REQUIRE(kvm_has_cap(KVM_CAP_GUEST_MEMFD));
+> +
+> +	test_gmem_flag_validity();
+> +
+> +	test_with_type(VM_TYPE_DEFAULT, 0);
+> +	if (kvm_has_cap(KVM_CAP_GUEST_MEMFD_MMAP))
+> +		test_with_type(VM_TYPE_DEFAULT, GUEST_MEMFD_FLAG_MMAP);
+> +
+> +#ifdef __x86_64__
+> +	test_with_type(KVM_X86_SW_PROTECTED_VM, 0);
+> +#endif
 
-David / dhildenb
+Similarly, don't hardocde the VM types to test, and then bail if the type isn't
+supported.  Instead, pull the types from KVM and iterate over them.
 
+Do that, and the test can provide better coverage is fewer lines of code.  Oh,
+and it passes too ;-)
+
+---
+From: Fuad Tabba <tabba@google.com>
+Date: Wed, 23 Jul 2025 11:47:14 +0100
+Subject: [PATCH] KVM: selftests: guest_memfd mmap() test when mmap is
+ supported
+
+Expand the guest_memfd selftests to comprehensively test host userspace
+mmap functionality for guest_memfd-backed memory when supported by the
+VM type.
+
+Introduce new test cases to verify the following:
+
+* Successful mmap operations: Ensure that MAP_SHARED mappings succeed
+  when guest_memfd mmap is enabled.
+
+* Data integrity: Validate that data written to the mmap'd region is
+  correctly persistent and readable.
+
+* fallocate interaction: Test that fallocate(FALLOC_FL_PUNCH_HOLE)
+  correctly zeros out mapped pages.
+
+* Out-of-bounds access: Verify that accessing memory beyond the
+  guest_memfd's size correctly triggers a SIGBUS signal.
+
+* Unsupported mmap: Confirm that mmap attempts fail as expected when
+  guest_memfd mmap support is not enabled for the specific guest_memfd
+  instance or VM type.
+
+* Flag validity: Introduce test_vm_type_gmem_flag_validity() to
+  systematically test that only allowed guest_memfd creation flags are
+  accepted for different VM types (e.g., GUEST_MEMFD_FLAG_MMAP for
+  default VMs, no flags for CoCo VMs).
+
+The existing tests for guest_memfd creation (multiple instances, invalid
+sizes), file read/write, file size, and invalid punch hole operations
+are integrated into the new test_with_type() framework to allow testing
+across different VM types.
+
+Cc: James Houghton <jthoughton@google.com>
+Cc: Gavin Shan <gshan@redhat.com>
+Cc: Shivank Garg <shivankg@amd.com>
+Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+Signed-off-by: Fuad Tabba <tabba@google.com>
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ .../testing/selftests/kvm/guest_memfd_test.c  | 162 +++++++++++++++---
+ 1 file changed, 140 insertions(+), 22 deletions(-)
+
+diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
+index 341ba616cf55..e23fbd59890e 100644
+--- a/tools/testing/selftests/kvm/guest_memfd_test.c
++++ b/tools/testing/selftests/kvm/guest_memfd_test.c
+@@ -13,6 +13,8 @@
+ 
+ #include <linux/bitmap.h>
+ #include <linux/falloc.h>
++#include <setjmp.h>
++#include <signal.h>
+ #include <sys/mman.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+@@ -34,12 +36,83 @@ static void test_file_read_write(int fd)
+ 		    "pwrite on a guest_mem fd should fail");
+ }
+ 
+-static void test_mmap(int fd, size_t page_size)
++static void test_mmap_supported(int fd, size_t page_size, size_t total_size)
++{
++	const char val = 0xaa;
++	char *mem;
++	size_t i;
++	int ret;
++
++	mem = mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0);
++	TEST_ASSERT(mem == MAP_FAILED, "Copy-on-write not allowed by guest_memfd.");
++
++	mem = mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
++	TEST_ASSERT(mem != MAP_FAILED, "mmap() for guest_memfd should succeed.");
++
++	memset(mem, val, total_size);
++	for (i = 0; i < total_size; i++)
++		TEST_ASSERT_EQ(READ_ONCE(mem[i]), val);
++
++	ret = fallocate(fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE, 0,
++			page_size);
++	TEST_ASSERT(!ret, "fallocate the first page should succeed.");
++
++	for (i = 0; i < page_size; i++)
++		TEST_ASSERT_EQ(READ_ONCE(mem[i]), 0x00);
++	for (; i < total_size; i++)
++		TEST_ASSERT_EQ(READ_ONCE(mem[i]), val);
++
++	memset(mem, val, page_size);
++	for (i = 0; i < total_size; i++)
++		TEST_ASSERT_EQ(READ_ONCE(mem[i]), val);
++
++	ret = munmap(mem, total_size);
++	TEST_ASSERT(!ret, "munmap() should succeed.");
++}
++
++static sigjmp_buf jmpbuf;
++void fault_sigbus_handler(int signum)
++{
++	siglongjmp(jmpbuf, 1);
++}
++
++static void test_fault_overflow(int fd, size_t page_size, size_t total_size)
++{
++	struct sigaction sa_old, sa_new = {
++		.sa_handler = fault_sigbus_handler,
++	};
++	size_t map_size = total_size * 4;
++	const char val = 0xaa;
++	char *mem;
++	size_t i;
++	int ret;
++
++	mem = mmap(NULL, map_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
++	TEST_ASSERT(mem != MAP_FAILED, "mmap() for guest_memfd should succeed.");
++
++	sigaction(SIGBUS, &sa_new, &sa_old);
++	if (sigsetjmp(jmpbuf, 1) == 0) {
++		memset(mem, 0xaa, map_size);
++		TEST_ASSERT(false, "memset() should have triggered SIGBUS.");
++	}
++	sigaction(SIGBUS, &sa_old, NULL);
++
++	for (i = 0; i < total_size; i++)
++		TEST_ASSERT_EQ(READ_ONCE(mem[i]), val);
++
++	ret = munmap(mem, map_size);
++	TEST_ASSERT(!ret, "munmap() should succeed.");
++}
++
++static void test_mmap_not_supported(int fd, size_t page_size, size_t total_size)
+ {
+ 	char *mem;
+ 
+ 	mem = mmap(NULL, page_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+ 	TEST_ASSERT_EQ(mem, MAP_FAILED);
++
++	mem = mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
++	TEST_ASSERT_EQ(mem, MAP_FAILED);
+ }
+ 
+ static void test_file_size(int fd, size_t page_size, size_t total_size)
+@@ -120,26 +193,19 @@ static void test_invalid_punch_hole(int fd, size_t page_size, size_t total_size)
+ 	}
+ }
+ 
+-static void test_create_guest_memfd_invalid(struct kvm_vm *vm)
++static void test_create_guest_memfd_invalid_sizes(struct kvm_vm *vm,
++						  uint64_t guest_memfd_flags,
++						  size_t page_size)
+ {
+-	size_t page_size = getpagesize();
+-	uint64_t flag;
+ 	size_t size;
+ 	int fd;
+ 
+ 	for (size = 1; size < page_size; size++) {
+-		fd = __vm_create_guest_memfd(vm, size, 0);
+-		TEST_ASSERT(fd == -1 && errno == EINVAL,
++		fd = __vm_create_guest_memfd(vm, size, guest_memfd_flags);
++		TEST_ASSERT(fd < 0 && errno == EINVAL,
+ 			    "guest_memfd() with non-page-aligned page size '0x%lx' should fail with EINVAL",
+ 			    size);
+ 	}
+-
+-	for (flag = BIT(0); flag; flag <<= 1) {
+-		fd = __vm_create_guest_memfd(vm, page_size, flag);
+-		TEST_ASSERT(fd == -1 && errno == EINVAL,
+-			    "guest_memfd() with flag '0x%lx' should fail with EINVAL",
+-			    flag);
+-	}
+ }
+ 
+ static void test_create_guest_memfd_multiple(struct kvm_vm *vm)
+@@ -171,30 +237,82 @@ static void test_create_guest_memfd_multiple(struct kvm_vm *vm)
+ 	close(fd1);
+ }
+ 
+-int main(int argc, char *argv[])
++static void test_guest_memfd_flags(struct kvm_vm *vm, uint64_t valid_flags)
+ {
+-	size_t page_size;
+-	size_t total_size;
++	size_t page_size = getpagesize();
++	uint64_t flag;
+ 	int fd;
++
++	for (flag = BIT(0); flag; flag <<= 1) {
++		fd = __vm_create_guest_memfd(vm, page_size, flag);
++		if (flag & valid_flags) {
++			TEST_ASSERT(fd >= 0,
++				    "guest_memfd() with flag '0x%lx' should succeed",
++				    flag);
++			close(fd);
++		} else {
++			TEST_ASSERT(fd < 0 && errno == EINVAL,
++				    "guest_memfd() with flag '0x%lx' should fail with EINVAL",
++				    flag);
++		}
++	}
++}
++
++static void test_guest_memfd(unsigned long vm_type)
++{
++	uint64_t flags = 0;
+ 	struct kvm_vm *vm;
+-
+-	TEST_REQUIRE(kvm_has_cap(KVM_CAP_GUEST_MEMFD));
++	size_t total_size;
++	size_t page_size;
++	int fd;
+ 
+ 	page_size = getpagesize();
+ 	total_size = page_size * 4;
+ 
+-	vm = vm_create_barebones();
++	vm = vm_create_barebones_type(vm_type);
++
++	if (vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_MMAP))
++		flags |= GUEST_MEMFD_FLAG_MMAP;
+ 
+-	test_create_guest_memfd_invalid(vm);
+ 	test_create_guest_memfd_multiple(vm);
++	test_create_guest_memfd_invalid_sizes(vm, flags, page_size);
+ 
+-	fd = vm_create_guest_memfd(vm, total_size, 0);
++	fd = vm_create_guest_memfd(vm, total_size, flags);
+ 
+ 	test_file_read_write(fd);
+-	test_mmap(fd, page_size);
++
++	if (flags & GUEST_MEMFD_FLAG_MMAP) {
++		test_mmap_supported(fd, page_size, total_size);
++		test_fault_overflow(fd, page_size, total_size);
++
++	} else {
++		test_mmap_not_supported(fd, page_size, total_size);
++	}
++
+ 	test_file_size(fd, page_size, total_size);
+ 	test_fallocate(fd, page_size, total_size);
+ 	test_invalid_punch_hole(fd, page_size, total_size);
+ 
++	test_guest_memfd_flags(vm, flags);
++
+ 	close(fd);
++	kvm_vm_free(vm);
++}
++
++int main(int argc, char *argv[])
++{
++	unsigned long vm_types, vm_type;
++
++	TEST_REQUIRE(kvm_has_cap(KVM_CAP_GUEST_MEMFD));
++
++	/*
++	 * Not all architectures support KVM_CAP_VM_TYPES. However, those that
++	 * support guest_memfd have that support for the default VM type.
++	 */
++	vm_types = kvm_check_cap(KVM_CAP_VM_TYPES);
++	if (!vm_types)
++		vm_types = VM_TYPE_DEFAULT;
++
++	for_each_set_bit(vm_type, &vm_types, BITS_PER_TYPE(vm_types))
++		test_guest_memfd(vm_type);
+ }
+
+base-commit: 7f4eb3d4fb58f58b3bbe5ab606c4fec8db3b5a3f
+--
 
