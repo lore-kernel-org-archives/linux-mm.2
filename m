@@ -2,101 +2,101 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 07DE7C83F26
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 23:37:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C870C83F26
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 23:37:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83C718E00C4; Thu, 24 Jul 2025 19:37:22 -0400 (EDT)
+	id 188AD8E00C5; Thu, 24 Jul 2025 19:37:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C70F8E007C; Thu, 24 Jul 2025 19:37:22 -0400 (EDT)
+	id 111978E007C; Thu, 24 Jul 2025 19:37:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 667878E00C4; Thu, 24 Jul 2025 19:37:22 -0400 (EDT)
+	id EF23E8E00C5; Thu, 24 Jul 2025 19:37:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D9EF8E007C
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 19:37:22 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2681AC058A
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D95A98E007C
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 19:37:24 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8570D14056E
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 23:37:24 +0000 (UTC)
+X-FDA: 83700772008.14.DDEF024
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf02.hostedemail.com (Postfix) with ESMTP id A28B380012
 	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 23:37:22 +0000 (UTC)
-X-FDA: 83700771924.28.3398144
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 4A1EA2000B
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 23:37:20 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=rivosinc-com.20230601.gappssmtp.com header.s=20230601 header.b=utv81lEv;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of debug@rivosinc.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=debug@rivosinc.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753400240; a=rsa-sha256;
-	cv=none;
-	b=DiYYFvZ0VFet9n58eJTJfDIMml/+Lfab61wMa5XNVBuDP7Etn8FnXX69K+wX8I5NyE9vcH
-	59jIOasNzmwZTJDhRH3rpIwxkbVvhrf17vrbTBmhgf4Yd4WZbFbcKfEGqnT2fR/Hbaeo7l
-	imHfDl8C0i0k3BXAESYp2dLRcLUlUX4=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=rivosinc-com.20230601.gappssmtp.com header.s=20230601 header.b=utv81lEv;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of debug@rivosinc.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=debug@rivosinc.com
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=rivosinc-com.20230601.gappssmtp.com header.s=20230601 header.b=UdzlGu6B;
+	spf=pass (imf02.hostedemail.com: domain of debug@rivosinc.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753400240;
+	s=arc-20220608; t=1753400242;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WOl3Nqiah3DIFqJnwAEdiPuuEwqhP+r/KN32JLcNnyU=;
-	b=quTAYrxHN3SYkHou1D9qCTu5PX71MO2ezCwg40UlR06VupicU0veEFFvviFIBazSPKzj5W
-	jRp5QC9yNyTsTtfj1cn2hjkv49O/fUMBWjKwitPELr82EfJRSSiz/nbXuNQzeN0+XilnOF
-	6jYp4rcSplsmQZlvq1mRpPfhvQY2tag=
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-23fb04ea1ecso728465ad.2
-        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 16:37:20 -0700 (PDT)
+	bh=yl+fpaUgVvAgmSBmN0Uf0wW/gDpMMKoNCvx2z4Q9Om8=;
+	b=IluVlTOOytT0d90uep1HHf1p5PVzayWvHb+DfRzBPg0VaNFQ/hxygujDB37yvt4Sg1eAy4
+	aFufgIuR6AcEecXdZ8vxZ7s+VYjAGZkZmWxx8lmUOw79To8rZwyzUKI3aiwF+YLCS+1acK
+	62OexWz8XUd+XKLVIzmQ1//djevPB1Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753400242; a=rsa-sha256;
+	cv=none;
+	b=KSfozNolXDrDBUxO8GJitMpqZsLgCKAkevN/dFyVd7MvSiCCI5OF6qliqiAUEvS8fveohp
+	AcuebzrnclegZ9Nj2f6X88GCVB/z01tSsf8tsYR4jRpOwei8RflKF/yE3Dj0UWfLfUDZPo
+	tEAS/E1TPM/idXB/j7vbnsxXYyo3P/k=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=rivosinc-com.20230601.gappssmtp.com header.s=20230601 header.b=UdzlGu6B;
+	spf=pass (imf02.hostedemail.com: domain of debug@rivosinc.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
+	dmarc=none
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-23636167b30so14482285ad.1
+        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 16:37:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1753400239; x=1754005039; darn=kvack.org;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1753400241; x=1754005041; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=WOl3Nqiah3DIFqJnwAEdiPuuEwqhP+r/KN32JLcNnyU=;
-        b=utv81lEviLWBXv9DZVSFWpSY02AEUFBgiMNhvberldcZ2pi9XPv3IVZdi33jqZ1h+B
-         WBInV5fwJXFQVwXVf2GQZJMtz54WaUED0sGL64PEJUAy/ekg294CAWCjGtsy/bKNTkfl
-         sZ6Dg040RPOvETl29wK22yQQOGfPpzsIuLcR4TQZ/2hkkt1s7r0Z1D/6r08EraG2HIR6
-         gDYiu5VvaCNhkRhL451lGy0Ubzf16ucL9UJG+GGCP2yw0NFD4DpgnelyeY/Bx8cp3kl0
-         w7j5Xyg4Yhe50y087PGTRNgOfGfi+NAvBwz2sHvUFTlmD5Mkz7+DG+DDR02ycNQ2uOF/
-         VQeA==
+        bh=yl+fpaUgVvAgmSBmN0Uf0wW/gDpMMKoNCvx2z4Q9Om8=;
+        b=UdzlGu6Bfb0GRnMIGd8dFocbYYChjLyjMyVEqEmK7OUDhz2jYBKWCLd9Tl3kyg0zIt
+         lCjLWOa5o+vB2334KSET6J0lwoUvx40I+boaw1e5ouvzU6c4Dk0RzPV+NephhBikS060
+         uoFsgNkhAEW76aPgUAoG6mxNbT/fR2t/PymrBh8/aq91O2G3cGfN/tJ2aWdIUswoajYX
+         MIzFUFI+nG63bPzYeXJWRaLSA3h27Ku+BL+watfymiAYWS6pbfw/UPdVp6FY6pdYrycH
+         Jta0PReldRR2KY1KhNAyQXnnf4CRPnhdAGpmDn+lPxJVK3ldWgF0wWH4v23Sv1ONLVgr
+         3P6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753400239; x=1754005039;
+        d=1e100.net; s=20230601; t=1753400241; x=1754005041;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=WOl3Nqiah3DIFqJnwAEdiPuuEwqhP+r/KN32JLcNnyU=;
-        b=RWvojj7EgcMD5EjNJgd2dXMzRjG1EeCnIdMgLL0yO4jsSXpwELfZT2OzdliolZolRS
-         lPHR6iLwzYLe3mahbi4Jv1rsrM9J7sogjx1YQr8QwbhOb/H3T5jwI3VtckSEqSKVstjv
-         5rjFODGdnWBuHsfDJCIkD1xhNImEVyIDf/VFLReMwQtRJSrhOkeBl38MaI2DyKj8FMyP
-         uQ9MPaYDx6WiKO3nbF1raxfMAXsvW+XkK7/wua37D4QNN9002wx7vtYp5GuQVJONFbgt
-         njEzd8MwVpRxuW595Chcq5JT9D7htuGQsrHKU1TGD8FY4hJla+Yvg+hV4c4CNX8KdAe0
-         K8Mg==
-X-Forwarded-Encrypted: i=1; AJvYcCX4q7sz83lOfYJt2j7AYm+YfO7F7adyk/ulp6XN3tisH+oSBD+88DmiSxZenjDUsqIhHkxfZsA0ng==@kvack.org
-X-Gm-Message-State: AOJu0Yw/C51Kj+fyzt+E4TLOQGbvZjq0GAcmP4s/ih/54at0fSk9Ra7h
-	P/fGDflJjX38ULq4rdg6gUGn5vw88/Coe3lccA2SNkWDrX+KqAnIde2Ue3F/1ZQPQ8TXVyG+30q
-	IjPNZ
-X-Gm-Gg: ASbGncsc+xT9uifpIyiEzTYcSz/tUSlYvqSoK+FT5TPW16lMAhqhyPFDerK+iKrTg3L
-	zjhKjJS7XcBMCFFL1HkByavki4zERB1dJ9boDytxTbgPmFr9F54aJat4+faEkIcr9TjJUHAI8Lc
-	BlDODIYi1CqjJlPya2C3ltiUbZcGMJeMKVuadWh2EmM3Q4paMlW5S+VjODGm1+eNljPUTJ08eVC
-	k3AmohDO3hKqDv3bjDTzksM4wOLo5Y2igEgG++57VCYHQ2v+yXNDc5JpSrMLYMSXMvBPmE+ArlK
-	ldK9pWbWlBBki39Msf664VoNuvXaw/TwHX/w+ZjhiLcYqYVHdxPCenwfTs28bOBg/rpoCeKLBg1
-	zjOHnQjz2d2aWHqTp3WTXZKvNhaiH2LvU
-X-Google-Smtp-Source: AGHT+IGSQSNsbZMV3011ClnOwbU01lkESEFEILFi40CGgrviIgB/I9wMU9rWnehZSismvHPpuGcGoQ==
-X-Received: by 2002:a17:902:d501:b0:235:e71e:a37b with SMTP id d9443c01a7336-23f981aed8emr123582705ad.34.1753400238919;
-        Thu, 24 Jul 2025 16:37:18 -0700 (PDT)
+        bh=yl+fpaUgVvAgmSBmN0Uf0wW/gDpMMKoNCvx2z4Q9Om8=;
+        b=YpA3UmS7dxhR49gmtl/e68FcPLmeAzSuHl8N3ZhYwDphzFPPgAanCjRzs4HLiGoA7l
+         ngX5DzhMdtbrEF2sxlZcS2gwHjchfJpVhsCN7uIDSXSImckbL3lI92s8QM8ML7TtU35e
+         RqR07MvqtqLshjQYPUQeY2d0iy45Zur0IpyHqLJ2AWZ3x841Wwyih/tvipwHv8K617wi
+         eyZ70K7Q7wknRKdABwj0Q0IZIM0eGVnJT1xmTGPxDj5vXPLOBacJhhjzNXbg3JckLP4S
+         SJfi11kcUJFKHKipNWZJofzG3ZOXonLk392BgTVfYrbdMCQ9h8sg0XX4oPGLVfbYjjke
+         p7ZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUGASysNi85HCtG6ctLEOsZmaytxQwt9Q+/rzCNA1Yp5/28/mws29sTWFVA61aB0qbDbwaIv93+kQ==@kvack.org
+X-Gm-Message-State: AOJu0YwItk4uNUCvOYrIKX4HvYDmkFPNSld2m7BwMAYs+e2wdbsyUIAP
+	NMLfDSBLW6Y/inxlNOWUuKiNBk+jlBUN/6iXGSKWq8OQpLJdNjzzJU5LgtX6laRnaWhlACzM/5u
+	1YcD+
+X-Gm-Gg: ASbGncvk54jLa9IbzxzqvU4MZZVaLzpUVfrDaL8pG8Svcnb6gNggKUYZH2lmICZvUtK
+	dsURZxoj1U0MWLGSsnf0c3PzCzUl8I9ASHsOS6BTlRyd5rdzHbXzdFQXIBOFjf/LnqFIjS82iuz
+	AIl7rYg9DHHAsjkuQdoiAEKZ0LihGx445N/Z52r9bQhcA8/xA6+RmqmPMtc6jOOY350xwDQOfKp
+	Na3efeZSejabuPUdhUiU60ap2X4cyr3dZ1Ww1ZadOxXE8Sl1mnngAGhlaSykjzA5yxKrUn4JY+I
+	k2AxDV9C0jV1ELMDFF5C/m2yTooWYAAJLucnz0oM43ytd15e6dISQoTul5WDC3RnMsD+9ewanYP
+	Bv3W4DB4boPjS4RBlPGB97aouXphh0c6f
+X-Google-Smtp-Source: AGHT+IEFvddaBDkybC2q7ob0zwYNRuGaOi2n4X57ciJYKI00Yd6EYfDqXnoJ8jUoGCKUz8NAesStww==
+X-Received: by 2002:a17:902:fc48:b0:23f:8df8:e7b1 with SMTP id d9443c01a7336-23f9820d012mr133037965ad.32.1753400241217;
+        Thu, 24 Jul 2025 16:37:21 -0700 (PDT)
 Received: from debug.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23fa48bc706sm23598685ad.106.2025.07.24.16.37.16
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23fa48bc706sm23598685ad.106.2025.07.24.16.37.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Jul 2025 16:37:18 -0700 (PDT)
+        Thu, 24 Jul 2025 16:37:20 -0700 (PDT)
 From: Deepak Gupta <debug@rivosinc.com>
-Date: Thu, 24 Jul 2025 16:36:59 -0700
-Subject: [PATCH 06/11] mm: Introduce ARCH_HAS_KERNEL_SHADOW_STACK
+Date: Thu, 24 Jul 2025 16:37:00 -0700
+Subject: [PATCH 07/11] scs: place init shadow stack in .shadowstack section
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250724-riscv_kcfi-v1-6-04b8fa44c98c@rivosinc.com>
+Message-Id: <20250724-riscv_kcfi-v1-7-04b8fa44c98c@rivosinc.com>
 References: <20250724-riscv_kcfi-v1-0-04b8fa44c98c@rivosinc.com>
 In-Reply-To: <20250724-riscv_kcfi-v1-0-04b8fa44c98c@rivosinc.com>
 To: Paul Walmsley <paul.walmsley@sifive.com>, 
@@ -122,14 +122,14 @@ Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
  heinrich.schuchardt@canonical.com, andrew@sifive.com, ved@rivosinc.com, 
  Deepak Gupta <debug@rivosinc.com>
 X-Mailer: b4 0.13.0
-X-Rspamd-Queue-Id: 4A1EA2000B
-X-Stat-Signature: pgdi11cd9yx8n944y7qhxcx7d4z76oid
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: A28B380012
+X-Stat-Signature: wssh9fx4iqip44i99suob7ahipapfju7
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1753400240-486358
-X-HE-Meta: U2FsdGVkX18LU2NXsMLQOlf/Ehgp5s+F/UzXuRunwYELNT4y1HI3egjt38g5pqY7thHDyHQ/nRD26433x1ElCDLjm8wlZXW7eYF3EL223ulB1hHeOq+orVEWr+gVT6e7HcY16QA+hOk2HqoIhQdv+sQFX1uj80r+/noww2JSi5AkrdJ7C/7u+4CbK6LA1dy/RKc46jZwrkX//Gju/oQ2eW1rSR9jUMn5JFEsvGmPqhJ1IU8aVnwK0fQarWbE+jwXRiuBOkkds701elEumdRZfG2ne0mdw15LLd2fy3WgoS9U4CABWYGrX1QaWcSZxTolD2O/04t3j9zwfln46eGdyavuORAqbSrkNhY+S7Uiplz0NPSp/54A1wyHicAXG3EEYHcUcAwyq062/roI5Vktr7zv/GcBYgdlzpXfvoe4HFkS9B/NcU0uF6DVxcnBjm+zTWET7qxOsnvCdB1EsaH6bwYTFjNBG0++AZbkyTzX/DsvsZzEULE7TiWpN6Q4m9dXtD5bPOSNUKIUYWKBkGD1JRzMTOaiORlpg5DOuO0qy1IPZ7YnF8/TXaT7x2qD7EvPpFIgjLbaWBkpSp3Ezzl3chl/jXRoCsug2wJnEmeeHmSnkjx864GDSuhqvGijchND49Ol7qM26Z0tg1j//cfvI3LNJF2bINvYPc4RJXSQqzK+OrQS/KExQRzs+5+jyRtNpoQvUzZHQ5DGmoy2fprul3xmI++O52PT3KUu7epjc/qXPH6x95k+heMpcaoqr7Ls/vcDRyfEa7VQ2l2szvE2YlR/PvxozFF7bkTU/Gm7aWX7e6Rxzz5F/ey2GUaPnu35vHaPvno68XwGay8r5+I3xgo+MkKrbaBSxNDXOs4EZYlrDU0emydrAdyV6CUtjqwPjSsMPVNpHhpk6TLdM/f/bJ6yVHMY1+5L8J/nWsDCkZywWUGqt2WddKUgfCW8m7AOH4Ihw/o7Q0fij2W7MD+
- Fa2c+Huz
- kOoDJt2TVpdVEYodcJq0hNtNbpBQbuWL55Q2iS1Nh8LobamSTY3lYXesPVlbBRTpQE14KraN6hiiVmBtU7neX42jjHJeZ1uVBs1fJ/EAoXy4Crrf8xqoIrSpNyB+/xaJSLPWsn2EfQWFPpMhabNs6smBTR2NQZWhzJjkKJH5JmWETWy7doxhTs+igGcLFuYFBLinPXApc2dEySa+MlJhx/0akmC0ZxbcqiNEGW+jKNpyLhtMaU99kBwuKnepHffb6N9hHXaq1ZxT9X6ja5Tw+OaDuR8QIY2lZV5q2P782ST/ynAjoHbwKaTvSOWDr7abq5WoS6EIvEB2mrHJ3VLNmlJLN8eqTv+CsIllUhAaajOtDo7D3vzHeCnmuLPFXnLW/00C5WEmzlbDM7TbP9IFBYVRBzqTiLE8gOnwXKUlmku8Cnk65wC+dThHCNxJTdnXk/RR5YYhaLcchUinVZRHyqrVF0X/KyU/jHHNeRUYt+LtF6GEACgTzD2HHI6kQgeOA9/xu8Az1GngMAcLiIqFbwkqoTnN+sKeDsAs5gEod/nMLgs4=
+X-HE-Tag: 1753400242-892209
+X-HE-Meta: U2FsdGVkX19JBpVSpnXw0RlqrxdhaD7qiSw6ve1G49+LTjrTnxYUGaVWpfyGFN1A78Q2YElvjFAAk4bO5H6pUPjnpOEBfO9vM9AQD5Ij+hgokRsEsxyzB5PN25KqVg184Nw33gOwrv/WeEIyWJErBzO6knpaulYd7AdnTXpd4rlUlbP4ftlysV2KFZmFFvadMr/LtEFrsilkHHJqhdXovnhDf5PvczXK1rEZYaK9r2B8sWDOiYS+2ULZP2T4JI2FUSgNs/DkIHxroK5HpL3VIocqT3GQdOF1Iwf/qxcPyuEq8C9efnOn2l7tga7Aqm2QT4m3C8GuA/oKS8Q8v11rBfBIoCBD2KfQjLXGueuB/nB0mTQXMFKEXwGuR+x9W3okBqCmQFbwsASBea896mbruLAiqzgTRoIV64Q834ROtaglNGwXhBWc5SwUYLrUSTh0NO6m/oga1AfNbX8yca44uWBuK2TKrIlbZFn5w9cu4lUOgg73EjkO9ElsZ720NUfXLDAWQLa+wt9mi9IeDI9paxqi35pORz0WymnhRluga0iC1WT2WDNx4dPBWpUnYK3AX8WQSJGJ5KsvPykgGbAOlYF9jQ+oBzrm8aY2Na1kEW2PUB2sJL9lIcS5QKiFLJH9jr624/l5A7APhdCcXnKaC2+iw0kLso+vAjCYYExlk/Ai72uqPN6pBadmwv7twvhoyfQcMLfIb9PUw9czNH7CxZAOYs5O915fQ3RzgSUt5I8lwQwm04kGofRLnZTZmmtpZ9mMeeIPLfH1sdT2u2/NH1iyv2XC8PlhXa43nF47vxIv4GnG20JznXFRo1aUMTSXu7mFfZIzyy7fHbKykydLOFBGln4ujbLRTaCVJcAaPL/xUoLKmYSNuyaPI5DIoM3fx9XpHssFMmsBSV0O83Qq2IHoMnGp8A0F1lceQf5jAKIioyWezOMvCPqjOQkGD1+7ekhujEEkCi0pftUQww5
+ I4pdna13
+ Ojf3B4FoOxGEkrLIQeW39EzLutvV9zmAiNT+WQ/D34XCUZeqpirCWwIjxF85Hrkm0mSlhhYBK5ACeksfU5lhPNgC45G56R6dSJIjlF6DGGyhtz3FqmVdgpgTHU8ycolTaCH9PLWL74dgf3h0+7al4bTmnzAcIgyo3LVFRx+Y8AhC48AKprFQDpKS7y900hS5AsHE4NrpILMkmXVA6zk91hoFswtUphRa8IzcuSS+xPF7DqWZl++Hz7b5bxkzoyXrW/+rIE0o4mNzTqmgqzPeBcpsjbZcRUO3jaBdpDaaJb2JOJVsq/kZCHjUF/M7zbNCnfinAxH8tgpcZAJeo/27H83g1FKtLYLWXpiOll3Z+LwPdryZ6P1i4+6yBdwIm472zLduNoFN+466bNYbfwF9LIvCCeQzIKyjlPTD3cXCuXrxf3ETJeewUF3ppxNq0Wm0czmz8qomiug6FccyvEA5EwbgIZeAo0jzMl6o3rYxvI/Agw0Ibm3xvW3svXu6gZ5KOtGIceB3vG+pxEQRVAm9dPNWK+g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,49 +138,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-commit bcc9d04e74 ("mm: Introduce ARCH_HAS_USER_SHADOW_STACK") introduced
-`ARCH_HAS_USER_SHADOW_STACK`. Introducing `ARCH_HAS_KERNEL_SHADOW_STACK`
-so that arches can enable hardware assistance for kernel shadow stack.
-
-If `CONFIG_DYNAMIC_SCS` or `CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK` are
-selected, skip compiler flag `-fsanitizer=shadow-call-stack`.
+If compiled scs and arch kernel shadow stack support, place shadow stack in
+`.shadowstack` section.
 
 Signed-off-by: Deepak Gupta <debug@rivosinc.com>
 ---
- Makefile   | 2 +-
- mm/Kconfig | 6 ++++++
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ include/linux/init_task.h |  5 +++++
+ init/init_task.c          | 12 ++++++++++--
+ 2 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index 35e6e5240c61..7e3ecca9353d 100644
---- a/Makefile
-+++ b/Makefile
-@@ -987,7 +987,7 @@ LDFLAGS_vmlinux += --gc-sections
- endif
+diff --git a/include/linux/init_task.h b/include/linux/init_task.h
+index bccb3f1f6262..a2569cc5a7ff 100644
+--- a/include/linux/init_task.h
++++ b/include/linux/init_task.h
+@@ -40,4 +40,9 @@ extern struct cred init_cred;
+ /* Attach to the thread_info data structure for proper alignment */
+ #define __init_thread_info __section(".data..init_thread_info")
  
- ifdef CONFIG_SHADOW_CALL_STACK
--ifndef CONFIG_DYNAMIC_SCS
-+ifeq ($(or $(CONFIG_DYNAMIC_SCS),$(CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK)),false)
- CC_FLAGS_SCS	:= -fsanitize=shadow-call-stack
- KBUILD_CFLAGS	+= $(CC_FLAGS_SCS)
- KBUILD_RUSTFLAGS += -Zsanitizer=shadow-call-stack
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 781be3240e21..f295ea611cdb 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -1367,6 +1367,12 @@ config ARCH_HAS_USER_SHADOW_STACK
- 	  The architecture has hardware support for userspace shadow call
-           stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
- 
-+config ARCH_HAS_KERNEL_SHADOW_STACK
-+	bool
-+	help
-+	  The architecture has hardware support for kernel shadow call
-+          stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
++#ifdef CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK
++/* init shadow stack page */
++#define __init_shadow_stack __section(".shadowstack..init")
++#endif
 +
- config ARCH_SUPPORTS_PT_RECLAIM
- 	def_bool n
+ #endif
+diff --git a/init/init_task.c b/init/init_task.c
+index e557f622bd90..e21af9db5c09 100644
+--- a/init/init_task.c
++++ b/init/init_task.c
+@@ -54,10 +54,18 @@ static struct sighand_struct init_sighand = {
+ };
  
+ #ifdef CONFIG_SHADOW_CALL_STACK
+-unsigned long init_shadow_call_stack[SCS_SIZE / sizeof(long)] = {
++unsigned long init_shadow_call_stack[SCS_SIZE / sizeof(long)]
++#ifdef CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK
++	/* shadow stack must go in special section */
++	__init_shadow_stack = {
++	[0] = SCS_END_MAGIC
++};
++#else
++	= {
+ 	[(SCS_SIZE / sizeof(long)) - 1] = SCS_END_MAGIC
+ };
+-#endif
++#endif /* CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK */
++#endif /* CONFIG_SHADOW_CALL_STACK */
+ 
+ /*
+  * Set up the first task table, touch at your own risk!. Base=0,
 
 -- 
 2.43.0
