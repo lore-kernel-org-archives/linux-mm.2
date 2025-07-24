@@ -2,66 +2,66 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BAD9CC83F1A
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 12:36:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BE828C83F26
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 12:36:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A0B68E0079; Thu, 24 Jul 2025 08:36:39 -0400 (EDT)
+	id 5D9EB8E007A; Thu, 24 Jul 2025 08:36:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 452138E0074; Thu, 24 Jul 2025 08:36:39 -0400 (EDT)
+	id 5B09D8E0074; Thu, 24 Jul 2025 08:36:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38E388E0079; Thu, 24 Jul 2025 08:36:39 -0400 (EDT)
+	id 4A0548E007A; Thu, 24 Jul 2025 08:36:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 292198E0074
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 08:36:39 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F08291A02F9
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 12:36:38 +0000 (UTC)
-X-FDA: 83699106876.30.B9D4922
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 35F5A8E0074
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 08:36:47 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E13371DA6F0
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 12:36:46 +0000 (UTC)
+X-FDA: 83699107212.27.87D6F4F
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 4D6D2100005
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 12:36:37 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=JKghUDp+;
-	spf=pass (imf05.hostedemail.com: domain of bhupesh@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=bhupesh@igalia.com;
-	dmarc=pass (policy=none) header.from=igalia.com
+	by imf06.hostedemail.com (Postfix) with ESMTP id 3E8E518000E
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 12:36:44 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=GT053E1g;
+	dmarc=pass (policy=none) header.from=igalia.com;
+	spf=pass (imf06.hostedemail.com: domain of bhupesh@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=bhupesh@igalia.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753360605; a=rsa-sha256;
+	cv=none;
+	b=aOwGLbOThXa0zARxmww79vxiEco1rOW9RtdhLuiCd35+PsmA/lDePl4siWgAbhgh/KyVui
+	6Q+skjk7jDXBlV3aunsj6rDQn7d0KofjW4YtbyRwqq5+uv91W3xYX4sl1ew2yToAl06wKO
+	21Ee4XltFEGEpaiPebowjh6AOqFKbYY=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=GT053E1g;
+	dmarc=pass (policy=none) header.from=igalia.com;
+	spf=pass (imf06.hostedemail.com: domain of bhupesh@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=bhupesh@igalia.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753360597;
+	s=arc-20220608; t=1753360605;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rtmwqIefmP9hgVB4nAr4h+0uRDWTQ0QL2qUbei8qyDk=;
-	b=aD1PfCqINHXQ2qo2FNK/W0P/wVQFoBtbuALtYIc/8yJ9UI1pJxbMSocRw6sQbzrFzxGzjV
-	bn2qraGpl225wvhixxRHDTca9bcuNlWbDW1Y/0MugyPf62S0zPqgcHkuIfbTVEeJ8DLS3o
-	Bft2ACpZ/XAAvaDs7SzbknWo+OJFnRg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753360597; a=rsa-sha256;
-	cv=none;
-	b=hvphQgBSOjQlDh0k7Kcsjd1UYNcUDkdip3L456sEWubuIFz4/kq5RsNgudkoESv0965zCy
-	psym1zRZdJs8p3FgDdjpmaRIu61yRRE+n31DUoGcxzuXWZhezUnUjp/EmhZjXVngOaTzV3
-	CLU4tJLbnTbihSlEAsvsaKzrFNII0Cg=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=JKghUDp+;
-	spf=pass (imf05.hostedemail.com: domain of bhupesh@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=bhupesh@igalia.com;
-	dmarc=pass (policy=none) header.from=igalia.com
+	bh=xxJuMzxUwX/3/4eueFKaBfV57kSJFTkqTcDBwOHRShE=;
+	b=2lQUep/Aag7UzNWTTJktpGS9AzpzqebjthOIXbbT5MXnsF/gb98hCqdsN9bJ2By8FSO/Le
+	P4lIqX19Ce7lUG4KAFNb/8ohsX1nriYXMlwisrudM9FOF1H3/s582djA8UsGQitqTDdioH
+	sMD+xJDGj50xXONqOxDWQcFHjYBk3L4=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
 	s=20170329; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=rtmwqIefmP9hgVB4nAr4h+0uRDWTQ0QL2qUbei8qyDk=; b=JKghUDp+HlUWPn2vpYAlkohY7x
-	BeZtFdce8x1hSGI+f5rk/JAfjYlz/Zaaf87zzqMgTzkL77GgzjkIDUD72+Hp9TkbBz33/9MAAJ6lS
-	tCUMtin1AOvtSvtjPo5Mfd9Zpp0Bwj0EMtJHmtnH3D59cwzM3NGX6t3PZiygjazK9841aaG8eKGvP
-	uG8A1Ikyt4U1B01846CkucnCUV5t8TiciEYtu8WYp+rV5MtTE4miQZN0uf9wBZ+gJYgqXbkHhThy4
-	Ro0wtfX3OimP+UFRKorBabHkzlIDIcejBbqJO3kZisOr3pfcjQUN19WRQaQ+GqtN6Fav5fLCJ4YQ0
-	YyxgPeTQ==;
+	bh=xxJuMzxUwX/3/4eueFKaBfV57kSJFTkqTcDBwOHRShE=; b=GT053E1gz6CXBmsRuLUeeUOtpZ
+	6eA3D/mixw8gzo+maEv5+OIfU9l6l1zpm7hNcECcQc97Y2Uo6qNtBbI9bu7B2qeu4nP2+DbqCect7
+	+zjIq1AQLb+dEZgY7qaQ2t2VyspHqmP2HsMoVM5BdOlERpTPwBCWEBlgc3/qNCUZ8n9qCihzT9LOi
+	lksslbdaMs5Jqe0IdN1K2iRcqgnMKEunvX7/isGlu7tuUm64o3scA1BrNZUnEgAT3Tdz0XxirNtel
+	jMh2a+QbAIEaP9yGzd0xamYvUdg2OP7Rsa5ZEk4cuNdocvwP1xQ9FqXMie0rBszM3c5oXfuc2GzRD
+	biNb+Xcw==;
 Received: from [223.233.78.24] (helo=localhost.localdomain)
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1uevBY-003BPU-SL; Thu, 24 Jul 2025 14:36:33 +0200
+	id 1uevBf-003BPU-Qi; Thu, 24 Jul 2025 14:36:40 +0200
 From: Bhupesh <bhupesh@igalia.com>
 To: akpm@linux-foundation.org
 Cc: bhupesh@igalia.com,
@@ -97,22 +97,22 @@ Cc: bhupesh@igalia.com,
 	linux-trace-kernel@vger.kernel.org,
 	kees@kernel.org,
 	torvalds@linux-foundation.org
-Subject: [PATCH v6 1/3] exec: Remove obsolete comments
-Date: Thu, 24 Jul 2025 18:06:10 +0530
-Message-Id: <20250724123612.206110-2-bhupesh@igalia.com>
+Subject: [PATCH v6 2/3] treewide: Switch memcpy() users of 'task->comm' to a more safer implementation
+Date: Thu, 24 Jul 2025 18:06:11 +0530
+Message-Id: <20250724123612.206110-3-bhupesh@igalia.com>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20250724123612.206110-1-bhupesh@igalia.com>
 References: <20250724123612.206110-1-bhupesh@igalia.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4D6D2100005
-X-Stat-Signature: b5mpow9ycggboai5wtf4d6i7erkgmx6b
 X-Rspam-User: 
-X-HE-Tag: 1753360597-168515
-X-HE-Meta: U2FsdGVkX1+z+vuR8MEvhxD27rodpuwCbRn/ByEPW6dE5nHd0896yI6eE+VeeBs7l/2IA5pnin83CKmTToDq6uac/0d/HP8d6F2UPLhpb5eauPPDIRlNZRci6XPDPi3UpYoXd0h+F8lrE2mxie7tXNh0hGlBuUR2lNS91kY3HCdsXn40I7hu8zRE/PoTk1D/n9aTLHqEKqUmxUw7qc3ImgaYFdm1IKelpNkF8oM8IGoqeYGurhG2tb4CF6u29DHOMpcF7/UKEXQs5kmxbC4On80re+d+1ZTeoTSse5HX8bLzpNpjkhvgMFETrD2fM6+sWyRB6pj2Z4BYrGxDL1OMAqJFfddzwKKu7etqegSIYMqm93dl1O+DZEmjfsbGvCPecmaWlNx/qbXTpKVFFfCWF6i044w2mkptsd31oEGw7Y/yRs57h1Tr84Zw12q46ANeb27PanTNtGiTlOzC6ki88K7PhuTY4XAe28UaEyeGLCUR76ABpze4gSlG2MtiMm/wIXR6vLEEIJ6rRWWDncgPpHCP570j4vBxcSHW4CXdpa2zKuHMO1cHoOE/x4hdlp9qipQiO0KlwsXLj0v41Erm4mAhSxZNkYgSJOxmJeOrsI6Fz+NopVaQFR1DSU0XleT8pUcoLKa7U63uz25eN6gCRtFlWyDQwjGxpp+E0cZRmQS4x4Ih8p6kLhKq4AvDKnYT06f1COv0Las81QvqJsNSsCU8COcBvvbZQkS7vV2/F4UVmGjsuzVBbuyPQSwpPQb8EyJqUz5lpuiAfV3kNj+x+HYJjq9CKkU5q3OZ5XnMJUFZZRXNSUX9mr7+jlvDd71ffZqPYQ6Lfq645q+VMUr651xiyNSrkYigIrHaJPbhTmzfyfi00W+Pf9e7vafuawnE0RRh5Y/TpVLZhfbefq8axYjH32WIJBi13gygbV7sNiGoGQ5WkFCemJe+rtyL7BY7LRvMVkrxpg9NLL2H/ba
- W/iEvYkS
- tf0/c5T+zrY0EcaIpz7zHCbsPcAqEfgcq9WU0RCpYJGnS9ghOxQkF5Xn9kC5rhL8rfTKLErjTbsRBtXagWHe9m2fCLlQ5ZNuWi3v9BusnQrJoCfq8OFaEXpkXFWCYHfm4Vz3rLWg23PATgDt4QfzI5YbpHBU4F5C3EMLdh4EINstT55OcXZ/FFGC9RPcqMI9ZASkjAyY0m68Eqc3INzM8zl/SyVBWg+GC04TI95loEsfrC+58/En+o1MpcyUW6FFTC3fXETrPSYYu5HZay+2nI6zItok6dKAMkppDlDdTUzjSIbWUBWrYcVHtHcTtJbMaSH7HrOJbpNcP4FYaOIyt3zTDOA==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 3E8E518000E
+X-Stat-Signature: atma7esu6cenw66kq84rstkakdagos89
+X-HE-Tag: 1753360604-285668
+X-HE-Meta: U2FsdGVkX19sJ2Db2m+0Khk63Wbwq6lbIAI09lI3qgrJuIj/thggpnJXR7u+QIbL9HNOtso7KmIEjQeqoSVi2r6Ev14xDSYGNmGgstp3HdpU8+sZSWXq0rQT1tbLeqyspOXjP7+KwAuWT0wrFC0mOBpY+MScbK/Ps+sseRF38p0BFG29pLlrFiegMc7FCtTg+CC99ldtBB4VPfWb2KnhIo8P7YQef6T5FkIp0cHzCLHBDi3/6hC3RVZTujSnzesALObhUrMRVRAhkRwZr8fafeqd/I+oVlCy5AbglpBO2HPLXgRfqlKctXh+ux+tSjUS+9zhbd6qPFybICkjL3Oc6HgmDwBlqPntRJr31ZHPX4YtcCd8fdKshwSywtO/hXYk4Mr9jweV5ITxzAWu1O+0RXoLrUUHZ+e+TlyNEcqGzM10pGekjNkfkxDfiO7Qix379LNNyF1z8ljfPA1VEdfeJ7aW19Xg9FOm0P+Nnuhe6Ew1dVhWswU1YSB5QqutyZOXOV9uwilIviwLgfzB0/bWBDMJlehdHTg1PMgVbPnun++CXPizunR5KnC1U9jjNmd/vp2sq7dL+SdHG+63mAqtD+ni9X9OwmDt3teLcg/RnuIiK9vgGXxH/StzgVEXDaSZVyoEU0O1BxIOp+TTkpoQaqhe8HjjUAk5VLSuOWN9jOJMap6nI/QHWogFjPssBvEPLH/NaFb4foPCKGrdpMgyeHBZHgC9POSQOkJdSSmiD6Sj1+Lq3zyMlPEPRtRHlbpdsSFWo7aKKy7u5KRRl1x0auJKXuz1M1eHYulEqj4k/AOKJrjK5BcK+H1dAlmBuoA/BUOPk8UBBz3NMn4rqkroEav+m0i/QnEjUJckwbRSieYKu09IzMnwTDxmmtnnGoZNqSQpQlYz8Oq9ZD1oQsf8d+pWKJ7TBkCj/uY1LJqDNyNGaU8vGEsjQ3jwW5g54jxzav18yEdzNu5DffIfUHg
+ Cek9sEBC
+ tMxfNFeoKLWaywFbnu5BH//1WOTRmAbH6XMEZKqf6aOvOF/3kBxUiTxg7Qe7PzwAOwjMZ3GGZR50rexCuUn0IQQZpre9MQ6Vwxjb1/P9XuT18PfXwgoR03LO9/WM7+ZuT4uAX9j2Olx6W8r2LhjMX8plTvO9UpIGMSYgd/dAmOo6bSyPkpypnl3bgusw5Lkq6SE1AUgEdgEEKyIIKX7UGFhmvlHxvI0K/+JhmTdhX13B3tz9zAjU2T3eWk5cqO+EVhM69iWo6cVugWpcNc+R4QqZxyaMaNBDrgQ+WoxbdHAITh1uk3OrfUGHazfeQeqHllQ6JPE7DJWZqTr1sCzpGj6yyo1nYeDymcn7flXu/46a8wBz2Tg0SiPh/S+3hOM/cWAsm9kZzWWndvPa9i6EP7DfJXIDEFUZpVkI5CEvUprtB/hA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,48 +121,155 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Patch 3a3f61ce5e0b ("exec: Make sure task->comm is always NUL-terminated"),
-replaced 'strscpy_pad()' with 'memcpy()' implementations inside
-'__set_task_comm()'.
+As Linus mentioned in [1], currently we have several memcpy() use-cases
+which use 'current->comm' to copy the task name over to local copies.
+For an example:
 
-However a few left-over comments are still there, which mention
-the usage of 'strscpy_pad()' inside '__set_task_comm()'.
+ ...
+ char comm[TASK_COMM_LEN];
+ memcpy(comm, current->comm, TASK_COMM_LEN);
+ ...
 
-Remove those obsolete comments.
+These should be modified so that we can later implement approaches
+to handle the task->comm's 16-byte length limitation (TASK_COMM_LEN)
+in a more modular way (follow-up patch does the same):
 
-While at it, also remove an obsolete comment regarding 'task_lock()'
-usage while handing 'task->comm'.
+ ...
+ char comm[TASK_COMM_LEN];
+ memcpy(comm, current->comm, TASK_COMM_LEN);
+ comm[TASK_COMM_LEN - 1] = '\0';
+ ...
+
+The relevant 'memcpy()' users were identified using the following search
+pattern:
+ $ git grep 'memcpy.*->comm\>'
+
+[1]. https://lore.kernel.org/all/CAHk-=wjAmmHUg6vho1KjzQi2=psR30+CogFd4aXrThr2gsiS4g@mail.gmail.com/
 
 Signed-off-by: Bhupesh <bhupesh@igalia.com>
 ---
- include/linux/sched.h | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ include/linux/coredump.h       | 3 ++-
+ include/trace/events/block.h   | 5 +++++
+ include/trace/events/oom.h     | 1 +
+ include/trace/events/osnoise.h | 1 +
+ include/trace/events/signal.h  | 1 +
+ include/trace/events/task.h    | 2 ++
+ 6 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 84449f847256..8bbd03f1b978 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1156,10 +1156,8 @@ struct task_struct {
- 	 *
- 	 * - normally initialized begin_new_exec()
- 	 * - set it with set_task_comm()
--	 *   - strscpy_pad() to ensure it is always NUL-terminated and
-+	 *   - logic inside set_task_comm() will ensure it is always NUL-terminated and
- 	 *     zero-padded
--	 *   - task_lock() to ensure the operation is atomic and the name is
--	 *     fully updated.
- 	 */
- 	char				comm[TASK_COMM_LEN];
+diff --git a/include/linux/coredump.h b/include/linux/coredump.h
+index 68861da4cf7c..988b233dcc09 100644
+--- a/include/linux/coredump.h
++++ b/include/linux/coredump.h
+@@ -54,7 +54,8 @@ extern void vfs_coredump(const kernel_siginfo_t *siginfo);
+ 	do {	\
+ 		char comm[TASK_COMM_LEN];	\
+ 		/* This will always be NUL terminated. */ \
+-		memcpy(comm, current->comm, sizeof(comm)); \
++		memcpy(comm, current->comm, TASK_COMM_LEN); \
++		comm[TASK_COMM_LEN - 1] = '\0'; \
+ 		printk_ratelimited(Level "coredump: %d(%*pE): " Format "\n",	\
+ 			task_tgid_vnr(current), (int)strlen(comm), comm, ##__VA_ARGS__);	\
+ 	} while (0)	\
+diff --git a/include/trace/events/block.h b/include/trace/events/block.h
+index 6aa79e2d799c..dfc20fbe389c 100644
+--- a/include/trace/events/block.h
++++ b/include/trace/events/block.h
+@@ -214,6 +214,7 @@ DECLARE_EVENT_CLASS(block_rq,
+ 		blk_fill_rwbs(__entry->rwbs, rq->cmd_flags);
+ 		__get_str(cmd)[0] = '\0';
+ 		memcpy(__entry->comm, current->comm, TASK_COMM_LEN);
++		__entry->comm[TASK_COMM_LEN - 1] = '\0';
+ 	),
  
-@@ -1965,7 +1963,7 @@ extern void __set_task_comm(struct task_struct *tsk, const char *from, bool exec
-  *   User space can randomly change their names anyway, so locking for readers
-  *   doesn't make sense. For writers, locking is probably necessary, as a race
-  *   condition could lead to long-term mixed results.
-- *   The strscpy_pad() in __set_task_comm() can ensure that the task comm is
-+ *   The logic inside __set_task_comm() should ensure that the task comm is
-  *   always NUL-terminated and zero-padded. Therefore the race condition between
-  *   reader and writer is not an issue.
-  *
+ 	TP_printk("%d,%d %s %u (%s) %llu + %u %s,%u,%u [%s]",
+@@ -352,6 +353,7 @@ DECLARE_EVENT_CLASS(block_bio,
+ 		__entry->nr_sector	= bio_sectors(bio);
+ 		blk_fill_rwbs(__entry->rwbs, bio->bi_opf);
+ 		memcpy(__entry->comm, current->comm, TASK_COMM_LEN);
++		__entry->comm[TASK_COMM_LEN - 1] = '\0';
+ 	),
+ 
+ 	TP_printk("%d,%d %s %llu + %u [%s]",
+@@ -435,6 +437,7 @@ TRACE_EVENT(block_plug,
+ 
+ 	TP_fast_assign(
+ 		memcpy(__entry->comm, current->comm, TASK_COMM_LEN);
++		__entry->comm[TASK_COMM_LEN - 1] = '\0';
+ 	),
+ 
+ 	TP_printk("[%s]", __entry->comm)
+@@ -454,6 +457,7 @@ DECLARE_EVENT_CLASS(block_unplug,
+ 	TP_fast_assign(
+ 		__entry->nr_rq = depth;
+ 		memcpy(__entry->comm, current->comm, TASK_COMM_LEN);
++		__entry->comm[TASK_COMM_LEN - 1] = '\0';
+ 	),
+ 
+ 	TP_printk("[%s] %d", __entry->comm, __entry->nr_rq)
+@@ -505,6 +509,7 @@ TRACE_EVENT(block_split,
+ 		__entry->new_sector	= new_sector;
+ 		blk_fill_rwbs(__entry->rwbs, bio->bi_opf);
+ 		memcpy(__entry->comm, current->comm, TASK_COMM_LEN);
++		__entry->comm[TASK_COMM_LEN - 1] = '\0';
+ 	),
+ 
+ 	TP_printk("%d,%d %s %llu / %llu [%s]",
+diff --git a/include/trace/events/oom.h b/include/trace/events/oom.h
+index 9f0a5d1482c4..a5641ed4285f 100644
+--- a/include/trace/events/oom.h
++++ b/include/trace/events/oom.h
+@@ -24,6 +24,7 @@ TRACE_EVENT(oom_score_adj_update,
+ 	TP_fast_assign(
+ 		__entry->pid = task->pid;
+ 		memcpy(__entry->comm, task->comm, TASK_COMM_LEN);
++		__entry->comm[TASK_COMM_LEN - 1] = '\0';
+ 		__entry->oom_score_adj = task->signal->oom_score_adj;
+ 	),
+ 
+diff --git a/include/trace/events/osnoise.h b/include/trace/events/osnoise.h
+index 3f4273623801..0321b3f8d532 100644
+--- a/include/trace/events/osnoise.h
++++ b/include/trace/events/osnoise.h
+@@ -117,6 +117,7 @@ TRACE_EVENT(thread_noise,
+ 
+ 	TP_fast_assign(
+ 		memcpy(__entry->comm, t->comm, TASK_COMM_LEN);
++		__entry->comm[TASK_COMM_LEN - 1] = '\0';
+ 		__entry->pid = t->pid;
+ 		__entry->start = start;
+ 		__entry->duration = duration;
+diff --git a/include/trace/events/signal.h b/include/trace/events/signal.h
+index 1db7e4b07c01..7f490e553db5 100644
+--- a/include/trace/events/signal.h
++++ b/include/trace/events/signal.h
+@@ -68,6 +68,7 @@ TRACE_EVENT(signal_generate,
+ 		__entry->sig	= sig;
+ 		TP_STORE_SIGINFO(__entry, info);
+ 		memcpy(__entry->comm, task->comm, TASK_COMM_LEN);
++		__entry->comm[TASK_COMM_LEN - 1] = '\0';
+ 		__entry->pid	= task->pid;
+ 		__entry->group	= group;
+ 		__entry->result	= result;
+diff --git a/include/trace/events/task.h b/include/trace/events/task.h
+index af535b053033..4ddf21b69372 100644
+--- a/include/trace/events/task.h
++++ b/include/trace/events/task.h
+@@ -22,6 +22,7 @@ TRACE_EVENT(task_newtask,
+ 	TP_fast_assign(
+ 		__entry->pid = task->pid;
+ 		memcpy(__entry->comm, task->comm, TASK_COMM_LEN);
++		__entry->comm[TASK_COMM_LEN - 1] = '\0';
+ 		__entry->clone_flags = clone_flags;
+ 		__entry->oom_score_adj = task->signal->oom_score_adj;
+ 	),
+@@ -45,6 +46,7 @@ TRACE_EVENT(task_rename,
+ 
+ 	TP_fast_assign(
+ 		memcpy(entry->oldcomm, task->comm, TASK_COMM_LEN);
++		entry->oldcomm[TASK_COMM_LEN - 1] = '\0';
+ 		strscpy(entry->newcomm, comm, TASK_COMM_LEN);
+ 		__entry->oom_score_adj = task->signal->oom_score_adj;
+ 	),
 -- 
 2.38.1
 
