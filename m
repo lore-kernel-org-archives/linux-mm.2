@@ -2,102 +2,101 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9551BC87FC5
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 23:37:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3DA1DC83F26
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 23:37:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E66E6B0365; Thu, 24 Jul 2025 19:37:18 -0400 (EDT)
+	id 4E3118E00C3; Thu, 24 Jul 2025 19:37:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 246CF6B0367; Thu, 24 Jul 2025 19:37:18 -0400 (EDT)
+	id 3F6518E007C; Thu, 24 Jul 2025 19:37:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C11C6B0368; Thu, 24 Jul 2025 19:37:18 -0400 (EDT)
+	id 297168E00C3; Thu, 24 Jul 2025 19:37:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EB8816B0365
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 19:37:17 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B0FB2804E0
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0EC518E007C
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 19:37:20 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CCA6CC058A
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 23:37:19 +0000 (UTC)
+X-FDA: 83700771798.22.B19C9D2
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf22.hostedemail.com (Postfix) with ESMTP id EDAF3C0005
 	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 23:37:17 +0000 (UTC)
-X-FDA: 83700771714.13.2279957
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C971C140002
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 23:37:15 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=rivosinc-com.20230601.gappssmtp.com header.s=20230601 header.b=xlyTFWMK;
-	spf=pass (imf23.hostedemail.com: domain of debug@rivosinc.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753400235; a=rsa-sha256;
-	cv=none;
-	b=yC3TcTGAg+ejX5mpUqLyDuagrVkuc1EAxGFKNcPcYUlNo0M0lt5CiyuxK1Z9+jwPGPKfzo
-	rlgzbtbVmaC78jyMHzB9vApOpH6S2h9WZ0LBZoPNhIiRbf2rL6KPPmWyvlqWmSh8Z8AJV+
-	IdXqKd9rQIQBL64FvrOOL1DFIwfccoY=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=rivosinc-com.20230601.gappssmtp.com header.s=20230601 header.b=xlyTFWMK;
-	spf=pass (imf23.hostedemail.com: domain of debug@rivosinc.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
-	dmarc=none
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=rivosinc-com.20230601.gappssmtp.com header.s=20230601 header.b="S/pds26i";
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of debug@rivosinc.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=debug@rivosinc.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753400235;
+	s=arc-20220608; t=1753400238;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YAeHR6jMoeNreT1rLi4tkifNH7GwHO7F0FWeni164mI=;
-	b=iapIdnrfvvLgNOnPr7xFgZaCiagPzOuzWh4Xjk2dss4EyLavfhis6ciULUyCIa+ChGs93o
-	Zb0JCnSMAEe1C64E4QR9T90lR3qQRPh6E+U7BDztKpENqpCPEBGqX7S9H5Oo5xKlc1bXva
-	e/5GQRSFkG9qGTpUTCzhmuIXfIbG2oM=
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-23fb04ea1ecso728175ad.2
-        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 16:37:15 -0700 (PDT)
+	bh=Gkm+U+Z8JovOoe8ArAZBSUqCVEx3YFZYKLxHXbXYTzk=;
+	b=IBIYYtpecLUInkuw52TCei/3CZgjxmMzIsFtiIpdcSjfpoYJ95HJCzu0FcDd0NWCpfATnR
+	JM9fdYOqgaZXS2bZ8KxcCwTXIs/C5Osw0bebyMbl6klDoF8AxpidpdxgSyd521OYsFSozl
+	rQjfmQTyxPLdy9imRiRKoF908eUqm2Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753400238; a=rsa-sha256;
+	cv=none;
+	b=Ze3XRRhTwtyvAFmYm1MecPQ5U20owe+UJ2TL17FR8w2HyRKFV2Cnna5WDEeb88TSUj82Ji
+	Vcue+15jRKspDOo4K5muKiI7viIm1WSa3kt6FDM2lPoi8VepIWdT8aExZTWMVWHRhuEKez
+	9Ma6hRiswdwAV1fbvfGKaxAcmSl7+qs=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=rivosinc-com.20230601.gappssmtp.com header.s=20230601 header.b="S/pds26i";
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of debug@rivosinc.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=debug@rivosinc.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-23c8f179e1bso17966365ad.1
+        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 16:37:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1753400234; x=1754005034; darn=kvack.org;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1753400237; x=1754005037; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=YAeHR6jMoeNreT1rLi4tkifNH7GwHO7F0FWeni164mI=;
-        b=xlyTFWMKTCI2C3QYYus7n5ajcvYawzh3eUScQ2zJDBa75nkydTYtwRoCS9nBOWkEAC
-         HuHZ+zGn6mXK51XXI3v05eps8f2phtqZTLzf8FT7wstlEG4HupGSKkgc3YCnWp371Ki1
-         8ttHHZAjPyzpvYmHLBInn7yJ33Eaw5JJ0Gd4PpLrm+gN+mFS1+G5qoB0DPcmyz8qlBum
-         YE8J2fPfkChbhWhM/SIr7PindzD1gQXOZSLDUkxqebJPTE+3Y/Q03+tIjucuLfX88jXi
-         cHk+vEbHyjPCkqCzQ2sb2lUn1PBjD2zmy06Wc9BBUPakrcJ7KBbh5+WKxHQpq9AEtkkT
-         gJNQ==
+        bh=Gkm+U+Z8JovOoe8ArAZBSUqCVEx3YFZYKLxHXbXYTzk=;
+        b=S/pds26iwddS3A8mA+UCYQ7D2Fdhc1GPHp+yviaTe2nhxiO7dDTYPoDuvvBriPwws/
+         u557R8gFN57K60aHH9W+UQwo7PYEQ5vBLder1x3HEdBdz93YonIhM6RstCDcwWa8Rmut
+         oVw4NJaTGh2H8o3CN+SlKPbaWVk5o5P6u17YPDbpIQIeytN4W4y1hrQaJ/MSjwzDryhA
+         av8NI7j1nJUS/u4s1LHDMGivsCWikfHsz4vM2u9xkXMJpIrTKkuce4/1A5oNo4yFB34/
+         bBWGFpiZJStWGzK6v2EjwQhQ+d3s6brq/0GewkN+FbeA3XvGifcbJhSFYuy5krpW4hDf
+         RNiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753400234; x=1754005034;
+        d=1e100.net; s=20230601; t=1753400237; x=1754005037;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YAeHR6jMoeNreT1rLi4tkifNH7GwHO7F0FWeni164mI=;
-        b=UVaOJH7eq1Qwh903LQe5KBkeRGblQ/yHYE20Edu57yiR0HXlGz80qmaF+nIcdq1qVT
-         0PEhkhCSt0jrJp1FPcuZLtVSB2nyegUE8av3UbYoSlI+JGTfeZKyEjCA5ODVyzDw2vw3
-         nZs89mK2JlQT5qu7xSghe6m6jJSCn+x0SUQ2gvZUYmgkzzt6TzHWAgYj2F3i625jQ1In
-         8kVj4/U4dwZ5iqm3m4hU3cYdsxvoOv/NI4aZ/kqVBUAV6ntSQQiPOFBNyAMst37XpoP5
-         59iZDGs1W2YhNCOBSUcKDiSPhk8Ypokhad/JiEqbzm/ItibTIoDjlWwi49CHI/ra/hcw
-         WOUw==
-X-Forwarded-Encrypted: i=1; AJvYcCVqM9bTnlFyc5IDZ/qRDhH7vyNUPoSCUwUmoqJjnyqnVpFWHSxSg9fzp+HClZqE/zBCvxVHxtojUQ==@kvack.org
-X-Gm-Message-State: AOJu0YxO6qMM18oF/NhXJP0zFfbZN/tjGNpBGRGjxQtX5FJbJRzk9C5K
-	jnMlcuFdGAzu2VDFGWpetCNipFmkH8Pb8++CWpRVzpniOgKwSQ0X6rP8zhSNW4VcYX304Aj7j0A
-	itaMy
-X-Gm-Gg: ASbGncukSEhlxoiTkx4O1RdvakLvzBYdpCx0swobduvWXzeXHKGTJcCgOWlT8b9EXUd
-	Ex5VYFNTQrc2exuA+bfWcyWMmb6zK9bmCI7sQPZ1GaaAYLtMYHvqUwjps613kJqALLT89skRW+4
-	2ccHVdVXbWg1uosdZHoT9GoOpLbjvqulA/x8xpdnmy3u8zwAxOwMIF73drXKuemZlCmiD6xpGoW
-	s8Txc5xKMiA28q1BhIzoiaix55Ju+M4qVMtK8q7zxq4fcf4RVFhyM2A3SfkKteWKa0sMIw/GVQh
-	okJCTl4B8VKWm+Bok26l/brzhxlakYy0W7A3jK33Igf1ZfUTM8EDd81NwMMv6YkwATvnjSSnNSo
-	05nujx47wOFu/uSiVy3oDKRGknaZ+D1+2CyQsv2T+Mog=
-X-Google-Smtp-Source: AGHT+IEC6umj6Lj/bljHcGk8ktP/FZKxktXm+XIJAAVaqHXn4oZH20sfm15h9uxx49Sr7WC6JzXzDg==
-X-Received: by 2002:a17:903:3c2b:b0:234:adce:3ece with SMTP id d9443c01a7336-23f9813ab07mr115991405ad.11.1753400234285;
-        Thu, 24 Jul 2025 16:37:14 -0700 (PDT)
+        bh=Gkm+U+Z8JovOoe8ArAZBSUqCVEx3YFZYKLxHXbXYTzk=;
+        b=HpeuQvqAjWWBO8FXCCDDc+xhRWlUDQCkpGGVNPopz2imXix/fk6mCwast5KLQkuM+N
+         LEZGMckKjmXrm3QK/4+ievBZLnhEXOOrfvoghP86U7Sewjq5AyFcvdpWvHvXQm2JAWTm
+         5UoEh48fAvZ2sq6c2VaXJNFXHEVVOmu0rfmd7+1ZcQw1lVC41aUb4sEOISpS+ug/zJyG
+         nrodD/+Ik9oqRQkfkDf935yl9gwWZOJGcOCPbP3yeH7xjkumcHqb9IqHTOR3fz6DENkI
+         YRNeF05k3qOyOp7gCbEU0ivDuqjgND6mPvFUtfNnfif7aBYUCF3/DIuTT2yqD7SIR7Gs
+         EK3A==
+X-Forwarded-Encrypted: i=1; AJvYcCWG3zDpazdps53zAJn8o/k8PvFBixT2aIofoq7PFK4r2aFqE8ySbfe9EGO9PP6S3hLQZtxQEkdmdQ==@kvack.org
+X-Gm-Message-State: AOJu0YwCWspc+h6/vIFxEl4C0GN7CaToW06QLzcV4NJ62ORfMGFCGx1z
+	PfrtGU10q5VyxMQ4P+3pBoEn8KqTyx1hPw4u7vjcs3Hdzv+uWn4CJj0A+4jx+JgyHFCWeAyqO2K
+	B7skS
+X-Gm-Gg: ASbGncubnFjXD/EsD4JoPDK9ioZDk+HLWYCkdDojs6E1yVFC73RoUxMMc52BS6YuANT
+	r2750VhG/YW1sNtf6LEenOzV/sYkhqYwrCxlYouXypGsBqZ34mpFvljIty1WT7KHiisVxAr3CqZ
+	zrqLN/EFNRkLZU8MbuHP6JnE+TWCm4PDHZtHVmm5PdxnY85PGxPEqJm52I8UyAijSmg6UlSsO6t
+	xx+sOT23XZqNztT2dSEW7JFP8xdpxRAc96NfzUITl5m62P/FWE9DIUWgNPqTVLrd8R9tLp/FMgF
+	cGg3MVgVuw/B2OXMVJjVHYvlCKxn148J7VktrBYIIcEEPg0Ju5G66Oflz9Hnxyj4a36uDJDnAiv
+	d/h4+VrtYgU/1pwNcmMzBvJMjunspoVEn
+X-Google-Smtp-Source: AGHT+IH5SBpkVu16UrwUXGB277v+OXuJbFLj21IH8FU8jVfnMFq+cBM3PPB90wB16oPa9iIZanRWnA==
+X-Received: by 2002:a17:903:24c:b0:234:9094:3fb1 with SMTP id d9443c01a7336-23f981afcb2mr126281075ad.35.1753400236613;
+        Thu, 24 Jul 2025 16:37:16 -0700 (PDT)
 Received: from debug.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23fa48bc706sm23598685ad.106.2025.07.24.16.37.12
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23fa48bc706sm23598685ad.106.2025.07.24.16.37.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Jul 2025 16:37:13 -0700 (PDT)
+        Thu, 24 Jul 2025 16:37:16 -0700 (PDT)
 From: Deepak Gupta <debug@rivosinc.com>
-Date: Thu, 24 Jul 2025 16:36:57 -0700
-Subject: [PATCH 04/11] riscv: exception handlers can be software guarded
- transfers
+Date: Thu, 24 Jul 2025 16:36:58 -0700
+Subject: [PATCH 05/11] riscv: enable landing pad enforcement
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250724-riscv_kcfi-v1-4-04b8fa44c98c@rivosinc.com>
+Message-Id: <20250724-riscv_kcfi-v1-5-04b8fa44c98c@rivosinc.com>
 References: <20250724-riscv_kcfi-v1-0-04b8fa44c98c@rivosinc.com>
 In-Reply-To: <20250724-riscv_kcfi-v1-0-04b8fa44c98c@rivosinc.com>
 To: Paul Walmsley <paul.walmsley@sifive.com>, 
@@ -123,14 +122,14 @@ Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
  heinrich.schuchardt@canonical.com, andrew@sifive.com, ved@rivosinc.com, 
  Deepak Gupta <debug@rivosinc.com>
 X-Mailer: b4 0.13.0
+X-Stat-Signature: dejmbimzgfnqgetwxpme7sxw7trxrj4d
+X-Rspamd-Queue-Id: EDAF3C0005
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C971C140002
-X-Stat-Signature: nx1kmtr3axe71bk15msq9i9mzi477cc8
-X-HE-Tag: 1753400235-438328
-X-HE-Meta: U2FsdGVkX19FSAQtm0mjpHeZayyLglTow+5gqI4MRB4ZTdleZfqfetk4HcIPd3lyU8nciF2g8sXxqPubiVFtnC36ci7T32UmdxZr0CAlgjcguWw2YxqDNz0NjwD1wc6+f69CAjPnJPAQHNtQqW2bt3mCxC2f3SY2ibSNvpCQpGQ9k7ABENG1nTjLpGn7JLd+fw6LvM4AtAoqbREhOU1WNVWe5sXvO59m8pGJ/RyKvuyFkbe5oxS/tKKZ2C7q4DUlw/ygxc0Z5UAVplxluvcME48dy2H7zAed3Ovn3ZGnwkGgiXLYN/pRu9rlgvbHSXBFgCmcq9HSElrcl+QcaT9dV0bKcmSSYiL7TXNgh03E15krP5oHHRu9Zrn+f2H9cohQCMrY1wX+B0wPzvJguiGyniBHwspEuR+ieUShub5q0s6p45Aw4f9DpIwUvAOBBCHtUXEshc7qr4AexY9Vzcq1qqxQmaxm+rcrXIibFe8alg+PHbvQfpyBuOnc0yiqq54qOEWK/jDcv7smdf7gMYVkA02YHPgXnsfz57cCdd9hCraUf6WCD/syF1RQ/ApCdehAbY3g8WihBJkgnP2Dy6uV2czdn98wh8/9NUaC+kAXqd+ueWRr8402WEfiK9zbFOH2wR+qe+nH1birxcxBSasoQlMhR9Tb09NFXvD4RZJMIMvSzgB18W9XZcj/Bqppy+owuvp5egSHhHrfE3t9ao5A/YDgQRvu2z8X/fko6e8LmkROvay8U7EwVzuRgoEdlwpnxohed1m+jxsJZ3B2MggfufOdvcCvm2jnhFa00rKaxFD9KOA3ACrU9tLBWVuff3gKSEu3csgbImbQ1QUU9g4PIAIihoAMC+Kulr+g9JPC8zg7duawxtFJk7PCMZ1ov9gj9DM/0hMym2/M6NRL2NfHv3XfjcQlbkPrrO+5VjFyAY0AGJ6a2tqr4noz8+2Q1xa/3z1Bgu9c7aohK5OQWFO
- XGpL4L96
- O+S3y16bpaJCRIy6w+us7rNSSnOX8Wc76av8rSXc0MteHOJKunV68v7Gqp5+ojX57JUVfR6W77LngZg3UNOeerq8Iqc0FRnpO2PPwiQInaoX1Hs/WZXSR2Uaxt1T8c13Ec6Mxj7u8lThUhxS+oOdWQ7GyW5O9dMlQuHdmWI66ei4wMVmQEGldA3a3J3+deP3vAJbkdhMdVXZv/tgjGmgmfx2w4+nXRUEiB6wmAhDMiQl8YC/NhOl8fkLl5ltb2yv2FGIQfGCMOIQZwebLJBwBJEOmbDWyYYdn+vRmIqAW+zIbvFWwDn2dY26GErvVn8bpuovm3fRGVtIqKuhstViNgTVNRx35TUPpYQDCdrZre9WgnQw9mkTm62LuMU/fyom05thsNYxFw6B3UgvN107fXPEsceoXGy0r+6Hn14EeXHwoeVx6dyUKmyRNiWNE6BEw9a5+FeCN4R7aIQ8dshqHKAMSRQZB1UGIbKnAwhjyypAzy7i7LsAL4AF16g==
+X-HE-Tag: 1753400237-95230
+X-HE-Meta: U2FsdGVkX1/78PDqsSFyQunzD5qlctv6pdXjREF9r9oDREFyJSQXsW9kl5bvskMyXHIKVssdJl2lUlo1tUaG+B0p9UoC9Vf2jul+Q7KJJM0twOm6kFJavyjBtRxIeihewsP9mIG3xAmRIR1KTAnWYNL7zPzXD/vVtg6sE54jfxwc03DEBnud3DB3IIEzLZHlb2I5r+pHkF5l/UC//Pon1sqiTbSqomIGQFxbhch3J3O5dLwDHajw9LbqpGynPkwOI4vCZhqZcAB/mJOOApnX55b0sdiLXef/LDZfkRRrpCOscwypbnyawoxb8mviv7mokxnhJx+txQ7T6BPBXG5UjenwRWEpqE0P9XBmTfWDq584vBWYasiUb3xujP5418qZzu1F96AqvJqm4lGHcv9bXx0m04CJNe9gLoOMGyG7JfVC/oLjkegq5nJhNYeXTI2lomNJzV+z0PmyxCxJ/BjCRUbyUsRvdjK+OA/gVIDf3sfOx2zBuBlcv72t1a3A/NlKqL8pakdu8O/mdm2CfCJYiJJkxqFS+aWG0HVg5iv5ozNo16aQRpB9EZBbawqqa1TNx9iyfGdazJTnt7saA/VIN8WsmJlm/5yJ7BbyyjXq8pFRzx+nVdGhmN0qUHqikXDXFm5XJQOuo01AeP3vZOKgAvAazY2H8LYpjdU9kwhl4Qsd2rzJSh/8mwqo8mHRudsoIrKL7DXDiHLDSq87YjZmNKX3eeEwN7lJXt6AzS3THGeaYgjPurQq1oaXk8ExpYWyIJJop/p6x4xj0Po6Xcwr1m509OhEKFlhLDfM+xuzsT555ZQjVQhod0XpjjwZ+CVrUjxMOPTf1e97R6kytK5AUAeFyCjeRDxINGH4edNpHedbs16nvcCJDnKbHQCNho1xj0lpd9IwMZUFJcPHC499rXfZ2XfccuEVtYeAWj7MZP1VqCPiGc7XNQftfbsLmIHnY1V85bgnsuviw2N2f8/
+ 0vMDy2hk
+ xOPu8FHsnZpifixO9IIPHVJpgCXWChr9pqAHpiPeWIJWvAQ7cT8ImzV2dOdZ1ZUYbO+9fFV6VvqTxBpU6LqG2vxsVs31UB8mzIvjP5AVSOwEBPafanje+r4dBDRbvtcFCowmV1yeFfO7YnOyUv9TWz5Q8FV08Mb8yrPbioTlhLssDXU78HplTM8PLkqOlCsHYVY1U/dKIaAI90lq3cwE2b05EHHCT62G0fbcAouzWLFL8uR7yJ1gWqfrsVikmPnrh4w+tYaZBslnusn4tSq3HQBhkNtuFIM8P+X4jjWjytvMa6vQ42VKkhsx/tV6+DQuJw+RCtJUefeIK28nx3V5C/w7V7W8HgeL9x4XHuJyElYeND/9YMiCkUCJszja3CkE6L9dScVujGVXkXbzjf0xAyVEpEySkH2WLy1NUxO9vMmn80QNHUeIJPeG+KuumNn3baUSTcrh8hM2b2w0wabcK581OEneB7VF10zr1AyfORMGAX1IDrLz9UoelAA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,34 +138,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Exception handlers are static and loaded from readonly memory. Control
-transfers can be software guarded and not requiring lpad on target.
+Enables landing pad enforcement by invoking a SBI FWFT call.
 
 Signed-off-by: Deepak Gupta <debug@rivosinc.com>
 ---
- arch/riscv/kernel/entry.S | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/riscv/kernel/asm-offsets.c |  1 +
+ arch/riscv/kernel/head.S        | 19 +++++++++++++++++++
+ 2 files changed, 20 insertions(+)
 
-diff --git a/arch/riscv/kernel/entry.S b/arch/riscv/kernel/entry.S
-index 598e17e800ae..3f0890b9c0b9 100644
---- a/arch/riscv/kernel/entry.S
-+++ b/arch/riscv/kernel/entry.S
-@@ -224,12 +224,12 @@ SYM_CODE_START(handle_exception)
- 	add t0, t1, t0
- 	/* Check if exception code lies within bounds */
- 	bgeu t0, t2, 3f
--	REG_L t1, 0(t0)
--2:	jalr t1
-+	REG_L t2, 0(t0)
-+2:	jalr t2
- 	j ret_from_exception
- 3:
+diff --git a/arch/riscv/kernel/asm-offsets.c b/arch/riscv/kernel/asm-offsets.c
+index e4d55126dc3e..e6a9fad86fae 100644
+--- a/arch/riscv/kernel/asm-offsets.c
++++ b/arch/riscv/kernel/asm-offsets.c
+@@ -536,6 +536,7 @@ void asm_offsets(void)
+ 	DEFINE(SBI_EXT_FWFT, SBI_EXT_FWFT);
+ 	DEFINE(SBI_EXT_FWFT_SET, SBI_EXT_FWFT_SET);
+ 	DEFINE(SBI_FWFT_SHADOW_STACK, SBI_FWFT_SHADOW_STACK);
++	DEFINE(SBI_FWFT_LANDING_PAD, SBI_FWFT_LANDING_PAD);
+ 	DEFINE(SBI_FWFT_SET_FLAG_LOCK, SBI_FWFT_SET_FLAG_LOCK);
+ #endif
+ }
+diff --git a/arch/riscv/kernel/head.S b/arch/riscv/kernel/head.S
+index 9c99c5ad6fe8..59af044bf85c 100644
+--- a/arch/riscv/kernel/head.S
++++ b/arch/riscv/kernel/head.S
+@@ -185,6 +185,16 @@ secondary_start_sbi:
+ 1:
+ #endif
+ 	scs_load_current
++
++#if defined(CONFIG_RISCV_SBI) && defined(CONFIG_RISCV_KERNEL_CFI)
++	li a7, SBI_EXT_FWFT
++	li a6, SBI_EXT_FWFT_SET
++	li a0, SBI_FWFT_LANDING_PAD
++	li a1, 1 /* enable landing pad for supervisor */
++	li a2, SBI_FWFT_SET_FLAG_LOCK
++	ecall	/* check for error condition and take appropriate action */
++#endif
++
+ 	call smp_callin
+ #endif /* CONFIG_SMP */
  
--	la t1, do_trap_unknown
-+	la t2, do_trap_unknown
- 	j 2b
- SYM_CODE_END(handle_exception)
- ASM_NOKPROBE(handle_exception)
+@@ -359,6 +369,15 @@ SYM_CODE_START(_start_kernel)
+ #endif
+ 	scs_load_current
+ 
++#if defined(CONFIG_RISCV_SBI) && defined(CONFIG_RISCV_KERNEL_CFI)
++	li a7, SBI_EXT_FWFT
++	li a6, SBI_EXT_FWFT_SET
++	li a0, SBI_FWFT_LANDING_PAD
++	li a1, 1 /* enable landing pad for supervisor */
++	li a2, SBI_FWFT_SET_FLAG_LOCK
++	ecall	/* check for error condition and take appropriate action */
++#endif
++
+ #ifdef CONFIG_KASAN
+ 	call kasan_early_init
+ #endif
 
 -- 
 2.43.0
