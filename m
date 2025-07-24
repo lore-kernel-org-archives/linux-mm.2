@@ -2,76 +2,76 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C9E27C83F26
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 08:47:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 400DEC83F26
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 08:47:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E82A6B0149; Thu, 24 Jul 2025 04:47:24 -0400 (EDT)
+	id D78CD6B014A; Thu, 24 Jul 2025 04:47:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C0146B014A; Thu, 24 Jul 2025 04:47:24 -0400 (EDT)
+	id D50296B014C; Thu, 24 Jul 2025 04:47:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5AEEE6B014B; Thu, 24 Jul 2025 04:47:24 -0400 (EDT)
+	id C18076B014D; Thu, 24 Jul 2025 04:47:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CC416B0149
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 04:47:24 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0750F1D9DD7
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B0F706B014A
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 04:47:27 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 62F50802E6
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 08:47:27 +0000 (UTC)
+X-FDA: 83698529334.11.D033627
+Received: from TYPPR03CU001.outbound.protection.outlook.com (mail-japaneastazon11012037.outbound.protection.outlook.com [52.101.126.37])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 981401C0003
 	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 08:47:24 +0000 (UTC)
-X-FDA: 83698529208.07.A0D81B0
-Received: from TYPPR03CU001.outbound.protection.outlook.com (mail-japaneastazon11012067.outbound.protection.outlook.com [52.101.126.67])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 303CF80002
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 08:47:20 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=vivo.com header.s=selector2 header.b=Ok2DuZGl;
-	spf=pass (imf30.hostedemail.com: domain of link@vivo.com designates 52.101.126.67 as permitted sender) smtp.mailfrom=link@vivo.com;
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=vivo.com header.s=selector2 header.b=YWjEOVCB;
 	dmarc=pass (policy=quarantine) header.from=vivo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753346841; a=rsa-sha256;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf20.hostedemail.com: domain of link@vivo.com designates 52.101.126.37 as permitted sender) smtp.mailfrom=link@vivo.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753346844; a=rsa-sha256;
 	cv=pass;
-	b=HO855fiGll6nX+WBpQF7KZhQVBMr3FkW6Bc+cR3SmlEi4dSkj76Yh7vRe9praFrbE43++C
-	metvrXBdSqRgDcFjsUoWxdOJhz/fUt8qqStFNL/fUUOExRlpzrpHZCdYGvo6UW/NHwwMR/
-	HapT4+ZFC+8OgJ2iJ6dKQK4fGwoNoRY=
+	b=UHlvN/TfT9lEvqosjUtI2jWBpIHwLBj08uOAFVb85BmV4IvuQH7yP6v5tSIvath9jxiTKV
+	nIT5PpQWjQqIcZJH5lKU6qG3e0Sr2wfJmNxb6agFO9OLVtLQ1RgUdyfchnw0Nmx6lnQaxh
+	dRdtj4o1/sjtY6e3JxnYuoljpUZlH1M=
 ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=vivo.com header.s=selector2 header.b=Ok2DuZGl;
-	spf=pass (imf30.hostedemail.com: domain of link@vivo.com designates 52.101.126.67 as permitted sender) smtp.mailfrom=link@vivo.com;
+	imf20.hostedemail.com;
+	dkim=pass header.d=vivo.com header.s=selector2 header.b=YWjEOVCB;
 	dmarc=pass (policy=quarantine) header.from=vivo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf20.hostedemail.com: domain of link@vivo.com designates 52.101.126.37 as permitted sender) smtp.mailfrom=link@vivo.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753346841;
+	s=arc-20220608; t=1753346844;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w8vNQTxEiBGsHHcBYGEaSLVl0jn54V4X6W24zQBAnVM=;
-	b=kKE+cKYuJlgBpjbic2sMOjOQZrTzaPciHFJ/iXHu9m1NPbldpjuHBJ9gF2A3mcuHPchPHG
-	pWIJPIQ+2+vj4vzlu8aCfGW26tgosUdqEFzIuqUXAZuw7DhpgioNxP6QtdLJnhJ2Zdff27
-	I4q1I/WdXC79pORu1PSqXPSFb4EA2/U=
+	bh=pThp25aSgZjCV3oK2DYHuqnuEQLQjBp5Rhnz6cgjz+o=;
+	b=vUubdCzO7UPxao3E/F8P3AQsfE8BbN5HssvsLPb65mra3nab7oqABlBIK+oJOC5fNwYa6/
+	gPSpigTBrSQvtWLZkyUcMif1Qq1PRkkUwhcgD72tQu61Xa9vAMcvQinCU70gBfRZjVKiXY
+	hCwmAE/FFxWhnCYx3Qk5mIIqfllAI1A=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TxMnukXvjlDkflzWm2lzH4lMZjx7kfy4aV5j9SbN2uKAFK56gYtZ5Wlx+5L/tXAok1LbnWzN/J6ZHfWc4PO3z6E00QQAwphauKZbboZe99pY8FbFgym5Nfh9v08zcat53ijVKhSUB9KyRowFToEz0vTeVzAHsXG1kgutrK+60FJpejcQJQ42Lny/LTlOA9w6d04PlFqjYaj6+qJxidecgcg2u5Q11iqL+fxI1wjtODa+tf2/jq5jJTqanjMpeihvNcWPZuxQhMyN96zoyoJetJnBch+tR8phWnUXIy0cRutfMzy7gZZBChWavinG8mOB6+UHY0GU0TlIQZZC+ES29Q==
+ b=wLmbXgSy+B7jLOArA8bEBZmtYYL1njACESBTlSl0CvhuOnfoLBZgtEVxGwn6FQHg6GlpdLKmcXGPB9UqBfP0lFZT+uAa1dzgk7FLOCcolgnFKVk4tz7wshNJTTiZReMLzaQwpNAWoVzJBVePIxoXdX6zi6whWwDsIPFuGmVZ4HG44Z94AlIwALFK3+7wndMJzsaM57i4UNt+xc1UhXFr7dENJtMFUhXUxipb4gAI6QuK6nnAEUkCu5RTTYWW/mAG/iMf2cw/siYUgR3oyCcyYaUgOI2o9TJ1PSvshzo85UhXo9ouGlIMKaWtUSzyHzWNiKmQStJdiASwseNDwYlFnw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=w8vNQTxEiBGsHHcBYGEaSLVl0jn54V4X6W24zQBAnVM=;
- b=iyCJYsGD5YlNHBnIUb1WGFAAazxezQedXcryYGlHNiTSqlj+a/CLCKNDjlqwU8iIany2jJA1iPBtQpje0T2QsG0UyqWbNWHexp2v6pVB1fl6vrTTAavRiD2dFjBm+6sGsWp1dz0iQRWNoy2U40TPArfVqQhIlMoPEj4KzF5h15g5zAleLe9FHW2XCLzPdm5udH9rCq9BNZXMBPqRQVODJqMvSrKU7tZRpHANgt6E1BRmtqgV7cTH/qyb1ieT8s18HB7BtmovfqDGvDZFiunP5p9AKCwza22d27qx9NnjIuwcr+C3TsWYpHr3GZPcNN16F/KJnZOEQrVDYbThTdVBtA==
+ bh=pThp25aSgZjCV3oK2DYHuqnuEQLQjBp5Rhnz6cgjz+o=;
+ b=l3VerInWHEFFkGTMiuycZ2/EUGaDwJr3XFqFvq96UhOLrj8uu44gecpbOVSxbOI5rfi1ckv4NnFIBZpFAE+nQ6gxgRuGa9/8P3b+m0fM+hlCnCfx66JPptnW8uioghR1LYeVYnRxreBvgoWS2/aZffEL+W6kIT6hcnvqRnejwX9ZHB4FzvnKRqrjs9wZRYH9eQ0YTyMVsTmu162excq1/5ofS7u0ZB+tsz7enFWJ8EKZ70QcOniiZaHGCZ+ayn0WmJyXodCph0wx8tcgJEeky7qqqJJqXub1U7pukPsH6ojvXjARlyXXyTAayLnzpOwSembuRtv64dlihyfXvn0y4w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
  dkim=pass header.d=vivo.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=w8vNQTxEiBGsHHcBYGEaSLVl0jn54V4X6W24zQBAnVM=;
- b=Ok2DuZGlCPsbloDfKDT92UGrd3Km6BD1pNapSX/zafSmHI6RjHHoR7sEr5tDYPeZ9+m9xr2LNO2GnL6oM0xgFspww2nrvVeTsxEmgd85AG36o6H6UKZSoyxKVNoYWUBKJUxkrcTyEaJf7BVdOfLQwbncbZJsAI0Pphp90KSxPWtP1r7mdI4tRpaq4cXg1Nz3rI74mIwI2NvOFV1AGxCNtc1I+Gd7yzs2nh4FlhVnDW5ST1lvvlHMP62/ArYhVW2O5NIStb4igCkoE1eqYqA9nPBQ4c3QcQMGI8bAt4HIGH/F58OGCfP02eULJzSZ6NXByqHdX6uJxeyJuiuAfhJgxQ==
+ bh=pThp25aSgZjCV3oK2DYHuqnuEQLQjBp5Rhnz6cgjz+o=;
+ b=YWjEOVCBaw27RFyqCzw/ySWx5hrFHD8w963inRH0R6LxOhIPys9XTCuE0qgcKy5p+ZRm/Pjs4hn6mc40ednSJGAuflbW9HC0u+ucNyc5SGlbABJFJboQ7AQalblKhJoO+YdsUyHje3HVuHFFyuPM3gmrxgl47CTzfs4uHAPutY/Ef4Rgi3zD0mQFdKi3PRx+yK78hHCytPnyV9UjvIl1dxkNj0IifQ3jSxCZmxnfHrC8SBR1YnUs52OHTsLdv8kF3BriIzcKbWW1EJRNbBiVhF9o+HGZMOFGGYk9SeATZoB+BnSOOgcaPyeuooniIG4LpYz5L3Ys0cIxZrHwVJtmhQ==
 Received: from PUZPR06MB5676.apcprd06.prod.outlook.com (2603:1096:301:f8::10)
  by PS1PPF2A261C07C.apcprd06.prod.outlook.com (2603:1096:308::247) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.21; Thu, 24 Jul
- 2025 08:46:03 +0000
+ 2025 08:46:09 +0000
 Received: from PUZPR06MB5676.apcprd06.prod.outlook.com
  ([fe80::a00b:f422:ac44:636f]) by PUZPR06MB5676.apcprd06.prod.outlook.com
  ([fe80::a00b:f422:ac44:636f%4]) with mapi id 15.20.8943.029; Thu, 24 Jul 2025
- 08:46:03 +0000
+ 08:46:09 +0000
 From: Huan Yang <link@vivo.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@redhat.com>,
@@ -101,9 +101,9 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	Baolin Wang <baolin.wang@linux.alibaba.com>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 4/9] mm/rmap: add args in rmap_walk_control done hook
-Date: Thu, 24 Jul 2025 16:44:32 +0800
-Message-Id: <20250724084441.380404-5-link@vivo.com>
+Subject: [RFC PATCH 5/9] mm/rmap: introduce exit hook
+Date: Thu, 24 Jul 2025 16:44:33 +0800
+Message-Id: <20250724084441.380404-6-link@vivo.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250724084441.380404-1-link@vivo.com>
 References: <20250724084441.380404-1-link@vivo.com>
@@ -115,88 +115,88 @@ X-ClientProxiedBy: TYWP286CA0006.JPNP286.PROD.OUTLOOK.COM
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PUZPR06MB5676:EE_|PS1PPF2A261C07C:EE_
-X-MS-Office365-Filtering-Correlation-Id: d183e51c-7cee-4c71-8519-08ddca8e85b6
+X-MS-Office365-Filtering-Correlation-Id: 9f5b13e3-0af5-4121-28c0-08ddca8e8920
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|1800799024|52116014|7416014|376014|366016|38350700014|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?/mk8Pl1J4w5kYorFEYxfDIsY2FtGd/4Prk65Ms3W1PKsrR2Y6zzcenEysLBV?=
- =?us-ascii?Q?BGhgkh6hhSIrlQndvhFemj3UjZaXhigBthFjl972aYez4FEW47I5lod9NKXu?=
- =?us-ascii?Q?ZESLq/QTXLXHXJqbHiVC/pXo4F6+Zqgq58RlSaHK+VfCne1DUWauRe0jqvl3?=
- =?us-ascii?Q?tD5hIm4y1P0gTDuJTvju5t1tYCBw1FbNPVDhUzTtdqEuDK+PKImiNTQzwGW3?=
- =?us-ascii?Q?ifwVS3E73dG+T79Jkj9c7SDqAIxT+hnk/rSJ6X4fNpwVKqCg8IKbOCmUgf5h?=
- =?us-ascii?Q?uy/0nGXOdO4ogaJ7qBBBBovM2FC+DSHhSdQ9WKrxeqBYTRIn2eGmhV8/x/z+?=
- =?us-ascii?Q?hvyWx26w3JtYa8nKOweZzkkIPk4pFfm3nG8hlUSkm3BQFz3kCrmD8rEndxOB?=
- =?us-ascii?Q?QNmGXPzCDfugJtGo4spj3hLyc7/Nz02T/98nIqR/yVJjbR5l2M/3ReoVQMwH?=
- =?us-ascii?Q?BqnpOHnYll/CrFJ7dM431xuz8xaPH0XoKkOhXcipphy9p3vjs+U3WGOAtJ/Q?=
- =?us-ascii?Q?92Jg1JjpL1gsXuPW+y9Gun6R4rJY0UHHA8lURSw7Yljr23z7q6dQQlmodlky?=
- =?us-ascii?Q?CDu3u9Lw7shMv6WG72ave4xlO9eIcCzIZCq3PwNL9HArdW4Mztl/ZZvU6ANq?=
- =?us-ascii?Q?yf701oXAiXVrxI+MfNZPRisBvVIF0O/YuyE1opSgWAxmie6MObGLDZ9Q7/Ok?=
- =?us-ascii?Q?9lULxPScvddSk94fPdhcT8ppPX8l915qUzhIv3JaIR255CLn7lDe56qECTTL?=
- =?us-ascii?Q?JUOzBt1Q/utUA1KgdMaUld8NR81U29LUwbhfu9ZxTLP0fhJzlyYgqkSjEtpv?=
- =?us-ascii?Q?ONMwd2w/fwAQ3Z4W6ZGsy2iIzxOhguFkidxXNGrShgkAt/3oANywWvg35fqA?=
- =?us-ascii?Q?f22kjzm3su3/Zekdi71Y91phSNuHkm69dI3E44qEO5vHrS0ZtGuTCOwhPwwS?=
- =?us-ascii?Q?0YQVf4KXRjr8U+ZBXw7T5O6sk1T6RjempWN5NITnfS7PnFbLCtg16cfWy+kZ?=
- =?us-ascii?Q?3NCZzfTzhijeQxknvfc5y6HybpJQ+2BJUY6F6eoqI9ALg/igU86gV4i3MqnL?=
- =?us-ascii?Q?ccQNZWJW2whJRownuNAoSuct/AcHkV9BrukalZ5BPmpYToad0LUbmJCHVEK0?=
- =?us-ascii?Q?/LpP/M+2Vh8aFCS830oblVCj7GIwGOxpkeF3etVjTatPAQ2QKZMtcoGezplU?=
- =?us-ascii?Q?lbFTd46vR6xh0QbO8fWfxksy3snB9uahxUVH852KX0aKI0CfiV4xzxWEGeKX?=
- =?us-ascii?Q?5i1qQqNjuqowfbOKryAEURoGGxELFnw8maT6goUiU0mJFpe+8TmaBNkhKZlW?=
- =?us-ascii?Q?Oya1J5BfNW+j45ImTBMwsqeVvPKGxmvfLbM/35WuyCInET/9tMaLPOhjC7Ng?=
- =?us-ascii?Q?k43kkrcm5Xc11IQF9hFsZCeSmskCHbBcCU866piSYgEgXLRzhwLyM8zexwtf?=
- =?us-ascii?Q?m1s+Jkoqwm5fkbRY0A51uBhZ8efQrQ8sd0VBvJCDIdFOsmBmYyRIy2RSuDNG?=
- =?us-ascii?Q?1K5JGZXtjQUkIMk=3D?=
+	=?us-ascii?Q?ojMIDQOTIcJ4rxyEQWNQ+SbbhXz02K0Q56SHkPQDaCi5RprqABcCznUhNZNn?=
+ =?us-ascii?Q?SxMGyix4H/YmWWoDcuJhusJ1yoctz/BjrIWdhPK3csgeLNt+2RtuF06AXNTV?=
+ =?us-ascii?Q?P0HBhitNRc2++vLm9pcAA6c3YiFLdQm8z3ppDNtwIYINsoOj0dMoFSekCafd?=
+ =?us-ascii?Q?1FnycQE5lt/GsX1yFxWYzUK6jfiNDk0gh5Z9zPO5Pfbn22xLOQbKBT4pHgNB?=
+ =?us-ascii?Q?F6OOQC9M7h6FuOTNSI9+o09j7PcqOdOtAZ8ho80PRn4KGeXOHlGCYyZicoE2?=
+ =?us-ascii?Q?B8a4IxcrBjBHPBEWTuH09dAxy6IUHM/vUSBzTv1taW2jOTv/dUc69FakUtcR?=
+ =?us-ascii?Q?vNAywiJcOU/dy9j/cdRmm/IdnKDDJxsa9JBnprRUYku0gsK0bgbuDYgOfotC?=
+ =?us-ascii?Q?S9fdFmsXNCHFsLzIguhmMPeJ7z+qdkQ+FfJNmBVDy6Z0ZbWVJcu31ZVKcp/i?=
+ =?us-ascii?Q?+EjHTaIVZ2juHn5sHjAw5DDXKhAUSQHgUx4GvNYiT5g9BGR9vGYRuN8pfMMM?=
+ =?us-ascii?Q?V46azFA5PPbFWWVKETxfe9t6YR/Qd4LMKUJ/ctl+ZOJ2em9zO9LRSFVks4vR?=
+ =?us-ascii?Q?hlFZZ3HG4Fr9zc9qIBZGbwSbioVU2lCTcUjYUL9XbcWKDCdjkDkcsEBUpaeZ?=
+ =?us-ascii?Q?+Qq7dgmlVNZcov31E4XZze1mLPLmjq4rgJ71lw/84XErEvnLCzj9HWVC4m/W?=
+ =?us-ascii?Q?FaNmHUtUhZC/TudoDHWtz6EQUDRsuzd+Qbt9rGkpy7SEFhd9PtoXwP7OvbRR?=
+ =?us-ascii?Q?4xDFAneB0KA6T8b/dNnF38NZ++AXiM4pQY897OzEF960YyRDrEq5rC77+iWd?=
+ =?us-ascii?Q?AzO9HUod8fjkynnHyImV0zyGE1aIl5GUvbRut2BP2B1usYEUBDxwlMpBnjk7?=
+ =?us-ascii?Q?IUwkLfMy2rG/VkMylEWWGFJgwZaGKnvUuNs3TFEu3Pnu3bBW5UFo44C7Khmg?=
+ =?us-ascii?Q?Avsd0ttylyrpVB/bRQCbS9nqvtD7Hi82szvNoiPgvgOv+aUeLt4pqBd4qIrd?=
+ =?us-ascii?Q?y9WQbp+JUDJCu65Q8B2GxpDrTuEf9tFtJiDl9AkdHa4GF32df9vsBh3Kobrk?=
+ =?us-ascii?Q?YkOM96cDNTyFuzFAxAb2zMZaV7NUB3BDWGFa0LIHdh8vE1v7BbCfYzlAU8DD?=
+ =?us-ascii?Q?0ou5heibdrYmLJI7s9QDGfJHVDb4HgaJ41DFpub14zgYa4pNHdjWJZujVRBW?=
+ =?us-ascii?Q?SEe4erjyQDSxKuioAei7AUHHd1AKlUh0b0q/YtDdGEz4LG/DwrDJSIUZ8DTa?=
+ =?us-ascii?Q?kJNrvUckpx+qDkohdXFKduAuYFNbSn0FM7zIxIouhlgNFdCOiSAgyCCvocEl?=
+ =?us-ascii?Q?gg8B9uSVKkIKHQj0VUKlwP2lvpgy0wCf32I9ynEqwgVE6YxNBB3iYtV/69rF?=
+ =?us-ascii?Q?5TSpAmMChaUSljZ6kglHpW9MmpB+CCv+ow60wd2lae2areA04H0GXTE18Wkw?=
+ =?us-ascii?Q?mUc/Tq6cEhYf2qwNfF6Pml3wE5wXK6Bru/6KXz/COa4Z+LZfoeIkqNAobRHi?=
+ =?us-ascii?Q?0jGpfNem/X5U0Kc=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PUZPR06MB5676.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(7416014)(376014)(366016)(38350700014)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?9hNSVi4irf+Kp6C68XbqqOzdATIREJn0CrnuW16r9wkHrqFLqL4xbPdR9ex1?=
- =?us-ascii?Q?oEq0iOnQF0xV1K9HSKbLRXf0mBCecZmAp9SX+bN5ES2Ivh6IQn6z80bTnMgM?=
- =?us-ascii?Q?WwHA0PwSBTSKPRC1sPyHCpUPHWLsh+Zod4XIyIcxnNTnPwkmblJLSjF5oJGS?=
- =?us-ascii?Q?6K6ZbkkuVtsB8UdiLiQ3jUujZz462dOfd1XLkSSBRSMDQrMU3jBTNqlNm3Gu?=
- =?us-ascii?Q?tiAGOGxkH+NVANqzBZ1pI2Py6KSSCKxCnDkbW0mpTcol7fwyrZZzBXwqzRcO?=
- =?us-ascii?Q?ttqlv96iBOzMzRhzip6XNzxdQZ2Fz1a/PXTU7Im5SA6l540/M9Xv7M72uAAq?=
- =?us-ascii?Q?4UO1ObA6hnDk6voKiG/gO0HJQIRe+mGACj9zXyyW5hG4KkZCcUD0nLxu3iZ9?=
- =?us-ascii?Q?GQB5ntAKbadQ7yIoeihdYfSyNpGLCVms8+t/s3jln5104DqsbFwj7Idb+wTA?=
- =?us-ascii?Q?A7pAl16W7dBgR9MTlBWmQzU/LLnPctGxa//gGCvw4pOejJXZDyAsRJoTl03K?=
- =?us-ascii?Q?jTreFeqmMMlFm51Wvcg4bMDb3KQNEMuXZ0AOND3RvKp0YaRP5ygekZ7ICS7m?=
- =?us-ascii?Q?6HbZby8qCgfDDE3/NxI+QSf3qlrwykbD+S8skRPSDv1NcRsDdBeZs90XHTMV?=
- =?us-ascii?Q?Vrf/Z81KgUzFRn1cXgJeokGNv43IcZ7EoaglZ+/d39F/niGVo0wKq2G51SkS?=
- =?us-ascii?Q?JLTfnO1xMSTVyOE4ozG6LV7E4LF2ZCBtPfRO9GquzAjss10k4Ckf7oZUCMIB?=
- =?us-ascii?Q?rImftFMl2DU7VxTsvdWmyEuT/800IPMh9tdgpuhNRq6noKlQ+AMGGYDiqEQt?=
- =?us-ascii?Q?H/ZcxskbjHaEJIjeEIbBBOfQSRUbkUTrOMkwcthvfSY7rwAMBpgHZjRcirBO?=
- =?us-ascii?Q?ZlH7M0pzQ+SDU/xp7Axvvw1hiQ0FkAGKt4j71S72AAcnwdUuFTGfhwzjkaEJ?=
- =?us-ascii?Q?kXtXM6LXddmYZdw36DyPHoHRjFYywI71+FKkvEidLp5pUWbTEklEow5QSYQq?=
- =?us-ascii?Q?Qa7gF+2eMYRKhCNjvID/mpglvmQGLqngCBbTS2fFnDm7B9MsgRQe5BorG56S?=
- =?us-ascii?Q?91trxW+QRxek5fIVofuNIMTHYLpKQnPgz9VkqaMlP8ugpQHJIjLa2cVy7J/Q?=
- =?us-ascii?Q?QmskvqikrJFyghn9TTibsU0Az0zFnA5rU3j5lvKdYlYEDMy076YaLxUUaAuB?=
- =?us-ascii?Q?u6wNUsmAC2fn0E5E3m/m0GHyeB7bvJib5CwgiK24k+kPS8N3oU8UKxd0as1J?=
- =?us-ascii?Q?ZWumi4ybdMoax8V6+eHDklNNR/lkv2pE6Lw5kJDHeJiGJeHkgxcY7Zo3X1fe?=
- =?us-ascii?Q?wVlimTljVwWtubUdAbrWE0j4TARmloSBGQS0gSSrBlVW5mJeF9XWE8Y7NVWU?=
- =?us-ascii?Q?oC2DAXWIRtCE+U4jv9hAEemswpGq4ca/n+au6O0CZmB7gbRZvmpsm36Zhg+c?=
- =?us-ascii?Q?cWW7PTVlX80e4pdlTWscBqYF/GHNnABcoGaUWPTtM0OMLLM6Us6XHAs7l81z?=
- =?us-ascii?Q?wcLElPmbh+Cc7NqIY+2Z+9cgzNV3rCwdcsudx5WnBnGPoeGV+XvdHWbZ0Igg?=
- =?us-ascii?Q?rut0OITfW+5O+31w9iGdsnjXQKbyOV/3/ODtJHmK?=
+	=?us-ascii?Q?qTNIvCapuDn+jfuJRnT6nJG61V6arDB/CEVIagGQNi0S+Lu5ZIRYxjkrsbCo?=
+ =?us-ascii?Q?mGIdso7fm3mISoGDlImN508rYF9BAeR4IbHskJ+UFFRgayB9ouLQ82bVRvQn?=
+ =?us-ascii?Q?jUZ0u3pcljVldG3F8BdspzJriGwVU4ylWXGniwzB0t4cbB87vXrgl59LnMus?=
+ =?us-ascii?Q?hsUvPwAD2vkCc7psw+rNU3S/7YaNeTKMl2k8WNRsQrs9nw32xpI0f5HjKD/C?=
+ =?us-ascii?Q?FokrChsbzymmR/NVZmOK0pd+xR1YBp47xIH0xVGZZJRqrbF+GvzIDZXeS29x?=
+ =?us-ascii?Q?1rQaDKb25/46K9dTtdZ9Ca/SRf/2Tj2w7V3xhvlK0+FKRMySEZSReqLd+btM?=
+ =?us-ascii?Q?+frstpLOpWQxXGHKZYE1f+9iwfipNlchWDaEWxPVISzC1gjjQqzKPM504nIY?=
+ =?us-ascii?Q?H8Gf22aHbSBCgAKLHrw0v8nJ0OJ66rOVb90MQZPDyaaFC+Zpr80fgIQtWEOz?=
+ =?us-ascii?Q?JjK6fe9FiCBPsoIpf/NuVWT6u/pNM0wtmGsfRylYyCP/Sq4MdkhEZ/BqDZqK?=
+ =?us-ascii?Q?tILlcUys4e8xuGvQ9tLxXC0lRo8uS9SE7aTP/CbFSQF/P+U14YAieAyOwlyy?=
+ =?us-ascii?Q?wk2bVOY98oX//GltJ7Yt85aVqkmAW0JxGM8nd+QfVuCpF/LHDxY118AW+u7s?=
+ =?us-ascii?Q?/gQf9Dyl9Pz9kVCfvOzfy2Ffu3wobbByZlCHTdyr1OJ1P5WpSvY/FvXb45Aq?=
+ =?us-ascii?Q?1dZ16hjygUg8fwZtmhuuVRDu2GsT3qiHDH6HBJirIrw2eUDxy9sJs4vUs/FK?=
+ =?us-ascii?Q?0rPLtsB7BOPK6hoKapCRsu99MiGF2OPlmkcM6yMF5cUwoMlZz7tJs4vhZwZR?=
+ =?us-ascii?Q?wbIxVi8xBkioVcWxgK27LdFT8dDDq4SJhlW76j6UEG2pJsGF7jvVfkktoKj2?=
+ =?us-ascii?Q?7evP3s57PtlxGE6kLzE1rUIrzRTVQ7qa0vDR5Nowk2qflNfhV0byeaxq4qLE?=
+ =?us-ascii?Q?uB1lz9R0Tdh5vJ2qO+AffRadNH3sQwiSk2TVftayxkdV8a9uBs5HIgcv1s+6?=
+ =?us-ascii?Q?mEcOMHtr4URAst5HN2C3BBSWUtZYOJWlOYWmSEWktbqPr9glBleGA/HUnWrN?=
+ =?us-ascii?Q?fCWHk54YCRnFRgv5uDHL0rnCa5ZlVFzaUmZlVRC/p40sh1Sevkr3l0IA1/b/?=
+ =?us-ascii?Q?J0QAgUnyQqMoNngtTKWZ6CNuF6YpNswTiInHm0I1mn0KyKSLx52vH3saJExW?=
+ =?us-ascii?Q?SlDWzC+76yCDZn8bnjR/E1XCbUw+jM4jblke2O6/SMPhsP3gYmRRAxXJZwyZ?=
+ =?us-ascii?Q?ZRlrkevvlHwYRZ6LxLpEyVwZFRr/Gbe6rkA1P6HeEQxNTA8tCq/xbw6HIHzs?=
+ =?us-ascii?Q?ysq5WbGY14RiEmh8ceLlVPNcmxsyfMLDAsS2mPkETj/mO9r0V5OpVTPRvpom?=
+ =?us-ascii?Q?t6BKmYV5p2hVkoovJqSY2cytKDSUoOkvaR7DrWjD5OkYnNlVJ0vB9a45fJGY?=
+ =?us-ascii?Q?I1Kmj9RH5RtmAwxsXiusa5sGuVoGWU9OkugAwWwQrlZfF96dgIX2LrwT2tEu?=
+ =?us-ascii?Q?PRTJ4bqAXUgCENLqJkSDfWUD2N0LqC+l7MyhmRPys+G9+gevKvMScWkjxOE5?=
+ =?us-ascii?Q?Far9Mgr1FJL5UlitgktpPzNECSlNK0dilbmM8ft2?=
 X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d183e51c-7cee-4c71-8519-08ddca8e85b6
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9f5b13e3-0af5-4121-28c0-08ddca8e8920
 X-MS-Exchange-CrossTenant-AuthSource: PUZPR06MB5676.apcprd06.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2025 08:46:03.6028
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2025 08:46:09.3323
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jTWFXfafncaAwJrHO+omnMZkO5PzwKh9+A76IrwpPmGZ8TIbMkdBhcg41xw0b/SKzXOJLKSdeCSd7+CAert/aA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5XfAtwiuz0hQFaL8FCCKTSMd5S/z3OtckY6ZkfMdGH3H4DY0JN1hjSzdP0d2kTSl4MaejMFfyVATEzrlCx6i4g==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PS1PPF2A261C07C
+X-Rspamd-Queue-Id: 981401C0003
+X-Stat-Signature: 3dm869xejgfn7h89ae5nzmux8xrsz5ac
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 303CF80002
-X-Stat-Signature: 19pzbf7gep3u7dnopq3y6ed8bjgg1q6b
-X-HE-Tag: 1753346840-267438
-X-HE-Meta: U2FsdGVkX1+86RJEkQ3pPiduncemZISNUkDlfYEXNgsnDSys1ZBWKnA5eqTum5hjccOsttJsbbfNg0TriDRHzMhoLEPyKkrWDgNMg+CtUL4KrPasI2WNJcTwz1OS2KNih2jqYD3N+36q6laBQExRbXi59TOM+w+Ad1jkX7NAY2bybw4+4aXnMII/jcBgYyqVbbDnPkwhP0yMX7BmV1QRi2F8ZXwKe1egfRMSQvLcsjyZajvKI2gZB3dNlZnMnSUG+eRC2qNQzeYCFNl8dMwSHovFZNnZELJnYCE35hKG4gB7ztANp4PuOwYwEfsQKIl0cYHmBvYfbZN90qBPQlwV4wBa7vBEjosEFuOAc1G7gyd+uf+78uwWSeov0AT39pt5wqKQ18loEdGijy6+s+l8R7VWyOC+BeRv6ggC0F+MTPTasnWuWU2rUt3VQkwriKneB2l4rrl37us/gtsrBreT7fy/QqMU0Y8qUaFj1dHRC9waKAT39C3Udg4gXCu6Ev7Iqe/wenb8FFjctQ7yQ3f2RkZ/wOfYqMHaJsBU48mv7IEx3aVvl8fYRF2w190srBRsoEWhxlj+X/0ThW+tc/yKOG3U7vhljMmLG76TPV/q3Aqrqwf6Kk6/2ip0yPLoamyrJIH/NsOaGKqLOswZZzdL1hfXvRzkUrn/H1AZz7iM0hB8fc5BDIlLecSuYqVtdidxNjqr02cijccHeuQSU9jhcImKVAsI/8kv/u+Cwzys1iXZk+1zEEiBVJgtS/T1UOewGddw97UMxqw57FVeVGyvPytuSaZfDn8edjlcT6di9O4G79Qerfy3FaY3N3no+XXebA9hEDbbda02VJK7SvV4jdglGAUKmFujRCMEQbYQDMnrdAAHmIhhow8VwD1B7+QTqRtAH/zqfOz51Ho1kb90OIauUEpfS/s21T8uZVih6iS/AEXwxJO9KVlzmJf8T0VPbfzFLpI9q8M2UHt+FzH
- aEDyWQBB
- 7oD0rEfwxaa0PEvPrlLnxBkdJbHZbTtMqiQC/VNfMXh3ZiFR8vvQFFbTFY98zPeDZB7J4ZNMkPmWkk+ljX7ENFJHlhnCYCO7hmLXmZEnr5tQ7ZJm4AP7Zarp4s83cB5ZSZQcWCHT4CW9FzHnkKtsC+ZQfSAbGe3El/40eAylVr236RzZtqgWEnUegEnrDvMLb5xmClkaa43Lh5FFGFXmGPPOe/fiWLq099FqWsPqqiAsMpOCYSFrzATLMgzKsD+JCdDiAkyIMhjX7z0MIs9ZJLfkSojrbUnjlopJxIVCQdMUTvTTe5DP0Od5h4r9WghW5ab1MSPcHy2ef3uuv+FVgDrfHp2Sv8KQgAo6x+UsOm6SrZWyrqmj6jGOQ1LEg7iEzrLmtd3y8iDa74DVsgQwe9mqe+TdaQOny4e5k9HxYuuMF+Xfb+Fr5JlWfKJSdpUpp8wJ4141gCBXVOJQCRGDxb0sOFIVPXFgVIVkJkEXZsst7QFIfmrwvkO0eX2KOtAvTOUu5f3APDbxiyw7K0qLmGYtDGLWctPeQxHRxWan7rrsRTADAIHRHtvzFJPm3X07C0UEQy0+hKlOIVuE=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1753346844-66675
+X-HE-Meta: U2FsdGVkX18ELCTfil3mB44a9RKGhaCdATiCon5texaUnBkK7ezRFJ1L9c2IEZenAG363GThjBgzxep9/Ww3y/HD5++NjOXJCkAXzn6Vn+i5U4NkcvoI/a6Zf27DNwgIjqe/Ixa7EZ6tGa7o2nFy/cmAzBsezGlID10elu5U7+gDMEZOWN/X5i2/Eg6NO41triED4lcwbh1C+YluJJYAsneCF02gg3GmFoFThGlTHdRuJasRSdSCaV5/HMBEqgXrMP4d93FTftBJ39uimJEjg7scgOYThxBH0WdvsrOJ2hfuR9OUF2Faopar5P0kyCkgtGqy/8+QY6fxUxO+HXDaj/vRyPmxL2OYpx4cvvsDiCPbriPWOmD7p5tgVJUU76DaRTO7syo2BLZBx12UuEcRrFmU3HAoREMSBHcRxZlY3XYFewgYT6dCGJ9II0sgpujxrmFr6IEYBfBo5meQF7P1mEC2ncs+ENy93Kmv4z3lXYk4uEI+hY8XVSaWEU40lOpH7LSpiYqJwSSymmpGbEzhcMvJkzUVaHQEs88R5t8JPtfqUpfZ5ADvqS7ynKajUhmKx+Mi0qMOAFxBBGGBvOWNjWsMmiXhzgXNLi0quTyz+KtgoZYPXr7iReY+N1mXH2ECY5kBvSzb7PWDKCFQDpuVftu7N/j252ujhNYpZ4iDVCNW1OealYxK+RSxBKAM8pgQvHE1/PCIPD8bXifKOhDE0lQGS+H8lntXtpFx2OZDzU5UrNmIYMQ1wJlpKBOpNdD/bcDfyIuARY6cZtOZdIpOKULlaBJWfV4F+GAk0jM7ngBOzdZ82zZ/S9rS9jfcwN6qHPjYsSqAH5ZcYMuFycN487YygpWwdHwVCPCyW1EdARjnvMBczlI84kkPVdzzNQgiATZj9uhPm0ii+VvvwXk6Viej7CG/4v08wzEJImEd3FYQ1jIuTGLbbuglkhnEoE4h7qwC1R+aHs4cMYyAGAs
+ +hWujvhV
+ Gw74CCXSIKbuYGQyS33QGq8Cvi1YnfB7Ul8Gd0r0isYcxlWF4SWumSx/DyiQ7S1SY98Z97XaTKKg5yy2nfRyCP6UNlXxThtbtKMIY+wdQ8+tSExMmPgSPhTXkJXlaTwS5aQ/ACtNIQ4O/ZRO9c/r1ZrUSojd1wrHwGHvYiCeGXObgrx3PiB+fdsU21EczcywfutDfFS6WX3TfNb4TMB++Z2/u9JBht9VmgEpNLaTgyyFlGXQKWRpeCkLx7VissZQ2NnFtsw45T8kQX0pmHPr+ZE8rVNdFl7unufPZ7wmmy5yLPt/xuXmMrLIpGMrJ4XzDNhV3Wp9pYm0rSwzM9SqNYjHpN0UpHsYrTXWkrkCFd4H4oyRjvvqSa4IQuYoKUZS5GN27c5/8nY3HzVnHdRCaU4/Nyh88jxvVowlsCjvLabI3ZhfBq/gXNagPhHub3pJxwPIh/NcX5rRv30p8ab6wB4wVS8qFo+nhdUUmy5nFrGNDnqQnnzBDSnMrxUj2zwwz79Y1TX0JI5scDxpUD925OigYQNoB9Z6h3uOvYpqpC1u6ss4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -205,76 +205,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In the done hook that determines whether rmap_walk can terminate the
-traversal early, we may need to read parameters from rmap_walk_control
-to assist in this decision.
+When approaching the end of an rmap_walk traversal, we may need to
+perform some resource statistics or cleanup work, and these operations
+need to be done under lock.
 
-This patch adds the rmap_walk_control as a parameter to the done hook.
+This patch adds a new exit hook to rmap_walk_control.
+
+Note that currently, the exit hook only be used in the anon and file
+rmap_walk implementations, as ksm no need it.
 
 Signed-off-by: Huan Yang <link@vivo.com>
 ---
- include/linux/rmap.h | 2 +-
- mm/ksm.c             | 2 +-
- mm/rmap.c            | 6 +++---
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ include/linux/rmap.h | 2 ++
+ mm/rmap.c            | 6 ++++++
+ 2 files changed, 8 insertions(+)
 
 diff --git a/include/linux/rmap.h b/include/linux/rmap.h
-index f0d17c971a20..a305811d6310 100644
+index a305811d6310..594dc4df3bfb 100644
 --- a/include/linux/rmap.h
 +++ b/include/linux/rmap.h
-@@ -1013,7 +1013,7 @@ struct rmap_walk_control {
- 	 */
+@@ -999,6 +999,7 @@ void remove_migration_ptes(struct folio *src, struct folio *dst, int flags);
+  * locked: already locked before invoke rmap_walk
+  * rmap_one: executed on each vma where page is mapped
+  * done: for checking traversing termination condition
++ * exit: do some clean work below lock before leave rmap_walk
+  * anon_lock: for getting anon_lock by optimized way rather than default
+  * invalid_vma: for skipping uninterested vma
+  */
+@@ -1014,6 +1015,7 @@ struct rmap_walk_control {
  	bool (*rmap_one)(struct folio *folio, struct vm_area_struct *vma,
  					unsigned long addr, void *arg);
--	int (*done)(struct folio *folio);
-+	int (*done)(struct folio *folio, struct rmap_walk_control *rwc);
+ 	int (*done)(struct folio *folio, struct rmap_walk_control *rwc);
++	void (*exit)(struct folio *folio, struct rmap_walk_control *rwc);
  	struct anon_vma *(*anon_lock)(const struct folio *folio,
  				      struct rmap_walk_control *rwc);
  	bool (*invalid_vma)(struct vm_area_struct *vma, void *arg);
-diff --git a/mm/ksm.c b/mm/ksm.c
-index ef73b25fd65a..635fe402af91 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -3072,7 +3072,7 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
- 				anon_vma_unlock_read(anon_vma);
- 				return;
- 			}
--			if (rwc->done && rwc->done(folio)) {
-+			if (rwc->done && rwc->done(folio, rwc)) {
- 				anon_vma_unlock_read(anon_vma);
- 				return;
- 			}
 diff --git a/mm/rmap.c b/mm/rmap.c
-index bae9f79c7dc9..e590f4071eca 100644
+index e590f4071eca..66b48ab192f5 100644
 --- a/mm/rmap.c
 +++ b/mm/rmap.c
-@@ -2232,7 +2232,7 @@ static bool invalid_migration_vma(struct vm_area_struct *vma, void *arg)
- 	return vma_is_temporary_stack(vma);
- }
- 
--static int folio_not_mapped(struct folio *folio)
-+static int folio_not_mapped(struct folio *folio, struct rmap_walk_control *rwc)
- {
- 	return !folio_mapped(folio);
- }
-@@ -2828,7 +2828,7 @@ static void rmap_walk_anon(struct folio *folio, struct rmap_walk_control *rwc)
- 
- 		if (!rwc->rmap_one(folio, vma, address, rwc->arg))
- 			break;
--		if (rwc->done && rwc->done(folio))
-+		if (rwc->done && rwc->done(folio, rwc))
+@@ -2832,6 +2832,9 @@ static void rmap_walk_anon(struct folio *folio, struct rmap_walk_control *rwc)
  			break;
  	}
  
-@@ -2891,7 +2891,7 @@ static void __rmap_walk_file(struct folio *folio, struct address_space *mapping,
- 
- 		if (!rwc->rmap_one(folio, vma, address, rwc->arg))
- 			goto done;
--		if (rwc->done && rwc->done(folio))
-+		if (rwc->done && rwc->done(folio, rwc))
++	if (rwc->exit)
++		rwc->exit(folio, rwc);
++
+ 	if (!locked)
+ 		anon_vma_unlock_read(anon_vma);
+ }
+@@ -2895,6 +2898,9 @@ static void __rmap_walk_file(struct folio *folio, struct address_space *mapping,
  			goto done;
  	}
  done:
++	if (rwc->exit)
++		rwc->exit(folio, rwc);
++
+ 	if (!locked)
+ 		i_mmap_unlock_read(mapping);
+ }
 -- 
 2.34.1
 
