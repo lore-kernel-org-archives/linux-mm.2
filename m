@@ -2,70 +2,80 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 70016C83F1A
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 05:50:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C17FC83F26
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 05:50:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE36F8E0049; Thu, 24 Jul 2025 01:50:34 -0400 (EDT)
+	id 0C16F8E0048; Thu, 24 Jul 2025 01:50:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B478F8E0048; Thu, 24 Jul 2025 01:50:34 -0400 (EDT)
+	id 098268E004A; Thu, 24 Jul 2025 01:50:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A349A8E0049; Thu, 24 Jul 2025 01:50:34 -0400 (EDT)
+	id EC9B38E0048; Thu, 24 Jul 2025 01:50:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 93ADC8E0048
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C05ED8E004A
 	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 01:50:34 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 43A1780232
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 79B97583E1
 	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 05:50:34 +0000 (UTC)
-X-FDA: 83698083588.12.357694C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 6C421A000B
+X-FDA: 83698083588.05.8B67EC4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id D10EF40005
 	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 05:50:32 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s29zubue;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QgWgAc1Z;
+	spf=pass (imf27.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753336232; a=rsa-sha256;
+	cv=none;
+	b=Rx9RbKcKzyIjC5jIxB7gh7RDboAhlzTsuq3pS7TF8GbR3aHiIhA/TjTPjX96Is36FVKLO/
+	uZNUdjE82Z/+ff6nXNKSOJ1wMEZhX6RjFUkdmVsAxzkTupu4PjmXcdi+YusP6jwpRh3RtH
+	R8Z/TPLcIG12a7lNJyR+B9GJhE9dnAw=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QgWgAc1Z;
+	spf=pass (imf27.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1753336232;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tWEmAXSsSqp0aOqLizAGvUyWWzoVjGCWN3V0l/bYucM=;
-	b=0CxV87ytb3Y+1Sd5XM9JHyp1zoAg/T1+R95piuIpCIpC1LIQcihMnSXLZU9kucLVRGMNOt
-	mNyKkklt3j9bMKt7ASVru6QvfNcrGZarcBgAD5jdKrIPQb7jOjrwggO0luyjcUYcLXKGxz
-	HhTQMTO6tclrVjQuAHRzilZAcNOwurs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753336232; a=rsa-sha256;
-	cv=none;
-	b=LTPE0qeVscKhUJwhldZCqeocP5XfU3zYthhiNa6biGtjK+lqwEDQcR+bVJ4Hie4M+jw+Iz
-	lgio52ThnDcXvp2s0P31SHLuChq3kcQ/mjua8DhVEkEhByCM1MueH58OLhaPkI/rm+accm
-	ogiU8XiAvrwC3h9ZIJFZpQ5LQeXPt1k=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s29zubue;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
+	bh=4j17pn+//SHkaX8ONm+HlhNEvqzcDQ+QNAUfr7A3lEQ=;
+	b=ghWNTRmpMEctEFCYUlcPNDl+jhDv+M6oexZxju/MtK3yRAxXczrvW4DW8jjVJZ/WdaSOuX
+	LSk5PMvGUT96SgUVeDsCoJUX5UwB1QGIBDB3GH/HcRdTpgqroAc3EYuHWg1nWXP2pHRVS/
+	4bzcdNg9cUMHzvFRTTU6owWuoeI9MyE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B0D1846538;
-	Thu, 24 Jul 2025 05:50:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50F18C4CEF8;
+	by tor.source.kernel.org (Postfix) with ESMTP id 68FF46114C;
+	Thu, 24 Jul 2025 05:50:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC523C2BCB1;
 	Thu, 24 Jul 2025 05:50:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1753336230;
-	bh=HjxWaeaCv8M/oL9GQSiYPTHDkhtk+DTRYh358m2uH3A=;
+	bh=p+7YUBTmffdnZ8pKAPuZ2rzC3Zvp9P0MFRgY7Xz1ydU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s29zubuefnI+LBjVqZ9vpCGlu5Y5WvluYyoGkQGyTns5h1ASI0ONXsaMz96AIkRXI
-	 cZ6ofUY5AV/ts56FD7h4Y1bDIuQLpyBShwLCqHUW8DfnoPw2vQJCqzlbBvLEe9bAOI
-	 kxQ0p30UKRiDezURaIGb+gVISD37zXrkYV5ryEw6lEsNnY69EOXcRhYpYb1D80YLxn
-	 I+zACitAelI7J9mGOrR/C6kNqZ5T5TmrV+gQX0mkg7goDAphZEna6azIrtOhh7fcjB
-	 Z+KIemqogOSqAlWLzBYa9uUGf/kIwnqbXHcE1N7vHH7V81ftidRhNtlb3B2IzsvdA6
-	 8adJrtZ2w9B2Q==
+	b=QgWgAc1Z4h7uumRs3FFTKmk6zT6WYc3ZB83iSXiAZCG3NFITyJRewAAhvM7SCdTB4
+	 RxT11O3im9HodJy3iQHDCIux7eUlVSNQW6vtNOpk+XKga6Y6fSj/9wwhDqjvs9xFUF
+	 rCGWpttB1snOwFhFvWshiFbzZcXiHhUf9pIp6AbINpGCNdRMNio67jDVRMKJBh7BuE
+	 fdkdGJldi6mApzEQpFIUP62H0n6GbSbzIk9V1TPCmz4OwMw6YkG/4j38bPS4hFhKJ2
+	 k2xWrnI6HQnV9XChu9iVDC9Tei62bf2nNEwWaweCdPI6/DaXZd3bddGMJWg3LAw2pQ
+	 U8NDMsvEgKExw==
 From: Kees Cook <kees@kernel.org>
 To: Arnd Bergmann <arnd@arndb.de>
 Cc: Kees Cook <kees@kernel.org>,
-	Will Deacon <will@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas.schier@linux.dev>,
+	Marco Elver <elver@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
 	Ard Biesheuvel <ardb@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	linux-kbuild@vger.kernel.org,
+	kasan-dev@googlegroups.com,
+	linux-hardening@vger.kernel.org,
+	Will Deacon <will@kernel.org>,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Gavin Shan <gshan@redhat.com>,
@@ -73,7 +83,6 @@ Cc: Kees Cook <kees@kernel.org>,
 	James Morse <james.morse@arm.com>,
 	Oza Pawandeep <quic_poza@quicinc.com>,
 	Anshuman Khandual <anshuman.khandual@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
@@ -98,19 +107,12 @@ Cc: Kees Cook <kees@kernel.org>,
 	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
 	Thomas Huth <thuth@redhat.com>,
 	Brian Gerst <brgerst@gmail.com>,
-	Marco Elver <elver@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
 	Hou Wenlong <houwenlong.hwl@antgroup.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Luis Chamberlain <mcgrof@kernel.org>,
 	Sami Tolvanen <samitolvanen@google.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
 	Andy Lutomirski <luto@kernel.org>,
 	Baoquan He <bhe@redhat.com>,
 	Alexander Graf <graf@amazon.com>,
@@ -127,6 +129,7 @@ Cc: Kees Cook <kees@kernel.org>,
 	"Paul E. McKenney" <paulmck@kernel.org>,
 	Bibo Mao <maobibo@loongson.cn>,
 	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
 	x86@kernel.org,
 	kvm@vger.kernel.org,
 	ibm-acpi-devel@lists.sourceforge.net,
@@ -135,30 +138,27 @@ Cc: Kees Cook <kees@kernel.org>,
 	linux-trace-kernel@vger.kernel.org,
 	linux-efi@vger.kernel.org,
 	linux-mm@kvack.org,
-	kasan-dev@googlegroups.com,
-	linux-kbuild@vger.kernel.org,
-	linux-hardening@vger.kernel.org,
 	kexec@lists.infradead.org,
 	linux-security-module@vger.kernel.org,
 	llvm@lists.linux.dev
-Subject: [PATCH v4 1/4] arm64: Handle KCOV __init vs inline mismatches
-Date: Wed, 23 Jul 2025 22:50:25 -0700
-Message-Id: <20250724055029.3623499-1-kees@kernel.org>
+Subject: [PATCH v4 4/4] kstack_erase: Support Clang stack depth tracking
+Date: Wed, 23 Jul 2025 22:50:28 -0700
+Message-Id: <20250724055029.3623499-4-kees@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250724054419.it.405-kees@kernel.org>
 References: <20250724054419.it.405-kees@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2121; i=kees@kernel.org; h=from:subject; bh=HjxWaeaCv8M/oL9GQSiYPTHDkhtk+DTRYh358m2uH3A=; b=owGbwMvMwCVmps19z/KJym7G02pJDBmNJxevUIqUu+2x4F/fOofGOacvWqgmvnqeLJv0JeJDL usnHfXgjlIWBjEuBlkxRZYgO/c4F4+37eHucxVh5rAygQxh4OIUgIn41TAyrHh499h001Vid05L Nkw14RZx7siKejb92THeWXEx6x9PFmT4K1OTc6Ms/eTviZ93fAuV7N800326HO/5hfY1V14Gh4a 0MAEA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2299; i=kees@kernel.org; h=from:subject; bh=p+7YUBTmffdnZ8pKAPuZ2rzC3Zvp9P0MFRgY7Xz1ydU=; b=owGbwMvMwCVmps19z/KJym7G02pJDBmNJ5fsPnPUwKQyTLv6YDRX59942Z9pVg4x/Z3tr6sPL i8Lmbqoo5SFQYyLQVZMkSXIzj3OxeNte7j7XEWYOaxMIEMYuDgFYCLbGRj+55xsNLv8fgpvz+zJ 97Q2v1jyfM6aXx5r3h0o/XvrBVfaBhWG/34taus75nNe6jl2+9BH9ihD5yM7dLl817dcaviWpVx +gAsA
 X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 5m84wqburdza8ngdfepk56k1bmmnqg3c
-X-Rspamd-Queue-Id: 6C421A000B
-X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1753336232-581037
-X-HE-Meta: U2FsdGVkX1/lI35ehNVLKX/VxDdoWJPDM8TRiQ3AOM1GZY50yJggj9Xw4V/D5vV+KVly7yMF7YrJ8K9y4FP4iWdSjOiXI40NJfWNlS3V9Z2gf3MwVessj2OZFgzecw5CFuqoRq01TlHnH5CTu0oy/gNpEjtEnD4uzSvCV8fe78Pt2GhD21+b0VyfZB3OzyDrwi7UCfYdVM2XuEsCy7Hy1vHb8wp2twx2FJyj8bsWHDFPOAe3hiUgd1Xf/kWbhP3EWQtA+3/I31W6VCXQf1g1/y/CPJi7WeOxEOtYmc0QFZjoz8dmRwTjGfAFZ7tBEjR7xMAXiN/EgEp/YvIcv/E+dlc4Vz/N8V0RUXwzg1+BfVUJSeUhO2u4e1E+fEPcC9Z61UHC/3eN0H3hzwdC/pOgnLCnfD96F7f3vXTFJmszjMNO2fs5Ux4htPIr4UD+zuU+P5YXQWsjFa4yN9j/Emm9TIz3afF9oDG+yCUJX5wcXNmW3lnC8PQVSmlkx2sg6Kw5ynP3uhDdCQpGboRLz8X4QECbv0/9TKpNjDpHjDRoPeNRW1+O4lGWBcPvEeT4vUy80c8l46bgK+jK3jWEeGYCmuP5EaD4mg7G7rXR/xXrBgx2/HhAh3GdkIaZiynbD3ZaPbPB6mNJ8+dhL4gmrN9iGG3zrWoWQ9ayAFRKGTaFNwY5Ixyfc/Aypq5yXSXDnvHlPXHXhA8LHIOswp6aU1maR0/piBLMy7uIeEsYHhwSVAQlDfMO4yazEQ/EWrRTwSTBgNw80U5BND8cnnxMZNr5NWu68GAaKL1UOZG5u9zkgHAZ609jcmapIOOLHr9iUOIvt8ENHsvlX7C0rCxPScWvXNhUJXed2XpMXGD0fsYQhqziwgYArSm5sYWgAfrgWUMesY61eSAkgd2ANGRzraQyo+jgaVE7rDgxKlOhZBGishdjDjyZU3lf2QPxEJ2ewqyrCgdEYk3K8gCCpwT2cKf
- nEy33NVz
- Gp76afnKUbYrzBHhT9SxbXSoEPtCCT+Wao+qm7WjvIvzPfFXcX5dL9Ybn27qvEhRM5WqKFEwbLwStxPAkaZsHF2kcOaT737WJ4J41WlT7D+mCH5xVmc3VnpjihdOySM45lJ3kBDxA9VO2FlV3Lhh/X6uhHaWihGOtlysQmGcvGuW3vspeLqztfVBdSDTW5YMwUtkE0WpElhJMo9w3eeiHbMhutJpXNlOVi/pQhGn7qLgOzB380sZhKHmEYaL4Hv59hgDsvPCwMQvyRhMMx6VFR0GBm7gUy0/BgQOQH1a9O19SzJAkpm414XUAfRQnaKhCDvOFoB+W+1EdCXsRqEawu+C0aZ9scjsgKWWeDdtkLDDRJecLbd4QmJ3DrjsBGAFp7G7Eh6CH2/S2NYD7vVGtw5ZfRoIipCshMt77bUF/FIPUlGGs66l0nTQGDg2XLayoAIDd0XaWNpoh3Uhx5i1lyqPHuJVOjqXrC4GmG2rdGsdEVazm5XiEKVIHoy5QZL3/eUxQWZaf0zoyplswFlBGVUg+wWZX4NxKsFBX9gGeE3dUnLr8UIWiYoLu+jf8ErAqYTMmqHa5VS0SA8yCzmgjzOeIAbrpeVClF87Plva8bZ5pExnj2X1s8gjIkzsUQoFbbTmT+xjzQxesnys=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D10EF40005
+X-Stat-Signature: bemjpurqwuh6jb4xg7yy8phcr9jcypzd
+X-HE-Tag: 1753336232-147518
+X-HE-Meta: U2FsdGVkX19GlcF+JUBTc9SPv1hebdkcyBbg6mmLalceJfcVo7WIyqdhkIPHTduahZ412x24zk1LfawQWlOcIcOeqdK2/7TiXYBUwVwAP6HlLmF8YvLl+Lk9PSA+w2Jd49eKQWBDG73T/8+TFGg6UNm73oa/ZoN/N0JDlC+oZFTDGJYTAZt+swXM9IudvUaACQUMqeD7jegtvyG87NuCx0nue0YuU/V/S8ZuHdCgv72eWE9DfNmIK+1OUV4z8cU/qhul3W7+nNwoFsJiBFhGaoWljg5SQcr45Yty5hhubcS1idZ03yjz0vpg+jg7DbNUQVhhewHaMt1drL9GFFhOEXPuPp3CRAq13nZw1UgWDz2JQ1DvZuZft/86hvrI6HhyoL44gh1ktE/6Os2lTvtxnTVPyJWOZEaZtTS/UxjA+RKRKdaVpi6PPThCTVu5yY5fisSADMYm0in5JeL2lAukRtQEOwiGhTMRmz2Ytv+Tr6qnkgAKFmG0NkQhGXYTCFvgOKF7BG9fhHD3N0Ki4+hWy/h0TW3ZEJ4M6uQB3suYQPlLWqshuIsbRH3f0umG6JNSUna1c1f3aLiSY9OsMPmCPU1CMITy/wo0D/DqygMQKJ5BZwCZbbUG9c1952+C1vWxrfHSJ4H2X+mrh7/bqvHnPb0q9+xm1Qf8fDyFDXYnSS/g2tL8K2T8MhQbWwHOSOkIKFn0L4H29ghIUbYYVLNt6FdsRSIKCHkHe7V/M7/vM1QYMUidsfn9ut/WR1KlL39Yt1j2XLIBsw07dk8ZWBJZVK1CkBW+Wt5q3LoCFaIBvhC1ozzr+6UEBe4AVAaiPvxKc7RNaWWKDrIsljQTdqRIgfPhe26rbbLvDwDZolO+2ZB52/AzYNA5+nU+d4NumotEpYw6ggyTDHoI6738OoqeGXUegL2bODQAFK8oyfXZZXyrO+l95J8mSNKc8MyLp/WB5jhSIk3x+NFpnhX5WFy
+ VPXTf4Bt
+ JbK3rtAWGvaOgKUuvUt1kqF3g6iqHclADJehT6EZAOX2ud9okZHaFkUq7CfEnFAhXbc4bBHue1hb3OeQlPrwjfw361QXL6DlmVHfjMOZ2e5qdzi06iSceuwfYa0gdSKfaW1txeyeOXnGD1BdkzPvgaz41ruFWaFax/idA3khPkCwD/EhuzFB2sv9po7HDwoRlAQvcww+jGj9god7+1gcZAI+n/S8FwqgGdWK8hPMFZS5uZXRwBsWDmKxeVx6Oy6abeoBNFMWbx6jZA0wqHrpIOr1FxPRyNBp+TmCcEi6s8ZxF7Owvhc+84RUvh+QBJakUUdc8j6X5DO2YFVyp2C+b3tqHPNNTC+CyG8yUWHSQkTWQiitPTVBwV/+kSuV8hsxnFqyg03bBK1Zb/LI3vfBPz9Cjq3nRrRxIIEiMN2XXEaZddxkJ2aAIZiBRjv5FBK+j8GFhmGNj4X78HzxooW6/XMFRfRD6W5Ccx65i7kr6iV/ohdzzygLJOOLgMCpsB/g6gvgAYRmwaGWWOMZkuK4Unv0iGLlcJSzo+kwEjqomog3BxiI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -167,54 +167,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-GCC appears to have kind of fragile inlining heuristics, in the
-sense that it can change whether or not it inlines something based on
-optimizations. It looks like the kcov instrumentation being added (or in
-this case, removed) from a function changes the optimization results,
-and some functions marked "inline" are _not_ inlined. In that case,
-we end up with __init code calling a function not marked __init, and we
-get the build warnings I'm trying to eliminate in the coming patch that
-adds __no_sanitize_coverage to __init functions:
+Wire up CONFIG_KSTACK_ERASE to Clang 21's new stack depth tracking
+callback[1] option.
 
-WARNING: modpost: vmlinux: section mismatch in reference: acpi_get_enable_method+0x1c (section: .text.unlikely) -> acpi_psci_present (section: .init.text)
-
-This problem is somewhat fragile (though using either __always_inline
-or __init will deterministically solve it), but we've tripped over
-this before with GCC and the solution has usually been to just use
-__always_inline and move on.
-
-For arm64 this requires forcing one ACPI function to be inlined with
-__always_inline.
-
+Link: https://clang.llvm.org/docs/SanitizerCoverage.html#tracing-stack-depth [1]
 Signed-off-by: Kees Cook <kees@kernel.org>
 ---
-Cc: Will Deacon <will@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicolas Schier <nicolas.schier@linux.dev>
+Cc: Marco Elver <elver@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
 Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Gavin Shan <gshan@redhat.com>
-Cc: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Cc: James Morse <james.morse@arm.com>
-Cc: Oza Pawandeep <quic_poza@quicinc.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: <linux-arm-kernel@lists.infradead.org>
+Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: <linux-kbuild@vger.kernel.org>
+Cc: <kasan-dev@googlegroups.com>
+Cc: <linux-hardening@vger.kernel.org>
 ---
- arch/arm64/include/asm/acpi.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ security/Kconfig.hardening    | 5 ++++-
+ scripts/Makefile.kstack_erase | 6 ++++++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
-index a407f9cd549e..c07a58b96329 100644
---- a/arch/arm64/include/asm/acpi.h
-+++ b/arch/arm64/include/asm/acpi.h
-@@ -150,7 +150,7 @@ acpi_set_mailbox_entry(int cpu, struct acpi_madt_generic_interrupt *processor)
- {}
- #endif
+diff --git a/security/Kconfig.hardening b/security/Kconfig.hardening
+index f7aa2024ab25..b9a5bc3430aa 100644
+--- a/security/Kconfig.hardening
++++ b/security/Kconfig.hardening
+@@ -82,10 +82,13 @@ choice
  
--static inline const char *acpi_get_enable_method(int cpu)
-+static __always_inline const char *acpi_get_enable_method(int cpu)
- {
- 	if (acpi_psci_present())
- 		return "psci";
+ endchoice
+ 
++config CC_HAS_SANCOV_STACK_DEPTH_CALLBACK
++	def_bool $(cc-option,-fsanitize-coverage-stack-depth-callback-min=1)
++
+ config KSTACK_ERASE
+ 	bool "Poison kernel stack before returning from syscalls"
+ 	depends on HAVE_ARCH_KSTACK_ERASE
+-	depends on GCC_PLUGINS
++	depends on GCC_PLUGINS || CC_HAS_SANCOV_STACK_DEPTH_CALLBACK
+ 	help
+ 	  This option makes the kernel erase the kernel stack before
+ 	  returning from system calls. This has the effect of leaving
+diff --git a/scripts/Makefile.kstack_erase b/scripts/Makefile.kstack_erase
+index 5223d3a35817..c7bc2379e113 100644
+--- a/scripts/Makefile.kstack_erase
++++ b/scripts/Makefile.kstack_erase
+@@ -8,6 +8,12 @@ kstack-erase-cflags-$(CONFIG_GCC_PLUGIN_STACKLEAK_VERBOSE) += -fplugin-arg-stack
+ DISABLE_KSTACK_ERASE := -fplugin-arg-stackleak_plugin-disable
+ endif
+ 
++ifdef CONFIG_CC_IS_CLANG
++kstack-erase-cflags-y += -fsanitize-coverage=stack-depth
++kstack-erase-cflags-y += -fsanitize-coverage-stack-depth-callback-min=$(CONFIG_KSTACK_ERASE_TRACK_MIN_SIZE)
++DISABLE_KSTACK_ERASE  := -fno-sanitize-coverage=stack-depth
++endif
++
+ KSTACK_ERASE_CFLAGS   := $(kstack-erase-cflags-y)
+ 
+ export STACKLEAK_CFLAGS DISABLE_KSTACK_ERASE
 -- 
 2.34.1
 
