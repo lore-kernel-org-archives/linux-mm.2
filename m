@@ -2,102 +2,98 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C6462C83F1A
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 06:47:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8469DC83F1A
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 07:30:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B15D6B013A; Thu, 24 Jul 2025 02:47:41 -0400 (EDT)
+	id AC6B66B010C; Thu, 24 Jul 2025 03:30:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2891B6B013B; Thu, 24 Jul 2025 02:47:41 -0400 (EDT)
+	id A76FE6B0110; Thu, 24 Jul 2025 03:30:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C5C26B013D; Thu, 24 Jul 2025 02:47:41 -0400 (EDT)
+	id 93ECD6B010C; Thu, 24 Jul 2025 03:30:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 07AA66B013A
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 02:47:41 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4C351112039
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 06:47:40 +0000 (UTC)
-X-FDA: 83698227480.20.8B166E6
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf23.hostedemail.com (Postfix) with ESMTP id A2740140002
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 06:47:38 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EiyeNwW9;
-	spf=pass (imf23.hostedemail.com: domain of leon@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 7917A6B0103
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 03:30:43 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 213A55863A
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 07:30:43 +0000 (UTC)
+X-FDA: 83698335966.06.37E37CB
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 03FF420016
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 07:30:39 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Wcm48Xl9
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753339658;
+	s=arc-20220608; t=1753342241;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fn3knKVKVCpcK50XNHsC0pks1LFNjjEZLC3nrBSUFXI=;
-	b=mT6zYwfVxPFhbG6j4TIWPoYXf4zw9OlmWxcCpGpaysoWfUZpXQOohuuTWhbbbzuz38lJF0
-	MX/FdiwgtkM9HXglo/XR9kWef7n7OBwDd+dJDBIknMRbGa9cH8a/YTkSLdV+OiBBX+PYRV
-	wCHl5WSmsP5L0bwt97kCnb/ky+FzRwI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753339658; a=rsa-sha256;
-	cv=none;
-	b=3fWbcjUkKofKmEgDHz3HAW0vJTMPqu75HBj+Vc4rjXHw98bjrxOZK0m/qWSbOHJc2wsTmX
-	TGsBbUrKtNmKrfVsUJqhwyqEol/kPcco4RNBC2GejxzOv+yHI2MHliJysv4mKf9PBsLR/Z
-	950IeJgmJbK0K1zKshfqWKPbrGaQaI8=
+	bh=x0ieeULae3wZoXFYbacES0pRJT+dyok9yRpzdF6F6T0=;
+	b=dRtniYrEl9dNzqv8J7d+GUR+AM2+Z9yl7bqAUnLFHKaaTjuPI72n8vy/b0C3xnWHNEYfPn
+	fEwXTRFZw88Of62kPxhEbvRUr9ldSlJwPb4aoII9tgIX93yibsJhu1rt0cTABKO8WwL1KN
+	o80V93BfVUMnEU4X0K8ukKbfBeJBgys=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EiyeNwW9;
-	spf=pass (imf23.hostedemail.com: domain of leon@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 895165C5945;
-	Thu, 24 Jul 2025 06:47:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C39FC4CEF1;
-	Thu, 24 Jul 2025 06:47:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753339657;
-	bh=csTsbkp93NJRtM4YbopZiMpO/7B2FNB1bYVQvq4Gu8o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EiyeNwW9FSXVQdf4EQIVZt5/CPNXF5UMFZvCWr4eXLRAEYT/QVUbSIL6Yn8BxFDfB
-	 APMYAPa9KV5RKE4rOUMR60FhZQuZWKMNRfHF2LsW4nfglewY4O4/bnyU4XcQR/DYMU
-	 FP2UNyPz58ah+A2siP1KKh6qJPrUYZovswwCSXMTz9OeGGDIfF7tnkEzR6AqnL48l2
-	 kJNL5ORY4Bg7SuXvcsYsC1+kER29kfT4O0lsyCRc73L58wNWEq0w9J0GdxIfZQLdnb
-	 GidBmwLI0QEl4x+mR2E29CADPKupMoF/T2EOd5XcGXlCZcdv+ISbHe9lDlrLUkdbzA
-	 S52eZLseracTQ==
-Date: Thu, 24 Jul 2025 09:47:32 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Matthew Brost <matthew.brost@intel.com>,
-	Mika =?iso-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>
-Cc: Francois Dugast <francois.dugast@intel.com>, airlied@gmail.com,
-	akpm@linux-foundation.org, apopple@nvidia.com, baohua@kernel.org,
-	baolin.wang@linux.alibaba.com, dakr@kernel.org, david@redhat.com,
-	donettom@linux.ibm.com, jane.chu@oracle.com, jglisse@redhat.com,
-	kherbst@redhat.com, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, lyude@redhat.com, peterx@redhat.com,
-	ryan.roberts@arm.com, shuah@kernel.org, simona@ffwll.ch,
-	wangkefeng.wang@huawei.com, willy@infradead.org, ziy@nvidia.com,
-	Balbir Singh <balbirs@nvidia.com>, jgg@nvidia.com
-Subject: Re: [PATCH] mm/hmm: Do not fault in device private pages owned by
- the caller
-Message-ID: <20250724064732.GQ402218@unreal>
-References: <9ae3e014-c7d0-4d58-af0e-925bcd9e4cfd@nvidia.com>
- <20250722193445.1588348-1-francois.dugast@intel.com>
- <023ab16d-f3af-487e-a7ce-929bf7b2fe3e@nvidia.com>
- <aIG+gqY2YRqBeKlh@lstrano-desk.jf.intel.com>
- <dad71615-0eba-4a8d-abfc-979fb815511c@redhat.com>
- <aIHLWnjzKWma1NLC@lstrano-desk.jf.intel.com>
- <368fa1c1-fccc-445d-bd22-0053fd2db29c@redhat.com>
+	imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Wcm48Xl9;
+	spf=none (imf13.hostedemail.com: domain of BATV+9f1e8e75762dfc1a426e+8005+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+9f1e8e75762dfc1a426e+8005+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753342241; a=rsa-sha256;
+	cv=none;
+	b=gJ36va9zN9DVeAOFZup/rKsNKaWN/o6JBy4k0N7pE9v/80shMTecJD+vpDRnEtodOkjhdc
+	KkWVfnVVQeOOhhQlLSn5RGUxfGjRYi7Dg/aKb2z1wGY/mY9V9LQB0ni/qVC/0Nh9Et4ZTv
+	ofB7LcHqum4pOytbspmBBfX2JScFcMg=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=x0ieeULae3wZoXFYbacES0pRJT+dyok9yRpzdF6F6T0=; b=Wcm48Xl9he+9gkl3mD7JfqaQce
+	x8ztVwaaQNB53A5F0yo+KJrnZBPNw4lAAfrPl0N8sY5OVPJkJwDMEuhieCsS8U2mg6MaQuEwoJP8A
+	xMtVgtwNnUmpskEXT899TV8M6A/t15OZ56RkAqlELlIhtEg6MJI7GHk5/pnYN3CooEIxTiMxJOupF
+	e/fzMsUaHaqch4kbHHT4PsbtVhXeYYpulwGUn4Mg0RNT9PSKNDvu085SQy4hz65m6cPkTug6Yab24
+	Ok2AgKIsmRhAGwRl+UsJpcNYYufuJ2+ztViaJE6jZJ4iGTvhPqtPDql8iGT7pCunDpG/dtx/NVm61
+	BqqmT/kw==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1ueqPS-00000006i6Y-1TLE;
+	Thu, 24 Jul 2025 07:30:34 +0000
+Date: Thu, 24 Jul 2025 00:30:34 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Christoph Hellwig <hch@infradead.org>,
+	Yonatan Maman <ymaman@nvidia.com>,
+	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Leon Romanovsky <leon@kernel.org>, Lyude Paul <lyude@redhat.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Alistair Popple <apopple@nvidia.com>,
+	Ben Skeggs <bskeggs@nvidia.com>,
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Or Har-Toov <ohartoov@nvidia.com>,
+	Daisuke Matsuda <dskmtsd@gmail.com>, Shay Drory <shayd@nvidia.com>,
+	linux-mm@kvack.org, linux-rdma@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org, Gal Shalom <GalShalom@nvidia.com>
+Subject: Re: [PATCH v2 4/5] RDMA/mlx5: Enable P2P DMA with fallback mechanism
+Message-ID: <aIHhGi3adOiLykJn@infradead.org>
+References: <20250718115112.3881129-1-ymaman@nvidia.com>
+ <20250718115112.3881129-5-ymaman@nvidia.com>
+ <aH3mTZP7w8KnMLx1@infradead.org>
+ <aIBdKhzft4umCGZO@ziepe.ca>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <368fa1c1-fccc-445d-bd22-0053fd2db29c@redhat.com>
-X-Rspamd-Queue-Id: A2740140002
+In-Reply-To: <aIBdKhzft4umCGZO@ziepe.ca>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Stat-Signature: sujxq85x777hem6c5coogtz7rhyc1hfr
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 03FF420016
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 5q4p13c39sjkspu3kdcw61bup7jmswhp
-X-HE-Tag: 1753339658-683893
-X-HE-Meta: U2FsdGVkX1/ebwbT0J0fpUrEXQzDPjLymJ4+9cFmGMaqmGtf9iKPRfXA1V+LnPHA0DeJ8tQEURRVW9L1cTQuYT05PuJGdPo+WPl0n7vA8STKDM3ec+/Uel1H9JhrOdEdP7sb/RvJDJ+fxK7loWRPMqog3MJPoicRLnl4658Z2iSi94V1O7zob3wSClt/3OfMAhuZn/3KjJODVD3e09eMYhopDYikxy3YbQYZicMn8xRXBBuSxoD+ACZkzceHSp+6z5clPCmmM8uSQYKk5n+vpsXX9fD6XeHtU7jpULOyGMmCzI6e7cH5i3Xm+Gs5tP3USCr8MbpJV64ocaV9TOkJOH4R6IzRSQdbzyReMgQfhrtpVMYKe175Bu1E5VWJWPFLQKyHt5bfhGF2w5k6/zfiZyPyPoPT/Ml36AahHxS2Es2KPD/XNzB6zNh2GynE0+LjYOL8NBcQ0z+Ja4FiUhXycoPTk3h5GzdPkeBFkvGdWf6BcGltYj4sCEk9g04KwimJ5QkWAvJtjwdLj/ZkLxjYqO1+Jj5n0+75atFYV9BVSl1/5moDV5hI55a0HMmj4AqjWwsbp2IValY7aI/GBQTDFvpSiZz9uBtJGVhkwnfMQu69pwd0+/mQWVj1Fjw4LASmU3NB8Ea5OdK+n2/hjsmZWpd5CEmmwdIaqX2vFkQmkzU5nZ2kFprfMeUciv9mpRcdsNNNF+KbkJw9a4x3bPDs4zLe5BdwVHJbsv0OdQ09WBIEubkDvm9crrPkG8lrRmEixNYuEvXNbkfsylifVVZn9LyK3AoaQ1wJKfvQzvUcXvOgDCv195Y1YtjEN8vobkeIdQUuW0XzWFMYmBq+WNpoBSgvfkOxTrMsYGWrkTBzgBQ2yGIToc8AOoPVtlTJo3scZeF6NoFnTa95u+wpqGjGhTK34DU20NU8wGxjNc4oNi7I9SN1if7kPpGty41j3I4HBgFfVMRh76h7gJbziRP
- eMrfZMSJ
- IiraojmtiwYpGmqBw+ibcxgft0hlWtdchclqow+p2Q7+VNhK4LumrfoVGJjPTeHqUaF9nS+HQQpBhYb6Ky6xvyVamHiyx7Bvx+dfJCtHkcQCCKyAosSzVKyzZGjaop6QhrNjnLoMqgZPrzrURlWoTTkM3XrMADGRtNFZ+a6vNhP4au8jfUGHJgSuW9NMHwoO0xYGOEF1MB89GcZKg5dTCxz4kqQFrwZUYUOKZJd+XgiLA+niYfKczlZtfC5bZ5CHMIi+k8m+UWACPYQGUnKA5PXAUYQ==
+X-HE-Tag: 1753342239-956017
+X-HE-Meta: U2FsdGVkX1+6pYzT+yk6tgOratt96NzhOvw8bb6Z8Zc9Y1NFV0vyp6zHOW+3DV/aqzuvGJeIBpc5oL/y75WUz8NSm5MXXwHiLIU6wWuPz2w6WUT7ORuzaWCDUTEmufekYaP2w4JKE+QVASq6IZ46GKqOYtueORa6LxbWc6XUuDImG+1DccerJlTr/BvdP2Zhi97B6E6kr842D3h/zmhlWiI4u1wTlvGV9a1YgxH+FlMS7ohmKnzEoB57xfA8RP62NmD3XhHNp9GCGB64EwtfEmgEIAV9/10DiOHYsMAyKlNn1EOZs8JTaWKn9AhvzdepVt8MHi1slum8peL8KZ0k4wstkNl4TqxEtyuMcscz1SZmoyQSyrPSktxNKR75UjQLW3RRDClDs8fLEmbF3OOY1hOUh6Pw29BVUg/cDYIj9iP/1rrQRVNypZDqJRKN7cHSzWDpnW28Uu2kcm7lqg83D+icMMhVIyaO033opyDib/eZu4askshw0NKilZRrJNaYT+JyMt72iKK+134H5CsUCqOfM3W+ODlgR1qpMQHsObFhtZ3Ox3y+DKp5XkqCqce4WvxJXoW1cTCjwj2Tz8GDTatS918URfP0YCNEsua10n8aKOXYZ1u6hwRwgNBb1L1Acwz1D3K5N9PYhhCBxVBD50gKbM8rHEdtL62LeNMrDB+c4AciChwac7WqeoiThnfBTXMXNVZlGWRNeIvLZSlukEEbCVnxn/8/WedZM45sPVmUpUtM7w5r7/Hpd7g0NovCzsUfyMor7w+lgUIF9SaeejVn+LHG4bPg2VoHrbeLIMxfhVqRQTiYCTW7qurlqEw70EnyVi6GpSsDRaFTuw8AFwC9N4ganAfBAGeH4VrCtHENcgrFZlXrFj84s852Q4taGTbAdO4lKVoJi4Bigb/G0jPx41MfSpuKKvDE1CTdav0YWWqNKRLiWmSnvaBU18YRxLAPdPVpTskX+S3oK91
+ 17ZkFXDl
+ IfcLUgZN/43+BDn5Df9Bql8jYSe9yqzm4wvElonCbUOiUGURZTgVAWsnXMhvO8HuDbFFFIn8/2q96Qm5AuZO2OhxL2k6Jxa/Zn8JL3Xh5dJTMIzQQ55rrP7GpYdyUbXjXP7gPmCXxsmXCN7CVO2qjIY9YHLd7hA9UzYMTyFyHKM52RY2DgvA+4+xn19160W4WPWVkn7u4Kg7rmCwZq5tIypNOTP4yxbvot3R4t3sHmwNYj1eYnC9ytbELH8CMHK8+v/aGBgsArsxkv8vuGnadmQCF4KghCn0lOSuWiUwlf1cV0/PXoLQ0uM7WZVF7dhldQDgXmYtGaj8XaZkuxuI1eT6zmV7L1KTlRbrRU0VScUXYmSdTcmR4PRXW+NEy6VDJmk9uWBOb6ogl0sgueRz4hScxTtA92ZbwBQt8QCMyXLYZpeRXIBILvou+rJaTA9+TALwQeySrH5a/u4k=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,51 +102,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 24, 2025 at 09:04:36AM +0300, Mika Penttilä wrote:
+On Wed, Jul 23, 2025 at 12:55:22AM -0300, Jason Gunthorpe wrote:
+> On Mon, Jul 21, 2025 at 12:03:41AM -0700, Christoph Hellwig wrote:
+> > On Fri, Jul 18, 2025 at 02:51:11PM +0300, Yonatan Maman wrote:
+> > > From: Yonatan Maman <Ymaman@Nvidia.com>
+> > > 
+> > > Add support for P2P for MLX5 NIC devices with automatic fallback to
+> > > standard DMA when P2P mapping fails.
+> > 
+> > That's now how the P2P API works.  You need to check the P2P availability
+> > higher up.
 > 
-> On 7/24/25 08:57, Matthew Brost wrote:
-> > On Thu, Jul 24, 2025 at 08:46:11AM +0300, Mika Penttilä wrote:
-> >> On 7/24/25 08:02, Matthew Brost wrote:
-> >>> On Thu, Jul 24, 2025 at 10:25:11AM +1000, Balbir Singh wrote:
-> >>>> On 7/23/25 05:34, Francois Dugast wrote:
-> >>>>> When the PMD swap entry is device private and owned by the caller,
-> >>>>> skip the range faulting and instead just set the correct HMM PFNs.
-> >>>>> This is similar to the logic for PTEs in hmm_vma_handle_pte().
-> >>>>>
-> >>>>> For now, each hmm_pfns[i] entry is populated as it is currently done
-> >>>>> in hmm_vma_handle_pmd() but this might not be necessary. A follow-up
-> >>>>> optimization could be to make use of the order and skip populating
-> >>>>> subsequent PFNs.
-> >>>> I think we should test and remove these now
-> >>>>
-> >>> +Jason, Leon – perhaps either of you can provide insight into why
-> >>> hmm_vma_handle_pmd fully populates the HMM PFNs when a higher-order page
-> >>> is found.
-> >>>
-> >>> If we can be assured that changing this won’t break other parts of the
-> >>> kernel, I agree it should be removed. A snippet of documentation should
-> >>> also be added indicating that when higher-order PFNs are found,
-> >>> subsequent PFNs within the range will remain unpopulated. I can verify
-> >>> that GPU SVM works just fine without these PFNs being populated.
-> >> afaics the device can consume the range as smaller pages also, and some
-> >> hmm users depend on that.
-> >>
-> > Sure, but I think that should be fixed in the device code. If a
-> > large-order PFN is found, the subsequent PFNs can clearly be inferred.
-> > It's a micro-optimization here, but devices or callers capable of
-> > handling this properly shouldn't force a hacky, less optimal behavior on
-> > core code. If anything relies on the current behavior, we should fix it
-> > and ensure correctness.
+> How do you mean?
 > 
-> Yes sure device code can be changed but meant to say we can't just
-> delete those lines without breaking existing users.
+> This looks OKish to me, for ODP and HMM it has to check the P2P
+> availability on a page by page basis because every single page can be
+> a different origin device.
+> 
+> There isn't really a higher up here...
 
-Mika is right. RDMA subsystem and HMM users there need to be updated.
+The DMA API expects the caller to already check for connectability,
+why can't HMM do that like everyone else?
 
-We have special flag (IB_ACCESS_HUGETLB) that prepare whole RDMA stack
-to handle large order PFNs. If this flag is not provided, we need to
-fallback to basic device page size (4k) and for that we expect fully
-populated PFN list.
-
-Thanks
 
