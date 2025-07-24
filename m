@@ -2,90 +2,118 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DAB93C83F1A
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 14:13:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 33D05C83F1A
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 14:30:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A3AC8E0088; Thu, 24 Jul 2025 10:13:38 -0400 (EDT)
+	id 96AB98E0089; Thu, 24 Jul 2025 10:29:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 553E38E007C; Thu, 24 Jul 2025 10:13:38 -0400 (EDT)
+	id 8F3F08E007C; Thu, 24 Jul 2025 10:29:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41B438E0088; Thu, 24 Jul 2025 10:13:38 -0400 (EDT)
+	id 795418E0089; Thu, 24 Jul 2025 10:29:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 27D5E8E007C
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 10:13:38 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CC2131DA790
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 14:13:37 +0000 (UTC)
-X-FDA: 83699351274.18.2831D26
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
-	by imf29.hostedemail.com (Postfix) with ESMTP id F206F120002
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 14:13:35 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b=pwq5tdM2;
-	dmarc=pass (policy=none) header.from=lwn.net;
-	spf=pass (imf29.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 64D578E007C
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 10:29:59 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3447158E69
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 14:29:59 +0000 (UTC)
+X-FDA: 83699392518.07.D6C34B3
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4B35520016
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 14:29:57 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ywFB9DLR;
+	spf=pass (imf13.hostedemail.com: domain of surenb@google.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753366416;
+	s=arc-20220608; t=1753367397;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FDYBYXhi2fpIXmidMih0lla5P8/HwKyQKaeA3qjglN4=;
-	b=I40TJ1zHNCMUWDBdxTo2e2gcD1UHWDAFnEvfvSp8cH46FFHWWtQKmw1erd2EyuqAK3R2he
-	AQ2HzaDJ31edipExp1C5lQQv2c9bo2I1ekp346gyw8RlHRYwYzYsEsKokHanLfWN7Ce1kv
-	lVA9TusUxaTM8+rSilxnRJowNWhWpzg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753366416; a=rsa-sha256;
+	bh=FlhcpDPJ/zf5PjQewozCSVSh7GoDUgf457I2X0B4PcQ=;
+	b=MuCMDJPhxyWn1WpMVpoEnean68RFHsXVYc3oYuy8o1vzKNnOCrwGcigUidczQMyJ7RnHJL
+	9UKcpmhkUoPvWsKGan/FT+Uw2NbDkHFkxpRt0lmqg09tGzJKLmfCei75dx3432Ea6lDauA
+	+r4XnHbZ/Qh9R4cLinOx9J7lD3rvSPU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753367397; a=rsa-sha256;
 	cv=none;
-	b=7o338lHQFCxsjrZySVwnSoy8atgHh70w+V7syegrk9kUN0ZScNHaPpu8s7HfB81p4lbiiJ
-	vYzGcd5l3X1LFuR/GAT4xY1zWCQuJE0jmSrCFoi6LRj3IW1lLoZZONR/oUOqBXPBInDwnr
-	DZ9W5hIdOv07OOVU9FdaOMmsUzUTdcw=
+	b=1a2s1vW19mcAW39Uuel5EE20G3JIxQrTi4aH6GXzPXPXxgNe9m+eu3sskCdcVXgaXhEd9Y
+	u3e2E7w7z7khIxHLWaDXCil24+qJ9lBaW3W2xmLWzl9CO6vKfK+W+mDxxhhRv+P8y94kSZ
+	toIAfuISm6rG0wpOGeoHvWpL9WGMtso=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b=pwq5tdM2;
-	dmarc=pass (policy=none) header.from=lwn.net;
-	spf=pass (imf29.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 3A3B040AD2
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1753366414; bh=FDYBYXhi2fpIXmidMih0lla5P8/HwKyQKaeA3qjglN4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=pwq5tdM2vDY6APoBJuNEplILNdsyaU8ylKRxeCbXe8XwZITdA49KYYVSYTry8HpKV
-	 11JU1pkrDwmKYTn4Fl/PSS7PRD9lEUq9GYeo/HlJaKcFNthhWNgGaSbErWZpRksXU/
-	 2vcUlKH47OM35KhDFiJKYjv9eHZYQfJhlwveoisq76XE1Ph/wNujQEY4mwi+2EPI03
-	 C6Ge6wReBlahOFy06igmvLpUfGmMHNmMAtE5bIWSddnTvAo8pP5gNfRizJLIkJVMoq
-	 n+gO3mVS2lc+fqlOMygB0N/vI5gck9MYQxuB1GcL+iBGKHLpcflufHKZM8r4X1ng6W
-	 uqNwh/ttjzzkw==
-Received: from localhost (unknown [IPv6:2601:280:4600:2da9::1fe])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 3A3B040AD2;
-	Thu, 24 Jul 2025 14:13:34 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Eugen Hristev <eugen.hristev@linaro.org>, linux-kernel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-mm@kvack.org, tglx@linutronix.de, andersson@kernel.org,
- pmladek@suse.com
-Cc: linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org,
- eugen.hristev@linaro.org, mojha@qti.qualcomm.com, rostedt@goodmis.org,
- jonechou@google.com, tudor.ambarus@linaro.org
-Subject: Re: [RFC][PATCH v2 02/29] Documentation: add kmemdump
-In-Reply-To: <20250724135512.518487-3-eugen.hristev@linaro.org>
-References: <20250724135512.518487-1-eugen.hristev@linaro.org>
- <20250724135512.518487-3-eugen.hristev@linaro.org>
-Date: Thu, 24 Jul 2025 08:13:33 -0600
-Message-ID: <87zfctad82.fsf@trenco.lwn.net>
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ywFB9DLR;
+	spf=pass (imf13.hostedemail.com: domain of surenb@google.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-60b86fc4b47so9060a12.1
+        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 07:29:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753367396; x=1753972196; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FlhcpDPJ/zf5PjQewozCSVSh7GoDUgf457I2X0B4PcQ=;
+        b=ywFB9DLRQRqlUbRrS9+Rz5ocAMT8XU6F4X1ylg2S8dxJeGDgKUk5Xss1FLPi63KEa8
+         63u6gtfihKjvCRh+gGvP+AnVsMkWc9S1BInyRehh+0U98YHWar4okpAen+yHwX2m5Ef0
+         SzinW1k4rox6Jh1A8ZZKr/eFNyIbNjPhu7Eok4ZHsZgzxjagv6zTTletw9t9GgSdTp9u
+         l7lYTg9uhIYl9zD+2u0THHnVulFGFAg0XCxtK8w/ZX0udreeHmynAnMtkNyN0oMBBUC1
+         NKw+PZNEVNwvmo4eGprJU3NiAYP6crw0+oMNAzsfj089WCbl+vbIQP7IT4GEKs1rGANj
+         oB8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753367396; x=1753972196;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FlhcpDPJ/zf5PjQewozCSVSh7GoDUgf457I2X0B4PcQ=;
+        b=ee3bTZadLT9kktsYHpyGCzgINcPyDhynnbcZEn/GDmq4XiLeU2bJIHeXg98sOs+5qV
+         DlhHVKWP5mDLzW55yb5fdPUJ0MQS7z92PuMgc6jTWI9pju31CTC1XFaxKuoHCWIoY1p8
+         abKtKjSIHNFkTvqx788JCLEHNWK3q4NYTLiInqI2taf7SYjTypFan48AlTm+ze5XN6uh
+         t5R6ErH8MSw7bwbR9/2+/QWHCI4jlmKPXv7kWEO/9lQ5hFxlOzRq0nK3ZmObdokj2OwQ
+         8S4yZIuKmZYqTrDwuirrkZQopQycVSi+19/xrihrIERSg8wDOpBP4FvRio3jZjJQM7fa
+         b1rA==
+X-Forwarded-Encrypted: i=1; AJvYcCVptpomvJH8WbpEAa4YwnwX377wYW1i+3+uTjAPkzCVnUUy/+y/cdsb396mtVoFSZ+gzcNjpoC3Cg==@kvack.org
+X-Gm-Message-State: AOJu0YxKC0RZc7LKKjV/KW7yb+SoLmv2E1H6iva+olWPAcQqnSrLTjKg
+	ucVNmvacBrAc3tDAAVE/zpODmIaj3pB8T4Q7BdlLbksEebk81u/bV7MiP11Mc/mcK9/9FN0IpW7
+	XaYkuYeAI5vm3xRnPW84SJM3DBcgfCk3FSXwa5mEh
+X-Gm-Gg: ASbGncsWso2hlE1xn5G+Rx8zAQmS54aqa5az+kPrzgL3osW+qVs0eGIlV542Ddkbvqq
+	X6f7SQWe5oCsiU4lBeYSFbnw68yVQJ5tpntyTOoavrgRWUBvtOKZLVK9rwdlOCHTXO2bPPCRNsC
+	MjA0qXc6xNsOJru38q0VwGwtAm40TRnj28DtxAX0dhAvd6o8HVfRF2yQBqYJAJwizqYMpDSHlYa
+	Lg579o+xqjaCMN7RrjRF/sIFL0TQ926iIn55l6uOlQrKpaS
+X-Google-Smtp-Source: AGHT+IFnzfnkL7IMifLfz57vgfmQBM0IvNePvt8oCAV9PXZXiY5Zcoi2sHhp40dEdBN6gXkrNPjSmbr628hsdVXAWto=
+X-Received: by 2002:a05:6402:20ca:b0:60e:3d45:c65a with SMTP id
+ 4fb4d7f45d1cf-614cce46f4emr80233a12.5.1753367395396; Thu, 24 Jul 2025
+ 07:29:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: F206F120002
-X-Stat-Signature: rhyhzg1rn7ucnfz4f4uqgreboh6erg6y
+References: <CAG48ez0-deFbVH=E3jbkWx=X3uVbd8nWeo6kbJPQ0KoUD+m2tA@mail.gmail.com>
+ <16c97e30-19c9-41e8-b73b-c0b3c8eceff3@suse.cz> <CAG48ez1qhjQNHC+3572udqVWHTANFpQ0ngxn_4ZDC9F8NCXsFA@mail.gmail.com>
+ <c53b22c3-9f7f-4793-9d10-f4df861a3e32@suse.cz> <CAG48ez2cGX3e5bqgcw0OEnho29+YhwG2eOrHRgNwGAA_Nb65nw@mail.gmail.com>
+ <CAJuCfpEcjH+W83At8WSkgzO=JvZmapg6dPaXmuSRS4ufhSha4w@mail.gmail.com>
+ <CAJuCfpHk_k5eVhAZTK=jJvES9311Hyo_YXxY-S56EAYSBuRVRQ@mail.gmail.com>
+ <702ab3bb-db4c-49cb-bb77-4e864cae610e@suse.cz> <dbc20783-0ff5-4902-bd73-e9282bfd87ba@lucifer.local>
+In-Reply-To: <dbc20783-0ff5-4902-bd73-e9282bfd87ba@lucifer.local>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Thu, 24 Jul 2025 07:29:42 -0700
+X-Gm-Features: Ac12FXwkwryuiZ7qVX6VVH1hTJoQ17odUJToEjarcBlX6QEUdlzMhlFWhWvKrTQ
+Message-ID: <CAJuCfpEVrpHACx2G2=Gq7YadxkA-DnFpFmbUij=Xr1=w7yrLbg@mail.gmail.com>
+Subject: Re: [BUG] hard-to-hit mm_struct UAF due to insufficiently careful
+ vma_refcount_put() wrt SLAB_TYPESAFE_BY_RCU
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Linux-MM <linux-mm@kvack.org>, 
+	kernel list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 4B35520016
+X-Stat-Signature: ca7qbbmcssewb8kqofaeji5wrcpgub6z
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1753366415-914138
-X-HE-Meta: U2FsdGVkX18FSv8oD38etj5tSaGFdQCbXnrlWW9igAeMzHZGuc7g51hQYHfhYo/J+NkMAnmP/idK+FRM3ccRiJW0+mHuZOL1pcdve0QTwmNRBK7PGkN03erBBO6uCeBoGcXATPwTugussmyoQD0j/QAXDqKANG2ZC236XOnwRr4Q0Bop5oPFCPPPu1olXbsmIum53WI8TbxDeU9j8u+H1etB9J0CnzyLAga1S+09aE4MWeGjhFlBfCo7vtbInH8mDIpaWzUQw0AFWess+OqUlulX1r+NVNEilqB78WkGQlRpPdGdU7+1acNNH/bcRzR2CbaNhIB1/cJ01hF/pZrqsLWyUgX0HQpesfTM/rlQz7lRo3/1LN6UdTJ0xTpx/52tYNNySstA4iMr5cfvCTEb0pR5Bye+0tUVX5+a51mViIRZl5FNFtb7NdUWfMoviMC2UL5MtjCxLJwrO5Pk2Q0227weE+/LOAvSQiV8rewLO+C8XQzvphMSoRueuGVAEr4t2wjzAzMA/LE4werJ4lCLqnO3uYyWz7PKECd+LXLvmv9LIuQmEqROc+SpNhW8V+t/oL35jfA33w+ldiRao0pYW4tN2UsBh+rbwrZ5cXvqd6baR6aioWLBXqQAtUISWuhnJnTs0Oj1vI4xWSZ6D0VMZH3kOHOukYcUPBlqYBx1DJWqWmg1u9giD0w9rLjf1OH+vFpGKUNHBFGbG5TpTdoQThvNbjIL8y3bioEIlBzMw3wuc71gFlM54xyEvbQb2WqVD6annH3bhI6gbyvRjdnkG29LuR78/+HKku1Qks6XBIU6S5585UPcBuKxXK8pQdOS35uYEJC2zR/TO+DAUZ1TQIandXtvVaA7X3AHf5BF7LZk2ZEEm6i7joc1PT+QivlsVwF259UPNY+XEqv62cqIKg2mopzYAlXXTZyyJeaWHS6zYSlowy06Mhc6Gb4hQU1vNlXd3j3oDIluT3LM1fV
- rVgzRo7t
- H62A57U9QVjRriiDkNMZV5mM9pqJFai4Mz9b+sNuNexk8NKyN+K86B4CCzsbwrYVvk8p4QP11jfoiRwLBL97u6bgdET1UIWmORsoFkth6uXbCdcLwD7K31cRSApPm6W0R7AU81DmnvGtvS/+svRRg9dpwQNE48IGxlAW3vrssmJdCiQKfATRRy5OFtUrxgvyR8JXe3IqiHojQLfgmYHK5ssyEsA92vAyHh3vDgTeE0zL9kWyWWAxW6sZdKOqpJIEdq3Sp3X01ix4fic9zVocn0Ql2aXKr1u/kdGxxbWBngd3i8K//HiF48SbWNN06L9gemRI0qDRY9gPELkZECcFrGHJGttcvcLdRlkI+
+X-HE-Tag: 1753367397-440493
+X-HE-Meta: U2FsdGVkX197/jBSIlHf1AagJf7BLOWUwcmVCyhwrLDWfFXItzyNq3WUxY64p29Ie2ljqTd0JH/2aowYQcHQOhEXq9Vp+zfdYgq3wFo7xXhYUUenc76bs+dLfDq2RlORQO7YXrrj2mkw53YNM2Q6jaK/eFufhmo76dh0I9S+1WEZbiz0aORmIj91H1/gwau8Ty+5MwM430dPQ2CHnZB8pOXTVv6EJ72naFpKeeUKR2wh0QgY/uEDxtp0M6kFtPhfp5QGp8vXL1X6lOGgVIHm6hX16DlmTf8f71dU//Ly5SUjvhyJwwaBPPZf08UEbTfWPFFfxsk/vscZrjLbbhZNwJnZA3dJ0jwCRr66GnthzPsDA1emKaOqQ+mba/tXcq1jJHyik9trPwKSFszIkL+JXBJKW5FhKBcbKRAV6U+1jULphnHA2f4c9eWvoh43h8SvgUKkEImvHEFluIWZE5tu27m80TOfm+JxIA3uPhLqWa5uCZe34ZwCv/3LAuJzBDQWkHfxnd0KBhzXQnEn01jhGbYQR1wpTwRC/monnFmpx9Chi+Dad31J/QoV6hnpCj3zox4F9ePdxv0QRok0VO04mdK0H/6RpVORUh8t4Xr+Beuex1aTLcpem5js5+LKbuNKksfWLfTngkupqqs2ubGSATEqKxvi/VUb1BDda+J3eWlWs7DcxJv/jUTWeY/b+j/NNVvVy2g8ZIoiH6rnnLQcNjaQzEBIFJfSsMfte+TbB75mVxN5TKg5IcF1RvDX6I+8VaFqg77ehXm873igRCQvUH7nJ05M1p7u4Zaow5Bspdss83XF+lGEAnPbp9wDcyu2U7156ALVl6DEQBk8RVqK/FGE2sy++GInt6GkUbNTlvrDxV/htGgpZ5cfo0l5c3K2N5kZe069fS6KmCtBvo4aCXAV/eKJ1KHcZpKqzZLAMgB7TkzA1x5b+ZUGvsAo2Hkmnehsno/xiIGgfG/bG+n
+ 0my/Xms/
+ ie44RjnRkFDv7PxmXoVfHYR/IhY7+SP1/rnInZyNPkbNA5htPN5rX6CjQ9FQUph4o7ZNFu9WZnglK/4Rh6sKSu0aq57HR4G68U6BpDp22PHndWwp3v2PuFRc9VGA59k8TsYV5B2DgGT617uwaYAX26n6iEZYxT+PBj2LDlsKvYgwb75SYWV7KB3A7Nnr3IhSF+H34SK92G1HNu5nTjRNuO0V12OgrMQsg7emYBA0kia9EgVFFw6U3hbgx7KuMQ+bSEvG8mDXMMiLUF8s=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,183 +122,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Eugen Hristev <eugen.hristev@linaro.org> writes:
-
-> Document the new kmemdump kernel feature.
-
-Thanks for including documentation!
-
-> Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
-> ---
->  Documentation/debug/index.rst    | 17 ++++++
->  Documentation/debug/kmemdump.rst | 98 ++++++++++++++++++++++++++++++++
->  MAINTAINERS                      |  1 +
->  3 files changed, 116 insertions(+)
->  create mode 100644 Documentation/debug/index.rst
->  create mode 100644 Documentation/debug/kmemdump.rst
+On Thu, Jul 24, 2025 at 3:53=E2=80=AFAM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
 >
-> diff --git a/Documentation/debug/index.rst b/Documentation/debug/index.rst
-> new file mode 100644
-> index 000000000000..9a9365c62f02
-> --- /dev/null
-> +++ b/Documentation/debug/index.rst
-> @@ -0,0 +1,17 @@
-> +.. SPDX-License-Identifier: GPL-2.0
-> +
-> +===
-> +kmemdump
-> +===
-> +
-> +.. toctree::
-> +   :maxdepth: 1
-> +
-> +   kmemdump
-> +
-> +.. only::  subproject and html
-> +
-> +   Indices
-> +   =======
-> +
-> +   * :ref:`genindex`
+> On Thu, Jul 24, 2025 at 10:38:06AM +0200, Vlastimil Babka wrote:
+> > On 7/24/25 04:30, Suren Baghdasaryan wrote:
+> > > So, I think vma_refcount_put() can mmgrab(vma->mm) before calling
+> > > __refcount_dec_and_test(), to stabilize that mm and then mmdrop()
+> > > after it calls rcuwait_wake_up(). What do you think about this
+> > > approach, folks?
+> >
+> > Yeah except it would be wasteful to do for all vma_refcount_put(). Shou=
+ld be
+> > enough to have this version (as Jann suggested) for inval_end_read: par=
+t of
+> > lock_vma_under_rcu.
 
-Please don't create a new top-level directory for just this tool - I've
-been working for years to get Documentation/ under control.  This seems
-best placed under Documentation/dev-tools/ ?
+Yes, definitely.
 
+> > I think we need it also for the vma_refcount_put() done
+> > in vma_start_read() when we fail the seqcount check? I think in that ca=
+se
+> > the same thing can be happening too, just with different race windows?
 
-> diff --git a/Documentation/debug/kmemdump.rst b/Documentation/debug/kmemdump.rst
-> new file mode 100644
-> index 000000000000..3301abcaed7e
-> --- /dev/null
-> +++ b/Documentation/debug/kmemdump.rst
-> @@ -0,0 +1,98 @@
-> +.. SPDX-License-Identifier: GPL-2.0
-> +
-> +==========================
-> +kmemdump
-> +==========================
+Yes.
 
-A nit, but it's nicer to match the markup line lengths with the enclosed
-text. 
+> >
+> > Also as Jann suggested, maybe it's not great (or even safe) to perform
+> > __mmdrop() under rcu? And maybe some vma_start_read() users are even mo=
+re
+> > restricted? Maybe then we'd need to make __mmdrop_delayed() not RT-only=
+, and
+> > use that.
+>
+> Agreed that doing this under RCU seems unwise.
+>
+> I know PTL relies on this as well as zap PTE page table reclaim, likely t=
+hese
+> wouldn't interact with an mm going away (you'd hope!) but it seems unwise=
+ to
+> play around with assumptions here.
 
-> +This document provides information about the kmemdump feature.
-> +
-> +Overview
-> +========
-> +
-> +kmemdump is a mechanism that allows any driver or producer to register a
-> +chunk of memory into kmemdump, to be used at a later time for a specific
-> +purpose like debugging or memory dumping.
-> +
-> +kmemdump allows a backend to be connected, this backend interfaces a
-> +specific hardware that can debug or dump the memory registered into
-> +kmemdump.
-> +
-> +kmemdump Internals
-> +=============
-> +
-> +API
-> +----
-> +
-> +A memory region is being registered with a call to `kmemdump_register` which
-
-Please just say kmemdump_register() - that will let our carefully
-written automatic markup machinery do its thing.  Among other things, it
-will create a cross-reference link to the kerneldoc documentation for
-this function (if any).  All function references should be written that
-way. 
-
-> +takes as parameters the ID of the region, a pointer to the virtual memory
-> +start address and the size. If successful, this call returns an unique ID for
-> +the allocated zone (either the requested ID or an allocated ID).
-> +IDs are predefined in the kmemdump header. A second registration with the
-> +same ID is not allowed, the caller needs to deregister first.
-> +A dedicated NO_ID is defined, which has kmemdump allocate a new unique ID
-> +for the request and return it. This case is useful with multiple dynamic
-> +loop allocations where ID is not significant.
-> +
-> +The region would be registered with a call to `kmemdump_unregister` which
-> +takes the id as a parameter.
-> +
-> +For dynamically allocated memory, kmemdump defines a variety of wrappers
-> +on top of allocation functions which are given as parameters.
-> +This makes the dynamic allocation easy to use without additional calls
-> +to registration functions. However kmemdump still exposes the register API
-> +for cases where it may be needed (e.g. size is not exactly known at allocation
-> +time).
-> +
-> +For static variables, a variety of annotation macros are provided. These
-> +macros will create an annotation struct inside a separate section.
-> +
-> +
-> +Backend
-> +-------
-> +
-> +Backend is represented by a `struct kmemdump_backend` which has to be filled
-
-Structures, too, can be mentioned without explicit markup.
-
-> +in by the backend driver. Further, this struct is being passed to kmemdump
-> +with a `backend_register` call. `backend_unregister` will remove the backend
-> +from kmemdump.
-> +
-> +Once a backend is being registered, all previously registered regions are
-> +being sent to the backend for registration.
-> +
-> +When the backend is being removed, all regions are being first deregistered
-> +from the backend.
-> +
-> +kmemdump will request the backend to register a region with `register_region`
-> +call, and deregister a region with `unregister_region` call. These two
-> +functions are mandatory to be provided by a backend at registration time.
-> +
-> +Data structures
-> +---------------
-> +
-> +`struct kmemdump_backend` represents the kmemdump backend and it has two
-> +function pointers, one called `register_region` and the other
-> +`unregister_region`.
-> +There is a default backend that does a no-op that is initially registered
-> +and is registered back if the current working backend is being removed.
-
-Rather than this sort of handwavy description, why not just use the
-kerneldoc comments you have written for this structure?
-
-> +The regions are being stored in a simple fixed size array. It avoids
-> +memory allocation overhead. This is not performance critical nor does
-> +allocating a few hundred entries create a memory consumption problem.
-> +
-> +The static variables registered into kmemdump are being annotated into
-> +a dedicated `.kemdump` memory section. This is then walked by kmemdump
-> +at a later time and each variable is registered.
-> +
-> +kmemdump Initialization
-> +------------------
-> +
-> +After system boots, kmemdump will be ready to accept region registration
-> +from producer drivers. Even if the backend may not be registered yet,
-> +there is a default no-op backend that is registered. At any time the backend
-> +can be changed with a real backend in which case all regions are being
-> +registered to the new backend.
-> +
-> +backend functionality
-> +-----------------
-> +
-> +kmemdump backend can keep it's own list of regions and use the specific
-> +hardware available to dump the memory regions or use them for debugging.
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 7e8da575025c..ef0ffdfaf3de 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -13620,6 +13620,7 @@ F:	drivers/iio/accel/kionix-kx022a*
->  KMEMDUMP
->  M:	Eugen Hristev <eugen.hristev@linaro.org>
->  S:	Maintained
-> +F:	Documentation/debug/kmemdump.rst
->  F:	drivers/debug/kmemdump.c
->  F:	include/linux/kmemdump.h
-
-Thanks,
-
-jon
+__mmdrop_delayed() is a viable option but I would hate adding
+mm->delayed_drop for !CONFIG_PREEMPT_RT just for this one case.
+Alternatively, we don't need to be in the rcu read section when we
+call vma_end_read() inside lock_vma_under_rcu(). We refcounted the
+vma, so it's locked and stable, no need for RCU at that point. We can
+move rcu_read_unlock() before vma_end_read(). However that's not the
+case with the vma_refcount_put() inside vma_start_read(). We could
+change vma_start_read() semantics so that it drops rcu_read_lock
+before it returns. That way we could do vma_refcount_put() after
+rcu_read_unlock() in both places.  The retry case in
+lock_vma_under_rcu() would have to reacquire rcu_read_lock() but that
+retry is not the usual path, so should not affect overall locking
+performance. What do you think about this alternative?
 
