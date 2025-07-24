@@ -2,107 +2,83 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DA582C83F1A
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 08:59:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DFCDFC83F26
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 09:09:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B1556B0261; Thu, 24 Jul 2025 04:59:27 -0400 (EDT)
+	id 53DA18E0057; Thu, 24 Jul 2025 05:09:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 689666B0266; Thu, 24 Jul 2025 04:59:27 -0400 (EDT)
+	id 4A09F8E0051; Thu, 24 Jul 2025 05:09:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5785E6B0269; Thu, 24 Jul 2025 04:59:27 -0400 (EDT)
+	id 2CC718E0057; Thu, 24 Jul 2025 05:09:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 446586B0261
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 04:59:27 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B832F1A02F5
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 08:59:26 +0000 (UTC)
-X-FDA: 83698559532.07.299D00F
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 64B43A0003
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 08:59:24 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BeV3Itep;
-	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753347564;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 129898E0051
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 05:09:19 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 864841124E5
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 09:09:18 +0000 (UTC)
+X-FDA: 83698584396.18.6357F12
+Received: from SEYPR02CU001.outbound.protection.outlook.com (mail-koreacentralazon11013012.outbound.protection.outlook.com [40.107.44.12])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2A40F10000A
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 09:09:14 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=vivo.com header.s=selector2 header.b=fA8NgzgS;
+	spf=pass (imf05.hostedemail.com: domain of link@vivo.com designates 40.107.44.12 as permitted sender) smtp.mailfrom=link@vivo.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=vivo.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753348156;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KbAjULp57DFaxZp4EhQSXlWNY4PHov8q7LM6Z5vJA/c=;
-	b=CUgpOZaJGSxJApd17q9sDBMVmRjOEfHd2j63n++weexW+kIbJfXKheGB6+bPxOR5nSTbzo
-	Wk+qFAZn4B8FAOMNc/aap91aInmsI8a+sP+VZ6WnGMx2K97flephImWEBNlceVxWgLW/ar
-	1yxUvpsOdsTZ93Qi52iDLwCEvKk/az0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753347564; a=rsa-sha256;
-	cv=none;
-	b=rIeNXZ/ktt5eGmxBXcoEliHlNBp8JN+gGT4sHO/bHsJXSbEqvBFOX6nhXgFdRu23g1RR2I
-	v3gQkQEpRkU4kADFC3tnYOYxeq2y9WiZ5JfI+j3V1TXAlScV5p2BPJz5UpKbay7U0HD+9u
-	+pOaRkq5XY371iof+fjjA0TLqo5WQXU=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BeV3Itep;
-	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753347563;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=KbAjULp57DFaxZp4EhQSXlWNY4PHov8q7LM6Z5vJA/c=;
-	b=BeV3ItepQKjMqK9WmJZU0Ywm/c/lwdm2FtV3SRYpeIxlSQxypiYdAj0X9D9c9Oipu7oaBM
-	Dr6NhkbnXdbEIy/Hi6KROvtRsf880EJ+4FxIRFpM0vfICguGGHgA06gAcf2zDb50Y7WxXZ
-	Nb/YQvHWjbAbvyM3G2s5n4wbk8bTYgk=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-631-Bn9GSPS8M7ia22P3QfxbUQ-1; Thu, 24 Jul 2025 04:59:21 -0400
-X-MC-Unique: Bn9GSPS8M7ia22P3QfxbUQ-1
-X-Mimecast-MFC-AGG-ID: Bn9GSPS8M7ia22P3QfxbUQ_1753347561
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-454dee17a91so5601485e9.3
-        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 01:59:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753347560; x=1753952360;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KbAjULp57DFaxZp4EhQSXlWNY4PHov8q7LM6Z5vJA/c=;
-        b=AIMkl41vFRB0ajk+w2h2N+jLQhWopm8f1mDKgUEFv4glnXnEDwJ3UEbSrSqNc6lMH3
-         phU6RiHrkkcspr1Q4M/6o20zxwuph6tKtMwUCFiE+XNYGPaoNVgdnVzMlJAKpkk1FOX6
-         DuhHhdwLskKSJIEDxGRHJRbF/AwxsUToIMEpmZeMOZElSVhcrcRQBAYkHoz8j4Bb+Vnm
-         riEYX9YB7waPcRZhhNr+e73sR9MbmlCL2Zt/vhTW4OUz1WTEGVBT5g8uMWTWU5viMz5Q
-         fmPx3XR46796onwn8ftV2TsvlQ9GXH80/12Y5kOC21c+ZlQT76MtZW1g46LLqsmJdA8T
-         2Dtg==
-X-Forwarded-Encrypted: i=1; AJvYcCWKeTw6gw5o4r0t5guhUAH78KTDwxcfnko74EH/QwdBPp44u5EWenPWXAoyWEEaewXkmok0/CSF7A==@kvack.org
-X-Gm-Message-State: AOJu0Yw8lVOgOGtZ9JjHU+NHvABYdH+KkgFgRIUQnZOFQOtpr9zzQ5Jf
-	BmEV2nRyWeyTlC7oGmJTIszghDoQVZl0riv4DVNppDmFAMBtOlxnNRJK/jGtujKhKHt2DmFNS4f
-	N7i/LUsJV6hOJdKPpWk5TaxfOQTVn2HoIhx3829jSeWlBZk92geEj
-X-Gm-Gg: ASbGncs6qJ4mM+klATk0+JY+MF9Ry1lg/1aDtcXK/DI4Wy7foBgJ6w+H5u9RC5TleC0
-	W/2Lt4OYTZxOvGkAnhdeHx+EX/kOs7MacNJLlM1tRWb/7F+becKF4X0n6syEpggT7R2pWX6dW/c
-	8H/KxrSA1TSCvSaPFqBCnI1K7QVDU7gDcP/QBt+KZpiPUjwrehrYHZQl5Wh6WU3nnEt+UKsYIie
-	A+NWatv/cRVftDcao7OXSQT4bkdeWLDccfVblJUaZIlk7PBvCxk6FBUjSeMGUeDUmZ3l6rs7M1k
-	UVWaKOTAxCL+5eb7ul2P8rwDc0FhF7yjzXAZ7Tki7eLtplHKbUigD2nFg6G4Mf4Uk9PKjOwZSxF
-	VYcw8UyoPPkmJUswUYXF1ifT73jLz2S39ug1S9UDb5WfjxEZErk/wM4nsLyqotT6R
-X-Received: by 2002:a05:600c:34c8:b0:456:2a9:f815 with SMTP id 5b1f17b1804b1-4586e529e4bmr24857875e9.4.1753347560633;
-        Thu, 24 Jul 2025 01:59:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFFi5+e8h65j8G/90Yb5xypCSe09/IV+5bnm/weBgPN3KMsU7GCZlI1Y32G5GAm3Vnqmz43nw==
-X-Received: by 2002:a05:600c:34c8:b0:456:2a9:f815 with SMTP id 5b1f17b1804b1-4586e529e4bmr24857545e9.4.1753347560062;
-        Thu, 24 Jul 2025 01:59:20 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f1f:5e00:c941:d6fb:3e30:b42? (p200300d82f1f5e00c941d6fb3e300b42.dip0.t-ipconnect.de. [2003:d8:2f1f:5e00:c941:d6fb:3e30:b42])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458705684a8sm11879845e9.26.2025.07.24.01.59.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Jul 2025 01:59:19 -0700 (PDT)
-Message-ID: <86516155-f2d9-4e8d-9d27-bdcb59e2d129@redhat.com>
-Date: Thu, 24 Jul 2025 10:59:18 +0200
-MIME-Version: 1.0
+	bh=n5dCr3ukrDJQ9ovFT7dYHITFIZXX/UmRi8AB5ypf21Y=;
+	b=i4jLkiwyTi/zz/CmjAy7bSPgeqvU+lsW5EfP50LbkkRrFvb4QJ9Uhqo9A582LaIUCSxmC1
+	naTJAX8hGpCxMh9UPNB7avE5k0da4EzRv8v9/HxwVH7QVtNkECTdSu+httPTKcubucCX1o
+	Kh/foN+Sw120Th9PwFOmb9Ekta/m1nk=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753348156; a=rsa-sha256;
+	cv=pass;
+	b=yoCfwLflDa19N2Cmy3nqtTyTyo3uWRVI1isw3NTi2VQ8x1DOl15c0rHxCg69DUTOvtB0Nn
+	CvB0vYZOLtZ4hLyT/+HQ06oc7O3HkS06+yDgVsw3BvC60gnPV/pFg8C0wrjGyAr2tdiA1/
+	ANeKMUqowVrJNSwEqCyj7omtSnkuaMI=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=vivo.com header.s=selector2 header.b=fA8NgzgS;
+	spf=pass (imf05.hostedemail.com: domain of link@vivo.com designates 40.107.44.12 as permitted sender) smtp.mailfrom=link@vivo.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=vivo.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AOoPCtgtFBzyluiy1XNSPUWdPo9M3Grj7z/JGyOo6DfxCp0ZtaVBE6C5iocgexTCR2k0HIGDvFv5ZZT2UA6k/rxQxyPbTskSBTYlWvUY6VHx+0AfzEjAaXAf8wWf3lkhh6hoYWbSvDEVmKk0ZzWH+oPcMMEVif7Wl3z1NwAHHJxVh6HEN6w3TaLSqauzidjU1lXRwAllJ7VnagwLTWzIFRD+L6Jtme7Dl8Lw1grlW4AHgyt7Ae4gMkhWj6PEzURY8nbE6Rk5F1gUeisOGdxXfArqo2Ea0CdVPdxcdLWPflBQa2amoZzFYyUOZwm+W3504V3tG+Te7781EFRcZEWnBg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=n5dCr3ukrDJQ9ovFT7dYHITFIZXX/UmRi8AB5ypf21Y=;
+ b=HhgVkxL/gXlww3WdIOVw8+SYEqn8+wBdYwwdVqZ+vU6fuNmc+RUWBjqyhXAHeRTOhe8/sobIN0+klUHdjd75dK5hrjamJvm7qPRfExwwhv3wyVGZdPPr6q+TjmDS6khATL01pcswQhnVJy10aZtp7dz2ykv4s0O9u1yh24+b/mjs3HA6sFBCoU8YD0uXAloC+4bW9UdrrnlGnz/cSX8oQhy8JeHP8OhdKCfJRU9DNhp13596v7maLyOCyP8mIMrc3U87U6nl+KD0+JRt2S5RGKUhxfQbRUbI7OFItvqbOtILAuFwr3eJULghlrEPC/AtXZyJdvdbtYHaNxd2Nx0HFQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
+ dkim=pass header.d=vivo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=n5dCr3ukrDJQ9ovFT7dYHITFIZXX/UmRi8AB5ypf21Y=;
+ b=fA8NgzgSp54lEoFGKmCdok85VIX/iXEeEiJkaDtUrZoMtn3D+Ljce0vW+xvxeTqoCJoUaBDkoPkhMAHN6mRoo/aJ/UMPnTzisrwyWoNafEaImv9hCfmzq2wGYEQE7pUQjqF531KeQ5ML2PW8ucKkzNdrV/mEwRAwlp2psbsYWVOolILZWwwfcoJLyOz2YGytZnZy4vz00MsWkYRRVNqhq6nQZaizRD/nBodLJmXf6o5bznaI3Z9NxW8MhFlWx+IySkoJbMKpb1Hk1w7VXNF19o2hXUFgrfKNlBJdG8goxHz2FWYMye/ESD9JQL16QzHq9nLXu5NJ8eXQvotF0KItmw==
+Received: from PUZPR06MB5676.apcprd06.prod.outlook.com (2603:1096:301:f8::10)
+ by TY0PR06MB5080.apcprd06.prod.outlook.com (2603:1096:400:1b8::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8943.30; Thu, 24 Jul
+ 2025 09:09:09 +0000
+Received: from PUZPR06MB5676.apcprd06.prod.outlook.com
+ ([fe80::a00b:f422:ac44:636f]) by PUZPR06MB5676.apcprd06.prod.outlook.com
+ ([fe80::a00b:f422:ac44:636f%4]) with mapi id 15.20.8943.029; Thu, 24 Jul 2025
+ 09:09:09 +0000
+Content-Type: multipart/alternative;
+ boundary="------------8AhXF963MPGW7Dj1kecJ6QwI"
+Message-ID: <cc560d48-884d-4c8f-9fb0-565d74ad769a@vivo.com>
+Date: Thu, 24 Jul 2025 17:09:01 +0800
 User-Agent: Mozilla Thunderbird
 Subject: Re: [RFC PATCH 0/9] introduce PGTY_mgt_entry page_type
-To: Huan Yang <link@vivo.com>, Andrew Morton <akpm@linux-foundation.org>,
+To: David Hildenbrand <david@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Rik van Riel
  <riel@surriel.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
  Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>,
@@ -119,67 +95,114 @@ To: Huan Yang <link@vivo.com>, Andrew Morton <akpm@linux-foundation.org>,
  Yu Zhao <yuzhao@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org
 References: <20250724084441.380404-1-link@vivo.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- g3eXuA==
-Organization: Red Hat
-In-Reply-To: <20250724084441.380404-1-link@vivo.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Vu5OfWDVkeCAIodpx-YUclMhDzWFmleyLlfOE_79uZg_1753347561
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 64B43A0003
-X-Stat-Signature: gk9ss5h4ukqgcfo8fzwaz4j1uzqx4n4k
+ <86516155-f2d9-4e8d-9d27-bdcb59e2d129@redhat.com>
+From: Huan Yang <link@vivo.com>
+In-Reply-To: <86516155-f2d9-4e8d-9d27-bdcb59e2d129@redhat.com>
+X-ClientProxiedBy: SI2PR01CA0018.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:191::7) To PUZPR06MB5676.apcprd06.prod.outlook.com
+ (2603:1096:301:f8::10)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PUZPR06MB5676:EE_|TY0PR06MB5080:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0bd7de9a-bf53-463b-6cbc-08ddca91bf9e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|52116014|7416014|1800799024|8096899003|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?WWhrUUQxelk0UGtrRGJRaGEyOENvODNzK293YlRxZXA4QXRmT0FIcFY5ZGta?=
+ =?utf-8?B?OWdEbC9IdmxSZi8xTi9ETG00Z3hWMzF0YjBBUXpxSTB4WFMzV1d4cS9mZ1Vq?=
+ =?utf-8?B?VG4zSStNSkc2QVA1Q0poQlArSUhlZmQvcnBDVHl0Tktyc3JwLy9pamxSSFBK?=
+ =?utf-8?B?dDBwbEJSQnhHV3NOWHJiZGsraWk5U3dQVFVBU2Jvclh6cjVzS1J5azcwVWNt?=
+ =?utf-8?B?YWExamxTRkV4SWFxbmFXWU1CMXA0cDhMNlU2Nk1PRjF6WDZVY3BrQ3dQWW9S?=
+ =?utf-8?B?bnorM1VuZkx4azhMai9HVmlZL1ZYclB2VHNVSnNqaCt3N2VrUnV5d2pEbjBs?=
+ =?utf-8?B?alkrU01vRDI1OUp4Wi9sMXgxTFZwY1NOK0xDOXdhTnh0RmUyR1p6ZjRvR1pm?=
+ =?utf-8?B?ek05MUNMdzdQeHc3Ly9aWnR4NjNxa0NvYXAwSkpKRGFMSVBaalE4TFJ3a1lT?=
+ =?utf-8?B?QWhiWGdUcS9wVkZGMnE4dC9rbmlHTlZqcHVwOStPUGo3OWVnM3VUa1oxZzJO?=
+ =?utf-8?B?NEZzZHE3UXNRT2dtSUdXVk1oajBZTDJIOTZuc2c0dFhkbnVDVkltazduTFF4?=
+ =?utf-8?B?MHdMdHJ1NzRLV0xoak5mZmhYdDVoYjk0NmZpcHdMTHQ4bUZwOXp2K3pmTDdU?=
+ =?utf-8?B?U1puQW9NMUpZREg1c1k2eC9XQkVINUpUWVlGWktIY0hFS3ZnQW9MNi9sRnVG?=
+ =?utf-8?B?QXduM1M0RXFGajRXNVpiYmdURkxpaVpTemg0bk5FQnVWWmQ3L09XY293YU5z?=
+ =?utf-8?B?MmVUak9qeUJxRVVSY0lxcHovaWcrbStlM3dpSHpSeloxSHZEdytyYXpHTVFS?=
+ =?utf-8?B?S3l5U1pFL3hzMC9ncVIyMldBR3QrMVp5bWw1L0pmODl4TDBwY21BQkZFVkxE?=
+ =?utf-8?B?azBybUQvVU5rTUo0RFFlWGFWdHRhOERGSU9IWUErYjN0UEFNeVFnYnpuRUVS?=
+ =?utf-8?B?STNkN1B1UU96QVZDMkVRWUVvTU1ZM3ZNcGNpdmoxL1hGbkh4endlZ0xraXV6?=
+ =?utf-8?B?Mk84QWZhcHRxbjVaZms1KzU4ZVljNkh6Ym9wNVRMWnZWUVB4ZzVNZnF2YU4r?=
+ =?utf-8?B?aldrTjUzY3BIYStFLzQzWWNzOWJ5dGJpQ25nRmRyK1dpa3VsVlBJM2xGOTBT?=
+ =?utf-8?B?OU0zalBFcWYzNndTYTRPeTV2SVN6VUJwRHRUZFlOZTJ6MXJnUUlIMWtnTVAx?=
+ =?utf-8?B?WTB0cDJMRTdoUDh4MmtwUXdmczdnWUg0dGd3NzZ5a2Y4aS9STHhteklYaXpL?=
+ =?utf-8?B?TzZJV0pSSXM3all2OVBaWUE0TXdsSUtFQWNKWkI3UHJkRU5ZM2VGQ0R1S1ln?=
+ =?utf-8?B?czVwcGFtY3FNZGVqaE90VFQxU3lqQ2EvZU9mbm5ETU5NVGRISjBWWHErbUJB?=
+ =?utf-8?B?SVBqMkN5T3pnL2VBckZFWWoyd1BHU0E4YnlTcVVvVGFSQ3FhcTdvWGdTY3ht?=
+ =?utf-8?B?Z1FaSXQ1aFBweTl0RDdVdUtuc0FINW15YS9sNXY5OEtQZWduYzdabDZ6Mncr?=
+ =?utf-8?B?WUpBK2tNSzRidFNaR0FtVHFqenFKRDZzbUZDYWZMQnJHVW9GMXFBR0RQQTcz?=
+ =?utf-8?B?N1p4WjVrS2VRTVlTbXZneUdZYUwwU0VobmgvVHRrbzJqYU52aWd5eWhsZ3J5?=
+ =?utf-8?B?OHN3Umc1U2gxVEZpQnpwbXlOZWduSWs5QzdlWGNaYUIrSncraSsxa3g2TlJp?=
+ =?utf-8?B?d2I5RHh1NHVTbnBUS2ZsV05xYVZUOVZwRXJ1Q29kTmx5NXNwOU1kVWZmaGFk?=
+ =?utf-8?B?YTYzcmJ3R0N4dEtRaWdkNFhydTExOGVJYWxFSFdSUks1UHBsRGt0UmtWaVhN?=
+ =?utf-8?B?QTFhTkhRanQ4bG5tcGp4K0lOOHY5TXdNN3RIUFlOME5kWFhxSENXRmk3ejdZ?=
+ =?utf-8?B?NDlWSlRhSW5xUEpZbTJ4eVQ4bnlTOWhtcitNeDQxYmFOc0dTUDVYeGMxYWVn?=
+ =?utf-8?B?YVFFTU53eDllVUhWV1BQV0hnK1A3eDJ2ZTM2T3RPNVd6dlhiYkpSQ0xhTDky?=
+ =?utf-8?Q?aRddfupQXBGhwRba8Uk1i1aqXYqWSU=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PUZPR06MB5676.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(52116014)(7416014)(1800799024)(8096899003)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MCtGT1NCL2RIWTUzSkZoZ1BoeHNId09GeFlkVVVmdDNGZEF5T2p0RjdCUkQy?=
+ =?utf-8?B?ZjBaSHhxVTEvQXZqcU0vM0xyME1OZld3REptczRjN1lMQjJsNmRNR3QyU1NM?=
+ =?utf-8?B?d0JPV1hUT3M0Y3ljd2Ird3ZNcmhmV3hjQ0o3TlVMdUk4Q3AwaUppVExKSnd3?=
+ =?utf-8?B?ZXZ0V2w1MEI3VlEwc0dBZGZkK1ZZUFlJT1BKY0RnZ0RJMkZpTlVkKzBsUDZY?=
+ =?utf-8?B?TG90SkQxOVVZOHIzQVBxYVlYUVA3SmhFTVUvU2ZNS0hXNHJKSmo1TE5xS3FH?=
+ =?utf-8?B?ZXRDVmpTeWc5U3BZU2cwOWRvdlFLbTdKTnU2Yk91cUx2SkpPYWM2U2VlNktZ?=
+ =?utf-8?B?MTJiNFR6bE5CK0ovZEN0eHZsSHpRd0lZRU5HV3RCakVMRkh6b3dEMHk3K2p0?=
+ =?utf-8?B?RXBoVXd1d0ZBNUN6a1QvT1Q5ZzZxL1V6RG9TUTBBNGxwWEdJMTAwSkRNbFdB?=
+ =?utf-8?B?a1pnT0tKNHRkb0RHdzFBQllncExKL2kwdHROOXoxVHZBSENCaFpKV2kyYTNS?=
+ =?utf-8?B?TzZXeXRsQ3VhOStsaGk4Z01IVkt4K3k2Z0xIek12ak9sRlVKVFM1QmlaeUZw?=
+ =?utf-8?B?NC9JN09oYmVURFVWQURBYXZOcGthSWVtVVdRTkc2bXpnVjhBZk5XVTROelFo?=
+ =?utf-8?B?ZTlIdTlJdGVxNWN3eU9jZkNyUjJzQk95MTFOOVpTbjI2Sml1OXRUUndac1pr?=
+ =?utf-8?B?akZNZHhPUWpUR29QSUwxVHFaTmluUnlpSmZOR2dieDVSL05pQUpuVTU3eGcr?=
+ =?utf-8?B?UGZVNGlYTHRKYkF2d2NXRjVDL2VXUkY4Q3dadDZBd0RkZXdtN2FQZXFPRzFr?=
+ =?utf-8?B?R012MURLUndsZWhmMmMwRDluM3Y2K0ZYTGdEaWFIS1orM04rL3hUZFBHSlFM?=
+ =?utf-8?B?OWlmdWZGQkRmL2NPaFNsNHJMTURocTM3ZHBkbUdSbUM0eGQ2NUlyY05tT2tp?=
+ =?utf-8?B?M0ZKdXhVY1ZGZlU0aHoxUnE4SFZ5Q28xRnVWZ2FWa3Q4ZmNrY3FqazFja1lX?=
+ =?utf-8?B?bkFtQXFKaVRjSFl2NU1XWVYvOTBYcHErMFkrMmtscGJlUzdDWnZpd0FCU0da?=
+ =?utf-8?B?WlpmalNjeVIxQmNaRFkraFdKNE5OcnN0akNHcS9heFFZRGFoVlM2SVJ0ZnJw?=
+ =?utf-8?B?MEExS3hFRncrOU03bWExYnhiOXdPY0E5S3BSMWdPWllrN24veEovZnRwL0d3?=
+ =?utf-8?B?ZUtISG9peWJSRW5naytDYURtVUExWWxtaURwREJvRGwvdDJja2c5U1NjYk5Q?=
+ =?utf-8?B?T3QvaEhENXlQRkRyK2lWQmRIYjNKR1VrMVF4MmJySXZoRG9oWGpFRWs4d3kv?=
+ =?utf-8?B?dEwzSmxkZXJiakNGVFVDQW9XenhGWXQxQUNYL1dWdVZUZ0tia0ptczJzVWtz?=
+ =?utf-8?B?RWtqbGhkU3FDRG5sWGRNTmdyS1ZqUjc1Vkt6RHdCVVlJRjIwY1dJSWY3VUZK?=
+ =?utf-8?B?L245UDNEaVNiZnFudHgra0E2M0tlZC9UY1ZUVGhNRHlpck5YQURzYitRWSth?=
+ =?utf-8?B?WExDajI0MHJoTVRkRHlyWWZEc3lpQ0ttTldVMGZHUUt3ZGp6Yk9LNTRrNGhY?=
+ =?utf-8?B?SjRxNEJvQ00wdXF3WmpCN3FTelpXS3VqOGlxOE9Dbm9EdDMzU0prajJQK1VW?=
+ =?utf-8?B?Qk9VQTlIcFpPbnduVXZpOVIxQStiSXVWY1hMbGJaNkxtcUlRcWFnMXB2endO?=
+ =?utf-8?B?cTg1S2lmcDhIc0JTb2daSHg2elFvajNtaU5NbWNCWStnR3ZtMGpmL3dOalhh?=
+ =?utf-8?B?SkFaMkJWOCswQzgzYVdhVFJhVEtEZFB1YVl0TXJ5Tk1NenN5amNkVno4V2F4?=
+ =?utf-8?B?VzdWSTUzaldxYWpHdEtza2lVY2hxTWdEYTBwRjlGRXZ6NUxFQndldW9Nc3Ex?=
+ =?utf-8?B?cjZrRXRXNS9MN3hTYXNoRDlORE9vaGVUUUpUNHBBS0NPR0xWZFdiY1k2Z0dJ?=
+ =?utf-8?B?RVRHWDJWTkhnQ2pMaUJwNWN3UlF4S3J5VzIyTjNEUksrQ3I2UE9uZmhCRkhM?=
+ =?utf-8?B?SG1jcXNENHA5eTlMaDBBOFlRZUs1U1VTS0xIcVMzSUIyRFZDL3ZKWkVlMWI4?=
+ =?utf-8?B?L3BFRitoRVdSTk5IWkRpVGtQRkU2d0hQOGZRZngwak5BZFliZXpmWFdYcEhW?=
+ =?utf-8?Q?B2TegE/LNuHDbWXIXrue8YdTy?=
+X-OriginatorOrg: vivo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0bd7de9a-bf53-463b-6cbc-08ddca91bf9e
+X-MS-Exchange-CrossTenant-AuthSource: PUZPR06MB5676.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2025 09:09:09.1789
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1DSzfbsuMI6lWMrYHOYF72ONWaH7pFUdCBBgRmJ4W8o5OhViepnfM5nIYuc0ngUAeezThC7law81uqjKQEoY4A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY0PR06MB5080
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 2A40F10000A
+X-Stat-Signature: coxxag6tam9bpg39nq7nw816fitzepok
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1753347564-677639
-X-HE-Meta: U2FsdGVkX19zUwG1Us0TvgBiRVR/DV2t5HKlSAxdarozqTejjVQ/G1S2SlbyYnTD80oVk51/eciB11yctQhru0XA4jSnLBEeiB9IZ3lN+vHkW8wKF1GlpZSSTpsiDTfKj271K7zTNhmWJhQTVd4GxJkBzk51VNfgYj7tLfkIdZsQT8uS4YNliqe2n6hzTqOmBWXJ1sqEZNbPj84801eHv2YBAp87eXP42D33+cvl154NJ5zWBEJDvbNAzILVXnnUa56ypeOUTKDdRGIQheXg4GIes/y2FP4kyKQzYdorYGQ3OrWkqBEZ/Y7PrR9EuA4ZlR0ZQaRcT/XUs8loOlCHXZHJU7i9gH/SfeeStRVGQsSXRYTAfaGu9pD7pXXpLjx5k+B2lNsI+73K3zCBQY45qwAvxtMWXLY+lwiFxR+Fxi54oEA/Q+cIDWPbpNZhQV8CLgq6gMlTDW+ykMatH/8oXgeomikoGB8RsHpsAzfTyI6Z6mb8Rb5+uj3gg8QsWjp19mdmVKsyOJ//Oo3MJVyV/CYam+scG7nuGWUeSfAVSGjB2zV20CoWpPCX6rsagFix1I9xUQHGLD5Cb557sKv/u95cWjLPzWlPo5jRTzPX+xtE1HaNUmVzk+HvckNmlzqEzOkZvPtHgM23rNjnZ7kuDjsYNl6nd6aWO3yLT4Drp6JMZrqyhwwnG57iQCCWiVzAQoDiOr2TPI+Pphv2C5RMzb5OlU8Ig18P1ApQp9IXbxTUYxfz52rq5f69JGKEGCxEkP++Kp4SNfzaj82dHNc/N4DjIAmWYwJG1y0X+rWdCeDKsD678VLXNuwsjl2m3z7MgdgXR1tQJk/no3l0eRcWzGPEtlLTGtbdZ9MpEoPDMYPJ359vG0MwwLhZIek95zsbRWy74zsSUqZ21pHT30ODHkWObIvl7MPwAJIPFGdPcShcrbS5nPKMiXSCzJiUqahj5vpI7+IRjKq82nVPgzX
- NDqWRm7R
- FcPj+/ri+C++3ajaEXraj6S+lKxvWdnzF0R/IAdWFegqdXa7zaq5YFprVxwrFl9HRqVWjTgqB/HeyTvEYxlyepJVo4hfMhaHAPh1/ejcqW/ZE9ghg1xGe55edhlzfkou7HENL+0ncrymzUJ99xVslSA00U9a3WkN0TE5vYVVF4zPUG1oTq/qVNT4uUNEzVXi3BlagciezUSYu8murt5s+L27LdKFXtvSbwJzVBco8dBoH11msKh+kB6nHYkv2hGSX0mJAnCgTcf4Eg7+tSVXYjJkYbYSeCfs4fTBHu68bKzaYcRPwujm/Kj+f4y4Tl56Jih9mHUREwnvBG86RSd9vAh+l1MuYdMA4kFyinSgo+3VaV8O6ZtEHReVRMMTyw2SXcjDYHH3ldzvWyUGSVo/nXSI1AcWNS6MfIR9mDuabJuGcACZpcTHrNg80hHPgM4VbmGXCnPaclMrUU9knbv0FYv0yhekId8vkKQgl/ueAdFPLvzdJVdCOPZ+XS2WGud4fFzXhxwzhWzuvKb6JPUJXt7jOwZI4UaRSEPi9awFWO6JSzUuIO8zZPz5ZH5YNTiEMsgYD3E68miSm1UKU2k+8oyqDwFuppLCp1sWx
+X-HE-Tag: 1753348154-54114
+X-HE-Meta: U2FsdGVkX1+zYqv5RGoKnnOy2VTzYKXcC7nnKbtDAESOkms9d9k2bK1jFE9PrVzFLbng4+dtWE8d0JXrojUdSH6xUlI7PcX4plO6J9SbjUoMkK1l3H3wyLiNbdF5pQOjMTWM7u+PVwWjkiOsbt09ZrjZxtErt71lF80Nj0iqWK3PLG2ZrJ8dSuGcVJa/s//+COszbZt6XkdU71ybUzgRU7mpnGNVO+mYJMOSKujAW8y2Bh5Jm5SNTZhUzj76whUGltojkfgKiVsTzii6fjHo23SJGe2fACxhydWTxpmwaGeDjAlRfM2PAAWwLA6SgOIgyHm3ilCOterjYuBxpLEbsUGXKKLso9MCJ6NFfJNY+/UwAPy47m1kB7QcDEOv5m2bhSVfMWxJ1MQhLnxVQ6heuvkKxq3iFmdMCSUA47JytAzMdZnM70RlsLGpCeie+ZPzc4BYRFF2PIdDJTn8kjy4/x3NIwlF+SW6ixSBkZEOu84uUjelSYc539fBoAnCscGEsvFos/Sq+o6m7HKn5i1cJlW5lvyefCst7YUod6zK1J3tTJr1n1K7nIeVySfXYRwGgKY01rc9FUFnZQjPFg3qmmmaM4/yJMECkrcNM8gkNdgDZN6pnnp+uhqyoDVwvEKdvCo0YCJD6hICFMUgdWydwMt0gBGse7EnvkW9mpqaDArPBp16w2TAwyMa2gRvqrMQDxoJPBj3HN1Ip6DGj91OOYdfmTfLIp2B9QNiGAXb3HUfnyLea+gAV397nLt1d38Tc4X25YCQAr4LxsTtvS4Gu18z0j3qzjFQh3Gr9lC6UrUfhwpmfSkThr/UC7Te96l8X5I754XRc0mphM/GPUar3QA+zDijiWsQuW4K8RVHDSCIzeDWbEDQXCCA1fiYgVQBn4DIC3yN/jXhA8gcjUvx8xQ6edwF41znD77m36ws8ZtToxjJSWe6CtHhaoWxUXio/vlAUmLW9ihcARNuSyZ
+ hS6ltZc2
+ TFdkpy0BdUs7+Z2UJHoWhijfgrLbFi0k3eDvls0wXVoQCFO88XmIFTbsnsGj8Uw1+pAIj3UFeaLCH0sU6NeIB83ao6tbUAdVW0fMSRhoxk0dFzoo6YlNfZJLnyygiQYPVfJkgjO5roN7Y+TddUIPHghdsTph0ru5RVmSKOWHkYZFDcbCMcsvm/xUTYakMiAvtlTuZaZk5GprHOMUlsVg38kkdiq5MjXQTFDjcTWTtppT1KJA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -188,121 +211,396 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 24.07.25 10:44, Huan Yang wrote:
-> Summary
-> ==
-> This patchset reuses page_type to store migrate entry count during the
-> period from migrate entry setup to removal, enabling accelerated VMA
-> traversal when removing migrate entries, following a similar principle to
-> early termination when folio is unmapped in try_to_migrate.
+--------------8AhXF963MPGW7Dj1kecJ6QwI
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-I absolutely detest (ab)using page types for that, so no from my side 
-unless I am missing something important.
 
-> 
-> In my self-constructed test scenario, the migration time can be reduced
+在 2025/7/24 16:59, David Hildenbrand 写道:
+> On 24.07.25 10:44, Huan Yang wrote:
+>> Summary
+>> ==
+>> This patchset reuses page_type to store migrate entry count during the
+>> period from migrate entry setup to removal, enabling accelerated VMA
+>> traversal when removing migrate entries, following a similar 
+>> principle to
+>> early termination when folio is unmapped in try_to_migrate.
+>
+> I absolutely detest (ab)using page types for that, so no from my side 
+> unless I am missing something important.
+>
+>>
+>> In my self-constructed test scenario, the migration time can be reduced
+>
+> How relevant is that in practice?
 
-How relevant is that in practice?
+IMO, any folio mapped < nr vma in mapping(anon_vma, addresss_space), 
+will benefit from this.
 
-> from over 150+ms to around 30+ms, achieving nearly a 70% performance
-> improvement. Additionally, the flame graph shows that the proportion of
-> remove_migration_ptes can be reduced from 80%+ to 60%+.
-> 
-> Notice: migrate entry specifically refers to migrate PTE entry, as large
-> folio are not supported page type and 0 mapcount reuse.
-> 
-> Principle
-> ==
-> When a page removes all PTEs in try_to_migrate and sets up a migrate PTE
-> entry, we can determine whether the traversal of remaining VMAs can be
-> terminated early by checking if mapcount is zero. This optimization
-> helps improve performance during migration.
-> 
-> However, when removing migrate PTE entries and setting up PTEs for the
-> destination folio in remove_migration_ptes, there is no such information
-> available to assist in deciding whether the traversal of remaining VMAs
-> can be ended early. Therefore, it is necessary to traversal all VMAs
-> associated with this folio.
+So, all pages that have been COW-ed by child processes can be skipped.
 
-Yes, we don't know how many migration entries are still pointing at the 
-page.
+>
+>> from over 150+ms to around 30+ms, achieving nearly a 70% performance
+>> improvement. Additionally, the flame graph shows that the proportion of
+>> remove_migration_ptes can be reduced from 80%+ to 60%+.
+>>
+>> Notice: migrate entry specifically refers to migrate PTE entry, as large
+>> folio are not supported page type and 0 mapcount reuse.
+>>
+>> Principle
+>> ==
+>> When a page removes all PTEs in try_to_migrate and sets up a migrate PTE
+>> entry, we can determine whether the traversal of remaining VMAs can be
+>> terminated early by checking if mapcount is zero. This optimization
+>> helps improve performance during migration.
+>>
+>> However, when removing migrate PTE entries and setting up PTEs for the
+>> destination folio in remove_migration_ptes, there is no such information
+>> available to assist in deciding whether the traversal of remaining VMAs
+>> can be ended early. Therefore, it is necessary to traversal all VMAs
+>> associated with this folio.
+>
+> Yes, we don't know how many migration entries are still pointing at 
+> the page.
+>
+>>
+>> In reality, when a folio is fully unmapped and before all migrate PTE
+>> entries are removed, the mapcount will always be zero. Since page_type
+>> and mapcount share a union, and referring to folio_mapcount, we can
+>> reuse page_type to record the number of migrate PTE entries of the
+>> current folio in the system as long as it's not a large folio. This
+>> reuse does not affect calls to folio_mapcount, which will always return
+>> zero.
+> > > Therefore, we can set the folio's page_type to PGTY_mgt_entry when
+>> try_to_migrate completes, the folio is already unmapped, and it's not a
+>> large folio. The remaining 24 bits can then be used to record the number
+>> of migrate PTE entries generated by try_to_migrate.
+>
+> In the future the page type will no longer overlay the mapcount and, 
+> consequently, be sticky.
+>
+>>
+>> Then, in remove_migration_ptes, when the nr_mgt_entry count drops to
+>> zero, we can terminate the VMA traversal early.
+>>
+>> It's important to note that we need to initialize the folio's page_type
+>> to PGTY_mgt_entry and set the migrate entry count only while holding the
+>> rmap walk lock.This is because during the lock period, we can prevent
+>> new VMA fork (which would increase migrate entries) and VMA unmap
+>> (which would decrease migrate entries).
+>
+> The more I read about PGTY_mgt_entry, the more I hate it.
+>
+>>
+>> However, I doubt there is actually an additional critical section 
+>> here, for
+>> example anon:
+>>
+>> Process Parent                          fork
+>> try_to_migrate
+>>                                          anon_vma_clone
+>>                                              write_lock
+>>                                                  avc_inster_tree tail
+>>                                          ....
+>>      folio_lock_anon_vma_read             copy_pte_range
+>>          vma_iter                            pte_lock
+>>                  ....                           pte_present copy
+>>                                              ...
+>>                  pte_lock
+>>                      new forked pte clean
+>> ....
+>> remove_migration_ptes
+>>      rmap_walk_anon_lock
+>>
+>> If my understanding is correct and such a critical section exists, it
+>> shouldn't cause any issues—newly added PTEs can still be properly
+>> removed and converted into migrate entries.
+>>
+>> But in this:
+>>
+>> Process Parent                          fork
+>> try_to_migrate
+>>                                          anon_vma_clone
+>>                                              write_lock
+>>                                                  avc_inster_tree
+>>                                          ....
+>>      folio_lock_anon_vma_read             copy_pte_range
+>>          vma_iter
+>>                  pte_lock
+>>                      migrate entry set
+>>                  ....                        pte_lock
+>>                                                  pte_nonpresent copy
+>>                                              ....
+>> ....
+>> remove_migration_ptes
+>>      rmap_walk_anon_lock
+>
+> Just a note: migration entries also apply to non-anon folios.
+Yes, just example.
+--------------8AhXF963MPGW7Dj1kecJ6QwI
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-> 
-> In reality, when a folio is fully unmapped and before all migrate PTE
-> entries are removed, the mapcount will always be zero. Since page_type
-> and mapcount share a union, and referring to folio_mapcount, we can
-> reuse page_type to record the number of migrate PTE entries of the
-> current folio in the system as long as it's not a large folio. This
-> reuse does not affect calls to folio_mapcount, which will always return
-> zero.
- > > Therefore, we can set the folio's page_type to PGTY_mgt_entry when
-> try_to_migrate completes, the folio is already unmapped, and it's not a
-> large folio. The remaining 24 bits can then be used to record the number
-> of migrate PTE entries generated by try_to_migrate.
+<!DOCTYPE html><html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">在 2025/7/24 16:59, David Hildenbrand
+      写道:<br>
+    </div>
+    <blockquote type="cite" cite="mid:86516155-f2d9-4e8d-9d27-bdcb59e2d129@redhat.com">On
+      24.07.25 10:44, Huan Yang wrote:
+      <br>
+      <blockquote type="cite">Summary
+        <br>
+        ==
+        <br>
+        This patchset reuses page_type to store migrate entry count
+        during the
+        <br>
+        period from migrate entry setup to removal, enabling accelerated
+        VMA
+        <br>
+        traversal when removing migrate entries, following a similar
+        principle to
+        <br>
+        early termination when folio is unmapped in try_to_migrate.
+        <br>
+      </blockquote>
+      <br>
+      I absolutely detest (ab)using page types for that, so no from my
+      side unless I am missing something important.
+      <br>
+      <br>
+      <blockquote type="cite">
+        <br>
+        In my self-constructed test scenario, the migration time can be
+        reduced
+        <br>
+      </blockquote>
+      <br>
+      How relevant is that in practice?&nbsp;<br>
+    </blockquote>
+    <p>IMO, any folio mapped &lt; nr vma in mapping(anon_vma,
+      addresss_space),&nbsp;<span style="color: rgba(0, 0, 0, 0.85); font-family: Inter, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, &quot;SF Pro SC&quot;, &quot;SF Pro Display&quot;, &quot;SF Pro Icons&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">will
+        benefit from this.</span></p>
+    <p><span style="color: rgba(0, 0, 0, 0.85); font-family: Inter, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, &quot;SF Pro SC&quot;, &quot;SF Pro Display&quot;, &quot;SF Pro Icons&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">So,&nbsp;</span><span style="color: rgba(0, 0, 0, 0.85); font-family: Inter, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, &quot;SF Pro SC&quot;, &quot;SF Pr
+ o Displa
+ y&quot;, &quot;SF Pro Icons&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">all
+        pages that have been COW-ed by child processes can be skipped.</span></p>
+    <blockquote type="cite" cite="mid:86516155-f2d9-4e8d-9d27-bdcb59e2d129@redhat.com"><br>
+      <blockquote type="cite">from over 150+ms to around 30+ms,
+        achieving nearly a 70% performance
+        <br>
+        improvement. Additionally, the flame graph shows that the
+        proportion of
+        <br>
+        remove_migration_ptes can be reduced from 80%+ to 60%+.
+        <br>
+        <br>
+        Notice: migrate entry specifically refers to migrate PTE entry,
+        as large
+        <br>
+        folio are not supported page type and 0 mapcount reuse.
+        <br>
+        <br>
+        Principle
+        <br>
+        ==
+        <br>
+        When a page removes all PTEs in try_to_migrate and sets up a
+        migrate PTE
+        <br>
+        entry, we can determine whether the traversal of remaining VMAs
+        can be
+        <br>
+        terminated early by checking if mapcount is zero. This
+        optimization
+        <br>
+        helps improve performance during migration.
+        <br>
+        <br>
+        However, when removing migrate PTE entries and setting up PTEs
+        for the
+        <br>
+        destination folio in remove_migration_ptes, there is no such
+        information
+        <br>
+        available to assist in deciding whether the traversal of
+        remaining VMAs
+        <br>
+        can be ended early. Therefore, it is necessary to traversal all
+        VMAs
+        <br>
+        associated with this folio.
+        <br>
+      </blockquote>
+      <br>
+      Yes, we don't know how many migration entries are still pointing
+      at the page.
+      <br>
+      <br>
+      <blockquote type="cite">
+        <br>
+        In reality, when a folio is fully unmapped and before all
+        migrate PTE
+        <br>
+        entries are removed, the mapcount will always be zero. Since
+        page_type
+        <br>
+        and mapcount share a union, and referring to folio_mapcount, we
+        can
+        <br>
+        reuse page_type to record the number of migrate PTE entries of
+        the
+        <br>
+        current folio in the system as long as it's not a large folio.
+        This
+        <br>
+        reuse does not affect calls to folio_mapcount, which will always
+        return
+        <br>
+        zero.
+        <br>
+      </blockquote>
+      &gt; &gt; Therefore, we can set the folio's page_type to
+      PGTY_mgt_entry when
+      <br>
+      <blockquote type="cite">try_to_migrate completes, the folio is
+        already unmapped, and it's not a
+        <br>
+        large folio. The remaining 24 bits can then be used to record
+        the number
+        <br>
+        of migrate PTE entries generated by try_to_migrate.
+        <br>
+      </blockquote>
+      <br>
+      In the future the page type will no longer overlay the mapcount
+      and, consequently, be sticky.
+      <br>
+      <br>
+      <blockquote type="cite">
+        <br>
+        Then, in remove_migration_ptes, when the nr_mgt_entry count
+        drops to
+        <br>
+        zero, we can terminate the VMA traversal early.
+        <br>
+        <br>
+        It's important to note that we need to initialize the folio's
+        page_type
+        <br>
+        to PGTY_mgt_entry and set the migrate entry count only while
+        holding the
+        <br>
+        rmap walk lock.This is because during the lock period, we can
+        prevent
+        <br>
+        new VMA fork (which would increase migrate entries) and VMA
+        unmap
+        <br>
+        (which would decrease migrate entries).
+        <br>
+      </blockquote>
+      <br>
+      The more I read about PGTY_mgt_entry, the more I hate it.
+      <br>
+      <br>
+      <blockquote type="cite">
+        <br>
+        However, I doubt there is actually an additional critical
+        section here, for
+        <br>
+        example anon:
+        <br>
+        <br>
+        Process Parent&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fork
+        <br>
+        try_to_migrate
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; anon_vma_clone
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; write_lock
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; avc_inster_tree
+        tail
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ....
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp; folio_lock_anon_vma_read&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; copy_pte_range
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vma_iter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pte_lock
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ....&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pte_present copy
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pte_lock
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; new forked pte clean
+        <br>
+        ....
+        <br>
+        remove_migration_ptes
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp; rmap_walk_anon_lock
+        <br>
+        <br>
+        If my understanding is correct and such a critical section
+        exists, it
+        <br>
+        shouldn't cause any issues—newly added PTEs can still be
+        properly
+        <br>
+        removed and converted into migrate entries.
+        <br>
+        <br>
+        But in this:
+        <br>
+        <br>
+        Process Parent&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fork
+        <br>
+        try_to_migrate
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; anon_vma_clone
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; write_lock
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; avc_inster_tree
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ....
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp; folio_lock_anon_vma_read&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; copy_pte_range
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vma_iter
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pte_lock
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; migrate entry set
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ....&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pte_lock
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pte_nonpresent
+        copy
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ....
+        <br>
+        ....
+        <br>
+        remove_migration_ptes
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp; rmap_walk_anon_lock
+        <br>
+      </blockquote>
+      <br>
+      Just a note: migration entries also apply to non-anon folios.&nbsp;<br>
+    </blockquote>
+    Yes, just example.
+  </body>
+</html>
 
-In the future the page type will no longer overlay the mapcount and, 
-consequently, be sticky.
-
-> 
-> Then, in remove_migration_ptes, when the nr_mgt_entry count drops to
-> zero, we can terminate the VMA traversal early.
-> 
-> It's important to note that we need to initialize the folio's page_type
-> to PGTY_mgt_entry and set the migrate entry count only while holding the
-> rmap walk lock.This is because during the lock period, we can prevent
-> new VMA fork (which would increase migrate entries) and VMA unmap
-> (which would decrease migrate entries).
-
-The more I read about PGTY_mgt_entry, the more I hate it.
-
-> 
-> However, I doubt there is actually an additional critical section here, for
-> example anon:
-> 
-> Process Parent                          fork
-> try_to_migrate
->                                          anon_vma_clone
->                                              write_lock
->                                                  avc_inster_tree tail
->                                          ....
->      folio_lock_anon_vma_read             copy_pte_range
->          vma_iter                            pte_lock
->                  ....                           pte_present copy
->                                              ...
->                  pte_lock
->                      new forked pte clean
-> ....
-> remove_migration_ptes
->      rmap_walk_anon_lock
-> 
-> If my understanding is correct and such a critical section exists, it
-> shouldn't cause any issues—newly added PTEs can still be properly
-> removed and converted into migrate entries.
-> 
-> But in this:
-> 
-> Process Parent                          fork
-> try_to_migrate
->                                          anon_vma_clone
->                                              write_lock
->                                                  avc_inster_tree
->                                          ....
->      folio_lock_anon_vma_read             copy_pte_range
->          vma_iter
->                  pte_lock
->                      migrate entry set
->                  ....                        pte_lock
->                                                  pte_nonpresent copy
->                                              ....
-> ....
-> remove_migration_ptes
->      rmap_walk_anon_lock
-
-Just a note: migration entries also apply to non-anon folios.
-
--- 
-Cheers,
-
-David / dhildenb
-
+--------------8AhXF963MPGW7Dj1kecJ6QwI--
 
