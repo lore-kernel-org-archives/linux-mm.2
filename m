@@ -2,66 +2,66 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E56BAC83F26
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 12:36:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BAD9CC83F1A
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 12:36:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 64E4C8E0078; Thu, 24 Jul 2025 08:36:37 -0400 (EDT)
+	id 4A0B68E0079; Thu, 24 Jul 2025 08:36:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 626228E0074; Thu, 24 Jul 2025 08:36:37 -0400 (EDT)
+	id 452138E0074; Thu, 24 Jul 2025 08:36:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 562B58E0078; Thu, 24 Jul 2025 08:36:37 -0400 (EDT)
+	id 38E388E0079; Thu, 24 Jul 2025 08:36:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4648B8E0074
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 08:36:37 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 03B7558BA4
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 12:36:36 +0000 (UTC)
-X-FDA: 83699106834.06.2C57052
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 292198E0074
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 08:36:39 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F08291A02F9
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 12:36:38 +0000 (UTC)
+X-FDA: 83699106876.30.B9D4922
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 2EEFCA0006
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 12:36:34 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=oKKf19rc;
-	spf=pass (imf25.hostedemail.com: domain of bhupesh@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=bhupesh@igalia.com;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 4D6D2100005
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 12:36:37 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=JKghUDp+;
+	spf=pass (imf05.hostedemail.com: domain of bhupesh@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=bhupesh@igalia.com;
 	dmarc=pass (policy=none) header.from=igalia.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753360595;
+	s=arc-20220608; t=1753360597;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=kTMLqhd8ACCARh9s+Oizrnftx6KSLEeKOV2ICyEnYoY=;
-	b=kqNsZBjqiBibZvX1wwhUQZJTZNSzSzyVxwaHVLSEV5mQIL2QxtROVqY3wB6XGjPvwoR6u9
-	VJfVuswvs7ZCvQoNdtEs15MgZTO3DB3LCaB4MT4S/bI82Ygh8zEKBZskFk+OlhgkWl6PKa
-	P/0rpib5vTcnsQWMGnSVXa+fq3iQQNk=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=oKKf19rc;
-	spf=pass (imf25.hostedemail.com: domain of bhupesh@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=bhupesh@igalia.com;
-	dmarc=pass (policy=none) header.from=igalia.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753360595; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=rtmwqIefmP9hgVB4nAr4h+0uRDWTQ0QL2qUbei8qyDk=;
+	b=aD1PfCqINHXQ2qo2FNK/W0P/wVQFoBtbuALtYIc/8yJ9UI1pJxbMSocRw6sQbzrFzxGzjV
+	bn2qraGpl225wvhixxRHDTca9bcuNlWbDW1Y/0MugyPf62S0zPqgcHkuIfbTVEeJ8DLS3o
+	Bft2ACpZ/XAAvaDs7SzbknWo+OJFnRg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753360597; a=rsa-sha256;
 	cv=none;
-	b=VXcRtw5BsMdzAkeBLVMLVsrKbcUjozW6p2SG0WiEjepIkFDQnhXPboM3EzxFCT/B6gtJcz
-	oirj22gOryVX1del2p4GLDtPUCp+CUP1YXWbwUKW6Ih8OGbO9FVTLCiEG2fZvCxBD3OTAQ
-	pNMLttHgQqvJ7rhgows9reGuo37DaOc=
+	b=hvphQgBSOjQlDh0k7Kcsjd1UYNcUDkdip3L456sEWubuIFz4/kq5RsNgudkoESv0965zCy
+	psym1zRZdJs8p3FgDdjpmaRIu61yRRE+n31DUoGcxzuXWZhezUnUjp/EmhZjXVngOaTzV3
+	CLU4tJLbnTbihSlEAsvsaKzrFNII0Cg=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=JKghUDp+;
+	spf=pass (imf05.hostedemail.com: domain of bhupesh@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=bhupesh@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=kTMLqhd8ACCARh9s+Oizrnftx6KSLEeKOV2ICyEnYoY=; b=oKKf19rcSSkXTmh1MA4PBQ476N
-	Dv3eNo+L1JatFoA7T5mrN2+0OjQpe9OOPJeq+sLXSTrhk1TnBydE5RZQfkN722JNdB79sqWpM/S/k
-	SIBrZlAONRmg1WSKBvqyRC/RxwEYhSxCQF6b6z7TwiE8egFWj/r02JlskgE0vh6BWhOCzakc61IKE
-	e80rAKtvATtYf6XkZ3nbtIbfiRbic7M/JoxsKYtuMxugNwJTADNPT6JCwx44KstSCLVdWH5aqjQcO
-	lHDHjmRULKVLzCGI5kDyND0+Uz8TE5nsLCM1RnktS+EKRpEzC3OIkBNRIAXv+r0HQd3g47yrH9Mv3
-	mn74TWMg==;
+	bh=rtmwqIefmP9hgVB4nAr4h+0uRDWTQ0QL2qUbei8qyDk=; b=JKghUDp+HlUWPn2vpYAlkohY7x
+	BeZtFdce8x1hSGI+f5rk/JAfjYlz/Zaaf87zzqMgTzkL77GgzjkIDUD72+Hp9TkbBz33/9MAAJ6lS
+	tCUMtin1AOvtSvtjPo5Mfd9Zpp0Bwj0EMtJHmtnH3D59cwzM3NGX6t3PZiygjazK9841aaG8eKGvP
+	uG8A1Ikyt4U1B01846CkucnCUV5t8TiciEYtu8WYp+rV5MtTE4miQZN0uf9wBZ+gJYgqXbkHhThy4
+	Ro0wtfX3OimP+UFRKorBabHkzlIDIcejBbqJO3kZisOr3pfcjQUN19WRQaQ+GqtN6Fav5fLCJ4YQ0
+	YyxgPeTQ==;
 Received: from [223.233.78.24] (helo=localhost.localdomain)
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1uevBR-003BPU-D2; Thu, 24 Jul 2025 14:36:25 +0200
+	id 1uevBY-003BPU-SL; Thu, 24 Jul 2025 14:36:33 +0200
 From: Bhupesh <bhupesh@igalia.com>
 To: akpm@linux-foundation.org
 Cc: bhupesh@igalia.com,
@@ -97,20 +97,22 @@ Cc: bhupesh@igalia.com,
 	linux-trace-kernel@vger.kernel.org,
 	kees@kernel.org,
 	torvalds@linux-foundation.org
-Subject: [PATCH v6 0/3] Add support for long task name
-Date: Thu, 24 Jul 2025 18:06:09 +0530
-Message-Id: <20250724123612.206110-1-bhupesh@igalia.com>
+Subject: [PATCH v6 1/3] exec: Remove obsolete comments
+Date: Thu, 24 Jul 2025 18:06:10 +0530
+Message-Id: <20250724123612.206110-2-bhupesh@igalia.com>
 X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20250724123612.206110-1-bhupesh@igalia.com>
+References: <20250724123612.206110-1-bhupesh@igalia.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 4D6D2100005
+X-Stat-Signature: b5mpow9ycggboai5wtf4d6i7erkgmx6b
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2EEFCA0006
-X-Rspamd-Server: rspam06
-X-Stat-Signature: dj377a41pp7en5qjbddc5gnx8sdq8ozs
-X-HE-Tag: 1753360594-484557
-X-HE-Meta: U2FsdGVkX1/5plnFCQU2FCbD8QDOAeIZRZPfsoV8OrxAsWzvVps2v+3Y+sEOdwW2XcUxYQskLwX/VR2yguUOlhpCzYEpnP70dH/rkR4FQl8d4QZtsUl0/Nr+uZXjsIrDbyfU6b3vy059gC7kae6FN5iIgGeprLjDvdNquynILT19O9lVuJTSqucgY8QaqEaJ8FqG4El1uz84/qMMU3UQcfkhgB/QArJHhVmGM+409V+4peXH/Cv/Bvy7QCEJmmiewnVeZ6IHT12R/xUsxgCSG/Zd8MCoIgHr5gCGBnIWR+gi+FnOHRS+6CQp3j8BKGaZ3TH/g333RAGQVEkEfskMLsfAUGRCF7PXbmLhPMYl8GTY5mesID6zinl/ue7p6kkf/yadLn8wjHtdlrasdRvr1R4PdlFwrTmoQWSvpTYTPaSsM2cfydPWmjMFl1oSzmbhSXqaZIhGbrwO31K+3aQSU/sJhi+H8BE4WkNgRlu1J/99I0ghD+TUUZ5LrriKL8/8KS7EDOgLDVo4ryuFglQd1r4gOW25oW0jCpoHXWtvO/bmrUCk7nIT0w8dCDisU0PstK785a5ADT92kV6dHKN0m+JpmzNIVEX8li4FUFd66Jhj4FGkm+kvfuOD7vwPKlR+GuRozIRHRwhjfhFWMLeFNX1RztyUiroaM5bVL+Effh1ERGMsdSb++g9jzQsUfLqQEWKVW3zmbWUiq0L41VKTWX1/XO5iVGSNZzl6ScPyVcP/vCG+f13OV8ks22uCtom2qmwp63REaa+QiNASKYSywTJSgxXAec4zMY8+hwzHzceyjLQWFeHQeU4ehc73NZk3yV7LdwFI59xR2aoZ54/MFqRGxnemAGXZvf5QMMrftfEXEJLnW2u7SLfBsnxQZ866tI97tKdzv5yGB2DqI744DVI4lfs4E0rQ94nx5le+ZK+VqLZZgvq7bOZoa8ie2XZfx4JekduSVeTuWPwfSi7
- xXBkMlI8
- nMxE862zX0IExNKg73dva50tPeUEgQYQKMUeS653aLhlXuye6OJr3tFVwlRdYnAjnmTM8LDm0cGAjZcyeWY6on/wKpiW3x8chEYOFqJZKEv/NktDw8NzT1uXi2EENRpzolzLeNTKs0xbm9R9yQdAGwo9DNb9nvn2P/xGZunAQIUNfBSYxAlDqa5YNyqpwJX1Wecp21NSQ4+iNANxlZkfVjpF7emRUyUIORNa4s+INmbLcmOrVRLlT928ukvFPvF++chpb2VGSiOjdJYZf+qEpgdfn25sMn9/0cvy5NzezOtjVJHMneWfzzHpwYduVvQndZo59/CR/7LQ7SgkZQbj9UaCHmZi08LPp1rfXZBnDlPRPtxqmQffnC1B5Gexa9NlPGI3tqjQHW0u36+BTjYHfWxq5K1LAtGXbKb4O
+X-HE-Tag: 1753360597-168515
+X-HE-Meta: U2FsdGVkX1+z+vuR8MEvhxD27rodpuwCbRn/ByEPW6dE5nHd0896yI6eE+VeeBs7l/2IA5pnin83CKmTToDq6uac/0d/HP8d6F2UPLhpb5eauPPDIRlNZRci6XPDPi3UpYoXd0h+F8lrE2mxie7tXNh0hGlBuUR2lNS91kY3HCdsXn40I7hu8zRE/PoTk1D/n9aTLHqEKqUmxUw7qc3ImgaYFdm1IKelpNkF8oM8IGoqeYGurhG2tb4CF6u29DHOMpcF7/UKEXQs5kmxbC4On80re+d+1ZTeoTSse5HX8bLzpNpjkhvgMFETrD2fM6+sWyRB6pj2Z4BYrGxDL1OMAqJFfddzwKKu7etqegSIYMqm93dl1O+DZEmjfsbGvCPecmaWlNx/qbXTpKVFFfCWF6i044w2mkptsd31oEGw7Y/yRs57h1Tr84Zw12q46ANeb27PanTNtGiTlOzC6ki88K7PhuTY4XAe28UaEyeGLCUR76ABpze4gSlG2MtiMm/wIXR6vLEEIJ6rRWWDncgPpHCP570j4vBxcSHW4CXdpa2zKuHMO1cHoOE/x4hdlp9qipQiO0KlwsXLj0v41Erm4mAhSxZNkYgSJOxmJeOrsI6Fz+NopVaQFR1DSU0XleT8pUcoLKa7U63uz25eN6gCRtFlWyDQwjGxpp+E0cZRmQS4x4Ih8p6kLhKq4AvDKnYT06f1COv0Las81QvqJsNSsCU8COcBvvbZQkS7vV2/F4UVmGjsuzVBbuyPQSwpPQb8EyJqUz5lpuiAfV3kNj+x+HYJjq9CKkU5q3OZ5XnMJUFZZRXNSUX9mr7+jlvDd71ffZqPYQ6Lfq645q+VMUr651xiyNSrkYigIrHaJPbhTmzfyfi00W+Pf9e7vafuawnE0RRh5Y/TpVLZhfbefq8axYjH32WIJBi13gygbV7sNiGoGQ5WkFCemJe+rtyL7BY7LRvMVkrxpg9NLL2H/ba
+ W/iEvYkS
+ tf0/c5T+zrY0EcaIpz7zHCbsPcAqEfgcq9WU0RCpYJGnS9ghOxQkF5Xn9kC5rhL8rfTKLErjTbsRBtXagWHe9m2fCLlQ5ZNuWi3v9BusnQrJoCfq8OFaEXpkXFWCYHfm4Vz3rLWg23PATgDt4QfzI5YbpHBU4F5C3EMLdh4EINstT55OcXZ/FFGC9RPcqMI9ZASkjAyY0m68Eqc3INzM8zl/SyVBWg+GC04TI95loEsfrC+58/En+o1MpcyUW6FFTC3fXETrPSYYu5HZay+2nI6zItok6dKAMkppDlDdTUzjSIbWUBWrYcVHtHcTtJbMaSH7HrOJbpNcP4FYaOIyt3zTDOA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,113 +121,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Changes since v5:
-================
-- v5 can be seen here: https://lore.kernel.org/lkml/20250716123916.511889-1-bhupesh@igalia.com/ 
-- As suggested by Linus, replaced 'tsk->comm' with 'tsk->comm_str' locally, and verified basic
-  thread names and then changed 'tsk->comm_str' back to 'tsk->comm'. So essentially now 'tsk->comm'
-  is TASK_COMM_EXT_LEN i.e. 64-bytes long.
+Patch 3a3f61ce5e0b ("exec: Make sure task->comm is always NUL-terminated"),
+replaced 'strscpy_pad()' with 'memcpy()' implementations inside
+'__set_task_comm()'.
 
-Changes since v4:
-================
-- v4 can be seen here: https://lore.kernel.org/lkml/20250521062337.53262-1-bhupesh@igalia.com/ 
-- As suggested by Kees, replaced tsk->comm with tsk->comm_str, inside 'task_struct'
-  where TASK_COMM_EXT_LEN is 64-bytes.
+However a few left-over comments are still there, which mention
+the usage of 'strscpy_pad()' inside '__set_task_comm()'.
 
-Changes since v3:
-================
-- v3 can be seen here: https://lore.kernel.org/lkml/20250507110444.963779-1-bhupesh@igalia.com/
-- As suggested by Petr and Steven, used 'comm_ext' name instead of
-  'real_comm'. Correspondingly the macro name is changed to 'TASK_COMM_EXT_LEN'
-  for the 64-byte extended comm.
-- Rebased this patchset on linux-next/master, which contain the following patch from
-  Steven now:
-       155fd6c3e2f0 ("tracing/sched: Use __string() instead of fixed lengths for task->comm")
-- Accordingly, v4 drops the changes done for 'trace/sched' events in v3,
-  but retains the 'safe' memcpy' changes for other kernel trace users.
+Remove those obsolete comments.
 
-Changes since v2:
-================
-- v2 can be seen here: https://lore.kernel.org/lkml/20250331121820.455916-1-bhupesh@igalia.com/
-- As suggested by Yafang and Kees, picked Linus' suggested approach for
-  this version (see: <https://lore.kernel.org/all/CAHk-=wjAmmHUg6vho1KjzQi2=psR30+CogFd4aXrThr2gsiS4g@mail.gmail.com/>).
-- Dropped kthreads patch from this version. It would be sent out
-  separately, if we have a consensus on this approach.
+While at it, also remove an obsolete comment regarding 'task_lock()'
+usage while handing 'task->comm'.
 
-Changes since v1:
-================
-- v1 can be seen here: https://lore.kernel.org/lkml/20250314052715.610377-1-bhupesh@igalia.com/
-- As suggested by Kees, added [PATCH 3/3] to have a consistent
-  'full_name' entry inside 'task_struct' which both tasks and
-  kthreads can use.
-- Fixed the commit message to indicate that the existing ABI
-  '/proc/$pid/task/$tid/comm' remains untouched and a parallel
-  '/proc/$pid/task/$tid/full_name' ABI for new (interested) users.
+Signed-off-by: Bhupesh <bhupesh@igalia.com>
+---
+ include/linux/sched.h | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-While working with user-space debugging tools which work especially
-on linux gaming platforms, I found that the task name is truncated due
-to the limitation of TASK_COMM_LEN.
-
-Now, during debug tracing, seeing truncated names is not very useful,
-especially on gaming platforms where the number of tasks running can
-be very high.
-
-This patchset does not touch 'TASK_COMM_LEN' at all, i.e.
-'TASK_COMM_LEN' and the 16-byte design remains untouched.
-
-Via this patchset, Linus suggested 'tsk->comm' is made 64-byte long
-and equal to TASK_COMM_EXT_LEN.
-
-To avoid any surprises / bug,s I replaced 'tsk->comm' with
-'tsk->comm_str' locally inside 'task_struct' and checked compilation
-of code and basic working of thread names:
-
-       struct task_struct {
-	       ..............
-               char    comm_str[TASK_COMM_EXT_LEN];
-	       ..............
-       };
-
-       where TASK_COMM_EXT_LEN is 64-bytes.
-
-Once done, I changed the name back to 'tsk->comm'.
-
-To ensure that the existing ABI and userspace continues to work
-as intended, we ensure that:
-
-- Existing users of 'get_task_comm'/ 'set_task_comm' will get 'tsk->comm'
-  truncated to a maximum of 'TASK_COMM_LEN' (16-bytes) to maintain ABI,
-- New / Modified users of 'get_task_comm'/ 'set_task_comm' will get
- 'tsk->comm' supported up to a maximum of 'TASK_COMM_EXT_LEN' (64-bytes).
-
-Note, that the existing users have not been modified to migrate to
-'TASK_COMM_EXT_LEN', in case they have hard-coded expectations of
-dealing with only a 'TASK_COMM_LEN' long 'tsk->comm_str'.
-
-After this change, gdb is able to show full name of the task, using a
-simple app which generates threads with long names [see 1]:
-  # gdb ./threadnames -ex "run info thread" -ex "detach" -ex "quit" > log
-  # cat log
-
-  NameThatIsTooLongForComm[4662]
-
-[1]. https://github.com/lostgoat/tasknames
-
-Bhupesh (3):
-  exec: Remove obsolete comments
-  treewide: Switch memcpy() users of 'task->comm' to a more safer
-    implementation
-  include: Set tsk->comm length to 64 bytes
-
- include/linux/coredump.h       |  3 ++-
- include/linux/sched.h          | 15 +++++++++------
- include/trace/events/block.h   |  5 +++++
- include/trace/events/oom.h     |  1 +
- include/trace/events/osnoise.h |  1 +
- include/trace/events/signal.h  |  1 +
- include/trace/events/task.h    |  2 ++
- 7 files changed, 21 insertions(+), 7 deletions(-)
-
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 84449f847256..8bbd03f1b978 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1156,10 +1156,8 @@ struct task_struct {
+ 	 *
+ 	 * - normally initialized begin_new_exec()
+ 	 * - set it with set_task_comm()
+-	 *   - strscpy_pad() to ensure it is always NUL-terminated and
++	 *   - logic inside set_task_comm() will ensure it is always NUL-terminated and
+ 	 *     zero-padded
+-	 *   - task_lock() to ensure the operation is atomic and the name is
+-	 *     fully updated.
+ 	 */
+ 	char				comm[TASK_COMM_LEN];
+ 
+@@ -1965,7 +1963,7 @@ extern void __set_task_comm(struct task_struct *tsk, const char *from, bool exec
+  *   User space can randomly change their names anyway, so locking for readers
+  *   doesn't make sense. For writers, locking is probably necessary, as a race
+  *   condition could lead to long-term mixed results.
+- *   The strscpy_pad() in __set_task_comm() can ensure that the task comm is
++ *   The logic inside __set_task_comm() should ensure that the task comm is
+  *   always NUL-terminated and zero-padded. Therefore the race condition between
+  *   reader and writer is not an issue.
+  *
 -- 
 2.38.1
 
