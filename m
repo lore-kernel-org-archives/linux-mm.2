@@ -2,108 +2,135 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A5B4FC87FC5
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 05:44:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F0058C83F26
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 05:46:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB40C6B01F6; Thu, 24 Jul 2025 01:44:51 -0400 (EDT)
+	id 65CC58E0002; Thu, 24 Jul 2025 01:46:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5DE86B01F7; Thu, 24 Jul 2025 01:44:51 -0400 (EDT)
+	id 60DF96B01F8; Thu, 24 Jul 2025 01:46:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4C726B01F8; Thu, 24 Jul 2025 01:44:51 -0400 (EDT)
+	id 5238F8E0002; Thu, 24 Jul 2025 01:46:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AEBC76B01F6
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 01:44:51 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 51CE8160257
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 05:44:51 +0000 (UTC)
-X-FDA: 83698069182.25.429C5C2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 91ACB160002
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 05:44:49 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C6jGoMhe;
-	spf=pass (imf08.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3CC006B01F7
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 01:46:21 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DB7261D9AEF
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 05:46:20 +0000 (UTC)
+X-FDA: 83698072920.06.DA95619
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf02.hostedemail.com (Postfix) with ESMTP id B70CC80004
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 05:46:18 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Xzy/nMRo";
+	spf=pass (imf02.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753335889;
+	s=arc-20220608; t=1753335978;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xWwIrjr8oLOcsM5a+NL45qc2mC5fuxGwy7bWSwmB7L0=;
-	b=5Vd22gYnzlenZ7c7tEov5h9WoMbn62vsojrZLIgjgOG0FDIV79C3ndOtq1q0PdxA0O9J+i
-	+8aFEUuTnmHsaaClPIHtosFymxcA63vYW8CRQJGHbb7WkXNMiflDdP+ukuTV4TK5jBOeAU
-	w5p0a+CsGgLsB/Q1y+ebZPTme7gfCUk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753335889; a=rsa-sha256;
+	bh=UNwMJnsrlfjHIfnx8+XyAkalOotEMNE2AFm+hZ9zED0=;
+	b=lV+M53w6giNThUHWj/AiMuikXoha7PVDpL4FFruBCSZKKwLGRqkClS2PxRyBuxrdfHU+Vs
+	Ec1J7VuInIAFLHFSVC2g9Vosh7aHptcEpXnVulVjtTD6hjtA729XmUgECtWVPXfMEveNyt
+	WhCWYOszKsi6YYNdBSVFrwB3jGZmHO8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753335978; a=rsa-sha256;
 	cv=none;
-	b=wfdRvc0Bq5DFbfY7sN0KLm10plcS7eFO42Ptt5d81/jXWuIXyGbKZWQxYFCGG+T/t3SnoM
-	aMUXVobr+1hdxxW65xcb01S1UyR3xfzifN36sGdCYqh4MKBa0d1KXqed4uQ3ySYWQ+75TS
-	GpvsQwLmrL7nH9PIVEurkIrVwcHGeK4=
+	b=xOuZ6bPWKkGwK686ok19EP/Gn1ufanaWDKVFZcRsUkmTKmzKOByE1qfvXcX9hN0aqFu6aw
+	zwXfPWdofGVOKucf++aQynHolr1s3+VyDSOJH2PLofxlUPDzeNR20TfSpMxieZsjv9PJTW
+	RFBJExAEHjCY1t0Mmcfxo9fYzze8nNQ=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C6jGoMhe;
-	spf=pass (imf08.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 63A384456A;
-	Thu, 24 Jul 2025 05:44:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E9B6C4CEED;
-	Thu, 24 Jul 2025 05:44:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753335888;
-	bh=U4I+CEURF422p0sGN26ha9HaOt720UUk24J+vl+6mjI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=C6jGoMhePxWs2G1RnhF59gG3AXap97mUUE40SE0Rm0zZuH4EkRp+dPag/rTKFTJtk
-	 aIH8UT5BEZzz8AS2s95p9XeW+qVBOtlMdJU9OcofPSwraKN+wgvSIt7eeHshgWCTsT
-	 z/pst5aWEXs8QqfceKtXDCpdgWnxSY7hlyYDAOq+nTfBlhT9pT/3LCgyEKtkwCcEYG
-	 Qc+p/WDMbD1kDL3Wqi3br3L11qZxkfSyOQLi2R2Bu3EOjG1wVamcR4BfC5KFfACpsJ
-	 9GcKqEIPKMc7PjakSUojQydViLJlolHSBB2JOKHxDcIAki1C99B8uS3kEZjWAxtRnX
-	 jtT9QAxe4rLNA==
-Date: Thu, 24 Jul 2025 08:44:43 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: "Kasireddy, Vivek" <vivek.kasireddy@intel.com>
-Cc: Alex Williamson <alex.williamson@redhat.com>,
-	Christoph Hellwig <hch@lst.de>, Jason Gunthorpe <jgg@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
-	Jens Axboe <axboe@kernel.dk>,
-	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
-	Joerg Roedel <joro@8bytes.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
-	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Will Deacon <will@kernel.org>
-Subject: Re: [PATCH 10/10] vfio/pci: Add dma-buf export support for MMIO
- regions
-Message-ID: <20250724054443.GP402218@unreal>
-References: <cover.1753274085.git.leonro@nvidia.com>
- <aea452cc27ca9e5169f7279d7b524190c39e7260.1753274085.git.leonro@nvidia.com>
- <IA0PR11MB7185E487736B8B4CD70600DEF85EA@IA0PR11MB7185.namprd11.prod.outlook.com>
+	imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Xzy/nMRo";
+	spf=pass (imf02.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1753335978;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UNwMJnsrlfjHIfnx8+XyAkalOotEMNE2AFm+hZ9zED0=;
+	b=Xzy/nMRohmCJsOKUEnHVPxffWP5ptKUWTzNCkHDM92bMnHc5yVp5daEmT8VfPavABXBHvf
+	4yAJ9v6Y7AMN90RI+DE4m2hCjCeen3Ia9iEsLM+5kpeZsbaqyHiUGVVEDthngqG4K5ntA9
+	fUfkgCtBEFuJEh1L14dAwc/bYeDAXY8=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-407-_5Dg--r_Pcy8o3KuoT-bQw-1; Thu, 24 Jul 2025 01:46:14 -0400
+X-MC-Unique: _5Dg--r_Pcy8o3KuoT-bQw-1
+X-Mimecast-MFC-AGG-ID: _5Dg--r_Pcy8o3KuoT-bQw_1753335973
+Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-32cbc4a763eso1995751fa.3
+        for <linux-mm@kvack.org>; Wed, 23 Jul 2025 22:46:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753335973; x=1753940773;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UNwMJnsrlfjHIfnx8+XyAkalOotEMNE2AFm+hZ9zED0=;
+        b=S7avcPqDCRGJfqFUtNQFI+SeKPHpn/mx5ZCx0eMmKl9Sn6jv+munAKiATjpFxLnRSg
+         zcbunE4jpa+VdX2ViM1Dujqs23oENe8mHiYfCGxtuENI8gw/eAAqmtZyxnWzjERgO4xF
+         z7EKB0h35ulbeQqmt1vwCqcigGlkgRTgqG8vnrb+w4gDiJLDVc1rbR0pUmo6fLC14lYq
+         I60LWYh65MoZF25ohdIXkvrk0qx4+unm7AM+Om7xsu97yIiku38R3dUcBS69uEb3TMlS
+         8fMAjUqeuB4DEeiaxyJYkKrDnuuZKHjIjzeYvxpinJzyDMW2O5QE8TH6aMv/6e6UfjLt
+         X6AA==
+X-Forwarded-Encrypted: i=1; AJvYcCX2Xubry0LANLP0x17uaEm5yQQ/foe7+98k06b+IwVsA6/yusZIHNsCVoDJittPf6iuS8FuWPcmWA==@kvack.org
+X-Gm-Message-State: AOJu0Yx6O/CQD8nwkS4Yt3XiGN3VxOjxLTE4jhIlRaw+Kxt6I2E4EuGe
+	vGWkbXXyXV1r+lj8PLzNV76B6KROEjELzC2taFg7relg0LYX9YhBoW6ZISD8HoNzcPSKjtgyO6K
+	pN9btH+jGDmfazqJOzQ5EEe+lC+CmCqMaOzPF6kP4xzrc2BXqhxE=
+X-Gm-Gg: ASbGncuDsOV/rXaTNp3fEeptHas8rpJiXczR5wPx9vtTtOfhkUKE9h6L8B5I387tLb+
+	jxr5cEXIgKeUlV4S8khJnBwyWyNR9We/dSkXVhuwTgVZDGHvoBorNXC/s+buYUIQTQvLTbiShZy
+	n1uAfRCps7AdYZwTbORwYymFMZvlVndntBFI035/eQVU9Cefo3u6KNjQV372s0/TO1ryhU4JYJB
+	Ws3CwIqpGqNA+Sn7HvaQx9I95RJpWnOR1k0peuprMTVCxg3lha2W09KAb8nosPDsxG8PY8eYkFf
+	2o6XRUkBr0+ZE44uWJ8jJNGi/IShz3df7nw8y34m5pX0maVj7kUrfCyC/XgmwUsdCg==
+X-Received: by 2002:a2e:b88f:0:b0:32b:a7d2:a8b1 with SMTP id 38308e7fff4ca-330dfcf9563mr17781701fa.12.1753335973025;
+        Wed, 23 Jul 2025 22:46:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEVuWN3kjiXBLdFUiaycJpmnxFsCty+fYD0fmCcRFhmov/er61nqrT1/bUmvuEMXStaMCRkdw==
+X-Received: by 2002:a2e:b88f:0:b0:32b:a7d2:a8b1 with SMTP id 38308e7fff4ca-330dfcf9563mr17781521fa.12.1753335972491;
+        Wed, 23 Jul 2025 22:46:12 -0700 (PDT)
+Received: from [192.168.1.86] (85-23-48-6.bb.dnainternet.fi. [85.23.48.6])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-331e079336bsm1708151fa.32.2025.07.23.22.46.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Jul 2025 22:46:12 -0700 (PDT)
+Message-ID: <dad71615-0eba-4a8d-abfc-979fb815511c@redhat.com>
+Date: Thu, 24 Jul 2025 08:46:11 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <IA0PR11MB7185E487736B8B4CD70600DEF85EA@IA0PR11MB7185.namprd11.prod.outlook.com>
-X-Rspamd-Queue-Id: 91ACB160002
-X-Stat-Signature: awnsar8pj6phsp8hm7tusuktwqkfpe9f
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/hmm: Do not fault in device private pages owned by the
+ caller
+To: Matthew Brost <matthew.brost@intel.com>
+Cc: Francois Dugast <francois.dugast@intel.com>, airlied@gmail.com,
+ akpm@linux-foundation.org, apopple@nvidia.com, baohua@kernel.org,
+ baolin.wang@linux.alibaba.com, dakr@kernel.org, david@redhat.com,
+ donettom@linux.ibm.com, jane.chu@oracle.com, jglisse@redhat.com,
+ kherbst@redhat.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lyude@redhat.com, peterx@redhat.com, ryan.roberts@arm.com, shuah@kernel.org,
+ simona@ffwll.ch, wangkefeng.wang@huawei.com, willy@infradead.org,
+ ziy@nvidia.com, Balbir Singh <balbirs@nvidia.com>, jgg@nvidia.com,
+ Leon Romanovsky <leonro@nvidia.com>
+References: <9ae3e014-c7d0-4d58-af0e-925bcd9e4cfd@nvidia.com>
+ <20250722193445.1588348-1-francois.dugast@intel.com>
+ <023ab16d-f3af-487e-a7ce-929bf7b2fe3e@nvidia.com>
+ <aIG+gqY2YRqBeKlh@lstrano-desk.jf.intel.com>
+From: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>
+In-Reply-To: <aIG+gqY2YRqBeKlh@lstrano-desk.jf.intel.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: MX5S3mUsxYjcbPzrUVvyCsTM-5XqKp0PJOjHafaCQpQ_1753335973
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: B70CC80004
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1753335889-880132
-X-HE-Meta: U2FsdGVkX18hUVb9Lq2INlu2CqHcHsqSVC92r3zSXX2YFPSzDD75odZ7V+V2M7TD6ypABHuVLJTbbMplNuPWfxBQZ4PXsr+oCW+HiaPo2G1qgFXoGA4eAnH7Aeg9ILZbdNDtsW8kibHK8dzzLsIuyQG2e8ONYlDPMSDSNbO4diRJrLr/UjKXLE0pgsERWtz7Wxlie3rksqs1h1IEo72FaO/L/ARnzKfIZJHfE35iKKb/9YEjHFLe2y3aZ5avsdqMbSBt5MKkc/Cyx//BLa+58TNpbq8xQjBMGhvfDazoMhF65n9QHU7m1XMpGRz6Dh8pxBtlXMVYV3HV/LVAeNM9+vMJVZsuVGdJa//xi/erSpZfdIRt+7ZkmbYFO8+k/VgYqrNTWfniYWJG5WwTf0VCZL2/BCssydh2O/efECeYgVrDvNTy/46pEh7Zh2GullpIDfHNbrZgs8cLAYHPy742M3xk/EjXk8opxEFA8CO6gPx29sMcmh2sYkG4I9hQ7rlsdt45hDpGxtC3z2nrFQQ7aUvGxqfIyb4EvZRI7cX/Z4P3oBLUemzaY8utZ6wS3koyF3GLxHsQfS2UlmFfRsJzXeMYLCSiNpRg36hgsN2JoB7HFuQl1jzYziOrcETVmVqCn1wsVeKnM/ZbjYMLs+EuQE9bKWx3OcvHmesWx2SBOSQv9ZaJZxHB67H6wWbSBLiBbH/3goxbyb1SDwSt/hVeOEj4dRhz8+94Hp2CNjqJppEuWxbUIK/noNbwuexoJLAr0KXsSRCf39MryJlG0SfnWGH6EClkHzSv/SYlpUScV3IvxFy/b/YGv+Yjm4oDsafiRx6BTyFBsPvQUIYg7cpKRQne2uZmkebdf2YQn9XZCwliCYHhbLc10xJsdnuG36Qdb9uliGHlDs0jgqojqf1jHBroMbdUMk7SxsFrtIxHgzs61IaB1KDKDPjM++3LkOVc8k1lkyCy1GTzs+All+Y
- ZC1jg6NX
- FdNsYDk6YAzM7SHBMqoEYADAuc+VKld5KoMLuBLorxg/62ZCewMcnecdaffK+sczbKen1JN8kpzJ0N0gvZXZz7r+gXTBavOFaA0Rfr+7DdcEixtqleJCMOZZoqeHWhQY47m1k4Ym3AjrBDnL6eYll0LdM36+75ML2DVLxKGd5hcAAC2EXicpl05qxjXRRnl4eIG3Rm2IRoUeGDhWBMv1Z6qgoyZnXkuIbJDv4OGhFxhBcqT/8VcnbDIARRuXVs0C7EHgGHk0jjg0DyjzuJNNc37tpGmK/fG4asgG5XiFtBYzVtC+gm0T8SUb695HN7lX46wnBvD84EmnrijxLWGhI7qCp/g==
+X-Rspamd-Server: rspam09
+X-Stat-Signature: jb5orzu8padiifiy4h89riupwu774noz
+X-HE-Tag: 1753335978-130678
+X-HE-Meta: U2FsdGVkX18CV2sN8VyWIEZIGPU8TkaEoCodxBSHtiTeB3e5jTO0BZBoRl0bDg+OAy9Hoy9lTpXRp8qyYPyHH5lmG+ANcqG7x8YW+BRB0y7DHzontOifVWv9XVAgDQj2cFx+DLDY7KM4H6qKL14n72s8ygm13ZagUCUc2uO/Wmk5+8gNjgYMGx+Y7JLIxwThmuQsnReouVH/1/e1C2oThbXRI5SGOJOhy9r6ZkW77i+FEKo4pNRJLidmbqgijh82v9HE6DvpK6ocDtVzJmlL4054GFk6BTfhDRhP1Zu3Sop3ch+jeUj8ZoVDAvuY6Mawg/NOF2pkthP5QIFobrW78qWjK1GHfvYXje6+RkyjB2lpBRuOFp9lUmJQcaJHJ4AEaXRhC5i8+JMSyg3c4iXTxc4aI9QSsxv/ogK0JhXThgoO57yMj+VGsi/sVaMhAilP+YuiWhrQWPeOXuI3kCLKx08kTQHnewkibOBkYXv3Jgfhq/og25Dxv6RkQDtMSWmte1lMT8PT0UUUgawITUs+aos4WVyhjU7ymWD+Auch7FUHDMhl2uqCEdaGjPw6B3xgCwILXzhxUNC0KixrPCbFv0RHCs9wTQoQ+f5CeCRJHMO9JsJ/dPm9KM6KDBfKo2ulRrhIbGYdMKgmkXeLH5sG8Tqd4YmvO2sQKevx0742w38kqEzT6muhkqT6beU49R5q+fP3OA5LC+BQKPbtP6oqT7rWY5FoaCQKCEmliZ70Nlmpxe90A7sBIdA+Mnfek1Md9kFJNDpu2YzLzhW+bPjsIpGZSfptTBXyV7A7+cWwAFNe9Qco1enCSxWgRAnSM/OZco+6Hoopiyf0lYD7s+/BvTR7BkCI/qiAVcKXM6iisXZNzNg3ZgDc9bhHLN87XJJbZty9HveoRgyBB8eIV3qYpToKcbO42kKKOVqZxIliX/vgKIhDlgwT4ixEqIyQmuRM5aUms+uj2YlRbigFiAv
+ MQzwp6UH
+ MUcys
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,124 +139,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 24, 2025 at 05:13:49AM +0000, Kasireddy, Vivek wrote:
-> Hi Leon,
-> 
-> > Subject: [PATCH 10/10] vfio/pci: Add dma-buf export support for MMIO
-> > regions
-> > 
-> > From: Leon Romanovsky <leonro@nvidia.com>
-> > 
-> > Add support for exporting PCI device MMIO regions through dma-buf,
-> > enabling safe sharing of non-struct page memory with controlled
-> > lifetime management. This allows RDMA and other subsystems to import
-> > dma-buf FDs and build them into memory regions for PCI P2P operations.
-> > 
-> > The implementation provides a revocable attachment mechanism using
-> > dma-buf move operations. MMIO regions are normally pinned as BARs
-> > don't change physical addresses, but access is revoked when the VFIO
-> > device is closed or a PCI reset is issued. This ensures kernel
-> > self-defense against potentially hostile userspace.
-> > 
-> > Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-> > Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-> > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-> > ---
-> >  drivers/vfio/pci/Kconfig           |  20 ++
-> >  drivers/vfio/pci/Makefile          |   2 +
-> >  drivers/vfio/pci/vfio_pci_config.c |  22 +-
-> >  drivers/vfio/pci/vfio_pci_core.c   |  25 ++-
-> >  drivers/vfio/pci/vfio_pci_dmabuf.c | 321 +++++++++++++++++++++++++++++
-> >  drivers/vfio/pci/vfio_pci_priv.h   |  23 +++
-> >  include/linux/dma-buf.h            |   1 +
-> >  include/linux/vfio_pci_core.h      |   3 +
-> >  include/uapi/linux/vfio.h          |  19 ++
-> >  9 files changed, 431 insertions(+), 5 deletions(-)
-> >  create mode 100644 drivers/vfio/pci/vfio_pci_dmabuf.c
 
-<...>
+On 7/24/25 08:02, Matthew Brost wrote:
+> On Thu, Jul 24, 2025 at 10:25:11AM +1000, Balbir Singh wrote:
+>> On 7/23/25 05:34, Francois Dugast wrote:
+>>> When the PMD swap entry is device private and owned by the caller,
+>>> skip the range faulting and instead just set the correct HMM PFNs.
+>>> This is similar to the logic for PTEs in hmm_vma_handle_pte().
+>>>
+>>> For now, each hmm_pfns[i] entry is populated as it is currently done
+>>> in hmm_vma_handle_pmd() but this might not be necessary. A follow-up
+>>> optimization could be to make use of the order and skip populating
+>>> subsequent PFNs.
+>> I think we should test and remove these now
+>>
+> +Jason, Leon – perhaps either of you can provide insight into why
+> hmm_vma_handle_pmd fully populates the HMM PFNs when a higher-order page
+> is found.
+>
+> If we can be assured that changing this won’t break other parts of the
+> kernel, I agree it should be removed. A snippet of documentation should
+> also be added indicating that when higher-order PFNs are found,
+> subsequent PFNs within the range will remain unpopulated. I can verify
+> that GPU SVM works just fine without these PFNs being populated.
 
-> > +static int validate_dmabuf_input(struct vfio_pci_core_device *vdev,
-> > +				 struct vfio_device_feature_dma_buf *dma_buf)
-> > +{
-> > +	struct pci_dev *pdev = vdev->pdev;
-> > +	u32 bar = dma_buf->region_index;
-> > +	u64 offset = dma_buf->offset;
-> > +	u64 len = dma_buf->length;
-> > +	resource_size_t bar_size;
-> > +	u64 sum;
-> > +
-> > +	/*
-> > +	 * For PCI the region_index is the BAR number like  everything else.
-> > +	 */
-> > +	if (bar >= VFIO_PCI_ROM_REGION_INDEX)
-> > +		return -ENODEV;
+afaics the device can consume the range as smaller pages also, and some
+hmm users depend on that.
 
-<...>
 
-> > +/**
-> > + * Upon VFIO_DEVICE_FEATURE_GET create a dma_buf fd for the
-> > + * regions selected.
-> > + *
-> > + * open_flags are the typical flags passed to open(2), eg O_RDWR,
-> > O_CLOEXEC,
-> > + * etc. offset/length specify a slice of the region to create the dmabuf from.
-> > + * nr_ranges is the total number of (P2P DMA) ranges that comprise the
-> > dmabuf.
-> Any particular reason why you dropped the option (nr_ranges) of creating a
-> single dmabuf from multiple ranges of an MMIO region?
+> Matt
 
-I did it for two reasons. First, I wanted to simplify the code in order
-to speed-up discussion over the patchset itself. Second, I failed to
-find justification for need of multiple ranges, as the number of BARs
-are limited by VFIO_PCI_ROM_REGION_INDEX (6) and same functionality
-can be achieved by multiple calls to DMABUF import.
 
-> 
-> Restricting the dmabuf to a single range (or having to create multiple dmabufs
-> to represent multiple regions/ranges associated with a single scattered buffer)
-> would be very limiting and may not work in all cases. For instance, in my use-case,
-> I am trying to share a large (4k mode) framebuffer (FB) located in GPU's VRAM
-> between two (p2p compatible) GPU devices. And, this would probably not work
-> given that allocating a large contiguous FB (nr_ranges = 1) in VRAM may not be
-> feasible when there is memory pressure.
+--Mika
 
-Can you please help me and point to the place in the code where this can fail?
-I'm probably missing something basic as there are no large allocations
-in the current patchset.
 
-> 
-> Furthermore, since you are adding a new UAPI with this patch/feature, as you know,
-> we cannot go back and tweak it (to add support for nr_ranges > 1) should there
-> be a need in the future, but you can always use nr_ranges = 1 anytime. Therefore,
-> I think it makes sense to be flexible in terms of the number of ranges to include
-> while creating a dmabuf instead of restricting ourselves to one range.
+>
+>>> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+>>> ---
+>>>  mm/hmm.c | 25 +++++++++++++++++++++++++
+>>>  1 file changed, 25 insertions(+)
+>>>
+>>> diff --git a/mm/hmm.c b/mm/hmm.c
+>>> index f2415b4b2cdd..63ec1b18a656 100644
+>>> --- a/mm/hmm.c
+>>> +++ b/mm/hmm.c
+>>> @@ -355,6 +355,31 @@ static int hmm_vma_walk_pmd(pmd_t *pmdp,
+>>>  	}
+>>>  
+>>>  	if (!pmd_present(pmd)) {
+>>> +		swp_entry_t entry = pmd_to_swp_entry(pmd);
+>>> +
+>>> +		/*
+>>> +		 * Don't fault in device private pages owned by the caller,
+>>> +		 * just report the PFNs.
+>>> +		 */
+>>> +		if (is_device_private_entry(entry) &&
+>>> +		    pfn_swap_entry_folio(entry)->pgmap->owner ==
+>>> +		    range->dev_private_owner) {
+>>> +			unsigned long cpu_flags = HMM_PFN_VALID |
+>>> +				hmm_pfn_flags_order(PMD_SHIFT - PAGE_SHIFT);
+>>> +			unsigned long pfn = swp_offset_pfn(entry);
+>>> +			unsigned long i;
+>>> +
+>>> +			if (is_writable_device_private_entry(entry))
+>>> +				cpu_flags |= HMM_PFN_WRITE;
+>>> +
+>>> +			for (i = 0; addr < end; addr += PAGE_SIZE, i++, pfn++) {
+>>> +				hmm_pfns[i] &= HMM_PFN_INOUT_FLAGS;
+>>> +				hmm_pfns[i] |= pfn | cpu_flags;
+>>> +			}
+>>> +
+>> As discussed, can we remove these.
+>>
+>>> +			return 0;
+>>> +		}
+>> All of this be under CONFIG_ARCH_ENABLE_THP_MIGRATION
+>>
+>>> +
+>>>  		if (hmm_range_need_fault(hmm_vma_walk, hmm_pfns, npages, 0))
+>>>  			return -EFAULT;
+>>>  		return hmm_pfns_fill(start, end, range, HMM_PFN_ERROR);
+>>
+>>
+>> Balbir Singh
 
-I'm not a big fan of over-engineering. Let's first understand if this
-case is needed.
-
-Thanks
-
-> 
-> Thanks,
-> Vivek
-> 
-> > + *
-> > + * Return: The fd number on success, -1 and errno is set on failure.
-> > + */
-> > +#define VFIO_DEVICE_FEATURE_DMA_BUF 11
-> > +
-> > +struct vfio_device_feature_dma_buf {
-> > +	__u32	region_index;
-> > +	__u32	open_flags;
-> > +	__u64	offset;
-> > +	__u64	length;
-> > +};
-> > +
-> >  /* -------- API for Type1 VFIO IOMMU -------- */
-> > 
-> >  /**
-> > --
-> > 2.50.1
-> 
 
