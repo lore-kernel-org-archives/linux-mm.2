@@ -2,116 +2,113 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E71AC83F17
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 02:30:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9FB6DC83F17
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 02:39:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7AB8E6B019B; Wed, 23 Jul 2025 22:30:27 -0400 (EDT)
+	id 25FB56B017E; Wed, 23 Jul 2025 22:39:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 754F86B019C; Wed, 23 Jul 2025 22:30:27 -0400 (EDT)
+	id 20FD96B019D; Wed, 23 Jul 2025 22:39:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61CF76B019D; Wed, 23 Jul 2025 22:30:27 -0400 (EDT)
+	id 0FEDB6B019E; Wed, 23 Jul 2025 22:39:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A8F66B019B
-	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 22:30:27 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E57B91117E5
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 02:30:26 +0000 (UTC)
-X-FDA: 83697579252.26.FFA0F52
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 22A6A80006
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 02:30:24 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=fcY4nNto;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf30.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753324225; a=rsa-sha256;
-	cv=none;
-	b=1UNjlerR+MIc+qtxfoM95ivKD5jIQ1HLYIx2UO0jr+ombn4c+k7Z8I05ojGy2a8keZrOB/
-	vbFg+5FkpIBJWzh+jo1zQ/40kgZcom8WMTcQi1jILg0t2XS9g2kVkAtc0KOHm6fLpn4pz1
-	YP0oTB1ht7zPq1ydxtwmi+M1yJQowe8=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=fcY4nNto;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf30.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E76B66B017E
+	for <linux-mm@kvack.org>; Wed, 23 Jul 2025 22:39:50 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0BC50C0278
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 02:39:50 +0000 (UTC)
+X-FDA: 83697602940.05.1C1CB53
+Received: from esa10.hc1455-7.c3s2.iphmx.com (esa10.hc1455-7.c3s2.iphmx.com [139.138.36.225])
+	by imf05.hostedemail.com (Postfix) with ESMTP id A5097100009
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 02:39:47 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=fujitsu.com header.s=fj2 header.b=NcLw+OPk;
+	spf=pass (imf05.hostedemail.com: domain of ruansy.fnst@fujitsu.com designates 139.138.36.225 as permitted sender) smtp.mailfrom=ruansy.fnst@fujitsu.com;
+	dmarc=pass (policy=reject) header.from=fujitsu.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753324225;
+	s=arc-20220608; t=1753324788;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uhz9gu0FksG/+3WQimJkdZ69HI0pSq+ZcmQhr+seIE4=;
-	b=5cDm2hoHTJRl/kPIAFmsbAbPcM44FcuOybCzun9kJdfvEHdwOZf8dc2pNRzkaiJvPSOJYK
-	KLKtTVCkQGZpas1EqcOksyD9SRrKXgNRJqw4yah7mmFwvVRC3fi3JAPsXzD3GwF4lgSoSf
-	Og0CZouthK3XaTV7144GKhBgPnMViyg=
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4aaf43cbbdcso75201cf.1
-        for <linux-mm@kvack.org>; Wed, 23 Jul 2025 19:30:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753324224; x=1753929024; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uhz9gu0FksG/+3WQimJkdZ69HI0pSq+ZcmQhr+seIE4=;
-        b=fcY4nNtoFFAGkt8s1awFtnfYl0K2EJ4Opgprf2IzX+zf9GYzU8kbGZ/wa3fJ8+NOZF
-         uoEjrqGbnX+4STiAelBUoH4aW8aPZoWNDol1DVz02ey2zGMHpg6KpveBMWIIU12ZU2Jk
-         DThiVMOemT9Vjhdxi+Y2BMOaK9/tco3gMSfamMSFNdeV+XZB7wJQIpXAHZU6Qw+jGGYF
-         TB4GJE8zSqmx9djLV779PrVEIS7Z52JqYTgNfUQHewR5mjPjbQXs7o7GrimcUdoss/Qo
-         WNsAufth6jPuPUzVchUQmEw8BpmYTsigjSU+GwIO0Qw888n5+9MGjVVZffXc4PlsCxR3
-         RbVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753324224; x=1753929024;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uhz9gu0FksG/+3WQimJkdZ69HI0pSq+ZcmQhr+seIE4=;
-        b=Ns9NxbxT8MyK1frtlpNepLKld2ioE9zS5HbY8j8AYkFgzcK0doF1WWz3T62WA4zORQ
-         rEDtHlO6rDNUFzpT2KD91bfCQaTk1//1WrCoD+F3Etq1vjXReVTLGJbbDpbNQYS8BaSs
-         KcQ5Tqtxsk1xLGTocPbb9SkAO5eVk/H3YcEwscEWcct2KOrgeHTNz60Z8NR8d7H4VOmh
-         WBbw74uR35Re+5bubnRxv06WfFFow2cinEJDUTzxRQ8gWlENfz8aPlwKG810k4HLyaKr
-         W6wFaP0SMLk1OiocxdPHzuN/uCY2fiVqaVGbnoikd6Syffy04shSF/+6xQaGe3F1m1hA
-         8jGA==
-X-Forwarded-Encrypted: i=1; AJvYcCV6Yb+pONuIpBF32D0SVi1qfXV7K36afIACDSYmxofVGdTZ6yZVsEddm6hhWevMeRD2SkrquqhFyQ==@kvack.org
-X-Gm-Message-State: AOJu0YxhCAiKxZnwkpfkXxDRF5Dc8gkWj4ngf1BsaQv5hqwG7tDtbdm3
-	MwV4KKjWjQ3hfLgTPWyBaeA61imrlfL0U3/mz16Zcoou2jcHskL//YfhG6+No1HVqv2C3BkMpZS
-	WDct7njQRkOE8ke/TZZN3IJnLEHwg93iJMcikumNN
-X-Gm-Gg: ASbGncsqoDJ2gTrwOm66mCDWAZ9WDR6qsLte0CqbK1LFAh/etKQ/WmaENjbUQ1Bq2ug
-	yj/6iqzViX9yl8rzNv55KOEnBW3fIVFWZ4yUZsqef25rSDu9VnDyoxQyRoZAc3nMK6WjpbvbiUm
-	EE9CprHK9ThTyGvH1pI/v+IDqFh5PCxla3b7UHWRnP8bLsQTI4cqRtVKt+WRb2hrcaVorUFkYOG
-	kkRmw==
-X-Google-Smtp-Source: AGHT+IHVMaulNLvc1zx4yHy8Nrn3HmQ77Cxx1g7QWtcrSOk+YXAwyY9tZvc856DCkinY1MuvRX/I7RwuKWT45oc0RFQ=
-X-Received: by 2002:ac8:7f95:0:b0:4a7:26d2:5a38 with SMTP id
- d75a77b69052e-4ae7e2aa1efmr1346841cf.19.1753324223595; Wed, 23 Jul 2025
- 19:30:23 -0700 (PDT)
+	bh=LVI4ui27shb45WBw7de/2FLoBAEccuHo9aQTcjGPAgE=;
+	b=8R+ytn5ILM+KvF05jA3sAWfOR3Pxz7Y34EQ3qRbdjbnIzBxsFtxPGOmrUgeNVrSJ4GRQzu
+	NUfHbiuCz+qSnwst80L1GbWCJhDMNHrHxUhpEqlm3yExrPMLrJyqUqgnz5WqEZi4+IyGff
+	ftDL94Vb5VMv62m2e2uIyU3BqOUEl14=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753324788; a=rsa-sha256;
+	cv=none;
+	b=va7S1b2XvvZyIfa4/vkaY3PRIuK5MZ2kUBNCvg27MI+LEiJ63LiUb1/U/oF9F9S6HkL41C
+	w89NFaLwC208he1blC1EqczIHN99CBOAoR0F5CjKO9XfIsbXmujGZERZAwZbl8o3mb7fiI
+	tFphR7LuI7N3Y/SM1TL15k01zAjFo/A=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=fujitsu.com header.s=fj2 header.b=NcLw+OPk;
+	spf=pass (imf05.hostedemail.com: domain of ruansy.fnst@fujitsu.com designates 139.138.36.225 as permitted sender) smtp.mailfrom=ruansy.fnst@fujitsu.com;
+	dmarc=pass (policy=reject) header.from=fujitsu.com
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1753324787; x=1784860787;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=uPlh/YWX4gV2j+/e8PX8tFDcfpt6QXFzRYCQvBZYddQ=;
+  b=NcLw+OPkkRJRxiKp64GCn0XgSvqjs/weyr82CzGG7yVG/fs9XZ/6EU0Y
+   5Crk+FqUsplyqupffEorX40w/x/ThE545P9KWAhJ9geTeVT+ONQ3ATdld
+   RM6DDtAZWVByt3iv983NoJWm1mgDXLazndJGRAGwSYA/wGGFXUNUCfQ4R
+   0SxGj/FST1sYrujV+mdz4xgdXy3ruZkX9laslDvQl+gwwAyam2pgMvv1b
+   epUWSADUKK+pGYMePgzKpnKdZooN30YvbB9aLGbCR9YdkX2JtO+OHtkHF
+   7E3k9R6lxl+GIDgaXSxJ6ry0//OabBmWvQiaruCD+ceQfwPvFYm2evdCz
+   g==;
+X-CSE-ConnectionGUID: ccaXRW36Tu6H7X6EGdxkbA==
+X-CSE-MsgGUID: xbGCOWLjTAGb8fDZhpczjg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="194633409"
+X-IronPort-AV: E=Sophos;i="6.16,336,1744038000"; 
+   d="scan'208";a="194633409"
+Received: from unknown (HELO az2nlsmgr1.o.css.fujitsu.com) ([20.61.8.234])
+  by esa10.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2025 11:39:46 +0900
+Received: from az2nlsmgm2.o.css.fujitsu.com (unknown [10.150.26.202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2nlsmgr1.o.css.fujitsu.com (Postfix) with ESMTPS id 2F3731C000A1
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 02:39:46 +0000 (UTC)
+Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2nlsmgm2.o.css.fujitsu.com (Postfix) with ESMTPS id 9497F1C00167
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 02:39:45 +0000 (UTC)
+Received: from [192.168.22.105] (unknown [10.167.135.81])
+	by edo.cn.fujitsu.com (Postfix) with ESMTP id C9EC11A000B;
+	Thu, 24 Jul 2025 10:39:40 +0800 (CST)
+Message-ID: <85d83be2-02f8-4ef6-91c7-ff920e47d834@fujitsu.com>
+Date: Thu, 24 Jul 2025 10:39:40 +0800
 MIME-Version: 1.0
-References: <CAG48ez0-deFbVH=E3jbkWx=X3uVbd8nWeo6kbJPQ0KoUD+m2tA@mail.gmail.com>
- <16c97e30-19c9-41e8-b73b-c0b3c8eceff3@suse.cz> <CAG48ez1qhjQNHC+3572udqVWHTANFpQ0ngxn_4ZDC9F8NCXsFA@mail.gmail.com>
- <c53b22c3-9f7f-4793-9d10-f4df861a3e32@suse.cz> <CAG48ez2cGX3e5bqgcw0OEnho29+YhwG2eOrHRgNwGAA_Nb65nw@mail.gmail.com>
- <CAJuCfpEcjH+W83At8WSkgzO=JvZmapg6dPaXmuSRS4ufhSha4w@mail.gmail.com>
-In-Reply-To: <CAJuCfpEcjH+W83At8WSkgzO=JvZmapg6dPaXmuSRS4ufhSha4w@mail.gmail.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 23 Jul 2025 19:30:12 -0700
-X-Gm-Features: Ac12FXyGI_TL4rNat7nkeSuGaWk8u2SFNub6ULGRe-fj0opu2rcTQxU7ydZQeAc
-Message-ID: <CAJuCfpHk_k5eVhAZTK=jJvES9311Hyo_YXxY-S56EAYSBuRVRQ@mail.gmail.com>
-Subject: Re: [BUG] hard-to-hit mm_struct UAF due to insufficiently careful
- vma_refcount_put() wrt SLAB_TYPESAFE_BY_RCU
-To: Jann Horn <jannh@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Linux-MM <linux-mm@kvack.org>, 
-	kernel list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: aegm5tzt4yeao6hjz54qnxwqcsm6yrj1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v3] mm: memory-tiering: Fix PGPROMOTE_CANDIDATE
+ counting
+To: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, lkp@intel.com,
+ akpm@linux-foundation.org, y-goto@fujitsu.com, mingo@redhat.com,
+ peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
+ dietmar.eggemann@arm.com, rostedt@goodmis.org, mgorman@suse.de,
+ vschneid@redhat.com, Li Zhijian <lizhijian@fujitsu.com>,
+ Ben Segall <bsegall@google.com>
+References: <20250722141650.1821721-1-ruansy.fnst@fujitsu.com>
+ <87cy9r38ny.fsf@DESKTOP-5N7EMDA>
+From: Shiyang Ruan <ruansy.fnst@fujitsu.com>
+In-Reply-To: <87cy9r38ny.fsf@DESKTOP-5N7EMDA>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: A5097100009
+X-Stat-Signature: qadyw14yeire5eafyubzabyndq7dzeyu
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 22A6A80006
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1753324224-732044
-X-HE-Meta: U2FsdGVkX1/znsRrZ0V6xOMk3WHzm7zqxwBT1NJ0OZyhTSshLPqyEIVNyCwRbyFFyjUcO8mr7WR/3Dt7mkUSUfEUdZB/k/3HYvK9XSkIP5rBObz9XRe8RI/TxAojju6n32SzqVk/wAGeVrxn2BTmjZib506LE/MBP36uQaDXI0Os49KTKYMJcqGo8HPp5cKZ5KVU2Sezo/CWFY9rMXZlMfPD3vYRwmzbA941vH8FWc/VoDhmjhKrrlEhCrfjIlhCRnF04nHaRxSBwzVRcpHM3bCmnrDJZQk2N57jUL5hZeYowv8g3VuadU9fXibgM4exwExTgV5AKgL4e0TI8RY4xv4BfbwrIRo9WedOil6a3dizSTOdotMatjbmCyxT4uOJ86T/u/l1IN1KrFoLrGZ9bf1+wOztwcSnAPe8OIBV5/IhfLyLnG3vmn+bcS0hFu5MWP5vbmAPdjsP1o4fqojZt0gr34O6t6V98aeLktOoqsHmhQjmcOjY5QBB26AZDcTSXTL3PxkWIGe2VSDL9iakk22YpE+Wrqkb3u4F9k/e30CfIJdIWqnNxG2r+WCBKOvjFSv4+msJg71WCls8ggdSqOft59bVX6cfpsBktMj5i9jyg7glqoJWjay+Vg2vlLvmIHz5LfKwEwWzh0+P/9T8i72ytFbZdx+ImBNGrRoadFG6gp+WjZd6lNnuuDU7tI3GoGDeaYmazd/feEoWDjKjEG5ZltAIzxGg7qAFEPRzcaOPP/qZ4JCUCQbNOfCnZfZwPRYkjoDiXASm7qYHKsUcAXL1XNcTpQuW9KsudxpnTrFEoNKiipmC6hSvdhUCQsc4Z3IHZowO0k+BfBKCSVT0RVvA9xOg0JLa5YOgrXa7CnZaKRMahNHZ67sRJgY2vuXYKfq+J90aHoqRk9XeB16OoiuDdyzBjsCkBUtp8SQXfQR15QW/MmEE0w+qBYfMWbhQvYBFpkb8Wtck3NNOolQ
- sn7cF2G/
- uKZW3vNYBCX2UZBe9d7oMn/l4r564My5KVAOaXOy/tdCk/J3KMWmQBEVnAHTLaFZdgLY4Eyg3xbNtTjKxnvXS89I0Ajgjx9tSTfnH04ituEW/JGS+jZ8NMAck8hm11u9RVu7MEGkuUwXsF7l4mUkdAV2zj2SfspdzZ6KgLcZWkVgoJtOXPq46yAPlgCKwU98x0u/mh2c0TxPTxLurDU0gnkrrmjvYIhTQ39UCxa2i+ZFkShSDpayfn/zsEpu9+jaj1GA11RS+4ftvLvY=
+X-HE-Tag: 1753324787-846220
+X-HE-Meta: U2FsdGVkX1/NgUlUrLcaZre//6RDIQemPEKTYZVJ2jcBnspNuBNkOp7qcJvWDYaKN5gaUyYAzIJ/29wF/iA2Ryf8dhFVa7gu2+SOP+cmHWL7wGK1yzt91dgii38UYaKJtNIIjkpD3w90bQw0fQ2eowPrGRMqPnTyaMkogVKznZ2gosSvZ28SIF/OcGMvCkdtnpu11ZteFRec/zn6tGhtaVL8uXdpKE27ZQWoa80mSw2MsFxgU83VM5ZHV8OIdrKU10hnVx04whqd4NOxGAO7FGmySFLAcv6uXayEAEUHRj0q7lFUthBA7Mrsu0Y4nLsU2Q6eE2xwxUtCyb0X7BRmQsUHELrxMQSqR/mdwDPcN4G94wgnmHGI1ZM33oNeHEWB/gs3CangE7KMjKoWWJUaDKanA5T712sS2U9ad2krQhCeHXuPGTZZA7YSV5eappy3d5QaS1DXRMP2Nfl96QuP0MTLM2VkNRR69nIR8tyjp4XJ84ECBHupi6JFpAUqtwE8IRzUc+LYhKEvDbRlnwEkCxNM3Dt1cbGkA6UH47ID8+D2fdD/KJD67RmmHcezg9T2eUBA/WJnVRfpH8Fj4E/y193TBycLcyDRUb+abSeptnhkhpBNlmElDDMtrhcPWdb3Xo3nxwpvVowgnm2o/A7MWW1iHxNBtnUHTnbkncYPz9tzaZNQh449PzDScuM86d04JmDG89pZunW8mED+rHPDeJsySzK7CnFJPISGg+klCwFd9DgODWmLv2ACBZ0HgeQ+Q+XuUqyQE/RlxtGfkpcgpWHMSfOjoQSC+Lwwce+Hy0EXjYUZVNCPhA+E2HA93SSsxBV8Oa9CCMiT1pRiNHInltkFjw7J7raqY1kxUCfIlZjuVk8WWTwuUBGhp3An8zRzCEZomrQxDRG+Ylck+zcZLCcHgAXhROyJ3hZaBS7TLkWCbdPoyajhMU9FSmTRkimav4XX2+0ITkCSCdIesiH
+ 2PyXU+4u
+ N3iMMEFx2NInNsRurwkd+tSKOFfqkw4wJjSbcEgKx9/Xizn/NPa58Xriw3AXGsQdcWKtyrk4ygBM8oJrwGNXW4bo3oN0QtLqV+hOTmV3hEkR6w7BoBW7MMVGJRcg29HtiDSwxi/fQ2698fc0ZhudK9A24lVt2iOAvr3as+0Eew9szniHnELeYaIQXAspzT7RW3Y7y36Ra5fRf7iILehb2EbJa8pEYaqLI9m4wEBCs9pMJ6+dOHfR6De/WoW4yVjuTlGb0/ty/66lT+5WfuJKK4CehDWJBuX53QHlljCwdqEyzNQwozb3duEhboHTYtzy47zwVxtP/ZN4ThAfdO5sEbIU2MT5x8wraQgekCp8PO+mGz9LCUdOCIIJ+k2hrDDKzUPfOR2d1FDYBPr8Esu/N6W1FyN/C1lk5c/wXEZpgDyUTMHISqGzfycejDAu1MWzgMsXvDrndUy1p5QBRg095dyAb7vcrKXQLSKRy12+ddZNB1xXM3TAs2+g7dYh9beriaGeMYpQJOF9UqQZQ9GIcCWNWOSylysgzu6H/GG8dg3QN85Tjg9UmnmppYtw9pEpnYWgFcLEwkN+mMnY379qRs7zX44/rP5CD9eZR0dlwxvvLk+XqsKJZBGI98KKPbJQbUmS3oCBocDCsFya3C53oGK0g430rauSjXXVMts57fFzTVBDl54VRhWgy7B/PmX1SqUwxrNOXhKyWPBSqOqR2UpTqv8FZTCiet4DGVwRgOyM6x+vVbOXTKQ8EGfVw5IdcQZGFohdYxZD8QdpS1uKO9n0tRA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,108 +117,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 23, 2025 at 1:27=E2=80=AFPM Suren Baghdasaryan <surenb@google.c=
-om> wrote:
->
-> On Wed, Jul 23, 2025 at 11:19=E2=80=AFAM Jann Horn <jannh@google.com> wro=
-te:
-> >
-> > On Wed, Jul 23, 2025 at 8:10=E2=80=AFPM Vlastimil Babka <vbabka@suse.cz=
-> wrote:
-> > > On 7/23/25 19:49, Jann Horn wrote:
-> > > > On Wed, Jul 23, 2025 at 7:32=E2=80=AFPM Vlastimil Babka <vbabka@sus=
-e.cz> wrote:
-> > > >> On 7/23/25 18:26, Jann Horn wrote:
-> > > >> > There's a racy UAF in `vma_refcount_put()` when called on the
-> > > >> > `lock_vma_under_rcu()` path because `SLAB_TYPESAFE_BY_RCU` is us=
-ed
-> > > >> > without sufficient protection against concurrent object reuse:
-> > > >>
-> > > >> Oof.
-> > > >>
-> > > >> > I'm not sure what the right fix is; I guess one approach would b=
-e to
-> > > >> > have a special version of vma_refcount_put() for cases where the=
- VMA
-> > > >> > has been recycled by another MM that grabs an extra reference to=
- the
-> > > >> > MM? But then dropping a reference to the MM afterwards might be =
-a bit
-> > > >> > annoying and might require something like mmdrop_async()...
-> > > >>
-> > > >> Would we need mmdrop_async()? Isn't this the case for mmget_not_ze=
-ro() and
-> > > >> mmput_async()?
-> > > >
-> > > > Now I'm not sure anymore if either of those approaches would work,
-> > > > because they rely on the task that's removing the VMA to wait until=
- we
-> > > > do __refcount_dec_and_test() before deleting the MM... but I don't
-> > > > think we have any such guarantee...
-> > >
-> > > I think it would be waiting in exit_mmap->vma_mark_detached(), but th=
-en
-> > > AFAIU you're right and we'd really need to work with mmgrab/mmdrop be=
-cause
-> > > at that point the  mmget_not_zero() would already be failing...
-> >
-> > Ah, I see! vma_mark_detached() drops its reference, then does
-> > __vma_enter_locked() to bump the refcount by VMA_LOCK_OFFSET again
-> > (after which the reader path can't acquire it anymore), then waits
-> > until the refcount drops to VMA_LOCK_OFFSET, and then decrements it
-> > down to 0 from there. Makes sense.
->
-> Yes, that's what I was checking to understand the race. In your explanati=
-on:
->
-> A1 found the vma
-> A2 detached it
-> A3 attached it to another mm
-> A1 refcounts the vma
-> A1 realizes it's from another mm and calls vma_end_read() which tries
-> to wake up another mm's waiter.
 
-Ok, I finally got the entire picture. Now I understand why it would be
-so hard to reproduce and that it depends on a very specific order of
-execution. These steps should happen in precisely this order:
 
-A3 calls __vma_enter_locked() and refcount_add_not_zero() fails due to
-A1 holding a refcount (usual situation);
-By the time A3 calls rcuwait_wait_event(), A1 should drop its refcount
-so that rcuwait_wait_event() does not enter wait;
-By the time A1 calls rcuwait_wake_up(), A3 should free the mm leading
-to A1's UAF;
+在 2025/7/23 11:09, Huang, Ying 写道:
+> Ruan Shiyang <ruansy.fnst@fujitsu.com> writes:
+> 
+>> From: Li Zhijian <lizhijian@fujitsu.com>
+>>
+>> ===
+>> Changes since v2:
+>>    1. According to Huang's suggestion, add a new stat to not count these
+>>    pages into PGPROMOTE_CANDIDATE, to avoid changing the rate limit
+>>    mechanism.
+>> ===
+> 
+> This isn't the popular place for changelog, please refer to other patch
+> email.
 
-Very clever.
-I was wrong thinking that we can call rcuwait_wake_up() for the
-original mm that vma was attached before. We do have to
-rcuwait_wake_up() the mm that vma is attached to at the time of
-vma_refcount_put(), so using vma->vm_mm in vma_refcount_put() is the
-right thing to do because our refcount might be blocking operations on
-the current vma->mm, not the one vma was originally attached to. We
-just have to stabilize vma->mm.
+OK. I'll move this part down below.>
+>> Goto-san reported confusing pgpromote statistics where the
+>> pgpromote_success count significantly exceeded pgpromote_candidate.
+>>
+>> On a system with three nodes (nodes 0-1: DRAM 4GB, node 2: NVDIMM 4GB):
+>>   # Enable demotion only
+>>   echo 1 > /sys/kernel/mm/numa/demotion_enabled
+>>   numactl -m 0-1 memhog -r200 3500M >/dev/null &
+>>   pid=$!
+>>   sleep 2
+>>   numactl memhog -r100 2500M >/dev/null &
+>>   sleep 10
+>>   kill -9 $pid # terminate the 1st memhog
+>>   # Enable promotion
+>>   echo 2 > /proc/sys/kernel/numa_balancing
+>>
+>> After a few seconds, we observeed `pgpromote_candidate < pgpromote_success`
+>> $ grep -e pgpromote /proc/vmstat
+>> pgpromote_success 2579
+>> pgpromote_candidate 0
+>>
+>> In this scenario, after terminating the first memhog, the conditions for
+>> pgdat_free_space_enough() are quickly met, and triggers promotion.
+>> However, these migrated pages are only counted for in PGPROMOTE_SUCCESS,
+>> not in PGPROMOTE_CANDIDATE.
+>>
+>> To solve this confusing statistics, introduce this
+>> PGPROMOTE_CANDIDATE_NOLIMIT to count the missed promotion pages.  And
+>> also, not counting these pages into PGPROMOTE_CANDIDATE is to avoid
+>> changing the existing algorithm or performance of the promotion rate
+>> limit.
+>>
+>> Perhaps PGPROMOTE_CANDIDATE_NOLIMIT is not well named, please comment if
+>> you have a better idea.
+> 
+> Yes.  Naming is hard.  I guess that the name comes from the promotion
+> that isn't rate limited.  I have asked Deepseek that what is the good
+> abbreviation for "not rate limited".  Its answer is "NRL".  I don't know
+> whether it's good.  However, "NOT_RATE_LIMITED" appears too long.
 
-So, I think vma_refcount_put() can mmgrab(vma->mm) before calling
-__refcount_dec_and_test(), to stabilize that mm and then mmdrop()
-after it calls rcuwait_wake_up(). What do you think about this
-approach, folks?
+"NRL" Sounds good to me.
 
->
-> Vlastimil is right that if A1 was able to successfully elevate vma's
-> refcount then:
-> 1. vma must be attached to some valid mm. This is true because if the
-> vma is detached, vma_start_read() would not be able to elevate its
-> refcount. Once vma_start_read() elevates the refcount, vma will not
-> detach from under us because vma_mark_detached() will block until no
-> readers are using the vma.
-> 2. vma->mm can't be destroyed from under us because of that
-> exit_mmap()->vma_mark_detached() which again will ensure no readers
-> are holding a reference to the vmas of that mm.
->
-> So, a special version of vma_refcount_put() that takes mm as a
-> parameter and does mmgrab/mmdrop before using that mm might work. I'll
-> do some more digging and maybe test this solution with your reproducer
-> to see if that works as I would expect.
-> Thanks,
-> Suren.
+I'm thinking another one: since it's not rate limited, it could be 
+migrated quickly/fast.  How about PGPROMOTE_CANDIDATE_FAST?
+
+
+> 
+>>
+>>
+> 
+> The empty line is unnecessary.
+
+OK.>
+>> Cc: Huang Ying <ying.huang@linux.alibaba.com>
+> 
+> Suggested-by: Huang Ying <ying.huang@linux.alibaba.com>
+
+OK.
+
+
+--
+Thanks,
+Ruan.
+
+> 
+>> Cc: Ingo Molnar <mingo@redhat.com>
+>> Cc: Peter Zijlstra <peterz@infradead.org>
+>> Cc: Juri Lelli <juri.lelli@redhat.com>
+>> Cc: Vincent Guittot <vincent.guittot@linaro.org>
+>> Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+>> Cc: Steven Rostedt <rostedt@goodmis.org>
+>> Cc: Ben Segall <bsegall@google.com>
+>> Cc: Mel Gorman <mgorman@suse.de>
+>> Cc: Valentin Schneider <vschneid@redhat.com>
+>> Reported-by: Yasunori Gotou (Fujitsu) <y-goto@fujitsu.com>
+>> Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+>> Signed-off-by: Ruan Shiyang <ruansy.fnst@fujitsu.com>
+>> ---
+>>   include/linux/mmzone.h | 2 ++
+>>   kernel/sched/fair.c    | 6 ++++--
+>>   mm/vmstat.c            | 1 +
+>>   3 files changed, 7 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+>> index 283913d42d7b..6216e2eecf3b 100644
+>> --- a/include/linux/mmzone.h
+>> +++ b/include/linux/mmzone.h
+>> @@ -231,6 +231,8 @@ enum node_stat_item {
+>>   #ifdef CONFIG_NUMA_BALANCING
+>>   	PGPROMOTE_SUCCESS,	/* promote successfully */
+>>   	PGPROMOTE_CANDIDATE,	/* candidate pages to promote */
+>> +	PGPROMOTE_CANDIDATE_NOLIMIT,	/* candidate pages without considering
+>> +					 * hot threshold */
+>>   #endif
+>>   	/* PGDEMOTE_*: pages demoted */
+>>   	PGDEMOTE_KSWAPD,
+>> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+>> index 7a14da5396fb..12dac3519c49 100644
+>> --- a/kernel/sched/fair.c
+>> +++ b/kernel/sched/fair.c
+>> @@ -1940,11 +1940,14 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
+>>   		struct pglist_data *pgdat;
+>>   		unsigned long rate_limit;
+>>   		unsigned int latency, th, def_th;
+>> +		long nr = folio_nr_pages(folio);
+>>   
+>>   		pgdat = NODE_DATA(dst_nid);
+>>   		if (pgdat_free_space_enough(pgdat)) {
+>>   			/* workload changed, reset hot threshold */
+>>   			pgdat->nbp_threshold = 0;
+>> +			mod_node_page_state(pgdat, PGPROMOTE_CANDIDATE_NOLIMIT,
+>> +					    nr);
+>>   			return true;
+>>   		}
+>>   
+>> @@ -1958,8 +1961,7 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
+>>   		if (latency >= th)
+>>   			return false;
+>>   
+>> -		return !numa_promotion_rate_limit(pgdat, rate_limit,
+>> -						  folio_nr_pages(folio));
+>> +		return !numa_promotion_rate_limit(pgdat, rate_limit, nr);
+>>   	}
+>>   
+>>   	this_cpupid = cpu_pid_to_cpupid(dst_cpu, current->pid);
+>> diff --git a/mm/vmstat.c b/mm/vmstat.c
+>> index a78d70ddeacd..ca44a2dd5497 100644
+>> --- a/mm/vmstat.c
+>> +++ b/mm/vmstat.c
+>> @@ -1272,6 +1272,7 @@ const char * const vmstat_text[] = {
+>>   #ifdef CONFIG_NUMA_BALANCING
+>>   	"pgpromote_success",
+>>   	"pgpromote_candidate",
+>> +	"pgpromote_candidate_nolimit",
+>>   #endif
+>>   	"pgdemote_kswapd",
+>>   	"pgdemote_direct",
+> 
+> ---
+> Best Regards,
+> Huang, Ying
+
 
