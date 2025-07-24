@@ -2,180 +2,129 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 97866C83F26
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 10:57:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E708DC83F26
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 11:05:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34CAA8E006E; Thu, 24 Jul 2025 06:57:52 -0400 (EDT)
+	id 750318E006F; Thu, 24 Jul 2025 07:05:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FC308E0051; Thu, 24 Jul 2025 06:57:52 -0400 (EDT)
+	id 727FA8E0051; Thu, 24 Jul 2025 07:05:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 19CF08E006E; Thu, 24 Jul 2025 06:57:52 -0400 (EDT)
+	id 63DB48E006F; Thu, 24 Jul 2025 07:05:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 00D808E0051
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 06:57:51 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A8B54B89BC
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 10:57:51 +0000 (UTC)
-X-FDA: 83698857942.24.D990E30
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E053840005
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 10:57:48 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=MCM9U+EI;
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
-	spf=pass (imf17.hostedemail.com: domain of konrad.dybcio@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=konrad.dybcio@oss.qualcomm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 54C298E0051
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 07:05:01 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 04B21C0351
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 11:05:00 +0000 (UTC)
+X-FDA: 83698876002.30.8A1097A
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4056E8000D
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 11:04:59 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Et3CrKPW;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753354669;
+	s=arc-20220608; t=1753355099;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=frgttlq1wUpHfs85c6sOB8oFTBM5O4TFBHJ8W4S/2Zg=;
-	b=kAj+4/9KwTaWmUviJiMyFkQuDzam49PnUD8ZwJcJjcGK25Y9TvRemh+6AKmE7tzo3giFf0
-	XauuadhN1cXzdBscLFA6Hu8VHNTDTYeUhU45pqOon+odM6Fb27gkyX3oHpQWWQAPj3pFDt
-	RnAv3wd6rZODsRj1BmWbWgYWQ0we+yQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753354669; a=rsa-sha256;
+	bh=hIUwmPHAS5I/CUOP00py81w0hjNzvTvkcVdQbKas/DA=;
+	b=WixKY4fBOPSJzEscS/6edtmx3xSUbiQcwLZVJ4uIicAo1/hweoGarpx2jIq+lkyWpQ4FSU
+	XitJ6a3V46rzy3Cg++rVe/spsOwIJfU+BgDUKK8WLI6NeB/0U6crmtZ0FnzetNXp4o4SPB
+	tBJzBEsife2zA1lZ2hDBLiuadeWQt4Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753355099; a=rsa-sha256;
 	cv=none;
-	b=zT5bI6HrLpH8UPDU7twBEDadfCeK55ZMjgl78N8Oto2yp+QPD5UH0bMyS41k6fx3RO2kP4
-	L9UQ4QNWt7wGU9dhgo6osgkhuw4jeme1n9Ei6cmvGT9bsgYq6v4A6xQ6fe7jGA3htWi+mM
-	ITXQnQT6IWEP976U6w2oyOTlO7hWfVc=
+	b=XeUWSrB8cpMetMUxKys29CKAnXk2KJ2Q/ZGFyU2bfekXCzR4r6OIv2t1x60ErHB/LetK9C
+	jx1qZKLWBg4xAzpr6Ro//OS8xFNDFt+mCM58efsnJncCDsRv+DW0RQNxyMYmsB3IBdbymt
+	NrxpGur0JeilndYgamMiD8G5p91MQ3I=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=MCM9U+EI;
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
-	spf=pass (imf17.hostedemail.com: domain of konrad.dybcio@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=konrad.dybcio@oss.qualcomm.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56O9kBwo015267
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 10:57:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	frgttlq1wUpHfs85c6sOB8oFTBM5O4TFBHJ8W4S/2Zg=; b=MCM9U+EIRXdUhkkj
-	RnaQHyphmlwj8ufux4uRqT1CeeRyh4WJeQyMhFCoM7HUZE8B54OyMur9MQ7pLAHK
-	q7Q1KVrS7BFGTDMUnHwdUrmlCjNOXtf0Rp/Gdwturu54n0TsR+qJU3AtKnFv2WhV
-	Ajeq9g9mm1HxhnKm5PMSdv09h5GF5GTeKQLa+UREcjMI+vHbBSZEp5ZsQOJYdrBc
-	29cuk/jHFBZqdsYWQeB8ET0R6F2HpIBhXtEQ0eTVFTrqxXZJKuhGlQ4XUWQjybWw
-	SQmEEyV1+dpeOxXC5puV3gSzpq8fRjewj3wouaPKzcYBH4zMbbbQ82M9zd+81FQV
-	uLJMxQ==
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 483379tk85-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 10:57:47 +0000 (GMT)
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-6fb030f541bso2733476d6.1
-        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 03:57:47 -0700 (PDT)
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Et3CrKPW;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-60cc11b34f6so3498181a12.0
+        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 04:04:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753355097; x=1753959897; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hIUwmPHAS5I/CUOP00py81w0hjNzvTvkcVdQbKas/DA=;
+        b=Et3CrKPWLXX0iRshQpuzKYRnuIKwlJ0/iNWJzGYrqvaoxlNjZ7ORmXKKI6Ja6V0DkK
+         B5JjqjLfVytAeSl5yoIRkF3InM79RmvdJ9kpp6pm510W53twk4vnmaJxn6RtcasZIHkh
+         ZTskNLqFbeiqTlHuPPf5WY99d1pQSRHn8R6d55+5la4xNj3AlRQ7OACcKJgoF/4dsmYq
+         y6Wqun3abPV6xCPhoyBDSIKBGTelU0z8ZOKBNOFzjKbO14bKv1LVIAxPW0x9VMpG2ekb
+         gOdI61XXnb49lqBEXuHTU/jzp/c17Gzp4faxnh+zFWu5adYrDkpCdArLpuWLXw3LTUxV
+         f9Xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753354666; x=1753959466;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=frgttlq1wUpHfs85c6sOB8oFTBM5O4TFBHJ8W4S/2Zg=;
-        b=wzxN0kECvuQk18konKPcNOoYXLE4Maphu4xVa+KWzmKh9jCQ+dGWf6vsnnpx8FhydT
-         wQ8C8N0FAX+71D3NNRW7YA7LvM1sGnGU7eDggtFpSqnPOMS5clSd/3hSwpcYVLvnrewV
-         LXDQzXLAL2aOhSxD/qFLYwWXSOjTxHGBu4ff0oa1Z8DQN/zVtqIjpagb5XzFivymg2LI
-         /IAN8O9gz7WaQ41aptqbey166OsA61mL9JP24bhzTMNcr0jcc4oG+BuJTaXVfFlnubQN
-         NBkJ8AA3ITUh1aofiA2kKpn1+rjhaqa04hgrM6UmgwgLof8uH7NqyMMHN/DfGbRja/wO
-         ro/A==
-X-Forwarded-Encrypted: i=1; AJvYcCWf3Bk5rOAVG1xIVdBIvSTSScci/UVJkDjtLmwf5d2Ty4zZ9Kucnfbx/hvHvEaOl9fDnOgtyYnsHw==@kvack.org
-X-Gm-Message-State: AOJu0YxWFpSe3p1thTyJ+4zbMJkb6b0wrb/4GKZwWQ8K8WoF3XL4jT/B
-	nQPKTFb+k/rdD/YcTnYqYhcPemOpcGGUD3bI1Wr8tdzTEYBsb6y0jX7Htl7q3/pspFpLYZ6pyAW
-	rdCbX20xhGXxaLQb28yBMogCqbNKTYygUqW+UEpHPRVd7/RQ/9ycKVQ==
-X-Gm-Gg: ASbGnctiw7xrCUjRDWRJHDVGITINimhZMP3+381PaTJ2RFp/Y6RJ4dD1mhl8topbXPl
-	P286TwH54BZ9G3km6JbfKAoBCGafTqMMMTzsIxZB9BFTvvjukCu6F2vQwSz0OpW5QeK3/TGvlo1
-	vXXqbzOP36ig4V2CjNsVDgagz37y+fNDi5vHJ6lZbqfaiom11eVsNLD3nCnoC70XocQKvVvCuhD
-	QnSdGgWrH1MrG1vRGdozOofnuaC3/iD/N7ZUgIju8tzaf56T0iiqSpNWcOposhPLnpDjlZwgzes
-	SMPwHmPIRu8uLeXuY5u2JaXh144o8JtyHNJTSaSWrmqte/qU1KzB2bl+wFqk1g/7CWlGMQPpHyj
-	omuzsX6l85jr3RK150A==
-X-Received: by 2002:a05:6214:1d2f:b0:702:d3c5:2bf1 with SMTP id 6a1803df08f44-70700537849mr43874706d6.3.1753354666050;
-        Thu, 24 Jul 2025 03:57:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGOPUGD8doV9+jglxqU2GB0DYEWEF7aTYg/TWGqOaOfQBWULvPms9oF3r1fFWzU0hBkNoKlEg==
-X-Received: by 2002:a05:6214:1d2f:b0:702:d3c5:2bf1 with SMTP id 6a1803df08f44-70700537849mr43874396d6.3.1753354665532;
-        Thu, 24 Jul 2025 03:57:45 -0700 (PDT)
-Received: from [192.168.43.16] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af47cc6e753sm95191866b.50.2025.07.24.03.57.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Jul 2025 03:57:44 -0700 (PDT)
-Message-ID: <bbb07270-cf7d-4fc6-9a74-334fcaf00f05@oss.qualcomm.com>
-Date: Thu, 24 Jul 2025 12:57:39 +0200
+        d=1e100.net; s=20230601; t=1753355097; x=1753959897;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hIUwmPHAS5I/CUOP00py81w0hjNzvTvkcVdQbKas/DA=;
+        b=gnIjj8qqGC+7eGVtGIQFm+8SN43StsfEgDOM9+JuRv2w3BeMvQ7l00OfugL2xOtY9T
+         PSiCBO7HuYOL2vCD2uJKsUZnS7q1wmCLO+8n0e4MOjdYe759suc8fI7pmdF+es0Byz31
+         4mq++jf/ibv4H4N5dvEUzrfCRZXegS1moo8SbQfNP0RDqAXVCbCwnSPN5WQ24I4ovLP7
+         TLPyBwEl+idz5wI4nSeuXi9uPfvNBrDgn7RzNclFkM/bRx+xa02OQ5hc2wcX9usBtjum
+         6pGiHKbrsIVfWVqy+hVfw89P4WCVV8HOkCv1gwByTqROob4i+5e68+GEhFaD7LEfDdzq
+         zi1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUuP5yJHaLsP0Ppj36rUw5Jc2dkJSPlFkYb4U7WD4s4j/N2s4TaXIVG6j9wDcakmrPqiWc3yqD59A==@kvack.org
+X-Gm-Message-State: AOJu0YyaHLqiwe1K9vNy+eCkJW1PavrziTZf36VqZs/GMlX+VMMjygKu
+	27jD4DBKJTs10gniMZszqFJz61+kausl1yEFr9gmbF/OqpCWkbQIaEvBUjcNxNzVDXsX2xf/Mx7
+	cqZRWloj20L2QIQFxYoygF9iAUt1YFAY=
+X-Gm-Gg: ASbGnctTCHPG+HNIcezFIzz6W5LoUIT0r+MaxYu+9R+rnjfplbMeOsScuo6+4E126cr
+	4Szl7QGqTGmoDrWEQOYqgPOfIrsaklQcMnuKV8uTojo1ZrhbUakIKhjouFAoUZh3YdKAXLbIdh8
+	JqR+LXtuuQ4vr3IBkpGVBnaGVFPO2IdSfLMdqUoEKb7i8GXuIh+jKD1eGLRnzlCEOIhe6f7GY2z
+	63ZOmkI0A==
+X-Google-Smtp-Source: AGHT+IHPG9CppWQlW2WG11oa6jW9jIvsCOFaEPh9C4R84HymaGR9H07ZVvtMJ1em3UaqkyymENVRG1C3VhJB+3+pi38=
+X-Received: by 2002:a17:906:478a:b0:ae0:7e95:fb with SMTP id
+ a640c23a62f3a-af4c1e2633dmr202631066b.5.1753355097066; Thu, 24 Jul 2025
+ 04:04:57 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 11/15] pinctrl: qcom: use generic pin function helpers
-To: Bartosz Golaszewski <brgl@bgdev.pl>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Alexey Klimov <alexey.klimov@linaro.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Sean Wang <sean.wang@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-        Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
-        Andy Shevchenko <andy@kernel.org>,
-        Andrew Morton
- <akpm@linux-foundation.org>,
-        David Hildenbrand <david@redhat.com>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Dong Aisheng <aisheng.dong@nxp.com>,
-        Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-        Jacky Bai <ping.bai@nxp.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        NXP S32 Linux Team <s32@nxp.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Tony Lindgren <tony@atomide.com>,
-        Haojian Zhuang
- <haojian.zhuang@linaro.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-hardening@vger.kernel.org, linux-mm@kvack.org,
-        imx@lists.linux.dev, linux-omap@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-References: <20250724-pinctrl-gpio-pinfuncs-v3-0-af4db9302de4@linaro.org>
- <20250724-pinctrl-gpio-pinfuncs-v3-11-af4db9302de4@linaro.org>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20250724-pinctrl-gpio-pinfuncs-v3-11-af4db9302de4@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: 1mQMw_Qd2461H_vMX4HxxzVfg3RLrGTh
-X-Authority-Analysis: v=2.4 cv=btxMBFai c=1 sm=1 tr=0 ts=688211ab cx=c_pps
- a=UgVkIMxJMSkC9lv97toC5g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=KKAkSRfTAAAA:8 a=EUspDBNiAAAA:8
- a=jpok1_DMC_Ne8w05vhoA:9 a=QEXdDO2ut3YA:10 a=1HOtulTD9v-eNWfpl4qZ:22
- a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI0MDA4MiBTYWx0ZWRfXz7T4OMuA4hXv
- jkFi3osyWtU4k46NSARBgqLguWxb/3SkFjfl38iETPp3+LR1aRs7hzfxakRqOUaA9pXyBtIDcEi
- 4R4xWVDV3g8vJQfhUSavWbCQZz2qWQdJd/ACcmjMuuGwyVCw3OrltLzg8VgOhp6dveMKBPgqBJ1
- bGooHz3pSQ9c1C2QtHtUdglIjcdYjg0l5h8JBqbbpmpxE7i4GM6PkCRceRebzMZRpB4IkNdrPsd
- 6fJkoYCsd2FxNYwsOTOw/ktkfWsoA+aoNTXRj1VjfIXOuzB9KjsiIyWBXaGv+9lyHcl4EsiDn7z
- reSPo3LNHeLRcMFPkOLsgFLSZAZxOTtRzHgjEBkHVXoBHrlhxivknSawQ6rdDGqRXluG0ydT7rr
- kfE/6u8zTyO0fxhJd9A+en7Ae78Gw5U7qEi4cLJLSMBEjXorFcz6x8Y7cXQ+KBnDffHp03up
-X-Proofpoint-ORIG-GUID: 1mQMw_Qd2461H_vMX4HxxzVfg3RLrGTh
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-24_01,2025-07-24_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 mlxlogscore=456 impostorscore=0 mlxscore=0 clxscore=1011
- adultscore=0 priorityscore=1501 phishscore=0 suspectscore=0
- lowpriorityscore=0 spamscore=0 bulkscore=0 classifier=spam authscore=0
- authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2507240082
-X-Stat-Signature: 9znecomxj9rkuuguhsse5dcknoxt8g5y
-X-Rspamd-Queue-Id: E053840005
+References: <20250724-pinctrl-gpio-pinfuncs-v3-0-af4db9302de4@linaro.org> <20250724-pinctrl-gpio-pinfuncs-v3-1-af4db9302de4@linaro.org>
+In-Reply-To: <20250724-pinctrl-gpio-pinfuncs-v3-1-af4db9302de4@linaro.org>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Thu, 24 Jul 2025 13:04:20 +0200
+X-Gm-Features: Ac12FXwYO9py2pad9YYkUaWtcE51AjTlJa3erYsopqu9ohpn5SMp_S7iBIXDS4k
+Message-ID: <CAHp75VdoZr0YCm3Pc7F5jOV8Q-H9K+gje2fi71nonHoXq2YPdQ@mail.gmail.com>
+Subject: Re: [PATCH v3 01/15] lib: provide kmemdup_const()
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
+	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
+	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
+	linux-hardening@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
+	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: rxddz9ab5b91d3bkb1qmdjt1bjjm3omt
+X-Rspamd-Queue-Id: 4056E8000D
 X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1753354668-707836
-X-HE-Meta: U2FsdGVkX1/nrUUmg648QVRzFsvsyTsaTK0M+AbSIKC5cPA8w4NR+bTNs9akKnhVVK/DO7lcLYbt9wy0XzFtQIxDpD9nyLKSI1K9DDTMA+A0p23tKhbiv1dM9mugPGA1MYK23yAZWfrlEooCymrbYLQNfPwLsYqLiy8jlajs8wYPuxuYQp9lBo4ZhSWHPTyN87PId/Hkkzf59dBvFFLWrPLiJ+qTXJf/darIxfcKX+5Dgxhf+Vv5dTzvPQeZa1txVjRvrf+PljB+omqN11Skyqj+RmO6QJKJ5sQo3SlZB+KGNBum13/b6J7Mkt2sSWw0unRCeuiG6Ay0oJRL0QXhP13/hsq9QPJu4Raea4wqi/AcAm6F1+o6MOW5wBm9rR6USPINL4GfIFUhYG0qE5nbC5fhX7dYgReFan3AZJfkfIIHU2jwIYlHYc9BjCLxCuIAH0XjLkQMwYlHhvRxJWEwK3TOtrgN0p+B4+x65KsYKoIcXeQ3STquP9JPKl2+bCPvdsjmVDYG0vV5VMgL1TucKk0vgnz3Lrx7RqfZouzX69R10G9mwvrSD0VSSeZgy2MBWw2UazXc/o3zRYk7dbBgyx4lnl95sNwkGT8wTANV/E3F/dVTefl0U3wLx7RbNm0daH7yU5YeopQC9MPaa3CSfqKB1D6gLu/sG1Zh4O32ax+UEZJBh0+6mP9la/Kz3ZWUv4jDjkMxlTQXPfdl2G8Uhb1HBaVdFUtLWrJSXgxKWa22O/w5cM2DlWOYD4cO5fUTvo22VoMgJzN5TaueMmIu/Wt0HZcdtK7H8jddsKrNIdSG/iKL+JuO8JBuXi36AS3ftI4sTTXuoVkUVllDD6EvwDZim2beb9v46pxaLiAt6Sl7O5/ZLnWO/BYYAFLn88ceK7RDAajdCUBK1jZDwz71IIowzniqZRXu5CfXxTqClHL3incW6erQBuZpWM3u3NDwlaZc55/o30P7GCyC47E
- L7uYsSSj
- a88V4wAw3UjxeOk+IO9O5UaoUpuKfmk3GFQqTKc8HFbsF2folgQHP5jD+8su1U1pwuAqSC9KCp2vyw+kLNd3NeS6BUwm7A2t1F+X+RhAbbzA763PVJ5NOKu6Ej6ueOGWJCEU4M6gxVCnmjoJ5erQVTzpNalQs+Trmgmqv9Q4wW/zQ4uXwkHuyQrP+ZvYKJVhdbAGumsq99kRVBASTkZBFyIK+P+cf9ejiGu1RAGBVzpZwxqAWMzxBuvoXcUk1TmgyyCg1qdUdRat33UIAHCeYogiMV8caUQMlLcx+FsBO7UpNss77q6nXQqpC31aGSJSp0djNQvXLCbstC9UGgGBbl8HHi0WlbERCL56e/SSz1aFy/xxLyyGPI11rlRUFvqdbwJCG8VUvDkZCosvC3ja5R8+j7J6dqVcBMkb+ShlkigLU0RfYt/o7brWLEDJAGBnGCO+scZhVgvnO25c3mHGd5l6v0SXLMYgSskT2IF+jU5cPyFKp3g3oZrcdHnFybiR+K8STSLyYNQxMAC6lF+EQ4J+BH+alqGTplWQiSoFv2xeCvBn+LWBsdnyUKfOBdhp5mStkl/DgPHdHLCbXFrvcZNJkCUzwbxy7ZIgfyPjsj+Tsb9B2nvVs+e9BSA==
+X-HE-Tag: 1753355099-730481
+X-HE-Meta: U2FsdGVkX19tMYBKqwtlwfzx6NMavB3uUp2iZGCWU90NJyGI+AYcf+KBj+z+H8QhCYdq9ioVpmr3H3rqBxCODCGBZ/S+Y7Dgm595P7Z+cyU7I/HWPIC76WgZDH1pFgcpqfX2dbmYbCHAL/jOC5gPglXqiqXURN+f0pKYQkvzruiDY3038ocW02K4UTOgrJDkMxzTfyMeu5ipbvWSsA4X9E8cwY5pJO5Ca2xm7ncSyXrbpsh03NdGMLKVQQg4syFIEGBeSbhZw+/zZTrlZ+6fjeo0uo/L7vv4oKB6FckYXMnS9YGESn3CHBWZh1LBFY6UnLX+jA3KpTT+NEyuFsRcWPHkNiVVaZy4nTdTcLouMiOhzA78fL/eGAEn69XhC9rXLSnFErfwwwl0gTIYAYtyCoXSXAGUz9ny8tqteI5tXQ7u25xC5xOSTNayKIRGGOKwrRDpzlWo1ZldMsgbjaPl2WdR+8NoBL05rPvualmFMT0SDmRxQ1HRV0ZHvRAToVQbCC4tqt9Wsenuk+FNOC/cnL/sXaM2JTdvN9viUol81c32dikmYZAQcSWZZddiaYDiYp37fuKXyBgWE7Ox4hnnwrumaFkWwsDQoEM3EsKkfy9fYjqjaMgOQQ3fUuSGrbpWnX2mMGBFFvnRjLS6UN0BSdTEmJJURMzRfj7jrjGMQ8hm2UeDE4UcZ1C3PWMu2UugQip4RNowAu9WOPm90cMGWQ7IFBjhjYprytnbJy23u4UvTHZtVYACZDCs/HdB8EE1AfS6iFQjbeQN0uALCpbPKlFNWtQoMRRrV+34r2793bvIiUfkGOqIiN55MBICObVriV/JO9CijVGJQO9p1JDmkgXi1PYee/vMdsuL0GE9F9+5CPSyN/V+hKq+c+0wsUHvDMEGkLuL9h1W1yvQE1KckkZYzJyM/NyI01mSkgIRSrIGbX4n9Sl3ZW6hgY285SzM58NZDOMU35//Q5ROqfp
+ o+bvvPu0
+ qMESd+EM5v27U6m2s4YctmCcHf0skb13clyNPBeDg1c3m61Xv5smBIYTMXGyxPclrcDLO18AjXaKkbu9KyNijm7u/D87G8GJtJT7mT9GmwkxvqPLSAFIuNnOK868QCExMk5rHpRoktEmcZBNc1u88yc7dVfqTt075MZH1LXah3X1mFO8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -184,18 +133,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/24/25 11:24 AM, Bartosz Golaszewski wrote:
+On Thu, Jul 24, 2025 at 11:24=E2=80=AFAM Bartosz Golaszewski <brgl@bgdev.pl=
+> wrote:
+>
 > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> 
-> With the pinmux core no longer duplicating memory used to store the
-> struct pinfunction objects in .rodata, we can now use the existing
-> infrastructure for storing and looking up pin functions in qualcomm
-> drivers. Remove hand-crafted callbacks.
-> 
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> ---
+>
+> Provide a function similar to strdup_const() but for copying blocks of
+> memory that are likely to be placed in .rodata.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Makes sense, one nit-pick below.
 
-Konrad
+...
+
+>  extern void *kmemdup_noprof(const void *src, size_t len, gfp_t gfp) __re=
+alloc_size(2);
+>  #define kmemdup(...)   alloc_hooks(kmemdup_noprof(__VA_ARGS__))
+>
+> +extern const void *kmemdup_const(const void *src, size_t len, gfp_t gfp)=
+;
+
+Can we locate this in the similar order to the C-file? I would put it
+before kmemdup_array().
+
+>  extern void *kvmemdup(const void *src, size_t len, gfp_t gfp) __realloc_=
+size(2);
+>  extern char *kmemdup_nul(const char *s, size_t len, gfp_t gfp);
+>  extern void *kmemdup_array(const void *src, size_t count, size_t element=
+_size, gfp_t gfp)
+
+(below left for the context)
+> +
+>  /**
+>   * kmemdup_array - duplicate a given array.
+
+--=20
+With Best Regards,
+Andy Shevchenko
 
