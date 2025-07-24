@@ -2,57 +2,69 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BEEEAC83F26
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 08:03:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0AE6EC83F26
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 08:07:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2775F6B0249; Thu, 24 Jul 2025 04:03:22 -0400 (EDT)
+	id 87A558E0050; Thu, 24 Jul 2025 04:07:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D5878E004F; Thu, 24 Jul 2025 04:03:22 -0400 (EDT)
+	id 7FCB68E004F; Thu, 24 Jul 2025 04:07:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C594A6B024B; Thu, 24 Jul 2025 04:03:21 -0400 (EDT)
+	id 6EB308E0050; Thu, 24 Jul 2025 04:07:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 23E076B0249
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 04:03:21 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CE370111E1C
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 08:03:20 +0000 (UTC)
-X-FDA: 83698418160.23.D677D66
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 21FDE1C000A
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 08:03:18 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf20.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BFA18E004F
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 04:07:55 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0F55C112022
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 08:07:55 +0000 (UTC)
+X-FDA: 83698429710.24.7241B1D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 51E9220002
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 08:07:53 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VOsjIIeI;
+	spf=pass (imf13.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753344199;
+	s=arc-20220608; t=1753344473;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pphLpZQBM1FB+eB5IO2M5MevyRelWmIUkDJtbfDmgGg=;
-	b=i4X9SiNMVXwKFyMq3FbI7KogBVu7AvuQ8TLuCnQQe3JUE1hZ8UVJ0PycO5x7/FHoflRYUB
-	y7SuyGxflY4OLfNuJ2u0gzbnbjU4cpH4zQSgGtFcBV+kO2g6rdTwvlt/Fumwk3VUnHlDxO
-	y0aSfCrxTLjfwEYYF9u64gMyVIGKeFg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753344199; a=rsa-sha256;
-	cv=none;
-	b=j+h4qKQFCacf2Q620kHBbg2oENB/xPHBrBg1UH96AXgvPClxmqYkvZMzkEZ3YDk6tkMPj5
-	g/vpzxg7f9mjKmPMqRzs4iB+a2vepMh3uN0hqzQ0HOz2PSXHXpWe5yA89uEunZKQ27+2im
-	mRSVnmd5T7rHsxmzTUyoJ3sPmRMbjTk=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=eyk2+QZtM+tWsxbT7v7GQklfKFiQSaulhZCeVLeiKsc=;
+	b=FZ/4SXeEJAXOSZCvf/pzG0Q3HST6wAwF65YZCUvVuaMFz4A7xAJCy9tqK9x/SGZ8jmBQv4
+	NX/omnUG1HWziZTlSoK3k6iMZ8H/0pvCKZmO/DtjwLaIzFScKJ7Bej3oA2rVM6OVhX1lYd
+	2P/Gl3uMcUIgYUI1H9JYj5I7vmThon0=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf20.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id BD46068BEB; Thu, 24 Jul 2025 10:03:13 +0200 (CEST)
-Date: Thu, 24 Jul 2025 10:03:13 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Leon Romanovsky <leon@kernel.org>
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VOsjIIeI;
+	spf=pass (imf13.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753344473; a=rsa-sha256;
+	cv=none;
+	b=x0b4vk9l2toNkGO5+8K3TL8MyoZEA81m0QchnC4fIBu0bNQFCIzOrXMjiAuKgMMkU3Xa2Q
+	l3PM5HPQLM8yIit60OaYEt5ThPSbUHh9y6X0v70vv6VM/7Smrfzfoi9qJLKeClJAJzvAoN
+	jxAL7lYZFakM4SahaDaTn0V/8Xe4bEU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id DA08B439A2;
+	Thu, 24 Jul 2025 08:07:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0172DC4CEF1;
+	Thu, 24 Jul 2025 08:07:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753344471;
+	bh=1SX+zcqB99cjjB9BCfDjf9tPWG4xWING89rNVeEpf+w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VOsjIIeIH9Rm+A+TaQ0V7RH51KmQgYil3OHypDB1K75Vw6Q633ZWqyufs6mpXmjgy
+	 8LsZTfLRMqu8Q3aUECPmaK6fz118qRgZxsQo52X8A22JJasuxKIhK8eiezk8hp9SAc
+	 jHnyZT944fThfEGK02iapsKBQc2GMyceVPsI5Ej6hFz/7GB9hjU2rY3MhXnDmg0Af3
+	 EmVL68MOlWu5/WtcynPwwwXn3gv5bFT1ONKBqH4E10CypSHNangIwHPWApThEuqWtj
+	 gZXy/mzxhxENu2F+hWSPwgeJkrW8aD7ChboSZ9kiIUCIRjgkp5GFEhH5TMyS7SGjaO
+	 J/E2lr1sMS9Pg==
+Date: Thu, 24 Jul 2025 11:07:47 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Christoph Hellwig <hch@lst.de>
 Cc: Alex Williamson <alex.williamson@redhat.com>,
-	Leon Romanovsky <leonro@nvidia.com>, Christoph Hellwig <hch@lst.de>,
 	Jason Gunthorpe <jgg@nvidia.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Bjorn Helgaas <bhelgaas@google.com>,
@@ -70,22 +82,26 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
 	Sumit Semwal <sumit.semwal@linaro.org>,
 	Vivek Kasireddy <vivek.kasireddy@intel.com>,
 	Will Deacon <will@kernel.org>
-Subject: Re: [PATCH 05/10] PCI/P2PDMA: Export pci_p2pdma_map_type() function
-Message-ID: <20250724080313.GA31887@lst.de>
-References: <cover.1753274085.git.leonro@nvidia.com> <82e62eb59afcd39b68ae143573d5ed113a92344e.1753274085.git.leonro@nvidia.com>
+Subject: Re: [PATCH 02/10] PCI/P2PDMA: Introduce p2pdma_provider structure
+ for cleaner abstraction
+Message-ID: <20250724080747.GS402218@unreal>
+References: <cover.1753274085.git.leonro@nvidia.com>
+ <c2307cb4c3f1af46da138f3410738754691fbb3d.1753274085.git.leonro@nvidia.com>
+ <20250724075145.GB30590@lst.de>
+ <20250724075533.GR402218@unreal>
+ <20250724075922.GD30590@lst.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <82e62eb59afcd39b68ae143573d5ed113a92344e.1753274085.git.leonro@nvidia.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Rspamd-Queue-Id: 21FDE1C000A
-X-Stat-Signature: erji6fcr4u9g113h1r74wuiyx4z4sxgd
+In-Reply-To: <20250724075922.GD30590@lst.de>
+X-Stat-Signature: 1ub55fu1p1uddxqkkahane7yd7jk64ug
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 51E9220002
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1753344198-751916
-X-HE-Meta: U2FsdGVkX1/2iTXcrolj9A7Os6JhC7neEv00v1O0Jy+0YLhcds80WGw0jzB7dnHLIQYV3tOu2xl/K2Uzk5KAqMyGSTQ0OeaZNEyrqOnIf8hd2rRYptqtlqVPp4kk6QnseSGu1ow2QS3mX5bv8f/88iPpvtdiP701TZl8kgsHyJKK5jyqTVyn4fX9XDW4sPQ3aUd3u6DDckiXFclFmRQcZyr84g/BL8DFjQLDaXL7jLPe2zweANOAPANA0rz3C4VntARVpeaBT2I22Jplgh9sCwUIvcZgt01cow6LTlwojqfzVtPiZyPiSxklvGRin7Eg6gQ1jWpeKRWbgmccmgeZiqo0KbFcV1XuB1NKeChlA9ejlL1RH7WZBEf7AMrv/RjM/gibXJpxgfDCHv3ze58C5U7EQYutJqBfYKJbzE8D43KII2aRbAEeA17k1fusVFwp7YzDVzHp77aROK/68YJhWTf6yBOehSj2euJxujd0jmu5XamQPxPf4nl+c/mM+1NRC50SC5RfTdmsCrueeBz3e4X9wF+3LlwfUyuSfyyB0+8zJdzEEhc7MjCKGRO4+rfNimCPj9ZQTXEy2tnDA1gbCwrk+rHlJB72RggyRpfYgEe1+ey6QsFlFqEx/IMEenfttgEKvoc9TqBuvB8N4VMsBd5uSeAXaxQFbWRHddpXstdFo1CaNxtrUP4CS8bvDm1lPQENR7/ksJZf9SfcWYocjvYCH2a70KaIlgoCK4rKP29Txc8jp6ZBDxq9e9jhelwjzOHX4LPlyzqRydGBQLz78ump0+z69zkg4u2BneyT+ecPIgnQJn90o6ouKPPWtYHPS7ZITXDeXNfhw3pYWlumtaEe2R769N+4Cy9MpCrtGmdOn+z8i7jpDib3zBinCU7iqMKWFLktJbVvPmsqpSM/g7NTQTOgTVp6rN0pbJCopDEOB/nvWV53qfTAMw8QuhQxuGNjMuIr096axABp1ZS
- W6zqZRjD
- ENRuODLdO4uU/8ytJtK3aa4knhYk1zPwZbRr9wJwfsmNu04b7kQXfXPs8nBDMlPIXxCeRqx/0ONCZJp4C4RWsx54HwPspWMvH42352/odK057TWVVTmbHZA/I4zdzCw99a8zoJXAyX58oQa2HENghulWIUUi+p3hN4D1Z
+X-HE-Tag: 1753344473-179532
+X-HE-Meta: U2FsdGVkX1/NdwZZDmDU5LOZJiWZRmLzz/uMkjdYaJ27//fMN59q6cjy+Z99n3nqucKhuftGu0U778LUnbHRgh3zFyI8n3XDeJwe4/gPeGap/7K0YzlvSp0dCyuZlk02jb573qBuQ1F3qzSsrvW3gztBdv4PZXPMDAUtwrB5vCVg+X9BVYJJJqY0PFLzmCBycjACSvmg6KRSUGj0mwU7gZbtGvy9I55B1vRuYTGdrE9ItkrbcViAbILI8vaKmfa6SunUsjkxfN5JpNr2GmcUwajUHdwdZDbnUeAo5fvXgNmpXMkgRCpseYcSGlTzJfgBWDXDqupc/eM+QAyIEwWPws6Sh4hxqDPdvf5oPMMMe2lEWBWIXl1MkhmwWrwKSlgqlMN/9aEwrcbHQj3/HmpB+GXnZhg/On2ke5B4yjTWqamFarkvseiHazzS9t+VfBBskWMVZYGhx1xqjLJt59DdAZb+dNFSmhIkFnrLrBL6PIZrJWQanNFc8Zlc6d4oRokDuk+fSVmbQsl9WvyRpBYP3jDqbpqBS0/X5Vc0yPbsW87lSxdk3COw+5M+oSvd9PxjINorBY0B2FCTmgpkfx/Ne+lqSraGKA32tTpPMK7XrVwjYNmlMJUZHTHO5GyXB0qzcJ9eKwIsu3+Jdn/S6gYZIweCzPnDKL6N3/Fq1asSfN79K+t1I9OVGU/X8lkn1KDY1AVcY6q0NHxTWYqIRFEX59oGlY4t41NG1fBRDclh3sAAPwtecM8uk8EYObHvCaSBpFRgeg0QAB4b42Z3vUyKIy6tueteOc1LWBojyoBGlJJ3IcSqflOOg09R0sN6vqA1IH1YEq7clCrehoRQdwySnKawE6DzRd3xNudZqJU/IycOOvMaARH0S4F55Xqn1T6exQdEwPGLSfLgqxzZWflHgRpG+ZQCYBhtPcSCbEM8yNaQa6yA3lHgYAMfukxzWEZgP3cbffwKdAJdlx/07SK
+ z6Twk9J1
+ WQ5n3MWVu4M7ioYUmODDcTTiPXAUjyqVYSA+UIov9zdcXMtjap08hv5oYDPEfURhKFW0O9G69JERRwoJ0HOUkUrn5PgUDX7Doik1DRke5FislCxpkPIqQ2vE/OgHEDxk8r9/xk/d/n0HiiuS/yBS7P6P1sv3a6kFKSA2q3ZTpf6wyxB7SHlZiwYHOXKxLYkJDcvyijmIevbADdEJBBRnDhojOPPVINjA9qZbqtYh8GtGdxWWH+gc0M+MI0WCkobThPDWeFGoyLffZGc8HymgK527kjVkXHCFgZstbUWT3OxT5O1/mKLM3Z7gfewFvDZ9Q4/o/JNH/m+Wsz6hzo9spGi8jKEyo/xJ7mJFN26WI4T8o8pxO4Ct9pm/IrQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,13 +110,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 23, 2025 at 04:00:06PM +0300, Leon Romanovsky wrote:
-> From: Leon Romanovsky <leonro@nvidia.com>
+On Thu, Jul 24, 2025 at 09:59:22AM +0200, Christoph Hellwig wrote:
+> On Thu, Jul 24, 2025 at 10:55:33AM +0300, Leon Romanovsky wrote:
+> > Please, see last patch in the series https://lore.kernel.org/all/aea452cc27ca9e5169f7279d7b524190c39e7260.1753274085.git.leonro@nvidia.com
+> > It gives me a way to call p2p code with stable pointer for whole BAR.
+> > 
 > 
-> Export the pci_p2pdma_map_type() function to allow external modules
-> and subsystems to determine the appropriate mapping type for P2PDMA
-> transfers between a provider and target device.
+> That simply can't work.  So I guess you're trying to do the same stupid
+> things shut down before again?  I might as well not waste my time
+> reviewing this.
 
-External modules have no business doing this.
+I'm not aware of anything that is not acceptable in this series.
 
+This series focused on replacing dma_map_resource() call from v3
+https://lore.kernel.org/all/20250307052248.405803-4-vivek.kasireddy@intel.com/
+to proper API.
+
+   92         if (!state) { 
+   93                 addr = pci_p2pdma_bus_addr_map(provider, phys_vec->paddr); 
+   94         } else if (dma_use_iova(state)) {                                 
+   95                 ret = dma_iova_link(attachment->dev, state, phys_vec->paddr, 0,
+   96                                     phys_vec->len, dir, DMA_ATTR_SKIP_CPU_SYNC); 
+   97                 if (ret)                                                        
+   98                         goto err_free_table;                                   
+   99                                                                               
+  100                 ret = dma_iova_sync(attachment->dev, state, 0, phys_vec->len);
+  101                 if (ret)                                                     
+  102                         goto err_unmap_dma;                                 
+  103                                                                            
+  104                 addr = state->addr;                                       
+  105         } else {                                                         
+  106                 addr = dma_map_phys(attachment->dev, phys_vec->paddr,   
+  107                                     phys_vec->len, dir, DMA_ATTR_SKIP_CPU_SYNC);
+  108                 ret = dma_mapping_error(attachment->dev, addr);                
+  109                 if (ret)                                                      
+  110                         goto err_free_table;                                 
+  111         }            
+
+Thanks
+
+> 
+> 
 
