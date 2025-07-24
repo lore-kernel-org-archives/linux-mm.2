@@ -2,93 +2,93 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 65433C83F1A
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 13:57:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B946C83F1A
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 13:57:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C89078E007F; Thu, 24 Jul 2025 09:56:44 -0400 (EDT)
+	id D73DF8E0080; Thu, 24 Jul 2025 09:56:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C62A78E007C; Thu, 24 Jul 2025 09:56:44 -0400 (EDT)
+	id D4A3A8E007C; Thu, 24 Jul 2025 09:56:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4F698E007F; Thu, 24 Jul 2025 09:56:44 -0400 (EDT)
+	id C3A148E0080; Thu, 24 Jul 2025 09:56:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A500F8E007C
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 09:56:44 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B2A3D8E007C
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 09:56:45 -0400 (EDT)
 Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 73050B95D8
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 13:56:44 +0000 (UTC)
-X-FDA: 83699308728.04.DCD5DEC
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 8DEC6180002
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 13:56:42 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=qMAEsPgy;
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 673AB803CA
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 13:56:45 +0000 (UTC)
+X-FDA: 83699308770.04.DA06395
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 6EE3B80004
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 13:56:43 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=ATW0wBXl;
 	dmarc=pass (policy=none) header.from=linaro.org;
-	spf=pass (imf16.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.128.41 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753365402; a=rsa-sha256;
+	spf=pass (imf02.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.128.52 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753365403; a=rsa-sha256;
 	cv=none;
-	b=x9kavQY+R4SKdJ+yek7eTimkhVHbdp3NKkNytHZqdf8YjwIwUS0SOyQU0UPrzpbDyxk7+9
-	rF6thYiFRWDdcQiWDqfIX14cyjWugiYW80wIXFBe8FaF1Sa+kJhIFkkh+z4BFi9NNbdeCS
-	KBlnow2MVGuvqARuZmd8NkrROrxRSqY=
+	b=SQuEhEwWzEOZFIPcFnRDAoLbggCk+BrYNerWj31UNFHnk2fPdkS+FZZASkvzLvDyrGJsip
+	YkpTt+aZTe5BSr1a8C31cbTAWaZr3gwYBC04x6kQiefESeXpWGmEAs2gESPa45nJ4CJ/R5
+	A1Ql2V3wyyvgAUVVoeP5ZnSh0Tk5kxo=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=qMAEsPgy;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=ATW0wBXl;
 	dmarc=pass (policy=none) header.from=linaro.org;
-	spf=pass (imf16.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.128.41 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org
+	spf=pass (imf02.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.128.52 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753365402;
+	s=arc-20220608; t=1753365403;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ieqGzTCdj4VITWiplNNA/VccLe5fuArNXR2nSJt3s9g=;
-	b=EOGCm0VCkBbOY0LPLzZSf3zjjGscW+vDhXjaSraTaOW9/4XFJvpJhgXXsQOxsEVcLJW+MU
-	GBlE1nO3wvO9VsWgD1WlnreaOKGqlUXzI+PG2DdVgJflIAIZcYRQcd5lolc6iTXpA6ZQAm
-	9En7PW0dzywFz8c2aLu1H2le8YaHIq0=
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4537edf2c3cso10995785e9.3
-        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 06:56:42 -0700 (PDT)
+	bh=dx+zx3hCg8Qz6JMSxLg+rjsObdnsN3uv3uvSypyoc0Q=;
+	b=zyBMl5aWR0S/BxZoQImrfoSzd8s1tQVvlQtAX/bTTEN/AOaCNLr++F2V4JJCRKTYg5Eouv
+	nJnY0QYX70/+Zfr/fk9yEiMDFsMMbyPRe04UjHICLLZlGuwusTjhxHRDwxArMgy0MN9Q5N
+	MzBo/XuSOZ58s1irA/EM6rOFTmMEED4=
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-451d6ade159so6665095e9.1
+        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 06:56:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1753365401; x=1753970201; darn=kvack.org;
+        d=linaro.org; s=google; t=1753365402; x=1753970202; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ieqGzTCdj4VITWiplNNA/VccLe5fuArNXR2nSJt3s9g=;
-        b=qMAEsPgyUbESox8P9flg+UVx4OHT+V9WmlwNCx51lu52hZjFc+6WgK+h1w9liBfB/f
-         25nkW9G/uTCiCdEhsUMX4uGkSpIAIZBSZmuqW3XQQad9rR3pOReJeJj+SBDFUFQz7pvN
-         jR2Tc5Alh0c3nZSvuBwhiCW2hIBkvmX1WF5nGpL71GUhdZzF3yBuErZNKrLFfyr+xkb4
-         IIPyeH85ZnVxPwPdOCqzoa5eD4420ydlI2Egidw2SwjCJ1+xA3BxLJYVYuzB/UJ2lYEw
-         wJtLG/DNmoGPwvyPAD65VrQtBu6RUP89Jlllzk3l3bhndIJq/ijAE15YmVYKPlB/YbWi
-         E5Kw==
+        bh=dx+zx3hCg8Qz6JMSxLg+rjsObdnsN3uv3uvSypyoc0Q=;
+        b=ATW0wBXlkmTO44Lus1xAuNDkZuflIW4i5OkjWNwVL0Yh+Izokhx8TYdMJZLvpBgIgW
+         SH6jfO+Kgvf7zLcP8F0u5hxHxIW5lbOgjRuk2HIYu7ImAepA9T/sVVtnt4lFZPjM3L5j
+         oHypSftFhTwOZZYy+XD+aApul8ym+J7ISi8Q3czsHYoLXjQti0eTtcgiVikwKmKH0JUP
+         GDMl5ZqSQymddXrAxqhgVHtAsEkSTHOaInvAnqbNSOMKm/YZn82MfFDd6FdQdPBbZ0Ak
+         PnGq1mU+yADLfcUy1tO0/rSi5EeU3R6DQXSQP089od4ewoNLV4i2EMwP7Ve6iZpBxNpK
+         wsJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753365401; x=1753970201;
+        d=1e100.net; s=20230601; t=1753365402; x=1753970202;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ieqGzTCdj4VITWiplNNA/VccLe5fuArNXR2nSJt3s9g=;
-        b=nNEfnRGB4slpS7o3CszoHqZmhxpB0Ocz87VM4leipsoaSGmwJ2hQ9yw/xYZahQajZ4
-         fgKQSQWbw4Mx0WGf3WDJdTUDMc+mkyEbugWEhbJqcmPivaHiuYgDqUywdJOoocuiYX2y
-         TuHjKk5XHx+ul5ke8K7fzmq/lMBs9EP+ZRnd/47anjnFtN2b05nhkej44Jm/JHpdWLeW
-         YdSF1HpJ2UY2pXeXR3Yj2VSEdRq5NleYJulKc9z2tr/bmV6D/n7IJtY9ldzEBcrO1mNt
-         WmXtDHBY+qLbGcDKiE6CaPTniWR/eAAMIVm1pa6ZEWjcnh715avx/216PpJ3jMEkS3vb
-         uCPw==
-X-Forwarded-Encrypted: i=1; AJvYcCVgueBoRxSFOwCQCA5Ye9iny8p8Pa7/gEnH/jtN+Y3bHPZXMQK7nIaBWT7njxbBpMe3htMoIlO6QQ==@kvack.org
-X-Gm-Message-State: AOJu0Yzw2u1krnZLHd6pcl8FA7THgPfSJez7VMQv74jHHh7a5CVg8jA2
-	K5uil0OpVlgnslavlawhILiK3lAepjAsA4xML+IFb9d/BZlTva1Z1xC58VxMBSIoV94=
-X-Gm-Gg: ASbGncsoW2Y6KgD5VGjmqLQeb+djom2oLiRJVipGmFigQTh6DQ5Nr8/o4GNperjCjiX
-	6ndgYmHrLMZRmcA1d1gOQdFKdy7Iyv3GhygeNs8BeR7cRxleIOPElDIB6SSWUOIScGsXhQyjPmI
-	uzURZ5TsaRWVw22T1Dsd/QV7SayLDlqhCBJ5nEByDSS6/qvqya6vSIVy7j5kj+gClphl6GPi68a
-	2Lf9kRhkpgDHRH9Gy75KWQNjptarTINNW4edBXd0XDsqwvG6LgkChAiJEOCixqtRBPTDMbiz7ot
-	PWsSy44AjCvRqoZiOqxFToWABkfjIsjtYwuNZk7FLBeFktZOcVwdpawYZV2ilaHWKQrL5E5Pjux
-	0OLbvhRsNoLFytbm7cwKF3yv+wR/kdoEGmN7Zf2zDttcDork+EIygIr3UY68qZH/Y6WvA33Uih0
-	nhqEZK4wyf7/8O
-X-Google-Smtp-Source: AGHT+IGXEHFsoY1KVpxzOAw5TwDBINg782dVci0CvVy56NLBcwsZCPP5/3Z/QT3qLnRYduHfxvJiyA==
-X-Received: by 2002:a05:600c:c167:b0:456:1c44:441f with SMTP id 5b1f17b1804b1-45868d7266fmr61139855e9.31.1753365401169;
-        Thu, 24 Jul 2025 06:56:41 -0700 (PDT)
+        bh=dx+zx3hCg8Qz6JMSxLg+rjsObdnsN3uv3uvSypyoc0Q=;
+        b=cZQ5IjTcQYtSI2Qo+H2bwkmXpziCiB0R7jPeXS9ZUgnVLby3vJDnq75QOcvlULNQq2
+         rb4Pv6WQxS9U+LKn3d7Lhj5LrHWxP9BmWyutF2fJgWGxgvpS6lYLuoCz3p1VoT/la7rr
+         EfYSUPGGb68UTh2kVYQ1UR2t7VEVhrrBB6kb1N+e9t35zjUCi3ZJi8uaCz/C0aePgKyO
+         XdPWrrr4R06ndTGwp9TNc8qOvKSlQcl4HbOFlaKGdpVL7S2bFbdCF3h8SF746mtXhT6d
+         fO8jEkfaQfKehwiYnzBIpuRr9wqXbVp4CLUfNhbA3+13XaVDGR4pL8Fg7g+24U1sM3G/
+         avzw==
+X-Forwarded-Encrypted: i=1; AJvYcCX9Lcm2lNk77gJzsoKzyAL6mju7zA5ksO8P9gCT+OJXltf+nIZ0mAdJdCaMBWFPyuOgJgWhoKU4Sg==@kvack.org
+X-Gm-Message-State: AOJu0YwOBhve7i6AOjiZ/iJLGMSxXw/7oY4WyzHCedihwcpSOiMiElmY
+	EVBe7N7oIbItEyQ3Amv5RAFGDDdmbOtUXBsLbylyj25GtjMlgXIGGR0x01EHpRlnDxw=
+X-Gm-Gg: ASbGnctp/t6jvvaDNZ3o9keIqHpuf9mmlY5TDbAL82NwO3K0VBnmzkfZVmyWzvlECzT
+	7cGhtCoF1oLntEmzGHiYXiukS5DSkOj1bn24WCIWpe3aMafhOowa9pv2poy2ZR+i5kur99ibCGu
+	UGEuljYCmNTDdGNxCZJCTJLnj94xgoGCpAgCsVxlSqj5dUvmQUmwBk3A69Q7BxkbuJ65Ve0/9sO
+	g7BiE8JGPepTXq9/128IL77rZNewIOFOQLYcWIQTwNbXMK4Gjvp14tLZLPqg+PBkNCk2sisevKj
+	jAD8ENWFfAbx3aQcNjLUCxv8kMBRPsxqVZZnYLKb7Bn7whSs1IowVHIQZ2YAATiYRjN20pgQbbB
+	fmj2M5wJqbP1Eq/QHq7L2NgVfx0qrz6BCBeUczpmh1bA/MnE5nIxnGqera1WEUT1m1JKxkIlJpO
+	NLSfIT1c7kFd1W
+X-Google-Smtp-Source: AGHT+IGliARSjFjzMbqI3XaGwe/LefU8e+9kx8i0i+1k/+nyeMB8SAYvSTjLiytSObV6pAe7PVl9aw==
+X-Received: by 2002:a05:600c:3583:b0:456:161c:3d77 with SMTP id 5b1f17b1804b1-45868cff2b8mr75404365e9.16.1753365402037;
+        Thu, 24 Jul 2025 06:56:42 -0700 (PDT)
 Received: from eugen-station.. (cpc148880-bexl9-2-0-cust354.2-3.cable.virginm.net. [82.11.253.99])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4587054e37dsm20889375e9.14.2025.07.24.06.56.40
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4587054e37dsm20889375e9.14.2025.07.24.06.56.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Jul 2025 06:56:40 -0700 (PDT)
+        Thu, 24 Jul 2025 06:56:41 -0700 (PDT)
 From: Eugen Hristev <eugen.hristev@linaro.org>
 To: linux-kernel@vger.kernel.org,
 	linux-arm-msm@vger.kernel.org,
@@ -105,22 +105,22 @@ Cc: linux-arm-kernel@lists.infradead.org,
 	rostedt@goodmis.org,
 	jonechou@google.com,
 	tudor.ambarus@linaro.org
-Subject: [RFC][PATCH v2 21/29] kernel/configs: Register dynamic information into Kmemdump
-Date: Thu, 24 Jul 2025 16:55:04 +0300
-Message-ID: <20250724135512.518487-22-eugen.hristev@linaro.org>
+Subject: [RFC][PATCH v2 22/29] mm/numa: Register information into Kmemdump
+Date: Thu, 24 Jul 2025 16:55:05 +0300
+Message-ID: <20250724135512.518487-23-eugen.hristev@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250724135512.518487-1-eugen.hristev@linaro.org>
 References: <20250724135512.518487-1-eugen.hristev@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 8DEC6180002
-X-Stat-Signature: dmmfbky7cqybu87u87jrz85bfmt6gdoh
+X-Rspamd-Queue-Id: 6EE3B80004
+X-Stat-Signature: 3o719zpsm8tw8e73d91zbwasdnhh4kpx
 X-Rspam-User: 
-X-HE-Tag: 1753365402-991722
-X-HE-Meta: U2FsdGVkX1+BymhHa/vIO8nkMw2EDcpQsCAGCp4yIYjMcEs1/ZNXKHyxCpb1obh3HcDjuk4E1jHEGth2ebrF+Ly6AWVc1MPeNIE6w0p5lxlfNCG0SncjjZjbbmK7GDCW2tw80nYihV33t0k+BfVaD39URorFzZxdACcatrf/NMLOhkqgLoh/uIdFEh1kyp4NO11yWSRR4NkLidOZwVr5yC6h+xVpO6ZbACNWuKpyiyv0gOUY4hDa24OLTTUJZn5TEDzhimB3tGjA/+W/n9+J5e0aGb0TrhyhpEbwpA/R7LuRFovV1FaTgcshE/14X3qhXmi++iCAejtppcQiMIulT1H5UMy9+2LCymbfxeRT/p/l1/EjIJYrHWqhKcl59t823Bpk5UQ/GXxy+ok6LLL6OuvKTnjMxzugQ8PWWfStEfy+eiDy4hBf8UjE7p0dnvPWEndVBjUWehhkGQAbWs0AVe2MUvTZzogK9RodC9ZcCWIgFocwLqTwrJFa7ZdeyelEuWqflNWlntY/sR/fi+VDocMdLN44G0e+G5DBSwynuc7ddwZMFa0XcbiP7/08mo8fQYPGc5sG+hE10+WENTnPCxBV0nNgcwoxPvngFMan/EwRFI1c/oAN0UZyMyXftAliIRUGBVL2LFFU2HYpT8qlPF22NsiON6yh7TsgA9Yjbrp0oySLWVEa0w2s/4AKxoTVSyg4t0uS3B4Fnz7Ugj/meQqSNLApT6Tkq1O3J9/OYjRbcStZfwSvSt5eV+vydZAeR1umD+gHwProdSBVf4NQcOEMNEh2qL/bW7MfJXgbhKCq1v0L4mCkHRxhKUKM/J6cKwnmUFKQMFo8sU5wzC/bkyiDa2Z/2XvNIbZy6kCwUi5ygzLoh4sZFau3XjSvtSmLUBUyZH9ivxP+uhhgaF6x3zeW5/6gIYAiplp705S3mer3xUX9aWQh4OqLnfY1z8e16i/sd4CHCWG1dDKu6FZ
- OFtxHeDk
- 5GdipFEJcoWGYH4zHzPxZqoZW2uY+ByL2Ki3daTmmgmBG9NM2pUVDxWqzzyKwrhpIlHpRsBOvH1vvVVi0o8eRc+yRaC/4BENSwMevlmJxKgpj1ABJdzY0teyy3ZrMILZWTu2nmo7P5wN6Up8up/X4lFKa4oO41NDpG61zMQhgKy3LXd7xPRFspW7yCzkVwrYmRY9NtxxlJjR9w2ZTJYAKQktZaWW3CWDp73P2NP4odLGkobClOLWgJO68Vq/4cfmoFSMJs5Z+2pln4w+qMC64+ELAz/J00UUM5VwF/bA3AEvTXBlRVLOC3FuE7sQCOnAmSyxJPprW4AqkKJtWtOS3+P2L6+oxiZyChMWXayjrdTlolByex9YGaImvDEfI/J0nrFHZUepH74oxjVjyseJRWuoMpQ==
+X-HE-Tag: 1753365403-200132
+X-HE-Meta: U2FsdGVkX1/uCbrJAawuDRQs6Zw5upFNB5xLqG06avwdU8MuKug9RKG/itL0RsnBbn3SNS7xinqmLTF6K2buahRgw+MizOMfQ/umrFGOF2RnxNAMSxfoVIkKsShodpRXviELi7vEqKtwfQGR6wRlLSepSt49s+wTQusqH7tZ+YUkf8iOySUDE9nA1amqATkcli+ejpkMTFjGDsKfQGxovQ0eWGNYM0ohhXtignQuEd3VpQp52Dg/Gdk7zzRL7u0POpBpQExCA5YRcK0IjMRVlI9gKF4/XkwWZukwG5K0xZdN3QFFtwvsNIZ3s0Jw4v+LBEDpSsKMOIZZPsOx2g/dRR3/Zuupy59pXEd9zs6u70YZFtAajpQ6o2CGukUP0NySE9ztxqzg5Mxvh+s9HlvzztPMDgyeqBOFHGn0XVM/hZ85PS5Wh1Po1DeteIVBgXJR1ZZs9GUnbl/qxX6+u1ZBEj1Q8IPBM2TEmyRRjC+JXEwSVxe/61MlY6O7il0VC5g5IoQEOCvB18buRbJMFi2h3b+nIh6/TkE5tP07uMEK940hGLNxmapGreeQsNZewob+71AXtccVlQedYxsllw0iIFfLnbVycsc+UnmAsGp21wExhpEwIgktz1X8K3OnU3CYxumF6YATm+97U/1VVhK6v5Ai78EPfzmtSl5OFW0ro6WdRE1g8JeoYo+K3FylVg7HvlABb725rzshJ4rmwzux/20YXCfAY079z+a83ETS9Ya67x/dQ800nm0/moWcyCoJ3/iaxGTu0pkpgJMANNSkr96/FIQtxcYFeul2qxUKdJPKdFJ4iNGAK8UGU3a0lWB19YZbVwvVbrIuu9NfiqppaJPzEVddIjzGcq27BbblosB+iJ+Z2Uf6CryVnEvrBj54gAeBUZzXXLCKMq5UUnExPwXXZ+DRfuLRe50pEu3OmD1HSzLaTu+VFIaQoF9HyBKSAQRYJC1daxSJK9eIR/G
+ GpaRArtM
+ jeS2xDsdEjX4rRVT4h+3qvUkem8MtIml1J/AECu4YvsQHLiLEyP0GfJ1z4lGF5P1YAW69pnIN+qBA9Gl/8G2OD02OY6DkeOOySrTdY3tD5OvGdZzwf12Y1NQFyv9x/jwWPKiFU9s40zMM+8zynZ7YHbsXHAQL5D6gI0kCM2IHUvZRwnjisriAgE9Ecfm98qq7fUhePE5PETtuEWHtKzH34iUHRkcBI4az2OGMgzwTPd/FwsICmwraEqyXofQTHD00slEz3Ir2aLAMDD9qfZsh+Qa1tpP8j4ct48/nsAwjIMXwetRib0B27fR669D56g2IrOMDDcmf4+TwdGNq+t8P+D05Rew3QYM3AgQkbfwb5FU7fAw0wOfNgAsEHVdwOeKP1RDS7feEGMPVo5EQtuO8xuv7bA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,39 +129,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Register kernel_config_data information into kmemdump.
-Debugging tools look for the start and end markers, so we need to capture
-those as well into the region.
+Annotate vital static information into kmemdump:
+ - node_data
+
+Information on these variables is stored into dedicated kmemdump section.
+
+Register dynamic information into kmemdump:
+ - dynamic node data for each node
+
+This information is being allocated for each node, as physical address,
+so call kmemdump_phys_alloc_size that will allocate an unique kmemdump
+uid, and register the virtual address.
 
 Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
 ---
- kernel/configs.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ mm/numa.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/configs.c b/kernel/configs.c
-index a28c79c5f713..ec94b695f234 100644
---- a/kernel/configs.c
-+++ b/kernel/configs.c
-@@ -15,6 +15,7 @@
- #include <linux/seq_file.h>
- #include <linux/init.h>
- #include <linux/uaccess.h>
+diff --git a/mm/numa.c b/mm/numa.c
+index 7d5e06fe5bd4..88cada571171 100644
+--- a/mm/numa.c
++++ b/mm/numa.c
+@@ -4,9 +4,11 @@
+ #include <linux/printk.h>
+ #include <linux/numa.h>
+ #include <linux/numa_memblks.h>
 +#include <linux/kmemdump.h>
  
- /*
-  * "IKCFG_ST" and "IKCFG_ED" are used to extract the config data from
-@@ -64,6 +65,11 @@ static int __init ikconfig_init(void)
+ struct pglist_data *node_data[MAX_NUMNODES];
+ EXPORT_SYMBOL(node_data);
++KMEMDUMP_VAR_CORE(node_data, MAX_NUMNODES * sizeof(struct pglist_data));
  
- 	proc_set_size(entry, &kernel_config_data_end - &kernel_config_data);
+ /* Allocate NODE_DATA for a node on the local memory */
+ void __init alloc_node_data(int nid)
+@@ -16,7 +18,8 @@ void __init alloc_node_data(int nid)
+ 	int tnid;
  
-+	/* Register 8 bytes before and after, to catch the marker too */
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_CONFIG,
-+			     (void *)&kernel_config_data - 8,
-+			     &kernel_config_data_end - &kernel_config_data + 16);
-+
- 	return 0;
- }
- 
+ 	/* Allocate node data.  Try node-local memory and then any node. */
+-	nd_pa = memblock_phys_alloc_try_nid(nd_size, SMP_CACHE_BYTES, nid);
++	nd_pa = kmemdump_phys_alloc_size(nd_size, memblock_phys_alloc_try_nid,
++					 nd_size, SMP_CACHE_BYTES, nid);
+ 	if (!nd_pa)
+ 		panic("Cannot allocate %zu bytes for node %d data\n",
+ 		      nd_size, nid);
 -- 
 2.43.0
 
