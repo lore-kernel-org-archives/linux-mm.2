@@ -2,123 +2,136 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2836CC87FC5
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 23:34:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4DC93C87FC5
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 23:37:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A80206B035C; Thu, 24 Jul 2025 19:34:21 -0400 (EDT)
+	id D1D1B6B035E; Thu, 24 Jul 2025 19:37:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A57FA6B035D; Thu, 24 Jul 2025 19:34:21 -0400 (EDT)
+	id CCDBD6B035F; Thu, 24 Jul 2025 19:37:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 96D4B6B035E; Thu, 24 Jul 2025 19:34:21 -0400 (EDT)
+	id B95086B0360; Thu, 24 Jul 2025 19:37:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 86D046B035C
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 19:34:21 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2B687133BA2
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 23:34:21 +0000 (UTC)
-X-FDA: 83700764322.17.DA6E1CE
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 60F9320002
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 23:34:19 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=19kQxBGO;
-	spf=pass (imf13.hostedemail.com: domain of 3-sKCaAsKCNU13B5IC5PKE77FF7C5.3FDC9ELO-DDBM13B.FI7@flex--ackerleytng.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3-sKCaAsKCNU13B5IC5PKE77FF7C5.3FDC9ELO-DDBM13B.FI7@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A0D1C6B035E
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 19:37:08 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3E6E2C04CB
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 23:37:08 +0000 (UTC)
+X-FDA: 83700771336.24.25580AF
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 4E28AC0004
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 23:37:06 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=rivosinc-com.20230601.gappssmtp.com header.s=20230601 header.b=BdbI1Cnw;
+	spf=pass (imf10.hostedemail.com: domain of debug@rivosinc.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753400059;
+	s=arc-20220608; t=1753400226;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AOC/P/oGXAoRRZqdH8GHzQvdWeyyCWYievctnkwxwC4=;
-	b=wIMEIyGAZYUc14HFsW9RBQ4I8wOOcxIIehE+0rFjeAo1JcC2JAx7FX0WPTGnnMFrNUdYv0
-	MWqdfy9JubwL832iJ3RKLGOC40hRyIZ69CARediD02C7DYxqyy+T2VIt5YrS1TOeD6Fu+j
-	uf0EXKWqVhDsxdSF+wac2t2yO/1WftQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753400059; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=C+gXzIdU61xINYweA3A+NL6d5ZRp4vso9nWy72/uM8k=;
+	b=dAXJ+lrG6ip25snLDNTtx2PpAi6DHau9OVkApesibZXjR4HCosnB+HRDxHndtJikDJdC5z
+	LowLvAV/oiiiP/BclOTxEfvTAUvTbQHOHN1F9ydPw6hGfvEn4/wL3+8GtiRf1Q7pwZ1dsl
+	wfbLpPSJovLeuqdMZliWtnpPy5eO4Yo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753400226; a=rsa-sha256;
 	cv=none;
-	b=OAKCR7mmoNMXY1GQCIuKnO7282rdPapWrh2onIzAGhYslLdUiunrV9khzEgN2AdL2p60WD
-	huYfUxrowyJmL2E3Qsp8ZLmdqV/WYg8M5XejukWtCimaj3cDc7oDEdCXKTp2CgmhgYWhq6
-	HrnduIl7q7P433NMhOX4EjAQrcK5ZB4=
+	b=ZMcovAl+Hlz02ZDqH1mwC1TGe/S5tIMzueCRXfgdruXcceEjJ14U7tEJrWpMRN+gj5ji0t
+	FN9H01qvX2LhnQeATXI30fZUR6nvtftU44ikBMDAVhapYoPA0SMkBLYzBGwJTWVYlBnJZQ
+	xbIbNpr89MViLq2AM3R50D+XBW6afVI=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=19kQxBGO;
-	spf=pass (imf13.hostedemail.com: domain of 3-sKCaAsKCNU13B5IC5PKE77FF7C5.3FDC9ELO-DDBM13B.FI7@flex--ackerleytng.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3-sKCaAsKCNU13B5IC5PKE77FF7C5.3FDC9ELO-DDBM13B.FI7@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-749177ad09fso668999b3a.2
-        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 16:34:19 -0700 (PDT)
+	imf10.hostedemail.com;
+	dkim=pass header.d=rivosinc-com.20230601.gappssmtp.com header.s=20230601 header.b=BdbI1Cnw;
+	spf=pass (imf10.hostedemail.com: domain of debug@rivosinc.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
+	dmarc=none
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-23602481460so16012325ad.0
+        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 16:37:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753400058; x=1754004858; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AOC/P/oGXAoRRZqdH8GHzQvdWeyyCWYievctnkwxwC4=;
-        b=19kQxBGODnNFiyeIxwyTdk1m8/eDXJreZFeBUhAYmbylW+K29vQw2T/P9d835l2brq
-         sWWgd0wBv86xcArINK9dDWnu24fatdUbB35hq234GLe6vsnK8DHd1V9DF+zXWVZX5jU1
-         7tsZPnWy6qBqMcpUTPa5duExrRfuRwY5hdRXrui6OEzKhyN1blYkBdUgJ897EOmpwMi5
-         MjxjtcEaMGp4yRKMRU+wZljCQwX+A4mOosKn+ceLA4pF1xXIufl598iz4OcdjxUMW9S8
-         1l3G/1bjbGCV78vQEiXcLCnva+Z3lQCpnr8JbkjcDevG6c0v4BNgqWrUBcYgB0kKgfjL
-         kDWA==
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1753400225; x=1754005025; darn=kvack.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=C+gXzIdU61xINYweA3A+NL6d5ZRp4vso9nWy72/uM8k=;
+        b=BdbI1Cnwe+IqoBMDpyv2XH1BRnxvEfivZ1gr52UxJ4XAwPDJF3WuufWjgLZpfokW/C
+         ytTJd9jc/7/PALVVY8lTpQfVhJj8iz4qBxr7DiqriO1OBLjXqtVwQlvhicyLRz/cS6qS
+         rMEde9AHjzbxSxQB31LZiNvhFPeoTvoXh3qKpz5mtfwbvK6UiaTDzu/Nf1u5Reu+z+GN
+         bUT3s31WpKrgFjrX/abbI+GLzkNcpARlg/z+fkNN6BY2MhzyIIZxn8tiDzHYBRg/1Wp9
+         0Iedyqkrb0xRPPhUuh2cYUytLS8IVScGMnJi8HBr7re6NUuldNm2vHMI6sqkBQSYllo5
+         Cg7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753400058; x=1754004858;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AOC/P/oGXAoRRZqdH8GHzQvdWeyyCWYievctnkwxwC4=;
-        b=u7/Ou9CpF+L91+/carNmv2ILvWXy8nPBbXQ/i5aYMUGV2aoil+2g+a96W4IvjQECvy
-         +QgD8x2efP7+69wsqbaYzEW0TqJioLi9RbPNGumr+tClFMkfseN/9yGE9HcMyfb5S0/h
-         WVwTyCNwkeC3MUoHLWiUWQHxjjrtu/XavTSXH3ZDQeL7+QtTxXnkbn6c6Vod95YSffcb
-         mM8QpfYFZ5Fr528OKWT7+8am7guuSV7O3Sv0e9Bsik5Kjg7HW9IptWG+ol6JayUTWKbr
-         9O6R6L0CXhpAsO9+0CtgqHCAtUOaCNNZwWnXa/gl9gqdJ+h5TQQpzWOLnEykFEJ7MRKt
-         heAw==
-X-Forwarded-Encrypted: i=1; AJvYcCW+c+nfN2Ddp3YvAMTmP6NHpXFSvknVtESI9qLURUGomS/DlEPfkQ3jQCST+8nTEgfDtgfRTpHM/g==@kvack.org
-X-Gm-Message-State: AOJu0YznVP+5kdNvnRIIQsNGrm/Svao4U2RCZ+tDZQ9uqj3YoRwBDZe6
-	cz6VQiAVmGL3UikXiXUQPIStOO8X3PrSwjq/NjNfdeYyhEe3SUFNw4aSxIV/IJXJs2HrBqZW8kt
-	SOYFthFAH7Q409YlkOHIwKd5TmQ==
-X-Google-Smtp-Source: AGHT+IHY5fZQ+2KvhBreA+9T2uYUREVCLpgYaImwQk0f+GpHuDd/3+UjiagOjIEkhCM9MDPNsi5LdrO2naMGArQC7A==
-X-Received: from pfbfj9.prod.google.com ([2002:a05:6a00:3a09:b0:748:e8fc:e9f0])
- (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:c85:b0:736:51ab:7aed with SMTP id d2e1a72fcca58-760353d0942mr12321101b3a.16.1753400058101;
- Thu, 24 Jul 2025 16:34:18 -0700 (PDT)
-Date: Thu, 24 Jul 2025 16:34:16 -0700
-In-Reply-To: <diqzcy9pdvkk.fsf@ackerleytng-ctop.c.googlers.com>
-Mime-Version: 1.0
-References: <20250723104714.1674617-1-tabba@google.com> <20250723104714.1674617-15-tabba@google.com>
- <1ff6a90a-3e03-4104-9833-4b07bb84831f@intel.com> <aIK0ZcTJC96XNPvj@google.com>
- <diqzcy9pdvkk.fsf@ackerleytng-ctop.c.googlers.com>
-Message-ID: <diqz7bzxduyv.fsf@ackerleytng-ctop.c.googlers.com>
-Subject: Re: [PATCH v16 14/22] KVM: x86/mmu: Enforce guest_memfd's max order
- when recovering hugepages
-From: Ackerley Tng <ackerleytng@google.com>
-To: Sean Christopherson <seanjc@google.com>, Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-mm@kvack.org, kvmarm@lists.linux.dev, pbonzini@redhat.com, 
-	chenhuacai@kernel.org, mpe@ellerman.id.au, anup@brainfault.org, 
-	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
-	viro@zeniv.linux.org.uk, brauner@kernel.org, willy@infradead.org, 
-	akpm@linux-foundation.org, yilun.xu@intel.com, chao.p.peng@linux.intel.com, 
-	jarkko@kernel.org, amoorthy@google.com, dmatlack@google.com, 
-	isaku.yamahata@intel.com, mic@digikod.net, vbabka@suse.cz, 
-	vannapurve@google.com, mail@maciej.szmigiero.name, david@redhat.com, 
-	michael.roth@amd.com, wei.w.wang@intel.com, liam.merwick@oracle.com, 
-	isaku.yamahata@gmail.com, kirill.shutemov@linux.intel.com, 
-	suzuki.poulose@arm.com, steven.price@arm.com, quic_eberman@quicinc.com, 
-	quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, quic_svaddagi@quicinc.com, 
-	quic_cvanscha@quicinc.com, quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, 
-	catalin.marinas@arm.com, james.morse@arm.com, yuzenghui@huawei.com, 
-	oliver.upton@linux.dev, maz@kernel.org, will@kernel.org, qperret@google.com, 
-	keirf@google.com, roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, 
-	jgg@nvidia.com, rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, 
-	hughd@google.com, jthoughton@google.com, peterx@redhat.com, 
-	pankaj.gupta@amd.com, ira.weiny@intel.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 60F9320002
-X-Stat-Signature: g6zr61w4u3di41w54eeyrs5bnzdxkq6q
+        d=1e100.net; s=20230601; t=1753400225; x=1754005025;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=C+gXzIdU61xINYweA3A+NL6d5ZRp4vso9nWy72/uM8k=;
+        b=H3AR2Zsq0j8ZAkDnPE6ZIUHlql3Y7oGaW71CxwmEHSxHeFInmn/bHq9qLVL6QZx0yt
+         YvwM+5WbCy5ixrBBRVQazwBHyFQV8SXUjMJ2e//K2rpLYMsEZWjiMq5+C299rEKr9IN/
+         KQboR667smAnmqKDXYnRc59NKaTqwqqqBgyWrwJNYM5IArPQrWEOLyPNeNZd4nyD9VNl
+         DTt/xE7mY/DiBejgr+umTR5atcSIWE20JOS7QTMGRhFpT7Rrng2amBe3TSIFNVWsWTZn
+         exGmttlvBqDhp42+XriwbD8HqmGiqoJLezVjpDLRuAVShJE4bUB0gUy5HWTO1zOO8xq8
+         R09w==
+X-Forwarded-Encrypted: i=1; AJvYcCVUT1TLg4EJSJMzh9U1LuRur1jV+V0CX3XcaUDkAlTwzAxScoReMU9pyNDG5C6H7ncj5g+8ZvKFxQ==@kvack.org
+X-Gm-Message-State: AOJu0YxRJ3jmSACEpYBxOrGvKloX8PqCEDLilN6etU5pFHus1Rtz8BMS
+	laitP65CLPVzXOY2fUQ71dCPG1jZRj0HV+GLNn71wyGFy94GrA6mNYNvFhsWYJbbclA1pdlb7iG
+	ifgoG
+X-Gm-Gg: ASbGncv3n1QkwVUr9xUx0kPwpw1PUuqk9hog4xtDLTKQe5sOvTN4ankKQrYI6vrXuXA
+	aRgR3OPhhZkl4MLyPv+oiZJB8YhMACaK68Gq9XAT6kbWo/QywXbYNMrVLMlECJ8IBHSGtW8beaF
+	eYXxfsSB0wfdzzNB6MQpbAtYWgRiuwo1nXyhTJlQdfUsStvsvD3ngTfWtKD681y8y7ViEGWv6Kl
+	2gW8U+fXXn3Xp+Nu80XsQQtw5fhRU8Ex5HUByoYRXZZbLJHobZsUXmlOxnslgICD6I6/t+U1SYV
+	PcaSaeEdH4SHhzUOWQUHbc7CFQ9Bi8uKEgMMGgOMc6Yu7FGVA3ovn0bEel3gU6ZCAKJriQLMY5s
+	DCtSSsZgwCMZ9dsc23orMS1bBWadS6yPg
+X-Google-Smtp-Source: AGHT+IFr7l7kjkqrXt81vLsMKucPZmY9zD/JPe8FlvG5PsYFoAY8mYZhkhl/H2Tn5r65e1Axf3ZuZg==
+X-Received: by 2002:a17:903:1b63:b0:223:653e:eb09 with SMTP id d9443c01a7336-23f98161f8dmr123171695ad.7.1753400224864;
+        Thu, 24 Jul 2025 16:37:04 -0700 (PDT)
+Received: from debug.ba.rivosinc.com ([64.71.180.162])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23fa48bc706sm23598685ad.106.2025.07.24.16.37.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Jul 2025 16:37:04 -0700 (PDT)
+From: Deepak Gupta <debug@rivosinc.com>
+Subject: [PATCH 00/11] riscv: fine grained hardware assisted kernel
+ control-flow integrity
+Date: Thu, 24 Jul 2025 16:36:53 -0700
+Message-Id: <20250724-riscv_kcfi-v1-0-04b8fa44c98c@rivosinc.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJXDgmgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDM0Mz3aLM4uSy+OzktEzdNAtTw7QkI0Mji6Q0JaCGgqLUtMwKsGHRsbW
+ 1AHi6z7JcAAAA
+To: Paul Walmsley <paul.walmsley@sifive.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Alexandre Ghiti <alex@ghiti.fr>, Masahiro Yamada <masahiroy@kernel.org>, 
+ Nathan Chancellor <nathan@kernel.org>, 
+ Nicolas Schier <nicolas.schier@linux.dev>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@redhat.com>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+ Bill Wendling <morbo@google.com>, Monk Chiang <monk.chiang@sifive.com>, 
+ Kito Cheng <kito.cheng@sifive.com>, Justin Stitt <justinstitt@google.com>
+Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-kbuild@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev, 
+ rick.p.edgecombe@intel.com, broonie@kernel.org, cleger@rivosinc.com, 
+ samitolvanen@google.com, apatel@ventanamicro.com, ajones@ventanamicro.com, 
+ conor.dooley@microchip.com, charlie@rivosinc.com, samuel.holland@sifive.com, 
+ bjorn@rivosinc.com, fweimer@redhat.com, jeffreyalaw@gmail.com, 
+ heinrich.schuchardt@canonical.com, andrew@sifive.com, ved@rivosinc.com, 
+ Deepak Gupta <debug@rivosinc.com>
+X-Mailer: b4 0.13.0
+X-Rspamd-Queue-Id: 4E28AC0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1753400059-969622
-X-HE-Meta: U2FsdGVkX1/hQcNSa6wKFKRc+bCLsl5CL293KzAzZO2qFz3CB44L+NdIoQdTMMerSwaE1wO2MF+r5rQmQzucgdQZr1jZ1kbH1kgVKJx1Hx6b19SoNGNvVcn9CmfNMQuS6cjpoIFQojdGJ0rYoCTuKq3wZGzwl5puX0tF2742ZX9wJYImHJTTB8G1oYxMHWV4GG5V5dPfQLwKi9f2f3F4Q8DLa6vt0eqaV0wzThGWwc0IWXOzA6EWvZW8cnm6AAySZ4UR/qG+VikNZ7bYKaEMA/EdDcdSgHLG0Y1KIcnNxCvVduL5jpNvJ7lNG+5RzoQ3l7fi4OoEyAjDalgKGinhtJxKaDnDhNTKJkqp5dmKkUHXcjkiFZ+l8E2BvRqx7wAO/rOsTvOSn9R/hAjBO8BkRZTvyEAj+cyvDqMl9iJtVTRuavnMmlh85ChHf9v+9CESjoQffcN2poCv7Mmusi1k0b93O2jzkeb3oV47AH8ZBHko617TlO3wSp+jkRjkln33q3OVHp5NpMAa5S12zfVpzn3Q/xv8IvwtOd2RKalbKh5RPjtaYgI5mMvqcOjs+gac3iieRYNH/cdtuutlIw471/U7/SSt1bJbpGM/IABIIbygVPm6w0pwz1nX/MdN4Y7mVPzlNnVZ3/rjxgMDEzaUaEMRhrsDWZHNC2d35SyjpftB62DvufMK3CPuLQLUCjQoGpsejvR2oa6tQJoRCPK/povqdKCmX+HAMJWbwsQyNcpqBFQdr84FVqrdfDBQuJYJI/KgLz/42nutzLcro9nmqdSZguPL2qXGuDU6ZavQCvGrkrdCaP/fxq7Z/ERXvAfOgY866vgVWf+/qxxh3RQIH3eEkqatw3E/4Na8iXrKge4PYNZq7kv5G3QqiIXM9EMq/tYUOdplOdkXhxPy77qDBhnFa239bTHyDrQHbEsGCL57BHmgas8WaYvb0Ly5+TaLI1i2lfvGa1q3dgMLb1F
- ao5nl0Dc
- dfVSuYCC5UbgwTDSg2naLvKMpd6UsAEaB8JXIuSt9bcQr8r3QwIPS0bUEAv4ClAMxl82zivhWe4mLxz1wFsgPvUFsxGO/wz8N8CSmtu1bOoNB9HAmVBBKsa4cy2I3J0DtAnRxSnjlfq0GjhpthvEp2HsEY/6wCziM8yW+cY78h+Z0avd90hqo2qsjM+NC3wg2201Ij56IGczeE0woa6SZp7XQ1xdn/RMyWcfpiit13lX1TgEyIA/1IIcHAOa0U9D0DMY5oKf+pPZHrkgn3hGH8prHf/6obtJLEPO8LYauwgsXrFz/u4aJD8c246m67d7hTtDvcuNB2MNCVuBYODSZlTn54rVOgrJYzBFYdAoshxOTcRy2UbmT+49UKbvNg/715OLQSv3LiP02BcdxGZcMzDK03q/vSwqWTp7FQOzP5sfpYwetiCluHfUrD+BjJAvd3G3sns7j+qSwX+a9Tl+TDVp0P1JuqtExQlXSMo/9s1k3opgJUv5dBlABKM9TOLnP+2CxM1FVeslbpAZWhHDGGfyszQoOnt+75C/Vdnj1Nm6KgI54OHsLhGyW0++HJM5ibocZTHFoT3Cu8TRMHE+R7Pk8aekPVGDRJCARW56v1E9vxdsu+OwM0xwePbUN77Sr5SxFELxWQ674VCa6MMdoDHWHlb3I3VwcerCsrwFHjC+G2t4/L1aeiKtz1vpDTZO0x49Y9/Z44hm09iM=
+X-Rspamd-Server: rspam09
+X-Stat-Signature: jxzsczz5sdxaizqmab6usnatkwasydwh
+X-HE-Tag: 1753400226-611946
+X-HE-Meta: U2FsdGVkX19a6bSU7UXIVJ9ZGcaaHCfBjmKpFwQsgF9QTm/RtBrQc9OuuAx161RSd6ERGZJd/I1lsFk6VtQIECN90JRG/esiYQHi/6xUf80DIuUD0kqntUui/6FkiRJvAv/q6mt3UXkHrEqcFOM4nQV/Uxzij67AfsHWIVN24nkSsNc398jg2jssLTmcNukPI5ZzVuzM8KCgPrudvDdc9M4pzuciQywLqh37/X9CIsHD34uJxEWpwha/LpMG1AwTNKncDbumMLFxwDNGN/KDM/cSZw5wJJxLnR1G1bXxS/PnlBbeeJ3kyEjJaRDeDHTv2m2hKUnyLujH1Xow3jedHlMXvprbu8sp98MTEMlwLTORcSPxCAzYDzQ14esB5o3jgKi7wWWZ/X9PHexPZpY5CVueaQCijN2dnKvxRqn5nEJoETpQbd3XQJoxnRsNgi7DYQZdcIKMGX5BaIJi5ZQ7Ro0H/1mm4nmTwyOomiA3OTsvs/7o7XFpeSDTtztTHDc5EoFyaYliLcWp74iwtW3WO/Y0ClsYt9OSJgzFSJaTo2HB5u+sQsx/4E+mayaG+M067K/y3/1rzIHIW4jDbk6Ow5/jiKaUj/sYzZs9/H/Be8+3SQ9TVXAZKmTahYVWNtoApWsOMJP/Pq61JD4pu/PjdUHCeUP72qtYQ01vE0WK0iof5eEb1J+9h3DmssOI2jzXRVcGaI6+nfEuIhrkvR8tOIrGWjeIuOo2Q6a/YCCQnGW9oDP8PRtwC6iMH77nJJyrq9C7kEFp55CGVJTt3b0jZw5A01oz5k+Fdj7c1dAzYd/nnsMfE8NLv2fMM4G9UFLRDpMtuR3WSI8ObPYiaNH4yob7KArgygsWwnGqH3RPBQ1wzYDrTSn50aesHbr1xfgWGc1M0WBzjH7+6AlXXRSlpGJO/AW1vB9biTA6Cocf91EX7Syxz4ob4UWqw2f8fYyWCZB7tStmQbsMlGdyDdX
+ QAGvXJmK
+ vV0N3m0zKEX2FBkvDfpzGUnmh41l+zZLeTWjm3ZeG22t+/ZlBt0HTypB5gX+870Ew6uzwAGvrCoVKpxCfr7Ze0aDvTZayw+WsXPfZ0IRpd69zF8fUmO1xLq0fDUFhTGrK+rkiU7COhh9V/5TXQVfuVC0nN+MtMh92ATXQCKRvsCipngvWQYV4Xq79GdgOlTeBZJI4GqsZ3xLCpDOueFPMpOOevf/j1B0SVrLJcnqaMQ21IYqD0cH/tOG6dM23BkEmVZNqpyJQrsUJTnY+JBzOdQTMKH21jYH5PGx8EcAptyW4cjkZK9ypS/FFwZJk7Sw5dDp2jG/sJ6kteTZufpqGOXa6pf/rasVagYbTjsSogV48taxzoejNYTWooYL0Sd6qcFv1lRK+uGJIO1QaiQkLHSsNk7M3/zZ2Q0InQipniRmevUB+4lu1oKNFCvHCmumorcT3XVlJYVgDExBx/T5Zcjoz7L4aK64Pl59xiGd2WAviyGppKjaWJ5Jq9Ewg86nwzM3AmQhXQT2FpPPzEYqNsevRK/QTlP6/SlQsuFCSusHMN6AKPmPSghtx8J7YAh+59cfJCwsN1TVTIWac8yA8cwsjIQcT+ZZIHquHckaouiL0wrg7fI+3nV0vb3JR2bG+yQgpZuLI2yyvhxi9zDgrtsTcUQ1rsD2NiBrZgcUVI39qGo4Tgkb7VwbE57co/AKzxpxLqwn2xWCWKG0F91IHLf+RacYwq3DNQRWv5LjADtnOQOJ5ZSIBQ3EhS/anFH6gl/C/RR2AwYRQJBJ2ALl7jqrMxrSL3p8h4svPrRHXo0533oJF7soVTpZmg2NATYYo+Te8MPm9A65Pnvla7d9ompB+FYRrSQjTmhnvrXzc1mS/S3zrkkfplBLa6PG3tjkPqpTySRo2avNOB+2GnHFsp/eCONbJsmginRw7itCfB4iYeAmKhoBwWe/ZUQpwp6dWJH0kAumPTdnXDUJi3YffAOPQRbpi
+ 6nt1LHHa
+ Nk2+Wp5MwInbeeKCA7Ywmwa6T2KWr9+1TGCNsU42EpQ+dkMDTlYzQBSosjiR2v8pIqatwAQmivOvyRP3I7aHL8/g4WA3kv7dhBh89XkWKYXgVd4M8V6VaGXiipd23HixaDukahjYUCUEyuCwkOswpnlh+TrVazBcHgZ+kWYfeXQMwW6o3PypdRekFtQPc6roWY3yOpsxumJNN7vbF8Y0DA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,316 +140,210 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Ackerley Tng <ackerleytng@google.com> writes:
+This patch series enables fine grained control-flow integrity for kernel
+on riscv platform. I did send out a RFC patchset [1] more than an year ago.
+Since it's been a while, I am resetting the versioning and calling it a RFC
+due to following reasons
 
-> Sean Christopherson <seanjc@google.com> writes:
->
->> On Wed, Jul 23, 2025, Xiaoyao Li wrote:
->>> On 7/23/2025 6:47 PM, Fuad Tabba wrote:
->>
->> ...
->>
->>> > +	if (max_level == PG_LEVEL_4K)
->>> > +		return max_level;
->>> > +
->>> > +	return min(max_level,
->>> > +		   kvm_x86_call(gmem_max_mapping_level)(kvm, pfn));
->>> >   }
->>> 
->>> I don't mean to want a next version.
->>> 
->>> But I have to point it out that, the coco_level stuff in the next patch
->>> should be put in this patch actually. Because this patch does the wrong
->>> thing to change from
->>> 
->>> 	req_max_level = kvm_x86_call(gmem_max_mapping_level)(kvm, pfn);
->>> 	if (req_max_level)
->>> 		max_level = min(max_level, req_max_level);
->>> 
->>> to
->>> 
->>> 	return min(max_level,
->>> 		   kvm_x86_call(gmem_max_mapping_level)(kvm, pfn));
->>
->> Gah, nice catch.  Let's do one more version (knock wood).  I have no objection
->> to fixing up my own goof, but the selftest needs to be reworked too, and I think
->> it makes sense for Paolo to grab this directly.  The fewer "things" we need to
->> handoff to Paolo, the better.
->>
->> The fixup will generate a minor conflict, but it's trivial to resolve, and the
->> resting state should end up identical.
->>
->> As fixup:
->>
->> ---
->>  arch/x86/kvm/mmu/mmu.c | 14 +++++++++++---
->>  1 file changed, 11 insertions(+), 3 deletions(-)
->>
->> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
->> index 6148cc96f7d4..c4ff8b4028df 100644
->> --- a/arch/x86/kvm/mmu/mmu.c
->> +++ b/arch/x86/kvm/mmu/mmu.c
->> @@ -3305,9 +3305,9 @@ static u8 kvm_max_level_for_order(int order)
->>  static u8 kvm_max_private_mapping_level(struct kvm *kvm, struct kvm_page_fault *fault,
->>  					const struct kvm_memory_slot *slot, gfn_t gfn)
->>  {
->> +	u8 max_level, coco_level;
->>  	struct page *page;
->>  	kvm_pfn_t pfn;
->> -	u8 max_level;
->>  
->>  	/* For faults, use the gmem information that was resolved earlier. */
->>  	if (fault) {
->> @@ -3331,8 +3331,16 @@ static u8 kvm_max_private_mapping_level(struct kvm *kvm, struct kvm_page_fault *
->>  	if (max_level == PG_LEVEL_4K)
->>  		return max_level;
->>  
->> -	return min(max_level,
->> -		   kvm_x86_call(gmem_max_mapping_level)(kvm, pfn));
->> +	/*
->> +	 * CoCo may influence the max mapping level, e.g. due to RMP or S-EPT
->> +	 * restrictions.  A return of '0' means "no additional restrictions", to
->> +	 * allow for using an optional "ret0" static call.
->> +	 */
->> +	coco_level = kvm_x86_call(gmem_max_mapping_level)(kvm, pfn);
->> +	if (coco_level)
->> +		max_level = min(max_level, coco_level);
->> +
->> +	return max_level;
->>  }
->>  
->>  int kvm_mmu_max_mapping_level(struct kvm *kvm, struct kvm_page_fault *fault,
->>
->> base-commit: f937c99dad18339773f18411f2a0193b5db8b581
->> -- 
->>
->> Or a full patch:
->>
->> From: Sean Christopherson <seanjc@google.com>
->> Date: Wed, 23 Jul 2025 11:47:06 +0100
->> Subject: [PATCH] KVM: x86/mmu: Enforce guest_memfd's max order when recovering
->>  hugepages
->>
->> Rework kvm_mmu_max_mapping_level() to consult guest_memfd (and relevant)
->> vendor code when recovering hugepages, e.g. after disabling live migration.
->> The flaw has existed since guest_memfd was originally added, but has gone
->> unnoticed due to lack of guest_memfd hugepage support.
->>
->> Get all information on-demand from the memslot and guest_memfd instance,
->> even though KVM could pull the pfn from the SPTE.  However, the max
->> order/level needs to come from guest_memfd, and using kvm_gmem_get_pfn()
->> avoids adding a new gmem API, and avoids having to retrieve the pfn and
->> plumb it into kvm_mmu_max_mapping_level() (the pfn is needed for SNP to
->> consult the RMP).
->>
->> Note, calling kvm_mem_is_private() in the non-fault path is safe, so long
->> as mmu_lock is held, as hugepage recovery operates on shadow-present SPTEs,
->> i.e. calling kvm_mmu_max_mapping_level() with @fault=NULL is mutually
->> exclusive with kvm_vm_set_mem_attributes() changing the PRIVATE attribute
->> of the gfn.
->>
->> Signed-off-by: Sean Christopherson <seanjc@google.com>
->> ---
->>  arch/x86/kvm/mmu/mmu.c          | 91 ++++++++++++++++++++-------------
->>  arch/x86/kvm/mmu/mmu_internal.h |  2 +-
->>  arch/x86/kvm/mmu/tdp_mmu.c      |  2 +-
->>  3 files changed, 58 insertions(+), 37 deletions(-)
->>
->> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
->> index 20dd9f64156e..c4ff8b4028df 100644
->> --- a/arch/x86/kvm/mmu/mmu.c
->> +++ b/arch/x86/kvm/mmu/mmu.c
->> @@ -3302,31 +3302,63 @@ static u8 kvm_max_level_for_order(int order)
->>  	return PG_LEVEL_4K;
->>  }
->>  
->> -static u8 kvm_max_private_mapping_level(struct kvm *kvm, kvm_pfn_t pfn,
->> -					u8 max_level, int gmem_order)
->> +static u8 kvm_max_private_mapping_level(struct kvm *kvm, struct kvm_page_fault *fault,
->> +					const struct kvm_memory_slot *slot, gfn_t gfn)
->
-> Would you consider renaming this kvm_max_gmem_mapping_level()? Or
-> something that doesn't limit the use of this function to private memory?
->
->>  {
->> -	u8 req_max_level;
->> +	u8 max_level, coco_level;
->> +	struct page *page;
->> +	kvm_pfn_t pfn;
->>  
->> -	if (max_level == PG_LEVEL_4K)
->> -		return PG_LEVEL_4K;
->> +	/* For faults, use the gmem information that was resolved earlier. */
->> +	if (fault) {
->> +		pfn = fault->pfn;
->> +		max_level = fault->max_level;
->> +	} else {
->> +		/* TODO: Constify the guest_memfd chain. */
->> +		struct kvm_memory_slot *__slot = (struct kvm_memory_slot *)slot;
->> +		int max_order, r;
->> +
->> +		r = kvm_gmem_get_pfn(kvm, __slot, gfn, &pfn, &page, &max_order);
->> +		if (r)
->> +			return PG_LEVEL_4K;
->> +
->> +		if (page)
->> +			put_page(page);
->
-> When I was working on this, I added a kvm_gmem_mapping_order() [1] where
-> guest_memfd could return the order that this gfn would be allocated at
-> without actually doing the allocation. Is it okay that an
-> allocation may be performed here?
->
-> [1] https://lore.kernel.org/all/20250717162731.446579-13-tabba@google.com/
->
->> +
->> +		max_level = kvm_max_level_for_order(max_order);
->> +	}
->>  
->> -	max_level = min(kvm_max_level_for_order(gmem_order), max_level);
->>  	if (max_level == PG_LEVEL_4K)
->> -		return PG_LEVEL_4K;
->> +		return max_level;
->
-> I think the above line is a git-introduced issue, there probably
-> shouldn't be a return here.
->
+- This is first (in a while)  and I may have missed things.
+- Earlier patchset were not fine-grained kcfi. This one is.
+- Toolchain used to compile kernel is still in development.
+- On asm indirect callsites, setting up label need toolchain support.
 
-My bad, this is a correct short-circuiting of the rest of the function
-since there's no smaller PG_LEVEL than PG_LEVEL_4K.
+It is based on 6.16-rc1 with user cfi enabling patchset(v18)[2] applied on it.
+Hardware guarantee on kernel's control flow integrity is enforced via zicfilp
+and zicfiss riscv cpu extensions. Please take a look at user cfi enabling
+patchset for more details and references on these cpu extensions.
 
->>  
->> -	req_max_level = kvm_x86_call(gmem_max_mapping_level)(kvm, pfn);
->> -	if (req_max_level)
->> -		max_level = min(max_level, req_max_level);
->> +	/*
->> +	 * CoCo may influence the max mapping level, e.g. due to RMP or S-EPT
->> +	 * restrictions.  A return of '0' means "no additional restrictions", to
->> +	 * allow for using an optional "ret0" static call.
->> +	 */
->> +	coco_level = kvm_x86_call(gmem_max_mapping_level)(kvm, pfn);
->> +	if (coco_level)
->> +		max_level = min(max_level, coco_level);
->>  
->
-> This part makes sense :)
->
->>  	return max_level;
->>  }
->>  
->> -static int __kvm_mmu_max_mapping_level(struct kvm *kvm,
->> -				       const struct kvm_memory_slot *slot,
->> -				       gfn_t gfn, int max_level, bool is_private)
->> +int kvm_mmu_max_mapping_level(struct kvm *kvm, struct kvm_page_fault *fault,
->> +			      const struct kvm_memory_slot *slot, gfn_t gfn)
->>  {
->>  	struct kvm_lpage_info *linfo;
->> -	int host_level;
->> +	int host_level, max_level;
->> +	bool is_private;
->> +
->> +	lockdep_assert_held(&kvm->mmu_lock);
->> +
->> +	if (fault) {
->> +		max_level = fault->max_level;
->> +		is_private = fault->is_private;
->> +	} else {
->> +		max_level = PG_LEVEL_NUM;
->> +		is_private = kvm_mem_is_private(kvm, gfn);
->> +	}
->>  
->>  	max_level = min(max_level, max_huge_page_level);
->>  	for ( ; max_level > PG_LEVEL_4K; max_level--) {
->> @@ -3335,25 +3367,16 @@ static int __kvm_mmu_max_mapping_level(struct kvm *kvm,
->>  			break;
->>  	}
->>  
->> +	if (max_level == PG_LEVEL_4K)
->> +		return PG_LEVEL_4K;
->> +
->>  	if (is_private)
->> -		return max_level;
->> -
->> -	if (max_level == PG_LEVEL_4K)
->> -		return PG_LEVEL_4K;
->> -
->> -	host_level = host_pfn_mapping_level(kvm, gfn, slot);
->> +		host_level = kvm_max_private_mapping_level(kvm, fault, slot, gfn);
->> +	else
->> +		host_level = host_pfn_mapping_level(kvm, gfn, slot);
->>  	return min(host_level, max_level);
->>  }
->>  
->> -int kvm_mmu_max_mapping_level(struct kvm *kvm,
->> -			      const struct kvm_memory_slot *slot, gfn_t gfn)
->> -{
->> -	bool is_private = kvm_slot_has_gmem(slot) &&
->> -			  kvm_mem_is_private(kvm, gfn);
->> -
->> -	return __kvm_mmu_max_mapping_level(kvm, slot, gfn, PG_LEVEL_NUM, is_private);
->> -}
->> -
->>  void kvm_mmu_hugepage_adjust(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
->>  {
->>  	struct kvm_memory_slot *slot = fault->slot;
->> @@ -3374,9 +3397,8 @@ void kvm_mmu_hugepage_adjust(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
->>  	 * Enforce the iTLB multihit workaround after capturing the requested
->>  	 * level, which will be used to do precise, accurate accounting.
->>  	 */
->> -	fault->req_level = __kvm_mmu_max_mapping_level(vcpu->kvm, slot,
->> -						       fault->gfn, fault->max_level,
->> -						       fault->is_private);
->> +	fault->req_level = kvm_mmu_max_mapping_level(vcpu->kvm, fault,
->> +						     fault->slot, fault->gfn);
->>  	if (fault->req_level == PG_LEVEL_4K || fault->huge_page_disallowed)
->>  		return;
->>  
->> @@ -4564,8 +4586,7 @@ static int kvm_mmu_faultin_pfn_private(struct kvm_vcpu *vcpu,
->>  	}
->>  
->>  	fault->map_writable = !(fault->slot->flags & KVM_MEM_READONLY);
->> -	fault->max_level = kvm_max_private_mapping_level(vcpu->kvm, fault->pfn,
->> -							 fault->max_level, max_order);
->> +	fault->max_level = kvm_max_level_for_order(max_order);
->>  
->>  	return RET_PF_CONTINUE;
->>  }
->> @@ -7165,7 +7186,7 @@ static bool kvm_mmu_zap_collapsible_spte(struct kvm *kvm,
->>  		 * mapping if the indirect sp has level = 1.
->>  		 */
->>  		if (sp->role.direct &&
->> -		    sp->role.level < kvm_mmu_max_mapping_level(kvm, slot, sp->gfn)) {
->> +		    sp->role.level < kvm_mmu_max_mapping_level(kvm, NULL, slot, sp->gfn)) {
->>  			kvm_zap_one_rmap_spte(kvm, rmap_head, sptep);
->>  
->>  			if (kvm_available_flush_remote_tlbs_range())
->> diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_internal.h
->> index 65f3c89d7c5d..b776be783a2f 100644
->> --- a/arch/x86/kvm/mmu/mmu_internal.h
->> +++ b/arch/x86/kvm/mmu/mmu_internal.h
->> @@ -411,7 +411,7 @@ static inline int kvm_mmu_do_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
->>  	return r;
->>  }
->>  
->> -int kvm_mmu_max_mapping_level(struct kvm *kvm,
->> +int kvm_mmu_max_mapping_level(struct kvm *kvm, struct kvm_page_fault *fault,
->>  			      const struct kvm_memory_slot *slot, gfn_t gfn);
->>  void kvm_mmu_hugepage_adjust(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault);
->>  void disallowed_hugepage_adjust(struct kvm_page_fault *fault, u64 spte, int cur_level);
->> diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
->> index 7f3d7229b2c1..740cb06accdb 100644
->> --- a/arch/x86/kvm/mmu/tdp_mmu.c
->> +++ b/arch/x86/kvm/mmu/tdp_mmu.c
->> @@ -1813,7 +1813,7 @@ static void recover_huge_pages_range(struct kvm *kvm,
->>  		if (iter.gfn < start || iter.gfn >= end)
->>  			continue;
->>  
->> -		max_mapping_level = kvm_mmu_max_mapping_level(kvm, slot, iter.gfn);
->> +		max_mapping_level = kvm_mmu_max_mapping_level(kvm, NULL, slot, iter.gfn);
->>  		if (max_mapping_level < iter.level)
->>  			continue;
->>  
->>
->> base-commit: 84ca709e4f4d54aae3b8d4df74490d8d3d2b1272
->> --
+Toolchain
+----------
+As mentioned earlier toolchain used to develop this patchset are still in
+development. But you can grab them here [3]. This is how I configure and
+compile toolchain.
+
+$ ./riscv-gnu-toolchain/configure \
+--prefix=/scratch/debug/open_src/sifive_cfi_toolchain/INSTALL_funcsig \
+--with-arch=rv64gc_zicfilp_zicfiss_zicsr_zifencei_zimop_zcmop \
+--enable-debug-info --enable-linux --disable-gdb  --with-abi=lp64d \
+--with-label-scheme=func-sig \
+--with-linux-headers-src=/scratch/debug/linux/kbuild/usr/include
+
+$ make -j$(nproc)
+
+If `-fcf-protection=full` is selected, toolchain is enabled to generate
+labeled landing pad instruction at the start of the function. And
+shadow stack push to save return address and sspopchk instruction in
+the return path.
+
+riscv kernel control-flow integrity
+------------------------------------
+
+As with normal user software, enabling kernel control flow integrity also
+require forward control flow integrity and backward control flow integrity.
+This patchset introduces CONFIG_RISCV_KERNEL_CFI config, hw assisted riscv
+kernel cfi is enabled only when `CONFIG_RISCV_KERNEL_CFI=y`. Selecting
+CONFIG_RISCV_KERNEL_CFI is dependent on CONFIG_RISCV_USER_CFI.
+
+To compile kernel, please clone the toolchain (link provided above), build
+it and use that toolchain bits to compile the kernel. When you do `menuconfig`
+select `Kernel features` --> `riscv userspace control flow integrity`.
+When you select `riscv userspace control flow integrity`, then `hw assisted
+riscv kernel control flow integrity (kcfi)` will show up. Select both and
+build.
+
+I have tested kcfi enabled kernel with full userspace exercising (unlabeled
+landing pads) cfi starting with init process. In my limited testing, this
+boots. There are some wrinkles around what labeling scheme should be used
+for vDSO object. This patchset is using labeled landing pads for vDSO.
+We may end up using unlabeled landing pad for vDSO for maximum compatibility.
+But that's a future discussion.
+
+Qemu command line to launch:
+/scratch/debug/open_src/qemu/build_zicfilp/qemu-system-riscv64 \
+  -nographic \
+  -monitor telnet:127.0.0.1:55555,server,nowait \
+  -machine virt \
+  -cpu rv64,zicond=true,zicfilp=true,zicfiss=true,zimop=true,zcmop=true,v=true,vlen=256,vext_spec=v1.0,zbb=true,zcb=true,zbkb=true,zacas=true \
+  -smp 2 \
+  -m 8G \
+  -object rng-random,filename=/dev/urandom,id=rng0 \
+  -device virtio-rng-device,rng=rng0 \
+  -drive file=/scratch/debug/open_src/zisslpcfi-toolchain/buildroot/output/images/rootfs.ext2,format=raw,id=hd0 \
+  -append "root=/dev/vda rw, no_hash_pointers, loglevel=8, crashkernel=256M, console=ttyS0, riscv_nousercfi=all" \
+  -serial mon:stdio \
+  -kernel /scratch/debug/linux/kbuild/arch/riscv/boot/Image \
+  -device e1000,netdev=net0 \
+  -netdev user,id=net0,hostfwd=tcp::10022-:22 \
+  -virtfs local,path=/scratch/debug/sources/spectacles,mount_tag=host0,security_model=passthrough,id=host0\
+  -bios /scratch/debug/open_src/opensbi/build/platform/generic/firmware/fw_jump.bin
+
+Backward kernel control flow integrity
+---------------------------------------
+This patchset leverages on existing infrastructure of software based shadow
+call stack support in kernel. Differences between software based shadow call
+stack and riscv hardware shadow stack are:
+
+- software shadow call stack is writeable while riscv hardware shadow stack
+  is writeable only via specific shadow stack instructions.
+
+- software shadow call stack grows from low memory to high memory while riscv
+  hardware shadow stack grows from high memory to low memory (like a normal
+  stack).
+
+- software shadow call stack on riscv uses `gp` register to hold shadow stack
+  pointer while riscv hardware shadow stack has dedicated `CSR_SSP` register.
+
+Thus its ideal use existing shadow call stack plumbing and create hooks into
+it to apply riscv hardware shadow stack mechanisms on it.
+
+This patchset introduces `CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK` along the lines
+of `CONFIG_ARCH_HAS_USER_SHADOW_STACK`.
+
+Forward kernel control-flow integrity
+--------------------------------------
+Enabling forward kernel control-flow integrity is mostly toolchain work where
+it emits a landing pad instruction at the start of address-taken function. 
+zicfilp allows landing pads to be labeled with a 20-bit immediate value. 
+Compiler used here is following the scheme of normalizing function prototype
+to a string using C++ itanium rules (with some modifications). See more details
+here [4]. Compiler generates a 128bit md5 hash over this string and uses
+first non-zero (scanning from MSB) 20bit segment from the 128-bit hash as label
+value.
+
+This is still a work in progress and feedback/comments are welcome.
+
+I would like to thank Monk Chiang and Kito Cheng for helping and continue to
+support from the toolchain side.
+
+[1] - https://lore.kernel.org/lkml/CABCJKuf5Jg5g3FVpU22vNUo4UituPEM7QwvcVP8YWrvSPK+onA@mail.gmail.com/T/#m7d342d8728f9a23daed5319dac66201cc680b640
+[2] - https://lore.kernel.org/all/20250711-v5_user_cfi_series-v18-0-a8ee62f9f38e@rivosinc.com/
+[3] - https://github.com/sifive/riscv-gnu-toolchain/tree/cfi-dev
+[4] - https://github.com/riscv-non-isa/riscv-elf-psabi-doc/pull/434
+
+To: Paul Walmsley <paul.walmsley@sifive.com>
+To: Palmer Dabbelt <palmer@dabbelt.com>
+To: Albert Ou <aou@eecs.berkeley.edu>
+To: Alexandre Ghiti <alex@ghiti.fr>
+To: Masahiro Yamada <masahiroy@kernel.org>
+To: Nathan Chancellor <nathan@kernel.org>
+To: Nicolas Schier <nicolas.schier@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+To: David Hildenbrand <david@redhat.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Liam R. Howlett <Liam.Howlett@oracle.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+To: Mike Rapoport <rppt@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+To: Michal Hocko <mhocko@suse.com>
+To: Nick Desaulniers <nick.desaulniers+lkml@gmail.com>
+To: Bill Wendling <morbo@google.com>
+To: Monk Chiang <monk.chiang@sifive.com>
+To: Kito Cheng <kito.cheng@sifive.com>
+To: Justin Stitt <justinstitt@google.com>
+Cc: linux-riscv@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-kbuild@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: llvm@lists.linux.dev
+Cc: rick.p.edgecombe@intel.com
+Cc: broonie@kernel.org
+Cc: cleger@rivosinc.com
+Cc: samitolvanen@google.com
+Cc: apatel@ventanamicro.com
+Cc: ajones@ventanamicro.com
+Cc: conor.dooley@microchip.com
+Cc: charlie@rivosinc.com
+Cc: samuel.holland@sifive.com
+Cc: bjorn@rivosinc.com
+Cc: fweimer@redhat.com
+Cc: jeffreyalaw@gmail.com
+Cc: heinrich.schuchardt@canonical.com
+Cc: monk.chiang@sifive.com
+Cc: andrew@sifive.com
+Cc: ved@rivosinc.com
+
+Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+---
+Deepak Gupta (11):
+      riscv: add landing pad for asm routines.
+      riscv: update asm call site in `call_on_irq_stack` to setup correct label
+      riscv: indirect jmp in asm that's static in nature to use sw guarded jump
+      riscv: exception handlers can be software guarded transfers
+      riscv: enable landing pad enforcement
+      mm: Introduce ARCH_HAS_KERNEL_SHADOW_STACK
+      scs: place init shadow stack in .shadowstack section
+      riscv/mm: prepare shadow stack for init task
+      riscv: scs: add hardware shadow stack support to scs
+      scs: generic scs code updated to leverage hw assisted shadow stack
+      riscv: Kconfig & Makefile for riscv kernel control flow integrity
+
+ Makefile                               |  2 +-
+ arch/riscv/Kconfig                     | 37 +++++++++++++++++++++++++-
+ arch/riscv/Makefile                    |  8 ++++++
+ arch/riscv/include/asm/asm.h           |  2 +-
+ arch/riscv/include/asm/linkage.h       | 42 +++++++++++++++++++++++++++++
+ arch/riscv/include/asm/pgtable.h       |  4 +++
+ arch/riscv/include/asm/scs.h           | 48 +++++++++++++++++++++++++++-------
+ arch/riscv/include/asm/sections.h      | 22 ++++++++++++++++
+ arch/riscv/include/asm/thread_info.h   | 10 +++++--
+ arch/riscv/kernel/asm-offsets.c        |  1 +
+ arch/riscv/kernel/compat_vdso/Makefile |  2 +-
+ arch/riscv/kernel/entry.S              | 21 ++++++++-------
+ arch/riscv/kernel/head.S               | 23 ++++++++++++++--
+ arch/riscv/kernel/vdso/Makefile        |  2 +-
+ arch/riscv/kernel/vmlinux.lds.S        | 12 +++++++++
+ arch/riscv/lib/memset.S                |  6 ++---
+ arch/riscv/mm/init.c                   | 29 +++++++++++++++-----
+ include/linux/init_task.h              |  5 ++++
+ include/linux/scs.h                    | 26 +++++++++++++++++-
+ init/init_task.c                       | 12 +++++++--
+ kernel/scs.c                           | 38 ++++++++++++++++++++++++---
+ mm/Kconfig                             |  6 +++++
+ 22 files changed, 314 insertions(+), 44 deletions(-)
+---
+base-commit: cc0fb5eb25ea00aefd49002b1dac796ea13fd2a0
+change-id: 20250616-riscv_kcfi-f851fb2128bf
+--
+- debug
+
 
