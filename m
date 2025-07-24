@@ -2,91 +2,91 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A7210C83F1A
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 13:57:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 65433C83F1A
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 13:57:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0EF728E007E; Thu, 24 Jul 2025 09:56:44 -0400 (EDT)
+	id C89078E007F; Thu, 24 Jul 2025 09:56:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A2EB8E007C; Thu, 24 Jul 2025 09:56:44 -0400 (EDT)
+	id C62A78E007C; Thu, 24 Jul 2025 09:56:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED0EB8E007E; Thu, 24 Jul 2025 09:56:43 -0400 (EDT)
+	id B4F698E007F; Thu, 24 Jul 2025 09:56:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D8F8D8E007C
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 09:56:43 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A80381A035A
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 13:56:43 +0000 (UTC)
-X-FDA: 83699308686.30.FF17639
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B9AAC120002
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 13:56:41 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=moDG5beF;
-	spf=pass (imf29.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.221.43 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
+	by kanga.kvack.org (Postfix) with ESMTP id A500F8E007C
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 09:56:44 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 73050B95D8
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 13:56:44 +0000 (UTC)
+X-FDA: 83699308728.04.DCD5DEC
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8DEC6180002
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 13:56:42 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=qMAEsPgy;
+	dmarc=pass (policy=none) header.from=linaro.org;
+	spf=pass (imf16.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.128.41 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753365402; a=rsa-sha256;
+	cv=none;
+	b=x9kavQY+R4SKdJ+yek7eTimkhVHbdp3NKkNytHZqdf8YjwIwUS0SOyQU0UPrzpbDyxk7+9
+	rF6thYiFRWDdcQiWDqfIX14cyjWugiYW80wIXFBe8FaF1Sa+kJhIFkkh+z4BFi9NNbdeCS
+	KBlnow2MVGuvqARuZmd8NkrROrxRSqY=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=qMAEsPgy;
+	dmarc=pass (policy=none) header.from=linaro.org;
+	spf=pass (imf16.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.128.41 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753365401;
+	s=arc-20220608; t=1753365402;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ay6ISBVXr4RhwBg6A2t7OCdYp+NqRXGL2jP3qh5ffs0=;
-	b=j+hJJ/7N+t17IqTOhcMLHtmPZKuoGEDdsvzbPn4io6tV9ElJRiGLlOQraNmnwXrk6Egfx3
-	2qcJ9kbXurqRGUEPJLqcv4aYGSkq+fL30FQiqgL+0/lzI44pWhuxlOkZ44K4Etgqj98jk0
-	ePsq4Ilek5ZPn82v9T3pojwlo878d50=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=moDG5beF;
-	spf=pass (imf29.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.221.43 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753365401; a=rsa-sha256;
-	cv=none;
-	b=Awsue3gU84ltnxQHvM2WxU/HyLifj3dAnORIbEojf4oNvFFhmtIkFoBWJ9nyiPKLMLM4XI
-	1PZh6uDAQUFLps+OJwZqiTiusb8ZU7M9KKnQGlM92UkokDUmK2m2RS2YHoLx7FwYrjZ97u
-	7MGKOjs+5O5UYOkU5AZi1Zapi5U4AOs=
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3a4ef2c2ef3so809558f8f.2
-        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 06:56:41 -0700 (PDT)
+	bh=ieqGzTCdj4VITWiplNNA/VccLe5fuArNXR2nSJt3s9g=;
+	b=EOGCm0VCkBbOY0LPLzZSf3zjjGscW+vDhXjaSraTaOW9/4XFJvpJhgXXsQOxsEVcLJW+MU
+	GBlE1nO3wvO9VsWgD1WlnreaOKGqlUXzI+PG2DdVgJflIAIZcYRQcd5lolc6iTXpA6ZQAm
+	9En7PW0dzywFz8c2aLu1H2le8YaHIq0=
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4537edf2c3cso10995785e9.3
+        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 06:56:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1753365400; x=1753970200; darn=kvack.org;
+        d=linaro.org; s=google; t=1753365401; x=1753970201; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ay6ISBVXr4RhwBg6A2t7OCdYp+NqRXGL2jP3qh5ffs0=;
-        b=moDG5beFlvNfp8Zs8fMaWv8CAXBjre5ZJV832IlEXmbSsGsY8JXOp1lc29GwdDBIrd
-         DD2cdr2priH78e/m1JmGHiJ0rxmGN+yyxSAImi4hTcWRvNuluOTcYfbvKcFxaSDwWHSI
-         NB9nnfjVfSmBeC9Aw7O42MvT3aUs4vgs3Tm7t3cFh8L7ZHDZugwkw1L0LPDxPb8SJiEd
-         J1tA84TMkJ1LA8i5QCrezKYTy/4cY7NenkyKfRYSG9U+hPKYokRAVye2ADSRked3Ujlv
-         8Zp0qIKCqyh/DMsSLpPWg5AU8IjKfGeAw/mJNh80eD1oLNmeHsKTKw9AdHvpU3QKIGew
-         +tnA==
+        bh=ieqGzTCdj4VITWiplNNA/VccLe5fuArNXR2nSJt3s9g=;
+        b=qMAEsPgyUbESox8P9flg+UVx4OHT+V9WmlwNCx51lu52hZjFc+6WgK+h1w9liBfB/f
+         25nkW9G/uTCiCdEhsUMX4uGkSpIAIZBSZmuqW3XQQad9rR3pOReJeJj+SBDFUFQz7pvN
+         jR2Tc5Alh0c3nZSvuBwhiCW2hIBkvmX1WF5nGpL71GUhdZzF3yBuErZNKrLFfyr+xkb4
+         IIPyeH85ZnVxPwPdOCqzoa5eD4420ydlI2Egidw2SwjCJ1+xA3BxLJYVYuzB/UJ2lYEw
+         wJtLG/DNmoGPwvyPAD65VrQtBu6RUP89Jlllzk3l3bhndIJq/ijAE15YmVYKPlB/YbWi
+         E5Kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753365400; x=1753970200;
+        d=1e100.net; s=20230601; t=1753365401; x=1753970201;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ay6ISBVXr4RhwBg6A2t7OCdYp+NqRXGL2jP3qh5ffs0=;
-        b=g8cUS4VkM1z7KrtWp9Y3AawwmWxsEdXBPs4gIUcl8RimqKjpo+CErEI9BIV+2O2YVJ
-         rmhUuXESoVFCLl1F5KkaxbmhcLVsvywi1RDs6zxe/JiB7zWNcE4lfQRrktPTlc4Wqo51
-         FwyvNerKLDBVhm0tdgmNGdsdaV9TksdnI5mkjj3ycALjENhH66emqiCyzGt/20+/+Hfz
-         NOWm43p9iXXft3agqj+gBqVDjVgqNMNuH8fMsbY3miDp7Ga4PV4VKr92FKc+XOYZp2zg
-         2H1PnWsvHnDI6g2rqZ2DKufjFnrgg9us3YxWF8e42XCRoX9nFPUIRHhc2vkZQZKIknEU
-         klzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXCM6qdUDeGw4VQiM21QjyM/Kfmo9EBwU8/Aje76+W9rDh7gAi05kZ4u9xak4OWPX+JoJpnbiaMRw==@kvack.org
-X-Gm-Message-State: AOJu0YwNdxbxQXigbVCmOQi5fWqhOFO8pA0XVTd7FpVfTXEF4LZMJ9yh
-	eUNlKSaXAUcGopIUeoEHx6w4j+SI9vYwURV04xYQnX5fT+27uEqrsEJMrHMRGbvxR+M=
-X-Gm-Gg: ASbGncu8e0IvQXAKpKH7EigU+6dYLWGI80nm8VXtI8aCaMY4SXA7gR8IrYSBlhdI9ym
-	r2YPEvQJuY2/JpOsRp//aQ1j2C78ZpSrDbHKOPBYPnbObg2ztR1zF1PKetUYgPyLpLFGfdR4+T2
-	fUkLRqji6eTCYfLN5pT5+hZJA4Oql4nuA57qfFT/Av/ATovJx6kqFy8b08O5EkrPiMTWfb24ycE
-	aJgURbY4gghTb2M52kGXpt50nY6kMfGsbM5RVFLsWpYAD+Ye7cTrpO96/BIcNvAJDl6gUgQY6bC
-	x0wRnHxF0VKAkqVhDBQot3aCmfby7rdyYAkihHlHcxr4v7tFcQI+PLpSPUgDBKfDVUIBSXj7qGi
-	M4SHkP9qXnMWb5vAiJsfJSK6DyrvLR23PLIwPdDU0qGx8VLGsYfKDyJjRdbzYAnBPHoXHk++h3w
-	+aDrcSYNsAcxUl
-X-Google-Smtp-Source: AGHT+IGCkgT/Av7S5A2E0I2QQdMK0eQR1KK2t84reKZkouB15tDDQWfO+rh0+B+shYiLiz/J/iIBUg==
-X-Received: by 2002:a05:6000:1882:b0:3b4:9721:2b2d with SMTP id ffacd0b85a97d-3b768c9c202mr6498976f8f.9.1753365400320;
-        Thu, 24 Jul 2025 06:56:40 -0700 (PDT)
+        bh=ieqGzTCdj4VITWiplNNA/VccLe5fuArNXR2nSJt3s9g=;
+        b=nNEfnRGB4slpS7o3CszoHqZmhxpB0Ocz87VM4leipsoaSGmwJ2hQ9yw/xYZahQajZ4
+         fgKQSQWbw4Mx0WGf3WDJdTUDMc+mkyEbugWEhbJqcmPivaHiuYgDqUywdJOoocuiYX2y
+         TuHjKk5XHx+ul5ke8K7fzmq/lMBs9EP+ZRnd/47anjnFtN2b05nhkej44Jm/JHpdWLeW
+         YdSF1HpJ2UY2pXeXR3Yj2VSEdRq5NleYJulKc9z2tr/bmV6D/n7IJtY9ldzEBcrO1mNt
+         WmXtDHBY+qLbGcDKiE6CaPTniWR/eAAMIVm1pa6ZEWjcnh715avx/216PpJ3jMEkS3vb
+         uCPw==
+X-Forwarded-Encrypted: i=1; AJvYcCVgueBoRxSFOwCQCA5Ye9iny8p8Pa7/gEnH/jtN+Y3bHPZXMQK7nIaBWT7njxbBpMe3htMoIlO6QQ==@kvack.org
+X-Gm-Message-State: AOJu0Yzw2u1krnZLHd6pcl8FA7THgPfSJez7VMQv74jHHh7a5CVg8jA2
+	K5uil0OpVlgnslavlawhILiK3lAepjAsA4xML+IFb9d/BZlTva1Z1xC58VxMBSIoV94=
+X-Gm-Gg: ASbGncsoW2Y6KgD5VGjmqLQeb+djom2oLiRJVipGmFigQTh6DQ5Nr8/o4GNperjCjiX
+	6ndgYmHrLMZRmcA1d1gOQdFKdy7Iyv3GhygeNs8BeR7cRxleIOPElDIB6SSWUOIScGsXhQyjPmI
+	uzURZ5TsaRWVw22T1Dsd/QV7SayLDlqhCBJ5nEByDSS6/qvqya6vSIVy7j5kj+gClphl6GPi68a
+	2Lf9kRhkpgDHRH9Gy75KWQNjptarTINNW4edBXd0XDsqwvG6LgkChAiJEOCixqtRBPTDMbiz7ot
+	PWsSy44AjCvRqoZiOqxFToWABkfjIsjtYwuNZk7FLBeFktZOcVwdpawYZV2ilaHWKQrL5E5Pjux
+	0OLbvhRsNoLFytbm7cwKF3yv+wR/kdoEGmN7Zf2zDttcDork+EIygIr3UY68qZH/Y6WvA33Uih0
+	nhqEZK4wyf7/8O
+X-Google-Smtp-Source: AGHT+IGXEHFsoY1KVpxzOAw5TwDBINg782dVci0CvVy56NLBcwsZCPP5/3Z/QT3qLnRYduHfxvJiyA==
+X-Received: by 2002:a05:600c:c167:b0:456:1c44:441f with SMTP id 5b1f17b1804b1-45868d7266fmr61139855e9.31.1753365401169;
+        Thu, 24 Jul 2025 06:56:41 -0700 (PDT)
 Received: from eugen-station.. (cpc148880-bexl9-2-0-cust354.2-3.cable.virginm.net. [82.11.253.99])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4587054e37dsm20889375e9.14.2025.07.24.06.56.39
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4587054e37dsm20889375e9.14.2025.07.24.06.56.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Thu, 24 Jul 2025 06:56:40 -0700 (PDT)
 From: Eugen Hristev <eugen.hristev@linaro.org>
@@ -105,22 +105,22 @@ Cc: linux-arm-kernel@lists.infradead.org,
 	rostedt@goodmis.org,
 	jonechou@google.com,
 	tudor.ambarus@linaro.org
-Subject: [RFC][PATCH v2 20/29] printk: Register information into Kmemdump
-Date: Thu, 24 Jul 2025 16:55:03 +0300
-Message-ID: <20250724135512.518487-21-eugen.hristev@linaro.org>
+Subject: [RFC][PATCH v2 21/29] kernel/configs: Register dynamic information into Kmemdump
+Date: Thu, 24 Jul 2025 16:55:04 +0300
+Message-ID: <20250724135512.518487-22-eugen.hristev@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250724135512.518487-1-eugen.hristev@linaro.org>
 References: <20250724135512.518487-1-eugen.hristev@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: yezgtii1srdgkb79bgc7iud4e5i49mka
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B9AAC120002
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 8DEC6180002
+X-Stat-Signature: dmmfbky7cqybu87u87jrz85bfmt6gdoh
 X-Rspam-User: 
-X-HE-Tag: 1753365401-665779
-X-HE-Meta: U2FsdGVkX1/mr9sofBvYs3cRW7fn/gBv/nr2yFydkTKuqyPh15MUfnw4GzGONzQAIVyiuLwzOjyhhpe6UfY2qmWEdS+vVZ6fc5JOWhwerfirvw5OY8nCP34NTIbl2bmePTvEa/+QaLAm6xpOB2njlOj6GWQukmlkvokBwhbWVhTMsQby2DXU6YSq2ff1+PWLxs1C06Nhy75YSsztQOiaOtyg7FW/BTfNCf4pttg2TNGqHhN9+57bF5HPrBPqofaIqJpD+azqJC3rm199HAtLoxyJZph+fIgUeuyh6kewNd8QMZAWtucMZiRrXi8ps2awvbeY7CWk75gBxJosk3aQyJCu7FN+mVKX7a9hqB+u/5rbBIDFvOY46WK99ckkLBahW+ixnLn30yTvFC4nVANRuZp/fJhvqXEB1O7jCueeiimwPqtDgCmVKg4qBTY9sfHyUHIaFYLVgx4FbdgK0HlR80zam3F6hhzGH326FpMYB/plxWfgrAsEa0QDKxDbYYox9lPvEKHasGffRtqCrbO9HLw1Jy9gNjobjnnsUE90hzgwr3p987gtMeLOneQP7eDvdSUiO36w9hc66EJIBjmTmlCQQQw8UIh6O9AonS931Qr0/nN/rgGoAtHZMykje0jEsWNhmaMWJGOLuZM4niwcOQ0yXcxGfUychTC0pF58lrC/Me7LMPtxPbXUcUoOx9UEw28Z5W/5U9mLnLNXPKUfXAs7O+UtzF7XeFjHOJpQ1gx0MUWy30fRr2QDp5f+MFd9zB6NTryUFsGUTEvRL1Il3tHwZz3i/oMkftnk2O31RIzAOpzBDA1C74O3b38/OI/ou1JzZ2io3ZYGTvdZoopkCNqPDC8HzBrRcXDWLVIJ+ABVngLjAgUVD8jTjh2Ts4QXujNqh1DoYtc69lBJFeOYmFA+n178SWwq/oXeqFKGl+AjiEZKcXZ1g1DJL1PF6PU8bjHWEc8j6Ok2Ejef9vm
- /deRWkU6
- 6K3E8VpO0CXmkSA7v56BP+Hy0XlPwyhhIzX3MIGcxiVCOevBXyksQTiDe/RVOvhRoYJJU2aYpoJjYIED0Gu2qfr4SkQVeQ+il+akDkXZaK2QZIqeX6FwsgIETCClUhleTZOcigXoRYKbaEQhvmap2DchikPe5hjUHcbgjvmMpSFuZAGxoIcYmcE+zTrMGp9vh4W2O1N1Tc/1qDZ4Gnm5220EZFaRPeNYT/bP2pr7L43b0dCkf4BwTwX8iTfC4NMm6b+B8q7FjkPlhOQU101hUo2yHofKu4VCN6bnO2iO+5bagROvv4rhfSnf1PwC5R4LVLP+P2rzub/AJ9hEMYaF9+FO2mxYS6DSRRdTsuLBxxziUcD/D7eGRtyn81yS+YNRkKNBrZzFvllSdycc5Zhe5ey5H+Q==
+X-HE-Tag: 1753365402-991722
+X-HE-Meta: U2FsdGVkX1+BymhHa/vIO8nkMw2EDcpQsCAGCp4yIYjMcEs1/ZNXKHyxCpb1obh3HcDjuk4E1jHEGth2ebrF+Ly6AWVc1MPeNIE6w0p5lxlfNCG0SncjjZjbbmK7GDCW2tw80nYihV33t0k+BfVaD39URorFzZxdACcatrf/NMLOhkqgLoh/uIdFEh1kyp4NO11yWSRR4NkLidOZwVr5yC6h+xVpO6ZbACNWuKpyiyv0gOUY4hDa24OLTTUJZn5TEDzhimB3tGjA/+W/n9+J5e0aGb0TrhyhpEbwpA/R7LuRFovV1FaTgcshE/14X3qhXmi++iCAejtppcQiMIulT1H5UMy9+2LCymbfxeRT/p/l1/EjIJYrHWqhKcl59t823Bpk5UQ/GXxy+ok6LLL6OuvKTnjMxzugQ8PWWfStEfy+eiDy4hBf8UjE7p0dnvPWEndVBjUWehhkGQAbWs0AVe2MUvTZzogK9RodC9ZcCWIgFocwLqTwrJFa7ZdeyelEuWqflNWlntY/sR/fi+VDocMdLN44G0e+G5DBSwynuc7ddwZMFa0XcbiP7/08mo8fQYPGc5sG+hE10+WENTnPCxBV0nNgcwoxPvngFMan/EwRFI1c/oAN0UZyMyXftAliIRUGBVL2LFFU2HYpT8qlPF22NsiON6yh7TsgA9Yjbrp0oySLWVEa0w2s/4AKxoTVSyg4t0uS3B4Fnz7Ugj/meQqSNLApT6Tkq1O3J9/OYjRbcStZfwSvSt5eV+vydZAeR1umD+gHwProdSBVf4NQcOEMNEh2qL/bW7MfJXgbhKCq1v0L4mCkHRxhKUKM/J6cKwnmUFKQMFo8sU5wzC/bkyiDa2Z/2XvNIbZy6kCwUi5ygzLoh4sZFau3XjSvtSmLUBUyZH9ivxP+uhhgaF6x3zeW5/6gIYAiplp705S3mer3xUX9aWQh4OqLnfY1z8e16i/sd4CHCWG1dDKu6FZ
+ OFtxHeDk
+ 5GdipFEJcoWGYH4zHzPxZqoZW2uY+ByL2Ki3daTmmgmBG9NM2pUVDxWqzzyKwrhpIlHpRsBOvH1vvVVi0o8eRc+yRaC/4BENSwMevlmJxKgpj1ABJdzY0teyy3ZrMILZWTu2nmo7P5wN6Up8up/X4lFKa4oO41NDpG61zMQhgKy3LXd7xPRFspW7yCzkVwrYmRY9NtxxlJjR9w2ZTJYAKQktZaWW3CWDp73P2NP4odLGkobClOLWgJO68Vq/4cfmoFSMJs5Z+2pln4w+qMC64+ELAz/J00UUM5VwF/bA3AEvTXBlRVLOC3FuE7sQCOnAmSyxJPprW4AqkKJtWtOS3+P2L6+oxiZyChMWXayjrdTlolByex9YGaImvDEfI/J0nrFHZUepH74oxjVjyseJRWuoMpQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,108 +129,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Annotate vital static information into kmemdump:
- - prb_descs
- - prb_infos
- - prb
- - prb_data
- - printk_rb_static
- - printk_rb_dynamic
-
-Information on these variables is stored into dedicated kmemdump section.
-
-Register dynamic information into kmemdump:
- - new_descs
- - new_infos
- - new_log_buf
-In the case when the log buffer is dynamically replaced by a runtime
-allocated version, call kmemdump to register the data with a replace
-flag to remove the old registered data.
+Register kernel_config_data information into kmemdump.
+Debugging tools look for the start and end markers, so we need to capture
+those as well into the region.
 
 Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
 ---
- kernel/printk/printk.c | 28 +++++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+ kernel/configs.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index 0efbcdda9aab..f7d60dbe5e5a 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -48,6 +48,7 @@
- #include <linux/sched/clock.h>
- #include <linux/sched/debug.h>
- #include <linux/sched/task_stack.h>
+diff --git a/kernel/configs.c b/kernel/configs.c
+index a28c79c5f713..ec94b695f234 100644
+--- a/kernel/configs.c
++++ b/kernel/configs.c
+@@ -15,6 +15,7 @@
+ #include <linux/seq_file.h>
+ #include <linux/init.h>
+ #include <linux/uaccess.h>
 +#include <linux/kmemdump.h>
  
- #include <linux/uaccess.h>
- #include <asm/sections.h>
-@@ -540,10 +541,16 @@ static u32 log_buf_len = __LOG_BUF_LEN;
- #endif
- _DEFINE_PRINTKRB(printk_rb_static, CONFIG_LOG_BUF_SHIFT - PRB_AVGBITS,
- 		 PRB_AVGBITS, &__log_buf[0]);
-+KMEMDUMP_VAR_CORE_NAMED(prb_descs, _printk_rb_static_descs, sizeof(_printk_rb_static_descs));
-+KMEMDUMP_VAR_CORE_NAMED(prb_infos, _printk_rb_static_infos, sizeof(_printk_rb_static_infos));
-+KMEMDUMP_VAR_CORE_NAMED(prb_data, __log_buf,  __LOG_BUF_LEN);
-+KMEMDUMP_VAR_CORE(printk_rb_static, sizeof(printk_rb_static));
- 
- static struct printk_ringbuffer printk_rb_dynamic;
-+KMEMDUMP_VAR_CORE(printk_rb_dynamic, sizeof(printk_rb_dynamic));
- 
- struct printk_ringbuffer *prb = &printk_rb_static;
-+KMEMDUMP_VAR_CORE(prb, sizeof(prb));
- 
  /*
-  * We cannot access per-CPU data (e.g. per-CPU flush irq_work) before
-@@ -1211,7 +1218,10 @@ void __init setup_log_buf(int early)
- 		goto out;
- 	}
+  * "IKCFG_ST" and "IKCFG_ED" are used to extract the config data from
+@@ -64,6 +65,11 @@ static int __init ikconfig_init(void)
  
--	new_log_buf = memblock_alloc(new_log_buf_len, LOG_ALIGN);
-+	new_log_buf = kmemdump_alloc_id_size_replace(KMEMDUMP_ID_COREIMAGE_prb_data,
-+						     new_log_buf_len,
-+						     memblock_alloc,
-+						     new_log_buf_len, LOG_ALIGN);
- 	if (unlikely(!new_log_buf)) {
- 		pr_err("log_buf_len: %lu text bytes not available\n",
- 		       new_log_buf_len);
-@@ -1219,7 +1229,10 @@ void __init setup_log_buf(int early)
- 	}
+ 	proc_set_size(entry, &kernel_config_data_end - &kernel_config_data);
  
- 	new_descs_size = new_descs_count * sizeof(struct prb_desc);
--	new_descs = memblock_alloc(new_descs_size, LOG_ALIGN);
-+	new_descs = kmemdump_alloc_id_size_replace(KMEMDUMP_ID_COREIMAGE_prb_descs,
-+						   new_descs_size, memblock_alloc,
-+						   new_descs_size, LOG_ALIGN);
++	/* Register 8 bytes before and after, to catch the marker too */
++	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_CONFIG,
++			     (void *)&kernel_config_data - 8,
++			     &kernel_config_data_end - &kernel_config_data + 16);
 +
- 	if (unlikely(!new_descs)) {
- 		pr_err("log_buf_len: %zu desc bytes not available\n",
- 		       new_descs_size);
-@@ -1227,7 +1240,10 @@ void __init setup_log_buf(int early)
- 	}
- 
- 	new_infos_size = new_descs_count * sizeof(struct printk_info);
--	new_infos = memblock_alloc(new_infos_size, LOG_ALIGN);
-+	new_infos = kmemdump_alloc_id_size_replace(KMEMDUMP_ID_COREIMAGE_prb_infos,
-+						   new_infos_size, memblock_alloc,
-+						   new_infos_size, LOG_ALIGN);
-+
- 	if (unlikely(!new_infos)) {
- 		pr_err("log_buf_len: %zu info bytes not available\n",
- 		       new_infos_size);
-@@ -1284,9 +1300,11 @@ void __init setup_log_buf(int early)
- 	return;
- 
- err_free_descs:
--	memblock_free(new_descs, new_descs_size);
-+	kmemdump_free_id(KMEMDUMP_ID_COREIMAGE_prb_descs,
-+			 memblock_free, new_descs, new_descs_size);
- err_free_log_buf:
--	memblock_free(new_log_buf, new_log_buf_len);
-+	kmemdump_free_id(KMEMDUMP_ID_COREIMAGE_prb_data,
-+			 memblock_free, new_log_buf, new_log_buf_len);
- out:
- 	print_log_buf_usage_stats();
+ 	return 0;
  }
+ 
 -- 
 2.43.0
 
