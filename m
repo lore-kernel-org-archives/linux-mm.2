@@ -2,118 +2,111 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D623C83F26
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 21:54:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 81613C87FC5
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 21:56:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 226696B0092; Thu, 24 Jul 2025 17:54:01 -0400 (EDT)
+	id CD9946B0341; Thu, 24 Jul 2025 17:56:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D05B6B0096; Thu, 24 Jul 2025 17:54:01 -0400 (EDT)
+	id C83066B0342; Thu, 24 Jul 2025 17:56:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0BF466B0098; Thu, 24 Jul 2025 17:54:01 -0400 (EDT)
+	id B4A976B0343; Thu, 24 Jul 2025 17:56:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EDB796B0092
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 17:54:00 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 731761DB183
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 21:54:00 +0000 (UTC)
-X-FDA: 83700511440.25.451CCB1
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F5D16B0341
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 17:56:12 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 21015C0567
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 21:56:12 +0000 (UTC)
+X-FDA: 83700516984.16.8E378D6
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 1C666C000D
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 21:53:57 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OpycNFQZ;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf10.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753394038; a=rsa-sha256;
-	cv=none;
-	b=plmMKOOUgVk4nUWofQ+IaqU4WByO9gA4vQ0r2IAB7efqT2j5PvjmJl2Ef0wPicPapQVj+u
-	6hi9+whpc+PYyn0kqCjm6UcGESF5JIDssEm4KhJVvb3YFW+eWnVgxw9sEVEfrxZ/7Gi82r
-	4G/7mckGzXF/wIK4yKk/Gu24Oqu7HAI=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OpycNFQZ;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf10.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	by imf07.hostedemail.com (Postfix) with ESMTP id C540540007
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 21:56:09 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=O8ktJ0JY;
+	spf=pass (imf07.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753394038;
+	s=arc-20220608; t=1753394169;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jXLN4SsCK0ZOlY5y21K92auQYthqaAwqTZRZM+NRLdw=;
-	b=r5YM4//HqU0ckvGUmAKJlWybc2rCXj7yhGXz2+4wdQmx/iGs61/iDqAAnopWhAC3QaVvaE
-	cZH+MJlo90udAZmvD8MplsOd/+PNbM/Mz1ChYT6DBIOjSkT9PBjJRGtqxKFDz9/B3W/jZ1
-	3q/+voOXAOD5LxF1EUGE5qVVutZMzTQ=
+	bh=TnIYE6isHOtcopFB9zBfVfcEC5sN5etTBxSjFpgZalU=;
+	b=EiUIw6Z2Z84CeN50BBp2LN4ibO3/SgfvrtuyqT07rZvQEOyUjoGfywDJj16rA4UbOOwr5j
+	FatK/5XgA/DpheAMn6h42c89/ovHD79h3Ql922IQiz6Qn7oD4JSZjHevMVkbPbkwTucsJH
+	BaBTin7lCpQb91TElpgFUsxVabckSX8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753394169; a=rsa-sha256;
+	cv=none;
+	b=1LAkn0cCR+GryR5ofGshA70pTbUFgylO+YvmOnYeAvFGUB2lK7zVMmL6LrPvQid5Q29Edm
+	uD/D+0ASgWHq0RgPtxeI7JUqhT0+ZdDlbXXAXBbRAK1um39Yc2t7Xsuuqf0b3CcqZe+60e
+	19wIG/tPtNoOIgqriszeQujEKnmya5M=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=O8ktJ0JY;
+	spf=pass (imf07.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753394037;
+	s=mimecast20190719; t=1753394169;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=jXLN4SsCK0ZOlY5y21K92auQYthqaAwqTZRZM+NRLdw=;
-	b=OpycNFQZ/xYgtwXd3kiZj2QX/LXIflzLWzSfsF1q37p2OKEfEYPe1G4jzPYqwHhRGfniTH
-	wJvXrb85rnwpLK5miRTdWnguZl8naRinOPk4462wHzO1e8M7gVTPwZ/JRKFkpv6HVHWTIy
-	mDG780KQamiPvH/aVS4TnSfkU1XQCB0=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=TnIYE6isHOtcopFB9zBfVfcEC5sN5etTBxSjFpgZalU=;
+	b=O8ktJ0JY/n/CYiPMbATYyYbygUTzSk7rP/PNKs6IwiRRvVpNyH2QmF9xRrvfY5MReRnUdw
+	jzWyx3ZuxoOFivr7o47MojcnVLnO7Z8rbb6FlpZxwkiL7BUr5UqxjVqT4ZKEoZ3MvK4opp
+	m+dIj2hbl56/aq0GPcfVYA6qnGb1Cyg=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-675-C5swodLkMFap4GdtvaG0bQ-1; Thu, 24 Jul 2025 17:53:56 -0400
-X-MC-Unique: C5swodLkMFap4GdtvaG0bQ-1
-X-Mimecast-MFC-AGG-ID: C5swodLkMFap4GdtvaG0bQ_1753394035
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3a4f3796779so816130f8f.1
-        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 14:53:55 -0700 (PDT)
+ us-mta-457-WHYWO-QFNlqKwTava_jL5Q-1; Thu, 24 Jul 2025 17:56:07 -0400
+X-MC-Unique: WHYWO-QFNlqKwTava_jL5Q-1
+X-Mimecast-MFC-AGG-ID: WHYWO-QFNlqKwTava_jL5Q_1753394166
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3a4f7ebfd00so604894f8f.2
+        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 14:56:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753394035; x=1753998835;
+        d=1e100.net; s=20230601; t=1753394166; x=1753998966;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=jXLN4SsCK0ZOlY5y21K92auQYthqaAwqTZRZM+NRLdw=;
-        b=YLxBY0/CqFujeCTdMUFE0IB5kqMOAg1NKz0gTDTNY+G4sVzmpynPyBOvg3KEYuJCRj
-         7gcl6DRnNptAWGvjY0f6HXfdlt/A/4uoE3x4sG5nwEUgIetYCqZ6jwqYvOvDD0zehdi2
-         Ra27rlDMbFkjc5NyoAfY5sgKYX35zqW94TzDoCYemvPvJAM3YPqZo2vC7kUaCcVs6XwK
-         E/RX7Xfb5BUhjiftKlN6CVXmiZHCyfHMtmV5KnBjcV1LMfLtRrSTNpZn1CG9XIfVl7gP
-         ByXbJI/hxn9FGTNAr6dWKfZMWw9e2cVCGSlPHG19yU/IqIfJ707V8zUi9SI5c9r/FrFj
-         MCjA==
-X-Forwarded-Encrypted: i=1; AJvYcCUj5DhFmEBhJeSk9dSUx5LYCzZFwgXP5CG1yaoXmeD/TXCmRwe2KrwBPxPZOFINc4AS4soiZ6yryw==@kvack.org
-X-Gm-Message-State: AOJu0YzEy5220rkBEiOkJjrqygmqcOgf9ahAbttu9IxGkuqb1loUFNrj
-	dopozImd1HVlxR0IE2kNqWk5ojCzNqy1GzcbSkju5xthoSwPSM73jr/7RpvD8dD+6mPAZbwl3VA
-	dMfmeikXdvruWcH28Y5bQQUN48xCgi/qsH6YZsGpnf+q1RaTdPSaF
-X-Gm-Gg: ASbGncuFoD/iHad7jxAYuErn3bCzHmEPUn7EPmeDk4X2ePFCeqzXt4cHPtpT+W0Qf1w
-	YvNB56VvtDDqM3S27xcWVc+MgI2i8epMMaLz8GDV9D43scMMrfg0jj5Se/5jRmBiEBjidWgi6EE
-	h/J72qqe0bx197DyfjOIRxGVNIV9l13B8R6bdNAn22LJ7xsz0WGoZd6nfuRYkc6K5Z++w/VLYE3
-	8EqBtcwgmnQKK6p/gxHKeEutZUNPtLLSsu4qNe9rbuilYnK2h1roH8OdDY6+dAP3qXOier2xdIQ
-	J1RLfoVNkaxsY4H6/JTm0bV5TILtFmDFbS5DI/kplAKwoZZVDnh7xYdeN6c+m9B1PsD7MiEi8Zf
-	5lTUvueosSJaZcrxdUzYHTrSXSHOc0/AJEEK5kFK0ip3DNAxfYGBWgGnx2za6g+7vPcU=
-X-Received: by 2002:a05:6000:1ace:b0:3a5:2949:6c38 with SMTP id ffacd0b85a97d-3b768f14a6fmr6764491f8f.52.1753394034740;
-        Thu, 24 Jul 2025 14:53:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGkJOWTq8/VD4bvUr6a2rEovzwLN5dTrmxK2FT42yxexbPhNZb6gZWZXp4oLGU60o1OpU2tGg==
-X-Received: by 2002:a05:6000:1ace:b0:3a5:2949:6c38 with SMTP id ffacd0b85a97d-3b768f14a6fmr6764479f8f.52.1753394034223;
-        Thu, 24 Jul 2025 14:53:54 -0700 (PDT)
+        bh=TnIYE6isHOtcopFB9zBfVfcEC5sN5etTBxSjFpgZalU=;
+        b=R73OKfyK38cgzj+eZ3U5IGTI62ZoNMuCxmyd5sIsOwQtcp60PC0687Y46v2F98YndI
+         nojHZMhIpPnnps3W1666mbfsm4tvnY+sQycpsdXECkWQupLeazNHHIuioGQBpvWY+2RN
+         SHtGz/jRfZtVh2UpZdzT+I9928dW1Qtw/iRnvpzQNF+iqX3el2VpS1OeSVmwqigKEV6I
+         G8iAhs8eZqnXehspjAdE42UQ6pwOeHpavNjGgJoVyuIKWZyo1BuFo11IpROBiUa83VPV
+         0Gp8d4ln1HDYzP8TLpYjbTxswpgcyuqw3I3EYjVf6SDrKu9FH/h2xQGyDk/93dc4pc16
+         ng/g==
+X-Gm-Message-State: AOJu0Yz3whm/qtT4SbMc1RfMg01MEQ9HSAMjfPJcpJwWahaJg/yZNvXP
+	32cOWDO30gckk2EvsJZQjdOmpPJ71GztHt7n45Fgx/j1nYXczgki77yKG81p1pt6TvyqUBeh6J3
+	JvNsZssRmuiCDny8c9Ws6/mfXDE1k8iF2iyNAh7ibFMy2Uk0LkfYmRkMANFcNXYQ=
+X-Gm-Gg: ASbGncvPqEkFjeVUeWPYZIissYw2mqhKs8w9N4bGuArFbo1UEvHS/0xwveH2VG3xdsO
+	dyPoBYJz2OM9rWSJPfn4wbLmchb5ZmcsQyFqVo+aaFiMRzbMvTowsBMBYEXUx/dxivwTOvrYVOq
+	OJwi532P9b5spr0krHfVkWCkwuaanxPrQbqPa6cfT2LfKzOtuPDS1Qh0f0v9iWaOcEAsirPPzDj
+	4k/fiXfjEE5hkjFhokqMKdQtc2r2tortuPYcLhxnp2jr3Pb71O6zRLhV8D+KwPSA8E9zhn8et7x
+	2jEpON6hcvfKvU7SE/2hE3xcsN+VMK1bz34wuIoCcewefLELFTv81RAGFVpMhZZhIHIYJOtf1RW
+	I5DCFWdcrtEc4DQ8dugpq7UjJJVafo6st6mtXPG2/PSYkxkG2hIkYNH3BMAOgCsR8Y7o=
+X-Received: by 2002:a5d:5d07:0:b0:3b5:dc04:3f59 with SMTP id ffacd0b85a97d-3b768f162b3mr6550288f8f.37.1753394166456;
+        Thu, 24 Jul 2025 14:56:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEpj0Q/qfPPBHUfZgfVRBY+U0T8fmE6q5msKr2mfaAw9QwTWSOib0nfbwpWlSY/Dv9OPcQx1Q==
+X-Received: by 2002:a5d:5d07:0:b0:3b5:dc04:3f59 with SMTP id ffacd0b85a97d-3b768f162b3mr6550278f8f.37.1753394166010;
+        Thu, 24 Jul 2025 14:56:06 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f01:5500:ba83:3fd7:6836:62f6? (p200300d82f015500ba833fd7683662f6.dip0.t-ipconnect.de. [2003:d8:2f01:5500:ba83:3fd7:6836:62f6])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b76fcc3ccasm3300445f8f.80.2025.07.24.14.53.53
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458705e39b1sm31164285e9.34.2025.07.24.14.56.03
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Jul 2025 14:53:53 -0700 (PDT)
-Message-ID: <9c861191-ac9e-4d26-b2a2-1facfa45de44@redhat.com>
-Date: Thu, 24 Jul 2025 23:53:52 +0200
+        Thu, 24 Jul 2025 14:56:05 -0700 (PDT)
+Message-ID: <85c4a092-14df-4478-811c-f3789610e4b8@redhat.com>
+Date: Thu, 24 Jul 2025 23:56:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/5] mm/mseal: update madvise() logic
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Jeff Xu <jeffxu@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Kees Cook <kees@kernel.org>,
- linux-hardening@vger.kernel.org
-References: <cover.1752687069.git.lorenzo.stoakes@oracle.com>
- <ec480dc1fd4ce04bb11c0acac6c6da78dc6f4156.1752687069.git.lorenzo.stoakes@oracle.com>
- <CABi2SkU75e7tXcpgnLbDhqSJBWVPOvmfMh2uPsU3mUjMUhhYqw@mail.gmail.com>
- <38ed372a-4b27-498e-bb3b-f95792bbbe27@lucifer.local>
+Subject: Re: [PATCH] mm/rmap: Add anon_vma lifetime debug check
+To: Jann Horn <jannh@google.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Rik van Riel
+ <riel@surriel.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20250724-anonvma-uaf-debug-v1-1-29989ddc4e2a@google.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -160,21 +153,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  WBe5lqcozu9LpNDH/brVSzHCSb7vjNGvvSVESDuoiHK8gNlf0v+epy5WYd7CGAgODPvDShGN
  g3eXuA==
 Organization: Red Hat
-In-Reply-To: <38ed372a-4b27-498e-bb3b-f95792bbbe27@lucifer.local>
+In-Reply-To: <20250724-anonvma-uaf-debug-v1-1-29989ddc4e2a@google.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: f2Dg2ku663sK853dopfU6QPn7RNTyvW-wOI8ZMd0g9E_1753394035
+X-Mimecast-MFC-PROC-ID: TpzPy6OzL0BSRwRk-QqQf3QRhpjdKH4OBaB46J8cQMo_1753394166
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: C540540007
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1C666C000D
-X-Stat-Signature: zrp6thqpnwhayuj1afku5tdg9wgxz73u
-X-HE-Tag: 1753394037-136535
-X-HE-Meta: U2FsdGVkX1/HPgm8sVhVj86SQibl0GlFCK+Nuqs//38noryiYO4mKyX8nJoBB8U2nooPT4ASEM/rhSqNMc99r1ZHLH6sqNaZnWAMGwfNMjXlLMbVfI8i1gx8MWfcxtBLROk/O0DlBbSP7QFOwEQaBjKhiNDEEDq0ThGwZp7fZviiYF5JfpnkJWTLgsDORjJS61bZsSCranHvPZAbWVSAsGKoPkH2cxFL0ObMT0zLg2871pRZ0NgVBwkqBHtVp5GVL9Qr5RiM3XNH3Y0TFElqAs9S0lLxanqf6gYPQFoL0PhWiSRzlce2Ch3oi5XIh1EnaRrfQILtqD0rZUGdwYjPYeB/CEPKeTd1+iqO4JpL4qZv62QGSwLelrZbSJPcK1qDLcoPO/xDFrOtxHlM7BIC33k3aJxOc5wOdW6Gy9Nyu3OKyUqCl7sS03b5gc+Czi4cm5nzY4ogEgEB3S8ezspcs/WLQszFuVLNxVKEvFPHQC2eUG5IHXuUbWgvyLuxN7dqJaSm1dyskSCQAMwHnbltgVxTNgcYOypqwcMv6r7IlmMdZSW166IUUoeNUAIZbugocK2BXJ3XZz5+rLvjG2ZhujqgCKW7RkUxbj4vavN3yIwlNIElmgcCvoFeTyxJ+R4L8GA9HNUtuph0i9xh4i7usxQ1Lrydbt++DZOt9opcWtDL9z1RRcEkCagutnxh0ALbtrn9O5B3BB4T4C6FIJBhljWfjP3XeS/DFuoyytPvgiPoNzAFDRzkSJd0y7qpO4bymV87DAopz0oDqepM7WafknYbqMH70J8LhV73nebYQcSiBZCTGu+3VWtI3lS7v191IOAJgWE3BZc3aK5NAt5m7JVV5W/ILUg1wv7yFKkBJMrBipHnFMK0Rmy/dVit+kO6t1ZpS6ufLkQ7Sy/7prmI6YOBZ1nNglHjiYg7AwuImNg/S//NjiS7586dUkB+qdaMFj464sPwApcu3EAGjFz
- XPV/bdyt
- zdqB5hm8+nU4dDMF714Mc9BF+OGTiuldEvun7ahZ9/bwxJ1YJC7/rGhvvwAeAoyTr+qOBGSNwbtF9PbpqMdygE8J5f8eMJsGbZHMXVt4xzsZua6WQ5jfzSboX+niKCW+Zj43XlDzbR2zxLMqS1mfbcIsw+s/PKh6bAPQyShJr3LowxSV+umqhJu8tl/QrGJOGW3L0F2Ns9srSLGp+Ooh3hLwxRpbpCwqtO3qNBv2K+XgNim1lwx8TEjsC1d9tojnmGSKkE0AB334qtU6RBAGi/7TavQaxr1XtJdjCzShtJ8BFdt0viKTdk5M+TgoCIwsOtJYUegmyIQXf20jWkrnidpbKz0HtZW7OJC+rfDQmbN6QHY4ok1g+WW6IWxmfTg+d4wLByWILahyyiw2ZC9bPXwG587Ql7ZZu/9qGeC43sWlJ7x3fmHmgYq4FbAEhQGwPU3VEYAY16SuZm9IirxSwWFz5Mg==
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 37mujfdkyghzb7hm1uhqkghirngzg98c
+X-HE-Tag: 1753394169-525034
+X-HE-Meta: U2FsdGVkX189FN+tSvAD3vURt0Bfceu9oBQ5PfMWh0zl9xO1+CGl2iP0Qikr18a2omMszNfKekQBCQkH35t+xhWSmJ7w6d3/9dR0cnELOnMPF6jjNGeYYE4/pcXi1cJkUofMa2OANJ3Wu/9ceqxaHAfB/bYih+Cku/M82gNz9M3KGEWb5X14XqmasTqnn9p/HjHmGQG9M4zv7hK75NUGFnaWO5vaW1jSt1DFuIaQxcEkhTwuC1x1WwQuN3UXcb1waIiPIkjoGJc/blnqRNS+dZTTNG4+Aujm7uEe4Q6BgM8XLFqucieQBlZ7KdcOQWnTw0sx8xzKbr2PF7ErqrfyI9F/Mstkr+sl6YtY6CXmnqnDMvEWRqaUYGPptbLztsX0VcBEevH+q6K6/ZGv5BIPe+r3uQCbi5QrAkdWZhrgOy259a3ft4hHGNM1xq/b4N+W+EE/Xy4MAj31qnQZ+PhiaZlPDMkgaEpvX5zzX63kcmq/13swmYgUVVMdhjnyWeBX+bwsZxPSQ5NbdiD6KYsuCC2snfNpqLqRqaApGmE9UmZfMOOzh1fjUvHHnz/to4H3rtigPszRXihm+3Tf8Nj7kCWEDvpIjmX3KgNAlUTAhVKftRTCY2oZCKspie+Q0hI9McO8odkTZE1V9OZI7u8ru6AT733CYg+KEEVC+CCTvL1ixBOIdfKU5YI9DA/Hwswk/V2Q9qyY3hFJ7fGE8PgDd0IzXfIUl/NnPv7OoKd3yvtJMGyQi1BKOKE4Y9RLW1gmmVwiQwQJ6QflFXeVuNcvUVJkNi06D2CsTPEgJb/5lRjiScVQuP2nMB9okO1RAcqRvdRTKbL3b72Pq1TeaKzCK4Nuz2fsfa+Tp6zZ8Y0+ImCO6c12ppy0ZDXGKc4USAsQbru4JBCKIk3Ryg1eOzCMQZJGm0X05CnzS54/iOUd87vPJydwOtWASe6n4HekvVOJdCNPM3oPEYacob3dlXL
+ vDA6PfJY
+ T4df+TPFRcIlJFhy1yKmtok84UAbfCiIsHG2yo8XeJulqCgEa0twctFzlD4VHGbuqtv5trGGRy70VOIZ7GoMvxCMJ+DAi1l4V5b4tZ3uRvalgq+KkT/GcvkHwdaxf3O7VNrdiOH2bD1yYIVT6MA4Z/Q4t9JVov1ewyjLQbyReNV5pKfgy5HsYaUQMWu2cuoq3VdwT2MJcFL4MA+fsB896DzkTCPSAatEJ8XBJYyxeJGyxujORj8fHuvz5EiQ3VzL9OIV+BhV6lBvzbTX0OXSvdbONxNj6J3t/zCLDNn+Mlhx3/Ke+PRLP2VS9QrcC6D/i/4+1Wr6FCXh1z5MiL6CoZyArZ9rrpuY4hZxAD9ENj5QrIASbSIMc82m43PipeMh70o7P3BjEFAznNPQd5oCwbCFkjKVqxACg4Xve+RIcSOKjjSwOC0k/tWN9KetPP2YYiv1fdIe8n1UYkSHKc3s2CZiNlVUvRRIoQzwGQq5DjoX04kDMBIK6oBEWJwDTQKViWynaF/V//AoFmJXkftkHuFUo28qF7jeRty6alne7sl9nd5VRbBmm8keUWIQ9wdYwIt15sLzHUPmXX5g=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -183,28 +176,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 24.07.25 21:13, Jann Horn wrote:
+> If an anon page is mapped into userspace, its anon_vma must be alive,
+> otherwise rmap walks can hit UAF.
 > 
->> 4. We could ask applications to switch to non-destructive madvise,
->> like MADV_COLD or MADV_PAGEOUT. Or, another option is that we could
->> switch the kernel to use non-destructive madvise implicitly for
->> destructive madvise in suitable situations.
+> There have been syzkaller reports a few months ago[1][2] of UAF in rmap
+> walks that seems to indicate that there can be pages with elevated mapcount
+> whose anon_vma has already been freed, but I think we never figured out
+> what the cause is; and syzkaller only hit these UAFs when memory pressure
+> randomly caused reclaim to rmap-walk the affected pages, so it of course
+> didn't manage to create a reproducer.
 > 
-> Umm what? I don't understand your point.
+> Add a VM_WARN_ON_FOLIO() when we add/remove mappings of anonymous pages to
+> hopefully catch such issues more reliably.
 > 
->> 5. We could investigate more based on vma->anon_vma
+> Implementation note: I'm checking IS_ENABLED(CONFIG_DEBUG_VM) because,
+> unlike the checks above, this one would otherwise be hard to write such
+> that it completely compiles away in non-debug builds by itself, without
+> looking extremely ugly.
 > 
-> I have no idea what you mean by this. I am an rmap maintainer and have
-> worked extensively with anon_vma, what's the point exactly?
+> [1] https://lore.kernel.org/r/67abaeaf.050a0220.110943.0041.GAE@google.com
+> [2] https://lore.kernel.org/r/67a76f33.050a0220.3d72c.0028.GAE@google.com
+> 
+> Signed-off-by: Jann Horn <jannh@google.com>
+> ---
+>   include/linux/rmap.h | 13 +++++++++++++
+>   1 file changed, 13 insertions(+)
+> 
+> diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+> index c4f4903b1088..ba694c436f59 100644
+> --- a/include/linux/rmap.h
+> +++ b/include/linux/rmap.h
+> @@ -449,6 +449,19 @@ static inline void __folio_rmap_sanity_checks(const struct folio *folio,
+>   	default:
+>   		VM_WARN_ON_ONCE(true);
+>   	}
+> +
+> +	/*
+> +	 * Anon folios must have an associated live anon_vma as long as they're
+> +	 * mapped into userspace.
+> +	 * Part of the purpose of the atomic_read() is to make KASAN check that
+> +	 * the anon_vma is still alive.
+> +	 */
+> +	if (IS_ENABLED(CONFIG_DEBUG_VM) && PageAnonNotKsm(page)) {
 
-I think, the idea would be to add an additional anon_vma check: so if 
-you have a MAP_PRIVATE file mapping, you could still allow for 
-MADV_DONTNEED if you are sure that there are no anon folios in there.
+1) You probably don't need the CONFIG_DEBUG_VM check: the 
+VM_WARN_ON_FOLIO should make everything get optimized out ... right?
 
-If there is an anon_vma, the only way to find out is actually looking at 
-the page tables.
+2) We have a folio here, so ... better
 
-To be completely precise, one would have to enlighten the zap logic to 
-refuse to zap if there is any anon folio there, and bail out.
+if (folio_test_anon(folio) && !folio_test_ksm(folio)) {
+	...
+}
+
+> +		unsigned long mapping = (unsigned long)folio->mapping;
+> +		struct anon_vma *anon_vma = (void *)(mapping - PAGE_MAPPING_ANON);
+> +
+> +		VM_WARN_ON_FOLIO(atomic_read(&anon_vma->refcount) == 0, folio);
+> +	}
+
+In general,
+
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
 Cheers,
