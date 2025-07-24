@@ -2,216 +2,176 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A9F20C83F26
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 10:01:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 39254C83F26
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 10:14:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CBFB8E006A; Thu, 24 Jul 2025 06:01:51 -0400 (EDT)
+	id 8509E6B028F; Thu, 24 Jul 2025 06:14:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A3638E0051; Thu, 24 Jul 2025 06:01:51 -0400 (EDT)
+	id 7D9D16B0292; Thu, 24 Jul 2025 06:14:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 292AF8E006A; Thu, 24 Jul 2025 06:01:51 -0400 (EDT)
+	id 67BC46B0293; Thu, 24 Jul 2025 06:14:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 155908E0051
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 06:01:51 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 92A63131877
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 10:01:50 +0000 (UTC)
-X-FDA: 83698716780.13.ED3C205
-Received: from OS8PR02CU002.outbound.protection.outlook.com (mail-japanwestazon11012008.outbound.protection.outlook.com [40.107.75.8])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 9EA98C0014
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 10:01:47 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=vivo.com header.s=selector2 header.b=ELleoyH0;
-	dmarc=pass (policy=quarantine) header.from=vivo.com;
-	spf=pass (imf22.hostedemail.com: domain of link@vivo.com designates 40.107.75.8 as permitted sender) smtp.mailfrom=link@vivo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753351307; a=rsa-sha256;
-	cv=pass;
-	b=EzF2TRdj5+s4jKUNbe5lQBkHFfB2qXYmz4cygoqM6iqLxcgKhZ3E+EJ3n+Izdy1sMNgDCu
-	8jHnbjsPXZjORt7lxMOCMfTG2sSyQdsFaeHpTX8Z1701kLMqTjLrJb5WHJn2TtwcfKnxzZ
-	JFkFV8tS7SlVmw+8RaBUYaN6D4R8k8I=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=vivo.com header.s=selector2 header.b=ELleoyH0;
-	dmarc=pass (policy=quarantine) header.from=vivo.com;
-	spf=pass (imf22.hostedemail.com: domain of link@vivo.com designates 40.107.75.8 as permitted sender) smtp.mailfrom=link@vivo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753351307;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B7676B028F
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 06:14:39 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EDEB21D46DA
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 10:14:38 +0000 (UTC)
+X-FDA: 83698749036.04.4F956B8
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf12.hostedemail.com (Postfix) with ESMTP id B441140014
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 10:14:36 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nLYGEiFm;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3pZ1FqzC;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pXb2Y2nA;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=qCLsHA3A;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753352077;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t3C9R4jl3GsCdZu295tvsEcCGkD7WiHsUqV/cbDeyHw=;
-	b=rU6o9FBPF2BVQlSv2fVg2bFFKKp74LCEZSAyg+imEXYpXzCqXEXRUeWX7zjXFwdQDRcDa4
-	P3haogav2qk+wSC0IfilGOYbCfeWmxZ8QDH+k348eWzeciW1UvWaNBynNN64PBOMeEX+Jm
-	jIPibk5IX3/JaquJEsca22IUHu2OHB4=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Qyn5ddpVpCZWGbyMHRm2Rk+6oOqTGnQ2VK+kLMMczo8rYGDzqfoL1aPueyuOT2LNb9wrj7iILNQSPe6kT8a8n3OUOQpo5uuPr8tjFGmkd3p0GKJQK7/9oVzX0gxPoEho5lixODu1ZwEnWBuZmFb/xnpGnP1xleT/MHKFP42rmfNcrXbxrdAz377GNICktm6o+fQ6GkmN2lXgx14NjoSvy+Q4QJJYUqkiqhvXmi/1ni4N/IMVDzXyvwKTkmRrTa0mFrfehhTHAtK95GFX/4/PRbtPCtAIjZGtLwm7PPCQR8B1imRJzTKLIKlJ566wGhD4oo44ugm5LqjbynxaD+Gsqg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=t3C9R4jl3GsCdZu295tvsEcCGkD7WiHsUqV/cbDeyHw=;
- b=IOYnw0FJnnUqv1Laeb/x5BJ4dQNpWoYyZoCpknN8JGEnoKv5y5yCfiMwdXtWvakMnhJObBfhgRsrUT3Aimuu/iRGxqHt6nFYwHFOCQCDWy4NhNe7qcV6LpWXEG0oRjC7NHXrCl2tyyEjSl+vyC5Pth7SlmkAvK8J2s6l1dR7xcwtjFoVlH3tSb/y6MgMEGnMvQo/HX0mufq0CcM5gbZ6yy5Kj8P7jkbT2a9utTIor6cUKabAapNDNPugRi3lONoszrhTINslz0QPqK4MuM1FiUZI/osV4TdvEg5D1n5TFtLBF0f57Opv0mEvr1t8asbbVZa5tJ3rTJ7x+5CZi2TuGQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=t3C9R4jl3GsCdZu295tvsEcCGkD7WiHsUqV/cbDeyHw=;
- b=ELleoyH0p+gsOmNunCnyevsi6Wc6yjtzedxrw7Xq2sbbWM9pWe2s+PQ7J1GcwBdR4QatPb9AtAr+zU90bqBIdRhrhbSYFljdWOI2B/yBreW5GOjXKNKuWOdWwJvqlkXhYoIgghS2vwZ54k96LZde3u2JvWIajBjk6+BLeYQQl4IGIJMrvDBxyK1nmmD+FF9ebMO3RwLoNW8NnUKS2uO0UDaKym8TNTl9CZYuXMKWiwxMIz19HQMMyFnIrXfp5/dJ9J7IXsnHgg9jnAGrq6soYWrCydWQGrDu3Oq2jyM8akg+oQh5QpNL7WmVwprqxuH6OGtSfIphT5F7MkAUObjpKw==
-Received: from PUZPR06MB5676.apcprd06.prod.outlook.com (2603:1096:301:f8::10)
- by TYZPR06MB6022.apcprd06.prod.outlook.com (2603:1096:400:340::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.21; Thu, 24 Jul
- 2025 10:01:41 +0000
-Received: from PUZPR06MB5676.apcprd06.prod.outlook.com
- ([fe80::a00b:f422:ac44:636f]) by PUZPR06MB5676.apcprd06.prod.outlook.com
- ([fe80::a00b:f422:ac44:636f%4]) with mapi id 15.20.8943.029; Thu, 24 Jul 2025
- 10:01:41 +0000
-Message-ID: <4917880f-df55-4c5e-af06-95b408021b71@vivo.com>
-Date: Thu, 24 Jul 2025 18:01:34 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/9] introduce PGTY_mgt_entry page_type
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: David Hildenbrand <david@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>, Rik van Riel <riel@surriel.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>,
- Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Christian Brauner <brauner@kernel.org>, Usama Arif <usamaarif642@gmail.com>,
- Yu Zhao <yuzhao@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20250724084441.380404-1-link@vivo.com>
- <86516155-f2d9-4e8d-9d27-bdcb59e2d129@redhat.com>
- <cc560d48-884d-4c8f-9fb0-565d74ad769a@vivo.com>
- <e9bb93a6-1e95-40e5-ad10-a60d80735432@redhat.com>
- <6d14e212-418e-4734-b256-b75c6fade25c@redhat.com>
- <23b986e2-80d6-432f-8188-7a11d6915c9f@redhat.com>
- <cd253bcb-3ffa-4871-ae11-59d158fafada@vivo.com>
- <f21b75f9-0650-44c2-bf47-516390364a8b@lucifer.local>
- <10484264-e863-46e9-9797-d2d76a531557@vivo.com>
- <a7f8b628-14f0-49ae-bf71-14c4a3f4fd89@lucifer.local>
-From: Huan Yang <link@vivo.com>
-In-Reply-To: <a7f8b628-14f0-49ae-bf71-14c4a3f4fd89@lucifer.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SI2P153CA0034.APCP153.PROD.OUTLOOK.COM
- (2603:1096:4:190::17) To PUZPR06MB5676.apcprd06.prod.outlook.com
- (2603:1096:301:f8::10)
+	bh=0Cb3/++MEwl7Z6VekxEpy01dqQjPmNLRWlpN/hgrJ/0=;
+	b=Ek859Y0lXp+Y3bNE5/pBAir24OySLivzonmkHZi70MQMp5/Lf8A9RxHvM8HPcwwloU/Qaz
+	MpGfuKzl86XXjoPRy0u5+RBtERmspqmM+UmbgsFz2lQNzDkQKrTR/PKw02LzXshE77SeKZ
+	5WykazuuAjX5BHcffWAlFzqKhhe5sks=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753352077; a=rsa-sha256;
+	cv=none;
+	b=UOJ6e6un36461Abevd4RVRA1KQK20poVVbn0VolGRDAgGC5PSZYOPvYZB9d7URwaFmdL5L
+	mPEX8e+IFy5EZ5Cmi3yBhn4de9kIRp5shZT/N8k/1V/91y2yPZL93aByyT+aYI33Uiu+AY
+	siR+akvcv8KN0wP/LfZj9UXeJob/hsU=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nLYGEiFm;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3pZ1FqzC;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pXb2Y2nA;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=qCLsHA3A;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E71B81F394;
+	Thu, 24 Jul 2025 10:14:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1753352075; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=0Cb3/++MEwl7Z6VekxEpy01dqQjPmNLRWlpN/hgrJ/0=;
+	b=nLYGEiFmJWcNZBbspiqCJwcNcMunIUHTB60lvcPgvxIcIE/XJAuWTDWEwMHfeObvM8/mrz
+	CxpabEYPF/Ft8tdIIEY+rqSPXk5UU5LTkwGkZRE4t6PzSJ9UlPchBvzKtrYK2yfvsQiWLo
+	I7QB+3qrQrIGg8eqTctUNhNKka376as=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1753352075;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=0Cb3/++MEwl7Z6VekxEpy01dqQjPmNLRWlpN/hgrJ/0=;
+	b=3pZ1FqzCngimCdeVftWke/jvyzKpGeawiUtGe4sxuDTnxwqDMXrfsihFbOUbjW7setThRN
+	08zR/bAzYNi9ssAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1753352074; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=0Cb3/++MEwl7Z6VekxEpy01dqQjPmNLRWlpN/hgrJ/0=;
+	b=pXb2Y2nA7gnPs0wQRFBGmFLFOMHVdrjoha8c1iaEen+cFPiUR8H9tJ6Lf2YzFE3YckcWoj
+	5YkGPL6PC62tEby/+360OS/lCPBRci94BEBRaBTlvJErhUVUuTmvRwZcA868vtFit4GRJv
+	RTDyrkIXfqhIgahq57ErRCdsGmRptFw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1753352074;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=0Cb3/++MEwl7Z6VekxEpy01dqQjPmNLRWlpN/hgrJ/0=;
+	b=qCLsHA3A5D7w1CNsjxh7caLdz7/xGHhI4RxMjyx5KTK87zG2ksYKYOYL6Sg0Cp8DXjz8xF
+	690yjisK+nkGXyBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D15D4136DC;
+	Thu, 24 Jul 2025 10:14:34 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id hii9MooHgmiUYgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 24 Jul 2025 10:14:34 +0000
+Message-ID: <45cd4505-39a0-404d-9840-a0a75fcc707f@suse.cz>
+Date: Thu, 24 Jul 2025 12:14:34 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PUZPR06MB5676:EE_|TYZPR06MB6022:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0f13eb4e-63e9-4dbf-7fb8-08ddca9916ac
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Vi9iV1hOOTNmTGI0ZDhLeWJGL0hUTzZGTUFGZ1NEQ0JCcUp2M0xFYW16M3J6?=
- =?utf-8?B?ejBwOHByZ3lkbExHeW5PdUxTRHZ6Wi9RL2FodVgrYjc3bWdtN0hvNUVFMWZk?=
- =?utf-8?B?RktJNWVLMGI1Z2F4WGxGVmdSbmdqTXBTd3luRjFuall1Q2p6UkpnaTU5TENm?=
- =?utf-8?B?d3hyL0hPSU9PVWNraCs5endhY0puUWgxRk1KMGlITTZ4c00rcjFUNW1CODRP?=
- =?utf-8?B?UGhLM2x1TW5WQldjdVpPZlgxRDhHeTltRXVNNzJzK3Uvais5V1lvSFFmbEFP?=
- =?utf-8?B?dWNsR3pVZUJKeTc2RFp4aVlRYU9DWExNTTdIZjU3SG5PRUJQSFpmZXJFTW9u?=
- =?utf-8?B?YVhqSmMzK2tndTZUUVIybWVOM2RtMXF1ZFJpb1NNenpGTTZ3TjV2a0JjMUR2?=
- =?utf-8?B?M3duQ1pSeHI2N0tSVVZ0Sm1ZRHVRQlhKbC8yYUlDOXZqSDJMaEJxRm9Jb0FS?=
- =?utf-8?B?YlBUY2V1bktqKyt3YldFdU96YndDL296ekN4b3VTQjN0anpuVzRpT2J2RDVm?=
- =?utf-8?B?K0ZiakdXQ01QV0w2d3JlMXl5RGpaZnBXb0xCQ2hHM2t3VG5LMEtHcU9hbEJS?=
- =?utf-8?B?aUc3a1BYN2xzdytkZDVMWGI2MTJxYnlGOGczWXRsMGRyK2ZaeExlcHJIaDAz?=
- =?utf-8?B?dzBDZzI5QTAzQTJ1YmNSOENjSnE4ekVsNVZLVzNCVFFRclZQcW04UllBTG1L?=
- =?utf-8?B?UUtzaFFRaGkzMVlwZmhoZUFOUUthd2lXUEdBbEZHaFlON3hwWmpSYXZFOWdT?=
- =?utf-8?B?TFRaaWFYRW9sb2RxSDVIKzFmYTIrVzhWTi9UU3MvVFhkV3hRNHNpa1hPOXFV?=
- =?utf-8?B?Mmp5Qy94Q1B3eEVsZEJ0a01RODVqVGJEaFM4aXhWbnB3MVdlQVR0bytCY2lx?=
- =?utf-8?B?MW90L0t0dVZWM3dOcVVuL1J0Zll1R1phNGJHcU0yejhBTmFRT1NEeHRINms0?=
- =?utf-8?B?clZpUG0xS1dMaGV2WE1TY0ZsMDEzUWtwdk9tUFVYRlhtSnRJZmFiWU9Uc1pP?=
- =?utf-8?B?QWlCMFMvQko3U2hTUFVZSVdLY2JjMzYvYlJ5RVNQc1gvTytaNVVWdHJURVdS?=
- =?utf-8?B?em54UmZnVTF0WXFCWVo0YWRBS1Y2NUtwYjhjeFE1empvb0o2YlAreHAwRjBT?=
- =?utf-8?B?aU1jOXZjblhMUjBkeDc0Y3p5VWNscXdMN21ubFJiRGIxN01xQWpST1BRMDlT?=
- =?utf-8?B?ZjZLa3pVaElSbDR1VnlCaDdXLzFGL0RGUk5XMm44QXRwRkVFcTIyWGxlSStH?=
- =?utf-8?B?M00wRWVmbXVjVkE3WFh1bm16akpJY0xJclZrSVdNZFpjOUpMdEp5STVRRENJ?=
- =?utf-8?B?SUVwR2h2SXhjMnd4Nis5Njc4Vk94T2JxWUluenErUGw5MERHRXFrNmF5S3ZK?=
- =?utf-8?B?VjBLd3RGczFYNmZPN2ZtcW14MWhhMlFoNlA1bzNBQU42K0xhaVlpeWlyZnB4?=
- =?utf-8?B?R0prTExVcjRDbW9uRk1oeWJDQytOTTZ2SjNSTVhpVjVGRXJjNmFFakU4N2lx?=
- =?utf-8?B?c25EanZLQkU5d2Nsa05BRkpTTlRpbS9EQ0tSdEdWcGgzMlVHOWJIYStNczJ1?=
- =?utf-8?B?VWo1WnNtemdDQ3E2akxNT0RQUUdWS24xblpwWjdqQlR1eCtXSm53b2c0MmNT?=
- =?utf-8?B?L29RbDNjRlRHRWFvZjRxNlgrWU9FL3d6MytldUdNOUdOdDFaaHI4WU1za3dK?=
- =?utf-8?B?bFgzbEp6UmU5czhuays0NElJbG41Z1pnQUxOb2lMY09oWG1ncllDT0JpWTE2?=
- =?utf-8?B?TlFNenFIdkJCejZWQlJmQTJidkdqem0rMWJENTB1TjNZM1NadnBML0Npc0gr?=
- =?utf-8?B?cUpUU0xpSmhWMEFyZytVa3VaVEFpVHM4ZTE4OHVabE1EOFJudXQyZGo5bEYz?=
- =?utf-8?B?ZWQ3UTVEdkJlYVduNzN1ZFpvU0hGQXlHc2J2dTBTOGg1ZTZSa05QdkFpVHFD?=
- =?utf-8?B?V25idkZtSFlVR1drMzdoaUJqRzZNMzJraWFCeHkvTkExWFVzblFwZEFaNVo3?=
- =?utf-8?Q?9S9MF/v3FhBP2W8eBi6mgsqnipRU38=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PUZPR06MB5676.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OEJNOTN0Tzdrdjg5dEhHWDV5Zm1KUTBtMjNHTjk5dFg4WUxSeWVISm9JaVA3?=
- =?utf-8?B?NGZ1U2JpTXF3djY2WWJVRUt3NDN5MGxSeTRIeEZLejBFVDNoMkViL3A2dmJI?=
- =?utf-8?B?SmdIVURFUnZyTHRZUHo3MkhLWkxLdnJuSnV1OEZxanhKdEdLZjNJZHdKRDhw?=
- =?utf-8?B?T3JEVTdHbG5Rd2g4b0Z6TWthT3ZlNnBpS2VYam1zQ0hITE1rcVpOc0V0eklR?=
- =?utf-8?B?RWFsSFRMdENwMkR3SHltbzk5cmhYTDdZdTFrWFhTSkJzWk81b0ltTGM1dmk4?=
- =?utf-8?B?YjhPeFlzRVZCWXhad3I3UVBjSVd1c2RncnZZMkpPbzUwTGZId00zSXNLY1Q0?=
- =?utf-8?B?a080Um5obGp1K2lrRzB6cUJ5ZTMzM0krc0g1MDlaK0Yrdy9iWm9pblh4U3hn?=
- =?utf-8?B?TGsrWlJ4UmVXczhKL3VwMGF0RG93VnZpei9QaWhySHIwRS9CNTVyc1pnRWJm?=
- =?utf-8?B?d2xoT0ZIK0JrMVhkSUNaM2szQmNuMXdSL3FDY1dQUmpVSVZ1TGZnc0svZld6?=
- =?utf-8?B?b2R4ZWtDZnVzZ0pYWEh5bmd5ek81V2hmY240ZUJkdS9tc0pIdjFpbmtzcmVX?=
- =?utf-8?B?QjFFRzlRbkVOWlVLb2pFOWlLUk1FbHdJcW94SUxvM0I4ZVhKRnZEaUdjNEsy?=
- =?utf-8?B?ckFERFdEY2drNStRUXd6aklvQnQycmVZUGgzeWtreTRGUnZIcDVrODhMNzdt?=
- =?utf-8?B?SzZGYTJCNExzSThpRXIwUVlWQkJpR3hsaUVqeXd0V1FBTktjREVXb1g5RitY?=
- =?utf-8?B?L1hmYzJnQUhjZ3ppV0t2N1MvZXVXalF3Z0pOcFpuaS9kTHhMY24rQXVqVysz?=
- =?utf-8?B?M0wwdE9XbGxZeU1GZTRHdFg5b2VtTFpkZVUzWlEzZ0hZenRXYklvUzIwWkhx?=
- =?utf-8?B?TWdobUdlTHNmaC9TVmNkTElieE1uYm5GZ2VWTGF4eXAxRURGdEdhMlpLOFAw?=
- =?utf-8?B?U0ZIcmZOVHFPSXNLYXR4MG0yaVVuQjJiTkUwRnM0Z3FwRkNnY0kzV1dmQ2RI?=
- =?utf-8?B?S2pUbVdLeWZid2RYajhEYU80Sk4vY2NqMWl1VmdzTVJ4c3pzZHFoWXZvZEVK?=
- =?utf-8?B?S2kxTTkzZ1RmMThqVU00eGtXTFNvT0lkODQrZE1TMUJiM0kvcDdmemowSXFT?=
- =?utf-8?B?cXl3UU05SFZrSFhhREM4VElTbnF6OVBHbzlIME5TeEtNTjdkaUs1a2laTzAx?=
- =?utf-8?B?RGZXLzlBRmRMTXB4akRJVHJWSVlBdkIyUGpZRVVjb29YRCtjR3UzYW1nWk1P?=
- =?utf-8?B?VGFFaE0rMm9TVS81WEpqUUU1bjl5SnRVSy82bkg3Z1paV2pjK2VDUDMrSFlW?=
- =?utf-8?B?bnBWK09FK1BzamVBamtGYnJvSmdkb2NsendwbDZtMHB3bC9xM0ZnQVFDZWlV?=
- =?utf-8?B?OFBNNkcxMFlFV1E2ajBtRmV5MVhWMTZXVXgvMktNa0NwbitES1o0MUtiV1ZY?=
- =?utf-8?B?L2JobzFVWElHMlVrUkVkWlU0Q2RxbGU4dUxsUStPOEFEVERtQTlkOGpaTkRm?=
- =?utf-8?B?ZGNiM3diUDhkNHk2ZDltZ0pNYlRwNDlWNzJVSVJ0SWVYZWdpUHFmYzAvbEZn?=
- =?utf-8?B?U0E4eW80eW81YWVMZm1FWHdIQ2NPallVSXFoOHAvZjVVSHVKaTdPK2dZL21E?=
- =?utf-8?B?amlERTRGUWlnWFo4OWNudFhXNjVXS3ZJaGFaYUxCNmg5bU9IS28wUlREZ1dC?=
- =?utf-8?B?eFZHKzA1dzQ2VHJzcHo4NmU5VDJRTWJ3VjZlWGMvOXJ3OU9DTzNuOWtrNC81?=
- =?utf-8?B?Q1NYNTFsRndPSjBTaEIrb2xzUVNUV1FyaGxma0xaRmloeVFOOEdxVS80cm5z?=
- =?utf-8?B?TFhvenlkZjdWUzFLb2E1K1k1eFN2QzdkeHZMaGk2blBJc1FOYy9ucFpWT3pG?=
- =?utf-8?B?V2d0NjJkV1dtV1FrNTBLOXRMVTVkUjR4eXA5ZUdHbDZ4T1IzeXlzb2IyeVgy?=
- =?utf-8?B?NkJjbnYxOVB6SXhPY001UTNLUEhNWEFUVk4reVpZRmRhdUl1eUUrVXk1Um9Y?=
- =?utf-8?B?ZWtOYTY1VkVkVXVkVk5nSTdlUnZFejdQZFdtV3Qxc3ZhS1NhZ2hUMGlIaHNk?=
- =?utf-8?B?enBVUXdvVzhlZzYybUZjTkI1TEszMGs4bGZIeVI0WnBkazYzQXZkMFVtL0J3?=
- =?utf-8?Q?GpJbUfY2/T19vpNp86BoZN4aB?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0f13eb4e-63e9-4dbf-7fb8-08ddca9916ac
-X-MS-Exchange-CrossTenant-AuthSource: PUZPR06MB5676.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2025 10:01:41.7734
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: spMd5hH4x7xpgh7BD2rQkqqcxDpIu7SC8cG5pj6oeGF8GMKp9j15ZkH+cFjZEwQ+meWE45kN9M389WpfSGUHgw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYZPR06MB6022
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] kasan: skip quarantine if object is still accessible
+ under RCU
+Content-Language: en-US
+To: Jann Horn <jannh@google.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+ Alexander Potapenko <glider@google.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: kasan-dev@googlegroups.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20250723-kasan-tsbrcu-noquarantine-v1-1-846c8645976c@google.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20250723-kasan-tsbrcu-noquarantine-v1-1-846c8645976c@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: B441140014
+X-Stat-Signature: iwy4qiinygoyee9kxfgyh9n36m4hdhq1
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9EA98C0014
-X-Stat-Signature: 8gktuwpfgf7mij9kkpezd8ig9tsqcc3t
-X-HE-Tag: 1753351307-968945
-X-HE-Meta: U2FsdGVkX1/54ASwWQJqJV1z1DvgPPA/fJsWWNxr094LGUz3Qf+3hIQlf98G0mjo/rmC3pu1WWEIfAL86KNTmdGz64PiChxrmxWBv9yhPYiItUNeYvx/QrFk+iSgWwuNdEXHBzBFhsHEhV/7UAHMHX88pz2VwjVITlmo8UUUW0MILnXHyjFMfi01n6Kw9ohm2EDBgcTq8W14ejn945Cblb/ma0+09m9kzxsfh2f3wRWqRDSgVdKcsvyOSFhx08xx3YZjwMd3HwKJeac+ruANlzCiMZ97/V3Kj5wd4DgdUTXWW5xPkcRqYV4XlkfEqcruIv3u7Jn2E/zTdXEP1Sf6xy3MNkMzBe8o1H1nFCfKymivmTifnovKlKVEJdwKZvJp0ARaAWLCdyiIsNtfmy492pEIDTkY+N4RJf+fgnlyewv9fUkG4cmYD0puyUiisDe3vtnupWrcu6FTfSiVm7Tjll3H3XjNHrafz4Jqaqc2TQ81D8A1cAE8YmBKqAHVw9CJ4h2A8Vmo6auvmKgmIgh/wZI6DMTbA1zBF9jYiljpubrWWY8mYkc+B7uhVIMWMJrlo3nwzzeQkPhEJUZoQQZUDk1s/WTlYoh78BL298ls3iwrZoOo+oqQnT9KvitAABdyQApakh425CG8/gJ67rZMarCHUaewUv0vINO7Hx2bVWga47f6kIt+NotzKmttIKUapCs4/kuozkaujLUg1FT0vHxvdnmotNdYf3Ww/lPUsLhR0NsV7iROiF/pW5dfyRlH9zvCjN5KTW28KGzTyD2YNcNNbmaDOU5774xrwScDpbc51q7uRyoF0AL3wnPvikgjK1dtXpXMJixSByxwmB0AswTzPxFhCpW+1lyS7x30TVX//SY0/H5oep1jlEpNFh0TvwWiMhEvaIyRU7RnM6otRC6x15iTp+2f9ohDv/YwjwWXdlPChXii+ldkjQQqOgfYT/XCmUZD4jyGTDf2NjT
- E6I5M1sv
- /u5y+E8Do2PYt450qXhyzIHdVNHuadf+ry9Oj9prM9thyhwCOzZwLrfgLsuWU4Ur/BMEO79BP0YD3W84fYomQN5pOMCRY8eMZrzvKfbvZX6MBt+VJa/GgFA/jQtlsPcfJivYhE5pSkcx0cjRW7qxvDMXVhJVkkLXaMmAHVxIC8deL2WNQ2nIOdU31lTQefQjErdrnyapgaNpkWvIF1u/nDyXfTmFeHRs6Z8T8adFUOA6erXi1lg1EqjIyn2HqiqRdnfJ6Y+Dm4kQMEzC4t/xc7tX/8dJFMwgWzX7osfogmxGRWOva4EqfduZNpELNc3OsB4aXf9HLQwa42zxgW7ak/OlzGC2qvrxCm01C8BVtDlAVqypkQoJIcl3ihBVlDOgI9VuBTKnNcmVQAAS5ZVHyK3njSFFaVZeqasWqdbmQDI5yfI/T5ABgVdK4DuiF2qOeV+kK4MzsJ3ZWpM4yxRE4nvPAAnZDY9Sf4OmkccC6g4k+lgYTClhMDa86AOVfS9pEDKT34wpwYmQthekeVm1oaU2GlR0tYv6QHFLW7+33W48XA7cJENMiPZ05Ex4xWIMkkr1QfgPW0XT0hwTNktvWwOaGIJkDeWWtmuQ8eLMALZulfSJgH3jbtAFP1UxPWowLqjGavQK/CBl15CGqkXDdy+emeAVEbeFT0Cbim9+PGsqw8CpWmzi7XHHSq8gghHPimZZMv5JsDKlGWk0=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1753352076-981857
+X-HE-Meta: U2FsdGVkX19F8Ua9hjTQnjikIXjOedZclTlWp+HLR7Jica/6D4FIE/bs/40Q6Gp+gvaLAMfEhs9bVfh9ZcT4RKube5su9Cdjszhq8QBdTYmUxH6qJtxD8nZDHgmST1imq4uZvi3XtrSJP59ydhP3jmYIURE0oomwwi7u7BThmpIYUeoZC2fDT8t7lnlgP6EdsKPc+iDc7PDZheArZ7Z5pYw5MmgFfCQw8GPP/HkP8pAgxZCuUD3yPJCuDnPAWbqm6suPwl6BylaN0Qik9U+acYBlp3rNakvnE32G7epawkexNH6XzU5aV2kBwbzbZHWA6bxVM4XsqUOKxfoHvwKHg1OSB7jxaX34jrx45NEa+HC0XtCNx4l8NthkyoLNb0pQi7YOPkoPZnsgvURcL8h49E01Fy9vkA55Fgq74sI1DTCSCv3vLgE1N2DXxp6wJ4b7eRQ7QuFZMmNFy4naDPzU3hpdTnhu/DPSdBHYJJEQuGXrV6jtBuYVz/BJKzLYTXWNpix4RXhRPxLt8SUPmxo1N7CgnxijDlZjVU4ekzdAYjTsEkO5iaRNT/PPBsxtHUDqRJcJc2ZO3BHb8xaOd9Q1iPhnXvSLweTcVFDsuaHJS7hv5ebK5gPD2OicJo9ko1gv/GbLZgrRX2aGMyu6II4Bo5M2jQ9poeXwZVbGAUehYCxH6ZFI351f/Hd+9KZ0/8LTQhGiyclaaPjOqY1s6q7dcOY3lZRz+aoDpww6cZ4hjboRGBHUfIE2p/X2WsXuyF1RA+sntHDlD9mbrxqzg+wIt1fo3b9dIGMIwa1M9FuCYQCygEaz5E9MoMOK09LIGMBEM3/OC9AmGD+/ZjdqtXnRKovbplRtLb7Zpczd8vtjMTXcOjXBHIqc6C33pYoDGU4DwwRu+B4aRGIRFA7WCegyHbdhp4UAGWTDaQNfS8yI08EyF73fRKRLwoTEnEzteFFyHfA6WyaaYA9FDGWaxJL
+ zNCO3vaP
+ Usxt+mzwr5HfoKH7W15ZmvtAMk4EGgxZxFRz+
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -220,32 +180,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 7/23/25 16:59, Jann Horn wrote:
+> Currently, enabling KASAN masks bugs where a lockless lookup path gets a
+> pointer to a SLAB_TYPESAFE_BY_RCU object that might concurrently be
+> recycled and is insufficiently careful about handling recycled objects:
+> KASAN puts freed objects in SLAB_TYPESAFE_BY_RCU slabs onto its quarantine
+> queues, even when it can't actually detect UAF in these objects, and the
+> quarantine prevents fast recycling.
+> 
+> When I introduced CONFIG_SLUB_RCU_DEBUG, my intention was that enabling
+> CONFIG_SLUB_RCU_DEBUG should cause KASAN to mark such objects as freed
+> after an RCU grace period and put them on the quarantine, while disabling
+> CONFIG_SLUB_RCU_DEBUG should allow such objects to be reused immediately;
+> but that hasn't actually been working.
 
-在 2025/7/24 17:58, Lorenzo Stoakes 写道:
-> On Thu, Jul 24, 2025 at 05:56:09PM +0800, Huan Yang wrote:
->> 在 2025/7/24 17:45, Lorenzo Stoakes 写道:
->>> Having looked at anon rmap in detail, I have come to think the only sensible way
->>> forward is something fairly bold.
->> Woo, that's really interesting. I'm looking forward to this.
-> Haha thanks, I found the one person in the world who's excited by anon rmap :P
->
-> Or rather, the only OTHER person ;)
+Was the "allow reuse immediately" not working also before you introduced
+CONFIG_SLUB_RCU_DEBUG, or is it a side-effect of that? IOW should we add a
+Fixes: here?
 
-Not only is this interesting, but the efficiency of anonymous page 
-reclamation also frequently affects the performance of our products.
+> I discovered such a UAF bug involving SLAB_TYPESAFE_BY_RCU yesterday; I
+> could only trigger this bug in a KASAN build by disabling
+> CONFIG_SLUB_RCU_DEBUG and applying this patch.
+> 
+> Signed-off-by: Jann Horn <jannh@google.com>
 
-In our flame graphs, we can see that many anonymous page reverse mapping 
-paths are among the hotspots.
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
-Therefore, please continue your work—I’m really looking forward to the 
-results.
+> ---
+>  mm/kasan/common.c | 25 ++++++++++++++++++-------
+>  1 file changed, 18 insertions(+), 7 deletions(-)
+> 
+> diff --git a/mm/kasan/common.c b/mm/kasan/common.c
+> index ed4873e18c75..9142964ab9c9 100644
+> --- a/mm/kasan/common.c
+> +++ b/mm/kasan/common.c
+> @@ -230,16 +230,12 @@ static bool check_slab_allocation(struct kmem_cache *cache, void *object,
+>  }
+>  
+>  static inline void poison_slab_object(struct kmem_cache *cache, void *object,
+> -				      bool init, bool still_accessible)
+> +				      bool init)
+>  {
+>  	void *tagged_object = object;
+>  
+>  	object = kasan_reset_tag(object);
+>  
+> -	/* RCU slabs could be legally used after free within the RCU period. */
+> -	if (unlikely(still_accessible))
+> -		return;
+> -
+>  	kasan_poison(object, round_up(cache->object_size, KASAN_GRANULE_SIZE),
+>  			KASAN_SLAB_FREE, init);
+>  
+> @@ -261,7 +257,22 @@ bool __kasan_slab_free(struct kmem_cache *cache, void *object, bool init,
+>  	if (!kasan_arch_is_ready() || is_kfence_address(object))
+>  		return false;
+>  
+> -	poison_slab_object(cache, object, init, still_accessible);
+> +	/*
+> +	 * If this point is reached with an object that must still be
+> +	 * accessible under RCU, we can't poison it; in that case, also skip the
+> +	 * quarantine. This should mostly only happen when CONFIG_SLUB_RCU_DEBUG
+> +	 * has been disabled manually.
+> +	 *
+> +	 * Putting the object on the quarantine wouldn't help catch UAFs (since
+> +	 * we can't poison it here), and it would mask bugs caused by
+> +	 * SLAB_TYPESAFE_BY_RCU users not being careful enough about object
+> +	 * reuse; so overall, putting the object into the quarantine here would
+> +	 * be counterproductive.
+> +	 */
+> +	if (still_accessible)
+> +		return false;
+> +
+> +	poison_slab_object(cache, object, init);
+>  
+>  	/*
+>  	 * If the object is put into quarantine, do not let slab put the object
+> @@ -519,7 +530,7 @@ bool __kasan_mempool_poison_object(void *ptr, unsigned long ip)
+>  	if (check_slab_allocation(slab->slab_cache, ptr, ip))
+>  		return false;
+>  
+> -	poison_slab_object(slab->slab_cache, ptr, false, false);
+> +	poison_slab_object(slab->slab_cache, ptr, false);
+>  	return true;
+>  }
+>  
+> 
+> ---
+> base-commit: 89be9a83ccf1f88522317ce02f854f30d6115c41
+> change-id: 20250723-kasan-tsbrcu-noquarantine-e207bb990e24
+> 
 
-Additionally, if there’s anything I can do to help, I’d be happy to 
-participate.
-
-Thanks.
-
->
-> Cheers, Lorenzo
->
 
