@@ -2,92 +2,93 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 30830C83F1A
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 13:56:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4F746C83F26
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 13:56:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB3296B02C0; Thu, 24 Jul 2025 09:56:24 -0400 (EDT)
+	id B296F6B02C1; Thu, 24 Jul 2025 09:56:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A8AEE6B02C1; Thu, 24 Jul 2025 09:56:24 -0400 (EDT)
+	id AD9366B02C4; Thu, 24 Jul 2025 09:56:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A02D6B02C3; Thu, 24 Jul 2025 09:56:24 -0400 (EDT)
+	id 954626B02C5; Thu, 24 Jul 2025 09:56:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 80C8B6B02C0
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 09:56:24 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0A6E513328F
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 13:56:24 +0000 (UTC)
-X-FDA: 83699307888.16.AC39E58
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 199E840012
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 13:56:21 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=qJAvPUfF;
-	dmarc=pass (policy=none) header.from=linaro.org;
-	spf=pass (imf01.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.128.47 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 80BF86B02C1
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 09:56:25 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 503C31A03CC
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 13:56:25 +0000 (UTC)
+X-FDA: 83699307930.25.B33BACF
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 4BE4A1C0015
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 13:56:22 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=nB8ok7cf;
+	spf=pass (imf18.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.221.43 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753365382;
+	s=arc-20220608; t=1753365383;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=doj4VgkcPMuCm07rkZxbId/BUVze9/Fe8T+2B7NuuHU=;
-	b=kjRti9pH4ZxTKhNc10PNFjSKy4LF2t6P+IKZ88pXYojYWdObj6gKZbaai66k5xKxXh6C/Y
-	9BY6WXg9MceZU2mIDCRXKJjnS8Q8KJzH+JdO6yhT5Vdft+YCBHt6IVZpx296IzeVXjGD/M
-	T9ckHDJzG5CdiHUGN1RwwP35LwV8B1I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753365382; a=rsa-sha256;
-	cv=none;
-	b=Kr0x0eHF0FpBvci/gevG9XJapuqY+XnwX0UhPaq/NMZyH9jORFU8A2v9k42N7ZnL/g2HTs
-	X5lk/xoTErooC98KVXuiOHj91KfXPqXHCy99hB347b8Moq34c33npBVmzdLy6mJ8NlcV7v
-	K/cWUzVSvBovR1VROJVo9bnrGSCTLXc=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=GN2zEFDyKGDBFhODZpN5vP0Lq5DSvoJDRdz0YaUUvGk=;
+	b=fGJPJQi+TIHUU+RjcJiCGbVFRDXV/icehlwKkBrxg3WU3bE8HcmsiSv40+5h9siJUr+CGM
+	TDKpzqGpKcQeyqZak5BYKw1O+Euc8beFq9qClW9+4j00dsybwjJ3YPfhmLaw37njBNjrIK
+	JpMZSDGTzEE+f43CA00fhVg3a9JUiFQ=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=qJAvPUfF;
-	dmarc=pass (policy=none) header.from=linaro.org;
-	spf=pass (imf01.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.128.47 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-456108bf94bso6525985e9.0
-        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 06:56:21 -0700 (PDT)
+	imf18.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=nB8ok7cf;
+	spf=pass (imf18.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.221.43 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753365383; a=rsa-sha256;
+	cv=none;
+	b=u46oKM8fdR0vsHCr/8ax0oQ+BfxVh7j0CMbNIr2uZTgaH0aeNEz8icWjmCOvwSrXP9XqIL
+	j892AhZLF8u7T6sdpTeVh16R6+mKs2oxVVFAfw4Be0OXbcRsGeZq/9i2JzFaIvzYuxxg+K
+	tzdCLciSzwADOsDCqouC65nv4ID8qKo=
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3b77377858bso230706f8f.3
+        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 06:56:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1753365380; x=1753970180; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=doj4VgkcPMuCm07rkZxbId/BUVze9/Fe8T+2B7NuuHU=;
-        b=qJAvPUfFQC555pwlybjRpMdCJnYy8wK3u28gfTw6EndVIzcNXOu+K4PO3ILaDekXgT
-         dQxaJdwXghc1QYq1y0rgcvUI2LpbqTY1FJsZ57dXzRQ2eWOhP7y9ExGHB2S4lCRH9JU+
-         YT74BVIay3Xv4AQDu+3dTe7fPn0XXBBI6atCQSyXTouorpQjkiw2nC4S89qaDGM9II4k
-         hnadiuBBDcvC3aNEiB0Ydx5CqZXqP1FCecE2yLkqzIOeT7NTwrJwU0sBEXjRNhUpnNfy
-         L4pT0JUGQIkWTo+NqIB+NDGZ3/H57rRHrolKNk3lQdzjKd/So+i7NZLNquzK4Arvp8uv
-         TONA==
+        d=linaro.org; s=google; t=1753365381; x=1753970181; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GN2zEFDyKGDBFhODZpN5vP0Lq5DSvoJDRdz0YaUUvGk=;
+        b=nB8ok7cfWTSdgmLyfNm4Q/ymIc4tvkCgj+8iG1lMao8z0RGZK0TXSyP3Medb+jW2kr
+         TuH2qubQSTuly6gBkrTMtHwBK/Xc1BiGOcHjUQjteSJ56tIuKCUDGw53f6ArGFZiw7a0
+         wDEAln8Tu1kgUv51IR/Y6mHltW7HR/fPeuaLcPW1Bx7m8bFfm/iST7LO4Wtw0YTzDwbj
+         d8C4kDxtGvgzMvxvLkdVv+4Y4BDFWxe7cND/KFo1C75S/vMyo2lwppDkufwWXvhLHcgV
+         BUkLggRUruHCkNnwTkxSvzYeyPNNzbnhNfEG3fkqUJhrprc/uJmBJnk7DIOlXg2m0Wi7
+         w1RQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753365380; x=1753970180;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=doj4VgkcPMuCm07rkZxbId/BUVze9/Fe8T+2B7NuuHU=;
-        b=R8q9CGP8ogjlUr2WKvqpykzdeg6GVnK+Dwtfvy1Q0Q/7aU/kC1xrFrEjHHvavQ+eEZ
-         C7FdU5+ALZ6yM1WuShQU8B3kDC0KBMG0sC5GmY5hGF0sfefAN1mygVJ8Rh/Yi/gpnkJZ
-         allDZHjQz5KTDPJrXS40VHZg8NpRaIXCCKS9ACdu8PIawd0A/LjicQmgYpZ89IfMWS/h
-         Ni+8YGiydHPI4czu/+RH9eHt04jkVaYklpWO3rLlMkSlEiWh1dIOUr0d6wdDIanYJCYz
-         bAbdp8hgl2/hhNhUt2y+r4HK4501zGnWkccgLGDeVrFTSdY4IOXBWFamUgGriF8BNgSF
-         Km2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWJv545RuZqFZzKgW08idGbA6RqaFANFLM4D8uWeyWh6w5R/WuYcY4MGbcWVLfs/5WRlo4xy73G7g==@kvack.org
-X-Gm-Message-State: AOJu0YxuEDEGBX5Z7kMoy/QflRmziNQq8JjtHjmYuCz5oVzj8p/dNQbn
-	ziD3iGDfFOevlAsDDg+Sjr2PSlv7E3IFrH/0OoubpC23kknJDlINW5p83PKyoi9mjmI=
-X-Gm-Gg: ASbGncuNbHEhVq8pK4JtS8ixWsJf+HoAaBek8tGjCJNU8+hCF9xc5KWS6zSFQQEkq/c
-	f5c3OOMXrCJVRKJXlvNRMRQsBlqVow21FrLvQaSJsXUfHWVnoSDI6LRKGDLh4WRWHFl5Y/lij6J
-	OB9kdgkgPs6iNgf624xV3OQ8sG2MwasOqb92vFjncyAC+3QlOu1NlWuxYfOubFAg/HPOnwUAsLb
-	JlDDHw2oczo6PuTIToiTAukQHDTcP6ngkxjyk6Ahy9qXhZgH4lbq/dxi8W+VG6B21prnkTKXUMi
-	hRdVag78vn6Aru3E9QlAbwi3umypqi78r6deXbQlumrnB7Nww2w3pMVwoAzr21PQnuncgGyT6dS
-	tJ+Y+jgsVvJ7Fj73VuG0OB9OTSsTZPPQXNhNt4FE/LxFLLtynyH17/ykhRoz7H3sHiQ+5bn3XIA
-	VKZwDECInT2zqn
-X-Google-Smtp-Source: AGHT+IEgB2qGK5rHK/xrXroIqjpgxM1xiUoTO/MHHfQIsCwn5d+nXDbe5Qo7CYSHLXnX07gaTNJQKQ==
-X-Received: by 2002:a05:6000:4026:b0:3a6:d26a:f0f5 with SMTP id ffacd0b85a97d-3b768ea0591mr7040730f8f.21.1753365380179;
-        Thu, 24 Jul 2025 06:56:20 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1753365381; x=1753970181;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GN2zEFDyKGDBFhODZpN5vP0Lq5DSvoJDRdz0YaUUvGk=;
+        b=reAQbbberWUU8pDvRPOW7cyM2nhtzGPCx1z7eUhAn4pMjAR5q6AqADsxh8/LdVL1/D
+         LpJ21tFKu7O3inTBpEG3lVH6EtwBCb8ffSNJgFsSK97vlqf5feEoR4csC64DQjYvhJzW
+         HZyHW7P1J/3JJDIWkNc1wIYlFWkH/BB+o2pPtKUlLPRmhulXV+pzdyOPklzeLIOzqP9H
+         pA3hJZ4owyANkSibHGsTzdMjH2D2Ah/m+DScq0Ge6cQ0z93qpJ+aXgFZB+XaZPvEHi8L
+         RDL6AJGVCuQS29nZEXpp+GanI4pfjNnrhBxmpfXGrqvUoAFUhB7jlMpJWvhNX7jMknmb
+         VlvA==
+X-Forwarded-Encrypted: i=1; AJvYcCW1RsGRYjEWGFc7kObYrnoyj3ljvf7Jmt0fga4E7cyEplMoIET259IVaEu8nlzKwMWWu+SIgxh5Rw==@kvack.org
+X-Gm-Message-State: AOJu0YwdiI1e9+ezKEsOOQ9qnktbE1ETMjLim+hfJ0y8yCqei5TjiQzI
+	q16WS4kZvRdLSHwacE+Xpvje+9YBGp6H8Jt+U3px5bTHSJvXSNafLzSjwD3ufgYbJes=
+X-Gm-Gg: ASbGncuADja6enAokZMyPUT81FK6mNN7snYqJ5pMWPj3WGiXDUQaDJJtGA2vEIt6ZbA
+	zgN5BuGBHRUtOBFa3f34EidPMO35FmQAfiwKBE9nd4yN9+z77ajCm/dr6rlV1TrZtEkNd1bhTj/
+	jTItSQ4/E0fGw3wh+Mk3BOfTj+mbYzA5R6GrKhByUaXlhwxgPvwO5yefs0g3uVDFEvEOgzKcYpC
+	S5a/v0W6qhePRbiZyS9tQ1zbi57dAe3htkGX16T+2UlGqf7S2pvQ9J/j99j6nXHCyK+ItK1FF4y
+	dmW7uvGnrRBCdIpEpGjmKj6oZKZ8hnHXZD6gHXN9Bw97CzR5n4kc1ayQvokWOtdEZknqOItIWey
+	X4NpP/2vcSE4crZ1sAbQQH8FNv1mqbPCgbcjspeqTvcSrtWVAhL4h1Xe5wQwdhCiKMe1PvFL+gK
+	gILh7QD+mg2o3qGtnsmdq7gQY=
+X-Google-Smtp-Source: AGHT+IHTmHRuZDTBifWGKFIc3eVCp5M+8i6pzB5UkemP/rWgYq+QJTPTzxAD1akVwZJswOYtPp8y1A==
+X-Received: by 2002:a05:6000:144c:b0:3b5:dc2a:ee74 with SMTP id ffacd0b85a97d-3b768eb427amr6529079f8f.24.1753365381251;
+        Thu, 24 Jul 2025 06:56:21 -0700 (PDT)
 Received: from eugen-station.. (cpc148880-bexl9-2-0-cust354.2-3.cable.virginm.net. [82.11.253.99])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4587054e37dsm20889375e9.14.2025.07.24.06.56.19
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4587054e37dsm20889375e9.14.2025.07.24.06.56.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Jul 2025 06:56:19 -0700 (PDT)
+        Thu, 24 Jul 2025 06:56:20 -0700 (PDT)
 From: Eugen Hristev <eugen.hristev@linaro.org>
 To: linux-kernel@vger.kernel.org,
 	linux-arm-msm@vger.kernel.org,
@@ -104,20 +105,22 @@ Cc: linux-arm-kernel@lists.infradead.org,
 	rostedt@goodmis.org,
 	jonechou@google.com,
 	tudor.ambarus@linaro.org
-Subject: [RFC][PATCH v2 00/29] introduce kmemdump
-Date: Thu, 24 Jul 2025 16:54:43 +0300
-Message-ID: <20250724135512.518487-1-eugen.hristev@linaro.org>
+Subject: [RFC][PATCH v2 01/29] kmemdump: introduce kmemdump
+Date: Thu, 24 Jul 2025 16:54:44 +0300
+Message-ID: <20250724135512.518487-2-eugen.hristev@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250724135512.518487-1-eugen.hristev@linaro.org>
+References: <20250724135512.518487-1-eugen.hristev@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 199E840012
-X-Stat-Signature: 9ge6r6wcofxbhrhdbakwrfc6qszmr8qk
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1753365381-582896
-X-HE-Meta: U2FsdGVkX18m33LVCDsdHwsmWGto8/wYnWqz8Ltp1k/daRsXpLB14RCZoEgfS87YCZ+hu4UCYfZGS0D1wGfnHw0otYwk/Hn3EzOdEAHP+NaK12mJo74c2AeOpjYBeQegfluz7EqIk6fyJEFsdz5ok3AHuzol4jw+Pck58hy1VCk3KeoM9KxRaBALCGa9xHf4CvA4a79PYVTVaPaG1mhKQg7xxEywGmtPXV6UoZmqPql3+Gpu62d0j2ho1pQ3gZrbnDhnM0+e36WNSkhG591XfIEwnL7eGy0HHCBb18qqcrpvjKwUzVjbxb55uiKKwUjSvctiKc0oschZKEnBe3Rpv+E72oTRiwxBC9u4yEHYsEw8NqKf1ECx4/NSgZLrLzKK2p1Mtys/5nwk/2nCMp1+tUeYR45rdxEjhb4MuilrseI7JJlmGGAuLnqVlZulP5q07qziUYi58xJWcHmKsiD50oYxJuK9fsujbjXqUpZkju4dBReNKKyBG6FtUARnq3b9+TUU/xajWLv9MEhUgS73GlOhRsMEyjofZMuZ68mJ8l40b5xM1VVoWGte4EOx4Cf/agtDnd7t8euFO3D59MlZnv/ywK2hW48mtsWyBifVth5A7Wp3J5jRb6/xjQqlW8gCrKq4UlpV4Kc4trqiFog1e1rhFXNYe6c8aKHysuqNS7crqCDtNVyA1BM8z2hU8zOqAexTRKgCO2z8jmWkLc/tbLXLGtAS6yENc8QbIKq1chK17vpzRlHng0aff90phzzHgqRqL7c7Q8XmpvL8xu1PzcLbq8uTxZAO1F0Rhrh7zQyjpJ02jVlPd2o5I09qIWAOpD3/QvZp75NYsqniJLxDSqMRJAmHjyyV9mWpmJhYDQlHy1aAy0mwjXewCZRcl7c2tNccYkVgfWkPtjYtl3f/bl7f7mLzWUhSTkEfqscZgRQ4AbfkDzSouFy1vYQSvSEjfg7oSTLt2I8vDsz+Wf3
- jOMULlxs
- LP1UPAoVpHGtfIOMhIUHAgfd3TjTCch79YXRb39CBRmmb3W9x3V5/Wkpua3zmYhP2Axa68S3TE71Tz622MpJ3UJIa7DxTEILaz3ZHsHgQK8QQbaDNt966u9zjpin6bOOIL9I9xMWNqAdp58cFIk06YBckFSANIb1OkBtI27OZPorGp2KQ3osUiSugkZLopTbuejfyiQSMNuDj3kaPBgW0tSzm3Tt3zqb1LP4wK2RFTuFKCxDY6cWiI2JYBJ+h0lWK1TRgZtwjPq6AY4gJ3iQJSc0dWjS5y4RuWdPHjYYFLBKAjtCHIHqx3B9/W8w03d/4VyFH9T74d+TDMvdlutaY3SbJ0LyxyV+wB1b12KFn3B7+V8oKOGFOsKkueyf9/BuIKbtTPbOcUsZNpDozwtPRxXGA1QIWMvfOXHqeBP5vdytMMMEVo5SRkMfx+R4bD+zCQMblRY/75TR7QUXaTadXx39a8779LD/F8h20795zs5BjteTH4isWrVrCRYwt5SR85ZCGsggb3rMNOH/3pYl1rcLbyfNRC0jY5mIc7ntE2XiFmrkgi5SBAKjl5ianQdmmPsVC
+X-Rspamd-Queue-Id: 4BE4A1C0015
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 5ssn5fxszfj9x7x6dz4bdiagqq8381jt
+X-HE-Tag: 1753365382-832977
+X-HE-Meta: U2FsdGVkX1925ux2obL/NwnwMcnhk7mH5OYoVUEuc1O4dit1fa5Si1sGdWkphyWOhLfDJJNGjsSPPC2J58FMGEmbOu79hfR1w966BShxWO7ANjIqpxYf18FcRF2NYIINyoYl3eIJ+3whvaP8r7/VCZ//S5yLnqaJcgS1IisY7UslPzmbB682XE3J0BFPz8ylOt26NdSolDew7WX9Qt0Q+1j58gQPIPeA7TqrEptwQQqx745TAh70f/A7Gog2JE51rm7tEgisFmTtBN4OG28x2pGMT2Wqj5e8gYq6yOtjKWzV+UWjhgOwPK6P7uWx7ChjO5Hrs/upGvFdvAdPOYohfu1l+w3oHw9IukBoQ6iMWvEP4hO5EFGKdJYQDDONTVulywe9l9WJvIr8DSgwXu/w8gmsmRtBHTlrHCv30+fh6nMX6HdPTpKGXdP9J3YO23//2Qco1dACoBJgb9rLxvp9KW6zjsEDbB+bBNClbqy/6vRF0Tj7TNuMeJihCO3j9ABzoJ+SZ9Lvc/Eh6jVbk8Iar8EDqpL3JT87nU9idzxDOpLyatoNOXQQiDNZnv+Aet4XvFDLne3T2KvH/7baEgAoUFxRA0ZPYWgjPHHbHe3z5EvbnhOELqSmBhWndeWVA4qUoI8vfFCfpwg+mI1jSO5rloS+Yt3is2Y7RYh0nxTJcTBktLiZ5rNgKt/nTcyLLl3xwBZEcoCWOZOIetV3FmQeVsu+R1kjNjrk5dUwH8kuKVFXKOZ6fs2hMCkY7B8ppNwXox5uqnHtI258HlFrfNQcgbUHprmm49WC5mycW7+f9Zy1+nFdHX3hJexa4YeyHiIsw0yamiKvF/3C2D3N9lCpccsOJL4YAk+TivVT0db0hmTS80beVUSh7CNF1xRzHDIt1G9Qfru6gMnIhpgAeQRkCeFs4tWW7dOTkPO3ueWG+Rqlfzx5HwLwCPYKIg/vJ5jXW9iBz4wKeD9A7PHbrfc
+ RDbO+w5T
+ zkI/D7XS5vZ3cLA29Oh8pG4kpuaUHCUtFJEQVtplQUxcD4eiVWrrzkHmzFxkYdt2rK6b/jNLdjGO98BqGu/xZUVIZE4hcbkfe42fQw2AlI25X6fYrg3XSBrWR9D5GB3tiRGBgZC+tr6MyqNrx6FizvcGNDwsbIoCqbmL24sMrW2ubA4Hd01LlVJ4yjy6GAasAgJiOuJ9hILI7YyEUnFlTgBfjSJu3VoQTw5IOeGLLIf+myBRql7fJZFx7dMHU/m1XaRPyto43Y3sdUgvUz08j8w35EnS//dmyNo+KcBzYnJdOdBifntHfR93av7phPOOZozpu+UHFoFT+NfC6V5Pg5uiNWFsogfSYYRM+h/zoWVIKVAlsWTaI5uB6iocwoFaIvtCyVkaqqyV45EOI38Mq6Qnj0Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,254 +129,492 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-kmemdump is a mechanism which allows the kernel to mark specific memory
-areas for dumping or specific backend usage.
-Once regions are marked, kmemdump keeps an internal list with the regions
-and registers them in the backend.
-Further, depending on the backend driver, these regions can be dumped using
-firmware or different hardware block.
-Regions being marked beforehand, when the system is up and running, there
-is no need nor dependency on a panic handler, or a working kernel that can
-dump the debug information.
-The kmemdump approach works when pstore, kdump, or another mechanism do not.
-Pstore relies on persistent storage, a dedicated RAM area or flash, which
-has the disadvantage of having the memory reserved all the time, or another
-specific non volatile memory. Some devices cannot keep the RAM contents on
-reboot so ramoops does not work. Some devices do not allow kexec to run
-another kernel to debug the crashed one.
-For such devices, that have another mechanism to help debugging, like
-firmware, kmemdump is a viable solution.
+Kmemdump mechanism allows any driver to mark a specific memory area
+for later dumping purpose, depending on the functionality
+of the attached backend. The backend would interface any hardware
+mechanism that will allow dumping to complete regardless of the
+state of the kernel (running, frozen, crashed, or any particular
+state).
 
-kmemdump can create a core image, similar with /proc/vmcore, with only
-the registered regions included. This can be loaded into crash tool/gdb and
-analyzed.
-To have this working, specific information from the kernel is registered,
-and this is done at kmemdump init time, no need for the kmemdump user to
-do anything.
-
-This version of the kmemdump patch series includes two backend drivers:
-one is the Qualcomm Minidump backend, and the other one is the Debug Kinfo
-backend for Android devices, reworked from this source here:
-https://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/drivers/android/debug_kinfo.c
-written originally by Jone Chou <jonechou@google.com>
-
-Initial version of kmemdump and discussion is available here:
-https://lore.kernel.org/lkml/20250422113156.575971-1-eugen.hristev@linaro.org/
-
-Kmemdump has been presented and discussed at Linaro Connect 2025,
-including motivation, scope, usability and feasability.
-Video of the recording is available here for anyone interested:
-https://www.youtube.com/watch?v=r4gII7MX9zQ&list=PLKZSArYQptsODycGiE0XZdVovzAwYNwtK&index=14
-
-The implementation is based on the initial Pstore/directly mapped zones
-published as an RFC here:
-https://lore.kernel.org/all/20250217101706.2104498-1-eugen.hristev@linaro.org/
-
-The back-end implementation for qcom_minidump is based on the minidump
-patch series and driver written by Mukesh Ojha, thanks:
-https://lore.kernel.org/lkml/20240131110837.14218-1-quic_mojha@quicinc.com/
-
-*** How to use kmemdump with minidump backend on Qualcomm platform guide ***
-
-Prerequisites:
-Crash tool with target=ARM64 and minor changes required for usual crash mode
-(minimal mode works without the patch)
-A patch can be applied from here https://p.calebs.dev/49a048
-This patch will be eventually sent in a reworked way to crash tool.
-
-Target kernel must be built with :
-CONFIG_DEBUG_INFO_REDUCED=n ; this will have vmlinux include all the debugging
-information needed for crash tool.
-
-Otherwise, the kernel requires these as well:
-CONFIG_KMEMDUMP, CONFIG_KMEMDUMP_COREIMAGE, and the backend
-CONFIG_KMEMDUMP_QCOM_MINIDUMP_BACKEND
-
-Kernel arguments:
-Kernel firmware must be set to mode 'mini' by kernel module parameter
-like this : qcom_scm.download_mode=mini
-
-After the kernel boots, and qcom_minidump module is loaded, everything is ready for
-a possible crash.
-
-Once the crash happens, the firmware will kick in and you will see on
-the console the message saying Sahara init, etc, that the firmware is
-waiting in download mode. (this is subject to firmware supporting this
-mode, I am using sa8775p-ride board)
-
-Example of log on the console:
-"
-[...]
-B -   1096414 - usb: init start
-B -   1100287 - usb: qusb_dci_platform , 0x19
-B -   1105686 - usb: usb3phy: PRIM success: lane_A , 0x60
-B -   1107455 - usb: usb2phy: PRIM success , 0x4
-B -   1112670 - usb: dci, chgr_type_det_err
-B -   1117154 - usb: ID:0x260, value: 0x4
-B -   1121942 - usb: ID:0x108, value: 0x1d90
-B -   1124992 - usb: timer_start , 0x4c4b40
-B -   1129140 - usb: vbus_det_pm_unavail
-B -   1133136 - usb: ID:0x252, value: 0x4
-B -   1148874 - usb: SUPER , 0x900e
-B -   1275510 - usb: SUPER , 0x900e
-B -   1388970 - usb: ID:0x20d, value: 0x0
-B -   1411113 - usb: ENUM success
-B -   1411113 - Sahara Init
-B -   1414285 - Sahara Open
-"
-
-Once the board is in download mode, you can use the qdl tool (I
-personally use edl , have not tried qdl yet), to get all the regions as
-separate files.
-The tool from the host computer will list the regions in the order they
-were downloaded.
-
-Once you have all the files simply use `cat` to put them all together,
-in the order of the indexes.
-For my kernel config and setup, here is my cat command : (you can use a script
-or something, I haven't done that so far):
-
-`cat memory/md_KELF1.BIN memory/md_Kvmcorein2.BIN memory/md_Kconfig3.BIN \
-memory/md_Kmemsect4.BIN memory/md_Ktotalram5.BIN memory/md_Kcpu_poss6.BIN \
-memory/md_Kcpu_pres7.BIN memory/md_Kcpu_onli8.BIN memory/md_Kcpu_acti9.BIN \
-memory/md_Kjiffies10.BIN memory/md_Klinux_ba11.BIN memory/md_Knr_threa12.BIN \
- memory/md_Knr_irqs13.BIN memory/md_Ktainted_14.BIN memory/md_Ktaint_fl15.BIN \
-memory/md_Kmem_sect16.BIN memory/md_Knode_dat17.BIN memory/md_Knode_sta18.BIN \
-memory/md_K__per_cp19.BIN memory/md_Knr_swapf20.BIN memory/md_Kinit_uts21.BIN \
-memory/md_Kprintk_r22.BIN memory/md_Kprintk_r23.BIN memory/md_Kprb24.BIN \
-memory/md_Kprb_desc25.BIN memory/md_Kprb_info26.BIN memory/md_Kprb_data27.BIN \
-memory/md_Krunqueue28.BIN memory/md_Khigh_mem29.BIN memory/md_Kinit_mm30.BIN \
-memory/md_Kinit_mm_31.BIN memory/md_Kunknown32.BIN memory/md_Kunknown33.BIN \
-memory/md_Kunknown34.BIN  memory/md_Kunknown35.BIN memory/md_Kunknown36.BIN \
-memory/md_Kunknown37.BIN memory/md_Kunknown38.BIN memory/md_Kunknown39.BIN \
-memory/md_Kunknown40.BIN memory/md_Kunknown41.BIN memory/md_Kunknown42.BIN \
-memory/md_Kunknown43.BIN memory/md_Kunknown44.BIN memory/md_Kunknown45.BIN \
-memory/md_Kunknown46.BIN memory/md_Kunknown47.BIN  memory/md_Kunknown50.BIN \
-memory/md_Kunknown51.BIN memory/md_Kunknown52.BIN \
-memory/md_Kunknown53.BIN > ~/minidump_image`
-
-Once you have the resulted file, use `crash` tool to load it, like this:
-`./crash --no_modules --no_panic --no_kmem_cache --zero_excluded vmlinux minidump_image`
-
-There is also a --minimal mode for ./crash that would work without any patch applied
-to crash tool, but you can't inspect symbols, etc.
-
-Once you load crash you will see something like this :
-
-   KERNEL: /home/eugen/linux-minidump/vmlinux  [TAINTED]
-    DUMPFILE: /home/eugen/new
-        CPUS: 8 [OFFLINE: 7]
-        DATE: Thu Jan  1 02:00:00 EET 1970
-      UPTIME: 00:00:29
-       TASKS: 0
-    NODENAME: qemuarm64
-     RELEASE: 6.16.0-rc7-next-20250721-00029-gf8cffdbf0479-dirty
-     VERSION: #5 SMP PREEMPT Tue Jul 22 18:44:57 EEST 2025
-     MACHINE: aarch64  (unknown Mhz)
-      MEMORY: 34.2 GB
-       PANIC: ""
-crash> log
-[    0.000000] Booting Linux on physical CPU 0x0000000000 [0x410fd4b2]
-[    0.000000] Linux version 6.16.0-rc7-next-20250721-00029-gf8cffdbf0479-dirty (eugen@eugen-station) (aarch64-none-linux-gnu-gcc (Arm GNU Toolchain 13.3.Rel1 (Build arm-13.24)) 13.3.1 20240614, GNU ld (Arm GNU Toolchain 13.3.Rel1 (Build arm-13.24)) 2.42.0.20240614) #5 SMP PREEMPT Tue Jul 22 18:44:57 EEST 2025
-
-
-*** Debug Kinfo backend driver ***
-I don't have any device to actually test this. So I have not.
-I hacked the driver to just use a kmalloc'ed area to save things instead
-of the shared memory, and dumped everything there and checked whether it looks
-sane. If someone is willing to try it out, thanks ! and let me know.
-I know there is no binding documentation for the compatible either.
-
-Thanks for everyone reviewing and bringing ideas into the discussion.
-
-Eugen
-
-Changelog since the v1 of the RFC:
-- Reworked the whole minidump implementation based on suggestions from Thomas Gleixner.
-This means new API, macros, new way to store the regions inside kmemdump
-(ditched the IDR, moved to static allocation, have a static default backend, etc)
-- Reworked qcom_minidump driver based on review from Bjorn Andersson
-- Reworked printk log buffer registration based on review from Petr Mladek
-
-I appologize if I missed any review comments. I know there is still lots of work
-on this series and hope I will improve it more and more.
-Patches are sent on top of next-20250721
-
-Eugen Hristev (29):
-  kmemdump: introduce kmemdump
-  Documentation: add kmemdump
-  kmemdump: add coreimage ELF layer
-  Documentation: kmemdump: add section for coreimage ELF
-  kmemdump: introduce qcom-minidump backend driver
-  soc: qcom: smem: add minidump device
-  init/version: Annotate static information into Kmemdump
-  cpu: Annotate static information into Kmemdump
-  genirq/irqdesc: Annotate static information into Kmemdump
-  panic: Annotate static information into Kmemdump
-  sched/core: Annotate static information into Kmemdump
-  timers: Annotate static information into Kmemdump
-  kernel/fork: Annotate static information into Kmemdump
-  mm/page_alloc: Annotate static information into Kmemdump
-  mm/init-mm: Annotate static information into Kmemdump
-  mm/show_mem: Annotate static information into Kmemdump
-  mm/swapfile: Annotate static information into Kmemdump
-  mm/percpu: Annotate static information into Kmemdump
-  mm/mm_init: Annotate static information into Kmemdump
-  printk: Register information into Kmemdump
-  kernel/configs: Register dynamic information into Kmemdump
-  mm/numa: Register information into Kmemdump
-  mm/sparse: Register information into Kmemdump
-  kernel/vmcore_info: Register dynamic information into Kmemdump
-  kmemdump: Add additional symbols to the coreimage
-  init/version: Annotate init uts name separately into Kmemdump
-  kallsyms: Annotate static information into Kmemdump
-  mm/init-mm: Annotate additional information into Kmemdump
-  kmemdump: Add Kinfo backend driver
-
- Documentation/debug/index.rst      |  17 ++
- Documentation/debug/kmemdump.rst   | 104 +++++++++
- MAINTAINERS                        |  18 ++
- drivers/Kconfig                    |   4 +
- drivers/Makefile                   |   2 +
- drivers/debug/Kconfig              |  55 +++++
- drivers/debug/Makefile             |   6 +
- drivers/debug/kinfo.c              | 304 +++++++++++++++++++++++++
- drivers/debug/kmemdump.c           | 239 +++++++++++++++++++
- drivers/debug/kmemdump_coreimage.c | 223 ++++++++++++++++++
- drivers/debug/qcom_minidump.c      | 353 +++++++++++++++++++++++++++++
- drivers/soc/qcom/smem.c            |  10 +
- include/asm-generic/vmlinux.lds.h  |  13 ++
- include/linux/kmemdump.h           | 219 ++++++++++++++++++
- init/version.c                     |   6 +
- kernel/configs.c                   |   6 +
- kernel/cpu.c                       |   5 +
- kernel/fork.c                      |   2 +
- kernel/irq/irqdesc.c               |   2 +
- kernel/kallsyms.c                  |  10 +
- kernel/panic.c                     |   4 +
- kernel/printk/printk.c             |  28 ++-
- kernel/sched/core.c                |   2 +
- kernel/time/timer.c                |   3 +-
- kernel/vmcore_info.c               |   3 +
- mm/init-mm.c                       |  12 +
- mm/mm_init.c                       |   2 +
- mm/numa.c                          |   5 +-
- mm/page_alloc.c                    |   2 +
- mm/percpu.c                        |   3 +
- mm/show_mem.c                      |   2 +
- mm/sparse.c                        |  16 +-
- mm/swapfile.c                      |   2 +
- 33 files changed, 1670 insertions(+), 12 deletions(-)
- create mode 100644 Documentation/debug/index.rst
- create mode 100644 Documentation/debug/kmemdump.rst
+Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
+---
+ MAINTAINERS                       |   6 +
+ drivers/Kconfig                   |   4 +
+ drivers/Makefile                  |   2 +
+ drivers/debug/Kconfig             |  16 +++
+ drivers/debug/Makefile            |   3 +
+ drivers/debug/kmemdump.c          | 214 ++++++++++++++++++++++++++++++
+ include/asm-generic/vmlinux.lds.h |  13 ++
+ include/linux/kmemdump.h          | 135 +++++++++++++++++++
+ 8 files changed, 393 insertions(+)
  create mode 100644 drivers/debug/Kconfig
  create mode 100644 drivers/debug/Makefile
- create mode 100644 drivers/debug/kinfo.c
  create mode 100644 drivers/debug/kmemdump.c
- create mode 100644 drivers/debug/kmemdump_coreimage.c
- create mode 100644 drivers/debug/qcom_minidump.c
  create mode 100644 include/linux/kmemdump.h
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 70d1a0a62a8e..7e8da575025c 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -13617,6 +13617,12 @@ L:	linux-iio@vger.kernel.org
+ S:	Supported
+ F:	drivers/iio/accel/kionix-kx022a*
+ 
++KMEMDUMP
++M:	Eugen Hristev <eugen.hristev@linaro.org>
++S:	Maintained
++F:	drivers/debug/kmemdump.c
++F:	include/linux/kmemdump.h
++
+ KMEMLEAK
+ M:	Catalin Marinas <catalin.marinas@arm.com>
+ S:	Maintained
+diff --git a/drivers/Kconfig b/drivers/Kconfig
+index e0777f5ed543..412ef182d5c2 100644
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -245,4 +245,8 @@ source "drivers/hte/Kconfig"
+ 
+ source "drivers/cdx/Kconfig"
+ 
++source "drivers/dpll/Kconfig"
++
++source "drivers/debug/Kconfig"
++
+ endmenu
+diff --git a/drivers/Makefile b/drivers/Makefile
+index b5749cf67044..e4cc23f4aba2 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -196,3 +196,5 @@ obj-$(CONFIG_CDX_BUS)		+= cdx/
+ obj-$(CONFIG_DPLL)		+= dpll/
+ 
+ obj-$(CONFIG_S390)		+= s390/
++
++obj-y				+= debug/
+diff --git a/drivers/debug/Kconfig b/drivers/debug/Kconfig
+new file mode 100644
+index 000000000000..b86585c5d621
+--- /dev/null
++++ b/drivers/debug/Kconfig
+@@ -0,0 +1,16 @@
++# SPDX-License-Identifier: GPL-2.0
++menu "Generic Debug Options"
++
++config KMEMDUMP
++	bool "Allow the kernel to register memory regions for dumping purpose"
++	help
++	  Kmemdump mechanism allows any driver to register a specific memory
++	  area for later dumping purpose, depending on the functionality
++	  of the attached backend. The backend would interface any hardware
++	  mechanism that will allow dumping to happen regardless of the
++	  state of the kernel (running, frozen, crashed, or any particular
++	  state).
++
++	  Note that modules using this feature must be rebuilt if option
++	  changes.
++endmenu
+diff --git a/drivers/debug/Makefile b/drivers/debug/Makefile
+new file mode 100644
+index 000000000000..8ed6ec2d8a0d
+--- /dev/null
++++ b/drivers/debug/Makefile
+@@ -0,0 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0
++
++obj-$(CONFIG_KMEMDUMP) += kmemdump.o
+diff --git a/drivers/debug/kmemdump.c b/drivers/debug/kmemdump.c
+new file mode 100644
+index 000000000000..b6d418aafbef
+--- /dev/null
++++ b/drivers/debug/kmemdump.c
+@@ -0,0 +1,214 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/device.h>
++#include <linux/errno.h>
++#include <linux/module.h>
++#include <linux/kmemdump.h>
++
++#define MAX_ZONES 201
++
++static int default_register_region(const struct kmemdump_backend *be,
++				   enum kmemdump_uid id, void *area, size_t sz)
++{
++	return 0;
++}
++
++static int default_unregister_region(const struct kmemdump_backend *be,
++				     enum kmemdump_uid id)
++{
++	return 0;
++}
++
++static const struct kmemdump_backend kmemdump_default_backend = {
++	.name = "default",
++	.register_region = default_register_region,
++	.unregister_region = default_unregister_region,
++};
++
++static const struct kmemdump_backend *backend = &kmemdump_default_backend;
++static DEFINE_MUTEX(kmemdump_lock);
++static struct kmemdump_zone kmemdump_zones[MAX_ZONES];
++
++static int __init init_kmemdump(void)
++{
++	const struct kmemdump_zone *e;
++
++	/* Walk the kmemdump section for static variables and register them */
++	for_each_kmemdump_entry(e)
++		kmemdump_register_id(e->id, e->zone, e->size);
++
++	return 0;
++}
++late_initcall(init_kmemdump);
++
++/**
++ * kmemdump_register_id() - Register region into kmemdump with given ID.
++ * @req_id: Requested unique kmemdump_uid that identifies the region
++ *	This can be KMEMDUMP_ID_NO_ID, in which case the function will
++ *	find an unused ID and return it.
++ * @zone: pointer to the zone of memory
++ * @size: region size
++ *
++ * Return: On success, it returns the unique id for the region.
++ *	 On failure, it returns negative error value.
++ */
++int kmemdump_register_id(enum kmemdump_uid req_id, void *zone, size_t size)
++{
++	struct kmemdump_zone *z;
++	enum kmemdump_uid uid = req_id;
++	int ret;
++
++	if (uid < KMEMDUMP_ID_START)
++		return -EINVAL;
++
++	if (uid >= MAX_ZONES)
++		return -ENOSPC;
++
++	mutex_lock(&kmemdump_lock);
++
++	if (uid == KMEMDUMP_ID_NO_ID)
++		while (uid < MAX_ZONES) {
++			if (!kmemdump_zones[uid].id)
++				break;
++			uid++;
++		}
++
++	if (uid == MAX_ZONES) {
++		mutex_unlock(&kmemdump_lock);
++		return -ENOSPC;
++	}
++
++	z = &kmemdump_zones[uid];
++
++	if (z->id) {
++		mutex_unlock(&kmemdump_lock);
++		return -EALREADY;
++	}
++
++	ret = backend->register_region(backend, uid, zone, size);
++	if (ret) {
++		mutex_unlock(&kmemdump_lock);
++		return ret;
++	}
++
++	z->zone = zone;
++	z->size = size;
++	z->id = uid;
++
++	mutex_unlock(&kmemdump_lock);
++
++	return uid;
++}
++EXPORT_SYMBOL_GPL(kmemdump_register_id);
++
++/**
++ * kmemdump_unregister() - Unregister region from kmemdump.
++ * @id: unique id that was returned when this region was successfully
++ *	registered initially.
++ *
++ * Return: None
++ */
++void kmemdump_unregister(enum kmemdump_uid id)
++{
++	struct kmemdump_zone *z = NULL;
++
++	mutex_lock(&kmemdump_lock);
++
++	z = &kmemdump_zones[id];
++	if (!z->id) {
++		mutex_unlock(&kmemdump_lock);
++		return;
++	}
++
++	backend->unregister_region(backend, z->id);
++
++	memset(z, 0, sizeof(*z));
++
++	mutex_unlock(&kmemdump_lock);
++}
++EXPORT_SYMBOL_GPL(kmemdump_unregister);
++
++/**
++ * kmemdump_register_backend() - Register a backend into kmemdump.
++ * @be: Pointer to a driver allocated backend. This backend must have
++ *	two callbacks for registering and deregistering a zone from the
++ *	backend.
++ *
++ * Only one backend is supported at a time.
++ *
++ * Return: On success, it returns 0, negative error value otherwise.
++ */
++int kmemdump_register_backend(const struct kmemdump_backend *be)
++{
++	enum kmemdump_uid uid;
++	int ret;
++
++	if (!be || !be->register_region || !be->unregister_region)
++		return -EINVAL;
++
++	mutex_lock(&kmemdump_lock);
++
++	/* Try to call the old backend for all existing regions */
++	for (uid = KMEMDUMP_ID_START; uid < MAX_ZONES; uid++)
++		if (kmemdump_zones[uid].id)
++			backend->unregister_region(backend,
++						   kmemdump_zones[uid].id);
++
++	backend = be;
++	pr_debug("kmemdump backend %s registered successfully.\n",
++		 backend->name);
++
++	/* Call the new backend for all existing regions */
++	for (uid = KMEMDUMP_ID_START; uid < MAX_ZONES; uid++) {
++		if (!kmemdump_zones[uid].id)
++			continue;
++		ret = backend->register_region(backend,
++					       kmemdump_zones[uid].id,
++					       kmemdump_zones[uid].zone,
++					       kmemdump_zones[uid].size);
++		if (ret)
++			pr_debug("register region failed with %d\n", ret);
++	}
++
++	mutex_unlock(&kmemdump_lock);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(kmemdump_register_backend);
++
++/**
++ * kmemdump_unregister_backend() - Unregister the backend from kmemdump.
++ * @be: Pointer to a driver allocated backend. This backend must match
++ *	the initially registered backend.
++ *
++ * Only one backend is supported at a time.
++ * Before deregistering, this will call the backend to unregister all the
++ * previously registered zones.
++ *
++ * Return: None
++ */
++void kmemdump_unregister_backend(const struct kmemdump_backend *be)
++{
++	enum kmemdump_uid uid;
++
++	mutex_lock(&kmemdump_lock);
++
++	if (backend != be) {
++		mutex_unlock(&kmemdump_lock);
++		return;
++	}
++
++	/* Try to call the old backend for all existing regions */
++	for (uid = KMEMDUMP_ID_START; uid < MAX_ZONES; uid++)
++		if (kmemdump_zones[uid].id)
++			backend->unregister_region(backend,
++						   kmemdump_zones[uid].id);
++
++	pr_debug("kmemdump backend %s removed successfully.\n", be->name);
++
++	backend = &kmemdump_default_backend;
++
++	mutex_unlock(&kmemdump_lock);
++}
++EXPORT_SYMBOL_GPL(kmemdump_unregister_backend);
++
+diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+index fa5f19b8d53a..433719442a5e 100644
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -488,6 +488,8 @@ defined(CONFIG_AUTOFDO_CLANG) || defined(CONFIG_PROPELLER_CLANG)
+ 	FW_LOADER_BUILT_IN_DATA						\
+ 	TRACEDATA							\
+ 									\
++	KMEMDUMP_TABLE							\
++									\
+ 	PRINTK_INDEX							\
+ 									\
+ 	/* Kernel symbol table: Normal symbols */			\
+@@ -891,6 +893,17 @@ defined(CONFIG_AUTOFDO_CLANG) || defined(CONFIG_PROPELLER_CLANG)
+ #define TRACEDATA
+ #endif
+ 
++#ifdef CONFIG_KMEMDUMP
++#define KMEMDUMP_TABLE							\
++	. = ALIGN(8);							\
++	.kmemdump : AT(ADDR(.kmemdump) - LOAD_OFFSET) {			\
++		BOUNDED_SECTION_POST_LABEL(.kmemdump, __kmemdump_table,	\
++					   , _end)			\
++	}
++#else
++#define KMEMDUMP_TABLE
++#endif
++
+ #ifdef CONFIG_PRINTK_INDEX
+ #define PRINTK_INDEX							\
+ 	.printk_index : AT(ADDR(.printk_index) - LOAD_OFFSET) {		\
+diff --git a/include/linux/kmemdump.h b/include/linux/kmemdump.h
+new file mode 100644
+index 000000000000..c3690423a347
+--- /dev/null
++++ b/include/linux/kmemdump.h
+@@ -0,0 +1,135 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef _KMEMDUMP_H
++#define _KMEMDUMP_H
++
++enum kmemdump_uid {
++	KMEMDUMP_ID_START = 0,
++	KMEMDUMP_ID_USER_START,
++	KMEMDUMP_ID_USER_END,
++	KMEMDUMP_ID_NO_ID,
++};
++
++#ifdef CONFIG_KMEMDUMP
++/**
++ * struct kmemdump_zone - region mark zone information
++ * @id: unique id for this zone
++ * @zone: pointer to the memory area for this zone
++ * @size: size of the memory area of this zone
++ */
++struct kmemdump_zone {
++	enum kmemdump_uid	id;
++	void			*zone;
++	size_t			size;
++};
++
++/* kmemdump section table markers*/
++extern const struct kmemdump_zone __kmemdump_table[];
++extern const struct kmemdump_zone __kmemdump_table_end[];
++
++/* Annotate a variable into the given kmemdump UID */
++#define KMEMDUMP_VAR_ID(idx, sym, sz)						\
++	static const struct kmemdump_zone __UNIQUE_ID(__kmemdump_entry_##sym)	\
++	__used __section(".kmemdump") = { .id = idx,				\
++					  .zone = (void *)&(sym),		\
++					  .size = (sz),				\
++					}
++
++/* Iterate through kmemdump section entries */
++#define for_each_kmemdump_entry(__entry)		\
++	for (__entry = __kmemdump_table;		\
++	     __entry < __kmemdump_table_end;		\
++	     __entry++)
++
++#else
++#define KMEMDUMP_VAR_ID(...)
++#endif
++/*
++ * Wrapper over an existing fn allocator
++ * It will :
++ *	- unregister the memory already registered into kmemdump at the given UID
++ *	- register the memory into kmemdump at the given UID
++ *	- take an argument for the ID and the wanted size
++ */
++#define kmemdump_alloc_id_size_replace(id, sz, fn, ...)			\
++	({								\
++		void *__p = fn(__VA_ARGS__);				\
++									\
++		if (__p) {						\
++			kmemdump_unregister(id);			\
++			kmemdump_register_id(id, __p, sz);		\
++		}							\
++		__p;							\
++	})
++/*
++ * Wrapper over an existing fn allocator
++ * It will :
++ *	- fail if the given UID is already registered
++ *	- register the memory into kmemdump at the given UID
++ *	- take an argument for the ID and the wanted size
++ */
++
++#define kmemdump_alloc_id_size(id, sz, fn, ...)				\
++	({								\
++	void *__p = fn(__VA_ARGS__);				\
++									\
++		if (__p)						\
++			kmemdump_register_id(id, __p, sz);		\
++		__p;							\
++	})
++
++#define kmemdump_alloc_size(...)					\
++	kmemdump_alloc_id_size(KMEMDUMP_ID_NO_ID, __VA_ARGS__)
++
++#define kmemdump_phys_alloc_id_size(id, sz, fn, ...)			\
++	({								\
++		phys_addr_t __p = fn(__VA_ARGS__);			\
++									\
++		if (__p)						\
++			kmemdump_register_id(id, __va(__p), sz);	\
++		__p;							\
++	})
++
++#define kmemdump_phys_alloc_size(...)					\
++	kmemdump_phys_alloc_id_size(KMEMDUMP_ID_NO_ID, __VA_ARGS__)
++
++#define kmemdump_free_id(id, fn, ...)					\
++	({								\
++		kmemdump_unregister(id);				\
++		fn(__VA_ARGS__);					\
++	})
++
++#ifdef CONFIG_KMEMDUMP
++
++#define KMEMDUMP_BACKEND_MAX_NAME 128
++/**
++ * struct kmemdump_backend - region mark backend information
++ * @name: the name of the backend
++ * @register_region: callback to register region in the backend
++ * @unregister_region: callback to unregister region in the backend
++ */
++struct kmemdump_backend {
++	char name[KMEMDUMP_BACKEND_MAX_NAME];
++	int (*register_region)(const struct kmemdump_backend *be,
++			       enum kmemdump_uid uid, void *vaddr, size_t size);
++	int (*unregister_region)(const struct kmemdump_backend *be,
++				 enum kmemdump_uid uid);
++};
++
++int kmemdump_register_backend(const struct kmemdump_backend *backend);
++void kmemdump_unregister_backend(const struct kmemdump_backend *backend);
++
++int kmemdump_register_id(enum kmemdump_uid id, void *zone, size_t size);
++void kmemdump_unregister(enum kmemdump_uid id);
++#else
++static inline int kmemdump_register_id(enum kmemdump_uid uid, void *area,
++				       size_t size)
++{
++	return 0;
++}
++
++static inline void kmemdump_unregister(enum kmemdump_uid id)
++{
++}
++#endif
++
++#endif
 -- 
 2.43.0
 
