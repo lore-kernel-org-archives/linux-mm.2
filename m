@@ -2,253 +2,228 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 358C8C83F1A
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 05:13:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A073C83F1A
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 05:14:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B26528E0041; Thu, 24 Jul 2025 01:13:52 -0400 (EDT)
+	id CD4638E0042; Thu, 24 Jul 2025 01:14:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD7288E0002; Thu, 24 Jul 2025 01:13:52 -0400 (EDT)
+	id CACA58E0002; Thu, 24 Jul 2025 01:14:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9772F8E0041; Thu, 24 Jul 2025 01:13:52 -0400 (EDT)
+	id B4CDE8E0042; Thu, 24 Jul 2025 01:14:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8424A8E0002
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 01:13:52 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 44AE71119AC
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 05:13:52 +0000 (UTC)
-X-FDA: 83697991104.05.BF8B3A7
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 08B641C0008
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 05:13:48 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=boQFFCIU;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=g+CjIYZi;
-	spf=pass (imf21.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 9A32F8E0002
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 01:14:05 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 551721A029F
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 05:14:05 +0000 (UTC)
+X-FDA: 83697991650.19.5383486
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 36AABC000A
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 05:14:01 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Q942Aj1g;
+	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
+	spf=pass (imf10.hostedemail.com: domain of vivek.kasireddy@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=vivek.kasireddy@intel.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753334041; a=rsa-sha256;
+	cv=pass;
+	b=dgS7cl7wKQfzglZH5pfO2sIUKpkaN7AwdZyi5EqKJ9iGNoh6U8CzMi/AmqJE4yICmnghSv
+	tw/FrpYdbkT9AjEZ+h6BJpID3NM8OeSal2JCLzvSH4EdYduITw8i9DjQVFmjVi+uu0WjYr
+	JjPCgpnEHX8LGF0mPsSPHc3P0OhQSm0=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Q942Aj1g;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf10.hostedemail.com: domain of vivek.kasireddy@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=vivek.kasireddy@intel.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753334029;
+	s=arc-20220608; t=1753334041;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7tm5sRUKNKcgqMouXQ3EH1xhGvfaryCLw87u/hkzof0=;
-	b=JPel1N53tE3/XkZCi3iIfup9lAsowVfc5odbCTUhH3An2aRe8ghelQG5bjtmU+M+/NmcV4
-	5um9ypVOXgN1wO/ooMW/+AQPEULzH2y2F6bicER03j1gatQFwsQsyMoFsvPoHjo5F0aSpR
-	L9QTh7mHQxAAcV67aN+98SUKxY+IcZk=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753334029; a=rsa-sha256;
-	cv=pass;
-	b=hBXgru/kocCJUMH6hU6XB53Y+wVR1vIsSQ13i7nBKZRkM36eqiE8ayH1ZJypKC6BGOx2Iu
-	LRFBMRVh4gLW8REo9MpUezTwD1l+UqiVnGHDb6grVSxYp/LMUwZ+ryEveMgTeLdn+sUVyU
-	w4IsWmEZdUBv5AO0Z0Lnp1ACShv8uaM=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=boQFFCIU;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=g+CjIYZi;
-	spf=pass (imf21.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56NLQwLh026822;
-	Thu, 24 Jul 2025 05:13:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=7tm5sRUKNKcgqMouXQ3EH1xhGvfaryCLw87u/hkzof0=; b=
-	boQFFCIUy7ixggii1UhPbw+zu6YXabzVOI4Z0IQ++Fx0x69Y2+Lo8/yICdo9ByT7
-	VlTD8qgABBQn60s+YUytSYKWUVnb7aWJyLgW4yr881FDHDPaQY5Js0G2q5rKumeG
-	FXYNgLoosDjFAPO/YP+y+mejQS9vPP6nzdNWIZUf1CkzQxyTzmVB/+X5cnQNm4r1
-	YIiUvCf7VoBfb7AjqRd9qMZZlldBIc3C+JTHZ7YG1LVNw9ELEZI/kp058oQHcy7j
-	WfIMj1+X8htMBzzQkqt/p1TQ+xGVtJQRFCAsPRK7ZTA+Va93l3QM5/SmNRrH10Qp
-	sXP5DmAdGHDW/ojM6FaT+A==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 482cwhub6k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 24 Jul 2025 05:13:46 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 56O4EjgY010405;
-	Thu, 24 Jul 2025 05:13:45 GMT
-Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11on2052.outbound.protection.outlook.com [40.107.223.52])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4801tbdq01-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 24 Jul 2025 05:13:45 +0000
+	bh=k3O4eP72ZsW5qnij+fAQZ+JKkP5ax8K1UiQRqVG4umA=;
+	b=lBEnMTuyZ2a3k8rllZcM4EPtZ1Hth+9Q7IHJEriedrHsdA79stPmG/jMZZg3as3Qb0+7U1
+	z9JEQMnfo1nUe6Utc6RiRAQnBzfRTBw0Hg839qmKBLTyLx0Kv1ZzTPGWj9SJpnr693OZqj
+	oNkQ4nT924ME7Qv0Kuh9gCcfG1jpYzY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753334042; x=1784870042;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=JoJJobVJO3IvEliM0YpHvR3zR5baor7jVn/JVeXXcGA=;
+  b=Q942Aj1gpAftDnbZHWl89pCEcG/kvNJ8gp7o7g6uCe59yXCmru0OXaWV
+   pR7+sqd6NlTZgjYJmiHe3fXWuEPKNdb+65rSmkN59kFTw5el1lopzBBdj
+   zZsaVhHGFMnx+p6LiyogJPROkE5ZsfVSgONT5WNWUOe3xATbjo/UQ0ePS
+   aW0Mq49pf4xU9EpxTGrBpAfRXyR4h3WIIUUJNGUoBnjEcIOhB5WgwpGAI
+   Wr4ZOPCQpFGpjnoWFjtyxgM83YjnN0i9n8p4wPIwDWZPtwTlurzA55vDD
+   nhTnN+PvPgYmAIUd0MY9oM0N8yBz2kJBkj/ieJsGJCino9YeAXTUm+GDd
+   A==;
+X-CSE-ConnectionGUID: 1FoNU3Q8QM67i3rlTNsx9w==
+X-CSE-MsgGUID: ubFpezhsSGCPH4uqoKhKeg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="55780615"
+X-IronPort-AV: E=Sophos;i="6.16,336,1744095600"; 
+   d="scan'208";a="55780615"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2025 22:14:00 -0700
+X-CSE-ConnectionGUID: TzrUFwe/TmCYBz6eC8hYGg==
+X-CSE-MsgGUID: senWZ3RjQBqeJM+x1QKKgQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,336,1744095600"; 
+   d="scan'208";a="160235183"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2025 22:13:59 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Wed, 23 Jul 2025 22:13:58 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26 via Frontend Transport; Wed, 23 Jul 2025 22:13:58 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (40.107.236.75)
+ by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Wed, 23 Jul 2025 22:13:57 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Kjd+FDnG5+21ds1hr39+pAs4G+aJO1d7rIpO8uYAxOrQKKB/s/uH9tJS04klho2zw6gsCmqf3ASJFcUfdTR11p4434ec58BmUWWuVQysfQ0AIgk0yHYarxE3QKs3jgkO7WBX5s8FmbJIcwKPg5orJniMMbHWiUHo9WuJ+z/JZPc6lana7w0xOS2Q+h9KHoi9kMGKIfdaXakPB3XI0R921V9WnIgZq3VEl64kb63WS5kugxokf02njUwo7HpQeIK82mZ1Ov9YyxykkWjIc4MwbhrxrlCxb+xCWP0xiMWhcBQRQH7dvMEed86psLy2+MXeGYgtUh+tpx799XG/5jLNlg==
+ b=QW8unMj7OMMoP0uCx4u6hgMGTXBIXrsHuxBvdRKwi4t2UUJhwNaiM9f7zZ6+vw9ImVq/70gac21pEG0XUWbpeCav/SrpEl5iZpsKgTMTqrCs3Pe8M3gAK4d7RJGRd/RH5Q194cYdNDGHTEpRMOOz07nAEmuY6PKh3FwQrvm253Y+j62NqUINiPmNmy5MphUIkxHhRNlyay3NEQpxLQT6c3gL8v1KLNPSowdTqc+RwFDQffXkuHregU7/b3k5HvsdPM23Vya6bzADFqa8yJwpmwhULy6LpGtmsEkqcw8kyqxsrGudh6VbDMGdo9f+eZM3JAs9W/Yh2ufKretFL+Tweg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7tm5sRUKNKcgqMouXQ3EH1xhGvfaryCLw87u/hkzof0=;
- b=B8UDkSMubbSxDITMYAtDIk3xYAyo9DouGiNT4PgOlR1+tKveUNVkgXJu2OOHrgNO7/LVWiP61wW0I8ZWelySyKT+1u+1jYTtA0JAnj8Hq7Y+qDk45v3dlvz8X4lxlqDJcAc7C0AoNSM+f4Zg6J7w9m4AXitj4+o+yvpFxQK7vx/NwIHhDbboga+Q8vUQcumYBN7fcNcv3PShfEFPCskbW2YTiEfellM7YFe1YeCk+0pBePEN7KBQQG48dIvhbag8jkkXJw8lWqiv2qi5N59GKpyui2AWwhCVCSu1gjbbFf7MVs8WcwNfBspex0HAhvf2yJ5+2Snw/A6UuQOu9s+6Xw==
+ bh=k3O4eP72ZsW5qnij+fAQZ+JKkP5ax8K1UiQRqVG4umA=;
+ b=BYmFrqFbvLUzzcMIHqjW9vlicgpOWry79AsGfgALXoED3AdPQToMjhlUg37g1qe5+xZszdsUbLKGzmldfTDSAOFNbOuOmiJ99U4OexDKHEYV1yxrHrlFb3bwyeyMdSIJhOeXzK2XYY4td48woxFKqOIIEZN7/6Fe2KWYMGsawEOjmOC6y0fQVJwL3dRiKD2K6dpCwxkxvqUdoIf2dS8L9VjsxBXljKUjh+K+H6M95xsls93Ax/udYPzdy22YSPOXzYVnAXn5rmTdfEn3dk52x0PBXIXXQh70u/S7E3lsDrkokw4ZVOO29eptVutpuJEKK/j1kO7p3yhfjWbAajTBYg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7tm5sRUKNKcgqMouXQ3EH1xhGvfaryCLw87u/hkzof0=;
- b=g+CjIYZiLhYumCy/Ax8DB+mAzoeCIIJDWGTdc5lpq/WXWpFuU1xHwBB7jnzA2k+qY5CTs0c+ZtVywb5I8xxz50+5K/N1gi44445e8TiNkFu9FUIW2GAQQT1tjWVYCpCwm8xbms/HRDA+l55kQh6+s29W3S45b6xwU7MEqQZgKIk=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by PH7PR10MB5673.namprd10.prod.outlook.com (2603:10b6:510:125::19) with
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA0PR11MB7185.namprd11.prod.outlook.com (2603:10b6:208:432::20)
+ by DM4PR11MB6311.namprd11.prod.outlook.com (2603:10b6:8:a6::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.42; Thu, 24 Jul
- 2025 05:13:41 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.8964.019; Thu, 24 Jul 2025
- 05:13:41 +0000
-Date: Thu, 24 Jul 2025 06:13:39 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Jann Horn <jannh@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Pedro Falcato <pfalcato@suse.de>,
-        Linux-MM <linux-mm@kvack.org>,
-        kernel list <linux-kernel@vger.kernel.org>
-Subject: Re: [BUG] hard-to-hit mm_struct UAF due to insufficiently careful
- vma_refcount_put() wrt SLAB_TYPESAFE_BY_RCU
-Message-ID: <b798c84e-f3fd-486d-ad70-c827385a558a@lucifer.local>
-References: <CAG48ez0-deFbVH=E3jbkWx=X3uVbd8nWeo6kbJPQ0KoUD+m2tA@mail.gmail.com>
- <6df9812c-96a5-41be-8b0e-5fff95ec757c@lucifer.local>
- <CAG48ez1A17JC7Q35jmurY+Co0t_a78bPy9eRWRim7xJy9oLCvA@mail.gmail.com>
- <3a233a85-3a94-422e-87be-591f93acbac7@lucifer.local>
- <CAG48ez36AcGBy8_wo09WEHz98Dp44yKZ_FiVtFt8tcV9WiHafA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAG48ez36AcGBy8_wo09WEHz98Dp44yKZ_FiVtFt8tcV9WiHafA@mail.gmail.com>
-X-ClientProxiedBy: LO2P265CA0315.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:a4::15) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.39; Thu, 24 Jul
+ 2025 05:13:49 +0000
+Received: from IA0PR11MB7185.namprd11.prod.outlook.com
+ ([fe80::dd3b:ce77:841a:722b]) by IA0PR11MB7185.namprd11.prod.outlook.com
+ ([fe80::dd3b:ce77:841a:722b%3]) with mapi id 15.20.8943.029; Thu, 24 Jul 2025
+ 05:13:49 +0000
+From: "Kasireddy, Vivek" <vivek.kasireddy@intel.com>
+To: Leon Romanovsky <leon@kernel.org>, Alex Williamson
+	<alex.williamson@redhat.com>
+CC: Leon Romanovsky <leonro@nvidia.com>, Christoph Hellwig <hch@lst.de>, Jason
+ Gunthorpe <jgg@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, Bjorn
+ Helgaas <bhelgaas@google.com>, =?iso-8859-1?Q?Christian_K=F6nig?=
+	<christian.koenig@amd.com>, "dri-devel@lists.freedesktop.org"
+	<dri-devel@lists.freedesktop.org>, "iommu@lists.linux.dev"
+	<iommu@lists.linux.dev>, Jens Axboe <axboe@kernel.dk>,
+	=?iso-8859-1?Q?J=E9r=F4me_Glisse?= <jglisse@redhat.com>, Joerg Roedel
+	<joro@8bytes.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
+	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-pci@vger.kernel.org"
+	<linux-pci@vger.kernel.org>, Logan Gunthorpe <logang@deltatee.com>, "Marek
+ Szyprowski" <m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>, Will Deacon <will@kernel.org>
+Subject: RE: [PATCH 10/10] vfio/pci: Add dma-buf export support for MMIO
+ regions
+Thread-Topic: [PATCH 10/10] vfio/pci: Add dma-buf export support for MMIO
+ regions
+Thread-Index: AQHb+9IaqW2aYf5a0kKT+xAFJGMHyLRAkYIg
+Date: Thu, 24 Jul 2025 05:13:49 +0000
+Message-ID: <IA0PR11MB7185E487736B8B4CD70600DEF85EA@IA0PR11MB7185.namprd11.prod.outlook.com>
+References: <cover.1753274085.git.leonro@nvidia.com>
+ <aea452cc27ca9e5169f7279d7b524190c39e7260.1753274085.git.leonro@nvidia.com>
+In-Reply-To: <aea452cc27ca9e5169f7279d7b524190c39e7260.1753274085.git.leonro@nvidia.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA0PR11MB7185:EE_|DM4PR11MB6311:EE_
+x-ms-office365-filtering-correlation-id: 6f035736-2d25-4cf1-8e48-08ddca70dfb3
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014|38070700018;
+x-microsoft-antispam-message-info: =?iso-8859-1?Q?TplHPSr9behLwrKHcSXAoZCbZM9Zj9CvLeMPXLjgYWEx0pIiT0PyQiKNbU?=
+ =?iso-8859-1?Q?HSwVYXbdwqqDHkdQ4aTlGWu7NTecvF/NFXiTDRYCIVduHH2cC1gRMl1JrI?=
+ =?iso-8859-1?Q?9c/Mof3HMQ/2tgrIlDsYNaOOQ741d8VZOTODEP9Q6BeAr9gKWtHtCoYgY3?=
+ =?iso-8859-1?Q?Q9lh5Jy0MZ/kzXPqvNJWezLsfCx8F8jf8gklcWStpWLoOY+8RQ2l44nE4m?=
+ =?iso-8859-1?Q?u8ahXn28U9AiLVUYOhN67o/cABAKEZ6XFp5qPuCLM/0ghflQ6Zzw1UBpAB?=
+ =?iso-8859-1?Q?4RRsfpw/L+LtAtuxVWAkNndieSP5ZiBl81ZWfxpZF4DgLTDp+pgiPhqba1?=
+ =?iso-8859-1?Q?N4IiwWtChoS54CCprGlPs6qwlST6NKvZvhxMw0n/ykMmCk9Ib1u4IQ4uYs?=
+ =?iso-8859-1?Q?eliHZIA1YufiZRZXq3GORLMQZnot6/xgeys2rD0QRICwJvm6R1748G/HM+?=
+ =?iso-8859-1?Q?Oo8Vg3etnNwllETZsOY4tDpV6M3077g8XahF8oWQAN0dRIMWld7jBPT8G3?=
+ =?iso-8859-1?Q?ig+DNLEerJW6JAUmnTtHcOSoTSCReQEbowcIVBaThHr4qDorjU7KIJMjVU?=
+ =?iso-8859-1?Q?YeBLqBQyYZZFzy0+BLrse6zwKY/0bcMFyVhtPZvxvqoIhss7qNW3fJi6kn?=
+ =?iso-8859-1?Q?VfXOmOMt3gJwM0b/+7tfyRHjcz7OGDhD93YfmD4MtGUS1F+Y0JTpu7de81?=
+ =?iso-8859-1?Q?HkbtonL3y7Cv2MHv3VyI1RgylbcgUjSx0PWaFInLJyPHbhA3IDt6Tc0GNu?=
+ =?iso-8859-1?Q?XsGvQvFBv+W2bwR+dv+xwDnIvoNk6GGUDiyVB7o0xoGQbf+UIcCWuTLbq2?=
+ =?iso-8859-1?Q?8xfbHcFdSv8oN+4M8mBeBc+DyORgAmuJ3cJZGuxWjTthjGpt4Vs/5NY7yS?=
+ =?iso-8859-1?Q?9LdawRIDYnc9nO+NMOD49emJTymdCgSwtNrNNaWtSt0JnOy/98H7aiOKMq?=
+ =?iso-8859-1?Q?nQdWKKe6ESGl0m8tDfUE+1ikN1N8SXv/pcgrKEczg7izmGi3qQwdKfj+b3?=
+ =?iso-8859-1?Q?KlMR6X74hhJbKM+HarpX9HOFbPZBl21QRt0JUZeofvCU3dR5N/gB+CQOiy?=
+ =?iso-8859-1?Q?itfiR+KIzXdNSKG9bOr+p6jegzXikRRjqCQ5gm2rf+cZZhzMBgMASV35sq?=
+ =?iso-8859-1?Q?5iJDzJvxKLYY3FP/5LlGRClDD52w4q4m9KL65GBGuK4u8PEz0450q0730Y?=
+ =?iso-8859-1?Q?Ai34QSlzece8ObEr2MR2t8WfNjR1Gh05LB/GADwwS8PMjjKnM+D2pduZgv?=
+ =?iso-8859-1?Q?ZPo0mwNfGIvGqqO2OqgKN4A3mNfaMkuHOFz4lAWG3coJ7vlrSD4j2ylrNW?=
+ =?iso-8859-1?Q?j3JrG18JN8CodtaM1pldbLbJ03udG2YLMCO5MWA4+Si3G2ojpAkrGBfp0r?=
+ =?iso-8859-1?Q?dkoggGCM8mYu2xGr3hsT1nmXoaipKAJIFSEtUVb/9cNCrdswcir3tWQi6F?=
+ =?iso-8859-1?Q?cGo6zOBlVHVZ6s24TEPJPx0S+TUuZBdNKG35qtviGfzPjGAaDrDbOQNgn2?=
+ =?iso-8859-1?Q?FgdmKLk02N2Zgez1R5SiDWhxX1/Gvc6FwLKji5sars5Q=3D=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR11MB7185.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?fl6L1+R5WKhGk9NgEJrrAjeJc/FLUP/HUbkR5648OFEa6A0Ms5V/xEJJvR?=
+ =?iso-8859-1?Q?sT1w7IGYa7uxCm83uqnUfZEGMa2dyeaaLdPSRzElNZTcMz+yFKiNVYc6Wn?=
+ =?iso-8859-1?Q?EUC0DCa3oL0kT2dxb1pT605T5C/orMKJst0+JmbQAhSLwBEe9kcFPEOI9y?=
+ =?iso-8859-1?Q?tH8snNFfT0/q55q46TZbKS1yIoQ3F4dPGww0uJjh1AXwV6AXNBuDEPJ/Bq?=
+ =?iso-8859-1?Q?fUfmIPNHTSAHsmJrM+nq69xVpJEcfTDaQSUl5htEQZwo24qSRjy4ch9+VE?=
+ =?iso-8859-1?Q?ST3+g7QBgKlW3Y+VN0RmHAswopNlEfjwKJi1WA8UoLSYuHGBgrtJA6JC26?=
+ =?iso-8859-1?Q?eGIBU6sORPeka7e+fBTIgC7BnRObf8DgDaU35mZr1tpt5sYsEH+qpem7F6?=
+ =?iso-8859-1?Q?P7B+5X+EoVuQX8X6VJgYtT7i/D+P66habIkaiZPDwvrvD77vnJe4iQuvUn?=
+ =?iso-8859-1?Q?+EY48W70XrzdCb+FKOumfm2DOZrnZ0ZawZkyetDyPAb32zUct6h7D3Yoog?=
+ =?iso-8859-1?Q?VPfUQCA19slDFFrpm/q8YvmpzMVpw1LsWcNmsnqbcN3RJwQI2aHoR8mFm5?=
+ =?iso-8859-1?Q?vZVBSJzi67N5r4Qd86uJKmLxEezLfqYUtllqHDdqpACzrCxQlpOXczj3OB?=
+ =?iso-8859-1?Q?FKnUVuqDt519yCFdPy3JQqGPjBSoQA0k77uJIYhP1l/JmMqmf8+Lp7kJn4?=
+ =?iso-8859-1?Q?fT1BeVnofMKVpFBAALkePpOf29QgxjJMa/PNWi3/vlP2YAS11EsuqpXa89?=
+ =?iso-8859-1?Q?s6zcBTnWGhOjNKjPgDRd/hgqbWMqdw3wYVpbj7xC9kBdazKUUjOu+YDEY2?=
+ =?iso-8859-1?Q?vv5pnpob5+A6GHOMYe044QCR/d9VNO4u1MUZLBsn3Arpesn8NFNrN87M5F?=
+ =?iso-8859-1?Q?HiCUsFIgEGfHS4wz4lyIKxxZqUrcspx5OlhTGWtAD4N+7VJx+TdnkRxXze?=
+ =?iso-8859-1?Q?stMoYPbGxhPOQPCVDCYtSSPtk7PuG/4fXNiVk8+QG7KPWzgY+mIL+XF0hf?=
+ =?iso-8859-1?Q?Yf5LTO32yManXZTrKnwRq4x/a5nOuil1mzgA/S3ZV25VlQ3c8pL0LbtNE2?=
+ =?iso-8859-1?Q?/YajsHQ6WYqNlGZ/GPQthmbLIuG265xIMlX2s8f97J1Psw1F1GORv84Arn?=
+ =?iso-8859-1?Q?EbL4EFh+kIm9No8K7EHxZk66ZE0MEd0MH35xJOu1LsFh+LnRGAwuVDxlv8?=
+ =?iso-8859-1?Q?ibMfXQ0oLuHPSkW/xf7MlM/xlLE0GYpgyg2wKZOacgzEc8YStMaQh1/N1r?=
+ =?iso-8859-1?Q?lOFi7Eyec4yhvZrZvkUz//CcOCQq07IwStO+2KOMrYFBrJqz/1LZOYgKSf?=
+ =?iso-8859-1?Q?kdDGkUUTQ/zVtIiIkrwBsmIYGjNXYM6Y+HkDxEjz3240mQdFR46EGYAbFL?=
+ =?iso-8859-1?Q?Td86vNZxEWcvlNlryY6Yyk+eTbC4gOxDgmhEBd0pC4cIYM7Gbyd07WSpWf?=
+ =?iso-8859-1?Q?Z2iekjSMX5DM8fTWnUA3lBECHm/Rk1FSrdTZwz5/JeDF/0ow0ia6uLnaz7?=
+ =?iso-8859-1?Q?J8EWsf27efUDplrN8fPPmc4sH9tjuRDN2tX0V5/m4XsuU5GUt9d/DMsCic?=
+ =?iso-8859-1?Q?Muc2ycQnZIloPP1aQOXcTBvgVn6l9s+uO+SJjpntF4fEII+zwtlTwPYElc?=
+ =?iso-8859-1?Q?JMeuyh8uqOVH9fO8KHL1kFA7Guo4g3CQME?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|PH7PR10MB5673:EE_
-X-MS-Office365-Filtering-Correlation-Id: d2a6e4c9-4bcd-4ad2-977c-08ddca70dabf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?alA1T29WQkMyWDljVkl0MCtCMGNHY1ZHTEUyUTZLdGtPN0RKTGlOeXppYmZr?=
- =?utf-8?B?bmFqcU15MGlRRjYwek1Mek56dElPYk05ekVTNGc4SHE2czBtZDhXcFZHM1NH?=
- =?utf-8?B?VU5SUmJDOXlocVpreXRtcTY3bU1xMURvTHBtNElVSjBNU0dHWVBnbHFsV1BV?=
- =?utf-8?B?SStlU0dpQndMMFFQaWYySUNvZ3Fmc0xMTnZ1UzJVR0lleVBkakdYTmo2MGwy?=
- =?utf-8?B?NzhNVEJkZHdwVlVRSWI4TGlJUVhmcGZyWk1oZ2hEUFRIaEUyaEg1Z01qREdY?=
- =?utf-8?B?VHZqeE41eFRoYkNKbXJ0RFN5eDRTOGpMZnVmT1dGTWhoVndZWEhkOVZaMFJ1?=
- =?utf-8?B?Si8raGs5OGJIR0NEbjhBZzVDNDU4OFpBTWtRL0lPd3NJZXNZcENsNjBhbnQ1?=
- =?utf-8?B?dnRUOStvRVcwWWxDb0kzWFR6UGpYVXAveGp2K2dVdzN1TUE2MGQwZ3h1Y3ZI?=
- =?utf-8?B?cHNtN2pQTkIybjNZZVdCWWJXMWpjNlVKcFNUV1FTK3BQbkNLY2p2NkFqMHBU?=
- =?utf-8?B?SGFqR2dYempLQWNiaGpDTmd4Zjlqd1JnYmtWNjg5a2IyRlRMTUw0ek5BYWpB?=
- =?utf-8?B?ditwQW5GNkg1VEJWYlloQWRtVW9pdk9NaFFWVjF5YlZjZjZuZTFKaFBmajNI?=
- =?utf-8?B?cktEUlpLcGkxb0VOT0hPZHhoWTRoRm04UlBUanVPWHlGVlZtOUx1U0czandT?=
- =?utf-8?B?aXF5ZjNxa1VpTjJkOSs3LytsdGUwakkyUXJ3VnhCcCsybGFOMmk4dWxxcDA0?=
- =?utf-8?B?eTdOaUloTEtoVXJQc3J0NVl5dDZEYnQvbmNzS3Yxd1FJVmlyUE1nbm50dDY0?=
- =?utf-8?B?dkxuenBUbUlkSDNQeStWcE5MODlLS016Z0Y2MU4rL2xZSWQvSU1hOU1nam8y?=
- =?utf-8?B?OFE4WE5KejVZWHg2TG9PZWhxWjJ4Q1pERFgwQi80SFVQWDFZZWIvUzdUQzBJ?=
- =?utf-8?B?ekZsSE14emsyMks3YXAzczROV3p5Z1IzVGNueDFuQVRmWFhDT1dZdW5UMGlW?=
- =?utf-8?B?bUpHOXdrWUlkSnVLZDZqNVhNYkxqL25uNHdGR1pSMk9EUWdXa0VPNkNVbU82?=
- =?utf-8?B?MDRxci9Fcmg0SXY2WVc1ZnBUSG41NkNqSTJzS0pyUitnMkRLTG9lZHJjY3py?=
- =?utf-8?B?ZGtrOWFJYmc3cjdnMlpZdStuT3lTTHgxQlhkMjRFZXRRUnVFemxUNXVLbzVm?=
- =?utf-8?B?d2kyZUZtMlJpQlNueFBONWU0QmxuczBUbDY5WXdZMG9QT3oydm55dWRyWFBL?=
- =?utf-8?B?aEREbDFkRndqNVBmekNLYXZra3FsOGdzd0tmVlJnR3RESW96b2FBaFZDalZs?=
- =?utf-8?B?ZXVXb3FqbzEyTlRWamZYd3VVNnVRQ2hWVVpRd0xua1dBb25mSlYwaDZuNWlR?=
- =?utf-8?B?S2JpbTVMTnRxZFd3UGZYQStPOWd6L1RmRlpOczBkYlBNalJscjVRNEI5dkVu?=
- =?utf-8?B?WWo5eTBZRFg2Wi95cjJXU0FLOVdRYldSclV2cmxDQnlSTStjN1VwOFZ5cGlG?=
- =?utf-8?B?ei9yQjJDcWtCWEQ5cUplOG1GaUpJcDUzS05HelFrRlBUcXVrc0p6YnIydkM4?=
- =?utf-8?B?NjNvS01uVUx0WHd1ZWFUVGJXTUpUdUlFclFEVVBDU1BwUFdYQ2xqekRUWEk3?=
- =?utf-8?B?NkcxNk1iTzlOTnJCbDBmM1lHRVRVb3Q1U3hXQ2daRTZDM1hwc0xLNFJ3Rzdt?=
- =?utf-8?B?WDR5dnE4QmdSSEpvRDRiZ3BIaDE3LzlpMEJjVFJqWlpOSlVqMEw0N3lQbUtr?=
- =?utf-8?B?cXVXMXN5SllOb0tKd2NvVnA4UE9sRWhBUmpGY3JGL25xUFo1U21GY29tMTMr?=
- =?utf-8?B?MWFHTU9ydHd0T1k0bzhXaHliTVBKZ2RuK2FmaVZPM2NXb3VpVGxVY1M2emlj?=
- =?utf-8?B?TWtBbjFkREN6UFgrSlNHTVhzcFdqSE9ZNEs3d2YrYkpwWEYwVEF5a2xWMDk3?=
- =?utf-8?Q?Sj+1IaHxCSA=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VE9yOGxHSnZlSitJSU9aa254MzMxYjQrRVlINGMrb2JWakZXSUd0ZncvQzda?=
- =?utf-8?B?VThubmpzWlVZWEt0aDY1T0FQQXhJQmhNZHdzd2czNlNXSUtiZzBQeHRVQUg1?=
- =?utf-8?B?SlBmTkgxcVQyQnBDeEFXM1V2Y21BNnVnOUtxMVFuNzQ4TEFIY0hzVndWRm80?=
- =?utf-8?B?MmhxTTBCVGUzRjY4a0VSSkJnYUJsYVpsdUE5TVFIZ0krdHp6MkhFQ21iaUlO?=
- =?utf-8?B?cVlLQVMwWmxmQU1KODhTZmx5dytqQVo1ZU5rMmlnV0ljMTdYUXFaWjJJMGNM?=
- =?utf-8?B?YUxiekRqWHE5YVkxRFhoOFdhZ2RSN1ZXTkcxK0ZuZjJ5WXZQZnZBd3JsY1RT?=
- =?utf-8?B?RU93LzdoNmVORDRnUW1hUFJWZ1V4em1yUktyZit2c21lZ0pHMUU0M3JaS1RE?=
- =?utf-8?B?Z3dTMWZFVGdPUzVGSkIwSTNBMTFTb1hraVpSc05rQUlDdmg0RG1LcHBtRzhT?=
- =?utf-8?B?OVQ2eFZhcjJCZ01xOERhUUIxbXQ2UlRxa041bUtBR213YlFrY0x6MVYrMnBy?=
- =?utf-8?B?MVhHU043Nm5WSitjdXpITXlDd2o0UXV6OE1KSzVmYlRpbmxlMDRtcmhGV3hE?=
- =?utf-8?B?ODhDWkU3SzdnVEFYUGlVUjBqVkpsR3Z5d3VLazRhSlRDSEc0ZGlpNnVFdC91?=
- =?utf-8?B?cmMxam5jVC9vVlFacWFFVE42aUh6ekVKVUM2RGJUaFRja0lyczc1NVdDdVdn?=
- =?utf-8?B?SU5vTGI2emNlbm84bGs1NlcyeE5aeTIzNytEUHVKZEU5Ky8zdUFwNXJjLzVR?=
- =?utf-8?B?aWdqdmxlMmpQMHllK0hRTkFoUWtvR0hxcE4wUndzNUxNS1FZeFMxbFR1QTVs?=
- =?utf-8?B?OEVIKzU2dy82RHJSVXloamxXcTJ0elU4ZXo1QU5XTm00UHVMTnRDbzF3Vmh0?=
- =?utf-8?B?T1hEVGNKcC9iaWhoVXIrUnVuSG1DajFIamlmZUxtNTJ6M21UUGhTZnpvdHg1?=
- =?utf-8?B?REpSdzVtdXhsZ1N6SDZkQmJpWDNLWGJSTUZDQkFROUJqK0w1Ym01elZRbm1v?=
- =?utf-8?B?anF0SkVlejVlMzM2VnhyRTFZWGNJU3kxZVl5UzdxTnZrU3FTR3dVQmV1RUNz?=
- =?utf-8?B?VVNaclVGVG9jUGgxT1NxS0gyM3BFY3ZwNkVtYWNxNysxWlREcXRSMmRKQy9r?=
- =?utf-8?B?Y0ZWZHhSaWxseDh3NkxQQW1oL3UzZWJ2dkM3Yld1Z1dwY0NFR0VDS3RxMGVD?=
- =?utf-8?B?bUwzZ2NLNFhzaHk5Rkh3d3V1ZnJHVndUcHlBMThKZGZOV1VJc1c2a1lRTUtY?=
- =?utf-8?B?UVhIam54bHY2VmdOcE9XVy8xelFBRUg2WVB6S1hMTDB3YVJ0bitYY1dxTmI5?=
- =?utf-8?B?STZIUmUxVG15WUxGMHJLMDgxOHlRSDNlNmxEeTRaZUtra0dUdFF0QWFEM2xS?=
- =?utf-8?B?RzIydTZydkZvZ29oa2VQSHlDbHdOSDNrV2NLenBpU3BLTTBDMkVYWWIreDNq?=
- =?utf-8?B?Ris5MTBlc0E0a1FScWlISlRFSmhQQ0FkOXYxRlQzQk1QV25ub0Q1dmYzbkR2?=
- =?utf-8?B?b0kwd2xkZ3AxV1NSSDNmOE0yYTVjWVJVRDFiUURxVTlodkpGdGtEaGlkSGE5?=
- =?utf-8?B?OFp3QlVOQ3h5UXN2MC84blBNV0JUQTRGYnIycFlidUV2QUZERHJiYXU3TlRP?=
- =?utf-8?B?NjB1Wjc1OEpSN3daWWJBZENRckdUU2FiZzdjbFg5WXFpK2tUSk1JVTFBSVdv?=
- =?utf-8?B?TW9VdFNrNTkyQkVoTnpFMHgwSDlXdTQ5RVlTNDRVb3hpc3IxMnZoUGI3Ritm?=
- =?utf-8?B?c1VkWkJlemFZeTVGbjgyVEE1QzZLZTZNVC9JM0UrUmlzcGtYN0RGRlZ0KzZP?=
- =?utf-8?B?M1o0QVJTcnU4MkVWdlRjRGNXOUZPV1J6V0FzU3JrLzlDV2R0SVFqMTRRSTJZ?=
- =?utf-8?B?LzU5dlpRa1Jmd3FjNDNScFdMajE0UDNSaDRXdlI4Ylp3dE1kT0VjQzl2c2pO?=
- =?utf-8?B?TmNwcFhOeExIRy9oTEt1cTBZZ0E5SUhNem1PV09WRVZaWDhFcE9LVGdlbmY1?=
- =?utf-8?B?R3BCcGxmeVZuNis1Q3JCTzVNTVAvbzRLSjNqWEpvTlN5U0ZtaStyL080L3Fr?=
- =?utf-8?B?VFZYZVQ1WlJCLy90aUwxTnJRRWxiUXFGL2JJV2ZzdldmYklSMlBLUUUyUGFK?=
- =?utf-8?B?dlYwRGRaRXpucWtFejY2VVBCdHo4ZXRzQVByTjBJR3FCMlBYVnFDZ1FqTTFr?=
- =?utf-8?B?ZFE9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	IZghH5kN5UFET0FmxDhDZtr5HzVi5w3KYx/6gM5yUIwWcTOC5pW4xdsVvEadgyhsjK7hJ4egsxxt0glLdRCoEue0vt2bfDtjiTUKzcbEOwgI0vQADI9D1FA4kYkh+8vjlz7+XezReObZGr7BKodDg1nLrgcaxRGai1OvQAjhJPTpYZgQ1RjSdft7JtpognLARjTd1sxAvpDjsoIj+f5YpQ+iJTtpNVfRnjfRO3yS51iRJc3/1sFeLEQHSuKyUlHD1sjX+rs+eOlzF95eTQ2TqPVwuj781mhV2jLKVEXFKZWRP6EDEpw2IeXgbTRh52DAxWJBePuGDvdG2VM/v8yVMyQ44/vZTQowIwcLK6v33Kb3OPqRWlJltB/jCj1wRRGU5uvxviZ5Jq64gMPEXL7fPEUniO9Fb/C3KHSYp7PU9meZvd0YfWsQRnO9QRWdC/V6vFa7jznzKcy88xvaDVuUwA6tOXKNG+iN7f5K+ow29F+QQcB5MdgKADZMSErac+g+KOdJbOwc7Hk9tTJxWfkxDWUO6bWxddOK9+eEcynjVRRl/QQkamLoSFoL530mytqO3XzGEtIsVk+juSBvs2JcZLYQWTVu7TLfp4qVjoesAhs=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d2a6e4c9-4bcd-4ad2-977c-08ddca70dabf
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2025 05:13:41.2331
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB7185.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6f035736-2d25-4cf1-8e48-08ddca70dfb3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Jul 2025 05:13:49.4350
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5Owk3xQqI7G67q0S37iavs837et8TWNvSPVefem46kq12B6ifOc01Y8GP9YZrHeEOLYi4VeuOF1mgcOrC16OdbH1foDSkYpIZNybuekP+UU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR10MB5673
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-23_03,2025-07-23_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 phishscore=0
- mlxscore=0 bulkscore=0 mlxlogscore=999 suspectscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2507240032
-X-Proofpoint-GUID: 4nm1rxqt7bUeXZ4COBf9yDrHlUQxjzPn
-X-Proofpoint-ORIG-GUID: 4nm1rxqt7bUeXZ4COBf9yDrHlUQxjzPn
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI0MDAzMSBTYWx0ZWRfX8Ax5wBtLllCh
- gIwJSFsw+pGGMnCRHhzIZ7Dazh7/GGJhI3S/BOaAuumM1JqMIi5ozU88REwKZK8Oew2Y7lcs6jF
- 0mH3ZutjRJYB9CWmBUl+r12MJ5R+UvsHf4dh6fMi7V2jAlPCTPiFIkiik/K0+Lgx0zTBX5KzYwC
- aFD6hsDcRs4B7rpk3eszHTSuvNAMuvjcAbHyZRqiUy26ew8reiJcBUAKlnWb8hJae9E/x9ocGJe
- KvK/tp1CHLTarnV2iDvumDyJ/NlghvWOx+oTZBQAEz/QMOXNSA37KV/y1ICdq42HfEWYVobDzWl
- jKVkM4xE/UX3Wriaqt27vSa2KD9KaQZujNdgYBPcM1un75xUFDReuG0IDISG9DCff2NS/31NjUJ
- 3nItRnEDP+h0xZSwVAaURlhBj6pFX9VJrJCPdPS9xiQV72O/ZQxa3HxUgYBBbeSQx3SGW9Xf
-X-Authority-Analysis: v=2.4 cv=IPoCChvG c=1 sm=1 tr=0 ts=6881c10a cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
- a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
- a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=GoEa3M9JfhUA:10
- a=yPCof4ZbAAAA:8 a=7yn845ouWORMtootedAA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Rspamd-Queue-Id: 08B641C0008
-X-Stat-Signature: 94f7aww9kh5ujjyfyxjjtqj4gjyxcf3e
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: hVN0hBtwyH/OgODuXu4e+Zvy6ZatZaBSGrvEfm5CoxQCZebQ9Kq/dj7HbLE9KqgSnmViyAcDvBAlJGa/ycMqBYcrvoJYvVDIAmC8U3+2eLY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6311
+X-OriginatorOrg: intel.com
+X-Stat-Signature: 3d66qhgx8ebf5eg6dewnekbkzcqa6fzs
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1753334028-909768
-X-HE-Meta: U2FsdGVkX19LXYvtR6S9CWJeTqDVrAI+X/I7p5OK848vG4SwRx2p2gAa2kWlwHOn2Q3HyC6Uy41qadJxPVk08nerCWSh6P6hnaNlyWAzsvvHln8H5/FfbuswH4w88PuaCazKqrXm0AYjpobcYbTIgzzNvFZ4HCjsBzOLJ3fPL4RXFOgfXCy2ZVC8PM/pLNJ/D5en5b6SPbnU36DlOepImj+edcOMkfB2NPECWON3VsFtqok6pj21PrXSZwwBWg3J5hz7lonj2x+e3H4U6zhOYgDjlMvAhldWR2h9J9hyjr+FXqdqN3dukVB7rIPWaSYroWjogn4plA1h0hTRgnYgDCRBTRiY3VtbtsYL55yUZkkwVJnpyQR1BXs1dwyZAndZpK/QyHwoOPKnMZH4r1nJRVhG1UtgZ4vvB0+aqax70uzvFzEEBIjRy0QI9p5lAoAomz0dadaF4vHy0ZYsOGKRgfslsw2tjokb8s8Ey9iTVEypOazRc2P64f/NbnNEXoFLA2PPSu9pp6Z/7DqzW44G+ZEEoaWbE+mH40kI69lr78xnT2ztA83tfgyRhIgcuRnSOnauUHNZf7mW07a2WViSuxi95M8mWZs3vY/XgeYqtY7Uzqb12tIQEqzEYfW2PE4FwdOKvFzosgl8Wg2N32rZ9sRtX4m78CvVXrcCmG8npGBzK7wRbUhK7Fqdap6czL/CWeRDZW3cCOysMHRle5z91uLgxjgC1mZJ3Kc6XXn2v6wQj85PIRFFa8kDZhnYWFnqB46YbWe6hAMPWIzxQS09+CEh/qZun/A+D5mSpL7TsPoMUuKPRhvDv9s7vERaqXm8iTHF8AtgL0IRpIPW8ikVXDWrgioSBswR6nVf4hG57l0R+DDhbX61a2TybB2Wt/QDVBN8CMp6peaNFstLa8qtLUTwnz28/JEdtJ47uGVJdNQ7appUGhN/auwUaUUqfTmxLpfbk+DmorUb7Rq/L/k
- lJYpnhbT
- KHgVp208OqiYw5xilYu+orxTtdxm8xS8mjS+fIq54rDZyrRs=
+X-Rspamd-Queue-Id: 36AABC000A
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1753334041-771097
+X-HE-Meta: U2FsdGVkX1+UKKsWcaLsOJzlIF2avr92Q4tJZQB7ILY5ZusLaxEjw6e4DDgXI8T7QhZnuWgWWI4VRmhZxNml2uJESNKB0s4jjL6aFCg3rwFDDuZHnquyoj+JNSf/Fi+u9UoUA5k4npFY2WosPL0OQJ2VklufPxL+Mi3XPt4saLi6vMnHgkcnMSPbFjLuN81I7GvuFxfZa2LeFEdhIhsXam4M5Haw21o0M6U6W5Cg27p28kbN4cI5eo2nnu3rx0Wl4MKHU5ipAkH0OXB2iZCrOY+gtB1PIgfrU92g77/SsxtIFW4OExhWlSXxu54mCmKlwGzBsPYmINjPduMRZQmMbtVBXSZO/JeB5hRJC6kJWb+6YPh37KQSZW6nUisjlNevu3lxfBCs7U9++LUZH9EhYI7kaKTMAMdpaH0rWu3WhvZ26nhtB6DWzacmxygSFbRyLxqtzN/+8Z0jeixARM1t9haJkw/JE5VV3cFidaCADgskMNgihAYgeVAFFMySHMkKrAUaoUOqeSU9edR40LPAFeM3s5yplEz+WoHr9Jp3xu9TuDOCZwqNtKv1e3SNxwWFZGJe5m0sKdeyyBAOOrYApt8xc6DEx/6VhqlaQJWCACpBOoGo79o2ckwDqBTBtztYNnuJipcSZZ+SgbmwbOOiUckOc3J39FZIhJvMi/NxOU0iL46O2zsX20XasdjN9KPzn5KTOgDIBZgEW3hqj5YqurogzYIlxYRGdaOB8uJdf+lJ9QnOTVGyku/HlJaeVfbDvS2mcqQMYb+zViI47yrg2H0yGksxGnVl+HpkfsiSb+HH92jMWhYiS9F/qPPkKMboh+KaQJZHRMubTBYoKrlzwO7zu+GqbMs8yodldtzPQzFb0jgDqInijyBN0lLO0yp//V1chxSO9r9rzshvSRL9c6QENPh/SjqqYy6ZD3UvFL/uOd699yua6qjueiy+zrwObcAe76uXfRIBLh2CUiV
+ fHsqIjc0
+ itFOM18hmX7Na7ipjN1aqcaMh00JkIUumgYCQb6E/eni5M23iwqkn3GiJTFrid1IoUu7hA8gTarSXQN5tRpIUcGgIWE7yU24fdgeurTgIU347d/nYW+WRgsb6MFRrn3h364hXyX7CemC8K58B42GalkJBAxJKNqyGk0KNWsb9PanCyVZv7d51ohtc4MBk9H1zhFzgX2ybzjYfyBcymauVp4f8CLddYm1sNC/HUi4ziNRM64J6+pJ8+xJWiwRuuszo6ewqhEUKyJ7lxuqHRqXR1y7tJ684No2OheCF60nKERE5aUlIdp+118boQ2tQdWXJ2/25Ac3W2Nvz/o8xq99YkLhRm3q63bavCqFTTHWcaZK+M6A8IIZrH635T5D5MitA3dqSRtG3SCumaHVpwJBnepfKCLT+miH/h52kloZ2qlqQ//ikDhVCGLJ4hbviJM/ayfbdLwIgCEZOqx1C0QYW2c+bJE4+FuaRHv91WctQ63DNSWL93RnrfLTOEG5Ag/0/42JoGh3EuF5MizpKNP+2gbFoZTV1+HyWjgRWEcTccB9kPz+UCM1izdrfsO9/sGOYAEmlZAXtJ4YUpD4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -257,165 +232,745 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 23, 2025 at 09:43:35PM +0200, Jann Horn wrote:
-> Sorry, while typing up this mail I realized I didn't have this stuff
-> particularly straight in my head myself when writing my previous mails
-> about this...
->
-> On Wed, Jul 23, 2025 at 8:45 PM Lorenzo Stoakes
-> <lorenzo.stoakes@oracle.com> wrote:
-> > On Wed, Jul 23, 2025 at 08:30:30PM +0200, Jann Horn wrote:
-> > > On Wed, Jul 23, 2025 at 8:14 PM Lorenzo Stoakes
-> > > <lorenzo.stoakes@oracle.com> wrote:
-> > > > On Wed, Jul 23, 2025 at 06:26:53PM +0200, Jann Horn wrote:
-> > > > > There's a racy UAF in `vma_refcount_put()` when called on the
-> > > > > `lock_vma_under_rcu()` path because `SLAB_TYPESAFE_BY_RCU` is used
-> > > > > without sufficient protection against concurrent object reuse:
-> > > > >
-> > > > > lock_vma_under_rcu() looks up a VMA locklessly with mas_walk() under
-> > > > > rcu_read_lock(). At that point, the VMA may be concurrently freed, and
-> > > > > it can be recycled by another process. vma_start_read() then
-> > > > > increments the vma->vm_refcnt (if it is in an acceptable range), and
-> > > > > if this succeeds, vma_start_read() can return a reycled VMA. (As a
-> > > > > sidenote, this goes against what the surrounding comments above
-> > > > > vma_start_read() and in lock_vma_under_rcu() say - it would probably
-> > > > > be cleaner to perform the vma->vm_mm check inside vma_start_read().)
-> > > > >
-> > > > > In this scenario where the VMA has been recycled, lock_vma_under_rcu()
-> > > > > will then detect the mismatching ->vm_mm pointer and drop the VMA
-> > > > > through vma_end_read(), which calls vma_refcount_put().
-> > > >
-> > > > So in _correctly_ identifying the recycling, we then hit a problem. Fun!
-> > > >
-> > > > > vma_refcount_put() does this:
-> > > > >
-> > > > > ```
-> > > > > static inline void vma_refcount_put(struct vm_area_struct *vma)
-> > > > > {
-> > > > >         /* Use a copy of vm_mm in case vma is freed after we drop vm_refcnt */
-> > > > >         struct mm_struct *mm = vma->vm_mm;
-> > > >
-> > > > Are we at a point where we _should_ be looking at a VMA with vma->vm_mm ==
-> > > > current->mm here?
-> > >
-> > > Well, you _hope_ to be looking at a VMA with vma->vm_mm==current->mm,
-> > > but if you lose a race it is intentional that you can end up with
-> > > another MM's VMA here.
+Hi Leon,
 
-Right I get the SLAB_TYPESAFE_BY_RCU thing, what I'm saying overall is 'can we
-detect that we lost the race by knowing what mm this should be'...
+> Subject: [PATCH 10/10] vfio/pci: Add dma-buf export support for MMIO
+> regions
+>=20
+> From: Leon Romanovsky <leonro@nvidia.com>
+>=20
+> Add support for exporting PCI device MMIO regions through dma-buf,
+> enabling safe sharing of non-struct page memory with controlled
+> lifetime management. This allows RDMA and other subsystems to import
+> dma-buf FDs and build them into memory regions for PCI P2P operations.
+>=20
+> The implementation provides a revocable attachment mechanism using
+> dma-buf move operations. MMIO regions are normally pinned as BARs
+> don't change physical addresses, but access is revoked when the VFIO
+> device is closed or a PCI reset is issued. This ensures kernel
+> self-defense against potentially hostile userspace.
+>=20
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> ---
+>  drivers/vfio/pci/Kconfig           |  20 ++
+>  drivers/vfio/pci/Makefile          |   2 +
+>  drivers/vfio/pci/vfio_pci_config.c |  22 +-
+>  drivers/vfio/pci/vfio_pci_core.c   |  25 ++-
+>  drivers/vfio/pci/vfio_pci_dmabuf.c | 321 +++++++++++++++++++++++++++++
+>  drivers/vfio/pci/vfio_pci_priv.h   |  23 +++
+>  include/linux/dma-buf.h            |   1 +
+>  include/linux/vfio_pci_core.h      |   3 +
+>  include/uapi/linux/vfio.h          |  19 ++
+>  9 files changed, 431 insertions(+), 5 deletions(-)
+>  create mode 100644 drivers/vfio/pci/vfio_pci_dmabuf.c
+>=20
+> diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
+> index 2b0172f546652..55ae888bf26ae 100644
+> --- a/drivers/vfio/pci/Kconfig
+> +++ b/drivers/vfio/pci/Kconfig
+> @@ -55,6 +55,26 @@ config VFIO_PCI_ZDEV_KVM
+>=20
+>  	  To enable s390x KVM vfio-pci extensions, say Y.
+>=20
+> +config VFIO_PCI_DMABUF
+> +	bool "VFIO PCI extensions for DMA-BUF"
+> +	depends on VFIO_PCI_CORE
+> +	depends on PCI_P2PDMA && DMA_SHARED_BUFFER
+> +	default y
+> +	help
+> +	  Enable support for VFIO PCI extensions that allow exporting
+> +	  device MMIO regions as DMA-BUFs for peer devices to access via
+> +	  peer-to-peer (P2P) DMA.
+> +
+> +	  This feature enables a VFIO-managed PCI device to export a portion
+> +	  of its MMIO BAR as a DMA-BUF file descriptor, which can be passed
+> +	  to other userspace drivers or kernel subsystems capable of
+> +	  initiating DMA to that region.
+> +
+> +	  Say Y here if you want to enable VFIO DMABUF-based MMIO export
+> +	  support for peer-to-peer DMA use cases.
+> +
+> +	  If unsure, say N.
+> +
+>  source "drivers/vfio/pci/mlx5/Kconfig"
+>=20
+>  source "drivers/vfio/pci/hisilicon/Kconfig"
+> diff --git a/drivers/vfio/pci/Makefile b/drivers/vfio/pci/Makefile
+> index cf00c0a7e55c8..f9155e9c5f630 100644
+> --- a/drivers/vfio/pci/Makefile
+> +++ b/drivers/vfio/pci/Makefile
+> @@ -2,7 +2,9 @@
+>=20
+>  vfio-pci-core-y :=3D vfio_pci_core.o vfio_pci_intrs.o vfio_pci_rdwr.o
+> vfio_pci_config.o
+>  vfio-pci-core-$(CONFIG_VFIO_PCI_ZDEV_KVM) +=3D vfio_pci_zdev.o
+> +
+>  obj-$(CONFIG_VFIO_PCI_CORE) +=3D vfio-pci-core.o
+> +vfio-pci-core-$(CONFIG_VFIO_PCI_DMABUF) +=3D vfio_pci_dmabuf.o
+>=20
+>  vfio-pci-y :=3D vfio_pci.o
+>  vfio-pci-$(CONFIG_VFIO_PCI_IGD) +=3D vfio_pci_igd.o
+> diff --git a/drivers/vfio/pci/vfio_pci_config.c
+> b/drivers/vfio/pci/vfio_pci_config.c
+> index 8f02f236b5b4b..7e23387a43b4d 100644
+> --- a/drivers/vfio/pci/vfio_pci_config.c
+> +++ b/drivers/vfio/pci/vfio_pci_config.c
+> @@ -589,10 +589,12 @@ static int vfio_basic_config_write(struct
+> vfio_pci_core_device *vdev, int pos,
+>  		virt_mem =3D !!(le16_to_cpu(*virt_cmd) &
+> PCI_COMMAND_MEMORY);
+>  		new_mem =3D !!(new_cmd & PCI_COMMAND_MEMORY);
+>=20
+> -		if (!new_mem)
+> +		if (!new_mem) {
+>  			vfio_pci_zap_and_down_write_memory_lock(vdev);
+> -		else
+> +			vfio_pci_dma_buf_move(vdev, true);
+> +		} else {
+>  			down_write(&vdev->memory_lock);
+> +		}
+>=20
+>  		/*
+>  		 * If the user is writing mem/io enable (new_mem/io) and we
+> @@ -627,6 +629,8 @@ static int vfio_basic_config_write(struct
+> vfio_pci_core_device *vdev, int pos,
+>  		*virt_cmd &=3D cpu_to_le16(~mask);
+>  		*virt_cmd |=3D cpu_to_le16(new_cmd & mask);
+>=20
+> +		if (__vfio_pci_memory_enabled(vdev))
+> +			vfio_pci_dma_buf_move(vdev, false);
+>  		up_write(&vdev->memory_lock);
+>  	}
+>=20
+> @@ -707,12 +711,16 @@ static int __init init_pci_cap_basic_perm(struct
+> perm_bits *perm)
+>  static void vfio_lock_and_set_power_state(struct vfio_pci_core_device
+> *vdev,
+>  					  pci_power_t state)
+>  {
+> -	if (state >=3D PCI_D3hot)
+> +	if (state >=3D PCI_D3hot) {
+>  		vfio_pci_zap_and_down_write_memory_lock(vdev);
+> -	else
+> +		vfio_pci_dma_buf_move(vdev, true);
+> +	} else {
+>  		down_write(&vdev->memory_lock);
+> +	}
+>=20
+>  	vfio_pci_set_power_state(vdev, state);
+> +	if (__vfio_pci_memory_enabled(vdev))
+> +		vfio_pci_dma_buf_move(vdev, false);
+>  	up_write(&vdev->memory_lock);
+>  }
+>=20
+> @@ -900,7 +908,10 @@ static int vfio_exp_config_write(struct
+> vfio_pci_core_device *vdev, int pos,
+>=20
+>  		if (!ret && (cap & PCI_EXP_DEVCAP_FLR)) {
+>  			vfio_pci_zap_and_down_write_memory_lock(vdev);
+> +			vfio_pci_dma_buf_move(vdev, true);
+>  			pci_try_reset_function(vdev->pdev);
+> +			if (__vfio_pci_memory_enabled(vdev))
+> +				vfio_pci_dma_buf_move(vdev, true);
+>  			up_write(&vdev->memory_lock);
+>  		}
+>  	}
+> @@ -982,7 +993,10 @@ static int vfio_af_config_write(struct
+> vfio_pci_core_device *vdev, int pos,
+>=20
+>  		if (!ret && (cap & PCI_AF_CAP_FLR) && (cap & PCI_AF_CAP_TP))
+> {
+>  			vfio_pci_zap_and_down_write_memory_lock(vdev);
+> +			vfio_pci_dma_buf_move(vdev, true);
+>  			pci_try_reset_function(vdev->pdev);
+> +			if (__vfio_pci_memory_enabled(vdev))
+> +				vfio_pci_dma_buf_move(vdev, true);
+>  			up_write(&vdev->memory_lock);
+>  		}
+>  	}
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
+_core.c
+> index 5512d13bb8899..e5ab5d1cafd9c 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -29,7 +29,9 @@
+>  #include <linux/nospec.h>
+>  #include <linux/sched/mm.h>
+>  #include <linux/iommufd.h>
+> +#ifdef CONFIG_VFIO_PCI_DMABUF
+>  #include <linux/pci-p2pdma.h>
+> +#endif
+>  #if IS_ENABLED(CONFIG_EEH)
+>  #include <asm/eeh.h>
+>  #endif
+> @@ -288,6 +290,8 @@ static int vfio_pci_runtime_pm_entry(struct
+> vfio_pci_core_device *vdev,
+>  	 * semaphore.
+>  	 */
+>  	vfio_pci_zap_and_down_write_memory_lock(vdev);
+> +	vfio_pci_dma_buf_move(vdev, true);
+> +
+>  	if (vdev->pm_runtime_engaged) {
+>  		up_write(&vdev->memory_lock);
+>  		return -EINVAL;
+> @@ -371,6 +375,8 @@ static void vfio_pci_runtime_pm_exit(struct
+> vfio_pci_core_device *vdev)
+>  	 */
+>  	down_write(&vdev->memory_lock);
+>  	__vfio_pci_runtime_pm_exit(vdev);
+> +	if (__vfio_pci_memory_enabled(vdev))
+> +		vfio_pci_dma_buf_move(vdev, false);
+>  	up_write(&vdev->memory_lock);
+>  }
+>=20
+> @@ -691,6 +697,8 @@ void vfio_pci_core_close_device(struct vfio_device
+> *core_vdev)
+>  #endif
+>  	vfio_pci_core_disable(vdev);
+>=20
+> +	vfio_pci_dma_buf_cleanup(vdev);
+> +
+>  	mutex_lock(&vdev->igate);
+>  	if (vdev->err_trigger) {
+>  		eventfd_ctx_put(vdev->err_trigger);
+> @@ -1223,7 +1231,10 @@ static int vfio_pci_ioctl_reset(struct
+> vfio_pci_core_device *vdev,
+>  	 */
+>  	vfio_pci_set_power_state(vdev, PCI_D0);
+>=20
+> +	vfio_pci_dma_buf_move(vdev, true);
+>  	ret =3D pci_try_reset_function(vdev->pdev);
+> +	if (__vfio_pci_memory_enabled(vdev))
+> +		vfio_pci_dma_buf_move(vdev, false);
+>  	up_write(&vdev->memory_lock);
+>=20
+>  	return ret;
+> @@ -1512,6 +1523,8 @@ int vfio_pci_core_ioctl_feature(struct vfio_device
+> *device, u32 flags,
+>  		return vfio_pci_core_pm_exit(vdev, flags, arg, argsz);
+>  	case VFIO_DEVICE_FEATURE_PCI_VF_TOKEN:
+>  		return vfio_pci_core_feature_token(vdev, flags, arg, argsz);
+> +	case VFIO_DEVICE_FEATURE_DMA_BUF:
+> +		return vfio_pci_core_feature_dma_buf(vdev, flags, arg, argsz);
+>  	default:
+>  		return -ENOTTY;
+>  	}
+> @@ -2088,9 +2101,13 @@ int vfio_pci_core_init_dev(struct vfio_device
+> *core_vdev)
+>  	INIT_LIST_HEAD(&vdev->dummy_resources_list);
+>  	INIT_LIST_HEAD(&vdev->ioeventfds_list);
+>  	INIT_LIST_HEAD(&vdev->sriov_pfs_item);
+> +#ifdef CONFIG_VFIO_PCI_DMABUF
+>  	vdev->provider =3D pci_p2pdma_enable(vdev->pdev);
+>  	if (IS_ERR(vdev->provider))
+>  		return PTR_ERR(vdev->provider);
+> +
+> +	INIT_LIST_HEAD(&vdev->dmabufs);
+> +#endif
+>  	init_rwsem(&vdev->memory_lock);
+>  	xa_init(&vdev->ctx);
+>=20
+> @@ -2473,11 +2490,17 @@ static int vfio_pci_dev_set_hot_reset(struct
+> vfio_device_set *dev_set,
+>  	 * cause the PCI config space reset without restoring the original
+>  	 * state (saved locally in 'vdev->pm_save').
+>  	 */
+> -	list_for_each_entry(vdev, &dev_set->device_list, vdev.dev_set_list)
+> +	list_for_each_entry(vdev, &dev_set->device_list, vdev.dev_set_list) {
+> +		vfio_pci_dma_buf_move(vdev, true);
+>  		vfio_pci_set_power_state(vdev, PCI_D0);
+> +	}
+>=20
+>  	ret =3D pci_reset_bus(pdev);
+>=20
+> +	list_for_each_entry(vdev, &dev_set->device_list, vdev.dev_set_list)
+> +		if (__vfio_pci_memory_enabled(vdev))
+> +			vfio_pci_dma_buf_move(vdev, false);
+> +
+>  	vdev =3D list_last_entry(&dev_set->device_list,
+>  			       struct vfio_pci_core_device, vdev.dev_set_list);
+>=20
+> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c
+> b/drivers/vfio/pci/vfio_pci_dmabuf.c
+> new file mode 100644
+> index 0000000000000..5fefcdecd1329
+> --- /dev/null
+> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
+> @@ -0,0 +1,321 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/* Copyright (c) 2025, NVIDIA CORPORATION & AFFILIATES.
+> + */
+> +#include <linux/dma-buf.h>
+> +#include <linux/pci-p2pdma.h>
+> +#include <linux/dma-resv.h>
+> +
+> +#include "vfio_pci_priv.h"
+> +
+> +MODULE_IMPORT_NS("DMA_BUF");
+> +
+> +struct vfio_pci_dma_buf {
+> +	struct dma_buf *dmabuf;
+> +	struct vfio_pci_core_device *vdev;
+> +	struct list_head dmabufs_elm;
+> +	struct phys_vec phys_vec;
+> +	u8 revoked : 1;
+> +};
+> +
+> +static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
+> +				   struct dma_buf_attachment *attachment)
+> +{
+> +	struct vfio_pci_dma_buf *priv =3D dmabuf->priv;
+> +
+> +	if (!attachment->peer2peer)
+> +		return -EOPNOTSUPP;
+> +
+> +	if (priv->revoked)
+> +		return -ENODEV;
+> +
+> +	switch (pci_p2pdma_map_type(priv->vdev->provider, attachment-
+> >dev)) {
+> +	case PCI_P2PDMA_MAP_THRU_HOST_BRIDGE:
+> +		break;
+> +	case PCI_P2PDMA_MAP_BUS_ADDR:
+> +		/*
+> +		 * There is no need in IOVA at all for this flow.
+> +		 * We rely on attachment->priv =3D=3D NULL as a marker
+> +		 * for this mode.
+> +		 */
+> +		return 0;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+> +	attachment->priv =3D kzalloc(sizeof(struct dma_iova_state),
+> GFP_KERNEL);
+> +	if (!attachment->priv)
+> +		return -ENOMEM;
+> +
+> +	dma_iova_try_alloc(attachment->dev, attachment->priv, 0, priv-
+> >phys_vec.len);
+> +	return 0;
+> +}
+> +
+> +static void vfio_pci_dma_buf_detach(struct dma_buf *dmabuf,
+> +				    struct dma_buf_attachment *attachment)
+> +{
+> +	kfree(attachment->priv);
+> +}
+> +
+> +static void fill_sg_entry(struct scatterlist *sgl, unsigned int length,
+> +			 dma_addr_t addr)
+> +{
+> +	sg_set_page(sgl, NULL, length, 0);
+> +	sg_dma_address(sgl) =3D addr;
+> +	sg_dma_len(sgl) =3D length;
+> +}
+> +
+> +static struct sg_table *
+> +vfio_pci_dma_buf_map(struct dma_buf_attachment *attachment,
+> +		     enum dma_data_direction dir)
+> +{
+> +	struct vfio_pci_dma_buf *priv =3D attachment->dmabuf->priv;
+> +	struct p2pdma_provider *provider =3D priv->vdev->provider;
+> +	struct dma_iova_state *state =3D attachment->priv;
+> +	struct phys_vec *phys_vec =3D &priv->phys_vec;
+> +	struct scatterlist *sgl;
+> +	struct sg_table *sgt;
+> +	dma_addr_t addr;
+> +	int ret;
+> +
+> +	dma_resv_assert_held(priv->dmabuf->resv);
+> +
+> +	sgt =3D kzalloc(sizeof(*sgt), GFP_KERNEL);
+> +	if (!sgt)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	ret =3D sg_alloc_table(sgt, 1, GFP_KERNEL | __GFP_ZERO);
+> +	if (ret)
+> +		goto err_kfree_sgt;
+> +
+> +	sgl =3D sgt->sgl;
+> +
+> +	if (!state) {
+> +		addr =3D pci_p2pdma_bus_addr_map(provider, phys_vec-
+> >paddr);
+> +	} else if (dma_use_iova(state)) {
+> +		ret =3D dma_iova_link(attachment->dev, state, phys_vec->paddr,
+> 0,
+> +				    phys_vec->len, dir,
+> DMA_ATTR_SKIP_CPU_SYNC);
+> +		if (ret)
+> +			goto err_free_table;
+> +
+> +		ret =3D dma_iova_sync(attachment->dev, state, 0, phys_vec-
+> >len);
+> +		if (ret)
+> +			goto err_unmap_dma;
+> +
+> +		addr =3D state->addr;
+> +	} else {
+> +		addr =3D dma_map_phys(attachment->dev, phys_vec->paddr,
+> +				    phys_vec->len, dir,
+> DMA_ATTR_SKIP_CPU_SYNC);
+> +		ret =3D dma_mapping_error(attachment->dev, addr);
+> +		if (ret)
+> +			goto err_free_table;
+> +	}
+> +
+> +	fill_sg_entry(sgl, phys_vec->len, addr);
+> +	return sgt;
+> +
+> +err_unmap_dma:
+> +	dma_iova_destroy(attachment->dev, state, phys_vec->len, dir,
+> +			 DMA_ATTR_SKIP_CPU_SYNC);
+> +err_free_table:
+> +	sg_free_table(sgt);
+> +err_kfree_sgt:
+> +	kfree(sgt);
+> +	return ERR_PTR(ret);
+> +}
+> +
+> +static void vfio_pci_dma_buf_unmap(struct dma_buf_attachment
+> *attachment,
+> +				   struct sg_table *sgt,
+> +				   enum dma_data_direction dir)
+> +{
+> +	struct vfio_pci_dma_buf *priv =3D attachment->dmabuf->priv;
+> +	struct dma_iova_state *state =3D attachment->priv;
+> +	struct scatterlist *sgl;
+> +	int i;
+> +
+> +	if (!state)
+> +		; /* Do nothing */
+> +	else if (dma_use_iova(state))
+> +		dma_iova_destroy(attachment->dev, state, priv->phys_vec.len,
+> +				 dir, DMA_ATTR_SKIP_CPU_SYNC);
+> +	else
+> +		for_each_sgtable_dma_sg(sgt, sgl, i)
+> +			dma_unmap_phys(attachment->dev,
+> sg_dma_address(sgl),
+> +				       sg_dma_len(sgl), dir,
+> +				       DMA_ATTR_SKIP_CPU_SYNC);
+> +
+> +	sg_free_table(sgt);
+> +	kfree(sgt);
+> +}
+> +
+> +static void vfio_pci_dma_buf_release(struct dma_buf *dmabuf)
+> +{
+> +	struct vfio_pci_dma_buf *priv =3D dmabuf->priv;
+> +
+> +	/*
+> +	 * Either this or vfio_pci_dma_buf_cleanup() will remove from the list.
+> +	 * The refcount prevents both.
+> +	 */
+> +	if (priv->vdev) {
+> +		down_write(&priv->vdev->memory_lock);
+> +		list_del_init(&priv->dmabufs_elm);
+> +		up_write(&priv->vdev->memory_lock);
+> +		vfio_device_put_registration(&priv->vdev->vdev);
+> +	}
+> +	kfree(priv);
+> +}
+> +
+> +static const struct dma_buf_ops vfio_pci_dmabuf_ops =3D {
+> +	.attach =3D vfio_pci_dma_buf_attach,
+> +	.detach =3D vfio_pci_dma_buf_detach,
+> +	.map_dma_buf =3D vfio_pci_dma_buf_map,
+> +	.release =3D vfio_pci_dma_buf_release,
+> +	.unmap_dma_buf =3D vfio_pci_dma_buf_unmap,
+> +};
+> +
+> +static void dma_ranges_to_p2p_phys(struct vfio_pci_dma_buf *priv,
+> +				   struct vfio_device_feature_dma_buf
+> *dma_buf)
+> +{
+> +	struct pci_dev *pdev =3D priv->vdev->pdev;
+> +
+> +	priv->phys_vec.len =3D dma_buf->length;
+> +	priv->phys_vec.paddr =3D pci_resource_start(pdev, dma_buf-
+> >region_index);
+> +	priv->phys_vec.paddr +=3D dma_buf->offset;
+> +}
+> +
+> +static int validate_dmabuf_input(struct vfio_pci_core_device *vdev,
+> +				 struct vfio_device_feature_dma_buf *dma_buf)
+> +{
+> +	struct pci_dev *pdev =3D vdev->pdev;
+> +	u32 bar =3D dma_buf->region_index;
+> +	u64 offset =3D dma_buf->offset;
+> +	u64 len =3D dma_buf->length;
+> +	resource_size_t bar_size;
+> +	u64 sum;
+> +
+> +	/*
+> +	 * For PCI the region_index is the BAR number like  everything else.
+> +	 */
+> +	if (bar >=3D VFIO_PCI_ROM_REGION_INDEX)
+> +		return -ENODEV;
+> +
+> +	if (!(pci_resource_flags(pdev, bar) & IORESOURCE_MEM))
+> +		return -EINVAL;
+> +
+> +	if (!PAGE_ALIGNED(offset) || !PAGE_ALIGNED(len))
+> +		return -EINVAL;
+> +
+> +	bar_size =3D pci_resource_len(pdev, bar);
+> +	if (check_add_overflow(offset, len, &sum) || sum > bar_size)
+> +		return -EINVAL;
+> +
+> +	return 0;
+> +}
+> +
+> +int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32
+> flags,
+> +				  struct vfio_device_feature_dma_buf __user
+> *arg,
+> +				  size_t argsz)
+> +{
+> +	struct vfio_device_feature_dma_buf get_dma_buf =3D {};
+> +	DEFINE_DMA_BUF_EXPORT_INFO(exp_info);
+> +	struct vfio_pci_dma_buf *priv;
+> +	int ret;
+> +
+> +	ret =3D vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_GET,
+> +				 sizeof(get_dma_buf));
+> +	if (ret !=3D 1)
+> +		return ret;
+> +
+> +	if (copy_from_user(&get_dma_buf, arg, sizeof(get_dma_buf)))
+> +		return -EFAULT;
+> +
+> +	ret =3D validate_dmabuf_input(vdev, &get_dma_buf);
+> +	if (ret)
+> +		return ret;
+> +
+> +	priv =3D kzalloc(sizeof(*priv), GFP_KERNEL);
+> +	if (!priv)
+> +		return -ENOMEM;
+> +
+> +	priv->vdev =3D vdev;
+> +	dma_ranges_to_p2p_phys(priv, &get_dma_buf);
+> +
+> +	if (!vfio_device_try_get_registration(&vdev->vdev)) {
+> +		ret =3D -ENODEV;
+> +		goto err_free_priv;
+> +	}
+> +
+> +	exp_info.ops =3D &vfio_pci_dmabuf_ops;
+> +	exp_info.size =3D priv->phys_vec.len;
+> +	exp_info.flags =3D get_dma_buf.open_flags;
+> +	exp_info.priv =3D priv;
+> +
+> +	priv->dmabuf =3D dma_buf_export(&exp_info);
+> +	if (IS_ERR(priv->dmabuf)) {
+> +		ret =3D PTR_ERR(priv->dmabuf);
+> +		goto err_dev_put;
+> +	}
+> +
+> +	/* dma_buf_put() now frees priv */
+> +	INIT_LIST_HEAD(&priv->dmabufs_elm);
+> +	down_write(&vdev->memory_lock);
+> +	dma_resv_lock(priv->dmabuf->resv, NULL);
+> +	priv->revoked =3D !__vfio_pci_memory_enabled(vdev);
+> +	list_add_tail(&priv->dmabufs_elm, &vdev->dmabufs);
+> +	dma_resv_unlock(priv->dmabuf->resv);
+> +	up_write(&vdev->memory_lock);
+> +
+> +	/*
+> +	 * dma_buf_fd() consumes the reference, when the file closes the
+> dmabuf
+> +	 * will be released.
+> +	 */
+> +	return dma_buf_fd(priv->dmabuf, get_dma_buf.open_flags);
+> +
+> +err_dev_put:
+> +	vfio_device_put_registration(&vdev->vdev);
+> +err_free_priv:
+> +	kfree(priv);
+> +	return ret;
+> +}
+> +
+> +void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool
+> revoked)
+> +{
+> +	struct vfio_pci_dma_buf *priv;
+> +	struct vfio_pci_dma_buf *tmp;
+> +
+> +	lockdep_assert_held_write(&vdev->memory_lock);
+> +
+> +	list_for_each_entry_safe(priv, tmp, &vdev->dmabufs, dmabufs_elm) {
+> +		if (!get_file_active(&priv->dmabuf->file))
+> +			continue;
+> +
+> +		if (priv->revoked !=3D revoked) {
+> +			dma_resv_lock(priv->dmabuf->resv, NULL);
+> +			priv->revoked =3D revoked;
+> +			dma_buf_move_notify(priv->dmabuf);
+> +			dma_resv_unlock(priv->dmabuf->resv);
+> +		}
+> +		dma_buf_put(priv->dmabuf);
+> +	}
+> +}
+> +
+> +void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device *vdev)
+> +{
+> +	struct vfio_pci_dma_buf *priv;
+> +	struct vfio_pci_dma_buf *tmp;
+> +
+> +	down_write(&vdev->memory_lock);
+> +	list_for_each_entry_safe(priv, tmp, &vdev->dmabufs, dmabufs_elm) {
+> +		if (!get_file_active(&priv->dmabuf->file))
+> +			continue;
+> +
+> +		dma_resv_lock(priv->dmabuf->resv, NULL);
+> +		list_del_init(&priv->dmabufs_elm);
+> +		priv->vdev =3D NULL;
+> +		priv->revoked =3D true;
+> +		dma_buf_move_notify(priv->dmabuf);
+> +		dma_resv_unlock(priv->dmabuf->resv);
+> +		vfio_device_put_registration(&vdev->vdev);
+> +		dma_buf_put(priv->dmabuf);
+> +	}
+> +	up_write(&vdev->memory_lock);
+> +}
+> diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci=
+_priv.h
+> index a9972eacb2936..28a405f8b97c9 100644
+> --- a/drivers/vfio/pci/vfio_pci_priv.h
+> +++ b/drivers/vfio/pci/vfio_pci_priv.h
+> @@ -107,4 +107,27 @@ static inline bool vfio_pci_is_vga(struct pci_dev
+> *pdev)
+>  	return (pdev->class >> 8) =3D=3D PCI_CLASS_DISPLAY_VGA;
+>  }
+>=20
+> +#ifdef CONFIG_VFIO_PCI_DMABUF
+> +int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32
+> flags,
+> +				  struct vfio_device_feature_dma_buf __user
+> *arg,
+> +				  size_t argsz);
+> +void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device *vdev);
+> +void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool
+> revoked);
+> +#else
+> +static inline int
+> +vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32
+> flags,
+> +			      struct vfio_device_feature_dma_buf __user *arg,
+> +			      size_t argsz)
+> +{
+> +	return -ENOTTY;
+> +}
+> +static inline void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device
+> *vdev)
+> +{
+> +}
+> +static inline void vfio_pci_dma_buf_move(struct vfio_pci_core_device
+> *vdev,
+> +					 bool revoked)
+> +{
+> +}
+> +#endif
+> +
+>  #endif
+> diff --git a/include/linux/dma-buf.h b/include/linux/dma-buf.h
+> index d58e329ac0e71..f14b413aae48d 100644
+> --- a/include/linux/dma-buf.h
+> +++ b/include/linux/dma-buf.h
+> @@ -483,6 +483,7 @@ struct dma_buf_attach_ops {
+>   * @dev: device attached to the buffer.
+>   * @node: list of dma_buf_attachment, protected by dma_resv lock of the
+> dmabuf.
+>   * @peer2peer: true if the importer can handle peer resources without pa=
+ges.
+> + * #state: DMA structure to provide support for physical addresses DMA
+> interface
+>   * @priv: exporter specific attachment data.
+>   * @importer_ops: importer operations for this attachment, if provided
+>   * dma_buf_map/unmap_attachment() must be called with the dma_resv
+> lock held.
+> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.=
+h
+> index b017fae251811..548cbb51bf146 100644
+> --- a/include/linux/vfio_pci_core.h
+> +++ b/include/linux/vfio_pci_core.h
+> @@ -94,7 +94,10 @@ struct vfio_pci_core_device {
+>  	struct vfio_pci_core_device	*sriov_pf_core_dev;
+>  	struct notifier_block	nb;
+>  	struct rw_semaphore	memory_lock;
+> +#ifdef CONFIG_VFIO_PCI_DMABUF
+>  	struct p2pdma_provider  *provider;
+> +	struct list_head	dmabufs;
+> +#endif
+>  };
+>=20
+>  /* Will be exported for vfio pci drivers usage */
+> diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
+> index 5764f315137f9..ad8e303697f97 100644
+> --- a/include/uapi/linux/vfio.h
+> +++ b/include/uapi/linux/vfio.h
+> @@ -1468,6 +1468,25 @@ struct vfio_device_feature_bus_master {
+>  };
+>  #define VFIO_DEVICE_FEATURE_BUS_MASTER 10
+>=20
+> +/**
+> + * Upon VFIO_DEVICE_FEATURE_GET create a dma_buf fd for the
+> + * regions selected.
+> + *
+> + * open_flags are the typical flags passed to open(2), eg O_RDWR,
+> O_CLOEXEC,
+> + * etc. offset/length specify a slice of the region to create the dmabuf=
+ from.
+> + * nr_ranges is the total number of (P2P DMA) ranges that comprise the
+> dmabuf.
+Any particular reason why you dropped the option (nr_ranges) of creating a
+single dmabuf from multiple ranges of an MMIO region?
 
->
-> (I forgot: The mm passed to lock_vma_under_rcu() is potentially
-> different from current->mm if we're coming from uffd_mfill_lock(),
-> which would be intentional and desired, but that's not relevant here.
-> Sorry for making things more confusing.)
+Restricting the dmabuf to a single range (or having to create multiple dmab=
+ufs
+to represent multiple regions/ranges associated with a single scattered buf=
+fer)
+would be very limiting and may not work in all cases. For instance, in my u=
+se-case,
+I am trying to share a large (4k mode) framebuffer (FB) located in GPU's VR=
+AM
+between two (p2p compatible) GPU devices. And, this would probably not work
+given that allocating a large contiguous FB (nr_ranges =3D 1) in VRAM may n=
+ot be
+feasible when there is memory pressure.
 
-...and because of this, no we can't. I hate how uffd is implemented.
+Furthermore, since you are adding a new UAPI with this patch/feature, as yo=
+u know,
+we cannot go back and tweak it (to add support for nr_ranges > 1) should th=
+ere
+be a need in the future, but you can always use nr_ranges =3D 1 anytime. Th=
+erefore,
+I think it makes sense to be flexible in terms of the number of ranges to i=
+nclude
+while creating a dmabuf instead of restricting ourselves to one range.
 
-But even so, even if we could, it would SUCK as it would leave us with a
-_requirement_ that this had to be current->mm or a race-recycled thing.
+Thanks,
+Vivek
 
-Stuff like mshare also wants to pull out assumptions about current->mm, so
-we don't really want to be doing this anywhere even if we could.
+> + *
+> + * Return: The fd number on success, -1 and errno is set on failure.
+> + */
+> +#define VFIO_DEVICE_FEATURE_DMA_BUF 11
+> +
+> +struct vfio_device_feature_dma_buf {
+> +	__u32	region_index;
+> +	__u32	open_flags;
+> +	__u64	offset;
+> +	__u64	length;
+> +};
+> +
+>  /* -------- API for Type1 VFIO IOMMU -------- */
+>=20
+>  /**
+> --
+> 2.50.1
 
-So moot really.
-
->
-> > > > Or can we not safely assume this?
-> > >
-> > > No.
-> >
-> > What code paths lead to vma_refcount_put() with a foreign mm?
->
-> Calls to vma_refcount_put() from vma_start_read() or from
-> lock_vma_under_rcu() can have an MM different from the mm that was
-> passed to lock_vma_under_rcu().
->
-> Basically, lock_vma_under_rcu() locklessly looks up a VMA in the maple
-> tree of the provided MM; and so immediately after the maple tree
-> lookup, before we grab any sort of reference on the VMA, the VMA can
-> be freed, and reallocated by another process. If we then essentially
-> read-lock this VMA which is used by another MM (by incrementing its
-> refcount), waiters in that other MM might start waiting for us; and in
-> that case, when we notice we got the wrong VMA and bail out, we have
-> to wake those waiters up again after unlocking the VMA by dropping its
-> refcount.
-
-Thanks for the explanation but I _think_ I understood this bit, what I
-meant was 'except for cases where slab recycled the VMA' :), as in
-_intentionally_ vma->vm_mm != current->mm.
-
-You've answered above re: uffd.
-
->
-> > I mean maybe it's an unsafe assumption.
-> >
-> > I realise we are doing stuff for _reasons_, but I sort of HATE that we have
-> > put ourselves in a position where we might always see a recycled VMA and
-> > rely on a very very complicated seqnum-based locking mechanism to make sure
-> > this doesn't happen.
->
-> Yes, that is pretty much the definition of SLAB_TYPESAFE_BY_RCU. ^^
-> You get higher data cache hit rates in exchange for complicated "grab
-> some kinda stable object reference and then recheck if we got the
-> right one" stuff, though it is less annoying when dealing with a
-> normal refcount or spinlock or such rather than this kind of
-> open-coded sleepable read-write semaphore.
-
-Yes, and again I should have more closely scrutinised the original
-series... or at least more closely _understood_ it. Entirely my fault,
-though due to workload more than anything (hey guess I need to work some
-more weekends :)
-
-I understand we're doing this trade-off for a reason. But we're asking for
-problems here.
-
->
-> > It feels like we've made ourselves a challenging bed and uncomfy bed...
-> >
-> > >
-> > > > Because if we can, can we not check for that here?
-> > > >
-> > > > Do we need to keep the old mm around to wake up waiters if we're happily
-> > > > freeing it anyway?
-> > >
-> > > Well, we don't know if the MM has already been freed, or if it is
-> > > still alive and well and has writers who are stuck waiting for our
-> > > wakeup.
-> >
-> > But the mm we're talking about here is some recycled one from another
-> > thread?
->
-> The MM is not recycled, the VMA is recycled.
-
-Yeah sorry it was late, this is what I meant.
-
-VMA is recycled, so different mm.
-
->
-> > Right so, we have:
-> >
-> > 'mm we meant to get' (which apparently can't be assumed to be current->mm)
-> > 'mm we actually got' (which may or may not be freed at any time)
-> >
-> > The _meant to get_ one might have eternal waiters. Or might not even need
-> > to be woken up.
-> >
-> > I don't see why keeping the 'actually got' one around really helps us? Am I
-> > missing something?
->
-> We basically have taken a read lock on a VMA that is part of the
-> "actually got" MM, and so we may have caused writers from that MM to
-> block and sleep, and since we did that we have to wake them back up
-> and say "sorry, locked the wrong object, please continue".
-
-OK I think this is the crux of it then, and what I've been missing here -
-we have taken a read lock _by mistake_ in effect on the recycled mm, which
-may end up to be a spurious one that we need to immediately drop, but
-because of this we might have waiters that could wait forever.
-
-OK I get it. But to safely reference the mm here we need to be assured it
-stays around because in case of this not being true, we have nothing to
-prevent that mm going away right?
 
