@@ -2,94 +2,94 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 02A27C87FC5
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 18:41:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 22BFFC83F26
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 18:41:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F0888E00AD; Thu, 24 Jul 2025 14:41:14 -0400 (EDT)
+	id B8E908E00AE; Thu, 24 Jul 2025 14:41:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 87B298E007C; Thu, 24 Jul 2025 14:41:14 -0400 (EDT)
+	id B3B158E007C; Thu, 24 Jul 2025 14:41:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 742978E00AD; Thu, 24 Jul 2025 14:41:14 -0400 (EDT)
+	id A02818E00AE; Thu, 24 Jul 2025 14:41:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CA238E007C
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 14:41:14 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D387E804BA
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 18:41:13 +0000 (UTC)
-X-FDA: 83700025626.25.AB22FC0
-Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
-	by imf22.hostedemail.com (Postfix) with ESMTP id F0A26C0006
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 18:41:11 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=j+hMgds2;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 880238E007C
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 14:41:45 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3A8D3804E4
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 18:41:45 +0000 (UTC)
+X-FDA: 83700026970.17.C7C9EF1
+Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 503CD40004
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 18:41:43 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=Ixi9qBZW;
 	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf22.hostedemail.com: domain of jeffxu@chromium.org designates 209.85.160.53 as permitted sender) smtp.mailfrom=jeffxu@chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753382472; a=rsa-sha256;
+	spf=pass (imf07.hostedemail.com: domain of jeffxu@chromium.org designates 209.85.160.50 as permitted sender) smtp.mailfrom=jeffxu@chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753382503; a=rsa-sha256;
 	cv=none;
-	b=jXyWCTJKIJ3RLlsReWJok3CwN6adbG56qop0QVu2ASPm1m9Qxz3nI3JzVb105YGHqwbOTA
-	7CnnRbza6AmA5ON2AT+qJeGfBLNjLwSumL5m+rJGq1DulHBrGofJsdfoU+lqRbleYS7lyS
-	/3RqLfzZ4V0k7sf6wJP/WfeJyUanEIk=
+	b=bp57tOKrIjO0wOgVFa4MjNCQnnXUN0yiYuXUogaiL9bsoILhBpU0VPxEyLxKRyh1M2U/ui
+	YSFD6lVtTNBysqHnFdvM35OGgeNG9zGUQQY5I/6hQS3VKx1OvjklC7IIDuXQ0jFDyn5UIw
+	epB7qH0PIHu49dvVrTfriimP0z5F1Go=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=j+hMgds2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=Ixi9qBZW;
 	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf22.hostedemail.com: domain of jeffxu@chromium.org designates 209.85.160.53 as permitted sender) smtp.mailfrom=jeffxu@chromium.org
+	spf=pass (imf07.hostedemail.com: domain of jeffxu@chromium.org designates 209.85.160.50 as permitted sender) smtp.mailfrom=jeffxu@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753382472;
+	s=arc-20220608; t=1753382503;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pdGmQQBULDak1afO6wOGgGVbsIT5jshSzS0GzXEZM9Q=;
-	b=Smz64f1n538WjkJs5vWa6XvChzD/YFJdTgqN8BV220vBmpAgKEHszZgnI5xT2ByQzuGzcI
-	kVYamvmjfDDbVGJx84B61JHaGPmXdEaslky13UGqG9XNA1wFjq1Vgt7mjaY4VcFG8r2ez0
-	ipXPRHENG1wCel2oRd6mfhyw2RolLZA=
-Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-2ffaa4b4f32so31658fac.0
-        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 11:41:11 -0700 (PDT)
+	bh=T1HWlZ2q1kj2IfdBM1XqDySr0QM/i4rMvQ57Io2GLV0=;
+	b=DP5o+m9vE9kgqLlkg4LKo+5r3FxAn46PXqW38RtaXVgpHnQSKKMyfLwBfoXlEaD+wvBpdf
+	GXpJm+swDun0ACSeIVLmaTqQlouBLaGB9d3j6xbEClzp3qGIH+Z9N14c4wmccH9g5HA1x+
+	e/Zl8G0GZTS4VbhY+PkrN9q+Q6puHRQ=
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-306db06638eso192011fac.1
+        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 11:41:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1753382471; x=1753987271; darn=kvack.org;
+        d=chromium.org; s=google; t=1753382502; x=1753987302; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=pdGmQQBULDak1afO6wOGgGVbsIT5jshSzS0GzXEZM9Q=;
-        b=j+hMgds26HpP33Ycf0maw9wa2Hp5JCdFZx0aVaK5xDMqHdVq65YnJTL73Cdof0IyNb
-         5sP4J98+ewj9NCq+caNiGrWD+ragnrD/OPHuGS/HDmrqxRIBsbjd6nQolOrnjqFQ/jl7
-         pb92JEMxQwYiRd2z3/BOLtnxXPxvVSl3/Qhq0=
+        bh=T1HWlZ2q1kj2IfdBM1XqDySr0QM/i4rMvQ57Io2GLV0=;
+        b=Ixi9qBZWZwe1E1AdMSATpG4e1Xh0qd3dxnQ5I56aIJpK27M6xRbunSk/MOH7bBy8me
+         kZBQq8PApY0h1rB+/TryNLNIl+EaD0+yxim/mlwCuGAfoAEB68rBz41i9/adsVSh0gFM
+         zovTEgcv5u+0onNuIrH3hwoAw98nruGa/WX6s=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753382471; x=1753987271;
+        d=1e100.net; s=20230601; t=1753382502; x=1753987302;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=pdGmQQBULDak1afO6wOGgGVbsIT5jshSzS0GzXEZM9Q=;
-        b=GWlxFZNGPMiCiAdTJxrxb4eEHMui2q5iyLp2wJP2c93BCWTDzaWUPcjkMnyn3aTrNV
-         m60Ugy8ap2FxPhDe6A4q5Ut68LmpGQx+X/jx+5EnDQSYhi2UdYlxd67Sla7BHVoyUbjv
-         eL1cxIv8paNrezURhWc3AgaDAiCEnx4PUYeTAEYX5y03+7WbYbEPHLwBZoEYnUQHTAaz
-         zJxyQh0M0PpHoyRJOfFt/xCerqtsKZtZdgN4xx9OL6Xpjno2y9Y7mdGdtRn8ysOEPu/W
-         W+k/99irwmHjK6LInDSs5CfGKdF6HN6uIeJ/JpXLFVCuws0LEr2xO9MkJfpK8SzQ+tKU
-         Mcgg==
-X-Forwarded-Encrypted: i=1; AJvYcCXArlXxPpEgc3cWkehiP1FFuJjS9IKhQF/AWdLYh0iSNforiuiiti4TOMuYxWX9DoNerq3T0dHglg==@kvack.org
-X-Gm-Message-State: AOJu0Yx/CEXciI5Fqz4/0Jdcw8h4etv+fuwlkcjjyhDjT43bD8PyCZK4
-	w1LnYVQ4S1yg6SLUGMvap2zwC8RVNGDXGMHViJ9/iYWrrFnyGQv9JPYnJf5PVdN6FXf8Q59jdJc
-	m70+ddQpQcKuyjPhNfE7wcA6FhLOZAnEM28pzKVyO
-X-Gm-Gg: ASbGncvbpwcC6+SZFVrJVMf2mx0ecOCkDhl82sI9QGW8d1cvJugcG7hbXKB7kwP/am5
-	xJaBYWAGTV5yv3rB59iicltL81Sqe6/n3Ab1ldldd8ysgFUfdcaEynUo7NxWavT445Mz9BIGDV0
-	x8mIpSdg30PpBEl2H7Yl/ic8DMErJM2c0vLUn2lDYEWjiX7xOdAKwdgcT8KgxueDPNWAWLzs3nj
-	qqbcmlzW06ZdpsRSsUUEgYTXbKo6G2XQN+P
-X-Google-Smtp-Source: AGHT+IEoYM1EWKvzwa2CPrTTDfzZ7Ksf2AOfnilQct0N6oYa/w+7054kRqvJaSR7CoWM8egO7TBFq4f8ZqpZ1JK1c6I=
-X-Received: by 2002:a05:6870:d2c6:b0:2e9:fd62:9068 with SMTP id
- 586e51a60fabf-306c73182d7mr2083260fac.10.1753382470954; Thu, 24 Jul 2025
- 11:41:10 -0700 (PDT)
+        bh=T1HWlZ2q1kj2IfdBM1XqDySr0QM/i4rMvQ57Io2GLV0=;
+        b=hHNZlbraZXw3MXw45g0KRXnmGf+yUpd2fiJ58WuxKvySRZZ5dcOZ7fXgMxovw79hQy
+         tQcLFTQLuKQ9TCv/vClnpDGj63TT3AOhAB92KR2zgwRVK6GDpORJ+TA8HEHrrufsgLlQ
+         iqBXkPEuRyvwRg69govCMRulIap3f887BFMdrV2jJjLyHNh06gG6odzTbjoGXt2JDx1Q
+         4HuYiL/mQ18G+4v/0JRDdGhVgFOCN3aDHwd6wXfpCqv+vkvZyvy6BPtE/hYTIol72UoY
+         vLyKNcIezYlnxKPJ+wONZEW/Cc3Z0BMgKsSXhURzfJZ5SlysO/eZiQMQK71qyZ89uPd9
+         E+tA==
+X-Forwarded-Encrypted: i=1; AJvYcCXlTRAib7eSWGO49svRNQv0Qy8zGqDJDa7hYNu7YTQtXEBAraTZ+ivmFqYUUsIzDrNTJRVbau7hXw==@kvack.org
+X-Gm-Message-State: AOJu0YyR0yG2LMbnCniM13gPoiTB2jCHtCHuFkl+uTa0Ro8ZqO1yGr/L
+	sRb2Qh6sQFsle7r7kILzxIXhShl96fgjPWnBi94srK9bucNetf12gO2b38p7kJXT9LqzE2pgI8x
+	I5A5qheRplP5Odfr0sbCp2lK722hVLkrE9o5IQ2JvkML6b1KTCtI=
+X-Gm-Gg: ASbGncunf0pdlqiui0iM+6k3ohnWC69Gumo08gfYsVu2QCwuNbd6VkANwskux/GaORB
+	cpTwjYfKJc8spL08WNuOHQt54HbFfJf8SiV+0gHxWLa3KhR1qdydiP4ckRyWj5o6mL0S0HnO3/9
+	AC60z2uD8b5mvtopg3GIcrW4lj0KbvQU+Nus/gNK7mGcDY9YsOO2pD/kSX4GYeTkQk6t1cN/ai3
+	H2yenDDute1uwGb24b4U0mZrdSUEyNbdWen
+X-Google-Smtp-Source: AGHT+IFGOCABTTvB+uzF9wmiyKAOSjp+0YvJguYqvnGbeIpD4kNUAbPp92D+Kc9fHRgycq+ZSZnoA+bqeSnlnTMvEN0=
+X-Received: by 2002:a05:6871:71c5:b0:2b8:f99d:7ce6 with SMTP id
+ 586e51a60fabf-306c6f21d67mr1770212fac.3.1753382502323; Thu, 24 Jul 2025
+ 11:41:42 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1752687069.git.lorenzo.stoakes@oracle.com> <f4dda4c4840c69b2ea735bcb6d54ae70d527a48a.1752687069.git.lorenzo.stoakes@oracle.com>
-In-Reply-To: <f4dda4c4840c69b2ea735bcb6d54ae70d527a48a.1752687069.git.lorenzo.stoakes@oracle.com>
+References: <cover.1752687069.git.lorenzo.stoakes@oracle.com> <9ae70e1c509d790cf174f16e491975efd9be50b6.1752687069.git.lorenzo.stoakes@oracle.com>
+In-Reply-To: <9ae70e1c509d790cf174f16e491975efd9be50b6.1752687069.git.lorenzo.stoakes@oracle.com>
 From: Jeff Xu <jeffxu@chromium.org>
-Date: Thu, 24 Jul 2025 11:40:59 -0700
-X-Gm-Features: Ac12FXybD_pjPvOBCwcY-hNwuSV51_tRDl2BKwa1m5oQnEMvCGJNkN39CTK8H50
-Message-ID: <CABi2SkWgp1M5FWbo8p6_byF+5FzQtcSg3ui0rQ9Mpy6z2_BB5Q@mail.gmail.com>
-Subject: Re: [PATCH v3 4/5] mm/mseal: Simplify and rename VMA gap check
+Date: Thu, 24 Jul 2025 11:41:30 -0700
+X-Gm-Features: Ac12FXycf8JmBrOhOyz1OgvG94mrvgZe6JkSBqJucvHYxI-9914zkEue6RQd-ZA
+Message-ID: <CABi2SkXQsao-S+uy63k6Zc=y4W-pik6XZSzw+05f_Ws_frqZmQ@mail.gmail.com>
+Subject: Re: [PATCH v3 5/5] mm/mseal: rework mseal apply logic
 To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
 	David Hildenbrand <david@redhat.com>, Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, 
@@ -98,13 +98,13 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R . Howlett" <Liam.Howlett@
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: F0A26C0006
-X-Stat-Signature: kxjrbp4fi3onyzkttiax9ybjctdmgp4z
+X-Rspamd-Queue-Id: 503CD40004
+X-Stat-Signature: 5oubkknqh77n9xexgn5k7ywbbdm9qror
 X-Rspam-User: 
-X-HE-Tag: 1753382471-847153
-X-HE-Meta: U2FsdGVkX1/TWSafJrJrwE+X4gvG34GgQ6tix0FpDeFUXlalFsHe5+E7FREPRF/B439BWDYNKME0EwGMX/68uNboxiuQfQd23iuz1ZRFsGbKLrmLI0UH4gPNM+WEQVfIA6kzDDzTeCwMGGw6hgQhb0an2tZlgP4gtDmjiVzrdYMZie08g/uf2HxzGS4SvWjW4CDkZa8cFAC4gVSlIVAbN4ETG/aEE/0/0H6XTVZhY36jW8PxIUsYAOHkljyg5anWAIwK4ozcbiuW+w97FsgP2nmSTj+WLwDcSsHoxleUquA6WE4gapMWoZ0xjWYqZSlQIi+wYSCu2ojjw9DueY5u0baqTzgb6eDHjP2AWHeBmqiX27XW2rCWnTPnWAb7B07w4Aat+u8CiZIO9GTnMwpXLLSlLm2pXQK5lZTal/7VRLgcLGXXRJN4FBP2YfP9pXl0h6RvhUTKTLuKVGDbKAN0CPTSW+W9rC5tAZyaNplmpLN2Q8JNsZE2551YLRI1O1fj2nE4BIXM34nD1CIQUdMJSf9auH8p4/iZ1eTdPX5EC7dGSJhaJph9zCBv8NXtu+UEamdDzJZyJDK0QnMRnueFOH1YFpkEQkUFbb/xNN6qQG3cU5xLzg+FdybpcuMpgszuh3rMr0gPiAojV/WAfZoi+hNYh09mHk7n4R1ZidCCe5YGeSDu56U1825Xr/ly1tF7dkpPMiqR9/KEMCiKbzLsi9gIA451G3gsNikDv8wtq91jHaxtcQiChG7+GcnLLphDh9eaiYt+2q83+XtLGo1g2PViRWmSs1k4Vuvqfn7aUYoC4GFGF8lxS5gCrwtXaswPoWxtTjX206+jAAWzEjkFGrJwaF1/2KHdIZ2ElY+zWfXrD8E4KzZtdW0xlrIkYrR61vtt5bfURocszPQoE9oYQQ4NneEyZYC3AqGsfTehBoTOlYZJXYQwmhRWGKmmFPpq5QDP3Brs1HgsjEuMri9
- A9qZDrUy
- OmKAj5qKNaqv+sn9OchqqoiPQxhRM2yA2LojEL/TiSpCagWY2BEYQmAS1rI5Z8wkevuGNgB33kvVmfTx3b6OG8+pc3t+OowxN0Wj8oUO3v05CSWq7l0nyAM0YF0+LITzRAdW29comDeqffEfObGPSXVXYQM/u4OR7O6QRd2xoVC/KjABBtHr3WXKnsuzRHkgAUZE6OFKEbCs2buE=
+X-HE-Tag: 1753382503-850645
+X-HE-Meta: U2FsdGVkX193GBeTMHH6+/wNbKarhMocHbHG6LN4qGONNJA6OIcxjoKHLTdZxo56VbLq4q3mDj05hfjhw2D0J7iYZH1r2O72uCyEARv3gCVjezsKlWDZRqOgrccjDCj/Y6fJ21ijHRbQSwaILL50nWZgR9b8hzzHQltIwuyHuEGj9EjUFGByGhvo4BYpj9gYpGRVKrqY9MCvMk6erjvAP85Asehl9cRpEKgLbRxTWDiZ2mrJ5xdnD204ar1gbW8iTcPX3llCXSLWG6Krtngv79VAAKPtyrsDUZ0VuP6ngH4O1EUmwq1f++PkIF9IErfONRPrbLTP545RrlbmHoSwzHYfgkshh0OAzxa02zV+QkerVWY/qWYhycfzLqJVW8UsuL0jzoTp7XBLWjyhSUuA5MvP40wg1sz0wJmF0VCsalb83RyL8d3nKoIvEBi8mu6OsEZ/8C3t+TiU1qIm1yF2hiw7hbNYupILbiVvw+dg4yjso3k3Jeafj6o71MgJ+DfmVjafmn16aDvn+rSPsI8o596PEwsizfR9GuniSFJeWiSIMJYseZfYwv8RweqzCY+2YtzCe7ZEQX87EGdDweZ8OLdomVbtS0igQEJtshba6Kyk4CxA805zwI8U4+7NvUb2NOXIpcbgmJZ4p9H0huybRIC4L/zw65Qo+VKi2K/xlBUp7OnfFi6wlm0B2gP0jw/G0718jg1A7G6XbMUidAHR6ERjUqfIVicBMI/TidvupUpZoo4ksKwXXdZoj0SvW7PqQMFafqUcwBusjY+5DZR4ZvjXdiXdX6pJnaDBcUSzvD/ukFUj6pquQGQfAOvCGnkOLv5/91b4hcovJ1NZETuwFstUvrmAQTve+8OhwgTRcoPuniIpDOLXznTHkjVfRuQ7JkhUkkLGi/ve2qiDazabYMh6rNj95XsSN7in5/fprWD0EmBKTikcOrHYF1w8t+L6R6PqL+o/cfVboWAlTYz
+ i3qGsCKI
+ lBGxQCr7w5qJoMRylPOxDVqtY+e/I1pPcHyNBNh6Ky8vm520r9M37DH/Itq0RaScr2ngw5FZJsa2UjM1cdHQCK5LrUPat1Zit3yTuz4wFPSxv2dp1Mhv/TsJLHrUQ/FLV65ubCWmFOQbm10MZB/MiodlszUuBXJi8QWJoIlp3wyYMP0dsgFgcTjHrJvt+xU3Pmg2Bz8dwKkA0kzhf8LGwhOzqI+NJSFsPA/FCuf7ndbNlxv20ttTWBHU/H9ijl+9kt5v09Hc/4YbdR9JzvPNs+f1QWGVcg0fozI+fboDzZ1rtcSY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,108 +118,146 @@ Hi Lorenzo,
 On Wed, Jul 16, 2025 at 10:38=E2=80=AFAM Lorenzo Stoakes
 <lorenzo.stoakes@oracle.com> wrote:
 >
-> The check_mm_seal() function is doing something general - checking whethe=
-r
-> a range contains only VMAs (or rather that it does NOT contain any
-> unmapped regions).
+> The logic can be simplified - firstly by renaming the inconsistently name=
+d
+> apply_mm_seal() to mseal_apply().
 >
-> So rename this function to range_contains_unmapped().
+> We then wrap mseal_fixup() into the main loop as the logic is simple enou=
+gh
+> to not require it, equally it isn't a hugely pleasant pattern in mprotect=
+()
+> etc.  so it's not something we want to perpetuate.
 >
-> Additionally simplify the logic, we are simply checking whether the last
-> vma->vm_end has either a VMA starting after it or ends before the end
-> parameter.
+> We eliminate the need for invoking vma_iter_end() on each loop by directl=
+y
+> determining if the VMA was merged - the only thing we need concern
+> ourselves with is whether the start/end of the (gapless) range are offset
+> into VMAs.
 >
-> This check is rather dubious, so it is sensible to keep it local to
-> mm/mseal.c as at a later stage it may be removed, and we don't want any
-> other mm code to perform such a check.
+> This refactoring also avoids the rather horrid 'pass pointer to prev
+> around' pattern used in mprotect() et al.
 >
 > No functional change intended.
 >
 > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 > Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 > Acked-by: David Hildenbrand <david@redhat.com>
-> ---
->  mm/mseal.c | 36 +++++++++++-------------------------
->  1 file changed, 11 insertions(+), 25 deletions(-)
->
-> diff --git a/mm/mseal.c b/mm/mseal.c
-> index adbcc65e9660..61c07b1369cb 100644
-> --- a/mm/mseal.c
-> +++ b/mm/mseal.c
-> @@ -37,32 +37,22 @@ static int mseal_fixup(struct vma_iterator *vmi, stru=
-ct vm_area_struct *vma,
->         return ret;
->  }
->
-> -/*
-> - * Check for do_mseal:
-> - * 1> start is part of a valid vma.
-> - * 2> end is part of a valid vma.
-> - * 3> No gap (unallocated address) between start and end.
-> - * 4> map is sealable.
-> - */
-> -static int check_mm_seal(unsigned long start, unsigned long end)
-Is it possible to leave the check_mm_seal() function together with its
-header comments? My original reason was to have a contract that
-documents the exact entry check for mseal(). That way, no matter how
-the code is refactored in the future, as long as the contract remains
-true, I won't need to worry about behavior changes for mseal(). This
-could be helpful if you move range_contains_unmapped into vma.c in the
-future.
-
-Note: "4> map is sealable." can be removed,  which is obsolete, we no
-longer use sealable flags.
+Acked-by: Jeff Xu <jeffxu@chromium.org>
 
 Thanks and regards,
 -Jeff
-> +/* Does the [start, end) range contain any unmapped memory? */
-> +static bool range_contains_unmapped(struct mm_struct *mm,
-> +               unsigned long start, unsigned long end)
->  {
->         struct vm_area_struct *vma;
-> -       unsigned long nstart =3D start;
-> +       unsigned long prev_end =3D start;
->         VMA_ITERATOR(vmi, current->mm, start);
+> ---
+>  mm/mseal.c | 67 ++++++++++++++++--------------------------------------
+>  1 file changed, 20 insertions(+), 47 deletions(-)
 >
-> -       /* going through each vma to check. */
->         for_each_vma_range(vmi, vma, end) {
-> -               if (vma->vm_start > nstart)
-> -                       /* unallocated memory found. */
-> -                       return -ENOMEM;
+> diff --git a/mm/mseal.c b/mm/mseal.c
+> index 61c07b1369cb..0ab12e09792a 100644
+> --- a/mm/mseal.c
+> +++ b/mm/mseal.c
+> @@ -15,28 +15,6 @@
+>  #include <linux/sched.h>
+>  #include "internal.h"
+>
+> -static int mseal_fixup(struct vma_iterator *vmi, struct vm_area_struct *=
+vma,
+> -               struct vm_area_struct **prev, unsigned long start,
+> -               unsigned long end, vm_flags_t newflags)
+> -{
+> -       int ret =3D 0;
+> -       vm_flags_t oldflags =3D vma->vm_flags;
 > -
-> -               if (vma->vm_end >=3D end)
-> -                       return 0;
-> +               if (vma->vm_start > prev_end)
-> +                       return true;
->
-> -               nstart =3D vma->vm_end;
-> +               prev_end =3D vma->vm_end;
->         }
->
-> -       return -ENOMEM;
-> +       return prev_end < end;
+> -       if (newflags =3D=3D oldflags)
+> -               goto out;
+> -
+> -       vma =3D vma_modify_flags(vmi, *prev, vma, start, end, newflags);
+> -       if (IS_ERR(vma)) {
+> -               ret =3D PTR_ERR(vma);
+> -               goto out;
+> -       }
+> -
+> -       vm_flags_set(vma, VM_SEALED);
+> -out:
+> -       *prev =3D vma;
+> -       return ret;
+> -}
+> -
+>  /* Does the [start, end) range contain any unmapped memory? */
+>  static bool range_contains_unmapped(struct mm_struct *mm,
+>                 unsigned long start, unsigned long end)
+> @@ -55,38 +33,33 @@ static bool range_contains_unmapped(struct mm_struct =
+*mm,
+>         return prev_end < end;
 >  }
 >
->  /*
-> @@ -184,14 +174,10 @@ int do_mseal(unsigned long start, size_t len_in, un=
-signed long flags)
->         if (mmap_write_lock_killable(mm))
->                 return -EINTR;
+> -/*
+> - * Apply sealing.
+> - */
+> -static int apply_mm_seal(unsigned long start, unsigned long end)
+> +static int mseal_apply(struct mm_struct *mm,
+> +               unsigned long start, unsigned long end)
+>  {
+> -       unsigned long nstart;
+>         struct vm_area_struct *vma, *prev;
+> -       VMA_ITERATOR(vmi, current->mm, start);
+> +       unsigned long curr_start =3D start;
+> +       VMA_ITERATOR(vmi, mm, start);
 >
+> +       /* We know there are no gaps so this will be non-NULL. */
+>         vma =3D vma_iter_load(&vmi);
 > -       /*
-> -        * First pass, this helps to avoid
-> -        * partial sealing in case of error in input address range,
-> -        * e.g. ENOMEM error.
+> -        * Note: check_mm_seal should already checked ENOMEM case.
+> -        * so vma should not be null, same for the other ENOMEM cases.
 > -        */
-> -       ret =3D check_mm_seal(start, end);
-> -       if (ret)
-> +       if (range_contains_unmapped(mm, start, end)) {
-> +               ret =3D -ENOMEM;
->                 goto out;
-> +       }
+>         prev =3D vma_prev(&vmi);
+>         if (start > vma->vm_start)
+>                 prev =3D vma;
 >
->         /*
->          * Second pass, this should success, unless there are errors
+> -       nstart =3D start;
+>         for_each_vma_range(vmi, vma, end) {
+> -               int error;
+> -               unsigned long tmp;
+> -               vm_flags_t newflags;
+> -
+> -               newflags =3D vma->vm_flags | VM_SEALED;
+> -               tmp =3D vma->vm_end;
+> -               if (tmp > end)
+> -                       tmp =3D end;
+> -               error =3D mseal_fixup(&vmi, vma, &prev, nstart, tmp, newf=
+lags);
+> -               if (error)
+> -                       return error;
+> -               nstart =3D vma_iter_end(&vmi);
+> +               unsigned long curr_end =3D MIN(vma->vm_end, end);
+> +
+> +               if (!(vma->vm_flags & VM_SEALED)) {
+> +                       vma =3D vma_modify_flags(&vmi, prev, vma,
+> +                                       curr_start, curr_end,
+> +                                       vma->vm_flags | VM_SEALED);
+> +                       if (IS_ERR(vma))
+> +                               return PTR_ERR(vma);
+> +                       vm_flags_set(vma, VM_SEALED);
+> +               }
+> +
+> +               prev =3D vma;
+> +               curr_start =3D curr_end;
+>         }
+>
+>         return 0;
+> @@ -185,10 +158,10 @@ int do_mseal(unsigned long start, size_t len_in, un=
+signed long flags)
+>          * reaching the max supported VMAs, however, those cases shall
+>          * be rare.
+>          */
+> -       ret =3D apply_mm_seal(start, end);
+> +       ret =3D mseal_apply(mm, start, end);
+>
+>  out:
+> -       mmap_write_unlock(current->mm);
+> +       mmap_write_unlock(mm);
+>         return ret;
+>  }
+>
 > --
 > 2.50.1
 >
