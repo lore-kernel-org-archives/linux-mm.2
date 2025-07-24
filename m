@@ -2,115 +2,115 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0720BC83F1A
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 14:50:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 546A7C83F1A
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 14:51:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 969028E0090; Thu, 24 Jul 2025 10:50:50 -0400 (EDT)
+	id E4B518E0091; Thu, 24 Jul 2025 10:51:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F1488E007C; Thu, 24 Jul 2025 10:50:50 -0400 (EDT)
+	id DFCDA8E007C; Thu, 24 Jul 2025 10:51:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E1118E0090; Thu, 24 Jul 2025 10:50:50 -0400 (EDT)
+	id D12B28E0091; Thu, 24 Jul 2025 10:51:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 692958E007C
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 10:50:50 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0C4ECC01B1
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 14:50:50 +0000 (UTC)
-X-FDA: 83699445060.29.EC2CA0E
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 6EA0F18000D
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 14:50:48 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BF06A8E007C
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 10:51:29 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 71FEB16036B
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 14:51:29 +0000 (UTC)
+X-FDA: 83699446698.20.434860F
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 7955A180009
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 14:51:27 +0000 (UTC)
 Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=x76vEytQ;
-	dmarc=pass (policy=quarantine) header.from=pankajraghav.com;
-	spf=pass (imf16.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.152 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753368648;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aUm65lZP53PD6UFdCNM0FQrwo2MXNsuP3026Ad+nKaE=;
-	b=KQqxSaZL84bc4KMAqbwNpBEi00LH85lKjV5PqVzXvLMRBazszmn54e/yBITKzz4rlaDVRM
-	QEG4/Ef6+VgOXEaJ6D0cKTY8l8GrkT5V4NENe0RlWBdTemS8KOMVzbRV0FgdJvD1qjECHF
-	mAQd6TFxINjLFrVJoGXMjrk5OEtos3I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753368648; a=rsa-sha256;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Sn6MfGHJ;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf16.hostedemail.com: domain of jannh@google.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=jannh@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753368687; a=rsa-sha256;
 	cv=none;
-	b=FO3fe1qP39QEQbiV9C1vmiLApH7DyZEsEAeCOBVIV0jrMHssgYuI4Chj5KS0TPp0Pe19Ot
-	JstUH78BZXWOZlWL7K0hvMTpBmzythd6Y7QJvI2aY7vG8Ro+uB4vEdffr9u8msrwu4W9AO
-	W7VB4DNSAzyx1idlsHEkludWqEqV2po=
+	b=Vx/pkV7ilNcPscRviPpuJfW7v8xrLXOdq3+j8ucTZ7KVTqJPO4L+TgRxtx5P7EUcJULxVj
+	rbBf7mUtnPQO6URoP6CLSaJ2slfV3L17bnkUhaTCodEFS6km7tvRUt1rmrwLhyl4RqFGos
+	J8NV6gyKlJaIUhiH70ZxVlMBDX4r9H4=
 ARC-Authentication-Results: i=1;
 	imf16.hostedemail.com;
-	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=x76vEytQ;
-	dmarc=pass (policy=quarantine) header.from=pankajraghav.com;
-	spf=pass (imf16.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.152 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4bnv7n1wFlz9t5m;
-	Thu, 24 Jul 2025 16:50:45 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pankajraghav.com;
-	s=MBO0001; t=1753368645;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	dkim=pass header.d=google.com header.s=20230601 header.b=Sn6MfGHJ;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf16.hostedemail.com: domain of jannh@google.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=jannh@google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753368687;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aUm65lZP53PD6UFdCNM0FQrwo2MXNsuP3026Ad+nKaE=;
-	b=x76vEytQYOiiVL0uyLac3ejDCr+U69TsJRegMRGlNKbpDMYYg4GpZMLFlbbQ03qKsHkyGT
-	3/he+Tjf5ia6zlRTkkeVh4HHNZfWPxH9XuB4olqTnZU33wEJLQ8Zqzs5TDhsLqpw/kpshB
-	kgQACvOmj7yTzNqKfD4d/vQO30NUw1ysp57qkBzVeUA8V7H189iNVqBzwIwABxFkzTmqox
-	m2BtWlsv9PfGbJIsZCwN/mHrKUJK+tazSBRReLrAQO308vnl0RQfQlRSpEgIDTXEowkh5U
-	cxhDKCzlU88kiEbrA9wTAWTntaXCqvfUaabmIGGhFTAM7GNB75fIRFxIHBzqkA==
-From: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>
-To: Suren Baghdasaryan <surenb@google.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Zi Yan <ziy@nvidia.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Michal Hocko <mhocko@suse.com>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Nico Pache <npache@redhat.com>,
-	Dev Jain <dev.jain@arm.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>
-Cc: linux-kernel@vger.kernel.org,
-	willy@infradead.org,
-	linux-mm@kvack.org,
-	x86@kernel.org,
-	linux-block@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	"Darrick J . Wong" <djwong@kernel.org>,
-	mcgrof@kernel.org,
-	gost.dev@samsung.com,
-	kernel@pankajraghav.com,
-	hch@lst.de,
-	Pankaj Raghav <p.raghav@samsung.com>
-Subject: [RFC v2 4/4] block: use largest_zero_folio in __blkdev_issue_zero_pages()
-Date: Thu, 24 Jul 2025 16:50:01 +0200
-Message-ID: <20250724145001.487878-5-kernel@pankajraghav.com>
-In-Reply-To: <20250724145001.487878-1-kernel@pankajraghav.com>
-References: <20250724145001.487878-1-kernel@pankajraghav.com>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=oZBzBNB+u1GHY7Eewg0Wa8/2bvpUh1nZ72QzMOssxqc=;
+	b=uW+xCfI1UKXOwT87h3uQ8ZtBIa0PXOta0N5xF8cPgu0DEZeJcpdIDwZFkc2Sd81FKg+IV9
+	5wJK20ciODvUhI0oaPUhzSaHLXZ5zRtKJC7B3UCcVRZKB+82UMvLMvTdubC1/fz1El6Yoz
+	ThHgDYCA/rPcOZ0Y8pV7vmimNQKjV7Q=
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-611d32903d5so10539a12.0
+        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 07:51:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753368686; x=1753973486; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oZBzBNB+u1GHY7Eewg0Wa8/2bvpUh1nZ72QzMOssxqc=;
+        b=Sn6MfGHJssQgcmN0zzvJo/GIYPQl6jtkAyzU7CQj/SJiaentJo9euSMl1NQzVQhtC3
+         mk3jhEER4pW3tCWKXPUu/sfZByxMFFjDv8t/yP0QNawp7T4t/3OgPDpQF/IpP0m4c7eg
+         y0WPQyL4+Nj6GAZ1hJslDkPhaqEiXOzcm9ebjZZro/miS7DiTsXBceWn4mn5h3OIATkP
+         ElVQVT09ojMUwlNLG5B3ztVfi2Uw14r9qgVt8WmWOv/nD/1Tfq31jEc0t8JOEuWG65uY
+         Kliyb+ihDAk2GGfvlmeYoHvJI+bgPsQc+PrOVkpu0u5hDC3hJjceYnLEkTQpzKmIPI4b
+         kXBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753368686; x=1753973486;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oZBzBNB+u1GHY7Eewg0Wa8/2bvpUh1nZ72QzMOssxqc=;
+        b=jg0p4tPLufScg5IpHJ78ZZr6N+rjE6T0yPUfPlevnQHpf6EorLV9XOjUKdNR3waVq/
+         n5b82+enFtUQ+f56B9gLwYPKAj+Qw1qFDykvwJSTpP19Yxw3cnzT02cXKgcCnHZ72vFd
+         Vd8s9o+Wq0DdNEj0aRPba6MtoOlxYeXDA/ik2iPQ+6houwryNoMUgTGQNcxVSwmMxXi8
+         jnjplxW6KWG7QI8KkpJF7iPbqTpyqcuwSbwuzu/rwd/5XPHIaUwRYLqxdb6gFvFnVGAL
+         LS53fVK24K1HHwNKSJiVq4fQTcPvnTCtj0PBeJxJ103mAQKHMuoEQYMtwNus/IPW5PhV
+         W5ng==
+X-Forwarded-Encrypted: i=1; AJvYcCX8LFT1nN8TDuNmBcI2reG2RPNu2BsDXXTd5uv170gAvbEL8a48HMCqrz8d/2z6Ti+SMBRyamV5qg==@kvack.org
+X-Gm-Message-State: AOJu0YyN3DoBjm8Cja6x7JTxdNI21KBYEZM487qWscR+Lngu6j/oUj1q
+	WChay+o0PTfFjfqjf+8RtMHy9+JNyLoK+1QoFsTekw5OKUwTddjw5/5/qyAKNT5OZpG3coJwt9X
+	E9ffhbR7qvkJm8Hke3kb/kAfjeyea+TVHFBzK86eH
+X-Gm-Gg: ASbGncsOON22/ZSFIM7LXrpdI6QFP/Gpj44KD8t7/kPfAla7GVtDzokiXNj7ruqDHXH
+	J5tQStj56WCcOFnU1D5uvdp8NMMUFQ9W2WSLf9i01Cn6o3QP4czzbmEhfwBbP/71mhSMx4fKcj1
+	2LU9txgKMntKcuX+anWPi/kmFXHvAybc8I1fmYWr2ItPKw5NwN9F5/Hqi7Qbdltq8dy4yJlyYzQ
+	r/yhddzeov4hiPxizXRS+p6Q2xZiRco4g==
+X-Google-Smtp-Source: AGHT+IEOrsDqVo5ci8aYn8jCdtj5CeXQAyO6/Tl1aEs7FqRIBfFdqhP4tUAk0s46m+L4Fi+pXaBVScYi4SEPT7gsT8s=
+X-Received: by 2002:a50:c2c9:0:b0:613:5007:6448 with SMTP id
+ 4fb4d7f45d1cf-614cce2f1efmr81961a12.3.1753368685537; Thu, 24 Jul 2025
+ 07:51:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: k16m56oxanw1xmj5o5f9a33kptpf8ns5
-X-Rspamd-Queue-Id: 6EA0F18000D
-X-Rspamd-Server: rspam10
+References: <CAG48ez0-deFbVH=E3jbkWx=X3uVbd8nWeo6kbJPQ0KoUD+m2tA@mail.gmail.com>
+ <6df9812c-96a5-41be-8b0e-5fff95ec757c@lucifer.local> <CAG48ez1A17JC7Q35jmurY+Co0t_a78bPy9eRWRim7xJy9oLCvA@mail.gmail.com>
+ <3a233a85-3a94-422e-87be-591f93acbac7@lucifer.local> <CAG48ez36AcGBy8_wo09WEHz98Dp44yKZ_FiVtFt8tcV9WiHafA@mail.gmail.com>
+ <b798c84e-f3fd-486d-ad70-c827385a558a@lucifer.local>
+In-Reply-To: <b798c84e-f3fd-486d-ad70-c827385a558a@lucifer.local>
+From: Jann Horn <jannh@google.com>
+Date: Thu, 24 Jul 2025 16:50:49 +0200
+X-Gm-Features: Ac12FXyobmXk6Rg8bysoNNk35-q0E97inAQrfimfGZSKIsFeLOaEfZN3ZnDmKGw
+Message-ID: <CAG48ez07dfabOERsOQoh8LWkcYTXo+svQk9X31afmWVGAVg9Tg@mail.gmail.com>
+Subject: Re: [BUG] hard-to-hit mm_struct UAF due to insufficiently careful
+ vma_refcount_put() wrt SLAB_TYPESAFE_BY_RCU
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, Pedro Falcato <pfalcato@suse.de>, 
+	Linux-MM <linux-mm@kvack.org>, kernel list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 7955A180009
+X-Stat-Signature: 7561sfrmaba5txbkbypx8riamfhn3uqi
 X-Rspam-User: 
-X-HE-Tag: 1753368648-548614
-X-HE-Meta: U2FsdGVkX1/kSHddhFkiy6IK6M+Fz6vnntd/9YeseWsvUQcrM9Y1WFWDmwmBbv0OtmtDapOnhLeH612K1RuBVSsjorkBNrkvcqv9B0vO40MJkCOFIymhRS6eb+Klvg5I8XhxLjp1WH4CfDIeKU+nxhthiHnrPc/lkQwDF4oeRMVOSjjv9ATNgo3sRZWKMHxu7z+93l6OKUicm6zYYFp2fErD4u+tlmdLO+MWlVp79HvYB62YeqOhvcDMhJnh3zRjyH4VZqogHVrxKYRDrVCu/6RwnZNwIvW++ntL1TSFGZEon8gUxCoRLq6eVzcjs2sRZDWFQlGghJSFujhQ6091bFl74tZDlUBkN5Ettu4yFJtJZ638CRhd9snM1cJ6/3vlA2YQn6E4jbN7Cxz+ii2IWpKFGbQLNeGDCukwTPAsri58YhNoL1C01TS33Ey8g+5bieY9Zb23hlpQTfUOS0/rmdcCn6Mx2jwOCnbCjSGzi1ykCRB5ETLprwjyRmC0b+/WHT9KI5qYo466+NiiTV8RDx7R1bJEhew8cLxTPGcLXu5JRiRdD2A0AkCKVY9ElxjuT4mhsgjxXVODgt03qegBqxm0dLiORZipGLf/zukhJ+WoYLfkmE4X6q7Eo/TwIYn5l01ZrkastBxKe39bu6lSBK+RM/lwntI47isIwVP3bL3S0Rx3l1o+tpth9DTN4Q6IAT2mYvCcwWdzWE76mUxaXqYCU8Hvv8v3rF1uidgcsTnl5KHgXc48a31HUrhDJQPv342s8l3PFLuQJ6j1lt0ptpJTG+opjkMVwhaOby54rutZLDCNjHxfcV9jujD+qLC2xT781ES71B6nMoPyr6gc8mnYz0j+2eGz+EGjfAl0CmKBk8whtpPDPv9jXMgZvyNxXo1in10FLBFL6c9VwhC0KDEajLB2ktk1J6GchJuhh+pkVwcbcySuRnRM3hUe0QFUQC8lAAvulc6tNOMKpQM
- IXvkFoer
- Vk3zcxu/wxSNWPeu5xvl7to7Isw==
+X-HE-Tag: 1753368687-680297
+X-HE-Meta: U2FsdGVkX1/xYCWub4nzK0jaValV5G/5Wyyor6MzJ48s/HaJJQQ3JNbJu02ewipva/cnLtGoWG7e2LO4Kc4JuCuP8B/eB+Bu/JzdWHITIiyCTtJ8DV6r7luqRcbcrtQ+jORGYbhwJwH02Xiw5mv664eUEjy4kY+LznwUKj/mmOkLEtbxoZqyBVfThhVH/O4FCLb8sAlLWIfesAmanGxjRdhJEeBDC6ce3uNxmQeAWXQzw+5CQafjYfbcwVK8786fnII46XxZcG4WXjT0ysyA0v5EH4wrbsIPQ0dO8RDtYC7LWeIK8GSeNkQbn10K79BnNP9SwDVpi+/PSbIy7Lt354NkU6vvbZv7wXsrSAL2wh80/S6IEIO9Se3DJydXy5rpJT0P8DpzYV70/NYIJ2MDcJLNpJY842g8XcEFbwmia1kfkyrNxDzlyehqW+hWNIHo15ROkb6Esn+huF0KmyrEn1jKbgL1WPb9b2EhKIZjW1+FVQDlU2xNjE7DtaAN3Yx0IRD75yX7a83VxosvkWqSMuk/rLeGVBgETYF/e0AP2D11z+ndNJQzvYwWPbiJI+3TnUZzJz8kfwaBPm37eqQ5+N8jN0Nm6HLOXS6UDuMUlWQOYUgO4wevvVjNGpDKuFUuJQoU761Uw0FZDezfLCTieoi9kZ710NW6jpQAWBB6c4I8Kwr7khFQ4IcZW75ETfleaVEj0pysEjRZ3H3NTy9hiGPQEqnSJCcp62HhQIFMALB/3JgamtutP9pfVQizihRp5UgqkEs9mv1LurBm7svSkxcP9RtlPOiZXN3ECGX3oshGXVdy8OA76qhwrU9GYn8cfzwgq8LXxJuPREtUxY61EjfOUuSbsey3pdOrBLH+fYm3n/R+KEYVrEPWbNYN+MpnrMjSjidOScmIuoPGvUCK6muxGjek6Pic6zX/AWg0d9g+EEiPh15cc9RGNaVcpY+ECVvSydga1mqcDJ2yjzQ
+ kfJyGx6G
+ hl6/D5V3WNHJX48i0T1LqokosAY83Nx/v8fRmMaPsMFNQoYZaRV1y8VxYdyf5OHLZKXvHrUTDfd5el/PEAbcKnrnl2WBn+Kz6WJqLFWjcxEVOOkROnFlZPSetGtFyL4BTY62dzGkKUHufUpxIx98BYVy6WN1g0Cz88y5xaTi7+Rhbd6XVqnuMp1y90cjWVx48Y1IOCiLSeYIibIw+xotbtojJUgQQWnrZooSN6/b8g1fsvKb72mTjO5At6CnDneA9BrurETPeG37iQhkxTxFhLsiXYPz43CczKDSGsvvPnCUiep/Hqk3p6crkPFp98bSSAbV87LYZaLX1hLy5+4T6ojV60g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,57 +119,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Pankaj Raghav <p.raghav@samsung.com>
+On Thu, Jul 24, 2025 at 7:13=E2=80=AFAM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+> On Wed, Jul 23, 2025 at 09:43:35PM +0200, Jann Horn wrote:
+> > Sorry, while typing up this mail I realized I didn't have this stuff
+> > particularly straight in my head myself when writing my previous mails
+> > about this...
+> >
+> > On Wed, Jul 23, 2025 at 8:45=E2=80=AFPM Lorenzo Stoakes
+> > <lorenzo.stoakes@oracle.com> wrote:
+> > > On Wed, Jul 23, 2025 at 08:30:30PM +0200, Jann Horn wrote:
+> > > > On Wed, Jul 23, 2025 at 8:14=E2=80=AFPM Lorenzo Stoakes
+> > > > <lorenzo.stoakes@oracle.com> wrote:
+> > > > > On Wed, Jul 23, 2025 at 06:26:53PM +0200, Jann Horn wrote:
+> > > > > > There's a racy UAF in `vma_refcount_put()` when called on the
+> > > > > > `lock_vma_under_rcu()` path because `SLAB_TYPESAFE_BY_RCU` is u=
+sed
+> > > > > > without sufficient protection against concurrent object reuse:
+> > > > > >
+> > > > > > lock_vma_under_rcu() looks up a VMA locklessly with mas_walk() =
+under
+> > > > > > rcu_read_lock(). At that point, the VMA may be concurrently fre=
+ed, and
+> > > > > > it can be recycled by another process. vma_start_read() then
+> > > > > > increments the vma->vm_refcnt (if it is in an acceptable range)=
+, and
+> > > > > > if this succeeds, vma_start_read() can return a reycled VMA. (A=
+s a
+> > > > > > sidenote, this goes against what the surrounding comments above
+> > > > > > vma_start_read() and in lock_vma_under_rcu() say - it would pro=
+bably
+> > > > > > be cleaner to perform the vma->vm_mm check inside vma_start_rea=
+d().)
+> > > > > >
+> > > > > > In this scenario where the VMA has been recycled, lock_vma_unde=
+r_rcu()
+> > > > > > will then detect the mismatching ->vm_mm pointer and drop the V=
+MA
+> > > > > > through vma_end_read(), which calls vma_refcount_put().
+> > > > >
+> > > > > So in _correctly_ identifying the recycling, we then hit a proble=
+m. Fun!
+> > > > >
+> > > > > > vma_refcount_put() does this:
+> > > > > >
+> > > > > > ```
+> > > > > > static inline void vma_refcount_put(struct vm_area_struct *vma)
+> > > > > > {
+> > > > > >         /* Use a copy of vm_mm in case vma is freed after we dr=
+op vm_refcnt */
+> > > > > >         struct mm_struct *mm =3D vma->vm_mm;
+> > > > >
+> > > > > Are we at a point where we _should_ be looking at a VMA with vma-=
+>vm_mm =3D=3D
+> > > > > current->mm here?
+> > > >
+> > > > Well, you _hope_ to be looking at a VMA with vma->vm_mm=3D=3Dcurren=
+t->mm,
+> > > > but if you lose a race it is intentional that you can end up with
+> > > > another MM's VMA here.
+>
+> Right I get the SLAB_TYPESAFE_BY_RCU thing, what I'm saying overall is 'c=
+an we
+> detect that we lost the race by knowing what mm this should be'...
+>
+> >
+> > (I forgot: The mm passed to lock_vma_under_rcu() is potentially
+> > different from current->mm if we're coming from uffd_mfill_lock(),
+> > which would be intentional and desired, but that's not relevant here.
+> > Sorry for making things more confusing.)
+>
+> ...and because of this, no we can't. I hate how uffd is implemented.
 
-Use largest_zero_folio() in __blkdev_issue_zero_pages().
-On systems with CONFIG_STATIC_HUGE_ZERO_FOLIO enabled, we will end up
-sending larger bvecs instead of multiple small ones.
+I mean, we are in a context where we're looking up a VMA under a
+specific MM, we know which MM the VMA should be from. And we have a
+bailout that checks for this. It's just that by the time we can check
+if the MM matches the expected one, we've already grabbed the VMA.
 
-Noticed a 4% increase in performance on a commercial NVMe SSD which does
-not support OP_WRITE_ZEROES. The device's MDTS was 128K. The performance
-gains might be bigger if the device supports bigger MDTS.
+> > > Right so, we have:
+> > >
+> > > 'mm we meant to get' (which apparently can't be assumed to be current=
+->mm)
+> > > 'mm we actually got' (which may or may not be freed at any time)
+> > >
+> > > The _meant to get_ one might have eternal waiters. Or might not even =
+need
+> > > to be woken up.
+> > >
+> > > I don't see why keeping the 'actually got' one around really helps us=
+? Am I
+> > > missing something?
+> >
+> > We basically have taken a read lock on a VMA that is part of the
+> > "actually got" MM, and so we may have caused writers from that MM to
+> > block and sleep, and since we did that we have to wake them back up
+> > and say "sorry, locked the wrong object, please continue".
+>
+> OK I think this is the crux of it then, and what I've been missing here -
+> we have taken a read lock _by mistake_ in effect on the recycled mm, whic=
+h
+> may end up to be a spurious one that we need to immediately drop, but
+> because of this we might have waiters that could wait forever.
+>
+> OK I get it. But to safely reference the mm here we need to be assured it
+> stays around because in case of this not being true, we have nothing to
+> prevent that mm going away right?
 
-Signed-off-by: Pankaj Raghav <p.raghav@samsung.com>
----
- block/blk-lib.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
-
-diff --git a/block/blk-lib.c b/block/blk-lib.c
-index 4c9f20a689f7..3030a772d3aa 100644
---- a/block/blk-lib.c
-+++ b/block/blk-lib.c
-@@ -196,6 +196,8 @@ static void __blkdev_issue_zero_pages(struct block_device *bdev,
- 		sector_t sector, sector_t nr_sects, gfp_t gfp_mask,
- 		struct bio **biop, unsigned int flags)
- {
-+	struct folio *zero_folio = largest_zero_folio();
-+
- 	while (nr_sects) {
- 		unsigned int nr_vecs = __blkdev_sectors_to_bio_pages(nr_sects);
- 		struct bio *bio;
-@@ -208,15 +210,14 @@ static void __blkdev_issue_zero_pages(struct block_device *bdev,
- 			break;
- 
- 		do {
--			unsigned int len, added;
-+			unsigned int len;
- 
--			len = min_t(sector_t,
--				PAGE_SIZE, nr_sects << SECTOR_SHIFT);
--			added = bio_add_page(bio, ZERO_PAGE(0), len, 0);
--			if (added < len)
-+			len = min_t(sector_t, folio_size(zero_folio),
-+				    nr_sects << SECTOR_SHIFT);
-+			if (!bio_add_folio(bio, zero_folio, len, 0))
- 				break;
--			nr_sects -= added >> SECTOR_SHIFT;
--			sector += added >> SECTOR_SHIFT;
-+			nr_sects -= len >> SECTOR_SHIFT;
-+			sector += len >> SECTOR_SHIFT;
- 		} while (nr_sects);
- 
- 		*biop = bio_chain_and_submit(*biop, bio);
--- 
-2.49.0
-
+Yes - as Suren explained, as long as we hold a reference to the VMA,
+the MM also stays around, but to access the MM after dropping the VMA
+we need to somehow grab a reference on the MM first.
 
