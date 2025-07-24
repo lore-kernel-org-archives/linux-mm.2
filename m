@@ -2,135 +2,97 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D7F97C87FC5
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 23:37:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E68DC87FCA
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 23:38:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88B7D8E00C9; Thu, 24 Jul 2025 19:37:34 -0400 (EDT)
+	id A5FFB8E00CA; Thu, 24 Jul 2025 19:38:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EC978E007C; Thu, 24 Jul 2025 19:37:34 -0400 (EDT)
+	id 9E9CB8E007C; Thu, 24 Jul 2025 19:38:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68F1C8E00C9; Thu, 24 Jul 2025 19:37:34 -0400 (EDT)
+	id 8D8CB8E00CA; Thu, 24 Jul 2025 19:38:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 514B68E007C
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 19:37:34 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2142B80578
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 23:37:34 +0000 (UTC)
-X-FDA: 83700772428.18.4052FB1
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 38EAE140007
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 23:37:32 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=rivosinc-com.20230601.gappssmtp.com header.s=20230601 header.b=d8B9P47L;
-	spf=pass (imf09.hostedemail.com: domain of debug@rivosinc.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7BAD08E007C
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 19:38:06 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F0734C057B
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 23:38:05 +0000 (UTC)
+X-FDA: 83700773730.04.24F8118
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 584A240005
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 23:38:04 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lRIW9KGH;
+	spf=pass (imf27.hostedemail.com: domain of kees@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753400252;
+	s=arc-20220608; t=1753400284;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=peHOF2kFTCg4ZjEHfH+NsYT+T4LY9ghqoCHBPY5quO0=;
-	b=gniZpepTWNxcivkHQdbQh7ybK7qXyhw50OGs/T9iDYWavcjF9LxO5+KlXYr6ToMK1kXc7J
-	+F58r2dKSBTzSSDbdXx+M55RQTLvAuzUJbJK+06mrI6bLU5s6939JJMTXJn8t46CHB/eJc
-	WGvRgbUXOWX7C6CZpHka/n3dFhqxN6I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753400252; a=rsa-sha256;
+	bh=20zNdnhVMEE4ppbNQP0Y2okYSRQIntQ886en1roRbdA=;
+	b=AaWogXboWiZ12H68y69VynqOXFp+HDd/eBNbtkqyqxKI30OYpzJlX9gDBIpjpDM3+lXwUe
+	5W1D48KmnNPXd7AEu4603X++wc5/5C7cxZjSGb51wgmSwkrXxPeVLK/HLN2eKFrWFrj/T/
+	+GX3HEKPwJ83v+g5NSeB1UQnxVeGUqk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753400284; a=rsa-sha256;
 	cv=none;
-	b=HwkiEhpGjgHT0iD1vUYvi4RzZbg/zJSx4JwxdBh3Pt4m8xn2mmvd7C5NCc/m6sCqRs3bT3
-	eGHqra6EUNi8r/L1TDc2MOrw3cBmjnxWTYWBix98a6N4xvYwBmTGxZ6grMN4/ashBwpU4Z
-	7j2O7n3LthVc7Rqzrpsr7SBElCfo25w=
+	b=I7m43kU87JWwQPQ+yI5EHmtPiJ9TgZpmu3wcGuSCDOuHuybFQSZHp9RiwFMIV0cldy7LU4
+	W7gGEkYAjB88cthiiOrXtknA6DoHZ1HbxOlGRCg6ApMULVy6MRztQxO5KAZbsxN+SPvG7c
+	V3sq9FYquRDPbcazhnW5eYlk4rxVlF4=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=rivosinc-com.20230601.gappssmtp.com header.s=20230601 header.b=d8B9P47L;
-	spf=pass (imf09.hostedemail.com: domain of debug@rivosinc.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
-	dmarc=none
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-b321bd36a41so1449273a12.2
-        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 16:37:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1753400251; x=1754005051; darn=kvack.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=peHOF2kFTCg4ZjEHfH+NsYT+T4LY9ghqoCHBPY5quO0=;
-        b=d8B9P47L/IHBR1hSe9wao70ncNgWQ17gHYU9+0jQcnYCuGJvpccNWuagOeGvJQw0Lo
-         8L7hhS7nVEWwtqW6iIrig8bo9kmpIsu369fL7Bkf53JbuAoQS8DSrCjc3soPMB5fVd/j
-         P18nhNy1+A1wzVRS/aTgy1ZmgjdKmFwFwIsV8zZh9LZfJHZ66Jv64RZ/gXh8WUeP0W2Y
-         l6zs1UUcfOt6SMd+MlzV8AgpUryt2aa4l0LijXrN0NfUDjVu5Gf2N4TwbLctNhsBXMRH
-         7oowLuPWtVz7bYFrKZGjH5vV+MSJdIPp848Jw5F1hXIiln2xObK4eBtSc2vFHhpf35YK
-         W8pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753400251; x=1754005051;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=peHOF2kFTCg4ZjEHfH+NsYT+T4LY9ghqoCHBPY5quO0=;
-        b=PjWeZ5U+N0Qfr94CGsipKygy/IsLsCMFdReG/FDN4MmCTFl/OeYmwHwCT10jdaykYL
-         WG1vtebQ8a3LopaZoA+pNNIVMCyM3P0NUK5kAGfVX2YakJ96hVaZQTKnQz38yAJ3nA17
-         WyiPdD3+mKZD6xz08PSLKbJiOsc/r8/Ym6rNCntv1jef4GQxRK2AcRdvlzh+rUcimCxU
-         PeJsELp6WdiWYInrVafp+7VSlnILft0C9xj4MdnxfFLrCcU3SzVI/NSgxB97+g7iHuFG
-         GQdcQbJq/9eJ6zch2tJxK7UxJRm/IfES5I77LsV8N1i6WyuBoXDKQfv3xQekg4K5cRsA
-         PusA==
-X-Forwarded-Encrypted: i=1; AJvYcCUHa0j/bgtPBo5MqAwi21ar0h42uSbbRz4s3c6YUVZJsR4AyflIhIO90M3KiNeox6BCLHJGTWvtow==@kvack.org
-X-Gm-Message-State: AOJu0Yz58+PDm/9694RkGJtTg6c348P4W4HfxeqJy0qr7fR8IWeTJtjD
-	tSyXkqdy4f3oMv1hvgBhvINrj3S1qAlciq797bI+RtJjqk59KDWw0/yLTUdi9M/vbf3+XyXy2Kd
-	xFvq9
-X-Gm-Gg: ASbGnctIPezRsitdtvNRHJw2A8bikYXABtNZ4qmd7AecRXd3X4piXBQRUO89FSUcYFX
-	6rKOkaHzC5IriYLr9CtwXzgWD56NAodIFcoiqw4FKLy6Ca6Y2xFH5GqY9W42CVJYgwpKu9WBHxJ
-	LFcIdDxiobw85Lo9dguJ2+UJOSRoNqkpg7fJtytPoVXOw5++e4ArzuEb+nnwgqeZesMdcd2iANs
-	jUhb0a7XNVcGX8BoEzU1JFVozSh7J/sF3bNBEQSrNxt4L/1uuO1bK3tbkjpn3AuON7KJoEdtN6O
-	cGveD0zehNmAuY83WMnHQFtnHjvMgAQHBkanSOg94ANWsSSCKQ8TCmU7sWc1iROc2ArRsncKvBs
-	brIDqCfo1OqwhUjdMNtalxXnK2m1lH9ur3iUSfNEeGVI=
-X-Google-Smtp-Source: AGHT+IHWiexaVwmMrfCesAYQvzzDEjUSkMZA8bOmNgM6tMD5UpaI8v8Bzd/POThkVi6Pt2HxfwQt4Q==
-X-Received: by 2002:a17:902:cece:b0:234:d431:ec6e with SMTP id d9443c01a7336-23f9813a90emr143907835ad.3.1753400250715;
-        Thu, 24 Jul 2025 16:37:30 -0700 (PDT)
-Received: from debug.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23fa48bc706sm23598685ad.106.2025.07.24.16.37.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Jul 2025 16:37:30 -0700 (PDT)
-From: Deepak Gupta <debug@rivosinc.com>
-Date: Thu, 24 Jul 2025 16:37:04 -0700
-Subject: [PATCH 11/11] riscv: Kconfig & Makefile for riscv kernel control
- flow integrity
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lRIW9KGH;
+	spf=pass (imf27.hostedemail.com: domain of kees@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 37B955C67B9;
+	Thu, 24 Jul 2025 23:38:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB12C4CEED;
+	Thu, 24 Jul 2025 23:38:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753400282;
+	bh=b5hCToxNeuwTg9pHwy7ASyHLcQ4WXMdqVI9hwgI69ks=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lRIW9KGHcqL0Fmk+5ttu/lxjwJbU/eFI84L7Hj2MdW1ul6fOEUBmOnNycwc827Q4i
+	 LJEsZJ4GrO/oavqNwFPm9QRw9JUObG/+JjzR4v93D3Z/GX86s3koBwvt/aib1W/GAM
+	 3RexJjMDXqALCzOv+OU2x4dAPCS7pO0Y31VMtBcJ6qNYaNPH6sRFA3Mnsp8YtAIEBs
+	 z3FgN22qFgnMhUL3M9Kn9FiIpuoW6nQxO/phd+Q1+C0IteuDAAlQ0Y242fixPEdh1m
+	 DqLjhm17PE65XTYxL6aNBrQ0qbhAUzoCYsp2B2mMVvwDSjijsYmA9fI8vyAmTLKO38
+	 kzpv0dDDyGK6w==
+Date: Thu, 24 Jul 2025 16:38:02 -0700
+From: Kees Cook <kees@kernel.org>
+To: Bhupesh <bhupesh@igalia.com>
+Cc: akpm@linux-foundation.org, kernel-dev@igalia.com,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, oliver.sang@intel.com, lkp@intel.com,
+	laoar.shao@gmail.com, pmladek@suse.com, rostedt@goodmis.org,
+	mathieu.desnoyers@efficios.com, arnaldo.melo@gmail.com,
+	alexei.starovoitov@gmail.com, andrii.nakryiko@gmail.com,
+	mirq-linux@rere.qmqm.pl, peterz@infradead.org, willy@infradead.org,
+	david@redhat.com, viro@zeniv.linux.org.uk, ebiederm@xmission.com,
+	brauner@kernel.org, jack@suse.cz, mingo@redhat.com,
+	juri.lelli@redhat.com, bsegall@google.com, mgorman@suse.de,
+	vschneid@redhat.com, linux-trace-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org
+Subject: Re: [PATCH v6 3/3] include: Set tsk->comm length to 64 bytes
+Message-ID: <202507241634.C0346AC@keescook>
+References: <20250724123612.206110-1-bhupesh@igalia.com>
+ <20250724123612.206110-4-bhupesh@igalia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250724-riscv_kcfi-v1-11-04b8fa44c98c@rivosinc.com>
-References: <20250724-riscv_kcfi-v1-0-04b8fa44c98c@rivosinc.com>
-In-Reply-To: <20250724-riscv_kcfi-v1-0-04b8fa44c98c@rivosinc.com>
-To: Paul Walmsley <paul.walmsley@sifive.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Alexandre Ghiti <alex@ghiti.fr>, Masahiro Yamada <masahiroy@kernel.org>, 
- Nathan Chancellor <nathan@kernel.org>, 
- Nicolas Schier <nicolas.schier@linux.dev>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@redhat.com>, 
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
- Bill Wendling <morbo@google.com>, Monk Chiang <monk.chiang@sifive.com>, 
- Kito Cheng <kito.cheng@sifive.com>, Justin Stitt <justinstitt@google.com>
-Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-kbuild@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev, 
- rick.p.edgecombe@intel.com, broonie@kernel.org, cleger@rivosinc.com, 
- samitolvanen@google.com, apatel@ventanamicro.com, ajones@ventanamicro.com, 
- conor.dooley@microchip.com, charlie@rivosinc.com, samuel.holland@sifive.com, 
- bjorn@rivosinc.com, fweimer@redhat.com, jeffreyalaw@gmail.com, 
- heinrich.schuchardt@canonical.com, andrew@sifive.com, ved@rivosinc.com, 
- Deepak Gupta <debug@rivosinc.com>
-X-Mailer: b4 0.13.0
-X-Rspamd-Queue-Id: 38EAE140007
-X-Stat-Signature: 4xnc6mcpm83o6ry76xybyxmudmr4x6kh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250724123612.206110-4-bhupesh@igalia.com>
+X-Rspamd-Queue-Id: 584A240005
+X-Stat-Signature: ia4gsf3po35rtfw5c4n9yksnji6rpedp
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1753400252-263571
-X-HE-Meta: U2FsdGVkX19J2ZdZ1jekQ4SQkdIRdvD2Ns68quxM+1Fmy8mo9uZHxbEVyz3m58XMIh3pYWKiCTHAprvKwdyQs5UYLRvQfxJ4ydv6kpP7ufVFSh92fvuH3qHjZYAIu3Bk0PYi+gpfMf1f4Yw3Kxg5onl6Xj/PzLoOcU1vC8yzaUlXMdZ6rGrOMpklLaW5jxgvYIsniBuhul+4+j6BhgKJIbTPOXrrQgNuU4OP/nZVot5rTk3Jr+wo6CyDAxuJLjBum0JW2TVAnxBmRehoji2DGfG0VqsS2BTmM9aezb0+9W/PNvAjMLl7CZKmeWPsrrtQvRM5j0TrzQLYAvfIWbSjPqZ4uoMpV+DfH9zfWxld3CyfLVCIoShuzH7BfMaaRsnK+mwQWcbnHPErJ8DuFtyLbLzt0xtD66mlmo2dCtn8BmtGK+hd0l57w/pLDw0hWdAzmKvL+Pq6dtLlrxtXG3OOiXk3FgQp+EkPQ+55Ah896+Q0WZ0BJ36TT0Xe2pc2UPRzOIxsptMjdE44XJdGPZAZJZjfkT2RvDwewNjKFTLmagScjmsajUvzvagv+sdyf5EEk9T+3AQdw8U6wq7Whvj/UezD4xvrW1C4SR4+2+wPkNgD7pW3HHtqeWbIcIhIfQOwa9IkUWkteK9xTFyXZ6Aygf0Fnt1Wfe2LptA2jBtUdnb/4FtAllVgUPlIbma93xxszXcegrPJ+fYIcWO3tVQD7jshBWP5U09cpDFRXwXrKK/xKlaRu4CZpSXnwa6MlV4FgDIhkkpA/GAMaHyplMI/72PHe4KEd+cUfKg9yg7droq9wP0dHf94yo2Rgihv7uU5ufnBzZWHUDZFbTQoGoOCyhz7C34NVm5T8CV6YXbR/Iodgxdf4Tsy+KW0ixkCqIoGrAmMr8mQqH5OELN9W5A75R+Nc60HQVffEM4bkH14A0PamFhHCFyErSLyWXnFcgsyvZSI7omBeQvM87TUOVs
- 3ZfE+PhN
- gW3srqiipXhs5ca7l6A11YR545ex4koNC19fGBO9q+9+lmDtyul5X1Kppj//v92M9TeAH87uZ/0iOBrPFXX58RXxZpDuTFmDvUb40snfjPBSg5ssw4wUyw/PHBTGs0QAoPfGQvFfhTxGOShecyT3vOMlo/ROWre2mo35oERBwdJw5NuHCc3nICmKl++eUu+KSEwEwkZAFCQGDct7tqV9I/E3QQm1WyMjaR6B7vCFFrIhVYGaQ8VlJ9WFfRHzGuMtngJ8ERIHmX02ZR0UFhKQUK/SuSDZU4xIBaVx+poSOm8qDS/RUDHBw8lzmSV6UWzYZcCCIQ6qZx3mp7Aatg+3uvZXSoXcphypMiRw4FtWUXBSf+OHUXNsdQCJo67voxZecuSYIRsi7iyJI1c8a97X5GW/oF2LlqmOfTr/bDdqdF00mjFYYzCws83N4az7Ul5vsbCoDf04UUSBN9NkSucr3OFUG6KzpuUPIPyAUh/i2pbZEQZgoIiiK94FMZkbjtAp58q/ObbvMX9prreq9FycvkPWxeDBTsh7uuXUKFyNfu95F2ZwjNCN8ltHpmIVSQw2ReAU3oLdN03hxW0Y=
+X-HE-Tag: 1753400284-8869
+X-HE-Meta: U2FsdGVkX19CBy7jBs17YX+PNksOsZcD7uzJ38iNnU+nGkI+Pnb1z5YNEIcZ6WDelwbojyZG5HvrNocB71hzNpZj1eHx5PN3blKR3i2NR/qwB8bupvv9C+8slEsTFaSK3RKdRKJHlnCG0/sre9RFAt1ukHWVWJSYH9AEizwt9EE35XUsf4j8NNNuqratJbKhA8I97Gw1wfGpH1964WV/2yqvrX3vZrzsKldIPTFBoNClUBzu8x0xj9E/9IPFjt4uLQcHJN2sePqa6rcE6Y38eEXDDSvH6UT7JeBCOYxl2uJyrUHffS/Z7vsB8eEhJSJxUQBmkqBMZGUTz/g+ZDNTnsNhhHmD6bswa7JACFWOFhyyHVN6TcD6MxX0N4OUw5cwFmCT+7Hx06qAXDnMW0ExM5MoDoa17Y3rRhYBcmzU9NQup4EY2H9dWSUkmLGqPuQY7tzaViZmqzOJQffD84h5plWVQCSDkCfc8YXFzGgH5p+F6HM6hn778Uj4FpZDAAPkP9njnNd7vaZdGr1Kx1BuyHTjmbGz3uHgIQUApsnxLm+yFxBHk1hu+QzMiM4De4383TeTQ566GhVfYIas31EodEbak7My3GdZr17uBmbgvLG85Sz4g9A50Vw/KtsXMeQB1HFRwfDJgT7WlSpcQ/mAplGavTTXInKBXJK/3hLkTg0kgMA/j2smvF9gClRUGJiQmiCXOEhC1GMcvPCwMiGLHVx0ez+hpFz26/pZzLmah1mEsbRVVhbvUzHvjgPB60DcaqQkfS5QyqoctJJ8vfnmN8MzMdMamKZjgMIlsCd6ZAJMua4HWxTaoZsB1D4UiDpQcUcYcbkf8AzpLqLdNBrwrbE2FdYEA1GGsIKwb97MeImFNJJoWgfR5s8vh2msqjj4mj+c5mJ+KjbDdwbc/yrP+PX2ZW15igZDbKo4ZdBItZ30E4zlOqJ2f28zqHOSzFV0G76To72M5mf/bFBM/LJ
+ eUSH+cBY
+ jHkAUjceJ6dgsrF0SJzFOnHWnEqjcnuM1PfxVxkNU0DyN+294PrL/hIP9fr9wr370tmxvNAKworKzfCd4zcojVgxG1rwxv5ouyU+Q1B3Z/pnBHyprfSZp8Ez8PWM1liz5JSdfYGiTC07IYR+KltYKAekuNWMTp4VN8qtpeKgb+33QjnjbPdTOF3J+hZw3icRWYPLlUGv1Ouzo1qZwPkAyJ0M+/eOwqnGWCGmM28mJeUMpT+vZgA6tNH+cy1ZZ1F9Y+GZwl2hk6Uvm5Dtf+EymhOiPaH9Ml0GG/F0HHtN+m8Rnkv3+wWipIlRRRJZ1AX+Ffqt7JBOdotKu0GY5UtkQckg+gWXuzj9mqaSdc7/VrvmH+mRTqbjyMmm1FOBhLqgHesxSaBYv57iz6LEt51A7I0jcREII0bw1y4ga
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,139 +101,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Defines `CONFIG_RISCV_KERNEL_CFI` and selects SHADOW_CALL_STACK
-and ARCH_HAS_KERNEL_SHADOW_STACK both so that zicfiss can be wired up.
+On Thu, Jul 24, 2025 at 06:06:12PM +0530, Bhupesh wrote:
+> Historically due to the 16-byte length of TASK_COMM_LEN, the
+> users of 'tsk->comm' are restricted to use a fixed-size target
+> buffer also of TASK_COMM_LEN for 'memcpy()' like use-cases.
+> 
+> To fix the same, we now use a 64-byte TASK_COMM_EXT_LEN and
+> set the comm element inside 'task_struct' to the same length:
+>        struct task_struct {
+> 	       .....
+>                char    comm[TASK_COMM_EXT_LEN];
+> 	       .....
+>        };
+> 
+>        where TASK_COMM_EXT_LEN is 64-bytes.
+> 
+> Now, in order to maintain existing ABI, we ensure that:
+> 
+> - Existing users of 'get_task_comm'/ 'set_task_comm' will get 'tsk->comm'
+>   truncated to a maximum of 'TASK_COMM_LEN' (16-bytes) to maintain ABI,
+> - New / Modified users of 'get_task_comm'/ 'set_task_comm' will get
+>  'tsk->comm' supported up to the maximum of 'TASK_COMM_EXT_LEN' (64-bytes).
+> 
+> Note, that the existing users have not been modified to migrate to
+> 'TASK_COMM_EXT_LEN', in case they have hard-coded expectations of
+> dealing with only a 'TASK_COMM_LEN' long 'tsk->comm'.
+> 
+> Signed-off-by: Bhupesh <bhupesh@igalia.com>
+> ---
+>  include/linux/sched.h | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/sched.h b/include/linux/sched.h
+> index 8bbd03f1b978..b6abb759292c 100644
+> --- a/include/linux/sched.h
+> +++ b/include/linux/sched.h
+> @@ -317,6 +317,7 @@ struct user_event_mm;
+>   */
+>  enum {
+>  	TASK_COMM_LEN = 16,
+> +	TASK_COMM_EXT_LEN = 64,
+>  };
+>  
+>  extern void sched_tick(void);
+> @@ -1159,7 +1160,7 @@ struct task_struct {
+>  	 *   - logic inside set_task_comm() will ensure it is always NUL-terminated and
+>  	 *     zero-padded
+>  	 */
+> -	char				comm[TASK_COMM_LEN];
+> +	char				comm[TASK_COMM_EXT_LEN];
+>  
+>  	struct nameidata		*nameidata;
+>  
+> @@ -1954,7 +1955,7 @@ extern void kick_process(struct task_struct *tsk);
+>  
+>  extern void __set_task_comm(struct task_struct *tsk, const char *from, bool exec);
+>  #define set_task_comm(tsk, from) ({			\
+> -	BUILD_BUG_ON(sizeof(from) != TASK_COMM_LEN);	\
+> +	BUILD_BUG_ON(sizeof(from) < TASK_COMM_LEN);	\
+>  	__set_task_comm(tsk, from, false);		\
+>  })
+>  
+> @@ -1974,6 +1975,10 @@ extern void __set_task_comm(struct task_struct *tsk, const char *from, bool exec
+>  #define get_task_comm(buf, tsk) ({			\
+>  	BUILD_BUG_ON(sizeof(buf) < TASK_COMM_LEN);	\
+>  	strscpy_pad(buf, (tsk)->comm);			\
+> +	if ((sizeof(buf)) == TASK_COMM_LEN)		\
+> +		buf[TASK_COMM_LEN - 1] = '\0';		\
+> +	else						\
+> +		buf[TASK_COMM_EXT_LEN - 1] = '\0';	\
 
-Makefile checks if CONFIG_RISCV_KERNEL_CFI is enabled, then light
-up zicfiss and zicfilp compiler flags. CONFIG_RISCV_KERNEL_CFI is
-dependent on CONFIG_RISCV_USER_CFI. There is no reason for user to
-not select support for user cfi while enabling for kernel.
-
-compat vdso don't need fcf-protection (toolchain lacks support).
-
-Signed-off-by: Deepak Gupta <debug@rivosinc.com>
----
- arch/riscv/Kconfig                     | 37 +++++++++++++++++++++++++++++++++-
- arch/riscv/Makefile                    |  8 ++++++++
- arch/riscv/kernel/compat_vdso/Makefile |  2 +-
- arch/riscv/kernel/vdso/Makefile        |  2 +-
- 4 files changed, 46 insertions(+), 3 deletions(-)
-
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index 385c3d93e378..305ba5787f74 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -245,7 +245,7 @@ config GCC_SUPPORTS_DYNAMIC_FTRACE
- 	depends on CC_HAS_MIN_FUNCTION_ALIGNMENT || !RISCV_ISA_C
- 
- config HAVE_SHADOW_CALL_STACK
--	def_bool $(cc-option,-fsanitize=shadow-call-stack)
-+	def_bool $(cc-option,-fsanitize=shadow-call-stack) || $(cc-option,-mabi=lp64 -march=rv64ima_zicfilp_zicfiss)
- 	# https://github.com/riscv-non-isa/riscv-elf-psabi-doc/commit/a484e843e6eeb51f0cb7b8819e50da6d2444d769
- 	depends on $(ld-option,--no-relax-gp)
- 
-@@ -864,6 +864,16 @@ config RISCV_ISA_ZICBOP
- 
- 	  If you don't know what to do here, say Y.
- 
-+config TOOLCHAIN_HAS_ZICFILP
-+	bool
-+	default y
-+	depends on 64BIT && $(cc-option,-mabi=lp64 -march=rv64ima_zicfilp)
-+
-+config TOOLCHAIN_HAS_ZICFISS
-+	bool
-+	default y
-+	depends on 64BIT && $(cc-option,-mabi=lp64 -march=rv64ima_zicfiss)
-+
- config TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
- 	def_bool y
- 	# https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=aed44286efa8ae8717a77d94b51ac3614e2ca6dc
-@@ -1182,6 +1192,31 @@ config RISCV_USER_CFI
- 	  space does not get protection "for free".
- 	  default n.
- 
-+config RISCV_KERNEL_CFI
-+	def_bool n
-+	bool "hw assisted riscv kernel control flow integrity (kcfi)"
-+	depends on 64BIT && $(cc-option,-mabi=lp64 -march=rv64ima_zicfilp_zicfiss)
-+	depends on RISCV_USER_CFI
-+	select ARCH_SUPPORTS_SHADOW_CALL_STACK
-+	select SHADOW_CALL_STACK
-+	select ARCH_HAS_KERNEL_SHADOW_STACK
-+	help
-+	  Provides CPU assisted control flow integrity to for riscv kernel.
-+	  Control flow integrity is provided by implementing shadow stack for
-+	  backward edge and indirect branch tracking for forward edge. Shadow
-+	  stack protection is a hardware feature that detects function return
-+	  address corruption. This helps mitigate ROP attacks. RISCV_KERNEL_CFI
-+	  selects CONFIG_SHADOW_CALL_STACK which uses software based shadow
-+	  stack but is unprotected against stray writes. Selecting RISCV_KERNEL_CFI
-+	  will select CONFIG_DYNAMIC_SCS and will enable hardware assisted shadow
-+	  stack protection against stray writes.
-+	  Indirect branch tracking enforces that all indirect branches must land
-+	  on a landing pad instruction else CPU will fault. This enables forward
-+	  control flow (call/jmp) protection in kernel and restricts all indirect
-+	  call or jump in kernel to a landing pad instruction which mostly likely
-+	  will be start of the function.
-+	  default n
-+
- endmenu # "Kernel features"
- 
- menu "Boot options"
-diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
-index 7128df832b28..6ef30a3d2bc4 100644
---- a/arch/riscv/Makefile
-+++ b/arch/riscv/Makefile
-@@ -61,8 +61,10 @@ else ifeq ($(CONFIG_LTO_CLANG),y)
- endif
- 
- ifeq ($(CONFIG_SHADOW_CALL_STACK),y)
-+ifndef CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK
- 	KBUILD_LDFLAGS += --no-relax-gp
- endif
-+endif
- 
- # ISA string setting
- riscv-march-$(CONFIG_ARCH_RV32I)	:= rv32ima
-@@ -91,6 +93,12 @@ riscv-march-$(CONFIG_TOOLCHAIN_HAS_ZABHA) := $(riscv-march-y)_zabha
- KBUILD_BASE_ISA = -march=$(shell echo $(riscv-march-y) | sed -E 's/(rv32ima|rv64ima)fd([^v_]*)v?/\1\2/')
- export KBUILD_BASE_ISA
- 
-+ifeq ($(CONFIG_RISCV_KERNEL_CFI),y)
-+riscv-march-$(CONFIG_TOOLCHAIN_HAS_ZICFILP) := $(riscv-march-y)_zicfilp
-+riscv-march-$(CONFIG_TOOLCHAIN_HAS_ZICFISS) := $(riscv-march-y)_zicfiss
-+KBUILD_CFLAGS += -fcf-protection=full
-+KBUILD_AFLAGS += -fcf-protection=full
-+endif
- # Remove F,D,V from isa string for all. Keep extensions between "fd" and "v" by
- # matching non-v and non-multi-letter extensions out with the filter ([^v_]*)
- KBUILD_CFLAGS += $(KBUILD_BASE_ISA)
-diff --git a/arch/riscv/kernel/compat_vdso/Makefile b/arch/riscv/kernel/compat_vdso/Makefile
-index 24e37d1ef7ec..552131bc34d7 100644
---- a/arch/riscv/kernel/compat_vdso/Makefile
-+++ b/arch/riscv/kernel/compat_vdso/Makefile
-@@ -69,4 +69,4 @@ quiet_cmd_compat_vdsold = VDSOLD  $@
- 
- # actual build commands
- quiet_cmd_compat_vdsoas = VDSOAS  $@
--      cmd_compat_vdsoas = $(COMPAT_CC) $(a_flags) $(COMPAT_CC_FLAGS) -c -o $@ $<
-+      cmd_compat_vdsoas = $(COMPAT_CC) $(filter-out -fcf-protection=full, $(a_flags)) $(COMPAT_CC_FLAGS) -c -o $@ $<
-diff --git a/arch/riscv/kernel/vdso/Makefile b/arch/riscv/kernel/vdso/Makefile
-index 2b528d82fa7d..7b1446b63ebc 100644
---- a/arch/riscv/kernel/vdso/Makefile
-+++ b/arch/riscv/kernel/vdso/Makefile
-@@ -17,7 +17,7 @@ ifdef CONFIG_VDSO_GETRANDOM
- vdso-syms += getrandom
- endif
- 
--ifdef CONFIG_RISCV_USER_CFI
-+ifneq ($(CONFIG_RISCV_USER_CFI), $(CONFIG_RISCV_KERNEL_CFI))
- CFI_MARCH = _zicfilp_zicfiss
- CFI_FULL = -fcf-protection=full
- endif
+strscpy_pad() will already make sure buf is NUL-terminated, so I don't
+see why there is a need for explicit final byte termination? (And even
+if we do need it, then it should just be buf[sizeof(buf) - 1] otherwise
+using a buf that is < TASK_COMM_EXT_LEN but > TASK_COMM_LEN will have
+a spurious NUL byte write beyond its buffer.)
 
 -- 
-2.43.0
-
+Kees Cook
 
