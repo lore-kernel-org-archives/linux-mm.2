@@ -2,126 +2,123 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D092C83F26
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 08:53:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DA582C83F1A
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 08:59:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B12446B0141; Thu, 24 Jul 2025 04:53:06 -0400 (EDT)
+	id 6B1556B0261; Thu, 24 Jul 2025 04:59:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC3376B0144; Thu, 24 Jul 2025 04:53:06 -0400 (EDT)
+	id 689666B0266; Thu, 24 Jul 2025 04:59:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B17B6B0147; Thu, 24 Jul 2025 04:53:06 -0400 (EDT)
+	id 5785E6B0269; Thu, 24 Jul 2025 04:59:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8405D6B0141
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 04:53:06 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3A0961DA1FA
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 08:53:06 +0000 (UTC)
-X-FDA: 83698543572.21.A1DD403
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B69A120002
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 08:53:03 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XsFloDnI;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf13.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 446586B0261
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 04:59:27 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B832F1A02F5
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 08:59:26 +0000 (UTC)
+X-FDA: 83698559532.07.299D00F
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 64B43A0003
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 08:59:24 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BeV3Itep;
+	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753347183;
+	s=arc-20220608; t=1753347564;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eSRWHNR3oSryq2XtU/spTQx/p9VSczkNbYfeDDaHpfg=;
-	b=1qILRXKnSPg/HS73O9pQ/Y1iKt8ASB1H2U3PqchRu7Ij5aXgq5ZYzn/Y46py7y4j3/3U7B
-	4wmcvVj05jF2K1pB+ekYbgBjC3AywoRmjP438zdDJeC67KL0Gp0zzqhCSVX1ILkmYptC8/
-	tw89HBXbcA/6RHUw0HHP4fR8X948gFY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753347183; a=rsa-sha256;
+	bh=KbAjULp57DFaxZp4EhQSXlWNY4PHov8q7LM6Z5vJA/c=;
+	b=CUgpOZaJGSxJApd17q9sDBMVmRjOEfHd2j63n++weexW+kIbJfXKheGB6+bPxOR5nSTbzo
+	Wk+qFAZn4B8FAOMNc/aap91aInmsI8a+sP+VZ6WnGMx2K97flephImWEBNlceVxWgLW/ar
+	1yxUvpsOdsTZ93Qi52iDLwCEvKk/az0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753347564; a=rsa-sha256;
 	cv=none;
-	b=1nuKXhM02q0Mh/g+rIw0j11tHgFZsk+rKzzd9a1S0gvSNUx7bw93AnND4+QdJmHDin3We8
-	eDUbzA2H+24bVB6/nG2PjSfp3zH+TLk8Ez+o17roK47zIETGWF8fkcazcC/QojjBmes7J/
-	TGHi9SfgAGsrpGf8LSNfMpZBiCd9xZU=
+	b=rIeNXZ/ktt5eGmxBXcoEliHlNBp8JN+gGT4sHO/bHsJXSbEqvBFOX6nhXgFdRu23g1RR2I
+	v3gQkQEpRkU4kADFC3tnYOYxeq2y9WiZ5JfI+j3V1TXAlScV5p2BPJz5UpKbay7U0HD+9u
+	+pOaRkq5XY371iof+fjjA0TLqo5WQXU=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XsFloDnI;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf13.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BeV3Itep;
+	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753347183;
+	s=mimecast20190719; t=1753347563;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=eSRWHNR3oSryq2XtU/spTQx/p9VSczkNbYfeDDaHpfg=;
-	b=XsFloDnIbkCYrtf+StkptWptgS+kzWzrAnpo54XFaaO2RXoYpV0OS+m41LRO3cP3WkWXMJ
-	y6VFn7oo/VcN81q1CeAW+37dicQ94YlRY5IBP0rIzb1nZtiKQnf+BtrBdp2V8N5zaB0kPb
-	LYLoNi1Bpe9ykuo5Xm5nlh4t57oHF/w=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=KbAjULp57DFaxZp4EhQSXlWNY4PHov8q7LM6Z5vJA/c=;
+	b=BeV3ItepQKjMqK9WmJZU0Ywm/c/lwdm2FtV3SRYpeIxlSQxypiYdAj0X9D9c9Oipu7oaBM
+	Dr6NhkbnXdbEIy/Hi6KROvtRsf880EJ+4FxIRFpM0vfICguGGHgA06gAcf2zDb50Y7WxXZ
+	Nb/YQvHWjbAbvyM3G2s5n4wbk8bTYgk=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-436-t2qN7jJ0M1CN6_qTfuw2Yw-1; Thu, 24 Jul 2025 04:52:59 -0400
-X-MC-Unique: t2qN7jJ0M1CN6_qTfuw2Yw-1
-X-Mimecast-MFC-AGG-ID: t2qN7jJ0M1CN6_qTfuw2Yw_1753347178
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3a5058f9ef4so275396f8f.2
-        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 01:52:58 -0700 (PDT)
+ us-mta-631-Bn9GSPS8M7ia22P3QfxbUQ-1; Thu, 24 Jul 2025 04:59:21 -0400
+X-MC-Unique: Bn9GSPS8M7ia22P3QfxbUQ-1
+X-Mimecast-MFC-AGG-ID: Bn9GSPS8M7ia22P3QfxbUQ_1753347561
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-454dee17a91so5601485e9.3
+        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 01:59:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753347178; x=1753951978;
+        d=1e100.net; s=20230601; t=1753347560; x=1753952360;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=eSRWHNR3oSryq2XtU/spTQx/p9VSczkNbYfeDDaHpfg=;
-        b=egYMKyVCcdVVAQGpyKebqDGQSMzUY6rwQmqRi8hUOgG2TCuyQ69P8D0w/ESy4ZJ6Gl
-         eWSwyD0aJ5fwBaPcvH6LudwErWBAr5YeOmVu1LET8l1I9pRsFeXOnMzlpe+E2jpccsdn
-         DzIvuYcNcmOx++6sAP98CsLaXUY31FJOwwDUz8NigZLYf8BcSh6Q+XUVJHXKuPoVYL03
-         nDVvrOvzZf3zhJ0f7Lu1fWcuSeoFSCsMx0RziJchP5bzGN5D7VJqxZHIjMJXIMFMlIqJ
-         x1h8L+ar+8fclezM/KI0qOitTjS4xpclIx3duSs7g240lXXLMudTjZyvDPmlreLZ+nzP
-         HmmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUo0KkJ31t8mpQu4Ijo8nxw63lokf9VUq5PpYnMJGavnV1d5w3rq9iXOOFVopMNRE8GBuI1scKUcQ==@kvack.org
-X-Gm-Message-State: AOJu0YwfnuGE2OW2FN4k1ihlp3bbtcKc4y7qGI9R3oGzOxWesRXlabbA
-	aVCJsUuFGtLlQLWQX2IicsVzzwcIGW6bQmE2Xai0qi3saC5lKiSYKxOi74MLzYmQnIVMrV4X0nQ
-	SG0iETQZ4OIs3IKfG/9/MJLM1boj6hUdlsALDZP9tTFXbOnp+roWm
-X-Gm-Gg: ASbGnct/s2Ok6ts5osJURF+pGTI2tcWrTrplbUpHvDMUeLDuk3T+7huUMBM+yn1lOry
-	LNCzF3P2jkb5N5K1Qu2eGi/AjsY/xLbF9yY4eiTnBAV9b1mOVsrWEArBouwjE40cCkJ6zVpSEXV
-	4TjdeZ/XSusSGpsBD2vcAMc+0rlqpFQ/d2ptJWKIJY0cRlsrD7/w9ojXsI6e21seqUlbvpGle5K
-	dBSfm8HZ1szVVn6uBiEgPbkuzagZXztnNQuzxRuZx3aRojy2Tnwf8k6Cnj7y+pTEl3viOKEENjx
-	17WAn/il7kBZ6Y4ccrxYqcizWKWgQ8JACD0U3fV/7CLimA7w5YpgHzLRATmaOBdr5JJR8j7Bt0M
-	/pjmqmYeFjS9YnmWpRN1SUQUA+cgUJw7eodySci67x1di+MWtJt+suciRHNFyYBq6
-X-Received: by 2002:a05:6000:1884:b0:3a8:30b8:cb93 with SMTP id ffacd0b85a97d-3b768ef953dmr4588632f8f.32.1753347177736;
-        Thu, 24 Jul 2025 01:52:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEoD8bQhLMR7nrUTvI3JvUWW9/Pn8ZIBrS4iPYjqfRFSc5RU+yNx7pIBUo5X7x71tBeIaa94w==
-X-Received: by 2002:a05:6000:1884:b0:3a8:30b8:cb93 with SMTP id ffacd0b85a97d-3b768ef953dmr4588610f8f.32.1753347177191;
-        Thu, 24 Jul 2025 01:52:57 -0700 (PDT)
+         :content-language:from:references:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KbAjULp57DFaxZp4EhQSXlWNY4PHov8q7LM6Z5vJA/c=;
+        b=AIMkl41vFRB0ajk+w2h2N+jLQhWopm8f1mDKgUEFv4glnXnEDwJ3UEbSrSqNc6lMH3
+         phU6RiHrkkcspr1Q4M/6o20zxwuph6tKtMwUCFiE+XNYGPaoNVgdnVzMlJAKpkk1FOX6
+         DuhHhdwLskKSJIEDxGRHJRbF/AwxsUToIMEpmZeMOZElSVhcrcRQBAYkHoz8j4Bb+Vnm
+         riEYX9YB7waPcRZhhNr+e73sR9MbmlCL2Zt/vhTW4OUz1WTEGVBT5g8uMWTWU5viMz5Q
+         fmPx3XR46796onwn8ftV2TsvlQ9GXH80/12Y5kOC21c+ZlQT76MtZW1g46LLqsmJdA8T
+         2Dtg==
+X-Forwarded-Encrypted: i=1; AJvYcCWKeTw6gw5o4r0t5guhUAH78KTDwxcfnko74EH/QwdBPp44u5EWenPWXAoyWEEaewXkmok0/CSF7A==@kvack.org
+X-Gm-Message-State: AOJu0Yw8lVOgOGtZ9JjHU+NHvABYdH+KkgFgRIUQnZOFQOtpr9zzQ5Jf
+	BmEV2nRyWeyTlC7oGmJTIszghDoQVZl0riv4DVNppDmFAMBtOlxnNRJK/jGtujKhKHt2DmFNS4f
+	N7i/LUsJV6hOJdKPpWk5TaxfOQTVn2HoIhx3829jSeWlBZk92geEj
+X-Gm-Gg: ASbGncs6qJ4mM+klATk0+JY+MF9Ry1lg/1aDtcXK/DI4Wy7foBgJ6w+H5u9RC5TleC0
+	W/2Lt4OYTZxOvGkAnhdeHx+EX/kOs7MacNJLlM1tRWb/7F+becKF4X0n6syEpggT7R2pWX6dW/c
+	8H/KxrSA1TSCvSaPFqBCnI1K7QVDU7gDcP/QBt+KZpiPUjwrehrYHZQl5Wh6WU3nnEt+UKsYIie
+	A+NWatv/cRVftDcao7OXSQT4bkdeWLDccfVblJUaZIlk7PBvCxk6FBUjSeMGUeDUmZ3l6rs7M1k
+	UVWaKOTAxCL+5eb7ul2P8rwDc0FhF7yjzXAZ7Tki7eLtplHKbUigD2nFg6G4Mf4Uk9PKjOwZSxF
+	VYcw8UyoPPkmJUswUYXF1ifT73jLz2S39ug1S9UDb5WfjxEZErk/wM4nsLyqotT6R
+X-Received: by 2002:a05:600c:34c8:b0:456:2a9:f815 with SMTP id 5b1f17b1804b1-4586e529e4bmr24857875e9.4.1753347560633;
+        Thu, 24 Jul 2025 01:59:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFFi5+e8h65j8G/90Yb5xypCSe09/IV+5bnm/weBgPN3KMsU7GCZlI1Y32G5GAm3Vnqmz43nw==
+X-Received: by 2002:a05:600c:34c8:b0:456:2a9:f815 with SMTP id 5b1f17b1804b1-4586e529e4bmr24857545e9.4.1753347560062;
+        Thu, 24 Jul 2025 01:59:20 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f1f:5e00:c941:d6fb:3e30:b42? (p200300d82f1f5e00c941d6fb3e300b42.dip0.t-ipconnect.de. [2003:d8:2f1f:5e00:c941:d6fb:3e30:b42])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b76fcc43c2sm1436739f8f.83.2025.07.24.01.52.55
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458705684a8sm11879845e9.26.2025.07.24.01.59.18
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Jul 2025 01:52:56 -0700 (PDT)
-Message-ID: <a3f1af02-ef3f-40f8-be79-4c3929a59bb7@redhat.com>
-Date: Thu, 24 Jul 2025 10:52:54 +0200
+        Thu, 24 Jul 2025 01:59:19 -0700 (PDT)
+Message-ID: <86516155-f2d9-4e8d-9d27-bdcb59e2d129@redhat.com>
+Date: Thu, 24 Jul 2025 10:59:18 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] mm/hmm: HMM API to enable P2P DMA for device
- private pages
-To: Alistair Popple <apopple@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Matthew Wilcox <willy@infradead.org>, Yonatan Maman <ymaman@nvidia.com>,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>, Leon Romanovsky
- <leon@kernel.org>, Lyude Paul <lyude@redhat.com>,
- Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Ben Skeggs <bskeggs@nvidia.com>,
- Michael Guralnik <michaelgur@nvidia.com>, Or Har-Toov <ohartoov@nvidia.com>,
- Daisuke Matsuda <dskmtsd@gmail.com>, Shay Drory <shayd@nvidia.com>,
- linux-mm@kvack.org, linux-rdma@vger.kernel.org,
- dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, Gal Shalom <GalShalom@nvidia.com>
-References: <20250718115112.3881129-1-ymaman@nvidia.com>
- <20250718115112.3881129-2-ymaman@nvidia.com>
- <aHpXXKTaqp8FUhmq@casper.infradead.org> <20250718144442.GG2206214@ziepe.ca>
- <aH4_QaNtIJMrPqOw@casper.infradead.org>
- <7lvduvov3rvfsgixbkyyinnzz3plpp3szxam46ccgjmh6v5d7q@zoz4k723vs3d>
- <aIBcTpC9Te7YIe4J@ziepe.ca>
- <cn7hcxskr5prkc3jnd4vzzeau5weevzumcspzfayeiwdexkkfe@ovvgraqo7svh>
+Subject: Re: [RFC PATCH 0/9] introduce PGTY_mgt_entry page_type
+To: Huan Yang <link@vivo.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Rik van Riel
+ <riel@surriel.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>,
+ Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Christian Brauner <brauner@kernel.org>, Usama Arif <usamaarif642@gmail.com>,
+ Yu Zhao <yuzhao@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20250724084441.380404-1-link@vivo.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -168,21 +165,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  WBe5lqcozu9LpNDH/brVSzHCSb7vjNGvvSVESDuoiHK8gNlf0v+epy5WYd7CGAgODPvDShGN
  g3eXuA==
 Organization: Red Hat
-In-Reply-To: <cn7hcxskr5prkc3jnd4vzzeau5weevzumcspzfayeiwdexkkfe@ovvgraqo7svh>
+In-Reply-To: <20250724084441.380404-1-link@vivo.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: XWljHDCvVhEBlCTSX1Of9aP5uIROO76dpPPqPA31j40_1753347178
+X-Mimecast-MFC-PROC-ID: Vu5OfWDVkeCAIodpx-YUclMhDzWFmleyLlfOE_79uZg_1753347561
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B69A120002
-X-Stat-Signature: umzhx6y3btijq1bbg5xcodggdtbpkoic
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 64B43A0003
+X-Stat-Signature: gk9ss5h4ukqgcfo8fzwaz4j1uzqx4n4k
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1753347183-621890
-X-HE-Meta: U2FsdGVkX188lM+P/UlDwGuIQiquqFoYiS8D3UahOH/mGkCDDCI2pzZBk+99iYAVERUCwhl8XDDh3IiJaqbqyaPYOOzQhQ62rFuYWmY/ZKPlhe3KmqrzY/dFcMd4tTEfVW6LlKSRgCPmIxAmDGbYrEMwin3mT1aYBTYR2kDGE0DHV6NtrL3hSrcA3LwJj/bFVw9MOQlENHZBDiGB269T1gpoUeWn9IO8IsvFbyDb2MUqg5rS4hD30l0cu67H80U+QB0djkF9+BetsPeHecMcxF1RdB/Q7sKWRaDy2o6RxmtEs26fh2DA6SJYq/Bk6VGESzAP6CoFhRX+KTCTExs1FL/N1ljYlY0UNJeEbm5SMVyWhlCkCtoSirexVgZC0qkLLVYi/qo//Kalx7Hp1tkGifJLdDVIfYP8fIKNS0prYSjxyPCjAemCn/6yYRUFa42IV9Cdeo5a9mZpx8rBHdSR9fBJHGmdPoghYyHFWxIgtuzV7ciVHgRv0oRWL9UQAxvzDzH+xvbZDSeD2lgwm5E1zC0nEEyuiQijHY9QQZ9NsQtuR8MzEzLRIPZ/F+v7MhMu4B4w5fm+gR3zN5V68Yenm8MF3JVvhaPZ083lnRQNfm4IqXyLV3Ekv95PRd81AMz5sOQ+dpKBlFSyUlW2ABebQZEXhBX9KNJUDPcC96kVyS09xzU//xsTnz34izGXLUWEk3tUX8cyPje0D43hga2fC5hV+KLC6WlKdrMyJixD2S9BvwFtimsN3vgnH1V4sCcF7nD4HKtnMThvMC0OBaWnoaZ/P9rYYJ9Ayt3DI401qqsGpg8NnoqlV35v4CJ3fRvECnIczyV7qlzv0wjI9YLfrxE93cXthjsyLLNIoLK2P0bEXkUz+AF1hq4nvZ2+jrGK/w6cn11p6096qf9Fa7/uM9IOEyZ4+828h48gQgcOY8hEoZppenc9MdWsqhUojMjwWWGjfckgfrwYVXv6YZZ
- MEDfaPFE
- +XKh7XJcYYQVEJqqxJHH8O8QLSylVRjKSRjE/G6ImDocV2+PzLrFhLTkr358iK7tUPo7iwlCPFyFcj1uqcjQC1UwB5QSgwFxJh5QiG6KpLD+lUTMuN0TyDyw4cImWo2rtCj1AIiAwUVIW5Y2Uqw8itMhygpAwlciiM+Wc9jyq+9mSh4MOkTazEOdSL7xK9/xylhPal2gYlQIi3WGgy6dVlxDhAEGNFlgbe+49eHP4O1QzQ/OYhwmokmYMU22CDRPnmuF8/WaOvMlQ3nd8QdAeTW9oJssYfJZmnQKHaDdBO7bpz6VVffejJjHIzqDfeSm3PXdMAhDZ/cQqckryFvsMNliHI0gBVSN4c+3GF8UH4BpSXN5g0ZGdm42ftLhYYx7JJNZDJZX2k5/6cbjCOEUyO4MOBBIPYod4XDdS8tNkAozaTxgZJ9+RUsuVaMcp7COPQPz9UAaaCIFNxTNgUnw6G+Sh3g==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1753347564-677639
+X-HE-Meta: U2FsdGVkX19zUwG1Us0TvgBiRVR/DV2t5HKlSAxdarozqTejjVQ/G1S2SlbyYnTD80oVk51/eciB11yctQhru0XA4jSnLBEeiB9IZ3lN+vHkW8wKF1GlpZSSTpsiDTfKj271K7zTNhmWJhQTVd4GxJkBzk51VNfgYj7tLfkIdZsQT8uS4YNliqe2n6hzTqOmBWXJ1sqEZNbPj84801eHv2YBAp87eXP42D33+cvl154NJ5zWBEJDvbNAzILVXnnUa56ypeOUTKDdRGIQheXg4GIes/y2FP4kyKQzYdorYGQ3OrWkqBEZ/Y7PrR9EuA4ZlR0ZQaRcT/XUs8loOlCHXZHJU7i9gH/SfeeStRVGQsSXRYTAfaGu9pD7pXXpLjx5k+B2lNsI+73K3zCBQY45qwAvxtMWXLY+lwiFxR+Fxi54oEA/Q+cIDWPbpNZhQV8CLgq6gMlTDW+ykMatH/8oXgeomikoGB8RsHpsAzfTyI6Z6mb8Rb5+uj3gg8QsWjp19mdmVKsyOJ//Oo3MJVyV/CYam+scG7nuGWUeSfAVSGjB2zV20CoWpPCX6rsagFix1I9xUQHGLD5Cb557sKv/u95cWjLPzWlPo5jRTzPX+xtE1HaNUmVzk+HvckNmlzqEzOkZvPtHgM23rNjnZ7kuDjsYNl6nd6aWO3yLT4Drp6JMZrqyhwwnG57iQCCWiVzAQoDiOr2TPI+Pphv2C5RMzb5OlU8Ig18P1ApQp9IXbxTUYxfz52rq5f69JGKEGCxEkP++Kp4SNfzaj82dHNc/N4DjIAmWYwJG1y0X+rWdCeDKsD678VLXNuwsjl2m3z7MgdgXR1tQJk/no3l0eRcWzGPEtlLTGtbdZ9MpEoPDMYPJ359vG0MwwLhZIek95zsbRWy74zsSUqZ21pHT30ODHkWObIvl7MPwAJIPFGdPcShcrbS5nPKMiXSCzJiUqahj5vpI7+IRjKq82nVPgzX
+ NDqWRm7R
+ FcPj+/ri+C++3ajaEXraj6S+lKxvWdnzF0R/IAdWFegqdXa7zaq5YFprVxwrFl9HRqVWjTgqB/HeyTvEYxlyepJVo4hfMhaHAPh1/ejcqW/ZE9ghg1xGe55edhlzfkou7HENL+0ncrymzUJ99xVslSA00U9a3WkN0TE5vYVVF4zPUG1oTq/qVNT4uUNEzVXi3BlagciezUSYu8murt5s+L27LdKFXtvSbwJzVBco8dBoH11msKh+kB6nHYkv2hGSX0mJAnCgTcf4Eg7+tSVXYjJkYbYSeCfs4fTBHu68bKzaYcRPwujm/Kj+f4y4Tl56Jih9mHUREwnvBG86RSd9vAh+l1MuYdMA4kFyinSgo+3VaV8O6ZtEHReVRMMTyw2SXcjDYHH3ldzvWyUGSVo/nXSI1AcWNS6MfIR9mDuabJuGcACZpcTHrNg80hHPgM4VbmGXCnPaclMrUU9knbv0FYv0yhekId8vkKQgl/ueAdFPLvzdJVdCOPZ+XS2WGud4fFzXhxwzhWzuvKb6JPUJXt7jOwZI4UaRSEPi9awFWO6JSzUuIO8zZPz5ZH5YNTiEMsgYD3E68miSm1UKU2k+8oyqDwFuppLCp1sWx
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -191,65 +188,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 23.07.25 06:10, Alistair Popple wrote:
-> On Wed, Jul 23, 2025 at 12:51:42AM -0300, Jason Gunthorpe wrote:
->> On Tue, Jul 22, 2025 at 10:49:10AM +1000, Alistair Popple wrote:
->>>> So what is it?
->>>
->>> IMHO a hack, because obviously we shouldn't require real physical addresses for
->>> something the CPU can't actually address anyway and this causes real
->>> problems
->>
->> IMHO what DEVICE PRIVATE really boils down to is a way to have swap
->> entries that point to some kind of opaque driver managed memory.
->>
->> We have alot of assumptions all over about pfn/phys to page
->> relationships so anything that has a struct page also has to come with
->> a fake PFN today..
+On 24.07.25 10:44, Huan Yang wrote:
+> Summary
+> ==
+> This patchset reuses page_type to store migrate entry count during the
+> period from migrate entry setup to removal, enabling accelerated VMA
+> traversal when removing migrate entries, following a similar principle to
+> early termination when folio is unmapped in try_to_migrate.
+
+I absolutely detest (ab)using page types for that, so no from my side 
+unless I am missing something important.
+
 > 
-> Hmm ... maybe. To get that PFN though we have to come from either a special
-> swap entry which we already have special cases for, or a struct page (which is
-> a device private page) which we mostly have to handle specially anyway. I'm not
-> sure there's too many places that can sensibly handle a fake PFN without somehow
-> already knowing it is device-private PFN.
+> In my self-constructed test scenario, the migration time can be reduced
+
+How relevant is that in practice?
+
+> from over 150+ms to around 30+ms, achieving nearly a 70% performance
+> improvement. Additionally, the flame graph shows that the proportion of
+> remove_migration_ptes can be reduced from 80%+ to 60%+.
 > 
->>> (eg. it doesn't actually work on anything other than x86_64). There's no reason
->>> the "PFN" we store in device-private entries couldn't instead just be an index
->>> into some data structure holding pointers to the struct pages. So instead of
->>> using pfn_to_page()/page_to_pfn() we would use device_private_index_to_page()
->>> and page_to_device_private_index().
->>
->> It could work, but any of the pfn conversions would have to be tracked
->> down.. Could be troublesome.
+> Notice: migrate entry specifically refers to migrate PTE entry, as large
+> folio are not supported page type and 0 mapcount reuse.
 > 
-> I looked at this a while back and I'm reasonably optimistic that this is doable
-> because we already have to treat these specially everywhere anyway.
-How would that look like?
+> Principle
+> ==
+> When a page removes all PTEs in try_to_migrate and sets up a migrate PTE
+> entry, we can determine whether the traversal of remaining VMAs can be
+> terminated early by checking if mapcount is zero. This optimization
+> helps improve performance during migration.
+> 
+> However, when removing migrate PTE entries and setting up PTEs for the
+> destination folio in remove_migration_ptes, there is no such information
+> available to assist in deciding whether the traversal of remaining VMAs
+> can be ended early. Therefore, it is necessary to traversal all VMAs
+> associated with this folio.
 
-E.g., we have code like
+Yes, we don't know how many migration entries are still pointing at the 
+page.
 
-if (is_device_private_entry(entry)) {
-	page = pfn_swap_entry_to_page(entry);
-	folio = page_folio(page);
+> 
+> In reality, when a folio is fully unmapped and before all migrate PTE
+> entries are removed, the mapcount will always be zero. Since page_type
+> and mapcount share a union, and referring to folio_mapcount, we can
+> reuse page_type to record the number of migrate PTE entries of the
+> current folio in the system as long as it's not a large folio. This
+> reuse does not affect calls to folio_mapcount, which will always return
+> zero.
+ > > Therefore, we can set the folio's page_type to PGTY_mgt_entry when
+> try_to_migrate completes, the folio is already unmapped, and it's not a
+> large folio. The remaining 24 bits can then be used to record the number
+> of migrate PTE entries generated by try_to_migrate.
 
-	...
-	folio_get(folio);
-	...
-}
+In the future the page type will no longer overlay the mapcount and, 
+consequently, be sticky.
 
-We could easily stop allowing pfn_swap_entry_to_page(), turning these 
-into non-pfn swap entries.
+> 
+> Then, in remove_migration_ptes, when the nr_mgt_entry count drops to
+> zero, we can terminate the VMA traversal early.
+> 
+> It's important to note that we need to initialize the folio's page_type
+> to PGTY_mgt_entry and set the migrate entry count only while holding the
+> rmap walk lock.This is because during the lock period, we can prevent
+> new VMA fork (which would increase migrate entries) and VMA unmap
+> (which would decrease migrate entries).
 
-Would it then be something like
+The more I read about PGTY_mgt_entry, the more I hate it.
 
-if (is_device_private_entry(entry)) {
-	page = device_private_entry_to_page(entry);
-	
-	...
-}
+> 
+> However, I doubt there is actually an additional critical section here, for
+> example anon:
+> 
+> Process Parent                          fork
+> try_to_migrate
+>                                          anon_vma_clone
+>                                              write_lock
+>                                                  avc_inster_tree tail
+>                                          ....
+>      folio_lock_anon_vma_read             copy_pte_range
+>          vma_iter                            pte_lock
+>                  ....                           pte_present copy
+>                                              ...
+>                  pte_lock
+>                      new forked pte clean
+> ....
+> remove_migration_ptes
+>      rmap_walk_anon_lock
+> 
+> If my understanding is correct and such a critical section exists, it
+> shouldn't cause any issues—newly added PTEs can still be properly
+> removed and converted into migrate entries.
+> 
+> But in this:
+> 
+> Process Parent                          fork
+> try_to_migrate
+>                                          anon_vma_clone
+>                                              write_lock
+>                                                  avc_inster_tree
+>                                          ....
+>      folio_lock_anon_vma_read             copy_pte_range
+>          vma_iter
+>                  pte_lock
+>                      migrate entry set
+>                  ....                        pte_lock
+>                                                  pte_nonpresent copy
+>                                              ....
+> ....
+> remove_migration_ptes
+>      rmap_walk_anon_lock
 
-Whereby device_private_entry_to_page() obtains the "struct page" not via 
-the PFN but some other magical (index) value?
+Just a note: migration entries also apply to non-anon folios.
 
 -- 
 Cheers,
