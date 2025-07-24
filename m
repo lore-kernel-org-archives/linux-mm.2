@@ -2,88 +2,91 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 34EABC83F1A
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 07:37:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D0D73C83F1A
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 07:45:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B22586B0207; Thu, 24 Jul 2025 03:36:59 -0400 (EDT)
+	id 4C7D66B010F; Thu, 24 Jul 2025 03:45:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF8536B0208; Thu, 24 Jul 2025 03:36:59 -0400 (EDT)
+	id 478C06B0115; Thu, 24 Jul 2025 03:45:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A34C86B0209; Thu, 24 Jul 2025 03:36:59 -0400 (EDT)
+	id 38E736B0110; Thu, 24 Jul 2025 03:45:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 928BD6B0207
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 03:36:59 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 12CFBB82BB
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 07:36:59 +0000 (UTC)
-X-FDA: 83698351758.05.207B1D7
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 7A3E6A0003
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 07:36:55 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=r6vgAEi5;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf15.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753342617; a=rsa-sha256;
-	cv=none;
-	b=1vlTcoVqQ2QF//5kXNShIAPMVmzXVAA5OB9EmtJ0z0Man/sr8QGhjfWoJj/ux8WLYkO/7J
-	OAI+wXCMpdBu9wjFjNE26Pr1Bbpz/JhRquXmmGUnGtmVib+XTkW5Iu8r6k8yb3QJmzyCHd
-	fFU/92gc5bSXpZJxJUbw1JpDzo0kKPE=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=r6vgAEi5;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf15.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 212546B010A
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 03:45:53 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 96044802D7
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 07:45:52 +0000 (UTC)
+X-FDA: 83698374144.14.6A07113
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+	by imf28.hostedemail.com (Postfix) with ESMTP id F3BA1C0005
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 07:45:49 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=S0cMiknO;
+	spf=pass (imf28.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753342617;
+	s=arc-20220608; t=1753343151;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P6saxIttai/NSTgVrkSSj21N3ELBMaOxdIJSLIFoS5k=;
-	b=vNFQxLX4CvNK9GMk3/MVLIuAhbRm6orkM7lR15MzxIQyeJ+Y8Oxi9hPEpHQ4VeFtiB4tju
-	O3pcN6BAFeB1t3SfY/7GMyX21BdwfOumYqH9Nbh7vAPKIPCQFv9MlgQ8huS+oippKbRiDJ
-	pbCc0EYDGZHac3KApp7PJO4Jxe1KCpk=
+	bh=hjBHJMe/Q18LuysRuiW8kz7jNE0xs2d+Q0WubtH/tqk=;
+	b=yRgOr0jepYzIZF7/puVjAEzk1GU5s0hLO3Nsyr8SQuTBo05KPg5t/kgLNVYE0yOROQVuLC
+	rYVpqn6RmmS4ue9sH+8c/jiR4xsks2iYkf78CdNLG4b7aR47mu4FwxYgO+SByXBn7bDKBw
+	Tgz8x5rO/B60afImL4RUSNX1F3y8qhg=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=S0cMiknO;
+	spf=pass (imf28.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753343151; a=rsa-sha256;
+	cv=none;
+	b=KKPtHkJ2c2+i+YU8Qd9Xu52WoJyTFEbbQfvE2vb5j/2IVgx85jvQkoxKz4qD5WCZ5OSN+F
+	m/GwtFzOKS8UR1u5hbaTn/nEEjCBXmi/jmEeMf7GSOwnRNU3ZTj+zCLAGBVpkpCQk7Em76
+	wpN1ywQCG5zohIuaZiQK5wDrShtZ4zo=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1753342611; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=P6saxIttai/NSTgVrkSSj21N3ELBMaOxdIJSLIFoS5k=;
-	b=r6vgAEi5VajCOo2tY6PDP9jQno6S17LMRkMrJhAbxPXe3uAJBpGX6pJ9gIZJ2LJfmVyoQJHQJHWzE8pc+YMr+j/lDFIS4s64bjaYiqj87yJyew+ZCJ8vU2sIBLeDFPGPR8br8yuNPLsqRmFIvR+HA57nEwAkgTuOThZo6b4AHrM=
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WjlKIg3_1753342609 cluster:ay36)
+	t=1753342536; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=hjBHJMe/Q18LuysRuiW8kz7jNE0xs2d+Q0WubtH/tqk=;
+	b=S0cMiknOSAY03rZazQ7omK3e+BxfjLqrYgbI2biJFvznoUpLA4EIKfGzdegYhznwGaMOgNw45owCV2nKGTX1zwdLeIUwm7rxxZKYE34w261eo1iGMD85BJ5IVVEYuORXXbboVSUAcluUHDjkUDpQc9Ga3RaEIMoGrN0f7tnExEA=
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WjlauW4_1753342521 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Thu, 24 Jul 2025 15:36:50 +0800
+          Thu, 24 Jul 2025 15:35:33 +0800
 From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Shiyang Ruan <ruansy.fnst@fujitsu.com>
-Cc: linux-mm@kvack.org,  linux-kernel@vger.kernel.org,  lkp@intel.com,
-  akpm@linux-foundation.org,  y-goto@fujitsu.com,  mingo@redhat.com,
-  peterz@infradead.org,  juri.lelli@redhat.com,
-  vincent.guittot@linaro.org,  dietmar.eggemann@arm.com,
-  rostedt@goodmis.org,  mgorman@suse.de,  vschneid@redhat.com,  Li Zhijian
- <lizhijian@fujitsu.com>,  Ben Segall <bsegall@google.com>
+To: "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>
+Cc: "Shiyang Ruan (Fujitsu)" <ruansy.fnst@fujitsu.com>,
+  "linux-mm@kvack.org" <linux-mm@kvack.org>,
+  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+  "lkp@intel.com" <lkp@intel.com>,  "akpm@linux-foundation.org"
+ <akpm@linux-foundation.org>,  "Yasunori Gotou (Fujitsu)"
+ <y-goto@fujitsu.com>,  "mingo@redhat.com" <mingo@redhat.com>,
+  "peterz@infradead.org" <peterz@infradead.org>,  "juri.lelli@redhat.com"
+ <juri.lelli@redhat.com>,  "vincent.guittot@linaro.org"
+ <vincent.guittot@linaro.org>,  "dietmar.eggemann@arm.com"
+ <dietmar.eggemann@arm.com>,  "rostedt@goodmis.org" <rostedt@goodmis.org>,
+  "mgorman@suse.de" <mgorman@suse.de>,  "vschneid@redhat.com"
+ <vschneid@redhat.com>,  Ben Segall <bsegall@google.com>
 Subject: Re: [PATCH RFC v3] mm: memory-tiering: Fix PGPROMOTE_CANDIDATE
  counting
-In-Reply-To: <85d83be2-02f8-4ef6-91c7-ff920e47d834@fujitsu.com> (Shiyang
-	Ruan's message of "Thu, 24 Jul 2025 10:39:40 +0800")
+In-Reply-To: <ecc1622e-1076-4c03-9e1b-44aa701e6a5c@fujitsu.com> (Zhijian Li's
+	message of "Thu, 24 Jul 2025 03:35:39 +0000")
 References: <20250722141650.1821721-1-ruansy.fnst@fujitsu.com>
-	<87cy9r38ny.fsf@DESKTOP-5N7EMDA>
-	<85d83be2-02f8-4ef6-91c7-ff920e47d834@fujitsu.com>
-Date: Thu, 24 Jul 2025 15:36:48 +0800
-Message-ID: <87wm7y3ur3.fsf@DESKTOP-5N7EMDA>
+	<ecc1622e-1076-4c03-9e1b-44aa701e6a5c@fujitsu.com>
 User-Agent: Gnus/5.13 (Gnus v5.13)
+Date: Thu, 24 Jul 2025 15:35:20 +0800
+Message-ID: <871pq659dz.fsf@DESKTOP-5N7EMDA>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7A3E6A0003
-X-Stat-Signature: hd85dsxmsq4addwjx9xj8nfrneshsmpm
+Content-Type: text/plain; charset=ascii
 X-Rspam-User: 
-X-HE-Tag: 1753342615-151642
-X-HE-Meta: U2FsdGVkX1+eXE60lI06q8gLX29cu/4mgaXe6emXY6wnQsJIMkavrJ5DydiRx12HGJ7CJIuoDjBwMv8Ai0r30bd05sqLwMDEX3xrKmBJl0B4dyUfwe7RxxmLZqySRCf9UO8csQxuz6uEVCMGw8N7Qw7UI/ZTZ54sS/k9At/gnC3c4lHnioZnmgL2UeeaaF5kgWQSov7NBwjH2iDhsknxhjOSMg7zuSZMiURX34YAGEm1gO/3ccDhx/I+yflaXlODu9EK7bwOLPI5eV57VJ2o5UiSjk7Yu39cGz6GVfh4nUsmVS1vL6GuMD1EF0c32VqVWTGT2Qh9Ax5JgvoiqOjI/mhbo7gJO5Zk0oTTRFyz9ZD7Ayq0ubwrJxs8QX4nqrsy/pjFuxlJILAwniZMb73wwboqxKQLyHZun+Q2h7+DgsymjRwI2Lk40hLwpAwiw9PnIQOH9nl+lK4TQrRRzyeJy3hkfEgz9tmDHSmVqF4DNMoP7yuG2YlZ+SYk7NruoGirLECzZmhUA0/zRT11c054YI4rGHVukBfpvQCEjPn3d58ktvdQLr/myM8ha4tOOu7osbOQcpwhX51Bkkzxl05aLbu/TS3LhacCj0jhOwVHZ1LeSmTrknoYZP7wXEfEqVW0qhtgK5s7eahLJ7GgKrsEh6x23TsLg6VjGDwsSSRfYvvdDXyCOWLj+P0DT+Rig+T9lWH1E7oQ4YwSr9ASJr4rcEED/lgcup17QST7qznBcgN5j+nB/+0JZMTsG6GPrgWrsw6ihDiNFJfnZXoPN2Qg1lT4U3By2nGiDrW+/qu2aFusR0DqGP+nMBBD1eQkIkvwcpxmREU5S9Ra06YE9wRVTDdGsupp0fuAWSCGK33xq0HQHBmU8jwP+5jHOsNbK5Jw7A9/lxaCUlKe89KuMWgtvHPWWj9Bf7FfHwVfPXY43OJB1APFofWoBsXWtmSSatz8QIuoWRMHR88PZGV1QQu
- RcRc/lH4
- pQhDH9BAHz3J5t1jib94zfhaiQTnzk3wht798RI5FlfzBHl25VN1k7XGyCLzrlJo0LNzCJsDPkydtlFvkeSHbIfKKrVlsP5+1choIXg9bUdqVuNU7XCPYpeThdGdDZEplUmrlvz1JXxbtRhELb8u/NJw6CttFZlXyrm8SS6Cv/FF1s8e0msdnOy1VtQHBt0tUXMLCyLj66uP/QIZRLI9H0S7JEF4r2+CtBXkXxFOFyt4c5Hj5zK+3Jf89s1VXf4DMWDOZSI5tWl37CDBeSMTdtVgV3LWvCIh7QwldLmjHxiFtpD7yremTkqLzFhvV1kaCzcJq6IKsW77WFTZPaTZkxssJa0qLlyD12SSr0st+As8DQbSo7kD6fGbEuK9aJHvZzISLZ6a/cvR3Fe+pBJxiSl95lV3+tksZtSUcMrdrkXFBXpbtWqKmdt3e3scAbDRQEn/Dxg6univecoYzAaFAPCK8Yw4hzzbof2bxRB9thl1+Bj2+i9vDlCgHUVLQ3diozbcfyp0exaUuVUBxZ9w2yjHVV4z4YYIVVpfruuCGBQ4g1cRCBNiHoDJ3ecpWu7C7OLcKakGlmw4Acq4PoLWqhApsceDhdwPyN0aWPcTTZxgc1C0KzkgmTt+fAA==
+X-Rspamd-Queue-Id: F3BA1C0005
+X-Rspamd-Server: rspam06
+X-Stat-Signature: ykj7mnwbzzwxtiz5ao1yu3c8xu3g4oip
+X-HE-Tag: 1753343149-867307
+X-HE-Meta: U2FsdGVkX18ZlveAIIRoExv5f+M5pAM6z8C6RNJi6mC/Ox/ZtOQzGqs7nZc29tgQ4TtEnXoOkLV2OrvGrwUy2tqATs7SHkRQdGZwfeixMvih3nazd9KL1omfPz2mOyBW00D4PMaDLyto1v5tFKTXFP0H6tI7JXc2sH97X8TOR8JvBe47/tNnawbXSyOARlrBZ71hc3/QwPiuttV8g8p6RkoRt2oYSTMxJVevqo1kAgg0T9jXzRGvXUbUTRO97tOCsXlBezIDPXp45Zv1v6FJIV/bbp322DF5nNq28uOrSp948WLA47crmMOlpgqBPLnuEckku8ExWpLK5grrzPYVOrC0ogxoHg3e3+Yq2jWlhirPQjwTlPRQ9jDN4itnd1xVKsmpljW78B2TUbFr12AAjCAm6TSFmDN2cnynOuMLw6ZYk+y85SmbFGs6Qu21lDsod2BMgoIKLZPz6YMQK21dH0yNLC1vgPaR8K16YeWvtavaKkvv//GN0+tihdIU3I7FfPWKvpka9j3ieQLrC98LGr9CRGY8bqINynSDVXBSFupasbUabZYVo+/ch4lziYDv6lc6fYl/Z6H+XWo8J72HiucqRdm+PtYVGjE0Jb7oCnQqgv2HlgpS/J1cbmjQSXHxLXDboj4xrsZ+w/0bLxVW2QtSmEqKIOD1426Vb9wp7BmjJKfSU/VaNfYZaZqS8vnReDb6JhXdqjQ9FI+cpqUrRhOaqG4sxtcuO8yo1PJbUyow9ewjl5B+4hsKF874JoIB1XcdjiABabn7/0iJ1tbOfyPIitObE3ptNJ20a0gw2mVLbCTubEwT7YU1+0JDddPgGxXZZHLrhVTSttgmApRhSzKqJaD7yNH+BXmC7E1NF2xoxNyNxpN5IyjXp6PU0v2qvTpaxazecpBqHESAdfX1ALn5ibEclio+XsI64vf0GuklJtt/1kaHLOyHjxi6iWGd0nUowxr8W97ZvGKXrOX
+ 2I9sjMRf
+ mP1Awf57ODELA0JOHCZSRW1QX+E2D8ZMyoOflZhnABTh8cfL6ZdOnsmGh7jGZXFDgM0HsBjRfiriCobHvJ8CvzGw8oZCEoyWREhANqeNomUrbOAUrT7EiC7p4izKH0EnDcMAhxNlj0+DWiuE3/3LqHkLHAcaO8C/NpB0llobQRxqAKADT7dUquhz0AmUpolGdQcdNpAMONgr23l/I+Kc/tX7OToEkThlZA1GgOZ3T1031nTpZ/F5jlj+7fhN3CS9H0GzK8yspfcsVMC9UNhDEn/UxZtn53KQ+O6OcD7rn/IDBX4Zv4DiA/zf69A7AbTUDK5S3gHEYutINQ4nzcSODQMbN4Ba6eHJw3KlFPoGMl1DpcpOy0+CTl9QJVG3534x1qpJxKg7jEC6zqUwhhusHh00TxISJMkL1sYFpATqFJiP4tAzTTeumwWeXVac95hSF7BcdnT1NF7WLjXXL5LEllL/61UQyPjuj7/IlAPuesrV1oeNFUMfuwIP2VMcPkE749lRCR9wpSURZ0Z66n0c9bDCo7ZPlh1POfBAES2awiiu17+mPvl5KFiNTt6nFHXzsy09pBqMy2abTNFt1IT9FxZAMk+YOV5PCcKij7yvyeAH47/YhaCT0sQ4haw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,164 +95,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Shiyang Ruan <ruansy.fnst@fujitsu.com> writes:
+"Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com> writes:
 
-> =E5=9C=A8 2025/7/23 11:09, Huang, Ying =E5=86=99=E9=81=93:
->> Ruan Shiyang <ruansy.fnst@fujitsu.com> writes:
->>=20
->>> From: Li Zhijian <lizhijian@fujitsu.com>
->>>
->>> =3D=3D=3D
->>> Changes since v2:
->>>    1. According to Huang's suggestion, add a new stat to not count these
->>>    pages into PGPROMOTE_CANDIDATE, to avoid changing the rate limit
->>>    mechanism.
->>> =3D=3D=3D
->> This isn't the popular place for changelog, please refer to other
->> patch
->> email.
+> On 22/07/2025 22:16, Ruan Shiyang wrote:
+>> From: Li Zhijian<lizhijian@fujitsu.com>
+>> 
 >
-> OK. I'll move this part down below.>
->>> Goto-san reported confusing pgpromote statistics where the
->>> pgpromote_success count significantly exceeded pgpromote_candidate.
->>>
->>> On a system with three nodes (nodes 0-1: DRAM 4GB, node 2: NVDIMM 4GB):
->>>   # Enable demotion only
->>>   echo 1 > /sys/kernel/mm/numa/demotion_enabled
->>>   numactl -m 0-1 memhog -r200 3500M >/dev/null &
->>>   pid=3D$!
->>>   sleep 2
->>>   numactl memhog -r100 2500M >/dev/null &
->>>   sleep 10
->>>   kill -9 $pid # terminate the 1st memhog
->>>   # Enable promotion
->>>   echo 2 > /proc/sys/kernel/numa_balancing
->>>
->>> After a few seconds, we observeed `pgpromote_candidate < pgpromote_succ=
-ess`
->>> $ grep -e pgpromote /proc/vmstat
->>> pgpromote_success 2579
->>> pgpromote_candidate 0
->>>
->>> In this scenario, after terminating the first memhog, the conditions for
->>> pgdat_free_space_enough() are quickly met, and triggers promotion.
->>> However, these migrated pages are only counted for in PGPROMOTE_SUCCESS,
->>> not in PGPROMOTE_CANDIDATE.
->>>
->>> To solve this confusing statistics, introduce this
->>> PGPROMOTE_CANDIDATE_NOLIMIT to count the missed promotion pages.  And
->>> also, not counting these pages into PGPROMOTE_CANDIDATE is to avoid
->>> changing the existing algorithm or performance of the promotion rate
->>> limit.
->>>
->>> Perhaps PGPROMOTE_CANDIDATE_NOLIMIT is not well named, please comment if
->>> you have a better idea.
->> Yes.  Naming is hard.  I guess that the name comes from the
->> promotion
->> that isn't rate limited.  I have asked Deepseek that what is the good
->> abbreviation for "not rate limited".  Its answer is "NRL".  I don't know
->> whether it's good.  However, "NOT_RATE_LIMITED" appears too long.
+> I believe you are the actual author of this patch, so please change to yourself :)
 >
-> "NRL" Sounds good to me.
 >
-> I'm thinking another one: since it's not rate limited, it could be
-> migrated quickly/fast.  How about PGPROMOTE_CANDIDATE_FAST?
+>> Cc: Juri Lelli<juri.lelli@redhat.com>
+>> Cc: Vincent Guittot<vincent.guittot@linaro.org>
+>> Cc: Dietmar Eggemann<dietmar.eggemann@arm.com>
+>> Cc: Steven Rostedt<rostedt@goodmis.org>
+>> Cc: Ben Segall<bsegall@google.com>
+>> Cc: Mel Gorman<mgorman@suse.de>
+>> Cc: Valentin Schneider<vschneid@redhat.com>
+>> Reported-by: Yasunori Gotou (Fujitsu)<y-goto@fujitsu.com>
+>> Signed-off-by: Li Zhijian<lizhijian@fujitsu.com>
+>> Signed-off-by: Ruan Shiyang<ruansy.fnst@fujitsu.com>
+>> ---
+>>   include/linux/mmzone.h | 2 ++
+>>   kernel/sched/fair.c    | 6 ++++--
+>>   mm/vmstat.c            | 1 +
+>>   3 files changed, 7 insertions(+), 2 deletions(-)
+>> 
+>> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+>> index 283913d42d7b..6216e2eecf3b 100644
+>> --- a/include/linux/mmzone.h
+>> +++ b/include/linux/mmzone.h
+>> @@ -231,6 +231,8 @@ enum node_stat_item {
+>>   #ifdef CONFIG_NUMA_BALANCING
+>>   	PGPROMOTE_SUCCESS,	/* promote successfully */
+>>   	PGPROMOTE_CANDIDATE,	/* candidate pages to promote */
+>
+> Additionally, I think the current comment for PGPROMOTE_CANDIDATE is inaccurate. If possible, I'd like to refine it along with this patch.
+> For example:
+> 	/*
+> 	 * Candidate pages for promotion based on hint fault latency. This counter
+> 	 * is used to control the promotion rate and adjust the hotness threshold.
+> 	 */
+> What are your thoughts, @Ying?
 
-This sounds good to me, Thanks!
+This looks good to me, Thanks!
 
 ---
 Best Regards,
 Huang, Ying
 
 >
->>=20
->>>
->>>
->> The empty line is unnecessary.
 >
-> OK.>
->>> Cc: Huang Ying <ying.huang@linux.alibaba.com>
->> Suggested-by: Huang Ying <ying.huang@linux.alibaba.com>
+>> +	PGPROMOTE_CANDIDATE_NOLIMIT,	/* candidate pages without considering
+>> +					 * hot threshold */
 >
-> OK.
+> Similarly, the comment for PGPROMOTE_CANDIDATE_NOLIMIT can also be made more precise.
 >
 >
-> --
-> Thanks,
-> Ruan.
+> Thanks
+> Zhijian
 >
->>=20
->>> Cc: Ingo Molnar <mingo@redhat.com>
->>> Cc: Peter Zijlstra <peterz@infradead.org>
->>> Cc: Juri Lelli <juri.lelli@redhat.com>
->>> Cc: Vincent Guittot <vincent.guittot@linaro.org>
->>> Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
->>> Cc: Steven Rostedt <rostedt@goodmis.org>
->>> Cc: Ben Segall <bsegall@google.com>
->>> Cc: Mel Gorman <mgorman@suse.de>
->>> Cc: Valentin Schneider <vschneid@redhat.com>
->>> Reported-by: Yasunori Gotou (Fujitsu) <y-goto@fujitsu.com>
->>> Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
->>> Signed-off-by: Ruan Shiyang <ruansy.fnst@fujitsu.com>
->>> ---
->>>   include/linux/mmzone.h | 2 ++
->>>   kernel/sched/fair.c    | 6 ++++--
->>>   mm/vmstat.c            | 1 +
->>>   3 files changed, 7 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
->>> index 283913d42d7b..6216e2eecf3b 100644
->>> --- a/include/linux/mmzone.h
->>> +++ b/include/linux/mmzone.h
->>> @@ -231,6 +231,8 @@ enum node_stat_item {
->>>   #ifdef CONFIG_NUMA_BALANCING
->>>   	PGPROMOTE_SUCCESS,	/* promote successfully */
->>>   	PGPROMOTE_CANDIDATE,	/* candidate pages to promote */
->>> +	PGPROMOTE_CANDIDATE_NOLIMIT,	/* candidate pages without considering
->>> +					 * hot threshold */
->>>   #endif
->>>   	/* PGDEMOTE_*: pages demoted */
->>>   	PGDEMOTE_KSWAPD,
->>> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
->>> index 7a14da5396fb..12dac3519c49 100644
->>> --- a/kernel/sched/fair.c
->>> +++ b/kernel/sched/fair.c
->>> @@ -1940,11 +1940,14 @@ bool should_numa_migrate_memory(struct task_str=
-uct *p, struct folio *folio,
->>>   		struct pglist_data *pgdat;
->>>   		unsigned long rate_limit;
->>>   		unsigned int latency, th, def_th;
->>> +		long nr =3D folio_nr_pages(folio);
->>>     		pgdat =3D NODE_DATA(dst_nid);
->>>   		if (pgdat_free_space_enough(pgdat)) {
->>>   			/* workload changed, reset hot threshold */
->>>   			pgdat->nbp_threshold =3D 0;
->>> +			mod_node_page_state(pgdat, PGPROMOTE_CANDIDATE_NOLIMIT,
->>> +					    nr);
->>>   			return true;
->>>   		}
->>>   @@ -1958,8 +1961,7 @@ bool should_numa_migrate_memory(struct
->>> task_struct *p, struct folio *folio,
->>>   		if (latency >=3D th)
->>>   			return false;
->>>   -		return !numa_promotion_rate_limit(pgdat, rate_limit,
->>> -						  folio_nr_pages(folio));
->>> +		return !numa_promotion_rate_limit(pgdat, rate_limit, nr);
->>>   	}
->>>     	this_cpupid =3D cpu_pid_to_cpupid(dst_cpu, current->pid);
->>> diff --git a/mm/vmstat.c b/mm/vmstat.c
->>> index a78d70ddeacd..ca44a2dd5497 100644
->>> --- a/mm/vmstat.c
->>> +++ b/mm/vmstat.c
->>> @@ -1272,6 +1272,7 @@ const char * const vmstat_text[] =3D {
->>>   #ifdef CONFIG_NUMA_BALANCING
->>>   	"pgpromote_success",
->>>   	"pgpromote_candidate",
->>> +	"pgpromote_candidate_nolimit",
->>>   #endif
->>>   	"pgdemote_kswapd",
->>>   	"pgdemote_direct",
->> ---
->> Best Regards,
->> Huang, Ying
+>>   #endif
 
