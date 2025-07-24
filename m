@@ -2,118 +2,177 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 33D05C83F1A
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 14:30:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6AAF2C83F26
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 14:30:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96AB98E0089; Thu, 24 Jul 2025 10:29:59 -0400 (EDT)
+	id 06BA86B013B; Thu, 24 Jul 2025 10:30:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F3F08E007C; Thu, 24 Jul 2025 10:29:59 -0400 (EDT)
+	id 01C076B013D; Thu, 24 Jul 2025 10:30:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 795418E0089; Thu, 24 Jul 2025 10:29:59 -0400 (EDT)
+	id E265C6B013E; Thu, 24 Jul 2025 10:30:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 64D578E007C
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 10:29:59 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3447158E69
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 14:29:59 +0000 (UTC)
-X-FDA: 83699392518.07.D6C34B3
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 4B35520016
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 14:29:57 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ywFB9DLR;
-	spf=pass (imf13.hostedemail.com: domain of surenb@google.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CF8EC6B013B
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 10:30:55 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F1332140453
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 14:30:53 +0000 (UTC)
+X-FDA: 83699394786.21.9B619F6
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 4F0C6C0014
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 14:30:51 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QySJgUX7;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ucHKu6mr;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QySJgUX7;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ucHKu6mr;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753367397;
+	s=arc-20220608; t=1753367451;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FlhcpDPJ/zf5PjQewozCSVSh7GoDUgf457I2X0B4PcQ=;
-	b=MuCMDJPhxyWn1WpMVpoEnean68RFHsXVYc3oYuy8o1vzKNnOCrwGcigUidczQMyJ7RnHJL
-	9UKcpmhkUoPvWsKGan/FT+Uw2NbDkHFkxpRt0lmqg09tGzJKLmfCei75dx3432Ea6lDauA
-	+r4XnHbZ/Qh9R4cLinOx9J7lD3rvSPU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753367397; a=rsa-sha256;
+	bh=k4Tsq+b880kK49R6CSOyZ9PmBo7u0+b5eMyTxU0Yb8Y=;
+	b=oVGfMjmbaLvjjlWED0nMa3VpDlisH3/mPiOmX5zFZlic+MemaOjwknRD7u9Sieuv+qKx2v
+	NfH7GH3xdEgj6f6zJMatPKG7B6YjB2dJr5iTxqvR+A5AQofPkvInN61yAYy07Y8bSwNJek
+	Eak6tiv6MPcT8N3olUkVJODZU3+3T9Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753367451; a=rsa-sha256;
 	cv=none;
-	b=1a2s1vW19mcAW39Uuel5EE20G3JIxQrTi4aH6GXzPXPXxgNe9m+eu3sskCdcVXgaXhEd9Y
-	u3e2E7w7z7khIxHLWaDXCil24+qJ9lBaW3W2xmLWzl9CO6vKfK+W+mDxxhhRv+P8y94kSZ
-	toIAfuISm6rG0wpOGeoHvWpL9WGMtso=
+	b=qYnqa0rHymlcHqi9o21Ms7hohoF+ZcyIANWEgWvcOd+Ko0qtwj0V/H5OmTOo4uhaXdWhrC
+	6Ki/QgbrjsIAwLy1rE30OUNXs/G6PxI2ezpzK3lD5Uip3fAF85L3pevlJAjhNnM19LfMsS
+	z9fWgCwbPmIiGLR9tEqQFXrbUETH6rg=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ywFB9DLR;
-	spf=pass (imf13.hostedemail.com: domain of surenb@google.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-60b86fc4b47so9060a12.1
-        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 07:29:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753367396; x=1753972196; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FlhcpDPJ/zf5PjQewozCSVSh7GoDUgf457I2X0B4PcQ=;
-        b=ywFB9DLRQRqlUbRrS9+Rz5ocAMT8XU6F4X1ylg2S8dxJeGDgKUk5Xss1FLPi63KEa8
-         63u6gtfihKjvCRh+gGvP+AnVsMkWc9S1BInyRehh+0U98YHWar4okpAen+yHwX2m5Ef0
-         SzinW1k4rox6Jh1A8ZZKr/eFNyIbNjPhu7Eok4ZHsZgzxjagv6zTTletw9t9GgSdTp9u
-         l7lYTg9uhIYl9zD+2u0THHnVulFGFAg0XCxtK8w/ZX0udreeHmynAnMtkNyN0oMBBUC1
-         NKw+PZNEVNwvmo4eGprJU3NiAYP6crw0+oMNAzsfj089WCbl+vbIQP7IT4GEKs1rGANj
-         oB8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753367396; x=1753972196;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FlhcpDPJ/zf5PjQewozCSVSh7GoDUgf457I2X0B4PcQ=;
-        b=ee3bTZadLT9kktsYHpyGCzgINcPyDhynnbcZEn/GDmq4XiLeU2bJIHeXg98sOs+5qV
-         DlhHVKWP5mDLzW55yb5fdPUJ0MQS7z92PuMgc6jTWI9pju31CTC1XFaxKuoHCWIoY1p8
-         abKtKjSIHNFkTvqx788JCLEHNWK3q4NYTLiInqI2taf7SYjTypFan48AlTm+ze5XN6uh
-         t5R6ErH8MSw7bwbR9/2+/QWHCI4jlmKPXv7kWEO/9lQ5hFxlOzRq0nK3ZmObdokj2OwQ
-         8S4yZIuKmZYqTrDwuirrkZQopQycVSi+19/xrihrIERSg8wDOpBP4FvRio3jZjJQM7fa
-         b1rA==
-X-Forwarded-Encrypted: i=1; AJvYcCVptpomvJH8WbpEAa4YwnwX377wYW1i+3+uTjAPkzCVnUUy/+y/cdsb396mtVoFSZ+gzcNjpoC3Cg==@kvack.org
-X-Gm-Message-State: AOJu0YxKC0RZc7LKKjV/KW7yb+SoLmv2E1H6iva+olWPAcQqnSrLTjKg
-	ucVNmvacBrAc3tDAAVE/zpODmIaj3pB8T4Q7BdlLbksEebk81u/bV7MiP11Mc/mcK9/9FN0IpW7
-	XaYkuYeAI5vm3xRnPW84SJM3DBcgfCk3FSXwa5mEh
-X-Gm-Gg: ASbGncsWso2hlE1xn5G+Rx8zAQmS54aqa5az+kPrzgL3osW+qVs0eGIlV542Ddkbvqq
-	X6f7SQWe5oCsiU4lBeYSFbnw68yVQJ5tpntyTOoavrgRWUBvtOKZLVK9rwdlOCHTXO2bPPCRNsC
-	MjA0qXc6xNsOJru38q0VwGwtAm40TRnj28DtxAX0dhAvd6o8HVfRF2yQBqYJAJwizqYMpDSHlYa
-	Lg579o+xqjaCMN7RrjRF/sIFL0TQ926iIn55l6uOlQrKpaS
-X-Google-Smtp-Source: AGHT+IFnzfnkL7IMifLfz57vgfmQBM0IvNePvt8oCAV9PXZXiY5Zcoi2sHhp40dEdBN6gXkrNPjSmbr628hsdVXAWto=
-X-Received: by 2002:a05:6402:20ca:b0:60e:3d45:c65a with SMTP id
- 4fb4d7f45d1cf-614cce46f4emr80233a12.5.1753367395396; Thu, 24 Jul 2025
- 07:29:55 -0700 (PDT)
+	imf22.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QySJgUX7;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ucHKu6mr;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QySJgUX7;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ucHKu6mr;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id ADA651F399;
+	Thu, 24 Jul 2025 14:30:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1753367449; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=k4Tsq+b880kK49R6CSOyZ9PmBo7u0+b5eMyTxU0Yb8Y=;
+	b=QySJgUX7+KOApssRwOKHV7U6qg2d6ujMNn1BGeFL82Q4/ihFfkiN+Exq8tyOkXu6h1Eq18
+	kgKardLPFG371Xdnh/SQxt4rulUQb+V59W8OIf2CGRwH5NmD5iG3pZU6mMSlQsS+gcEAe8
+	TSogh0dyrTNbWzoexaiBHnZbFjxyP6M=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1753367449;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=k4Tsq+b880kK49R6CSOyZ9PmBo7u0+b5eMyTxU0Yb8Y=;
+	b=ucHKu6mrc95YXAPNa1GzCLHur1JIrH8blfy44QJsIPvHWNpDMGQeLAs9/6Y/3QmLZP4MAQ
+	nq6zNu6eBGz4HPCA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1753367449; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=k4Tsq+b880kK49R6CSOyZ9PmBo7u0+b5eMyTxU0Yb8Y=;
+	b=QySJgUX7+KOApssRwOKHV7U6qg2d6ujMNn1BGeFL82Q4/ihFfkiN+Exq8tyOkXu6h1Eq18
+	kgKardLPFG371Xdnh/SQxt4rulUQb+V59W8OIf2CGRwH5NmD5iG3pZU6mMSlQsS+gcEAe8
+	TSogh0dyrTNbWzoexaiBHnZbFjxyP6M=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1753367449;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=k4Tsq+b880kK49R6CSOyZ9PmBo7u0+b5eMyTxU0Yb8Y=;
+	b=ucHKu6mrc95YXAPNa1GzCLHur1JIrH8blfy44QJsIPvHWNpDMGQeLAs9/6Y/3QmLZP4MAQ
+	nq6zNu6eBGz4HPCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 932F1136DC;
+	Thu, 24 Jul 2025 14:30:49 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id GrxqHZlDgmhwMwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 24 Jul 2025 14:30:49 +0000
+Message-ID: <9cad7b86-4b77-4881-9cbf-637b6a61695d@suse.cz>
+Date: Thu, 24 Jul 2025 16:30:49 +0200
 MIME-Version: 1.0
-References: <CAG48ez0-deFbVH=E3jbkWx=X3uVbd8nWeo6kbJPQ0KoUD+m2tA@mail.gmail.com>
- <16c97e30-19c9-41e8-b73b-c0b3c8eceff3@suse.cz> <CAG48ez1qhjQNHC+3572udqVWHTANFpQ0ngxn_4ZDC9F8NCXsFA@mail.gmail.com>
- <c53b22c3-9f7f-4793-9d10-f4df861a3e32@suse.cz> <CAG48ez2cGX3e5bqgcw0OEnho29+YhwG2eOrHRgNwGAA_Nb65nw@mail.gmail.com>
- <CAJuCfpEcjH+W83At8WSkgzO=JvZmapg6dPaXmuSRS4ufhSha4w@mail.gmail.com>
- <CAJuCfpHk_k5eVhAZTK=jJvES9311Hyo_YXxY-S56EAYSBuRVRQ@mail.gmail.com>
- <702ab3bb-db4c-49cb-bb77-4e864cae610e@suse.cz> <dbc20783-0ff5-4902-bd73-e9282bfd87ba@lucifer.local>
-In-Reply-To: <dbc20783-0ff5-4902-bd73-e9282bfd87ba@lucifer.local>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 24 Jul 2025 07:29:42 -0700
-X-Gm-Features: Ac12FXwkwryuiZ7qVX6VVH1hTJoQ17odUJToEjarcBlX6QEUdlzMhlFWhWvKrTQ
-Message-ID: <CAJuCfpEVrpHACx2G2=Gq7YadxkA-DnFpFmbUij=Xr1=w7yrLbg@mail.gmail.com>
-Subject: Re: [BUG] hard-to-hit mm_struct UAF due to insufficiently careful
- vma_refcount_put() wrt SLAB_TYPESAFE_BY_RCU
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Linux-MM <linux-mm@kvack.org>, 
-	kernel list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4B35520016
-X-Stat-Signature: ca7qbbmcssewb8kqofaeji5wrcpgub6z
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 02/14] slab: add sheaf support for batching kfree_rcu()
+ operations
+Content-Language: en-US
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: Suren Baghdasaryan <surenb@google.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
+ maple-tree@lists.infradead.org
+References: <20250723-slub-percpu-caches-v5-0-b792cd830f5d@suse.cz>
+ <20250723-slub-percpu-caches-v5-2-b792cd830f5d@suse.cz>
+ <aIEQQ0MW5e8KMvVL@pc636>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <aIEQQ0MW5e8KMvVL@pc636>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: gm1prs91k4a4x1irgnhb9wqi1a4cdmb6
+X-Rspamd-Queue-Id: 4F0C6C0014
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1753367397-440493
-X-HE-Meta: U2FsdGVkX197/jBSIlHf1AagJf7BLOWUwcmVCyhwrLDWfFXItzyNq3WUxY64p29Ie2ljqTd0JH/2aowYQcHQOhEXq9Vp+zfdYgq3wFo7xXhYUUenc76bs+dLfDq2RlORQO7YXrrj2mkw53YNM2Q6jaK/eFufhmo76dh0I9S+1WEZbiz0aORmIj91H1/gwau8Ty+5MwM430dPQ2CHnZB8pOXTVv6EJ72naFpKeeUKR2wh0QgY/uEDxtp0M6kFtPhfp5QGp8vXL1X6lOGgVIHm6hX16DlmTf8f71dU//Ly5SUjvhyJwwaBPPZf08UEbTfWPFFfxsk/vscZrjLbbhZNwJnZA3dJ0jwCRr66GnthzPsDA1emKaOqQ+mba/tXcq1jJHyik9trPwKSFszIkL+JXBJKW5FhKBcbKRAV6U+1jULphnHA2f4c9eWvoh43h8SvgUKkEImvHEFluIWZE5tu27m80TOfm+JxIA3uPhLqWa5uCZe34ZwCv/3LAuJzBDQWkHfxnd0KBhzXQnEn01jhGbYQR1wpTwRC/monnFmpx9Chi+Dad31J/QoV6hnpCj3zox4F9ePdxv0QRok0VO04mdK0H/6RpVORUh8t4Xr+Beuex1aTLcpem5js5+LKbuNKksfWLfTngkupqqs2ubGSATEqKxvi/VUb1BDda+J3eWlWs7DcxJv/jUTWeY/b+j/NNVvVy2g8ZIoiH6rnnLQcNjaQzEBIFJfSsMfte+TbB75mVxN5TKg5IcF1RvDX6I+8VaFqg77ehXm873igRCQvUH7nJ05M1p7u4Zaow5Bspdss83XF+lGEAnPbp9wDcyu2U7156ALVl6DEQBk8RVqK/FGE2sy++GInt6GkUbNTlvrDxV/htGgpZ5cfo0l5c3K2N5kZe069fS6KmCtBvo4aCXAV/eKJ1KHcZpKqzZLAMgB7TkzA1x5b+ZUGvsAo2Hkmnehsno/xiIGgfG/bG+n
- 0my/Xms/
- ie44RjnRkFDv7PxmXoVfHYR/IhY7+SP1/rnInZyNPkbNA5htPN5rX6CjQ9FQUph4o7ZNFu9WZnglK/4Rh6sKSu0aq57HR4G68U6BpDp22PHndWwp3v2PuFRc9VGA59k8TsYV5B2DgGT617uwaYAX26n6iEZYxT+PBj2LDlsKvYgwb75SYWV7KB3A7Nnr3IhSF+H34SK92G1HNu5nTjRNuO0V12OgrMQsg7emYBA0kia9EgVFFw6U3hbgx7KuMQ+bSEvG8mDXMMiLUF8s=
+X-HE-Tag: 1753367450-220186
+X-HE-Meta: U2FsdGVkX1+T2SAFKL48icyD871IkDzFThR8O1uqcSz22Dd6howG6CZOXqisbDyDFgtlDRDLbGgH0+WY210unRE+gUPky/qMxtBboMI5wY+yJeh9XP5sU/xPFUxWGRUPIgUOf1gbNmG1Zrf8pZ8+qMzzRPLvWFzTpRyyPcN0HTPSj+EapRJ1MWK8AVWSLxe7/sA3C5HEtv3/6vHlfAowbzVA4CfANLdYeDJ1rqHWm7SJFbAsrTk+t1QaXvmc/B0ABFkNrbbfa0vW4sG937IJJN2l+ElQ8711aP22zeqq+ei+YNhNJAjOpNmba6wlpzmSID0M3m9le1QoxLJnZ/KpqMXhwFUvJrRhbXL/ps/KKM5eFLK+2NTatj6lu5gROSkibKAL0RzweKTJ7LJjpw2mS9fPX6Z4dK3uVZzQQgW9weQBFBstlnv5sKpI0HYZZ/VN1Q+rJtwg2wHtyUzi10yaHvGGFhhHwt2pfDALxdjwJ6mrtB8Xn94g3Svirrbe3PLXhD4cYa2VXHkn6ffdy1Z2SSsL0qDtv4zaJx/Uqg70Ys5ppzHUTacR2qjLFRwu1rQN6ie8l83gJePgfyQbewTxwahSXsmDnSEnti+h0G3E9koG+FyZf3NI1GbihLiskoosNl5icaCQi21V174hpcPbRgHmrGkp/bOIRdTpkTDg8Rt/qqrENcjyGSE4iehPWczc+mavlNiy1ve7k5bFeq05MwDA26XjLHF0xm5br6sJ5FHfKcjO2odXxaRTnelWAz3b4Up1QXmMnfvOhjXL2q+N+BDhuoS4Q3FtTR5BaZx7s9mabpCju15CPk78FkPoyGTFV9CnETSCDcEssMPAKA4LiBRf0HgEcjBACvEK05pwQdDX/itOXRuGEXLueUpvpl0GCPid76Qg/0BBFsst8UwlcwSLkd/B97wEjplaMeOdGu8Hw6pfFXOP+7ejP0WO4OO5CJvZQQgNq4YV952nAap
+ ZjpPOhBS
+ ZHIcyxMQz3zfBDXjD2wY7CuiK4BrSjuvb402TDDaJ00N827rRVvLxSUeql1fBhbo0AXhXpRNkfu0kJnlIZS8i0bKoGRPeUplCz6dQRA8FUSA9Yu8gEbo6EvA0K4OpWuOpGHlvCucsGltQTxhvUL8j3aV5oM71hrcgg1RNETy3CnPG4xonA/CpKAAe7vAVk07J1JAfKcRqq4WqyQXqtxaPpG0cGImxiJJa9TNrYJBY1YXBFL8Jm6Es6on/fLSv1jm+qw/tuXNaL9Ydk3wN/HOnhv+ZG+7NfbFJEjbj1q7pZ7e9DJw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,58 +181,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 24, 2025 at 3:53=E2=80=AFAM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
->
-> On Thu, Jul 24, 2025 at 10:38:06AM +0200, Vlastimil Babka wrote:
-> > On 7/24/25 04:30, Suren Baghdasaryan wrote:
-> > > So, I think vma_refcount_put() can mmgrab(vma->mm) before calling
-> > > __refcount_dec_and_test(), to stabilize that mm and then mmdrop()
-> > > after it calls rcuwait_wake_up(). What do you think about this
-> > > approach, folks?
-> >
-> > Yeah except it would be wasteful to do for all vma_refcount_put(). Shou=
-ld be
-> > enough to have this version (as Jann suggested) for inval_end_read: par=
-t of
-> > lock_vma_under_rcu.
+On 7/23/25 18:39, Uladzislau Rezki wrote:
+> On Wed, Jul 23, 2025 at 03:34:35PM +0200, Vlastimil Babka wrote:
+>>  static bool
+>>  need_offload_krc(struct kfree_rcu_cpu *krcp)
+>>  {
+>> @@ -1952,6 +1973,9 @@ void kvfree_call_rcu(struct rcu_head *head, void *ptr)
+>>  	if (!head)
+>>  		might_sleep();
+>>  
+>> +	if (kfree_rcu_sheaf(ptr))
+>> +		return;
+>> +
+>>
+> I have a question here. kfree_rcu_sheaf(ptr) tries to revert freeing
+> an object over one more newly introduced path. This patch adds infra
+> for such purpose whereas we already have a main path over which we
+> free memory.
+> 
+> Why do not we use existing logic? As i see you can do:
+> 
+>    if (unlikely(!slab_free_hook(s, p[i], init, true))) {
+>         p[i] = p[--sheaf->size];
+>         continue;
+>    }
+> 
+> in the kfree_rcu_work() function where we process all ready to free objects.
 
-Yes, definitely.
+I'm not sure I understand. In kfree_rcu_work() we process individual
+objects. There is no sheaf that you reference in the code above?
+Or are you suggesting we add e.g. a "channel" of sheaves to process in
+addition to the existing channels of objects?
 
-> > I think we need it also for the vma_refcount_put() done
-> > in vma_start_read() when we fail the seqcount check? I think in that ca=
-se
-> > the same thing can be happening too, just with different race windows?
+> I mean, for slab objects we can replace kfree_bulk() and scan all pointers
+> and free them over slab_free_hook().
 
-Yes.
+The desired outcome after __rcu_free_sheaf_prepare() is to take the whole
+sheaf and have it reused, not free individual objects. So we call
+slab_free_hook() in __rcu_free_sheaf_prepare() but don't actually free
+individual objects as necessary.
 
-> >
-> > Also as Jann suggested, maybe it's not great (or even safe) to perform
-> > __mmdrop() under rcu? And maybe some vma_start_read() users are even mo=
-re
-> > restricted? Maybe then we'd need to make __mmdrop_delayed() not RT-only=
-, and
-> > use that.
->
-> Agreed that doing this under RCU seems unwise.
->
-> I know PTL relies on this as well as zap PTE page table reclaim, likely t=
-hese
-> wouldn't interact with an mm going away (you'd hope!) but it seems unwise=
- to
-> play around with assumptions here.
+> Also we do use a pooled API and other improvements to speed up freeing.
 
-__mmdrop_delayed() is a viable option but I would hate adding
-mm->delayed_drop for !CONFIG_PREEMPT_RT just for this one case.
-Alternatively, we don't need to be in the rcu read section when we
-call vma_end_read() inside lock_vma_under_rcu(). We refcounted the
-vma, so it's locked and stable, no need for RCU at that point. We can
-move rcu_read_unlock() before vma_end_read(). However that's not the
-case with the vma_refcount_put() inside vma_start_read(). We could
-change vma_start_read() semantics so that it drops rcu_read_lock
-before it returns. That way we could do vma_refcount_put() after
-rcu_read_unlock() in both places.  The retry case in
-lock_vma_under_rcu() would have to reacquire rcu_read_lock() but that
-retry is not the usual path, so should not affect overall locking
-performance. What do you think about this alternative?
+It could be useful to know the details as in Suren's measurements there's
+issues with kfree_rcu() using sheaves when lazy rcu is used. Is the
+kfree_rcu() infra avoiding being too lazy somehow? We could use the same
+techniques for sheaves.
+
+> Thanks!
+> 
+> --
+> Uladzislau Rezki
+
 
