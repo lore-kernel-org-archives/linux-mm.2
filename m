@@ -2,128 +2,251 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A41FDC87FCC
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 18:57:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 15CBCC87FC5
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Jul 2025 19:07:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 47D976B00E2; Thu, 24 Jul 2025 14:57:41 -0400 (EDT)
+	id 752558E00B3; Thu, 24 Jul 2025 15:07:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 454566B00E5; Thu, 24 Jul 2025 14:57:41 -0400 (EDT)
+	id 727828E007C; Thu, 24 Jul 2025 15:07:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 369F56B00E8; Thu, 24 Jul 2025 14:57:41 -0400 (EDT)
+	id 5C8398E00B3; Thu, 24 Jul 2025 15:07:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 240CF6B00E2
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 14:57:41 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C3A63113552
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 18:57:40 +0000 (UTC)
-X-FDA: 83700067080.04.350114E
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B7C38140006
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 18:57:38 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DZZwffoe;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753383458; a=rsa-sha256;
-	cv=none;
-	b=YPaWdMw2vJHnaxS3AYHAVLbaKQ48gzgm2OQqpUGTdgzuGD3K02/g/+b6wHfCDsDCYILLVq
-	MIfLf29Uu2t3VeqPrEz1rp/NvPKNABlnIn+dzoZbFnsJZK/trdoVr7roZyrPy0YWb06SbL
-	NTMlC3XKxQFp2PaxN0bfHe4ZMfq0z4o=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DZZwffoe;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753383458;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 460DD8E007C
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 15:07:38 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F1AE91404DA
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 19:07:37 +0000 (UTC)
+X-FDA: 83700092154.23.418A244
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 7E7D320016
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 19:07:34 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=kS2hXitN;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=MLiDqVmH;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf03.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753384054;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Iv0+8TMRDjRcb8ybGvxWVsE501yeGF/k6V04AvLUUII=;
-	b=BBPTMsZtIdaDUKZ46JY8sirg595Ry9pG9zP/d1ot2/r80RYfjbCO3ueN24I+DrVSgUn4aA
-	PwHkp5XeeUl8IKhER/cyvsCo4k9rr/zU4vVFmOnttBh0AnAwTuHJs6+vVEOMOvTkCKoeKH
-	1y1A943qPKesEubzUFiE7iyrVDXgdps=
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4563a57f947so12436105e9.1
-        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 11:57:38 -0700 (PDT)
+	bh=U2xrwxhLxv4frlpGHBeDgdgnS8BYgPxkcx6aztfrvKI=;
+	b=SIpJ0CYZftSbaPdriU7XVEk8LXDGyul+wjkuhI2X1al+ajO00MOl0qxMtCMFHqOLkVz3SQ
+	LL7UW+BWYDmV79Jd/9TMqRTgvUhoQT+/Ibx5nSaGSvHwOZx8N5hJXjAHa2U5clzOOmrJzB
+	YwqVwQnYM/yGQ2pOyZCbXz9ibt/Ce1w=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753384054; a=rsa-sha256;
+	cv=pass;
+	b=Theoa9oCGjm6AtPAyIVDViWIsoMO5rzBFQndCNcSRjaMmO6ke+KVFaj0TDlSsdSvLvGY/y
+	MfaUcMK671EzwCTSJi+4qrjV18rhvjoJL5EJiRrjknyJSX4WpLOO79J6r5i3U42C+Cw8vy
+	arHGA29pzQZilhhPm2vWQ3jWrW3tbDY=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=kS2hXitN;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=MLiDqVmH;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf03.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56OGixZk021700;
+	Thu, 24 Jul 2025 19:07:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=U2xrwxhLxv4frlpGHBeDgdgnS8BYgPxkcx6aztfrvKI=; b=
+	kS2hXitNsEaOUjxtRHiRCS+ddAVG4G0Pdbq4XYSJ4xHOcN4jZbmfQSP08/Al3YGo
+	n0Y92xekdCkzKmeuu/oxegFUm4duX5yN2dFDXE1tEioRTtBUGlEcoxve4nczzj5t
+	Xm+1TAI0G/YBbSJl5lbor0WyDmZHBddnq2S0jkWMgfBEJ5IdXVg4GPcm1vvN9vZV
+	XRqnaS1oyl9E12JuNKeRsyoM15Z1lk7keEjgdybRdSbbYXJxaGP89f7YQaZV6Ou0
+	X4L6765q6vqqYc4J/TCzGm7Tb6bl+YCj04eCQqUoyroXP6s61wCskkw9U0kxWiwo
+	dnR6gElCeg3eJoJNo+W1Eg==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 482cwhvrfw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 24 Jul 2025 19:07:28 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 56OHVJOj014366;
+	Thu, 24 Jul 2025 19:07:27 GMT
+Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12on2076.outbound.protection.outlook.com [40.107.244.76])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4801tjjd71-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 24 Jul 2025 19:07:27 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Gt78ViufxMJdiLY4fcfhLrmGA+WFDuAdTewZgmnttzDSREkjlccbM9v0a7ZeUgB5JMFlGd+k7mr9oN+0GFZTywWWjAiq1eZN4PoTPZYXhm+yFkLwvtKTfYZvZ/qBFeAybeZSpVs4vFqSukOLQnu5G51hAUuzu0YZrjxQH+wTjZWGppmjFIzS7es+R4At22N1cX4/bRLf0hlCkyOL9VTwTH2ilib+258CWiEZhKAymsWFktJIaMGBj+ojexxgyhS6lk51YD2rPlAFXIqZC03/RqbeGVTb6bANJfynov4K7nl5uoNrZZKEXPj/sn1Z5jJPTiOBf1k7DWC9gzNI9FFLjA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=U2xrwxhLxv4frlpGHBeDgdgnS8BYgPxkcx6aztfrvKI=;
+ b=Z6zIeQi12SlGS0SbvM7oOPGQROWBEU8Vh+xiXzbKdOmTHRkFuQwsr068ie8xwKqLOwvwRggK9pocdjiLXieSTYJQ1bbKj3LqJnbpZo41WojRacAgFigVwsqlIstVv0pBAEG5bSnh4MdedJwndZM8IjM23ySfHzqSrt1RQmL3ePIojHePt8slPnE6qj0n/O5MaXr/AcXu3mqKrYZqxtKfLRClntHPGKAUngHk2wL3h9a0Acme9F2Ann6qYgG/IhBlcGeK9cWqiG0O31OV9UvvCDSKPL3LH1wsAdUN8ATuDOBi92YiNiA4hW9jVcOIwil2hEMRN4j7HzTA9XrJrHtx/w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753383457; x=1753988257; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Iv0+8TMRDjRcb8ybGvxWVsE501yeGF/k6V04AvLUUII=;
-        b=DZZwffoeBaJebadWx93cMKG9DbQ32/PAV5JzmC5D2RreVCefaVgDBgvyTAwOrJihfM
-         b5nuvFL+WLug+tfQSeeegKRQm7G3DAEitg34M8UTr8IACv3X9KDnNaXTwmqJ+BY0dwic
-         qDd5s/dkTF5ItnDXe4aUAe0SXHl3oOFfeX45zgGy9FNggWN1+8VUOomizzqTb3XIU9I3
-         mhlbi4jdSKk/uGLbJgUr/CBy2U4iHxXsydWb2ma7zeliDMI7BDYk4IXuu7hqERYXHquV
-         nyQCicribFQDMcew9xxA99gT2n3m5xINYFUx4QIEt8qPGEdqzrkFlRj12QsrF2u7gXhL
-         gIOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753383457; x=1753988257;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Iv0+8TMRDjRcb8ybGvxWVsE501yeGF/k6V04AvLUUII=;
-        b=LE4UfXUe+PddBSQOqUZZ25SVt0fAJY5HwJaEEUxWn1dv4D6gAbQmSUonT7PzispAC/
-         memXZnoWsopw7mUO0xAWjW9ig6wQM/ad89Ot+irECJaTIiT5FhiiSCyhjEdGLWo0Ax2Y
-         ezut7aNOLt6RGLJKCIyJwEE6jBAdHlwDzfxu/ZVIfkotTzJ2IDxCrNzzfdvPR2xoyi5e
-         wGoJaHT+T29atB61XcBykhuih9xuKCZZZ8EflcnOvg0Ne+Zj9L5bS4XfanE651+Dbigm
-         QWQGeKKz94+C7L/kpLeoSNB31rdIkFO39Ckouc8VEE4j71uAQCxhfkCpPpZXyST9nrHN
-         +FcA==
-X-Gm-Message-State: AOJu0YxI1xgj+G/urraodW19Xq7+AEu68GJbqxXlHNB0LRpZD6iphSFQ
-	3OBHZTC0+3w+3KTY+b66kQN52rdFUXp4NRI2rOal+mIthrKtC6uPQt3F
-X-Gm-Gg: ASbGncskYhqiN8zU8iN6Pfa4ZqFYjOckuXJWNZWpLGd552HPPNazChTXcGJBSf1M936
-	SdH4ZbRkvZi5Bof8WjJJTv25NyM9rLjgx9VxmGJGKb3JGcGtvKhvVtUsxE8l36R8p92zZevsafr
-	r5c/8MrgMUG2HHQ+cRcDzVQjTt/AcThECq2wNguF1OwGSC+vwvOMKl48FhtteT/kP3upFuaTgD6
-	QoWIwSX5p07c5X+rcHKr98xClLrlXg0/I9PypwezuaflAEGg+mZvVzaT1JbMtveY509c1uDrYUQ
-	zd9aL+yqGKPkRFjY8/41pdSBnBMDNWBry8VghWgUAKbDuHpF1xdY7slXegtcDvtK1jSM+MqStdi
-	cHFip+ClJzK8Mutx0Kx/L0G/ycsSkgOxIzxRWGpD6qUcsUNH3e6LzZbVx3t8z8I8rNkp1t8Bgrs
-	WQ4KTx0Q==
-X-Google-Smtp-Source: AGHT+IGzehIpMIPRxdQDW9qcUj2ivjoOBXoHMhqzIsfwC1PF1DUdkFnWEY/UqnYXk+EkF9nwxxMdTA==
-X-Received: by 2002:a05:600c:1550:b0:456:1122:8342 with SMTP id 5b1f17b1804b1-4587050d92cmr27385065e9.5.1753383456711;
-        Thu, 24 Jul 2025 11:57:36 -0700 (PDT)
-Received: from ?IPV6:2a03:83e0:1126:4:14f1:c189:9748:5e5a? ([2620:10d:c092:500::5:9230])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458705ce685sm28293435e9.30.2025.07.24.11.57.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Jul 2025 11:57:36 -0700 (PDT)
-Message-ID: <3ec01250-0ff3-4d04-9009-7b85b6058e41@gmail.com>
-Date: Thu, 24 Jul 2025 19:57:32 +0100
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=U2xrwxhLxv4frlpGHBeDgdgnS8BYgPxkcx6aztfrvKI=;
+ b=MLiDqVmHsHOiM92KZvBS+KKTcYsaTX8bXTIgKRoSlyZyAZT775BIy4qedLQTGmJNtDqK5cwNk5b+YlqZTYbBe1Q0KU2r+tlB5oAPQkM/NhJDLjAQXIZ0GclPusSNQVhtVXhjVcy71a/jZqWxSCnlpmVnUqshbQIot9NVDHs7uc0=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by CH0PR10MB5162.namprd10.prod.outlook.com (2603:10b6:610:de::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.23; Thu, 24 Jul
+ 2025 19:07:23 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.8964.019; Thu, 24 Jul 2025
+ 19:07:23 +0000
+Date: Thu, 24 Jul 2025 20:07:20 +0100
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Jeff Xu <jeffxu@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+        David Hildenbrand <david@redhat.com>, Vlastimil Babka <vbabka@suse.cz>,
+        Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        Kees Cook <kees@kernel.org>, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v3 2/5] mm/mseal: update madvise() logic
+Message-ID: <38ed372a-4b27-498e-bb3b-f95792bbbe27@lucifer.local>
+References: <cover.1752687069.git.lorenzo.stoakes@oracle.com>
+ <ec480dc1fd4ce04bb11c0acac6c6da78dc6f4156.1752687069.git.lorenzo.stoakes@oracle.com>
+ <CABi2SkU75e7tXcpgnLbDhqSJBWVPOvmfMh2uPsU3mUjMUhhYqw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CABi2SkU75e7tXcpgnLbDhqSJBWVPOvmfMh2uPsU3mUjMUhhYqw@mail.gmail.com>
+X-ClientProxiedBy: LO6P123CA0002.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:338::6) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH POC] prctl: extend PR_SET_THP_DISABLE to optionally
- exclude VM_HUGEPAGE
-To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- linux-doc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, SeongJae Park <sj@kernel.org>,
- Jann Horn <jannh@google.com>, Yafang Shao <laoar.shao@gmail.com>,
- Matthew Wilcox <willy@infradead.org>, Johannes Weiner <hannes@cmpxchg.org>
-References: <20250721090942.274650-1-david@redhat.com>
-Content-Language: en-US
-From: Usama Arif <usamaarif642@gmail.com>
-In-Reply-To: <20250721090942.274650-1-david@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B7C38140006
-X-Stat-Signature: ud98gayjciyq8wirnd66arbjfded5krz
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CH0PR10MB5162:EE_
+X-MS-Office365-Filtering-Correlation-Id: 68d1b25a-6864-4ca4-31ab-08ddcae55237
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?OUxQQnllZ3NZOGRjbVp3b1pvY2FXSm5lcmNPY3dLdmFEckNVUVhJYUgxeWdk?=
+ =?utf-8?B?OFRYVFgvYS82V0lIQWdLZlpoNWR3NzdJelExTWE5TFF4NUZ0b2srTG1xRWoz?=
+ =?utf-8?B?NlhTazZHbzNLV0dRbXhESzJVeDhZSTl0VjNVNmVqNEhrSlgvRDFsdGYxQzNX?=
+ =?utf-8?B?cUZsamEzenNCek85cDN1M0Fxcmx6MzJRbnhsTWF5VmJlbVIvVzNkRG9zS3NO?=
+ =?utf-8?B?cXlwLzBFUmdoVG1laVh0WmtKdGFNeEoyZEM4RFZsVmNZVFlFM2tNVWU3bHZN?=
+ =?utf-8?B?WGd0UUVjNWlKNFpSQkVTSG43T0J6bGNlTy9hUUNERTNJdGFhYklhaW9Wd0th?=
+ =?utf-8?B?eGY4cU9rbzNBSXNhdTRHbVE5c3JVQU1SU0hTZE81NngrbWxzNjRSejhJU2dS?=
+ =?utf-8?B?YlAyYW5qcXkzdXZ1bzcraW9OcWx1ajhWWUk0eFpBZjBZcnNoSlRjK3lRdHZS?=
+ =?utf-8?B?WS9zcDhDTnIvOHZDNkFlaUFXMkdlaktndHlVUGphTkZXQXAycHAyQWZLMFZD?=
+ =?utf-8?B?N3BiVXI5NWZGbDJ5ZGdoQ3BsY2d5V1dZNkhEanJ3YWx6S3RnMmsrVm9HcnNQ?=
+ =?utf-8?B?R1N1TERDbUhvU2JTVlZkK3FzRlZaRU9qTlRZN0RFWUZmSUtVWEtQSWlmQmN4?=
+ =?utf-8?B?UlhacXdpVHFVSWNtd012SFl2c2VNenVxOUpsQWJKcU9OUmNldkZ2VVJINEFQ?=
+ =?utf-8?B?Ti9LOXd1bjkvdUcrL0U5Y3M4ZE9YMlNqWnlUd2JQZmpRUWUxY0s3b09QY0Fa?=
+ =?utf-8?B?WmszSGZHSkxzajJMUjVySXVTblZKakFZUTh6YjczUHlSTVhudktGOTVSTXdW?=
+ =?utf-8?B?QTgyNkxJTUNaV1U5TXlUM043ZUQwbDVLYTVaWjNDRENKMWhzdkl2cjhITHV0?=
+ =?utf-8?B?VW1USmIraGFrbkJzMytVaXp0RlJhNktXeXl6a3FmRU5Bbmp1TjloRW5veGZy?=
+ =?utf-8?B?aGJTMlZhWlhTL3JKODVFTk1XVFpNcmRpQXRFemphcHFjMTdEVzN1aVFUM0E2?=
+ =?utf-8?B?eVV5ZEk3YWh3ZTh0K3VlbVh1bm13RmdvLzdDTWZ5WjVvYUN4Ykl2bGdZVlVR?=
+ =?utf-8?B?OG8zVXJGRzNXZlQ2ZTFyaStEMGlvZG84QzJnTy9rWmsrdVRxS0M0QVFMSW9Q?=
+ =?utf-8?B?dzY0SWVJeWNmV3ZMSGZzYlBwd3p3YUFxdElVdVEvU2h1cW9Zc1hheVJlZkN1?=
+ =?utf-8?B?ck93ZU5GZWN5d3FDUTVnRGpabEVycmR5SURINWpYbHB2VDZIT2NBaXZocWtD?=
+ =?utf-8?B?eVVReFNLTU1PZThGcXIzdWwrZ0poRi9aOUI4UjhMNnNOc2VkWXRoSWd6MWFO?=
+ =?utf-8?B?VUpFT2kwVmdkOWRsZmkyS1IwbUlLU0x0Rkc3RmFNNGpuUFVrWDlaNXdQYnMr?=
+ =?utf-8?B?SG5VdEtBbzRlOWsrMERjVThPUFMwelNONldpZ0o3VW1kY1IwbTBhOGp0OXZr?=
+ =?utf-8?B?TXo4WWgxbmpXczY4VmhqNDF0cVdraHdMeGJ1a1F3aDdvVEFrQ2h0YUZXVnJh?=
+ =?utf-8?B?cDRqcDRqazRRL1FFUjE5SDZ5NStsRG1kNkNHR2xnQTlXaWpTRTMreTNic1Rp?=
+ =?utf-8?B?V2Z2SGVldGxxOXdOcHV6R1hpNURYVFNDUm5MTjlXZWVrZzNlMHRwdmpHK1JY?=
+ =?utf-8?B?cGdNNGpZVEllckpFdmJaOUdVaEo5UkhaOWRYQ3pXZk53dUlHamxZQ25rMzdn?=
+ =?utf-8?B?YlpEZlBBRUhWamk4b2lHVmFMY3lObW82ME9uWDBFUHF4UzNlV1RPdW9nWm9V?=
+ =?utf-8?B?VWNZZGpMQ1l5S2Z4amZIUEQ0bmo5bU9zeFM5bkVURG9PVG1qRW5vV2NTZnhT?=
+ =?utf-8?B?Z0VkRVBZbGkyRGRybkN5WHI0QTE2WHZyRXcrbkJLQkx5elpmNzh4UDF3Rzcv?=
+ =?utf-8?Q?dJLU7YZhopU41?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?QTVSODJDcmlRMFU1RHNrZGQ1YUJtTExzT3gxZTJrbmtFSzJXMXhsVXI2SlhP?=
+ =?utf-8?B?SU41YVBYQWFlalJueFlEMEtOM0tHYmo5RStLc2s1aFl6VUErYkpPMUQ4SUJw?=
+ =?utf-8?B?K3dyRU1hSXBZYkpJcXlLbFZsNVJCUGVyanIxa0RtNVFkWGhjN2RrOVVLYzVD?=
+ =?utf-8?B?SWVOWjlJTkczay91cUhGVzNlMHMvR0Zab1pWakIwRjdmVlBRbFQxZWFHMDRQ?=
+ =?utf-8?B?UVF2bmoraklUVnppZStqbk1RaW16Nm8yMm5CZDh2NysranBRRWU2dHpFNDdS?=
+ =?utf-8?B?dzREUks2MmE2RnR6VmxGa1hiazVULytCT0RtVEZWbzkybUlPaWxkQThGTFYz?=
+ =?utf-8?B?VVQrQk9XZFpqKzZoTVo1SUVTam53V1h3TzVCd1RQdUkrcmErZ0UyL0dtZ3R5?=
+ =?utf-8?B?NTRTUjQrYXpBZlMzNlNHZmlwVUhpUlFFUXRnUGlRNDUvc2pUa0huVk1ySzFM?=
+ =?utf-8?B?MTBJM0RvRVBmaVV5aVNMRE01Skh0dXV4UmF6K1VIOUNpRDNhakZhc2Rab3RJ?=
+ =?utf-8?B?NzR4OEo0Y3dGQWNtM0JFL2UyREpCeDFPS0x1Z3hvV1pZSjBvY2xiam5Zc3JC?=
+ =?utf-8?B?NkFpNEFTKzN3eWFYQnVIZzU1aExuYU96aTZ3N2krSGd5MTFGV0RpdEZwZ3hU?=
+ =?utf-8?B?Q1JFdDFoYWtOdllreFlYdFprdnZHYWFEeDZIcnNNQkFHTXllamhCTVpEME55?=
+ =?utf-8?B?M2hJaVQyZHd2NkRvV3lCYTQxaE9FRmlRb3lnVmRTcGxDcmpPZUV3SWl5Nlkz?=
+ =?utf-8?B?VlVieEMxQmR3Zi9Qd213MEhseDRheVRBaUZmdXE2QVAvbTRzRlF6cnZuL3Zo?=
+ =?utf-8?B?WkJqQWZsd1o0LzFCSmpsOWJ2RVFNMFp2RGM4ajRacktZVW9RbVYwYmJYSmZx?=
+ =?utf-8?B?b1dNa01tY1pLaHRkczc2cC9HcSsreUMyRkNFMVRJbnJpWHlNNEFFMnZ1UUJo?=
+ =?utf-8?B?V0xCQ054WVBEc1g4djZHTGNrNy9OUm8wdkcyOXdvYS9HSHNaWmRtdG5nbzJ6?=
+ =?utf-8?B?b3hweFN1NFh0RkZGbmFXaVljYVQ2cXRsZURCdWlwUG8wZk4zSlVLL3I2QWxh?=
+ =?utf-8?B?L2k5RkJlTDlyenN5VTV2T2NXN1J6R3k5NUdQaHRheXlncHVFSENibEtuckhN?=
+ =?utf-8?B?L25QNHpJTXk2cTFydDZxVDVXblFIbGFYZHZ0RnI4bjk3MDFQcXRHUVFicDZQ?=
+ =?utf-8?B?MHY2SHlicFczeFVnQUw2cnRXMVpKWFRwUGVBZXFvMk54Nk9Wa0plUHd1dHVO?=
+ =?utf-8?B?eEhxWkRBZFVNOVRkT3Vvb20xaFd5ajhkWmFRbnZzYW5iTnptMXhPdEdkUldR?=
+ =?utf-8?B?YjhyMnZXSEhiNmpWV2JJYW03ZFlrSlVuVUVxMFlQRzZXNkJ4SUJwV3NPbVF6?=
+ =?utf-8?B?Ukt1b3NYWGFUNjg5cWRYeEtvcVZJSThLallXYlF4dUxVSHNDdGt6bHRaY3Nq?=
+ =?utf-8?B?QjBqM2hrZWtqWEVGSHlGVnYyUjJnSkdNZ21FMVczdEVVRGkxWjlCcTJ0UHVp?=
+ =?utf-8?B?eXloTFJrWENsaUdvUlN0c0I2Z2p6bEFRSkYvd2hUTnhNTVgyaGVlNjV4WDE4?=
+ =?utf-8?B?MTVJZ2RONDdEMDJUOVUvVkJMUHpSRzBKbVlua3QyTkRVNWtjcGY5SVZJRUZG?=
+ =?utf-8?B?SndJV0NKa0FhWGdwWXZtYk1PcVdBSG9HTnNXWnFQNjByeGhPclZ0eDkzcXdj?=
+ =?utf-8?B?MzZJNlVCZUYrQzhJb2cwelh0OUU4WU5nRkNBcmc2OHd6SGwvWVVIWk8zKzJw?=
+ =?utf-8?B?cS9RaTM2aGdUQXNHZFh4T2ZnMWpZazJFRksvSDVIOElPbmpuelcyaFBHRm1E?=
+ =?utf-8?B?Nmp5TUo0ZzJJY0RhYzRLNVFNMitUdzNaM2xZOFllNmFwbFRHQTBySjJnVkZQ?=
+ =?utf-8?B?RVRCTzR5UXlacTRKZ3AzZnJvY0lEdGFvUms3dGp2ZTd4andXYlVUam9CWkh1?=
+ =?utf-8?B?VzcyWVcxNjh3RGNoTGhFR1Ewa3pJY2Ftbk9IdjlUeG1BVTZOK0RFRS8vTjIr?=
+ =?utf-8?B?eUI1YmxTVVVycE93Tm5BSXlKa3FRSEYrZE91ZVBmdEJHZmNhZUpsMUNqMnBm?=
+ =?utf-8?B?UXlodDV4MnoyUGhlQW0zczh6SUNkL3NJMXlpbkFzZWtiWGdoVVZacWU1cGd4?=
+ =?utf-8?B?Q1VKU0xwUFNWdlA1dzNRbGFCQ2pnNjdXZ1QzWGZaYnF2T1FSbTNFWnhhMmFy?=
+ =?utf-8?B?TVE9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	3EG+pp13b/xYs+CMBrbc2Fa5MDK+Ib97O9rjEvLAw6wLVnJip+8BKQFgew53a2ETG2IYXrddKh4WLrFAj9aCFP1yjOeNzMEp5rcb+dt8cA1gAyrROg/GjEzz6y0xJLgPM3tyF6FZFDuhXb770oxVdLqsg3OoqbBCF1Ue1SXmLYtATV0OVV1ghxZPLu49k3HjP3pxOfDmlWeOVcxJVxrziPAHq372m3HeF8wfBZTP6xs6J0o0ESJcVysVBfhU0UC2TsUp6FAOt3BDUzyqbCegGGHVKSu0AHYTJ6/DAdT2LcvInM1uwprcbPirwyqEyHnw+7yN0Cq0Y/eF/VCjgOcHfGDbY5KJBeBO9cWoJaF6ZVqpc0a/BogMVtW3rpTM8ER/HS7tXb6cAah6SHxBSjby0NIYlzRJJXqIquvZLKDZgTMolEx4p3N6BvxbRorEE2tAQKgTm1j1spqaAbViLAFiOnvxN+8eY8PC1KZFNdtUOd6zAl9mOMZEF0zg7jrsHaMgJkV83fw/7Zxfw9gs6KhpJwckWHEEVUj32iw9GkeS83vd6jcgM8AH9KXFwVsCmMiwzCg1JrD9Nt5CwoXxTWbvlQBUgbayUnaGwf/cafVHo7Y=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 68d1b25a-6864-4ca4-31ab-08ddcae55237
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2025 19:07:23.3856
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CAr0YQadhpjj7YJVNvpDWofZZxyFncDxx5GCzOAhGYZ+mKXkM9bmSC6XHQzT02HW2HBvVbNZhu+rqJnEx5Wn2uMCaGITtq0wFRXcEpPuZjQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR10MB5162
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-24_04,2025-07-24_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0 bulkscore=0
+ suspectscore=0 mlxscore=0 phishscore=0 mlxlogscore=999 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
+ definitions=main-2507240148
+X-Proofpoint-GUID: lK4sVNCD6if3mWJgAabABYb53QrpyPk0
+X-Proofpoint-ORIG-GUID: lK4sVNCD6if3mWJgAabABYb53QrpyPk0
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI0MDE0OCBTYWx0ZWRfX5eGnbz6v0B57
+ tX++oZ1KzG2tJx6VUTz3H+juTuo/m5kBi2IWK8b03SS93rySbbVV/CbqOiuQVzhhNdUJ0gy8Ekc
+ h7mZ6NWXVN4a+xV9MtAphYpN3IDtqIOYpXWMkxik6mDMz1DW/Itr7OkDeY453vUlcx/HfX0ZIrC
+ Y+J1Cggl0lbCF84EZ0sz1HOV5GvxPq2Y2XOjr//5lWWGaLOqV+Vo/29RSw/vOIuLiKZKW4OfcIo
+ cLb271aiF3qAUODxQzEObLrbTMF/okRJ1loEafz1t/35hOfW8a0WTvcgN7KpdGow2mQgaBWHVGz
+ DkmJb9dO2nuCjJK9Jz+HvHNvLmbEHh+cpJ6NU3hOhXyjmXRIHalTy5JC6XpC0+nrt0LQziV992F
+ XiJFADGpwSMHSuGnCbCle2yQiMv3DOFiIZNqs2tHFe6LIT8gXWGcEZzWneSJH0Q3suIcP/Fu
+X-Authority-Analysis: v=2.4 cv=IPoCChvG c=1 sm=1 tr=0 ts=68828470 b=1 cx=c_pps
+ a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
+ a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=GoEa3M9JfhUA:10
+ a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=cm27Pg_UAAAA:8 a=P-IC7800AAAA:8
+ a=yPCof4ZbAAAA:8 a=20KFwNOVAAAA:8 a=OVfS8GUj7Yq4ZkoHXwkA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=d3PnA9EDa4IxuAV0gXij:22 cc=ntf awl=host:12061
+X-Rspamd-Queue-Id: 7E7D320016
+X-Stat-Signature: jdshf4yt1gn5sdr4i3nzr9tbmox4f6p8
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1753383458-423099
-X-HE-Meta: U2FsdGVkX1+Z+hMG/5Imu+oeM3m4ZXT6X1OyfbPktLA6TatK/eRb8S5rrv7oH7jDTA0CX9wZOfwrJG4sMSuhkIz3O17InMnEq/Q2Eg3LNIMRK+ZHqe1K9/Qk7mQrvc8lV9ag1/0njXxMxp30fD8gWJyJDupSTJLA08Cl5A6h18/NR1VgWAfzc6XLZQTwug8WERC6camrN8F/8GGugck+VgVk7oqXX4XkV6/+OT8V9JtSy/NbkaW/X4yiIzZ7mjF9/79vg5q2F9E4KQkekGqwnqqJ0XJYztMrL8KvbaRwO2BQu54WCFEDByH0sN09K5x4ieL1XZEMrCjbbg3+V8G/O2T9Zdvd9PsGjmGxQA2COx63HN8CcB4t0CswmNd82Jgu0dXS+20zlEq1r0s1Jjp5RgyMRnVOYd53AWsnB+KnjgFGIq2f2yiyNluqeL6pSpPEk6bhTCp573GEJpAw7E9fEC+0N0QTO2H1kmNeLtYHOYK05ElnDSPVyMTF9bRwujFtRoOy1xXPPJqamfxJghTCbgR6DEfvooJUgOSUCSyxyPvuS/LFOw5XM5jTCxRJ8pKPlfYZiAAtOOpOsqDa1Z+o674e4+iFYMmAbmgv5+qD6spFz4JsqxquOPLZ+tKOl/VtpgtRA2gsPhx9F/TQ5QXLeMVIhb5IZ32ovODl7O81G5LyW0uDJt2XZaFnUBpWhMzU0vkrp1ziGrKhz5e9u9rxgBgcTHgAzs6MZV4j5u5y93zZ33tndySGEtN+Xk79ypjx1YwQ0KAKxcebeWRp0Nx/3C4iRVLPcxA/NLa8D6m4+bOGLUH/Gv1RecWKw6mQ2XkVmcfoG8ylzEfRbd4M1RDKKw9Z3CAr+ACafDeMD0W2bTe6YxDT0IM+s+DFkmzsf3nf/dK1dmzWAE17Wcq3KGyfdYX7Ao3DGC9iUWpSVjaQBIgOI5S1d8vv9j9U0kqzf5OGNIcFIu1oIybOLb75Tbp
- 5urOLDmD
- Y5wnS9Z/DhR2bHDaPutI0rlSbsOZ7HaCSW5/0W/gvyjhksgwpQTx/6upW9m5zR/Lv+ifG/PESvagADlMscgV5TPiua2LWH9EPhzCOpA3QH+fHpb1M0WztZrPGV9qszPwcZnd71X31UiOX+K6dgmXdm5qZRr36GWy+lOgrG7c5047mM5nP4b1y0DEx4PYKdPiSdyklKWpaEzV0imQg9fF0NvJpWuN3Oony7i5OPUEkgEyzKeVg8/VwwS1rum27fpfLbG2geHgVvcHhbX0wVW7eCFSgDGH4f8UCh/BGnGv/7s8iJ7WxmA5yMUP89eGYqb6No8wc0v4ITdug+QGt/FLC3298/KdgZiBWHe05P1OO8ySm/zlWkCxKrgZQwsyZmXR+q7SixzjWc681H+agu2Ym6H2w9/0GfEGibH2399MXCHVjiQsDDVo6GdIOTRqnUVs4lHMqu8doR/mWYOuu8jBdGDp3TP+4cgOhX1MvgRZueRciAMw9wXtRTTM/aBRcVElibLGr1cxRntiXWLU9L4zejUwA6PkDbNSIqiNce5u5STYqovPJRNkLF0CdXOV78MYmfUojhA2VjX/cXOajI1+BPlQN3dovXoVHJeKn4P8ShWwh/S+5lte6GIEob3Nn9hI2MJilMNa5ZcXcDdGtl02Zco7jzgp7aPLzEVC55k+d9AFxAnPkvg2VDJo4zTBNLf4rkZR9n0c54YE0Lyv8Ckp+gAJ17k0j7kTsBK/PzA8QJtF4JDbAMSPiBQwar0nnZdpCoGXE1C8TGQ3mi22REYGPIlPAVFDT6hWGYp4YqaR+MYPR/eBFHBadZ2cWtB0yBVzZ0y5FQh+ARmCQEZTq7aiGbCn18aE3lUGquCDoNR/tx0YdwxZKr+D4JGWvZmYGP6vQbd5/y3+DRmubF99gLlltoi38Q0803lzErdpAL0gBG9rNNlqYDQiQ7RvjkkhgT+PRgyogSp5BziUJw/ev2GZ3tM2ExlM/
- oeuPnxTd
- uy2qfA8sLxE0+61iN6Wz4lGXldXGf39z
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1753384054-663233
+X-HE-Meta: U2FsdGVkX1/9Cq7dXMkdVQM1cOw4BSDM1+jjqWjrPYRBd6XqUILNHSCo5yBcxfLz7F3A/bMoAbNzaaFIgI1kwSCHe0uyjghSLI75FSCX5nMCB9fe++K/nShbNIOOjXN8WmnbiQaoSc+6LxOASepD4f1Aa3qXmecJVxZtq13mA8JPAk4B2H6nmXJ9SntF/0Cb9+jEt0H/G8VL0njffP7AFUWi5ZbGKBYOvkmV6jKuxbUHW25dke4bMZvw6odPkIQWclzrB2pnVCqI7grHuSZChqLvpQp9bcPlBnPqFVoc52c6xlTbGFxDXQRJcmjL1VyRUlFosOnju6MyaXzHfvO1ZYL6wDbzOhsGG54+lQa0MRxBHliJIGtC9oFluPJGMg3ZMl73j/KgtWbp9siQlHLqxEAGyX8YkghbsQnSsU2F9d8eA5DNTYOIuI84EZ3/I9vi+CuNOIkxGhHg8FRL94WWVV8V7D5GyJ0z3HWVzuP+HP3bxLyJDF4k6p9s3y3gJUstqSBg71prtAbjh7W0XXt7iyGZiyX9HCK/tS46mabWOu4R3x2TgrpXb0gyUYtqpZl3UlC6OfrmoiR0Xcn5A2ytrgrDboKNb3f658txnJC5FnUX2PIPyPEyxjt0iMO4iPIdbgA8oXmvPBI0w43O70BXYemAqRkhyBjzzg+ca2G3zkM4CZw3S7J1ex5Eb0GY7reCwxLbFhxJdOq1lRvr5s6iNxTuhxqasLk5OhLlH/ENPslOiZw7JQVmpInts+ygcwCocKWKow0vDaMAlx1sA7mSot1SFiqtFTh5w7VfuAnlVntqGGmmi0bL7y71uVWdcthnwKxOT+MqdI/vEqbX9Tc24IqZHlqCaaEUkNlM3/0Ny2r9menG9482W/7ZKoKzaT3aYJWjFsUoYIArd73Thn4Z2pk9Zi+L8fj+N+P7U5qfJ7I0N6zgBvodYgMqY2mjWh3PXs0TM6IlJuL7XUsh7jW
+ jETFO3O3
+ XrS1/6TTJj44Amc0cYpAEUpvoXxuEaV05R6H2WYxpRRkIDbdvRm+VY7bv3huLzUhIsM/4Yhmn2Z8PJN/SChPIbn0wBb+34LVwj91IgeaXLJsUpQf0aKg6ZM0C1lgV4L1IwBaFh7bZdsPdEVlaz5JIYFD5H87x5D43o0qv4rKHAMvrrd1HyMWW5DWLtbqIsj7dCTIbXQYcK30s3ydlGe5gqwyfBXLnfRKhtPWfDfwAc3rcWIMnNgII8KtesjyjkHpGhpvC+LV8ljFTVFzjR6yWlkbrEsaQuqJPno+RIlReOJi1xYGieiPuFUx9LzmHdnjREzjyEd4DIsmnPCQr83n9aX1m33uzu43PXo/13FPdbiUDSsnc2t5mf4AKWettDCtfGkACr/Hd5Ad/ERhVhkuRjQi0V0Z65eS1/3i6EQYQlUiwudk/pgrxWK/v6PgsEcKESdm0Sjrsmbpod+gwgTK8hqgc5Z2n34JKZxbL1JUCrj256+hmzpEYAzQWA8f/eL7zcE3Ommankgr472pSwt7vZDErabvrWiBY1fZAWXMM7SLsJMRKo86YChtIRXPfvd6upsru47IHEHXdvWHo7E7BgxjqIF9wlQP6oywkDEfkotmqmr9PDYYI6BMq+TDqV/ebCxN3ImlfQeUeFNPCuhipPkQ3GQI+kHXJczX33tdDEUKSLVGfrxWL3BoVhcDhaIn53QPj5SGYfNlniB+4oxF0q06dFopwTWPKdiaVpoh2xnnJadSK3r4fNzMtEX+dZXOO8Zv28VOsI1/x0l3PkbbE5rC4rP9tt2fBHgbG3MXC7YfSGmoYx+9Js74oq/Y+PbUz4jzN9BQy00T7m2yNjy+DqrQPqgMzU5LATpoxfk/ICTaiASDRSpaPZEhwSq+sf41Gj1nU
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,294 +255,456 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Jul 24, 2025 at 11:39:05AM -0700, Jeff Xu wrote:
+> Hi Lorenzo,
+>
+> This change has two parts: a non-functional refactoring work of moving
+> function from mseal.c to madvise.c, and a functional change to the
+> behavior of madvise under mseal. Would you consider splitting the
+> change into two parts? which seems to be a common practice at
+> supplying patches in lkml.
 
+No I won't do that.
 
-On 21/07/2025 10:09, David Hildenbrand wrote:
-> People want to make use of more THPs, for example, moving from
-> THP=never to THP=madvise, or from THP=madvise to THP=never.
-> 
-> While this is great news for every THP desperately waiting to get
-> allocated out there, apparently there are some workloads that require a
-> bit of care during that transition: once problems are detected, these
-> workloads should be started with the old behavior, without making all
-> other workloads on the system go back to the old behavior as well.
-> 
-> In essence, the following scenarios are imaginable:
-> 
-> (1) Switch from THP=none to THP=madvise or THP=always, but keep the old
->     behavior (no THP) for selected workloads.
-> 
-> (2) Stay at THP=none, but have "madvise" or "always" behavior for
->     selected workloads.
-> 
-> (3) Switch from THP=madvise to THP=always, but keep the old behavior
->     (THP only when advised) for selected workloads.
-> 
-> (4) Stay at THP=madvise, but have "always" behavior for selected
->     workloads.
-> 
-> In essence, (2) can be emulated through (1), by setting THP!=none while
-> disabling THPs for all processes that don't want THPs. It requires
-> configuring all workloads, but that is a user-space problem to sort out.
-> 
-> (4) can be emulated through (3) in a similar way.
-> 
-> Back when (1) was relevant in the past, as people started enabling THPs,
-> we added PR_SET_THP_DISABLE, so relevant workloads that were not ready
-> yet (i.e., used by Redis) were able to just disable THPs completely. Redis
-> still implements the option to use this interface to disable THPs
-> completely.
-> 
-> With PR_SET_THP_DISABLE, we added a way to force-disable THPs for a
-> workload -- a process, including fork+exec'ed process hierarchy.
-> That essentially made us support (1): simply disable THPs for all workloads
-> that are not ready for THPs yet, while still enabling THPs system-wide.
-> 
-> The quest for handling (3) and (4) started, but current approaches
-> (completely new prctl, options to set other policies per processm,
->  alternatives to prctl -- mctrl, cgroup handling) don't look particularly
-> promising. Likely, the future will use bpf or something similar to
-> implement better policies, in particular to also make better decisions
-> about THP sizes to use, but this will certainly take a while as that work
-> just started.
-> 
-> Long story short: a simple enable/disable is not really suitable for the
-> future, so we're not willing to add completely new toggles.
-> 
-> While we could emulate (3)+(4) through (1)+(2) by simply disabling THPs
-> completely for these processes, this scares many THPs in our system
-> because they could no longer get allocated where they used to be allocated
-> for: regions flagged as VM_HUGEPAGE. Apparently, that imposes a
-> problem for relevant workloads, because "not THPs" is certainly worse
-> than "THPs only when advised".
-> 
-> Could we simply relax PR_SET_THP_DISABLE, to "disable THPs unless not
-> explicitly advised by the app through MAD_HUGEPAGE"? *maybe*, but this
-> would change the documented semantics quite a bit, and the versatility
-> to use it for debugging purposes, so I am not 100% sure that is what we
-> want -- although it would certainly be much easier.
-> 
-> So instead, as an easy way forward for (3) and (4), an option to
-> make PR_SET_THP_DISABLE disable *less* THPs for a process.
-> 
-> In essence, this patch:
-> 
-> (A) Adds PR_THP_DISABLE_EXCEPT_ADVISED, to be used as a flag in arg3
->     of prctl(PR_SET_THP_DISABLE) when disabling THPs (arg2 != 0).
-> 
->     For now, arg3 was not allowed to be set (-EINVAL). Now it holds
->     flags.
-> 
-> (B) Makes prctl(PR_GET_THP_DISABLE) return 3 if
->     PR_THP_DISABLE_EXCEPT_ADVISED was set while disabling.
-> 
->     For now, it would return 1 if THPs were disabled completely. Now
->     it essentially returns the set flags as well.
-> 
-> (C) Renames MMF_DISABLE_THP to MMF_DISABLE_THP_COMPLETELY, to express
->     the semantics clearly.
-> 
->     Fortunately, there are only two instances outside of prctl() code.
-> 
-> (D) Adds MMF_DISABLE_THP_EXCEPT_ADVISED to express "no THP except for VMAs
->     with VM_HUGEPAGE" -- essentially "thp=madvise" behavior
-> 
->     Fortunately, we only have to extend vma_thp_disabled().
-> 
-> (E) Indicates "THP_enabled: 0" in /proc/pid/status only if THPs are not
->     disabled completely
-> 
->     Only indicating that THPs are disabled when they are really disabled
->     completely, not only partially.
-> 
-> The documented semantics in the man page for PR_SET_THP_DISABLE
-> "is inherited by a child created via fork(2) and is preserved across
-> execve(2)" is maintained. This behavior, for example, allows for
-> disabling THPs for a workload through the launching process (e.g.,
-> systemd where we fork() a helper process to then exec()).
-> 
-> There is currently not way to prevent that a process will not issue
-> PR_SET_THP_DISABLE itself to re-enable THP. We could add a "seal" option
-> to PR_SET_THP_DISABLE through another flag if ever required. The known
-> users (such as redis) really use PR_SET_THP_DISABLE to disable THPs, so
-> that is not added for now.
-> 
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> Cc: Nico Pache <npache@redhat.com>
-> Cc: Ryan Roberts <ryan.roberts@arm.com>
-> Cc: Dev Jain <dev.jain@arm.com>
-> Cc: Barry Song <baohua@kernel.org>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Usama Arif <usamaarif642@gmail.com>
-> Cc: SeongJae Park <sj@kernel.org>
-> Cc: Jann Horn <jannh@google.com>
-> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-> Cc: Yafang Shao <laoar.shao@gmail.com>
-> Cc: Matthew Wilcox <willy@infradead.org>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> 
-> ---
-> 
-> At first, I thought of "why not simply relax PR_SET_THP_DISABLE", but I
-> think there might be real use cases where we want to disable any THPs --
-> in particular also around debugging THP-related problems, and
-> "THP=never" not meaning ... "never" anymore. PR_SET_THP_DISABLE will
-> also block MADV_COLLAPSE, which can be very helpful. Of course, I thought
-> of having a system-wide config to change PR_SET_THP_DISABLE behavior, but
-> I just don't like the semantics.
-> 
-> "prctl: allow overriding system THP policy to always"[1] proposed
-> "overriding policies to always", which is just the wrong way around: we
-> should not add mechanisms to "enable more" when we already have an
-> interface/mechanism to "disable" them (PR_SET_THP_DISABLE). It all gets
-> weird otherwise.
-> 
-> "[PATCH 0/6] prctl: introduce PR_SET/GET_THP_POLICY"[2] proposed
-> setting the default of the VM_HUGEPAGE, which is similarly the wrong way
-> around I think now.
-> 
-> The proposals by Lorenzo to extend process_madvise()[3] and mctrl()[4]
-> similarly were around the "default for VM_HUGEPAGE" idea, but after the
-> discussion, I think we should better leave VM_HUGEPAGE untouched.
-> 
-> Happy to hear naming suggestions for "PR_THP_DISABLE_EXCEPT_ADVISED" where
-> we essentially want to say "leave advised regions alone" -- "keep THP
-> enabled for advised regions",
-> 
-> The only thing I really dislike about this is using another MMF_* flag,
-> but well, no way around it -- and seems like we could easily support
-> more than 32 if we want to, or storing this thp information elsewhere.
-> 
-> I think this here (modifying an existing toggle) is the only prctl()
-> extension that we might be willing to accept. In general, I agree like
-> most others, that prctl() is a very bad interface for that -- but
-> PR_SET_THP_DISABLE is already there and is getting used.
-> 
-> Long-term, I think the answer will be something based on bpf[5]. Maybe
-> in that context, I there could still be value in easily disabling THPs for
-> selected workloads (esp. debugging purposes).
-> 
-> Jann raised valid concerns[6] about new flags that are persistent across
-> exec[6]. As this here is a relaxation to existing PR_SET_THP_DISABLE I
-> consider it having a similar security risk as our existing
-> PR_SET_THP_DISABLE, but devil is in the detail.
-> 
-> This is *completely* untested and might be utterly broken. It merely
-> serves as a PoC of what I think could be done. If this ever goes upstream,
-> we need some kselftests for it, and extensive tests.
-> 
-> [1] https://lore.kernel.org/r/20250507141132.2773275-1-usamaarif642@gmail.com
-> [2] https://lkml.kernel.org/r/20250515133519.2779639-2-usamaarif642@gmail.com
-> [3] https://lore.kernel.org/r/cover.1747686021.git.lorenzo.stoakes@oracle.com
-> [4] https://lkml.kernel.org/r/85778a76-7dc8-4ea8-8827-acb45f74ee05@lucifer.local
-> [5] https://lkml.kernel.org/r/20250608073516.22415-1-laoar.shao@gmail.com
-> [6] https://lore.kernel.org/r/CAG48ez3-7EnBVEjpdoW7z5K0hX41nLQN5Wb65Vg-1p8DdXRnjg@mail.gmail.com
-> 
-> ---
->  Documentation/filesystems/proc.rst |  5 +--
->  fs/proc/array.c                    |  2 +-
->  include/linux/huge_mm.h            | 20 ++++++++---
->  include/linux/mm_types.h           | 13 +++----
->  include/uapi/linux/prctl.h         |  7 ++++
->  kernel/sys.c                       | 58 +++++++++++++++++++++++-------
->  mm/khugepaged.c                    |  2 +-
->  7 files changed, 78 insertions(+), 29 deletions(-)
-> 
-> diff --git a/Documentation/filesystems/proc.rst b/Documentation/filesystems/proc.rst
-> index 2971551b72353..915a3e44bc120 100644
-> --- a/Documentation/filesystems/proc.rst
-> +++ b/Documentation/filesystems/proc.rst
-> @@ -291,8 +291,9 @@ It's slow but very precise.
->   HugetlbPages                size of hugetlb memory portions
->   CoreDumping                 process's memory is currently being dumped
->                               (killing the process may lead to a corrupted core)
-> - THP_enabled		     process is allowed to use THP (returns 0 when
-> -			     PR_SET_THP_DISABLE is set on the process
-> + THP_enabled                 process is allowed to use THP (returns 0 when
-> +                             PR_SET_THP_DISABLE is set on the process to disable
-> +                             THP completely, not just partially)
->   Threads                     number of threads
->   SigQ                        number of signals queued/max. number for queue
->   SigPnd                      bitmap of pending signals for the thread
-> diff --git a/fs/proc/array.c b/fs/proc/array.c
-> index d6a0369caa931..c4f91a784104f 100644
-> --- a/fs/proc/array.c
-> +++ b/fs/proc/array.c
-> @@ -422,7 +422,7 @@ static inline void task_thp_status(struct seq_file *m, struct mm_struct *mm)
->  	bool thp_enabled = IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE);
->  
->  	if (thp_enabled)
-> -		thp_enabled = !test_bit(MMF_DISABLE_THP, &mm->flags);
-> +		thp_enabled = !test_bit(MMF_DISABLE_THP_COMPLETELY, &mm->flags);
->  	seq_printf(m, "THP_enabled:\t%d\n", thp_enabled);
->  }
->  
-> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> index e0a27f80f390d..c4127104d9bc3 100644
-> --- a/include/linux/huge_mm.h
-> +++ b/include/linux/huge_mm.h
-> @@ -323,16 +323,26 @@ struct thpsize {
->  	(transparent_hugepage_flags &					\
->  	 (1<<TRANSPARENT_HUGEPAGE_USE_ZERO_PAGE_FLAG))
->  
-> +/*
-> + * Check whether THPs are explicitly disabled through madvise or prctl, or some
-> + * architectures may disable THP for some mappings, for example, s390 kvm.
-> + */
->  static inline bool vma_thp_disabled(struct vm_area_struct *vma,
->  		vm_flags_t vm_flags)
->  {
-> +	/* Are THPs disabled for this VMA? */
-> +	if (vm_flags & VM_NOHUGEPAGE)
-> +		return true;
-> +	/* Are THPs disabled for all VMAs in the whole process? */
-> +	if (test_bit(MMF_DISABLE_THP_COMPLETELY, &vma->vm_mm->flags))
-> +		return true;
->  	/*
-> -	 * Explicitly disabled through madvise or prctl, or some
-> -	 * architectures may disable THP for some mappings, for
-> -	 * example, s390 kvm.
-> +	 * Are THPs disabled only for VMAs where we didn't get an explicit
-> +	 * advise to use them?
->  	 */
-> -	return (vm_flags & VM_NOHUGEPAGE) ||
-> -	       test_bit(MMF_DISABLE_THP, &vma->vm_mm->flags);
-> +	if (vm_flags & VM_HUGEPAGE)
-> +		return false;
-> +	return test_bit(MMF_DISABLE_THP_EXCEPT_ADVISED, &vma->vm_mm->flags);
->  }
+it's a very small change, and it was intentionally bundled so we correct
+the oddly implemented version while moving.
 
+>
+> On Wed, Jul 16, 2025 at 10:38 AM Lorenzo Stoakes
+> <lorenzo.stoakes@oracle.com> wrote:
+> >
+> > The madvise() logic is inexplicably performed in mm/mseal.c - this ought
+> > to be located in mm/madvise.c.
+> >
+> This is part one of a non-functional refactoring work to move a
+> function from mseal.c to madvise.c.
+>
+> There are two main reasons why I initially wanted to keep all
+> mseal-related functions in mseal.c:
+>
+> 1 Keeping all mseal related logic in mseal.c makes it easier for
+> developers to find all the impacted areas of mseal.
 
-Hi David,
+That's very silly, sorry but no.
 
-Over here, with MMF_DISABLE_THP_EXCEPT_ADVISED, MADV_HUGEPAGE will succeed as vm_flags has
-VM_HUGEPAGE set, but MADV_COLLAPSE will fail to give a hugepage (as VM_HUGEPAGE is not set
-and MMF_DISABLE_THP_EXCEPT_ADVISED is set) which I feel might not be the right behaviour
-as MADV_COLLAPSE is "advise" and the prctl flag is PR_THP_DISABLE_EXCEPT_ADVISED?
+You're putting stuff entirely specific to madvise() away from madvise(),
+to bundle things up for no really good reason.
 
-This will be checked in multiple places in madvise_collapse: thp_vma_allowable_order,
-hugepage_vma_revalidate which calls thp_vma_allowable_order and hpage_collapse_scan_pmd
-which also ends up calling hugepage_vma_revalidate. 
+Again, you have a desire to do things that are at odds with how everything
+else in mm is done.
 
-A hacky way would be to save and overwrite vma->vm_flags with VM_HUGEPAGE at the start of madvise_collapse
-if VM_NOHUGEPAGE is not set, and reset vma->vm_flags to its original value at the end of madvise_collapse
-(Not something I am recommending, just throwing it out there).
+> 2 mseal is not supported in 32 bits, and mseal.c is excluded from 32
+> bits build (see makefile).This would prevent accidentally using mseal
+> in code paths shared between 32-bit and 64-bit architectures. It also
+> avoids adding #Ifdef in the .c file, which is recommended by the mm
+> coding standard (I received comments about avoiding  #ifdef in .c  in
+> the past).
 
-Another possibility is to pass the fact that you are in madvise_collapse to these functions 
-as an argument, this might look ugly, although maybe not as ugly as hugepage_vma_revalidate
-already has collapse control arg, so just need to take care of thp_vma_allowable_orders.
+You're doing something strictly worse by putting madvise() stuff to bitrot
+in another file.
 
-Any preference or better suggestions?
+It's always a trade-off.
 
-Thanks!
-Usama
+There's no set 'coding standard', there's what maintainers accept.
 
+>
+> Point 2 can go aways if 32 bits mseal support is coming soon, same as
+> my other comments for patch 1/5.
+
+But that's not the reason, as commit message states.
+
+>
+> Point 1 remains. However, I want to focus on the functional change
+> part of this patch, rather than the other aspects.
+
+No point 1 is dimsissed as is point 2.
+
+>
+> > Additionally can_modify_vma_madv() is inconsistently named and, in
+> > combination with is_ro_anon(), is very confusing logic.
+> >
+> > Put a static function in mm/madvise.c instead - can_madvise_modify() -
+> > that spells out exactly what's happening.  Also explicitly check for an
+> > anon VMA.
+> >
+> > Also add commentary to explain what's going on.
+> >
+> > Essentially - we disallow discarding of data in mseal()'d mappings in
+> > instances where the user couldn't otherwise write to that data.
+> >
+> > Shared mappings are always backed, so no discard will actually truly
+> > discard the data.  Read-only anonymous and MAP_PRIVATE file-backed
+> > mappings are the ones we are interested in.
+> >
+> > We make a change to the logic here to correct a mistake - we must disallow
+> > discard of read-only MAP_PRIVATE file-backed mappings, which previously we
+> > were not.
+> >
+> > The justification for this change is to account for the case where:
+> >
+> > 1. A MAP_PRIVATE R/W file-backed mapping is established.
+> > 2. The mapping is written to, which backs it with anonymous memory.
+> > 3. The mapping is mprotect()'d read-only.
+> > 4. The mapping is mseal()'d.
+> >
+> > If we were to now allow discard of this data, it would mean mseal() would
+> > not prevent the unrecoverable discarding of data and it was thus violate
+> > the semantics of sealed VMAs.
+> >
+> This is the functional change and the most important area that I would
+> like to discuss in this patch series.
+
+OK.
+
+>
+> Since Jann Horn first highlighted [1] the problematic behavior of
+> destructive madvise for anonymous mapping during initial discussions
+> of mseal(), the proper solution has been open to discussion and
+> exploration. Linus Torvalds has expressed interest [2] in fixing this
+> within madvise itself, without requiring mseal, and I copied it here
+> for ease of reference:
+>
+> “Hmm. I actually would be happier if we just made that change in
+> general. Maybe even without sealing, but I agree that it *definitely*
+> makes sense in general as a sealing thing.”
+>
+> After mseal was merged, Pedro Falcato raised a valid concern regarding
+> file-backed private mappings. The issue is that these mappings can be
+> written to, and subsequently changed to read-only, which is precisely
+> the problem this patch aims to fix. I attempted to address this in
+> [3]. However, that patch was rejected due to the introduction of a new
+> vm_flags, which was a valid rejection as it wasn't the ideal solution.
+> Nevertheless, it sparked an interesting discussion, with me raising a
+> point that userspace might use this feature to free up RAM for
+> file-backed private mapping that is never written to,  and input about
+> this topic from Vlastimil Babka [4] is about MADV_COLD/MADV_PAGEOUT.
+
+OK not sure what point you're making yet?
+
+>
+> A detail about userspace calling those madvise for file-backed private
+> mapping. Previously, I added extra logging in the kernel, and observed
+> many instances of those calls  during Android phone startup, although
+> I haven’t delved into the reason behind why user space calls those,
+> e.g. if it is from an individual app or Android platform.
+
+Hang on, sorry, are you saying that you intentionally allowed destruction
+of mseal()'d VMAs to serve android?
+
+I hope I'm misunderstanding you here.
+
+Either way I don't know what your point is? Don't mseal them if you want to
+perform destructive operations on them?
+
+You have to argue as to why this change is not valid in _upstream_ linux.
+
+>
+> Incidentally, recently while I was studying selinux code, particularly
+> exemod permission [5] , I learned that selinux utilizes vma->anon_vma
+> to identify file-backed mappings that have been written to.  Jann
+> pointed out to me that the kernel creates a COW mapping when a private
+> file-backed mapping is written. Now I'm wondering if this could be the
+> answer to our problem. We could try having destructive madvise check
+> vma->anon_vma and reject the call if it's true. I haven't had a chance
+> to test this theory yet, though.
+
+Umm what? Why? What are you talking about?
+
+A MAP_PRIVATE mapping will not have VM_SHARED set. This is why I changed
+the check to this.
+
+I really don't understand what point you're trying to make here.
+
+The check I've provided works correctly to disallow the previously
+_incorrectly allowed_ MAP_PRIVATE mapping of a file-backed mapping.
+
+This was something you missed, and is now corrected.
+
+>
+> To summarize all the discussion points so far:
+> 1. It's questionable behavior for madvise to allow destructive
+> behavior for read-only anonymous mappings, regardless of mseal state.
+
+Umm, ok. Well maybe, but it's essentially uAPI at this point. This feels
+irrelevant to this series.
+
+> 2. We could potentially fix point 1 within madvise itself, without
+> involving mseal, as Linus desires.
+
+No, we will not do that.
+
+> 3. Android userspace uses destructive madvise to free up RAM, but I
+> need to take a closer look at the patterns and usage to understand why
+> they do that.
+
+OK so what?
+
+> 4. We could ask applications to switch to non-destructive madvise,
+> like MADV_COLD or MADV_PAGEOUT. Or, another option is that we could
+> switch the kernel to use non-destructive madvise implicitly for
+> destructive madvise in suitable situations.
+
+Umm what? I don't understand your point.
+
+> 5. We could investigate more based on vma->anon_vma
+
+I have no idea what you mean by this. I am an rmap maintainer and have
+worked extensively with anon_vma, what's the point exactly?
+
+>
+> Link: https://lore.kernel.org/lkml/CAG48ez3ShUYey+ZAFsU2i1RpQn0a5eOs2hzQ426FkcgnfUGLvA@mail.gmail.com/
+> [1]
+> Link: https://lore.kernel.org/lkml/CAHk-=wiVhHmnXviy1xqStLRozC4ziSugTk=1JOc8ORWd2_0h7g@mail.gmail.com/
+> [2]
+> Link: https://lore.kernel.org/all/20241017005105.3047458-2-jeffxu@chromium.org/
+> [3]
+> Link: https://lore.kernel.org/all/8f68ad82-2f60-49f8-b150-0cf183c9cc71@suse.cz/
+> [4]
+> Link: https://elixir.bootlin.com/linux/v6.15.7/source/security/selinux/hooks.c#L3878
+> [5]
+>
+> > Finally, update the mseal tests, which were asserting previously that a
+> > read-only MAP_PRIVATE file-backed mapping could be discarded.
+> >
+> The test you are updating is not intended for the scenario this patch
+> is aimed to fix: i.e. the scenario:
+> 1. A MAP_PRIVATE R/W file-backed mapping is established.
+> 2. The mapping is written to, which backs it with anonymous memory.
+> 3. The mapping is mprotect()'d read-only.
+> 4. The mapping is mseal()'d.
+>
+> The test case doesn't include steps 1, 2, and 3, is it possible to
+> keep the existing one and create a new test case? But I don't think
+> that's the main discussion point. We can revisit test cases once we've
+> fully discussed the design.
+
+I do not know why you put this here. Can you please put review along side
+the code you're reviewing.
+
+You're making my life unnecessarily hard here.
+
+But yes, you're right, I messed up the test here, I'll send a fix-patch.
+
+Incidentally, it seems like the test _explicitly_ asserted that this
+behaviour was the opposite of what it should be which makes me think again
+this might be intentional... Concerning.
+
+>
+> Thanks and regards,
+> -Jeff
+> > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+> > Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+> > Acked-by: David Hildenbrand <david@redhat.com>
+> > ---
+> >  mm/madvise.c                            | 63 ++++++++++++++++++++++++-
+> >  mm/mseal.c                              | 49 -------------------
+> >  mm/vma.h                                |  7 ---
+> >  tools/testing/selftests/mm/mseal_test.c |  3 +-
+> >  4 files changed, 63 insertions(+), 59 deletions(-)
+> >
+> > diff --git a/mm/madvise.c b/mm/madvise.c
+> > index 2bf80989d5b6..dc3d8497b0f4 100644
+> > --- a/mm/madvise.c
+> > +++ b/mm/madvise.c
+> > @@ -19,6 +19,7 @@
+> >  #include <linux/sched.h>
+> >  #include <linux/sched/mm.h>
+> >  #include <linux/mm_inline.h>
+> > +#include <linux/mmu_context.h>
+> >  #include <linux/string.h>
+> >  #include <linux/uio.h>
+> >  #include <linux/ksm.h>
+> > @@ -1255,6 +1256,66 @@ static long madvise_guard_remove(struct madvise_behavior *madv_behavior)
+> >                                &guard_remove_walk_ops, NULL);
+> >  }
+> >
+> > +#ifdef CONFIG_64BIT
+> > +/* Does the madvise operation result in discarding of mapped data? */
+> > +static bool is_discard(int behavior)
+> > +{
+> > +       switch (behavior) {
+> > +       case MADV_FREE:
+> > +       case MADV_DONTNEED:
+> > +       case MADV_DONTNEED_LOCKED:
+> > +       case MADV_REMOVE:
+> > +       case MADV_DONTFORK:
+> > +       case MADV_WIPEONFORK:
+> > +       case MADV_GUARD_INSTALL:
+> > +               return true;
+> > +       }
+> > +
+> > +       return false;
+> > +}
+> > +
+> > +/*
+> > + * We are restricted from madvise()'ing mseal()'d VMAs only in very particular
+> > + * circumstances - discarding of data from read-only anonymous SEALED mappings.
+> > + *
+> > + * This is because users cannot trivally discard data from these VMAs, and may
+> > + * only do so via an appropriate madvise() call.
+> > + */
+> > +static bool can_madvise_modify(struct madvise_behavior *madv_behavior)
+> > +{
+> > +       struct vm_area_struct *vma = madv_behavior->vma;
+> > +
+> > +       /* If the VMA isn't sealed we're good. */
+> > +       if (can_modify_vma(vma))
+> > +               return true;
+> > +
+> > +       /* For a sealed VMA, we only care about discard operations. */
+> > +       if (!is_discard(madv_behavior->behavior))
+> > +               return true;
+> > +
+> > +       /*
+> > +        * But shared mappings are fine, as dirty pages will be written to a
+> > +        * backing store regardless of discard.
+> > +        */
+> > +       if (vma->vm_flags & VM_SHARED)
+> > +               return true;
+> > +
+> > +       /* If the user could write to the mapping anyway, then this is fine. */
+> > +       if ((vma->vm_flags & VM_WRITE) &&
+> > +           arch_vma_access_permitted(vma, /* write= */ true,
+> > +                       /* execute= */ false, /* foreign= */ false))
+> > +               return true;
+> > +
+> > +       /* Otherwise, we are not permitted to perform this operation. */
+> > +       return false;
+> > +}
+> > +#else
+> > +static bool can_madvise_modify(struct madvise_behavior *madv_behavior)
+> > +{
+> > +       return true;
+> > +}
+> > +#endif
+> > +
+> >  /*
+> >   * Apply an madvise behavior to a region of a vma.  madvise_update_vma
+> >   * will handle splitting a vm area into separate areas, each area with its own
+> > @@ -1268,7 +1329,7 @@ static int madvise_vma_behavior(struct madvise_behavior *madv_behavior)
+> >         struct madvise_behavior_range *range = &madv_behavior->range;
+> >         int error;
+> >
+> > -       if (unlikely(!can_modify_vma_madv(madv_behavior->vma, behavior)))
+> > +       if (unlikely(!can_madvise_modify(madv_behavior)))
+> >                 return -EPERM;
+> >
+> >         switch (behavior) {
+> > diff --git a/mm/mseal.c b/mm/mseal.c
+> > index c27197ac04e8..1308e88ab184 100644
+> > --- a/mm/mseal.c
+> > +++ b/mm/mseal.c
+> > @@ -11,7 +11,6 @@
+> >  #include <linux/mman.h>
+> >  #include <linux/mm.h>
+> >  #include <linux/mm_inline.h>
+> > -#include <linux/mmu_context.h>
+> >  #include <linux/syscalls.h>
+> >  #include <linux/sched.h>
+> >  #include "internal.h"
+> > @@ -21,54 +20,6 @@ static inline void set_vma_sealed(struct vm_area_struct *vma)
+> >         vm_flags_set(vma, VM_SEALED);
+> >  }
+> >
+> > -static bool is_madv_discard(int behavior)
+> > -{
+> > -       switch (behavior) {
+> > -       case MADV_FREE:
+> > -       case MADV_DONTNEED:
+> > -       case MADV_DONTNEED_LOCKED:
+> > -       case MADV_REMOVE:
+> > -       case MADV_DONTFORK:
+> > -       case MADV_WIPEONFORK:
+> > -       case MADV_GUARD_INSTALL:
+> > -               return true;
+> > -       }
+> > -
+> > -       return false;
+> > -}
+> > -
+> > -static bool is_ro_anon(struct vm_area_struct *vma)
+> > -{
+> > -       /* check anonymous mapping. */
+> > -       if (vma->vm_file || vma->vm_flags & VM_SHARED)
+> > -               return false;
+> > -
+> > -       /*
+> > -        * check for non-writable:
+> > -        * PROT=RO or PKRU is not writeable.
+> > -        */
+> > -       if (!(vma->vm_flags & VM_WRITE) ||
+> > -               !arch_vma_access_permitted(vma, true, false, false))
+> > -               return true;
+> > -
+> > -       return false;
+> > -}
+> > -
+> > -/*
+> > - * Check if a vma is allowed to be modified by madvise.
+> > - */
+> > -bool can_modify_vma_madv(struct vm_area_struct *vma, int behavior)
+> > -{
+> > -       if (!is_madv_discard(behavior))
+> > -               return true;
+> > -
+> > -       if (unlikely(!can_modify_vma(vma) && is_ro_anon(vma)))
+> > -               return false;
+> > -
+> > -       /* Allow by default. */
+> > -       return true;
+> > -}
+> > -
+> >  static int mseal_fixup(struct vma_iterator *vmi, struct vm_area_struct *vma,
+> >                 struct vm_area_struct **prev, unsigned long start,
+> >                 unsigned long end, vm_flags_t newflags)
+> > diff --git a/mm/vma.h b/mm/vma.h
+> > index acdcc515c459..85db5e880fcc 100644
+> > --- a/mm/vma.h
+> > +++ b/mm/vma.h
+> > @@ -577,8 +577,6 @@ static inline bool can_modify_vma(struct vm_area_struct *vma)
+> >         return true;
+> >  }
+> >
+> > -bool can_modify_vma_madv(struct vm_area_struct *vma, int behavior);
+> > -
+> >  #else
+> >
+> >  static inline bool can_modify_vma(struct vm_area_struct *vma)
+> > @@ -586,11 +584,6 @@ static inline bool can_modify_vma(struct vm_area_struct *vma)
+> >         return true;
+> >  }
+> >
+> > -static inline bool can_modify_vma_madv(struct vm_area_struct *vma, int behavior)
+> > -{
+> > -       return true;
+> > -}
+> > -
+> >  #endif
+> >
+> >  #if defined(CONFIG_STACK_GROWSUP)
+> > diff --git a/tools/testing/selftests/mm/mseal_test.c b/tools/testing/selftests/mm/mseal_test.c
+> > index 005f29c86484..34c042da4de2 100644
+> > --- a/tools/testing/selftests/mm/mseal_test.c
+> > +++ b/tools/testing/selftests/mm/mseal_test.c
+> > @@ -1712,7 +1712,6 @@ static void test_seal_discard_ro_anon_on_filebacked(bool seal)
+> >         unsigned long size = 4 * page_size;
+> >         int ret;
+> >         int fd;
+> > -       unsigned long mapflags = MAP_PRIVATE;
+> >
+> >         fd = memfd_create("test", 0);
+> >         FAIL_TEST_IF_FALSE(fd > 0);
+> > @@ -1720,7 +1719,7 @@ static void test_seal_discard_ro_anon_on_filebacked(bool seal)
+> >         ret = fallocate(fd, 0, 0, size);
+> >         FAIL_TEST_IF_FALSE(!ret);
+> >
+> > -       ptr = mmap(NULL, size, PROT_READ, mapflags, fd, 0);
+> > +       ptr = mmap(NULL, size, PROT_READ, MAP_SHARED, fd, 0);
+> >         FAIL_TEST_IF_FALSE(ptr != MAP_FAILED);
+> >
+> >         if (seal) {
+> > --
+> > 2.50.1
+> >
 
