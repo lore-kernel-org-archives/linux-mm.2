@@ -2,231 +2,115 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AA870C83F26
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 08:30:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A0A58C83F26
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 08:36:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D21F8E0005; Fri, 25 Jul 2025 04:30:45 -0400 (EDT)
+	id 3F1F86B0089; Fri, 25 Jul 2025 04:36:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A9678E0001; Fri, 25 Jul 2025 04:30:45 -0400 (EDT)
+	id 3CF156B008A; Fri, 25 Jul 2025 04:36:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3713B8E0005; Fri, 25 Jul 2025 04:30:45 -0400 (EDT)
+	id 2DFCD6B008C; Fri, 25 Jul 2025 04:36:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 222648E0001
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 04:30:45 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A2E4CBAAB6
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 08:30:44 +0000 (UTC)
-X-FDA: 83702116008.20.EEDA8DB
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 31F82140005
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 08:30:40 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=q1Yi+aqu;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=n235iMZ5;
-	spf=pass (imf26.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753432241; a=rsa-sha256;
-	cv=pass;
-	b=R2Y1Kcppz3RGUqMgmFqoE2lbE72/7+oCaVSmz/8ie4is/J3DADT9LmSWqLonWviXgAUTsj
-	LEsKBoSnlXS3zoYPUUA+OBia/EKHUWyIFgadnnwbCRuQXMn1l3QKdY09QF+lAT32vnUOSO
-	d+ksBfqIAoUDZzoeYoRz0sUmyYVIjQE=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=q1Yi+aqu;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=n235iMZ5;
-	spf=pass (imf26.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753432241;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E1536B0089
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 04:36:16 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C2C2F1DB9A9
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 08:36:15 +0000 (UTC)
+X-FDA: 83702129910.03.EA9E81B
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	by imf14.hostedemail.com (Postfix) with ESMTP id D0F67100009
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 08:36:13 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kowalczyk-ws.20230601.gappssmtp.com header.s=20230601 header.b=IvbLXxSZ;
+	spf=pass (imf14.hostedemail.com: domain of patryk@kowalczyk.ws designates 209.85.218.42 as permitted sender) smtp.mailfrom=patryk@kowalczyk.ws;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753432574;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2SWHnODwaZHc7cbsXpb7KgRvwcB9iipkBvdz3VRiUbI=;
-	b=b6RmR+gqTjWjTI29OGzywqP4rdadePvUcrnf0Y06kx7fjL3qzLYKYkiVYE+UcCk3PqA6Ss
-	6XfeI6QpNciGT9rtsrvz6wykNbL0Sz6xl4j8mq2HH3Gjr+jlOO2yvyXA7tmAwgQP+WHYiU
-	KE7Yxt4Z6iToYulx9cmyOVfev/Of0uk=
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56P7fpUq013030;
-	Fri, 25 Jul 2025 08:30:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=2SWHnODwaZHc7cbsXpb7KgRvwcB9iipkBvdz3VRiUbI=; b=
-	q1Yi+aqu5+CjUK6frzR7eXVJU78l6f6cvih4YD5+3RMWzMtwfA7TNLm+waBinh73
-	hIjfmHxekDF1HmXMlfBOf8/ihVAAp6ekB7C2MoKIulHrqHitqGrUsEQ9lxMmRRcc
-	47tnQogLd5Uq/HH6EAvOLpmcbRxNeHxM3HzoOxSZrXceClyDzNBCSicVRSiB8p8p
-	e+yQfDjlX0m1yQDpNsFNcwJhvFzfv5IIVpp1QTcQyxPQikCYKRtWzcpyXJihFqb+
-	eHY0Z8Mjr7mBj+IPmnFOwbyCCNPA0LyH8TI3MFFKZkJ+c8pZ0Oq6VaNV0pz6PgZd
-	wZr8GWTOQp5PeCGfuEurzg==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 483w3wgm8u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 25 Jul 2025 08:30:35 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 56P8U2I4014553;
-	Fri, 25 Jul 2025 08:30:34 GMT
-Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12on2042.outbound.protection.outlook.com [40.107.244.42])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4801tk5gt8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 25 Jul 2025 08:30:34 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Hjf9AtAw1nG7VsonJZpb5p4Z4kHXnioe/MOiw9KSSQbDdPPs7ZJvWs9OLSFE9YM8Td6qI2Qbui+9UbThs7bNz04MFqR8qvxncMckkLKOcDYfVuIDc4T0TUZClYls/5lYZXn76TbKy/l3lfCGJzWonXHdrg2QpO/x5JIjm+NI2lPoQtxBrxaMAtKRKgod6//+yXAyt9lwxrgTVmQkXxVqczOk7aY3NRk7B8FRL68Y713pUdxvXIzP4SGOgV946AJfaqc2xCjP9t8Z0S9xqdIVUvEufiw8R1EnPWhO71F67X7QmnTygg1FAXXBq7JJi8qx6SImbTxdS9aNDR7eatRK3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2SWHnODwaZHc7cbsXpb7KgRvwcB9iipkBvdz3VRiUbI=;
- b=fcuC1KkMTgdSoTZ8yRCNRmXATs+f1jUQLcDxeEAU+WlO4+a+l1IC3VPiO5mlrtYwF20VDLrn3qTvZ/RTiqnWZhs7ybxU/XdkfK9dvoCVApiGsQkw6uWcZ6cOkj8CNvtwbgjzUOivAkfrerUnnoMWL6uIkDBhc3RJr0LiKv+NQfwjhNUccQGKeiERvBqjEinol8KuLaGqmdrPoqs0Cw739OWyndlbnrGpTcClsvuKPBOHiIhxrN7ym8N/erR8Hr9xR6fxivs1wlfBqDxNS9l0/puaqM/ozUE+nOSqohxoDZqVMsZOq002Vv/gyypPQ/vQhFvsGJlpIhQXgBHkQCCYPw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	bh=Ys9sr9GADZ+/d8kZ/xwzdxAR3Im3uGxlJ75ufMR9KVM=;
+	b=XsM/0FfAh1GWrWRwFH59T7TCz5w2sL4xfHhh0QSko0LZJ24mZ04NcwhiC/wlLsXGV0YyFH
+	EsiMSGSZw2EeehibKuHNXYmmEEvWv5JJ+J/pr0qiKxh5+Gvu9pvdHjk7y45rlxcQ/KMKIz
+	qUGSHtIUVOF52KKi9ouVzbWUNxr9+Ck=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753432574; a=rsa-sha256;
+	cv=none;
+	b=23dFFu13stO6FaPkmi7YEH6eQ03c/VlPOhbkPU7WL+/G9vOu6T0bCvtj2rV75pI1AXlpH+
+	sMNcz72Pd07JkX/hKopYSP4i0XQNeRqmb6aVCLkE2BMsjix0PUsQL1lyufafxHGy6Lz+nM
+	hlPFSJTisEGp4FnsxuF/7i7xU4B9RBA=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kowalczyk-ws.20230601.gappssmtp.com header.s=20230601 header.b=IvbLXxSZ;
+	spf=pass (imf14.hostedemail.com: domain of patryk@kowalczyk.ws designates 209.85.218.42 as permitted sender) smtp.mailfrom=patryk@kowalczyk.ws;
+	dmarc=none
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-ae0c571f137so391762366b.0
+        for <linux-mm@kvack.org>; Fri, 25 Jul 2025 01:36:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2SWHnODwaZHc7cbsXpb7KgRvwcB9iipkBvdz3VRiUbI=;
- b=n235iMZ5FfjsM1orvYWCNAT4PG6J2Xqvg9QkZqWUwQR7mdTo3AornEkWMHWEfJWZTdiQny6VGRRACKmIahZcFOWcOyNP6+rh0gE8OI5KVPuFWSXnXDjneCbYwvM21BRR94xhuBQ4TPcZ6SON3W5MvRIDcY+2aLafSdkmJLRJyTw=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by SJ0PR10MB6422.namprd10.prod.outlook.com (2603:10b6:a03:44c::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.22; Fri, 25 Jul
- 2025 08:30:31 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.8964.019; Fri, 25 Jul 2025
- 08:30:31 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-        David Hildenbrand <david@redhat.com>, Vlastimil Babka <vbabka@suse.cz>,
-        Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        Jeff Xu <jeffxu@chromium.org>, Kees Cook <kees@kernel.org>
-Subject: [PATCH v4 5/5] mm/mseal: rework mseal apply logic
-Date: Fri, 25 Jul 2025 09:29:45 +0100
-Message-ID: <ddfa4376ce29f19a589d7dc8c92cb7d4f7605a4c.1753431105.git.lorenzo.stoakes@oracle.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <cover.1753431105.git.lorenzo.stoakes@oracle.com>
-References: <cover.1753431105.git.lorenzo.stoakes@oracle.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: LO4P123CA0343.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:18d::6) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+        d=kowalczyk-ws.20230601.gappssmtp.com; s=20230601; t=1753432572; x=1754037372; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ys9sr9GADZ+/d8kZ/xwzdxAR3Im3uGxlJ75ufMR9KVM=;
+        b=IvbLXxSZ2C3i4WdM8qC8HKamTku5+FnWnPKlDJYCXdEAPNbR+yqBPGnKPMy6iUycuB
+         8L/FgtbDw5e3d1BnwrddosLN5nE15tyzBCFNNrMOF7bfB+IrTKo3/jtbPqv+j85hhaD2
+         s3wNrCOK7cbkazrxs1LRm6mtNy89bzaa9I1Y2jmIcJK6XQCAkTLpGXINyG2/4txJR59F
+         jXViguyIvpIAAooMSV7X98A+baNFe0r4+k4L4BEFwtp+xA7owD2uQbm5YdOC13/NqgJE
+         bEVB4rfSQ+f4tsQKbvP+oGtpCBJGw2E0gyxSu6DxqyAW7AEMpqaUe3pOHx0lAU2cN/7b
+         yfAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753432572; x=1754037372;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ys9sr9GADZ+/d8kZ/xwzdxAR3Im3uGxlJ75ufMR9KVM=;
+        b=klUKXdgiwC8HPxuO/ApqGeWPcewIuJA0KcRs2s1d2u1ivq1scdGaRTPUdDWl6k8ZTA
+         qrPXP9LmR2Kr4DMGpIE/OaGPdIP41qlZzSrLTvM3TUKjQvwOfehge/GPhVAK/pba1kIT
+         78nXQ/pL9KZfpXVwNFj4zNFjzgYGjbjfKALth7LrywAeKwkTWMixdq01iDcPWauhDZaY
+         eTtd3cdsoK7HcC4wTPaQagqjlf/YvSNxCLLItxMDRENLUKPhabtriGRz5kzut+BtRqQ/
+         QXsLAisjkHT35kCQCBNM7trGRrc8OoVsIKhO5wWFqaFSFRHYPO9A/h4uq2gb0ntiax8I
+         Kn5w==
+X-Forwarded-Encrypted: i=1; AJvYcCUlvZPDg8vm/Ro3Juki0RktM/LUrjZWOmDhEg4XIR7H09mmrvlp/etNrMnEMoU+lMLFPzM3vNFJTg==@kvack.org
+X-Gm-Message-State: AOJu0YxwHd9YveZMHxao36Kn8eZk8rM1Zzozr7hwUUdRIeFIAPL+3/nP
+	HicvxS6ldkJMecmU7yNv9z9k7Na+ndjSv3Tf2ZvMVa8YViVU7/hNnUOUFAsljpxAkpUF6frlc1e
+	Cmod3S5mXWiA2ne0+wdZoQZ48IQIVCKlaosAMYYbV
+X-Gm-Gg: ASbGncuNovlBbFjgZatobxfdUN8K7q/MA2d7eAdXD1ZDDJ82I+zgsSemsbJkwzJHI4G
+	PMkis9YPtv6kV/iCNQqSWeKIeOPm5J66gogQcAhq+OdUEtIz91mIs9NY/0EmQafbd8V3XEOokGP
+	gA1wiheX3yW0X2dAOxm1wfyUmVMlOpLvrY9mrCR0Ko6XF6xtYXHYLfTenhPwMGNzt1GIKRTkBRK
+	nBm
+X-Google-Smtp-Source: AGHT+IFjZQuvzKeBvlB/9uZViervlLT3ZTJPzyA4uOAljciqK9zBJ1oNC2nFgYjzMrFfCeyV7tk6+d8rpqbKIiSeboc=
+X-Received: by 2002:a17:907:9287:b0:ae9:bf58:4190 with SMTP id
+ a640c23a62f3a-af616efc1ddmr152152566b.4.1753432571821; Fri, 25 Jul 2025
+ 01:36:11 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|SJ0PR10MB6422:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2a0274da-efbe-435a-4886-08ddcb558488
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?2yH8bsAYmUJz675CGsWHNgocBeC1s5Pdro9c+o1Uish7S46/DB2BLB2xdjEu?=
- =?us-ascii?Q?nDon22SNpgf8yYup93nCkPsy5xpUc6YikZ9GkUg5LkZPXKWCZ++lhdKfsLai?=
- =?us-ascii?Q?7Z71k1eekZ+7zKqH1zXFBXDMpafTOVm/tyYe8+zcw4jgnnT7UyB9ep/xbzNj?=
- =?us-ascii?Q?ZDZhB3FQvqyVvmxf07DTJ5bWUEtwpLYmfIxngsbzZu5xkGWX1EsBfxQzxvX8?=
- =?us-ascii?Q?YjVd884BYFSTa51kk2ujysEQGLv3qyj/4gZIZAzKn3k/IGlmrF7xcY2sB0gq?=
- =?us-ascii?Q?xQC5Xn4efKNyMIpESyYE2tXC0yEWehc5L2CxiuCUnSHS7SyidcNrgP5quFQR?=
- =?us-ascii?Q?SeI24+wPhlE1sJ6P/FBDkYstF977hqFLxYqr/VuUAvFN7kT84VZSSOwovV10?=
- =?us-ascii?Q?SdG+cUIL7RntFn4T05p75uwJMZYPmK8XebgxuHBys/G966DTm4d4ITvnXels?=
- =?us-ascii?Q?D8b2P9vzHhfxkuY23FMGve728wD5NQKrXlAwuB6lwwsDwBLAIfG6yVEb1FLU?=
- =?us-ascii?Q?tqxzNUkiWQeUhWFJUKXEsKXBjKL1ceC1XZliC+4OPGvtwxHwK2mraDTiFGAL?=
- =?us-ascii?Q?xigcT1aO4rF0LfmoOuOe5oeTglCAUcThzqqm+Q/PFF7Z5eFlqzxYQyZWj8LQ?=
- =?us-ascii?Q?GdvhCkCfgMnWkuMDO78p2NM0x4siQ8BPo8usun8hjk0G5lawFeS2lrAtHZoI?=
- =?us-ascii?Q?WlMwh0PKRG4H20qpqQaQ6vkYLmdTWbqHGdltyBzgWCOPCVzXOzd+Hsf7nytM?=
- =?us-ascii?Q?tLRj+0LNzqvgCYUDYjW6NvVqBB0u/vLgJSC66XG0Zhuy2X+hQLrQbJFWS0jh?=
- =?us-ascii?Q?98gyahnv2mWPsDkRZY2Oj4A9Z8Z48yMIu3kwiRbOTC2D6h8TLEgzXoE2xXJR?=
- =?us-ascii?Q?SmTEZBwEf19h11FtYlqAf4Q2OURLI6NZrZC5v22q71CRUpJusBnikXViBN66?=
- =?us-ascii?Q?PPniS7wdSMTnfDhFtfAclEpdW8hSBVeoQFxuJMnPDqwGNghtrXdeLeaP/A1n?=
- =?us-ascii?Q?O+SXgjiAH7thgGEskiVi44sj/H94n9p4934tKXEMWMMTT0REHN+saVmoWFnE?=
- =?us-ascii?Q?lZTdU6M366yStKqMckKTZdVcI2C9E9gUVmKaf0H4zqRtG/LmWCRBl8ngLhHa?=
- =?us-ascii?Q?e/6PZO2NdJj/w1La1dDJQjpsI8Gt7nU2/xtFMe3Wwu672qHzOyaApaQS+OIM?=
- =?us-ascii?Q?ZIrXUBa96bXi/RYNygACFuONC+oIv63bmET1C831L3olnxkAybRsi/WhiqM/?=
- =?us-ascii?Q?SPktTQvO2GHzwKMBbmwte/4fHHB5A6dQehL8tf6eHPXrXHqqsINKY2TPlL4P?=
- =?us-ascii?Q?B7NTi2ee3La2/bjd6TODCarTr3ChW1DNd2Sl7SbrJk40Zq4PbLfhPq3HDqmB?=
- =?us-ascii?Q?k4nvpVnt1VegPIz3EnaJBj71O7C1/GJY6VdZV3C0Zwys6uyDeFMY1OjSD7r6?=
- =?us-ascii?Q?fcH53Md85V8=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+yxMLjGwVG4cn3y0RivPhEK6ihMCjkmupoE8DRjfAZYw7jeQ9ytkYvn0Mgnx?=
- =?us-ascii?Q?gwpCcK79UhRN1Ptpp/tM44LLD3g11s6pJftW992HKtajZgd5xfo5bOQRc0/v?=
- =?us-ascii?Q?xscI//ePD9FsQk7Nbv2hbjnbj/VLTPM2KnMA7JnXFR72FP011nEnBK6IB03N?=
- =?us-ascii?Q?SxG5AnoTutpLUc7J0oMUSLMFT9SHru6BRzNlmQ9ea3kcTCC/TOcVrfGGWRCL?=
- =?us-ascii?Q?ZFR1Z8WtlazuwrGqy/FhkXoi+NZRQUKvkricSeX5sPkldQY1TAI1bmSuvAss?=
- =?us-ascii?Q?C2DEAQ2d6esCHZ6pqwCmbDHoalbh5F0VsVAe5v3Mm8ZmGClcaRKt1B05Z6Gb?=
- =?us-ascii?Q?l0+aPNigDDDqw/e8F7SKMyHynQtgONT6825rCpOThj/oaJ9BbMugy27QhdFd?=
- =?us-ascii?Q?ZMrug+1PhzwNS3Thp0Yn+MSUunXZHD5ktn7Jsl0xtLXyHALR0xCQdMd3aasW?=
- =?us-ascii?Q?xAd5O0kL+UShFNyBy5/JxiGPwrvgmRHQcDxCKQgx/PXB4mPKlI4DrG3cchGC?=
- =?us-ascii?Q?Sntnzv2nFkdsTt81fjLiLhiXdn9xRD8Pdf5BA2a8vrO6s2GlLLoUW9qSrNoN?=
- =?us-ascii?Q?bqutysYrPL8Bzyb2GB+2bv9dKVq1mFM9aVvDJ+F8XH6Th66+AXJ9skFrUrpN?=
- =?us-ascii?Q?zDRVPiwx9uXTBJf8xlhi5xR0oDlSonOgqXFOWmH3brnLkgw/2ADcKpQZHWUu?=
- =?us-ascii?Q?Cucg4H2mYG9HaQ70ScNxzl45AB2vB6zbHo6nJVEAC+7+iww9j2NA05LfgbpB?=
- =?us-ascii?Q?m39vh9/IQ4p/I5sjOqHeb+nNODKKm5/KPVA+2E8YOQMQmVU7HFaPvQHjuQzg?=
- =?us-ascii?Q?iTQUU/vv8B5SNTpEJQ+XkKhTkrkB10RrW3X+zldjPPjELmgoc9mRNmmg0RUj?=
- =?us-ascii?Q?51PT1LnwBt6f+qCsM93uTbXqj2+1jjwzDE3BQUfKjef2zAOn9+0UAbfCf/+V?=
- =?us-ascii?Q?+yRqtL9e9GTeFZ4xgPmwaM7VQRfb1j688ZEgS37ZLt87XvG1wh2TYMjj0NAd?=
- =?us-ascii?Q?XMm7d6kwW0JjttxUR16ITfOP3I43SnSgCkp0sDa/wScai2ldbBoy8hlJuTUk?=
- =?us-ascii?Q?3Y7rIUj0DAI1Yk/v8iAfrxVLbCiRZwH+1NDTHDpO9Mn4ccfl1e2kevlLXr8y?=
- =?us-ascii?Q?CPWY7sjTx5yflLV71Q4wxhfufXrcI0QRlYhssx3WvCa4WL5LkOC6KMTJERqk?=
- =?us-ascii?Q?ntxTRksPYOvxuUQi9O5nhtMzGENIzUeDgRp+3qo1Z8a/2cIxR0bfz5JNO1qx?=
- =?us-ascii?Q?6e4uiKm4ADZB3hOQBbVbLkpxKqcbURzPqMKSy+4NIX4sYIbT7L+hzcJ9CfmE?=
- =?us-ascii?Q?HJIqQ4dBlDQU0m9c/DwXTXslvYKKlGCun6wvOuTE2LZUDr2BJL2bwqXeyKPe?=
- =?us-ascii?Q?t2VJe3dCKBhN/5/gHh+425tVdXVk46mt0w085OB6Qw1oyonqS9e/n5DSibrs?=
- =?us-ascii?Q?+nJkQCnAdn4u3g3IvNh6eLDahdct9kZzftVL9mW7KvKWH+siaXEK2jDW8viZ?=
- =?us-ascii?Q?yU9/kAKTUkc28HQS52YdXuwiBFwSGVR8CiRt++vORRFIEF80RZ7DFcMiNtkk?=
- =?us-ascii?Q?fwS1FRfSv17zI1EJvkUcOQBpZbIinoRGNHcLK6HMKMxaqkLZSp0HgXlcYlhW?=
- =?us-ascii?Q?2g=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	g67IYPRIYRaca+ruc1u2fKjqhuBxHfifufLvaNOqe8FT+OhL9YfH1F3xZ/kUxUGLiqN2/BFL1bCK9z4xmKyhqxYhi95v2paBaU9USz5TJajtOXAU1Jv99fyGL+y2Q3TQzoJadD71wRIgLKrQKqRJx67/4FodJpTqBHsW2Vy137jBqzMYN6+GpuUT0/aM3eBIq2sJRSo/Ge3O1TtUKNLeZ01hhh489TrmEC/E+XrB+IRWg4XCkfMmw/BWR8QAh45sRf4IFYZWOTFp6I3xs+9bS1E62ZYWKaz/QlvGtusj2CuiE1Gbf+pQCDUaFhqr2HaS87F0uVVECFm5SgzipYTCKRDwHH3nCXqxaRZTmhqPmvoOSMIf0rrx533vQzFoRbo8r0HXH9FKryhPk+a5gdpmP1CIWs691s+FI/FemF+9IVAj8Zlehqo9eV7W3QlJJa1rjqxZmWddDTwiGNuO6/nL2Tt10JNMSc6zBxlZLpaRDXw7VfobyimTesqhW4jXpqo2k2ZAVypOtWvTmYzWX0yUN7Tl28wPSCpmr2fH5qFpJueWg0oy/6m5rRE1Y05YKdqGMGAjWJx1zKig9pAuWu/caHV7D+gRfdQpGnXxEsX9aAg=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2a0274da-efbe-435a-4886-08ddcb558488
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jul 2025 08:30:31.3221
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: j56cdTZs4aHeLrZVyqA0PeebVFWeH3q4nYQslojQIJSo2brBnEiOnHLxQ54OEuRRGF6pZHvyuqaz+qnYVhq48izooh1l1P0U8wVbwDsXZi8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB6422
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-25_02,2025-07-24_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0 bulkscore=0
- suspectscore=0 mlxscore=0 phishscore=0 mlxlogscore=981 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2507250071
-X-Proofpoint-ORIG-GUID: RT3vwfHGKGLsY7ssBUXHaocLyGfjoLTG
-X-Proofpoint-GUID: RT3vwfHGKGLsY7ssBUXHaocLyGfjoLTG
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI1MDA3MCBTYWx0ZWRfXytKy/q32w1+0
- E08qxA+jqsvoERIPD6YVHOp8pMG1fJ3VGY1DWlGfJcIyGv4ph7N3rrdYvTKVRsS6fwsC+mbD0YQ
- wBDvr2LTPmgw0EvKxkXEKVDo2kpAnPwbU6kT7YQxzz8RO46/08cKeoFiutV6F00YfVZoqJup+mn
- n+Rw/MmnNIpRsHRk59aEXH4wC0FdGXqkqT0D8XTtwpGLHd+WX7+CQog0+ch1APpld8zODGEaw3k
- NioVstGbY5g8+BZKHR6omcrneFDVu5HO1NqApO818zTWEH4AHowuIo2PD7XQVtCJk57NEDaaojo
- JZdvGHpIYTxXeaRhn1LgiCyZv3Hzmf3SN0z9qH87P4dB2PRllB0rtQs6TSGgkAVu8FdGRG625nk
- ov3oknulgynzGC/VvSCy6yF4qaqN7XvRQty4+TCA3laapGnXFLswBMxqqXXS1m1+0O5s9CI4
-X-Authority-Analysis: v=2.4 cv=Jt7xrN4C c=1 sm=1 tr=0 ts=688340ab b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
- a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
- a=xqWC_Br6kY4A:10 a=Wb1JkmetP80A:10 a=GoEa3M9JfhUA:10 a=yPCof4ZbAAAA:8
- a=20KFwNOVAAAA:8 a=cm27Pg_UAAAA:8 a=ZfV5uqM9ac08Jx8ArasA:9 cc=ntf
- awl=host:12061
+References: <CAJCW39JCDX6_S2Ojt1HMmX-h_qAKm2eBRzxX5kOHNJz60Zu=vw@mail.gmail.com>
+ <d5c6ac93-1af0-4093-afea-94a29a387903@redhat.com> <63b69425-2fd1-2c77-06d6-e7ea25c92f34@google.com>
+ <3f204974-26c8-4d5f-b7ae-4052cbfdf4ac@redhat.com> <a8ac7ec3-4cb3-4dd8-8d02-ede6905f322e@linux.alibaba.com>
+ <da2ab844-98c9-4eb2-82ac-01d01bec30f3@linux.alibaba.com> <dab283bf-a9cf-30be-02ed-da0d7c8ffcf0@google.com>
+ <0c9dc2fa-34c9-4db5-bea3-af4caf05ee6b@linux.alibaba.com>
+In-Reply-To: <0c9dc2fa-34c9-4db5-bea3-af4caf05ee6b@linux.alibaba.com>
+From: Patryk Kowalczyk <patryk@kowalczyk.ws>
+Date: Fri, 25 Jul 2025 10:36:00 +0200
+X-Gm-Features: Ac12FXyEKrtN_N7qJCcS398gnqUSs9IOulF0QK-vhDxlTYEsZ407N2rmXhUxFoE
+Message-ID: <CAJCW39JmaJpFCgoSGf6tSYkwVgxyUdSDFeeoFmf6ODLfsh4Cag@mail.gmail.com>
+Subject: Re: regression - mm: shmem: add large folio support for tmpfs affect
+ GPU performance.
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Hugh Dickins <hughd@google.com>, David Hildenbrand <david@redhat.com>, da.gomez@samsung.com, 
+	baohua@kernel.org, wangkefeng.wang@huawei.com, ioworker0@gmail.com, 
+	willy@infradead.org, ryan.roberts@arm.com, akpm@linux-foundation.org, 
+	eero.t.tamminen@intel.com, =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, 
+	"linux-mm@kvack.org" <linux-mm@kvack.org>
+Content-Type: multipart/alternative; boundary="00000000000094d5bd063abcd59d"
+X-Rspamd-Queue-Id: D0F67100009
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 31F82140005
-X-Stat-Signature: upy1mg8qsbjxz5wbq7p5phamdmg5ww5q
-X-HE-Tag: 1753432240-874282
-X-HE-Meta: U2FsdGVkX1/OZu7OhUwFtgpq+Ng1dkMGWnD9omXcTaRk66Ieb+ZOjc1o3kjympIgU/JsEpK+8DXOe9NrNV/Y9uSzNjhtf6elfFXBLOZNylzMUG369IUXsJqdj/D/G3TbWpzEuhO/ENukHA79ZkIM3fFZP0E4XtIYWQN91kexaFgQNahvVqcuxXQrbHEVz+JS4ILY5QDfXk+ez0DeYXKkVUKh1MGa57B/3fGUt0zya2rTO+17t6wZBhRwm1BOWbnuWIqSZn7dvVaM5lVxnhumWKIp0k9iCw11IWVxdpEd1DG/DYdwtmYgnra3FqUphTW6A4be6V+jRHJwaAGnGva2mxF283f+eR3PI9FwVxQpDHupXl1BKe+ijBU+ufy2bwUo3H5tPv8HbvN2MiSDuszeLrsC8//2fFSiYmCNRGnU1kLPLhTjBKfVJM+X3BTfXdv18bQnULqm9c17uHBp26vUtYNgh4CvH18FCSSF6S6wcMS9UNFTXNC08Gur6E0Ih2V3u531+NSH5tU+EFrGK0qlYjuagTzFiPakfaMem0xmKl6ABkDM4M3fRTDYqWUEPRZGO3/doQYZO+uJ3IjX0t3E/Z6QYuOZkslr/ow0bXYcFsyCUaopN9l5fh0ir/jkxqPMCblMjifnCQSuax39X/fIFQ8iuqKreFASx9Db9gZF/bEUV/GBn4wkoSiGr6UC7F5kmYNI6qn9bAyEkwl10a7ckrdFVvm5K8dMyABpYqrlomUeHKA2bGbg9UceYW6SOyw3KOyf2ineEvYDiLT8JUByaOG1iugFKtcys5QV1/W5nBFzADNg1T96H82R2GZiKGFawlPXHj0xLHHopPMha4FQMo4yLyiKwNNEF7VHophj1K7fz6VgbqcROhRhHtylI7wkJTRFB7u7jQ6UsrkA+t9fOyClU0b4epY8S/LIlh6/3KjdX6605E1f0ZoIzYZidLsA06C1b2YJ0nqf52QBgPg
- TIjSXWXX
- Ybs1NKoiD1bf8o29EyhNiE2nFny5oPRPD48g1aqs+NHAL5VMd2CvwfzKn0abgvtp8hh3QQt20cRop8LPpTW8PVuVqugAw3ecoZjmJ96aSKCGPOfxI5QiQGaFoAVKXiMeVtI8CKqDyLfQUk2525BMpEtJ3/4jmoV7eUNqzKMpo4GhPHMw6P3GO3Jg7Cw7h6js8rII/ZleLj+7Gqc/s8rEkuFTrBRNqfchHxkKis4egFQDnVf1SPBNCt1En2WNEIMVIoWHCKKeSerp5eTwrMzosYHJIPOY2TBLfTGL4SeE18WPMqYo9lPzmuWRpcM/lx4oDjMDUz5ZXoTObbQGInB0J6fzR8380TyQENdVCP1cBWbR89DYnfVfh+ZyEaTYla8igECMPXGlqzF4U+q+sMNGRLsU6ek+cC5GqfQiQM2GWZsTch0mqd8Q9qV7TcKpDzDZMruJanIxsDrZo/TuHf0Z4qmOMD1ROppgNSwcVSQEfgu1SqnUaiZVIkgCQ+Uw/VkggObhHYX2g5F32sfQhRMcf4JjVdr3l/MMEBhMVDjD3HRz3FBF5R0dLiTcV0vtsdN/eVwOHospvxucNuZiyivg0lV5OP/ovfGXnqSXO4h4hzGu7095jVAatWM25/ieGwHa639cYhuTjEJOGs2o8uXHkNA+9pKZd2DzaLgyCpplxlHpA/v5prwLTMymrxtpchsZSVP5DdzF7cAyz1ds4sE6okjKmMcYAOqillQvFdxQMLF0/Rq1VD5X8tzXF5v9UFtzc+vnGYPyXEy63KYgOVB+GZUMPSA==
+X-Rspamd-Server: rspam09
+X-Stat-Signature: ssag8bdkg83csitq6kbh8me71zba3ziz
+X-HE-Tag: 1753432573-678337
+X-HE-Meta: U2FsdGVkX19Wjffw+hnXd5qJ/n5ngf2aIBJdQPKuEhAdJ3l8VszgoGydp9LJhHbYEp6TiffqX631VmiKKxPIMJILoBg/BMVvQpVkuRh8XFtBX7vnwbnc5gU3oYJzBSlskMankVXThUCTo6gE+uxRacjl/pqh2AVeXcEJnc9UN/WDqvxd9JVSiXuzCBsmjWcevjFgDBUNlH2bdTDHTOxt73xLpk9u8e5sB742w5bEdRyKy6SRqK0jrzZ45wHPAVsTbrqzIEWVdbMh09GbUfDVp4TAzV64s1PnjU+/z9rY902Ex9fwKKHk3I5Q+71WPuL5ilhl/HOcWUmkGhg6iIclvGnZfLEuTFJY0B2twfsm4IT34dmxk7rUR8KOxHFt6drgjIjHabgEL2jX2mKO45rJQqzWf51+iWXKMDA7n93ePcmi++dlDgd8WXRDpukTYeEYb6r2RVP+wtTlFYP+hCEjCk7CZ7jLWHrecjnJUYY87CLjIpbhS38D3I5h08pF0F2WcRzt/WXNsZJLuPH4LBXkkwRwZAX41CFifAAkT2mJsQp6uztWvF6oOsxpjo9MeJTywf7ImWjqQpvQnaPiOy0AlXX+LxwJ+wjdTlSUpij8dxWw1oJpgWw+81mXX/nV9t31bA/yLn9Z31VMYELYpHlzTcqftQRnZCgvAMMQjJ66O/Ja5W6RXxctkA1afXLps1gYJc+lbq5saWD1v2yW8xqG6AJL9r1sDALvOfzH7Pw3iLCztgiWRXG+MxXSe++BSBb/hs4N5aLl37KxZIvq+92hNkl3UNUHmsQBAg/SmhEfQr1ZMt7KpGgIaA7QQlZ4XPW1POXhZQIKdE+9pS2MG8q7Xdj6yaLsyZsQRmiLFiuYFxOXw35EJ6eHzVLaS2lH7CqYknQQxeJ95BhbUD6LjntDKPCBIwQQNp2FUtr1i+0IiDGzuDZQMr24bQuTn0B+phHSMvhm4vRBnoWq6nOpSUO
+ qEMMwYmo
+ 0k0USoI/3YOAche5K91vfm8KkyyC1yg83IFbNg4O6ya/x7ULyZ+whln4KTpNqrH+sy6BA+M3YyCFs0bwVC7DTnfD0ObWtHhisXw3Xk58aGisJtK6UF/yI1EmVysJORYgP4XuLKZ7u7/JULvroi+PUaN6tX3hzCCPlJAxcOrJB8Me7C8aljXXpgDzxnu8YNQSEPiKCOZSxYNYpNIJmftI+f76vQWPzyUt8JUR+vBbwvYBCt/lgv3css++/NbaXtcClvqiXasBvpCKGY87AxZn46EMs/6HkJ/Zz5NwSsxTghibhv0B8gg5kPZDmhP2LismIVzy2Iu4Bs5LzZ0ssOmzemuHcRnLXHGfPXMYZldR/jL7O24W/cXRcT1/oVf0m/S1HWJKnZLVdS7qBGaSFmMoDclMxCgG3UAnhorCZACjFfM3h7V/lazH4tysVBpmSbYWyZSkctTgRqJHUrxQihO5tTNZLeHmllK+8hCp6RIuLFVp9GDft2TGNFW4N4cjT91/hLO2l1qLvZO/hp97XbrCLaPmHGOaKVIYEGn6oYrYl4vW8OPZ2fDnq6FzzpP8jS/crYAZ3Kkp12lYDN10=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -235,136 +119,190 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The logic can be simplified - firstly by renaming the inconsistently named
-apply_mm_seal() to mseal_apply().
+--00000000000094d5bd063abcd59d
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-We then wrap mseal_fixup() into the main loop as the logic is simple
-enough to not require it, equally it isn't a hugely pleasant pattern in
-mprotect() etc.  so it's not something we want to perpetuate.
+I have tested the fix for the i915 driver with kernel 6.16-rc7 and intel
+core ultra 155H.
+The performance in several tests is on the kernel 6.12 level,
+so from a functional standpoint, the issue has been resolved.
+Additionally, I also see potential for further optimization of the Xe
+driver.
 
-We eliminate the need for invoking vma_iter_end() on each loop by directly
-determining if the VMA was merged - the only thing we need concern
-ourselves with is whether the start/end of the (gapless) range are offset
-into VMAs.
+regards,
+Patryk
+pt., 25 lip 2025 o 08:05 Baolin Wang <baolin.wang@linux.alibaba.com>
+napisa=C5=82(a):
 
-This refactoring also avoids the rather horrid 'pass pointer to prev
-around' pattern used in mprotect() et al.
+>
+>
+> On 2025/7/25 12:47, Hugh Dickins wrote:
+> > On Fri, 25 Jul 2025, Baolin Wang wrote:
+> >>>
+> >>> I hope to correct the logic of i915 driver's shmem allocation, by
+> extending
+> >>> the shmem write length in the i915 driver to allocate PMD- sized THPs=
+.
+> IIUC,
+> >>> some sample fix code is as follows (untested). Patryk, could you help
+> test
+> >>> it to see if this resolves your issue? Thanks.
+> >
+> > This patch cannot be the right fix.  It may be a very sensible workarou=
+nd
+> > for some in-kernel drivers (I've not looked or tried); but unless I
+> > misunderstand, it does nothing to restore userspace behaviour on a
+> > huge=3Dalways tmpfs.
+>
+> Yes. Initially, we wanted to maintain compatibility with the 'huge=3D'
+> option, meaning that 'huge=3Dalways' tmpfs mount would still allocate
+> PMD-sized THPs. However, the current implementation is the consensus we
+> reached after much debate:
+>
+> 1. =E2=80=9CWhen using tmpfs as a filesystem, it should behave like other
+> filesystems. No more special mount options.=E2=80=9D Per Matthew.
+> 2. =E2=80=9CDo not let the 'huge=3D' mount option mean 'PMD-sized' when o=
+ther
+> sizes exist.=E2=80=9D Per David.
+>
+> At the time, we should have sought your advice, but we failed. The long
+> historical discussion is in this thread[1]. So now the strategy for
+> tmpfs supporting large folios is:
+>
+> "
+> Considering that tmpfs already has the 'huge=3D' option to control the
+> PMD-sized large folios allocation, we can extend the 'huge=3D' option to
+> allow any sized large folios. The semantics of the 'huge=3D' mount option
+> are:
+> huge=3Dnever: no any sized large folios
+> huge=3Dalways: any sized large folios
+> huge=3Dwithin_size: like 'always' but respect i_size
+> huge=3Dadvise: like 'always' if requested with madvise()
+>
+> Note: For tmpfs mmap() faults, due to the lack of a write size hint,
+> still allocate the PMD-sized large folios if
+> huge=3Dalways/within_size/advise is set.
+>
+> Moreover, the 'deny' and 'force' testing options controlled by
+> '/sys/kernel/mm/transparent_hugepage/shmem_enabled' still retain the
+> same semantics. The 'deny' can disable any sized large folios for tmpfs,
+> while the 'force' can enable PMD sized large folios for tmpfs.
+> "
+>
+> Currently, we have observed regression in the i915 driver but have not
+> yet seen userspace regression on a huge=3Dalways tmpfs.
+>
+> If you have better suggestions, please feel free to point them out. Thank=
+s.
+>
+> [1] https://lore.kernel.org/lkml/Zw_IT136rxW_KuhU@casper.infradead.org/
+>
+> > Please reread my comment earlier in the thread, in particular,
+> > Passing a new SIGBUS xfstest does not excuse a regression: strict
+> PAGE_SIZE
+> > SIGBUS behaviour is fine for the newly-featured mTHPs or large folios,
+> > but not for the long-established huge=3Dalways.
+>
+>
 
-No functional change intended.
+--00000000000094d5bd063abcd59d
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Jeff Xu <jeffxu@chromium.org>
----
- mm/mseal.c | 67 ++++++++++++++++--------------------------------------
- 1 file changed, 20 insertions(+), 47 deletions(-)
+<div dir=3D"ltr"><div dir=3D"ltr">I have tested the fix for the i915 driver=
+ with kernel 6.16-rc7 and intel core ultra 155H.=C2=A0<div>The performance =
+in several tests is on the kernel 6.12 level,</div><div>so from a functiona=
+l standpoint, the issue has been resolved.=C2=A0</div><div>Additionally, I =
+also see potential for further optimization of the Xe driver.</div></div><d=
+iv><br></div>regards,<div>Patryk<br><div class=3D"gmail_quote gmail_quote_c=
+ontainer"><div dir=3D"ltr" class=3D"gmail_attr">pt., 25 lip 2025 o 08:05=C2=
+=A0Baolin Wang &lt;<a href=3D"mailto:baolin.wang@linux.alibaba.com">baolin.=
+wang@linux.alibaba.com</a>&gt; napisa=C5=82(a):<br></div><blockquote class=
+=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rg=
+b(204,204,204);padding-left:1ex"><br>
+<br>
+On 2025/7/25 12:47, Hugh Dickins wrote:<br>
+&gt; On Fri, 25 Jul 2025, Baolin Wang wrote:<br>
+&gt;&gt;&gt;<br>
+&gt;&gt;&gt; I hope to correct the logic of i915 driver&#39;s shmem allocat=
+ion, by extending<br>
+&gt;&gt;&gt; the shmem write length in the i915 driver to allocate PMD- siz=
+ed THPs. IIUC,<br>
+&gt;&gt;&gt; some sample fix code is as follows (untested). Patryk, could y=
+ou help test<br>
+&gt;&gt;&gt; it to see if this resolves your issue? Thanks.<br>
+&gt; <br>
+&gt; This patch cannot be the right fix.=C2=A0 It may be a very sensible wo=
+rkaround<br>
+&gt; for some in-kernel drivers (I&#39;ve not looked or tried); but unless =
+I<br>
+&gt; misunderstand, it does nothing to restore userspace behaviour on a<br>
+&gt; huge=3Dalways tmpfs.<br>
+<br>
+Yes. Initially, we wanted to maintain compatibility with the &#39;huge=3D&#=
+39; <br>
+option, meaning that &#39;huge=3Dalways&#39; tmpfs mount would still alloca=
+te <br>
+PMD-sized THPs. However, the current implementation is the consensus we <br=
+>
+reached after much debate:<br>
+<br>
+1. =E2=80=9CWhen using tmpfs as a filesystem, it should behave like other <=
+br>
+filesystems. No more special mount options.=E2=80=9D Per Matthew.<br>
+2. =E2=80=9CDo not let the &#39;huge=3D&#39; mount option mean &#39;PMD-siz=
+ed&#39; when other <br>
+sizes exist.=E2=80=9D Per David.<br>
+<br>
+At the time, we should have sought your advice, but we failed. The long <br=
+>
+historical discussion is in this thread[1]. So now the strategy for <br>
+tmpfs supporting large folios is:<br>
+<br>
+&quot;<br>
+Considering that tmpfs already has the &#39;huge=3D&#39; option to control =
+the <br>
+PMD-sized large folios allocation, we can extend the &#39;huge=3D&#39; opti=
+on to <br>
+allow any sized large folios. The semantics of the &#39;huge=3D&#39; mount =
+option are:<br>
+huge=3Dnever: no any sized large folios<br>
+huge=3Dalways: any sized large folios<br>
+huge=3Dwithin_size: like &#39;always&#39; but respect i_size<br>
+huge=3Dadvise: like &#39;always&#39; if requested with madvise()<br>
+<br>
+Note: For tmpfs mmap() faults, due to the lack of a write size hint, <br>
+still allocate the PMD-sized large folios if <br>
+huge=3Dalways/within_size/advise is set.<br>
+<br>
+Moreover, the &#39;deny&#39; and &#39;force&#39; testing options controlled=
+ by <br>
+&#39;/sys/kernel/mm/transparent_hugepage/shmem_enabled&#39; still retain th=
+e <br>
+same semantics. The &#39;deny&#39; can disable any sized large folios for t=
+mpfs, <br>
+while the &#39;force&#39; can enable PMD sized large folios for tmpfs.<br>
+&quot;<br>
+<br>
+Currently, we have observed regression in the i915 driver but have not <br>
+yet seen userspace regression on a huge=3Dalways tmpfs.<br>
+<br>
+If you have better suggestions, please feel free to point them out. Thanks.=
+<br>
+<br>
+[1] <a href=3D"https://lore.kernel.org/lkml/Zw_IT136rxW_KuhU@casper.infrade=
+ad.org/" rel=3D"noreferrer" target=3D"_blank">https://lore.kernel.org/lkml/=
+Zw_IT136rxW_KuhU@casper.infradead.org/</a><br>
+<br>
+&gt; Please reread my comment earlier in the thread, in particular,<br>
+&gt; Passing a new SIGBUS xfstest does not excuse a regression: strict PAGE=
+_SIZE<br>
+&gt; SIGBUS behaviour is fine for the newly-featured mTHPs or large folios,=
+<br>
+&gt; but not for the long-established huge=3Dalways.<br>
+<br>
+</blockquote></div></div></div>
 
-diff --git a/mm/mseal.c b/mm/mseal.c
-index 1059322add34..3df9581ec828 100644
---- a/mm/mseal.c
-+++ b/mm/mseal.c
-@@ -15,28 +15,6 @@
- #include <linux/sched.h>
- #include "internal.h"
- 
--static int mseal_fixup(struct vma_iterator *vmi, struct vm_area_struct *vma,
--		struct vm_area_struct **prev, unsigned long start,
--		unsigned long end, vm_flags_t newflags)
--{
--	int ret = 0;
--	vm_flags_t oldflags = vma->vm_flags;
--
--	if (newflags == oldflags)
--		goto out;
--
--	vma = vma_modify_flags(vmi, *prev, vma, start, end, newflags);
--	if (IS_ERR(vma)) {
--		ret = PTR_ERR(vma);
--		goto out;
--	}
--
--	vm_flags_set(vma, VM_SEALED);
--out:
--	*prev = vma;
--	return ret;
--}
--
- /*
-  * Does the [start, end) range contain any unmapped memory?
-  *
-@@ -62,38 +40,33 @@ static bool range_contains_unmapped(struct mm_struct *mm,
- 	return prev_end < end;
- }
- 
--/*
-- * Apply sealing.
-- */
--static int apply_mm_seal(unsigned long start, unsigned long end)
-+static int mseal_apply(struct mm_struct *mm,
-+		unsigned long start, unsigned long end)
- {
--	unsigned long nstart;
- 	struct vm_area_struct *vma, *prev;
--	VMA_ITERATOR(vmi, current->mm, start);
-+	unsigned long curr_start = start;
-+	VMA_ITERATOR(vmi, mm, start);
- 
-+	/* We know there are no gaps so this will be non-NULL. */
- 	vma = vma_iter_load(&vmi);
--	/*
--	 * Note: check_mm_seal should already checked ENOMEM case.
--	 * so vma should not be null, same for the other ENOMEM cases.
--	 */
- 	prev = vma_prev(&vmi);
- 	if (start > vma->vm_start)
- 		prev = vma;
- 
--	nstart = start;
- 	for_each_vma_range(vmi, vma, end) {
--		int error;
--		unsigned long tmp;
--		vm_flags_t newflags;
--
--		newflags = vma->vm_flags | VM_SEALED;
--		tmp = vma->vm_end;
--		if (tmp > end)
--			tmp = end;
--		error = mseal_fixup(&vmi, vma, &prev, nstart, tmp, newflags);
--		if (error)
--			return error;
--		nstart = vma_iter_end(&vmi);
-+		unsigned long curr_end = MIN(vma->vm_end, end);
-+
-+		if (!(vma->vm_flags & VM_SEALED)) {
-+			vma = vma_modify_flags(&vmi, prev, vma,
-+					curr_start, curr_end,
-+					vma->vm_flags | VM_SEALED);
-+			if (IS_ERR(vma))
-+				return PTR_ERR(vma);
-+			vm_flags_set(vma, VM_SEALED);
-+		}
-+
-+		prev = vma;
-+		curr_start = curr_end;
- 	}
- 
- 	return 0;
-@@ -192,10 +165,10 @@ int do_mseal(unsigned long start, size_t len_in, unsigned long flags)
- 	 * reaching the max supported VMAs, however, those cases shall
- 	 * be rare.
- 	 */
--	ret = apply_mm_seal(start, end);
-+	ret = mseal_apply(mm, start, end);
- 
- out:
--	mmap_write_unlock(current->mm);
-+	mmap_write_unlock(mm);
- 	return ret;
- }
- 
--- 
-2.50.1
-
+--00000000000094d5bd063abcd59d--
 
