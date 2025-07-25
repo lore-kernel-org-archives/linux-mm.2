@@ -2,125 +2,184 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C1ED6C87FCE
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 12:16:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4AB3DC87FCA
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 13:08:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E0D56B007B; Fri, 25 Jul 2025 08:16:40 -0400 (EDT)
+	id 8D60B6B007B; Fri, 25 Jul 2025 09:08:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 391AB6B0088; Fri, 25 Jul 2025 08:16:40 -0400 (EDT)
+	id 8ADE06B0089; Fri, 25 Jul 2025 09:08:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 280B76B0089; Fri, 25 Jul 2025 08:16:40 -0400 (EDT)
+	id 776AF6B008A; Fri, 25 Jul 2025 09:08:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 178BE6B007B
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 08:16:40 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9665B1DBBF4
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 12:16:39 +0000 (UTC)
-X-FDA: 83702685318.28.7D3D050
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 80073A000F
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 12:16:37 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 699C06B007B
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 09:08:33 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E46AD1A0742
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 13:08:32 +0000 (UTC)
+X-FDA: 83702816064.18.243879A
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 78F63A000C
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 13:08:30 +0000 (UTC)
 Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=jrToKTxA;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf15.hostedemail.com: domain of jannh@google.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=jannh@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753445797; a=rsa-sha256;
-	cv=none;
-	b=gnEfThWb78Ml88SgVOwzEOiMwnKQmYdbufS50AEbkt4mpovPZKALKs1/PwDEbkBIoPOEci
-	n328X2mE33O2DDbj+vqA6t7gx4SKyVsshPv6lyEGqUI43Qj5RU5g5krjjEZFwnqZLXIoUv
-	FyX5CwR4dyQeTTLKv42sfmpHszTtDoo=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=jrToKTxA;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf15.hostedemail.com: domain of jannh@google.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=jannh@google.com
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YFMeJIY7;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf15.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753445797;
+	s=arc-20220608; t=1753448910;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=v8A06zzov4fRzg2AP/VvqP9aaecoBJtmC4l+aze+HnM=;
-	b=rWUSIQnoZeBTXp9i8WG8NcgTUbVU3JWqoD0S0zrj8h+ecQ2ag/pcNQ3P3NX8TCRF6KGiTS
-	8scWauPsrvEDWFT3/wBM7C0290zusS6pLNSapLy+XHSG9te07rt2Mrj6nLBuCyySsxxt6T
-	tesFvYkFuksF4NflRGxPc2Dq34Qf2Do=
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4562b2d98bcso33995e9.1
-        for <linux-mm@kvack.org>; Fri, 25 Jul 2025 05:16:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753445796; x=1754050596; darn=kvack.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=v8A06zzov4fRzg2AP/VvqP9aaecoBJtmC4l+aze+HnM=;
-        b=jrToKTxA/HfkR9byriCdstTvYmpDu+AwL3X95GOrKjaOMseaKPJpRzNaPjc/yPes8r
-         WAC3yiMKgUKfnkqP/XcaqEEbUerWvf89CGQQ4D2CgqJg9k/SZAAZX5QJHE9xjbePiks7
-         QSbYfdLR7gYMymp5Y0JqGIr3u0dWBzyCkh90guGnu8ZgSKorB13dvVTrcb3lJ3g9U9+Q
-         bBGI5fq7Ivf0SrGMO4kv5mKRpR8+6IK5qzzJX1fHbT8hSbgnbiVkCXh94SgWRFvp8unO
-         MFTO34WS6keNbC0mHcz7W3a+JhMWumSC2Mltl2PiWgWabDNPVkhlrALz1pXprY0Xo/z2
-         JuqQ==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vXVoKfgt+eDdtfLoo5jK4LHubyq9Q2bBiLasDQpfjKc=;
+	b=xBBYFYvxXup+MQeTuLR3CuH1Fp15IIRxP5tj3dNhlzIBANx26Lgw9Slj9DZflOtT07WDOn
+	7txyNF/I5JObG7OrIF3hJNlLgwUZ5HT1XqZjxR7kZSlaceJzPvf0eagWNOLQBTANrH+mki
+	UyhSqx/L45ySx+gUkJDWM4FvQ6UedIo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753448910; a=rsa-sha256;
+	cv=none;
+	b=u3tGan3XfO0tIhg8XU57yF9UJPy9C3cmHNv5Gbb77b5Pq9wIn7chEsa3fsF7fRZeMwIvLe
+	dXfqQJoQ8nawKGQvxCQcCOrmnbBg1RSOAp6zRoquyyprz63WZaheFsTuBk/WFa9bcBmMB8
+	jJLpbxt0sdH3MJX9Fzv4xb9LBAj8wXk=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YFMeJIY7;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf15.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1753448909;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=vXVoKfgt+eDdtfLoo5jK4LHubyq9Q2bBiLasDQpfjKc=;
+	b=YFMeJIY7jgqKSEFIsnEGPjmoH5hGkda+jIYWU2c9IgQv2n2cOuPqAa7hWfjLkWOPiPudG7
+	6vk3vHkaUqg2mYGIim9vOO+GQ7bhYFE1us9vDdTuqSi18nqHfPI0ndVI9vNW5KX2zHJCWD
+	EtvyYbtZbMNH4IB8HOUbLzLSIFcEZCA=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-50-iWoVam2aOr2BT8f7M0iCOw-1; Fri, 25 Jul 2025 09:08:28 -0400
+X-MC-Unique: iWoVam2aOr2BT8f7M0iCOw-1
+X-Mimecast-MFC-AGG-ID: iWoVam2aOr2BT8f7M0iCOw_1753448907
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45597cc95d5so10138865e9.1
+        for <linux-mm@kvack.org>; Fri, 25 Jul 2025 06:08:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753445796; x=1754050596;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=v8A06zzov4fRzg2AP/VvqP9aaecoBJtmC4l+aze+HnM=;
-        b=mAENUmYXtoBJ3xLmWMDPWMKoQf2PcUZsJHRv+d4d79+9Uf0YiHOB5f89POByGIVFg9
-         buHmjDk2jWTdHF7cnZXAdLnzWIiyxVgsjIsHnKWDDD6LjJUqRBp92hlxJT1rsBvr4aS5
-         DTASc33ixDHmbhJT7PaRCqhg5fSH2LDZujxKyobadou3IOS7rl+hY/ed4UbKN0SJuprw
-         fNJstWBOaI8lZ3hdgbNfgnOHzMt1LfsfqjLtAxzYAUpIgjsm1TqPaYGGQRhkf+kL71BP
-         W/9PsgjHMNOxz3LEPygNCOLWNr5DWJ/LY6nmm+J4bngz1mjV3pyto7HIWd/es2jPwoaH
-         YMhg==
-X-Gm-Message-State: AOJu0Yw9KPo5KL1hqoQVz9mKZ+bip/wDa1ugE+Y94W5U1aa+d6Jf4L5R
-	nDIM4ueln2mdc1CEKrue4NWxZ7g+9oKUJN2y50lcVjnQpGtvSUEi/Y3sL5YIeB1BpQ==
-X-Gm-Gg: ASbGncvX+Oe0Sdf+fdCRFp6iTav9k4V7/sZqL9ZhBhwJU9QlrbxDjE9xkiPiTh7LOwe
-	+paySfo/Pt7ac88LvE/+7WC8po+h/3TRMX/J5Am9rm8e3nh19CibvKu3DcwxxdczpepxuWDzuFY
-	4J/kK7sqKPsxCfZq6soItPTMXVcSI3SQKeZStBn2LsPG6YgvXnj+HSq7ww4h5hQve79jj6NVXOr
-	QkC1Zi1CAENG9gDJJhnioeHkyUyRUl0qOYXxAg/rXTTbZ51HYWtojThPiSl+zsQ9L0S8viuoVjh
-	TlZ5n5GHjVRSFEG6XM/ZXkkBuArDJuhf3sDKjM6fjU+E51PALiryOKuLqK++Ilk1+2RhuuDuxl6
-	L/3JrS5UBBg==
-X-Google-Smtp-Source: AGHT+IGciF+4vEIkN/QlW54EKn9w/jC8q5NchVG0Sr8U59/ARVTa0iNrkl49Gr+973iUxiCoTLx16g==
-X-Received: by 2002:a05:600c:548b:b0:455:fb2e:95e9 with SMTP id 5b1f17b1804b1-458730cfd06mr1672715e9.6.1753445795587;
-        Fri, 25 Jul 2025 05:16:35 -0700 (PDT)
-Received: from localhost ([2a00:79e0:9d:4:5214:94de:bd29:e79d])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b76fc605a4sm4916829f8f.14.2025.07.25.05.16.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Jul 2025 05:16:34 -0700 (PDT)
-From: Jann Horn <jannh@google.com>
-Date: Fri, 25 Jul 2025 14:16:24 +0200
-Subject: [PATCH v2] mm/rmap: Add anon_vma lifetime debug check
+        d=1e100.net; s=20230601; t=1753448907; x=1754053707;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=vXVoKfgt+eDdtfLoo5jK4LHubyq9Q2bBiLasDQpfjKc=;
+        b=cskPI5JPq5Ovx+MO9//SDOgSzbQMuHm5v5sXs3Fq6M08iInV8VQPekPSmBs0ZgnIHK
+         5ZRTfEZg9X1dmRXJYyb6e9E91aGaOhD1Q2u2HCK12Z3LchR4pwiD3DJvKVgBsngVNKD3
+         yHhGnstjEwRdiY1/2ZDZdikH/SQGs87cN9RXXo5ehtwwFgytRVZGn3IrwsTDxG3COZiO
+         4HtmeitYH53H08nwzlLBafvKinWb/n/+GYZfN8xrHKri9mzooVs7sUSi7Hhqxij6zzcs
+         S/sRubiAfYcp9fS1BKC3NxJQGRQG9EeUBNNWyBcODf0JUvbWzbwXMplopQ73FNnnXpUm
+         UFaQ==
+X-Gm-Message-State: AOJu0YxuZ0kvXx4T77c5GcK6FpfZkPmtRismSsCtWHdG/5cVdMQURc31
+	xE+mx1Nfq8BW+h2NE4aHAbpicrUY7bc3R7yuMWDTly8Z5hQyhpVj1kWikrOuHH8276e9gw6f0pg
+	JzkNw9wvDH6ON7yA38qhxv3t3kvOTjz7i0MOrMB99hQCZHxHGv8lY
+X-Gm-Gg: ASbGncsQkrwbpetMYwsxif/mgKH8gE1s94ESWAJDtHlgPVTdmVGdVB+Su7PPn2kdSkd
+	gM8dnWtL2hpiKdeUHWobpGA1H39Yk8151Ctz9Qy4j9KJxU2bB8U4EvpDr1H8VNhPWhgIVFcJ0aE
+	OcXSxXSpn3m/Ppqnp670h9YO9ET6gMzVukvHSHnyFgHiyBSOvEeVpj5NF513khEBQHu+N5biae7
+	vcUuqVhvZ+fxg3uSuONJBoYNffK4uQ7qeZF7N+wwKgndr7CVFEUvTfo69viGwxmnCLoPVKbwQOa
+	ztu/gt6ssHSlPFVgO+Oa8ZqLIgCXiL+wTSuuOvzd8OGIcHKBRPo8oPWCe4KdtliWBlFY7FVfDie
+	PLbpuAyPrnQMrwYnMzyW7OjUzEXCZZeWwqTwIyZdtnXrrz0+bDhG3zXRdm80GO9Vn
+X-Received: by 2002:a05:600c:a08e:b0:456:1a87:a6cb with SMTP id 5b1f17b1804b1-458787dc1fcmr10178335e9.19.1753448907053;
+        Fri, 25 Jul 2025 06:08:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF2RXrdRvbIxRYGYQLphu0lW6ksSFFRRKo/9yzkhDSnD9/0KgQ1xqI1uMWWpky4n4Gl2pL7ag==
+X-Received: by 2002:a05:600c:a08e:b0:456:1a87:a6cb with SMTP id 5b1f17b1804b1-458787dc1fcmr10177755e9.19.1753448906522;
+        Fri, 25 Jul 2025 06:08:26 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f34:ae00:cf93:b0dc:6bed:abc? (p200300d82f34ae00cf93b0dc6bed0abc.dip0.t-ipconnect.de. [2003:d8:2f34:ae00:cf93:b0dc:6bed:abc])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45870532a4csm53826245e9.7.2025.07.25.06.08.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Jul 2025 06:08:25 -0700 (PDT)
+Message-ID: <0905a63e-420e-484f-a98b-19e85fc851fa@redhat.com>
+Date: Fri, 25 Jul 2025 15:08:24 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH POC] prctl: extend PR_SET_THP_DISABLE to optionally
+ exclude VM_HUGEPAGE
+To: Usama Arif <usamaarif642@gmail.com>, linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+ linux-doc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, SeongJae Park <sj@kernel.org>,
+ Jann Horn <jannh@google.com>, Yafang Shao <laoar.shao@gmail.com>,
+ Matthew Wilcox <willy@infradead.org>, Johannes Weiner <hannes@cmpxchg.org>
+References: <20250721090942.274650-1-david@redhat.com>
+ <3ec01250-0ff3-4d04-9009-7b85b6058e41@gmail.com>
+ <601e015b-1f61-45e8-9db8-4e0d2bc1505e@redhat.com>
+ <99e25828-641b-490b-baab-35df860760b4@gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ g3eXuA==
+Organization: Red Hat
+In-Reply-To: <99e25828-641b-490b-baab-35df860760b4@gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: mQZ8NvIe4CizRagSvd-uRuFezJTaMwROv6_mLuWJ3zg_1753448907
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250725-anonvma-uaf-debug-v2-1-bc3c7e5ba5b1@google.com>
-X-B4-Tracking: v=1; b=H4sIAJd1g2gC/32NQQ7CIBBFr9LM2jFAahBX3qPpAsqUklgwYImm4
- e5iD+DyveS/v0Om5CnDrdshUfHZx9BAnDqYFh0cobeNQTBxYVL0qEMMZdW46Rktmc2hVtYwMj2
- X0kDbPRPN/n00h7Hx4vMrps9xUfjP/qsVjhyFUldl7dST0HcXo3vQeYorjLXWL2nQBm6zAAAA
-X-Change-ID: 20250724-anonvma-uaf-debug-a9db0eb4177b
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@redhat.com>, 
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
- Rik van Riel <riel@surriel.com>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Jann Horn <jannh@google.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1753445791; l=2822;
- i=jannh@google.com; s=20240730; h=from:subject:message-id;
- bh=RPodm9Ldenuy/H5haDTN8fCr5D6oW2GFg9ixFEFNSgU=;
- b=2aXvVOIInCdwGZjckt0AFw/FmLGP7KvAWt58w6Phvj1VFsc79j9yuxuT9YQ416/22q2uKcSkZ
- SpdyefrwB9RCL/p7QsSAyU1j7eMRm1X9VRAhUvVMJ+pTw/0yPy2nNZJ
-X-Developer-Key: i=jannh@google.com; a=ed25519;
- pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 80073A000F
-X-Stat-Signature: 1pw1hzruess7m97panrz8foppt599ec5
+X-Rspamd-Queue-Id: 78F63A000C
+X-Stat-Signature: xeupo5ntmqoe7i3xs36f5otzihbcte9w
 X-Rspam-User: 
-X-HE-Tag: 1753445797-451882
-X-HE-Meta: U2FsdGVkX19bEurj0C9oXou2ngj2TomPKQuqj15fA6tGpqsNvfTP04pU+fPP7hUChWE+79eRdhRsyPYJ7OJP2OEqef+6t/GH80eqoEKYUhxwb396EKJRM/wpe0BUN+7ZFjqtGbZIYPoj6kRY6s7tu5pA90Yz5uKJ1fPbxwbvXskAzTn0Y6AJgF9qwBdsLLODpPZm4CHH3dnOjJqT0wcffAoUZVcnRnHYJYf0OiEeEwQjdOdYT+VR3SDZ/hCW79fZUmDwfwQZGjXC3Z6jrXqAxkE+EP1F6NPxE3P3OFgiefwDtYR/Yv+zahaTHzVa2ZcA7Sd9+Zy4w3RToazJ2WmEx6KyG9Hxrd/hrwPlkbdSKdjaNK6OlDrsMhXp4Uc4ZdMpt1G8v7CJ8eJl3sP1wUNGaNJiSisFwN9WGWfCa/5gOP6qb/3eKfGrDMoxxIoow5n6iKg9dbe7XMf1pBozZwrduqpgc88DMYawlSHRso0Z3GkY/yl4xL81oYyxkxP3SdUDhw2Uj5SLshyWyA4j4WyhxcNyZy4TmDeHeKwIaQQaFHMRB6JIUFeURi9e9sl1KJPWiBYgD9IC/lMCIY9ZXrSioNWFAD2xMHEGX/n06KrOBJZDMTrHsuJByFwsNNJjcuQ/n0qdTCJU7EntiHPiDydb2yhumALTSP1R7O8IdES8d3Ls6e50tlGFlA6k6isNUTi2pSQCqTa4NbNlRQrcAzaWNvbPY3bjY4URO6J2L+T5NBqYUzYsvPEv2wwpRUsFD2g8jb5b8YTDwfLkKTztfh102DBF3tG1NkjI+k94xB8mJunf12wPmJ5r4d1teUNMFScQtpaaKN5B8eF76DBTjqMJaNR6z6Yv7IbzNQx/wwiZEPu+K5f4qq4Wr2xXBS+GJq6dUAHtyujqjqTO5wstbCnteR4crjfeVPaZ5zFdbA2S4jI8cDNczuWQCXWitf790I1WXq/StSZ+zRsG+ZK+o6b
- VDj/cywj
- d7EZLTWbn6PFoscwaU52hqFZLzZx3YxWPNoH5EeQOCUP/uXVpruz9Uft4UJ3CmUuIFphP5UTEVkk/LfxCDy/gqpSxb/+P8N9RaqOKg20xukblLMX1xob6mqgDuiwZpdjiMHHnRzwqkkE18wZsGCyPVIX9rkUvGslg2zqnYNyYNTCoD5g3cQg92Ci3ybSbx/zgLwXwYDCJL3EG1ghWOR242k6Ham/D0Q/27HXOujADdElgF4ocmd4I5CTSJOD7U9R01ozO20a6bxykhc0iwtVKobyWtt3b8q5ykQF+xeqSmAvPRNne2PMl12y/WdYTOSL3rwnUkMJII8SKZNgOesbSEe+Axaf7X1O1xPxEmpptfw1FsvgvWbcF1vn8nNg+SzSCepRVCv44slEsWVSTi5A6AoLfpdXhsiqeyGA43n8U0fE/5oXaL439dmQNlEcMzPEfjmPWzr80DLUEuMTtxKos1Jypvmtsv8eWrrD5
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1753448910-725904
+X-HE-Meta: U2FsdGVkX1/9ukWCjBNCJQi51kXc8uDy87z8wnYJ0FGEDVtG6277vaqyEM3wfb2KfbBlJz8zYPD5tV9Xqe3A0bIFbk+2fVI139fSu+AdIhVnpYCVjmdHzBRVYjZQMX4EWCl+swZYhB/Ve2cLchvWQn3QNvti2sI5UdNzKi+8ONobgLDOziYKlotoI/P28ndh3s27aqNzA/zt7xkngycNVAGmdGERT1o1IXTrbEcqrAY+1RQSJpnyTKzt7ZAswWi6dv6IQ2MXL7uj1CfBy7jRjcGzelOrzEDPQHQGmwW6tVu0nCbU3l3lk+sxN4uyeQeiX7NIssqhRLmfzqO7jk41xsgk2btes1cQ0LByB13Xave+oU3CHdTWA5RPQufgIpmKX1crhmiW/n4k0vcCR4oYMO5+2LCWUtNLEEBhI/8Eg3RwXfDLC3XTRa1eaxg3/VOQ0tmmwLkoerdnzL8V97EmRpgIWcPvoLJ7ZYfvCItkSmu5z39WYL3ARrrimvbTZL5yooyUqjOU6lTLtZDKeYmJNLTeVpQdqEN7A3bEzRjT9zoYw8A7H0B1Ului3PDAhPok8E30KY2cnh4BTzpnVD4QgNj+ChdGqKf/91LsWiQCOhtKyjI8kLujSFYZklHwyFe7Y/1/+8l5lxUzgTuREbIOI2p/dVTXgv0vrE7ronkRT5e4V6tUPLi1683N2nOFtr9+XFREPXzsNuyT01k/VVaVE9og4LfVCAXBsuuf5ie4PtomRJskpMaLC97WDjEMlSFWm1J1JNgGpNPfx3zuzn66Qv4juhONyZc5z9pR7VxTOWJVcSTRRfAuiq39H121shCjQuy3bvRsUrJQ7CB5yqKh6MhH4nE9el3KbmVLQiSYeFJ+Mf6BaAj4eCqCm0A2zPi+myfB6uLTbhrR0hePQHYItPUdPpEGZFJUaqR/EDJmM70aa5LM+rxI2Q/qU+cPOH4qt+VmO4hQRtUvv0RnGqb
+ f6K+PThM
+ 15AnYAKkudhXL+kA8AcCXBpaGAkql4QhNi5n29kMQ6z3GTnEgmqXBSO2f0QRcFLTOPVA6Al5vb8BNIAgPOVK5T4cpQaWqRqazgtLh9VRKWZLczzry7QDUxIsiemTZyxuGY8YI81lyCRuKdTRfRpjUfzQ0eXIGvwQIeFvpPSBtfRZWuCayWGYSWfqs+AxARtGE2JsHamperDk8aShlrhMfAUoD5epIBW0k/4TDkB+oTGRQScMFOPW55Fn81PZP7nROMcD6AXl32BXaMg1Es5iuiqg32vEbBbcKb8pcMCCfQqVBNQsj4IImD3+/81ppGgJjEdMNrkw5pYL1qA/SNdK1AeIM0zi7Fk1fvbBYJ/LuvEUn7RCQnSwvoryfC0VlqzdXCJABpOF8lSa1TzEHW9AauI9kBfEYW1zwHwo/VT5tttF8D8eiJ3FzSCEUsNwCJCV1T8ML+kRHdV3nIwPyGhjsXMOEY3yU3Xsax2naC8QLcoQx0JWng4Csgt8Yu9Ol0Oi4hdz4wakKJKxlSzejl4kS47BBgh/YozySxWYXO8rdn4ZccjhHf7BZp/8SdIwd12/FDN3h+/iVKhclBk0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,75 +188,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If an anon folio is mapped into userspace, its anon_vma must be alive,
-otherwise rmap walks can hit UAF.
+On 25.07.25 00:27, Usama Arif wrote:
+> 
+>> Hi!
+>>
+>>>
+>>> Over here, with MMF_DISABLE_THP_EXCEPT_ADVISED, MADV_HUGEPAGE will succeed as vm_flags has
+>>> VM_HUGEPAGE set, but MADV_COLLAPSE will fail to give a hugepage (as VM_HUGEPAGE is not set
+>>> and MMF_DISABLE_THP_EXCEPT_ADVISED is set) which I feel might not be the right behaviour
+>>> as MADV_COLLAPSE is "advise" and the prctl flag is PR_THP_DISABLE_EXCEPT_ADVISED?
+>>
+>> THPs are disabled for these regions, so it's at least consistent with the "disable all", but ...
+>>
+>>>
+>>> This will be checked in multiple places in madvise_collapse: thp_vma_allowable_order,
+>>> hugepage_vma_revalidate which calls thp_vma_allowable_order and hpage_collapse_scan_pmd
+>>> which also ends up calling hugepage_vma_revalidate.
+>>>> A hacky way would be to save and overwrite vma->vm_flags with VM_HUGEPAGE at the start of madvise_collapse
+>>> if VM_NOHUGEPAGE is not set, and reset vma->vm_flags to its original value at the end of madvise_collapse
+>>> (Not something I am recommending, just throwing it out there).
+>>
+>> Gah.
+>>
+>>>
+>>> Another possibility is to pass the fact that you are in madvise_collapse to these functions
+>>> as an argument, this might look ugly, although maybe not as ugly as hugepage_vma_revalidate
+>>> already has collapse control arg, so just need to take care of thp_vma_allowable_orders.
+>>
+>> Likely this.
+>>
+>>>
+>>> Any preference or better suggestions?
+>>
+>> What you are asking for is not MMF_DISABLE_THP_EXCEPT_ADVISED as I planned it, but MMF_DISABLE_THP_EXCEPT_ADVISED_OR_MADV_COLLAPSE.
+>>
+>> Now, one could consider MADV_COLLAPSE an "advise". (I am not opposed to that change)
+>>
+> 
+> lol yeah I always think of MADV_COLLAPSE as an extreme version of MADV_HUGE (more of a demand
+> than an advice :)), eventhough its not persistant.
+> Which is why I think might be unexpected if MADV_HUGE gives hugepages but MADV_COLLAPSE doesn't
+> (But could just be my opinion).
+> 
+>> Indeed, the right way might be telling vma_thp_disabled() whether we are in collapse.
+>>
+>> Can you try implementing that on top of my patch to see how it looks?
+>>
+> 
+> My reasoning is that a process that is running with system policy always but with
+> PR_THP_DISABLE_EXCEPT_ADVISED gets THPs in exactly the same behaviour as a process that is running
+> with system policy madvise. This will help us achieve (3) that you mentioned in the
+> commit message:
+> (3) Switch from THP=madvise to THP=always, but keep the old behavior
+>       (THP only when advised) for selected workloads.
+> 
+> 
+> I have written quite a few selftests now for prctl SET_THP_DISABLE, both with and without
+> PR_THP_DISABLE_EXCEPT_ADVISED set incorporating your feedback on it. I have all of them passing
+> with the below diff. The diff is slightly ugly, but very simple and hopefully acceptable. If it
+> looks good, I can send a series with everything. Probably make the below diff as a separate patch
+> on top of this patch as its mostly adding an extra arg to functions and would keep the review easier?
 
-There have been syzkaller reports a few months ago[1][2] of UAF in rmap
-walks that seems to indicate that there can be pages with elevated mapcount
-whose anon_vma has already been freed, but I think we never figured out
-what the cause is; and syzkaller only hit these UAFs when memory pressure
-randomly caused reclaim to rmap-walk the affected pages, so it of course
-didn't manage to create a reproducer.
+Yes, we should do it as a separate patch, makes our life easier, because 
+that requires more work.
 
-Add a VM_WARN_ON_FOLIO() when we add/remove mappings of anonymous folios to
-hopefully catch such issues more reliably.
+We require a cleanup first, the boolean parameter for 
+__thp_vma_allowable_orders() is no good.
 
-[1] https://lore.kernel.org/r/67abaeaf.050a0220.110943.0041.GAE@google.com
-[2] https://lore.kernel.org/r/67a76f33.050a0220.3d72c.0028.GAE@google.com
-
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Signed-off-by: Jann Horn <jannh@google.com>
----
-Changes in v2:
-- applied akpm's fixup (use FOLIO_MAPPING_ANON, ...)
-- remove CONFIG_DEBUG_VM check and use folio_test_* helpers (David)
-- more verbose comment (Lorenzo)
-- replaced "page" mentions with "folio" in commit message
-- Link to v1: https://lore.kernel.org/r/20250724-anonvma-uaf-debug-v1-1-29989ddc4e2a@google.com
----
- include/linux/rmap.h | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
-
-diff --git a/include/linux/rmap.h b/include/linux/rmap.h
-index 20803fcb49a7..6cd020eea37a 100644
---- a/include/linux/rmap.h
-+++ b/include/linux/rmap.h
-@@ -449,6 +449,28 @@ static inline void __folio_rmap_sanity_checks(const struct folio *folio,
- 	default:
- 		VM_WARN_ON_ONCE(true);
- 	}
-+
-+	/*
-+	 * Anon folios must have an associated live anon_vma as long as they're
-+	 * mapped into userspace.
-+	 * Note that the atomic_read() mainly does two things:
-+	 *
-+	 * 1. In KASAN builds with CONFIG_SLUB_RCU_DEBUG, it causes KASAN to
-+	 *    check that the associated anon_vma has not yet been freed (subject
-+	 *    to KASAN's usual limitations). This check will pass if the
-+	 *    anon_vma's refcount has already dropped to 0 but an RCU grace
-+	 *    period hasn't passed since then.
-+	 * 2. If the anon_vma has not yet been freed, it checks that the
-+	 *    anon_vma still has a nonzero refcount (as opposed to being in the
-+	 *    middle of an RCU delay for getting freed).
-+	 */
-+	if (folio_test_anon(folio) && !folio_test_ksm(folio)) {
-+		unsigned long mapping = (unsigned long)folio->mapping;
-+		struct anon_vma *anon_vma;
-+
-+		anon_vma = (void *)(mapping - FOLIO_MAPPING_ANON);
-+		VM_WARN_ON_FOLIO(atomic_read(&anon_vma->refcount) == 0, folio);
-+	}
- }
- 
- /*
-
----
-base-commit: 1d1c610e32ab2489c49fccb7472a6bef136a0a8b
-change-id: 20250724-anonvma-uaf-debug-a9db0eb4177b
+I just pushed something untested to my branch (slightly adjusted patch#1 
++ 2 more patches), can you have a look at that? (untested ... :) )
 
 -- 
-Jann Horn <jannh@google.com>
+Cheers,
+
+David / dhildenb
 
 
