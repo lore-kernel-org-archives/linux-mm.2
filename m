@@ -2,108 +2,81 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 43ADCC87FCC
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 00:45:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AFF3FC87FCC
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 01:05:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C548E8E00D0; Thu, 24 Jul 2025 20:45:04 -0400 (EDT)
+	id 2EAE68E00D1; Thu, 24 Jul 2025 21:05:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C14D08E007C; Thu, 24 Jul 2025 20:45:04 -0400 (EDT)
+	id 2C2A28E007C; Thu, 24 Jul 2025 21:05:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B524C8E00D0; Thu, 24 Jul 2025 20:45:04 -0400 (EDT)
+	id 1FF858E00D1; Thu, 24 Jul 2025 21:05:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A51368E007C
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 20:45:04 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 52E0F1A0333
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 00:45:04 +0000 (UTC)
-X-FDA: 83700942528.21.4D19AA9
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 9949CC0004
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 00:45:02 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Mx4P75kK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of tj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=tj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753404302; a=rsa-sha256;
-	cv=none;
-	b=xZIcUWnUslwprcoom8JvXQ43m/0r/JaeFjEbP+atNZ3cfpv+T0Wqs2tz8pKAS94UNJpP8n
-	aqjTuP4q6hYweS6SmMPjdCjnCQw0gHQDA0Hua86knzv9d9SDogt6EdgSKPKDULjThpsdc+
-	D7Fa/PmUHRR43+f/6HnWptjckCwKbG0=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Mx4P75kK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of tj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=tj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E10B8E007C
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 21:05:08 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9B3431DB61E
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 01:05:07 +0000 (UTC)
+X-FDA: 83700993054.27.E6F3E34
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id E83DA8000B
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 01:05:05 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=HXP5UqLi;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753404302;
+	s=arc-20220608; t=1753405506;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gE99b4ZnSyea/VzCZeIPyKJzK2bS7p039WOOhhlx08g=;
-	b=8d01vWTivFti0jz9JD8FSEFNpFm3YNiXgzkgxrFM6cDm1ibXrOZwtBcVjtbjFYplVJ5j6o
-	ofB9OJz9LRgktnq9pxyfkH86V8lxNblNwX3ejAIT/08zWZtLkEDFHdyhNsT20I1xRDiQz4
-	jY6asIP6p2iHCdqXZYx5mEK+uzwSrX4=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=9DY9zSrjxnI4tno1NsONmm4QHg6nR8eJiRfauUt2LzE=;
+	b=H5ix9i3/7TGMH/a0secChp/Zr4S+OFroV+6HcgKEG0HqbwjCtFh6eR+86ATkc535H9WtEk
+	lkKAqzil01ZtgoFB+Ls4cB80xmZTVKqZMHTposifN782o5JAPfKMM+8g3J+vrjGZ01aHtc
+	Xz96K8q7yeHFEYPxpiLZS5Sf5dzFXng=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753405506; a=rsa-sha256;
+	cv=none;
+	b=no1vpkEo7zo0Lx5kvyuMhNbD4Pa1zGMYQYMN2Q1rhk0FdSQzyCGOSkIcE7T5Fnoa8eV5Qt
+	9m3cuoDhwQwVk9J8CE3oafOoGybWiA1s6Yz4xPE9PuwWKDmAPikpwkb2vooP7Y63kuxAvH
+	WXoKMbcE/ccX0XJAnq/hMf50cHaysNw=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=HXP5UqLi;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 5FC375C6956;
-	Fri, 25 Jul 2025 00:45:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBA47C4CEED;
-	Fri, 25 Jul 2025 00:45:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753404301;
-	bh=dvzxxFO1gaX+9xGTWwgKBCgV2b2CxVSK7tOnwNJFUio=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Mx4P75kKdF2V/aTgUjzyLBGy6f2MxQkesu7J3yxq3vEfAcB7ES6M60ybBRTtdBoS/
-	 jolS/1xxvErQtFnIo0OQZVGIMAEjrOal3WiqWUDZP6BbIWS/Ila/lyf2dC2nSf/Gbj
-	 rq8WPXzQ3J5oTC62KScmoUJoOOZOcXtNfQOCRDNghJKTyrwUPsfByokTTShdldhSI6
-	 ECrRz2veukkxssSq5AZPpWLseG8RxnO6UYjaU1lOpUkmRmGCHJFftVhjulI39Eh4fj
-	 9neuKi7uot7S9R4FfwgtPHW9x2iGksCBRuTYjcBfB3adZMD8a1hBTI2Ym4HkHU7y9e
-	 l6dOJgW1jksGA==
-Date: Thu, 24 Jul 2025 14:44:59 -1000
-From: Tejun Heo <tj@kernel.org>
-To: Daniel Sedlak <daniel.sedlak@cdn77.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Neal Cardwell <ncardwell@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org,
-	netdev@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
-	Matyas Hurtik <matyas.hurtik@cdn77.com>
-Subject: Re: [PATCH v3] memcg: expose socket memory pressure in a cgroup
-Message-ID: <aILTi2-iZ1ge3D8n@slm.duckdns.org>
-References: <ni4axiks6hvap3ixl6i23q7grjbki3akeea2xxzhdlkmrj5hpb@qt3vtmiayvpz>
- <telhuoj5bj5eskhicysxkblc4vr6qlcq3vx7pgi6p34g4zfwxw@6vm2r2hg3my4>
- <CAAVpQUBwS3DFs9BENNNgkKFcMtc7tjZBA0PZ-EZ0WY+dCw8hrA@mail.gmail.com>
- <4g63mbix4aut7ye7b7s4m5q7aewfxq542i2vygniow7l5a3zmd@bvis5wmifscy>
- <CAAVpQUCOwFksmo72p_nkr1uJMLRcRo1VAneADon9OxDLoRH0KA@mail.gmail.com>
- <jj5w7cpjjyzxasuweiz64jqqxcz23tm75ca22h3wvfj3u4aums@gnjarnf5gpgq>
- <yruvlyxyy6gsrf2hhtyja5hqnxi2fmdqr63twzxpjrxgffov32@l7gqvdxijs5c>
- <878ca484-a045-4abb-a5bd-7d5ae82607de@cdn77.com>
- <irvyenjca4czrxfew4c7nc23luo5ybgdw3lquq7aoadmhmfu6h@h4mx532ls26h>
- <486bfabc-386c-4fdc-8903-d56ce207951f@cdn77.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <486bfabc-386c-4fdc-8903-d56ce207951f@cdn77.com>
+	by sea.source.kernel.org (Postfix) with ESMTP id A3D2343740;
+	Fri, 25 Jul 2025 01:05:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA5EC4CEED;
+	Fri, 25 Jul 2025 01:05:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1753405504;
+	bh=tAi5yNbVWJZar85JYgxMKocAfRchNPvqbGllAqQ8wQY=;
+	h=Date:From:To:Cc:Subject:From;
+	b=HXP5UqLif1X61lXGPABx2KAbUTpnbRg6hpTtBn2nMNaygxT8Ase/sMQtr+pAG10nO
+	 b3LAKC0oGKgS28/tNtifcdkHB7Kat3YQBizSFC9avU4m7SBa85DKyk3DqtQV+Sxb2C
+	 N0HOhwDaozGo8fO7kqrt6Y122N85kyQm6kJK8UJg=
+Date: Thu, 24 Jul 2025 18:05:03 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-mm@kvack.org, mm-commits@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: [GIT PULL] hotfixes for 6.16
+Message-Id: <20250724180503.a8a80b0b0c904c1c7f967448@linux-foundation.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 65kjh46oe7d4gz6woze5y1sh8wowoohk
+X-Rspamd-Queue-Id: E83DA8000B
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9949CC0004
-X-Stat-Signature: pfkjo9rejyy8k6ztofjx3xkiqthr1akx
-X-HE-Tag: 1753404302-27861
-X-HE-Meta: U2FsdGVkX18WqOSNKSSConrOHGSnuvKHGeyG4HwgsCvZk7JeGJTal2Gfnm7Takwfuq5IxnWFd5Yvin9n+vmABN6czoO9JcA2YfUDMYeSmI6C6epbgHNHw8FuOtlKDKxuH3B+IUyaYhGe08YwPJeueklATOqPbmjxGxpRmdjCCagne5VfBFDrQe9vBpqJ+OGt91Rpv5fHTDOAsnzVXKECzjGzpWZ+rmJJL2RgRSts4B7pD0mobsRBPsebMFasntgsUcE4jFdMJpelEe8fc63p8+O4ObVAtwFKiffI1Fkrt4YT5WPBi4SKpn3ficUAZpeyn83GVFR79RPGm3Ls2zcmVCjZzT1D4hDU5SSOrggC9ip963K9mZfUovkJhlwOpn1CvNVIaTUT5FIKWKef8V4cIvH2baY5vFqyFbHC1isWPIzjAZQTyQqT9REJS3Bts6AL/gX1ogwVwKtgmMFHutXudunqmDqX/3+/ndpxYX0AqhHmLFcdNtX/mex5nTaoHM6Je66xLd67l5ex+TTNP2mBAhhuccEy2lZW8zC1Pk0kSRIOdeOv0of5asx3n99BhS+AyC0nIag5c5m+DSLso8Z4xAFfbxnQIfp5tW6eAHFMxNFTx5uC6j6YniRfx7cBNqFPZsxZv13MxDhmgv+Nrlebc/9DAUYRu7H475jGM0LPqLhcasGHOlLcYQ0mNdJzPjeMm8I2PV06YDJTg9jmdHxf0OWQFL4EZNF7jdWTy1C4xZGz2Pb7c8Bf3Ey3I/t24NoJlvVL3gHIEslJE8CC+62KCWR/xYg0wfhu+R6HfK5UJiguVysRE61bUj7xy0GSYw5B7B+9bAlpLYTC5tgTd7Q2qEzRIyh7gJ79Z+ZUh2RxeuHGGFQJE8Hd5x+awlry41qgPA7FUAsfx1+V91s5Werg6pZ2U3A9zHCtLCvNqXozj1Bnet9uxinggrlTqGydC5pfLrnPnK74jeCwUwS2Mfg
- v/MqJvDQ
- 9kHud61slbEpbciKiyvnRKHgk/A5PydEF7GrpGYmrEkFiZL6IzWhrPcOTMUspiOnSJPXupcxuZzQ2UoXUnbvzQSF+I2p+L1lLVV/H95Q1Mohx1psY+fe2govZZbyJz/mRGjdPx0DSIFpD1xCZTNmVC/VskB47+bGnhrmOvU6QDzIQPmF81RLm6HigCdDkQXcVrbCDGjFf4ncP3/TR98WAI67L4A==
+X-HE-Tag: 1753405505-76396
+X-HE-Meta: U2FsdGVkX1/kZCkSOPL9oy5lO2Jqvc3FRobQZvf2i3JN9wku5NGFGTaRomFs2v45ECx4Gs8STzbLG+H7qYvKn3Si9tuGN0rlyT0EwqsnruXuAN/wTM/uOewh2OrxXPOISkR66m9o4sGF1tM1UmSCj04oXCZVm/IydsoshpOCt6fH7NuOnHcNRlx7zu2J4XsZCCfIr6hBYqCb4cLCJqLg+upr+tEcLOdJGL74xaki1rhiuyJ84uy0O5lJBXaLwBxO1KlFs6rxcxO/8EpQ6Alpjnz1MkOl/8J+1dG6evv97iJswX4HeQZGtNWYgRA2q58jv6yHwmjAyIDLbLfz6hpb6jTZq/8D3ZAJ29ucn2Ps2ldbI9jLnbTjVYu6T05vEfe26le5K0RWo6kKXL3/4jqRnUxfDJmy518D10LbKVIfHc/l0cwemrBBZ+nSTBiRqvkChPjl1FdyKQIFN5d2hSuBEZ7qvpKU3n5HFb4RLFQQL7kkXRflN3gOX/wkELpW843woOJE61mVn8iyg1yBn0M4SkfCrW+kK45RANbUPa66pOLGR+4TyDgZX3+E+uu5R0DSqM6vnkn7hbjEDJ2RAp0g4JnnmEgpnY06cwcHafLoyCeIPQzaU9ZC7NV6KvK88VHdLRRb/ib08v+oPM38/UJoaax+VIQUcWW3L5x6WOgcPvt7sU93mXHghnm0Bk1veWqjlp0K4yLi4RkFQUVJk76CPUluZ/MYRSzqCn0iPn4PUbLXt8k0o8NCXavJo2GS1wueXrWln5KTg7UcAPANM9C8aY9z4gcwAjwMGgIuPoGu6/SzGdxtKX0LI1Elo2B+V1aVpRIQ2PkCn3lMOYGC1ABfUw4PkIsOf1gnHBt4qSxcF3Xj7+4J5BzH1+zgK5ojgyqnjV6k7XhZ4O/8jiJwI4/HUmlwaZF/jPTA41m66k3NYdrsq/GyLy/lEPTsAJ9ErDCL1wUxekEMDydn+UVhXER
+ nmzUx05A
+ 0skJC6jjhbKZu40SAbGejgvR6rvRMdvr3i4Hiv7afpxFSL1RbSE8kzwrpCei6xctkUwuu1Xupvg84MqoX/tUvxPSRMshy9a0RQSC7WsYQnj3dpbpZuV3MUC3jHGO30ZbNF9d+ZT3I6aeM0apJfERMwsb0I0c1h4Y1U0BIoQJtC0MGUvO9RepLPx3pvcMuXNuIwJx1PQPIwAHfRGCOUdRpBVwOpzUNmPu2mZEsclMl3SChvSAcC51mpNTEVMwc4IK5lDz+cpjHkzGc5Xs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,23 +85,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 24, 2025 at 10:43:27AM +0200, Daniel Sedlak wrote:
-...
-> Currently, we know the following information:
-> 
-> - we know when the pressure starts
-> - and we know when the pressure ends if not rearmed (start time + HZ)
-> 
-> From that, we should be able to calculate a similar triplet to the pressure
-> endpoints in the cgroups (cpu|io|memory|irq).pressure. That is, how much %
-> of time on average was spent under pressure for avg10, avg60, avg300 i.e.
-> average pressure over the past 10 seconds, 60 seconds, and 300 seconds,
-> respectively. (+ total time spent under pressure)
 
-Let's just add the cumulative duration that socket pressure was present.
+Linus, please pull this batch of hotfixes, thanks.
 
-Thanks.
 
--- 
-tejun
+The following changes since commit db6cc3f4ac2e6cdc898fc9cbc8b32ae1bf56bdad:
+
+  Revert "sched/numa: add statistics of numa balance task" (2025-07-09 21:07:56 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2025-07-24-18-03
+
+for you to fetch changes up to 0dec7201788b9152f06321d0dab46eed93834cda:
+
+  sprintf.h requires stdarg.h (2025-07-24 17:58:00 -0700)
+
+----------------------------------------------------------------
+11 hotfixes.  9 are cc:stable and the remainder address post-6.15 issues
+or aren't considered necessary for -stable kernels.
+
+7 are for MM.
+
+----------------------------------------------------------------
+Akinobu Mita (1):
+      resource: fix false warning in __request_region()
+
+Harry Yoo (1):
+      mm/zsmalloc: do not pass __GFP_MOVABLE if CONFIG_COMPACTION=n
+
+Jason Gunthorpe (1):
+      mm: update MAINTAINERS entry for HMM
+
+Jinjiang Tu (1):
+      mm/vmscan: fix hwpoisoned large folio handling in shrink_folio_list
+
+Marco Elver (1):
+      kasan: use vmalloc_dump_obj() for vmalloc error reports
+
+Nathan Chancellor (1):
+      mm/ksm: fix -Wsometimes-uninitialized from clang-21 in advisor_mode_show()
+
+Ryusuke Konishi (1):
+      nilfs2: reject invalid file types when reading inodes
+
+SeongJae Park (1):
+      mm/damon/core: commit damos_quota_goal->nid
+
+Sergey Senozhatsky (1):
+      mailmap: add entry for Senozhatsky
+
+Stephen Rothwell (1):
+      sprintf.h requires stdarg.h
+
+Zi Yan (1):
+      selftests/mm: fix split_huge_page_test for folio_split() tests
+
+ .mailmap                                          |  4 ++++
+ CREDITS                                           |  4 ++++
+ MAINTAINERS                                       |  3 ++-
+ fs/nilfs2/inode.c                                 |  9 ++++++++-
+ include/linux/sprintf.h                           |  1 +
+ kernel/resource.c                                 |  5 +++--
+ mm/damon/core.c                                   | 15 +++++++++++++++
+ mm/kasan/report.c                                 |  4 +++-
+ mm/ksm.c                                          |  6 +++---
+ mm/memory-failure.c                               |  4 ++++
+ mm/vmscan.c                                       |  8 ++++++++
+ mm/zsmalloc.c                                     |  3 +++
+ tools/testing/selftests/mm/split_huge_page_test.c |  3 ++-
+ 13 files changed, 60 insertions(+), 9 deletions(-)
+
 
