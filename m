@@ -2,127 +2,139 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F2FDC87FCA
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 16:40:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BC76BC87FCA
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 16:42:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 29B3C6B008A; Fri, 25 Jul 2025 12:40:54 -0400 (EDT)
+	id 5FB246B009B; Fri, 25 Jul 2025 12:42:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 24C2C6B0099; Fri, 25 Jul 2025 12:40:54 -0400 (EDT)
+	id 5D2836B009C; Fri, 25 Jul 2025 12:42:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13B776B009B; Fri, 25 Jul 2025 12:40:54 -0400 (EDT)
+	id 4E8E76B009E; Fri, 25 Jul 2025 12:42:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0346D6B008A
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 12:40:54 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id ACD28133FDB
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 16:40:53 +0000 (UTC)
-X-FDA: 83703351186.05.D36331D
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D84082000E
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 16:40:51 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=zeO2ahSD;
-	spf=pass (imf03.hostedemail.com: domain of 3krODaAsKCFMvx5zC6zJE8119916z.x97638FI-775Gvx5.9C1@flex--ackerleytng.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3krODaAsKCFMvx5zC6zJE8119916z.x97638FI-775Gvx5.9C1@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 4190C6B009B
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 12:42:46 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0C87FC06E3
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 16:42:46 +0000 (UTC)
+X-FDA: 83703355932.12.E623258
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 13C5AA000C
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 16:42:43 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=rivosinc-com.20230601.gappssmtp.com header.s=20230601 header.b=QYk6Px55;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of debug@rivosinc.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=debug@rivosinc.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753461764; a=rsa-sha256;
+	cv=none;
+	b=DAIrkiJmsSELN4Te7LzGrEXdFLwN7eNd8lcvy6kLnd7zipT2RVsgNtE4ihTKKbgVV0SEwy
+	/26EDdZydIpw8zKjCqYzM2GZKZcOLv8i7U3eJ9pSmSLnd4ODMOZ6vGjEGVgtWlkK+Xs+Zr
+	VyS4ZnUD4xK5vjWPtxJdBDahJNKpt68=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=rivosinc-com.20230601.gappssmtp.com header.s=20230601 header.b=QYk6Px55;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of debug@rivosinc.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=debug@rivosinc.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753461651;
+	s=arc-20220608; t=1753461764;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h0vJgkAubMXXN6o65VTnm8PRheVkeM5gEkAdD1H4GYM=;
-	b=kaVo+oDxS2142AcAtHpKcmiBKyVOGzAfhA4CPRgup5oquM8NHB8RcMbKna9kfrlDAEqOe6
-	d03xYO43en8zArP4ajDiclT/3pN2d9NjG9Mq0V738J/vtE0y1mAty/+1yRuh933kfQtm3a
-	iDDenmRN2f+U09/0pFIy4WOHXPyXHPI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753461651; a=rsa-sha256;
-	cv=none;
-	b=uYFleAiyKAs/cyr48OzphWUVbWKTiF4u35eZx90ohBxIFHsQqOiAahMIcQV4fTXZNDF6Pk
-	AHXQp1/jpnMbFCNu42DZfdaVfYAXLBoQTwSYpDloH4V8p0jnmfNPMe/VyLtAARqNvULgCA
-	ezHutMKEh7yhqrcifooMPSs45ZJrdbU=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=zeO2ahSD;
-	spf=pass (imf03.hostedemail.com: domain of 3krODaAsKCFMvx5zC6zJE8119916z.x97638FI-775Gvx5.9C1@flex--ackerleytng.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3krODaAsKCFMvx5zC6zJE8119916z.x97638FI-775Gvx5.9C1@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b3510c0cfc7so1758659a12.2
-        for <linux-mm@kvack.org>; Fri, 25 Jul 2025 09:40:51 -0700 (PDT)
+	bh=8y2TNoIk2wdBhLwSEjjylt9WbC1a8YKSz5ABVX4y0Uk=;
+	b=PlxaS4Rbc4JJw/IzFJ16N0xYs6abkq3pWeEF7ius+XHY9+u3hT1KeXIGq31GBwNYZ9WAyh
+	EtCenZz0yZ4HXrigyGdYQfD2iiv42Y/rpo1ogL4pKWwZzfgWx/ijHDmH14nJol1728nQdJ
+	vTjI6v1T8zjdpjuKLnUL2NP+a/G3aUY=
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2349f096605so27885845ad.3
+        for <linux-mm@kvack.org>; Fri, 25 Jul 2025 09:42:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753461650; x=1754066450; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=h0vJgkAubMXXN6o65VTnm8PRheVkeM5gEkAdD1H4GYM=;
-        b=zeO2ahSDrPDz3WGxxX+088Rol69L6nz7knqHdWWEkxDJoZLjSUk8aZVXS0EKYZ4ehh
-         krxTSMvMeVWfomyfE6Lg7DUPJzeM5avghyOwLPWewqUTf+9c/q5N6pYiaJL0Nco6mjpv
-         aAKHH5GbGPHb07KL07hcBE3VDr9LKvdpY8mA3rJ7+5KsQAk/6kHEl6dZBkWmhj/fU/4J
-         XZjQ6/OO61EjJH2fp/AcP2dngvg5oHXMaxcLO1Jr6uaeFHWOrn7tVQrg66WKvpF5b8M0
-         VBnjr2BDti+dTall9ErdZ5InDIRUoUzCWORNFmzSyf/H653pVCtC8NmHvCPBW8VnrFTw
-         DhPw==
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1753461763; x=1754066563; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8y2TNoIk2wdBhLwSEjjylt9WbC1a8YKSz5ABVX4y0Uk=;
+        b=QYk6Px55djSA16SopT0AXBnjh7xKiQlCDErDzQVKpZ20UHNjenRoQmiJRfoqsM9J7/
+         FLMWRLlUChRt62bXGWnqAdi3/Nq2GRELWcWYpUK8c3WxaPjOIJFOVZ14jIEAHkeOqAvj
+         QLZC16/P4d11CKUDSXyyRfYcfFSFztbUw8FI6CAX4PSdYNFz1h3VMpB7rnTJYX0zDTcP
+         c/PMaRGeaYjOQy82hSmkABtWoNWuO7/Djhel4ge0VhJ/mPGYGDDJamquZ2lg1m+Jx22a
+         YFKjrEUrLPDcu8Dl5nbGcMmIrROZzF7KZ/DMGJbM9OQEC4pOQ8gWivOTLOPs3B4JQJZ/
+         lRSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753461651; x=1754066451;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=h0vJgkAubMXXN6o65VTnm8PRheVkeM5gEkAdD1H4GYM=;
-        b=S/sCpmGqwJIMRFQb3hXaI0hjwyadIZ++LNSUrQEc6nDaL1BAsRfmjweGlXkBHMV6Or
-         5aE3in+G56D3RCvJOLJccOwy3ssmZbYOiza9Vm/SXm2t3vRIsVFvaD6Vd7fSmwiyTUks
-         x86qM5dA8Ezbp3QqFP9aUHL2io5yomrnAIimSAI7726ehPZHAvrYxPS8N9BVP7KHJsd1
-         zc6gMSl54hyTo6AHBzezPnrMKYSK1Peovn9pMajfjC9E8/4+ueqA5+QpgzuZcmHURCuE
-         bN/9ib/7UHjVkiDo132fP1jxjQ/tcZ+wq8YUfPT+u1NgsyiibwOc4sAwutacR5freDyG
-         xvgA==
-X-Forwarded-Encrypted: i=1; AJvYcCWMpXzaXT1yPMmkPKotm3gy1nYeH0PEr+CczdqSbtE65ldUOTp47pgAsUzxZN3MjHHwUHgb2KYaNA==@kvack.org
-X-Gm-Message-State: AOJu0Yy2JVx0SmzxNFV/UQYA5YoV0Sl8nuQlMUyz7stznXGqhsuxs7M3
-	jPZAR5IsPEJlg1I1fsBnZu1f/ySbU1nVoQW1mUXLMejgkbdwUWIns4y95RUVOy1w8tUw85WWTkk
-	TACnM8iyv8wAeWMOVWF7skzpDsw==
-X-Google-Smtp-Source: AGHT+IESSUb5A7ox/0yy/1EortQTdLaTQG/uMcj33CzvrGYLDRDtIu6A1gNBwhWuX15U4LdcnVba587BKC1ItwdU2g==
-X-Received: from pjbqc8.prod.google.com ([2002:a17:90b:2888:b0:312:26c4:236])
- (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90a:e185:b0:31c:bfb9:fca0 with SMTP id 98e67ed59e1d1-31e77a18508mr3602768a91.4.1753461650340;
- Fri, 25 Jul 2025 09:40:50 -0700 (PDT)
-Date: Fri, 25 Jul 2025 09:40:48 -0700
-In-Reply-To: <aIOMPpTWKWoM_O5J@google.com>
-Mime-Version: 1.0
-References: <20250723104714.1674617-1-tabba@google.com> <20250723104714.1674617-16-tabba@google.com>
- <diqza54tdv3p.fsf@ackerleytng-ctop.c.googlers.com> <aIOMPpTWKWoM_O5J@google.com>
-Message-ID: <diqzy0sccjfz.fsf@ackerleytng-ctop.c.googlers.com>
-Subject: Re: [PATCH v16 15/22] KVM: x86/mmu: Extend guest_memfd's max mapping
- level to shared mappings
-From: Ackerley Tng <ackerleytng@google.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-mm@kvack.org, kvmarm@lists.linux.dev, pbonzini@redhat.com, 
-	chenhuacai@kernel.org, mpe@ellerman.id.au, anup@brainfault.org, 
-	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
-	viro@zeniv.linux.org.uk, brauner@kernel.org, willy@infradead.org, 
-	akpm@linux-foundation.org, xiaoyao.li@intel.com, yilun.xu@intel.com, 
-	chao.p.peng@linux.intel.com, jarkko@kernel.org, amoorthy@google.com, 
-	dmatlack@google.com, isaku.yamahata@intel.com, mic@digikod.net, 
-	vbabka@suse.cz, vannapurve@google.com, mail@maciej.szmigiero.name, 
-	david@redhat.com, michael.roth@amd.com, wei.w.wang@intel.com, 
-	liam.merwick@oracle.com, isaku.yamahata@gmail.com, 
-	kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com, steven.price@arm.com, 
-	quic_eberman@quicinc.com, quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, 
-	quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com, 
-	quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com, 
-	james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev, 
-	maz@kernel.org, will@kernel.org, qperret@google.com, keirf@google.com, 
-	roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, 
-	rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com, 
-	jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com, 
-	ira.weiny@intel.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: D84082000E
+        d=1e100.net; s=20230601; t=1753461763; x=1754066563;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8y2TNoIk2wdBhLwSEjjylt9WbC1a8YKSz5ABVX4y0Uk=;
+        b=UDEUN9+OzHxUWg31P8yNkTVKlzRVz8kHV8hJ515lHce1v5AgnvpzFS+adveKAPh72r
+         qca7RGl0h1ILgLUoPvUwvC1I3QbIMml/+eelIV7YndejztVpJFOVZ819kyQMVEsn919t
+         THnG6D7Yem9HP1Sg4kgHfLzFF8XnKOJVI76SsdMiwhGVE4Xxq3xzpv7lf0w+3CvjGeZH
+         XgAHIb1B3TFbA6MBYUayy6g2YJjyRN0vPhZ9p02UtXJVKLi6pJHTC4Hj0vwlI5w6jEZ+
+         RmacOjn0yj2lvGtBiytur07OspafSQS7xBQ/2rPnKr3gkuXz8nmh6Kg596yeLqcNPxN5
+         /6Bw==
+X-Forwarded-Encrypted: i=1; AJvYcCXiuD+3yrckyGxdRRw3yKYe8Qyf5pzLWnTc1UhPGrk/4O5vP/MmKQtFkSZUJ+WgYIl5A8rVZd3+9Q==@kvack.org
+X-Gm-Message-State: AOJu0YwF+mEyPWr3IvIPX6k3YHkw0qmBkWtefye9s2FCBgrbJWDrTm2l
+	D16KlzGlRtnIq1Wrtaw1N0gwRxuc9hsvzBv+T7Si15bMnjKoCusdHEG+rQhp7PyjceQ=
+X-Gm-Gg: ASbGncuwL+W0f6UX7zJ88ArfYF2OkUnDKeqoFtsJE7i2bjulDb2E79Wf1Rfaom3lCnb
+	VKtKdD0ugKPMwPvFNcll8DoM9a2rVddWTN2cGD46iiGSbZYPiAGGF4RAdKjO/KsHXtXU0Uya/Dx
+	6yhONndJhEz8mBZJ5WpOG1Be30cREPpjkQ4M535obkzPxwiIbrBCNb5L28exearU+iO+oiRNOUD
+	wPdeqC8a29eVJuv2Ny85v8STpvg0ohY7eiAeZvVLPBO3cDlRTIy59D/ByA1D1H0l0oY2M7ZP43H
+	GwZlap6P655oLLs5qK1J8e/pPxpu15dxjhu8x63qlZKBRkXNR8BWUPmWm0naG47fOJIgCZBWAyf
+	+CuRJ8CaxhUV7Sml1o2aiUktWKpY8VW9r
+X-Google-Smtp-Source: AGHT+IESsSEPy/ac8F6mWdBj6vdPwp9s3VzEdxE6SjFz3Dg1QtfJX8WaXR44J4QcA36ULd9Dz05/pg==
+X-Received: by 2002:a17:902:e891:b0:236:94ac:cc1a with SMTP id d9443c01a7336-23fb3179530mr40948875ad.27.1753461762804;
+        Fri, 25 Jul 2025 09:42:42 -0700 (PDT)
+Received: from debug.ba.rivosinc.com ([64.71.180.162])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23fbe30bbc4sm1244165ad.29.2025.07.25.09.42.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Jul 2025 09:42:42 -0700 (PDT)
+Date: Fri, 25 Jul 2025 09:42:39 -0700
+From: Deepak Gupta <debug@rivosinc.com>
+To: Sami Tolvanen <samitolvanen@google.com>
+Cc: Will Deacon <will@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas.schier@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Monk Chiang <monk.chiang@sifive.com>,
+	Kito Cheng <kito.cheng@sifive.com>,
+	Justin Stitt <justinstitt@google.com>,
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-kbuild@vger.kernel.org, linux-mm@kvack.org,
+	llvm@lists.linux.dev, rick.p.edgecombe@intel.com,
+	broonie@kernel.org, cleger@rivosinc.com, apatel@ventanamicro.com,
+	ajones@ventanamicro.com, conor.dooley@microchip.com,
+	charlie@rivosinc.com, samuel.holland@sifive.com, bjorn@rivosinc.com,
+	fweimer@redhat.com, jeffreyalaw@gmail.com,
+	heinrich.schuchardt@canonical.com, andrew@sifive.com,
+	ved@rivosinc.com
+Subject: Re: [PATCH 10/11] scs: generic scs code updated to leverage hw
+ assisted shadow stack
+Message-ID: <aIOz_wxxCr8tPgXz@debug.ba.rivosinc.com>
+References: <20250724-riscv_kcfi-v1-0-04b8fa44c98c@rivosinc.com>
+ <20250724-riscv_kcfi-v1-10-04b8fa44c98c@rivosinc.com>
+ <20250725161327.GC1724026@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20250725161327.GC1724026@google.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 13C5AA000C
+X-Stat-Signature: 51rxny8h7f7hdmsdpch4jtszpegi468f
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: e7zacyjh17nheyg7yj7rrdgn7tu9foeh
-X-HE-Tag: 1753461651-393368
-X-HE-Meta: U2FsdGVkX1/DRFL5MxH5vGY+7mCmzABnTvPw8hPElDIpjGNbd0GtbX9wVxYPoGAQmMwhaFAThATsQ9NkfoSyJA9oga2Yi3KsEeIZaDFYFO8ZaBXBooXXCnh0x6fWg4UztsgPrgD/EbgedaqjIBmsuiyDogsN1NykkOeirJiP4jybgy55LgivE7mmVF8GP6rTZFc8xYDxXHopO1YO+tidBO/liqrWM9oyk/dXDrphaIYgT63s/Fs+SEGvbP8Tgi773TIUJPoXyQBOLAsW5r0bIryUdSqqlFUozutCSJUwuR+Q/74EEOh2J8Vl8zV4tF2iuFaEE4naOJwMJYaXSccqL5MOb2emelpOgTQolEtDEbuWPFQ/2O/z2OKFisnR2CXPHyB0YcesrrO4QFrqhBRYG4QF4x7k9mGlP38BE4gTeWGESkf8AxT/FSyJC9AtfEkP3IoikA7P8EPN3PfxARvkvTc+q6VsBQPJiCL7w7OK4PuQcF0XJXgTr0XS4CKIZw0PSlcUflqycsN5RlONPAd+ZFIK8f5dXo8XVB1qQkIfxrRfe6DoftK0U7A9QC8q6GKf7dTwialeGEFJ6AWfFk9Wgn72WUxLchTQqT5LOyhlrV4WbUrg1XJgjdtHzeQakIJYDsTOoqq76w4K+eHiBxqbo5gr/NErDceg/96LmXP/oDyMIM1+qUuAutU9Ng4zB9ED93R7BiMNtgUk66XsEPaYaoN3XIUrKMHuxqM91pRxQhjUzeVQK8ioUlRCfLdCR4J76umZaBkFs0eVhSBetXhgSHvr9UsRq1Am0c+KNm4zyZ9z0tRjlpvSrEPf/5X8+O9zMayO91E1Aueoo9WtJfV9OtgGs/bgDf0RT+Qetxe2D9M+qjNKEjUYC2vAuHlcIF/N3SwmIX1LluMUMJQ7gm6muGaNX+GOUo/V6dsmjB9JnkCukiwYVh252+c3VaAFV7k9M72jyiysoQ6zmXOwJB1
- mMs6hAUG
- QFzrXsi267yuoJ34xsZc80dTDc69bykFGGYjsInCb5Z2fVV4Rl+eL5tn7OX+PGZMDWYjMSj/+EKsdEJC754RDwVQvPWpMmTuF+TITYNmWoqavwL1KyCcZbA6zj7ml1W2P2TkBGJcXJv+N7fHA06tUY8flr4/aZHZnWOuYF8+BH9HrhT9FFRJnLjUl/dvGPYfBWOyDlS0U4I3x/yFyQzFBzuZFK0zFJrp2/sTd0avXeb3wFxsnTqdI0q2kNgtQ5Zlh/5aKRHOfAoIubESUthw6qJs+Ie5fXDk2bOhA1z135RdtD9M5XwrL8kij3FvE5FcMTzqljSBq4T3lvNDYKHCzQmr6v9QyrT1JR4l0B+R6Xmadinr/1xvLSohqKeq0quO5Hn9kBr9aec4NcfBFTddMMC01kThmADaJpb+xTMrhnSG5X2sThT82itmi694SxN6hI46DD1mvmajfpdngyYscHF/YueB6sWOeQr7cNyTG9s7JJZ7RPopsxrKCrkhJRMaHmm2pB4NnRNL2FZD28VZ8UKjdMrvKNTaHDFkxKQd3/xS21VuuNTWhD8D1DQ01/pztego2rHwWx8BLcSIxnJSRNFxlxY3dMqb560lfloeMtSgUOESRzuzxelKR0NmsdpnObKJZ5ZZPc6KAqUs/jlLVjk8xit6TtVwR4cawjXmuXAnv71ICMGTEkTIyfMx4HPpZuvXEpT1Os1zujhZM+d2VZzfC0Q==
+X-HE-Tag: 1753461763-620847
+X-HE-Meta: U2FsdGVkX1/WuYeYlE8qVkXdFe9S/4kmdAjq2o11+6Ap2myFV8wpiDNDDhGuT3+v5nKB1sYJgJcwuqvnGUTm1IcEaq+6wquUF62CMBwjAZh4ittEt8Y/dsOIPK8EX4TJd+1BOn9AkGPLg0XnxbZDU9vqQVX/D1l/9jv8V+/xfGtD69LOqpubQ0lnXhaJcesScT388obFrSPpn01Hu98DZ+tZNcag09szFpJ+rzfPHt2VXlr7YDYXe8uAq95MTBXBuEHFqRmVH6p+yifW16KjdJCff4TMSg3z5guRw7HrKj0RJj2aYz11003twvRhTz8mkI3aL+iycknv50FLIJLQv1riUiy/Z213PUWpNqxgUUTeaY/HvHRxP4LyZ4zgoIXXQUqVeEW2PMRQ0nV6SqlqlLSgtD/VYOYpx4A7u5LkCC3bppqtBsR2q2O+zZcVhZhX5mFdIct2Q6h/NE9qTVx3ShJhO4f2Va1lHsYv+HmCjk9ZD35kf+R9TXPtAhe3eA8HFET+RB0Z6ZAZviWsrGwDkK+ZPaKq89MdAUW9r4b+cbQ7x0hXvNKZrlsTVgxXE8/nPTO0uTUg+tJEVdRmkxX8B6uVcfoHidJzvuezVeRjB3s/9TX+wtWl2fufWdtjCtDDn6DDrS3dppG7I//ChuaDE5eKvjMpF84w9W+lWV2IrJydRCwZLad3A5a1K19ZvsYi+Xj5adXMgonrftnuuyard6jYTsDY3zHnxKTFijBx/rJgBMg5HXyZG2J4O2v17YzLvY757u2pA4jGuiGUhfTLfll359izkmPoklo/XzcgIKvWYqfe7ux/RZ0ktEsxSIuqekvMXwxuTSgY0QCfmf7LGFBZbgFp8oROXNuY/H63I8fSXuUWd+p9HkkyXagjhdGKLOgZh0Trbk8jRnunbIoBLmEmZkUIzGHWKY/FCYYtrtUlhRVaww5guMxqeTFR7SoisblKUSzWYcq7mur4siU
+ 9LUVbdWS
+ EotPGOlXzxurtJf3lETIFrN2UHks/jQJbz+XLHGS+JAejMUI9Qy9+GDAypybRhEnz1pujo7ShiyOiT78W6K7tMJvycqyNObGqeDt5IDyvLGnasq0m691WJS/nuYT6ZuUjrYIrMoonDEoeT890Rf4kAUzX/2Jy8fOeTh1moIN5Tww3ZqF1FIcuBasx3Fm/sLnm5AKgtA5edZTYyRuxhCfZ9vlY6vi7OO6v2PAjP4XdQeG6503JfPO/pw3X6X2iP4X5zGAANaj++8d0Uov53UdxSirlIHwGUGcO0Alzw0CltI26KVf9V5iSzBNH7AczJJWniIvv+FwvMBjs5mwQgR1+c5k4VtAURmBEZl4tlVC3G5D60IEDjLRJnDJPOoeFXxewgI3rV44VFvvOqiVyVaR3KdSWyR9p1ucaLXsJE97EpJ78Hho2ijjauD6q4jjcULj1aDn6tDGEQRoUpxL6DBNKw2S0SiD0xDAbBFKSMCBKjwi76adWJrsLbRSkq2OEF+cZ/51mEgLxwIHY8Kn8rJHfzIS7HUOnm2nZ++YA62RqMUXKO2MD6bJcRdzdt9AGwqD4MtcsLPRUoj0Z2fJgroD1U/GaUFaKh8t7Wy6P
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,80 +143,175 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sean Christopherson <seanjc@google.com> writes:
-
-> On Thu, Jul 24, 2025, Ackerley Tng wrote:
->> Fuad Tabba <tabba@google.com> writes:
->> >  int kvm_mmu_max_mapping_level(struct kvm *kvm, struct kvm_page_fault =
-*fault,
->> > @@ -3362,8 +3371,9 @@ int kvm_mmu_max_mapping_level(struct kvm *kvm, s=
-truct kvm_page_fault *fault,
->> >  	if (max_level =3D=3D PG_LEVEL_4K)
->> >  		return PG_LEVEL_4K;
->> > =20
->> > -	if (is_private)
->> > -		host_level =3D kvm_max_private_mapping_level(kvm, fault, slot, gfn)=
-;
->> > +	if (is_private || kvm_memslot_is_gmem_only(slot))
->> > +		host_level =3D kvm_gmem_max_mapping_level(kvm, fault, slot, gfn,
->> > +							is_private);
->> >  	else
->> >  		host_level =3D host_pfn_mapping_level(kvm, gfn, slot);
->>=20
->> No change required now, would like to point out that in this change
->> there's a bit of an assumption if kvm_memslot_is_gmem_only(), even for
->> shared pages, guest_memfd will be the only source of truth.
+On Fri, Jul 25, 2025 at 04:13:27PM +0000, Sami Tolvanen wrote:
+>On Thu, Jul 24, 2025 at 04:37:03PM -0700, Deepak Gupta wrote:
+>> If shadow stack have memory protections from underlying cpu, use those
+>> protections. arches can define PAGE_KERNEL_SHADOWSTACK to vmalloc such shadow
+>> stack pages. Hw assisted shadow stack pages grow downwards like regular
+>> stack. Clang based software shadow call stack grows low to high address.
 >
-> It's not an assumption, it's a hard requirement.
+>Is this the case for all the current hardware shadow stack
+>implementations? If not, we might want a separate config for the
+>shadow stack direction instead.
+
+Is there something like this for regular stack as well?
+I could copy same mechanism.
+
 >
->> This holds now because shared pages are always split to 4K, but if
->> shared pages become larger, might mapping in the host actually turn out
->> to be smaller?
+>> Thus this patch addresses some of those needs due to opposite direction
+>> of shadow stack. Furthermore, hw shadow stack can't be memset because memset
+>> uses normal stores. Lastly to store magic word at base of shadow stack, arch
+>> specific shadow stack store has to be performed.
+>>
+>> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+>> ---
+>>  include/linux/scs.h | 26 +++++++++++++++++++++++++-
+>>  kernel/scs.c        | 38 +++++++++++++++++++++++++++++++++++---
+>>  2 files changed, 60 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/include/linux/scs.h b/include/linux/scs.h
+>> index 4ab5bdc898cf..6ceee07c2d1a 100644
+>> --- a/include/linux/scs.h
+>> +++ b/include/linux/scs.h
+>> @@ -12,6 +12,7 @@
+>>  #include <linux/poison.h>
+>>  #include <linux/sched.h>
+>>  #include <linux/sizes.h>
+>> +#include <asm/scs.h>
+>>
+>>  #ifdef CONFIG_SHADOW_CALL_STACK
+>>
+>> @@ -37,22 +38,45 @@ static inline void scs_task_reset(struct task_struct *tsk)
+>>  	 * Reset the shadow stack to the base address in case the task
+>>  	 * is reused.
+>>  	 */
+>> +#ifdef CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK
+>> +	task_scs_sp(tsk) = task_scs(tsk) + SCS_SIZE;
+>> +#else
+>>  	task_scs_sp(tsk) = task_scs(tsk);
+>> +#endif
+>>  }
+>>
+>>  static inline unsigned long *__scs_magic(void *s)
+>>  {
+>> +#ifdef CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK
+>> +	return (unsigned long *)(s);
+>> +#else
+>>  	return (unsigned long *)(s + SCS_SIZE) - 1;
+>> +#endif
+>>  }
+>>
+>>  static inline bool task_scs_end_corrupted(struct task_struct *tsk)
+>>  {
+>>  	unsigned long *magic = __scs_magic(task_scs(tsk));
+>> -	unsigned long sz = task_scs_sp(tsk) - task_scs(tsk);
+>> +	unsigned long sz;
+>> +
+>> +#ifdef CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK
+>> +	sz = (task_scs(tsk) + SCS_SIZE) - task_scs_sp(tsk);
+>> +#else
+>> +	sz = task_scs_sp(tsk) - task_scs(tsk);
+>> +#endif
+>>
+>>  	return sz >= SCS_SIZE - 1 || READ_ONCE_NOCHECK(*magic) != SCS_END_MAGIC;
+>>  }
+>>
+>> +static inline void __scs_store_magic(unsigned long *s, unsigned long magic_val)
+>> +{
+>> +#ifdef CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK
+>> +	arch_scs_store(s, magic_val);
+>> +#else
+>> +	*__scs_magic(s) = magic_val;
+>> +#endif
+>> +}
+>> +
 >
-> Yes, the host userspace mappens could be smaller, and supporting that sce=
-nario is
-> very explicitly one of the design goals of guest_memfd.  From commit a780=
-0aa80ea4
-> ("KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for guest-specific backing memo=
-ry"):
+>I'm not a huge fan of all the ifdefs. We could clean this up by
+>allowing architectures to simply override some these functions, or at
+>least use if (IS_ENABLED(CONFIG...)) instead. Will, any thoughts about
+>this?
 >
->  : A guest-first memory subsystem allows for optimizations and enhancemen=
-ts
->  : that are kludgy or outright infeasible to implement/support in a gener=
-ic
->  : memory subsystem.  With guest_memfd, guest protections and mapping siz=
-es
->  : are fully decoupled from host userspace mappings.   E.g. KVM currently
->  : doesn't support mapping memory as writable in the guest without it als=
-o
->  : being writable in host userspace, as KVM's ABI uses VMA protections to
->  : define the allow guest protection.  Userspace can fudge this by
->  : establishing two mappings, a writable mapping for the guest and readab=
-le
->  : one for itself, but that=E2=80=99s suboptimal on multiple fronts.
->  :=20
->  : Similarly, KVM currently requires the guest mapping size to be a stric=
-t
->  : subset of the host userspace mapping size, e.g. KVM doesn=E2=80=99t su=
-pport
->  : creating a 1GiB guest mapping unless userspace also has a 1GiB guest
->  : mapping.  Decoupling the mappings sizes would allow userspace to preci=
-sely
->  : map only what is needed without impacting guest performance, e.g. to
->  : harden against unintentional accesses to guest memory.
-
-Let me try to understand this better. If/when guest_memfd supports
-larger folios for shared pages, and guest_memfd returns a 2M folio from
-kvm_gmem_fault_shared(), can the mapping in host userspace turn out
-to be 4K?
-
-If that happens, should kvm_gmem_max_mapping_level() return 4K for a
-memslot with kvm_memslot_is_gmem_only() =3D=3D true?
-
-The above code would skip host_pfn_mapping_level() and return just what
-guest_memfd reports, which is 2M.
-
-Or do you mean that guest_memfd will be the source of truth in that it
-must also know/control, in the above scenario, that the host mapping is
-also 2M?
+>>  DECLARE_STATIC_KEY_FALSE(dynamic_scs_enabled);
+>>
+>>  static inline bool scs_is_dynamic(void)
+>> diff --git a/kernel/scs.c b/kernel/scs.c
+>> index d7809affe740..5910c0a8eabd 100644
+>> --- a/kernel/scs.c
+>> +++ b/kernel/scs.c
+>> @@ -11,6 +11,7 @@
+>>  #include <linux/scs.h>
+>>  #include <linux/vmalloc.h>
+>>  #include <linux/vmstat.h>
+>> +#include <asm-generic/set_memory.h>
+>>
+>>  #ifdef CONFIG_DYNAMIC_SCS
+>>  DEFINE_STATIC_KEY_FALSE(dynamic_scs_enabled);
+>> @@ -32,19 +33,31 @@ static void *__scs_alloc(int node)
+>>  {
+>>  	int i;
+>>  	void *s;
+>> +	pgprot_t prot = PAGE_KERNEL;
+>> +
+>> +#ifdef CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK
+>> +	prot = PAGE_KERNEL_SHADOWSTACK;
+>> +#endif
+>
+>I would rather define the shadow stack protection flags in the header
+>file and allow them to be overridden in asm/scs.h.
+>
+>>  	for (i = 0; i < NR_CACHED_SCS; i++) {
+>>  		s = this_cpu_xchg(scs_cache[i], NULL);
+>>  		if (s) {
+>>  			s = kasan_unpoison_vmalloc(s, SCS_SIZE,
+>>  						   KASAN_VMALLOC_PROT_NORMAL);
+>> +/*
+>> + * If software shadow stack, its safe to memset. Else memset is not
+>> + * possible on hw protected shadow stack. memset constitutes stores and
+>> + * stores to shadow stack memory are disallowed and will fault.
+>> + */
+>> +#ifndef CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK
+>>  			memset(s, 0, SCS_SIZE);
+>> +#endif
+>
+>This could also be moved to a static inline function that
+>architectures can override if they have hardware shadow stacks that
+>cannot be cleared at this point.
+>
+>>  			goto out;
+>>  		}
+>>  	}
+>>
+>>  	s = __vmalloc_node_range(SCS_SIZE, 1, VMALLOC_START, VMALLOC_END,
+>> -				    GFP_SCS, PAGE_KERNEL, 0, node,
+>> +				    GFP_SCS, prot, 0, node,
+>>  				    __builtin_return_address(0));
+>>
+>>  out:
+>> @@ -59,7 +72,7 @@ void *scs_alloc(int node)
+>>  	if (!s)
+>>  		return NULL;
+>>
+>> -	*__scs_magic(s) = SCS_END_MAGIC;
+>> +	__scs_store_magic(__scs_magic(s), SCS_END_MAGIC);
+>>
+>>  	/*
+>>  	 * Poison the allocation to catch unintentional accesses to
+>> @@ -87,6 +100,16 @@ void scs_free(void *s)
+>>  			return;
+>>
+>>  	kasan_unpoison_vmalloc(s, SCS_SIZE, KASAN_VMALLOC_PROT_NORMAL);
+>> +	/*
+>> +	 * Hardware protected shadow stack is not writeable by regular stores
+>> +	 * Thus adding this back to free list will raise faults by vmalloc
+>> +	 * It needs to be writeable again. It's good sanity as well because
+>> +	 * then it can't be inadvertently accesses and if done, it will fault.
+>> +	 */
+>> +#ifdef CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK
+>> +	set_memory_rw((unsigned long)s, (SCS_SIZE/PAGE_SIZE));
+>> +#endif
+>
+>Another candidate for an arch-specific function to reduce the number
+>of ifdefs in the generic code.
+>
+>Sami
 
