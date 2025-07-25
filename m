@@ -2,123 +2,116 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4AB3DC87FCA
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 13:08:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 77235C87FCA
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 13:34:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D60B6B007B; Fri, 25 Jul 2025 09:08:33 -0400 (EDT)
+	id CB0626B0088; Fri, 25 Jul 2025 09:34:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8ADE06B0089; Fri, 25 Jul 2025 09:08:33 -0400 (EDT)
+	id C88286B0089; Fri, 25 Jul 2025 09:34:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 776AF6B008A; Fri, 25 Jul 2025 09:08:33 -0400 (EDT)
+	id B9E686B008A; Fri, 25 Jul 2025 09:34:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 699C06B007B
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 09:08:33 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E46AD1A0742
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 13:08:32 +0000 (UTC)
-X-FDA: 83702816064.18.243879A
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AB2396B0088
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 09:34:12 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5B85C133F0D
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 13:34:12 +0000 (UTC)
+X-FDA: 83702880744.16.F0E84B4
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 78F63A000C
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 13:08:30 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YFMeJIY7;
+	by imf24.hostedemail.com (Postfix) with ESMTP id D32EC180004
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 13:34:09 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CWv7NeuF;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf15.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	spf=pass (imf24.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753448910;
+	s=arc-20220608; t=1753450450;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vXVoKfgt+eDdtfLoo5jK4LHubyq9Q2bBiLasDQpfjKc=;
-	b=xBBYFYvxXup+MQeTuLR3CuH1Fp15IIRxP5tj3dNhlzIBANx26Lgw9Slj9DZflOtT07WDOn
-	7txyNF/I5JObG7OrIF3hJNlLgwUZ5HT1XqZjxR7kZSlaceJzPvf0eagWNOLQBTANrH+mki
-	UyhSqx/L45ySx+gUkJDWM4FvQ6UedIo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753448910; a=rsa-sha256;
+	bh=qjzMjUgFyhocxCtvsQ+BuNp/oTUhZgO65l7SMnRUajs=;
+	b=1l20q1p5V+0PZW+LQIEovPobMhrVnijmdbFOk0Gd6mkevDLjcgy5ulZG5LQCer+ksWO5bu
+	3fKIGIN05+QG8sCknV3i+21PDRXkw9MImNwt/rYXD3n4nQrc7qpa6KRRe/t4SunxsFSa/g
+	iWkqmwukHTtPmBgF6uud9JnOeTovZ10=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753450450; a=rsa-sha256;
 	cv=none;
-	b=u3tGan3XfO0tIhg8XU57yF9UJPy9C3cmHNv5Gbb77b5Pq9wIn7chEsa3fsF7fRZeMwIvLe
-	dXfqQJoQ8nawKGQvxCQcCOrmnbBg1RSOAp6zRoquyyprz63WZaheFsTuBk/WFa9bcBmMB8
-	jJLpbxt0sdH3MJX9Fzv4xb9LBAj8wXk=
+	b=IFR8Y3/raJtKIMtQC6A7nvIqlbhGza2HxVhP3cPZa/Zh6Zk6qtx52LTS25TvEwE102hEB3
+	u8nuZzem3l9KlZad7suKDFgjfms3SFZITCt2YSQcfOWzYUequmvgZuTi1cpdWzr4D4N2z0
+	csNJx6khjLktSp22qhFaEI+C4SghtEw=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YFMeJIY7;
+	imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CWv7NeuF;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf15.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	spf=pass (imf24.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753448909;
+	s=mimecast20190719; t=1753450449;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=vXVoKfgt+eDdtfLoo5jK4LHubyq9Q2bBiLasDQpfjKc=;
-	b=YFMeJIY7jgqKSEFIsnEGPjmoH5hGkda+jIYWU2c9IgQv2n2cOuPqAa7hWfjLkWOPiPudG7
-	6vk3vHkaUqg2mYGIim9vOO+GQ7bhYFE1us9vDdTuqSi18nqHfPI0ndVI9vNW5KX2zHJCWD
-	EtvyYbtZbMNH4IB8HOUbLzLSIFcEZCA=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=qjzMjUgFyhocxCtvsQ+BuNp/oTUhZgO65l7SMnRUajs=;
+	b=CWv7NeuF6PIErdGept6VPtfUWsZZlOVhXIz39kd0m4clWtKVyF0Ek6MO4xBPT84+JjpUxl
+	FMtrFN5ccbJYOyyjQjCsVhcz+Q38SMbgyJPPhamKOjZqU0hkOiSHDBfeaJ559nXExhEuzv
+	ExSG1dYevOO92u3m5UFcipAKkAzDTpk=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-50-iWoVam2aOr2BT8f7M0iCOw-1; Fri, 25 Jul 2025 09:08:28 -0400
-X-MC-Unique: iWoVam2aOr2BT8f7M0iCOw-1
-X-Mimecast-MFC-AGG-ID: iWoVam2aOr2BT8f7M0iCOw_1753448907
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45597cc95d5so10138865e9.1
-        for <linux-mm@kvack.org>; Fri, 25 Jul 2025 06:08:28 -0700 (PDT)
+ us-mta-614-bnxXs3aTO2K4htrIQ8oakA-1; Fri, 25 Jul 2025 09:34:08 -0400
+X-MC-Unique: bnxXs3aTO2K4htrIQ8oakA-1
+X-Mimecast-MFC-AGG-ID: bnxXs3aTO2K4htrIQ8oakA_1753450447
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3b775f1236fso331200f8f.1
+        for <linux-mm@kvack.org>; Fri, 25 Jul 2025 06:34:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753448907; x=1754053707;
+        d=1e100.net; s=20230601; t=1753450447; x=1754055247;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=vXVoKfgt+eDdtfLoo5jK4LHubyq9Q2bBiLasDQpfjKc=;
-        b=cskPI5JPq5Ovx+MO9//SDOgSzbQMuHm5v5sXs3Fq6M08iInV8VQPekPSmBs0ZgnIHK
-         5ZRTfEZg9X1dmRXJYyb6e9E91aGaOhD1Q2u2HCK12Z3LchR4pwiD3DJvKVgBsngVNKD3
-         yHhGnstjEwRdiY1/2ZDZdikH/SQGs87cN9RXXo5ehtwwFgytRVZGn3IrwsTDxG3COZiO
-         4HtmeitYH53H08nwzlLBafvKinWb/n/+GYZfN8xrHKri9mzooVs7sUSi7Hhqxij6zzcs
-         S/sRubiAfYcp9fS1BKC3NxJQGRQG9EeUBNNWyBcODf0JUvbWzbwXMplopQ73FNnnXpUm
-         UFaQ==
-X-Gm-Message-State: AOJu0YxuZ0kvXx4T77c5GcK6FpfZkPmtRismSsCtWHdG/5cVdMQURc31
-	xE+mx1Nfq8BW+h2NE4aHAbpicrUY7bc3R7yuMWDTly8Z5hQyhpVj1kWikrOuHH8276e9gw6f0pg
-	JzkNw9wvDH6ON7yA38qhxv3t3kvOTjz7i0MOrMB99hQCZHxHGv8lY
-X-Gm-Gg: ASbGncsQkrwbpetMYwsxif/mgKH8gE1s94ESWAJDtHlgPVTdmVGdVB+Su7PPn2kdSkd
-	gM8dnWtL2hpiKdeUHWobpGA1H39Yk8151Ctz9Qy4j9KJxU2bB8U4EvpDr1H8VNhPWhgIVFcJ0aE
-	OcXSxXSpn3m/Ppqnp670h9YO9ET6gMzVukvHSHnyFgHiyBSOvEeVpj5NF513khEBQHu+N5biae7
-	vcUuqVhvZ+fxg3uSuONJBoYNffK4uQ7qeZF7N+wwKgndr7CVFEUvTfo69viGwxmnCLoPVKbwQOa
-	ztu/gt6ssHSlPFVgO+Oa8ZqLIgCXiL+wTSuuOvzd8OGIcHKBRPo8oPWCe4KdtliWBlFY7FVfDie
-	PLbpuAyPrnQMrwYnMzyW7OjUzEXCZZeWwqTwIyZdtnXrrz0+bDhG3zXRdm80GO9Vn
-X-Received: by 2002:a05:600c:a08e:b0:456:1a87:a6cb with SMTP id 5b1f17b1804b1-458787dc1fcmr10178335e9.19.1753448907053;
-        Fri, 25 Jul 2025 06:08:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF2RXrdRvbIxRYGYQLphu0lW6ksSFFRRKo/9yzkhDSnD9/0KgQ1xqI1uMWWpky4n4Gl2pL7ag==
-X-Received: by 2002:a05:600c:a08e:b0:456:1a87:a6cb with SMTP id 5b1f17b1804b1-458787dc1fcmr10177755e9.19.1753448906522;
-        Fri, 25 Jul 2025 06:08:26 -0700 (PDT)
+        bh=qjzMjUgFyhocxCtvsQ+BuNp/oTUhZgO65l7SMnRUajs=;
+        b=HhnBETdDmHWhq5DVRQMXPXLRCAXbixiNalZxm/RE3EayB6D0lHpXWg5HHY+wVfVRQb
+         zYwLw1VEoxqnDI1R4jNIMuhJrSfv24uwpO/clSl7zU35Ug9cUn+nGT9aesuIMEusqFmb
+         2tggGHDV9h37ESpKUjpIlSi6xtuJi/sP4xLbTIkdIU9MCcAGTG3UXvfiSFs0DPPK1gzi
+         IV/iAXeV4j1rJ5LiOP19J1GMYXsrNGfZtgBHVAp4kCWxTc6HitvO4YcGHHAUA62Mvgmo
+         wTH/Ip8VI7MZPH1O+KxMwSIoytSSCiO82OPI+sOBmbjOhUG8y/XEyzbQyC2fx+DPiEOa
+         7qbQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXJeELyQIKy4JQIhbS2s8awGUlA9J6QT6guvjp3PwzkdLCtkDI7qehAWu/q36YVVY1rjwQ5lwLgEA==@kvack.org
+X-Gm-Message-State: AOJu0YyPYmdTOwYIh+D6xzq76ggazj6rbhfW3aB1LM8WAIAzFfRTp7xX
+	3/XFB0xmFdT5n/senpcep7vy44zQJC3wL+ROb2SQ58UCJOdCIQRBpx86oi5SnRGIZrovqVkH8yj
+	zxSO/DcYHc2IH0YJIIkpi8itTxTYZRU4CgaAXBZt39c+JFsJjpCfo
+X-Gm-Gg: ASbGncu8Jbu7z/LbI54smFUNSd0K30TK7vkXwxfoL8l/IDEraixiZL+9I5qPapfOMhs
+	77cbckXJvanNOu0nQ8ORtuF9Rd4vLSTe2VWEoPpdPIsQxpIOO6Mypzp75Y6z0ACMuPXFE4jz3dh
+	LQ4IxplmFlbYpan8ELAAMgPcGvY8+6wtnUrxqSslzFeeuBoVdg+fm4P1/bS8jlnvX6QHxziV05v
+	J1HtJNh1DLk+JeaqaxX3YpVgHc7Ec/V3wtUkPAqIjzDBz45wqcmJzPQPTARePKzrbGrO9nX/RDU
+	aS0xMXXYbQGOgBOTOZTd4I9D3m4ivMLpzAdLk7vD58cL5UnVcgtd49FNvR//n0cY+Vsp2j2vB9p
+	qyEqRZywlvCKkQZfjdShzhxqARR/oDWvtwswdHswxK+fJeOtjTcI9YPir8DwX/E/c
+X-Received: by 2002:a05:6000:4387:b0:3b6:136d:55de with SMTP id ffacd0b85a97d-3b7765e6081mr1825575f8f.7.1753450446603;
+        Fri, 25 Jul 2025 06:34:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEleK9UMiHt5WkhFPdIkFBwXAyimA+Jk8S8JlFb61PWfPjOgKNNQgs2/x2srwaWvJHl9HSEow==
+X-Received: by 2002:a05:6000:4387:b0:3b6:136d:55de with SMTP id ffacd0b85a97d-3b7765e6081mr1825546f8f.7.1753450446066;
+        Fri, 25 Jul 2025 06:34:06 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f34:ae00:cf93:b0dc:6bed:abc? (p200300d82f34ae00cf93b0dc6bed0abc.dip0.t-ipconnect.de. [2003:d8:2f34:ae00:cf93:b0dc:6bed:abc])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45870532a4csm53826245e9.7.2025.07.25.06.08.24
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b76fc75e7asm5003077f8f.31.2025.07.25.06.34.04
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Jul 2025 06:08:25 -0700 (PDT)
-Message-ID: <0905a63e-420e-484f-a98b-19e85fc851fa@redhat.com>
-Date: Fri, 25 Jul 2025 15:08:24 +0200
+        Fri, 25 Jul 2025 06:34:05 -0700 (PDT)
+Message-ID: <75afc906-9a09-4c86-8d70-f1c42a2ee4fc@redhat.com>
+Date: Fri, 25 Jul 2025 15:34:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH POC] prctl: extend PR_SET_THP_DISABLE to optionally
- exclude VM_HUGEPAGE
-To: Usama Arif <usamaarif642@gmail.com>, linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- linux-doc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, SeongJae Park <sj@kernel.org>,
- Jann Horn <jannh@google.com>, Yafang Shao <laoar.shao@gmail.com>,
- Matthew Wilcox <willy@infradead.org>, Johannes Weiner <hannes@cmpxchg.org>
-References: <20250721090942.274650-1-david@redhat.com>
- <3ec01250-0ff3-4d04-9009-7b85b6058e41@gmail.com>
- <601e015b-1f61-45e8-9db8-4e0d2bc1505e@redhat.com>
- <99e25828-641b-490b-baab-35df860760b4@gmail.com>
+Subject: Re: [PATCH 3/3] selftests/mm: assert rmap behave as expected
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Rik van Riel
+ <riel@surriel.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>
+References: <20250716082710.2801-1-richard.weiyang@gmail.com>
+ <20250716082710.2801-4-richard.weiyang@gmail.com>
+ <c4f339de-64d8-456b-bcdf-3719bea08fb1@redhat.com>
+ <20250717031748.27eic7qxotft6uko@master>
+ <20250725021649.eetoa4sev7r4uweh@master>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -165,21 +158,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  WBe5lqcozu9LpNDH/brVSzHCSb7vjNGvvSVESDuoiHK8gNlf0v+epy5WYd7CGAgODPvDShGN
  g3eXuA==
 Organization: Red Hat
-In-Reply-To: <99e25828-641b-490b-baab-35df860760b4@gmail.com>
+In-Reply-To: <20250725021649.eetoa4sev7r4uweh@master>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: mQZ8NvIe4CizRagSvd-uRuFezJTaMwROv6_mLuWJ3zg_1753448907
+X-Mimecast-MFC-PROC-ID: 9GQapovtLLWIvYHa2ej2RY9NFGrEs4FSTunJqcZWAL0_1753450447
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 78F63A000C
-X-Stat-Signature: xeupo5ntmqoe7i3xs36f5otzihbcte9w
+X-Stat-Signature: fwbwpz41b5gexb6ze1yws6j7915qy8p1
+X-Rspamd-Queue-Id: D32EC180004
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1753448910-725904
-X-HE-Meta: U2FsdGVkX1/9ukWCjBNCJQi51kXc8uDy87z8wnYJ0FGEDVtG6277vaqyEM3wfb2KfbBlJz8zYPD5tV9Xqe3A0bIFbk+2fVI139fSu+AdIhVnpYCVjmdHzBRVYjZQMX4EWCl+swZYhB/Ve2cLchvWQn3QNvti2sI5UdNzKi+8ONobgLDOziYKlotoI/P28ndh3s27aqNzA/zt7xkngycNVAGmdGERT1o1IXTrbEcqrAY+1RQSJpnyTKzt7ZAswWi6dv6IQ2MXL7uj1CfBy7jRjcGzelOrzEDPQHQGmwW6tVu0nCbU3l3lk+sxN4uyeQeiX7NIssqhRLmfzqO7jk41xsgk2btes1cQ0LByB13Xave+oU3CHdTWA5RPQufgIpmKX1crhmiW/n4k0vcCR4oYMO5+2LCWUtNLEEBhI/8Eg3RwXfDLC3XTRa1eaxg3/VOQ0tmmwLkoerdnzL8V97EmRpgIWcPvoLJ7ZYfvCItkSmu5z39WYL3ARrrimvbTZL5yooyUqjOU6lTLtZDKeYmJNLTeVpQdqEN7A3bEzRjT9zoYw8A7H0B1Ului3PDAhPok8E30KY2cnh4BTzpnVD4QgNj+ChdGqKf/91LsWiQCOhtKyjI8kLujSFYZklHwyFe7Y/1/+8l5lxUzgTuREbIOI2p/dVTXgv0vrE7ronkRT5e4V6tUPLi1683N2nOFtr9+XFREPXzsNuyT01k/VVaVE9og4LfVCAXBsuuf5ie4PtomRJskpMaLC97WDjEMlSFWm1J1JNgGpNPfx3zuzn66Qv4juhONyZc5z9pR7VxTOWJVcSTRRfAuiq39H121shCjQuy3bvRsUrJQ7CB5yqKh6MhH4nE9el3KbmVLQiSYeFJ+Mf6BaAj4eCqCm0A2zPi+myfB6uLTbhrR0hePQHYItPUdPpEGZFJUaqR/EDJmM70aa5LM+rxI2Q/qU+cPOH4qt+VmO4hQRtUvv0RnGqb
- f6K+PThM
- 15AnYAKkudhXL+kA8AcCXBpaGAkql4QhNi5n29kMQ6z3GTnEgmqXBSO2f0QRcFLTOPVA6Al5vb8BNIAgPOVK5T4cpQaWqRqazgtLh9VRKWZLczzry7QDUxIsiemTZyxuGY8YI81lyCRuKdTRfRpjUfzQ0eXIGvwQIeFvpPSBtfRZWuCayWGYSWfqs+AxARtGE2JsHamperDk8aShlrhMfAUoD5epIBW0k/4TDkB+oTGRQScMFOPW55Fn81PZP7nROMcD6AXl32BXaMg1Es5iuiqg32vEbBbcKb8pcMCCfQqVBNQsj4IImD3+/81ppGgJjEdMNrkw5pYL1qA/SNdK1AeIM0zi7Fk1fvbBYJ/LuvEUn7RCQnSwvoryfC0VlqzdXCJABpOF8lSa1TzEHW9AauI9kBfEYW1zwHwo/VT5tttF8D8eiJ3FzSCEUsNwCJCV1T8ML+kRHdV3nIwPyGhjsXMOEY3yU3Xsax2naC8QLcoQx0JWng4Csgt8Yu9Ol0Oi4hdz4wakKJKxlSzejl4kS47BBgh/YozySxWYXO8rdn4ZccjhHf7BZp/8SdIwd12/FDN3h+/iVKhclBk0=
+X-HE-Tag: 1753450449-980671
+X-HE-Meta: U2FsdGVkX1+cCjeGnTfebkeK5hxCwTGoohosU7hR1/iI/IBcmImAzuow99qzlSj3M2jx3A34ib3zrDimMoozgaVV7olxuy6yVCEfLlMTSWTgbxuLS6+O+bk5icrJ3LAHqWxSl92AExZu4mKmlOfrK9VhTkX/BQb3oUM+zb56BzX/2SroSbNuZetg1PdEVIGLaK7GJgKUBagK871NkhLnHz47lYf1wSHaimxYMJFlZLIqFvZ9nZsTSMnYHxIc/xHQmFPLkH4XZSuOlj90G2jEinFse3qS0s6IMhZUaOSuJFqTmSRu6qLllHRfGHwUn0FJWjYe1UKA6/LzNb+5NZDwMwrWFZ72pRg9bYzH5YM1QXIyQFJR9jPT4iXoGcnrxWuptPHxs3ZQ715T2YID9/e6bJCtVy9a61XNhwJQYWzw3k458HSUHEPFw3cJDf2DOgsgsp3TgEOeBbLEoDj+4Edm15Cp7AUpAdkqlfLgn23jxP1whHTyydPdfrhyitQWbD7DuddEkfH3uy2fAIn4NdAXcLDHd5uDEgNSE91NPlibfZSWaRSzeRFt7+qkgmczDNJP7LIntEui+dzTAf4aBk8zO325MnqsAnux8XTJpEWEBGJgO5YJW6R+GY3m04x2dL2p2TH2EDhNFCfEenUqLq0FIa42qIp5pev3UMiKV3RmIvGYF0IcyRxp8qMT4wO2D7NZw3xfKfhhmSmGEFYRHw7X61DwzXF1Qf5gpFPuoOY8afeNlLZeeFXDStDTgn500kmFxCg8jRD55Xetd9tGTOMJtkWXlcnfRexzyv/GF9RbAGcErT+Ztl+8moehdqLwzbA+YTrKh6qGhhG+K1hQLkyZNVPtMXU7UwBlkjwzcnNWuDk62Gx6QABIrWLtWP84VcwUZrGC3dRRqhWr9gDOCdmt0bO/RpsaI6mkYqqHFH2Swoaas+b7oqSg8CaQsZKNQ8YNmkhTKn41BRQhoWnbHZD
+ lP9Eq/Y6
+ ek9CDHEpwm5Rawr3zHTgrRZXTjmqbdoL3EmYNVbP9TBx0HDBDxYNoH50phxLgjVAFu5fwEzt3iDgl1Iyi7MhtmPoiLLtstnirYBGnZkyQqZ5TO425mPEbyzEW4EuhCBPKgb1a4vWUSVqbJ/K1azpwhjtMtHbESrVFtbAEvXn4uxHTAiZu3eeF+MUBrBfkPrhfz/97z1prP41ZC7dqSJ1kkRaA/rA/BLj0SJDUemqv4cGpfn6W2r3qHurdRIogGMl/cWb+TqT/zEXEpjbKLFcQL1myviegXfYuwA8FBXXDIRZcdCml4xUlvkGK+bUyM469pv7zRrMEtwZ9UB/jUfWGWvtzKAcMPJhH3jyym3kxsAuG2YyQFkGAjxgpHv3YwkwDMI3tW1epnOjESmaq3nc1c8dVPMATcsWWOunM5TwMMvK93nGRlTW5WyhjSV68oK6Cmqy6u8b6TcH4yPydiL7t+GlPGpMQCwsrtiq7kkjqUOS3NyfSX+9L7kHzvNNnBjJTMdf06kytooS4OlFgWtAkDRw1mDroueP3INEZy/vs3DgKdkEXsAEOgCDvxg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -188,75 +181,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 25.07.25 00:27, Usama Arif wrote:
-> 
->> Hi!
->>
->>>
->>> Over here, with MMF_DISABLE_THP_EXCEPT_ADVISED, MADV_HUGEPAGE will succeed as vm_flags has
->>> VM_HUGEPAGE set, but MADV_COLLAPSE will fail to give a hugepage (as VM_HUGEPAGE is not set
->>> and MMF_DISABLE_THP_EXCEPT_ADVISED is set) which I feel might not be the right behaviour
->>> as MADV_COLLAPSE is "advise" and the prctl flag is PR_THP_DISABLE_EXCEPT_ADVISED?
->>
->> THPs are disabled for these regions, so it's at least consistent with the "disable all", but ...
->>
->>>
->>> This will be checked in multiple places in madvise_collapse: thp_vma_allowable_order,
->>> hugepage_vma_revalidate which calls thp_vma_allowable_order and hpage_collapse_scan_pmd
->>> which also ends up calling hugepage_vma_revalidate.
->>>> A hacky way would be to save and overwrite vma->vm_flags with VM_HUGEPAGE at the start of madvise_collapse
->>> if VM_NOHUGEPAGE is not set, and reset vma->vm_flags to its original value at the end of madvise_collapse
->>> (Not something I am recommending, just throwing it out there).
->>
->> Gah.
->>
->>>
->>> Another possibility is to pass the fact that you are in madvise_collapse to these functions
->>> as an argument, this might look ugly, although maybe not as ugly as hugepage_vma_revalidate
->>> already has collapse control arg, so just need to take care of thp_vma_allowable_orders.
->>
->> Likely this.
->>
->>>
->>> Any preference or better suggestions?
->>
->> What you are asking for is not MMF_DISABLE_THP_EXCEPT_ADVISED as I planned it, but MMF_DISABLE_THP_EXCEPT_ADVISED_OR_MADV_COLLAPSE.
->>
->> Now, one could consider MADV_COLLAPSE an "advise". (I am not opposed to that change)
->>
-> 
-> lol yeah I always think of MADV_COLLAPSE as an extreme version of MADV_HUGE (more of a demand
-> than an advice :)), eventhough its not persistant.
-> Which is why I think might be unexpected if MADV_HUGE gives hugepages but MADV_COLLAPSE doesn't
-> (But could just be my opinion).
-> 
->> Indeed, the right way might be telling vma_thp_disabled() whether we are in collapse.
->>
->> Can you try implementing that on top of my patch to see how it looks?
->>
-> 
-> My reasoning is that a process that is running with system policy always but with
-> PR_THP_DISABLE_EXCEPT_ADVISED gets THPs in exactly the same behaviour as a process that is running
-> with system policy madvise. This will help us achieve (3) that you mentioned in the
-> commit message:
-> (3) Switch from THP=madvise to THP=always, but keep the old behavior
->       (THP only when advised) for selected workloads.
-> 
-> 
-> I have written quite a few selftests now for prctl SET_THP_DISABLE, both with and without
-> PR_THP_DISABLE_EXCEPT_ADVISED set incorporating your feedback on it. I have all of them passing
-> with the below diff. The diff is slightly ugly, but very simple and hopefully acceptable. If it
-> looks good, I can send a series with everything. Probably make the below diff as a separate patch
-> on top of this patch as its mostly adding an extra arg to functions and would keep the review easier?
+Sorry,
 
-Yes, we should do it as a separate patch, makes our life easier, because 
-that requires more work.
+>> So the case should be
+>>
+>>   * mapping (MAP_PRIVATE | MAP_ANONYMOUS)
+>>   * write some content in root parent
+>>   * fault in for each child
 
-We require a cleanup first, the boolean parameter for 
-__thp_vma_allowable_orders() is no good.
+That is not required, but a FORCE_READ() would also not be harmful (if 
+it would be done by your common code)
 
-I just pushed something untested to my branch (slightly adjusted patch#1 
-+ 2 more patches), can you have a look at that? (untested ... :) )
+>>   * do migration and record pfn
+>>   * then check pfn is the same in each child
+
+Yes, makes sense.
+
+A new version makes sense, so we can have a look what the new state 
+looks like.
 
 -- 
 Cheers,
