@@ -2,91 +2,142 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B0EC6C83F26
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 06:05:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8C46DC87FCA
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 06:13:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C3666B007B; Fri, 25 Jul 2025 02:05:22 -0400 (EDT)
+	id ED9706B007B; Fri, 25 Jul 2025 02:13:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 173E36B0088; Fri, 25 Jul 2025 02:05:22 -0400 (EDT)
+	id EA3666B0088; Fri, 25 Jul 2025 02:13:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 089E96B0089; Fri, 25 Jul 2025 02:05:22 -0400 (EDT)
+	id DB8EB6B0089; Fri, 25 Jul 2025 02:13:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EC2606B007B
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 02:05:21 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 94A30133AE3
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 06:05:21 +0000 (UTC)
-X-FDA: 83701749642.26.0E0459F
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 90F6940008
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 06:05:18 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=WYu8qtSJ;
-	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753423519; a=rsa-sha256;
-	cv=none;
-	b=iDKETdE5ahYjnIH+9CeRCpvykX3dTi1/7kmVMUKSqqlKSyr0s+gqcebpBYXtDX+QYQM7wt
-	mqVDtooWXFr2OErwYA9ld1bxImFHmU7uDgPWWxv9bECcbGMVeaMTsuk30xFEmr2lxmnI6l
-	tgnxwCI6RwlE/JA+QUlRAiWAglqkPGA=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=WYu8qtSJ;
-	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id CBBBB6B007B
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 02:13:41 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7C03616062E
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 06:13:41 +0000 (UTC)
+X-FDA: 83701770642.29.399FE36
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 1AD14A0003
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 06:13:38 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=canonical.com header.s=20210705 header.b=SGwTVuWP;
+	spf=pass (imf25.hostedemail.com: domain of heinrich.schuchardt@canonical.com designates 185.125.188.123 as permitted sender) smtp.mailfrom=heinrich.schuchardt@canonical.com;
+	dmarc=pass (policy=none) header.from=canonical.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753423519;
+	s=arc-20220608; t=1753424019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fNe1kuAKXpbr7W/PL4R47yQyd9hjp5RPvJ0TgvihILc=;
-	b=PikTwb5pzVDgQsGZjeC+vFJ5o0lkP3XIaERwIBs1CBHYVJ5L6wQ4eZkMS+61Y3e2O95mL5
-	O0L5Plw8GBe34muer3rGlYZV7lsa+XabXT3nolgntM+xcJUtwVfo/7gAmt3vGzqewD/JiI
-	Ro/vmSb5stDnrZ0S1LAbLaxKinpFrM4=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1753423515; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=fNe1kuAKXpbr7W/PL4R47yQyd9hjp5RPvJ0TgvihILc=;
-	b=WYu8qtSJD+xCYeU1Uaz+fLphjurL3g74yck0m01zTMrSGk217yYCz4NvO2b/uCPWBi+gSTBwmcAjG866Jfcf8d2l8eQPWSk5X27ACoge339zPn+Togr6rRC/11WqkyxrS0qu3n8KdpFzNSPKGODcsdwaOnrH2iYOwLBnE4zPWQY=
-Received: from 30.74.144.118(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WjwLJUu_1753423513 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 25 Jul 2025 14:05:14 +0800
-Message-ID: <0c9dc2fa-34c9-4db5-bea3-af4caf05ee6b@linux.alibaba.com>
-Date: Fri, 25 Jul 2025 14:05:13 +0800
+	bh=TzyPAUEa1ra9f+Fo595oVFYE4lltInSXTAdJNreFcWM=;
+	b=w7CfTidILa6iZpf2nYtdeBQsH4YY+uEBxs7iculNapmFWxhx1E5GnKZMRHIIiFHSpSV2vi
+	2sLcZF84fvSm/KQTq8hHcZvWBiRTjb5jf9kQ93ipcpRnl6HG6I+KrrLsUV7CKffpl4G2Lj
+	Roy6kXblJBNlxvOFuS9+nzO7uzTUQZ4=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=canonical.com header.s=20210705 header.b=SGwTVuWP;
+	spf=pass (imf25.hostedemail.com: domain of heinrich.schuchardt@canonical.com designates 185.125.188.123 as permitted sender) smtp.mailfrom=heinrich.schuchardt@canonical.com;
+	dmarc=pass (policy=none) header.from=canonical.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753424019; a=rsa-sha256;
+	cv=none;
+	b=kKB/RWYkcPwqdKsBpErsBcRdPGsq8UeGyisUB86p7SmW4NRIT45/+nQ5IqLP09D8m0ywOA
+	nzZsQnnZWFddgQ7yAOpgAqO0Rs7epCbv38MHAqOuv06CWo7f0I80/iL0oUzVJ4d21UVviJ
+	ZngFpYGMSJSIv2oaKze2gdRqC+AE5oI=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 4BF6F3FB4E
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 06:13:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1753424014;
+	bh=TzyPAUEa1ra9f+Fo595oVFYE4lltInSXTAdJNreFcWM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type;
+	b=SGwTVuWPpY6c1sBas8ZSrZFlNSdI+cToZfZTpDnBCyoc3IwaGhT3YzzQtVaa1NLut
+	 ovTwZ7OmUcw2zORa0q2Nm8VPL3g5soWaNEXJUcAv+oRYyVsUq5vcX57CLMc3WQm3qF
+	 MFAjEA4UZj2hEjU9PhoO05Jz0xqpe5Bx2oIM4ymLfTaYRbd1SPJ++EwQkj5aqP/hyB
+	 RxKmNF299j8c9A8zUQN1K47CCyokaFNvJFzilFten1OddENebYsaY/riojolSXZojC
+	 YxAH3ZbJHLGIiihaPFxJmskXRlSlOys22+qaLRGcKlPUiqocLFKhz45lHYtfRQh5fU
+	 LBpl1JJv4XQBw==
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-451d7de4ae3so10621405e9.2
+        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 23:13:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753424013; x=1754028813;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TzyPAUEa1ra9f+Fo595oVFYE4lltInSXTAdJNreFcWM=;
+        b=V4WFwUh+2YX9tomY5Z58rn4hilxIMcmTjhb814E5/4R7l+xRl46DbpAPdJ6gHAmkVJ
+         aRol66O9G9EwL3B9eWbXjyF0l0V8baZnfhGgEW9P6v64BDng4PRGjBiIT7JFVt+zu1VR
+         GwxmHSgn8yO2vUN4GGcXhC/6M+pQHgB5W3tczoaM03eCkaWfmyern1bxwh61SzC8ee4H
+         sXs1AkoPGNormYsj6G4no1gDa079JngrBPnhbXM8K8dIP1oVzrRrOi9n//XNEiWzf9uT
+         eNXxqHoslSUaXxp+TrElvk1Biy9JRJoiEkVtdRUHvOwPa9n49ahKIdFk5TUy+aegXNb/
+         BnsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWym32eSwkGO66nlrANdONzCH3FLbO8gGl4jct3c/aqZInvL7aDyMPL5DI5Kum43eghJdIXdd/V8Q==@kvack.org
+X-Gm-Message-State: AOJu0YzEfO4i3GpKMdpQ4Vz1VYNsk17MSfAKV6rCS82mPglHDC3s5FiK
+	E6Rp8vrjyxeL3oXIBAeDp/nngcyH75NrOuTPxTNTdLlNg1Lk+y7xSzrKK6K7A+j8mLDItPEe25K
+	TXQhHOZQTlM3CeoHXEhEEGHL/p+jKQdhPrc4Du1/kJ9Pq5daDGaHYI9dyIotEQthibBNy
+X-Gm-Gg: ASbGncuLMAfla55iNf2IfwaKxBRzIV1FSewCRmP4Gbod+x0KQ6pK+eYb7b//NnBz7Z4
+	yWZq+VA/M4wSkRfgkVo1km7xFmBXVbF3g2sLDuWM6lfOHs2XC9aFbLXN0sYdHbR4UaPr+r2SN3t
+	yEzNJBuqaw0H7ogQlPfEu9OvslBtjy0/ZUAbDnsB1GZu7MdOzJqa/N2iKwzyl7ES0PoI7FmRbwC
+	BV+ZkWQ5nUyDZf4+BQI1cpgCkooUXsnExwQ6VEgUOIsWb5dZuki1v2dDReR474d6jPRCont0yHt
+	y+w/ypVJd4lscX5uL07KjsADFIO7Hhcj82M7w1MFwQZOJMcButaNlePHN13SWmSTDBwR/RGfaN0
+	P2RPjTcRAERtVCKWAw1oQNCeMT/pim6Wc+i33
+X-Received: by 2002:a05:600c:861a:b0:456:1bae:5470 with SMTP id 5b1f17b1804b1-45876b12ab6mr2570235e9.8.1753424013117;
+        Thu, 24 Jul 2025 23:13:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFnuDATio1q8lhm2BzVtYuo6oTtxWHR46flKXtmOHWUTwYg4EBDhbjT8wj0HyskkwGEINn1ow==
+X-Received: by 2002:a05:600c:861a:b0:456:1bae:5470 with SMTP id 5b1f17b1804b1-45876b12ab6mr2569725e9.8.1753424012699;
+        Thu, 24 Jul 2025 23:13:32 -0700 (PDT)
+Received: from [192.168.123.154] (ip-005-147-080-091.um06.pools.vodafone-ip.de. [5.147.80.91])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458705bcb61sm41269355e9.20.2025.07.24.23.13.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 24 Jul 2025 23:13:31 -0700 (PDT)
+Message-ID: <2ba0c09d-2783-4dce-a889-06e16abbde61@canonical.com>
+Date: Fri, 25 Jul 2025 08:13:29 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: regression - mm: shmem: add large folio support for tmpfs affect
- GPU performance.
-To: Hugh Dickins <hughd@google.com>
-Cc: David Hildenbrand <david@redhat.com>,
- Patryk Kowalczyk <patryk@kowalczyk.ws>, da.gomez@samsung.com,
- baohua@kernel.org, wangkefeng.wang@huawei.com, ioworker0@gmail.com,
- willy@infradead.org, ryan.roberts@arm.com, akpm@linux-foundation.org,
- eero.t.tamminen@intel.com, =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?=
- <ville.syrjala@linux.intel.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>
-References: <CAJCW39JCDX6_S2Ojt1HMmX-h_qAKm2eBRzxX5kOHNJz60Zu=vw@mail.gmail.com>
- <d5c6ac93-1af0-4093-afea-94a29a387903@redhat.com>
- <63b69425-2fd1-2c77-06d6-e7ea25c92f34@google.com>
- <3f204974-26c8-4d5f-b7ae-4052cbfdf4ac@redhat.com>
- <a8ac7ec3-4cb3-4dd8-8d02-ede6905f322e@linux.alibaba.com>
- <da2ab844-98c9-4eb2-82ac-01d01bec30f3@linux.alibaba.com>
- <dab283bf-a9cf-30be-02ed-da0d7c8ffcf0@google.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <dab283bf-a9cf-30be-02ed-da0d7c8ffcf0@google.com>
+Subject: Re: [PATCH 01/11] riscv: add landing pad for asm routines.
+To: Deepak Gupta <debug@rivosinc.com>
+Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev,
+ rick.p.edgecombe@intel.com, broonie@kernel.org, cleger@rivosinc.com,
+ samitolvanen@google.com, apatel@ventanamicro.com, ajones@ventanamicro.com,
+ conor.dooley@microchip.com, charlie@rivosinc.com, samuel.holland@sifive.com,
+ bjorn@rivosinc.com, fweimer@redhat.com, jeffreyalaw@gmail.com,
+ andrew@sifive.com, ved@rivosinc.com, Paul Walmsley
+ <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor
+ <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Bill Wendling <morbo@google.com>, Monk Chiang <monk.chiang@sifive.com>,
+ Kito Cheng <kito.cheng@sifive.com>, Justin Stitt <justinstitt@google.com>
+References: <20250724-riscv_kcfi-v1-0-04b8fa44c98c@rivosinc.com>
+ <20250724-riscv_kcfi-v1-1-04b8fa44c98c@rivosinc.com>
+Content-Language: en-US
+From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+In-Reply-To: <20250724-riscv_kcfi-v1-1-04b8fa44c98c@rivosinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 5zsirxr9krqigcs1ddawgj6b4qydp86e
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1AD14A0003
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 90F6940008
-X-Stat-Signature: jp7i683sxpbmfrhawjcgbfpwpu634647
-X-HE-Tag: 1753423518-303598
-X-HE-Meta: U2FsdGVkX18m5U6jKpPGvpAPjc6/CKyj+PgHA9aJZBGcw4FAqiG37Nnt19LnlsRSsXD4tjf6xzKzR8J90qH63k1T+ddW4satuk53BrxDX6Jzmnrfck3sJGcB7e1g4U5G58IIzo1SiXQQ9HqTwakEeUbHXQdV7WEJL8rrlMUUa+OuIhkIoLKFZprpVRt00arNTPGbpcpGLjiK9JD/Df5HkHZKBOwus/qhZE7ai3rsdCZkTehJ89Sdp+6lv0DUIzjpdQ6Hi2NqXxkFjn6nhsMSmax23E/vOm0X2x0FrBGc5CJM5wHs6gDHZQTiH7DVWVtVXa7la8rEnhjaR4QjJ4B/B/HH5AJWP6uSY8nynvDRvYRzdZykmG4CCDi67STREKJcGmRvLvBORk+yfo3/5YnbD0SuSv7UYyGYjYd8urXWUztD3mFYvefeqUcOOgAQivp2SSb7kGoiIDanmTJm39mCuR9s3kN7GInoSl9AN9IeOg6Idvm70NfqAEUsrtNmi7x3Y3M3UBHW/me2DbDr//p/aRZrPFYc7jZ09WDEFQrx2y38pXIrxmenq9dq/DN5FCB3whj80XQSuNnxv0blImcEbJ9zqxUk8V4x3G92NwICKJulm/+8HTXo+vKv90gcJJkpQszuob4Jjzm8WmQfVYM/T72XIrsPIVepOdKqvXQFfQ/g4ctCrwLV3W/AZQVXbOBF3gdw42Ekah4xcfu7lHLiipErVrB0J/eFjPEAR8HTexSc3MwUk+DuGgeOKbV1czryPP9i4wnadseFgV9bh/zXE8dH4527CoVkhylJbSzWOYizy+EWNSRJ2ZULxav4NB5PdtCqQjiGGLjN8tAYye7AAsNQ6EZ1gRheLP4g7fTWKMWnA5S+oHbHu06bU0VLPMm4eNDFJ3N1M1TbJVzqNjjE7XEUGYxlDge+SQ9WVqVqOVVvcPYDJgXwQ+ZCi4So3V2NH/fPzZzE+9KMMeAwkz8
- 5nT5/0rv
- UqX7f0sR4x8yCPAjcC58TvyISgSFTRHGO5pgGh4nH6f5l2f5E9y264vWqN7HxVkNFtx4ybm+lnlmN93gbGI6eM/SyuhcHrVny2Ozuvn8lTd2D+uglNZ4woTabeuwuUPDWiRtcG4pOwIcWalYqqB5nymiwIwoKdv7mnkLK2695fOYKzbwjGw/TzCSj1QfPNUtQZ3YsLyWDvzuTFqs3z4UrUgVMPDq1hevWAF4mxlebTwnes2iDeABWo1Rcqz3nGiFAtsbw1ylzX7KXOU/IXuAgUBZz9stqdE7Jicd51INJ/gX471APwEFklzB8Zd2rgC0bNTjb1g3tXU5Cum+wDJqUogm8nTQ+gVYw+LCamPH7+PyYMOI4ei3iYEPE1suFmc889yPe/oU4pSYMIxSPNnWJDk5NYOASxNbGArxiMvp5QwR2n44P/vACZ2mMmw87XeT90HsSgXYN0Byg99k0Vnh8DZh55wrA8QFRuZ1v
+X-HE-Tag: 1753424018-935135
+X-HE-Meta: U2FsdGVkX18L0yGQod3d0/Io8ShUqUDnYt6VgtErIvuFmzJdL3H0d7aWd+JjKuESEl1Is8mFKM3wtr4IdQfKNNwuhCX9lJREOIcga5KqOq0/pAESHuIX/GZrfTTEzqyUnzSOCEf4Ica5VlLFwH9p2fzxH+coJXltt0ag4akfTFfDDhEKtFapChO04pa+/LnUp8KuYoFhefMvFqiBX4tscNNYWrVYGZLJuPLhzqoguueGcKj5QWYreHht3OlvG+9/4aQSxRqlfbKbcnB451PFCMAhJx61aoFVI3Zi6U/K0LPXdC8oW5qK57uzD/yIh2U8PsjzCIFyGzPaixRqzrtEjZzeblC7U7F/uyPoxt0U31YKCX8kcfjTJGe8+wh/jG3JgooEbgUpD/JtIJ5stVIfuEN4N2M7g6ms7iFozM+xX3ROHHkFF+36ipVgOzhcsE/zQ8Sqp6wHnkGeuLmK1v/IH/14YshqdogD1cwe+sdbn8MGPh9Wtay6MojTWYdFenivwYXR32Vi7x5GekO8q4KrfAHbKSLFSECBg6EpGK13jlZMi+0lrOkWmlVFPGMqij0pbz4lcWY9C1GecxEzBAJIhQ9+oBu59eae4bURSt0QA6jbFjbb7++d7I/BX4OfciXCS9p1cEM5ba+LTTG30usOT2sGqIbTimS5p7eJSr47pOstOJUIwTcnX/TRvDU0grRUxi4HrZq9K/PED5TjWSkoEjg3BL7a89kYuxiYsUv+4l4KonJam7OBA2rhOpax7F0N/zAepg9ANKExxL0a9VUF6MBcHOfQkV3sGl1LgBoEBwwjT77aB2ocq2/IeWLYgI4rQuaxWa0nrCmKwcOQzJamFhIR7pBvFEv7+3JFLrDBrG+iAINoyxjRDqHpztOhLBkegW3hASs8kgZxosGu8FGwWIOt28e5cG72hlV1wdToAPR+cUUmesHmLFMCx275p5j9LOWsD9hXFpLSfuJK/Pb
+ DLY+EvRD
+ 8u8TC84Wqvqv26PPa9AuGh2C2O84WjQv06XhafgZqg7FeUtnn49raHX9kyFAmTXdwwpbDcA/Zgtv+t4+bPKvSm7M1+PVZOeCNgtosFPI/Uiqyls0PYr8w28bS/TTbJ9HQoGaO7S4NNh24tJ2ySIf9zvI9Qn6gMBMMVJlyiQvQlwzBQNP2TFBNsrML3G+Cyp+LnNNoOg2KTeALuXgQP5aBfc0tMzGqiL3eKlpbWgY6Lheai+swRUvunAGwD9oy4YPOyBkX86Cev1rxTW/ajnP8eMQA96JsE3YMK7tDcP9Q/eE+omZFUYy5YJEo1z9o4QIArRQQRiSzsq9uw3Jrfd/b2hopwatURT4oaBv8bvdWMal1yhfrn3oShU4pe6snon69lOpxM1ciyj+NkORughEwg8fkq02+TzEeCf6uhNGWIuDMMT+UUt4dT/iEsFofe7HBSpLaNfKsA4UhO4JT989EegoNQA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,64 +146,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2025/7/25 12:47, Hugh Dickins wrote:
-> On Fri, 25 Jul 2025, Baolin Wang wrote:
->>>
->>> I hope to correct the logic of i915 driver's shmem allocation, by extending
->>> the shmem write length in the i915 driver to allocate PMD- sized THPs. IIUC,
->>> some sample fix code is as follows (untested). Patryk, could you help test
->>> it to see if this resolves your issue? Thanks.
+On 25.07.25 01:36, Deepak Gupta wrote:
+> SYM_* macros are used to define assembly routines. In this patch series,
+> re-define those macros in risc-v arch specific include file to include
+> a landing pad instruction at the beginning. This is done only when the
+> compiler flag for landing pad is enabled (i.e. __riscv_zicfilp).
 > 
-> This patch cannot be the right fix.  It may be a very sensible workaround
-> for some in-kernel drivers (I've not looked or tried); but unless I
-> misunderstand, it does nothing to restore userspace behaviour on a
-> huge=always tmpfs.
+> TODO: Update `lpad 0` with `lpad %lpad_hash(name)` after toolchain
+> support.
+> 
+> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+> ---
+>   arch/riscv/include/asm/linkage.h | 42 ++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 42 insertions(+)
+> 
+> diff --git a/arch/riscv/include/asm/linkage.h b/arch/riscv/include/asm/linkage.h
+> index 9e88ba23cd2b..162774b81158 100644
+> --- a/arch/riscv/include/asm/linkage.h
+> +++ b/arch/riscv/include/asm/linkage.h
+> @@ -6,7 +6,49 @@
+>   #ifndef _ASM_RISCV_LINKAGE_H
+>   #define _ASM_RISCV_LINKAGE_H
+>   
+> +#ifdef __ASSEMBLY__
+> +#include <asm/assembler.h>
+> +#endif
+> +
+>   #define __ALIGN		.balign 4
+>   #define __ALIGN_STR	".balign 4"
+>   
+> +#ifdef __riscv_zicfilp
+> +/*
+> + * A landing pad instruction is needed at start of asm routines
+> + * re-define macros for asm routines to have a landing pad at
+> + * the beginning of function. Currently use label value of 0x1.
 
-Yes. Initially, we wanted to maintain compatibility with the 'huge=' 
-option, meaning that 'huge=always' tmpfs mount would still allocate 
-PMD-sized THPs. However, the current implementation is the consensus we 
-reached after much debate:
+Your code below uses label value 0 which disables tag checking. As long 
+as we don't have tool support for calculating function hashes that is an 
+appropriate approach.
 
-1. “When using tmpfs as a filesystem, it should behave like other 
-filesystems. No more special mount options.” Per Matthew.
-2. “Do not let the 'huge=' mount option mean 'PMD-sized' when other 
-sizes exist.” Per David.
+%s/Currently use label value of 0x1./Label value 0x0 disables tag checking./
 
-At the time, we should have sought your advice, but we failed. The long 
-historical discussion is in this thread[1]. So now the strategy for 
-tmpfs supporting large folios is:
+Best regards
 
-"
-Considering that tmpfs already has the 'huge=' option to control the 
-PMD-sized large folios allocation, we can extend the 'huge=' option to 
-allow any sized large folios. The semantics of the 'huge=' mount option are:
-huge=never: no any sized large folios
-huge=always: any sized large folios
-huge=within_size: like 'always' but respect i_size
-huge=advise: like 'always' if requested with madvise()
+Heinrich
 
-Note: For tmpfs mmap() faults, due to the lack of a write size hint, 
-still allocate the PMD-sized large folios if 
-huge=always/within_size/advise is set.
-
-Moreover, the 'deny' and 'force' testing options controlled by 
-'/sys/kernel/mm/transparent_hugepage/shmem_enabled' still retain the 
-same semantics. The 'deny' can disable any sized large folios for tmpfs, 
-while the 'force' can enable PMD sized large folios for tmpfs.
-"
-
-Currently, we have observed regression in the i915 driver but have not 
-yet seen userspace regression on a huge=always tmpfs.
-
-If you have better suggestions, please feel free to point them out. Thanks.
-
-[1] https://lore.kernel.org/lkml/Zw_IT136rxW_KuhU@casper.infradead.org/
-
-> Please reread my comment earlier in the thread, in particular,
-> Passing a new SIGBUS xfstest does not excuse a regression: strict PAGE_SIZE
-> SIGBUS behaviour is fine for the newly-featured mTHPs or large folios,
-> but not for the long-established huge=always.
+> + * Eventually, label should be calculated as a hash over function
+> + * signature.
+> + */
+> +#define SYM_FUNC_START(name)				\
+> +	SYM_START(name, SYM_L_GLOBAL, SYM_A_ALIGN)	\
+> +	lpad 0;
+> +
+> +#define SYM_FUNC_START_NOALIGN(name)			\
+> +	SYM_START(name, SYM_L_GLOBAL, SYM_A_NONE)	\
+> +	lpad 0;
+> +
+> +#define SYM_FUNC_START_LOCAL(name)			\
+> +	SYM_START(name, SYM_L_LOCAL, SYM_A_ALIGN)	\
+> +	lpad 0;
+> +
+> +#define SYM_FUNC_START_LOCAL_NOALIGN(name)		\
+> +	SYM_START(name, SYM_L_LOCAL, SYM_A_NONE)	\
+> +	lpad 0;
+> +
+> +#define SYM_FUNC_START_WEAK(name)			\
+> +	SYM_START(name, SYM_L_WEAK, SYM_A_ALIGN)	\
+> +	lpad 0;
+> +
+> +#define SYM_FUNC_START_WEAK_NOALIGN(name)		\
+> +	SYM_START(name, SYM_L_WEAK, SYM_A_NONE)		\
+> +	lpad 0;
+> +
+> +#define SYM_TYPED_FUNC_START(name)				\
+> +	SYM_TYPED_START(name, SYM_L_GLOBAL, SYM_A_ALIGN)	\
+> +	lpad 0;
+> +
+> +#endif
+> +
+>   #endif /* _ASM_RISCV_LINKAGE_H */
+> 
 
 
