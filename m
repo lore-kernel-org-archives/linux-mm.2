@@ -2,116 +2,109 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 182A0C87FCE
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 19:11:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C756BC87FCA
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 19:12:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 958556B007B; Fri, 25 Jul 2025 15:11:06 -0400 (EDT)
+	id 22FFC6B008A; Fri, 25 Jul 2025 15:12:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 909206B0089; Fri, 25 Jul 2025 15:11:06 -0400 (EDT)
+	id 2079A6B008C; Fri, 25 Jul 2025 15:12:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 81EED6B008A; Fri, 25 Jul 2025 15:11:06 -0400 (EDT)
+	id 144B16B0092; Fri, 25 Jul 2025 15:12:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 73E2E6B007B
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 15:11:06 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9CBD51DA647
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 19:11:05 +0000 (UTC)
-X-FDA: 83703729690.08.362B79F
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 97C56180014
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 19:11:03 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=4lwg1tWz;
-	spf=pass (imf06.hostedemail.com: domain of jannh@google.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 071F26B008A
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 15:12:55 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 77DB81DBEA6
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 19:12:54 +0000 (UTC)
+X-FDA: 83703734268.25.BA48E3B
+Received: from ale.deltatee.com (ale.deltatee.com [204.191.154.188])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4BB7F180009
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 19:12:52 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=deltatee.com header.s=20200525 header.b=DrqrpaR7;
+	spf=pass (imf16.hostedemail.com: domain of logang@deltatee.com designates 204.191.154.188 as permitted sender) smtp.mailfrom=logang@deltatee.com;
+	dmarc=pass (policy=quarantine) header.from=deltatee.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753470772; a=rsa-sha256;
+	cv=none;
+	b=D/qO5SXuhZ4pWOdwLHbv6rIx+Roqi3h5qSKs/1T4g/ZBSwji/kng98elA/aExJ/DEA4sLr
+	zjXY0/qsvq+AN2jrCxNWZMe9t2cTJh//wSsajUS/5RcsSanyd+TP+tb6xlf3a4IghqbaQ5
+	AP/b+i58a/vo2oc0z65Gk5wcPypIYGY=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=deltatee.com header.s=20200525 header.b=DrqrpaR7;
+	spf=pass (imf16.hostedemail.com: domain of logang@deltatee.com designates 204.191.154.188 as permitted sender) smtp.mailfrom=logang@deltatee.com;
+	dmarc=pass (policy=quarantine) header.from=deltatee.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753470663;
+	s=arc-20220608; t=1753470772;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ohbQ5KF8b/EeqfVu3tRLb4Pn8KVgHa3I47YPvi58yJM=;
-	b=JhlasPf4JS//uWE4JfBH8eEqQPERIwqAwuPkjOYSDgyLxCKTA31KfdsZCiWHaa41xoYKLy
-	Ad9zEl+ws32sy/rhSFDuD4m6rYc2yccpGPMLIvrJecnhAtkFpo4OvUxa7ElJdkMT4kruTi
-	dLI7ABOnnHL+xsBebqyvZmYw2Xd4/Mw=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=4lwg1tWz;
-	spf=pass (imf06.hostedemail.com: domain of jannh@google.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753470663; a=rsa-sha256;
-	cv=none;
-	b=7lvfgZCfcf72eysQs1qTUyKhJpgmGLkIdUqOACULEN/VwA/C60ShFMzgQhdTxpeT5Fn4cD
-	UUcw53HtgNiwHpP2sa6VodVWbi6kN5tBE+VPm83LFRuhnJNg4j3IOe4HOtbr41xL88Kw+a
-	NJZO8UShbjuJ9Md2owaXI4voKUTPq0c=
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-611d32903d5so2118a12.0
-        for <linux-mm@kvack.org>; Fri, 25 Jul 2025 12:11:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753470662; x=1754075462; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ohbQ5KF8b/EeqfVu3tRLb4Pn8KVgHa3I47YPvi58yJM=;
-        b=4lwg1tWzM9+3J3s+Ksvui74px5oWdzrww85v88+Ifq9O/fYNWrEEwMPSutGQDaepFH
-         YgTXTmUGo1Y1w7Q6hhlnPFtW+VWm/z4k98vw1fRAf3acm/MeP1qI3D+h+t0fbnmAb8OH
-         +R8jB9RWh9qf3rjFXgY7iMMyy3F0MqI9gOp8FWBtLaaS/+HuhVSTmbPfyx+PxdDvSAD2
-         wfKatKbhRITP3d84QKUj53JSInWc6NoADYhVP07ZfbkiUwv3d4S91U93pILhh5O5b+09
-         5uL85/MI5ymELDImPMXLHAI5sIoPQYbSg3ec/4poaMw8ogdkmb3HzakXR1noq2ClxbnL
-         u0uQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753470662; x=1754075462;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ohbQ5KF8b/EeqfVu3tRLb4Pn8KVgHa3I47YPvi58yJM=;
-        b=UQEpJSWZOyt7XIZOBSt+zAhJlpmujWgtOSyrOxHbX2ek+7fLx/sLhJbHNyqI4tD535
-         uSQ84Lic63b2Rfu7t8Wje5nu/JdRkVVmhZuGP525tM8RhXYy8LSppP0+KfLhnAUkE/7r
-         FPylhifg1rwb2yCn5oV1izFnWXEe93xG+mZQ7ZFTxc6G3VL0cXQuI8e2drpZWg052V4P
-         lbBbkJZ/y7cYI4CfY+6wwD/7mAkuho2zOb82X1TCa1JZEmuYPAEsAwdy1Mno6h/81e4h
-         BesdTQh21gFkutCZGzsWBYpoQMnGETk/SCUEhAj4BP1xZERTE7wMklGAywuk6xBBGG52
-         6w0w==
-X-Forwarded-Encrypted: i=1; AJvYcCWURIak//QpwJ3y4zXCO5cJ9BPhZ6w2xlvuELfKDssoye56EeIesY1NcQv8QrGMCWgVpqJHPIt4VA==@kvack.org
-X-Gm-Message-State: AOJu0YxewdNWIFK22aMD77C6B41yu4SAWrMMK/3TTrAw/2gwkNLvv0pN
-	qO2whL2qWPWbvraPIaDi1lc3TeqX54SGG9pvuuNUgzRQAN/Sk5cJzlUrBMoE6k9IOgf+FDh9t8w
-	Qci5mfDvb1JX8OklS3o34/F0wd78Y4gsbH8reA1JR
-X-Gm-Gg: ASbGncu5PxynbvGRPaml3vv5Plhtg/9xyyBEi02SS+cigFJVqHKBbx+YWh4H/fWqsHU
-	2lWmkEgDNusiohroe0QZR4McSPg+FM8XTC111lndVRQO085Uf5aaGZEl6wYadnIW7Bhsw3tJCZs
-	URdyVaOo/37zbUCoeQTHwrNFh7boS3rORQTM+T13JzjFCieiMqWjxIdBEQA4sW+QRZXgsa8nGjG
-	QytGu+ayBKmxWj91rp4uF1NxgyeDlr7kuM=
-X-Google-Smtp-Source: AGHT+IFnM9lb8v0yhy+r9g7LlejQ85g1+jN80aPjt0EXGFDmgpf5XaZMiO20Q6d8dkFVzoj7t44+LzAH3gV+dXXjqTY=
-X-Received: by 2002:a05:6402:2088:b0:607:bd2:4757 with SMTP id
- 4fb4d7f45d1cf-61505ca9e53mr18025a12.1.1753470661523; Fri, 25 Jul 2025
- 12:11:01 -0700 (PDT)
+	bh=EeOo9vMPBFT+62n5mqYkCAxWsQk1Wvt4dBFyCgwjFrk=;
+	b=G1cZ+wul/CMioNEGvAjOMomDMZZYhthO4twa8PBMSsMFcgWwCr8BQCteEoGd6cQX8vCIxr
+	gDYpuJRxAqdSFbeSJj1ickEB84gng3Y2/hQ7zDjtq7nHIpoctiXtW9Chg5+2UMeYuhFKfL
+	IQX7UawqGtExfvNOP57OEbtURvAg08c=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=deltatee.com; s=20200525; h=Subject:In-Reply-To:From:References:Cc:To:
+	MIME-Version:Date:Message-ID:content-disposition;
+	bh=EeOo9vMPBFT+62n5mqYkCAxWsQk1Wvt4dBFyCgwjFrk=; b=DrqrpaR7S9OrXgfKiTlAraouUx
+	i4ghrIDe0rHZjeUNlfEzZoAUiPbvMyzYgY3NP/FMkua4fsEG4BUEfWmG08NaN3AJaxLLtN7IEqbhj
+	4WALY5AeeenGjVOoB5wbIg0n3jzsD5dSSYuovvsWyo6RrCK5quFSZw02fh++FfvIYO/9zgKYx9SHc
+	ffj80QXJEfFoR9tRFdpABXThOf1TAKdNiRKAY7HTLi6iU5GP9OmSa0ys2SxJ5ifdpvS0AuGd7so8G
+	WtqXMuLWHNwwZap6WIJ6fbeihB/YIucDtjbo21c+DH8bj/20oQ4+GwAjSz3Bt9RGNE02AWYwVosV8
+	6WQn0Kww==;
+Received: from guinness.priv.deltatee.com ([172.16.1.162])
+	by ale.deltatee.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96)
+	(envelope-from <logang@deltatee.com>)
+	id 1ufNqT-006E5j-0X;
+	Fri, 25 Jul 2025 13:12:42 -0600
+Message-ID: <a749c502-7794-42f0-8f86-163efd4640b2@deltatee.com>
+Date: Fri, 25 Jul 2025 13:12:35 -0600
 MIME-Version: 1.0
-References: <cover.1752232673.git.lorenzo.stoakes@oracle.com>
- <8f41e72b0543953d277e96d5e67a52f287cdbac3.1752232673.git.lorenzo.stoakes@oracle.com>
- <CAG48ez0KjHHAWsJo76GuuYYaFCH=3n7axN2ryxy7-Vabp5JA-Q@mail.gmail.com> <892e3e49-dbcd-4c1f-9966-c004d63f52df@lucifer.local>
-In-Reply-To: <892e3e49-dbcd-4c1f-9966-c004d63f52df@lucifer.local>
-From: Jann Horn <jannh@google.com>
-Date: Fri, 25 Jul 2025 21:10:25 +0200
-X-Gm-Features: Ac12FXzH0kaDd1FSHQ6rjBvK5l93OfpQZvkg8iFQz3nK0xtBEz9RE_fXG7JCCE8
-Message-ID: <CAG48ez3qB7W3JqjrkkQ3SRdQNza3Q9noqkgmBg=3F_8vhwQ4gQ@mail.gmail.com>
-Subject: Re: [PATCH v3 09/10] mm/mremap: permit mremap() move of multiple VMAs
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, Linux API <linux-api@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
+ Jens Axboe <axboe@kernel.dk>, =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?=
+ <jglisse@redhat.com>, Joerg Roedel <joro@8bytes.org>, kvm@vger.kernel.org,
+ linaro-mm-sig@lists.linaro.org, linux-block@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-mm@kvack.org, linux-pci@vger.kernel.org,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Robin Murphy <robin.murphy@arm.com>, Sumit Semwal <sumit.semwal@linaro.org>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, Will Deacon <will@kernel.org>
+References: <cover.1753274085.git.leonro@nvidia.com>
+ <82e62eb59afcd39b68ae143573d5ed113a92344e.1753274085.git.leonro@nvidia.com>
+ <20250724080313.GA31887@lst.de> <20250724081321.GT402218@unreal>
+ <b32ae619-6c4a-46fc-a368-6ad4e245d581@deltatee.com>
+ <20250725185402.GU402218@unreal>
+Content-Language: en-CA
+From: Logan Gunthorpe <logang@deltatee.com>
+In-Reply-To: <20250725185402.GU402218@unreal>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 172.16.1.162
+X-SA-Exim-Rcpt-To: leon@kernel.org, hch@lst.de, alex.williamson@redhat.com, jgg@nvidia.com, akpm@linux-foundation.org, bhelgaas@google.com, christian.koenig@amd.com, dri-devel@lists.freedesktop.org, iommu@lists.linux.dev, axboe@kernel.dk, jglisse@redhat.com, joro@8bytes.org, kvm@vger.kernel.org, linaro-mm-sig@lists.linaro.org, linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org, m.szyprowski@samsung.com, robin.murphy@arm.com, sumit.semwal@linaro.org, vivek.kasireddy@intel.com, will@kernel.org
+X-SA-Exim-Mail-From: logang@deltatee.com
+Subject: Re: [PATCH 05/10] PCI/P2PDMA: Export pci_p2pdma_map_type() function
+X-SA-Exim-Version: 4.2.1 (built Wed, 06 Jul 2022 17:57:39 +0000)
+X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 97C56180014
-X-Rspamd-Server: rspam06
-X-Stat-Signature: gq6e79ph6a3bkkqpm5ghxbstcgbhur1t
-X-HE-Tag: 1753470663-489781
-X-HE-Meta: U2FsdGVkX1+bHsVRn7eZIP5nJXr2uS4VFKkUJji17DbED6l1H0ktmpofX/WucI3vegF7hWzFCpYc0ES4Ojq3YvESVCRY7ilVq2vJv/LcFbduEnCERbiBGowt669jbD1XY801+fPUqAxxSO2l923qN2MkvMO440fHxxL1inS410LSCplhhzymVCoE3JhfDVIdRrSPK0DPcTe+BhsdIg6Q+SMPJE6BFJA5Hoz4vjWfIh8ca4KK7n9lf5w3pFOTYAyUZ2sCEt5wQ9oaqYmln5oPA7V/i9c6koE9tKokEOyXW0Ih5cLOAltQXdy8ZtHP5cLQ5rl0HmQriXRZ0NBkCea7EY6ElwYFzMQqNNC1kZfoQ8JqXy4Z9I8UWXAcaENKvoHqPMzq3/rn82c86FocfLEGZRxC9dFELl0qwF+BZaP/vxmmO2drd3jW1/or79GWqeT0KfvO6qF4jMS82XkwcKQOic4CmEO8niIBUhaRhlCJ1Xyo+XGYH+N05oa4J/KZqCMHr8TvMlU8Hrxx23hFI/fSRu+kj6JGIc+L2S+DD1EslInnqEUy7uIYHrDEBsKNtekuEGKchhatRbM1Zp4Op952j0EdXNMuuQFlPK/y/NGH1UbQDn0DbnAO0uUZJTqe5BBByhODgGmhBI7w7Js0xgoNbVvu1sQ8qDTKHs/woIGB9iX3wtO2z2lirVmQXxtcpJoDsAgyNo82S/CQ407746T4rkTh9GcRRL66ya/N5Lncw2F2IugRpurfTcupbQEh0+SBMPNLjPEr//jXc57gy0d3+YXVTqUW9odGAECvAUGNOSXOv+b5SkBqItLV2oPWBixCfBORbEbC4R/MGyfWby+fvAUKtq1YTKr2hHU8DpJjGPMPP7aa3sqNkteBKoI201UDB8yLuXyg3UX2B9GZsPOm7Yw5GlxXYRLNei353pOxBl0iJkFaBmKVPlbVSMnfmIu0kGKSdkdqrxD7hY0bGfE
- dO6wxz4h
- 73yt1UGhJWWC1YmEZust+tKTnRItWNeicib3FOlETFh8FntRJ2OHSYkYp5TTzs72mCUdpy7REePdB3gZU6oSKQRUICkwx+PSgaVG9MMNpceNf3A/AciJpD+sqDCGGGk0baVkrX73SyUlbPw/j5+A4zAxdU5/pOvkncc0Izt2oVU2R9ISLrcaljA7w6mfadQrlYp9lOur1ummgeGU4UE9W5YXxMSQAYxVs/7dl
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4BB7F180009
+X-Stat-Signature: 4ccr7nqz85eg6i6cpfrkonaw3jt1y83y
+X-HE-Tag: 1753470772-755708
+X-HE-Meta: U2FsdGVkX19DoovyJbxs5lcd7up777lmuoAwo7pUNuIq0oQVvad0oRkd/wZlBERXaoGOTiVu6rboZOhnme6lVBGYs3YHuN3wwhv1MfxKP3P5HiGPMHflrKqi9ljypes+UOHjZDWZ6AWtF5BWe/wnz6d2HcJ2JrHBDs5xPKNIuMl12AWjsDWgnhYGAg8ErqG+pR8FPvs+dMueJ6/fKL6OtfeIjecWz/+JkRKO1XLUfrb1oOFdmp/Vi6cMTOx8kMZ1tPFzvIEEsUdodwkdrjoU1b8eLMvzbLfG2QTf5N0F9rdM0WODzrh5i7CK1j/hR5IZpyEy9vlIZj5zNpZpXOxvLzeFYBqdgzO/MWVW1Vo9b2+peNbDD9RlAaFJOf/oaT0+vrFEM/LG/atL15COSaXgGYHFLHaGtDWNrg8APbDQyFFxnL0zvHdrg2IYIG/ijI2SksN5OZcyDoLdnarqsvU679lBbN1VPdl9J/ZZTd2F6pDY3vgmaTuJ6lut7oYrRsW40O9Tgp2QzWIxyCXPPJ4pOKLtDhJqznRdpiYgitGL7xNB/2WQcpyMSk/ToHikbeKruTy96iQGOsg0L0aKi76CSkYKvbZSSzdFu8WDrHIJp4UyBPtD9122+dE1vnwVjK51Opeaueeq7MqQVUlE4LPtxJA44Mi0PhapROb6GcbxTUWzYbtbQ2zqigRYCVNnvSxPx79PWHYO/s5RS//Fco8/UTXOwz9CWllW5rFGjYNE00nsB5pdXU8Kvk4NXRkc38mQe7M73CD3SpLQZSKkLZPVo0sn/3+0PCg6sCKxLqGNmXTNIn8yBPBWEapMckEb+QcAApNkFbYuvw1hATJqsjuDqHGpLRoyBAhqNGpS0IvaGUyP3wRfth1rHysgSEAfT6EtAerdKgnJV+Mc0PLLmHdUaC7jaaVOTf6kh2A0blqkmPKabqkd/5P5vtkNG+yREjcRN6i7FR6rMobumXvq66w
+ RBSUQgQC
+ YCl1N0m+r+g/Phg8KfzxJfBOrjIMtDZ7nb/yhK7A5FnPUwq0fLgzqRs1DXM9egefr8GnKPTvDSqINDwhugVap2LHz1co4JHYC5o8792dKvLMPBNCxvkODNV/sKDTparI98nMuNfmatpaXfh6e6N4NrT7g2fhg+N5tsCmpTDIozivBVaPLXqylxFE+0ARVJdP3/ftoMmEOBsoE4LsekPtf/tILajJG6a5UUht+xdtKNzwXfTc4h763+XA8LjCLBzo1Hdz6qS1YP8l2EkibaPFSEmma3dBX2iQCtQC5cu7Wo9IS5SvBdMb0dBK3sfp50UX39/aylRsG7kvnvPqsy6eD+1eZAZtZ+YPiqCPO
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,37 +113,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 25, 2025 at 7:28=E2=80=AFPM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
-> On Fri, Jul 25, 2025 at 07:11:49PM +0200, Jann Horn wrote:
-> > On Fri, Jul 11, 2025 at 1:38=E2=80=AFPM Lorenzo Stoakes
-> > <lorenzo.stoakes@oracle.com> wrote:
-> > > Note that any failures encountered will result in a partial move. Sin=
-ce an
-> > > mremap() can fail at any time, this might result in only some of the =
-VMAs
-> > > being moved.
-> > >
-> > > Note that failures are very rare and typically require an out of a me=
-mory
-> > > condition or a mapping limit condition to be hit, assuming the VMAs b=
-eing
-> > > moved are valid.
-> >
-> > Hrm. So if userspace tries to move a series of VMAs with mremap(), and
-> > the operation fails, and userspace assumes the old syscall semantics,
-> > userspace could assume that its memory is still at the old address,
-> > when that's actually not true; and if userspace tries to access it
-> > there, userspace UAF happens?
->
-> At 6pm on the last day of the cycle? :) dude :) this long week gets ever
-> longer...
 
-To be clear, I very much do not expect you to instantly reply to
-random patch review mail I send you late on a Friday evening. :P
 
-> Otherwise for mapping limit we likely hit it right away. I moved all the
-> checks up front for standard VMA/param errors.
+On 2025-07-25 12:54, Leon Romanovsky wrote:
+>> The solution that would make more sense to me would be for either
+>> dma_iova_try_alloc() or another helper in dma-iommu.c to handle the
+>> P2PDMA case. dma-iommu.c already uses those same interfaces and thus
+>> there would be no need to export the low level helpers from the p2pdma code.
+> 
+> I had same idea in early versions of DMA phys API discussion and it was
+> pointed (absolutely right) that this is layering violation.
 
-Ah, I missed that part.
+Respectfully, I have to disagree with this. Having the layer (ie.
+dma-iommu) that normally checks how to handle a P2PDMA request now check
+ how to handle these DMA requests is the exact opposite of a layering
+violation. Expecting every driver that wants to do P2PDMA to have to
+figure out for themselves how to map the memory before calling into the
+DMA API doesn't seem like a good design choice to me.
+
+> So unfortunately, I think that dma*.c|h is not right place for p2p
+> type check.
+
+dma*.c is already where those checks are done. I'm not sure patches to
+remove the code from that layer and put it into the NVMe driver would
+make a lot of sense (and then, of course, we'd have to put it into every
+other driver that wants to participate in p2p transactions).
+
+Logan
+
 
