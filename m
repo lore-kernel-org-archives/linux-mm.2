@@ -2,118 +2,108 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 77B36C87FCE
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 15:38:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1E009C87FCA
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 15:40:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC0D26B0096; Fri, 25 Jul 2025 11:38:10 -0400 (EDT)
+	id B532D6B008C; Fri, 25 Jul 2025 11:40:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5A996B0098; Fri, 25 Jul 2025 11:38:10 -0400 (EDT)
+	id B02D06B0092; Fri, 25 Jul 2025 11:40:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D217B6B0099; Fri, 25 Jul 2025 11:38:10 -0400 (EDT)
+	id A18AC6B0093; Fri, 25 Jul 2025 11:40:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C35536B0096
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 11:38:10 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7638A1A080D
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 15:38:10 +0000 (UTC)
-X-FDA: 83703193140.29.FC39CB0
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 2C374140005
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 15:38:07 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jU63o8H6;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YduZZemj;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jU63o8H6;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YduZZemj;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753457888; a=rsa-sha256;
-	cv=none;
-	b=OqEVKsmPtLp4GH9XpgtI08kXqR2c6Pvh40d3b3tWc1oyKE9ZpTtMAgMhC+WhbElKV+vh2H
-	I4+jVdqOHMEhTlNQPa2yEJV+ZQ+2pe44uZbTyHa627pZwFeJmpwkUUCvt84Qe4jSyYL99J
-	TzIXmTOL0BIf3rmxTl8JmBbVotFVHuk=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jU63o8H6;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YduZZemj;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jU63o8H6;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YduZZemj;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 92E4E6B008C
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 11:40:17 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4D9DA1607F7
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 15:40:17 +0000 (UTC)
+X-FDA: 83703198474.20.00397C6
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf14.hostedemail.com (Postfix) with ESMTP id B763B100004
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 15:40:14 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OG7K90+6;
+	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753457888;
+	s=arc-20220608; t=1753458014;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C6V8dlxI5N0x3RCAaUdHAjtLVSGrpxU1om7131VAmWE=;
-	b=sPfF4/ppu++4DKxTUdkmjJ2HWQ5u17UgC4R11B7pSy5dKYqfsvIPDqHL+KBYn2vhCRYZT8
-	w8xrlunQHDpE6x5Bp5qGX/BlReYBnLa+gxYH1okDCeQLBSuNJ9JOUalRJEA/cxgiDKYVd4
-	hgNDjuFMeGmj1zS6XY/PgrEQ76+eum0=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 6D49021A16;
-	Fri, 25 Jul 2025 15:38:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1753457886; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	bh=sC45sZmC6S0ZueACRW7H6v1qytH0Lj12og8gIKqUatE=;
+	b=E9OXZoOxrxwt9nWlGmy3SHVQTrR9BOjN4LCdie8Z6hC9fU12u0cLi7CF0uvH2rLSl277hs
+	53VBCauxQNa82iCB8jL52HAYdaT6BM05zgUjLbeA/QGVhLqPZFwsgE6rfYm7ihOVK2jO+6
+	NXNgkpROMaXETGGf3s8JXT8BpxR7O6s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753458014; a=rsa-sha256;
+	cv=none;
+	b=hdw94nrDt5YKV08B9XJCsfm/v2ZC6EzedXzlf34GscaEyGZOkfkf3QupI596W1skBatawl
+	svNtLDxfNSs0gs/u1Jm5jWc04hlggOpUlSIRIkfvJtRjqdBlmTKAVfboVv4J6vZRxZl4M+
+	wYRGdeXBSeTRQiRpwdoXvyLw/trIDgY=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OG7K90+6;
+	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1753458014;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=C6V8dlxI5N0x3RCAaUdHAjtLVSGrpxU1om7131VAmWE=;
-	b=jU63o8H65eYOqvR5IaEhiTTYZHWrdT5bBXODEEc80wmY/RAUDbh2DxIxWr4saKQhxeH2vn
-	RMkDus4UfqrFtOlv7L9Qtn6mp8N57fC0Rq8LP+8tSoAiQYKjE5tPsABC6VlyORE+l2WcQu
-	t6e+KVD6IFF94MRgPxhg+fxbFYE4nfc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1753457886;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=C6V8dlxI5N0x3RCAaUdHAjtLVSGrpxU1om7131VAmWE=;
-	b=YduZZemj1T5Q4zM5L0Hz1Uy7on05op+5jS8WB1DS7nVokKtka+aElLXpTygkH8cP6REWl7
-	xxAOmJPyb9Y3Q5DQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1753457886; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=C6V8dlxI5N0x3RCAaUdHAjtLVSGrpxU1om7131VAmWE=;
-	b=jU63o8H65eYOqvR5IaEhiTTYZHWrdT5bBXODEEc80wmY/RAUDbh2DxIxWr4saKQhxeH2vn
-	RMkDus4UfqrFtOlv7L9Qtn6mp8N57fC0Rq8LP+8tSoAiQYKjE5tPsABC6VlyORE+l2WcQu
-	t6e+KVD6IFF94MRgPxhg+fxbFYE4nfc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1753457886;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=C6V8dlxI5N0x3RCAaUdHAjtLVSGrpxU1om7131VAmWE=;
-	b=YduZZemj1T5Q4zM5L0Hz1Uy7on05op+5jS8WB1DS7nVokKtka+aElLXpTygkH8cP6REWl7
-	xxAOmJPyb9Y3Q5DQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 53F731373A;
-	Fri, 25 Jul 2025 15:38:06 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id x9MfFN6kg2itaAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 25 Jul 2025 15:38:06 +0000
-Message-ID: <1a43ebfa-0c4f-4029-ad81-125aba68b764@suse.cz>
-Date: Fri, 25 Jul 2025 17:38:03 +0200
+	bh=sC45sZmC6S0ZueACRW7H6v1qytH0Lj12og8gIKqUatE=;
+	b=OG7K90+6K2Rq/2uNGFtYXgqOZAIMRpx11uXD539G0SeEh2NE9LrF68ZsJDIk4JZyVzaLJM
+	ONSmKGPNuBOlhmEeNLFpZgbu8oV7+4aw0FaT7BmPSzh8AH2kuy4ny59j8hpzBKS4fGHKWl
+	rVLXu7zu0BAERpSmvNXHcSfOL8RDKoE=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-308-m8tvBWriNfiwkL2DacoWJA-1; Fri, 25 Jul 2025 11:40:12 -0400
+X-MC-Unique: m8tvBWriNfiwkL2DacoWJA-1
+X-Mimecast-MFC-AGG-ID: m8tvBWriNfiwkL2DacoWJA_1753458012
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3b76d51048eso1534533f8f.2
+        for <linux-mm@kvack.org>; Fri, 25 Jul 2025 08:40:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753458011; x=1754062811;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=sC45sZmC6S0ZueACRW7H6v1qytH0Lj12og8gIKqUatE=;
+        b=J93zKaKbY3Lj1T5Z82U2u9ua2HaNQaWuN9TYhC3yuvOXAOJfLMJCiplYQ+gBg8d+Lf
+         SEPDmPyx0F8Q7yRGns9ddVPfwAzpgscBYjKr2h2ucYTmLfMyQyarJ4q+ro9ibqf4+F1T
+         yyU7Ll0dwN29SjbyWAGP9NsAnIzKDNwdnKEL45AJ8c7Lv8lsF/0LjbBXkGya9q122t9I
+         ABYsUGw8wZbc09L61K9BFpOl/7t10+HdmOguN18RZ1MQesqoEeiJto20cOIZ4Pe6nA/J
+         YNGiTjHOUXTlpTdAm56KRjbYzFcupKM9HWfxiauF1xFfn9l23ZtC0esMs9WFpcZRd9MO
+         8Uyg==
+X-Forwarded-Encrypted: i=1; AJvYcCW1/8/Db2QkgDX5RQTjDDezH+e29hSZGU9/h8bR4q65SeK1Kp4DT39NC9VgYEQPWPRgXgGmDVoekg==@kvack.org
+X-Gm-Message-State: AOJu0Yy7LS5MFnv6hewOw7yC0hLLNBKG6S5DOrGvYi/LWhPpqgTdNH2N
+	yP5K6yA5AzWhM1teUnJ6geRozK3aKWGS8kPYlo9tL7bJUK7WWOq7EFW/CFyuz6LHB343PgnDhcf
+	/xdINgq1N1apVQ21Er8jC/jHhCGF4hLP06cAqZMfQVhiSMKFDLA30
+X-Gm-Gg: ASbGncufgZFDd8CcVPj5DwaHAbYOWDjqc8u1/eXf27v8QHuSeTtFDULCg1lNdRahueo
+	V62pWoeDR5kFD4U3JJk50EaUMSxzXhm0I7utczL1v02sVlq0JuZZ9ZL3TCeOyMKKgcqmtXYS57U
+	Ix/il8g7NuVevWaj23wN39B5x/hhm5DRG9eJ4EEDs5dO6fkgADpFtxxKn8sNbFfOEIU5gz2pZxO
+	5u1+vOOo76A/GUggbWzVaMBAxEcfWl7vioxgD6Q9h7ZimTGJsnL7YSYItcz0dUDUDL+NH4ZfJid
+	0CoXKfkN9nUvJ5MMXRY3fJrJinZmPndrPgixsIVGupKg9xO98OI9bk9Ut3io76+3NFPSFpK/5fr
+	GivyeWQOn1kLzkmmmscjdw/K8T9YuIb7dtCv9DwO+n79qDZgIH8hQKlwbOM0XHsnA
+X-Received: by 2002:a05:6000:230e:b0:3b7:5cd3:fc44 with SMTP id ffacd0b85a97d-3b7765ebbb7mr2029231f8f.4.1753458011477;
+        Fri, 25 Jul 2025 08:40:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFcFgs6H/wTKa9G+TeRTa7JgaCydFZvZ7XTEctddgKIUnysUc4LLUc3CS4Kto0KmSHn0+paOw==
+X-Received: by 2002:a05:6000:230e:b0:3b7:5cd3:fc44 with SMTP id ffacd0b85a97d-3b7765ebbb7mr2029206f8f.4.1753458010930;
+        Fri, 25 Jul 2025 08:40:10 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f34:ae00:cf93:b0dc:6bed:abc? (p200300d82f34ae00cf93b0dc6bed0abc.dip0.t-ipconnect.de. [2003:d8:2f34:ae00:cf93:b0dc:6bed:abc])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458705c4f40sm57086215e9.27.2025.07.25.08.40.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Jul 2025 08:40:10 -0700 (PDT)
+Message-ID: <c5a52f8c-5819-4eca-be4d-9c534c6ad6bd@redhat.com>
+Date: Fri, 25 Jul 2025 17:40:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2] mm/rmap: Add anon_vma lifetime debug check
-Content-Language: en-US
-To: Jann Horn <jannh@google.com>
+To: Jann Horn <jannh@google.com>, Vlastimil Babka <vbabka@suse.cz>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Rik van Riel
  <riel@surriel.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
  Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org,
@@ -121,56 +111,67 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 References: <20250725-anonvma-uaf-debug-v2-1-bc3c7e5ba5b1@google.com>
  <1d849190-214e-413e-a082-d7f862b653cc@suse.cz>
  <CAG48ez23CPO-m6kPaEs8kLUfRVCN+QMbsEn7BocfaJuq=gRwaA@mail.gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ g3eXuA==
+Organization: Red Hat
 In-Reply-To: <CAG48ez23CPO-m6kPaEs8kLUfRVCN+QMbsEn7BocfaJuq=gRwaA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 2C374140005
-X-Stat-Signature: zbqugfqsabnai86rc567hoz1ckeewnj4
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 09qty1FV1fU7JTtdFp59cBoDU_zHzrv_SQML0gp8EVA_1753458012
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: B763B100004
+X-Stat-Signature: k9fckg1es6cpa9emn77mzjo8m7gwpusi
 X-Rspam-User: 
-X-HE-Tag: 1753457887-248823
-X-HE-Meta: U2FsdGVkX1/2tdKmEnM2NfCsaggkJz85U/Npi6h9tIVTkpqGcuKc1LBx/zI9l0zHYR9vvZyZ9IBpRGj3nv4nkXDjCuqKQkILdZauj04IUTp+lLYv0W3HtphHG2K/UNwWuH2b+CaG5aJwSlSR0mvFbTNPkN6IR5aB77IEeS3+p52H7pEPJ5rggmAOElM1g73GBB6KtCOANOZBGWm/1vaLRoCVKJQoFpab7DRp29zOvFlsZi0qdD7XH4rfy2AlFAn0+hgzn9iM6e0zASxZr7enoXoK8ggbCjvE+V4uThCl6EMRidZve6oi3w/lzHbSV9e0NLVIIYifz8qSwvPXOIj6sJCw85tVilZ2b18hergFf5pPar0DNsOfp+JO9uoNcnE1U5+SsRxPE0+3BGbEFYVIvU70QBYe8hVX7xZFJky6O8824iTJOeOpadDJ5I/qn9gF7NB69SCx5JM6Eh+U56eQXLrp96zRsoqwH07ByeIvhTQ0dDpnyNP/fgSYapvLFcYVKEqxTwcuUWCk2MR/66dJ5DNAgC3gU5Y75MA+KNItE+AAF2+GPBYyQP83+qZh9fOEx7k4hDCapkxt8+QwC6pPAhR6oWiq2xjtzUTfr+NCTL1t3NUlfRd6ZmjzkjSbURzU29U3LmIlSk4/W0SxTYhtDt1suQCpapEGRs8GJZ5hcVuJRkPRHRlWPgU7gsXLzJirwica82JC95EWOOHVX9WSlfxEn1BhLGdZAWyoNPi4OJLliMeDMo3XdlmgpPMwSSn5R8wW4XAaALgCibEDSeXzIZcvejE7TpS5rgXt+wPV5c+Lxn2QTtE1VPj4Mv6Q76n6x6JlGxwqznXpEYKXQ0B0zG4UrwSEtGwrnrE8V0PkVYp/RioVHe/HqrMftFWIvKv06PhGpwQcPXKFnUs29f8v0QUBR/UccAqiy5FB7/PzXG15Mqm5W0PiKyosUIXze/py
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1753458014-128590
+X-HE-Meta: U2FsdGVkX1+oCNvUcCjl1TPSHnhs4n2dv8b2lFZ3IWOEaW16Ih3c9J9MasmgtrR+kbE73PvVI9BDlmRU8fg8KP9SW8e5HmczxFdrDhEaMRbn3TikfIL/LvlwNeovKd4hrS2NIH90EM2MBH1RiPujptFeqYDdSU96QL5WiQQ9incVw8Cwk1MvwH50iLeoc5oYLRGFw1/czmXfrXjKBeLVqSc5XVCy26bQVHRJCKtmnuyuqmPDjIdZEgOpsdsoSNQyVq9bkwj9Wx7StnJvvo4Yc2eY/39zXilNvupgvo3iT6At6d9nKFyQxwYjSAyfkEPfSb4JXlI0Ir2dcr2XdVCletvXc89ykdgCbT+qgyakxk8eSGGoJiF8+HpVX9c984991gy8T/d7rf1nBoIb2xyjmZhvmeien7FdUXzhqRDTVphIzsoFgth/NLqrzrRgw+HqX9Wnvpx6Fp7RHMeeTEg5ahvOt76zcPuSE6O+CEvHoYYbd/ZHKBdDpV06eWC05taNyqWeve5yIJeaq03vcmkBOgy5UGc4ZNvaYxwTo9HfCkT2u1RGyl1SpF340BXklBvOjPYYjquIDe38T3g0CfZJrSfzr1c0SO8ogf/kOj8h4Lsflz+mC8AHkLkGajf4CgBJFNNjyGbe/MEWnnNgw0pXIFwaLSBU2k1lXr3DZxaPpf/MYBrlFWrNDt5GGeziKjPTK1VR/BMIgFwSgSud3sgLX6RnuO9KdtZbGvnzFcIz3Ea2DBQtvjK/PQKLhqTLqujWZ/unRr1fDQlMgn1t30i4Mzk2RTdRP73Kv4VI2p59aYAeVyjdymkb+Sk2Ul5IgAiFj12+gDOwrygZUkI053Je4o1lhDR9WPMJ1R1LsNwiMDfXlFOAaouG0jG/ehlzQRvMEj2HmoCTLYBg00fEj3+eHYaNzqyGIjoJbMGdrqCLrEs5HcsG6K2+UfX4IWCNrgXX2I7HZaRqxoOZ0wH5jIp
+ LhzUhaT+
+ c0Tsj+Np2sMZ1MPf9TraEAb6PeWol1aK2/KZ6qvWp6l1JQPuke4HB5o1PjcdZylVRFYtj7fjFdqykG4G7H6mJz/a22yXffqNBj0tLEnJdp/DhSDCzQxU+F+hVgKuqt91pLG6MveWihA34/zVjK0foNH8OzMEEUSqpaO/Ek3TjiuN4sKrOaaVhMNZ1YHBHr390UZW4WPR4HLAE1EJyxqc5vzxHsZo/mT//0PcMiRPkZYWXCK62M/dD5CZzQ0H46z4X9zG7brru3KGRuvejOrY9/wPZljX2RII1fgtpYH10Ja5fjUTvXOKe7wzxjQgd5t8yUqjAEVqozdo/a7m05Ju9Y6FXKboc4Yn00hcxkfriblZayaTFeKR1G9nmCpdaW3ucG/SVbvoA8zeXIFilhkP3ysvJKcnQ93o038+pMvujvmCtjg9P54atANIxfC9wzubwW4TIGiHWm6HiFB6yxrdfwOdnizJuqfuEJw8897WFXZGdRrBDE/UjGnmhGzdolL+ZRa8u
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -179,118 +180,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/25/25 16:44, Jann Horn wrote:
-> On Fri, Jul 25, 2025 at 4:11 PM Vlastimil Babka <vbabka@suse.cz> wrote:
->> On 7/25/25 14:16, Jann Horn wrote:
->> > If an anon folio is mapped into userspace, its anon_vma must be alive,
->> > otherwise rmap walks can hit UAF.
->> >
->> > There have been syzkaller reports a few months ago[1][2] of UAF in rmap
->> > walks that seems to indicate that there can be pages with elevated mapcount
->> > whose anon_vma has already been freed, but I think we never figured out
->> > what the cause is; and syzkaller only hit these UAFs when memory pressure
->> > randomly caused reclaim to rmap-walk the affected pages, so it of course
->> > didn't manage to create a reproducer.
->> >
->> > Add a VM_WARN_ON_FOLIO() when we add/remove mappings of anonymous folios to
->> > hopefully catch such issues more reliably.
->> >
->> > [1] https://lore.kernel.org/r/67abaeaf.050a0220.110943.0041.GAE@google.com
->> > [2] https://lore.kernel.org/r/67a76f33.050a0220.3d72c.0028.GAE@google.com
->> >
->> > Acked-by: David Hildenbrand <david@redhat.com>
->> > Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->> > Signed-off-by: Jann Horn <jannh@google.com>
-
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-
->> > ---
->> > Changes in v2:
->> > - applied akpm's fixup (use FOLIO_MAPPING_ANON, ...)
->> > - remove CONFIG_DEBUG_VM check and use folio_test_* helpers (David)
->> > - more verbose comment (Lorenzo)
->> > - replaced "page" mentions with "folio" in commit message
->> > - Link to v1: https://lore.kernel.org/r/20250724-anonvma-uaf-debug-v1-1-29989ddc4e2a@google.com
->> > ---
->> >  include/linux/rmap.h | 22 ++++++++++++++++++++++
->> >  1 file changed, 22 insertions(+)
->> >
->> > diff --git a/include/linux/rmap.h b/include/linux/rmap.h
->> > index 20803fcb49a7..6cd020eea37a 100644
->> > --- a/include/linux/rmap.h
->> > +++ b/include/linux/rmap.h
->> > @@ -449,6 +449,28 @@ static inline void __folio_rmap_sanity_checks(const struct folio *folio,
->> >       default:
->> >               VM_WARN_ON_ONCE(true);
->> >       }
->> > +
->> > +     /*
->> > +      * Anon folios must have an associated live anon_vma as long as they're
->> > +      * mapped into userspace.
->> > +      * Note that the atomic_read() mainly does two things:
->> > +      *
->> > +      * 1. In KASAN builds with CONFIG_SLUB_RCU_DEBUG, it causes KASAN to
->> > +      *    check that the associated anon_vma has not yet been freed (subject
+>>> +      */
+>>> +     if (folio_test_anon(folio) && !folio_test_ksm(folio)) {
 >>
->> I think more precisely it checks that the slab folio hosting the anon_vma
->> could not have been yet freed, IIUC? If the anon_vma itself has been freed
->> then this will not trigger.
+>> So you verified this compiles out completely without DEBUG_VM?
 > 
-> The point of CONFIG_SLUB_RCU_DEBUG, which I'm talking about here, is
-> that it allows KASAN to catch UAF once the anon_vma has been freed and
-> an RCU grace period has passed; it is not necessary that the slab
-> folio has been freed.
-> 
-> You can see that working in the linked syzkaller reports - KASAN
-> tracked the object as freed after slab_free_after_rcu_debug(), which
-> is an RCU callback scheduled from kmem_cache_free().
-> 
->> > +      *    to KASAN's usual limitations). This check will pass if the
->> > +      *    anon_vma's refcount has already dropped to 0 but an RCU grace
->> > +      *    period hasn't passed since then.
->>
->> AFAIU this says it more accurately and matches my interpretation above?
->>
->> > +      * 2. If the anon_vma has not yet been freed, it checks that the
->> > +      *    anon_vma still has a nonzero refcount (as opposed to being in the
->> > +      *    middle of an RCU delay for getting freed).
->>
->> Again the RCU delay would apply to the slab page, unless you talk about the
->> CONFIG_SLUB_RCU_DEBUG specific path (IIRC).
-> 
-> Yes, right, the "RCU delay" in the second bullet point refers to
-> CONFIG_SLUB_RCU_DEBUG.
+> No, after David's suggestion to remove the explicit CONFIG_DEBUG_VM
+> check, I looked at the definitions of these things to check that it's
+> all just plain reads and arithmetic, and removed the CONFIG_DEBUG_VM
+> check, but haven't actually compile-tested it.
 
-OK I misunderstood that while bullet 1 notes the check only happens with
-CONFIG_SLUB_RCU_DEBUG, I assumed the description is still meant semantically
-from the point of anon_vma users (particularly what "freed" means - moment
-of kfree() vs KASAN quarantine). Once considered from the point of what
-happens with the object under CONFIG_SLUB_RCU_DEBUG, it all makes sense.
+The compiler seems to know its judo well.
 
-> Here I'm saying "If the anon_vma has not yet been freed" because
-> that's the only case in which I can reliably say what will happen, and
-> this is the main case that isn't already covered by the first bullet
-> point in a CONFIG_SLUB_RCU_DEBUG build.
-> 
->> That said, I wonder if here in __folio_rmap_sanity_checks() we are even in a
->> situation where we rely on SLAB_TYPESAFE_BY_RCU in order to not touch
->> something that's not anon_vma anymore? I think we expect it to exist?
-> 
-> Yes, we expect it to exist. That's why I'm not just asserting that the
-> anon_vma is still considered live by KASAN, but also that its refcount
-> is non-zero.
-> 
->> Can we
->> thus invent a CONFIG_SLUB_RCU_DEBUG-specific assert that assert the anon_vma
->> itself has not been freed yet (i.e. even if within a grace period?).
-> 
-> That is essentially what I'm doing - checking that the count is
-> nonzero verifies that it's not within a grace period, and the implicit
-> KASAN check verifies it can't be in a KASAN quarantine after the grace
-> period is over.
+-- 
+Cheers,
 
-OK I guess that's sufficient and we'd be unlikely to find a bug scenario
-where anon_vma was kfree'd() and thus KASAN with CONFIG_SLUB_RCU_DEBUG is
-waiting for the grace period, yet it doesn't have a zero refcount.
+David / dhildenb
 
 
