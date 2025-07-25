@@ -2,89 +2,125 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C3F85C87FCA
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 19:39:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 745B2C87FCE
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 19:52:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6814B6B0089; Fri, 25 Jul 2025 15:39:58 -0400 (EDT)
+	id B2CF46B007B; Fri, 25 Jul 2025 15:52:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 631B16B008A; Fri, 25 Jul 2025 15:39:58 -0400 (EDT)
+	id B04C76B0089; Fri, 25 Jul 2025 15:52:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 520E16B0092; Fri, 25 Jul 2025 15:39:58 -0400 (EDT)
+	id A41926B008A; Fri, 25 Jul 2025 15:52:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EE3C6B0089
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 15:39:58 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AACA2C0928
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 19:39:57 +0000 (UTC)
-X-FDA: 83703802434.06.8055A7B
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 101C040007
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 19:39:55 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z3Nop6OW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753472396; a=rsa-sha256;
-	cv=none;
-	b=0SY7g0n9vLsqH+yNLfokJqzrxb/WrLQ2nsIPiXYhDhwtbxgOUGyWaPkF6Ey8cM+7DjD2mT
-	X/ifnufB/sE+NX86u5gXRfPKApHSUJEGt15/Qt4BbNtRH4QTVWk588T3XgZ5iWy7inKd+O
-	x+ORJlr/KvLB0plnbsJUtLswsE0R7EY=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z3Nop6OW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9597E6B007B
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 15:52:49 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0EBEB5BB37
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 19:52:49 +0000 (UTC)
+X-FDA: 83703834858.15.26B5406
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 4B303C000A
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 19:52:47 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Khv1Ob8D;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf10.hostedemail.com: domain of 3jeCDaAYKCKgaMIVRKOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--seanjc.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3jeCDaAYKCKgaMIVRKOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--seanjc.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753472396;
+	s=arc-20220608; t=1753473167;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sLGlDYryathO607m++rOwKc5yWUqQUZkHpV1hRXUyO8=;
-	b=dOUu0HCfed9pYe7QEWVwnrC5uGxhm7ngWagOoW70nmC9X8W6mw8/g4FHNLIOIRm6XDxZhN
-	kXLcD1ax/4o5xv0mry3ZrWkj9fYmA3TO7NB4nvo+B/kF6MzAe7zQQW5IZuOsGVbMymeGdA
-	mtjO6xFDWBFfrTZvvwb2dPqm/i0Libc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id E51C05C58E4;
-	Fri, 25 Jul 2025 19:39:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E2A4C4CEE7;
-	Fri, 25 Jul 2025 19:39:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753472394;
-	bh=uj/N/bSRAAtErIC/6xB/eoKkqvtlQGzcmsA0lQ53fm0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z3Nop6OWuWhO694lwWd7a6lOzCzOaXZBZWF6ohngBLzTTTTkL7HzywkhlVG5290+P
-	 W82DK9Whc4fPHjcoG5v1Di2DkwS3SQWoIwgnhjwcRc8tvtzvDU1ecUbfXcNN67pgOk
-	 EmsQvz4ZzHFor/lk3yHY8sdmt9sQt22AScs5B/i7aPXjNfcJ1eUFD3EjeRsneuZAZJ
-	 uSUvApM1ESn6ccy767IQyN3h7RRmMpAeP+mrfmaTuMSnMkdDr8+T8p5MtuMK2TDWsb
-	 hlrxdAUiEKz18a9rgl+1srekdNNm/WKjnTRHFib7MEnrRTVhmy7+YnSqZFQg6wY7xv
-	 IMvK74uGofcfg==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	Bijan Tabatabai <bijan311@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	damon@lists.linux.dev,
-	Bijan Tabatabai <bijantabatab@micron.com>
-Subject: Re: [PATCH] mm/damon/vaddr: Skip isolating folios already in destination nid
-Date: Fri, 25 Jul 2025 12:39:52 -0700
-Message-Id: <20250725193952.49563-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250725193637.49389-1-sj@kernel.org>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 101C040007
-X-Stat-Signature: d9mau71pr9cfgat86ztwqufyade66i6i
+	bh=QGGwHKzNdqzja55fvEizh1HPckulPqbm51MIc4WTZ8o=;
+	b=ySr+8wX7y6N3qazddZVn+i3f8UUw72MJ+1igxAMWhq8FVcwi8hZsE9/MxVNpoMWZ85zuCz
+	AYjBd6tDpf7hVHT2CINdcQEA8KkEMkijZtEIZZFRV8U15k0oGy6BvWqkGhycKj7KuT5cYy
+	ZOVO58PNnCLPSuVtL9z62ScRZIU/ynw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753473167; a=rsa-sha256;
+	cv=none;
+	b=Zd9xWxyGb7CBZj26E2XnOHmjokALZEnKrj/R/SDAnauFlTajRnoFANw2t6NtNauLcgqzjd
+	VfEnLw9qMZvn74Rp8t6CRMFEwum4P6g9gI+PanjViw0YJNIjD2J/JY54wY+cy8dhSlonqr
+	x/y+/qs1NtN0JfI42sMRZ77/B3l7aV8=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Khv1Ob8D;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf10.hostedemail.com: domain of 3jeCDaAYKCKgaMIVRKOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--seanjc.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3jeCDaAYKCKgaMIVRKOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--seanjc.bounces.google.com
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-235e1d70d67so24186235ad.0
+        for <linux-mm@kvack.org>; Fri, 25 Jul 2025 12:52:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753473166; x=1754077966; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=QGGwHKzNdqzja55fvEizh1HPckulPqbm51MIc4WTZ8o=;
+        b=Khv1Ob8DORu7SONVtl4Nb0QgyPb1qS6xhKiSG+3WgFL2vE2hAkTz7fBp4nJ+bznFRr
+         rzz7JNzcPdbMq/OUylMpGIRn5CW4G3tfeC3X9xLQGOidIYsceYTi9Iw1ZboYMLebO0/O
+         n3NgUbRxLznJdvvzL6InJXHD6wf51+iVLqGM4+uZMIPiQSB68fzUSQ8GScpIL6CxP0gD
+         IBYN4vn0KM38mTEe8cdM/Wa5rSfqvg6qeJj2LRTwMbnSJi+OI55k/VXWa44l3lq42mzd
+         qHAOS97Z+v5ffU/7z3uLrDMWlGjYUSei1LBNHQHX5/eRmpDepZM79twreJfIraVjb20p
+         Ssyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753473166; x=1754077966;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QGGwHKzNdqzja55fvEizh1HPckulPqbm51MIc4WTZ8o=;
+        b=Qr9sZYdsGC5LmzcmmUxXRFrqTH5hnuRxpqM839uIbFHAEp2d6zP7pKUSwX3VS+j1Sy
+         C6tjpPBfAz83jVyEKciGOc64lmSUz+NSOzgQ67v7Ed4EBhDNHeII3JoRDOm1FMd+PPAH
+         A3JHYSTzGlpodpkI3odkLEptvtfbhXrDU7U7J8Zi2NC/VGi0eiUAAqI8LeTtGA+RyEqD
+         cqMOUuLPa9lNh5mH+MqfpaIVrEDpFVvhGU+nGyGCvW3AXruNkdqjQMYoQNTNKFV8z27Q
+         m4Qalf5pCWoLUi7e0recV/4VI6JfxLh7bmIq7w2XXYSLCxVlvkV0rDaXrqZQ8E1kL4Wt
+         2yYw==
+X-Forwarded-Encrypted: i=1; AJvYcCWi6dtcraUZNBLACtrUwO6h6NJzZ5j3tDKKHXpYh8eirLM3R+xcaqjzJf8alvc7VwR+tz6Fz6gBiw==@kvack.org
+X-Gm-Message-State: AOJu0Yw71SyNbblhaEz/qvQcTRFA8VibWuj4BODL9JohSHPlZ7di9hHJ
+	E3keGHiGVcq9geUF08t0V/+VB/0YnaBn3afOTANndIcS44xgRGaVy0jYHbedhihg1h3rwdhOryX
+	B5rJdsg==
+X-Google-Smtp-Source: AGHT+IGKfp2ZEdZFD4nXV8opXXNSrJNr2MwInumKeRrkZ/nbSrnkah7OjJY3KrZp8KeOnG/KWd4mQPv9Jxk=
+X-Received: from pjbqd15.prod.google.com ([2002:a17:90b:3ccf:b0:314:d44:4108])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d414:b0:23f:b4c4:710c
+ with SMTP id d9443c01a7336-23fb4c4730amr32702405ad.38.1753473165998; Fri, 25
+ Jul 2025 12:52:45 -0700 (PDT)
+Date: Fri, 25 Jul 2025 12:52:44 -0700
+In-Reply-To: <diqzseikcbef.fsf@ackerleytng-ctop.c.googlers.com>
+Mime-Version: 1.0
+References: <20250723104714.1674617-1-tabba@google.com> <20250723104714.1674617-16-tabba@google.com>
+ <diqza54tdv3p.fsf@ackerleytng-ctop.c.googlers.com> <aIOMPpTWKWoM_O5J@google.com>
+ <diqzy0sccjfz.fsf@ackerleytng-ctop.c.googlers.com> <aIO7PRBzpFqk8D13@google.com>
+ <diqzseikcbef.fsf@ackerleytng-ctop.c.googlers.com>
+Message-ID: <aIPgjOLq8erW06gK@google.com>
+Subject: Re: [PATCH v16 15/22] KVM: x86/mmu: Extend guest_memfd's max mapping
+ level to shared mappings
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-mm@kvack.org, kvmarm@lists.linux.dev, pbonzini@redhat.com, 
+	chenhuacai@kernel.org, mpe@ellerman.id.au, anup@brainfault.org, 
+	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
+	viro@zeniv.linux.org.uk, brauner@kernel.org, willy@infradead.org, 
+	akpm@linux-foundation.org, xiaoyao.li@intel.com, yilun.xu@intel.com, 
+	chao.p.peng@linux.intel.com, jarkko@kernel.org, amoorthy@google.com, 
+	dmatlack@google.com, isaku.yamahata@intel.com, mic@digikod.net, 
+	vbabka@suse.cz, vannapurve@google.com, mail@maciej.szmigiero.name, 
+	david@redhat.com, michael.roth@amd.com, wei.w.wang@intel.com, 
+	liam.merwick@oracle.com, isaku.yamahata@gmail.com, 
+	kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com, steven.price@arm.com, 
+	quic_eberman@quicinc.com, quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, 
+	quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com, 
+	quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com, 
+	james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev, 
+	maz@kernel.org, will@kernel.org, qperret@google.com, keirf@google.com, 
+	roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, 
+	rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com, 
+	jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com, 
+	ira.weiny@intel.com
+Content-Type: text/plain; charset="us-ascii"
+X-Rspamd-Queue-Id: 4B303C000A
+X-Stat-Signature: s4oy4xitkn99sycun5uhik1jkkufmwou
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1753472395-251342
-X-HE-Meta: U2FsdGVkX1/JAZABn6Tg5718M2BLPUBw3eBKUN0EXUn3c9QGy6W7xKXDZOaB8ZYM9f3HaJnnFxPGvfL3LaWXgE43sDKccLKEnmtnch5QQGTH3p5s8CZnCbOS1mVBRLwpq5KNiNtIJBjlnrKIJLS+UZaGZiuHibbedCgBpD+6c63HAnvSqOofJCnnZ2+gksuPMR4xk+8iQGOgDofZnM/+Ys4VWGQ+xzwmrZ6TaJ6OQMYPDug5xzj3YPyWeopcOrHUtMaa80Q7T+ihXKpdYjAOn3FFvfgbMPl4bvLiu2fFQCDMgHAKGSMr0YpZIqy//YUemjQINHrAMtDNe7y2JQI0c/SRlu8P1F4Uk2ILx6rUTi1trPlv4xPlE7sxOnYhSST/PpNeGpKu6QSdws6FuUnthTQsv5AemA9JWylqd0APJgm+fUejuR1lJGHJJbkOEOWG62sHfdST6rmDz5C3mfGsDiXQhdPEB7HsNtiobMj1DyL8incw87X0BXaWFzze9fMWVAx9oWUPKD18+mK7cBtiCqQ3WZpDyl8JPLkvZCXliCstLFWeEbJx354aFO2H97SSLiSZQEpOYPTQPkQ6fgqfnAP/XWw4lLmtMt+0f1hC8AokHNgj2AcvYZ2MHIp4z3iU1v9jIashbb6g4JgSCcRk1CBzZNzpyi1fJPQ7U3L9AaglJkIGe36wXKF30y3R9fwQYpXbgDhUomUXkR7jc5Lc2mENMrcMyCwNtUhY3PyiITLW0VcReqlyK77OHBnl3f9USVKQafFOkdnR7SVjKIGp8qxNHduJxPfwkMyksNQYTJNIsL5s2MU84VhOqxm/EJ+uyN22BqJsqF/EfqkNxbP/64JTeA4xOqrbzvI3e3GA7JAnFKpEyBQ/XTR0TO9a+Kv0+RiNsxbL6yOUIIzzicRngcEuwz7hoxXVmVuu0/fybEzqM0DPzWXolJkXMb5RMCNGbLWolWR5D6Qw29FDcYU
- Ab3xWbp8
- Lq5qlvTwkXzDFbgWoLaua69geNKRDFZVJPlSq0igmebZ8gcTIh1wc+PfhWAyEk9uJN9KErdn8ApDTJ100GJg56MdrQbM1lKOiBOAQ57nBzzcN7ujSIE4F/S1wzHoHIR7GbGxAyaspeuUBzoWys9fUcjJc2PGcXzie2yzvgNGh2KqaMqEUFAcYFcOb2gpDXJM89XsA0kGQnQGZHMHEXRpMC+sst9Iu2IqpXavtLtL/gmJSUnROX5WxWF2J9nfHdfeq9Kl12Nv1CF0gR9DqL10w2dzBZPPfu/MUv7rODDBCYDLCjiIPkTNe4ISJTwpq3PXMIsNy3R7OExppfTAoxi6uc1nGVw==
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1753473167-676809
+X-HE-Meta: U2FsdGVkX19N8rYdfHMK0sY/FRvzte8nnUUzAkzj6v5RjaVbjc4/igCG6Z50adqi5Lk1MiJv2ZoE4D0F9+0+Ug3k2tiLGDqG1HLC0P1+nfcJKcNZ59OYGJDzyiQo89tTcMhoKNHT0PxGCaYZ6cWWXma/CS94RHGgzCHWBBYkd9i00HjMLxFwVFt/etgMzjmPFhDO61oeg7qLI3kXzq9rxz8CIRZdnrW/E0xLYgB3SqEB0RG0H8ErYISZTh8oY6kL5qjhj15D0mtxdgCW/EmcaLvkzkBfH3AqXfTDCIrKsedzXcEUJ7/dSSZyfYA+yYdmHv6xwr6ivwh/MtAeNyXEhO0gZZOZCb5d1upkYHq+PouKk/HqzuXv4wnXVaIKBO8L2VGxrgFTYA2HdHsIj1uG9sDPn6znXCzvKA5PChnaRvhQEjQncHywTgEtUlHSzeVYunFSU9dZ06RbCG/xove1BKEJbHum5MAStsof12SGMJN0TGGSaqAwA+bneXra9onvdJApLR57CI7uXrgT83noAHDMKlkgO28/ag4uuqgnYFl4CJA0bs4XGvaAO3g/0xiaO8yB6h2RIIcEE7qniPMuLd2eGWvDoP/sSJE/yBtiMilt5+EkWipr5ikg/8sj4Px6jeHR207IyzG2xCFKYJAOpPEeHUJ5PWT4iEVWpWUDSXLal/MbWtmKfJKuDPXTlUTzRlt9eGHdoWsQQxrOZgSHkuUk/3I9qb/ZKmHm6QSgg5o+LetnbDzCAKGVBO1eAZ7t7PRBpdmBL93mcmrQrpCrKf6qapBV7BrXvERvtpsUlO0ikcyYfhDHgCOmEKs6YQ2aUskpm58H9xyE/Rc8jN+kQF8HYXub4Xbx0RC4JvnnC77hPOLFhjYxAqkiXqcqnWM8N1bbjGm7vMQBiyzoQXNKK24Gt9Hl6SZ9Ds1yHinjfKyPJ86yi8+OF5GRBcdONKpT4WqoN0jUNU8UaPUmi8P
+ uZ1KbHqs
+ CkeaUTjZvL/tyxCjRZ6wqdJ9SEdN+EkFf+v7zRm2dWKRP5komb4jr5A0DjRxcEIyQ0MQy8iOyxSxHQf+dYFPyLnUPi2pKmuQ6N27k8KoeIpIliEnToNWzpp080X2i7lJ1QM839uWhT79gx7/U/WLTOzn0x8Ryp981/EOJIHhYMkRmhliW8kwpw0l5K1Zg7qJCTNIf3UOTTrxHozZxxrb+OPDlX9mUJYo4yNr1+rXBwZaidCoZMCCIbH40A0FEsdVUjsLBb2MoXYehCoZ3YIvmk+99WVlFK8NB7sNL7//18UyvP1Y7sFim2+4Kl0/eAKAhO0cqCz3G3wtG0CV6KRj8bT3HBCFkzXPDoIDmbMU23kUnDyPzpxqLL4BgxhDk0o28Crg3DmVoVbrVSy95bVAVENJMTxa4x4w6eWmwhlOMHguRGGbO3EIPwOK1rQcGRWE1Bsq4KJSweJTciw08/Nyuc4av+oQLMkwdthHb3uh6RLpueoiAS894llq6iIfC5oEGSw5o0yYfc70rnEAjWg3ZCQBi0YB+ATqh48Sm6WbAMvuDztcNREJK0osImRNlcotYVPM2xg69eCgIfz51hJ2ROGW8MLQ/+qL2Q2Kv9fdH96F4uQjWZ+ut3XpixAY+K2Ezg2vHVgGXxMYeXydKiLNHin3qBZHMkRn7/wdJxAo/NbAkhFqhsBqFRCjEXy9uUc9oQ2Ig
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,65 +129,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+ Andrew
+On Fri, Jul 25, 2025, Ackerley Tng wrote:
+> Sean Christopherson <seanjc@google.com> writes:
+> > Invoking host_pfn_mapping_level() isn't just undesirable, it's flat out wrong, as
+> > KVM will not verify slot->userspace_addr actually points at the (same) guest_memfd
+> > instance.
+> >
+> 
+> This is true too, that invoking host_pfn_mapping_level() could return
+> totally wrong information if slot->userspace_addr points somewhere else
+> completely.
+> 
+> What if slot->userspace_addr is set up to match the fd+offset in the
+> same guest_memfd, and kvm_gmem_max_mapping_level() returns 2M but it's
+> actually mapped into the host at 4K?
+> 
+> A little out of my depth here, but would mappings being recovered to the
+> 2M level be a problem?
 
-On Fri, 25 Jul 2025 12:36:37 -0700 SeongJae Park <sj@kernel.org> wrote:
+No, because again, by design, the host userspace mapping has _zero_ influence on
+the guest mapping.
 
-> On Fri, 25 Jul 2025 11:33:00 -0500 Bijan Tabatabai <bijan311@gmail.com> wrote:
+> For enforcement of shared/private-ness of memory, recovering the
+> mappings to the 2M level is okay since if some part had been private,
+> guest_memfd wouldn't have returned 2M.
 > 
-> > From: Bijan Tabatabai <bijantabatab@micron.com>
-> > 
-> > damos_va_migrate_dests_add() determines the node a folio should be in
-> > based on the struct damos_migrate_dests associated with the migration
-> > scheme and adds the folio to the linked list corresponding to that node
-> > so it can be migrated later. Currently, folios are isolated and added to
-> > the list even if they are already in the node they should be in.
-> > 
-> > In using damon weighted interleave more, I've found that the overhead of
-> > needlessly adding these folios to the migration lists can be quite
-> > high. The overhead comes from isolating folios and placing them in the
-> > migration lists inside of damos_va_migrate_dests_add(), as well as the
-> > cost of handling those folios in damon_migrate_pages(). This patch
-> > eliminates that overhead by simply avoiding the addition of folios that
-> > are already in their intended location to the migration list.
-> [...]
-> > Signed-off-by: Bijan Tabatabai <bijantabatab@micron.com>
+> As for alignment, if guest_memfd could return 2M to
+> kvm_gmem_max_mapping_level(), then userspace_addr would have been 2M
+> aligned, which would correctly permit mapping recovery to 2M, so that
+> sounds like it works too.
 > 
-> Reviewed-by: SeongJae Park <sj@kernel.org>
-> 
-> > ---
-> > Sorry I missed this in the original patchset!
-> 
-> No worry!
-> 
-> Andrew, could we squash this into commit 19c1dc15c859 ("mm/damon/vaddr: use
-> damos->migrate_dests in migrate_{hot,cold}") on mm-stable?  I think this is
-> just a simple fixup.
-> 
-> > 
-> >  mm/damon/vaddr.c | 4 ++++
-> >  1 file changed, 4 insertions(+)
-> > 
-> > diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-> > index 7f5dc9c221a0..4404c2ab0583 100644
-> > --- a/mm/damon/vaddr.c
-> > +++ b/mm/damon/vaddr.c
-> > @@ -711,6 +711,10 @@ static void damos_va_migrate_dests_add(struct folio *folio,
-> >  		target -= dests->weight_arr[i];
-> >  	}
-> >  
-> > +	/* If the folio is already in the right node, don't do anything */
-> > +	if (folio_nid(folio) == dests->node_id_arr[i])
-> > +		return;
-> > +
-> >  isolate:
-> >  	if (!folio_isolate_lru(folio))
-> >  		return;
-> > -- 
-> > 2.43.5
-> 
-> 
-> Thanks,
-> SJ
-> 
+> Maybe the right solution here is that since slot->userspace_addr need
+> not point at the same guest_memfd+offset configured in the memslot, when
+> guest_memfd responds to kvm_gmem_max_mapping_level(), it should check if
+> the requested GFN is mapped in host userspace, and if so, return the
+> smaller of the two mapping levels.
+
+NAK.
+
+I don't understand what problem you're trying to solve, at all.  Setting aside
+guest_memfd for the moment, GFN=>HVA mappings are 100% userspace controlled, via
+memslots.  If userspace is accessing guest memory, it is userspace's responsibility
+to ensure it's accessing the _right_ guest memory.
+
+That doesn't change in any way for guest_memfd.  It is still userspace's
+responsibility to ensure any accesses to guest memory through an HVA access the
+correct GFN.
+
+But for guest_memfd guest mappings, the HVA is irrelevant, period.  The only reason
+we aren't going to kill off slot->userspace_addr entirely is so that _KVM_ accesses
+to guest memory Just Work, without any meaningful changes to (a well-behaved)
+userspace.
+
+For CoCo VMs (including pKVM), guest_memfd needs to ensure it doesn't create a
+hugepage that contains mixed memory, e.g. must not create a 2MiB userspace mapping
+if the 2MiB range contains private memory.  But that is simply a sub-case of the
+generate requirement that untrusted entities don't have access to private memory,
+and that KVM doesn't induce memory corruption due to mapping memory as both shared
+and private. 
 
