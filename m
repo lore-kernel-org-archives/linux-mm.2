@@ -2,95 +2,86 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AC6ABC87FCE
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 23:24:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 04DA7C87FCA
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 23:25:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 258F56B007B; Fri, 25 Jul 2025 19:24:24 -0400 (EDT)
+	id 8C44F6B008A; Fri, 25 Jul 2025 19:25:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 209956B0089; Fri, 25 Jul 2025 19:24:24 -0400 (EDT)
+	id 88CF36B008C; Fri, 25 Jul 2025 19:25:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11FE46B008A; Fri, 25 Jul 2025 19:24:24 -0400 (EDT)
+	id 78B006B0092; Fri, 25 Jul 2025 19:25:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 032EF6B007B
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 19:24:24 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A04EEC0566
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 23:24:23 +0000 (UTC)
-X-FDA: 83704368006.29.1E7FD31
-Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.7])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 9F244140006
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 23:24:20 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=126.com header.s=s110527 header.b="f XgYN6A";
-	spf=pass (imf09.hostedemail.com: domain of hexiaole1994@126.com designates 117.135.210.7 as permitted sender) smtp.mailfrom=hexiaole1994@126.com;
-	dmarc=pass (policy=none) header.from=126.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 6BC2B6B008A
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 19:25:59 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D9A271A056A
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 23:25:58 +0000 (UTC)
+X-FDA: 83704371996.17.AC5922B
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf21.hostedemail.com (Postfix) with ESMTP id EB3DC1C0007
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 23:25:56 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Fw/uCp44";
+	spf=pass (imf21.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753485861;
+	s=arc-20220608; t=1753485957;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GlThBCPvQpt2Hwv6/dlyXCnF8pL8WctIo5LIoMoRboU=;
-	b=Swlpcli5pq27o1bH6hja2Ry1rgufihDaM2A/MFr33fD5kK6mMTbGYWtq5AjtZwKzLbYwHE
-	56MCOcI9jFEmFKq5rjrytYlBkS4gc5+R92rSYdIfxPb4DcMtM1kAoT6ChA9sXemOZ23fYS
-	xBFZiLa+iMWKOJWdOfXRwpNeFgB4ouo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753485861; a=rsa-sha256;
+	bh=aaydfYuqVafMA2JLko3KZS5h6j/lPMMeqjP2Raw9h1E=;
+	b=IZaURxZt/HwPpkJWC/je9UMyPa9dEB/ig/gvASUJU/0FzOMbcWgFPUWLhdyLay1H56l2nc
+	GxZmnL6RXrEKa30OdDnSK014/sI6xQfkfazCRxZkSBY11DyWD7fC+zBgMeJaFvmTQsR+jH
+	uf0tDHwg3trz4cD8K4jv7LuNebHpfQ4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753485957; a=rsa-sha256;
 	cv=none;
-	b=B5qaGHy3jbt43okA9SdDYH9IgnRKFgeWSTbqd+dr7IXXRFURtDpCsKb3xsdUlV6rM7oBPB
-	tQ8BPb1nWdmqjlnC+1aJgPElWRGQHnYpuChu/0T8ujxx9va692wlK3dyaKZAHcpKwZZn4G
-	nOmVqcKa0NFyo+9lDtmULuLyqoccNIQ=
+	b=fxgSF2lU61XyYV0JVUkLxS66TcN45uJMn1iReoUSI7q9DuUBSJDWNCqCnyeGw4qmNiW4Yr
+	pOhjyYcR08FhZEBK1eS2ILRCiYnBj0znESQx+d1oBg7H/ONuyhNq+pdQpaO96OIEyBiEdE
+	CfKp7nbL89NGIz1T4L2akjks1spg7sc=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=126.com header.s=s110527 header.b="f XgYN6A";
-	spf=pass (imf09.hostedemail.com: domain of hexiaole1994@126.com designates 117.135.210.7 as permitted sender) smtp.mailfrom=hexiaole1994@126.com;
-	dmarc=pass (policy=none) header.from=126.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=GlThBCPvQpt2Hwv6/dlyXCnF8pL8WctIo5LIoMoRboU=; b=f
-	XgYN6APk6CXic3abvH1b3SKhAPy11CmRXLoczsjeefpgxjuVdO1kvjrJhWhrG1Fu
-	Xow37FwrAB1d0+v1+ZKQrYIQ2p7huAeRUbRO6q062IfyBjYjboom7nvEiYSRAkdA
-	4zXO1FcxdE7b8QjYq09B1QT139dlgBxqKTNjgF2D2Q=
-Received: from hexiaole1994$126.com (
- [2409:8a34:4450:f7b1:c186:48d2:c55d:317b] ) by ajax-webmail-wzpm-k8s-gz
- (Coremail) ; Sat, 26 Jul 2025 07:24:04 +0800 (GMT+08:00)
-X-Originating-IP: [2409:8a34:4450:f7b1:c186:48d2:c55d:317b]
-Date: Sat, 26 Jul 2025 07:24:04 +0800 (GMT+08:00)
-From: "Xiaole He" <hexiaole1994@126.com>
-To: "Matthew Wilcox" <willy@infradead.org>
-Cc: "Andrew Morton" <akpm@linux-foundation.org>,
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re:  [PATCH v1] mm/readahead: Optimize nr_to_read boundary check
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
- 20250707(2c85c371) MailMasterPC/5.4.1.1010_(10.0.26100) Copyright (c)
- 2002-2025 www.mailtech.cn 126com
-In-Reply-To: <aIOmm8cejmAyvSZ5@casper.infradead.org>
-References: <20250725152834.7602-1-hexiaole1994@126.com>
- <aIOmm8cejmAyvSZ5@casper.infradead.org>
-X-NTES-SC: AL_Qu2eAfiTukAv4imcY+kfm08ag+8+WcK2sv0l1I9fO5F4jCPj0SEJYmBkFnjJ1MawKAO+vD+wQTdRyvhkWpVCe40EEDWf7StT08y92i5zlzOAIw==
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_71794_1922560417.1753485844952"
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Fw/uCp44";
+	spf=pass (imf21.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1753485954;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aaydfYuqVafMA2JLko3KZS5h6j/lPMMeqjP2Raw9h1E=;
+	b=Fw/uCp44j50elRecwJYSlIwHTVK4my4ZXuqt1jXAPGzfYKW68TOQLEWcy0aYrAYuOUS2tp
+	5weDJPJQbYnUTtSguNmZ4Q2Fu3dMoSEHhjiXvQJeCIzfWSQfoDu/L3p10rq1rkRSyGO9YO
+	qQ0u6ug7uwAzA06C4Eu0TAeQqCl8Hu4=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Jan Kara <jack@suse.cz>
+Cc: Andrew Morton <akpm@linux-foundation.org>,  Matthew Wilcox
+ <willy@infradead.org>,  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,
+  Liu Shixin <liushixin2@huawei.com>
+Subject: Re: [PATCH] mm: consider disabling readahead if there are signs of
+ thrashing
+In-Reply-To: <875xffsxj4.fsf@linux.dev> (Roman Gushchin's message of "Fri, 25
+	Jul 2025 15:42:07 -0700")
+References: <20250710195232.124790-1-roman.gushchin@linux.dev>
+	<at4ojyziprhhktjgtfmuyzrqwfmomnly6fubkvmbtxkdnx6hpb@5nldc3vipwny>
+	<875xffsxj4.fsf@linux.dev>
+Date: Fri, 25 Jul 2025 16:25:49 -0700
+Message-ID: <87jz3vdf9e.fsf@linux.dev>
 MIME-Version: 1.0
-Message-ID: <28c0650a.4727.19843e6a1d8.Coremail.hexiaole1994@126.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:_____wDnz2sUEoRolhURAA--.13718W
-X-CM-SenderInfo: 5kh0xt5rohimizu6ij2wof0z/1tbikAmVBmiDlXfIqwACsi
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Content-Type: text/plain
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 9F244140006
-X-Stat-Signature: z14okzcha8dwq6t8c7grodj9eeij7q5d
+X-Rspamd-Queue-Id: EB3DC1C0007
+X-Stat-Signature: 3eqnceacj3zqc6798y14zbfxuagnmrbd
 X-Rspam-User: 
-X-HE-Tag: 1753485860-770928
-X-HE-Meta: U2FsdGVkX1/4edzfvtdqWQZPRWpkWh494aNtLBq0EXwBawXGOLoVjHKOS1Z6mH3twOxsXB2ruTGlM32WLyL0Zj9Bv4bXKlQmtoSp3vzO42Xi5Pf5EjvG3nMW1XZIsEYCHNzJRk/KlGIZXk/yz5tsXnwyHo0ueTNmA4JRKL0QdszS1OuFI1xrr8TfvWLKj/IcHF/TdT8nPlsI6sz9ggNpaYcNJFybQYTkWCr9gHpK9ZRnmqU/By+hdiY2NKDE4RNseH9HwkxvhTwSTOtiouS3k4k/fTFXT95JlBU85wwMkQkHk2lqewArdc2htxNAWIwnoDKoq5hMAKvMbXK5Gb+BbrzglPPs+n4SB4A3a/6KA6EWED0Vo0bYFyiDijBR5sVOOvyDwuYt65+jfFtiqktMCr+0zeAN2iCdOEh4FRZZOx5x5yGzCzztjrOpqwZN+ZbwERoFn3Ff8d8y93ZnDEbhwh//W5vVCF9lrWToDyCFFueOaWlsVZCdtSookeUpJJvkakb7X5cfBrOx/FXg5NJzh00rHuUP+YcQiZRCUHB94C+5Xcah0c7Vf0mO1J/SEKLiRXnP441+Oed2yH3OHfUds2BOLVALuR17tR9OH+yIV3jjPOCDhWR9+CDaAmR4rPwS/jAfGrehcD/kC763KDoGGVSOp//HYVIDE+OdaT5SBLkM00qvYCYX3aqwrx1Fw+ThO3HtGJJxHOcdZjjNswKc9gZIj8nHq4re6AaprrwxVTFGBHjrZqdCH7cwg0nrps/4dl6jufslZ4zzXUNNFzTPWJbwSTAUBBeUeB4NeaMIttTjoyG0tW8jMtOxPWzi35GVmBUjbH6DhIevO0QsMdWN2SWTxW2LLrkcBAeZFitoUVYU3953OpMj3QldcW/fu6kA9uWhppJnb5Qk1VnJJTb0ngA+yOTaJR6qVx/11X4Q3difR9FVc3wxjM+Yv1MJOPmfbWo3YL7HQFc0jrMLjBA
- QV/SApZZ
- nj927GOpHTMGsTqN4tSJpQYPqNTjt9TZrcASzhat/EeVCnH3TvIKH4mTy0G8u87xsWk7FwNS/EsER678H5mYQb8VNPwmaEEcGotB7ycfIvMp8nGOzLK93UfWPZ7E9IPrYalbfnYkQcBZ+olRWChdtzBfWoANCI9yVTAGoJACLXi1DUjgmm/MmTGB+yvevxcfu1XNTpWawzDcL95uu6Q8pjiOvpPvPZUZcpO0Ss4+ucQANj5KdmKVoUKnbMFuJI/AkUQztebD8yZeM6lRCX8a4s6lB7EZOTsX7Hdgj+ObeDkPSb+FCpSQx8/oNC623c3TVSRUR+LFecHmYdMaf3ERVuNpLGeMOF5w4zyYoxxoJ2SWwO0MjL5KNXTQPlxd4Crk/VSqiJOMvVUeIu3rMST2KzTbT+ra9T6mTwrwrna+REFthHIM+SwbObv8I5BsusBSf3rwGlX9emBwNhhltJclwiVoG73uN3ZVipoOcLk+Wbb8Tv2fEi6ESLeYJ7fSjBcKYWkWqcwD6COBRk+YpMWkJOAQnrG0WW3fjX47hPwLDekqqPP7phslAzbuvZ5/JTtzVraC6ELKDQiIk3nNv9hNbJIwhEfFrFw2BWB4AdUOVD72mrpCzS/kD/lw/wY5QXZAqimNiTZF/d3fqGDsjHCelyfeB2jF6fnxxCwYUmHrebyWGmCdiecphsmy9acXIwRL9CNZLqwO4GOzYCDPME+Neje1CDFcyCh8l3yUESO0LGtSk3R0OAUEjbdK1px7Iw3IeE/ilJIGDIX6OcMozd9w0QDv0zfFG7n8lsroMt/W5g5Zf9RQBp7w/DWC8Ddjn6K4yOAf92n0zwANO95wRynHJOwCo+KLxxot6TNTlrFPD0K8lJaPKsOW9m3DH9EYy0kCNATHDgpb4oAlFzv1c5Rv1wR7i6EZiLXNHXu/iEt5wWFBSV2P0rqhmB/nK6MZdLMrFv5ATEgmsnBPf6mM1OXF9Eoyl4jXp
- lZDl28J0
- NRA3VjpwBMg3uWbvLvypkf5Ohg03jUWPAWoouvxLg/L0RKLzZMWcUQ==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000449, version=1.2.4
+X-HE-Tag: 1753485956-700436
+X-HE-Meta: U2FsdGVkX1+D83fjSotNt4+NuFuzqmuQmLuP0H2xvFkFro4xH2oUSLDalxNrTT1S8teym8Dz5cmw20EzkMubBWaMrtE+0pm4ULp7LAY67Sr4jK+tL6kO8D3mcdvmpjHisPdXA6QRKYmAZ+kFgzfDgcyhj5423C2n8668TGrung/9Gslh8b2v83JxnE5vC1dQK2DdzFlOcQxAtvhT71UVSN5lhQrMBgBR6RrZZhM+0Li65OfM3cK1HOSmTu5QH+rmSOA76emBRaArXGmHYWMQYk/L+qGRqJl5eKVEfdudmnQzTnyG2+jOer2BjLmdm8BVObvQ+UYueUj2tPpB8KPHqBseyybmcIRzIhpAMQjrhMcHyaVcVKFzsXzIIemZeb1s9/nmV720+5eJ3rv5agF8GpWDICqKszqpDvTIvCAPDhag7ekRlTaYDC5Y29qw3pk2Rt2aouhxZ5SaRbOOIrcMlARQY3dCLxoYnqg0ylCG+Tnf69mTFzM3KHwyHKdDqT2zGBiL/oUmZZui9GKUVCpg6wHa8KvjF4LvXW85rDvz93N3uMK1MB+sbIaOTMypZYe+GvTzxbYIPc0x00DgZMqzMlVsYV26K1Ny+/askSZALOz6t3S0GHFTepwbNOiHRolwOJ4qcJSKcuOAaGbcRfKi6JA6k/i2FEkcu3IbxgBtBRWpNM9G28qInND/jjWgBAO9z0YDBRC3rBpBW0CubcvTTscAnTgeczls0yfStiwhqoMBxHJIG7K73rO4kE4DOEe51ssKA7SPFfqs4dXioMlB4uoKCOOu+6WroiRwy70ETQnJ8jaq+q2T9JrIaxoCq156rtRExj3oW2Y7nKUCe/v3ilUvU85TjNzCuQonDbQ/NVpuEWATi5zxRQs0EWuBb15hNTobjL6t1G0m7WwYrwNLZt8Hd7iTkfDD0Ga0X5FWIrCcEp1YFuuEPBzRaif0o5b5cNv5Th0zZ/6SiJJhi7Y
+ VrG9qJ3/
+ paSWO9LCbb3EnK2m92jhaH2kGhL6zcRRbx8X0Uud1tPdk/MSOYJYHTPDUIYtWSwlEx/km+JLZG//Fn6b62nM6SRYjcMfDZxg1qSBea4B1c5d0aO3jCia3vNjREitosjPM3AovnDahd0+4SIDU06yaRwvG5GalRRoGbzFGB5e5SgM0s6UBVYdESg8gUMYAkbhUfrgbawLTzJwai0RVmOgAvS5Jdg==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,145 +89,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-------=_Part_71794_1922560417.1753485844952
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+Roman Gushchin <roman.gushchin@linux.dev> writes:
 
-VGhhbmtzIGZvciB5b3VyIHF1aWNrIHJldmlldyBhbmQgZmVlZGJhY2suCkkgdW5kZXJzdGFuZCB5
-b3VyIHBvaW50cyByZWdhcmRpbmcgdGhlIG1pbmltYWwgcGVyZm9ybWFuY2UgaW1wYWN0IGFuZAp0
-aGUgcHJlZmVyZW5jZSBmb3Iga2VlcGluZyB0aGUgY3VycmVudCBsb2dpYyBnaXZlbiBpdHMgbG9u
-Zy1zdGFuZGluZwpjb3JyZWN0bmVzcy4gSSBhZ3JlZSB0aGF0IHRoZSBjaGFuZ2UgaXMgaW5kZWVk
-IG1pbm9yIGluIHNjb3BlLgpObyB3b3JyaWVzIGF0IGFsbCwgSSBhcHByZWNpYXRlIHlvdSB0YWtp
-bmcgdGhlIHRpbWUgdG8gY29uc2lkZXIgdGhlCnBhdGNoLgpCZXN0IHJlZ2FyZHMsICAKCgp8IHwK
-WGlhb2xlIEhlCnwKfApoZXhpYW9sZTE5OTRAMTI2LmNvbQp8Ci0tLS0gUmVwbGllZCBNZXNzYWdl
-IC0tLS0KfCBGcm9tIHwgTWF0dGhldyBXaWxjb3g8d2lsbHlAaW5mcmFkZWFkLm9yZz4gfAp8IERh
-dGUgfCA3LzI1LzIwMjUgMjM6NDUgfAp8IFRvIHwgWGlhb2xlIEhlPGhleGlhb2xlMTk5NEAxMjYu
-Y29tPiB8CnwgQ2MgfCBBbmRyZXcgTW9ydG9uPGFrcG1AbGludXgtZm91bmRhdGlvbi5vcmc+LAo8
-bGludXgtZnNkZXZlbEB2Z2VyLmtlcm5lbC5vcmc+LAo8bGludXgtbW1Aa3ZhY2sub3JnPiwKPGxp
-bnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc+IHwKfCBTdWJqZWN0IHwgUmU6IFtQQVRDSCB2MV0g
-bW0vcmVhZGFoZWFkOiBPcHRpbWl6ZSBucl90b19yZWFkIGJvdW5kYXJ5IGNoZWNrIHwKT24gRnJp
-LCBKdWwgMjUsIDIwMjUgYXQgMTE6Mjg6MzRQTSArMDgwMCwgWGlhb2xlIEhlIHdyb3RlOgpJZiBu
-cl90b19yZWFkIGlzLCBmb3IgaW5zdGFuY2UsIDMsIGFuZCBlbmRfaW5kZXggLSBpbmRleCArIDEg
-aXMgYWxzbyAzCiAobWVhbmluZyAzIHBhZ2VzIHJlbWFpbiksIHRoZSBjb25kaXRpb24gMyA+IDIg
-ZXZhbHVhdGVzIHRvIHRydWUsIGxlYWRpbmcKICB0byBucl90b19yZWFkIGJlaW5nIGFzc2lnbmVk
-IDMgYWdhaW4uIFdoaWxlIGNvbXBpbGVycyBtaWdodCBvcHRpbWl6ZQogdGhpcyB0cml2aWFsIHNl
-bGYtYXNzaWdubWVudCwgaXQgaW50cm9kdWNlcyB1bm5lY2Vzc2FyeSBsb2dpY2FsIG92ZXJoZWFk
-CiAgYW5kIHJlZHVjZXMgY29kZSBjbGFyaXR5LgoKQnV0IGl0IG1ha2VzIHRoZSBpbml0aWFsIGNv
-bXBhcmlzb24gbW9yZSBjb21wbGV4IChieSBvbmUgb3BlcmF0aW9uKSBhbmQKSSBiZXQgeW91IGNh
-bid0IG1lYXN1cmUgdGhlIGRpZmZlcmVuY2UgYW55d2F5LiAgSSdtIG5vdCBpbmNsaW5lZCB0bwp0
-d2VhayB0aGlzLgo=
-------=_Part_71794_1922560417.1753485844952
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: base64
+> Jan Kara <jack@suse.cz> writes:
+>
+>> On Thu 10-07-25 12:52:32, Roman Gushchin wrote:
+>>> We've noticed in production that under a very heavy memory pressure
+>>> the readahead behavior becomes unstable causing spikes in memory
+>>> pressure and CPU contention on zone locks.
+>>> 
+>>> The current mmap_miss heuristics considers minor pagefaults as a
+>>> good reason to decrease mmap_miss and conditionally start async
+>>> readahead. This creates a vicious cycle: asynchronous readahead
+>>> loads more pages, which in turn causes more minor pagefaults.
+>>> This problem is especially pronounced when multiple threads of
+>>> an application fault on consecutive pages of an evicted executable,
+>>> aggressively lowering the mmap_miss counter and preventing readahead
+>>> from being disabled.
+>>
+>> I think you're talking about filemap_map_pages() logic of handling
+>> mmap_miss. It would be nice to mention it in the changelog. There's one
+>> thing that doesn't quite make sense to me: When there's memory pressure,
+>> I'd expect the pages to be reclaimed from memory and not just unmapped. 
+>> Also given your solution uses !uptodate folios suggests the pages were
+>> actually fully reclaimed and the problem really is that filemap_map_pages()
+>> treats as minor page fault (i.e., cache hit) what is in fact a major page
+>> fault (i.e., cache miss)?
+>>
+>> Actually, now that I digged deeper I've remembered that based on Liu
+>> Shixin's report
+>> (https://lore.kernel.org/all/20240201100835.1626685-1-liushixin2@huawei.com/)
+>> which sounds a lot like what you're reporting, we have eventually merged his
+>> fixes (ended up as commits 0fd44ab213bc ("mm/readahead: break read-ahead
+>> loop if filemap_add_folio return -ENOMEM"), 5c46d5319bde ("mm/filemap:
+>> don't decrease mmap_miss when folio has workingset flag")). Did you test a
+>> kernel with these fixes (6.10 or later)? In particular after these fixes
+>> the !folio_test_workingset() check in filemap_map_folio_range() and
+>> filemap_map_order0_folio() should make sure we don't decrease mmap_miss
+>> when faulting fresh pages. Or was in your case page evicted so long ago
+>> that workingset bit is already clear?
+>>
+>> Once we better understand the situation, let me also mention that I have
+>> two patches which I originally proposed to fix Liu's problems. They didn't
+>> quite fix them so his patches got merged in the end but the problems
+>> described there are still somewhat valid:
+>
+> Ok, I got a better understanding of the situation now. Basically we have
+> a multi-threaded application which is under very heavy memory pressure.
+> I multiple threads are faulting simultaneously into the same page,
+> do_sync_mmap_readahead() can be called multiple times for the same page.
+> This creates a negative pressure on the mmap_miss counter, which can't be
+> matched by do_sync_mmap_readahead(), which is be called only once
+> for every page. This basically keeps the readahead on, despite the heavy
+> memory pressure.
+>
+> The following patch solves the problem, at least in my test scenario.
+> Wdyt?
 
-PGh0bWw+PGhlYWQ+PG1ldGEgaHR0cC1lcXVpdj0iQ29udGVudC1UeXBlIiBjb250ZW50PSJ0ZXh0
-L2h0bWw7IGNoYXJzZXQ9VVRGLTgiPjwvaGVhZD48Ym9keSBzdHlsZT0ibGluZS1oZWlnaHQ6Ij48
-ZGl2IHN0eWxlPSJmb250LWZhbWlseTog5b6u6L2v6ZuF6buROyI+PGRpdj5UaGFua3MgZm9yIHlv
-dXIgcXVpY2sgcmV2aWV3IGFuZCBmZWVkYmFjay4gIAo8L2Rpdj48ZGl2PkkgdW5kZXJzdGFuZCB5
-b3VyIHBvaW50cyByZWdhcmRpbmcgdGhlIG1pbmltYWwgcGVyZm9ybWFuY2UgaW1wYWN0IGFuZCAK
-PC9kaXY+PGRpdj50aGUgcHJlZmVyZW5jZSBmb3Iga2VlcGluZyB0aGUgY3VycmVudCBsb2dpYyBn
-aXZlbiBpdHMgbG9uZy1zdGFuZGluZyAKPC9kaXY+PGRpdj5jb3JyZWN0bmVzcy4gSSBhZ3JlZSB0
-aGF0IHRoZSBjaGFuZ2UgaXMgaW5kZWVkIG1pbm9yIGluIHNjb3BlLiAKPC9kaXY+PGRpdj5ObyB3
-b3JyaWVzIGF0IGFsbCwgSSBhcHByZWNpYXRlIHlvdSB0YWtpbmcgdGhlIHRpbWUgdG8gY29uc2lk
-ZXIgdGhlIAo8L2Rpdj48ZGl2PnBhdGNoLiAKPC9kaXY+PGRpdj5CZXN0IHJlZ2FyZHMsJm5ic3A7
-Jm5ic3A7PC9kaXY+PGRpdj48YnI+PC9kaXY+PGRpdiBzcGVsbGNoZWNrPSJmYWxzZSIgaWQ9Im50
-ZXMtcGNtYWMtc2lnbmF0dXJlIiBzdHlsZT0iZm9udC1mYW1pbHk65b6u6L2v6ZuF6buRIiBkYXRh
-LW50ZXMtc2lnbmF0dXJlPSJ0cnVlIj48ZGl2IHN0eWxlPSJmb250LXNpemU6MTRweDtwYWRkaW5n
-OjA7bWFyZ2luOjAiPjxkaXYgc3R5bGU9InBhZGRpbmctYm90dG9tOjZweDttYXJnaW4tYm90dG9t
-OjEwcHg7ZGlzcGxheTppbmxpbmUtYmxvY2siPiAgICAgICAgPGEgc3R5bGU9ImRpc3BsYXk6Ymxv
-Y2s7YmFja2dyb3VuZDojZmZmOyBtYXgtd2lkdGg6IDQwMHB4OyBfd2lkdGg6IDQwMHB4O3BhZGRp
-bmc6MTVweCAwIDEwcHggMDt0ZXh0LWRlY29yYXRpb246IG5vbmU7IG91dGxpbmU6bm9uZTstd2Vi
-a2l0LXRhcC1oaWdobGlnaHQtY29sb3I6dHJhbnNwYXJlbnQ7LXdlYmtpdC10ZXh0LXNpemUtYWRq
-dXN0Om5vbmUgIWltcG9ydGFudDt0ZXh0LXNpemUtYWRqdXN0Om5vbmUgIWltcG9ydGFudDsiPgog
-ICAgICAgICAgICA8dGFibGUgc3R5bGU9IndpZHRoOiAxMDAlOyBtYXgtd2lkdGg6IDEwMCU7IHRh
-YmxlLWxheW91dDogZml4ZWQ7IGJvcmRlci1jb2xsYXBzZTogY29sbGFwc2U7Y29sb3I6ICM5Yjll
-YTE7Zm9udC1zaXplOiAxNHB4O2xpbmUtaGVpZ2h0OjEuMzstd2Via2l0LXRleHQtc2l6ZS1hZGp1
-c3Q6bm9uZSAhaW1wb3J0YW50O3RleHQtc2l6ZS1hZGp1c3Q6bm9uZSAhaW1wb3J0YW50OyIgY2Vs
-bHBhZGRpbmc9IjAiPgogICAgICAgICAgICAgICAgPHRib2R5IHN0eWxlPSJmb250LWZhbWlseTog
-J1BpbmdGYW5nIFNDJywgJ0hpcmFnaW5vIFNhbnMgR0InLCdXZW5RdWFuWWkgTWljcm8gSGVpJywg
-J01pY3Jvc29mdCBZYWhlaScsICflvq7ova/pm4Xpu5EnLCB2ZXJkYW5hICFpbXBvcnRhbnQ7IHdv
-cmQtd3JhcDpicmVhay13b3JkOyB3b3JkLWJyZWFrOmJyZWFrLWFsbDstd2Via2l0LXRleHQtc2l6
-ZS1hZGp1c3Q6bm9uZSAhaW1wb3J0YW50O3RleHQtc2l6ZS1hZGp1c3Q6bm9uZSAhaW1wb3J0YW50
-OyI+CiAgICAgICAgICAgICAgICAgICAgPHRyPgogICAgICAgICAgICAgICAgICAgICAgICAgICAg
-PHRkIHN0eWxlPSJwYWRkaW5nOjA7IGJveC1zaXppbmc6IGJvcmRlci1ib3g7IHdpZHRoOiAzOHB4
-OyIgd2lkdGg9IjM4Ij4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8aW1nIHNyYz0i
-aHR0cHM6Ly9tYWlsLW9ubGluZS5ub3Nkbi4xMjcubmV0L3NtMjdkNjE3NThiZWUzZjY4NWI4M2Zj
-ZmM5NjgxNzNmOTEuanBnIiBzdHlsZT0idmVydGljYWwtYWxpZ246bWlkZGxlOyB3aWR0aDogMzhw
-eDsgaGVpZ2h0OiAzOHB4OyBib3JkZXItcmFkaXVzOjUwJTsiIGhlaWdodD0iMzgiIHdpZHRoPSIz
-OCI+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L3RkPgogICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgPHRkIHN0eWxlPSJwYWRkaW5nOiAwIDAgMCAxMHB4OyBjb2xvcjogIzMxMzUzYjsi
-PgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxkaXYgc3R5bGU9ImZvbnQtc2l6ZTog
-MTZweDtmb250LXdlaWdodDpib2xkOyB3aWR0aDoxMDAlOyB3aGl0ZS1zcGFjZTogbm93cmFwOyBv
-dmVyZmxvdzpoaWRkZW47dGV4dC1vdmVyZmxvdzogZWxsaXBzaXM7Ij5YaWFvbGUgSGU8L2Rpdj4K
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvdGQ+CiAgICAgICAgICAgICAgICAgICAgPC90
-cj4KICAgICAgICAgICAgICAgICAgICAgICAgPHRyIHN0eWxlPSJmb250LXNpemU6IDE0cHggIWlt
-cG9ydGFudDsgd2lkdGg6IDEwMCU7IiB3aWR0aD0iMTAwJSI+CiAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICA8dGQgc3R5bGU9InBhZGRpbmc6MTBweCAwIDAgMDsgZm9udC1zaXplOjE0cHggIWlt
-cG9ydGFudDsgd2lkdGg6IDEwMCU7IiBjb2xzcGFuPSIyIj4KICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgPGRpdiBzdHlsZT0id2lkdGg6IDEwMCU7Zm9udC1zaXplOiAxNHB4ICFp
-bXBvcnRhbnQ7d29yZC13cmFwOmJyZWFrLXdvcmQ7d29yZC1icmVhazpicmVhay1hbGw7Ij5oZXhp
-YW9sZTE5OTRAMTI2LmNvbTwvZGl2PgogICAgICAgICAgICAgICAgICAgICAgICAgICAgPC90ZD4K
-ICAgICAgICAgICAgICAgICAgICAgICAgPC90cj4KICAgICAgICAgICAgICAgIDwvdGJvZHk+CiAg
-ICAgICAgICAgIDwvdGFibGU+CiAgICAgICAgPC9hPjwvZGl2PjwvZGl2PjwvZGl2PjwvZGl2Pjxk
-aXYgY2xhc3M9IkotcmVwbHkgbnRlcy1tYWlsbWFzdGVyLXF1b3RlIiBzdHlsZT0icGFkZGluZy10
-b3A6IDFweDsgcGFkZGluZy1ib3R0b206IDFweDsgZm9udC1mYW1pbHk6IOW+rui9r+mbhem7kTsi
-PjxkaXYgc3R5bGU9Im1hcmdpbjoyZW0gMCAxZW07Zm9udC1zaXplOjE0cHg7bGluZS1oZWlnaHQ6
-MS4yNTtjb2xvcjojNzg3ODdhIj4tLS0tIFJlcGxpZWQgTWVzc2FnZSAtLS0tPC9kaXY+PGRpdiBz
-dHlsZT0ibWFyZ2luLWJvdHRvbToxZW07Zm9udC1zaXplOjEycHg7bGluZS1oZWlnaHQ6MS4yNTtj
-b2xvcjojMjMyMzI0O3BhZGRpbmc6MC41ZW0gMC4yNWVtO2JvcmRlci1yYWRpdXM6MC42N2VtO2Jh
-Y2tncm91bmQtY29sb3I6I2YwZjBmMCI+PHRhYmxlIHdpZHRoPSIxMDAlIiBjZWxscGFkZGluZz0i
-MCIgY2VsbHNwYWNpbmc9IjkiIGJvcmRlcj0iMCIgaWQ9Im50ZXNfZWRpdG9yX3RhYmxlXzEwMDEw
-IiBjbGFzcz0ibnRlc19lZGl0b3JfdGFibGUgbnRlc19lZGl0b3JfZXh0X3RhYmxlICI+PHRib2R5
-Pjx0cj48dGQgdmFsaWduPSJ0b3AiIHN0eWxlPSJ3aWR0aDo0LjI1ZW07Zm9udC1zaXplOjEycHg7
-bGluZS1oZWlnaHQ6MS4yNTtjb2xvcjojNzg3ODdhIj5Gcm9tPC90ZD48dGQgY2xhc3M9IiIgdmFs
-aWduPSJ0b3AiIHN0eWxlPSJmb250LXNpemU6MTJweDtsaW5lLWhlaWdodDoxLjI1O2NvbG9yOiMy
-MzIzMjQ7d29yZC1icmVhazpicmVhay1hbGwiPjxhIGNsYXNzPSJtYWlsLWZyb20iIHN0eWxlPSJj
-b2xvcjojMzA2MWYyO3RleHQtZGVjb3JhdGlvbjpub25lIiBocmVmPSJtYWlsdG86d2lsbHlAaW5m
-cmFkZWFkLm9yZyI+TWF0dGhldyBXaWxjb3gmbHQ7d2lsbHlAaW5mcmFkZWFkLm9yZyZndDs8L2E+
-PC90ZD48L3RyPjx0cj48dGQgdmFsaWduPSJ0b3AiIHN0eWxlPSJ3aWR0aDo0LjI1ZW07Zm9udC1z
-aXplOjEycHg7bGluZS1oZWlnaHQ6MS4yNTtjb2xvcjojNzg3ODdhIj5EYXRlPC90ZD48dGQgY2xh
-c3M9Im1haWwtZGF0ZSIgdmFsaWduPSJ0b3AiIHN0eWxlPSJmb250LXNpemU6MTJweDtsaW5lLWhl
-aWdodDoxLjI1O2NvbG9yOiMyMzIzMjQ7d29yZC1icmVhazpicmVhay1hbGwiPjcvMjUvMjAyNSAy
-Mzo0NTwvdGQ+PC90cj48dHI+PHRkIHZhbGlnbj0idG9wIiBzdHlsZT0id2lkdGg6NC4yNWVtO2Zv
-bnQtc2l6ZToxMnB4O2xpbmUtaGVpZ2h0OjEuMjU7Y29sb3I6Izc4Nzg3YSI+VG88L3RkPjx0ZCBj
-bGFzcz0iIiB2YWxpZ249InRvcCIgc3R5bGU9ImZvbnQtc2l6ZToxMnB4O2xpbmUtaGVpZ2h0OjEu
-MjU7Y29sb3I6IzIzMjMyNDt3b3JkLWJyZWFrOmJyZWFrLWFsbCI+PGEgY2xhc3M9Im1haWwtdG8i
-IHN0eWxlPSJjb2xvcjojMzA2MWYyO3RleHQtZGVjb3JhdGlvbjpub25lIiBocmVmPSJtYWlsdG86
-aGV4aWFvbGUxOTk0QDEyNi5jb20iPlhpYW9sZSBIZSZsdDtoZXhpYW9sZTE5OTRAMTI2LmNvbSZn
-dDs8L2E+PC90ZD48L3RyPjx0cj48dGQgdmFsaWduPSJ0b3AiIHN0eWxlPSJ3aWR0aDo0LjI1ZW07
-Zm9udC1zaXplOjEycHg7bGluZS1oZWlnaHQ6MS4yNTtjb2xvcjojNzg3ODdhIj5DYzwvdGQ+PHRk
-IGNsYXNzPSIiIHZhbGlnbj0idG9wIiBzdHlsZT0iZm9udC1zaXplOjEycHg7bGluZS1oZWlnaHQ6
-MS4yNTtjb2xvcjojMjMyMzI0O3dvcmQtYnJlYWs6YnJlYWstYWxsIj48YSBjbGFzcz0ibWFpbC1j
-YyIgc3R5bGU9ImNvbG9yOiMzMDYxZjI7dGV4dC1kZWNvcmF0aW9uOm5vbmUiIGhyZWY9Im1haWx0
-bzpha3BtQGxpbnV4LWZvdW5kYXRpb24ub3JnIj5BbmRyZXcgTW9ydG9uJmx0O2FrcG1AbGludXgt
-Zm91bmRhdGlvbi5vcmcmZ3Q7LDxicj48L2E+PGEgY2xhc3M9Im1haWwtY2MiIHN0eWxlPSJjb2xv
-cjojMzA2MWYyO3RleHQtZGVjb3JhdGlvbjpub25lIiBocmVmPSJtYWlsdG86bGludXgtZnNkZXZl
-bEB2Z2VyLmtlcm5lbC5vcmciPiZsdDtsaW51eC1mc2RldmVsQHZnZXIua2VybmVsLm9yZyZndDss
-PGJyPjwvYT48YSBjbGFzcz0ibWFpbC1jYyIgc3R5bGU9ImNvbG9yOiMzMDYxZjI7dGV4dC1kZWNv
-cmF0aW9uOm5vbmUiIGhyZWY9Im1haWx0bzpsaW51eC1tbUBrdmFjay5vcmciPiZsdDtsaW51eC1t
-bUBrdmFjay5vcmcmZ3Q7LDxicj48L2E+PGEgY2xhc3M9Im1haWwtY2MiIHN0eWxlPSJjb2xvcjoj
-MzA2MWYyO3RleHQtZGVjb3JhdGlvbjpub25lIiBocmVmPSJtYWlsdG86bGludXgta2VybmVsQHZn
-ZXIua2VybmVsLm9yZyI+Jmx0O2xpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmcmZ3Q7PC9hPjwv
-dGQ+PC90cj48dHI+PHRkIHZhbGlnbj0idG9wIiBzdHlsZT0id2lkdGg6NC4yNWVtO2ZvbnQtc2l6
-ZToxMnB4O2xpbmUtaGVpZ2h0OjEuMjU7Y29sb3I6Izc4Nzg3YSI+U3ViamVjdDwvdGQ+PHRkIGNs
-YXNzPSIiIHZhbGlnbj0idG9wIiBzdHlsZT0iZm9udC1zaXplOjEycHg7bGluZS1oZWlnaHQ6MS4y
-NTtjb2xvcjojMjMyMzI0O3dvcmQtYnJlYWs6YnJlYWstYWxsIj5SZTogW1BBVENIIHYxXSBtbS9y
-ZWFkYWhlYWQ6IE9wdGltaXplIG5yX3RvX3JlYWQgYm91bmRhcnkgY2hlY2s8L3RkPjwvdHI+PC90
-Ym9keT48L3RhYmxlPjwvZGl2PjxwcmU+T24gRnJpLCBKdWwgMjUsIDIwMjUgYXQgMTE6Mjg6MzRQ
-TSArMDgwMCwgWGlhb2xlIEhlIHdyb3RlOjxicj48YmxvY2txdW90ZSBjbGFzcz0ibW1icWMxIj5J
-ZiBucl90b19yZWFkIGlzLCBmb3IgaW5zdGFuY2UsIDMsIGFuZCBlbmRfaW5kZXggLSBpbmRleCAr
-IDEgaXMgYWxzbyAzPGJyPiAobWVhbmluZyAzIHBhZ2VzIHJlbWFpbiksIHRoZSBjb25kaXRpb24g
-MyAmZ3Q7IDIgZXZhbHVhdGVzIHRvIHRydWUsIGxlYWRpbmc8YnI+ICB0byBucl90b19yZWFkIGJl
-aW5nIGFzc2lnbmVkIDMgYWdhaW4uIFdoaWxlIGNvbXBpbGVycyBtaWdodCBvcHRpbWl6ZTxicj4g
-dGhpcyB0cml2aWFsIHNlbGYtYXNzaWdubWVudCwgaXQgaW50cm9kdWNlcyB1bm5lY2Vzc2FyeSBs
-b2dpY2FsIG92ZXJoZWFkPGJyPiAgYW5kIHJlZHVjZXMgY29kZSBjbGFyaXR5Ljxicj48L2Jsb2Nr
-cXVvdGU+PGJyPkJ1dCBpdCBtYWtlcyB0aGUgaW5pdGlhbCBjb21wYXJpc29uIG1vcmUgY29tcGxl
-eCAoYnkgb25lIG9wZXJhdGlvbikgYW5kPGJyPkkgYmV0IHlvdSBjYW4ndCBtZWFzdXJlIHRoZSBk
-aWZmZXJlbmNlIGFueXdheS4gJm5ic3A7SSdtIG5vdCBpbmNsaW5lZCB0bzxicj50d2VhayB0aGlz
-Ljxicj48L3ByZT48L2Rpdj48aW1nIHN0eWxlPSJ3aWR0aDoxcHg7aGVpZ2h0OjFweCIgc3JjPSJo
-dHRwczovL2NvdW50Lm1haWwuMTYzLmNvbS9iZWFjb24vd2VibWFpbC5naWY/dHlwZT13ZWJtYWls
-X21haWx0cmFjZSZhbXA7Z3VpZD0xNzA2ZjdmOWJmZTM2ODdkYzE5Y2I2NTg3M2UzMjlhMyI+PCEt
-LfCfmIAtLT48L2JvZHk+PC9odG1sPg==
-------=_Part_71794_1922560417.1753485844952--
+Actually, a better version is below. We don't have to avoid the actual
+readahead, just not decrease mmap_miss if the page is locked.
 
+--
+
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 0d0369fb5fa1..1756690dd275 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3323,9 +3323,15 @@ static struct file *do_async_mmap_readahead(struct vm_fault *vmf,
+        if (vmf->vma->vm_flags & VM_RAND_READ || !ra->ra_pages)
+                return fpin;
+ 
+-       mmap_miss = READ_ONCE(ra->mmap_miss);
+-       if (mmap_miss)
+-               WRITE_ONCE(ra->mmap_miss, --mmap_miss);
++       /* If folio is locked, we're likely racing against another fault,
++        * don't decrease the mmap_miss counter to avoid decreasing it
++        * multiple times for the same page and break the balance.
++        */
++       if (likely(!folio_test_locked(folio))) {
++               mmap_miss = READ_ONCE(ra->mmap_miss);
++               if (mmap_miss)
++                       WRITE_ONCE(ra->mmap_miss, --mmap_miss);
++       }
+ 
+        if (folio_test_readahead(folio)) {
+                fpin = maybe_unlock_mmap_for_io(vmf, fpin);
 
