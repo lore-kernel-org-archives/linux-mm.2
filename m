@@ -2,144 +2,112 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 45BB9C87FCA
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 14:43:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 24013C87FCE
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 14:45:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBC726B0088; Fri, 25 Jul 2025 10:43:31 -0400 (EDT)
+	id BD4BD6B008A; Fri, 25 Jul 2025 10:45:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C460F6B0089; Fri, 25 Jul 2025 10:43:31 -0400 (EDT)
+	id B5ED76B008C; Fri, 25 Jul 2025 10:45:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE65E6B008A; Fri, 25 Jul 2025 10:43:31 -0400 (EDT)
+	id A4D7B6B0092; Fri, 25 Jul 2025 10:45:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A47B6B0088
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 10:43:31 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 70862BB5CE
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 14:43:31 +0000 (UTC)
-X-FDA: 83703055422.19.EF9B3B0
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 4E5E020015
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 14:43:29 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=canonical.com header.s=20210705 header.b=QqmmkhH+;
-	dmarc=pass (policy=none) header.from=canonical.com;
-	spf=pass (imf03.hostedemail.com: domain of heinrich.schuchardt@canonical.com designates 185.125.188.123 as permitted sender) smtp.mailfrom=heinrich.schuchardt@canonical.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753454609; a=rsa-sha256;
-	cv=none;
-	b=dhMYQnI0YvLGl+fW9Tudq17W10vZko10rjg5L5du4F3tkZqyL4V5X21FgckWae5UcnETaq
-	27NYzHc8Be5mmxPaz/lHRa1VMhNahzwXJVHXK6Hbeh13Ob0E2bkEpBLgYrhRGDhayMEwKE
-	8dxpddo4t0RFXg9suf+/M0W4fuROE+Q=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=canonical.com header.s=20210705 header.b=QqmmkhH+;
-	dmarc=pass (policy=none) header.from=canonical.com;
-	spf=pass (imf03.hostedemail.com: domain of heinrich.schuchardt@canonical.com designates 185.125.188.123 as permitted sender) smtp.mailfrom=heinrich.schuchardt@canonical.com
+	by kanga.kvack.org (Postfix) with ESMTP id 944D36B008A
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 10:45:11 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 452141A07D0
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 14:45:11 +0000 (UTC)
+X-FDA: 83703059622.11.0E3B39B
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2B67640018
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 14:45:08 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=2H8keXiX;
+	spf=pass (imf17.hostedemail.com: domain of jannh@google.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753454609;
+	s=arc-20220608; t=1753454709;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0k2OjtFlklZYYSusmSIAAvwXtZV4jXB/0YYQlrt+7FM=;
-	b=kHa3ruJCt5Clvq3mzRGzt7Ealpy8VzSrhSfX5KR+G46F9xTBKygmoBzulLTYMs1bKc0Enz
-	N4O0zkuRxnCiSHQB3oAGvXIjkBuABR9/r5zFXvCMyQEO82a6emRbBhHIAgLZWes+hnq2ZX
-	MuoImNQ4qrUpR3pIKGiVymyoFIj1xog=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 657AD3F73B
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 14:43:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1753454604;
-	bh=0k2OjtFlklZYYSusmSIAAvwXtZV4jXB/0YYQlrt+7FM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type;
-	b=QqmmkhH+oeELz8SrXkqfveadWYD6f+xVH8sjn1VhlFAIFGN9jd9SfzZ4isziFZ78s
-	 dB7LDJAuuc+11oFlJQAdJNCuEbygP8Q9209uinnVNzt3HNgfubaRW2qQ8nJD0qNBnN
-	 1w8ze0+3jfL+r1n6Crwzst3r7i5eioJ54AH70pS7jkNBLcXVLE3Owtt8oPKJRKj+zf
-	 etpbzFIJxvKm3Ud2vjvllm/Nt6m70SUJajYZf9ECDci+3uYtyOaEaNQL6Ep/xXchrx
-	 iVTYOo6pKgbXGmFq+0Yxm0I1NkLwpoWeNVshj0Znpk/2PIzwLyz1uG8a5XWxiPekaj
-	 7PO6641c4vGUQ==
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-6149374a4c8so3196976a12.0
-        for <linux-mm@kvack.org>; Fri, 25 Jul 2025 07:43:24 -0700 (PDT)
+	bh=qIq14dJIVdG8Em0IZoGynxSIJDeMyZzA0yiBWzPg6Xc=;
+	b=00NT3pURVIv67BlgJa4GccJIw39r1nc5Gy93+4N7+tlQDcdUJvEs39gEd4GHnIr13LN8DD
+	zYMDUexRLWcShqhLc7MGlH8Y1QxEPwWXFMhIXd/NLia0EnDLNTy/OjZMB+rbRsTl20wfF7
+	BxygwfmUbIYzbkHHLRBMcTc8Ws9yaRU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753454709; a=rsa-sha256;
+	cv=none;
+	b=wdtp6pBi7IYO8it4bT3OIqSqWQU6JnFknd3EJiu6hvtTYpXv4VVSCnm5GGXgjWasXiRG53
+	wTHnUNb8WvahiUi/mqWA/PRZcQGfi403qvXNu9QNolF+1fUSxbLDXSUJZYTwHip/G1jkBs
+	g+J5puISdGVv6iEs+qSJRFC1UKr3S3c=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=2H8keXiX;
+	spf=pass (imf17.hostedemail.com: domain of jannh@google.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-609b169834cso11295a12.0
+        for <linux-mm@kvack.org>; Fri, 25 Jul 2025 07:45:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753454707; x=1754059507; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qIq14dJIVdG8Em0IZoGynxSIJDeMyZzA0yiBWzPg6Xc=;
+        b=2H8keXiXKBRwG4pCaw8R4h2AnJFQSnPDUbhd35xleTumwWpUbmC2QIYHxHXBJpucRa
+         jC4VsKJIayDEZrpefGjkGHbkYm9Cr78ua+KwQxKCBRsl6vI+w0xv14jaDndFEhbnfANY
+         huj74fQ3jUpQLSgrMMWt0h4duBID2XdXBlvnGmryKtt0MstuXiIj7WaU/PB0UnDs59Yn
+         mnFKb1rj72jvdqGfYUQdzyIFRIeWI+wfdpfXktyKPkiSdfxLXotXQbWj5baAbFVCF68I
+         jOiTNepwt9DpQTZAqtzvKL+EX6NYGQc73yamWMtgXmhaD7Kyhz/oXUWF5vP9JLDrQ8SH
+         JCYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753454603; x=1754059403;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0k2OjtFlklZYYSusmSIAAvwXtZV4jXB/0YYQlrt+7FM=;
-        b=OSxixFXLrdSVwJWF9RV5bHS6bCMaJWK03QzORg0RjZWXHFo/qydeT0kmFK0HA+/HqI
-         SCPf5ak1CVkPnuBE12eFpnu2vupA8gjQ57u9kRpezLYgWOihHUSAjASko0Rvk9QSaGmu
-         If1dH6IIhxpM0wrDXBpLKrDSUDfU2AhvxJok9GQYuipg/NPNGL1XV7QiL2Bzf1ACnNQC
-         yGx63JdFYVv+78tjvsLmKQWbNQbZ2GMDE/7S5IIeaCoBg+dY/WVM/2pzr+WbroV+A8BZ
-         04nZVq1g35BCxCME8Cyy3kplRDAgHopNr1h9yEs1HFGGloPiJA3SH6w454SG4b7ItN8Y
-         y+vA==
-X-Forwarded-Encrypted: i=1; AJvYcCXXqYfbTtLtH2get8Rs/DUug6q17mVj0Xg6hievrr4S8kk55kybdPlvWxApg724S23vHqV1E7e1tQ==@kvack.org
-X-Gm-Message-State: AOJu0YwL0PZjgkscDmVewLjrBRdoQhNnw1kW4nBkTDUSaWAwn4PsESYS
-	uHlocyz+koEN4aVQPhhkFhHHNlZ9iIrXi3OBZ1cvF2iOhZxJWL9WBFzFATpsKTGmneHLuABHUwv
-	L1XYZF2SfIpVntDD1v6t+S0wf7spGbmDzN2i9esZNRdPMQ4KgyIgrMgdIezKMCFRZqFoT
-X-Gm-Gg: ASbGncuEoRWqpNZ61gZTMhmLPkUcwyJP8AWRc1FlNM8M2D7XefmLxmqxBgSQx6lb8Q4
-	ClRO5JVoQllp9F3IfL5viwSKOcZKcnynQzTnbHo3Jc4M18PmxxqIAfkfbUQd9x1wjnH1IqwGodm
-	GlO/GAtzDL+6PPCK/aNsvEWLQDlrPAMLvREVKnzdz5QdA/k7dNFU6YME6n5u/zZuQEUdmrnYnDj
-	XMcUARjz3Lm3yKxzGi/rG7l3CT2YV4wvaOofKKK9g9DVp6AQUh8OI7atycRvsxPv8torPmc/WiK
-	Cl0uuEXnfsWVjwU1y97XEFqx8/hGA81IaGHTDWg4rAt+FEY4nW/T71Sad3qTqzMCvpxWwu16l9L
-	hF2E/LsEE3YdI2anF/xJQTrYwapGkq7C3TJTp
-X-Received: by 2002:a17:907:2d8f:b0:ae9:cd0a:5827 with SMTP id a640c23a62f3a-af61e533d42mr227199966b.20.1753454603613;
-        Fri, 25 Jul 2025 07:43:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHLGJ6zB3+OfdWnXfUelODaXvg8HjyVSfwaUZrmP6gSKNspnUl1zTG7y8LUoP5t34erFR1Evg==
-X-Received: by 2002:a17:907:2d8f:b0:ae9:cd0a:5827 with SMTP id a640c23a62f3a-af61e533d42mr227194666b.20.1753454603155;
-        Fri, 25 Jul 2025 07:43:23 -0700 (PDT)
-Received: from [192.168.103.102] (ip-005-147-080-091.um06.pools.vodafone-ip.de. [5.147.80.91])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af635af9967sm1931166b.131.2025.07.25.07.43.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Jul 2025 07:43:22 -0700 (PDT)
-Message-ID: <d6643810-094b-46d8-b223-b987783d23db@canonical.com>
-Date: Fri, 25 Jul 2025 16:43:20 +0200
+        d=1e100.net; s=20230601; t=1753454707; x=1754059507;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qIq14dJIVdG8Em0IZoGynxSIJDeMyZzA0yiBWzPg6Xc=;
+        b=eYOIm8Aq+3TQzrqsTHWb7d2npJQsuaq4zf0VMbAI0JHYKh5AsqSCtN5T2Auc/rocUA
+         bQFXhByfNc3oi82E/nOj11R8irqC7EpLlTKfKzBU0r9ldTTKpT5HINXYf8jiEIeiWifO
+         UjJED2Nz8Wc+gBpOmADEDgm2zUP4AUS0O02R3pyZWGqoKZFTToweG8I2e1hmU15tSfx8
+         0e7yvNTmxni3Sr8jNmVyCsZPHxxkoccN8y1sDp/1rInEKytm0K6MnOesx4pianBpUELI
+         g/ZK/xu3DZVDw+RhKo3UPphtVQZg0WRoYwvFIXXxbxgpKrBpMy2ayrduWPjx6tt8AHdC
+         lPbw==
+X-Forwarded-Encrypted: i=1; AJvYcCU1vR8TF9evwO4+gQ5oqs0pf0A9WF65zdEy4TKLiSE3+AQOgc+PTizTZXQUNufjLUOKpFFgspH9uw==@kvack.org
+X-Gm-Message-State: AOJu0YyVlx2CHLAEJnwzhxEzbogEs+pW2m2fHM2xtpintJyqebN7U220
+	unGXxmY3W+iW14YAQXFP6DMOWEFUiD9pgfPoBVZRa1saWI+YqvwxZhqMx1t6fe1jN+Cw3lFA+oe
+	yb7+DgZocMI5Hu6033jygYk/SUp+iJV+4vaW1gzQcNqPRFg1Jw2DXYnTujpc=
+X-Gm-Gg: ASbGnctYSaVdoXYyObsielJB8Mp3U4osD9eOJxjliZlVAcpUe5wpuy2XHcmGeAHIX03
+	aro2u61ozA38lhA3kRWzPkNbYI3cm8PQb4XCejjeqxPXxKI1ovDTqr+nAYQWvTs0lZvnvx5MP0P
+	qWBA4L3DEHI4Zqs4gFD/hr30/QFB2ubmPAKfX6A65k7EFNt9biOcUo/scE0B++ghvntYPAiYVpX
+	L9Zn65Q8IwrmsEQVf99skM+W8wvh5um5T4=
+X-Google-Smtp-Source: AGHT+IEYQbZPuNP3paaUxn8jeMegpNMd+Dg193eNXtPsbU/sYQfNMnRC6dvCdmFyXtMH+mXp7L5rpb7LbQrPR5ksMss=
+X-Received: by 2002:a05:6402:1d89:b0:612:ce4f:39c with SMTP id
+ 4fb4d7f45d1cf-614e6e4cfd3mr86568a12.0.1753454707041; Fri, 25 Jul 2025
+ 07:45:07 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/11] riscv: enable landing pad enforcement
-To: Deepak Gupta <debug@rivosinc.com>
-Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-kbuild@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev,
- rick.p.edgecombe@intel.com, broonie@kernel.org, cleger@rivosinc.com,
- samitolvanen@google.com, apatel@ventanamicro.com, ajones@ventanamicro.com,
- conor.dooley@microchip.com, charlie@rivosinc.com, samuel.holland@sifive.com,
- bjorn@rivosinc.com, fweimer@redhat.com, jeffreyalaw@gmail.com,
- andrew@sifive.com, ved@rivosinc.com, Paul Walmsley
- <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor
- <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Monk Chiang <monk.chiang@sifive.com>,
- Kito Cheng <kito.cheng@sifive.com>, Justin Stitt <justinstitt@google.com>
-References: <20250724-riscv_kcfi-v1-0-04b8fa44c98c@rivosinc.com>
- <20250724-riscv_kcfi-v1-5-04b8fa44c98c@rivosinc.com>
- <1149732f-bc8d-4339-90c3-e34aeac9f1be@canonical.com>
- <aIOSqskb_hBAqjIt@debug.ba.rivosinc.com>
-Content-Language: en-US
-From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-In-Reply-To: <aIOSqskb_hBAqjIt@debug.ba.rivosinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4E5E020015
-X-Stat-Signature: szjsg7pumt9ei8zkc3warofg1na8e93g
+References: <20250725-anonvma-uaf-debug-v2-1-bc3c7e5ba5b1@google.com> <1d849190-214e-413e-a082-d7f862b653cc@suse.cz>
+In-Reply-To: <1d849190-214e-413e-a082-d7f862b653cc@suse.cz>
+From: Jann Horn <jannh@google.com>
+Date: Fri, 25 Jul 2025 16:44:31 +0200
+X-Gm-Features: Ac12FXyb-HgzDpS3DcrqFBWx_FgxxiAo_cGOTd9j55tu-ioQwhxjh8xLSbmTJD4
+Message-ID: <CAG48ez23CPO-m6kPaEs8kLUfRVCN+QMbsEn7BocfaJuq=gRwaA@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/rmap: Add anon_vma lifetime debug check
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Rik van Riel <riel@surriel.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 2B67640018
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1753454609-419207
-X-HE-Meta: U2FsdGVkX196ybbgibdOoveE9qlrs2UuooNvoN509PctkLtueJB/OFAuR5lPIqKmB3Wpz2W1RrdbkO7yq1ykCLB68KjMBDV0J9gEn021CTxa8DYVHbQWrE8XLgvPxfUK5GaKDokycQobgGZj8a+GrygvqjC57uTDmHTlx1kBe6cjxtp+rmK7EBZyFjHAPufsdu8J6QYbs27eq2Ck9OheMsjQLUh3jy1igpnIoJHeOcWFNgMiocfrf9JQKJrYnJcDlSFTUKBUVYVj4mRmVr5volTMUfbFPu5HWcE7/zH7Re1chW/sfe2w0CvVPAhTmbGdsVphqWfYfg3ABp2ylm7aSxjTvsGoxKgna5Cq6ZSUvwXIqESh1KL+3UxCdDG9GlbhVqK/WfOKwuPMjax6wReF8dNICrbO2MHb0nF7IIl5V5Vj2GSwL1QNs7KHyYVdmojXXXsdDXWbG3EM+lBaYbzNxc9VvGn7PicNn1EnGB9KjwIxVFkGTEBDg3q6LpNVyn2jL5/tVUofImQkhfJ0Nbq4wK1uYwJODL5E8/cLhkw0cGa7LMpPzpSZD2X5cZqFe4vXEn9EbROkWzipFwmzfZKZICx2qv14PgcnFuFUHf1NuOD/A5hlaf+3cM56ycMR2UC6yjxRQ3TOFoaJzfOK1a3h6Pc4hRGxd7PICT/7wgIHAdoX06S6RmtPlk1+gvDbLUelYPqkqwUzeUP2pCfZbdbYN1T8MBY+JJ3IzP6uw8PKdUg/9BzsPDm2UpQGgM13RGI744WXymteOPGP8jJ9jiIr35GOaVlgQY9TIGDKlWy1X9EVKpvYQxPIRY7eDkiASL9IIS4MFSzUGP1kxgHR/PiYSy2np6XmIGgNL3XVw/PvJCvwVKU1lY9b6OKl7cUCUrbAw8lSqS/NJ3MjY//VGq+aG5QAaK//131aGebwloBoPSCpXBFzHUsXQUI2K3wmC3hpDV1rSdMQ82fOdVC0iJH
- LXn078sY
- jlRrrenz+u0ygnixbxzlJz4Q7z77ahPWgNmAlJ5taqFBseQSUCiQu7uyeJJRQ3hA26LO9j39seOWz+pbd9mafNOI1igYQdCj1eoQ3/v7l56jz2X0=
+X-Rspamd-Server: rspam09
+X-Stat-Signature: uexbnenqp88rpaz7bcwrqtmgu43zqesc
+X-HE-Tag: 1753454708-600649
+X-HE-Meta: U2FsdGVkX1/dHKBZDThzjJ01Yl4/q/mn/MpMt4N6hw/frfxRD7FjiQI0l3hSGYZ9Grs36/lnVk+9yna7wNnBaKCZIn/ZimUGN/yDw/lHrppj1P4g4XK0gGKhMEYnUuJgkzPyYf2szo9++hAFROxrro06Xf86lWarSM9Or7kiCW6NsR90aZYZU0u5KN+iE54kEwVbnJJ04I6yP2x/N2dDM2Qh00/Be0BHO+NgUNRvaJv09NNXyXoPWjE00F8kmPJT3e5Am5lKx4ENb4CdlGn9qTKVLWDAsx6uxqU5LG/TGWdJ+cArs7DtSoOPuFEScVkfovezAfqahVEgzdcCipJ68NnvHNrrkafB5nij8cj6P94EUfKvCHOdydDbFuQ5eS0oUmIrkau3ad5b1ZbsgUcLJCfUOIGKuJoXS4tJLi00Bk+yRNlyp29E/FsjUsqHsBSBBu7w/Kc4efZizZVKXvAzwspyGkbUm/4Qsue0ntEM6i6BSK/b7ayrJ+lCic8ugCebVThIyotsHLd3DHHqieWmb39rMSnzHeuQEN5q6WOwohB0le053L8ciA02cG5gRrV3H8I7tngh9fhh99yGAxF1xK1F/OB6k4KOYjWWeXhYYtAbzTSnAKjqNfIHekMCwOPhYZThdJTc3vFxCRTZRs2orI+n6EHdaTrEh6i7GppilZu80j4jTyCZdh1/TvSuqY90cZItkkjWIMs0d0m2P9xRlvxWq+pzzGaWc6Kw7fW61nJqidbcqNWMJb/wf4+tgaFnWnc3S/lNYThT2ZPIlyIRJbfCTke3Xg4irVwiasZ5PBkgrdant0wdMyTHAvNQqVM2mOsq8OJyJ3aXSS3YBpPhlTMk9v2ExCmXwAYubdXFZySW9kxAzfaRPd6L3OrOE78DWHre7zrGtjUehLFZI3NCs1OwiGZkhhRxjbga2yTg04a99WWPCWX7kbcG55SNh2Ly8gNET0BUEEQVe15FZHz
+ PJMGzLG9
+ +OZ+hI8fs9e++95szPeOaMrs26dRrM276sXDd2akpVHRb+8jSuNe+n+93Njo6t/vDOakyiZDgv8gOM1twk1gI6bTd3amWMMq46avMPC4PL4AQPnivVe9wYG18AlR1DbRpJzyAsFdqBMD3z2FA5MUE6WSXiWjjq61+O56m2gP1YJaj4z28DLFNr9erXm5YZIPJwOP/ygkuGzdUcHhnkENJlBTYUo4hPsUQloUrNllqfnz4t5JdxrpNeo+DLSU2BCZmAVveL4AKu8XpG2HVG3jCuQq14Wm09fFVqbV4FCGh0BQB0+bywIMSWKVpBin9Iuz8yeMNgyWgSNKAxKw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,89 +116,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 25.07.25 16:20, Deepak Gupta wrote:
-> On Fri, Jul 25, 2025 at 08:33:46AM +0200, Heinrich Schuchardt wrote:
->> On 25.07.25 01:36, Deepak Gupta wrote:
->>> Enables landing pad enforcement by invoking a SBI FWFT call.
->>>
->>> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
->>> ---
->>>  arch/riscv/kernel/asm-offsets.c |  1 +
->>>  arch/riscv/kernel/head.S        | 19 +++++++++++++++++++
->>>  2 files changed, 20 insertions(+)
->>>
->>> diff --git a/arch/riscv/kernel/asm-offsets.c b/arch/riscv/kernel/asm- 
->>> offsets.c
->>> index e4d55126dc3e..e6a9fad86fae 100644
->>> --- a/arch/riscv/kernel/asm-offsets.c
->>> +++ b/arch/riscv/kernel/asm-offsets.c
->>> @@ -536,6 +536,7 @@ void asm_offsets(void)
->>>      DEFINE(SBI_EXT_FWFT, SBI_EXT_FWFT);
->>>      DEFINE(SBI_EXT_FWFT_SET, SBI_EXT_FWFT_SET);
->>>      DEFINE(SBI_FWFT_SHADOW_STACK, SBI_FWFT_SHADOW_STACK);
->>> +    DEFINE(SBI_FWFT_LANDING_PAD, SBI_FWFT_LANDING_PAD);
->>>      DEFINE(SBI_FWFT_SET_FLAG_LOCK, SBI_FWFT_SET_FLAG_LOCK);
->>>  #endif
->>>  }
->>> diff --git a/arch/riscv/kernel/head.S b/arch/riscv/kernel/head.S
->>> index 9c99c5ad6fe8..59af044bf85c 100644
->>> --- a/arch/riscv/kernel/head.S
->>> +++ b/arch/riscv/kernel/head.S
->>> @@ -185,6 +185,16 @@ secondary_start_sbi:
->>>  1:
->>>  #endif
->>>      scs_load_current
->>> +
->>> +#if defined(CONFIG_RISCV_SBI) && defined(CONFIG_RISCV_KERNEL_CFI)
->>> +    li a7, SBI_EXT_FWFT
->>> +    li a6, SBI_EXT_FWFT_SET
->>> +    li a0, SBI_FWFT_LANDING_PAD
->>> +    li a1, 1 /* enable landing pad for supervisor */
->>> +    li a2, SBI_FWFT_SET_FLAG_LOCK
->>> +    ecall    /* check for error condition and take appropriate 
->>> action */
->>> +#endif
->>> +
->>>      call smp_callin
->>>  #endif /* CONFIG_SMP */
->>> @@ -359,6 +369,15 @@ SYM_CODE_START(_start_kernel)
->>>  #endif
->>>      scs_load_current
->>> +#if defined(CONFIG_RISCV_SBI) && defined(CONFIG_RISCV_KERNEL_CFI)
->>> +    li a7, SBI_EXT_FWFT
->>> +    li a6, SBI_EXT_FWFT_SET
->>> +    li a0, SBI_FWFT_LANDING_PAD
->>> +    li a1, 1 /* enable landing pad for supervisor */
->>
->> The SBI specification calls BIT(0) "LOCK".
->> Shouldn't we define a constant for the lock bit instead of using a 
->> magic value?
-> 
-> See below `li a2, SBI_FWFT_SET_FLAG_LOCK`.
-> 
-> "li a1, 1 /* enable landing pad for supervisor */>" --> this is enabling.
-> Had we done "li a1, 0 /* enable landing pad for supervisor */" --> this is
-> asking firmware to disable the feature (turn off the bit in menvcfg CSR)
+On Fri, Jul 25, 2025 at 4:11=E2=80=AFPM Vlastimil Babka <vbabka@suse.cz> wr=
+ote:
+> On 7/25/25 14:16, Jann Horn wrote:
+> > If an anon folio is mapped into userspace, its anon_vma must be alive,
+> > otherwise rmap walks can hit UAF.
+> >
+> > There have been syzkaller reports a few months ago[1][2] of UAF in rmap
+> > walks that seems to indicate that there can be pages with elevated mapc=
+ount
+> > whose anon_vma has already been freed, but I think we never figured out
+> > what the cause is; and syzkaller only hit these UAFs when memory pressu=
+re
+> > randomly caused reclaim to rmap-walk the affected pages, so it of cours=
+e
+> > didn't manage to create a reproducer.
+> >
+> > Add a VM_WARN_ON_FOLIO() when we add/remove mappings of anonymous folio=
+s to
+> > hopefully catch such issues more reliably.
+> >
+> > [1] https://lore.kernel.org/r/67abaeaf.050a0220.110943.0041.GAE@google.=
+com
+> > [2] https://lore.kernel.org/r/67a76f33.050a0220.3d72c.0028.GAE@google.c=
+om
+> >
+> > Acked-by: David Hildenbrand <david@redhat.com>
+> > Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > Signed-off-by: Jann Horn <jannh@google.com>
+> > ---
+> > Changes in v2:
+> > - applied akpm's fixup (use FOLIO_MAPPING_ANON, ...)
+> > - remove CONFIG_DEBUG_VM check and use folio_test_* helpers (David)
+> > - more verbose comment (Lorenzo)
+> > - replaced "page" mentions with "folio" in commit message
+> > - Link to v1: https://lore.kernel.org/r/20250724-anonvma-uaf-debug-v1-1=
+-29989ddc4e2a@google.com
+> > ---
+> >  include/linux/rmap.h | 22 ++++++++++++++++++++++
+> >  1 file changed, 22 insertions(+)
+> >
+> > diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+> > index 20803fcb49a7..6cd020eea37a 100644
+> > --- a/include/linux/rmap.h
+> > +++ b/include/linux/rmap.h
+> > @@ -449,6 +449,28 @@ static inline void __folio_rmap_sanity_checks(cons=
+t struct folio *folio,
+> >       default:
+> >               VM_WARN_ON_ONCE(true);
+> >       }
+> > +
+> > +     /*
+> > +      * Anon folios must have an associated live anon_vma as long as t=
+hey're
+> > +      * mapped into userspace.
+> > +      * Note that the atomic_read() mainly does two things:
+> > +      *
+> > +      * 1. In KASAN builds with CONFIG_SLUB_RCU_DEBUG, it causes KASAN=
+ to
+> > +      *    check that the associated anon_vma has not yet been freed (=
+subject
+>
+> I think more precisely it checks that the slab folio hosting the anon_vma
+> could not have been yet freed, IIUC? If the anon_vma itself has been free=
+d
+> then this will not trigger.
 
-So we lack constants for
+The point of CONFIG_SLUB_RCU_DEBUG, which I'm talking about here, is
+that it allows KASAN to catch UAF once the anon_vma has been freed and
+an RCU grace period has passed; it is not necessary that the slab
+folio has been freed.
 
-"Enable landing pad for supervisor-mode"
-"Disable landing pad for supervisor-mode"
+You can see that working in the linked syzkaller reports - KASAN
+tracked the object as freed after slab_free_after_rcu_debug(), which
+is an RCU callback scheduled from kmem_cache_free().
 
-Best regards
+> > +      *    to KASAN's usual limitations). This check will pass if the
+> > +      *    anon_vma's refcount has already dropped to 0 but an RCU gra=
+ce
+> > +      *    period hasn't passed since then.
+>
+> AFAIU this says it more accurately and matches my interpretation above?
+>
+> > +      * 2. If the anon_vma has not yet been freed, it checks that the
+> > +      *    anon_vma still has a nonzero refcount (as opposed to being =
+in the
+> > +      *    middle of an RCU delay for getting freed).
+>
+> Again the RCU delay would apply to the slab page, unless you talk about t=
+he
+> CONFIG_SLUB_RCU_DEBUG specific path (IIRC).
 
-Heinrich
+Yes, right, the "RCU delay" in the second bullet point refers to
+CONFIG_SLUB_RCU_DEBUG.
 
->>
->>> +    li a2, SBI_FWFT_SET_FLAG_LOCK
->>> +    ecall    /* check for error condition and take appropriate 
->>> action */
->>> +#endif
->>> +
->>>  #ifdef CONFIG_KASAN
->>>      call kasan_early_init
->>>  #endif
->>>
->>
+Here I'm saying "If the anon_vma has not yet been freed" because
+that's the only case in which I can reliably say what will happen, and
+this is the main case that isn't already covered by the first bullet
+point in a CONFIG_SLUB_RCU_DEBUG build.
 
+> That said, I wonder if here in __folio_rmap_sanity_checks() we are even i=
+n a
+> situation where we rely on SLAB_TYPESAFE_BY_RCU in order to not touch
+> something that's not anon_vma anymore? I think we expect it to exist?
+
+Yes, we expect it to exist. That's why I'm not just asserting that the
+anon_vma is still considered live by KASAN, but also that its refcount
+is non-zero.
+
+> Can we
+> thus invent a CONFIG_SLUB_RCU_DEBUG-specific assert that assert the anon_=
+vma
+> itself has not been freed yet (i.e. even if within a grace period?).
+
+That is essentially what I'm doing - checking that the count is
+nonzero verifies that it's not within a grace period, and the implicit
+KASAN check verifies it can't be in a KASAN quarantine after the grace
+period is over.
+
+> I was wondering what actually does rely on SLAB_TYPESAFE_BY_RCU, thanks
+> Lorenzo for pointing me to folio_get_anon_vma(). But that's only used
+> elsewhere than here, no?
+
+Yes; the point of this assertion is that folio_get_anon_vma() and
+folio_lock_anon_vma_read() (which show up in the stack traces of the
+two linked syzkaller reports) rely on the ->mapping not being
+dangling; and they can happen in the background anytime as long as the
+folio mapcount is elevated, but they only actually happen sporadically
+(in particular under memory pressure, which syzkaller apparently
+mostly triggers randomly and non-reproducibly). If we have bugs where
+the ->mapping of a folio goes away while it still has an elevated
+mapcount, then instead of randomly getting KASAN splats under memory
+pressure, it would be nice to detect this reliably. So I figured a
+nice place to check this is when we're decrementing the mapcount -
+that should catch almost all cases, except ones where such a bug
+happens because we somehow leaked both a mapcount and a refcount of a
+folio.
+
+> > +      */
+> > +     if (folio_test_anon(folio) && !folio_test_ksm(folio)) {
+>
+> So you verified this compiles out completely without DEBUG_VM?
+
+No, after David's suggestion to remove the explicit CONFIG_DEBUG_VM
+check, I looked at the definitions of these things to check that it's
+all just plain reads and arithmetic, and removed the CONFIG_DEBUG_VM
+check, but haven't actually compile-tested it.
 
