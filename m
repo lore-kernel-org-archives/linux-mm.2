@@ -2,112 +2,122 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 983B3C87FCE
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 18:27:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 33A53C87FCE
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 18:27:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3602E6B007B; Fri, 25 Jul 2025 14:27:05 -0400 (EDT)
+	id CD7156B0089; Fri, 25 Jul 2025 14:27:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3117C6B008C; Fri, 25 Jul 2025 14:27:05 -0400 (EDT)
+	id CAEC86B008A; Fri, 25 Jul 2025 14:27:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24E206B0092; Fri, 25 Jul 2025 14:27:05 -0400 (EDT)
+	id BEC2F6B0092; Fri, 25 Jul 2025 14:27:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 150CC6B007B
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 14:27:05 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BB5B3C08F3
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 18:27:04 +0000 (UTC)
-X-FDA: 83703618768.20.67982FD
-Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
-	by imf25.hostedemail.com (Postfix) with ESMTP id CDE38A000B
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 18:27:02 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=k7eY3PU6;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf25.hostedemail.com: domain of jeffxu@chromium.org designates 209.85.160.54 as permitted sender) smtp.mailfrom=jeffxu@chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753468022; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AFB9A6B0089
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 14:27:31 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1F58DBBF2C
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 18:27:31 +0000 (UTC)
+X-FDA: 83703619902.22.C79A9BC
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 3698D8000D
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 18:27:28 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=k8UO8l0G;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753468049; a=rsa-sha256;
 	cv=none;
-	b=iaUmO9qGyeRxHBo4OYJKiuV2elyHO/C8kXgS/siKfCjqqWJDFt9o4RMQkHlqikA8GpxfRA
-	ObH6riYQ0KEY0oU0FVxE8QxyjP1Z74xTnBHabgulr8RaUNHnSZn7GuJnqXRaOZzfWimgAX
-	dAYmsxc2q/hBCH17oUs22rcBUCPXo4c=
+	b=my+z1xnSbFLjSTwu0PzO4R7Tw52xhPPJYBSxQ3dhMK/Uxycf2ph2I9cwGC2Ir2CRm8Jb2Q
+	TSPG13MnTJXoa1q3zrxirAra0gqdhA3Pug3jlLYDhn/B40lFehHtOVTRhcT3Fd1Xzh4TZf
+	4YZJkYkFAjNFqlVjzMoWresoW/Vqmsc=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=k7eY3PU6;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf25.hostedemail.com: domain of jeffxu@chromium.org designates 209.85.160.54 as permitted sender) smtp.mailfrom=jeffxu@chromium.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=k8UO8l0G;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753468022;
+	s=arc-20220608; t=1753468049;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=alGDq6Ry3t/6owOKcyElG/+ugV+qZlm3QpS2noyYRwo=;
-	b=u9QKuP14gQrc8EBF3r5c4Jp08B9W6+QBfQD1NHq93yuFtfYZVFc94Yae7dEhR4+MFwHYa8
-	nkyb9QUFFYDplzn976xy2O9s2F+n3hHGrDy7umBBCbxCVfQHTwPZXYrCPx+6CVzDEOeXWC
-	MSLN1zF4lQplQKOElfWZr4YYTTIzwvs=
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-302db17fa08so217296fac.2
-        for <linux-mm@kvack.org>; Fri, 25 Jul 2025 11:27:02 -0700 (PDT)
+	bh=KGsJdJPVFg6ouh8HRlVVj9qvC5pGjbJ25tCnf1EI3MY=;
+	b=xGeCkDSFparlvNxVf6VFswtFFdU9JHFyYDXYWeKKBM6OZ3rdeDGY47flB7Xr7I2lQfsSke
+	ZIRfJjsNPpT9Qg0tFoqU65VcIZNTuQJ4R5L6CqhObu3GN7oMGwd48u2lu0dAI+2x9qelyY
+	cF/47UoKwy1qey3GDTbUVFAW/dTOAuA=
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-713fba639f3so21566337b3.1
+        for <linux-mm@kvack.org>; Fri, 25 Jul 2025 11:27:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1753468022; x=1754072822; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1753468048; x=1754072848; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=alGDq6Ry3t/6owOKcyElG/+ugV+qZlm3QpS2noyYRwo=;
-        b=k7eY3PU6UwNAz0aH6yY4sG9THReEb5fB9LVgUZ/RkTrz7JE/33dAUMlAypR3ELAYY/
-         00nOJOapAOxKlt/YuMN3ropO3tKfdNJXT+37/iR0qixsEXCwnsnpLD/dwKGOd1XgXjtD
-         mSucJCt3oc/9iFR8yqSnmkxvRov82tCQ484J0=
+        bh=KGsJdJPVFg6ouh8HRlVVj9qvC5pGjbJ25tCnf1EI3MY=;
+        b=k8UO8l0GsvJzGYwOYLfCY4vqItyZHopUYMK7dtSLUWJ/2YE59dIyOJXNvhnnd928By
+         aTiedRbVUknGYEwUEXR6zT14yruto6kG3Wct/qWe3Xp1T7ft+BnrLACTEI2ihZNuSF4i
+         RLWouXrnOXviSOEcnB/p6aM1LDTT5syXJ0VM+5vcBih9jWaCp++HtGE2lmixGaNhYn+0
+         NmB6R7bqTK7qutS+z/u3KaVFUnFC25Anp9Iyk8hXf4rbil5bx3+E2LkHKiCf2CPJoXmW
+         X2KVby2cpWDg0GahliKzJyS5x8Ph9YR0ipEXcKa/KhgsJCg8fgFeH7aZkzyxy42Ns8m/
+         0w+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753468022; x=1754072822;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1753468048; x=1754072848;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=alGDq6Ry3t/6owOKcyElG/+ugV+qZlm3QpS2noyYRwo=;
-        b=WTrMNP/AzFBHSQJHJOTzpdxwBExWGMrN599/Pw1zUZEH3H6SELwXprB5CaQ7lzDHpU
-         2cro+d2dF40Og5nO2xxA975lQxeYq66N1acFnUxXh8dDYQCHqXf+gZL2ZUaoscenfPux
-         kH9o8z+rvNLgiH76r7QOtXBA+AfJYkXy1XW6ITQLBeixMxR4Cw7DciS1vjJKbYZ65hej
-         nhFXZUgQ6G8QNx6mk4358ncW2vaUsQextZneX37DT0RFPUGxHCFybKm4jHmTPmw8Mbit
-         5txh/qtUOt0Xsw3S83VBFXmSZLfVNgIZhySFtX9cxlBbWQ7dDSWSyfsHoZOGzVbByFAx
-         oPsw==
-X-Forwarded-Encrypted: i=1; AJvYcCXKTQMil2f7weLNm3dHzbq6XH+cml3r93DXod8KOqx1BSfPWIySi69TweT9q6d1RAHX/qk218ZsZA==@kvack.org
-X-Gm-Message-State: AOJu0YyGlyNY+OjvR0/YUiUKROWybu6VjqCakyCIQvsrTbKprpxQnEb3
-	T0g8wH+qay10S3h+M1B7kObXOveYii9V1XWaY6UhSXE12t0uuocqAE5oIXrcg4oS9irjEK1Qrb1
-	QcQV/y6hQ/lm6FvG6BublJq3nUPwykydAb4MMM5Wb
-X-Gm-Gg: ASbGncvbBYHui55RPNsEhocc/ho+c4TSjB+NcEkZJb0Dd9TWyc9/L1zfKrD8FBK9rlC
-	Er/I0tWzKLCBZM+qVC6+YDh7d4q/Ayi5Jkz9LuLhAFwVEnrr6p9h6RshYhp4E/paaYn3laOAiXq
-	zKOA6MsgCD8ubsa9W3HJoRE/JqXrHN5bInUmVCK1I/4zb+3LMzifAR2XcwGOj0ZC1tCOW42o+lM
-	ywbdUsHvBr67hdOuOR26cduQYQ1dXO/t9XAIw==
-X-Google-Smtp-Source: AGHT+IFngRzgfoejt3mlP9tvAddRS2UA8uH+ymeb855nbW+1wntTvnE+e8poGwzJ/rhE3BnJFtfzCrluyDBgcx0E7IE=
-X-Received: by 2002:a05:6871:758a:b0:297:276e:7095 with SMTP id
- 586e51a60fabf-30701db3c7emr663346fac.11.1753468021761; Fri, 25 Jul 2025
- 11:27:01 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1753431105.git.lorenzo.stoakes@oracle.com>
- <dd50984eff1e242b5f7f0f070a3360ef760e06b8.1753431105.git.lorenzo.stoakes@oracle.com>
- <CABi2SkVeHWt+SKWWodXUNhXZi1Wv9YazEOGWEUJLvgPbopqBrA@mail.gmail.com>
- <ca6af6bc-1c5b-47fc-a00b-11d46867b5e7@lucifer.local> <f860d082-384d-4230-bb1c-09206c7daf72@redhat.com>
-In-Reply-To: <f860d082-384d-4230-bb1c-09206c7daf72@redhat.com>
-From: Jeff Xu <jeffxu@chromium.org>
-Date: Fri, 25 Jul 2025 11:26:50 -0700
-X-Gm-Features: Ac12FXxhETnYd5YWTH5JWBSDO_QT8rIt6KG98Nmkcj1shWxdgrRx71TTjPQMff8
-Message-ID: <CABi2SkVJ6O4GbEB9OAHwf2FjWJNj+1dJA7nUynRQYLZF9=LGKA@mail.gmail.com>
-Subject: Re: [PATCH v4 4/5] mm/mseal: simplify and rename VMA gap check
+        bh=KGsJdJPVFg6ouh8HRlVVj9qvC5pGjbJ25tCnf1EI3MY=;
+        b=Yc6yttntVv03jy/hHZGIrKTxuKYrvYxtwJtUTyLpmK5ezebeVEr61eazRfEt4tskZg
+         NVIDNXkscjrPFM2fH7WvZh+IbV7ckuvRlsC1ylS4PaQWTTutumFJkLWfHE8XanZ2jS9b
+         Xzs4kCUgY27NwwE99xzPgeENhuzEJxGJPWUkvvvD2RyT9tszgcy0YZY5Muk6hSMLe8sH
+         RApfaubepOebVWWVhytXzG/VcZHNeRQsljBkvyQyCiY7dVPFTM5PJLEYMSb1lm2C2/Nx
+         1qZqe0YmC8Pnv0vYtGgZPD1ht0eoYCPW+kG+Ag0Qq3QO6dxGGUqWhvrKDBTRI6BSEUHk
+         I/qQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXkr+yDPAl+6HCiiAIxtItgYdooQjS6+UtZzQmUA+8FhH3wxJwJ6pKT/YOMLbk2oRGaw7GlwMkV6A==@kvack.org
+X-Gm-Message-State: AOJu0YwZA/H29hGzy1hU6/KSoQ+x98AP127zpBA7ip52T9t+kiz65AnQ
+	AFOYm2jxZcY7bpz/mb8HolMr1sOufQbvubffp01Y/MeA25B3OygpmW+0
+X-Gm-Gg: ASbGnctqV55zPhKacu7GOxdgYqQe2e5KTi8BKfzfpOijzIg/e0wGs0pnlPwwHNG3U6P
+	IlW1zo+PR/+sEuGqaaYPFy9a+7Q6M7pjCNsaDV8J8qQjDrJYKQgn4jJWc9UvkSDjBnkQTK4y72R
+	/r17uz1qXBKGqVosU9dZSJ59tF4k5QndYqH0MSQxwEEufuK4LWahtpyLaeXh3ojmLH04eyJTnUw
+	cqfDcEKlTr5QVp3ICLbaDbUifDT9nb3tVZw0VgmXl7uac2xpz/wtjBZ/YNPZz3blrb/Ty7IOqly
+	bMLRYEDJQ3jzCsf8Ype9Tn6+QyzeFAMB+s3n8Qu1in5BSno2T3h+iJ/2EfLgMVwDGoHv6thNIeX
+	pcIeeRmeN7CRx2gBs7PLIBQ==
+X-Google-Smtp-Source: AGHT+IGvP02ssugHzK68/uifaDc8Ut7qztKieRH0z/WUQl+bdaCcOjca5FRzv6cc0PXhAr8U0F4sEA==
+X-Received: by 2002:a05:690c:724a:b0:70f:6ec6:62b2 with SMTP id 00721157ae682-719e328b19fmr41101687b3.8.1753468048036;
+        Fri, 25 Jul 2025 11:27:28 -0700 (PDT)
+Received: from localhost ([2a03:2880:25ff:50::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-719f23e1f19sm866757b3.83.2025.07.25.11.27.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Jul 2025 11:27:27 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
 To: David Hildenbrand <david@redhat.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Kees Cook <kees@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 7sj5xgnyi73je9woqxh4j9jc3yyd5ksa
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH] MAINTAINERS: Add missing headers to mempory policy & migration section
+Date: Fri, 25 Jul 2025 11:27:26 -0700
+Message-ID: <20250725182726.2540602-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <a2a3b527-8ed0-45e0-be15-85ec4ef1afa1@redhat.com>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ud9g3fjw6wod1uwz9b1q7utpoft66bus
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CDE38A000B
+X-Rspamd-Queue-Id: 3698D8000D
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1753468022-274274
-X-HE-Meta: U2FsdGVkX1/62xXwLXVdH5SmjRti/gqEVc/idDBNA42Qw1Q+e/ITO4/TN8loTefmjJNeTvsn6YA9CdrpLNIjk0HACPBvNkOCouHPXxE5b0HZQn5Kac5bBkrQbwrxDr1JockcPauH3QbL1PMx6GpCEhz+K2LroNEz/E0JTZMO7uIX7Bz5Ekio/xs3yHG+uSjqJ39EK2e9QllcV0NdoH1peAyS6km/GhBx/yAI7Z7jG/3s6e33CNQ64nvTn9Blzqq3bu3mC/3a5qhLrcw8AedJ81UCMLND+4O08VkfLgyM7Sji1niqDABrCuGwBj4TouFR1KxWFnS2+vfj46FMYRD2tTi7eRL1m+02igawvCsU/FcmAsdusEJmrmk1o1yQwtKv8h+mJAyJJ9T/mziVVuDHTSB1wxrd0wPa580Xi/T8pP8zRzDsd3s/dkFeu+J4Jr4b+11OyXylfNovY8y6wFMd1eFV/aMzMegPrHhrSOXe1md/L7cM14YLGOR7NL3bz7KwMhE9tSF/tw33I7jMyy7Y4bZgFjyBesTru/7vQFcoNaaf3HVXn0bF5nUMCzxwwZmdqgHOZJvDZdjiY4uu1IqLtz73UUiwhCpJI4qpLLKCHBXX/1haFQtWRSnqyIsKqHqOjwKfAW1FkG3wKTL4mWiQ4c2R7Bs7qssqHSvrCN5BzAmRh2sv9XPLdRsBmvRY/a5P28NTY1Slv7zUUnBOQi8byPf+7sREE7T2SFPrb6l6mCWNmnEd6YRkWSp6wW0SturcFX37O0kfQ7ZSrsGXVFojnluB9lxy3QlyeUOaAp+q/nXrHEApkhFDn/pS1oZUMiYeVUTK5cQ3OGI7h/Cx8yLCP3ws2KkN0DM8dcK1Pk80EgiCtsh+3sJwOvQh7/aeUdCPMMGECctHoQbFXzoQpZHu/WlRNFuozuLCrbpjMI1C7gdPIl/te7cDEgCnDR02exkURqHWBtSy1vOAtND493x
- QD/lVrIr
- Wthx//zpVk6uXtBI1HeQHolkRo0rhn6dNkHyGRbvRBuboiZdWJWOTriCgm5i228CE6IWkSGgidpDTVW6ZGOzAX54pHRTnpXGs+arFcV4Zh+gKV/KKJIVOFnmq5XOlu4Du+B1rfUqbmRJe1/iv9ANivJ9IqCaV2YKuhTMIt5X/SUGcOzzmMsW5497v/evv19sd3py7CTdCVuBsQ2Tkz4wE7nkQId9qR+i5iWRl3KmPSBSw3i8n2AVra+HDdw==
+X-HE-Tag: 1753468048-397553
+X-HE-Meta: U2FsdGVkX1996GaNfYLusiuweolU/qgDBhGYYtsN0SkTrIAovEU21XFdfU2EheHRR5n9TcA8CUxv6BiakT0ovRGvUJRQWVAFICsP+0K0e1E2/5rIRTJrigubbnDe52x9MTRK6mwLWQL2Iftgsln3lAKAj9NhWXh4NOOj3MZcuVC+IfgbtxKQnG655Wd5okrn+1zhFkdrLbOhgP4H698zToOfkC56uKPGP3rYnrX+NAwVzdftYxmRAlIX/50BnqkoSLH4jniUNpn1OJdQIsDZWS8Ingaz5FZO4Z1+u/WKNlBElnYMcpGzccimd+7VlH8h8A5+20AP8NPbfbmlVkhbup34cL4Wj8egU6ArUGU2OHvsQRhvHPSVAKpJuLe7t1L6CAQnRQgztgUemUjjUkD0vWf/Zzmsce7yS1LADVonQZLGrWAw8Mmrv1eNM6M5m5TrTv7EjOvwOcPhH1Po64zebyRgswxp7qGp3nKLaaCwlBHqBksS/kA0NtQC1XqdxxhxaPk/HCimLXTn8js8F7P766YHYULECtxnFJmiy6gQaEerk7klgvOIDIe+1zXsJdHjV/AUWO5+5xto3EiPdUnnm61flMCVL3igq9RpJeXjQR1frrEYtyeKS+oIM4DcDNmBGTisHVonKh0hY6ENj4aNXerrJLAAy2ZkBXFPRxa62zN1E5MoupHXbmsLt+bvvTGAsVei4QMdq2Hp2GRUdVPKmPf3crbLtZqIoJdUmZts7+xIe1RliMLu62QUznjeFwVs0mai3BZ1ir5e7ztaxeYepqY+jwfRNI7qHcKAil85QmQXCynm4VnxKhJpfTmet4gYcxiZUG8CX6G7JvqGyAbhtRXjXA4/3890Aa6DfZ6I09/aOLmg0XuohmoW3iR3Jdt9CXFS/4iBzh+vFFkF+//6oq+M9RQ3qGAHmncDtKUQJLWrvnERF66qxspCmtBT5UlIG947T4oNvqk4Yg4RTN1
+ TN76N59U
+ OvSzmxGqavlNZwUqVO08KM9em5B/Ec/poQcLL4YF0zvEPLJV1POoI2Viix23K3OlflaeUZmc9U2IEQBNXfsVuGCVrjKai3HBKxf5uAJdeZ0WVc4uiZmIXN7fLCVWnnPAYjzrxX9SBbHHiWHBJmCxyEhxgX+fk23GTxxNpn6rIe1JHBU8vJMq9mHWLk6NnTPkgnUDWhsC7rse9mI4NTcLUhvwTHuJTa1X3lpqsAC8olLHB5YBTMwjuq3/wliQ9s7Tr5qUWs5Of04Tyave6nP3TkKe7/dzwrdANgIFSb7CNpF0fpl+4t2LGyIaxGad1sGpk35AeZFxYrOL/dkl2TIdZBDxbF3C3I3J4/MzM8XlagmRMbkEbTgur2ynr4RpMxyfVv7IYnOH6rf1iu23XV6JR+f4vEdOv4UkYYpGpUSPEHVWJxa/6RMLloTEEwtOIdU7kqLGL06HX4Q9c2sP3u62yzADTl45XC88HC3O7kM/z+6MBLkt5TiH/gDk+QXYj23mi8LTxBqTQUQr1ck7BWT57n5UJBCqTq08jUkhWw8oUFpEpBvUjbfZzrFD/gN/H2wCxluSimxFMb+Mlzs9s6nJi55BcKw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,95 +126,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 25, 2025 at 11:10=E2=80=AFAM David Hildenbrand <david@redhat.co=
-m> wrote:
->
-> On 25.07.25 19:43, Lorenzo Stoakes wrote:
-> > On Fri, Jul 25, 2025 at 10:30:08AM -0700, Jeff Xu wrote:
-> >> Hi Lorenzo,
-> >>
-> >> On Fri, Jul 25, 2025 at 1:30=E2=80=AFAM Lorenzo Stoakes
-> >> <lorenzo.stoakes@oracle.com> wrote:
+On Fri, 25 Jul 2025 20:23:04 +0200 David Hildenbrand <david@redhat.com> wrote:
+
+> On 25.07.25 20:17, Joshua Hahn wrote:
+> > On Fri, 25 Jul 2025 20:03:09 +0200 David Hildenbrand <david@redhat.com> wrote:
+> > 
+> >> On 25.07.25 19:56, Joshua Hahn wrote:
+> >>> These two files currently do not belong to any section.
+> >>> The memory policy & migration section seems to be a good home for them!
 > >>>
-> >>> The check_mm_seal() function is doing something general - checking wh=
-ether
-> >>> a range contains only VMAs (or rather that it does NOT contain any
-> >>> unmapped regions).
+> >>> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> >>> ---
+> >>>    MAINTAINERS | 2 ++
+> >>>    1 file changed, 2 insertions(+)
 > >>>
-> >>> So rename this function to range_contains_unmapped().
-> >>>
-> >> Thanks for keeping the comments.
-> >
-> > You're welcome.
-> >
+> >>> diff --git a/MAINTAINERS b/MAINTAINERS
+> >>> index a8bebd0886df..dec8db8b5cc7 100644
+> >>> --- a/MAINTAINERS
+> >>> +++ b/MAINTAINERS
+> >>> @@ -15838,7 +15838,9 @@ S:	Maintained
+> >>>    W:	http://www.linux-mm.org
+> >>>    T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> >>>    F:	include/linux/mempolicy.h
+> >>> +F:	include/uapi/linux/mempolicy.h
 > >>
-> >> In the prior version of this patch, I requested that we keep the
-> >> check_mm_seal()  and its comments. And this version keeps the comments
-> >> but removes the check_mm_seal() name.
-> >
-> > I didn't catch that being your request.
-> >
-> >>
-> >> As I said, check_mm_seal() with its comments is a contract for
-> >> entry-check for mseal().  My understanding is that you are going to
-> >> move range_contains_unmapped() to vma.c. When that happens, mseal()
-> >> will lose this entry-check contract.
-> >
-> > This is just bizarre.
-> >
-> > Code doesn't stop working if you put it in another function.
-> >
-> > And you're now reviewing me for stuff I haven't done? :P
-> >
-> >>
-> >> Contact is a great way to hide implementation details. Could you
-> >> please keep check_mm_seal() in mseal.c and create
-> >> range_contains_unmapped() in vma.c. Then you can refactor as needed.
-> >
-> > Wait what?
->
-> do_mseal() calls range_contains_unmapped(), so I don't see the problem.
->
-> We could add a comment above the range_contains_unmapped(), call stating
-> *why* we do that, which is much more relevant than some check_XXX functio=
-n.
->
-> /*
->   * mseal() is documented to reject ranges that contain unmapped ranges
->   * (VMA holes): we can only seal VMAs, so nothing would stop mmap() etc.
->   * from succeeding on these unmapped ranged later, and we would not
->   * actually be sealing the requested range.
->   */
->
-Adding a reason explaining the reason is way more helpful than just
-stating what it's doing. Thanks!
+> >> That one is already on that secion on the mm/mm-new branch
+> > 
+> > Hi David,
+> > 
+> > Thank you for getting back so quickly : -)
+> 
+> :)
+> 
+> > 
+> > Unfortunately, I can't seem to find this file in MAINTAINERS in mm-new.
+> > Perhaps I am not looking correctly? Apologies in advance if that is the case.
+> > My HEAD for mm-new points to dd811f4553a9512501205ba8e58ef1a6af4cb291, for
+> > your reference.
+> 
+> Sorry, I was completely wrong ... I got confused by the other 
+> mempolicy.h file that Lorenzo also recently touched in here as part of 
+> the MISC section.
 
-a nit: I would use:
+Hi David,
 
-> /*
->   * mseal() is documented to reject ranges that contain unmapped ranges
->   * (VMA holes in the middle or both ends): we can only seal VMAs, so not=
-hing
->   * would stop mmap() etc. from succeeding on these unmapped ranged later=
-, and
->   * we would not actually be sealing the requested range.
->   */
+No worries at all! Yes, there is a lot of movement in the MAINTAINERS file
+right now and there are quite a few files to keep track of : -)
 
-To make it clear to the reader, because VMA holes might lead people to
-think they're only in the middle.
+> Sorry for the noise, I shall stop working for today and enjoy the 
+> weekend (and hope you will do as well)
+> 
+> Acked-by: David Hildenbrand <david@redhat.com>
 
-Thanks and regards,
--Jeff
-
-
-
-
-
-> Something like that.
->
-> --
+Thank you for the ack! Hope you enjoy the weekend!!
+Joshua
+ 
+> -- 
 > Cheers,
->
+> 
 > David / dhildenb
->
+
+Sent using hkml (https://github.com/sjp38/hackermail)
 
