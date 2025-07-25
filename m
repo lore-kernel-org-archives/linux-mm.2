@@ -2,98 +2,98 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7681DC87FCA
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 14:48:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9ABF1C87FCE
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 14:51:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 17ABF6B0088; Fri, 25 Jul 2025 10:48:50 -0400 (EDT)
+	id 291386B0092; Fri, 25 Jul 2025 10:51:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12C4F6B008C; Fri, 25 Jul 2025 10:48:50 -0400 (EDT)
+	id 268D86B0093; Fri, 25 Jul 2025 10:51:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 042616B0092; Fri, 25 Jul 2025 10:48:49 -0400 (EDT)
+	id 17F046B0095; Fri, 25 Jul 2025 10:51:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id EB0B66B0088
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 10:48:49 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9A357807C8
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 14:48:49 +0000 (UTC)
-X-FDA: 83703068778.28.CFCC61C
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	by imf11.hostedemail.com (Postfix) with ESMTP id C6EC440012
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 14:48:47 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="ECe/SPaf";
-	spf=pass (imf11.hostedemail.com: domain of jannh@google.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=jannh@google.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 06AD36B0092
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 10:51:16 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 53C811607A9
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 14:51:15 +0000 (UTC)
+X-FDA: 83703074910.11.B3533D3
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7E8AE80004
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 14:51:13 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=neoKQ5nc;
+	spf=pass (imf02.hostedemail.com: domain of jannh@google.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=jannh@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753454927;
+	s=arc-20220608; t=1753455073;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6fTiJ/2yQ7EUbjCeVCBz++1COYxUgI84X7sP0FcZaWQ=;
-	b=cNRI3eL+l6TSCwy4fmKvFZ3HNk6JAS7VAhHmZs9R4Vn46QRhjRSQfn7vKWaP1vblmOykVC
-	/oXcF1eRqNfvmJCU/J3JillTQzUuci9Q3VOyfTf3/+US4tFLj4UNRPKK+Js96Sn1wN+DXp
-	VzS+2/2PJ7WHZUxFx+vS1tuDvaIdksc=
+	bh=z/nE+IEcqT09EYKsaI5wJz1uG4N+ePEQMWFP+OoeT0g=;
+	b=UN03vmduY0lonTdL+Dkkj5Iywg9h5NweNeEP+us+anCr8mQ5UklWqWo2tCRQmVwDMRna2e
+	0vULtPUZDv4h5oTna5M0Sv8xVlFCszHu9xogNOpRt5XXEQa454k6usJFvmWRvg+jYeSnrA
+	MWX7M9pHrhNd7Sr5bVMsnGHyKh8oyS0=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="ECe/SPaf";
-	spf=pass (imf11.hostedemail.com: domain of jannh@google.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=jannh@google.com;
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=neoKQ5nc;
+	spf=pass (imf02.hostedemail.com: domain of jannh@google.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=jannh@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753454927; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753455073; a=rsa-sha256;
 	cv=none;
-	b=wdJlWWFkW8azWuYl8IoMat5+ihUI/2pOK3kz25jONjDruteW2lZEe9n7I0WwSK0ufsRmon
-	1mmNvpliLaUrJ5E6bL1PSicq8VDcVi2cXQjMkiXe3PHJ+lxTlLlLQRWi+SeTRrZmnDotWg
-	1RQlou867Uh4nIW5haXKqEoGbpFt5ws=
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5f438523d6fso9598a12.1
-        for <linux-mm@kvack.org>; Fri, 25 Jul 2025 07:48:47 -0700 (PDT)
+	b=N9LUBsuQbhlxYsirVOAVjyweHsgNmRxJc2iL4eC5zhSte7X4V46qRDLJTFmAqbqBaUwaIr
+	/em3vOl63GTU/R1YhimC/oFVUe5yWfrQ1B85gnb4T/BVlD4zVqxb+PrmHZfPziX4dYXQxe
+	zL0wxR5KMI/lu32IoQf5HJynmKVbsM8=
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-60b86fc4b47so8897a12.1
+        for <linux-mm@kvack.org>; Fri, 25 Jul 2025 07:51:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753454926; x=1754059726; darn=kvack.org;
+        d=google.com; s=20230601; t=1753455072; x=1754059872; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6fTiJ/2yQ7EUbjCeVCBz++1COYxUgI84X7sP0FcZaWQ=;
-        b=ECe/SPafsbJkAjD3Vsp3X6SCEHBGKJHS81vUvksNrCCE2lZfkIkjCYjc4js+5Z5FZt
-         LlF1sSx6VqCu9woEauN7q4afAMi1Si5BBooH5rRZx+H9Sn6DXHbAeKj6vr4l3UiCWBpa
-         quZLrY2tpxM4t7scgPmAIyawU3sVSAxlrt2vGfwW88CgrgGkImNhWxLCjh8LeYrS+7+2
-         A4/QY/UX+8LXRECKMVmgIkAuj3qhux9qTeBHZ11whvEupRDUR2F6RfIQXp0a4otKggEM
-         podO4nJX0va7oE9GnUEHOwiliojLFHIaxMUbn1gPvkTkSksPwxawWK8FAooQoR/xZJdI
-         +Onw==
+        bh=z/nE+IEcqT09EYKsaI5wJz1uG4N+ePEQMWFP+OoeT0g=;
+        b=neoKQ5ncViBu3MMAMw+HQsfLBLyu9HDel21nbeK2sFG/3PpbASqBFBknkAJnxJUMdX
+         rqTSSt5DXVfv/rRm3KN0XvfnkJZ+r397Nu8DqwcltlX8qc20RWEZbJ6n3NqZMYqI7wC7
+         TZdaGdqoqfKqVgO4j/18Te4+3ujkGDp7wQkV/Z6cRC+3vAe1/zRLJjI+OqlugLfLVVqj
+         Ou0TpOr26jiXj/UKMsTEiUg7okA2bDx0zZ5R8/40G7ArlYbnHmWF8Dk1Xg7MT0HgpwSu
+         ZnaCxRR3G3z20fli4xj74O5nN0N5FX6+1gmf9CG0cfEiIowA53Z7iWEytxmJbvvr06bw
+         rYpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753454926; x=1754059726;
+        d=1e100.net; s=20230601; t=1753455072; x=1754059872;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6fTiJ/2yQ7EUbjCeVCBz++1COYxUgI84X7sP0FcZaWQ=;
-        b=aMO15QqC3c6lmNFBpdu0EKEV2JwCDaMlHdR1dCTfXzmK0wufepBtyy9SaodF3m5L1N
-         dKeNo884PWpc2aeEzAJRhj0cBQn4dE1r9I08qJVCiGRSuBr+T9iLn+dtd/M3E06BpgzH
-         Rv+UEW8YrXj0HgJy/Xw3ep7MCu+Wtte85LnmAK+dO41ngOBQ7evszYG9FVCpuCMGuest
-         GvojHiwE2m0nnKfKil+QlrVTGPTcZXk/xCENznRYliWWebIDE8iShyuL4FcgmakAHAxg
-         JPT9Z6pLgdHZzDn8aRSflYoszAWzM6TDJ8ojDLcYmBL+yo6RpXdMcAzhNTIcsYD2wY5+
-         uBJw==
-X-Forwarded-Encrypted: i=1; AJvYcCXcVYeNs1U1xVsUH+phb80wVPcLUlA5gNcAU5OOt8W2K494GDxjJhl4jzKaJYd3AYAXN04BLPFnjQ==@kvack.org
-X-Gm-Message-State: AOJu0Yzyy+Ccj34zLGRF2mpUAP/4X+XO0Zgmq+z61ZpH9p2x+CqTu5Wg
-	Ar6C2UOw0WGhfqIyR+Z17MPPj2v6YEJDpG5EMCHAPuMVe4MRAh7k/zooz8poyQM7QIAwY4zxM2b
-	q48w6xKKkrGzK3knVXQNBOUnYAPcHwTwGQALF0cnW
-X-Gm-Gg: ASbGncvqkBTAEugB9+n8opYUKOFJ4TvvHSLzLCDMcfzqXMZsxrA5OMHLJcM44QvcTxg
-	w/imHTklXhWNRZNgtJHTL9skSAOFC5sug3RTZqrSTbiyn5BTmI1c3IeRxvImh1Rns5C0OQauVri
-	VsSocNynsQteY/Ia2AcVrh89a3pLWBabzBCexQUeWn3lWsC/V+d4j5+RZdZ6R2ezMARGNRFYVBX
-	T6w4iRLKXe3x6Xgb0W4qGdpsvzDHMIGC6Q=
-X-Google-Smtp-Source: AGHT+IFQ5AMiQfPybrXcmBkRC8UMaPAwiYPs8TQcD30T1QIfVF3Vtd6z6dbAtwTEtc6Dd6Sjmp1+B0ZsJ9Yqhgfl2cw=
-X-Received: by 2002:a05:6402:40d1:b0:60e:5391:a9e5 with SMTP id
- 4fb4d7f45d1cf-614ea755d34mr89389a12.5.1753454925860; Fri, 25 Jul 2025
- 07:48:45 -0700 (PDT)
+        bh=z/nE+IEcqT09EYKsaI5wJz1uG4N+ePEQMWFP+OoeT0g=;
+        b=QQTlRELcSrTiBNAo9aiiGkLmPwRYCO1TySV4PYdOYuQrMeorN/EAPU9ZdOQrJOtw55
+         3zSm1bjbd6bVlY27wRoHHZLS43HZbab29y9zWg3o9abjKZP9odrknmp4I8eWpO2Pwm0r
+         SXM+UD1L/DCTz+JNyx+MAGac3YCr8RKPEK0RiJRqBOhG6ylDblR54J/ukgeF++Z4ffH+
+         eNtXLH7OVjUxUoTNmdFDBwqUTXQkRMM3o37Rnq7HHv9UsTIon9jwTxeVY1st0NuiD5xs
+         Lxc6z69T9pbcGPhcF42Oa4ZYaoQrrbSIdRnOGtGPJ8/gHW/X+3h9NM7xnmXemTtMFbk9
+         OiNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUsoh9hKLTV3VqR6RxnOzbG/OcpN+fPcpDiI6xwt2X9Fd/4PFRvzvCO8WeMFlJJyYL8/jG2efA+gw==@kvack.org
+X-Gm-Message-State: AOJu0Yy7em+EuBdRuoiNh5/uUQcaMdmqoPoLBK2pT7ZBeEXdR76Bx1j0
+	im+gu7d7en173w5p+qNRp0wTRESrDCwLzgWRz07KFleM82NO7K45SKeL+XeWzn+D/g3C5aXcyQU
+	kgjebyqWnojvfuOGAs1R/eTjnfCBp2oq6MYEFfT2DqOsB5ubhStbATvIdEu0=
+X-Gm-Gg: ASbGncsJvrgqgtprRufroRotI8m456V0JarInThuZOxCgKU1hXvd0hjvQq5gUNb3k4i
+	eDim1wqEFd6F1E1fP/ob0lWNe4wGSAu62FImR8X+KYbzs5K8q4CMUBI+eU1481SiehvGrVDoJC7
+	NnZbQ1zI0jjXOo9vMs2EyJfEK0RX9KaOmvF306enxiPc/VBmEVHwbmzXN0oXNF1hyi/+WWjzsJC
+	mADUCYYs7bt50ZyWBTE7sNFNxwrcPfwPQA=
+X-Google-Smtp-Source: AGHT+IG1lwvRSpePK7y9eGYHxc9sTcfI3irMgXKR8bXMAVsFm8kAOC/of7gPaugNlGLD5gqriMXtX79x6wEI3XifrGs=
+X-Received: by 2002:a05:6402:324f:b0:612:bec2:cf22 with SMTP id
+ 4fb4d7f45d1cf-614e7adb2b2mr113055a12.4.1753455071506; Fri, 25 Jul 2025
+ 07:51:11 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250724-anonvma-uaf-debug-v1-1-29989ddc4e2a@google.com>
  <c3f04c75-a73b-48bb-b56e-7b18e57c2382@lucifer.local> <CAG48ez31aVnoBiMMjUczbmThWnRGmod4yppgMVqf2Nu5-hjU2g@mail.gmail.com>
- <50502c3b-903f-4018-b796-4a158f939593@lucifer.local>
-In-Reply-To: <50502c3b-903f-4018-b796-4a158f939593@lucifer.local>
+ <50502c3b-903f-4018-b796-4a158f939593@lucifer.local> <3a2810ed-74b5-4822-b3e1-bcaa97eec264@lucifer.local>
+In-Reply-To: <3a2810ed-74b5-4822-b3e1-bcaa97eec264@lucifer.local>
 From: Jann Horn <jannh@google.com>
-Date: Fri, 25 Jul 2025 16:48:09 +0200
-X-Gm-Features: Ac12FXzAIpPjC-gw79jtBUmPpJHNu7DPT7TU7_vGFytRzjofambUs1vGAWWcnjY
-Message-ID: <CAG48ez1TOULrpJGsUYvRSsrdWBepCJf9jh-xPpurRUXbMmAkuA@mail.gmail.com>
+Date: Fri, 25 Jul 2025 16:50:34 +0200
+X-Gm-Features: Ac12FXwno1Ye3Nj_ec3vwDkaWvQchsGEoLeSywsEebU12zoS1CIUQw1WpbRG1Nk
+Message-ID: <CAG48ez1Weu==SNUZF4EZVxUe8KhG0vXnUHzHFwmuJ3mTezRHJQ@mail.gmail.com>
 Subject: Re: [PATCH] mm/rmap: Add anon_vma lifetime debug check
 To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, 
@@ -102,14 +102,12 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.c
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: mepstn999g1577bonh5irgn8a4wamg5k
+X-Stat-Signature: x7gbw7xuywtezr5byixo8rbm93gi3c4p
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C6EC440012
+X-Rspamd-Queue-Id: 7E8AE80004
 X-Rspam-User: 
-X-HE-Tag: 1753454927-280560
-X-HE-Meta: U2FsdGVkX1+tkIC6ucYmhV3mtkQlxmnmxHsGDwMyxocJ4uiRCU1qGmFFevgNccul9BoasJF3Nul8i26jVBBmW8qxCSupwlrvkFlZqOV9oCUYd42SKGqBB/F3XT6rbuuSc4qXO4tJnkDlxV1GtgAS8yhxEw5jeJXKlSXyAYUD8KAeJJpGQOPNPzHcDPQjUStbiOBkj+vLJ60GNoKLKIAG+kb4eVL/BEEmZytUHDsdVJY5s4qtVldtAoE++RAfdcOEWY6C/M2/5WJPcwvjDY7FFt0fFdCzWr05NydRZYGKo1nTY7wZq+1G75wY7ZIN1UkfJ5PjI0aRNo/UtZtoUUVWllzqFZfBiatV55ZNXeQewkfbFQmNKn8+22IIpyRA/XBdb76VyfB3xD4dSHOFqn0hay/bjjgHLRUFLrUrlHmvokS1PzqUTKhiP/nxY7ngNOUnI0fXL+h6Ky9M256SR3HVnTazlSdvYMjRZA2Wkd5aeoYb48DGMGY4wu00ikTRtlySP6Zuq4rhQwmCCnO+NImaJz2lKUsRwQQZAMsVqzfZx9YweT33zs2Jdm9U+78DJIY5RtQDzJ7nbVNJT7B1przc9KG/uadC1cFiC6vVzrjXNXtufwUtgNLbvaiYVSzXNWeOuNpiJx+IrwIddQ9+jcLTpXd2R+bfL7USJyMDiqVCPwk+ZxJ9stDzeJKP2u+kDn9phmFOIQEjojewCKV1TAVyS9PCHmT+RE2ImSPMUHcezB6Sod644MKj8UbMU0Ss54zYB7ePe926Ol6a5rDOZvtSvnAzCyAr6KW5Ley9KLx5wnuAOTJ/POU26O9HrVXfcQLH9fqQgYb2Bb+Yb/DxolFiuI7i8HHlNfOAkexgE70x5Pm3g+9DVn53aLmtsaO4s0qPCCDM0VzOqfmI0Nkxq9NvpflTC0fyttea0mQQwDUo5Zw17E0iwyd31rvAALlXfjgroHlXv737pgcnPuWP/Ml
- pXuKPOXN
- CX3dr5Hz01z/99lQzi5vk0HzISFcMN8BauNo1++2tpy55TwvbtniV4XwclZIYSu0GkqjkX2p1PHo6pFQRpEAvbwn9Yi4rdwuG+GcE
+X-HE-Tag: 1753455073-330075
+X-HE-Meta: U2FsdGVkX18dpj14QXsbqigDU6P+wm1tKUHndh8QSMp8nfYJPl39BtJm7F9RxOcqxteHphZHcGqlm6OHGyCxVc6yAfjlM2zRxpHEcphi21GdJRgmjqb2Epv+NZB82VLfv6uSM8Saz7MEk6BHJ0BI1mLYXZxpg2f/KIq2Zod9kbBT7nchsK+CWgqrmsfMKCxPZPPNvQR/exv1B4kw5eV82DIfxRLwnAlpEq093G9brMRdBElq3p2e/V7TU6P/eGFq+K25+YfVr4IkMi5+RmbWwb61eHJRk67lrEld1//e0bqhRndN2fqq1elBjFjNJPOiS3vYklJG9bZUcEhLFhiy0u6H9mcY4lE37Tq9yln7XKusIp6mZPP3Jqf/dVtpfTMi/XUPX5bVgASh6xGDhMddJzgV/MTMo0VzxZvR39hPuK6Vgor8W9v1MHERov9WZV8pixnEZjdYYcbvslT4r4mYB4dBtYkHgmR7rrZ6RgDctHqTxgRM845xqOFjGz8ze8AUAj37Z/u+y46VKQBoED6AjMoV+uA/GNweF4GS+6It1uQfMZDUscpQlWILRB6BFLDRCLlxnrKKPQuENNq9CW+89H/bUq6DJUHo3XmxXJKeNU9W7k1OR2/nZ/H3lh2hLYFggh3C49q6+qFu5/jbrus9p2NGNZHhbVkFfHXMYg3iU0iLbN4LrrQRyMV6AiivE04gFhkKmdYxB6V1N26k+Lp/8SUHUCm2KQrPVLg+DXklN+WqB6XMvMjZ+4H2c88IlRSpEF59Sc9so3QZYBhxJzh0Pi7ri1WrXk8stvHj0lkZBXtkyFUUadEM+IjX6AJ4wThPldcqNIKLfSe7SFRAHd2jZ23lvwu7CKcU5XFgKqDlxCpDQeQ82r9reN40yMjTvUr8Z5DdwyQedMva3iOPgCMv5oZFpo1srKLKHlsx3XtpFRdEwdVr6pDHkGqNi+67f79eS5u0Y5IY+qk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,106 +116,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 25, 2025 at 3:49=E2=80=AFPM Lorenzo Stoakes
+On Fri, Jul 25, 2025 at 4:11=E2=80=AFPM Lorenzo Stoakes
 <lorenzo.stoakes@oracle.com> wrote:
-> On Fri, Jul 25, 2025 at 02:00:18PM +0200, Jann Horn wrote:
-> > An anon folio may outlive the VMAs it comes from, so it may also
-> > outlive its associated anon_vma.
+> I went checking for this but was blind obviously since didn't find, Vlast=
+a
+> asked off-list about why anon_vma's are allocated SLAB_TYPESAFE_BY_RCU.
 >
-> Yes, I will share some diagrams I did a while ago to outline this. They'r=
-e
-> ASCII and make you want to cry! :)
+> I notice as well folio_get_anon_vma() is _tricky_:
 >
-> Hmm, if non-root, I wonder if we
-
-(looks like you stopped typing mid-sentence)
-
-> > 2. Removing an anon folio mapping reduces the anon folio's mapcount
-> > before the VMA can go away.
+> /*
+>  * Getting a lock on a stable anon_vma from a page off the LRU is tricky!
+>  *
+>  * Since there is no serialization what so ever against folio_remove_rmap=
+_*()
+>  * the best this function can do is return a refcount increased anon_vma
+>  * that might have been relevant to this page.
+>  *
+>  * The page might have been remapped to a different anon_vma or the anon_=
+vma
+>  * returned may already be freed (and even reused).
+>  *
+>  * In case it was remapped to a different anon_vma, the new anon_vma will=
+ be a
+>  * child of the old anon_vma, and the anon_vma lifetime rules will theref=
+ore
+>  * ensure that any anon_vma obtained from the page will still be valid fo=
+r as
+>  * long as we observe page_mapped() [ hence all those page_mapped() tests=
+ ].
+>  *
+>  * All users of this function must be very careful when walking the anon_=
+vma
+>  * chain and verify that the page in question is indeed mapped in it
+>  * [ something equivalent to page_mapped_in_vma() ].
+>  *
+>  * Since anon_vma's slab is SLAB_TYPESAFE_BY_RCU and we know from
+>  * folio_remove_rmap_*() that the anon_vma pointer from page->mapping is =
+valid
+>  * if there is a mapcount, we can dereference the anon_vma after observin=
+g
+>  * those.
 >
-> the anon folio's mapcount? You mean the VMA's? :P
+> ^--- this seems particularly pertinent...
 
-I mean folio_mapcount(folio), which reads folio->_mapcount and
-folio->_large_mapcount.
-
-> > 4. If the anon-exclusive bit is set, the folio is only mapped in a
-> > single place (otherwise swapout+swapin could erroneously set
-> > RMAP_EXCLUSIVE, causing the swapped-in folio to be associated with the
-> > wrong anon_vma).
->
-> I believe (David?) swapin can cause this not to be the case?
->
-> > 5. When a VMA is associated with an anon_vma, it is always also
-> > associated with the corresponding root anon_vma (necessary because
-> > non-RMAP_EXCLUSIVE swapin falls back to associating the folio with the
-> > root anon_vma).
->
-> OK but we know for sure the UAF is not on a root anon_vma so it's not som=
-e
-> weirdness with trying to access anon_vma->root
-
-Ah, right.
-
-> > 6. If two VMAs in the same process have the same ->anon_vma, their
-> > anonvma chains must be the same (otherwise VMA merging can break
-> > stuff).
-> >
->
-> What do you mean the same?
->
-> If you mean they both must have AVC's which ponit to the individual VMAs
-> and each point to the same anon_vma, yes.
-
-Yeah, that.
-
-> God simple isn't it? ;)
-
-Yeah, I prefer to think of this at the slightly higher abstraction
-layer of "which VMAs are tied to which anon_vmas via AVC" and "which
-VMAs use which anon_vmas as their primary anon_vma"; to me, AVCs being
-separate objects is a minor implementation detail caused by the kernel
-only using intrusive lists instead of the kinds of data structures
-that you'd use in almost any other environment.
-(Like, you wouldn't need AVC objects if the references between VMAs
-and anon_vmas were formed with things like maple trees or xarrays, but
-I guess they wouldn't give you the interval tree semantics you want.)
-
-> I verified these numbers with drgn, interesting add a new child doesn't
-> increment refcount...
-
-Yeah - AFAIU a single reference is shared by all the VMAs that are
-tied to an anon_vma via AVC nodes, and a child anon_vma can't be
-associated with a VMA without its parent also being associated with
-the VMA...
-
-> > > We're sort of relying on this
-> > >
-> > > a. being a UAF
-> > >
-> > > b. the thing we're UAF-ing not either corrupting this field or (if th=
-at
-> > >     memory is actually reused as an anon_vma - I'm not familiar with =
-slab
-> > >     caches - so maybe it's quite likely - getting its refcount increm=
-ented.
-> >
-> > KASAN sees the memory read I'm doing with this atomic_read(), so in
-> > KASAN builds, if this is a UAF, it should trigger a KASAN splat
-> > (modulo KASAN limitations around when UAF can be detected). Basically,
-> > in KASAN builds, the actual explicit check I'm doing here is only
-> > relevant if the object has not yet been freed. That's why I wrote the
-> > comment "Part of the purpose of the atomic_read() is to make KASAN
-> > check that the anon_vma is still alive.".
->
-> Hm, I'm confused, how can you detect a UAF if the object cannot yet be
-> freed? :P
->
-> or would that be the case were it not an atomic_read()?
->
-> I guess this permits this to be detected in a timely manner.
-
-If the anon_vma hasn't yet been freed, but its refcount is 0, then
-that's still a bug because we rely on the anon_vma to have a nonzero
-refcount as long as there are folios with a nonzero mapcount that are
-tied to it, and it is likely to allow UAF at a later point.
+Yep! This was also how that anon_vma bug a few years ago
+(https://project-zero.issues.chromium.org/42451486) turned into UAF -
+it allowed you to have a folio still mapped into userspace while its
+anon_vma was already gone.
 
