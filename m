@@ -2,132 +2,84 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 87345C87FCE
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 22:37:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C331CC87FCA
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 22:42:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A66EF6B008A; Fri, 25 Jul 2025 18:37:51 -0400 (EDT)
+	id 629466B007B; Fri, 25 Jul 2025 18:42:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A1EA86B008C; Fri, 25 Jul 2025 18:37:51 -0400 (EDT)
+	id 5D9F46B0089; Fri, 25 Jul 2025 18:42:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92D7F6B0092; Fri, 25 Jul 2025 18:37:51 -0400 (EDT)
+	id 516A96B008A; Fri, 25 Jul 2025 18:42:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 835EC6B008A
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 18:37:51 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 541115BDE3
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 22:37:51 +0000 (UTC)
-X-FDA: 83704250742.01.142EDD8
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 1F59E140007
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 22:37:48 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HLrWBITs;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf09.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753483069; a=rsa-sha256;
-	cv=none;
-	b=Oo7J43tbA0stA2KAPmiMgRHTV91D1fLVv258oTHzmZ38Oup01CzTDDBo4iAtt7dY0pO8Do
-	bLa5/wgSjEa9M0ifVGu8KBkcMtUC30IXR2wfsKfENQoj2TqsjvUSnPTYMA4Yb1OEhFDr1g
-	D8auvs4z44Wz947HcpepK3INPEvf48g=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HLrWBITs;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf09.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 42CE46B007B
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 18:42:17 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DF223140838
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 22:42:16 +0000 (UTC)
+X-FDA: 83704261872.23.F29A0B3
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 0F2818000C
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 22:42:14 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nZ6pCdAv;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf02.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753483069;
+	s=arc-20220608; t=1753483335;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PxMQJ32P9TM5LgrkFm1FLN9ED8pQui3GJRtf4HfC5h4=;
-	b=gnOq4TtltLEWxjgEGs70ENRWnAJWc3UHGzDkLIgaaH46nrLc8lvJCk7//tAZYGkM/bN6W2
-	fr1+AwKOENKNuGz1nN2pfTYS8EzIIJdXg1OfXQBaCFX9rgqzNJiU2an+TWMHPzrgPWsgEm
-	DrMEFKHpCU/ED0jNGH/E025hj4lWQPo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753483068;
+	bh=A0Ko/T008kKzATvgo21S/8DgIEmpbQO5L/7e7R+RnuA=;
+	b=bn1J4IYz9AnNpSu1wdq+KP2Urar1lF+c3WTqtyEnnwPBtKGqw7YdL9LH+pSxlqcSHYNhDj
+	urAA1d2YMR7Guuxy8/S8+6WxtD9+6bqx0Wi6a8+5OEeR9ardvUZRtPfzjZlsTGNV9jZ9iB
+	S+GRWz6HzqFQAsPodzo0FsipAX/985A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753483335; a=rsa-sha256;
+	cv=none;
+	b=val23wwzoctFprkNMwRZoFfch/ZtIhJJMZBi7u+SpKZhfLI0W2/AWpjXIBsc9j4W6IB0Az
+	KMzCSbNS9PDHBFx3wqqmONqQAKOFZq0sBgwhMROnNXPqU0txSF6DuhBWxqAnB01mEJ7WEP
+	jTwG/p6OZLkaMJAt6k7P/SXrQifCidM=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nZ6pCdAv;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf02.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1753483332;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PxMQJ32P9TM5LgrkFm1FLN9ED8pQui3GJRtf4HfC5h4=;
-	b=HLrWBITsS8zgU/vH4iAPhs4UCRrHuraaL9dC619wNHtl3I5VJ+3xCqVdoggmjWEQm5ZKjA
-	lrvNkjGr2eESy6/hfbeqjExx4vrPUdWgCvVHAVsN9p+Fc88fbXL4ypdq+/yFbLQp53O6lN
-	/GeIUDt6Dhd1fznXArGUxYHZDpi35cA=
-Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
- [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-267-9nRyzZtMOBqmrEDrPePgMA-1; Fri, 25 Jul 2025 18:37:47 -0400
-X-MC-Unique: 9nRyzZtMOBqmrEDrPePgMA-1
-X-Mimecast-MFC-AGG-ID: 9nRyzZtMOBqmrEDrPePgMA_1753483067
-Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-7194c6ce830so40860687b3.1
-        for <linux-mm@kvack.org>; Fri, 25 Jul 2025 15:37:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753483067; x=1754087867;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PxMQJ32P9TM5LgrkFm1FLN9ED8pQui3GJRtf4HfC5h4=;
-        b=ccjzcw2kEFnpGrrJtlhpO4N72TnfBUjN0GksmZGjeZeApxkMxs/7qO/uDngVm7Yzo8
-         guV7VwpP/pikZC8AELCBQJrfsrRT1sHSWYzQffVSdFxLEYwO/5dm4roLB7fvizEjwZOJ
-         OPugCA3J14xZnvXpPMoijk7UKH4S8/5Tyop9aBGlJVJCtLJdkWTOCllmBjsoyHaX3n9s
-         P5QYVgGTKFHl6xnJr0JE9yx2O7cgkRr+9WlUX15k10/PwRxE4nLluGS7vg2/WcntpqdT
-         J9UsdClTNjm9KNIglx5ZXcIL3UAQlSZmVLguLALn8uaC0fhfwhIpW47L/qeV6q7E01BX
-         fHmg==
-X-Gm-Message-State: AOJu0YzU/1aPfBb6oC6afUwsnpAZ0DvG6O7f2UlNChnJfcA6bAKDY0Yq
-	cJLJVsNBaw5lvLe9GWfRhJYxAqI1xMqXOol0tGmwirVeiaHo2IbJBzyY4ua/UQnDYuDvhrOWMAF
-	Hy7bQ2jpgijk37t6ezS+P5ZHVqktntwxLk+JI0nwlWd08mio19o2bCetLNSd/2dW9wlOfaxS/O/
-	PNkd0HnLLkmVH3D+H12QtABtkEQ0M=
-X-Gm-Gg: ASbGncvcIfG0jwEzAhbgQZTRgVJicgsGYpion7JdUTzpX8VCYhkCboIFuiziiI9Eaj1
-	YT/YC/p5Q6ae/OEen2CV9FFdMBjQnGzF4Y3VRjvI9I/CCxHYFcqcy7Vyy0bTfs1Ay7caN77YRz+
-	2cjMvi0m/9at74XEKXCostLCE=
-X-Received: by 2002:a05:690c:4513:b0:714:3e:f424 with SMTP id 00721157ae682-719e3461242mr52042977b3.35.1753483066679;
-        Fri, 25 Jul 2025 15:37:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEfOqA9QhdPY+M0vEESx6VKf5ml2IvqKk9pj3fqjSjpp95LtZTi4ZjJtdc1Jt2Guhr63gv18jpOEl7GBVnJQNw=
-X-Received: by 2002:a05:690c:4513:b0:714:3e:f424 with SMTP id
- 00721157ae682-719e3461242mr52042437b3.35.1753483066311; Fri, 25 Jul 2025
- 15:37:46 -0700 (PDT)
+	bh=A0Ko/T008kKzATvgo21S/8DgIEmpbQO5L/7e7R+RnuA=;
+	b=nZ6pCdAvBYhWZg4stmEXGZH5XqIb8tSQDnvH847rHfYlDIMqVqE+C+HBAtAuhl/pQtur2N
+	CNgAVpr+Hv1R6Rh1tfJkcGv1PPIsoJ0daGeq/bGM3KlgCCf9CnVBmQGGWh/f1tKWxgZy6c
+	uBfKo+1+LocCIHfJ9czveJ9oEIpY/00=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Jan Kara <jack@suse.cz>
+Cc: Andrew Morton <akpm@linux-foundation.org>,  Matthew Wilcox
+ <willy@infradead.org>,  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,
+  Liu Shixin <liushixin2@huawei.com>
+Subject: Re: [PATCH] mm: consider disabling readahead if there are signs of
+ thrashing
+In-Reply-To: <at4ojyziprhhktjgtfmuyzrqwfmomnly6fubkvmbtxkdnx6hpb@5nldc3vipwny>
+	(Jan Kara's message of "Mon, 14 Jul 2025 17:16:51 +0200")
+References: <20250710195232.124790-1-roman.gushchin@linux.dev>
+	<at4ojyziprhhktjgtfmuyzrqwfmomnly6fubkvmbtxkdnx6hpb@5nldc3vipwny>
+Date: Fri, 25 Jul 2025 15:42:07 -0700
+Message-ID: <875xffsxj4.fsf@linux.dev>
 MIME-Version: 1.0
-References: <20250714003207.113275-1-npache@redhat.com> <20250714003207.113275-6-npache@redhat.com>
- <f87dd075-59e1-463f-bc36-0f6582abf31c@lucifer.local>
-In-Reply-To: <f87dd075-59e1-463f-bc36-0f6582abf31c@lucifer.local>
-From: Nico Pache <npache@redhat.com>
-Date: Fri, 25 Jul 2025 16:37:20 -0600
-X-Gm-Features: Ac12FXy2-qDATzXIVs0g2RONSMMgciAzDMU4oBvRHpQajDJJel4xlOl2pw4wSCs
-Message-ID: <CAA1CXcD0qKMqR4KSD-uqVORk=_gB=JwfkQ5owYV792B5Ng788A@mail.gmail.com>
-Subject: Re: [PATCH v9 05/14] khugepaged: generalize __collapse_huge_page_*
- for mTHP support
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	david@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
-	Liam.Howlett@oracle.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-	corbet@lwn.net, rostedt@goodmis.org, mhiramat@kernel.org, 
-	mathieu.desnoyers@efficios.com, akpm@linux-foundation.org, baohua@kernel.org, 
-	willy@infradead.org, peterx@redhat.com, wangkefeng.wang@huawei.com, 
-	usamaarif642@gmail.com, sunnanyong@huawei.com, vishal.moola@gmail.com, 
-	thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com, 
-	kirill.shutemov@linux.intel.com, aarcange@redhat.com, raquini@redhat.com, 
-	anshuman.khandual@arm.com, catalin.marinas@arm.com, tiwai@suse.de, 
-	will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org, 
-	jglisse@google.com, surenb@google.com, zokeefe@google.com, hannes@cmpxchg.org, 
-	rientjes@google.com, mhocko@suse.com, rdunlap@infradead.org, hughd@google.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: LAjRFg7Fa5OhQPlRk3rG_z-b1OYh09K7fm4L2ZY6Yy0_1753483067
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 1F59E140007
-X-Stat-Signature: en3dcwsq9p17prd3wtg8374z7e7i3gxc
+Content-Type: text/plain
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 0F2818000C
+X-Stat-Signature: iab7rz1bwe5ckbeddwsdj1j558gamtjg
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1753483068-546916
-X-HE-Meta: U2FsdGVkX19utRDUkPm12HkLizjGa3PIYbgfCMzTh1zm1pZNGKftfFyfdj2Qasu+nonyDuWoZEA1qeCx6Bisjuk9zbJyZh042vi0rB8h9SvwvEE4Sf9Pn+chtre42SKq5WodqR3gUnMMaf6KSOLHavlDuAdbXB9M0BDo11jOOEy2kVx3WEdoKdoUJKcAkjGRD4u+1WWpavHfkiXlYowr2rtn/6Om6v28kFCITxqJEYLOikfd3nzfkbDZztMN4oEIsT+cFTj73sYFHbKFmhmqYyYcrKaG2OfvLXrEzAUMscpFg2JlWbV4xuJzAGNZQU+JspegGEw0w/8WVtXXWTAYtZgSYy6z0FvVFNi3q5Wyt5YI7Fil+53c/ekJrDW9uaYbah3XLOYc4F8L0P4DsEt/Ex6qkYKFMIWSTRJrjatMeTrDbUhKsixtJAyVzSe9Yu9y1jImuZXaDWCMZrfJN0ozCs1VQrwW00gdNBxabfFeCirOYEXPL/L5of7RuG4w9UV5pOOSsZW1iw/3fnwvROzUNxEoVxpTdqXmCWZnzrZTRiqBcUnlnVITPDLMysodoXiREX5exGFatbaKOCHCSG1Ubn/5oUeZOB0SjSeoGw1FgYi2bWKYNpGPBlFaf/+0ApVWOiFH7+m2MxvS2LiqCNMhDm01wjlDdHE5S6kUI/3FUV4E4QOVk0zg//UBZ2QPOMDvprZmMyW5Sz+uWkcHi8CNVbTZuR0DaydC428RCPYJyU2CXimtL5SkGl24TNBWokeNCO/GSrTJ4+UticYyuYSp/Zkb6PlFkKSZPDd0yZvoUQOyA5LTzlqF527AjobTCgrrSN9MtUjvaPASm3c5eUHFR9TgQz3Eocr4Hfk2wb+YRtUlad+iI0f5YPdDV43nb2qH3vnqZGRp40iD6+YIa2osNbBcjgV2msQYIr0Km7Yyc5C26+SVAFdZ3ASXsC7ByQiV4Vn/aSSo9o9O7nUkxpo
- KxpU+PHX
- 5h9roVxNTb1aHv0lTz+9BbbTdkSn8UD2Ctr3c+EFAzrIa8iHdnKZY2y7HSFeI1hJpRpMQKIc0/YYjGVmyTPJOSkDOZsGrVmLQncjucdve0fuExNmC9w4iduq3MhLFATRMUtX8J4+I1TcGYw5y+T9bY9VyoWnx2T+tW/3ymXqmvgvHHIas0gJZeMgoTNxZ3tnKOYoKatoN/UpZawkn8EpdWrMs5QGue6GduFRXStMQTWvUZetQqS5YmI8BSR2ChURkjtadh1EnwzOMXB8tpXteB5342XwdVWWXhW/t1RD3eOmD4Qor8JfnWlHHmiBJyFSOxWtKIxUkGSmeRMVCoCLaODCpUmAvW5KgWb7lAPp5Nh9A/V+FGYsJRjagajcq9jqlfRn05ClarfAEdQk=
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1753483334-381671
+X-HE-Meta: U2FsdGVkX1/SIJUSUQf7NojWRTOeoGNQnmSiJ/lzxoKC0OxVvxrS0U6qYdfpyuyIliuZ4DoAOYXKzKhqw8OSH3nqrHVthsUEoF0AgUgfEwzvVSWHBkeAmLYCx+G2ewjT8wyefSBw1oJ8f0H9i3gDQkBC2OUXMK2dN/iQSTsVjx+hV6yZI792FcUI/zsbstvUcBJnj9aV6PwbNbYbPlaTwbKFIIJXlpemXBdKjsqpw6PekD6+psVEz8XMWKVbnkl46ia1+phnBBw6WHmbePC91+1HpDfzwiTdZcUGuF94KPpH5kgyid2+W4kT6Fz/I9LByenr6EcPSJCihDTstT4wF2d5od/DUFli49Up7CDhQ5wd/SGfECwePLhO6ROdjkUo5bjUrQ8PYlNhmFJqvaqS4414yvvvb4ZBe5/0QWpskSH5P9bAiVqcmUPIZnminDzab/9vTKdn9Q8f3n0iSQCeKd7kNb6smzZOwP+FfcW4P3q4Hiz7bkm86rdP5b/Of899hDpNpOfjDWnymwi5wHjyassLWq3+2QX5dzj1O5DOdcToNMiq4VdKPw2ewfl6LkljXJLoHYFE6F+vnE/rUkzulWXyM5lX5rDpw9MOX7ZKpYVCPvl1OWxALFxCiTg/jU/TwFIXYuTZdTPGpigLL9yzDCyidnMu1sDv2RWUYzmNw6rdEfOujQNT8pbRHU300tiVxat03bea+xrHKTwIF4xwZDwdvRO6VvvFYqH7xlA/HIsnJw6t1cbxGQ6UU1y1NvVXQ/8YmB1cLAkvdlBPaiflS6nJuCspmvpGHctIkIDRXBEvUnMp20WbP1RBNY72Hi5285fvrKnEIRWGzRuiwPj/9OuHRUOw2PVeGxRAUJrpDkjPvhY3G+XEWNqbuX8xNMR4E92f+Sk1vjaL1YbrD/sgcRPIGrFan7UCm44kSJZnGUMRZrkA2EdvyEZTYvLftl6iQLwAmTSxkd+7Pimv5Hf
+ WlisIskS
+ uBjZWwGX5RcF6RkbCdRrP31qtlIEw3tAyQPifXse6pVDAUodW1dJ0MmGmQgDqLOnLOBCOhKg8SLzLo9svoCN/esktbbIooFTLTLI+e5XfV68ZnY0Urn/+rDYViyVpo8/l504vIi8RtPp3OyojTA/d/L8vnvThyhzYlQOM/2GtsExQQff0+X4Zni/z6EYs+hDaRPe+1I6rJ4UNgpRFGg0GTjcMJA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,17 +88,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 25, 2025 at 10:15=E2=80=AFAM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
->
-> FYI this seems to conflict on mm-new with Dev's "khugepaged: optimize
-> __collapse_huge_page_copy_succeeded() by PTE batching" patch.
-Yes, I did notice this last time I pulled. I haven't taken the time to
-resolve it, but will shortly. I want to make sure I do it correctly
-and that these two dont conflict in any undesirable way !
+Jan Kara <jack@suse.cz> writes:
 
-Cheers,
--- Nico
+> On Thu 10-07-25 12:52:32, Roman Gushchin wrote:
+>> We've noticed in production that under a very heavy memory pressure
+>> the readahead behavior becomes unstable causing spikes in memory
+>> pressure and CPU contention on zone locks.
+>> 
+>> The current mmap_miss heuristics considers minor pagefaults as a
+>> good reason to decrease mmap_miss and conditionally start async
+>> readahead. This creates a vicious cycle: asynchronous readahead
+>> loads more pages, which in turn causes more minor pagefaults.
+>> This problem is especially pronounced when multiple threads of
+>> an application fault on consecutive pages of an evicted executable,
+>> aggressively lowering the mmap_miss counter and preventing readahead
+>> from being disabled.
 >
+> I think you're talking about filemap_map_pages() logic of handling
+> mmap_miss. It would be nice to mention it in the changelog. There's one
+> thing that doesn't quite make sense to me: When there's memory pressure,
+> I'd expect the pages to be reclaimed from memory and not just unmapped. 
+> Also given your solution uses !uptodate folios suggests the pages were
+> actually fully reclaimed and the problem really is that filemap_map_pages()
+> treats as minor page fault (i.e., cache hit) what is in fact a major page
+> fault (i.e., cache miss)?
+>
+> Actually, now that I digged deeper I've remembered that based on Liu
+> Shixin's report
+> (https://lore.kernel.org/all/20240201100835.1626685-1-liushixin2@huawei.com/)
+> which sounds a lot like what you're reporting, we have eventually merged his
+> fixes (ended up as commits 0fd44ab213bc ("mm/readahead: break read-ahead
+> loop if filemap_add_folio return -ENOMEM"), 5c46d5319bde ("mm/filemap:
+> don't decrease mmap_miss when folio has workingset flag")). Did you test a
+> kernel with these fixes (6.10 or later)? In particular after these fixes
+> the !folio_test_workingset() check in filemap_map_folio_range() and
+> filemap_map_order0_folio() should make sure we don't decrease mmap_miss
+> when faulting fresh pages. Or was in your case page evicted so long ago
+> that workingset bit is already clear?
+>
+> Once we better understand the situation, let me also mention that I have
+> two patches which I originally proposed to fix Liu's problems. They didn't
+> quite fix them so his patches got merged in the end but the problems
+> described there are still somewhat valid:
+
+Ok, I got a better understanding of the situation now. Basically we have
+a multi-threaded application which is under very heavy memory pressure.
+I multiple threads are faulting simultaneously into the same page,
+do_sync_mmap_readahead() can be called multiple times for the same page.
+This creates a negative pressure on the mmap_miss counter, which can't be
+matched by do_sync_mmap_readahead(), which is be called only once
+for every page. This basically keeps the readahead on, despite the heavy
+memory pressure.
+
+The following patch solves the problem, at least in my test scenario.
+Wdyt?
+
+Thanks!
+
+--
+
+@@ -3323,6 +3323,10 @@ static struct file *do_async_mmap_readahead(struct vm_fault *vmf,
+ 	if (vmf->vma->vm_flags & VM_RAND_READ || !ra->ra_pages)
+ 		return fpin;
+ 
++	/* We're likely racing against another fault, bail out */
++	if (folio_test_locked(folio) && !folio_test_uptodate(folio))
++		return fpin;
++
+ 	mmap_miss = READ_ONCE(ra->mmap_miss);
+ 	if (mmap_miss)
+ 		WRITE_ONCE(ra->mmap_miss, --mmap_miss);
+
 
 
