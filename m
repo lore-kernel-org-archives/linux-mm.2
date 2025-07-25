@@ -2,94 +2,82 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DF33CC87FCA
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 15:45:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 417B4C87FCA
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 15:45:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D8896B0088; Fri, 25 Jul 2025 11:45:10 -0400 (EDT)
+	id DA5E36B008A; Fri, 25 Jul 2025 11:45:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B06B6B0089; Fri, 25 Jul 2025 11:45:10 -0400 (EDT)
+	id D7DD16B008C; Fri, 25 Jul 2025 11:45:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C6166B008A; Fri, 25 Jul 2025 11:45:10 -0400 (EDT)
+	id CE2CF6B0092; Fri, 25 Jul 2025 11:45:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CBD06B0088
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 11:45:10 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 073305AC54
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 15:45:10 +0000 (UTC)
-X-FDA: 83703210780.14.5824FA3
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3C5324000F
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 15:45:07 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=nWi+22jj;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=2wlev3Mb;
-	spf=pass (imf12.hostedemail.com: domain of tglx@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=tglx@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C309F6B008A
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 11:45:38 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 77ED0113C95
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 15:45:38 +0000 (UTC)
+X-FDA: 83703211956.21.AA4CEBD
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 9D461120007
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 15:45:35 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=JNJdONl4
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753458336; a=rsa-sha256;
+	cv=none;
+	b=71IjxLiLkA/uw1MTYrynU0pXw9M9qUeeT8n4RY6nzcuR5tfIzJ/aHBGJ+yT+/vOdIHPWHn
+	5ZYU255ppgob6VQXnhszJJPnokUdTA3kcSpholaHXyWGwYdl5z4x1jQXfzMFBEPxjQZA7z
+	evJ7LZxdXVAymtfYkxTj7djUWpLuXfU=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=JNJdONl4;
+	dmarc=none;
+	spf=none (imf29.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753458308;
+	s=arc-20220608; t=1753458336;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zfNlU9QkQSDk6X3acZW9Zv6watdmS4XLb2lpyLgX3PU=;
-	b=Uqav22IX2O4Xpgy1neYgOTkKiHwuDR7xo1Ar7ME9y9IOoY4z/r/SoW8kbmFm9UJM/DmsWc
-	6LjT7wdFLOkhR4pPjXvVaEWiwJ7HGjoTU/jSGKCEvxEd2oSlZMhW/4t+5TNwa2AYiiRRbu
-	AXp0I+dw4N2jXdmBTz89YI8Nt5Qv3pU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753458308; a=rsa-sha256;
-	cv=none;
-	b=M2Xi/4/tQHHAJprS2IuD8uqaZdG6241HQDfhG8OISq3/SEvbAuUpWJ2SejB04COnLlo7L3
-	xpFJ9GRuoUkpoRgis4ERm1kLexftghYiv0hNd7Vj5JxGPLWfR+qJngAhIuoUx0LB/k2ji5
-	Y2BHPf8odlEyNjjdaCy7pqcSLHhEVYE=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=nWi+22jj;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=2wlev3Mb;
-	spf=pass (imf12.hostedemail.com: domain of tglx@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=tglx@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1753458305;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zfNlU9QkQSDk6X3acZW9Zv6watdmS4XLb2lpyLgX3PU=;
-	b=nWi+22jj/D7vpJ3jHZNLznk1KJL9waj+gQWBvee9c3DCDjBGRQxnd34ePojIYdP6v+eVKG
-	yG5tj6U0W7XvzcafeahhiJ7DsZKZL6kJKmzMVL+Ks4v2x2urTkyCLbR1OnkDjrqoOl6sj+
-	VnOF6P3Ga+8BpoAwTI8VywKIdWY0K+7xbhld/p0uekv7pnRBIEx6fFFyji+bMunGgJuuVR
-	URcoNjbaLEWjMDmaTrtJMO4834tjUkaAgIjqQOLkccuir0WvwA/yq2VibB7phjMZHWuSQX
-	g2prDMKR6GuQEP0js+MSZVdBI+cCC7zeSkfA3PhRO2hIPyB1B09Vv+ZLZ/v7ww==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1753458305;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zfNlU9QkQSDk6X3acZW9Zv6watdmS4XLb2lpyLgX3PU=;
-	b=2wlev3Mb1+z/3Pnnum1fsrCZ/wKE+6fI5t7UzhlvwaPmKxn6SEQEbGzJg3YvvNkBEQ1RKj
-	qNo7Fzzu1wV4ZADg==
-To: Oliver Sang <oliver.sang@intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, oe-lkp@lists.linux.dev,
- lkp@intel.com, linux-kernel@vger.kernel.org, x86@kernel.org, Sebastian
- Andrzej Siewior <bigeasy@linutronix.de>, linux-mm@kvack.org,
- ltp@lists.linux.it, oliver.sang@intel.com
-Subject: Re: [tip:locking/futex] [futex]  56180dd20c:
- BUG:sleeping_function_called_from_invalid_context_at_kernel/nsproxy.c
-In-Reply-To: <aINKAQt3qcj2s38N@xsang-OptiPlex-9020>
-References: <202507231021.dcf24373-lkp@intel.com> <87a54usty4.ffs@tglx>
- <aINKAQt3qcj2s38N@xsang-OptiPlex-9020>
-Date: Fri, 25 Jul 2025 17:45:04 +0200
-Message-ID: <87seikp94v.ffs@tglx>
+	bh=otUuWz9mfPFiVZUJEvzXYbOISqnMQyxkucKTmIZSSLo=;
+	b=pRYziisvHrt2aJkGkmMPp4Mw9e4ZFcOD8nM8HssNl1kmt0Hfp7e3y3hm4W8kqFXo6fooNk
+	FMQqGWJmFBsm0EwDcvvdgMh4MEzINaf5mHRBplRtF9Cb7NTU+/XxYT5NOPd6B0zkmIuvfr
+	MkGVwwRL2P9jggFsHnuXPHYfQD5Bitk=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=otUuWz9mfPFiVZUJEvzXYbOISqnMQyxkucKTmIZSSLo=; b=JNJdONl40Ij0yVJfj0J4ihq/N4
+	AzSztQ4QnTxRNAUTMSoHh5dty/pKn0QZ6qoGn6cZQM3OQkPMyMZVrteksH6V4F/xku+IBoEByqCqv
+	33KHCTRYK9bZe5ntZPaXv9KU7iCQoqydAUArH8iSFL2ASF4Mo85lAxBbTQrkaQ1IqNLTdW6M15agS
+	uGkMR3VcvfHSfrnnWQV7Xt6fYZf1LUjDLPPkfVlk0JnUxqKf7y/4wXJzME8awFABT/iafB/tYCqwa
+	+WMpROtkcqXH6M8UoklSQyc4hUD9CH/Spp7BZE62oYDE8Lm46YquCuUJB8kX/wFIekXs6IWIvI2zE
+	YnY9o5hQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1ufKbz-0000000E1ua-39Sk;
+	Fri, 25 Jul 2025 15:45:32 +0000
+Date: Fri, 25 Jul 2025 16:45:31 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Xiaole He <hexiaole1994@126.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] mm/readahead: Optimize nr_to_read boundary check
+Message-ID: <aIOmm8cejmAyvSZ5@casper.infradead.org>
+References: <20250725152834.7602-1-hexiaole1994@126.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: 3C5324000F
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250725152834.7602-1-hexiaole1994@126.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: t14q8ukpkm39bdkz98wjri5xg76y8kxt
-X-HE-Tag: 1753458307-169115
-X-HE-Meta: U2FsdGVkX1/JKV260IRjHCASRjH0bU9KepYGu7srGkZyv585BbdxDi+AiGKwsP4qkGM0IjNrhoqB3LRG77AENODklKtDYSLjVe7u+OI8DT6lt5WcfyMfpkge6tyeUS36MG0hQc0ajazGZ5w8EgmVG6RAFBtAABxLEBMw+2HWaM3oBjhUaINQPkrDgZaLVnT7AUoKPOk9ppdMHZtd2gh+/y6CDoUyaeUfhAKK2jZ44b0eoL0wjjyquMXdKNT6ryvkYh9WFulx8EEwTrS/APEF8T0uBVN5p4mCK7A6c9f42JMStn/guFLOm3pvmyrhoTXcCBH4SrqulwFnjzx/QA6DhA3sHBjZGu6S0ciUZpbPs7ctd7OMXoL9VULAhelU4Tsf9wLhDSS/TUglmRdlxlQrWh5PTpdI2JImVtzc+a5uvtkUZvY0qzewGiAY/71II9mk6TviKvnOX82i8a/a2VMU+P2JWUJufPYEOpIbdga4USUOtf/bS3zjObL6PqLvtT9lhn3BLSL9Lb5VgYTkcqWQvktQnOSyGv2cbsl8N2idX+y/V3Fr256xKSOc9wm1kWBcEDFLUOcz18LpHtk7uVVX2CqXTjJtndgpo/2ggoELt3T+Z54mB0rfmTfvrCJz1bWrtvw5g1f46DrSVhqH4CeAS2EwEVtoUhNldgojCYD61ojs7e27tPDq9tgUl0AT0/DuHtuM2RaFNxTdBB1RqUxtzpky68twa6IhJJzSO9cKQkGUIOK6XcQ1QYEOQbMEDHGJGVLJTqvFCU6A1sTeC4I+Io0kjtyVPXf40MeuBrqajitmo2YnZ3/QVK6Hyvf25KrwNS7Xn9vNw7rI/RWKid7n1WKIigYP60AHOxeUdTftZ1+SRHXE52NVhbMm4mq+DuRyDQf9um4zsZwEUp9mEr1Tb0y9PiykEXH+9RILs55AjWUHU4LpGeSRcVUpzeSr+WZhk5TwINDLiwfAYA+ZWIp
- 9mNBPUa9
- grurY5KuQ0d93eOBsQhgL/Gr8VKHKHCXFCNXUGBKaMWMTW2iW1uX2x5+sW04be1/viYpRPf7jD3tBUjdHq5j4iSTd4VT+c4ayJ1CNcES5TXVUuJjLdS/PK4jl5tQdjM03xPE43fku1jX7qWZAIauyQZ/+2AyRor8lpt7zVG/EabqHtwXjtDvgHS9K7l0C2WWi+ClMd+MlDC64HitFD1g4LjlZdZvamZ7oVa+l68dFClMsJLY=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9D461120007
+X-Stat-Signature: a6abzsmimmnxc3pzqz6z9tdnx3x9587h
+X-HE-Tag: 1753458335-195171
+X-HE-Meta: U2FsdGVkX1873Mm+0SFOYe4V5EDc+eIi6+7Nab92ORuXO6BgqzkJY8juzSPT9n3X0ongwrYApWrtrggxcUyBYqkyH+FmlQMwxF09hh8MO0U6WfZzEzmi5q0zFIk+0t6AdjjitFXdNLE0uQFL5y1cgJsyokM/mXfsvCJAGycZiVOBvVrZEkseqf5TyxTgLbRpx1GzjiE4bqtS4egrUBU8ayDfG31fwXrdtpcJXDW2b5m8B14gAb6TsuLeUjsfVjeKVxZPdRlNwARf6+tD4TLsm+lzcRSnQW7vO/JJXVRUutuyhZMPMTYsPwojeYDFpl3CLlJm23ZOCxCmypQLpI98RaXfi0Pdk7MExjt3cLb4kOdD0kqVm/odDVZDRvnpNpCthnaCAHDLFdrWzVPDHV93uW4WRJtTTds/zH7a+yb6Qwjoaj97hjXTwMImS/e7wyoiiO7UeT4Gj/KM3VbiOKSYJeHouqO5dPJqbkR4AHMK4+9kA8pkY5+pxRr0/mMvu5MWCEalztsdVDsb3Z05Diy7cDDY9MkTKl4G02s//Pya/xGC0DWDpZniRzhD6Q9esISCsLQkMUEvORRj+epqCSM+PxlqejWGiUxoVh2NWOmsiFP2ULztz4k5jBAbqm9YLCxu1q6oqEjyq+nNgmLhjnFxtP2IS/7AmYj4MCXeLwYSU491xvGh2MiFzbthPIioaLI1FrDDEf/ZNQoGrnFK+6kBP57ymZJSdhw+YA64UBKi1hq8TcxARh0+cPpUGwYSX4jfmHoJFWcngbYehOwveg5rLpqtzQZHRh4x5SCCdaX3DawN6EnCHvOZ1cQ4LfsF+OFIVzP5PI5Tf4PdhWRhx/HV1pYum6zXQJwCCaUzzfq6ceDnUNAxWIsKi0rNbZ5L5HpigembAYl92KV/npZyu96GlcOuyAcHf56N7nkG2uLttpdO62gqPzHGrXL4i9uR5CV95F45ezEgko/DZHIuCA6
+ jpHwFMtC
+ PwMjYvJBRcaYu4OufVinnwryfo8LBWI+csGk5CQjTk9K3VNlJlKJ1vqQyQIQ8I/cBWMVSrbJDR3WNIoYue7K+ycpcppJ7gmcB7YvtrHk07aRvgW/0gmDAu6muJ+vuTJfRE3cNn1TTniZ24QwttbFoMti6K5kh6eiM++FZN8Xmk3oKGNZKsExyL+/PGrTCdjex5RFexHXdLA/OA980x+Als/5dh0MYxhdxq1z4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,37 +86,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Oliver!
+On Fri, Jul 25, 2025 at 11:28:34PM +0800, Xiaole He wrote:
+> If nr_to_read is, for instance, 3, and end_index - index + 1 is also 3
+> (meaning 3 pages remain), the condition 3 > 2 evaluates to true, leading
+>  to nr_to_read being assigned 3 again. While compilers might optimize
+> this trivial self-assignment, it introduces unnecessary logical overhead
+>  and reduces code clarity.
 
-On Fri, Jul 25 2025 at 17:10, Oliver Sang wrote:
-> On Wed, Jul 23, 2025 at 07:22:43PM +0200, Thomas Gleixner wrote:
->> > [  286.673775][   C97] BUG: sleeping function called from invalid context at kernel/nsproxy.c:233   <---- (1)
->> > [  286.673784][   C97] in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 6748, name: oom03
->> > [  286.673787][   C97] preempt_count: 7ffffffe, expected: 0
->> 
->> Ooops. That's a corrupted preempt counter, which has underflown twice.
->> 
->> Can you please enable CONFIG_DEBUG_PREEMPT, so we can see where this
->> happens?
->
-> after enable CONFIG_DEBUG_PREEMPT, the config is as attached
-> config-6.16.0-rc5-00002-g56180dd20c19
-
-Thank you for trying, but I just realized that it tells us only when it
-underflows, but we don't see where the actual extra decrement happens
-before that.
-
-Can you please enable CONFIG_PREEMPT_TRACER and add
-
-'trace_event=preemptirq:preempt_disable,preemptirq:preempt_enable ftrace_dump_on_oops'
-
-to the kernel command line. The latter will dump the recorded
-preempt_enable/disable events and we can pinpoint the function which is
-responsible for that.
-
-Thanks,
-
-        tglx
-
+But it makes the initial comparison more complex (by one operation) and
+I bet you can't measure the difference anyway.  I'm not inclined to
+tweak this.
 
 
