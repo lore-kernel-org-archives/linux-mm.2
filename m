@@ -2,85 +2,91 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 04DA7C87FCA
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 23:25:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 453F2C87FCA
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 23:29:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C44F6B008A; Fri, 25 Jul 2025 19:25:59 -0400 (EDT)
+	id A77EB6B007B; Fri, 25 Jul 2025 19:29:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88CF36B008C; Fri, 25 Jul 2025 19:25:59 -0400 (EDT)
+	id A50096B0089; Fri, 25 Jul 2025 19:29:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78B006B0092; Fri, 25 Jul 2025 19:25:59 -0400 (EDT)
+	id 9B49C6B0092; Fri, 25 Jul 2025 19:29:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BC2B6B008A
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 19:25:59 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D9A271A056A
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 23:25:58 +0000 (UTC)
-X-FDA: 83704371996.17.AC5922B
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	by imf21.hostedemail.com (Postfix) with ESMTP id EB3DC1C0007
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 23:25:56 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Fw/uCp44";
-	spf=pass (imf21.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9298D6B007B
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 19:29:18 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D3A961A098A
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 23:29:17 +0000 (UTC)
+X-FDA: 83704380354.10.FBE6453
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 564B040002
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 23:29:16 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=juXMQ+hR;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753485957;
+	s=arc-20220608; t=1753486156;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aaydfYuqVafMA2JLko3KZS5h6j/lPMMeqjP2Raw9h1E=;
-	b=IZaURxZt/HwPpkJWC/je9UMyPa9dEB/ig/gvASUJU/0FzOMbcWgFPUWLhdyLay1H56l2nc
-	GxZmnL6RXrEKa30OdDnSK014/sI6xQfkfazCRxZkSBY11DyWD7fC+zBgMeJaFvmTQsR+jH
-	uf0tDHwg3trz4cD8K4jv7LuNebHpfQ4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753485957; a=rsa-sha256;
+	bh=E28miUOt3IoVgflcrHHHqc+kmbtbPFDdzOXN9QZRsLM=;
+	b=OBnjbV00tgDoFnDzV61jJa31XPWDR+bHhtTfFNJT1gLTxgq2eIdb54WNV4Sr9xKxThHFWU
+	77sXK9xaEA/1itnSXagpc7vSPB8kl97GbKnan17fT0clpRK4tUPMHJnSlbSGHi4dMJIIrw
+	Oe5JJ7kAzvh5csaAgC8a53YCbptUjnk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753486156; a=rsa-sha256;
 	cv=none;
-	b=fxgSF2lU61XyYV0JVUkLxS66TcN45uJMn1iReoUSI7q9DuUBSJDWNCqCnyeGw4qmNiW4Yr
-	pOhjyYcR08FhZEBK1eS2ILRCiYnBj0znESQx+d1oBg7H/ONuyhNq+pdQpaO96OIEyBiEdE
-	CfKp7nbL89NGIz1T4L2akjks1spg7sc=
+	b=3l3Bg0rldupNtLv7CQtyZ969iV8eW7vZuQnjbwogWdI4jdMUmZUSYfnupEvW32k09cMoQr
+	ujJBCElOtn9uy+I2avQlwQzTJv8ktLbH4p5Ds24NKtUugdoqfR2QRCZkh4r0iXCqEHWm3j
+	S5wWSdCLn3N1SZWvZ7QXv9pvjNLOqCU=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Fw/uCp44";
-	spf=pass (imf21.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1753485954;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aaydfYuqVafMA2JLko3KZS5h6j/lPMMeqjP2Raw9h1E=;
-	b=Fw/uCp44j50elRecwJYSlIwHTVK4my4ZXuqt1jXAPGzfYKW68TOQLEWcy0aYrAYuOUS2tp
-	5weDJPJQbYnUTtSguNmZ4Q2Fu3dMoSEHhjiXvQJeCIzfWSQfoDu/L3p10rq1rkRSyGO9YO
-	qQ0u6ug7uwAzA06C4Eu0TAeQqCl8Hu4=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: Jan Kara <jack@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>,  Matthew Wilcox
- <willy@infradead.org>,  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,
-  Liu Shixin <liushixin2@huawei.com>
-Subject: Re: [PATCH] mm: consider disabling readahead if there are signs of
- thrashing
-In-Reply-To: <875xffsxj4.fsf@linux.dev> (Roman Gushchin's message of "Fri, 25
-	Jul 2025 15:42:07 -0700")
-References: <20250710195232.124790-1-roman.gushchin@linux.dev>
-	<at4ojyziprhhktjgtfmuyzrqwfmomnly6fubkvmbtxkdnx6hpb@5nldc3vipwny>
-	<875xffsxj4.fsf@linux.dev>
-Date: Fri, 25 Jul 2025 16:25:49 -0700
-Message-ID: <87jz3vdf9e.fsf@linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Migadu-Flow: FLOW_OUT
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=juXMQ+hR;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6BC33601DC;
+	Fri, 25 Jul 2025 23:29:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6059BC4CEE7;
+	Fri, 25 Jul 2025 23:29:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1753486155;
+	bh=Ue/oc9CczBRUT94O9K4iabIwDmOGkWuBOTBAj7/504w=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=juXMQ+hR8u7of2YddrxLgmJWdlDaztSFcHXZJGu3KsrI07QrKldKez7JT+vEJqRxS
+	 30/q1aVLfgiP2/DSc0J35svPdqSLOkPtJd6W8YxovgeyTMI9GKUI+kHWGvfD/PVv/u
+	 vjfopHQQJG2I5ZP1x+wecue6BQZPAL4hY9vUDT/Y=
+Date: Fri, 25 Jul 2025 16:29:13 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Jinjiang Tu <tujinjiang@huawei.com>
+Cc: <andrii@kernel.org>, <avagin@gmail.com>,
+ <baolin.wang@linux.alibaba.com>, <brahmajit.xyz@gmail.com>,
+ <catalin.marinas@arm.com>, <christophe.leroy@csgroup.eu>,
+ <david@redhat.com>, <dev.jain@arm.com>, <hughd@google.com>,
+ <joern@logfs.org>, <linux-mm@kvack.org>, <lorenzo.stoakes@oracle.com>,
+ <mhocko@suse.com>, <rientjes@google.com>, <ryan.roberts@arm.com>,
+ <superman.xpt@gmail.com>, <thiago.bauermann@linaro.org>,
+ <wangkefeng.wang@huawei.com>
+Subject: Re: [PATCH] mm/memory-failure: hold PTL in hwpoison_hugetlb_range
+Message-Id: <20250725162913.5ab54fa56b8b67c749cff948@linux-foundation.org>
+In-Reply-To: <20250725033112.2690158-1-tujinjiang@huawei.com>
+References: <20250724090958.455887-1-tujinjiang@huawei.com>
+	<20250725033112.2690158-1-tujinjiang@huawei.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: EB3DC1C0007
-X-Stat-Signature: 3eqnceacj3zqc6798y14zbfxuagnmrbd
+X-Rspamd-Queue-Id: 564B040002
+X-Stat-Signature: tiapqfg9rusfbbzbz51mtzjpscf4t4jy
 X-Rspam-User: 
-X-HE-Tag: 1753485956-700436
-X-HE-Meta: U2FsdGVkX1+D83fjSotNt4+NuFuzqmuQmLuP0H2xvFkFro4xH2oUSLDalxNrTT1S8teym8Dz5cmw20EzkMubBWaMrtE+0pm4ULp7LAY67Sr4jK+tL6kO8D3mcdvmpjHisPdXA6QRKYmAZ+kFgzfDgcyhj5423C2n8668TGrung/9Gslh8b2v83JxnE5vC1dQK2DdzFlOcQxAtvhT71UVSN5lhQrMBgBR6RrZZhM+0Li65OfM3cK1HOSmTu5QH+rmSOA76emBRaArXGmHYWMQYk/L+qGRqJl5eKVEfdudmnQzTnyG2+jOer2BjLmdm8BVObvQ+UYueUj2tPpB8KPHqBseyybmcIRzIhpAMQjrhMcHyaVcVKFzsXzIIemZeb1s9/nmV720+5eJ3rv5agF8GpWDICqKszqpDvTIvCAPDhag7ekRlTaYDC5Y29qw3pk2Rt2aouhxZ5SaRbOOIrcMlARQY3dCLxoYnqg0ylCG+Tnf69mTFzM3KHwyHKdDqT2zGBiL/oUmZZui9GKUVCpg6wHa8KvjF4LvXW85rDvz93N3uMK1MB+sbIaOTMypZYe+GvTzxbYIPc0x00DgZMqzMlVsYV26K1Ny+/askSZALOz6t3S0GHFTepwbNOiHRolwOJ4qcJSKcuOAaGbcRfKi6JA6k/i2FEkcu3IbxgBtBRWpNM9G28qInND/jjWgBAO9z0YDBRC3rBpBW0CubcvTTscAnTgeczls0yfStiwhqoMBxHJIG7K73rO4kE4DOEe51ssKA7SPFfqs4dXioMlB4uoKCOOu+6WroiRwy70ETQnJ8jaq+q2T9JrIaxoCq156rtRExj3oW2Y7nKUCe/v3ilUvU85TjNzCuQonDbQ/NVpuEWATi5zxRQs0EWuBb15hNTobjL6t1G0m7WwYrwNLZt8Hd7iTkfDD0Ga0X5FWIrCcEp1YFuuEPBzRaif0o5b5cNv5Th0zZ/6SiJJhi7Y
- VrG9qJ3/
- paSWO9LCbb3EnK2m92jhaH2kGhL6zcRRbx8X0Uud1tPdk/MSOYJYHTPDUIYtWSwlEx/km+JLZG//Fn6b62nM6SRYjcMfDZxg1qSBea4B1c5d0aO3jCia3vNjREitosjPM3AovnDahd0+4SIDU06yaRwvG5GalRRoGbzFGB5e5SgM0s6UBVYdESg8gUMYAkbhUfrgbawLTzJwai0RVmOgAvS5Jdg==
+X-HE-Tag: 1753486156-580501
+X-HE-Meta: U2FsdGVkX18w17rUGNTh3W8rYpxjOsozxEaQHoAeO1YsjlW3Fx4MGSBF1hx3jJMsA3qL7RaKGqLcIwzktUDfTmeJbXhhfXS+iv5HOhVnusFozhQIc6aloDqkZ/8ee+21e6egqNjCvCIWemsGht3lP0OSQE8K8iV8TdV8JXfZRhVyQ+mhcaOpLHzXzCCGeKLyPm/Y7lhHniNQapdzPX/Vf9loquoPw63QE9OG4anu90sJBElsIqtumu28Uyae8sPY+lgjh8imqYDc+IhT8Dn7l3Au0WKz5Lb1FmmcO8HDkil5T8EA6eEmAruuH4sO0deaXUxVsUDg2Pnz/s0nwZjz55NsiGcGm0RnOVcCuF2Cs50U/BcxTiyGoENsJPvMXXznaGCK3VRtMc+PnEtTlWZ2KNHK+7ruxpTNG7ipqpEjkeTffz1vJsYAfMrsHi6LjOL4OfbI3pjzVFCB/WhemeyT6B04cXenqtUW6B7HyZfMHIjTJJh2deE6ZsxdvGJxE3yjazXb/kpfsSLDKfZ1bEUwThNzL/xoJmx7WbI+x8nL4Kgm4vLNrrNlmQ2ooKL8WcT0sdt/BURpgAXPemm9kbJtIqFioDX5aZYE/7Aw5/n8SlYTrj9PQEgEiWzxWetMYhvZrksZKjoQp7rmgIRrnODySjn8fpS95PrEuMf0hsC1HWku9y8TkrIYGlsdHVo0h8EDLmAhQ+n4CrFysRjlC1GKvoQMRkwJwBhPqGa3aSdrAQw/x/ta+nl17GWGwRwFNb+XKZXUSCAvOyn/MkA+TPxpMKht0GP4Zc7HfvYRCy1nDDayj4JkTLyZk3lDgCLkO16Pvrt4h4fdouHH3q1bk9vpXv8+WTQuN6qXggnAjpwmJ62dO/y3+b0/FRT6iGImnxle/0xaHLq2zm/OfC9vwvCgkwajZqu+s5yhEO814r0LCBcyqns0vbaMJBZ7oxnrWPip0M3PtFukb+gRbk74fdE
+ SpBxt4/T
+ FwTyWhFHwyr05Fm8ebx/cL5qDKjkKrLGYjo2z7paxC8eHTHbmAbjV2PEzLL5IxPUZnvI0
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,89 +95,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Roman Gushchin <roman.gushchin@linux.dev> writes:
+On Fri, 25 Jul 2025 11:31:12 +0800 Jinjiang Tu <tujinjiang@huawei.com> wrote:
 
-> Jan Kara <jack@suse.cz> writes:
->
->> On Thu 10-07-25 12:52:32, Roman Gushchin wrote:
->>> We've noticed in production that under a very heavy memory pressure
->>> the readahead behavior becomes unstable causing spikes in memory
->>> pressure and CPU contention on zone locks.
->>> 
->>> The current mmap_miss heuristics considers minor pagefaults as a
->>> good reason to decrease mmap_miss and conditionally start async
->>> readahead. This creates a vicious cycle: asynchronous readahead
->>> loads more pages, which in turn causes more minor pagefaults.
->>> This problem is especially pronounced when multiple threads of
->>> an application fault on consecutive pages of an evicted executable,
->>> aggressively lowering the mmap_miss counter and preventing readahead
->>> from being disabled.
->>
->> I think you're talking about filemap_map_pages() logic of handling
->> mmap_miss. It would be nice to mention it in the changelog. There's one
->> thing that doesn't quite make sense to me: When there's memory pressure,
->> I'd expect the pages to be reclaimed from memory and not just unmapped. 
->> Also given your solution uses !uptodate folios suggests the pages were
->> actually fully reclaimed and the problem really is that filemap_map_pages()
->> treats as minor page fault (i.e., cache hit) what is in fact a major page
->> fault (i.e., cache miss)?
->>
->> Actually, now that I digged deeper I've remembered that based on Liu
->> Shixin's report
->> (https://lore.kernel.org/all/20240201100835.1626685-1-liushixin2@huawei.com/)
->> which sounds a lot like what you're reporting, we have eventually merged his
->> fixes (ended up as commits 0fd44ab213bc ("mm/readahead: break read-ahead
->> loop if filemap_add_folio return -ENOMEM"), 5c46d5319bde ("mm/filemap:
->> don't decrease mmap_miss when folio has workingset flag")). Did you test a
->> kernel with these fixes (6.10 or later)? In particular after these fixes
->> the !folio_test_workingset() check in filemap_map_folio_range() and
->> filemap_map_order0_folio() should make sure we don't decrease mmap_miss
->> when faulting fresh pages. Or was in your case page evicted so long ago
->> that workingset bit is already clear?
->>
->> Once we better understand the situation, let me also mention that I have
->> two patches which I originally proposed to fix Liu's problems. They didn't
->> quite fix them so his patches got merged in the end but the problems
->> described there are still somewhat valid:
->
-> Ok, I got a better understanding of the situation now. Basically we have
-> a multi-threaded application which is under very heavy memory pressure.
-> I multiple threads are faulting simultaneously into the same page,
-> do_sync_mmap_readahead() can be called multiple times for the same page.
-> This creates a negative pressure on the mmap_miss counter, which can't be
-> matched by do_sync_mmap_readahead(), which is be called only once
-> for every page. This basically keeps the readahead on, despite the heavy
-> memory pressure.
->
-> The following patch solves the problem, at least in my test scenario.
-> Wdyt?
+> Hold PTL in hwpoison_hugetlb_range() to avoid operating on stale page, as
+> hwpoison_pte_range() have done.
 
-Actually, a better version is below. We don't have to avoid the actual
-readahead, just not decrease mmap_miss if the page is locked.
+Does this fix any known runtime issues?  Or is it expected to?
 
---
+In other words, do we have reason to backport this fix into earlier
+kernels?
 
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 0d0369fb5fa1..1756690dd275 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -3323,9 +3323,15 @@ static struct file *do_async_mmap_readahead(struct vm_fault *vmf,
-        if (vmf->vma->vm_flags & VM_RAND_READ || !ra->ra_pages)
-                return fpin;
- 
--       mmap_miss = READ_ONCE(ra->mmap_miss);
--       if (mmap_miss)
--               WRITE_ONCE(ra->mmap_miss, --mmap_miss);
-+       /* If folio is locked, we're likely racing against another fault,
-+        * don't decrease the mmap_miss counter to avoid decreasing it
-+        * multiple times for the same page and break the balance.
-+        */
-+       if (likely(!folio_test_locked(folio))) {
-+               mmap_miss = READ_ONCE(ra->mmap_miss);
-+               if (mmap_miss)
-+                       WRITE_ONCE(ra->mmap_miss, --mmap_miss);
-+       }
- 
-        if (folio_test_readahead(folio)) {
-                fpin = maybe_unlock_mmap_for_io(vmf, fpin);
 
