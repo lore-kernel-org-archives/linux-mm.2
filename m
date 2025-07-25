@@ -2,151 +2,125 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 947EAC87FCA
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 17:20:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2547CC87FCA
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 17:24:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 270DB6B0093; Fri, 25 Jul 2025 13:20:01 -0400 (EDT)
+	id 9F2496B008A; Fri, 25 Jul 2025 13:24:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 247EC6B0096; Fri, 25 Jul 2025 13:20:01 -0400 (EDT)
+	id 9CA746B0093; Fri, 25 Jul 2025 13:24:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 15D416B0098; Fri, 25 Jul 2025 13:20:01 -0400 (EDT)
+	id 906716B0095; Fri, 25 Jul 2025 13:24:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 050846B0093
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 13:20:01 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 89C3AC079C
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 17:20:00 +0000 (UTC)
-X-FDA: 83703449760.29.4FA624B
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 8887E2000E
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 17:19:58 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=rivosinc-com.20230601.gappssmtp.com header.s=20230601 header.b=zRafmHiR;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of debug@rivosinc.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=debug@rivosinc.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753463998; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 80FD36B008A
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 13:24:39 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0BA061A0893
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 17:24:39 +0000 (UTC)
+X-FDA: 83703461478.05.AFF5838
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 45E71A0002
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 17:24:37 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=L46Sl8Zz;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf15.hostedemail.com: domain of 31L2DaAYKCKkbNJWSLPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--seanjc.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=31L2DaAYKCKkbNJWSLPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--seanjc.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753464277; a=rsa-sha256;
 	cv=none;
-	b=Km+A+Z5x1Nv8Ef5wIxf/xk66lL60z1Zzdd/BMB7N9ZECLY+UxKL1RTu6IrdSP0YXqtAe9r
-	O5IQxkGn/+fm9AATGShybMPVzUNXcRbRkJQL3cKtTRWqdOOAycNnCHZ6R2H25zuE953bJN
-	FfXGe+Axe4MOKBsP2Gg46NGTca1o94I=
+	b=4u4ExuclMjzjJyhFOLj+1wnSEF1XsZmn9sMeyuE2zr4i8yp2nBNXbK063B77C3pFX0gqaA
+	OOMSP3aO3qc/dQmvRCv3xnYdYcwuLyxBkOwkBJ0b7dD+0qWMLFR9TmPQ0mlhzKio6k05Ec
+	AXKiMNzEjEa+5TfecIL1tHgOKe2jDaw=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=rivosinc-com.20230601.gappssmtp.com header.s=20230601 header.b=zRafmHiR;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of debug@rivosinc.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=debug@rivosinc.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=L46Sl8Zz;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf15.hostedemail.com: domain of 31L2DaAYKCKkbNJWSLPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--seanjc.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=31L2DaAYKCKkbNJWSLPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--seanjc.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753463998;
+	s=arc-20220608; t=1753464277;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GB3HN9rENNt5w+QmMp5DXorsMPRr7NrQ810NGI8rf3c=;
-	b=QRtWWPHUBfnrxoBU57GNIZ1+7WlQBUOujFcEHhtL07lPoJtbmYGUFN2Xe3cNYGBeLEufCx
-	5WF6M4A1FGyOxaIIFSzN+8AR0r80l1s2nlLxfSpMrXMjzMGaKJo/H5A9g/qbAVxi1Vq2qT
-	wElDbZj5fmYqfvRuf59YzKASg7uxBWk=
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-234c5b57557so21557455ad.3
-        for <linux-mm@kvack.org>; Fri, 25 Jul 2025 10:19:58 -0700 (PDT)
+	bh=ouGvu65qiGg+JqadVNKAxhqDIWS7jmV1hkTAAApCoHU=;
+	b=cBncOe0wzsUauK/X/kXyvsV4ThHcRhF+gu7ufHm4JIBnxdLLe3JLQmncyXqSTFIoLHBFgB
+	IekoQNPy2Rp7W6DK6ExK5SSiipponbbueV1fP6Id4ajV6HygfsbLaFF+O5yAJzeoTquRFX
+	L8A9VtU4RWSBl0UneOOYrSmGO4MhjAs=
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-31e3fdf1906so2239825a91.0
+        for <linux-mm@kvack.org>; Fri, 25 Jul 2025 10:24:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1753463997; x=1754068797; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GB3HN9rENNt5w+QmMp5DXorsMPRr7NrQ810NGI8rf3c=;
-        b=zRafmHiR9lwe3YEj6cGu22SqFVXbq6aC5vN0/vMMfYjA4vyjka5gXk1prf5wp0/sWx
-         3aNwghW0V2OhxXUavuWf35sQuGBRyGyJsP3blTpTlei2bG4dXcICbgbNFHRdI6xyG+eS
-         XdElsR6GED9KeQKH+XfOgICX9HSd5hcE7T4ImlPKLAABgnzApAfOCn1t9jAH/4h6Jafr
-         PETF2juvHSwbbRfMIexcePdAMhAqIJui1bTOf/5nSixjuXO1Em2HdEpc2ZMGHAwUzYrQ
-         9p3HWRpEI2/0VFl9rsT34GEFfqwuPMMds9J4ufuUYyMVEo/UQp35z1pObGjNnuhE2kTG
-         nKeg==
+        d=google.com; s=20230601; t=1753464276; x=1754069076; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ouGvu65qiGg+JqadVNKAxhqDIWS7jmV1hkTAAApCoHU=;
+        b=L46Sl8ZzFGpfcai/NXI7GmJAIIeOdTQiB2RyqYzvM2Tq89R4WCcej+HHrjHy/Hcil0
+         ycLxxsWdGcJkF816R7KCa5xp8xH9YYF7x+iZWRXiISY1HthXR3f9S93FoZb5XwzK9Weg
+         Jt4g+t0peFnPoIhaXkLOiD5qtpPaxS0dHeM1HiHoVLew+9dL+W8j+s5RW82eHY1RY7ez
+         dXBU7qZ1DD2t94PtygzachF5YoqgHmKmHyxqLa0Kllk9JqhxjlY/q9PwQuyZpCTUH03R
+         hcMecvWyWZ1ptEzYg9hIc1LO6+J0R4WZrBr73J6Bt/83T5reUEizImz3In9kaIxNXZdP
+         a2Ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753463997; x=1754068797;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GB3HN9rENNt5w+QmMp5DXorsMPRr7NrQ810NGI8rf3c=;
-        b=V5fx4D1bEYpWJeiBHmMzLrMT/62Tq6TDN3DN3KBflohkQbOaCfLVyECh9DVzae637l
-         55Le27rnvg1pXec1ufNoszg7pwKfehhc5dbkhm6c7fuXHTTh5MVNBa8/+H8VYFs6wOtE
-         iRg/dslJ3XWVSlLiZ5ethMhmISVgXcGGAK5MhIs34Rr7W4pxPgeSvPhZVhKogMwZu5mz
-         388SftuuEjJPDIRXntfhbPGUVTY/ciHdLWO4Z9HJBAWZft6i7LbPaewUAX76ApicUaSU
-         IvWe5wlTYYiUyNPXcbEjoTdMmQ84anvE/Bsq4XrWLvjzXdS6rVid8p+W5/uueZTTMrJB
-         i/Uw==
-X-Forwarded-Encrypted: i=1; AJvYcCVVYA3t9Z34uAS0HHo4IgszyjZOcDtaZlyMTrXKc6r9HgQWfL81jddx6XsHy1MdHjainM0rT0guWg==@kvack.org
-X-Gm-Message-State: AOJu0YxufPIcgVIxzF6uwWhPdrs7QZXa522PP+R5qxo0wbvxw8jcj1h3
-	yuyTlpcxQEFFuSovfzHVD9jbMvRw074n7+X4+dWAGaSQhDvWCk3hhv3vSAb3lOlQqX0=
-X-Gm-Gg: ASbGncuCU6SNriRtbe26jH9i8yFVShRN3SGLm31oNAFlkLAyAh1jh2U6xEJ2jQ80+Ds
-	jW5r2o/qQIQXmL4bWhDmYrbykFY1A3ZgoTWcHGFFFFTrif/oshJqIPWuDSWcaC5UaQB7vLkj4Rm
-	dmL1Vcy/p0I5oyu1JLcTABtWbsx0ZVgc+BFmCUhIU0adAhSjUDO26vkj+SFDT+ZFFH96z8441JN
-	9spedP///imXAGKYnf5iIwhRZzrzuzuMjMTU4q+sATFZt/BLoNE3jOEpuu8IxlhZ3F343VgxmBR
-	lUE6kC8Un/TQuB0xYDlS0LJsDNZ2wCwyZAM1wi4JSHpa20chgEM2IWcq14h0wKEDR/9EQ16B/Yd
-	75KkJXBgUU1S3B9fOOqXk5jMND3ft55LZ
-X-Google-Smtp-Source: AGHT+IFjom9VggtiV3miU2IzukS6s/Aukl0lHveBGocFoUm1oY8gb1MVFBAvHIxhtqVqK5CFl4GXiw==
-X-Received: by 2002:a17:903:2f8c:b0:234:986c:66e0 with SMTP id d9443c01a7336-23fb2ff97cemr42397075ad.4.1753463997175;
-        Fri, 25 Jul 2025 10:19:57 -0700 (PDT)
-Received: from debug.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23fbe536c19sm1459325ad.162.2025.07.25.10.19.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Jul 2025 10:19:56 -0700 (PDT)
-Date: Fri, 25 Jul 2025 10:19:53 -0700
-From: Deepak Gupta <debug@rivosinc.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "masahiroy@kernel.org" <masahiroy@kernel.org>,
-	"rppt@kernel.org" <rppt@kernel.org>,
-	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
-	"justinstitt@google.com" <justinstitt@google.com>,
-	"nick.desaulniers+lkml@gmail.com" <nick.desaulniers+lkml@gmail.com>,
-	"david@redhat.com" <david@redhat.com>,
-	"vbabka@suse.cz" <vbabka@suse.cz>,
-	"morbo@google.com" <morbo@google.com>,
-	"palmer@dabbelt.com" <palmer@dabbelt.com>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
-	"nicolas.schier@linux.dev" <nicolas.schier@linux.dev>,
-	"surenb@google.com" <surenb@google.com>,
-	"monk.chiang@sifive.com" <monk.chiang@sifive.com>,
-	"nathan@kernel.org" <nathan@kernel.org>,
-	"kito.cheng@sifive.com" <kito.cheng@sifive.com>,
-	"paul.walmsley@sifive.com" <paul.walmsley@sifive.com>,
-	"aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
-	"mhocko@suse.com" <mhocko@suse.com>,
-	"alex@ghiti.fr" <alex@ghiti.fr>,
-	"andrew@sifive.com" <andrew@sifive.com>,
-	"samitolvanen@google.com" <samitolvanen@google.com>,
-	"cleger@rivosinc.com" <cleger@rivosinc.com>,
-	"llvm@lists.linux.dev" <llvm@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"bjorn@rivosinc.com" <bjorn@rivosinc.com>,
-	"fweimer@redhat.com" <fweimer@redhat.com>,
-	"heinrich.schuchardt@canonical.com" <heinrich.schuchardt@canonical.com>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"conor.dooley@microchip.com" <conor.dooley@microchip.com>,
-	"ved@rivosinc.com" <ved@rivosinc.com>,
-	"samuel.holland@sifive.com" <samuel.holland@sifive.com>,
-	"charlie@rivosinc.com" <charlie@rivosinc.com>,
-	"jeffreyalaw@gmail.com" <jeffreyalaw@gmail.com>,
-	"linux-kbuild@vger.kernel.org" <linux-kbuild@vger.kernel.org>,
-	"ajones@ventanamicro.com" <ajones@ventanamicro.com>,
-	"apatel@ventanamicro.com" <apatel@ventanamicro.com>,
-	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
-	"broonie@kernel.org" <broonie@kernel.org>
-Subject: Re: [PATCH 10/11] scs: generic scs code updated to leverage hw
- assisted shadow stack
-Message-ID: <aIO8uSqiplnyyNOd@debug.ba.rivosinc.com>
-References: <20250724-riscv_kcfi-v1-0-04b8fa44c98c@rivosinc.com>
- <20250724-riscv_kcfi-v1-10-04b8fa44c98c@rivosinc.com>
- <3d579a8c2558391ff6e33e7b45527a83aa67c7f5.camel@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <3d579a8c2558391ff6e33e7b45527a83aa67c7f5.camel@intel.com>
+        d=1e100.net; s=20230601; t=1753464276; x=1754069076;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ouGvu65qiGg+JqadVNKAxhqDIWS7jmV1hkTAAApCoHU=;
+        b=XekCQt4S12OS9L2ZKJNc6cT2EhhGty/Ptbf8L0jXCV2d4mXKXpZquce6c6+Z13g9sb
+         5hX/xPCDRr7SnrpsEtWYzUK+dQzE98W698i8kyZ48+TqrHcfszmbeBrx7wfew4wcdcGP
+         FSgaqgglIjxn+0i5soOsACi2Gw6mKqxMUyqe140F6A8PrO/pUQ0Tf76t1f9YeHr8swzh
+         k1yLTHf0HfV8s6ukcAckLJKuv8tWToc9sKAq+/txg1DXY6kYTRje3A2C0jUiumL6E6ch
+         rKaMweaqhWEsWe/wJ7EW5gv3PZ+Cmx/vbCyvE8jedRRLcdl8RgQlKpZ70qF9JI+cDS6Y
+         IAKw==
+X-Forwarded-Encrypted: i=1; AJvYcCXX3XSWeOz9LuUcaIGu8cBNKXbYPpeB+QAH77rLkMWaMn8oJg7MJc6HwM5a3briLJwWoSIm4Lxagg==@kvack.org
+X-Gm-Message-State: AOJu0Yxyj+Vc6Z6LG7JMITapkdleOaGK/anSCF0uKk8SAZ/yoRf8o+l+
+	PxvYC3vRnRE4eSCBexIO3xyN8+ZrSIOhzOqedQ7q2GDyDe2mitieyxuOKg6JpQinAaA3anf4G7A
+	GqFe/Sw==
+X-Google-Smtp-Source: AGHT+IHbAz/eKQpxYLnv3UzRDiNfzFQyWZ03GI8G+wp5sD4kBBYyUq+g8Y0WEpcjXQKRT5uv4bipYXGp6JQ=
+X-Received: from pjbsf1.prod.google.com ([2002:a17:90b:51c1:b0:2e0:915d:d594])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:514e:b0:312:25dd:1c86
+ with SMTP id 98e67ed59e1d1-31e778f7879mr4767541a91.18.1753464276017; Fri, 25
+ Jul 2025 10:24:36 -0700 (PDT)
+Date: Fri, 25 Jul 2025 10:24:34 -0700
+In-Reply-To: <aIOVNcp7p2hU-YHM@google.com>
+Mime-Version: 1.0
+References: <20250723104714.1674617-1-tabba@google.com> <20250723104714.1674617-15-tabba@google.com>
+ <1ff6a90a-3e03-4104-9833-4b07bb84831f@intel.com> <aIK0ZcTJC96XNPvj@google.com>
+ <diqzcy9pdvkk.fsf@ackerleytng-ctop.c.googlers.com> <diqz7bzxduyv.fsf@ackerleytng-ctop.c.googlers.com>
+ <aIOVNcp7p2hU-YHM@google.com>
+Message-ID: <aIO90h_oJsvyxR45@google.com>
+Subject: Re: [PATCH v16 14/22] KVM: x86/mmu: Enforce guest_memfd's max order
+ when recovering hugepages
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-mm@kvack.org, kvmarm@lists.linux.dev, 
+	pbonzini@redhat.com, chenhuacai@kernel.org, mpe@ellerman.id.au, 
+	anup@brainfault.org, paul.walmsley@sifive.com, palmer@dabbelt.com, 
+	aou@eecs.berkeley.edu, viro@zeniv.linux.org.uk, brauner@kernel.org, 
+	willy@infradead.org, akpm@linux-foundation.org, yilun.xu@intel.com, 
+	chao.p.peng@linux.intel.com, jarkko@kernel.org, amoorthy@google.com, 
+	dmatlack@google.com, isaku.yamahata@intel.com, mic@digikod.net, 
+	vbabka@suse.cz, vannapurve@google.com, mail@maciej.szmigiero.name, 
+	david@redhat.com, michael.roth@amd.com, wei.w.wang@intel.com, 
+	liam.merwick@oracle.com, isaku.yamahata@gmail.com, 
+	kirill.shutemov@linux.intel.com, suzuki.poulose@arm.com, steven.price@arm.com, 
+	quic_eberman@quicinc.com, quic_mnalajal@quicinc.com, quic_tsoni@quicinc.com, 
+	quic_svaddagi@quicinc.com, quic_cvanscha@quicinc.com, 
+	quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, catalin.marinas@arm.com, 
+	james.morse@arm.com, yuzenghui@huawei.com, oliver.upton@linux.dev, 
+	maz@kernel.org, will@kernel.org, qperret@google.com, keirf@google.com, 
+	roypat@amazon.co.uk, shuah@kernel.org, hch@infradead.org, jgg@nvidia.com, 
+	rientjes@google.com, jhubbard@nvidia.com, fvdl@google.com, hughd@google.com, 
+	jthoughton@google.com, peterx@redhat.com, pankaj.gupta@amd.com, 
+	ira.weiny@intel.com
+Content-Type: text/plain; charset="us-ascii"
+X-Rspamd-Queue-Id: 45E71A0002
+X-Stat-Signature: 8bb1ksqaq4ugdo8p6umf9x9jq5qrwngh
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8887E2000E
-X-Stat-Signature: c3kdma9p34g4z4h9b6zpjq7x7khtzzxx
-X-HE-Tag: 1753463998-307673
-X-HE-Meta: U2FsdGVkX19cPVHtPONA76X+iF0TOSOtokEVgLC0v+LWjLuM/aenpTv0HcdsOKdUqUsP+lytyPdq70IZS5wdj6JTIbO+Tydv2kmJWgRtK1JTU613GCr2pQ4WGBJq/ZGjzE9F6PX0UNx+1j6JGbwGBQsEmomuyb9QL/hskC3uurElCyTfQxwucupss9pR0oaAj+sOOhzfn2jGXv8Qql+PwvQYtYNMK8bfjen8EDp5HTfZhU8KZoIeT8t5qaA+eAreyEYxZrW5ZIN6T8gS3X/qqM2FURP4xhbxefN/12rok5iAjjU1zIcc+XgH1BM3E4LMvPPEbAz8a5H8/LpLF+0z0OIq7Sf/RLOSU9OjbSnnbtYMv7yssNmx0HD6TR2N80FCN+cN6TR9DQf6AyWZ//ephG60y0v+G0iJ9jOymnlfCNu1K5uDFiUsMEVpPyJHzKOKzThK1DvOtS12N+2xIXEygEhpePNcvxXldQ/L8LreMX11c0xXxoxLDJqfmqW1g6F1995AJ5/34jeMlKnymzVMff6suM4qr4GYVTjopNdRlE3FriHSqZ/5lovx+L+3Q8sGgnS6ho4zBDNAtJ6nFVqV9ZGp90xrz/nDdijd5a2Q8SiReSCTcHpq+V40dJV/HI5wdKedwzOuMqx14BwVuD2/HDLec6JYAvminsT6/4R/gBLAakXxLcfF3noGy9rzO5GpN4aB3IDO0SfYim/+3y5938JXbw7s7l6v4Bgx+vxGh+j5MzYWAdFBXpfkgWFjaZnlxnHxzSkup5ZfjYi7vytvBN2QHHrTeTKwcZQ78GvXGdtS3OIS9LGmxWmz82yeoYDB16oPnqcezpLbb3JtsaRihdlIiDatIgOglOYei69Z2BOiyKcyGhBkFxxP5V1dMJgaWMfyhDB2PYenXv86z6um8R33gejEwgXsRiPGa2/Bx3d266ipk656VFHTuakdseHi1B7rZUjWAGlgezAQ4dP
- qIhfME8t
- vRxvDZ/cyrTFo2N5UXl+QxVilXV/zYEl9/oFxc6jWcFo+W3Bt8RUbEIqaKKaOBnimIckGhvRzi3mSmLOdI6iE57VvsdSP/TqpwjQPqj4Qpj7Ubw7Q9A4Pc5idNoQXoybPjN8PWz56Htp//mtt52QdUjurUNq7K9DBT6YIICBLr3eTFhtYamhvM1UWms0cCLNPUzjoMOv6L8BNJ6fxz/HHbdGwu6LDiZMNuOrgQn2fjo/HctI02gOUKTmiuSHQWuYVrAFopC59EgAuqzqDGZK+SiIWniZGymEXvY1p/Ev7Nu1sGaQAMf7pfw50bgsU6fx616csdD7yaxL1g3dhnHeSOxBEZOHF0jfqE5oAEeJ7vz8zHCIOJ4MHkT9HZhH1ZQhJTCLRH3+YdveM01P3DoLH8F1qsXE1Sp2cwRnyZQBMgAn0HqanvJi/rCJBifNynv30pqnz+68Mwf+sk0dAWWUiX28LcAv60fx4Fa0Aa4x1ed+W0+AwOBpTLWRu+fPpeLTs7hxoEHJctc1QRo4aZcxfSZDK8Tv0l1BmoEs+2m98xgA8uY+i6G6Gw8mIcFI6SUSmRFUpBGpe1IxvDxxj43yJz0a50ljJKKeRQPNmRDgaziI5tdcD9T6A/zrGzOhW6n2FuKy5rtof87fe1yw=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1753464277-557580
+X-HE-Meta: U2FsdGVkX18SpbrKv2s/ruzayW2//jchaO+NJgDzN4bsxgqkwN0hKIqQz+8SBrRc7VjZb5TyvuzSBBiX3n8RBQoJT+U3hX6N2A7GREBvWQYLm1X7xzU1YbfE72+fhmBb1MacoFD0QxKh0B7Mo7mfOTczZVGkrdxOTvri5scQ88DeQsS9iLX8JP12erSb75SWD9Z/eQGR2YXjKc4JBQePGC5jj6DnchxL3oSBV5kzRW0csj5Hfc2UOBQCq1Yo8KetvfxjXRddDXwNR7woIdCAYEEoL4fra/xwIhYk9LwUKMltHh3ok0GI86mYynHf+ETON1eWmTrZB3jirBdMqS9oXGZqINdpQKVSKWF64/oaw0OOxECB1E+HQ5piaqUYdL6SDzER2MoBGQr0skDO/WUEhZeWRX2R+kwSk0enFHiBlepsk58Zk7wRbh+huQv0vPUh94P0ldxQpoFZONmXRif96AVR4GPcY03Jh8X9SeRQcMKou1VQgaR5Xev258mTJhzZ1Zy5gBFCynRyxEeaa2ziQTz1rRXpoM7fNZ7JOXiSyCcBKG4K0tBFYhGULbQa+xMl8xSRz4RQ6C/6LuWwpL8BzEUJtG6sTwYwagKNDabzl8AnhEzXo17RZcg6ZfqH0Uv2VrDUSoHShHChaoQ3cytosBssW8phn86mpS25JvxP+iFmp/Uyd+yMPwo0XmS+PHTQZqaijhPJBrtXdPY9CrKUXXvgFgOgkM8xcWVojOmH2/i/zWLgHdAXKkY4gf9aNGISf65ytoW/NptJW4HHYqj/UKU292l/q9Mqgz/aTiRX94n7R9Xd6CJ+z1DoPcIxuYvHhQXc5C1oWiOufylAdkCTCF/dK3dtzuGDeyChJKjYRP7Rm1A+aD7ouUHriNq++lySn8qU5Ie7XowsbDm1DA3yTGv3kP3vgRgQvbc4GXgydZEEBk/rVGwdnESRNJtxAkQTFBAGLAQIcUDhyvZJiYb
+ 6PN9D2MP
+ GsQqoiZCSJrbui8PW8V7pfQ6+ysIndcw9RsmzMSXFPhK/pTMyWO9tyv1psOsT+7dbx8uTkoXdM6Mcc9kcGIscnQ0EWoCN1WmlE3KsoxxKpiRnuPy1fyawzOxOfrAmLlgi+/yMJhyk5EvYyC1iFAQ6AYJljVx2f/LruTAxiownK0J3LuS9G1H2UKhaJ9y5f+oJRyegPJQcEO9hqXmhrjfmhwsOSWiFaBvUXoHHYiLEXUwcMuxGPRxisNP/5EQS0/xoKPzgELmaOAjrIO2z7ZdSeKVyz9l9KrgqQ59Bgo+c59lvgXeMn0dseziPiglz1RnttvVb+j2qY7NI+SEyk6yMavV8P5TVEOke8+TVeL+YI7y64L11AfDv/bf710zB3i+c+woAwAQo0zTgsoE2R0fC2snor9WdyZ2DdL2htGtuqMALI2KDSVbvLdBd+8KzO+rC903JgpCNJfJDz4qFVvhZPM5By6aVJukwOH8LAjp9MfisyHqt70iqTD4esMwgohIB9SV98cJrKtTCJsRQ6R7vn4amxwYQuJXlsa6MB5pR8D5p0fyjYTB0j0NS1T5vl2BFUXp9T7tFwVXgOp19+FW1VaCQBnpJDjaEitpK6lyTlazpFK0h9MtXR6ydtn5SXGwpuci3NlFJNKCaPI8fHVJQRHZ8YpmeESNXJg0ADhuxRGoZfH7e1uYMcWErQSMvHSAnsS/km6fVHLB4ISU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -155,213 +129,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 25, 2025 at 05:06:17PM +0000, Edgecombe, Rick P wrote:
->On Thu, 2025-07-24 at 16:37 -0700, Deepak Gupta wrote:
->> If shadow stack have memory protections from underlying cpu, use those
->> protections. arches can define PAGE_KERNEL_SHADOWSTACK to vmalloc such shadow
->> stack pages. Hw assisted shadow stack pages grow downwards like regular
->> stack. Clang based software shadow call stack grows low to high address.
->> Thus this patch addresses some of those needs due to opposite direction
->> of shadow stack. Furthermore, hw shadow stack can't be memset because memset
->> uses normal stores. Lastly to store magic word at base of shadow stack, arch
->> specific shadow stack store has to be performed.
->>
->> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
->> ---
->>  include/linux/scs.h | 26 +++++++++++++++++++++++++-
->>  kernel/scs.c        | 38 +++++++++++++++++++++++++++++++++++---
->>  2 files changed, 60 insertions(+), 4 deletions(-)
->>
->> diff --git a/include/linux/scs.h b/include/linux/scs.h
->> index 4ab5bdc898cf..6ceee07c2d1a 100644
->> --- a/include/linux/scs.h
->> +++ b/include/linux/scs.h
->> @@ -12,6 +12,7 @@
->>  #include <linux/poison.h>
->>  #include <linux/sched.h>
->>  #include <linux/sizes.h>
->> +#include <asm/scs.h>
->>
->>  #ifdef CONFIG_SHADOW_CALL_STACK
->>
->> @@ -37,22 +38,45 @@ static inline void scs_task_reset(struct task_struct *tsk)
->>  	 * Reset the shadow stack to the base address in case the task
->>  	 * is reused.
->>  	 */
->> +#ifdef CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK
->> +	task_scs_sp(tsk) = task_scs(tsk) + SCS_SIZE;
->> +#else
->>  	task_scs_sp(tsk) = task_scs(tsk);
->> +#endif
->>  }
->>
->>  static inline unsigned long *__scs_magic(void *s)
->>  {
->> +#ifdef CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK
->> +	return (unsigned long *)(s);
->> +#else
->>  	return (unsigned long *)(s + SCS_SIZE) - 1;
->> +#endif
->>  }
->>
->>  static inline bool task_scs_end_corrupted(struct task_struct *tsk)
->>  {
->>  	unsigned long *magic = __scs_magic(task_scs(tsk));
->> -	unsigned long sz = task_scs_sp(tsk) - task_scs(tsk);
->> +	unsigned long sz;
->> +
->> +#ifdef CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK
->> +	sz = (task_scs(tsk) + SCS_SIZE) - task_scs_sp(tsk);
->> +#else
->> +	sz = task_scs_sp(tsk) - task_scs(tsk);
->> +#endif
->>
->>  	return sz >= SCS_SIZE - 1 || READ_ONCE_NOCHECK(*magic) != SCS_END_MAGIC;
->>  }
->>
->> +static inline void __scs_store_magic(unsigned long *s, unsigned long magic_val)
->> +{
->> +#ifdef CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK
->> +	arch_scs_store(s, magic_val);
->> +#else
->> +	*__scs_magic(s) = magic_val;
->> +#endif
->> +}
->> +
->>  DECLARE_STATIC_KEY_FALSE(dynamic_scs_enabled);
->>
->>  static inline bool scs_is_dynamic(void)
->> diff --git a/kernel/scs.c b/kernel/scs.c
->> index d7809affe740..5910c0a8eabd 100644
->> --- a/kernel/scs.c
->> +++ b/kernel/scs.c
->> @@ -11,6 +11,7 @@
->>  #include <linux/scs.h>
->>  #include <linux/vmalloc.h>
->>  #include <linux/vmstat.h>
->> +#include <asm-generic/set_memory.h>
->>
->>  #ifdef CONFIG_DYNAMIC_SCS
->>  DEFINE_STATIC_KEY_FALSE(dynamic_scs_enabled);
->> @@ -32,19 +33,31 @@ static void *__scs_alloc(int node)
->>  {
->>  	int i;
->>  	void *s;
->> +	pgprot_t prot = PAGE_KERNEL;
->> +
->> +#ifdef CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK
->> +	prot = PAGE_KERNEL_SHADOWSTACK;
->> +#endif
->>
->>  	for (i = 0; i < NR_CACHED_SCS; i++) {
->>  		s = this_cpu_xchg(scs_cache[i], NULL);
->>  		if (s) {
->>  			s = kasan_unpoison_vmalloc(s, SCS_SIZE,
->>  						   KASAN_VMALLOC_PROT_NORMAL);
->> +/*
->> + * If software shadow stack, its safe to memset. Else memset is not
->> + * possible on hw protected shadow stack. memset constitutes stores and
->> + * stores to shadow stack memory are disallowed and will fault.
->> + */
->> +#ifndef CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK
->>  			memset(s, 0, SCS_SIZE);
->> +#endif
->>  			goto out;
->>  		}
->>  	}
->>
->>  	s = __vmalloc_node_range(SCS_SIZE, 1, VMALLOC_START, VMALLOC_END,
->> -				    GFP_SCS, PAGE_KERNEL, 0, node,
->> +				    GFP_SCS, prot, 0, node,
->>  				    __builtin_return_address(0));
->
->This doesn't update the direct map alias I think. Do you want to protect it?
+On Fri, Jul 25, 2025, Sean Christopherson wrote:
+> On Thu, Jul 24, 2025, Ackerley Tng wrote:
+> I also don't want to effectively speculatively add kvm_gmem_mapping_order() or
+> expand kvm_gmem_get_pfn(), e.g. to say "no create", so what if we just do this?
+> 
+> 	/* For faults, use the gmem information that was resolved earlier. */
+> 	if (fault) {
+> 		pfn = fault->pfn;
+> 		max_level = fault->max_level;
+> 	} else {
+> 		/* TODO: Call into guest_memfd once hugepages are supported. */
 
-Yes any alternate address mapping which is writeable is a problem and dilutes
-the mechanism. How do I go about updating direct map ? (I pretty new to linux
-kernel and have limited understanding on which kernel api's to use here to unmap
-direct map)
+Aha!  Even better, we can full on WARN:
 
->
->>
->>  out:
->> @@ -59,7 +72,7 @@ void *scs_alloc(int node)
->>  	if (!s)
->>  		return NULL;
->>
->> -	*__scs_magic(s) = SCS_END_MAGIC;
->> +	__scs_store_magic(__scs_magic(s), SCS_END_MAGIC);
->>
->>  	/*
->>  	 * Poison the allocation to catch unintentional accesses to
->> @@ -87,6 +100,16 @@ void scs_free(void *s)
->>  			return;
->>
->>  	kasan_unpoison_vmalloc(s, SCS_SIZE, KASAN_VMALLOC_PROT_NORMAL);
->> +	/*
->> +	 * Hardware protected shadow stack is not writeable by regular stores
->> +	 * Thus adding this back to free list will raise faults by vmalloc
->> +	 * It needs to be writeable again. It's good sanity as well because
->> +	 * then it can't be inadvertently accesses and if done, it will fault.
->> +	 */
->> +#ifdef CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK
->> +	set_memory_rw((unsigned long)s, (SCS_SIZE/PAGE_SIZE));
->
->Above you don't update the direct map permissions. So I don't think you need
->this. vmalloc should flush the permissioned mapping before re-using it with the
->lazy cleanup scheme.
+		WARN_ONCE(1, "Get pfn+order from guest_memfd");
 
-If I didn't do this, I was getting a page fault on this vmalloc address. It directly
-uses first 8 bytes to add it into some list and that was the location of fault.
+Because guest_memfd doesn't yet support dirty logging:
 
->
->> +#endif
->> +
->
->I was thinking someday when we get to this for CET we would protect the direct
->map, and so would need some pool of shadow stacks because flushing the TLB for
->every thread alloc/free would likely be too impactful.
+	/* Dirty logging private memory is not currently supported. */
+	if (mem->flags & KVM_MEM_GUEST_MEMFD)
+		valid_flags &= ~KVM_MEM_LOG_DIRTY_PAGES;
 
-Yes pool would be useful per-cpu.
-
->
->
->>  	vfree_atomic(s);
->>  }
->>
->> @@ -96,6 +119,9 @@ static int scs_cleanup(unsigned int cpu)
->>  	void **cache = per_cpu_ptr(scs_cache, cpu);
->>
->>  	for (i = 0; i < NR_CACHED_SCS; i++) {
->
->Oh! There is a cache, but the size is only 2.
-
-Yes.
-In next iteration, I would likely increase the size of the cache if
-CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK=y.
-
->
->> +#ifdef CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK
->> +		set_memory_rw((unsigned long)cache[i], (SCS_SIZE/PAGE_SIZE));
->> +#endif
->>  		vfree(cache[i]);
->>  		cache[i] = NULL;
->>  	}
->> @@ -122,7 +148,13 @@ int scs_prepare(struct task_struct *tsk, int node)
->>  	if (!s)
->>  		return -ENOMEM;
->>
->> -	task_scs(tsk) = task_scs_sp(tsk) = s;
->> +	task_scs(tsk) = s;
->> +#ifdef CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK
->> +	task_scs_sp(tsk) = s + SCS_SIZE;
->> +#else
->> +	task_scs_sp(tsk) = s;
->> +#endif
->> +
->>  	return 0;
->>  }
->>
->>
->
+which kills off the kvm_mmu_recover_huge_pages() call from kvm_mmu_slot_apply_flags().
+And if KVM ever supports in-place recover for kvm_recover_nx_huge_pages() (which
+is doubtful given that mitigation shouldn't be required going forward), lack of
+hugepage support means any guest_memfd-based shadow page can't be a possible NX
+hugepage.
 
