@@ -2,142 +2,90 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5032EC83F26
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 06:33:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D66ADC83F26
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 06:39:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE3D96B0088; Fri, 25 Jul 2025 02:33:56 -0400 (EDT)
+	id 626146B007B; Fri, 25 Jul 2025 02:39:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D94AE6B008C; Fri, 25 Jul 2025 02:33:56 -0400 (EDT)
+	id 5D63C6B0089; Fri, 25 Jul 2025 02:39:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C82AB6B0092; Fri, 25 Jul 2025 02:33:56 -0400 (EDT)
+	id 4CC186B008C; Fri, 25 Jul 2025 02:39:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B8D706B0088
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 02:33:56 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0F7F859FA0
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 06:33:56 +0000 (UTC)
-X-FDA: 83701821672.13.4703D05
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-	by imf18.hostedemail.com (Postfix) with ESMTP id A12001C000B
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 06:33:53 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=canonical.com header.s=20210705 header.b=BNHB4G1p;
-	spf=pass (imf18.hostedemail.com: domain of heinrich.schuchardt@canonical.com designates 185.125.188.123 as permitted sender) smtp.mailfrom=heinrich.schuchardt@canonical.com;
-	dmarc=pass (policy=none) header.from=canonical.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 3929C6B007B
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 02:39:12 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E2BE980617
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 06:39:11 +0000 (UTC)
+X-FDA: 83701834902.25.5276FE7
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+	by imf09.hostedemail.com (Postfix) with ESMTP id E160B140007
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 06:39:07 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=azZIm4M5;
+	spf=pass (imf09.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753425234;
+	s=arc-20220608; t=1753425550;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AcnKBfE2a+S1VW5IMnseKsBzXFCCOskdFvDUc4TUQMs=;
-	b=jsiAJFeVu3GSpqio2BW4SUnZ+tv+C+x03EOxeysA5Ud4mDVQESq/Gt+JQgFUeP/VK/UWre
-	dGcl4ZnMLFeCZz8xQzGrTOA7C/5jHLwF7u3cptlo9XPA66ewW2TOEOUqupVwW3bvf34M5S
-	91VLHub76RLxBCv0qNcYmq8wwCAReaY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753425234; a=rsa-sha256;
+	bh=wNk6OPC1lu+j4/4Da2MNU71TbjdMfdCtRWdTsm81wLI=;
+	b=GUBEqFtpq1HuqrL/AISxEmpXq4dEv/SIYgLrctqj9h6gMqr5UMP5uyYsWD4BhZR4pZL1en
+	05bZZtdMu8UVp1I09Mv/KDerfSAho+u+g+X0g891xhicho5odm5jqMhNllFpbZYq5hja4b
+	/WKnpWLWURpKyS+1V2uzmfmIpN++/ls=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753425550; a=rsa-sha256;
 	cv=none;
-	b=BCa/lJMw+yeYQLWTlPPW3Ah9uK/Nwp0hJtZJc33ptB1qaSDaAGZ02PGUrQA7WAFTCU1Pzr
-	4oF8h9QS4BkR/Al/9tZhb8yeJyJCj+eFykVOs7R2gb4UX+zidD6lFIjeSLHin2h1yTAkuH
-	ijpYPS4tHavyF/GW/0g8YyuoXEvLeLM=
+	b=RIbulcke7rDTfioQiSg79yFAwgIzAnZZObECuMsix0i43bOkM9MalPy2rwdo58NYujF+3f
+	SruYZei3eZ7tbJGncdyIcozAuAbeYlivbXDDlsUszDa2b/23I+ZzIsHBkDcKQkgvWAcxXc
+	6ic89W64rEAC6qEfDk92CPvaGQBFye0=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=canonical.com header.s=20210705 header.b=BNHB4G1p;
-	spf=pass (imf18.hostedemail.com: domain of heinrich.schuchardt@canonical.com designates 185.125.188.123 as permitted sender) smtp.mailfrom=heinrich.schuchardt@canonical.com;
-	dmarc=pass (policy=none) header.from=canonical.com
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com [209.85.221.70])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 0F9163F75A
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 06:33:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1753425231;
-	bh=AcnKBfE2a+S1VW5IMnseKsBzXFCCOskdFvDUc4TUQMs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type;
-	b=BNHB4G1p6AwvuX8eQB5UkxJQBT0dBt1rnZHoImQ/fW555vDDFtnCog9LE0qGLXn4A
-	 un+4Rx6f1YQgKJle2wzM3Bum2cGpqK1Wh+eWR9BTPao0UHDRPT0x8DtC5OLKheX1If
-	 TYHsNPVe18TL3M7zMIRwoM8FO4p+J0gUfyWdvUZ4zTZYcoDaG+rK579Mnna1KS6yRQ
-	 XDzdL2Ee4ePlJrYGLdPjgX+Yb+gMPheH4OY0sM6HvP1+UBco9CNcNEE7N5L5ldtH8l
-	 zvNA6yAv9BN/vuQYOUzQrw36SpjjlawVgJGsKorqww65N6kIFxsO1jz5OHcWtEFykf
-	 SL/l+OSTPNtSQ==
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3a503f28b09so958923f8f.0
-        for <linux-mm@kvack.org>; Thu, 24 Jul 2025 23:33:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753425230; x=1754030030;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AcnKBfE2a+S1VW5IMnseKsBzXFCCOskdFvDUc4TUQMs=;
-        b=a2utXXZfOGjKXEShLM5YuH94s6eQPXMHERxibjOL4MTP8gxBZ5r7E6FnWaVu1VpWci
-         dGEqpSkw7P2UaQXSme/Q9nJ6h1CM9K6eUKC//dc0vC4Zb7yO0P933uka6p+QuMST6XLV
-         6s6EniFDFHNH6KrNDIWKu4UdxYup04+lHF6+04OYg4se1ktte3kn4rca4yP81HJR6ELu
-         8jIlzvy8tEu9b8K5/SbABBpc1lczOHKndaB63uSf5R+x30Nk3G9SHfv5u5H7hs+OP7Iw
-         jigPHTW8WEg+l8NbSJsqcY8krKV0bI1e5/2Dz6oV15XeQr2G9p6T0mSzXqfUPPY7Qfhm
-         fHDA==
-X-Forwarded-Encrypted: i=1; AJvYcCVdc03mTFsWbEu4au9jRD9RnXuEzvHbMrJtLetBBuXlQ/XURy59ODahzVYJiO2v4LRruZIo9PCMDw==@kvack.org
-X-Gm-Message-State: AOJu0YxbXN2aWgO187h8LcTq89zTTREDwPvljPEEqR2vOEiEk8PfBE85
-	1CgST5otNJWhXfU1sMhhcvfM0viB+nWl+CtvRF/Pd5o/QdWzLmD3tpNqlLke12cHDXMbpnqitie
-	sgv9kuNQGi+lrA5EBVd3HYfSg5XsxaUcZqq3ZXwGiWp5ZhqGV1evR00617qESEOnqNOlg
-X-Gm-Gg: ASbGncsOuht6bnD3dd0qsgsDGYEpJMyntViDnywwL2sk8Kxmewx2niM2QFx2R0MnA+z
-	q/jJwLJFTizPmgr9k8zNDMAqMEk0f5MkETsHNuAqWMba9gSOgK5qB1Y3eakCU0oJ7i/ATgMf/C1
-	JpKO+a5K4Aih0VOkRa8AqLOtxgyXEhYNOa1BSgp+Cx/yS0hcKOwboBgU/rwmu35MK7nSe2ZdIh+
-	PlsX0uAZ0j33vf+yM2iPj2WBPkHzvYz4Brpuflwi0XGmQXuQIWlP4DyIfeneRBXKjcKe9uO9tTE
-	WfkaXlFRw5la1ablWNCBBu7A0vduVvMJ0dezb/EpqJSqJtcExurLLdf8evmYBQA4axlkxdFJoZw
-	qIXD6KF4jiESaxjtRarKwUnUZ+8dBnabaAUP7
-X-Received: by 2002:a05:6000:2c0d:b0:3a5:7895:7f6b with SMTP id ffacd0b85a97d-3b7765ecfd6mr508106f8f.7.1753425230206;
-        Thu, 24 Jul 2025 23:33:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF33NxRWxXDTDDBoqgqdvHkBJufwM8gnuJUTxJTRNJxH7wzbKZ2u1yPOgBX88LofGXQiRQPhA==
-X-Received: by 2002:a05:6000:2c0d:b0:3a5:7895:7f6b with SMTP id ffacd0b85a97d-3b7765ecfd6mr508059f8f.7.1753425229758;
-        Thu, 24 Jul 2025 23:33:49 -0700 (PDT)
-Received: from [192.168.123.154] (ip-005-147-080-091.um06.pools.vodafone-ip.de. [5.147.80.91])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b76fcc3429sm4041277f8f.75.2025.07.24.23.33.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Jul 2025 23:33:48 -0700 (PDT)
-Message-ID: <1149732f-bc8d-4339-90c3-e34aeac9f1be@canonical.com>
-Date: Fri, 25 Jul 2025 08:33:46 +0200
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=azZIm4M5;
+	spf=pass (imf09.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1753425544; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=wNk6OPC1lu+j4/4Da2MNU71TbjdMfdCtRWdTsm81wLI=;
+	b=azZIm4M5d9SY/RSxRzqBgwR8gT5QZAbvwVUw07yjPdUOsXpuu+MIgBKoiMRpjtEANVBfvpJoNeykV11d/uDOMShlZHMCxMV54tWPBLabYjTcL7eFpV/mLRI68RNEfl/vkV5xWB6cM3MEI4VuQlrZ6X+Ff3otkEaEb4dHEgg219o=
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WjwBKdi_1753425542 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 25 Jul 2025 14:39:03 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Shiyang Ruan <ruansy.fnst@fujitsu.com>
+Cc: linux-mm@kvack.org,  linux-kernel@vger.kernel.org,  lkp@intel.com,
+  akpm@linux-foundation.org,  y-goto@fujitsu.com,  mingo@redhat.com,
+  peterz@infradead.org,  juri.lelli@redhat.com,
+  vincent.guittot@linaro.org,  dietmar.eggemann@arm.com,
+  rostedt@goodmis.org,  mgorman@suse.de,  vschneid@redhat.com,  Li Zhijian
+ <lizhijian@fujitsu.com>,  Ben Segall <bsegall@google.com>
+Subject: Re: [PATCH RFC v3] mm: memory-tiering: Fix PGPROMOTE_CANDIDATE
+ counting
+In-Reply-To: <982da1b2-0024-4c01-b586-02c0b8a41e95@fujitsu.com> (Shiyang
+	Ruan's message of "Fri, 25 Jul 2025 10:20:44 +0800")
+References: <20250722141650.1821721-1-ruansy.fnst@fujitsu.com>
+	<87cy9r38ny.fsf@DESKTOP-5N7EMDA>
+	<85d83be2-02f8-4ef6-91c7-ff920e47d834@fujitsu.com>
+	<87wm7y3ur3.fsf@DESKTOP-5N7EMDA>
+	<982da1b2-0024-4c01-b586-02c0b8a41e95@fujitsu.com>
+Date: Fri, 25 Jul 2025 14:39:00 +0800
+Message-ID: <87v7ng3hbv.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/11] riscv: enable landing pad enforcement
-To: Deepak Gupta <debug@rivosinc.com>
-Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-kbuild@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev,
- rick.p.edgecombe@intel.com, broonie@kernel.org, cleger@rivosinc.com,
- samitolvanen@google.com, apatel@ventanamicro.com, ajones@ventanamicro.com,
- conor.dooley@microchip.com, charlie@rivosinc.com, samuel.holland@sifive.com,
- bjorn@rivosinc.com, fweimer@redhat.com, jeffreyalaw@gmail.com,
- andrew@sifive.com, ved@rivosinc.com, Paul Walmsley
- <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor
- <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Monk Chiang <monk.chiang@sifive.com>,
- Kito Cheng <kito.cheng@sifive.com>, Justin Stitt <justinstitt@google.com>
-References: <20250724-riscv_kcfi-v1-0-04b8fa44c98c@rivosinc.com>
- <20250724-riscv_kcfi-v1-5-04b8fa44c98c@rivosinc.com>
-Content-Language: en-US
-From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-In-Reply-To: <20250724-riscv_kcfi-v1-5-04b8fa44c98c@rivosinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: A12001C000B
-X-Stat-Signature: jnby6o9bctgduiiizseefej613tung6w
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: E160B140007
+X-Stat-Signature: zyosef9injm7unxtj8rhyb83764fdqsd
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1753425233-391594
-X-HE-Meta: U2FsdGVkX1+WzLQQRVtEUS5NbHjqwTusHzQzYBPbBzaoISgAHZ5OC/LAbGFDkJoTUDH0Oy868GlG046vvT37JKkWovjUQbfjhiyh4+HqitqbCaw1NFmNquoCjY1ZjDT/tGblw5pw5w3DmEoB7TALsM+xqFti54Ie9lUqPhxNNCKFDFetlK5Yd5akmjeYZCeIYsHKZ7WXMcr/1JZuewSx5wTbUNxSuQ3fmvmtXR7Ule2iejU0Tbt/0XDVnlB8bTN1x3TTjCvJQatX90dWfVvHFwI7wIi8NpmdDFor8PGsdlkhlQpIAN0uTFRmYSFgITRospKu6gB6e2Y/2vbZR5cm1tCr2HGGLfI3zF2IkIAyFXTb0KtaQZVe3VVcAsvwhwhi/gALhDVxbO7dGPpOoUKgJIT7aIq4zMsnnVdzCmf3q3sh2vg6AmiH8lgcJHr9Irq5WZZbZPvxzYoKqFV/Pw2UR5/y3KayDjqUGyE2RlDZGtREALdZxHnwIlQR0BI+Iicl46htWZx02IgXCZbUOlLGMMufw8mFuvxWUWH62dWDXG+KhrwPUqo+wm9YYyoA3uIJ79i1l21rQetOfVojTlKVaWYdxj6vG9+Dlm8pZXO3j/jMr7jqNRTEcfON2MjWNwbx5Iz1cI82RuOjSgi8YrLzMG8s4XRdum1n5G/IZDZH95HtQKTeIytW91FMGflrsH4w97lsbTvTaJG84KE8zy/zLrqj2Dh6y5XrOwrmCbEfi1Rh3sQcXB5h8JEasj7m/sKWdBCCt/3NrcAMBY0Od0eKRaSFgKh0x2ORDediEslAmAxWec8VO00YmV2LrQ+kaY5rXNWVe1UNu5l1gD50OJm2ujiVYXMYeeqxKMZniE/yHNAilOjBfq88bPJ/ANS+/dnp+a6DYIJfOg1ltIh8PPT822E/0q1W6GV3fa4LFW+srcCftuSP7vufDtwyOFXapbBvPN2TBXiX8QzrNpMCD8L
- mVD0Rd6J
- 6kOkh6x+XklRU85QCnUZNv1xpocjeMpJn2urhNVZsM9S1BazhxrRLX4QvVt1Es1jIcrIeTOmY6V2T413yJy5EulRLkdBPu3euW1K2aqAwogbBR5aFGJk4DQT4oFO3S5LBPY5pew2qSbHdCmIc+QfIiKJ2KVQ86G4N1ksNFfPW7PKfMObOzp6LjC3CUwiWw9hsZGMY9bqr3B+GJ4ui4sklJG801fn8Aj7Oo6fZsxaW84gaPCMK2B3vq8Ygu69ihh+68pirNVHjPSnJj2niaBSu8vMnPREUQv0X9AQ26r8d6qQZvI46OcXF6kVcA+OBzIdK1bchXd7qV1mOe4kfRjO1/UT8Bnp4EtUrh3IyZNLt16p7gf4+D+CPdmS2SE7ZV8JbEY8KKtfoiCSQ0nWBLhGMCKO2IRp5knG8ONlOTXcBSGn8QcfJc4yDBZdI7N5HFymNEsQWpl0+oRhe14MfXAWfhk06XQ==
+X-HE-Tag: 1753425547-837752
+X-HE-Meta: U2FsdGVkX19tEAZ4HiQFQGcBA4RArlw0mb7wlOq+P+IpVugJXKIEckPaqVsFdyyl7CI8u7MsRFRyXiYAt1LqK8by2+cFbdNfNix6JK7AaaqxpWjfb5qpA8B8CA6JyWP3lv7E5gwnUszE7Gt14yywe05AP9o9/UgqGY0oa4iWsdY2itzrgVKhAS7+tpeu/H6MSGNDzXxsTn6te73MIgf4zYzPfPPFgL7pn9FcB6M/Qds5qytTOeZvcz0e6wIDpSmK8NruoKAtyUHYVmDeE7GHVoIgeZmpKx0SRADyDfk81jSlGMdSCribLLympsZLbgEVtQXYzwlCkr7314sAEO2nmJDnFsn9TZVNwIzfFoPwG5rEq+N73xVIip1vTspJpWWthDxFzajvf/4S+s7RdvpuyhbFhPXX9AoGeyWlp1oG9yFvqmFvBVdPcHXGpSOTU4nd8WKAoMK4xpUR/JPLyiXXTxQHcUYzwWkXd6Yptx2ThFs6Ibj9WV7xYi9U6h26jU7zX5/knqIEnvb25Djq+n/FoQ4wJ8LAZtQuxe0eitNWmq4K/dT7U+2KWKl8nc9Lbi/Z/R8b59pIHOZfm2WHUVajrAJ5V6zAw4xCOFm0aLbGvSXUF1H9MtJ41YvrUZPW2ZPq8DMB59+R0WX48OmhnaERU5jS9P3KX2qldTzalXyG4o9GVol8lBADCnheJLLoVhapgrl6HRnDYUIJzd09LCzlhh8ZwbkhcSKHJBqQtsgXF3jqkFhEbCzUk8xCnMWma/dWf1Rat6l3EzE2r6fI/FS4CYWSCm6LYmd+mFlrwTBa32Ha8jXlWdjNPzccwl7qwfryCr6sWHKNgzCYyCATxl/TIQVHgg8rsWBq4l7ydKyll67kQDoJWCXGCotUUB6xtmtsX42ehzO9KVOoweZaSuicmY2IuQf+sNSg/EhYvqR/EcF9QO5dW8SOu1ve6hs5mA/JzfRmaFCJBzRI6OY7hth
+ fdArGall
+ /hJX9L9OVC+xgZhgjqIbr8mTKWb/h49vp9V0wPleneno9AwHx4XUjLaYVvP5n93Qf+X3spm/vhgrS9DdkmUKDHx15k2Fs6O6vbXQZX/xQ/wyzAlh6DfkEoB3V9QsDtsEK0K9Hi3sAjm1fLGW9g8S8uabtSRv3ZeZ2TWse1Y8mmFSzQGAJmLpoFBWVYKheDf0W/2TTHjSSdvxuE6z/3/iH6e+E+hSrICOcspe5onv2UB81qhaDQz8ShNBNm1sEl/uf4v4RydIBcXsnglJFe7wV5gMCb4RqeUWfAw4YnugNcAxY7QipnPvDX1xurXPlOnQCmShM/TbovjCf5syP1WS5ze+xzc8UXgGHMicuk2wDiEU/uAHcEFOtBC7tNtQZrMbjqAOyb9ZlM5xg57k=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,73 +94,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 25.07.25 01:36, Deepak Gupta wrote:
-> Enables landing pad enforcement by invoking a SBI FWFT call.
-> 
-> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
-> ---
->   arch/riscv/kernel/asm-offsets.c |  1 +
->   arch/riscv/kernel/head.S        | 19 +++++++++++++++++++
->   2 files changed, 20 insertions(+)
-> 
-> diff --git a/arch/riscv/kernel/asm-offsets.c b/arch/riscv/kernel/asm-offsets.c
-> index e4d55126dc3e..e6a9fad86fae 100644
-> --- a/arch/riscv/kernel/asm-offsets.c
-> +++ b/arch/riscv/kernel/asm-offsets.c
-> @@ -536,6 +536,7 @@ void asm_offsets(void)
->   	DEFINE(SBI_EXT_FWFT, SBI_EXT_FWFT);
->   	DEFINE(SBI_EXT_FWFT_SET, SBI_EXT_FWFT_SET);
->   	DEFINE(SBI_FWFT_SHADOW_STACK, SBI_FWFT_SHADOW_STACK);
-> +	DEFINE(SBI_FWFT_LANDING_PAD, SBI_FWFT_LANDING_PAD);
->   	DEFINE(SBI_FWFT_SET_FLAG_LOCK, SBI_FWFT_SET_FLAG_LOCK);
->   #endif
->   }
-> diff --git a/arch/riscv/kernel/head.S b/arch/riscv/kernel/head.S
-> index 9c99c5ad6fe8..59af044bf85c 100644
-> --- a/arch/riscv/kernel/head.S
-> +++ b/arch/riscv/kernel/head.S
-> @@ -185,6 +185,16 @@ secondary_start_sbi:
->   1:
->   #endif
->   	scs_load_current
-> +
-> +#if defined(CONFIG_RISCV_SBI) && defined(CONFIG_RISCV_KERNEL_CFI)
-> +	li a7, SBI_EXT_FWFT
-> +	li a6, SBI_EXT_FWFT_SET
-> +	li a0, SBI_FWFT_LANDING_PAD
-> +	li a1, 1 /* enable landing pad for supervisor */
-> +	li a2, SBI_FWFT_SET_FLAG_LOCK
-> +	ecall	/* check for error condition and take appropriate action */
-> +#endif
-> +
->   	call smp_callin
->   #endif /* CONFIG_SMP */
->   
-> @@ -359,6 +369,15 @@ SYM_CODE_START(_start_kernel)
->   #endif
->   	scs_load_current
->   
-> +#if defined(CONFIG_RISCV_SBI) && defined(CONFIG_RISCV_KERNEL_CFI)
-> +	li a7, SBI_EXT_FWFT
-> +	li a6, SBI_EXT_FWFT_SET
-> +	li a0, SBI_FWFT_LANDING_PAD
-> +	li a1, 1 /* enable landing pad for supervisor */
+Shiyang Ruan <ruansy.fnst@fujitsu.com> writes:
 
-The SBI specification calls BIT(0) "LOCK".
-Shouldn't we define a constant for the lock bit instead of using a magic 
-value?
+> =E5=9C=A8 2025/7/24 15:36, Huang, Ying =E5=86=99=E9=81=93:
+>> Shiyang Ruan <ruansy.fnst@fujitsu.com> writes:
+>>=20
+>>> =E5=9C=A8 2025/7/23 11:09, Huang, Ying =E5=86=99=E9=81=93:
+>>>> Ruan Shiyang <ruansy.fnst@fujitsu.com> writes:
+>>>>
+>>>>> From: Li Zhijian <lizhijian@fujitsu.com>
+>>>>>
+>>>>> =3D=3D=3D
+>>>>> Changes since v2:
+>>>>>     1. According to Huang's suggestion, add a new stat to not count t=
+hese
+>>>>>     pages into PGPROMOTE_CANDIDATE, to avoid changing the rate limit
+>>>>>     mechanism.
+>>>>> =3D=3D=3D
+>>>> This isn't the popular place for changelog, please refer to other
+>>>> patch
+>>>> email.
+>>>
+>>> OK. I'll move this part down below.>
+>>>>> Goto-san reported confusing pgpromote statistics where the
+>>>>> pgpromote_success count significantly exceeded pgpromote_candidate.
+>>>>>
+>>>>> On a system with three nodes (nodes 0-1: DRAM 4GB, node 2: NVDIMM 4GB=
+):
+>>>>>    # Enable demotion only
+>>>>>    echo 1 > /sys/kernel/mm/numa/demotion_enabled
+>>>>>    numactl -m 0-1 memhog -r200 3500M >/dev/null &
+>>>>>    pid=3D$!
+>>>>>    sleep 2
+>>>>>    numactl memhog -r100 2500M >/dev/null &
+>>>>>    sleep 10
+>>>>>    kill -9 $pid # terminate the 1st memhog
+>>>>>    # Enable promotion
+>>>>>    echo 2 > /proc/sys/kernel/numa_balancing
+>>>>>
+>>>>> After a few seconds, we observeed `pgpromote_candidate < pgpromote_su=
+ccess`
+>>>>> $ grep -e pgpromote /proc/vmstat
+>>>>> pgpromote_success 2579
+>>>>> pgpromote_candidate 0
+>>>>>
+>>>>> In this scenario, after terminating the first memhog, the conditions =
+for
+>>>>> pgdat_free_space_enough() are quickly met, and triggers promotion.
+>>>>> However, these migrated pages are only counted for in PGPROMOTE_SUCCE=
+SS,
+>>>>> not in PGPROMOTE_CANDIDATE.
+>>>>>
+>>>>> To solve this confusing statistics, introduce this
+>>>>> PGPROMOTE_CANDIDATE_NOLIMIT to count the missed promotion pages.  And
+>>>>> also, not counting these pages into PGPROMOTE_CANDIDATE is to avoid
+>>>>> changing the existing algorithm or performance of the promotion rate
+>>>>> limit.
+>>>>>
+>>>>> Perhaps PGPROMOTE_CANDIDATE_NOLIMIT is not well named, please comment=
+ if
+>>>>> you have a better idea.
+>>>> Yes.  Naming is hard.  I guess that the name comes from the
+>>>> promotion
+>>>> that isn't rate limited.  I have asked Deepseek that what is the good
+>>>> abbreviation for "not rate limited".  Its answer is "NRL".  I don't kn=
+ow
+>>>> whether it's good.  However, "NOT_RATE_LIMITED" appears too long.
+>>>
+>>> "NRL" Sounds good to me.
+>>>
+>>> I'm thinking another one: since it's not rate limited, it could be
+>>> migrated quickly/fast.  How about PGPROMOTE_CANDIDATE_FAST?
+>> This sounds good to me, Thanks!
+>
+> Gemini 2.5 gave me a more radical name for it:
+>
+> /*
+>  * Candidate pages for promotion based on hint fault latency. This counter
+>  * is used by the feedback mechanism to control the promotion rate and
+>  * adjust the hot threshold.
+>  */
+> PGPROMOTE_CANDIDATE,
+> /*
+>  * Pages promoted aggressively to a fast-tier node when it has sufficient
+>  * free space. These promotions bypass the regular hotness checks and do
+>  * NOT influence the promotion rate-limiter or threshold-adjustment logic.
+>  * This is for statistics/monitoring purposes.
+>  */
+> PGPROMOTED_AGGRESSIVE,
+>
+> I think this one is concise and easy to understand with the
+> comments. What do you think?  If this one is not appropriate, then I
+> will go with "_NRL" as you suggested.
 
-Best regards
+In fact, we still count candidate pages here.  Although there's enough
+free space in the target node, the promotion may still fail for say
+increased refcount.
 
-Heinrich
+---
+Best Regards,
+Huang, Ying
 
-> +	li a2, SBI_FWFT_SET_FLAG_LOCK
-> +	ecall	/* check for error condition and take appropriate action */
-> +#endif
-> +
->   #ifdef CONFIG_KASAN
->   	call kasan_early_init
->   #endif
-> 
-
+[snip]
 
