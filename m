@@ -2,253 +2,88 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AD755C87FCC
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 02:36:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B2AFAC83F26
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 02:38:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 433016B007B; Thu, 24 Jul 2025 22:36:17 -0400 (EDT)
+	id 262706B007B; Thu, 24 Jul 2025 22:38:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E4196B0088; Thu, 24 Jul 2025 22:36:17 -0400 (EDT)
+	id 2136C6B0088; Thu, 24 Jul 2025 22:38:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 284AE6B0089; Thu, 24 Jul 2025 22:36:17 -0400 (EDT)
+	id 12A0D6B0089; Thu, 24 Jul 2025 22:38:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 137CA6B007B
-	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 22:36:17 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BF94F160341
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 02:36:16 +0000 (UTC)
-X-FDA: 83701222752.10.540FFDF
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf13.hostedemail.com (Postfix) with ESMTP id CE3B120002
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 02:36:10 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=gzZj0uJ1;
-	spf=pass (imf13.hostedemail.com: domain of sohil.mehta@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=sohil.mehta@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753410972; a=rsa-sha256;
-	cv=fail;
-	b=nRyPoD6lMD0XlI6tEnEPrH2fGtufX8j0qa2AQ68qD/PrbNFedZsx2rwRJah62oLsZTYTZJ
-	+YMUN/4J6ibLf5gtJ4gqpgfKlNjgbAx2JnJPuGp8+1KpiZSDKMmAmqEsE9kctBpgylUvyy
-	ABJJOFV8sTIxyQUtFCj3nVmPepFR7kQ=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=gzZj0uJ1;
-	spf=pass (imf13.hostedemail.com: domain of sohil.mehta@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=sohil.mehta@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753410972;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 008A76B007B
+	for <linux-mm@kvack.org>; Thu, 24 Jul 2025 22:38:34 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A765A1D8951
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 02:38:34 +0000 (UTC)
+X-FDA: 83701228548.17.FF4E71A
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3EAFE180002
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 02:38:30 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=g8XlYM+D;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753411112; a=rsa-sha256;
+	cv=none;
+	b=hlvzeSZHwxPRbN7bU1sBaF7xKKFLc4CiSrnFg3MLhAZffiVu9OepBKDsPD2dQeWxE/JfOG
+	FXCHqWJ33DX1Mzx3Ev87lNnoJI/Bx3/wfok52e4bT75hVFt/yod4/M34cFFgCR8utXeh4t
+	Gng7j5vGX4A8vhL6apafqafV+AQHbsw=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=g8XlYM+D;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753411112;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XOFb3BG95SG/oleOAlSfcza0asmnwcTb9PLrAskKMkA=;
-	b=3bmdBh792XmVW1pDZuOMZObINEp/Gm6Y0WrrKm8Li4PC9ZwRsYkdH4HNbEYDI7N7djFsB9
-	yBfGU8A4Rdx5FAX06FcYloV/Szs5idkFA8n8kDW/b6ueht8oiPxv0vecdAAq4W0Imnztm1
-	dtC8CN5nT9fTFEeSA+vV4lMgaGJSUOo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753410972; x=1784946972;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:mime-version;
-  bh=+W/hZJrU8kAN12wRFvGgtPEb/TxZeB893jwQ1ro9KrI=;
-  b=gzZj0uJ1lttJTkgyYuCT0XhlYIlqRUOKjiZ1YPRKe1lWSdEfwF75gU71
-   Ex7H1AEfnhkijqaIi4U5RSkvlX3nuer5pAc0ZVpy52uU5WpXxT1TSjIJQ
-   VwKu4qqubXKOi9xft8EePmIrnUfSrIn3gVQfQUI3k56L/9TLx+mebDN9u
-   5dNvMrEuHkI86MnxGl53wKnqCXMGuFSDX+q+nM9gIZnPeHbJqaKT2Y8XA
-   Odp6jVKZRzejArtS/qs4uAxqV4E/YKgjgPPyResmSwiO3/ehglp69/Xxv
-   LQRCEp30CsXk0kUH/NVeyLaP/J2wFXNw84OYPWB2pcQFABVfS9ZGsmGxB
-   Q==;
-X-CSE-ConnectionGUID: zIkDkCvOSGKZ2TA91ZtN0g==
-X-CSE-MsgGUID: vVDIjDy9T62IX5NfUU52vg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="59556541"
-X-IronPort-AV: E=Sophos;i="6.16,338,1744095600"; 
-   d="scan'208,223";a="59556541"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2025 19:36:09 -0700
-X-CSE-ConnectionGUID: 3bg5ieBNTMyoSi0afM3/Qg==
-X-CSE-MsgGUID: 5k/UuAchRc2xLhAbwJpz4g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,338,1744095600"; 
-   d="scan'208,223";a="161330484"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2025 19:36:08 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Thu, 24 Jul 2025 19:36:06 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26 via Frontend Transport; Thu, 24 Jul 2025 19:36:06 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (40.107.237.64)
- by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Thu, 24 Jul 2025 19:36:05 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XEV1CbuefZzv+pTBzAkULb4Q9AvXWAM0j6RJrFRNhew7ho1x9f9pBxezLuUUnxLnI+77J/Fm01w3bxvgIYVoAa10iNF6N7ECoh6cKhowktOIYQsvlphjmagm+7oNUkVpnS3NxnKCx3Y/L0AXqCYpqV517Zptj5cTf7kWR1QreYrhRf2cDVby0CkFdBv+41hOb2VOA+44E6Kcad71N57uX3U0EDr3a0pdC1PJLJlnQDerEvNA3mbkLk5Kcx/PCHAQj9sjJk1o3wjPvM1+J2hi87VEjuzCZ1zN5bRXTdWZIwWE8IbJAUPEE0pNVGa/aZEbKslavjLo/+l26PO9Kjv+3Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=K3hAQNFxKNYHrybuoJioi9AuMxKIZ+FP0FjTLh5F17Q=;
- b=BTAW+MIGQViyga8lYBh6RTmtS4rZOjDcedrU9Qps1ZLeMyXXaq9FpRoy0LUQZoT0eFG9VMj2dXKNUvYZMTi5p553yHLOLrqyd+PDjK5MzMiuJ+BAdxyyv0Dzr2cCf3d3CD7yRBitD0K9NjcIx9gKmAYaSlxp1IYGeoy40jRd8JcqXEpu4LS6rm5+n0k1FrrAvuQuuXKBMNur1ORC3ob3HfQy1KI1Nkp13zpWMy4gW0OMfTCjyv/y+8R9rl+pksCnFqA9nmyrhsiliGLPIUvXS0y3Kx+iAJ7m75zwRhb6d6WpDXTJq0sifNSVrjeZJuc17ns88O8ue2BJVKX17u4D5Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from BYAPR11MB3320.namprd11.prod.outlook.com (2603:10b6:a03:18::25)
- by PH7PR11MB6954.namprd11.prod.outlook.com (2603:10b6:510:205::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.21; Fri, 25 Jul
- 2025 02:35:58 +0000
-Received: from BYAPR11MB3320.namprd11.prod.outlook.com
- ([fe80::e8c4:59e3:f1d5:af3b]) by BYAPR11MB3320.namprd11.prod.outlook.com
- ([fe80::e8c4:59e3:f1d5:af3b%7]) with mapi id 15.20.8964.019; Fri, 25 Jul 2025
- 02:35:58 +0000
-Content-Type: multipart/mixed;
-	boundary="------------18s1F8WcBzGsUkBbG3AiQZxl"
-Message-ID: <e2765d39-5f44-4c60-b37f-c252c8a98f3d@intel.com>
-Date: Thu, 24 Jul 2025 19:35:56 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv9 02/16] x86/alternatives: Disable LASS when patching
- kernel alternatives
-Content-Language: en-US
-To: Dave Hansen <dave.hansen@intel.com>, "Kirill A. Shutemov"
-	<kirill.shutemov@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, "Thomas
- Gleixner" <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, "Borislav
- Petkov" <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
-	<x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra
-	<peterz@infradead.org>, Ard Biesheuvel <ardb@kernel.org>, "Paul E. McKenney"
-	<paulmck@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, Xiongwei Song
-	<xiongwei.song@windriver.com>, Xin Li <xin3.li@intel.com>, "Mike Rapoport
- (IBM)" <rppt@kernel.org>, Brijesh Singh <brijesh.singh@amd.com>, Michael Roth
-	<michael.roth@amd.com>, Tony Luck <tony.luck@intel.com>, Alexey Kardashevskiy
-	<aik@amd.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>
-CC: Jonathan Corbet <corbet@lwn.net>, Ingo Molnar <mingo@kernel.org>, "Pawan
- Gupta" <pawan.kumar.gupta@linux.intel.com>, Daniel Sneddon
-	<daniel.sneddon@linux.intel.com>, Kai Huang <kai.huang@intel.com>, "Sandipan
- Das" <sandipan.das@amd.com>, Breno Leitao <leitao@debian.org>, Rick Edgecombe
-	<rick.p.edgecombe@intel.com>, Alexei Starovoitov <ast@kernel.org>, Hou Tao
-	<houtao1@huawei.com>, Juergen Gross <jgross@suse.com>, Vegard Nossum
-	<vegard.nossum@oracle.com>, Kees Cook <kees@kernel.org>, Eric Biggers
-	<ebiggers@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, "Masami Hiramatsu
- (Google)" <mhiramat@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
-	Luis Chamberlain <mcgrof@kernel.org>, Yuntao Wang <ytcoode@gmail.com>,
-	"Rasmus Villemoes" <linux@rasmusvillemoes.dk>, Christophe Leroy
-	<christophe.leroy@csgroup.eu>, Tejun Heo <tj@kernel.org>, Changbin Du
-	<changbin.du@huawei.com>, Huang Shijie <shijie@os.amperecomputing.com>,
-	"Geert Uytterhoeven" <geert+renesas@glider.be>, Namhyung Kim
-	<namhyung@kernel.org>, Arnaldo Carvalho de Melo <acme@redhat.com>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-efi@vger.kernel.org>, <linux-mm@kvack.org>, "Kirill A. Shutemov"
-	<kas@kernel.org>
-References: <20250707080317.3791624-1-kirill.shutemov@linux.intel.com>
- <20250707080317.3791624-3-kirill.shutemov@linux.intel.com>
- <7d93b343-b275-4edb-ae26-4578ae53652f@intel.com>
-From: Sohil Mehta <sohil.mehta@intel.com>
-In-Reply-To: <7d93b343-b275-4edb-ae26-4578ae53652f@intel.com>
-X-ClientProxiedBy: BYAPR11CA0104.namprd11.prod.outlook.com
- (2603:10b6:a03:f4::45) To BYAPR11MB3320.namprd11.prod.outlook.com
- (2603:10b6:a03:18::25)
+	bh=HN0s+hdKn5rU9FyZkmT5ogrtEb0lIbKzVoa6+/K/tFg=;
+	b=ItdUt8ByAYhfhMF+Atrh3gLD2F3+S658fLAGAK6Vi1McSQpTXN51zYQiW1pNPOG2G4CTY/
+	/ud1xjIUFY69ZvT8lQkmL8tQNXiJZeNmhaykX3pSitPChDwN5Q0J2ntHxDc9dZDPWFs+7K
+	oT/UE7l+eLdfnsWmQsTpoan4RGXtM1A=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1753411108; h=Message-ID:Date:MIME-Version:Subject:From:To:Content-Type;
+	bh=HN0s+hdKn5rU9FyZkmT5ogrtEb0lIbKzVoa6+/K/tFg=;
+	b=g8XlYM+DJtGvmyPQ4elgzOINDqvFP/7rfsSzolcpfl756AHsMQWAEEB9n49hItoFigM038J10n0XUGEtXJfCe5ZKScYpzpyNo0EcvozfeJK1dHjEcmjkOhbiiBk22mDnhOIqrm8LQnHni4ZIt4zoCP9CT2d+TxiBfNG3kUcx7Lo=
+Received: from 30.74.144.118(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WjuuTqp_1753411106 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 25 Jul 2025 10:38:26 +0800
+Message-ID: <da2ab844-98c9-4eb2-82ac-01d01bec30f3@linux.alibaba.com>
+Date: Fri, 25 Jul 2025 10:38:25 +0800
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR11MB3320:EE_|PH7PR11MB6954:EE_
-X-MS-Office365-Filtering-Correlation-Id: d5bf2eb8-aabd-41f4-0515-08ddcb23fcbf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024|921020|4053099003;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?cmRpWjJSMERGTHlad082VkhFVytFSEQ5UCt0QlpSTGVTUDJubDhJaVlFbEM0?=
- =?utf-8?B?K2kyNkk1MUhob3FwQkFYM2k0a0hTZ2FGM1NaR1pKK1UyRGJibVZUM1lUeE9W?=
- =?utf-8?B?cWdsMzcvcUQ5UzF5TTErb0xZdXBzR1FEdGljZS9ua0VXcE9wTXRRVm9rMkRN?=
- =?utf-8?B?WmtaYTR3bkJWZHNTcW1Dd045YUhJa3BwUEVwT3ZHeEI5cTU5SmlubFcrZHVU?=
- =?utf-8?B?bElPQjIyOEhBbXgxa1BJcUdIR2NvVjBiTmdNZldheFlRZWgraW9wdk1lMGd0?=
- =?utf-8?B?dE1JSkRFRnUyVUdYUzVpYzljUktYTStqdUlGUEQrNlJQTmcrcUNCZ1ZSaVdt?=
- =?utf-8?B?RmRiZWRUNDdQaUFFcFB3Nk5qcUVUVGoyeks5UEVTdVJ6ZkdlM2RHWmIyME9W?=
- =?utf-8?B?UW5yK2F6a0toSXJ5emZaYzNPR3lQU29RWE9DNXhBeU9xQ05GM0gzY0dYY3Nk?=
- =?utf-8?B?NnREdkdJTFhuOGhwazRUOWxmaFJDRXFxZnRUa0UrQmNYdXBaUXEyc1J5QTQ2?=
- =?utf-8?B?NDZETzF0b05JRzJmekJPVU9xd0d2K2NzTmZmS2RzNHJobGpzOXRSRGMzcitE?=
- =?utf-8?B?TzJaL1pVbTlHOGt3aWNyWGR3WmlxTjI3R0dtUG8ySGhMWThGOG41WUt1enVa?=
- =?utf-8?B?L3BzaHhHZmdhYU1OZWxBQVYzaWZQU0ZuZHc2Z0xzakVxY2ZFTlN6OXI1TUFZ?=
- =?utf-8?B?NHRIN3g3YWprd2xZQitGMjRZME00NWJIVXliR2orS3hlTHFoSjJ0V1VOejNo?=
- =?utf-8?B?cDFoNXlyUzd3YnAxY2F0TTFJanoyOXdINDNHVzFTdDl1WnhWbmcwWDE2WlBy?=
- =?utf-8?B?VFQ0dmtBU3ZVRjI2RnFkNGNxNjJoRGlNZXc2TFduakFzdE54NTNySm0rWnNk?=
- =?utf-8?B?YU1nT09iNXEzc1E3QjU4QlFYZi9iNldhSTNadWlubUVML1pMOXJVT0wvVTAv?=
- =?utf-8?B?ckllNG5lMEF1UXorQjNRTEJrL2M5T1RWRk00a1lrVC9jNzFIdXhIUlRrSmNt?=
- =?utf-8?B?Y3R4VW8yT2g3TWZHU3FZYkdManNodTk2eTZFbEIyb0gxQkI0S1lVTTBsR2x6?=
- =?utf-8?B?NThjNHM2T3g1eDJoeWZBemhRNnhJNHAyOWRDRkh3NExUZFY4ZlJZWkF3KzEw?=
- =?utf-8?B?dTY3WGtDT2w1Zks1STk4VmdmYWFMa3dOYTViMEFHSGFhL1ZldDhvM3ZtbS83?=
- =?utf-8?B?cGtZSGtWTkRKemRaVGJMYmxVVHhEdFpWWlVrSlp0L0t6cTJSY2xtVEczYzgr?=
- =?utf-8?B?Z3BaempraVFGbzhkalBCbnBGUmU1ZlZSOGxnelJCeTZ1VjdhRWN3Vk0vRGxP?=
- =?utf-8?B?TU1OVnlRTWhud1NFUlhwOWRqdEpwNWtlWUdWQVpxTWxaUGRuU0pFSmNpYlJ0?=
- =?utf-8?B?ZVpTUEJvM0pvakI4azhDVlhKdVlHU0ovMEZvZTlON1Ivbmd6T1VSZUNBQ0lh?=
- =?utf-8?B?blF3UkVBcWp4WkZSN21IYTAvUHdiSXVOcEpCZnhNaEtXcHJqSHYyOTlrcFpz?=
- =?utf-8?B?RFljQ0JKZnVBTFBEdkZvZ2dJa1dXTFhibmpET2tpdS9ITFYzUXdBb0VBTmpC?=
- =?utf-8?B?bnRXM3FvRUFlMy8rb0V2TFRnOUwwekJIL2RhSEZ2NWo5aWMrOW1TdzVlbEhF?=
- =?utf-8?B?WGcydWd2S3BmZmpIMnhmTVh4dHVMUUx3anZpQWRFOE5kNWhDMkFzWFI2L1gz?=
- =?utf-8?B?K1E3S1RUYWU0RDd2OXAzd1hDc0hiSEdSWWdtT3Z6NlRZdnZ0K29BcVk3YnV5?=
- =?utf-8?B?SVFUdmw1SExXNjM1TU82VGxLVTJtUjJQb2NkM3hvRnFXdHRLVzVsNUQ5MUdL?=
- =?utf-8?B?OEtOM0poTDdyWjRYZVJEbXI5dlJYNUdkYmh0T0pxMjJnemRoVVdVcDdiektj?=
- =?utf-8?B?SUFTNlY3VSt0UmZjVWFuMVUxR0RpaDhYSHdReE9GeUFKWXhrczJzYnZNT0F6?=
- =?utf-8?B?djV4RWNuOTBrVE5MSHRxazJ1TnZGVHJsUWZDeFdQYUJEMjcweU40cWRmTVQx?=
- =?utf-8?B?ZVB0akkyMTlRPT0=?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3320.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(921020)(4053099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NlpHdXRZaHJ3RkpJUHJvcXJPbU12Mml6SXM4WXR5RVUyTUIyRS9hSmM5cGxS?=
- =?utf-8?B?UFlDSzg2OUJMSUZkK1UxTW1wV2ZOMWlKRlg4MUpUQVcra25lLzBDRndzSHJp?=
- =?utf-8?B?a21HNnBqbm1qaFNaYzN6K1V4ak5IeDFMaG9LcUJ5OGNnL2ZGNG1Ya0V2amo2?=
- =?utf-8?B?QXA0Z0hoZVdwcm5Iak9DbVlBSm54QmE3eDU0OGRWVXhsVExLZ0MydHF0TXF3?=
- =?utf-8?B?OGp2RWJMUnpYbkF2TmNxdHlnVzYxSmVUandEV1RBbytUK1FXQnZxL1RueGJm?=
- =?utf-8?B?OWJJTk1XeXh2OTIxWEFKRitRenJqYzgwRDdaL0pCT2YrTUxFbVlQMnlOMm1r?=
- =?utf-8?B?a2Z2Q1FZZTl6NUhGcDB4YUo3b0NVTDZFbCtHN1BKR280eCtqM0NEUnVubkxM?=
- =?utf-8?B?d216bW83Um41ZVlPRUVlNHhRTFpNeFJ2dWNCbitrc09IcUJwb3VSdzhVYy9J?=
- =?utf-8?B?aU92YUhuK0V5NjREaE5wRjZ1eUVrVnV4N3lNVTJCYy90aWh0aEZSd1NSQTF1?=
- =?utf-8?B?Qm8yeDRDOXFLaVp0ZG9ZZzhOaVRCKzBkYmhVMW8yR3FvYlpWYW1VRFhXWW01?=
- =?utf-8?B?em1POU9IalFwQmJlaDVLYVNLY2Z1ZjRtRlE0L0ZSV2tUWGNJTENicFJkMmYz?=
- =?utf-8?B?VXc4M3lGeG5rY0VLS1FtaDF3SGdYS3kwSU45UFVNVis5d3VNYXZ2NkQ0SVJj?=
- =?utf-8?B?UzhiQnlMS0ZSaUdJWE92YkUreTFYL3pPNjNhYXp0VUNzcnZMQ0tjWFFEbjE1?=
- =?utf-8?B?WmhwdWZPVldiTktJUVJwRFMrZ1Q3WHFKWWFnMkZwRnRocU5ETE0xeWtwS1dR?=
- =?utf-8?B?am40ZGY2UmtSZmR3TnZwcFhiYkV2Q3hJYkE4ZzFlL3o0RjVPakRxMFJYZHZh?=
- =?utf-8?B?SmR4MWRjK2J2cENCb0U3ZGhDK0t0dHl3clZWVEdTemhMRW54UDZHbVBFU2JE?=
- =?utf-8?B?OFBOZ09PUzRHVnpZZGZ1YXdMTEFnQSsvSUFoUm5kQkE3NU5WRHVKYWlGWEkx?=
- =?utf-8?B?RmdLYUltRG9lRXFzNGJnNmZPMDdLQ2Q1YVUrMUZoWXdjWWg2T1A1clpaNkhM?=
- =?utf-8?B?QjI2a0d5RDNDYkx0RkxPdVRaTWRBQ3ZJV3pUUE9GUXBtSHVDM0h0OWRqM0Jv?=
- =?utf-8?B?QVRrWEl3RTl6cTBrazRuak0rOVNFSXdYNHE3c0IzK2FndFNiUFBsTjA1S2ZH?=
- =?utf-8?B?Wm9GcmM5V0h6K1lmWHdGT3k2UDEvUHNoTjJGMXNHUUI4VGQvcFd0U1cyY3pi?=
- =?utf-8?B?eGduY1dQbjJlWkdwQ3BJQTQ2K1Q3SysvUHAyZW44UW40RWtJdzlKL2p2dFhI?=
- =?utf-8?B?dFh0Q0R0NGFnOGh4UG1WWS8wTXZNeEhjU3k3TWFVazJCbHdIcmdQRVBWQkMv?=
- =?utf-8?B?VkI4czFuSDBhUEVvL1h4VWtNa0Q3TXZYam5jMWZ3RnZ4bTJ5NHZKYlNOd2Js?=
- =?utf-8?B?dTE0ekVhUWJMSTREaUlndmZxRk9KOEtLbGJyUFBUanNXejlUa0dWZlNKOVFa?=
- =?utf-8?B?b1V6YWhkYnFTQW5mTGZZMTBrRHljZXFtOGZnSnFIOGd6VTVSdytPT1Iwd2tV?=
- =?utf-8?B?VHl4Zmc0OHBwYzk0L0hSRlduNEdQQk5Gc2d3dktodEVPbWZHaHAvdkhJd2k4?=
- =?utf-8?B?NWpYcndhUzVuUnUxdmswWXpjWHV6NGVsY1RMQ0ZQRFZseXRIY2dtNSs4V2NF?=
- =?utf-8?B?N0o4N1BXVXRnd1czNFJJbVlFZ3BZWkc1enJLdWwrUlRIbmMzL1FCY3JoTStC?=
- =?utf-8?B?VmhsTWlOeDN2NkhScW4wWm5QTjFNMjczQ1M1dnh2MXFMSjZrc3pRMFB2Mmd0?=
- =?utf-8?B?SVh4MkpkcjBqOVNISG95SDFyVC8zbXFCR2JHWTA5dklkQ1FwOFJiSktEYjBt?=
- =?utf-8?B?WXpmVlJOSVkvdGptb0c1dDJKOWdpVU1GSTBidm1NdG9KdHYrMzZnd0pkM1ZH?=
- =?utf-8?B?dDJmVkhJQ3NvTmsvS0JnSlU5SmpXbmdlUUJseXVLT05aRWZ3a2ZZS0kwSWtj?=
- =?utf-8?B?SXBndm9HL1BrM1dxR2wxNmF4dzlmcDM5Sm1vUW5ZUndWb2dwRGFOTjdnVjFp?=
- =?utf-8?B?alpSQ3pyYmJIa09jQmxsWFNrK0M4YjM1ZkZPdjJTNG95QzkzMUZMZkhESnFJ?=
- =?utf-8?Q?+l7WBErHJc7xpLJxV1N8xnKwJ?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: d5bf2eb8-aabd-41f4-0515-08ddcb23fcbf
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3320.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jul 2025 02:35:58.3095
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: R56w9EwWmdzaExnThTYT7M4FZFVpLf6TECZL+w9gEvPj/pcHyWFoeoNsU4om2B7s7jXju84q3mtwVjVl+DhvBw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6954
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: regression - mm: shmem: add large folio support for tmpfs affect
+ GPU performance.
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+To: David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>
+Cc: Patryk Kowalczyk <patryk@kowalczyk.ws>, da.gomez@samsung.com,
+ baohua@kernel.org, wangkefeng.wang@huawei.com, ioworker0@gmail.com,
+ willy@infradead.org, ryan.roberts@arm.com, akpm@linux-foundation.org,
+ eero.t.tamminen@intel.com, =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?=
+ <ville.syrjala@linux.intel.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>
+References: <CAJCW39JCDX6_S2Ojt1HMmX-h_qAKm2eBRzxX5kOHNJz60Zu=vw@mail.gmail.com>
+ <d5c6ac93-1af0-4093-afea-94a29a387903@redhat.com>
+ <63b69425-2fd1-2c77-06d6-e7ea25c92f34@google.com>
+ <3f204974-26c8-4d5f-b7ae-4052cbfdf4ac@redhat.com>
+ <a8ac7ec3-4cb3-4dd8-8d02-ede6905f322e@linux.alibaba.com>
+In-Reply-To: <a8ac7ec3-4cb3-4dd8-8d02-ede6905f322e@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 3EAFE180002
+X-Stat-Signature: yne1jgeyfn1bs9eyny31ikh8hnfgmdie
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CE3B120002
-X-Stat-Signature: gfgcqgqgba41hqhr6wu3g3she46476h4
-X-HE-Tag: 1753410970-79022
-X-HE-Meta: U2FsdGVkX1/Pq/+ySglmfSh8qmlM9+uAfN9tFxYR+2jjxKWAC/wXwz2OOz9+05bwRPEcm1DPTVPoJGVV6PEoNhyIydeW3h0YfqUAeWlWmW7LAPaYCMYb709KDtiKXN9FrZm+xOfzAxma1l0MhFfQd0WpjWYptPsiE4bPxdXZA31NCaLd2ffm+i73M1PfkbqjmGw7nOEStmymeNObKqKQkgwnKWeQtRSK7MYBqG/xyCBfLXFOfmexv/uSJzTUSXRCPhOxpC+pdNpN/FN7chVf0Is96nehVe8T1LSw2rF0UfBs6giTr5x/BPq9dE3qlnbi4y8yiP3rEOCP/9SSSRD9hDEtA0tfQAPg2Lp8HuVbWvHXpFX62smXt66pr27oorqfGUvef3DIpKIG+0PscCU7yi47xo7jhL9hs+wleY25TVnxe/xuIH6zftTrMo0AVmk+dAOCipZBcu8jAA4Ad/vvrLqo0llZ1m7U3K1705k03rtBjtW/+eYZJAMTc5HyG5NMAWpRyuHWsFzZZ6vSozpmxWNviGMI34Gma5LE9Omhfbi6JLfIPc45QBG4vF5FD2u2K5V0PVVWjJFZ6313KdyiFNLvt5on6KJVY3CJwICZrwe9aKPYKfncrlu4pOsI+TfBkL2lofbRXtPI6bAUDVUygF014bUz/QP+eGsU6iOYGkIHxUpotX1QdByKe68+4VPaBaXdqAmr7LySI2HoK7X2XB3RL6IMbmJ9bxvZXf2a1EkcDHOxl4/ATDCfAv3aqwT1kxfLIdKgnuDfKffBVDtOazEluDZpG+f3jytI6HcKcPV7cnkIcd+6lO1nBMsdMYcGULv8ZRO8GFJxdEOBB1g/Pt3blPmO8MWCrRgKjR6Soo4pTTKciWvFh26cXmrNGKxVsI5llttFqNSg/Ym2Zl9X+r87xBokIRMzny+P/fa9Or11NSyObWYHATfxb/SU2eegxjDNV1clA8srLNJr9gm
- odqZw4W9
- /Ou7K3858c6jtRRtUqXXoPurJmCrqDnUNHR8cBHCXorLEgx0H/dgqcsrZxGeGOZsXi7DQe2zU03wXBUJKTnjaqltlPsPGMUWGI6dva0fGTcJNwXLfMreyvqpzfJaELM9LVBxHtjXRszDcfPmZFK7p9q8JAkvcpC2+7CXDC/0y9wN9F9hERS3oUyZFDxGGdiDCdIy5TvQdUAXTPttUQvp2n/4mC71RVXMbo3u+Mys+2qywDJOlPkeSap0Rf+kqn5bfk+Dra8GzH/dNbffNeQr5spmPgxuc+273G91M+0u5uwZrpw9UvqSgiDgjrOJYXT6RBcaUsXVbm8JulkLvbngZVCdMpBgxazAyQJXDjCBP7lC5pUXr08e8ZF9FU19vREFJwsss3NPfsE04E1KWLbmDezhEsiQZ1r+qywDUQlFzUhJkVY2g3+CmfZipy0943eiVPL8Do3lhprisokuAZRv/HjlH3P3TB8aQQS9TCcwMsNeYk7OsxkzlXNN5WKvYpeYvlUCaUVgaBsu2xvciJJknOTsIbJT9/1d4GsiRnqB3qL6+8TcA2DlcdvEoJ0xrJn43C9cloUeMW8LvBD1s9UmV85fFoMQ/LYul/fjei7dRcZB2ze9m7FU9sIdCpcJAqRk2FFadFvfRknDtUhyyE0jwc2g9iEUk90uagoUuvXvgOREEh9FP7/tKYhKRNpcaWlEITOIX2+eatfSHD3Aws6ipkffOgB7vLBBWDOpuPmpCWWWMcWsux6U1RCT9+oDtr0Ytt3S65dUMd6vqhzYPL0l+s7eiE0+p8gKh2TEGfm9GteZ5v4GMx3jJIfddXq7Lly2R7JfJRf09MY1f4rDDqBfApwCoRTxc1fsll68OTNdG0/G3QdUrljjrdY9vljMW9jBKQBBFnotWiXQJdmuCiQerGimFMWmMH8sMBoTB
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1753411110-315361
+X-HE-Meta: U2FsdGVkX193nIxFu/iiabYqJ2Z0yCBcmk/v40EoJ3s5eAHd79DjKsMWPPFnhXG1OIEQ8TPq+57jY8a3ugGbBT7XlJNPYXLGKnX+S55YS3jv4xMvrIGgwMCCXX+H+7/8Ed1JyPxZ4n4vEixNBcGgNn6jy+NKH/fpMO6fAKtbIdfAh/kL/WBngGqTHoM5yjseKhnS0SbzFiFFQBuW9DUQFWf1U6g/9PUcYEYSPZGlbA1jLPUKlBhN7LIVQSB0rKceQ2wdplX3W7o7od6a3SWrlSdg7pI4VCP9dSALyvgKD/63AwLc0MzKCAMiBmXBvVtCW2svigIQZFmJLFadhVuQEqAWJF2DURAato9PBA+PURFCiWRpv6E6WxzkbKeDQzudDSbvZNydAEX3OzdX+crmzCsLJY4eITlmH4RpgrFKyGgNU8a6VU/sS7qU0xlntpzZpTPgKyu0/BJD8Z0aY3SOL7lWNskoRbSucU67HRveOcaKieuMqYqdbmiwddc0hXVZtOZQo1u887X8PwbFIdeQ7IVwpiykcMBj1NBw0f3YoJPNlZpddtu6UohqiG7ai+gk0giK20xRLSMEocVxFpb3UZizHYfEM/4TEBgJWjwGHzoABPMtNuTQi248o/YifTbrb0O9d8BO3xZ46IICRcPQ6tYVY7JRveWS4P3h4HeX3iYIe1C74As16oZx0P6XgM3Kcy9b9E5ZImHpFIdMBXUl4CqbopYtVMaIONZXxPnhjtPTP06OqGVxfA5DmtTxJ1qQj6IBJsHXk8VkBjj6ZI/OdNzxFgumqbjtbFwrJFW5VYX3HvOh9UeP8xlTM2LkFEX0XOfi9RevFaPUZYbxsZbp+pc4wG1qgFspqUuguC3Cu0nL7mwryq+L1OHpx3fZWEvLE7wK0TAQLD0xlknrFk1KZGyhgrL1OszJNRDLlansYZravoSHdb8BmDrvgAKnnVHNYp8iTsiN0cTVwaWtFT7
+ omGhEcuW
+ XXa2lk2AlgwhTozHpfotSsepcVKNeTCVfe4swX0wk8pRu47b6K4BkSn5gOjtRI1FyHI0axPDBWwDzMSuPkNuWZQ3IFnZz+2h8aQO13PkCIcx69S/sQiRD+YcB+OVow1fOhCJWYBRdlvtQNApP6zGX3Kx1ChMJm86Oe8tkPeCpZe0QuPxSTqRbc9fS8muxDVDXbZYHvuMWaIwbwy8gVpyNlSQsxYwGz+9Dr+X/s6/PzkZ7CXW8d6EPKJmpjlfZuTwjoK4U/ssYoZU2ANrHtfbH/dmLXCNAy8sLNJ/STNcdZJkMjbAcXtBOfXiUOzpxQHEC1YlM6+MpWnuFwlf1VQRzCXPt4pusv05Gp7Ge4iobib4IYDRkbwrdjjdTFKnOkghn5PyN6rxz6vjPUBTax26y+pyEncnnBNUtRGkidRi7GW2R0fjlZ3wtAiG2qy69ov4NmhqhxsgheWRHFUsFV9IsN/RdE1Ou0CqSb+E3TNjdgKiQF02PiVOMucP4TVn2F1QhL2/FTCdEGxqq7VKr1BRiUqmw+LzZ8FLOl/SG0e38H0em6/OEAuGHPBHv4HN/QeAcf17l3qr+GPUSSIOoVTM/K95JfQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -257,68 +92,223 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---------------18s1F8WcBzGsUkBbG3AiQZxl
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+Cc +mm maillist
 
-On 7/9/2025 9:58 AM, Dave Hansen wrote:
-
->> +	 * Avoid using memcpy() here. Instead, open code it.
->> +	 */
->> +	asm volatile("rep movsb"
->> +		     : "+D" (dst), "+S" (src), "+c" (len) : : "memory");
->> +
->> +	lass_clac();
->>  }
+On 2025/7/25 10:29, Baolin Wang wrote:
 > 
-> This didn't turn out great. At the _very_ least, we could have a:
 > 
-> 	inline_memcpy_i_really_mean_it()
+> On 2025/7/25 03:34, David Hildenbrand wrote:
+>> On 24.07.25 21:19, Hugh Dickins wrote:
+>>> On Thu, 24 Jul 2025, David Hildenbrand wrote:
+>>>> On 24.07.25 20:34, Patryk Kowalczyk wrote:
+>>>>>
+>>>>> Recently, I have observed a significant drop in the performance of the
+>>>>> graphics card on a Meteor Lake platform equipped with an Intel Core 
+>>>>> Ultra
+>>>>> 155H CPU and Xe 128EU GPU, using the i915 driver. Nearly every 
+>>>>> workload now
+>>>>> runs slower, with memory-intensive tasks experiencing performance 
+>>>>> reduced by
+>>>>> several percentages.
+>>>>>
+>>>>> This issue began with the Linux kernel version 6.14.x. Using git 
+>>>>> bisect, I
+>>>>> identified the problematic commit as
+>>>>> acd7ccb284b86da1b2e3233a6826fe933844fc06, which relates to the " 
+>>>>> large folio
+>>>>> support for tmpfs in the memory management subsystem."
+>>>>>
+>>>>> More information about this regression can be found at the 
+>>>>> following issue
+>>>>> tracker: https://gitlab.freedesktop.org/drm/i915/kernel/-/ 
+>>>>> issues/14645
+>>>>> <https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14645>
+>>>>>
+>>>>> Older bug for textures:
+>>>>> https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13845 
+>>>>> <https://
+>>>>> gitlab.freedesktop.org/drm/i915/kernel/-/issues/13845>
+>>>>
+>>>> Reading the tracker, the valuable information is:
+>>>>
+>>>> "I tested all the options available via the sysfs interface for 
+>>>> shmem_enabled
+>>>> in transparent hugepage. The selectable settings are: always, 
+>>>> within_size,
+>>>> advise, [never] (the default), deny, and force. Among these, only 
+>>>> the force
+>>>> option restores GPU performance on kernels later than version 6.13 
+>>>> and only
+>>>> for application executed after change."
+>>>>
+>>>> So probably you are no longer getting PMD THPs, whereby previously 
+>>>> you would
+>>>> have gotten PMD THPs.
+>>>>
+>>>> Do we know how the shmem memory is accessed? read/write or mmap? I 
+>>>> suspect it
+>>>> is accessed through write() first.
+>>>>
+>>>> I think we had a change in behavior regarding write(): we will now try
+>>>> allocating a PMD THP only if the write() spans the complete PHD range.
+>>>>
+>>>> I recall that we had a similar report before ...
 > 
-
-It looks like we should go back to __inline_memcpy()/_memset()
-implementation that PeterZ had initially proposed. It seems to fit all
-the requirements, right? Patch attached.
-
-https://lore.kernel.org/lkml/20241028160917.1380714-3-alexander.shishkin@linux.intel.com/
-
-> with the rep mov. Or even a #define if we were super paranoid the
-> compiler is out to get us.
+> Yes, Ville reported the same issue before[1], and I provided a fix to 
+> Ville off-list, but I have not received any feedback.
 > 
-> But _actually_ open-coding inline assembly is far too ugly to live.
+> [1] https://lore.kernel.org/lkml/aBEP-6iFhIC87zmb@intel.com/
 > 
---------------18s1F8WcBzGsUkBbG3AiQZxl
-Content-Type: text/plain; charset="UTF-8";
-	name="x86-asm-Introduce-inline-memcpy-and-memset.patch"
-Content-Disposition: attachment;
-	filename="x86-asm-Introduce-inline-memcpy-and-memset.patch"
-Content-Transfer-Encoding: base64
+>>> I haven't noticed a similar report, but that's my guess too: although
+>>> I thought I checked for precisely this (knowing it to be a danger)
+>>> during 6.14-rc, I did later find that I must have messed my test up;
+>>> but still haven't found time to establish precisely what's going on and
+>>> fix it (can't worry too much about releases between LTSs these days).
+>>
+>> At least scanning the code, write() would behave differently now.
+>>
+>> Now, I don't know which "hint" we should use to use PMD-sized THPs and 
+>> ignore the write size.
+>>
+>> Maybe the last resort would be starting at PMD-size, but falling back 
+>> to smaller orders if we fail to allocate one, hmmmm
+> 
+> I hope to correct the logic of i915 driver's shmem allocation, by 
+> extending the shmem write length in the i915 driver to allocate PMD- 
+> sized THPs. IIUC, some sample fix code is as follows (untested). Patryk, 
+> could you help test it to see if this resolves your issue? Thanks.
+> 
+> diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
+> index 1e659d2660f7..5dee740d1e70 100644
+> --- a/drivers/gpu/drm/drm_gem.c
+> +++ b/drivers/gpu/drm/drm_gem.c
+> @@ -591,7 +591,7 @@ struct page **drm_gem_get_pages(struct 
+> drm_gem_object *obj)
+>          i = 0;
+>          while (i < npages) {
+>                  long nr;
+> -               folio = shmem_read_folio_gfp(mapping, i,
+> +               folio = shmem_read_folio_gfp(mapping, i, 0,
+>                                  mapping_gfp_mask(mapping));
+>                  if (IS_ERR(folio))
+>                          goto fail;
+> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c b/drivers/gpu/ 
+> drm/i915/gem/i915_gem_shmem.c
+> index f263615f6ece..0edc75208b7a 100644
+> --- a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
+> +++ b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
+> @@ -69,6 +69,7 @@ int shmem_sg_alloc_table(struct drm_i915_private 
+> *i915, struct sg_table *st,
+>          struct scatterlist *sg;
+>          unsigned long next_pfn = 0;     /* suppress gcc warning */
+>          gfp_t noreclaim;
+> +       size_t chunk;
+>          int ret;
+> 
+>          if (overflows_type(size / PAGE_SIZE, page_count))
+> @@ -94,6 +95,7 @@ int shmem_sg_alloc_table(struct drm_i915_private 
+> *i915, struct sg_table *st,
+>          mapping_set_unevictable(mapping);
+>          noreclaim = mapping_gfp_constraint(mapping, ~__GFP_RECLAIM);
+>          noreclaim |= __GFP_NORETRY | __GFP_NOWARN;
+> +       chunk = mapping_max_folio_size(mapping);
+> 
+>          sg = st->sgl;
+>          st->nents = 0;
+> @@ -105,10 +107,13 @@ int shmem_sg_alloc_table(struct drm_i915_private 
+> *i915, struct sg_table *st,
+>                          0,
+>                  }, *s = shrink;
+>                  gfp_t gfp = noreclaim;
+> +               size_t bytes = (page_count - i) << PAGE_SHIFT;
+> +               loff_t pos = i << PAGE_SHIFT;
+> 
+> +               bytes = min(chunk, bytes);
+>                  do {
+>                          cond_resched();
+> -                       folio = shmem_read_folio_gfp(mapping, i, gfp);
+> +                       folio = shmem_read_folio_gfp(mapping, i, pos + 
+> bytes, gfp);
+>                          if (!IS_ERR(folio))
+>                                  break;
+> 
+> diff --git a/drivers/gpu/drm/ttm/ttm_backup.c b/drivers/gpu/drm/ttm/ 
+> ttm_backup.c
+> index 6f2e58be4f3e..0c90ae338afb 100644
+> --- a/drivers/gpu/drm/ttm/ttm_backup.c
+> +++ b/drivers/gpu/drm/ttm/ttm_backup.c
+> @@ -100,7 +100,7 @@ ttm_backup_backup_page(struct file *backup, struct 
+> page *page,
+>          struct folio *to_folio;
+>          int ret;
+> 
+> -       to_folio = shmem_read_folio_gfp(mapping, idx, alloc_gfp);
+> +       to_folio = shmem_read_folio_gfp(mapping, idx, 0, alloc_gfp);
+>          if (IS_ERR(to_folio))
+>                  return PTR_ERR(to_folio);
+> 
+> diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
+> index cbe46e0c8bce..9fb5f30552e4 100644
+> --- a/include/linux/shmem_fs.h
+> +++ b/include/linux/shmem_fs.h
+> @@ -156,12 +156,12 @@ enum sgp_type {
+>   int shmem_get_folio(struct inode *inode, pgoff_t index, loff_t write_end,
+>                  struct folio **foliop, enum sgp_type sgp);
+>   struct folio *shmem_read_folio_gfp(struct address_space *mapping,
+> -               pgoff_t index, gfp_t gfp);
+> +               pgoff_t index, loff_t write_end, gfp_t gfp);
+> 
+>   static inline struct folio *shmem_read_folio(struct address_space 
+> *mapping,
+>                  pgoff_t index)
+>   {
+> -       return shmem_read_folio_gfp(mapping, index, 
+> mapping_gfp_mask(mapping));
+> +       return shmem_read_folio_gfp(mapping, index, 0, 
+> mapping_gfp_mask(mapping));
+>   }
+> 
+>   static inline struct page *shmem_read_mapping_page(
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index c5eea697a96f..fcf233440c34 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -5920,6 +5920,7 @@ int shmem_zero_setup(struct vm_area_struct *vma)
+>    * shmem_read_folio_gfp - read into page cache, using specified page 
+> allocation flags.
+>    * @mapping:   the folio's address_space
+>    * @index:     the folio index
+> + * @write_end: end of a write if allocating a new folio
+>    * @gfp:       the page allocator flags to use if allocating
+>    *
+>    * This behaves as a tmpfs "read_cache_page_gfp(mapping, index, gfp)",
+> @@ -5932,14 +5933,14 @@ int shmem_zero_setup(struct vm_area_struct *vma)
+>    * with the mapping_gfp_mask(), to avoid OOMing the machine 
+> unnecessarily.
+>    */
+>   struct folio *shmem_read_folio_gfp(struct address_space *mapping,
+> -               pgoff_t index, gfp_t gfp)
+> +               pgoff_t index, loff_t write_end, gfp_t gfp)
+>   {
+>   #ifdef CONFIG_SHMEM
+>          struct inode *inode = mapping->host;
+>          struct folio *folio;
+>          int error;
+> 
+> -       error = shmem_get_folio_gfp(inode, index, 0, &folio, SGP_CACHE,
+> +       error = shmem_get_folio_gfp(inode, index, write_end, &folio, 
+> SGP_CACHE,
+>                                      gfp, NULL, NULL);
+>          if (error)
+>                  return ERR_PTR(error);
+> @@ -5958,7 +5959,7 @@ EXPORT_SYMBOL_GPL(shmem_read_folio_gfp);
+>   struct page *shmem_read_mapping_page_gfp(struct address_space *mapping,
+>                                           pgoff_t index, gfp_t gfp)
+>   {
+> -       struct folio *folio = shmem_read_folio_gfp(mapping, index, gfp);
+> +       struct folio *folio = shmem_read_folio_gfp(mapping, index, 0, gfp);
+>          struct page *page;
+> 
+>          if (IS_ERR(folio))
 
-RnJvbSBlYjNiNDViMzc3ZGY5MGQzYjM2N2UyYjNmZGRmZmYxYTcyNjI0YTRlIE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBQZXRlciBaaWpsc3RyYSA8cGV0ZXJ6QGluZnJhZGVhZC5vcmc+
-CkRhdGU6IE1vbiwgMjggT2N0IDIwMjQgMTg6MDc6NTAgKzAyMDAKU3ViamVjdDogW1BBVENIXSB4
-ODYvYXNtOiBJbnRyb2R1Y2UgaW5saW5lIG1lbWNweSBhbmQgbWVtc2V0CgpQcm92aWRlIGlubGlu
-ZSBtZW1jcHkgYW5kIG1lbXNldCBmdW5jdGlvbnMgdGhhdCBjYW4gYmUgdXNlZCBpbnN0ZWFkIG9m
-CnRoZSBHQ0MgYnVpbHRpbnMgd2hlbmV2ZXIgbmVjZXNzYXJ5LgoKU2lnbmVkLW9mZi1ieTogUGV0
-ZXIgWmlqbHN0cmEgKEludGVsKSA8cGV0ZXJ6QGluZnJhZGVhZC5vcmc+ClNpZ25lZC1vZmYtYnk6
-IFNvaGlsIE1laHRhIDxzb2hpbC5tZWh0YUBpbnRlbC5jb20+Ci0tLQogYXJjaC94ODYvaW5jbHVk
-ZS9hc20vc3RyaW5nLmggfCAyNiArKysrKysrKysrKysrKysrKysrKysrKysrKwogMSBmaWxlIGNo
-YW5nZWQsIDI2IGluc2VydGlvbnMoKykKCmRpZmYgLS1naXQgYS9hcmNoL3g4Ni9pbmNsdWRlL2Fz
-bS9zdHJpbmcuaCBiL2FyY2gveDg2L2luY2x1ZGUvYXNtL3N0cmluZy5oCmluZGV4IGMzYzJjMTkx
-NGQ2NS4uOWNiNWFhZTdmYmE5IDEwMDY0NAotLS0gYS9hcmNoL3g4Ni9pbmNsdWRlL2FzbS9zdHJp
-bmcuaAorKysgYi9hcmNoL3g4Ni9pbmNsdWRlL2FzbS9zdHJpbmcuaApAQCAtMSw2ICsxLDMyIEBA
-CiAvKiBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMCAqLworI2lmbmRlZiBfQVNNX1g4
-Nl9TVFJJTkdfSAorI2RlZmluZSBfQVNNX1g4Nl9TVFJJTkdfSAorCiAjaWZkZWYgQ09ORklHX1g4
-Nl8zMgogIyBpbmNsdWRlIDxhc20vc3RyaW5nXzMyLmg+CiAjZWxzZQogIyBpbmNsdWRlIDxhc20v
-c3RyaW5nXzY0Lmg+CiAjZW5kaWYKKworc3RhdGljIF9fYWx3YXlzX2lubGluZSB2b2lkICpfX2lu
-bGluZV9tZW1jcHkodm9pZCAqdG8sIGNvbnN0IHZvaWQgKmZyb20sIHNpemVfdCBsZW4pCit7CisJ
-dm9pZCAqcmV0ID0gdG87CisKKwlhc20gdm9sYXRpbGUoInJlcCBtb3ZzYiIKKwkJICAgICA6ICIr
-RCIgKHRvKSwgIitTIiAoZnJvbSksICIrYyIgKGxlbikKKwkJICAgICA6IDogIm1lbW9yeSIpOwor
-CXJldHVybiByZXQ7Cit9CisKK3N0YXRpYyBfX2Fsd2F5c19pbmxpbmUgdm9pZCAqX19pbmxpbmVf
-bWVtc2V0KHZvaWQgKnMsIGludCB2LCBzaXplX3QgbikKK3sKKwl2b2lkICpyZXQgPSBzOworCisJ
-YXNtIHZvbGF0aWxlKCJyZXAgc3Rvc2IiCisJCSAgICAgOiAiK0QiIChzKSwgIitjIiAobikKKwkJ
-ICAgICA6ICJhIiAoKHVpbnQ4X3QpdikKKwkJICAgICA6ICJtZW1vcnkiKTsKKwlyZXR1cm4gcmV0
-OworfQorCisjZW5kaWYgLyogX0FTTV9YODZfU1RSSU5HX0ggKi8KLS0gCjIuNDMuMAoK
-
---------------18s1F8WcBzGsUkBbG3AiQZxl--
 
