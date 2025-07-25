@@ -2,174 +2,140 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F0F8C87FCE
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 16:47:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F042C87FCE
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Jul 2025 16:47:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3434B6B009E; Fri, 25 Jul 2025 12:47:06 -0400 (EDT)
+	id C6BA06B00A0; Fri, 25 Jul 2025 12:47:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 31CF26B009F; Fri, 25 Jul 2025 12:47:06 -0400 (EDT)
+	id C436F6B00A1; Fri, 25 Jul 2025 12:47:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2319C6B00A0; Fri, 25 Jul 2025 12:47:06 -0400 (EDT)
+	id B59696B00A2; Fri, 25 Jul 2025 12:47:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 159326B009E
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 12:47:06 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C2BF3BBC32
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 16:47:05 +0000 (UTC)
-X-FDA: 83703366810.13.84221AC
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0E96C180005
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 16:47:02 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="RPe/GuXU";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=28DW0cse;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="RPe/GuXU";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=28DW0cse;
-	dmarc=none;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A6D976B00A0
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 12:47:16 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D4FE1BBB80
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 16:47:15 +0000 (UTC)
+X-FDA: 83703367230.15.57E40A2
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E5DB6A0011
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 16:47:13 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=rivosinc-com.20230601.gappssmtp.com header.s=20230601 header.b=PBj7rjOf;
+	spf=pass (imf15.hostedemail.com: domain of debug@rivosinc.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753462023;
+	s=arc-20220608; t=1753462034;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j6rgzcM42r6bNwWrNmvNxe4rewMivcbP9MWQ4KWmjXQ=;
-	b=mnogkV4CPac00BGtEi8NT2RV3GLmnt5zOsZ0BD6fMaTuqXl8XuoOlnkgXYXB+KZAJgBpaD
-	SHAyah+ds/8R+qXI1Lkl71Mh2kbu8leyDCWPGOY5RefuxV03k7ceRQrVe6+FSicnfsbLEa
-	D3FLPliwkPD0WDo63XYOAepBMsbAn7E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753462023; a=rsa-sha256;
-	cv=none;
-	b=hQtzqlp46shuhekIsqSw5F9/LGN6CrL7XLAvK8pcWdmiDh6FoGu+GpIjh1yDeZ6jRCbRlF
-	Vv5PZzB2TtYi0VxiYGdTQz0gODfiVnOq9osTLXMt78z7/kcb5Dek+tf1PSURgcD222v1hT
-	iooCgLEvD1zr+nsVQCOhXDA2mhBsx1g=
+	bh=vHLTqitS8m73sB1NoWWs/yPMz8aTSpmBU53QgGw/vVs=;
+	b=papQLD220TvC792o1tCkQw0XEVx26q2ERbuuq8tEZ98mKtb4Ji/BJMlXhmOJqvxH9SPE8n
+	A1w7SAjAPv2jDU1kd+5bsnAbk8C5rx+Y0gM4UcZ/g3mZjNy0fs5puzGYeCTa4LEJ+CXb8g
+	9K7MXZIt9gwsqRMni5aqFYDYCSYA7qQ=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="RPe/GuXU";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=28DW0cse;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="RPe/GuXU";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=28DW0cse;
-	dmarc=none;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 8048E1F78C;
-	Fri, 25 Jul 2025 16:47:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1753462021; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=j6rgzcM42r6bNwWrNmvNxe4rewMivcbP9MWQ4KWmjXQ=;
-	b=RPe/GuXUzXjAcbFcMm+vNtrov952mlsyQb6KVQwCox+l3f9HQqAOYMYL9Nsd1DpzPj9vo9
-	9LGLWnM6aZ6Y07ryXiyZqAGTt75jxM//DRLIxgkfJ98yitisRU4lrjF5PgWzreH7843bWD
-	hQW8u7W2qzYCOkvemzDosx/MdKlPuYI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1753462021;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=j6rgzcM42r6bNwWrNmvNxe4rewMivcbP9MWQ4KWmjXQ=;
-	b=28DW0cseOpZGtgrR8i5LN7voYD2K/3OfmxEb4dEGj24N7nqx4Ps+Kvmd9x/56yJAKZvF61
-	AOBqpMrgEINuZYAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1753462021; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=j6rgzcM42r6bNwWrNmvNxe4rewMivcbP9MWQ4KWmjXQ=;
-	b=RPe/GuXUzXjAcbFcMm+vNtrov952mlsyQb6KVQwCox+l3f9HQqAOYMYL9Nsd1DpzPj9vo9
-	9LGLWnM6aZ6Y07ryXiyZqAGTt75jxM//DRLIxgkfJ98yitisRU4lrjF5PgWzreH7843bWD
-	hQW8u7W2qzYCOkvemzDosx/MdKlPuYI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1753462021;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=j6rgzcM42r6bNwWrNmvNxe4rewMivcbP9MWQ4KWmjXQ=;
-	b=28DW0cseOpZGtgrR8i5LN7voYD2K/3OfmxEb4dEGj24N7nqx4Ps+Kvmd9x/56yJAKZvF61
-	AOBqpMrgEINuZYAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6CD75134E8;
-	Fri, 25 Jul 2025 16:47:01 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id v0c2GgW1g2gcfQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 25 Jul 2025 16:47:01 +0000
-Message-ID: <996a7622-219f-4e05-96ce-96bbc70068b0@suse.cz>
-Date: Fri, 25 Jul 2025 18:47:01 +0200
+	imf15.hostedemail.com;
+	dkim=pass header.d=rivosinc-com.20230601.gappssmtp.com header.s=20230601 header.b=PBj7rjOf;
+	spf=pass (imf15.hostedemail.com: domain of debug@rivosinc.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753462034; a=rsa-sha256;
+	cv=none;
+	b=15SjpEuXfwF9M6Z/v4ntQGdbgIbyppIPycqgh1/o0SemFHo1OTyqZ4CpUEuC/eiuBibZbo
+	7bEZopc/mFy8xPdyFPI5AOv9t9Xc3iiL3NPm0TR/YcR0LWwv/OA0hOkjBLW5MvXxlQYLCA
+	On+clbi+sn5ei98eOpAub0XUdzA6WsY=
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-74b54af901bso1627828b3a.2
+        for <linux-mm@kvack.org>; Fri, 25 Jul 2025 09:47:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1753462033; x=1754066833; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vHLTqitS8m73sB1NoWWs/yPMz8aTSpmBU53QgGw/vVs=;
+        b=PBj7rjOfl0TL9l8wzz7UFcy3eccPb0eXCvHW45yq4/KzBfkx5IHL6kuBHSoSzzBPx6
+         MeVPwU3O54i9CBs9OXoyDZFBIhfs6Nf3PUKem39d++8Fj8r/f39VUSvkSWl6A7tQEycW
+         sdL4dsxa/ZbjhEyR9RE5+gh0MU0b97hqA6QQj6Il2Yl6uxqcgAhJF4crsT4AgMYnDrEj
+         jhpKW1vFCfCcyuh7Sge4gdm8ALireF1+e0vGLgYCD6P+l+l0m8p27TbTAPjjgnRMQhOZ
+         AEGNpiRkvbxUSA/EgAVZnTcLKRnQLRJ1rOfbYlNTItuKdMYV9KVRAl484Cquj7kJL3EZ
+         hE4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753462033; x=1754066833;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vHLTqitS8m73sB1NoWWs/yPMz8aTSpmBU53QgGw/vVs=;
+        b=C3x3aX77UxrhV3OIY7lcsIAQXxvxYvW8C5fWixaqMDswzwjpMgkzPjNxT1Ak5hrLF7
+         05mimI3ato373yYBlYA9701KgRJvVjGD7SBGGIXxbwNXw3uuUp9J25M6+Goawte1tbJi
+         WVbVQfa8ADCQeIPIh/wFUwY+xLbEkd97tmbXzLheytdDN4MkqiJInq6tMXhrpNDBfQwW
+         L48ASRKT7IU2LFlbf04i5lYBXZHlJ2ebxFmHy1DRO36vV1Sdz6sImxzv+C6lb/SNtanl
+         ZPIRs63D4h1xQZNEj1pw0O1hU/fofZ0y0uLDZqTN2tbBxl9QHqUEGhmI2XlO6B+oT2KR
+         AYGA==
+X-Forwarded-Encrypted: i=1; AJvYcCX21bHTdo76z2AzmJ56PjoKDTg48nmZZdpdgL9B/LPZEQKnytOUeyppa5wonCbTnNmZgJBxHXeRZQ==@kvack.org
+X-Gm-Message-State: AOJu0YxqPIOkiRdJ+6iUG6w7KDcV8jSExI1KQaGJ21CSSa+xqlsl148N
+	enrqXbZHCW2lHdEDUXrLc8cLdbCbtK/kgwFFNPv7B1E5DbPsPlrp6rgrvWdLf/6Bzwg=
+X-Gm-Gg: ASbGncuNkElnlvxoxIsRKfZl6XWehGjirLmRgFLK6kSp6ZqgDwf056OcaTIl9tw2zJt
+	rs/XYrcvV4zgX7U6ZIuxVB4LdSuuUBVBDLtU7t7Wl5/DKryJssdVciF1A7OLoYkL4V3wNJuhul8
+	kDrAnyLf3OeJSELXeBhK3kkPkUm67QBjaJr2JVkPde068I+a/Jh/4LXi8Pg9R3aHQ23BwlKmyOu
+	Z0McXbsth9n1GBzx6TsNCWtEA/S7SMqMWif12Ec0w6UVJRa798vr0l/l0Wr2IHcKG3r5xBjXvxW
+	+HlAM8EmU20+/v67dDqkyJQXjU+U5zDJrIoQrOjF1JrtrS8c4+Rw0nT1p7Q9jY+5bN7cxtcqlu4
+	ub82m+WYFydkhsXtD9deeMZedl9gNbbDW
+X-Google-Smtp-Source: AGHT+IHxx3Jq+s72rQKTRVQE8Bq7kbAijuZ/ZVTSRX63AJDAbUraG/5Y8poHwWgKyEfuOloxC+qeAg==
+X-Received: by 2002:a05:6a00:1790:b0:74c:3547:7f0c with SMTP id d2e1a72fcca58-7633626d5afmr4307957b3a.3.1753462032636;
+        Fri, 25 Jul 2025 09:47:12 -0700 (PDT)
+Received: from debug.ba.rivosinc.com ([64.71.180.162])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7640b4d15cfsm119033b3a.119.2025.07.25.09.47.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Jul 2025 09:47:12 -0700 (PDT)
+Date: Fri, 25 Jul 2025 09:47:08 -0700
+From: Deepak Gupta <debug@rivosinc.com>
+To: Sami Tolvanen <samitolvanen@google.com>
+Cc: Will Deacon <will@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas.schier@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Monk Chiang <monk.chiang@sifive.com>,
+	Kito Cheng <kito.cheng@sifive.com>,
+	Justin Stitt <justinstitt@google.com>,
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-kbuild@vger.kernel.org, linux-mm@kvack.org,
+	llvm@lists.linux.dev, rick.p.edgecombe@intel.com,
+	broonie@kernel.org, cleger@rivosinc.com, apatel@ventanamicro.com,
+	ajones@ventanamicro.com, conor.dooley@microchip.com,
+	charlie@rivosinc.com, samuel.holland@sifive.com, bjorn@rivosinc.com,
+	fweimer@redhat.com, jeffreyalaw@gmail.com,
+	heinrich.schuchardt@canonical.com, andrew@sifive.com,
+	ved@rivosinc.com
+Subject: Re: [PATCH 10/11] scs: generic scs code updated to leverage hw
+ assisted shadow stack
+Message-ID: <aIO1DOrhUTolFWO6@debug.ba.rivosinc.com>
+References: <20250724-riscv_kcfi-v1-0-04b8fa44c98c@rivosinc.com>
+ <20250724-riscv_kcfi-v1-10-04b8fa44c98c@rivosinc.com>
+ <20250725161327.GC1724026@google.com>
+ <aIOz_wxxCr8tPgXz@debug.ba.rivosinc.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm: slub: avoid deref of free pointer in sanity checks
- if object is invalid
-Content-Language: en-US
-To: Li Qiong <liqiong@nfschina.com>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>,
- Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250725064919.1785537-1-liqiong@nfschina.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20250725064919.1785537-1-liqiong@nfschina.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: cwgdd3cukoqdyt41ysaqx567pdw8wzcs
-X-Rspamd-Queue-Id: 0E96C180005
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <aIOz_wxxCr8tPgXz@debug.ba.rivosinc.com>
 X-Rspam-User: 
-X-HE-Tag: 1753462022-907545
-X-HE-Meta: U2FsdGVkX181oOV0wqpAjPYfcKj/st6aVScTd1h2bvCQs5M9jY83+FKChR1gQKRjvSV4zfC5oOWoVwMc7tS6l66IBHGU+6yW+Tj6Qq7UOhFUIERdHBUlM4ksObKLfX4lNi8ZjvOd5YHmuaT8KG4jYyN5dk6QXiNWzuWaTmTG8Mf5MBjesFoKDn2Izb4GZ0b5OWpnmCpdV6cluJ3auMLxTJwqX/DTcuRmN2DPuox+N1VGsCnouMtyW7QoU9XT4IUdEEfPpQfXkReUJkL8qtnO2UYepwP7XQg+/fNNor6RUvsQ5UaZW7eTuKe7iQnS791tptab41vOKrA/yAkKi8c7w0MADgdI9bzNXb+hyXbQsz7wBrxIrbEu9fckwu2k3HCUcYOkLAJfPyYy8YE74id96POECXpE4gSXMIs+ouKwG/gKUU1BO8ldwltO83IU/cJ6TqHQZ8PmBWm7tuL1mNcsr68qQZTZBya4bhjLw9LoqNzyLPcf1GCrRu9XuZoRqu6PsBWbijVj3wu0h/iiBNp2E3ynDdsuyJFLsZUuCqNVHyvWmiDG+yHlh1k927ndchgerBNgPI31Iop91klt1bHFXSAVw/QCj6CuW/vKr3D209Ogbl2UPI256rkJxZp230IQmYRvsKr2IJ3t4VwLNHFAUvWhLpG1bejMK2EQbcc4rdvBHMvx4ng9N6X30jLWjOnyGhV2CwQMoabeWzkVH1BzLwaJQ6xC3PNKHwmy9rh3k1f8WSQsrLwqCTSZJZUHHWaob6VLW1MwqEm/hErXsbj/k2T4/SRzFdCXLr412nSPVXbBM2YHYoqEGZfgt+BlPrte2/GKsdCN/QuLzf4X0TML02qBIKnJVG5+cpDi+V0zzueahJqcnTY2zSXL+Uke5DWGeNI5o/UWb6FS+aLC97pfB3tuFw5Kl9zp+Bfmj5B5eJO+YZnPh+XGu2qRneODHFFSNgP7COqUHXGfuEz5iNn
- hpIg+m19
- gxMxmdbSWp7M4km2N+qWyrhYXcVI+Lg/dPbil0ksOoX49nPSj5qKGqr3eOYcU7w6Morwf3EBu7n55mJVWFKvNq/tbMva9aP0KnCg83qr9r59kCdQ0pPJN7DIX+5K8DOuJO2yB5Ajufqw7un3g0LE7BNYkmINHCPZeihvfbaQeXibdwRjAqHC+us15GBdGyijVFTSPE0X9L3M2F5DP/t5sYsGzKX82JZ9JcofFI2v46n1zb549brW+ldC5xjoj2BEhlRfGjefBlxZ/VPZ1dDDpj/VgshgNGD0ouNgO5dRr3vdS/NF9l1nsPLMwQed3FhKYAELzIZaX/ugI4GVgwnfrLoq4OtMgluQY6wCyX+co64hhaZ4cODynKbr0DylShlFSfjmOWICV2mz9MIci8kLv142Ckw==
+X-Rspamd-Queue-Id: E5DB6A0011
+X-Rspamd-Server: rspam06
+X-Stat-Signature: qhadsbgbzhgtn1ix66e9g5zc3senhmjx
+X-HE-Tag: 1753462033-898466
+X-HE-Meta: U2FsdGVkX18xetnIz8xggaN03Eq4VbBKfCNxSMGeDEnQGDva77z0H8pwU8FyC/Ylw5tcA1JOCWlAhOwyNNdA1YlWLQNVs1EKSzlE9i7alKlKWy09MYJR7szcCmt7qm0viZ2F0YI+Ilk2InLpCGpG+G3eByOltC2z6telSM7uof3oyfy76x0lWi+qfOvL0ESPvJ8/IyvpdMfI+LolFHTEjR63PxD4jplCDBoALoJKe4+2Ubq7xW39e/yilnnyzMnaVc3RG3pMJCJO0/NY44mMlR5TaZPPtpRALfe+29Z2OkqyZtH7r4KpsBa83Z6QWKcPJSaaKIAcwB65aq7ErtlAOoL6kp53VzGqzVh1DOKoTUcpKFZXpwUkINwuC4qWKjofhdd62TOonmFkLmYGS/sO1DZNLZm+ri9rwq7W1cWd21Zm/pRLSDDgNfcJxmS0QQr9ENxQ5MG0nGfFuvDKJJVaHVqx3NyI+aY/o/wGV28VuH5C87EJseN+ujDIh065NhPphUZpr/3AXIF/7pMa6Zrah+hQqD+Sy+vDuuvVw6iIB309fYBInPFfwflO4VXNja1AsdYV9LWQPn9KB86m8j0LMFvFCl6piYIOd59swdGOFTYlbFMSWimVDtCX3X1oJqY8lA5C6o4vvAiMEF1lc8tNENrc/vkTlWwm//tTFfqmmebtSIDUXqt0fsoWPyFEcow4ZqY3OWroW5epQUFdqH/zYVTEWUUftxRTz6MTqBeUwgOYvpx7evW12NBvIKrTDabFtRx03wcjYORP164uq6fwvgiHJIjiaG13/nnDLQadmpaAGBxGmu6N7QTE+rX9wxEO8ygewSe6MW1Etrc7bDo+Dc0hKonzu5ML0dcFf/8oyB3u+7TE2dksEVJyqxjj2L/KRfdkW6TRPF2J8NE/CraG2Nz9Ducbq9K28W1UcL97woFQlx5ycuo/rvgEK69lNuNL0Jai6B/oehoGGTwsxrY
+ M7Rkd2yH
+ Uoe1yKlbK9L5yln5SaP8c2Ud+m+5k6HXLb5O/7jsrEeq6xj1CGJ5AVtK+DmcHc0K08TZaZuVxyqYKHHPo1nyhyVeUBBjLeJqXpeAhIu0L1TMbjwvVrN3d8ZT3G5lmyt/CnGNh3NESGNAWCPq5DOl6f82wNcVH3+FKfOQkzv5YC+5qw746DtSQmutqpmOT6b5ZI+cOQGVQ9qNbsEL/Wk+mR9HfN/+C20Jg0g5zrOlj4OWj5Y6jWXwb0eMRe+fpqW4rLKWmjwK2bBIFdh2cXHPPGpwQ50boAnbNWMAGCnVn58hD8RJMCSOqap+VpjSiP3Xwqw5nD1pCtDfkjhAeDl8qX7YFN2KEb/pnXjaixDEe69sDCckN4u8KvE9/dm5wBTCRfPNw7N9cjUT3sW/DUhyyvNuX/GX+F5A//lDwKB7iWm1W4jiAjVJuw3MJt04C8LMxeC/ydMtkcrMaHBdWpmcmJOgXDLRyg3wWrNP++L5rmve3GMZkUbAIOBMkveqOOjSvy9sRiQrpcMVw5Ik4g5ooxYxlO4AwhyuZY98tKD2e20PfiOVJzXVWrp+IuWbLF0SodtuU7nrbIlO/oMP5A/D5TBuTv6ulf2GAdK7a
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -178,54 +144,190 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/25/25 08:49, Li Qiong wrote:
-> For debugging, object_err() prints free pointer of the object.
-> However, if check_valid_pointer() returns false for a object,
-> dereferncing `object + s->offset` can lead to a crash. Therefore,
-> print the object's address in such cases.
-> 
-> Fixes: bb192ed9aa71 ("mm/slub: Convert most struct page to struct slab by spatch")
+Sorry forgot to respond to rest of the comments.
 
-That was the last commit to change the line, but the problem existed before,
-AFAICS all the time, so I did:
+On Fri, Jul 25, 2025 at 09:42:39AM -0700, Deepak Gupta wrote:
+>On Fri, Jul 25, 2025 at 04:13:27PM +0000, Sami Tolvanen wrote:
+>>On Thu, Jul 24, 2025 at 04:37:03PM -0700, Deepak Gupta wrote:
+>>>If shadow stack have memory protections from underlying cpu, use those
+>>>protections. arches can define PAGE_KERNEL_SHADOWSTACK to vmalloc such shadow
+>>>stack pages. Hw assisted shadow stack pages grow downwards like regular
+>>>stack. Clang based software shadow call stack grows low to high address.
+>>
+>>Is this the case for all the current hardware shadow stack
+>>implementations? If not, we might want a separate config for the
+>>shadow stack direction instead.
+>
+>Is there something like this for regular stack as well?
+>I could copy same mechanism.
+>
+>>
+>>>Thus this patch addresses some of those needs due to opposite direction
+>>>of shadow stack. Furthermore, hw shadow stack can't be memset because memset
+>>>uses normal stores. Lastly to store magic word at base of shadow stack, arch
+>>>specific shadow stack store has to be performed.
+>>>
+>>>Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+>>>---
+>>> include/linux/scs.h | 26 +++++++++++++++++++++++++-
+>>> kernel/scs.c        | 38 +++++++++++++++++++++++++++++++++++---
+>>> 2 files changed, 60 insertions(+), 4 deletions(-)
+>>>
+>>>diff --git a/include/linux/scs.h b/include/linux/scs.h
+>>>index 4ab5bdc898cf..6ceee07c2d1a 100644
+>>>--- a/include/linux/scs.h
+>>>+++ b/include/linux/scs.h
+>>>@@ -12,6 +12,7 @@
+>>> #include <linux/poison.h>
+>>> #include <linux/sched.h>
+>>> #include <linux/sizes.h>
+>>>+#include <asm/scs.h>
+>>>
+>>> #ifdef CONFIG_SHADOW_CALL_STACK
+>>>
+>>>@@ -37,22 +38,45 @@ static inline void scs_task_reset(struct task_struct *tsk)
+>>> 	 * Reset the shadow stack to the base address in case the task
+>>> 	 * is reused.
+>>> 	 */
+>>>+#ifdef CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK
+>>>+	task_scs_sp(tsk) = task_scs(tsk) + SCS_SIZE;
+>>>+#else
+>>> 	task_scs_sp(tsk) = task_scs(tsk);
+>>>+#endif
+>>> }
+>>>
+>>> static inline unsigned long *__scs_magic(void *s)
+>>> {
+>>>+#ifdef CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK
+>>>+	return (unsigned long *)(s);
+>>>+#else
+>>> 	return (unsigned long *)(s + SCS_SIZE) - 1;
+>>>+#endif
+>>> }
+>>>
+>>> static inline bool task_scs_end_corrupted(struct task_struct *tsk)
+>>> {
+>>> 	unsigned long *magic = __scs_magic(task_scs(tsk));
+>>>-	unsigned long sz = task_scs_sp(tsk) - task_scs(tsk);
+>>>+	unsigned long sz;
+>>>+
+>>>+#ifdef CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK
+>>>+	sz = (task_scs(tsk) + SCS_SIZE) - task_scs_sp(tsk);
+>>>+#else
+>>>+	sz = task_scs_sp(tsk) - task_scs(tsk);
+>>>+#endif
+>>>
+>>> 	return sz >= SCS_SIZE - 1 || READ_ONCE_NOCHECK(*magic) != SCS_END_MAGIC;
+>>> }
+>>>
+>>>+static inline void __scs_store_magic(unsigned long *s, unsigned long magic_val)
+>>>+{
+>>>+#ifdef CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK
+>>>+	arch_scs_store(s, magic_val);
+>>>+#else
+>>>+	*__scs_magic(s) = magic_val;
+>>>+#endif
+>>>+}
+>>>+
+>>
+>>I'm not a huge fan of all the ifdefs. We could clean this up by
+>>allowing architectures to simply override some these functions, or at
+>>least use if (IS_ENABLED(CONFIG...)) instead. Will, any thoughts about
+>>this?
 
-    Fixes: 7656c72b5a63 ("SLUB: add macros for scanning objects in a slab")
-    Cc: <stable@vger.kernel.org>
+Yes I don't like it either.
+I'll do something about it in next iteration.
 
-> Signed-off-by: Li Qiong <liqiong@nfschina.com>
+>>
+>>> DECLARE_STATIC_KEY_FALSE(dynamic_scs_enabled);
+>>>
+>>> static inline bool scs_is_dynamic(void)
+>>>diff --git a/kernel/scs.c b/kernel/scs.c
+>>>index d7809affe740..5910c0a8eabd 100644
+>>>--- a/kernel/scs.c
+>>>+++ b/kernel/scs.c
+>>>@@ -11,6 +11,7 @@
+>>> #include <linux/scs.h>
+>>> #include <linux/vmalloc.h>
+>>> #include <linux/vmstat.h>
+>>>+#include <asm-generic/set_memory.h>
+>>>
+>>> #ifdef CONFIG_DYNAMIC_SCS
+>>> DEFINE_STATIC_KEY_FALSE(dynamic_scs_enabled);
+>>>@@ -32,19 +33,31 @@ static void *__scs_alloc(int node)
+>>> {
+>>> 	int i;
+>>> 	void *s;
+>>>+	pgprot_t prot = PAGE_KERNEL;
+>>>+
+>>>+#ifdef CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK
+>>>+	prot = PAGE_KERNEL_SHADOWSTACK;
+>>>+#endif
+>>
+>>I would rather define the shadow stack protection flags in the header
+>>file and allow them to be overridden in asm/scs.h.
 
-Added to slab/for-next, thanks!
+Yes that's good idea. I'll do that.
 
-> ---
-> v2:
-> - rephrase the commit message, add comment for object_err().
-> ---
->  mm/slub.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 31e11ef256f9..8b24f1cf3079 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -1097,6 +1097,10 @@ static void print_trailer(struct kmem_cache *s, struct slab *slab, u8 *p)
->  			      size_from_object(s) - off);
->  }
->  
-> +/*
-> + * object - should be a valid object.
-> + * check_valid_pointer(s, slab, object) should be true.
-> + */
->  static void object_err(struct kmem_cache *s, struct slab *slab,
->  			u8 *object, const char *reason)
->  {
-> @@ -1587,7 +1591,7 @@ static inline int alloc_consistency_checks(struct kmem_cache *s,
->  		return 0;
->  
->  	if (!check_valid_pointer(s, slab, object)) {
-> -		object_err(s, slab, object, "Freelist Pointer check fails");
-> +		slab_err(s, slab, "Invalid object pointer 0x%p", object);
->  		return 0;
->  	}
->  
+>>
+>>> 	for (i = 0; i < NR_CACHED_SCS; i++) {
+>>> 		s = this_cpu_xchg(scs_cache[i], NULL);
+>>> 		if (s) {
+>>> 			s = kasan_unpoison_vmalloc(s, SCS_SIZE,
+>>> 						   KASAN_VMALLOC_PROT_NORMAL);
+>>>+/*
+>>>+ * If software shadow stack, its safe to memset. Else memset is not
+>>>+ * possible on hw protected shadow stack. memset constitutes stores and
+>>>+ * stores to shadow stack memory are disallowed and will fault.
+>>>+ */
+>>>+#ifndef CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK
+>>> 			memset(s, 0, SCS_SIZE);
+>>>+#endif
+>>
+>>This could also be moved to a static inline function that
+>>architectures can override if they have hardware shadow stacks that
+>>cannot be cleared at this point.
 
+Make sense.
+
+>>
+>>> 			goto out;
+>>> 		}
+>>> 	}
+>>>
+>>> 	s = __vmalloc_node_range(SCS_SIZE, 1, VMALLOC_START, VMALLOC_END,
+>>>-				    GFP_SCS, PAGE_KERNEL, 0, node,
+>>>+				    GFP_SCS, prot, 0, node,
+>>> 				    __builtin_return_address(0));
+>>>
+>>> out:
+>>>@@ -59,7 +72,7 @@ void *scs_alloc(int node)
+>>> 	if (!s)
+>>> 		return NULL;
+>>>
+>>>-	*__scs_magic(s) = SCS_END_MAGIC;
+>>>+	__scs_store_magic(__scs_magic(s), SCS_END_MAGIC);
+>>>
+>>> 	/*
+>>> 	 * Poison the allocation to catch unintentional accesses to
+>>>@@ -87,6 +100,16 @@ void scs_free(void *s)
+>>> 			return;
+>>>
+>>> 	kasan_unpoison_vmalloc(s, SCS_SIZE, KASAN_VMALLOC_PROT_NORMAL);
+>>>+	/*
+>>>+	 * Hardware protected shadow stack is not writeable by regular stores
+>>>+	 * Thus adding this back to free list will raise faults by vmalloc
+>>>+	 * It needs to be writeable again. It's good sanity as well because
+>>>+	 * then it can't be inadvertently accesses and if done, it will fault.
+>>>+	 */
+>>>+#ifdef CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK
+>>>+	set_memory_rw((unsigned long)s, (SCS_SIZE/PAGE_SIZE));
+>>>+#endif
+>>
+>>Another candidate for an arch-specific function to reduce the number
+>>of ifdefs in the generic code.
+
+Yes I'll do these changes in next iteration.
+>>
+>>Sami
 
