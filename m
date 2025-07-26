@@ -2,111 +2,106 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F06BFC87FCA
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Jul 2025 07:42:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C83E0C87FCA
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Jul 2025 10:16:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E4196B0088; Sat, 26 Jul 2025 03:42:22 -0400 (EDT)
+	id DD98E6B0088; Sat, 26 Jul 2025 06:16:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 194A36B0089; Sat, 26 Jul 2025 03:42:22 -0400 (EDT)
+	id D89E16B0089; Sat, 26 Jul 2025 06:16:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 083CD6B008A; Sat, 26 Jul 2025 03:42:22 -0400 (EDT)
+	id C9F626B008A; Sat, 26 Jul 2025 06:16:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ECA496B0088
-	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 03:42:21 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 95C281343BE
-	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 07:42:21 +0000 (UTC)
-X-FDA: 83705622882.08.D87917E
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2E64940005
-	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 07:42:20 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gswPVrHk;
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BB6076B0088
+	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 06:16:32 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 244AA160A46
+	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 10:16:32 +0000 (UTC)
+X-FDA: 83706011424.02.E981D4A
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 686ABC000D
+	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 10:16:29 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=EZ8nJ+TB;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753515740;
+	s=arc-20220608; t=1753524990;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GvTWYWbJnd3Twi29+QTbfJLW1y0MCnmekCUUg3hBGB8=;
-	b=0VtPJLNwlUeLSPtMSulCoXa6MN99taXhEewFLMXN4tEg95qsHsHW/Ttv3XsKKYWUmEqIAw
-	+1Kt6VEf4aaSN2wtrDCGQo/VoIBf88wl/eJMRT9cmsS1u+XRhwV4Y/0pM90IkWUbcT2Peq
-	UUyueV9zd1lLhGCsS1RUlP4zHEYSRt8=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gswPVrHk;
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753515740; a=rsa-sha256;
+	bh=i8Zf1zp/ealqhGBavcPjq1WE/FPfh9VOVlz5M2PXbsE=;
+	b=lifp1mxyFQp1I/0nbmsqy098ouWrJBjB0XfdtwKpNWH1nR6ZvZWE74iubw7qVsguD2KNUn
+	DP2fWPSfvriWHgUgW7orQKYJtJmqD3SXGZ2DwCiuos9BGtg8gaINx3dcnE6Glulv5ZM7Qf
+	p82x6aDVjoyvZUCqxs8JeqSSMheMyV8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753524990; a=rsa-sha256;
 	cv=none;
-	b=TjD/r7EKScwBrwz/etBOTVGYMFAvUPl2G/r2rnJXpdn7g38VcN+usxM3v6tPUH7TUzUwJV
-	/Vq6g85BYdhkE+Ozls1eATPH/pL766WyIdupUJreBcQzGmPkYvZsYjW7B7gL3bsGc/iFak
-	qxTIB+KmUVsk0RkNn9iWHtZRO8WMPRE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 3759EA522AC;
-	Sat, 26 Jul 2025 07:42:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE1BAC4CEED;
-	Sat, 26 Jul 2025 07:42:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753515738;
-	bh=JH80ui6HzMZrysAZcLLCGsZmU6VvUIi+CTfUhFaghYM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gswPVrHk05CTmMSr0rmQsIvvtZGLK84sbkhG7vujS1AtdBJA3iUrxjWoNK98NMpda
-	 ONzMzbP/rH/UKNn5AGjuowNFtCTTKJdWOGXj7+cXUBv4SjmXHMqXaZJ89BtyrLgtao
-	 sSgrF+ZyPF68pEsFAuSeuuJQHuOzMAPxqSA19FKpb4XI3RynqKvZ9IPmNqv5FW9t1t
-	 Itp5hGadOCbL7KVHwUT5/b25VhAxaXhNZif1/oxZZKHKJPwkfA8HoTwEF5HY7nWkCV
-	 GGzrb4UeOALjgC2TLEYJIW4g8y91Wkoc30JITbnWHVGq3pXn4NFuyACkQGvB1r09oS
-	 4LB9QaOFiYRwQ==
-Date: Sat, 26 Jul 2025 10:42:02 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Deepak Gupta <debug@rivosinc.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	b=DX9YeM+umGqh87kUr/WaRqVQtxm16NFN2YQ7LxAIDJOPWrzUlvtfpAHp7vwlN4jPBj5/Nc
+	ghVJe8d62BCVrbWTfD8cjkZb9AuhYD/UNlL0yPkWe6+QBrigmp3z5AC8r1W+I3iR6LcqYf
+	ufHbFg5AR+4gemFzgqmybFKhAXicScA=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=EZ8nJ+TB;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753524990; x=1785060990;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=W1nUY5JRvORjm+vb1XNGGtov6ZtefmvCdZ1mHgN2mlk=;
+  b=EZ8nJ+TBu+d2cZWW4G8LgIGRXb+D9HdiCez2H/zmobNIXQoGOgZWELFv
+   VSPmcUYjim54huXbsOgpouovlAo9aD0pqpcR2DhRySdFFcaD1QdFzRrvp
+   Vt2b6P14mR1MHeoFoTUsxXEnFXOdzAjIfSbC6uhZ68SQLpIgpCh2m4CRS
+   dG4RQIG6KlGVHviufCuIu3c/1dF81Yk6NG3QXEG4LbPsXNs+2a0VmpO1i
+   ZYfPvJ5y9zGh+hK36aXaZjwTh+L8vUZ3B1iC4Qs4p0RfGnujEhqg9w/Xy
+   M0ISP0b9FNvcihCRb4I4iD9IakLbppbcMbPOWPJ2NRC97Q77u9DJY4LAk
+   Q==;
+X-CSE-ConnectionGUID: jOwGSD9USBGEThkMBpZapA==
+X-CSE-MsgGUID: rV2ag778TwqZqzqiaSiYNg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11503"; a="59646441"
+X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
+   d="scan'208";a="59646441"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2025 03:16:28 -0700
+X-CSE-ConnectionGUID: qT0WqMIBTVuDvvUSqVicjQ==
+X-CSE-MsgGUID: A02kl49eTdGcIXBoeLSxSA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
+   d="scan'208";a="161180536"
+Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 26 Jul 2025 03:16:24 -0700
+Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ufbwz-000Lrb-2T;
+	Sat, 26 Jul 2025 10:16:21 +0000
+Date: Sat, 26 Jul 2025 18:15:44 +0800
+From: kernel test robot <lkp@intel.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Christoph Hellwig <hch@infradead.org>,
 	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Monk Chiang <monk.chiang@sifive.com>,
-	Kito Cheng <kito.cheng@sifive.com>,
-	Justin Stitt <justinstitt@google.com>,
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, linux-mm@kvack.org,
-	llvm@lists.linux.dev, rick.p.edgecombe@intel.com,
-	broonie@kernel.org, cleger@rivosinc.com, samitolvanen@google.com,
-	apatel@ventanamicro.com, ajones@ventanamicro.com,
-	conor.dooley@microchip.com, charlie@rivosinc.com,
-	samuel.holland@sifive.com, bjorn@rivosinc.com, fweimer@redhat.com,
-	jeffreyalaw@gmail.com, heinrich.schuchardt@canonical.com,
-	andrew@sifive.com, ved@rivosinc.com
-Subject: Re: [PATCH 06/11] mm: Introduce ARCH_HAS_KERNEL_SHADOW_STACK
-Message-ID: <aISGypOAaDGaUZgd@kernel.org>
-References: <20250724-riscv_kcfi-v1-0-04b8fa44c98c@rivosinc.com>
- <20250724-riscv_kcfi-v1-6-04b8fa44c98c@rivosinc.com>
+	Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: remove io-mapping
+Message-ID: <202507261811.4FJjX1bu-lkp@intel.com>
+References: <20250724145313.65920-1-lorenzo.stoakes@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250724-riscv_kcfi-v1-6-04b8fa44c98c@rivosinc.com>
-X-Stat-Signature: htope3xoh6egj9kjzuspqhyna4xpizkk
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 2E64940005
+In-Reply-To: <20250724145313.65920-1-lorenzo.stoakes@oracle.com>
+X-Rspamd-Queue-Id: 686ABC000D
+X-Stat-Signature: bduxkx5xcab77zn7t6x7ebt45pbe6n53
 X-Rspam-User: 
-X-HE-Tag: 1753515740-366255
-X-HE-Meta: U2FsdGVkX18zktPkwyDvMTNN2yb8/PcbZdT0jneHLKrIp9iZkj2VTjQbqwSFVargKgMBh79uYNNYLWcd0Xe1AYDj9b9/iu4i2dK168O0GMZ7PMzIqmA42+l9SLygWhITYFjluuvGioWbarax6sOAopER2R9wQWFgY3t0xzVCZ346HtPnURCmLFfR6t7GMsjGHqnIcZgXM4+wpUh2GI/4XrzMEPxrHJRELnIB+wk1ZIeKDwizVT45hqRn/zE6ww6pQ2sCrUT/9Sl/Zj7sNixjS16wKxAgkwQq2qMiVuN3VWzbCFxDY+O6yCfIxnbO9CC+dYnAS6sp3oJbIh8nM33uwYSz7vC9AhwFS1OZbCORR6x4eekfCt/n7yjQX7kMFWE/JSeHZfTuyLnGmc5xtnz7piTrkqzAcwb/4mSYWOt3pUur7XheBdtJaK2h+a9wv6o1Ebk9DFoI6KomUMQwLxxb8kxMelZrZj9MvcLnChzNKq/6owe7gHbuS+buhk+UGTFUd4l3ctxNrtOFyNfM+1Y+5XIdLyhNCgV6zPFQdNc2hk6xb4Peu5QUOCh74uSqiKjQPbIPcIeyZbid4HqjQDxSu5IueR+VBBS8hp8ZAzyHT6AdSDfMttsLLMppxfslq2HPIFRU0t2dt2mTPuIGSc7H/sqOLwSgDcXBuMJeEwIcdSFFshAOXODyOv93hOXu7riBj05E++8+ptARl9vFwUE7Mgrozhn78XyML84ea30jIE9B1KrWWHxsVw8JwL7Xdc12gI718CyLev6Hb5F06Fl0LU3En03pk9RqVOKegC62SjLXtTDT9qgrCLWxMjkMq3NzEKknupgLMhc6MumRee8zHQ9ZrnJcSi3mhpI/tNVTOkJWxWkIhUh2s6ykxiDrKZ/7sFDnhIDzraulE7v+fpAiO8bS9bwTG9ZpV2AkCwTz9bO+BWEXkf66MNJxXJTIW2DwfjUYXgLnpJx389n208Q
- CHf/LeB9
- Vpp3uxvKnqpc69FnMHcKo4YZW6o0Py1fvQV9BmLHkDN3ggeVANdUnXkfIK7GbGHRwjfm0ZvxwrYRFJWY=
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1753524989-268853
+X-HE-Meta: U2FsdGVkX18AHyZp1P/IjWu21Ws0IMGeaLaa/UYxpu++1Y/3HTPValXRqRyF/LqL61D8KwBua6ejrq6w/2h/GDGSsQlhXW7yltOKWOoOKNUlfs7rskPRb2JvEIkbh1czDj8gaWALIdaHTZzrrx8w0eOrnhMtyEt6q424HR2S5Te5zqBp2BHdkGYFM4zH9SRzmPU44Sq5dlsMJ383ACuM9MqDV8/5NMLNlmOpLa04WOcV8S9wRBs9Ik18Qffe4Cx4TGtvm/zqfORNSVSbMNQhYnNLRtrLYFOlcde2dqiG20XvauTEaDawkzbMUTqGrMQXxaN1IBD59S/xVnLsdELndj87C83f2f6J9JpIbTmGsfCmszblnZ2JnLVvYZIKkCjdAoAP6enXhL1CZKIKKuDNo0Flv7NJZ3EAqfojfSVy8eR+d3eizOffGDO/K/qnXp34QdW+5GOJocjefkyaUwOSc9peVVRhFQ0P0eFB/RVKIjShJ9OXJlSzyF19XF9lbe7f2tV7RQpaad7Lv5+4rgYm2KIdb5yjFVOnCH/afbJZBKfzTmljbxW0UHZvZtBC2Wb8Bb+zJ2SYplfYuxeFYkydb95sQ7FdIU7wiBnfSDE8PLtjBAB8cl+ERb1zJwRyGZZqQHmMVGJCBpd+PB0/UtDTBgC6WDFs8W9fzeXC3d/pIYKVVvugesSoqcWGtgG1kSdDRzMKmE4oWJJxUYIf4LC8D9VWMHu3eXX54PyG3Re4RfkEoDAMeOfaEOHIjiMQk+Y+ieB8hsHAFVpCtsXYIYLSpdHD5svnH/eWlG8bTH53siJoaIoGxWmajwsiW4ttsc+3fU47xtmU7roTIqlWj7mXmdHhosGMVODu2hFYyB29iPDVYYa8KVeXx2UUwUia69K8
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,63 +110,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 24, 2025 at 04:36:59PM -0700, Deepak Gupta wrote:
-> commit bcc9d04e74 ("mm: Introduce ARCH_HAS_USER_SHADOW_STACK") introduced
-> `ARCH_HAS_USER_SHADOW_STACK`. Introducing `ARCH_HAS_KERNEL_SHADOW_STACK`
-> so that arches can enable hardware assistance for kernel shadow stack.
-> 
-> If `CONFIG_DYNAMIC_SCS` or `CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK` are
-> selected, skip compiler flag `-fsanitizer=shadow-call-stack`.
-> 
-> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
-> ---
->  Makefile   | 2 +-
->  mm/Kconfig | 6 ++++++
->  2 files changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Makefile b/Makefile
-> index 35e6e5240c61..7e3ecca9353d 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -987,7 +987,7 @@ LDFLAGS_vmlinux += --gc-sections
->  endif
->  
->  ifdef CONFIG_SHADOW_CALL_STACK
-> -ifndef CONFIG_DYNAMIC_SCS
-> +ifeq ($(or $(CONFIG_DYNAMIC_SCS),$(CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK)),false)
->  CC_FLAGS_SCS	:= -fsanitize=shadow-call-stack
->  KBUILD_CFLAGS	+= $(CC_FLAGS_SCS)
->  KBUILD_RUSTFLAGS += -Zsanitizer=shadow-call-stack
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 781be3240e21..f295ea611cdb 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -1367,6 +1367,12 @@ config ARCH_HAS_USER_SHADOW_STACK
->  	  The architecture has hardware support for userspace shadow call
->            stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
->  
-> +config ARCH_HAS_KERNEL_SHADOW_STACK
-> +	bool
-> +	help
-> +	  The architecture has hardware support for kernel shadow call
-> +          stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
+Hi Lorenzo,
 
-nit: tab and two space for indentation of the help text
+kernel test robot noticed the following build errors:
 
-> +
+[auto build test ERROR on akpm-mm/mm-everything]
 
-I think both ARCH_HAS_USER_SHADOW_STACK and ARCH_HAS_KERNEL_SHADOW_STACK
-belong to arch/Kconfig rather than mm/Kconfig
+url:    https://github.com/intel-lab-lkp/linux/commits/Lorenzo-Stoakes/mm-remove-io-mapping/20250724-225556
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20250724145313.65920-1-lorenzo.stoakes%40oracle.com
+patch subject: [PATCH] mm: remove io-mapping
+config: x86_64-buildonly-randconfig-003-20250725 (https://download.01.org/0day-ci/archive/20250726/202507261811.4FJjX1bu-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250726/202507261811.4FJjX1bu-lkp@intel.com/reproduce)
 
->  config ARCH_SUPPORTS_PT_RECLAIM
->  	def_bool n
->  
-> 
-> -- 
-> 2.43.0
-> 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202507261811.4FJjX1bu-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/net/ethernet/mellanox/mlx4/main.c:43:10: fatal error: 'linux/io-mapping.h' file not found
+      43 | #include <linux/io-mapping.h>
+         |          ^~~~~~~~~~~~~~~~~~~~
+   1 error generated.
+--
+>> drivers/net/ethernet/mellanox/mlx4/pd.c:36:10: fatal error: 'linux/io-mapping.h' file not found
+      36 | #include <linux/io-mapping.h>
+         |          ^~~~~~~~~~~~~~~~~~~~
+   1 error generated.
+
+
+vim +43 drivers/net/ethernet/mellanox/mlx4/main.c
+
+c1b43dca137f21 drivers/net/mlx4/main.c                   Eli Cohen        2011-03-22 @43  #include <linux/io-mapping.h>
+ab9c17a009ee8e drivers/net/ethernet/mellanox/mlx4/main.c Jack Morgenstein 2011-12-13  44  #include <linux/delay.h>
+10b1c04e92229e drivers/net/ethernet/mellanox/mlx4/main.c Jack Morgenstein 2016-12-29  45  #include <linux/etherdevice.h>
+09d4d087cd4869 drivers/net/ethernet/mellanox/mlx4/main.c Jiri Pirko       2016-02-26  46  #include <net/devlink.h>
+225c7b1feef1b4 drivers/net/mlx4/main.c                   Roland Dreier    2007-05-08  47  
 
 -- 
-Sincerely yours,
-Mike.
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
