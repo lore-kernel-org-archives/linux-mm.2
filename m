@@ -2,100 +2,112 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C94C3C87FCA
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Jul 2025 11:10:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E3D2AC87FCA
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Jul 2025 11:21:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 406146B0088; Sat, 26 Jul 2025 07:10:36 -0400 (EDT)
+	id 3A5A96B0088; Sat, 26 Jul 2025 07:21:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B6696B0089; Sat, 26 Jul 2025 07:10:36 -0400 (EDT)
+	id 354E26B0089; Sat, 26 Jul 2025 07:21:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F44F6B008A; Sat, 26 Jul 2025 07:10:36 -0400 (EDT)
+	id 26A666B008A; Sat, 26 Jul 2025 07:21:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1BACB6B0088
-	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 07:10:36 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 16C026B0088
+	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 07:21:44 -0400 (EDT)
 Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7D2465C3FA
-	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 11:10:35 +0000 (UTC)
-X-FDA: 83706147630.20.E2A904F
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	by imf04.hostedemail.com (Postfix) with ESMTP id D114740003
-	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 11:10:32 +0000 (UTC)
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 733BC140A54
+	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 11:21:43 +0000 (UTC)
+X-FDA: 83706175686.20.1678909
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	by imf04.hostedemail.com (Postfix) with ESMTP id E0EFF4000B
+	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 11:21:40 +0000 (UTC)
 Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="K/a4I00X";
-	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753528233;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=FlT7NpOhMJdWxS3mezT6U7WTT2ZdEMRbpdsA7w3xGvM=;
-	b=4PEqdMrYT28Rchim25rp+LaP8zD0RsVnKwp5oEtRVLVg4xg5HD9h7MkBrpHiZr83n5dAAe
-	kTriuhyqxqAhbLBzutPMvvX8GC9UKRs/Etf4xt9YyAmlO5cIZ3PqYZPctMt/OP4+4ywXdf
-	2ErPG0k3LZipet3+zHbQk8AnkOBVUhs=
+	dkim=pass header.d=intel.com header.s=Intel header.b=PPQ0AWgJ;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753528901; a=rsa-sha256;
+	cv=none;
+	b=MvZ4jHI4FCU/R6jCQKarpD8YafMTCTL41nKs9ret0fcncjQliD397Q5EUv5lUsEWkd/HE2
+	oyFdgx5uSHPETWPJdaaj6JqNVkVmiVMXclRlBdTkvlB0lDCVOdTPeUOxaf1bCO012mrfs5
+	TlYiMpdBFMg3jifR9SF+dOc4JWIM9d8=
 ARC-Authentication-Results: i=1;
 	imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="K/a4I00X";
-	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753528233; a=rsa-sha256;
-	cv=none;
-	b=Fb5/9OUomcbQddmtKw9l6jxEoQ46FjHPLGLpeKzvMFlfD06mRUGp7PjMZWjmy1mDQb8NUa
-	YrndbvGKIt6aQptO2j+sTwo6ENhR+QCVk307wwBMrs+eNR2H+k6aQ17NmigW443+RMDI/+
-	IymVokcZ28Bh40hafcOmaQyDLqhvQIk=
+	dkim=pass header.d=intel.com header.s=Intel header.b=PPQ0AWgJ;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753528901;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=spuPn6EhhX+giUyTCugKdbk5Yhd7jfvRxvUGZNpr+L0=;
+	b=PXtJNIut3vq1lA3HNrY13fZrAxYo5ouWD7nSfsakS09zWHG3E2EfCt6NI3vce0cqTghRRE
+	xom+WAZjZSkB7HpDpTAiOkOE+4tqAErvi0Nq46fsr/IZk2JNZRUE0Bvzh2b5razx/zuKq/
+	NgzAbZql8FSnlZWICzuOnJgwheKQ0Fw=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753528232; x=1785064232;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=BsDzL6jUj1vcsiHYQuUaBhwNbzLYvpKYnyq3KRSVMhA=;
-  b=K/a4I00XVThYVYqzaAy9xbDB1Efw0Qdw4I0p0/tHTT3A81c3yBr/Nfu7
-   t9SFi/6kNLzPOkUZvXXp1l7MLhcFDubd6vNw4Z8QKWlUSVNC/LVsdqwFh
-   +McMih+AMEUVWNXvZ/6MJAGIe7Lx+GjUGi4agROAnJ6TCDavZbQe2r0xc
-   alpGTE8uxcd79p21KWUS7UF7gc++9y/DkAcDL375r3O/u4guIXLyfR67c
-   L/YYKeA/JWYgsgLfgUE8pbyO5p/mc275MVF+dDuJt4DmReLAuIawkEBgP
-   5K/Ro/eAewTVLQupdAylfOHY2evpt24kQTN2H26+WTBpwAcHWOIq0BH9a
-   Q==;
-X-CSE-ConnectionGUID: QZWZUYk9THex6kX22TqUnw==
-X-CSE-MsgGUID: eKbSWTddTvaN+T9HLxvcOA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11503"; a="67199193"
+  t=1753528901; x=1785064901;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=wbRxOW83h5ag6rAvDa9zsvECbeocst1I6z9JDaiutro=;
+  b=PPQ0AWgJ77eUfULQ45ttrHSmMGzQsJiEc41pqy1v7EMZINqB9aUpBjZW
+   +ThcHECS/qSP23F91VEXL+MuORoTSRqN/xTGkkuXsvJRq8KKH5lnQ1590
+   ERxuPejosUgb13UjyegduBrP4IwV8oa7VZSzdQp40HQcGtpvZJUdghGRv
+   6ZMjnDQ5vUk7dscRusl8oqkmvZqfBKYYZyQER5tK3ZtXYtzBQ7EmXr4xA
+   S63yZGEdqtUZyDAa7gPUiAvF9pquGyjura4zZmPduX/NvUvni/264POyG
+   ZpzaMRWLvxrnRvg8soqiUf0bQ0yqCQzXDVnxc3C2OLeu//4Q7OG6Rd25+
+   w==;
+X-CSE-ConnectionGUID: Ri6sJsvzRl+VVvaOw2iEGA==
+X-CSE-MsgGUID: ekNXImWmRJqaprargFxcfg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11503"; a="55997861"
 X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
-   d="scan'208";a="67199193"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2025 04:10:31 -0700
-X-CSE-ConnectionGUID: mrSnGx4WSkquPLniUT7T0Q==
-X-CSE-MsgGUID: ywykZxh1RP+0vFoPBzc6Mg==
+   d="scan'208";a="55997861"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2025 04:21:39 -0700
+X-CSE-ConnectionGUID: 8zotRv7YQvKXCdlELy7OUA==
+X-CSE-MsgGUID: 0XG+XZTXR+uiUAgNJ2gZrw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
-   d="scan'208";a="161844790"
-Received: from igk-lkp-server01.igk.intel.com (HELO b3b7d4258b7c) ([10.91.175.65])
-  by fmviesa009.fm.intel.com with ESMTP; 26 Jul 2025 04:10:30 -0700
-Received: from kbuild by b3b7d4258b7c with local (Exim 4.96)
+   d="scan'208";a="192450002"
+Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 26 Jul 2025 04:21:33 -0700
+Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1ufcnM-0000Hz-0Q;
-	Sat, 26 Jul 2025 11:10:28 +0000
-Date: Sat, 26 Jul 2025 13:10:20 +0200
+	id 1ufcy2-000Lvd-0T;
+	Sat, 26 Jul 2025 11:21:30 +0000
+Date: Sat, 26 Jul 2025 19:20:41 +0800
 From: kernel test robot <lkp@intel.com>
-To: Vitaly Wool <vitaly.wool@konsulko.se>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Igor Belousov <igor.b@beldev.am>
-Subject: [akpm-mm:mm-new 351/351] ERROR: modpost: "__vmalloc_node_noprof"
- [mm/zblock.ko] undefined!
-Message-ID: <202507261304.kdaDjJq8-lkp@intel.com>
+To: Bhupesh <bhupesh@igalia.com>, akpm@linux-foundation.org
+Cc: oe-kbuild-all@lists.linux.dev, bhupesh@igalia.com,
+	kernel-dev@igalia.com, linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org, linux-perf-users@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	oliver.sang@intel.com, lkp@intel.com, laoar.shao@gmail.com,
+	pmladek@suse.com, rostedt@goodmis.org,
+	mathieu.desnoyers@efficios.com, arnaldo.melo@gmail.com,
+	alexei.starovoitov@gmail.com, andrii.nakryiko@gmail.com,
+	mirq-linux@rere.qmqm.pl, peterz@infradead.org, willy@infradead.org,
+	david@redhat.com, viro@zeniv.linux.org.uk, keescook@chromium.org,
+	ebiederm@xmission.com, brauner@kernel.org, jack@suse.cz,
+	mingo@redhat.com, juri.lelli@redhat.com, bsegall@google.com,
+	mgorman@suse.de
+Subject: Re: [PATCH v6 3/3] include: Set tsk->comm length to 64 bytes
+Message-ID: <202507261841.Z2C9RmTJ-lkp@intel.com>
+References: <20250724123612.206110-4-bhupesh@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20250724123612.206110-4-bhupesh@igalia.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E0EFF4000B
+X-Stat-Signature: qpxzuxq6wor5z7c1c9pygfk8kokp7qgk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D114740003
-X-Rspamd-Server: rspam06
-X-Stat-Signature: bkaif86zk7uxzxeq1bw79pb4aaacrcq9
-X-HE-Tag: 1753528232-731691
-X-HE-Meta: U2FsdGVkX18ejij1BXoYxKtvPzFtrLI48KHZB2lRlqCtDvgrzMYCyJVwV6ogpQXdwE7fGtYGovCmH9DSjaYgE0uboli77Wk1JpstHtT3VurwEVkl8cfK29mAofOwp/6GcRZDZ56Z5cL6nTn+MTcJu2X6tTNVfeDvNAgrT86MsQ+G8zC2c9dOiQtcrh5N1kDvIxKkyS7+hvSZMFAzG+38Wifc+pEvK20GpHLzxaCO+SHR4WctKF77jcclYfWv0QemZ4uy4pF7NikFyUP4Vi6kfjCl8J+8h9Y0dtdnxOcwgrphVsaPbBYLMVptfu2Ebw9Up5KpcqyNY0uunXEYW1SMkIXDrz46XFJ2PvtUIW6kGuJAi1H0mVnf1CG5L6+8Yg4qnvVU5USafUVQh6Mo1xpBQWXlotYgSIJHDs92dk/ZOJ0BTF1k0HAixC7IN7m7DmiOxVcDOCYDMdgdRXNbjlRI2rU18JyhXvuiKHBNkDxeO+P/ihgOqc9rT9+mdNvsVFovaHN5Omebd+o6ADENciGCazHHpJCcLm54PcH8XyC/1vIixWWKxbYuOYV530ZOcLoGaRTICTTyN+RJylAuhJ940JE4wep+ZyOAnGWgllgGz8A1rR6AbyPNFoUwWNh0LQ7FHt3+L1+ZY9w9R1jhdDqd5FYkxmuLPHxiycJweu8uFrM9MPez36Z1F2LBiiWk9A6mvT837YjC3iarOntmiTJeHv8kG3Id4poMIOhp4ppMTKiSs3y8WjNDd95qzp5E1hDkIgd5lTpyE9eqhWPnxi1LoeG0oLBOArNo+5Ko7leBnmzZpw/Q25/By/3+yS7fFAf707fZDu7/l8k/h/RgTg/r19vYHFB1HUuzj/POzgJTwTd4jdfc0IZwOWOtWCn/OjpmVS2hDf6ZsdP6+qBmktk2LVQLmKuf2gvexB5NDcGfiqq3viriWST/1oJ9Z0vIxtjDB8coBpgN8lAMRd+nSak
- IMDorLN7
- 2UgyFe36dB6rDKx6tiAipoC/cYg0TF0v3oi1pql9NxiYPxIz1lh4IWQK2rdtQ2qKsxthwcqQtUnT0DBuvaDOs7I9Oqe3i/FKSlI4caMw/BnRRbzHff6WRnLBdnixzfabSDoaS4ORcP5/q/3B2fy+tzYjAwjWScB2b0ZoYnj1oXBsOxHUl9AgM+KgGQ/7eGVtdqFyWY7vFuERZmr4cPLpi0kjFp8VgQ7zjASnyM0m+ZX2usYAsOIWoHpW9MyxT3Qawwg1X8SlCKTN63w7AcNHLCYuOUb58Q+Gseug1RSfNWhCAGEKD2S01x4JHOH8x/mQcKRVwRIX+hGQ70QCBpd11w637ehThjKxMl0A6X6miKBaePdSB9Bmgz3BB5C17XkCCD5xqkO14Men161FcqORiiyvMlwTjSmtHXCc8GgBH38lhLOT/vSaAvq//lPn4GxFqw6Fz
+X-HE-Tag: 1753528900-153605
+X-HE-Meta: U2FsdGVkX1/Z56tlV5gKozVbE1epbjBz4NoWcclTdf/bmJ9wWU5k9sKGva1IswW9FDzhFUNsy7T9N6k1TxvOFxGZAatcrcmlqCfJrExNZMa1QbrTJj9w3Hu0j3Ocl12Di2/+UAZ0qL/rTsq+HQ4EWApNDzFePnZpDBkImJil5ttwJGfO0E9MtN2ErtJeDBkzM9JVz62ZR7KEY+1KRp2k7Men8tVUz8AS1S3FR6AVCfOI5nI+F83fhl/iwt0MYE6UKW+i/2+lp0+M8/hO+phA8SvMku8VPbAf8k8neF0BgkVbF/vdEhKCg+hJaGjKzfKv3eoWQml2NlWe/Wk6UH7nHgB1avf2KxDm6PIXCotzd2DK3E8JmNDv9OxPMJFGuEw58bnnGHI8EifEFpjLG9rnt5mGaFdr/L4q4OWJg7HAevmhL4AKPQKjIj4imSa8h49h4zjj8CswupDjw7b8j29FNGH5W1K8likSYWhRgb/emsxcIdN86gJ9hZ6iGhtv7V/LBpfvY6yw34A5htqpyzyj3E4UJvmmO/TwTZ7y8g0r7uIIPFSRIv9UlqAvqseRk+KxarmfpGvyXOwNckfu/qHtx3Acq310k54oxgQdvrFK+R8uEOxHbYX0EXsDhYkQFpjw0n7aeSBrhoQIUhEnEHcpIzw+xK9OxUlDoV25PkhoNPTX74RLLmtYq/1Q66AQTxo2gpElpqnRztPdyBmU3fz07R5PzD4lSC+JaGEMLuGb7vMY4YyJLt+cRvmwE/K+Chkt9Cu6kNB5WhzQYXXt6BbVFjlbEaP4JU/8amA432AQOxeXnhJe6Qw8mbZEC1QHJYDxamXh16vZ4sNYU7MVtx2hHansDK/JMSYOouvSTHo9ZzvF7SW8Msrevs0jOqMeYsZR+QUUXcXKavUbqSFVglDKIpUJ9y+Sjnp85nNddI/US3OWZ2w7VWlYbxGCYedjJunTIStww+OPzhbjExFiS7u
+ FQkRc/lO
+ 8/CWlSYwzfx7YCX8l/teXP3Y33g84C+vD0ynef8Ewl8W1eIHdMUvVfdOOQuIeDb3rH0Ica9emsfBmlk0lbxglgJaG8qmXBl/vHSkJcEPTyTBIZEPOIUQj2kFFDq/4LCLK0/Ra+0ULFAoi3UXeQmV6yii1yRu32P3ngHoeWEpBwZLBvE2aMk+61HKLyVgcUQBj/y+TgHfI415WOSiasdCjjeKyIay8cHwSmCByn9U0wmNPFFaRUUp7S3VXRC0TBnNzVRtPeHvYkJDobi35F0p1CgctlU7FqsjXTO47NWX5Zh60MncXhMRP1IljnT1K84YefzHoNEs5lLgi+jy+nxrSn3FU435LUcvLuzjDjvGdID6Wsc+TDWOK/VWlIeIIv2bJ95l0He+b9Mxl3FzmoLWMKf0aZVDaticJesZux4YT8a9DGg72lBz0qwfqbZ3ySdAK7WsVBXGE6Q4wRn8vYznJeHEnjWCBjR10dVAPJce3XR42Ol0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,21 +116,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-head:   3dcf95fa6b5546e1b9b5a0b5faac4d5fbf1c3722
-commit: f800ea402e875e43aa96e1e6887ada1722760395 [351/351] mm: add zblock allocator
-config: parisc-randconfig-2004-20250719 (https://download.01.org/0day-ci/archive/20250726/202507261304.kdaDjJq8-lkp@intel.com/config)
-compiler: hppa-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250726/202507261304.kdaDjJq8-lkp@intel.com/reproduce)
+Hi Bhupesh,
+
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on trace/for-next]
+[also build test WARNING on tip/sched/core akpm-mm/mm-everything linus/master v6.16-rc7 next-20250725]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Bhupesh/exec-Remove-obsolete-comments/20250724-203927
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace for-next
+patch link:    https://lore.kernel.org/r/20250724123612.206110-4-bhupesh%40igalia.com
+patch subject: [PATCH v6 3/3] include: Set tsk->comm length to 64 bytes
+config: sparc64-randconfig-001-20250725 (https://download.01.org/0day-ci/archive/20250726/202507261841.Z2C9RmTJ-lkp@intel.com/config)
+compiler: sparc64-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250726/202507261841.Z2C9RmTJ-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202507261304.kdaDjJq8-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202507261841.Z2C9RmTJ-lkp@intel.com/
 
-All errors (new ones prefixed by >>, old ones prefixed by <<):
+All warnings (new ones prefixed by >>):
 
->> ERROR: modpost: "__vmalloc_node_noprof" [mm/zblock.ko] undefined!
+   drivers/gpu/drm/nouveau/nouveau_chan.c: In function 'nouveau_channel_ctor':
+>> drivers/gpu/drm/nouveau/nouveau_chan.c:336:51: warning: '%s' directive output may be truncated writing up to 63 bytes into a region of size 32 [-Wformat-truncation=]
+     snprintf(args->name, __member_size(args->name), "%s[%d]",
+                                                      ^~
+   drivers/gpu/drm/nouveau/nouveau_chan.c:336:2: note: 'snprintf' output between 4 and 77 bytes into a destination of size 32
+     snprintf(args->name, __member_size(args->name), "%s[%d]",
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+       current->comm, task_pid_nr(current));
+       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--
+   drivers/gpu/drm/nouveau/nouveau_drm.c: In function 'nouveau_drm_open':
+>> drivers/gpu/drm/nouveau/nouveau_drm.c:1202:32: warning: '%s' directive output may be truncated writing up to 63 bytes into a region of size 32 [-Wformat-truncation=]
+     snprintf(name, sizeof(name), "%s[%d]",
+                                   ^~
+   drivers/gpu/drm/nouveau/nouveau_drm.c:1202:2: note: 'snprintf' output between 4 and 77 bytes into a destination of size 32
+     snprintf(name, sizeof(name), "%s[%d]",
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+       current->comm, pid_nr(rcu_dereference(fpriv->pid)));
+       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+vim +336 drivers/gpu/drm/nouveau/nouveau_chan.c
+
+ebb945a94bba2c Ben Skeggs          2012-07-20  246  
+5b8a43aeb9cbf6 Marcin Slusarz      2012-08-19  247  static int
+5cca41ac70e587 Ben Skeggs          2024-07-26  248  nouveau_channel_ctor(struct nouveau_cli *cli, bool priv, u64 runm,
+06db7fded6dec8 Ben Skeggs          2022-06-01  249  		     struct nouveau_channel **pchan)
+ebb945a94bba2c Ben Skeggs          2012-07-20  250  {
+152be54224de18 Danilo Krummrich    2023-10-02  251  	const struct nvif_mclass hosts[] = {
+284ad706ad2f50 Ben Skeggs          2025-02-04  252  		{ BLACKWELL_CHANNEL_GPFIFO_B, 0 },
+32cb1cc358ffed Ben Skeggs          2024-11-25  253  		{ BLACKWELL_CHANNEL_GPFIFO_A, 0 },
+44f93b209e2afd Ben Skeggs          2024-11-25  254  		{    HOPPER_CHANNEL_GPFIFO_A, 0 },
+06db7fded6dec8 Ben Skeggs          2022-06-01  255  		{    AMPERE_CHANNEL_GPFIFO_B, 0 },
+7f4f35ea5b080e Ben Skeggs          2022-06-01  256  		{    AMPERE_CHANNEL_GPFIFO_A, 0 },
+06db7fded6dec8 Ben Skeggs          2022-06-01  257  		{    TURING_CHANNEL_GPFIFO_A, 0 },
+06db7fded6dec8 Ben Skeggs          2022-06-01  258  		{     VOLTA_CHANNEL_GPFIFO_A, 0 },
+06db7fded6dec8 Ben Skeggs          2022-06-01  259  		{    PASCAL_CHANNEL_GPFIFO_A, 0 },
+06db7fded6dec8 Ben Skeggs          2022-06-01  260  		{   MAXWELL_CHANNEL_GPFIFO_A, 0 },
+06db7fded6dec8 Ben Skeggs          2022-06-01  261  		{    KEPLER_CHANNEL_GPFIFO_B, 0 },
+06db7fded6dec8 Ben Skeggs          2022-06-01  262  		{    KEPLER_CHANNEL_GPFIFO_A, 0 },
+06db7fded6dec8 Ben Skeggs          2022-06-01  263  		{     FERMI_CHANNEL_GPFIFO  , 0 },
+06db7fded6dec8 Ben Skeggs          2022-06-01  264  		{       G82_CHANNEL_GPFIFO  , 0 },
+06db7fded6dec8 Ben Skeggs          2022-06-01  265  		{      NV50_CHANNEL_GPFIFO  , 0 },
+06db7fded6dec8 Ben Skeggs          2022-06-01  266  		{      NV40_CHANNEL_DMA     , 0 },
+06db7fded6dec8 Ben Skeggs          2022-06-01  267  		{      NV17_CHANNEL_DMA     , 0 },
+06db7fded6dec8 Ben Skeggs          2022-06-01  268  		{      NV10_CHANNEL_DMA     , 0 },
+06db7fded6dec8 Ben Skeggs          2022-06-01  269  		{      NV03_CHANNEL_DMA     , 0 },
+06db7fded6dec8 Ben Skeggs          2022-06-01  270  		{}
+06db7fded6dec8 Ben Skeggs          2022-06-01  271  	};
+e270b3665f8321 Gustavo A. R. Silva 2025-04-16  272  	DEFINE_RAW_FLEX(struct nvif_chan_v0, args, name, TASK_COMM_LEN + 16);
+5cca41ac70e587 Ben Skeggs          2024-07-26  273  	struct nvif_device *device = &cli->device;
+ebb945a94bba2c Ben Skeggs          2012-07-20  274  	struct nouveau_channel *chan;
+06db7fded6dec8 Ben Skeggs          2022-06-01  275  	const u64 plength = 0x10000;
+06db7fded6dec8 Ben Skeggs          2022-06-01  276  	const u64 ioffset = plength;
+06db7fded6dec8 Ben Skeggs          2022-06-01  277  	const u64 ilength = 0x02000;
+06db7fded6dec8 Ben Skeggs          2022-06-01  278  	int cid, ret;
+06db7fded6dec8 Ben Skeggs          2022-06-01  279  	u64 size;
+06db7fded6dec8 Ben Skeggs          2022-06-01  280  
+06db7fded6dec8 Ben Skeggs          2022-06-01  281  	cid = nvif_mclass(&device->object, hosts);
+06db7fded6dec8 Ben Skeggs          2022-06-01  282  	if (cid < 0)
+06db7fded6dec8 Ben Skeggs          2022-06-01  283  		return cid;
+06db7fded6dec8 Ben Skeggs          2022-06-01  284  
+06db7fded6dec8 Ben Skeggs          2022-06-01  285  	if (hosts[cid].oclass < NV50_CHANNEL_GPFIFO)
+06db7fded6dec8 Ben Skeggs          2022-06-01  286  		size = plength;
+06db7fded6dec8 Ben Skeggs          2022-06-01  287  	else
+06db7fded6dec8 Ben Skeggs          2022-06-01  288  		size = ioffset + ilength;
+ebb945a94bba2c Ben Skeggs          2012-07-20  289  
+ebb945a94bba2c Ben Skeggs          2012-07-20  290  	/* allocate dma push buffer */
+5cca41ac70e587 Ben Skeggs          2024-07-26  291  	ret = nouveau_channel_prep(cli, size, &chan);
+ebb945a94bba2c Ben Skeggs          2012-07-20  292  	*pchan = chan;
+ebb945a94bba2c Ben Skeggs          2012-07-20  293  	if (ret)
+ebb945a94bba2c Ben Skeggs          2012-07-20  294  		return ret;
+ebb945a94bba2c Ben Skeggs          2012-07-20  295  
+ebb945a94bba2c Ben Skeggs          2012-07-20  296  	/* create channel object */
+e270b3665f8321 Gustavo A. R. Silva 2025-04-16  297  	args->version = 0;
+e270b3665f8321 Gustavo A. R. Silva 2025-04-16  298  	args->namelen = __member_size(args->name);
+e270b3665f8321 Gustavo A. R. Silva 2025-04-16  299  	args->runlist = __ffs64(runm);
+e270b3665f8321 Gustavo A. R. Silva 2025-04-16  300  	args->runq = 0;
+e270b3665f8321 Gustavo A. R. Silva 2025-04-16  301  	args->priv = priv;
+e270b3665f8321 Gustavo A. R. Silva 2025-04-16  302  	args->devm = BIT(0);
+06db7fded6dec8 Ben Skeggs          2022-06-01  303  	if (hosts[cid].oclass < NV50_CHANNEL_GPFIFO) {
+e270b3665f8321 Gustavo A. R. Silva 2025-04-16  304  		args->vmm = 0;
+e270b3665f8321 Gustavo A. R. Silva 2025-04-16  305  		args->ctxdma = nvif_handle(&chan->push.ctxdma);
+e270b3665f8321 Gustavo A. R. Silva 2025-04-16  306  		args->offset = chan->push.addr;
+e270b3665f8321 Gustavo A. R. Silva 2025-04-16  307  		args->length = 0;
+bbf8906b2cad17 Ben Skeggs          2014-08-10  308  	} else {
+e270b3665f8321 Gustavo A. R. Silva 2025-04-16  309  		args->vmm = nvif_handle(&chan->vmm->vmm.object);
+06db7fded6dec8 Ben Skeggs          2022-06-01  310  		if (hosts[cid].oclass < FERMI_CHANNEL_GPFIFO)
+e270b3665f8321 Gustavo A. R. Silva 2025-04-16  311  			args->ctxdma = nvif_handle(&chan->push.ctxdma);
+06db7fded6dec8 Ben Skeggs          2022-06-01  312  		else
+e270b3665f8321 Gustavo A. R. Silva 2025-04-16  313  			args->ctxdma = 0;
+e270b3665f8321 Gustavo A. R. Silva 2025-04-16  314  		args->offset = ioffset + chan->push.addr;
+e270b3665f8321 Gustavo A. R. Silva 2025-04-16  315  		args->length = ilength;
+06db7fded6dec8 Ben Skeggs          2022-06-01  316  	}
+e270b3665f8321 Gustavo A. R. Silva 2025-04-16  317  	args->huserd = 0;
+e270b3665f8321 Gustavo A. R. Silva 2025-04-16  318  	args->ouserd = 0;
+06db7fded6dec8 Ben Skeggs          2022-06-01  319  
+06db7fded6dec8 Ben Skeggs          2022-06-01  320  	/* allocate userd */
+06db7fded6dec8 Ben Skeggs          2022-06-01  321  	if (hosts[cid].oclass >= VOLTA_CHANNEL_GPFIFO_A) {
+06db7fded6dec8 Ben Skeggs          2022-06-01  322  		ret = nvif_mem_ctor(&cli->mmu, "abi16ChanUSERD", NVIF_CLASS_MEM_GF100,
+06db7fded6dec8 Ben Skeggs          2022-06-01  323  				    NVIF_MEM_VRAM | NVIF_MEM_COHERENT | NVIF_MEM_MAPPABLE,
+06db7fded6dec8 Ben Skeggs          2022-06-01  324  				    0, PAGE_SIZE, NULL, 0, &chan->mem_userd);
+06db7fded6dec8 Ben Skeggs          2022-06-01  325  		if (ret)
+ebb945a94bba2c Ben Skeggs          2012-07-20  326  			return ret;
+ebb945a94bba2c Ben Skeggs          2012-07-20  327  
+e270b3665f8321 Gustavo A. R. Silva 2025-04-16  328  		args->huserd = nvif_handle(&chan->mem_userd.object);
+e270b3665f8321 Gustavo A. R. Silva 2025-04-16  329  		args->ouserd = 0;
+ebb945a94bba2c Ben Skeggs          2012-07-20  330  
+06db7fded6dec8 Ben Skeggs          2022-06-01  331  		chan->userd = &chan->mem_userd.object;
+06db7fded6dec8 Ben Skeggs          2022-06-01  332  	} else {
+06db7fded6dec8 Ben Skeggs          2022-06-01  333  		chan->userd = &chan->user;
+06db7fded6dec8 Ben Skeggs          2022-06-01  334  	}
+ebb945a94bba2c Ben Skeggs          2012-07-20  335  
+e270b3665f8321 Gustavo A. R. Silva 2025-04-16 @336  	snprintf(args->name, __member_size(args->name), "%s[%d]",
+e270b3665f8321 Gustavo A. R. Silva 2025-04-16  337  		 current->comm, task_pid_nr(current));
+ebb945a94bba2c Ben Skeggs          2012-07-20  338  
+06db7fded6dec8 Ben Skeggs          2022-06-01  339  	ret = nvif_object_ctor(&device->object, "abi16ChanUser", 0, hosts[cid].oclass,
+e270b3665f8321 Gustavo A. R. Silva 2025-04-16  340  			       args, __struct_size(args), &chan->user);
+06db7fded6dec8 Ben Skeggs          2022-06-01  341  	if (ret) {
+06db7fded6dec8 Ben Skeggs          2022-06-01  342  		nouveau_channel_del(pchan);
+ebb945a94bba2c Ben Skeggs          2012-07-20  343  		return ret;
+bbf8906b2cad17 Ben Skeggs          2014-08-10  344  	}
+ebb945a94bba2c Ben Skeggs          2012-07-20  345  
+e270b3665f8321 Gustavo A. R. Silva 2025-04-16  346  	chan->runlist = args->runlist;
+e270b3665f8321 Gustavo A. R. Silva 2025-04-16  347  	chan->chid = args->chid;
+e270b3665f8321 Gustavo A. R. Silva 2025-04-16  348  	chan->inst = args->inst;
+e270b3665f8321 Gustavo A. R. Silva 2025-04-16  349  	chan->token = args->token;
+06db7fded6dec8 Ben Skeggs          2022-06-01  350  	return 0;
+ebb945a94bba2c Ben Skeggs          2012-07-20  351  }
+ebb945a94bba2c Ben Skeggs          2012-07-20  352  
 
 -- 
 0-DAY CI Kernel Test Service
