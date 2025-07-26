@@ -2,112 +2,127 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E3D2AC87FCA
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Jul 2025 11:21:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D607C87FCA
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Jul 2025 11:31:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A5A96B0088; Sat, 26 Jul 2025 07:21:44 -0400 (EDT)
+	id A43866B0088; Sat, 26 Jul 2025 07:31:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 354E26B0089; Sat, 26 Jul 2025 07:21:44 -0400 (EDT)
+	id 9F4296B0089; Sat, 26 Jul 2025 07:31:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26A666B008A; Sat, 26 Jul 2025 07:21:44 -0400 (EDT)
+	id 909BC6B008A; Sat, 26 Jul 2025 07:31:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 16C026B0088
-	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 07:21:44 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A8626B0088
+	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 07:31:46 -0400 (EDT)
 Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 733BC140A54
-	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 11:21:43 +0000 (UTC)
-X-FDA: 83706175686.20.1678909
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	by imf04.hostedemail.com (Postfix) with ESMTP id E0EFF4000B
-	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 11:21:40 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=PPQ0AWgJ;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753528901; a=rsa-sha256;
-	cv=none;
-	b=MvZ4jHI4FCU/R6jCQKarpD8YafMTCTL41nKs9ret0fcncjQliD397Q5EUv5lUsEWkd/HE2
-	oyFdgx5uSHPETWPJdaaj6JqNVkVmiVMXclRlBdTkvlB0lDCVOdTPeUOxaf1bCO012mrfs5
-	TlYiMpdBFMg3jifR9SF+dOc4JWIM9d8=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=PPQ0AWgJ;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DB5845C432
+	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 11:31:45 +0000 (UTC)
+X-FDA: 83706200970.20.3344ACA
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C104780012
+	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 11:31:42 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=b5RIxQQK;
+	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753528901;
+	s=arc-20220608; t=1753529503;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=spuPn6EhhX+giUyTCugKdbk5Yhd7jfvRxvUGZNpr+L0=;
-	b=PXtJNIut3vq1lA3HNrY13fZrAxYo5ouWD7nSfsakS09zWHG3E2EfCt6NI3vce0cqTghRRE
-	xom+WAZjZSkB7HpDpTAiOkOE+4tqAErvi0Nq46fsr/IZk2JNZRUE0Bvzh2b5razx/zuKq/
-	NgzAbZql8FSnlZWICzuOnJgwheKQ0Fw=
+	bh=SlefamRAyhb5Hj2lsOIYr/7l5YHjqEhOEgoTla48dqQ=;
+	b=TUBJIsKP375w0w5m/o5YRk2R+h72ubZyUEmiOkGYUiEp86hVUVdagtJLuqIfe5jQ9fdihq
+	VJoMd01AlX73n0yJeC1irlDNidIZ01N4zB7AvXWuX02MKlaOX3v8tW7JQG18sHEAryF7n+
+	JU+qzcqCaeu6XJvYU3u84esp754G87c=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753529503; a=rsa-sha256;
+	cv=none;
+	b=2VHAL7Dlp4NuRfNlHz/6LeZYp6ICOZWbj+zwNH28zAZ14TugXTqp6q94NwHCGpgIkRibCK
+	te6CziVsrpOy2xY5Oh7pjpt1U47AZp9nWkrE9XkN72Q07SwT93GGOJ0032ZlKnaO4BTBum
+	/qxEFphOedt5KO3TQT15yPgbk5k+mzU=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=b5RIxQQK;
+	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753528901; x=1785064901;
+  t=1753529503; x=1785065503;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=wbRxOW83h5ag6rAvDa9zsvECbeocst1I6z9JDaiutro=;
-  b=PPQ0AWgJ77eUfULQ45ttrHSmMGzQsJiEc41pqy1v7EMZINqB9aUpBjZW
-   +ThcHECS/qSP23F91VEXL+MuORoTSRqN/xTGkkuXsvJRq8KKH5lnQ1590
-   ERxuPejosUgb13UjyegduBrP4IwV8oa7VZSzdQp40HQcGtpvZJUdghGRv
-   6ZMjnDQ5vUk7dscRusl8oqkmvZqfBKYYZyQER5tK3ZtXYtzBQ7EmXr4xA
-   S63yZGEdqtUZyDAa7gPUiAvF9pquGyjura4zZmPduX/NvUvni/264POyG
-   ZpzaMRWLvxrnRvg8soqiUf0bQ0yqCQzXDVnxc3C2OLeu//4Q7OG6Rd25+
-   w==;
-X-CSE-ConnectionGUID: Ri6sJsvzRl+VVvaOw2iEGA==
-X-CSE-MsgGUID: ekNXImWmRJqaprargFxcfg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11503"; a="55997861"
+  bh=x5ftixc4aZ/+5TD+y+Aes85jYKYNSbOyuX7QDNVsBd8=;
+  b=b5RIxQQKtzsnYdlnFx8W/A0MJpXAZrH23WAIVvafNCigq60Wluc7CYUL
+   JC9iNbt0bJul2t0rn1vgfNalaJmohEncAmjLN6gQL9hEqLOTq9uoW8cET
+   NLXw/HEiLBfAi7DrLdYpNilENTVhpPxjxaVugbzI/SOXSe+0stQBXP8JQ
+   BjSSft2OpfshQKFaQw0mjmbWMkpqxM+qhknaZj8v1710ZB1dEbz0PAsRw
+   hUrTNWhTF9kEfCSqKVXY2n33gRm4fTWL6bl0zjBes45+CF0aK+6OL6ZFu
+   057QH7XB4ivCb2JcpDtFR1MflrF49sFy/oxxUiyPByiugKAaGJW2dVM0b
+   Q==;
+X-CSE-ConnectionGUID: Zhh4ViyxSHWIncTN7jJ37A==
+X-CSE-MsgGUID: h+lgLYfQScGGhSDBiGoeMQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11503"; a="55705697"
 X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
-   d="scan'208";a="55997861"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2025 04:21:39 -0700
-X-CSE-ConnectionGUID: 8zotRv7YQvKXCdlELy7OUA==
-X-CSE-MsgGUID: 0XG+XZTXR+uiUAgNJ2gZrw==
+   d="scan'208";a="55705697"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2025 04:31:41 -0700
+X-CSE-ConnectionGUID: pR4kffSwRjy1c2IEc26nyw==
+X-CSE-MsgGUID: cFu3aEPNSiGqjJr475Nxqg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
-   d="scan'208";a="192450002"
+   d="scan'208";a="160800593"
 Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 26 Jul 2025 04:21:33 -0700
+  by orviesa010.jf.intel.com with ESMTP; 26 Jul 2025 04:31:34 -0700
 Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1ufcy2-000Lvd-0T;
-	Sat, 26 Jul 2025 11:21:30 +0000
-Date: Sat, 26 Jul 2025 19:20:41 +0800
+	id 1ufd7j-000Lvz-1t;
+	Sat, 26 Jul 2025 11:31:31 +0000
+Date: Sat, 26 Jul 2025 19:30:54 +0800
 From: kernel test robot <lkp@intel.com>
-To: Bhupesh <bhupesh@igalia.com>, akpm@linux-foundation.org
-Cc: oe-kbuild-all@lists.linux.dev, bhupesh@igalia.com,
-	kernel-dev@igalia.com, linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org, linux-perf-users@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	oliver.sang@intel.com, lkp@intel.com, laoar.shao@gmail.com,
-	pmladek@suse.com, rostedt@goodmis.org,
-	mathieu.desnoyers@efficios.com, arnaldo.melo@gmail.com,
-	alexei.starovoitov@gmail.com, andrii.nakryiko@gmail.com,
-	mirq-linux@rere.qmqm.pl, peterz@infradead.org, willy@infradead.org,
-	david@redhat.com, viro@zeniv.linux.org.uk, keescook@chromium.org,
-	ebiederm@xmission.com, brauner@kernel.org, jack@suse.cz,
-	mingo@redhat.com, juri.lelli@redhat.com, bsegall@google.com,
-	mgorman@suse.de
-Subject: Re: [PATCH v6 3/3] include: Set tsk->comm length to 64 bytes
-Message-ID: <202507261841.Z2C9RmTJ-lkp@intel.com>
-References: <20250724123612.206110-4-bhupesh@igalia.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Sean Wang <sean.wang@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Dong Aisheng <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	NXP S32 Linux Team <s32@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Tony Lindgren <tony@atomide.com>,
+	Haojian Zhuang <haojian.zhuang@linaro.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: Re: [PATCH v3 10/15] pinctrl: make struct pinfunction a pointer in
+ struct function_desc
+Message-ID: <202507261937.Txq9shpv-lkp@intel.com>
+References: <20250724-pinctrl-gpio-pinfuncs-v3-10-af4db9302de4@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250724123612.206110-4-bhupesh@igalia.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E0EFF4000B
-X-Stat-Signature: qpxzuxq6wor5z7c1c9pygfk8kokp7qgk
+In-Reply-To: <20250724-pinctrl-gpio-pinfuncs-v3-10-af4db9302de4@linaro.org>
+X-Rspamd-Queue-Id: C104780012
+X-Stat-Signature: 77jn7aopias84yxxwuo4fr11hc5mbi9j
 X-Rspam-User: 
-X-HE-Tag: 1753528900-153605
-X-HE-Meta: U2FsdGVkX1/Z56tlV5gKozVbE1epbjBz4NoWcclTdf/bmJ9wWU5k9sKGva1IswW9FDzhFUNsy7T9N6k1TxvOFxGZAatcrcmlqCfJrExNZMa1QbrTJj9w3Hu0j3Ocl12Di2/+UAZ0qL/rTsq+HQ4EWApNDzFePnZpDBkImJil5ttwJGfO0E9MtN2ErtJeDBkzM9JVz62ZR7KEY+1KRp2k7Men8tVUz8AS1S3FR6AVCfOI5nI+F83fhl/iwt0MYE6UKW+i/2+lp0+M8/hO+phA8SvMku8VPbAf8k8neF0BgkVbF/vdEhKCg+hJaGjKzfKv3eoWQml2NlWe/Wk6UH7nHgB1avf2KxDm6PIXCotzd2DK3E8JmNDv9OxPMJFGuEw58bnnGHI8EifEFpjLG9rnt5mGaFdr/L4q4OWJg7HAevmhL4AKPQKjIj4imSa8h49h4zjj8CswupDjw7b8j29FNGH5W1K8likSYWhRgb/emsxcIdN86gJ9hZ6iGhtv7V/LBpfvY6yw34A5htqpyzyj3E4UJvmmO/TwTZ7y8g0r7uIIPFSRIv9UlqAvqseRk+KxarmfpGvyXOwNckfu/qHtx3Acq310k54oxgQdvrFK+R8uEOxHbYX0EXsDhYkQFpjw0n7aeSBrhoQIUhEnEHcpIzw+xK9OxUlDoV25PkhoNPTX74RLLmtYq/1Q66AQTxo2gpElpqnRztPdyBmU3fz07R5PzD4lSC+JaGEMLuGb7vMY4YyJLt+cRvmwE/K+Chkt9Cu6kNB5WhzQYXXt6BbVFjlbEaP4JU/8amA432AQOxeXnhJe6Qw8mbZEC1QHJYDxamXh16vZ4sNYU7MVtx2hHansDK/JMSYOouvSTHo9ZzvF7SW8Msrevs0jOqMeYsZR+QUUXcXKavUbqSFVglDKIpUJ9y+Sjnp85nNddI/US3OWZ2w7VWlYbxGCYedjJunTIStww+OPzhbjExFiS7u
- FQkRc/lO
- 8/CWlSYwzfx7YCX8l/teXP3Y33g84C+vD0ynef8Ewl8W1eIHdMUvVfdOOQuIeDb3rH0Ica9emsfBmlk0lbxglgJaG8qmXBl/vHSkJcEPTyTBIZEPOIUQj2kFFDq/4LCLK0/Ra+0ULFAoi3UXeQmV6yii1yRu32P3ngHoeWEpBwZLBvE2aMk+61HKLyVgcUQBj/y+TgHfI415WOSiasdCjjeKyIay8cHwSmCByn9U0wmNPFFaRUUp7S3VXRC0TBnNzVRtPeHvYkJDobi35F0p1CgctlU7FqsjXTO47NWX5Zh60MncXhMRP1IljnT1K84YefzHoNEs5lLgi+jy+nxrSn3FU435LUcvLuzjDjvGdID6Wsc+TDWOK/VWlIeIIv2bJ95l0He+b9Mxl3FzmoLWMKf0aZVDaticJesZux4YT8a9DGg72lBz0qwfqbZ3ySdAK7WsVBXGE6Q4wRn8vYznJeHEnjWCBjR10dVAPJce3XR42Ol0=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1753529502-347478
+X-HE-Meta: U2FsdGVkX1+dnyeTBnOfUQ/jhAMtYc0Uri54oRNPwaIRY4cFWQXDb4IXq8wxjBa3SdjZfzN2UYaUa8QShoLprXujH6I4QWXT7Hh89r6l9CJidLCvSYXTvufZ+YQHjSR91gSAcXjiCSt2IBOYJxle4lv49wyRyYqXIMoUP5VnRGiG5cUwYlrm3SAJPjPc1Rw7pJlX3qfJyvaQtKcv20XuzQU2W17cB6a9uTXd5+83tvl1JYKqsulNNZyLlUq3QEPqAOUwrfUgCyZnS1tlLR9pEXrVqdkl51qaENBVjK9BRzEbLVzh+52RRAmKWkhAjdgw7H9JzFQp32nv8+xEFzf0Mp/j5S4ilBXB4flziMbR0tLE+QA5MELTrAlu3t4LciNewWxdLyu0xiWCr3Sh70F4vkk3vSIrMnRFgvpv80t9+MhMtXjcDIz+HRJF33RD40cD2NOLulrF5CDVBv+p8cM3tM3Dgc25k+0M1L8+kyq5qZ/71sv8J7H8sAFWY2woSUTO7hiJ0n3oO/SZttCqCKtu35TMENSu4WPDi5K4F6v5dAdaEU4QT+OBCaSxO70YwQriFA61yjqKIwt9oObwSP1JcS+Xn34/1ree8foNZqOGtZC5PDBHEdEWVfwhXeSYhefLcd2i50Dnf/J3iaApdAAuLLCbYHS5JviJJNJj9RzURWa0UL3OAVhkB0My7Wh5/1lAE0AWMKosn4Cr6q9fG+xaJ9N2Ci4FBes75pSBIgTb6bsIisIENXR5IWniXTo5gq1T3Lbn9pJLz3OGfdltNv77s9fkm7vUCXTia8Ve5Apl+IdRkQ/1XA7dckfhQaAQCz9tIRBoGqqYqN4XcEknwcyyBuLuOSyYhXGRxKfTw7dXlpX2SsuwMb2LOaqthmJR96NVHoSrNrCAHRYxHhZZScJ/ghUaAfXpeDUoAIbeD/emIKe/uQqXEkujKPg8QSE3idqcId+Ng6ayveoh+XiKtB5
+ bPCrLFUR
+ ZiZao1WPcvN/rqOyvC5hDyij4F9AHxtxpJ+dD144d+WKVgorJLWJcbczLH10+2p+gV47h8N7IkSqmvifIO5XcKhfzQyyMBfl4w9nl9uTh4EayDNsoP4rmKiBcGUZbbqBbgrjInV/bJ4mygHOjClxNd7QqWOHja2cDDM0uaNiGVmo1hLMpWvy8OqGDh0ikVtZITx13FuUKen+LkqF5S9115RvVEcmY7xR3udk8Kg9mtTwueZfWZXyLHnCUwj6ViU8Hx1IJp+fvdCoAKQzB3UWsN/654Zfr5HUWVf88a8ncOv+SvAXV1ikfC4JjOoHD0G6mjwfDonKbKuorCZlYw+Vnnc20EaosTyc7MqLZDzltOT0dVqwKPEBQID6u5xjeSm1HMrMlYK/r3xR5XJ7Sn5+t+m/J5GlRvsV/7VV15xnlf4yAW+yrxQMnNff7PmJiLTaZneP7yjQ2wtqlMmyQd1FClRBQMw/Zq2oUUZgmcCqhU2lucSu6YG/SnppNl8BMxIM3FmlpQWTvOsIa6Qc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,161 +131,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Bhupesh,
+Hi Bartosz,
 
 kernel test robot noticed the following build warnings:
 
-[auto build test WARNING on trace/for-next]
-[also build test WARNING on tip/sched/core akpm-mm/mm-everything linus/master v6.16-rc7 next-20250725]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+[auto build test WARNING on 05adbee3ad528100ab0285c15c91100e19e10138]
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Bhupesh/exec-Remove-obsolete-comments/20250724-203927
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace for-next
-patch link:    https://lore.kernel.org/r/20250724123612.206110-4-bhupesh%40igalia.com
-patch subject: [PATCH v6 3/3] include: Set tsk->comm length to 64 bytes
-config: sparc64-randconfig-001-20250725 (https://download.01.org/0day-ci/archive/20250726/202507261841.Z2C9RmTJ-lkp@intel.com/config)
-compiler: sparc64-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250726/202507261841.Z2C9RmTJ-lkp@intel.com/reproduce)
+url:    https://github.com/intel-lab-lkp/linux/commits/Bartosz-Golaszewski/lib-provide-kmemdup_const/20250724-172620
+base:   05adbee3ad528100ab0285c15c91100e19e10138
+patch link:    https://lore.kernel.org/r/20250724-pinctrl-gpio-pinfuncs-v3-10-af4db9302de4%40linaro.org
+patch subject: [PATCH v3 10/15] pinctrl: make struct pinfunction a pointer in struct function_desc
+config: x86_64-buildonly-randconfig-002-20250725 (https://download.01.org/0day-ci/archive/20250726/202507261937.Txq9shpv-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250726/202507261937.Txq9shpv-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202507261841.Z2C9RmTJ-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202507261937.Txq9shpv-lkp@intel.com/
 
 All warnings (new ones prefixed by >>):
 
-   drivers/gpu/drm/nouveau/nouveau_chan.c: In function 'nouveau_channel_ctor':
->> drivers/gpu/drm/nouveau/nouveau_chan.c:336:51: warning: '%s' directive output may be truncated writing up to 63 bytes into a region of size 32 [-Wformat-truncation=]
-     snprintf(args->name, __member_size(args->name), "%s[%d]",
-                                                      ^~
-   drivers/gpu/drm/nouveau/nouveau_chan.c:336:2: note: 'snprintf' output between 4 and 77 bytes into a destination of size 32
-     snprintf(args->name, __member_size(args->name), "%s[%d]",
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-       current->comm, task_pid_nr(current));
-       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
---
-   drivers/gpu/drm/nouveau/nouveau_drm.c: In function 'nouveau_drm_open':
->> drivers/gpu/drm/nouveau/nouveau_drm.c:1202:32: warning: '%s' directive output may be truncated writing up to 63 bytes into a region of size 32 [-Wformat-truncation=]
-     snprintf(name, sizeof(name), "%s[%d]",
-                                   ^~
-   drivers/gpu/drm/nouveau/nouveau_drm.c:1202:2: note: 'snprintf' output between 4 and 77 bytes into a destination of size 32
-     snprintf(name, sizeof(name), "%s[%d]",
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-       current->comm, pid_nr(rcu_dereference(fpriv->pid)));
-       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>> drivers/pinctrl/pinmux.c:917:7: warning: cast from 'void (*)(const void *)' to 'void (*)(void *)' converts to incompatible function type [-Wcast-function-type-strict]
+     917 |                                          (void (*)(void *))kfree_const,
+         |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/device/devres.h:166:34: note: expanded from macro 'devm_add_action_or_reset'
+     166 |         __devm_add_action_or_reset(dev, action, data, #action)
+         |                                         ^~~~~~
+   1 warning generated.
 
 
-vim +336 drivers/gpu/drm/nouveau/nouveau_chan.c
+vim +917 drivers/pinctrl/pinmux.c
 
-ebb945a94bba2c Ben Skeggs          2012-07-20  246  
-5b8a43aeb9cbf6 Marcin Slusarz      2012-08-19  247  static int
-5cca41ac70e587 Ben Skeggs          2024-07-26  248  nouveau_channel_ctor(struct nouveau_cli *cli, bool priv, u64 runm,
-06db7fded6dec8 Ben Skeggs          2022-06-01  249  		     struct nouveau_channel **pchan)
-ebb945a94bba2c Ben Skeggs          2012-07-20  250  {
-152be54224de18 Danilo Krummrich    2023-10-02  251  	const struct nvif_mclass hosts[] = {
-284ad706ad2f50 Ben Skeggs          2025-02-04  252  		{ BLACKWELL_CHANNEL_GPFIFO_B, 0 },
-32cb1cc358ffed Ben Skeggs          2024-11-25  253  		{ BLACKWELL_CHANNEL_GPFIFO_A, 0 },
-44f93b209e2afd Ben Skeggs          2024-11-25  254  		{    HOPPER_CHANNEL_GPFIFO_A, 0 },
-06db7fded6dec8 Ben Skeggs          2022-06-01  255  		{    AMPERE_CHANNEL_GPFIFO_B, 0 },
-7f4f35ea5b080e Ben Skeggs          2022-06-01  256  		{    AMPERE_CHANNEL_GPFIFO_A, 0 },
-06db7fded6dec8 Ben Skeggs          2022-06-01  257  		{    TURING_CHANNEL_GPFIFO_A, 0 },
-06db7fded6dec8 Ben Skeggs          2022-06-01  258  		{     VOLTA_CHANNEL_GPFIFO_A, 0 },
-06db7fded6dec8 Ben Skeggs          2022-06-01  259  		{    PASCAL_CHANNEL_GPFIFO_A, 0 },
-06db7fded6dec8 Ben Skeggs          2022-06-01  260  		{   MAXWELL_CHANNEL_GPFIFO_A, 0 },
-06db7fded6dec8 Ben Skeggs          2022-06-01  261  		{    KEPLER_CHANNEL_GPFIFO_B, 0 },
-06db7fded6dec8 Ben Skeggs          2022-06-01  262  		{    KEPLER_CHANNEL_GPFIFO_A, 0 },
-06db7fded6dec8 Ben Skeggs          2022-06-01  263  		{     FERMI_CHANNEL_GPFIFO  , 0 },
-06db7fded6dec8 Ben Skeggs          2022-06-01  264  		{       G82_CHANNEL_GPFIFO  , 0 },
-06db7fded6dec8 Ben Skeggs          2022-06-01  265  		{      NV50_CHANNEL_GPFIFO  , 0 },
-06db7fded6dec8 Ben Skeggs          2022-06-01  266  		{      NV40_CHANNEL_DMA     , 0 },
-06db7fded6dec8 Ben Skeggs          2022-06-01  267  		{      NV17_CHANNEL_DMA     , 0 },
-06db7fded6dec8 Ben Skeggs          2022-06-01  268  		{      NV10_CHANNEL_DMA     , 0 },
-06db7fded6dec8 Ben Skeggs          2022-06-01  269  		{      NV03_CHANNEL_DMA     , 0 },
-06db7fded6dec8 Ben Skeggs          2022-06-01  270  		{}
-06db7fded6dec8 Ben Skeggs          2022-06-01  271  	};
-e270b3665f8321 Gustavo A. R. Silva 2025-04-16  272  	DEFINE_RAW_FLEX(struct nvif_chan_v0, args, name, TASK_COMM_LEN + 16);
-5cca41ac70e587 Ben Skeggs          2024-07-26  273  	struct nvif_device *device = &cli->device;
-ebb945a94bba2c Ben Skeggs          2012-07-20  274  	struct nouveau_channel *chan;
-06db7fded6dec8 Ben Skeggs          2022-06-01  275  	const u64 plength = 0x10000;
-06db7fded6dec8 Ben Skeggs          2022-06-01  276  	const u64 ioffset = plength;
-06db7fded6dec8 Ben Skeggs          2022-06-01  277  	const u64 ilength = 0x02000;
-06db7fded6dec8 Ben Skeggs          2022-06-01  278  	int cid, ret;
-06db7fded6dec8 Ben Skeggs          2022-06-01  279  	u64 size;
-06db7fded6dec8 Ben Skeggs          2022-06-01  280  
-06db7fded6dec8 Ben Skeggs          2022-06-01  281  	cid = nvif_mclass(&device->object, hosts);
-06db7fded6dec8 Ben Skeggs          2022-06-01  282  	if (cid < 0)
-06db7fded6dec8 Ben Skeggs          2022-06-01  283  		return cid;
-06db7fded6dec8 Ben Skeggs          2022-06-01  284  
-06db7fded6dec8 Ben Skeggs          2022-06-01  285  	if (hosts[cid].oclass < NV50_CHANNEL_GPFIFO)
-06db7fded6dec8 Ben Skeggs          2022-06-01  286  		size = plength;
-06db7fded6dec8 Ben Skeggs          2022-06-01  287  	else
-06db7fded6dec8 Ben Skeggs          2022-06-01  288  		size = ioffset + ilength;
-ebb945a94bba2c Ben Skeggs          2012-07-20  289  
-ebb945a94bba2c Ben Skeggs          2012-07-20  290  	/* allocate dma push buffer */
-5cca41ac70e587 Ben Skeggs          2024-07-26  291  	ret = nouveau_channel_prep(cli, size, &chan);
-ebb945a94bba2c Ben Skeggs          2012-07-20  292  	*pchan = chan;
-ebb945a94bba2c Ben Skeggs          2012-07-20  293  	if (ret)
-ebb945a94bba2c Ben Skeggs          2012-07-20  294  		return ret;
-ebb945a94bba2c Ben Skeggs          2012-07-20  295  
-ebb945a94bba2c Ben Skeggs          2012-07-20  296  	/* create channel object */
-e270b3665f8321 Gustavo A. R. Silva 2025-04-16  297  	args->version = 0;
-e270b3665f8321 Gustavo A. R. Silva 2025-04-16  298  	args->namelen = __member_size(args->name);
-e270b3665f8321 Gustavo A. R. Silva 2025-04-16  299  	args->runlist = __ffs64(runm);
-e270b3665f8321 Gustavo A. R. Silva 2025-04-16  300  	args->runq = 0;
-e270b3665f8321 Gustavo A. R. Silva 2025-04-16  301  	args->priv = priv;
-e270b3665f8321 Gustavo A. R. Silva 2025-04-16  302  	args->devm = BIT(0);
-06db7fded6dec8 Ben Skeggs          2022-06-01  303  	if (hosts[cid].oclass < NV50_CHANNEL_GPFIFO) {
-e270b3665f8321 Gustavo A. R. Silva 2025-04-16  304  		args->vmm = 0;
-e270b3665f8321 Gustavo A. R. Silva 2025-04-16  305  		args->ctxdma = nvif_handle(&chan->push.ctxdma);
-e270b3665f8321 Gustavo A. R. Silva 2025-04-16  306  		args->offset = chan->push.addr;
-e270b3665f8321 Gustavo A. R. Silva 2025-04-16  307  		args->length = 0;
-bbf8906b2cad17 Ben Skeggs          2014-08-10  308  	} else {
-e270b3665f8321 Gustavo A. R. Silva 2025-04-16  309  		args->vmm = nvif_handle(&chan->vmm->vmm.object);
-06db7fded6dec8 Ben Skeggs          2022-06-01  310  		if (hosts[cid].oclass < FERMI_CHANNEL_GPFIFO)
-e270b3665f8321 Gustavo A. R. Silva 2025-04-16  311  			args->ctxdma = nvif_handle(&chan->push.ctxdma);
-06db7fded6dec8 Ben Skeggs          2022-06-01  312  		else
-e270b3665f8321 Gustavo A. R. Silva 2025-04-16  313  			args->ctxdma = 0;
-e270b3665f8321 Gustavo A. R. Silva 2025-04-16  314  		args->offset = ioffset + chan->push.addr;
-e270b3665f8321 Gustavo A. R. Silva 2025-04-16  315  		args->length = ilength;
-06db7fded6dec8 Ben Skeggs          2022-06-01  316  	}
-e270b3665f8321 Gustavo A. R. Silva 2025-04-16  317  	args->huserd = 0;
-e270b3665f8321 Gustavo A. R. Silva 2025-04-16  318  	args->ouserd = 0;
-06db7fded6dec8 Ben Skeggs          2022-06-01  319  
-06db7fded6dec8 Ben Skeggs          2022-06-01  320  	/* allocate userd */
-06db7fded6dec8 Ben Skeggs          2022-06-01  321  	if (hosts[cid].oclass >= VOLTA_CHANNEL_GPFIFO_A) {
-06db7fded6dec8 Ben Skeggs          2022-06-01  322  		ret = nvif_mem_ctor(&cli->mmu, "abi16ChanUSERD", NVIF_CLASS_MEM_GF100,
-06db7fded6dec8 Ben Skeggs          2022-06-01  323  				    NVIF_MEM_VRAM | NVIF_MEM_COHERENT | NVIF_MEM_MAPPABLE,
-06db7fded6dec8 Ben Skeggs          2022-06-01  324  				    0, PAGE_SIZE, NULL, 0, &chan->mem_userd);
-06db7fded6dec8 Ben Skeggs          2022-06-01  325  		if (ret)
-ebb945a94bba2c Ben Skeggs          2012-07-20  326  			return ret;
-ebb945a94bba2c Ben Skeggs          2012-07-20  327  
-e270b3665f8321 Gustavo A. R. Silva 2025-04-16  328  		args->huserd = nvif_handle(&chan->mem_userd.object);
-e270b3665f8321 Gustavo A. R. Silva 2025-04-16  329  		args->ouserd = 0;
-ebb945a94bba2c Ben Skeggs          2012-07-20  330  
-06db7fded6dec8 Ben Skeggs          2022-06-01  331  		chan->userd = &chan->mem_userd.object;
-06db7fded6dec8 Ben Skeggs          2022-06-01  332  	} else {
-06db7fded6dec8 Ben Skeggs          2022-06-01  333  		chan->userd = &chan->user;
-06db7fded6dec8 Ben Skeggs          2022-06-01  334  	}
-ebb945a94bba2c Ben Skeggs          2012-07-20  335  
-e270b3665f8321 Gustavo A. R. Silva 2025-04-16 @336  	snprintf(args->name, __member_size(args->name), "%s[%d]",
-e270b3665f8321 Gustavo A. R. Silva 2025-04-16  337  		 current->comm, task_pid_nr(current));
-ebb945a94bba2c Ben Skeggs          2012-07-20  338  
-06db7fded6dec8 Ben Skeggs          2022-06-01  339  	ret = nvif_object_ctor(&device->object, "abi16ChanUser", 0, hosts[cid].oclass,
-e270b3665f8321 Gustavo A. R. Silva 2025-04-16  340  			       args, __struct_size(args), &chan->user);
-06db7fded6dec8 Ben Skeggs          2022-06-01  341  	if (ret) {
-06db7fded6dec8 Ben Skeggs          2022-06-01  342  		nouveau_channel_del(pchan);
-ebb945a94bba2c Ben Skeggs          2012-07-20  343  		return ret;
-bbf8906b2cad17 Ben Skeggs          2014-08-10  344  	}
-ebb945a94bba2c Ben Skeggs          2012-07-20  345  
-e270b3665f8321 Gustavo A. R. Silva 2025-04-16  346  	chan->runlist = args->runlist;
-e270b3665f8321 Gustavo A. R. Silva 2025-04-16  347  	chan->chid = args->chid;
-e270b3665f8321 Gustavo A. R. Silva 2025-04-16  348  	chan->inst = args->inst;
-e270b3665f8321 Gustavo A. R. Silva 2025-04-16  349  	chan->token = args->token;
-06db7fded6dec8 Ben Skeggs          2022-06-01  350  	return 0;
-ebb945a94bba2c Ben Skeggs          2012-07-20  351  }
-ebb945a94bba2c Ben Skeggs          2012-07-20  352  
+   883	
+   884	/**
+   885	 * pinmux_generic_add_pinfunction() - adds a function group
+   886	 * @pctldev: pin controller device
+   887	 * @func: pinfunction structure describing the function group
+   888	 * @data: pin controller driver specific data
+   889	 */
+   890	int pinmux_generic_add_pinfunction(struct pinctrl_dev *pctldev,
+   891					   const struct pinfunction *func, void *data)
+   892	{
+   893		struct function_desc *function;
+   894		int selector, error;
+   895	
+   896		selector = pinmux_func_name_to_selector(pctldev, func->name);
+   897		if (selector >= 0)
+   898			return selector;
+   899	
+   900		selector = pctldev->num_functions;
+   901	
+   902		function = devm_kzalloc(pctldev->dev, sizeof(*function), GFP_KERNEL);
+   903		if (!function)
+   904			return -ENOMEM;
+   905	
+   906		function->func = kmemdup_const(func, sizeof(*func), GFP_KERNEL);
+   907		if (!function->func)
+   908			return -ENOMEM;
+   909	
+   910		/*
+   911		 * FIXME: It's generally a bad idea to use devres in subsystem core
+   912		 * code - managed interfaces are aimed at drivers - but pinctrl already
+   913		 * uses it all over the place so it's a larger piece of technical debt
+   914		 * to fix.
+   915		 */
+   916		error = devm_add_action_or_reset(pctldev->dev,
+ > 917						 (void (*)(void *))kfree_const,
+   918						 (void *)function->func);
+   919		if (error)
+   920			return error;
+   921	
+   922		function->data = data;
+   923	
+   924		error = radix_tree_insert(&pctldev->pin_function_tree, selector, function);
+   925		if (error)
+   926			return error;
+   927	
+   928		pctldev->num_functions++;
+   929	
+   930		return selector;
+   931	}
+   932	EXPORT_SYMBOL_GPL(pinmux_generic_add_pinfunction);
+   933	
 
 -- 
 0-DAY CI Kernel Test Service
