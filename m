@@ -2,99 +2,131 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ECAD0C83F17
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Jul 2025 23:19:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A798DC83F17
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Jul 2025 23:37:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B68E6B0088; Sat, 26 Jul 2025 19:19:24 -0400 (EDT)
+	id 079F76B008A; Sat, 26 Jul 2025 19:37:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1674C6B0089; Sat, 26 Jul 2025 19:19:24 -0400 (EDT)
+	id 02AA26B008C; Sat, 26 Jul 2025 19:37:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 081C76B008A; Sat, 26 Jul 2025 19:19:24 -0400 (EDT)
+	id E4C086B0092; Sat, 26 Jul 2025 19:37:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EBDBF6B0088
-	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 19:19:23 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 69592160B41
-	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 23:19:23 +0000 (UTC)
-X-FDA: 83707984206.02.B7F4617
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A6FDD40005
-	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 23:19:21 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oP6TEdb7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id D2EBA6B008A
+	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 19:37:55 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8C02A1141A0
+	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 23:37:55 +0000 (UTC)
+X-FDA: 83708030910.07.C2FE282
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5BAE940009
+	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 23:37:53 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=FruN6waU;
+	spf=pass (imf01.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.52 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753571961;
+	s=arc-20220608; t=1753573073;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EDGIW+TH9vAlNoQvdFdR+qpWRbp6aLgiXKsAT00qYJA=;
-	b=jvD+yPbHwOJOgw1V8r8ZXYtphS/HuLeZjD7DzBgDu195WYfdAGvNgB5WbJo3BgbYre7Oco
-	mWGaIluitzoQ/utDnaFKoG8GbmC6IkvgFJlYZ+3+aRSnvvVEPhCao8Q734y/EEERLhpoWD
-	qGC5G5jU+bYfvNLae+AQLdO7qAHnDkE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753571961; a=rsa-sha256;
+	bh=1tHg+Y1g27jBmEKsSCwCSS49UstWUnsuEvPhc+oks0Q=;
+	b=WO9JGAHdeGxsSZncTujSa/xrXQmT2mpLjxW3lSIjtSWg7CmNOgrWN000bYsCGdpIFD05W6
+	d6spdgmoMPN/0oDBjhcwdxob6ujcMKHYrIavNKWIuXf+86DJoRT0FWgNvB71/1mfxpAdbe
+	6u7vL95sQWCE90TspktIjFvMBhfIZKk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753573073; a=rsa-sha256;
 	cv=none;
-	b=DihZVs9+M4kaBRkglzEQEHuecNZb2inC55Pc3RW4NlNOZSIPiZf+p8jlJJGY1F8mgx0ViW
-	3v2hEifZ2bVutupBA2qjoBxNNV6QAdwDqhu9d8sue464WJHS6MSJrLYSQ2PR37zeaB4LQ7
-	BgKvsrn6MwlGUMvyx9VgfianoqRCN1I=
+	b=Wqg7PG8cKEeoQtMFysy5sprRfsBe0ItNadImBWMj+37l59Ls0/m+BTZzJJGgh2XLA8XdmZ
+	+PMydMkMfbP5+RE4Xtz2Kk/80JRaQHYtg2CxR0cHPeK9qivbmSQS+ULLy4z2mg6Vv6EbuB
+	ii8UWyTRqegf4Mk9dZyka+0w2FMlPb0=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oP6TEdb7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 579874435D;
-	Sat, 26 Jul 2025 23:19:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D9CC4CEED;
-	Sat, 26 Jul 2025 23:19:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753571960;
-	bh=EDGIW+TH9vAlNoQvdFdR+qpWRbp6aLgiXKsAT00qYJA=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=oP6TEdb7YE2T2S8Ap9nwc/X3asue9bKewcgHIuUVA3FoCpyOmXmfThSlzYPyAK/rP
-	 4QmN0JpN+rFzUZGkj7ZfF+6czDfH3GIzjeosnlj8ZOiateuLnVjtxdSz4wROmB22Fe
-	 vfrhicja1vsznPCIbFme0J4tO5KEpXgaiaY+tIDY9AwqLc2dTu1wu19uR7qZEUmZ/g
-	 OEgxNsGwqMrDhnvjqnWWGtfTN0rV/BICgDQCteeZ6t/gqmEDxcGxYzVjvKStGgtfOW
-	 na16XywlEeyZIaWoOiS06QOBLiNnnO6YFDoUHguGw1tVAVRvr6V1alfU6Krbou9WWZ
-	 q88hFGa4q31RQ==
-Date: Sat, 26 Jul 2025 16:19:18 -0700
-From: Kees Cook <kees@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-CC: Bhupesh <bhupesh@igalia.com>, akpm@linux-foundation.org,
- kernel-dev@igalia.com, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, oliver.sang@intel.com, lkp@intel.com,
- laoar.shao@gmail.com, pmladek@suse.com, rostedt@goodmis.org,
- mathieu.desnoyers@efficios.com, arnaldo.melo@gmail.com,
- alexei.starovoitov@gmail.com, andrii.nakryiko@gmail.com,
- mirq-linux@rere.qmqm.pl, peterz@infradead.org, willy@infradead.org,
- david@redhat.com, viro@zeniv.linux.org.uk, ebiederm@xmission.com,
- brauner@kernel.org, jack@suse.cz, mingo@redhat.com, juri.lelli@redhat.com,
- bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
- linux-trace-kernel@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v6_2/3=5D_treewide=3A_Switch_memcpy=28=29_use?=
- =?US-ASCII?Q?rs_of_=27task-=3Ecomm=27_to_a_more_safer_implementation?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <CAHk-=wi5c=_-FBGo_88CowJd_F-Gi6Ud9d=TALm65ReN7YjrMw@mail.gmail.com>
-References: <20250724123612.206110-1-bhupesh@igalia.com> <20250724123612.206110-3-bhupesh@igalia.com> <202507241640.572BF86C70@keescook> <CAHk-=wi5c=_-FBGo_88CowJd_F-Gi6Ud9d=TALm65ReN7YjrMw@mail.gmail.com>
-Message-ID: <B9C50D0B-DCD9-41A2-895D-4899728AF605@kernel.org>
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=FruN6waU;
+	spf=pass (imf01.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.52 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-adfb562266cso474030266b.0
+        for <linux-mm@kvack.org>; Sat, 26 Jul 2025 16:37:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1753573072; x=1754177872; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=1tHg+Y1g27jBmEKsSCwCSS49UstWUnsuEvPhc+oks0Q=;
+        b=FruN6waUSKZQr53eDNpE5ruungZaXnthkhx63X6v1MYWfx75ZMKKWdBK2WrZCz7VEg
+         iXMIozGJsGYCIxHZ3Ri3UBhUVmyF+LXzNQSxMdwdE96yeAIUTAx5rdwGzeClyBmmQQ2D
+         ZIDtq+oysIDkQyjb5j2js2JpXJCG0CEuYR0kY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753573072; x=1754177872;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1tHg+Y1g27jBmEKsSCwCSS49UstWUnsuEvPhc+oks0Q=;
+        b=DWCSmnZ96VGY4uC9KwPRWnUbghg93nlKhTcigWcwWvXCuWODe+ysjHFVfFljSGdaQD
+         SOTJcRX+CuttDXaYScJi9Qzj3XeI/aUmcXf7PEBx8SNOONjXYbBkYL/6XhGy9saZmiua
+         hG+NdD8RX2aliL1GsTmwzfwi2tDAi5Zl8jaYuzRxE/XzJd/UuS8hDhzQ2rDq2PL+XKXh
+         cw7I+6V6XRvg/hkDUgn1IdoGFpeL7OVmOnoXER4BW/+fbPtlRc9Q8jzt+xjbuvx2TZQJ
+         MZnlxWJx64vBSBeaU099OFunsjmKG9AUfNDgYAHO4P8clUuPkjsTeAGgh4IhYlX6907W
+         lOeg==
+X-Forwarded-Encrypted: i=1; AJvYcCWo3mgy1/UohHzni+oWJfxihip7bGFopURlli90aiBoPfaQ6LXu5a3NwC0D38usFJ35S6et0uHguQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw9Nmu5OuO/5w2UbeJhQP3f8OtWHvGgoCm2YVmmNR8q5pKwRQ/u
+	65jFFqT1Vx0xhslPpbRiWCXKidOzjJTu5gJdH4pi2gIlhfcYxTxOwWlS8hXNYO58WjDXSaBFIxw
+	UaJTIQ7Ta9A==
+X-Gm-Gg: ASbGnctsu12KXq9qgNPpc//sQeJOU3Xfp7sRcF+EzKflpnXBzOe9wd8zrbO0dzqhmqe
+	ro6jINS09eJJMDOw0BMjBaYLCoIT9IpY1P86XRi/IJFQGxkiKuvlka5vjPUsv9PdHIaRNuF5a9O
+	3L7oa9riGc7Y821Bvq+LannTRzagXLM6sQf8z29qAGi+AUpNmXaM2+P4Z+DDIvnmW+8wCUaNKl7
+	/BfKB8S7z5dTAhPkWIIMyiIlWLJXK5W1skJrObZXm/jsTSzwpa0enaCvG26H/iJ2cX8YlNB9xl2
+	sr76aDHf6q15mNik/Gvno2QaQxzlJ1Befs+GNyMhVL8phCofyA/Oy/ayJCjH0kRiO0MI9oHEuWI
+	S7Dohv+rqqgNmb6Fz1TUJjjAm+d+avWfcZBHJdCCbj6r7MtFhkFLbsmCj0tnjMQXNMR/DWwNMB/
+	/Wx33kelQ4tWb2ZhqIFg==
+X-Google-Smtp-Source: AGHT+IGx8ssP5iClseIwkUHT+5FsR90mrzVLd9wC9wrHzrM/UTqLTnqzy2fG3QMa5P5WRYvsJo/OYg==
+X-Received: by 2002:a17:907:3d0d:b0:ae2:60ba:da91 with SMTP id a640c23a62f3a-af61ca99878mr826256666b.15.1753573071502;
+        Sat, 26 Jul 2025 16:37:51 -0700 (PDT)
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com. [209.85.208.48])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6152a0e65a2sm221840a12.42.2025.07.26.16.37.50
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 26 Jul 2025 16:37:50 -0700 (PDT)
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-60c60f7eeaaso5286892a12.0
+        for <linux-mm@kvack.org>; Sat, 26 Jul 2025 16:37:50 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCURHDGv1NOC0LicELZsp63vtPFBIIxifbw3GXYhWJlyQJCKBorcgQizuViSe8ml8bQ6lvHxdGscHw==@kvack.org
+X-Received: by 2002:a05:6402:483:b0:611:f4b2:379c with SMTP id
+ 4fb4d7f45d1cf-614f1dced8amr5514831a12.20.1753573070075; Sat, 26 Jul 2025
+ 16:37:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: nb89uafamo3gu65mnhfgsoe891sihbju
-X-Rspamd-Queue-Id: A6FDD40005
-X-Rspamd-Server: rspam10
+References: <20250724123612.206110-1-bhupesh@igalia.com> <20250724123612.206110-3-bhupesh@igalia.com>
+ <202507241640.572BF86C70@keescook> <CAHk-=wi5c=_-FBGo_88CowJd_F-Gi6Ud9d=TALm65ReN7YjrMw@mail.gmail.com>
+ <B9C50D0B-DCD9-41A2-895D-4899728AF605@kernel.org>
+In-Reply-To: <B9C50D0B-DCD9-41A2-895D-4899728AF605@kernel.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sat, 26 Jul 2025 16:37:33 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wixR7ZR+aebFsWX4qWZ84tMTmyNWLUPmTy3YvaNJGqd-Q@mail.gmail.com>
+X-Gm-Features: Ac12FXwLhT2VoOEv9kNeOdgouvN4zZ9YLvHzVMPIsLMuRmQFnkSkLFn13r5tjO0
+Message-ID: <CAHk-=wixR7ZR+aebFsWX4qWZ84tMTmyNWLUPmTy3YvaNJGqd-Q@mail.gmail.com>
+Subject: Re: [PATCH v6 2/3] treewide: Switch memcpy() users of 'task->comm' to
+ a more safer implementation
+To: Kees Cook <kees@kernel.org>
+Cc: Bhupesh <bhupesh@igalia.com>, akpm@linux-foundation.org, kernel-dev@igalia.com, 
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, oliver.sang@intel.com, lkp@intel.com, 
+	laoar.shao@gmail.com, pmladek@suse.com, rostedt@goodmis.org, 
+	mathieu.desnoyers@efficios.com, arnaldo.melo@gmail.com, 
+	alexei.starovoitov@gmail.com, andrii.nakryiko@gmail.com, 
+	mirq-linux@rere.qmqm.pl, peterz@infradead.org, willy@infradead.org, 
+	david@redhat.com, viro@zeniv.linux.org.uk, ebiederm@xmission.com, 
+	brauner@kernel.org, jack@suse.cz, mingo@redhat.com, juri.lelli@redhat.com, 
+	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com, 
+	linux-trace-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 5BAE940009
 X-Rspam-User: 
-X-HE-Tag: 1753571961-756562
-X-HE-Meta: U2FsdGVkX19+hNzARyVPPa8Vz2wYap/nCTc/VPvO2NjaA+Suln7VRRqO5D1hWCXdtFfG/x8dGFOubWMrqG3xIxoygdNg2XvwYoblDvj3MiUFwW6yHWT6pApWiVN0/kf3dMBydm+Jf6Uy6MTX3uTFXvqFhsAGdUZ+bCQZWl02JK+VF3z9c3KBVervR4b+6KQJPPgLSxVJWjRU/q7W19uUfa041iWnecwyJZodQKBNxc9Xfy9FX8Q4t1Qz+xNnEp91vrEma/TQCAhumg9GzrFyeZVIB6ErJES8qasIJ2/25SfaaBoKOsCS+aagnlLLMJ8yiTnEqwkif7AE9c6EkJHHXp1gtb5ZglFXtdUTzDQ602VnDR4fDGroL5cW1LIazEwQ8tKrojxlweX5jjddpU5rZG003jz/yRSPzqjMapzFTPu6HGzoMi1x8pMsLCEHBzSkskapgFcv17S+XIOYZJf5qOvKRvDieVq1cPzbryUyvl51W95CyqLBibFK2VpE//+OBPixdakLotNXx8V0dbkprvI5h6Hdz2PGLxWXYvddio2FW2IzFqvGJd8fYXAa1yppw48ro0UcRFLsO231zGc2zEjWeBMPfjLroAbloGKqXPZJY+/bQkxbLNNiKBHVzElNw5hrLmJYdUPmRPBaprKOFrw+hzxfayjD0909KI3jmpWQ9gR3SUzVOxAeN6LlHretCaUz5JLUwg3N3wlSuK2OCn6AeGs4NjNmC3yZhlc3bHimkk2tgvwjAJfYXzyIQb9Sn+OPuLDWiuuJ0SnpTogoHmnXDOBaCZloW6lQ+gOXHk9KOiTaWeUdpRhvpN6DkMRp3S+s6cj9j3gJgWNdqq3/5s8alTveW2eLHorPn1aYP8ABCBmiCHK5HWBaVf+6rH9nlXJaYapBTf1JiruYvC6x2dLyUoc4lhc6dqL9gnid7H24FE9Lbz6FYS6nm4mea3/U7jYbrW7/o0ULqjkdOhp
- HvdbGqPt
- XvWsc3esxZmB0u7biHk4DAHRN6ndkW9H4UYhlvBKpH2Qa6R0UETVMfW+kn9c9K+Z7pIXRmLeY41ZTxJPHE0pZudANKG9/CdUMSzJCVR+CfeA8hb6y2CDYMl54aDYxLE4xtXLbfyEcYOxyb497itupCOOlsc2qEqo3JKBAljA0rEcOfsgdj4AIfzoTc+CnXwGAzxhw9dxFHUa+zEG1revllJdBvFO7iqx5O7Ks3SgnWmHUQcQMvDJ/Br88GmJ57JGUFzerZwFhwbQLPMHYL1qXiKqVBMK9boEq6GQEFHnUOUQyia2xmImmiMg5cEbzKIB6eQGVLgkeqwu3lc02l9davlsf34IJ27fBKLUAszXf1fISrDV+4YlcFNUllLo0nLRIXlJmDp+uvAkk4jdB/k+dGoLfF7rO4IE83++jv3Urb421hVeEq3tOtEddAA==
+X-Rspamd-Server: rspam09
+X-Stat-Signature: pp8yr5ah8b64o8qfwg4qbqzystpaz8ao
+X-HE-Tag: 1753573073-328276
+X-HE-Meta: U2FsdGVkX1+Uw5+eTVFJqryudCFWGYr8ANorvBZmoi+c2mjRRd9Ti2WI0hTHH8Y/oqzgRPnk+yr2xg/2DkHautdDnZO2nuuDH4y0SfhLkSfXFkrb888f+QHXh8IvXuxrdExSPyfsOTotmEdzGMVqVAK5kSGgUhEVrwdXatPMgl3yR93g8mSEla8a8fFxHjVrIXvMXn4C9QOAMjTRxyGEx3mUOMWBZrkth61mjv1cqark9IMZNGSLb7JdCaR6wkxGZWVuna3vElE/rXGFaGbAD7x/tlmapzVsfnBT/hV77fEFpOibhy3yx3Rou1m2farAEh7xOBMw1m6upvPn97U18XGMxGGbymA1tTKrEcwnwP39E7TBTIvgEU9iNt26+tNXfUsxbsgivUonMIZkfBStPQLQYDQZym+Lod4wNRlILfnl4ml4S5C9F9HBP9ztmaK4K0Z2MHzxEjU3cKWfAgtNsdjGiqFvluDVGbvPDHmLRm0Q/8K3Mv8v4MQpE5yaiG/0nRce6JZKbn7XVASig50UJe0TOgL957Lc2wvuxLedLAkzoJOfN8kYWczAexBJ1QNaMYjPxYHkpeSC5+tV7tHpTA2WOdS0/3GAhAbsbIWluPt4JN0zgsY1CLH5dDPfQkwJmwKAaDdegB4fkvuM2a34y5ULNCHQCWAxjZeFcmTrO2cuJZ7B1EeoAR9eEp0DznIiDk0cjnQ/A1NtmyOrttNCnBOkOrjVsTXccGHAW6kVZRsZjb0/aK2MGHsaqDa0TshOuaXbjl2BDnE7Qt8eIGRO7qtA0yapdYZJnmg4qHRY7cfdyrjoxqUuMw55vYm58fSn1Swit5/6LukPEuEFpvoIRdb52zAbKk/qzfXY/G5Fb0xIF2JSBBoNRC+V57UFsgrIiyzQdDk4L4tCcVbFU59WGMEutHHQGYv3U9WxaRiYMZG5vban2PJlopjmsIYm+Kn60l7OyC1pOP3Qqh4aSkT
+ IgjqdyA5
+ ZNoafzzZrbIwvnG78Yy5jNYjwAYhA/oIQso/ORb+nfk4ipFXmoAf8wbbralLmXQ8OyVc+0w7PTjKAnzOe5wro4XhTO03T8RxN7GmxEQC07dYrfwql1R5fFBPZOkZ/AnQ6KnXGQp5p2Fs7sfaGSFL7UG2CVCtLO0AI7dvfcbIcS7OoBWnjliAZSIsbIJv2o7/joE2jdijnuNl6qJ8zyYimgf5yji5nziQuGKWXD4Za74QWFQqKoEaT6iIYzZdYKk3ug0kzuv9/a8nymHda2ikibRL3Mp5CbDYj8T28sXOwaom3hpx6BQ+1BWq1lsIcI2FC41/55P94zD177Ef9mL9HpoihmGsroenJiZ4IKQB8J4zlDdhFNCCFQ4+sC1TUZWY8E+MonEKSLvWqh0RtcPY58sj4IB9rLEmjhiGTa5xgAGuTum79fW+lqBun0MmuXEYqm3XF4Ot9XjIDjIffR/Zhd8FXcvHSWqMK35X0j4SvbNBTjnZgCBJqSVPrxgHF6vS3MLLspDG2PwO2UH71In6tRVKCWQ7CNvltUaDq2j4w0AwQpNe6RKH1laLQxg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,34 +135,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On July 26, 2025 10:50:55 AM PDT, Linus Torvalds <torvalds@linux-foundatio=
-n=2Eorg> wrote:
->, but
+On Sat, 26 Jul 2025 at 16:19, Kees Cook <kees@kernel.org> wrote:
 >
->On Thu, 24 Jul 2025 at 16:49, Kees Cook <kees@kernel=2Eorg> wrote:
->>
->> Why not switch all of these to get_task_comm()? It will correctly handl=
-e
->> the size check and NUL termination=2E
->
->I'd rather aim to get rid of get_task_comm() entirely=2E
+> That works for me! I just get twitchy around seeing memcpy used for strings. :) if we're gonna NUL after the memcpy, just use strscpy_pad().
 
-That works for me! I just get twitchy around seeing memcpy used for string=
-s=2E :) if we're gonna NUL after the memcpy, just use strscpy_pad()=2E
+I do worry a tiny bit about performance.
 
->And guess what? We *have* that function=2E It's called "strscpy()"=2E It
->already does the right thing, including passing in the size of a fixed
->array and just dealing with it the RightWay(tm)=2E Add '_pad()' if that
->is the behavior you want, and now you *document* the fact that the
->result is padded=2E
+Because 'memcpy+set last byte to NUL' really is just a couple of
+instructions when we're talking small constant-sized arrays.
 
-Exactly=2E Let's see how much we can just replace with strscpy_pad()=2E It=
- we have other use cases, we can handle those separately=2E
+strscpy_pad() isn't horrible, but it's still at another level. And
+most of the cost is that "return the length" which people often don't
+care about.
 
--Kees
+Dang, I wish we had some compiler trick to say "if the value isn't
+used, do X, if it _is_ used do Y".
 
---=20
-Kees Cook
+It's such a trivial thing in the compiler itself, and the information
+is there, but I don't think it is exposed in any useful way.
+
+In fact, it *is* exposed in one way I can think of:
+
+   __attribute__((__warn_unused_result__))
+
+but not in a useful form for actually generating different code.
+
+Some kind of "__builtin_if_used(x,y)" where it picks 'x' if the value
+is used, and 'y' if it isn't would be lovely for this.
+
+Then you could do things like
+
+    #define my_helper(x) \
+        __builtin_if_used( \
+                full_semantics(x), \
+                simpler_version(x))
+
+when having a return value means extra work and most people don't care.
+
+Maybe it exists in some form that I haven't thought of?
+
+Any compiler people around?
+
+                 Linus
 
