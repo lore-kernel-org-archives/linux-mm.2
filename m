@@ -2,118 +2,93 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2AB15C87FCA
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Jul 2025 16:18:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 250C8C87FCA
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Jul 2025 16:23:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AAC316B0092; Sat, 26 Jul 2025 12:18:18 -0400 (EDT)
+	id B04D86B0088; Sat, 26 Jul 2025 12:23:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A841A6B0093; Sat, 26 Jul 2025 12:18:18 -0400 (EDT)
+	id AB52E6B0089; Sat, 26 Jul 2025 12:23:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 999B96B0095; Sat, 26 Jul 2025 12:18:18 -0400 (EDT)
+	id 9CAD86B008A; Sat, 26 Jul 2025 12:23:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8DD316B0092
-	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 12:18:18 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2193380A80
-	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 16:18:18 +0000 (UTC)
-X-FDA: 83706923076.13.5290179
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 271D34000C
-	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 16:18:15 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="lisg/UrL";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf17.hostedemail.com: domain of aliceryhl@google.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=aliceryhl@google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 88D036B0088
+	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 12:23:42 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3A56EBD322
+	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 16:23:42 +0000 (UTC)
+X-FDA: 83706936684.24.3A26E5D
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf27.hostedemail.com (Postfix) with ESMTP id E76DB4000A
+	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 16:23:39 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=EQYktzuZ
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753547020; a=rsa-sha256;
+	cv=none;
+	b=v+wXkL544VEZyI4jQLa/YDXp1YIYldYY5DbF6coYH2J+6YxCSQERoiiTrZ3crJOUT0xCHw
+	De5pU7mf26t86iJs5oXwIpqvufueMGZ/A6slFqHzjNCRAIvyr/lsPb0mdz7afdbucCKbxq
+	MYuaF8QdaREYyZK3vko23Y7tyT0Kr0M=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=EQYktzuZ;
+	dmarc=none;
+	spf=none (imf27.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753546696;
+	s=arc-20220608; t=1753547020;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RiLS2MBgpKK7dn/WFA7kJ/QtNdTGL5/cM0Nxh/9FxvY=;
-	b=ibEphp+9NVIeH+reBc/lgmG0JQB1G+OZvHVJnIxgQinjQ6u9gq1355tYgm6+YO63/FDoGK
-	dtZ2NCGSSqi6QqVQetDue8YLf1sYhSmuKYv9VGEuuJv7p1HL8Kvjbni7YRvg1G+nO0QAWe
-	BJzd5YqdzUxw+0hZyK6KD4WVvv5WBhI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753546696; a=rsa-sha256;
-	cv=none;
-	b=tx6jzRgY6boVxKaoS87dasqFVuTWHR2D+aJMobmHs9HLrPNFsyE2jdVytPn512reNH+Uex
-	OCIzhG/E5CmVumEZs6soCKShTx8/A9BVsUb7jzh81w55Y+GidmPXSPcZ7GQhPWZLjT+/y+
-	7C76kaITRetpP8lrMHPDk9ux2nSzmqs=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="lisg/UrL";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf17.hostedemail.com: domain of aliceryhl@google.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=aliceryhl@google.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-455b00339c8so20157395e9.3
-        for <linux-mm@kvack.org>; Sat, 26 Jul 2025 09:18:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753546695; x=1754151495; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RiLS2MBgpKK7dn/WFA7kJ/QtNdTGL5/cM0Nxh/9FxvY=;
-        b=lisg/UrL+mqPWZTeidW1Qe00CpD6yBnAer+C2XWL9Sn6VbNZ1YW8RKMKUihNvdUHEQ
-         JbjUv39um3x5qpazQ083h/zdxEN8LdTZ23IC+SYREd2BxHe0fzNjx+SrZxlOefKBb3O4
-         Fhd39/2JPCSnyleBojE+MYrk0PJi+LwQZQAu6itUIKUMMe/d3oyLXsTT+fNKpk1FcAEz
-         Ttqd8cwkfOsPwipNmdGhLKDhHe83fuZj6X9kj++HGe9iU8C++3ZVWIcTY52dG3AOGjoN
-         KuayW2MPl+JvmqYLxxLAutTd8BW+mU3Z3Rb/mDBS4jsBvY5tBXdNHR//ZVJIMxAXIla4
-         WLYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753546695; x=1754151495;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RiLS2MBgpKK7dn/WFA7kJ/QtNdTGL5/cM0Nxh/9FxvY=;
-        b=b66bKjIE90DuiyuQp0PTex/CRKBSfCeUqmibA/8eIZ8PnfEsxQVOIyFWyiW2fGajJ8
-         vVM8k4nvJ0cdKBJFCvqu/JPnC1y1BY/0SZfmGqnnZ5zLxte/LbdEdgsvSa7q6Sk9UWNA
-         ZM0LvWjZm0JHQ+LgVtT3tuBV7BI0TMMtP+iNDMff30lbyM5gP0X94lkbKpaQuJxwE0Ly
-         v2CuKsEspdHcBv81SFU8saP990kPESTdbbTvFQqRAR6OERcACvySwwpAr+Y+UIbi5KyU
-         9kOcvbHw6oQYsJGtaV2syE1hIr65l8rprTXmvRqve0f5JaLSetfd7BBh0mWIyad2mYSw
-         +IJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWKbYc8N1N5qPr1nc9wuwDC26Pihl4imBMRnJOchAvL1JkkLSDcQkRNj2AjOK2TyV8ShpOegU0aXw==@kvack.org
-X-Gm-Message-State: AOJu0Yzhk1iYhQKgkD8qnKuXxSidxQiutYWAQOpD/TVm5TZMzaUETHS8
-	Ne6waxGeWmSZdACSp8ccLdngtgrUtX5SSgBiEEPfLGwpGBPzijGMP+c2FJtAuGP894mG/LdRBJV
-	Vf+SYqeFNao9TiVPrzzWzQEionwGS4DXK0InyySBz
-X-Gm-Gg: ASbGncvtWF5Io10oP0AX9IiW0TRa6nmmhVmimTmERKEjA9oWZdxoNdgH+CEvtdEwpMP
-	4B+smNBPQjcQLOCqeVOj9n7nEzzNm9jiYHiE8UvbO3jm9zQ9wuB/031cVQikZJHclZVkxLINOiN
-	MC4DYwwP5xZ+vr2uJNZH8y+AXvVPzAD/aHalhjfdeHvftZb9pSQyowpUGbHNZGNK5MrdkTMdWLC
-	dvXTdAZ
-X-Google-Smtp-Source: AGHT+IE4T2Sn+YCnW4UddIk8IedAnI3g7v/KjWu/nPuK/MNxlZtY8DLAjeFjfi7qmMPpMkzy+RMzIlyv7WFJGSZZYKQ=
-X-Received: by 2002:a05:6000:1886:b0:3b5:d726:b7c with SMTP id
- ffacd0b85a97d-3b7766641a0mr4429309f8f.40.1753546694652; Sat, 26 Jul 2025
- 09:18:14 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250726-maple-tree-v1-0-27a3da7cb8e5@google.com>
- <20250726-maple-tree-v1-2-27a3da7cb8e5@google.com> <20250726165020.46880c31.gary@garyguo.net>
- <CAH5fLgi-3oT8+5Krzrg5JeagJMm6-8FNVr5G-UAszuhi0qZ1xA@mail.gmail.com>
-In-Reply-To: <CAH5fLgi-3oT8+5Krzrg5JeagJMm6-8FNVr5G-UAszuhi0qZ1xA@mail.gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Sat, 26 Jul 2025 18:18:02 +0200
-X-Gm-Features: Ac12FXz05m1OoGuwnB7bHkQoMy2rtk_a0qxycMPIapq4u8Ue_k0Q0z6l5hoUYyU
-Message-ID: <CAH5fLgjB7-xJ2OjVa6nxnUPk-1+wyxPMWQ15-Vc3mUp36+_Rhg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] rust: maple_tree: add MapleTree::lock() and load()
-To: Gary Guo <gary@garyguo.net>
-Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Andrew Ballance <andrewjballance@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	maple-tree@lists.infradead.org, rust-for-linux@vger.kernel.org, 
+	bh=BCelaxmFLQrYbCRGNGoWn94+fWTBVluOpP8vBuCzlJc=;
+	b=Qfz6KOUhqcVhBniWabGJXoPN1Saa0EDWMYhswqLHGH7/4DFWgQfwmzAvahQIK7DdGiN6+p
+	WWCGzSXRT//2HABqCv0d60hs9HSMQBz5tNNe3s6SVqq7WBXocEY9ZOkwCpThxCrxSNFzSA
+	x300eC0YEsXEW3aQdt2Bo15fCy17pao=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=BCelaxmFLQrYbCRGNGoWn94+fWTBVluOpP8vBuCzlJc=; b=EQYktzuZkvxfqM2Q5J90Ab3f1F
+	O9AUhlPVOrtk8aRkWbDVX3IDvRtAHZWLdFBHj2bTbx7gtaMJuZQpBRWSdyDMNFW9Q99wVjpDjV3nY
+	PHDpijOGz+OcpZS1A1azojnxk7gLfymJqZ6REW1+iwlZopuwDIFBFi5Hh1ImSkxA9po3ule/SCxdO
+	xBgTTQvyCQxFN2LCfQgMcByZoKLTBpsxOi1uLDVlLAfhIDCO6SYcXuxvgAmgB+PI2DJwDJtAJ38IU
+	aAvtCvxWMdZGInv8FNsLkEW3UYrJo6rAPbS+yFMkzQOzOJGdO50gnu8oUK7sLbcC8jDEyH4AR4kqR
+	XxKa0Igw==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1ufhgC-0000000Ft6W-15qn;
+	Sat, 26 Jul 2025 16:23:24 +0000
+Date: Sat, 26 Jul 2025 17:23:24 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Andrew Ballance <andrewjballance@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
+	maple-tree@lists.infradead.org, rust-for-linux@vger.kernel.org,
 	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 271D34000C
-X-Stat-Signature: ji5x7zmny1zfu8mxcs3za7h881ewti54
+Subject: Re: [PATCH 1/3] rust: maple_tree: add MapleTree
+Message-ID: <aIUA_HFLXMYNxWDM@casper.infradead.org>
+References: <20250726-maple-tree-v1-0-27a3da7cb8e5@google.com>
+ <20250726-maple-tree-v1-1-27a3da7cb8e5@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250726-maple-tree-v1-1-27a3da7cb8e5@google.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1753546695-222032
-X-HE-Meta: U2FsdGVkX1+bxwEcpLO/x++dCzf9PXN2sCPt8K9PACnDobMRyub1W/SL8/PXjDCpfZ9dKghxkxjmZTGM5W9f6kIeUYdCdS4Rv171XivQeqtZkdlS7oOkp2iYWcESuYIUdjwjcx+ByFVfp4IiMLP093prGeBJMKV5BO7VN1doT7Q6q3LKut2PaSXTkKIH+5IIznVPjBMJ0fAtWvB8FofGWzQBGDfBW6SmKCvPl7jlvbJGSmWq5FXVkRIbXeOr/kd6b6MoeIiSZ9jp1b3pvigQ4rL2I2KiCD4wDktZhO6I9v7FoCEGDTeljewcIMsrwesZT4oRueMNevYIWzxlK+uiMl8NC2vSkpeC+bdyAdL1p0ph2xmPF7TP8PAEpQjLOM+mKXiIne3tYTSjHqm+DiLtB2qZ8v3TGSnxnr3j/1EU9k9NnCod+YJhIYvtO0vfWHfMntjkssUVBLL3sWeSPXG28N2M+Dr9UDY0XE3I88TUfx3ic25WUkKlnsN8p2AKGvQv8kmwKNK9WjCRVLOfCEVWQe1k1aBLcpoaalUFyfd+HgxH01fHVQVwciGqBcTDNTp17Acc+b8xXzSCBP6+gHplIqNWcuCChamY32Qk0qJzmG6RCUzoa5l8qFioCoVPLWYyQerVIIeELPQYLn33HVqlZUTHxrPP7EMvcyfKqehwJucpa+6VnRnSlOtBABQAigaweU9BXe0lq8r1K7Xi3Q01v1fQ+9DyqjBXQ2V0EBoT+DWq03zi/mngOOkjc8GXwJKRuFd947asoKuW0/c5ZpWisbTOM3Kpw+007lsdpY0HC7jEp0my3yYUwSlI4wsrfg/aNHLUdoLSdGKFnT/ZMDZxNQ7S1b/WrQlcfEcoWKjAp/w7yutXerVbKhmMOsVwcBkEoPYRIl1Ltn1dZTDYmTnDEfm2EP9pwV8lHx5p+7JBODMxDrZpVQ9UVtp7jj5aKmn5L4gmAHbrepXYXQFa2Xa
- mlW32IXQ
- 8AEuf+ZwjgjTYXeMOtKhxZ5f2Qzfer9vBYaogxhOc/gJxqv5bTu3/ogsR8Q0W2f5nLaCQCwVFUn/MmbSk3EKfd6/6hgxHagrSaGM14yM5ij40NznGd6kuVOMybTIzuBHD4+y5DbtnQ27jl6OqRxuu4wnNUDhQjSfcJap+jqGax6vcGZtxGsNVYxLMXQfEADxqfTP1e8lg+Ksn3fiIH4lZ0WMfinkWkHxODfwxIDVNOWRyRGDashRuuz7IOlfrbb3OfrUTqPbRgyiBK6pw+cVYbhl/RxjtcSVX5sM9pqC6AifXufAIDhsoRKU26xp9BuT86gQN3HNNYD1Jile8v2J3+txtYAG5Jj9/5iHZ3oKy47uYiqF81p3pNVqzA01DM5TGvu0jtJc/x+V7Ddhh+y09mj4SGqTPhBZ2OiDt
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E76DB4000A
+X-Stat-Signature: 7mna6ibciyi16njitkeh87dkcw8ydzch
+X-HE-Tag: 1753547019-533361
+X-HE-Meta: U2FsdGVkX18ysZ+ytgLVvCcmfZei/NnRQ8EGJY15S9NrDoARGkpTZf/Pi6AZXVRNngrlDHJQvQhhExYIMnbjJkOVDPrBJwzM++wQlDe+oCjOpBZcQ7U9hHbGce/6kW7mW8jXW/1tqsCd05EaEDh+LV+i7v1zesNQfbNQX5Ny0x2NDNr2XLg2BiyKgze7NbNb65Ro0gOdqxm+ILLbqKJHRD4pKU18mvv2F0B+oak0YF26fcOf6HPhV6Ce6J9Y0HIy3S4SEjH1sFI5PO7ovM6D5PRT3zkeTUxivT53DvFYgbZ9r5Ui+M7qRkcWeOzLLWXQXW/dGT2LwHrrEpkXKXwqXik05O99tcxDaBm0vOnuNSYybIyvLeio1bgPGKji8GEMqu5jYO61KkK0gsiOmvnxn4ZpRWdJF52V22V7EEx29CEnHReL5VvlZpj7UzeeVCIQjorOOsb/9IcyVnfKReYXJypymACQoZuKIX63bTt1YyBTAtbWJByKL3oC/jgrahqrJCKqGspwEqtlu5jUNbtE1ZaVu86rrVvbHAkbejXzL78HAWGLb7H7u93txc4LKYNnnBVzJ+GZtEskslFZOWWSG9DNEiU4ISJyfdxiM6pcxzSKammFYuwSFmbWaToxoh1ANxsMVShRMnK42jGK9QNByHgHZrK+sIQ1ZEuKwuHmIu4cvU21vtep2YEhN0QxupOxloNJ422ownIMPTkTX7zZM5FxDaCxqgpslyiTipjmtkdKZLhgp6EBkawQmqGz02HkzU9tlKkshwjE7Th9PfkvHBvP8mVvgurj+MUvLGG41exWROO54yRmiBS3p0OPX0wnVoICNON/+0T/f9f9mcA+VAlxqYkQpEYnlsZQ4tZuOTS82+9RHPSwRgIfCIQ8gY2rsBW93HdsfirNlNzTCdxH3DdQaR80lJIv5H4lYZUaaZ2kF1VHOZR09lCus7Tc3a4MSsN6xQM3bwRHcqnA/LN
+ QCVAaf8G
+ SmcxpjBjNM1vTXjdM3Cw8ro2ISeagIM5JJ0ZPAC/QxOD5wVmW1YrOyyyM5in4PTaKOGZeWqqPSz8HaOvnmmCBsMdWSzY6bYqYNdhs1T0SQxd/7cPCvBAL9QlmHEjZgiPic4rv6KoEw9fNdQI1sWKITupRMclE7Wn66fTWwzTaEyVM909Zn00KgCP6knItF3jgTD3o91RrQezsSNUZNkdlt2h5dQIpz8mpPsqeP60KawNLFCfY+9medxBFz3eWYKx9PqbI+z8oO2N2Bs5ehJq57riMnaL4rgw2pEpXIkIWVQ8ivI1Qjgg/DBbqqNcMWZlPNJUx
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,66 +97,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jul 26, 2025 at 6:15=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> On Sat, Jul 26, 2025 at 5:50=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote=
-:
-> >
-> > On Sat, 26 Jul 2025 13:23:23 +0000
-> > Alice Ryhl <aliceryhl@google.com> wrote:
-> >
-> > > To load a value, one must be careful to hold the lock while accessing
-> > > it. To enable this, we add a lock() method so that you can perform
-> > > operations on the value before the spinlock is released.
-> > >
-> > > Co-developed-by: Andrew Ballance <andrewjballance@gmail.com>
-> > > Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
-> > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > > ---
-> > >  rust/kernel/maple_tree.rs | 94 +++++++++++++++++++++++++++++++++++++=
-++++++++++
-> > >  1 file changed, 94 insertions(+)
-> > >
-> > > diff --git a/rust/kernel/maple_tree.rs b/rust/kernel/maple_tree.rs
-> > > index 0f26c173eedc7c79bb8e2b56fe85e8a266b3ae0c..c7ef504a9c78065b3d575=
-2b4f5337fb6277182d1 100644
-> > > --- a/rust/kernel/maple_tree.rs
-> > > +++ b/rust/kernel/maple_tree.rs
-> > > @@ -206,6 +206,23 @@ pub fn erase(&self, index: usize) -> Option<T> {
-> > >          unsafe { T::try_from_foreign(ret) }
-> > >      }
-> > >
-> > > +    /// Lock the internal spinlock.
-> > > +    #[inline]
-> > > +    pub fn lock(&self) -> MapleLock<'_, T> {
-> > > +        // SAFETY: It's safe to lock the spinlock in a maple tree.
-> > > +        unsafe { bindings::spin_lock(self.ma_lock()) };
-> > > +
-> > > +        // INVARIANT: We just took the spinlock.
-> > > +        MapleLock(self)
-> > > +    }
-> > > +
-> > > +    #[inline]
-> > > +    fn ma_lock(&self) -> *mut bindings::spinlock_t {
-> > > +        // SAFETY: This pointer offset operation stays in-bounds.
-> > > +        let lock =3D unsafe { &raw mut (*self.tree.get()).__bindgen_=
-anon_1.ma_lock };
-> > > +        lock.cast()
-> > > +    }
-> >
-> > Could this return `&SpinLock<()>` using `Lock::from_raw`?
-> >
-> > I guess it has the drawback of having `MapleLock` needing to store
-> > `ma_lock` pointer but the guard is usually just all on stack and
-> > inlined so it probably won't make a difference?
-> >
-> > This way you remove `unsafe` from `lock` and gets a free `drop`.
->
-> I ended up going this way to avoid the extra field in MapleLock, like
-> you mention.
+On Sat, Jul 26, 2025 at 01:23:22PM +0000, Alice Ryhl wrote:
+> +struct ma_state rust_helper_MA_STATE(struct maple_tree *mt, unsigned long start, unsigned long end)
+> +{
+> +	MA_STATE(mas, mt, start, end);
+> +	return mas;
+> +}
 
-Oh, and it also avoids assuming anything about the layout of SpinLock<()>
+This seems very inefficient.  Returning a struct larger than two words
+(on x86 anyway) means that the compiler implements this as:
 
-Alice
+void rust_helper_MA_STATE(struct ma_state *masp, ...)
+{
+	MA_STATE(mas, mt, start, end);
+	*masp = mas;
+}
+
+so that's about 72 bytes being memcpy'd per access to the maple tree.
+Sure, it's stack, so it's cache hot, but surely we can implement
+the equivalent of MA_STATE in Rust and see a significant performance
+win, at least on read operations.
 
