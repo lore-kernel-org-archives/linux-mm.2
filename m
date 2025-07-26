@@ -2,65 +2,65 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 325E1C87FCE
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Jul 2025 03:33:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DE597C87FCE
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Jul 2025 03:36:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C3DB6B008A; Fri, 25 Jul 2025 23:33:19 -0400 (EDT)
+	id 6CD626B0089; Fri, 25 Jul 2025 23:36:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8737B6B008C; Fri, 25 Jul 2025 23:33:19 -0400 (EDT)
+	id 6A5646B008C; Fri, 25 Jul 2025 23:36:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7895A6B0092; Fri, 25 Jul 2025 23:33:19 -0400 (EDT)
+	id 5E2216B0092; Fri, 25 Jul 2025 23:36:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 68BE36B008A
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 23:33:19 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 972CC1409C8
-	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 03:33:18 +0000 (UTC)
-X-FDA: 83704995276.13.1006C0A
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F7D96B0089
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 23:36:22 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E20D55C08B
+	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 03:36:21 +0000 (UTC)
+X-FDA: 83705002962.02.B1A787D
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 5184316000A
-	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 03:33:16 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="T4A2//fp"
+	by imf19.hostedemail.com (Postfix) with ESMTP id 4423D1A0006
+	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 03:36:20 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=iXZnHIkt
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753500797;
+	s=arc-20220608; t=1753500980;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sOf/JsoJMrRn21goOdJm4+ac5LJbqkVW+ltM27ZJiRM=;
-	b=WnlYAgFo2rLr7oq/E7LSHeg6vwG8L/kO/rvoTVWe7wQi4Jq0lyCl5giM/LkKK6xtjpTAVi
-	mwDVSnDpOKbbaqZmQbfJuSrS9EbU6Xo0dp8xWiL69Q2D/W1zbu7yBknt/h1/DOJ2cTeAAu
-	+/QMccty7o9+qf4Vb5+RnKTZt67Jst4=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="T4A2//fp";
-	spf=none (imf08.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753500797; a=rsa-sha256;
+	bh=0SqKK1itEFeyqao+wJaeXuZjHvB4xmHKjQAwZpz8zt0=;
+	b=4FLw5uOT8dFrk8YgyAFk6KvbMCBsE/twQaR8Mq8XpIINx6Kw6+dGiP6pTivDNqs2GtNQLx
+	TLniC1XxR5DSo+k+5GL3ENXFCrjuVuwhSP8IOnFitU4k368kz9O9nbKwFAAW4L/EnymVFO
+	NA/YFmKxPkvYLe+wLylPQsZg1hI0NWw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753500980; a=rsa-sha256;
 	cv=none;
-	b=iP5mUm5+wjz4yu9ri3+VaSfK6tySNd3M//pB+z8/ms5KGfOVixuK1Z4H0myjXzS6mesGPq
-	jxziZngIQxlMVL/Dz32bIK52qiB5q7yBfe0yRXHzP8KsR2BzUnZuruggJ/tcXPhq7O/qKJ
-	kN6UdTTT5gOP5tvDgHSsgrkeP6qJDjs=
+	b=ErdWPVHJCbvfvEKAfbsKDXzLjbAEmftFnOPMD6gxXych2vyQ8rRNg7S/j8TPpTNthmb23u
+	lX9tAcCJoww0ydC9QMyh/t4OX8Msan6USPgZhd3+t6h0wq1XAZdqm1vqAO/nuYNGv843zD
+	R4vSH7aaZvc7/Cj8U3x++fZMN5u5Hxc=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=iXZnHIkt;
+	dmarc=none;
+	spf=none (imf19.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=sOf/JsoJMrRn21goOdJm4+ac5LJbqkVW+ltM27ZJiRM=; b=T4A2//fpP7ng2tgBSTerx+g2CY
-	Tw9hKP6h0ejao7H8r3Vx4CVlTBadoL9hwhlPqq3xJCrGPwdL+lPQCBmQ6OHPFHvW7myRAUIV5Zjg/
-	/CmL0RnpxfZKlzph6nJFMoOx9iKbfYTyEjBIIsvKQBSSJptrb3hAc14Gzx7RebRFftfmx2BijBL3E
-	BCSX48jOUiaKzZ9ENw+kc1/RM2dC4dVjZ/3Y3lIt55M0u3lbwan3zkvdfbY9ammRDVki2DWVETgf3
-	lTx/GNO0rVr9wDOC/d9uGHvYXlvg+WgBp3O6gbmVNyEbrx06sOypAQEAAkAutsLyutbAoKUOLB/Qn
-	KR648+1A==;
+	bh=0SqKK1itEFeyqao+wJaeXuZjHvB4xmHKjQAwZpz8zt0=; b=iXZnHIkt5XNkk41IakbLXc3TT/
+	VlOBtt4hbBrKqRz9anPJNXv8D4IwuY6U36ttsi1mNzLyklsogRm5k8NebdKtPbrV477Us9lmRy493
+	AG1leB9CMMSkhivLuTx2ibMe81Qi3VEJswvfeVLL1DmvB4EMgAtTKAFNjR5/LBJYtDSSRcaGMYQ0y
+	wdyIbvS7ldyFKYgyNg9Dzi1EeX/GEtzL2Vlug9858seMBXcan3f4wWyXqO+tyDlpKH7ZV2aaolZSj
+	9eTQxAVa1z/GT35Le6gy29VoN7MqpySiX69AmzKlOyr1Y+OmDhC9TQh6SfbmKoc4eF9bY5hcTpMtd
+	4xy+Dt4A==;
 Received: from [50.53.25.54] (helo=[192.168.254.17])
 	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ufVeq-0000000B5FQ-1bOC;
-	Sat, 26 Jul 2025 03:33:12 +0000
-Message-ID: <05ee7001-6425-43ab-a929-e1e7924d1d0e@infradead.org>
-Date: Fri, 25 Jul 2025 20:33:11 -0700
+	id 1ufVhr-0000000B5Pk-0JWR;
+	Sat, 26 Jul 2025 03:36:19 +0000
+Message-ID: <0fa9e4e7-1247-4c82-8c0b-fa65b7fbb56d@infradead.org>
+Date: Fri, 25 Jul 2025 20:36:18 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [RFC][PATCH v2 01/29] kmemdump: introduce kmemdump
@@ -78,14 +78,14 @@ From: Randy Dunlap <rdunlap@infradead.org>
 In-Reply-To: <20250724135512.518487-2-eugen.hristev@linaro.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: zxgxua6iow3yw46pjgbe7erk4qdr5hte
+X-Rspamd-Queue-Id: 4423D1A0006
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5184316000A
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 3kt19z8an5idn3ecsx366dd8np8g5jzr
-X-HE-Tag: 1753500796-748778
-X-HE-Meta: U2FsdGVkX1+Fq1gsE5z5vobHBiq3Jsk+9QunmiaC13mpBheGPrLZ2hrTq/kYCJ6cMbZM1iRKd8GdzKffGd9on+XfTNAzpkYDC+Sd041yicDg5OjYNHffAWopeD+Oh582K6HWvVvfdqi69pjVcoqJs64bYHn0raPLU26Lp9+sIumHOooSiPeyNYMaXh6+Fl+QGaCuSg5+QomsdvMIbc6KVBRvZf9LvQWGRqke0hbKp/xgvCyUy0BKmMeh3bArbnh5+1fLxkJ+YItGtgkItWHBFmQpv1EMR2gqtkzQa5ZuQnHzmVvNyGSjxMEmRFNn4rq8RCG5d67OG1rAY+u9307aICXF56Cg5gcjrEhGI12N8mXHA++ntlgzQeoQZHaKpMXshSe9E2V7NKG33QdM86HvePxua5LMA3/TD726EMtpe6U516nozJeMzSzEsK9e6Bj1Sl9HuHRdUDJa0edO5Rd8QlY75lVF5Mq8y9SFZNNM2ofYO5Cc8/HISHc+2LylsT6uiDQKe0jCsNTlDXqO6+jtK8lI977jWI9dfiVosHs9B1ws89u2dGhxmRbV0KMGwu8H50EsDyX0nYjb6B428mRJFur2b+S0XxF5/CiTMqTWStuDImzI2RV9gPQGWsrUOZbge/Jvcq1R68dHYya7D+9fjXWAnAwyd+GStgrqYCAr6LYNM9MzLQEvpOJKiZxeasSjfLO4bde7EEuWdGZC+hyGYli3q3KHndfrVmkG6E47iaE8et8dTDDKRJP+sFc34YRMQUoRsrknOoYfQpMp6eedOJPz+BrV01uQpbXL2v9Hp2NN/ci57s84Qp5qE2BVgXiza+tDr/wQkvjceuiTalchbh5N97/fp06l/MvKtdGuTqX+Lgi3fsAhy0T+ibtBinUPtp8CtSvcjF1ax/6Ld/u63Stm9yI+KdI/oV/u2yu/MWtuw4Z3SHA3hBfpz89J3GCF1/1vJvnohwsT02m4dQL
- S6v6angL
- r8dy3zOqpMUO47FCpO6mN/Ec8CrYAVmM19jTsJShPQzwWpNVk+w7ARNIHoU3T4BfeLrAdDoenO7TMLSjWTbUlYj6hAIORuKUgJG4f71kVGFBalfb7yf7lQvSsFq51QaXwc6ZBuQiJFHiLgeGFc8lxn1QVknkD7heZvcBILTui4YvSobwnPB2w9asXYw==
+X-HE-Tag: 1753500980-454520
+X-HE-Meta: U2FsdGVkX1/+dxcR6RVXoiEt2MsTeRjP2d/Bc4My59Q/4ej7/kbYk5hYneIrK//hHazM29lKeiJx/n1qmvSS82+3ppDPYqf28ScinPdlTh4uxO6PLfEyYr/ZJFTawPnDVjViOXY7ipPqoL1OqOkbFep7UVGKvfE3XjuhGaMVe+YmecRroEvaLQd2Gk6pvtzuMA1i7weWaE2TTxRmVVvqRvZ8CA9rV2DQqCMQtExPcIOTt31nRRR5QEw8qq834kr48uy+nAB0K8BDw/0YVPDjmjwoMG26dbJP5xrdPQXSiFk/wI5qEb6tzj1G2/Y1ly7Pifs3OQdu7NPasD4pP1z2ksCfLG1ztuCTTZm6c1/dpSd6BNjPafg3dcBLHNMx0cuW89AyDIclzdSp7ZkIsIVs842/MLG83GNY57OJvW/ryrS6U3ZVnECOsKTN1vw7aNT+fsMKgtAExORN8FBHAXuIO7G27Ewns7eJqyHqSXwypafngCdfq8J8s3Omc07ESLTU1+rUib81HCXP/XyijsPrY8nkLDj7yvdN2U7/EC4Nv8O4m1zKQHHcILKWM2k3Xo0GeoAhR6lygWJlkQJM6G00R4Fdvt/g9TyvjiXjsLA26HqxyQ4zBk77Ce2f+ML2IsyOxf8NAWaGB/ojnJuvB07BWFArsY9GqtbvRfa6RQAfOvbAA6YL86BT7CamXbgSXAUWvDfNF3DcxWLi8/bXyT8rlDJ9qjGtdjfKan5ey/Ys30E3SaUxmQYTleNH9fHtZUTWQSKHrM0kPoGZGZBrVI0V6xrS4wz7SYs/Srti0lji2ELKwCfCaC+97cZeKAMSrxkS/OkrJL5Jufg/R5hlKrUyst3w5NjGdo7rpJZkhaH7a82YDqnfXJkuiBZ9Dmsc//YApGKooo8+rpzjSXIMDe3QmAb7WIbMfzBnh97gse+yQTnJ4szw9wtrF9gyiuDm/e73qwzw3oQD6XkZn+tO9Vf
+ l25MUPpc
+ f32PD3eahCfQnmkl2Zr+3C9xYRpRaSRHspQgWdzTrGudb9EFMNAccIxhaXMqYhDyQJpILzNVuCDaL78OncFLxqlTSKCGphvsSO9a9qqM4+FNj86YPzYjuXmfvvFjZK46gB23gwdJA2LtTfeKkmSSEUmBPKPVdLwQesEDnnOtdxt3gr2MifH2/bJVC2pbvdbtm/Dz6qhIKUtM8OH561dgjS4hIzJhi9G/YLyCfRkKn2V8s63R+lTlqgenbj9AiuStv3sAG
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,26 +94,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
+Hi,
 
 On 7/24/25 6:54 AM, Eugen Hristev wrote:
-> diff --git a/drivers/Kconfig b/drivers/Kconfig
-> index e0777f5ed543..412ef182d5c2 100644
-> --- a/drivers/Kconfig
-> +++ b/drivers/Kconfig
-> @@ -245,4 +245,8 @@ source "drivers/hte/Kconfig"
->  
->  source "drivers/cdx/Kconfig"
->  
-> +source "drivers/dpll/Kconfig"
-
-Why adding dpll here? It's already in this Kconfig file.
-
-
+> diff --git a/drivers/debug/Kconfig b/drivers/debug/Kconfig
+> new file mode 100644
+> index 000000000000..b86585c5d621
+> --- /dev/null
+> +++ b/drivers/debug/Kconfig
+> @@ -0,0 +1,16 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +menu "Generic Debug Options"
 > +
-> +source "drivers/debug/Kconfig"
+> +config KMEMDUMP
+> +	bool "Allow the kernel to register memory regions for dumping purpose"
+> +	help
+> +	  Kmemdump mechanism allows any driver to register a specific memory
+> +	  area for later dumping purpose, depending on the functionality
+> +	  of the attached backend. The backend would interface any hardware
+> +	  mechanism that will allow dumping to happen regardless of the
+> +	  state of the kernel (running, frozen, crashed, or any particular
+> +	  state).
 > +
->  endmenu
+> +	  Note that modules using this feature must be rebuilt if option
+> +	  changes.
+
+It seems to me that this (all of the KMEMDUMP Kconfig options) could live in
+mm/Kconfig.debug instead of creating a new subdir for it.
 
 -- 
 ~Randy
