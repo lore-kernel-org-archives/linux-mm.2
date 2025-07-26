@@ -2,145 +2,257 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D143FC87FCE
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Jul 2025 00:43:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 030A5C87FCE
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Jul 2025 00:57:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5FB086B007B; Fri, 25 Jul 2025 20:43:34 -0400 (EDT)
+	id 579696B007B; Fri, 25 Jul 2025 20:57:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5AC686B0089; Fri, 25 Jul 2025 20:43:34 -0400 (EDT)
+	id 503056B0089; Fri, 25 Jul 2025 20:57:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49B096B008A; Fri, 25 Jul 2025 20:43:34 -0400 (EDT)
+	id 355A76B008A; Fri, 25 Jul 2025 20:57:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 383C56B007B
-	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 20:43:34 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 04222113BF8
-	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 00:43:33 +0000 (UTC)
-X-FDA: 83704567548.26.A55D91F
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 6FDD2A0003
-	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 00:43:32 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kBaBfcy8;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of nathan@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=nathan@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753490612; a=rsa-sha256;
-	cv=none;
-	b=Wg2WdRXIf7naZZ2go8dvFruZ7Z8zgDyV5rEAw3apd18PX84goFAr0dMQOtqlX8Ei6We0qs
-	shCMfFisH+GDhlteUWkpsf4KElMUY+nFRiwq4YmQXaWeACVp/3u+pNYUgP14Gtvs1v8FAq
-	7DwPtLBQo0m7A5v40E7BzX6pgF7jgzI=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kBaBfcy8;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of nathan@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=nathan@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753490612;
+	by kanga.kvack.org (Postfix) with ESMTP id 2028B6B007B
+	for <linux-mm@kvack.org>; Fri, 25 Jul 2025 20:57:30 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CCD7B1DBEC9
+	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 00:57:29 +0000 (UTC)
+X-FDA: 83704602618.27.3A1CF50
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 71E5140003
+	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 00:57:26 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=eaZwNbFQ;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=udd1upee;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf04.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753491446;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1sAzsEOvW+OhZvMm5Zu/ODZB3aFKVogO7ESRBoesTkU=;
-	b=Osqjj1omt4i1M0f0G5rlNTFM/n41B7TmXCyE2YytrgihanQibjLXZYMwTeXCogYeFgcchb
-	iuSgfCRQ42rIJYTAYDYdNn5CB+7wjnss/C1DAJUicjBlfpFYV94jCxX+MuoKXpHurne5nS
-	g1WOzsoSTVNPKe0n+xr59kOErSyzduo=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 31FE3A567D6;
-	Sat, 26 Jul 2025 00:43:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1170C4CEE7;
-	Sat, 26 Jul 2025 00:43:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753490610;
-	bh=FRa9xY4x5DiJRX0obptGEWaAk44wN8I8KzUTZYrUCjI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kBaBfcy8cvOEOsPzmxHVilPiLtCGr+TDf8X/qOm2ye9g94waAiMThV6LQwkD5mGES
-	 PDjLL+F1jsLeU64wJNGH2USu78DXOVIauVdSn5Za3ug6EyGqMkDWY68qx6CO1Gpj84
-	 N2fKc/oxH+okv+yKP2JrlydnIbTVzpb6w9fxjXPvPbNQT1zbh2x+enrj7WanGNqURj
-	 oluIdS5LRKkHy5qC/5rWJa6TJsIQMsqWbSs6k1imrXOBgatcUYq26mfwhTEKJwXKN7
-	 wK8GX+boueI26+UPx4/MDOH6NBVBpUuOSwVrQlpds5FDuUw13v4g1+lMsu+qwH3eh6
-	 5w2Rudv02W7cA==
-Date: Fri, 25 Jul 2025 17:43:13 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Kees Cook <kees@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, Will Deacon <will@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Gavin Shan <gshan@redhat.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	James Morse <james.morse@arm.com>,
-	Oza Pawandeep <quic_poza@quicinc.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
-	Hans de Goede <hansg@kernel.org>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
-	Michal Wilczynski <michal.wilczynski@intel.com>,
-	Juergen Gross <jgross@suse.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"Kirill A. Shutemov" <kas@kernel.org>,
-	Roger Pau Monne <roger.pau@citrix.com>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Usama Arif <usama.arif@bytedance.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Thomas Huth <thuth@redhat.com>, Brian Gerst <brgerst@gmail.com>,
-	Marco Elver <elver@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Hou Wenlong <houwenlong.hwl@antgroup.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>, Baoquan He <bhe@redhat.com>,
-	Alexander Graf <graf@amazon.com>,
-	Changyuan Lyu <changyuanl@google.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Jan Beulich <jbeulich@suse.com>, Boqun Feng <boqun.feng@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Bibo Mao <maobibo@loongson.cn>, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, x86@kernel.org,
-	kvm@vger.kernel.org, ibm-acpi-devel@lists.sourceforge.net,
-	platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-	linux-mm@kvack.org, kasan-dev@googlegroups.com,
-	linux-kbuild@vger.kernel.org, linux-hardening@vger.kernel.org,
-	kexec@lists.infradead.org, linux-security-module@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: Re: [PATCH v4 0/4] stackleak: Support Clang stack depth tracking
-Message-ID: <20250726004313.GA3650901@ax162>
-References: <20250724054419.it.405-kees@kernel.org>
-MIME-Version: 1.0
+	bh=1J6wqhpAoARWD3NW4jyzwNM5ju8vKM7GGZan6l2hwZE=;
+	b=t7JPC8QCZJtqNTQKsFjIvzyg5VoVnZrbyF7lX9mB3IFdF3+0ST+OGF2/W/OH/OrLuwY5hQ
+	bqxM8a3HVt11GYMmTk2AeBegGle9wxqnDbqiCAyfj5rpUHxP/VxKZKuqR+tYfPD8WWsvQU
+	Bocl4h3Uj/zzl34bmF/GmKpR1hNGplw=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753491446; a=rsa-sha256;
+	cv=pass;
+	b=M4yWZ87mh8KKZRg4CN4JL6JYlH8nPQOzOn2XEtw9u3R8t7Tm9bZQXWjyYt4mKwg9cpqpdj
+	e0tUYoaBovtiOTifpsthzmkoMbrhzT7/nHv8ETMPCNxaOgBa2WqjR1m1KJFB+avJPGRqWQ
+	Y83HovMX2ibJ2moAz7MgtkERL8IllLQ=
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=eaZwNbFQ;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=udd1upee;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf04.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56Q0TI1W002526;
+	Sat, 26 Jul 2025 00:56:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=1J6wqhpAoARWD3NW4j
+	yzwNM5ju8vKM7GGZan6l2hwZE=; b=eaZwNbFQjggUND0R7B7o5gl1hqAWtOhP8y
+	EvXqsNZ5Qtaq25DjCYxFv3Ct4IxtWilyDIt6ffLYdam6Qqq6iQreKYdAVqfp+gvQ
+	4EZwOI6lqaaPCjLPd0DRhbqGTebBGNv7mnraTaDZgrCP08ZwtLqCbWPHh6KNEzK+
+	6OQwXrEvJdBwmVq3oDJ9S46/DQzSf8/jO/kM2EtDkeYnhTlPHrAUJ8J5q8U+/AVV
+	1oS12h6XoZnT3gHx6ckwok8X8civbkamXXUaFbl+wk3JEzCObESSp3MQrLrfAnyo
+	1hg5Owh4cYmHoDAtAdTj9fHWRWCuD469qJYEMgS63GH4fDifewwg==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 484mh3g1h0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 26 Jul 2025 00:56:50 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 56PMtv2M005895;
+	Sat, 26 Jul 2025 00:56:50 GMT
+Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12on2080.outbound.protection.outlook.com [40.107.243.80])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4801tdpdy2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 26 Jul 2025 00:56:49 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gSX3TO/HIfibz6ogNp1gE0b6F6cI11SgstAux2c9R7+/WVc/fGut9uhiJYDG6oAeWBeIGdFamHMv5eeOC8shS0ZhRTz90lL4Dghq0nLJAt9DNex6oGUEtFx0CTLNJzLlZxx9kXUydjXyVTAmCHHzWBNzij0DJe9Z2Q0XaSibVuEHdegHaoOUeL/Ci7RQgpjeC7s2AamEE9FchVxPqsfZkfpFGxXac3fcBkvhAvB0DCzU3OoUpuzC5DiWv6LEE26SJufXm2pCxROkBiTFYZmFvUeYc0LA3E1wLDv/nYBGzUbLCBsFEy1phyMZXqcKsLVjAxf3OxPIb++MrORwvrwV2w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1J6wqhpAoARWD3NW4jyzwNM5ju8vKM7GGZan6l2hwZE=;
+ b=GZDkqAUc33Cf4GgRXZHWM56OnQArsB2dQEyVMQ2mc7V9OTyIL5QAS+NgNQhKdXPqEShLxWFTZTZMGabru9Jn2JY7tfsr0UHiOu7R3a8dqEbaqQUpmWADN5DRimPPWB+53eXZR7PWPeexDeW8h8iu/2f5DC/LgnSLkerMI77/qYNHifD6m7FDlJ1dmw8DUpPEXLYlazub8Qxq6df8MunZdskp/pj3SklylDE7esapcxZcSEKxN1iDxJ4pvCkQFrp1nRFfiMxqgPNegIGvNdoGZSCrelCKnQan23STorbsfXiKaLlJuEnipkpre6ZgsE9cl4nDAWvjF/oc5bLlCsjQYA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1J6wqhpAoARWD3NW4jyzwNM5ju8vKM7GGZan6l2hwZE=;
+ b=udd1upeeWXnFTRa2Pko2c8TRQq91U0H0RDuleKPnAjKNU2hl7MpT3SFK0GtPLAo90yTuOUlzc7NWDmU46BVZYcxto/GXrveyRoZNrLQnCbd0ncyRn6iRdBiyQvSLefqUm6o+iHahMJIJUZPx+oRPjq20R//Q2Y71SqD3+9py/s0=
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
+ by SJ2PR10MB7557.namprd10.prod.outlook.com (2603:10b6:a03:538::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.24; Sat, 26 Jul
+ 2025 00:56:46 +0000
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::f238:6143:104c:da23]) by CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::f238:6143:104c:da23%7]) with mapi id 15.20.8964.021; Sat, 26 Jul 2025
+ 00:56:45 +0000
+Date: Sat, 26 Jul 2025 09:56:28 +0900
+From: Harry Yoo <harry.yoo@oracle.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "H . Peter Anvin" <hpa@zyccr.com>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, Dennis Zhou <dennis@kernel.org>,
+        Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+        Alexander Potapenko <glider@google.com>,
+        Andrey Konovalov <andreyknvl@gmail.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Juergen Gross <jgross@suse.de>, Kevin Brodsky <kevin.brodsky@arm.com>,
+        Oscar Salvador <osalvador@suse.de>,
+        Joao Martins <joao.m.martins@oracle.com>,
+        Lorenzo Sccakes <lorenzo.stoakes@oracle.com>,
+        Jane Chu <jane.chu@oracle.com>, Alistair Popple <apopple@nvidia.com>,
+        Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@redhat.com>,
+        Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
+        "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+        Uladzislau Rezki <urezki@gmail.com>,
+        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Qi Zheng <zhengqi.arch@bytedance.com>,
+        Ard Biesheuvel <ardb@kernel.org>, Thomas Huth <thuth@redhat.com>,
+        John Hubbard <jhubbard@nvidia.com>,
+        Ryan Roberts <ryan.roberts@arm.com>, Peter Xu <peterx@redhat.com>,
+        Dev Jain <dev.jain@arm.com>, Bibo Mao <maobibo@loongson.cn>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-mm@kvack.org
+Subject: Re: [PATCH v3 mm-hotfixes 0/5] mm, arch: a more robust approach to
+ sync top level kernel page tables
+Message-ID: <aIQnvFTkQGieHfEh@hyeyoo>
+References: <20250725012106.5316-1-harry.yoo@oracle.com>
+ <20250725165101.e636bbe3fa69ad0b73810914@linux-foundation.org>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250724054419.it.405-kees@kernel.org>
-X-Stat-Signature: krzosuug5gd1yrxc7wj9t13ax8yr41q5
+In-Reply-To: <20250725165101.e636bbe3fa69ad0b73810914@linux-foundation.org>
+X-ClientProxiedBy: SL2P216CA0207.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:19::8) To CH3PR10MB7329.namprd10.prod.outlook.com
+ (2603:10b6:610:12c::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|SJ2PR10MB7557:EE_
+X-MS-Office365-Filtering-Correlation-Id: d2a0e04b-d342-40c9-c743-08ddcbdf4ab6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?bvJhHfkfD6UHJa0pC3QoXH08VICUme3YmAjU1Rbewr29qK3/xocZoQyn4oJu?=
+ =?us-ascii?Q?eAA6FhBPWiTnVJknxxdLCqf+iwaD1VpRQfm+BUpb0saMdPqd3ZDLbFN4t4/i?=
+ =?us-ascii?Q?932zbCbNDwyOrc5/zMate7lJ4hQ1S+e+4mMnskDEiBkXYWwOtY0XsW6O9nP/?=
+ =?us-ascii?Q?uyHE0GHghD2uRco+GeH/B2F3VsSHGjWZgMPRsVj+ggfY2KWccW32gAST3A4y?=
+ =?us-ascii?Q?mbg/P1B7WNCIhbn/5A2Mes15H4HOEi7FZ7FHucG/GQ+Yahux/4GAk8vhRcQi?=
+ =?us-ascii?Q?9R4FiFahiWMRihgCyYqhN+JbP74G7FLE7aKEayJiXN9pya2H03VKeAuBMMFm?=
+ =?us-ascii?Q?w8jNqcyjjA9k8bcZ6beqfv5ZIWnR4VrVgUtTKsBWhNfOGJC7kZdrLkJmUgL2?=
+ =?us-ascii?Q?ziSR2di8ioIpMBiZ+oVYu+q/O1hRN44819vLDPaKXIpDiFDoszLv/HdGZft5?=
+ =?us-ascii?Q?aDlqcNt2T/phQNWmFGLLchTT9mMZjgIYN1K7hD/5Q2yS5ca3wefnQaGe3eTb?=
+ =?us-ascii?Q?6LSO5VHVyRGGZCYpfRiG/CVfCijB88Or2rSnAbG1U4V0uvnjHVuKS9dbDRVv?=
+ =?us-ascii?Q?HrnO6vYwrggl7ZxryO6Cx68CZb+bfBJ/2M5ET3Emia63E5B1nCUIhnUA5tzJ?=
+ =?us-ascii?Q?DGhba3AXSOQI9vPsc/rvbwLLQSJ4KYdUHOQqYAmh006Rv35/4QDZpYiGzREu?=
+ =?us-ascii?Q?YYTgruWbPbwzs4o6/1/ZXyjn25CmH2aaF00RIeW3djHr2AWzO9ZkXDU52SCG?=
+ =?us-ascii?Q?QNWRDRAZZIy1dW7IZy/iuU/U+UXisrYgG2dLBA86yAoN/3jP3wJaJOGyC24R?=
+ =?us-ascii?Q?pAPXbfljlaZ9dg7lOIcCsuftJdgtspWg2SyiSAbeuzvL/XwVOJ3UyVoIhRaz?=
+ =?us-ascii?Q?jQadi0XepGbrbTFtnahd/d4IWpjzjM3hSV3Z0AUAEHlQx70MVYF1rsZsmLkw?=
+ =?us-ascii?Q?w3KPgAWkLurwrW4av1sM111+Y5+BY3Ki2rzZstssEEs/P7CeOIM2SQ0QOFA8?=
+ =?us-ascii?Q?Ww5lTYlWyJ/btNEyAKhPzE+5lVWruc3E8GKc548LvvLQ62WJi1j/p46EYHdi?=
+ =?us-ascii?Q?rwRJHn0q5ZjSllw53V4Erudl683gCHK+oTZnXSHKnSDRdCp54nsxC0X+AF67?=
+ =?us-ascii?Q?nja0y8df3yXTvclYKtVj+Io49/WT5q9Z8AfwgWz6CA4Vxu2NLREAeX7ZIWHQ?=
+ =?us-ascii?Q?/B5RRNsDedIXsjgbOtdadFZwSOvbOXwPS+xJSVLwA7ohpP5KpT9MSD68O5jC?=
+ =?us-ascii?Q?5I2BSU7h/pw0myGgljRTLcAbA4+etnyFmKM3Pz6NLqxgvJEvOmK0AKgnpVlz?=
+ =?us-ascii?Q?aJtmmesCJAhvnJu7s5bCq3k6IqBeuYUgFruSESefXeAzjurWfQ22kMOhWeLS?=
+ =?us-ascii?Q?n27Vc3r6IkScL53jvbpHhohf+y7ZQtYt1U84fR7bCkb+Zt5CK2ovWVsg6G9S?=
+ =?us-ascii?Q?BeiEQ5Icxcw=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Ff7sM7aVpoXaRjVdkn038s8Te9swBiE1QWU1x3RIlEhONDMpZ6EbZs96scMF?=
+ =?us-ascii?Q?3jQjNtH0gyUg3k0cFQBhAlQirgtU3HI+iqiSNdxtgAzx+X2H96PSfVcFMCYz?=
+ =?us-ascii?Q?NJITYpyYnUT8DwnkyBdA046y+beBwqWnk/2H2xOpAyS9GQOrdUEIRK51MoRa?=
+ =?us-ascii?Q?TmqKfWQsXisCnTBbCxUh0RmQo9Sx2rFIEAA5CcyVMCVJUcv5esmD3eQgJcte?=
+ =?us-ascii?Q?WDaEgsvMAVTL1cnP4JtTc9zip5eQyORfQMBTOIhWfb7SXgjfAxrbYe+m42p/?=
+ =?us-ascii?Q?KFknPLI7o5jYiItOJFQYTjR/pQfgFRxcS3WdJFpMTEegCZndkVHl5leHZaUr?=
+ =?us-ascii?Q?o+PHrHKcfuasRfwB6nc0CUdQ6R9qlnvhpB1OSWrlabzKONzGgg7FtZXBvz/b?=
+ =?us-ascii?Q?hm5tonxyd5fALAwtT94zqJxyDenw4AZOZkSYwC8H+lUuo0ddj0PDz/q0lkbI?=
+ =?us-ascii?Q?xdwgJZHs0ue6wDWMYhA7RRrh9lOeHintOsZwQPPyVa8gbpbeULTuf7tXVXKS?=
+ =?us-ascii?Q?qnut1oc2gVyMGAP4AcjTAGGVkzcTIJ2wIfE0d2mECMzILqQ9kG1V60ldB2o0?=
+ =?us-ascii?Q?zZ5Dj7j3e0L1OX31KV5KM97SbF+2lfK8J+Mcrwf8lks8OhH9jkgytJqOi2J5?=
+ =?us-ascii?Q?QP9Ti36WcZdCBozyemc4dLstKNyOZyJ16ltNN1OQBd762LhY/JeUGAAAP5xm?=
+ =?us-ascii?Q?n4S8WzBzWY06nK0JFkGl6Z4YAP9Jv5E6fldi0KhgVV5ZrETWViephIGghPH4?=
+ =?us-ascii?Q?mWQxd3U3XymXS/tNN7LF9SJgpzEMApZBtsoCi8j3Lj1sbLqLRyryk2whrVWT?=
+ =?us-ascii?Q?QFmfomTdq2QslL28PiVkZzVCmJm2MGdQQd9C78jTjfMAK5dqQZoVTNYOF6fV?=
+ =?us-ascii?Q?AflcumFKoaxOTrqLI5Ua0XDtoqZ9iC58AgdjcQovNc7T4X4e5BiwGEmQfjeu?=
+ =?us-ascii?Q?kwECGZUbDWN9oKe01dgHeNaBnJWi8EHGadkhC6kZAx3Il9nOEC8MMaIjPw/D?=
+ =?us-ascii?Q?Wb2xCq2Wb33iRcZ+UPjnySM50Pg5dvpZ8+BanngdrDfrgzzmEGTOQcy6u4XX?=
+ =?us-ascii?Q?RECUE1+bZVmg5LAqkpDQ1ph1zqbIZsMuroWDHra6hFeZITQeyzKtdVWaFME1?=
+ =?us-ascii?Q?VsIEgnz+wCRIP4MQzJTDMT4gyAJoLltlwiq+dOxn5P/7xBf+R+1F/ewg8kLP?=
+ =?us-ascii?Q?uyurjRpJbfSXmo+MEWChGHmHEbpph+SAJSIQhLZtt5yCbYcgHRmVuQSRCWAg?=
+ =?us-ascii?Q?03QDGXJ/jfWJX6LbrJ8QC75LB6OJUlW2xIpm+vaLKkBsh6yiRBuqlZ6Uk506?=
+ =?us-ascii?Q?TXDdbhSmHqDUccAPaACG2aDZWhCP7OafBORYiOF4nfk3jfnARoX+kabxDrb1?=
+ =?us-ascii?Q?Jw8W+ZSydYYQ3UYqbY7osSmeEg385mt3HkTTX8CB7hgvDA4In/GJdivoca+d?=
+ =?us-ascii?Q?pSf33W4KoTyvZjk1HvKrY3ruieYiTx8M0seKOul7jMwz8cJ4DaBYR9mixlXl?=
+ =?us-ascii?Q?HGn3qEVLwMhOfnvITeo2TgrP6Z3OyR5uVO+DaGXJT72g7Piag223Saf8ShmZ?=
+ =?us-ascii?Q?wEEtRP781gJ6LDpNkvZLF9n1M03i8wgbcCF+u7yA?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	mPj6VMVyws//kLWEeAEK/VbfBANQstpp5e6DteQak18627QsEqMpNL8E/ZSmgbD3rW1B2dmWBoxkL9nnIAv+ggrpINanPlziqdG9JDMCMuASkdRmrdnIyWI/xaJE5bmbFHkBrPFlmy51/j2kAlHO0K1BnLXYEQA9FNiHEapHhG/JIEARNt64y+QJC1dxviizgSRgNlmJmEBafVGlNTZhsNU2f61SsRIDQT7jonAeAn2FeXtLXjDVBfWMUfTIc7+8/C2DhwSXIB5b9R9DH3OgLk57ANcGknMdFI0wduOIaZsQ8g0R3wpYIGl2HkmvBnCrQHrCAYKqzPFywSs2jsaZ9niCrA1OIMiuN97gmeI574qXOMIAQhZWQerR35GUOum/6I10wxWIDW/JvdsSgfFjPtxNCwCSCvYssSAWJcvC3qXNAbxmr8X9AtKofjBAm+5zvSHXuDPqUlQOXtiR4OZm5hq4SVlvQloBwNFu0lnVUI8aSU/aQ1UQQhLOovzJ9GewbbIf/VvrgVen0vO+TXgSShZdlNjdD+klpvtW7zdbC+5z0vDilZec1CBT8TqoSx7hAGcjpt7R7vPf/zzQQnFP5Gt7X90O1Op6fl4V1JCg7tY=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d2a0e04b-d342-40c9-c743-08ddcbdf4ab6
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jul 2025 00:56:44.9818
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VgX9PdUwWfTW8Uo+7Sdwl2lJWHCI07eJUtfl0lugtf7oNx2Pb5mFgfcw2jY4U93Ozzfqj6ZP0UUfed4HxoySww==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR10MB7557
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-25_07,2025-07-24_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=999
+ bulkscore=0 phishscore=0 adultscore=0 suspectscore=0 spamscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2505160000 definitions=main-2507260004
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI2MDAwNSBTYWx0ZWRfX+1v7phBq5sXm
+ TUonn2CmS0Lu1ZqeNgO0Zy4DEtNHWuPSsBYznqtsHeJUOXkbDNhAwbpgWrzUrgcrk9ctIiiQhlF
+ EzpJuWRpPVE7nMmAocspycggCBqn69j0s242hSY6jWm+4mJkyvSpZhQVk9oXTuqKF1yiPGZWog9
+ vffwe9/2IuOJnkpZAmaAzRp2PNX9y8AhbHu94xYqkLMmstZPClixiJGDNQPRVDn/faZMoeud4AD
+ sCKjsFdWshICM1/8fi2lgZMDGb1XQm1jG2YAx0khquFX1/49ToUl+Bi96eE1DAvWAm5iB2hLgu5
+ gOwWXb1Wb2bJX4HRA9+Mi7iBUCwwxH7a7nuABHke0Rm+DWiG+RpJvEWDa7nGMYdWdfZ/ItBIfpw
+ R5cYN7gb4131Nhj2dSyqQTDewzkh2eTxaSsh4yr2LcL7UWrNlvuBncMFMK7i6S5FH0W93mUd
+X-Authority-Analysis: v=2.4 cv=CYsI5Krl c=1 sm=1 tr=0 ts=688427d2 cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
+ a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10 a=Wb1JkmetP80A:10 a=GoEa3M9JfhUA:10
+ a=yPCof4ZbAAAA:8 a=D3B9rt9QCh3B1xK0abIA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: 1riox9nFfFXQwd7lNzf0K0m5ClYpDT8Q
+X-Proofpoint-ORIG-GUID: 1riox9nFfFXQwd7lNzf0K0m5ClYpDT8Q
+X-Rspamd-Queue-Id: 71E5140003
+X-Stat-Signature: ej5iiw5h4bcj1fk8q6sobdo79ar6uyyb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6FDD2A0003
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1753490612-834706
-X-HE-Meta: U2FsdGVkX19+hGlpaeySs45v7vQ+M6rfYXjq7M9RxqUrnRWI22xxBEHuxcsg0Kf8VhFULgqevleYjqw01Ye4ivNFMDXNcDBsNU2W57psQE+GMv9W9CXoE9qtIzgwcFllUq2gzeTAElK3UwXDkYGo0VPkWeK34h11wJrMlH7PQcCZQKRVvPTsqzhJ8n4o6HV04cCrtOIwoTgflwM5HIp/AqWTDUMA5zS3J63sRp2hep19Luri8GZi23BnTdj4W3H93c3nn9tfJZ43L5h90CLqhrqkIowH4XoF+eAJqSr69cSw4B92bvEjrVpvzxDF3ohMMe4BLKIYeBmTTBm+dr1iIfybJ3yL1jhkDSDV23gwV322fCLwG0gzKJjLXjAXUvbuCWzF7s6i1tDo2YY6RfeExjh9yfrgrHS7FSWvmAlGge/+xqx7x3XQVduIzr+BmJBenYh+8r+XiygRlD3AYoPnoY3r3Egtv73SIrFjx9vLQLGgHC7RB7JMnd8PbCo0NpJP31o3hicEziZc0aDXX/Lu4hDDtDbw7zsJxipHZELaFLrRTZ5EFhBz77dZ+bGcUOpD5htxwU4SWMKMeDTet4YL+JVzPVVLG1pXtRbz9wOGTFDA3ziwLJMVJpBzQT7eB6nXhaDRkUulm6Bmkws6EJ0Y8A8sVcBzneV1lIgWJx9RuOE5KVNO3STw5qoS0+7wkldgx/AWXgeyM+tP6APgXDP6DDBskRsi8Nq4zylg1I8ctmbNWknmxq5UAeVCILXm0E7vbRVubhubRyZNiHK0oEuuU2TsiAGhvNffBiA+Iy7NUEQFgfe4vv5F1VARnQ8+2C30LGEYLjgKZNk+/Vp3MNGdI0vDo2q9fbf8AgPqEu/viW7OI+aIW03mX7ks4WTmef3Yc1XtdWSNvQpLcpAiezxfsV0Cv0BYT/aAmnnswJoiMlb+avAi+JD/RpvAijkkidYHx6Y5CsW3KVU3RgxRRJk
- YDwcRAgW
- dvNON4J12fz+jUpI5SJtT/m4SmUf9u5qVCBsmgoO+YCo4jw9eQuZ4Tl9B+hElJ7H/lW7tC1NMyHBK/F+lr77WiwR4gMys1qcksp6hHi8otl3KRiXthpAGL2F9FcbcCcTHmKLi6FaapWBSeePfPYqbWRD6vGsc3CFaMC6kPg/4bzbWCVhsUGud/KO+FwqO0ToHJwpHkfuuKmIy3fD6x7MRTYe3EGjkWlWsmxQs8gNysxWwfA+INbWpJtkgn3L4K/awHBxqhBRqslMgro8I/OhVSlwl5PfNnnaUMpWY/obrKH0V+A5lIl/J6PgeB1d3J/AKudA1ERtJ5WaeoAf0N5sRqVrWzpzYI5NqDOMxHG26i4QzrrY=
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1753491446-353092
+X-HE-Meta: U2FsdGVkX1/ajdzAdPFJoT71FjC8YX+LmyYTClpaJxx24CbeKToqRkA7mhLWfsPSmbPIoIbxQrO/42vTf5itfPwJF/+xLznpWs75neVGt4jc8Ww+t7DiqsZxCGN4JxtxlSWKKN7FZGMppqgxImxw6/T/BHiSoqzOdU+cZiaIvJ4nrAYDMRk8Js/Qlw8wzbWzBA3nFsFmIJYCT7FFfXGbkA5GuCvQ1jfqRHuy13LgoFSg5K1EPcEIUWwVNLtLa3DyWdRuEOdoAinkacO2iDxSIXqBFU0RxvXDUV+9WCR7Ehwxxm0bqLMOY3N5i8elINNbU1CEEY2YpqpPjS+gewqmWekzkRocsWYvUB69X46NTLnlbWrRqn36AsVjqJj1YK4+AH5LJTCy+WFU/8jWKc4gz6A5XEMlCdb2/XQ61p6eyiv72ZJGbTR4NHUGylTL/219dU4H+BKXdnwJJ0vVram98Xq5WwIDMQo3qrCQ+ZSKR6eR8/5iV/egXO3SUTYRp/ytyRA9rNLZLyzcg83kYca2SIOFQHOwzs2JsH/j1+eq/MoH0aJNWYYbJnxtyIzQPzg1MHirwGYAzdXbSqQMj9gEy30vFvwrXOMlT3pqUaMmgZQ2rpkJOmnuqjH3tejGgUWOSMcnbjZl4d9x/IVaMwbjUGqJHG6on230xkeYYD8ecoT+mYa+luC9sAeKz9kADfuzlOXQa1IHyzQeKF6xTwFClUjgG0l3Ew2BXqnNyHV0aO53GCUMhMOBjjZpwP6K0cO6PpzBv3/ALjHfzB3X9RQgByJ1UqeN3MFToqJNQUoInw/DBuOXkTfgd+CO4rhmmi9SZj4mUUElnCJXjYIgOAD0mMjCqJwLu89RwVYAb3NfA5KoBN8PtoIQd3HFuRBTAjgi4vqlzweJIG1WgiQN6JY/iYnzPtvFOkwPQbrepbgKF4HZXhQXnzx++TZeqSFgcdb7Yq8iYR+UMqxpNyT8B/Y
+ GUUKRt1W
+ FEmfL0ljzPsR926qnOyPiWWKK+hnntrwoZFIJ/47MZxC7f07gS/uVmaya6K2eALv8W1/YRVvyhWrnJZuG7x4fFZWDWPpGsQ/vehVcCHJXdMPou+ZW3/L2UO2tCRGhuYU3YzFnS5G9xdmczejpMoKtCMtoYg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -149,132 +261,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Kees,
-
-On Wed, Jul 23, 2025 at 10:50:24PM -0700, Kees Cook wrote:
->  v4:
->   - rebase on for-next/hardening tree (took subset of v3 patches)
->   - improve commit logs for x86 and arm64 changes (Mike, Will, Ard)
->  v3: https://lore.kernel.org/lkml/20250717231756.make.423-kees@kernel.org/
->  v2: https://lore.kernel.org/lkml/20250523043251.it.550-kees@kernel.org/
->  v1: https://lore.kernel.org/lkml/20250507180852.work.231-kees@kernel.org/
+On Fri, Jul 25, 2025 at 04:51:01PM -0700, Andrew Morton wrote:
+> On Fri, 25 Jul 2025 10:21:01 +0900 Harry Yoo <harry.yoo@oracle.com> wrote:
 > 
-> Hi,
+> > During our internal testing, we started observing intermittent boot
+> > failures when the machine uses 4-level paging and has a large amount
+> > of persistent memory:
+> > 
+> >   BUG: unable to handle page fault for address: ffffe70000000034
+> >   #PF: supervisor write access in kernel mode
+> >   #PF: error_code(0x0002) - not-present page
+> >   PGD 0 P4D 0 
+> >   Oops: 0002 [#1] SMP NOPTI
+> >   RIP: 0010:__init_single_page+0x9/0x6d
+> >   Call Trace:
+> >    <TASK>
+> >    __init_zone_device_page+0x17/0x5d
+> >    memmap_init_zone_device+0x154/0x1bb
+> >    pagemap_range+0x2e0/0x40f
+> >    memremap_pages+0x10b/0x2f0
+> >    devm_memremap_pages+0x1e/0x60
+> >    dev_dax_probe+0xce/0x2ec [device_dax]
+> >    dax_bus_probe+0x6d/0xc9
+> >    [... snip ...]
+> >    </TASK>
+> > 
+> > ...
+> >
+> >  arch/x86/include/asm/pgalloc.h          | 20 +++++++++++++
+> >  arch/x86/include/asm/pgtable_64_types.h |  3 ++
+> >  arch/x86/mm/init_64.c                   | 37 ++++++++++++++-----------
+> >  arch/x86/mm/kasan_init_64.c             |  8 +++---
+> >  include/asm-generic/pgalloc.h           | 16 +++++++++++
+> >  include/linux/pgtable.h                 | 17 ++++++++++++
+> >  include/linux/vmalloc.h                 | 16 -----------
+> >  mm/kasan/init.c                         | 10 +++----
+> >  mm/percpu.c                             |  4 +--
+> >  mm/sparse-vmemmap.c                     |  4 +--
+> >  10 files changed, 90 insertions(+), 45 deletions(-)
 > 
-> These are the remaining changes needed to support Clang stack depth
-> tracking for kstack_erase (nee stackleak).
+> Are any other architectures likely to be affected by this flaw?
 
-A few build issues that I see when building next-20250725, which seem
-related to this series.
+In theory, any architecture that does not share a kernel page table between
+tasks can be affected if they forgot to sync page tables properly.
+e.g., arm64 uses a single page table for kernel address space which
+is shared between tasks, so it should not be affected.
 
-1. I see
+But I'm not aware of any other architectures that are _actually_ known to
+have this flaw. Even on x86, it was quite hard to trigger without
+hot-plugging a large amount of memory. But if it turns out other
+architectures are affected, they can be fixed later in the same way as
+x86-64.
 
-  ld.lld: error: undefined symbol: __sanitizer_cov_stack_depth
-  >>> referenced by atags_to_fdt.c
-  >>>               arch/arm/boot/compressed/atags_to_fdt.o:(atags_to_fdt)
-  make[5]: *** [arch/arm/boot/compressed/Makefile:152: arch/arm/boot/compressed/vmlinux] Error 1
+> It's late for 6.16.  I'd propose that this series target 6.17 and once
+> merged, the cc:stable tags will take care of 6.16.x and earlier.
 
-when building ARCH=arm allmodconfig on next-20250725. The following diff appears to cure that one.
+Yes. It's quite late and that makes sense.
 
-diff --git a/arch/arm/boot/compressed/Makefile b/arch/arm/boot/compressed/Makefile
-index f9075edfd773..f6142946b162 100644
---- a/arch/arm/boot/compressed/Makefile
-+++ b/arch/arm/boot/compressed/Makefile
-@@ -9,7 +9,6 @@ OBJS		=
- 
- HEAD	= head.o
- OBJS	+= misc.o decompress.o
--CFLAGS_decompress.o += $(DISABLE_KSTACK_ERASE)
- ifeq ($(CONFIG_DEBUG_UNCOMPRESS),y)
- OBJS	+= debug.o
- AFLAGS_head.o += -DDEBUG
-@@ -96,7 +95,7 @@ KBUILD_CFLAGS += -DDISABLE_BRANCH_PROFILING
- 
- ccflags-y := -fpic $(call cc-option,-mno-single-pic-base,) -fno-builtin \
- 	     -I$(srctree)/scripts/dtc/libfdt -fno-stack-protector \
--	     -I$(obj)
-+	     -I$(obj) $(DISABLE_KSTACK_ERASE)
- ccflags-remove-$(CONFIG_FUNCTION_TRACER) += -pg
- asflags-y := -DZIMAGE
- 
---
+> It's regrettable that the series contains some patches which are
+> cc:stable and some which are not.  Because 6.16.x and earlier will end
+> up getting only some of these patches, so we're backporting an untested
+> patch combination.  It would be better to prepare all this as two
+> series: one for backporting and the other not.
 
-2. I see
+Yes, that makes sense and I'll post it as two series (one for backporting
+and the other not for backporting but as a follow-up) unless someone
+speaks up and argues that it should be backported as a whole.
 
-  kernel/kstack_erase.c:168:2: warning: function with attribute 'no_caller_saved_registers' should only call a function with attribute 'no_caller_saved_registers' or be compiled with '-mgeneral-regs-only' [-Wexcessive-regsave]
-    168 |         BUILD_BUG_ON(CONFIG_KSTACK_ERASE_TRACK_MIN_SIZE > KSTACK_ERASE_SEARCH_DEPTH);
-        |         ^
-  include/linux/build_bug.h:50:2: note: expanded from macro 'BUILD_BUG_ON'
-     50 |         BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
-        |         ^
-  include/linux/build_bug.h:39:37: note: expanded from macro 'BUILD_BUG_ON_MSG'
-     39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-        |                                     ^
-  include/linux/compiler_types.h:568:2: note: expanded from macro 'compiletime_assert'
-    568 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-        |         ^
-  include/linux/compiler_types.h:556:2: note: expanded from macro '_compiletime_assert'
-    556 |         __compiletime_assert(condition, msg, prefix, suffix)
-        |         ^
-  include/linux/compiler_types.h:549:4: note: expanded from macro '__compiletime_assert'
-    549 |                         prefix ## suffix();                             \
-        |                         ^
-  <scratch space>:97:1: note: expanded from here
-     97 | __compiletime_assert_521
-        | ^
-  kernel/kstack_erase.c:168:2: note: '__compiletime_assert_521' declared here
-  include/linux/build_bug.h:50:2: note: expanded from macro 'BUILD_BUG_ON'
-     50 |         BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
-        |         ^
-  include/linux/build_bug.h:39:37: note: expanded from macro 'BUILD_BUG_ON_MSG'
-     39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-        |                                     ^
-  include/linux/compiler_types.h:568:2: note: expanded from macro 'compiletime_assert'
-    568 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-        |         ^
-  include/linux/compiler_types.h:556:2: note: expanded from macro '_compiletime_assert'
-    556 |         __compiletime_assert(condition, msg, prefix, suffix)
-        |         ^
-  include/linux/compiler_types.h:546:26: note: expanded from macro '__compiletime_assert'
-    546 |                 __noreturn extern void prefix ## suffix(void)           \
-        |                                        ^
-  <scratch space>:96:1: note: expanded from here
-     96 | __compiletime_assert_521
-        | ^
-  kernel/kstack_erase.c:172:11: warning: function with attribute 'no_caller_saved_registers' should only call a function with attribute 'no_caller_saved_registers' or be compiled with '-mgeneral-regs-only' [-Wexcessive-regsave]
-    172 |         if (sp < current->lowest_stack &&
-        |                  ^
-  arch/x86/include/asm/current.h:28:17: note: expanded from macro 'current'
-     28 | #define current get_current()
-        |                 ^
-  arch/x86/include/asm/current.h:20:44: note: 'get_current' declared here
-     20 | static __always_inline struct task_struct *get_current(void)
-        |                                            ^
-  kernel/kstack_erase.c:173:37: warning: function with attribute 'no_caller_saved_registers' should only call a function with attribute 'no_caller_saved_registers' or be compiled with '-mgeneral-regs-only' [-Wexcessive-regsave]
-    173 |             sp >= stackleak_task_low_bound(current)) {
-        |                                            ^
-  arch/x86/include/asm/current.h:28:17: note: expanded from macro 'current'
-     28 | #define current get_current()
-        |                 ^
-  arch/x86/include/asm/current.h:20:44: note: 'get_current' declared here
-     20 | static __always_inline struct task_struct *get_current(void)
-        |                                            ^
+> It's awkward that some of the cc:stable patches have a Fixes: and
+> others do not.  Exactly which kernel version(s) are we asking the
+> -stable maintainers to merge these patches into?
 
-when building ARCH=i386 allmodconfig.
+I thought technically patch 1 and 2 are not fixing any bugs but they
+are prequisites of patch 3. But I think you're right that it only
+confuses -stable maintainers. I'll add Fixes: tags (the same one as
+patch 3) to patch 1 and 2 in future revisions.
 
-3. I see
+> This looks somewhat more like an x86 series than an MM one.  I can take
+> it via mm.git with suitable x86 acks.  Or drop it from mm.git if it
+> goes into the x86 tree.  We can discuss that.
 
-  In file included from kernel/fork.c:96:
-  include/linux/kstack_erase.h:29:37: error: passing 'const struct task_struct *' to parameter of type 'struct task_struct *' discards qualifiers [-Werror,-Wincompatible-pointer-types-discards-qualifiers]
-     29 |         return (unsigned long)end_of_stack(tsk) + sizeof(unsigned long);
-        |                                            ^~~
-  include/linux/sched/task_stack.h:56:63: note: passing argument to parameter 'p' here
-     56 | static inline unsigned long *end_of_stack(struct task_struct *p)
-        |                                                               ^
+It touches both x86/mm and general mm code so I was unsure which tree
+is the right one :) I don't have a strong opinion and I'm fine with both.
+Let's wait to hear opinions from the x86/mm maintainers.
 
-when building ARCH=loongarch allmodconfig, which does not support
-CONFIG_THREAD_INFO_IN_TASK it seems.
+> For now, I'll add this to mm.git's mm-new branch.  There it will get a
+> bit of exposure but it will be withheld from linux-next.  Once 6.17-rc1
+> is released I can move this into mm.git's mm-unstable branch to expose
+> it to linux-next testers.
+> 
+> Thanks.  I'll suppress the usual added-to-mm emails, save a few electrons.
 
+Yeah, the Cc list got quite long since it touches many files..
+
+Thanks a lot, Andrew!
+
+-- 
 Cheers,
-Nathan
+Harry / Hyeonggon
 
