@@ -2,113 +2,99 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A375C87FCA
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Jul 2025 22:06:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ECAD0C83F17
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Jul 2025 23:19:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 092946B0088; Sat, 26 Jul 2025 18:06:11 -0400 (EDT)
+	id 1B68E6B0088; Sat, 26 Jul 2025 19:19:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0434A6B0089; Sat, 26 Jul 2025 18:06:10 -0400 (EDT)
+	id 1674C6B0089; Sat, 26 Jul 2025 19:19:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E75346B008A; Sat, 26 Jul 2025 18:06:10 -0400 (EDT)
+	id 081C76B008A; Sat, 26 Jul 2025 19:19:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D44026B0088
-	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 18:06:10 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4FA9B59C87
-	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 22:06:10 +0000 (UTC)
-X-FDA: 83707799700.08.A56D5CB
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 603831C0006
-	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 22:06:08 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="In/tb93Y";
-	spf=pass (imf20.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753567568; a=rsa-sha256;
-	cv=none;
-	b=m0uPHWHWGeVc6AOKgV5aoovcUcMBA//KwxlxIpGza36isVxh7By6a/7uqvjBFOWjk9xRP6
-	K0S96dFjjFCfZlYxRCQpChxosBoLkjBy0rW9V8Q3iiS16j9214k/HwvLNXRpF2Y5rDc1yD
-	U+m4Jv7QqHMWz4pD8J0SB0YizLboXuk=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="In/tb93Y";
-	spf=pass (imf20.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EBDBF6B0088
+	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 19:19:23 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 69592160B41
+	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 23:19:23 +0000 (UTC)
+X-FDA: 83707984206.02.B7F4617
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id A6FDD40005
+	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 23:19:21 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oP6TEdb7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753567568;
+	s=arc-20220608; t=1753571961;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sJ0HbWh5wMU4zq+nDQgi0w5mYaeF8gFdCN3zESWgjG0=;
-	b=zAIVd+6WRhkLt9s/oYEXO9c8kB13Xls7G/6pnv7zfZT38TLiu3ZPcQlJwVw8Jn8pQ3vz9Y
-	w1U+edbDEQA7MW/ulvcxU7pp//xpa2F2Lpeo9x2QFVaRlUBdeO+Sg990D1NRrXTGFXOqLd
-	JQCSIJIHUKVbOpO8sX9f90EFHE7WEsg=
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-455fdfb5d04so17916565e9.2
-        for <linux-mm@kvack.org>; Sat, 26 Jul 2025 15:06:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753567567; x=1754172367; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sJ0HbWh5wMU4zq+nDQgi0w5mYaeF8gFdCN3zESWgjG0=;
-        b=In/tb93YNeNO/6f6/8m4U2bika+klqY5oLZ4fbzSgZDRQExGtdR4SEX9stEaINUzP3
-         R8t8u6cSmoA3+ayMgtBGUBeF3cgCylBLvA3aNIS39AnLp5BoIEIDJjEl+E7lItGhTOle
-         TVjkCs0if5r3VWmQDIIYph72d9wCfdZcFVnp+JJcKFNHZ29G8yH4iWOSXP9bErUvAAjj
-         wgQQfhwqDwTOIFjjT/O8mGdfz2y+iJcyU0YHrCgGDIoq1mz8m09/Jp9BbgRrS8L4k3HX
-         MkwyH7u61xaj70vW5/cggAbzYvVSKEX+LfwEE2zHNIrFgg2w1yHo5ar/2eA0GmeiHcCw
-         kzVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753567567; x=1754172367;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sJ0HbWh5wMU4zq+nDQgi0w5mYaeF8gFdCN3zESWgjG0=;
-        b=IqlZrRNubBjYNuGSNDJnccKAo8agkxYUWf8BXqJ1NJxQPu9iINnIdfyuGeAjk5T09B
-         qsjJINNTiHzEZWN1YicxS4J0zy1vch+7fYwjrK7jCmvKhanhl1WAHTmTN+62KeyZrWOd
-         8aQdleLp14YyvsgWtymC5GbMeLcvrb9fyWHRGeN/jXVGc8+gdZYXIDZZQoGn8pXGnwzt
-         dws/AHYio2VAiqrkS0sRG4NH4pUJrfNMOxRt9Y9/FCD+uXGzfLcwtXsAD9YcFdtx81xW
-         wDAqe081qXUmRdZ616ME5hq/mOPyUl3k+2nhqHKPoMsqPYqJ0Fi/z+Yud8PXTjKMjbcH
-         miHA==
-X-Forwarded-Encrypted: i=1; AJvYcCVanm5igMGx/D0PgOGxKqkPw6ZJXnmiARbPQary++3KI1UsqQ5cvnvRMHNnI8+xobKrTGC/892xFA==@kvack.org
-X-Gm-Message-State: AOJu0Yx+RzmqcWvEZExJfvoDDkGqEqzie10v+e9HUWnD08AX+FRrwwMV
-	hXv67de3YVg0kc2y27HuCLEGfWJhr0sicp3myJxuMt+QIT4BQ+LKyIu3gup7EtsdMSeV1Q/xc36
-	3IWsLy2hmB9pRdtsCwhtthyGv0YaRoTI=
-X-Gm-Gg: ASbGnctfhC80JgSGyJIpl8vd0iWkfR37En/S1PE/XOLEw1dINiBW8896kFayHXv20Pb
-	8r3EbkbQ762W7DG/JnLLIECc6RfUX2MR6IVj8yE4DzkcxL7+61BCtu1RYWHk2RDdnr09B+6wSD9
-	qWZAFiuaEFOqOo6MWI/fDY+LMrGwgzNJTZZUn58OZm8nGAH4GrQoMpdniEpAUHKQYLUdc2/mSWk
-	Q93oA57
-X-Google-Smtp-Source: AGHT+IERMWRconwwlICLYKuwfsAec6Ra2IUKJw6WcwmH1A2Pr9eQONsCFb0r5f8/2r7DCKhOVYQUXrXNn0q12SWzoEs=
-X-Received: by 2002:a5d:5886:0:b0:3b6:18be:3fbc with SMTP id
- ffacd0b85a97d-3b77671d232mr4837781f8f.2.1753567566495; Sat, 26 Jul 2025
- 15:06:06 -0700 (PDT)
+	bh=EDGIW+TH9vAlNoQvdFdR+qpWRbp6aLgiXKsAT00qYJA=;
+	b=jvD+yPbHwOJOgw1V8r8ZXYtphS/HuLeZjD7DzBgDu195WYfdAGvNgB5WbJo3BgbYre7Oco
+	mWGaIluitzoQ/utDnaFKoG8GbmC6IkvgFJlYZ+3+aRSnvvVEPhCao8Q734y/EEERLhpoWD
+	qGC5G5jU+bYfvNLae+AQLdO7qAHnDkE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753571961; a=rsa-sha256;
+	cv=none;
+	b=DihZVs9+M4kaBRkglzEQEHuecNZb2inC55Pc3RW4NlNOZSIPiZf+p8jlJJGY1F8mgx0ViW
+	3v2hEifZ2bVutupBA2qjoBxNNV6QAdwDqhu9d8sue464WJHS6MSJrLYSQ2PR37zeaB4LQ7
+	BgKvsrn6MwlGUMvyx9VgfianoqRCN1I=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oP6TEdb7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 579874435D;
+	Sat, 26 Jul 2025 23:19:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D9CC4CEED;
+	Sat, 26 Jul 2025 23:19:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753571960;
+	bh=EDGIW+TH9vAlNoQvdFdR+qpWRbp6aLgiXKsAT00qYJA=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=oP6TEdb7YE2T2S8Ap9nwc/X3asue9bKewcgHIuUVA3FoCpyOmXmfThSlzYPyAK/rP
+	 4QmN0JpN+rFzUZGkj7ZfF+6czDfH3GIzjeosnlj8ZOiateuLnVjtxdSz4wROmB22Fe
+	 vfrhicja1vsznPCIbFme0J4tO5KEpXgaiaY+tIDY9AwqLc2dTu1wu19uR7qZEUmZ/g
+	 OEgxNsGwqMrDhnvjqnWWGtfTN0rV/BICgDQCteeZ6t/gqmEDxcGxYzVjvKStGgtfOW
+	 na16XywlEeyZIaWoOiS06QOBLiNnnO6YFDoUHguGw1tVAVRvr6V1alfU6Krbou9WWZ
+	 q88hFGa4q31RQ==
+Date: Sat, 26 Jul 2025 16:19:18 -0700
+From: Kees Cook <kees@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+CC: Bhupesh <bhupesh@igalia.com>, akpm@linux-foundation.org,
+ kernel-dev@igalia.com, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, oliver.sang@intel.com, lkp@intel.com,
+ laoar.shao@gmail.com, pmladek@suse.com, rostedt@goodmis.org,
+ mathieu.desnoyers@efficios.com, arnaldo.melo@gmail.com,
+ alexei.starovoitov@gmail.com, andrii.nakryiko@gmail.com,
+ mirq-linux@rere.qmqm.pl, peterz@infradead.org, willy@infradead.org,
+ david@redhat.com, viro@zeniv.linux.org.uk, ebiederm@xmission.com,
+ brauner@kernel.org, jack@suse.cz, mingo@redhat.com, juri.lelli@redhat.com,
+ bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+ linux-trace-kernel@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v6_2/3=5D_treewide=3A_Switch_memcpy=28=29_use?=
+ =?US-ASCII?Q?rs_of_=27task-=3Ecomm=27_to_a_more_safer_implementation?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <CAHk-=wi5c=_-FBGo_88CowJd_F-Gi6Ud9d=TALm65ReN7YjrMw@mail.gmail.com>
+References: <20250724123612.206110-1-bhupesh@igalia.com> <20250724123612.206110-3-bhupesh@igalia.com> <202507241640.572BF86C70@keescook> <CAHk-=wi5c=_-FBGo_88CowJd_F-Gi6Ud9d=TALm65ReN7YjrMw@mail.gmail.com>
+Message-ID: <B9C50D0B-DCD9-41A2-895D-4899728AF605@kernel.org>
 MIME-Version: 1.0
-References: <20250723-kasan-tsbrcu-noquarantine-v1-1-846c8645976c@google.com>
-In-Reply-To: <20250723-kasan-tsbrcu-noquarantine-v1-1-846c8645976c@google.com>
-From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Sun, 27 Jul 2025 00:05:55 +0200
-X-Gm-Features: Ac12FXxVMLsmLFrJvmkI7l9TDJQ09BGxwghdFh3bJQfvTulVExlWwMj6B4rNIpk
-Message-ID: <CA+fCnZcyh52CqY+XDMMjc6f5KQoaji=7KiFM-6+2NidjfyNVGQ@mail.gmail.com>
-Subject: Re: [PATCH] kasan: skip quarantine if object is still accessible
- under RCU
-To: Jann Horn <jannh@google.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>, kasan-dev@googlegroups.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: nb89uafamo3gu65mnhfgsoe891sihbju
+X-Rspamd-Queue-Id: A6FDD40005
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 603831C0006
-X-Stat-Signature: ubmtx8oty3kzqiu84t13qd17w55fzqw5
-X-HE-Tag: 1753567568-878976
-X-HE-Meta: U2FsdGVkX1/yw6vdi3A4iT9JsLEhdWdK1WQ6Y0/KYnNC1TtgkUNf+ESH9Pj3zRRphMIGLQXrMeezVyLvVCoiYyVnJ/J8KOrd7X1GHyOuI09RnCj4m3PskTUO8qoXBzg9LCKZBwcs34ZqPMyDIRlgXGDjtBaF4CbudhIJkALLlw6oR/HUh2OHAH9bZ2fL6DfZCymfMk+AUlD6h7dreqDyU61z5zwHKhXPyCJ8781cIcZfdpC6dzdB+Uo15CeWmfOIeBDh2Dm08B0ZWGf9HIK3Q3+cJ2lTHiYDpqy5u4B3JBQQV5dEs5bCrzLUJsd5VvyJ9/6s3f4myuLhylSyfkQF+nWdG6mrlqrRjAYQD/ALo9GBYIb61QMg8tHrd9bx9OUSeuour2VMrePs0j5WP5fStqrO7Vr0akjIUsMuk+/SkK6Q6ZLhG1QrpxZU4ctH9a0Y/ZS+tMvysai+Ju6QJSb70NgD7XPg06LajpwQK3kJvJavSE5lc/fJicm6/44pqqTUF/qR/Y/uyESK18RbII9RyTqvcyOFiPqnZQC26wq+M4H1UmbubM2S7iTDwHLAbP/OTcYGOvyRYq4bpyYy/03s/eBgTEyOgDVLyrdIbAkmKTtqW9t6fJVVIA/4iRmbYjFiQu8Om5D0esy/J1z9lveYQisO4dsglDf8bUISnJQhG5dhxgMhOUS5BNxdNBfgukvGNjdlfB1bKUJFoehSq8wCYKUQRaB8eZz11dUMIydfyczX48cvb/4vvlGKr1knvzWabTsmaFeP9knm/U/3+bb75jv/rZPLNCtlWLQqMrBs0/NIqFKnUvDR6xkQkGCZeyTEWm0hGiyHnJxQTvBW0DZi5o9weSOZdQKkbDQmgJzvl7YO5gptxY+s/SGqGwcct4fkvIzp9aW3HRb3JeAkqZYSlsZME01hgdTLHQJDZJc1A4ktrpw62PoZt5dqvTQzOrEjR9/FQDuNvib5/YoJUox
- pD9LSBhc
- HMjVsaEBC+fGvElRx1Hq1CimozqLJeTfllPCe6/mMnkTwmTccImtmMlraWH9G1hxVEGWTNUyiCIEOKpF5oUCIzsVlLmRCWU1vL23efNf7z5l4h+S6WXv2kqlHv9PbVETWZn3/2/B2eOa7oJYgQ189aGkj9HprEn/bB/TfF2FZWc7hYPEBoEZC3RZRY3MkN9yPxXFcUREOhUdwvmU9TS0LbHbUfzg3fiNim2vh4tH+W+CagHA3rFrxglvV33QLL6Jf5iEsexkYmsSFqZj+fVqElov+a2gSa+LwdK/Yc4PsP5LzP4wL/clnwYA8kcn7YEO15K9oiRfGbrQxtKv5cjHxQ8qxVmyCxiFxuV5zITp8SjpL4r9bigadDvY4OTe0RNrLT3+edw8tRfk+2Ay8fcimIPtXFgQwFCSdUlYcSHJxkfdQeEltAu6e+oO05F4EGYR4Xw3hyQ515vNZ+wD1E2HUYwIs7cS2mJ750byu
+X-HE-Tag: 1753571961-756562
+X-HE-Meta: U2FsdGVkX19+hNzARyVPPa8Vz2wYap/nCTc/VPvO2NjaA+Suln7VRRqO5D1hWCXdtFfG/x8dGFOubWMrqG3xIxoygdNg2XvwYoblDvj3MiUFwW6yHWT6pApWiVN0/kf3dMBydm+Jf6Uy6MTX3uTFXvqFhsAGdUZ+bCQZWl02JK+VF3z9c3KBVervR4b+6KQJPPgLSxVJWjRU/q7W19uUfa041iWnecwyJZodQKBNxc9Xfy9FX8Q4t1Qz+xNnEp91vrEma/TQCAhumg9GzrFyeZVIB6ErJES8qasIJ2/25SfaaBoKOsCS+aagnlLLMJ8yiTnEqwkif7AE9c6EkJHHXp1gtb5ZglFXtdUTzDQ602VnDR4fDGroL5cW1LIazEwQ8tKrojxlweX5jjddpU5rZG003jz/yRSPzqjMapzFTPu6HGzoMi1x8pMsLCEHBzSkskapgFcv17S+XIOYZJf5qOvKRvDieVq1cPzbryUyvl51W95CyqLBibFK2VpE//+OBPixdakLotNXx8V0dbkprvI5h6Hdz2PGLxWXYvddio2FW2IzFqvGJd8fYXAa1yppw48ro0UcRFLsO231zGc2zEjWeBMPfjLroAbloGKqXPZJY+/bQkxbLNNiKBHVzElNw5hrLmJYdUPmRPBaprKOFrw+hzxfayjD0909KI3jmpWQ9gR3SUzVOxAeN6LlHretCaUz5JLUwg3N3wlSuK2OCn6AeGs4NjNmC3yZhlc3bHimkk2tgvwjAJfYXzyIQb9Sn+OPuLDWiuuJ0SnpTogoHmnXDOBaCZloW6lQ+gOXHk9KOiTaWeUdpRhvpN6DkMRp3S+s6cj9j3gJgWNdqq3/5s8alTveW2eLHorPn1aYP8ABCBmiCHK5HWBaVf+6rH9nlXJaYapBTf1JiruYvC6x2dLyUoc4lhc6dqL9gnid7H24FE9Lbz6FYS6nm4mea3/U7jYbrW7/o0ULqjkdOhp
+ HvdbGqPt
+ XvWsc3esxZmB0u7biHk4DAHRN6ndkW9H4UYhlvBKpH2Qa6R0UETVMfW+kn9c9K+Z7pIXRmLeY41ZTxJPHE0pZudANKG9/CdUMSzJCVR+CfeA8hb6y2CDYMl54aDYxLE4xtXLbfyEcYOxyb497itupCOOlsc2qEqo3JKBAljA0rEcOfsgdj4AIfzoTc+CnXwGAzxhw9dxFHUa+zEG1revllJdBvFO7iqx5O7Ks3SgnWmHUQcQMvDJ/Br88GmJ57JGUFzerZwFhwbQLPMHYL1qXiKqVBMK9boEq6GQEFHnUOUQyia2xmImmiMg5cEbzKIB6eQGVLgkeqwu3lc02l9davlsf34IJ27fBKLUAszXf1fISrDV+4YlcFNUllLo0nLRIXlJmDp+uvAkk4jdB/k+dGoLfF7rO4IE83++jv3Urb421hVeEq3tOtEddAA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,108 +103,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 23, 2025 at 4:59=E2=80=AFPM Jann Horn <jannh@google.com> wrote:
+
+
+On July 26, 2025 10:50:55 AM PDT, Linus Torvalds <torvalds@linux-foundatio=
+n=2Eorg> wrote:
+>, but
 >
-> Currently, enabling KASAN masks bugs where a lockless lookup path gets a
-> pointer to a SLAB_TYPESAFE_BY_RCU object that might concurrently be
-> recycled and is insufficiently careful about handling recycled objects:
-> KASAN puts freed objects in SLAB_TYPESAFE_BY_RCU slabs onto its quarantin=
+>On Thu, 24 Jul 2025 at 16:49, Kees Cook <kees@kernel=2Eorg> wrote:
+>>
+>> Why not switch all of these to get_task_comm()? It will correctly handl=
 e
-> queues, even when it can't actually detect UAF in these objects, and the
-> quarantine prevents fast recycling.
+>> the size check and NUL termination=2E
 >
-> When I introduced CONFIG_SLUB_RCU_DEBUG, my intention was that enabling
-> CONFIG_SLUB_RCU_DEBUG should cause KASAN to mark such objects as freed
-> after an RCU grace period and put them on the quarantine, while disabling
-> CONFIG_SLUB_RCU_DEBUG should allow such objects to be reused immediately;
-> but that hasn't actually been working.
->
-> I discovered such a UAF bug involving SLAB_TYPESAFE_BY_RCU yesterday; I
-> could only trigger this bug in a KASAN build by disabling
-> CONFIG_SLUB_RCU_DEBUG and applying this patch.
->
-> Signed-off-by: Jann Horn <jannh@google.com>
-> ---
->  mm/kasan/common.c | 25 ++++++++++++++++++-------
->  1 file changed, 18 insertions(+), 7 deletions(-)
->
-> diff --git a/mm/kasan/common.c b/mm/kasan/common.c
-> index ed4873e18c75..9142964ab9c9 100644
-> --- a/mm/kasan/common.c
-> +++ b/mm/kasan/common.c
-> @@ -230,16 +230,12 @@ static bool check_slab_allocation(struct kmem_cache=
- *cache, void *object,
->  }
->
->  static inline void poison_slab_object(struct kmem_cache *cache, void *ob=
-ject,
-> -                                     bool init, bool still_accessible)
-> +                                     bool init)
->  {
->         void *tagged_object =3D object;
->
->         object =3D kasan_reset_tag(object);
->
-> -       /* RCU slabs could be legally used after free within the RCU peri=
-od. */
-> -       if (unlikely(still_accessible))
-> -               return;
-> -
->         kasan_poison(object, round_up(cache->object_size, KASAN_GRANULE_S=
-IZE),
->                         KASAN_SLAB_FREE, init);
->
-> @@ -261,7 +257,22 @@ bool __kasan_slab_free(struct kmem_cache *cache, voi=
-d *object, bool init,
->         if (!kasan_arch_is_ready() || is_kfence_address(object))
->                 return false;
->
-> -       poison_slab_object(cache, object, init, still_accessible);
-> +       /*
-> +        * If this point is reached with an object that must still be
-> +        * accessible under RCU, we can't poison it; in that case, also s=
-kip the
-> +        * quarantine. This should mostly only happen when CONFIG_SLUB_RC=
-U_DEBUG
-> +        * has been disabled manually.
-> +        *
-> +        * Putting the object on the quarantine wouldn't help catch UAFs =
-(since
-> +        * we can't poison it here), and it would mask bugs caused by
-> +        * SLAB_TYPESAFE_BY_RCU users not being careful enough about obje=
-ct
-> +        * reuse; so overall, putting the object into the quarantine here=
- would
-> +        * be counterproductive.
-> +        */
-> +       if (still_accessible)
-> +               return false;
-> +
-> +       poison_slab_object(cache, object, init);
->
->         /*
->          * If the object is put into quarantine, do not let slab put the =
-object
-> @@ -519,7 +530,7 @@ bool __kasan_mempool_poison_object(void *ptr, unsigne=
-d long ip)
->         if (check_slab_allocation(slab->slab_cache, ptr, ip))
->                 return false;
->
-> -       poison_slab_object(slab->slab_cache, ptr, false, false);
-> +       poison_slab_object(slab->slab_cache, ptr, false);
->         return true;
->  }
->
->
-> ---
-> base-commit: 89be9a83ccf1f88522317ce02f854f30d6115c41
-> change-id: 20250723-kasan-tsbrcu-noquarantine-e207bb990e24
->
-> --
-> Jann Horn <jannh@google.com>
->
+>I'd rather aim to get rid of get_task_comm() entirely=2E
 
-Acked-by: Andrey Konovalov <andreyknvl@gmail.com>
+That works for me! I just get twitchy around seeing memcpy used for string=
+s=2E :) if we're gonna NUL after the memcpy, just use strscpy_pad()=2E
 
-Would it be hard to add KUnit test to check that KASAN detects such issues?
+>And guess what? We *have* that function=2E It's called "strscpy()"=2E It
+>already does the right thing, including passing in the size of a fixed
+>array and just dealing with it the RightWay(tm)=2E Add '_pad()' if that
+>is the behavior you want, and now you *document* the fact that the
+>result is padded=2E
+
+Exactly=2E Let's see how much we can just replace with strscpy_pad()=2E It=
+ we have other use cases, we can handle those separately=2E
+
+-Kees
+
+--=20
+Kees Cook
 
