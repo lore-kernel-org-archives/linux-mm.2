@@ -2,131 +2,116 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A798DC83F17
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Jul 2025 23:37:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E860C87FCC
+	for <linux-mm@archiver.kernel.org>; Sun, 27 Jul 2025 05:28:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 079F76B008A; Sat, 26 Jul 2025 19:37:56 -0400 (EDT)
+	id 50DFE6B007B; Sun, 27 Jul 2025 01:28:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02AA26B008C; Sat, 26 Jul 2025 19:37:55 -0400 (EDT)
+	id 4BF876B0088; Sun, 27 Jul 2025 01:28:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4C086B0092; Sat, 26 Jul 2025 19:37:55 -0400 (EDT)
+	id 3AD376B0089; Sun, 27 Jul 2025 01:28:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D2EBA6B008A
-	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 19:37:55 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8C02A1141A0
-	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 23:37:55 +0000 (UTC)
-X-FDA: 83708030910.07.C2FE282
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5BAE940009
-	for <linux-mm@kvack.org>; Sat, 26 Jul 2025 23:37:53 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=FruN6waU;
-	spf=pass (imf01.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.52 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 26A726B007B
+	for <linux-mm@kvack.org>; Sun, 27 Jul 2025 01:28:44 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F2C7316095D
+	for <linux-mm@kvack.org>; Sun, 27 Jul 2025 05:28:42 +0000 (UTC)
+X-FDA: 83708914884.26.04F5ED3
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 3391EC0002
+	for <linux-mm@kvack.org>; Sun, 27 Jul 2025 05:28:41 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=1ur+tlaQ;
+	spf=pass (imf10.hostedemail.com: domain of rientjes@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753573073;
+	s=arc-20220608; t=1753594121;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1tHg+Y1g27jBmEKsSCwCSS49UstWUnsuEvPhc+oks0Q=;
-	b=WO9JGAHdeGxsSZncTujSa/xrXQmT2mpLjxW3lSIjtSWg7CmNOgrWN000bYsCGdpIFD05W6
-	d6spdgmoMPN/0oDBjhcwdxob6ujcMKHYrIavNKWIuXf+86DJoRT0FWgNvB71/1mfxpAdbe
-	6u7vL95sQWCE90TspktIjFvMBhfIZKk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753573073; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Y4fzyMbg9b9tChn/1fYJ7NRuUNWKz/X0SkndoLYJL0g=;
+	b=qt/T3VBipmtxv1WygCzfcUQwcUiJiMJ+sodb8tNemvxBYeAlrWGwv7NYtS3ZBdv9E2hV+E
+	hjeYbVmrayZIypeUfPJJ+J3DQYqWOLls1Ql0Ot4rMw9YrfZbnrz6Qi6e2HSWUs5GkjA1Sh
+	8PHQ62lGDixog7yivLfmm9C9xwBMkwE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753594121; a=rsa-sha256;
 	cv=none;
-	b=Wqg7PG8cKEeoQtMFysy5sprRfsBe0ItNadImBWMj+37l59Ls0/m+BTZzJJGgh2XLA8XdmZ
-	+PMydMkMfbP5+RE4Xtz2Kk/80JRaQHYtg2CxR0cHPeK9qivbmSQS+ULLy4z2mg6Vv6EbuB
-	ii8UWyTRqegf4Mk9dZyka+0w2FMlPb0=
+	b=alDJ6zU6ZfLMMOjYv4BJrSNAjV4JkJI26qX6WA3DErxBRVv/FQ3SXiLQaVOpxlBcZo95f+
+	N19quGqiNsngIIDp5XImVfkMiWfUhAGN9RL3GzgAFbkOuOMnxgbxEfddEaOZOc9mQ9ANQM
+	Mg1PnQXQIAbYJPNpgU7NqSghpk+ebDE=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=FruN6waU;
-	spf=pass (imf01.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.52 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-adfb562266cso474030266b.0
-        for <linux-mm@kvack.org>; Sat, 26 Jul 2025 16:37:53 -0700 (PDT)
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=1ur+tlaQ;
+	spf=pass (imf10.hostedemail.com: domain of rientjes@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2357c61cda7so110285ad.1
+        for <linux-mm@kvack.org>; Sat, 26 Jul 2025 22:28:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1753573072; x=1754177872; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=1tHg+Y1g27jBmEKsSCwCSS49UstWUnsuEvPhc+oks0Q=;
-        b=FruN6waUSKZQr53eDNpE5ruungZaXnthkhx63X6v1MYWfx75ZMKKWdBK2WrZCz7VEg
-         iXMIozGJsGYCIxHZ3Ri3UBhUVmyF+LXzNQSxMdwdE96yeAIUTAx5rdwGzeClyBmmQQ2D
-         ZIDtq+oysIDkQyjb5j2js2JpXJCG0CEuYR0kY=
+        d=google.com; s=20230601; t=1753594120; x=1754198920; darn=kvack.org;
+        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Y4fzyMbg9b9tChn/1fYJ7NRuUNWKz/X0SkndoLYJL0g=;
+        b=1ur+tlaQ4i1zPvmsFCTUTNBahEr3S9QVyjqNuKmnBc2KK6rXjgGG+csJIqpCLeGAC3
+         qZ5SCswxYEb6cieS3V8bvbRT8fUSWHTxFokqZjg/lWqRtmMoGtbyw17nbr9VE3mPymu5
+         WMwuIWh+ai6OHMVlTXYAZeLNM0NPGOYhqeZUCLVYKNWk6bLGAP5pnPkrzM9G28u9oEEh
+         7Q7FPC3kaAmivOJujDyzvuEUs2PI8kCsURudQ3ArIvrWtVVuKJku0F71NC80a2nQueoQ
+         +a8f3Ka3jJjsCW9kuakPqCm2KDTToK9Krx/TUEM2QyaAOAwtinLBnhPnuleSnseKwjkG
+         9jig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753573072; x=1754177872;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1tHg+Y1g27jBmEKsSCwCSS49UstWUnsuEvPhc+oks0Q=;
-        b=DWCSmnZ96VGY4uC9KwPRWnUbghg93nlKhTcigWcwWvXCuWODe+ysjHFVfFljSGdaQD
-         SOTJcRX+CuttDXaYScJi9Qzj3XeI/aUmcXf7PEBx8SNOONjXYbBkYL/6XhGy9saZmiua
-         hG+NdD8RX2aliL1GsTmwzfwi2tDAi5Zl8jaYuzRxE/XzJd/UuS8hDhzQ2rDq2PL+XKXh
-         cw7I+6V6XRvg/hkDUgn1IdoGFpeL7OVmOnoXER4BW/+fbPtlRc9Q8jzt+xjbuvx2TZQJ
-         MZnlxWJx64vBSBeaU099OFunsjmKG9AUfNDgYAHO4P8clUuPkjsTeAGgh4IhYlX6907W
-         lOeg==
-X-Forwarded-Encrypted: i=1; AJvYcCWo3mgy1/UohHzni+oWJfxihip7bGFopURlli90aiBoPfaQ6LXu5a3NwC0D38usFJ35S6et0uHguQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw9Nmu5OuO/5w2UbeJhQP3f8OtWHvGgoCm2YVmmNR8q5pKwRQ/u
-	65jFFqT1Vx0xhslPpbRiWCXKidOzjJTu5gJdH4pi2gIlhfcYxTxOwWlS8hXNYO58WjDXSaBFIxw
-	UaJTIQ7Ta9A==
-X-Gm-Gg: ASbGnctsu12KXq9qgNPpc//sQeJOU3Xfp7sRcF+EzKflpnXBzOe9wd8zrbO0dzqhmqe
-	ro6jINS09eJJMDOw0BMjBaYLCoIT9IpY1P86XRi/IJFQGxkiKuvlka5vjPUsv9PdHIaRNuF5a9O
-	3L7oa9riGc7Y821Bvq+LannTRzagXLM6sQf8z29qAGi+AUpNmXaM2+P4Z+DDIvnmW+8wCUaNKl7
-	/BfKB8S7z5dTAhPkWIIMyiIlWLJXK5W1skJrObZXm/jsTSzwpa0enaCvG26H/iJ2cX8YlNB9xl2
-	sr76aDHf6q15mNik/Gvno2QaQxzlJ1Befs+GNyMhVL8phCofyA/Oy/ayJCjH0kRiO0MI9oHEuWI
-	S7Dohv+rqqgNmb6Fz1TUJjjAm+d+avWfcZBHJdCCbj6r7MtFhkFLbsmCj0tnjMQXNMR/DWwNMB/
-	/Wx33kelQ4tWb2ZhqIFg==
-X-Google-Smtp-Source: AGHT+IGx8ssP5iClseIwkUHT+5FsR90mrzVLd9wC9wrHzrM/UTqLTnqzy2fG3QMa5P5WRYvsJo/OYg==
-X-Received: by 2002:a17:907:3d0d:b0:ae2:60ba:da91 with SMTP id a640c23a62f3a-af61ca99878mr826256666b.15.1753573071502;
-        Sat, 26 Jul 2025 16:37:51 -0700 (PDT)
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com. [209.85.208.48])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6152a0e65a2sm221840a12.42.2025.07.26.16.37.50
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 26 Jul 2025 16:37:50 -0700 (PDT)
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-60c60f7eeaaso5286892a12.0
-        for <linux-mm@kvack.org>; Sat, 26 Jul 2025 16:37:50 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCURHDGv1NOC0LicELZsp63vtPFBIIxifbw3GXYhWJlyQJCKBorcgQizuViSe8ml8bQ6lvHxdGscHw==@kvack.org
-X-Received: by 2002:a05:6402:483:b0:611:f4b2:379c with SMTP id
- 4fb4d7f45d1cf-614f1dced8amr5514831a12.20.1753573070075; Sat, 26 Jul 2025
- 16:37:50 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1753594120; x=1754198920;
+        h=mime-version:message-id:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Y4fzyMbg9b9tChn/1fYJ7NRuUNWKz/X0SkndoLYJL0g=;
+        b=ESBsFkTYOL4CPv2dg+yLb+EkHcwcbxTTM0IpDRGq7mhJBQvbloQvZZozUZf1YL0wf4
+         frLfCp5yg9uqstuqKzIJWRA7EjpE4c1j1BjAyN9UMNEkS26TjP1qqXSSg29KvFgC8jCL
+         ug8++rGuXHOCdBgXb7qcV1SrNmi0uBHvR/IQ+mW+WCIXKv9kBb2cLOSqmRwKG3P0gHvx
+         lNshrTJE21IUOydCJqBRHupV5xHXrbnYYH5uP7MxTDJCWyZrH+ubJEQLDlD8T9BqSbf5
+         6LwPGN0k2Ku+jRcyrAj7YCl4k+2A3xO2HMkrZWJdKWAyhmyt0YF/rWykr2w1gapSpql1
+         SmnA==
+X-Gm-Message-State: AOJu0YzcPyzmYiXKcHOTV2sX2QFMb+TpJbvnRu2y2kob7897bUo1N9UO
+	nR+GPUZD+AICkfQ48HkJMIC4+8ozkH8glWU7EyMLvKpst8mUsDE0Tfoi5y+RPk1LYw==
+X-Gm-Gg: ASbGnctCjZ7w5HSwEM95mH3R3ie2jnFiafpUCmtbhEKaf00OwhcLj3w8ZzjxI2xTWIQ
+	LxIT4CHQw57bK85hHym3y9y1Gl429NzB2rGMUs/SWfdWHf2KzU3Qhg8MHvo7lflwYaIGrjk2Rhh
+	vkf986hNrWrZXpm+2iD0MEJY1vyDCze3+iO7/5RGGEG7WVlDRI8i37Pcwoebrv3rHggYR4kOUic
+	RyEwDcHoqHcGfYlsBLfz5Pduq6NhQW+wWiMIy4iRq12WQulkdO/wuML7dGP0d8nuk/rKKXL9NXF
+	isVb/ghwPePobuQPHn2/wtQiiThznXlZhydhHj7WMcdgbqq8KJxeZBofM/PcOTo1jmpav/C6tKE
+	XiFJ+0Uz0R7lPitzzSQczJ6RRL+gy4b+aVz4BU7kPPuA0vyxAYsrKjpntsxmQTE9MA9HmxZFzRi
+	hMzHpRFyuMz0y0Q7Pm+lkqW2oa85M9jWetBpy/XA==
+X-Google-Smtp-Source: AGHT+IHnc6cUG06f6cNWo4opD7IJz7IhkPswhlCALVJIFBdHGdAJXNrJvZAaR9NFudPqT1pwJuP30g==
+X-Received: by 2002:a17:903:2441:b0:23f:f6f4:246 with SMTP id d9443c01a7336-23ff6f40326mr596465ad.19.1753594119390;
+        Sat, 26 Jul 2025 22:28:39 -0700 (PDT)
+Received: from [2a00:79e0:2eb0:8:364f:4373:b756:1458] ([2a00:79e0:2eb0:8:364f:4373:b756:1458])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7640b1e0318sm2827904b3a.93.2025.07.26.22.28.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 26 Jul 2025 22:28:38 -0700 (PDT)
+Date: Sat, 26 Jul 2025 22:28:37 -0700 (PDT)
+From: David Rientjes <rientjes@google.com>
+To: Alexander Graf <graf@amazon.com>, 
+    Anthony Yznaga <anthony.yznaga@oracle.com>, 
+    Dave Hansen <dave.hansen@intel.com>, David Hildenbrand <david@redhat.com>, 
+    David Matlack <dmatlack@google.com>, 
+    Frank van der Linden <fvdl@google.com>, James Gowans <jgowans@amazon.com>, 
+    Jason Gunthorpe <jgg@nvidia.com>, Jork Loeser <jork.loeser@microsoft.com>, 
+    Junaid Shahid <junaids@google.com>, Mike Rapoport <rppt@kernel.org>, 
+    Pankaj Gupta <pankaj.gupta.linux@gmail.com>, 
+    Pasha Tatashin <tatashin@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
+    Praveen Kumar <kpraveen.lkml@gmail.com>, Vipin Sharma <vipinsh@google.com>, 
+    Vishal Annapurve <vannapurve@google.com>, 
+    "Woodhouse, David" <dwmw@amazon.co.uk>
+cc: linux-mm@kvack.org, kexec@lists.infradead.org
+Subject: [Hypervisor Live Update] Notes from July 14, 2025
+Message-ID: <ff87b623-2e8f-2fd8-3db0-d592804e1466@google.com>
 MIME-Version: 1.0
-References: <20250724123612.206110-1-bhupesh@igalia.com> <20250724123612.206110-3-bhupesh@igalia.com>
- <202507241640.572BF86C70@keescook> <CAHk-=wi5c=_-FBGo_88CowJd_F-Gi6Ud9d=TALm65ReN7YjrMw@mail.gmail.com>
- <B9C50D0B-DCD9-41A2-895D-4899728AF605@kernel.org>
-In-Reply-To: <B9C50D0B-DCD9-41A2-895D-4899728AF605@kernel.org>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sat, 26 Jul 2025 16:37:33 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wixR7ZR+aebFsWX4qWZ84tMTmyNWLUPmTy3YvaNJGqd-Q@mail.gmail.com>
-X-Gm-Features: Ac12FXwLhT2VoOEv9kNeOdgouvN4zZ9YLvHzVMPIsLMuRmQFnkSkLFn13r5tjO0
-Message-ID: <CAHk-=wixR7ZR+aebFsWX4qWZ84tMTmyNWLUPmTy3YvaNJGqd-Q@mail.gmail.com>
-Subject: Re: [PATCH v6 2/3] treewide: Switch memcpy() users of 'task->comm' to
- a more safer implementation
-To: Kees Cook <kees@kernel.org>
-Cc: Bhupesh <bhupesh@igalia.com>, akpm@linux-foundation.org, kernel-dev@igalia.com, 
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, oliver.sang@intel.com, lkp@intel.com, 
-	laoar.shao@gmail.com, pmladek@suse.com, rostedt@goodmis.org, 
-	mathieu.desnoyers@efficios.com, arnaldo.melo@gmail.com, 
-	alexei.starovoitov@gmail.com, andrii.nakryiko@gmail.com, 
-	mirq-linux@rere.qmqm.pl, peterz@infradead.org, willy@infradead.org, 
-	david@redhat.com, viro@zeniv.linux.org.uk, ebiederm@xmission.com, 
-	brauner@kernel.org, jack@suse.cz, mingo@redhat.com, juri.lelli@redhat.com, 
-	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com, 
-	linux-trace-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 5BAE940009
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 3391EC0002
+X-Stat-Signature: dfmannjoaiw3zwo84e8fdagafh46udg9
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: pp8yr5ah8b64o8qfwg4qbqzystpaz8ao
-X-HE-Tag: 1753573073-328276
-X-HE-Meta: U2FsdGVkX1+Uw5+eTVFJqryudCFWGYr8ANorvBZmoi+c2mjRRd9Ti2WI0hTHH8Y/oqzgRPnk+yr2xg/2DkHautdDnZO2nuuDH4y0SfhLkSfXFkrb888f+QHXh8IvXuxrdExSPyfsOTotmEdzGMVqVAK5kSGgUhEVrwdXatPMgl3yR93g8mSEla8a8fFxHjVrIXvMXn4C9QOAMjTRxyGEx3mUOMWBZrkth61mjv1cqark9IMZNGSLb7JdCaR6wkxGZWVuna3vElE/rXGFaGbAD7x/tlmapzVsfnBT/hV77fEFpOibhy3yx3Rou1m2farAEh7xOBMw1m6upvPn97U18XGMxGGbymA1tTKrEcwnwP39E7TBTIvgEU9iNt26+tNXfUsxbsgivUonMIZkfBStPQLQYDQZym+Lod4wNRlILfnl4ml4S5C9F9HBP9ztmaK4K0Z2MHzxEjU3cKWfAgtNsdjGiqFvluDVGbvPDHmLRm0Q/8K3Mv8v4MQpE5yaiG/0nRce6JZKbn7XVASig50UJe0TOgL957Lc2wvuxLedLAkzoJOfN8kYWczAexBJ1QNaMYjPxYHkpeSC5+tV7tHpTA2WOdS0/3GAhAbsbIWluPt4JN0zgsY1CLH5dDPfQkwJmwKAaDdegB4fkvuM2a34y5ULNCHQCWAxjZeFcmTrO2cuJZ7B1EeoAR9eEp0DznIiDk0cjnQ/A1NtmyOrttNCnBOkOrjVsTXccGHAW6kVZRsZjb0/aK2MGHsaqDa0TshOuaXbjl2BDnE7Qt8eIGRO7qtA0yapdYZJnmg4qHRY7cfdyrjoxqUuMw55vYm58fSn1Swit5/6LukPEuEFpvoIRdb52zAbKk/qzfXY/G5Fb0xIF2JSBBoNRC+V57UFsgrIiyzQdDk4L4tCcVbFU59WGMEutHHQGYv3U9WxaRiYMZG5vban2PJlopjmsIYm+Kn60l7OyC1pOP3Qqh4aSkT
- IgjqdyA5
- ZNoafzzZrbIwvnG78Yy5jNYjwAYhA/oIQso/ORb+nfk4ipFXmoAf8wbbralLmXQ8OyVc+0w7PTjKAnzOe5wro4XhTO03T8RxN7GmxEQC07dYrfwql1R5fFBPZOkZ/AnQ6KnXGQp5p2Fs7sfaGSFL7UG2CVCtLO0AI7dvfcbIcS7OoBWnjliAZSIsbIJv2o7/joE2jdijnuNl6qJ8zyYimgf5yji5nziQuGKWXD4Za74QWFQqKoEaT6iIYzZdYKk3ug0kzuv9/a8nymHda2ikibRL3Mp5CbDYj8T28sXOwaom3hpx6BQ+1BWq1lsIcI2FC41/55P94zD177Ef9mL9HpoihmGsroenJiZ4IKQB8J4zlDdhFNCCFQ4+sC1TUZWY8E+MonEKSLvWqh0RtcPY58sj4IB9rLEmjhiGTa5xgAGuTum79fW+lqBun0MmuXEYqm3XF4Ot9XjIDjIffR/Zhd8FXcvHSWqMK35X0j4SvbNBTjnZgCBJqSVPrxgHF6vS3MLLspDG2PwO2UH71In6tRVKCWQ7CNvltUaDq2j4w0AwQpNe6RKH1laLQxg==
+X-HE-Tag: 1753594121-617084
+X-HE-Meta: U2FsdGVkX19VQBW13xwvFz8qYlm21O2hQrzXEJ+bVJRgAt3taA1O4fehFtE2MRVTqoIuvNqorh/+LVk+1K7/omD+CornloqxX3bFnUJmIO16CManu9Ggb57wQ4oX6BqdL10yKVluBf4Dskpcp+NqoMK6rW8lJDoMxbVWfxGtbn8dOVBrATrKQ4ligRpRFk5Zmhe+VdV1AtW1I5zACarNDDG+atuT5Y+5jvJK0J4rjCdWWeWWiX0n+Q7Q+Ocpl0Iwaqmk2YdqMJh8KRArNGgDKT/Q9aghWRqiTFI1B29ulZBmD5WRopRgCGIgNOd+vcN0ycYDYrvP6FwXsP8BjjiZ18UTIieCS7mcG2LJmxt/kVZoyGrKR2DV8maf6RJRlS9blZJPzgyOnecWPex9w9e7uXaWdTTEr8917Hse4wlx/4UTpFPh6bXbTxZY6EP6P7dEJ58gBy4L11SB4HEqjeKqKVkJKTkUX/gEB8NiESqbmLs6xNO7ACvQZTSwcW4SmGEl1pHv0tua8aWPhA7cFcYbtI7o3vUFcEiOx4he/rrJBAx5u1gTeGivOPDnDtNjDrqkE9t5Ltd0b56QD0tKGzEe5ObaWEMXGYJbYNZJsfU/2nb00Pa29p2IdxdOh7Ugpk8Ixo98/BEjQSrE47OrbaIuCaWqhBoSr7i+w1jC3hQRsaCVyvdKbr5Kz5VmhzZEUzc3/UaEAT5p+3gWKYYi2d7zcs41dz8ESYJXjIKIz0/0c1/tTn2hETIVWts5Gng3FA2j7mcquqRJRgRz47vcdr+6cRMFDeBJEzcLBmARIcA7eWdLeq5K4LU9G9win4N9S0WNZj+fhgx0CNtOsRBU9HhoMPFykHiPJnlsnCuixKByK4nipeekBoIIft7n6/lDFU62U42O2TQ2jgBgzYkSxL++weOmm4RjDeGPT/WqbB4r3YZsjXEI2zpFiUuRKUz9re/hTmVzDWuS/xqxZP3Ce4z
+ 3TWks8aU
+ cm6bZivX0fyTWzl/v315scGo7Vih3bycGat0Y8gsKNlD8fYB0L1NjH1nBG40B5B9qpR6zEXP8B5VWEW8cdMQ9i5tlXZ8LnrSJyj5Nxvr5pwMxoa4pOkZl4X736Zbj74L1j8oMwxtMNHHI3ho2mn4WjoeR7PDAyL/dJBCC+aPEaoIkh5s+LVzLN0PJQ3rBKJMYkmDJgrLs2vVlMYCZCbLdR4ctPKk4CU8gufZ4w+XJ0mHMVNG11zy8FctlkUWbq4X1yOTkHBjcptI27+NoVzPwsHIvDyYabmpvJyFsZshpuWrn972NJO2ssgNVhrEufa/DciwnvV9E8wJJNds2z3DDkmqNtXDud++R+zGqBtMLCtWcrqmqnifWWWizVHDZsxBulBLvCZUbLgPtMbzNdsYVX3uXnQdVto6nkMMJK1EoHyoIIJwjQwoPFjD57EIbqi0TjbkKLz66s7JJJqDOzcwqekbIy+44qBZOsX8Dr2ir9JiJrlVjB7Xx5wsv3FBeEwWo93IO
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,46 +120,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 26 Jul 2025 at 16:19, Kees Cook <kees@kernel.org> wrote:
->
-> That works for me! I just get twitchy around seeing memcpy used for strings. :) if we're gonna NUL after the memcpy, just use strscpy_pad().
+Hi everybody,
 
-I do worry a tiny bit about performance.
+Here are the notes from the last Hypervisor Live Update call that happened 
+on Monday, July 14.  Thanks to everybody who was involved!
 
-Because 'memcpy+set last byte to NUL' really is just a couple of
-instructions when we're talking small constant-sized arrays.
+These notes are intended to bring people up to speed who could not attend 
+the call as well as keep the conversation going in between meetings.
 
-strscpy_pad() isn't horrible, but it's still at another level. And
-most of the cost is that "return the length" which people often don't
-care about.
+----->o-----
+Mike Rapoport discussed a proposal about sticky preservation with KHO.  A
+colleague had been working on integration with Microsoft Hyper-V (MSHV).
+They want to mark memory that is persistent forever so it is not necessary
+to mark pages as persistent for every kexec; this would continue until
+there was a request to stop persisting that memory.  An example is memfd
+to back guest memory where the layout of memory doesn't change much;
+another example might be PCI configuration.  This may be used for memory
+that is obtained from the HV but then not tracked anymore anywhere.
 
-Dang, I wish we had some compiler trick to say "if the value isn't
-used, do X, if it _is_ used do Y".
+Pasha Tatashin suggested that this would be another user for KHO and not
+part of LUO.  Mike suggested there may be states involved with this memory
+since you could eventually mark it as not sticky anymore.  Until this is
+marked as no longer sticky, it would be a permanently included fd.
 
-It's such a trivial thing in the compiler itself, and the information
-is there, but I don't think it is exposed in any useful way.
+Jason Gunthorpe asked what we would get back on the other side of the
+kexec.  Pratyush Yadav noted that we can't change the size of this memory
+without more effort.  Jason suggested that MSHV would just use a KHO
+provider and preserve with LUO as normal because you need to track the
+memory.  We might schedule additional time to discuss this in a follow-up
+when joined by MSHV developers.
 
-In fact, it *is* exposed in one way I can think of:
+----->o-----
+We discussed current status of LUO.  Pasha at the time had sent out v1 of
+of the patch series (non RFC) and received some comments.  Current version
+should address any concerns from the RFC version and also includes memfd
+preservation from Pratyush.  There is an on-going discussion about using
+kexec fs instead of using tokens.  Jason suggested against using
+filesystems if at all possible.  Pasha noted this could be a future
+extension and does not need to be part of the core LUO.
 
-   __attribute__((__warn_unused_result__))
+Mike noted there were two opinions being expressed: ioctls shouldn't be
+used and how much dev tmpfs differs from kernel filesystems.  Jason noted
+this is just a regular character device like hudnreds of other devices in
+the kernel.
 
-but not in a useful form for actually generating different code.
+Pratyush brought up the previous conversation about handing out sessions
+so when serialization is done it is done per session.  The agent decides
+who gets access to these sessions.  David Matlack asked if the agent could
+hand out sessions to unprivileged processes and, if so, this would address
+concerns about all saved fds being sent to the agent and context stored in
+the agent's process before being sent out again.  There was general
+agreement on session fds; an open question remained about whether the fd
+passing would be done with sockets or bind mounts.
 
-Some kind of "__builtin_if_used(x,y)" where it picks 'x' if the value
-is used, and 'y' if it isn't would be lovely for this.
+An example Jason provided would be to create a session through a file in
+a filesystem and then give that to qemu; qemu would then open it and do an
+ioctl on it and provide the kvmfd.  Pasha believed that it was very clean
+to do the policy through a userspace agent rather than in the kernel.
 
-Then you could do things like
+----->o-----
+We transitioned to discussing the agent, liveupdated, which the group
+thought was going to be needed.  There was a desire to have both Christian
+and systemd people join the call, so I took the AI to reach out and see
+if they would be available.  I asked about where liveupdated would live,
+if this is something that would be shipped along with the kernel itself or
+whether this would be perhaps its own open source entity.
 
-    #define my_helper(x) \
-        __builtin_if_used( \
-                full_semantics(x), \
-                simpler_version(x))
+Pratyush experimented with fdstore and was looking into whether a process
+could survive through the reboot call, or at least an fd survive through
+that call in systemd.  Pasha suggested there should be a way for the agent
+to survive until the reboot call if you modify the target to not kill the
+agent process.  He also suggested that while it may be attractive to have
+this as part of the systemd tree, it would be separated from that
+entirely.
 
-when having a return value means extra work and most people don't care.
+----->o-----
+Chris Li gave a quick update on PCI preservation.  He said the current
+support allows for the PCI device to preserve its state across the kexec
+and allows for supporting DMA during reboot.  He suggested the inital
+patch series to modify the PCI interfaces to allow registration will be
+straightforward.  However, feedback and discussion will be needed for
+changing PCI initialization for device that already have state; these
+changes could be invasive.
 
-Maybe it exists in some form that I haven't thought of?
+----->o-----
+David Matlack shared that the live update microconference was accepted for
+LPC!  It now shows up for the CFP so people can submit talks for this[1].
 
-Any compiler people around?
+----->o-----
+Next meeting will be on Monday, July 28 at 8am PDT (UTC-7), everybody is
+welcome: https://meet.google.com/rjn-dmzu-hgq
 
-                 Linus
+Topics for the next meeting:
+
+ - follow-up on sticky preservations with KHO, any additional insight
+   provided for MSHV use cases
+ - discuss any on-going pushback against character devices and suggestions
+   for using a filesystem instead of ioctls
+ - status update on the liveupdated agent, design, and timelines, as well
+   as open sourcing it and libluo in its own repository
+ - Frank van der Linden: physical pool allocator, used to provide memory
+   for hugetlb, guest_memfd, etc
+ - Chris Li: update on PCI preservation, registration, and initialization,
+   and the RFC patch series discussed in last meeting
+ - later: testing methodology to allow downstream consumers to qualify
+   that live update works from one version to another
+ - later: reducing blackout window during live update
+
+Please let me know if you'd like to propose additional topics for
+discussion, thank you!
+
+[1] https://lpc.events/event/19/contributions/2004/
 
