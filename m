@@ -2,117 +2,103 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 73AB0C87FCE
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 05:35:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 938CDC87FCE
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 05:41:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A99CD6B0088; Mon, 28 Jul 2025 01:35:52 -0400 (EDT)
+	id 1F2086B008A; Mon, 28 Jul 2025 01:41:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A71A76B0089; Mon, 28 Jul 2025 01:35:52 -0400 (EDT)
+	id 1A2646B008C; Mon, 28 Jul 2025 01:41:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AE8E6B008A; Mon, 28 Jul 2025 01:35:52 -0400 (EDT)
+	id 091676B0092; Mon, 28 Jul 2025 01:41:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CA9E6B0088
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 01:35:52 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9E14C80141
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 05:35:51 +0000 (UTC)
-X-FDA: 83712561702.10.AA2A73E
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C84BB180003
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 05:35:49 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=OPMHZSba;
-	spf=pass (imf06.hostedemail.com: domain of hughd@google.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E79406B008A
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 01:41:22 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 95C9312DAB9
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 05:41:22 +0000 (UTC)
+X-FDA: 83712575604.03.E72587E
+Received: from techbitestudio.com (techbitestudio.com [75.119.147.106])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 69752180002
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 05:41:20 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kenip.in header.s=mail header.b=dNLi3xke;
+	spf=pass (imf16.hostedemail.com: domain of siddhartha@kenip.in designates 75.119.147.106 as permitted sender) smtp.mailfrom=siddhartha@kenip.in;
+	dmarc=pass (policy=none) header.from=kenip.in
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753680949;
+	s=arc-20220608; t=1753681280;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8i5NnplGFIPS17ImJAs58zJ/RPpA9q/iksJNZ0TpQgA=;
-	b=1CaZYzhKQ2pwZ4MSHy6zebEkqnYTF630HYLWwZXeB4uButdUAzKPvR4ub/gNXrqLqNV4DP
-	nx6E1ho0GfTDMrJ7OvfrRol2CQPBGlw4yRAAzjIbE/JQPOi/WQpghBXffwKcbL0zQRPoG2
-	emCRy5jtxsDlSxkxTF5bj5FdtquySAA=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=OPMHZSba;
-	spf=pass (imf06.hostedemail.com: domain of hughd@google.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753680949; a=rsa-sha256;
+	bh=un3+I4PtG8unl1Hd7ukWnF6HXG0/MDVWa42ZNc5QU2Q=;
+	b=OJhkdfJZSyke86TjzeJ+yy5EP9rOBEKuAajeGgj3lTKDwWuog0EChGZRLBGDInZCStFcSy
+	cFhChSCyhi82fh72f3W+jdTQEs6HIs73NQaQp/fe2zV+nVhVYI03lRN1EdaiKbNtnOdpmC
+	Hxb5Zq4+CQD3ROs1NJG5+Wo2B45v1Xk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753681281; a=rsa-sha256;
 	cv=none;
-	b=LPGpMDdbyZEZmdtI0cK/LSplKMBkvmvcaMvWS5Qb4UfThBsRRYMiLf3SN2SASQVLXjqB5k
-	Y2RuhpM53WI7KinH0SAd0XqT35/1wW9NyXftuB+nKOGOe5w8SwUfeIfSk/dqG5oRNUxox4
-	wtcgPt1TuNLszx5RCZcwAPx/KIimdkU=
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-718389fb988so35227737b3.1
-        for <linux-mm@kvack.org>; Sun, 27 Jul 2025 22:35:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753680949; x=1754285749; darn=kvack.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8i5NnplGFIPS17ImJAs58zJ/RPpA9q/iksJNZ0TpQgA=;
-        b=OPMHZSbaVBJHEKz3zeHjAGhsXp7QUMRACucY0B8VRzXfR46ARIbcM/WiDjp7LYWZ5J
-         Pegqtip0mKBUOs2XMv67PGey8eg9ic5w9qQUBaDITgcXwZfnxmPRyYYfRicP3gjo3Yd0
-         KmL3OlbkHpyYFNa03WGw61ocItzLnTRkPGJ9D5pfJ0IIIs6Gv6YsDj1AJVo7LObhL4TU
-         3tjEwl3uOPnW1Q9WjCux/lRVijurHiLWfAIHhFguUV5oEqQXfB98mq1f6VBjoBilLvIW
-         oau/yHSqV/bDf5X4eupgs4rg+J0H+eo/5SeNODU9kMEseJNffiz0fdTu4QJeItpjHB0X
-         LByQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753680949; x=1754285749;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8i5NnplGFIPS17ImJAs58zJ/RPpA9q/iksJNZ0TpQgA=;
-        b=l+4eGuh6CV/fAHB1Q5gqoObaUthkCU/pSv3MlaJgINT/9Hrt4RM4Ar1AZ2vB+FZrV9
-         npe5awqQ5eVLmTUpyExtizzJkuXYIs+7qFDWF5KtzQmF6ioQzcam5TMMXGKW1zrcYZoj
-         7RhpaZwNT9WaPIO46RafQFfUkYju93hQnIH41nOjGOXq3FgziKT08WYf/ev8H/SrOtOi
-         4iP2oUJZBZL9VeGGcGkWdArOIqicxppSV3ziWdyO1/6lLL2JdXHE4bxJmpjYjeQtg61N
-         Ltjh4vAYteI95olDIXBsK2asuaGfkjePFtO7Ie0STIfPoXYkjkzEed32FqJuINyW/9rq
-         bIaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXpO1Lu2Bqjs1jL0mHv41nG2bOjiQsxdh/XprHKzPctPhwBhrPdn33cilBZCS0jo44iAiiqKwOw3A==@kvack.org
-X-Gm-Message-State: AOJu0YwEelx+JgQoBqVE/vsweKUb630zToSXUveN5Hu51EyFqvqRG7HI
-	eauc1x8pqfE9Tbpl+APXjmDrMrMmoZMqPiBYa4aIExSye1sjHvtaMsKxmifygP5kMA==
-X-Gm-Gg: ASbGnctm5CMsoSp4jJ4uBFOYOL7276i5GSZssNHOXNKE6qk6ufhORIuBDgmjEaHZkh4
-	6973NrjYOU0BI3g2CYIY+gB9exZB3CyWV8hMoVQGAbI1A9f54V+SVDH+VHeC/ImhbnWZ2EbiBG1
-	WFH4RssQcEkyj9OuLSqKMQ4jz9ln6zx3Y4900tObWamY6ZCSDtf562Fb+rHQOjqyy/zsNy+hdVj
-	NW7mPjcyaO6JQUR8aub/oJsxZw7W/s19G9IfHs/CQ0rulRZPI8moyfS9xGCAELTxPb9z9FPgx9r
-	+GGKmvad4r77wLdQgxPTmH5IJnewBoEiaQPVqodC+VFE8B7fVXfD+SZi+soGWdlypuzR99j6MJA
-	lT5PRJjodEntsN6hg/BuMaTlOoUGAQSffk03wt8NLdaQXduz7CRtrm48dXm2GLkt4XAsdyJTvq3
-	AB/QXwH5M=
-X-Google-Smtp-Source: AGHT+IFjJE9dD2Hm3OqFJBk9mtcpa1HWvzqDqvmdzoGTScjibYBqO5oQoMtL3WLJhdLzPEMm5No04w==
-X-Received: by 2002:a05:690c:ed4:b0:71a:f22:28fa with SMTP id 00721157ae682-71a0f225ce4mr54608607b3.39.1753680948282;
-        Sun, 27 Jul 2025 22:35:48 -0700 (PDT)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-719f23b135csm11508557b3.64.2025.07.27.22.35.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Jul 2025 22:35:47 -0700 (PDT)
-Date: Sun, 27 Jul 2025 22:35:31 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-cc: Hugh Dickins <hughd@google.com>, David Hildenbrand <david@redhat.com>, 
-    Patryk Kowalczyk <patryk@kowalczyk.ws>, da.gomez@samsung.com, 
-    baohua@kernel.org, wangkefeng.wang@huawei.com, ioworker0@gmail.com, 
-    willy@infradead.org, ryan.roberts@arm.com, akpm@linux-foundation.org, 
-    eero.t.tamminen@intel.com, 
-    =?UTF-8?Q?Ville_Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>, 
-    "linux-mm@kvack.org" <linux-mm@kvack.org>
-Subject: Re: regression - mm: shmem: add large folio support for tmpfs affect
- GPU performance.
-In-Reply-To: <0c9dc2fa-34c9-4db5-bea3-af4caf05ee6b@linux.alibaba.com>
-Message-ID: <df580afe-f7c2-c5eb-b575-373908e0f6a1@google.com>
-References: <CAJCW39JCDX6_S2Ojt1HMmX-h_qAKm2eBRzxX5kOHNJz60Zu=vw@mail.gmail.com> <d5c6ac93-1af0-4093-afea-94a29a387903@redhat.com> <63b69425-2fd1-2c77-06d6-e7ea25c92f34@google.com> <3f204974-26c8-4d5f-b7ae-4052cbfdf4ac@redhat.com>
- <a8ac7ec3-4cb3-4dd8-8d02-ede6905f322e@linux.alibaba.com> <da2ab844-98c9-4eb2-82ac-01d01bec30f3@linux.alibaba.com> <dab283bf-a9cf-30be-02ed-da0d7c8ffcf0@google.com> <0c9dc2fa-34c9-4db5-bea3-af4caf05ee6b@linux.alibaba.com>
+	b=WGrayF3MP6d7BUknGEoLCX7ijx1261T47c/sK1ivWMUjM78zT4QYgB6F0kLmkQSfJP/Mx4
+	hD0ol3dyjguTp+m9Y4heCQxXuMiFLA9OceSlLVFwUHgh+AHY5tU2V/MY858Q4yAk0P9OJl
+	A74DOvRvc1DVATpSnbdb0tkChuTClTM=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kenip.in header.s=mail header.b=dNLi3xke;
+	spf=pass (imf16.hostedemail.com: domain of siddhartha@kenip.in designates 75.119.147.106 as permitted sender) smtp.mailfrom=siddhartha@kenip.in;
+	dmarc=pass (policy=none) header.from=kenip.in
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=kenip.in;
+	 s=mail; h=Content-Transfer-Encoding:Content-Type:Message-ID:References:
+	In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=un3+I4PtG8unl1Hd7ukWnF6HXG0/MDVWa42ZNc5QU2Q=; b=dNLi3xkeInk/bmIW4O+MYUDGxe
+	bMqcetiLKlvQlywB3u/1boSNpctJ7EtawYRLurGlF3EzHVzFoitC+6mjlaHZMwhWq6MQXcByp4LfY
+	eUThx81GqPOZIxF8UeD3AwFztSE7WATbBC9GopBYnTa4T2lz7AwHR9DwiSMvjJnT3AWo=;
+Received: from localhost ([127.0.0.1] helo=kenip.in)
+	by techbitestudio.com with esmtpa (Exim 4.93)
+	(envelope-from <siddhartha@kenip.in>)
+	id 1ugGbr-0001EO-AY; Mon, 28 Jul 2025 11:11:15 +0530
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="-1463770367-729545462-1753680947=:2934"
-X-Stat-Signature: zdrhc7r5y3kwmxfqdbyxn6dzkx6mwiqe
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C84BB180003
+Date: Mon, 28 Jul 2025 11:11:15 +0530
+From: siddhartha@kenip.in
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>
+Subject: =?UTF-8?Q?Re=3A_=5BPATCH=5D_mm=3A_limit_THP_alignment_=E2=80=93_?=
+ =?UTF-8?Q?performance_gain_observed_in_AI_inference_workloads?=
+Mail-Followup-To: Dev Jain <dev.jain@arm.com>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>
+In-Reply-To: <fd6cc30b-cc8d-4003-ba01-fefd5d696ec6@suse.cz>
+References: <d8ffe547-5516-43e5-9f33-56b2698a0b4f@arm.com>
+ <ba2c89bd-88de-48f8-abd0-b62d8b1d50b3@lucifer.local>
+ <5816677a-705e-4a8f-b598-d74ff6198a02@arm.com>
+ <ee92d6a9-529a-4ac5-b3d0-0ff4e9085786@lucifer.local>
+ <e7152150-2f3e-4ad7-a6c5-f4b77e5c0e05@arm.com>
+ <f746d3aa-17e7-4b42-9e08-97cdb2cad89b@lucifer.local>
+ <80b849d4-faf3-47a9-8b8c-e8053299cfb2@arm.com>
+ <2e99712b-8dac-4762-9fc5-fe3ef569b65e@lucifer.local>
+ <afe95bb0-185b-4c4a-ae41-e02457422cc3@arm.com>
+ <787639a1e6a27c0f3b0e3ae658e1b8e7@kenip.in>
+ <5c3d307f-d303-48c3-b730-99a83d4815ec@lucifer.local>
+ <6eaaa2e4-9067-47bc-8dd4-d8ef56c26b3b@arm.com>
+ <5D015E99-474A-4D98-8C43-488A46BEB2F5@nvidia.com>
+ <fd6cc30b-cc8d-4003-ba01-fefd5d696ec6@suse.cz>
+Message-ID: <57c50dbbccf38a97e6e9cbb3f2f75f01@kenip.in>
+X-Sender: siddhartha@kenip.in
+X-Priority: 1 (Highest)
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 69752180002
 X-Rspam-User: 
-X-HE-Tag: 1753680949-331095
-X-HE-Meta: U2FsdGVkX1/yzFoFsp0t6igLBaFH8k/bmCKssnDfK9xYwcpXuJH3SG61Wtpcb7fC6oAgtoXYnTaOhBxwiPOk2sSkZf9HQhbe/25rHEzCQmZRPtCm6xl9Xm1heZIIrZ8m5HpCAHnpWGXVqLiTdkvYSVTSutfLWk9EjUpHgg3mC1zQ56DPT2Xr2Yc4OuD04w4Ye4pA1sfeToETcGfrqrV5lK6kRoF1dVPy0uA1Sxs8YTwAT3AEKxayLyFO+zPL8AQb+3xQec7vIoTK6iAiPKwMWkoKrWV/jyYV81XKz8LtAEo0BDYzEWeiA4kAZGyEjBghASbM4fjeO52Jrz2XNOroiInP2WnS0jRU/iGBmW87/fVbBwnb0b21CVgcJsuFOqZ1EvBrEQABcbvDqLGIALgeWFNq030ETMwtufPGFufrb8dsov69/zKxZdpGg8pPRf9oz22QPWx1plHzrV1Ao0Dbmzf2Gy14ZClAJzz0SiSVlAm6DyOUh6I+2un45liOFO/kO19s3qvWu4h/61Itn9ia/uvhbthtOI4ZkHdl+SS2qdA2M+U5GXIVhZVEqS9+lr6skPnjtzcrf3+OmCMdDTMRWkB9twbzOrAl88qo5WA7jTSsYss73A26jrOc3A2nmL7corSxdKpwiqnAdh3nmcB+Vx3KRD44IRBO6q28QYrQzF0vA8xfhav5ylueUzUFp3nV4T2hH6DVXuYifMNQi7yUxyRzIADqiUFKtatVM8KM8eTlYqYrmgKs4qtPjp1ahCmLA2v2JYCUqm7pBSNE+nAyRkBd7lzD3qa2Yp5r2EVQvBwNAquvOG4nrILiFSM9HsSOA60kdWPoc846g8SnOwHUsM2WflNBdnhM0ynRZoJHXHI/uDIzI3W25q3rd5r6uZyegrB6BlBRAJ5j2ursRNkkgylyqRzE6T4RmPGj7+5nqepAGmnYmUNIIwXNv8wZDxJQ05K+F2I+tXzHoeSAvB8
- Wsu861SH
- 9a1nQEV9ad5uuw13kMRhCAVOLiDPEJTgNocQ447iewzSJW2SHO6GyXb8sG8O2gUOaNzUGtd2g+m5P4o5j1TCdnNrjtLS/HmFc1RLFxwn2gPK2fiAqNiPabB24aO9adHDBly/jZZbvEqc2NfA4PzPHUHvWuUlKlE78zAZwm7Msk/aS/naAiXWS6i5p13TlH9wioK/nYyquahyiXCWjGLF5DbzxxNKzaYizwH5kRmcsVUZsLPQOwfIjOEcvrglTr9y+e8ts5CaBeNCCrIiABp8WVMaa4MnGxLnPpsSoO/bTNMqkGVlzbyZ+aFqkPvEFoEQ7AsftZvFZrXYgyXzlRS6HuHMBeZHcqPxwn0sUuZdpSIHGrxs8S70B8r10mqIaHET5iiA1Hp9DSYE13fQU2ihwi2ZYRWSb5eahHwPaqqtYhGA8LLitTqPuqiO+B8SWuOMms6tR80ZlNBn04XYccxRdb+CKdZZ8QX8gD3jFrM4/2+Wz5n/DYsPguAVLuuTIWFQ+OzqixMIM5/wikdZM2PQ/Phkvojhxmbual6mlHzrXp7lvqEHKy+mawXNN9A==
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 7uk3dpc4m99xj96px5t48hooauje3q8y
+X-HE-Tag: 1753681280-161125
+X-HE-Meta: U2FsdGVkX19v2uUkrYeeo4F/3hYb7rFjJIFYecIZf/z3/UPBKFFq03vabRl8/rBQEXe3ykUXjiDd9dIpxfIzhtZrbl84Hp0jWbJNJ3Md54BQ4/Jr2bkEPZU5DY75bpQDNbFCU5v9vKWrz4MKIKEiFM+jJko2S6AdCNKi1x0LnaWTMG9+wLLjAKRRSpKQu10CnzOZhUJZPw1Obo5M9SpdanxqGdmsqG9hTxjT4KUofCMiKY1y3N9JdEm09dwAVG/F664H1bBaistcvHOCqFCxn7qWM90H8lsXpy/DQFHYvxd0etqPEFRawUuW338CZ9Q5z1TqTlFl6xYbG9nhSn0cNtQq+t9SpAoQAXyyhLFTbZqOPIMh5LU3q6G8APRI73ldFQeuFeC8ULvaucXl61LUUtBEgVBaL72wktzaaM0HQw8arWcYQwKX+gg7brHP9TzQiDFEgC+Y/7nNmDWaDMOA8gCVZleMGSMIGxXM8oXYEem46w76xrHOSw9VFav/mDpRd7lKu0aQ15ynEnW0bB61if8kMdowbZQUEqEPFdIXqZVTqzdfb6QVJNzd+9hUiWymZtxak5TRTJOCfWWm6m/qtUB1KTRvGCYsS25HRHsAH0HQHdesUpv+/EswVpMH2/z/JAUDJ/eIHBozGW87WJY67B65v8DfVmQKy2E9vIrvKVZAf3loEc5RGoPoeunWIOdjxqRYXBMy4Iq2v+2EnJvSjMg93ihbY6BYFgh7uQ+l8hX9477Bho0GSfPSHOaEYFoHCr8G0tZrrE07b9rY/Q+oB97e7hPF4DhYQQIDaYDojphZ+qMLCsQI2SZNja9IcnZfSpuaQd++Wj63V/fFGrL72QoIQiJIjCAbtuyLVRGvJXmJQwhwOm3fw9/5fLAVhizOyRUiwHbcljk7CQTwbfW09kDLxpg+WQWc3NBbTYT6hxuhGQ30aD8YSePTxf/63uyVvy2OxAmKjepa0T/firK
+ JitCwwHd
+ a/X5ZW2b2PGaRiEgwVfveKnup9RfAqSs64RT+BJEv8omx+Q5iGZR0cygP9oKsWAF52M/ktZDSnY/dqcWMwVAy3t9IpqMwJTxBsl2uJSBnI6RA0O8a72qf9G8Zmw3L9hwSgmB/+2vrLZ2PuROS93X1an43vWXTGcga6OBN+/CPHCyDGHBpWxcWApEdPW/ruxB6DF1W783d3QiyD5uL5giPFPFYMr/yyAS7o8fkJRQHa5PhLMNBLFZbOrKujssqpqM1eU8+pLbzHv54xLHuGz8bhZdl3aH2Au7PFkF81F0RxCoWT4w2bMyCX3HMEkOErhqqg2U81hil3YXdCttHbReQBnAq55KRRhxr7DhTkayjK4OGdi3kVAiNcbh/Ki6NWQ3mbULskVA8VqZPaJd2HpPIs6EAabIeID74TVJuw0LuvM4jSMjRqra25jTTpbcdLU5yZMtBMUsmvZ1gfDjwXI62WqOcgogrTZheXUcKkj8PsPYXkQpHKC+KLCXtYT7aBDa5IQSK3d3JL2/Ul/G8NdXTPWZjs/4BxmlLAukC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,136 +107,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On 2025-07-07 14:26, Vlastimil Babka wrote:
+> On 7/1/25 20:49, Zi Yan wrote:
+>>>> This is very useful information and it's appreciated! Let's not 
+>>>> drown this
+>>>> out with restatements of stuff already covered.
+>>>> 
+>>>>> ⚙️ 5. mTHP note
+>>>>> Although this patch doesn’t target mTHP directly, I believe a 
+>>>>> similar logic
+>>>>> tweak could apply there too — especially with shmem-backed 
+>>>>> workloads (common
+>>>>> in model servers using shared tensor memory). I’d be happy to help 
+>>>>> test any
+>>>>> changes proposed there to derive the consequent results.
+>>>> Dev - could we hold off on any effort to do something like this 
+>>>> until I've
+>>>> had a chance to refactor THP somewhat? This is already a mess and 
+>>>> I'd like
+>>>> to avoid us piling on more complexity.
+>>>> 
+>>>> We can revisit this at a later stage.
+>>> 
+>>> Yes of course. I had run a small benchmark on a quick dumb patch I 
+>>> wrote and I
+>>> don't see any measurable perf improvement, probably because the 
+>>> highest THP order
+>>> getting chosen is always PMD size.
+>> 
+>> I think mTHP is much more complicated, since mTHP has many sizes.
+>> Trying to adjust VMA alignments to get mTHP might not work well, since
+>> you never know what sizes new VMAs are going to have.
+> 
+> Yes I agree it's more complicated. In case there would be a stream of
+> allocations of varying small-ish sizes, aligning each of them to its
+> smallest applicable mTHP could create gaps that wouldn't exist if we 
+> ignored
+> the alignment and just find any free area and in the end merge it to an
+> existing one. Basically we'd risk recreating the issue with gaps.
+> 
+> Sticking to one size (2MB) mitigates this to some extent. Unfortunately 
+> even
+> after my fix the heuristics might be prone to gaps:
+> 
+> - all allocations not multiple of 2MB - will merge freely
+> 
+> - all allocations multiple of 2MB - the alignment heuristic will kick 
+> in,
+> but as a result allocations should still merge as all boundaries are 
+> 2MB
+> alignned
+> 
+> - allocations alternate between multiple of 2MB and non-multiple of 2MB 
+> -
+> this will still create gaps
+> 
+> Note we already had a report about ebizzy regressing due to my commit 
+> [1]
+> and I suspect it might be due to this kind of scenario. A proper
+> investigation would be useful but I didn't get to it.
+> 
+> Maybe the solution is to first check if unaligned search gives us a 
+> range
+> that will merge with adjacent area, and only try the alignment 
+> heuristics if
+> it doesn't. This will still fail if mmap() is followed by e.g. 
+> mprotect() or
+> madvise() that will change an initially un-mergeable area to a 
+> mergeable
+> one. I have no ideas around that though. Just some thoughts to consider 
+> for
+> anyone wanting to change things here further :)
+> 
+> [1] 
+> https://lore.kernel.org/all/019401db769f%24961e7e20%24c25b7a60%24@telus.net/
+> 
+>> IMHO, it might be better to align VMA to PMD or the largest mTHP size
+>> (for example, on ARM64 with 64KB base page, PMD THP is 512MB, a 2MB
+>> mTHP sounds more reasonable there) if possible and enable
+>> VMA merging as much as possible for future huge page collapse.
+>> mTHP can be used to fill the non faulted holes in VMAs if necessary.
+>> 
+>>> 
+>>> Out of curiosity, where do you plan to do the refactoring?
+>> 
+>> 
+>> Best Regards,
+>> Yan, Zi
+>> 
+Hi Lorenzo, Dev, Mel,
 
----1463770367-729545462-1753680947=:2934
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+I'm following up on this patch submission from earlier this month:
+"[PATCH] mm: limit THP alignment – performance gain observed in AI 
+inference workloads."
 
-On Fri, 25 Jul 2025, Baolin Wang wrote:
-> On 2025/7/25 12:47, Hugh Dickins wrote:
-> > On Fri, 25 Jul 2025, Baolin Wang wrote:
-> >>>
-> >>> I hope to correct the logic of i915 driver's shmem allocation, by
-> >>> extending
-> >>> the shmem write length in the i915 driver to allocate PMD- sized THPs=
-=2E
-> >>> IIUC,
-> >>> some sample fix code is as follows (untested). Patryk, could you help=
- test
-> >>> it to see if this resolves your issue? Thanks.
-> >=20
-> > This patch cannot be the right fix.  It may be a very sensible workarou=
-nd
-> > for some in-kernel drivers (I've not looked or tried); but unless I
-> > misunderstand, it does nothing to restore userspace behaviour on a
-> > huge=3Dalways tmpfs.
->=20
-> Yes. Initially, we wanted to maintain compatibility with the 'huge=3D' op=
-tion,
-> meaning that 'huge=3Dalways' tmpfs mount would still allocate PMD-sized T=
-HPs.
-> However, the current implementation is the consensus we reached after muc=
-h
-> debate:
->=20
-> 1. =E2=80=9CWhen using tmpfs as a filesystem, it should behave like other=
- filesystems.
-> No more special mount options.=E2=80=9D Per Matthew.
+The change limits THP alignment to PMD-sized mappings, avoiding 
+unnecessary hugepage over-allocations in scenarios where 2MB alignment 
+is not beneficial. We’ve observed consistent performance improvements in 
+inference pipelines (specifically with OpenVINO) where the workload 
+profile includes a mix of small and large allocations.
 
-That's okay, I've not proposed a new mount option at all (though that is
-rather how "never" came to end up meaning "not usually": our shared dislike
-for adding yet more options).  I'm proposing (shock horror) respecting the
-long-standing meaning of "huge=3Dalways".
+Please let me know if:
+- There has been any progress or feedback from your end,
+- The patch needs to align with ongoing THP refactoring efforts,
+- Additional benchmarks, test traces, or system-level profiles would 
+help.
 
-> 2. =E2=80=9CDo not let the 'huge=3D' mount option mean 'PMD-sized' when o=
-ther sizes
-> exist.=E2=80=9D Per David.
+Happy to revise or refine the patch based on further discussion. Thanks 
+again for your time and input!
 
-That's less obvious.  The collision in tmpfs between anon mTHP, file large
-folio, and huge mount option (where shmem_enabled in sysfs provides that
-mount option for the internal mounts) is certainly difficult to resolve
-in any way pleasing to all (or any) of us.
+For your information, I have also posted the same at Openvino and 
+Huggingface forums and currently waiting for review for the commit on 
+the Openvino github repository.
 
-But what remains clear is that we should not degrade the behaviour of
-"huge=3Dalways" for existing users: they were given PMD-sized when possible
-before, and they should be given PMD-sized when possible now (not suited
-to all usages, when "huge=3Dwithin_size" may be more suitable).
-
->=20
-> At the time, we should have sought your advice, but we failed. The long
-> historical discussion is in this thread[1]. So now the strategy for tmpfs
-> supporting large folios is:
-
-Yes, it's a pity how limited and unresponsive I am, then and now and foreve=
-r;
-but the principle of not regressing userspace is not a topic on which my
-special input should be needed.
-
->=20
-> "
-> Considering that tmpfs already has the 'huge=3D' option to control the PM=
-D-sized
-> large folios allocation, we can extend the 'huge=3D' option to allow any =
-sized
-> large folios. The semantics of the 'huge=3D' mount option are:
-> huge=3Dnever: no any sized large folios
-> huge=3Dalways: any sized large folios
-> huge=3Dwithin_size: like 'always' but respect i_size
-> huge=3Dadvise: like 'always' if requested with madvise()
->=20
-> Note: For tmpfs mmap() faults, due to the lack of a write size hint, stil=
-l
-> allocate the PMD-sized large folios if huge=3Dalways/within_size/advise i=
-s set.
->=20
-> Moreover, the 'deny' and 'force' testing options controlled by
-> '/sys/kernel/mm/transparent_hugepage/shmem_enabled' still retain the same
-> semantics. The 'deny' can disable any sized large folios for tmpfs, while=
- the
-> 'force' can enable PMD sized large folios for tmpfs.
-> "
-
-Thanks for the summary, I'll have to come back to it another time: on
-first reading, it is not incompatible with "huge=3Dalways" always trying
-for PMD-sized, but falling back to smaller large folios when unsuccessful.
-
-(I'll mention in passing that I find it strange the way shmem is getting
-large folios of a selected subset of sizes from one direction, but large
-folios of all possible sizes from another direction - often dependent
-on whether i_nlink is 0 at the time, but maybe not.  My own preference,
-so long as those tunings exist, is that shmem should always be restricted
-to the selected subset of sizes; but I may well alienate everyone I've
-not already annoyed with that opinion, and it's probably "not a hill I'm
-prepared to die on", nor even directly relevant here - except that I'd
-better mention that unhappiness while I'm in the area.)
-
->=20
-> Currently, we have observed regression in the i915 driver but have not ye=
-t
-> seen userspace regression on a huge=3Dalways tmpfs.
-
-I shall not object to a temporary workaround to suit the i915 driver; but
-insist it not be taken as excuse not to fix the userspace regression later.
-
->=20
-> If you have better suggestions, please feel free to point them out. Thank=
-s.
-
-Sounds like you're disinclined to fix it yourself, and I'll lose the
-argument if it's not fixed during this cycle (since 6.17-next will become
-6.18 LTS); so I'd better carve out the time to get into it in coming weeks.
-
-Hugh
-
->=20
-> [1] https://lore.kernel.org/lkml/Zw_IT136rxW_KuhU@casper.infradead.org/
->=20
-> > Please reread my comment earlier in the thread, in particular,
-> > Passing a new SIGBUS xfstest does not excuse a regression: strict PAGE_=
-SIZE
-> > SIGBUS behaviour is fine for the newly-featured mTHPs or large folios,
-> > but not for the long-established huge=3Dalways.
----1463770367-729545462-1753680947=:2934--
+Best regards,
+Siddhartha Sharma
 
