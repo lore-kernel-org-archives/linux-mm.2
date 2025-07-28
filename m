@@ -2,106 +2,107 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E701C83F17
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 12:27:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 36B56C83F17
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 12:27:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB9BE6B0088; Mon, 28 Jul 2025 08:27:10 -0400 (EDT)
+	id B2ED96B008A; Mon, 28 Jul 2025 08:27:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A69C46B0089; Mon, 28 Jul 2025 08:27:10 -0400 (EDT)
+	id B07006B008C; Mon, 28 Jul 2025 08:27:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9313D6B008A; Mon, 28 Jul 2025 08:27:10 -0400 (EDT)
+	id 9CEBC6B0092; Mon, 28 Jul 2025 08:27:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E9076B0088
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 08:27:10 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1DB921D96FF
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 12:27:10 +0000 (UTC)
-X-FDA: 83713598220.12.03C3929
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8CB566B008A
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 08:27:38 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 05B4E5797C
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 12:27:38 +0000 (UTC)
+X-FDA: 83713599396.04.CA89807
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 857D6100009
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 12:27:07 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FifeEIHH;
-	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 982F1C0008
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 12:27:35 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=h8F1O7+y;
+	spf=pass (imf28.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753705627;
+	s=arc-20220608; t=1753705655;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QnQuEJmQQe5QI9lnPew2rtDphQn82+YCCHj3hCzNitw=;
-	b=3LfDwBAh6Ee+K72QbIzqZunN+C5IZbN0kMlOJ6tL9luhA/OQgYPwJQEGr1hHN8Zcm/m1eG
-	nHCwWiZpB2Ij5hefy+pfjdKxD9prPqlB6+uYjM+6o/ih723oLryz48+zPhHTSMPCeW5Bk3
-	bJNgUoZF8VzldTSja8aZQCNLZiY9Jbc=
+	bh=Nhndmh/mYDlCWe6LknGjpTmGbUX3l48dYqfaHjSz4Cc=;
+	b=4G/b+CQSXKcjETDLY5pCZoPF2R2Xbw6hSRyDbn4xx+zQDgG8ojVSmU0m+L8cFJdV1vlvW5
+	+dljYZpirf0fmaXncL5LkXcGLCPKV9hFSx2hOMQ6gYBM+FbPwtdoJ0hAkSHzH00ZOIk85p
+	eY7Yjfj4cJjX3uV1CHZOhuTqroDZnqI=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FifeEIHH;
-	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=h8F1O7+y;
+	spf=pass (imf28.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753705627; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753705655; a=rsa-sha256;
 	cv=none;
-	b=f4kKI4cIPTDQHYUDqPN9ZlvOqklbUkmbDa5WlE8h28VSxMpwS/N9iMhzvJ3XLgL0fXY3pZ
-	TM3e3LEtukPe8igkSDoByjm1YqlfiGPkn5URwahdFjZuwYGbK4XZ6nnD87+w1lHRRLsaHH
-	rN2qGFKxUwuoO6j+ry/ZRppIbW5tVi8=
+	b=FSlGzonN236ONHN6QYbldpZWYQGJkatxOLdoZ5bTsIg0/jOuX8KaHipikhjQqWmbSmus5i
+	5/svf0shqA5Kfie9OULfNJNWFW7QBQWLkwU0hrpQcGK+jp+cp9exn2UsjSLTwFQG55KXqB
+	yuc8CQb4ULUc/qGXEm/akoYgnWi7zEs=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753705626;
+	s=mimecast20190719; t=1753705655;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=QnQuEJmQQe5QI9lnPew2rtDphQn82+YCCHj3hCzNitw=;
-	b=FifeEIHHwSCFjyqm5aisaedY6kYuJGCBk/vQwIOTdfmILy90Z8QR9cSQQJGU7XGt0fim+o
-	dDy7OeqlbmEUnIUuCj5tqxhuu77rAVtEEb0OmcP8XfpVLbhtyOXchuG8U+IbRZLDLTR/i+
-	TxxpSIsUFuHukEvo12ph0U/u3vK5OI8=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=Nhndmh/mYDlCWe6LknGjpTmGbUX3l48dYqfaHjSz4Cc=;
+	b=h8F1O7+yy3huR/pBuT+jzyen3HGO8KXUVJ0kRW9XsdTmRA6OBejI1PJW5OqHjjxZElO5VR
+	8ZUOqKIxiPusOS0e5wfPoTP6OVrwbN3fnMLW0DV/I0YmybSNEEIDYvwKvrXg6xO9OAu6wS
+	9DtGygFBNSFXDKF+ZQgO2/Ylvkvu2Gw=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-601-3SgPJNj5OPaivQWoCqLvsA-1; Mon, 28 Jul 2025 08:27:05 -0400
-X-MC-Unique: 3SgPJNj5OPaivQWoCqLvsA-1
-X-Mimecast-MFC-AGG-ID: 3SgPJNj5OPaivQWoCqLvsA_1753705624
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4561611dc2aso29874935e9.0
-        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 05:27:05 -0700 (PDT)
+ us-mta-205-09Bcoat9NkCPOM9NVJ9i8Q-1; Mon, 28 Jul 2025 08:27:33 -0400
+X-MC-Unique: 09Bcoat9NkCPOM9NVJ9i8Q-1
+X-Mimecast-MFC-AGG-ID: 09Bcoat9NkCPOM9NVJ9i8Q_1753705651
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3b785aee904so709058f8f.2
+        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 05:27:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753705624; x=1754310424;
+        d=1e100.net; s=20230601; t=1753705651; x=1754310451;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
+         :content-language:references:cc:to:from:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=QnQuEJmQQe5QI9lnPew2rtDphQn82+YCCHj3hCzNitw=;
-        b=pA12WBUOwoRXp7ZKxs4ufn1uNCsslwcj1jhC4XmenHj9Yt9Ez1YWDAECONeRCi6um0
-         rchMPI090YsPcgrbw01MNJ4mJ+1to91qRud6Ushd1zwi7YS26PsLkcCV7Abb5Qx77ygi
-         Im5hoUPa4lIfJGEhXpE/LykGVKeB+SrIckWyHtofg/cw818l9LntHDEU1qHpSIcHfm1B
-         7VQr/NELK3C7Pya8M9S4IHcCy7PtXfiDb2EPFh6i39HTrlXgi0IgcIF93htwP7KDbyR3
-         8WDNltLI6hD1R0qbMEPC6zulPo8y514BVEGNltKUjoJ93Hud8xyHqLNaMt748QMSbpSM
-         BJIA==
-X-Forwarded-Encrypted: i=1; AJvYcCXUBcZ1INZS6aoP4W6J2ES0k8zjJA2DWA6U5uUKnOOO8jNEQQ+U4WuQr1EntcDMx05fXBneFdzwAg==@kvack.org
-X-Gm-Message-State: AOJu0Yw3lzAgO5yb1MeB21cOaNIYbsRL3cOsJbfsMQq1K37Mj3471Faq
-	Sm6Q/tALnNzUplUcgill4HE+5UviiBGepKd6zGqjBdt38DETofmWLbacEzgkNLvQmVydwY9o9zQ
-	Ka3VEZgmC97tDBNmJ6q3vicJEAHZyIQjuKnHLFstibc5b6vtV7hhy
-X-Gm-Gg: ASbGnctsHKM5eHgjWaYsv0xk0O3bD/lzy4+d51JYraxLU21FLiQIKOtWwGK8loibfNa
-	an6yK1O2WGJsB3kfIFMqhnZaRBvK/bO5/qzmIsSjbEMteqSwRSjb/SN6Cr6L0p4BrnHC8vuU/Qu
-	vISykdT70VzHzIneiWjqSAVMNjci/YaoPwe6BC0WdF7CAHoC1wY0lTik7pPLBfblmd9WwaR2+14
-	EMfcDjj0U5LA3yXoWEgThgl0jtdDR3sxouekU6o1ChORRQ9rDaPCVHaYTeqZV1vo5Ikq5cYam7W
-	GkEBPJc/sxHff0ZFQcUBoixcmrHjzuEwYX0XEA9zpO+6LAxK1hpkEL0kDmRU+oOHs9PbF/FVmQB
-	krVIbpRnf6JccpEfFbkjE18GpOIpqZgz3rXLXbIiJ54PPiSZnLtcjnf2YK4Qr8gic9Ds=
-X-Received: by 2002:a05:600c:6089:b0:456:1752:2b39 with SMTP id 5b1f17b1804b1-4587666c5f8mr77032435e9.33.1753705624334;
-        Mon, 28 Jul 2025 05:27:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH6t+wpPuc6znKz8nZXvCG8hSmYbB+9cHwFq6tAmgHTss/ZYl4BlI0qI6FlX6v6tmq3ljU9SA==
-X-Received: by 2002:a05:600c:6089:b0:456:1752:2b39 with SMTP id 5b1f17b1804b1-4587666c5f8mr77032195e9.33.1753705623840;
-        Mon, 28 Jul 2025 05:27:03 -0700 (PDT)
+        bh=Nhndmh/mYDlCWe6LknGjpTmGbUX3l48dYqfaHjSz4Cc=;
+        b=o6MoQIfVblN7uykrHYCylSdVh24Msvx1wxhSWpvAoT+LrhsZi8g/ShMUAcHYPpft2O
+         kdKiniBEhWjVFuHpVHeNvjSENCI0QxqnOsTfBQtqq99EYX4XO8ybXSfEl2iKt3GftBYq
+         aRSnrX0kecTqxkE9mhQtBJNxG14PF//eJ+rIWdMQTT6ryRgg9h3pRPVTgJRvs95r+3Cl
+         3oZ3kesu6p60mW7iy/oNJLMJe+jm+bm0GvbqWKCWL+O4ahNTZt7aGgePv410Q8xSWeTL
+         c9zM5GATIEAmVx+VkU6lrhkJbF3ey8WxKGzbuKXbqtG0QpYd9KV35pVuI8MTChRc45gM
+         NLuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUXGEhNK/T56hf7QNm5scZuO7endhd0VyK8rO/BN65xW+fmtPpMNfgY5QhToumM39dPMeByLxdJ7Q==@kvack.org
+X-Gm-Message-State: AOJu0YwJSQPZNo0WGy18HFQnmkBn4T4vqsaRgzNAwyyMYMB3Hjd0R85A
+	0dV7p/QYt/firIXJKO5snIeKiJDcj81eknxZFLwtwCNHEsRNElTlxiqI+CsNjEyR7mF2ktyPLeP
+	M3F5qiTc4XPb7qV8gQsTwV/xZyGJNlBv1OucugQF5k5V3RpQDkI4A
+X-Gm-Gg: ASbGncs8fyH9ezH+7iW5vt3M7DWAdvweGxJVm1vvpR/+s2lGqAiL/rf+JjjGqW4dMuV
+	aiSHAoXx//cfnsL4EM/fUEpHwkpqBupWe2gEuoduHJAZ0lYOZaFph/s9DKHz0ZPg8b9PbPaWeTx
+	TxxC+fd8AYScbQ2SjrKBl1j+foWllWuyGjo/x3sZCRIb1B45FZdktVurjzSWyBitSUJychhppnZ
+	d9Rmy3wh2t+A1CcfutQ0HR3gh9ZLJdUvEtGzEmejicJsx0RJQzHLrm12mbkyF7w/1WwvulTFowU
+	z0Vg1vxhTmYzbgqht7w+TZ/PNratL7V/95vzryihWOOs/CN65tipccyToIf48JqESkIX1dlzMpE
+	0EgHlhueZSRxofeaeBJOSoue6z4najUff+LMz2zWUMVKG8gMapC3LACWMMSja5xpw8l4=
+X-Received: by 2002:a05:6000:4026:b0:3b5:e244:52f9 with SMTP id ffacd0b85a97d-3b776763a56mr6925078f8f.40.1753705651376;
+        Mon, 28 Jul 2025 05:27:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFifIQiKDQs73iiVRO9b2dDYen4CTUw0MtmSxVaPuUV0RwNn2LG58Cy75mVAwqs1jz0/x8p5A==
+X-Received: by 2002:a05:6000:4026:b0:3b5:e244:52f9 with SMTP id ffacd0b85a97d-3b776763a56mr6925052f8f.40.1753705650797;
+        Mon, 28 Jul 2025 05:27:30 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f47:2b00:c5f3:4053:2918:d17c? (p200300d82f472b00c5f340532918d17c.dip0.t-ipconnect.de. [2003:d8:2f47:2b00:c5f3:4053:2918:d17c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4586eef77e8sm114032575e9.3.2025.07.28.05.27.02
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b783454d65sm5807523f8f.1.2025.07.28.05.27.29
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Jul 2025 05:27:03 -0700 (PDT)
-Message-ID: <1f8d924d-3554-43a6-a75e-66a08d1ce7b9@redhat.com>
-Date: Mon, 28 Jul 2025 14:27:01 +0200
+        Mon, 28 Jul 2025 05:27:30 -0700 (PDT)
+Message-ID: <a06922c2-9dad-4449-991c-913fa7765bc2@redhat.com>
+Date: Mon, 28 Jul 2025 14:27:29 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [RFC] Disable auto_movable_ratio for selfhosted memmap
+From: David Hildenbrand <david@redhat.com>
 To: Michal Hocko <mhocko@suse.com>
 Cc: Oscar Salvador <osalvador@suse.de>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, Hannes Reinecke <hare@kernel.org>
@@ -111,7 +112,7 @@ References: <aIcxs2nk3RNWWbD6@localhost.localdomain>
  <aIc9DQ1PwsbiOQwc@tiehlicka>
  <79919ace-9cd2-4600-9615-6dc26ba19e19@redhat.com>
  <aIdqVNCY-XMNICng@tiehlicka>
-From: David Hildenbrand <david@redhat.com>
+ <1f8d924d-3554-43a6-a75e-66a08d1ce7b9@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
  dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
@@ -157,21 +158,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  WBe5lqcozu9LpNDH/brVSzHCSb7vjNGvvSVESDuoiHK8gNlf0v+epy5WYd7CGAgODPvDShGN
  g3eXuA==
 Organization: Red Hat
-In-Reply-To: <aIdqVNCY-XMNICng@tiehlicka>
+In-Reply-To: <1f8d924d-3554-43a6-a75e-66a08d1ce7b9@redhat.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: _Z4AWMChb213pwVgNw5WMOJZAYRNk5V1fAdMrGRIXmc_1753705624
+X-Mimecast-MFC-PROC-ID: WP-tYitoyF0N6EIHM6I7tD1sT66K6wYf7BFlHHueZIs_1753705651
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: eia7e3kw5p1kwoipo77rredpg13pcdq9
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 857D6100009
 X-Rspam-User: 
-X-HE-Tag: 1753705627-636594
-X-HE-Meta: U2FsdGVkX19hgh61dIYsYfLe143JADNchXXVw6NVwLhddQErk4u1BPFHa9Zdxv6uEKmDNT/pJhp38ZtIfAyw6D+gPeGB6N5EmMGLfq+/bFPND31JMx2FA3Tijz07f3oqlFND8jnLKZ/XLJ+PRs+3XZhkkZA/4it0BHI1a3lEe0KhlbxRvRl1IU/2SEtIsbC9yYlKUBqjuc29YbTNPjoZA4L10jFmhJDE/GSEkfFZ9xDGkI5Q/GKZHJJKCn+LUgFr472KHFou+ZrZG10Ww7Py1ZTcvTsVcuCmRFnMRjPfnq3WAbnFwsPiKtE17x/QMduqoOkcVJUOamxhB+71M8F5i4orv9HT/EHWymiLnY8F4tliI9yPRMI+WWBUf/CAYWDYfgR85G8pL8lmjvpmbvFSPz9V/m19WzddLRfTIL6Vs824DXkUMhfMhNiPS2BE03qduHI3ISDzvOrNZ24fU9VohKCEs3lgJHkO1vI5+aZLYoc4sQowtqX8KZL8fEz6Bpe5M9sI+G1e9iPO635eXLvKXZs+RO5YpZ4oSmJwgNFFcPeqRxqvn9rHN6c2o7HrSB12mUKncWVdlcd7G58oWLT3gBehJx3fVNsyBaP37fyPRTLme2tK1oqYuS1nM3cLWJcE1BdFwCd1rBFr5vzKycErRBlOqw4BfOI9UQ4TiOvR/t25AdlDgxKe+qH05PEYas0X0WXC7BtuRSGSqVkG5p9cHKeOKe7ph937MkskboXdHLhzEbYdKAjfu5svXda8Z91H8PNYiLYV3bzx+DSaQM4HpTn9WvRG2KoDPX787E4Lt3uPpcPoKzA/IMT3jAxgMCEPh1imdSN06KOdCdYzQEgWCTR2//G8ESr4w3hzhkyClnO/6Jol4hBPklnOuKqfKy4AoKeVOQhxV0LQlLWWOccwQFGo2V2qZIdFmlmaJi3rFJGcHokIytacgwSr5iskUBZZi8eKewL8sk56gchInxO
- B4tSuSQ7
- zwC24NaPPaEq3XJv9aNGBpnLZh84ZxjoMH8tSslTSQOre9kgOSqQBJGx9tfbU3GJt6FYlOLWUDrBejDLtHoeogG7H6a6q7/Q7Q9K0GT2CtLxNhxZdIzcQixjPDGAsaUbiiWyTEVXnfbv20BZYxjQoiUn5EQGLVWKSfWlwX4b+AxINMa1PSldQmtE5j6KhwboKNIAKfGhr1DX/sOeKTeVYJ/gVbhCMzdspGFPXeJBzngu8HwiG5WlwGvevHe7Msd6oagj5wtgJdS5zs+Y39Y1MFh/R5amnLWIEpjUpPhXpcZ/iItPZoxzGp+dQ4Xc3j08ZYbOAocqs3ekmiS40Xvq73sda3pDM/RiMUxL+7FR3igGlzmVJyC6rI6F6Qt/tl1AhwFa/FaPfEEq/3U20sfDwpBo1Hg/wYLZrvr940euB7a2zterXz6MUqTtG8Ki/9D+M6PkbWGum/uFdGzTOcwGCXmh5mGMgMrCZloLixuWagc50JDXOOp8qvE40rHoE/vIbEq9J
+X-Rspamd-Queue-Id: 982F1C0008
+X-Rspamd-Server: rspam06
+X-Stat-Signature: iaz1nk4xywjama4zw46fzpxqotk6c87j
+X-HE-Tag: 1753705655-390348
+X-HE-Meta: U2FsdGVkX19Up3otqcCeKNb0/62fu1Bk7Pr/ijFk6CXLnobYedR8mO8xxM9C+coL8OcXkkvRGTsVvWzf7VBsofCaPtOh3aI/XwagHZcz1jlP3AKk8Ki3NztrYk5WC9KsBtKOJTRAxI/gldWYB3/IURIKU5ADuRRCH+14XqtAIFeCYPDCIrqP+ng2zyHsq/lH3kNImFgg+8goVqmBo/8mE+QATI7p8Uex33esTjjFb4bGcX5LxMMvI9+jHfj277buKk1A2NK0ze4SAGDHy9RKBA44k6R7vOxw2eGnlRFPSAqouO4ue6ixXF46SDlI2ZeBIa2+gKz1j/OGlcp/S2reifp4GaAAogFh0T6CXPLygM5Y3ujYbrRwwxU48zlTwCrNbVhdp7ZAGTfocd9W2aNmBYKeegp/IdX5EqXWVZA7SeqGTFlDKLRK9O5XA3vCY9tLNT5lOyELJ/WU70xx7tsBiElLcY4Q0ofAoZRBB627US8dX1TYRVs9PpdcH7ESNmZIOkYpYQ2GrYFtExRIQMNB35P13I2jJrv4ziCnXXNatO6eNsHlqmE/WtAa9G6mnnhvzdwBVKj9yZe6woK5DWcOxLRAMjwMtSBHYlJQ1sC/QzoOgCRL9/CwhwdaxlsQMob2GydObcr7ZrC01mH31QN5S9+oa0dnT9HrKqybmgi3l5Gap+0++xJ0czZ9o9Z2Wmuzlvrc6nGKN1J7WKbozbwFZYU2v1gD9jS5LLjzr8x11RNGZYg9FxTMN29q1e09+xHW0XFlP3WXm0G7ckG3lEWbJsowJMAXvcQq0uCTvo1dTY87IAvsvw92XlaTq/4vGYLuHx+luy5vWxHTm20MU9exJemm5YKx3NHrB6j4PGAvR+0wEJgSAlTiffSHsAduTNoHbY3rHqZlJb1tfwZdI8ykfh2dF8TGySYmDSjgGb+KwvhoGB7IYkU9C6ZEXHo+y59NY0Ue1rtnrubUWCwBUPt
+ R1aR531Y
+ usdWRUeRIFawD+lnQuiXwZgge1QvtUwGkZUU9DuVQyv209JVQFV0nX7Vjm0j5SU4gOhWwuGrLrHWUBk9Bt1csVTEjZ3wjaptq19kcbYHl0DR9Kz8jmdqp9uqN8loWuFSfST/2O7bGTqOHXBn9xjoNoBkzGBWE7XxQJJ3rQhieeR667mAIoPnBv+Y/IAulANDmQJeL7eZ0FTBaSeWc6pb9ZeUji7Q1WYFepGUoQod0PRy5CyOLLA2+VDEHj2KaljTnjzLOUNoAjxhthQG9Z5fb6zG0xsJn5i/JFExPXf7nngFEAIrsCsWM26GoXVnaYRL8vv19cxvcBTm18Z+YRBs2c7ea026q6q1Uvj1dBiEXDlSWcgJVWjQKWDrp74E6gK9qQ0tj8oUcGJ+pZOCJIR0wWCFefRWDDOb1Onwrv26Vd0hz8OlTE4JsAfoJQzZZTCW0heOrpyK+uPZivgVaCfz+xI0TyZCHeEM3CXebj41ZAI6v+7/s4/UsFfnavay9eFK8VHk4bP7vCpfChEQpJjH9ZmdP+g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -180,36 +181,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 28.07.25 14:17, Michal Hocko wrote:
-> On Mon 28-07-25 11:10:44, David Hildenbrand wrote:
->> On 28.07.25 11:04, Michal Hocko wrote:
->>> On Mon 28-07-25 10:53:08, David Hildenbrand wrote:
-> [...]
->>>> daxctl wants to online memory itself. We want to keep that memory offline
->>>> from a kernel perspective and let daxctl handle it in this case.
+On 28.07.25 14:27, David Hildenbrand wrote:
+> On 28.07.25 14:17, Michal Hocko wrote:
+>> On Mon 28-07-25 11:10:44, David Hildenbrand wrote:
+>>> On 28.07.25 11:04, Michal Hocko wrote:
+>>>> On Mon 28-07-25 10:53:08, David Hildenbrand wrote:
+>> [...]
+>>>>> daxctl wants to online memory itself. We want to keep that memory offline
+>>>>> from a kernel perspective and let daxctl handle it in this case.
+>>>>>
+>>>>> We have that problem in RHEL where we currently require user space to
+>>>>> disable udev rules so daxctl "can win".
 >>>>
->>>> We have that problem in RHEL where we currently require user space to
->>>> disable udev rules so daxctl "can win".
+>>>> ... this is the result. Those shouldn't really race. If udev is suppose
+>>>> to see the device then only in its entirity so regular memory block
+>>>> based onlining rules shouldn't even see that memory. Or am I completely
+>>>> missing the picture?
 >>>
->>> ... this is the result. Those shouldn't really race. If udev is suppose
->>> to see the device then only in its entirity so regular memory block
->>> based onlining rules shouldn't even see that memory. Or am I completely
->>> missing the picture?
+>>> We can't break user space, which relies on individual memory blocks.
 >>
->> We can't break user space, which relies on individual memory blocks.
+>> We do have userspace which onlines specific memory blocks and we cannot
+>> break that. But do we have any userspace that wants to online CXL like
+>> memory (or in general dax like memory) that would need to operate on
+>> those memory blocks with that kind of granularity?
 > 
-> We do have userspace which onlines specific memory blocks and we cannot
-> break that. But do we have any userspace that wants to online CXL like
-> memory (or in general dax like memory) that would need to operate on
-> those memory blocks with that kind of granularity?
-
-I'm afraid that ship has sailed.
-
+> I'm afraid that ship has sailed.
 > 
-> In other words what would break if we didn't expose CXL memory through
-> memory blocks in sysfs?
+>>
+>> In other words what would break if we didn't expose CXL memory through
+>> memory blocks in sysfs?
+> 
+> I think the whole libdaxctl handling for onlining memory is based on that.
+> 
 
-I think the whole libdaxctl handling for onlining memory is based on that.
+Sorry, forgot to add a pointer:
+
+https://github.com/pmem/ndctl/blob/main/daxctl/lib/libdaxctl.c
 
 -- 
 Cheers,
