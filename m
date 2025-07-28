@@ -2,119 +2,172 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8766BC83F26
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 21:41:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EE7E3C83F26
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 21:42:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 26BF56B008A; Mon, 28 Jul 2025 17:41:53 -0400 (EDT)
+	id 924B46B008C; Mon, 28 Jul 2025 17:42:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21CC86B008C; Mon, 28 Jul 2025 17:41:53 -0400 (EDT)
+	id 8FC6F6B0093; Mon, 28 Jul 2025 17:42:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 132956B0092; Mon, 28 Jul 2025 17:41:53 -0400 (EDT)
+	id 7EB7C6B0095; Mon, 28 Jul 2025 17:42:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 042B96B008A
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 17:41:53 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AB31E1403A2
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 21:41:52 +0000 (UTC)
-X-FDA: 83714996064.28.7D33A27
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	by imf29.hostedemail.com (Postfix) with ESMTP id D050D120004
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 21:41:50 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="sfgTe/dx";
-	spf=pass (imf29.hostedemail.com: domain of kuniyu@google.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=kuniyu@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F4E36B008C
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 17:42:53 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1921D1403EC
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 21:42:53 +0000 (UTC)
+X-FDA: 83714998626.24.7999E42
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 93690100002
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 21:42:50 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yKp8n9Lu;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IcXzhZDj;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=O42lQOT5;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=c8b42eqb;
+	spf=pass (imf14.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753738910;
+	s=arc-20220608; t=1753738971;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mUAStNjqHbOFii/5P+u4/wZKuq2iUR2hGxINlcM8q3o=;
-	b=2UoVyNSvAShhTbYV8bxxwuib9WdI/QmPWRVtkIov8OPwdY4N0ClUiq4HaZuuMCoK9Z8qtn
-	puzqWRldnneYS64WEuScm9cyLzPaOcZYGC6PAFqACxSQ3I3tBK9o/rTwEZp1DfLhfMZ3Bb
-	7K16LF3o+pFGNEldgPWv9Jl5sxVNEk0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753738910; a=rsa-sha256;
+	bh=6kYLrjhTCwgiO/q5O0ScJ+Y3bmPYFFc08jN4aiaBZLs=;
+	b=IBNEqdkVIFP6rIVtCjTrvkewHtqesbi5IwLk2m52FztuOb6avLj/gEb8COhYIwPuJ7gP7s
+	021mN2yZr7Ki2mJsOphGzLzzNVOihGMl5GVVyuDXR3GSrOXBDc+KPGsrKSy4q8lNpZDilc
+	/v5SGjLN60fqOryTAbuwqYhEcGvkDa4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753738971; a=rsa-sha256;
 	cv=none;
-	b=We3TXGa9c4taZW3CWcxHB0FJrGY7T1+6l1EKG05Gp+sGGUDhPygQOOzkxbrqpKjc6TNdo7
-	h2B4ZKMH6wAhrHlDCWrr2xrMLFgGyqhzmcI4hbygJ+YRPUI1MUfYKi7jTjnE2I2hZR4nw7
-	8neYs1T6V2xOzT4mmJm4kYyRSmt9tds=
+	b=JuMJAIKX3kaNZ2kU6flSejNwDwwrR2kdC7GMhNHKBNfs0Zw1W7P2e5/MeBPPAm5alvxyTC
+	FijlPYxnc3oYmvq28wYZwmLZFqtrKALT+hQOdvMMZw7AquPiyXz8GXhiaYVAszAoGCYtpS
+	bw8UXt/W97FRrmGg8lVsfWAtEVS1hOE=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="sfgTe/dx";
-	spf=pass (imf29.hostedemail.com: domain of kuniyu@google.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=kuniyu@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b34a71d9208so3606931a12.3
-        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 14:41:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753738910; x=1754343710; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mUAStNjqHbOFii/5P+u4/wZKuq2iUR2hGxINlcM8q3o=;
-        b=sfgTe/dxE/7e2BhvctZzfrh8adwEgTcY6OUDxtNL/JaqzXkkxjJUrhM4VwpwdgD1/t
-         5u3ys/jwwBmmPl0I69fRibTV0c8IUZ3Pd9shOmOxcA3XB1idIRWB8i46+Qgkd7owGbA7
-         S8RpEScLl/KOXSbApI0t0ha7osdAZuBspRDM3hH1YYorzn9/9l5fn2p/THsfYV83zL7K
-         3eT+8OYTLGrp5H74ncnGXz0T79UGJeydWUdsIY6T78qORQ9QrUzXxmrbGdwuoB8yJGo5
-         AEe6nCQDrESILrffPEWP/lR4GFNQpSClfKsUrLU4NTP83qXJXmxRo0C6/Is4komlkp3O
-         UQqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753738910; x=1754343710;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mUAStNjqHbOFii/5P+u4/wZKuq2iUR2hGxINlcM8q3o=;
-        b=ElbLID0bXG/k35n0KJ7bCJG6Erdez4aPqnLXWlg8wM4Bsgc2ZTc7dhLkU48L3LeIVJ
-         Lb94KdSlPdxqqNeOXI7zWxd9mJg9hZYLxirMJ8DmPwcKHQtLcHx/AzeUBar2DIpGmiVt
-         kZzW8gSQlTC4NoZqRUTPgyEuAVjvhQk1LpRb+d0P8nMpR6xXTmMVyEc1UockqLUp0iyN
-         GDIYQN9j1C+haMFMon71M44NoYGX09MveaMxRNwRFRrBaOvt2FLA416Ve0scE2OcSAk5
-         iZTrzGN7pIoddpbNiUR+Q95wmU1D8aUu8ddu/IOFNVNxZnRKo5mARK1pumKsVqenKUkh
-         oiaw==
-X-Forwarded-Encrypted: i=1; AJvYcCUyyoaBYqSfzU8FC4Q9vtt4a+NClBTjsR3Mb0BQJDufrVELX2OGM+BRXI6ya+8jgbxJU5tzwjDVew==@kvack.org
-X-Gm-Message-State: AOJu0YzlZtRSlPcWnpaYUhkwLE3b892WLV3TGQ3/aNQLV+OjyCw/Aqrk
-	qthKGuxBAMPh7TNdxrLvGhzTIxkcFTHa25qByv80p8zbJsjujIUeyjIRumIlbR2sRKjmS50OgQM
-	91mRzCxd1AmN6lCbyAPT44Suc+g9glQwLLlU+N0Z5
-X-Gm-Gg: ASbGncsZHxqUgOqaArJCIuBMHvY3LOb7aKwB0y+vEwMF0Bi6XH1IQXlHiH0+ZZLpQya
-	w0qV1ypXbSPeeGq100tcBb3hzl7K6+ouDwWY3LvPHFFeV/OgisqRQWTVWYWNLMc9kaaSp6SmTt3
-	F6XI6azFYR7Lw5+8czgYrMjoIN5PS+43cA60Ci+ByEEv0LvKoLYdWtb+RyDlDv4YiPwprjcxXj4
-	/pN47SnCllDI2kOPcdUXOD2C2Y32zznuW6Vh2ze
-X-Google-Smtp-Source: AGHT+IEOGwzp8WL8Q8zkHDQhkD+Y1vauphLStdSB+fJ+ZXlleLTi+x8oG5ddB2+iE4U4lYOfWltk1Hl2Bj7BLkm2VMk=
-X-Received: by 2002:a17:90b:58cb:b0:312:f0d0:bb0 with SMTP id
- 98e67ed59e1d1-31e77867c38mr20558782a91.12.1753738909472; Mon, 28 Jul 2025
- 14:41:49 -0700 (PDT)
+	imf14.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yKp8n9Lu;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IcXzhZDj;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=O42lQOT5;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=c8b42eqb;
+	spf=pass (imf14.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id A390A21289;
+	Mon, 28 Jul 2025 21:42:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1753738969; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=6kYLrjhTCwgiO/q5O0ScJ+Y3bmPYFFc08jN4aiaBZLs=;
+	b=yKp8n9Lu65/pFksaSm0Cx5OX9tRIbQshueFX/jBmJnWOnJz1KOQ6dA3jE60KWsxiPrrraL
+	NPKnEXkx164CnsgVF+kvYiTazEu7XGe1MGT8v6n2PrKSTE4gAwHJFnD2AYTnRN/qVv14do
+	dyMR2UHQGl8Qwa15SYZZlaMkYDCKM0M=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1753738969;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=6kYLrjhTCwgiO/q5O0ScJ+Y3bmPYFFc08jN4aiaBZLs=;
+	b=IcXzhZDjDjR6g6ERlgdlz8yyDsvYYF9adQm2odt44Pb09nOIDG6sX5WPcTvaeiK/jZmn9l
+	WyuDQZIIFdr06NCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1753738967; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=6kYLrjhTCwgiO/q5O0ScJ+Y3bmPYFFc08jN4aiaBZLs=;
+	b=O42lQOT5z03gbYYF/pi0808TLVL+MGfIctZ21WDWl/zots9kHSl1ZQ+NSoBf5c2gTNDa8o
+	acpyEDJvep9KDGl5AgG58nekVnoHoKrwaEnBY/eTBTYV+2JQvF56VNXV0lXN1SVZe5A39s
+	wqS8RHJmOiJ9dWldp6FO/KomvMhuw0k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1753738967;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=6kYLrjhTCwgiO/q5O0ScJ+Y3bmPYFFc08jN4aiaBZLs=;
+	b=c8b42eqb36caReC8Qza4Fx22d8mdh6OPCg53YYswZ1aidvfB5VYbDifalXaLEAKeZL4BgE
+	/8E4S7bsrJo678Dw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8CFFF1368A;
+	Mon, 28 Jul 2025 21:42:47 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id sWUNItfuh2gKDwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 28 Jul 2025 21:42:47 +0000
+Message-ID: <39fbeb2c-ef42-4898-b0f8-9340a6e9988e@suse.cz>
+Date: Mon, 28 Jul 2025 23:42:47 +0200
 MIME-Version: 1.0
-References: <20250721203624.3807041-1-kuniyu@google.com> <20250721203624.3807041-14-kuniyu@google.com>
- <20250728160737.GE54289@cmpxchg.org>
-In-Reply-To: <20250728160737.GE54289@cmpxchg.org>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Mon, 28 Jul 2025 14:41:38 -0700
-X-Gm-Features: Ac12FXzCNlmLcbIv9fmqumLLgswVMcQm_-d98NXQVOA-rLpKXIlVokMyihIY7Fs
-Message-ID: <CAAVpQUBYsRGkYsvf2JMTD+0t8OH41oZxmw46WTfPhEprTaS+Pw@mail.gmail.com>
-Subject: Re: [PATCH v1 net-next 13/13] net-memcg: Allow decoupling memcg from
- global protocol memory accounting.
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Neal Cardwell <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>, Matthieu Baerts <matttbe@kernel.org>, 
-	Mat Martineau <martineau@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Simon Horman <horms@kernel.org>, 
-	Geliang Tang <geliang@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, mptcp@lists.linux.dev, 
-	cgroups@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] mm: fix a UAF when vma->mm is freed after
+ vma->vm_refcnt got dropped
+Content-Language: en-US
+To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
+Cc: jannh@google.com, Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com,
+ pfalcato@suse.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250728175355.2282375-1-surenb@google.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20250728175355.2282375-1-surenb@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D050D120004
-X-Stat-Signature: hppckqnwifhj9bs1ewe99f4m6rmc3fgr
+X-Rspamd-Queue-Id: 93690100002
+X-Stat-Signature: 11owjn9uuoo9tdi8b537eus6cujw5e3h
 X-Rspam-User: 
-X-HE-Tag: 1753738910-917356
-X-HE-Meta: U2FsdGVkX194Oz1qaH+nbrasqNgNb+/VJFYq6cwysb2Xu/2XL1Zu9CR8gYi4s+hkl7CnvaJvn0yzipdBNz7+A9XDM1zBfavfJ6C5yEeYMYVmlL/TXKaQ8eLpKryZzY6gZoChaGIMRSkZ4IQ4ooNwxT7nlx+euPEiFOj9SGYPrGQdkVkfBbsxvIA48ULD5MDspRBYIJg76a7W/x61G0+IuDPQenArVl1T6AxW6DulWeMrKm2YwrsHpISM6huBXvLBVFRa31lI8DL95gQFZ6Cm0H0FP6ojrOl/jRpVadM/pdddO2mYa3n55Hp1RX7x3OVEwgkjuaF2D7EE0bw4DlZTsANtNaJLb/dEH3TP1U7x8zuNoA0p5e0WwDM4Urxsr4IzZoG97BlU0pwZfHIQrfY+S3JRLadCR+NgTb/SlTAT7M9kqMgVcHoEuTwW1EH42B3lK493vV31Z3mZ7+ojsJeQ6Gwyu1HNWEuQV/9oEHEitl8KIc9N+TwB8YjJMFtZYVnG+rD9NW4cUe33Q3WMZfZffxH8V4lpxoVXMHHulm4E0ai3J2+e5Qt5Qb0CEPFy9Bu9frPLq8C/yVNwXckQCThPHqPPtHf9ax/gOYYmIzjbGfe46nDCyk5i+b/a7D+MCKhnz6tINjLlJ9EFZDWWMUL88kRXGDv0ro7ySKLn4kCrU3YGBoHQLedRpz475pXGV6cfg/0lIDLxQqmNrsYdwgBt4IfguMLKJ6TuEE25xEWvjkFdvN/1ZyNego7IUB3ngqDUN0nCd+F6lyx9e9UDvzmvrrnMy6op7XuSLUmdq5cO8Mo+8ZmQ1y0vHSi//W71m8hr6aSznRQnE2DozUMHHV89ZnxsY2La2JpSTHjhb/G0VitTCNbQ1kkgRv0jw2ey1zZIO9QYzlYtjXDTUeHfuqld4E3fqFBKYH22QyMq26oGhoXi/QZGuGUe86B8kPql1rnJ6cynwt5+JFTJxm18Zix
- wDJXwVGI
- bZs0Bq9KcEGhxMDl4o17FedJy/gaqnc/ZcjmL0XV1FKGvPfJPeGEJuAvpKQCYqPj6gYkSd473xa7BPmuR9zEgKh+xe16G0HC/uFnepbNaanE7tWrchhidJkYLBDBhM76zw2gQDu7l9/4HA7lFJJJGsKdKKV2c3GvusR3OgmUbPQ7Zse7+1O7V6IWLdF9A2KkFUI60SKTqLLtYVanK5P9UDFLqmQ5vzAhS1z0o8n0wixVFy4jM1WsPPY+HlWR0usIRIHK+
+X-HE-Tag: 1753738970-159309
+X-HE-Meta: U2FsdGVkX1/7IRjj4K5tTI329ynRqx8/eHQ/r9aR0c2JHKCFTzk6hfQnn0kY++jYNqaP49DBslHQ52TUDqK/DvgLrx3gE5hF+aL0pA5Tiq1AJoGlWcxUaKnutQL4oSkTphx0GWNdNby/mPWH2KktkQN31AgKUfCGNMPQdBa0bjcnsd5RKTFR+1SbzMKjyzAnI3rbcs1oehjnABIPt+30VoxoxhYqPEQs9DtGitoxS1aWdVZplSpWqFuCMzjGmC21fsDFJeIA+0Kp3guWnksxhJIx5fBbuc5OAcD9Rd3XSigF+cKpWKx+dm/I24Dw+ubmHB8ZwbPiTis/5uOxDdCUEpyBQQlD+b4q9ldejPiwTVU7BII08NXS0fL9rNhLYJY3M/0GSyhFumqQt17L4Lyr0d318mzTg5NCmqMi26KrxMTd/U5o0EAqDF8ex0rdA/tGNBLvbQjZ0LKUzbdkGjH4+X9ZeaPowPQIAHG3JJssJHzqWBqbsw3Ha7p2zuGyfFnYOg/Zh5/u1IslLIqZTEan3IjDvh2o/7pe1/bXoYXgmNgsR1tSobCIVXNHpBte+GaA0wB1bfjOLQGuaqYEr/zY2/uspAqsW+t0l8ZR5g0OlMAtIc1+cmU+Al+o06UMa2ynj9M2l/rSojx54gXcxar43c7HT+aHeqWANpJyX3PlYPho+6CoFHDBcyMsEqtx6syx0eBgxjc2b4BSkh8wh3lDzeiOnZYinrLO1lZHS0d/d2JQJGsCBUXhT10I/hP1pbfOiHRoGmmxnVR4p6jdSfueUMCLKMyfcqF1SMe5BBf7qqprHbCQEpNm95eBYzSArpr1cTbacdcIAZw5rVH7RYfSfTYVdgEU9nmEBx/MIyU64GYDjhvMnB/mS8mVKvw3gS6wXiqmr1rx12C40sP2D+m7aW221uHkMF0b+YRi4QK/IjHTsql9e5DHgt/wsVE9CMf6gXVHy7Bl9fY2tSf5RLZ
+ aAKGCPPl
+ ql4a2WDCd3rNyxrMRuEFZFc2uK52GYf31wTgHmaPOyFSO7DarvJQV/5WEjYjOTNcz4ONcciV0ngGAJINYu7/38xDdZhMTsecd1qyabVlEDlnaZfjjk7334egp0UISrwKRbvBTHwpLqLtMwJ089ixMuNhVE29j5D+4wcl0xxCKVdo22CZObD7KfdS8tvsQAIvceFPM+3Ijc1awuGJyn0R0mgyfOrWGQ4W2l3plen1T5rrizOPvbDKLFrTScOmPiJCEgeM1jHnbu58OXpG8liW5X5l3Iplczg8FasCyOvlk2AgyZCEOP/KsLjabILOQxzgvQTR+y18tjmI9iNzA+qPeYgacFp7b81a8wVVYhTnIPVXYovjrCElOMqr75m9dWU8cLZJsCxmgp4GXHX+Qv3hseeNIKjz0YsVfHYrOFv4tNZeJPA9YVSYqujezKQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,100 +176,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 28, 2025 at 9:07=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.org=
-> wrote:
->
-> On Mon, Jul 21, 2025 at 08:35:32PM +0000, Kuniyuki Iwashima wrote:
-> > Some protocols (e.g., TCP, UDP) implement memory accounting for socket
-> > buffers and charge memory to per-protocol global counters pointed to by
-> > sk->sk_proto->memory_allocated.
-> >
-> > When running under a non-root cgroup, this memory is also charged to th=
-e
-> > memcg as sock in memory.stat.
-> >
-> > Even when memory usage is controlled by memcg, sockets using such proto=
-cols
-> > are still subject to global limits (e.g., /proc/sys/net/ipv4/tcp_mem).
-> >
-> > This makes it difficult to accurately estimate and configure appropriat=
-e
-> > global limits, especially in multi-tenant environments.
-> >
-> > If all workloads were guaranteed to be controlled under memcg, the issu=
-e
-> > could be worked around by setting tcp_mem[0~2] to UINT_MAX.
-> >
-> > In reality, this assumption does not always hold, and a single workload
-> > that opts out of memcg can consume memory up to the global limit,
-> > becoming a noisy neighbour.
->
-> Yes, an uncontrolled cgroup can consume all of a shared resource and
-> thereby become a noisy neighbor. Why is network memory special?
->
-> I assume you have some other mechanisms for curbing things like
-> filesystem caches, anon memory, swap etc. of such otherwise
-> uncontrolled groups, and this just happens to be your missing piece.
+On 7/28/25 19:53, Suren Baghdasaryan wrote:
+> By inducing delays in the right places, Jann Horn created a reproducer
+> for a hard to hit UAF issue that became possible after VMAs were allowed
+> to be recycled by adding SLAB_TYPESAFE_BY_RCU to their cache.
+> 
+> Race description is borrowed from Jann's discovery report:
+> lock_vma_under_rcu() looks up a VMA locklessly with mas_walk() under
+> rcu_read_lock(). At that point, the VMA may be concurrently freed, and
+> it can be recycled by another process. vma_start_read() then
+> increments the vma->vm_refcnt (if it is in an acceptable range), and
+> if this succeeds, vma_start_read() can return a recycled VMA.
+> 
+> In this scenario where the VMA has been recycled, lock_vma_under_rcu()
+> will then detect the mismatching ->vm_mm pointer and drop the VMA
+> through vma_end_read(), which calls vma_refcount_put().
+> vma_refcount_put() drops the refcount and then calls rcuwait_wake_up()
+> using a copy of vma->vm_mm. This is wrong: It implicitly assumes that
+> the caller is keeping the VMA's mm alive, but in this scenario the caller
+> has no relation to the VMA's mm, so the rcuwait_wake_up() can cause UAF.
+> 
+> The diagram depicting the race:
+> T1         T2         T3
+> ==         ==         ==
+> lock_vma_under_rcu
+>   mas_walk
+>           <VMA gets removed from mm>
+>                       mmap
+>                         <the same VMA is reallocated>
+>   vma_start_read
+>     __refcount_inc_not_zero_limited_acquire
+>                       munmap
+>                         __vma_enter_locked
+>                           refcount_add_not_zero
+>   vma_end_read
+>     vma_refcount_put
+>       __refcount_dec_and_test
+>                           rcuwait_wait_event
+>                             <finish operation>
+>       rcuwait_wake_up [UAF]
+> 
+> Note that rcuwait_wait_event() in T3 does not block because refcount
+> was already dropped by T1. At this point T3 can exit and free the mm
+> causing UAF in T1.
+> To avoid this we move vma->vm_mm verification into vma_start_read() and
+> grab vma->vm_mm to stabilize it before vma_refcount_put() operation.
+> 
+> Fixes: 3104138517fc ("mm: make vma cache SLAB_TYPESAFE_BY_RCU")
+> Reported-by: Jann Horn <jannh@google.com>
+> Closes: https://lore.kernel.org/all/CAG48ez0-deFbVH=E3jbkWx=X3uVbd8nWeo6kbJPQ0KoUD+m2tA@mail.gmail.com/
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> Cc: <stable@vger.kernel.org>
 
-I think that's the tcp_mem[] knob, limiting tcp mem globally for
-the "uncontrolled" cgroup.  But we can't use it because the
-"controlled" cgroup is also limited by this knob.
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
-If we want to properly control the "controlled" cgroup by its feature
-only, we must disable the global limit completely on the host,
-meaning we lose the "missing piece".
+> ---
+> Changes since v1 [1]
+> - Made a copy of vma->mm before using it in vma_start_read(),
+> per Vlastimil Babka
+> 
+> Notes:
+> - Applies cleanly over mm-unstable.
+> - Should be applied to 6.15 and 6.16 but these branches do not
+> have lock_next_vma() function, so the change in lock_next_vma() should be
+> skipped when applying to those branches.
+> 
+> [1] https://lore.kernel.org/all/20250728170950.2216966-1-surenb@google.com/
+> 
+>  include/linux/mmap_lock.h | 23 +++++++++++++++++++++++
+>  mm/mmap_lock.c            | 10 +++-------
+>  2 files changed, 26 insertions(+), 7 deletions(-)
+> 
+> diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+> index 1f4f44951abe..da34afa2f8ef 100644
+> --- a/include/linux/mmap_lock.h
+> +++ b/include/linux/mmap_lock.h
+> @@ -12,6 +12,7 @@ extern int rcuwait_wake_up(struct rcuwait *w);
+>  #include <linux/tracepoint-defs.h>
+>  #include <linux/types.h>
+>  #include <linux/cleanup.h>
+> +#include <linux/sched/mm.h>
+>  
+>  #define MMAP_LOCK_INITIALIZER(name) \
+>  	.mmap_lock = __RWSEM_INITIALIZER((name).mmap_lock),
+> @@ -183,6 +184,28 @@ static inline struct vm_area_struct *vma_start_read(struct mm_struct *mm,
+>  	}
+>  
+>  	rwsem_acquire_read(&vma->vmlock_dep_map, 0, 1, _RET_IP_);
+> +
+> +	/*
+> +	 * If vma got attached to another mm from under us, that mm is not
+> +	 * stable and can be freed in the narrow window after vma->vm_refcnt
+> +	 * is dropped and before rcuwait_wake_up(mm) is called. Grab it before
+> +	 * releasing vma->vm_refcnt.
+> +	 */
+> +	if (unlikely(vma->vm_mm != mm)) {
+> +		/* Use a copy of vm_mm in case vma is freed after we drop vm_refcnt */
+> +		struct mm_struct *other_mm = vma->vm_mm;
+> +		/*
+> +		 * __mmdrop() is a heavy operation and we don't need RCU
+> +		 * protection here. Release RCU lock during these operations.
+> +		 */
+> +		rcu_read_unlock();
+> +		mmgrab(other_mm);
+> +		vma_refcount_put(vma);
+> +		mmdrop(other_mm);
+> +		rcu_read_lock();
+> +		return NULL;
+> +	}
+> +
+>  	/*
+>  	 * Overflow of vm_lock_seq/mm_lock_seq might produce false locked result.
+>  	 * False unlocked result is impossible because we modify and check
+> diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+> index 729fb7d0dd59..aa3bc42ecde0 100644
+> --- a/mm/mmap_lock.c
+> +++ b/mm/mmap_lock.c
+> @@ -164,8 +164,7 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
+>  	 */
+>  
+>  	/* Check if the vma we locked is the right one. */
+> -	if (unlikely(vma->vm_mm != mm ||
+> -		     address < vma->vm_start || address >= vma->vm_end))
+> +	if (unlikely(address < vma->vm_start || address >= vma->vm_end))
+>  		goto inval_end_read;
+>  
+>  	rcu_read_unlock();
+> @@ -236,11 +235,8 @@ struct vm_area_struct *lock_next_vma(struct mm_struct *mm,
+>  		goto fallback;
+>  	}
+>  
+> -	/*
+> -	 * Verify the vma we locked belongs to the same address space and it's
+> -	 * not behind of the last search position.
+> -	 */
+> -	if (unlikely(vma->vm_mm != mm || from_addr >= vma->vm_end))
+> +	/* Verify the vma is not behind of the last search position. */
+> +	if (unlikely(from_addr >= vma->vm_end))
+>  		goto fallback_unlock;
+>  
+>  	/*
+> 
+> base-commit: c617a4dd7102e691fa0fb2bc4f6b369e37d7f509
 
-Currently, there are only two poor choices
-
-1) Use tcp_mem[] but memory allocation could fail even if the
-   cgroup has available memory
-
-2) Disable tcp_mem[] but uncontrolled cgroup lose seatbelt and
-   can consume memory up to system limit
-
-but what we really need is
-
-3) Uncontrolled cgroup is limited by tcp_mem[],
-   AND
-   for controlled cgroup, memory allocation won't fail if
-   it has available memory regardless of tcp_mem[]
-
-
->
-> But at this point, you're operating so far out of the cgroup resource
-> management model that I don't think it can be reasonably supported.
-
-I think it's rather operated under the normal cgroup management
-model, relying on the configured memory limit for each cgroup.
-
-What's wrong here is we had to set tcp_mem[] to UINT_MAX and
-get rid of the seatbelt for uncontrolled cgroup for the management
-model.
-
-But this is just because cgroup mem is also charged globally
-to TCP, which should not be.
-
-
->
-> I hate to say this, but can't you carry this out of tree until the
-> transition is complete?
->
-> I just don't think it makes any sense to have this as a permanent
-> fixture in a general-purpose container management interface.
-
-I understand that, and we should eventually fix "1) or 2)" to
-just 3), but introducing this change without a knob will break
-assumptions in userspace and trigger regression.
-
-cgroup v2 is now widely enabled by major distro, and systemd
-creates many processes under non-root cgroups but without
-memory limits.
-
-If we had no knob, such processes would suddenly lose the
-tcp_mem[] seatbelt and could consume memory up to system
-limit.
-
-How about adding the knob's deprecation plan by pr_warn_once()
-or something and letting users configure the max properly by
-that ?
 
