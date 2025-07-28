@@ -2,102 +2,106 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DC439C83F26
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 17:09:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CB6F5C83F26
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 17:14:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D7536B0088; Mon, 28 Jul 2025 13:09:58 -0400 (EDT)
+	id 5592C6B008A; Mon, 28 Jul 2025 13:14:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6AED26B0089; Mon, 28 Jul 2025 13:09:58 -0400 (EDT)
+	id 531546B008C; Mon, 28 Jul 2025 13:14:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C4226B008A; Mon, 28 Jul 2025 13:09:58 -0400 (EDT)
+	id 472DA6B0092; Mon, 28 Jul 2025 13:14:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4DD176B0088
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 13:09:58 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1C122160391
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 17:09:58 +0000 (UTC)
-X-FDA: 83714310876.26.4732153
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 5C3F340014
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 17:09:56 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=keMwUI35;
-	spf=pass (imf04.hostedemail.com: domain of 3466HaAYKCKocebOXLQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--surenb.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3466HaAYKCKocebOXLQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 380E16B008A
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 13:14:29 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 730E01A0380
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 17:14:28 +0000 (UTC)
+X-FDA: 83714322216.19.18E3CA0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id AD857C0012
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 17:14:26 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sjgNLLpH;
+	spf=pass (imf10.hostedemail.com: domain of djwong@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753722596;
+	s=arc-20220608; t=1753722866;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=eh6IvKrrVHAEt11I1o/Ron2ZJq2dRDEO+l/5Ggjas3E=;
-	b=T7OcdsxPTVzHD+oGa7+dUgJmYm0G1g3T4RCgiYqQDvuCJ8j/bx6SM2hIxHePG23u4w5TqS
-	OfkS4LrLqrIWWjyOhRAUgprjgfL8oLH2ARXIekvGEkjnYiYMiRZ3Pz+49RjRqJbZklZaL7
-	hK4yQpxqLOf9v4a9m5Ovl2sD+KQazQM=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hEg9stipqyHXcE3ATPZMJrOYedjqzkwWSN3XQuzPL/Q=;
+	b=CIHTUwvDKihI3ZgNgcjfunCaHL4sNAPySM+jGZUM0cdHpItrSXU+uO/LVWbDWzSv9h2VDU
+	rxLIELV+h3phKGvzOFBnnYkr1fPDcD8vXNprJguGKywWLfu09Te7j7Z+qFKyZUX7y4qvX0
+	KdgFmYCK3MfCweq/+NzWIG1X5gb4gqw=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=keMwUI35;
-	spf=pass (imf04.hostedemail.com: domain of 3466HaAYKCKocebOXLQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--surenb.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3466HaAYKCKocebOXLQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753722596; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sjgNLLpH;
+	spf=pass (imf10.hostedemail.com: domain of djwong@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753722866; a=rsa-sha256;
 	cv=none;
-	b=Ugpw+0YjRr3Nmz+uvy4Ob2kXkxzv6Mx5czoeTcwBiVO4ta4W/Xh0Q8JwMY9LQsVSwYWZlu
-	ndH1vLggrrpvgmlpN/znW7YC3mcXi6JuyfqluVRbrtryydoYiTn6IHGk9JWJuOLhhNF7sA
-	maKf92dZbbLFR0/o9KRQjh/4ijGsGZo=
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-23fe984fe57so26736575ad.0
-        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 10:09:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753722595; x=1754327395; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=eh6IvKrrVHAEt11I1o/Ron2ZJq2dRDEO+l/5Ggjas3E=;
-        b=keMwUI353vUk7TJTqgC8p1Ef4BTNwWoWZ1UQNChAPsB2FrzNEVMmhsYexBTE3cle35
-         xcCxArw8eBq4vsyl88Bv4n+ITP5ZHLZOisOmsY0lyhm2Bn4yshoLyoOWJ4jDF9tWYjn2
-         ilHhlgDWec4oe/J0NIhWLQ5bd8CNgd2tF+poDo32ZC+plfC2suT4mNWb3cWllBbAuI4A
-         bQwiFfvX7llIGTrCk1n0bTahF5s6FwUJ6ztx8uddZo887xQK52Px21KiF1gQNd1LTEIq
-         y+BEHfYh7W+u8tiRdpm+U+QrEAYLbPq9rr+6zsBqj8CglCrrEVht8rvxssCSnzn7h5M3
-         xAwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753722595; x=1754327395;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=eh6IvKrrVHAEt11I1o/Ron2ZJq2dRDEO+l/5Ggjas3E=;
-        b=wqXaLg78Kn5cc/04yYpuFmq6hN97HSkkTaOt+adiXzxaopt6VR6rIR9+qhs/RCtIMn
-         YNvyfYetAJ/EvlCNoZdr49JzW2FBiaT3QNYAky3YVGcmWawfFcYva3cNQUyDVkXm4Di1
-         KkSUV48rigWjgp9yH02v3PGfs6tStZBjeiWb1T34cxLiiY+0DcN4O5RlZdqAwUV3Jkx7
-         EQHgMsxkRyrsxPUiXydAHuxy+Z7yT+QhyCuGPZxO1+/59vmEFS0m+cW2VJOAXiSP7paM
-         bGBP0Zeqe55pPwpA+wNNfGTHGPhVCTZV+1QgLzc6kXy1NIZTUeWB4DDDOLeq5v3d4IAz
-         P1lg==
-X-Forwarded-Encrypted: i=1; AJvYcCVd3b5EqQJitzMMIsImwzy/bdMfZaMQGkjmRaCbzhGJBF43iTb3FreZ5rtAHoWJRaSG220v32qFig==@kvack.org
-X-Gm-Message-State: AOJu0Yy03Ih56dA2jqCtnfnnjlNf3x2aXnfBfpJxqyv4+c4ugIrPhTWy
-	AILeqmDnevXRlr4hHUzgcflNk+isDWyjBvxt2ZNJIDmn3/l1+V8T9gVP+5qulf8v0RSpZJmDXq7
-	CX/e0uA==
-X-Google-Smtp-Source: AGHT+IFd2+VRWI3M+Kfoauwo/cT4HXIsIJL90+W0WrGWufYg6PKRrmk/3I6NP6HrbQ2n89hPQHxfP8Zj3x4=
-X-Received: from plwp15.prod.google.com ([2002:a17:903:248f:b0:240:1be2:19ee])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:4b07:b0:240:4b3b:334f
- with SMTP id d9443c01a7336-2404b3b34a8mr26618875ad.34.1753722595188; Mon, 28
- Jul 2025 10:09:55 -0700 (PDT)
-Date: Mon, 28 Jul 2025 10:09:50 -0700
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.50.1.487.gc89ff58d15-goog
-Message-ID: <20250728170950.2216966-1-surenb@google.com>
-Subject: [PATCH 1/1] mm: fix a UAF when vma->mm is freed after vma->vm_refcnt
- got dropped
-From: Suren Baghdasaryan <surenb@google.com>
-To: akpm@linux-foundation.org
-Cc: jannh@google.com, Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com, 
-	vbabka@suse.cz, pfalcato@suse.de, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, surenb@google.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+	b=tP238gm9BZD32yjJX9hRRTHHvFxt6zUsS1UryscVGHZ915F68DgEgFIEK93Wtdq9F2eJBw
+	f4/dFCYXb5+CkYzPpHcozHpA5MmWJ5sRSHQ+bBr/IM511HUHi5CAx9QN9JVMIpx4Kx0CAK
+	qM8h6MX26t/1fgupNtpOBPP4NGhnR2I=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 07BF9601FB;
+	Mon, 28 Jul 2025 17:14:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4FE4C4CEF7;
+	Mon, 28 Jul 2025 17:14:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753722865;
+	bh=ShS6WZQge780shaKIIz7KkjUpx+cF0xBwdgZKYy9OdI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sjgNLLpH6URyHHPD/ay/v4Krp41qbfpFo1HGb6ethrvAEU3dKj0Z3H+UQaO/vZUpN
+	 c7PtAFK4Ozux7kcSJIodKzHjPZMIeC7SG5mZoxG6M9HrOR1aA4OuCEhk9TYxZfV/cC
+	 BKAN0sfMT4Zmxpep6xH92usKWGcJOoMz9UwRuSbZlgofRX1csq76jAWTPbLYeH3vbm
+	 6JvzdvOp5f5aKBTHAgwolC/ZVS44Xw+kp7BEysDLwwCkO03UZznK+DKcZrrM6KNupS
+	 vbsYEKY+aaOxjhQtFOBIywOFDridM8SJlFSwdizBH0phYTtVseRQDsgW5Ex1CmH7Au
+	 Io7pc9+ohXafQ==
+Date: Mon, 28 Jul 2025 10:14:25 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: Naresh Kamboju <naresh.kamboju@linaro.org>,
+	linux-fsdevel@vger.kernel.org, linux-mm <linux-mm@kvack.org>,
+	linux-xfs@vger.kernel.org, open list <linux-kernel@vger.kernel.org>,
+	lkft-triage@lists.linaro.org,
+	Linux Regressions <regressions@lists.linux.dev>,
+	Miklos Szeredi <miklos@szeredi.hu>, Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <liam.howlett@oracle.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Anders Roxell <anders.roxell@linaro.org>,
+	Ben Copeland <benjamin.copeland@linaro.org>
+Subject: Re: next-20250721 arm64 16K and 64K page size WARNING fs fuse file.c
+ at fuse_iomap_writeback_range
+Message-ID: <20250728171425.GR2672029@frogsfrogsfrogs>
+References: <CA+G9fYs5AdVM-T2Tf3LciNCwLZEHetcnSkHsjZajVwwpM2HmJw@mail.gmail.com>
+ <20250723144637.GW2672070@frogsfrogsfrogs>
+ <CAJnrk1Z7wcB8uKWcrAuRAZ8B-f8SKnOuwtEr-=cHa+ApR_sgXQ@mail.gmail.com>
+ <20250723212020.GY2672070@frogsfrogsfrogs>
+ <CAJnrk1bFWRTGnpNhW_9MwSYZw3qPnPXZBeiwtPSrMhCvb9C3qg@mail.gmail.com>
+ <CAJnrk1byTVJtuOyAyZSVYrusjhA-bW6pxBOQQopgHHbD3cDUHw@mail.gmail.com>
+ <CAJnrk1ZYR=hM5k90H57tOv=fe6F-r8dO+f3wNuCT_w3j8YNYNQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJnrk1ZYR=hM5k90H57tOv=fe6F-r8dO+f3wNuCT_w3j8YNYNQ@mail.gmail.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5C3F340014
+X-Rspamd-Queue-Id: AD857C0012
 X-Rspamd-Server: rspam06
-X-Stat-Signature: 3s8cd5hmioqidsdxuke67astdo65k7mo
-X-HE-Tag: 1753722596-982413
-X-HE-Meta: U2FsdGVkX1/ANdPFrhsgI0DMTPgT81ueOtQ/WjH64W9U4jI+T3GflcoeH96Or4wY3jMvG9t1/K3R08jtx90FtPuRuJ79vrW5UaRIjCo6t2uUtT3FJhHoIytUmTPHK1XYvCJwG3TzZLYdI2S0vnUUANxNR72H6hG9Ioymd2PxB4bHpKBswKITtRBpeZ1gEFKbQKwY8xgINSG5KjVHdNWEcadnWTZnYndL5Vfl+CmuU4zPwZzTBTbjjNrv7bSSoRS8RpipdSKjVV3vMCwfxdY/ZviIhd/9twRh7ZvaEnlpD24gWw/CLT3tJqVvu5izc5Z5kfsoil6E+fQo6208kXdvNYQVobUTbodxTCOuHlKYSILQHl7Tdwa06EWyzNehyrZvGxZKS6ZiaLo7AXcawqiQR2D6qOWKtL/ixZ0pXi2k/moKL8sxDCsyF1Bq0VZ95jGwvND9/4SWb/9i+oJzUCHn/wdUL+OY7swX5TFnfOujb4vnh0YlK2UQlm36BRZU96H3XUZQFzEhJZcG3ZPUdWAhA353UtL8KbMNWzExAa4fAu1gzEwfifKnTlQeYFSzbqwTdcNRCRSQFj+yL3pAkVawitUHlW7k8hOa66K6I/6/0vA/OCrecQ/EBKYhq9OroMBcyo6agaNkrO/WwZeqBcFiqVS4jc0xDWLsyREzlnJZ4Sa1PJJXa5uoiQiv2PixyjQTfc51QUcOyb3c1CAIWIZlGAxWxylbxYhVzinxBcQ6ASNOAM0hFbIGNfTFUXxRv3C2jP4atyZD6rVG/mXbvkcqG1/xAoB9blX+M579KaPeTkg7wMlgHEXJNMJ36isQfuNUEWMpVwX6bwRm+ibjDX+viCWphcBuANeWHvxRkX0dkby70cvpMt8uhMpZnKSe+UD7qXglcL2M/x0z0pIj/XSOQfzg4vW9P0wUvRQHkUdeTtaNvvOctIUXUa8gXJyerp0FgSEdBiGyM1T45YzPeTi
- mEkoqyqX
- oHiZpAZhZsDIDws9SKt5vItsunv8m6PLNP2nAYAdIYi6DMh5XN/OzoxlYSMgJk+9OYAjpKkUS5co7JTKMIIONPGT0gmuDFytUoBk51IliGkX39rugpRvO3V5vs4LqdPxtI+WIwrwm2QPVNBg3iHIIR4lnI4m0GvXsfNSbrLqqqiCyNJbnkJatDIohDE/UtKOptceZ14HJSLxgy9Pd21ofdFQTBlx7G4JsrsXA4UiHDp0s6rwy8FfTczDHicuAqTc/8Qww/V03NMOnkzPQtrr2Y35smP8w/WG4P2sJse7XSt7eglp+/JDmRPeBUumTBSc0oL3SqblaInYA/rO7BPwJdwWyi/MoF0v6oijmEkzR43sgtILwDmACJGUVINy5B/BaRo8K4sfo5DRP7b2wG0m8rqSvBD5k2FFy7izI5UBHsnVyH7pLDjMpYGKxhKcpaFTzjJfC1G6aZUmNlNaCLj27oSBW0+s8ZttICetIz1KtyxYOK8bwh87bWwhPnxiPzV4iDmxAfOBwhAfx8dKxkxD4wjAVdH6ua5IdY1JWHD/DNdT0pF7KQQokz4y7B3I0+7RTnbGn/PGSL4TseFF9fpyD7r6cEIBCcBPkM8LkoyJG+4TKJPvB9xf7saE4mIUAaO+e5ZLgSTB4WeuJ2m9l12ocgiNZM9bbTAtp59+/
+X-Stat-Signature: 6fktwzgt3mt9h5qwaxnshwus5aiqfbnx
+X-HE-Tag: 1753722866-275636
+X-HE-Meta: U2FsdGVkX19I6hZEhP2VoflnGtuafnh4YKFnifOYBF2RSq9oWy1+fO96+HMZuKCZGmCupmMb0XkGlITa4cRtvTMc95PrT4TwVpu89z+9b4BKuYn+4j6fdKX2Rvxxr2oGJrghle3RShd+ORSOrxGdTBbpciYZOQwLCjVJ9em+pKOmf35/7uLKJkHns8IV7eWDWs/vaC/wzmChVmfey0Dp2w9GEV3wBbDcsEdpomhyCV4hetO6uQJwT+KubXPiCrhpCq0GkrQ8R7/AwNZwLkdeJKD636BEC2tcFVfLrpUuK88amkNjgTMFyGXOcdWqthmbEqoThTByfU0qqlG7PK8bhGOEmR2OByfYeJEvizwGFATA/RG8nMe76lDQVdTXsYu3RrXj/fpkE6gzic0B5iv5z7LR7Wgo1515IqoAiSFHXzUSri47oegGcqVp8QnYNkXKm0+2um+P8zFudvUmno42NqJfWo8ciCAL5eNvjNKmA+eX2HHJGCFX/rsGFu79i2VZed4R7cB+5CahInAZDB5fBoeTeqw5+9JUlMjApoUWpzxc71hs/R2NDwlvkasmdIYMFgbm3PlUgbAGoLaPvvlvpaB6jDBWqcQHe2eDDfajkefN7PVHkckIiAlkcOd2IE+RkhzdrEjukrKr/A2ZpFYC1yCDhSsHowGF7vNEEMxnYXXEylbynSUkEwVxJWvEs4D1449+ZISmhK/WVxBVxqGzFuqrecxZMPGXJym2CIgOsnHi036uImSHrDn6oSSV+1AgAkVMqpIWsZWAfVf+GIY1ddBgLQGOcFhBQSUvXw7hvuFZVEK1hXU837BK+k1kiJbgvWlfO4QXxvQ1QS8aN5sQFty+2jUWuP1CLdiBDzQS9T3YSisGWbf1Ftx34/TJ8doSs94l61VJayGnEUJvb+WvGjiW6SWUyFhX6Zrvu5AO76lYXsYgPHcfuLtrHT2/5ViibH0rJh2DCyokj8894JY
+ UDrv8J2F
+ ogBV3P1zIa/uZut3aXXXVHwNLelok+vPITkcihZehua+OuRfs59Qa8sFmv15l/F+494MBjNE1NF8X61H5tedH2aDUY714oHx6rVv1g81pVjKeG2GPo5/WvMUAtc3DSBAwkVzQy9GAMwPn02MqAPCSyify4qQi6y77cUdLMYyn+sLW5+fns7vZV2IWcUKCBr8dgdBPnGehUUa8It+AVINocynsoWmTVEfkq3Qc8Rb0S2mmhVuZwTPmDRGKEREudwlLG6uhe0nPYOa/xLo/NTG9nvl/vB4Jhz1wll23dKAxKOY0nElZYfJQCA5HzmIHSzPeb4/QcI0othrKuIDIvJt+dsXTO+9+ywQ9jB6iMsn36MR0tLrVtl4dIVJ3LS0Rnaiq5cf/he+Jfvr2aVdtPKlLWHS53BBjhBi99Shlt9E1wmLIiE/2iIg6gROWGB3laTDT6HfE8hufJKO21HU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,136 +110,212 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-By inducing delays in the right places, Jann Horn created a reproducer
-for a hard to hit UAF issue that became possible after VMAs were allowed
-to be recycled by adding SLAB_TYPESAFE_BY_RCU to their cache.
+On Fri, Jul 25, 2025 at 06:16:15PM -0700, Joanne Koong wrote:
+> On Thu, Jul 24, 2025 at 12:14 PM Joanne Koong <joannelkoong@gmail.com> wrote:
+> >
+> > On Wed, Jul 23, 2025 at 3:37 PM Joanne Koong <joannelkoong@gmail.com> wrote:
+> > >
+> > > On Wed, Jul 23, 2025 at 2:20 PM Darrick J. Wong <djwong@kernel.org> wrote:
+> > > >
+> > > > On Wed, Jul 23, 2025 at 11:42:42AM -0700, Joanne Koong wrote:
+> > > > > On Wed, Jul 23, 2025 at 7:46 AM Darrick J. Wong <djwong@kernel.org> wrote:
+> > > > > >
+> > > > > > [cc Joanne]
+> > > > > >
+> > > > > > On Wed, Jul 23, 2025 at 05:14:28PM +0530, Naresh Kamboju wrote:
+> > > > > > > Regressions found while running LTP msync04 tests on qemu-arm64 running
+> > > > > > > Linux next-20250721, next-20250722 and next-20250723 with 16K and 64K
+> > > > > > > page size enabled builds.
+> > > > > > >
+> > > > > > > CONFIG_ARM64_64K_PAGES=y ( kernel warning as below )
+> > > > > > > CONFIG_ARM64_16K_PAGES=y ( kernel warning as below )
+> > > > > > >
+> > > > > > > No warning noticed with 4K page size.
+> > > > > > > CONFIG_ARM64_4K_PAGES=y works as expected
+> > > > > >
+> > > > > > You might want to cc Joanne since she's been working on large folio
+> > > > > > support in fuse.
+> > > > > >
+> > > > > > > First seen on the tag next-20250721.
+> > > > > > > Good: next-20250718
+> > > > > > > Bad:  next-20250721 to next-20250723
+> > > > >
+> > > > > Thanks for the report. Is there a link to the script that mounts the
+> > > > > fuse server for these tests? I'm curious whether this was mounted as a
+> > > > > fuseblk filesystem.
+> > > > >
+> > > > > > >
+> > > > > > > Regression Analysis:
+> > > > > > > - New regression? Yes
+> > > > > > > - Reproducibility? Yes
+> > > > > > >
+> > > > > > > Test regression: next-20250721 arm64 16K and 64K page size WARNING fs
+> > > > > > > fuse file.c at fuse_iomap_writeback_range
+> > > > > > >
+> > > > > > > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> > > > > > >
+> > > > > > > ## Test log
+> > > > > > > ------------[ cut here ]------------
+> > > > > > > [  343.828105] WARNING: fs/fuse/file.c:2146 at
+> > > > > > > fuse_iomap_writeback_range+0x478/0x558 [fuse], CPU#0: msync04/4190
+> > > > > >
+> > > > > >         WARN_ON_ONCE(len & (PAGE_SIZE - 1));
+> > > > > >
+> > > > > > /me speculates that this might be triggered by an attempt to write back
+> > > > > > some 4k fsblock within a 16/64k base page?
+> > > > > >
+> > > > >
+> > > > > I think this can happen on 4k base pages as well actually. On the
+> > > > > iomap side, the length passed is always block-aligned and in fuse, we
+> > > > > set blkbits to be PAGE_SHIFT so theoretically block-aligned is always
+> > > > > page-aligned, but I missed that if it's a "fuseblk" filesystem, that
+> > > > > isn't true and the blocksize is initialized to a default size of 512
+> > > > > or whatever block size is passed in when it's mounted.
+> > > >
+> > > > <nod> I think you're correct.
+> > > >
+> > > > > I'll send out a patch to remove this line. It doesn't make any
+> > > > > difference for fuse_iomap_writeback_range() logic whether len is
+> > > > > page-aligned or not; I had added it as a sanity-check against sketchy
+> > > > > ranges.
+> > > > >
+> > > > > Also, I just noticed that apparently the blocksize can change
+> > > > > dynamically for an inode in fuse through getattr replies from the
+> > > > > server (see fuse_change_attributes_common()). This is a problem since
+> > > > > the iomap uses inode->i_blkbits for reading/writing to the bitmap. I
+> > > > > think we will have to cache the inode blkbits in the iomap_folio_state
+> > > > > struct unfortunately :( I'll think about this some more and send out a
+> > > > > patch for this.
+> > > >
+> > > > From my understanding of the iomap code, it's possible to do that if you
+> > > > flush and unmap the entire pagecache (whilst holding i_rwsem and
+> > > > mmap_invalidate_lock) before you change i_blkbits.  Nobody *does* this
+> > > > so I have no idea if it actually works, however.  Note that even I don't
+> > > > implement the flush and unmap bit; I just scream loudly and do nothing:
+> > >
+> > > lol! i wish I could scream loudly and do nothing too for my case.
+> > >
+> > > AFAICT, I think I just need to flush and unmap that file and can leave
+> > > the rest of the files/folios in the pagecache as is? But then if the
+> > > file has active refcounts on it or has been pinned into memory, can I
+> > > still unmap and remove it from the page cache? I see the
+> > > invalidate_inode_pages2() function but my understanding is that the
+> > > page still stays in the cache if it has has active references, and if
+> > > the page gets mmaped and there's a page fault on it, it'll end up
+> > > using the preexisting old page in the page cache.
+> >
+> > Never mind, I was mistaken about this. Johannes confirmed that even if
+> > there's active refcounts on the folio, it'll still get removed from
+> > the page cache after unmapping and the page cache reference will get
+> > dropped.
+> >
+> > I think I can just do what you suggested and call
+> > filemap_invalidate_inode() in fuse_change_attributes_common() then if
+> > the inode blksize gets changed. Thanks for the suggestion!
+> >
+> 
+> Thinking about this some more, I don't think this works after all
+> because the writeback + page cache removal and inode blkbits update
+> needs to be atomic, else after we write back and remove the pages from
+> the page cache, a write could be issued right before we update the
+> inode blkbits. I don't think we can hold the inode lock the whole time
+> for it either since writeback could be intensive. (also btw, I
+> realized in hindsight that invalidate_inode_pages2_range() would have
+> been the better function to call instead of
+> filemap_invalidate_inode()).
+> 
+> > >
+> > > I don't think I really need to have it removed from the page cache so
+> > > much as just have the ifs state for all the folios in the file freed
+> > > (after flushing the file) so that it can start over with a new ifs.
+> > > Ideally we could just flush the file, then iterate through all the
+> > > folios in the mapping in order of ascending index, and kfree their
+> > > ->private, but I'm not seeing how we can prevent the case of new
+> > > writes / a new ifs getting allocated for folios at previous indexes
+> > > while we're trying to do the iteration/kfreeing.
+> > >
+> 
+> Going back to this idea, I think this can work. I realized we don't
+> need to flush the file, it's enough to free the ifs, then update the
+> inode->i_blkbits, then reallocate the ifs (which will now use the
+> updated blkbits size), and if we hold the inode lock throughout, that
+> prevents any concurrent writes.
+> Something like:
+>      inode_lock(inode);
+>      XA_STATE(xas, &mapping->i_pages, 0);
+>      xa_lock_irq(&mapping->i_pages);
+>      xas_for_each_marked(&xas, folio, ULONG_MAX, PAGECACHE_TAG_DIRTY) {
+>           folio_lock(folio);
+>           if (folio_test_dirty(folio)) {
+>                   folio_wait_writeback(folio);
+>                   kfree(folio->private);
+>           }
+>           folio_unlock(folio);
+>      }
+>     inode->i_blkbits = new_blkbits_size;
 
-Race description is borrowed from Jann's discovery report:
-lock_vma_under_rcu() looks up a VMA locklessly with mas_walk() under
-rcu_read_lock(). At that point, the VMA may be concurrently freed, and
-it can be recycled by another process. vma_start_read() then
-increments the vma->vm_refcnt (if it is in an acceptable range), and
-if this succeeds, vma_start_read() can return a recycled VMA.
+The trouble is, you also have to resize the iomap_folio_state objects
+attached to each folio if you change i_blkbits...
 
-In this scenario where the VMA has been recycled, lock_vma_under_rcu()
-will then detect the mismatching ->vm_mm pointer and drop the VMA
-through vma_end_read(), which calls vma_refcount_put().
-vma_refcount_put() drops the refcount and then calls rcuwait_wake_up()
-using a copy of vma->vm_mm. This is wrong: It implicitly assumes that
-the caller is keeping the VMA's mm alive, but in this scenario the caller
-has no relation to the VMA's mm, so the rcuwait_wake_up() can cause UAF.
+>     xas_set(&xas, 0);
+>     xas_for_each_marked(&xas, folio, ULONG_MAX, PAGECACHE_TAG_DIRTY) {
+>           folio_lock(folio);
+>           if (folio_test_dirty(folio) && !folio_test_writeback(folio))
+>                  folio_mark_dirty(folio);
 
-The diagram depicting the race:
-T1         T2         T3
-==         ==         ==
-lock_vma_under_rcu
-  mas_walk
-          <VMA gets removed from mm>
-                      mmap
-                        <the same VMA is reallocated>
-  vma_start_read
-    __refcount_inc_not_zero_limited_acquire
-                      munmap
-                        __vma_enter_locked
-                          refcount_add_not_zero
-  vma_end_read
-    vma_refcount_put
-      __refcount_dec_and_test
-                          rcuwait_wait_event
-                            <finish operation>
-      rcuwait_wake_up [UAF]
+...because iomap_dirty_folio doesn't know how to reallocate the folio
+state object in response to i_blkbits having changed.
 
-Note that rcuwait_wait_event() in T3 does not block because refcount
-was already dropped by T1. At this point T3 can exit and free the mm
-causing UAF in T1.
-To avoid this we move vma->vm_mm verification into vma_start_read() and
-grab vma->vm_mm to stabilize it before vma_refcount_put() operation.
+--D
 
-Fixes: 3104138517fc ("mm: make vma cache SLAB_TYPESAFE_BY_RCU")
-Reported-by: Jann Horn <jannh@google.com>
-Closes: https://lore.kernel.org/all/CAG48ez0-deFbVH=E3jbkWx=X3uVbd8nWeo6kbJPQ0KoUD+m2tA@mail.gmail.com/
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Cc: <stable@vger.kernel.org>
----
-- Applies cleanly over mm-unstable.
-- Should be applied to 6.15 and 6.16 but these branches do not
-have lock_next_vma() function, so the change in lock_next_vma() should be
-skipped when applying to those branches.
-
- include/linux/mmap_lock.h | 21 +++++++++++++++++++++
- mm/mmap_lock.c            | 10 +++-------
- 2 files changed, 24 insertions(+), 7 deletions(-)
-
-diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
-index 1f4f44951abe..4ee4ab835c41 100644
---- a/include/linux/mmap_lock.h
-+++ b/include/linux/mmap_lock.h
-@@ -12,6 +12,7 @@ extern int rcuwait_wake_up(struct rcuwait *w);
- #include <linux/tracepoint-defs.h>
- #include <linux/types.h>
- #include <linux/cleanup.h>
-+#include <linux/sched/mm.h>
- 
- #define MMAP_LOCK_INITIALIZER(name) \
- 	.mmap_lock = __RWSEM_INITIALIZER((name).mmap_lock),
-@@ -183,6 +184,26 @@ static inline struct vm_area_struct *vma_start_read(struct mm_struct *mm,
- 	}
- 
- 	rwsem_acquire_read(&vma->vmlock_dep_map, 0, 1, _RET_IP_);
-+
-+	/*
-+	 * If vma got attached to another mm from under us, that mm is not
-+	 * stable and can be freed in the narrow window after vma->vm_refcnt
-+	 * is dropped and before rcuwait_wake_up(mm) is called. Grab it before
-+	 * releasing vma->vm_refcnt.
-+	 */
-+	if (unlikely(vma->vm_mm != mm)) {
-+		/*
-+		 * __mmdrop() is a heavy operation and we don't need RCU
-+		 * protection here. Release RCU lock during these operations.
-+		 */
-+		rcu_read_unlock();
-+		mmgrab(vma->vm_mm);
-+		vma_refcount_put(vma);
-+		mmdrop(vma->vm_mm);
-+		rcu_read_lock();
-+		return NULL;
-+	}
-+
- 	/*
- 	 * Overflow of vm_lock_seq/mm_lock_seq might produce false locked result.
- 	 * False unlocked result is impossible because we modify and check
-diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
-index 729fb7d0dd59..aa3bc42ecde0 100644
---- a/mm/mmap_lock.c
-+++ b/mm/mmap_lock.c
-@@ -164,8 +164,7 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
- 	 */
- 
- 	/* Check if the vma we locked is the right one. */
--	if (unlikely(vma->vm_mm != mm ||
--		     address < vma->vm_start || address >= vma->vm_end))
-+	if (unlikely(address < vma->vm_start || address >= vma->vm_end))
- 		goto inval_end_read;
- 
- 	rcu_read_unlock();
-@@ -236,11 +235,8 @@ struct vm_area_struct *lock_next_vma(struct mm_struct *mm,
- 		goto fallback;
- 	}
- 
--	/*
--	 * Verify the vma we locked belongs to the same address space and it's
--	 * not behind of the last search position.
--	 */
--	if (unlikely(vma->vm_mm != mm || from_addr >= vma->vm_end))
-+	/* Verify the vma is not behind of the last search position. */
-+	if (unlikely(from_addr >= vma->vm_end))
- 		goto fallback_unlock;
- 
- 	/*
-
-base-commit: c617a4dd7102e691fa0fb2bc4f6b369e37d7f509
--- 
-2.50.1.487.gc89ff58d15-goog
-
+>           folio_unlock(folio);
+>     }
+>     xa_unlock_irq(&mapping->i_pages);
+>     inode_unlock(inode);
+> 
+> 
+> I think this is the only approach that doesn't require changes to iomap.
+> 
+> I'm going to think about this some more next week and will try to send
+> out a patch for this then.
+> 
+> 
+> Thanks,
+> Joanne
+> 
+> > > >
+> > > > void fuse_iomap_set_i_blkbits(struct inode *inode, u8 new_blkbits)
+> > > > {
+> > > >         trace_fuse_iomap_set_i_blkbits(inode, new_blkbits);
+> > > >
+> > > >         if (inode->i_blkbits == new_blkbits)
+> > > >                 return;
+> > > >
+> > > >         if (!S_ISREG(inode->i_mode))
+> > > >                 goto set_it;
+> > > >
+> > > >         /*
+> > > >          * iomap attaches per-block state to each folio, so we cannot allow
+> > > >          * the file block size to change if there's anything in the page cache.
+> > > >          * In theory, fuse servers should never be doing this.
+> > > >          */
+> > > >         if (inode->i_mapping->nrpages > 0) {
+> > > >                 WARN_ON(inode->i_blkbits != new_blkbits &&
+> > > >                         inode->i_mapping->nrpages > 0);
+> > > >                 return;
+> > > >         }
+> > > >
+> > > > set_it:
+> > > >         inode->i_blkbits = new_blkbits;
+> > > > }
+> > > >
+> > > > https://git.kernel.org/pub/scm/linux/kernel/git/djwong/xfs-linux.git/commit/?h=fuse-iomap-attrs&id=da9b25d994c1140aae2f5ebf10e54d0872f5c884
+> > > >
+> > > > --D
+> > > >
+> > > > >
+> > > > > Thanks,
+> > > > > Joanne
+> > > > >
+> 
 
