@@ -2,89 +2,83 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C66C7C87FCC
-	for <linux-mm@archiver.kernel.org>; Sun, 27 Jul 2025 20:18:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 91537C87FCE
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 01:44:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 834716B0098; Sun, 27 Jul 2025 16:18:28 -0400 (EDT)
+	id ABCFA6B007B; Sun, 27 Jul 2025 21:44:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E4C66B009A; Sun, 27 Jul 2025 16:18:28 -0400 (EDT)
+	id A6E7E6B0088; Sun, 27 Jul 2025 21:44:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6FA1B6B009B; Sun, 27 Jul 2025 16:18:28 -0400 (EDT)
+	id 9AB276B0089; Sun, 27 Jul 2025 21:44:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B60A6B0098
-	for <linux-mm@kvack.org>; Sun, 27 Jul 2025 16:18:28 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0D744134FE3
-	for <linux-mm@kvack.org>; Sun, 27 Jul 2025 20:18:28 +0000 (UTC)
-X-FDA: 83711157096.15.97C66C9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 86302A0003
-	for <linux-mm@kvack.org>; Sun, 27 Jul 2025 20:18:26 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SnVyd1ia;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753647506; a=rsa-sha256;
-	cv=none;
-	b=Wx/lyulCcZJZqUdF0uqZpetBwLDp57nqqxkRH5k17Tn6gYON96PdgRVprr2/7yJ0AYV8dH
-	p897vA/K8Km7a6FaZKteqcdkSj77QGrAr0exc/sQikTZ0cnv4T2rewD48MkOBOg93HnTDi
-	Tbda//LxHPhQXXIotpuhxDJJLbi8GVU=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SnVyd1ia;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E2AE6B007B
+	for <linux-mm@kvack.org>; Sun, 27 Jul 2025 21:44:17 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AFD0B142042
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 01:44:16 +0000 (UTC)
+X-FDA: 83711978112.13.165AE3B
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 323EFA0003
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 01:44:12 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=xPOCyhAn;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf25.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753647506;
+	s=arc-20220608; t=1753667054;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7+NEmqA4oRkdRp3XwcJS+hceyIABkS2aC0m+wthB0c8=;
-	b=vuvKInPfY1NMGWm1oF9VVckE7RtjofayMb7iJnDE21/0n5oJKYXEnjdtFIV1a+UPylxjCo
-	/o9dlAdNtu/uGvRsvVcjHt+bhfIflTrozvuaROahCgAtX+s8Bf0xLekWkSziRUsleUKtl7
-	o8y4GdsSbiOMGLoGCd0difXiPX9AWpQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0746B601FE;
-	Sun, 27 Jul 2025 20:18:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A97EFC4CEFA;
-	Sun, 27 Jul 2025 20:18:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753647505;
-	bh=lIN23oNIZq4gvn+3V74kVsfgrx2Y6wNkq7FOywUP7e8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SnVyd1iaZ6FIKe2TiI2z0l2MSfELTCCZol2515DoHHFYOTm0vguEMRVfekcMdFrp4
-	 MNz8vg9AOMJ7/Xqirrg14z4v2WJN2K65r4ZAFP5hbx9xAGDq2ATFA0cAnMX6IfPOVw
-	 mlc0Qs1JzsL/QIC79ERmWTZXEV1h3DwFk0Ey2tXFExsnhZfRxdz7IbWqD3x0kH9JD1
-	 9BdqkLbs2YX56yNk/wnj4ajUI5nDWfujZUyUnbmu4a8p+HDkMFS2rCxHuU3I+ZSuWO
-	 UHg/beRd0Lky+HxbcqIqt1JAVD2VyTiZpFGVweSJzFmIYKmLCz8NZywx+vcQIjThj3
-	 U3avO1s/Otxag==
-From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	kernel-team@meta.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC v2 7/7] mm/damon/sysfs: support paddr_fault
-Date: Sun, 27 Jul 2025 13:18:13 -0700
-Message-Id: <20250727201813.53858-8-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250727201813.53858-1-sj@kernel.org>
-References: <20250727201813.53858-1-sj@kernel.org>
+	bh=06xZ+bJju6hr8mDQ5HFTV8f7N7lQsAGxfNBuRYPHHVo=;
+	b=ZjFA/azzb9CX4Uaj0/GXvHKNUK3DAWiKrF6MzS+WIhIOZTX0UQa8z9WMBpXXe3pdiHCZyy
+	Kwiwcmxfi5cRHLauA7Kf8zzSlM37CBkP5SG9cTLuZCoE6SsPyhx0jvYojA6jzGvDXoAxSp
+	O9dKsSHV1U7Dmvq2H7v0OlR+Eu+S6zw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753667054; a=rsa-sha256;
+	cv=none;
+	b=wM1rFS9IbVfbmo+NvseENmla48d78dSU2qXwiOIaGIO3ot3znylJARQ2iTPWV2IuQynOP6
+	r1FixprJTSyKNpHKqq7Q2nxVsR81PmMN9hu1q1oxUtXKNDHzjkl5DbiC/+LU92G2btYQzg
+	HWplKGhflelo2YuiTUDjoV9feE+WwoM=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=xPOCyhAn;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf25.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1753667050; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=06xZ+bJju6hr8mDQ5HFTV8f7N7lQsAGxfNBuRYPHHVo=;
+	b=xPOCyhAnMTWwraPRn4aoaMdYGF1miD/gkCul6b9m9PT1sOOHisbrUZ5K0v7HagF9PrQIm6omTVi46H0azuPP96IUBdGZzqBWrhQ0bKGxJSgyF4E5v3GkAYYNnN50tiDwBSXYZgaiaKqG+UmejEH7oesy8KOhO3CDukuP/cF1KQc=
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WkBGr5i_1753667048 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 28 Jul 2025 09:44:08 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,  David Hildenbrand
+ <david@redhat.com>,  Johannes Weiner <hannes@cmpxchg.org>,  Zi Yan
+ <ziy@nvidia.com>,  Matthew Brost <matthew.brost@intel.com>,  Rakie Kim
+ <rakie.kim@sk.com>,  Byungchul Park <byungchul@sk.com>,  Gregory Price
+ <gourry@gourry.net>,  Alistair Popple <apopple@nvidia.com>,
+  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,  kernel-team@meta.com
+Subject: Re: [PATCH] mempolicy: Clarify what RECLAIM_ZONE means
+In-Reply-To: <20250725173546.2295177-1-joshua.hahnjy@gmail.com> (Joshua Hahn's
+	message of "Fri, 25 Jul 2025 10:35:45 -0700")
+References: <20250725173546.2295177-1-joshua.hahnjy@gmail.com>
+Date: Mon, 28 Jul 2025 09:44:06 +0800
+Message-ID: <87ms8p2iop.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 86302A0003
-X-Stat-Signature: uaqqoqseags9wkdmiiqnq9gfumy4w9a7
+Content-Type: text/plain; charset=ascii
+X-Rspamd-Queue-Id: 323EFA0003
+X-Stat-Signature: 3nz8gxrc5rskjwpeb19i4iog1qfg6zt8
 X-Rspam-User: 
-X-HE-Tag: 1753647506-969564
-X-HE-Meta: U2FsdGVkX18bNnO0Dd2hSlShIYAN6SWAHYY7Pqbf7WaC7zS5yt+yG11EXiFM3obP4nYqMkEOxD7Vc7ml3Hkk3rDajz6otBMT3w11fg8lsZFQK555/SS60LoUnoQGCsDLXkslYBxdOULlKfmGfzKejZr5posDwieU0st8vBrOVQLImjc8Q3MXx3gVTXI7IcKjNgksnDHWH08XAddlgCjYH1xtC/5gTf2MWSwPks3hoYh4CKxmoMGbBmvHH0WzYTPoDyCALayLsjY4GZ8dIG1IKq2vBUZA+inv+Is/1LQErO3/0pUMlNVeKw7MA0infw+tCd2mHzqAovzlOTRnSlwFtIHkwBerDEeas1oWMlbbbl5PJdxCWy5wqecMs+GAzXRpMvEy6dpa2h5K4SA8fui8CP9vYtUbtwjhm6w3p+3eQAJEWRJTXWN/1bz0T4RErtnb50U28SgwBf2uk/RzZVpPGVEWUk5C5m26GbWVfL+b9fxcTvUIbmsrxZl6lm01aRbmM1TY8jCJ7Hv7lND8qvukd8oN/Kp5QfEekGjM2Dt/Mds7h5MiF2cMOsWSG4+vOairv+BNUxawx4yI3l935GS3WsZRj8o9+76ku0Pgxr+BRth1fZCdjzEUnv78fmTOHaYLuSuHwT199V/8TwIIl9i5Tqmkoiij2h9rEfQEX3uwyitaNj2gwpDE9GxDlZ1sok3BHVZzsj1Lc2KIPE4PMeXphcBSfGsBI6lep114As3q3J4ExGpGebHcC7l6PllUv2FFlczbv+/KMjPeDdppqXeEbaUaioPbbG1W0MoZYQVvrSHK69I43Veg28d+fd3/C0Yj85l+p9DcB7PWHIyacp6eI6sxhoPSGoL6db5ULocawqsT1M6/HDYP5vG4hvFQjh7eRW0fg1nxp0ElnfhSREIljCdz5DEIlG3kZqWo91bAMEpLlguh0FoeQfk221EelcQR3GvA+OECx4FdRpvfooX
- zjv3mNOQ
- N/g9H+ORV5PFSX0WI3EEpiTkvuAS1Kw+OV/rN4/NlSTlng900SHn/+tr04gq8iiYPYIdMj+bQv7jZbDvmjj0iPBwo1re9ukWnPjKQXlPBID6WOVgzVqsjuLhVkWVL82WKnbbVzRE02c0B/Z1KO8dUfvYPfIcU1zY7ZDTUvRjY0HYx83S9ZTiia4tOVOZe3zgzNcu3RvofIHuAi4zPZMPtHwDlU1To+brd5Zy+FmxlQComrNhqGhss11Yz9PEIo2VhebRbwNERFqk1+CRzoa9WeFkViw==
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1753667052-606180
+X-HE-Meta: U2FsdGVkX1+ZHPxd+EcuJiqMSDk5D90fRtFIRskjYzGW1aoHOgvejQrWkZQF8n9FYLHKgH6Ujs4T4ETntEKyx7hX+Sw/QBSYVrty/lU8jUCC5yDMOx0g9Qt22ZxV8J2RjFnUHqo8M520VtcRDQ5ugfz/SGI464VAnOB6+YLJQy0hmikwXmqloqERaB0kHZ9KBhLAJCFdtEzz+UAA8wJ3jVKhyn/DqvssFiEUFASwXoo2FMIwczyYgL10tCozLo0c+2MUGY/Q2EPAqjuoGwSxTHoKa6aDW/zk3d+yOXDkH7G89xzTtqyvzZdIBbWMbXiC/J7eVxc1qL1CH0eRRU5vhhcHlYW7cffpkqm1PCWc364WgNzfkRxzNtIBxmh/OWj7Rwmo43x6h1Q1ZaNlrAUnbHFg6hTr7CUv++YbBzsQFzjcqNcr817monrF+85A9szHAuk/OApQIYZ7yvLfOFsVvQlLbcyb46e08YgwpWC5iXtSbk9GMoO3cFsf8rb0S4/NjqpW7wSD8FO9GzSCXJN3SDfL85/R8y/rG51SL4uHiSnDwkECYFdimXGQ+kncGn7/SCGyIkqrwTJwNVr7T/i7cD+eQLz0gy3/YFulu6sRUY8m2UdXphhSPHwSYiCsLfJZZW+TtpjzYWu21tpkxUSDILtivDVfnS4/l4e9pO7HCUKQ1/sP+yoy6CXOU6rQpaf2+flRC1Izbfeto8SSHJid/apBvBunW+hAPfjZqmRbtJLJh096PdDQKqvYGys4iiCIJXau82jI9drWAnSJNosOtsDn/xdR7BtA9cd4Yui3emnj5bUIHg72yLxcZLrqg08DLxffaK1LO/XoK+nN4vtwRHdcExSIGYs7DX++UzE8PHnTbpym3VS4R4QQld+SEQOZSe4nwwVqA3FI1iQYoDQxBus0DTLDShYUKyNt3hrAfbwrYamaoFqXyR5RkqPpnOiJvkwjv6fXqZB7HX/6SaH
+ 29xBQ6J2
+ 7v4AoXSQvy2Rh+D0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,46 +87,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Extend DAMON sysfs interface to support the page faults based physical
-address space access monitoring.  Users can use it by writing
-paddr_fault to the ops file.  For simple testing, the DAMON user-space
-tool can be used as below, after applying below hack.
+Hi, Joshua,
 
-    $ git diff
-    --- a/src/_damon_sysfs.py
-    +++ b/src/_damon_sysfs.py
-    @@ -548,7 +548,7 @@ def write_monitoring_attrs_dir(dir_path, context):
+Joshua Hahn <joshua.hahnjy@gmail.com> writes:
 
-     def write_context_dir(dir_path, context):
-         err = _damo_fs.write_file(os.path.join(dir_path, 'operations'),
-    -                              context.ops)
-    +                              'paddr_fault')
-         if err is not None:
-             return err
+> The zone_reclaim_mode API controls reclaim behavior when a node runs out of
+> memory. Contrary to its user-facing name, it is internally referred to as
+> "node_reclaim_mode". This is slightly confusing but there is not much we can
+> do given that it has already been exposed to userspace (since at least 2.6).
+>
+> However, what we can do is to make sure the internal description of what the
+> bits inside zone_reclaim_mode aligns with what it does in practice.
+> Setting RECLAIM_ZONE does indeed run shrink_inactive_list, but a more holistic
+> description would be to explain that zone reclaim modulates whether page
+> allocation (and khugepaged collapsing) prefers reclaiming & attempting to
+> allocate locally or should fall back to the next node in the zonelist.
+>
+> Change the description to clarify what zone reclaim entails.
+>
+> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> ---
+>  include/uapi/linux/mempolicy.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/include/uapi/linux/mempolicy.h b/include/uapi/linux/mempolicy.h
+> index 1f9bb10d1a47..24083809d920 100644
+> --- a/include/uapi/linux/mempolicy.h
+> +++ b/include/uapi/linux/mempolicy.h
+> @@ -69,7 +69,7 @@ enum {
+>   * These bit locations are exposed in the vm.zone_reclaim_mode sysctl
+>   * ABI.  New bits are OK, but existing bits can never change.
+>   */
+> -#define RECLAIM_ZONE	(1<<0)	/* Run shrink_inactive_list on the zone */
+> +#define RECLAIM_ZONE	(1<<0)	/* Prefer reclaiming & allocating locally */
+>  #define RECLAIM_WRITE	(1<<1)	/* Writeout pages during reclaim */
+>  #define RECLAIM_UNMAP	(1<<2)	/* Unmap pages during reclaim */
+>  
+>
+> base-commit: 25fae0b93d1d7ddb25958bcb90c3c0e5e0e202bd
 
-    $ sudo ./damo start
-    $ sudo ./damo report access
+Please consider the document of zone_reclaim_mode in
+Documentation/admin-guide/sysctl/vm.rst too.
 
-Signed-off-by: SeongJae Park <sj@kernel.org>
+And, IIUC, RECLAIM_ZONE doesn't mean "locally" exactly.  It's legal to
+bind to some node other than "local node".
+
 ---
- mm/damon/sysfs.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 6d2b0dab50cb..b1bf43972491 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -829,6 +829,10 @@ static const struct damon_sysfs_ops_name damon_sysfs_ops_names[] = {
- 		.ops_id = DAMON_OPS_PADDR,
- 		.name = "paddr",
- 	},
-+	{
-+		.ops_id = DAMON_OPS_PADDR_FAULT,
-+		.name = "paddr_fault",
-+	},
- };
- 
- struct damon_sysfs_context {
--- 
-2.39.5
+Best Regards,
+Huang, Ying
 
