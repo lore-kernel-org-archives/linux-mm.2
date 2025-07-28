@@ -2,109 +2,130 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BB0FC83F26
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 18:43:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A45DC83F17
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 18:48:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC8FC6B0089; Mon, 28 Jul 2025 14:43:48 -0400 (EDT)
+	id CC0526B0089; Mon, 28 Jul 2025 14:48:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA05E6B008C; Mon, 28 Jul 2025 14:43:48 -0400 (EDT)
+	id C972A6B008C; Mon, 28 Jul 2025 14:48:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C8F076B0092; Mon, 28 Jul 2025 14:43:48 -0400 (EDT)
+	id BACD86B0092; Mon, 28 Jul 2025 14:48:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B0CF36B0089
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 14:43:48 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 84DFD80381
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 18:43:48 +0000 (UTC)
-X-FDA: 83714547336.20.79F6710
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id DA630C0013
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 18:43:46 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PGonoDtf;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of djwong@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djwong@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753728226; a=rsa-sha256;
-	cv=none;
-	b=tKfkSYyDT2FbkogjgO7KR9sGpG0+FgXql7NqTTW3OYwiK5sDuqq5ofIADAaSrmlPNQ029U
-	H+WS0zMx4DWoEolEpNH5WhQftv7jJIfefb//hHjdkyWK7zvV8J8TaPhkIsSJVGlVm81zj/
-	T7BpLYXQWVPLfewY+UFPpbPo7CDR8HE=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PGonoDtf;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of djwong@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djwong@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AB5526B0089
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 14:48:14 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3F03180398
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 18:48:14 +0000 (UTC)
+X-FDA: 83714558508.27.2D4CAEB
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 4D0F940012
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 18:48:12 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=JjGEQEJf;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of asml.silence@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=asml.silence@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753728226;
+	s=arc-20220608; t=1753728492;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HAsS2jWovqhQ/P3dsGkg9jYfwdCiwv5xccdAZ6hHeKQ=;
-	b=Jpo1KjGNzb8puWkCXZxUCkjkw7rkiZwJ33Ce1MIzuQL2u/Czaz61LypGOKO4fyDviCUEep
-	QjnFeTnR3fDVZ7RdivLzYzI/uPlt2skCaLSR8lGNUP3/nCfcc/UZnqQo+cPLq5R+ecQf/g
-	OzKE9jWw0SllE1Sqp4ZnA0lX3mdJKZ4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 38B7B601FA;
-	Mon, 28 Jul 2025 18:43:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D73DBC4CEE7;
-	Mon, 28 Jul 2025 18:43:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753728225;
-	bh=Xf2hz7TOpHiqBdd1wuMT/dAEUrQ8nRBxTAfDXorLxU8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PGonoDtfZcvl4wAegtfBny9SfyLgEdPZ27t2cNxooJOOn3HuA8bv503WJHRlBWw0/
-	 eRHqrzV0jjMHylmDZZNHQmabfShEAPIMCTA+6v1TbNYHmXM5mwc5veRqJOkB9SFatm
-	 QgmCQSwmGMSi8qzCSGVdY0s4VM0QW8NWHY4pcn8hrkYlXjTlhvl+KRJFmH0zOQTjB+
-	 L4nkGlTuiKbMhtS04JXLwE5XksrSz631g+p6/m+cxUPSNQ6fRCEWFJEVcqadPsa5qg
-	 UOmtGppTOwPpVOmC5RhDP0mOrG+qsh2uqkcn2cW7wOipOny757apZjWhLb4uHEWnKM
-	 gFFSo9qi/pHyA==
-Date: Mon, 28 Jul 2025 11:43:45 -0700
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	linux-fsdevel@vger.kernel.org, linux-mm <linux-mm@kvack.org>,
-	linux-xfs@vger.kernel.org, open list <linux-kernel@vger.kernel.org>,
-	lkft-triage@lists.linaro.org,
-	Linux Regressions <regressions@lists.linux.dev>,
-	Miklos Szeredi <miklos@szeredi.hu>, Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <liam.howlett@oracle.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Anders Roxell <anders.roxell@linaro.org>,
-	Ben Copeland <benjamin.copeland@linaro.org>
-Subject: Re: next-20250721 arm64 16K and 64K page size WARNING fs fuse file.c
- at fuse_iomap_writeback_range
-Message-ID: <20250728184345.GD2672070@frogsfrogsfrogs>
-References: <CA+G9fYs5AdVM-T2Tf3LciNCwLZEHetcnSkHsjZajVwwpM2HmJw@mail.gmail.com>
- <20250723144637.GW2672070@frogsfrogsfrogs>
- <CAJnrk1Z7wcB8uKWcrAuRAZ8B-f8SKnOuwtEr-=cHa+ApR_sgXQ@mail.gmail.com>
- <20250723212020.GY2672070@frogsfrogsfrogs>
- <CAJnrk1bFWRTGnpNhW_9MwSYZw3qPnPXZBeiwtPSrMhCvb9C3qg@mail.gmail.com>
- <CAJnrk1byTVJtuOyAyZSVYrusjhA-bW6pxBOQQopgHHbD3cDUHw@mail.gmail.com>
- <CAJnrk1ZYR=hM5k90H57tOv=fe6F-r8dO+f3wNuCT_w3j8YNYNQ@mail.gmail.com>
- <aIe0ouF9tsuIO58_@casper.infradead.org>
- <CAJnrk1aXvVf7jaK9_2PamK5X+1b+crT+kmn8vktv0nxqCtcW8g@mail.gmail.com>
+	bh=KPtqArRqu6RKIpD2evhkTp5wjAyR3mIuxIPwkqRJjJg=;
+	b=CvtN7NkxPvS4lh82kkgx3CuG2fefS/0uN/LsvCCmhN+eeF7wMREHDQC/T254m/B0YmOV6B
+	Qp5mcWk9F2VB5AQoLX3OZ3cA3Dofl7h4HDEiM1NYJPWFH21Djp5OaNtSYMR9H07aBwW+eP
+	PFxYfZb7mtcZwbas8988IfxHX8eVvvE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753728492; a=rsa-sha256;
+	cv=none;
+	b=JUU7eLM+tdwMtk+owvvO9P51q7WBiiViyqwI93zPXje2cnBBj14uhZIjnbA8QjfMBb+fGA
+	KaG5tQt6I3yGXNW5Dfo9gIfZYA1/BA9F8cBv1QAE2NDqhhe34I4rPtru4Lem5u1Uniz5sZ
+	XgHTzy89ustilBUlfqDZxSXa+/dhA60=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=JjGEQEJf;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of asml.silence@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=asml.silence@gmail.com
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-ae0bde4d5c9so933531066b.3
+        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 11:48:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753728491; x=1754333291; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KPtqArRqu6RKIpD2evhkTp5wjAyR3mIuxIPwkqRJjJg=;
+        b=JjGEQEJf9UMUY2tjVq27ZpjxG/GSF2emBL+0Www6DUTQxZdoRYigNqJ8bNE/N11cvA
+         WGPJubz1nsSjsAf4t3ef00MiJLdohcm7OSb9UWznDW2xz2XMSj5XZjTaKB2x+0RL2ZCf
+         cuM81CsOccaEusLzwtz35O0WCTsnYDF99skPBWdQlI3FBzwKKlPCzizzNeXUTGNoXavU
+         vLsWmcxWFHFlWsCu3gv0YD2ZKw+NyL0DSDGgCDAeJbkkGRkUeL6ue6But0dK/xanTTq3
+         WzJv71KW50K33Y0CH67CoqRVr6Eeu5xL0yEs4PXYBcsRJn2XT5ZDaehbQiUa7muH0f2Q
+         3Khw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753728491; x=1754333291;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KPtqArRqu6RKIpD2evhkTp5wjAyR3mIuxIPwkqRJjJg=;
+        b=KWOhd4+apI8eidCyEMmoR53nPdmaiD91/XKJe3RRi1Mr+nkfEeDkRx4YmcWFLK/DrR
+         HiRwOSu9XiejMMOdwCdJcK/vMmFMQibKQZf5X2Gi/wTZbxvv0yfqedffaz4BMyTvyCbT
+         Pz7I8RtO+zjGulN025iDNO6qyc2w/ndc032rTHOwR2osFGcWZyWS4fdaysP9wbt2nOOR
+         skFdpFDtguX+UhdHtsBI3gHylp51CWWMwGUaBU8wwfdDlQvhyEBxEdVaLQXMXPkazSAv
+         KOYHZHbZ8lKetBbD6H0mDP+XputGK2dNDqwhbpb/5ayNFuSbXLur+ObHP9Hnf7tJiIt8
+         wyOQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVzZgk8hupSbTR/LP/inlk8fK1qHhWS44+ceErjHHL8xobGQHn/jV+MrRzkhUWrXvNh2+eS9uNOEg==@kvack.org
+X-Gm-Message-State: AOJu0Yy+ZoEkIgfTsn6ZoI6rdP1isqd5YDr8xc7ltxAnIBwV+EFcjChx
+	hFWrczz2wFvbA4LtztGgOquCVzD9tjPKEKfhNes5+Se2YP5TzmM4PsOj
+X-Gm-Gg: ASbGncvPtlm69/WiskUlw6wmgMVr/qhRtSHrVvDtme6hziXRL4Ht1+SD5I2+WyLGdVW
+	vbe8Qt60X1M3fXFTHFBrLx5EOEUHgnjtZbkRZ66b4MowHU6W6qPNQXevCxr1RoHK+uIdAJUPD/g
+	gkZoS4ol85YElBHsXOo+FJH8eTeCTNvBttROvPbABewXVglTcEYpD9CRZBGM+msWncXduZczaCZ
+	s8oHcHRsljaFvj+6X5xir45DcvqHTbtpVmEhfsYziHql/wDVTp/xB4JNyzvgoasUx8s31dPo/a0
+	q7MFoBYhj9mKmIurDSg5sD6QgGSd5LdvKwuW1I95I/plOMkQS6nTSU1dn2U8GvzYRgwKdETwhyd
+	QnFwOotC9Fi4xjrlTu1/lkmjylpDoH5w=
+X-Google-Smtp-Source: AGHT+IGzAV+yc6Tr08lhtVqfYb5YTgQLPzE5kcZfo5vFpSIrj8JxMfbWLpoJFl0I+K+SgA12E6PiOQ==
+X-Received: by 2002:a17:907:d2a:b0:ae3:e378:159e with SMTP id a640c23a62f3a-af617d0afbbmr1521651666b.26.1753728490438;
+        Mon, 28 Jul 2025 11:48:10 -0700 (PDT)
+Received: from [192.168.8.100] ([185.69.144.164])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af635aa33f9sm460220966b.98.2025.07.28.11.48.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Jul 2025 11:48:09 -0700 (PDT)
+Message-ID: <da4a9efd-64b3-4dc5-a613-b73e17f160d6@gmail.com>
+Date: Mon, 28 Jul 2025 19:49:30 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm, page_pool: introduce a new page type for page pool
+ in page type
+To: Mina Almasry <almasrymina@google.com>
+Cc: Byungchul Park <byungchul@sk.com>, linux-mm@kvack.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel_team@skhynix.com, harry.yoo@oracle.com, ast@kernel.org,
+ daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
+ john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
+ leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
+ andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
+ akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, horms@kernel.org, jackmanb@google.com, hannes@cmpxchg.org,
+ ziy@nvidia.com, ilias.apalodimas@linaro.org, willy@infradead.org,
+ brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
+ usamaarif642@gmail.com, baolin.wang@linux.alibaba.com, toke@redhat.com,
+ bpf@vger.kernel.org, linux-rdma@vger.kernel.org
+References: <20250728052742.81294-1-byungchul@sk.com>
+ <fc1ed731-33f8-4754-949f-2c7e3ed76c7b@gmail.com>
+ <CAHS8izO6t0euQcNyhxXKPbrV7BZ1MfuMjrQiqKr-Y68t5XCGaA@mail.gmail.com>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <CAHS8izO6t0euQcNyhxXKPbrV7BZ1MfuMjrQiqKr-Y68t5XCGaA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJnrk1aXvVf7jaK9_2PamK5X+1b+crT+kmn8vktv0nxqCtcW8g@mail.gmail.com>
-X-Stat-Signature: uoghuchzpd1kenj3m7xb8hui3wbs3hze
+X-Stat-Signature: 6ajbnaeqhb6hn1bfc4doby4deqajc55w
+X-Rspamd-Queue-Id: 4D0F940012
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DA630C0013
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1753728226-908782
-X-HE-Meta: U2FsdGVkX19PAtSLrlbXlxAwALqlo9N6m0y2IGLBM22xZ4DpXY4ZywZm1h3nBe+Y1MH/KMqBoDCRPxqS6jpDZ7YxVTzI5FmMh+FCrAlLSjqxeeC/H91xR2LYe1aWJ2kR/ZeGejQY9ASswF+vX19nO31qmCxC79OH8SAy1/NzO3xsV1hy/hd3WU256VZZhGsxBV0J/RWtNJsnAy8L8poHuMdk6AJDf+8nwLf3noKzgsPGcpzs/FsuHcpyeYxmPQGtBivU6z/s/Mtz1wqyMUNIK7MoNwxjIIedXDtKC9gbyYKd5uCb3LwSAa9j1mJJTVa4+Wl4H9yNpSX3IDL4pJ/sZHcpyYw2G59iiVOv5FQlzETIcevV+xq+JHFAGwVWmbpBxhcnVYnkFjrbC3t3Vg7RxjqMrs9JXfz5Q77v6GuKlyPWleNPY+pdt8oVU2HUY0k0g3Y1ea25TWsXISUyRj+jjzph73O+lcIphdnLZ22We/hBuJuFaEWTEh+TqEX5WCee7seOpXKjD1BgFHQg10ZU3hm2b2vkoOMF1Eo4F96jQUbjUM72HbJ2srGc4KMS6QAXZeAd9g71tgp3sNZGKzcb05c94SeEAFqbKrxrUcKF1FfWw3PQqiBXyurLWG53diWlxKxDl+Qy8Lv+Lq52evWFttgIVuegxCVyuuaGSjg4kWt1BR/JpOY8a3imKSeFagn1Jq/pBHTMTaeyoFrWDg0C15OoFcicNMxHWWXFDk+97KBS7mRqyGYzJZVc+3szLQjV7L9jtI9yr9FsVc5WnTJ//sshfBRkYTjnsJinXQCMRlXGQ0lmz48c4Ibyft8+aOuCgDiRQaAwCkT/QY3Yh/oOWjEj/9PrY9jhx0eN5Ih/l0BPefh/z8UIB7uMiRg5oscFJzoHxZY88sQRWtVWns5uZEJdLoUuJuR37q4fvWdkcwd43RQWF1rfLSXBDORiI0jpZoNCYal2oEfofmgWR+r
- o2owG3hB
- LNhld4359gIzQ4IVwW5aGG55XUZQX3lBF2IOllPHpn2jSPI35V3ou8/iJuYY+kIZLJdnX6M28IyjgvNPg5UFfSmOpGGNz+workE9UnIb1fdvaxatSSIKlWOslz/OPEECwwYF4y6lwFFtZ5tL69FnOhsn0gZpeozZ0CX3eNOePg9zdZjS45L+ygZJpeGxkxyZeLxwjYFt9Hy5owm/TEKsyUgaQ5IwWApA8XDrhcICkvXEjeaYHVoze5rv+Y0tv8dtDPyeaSGyidveRQ4bfZrX811vGpA6k5QuS0MwduJXM0IB6Rs7vmmd85DwCfKSR5OYbk/fQBAiNh2irx2kFzj/sjIeS9cPsYnOStT8nMhB9R0W8KTvz5Q54KsP5Ptn+Q+33pTcrswl9jOyQoDsi60rnLXElW/6eZx/vwfUg
+X-HE-Tag: 1753728492-982090
+X-HE-Meta: U2FsdGVkX18HYt3sM0X52DvGmRF6l3nMkA5ElCibIKOrsRb7d24xO2WWQDJJPmRoX1P/UdYybnLKm7GNj2SBbgKpcsoxeg1inCaKYdTsAKnWaL1I6rYRegVn/XeIbJvlmk4CcluROLCOwOtKmUYyETGB/A4TNk6yRe94+IEVJg/WgCsku43+Jc+5tMVaA4IcLepvz2KnkRx+QIgrgq2brV3Uwu6QfRcVEKJ4dzkNiPwelhJ2M/3fcZ9MAkf3Cap38b97A32sH6CuVsiNB8owxB/5MbF5M4ZmIP+Ka+R9mgMP2o1pKmXPi859kDVgVeF5G62IF72PddTq1uHMi7HoEZLU6HCf0UdCWt6Wx1SZwGIoVC2cqmmXKY0EIjZxclhdITYHgCbbPF+3TQprL0GkfPQr16WvDMWl5le6q2C5pifNGYR4fwkdFSyL5GFlWXRG/7SjQpsxSgSdEodigsmAu5lbX7013AMCxwxO5LmMpe9PIsMxmA61j267RoNH+yqqUY0Hf2nlfldAigkdGqZoC8a7nDtgoXhbez8WA+IXsuyV/n/58bQ6UMg0pk4ZtoYt0a1FGpIHyaCf/0f+2yW3HEViVWHZbxvQOxYc2QW9bAkbDlC36fg/bW+bkQdZUbp5D0UMXJz/l46mMFwwGdT1MLITExJXbi+Ibg8J41i7ibSU6lt4x9RvjiKzaseqpgQ0bN32FqqMBDiKX5E3HOaQc6onjh2vVHgZelVZ6UuZPr1yepOFfNK4cPpL6PrrDmzk7b2bxC1I6x9KtbxYA2a/eEerf5X7X0E25T/Vq7l+r/M1xSJ3DS0RBVs2y2iEa3qkl+Sg4t0iM8SFz4eHrFdG94zDrDXaGHvs6NxQ2t9SUTrh7VHNGT08eXszU9X+hGG08NdbFVdJ3/LJrfEfABJr4CuY5NSApNzZ2RpadRfOz9XbRrfMTQy/Yw73TipMbnFWZHFefI0iAoWqBy46nLD
+ BFjgjup1
+ DPmBULcOA7UjXrx8mqWKHyPr4iwnXXLEgCrITsTaEf3lM9djtyWfs5MfCbWGAMr2y1APWk7n4p/eRYNRkCP/7LX2YXW1FWOEvREnRxydVJ7aQiesVcKjY9I0MMNEK5JIEYRFWi5gN0J+EZ7SRis3AnTRST2DhaskGBmEpyjNwFQhTQ+0aPvWW0/2tTZcUuYfAi4PWznojQsM2Y1XQwNjZnhnTyQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,68 +134,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 28, 2025 at 10:55:42AM -0700, Joanne Koong wrote:
-> On Mon, Jul 28, 2025 at 10:34 AM Matthew Wilcox <willy@infradead.org> wrote:
-> >
-> > On Fri, Jul 25, 2025 at 06:16:15PM -0700, Joanne Koong wrote:
-> > > > > > > Also, I just noticed that apparently the blocksize can change
-> > > > > > > dynamically for an inode in fuse through getattr replies from the
-> > > > > > > server (see fuse_change_attributes_common()). This is a problem since
-> > > > > > > the iomap uses inode->i_blkbits for reading/writing to the bitmap. I
-> > > > > > > think we will have to cache the inode blkbits in the iomap_folio_state
-> > > > > > > struct unfortunately :( I'll think about this some more and send out a
-> > > > > > > patch for this.
-> >
-> > Does this actually happen in practice, once you've started _using_ the
-> > block device?  Rather than all this complicated stuff to invalidate the
-
-For most block device filesystems?  No.  And as far as I can tell, none
-of the filesystems actually support changing i_blkbits on the fly; I
-think only block devices can do that:
-
-$ git grep 'i_blkbits\s=\s'
-block/bdev.c:150:       BD_INODE(bdev)->i_blkbits = blksize_bits(bsize);
-block/bdev.c:209:               inode->i_blkbits = blksize_bits(size);
-fs/ceph/inode.c:81:     inode->i_blkbits = CEPH_FSCRYPT_BLOCK_SHIFT;
-fs/ceph/inode.c:1071:           inode->i_blkbits = CEPH_FSCRYPT_BLOCK_SHIFT;
-fs/ceph/inode.c:1076:           inode->i_blkbits = CEPH_BLOCK_SHIFT;
-fs/ceph/inode.c:1180:           inode->i_blkbits = PAGE_SHIFT;
-fs/direct-io.c:612:     unsigned int i_blkbits = sdio->blkbits + sdio->blkfactor;
-fs/direct-io.c:908:     const unsigned i_blkbits = blkbits + sdio->blkfactor;
-fs/direct-io.c:1110:    unsigned i_blkbits = READ_ONCE(inode->i_blkbits);
-fs/erofs/fscache.c:527: inode->i_blkbits = EROFS_SB(sb)->blkszbits;
-fs/fuse/file_iomap.c:2327:      inode->i_blkbits = new_blkbits;
-fs/fuse/inode.c:304:            inode->i_blkbits = new_blkbits;
-fs/inode.c:234: inode->i_blkbits = sb->s_blocksize_bits;
-fs/libfs.c:1761:        inode->i_blkbits = PAGE_SHIFT;
-fs/ocfs2/aops.c:2123:   unsigned int i_blkbits = inode->i_sb->s_blocksize_bits;
-fs/orangefs/orangefs-utils.c:320:                       inode->i_blkbits = ffs(new_op->downcall.resp.getattr.
-fs/smb/client/cifsfs.c:411:     cifs_inode->netfs.inode.i_blkbits = 14;  /* 2**14 = CIFS_MAX_MSGSIZE */
-fs/stack.c:72:  dest->i_blkbits = src->i_blkbits;
-fs/vboxsf/utils.c:123:  inode->i_blkbits = 12;
-
-> > page cache based on the fuse server telling us something, maybe just
-> > declare the server to be misbehaving and shut the whole filesystem down?
-> >
+On 7/28/25 19:39, Mina Almasry wrote:
+> On Mon, Jul 28, 2025 at 11:35 AM Pavel Begunkov <asml.silence@gmail.com> wrote:
+>>
+>> On 7/28/25 06:27, Byungchul Park wrote:
+>>> Changes from v1:
+>>>        1. Rebase on linux-next.
+>>
+>> net-next is closed, looks like until August 11.
+>>
+>>>        2. Initialize net_iov->pp = NULL when allocating net_iov in
+>>>           net_devmem_bind_dmabuf() and io_zcrx_create_area().
+>>>        3. Use ->pp for net_iov to identify if it's pp rather than
+>>>           always consider net_iov as pp.
+>>>        4. Add Suggested-by: David Hildenbrand <david@redhat.com>.
+>>
+>> Oops, looks you killed my suggested-by tag now. Since it's still
+>> pretty much my diff spliced with David's suggestions, maybe
+>> Co-developed-by sounds more appropriate. Even more so goes for
+>> the second patch getting rid of __netmem_clear_lsb().
+>>
+>> Looks fine, just one comment below.
+>>
+>> ...> diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
+>>> index 100b75ab1e64..34634552cf74 100644
+>>> --- a/io_uring/zcrx.c
+>>> +++ b/io_uring/zcrx.c
+>>> @@ -444,6 +444,7 @@ static int io_zcrx_create_area(struct io_zcrx_ifq *ifq,
+>>>                area->freelist[i] = i;
+>>>                atomic_set(&area->user_refs[i], 0);
+>>>                niov->type = NET_IOV_IOURING;
+>>> +             niov->pp = NULL;
+>>
+>> It's zero initialised, you don't need it.
+>>
 > 
-> I don't think this case is likely at all but I guess one scenario
-> where the server might want to change the block size midway through is
-> if they send the data to some network filesystem on the backend and if
-> that backend shuts down or is at full capacity for whatever reason and
-> they need to migrate to another backend that uses a different block
-> size then I guess this would be useful for that.
+> This may be my bad since I said we should check if it's 0 initialized.
+> 
+> It looks like on the devmem side as well we kvmalloc_array the niovs,
+> and if I'm checking through the helpers right, kvmalloc_array does
+> 0-initialize indeed.
 
-Maybe, but it would still be pretty extraordinary to change the block
-size on an open file -- any program that tries to do its IO in blocks
-(i.e. not a byte stream) has already stat'd the file and will be very
-confused.
+I wouldn't rely on that, it's just for zcrx I do:
 
-> fuse currently does allow the block size to be changed dynamically so
-> I'm not sure if we can change that behavior without breaking backwards
-> compatibility.
+kvmalloc_array(...,  GFP_KERNEL | __GFP_ZERO);
 
-<nod> For fuse+iomap I'm not going to allow it initially if there's
-anything in the pagecache ... but I could be talked into it.
+-- 
+Pavel Begunkov
 
---D
 
