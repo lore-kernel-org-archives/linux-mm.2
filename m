@@ -2,95 +2,108 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 57D92C83F17
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 19:03:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 06220C83F17
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 19:11:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D50D76B0089; Mon, 28 Jul 2025 15:03:22 -0400 (EDT)
+	id 9DD3A6B0089; Mon, 28 Jul 2025 15:11:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDAF06B008C; Mon, 28 Jul 2025 15:03:22 -0400 (EDT)
+	id 9B5656B008C; Mon, 28 Jul 2025 15:11:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC9516B0092; Mon, 28 Jul 2025 15:03:22 -0400 (EDT)
+	id 8CB376B0092; Mon, 28 Jul 2025 15:11:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A7FF86B0089
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 15:03:22 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 21A951A03CC
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 19:03:22 +0000 (UTC)
-X-FDA: 83714596644.20.7ECFE48
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 652831C0012
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 19:03:20 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DXODDJhN;
-	spf=pass (imf21.hostedemail.com: domain of longman@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753729400; a=rsa-sha256;
-	cv=none;
-	b=PwlIicRbm5kBRT5Y/lfC4LYZPTE8vELIGS2zSEwVX5/6o6J6bXFRD6yUvR+ITNubv6d+GP
-	6gHI+k6N7BMd0dauAjmxpJhB90jKHdP9R4V/xjWgEFTGCgNYki+3zwot3Ky6p3iTP8l3Wq
-	C5CwplGwpDhc9TKqqCvfG6YkKVl6L2o=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DXODDJhN;
-	spf=pass (imf21.hostedemail.com: domain of longman@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B2BC6B0089
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 15:11:21 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DD224B90FE
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 19:11:20 +0000 (UTC)
+X-FDA: 83714616720.21.AAF4CD5
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 218FCC0012
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 19:11:18 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mUUjvG46;
+	spf=pass (imf28.hostedemail.com: domain of djwong@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753729400;
+	s=arc-20220608; t=1753729879;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=o8KYtns/52WNChA2OdVFuhj45qhIjxevu6bRzkjJVdU=;
-	b=VWLnsRRtrxMXxg7I1DsP7emXMZ5ICf1j5YvX0sFAm8PiMPt0f68ADsDtv0E4gDoe/gZh34
-	q5StxN0b9LJ2h6LNCUXB8mPvfeH6A53fi5wj8ToVIhHJZCP7FuYMOrc1U5b8FS6luI/FnV
-	hOjLOJpRLHmLVVPPalBH7AEk0uaBm9I=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753729399;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=o8KYtns/52WNChA2OdVFuhj45qhIjxevu6bRzkjJVdU=;
-	b=DXODDJhNe7x0mIPtqvUAChoHKMzghG4WuIXQnnvRYI2ZX/VpvSLeuku0mivw99lTMluXBb
-	RCFaczfuvXGwxkFZ+8HcetY7TfuPb02BDdUTXwnzTYuPJ8GkOPUd4WfXNCHpyweMgz1R5h
-	v0+dav9ANxpry4ueKuXQ6A5PI2HniBM=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-530-x4zQ7z2HNrONl-LZxjCPUQ-1; Mon,
- 28 Jul 2025 15:03:15 -0400
-X-MC-Unique: x4zQ7z2HNrONl-LZxjCPUQ-1
-X-Mimecast-MFC-AGG-ID: x4zQ7z2HNrONl-LZxjCPUQ_1753729394
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7A292195609E;
-	Mon, 28 Jul 2025 19:03:13 +0000 (UTC)
-Received: from llong-thinkpadp16vgen1.westford.csb (unknown [10.22.81.41])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 14EBF1955F16;
-	Mon, 28 Jul 2025 19:03:11 +0000 (UTC)
-From: Waiman Long <longman@redhat.com>
-To: Catalin Marinas <catalin.marinas@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Waiman Long <longman@redhat.com>
-Subject: [PATCH] mm/kmemleak: Avoid soft lockup in __kmemleak_do_cleanup()
-Date: Mon, 28 Jul 2025 15:02:48 -0400
-Message-ID: <20250728190248.605750-1-longman@redhat.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=KLfCpBbe+DaAbT8Eln7M2dT3gEM6VtVnhQxG46GMw0g=;
+	b=TKYVFjGuCd9dwdnmZiTbIa2ui2/CBon2tB+AtYIUlItH572S8J6xsDp2eJNfBuRFctc2Y7
+	RACbgKHv1EphMDUzbliNnvEcOvwbxjA3uv0Jx4+/LSpVzsrOZbN3hxuDFOJ9JGk7XgI4CR
+	/YtsP4PUPdRD9COMbFdAM/0G8B2CSZ8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753729879; a=rsa-sha256;
+	cv=none;
+	b=MApjDgL59RQ+6s+rf93hf/aAkVeoxdm6/pbU7XnyB3oe39/lySQRoz9unuxmAkJFjghn61
+	JLACLnbSJOzEa1TupcuU4qLNjEIW+0LK/WtxKwdKcIlT42j9W7xd8erxD+ZgJFjAgCiYin
+	ksE3Fg516hgLoB7uIaT+JiphFePk/xs=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mUUjvG46;
+	spf=pass (imf28.hostedemail.com: domain of djwong@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 4DBD1A53EC3;
+	Mon, 28 Jul 2025 19:11:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB1E0C4CEE7;
+	Mon, 28 Jul 2025 19:11:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753729877;
+	bh=OPHzlOHDVErfDOFN6qu+2Q+agu10HU+OTpjRoqIYI8k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mUUjvG46rwuGxYK8BNbP0pBPCj+GJbHYvP7thaySUcFZMeBV/hHb5YGChFsjJEMcA
+	 uqN8zYiW2RZUUS2k2arkaC/rJNDxZ9Gqr9pYxCouVgxpOTctixk/2OoQdDlAEhw2I7
+	 28Qw5Ekq5Csmdz8bGTJ87mjvm7AxQVhGZOZSYnoILxS4Bj+na8+CkbnFYTyGikrehy
+	 hQVIgCOtH96G/It5OVK2Zj219BrrRiBr0lyuLJh3GGCCQVCBJ2cBvlnUpzsnAPqb9X
+	 OlIfoe4o/APEGzqDZCbBXRmXF01HNXH1TQRR9Zn8jeryQRhIAi9Q9qEL/zK7pL3W3C
+	 lG4zguT5wvqOQ==
+Date: Mon, 28 Jul 2025 12:11:17 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: Naresh Kamboju <naresh.kamboju@linaro.org>,
+	linux-fsdevel@vger.kernel.org, linux-mm <linux-mm@kvack.org>,
+	linux-xfs@vger.kernel.org, open list <linux-kernel@vger.kernel.org>,
+	lkft-triage@lists.linaro.org,
+	Linux Regressions <regressions@lists.linux.dev>,
+	Miklos Szeredi <miklos@szeredi.hu>, Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <liam.howlett@oracle.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Anders Roxell <anders.roxell@linaro.org>,
+	Ben Copeland <benjamin.copeland@linaro.org>
+Subject: Re: next-20250721 arm64 16K and 64K page size WARNING fs fuse file.c
+ at fuse_iomap_writeback_range
+Message-ID: <20250728191117.GE2672070@frogsfrogsfrogs>
+References: <CA+G9fYs5AdVM-T2Tf3LciNCwLZEHetcnSkHsjZajVwwpM2HmJw@mail.gmail.com>
+ <20250723144637.GW2672070@frogsfrogsfrogs>
+ <CAJnrk1Z7wcB8uKWcrAuRAZ8B-f8SKnOuwtEr-=cHa+ApR_sgXQ@mail.gmail.com>
+ <20250723212020.GY2672070@frogsfrogsfrogs>
+ <CAJnrk1bFWRTGnpNhW_9MwSYZw3qPnPXZBeiwtPSrMhCvb9C3qg@mail.gmail.com>
+ <CAJnrk1byTVJtuOyAyZSVYrusjhA-bW6pxBOQQopgHHbD3cDUHw@mail.gmail.com>
+ <CAJnrk1ZYR=hM5k90H57tOv=fe6F-r8dO+f3wNuCT_w3j8YNYNQ@mail.gmail.com>
+ <20250728171425.GR2672029@frogsfrogsfrogs>
+ <CAJnrk1bBesBijYRD1Wf_01OSBykJ0VzwFZKZFev0wPn9wYc98Q@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+In-Reply-To: <CAJnrk1bBesBijYRD1Wf_01OSBykJ0VzwFZKZFev0wPn9wYc98Q@mail.gmail.com>
+X-Rspamd-Queue-Id: 218FCC0012
+X-Stat-Signature: xaggywgkhwai5frj6m8jjmb9fc9hg4w7
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 652831C0012
-X-Stat-Signature: rjzib9cfg8ayq7gxmnagtsuawa4gyb61
-X-HE-Tag: 1753729400-671148
-X-HE-Meta: U2FsdGVkX1+XyIZB/XQZ7I7vwlRXsF7xIA9FGk3q0oKLqFEaLNmDwFD2QISiuIawEPO+bQSRLdzllYqJYJF7PWnAZXXlbQjHK6D35wfxUmbKkkJcRuUZGHg348MHox8HlV3l9nzEmJCowL0/xj80eRzysQLfNN+dhHkEXkKhrW4Faf4Q4LQuALjNzY/uehQw8Ed1G0IyQwYLj+hVASE9I7xe+9/ErOknywEn8EoYNxZN+2vWDwQxI/u13gv6JHjJeqQI4tD0k8GbwrlEwCsBRhHimstyQ19BCo11n4msCOZrS2MPYw1QwQ3AfcB1JHmdLjO1dWqDGC2KNRvb4Ttf+RDq8L22mmLOxJbwGVlHlsB29OohfgN5RFKxt2sU0yxl+mz3rajx+2OCzjssnFo9q4jYrGcnrGTAxH3PGijQlorfN4YyDULcr07HLZZRms6dOLx8lO0g2NI5Fx+Zr357vLyYhnhnsMb1Cl+k+rKjblEdlosPuCRk3DZ34VOyXhhuSnqNrD4UuseBBObFnFJKXQJ94bzdyrDiB/aPkMrOqSInR4TyloEpw1PjFivllNdUu12zLKaxFCqKtQ0SS1rRfe9vtbdfUSw3kUNWlV34kNl/rXv8nWKsqxXojsI33Glg1GNN6A1nEB5d5U1AP6ag3ZJpY9OsO8QWUoppFXwOzPv7ZU4olJGPmlJVa9el1K+zflYI/9AwBta7sFMofVooOSLFZ89uCbnzv1NA+g1quHxZWATF393mGln6L/hZYkeNSxggXbBu9DptwgU7ufJnePMgJf1jDh2TVgTrNxKeY4f7Rkuurj2e48waxk0xmfg6ktCw/XOixsF9YHQA+GUgWPoD+5lhbC9V8WfdXCNF3cQI6UKSZUrK8XvZg6BuoJiaoTnFUEU5MCHPEV1fu9qljW2hMofxJLd/xxgvEBkT6DWuOLjbfjwvcPvKNWZP9BLrF8w3KEmkAFZaZq7dikH
- zYvWqMcb
- 0cK2L4wr0mAVKd68P+LMNemVsgS/Ny7bwSd+R4zQgNBOojUdOqelc7HTuZbwqv57IYuwwIkzkfwviiMG4TagB8+4qcOR2fdM8duVHWJFGpGhLGVi+8NFzRN0ZiiMOVyxi7RGq9FBHzx3CU72Q/AG8KfdmJ2mxq+lHvAJTRFqJbU5vmHMejEMRma+DQ2xvJ79TRKh9iJa2fjvWdz7WsOcrXFzIFWQRWpcUJOtEhskw97tgjVSpAm3pZIBMQHn7yP8sjd1gvrLV5Q/klvztPZx4P/XZPtIxkUBOGT4WYhX+eo35dy0m2+AmPTl1kmWQYE/T7WF89nuS3JNi1YVuwbADgrsOODB8MztZu0lqWIANtK70Ky5/zI9tg7WtsA==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1753729878-995746
+X-HE-Meta: U2FsdGVkX180Nx1J19VVzyUYnxLpGJ0F/SaP+AIRxdmUsrWcppwUcMmebsMJMVBnkzMj6vCkXR45TxW+RnEq9d8bL/Rk+jHKLfl44KF/MlK41ebhMz+k5ccn/8sva6gyh9now0Bz8Qrs+7MuFAuCY+eSOoRCAFVn2AHZhdGQJDJYaOxS18o/84yFdQnERGWGV4LBDAW0XLj1iFPIlviH1qMECnwMPVCpDN7HaR5hZvqnoeHYN0LEklq74AyejJwhUQC2oS62bcmWKIpRGVADlLQ3Opu1lmn9K4+3QYUssCkl6NsSzG+CxSWNQtB9e2SB5JgGPgH3h077fDVnMsqqOpzAKKyj8B7CgeGKBlTkcIU7NO+rMENNJ9O0lVYymuw5gCw1nidAR1vMfQJxwKfZp2t2RBDVr9sJ07Zhr4QIQg2pZe1u9ov1Crl3AvWqQHrG+1hbt+vltYgYMM6WP8TYazpmQCFGc32dTW8YXJPmjRFS4dNe0QYujcMCOGy4gV1wUhODJWQJemCclfpN2Z839UlLayxmTTHa6Q0JtnPT8fJrlyhsjo5Bd410Ik8j10UOwvT813DXOhaZP9O20I8gh0ziJfyzcU+dQBNN5uX5m2LrGVhAlXoS/LSyVXyO7VKCQNkpod9ucjk/f2SrIhBB4Yp4jYCKmrSYTTiVmnlYjFXdGB2NhovCkNxPwnpHgqNZ6V5K1XWK4vrVZ7R65H6nCOU5hrpglPBLLDuVoryiCA/2f+lqE96Gk6FbUjLMs/yKfH3zeg6N91X0AYL7AWiIII/AYOLR2Yi8ckdR17d8c0S6e0i7xN+Jebnb0NsaVnK8GGfWYYwNDVw4JEjcQgSSM04xKhLCgAfATxXO/+C4qHy4Q5j2GtAwXa+eS5D1Jb4dil8IO383gNUq6W38DVnDZlj5XBnCEh22Y3SfrREuu9+2kWMVR+/aQxvyo8xEtoIlIIfWWdoAm39SJWwQ2zp
+ slhh9eUd
+ l8v3uvwUSYdue3ipFG9qrCA4ojobM8Hb21ooR6jJNPGi9G1wT0fBpZiPpM39HVktUK7v/8gs9xAcnltGHs9/b0D8cpA1txCjeJLJnWT0IU74QPh8kdEd0DIYY1wpQX+VTgAymtdTsjICM44/dRlkuQ1TCzMDptU5H4Y4kw6gUMYhdv6SvhwJHfA2Pi76SDpbo7pQDLitBRAdYyqVXPtxq0bpuQIynyl9T90GZJMZm/FO+/uCOZQuEWqU9YqvWH8vGKFR2ZO4j3P+rpbFFq77xBcuS61CaCrM1ozDtcUai19zi+BWXy5V1mg4FG/LROgeqQUcIqyjMZ8h8HvGg//zX1Uohw34zBPmd1A19o7XgMHbyKTytMu0Pb0NVar5MbtN2s6S/hfhJS6EFSlhRJxVwHWJi+Z+WKJLERH6j6bkb9l+Q3IN6h+mYWsmLtVajZJFRRp8pfjOQ4P/c0P8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,61 +112,269 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A soft lockup warning was observed on a relative small system x86-64
-system with 16 GB of memory when running a debug kernel with kmemleak
-enabled.
+On Mon, Jul 28, 2025 at 10:44:01AM -0700, Joanne Koong wrote:
+> On Mon, Jul 28, 2025 at 10:14 AM Darrick J. Wong <djwong@kernel.org> wrote:
+> >
+> > On Fri, Jul 25, 2025 at 06:16:15PM -0700, Joanne Koong wrote:
+> > > On Thu, Jul 24, 2025 at 12:14 PM Joanne Koong <joannelkoong@gmail.com> wrote:
+> > > >
+> > > > On Wed, Jul 23, 2025 at 3:37 PM Joanne Koong <joannelkoong@gmail.com> wrote:
+> > > > >
+> > > > > On Wed, Jul 23, 2025 at 2:20 PM Darrick J. Wong <djwong@kernel.org> wrote:
+> > > > > >
+> > > > > > On Wed, Jul 23, 2025 at 11:42:42AM -0700, Joanne Koong wrote:
+> > > > > > > On Wed, Jul 23, 2025 at 7:46 AM Darrick J. Wong <djwong@kernel.org> wrote:
+> > > > > > > >
+> > > > > > > > [cc Joanne]
+> > > > > > > >
+> > > > > > > > On Wed, Jul 23, 2025 at 05:14:28PM +0530, Naresh Kamboju wrote:
+> > > > > > > > > Regressions found while running LTP msync04 tests on qemu-arm64 running
+> > > > > > > > > Linux next-20250721, next-20250722 and next-20250723 with 16K and 64K
+> > > > > > > > > page size enabled builds.
+> > > > > > > > >
+> > > > > > > > > CONFIG_ARM64_64K_PAGES=y ( kernel warning as below )
+> > > > > > > > > CONFIG_ARM64_16K_PAGES=y ( kernel warning as below )
+> > > > > > > > >
+> > > > > > > > > No warning noticed with 4K page size.
+> > > > > > > > > CONFIG_ARM64_4K_PAGES=y works as expected
+> > > > > > > >
+> > > > > > > > You might want to cc Joanne since she's been working on large folio
+> > > > > > > > support in fuse.
+> > > > > > > >
+> > > > > > > > > First seen on the tag next-20250721.
+> > > > > > > > > Good: next-20250718
+> > > > > > > > > Bad:  next-20250721 to next-20250723
+> > > > > > >
+> > > > > > > Thanks for the report. Is there a link to the script that mounts the
+> > > > > > > fuse server for these tests? I'm curious whether this was mounted as a
+> > > > > > > fuseblk filesystem.
+> > > > > > >
+> > > > > > > > >
+> > > > > > > > > Regression Analysis:
+> > > > > > > > > - New regression? Yes
+> > > > > > > > > - Reproducibility? Yes
+> > > > > > > > >
+> > > > > > > > > Test regression: next-20250721 arm64 16K and 64K page size WARNING fs
+> > > > > > > > > fuse file.c at fuse_iomap_writeback_range
+> > > > > > > > >
+> > > > > > > > > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> > > > > > > > >
+> > > > > > > > > ## Test log
+> > > > > > > > > ------------[ cut here ]------------
+> > > > > > > > > [  343.828105] WARNING: fs/fuse/file.c:2146 at
+> > > > > > > > > fuse_iomap_writeback_range+0x478/0x558 [fuse], CPU#0: msync04/4190
+> > > > > > > >
+> > > > > > > >         WARN_ON_ONCE(len & (PAGE_SIZE - 1));
+> > > > > > > >
+> > > > > > > > /me speculates that this might be triggered by an attempt to write back
+> > > > > > > > some 4k fsblock within a 16/64k base page?
+> > > > > > > >
+> > > > > > >
+> > > > > > > I think this can happen on 4k base pages as well actually. On the
+> > > > > > > iomap side, the length passed is always block-aligned and in fuse, we
+> > > > > > > set blkbits to be PAGE_SHIFT so theoretically block-aligned is always
+> > > > > > > page-aligned, but I missed that if it's a "fuseblk" filesystem, that
+> > > > > > > isn't true and the blocksize is initialized to a default size of 512
+> > > > > > > or whatever block size is passed in when it's mounted.
+> > > > > >
+> > > > > > <nod> I think you're correct.
+> > > > > >
+> > > > > > > I'll send out a patch to remove this line. It doesn't make any
+> > > > > > > difference for fuse_iomap_writeback_range() logic whether len is
+> > > > > > > page-aligned or not; I had added it as a sanity-check against sketchy
+> > > > > > > ranges.
+> > > > > > >
+> > > > > > > Also, I just noticed that apparently the blocksize can change
+> > > > > > > dynamically for an inode in fuse through getattr replies from the
+> > > > > > > server (see fuse_change_attributes_common()). This is a problem since
+> > > > > > > the iomap uses inode->i_blkbits for reading/writing to the bitmap. I
+> > > > > > > think we will have to cache the inode blkbits in the iomap_folio_state
+> > > > > > > struct unfortunately :( I'll think about this some more and send out a
+> > > > > > > patch for this.
+> > > > > >
+> > > > > > From my understanding of the iomap code, it's possible to do that if you
+> > > > > > flush and unmap the entire pagecache (whilst holding i_rwsem and
+> > > > > > mmap_invalidate_lock) before you change i_blkbits.  Nobody *does* this
+> > > > > > so I have no idea if it actually works, however.  Note that even I don't
+> > > > > > implement the flush and unmap bit; I just scream loudly and do nothing:
+> > > > >
+> > > > > lol! i wish I could scream loudly and do nothing too for my case.
+> > > > >
+> > > > > AFAICT, I think I just need to flush and unmap that file and can leave
+> > > > > the rest of the files/folios in the pagecache as is? But then if the
+> > > > > file has active refcounts on it or has been pinned into memory, can I
+> > > > > still unmap and remove it from the page cache? I see the
+> > > > > invalidate_inode_pages2() function but my understanding is that the
+> > > > > page still stays in the cache if it has has active references, and if
+> > > > > the page gets mmaped and there's a page fault on it, it'll end up
+> > > > > using the preexisting old page in the page cache.
+> > > >
+> > > > Never mind, I was mistaken about this. Johannes confirmed that even if
+> > > > there's active refcounts on the folio, it'll still get removed from
+> > > > the page cache after unmapping and the page cache reference will get
+> > > > dropped.
+> > > >
+> > > > I think I can just do what you suggested and call
+> > > > filemap_invalidate_inode() in fuse_change_attributes_common() then if
+> > > > the inode blksize gets changed. Thanks for the suggestion!
+> > > >
+> > >
+> > > Thinking about this some more, I don't think this works after all
+> > > because the writeback + page cache removal and inode blkbits update
+> > > needs to be atomic, else after we write back and remove the pages from
+> > > the page cache, a write could be issued right before we update the
+> > > inode blkbits. I don't think we can hold the inode lock the whole time
+> > > for it either since writeback could be intensive. (also btw, I
+> > > realized in hindsight that invalidate_inode_pages2_range() would have
+> > > been the better function to call instead of
+> > > filemap_invalidate_inode()).
+> > >
+> > > > >
+> > > > > I don't think I really need to have it removed from the page cache so
+> > > > > much as just have the ifs state for all the folios in the file freed
+> > > > > (after flushing the file) so that it can start over with a new ifs.
+> > > > > Ideally we could just flush the file, then iterate through all the
+> > > > > folios in the mapping in order of ascending index, and kfree their
+> > > > > ->private, but I'm not seeing how we can prevent the case of new
+> > > > > writes / a new ifs getting allocated for folios at previous indexes
+> > > > > while we're trying to do the iteration/kfreeing.
+> > > > >
+> > >
+> > > Going back to this idea, I think this can work. I realized we don't
+> > > need to flush the file, it's enough to free the ifs, then update the
+> > > inode->i_blkbits, then reallocate the ifs (which will now use the
+> > > updated blkbits size), and if we hold the inode lock throughout, that
+> > > prevents any concurrent writes.
+> > > Something like:
+> > >      inode_lock(inode);
+> > >      XA_STATE(xas, &mapping->i_pages, 0);
+> > >      xa_lock_irq(&mapping->i_pages);
+> > >      xas_for_each_marked(&xas, folio, ULONG_MAX, PAGECACHE_TAG_DIRTY) {
+> > >           folio_lock(folio);
+> > >           if (folio_test_dirty(folio)) {
+> > >                   folio_wait_writeback(folio);
+> > >                   kfree(folio->private);
+> > >           }
 
-  watchdog: BUG: soft lockup - CPU#8 stuck for 33s! [kworker/8:1:134]
+Heh, I didn't even see this chunk, distracted as I am today. :/
 
-The test system was running a workload with hot unplug happening
-in parallel. Then kemleak decided to disable itself due to its
-inability to allocate more kmemleak objects. The debug kernel has its
-CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE set to 40,000.
+So this doesn't actually /initiate/ writeback, it just waits
+(potentially for a long time) for someone else to come along and do it.
+That might not be what you want since the blocksize change will appear
+to stall while nothing else is going on in the system.
 
-The soft lockup happened in kmemleak_do_cleanup() when the existing
-kmemleak objects were being removed and deleted one-by-one in a loop
-via a workqueue. In this particular case, there are at least 40,000
-objects that need to be processed and given the slowness of a debug
-kernel and the fact that a raw_spinlock has to be acquired and released
-in __delete_object(), it could take a while to properly handle all
-these objects.
+Also, unless you're going to put this in buffered-io.c, it's not
+desirable for a piece of code to free something it didn't allocate.
+IOWs, I don't think it's a good idea for *fuse* to go messing with a
+folio->private that iomap set.
 
-As kmemleak has been disabled in this case, the object removal and
-deletion process can be further optimized as locking isn't really
-needed. However, it is probably not worth the effort to optimize for
-such an edge case that should rarely happen. So the simple solution is
-to call cond_resched() at periodic interval in the iteration loop to
-avoid soft lockup.
+> > >           folio_unlock(folio);
+> > >      }
+> > >     inode->i_blkbits = new_blkbits_size;
+> >
+> > The trouble is, you also have to resize the iomap_folio_state objects
+> > attached to each folio if you change i_blkbits...
+> 
+> I think the iomap_folio_state objects automatically get resized here,
+> no? We first kfree the folio->private which kfrees the entire ifs,
 
-Signed-off-by: Waiman Long <longman@redhat.com>
----
- mm/kmemleak.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Err, right, it does free the ifs and recreate it later if necessary.
 
-diff --git a/mm/kmemleak.c b/mm/kmemleak.c
-index 8d588e685311..620abd95e680 100644
---- a/mm/kmemleak.c
-+++ b/mm/kmemleak.c
-@@ -2181,6 +2181,7 @@ static const struct file_operations kmemleak_fops = {
- static void __kmemleak_do_cleanup(void)
- {
- 	struct kmemleak_object *object, *tmp;
-+	unsigned int cnt = 0;
- 
- 	/*
- 	 * Kmemleak has already been disabled, no need for RCU list traversal
-@@ -2189,6 +2190,10 @@ static void __kmemleak_do_cleanup(void)
- 	list_for_each_entry_safe(object, tmp, &object_list, object_list) {
- 		__remove_object(object);
- 		__delete_object(object);
-+
-+		/* Call cond_resched() once per 64 iterations to avoid soft lockup */
-+		if (!(++cnt & 0x3f))
-+			cond_resched();
- 	}
- }
- 
--- 
-2.50.0
+> then we change inode->i_blkbits to the new size, then when we call
+> folio_mark_dirty(), it'll create the new ifs which creates a new folio
+> state object using the new/updated i_blkbits size
+> 
+> >
+> > >     xas_set(&xas, 0);
+> > >     xas_for_each_marked(&xas, folio, ULONG_MAX, PAGECACHE_TAG_DIRTY) {
+> > >           folio_lock(folio);
+> > >           if (folio_test_dirty(folio) && !folio_test_writeback(folio))
+> > >                  folio_mark_dirty(folio);
+> >
+> > ...because iomap_dirty_folio doesn't know how to reallocate the folio
+> > state object in response to i_blkbits having changed.
 
+Also, what about clean folios that have an ifs?  You'd still need to
+handle the ifs's attached to those.
+
+So I guess if you wanted iomap to handle a blocksize change, you could
+do something like:
+
+iomap_change_file_blocksize(inode, new_blkbits) {
+	inode_lock()
+	filemap_invalidate_lock()
+
+	inode_dio_wait()
+	filemap_write_and_wait()
+	if (new_blkbits > mapping_min_folio_order()) {
+		truncate_pagecache()
+		inode->i_blkbits = new_blkbits;
+	} else {
+		inode->i_blkbits = new_blkbits;
+		xas_for_each(...) {
+			<create new ifs>
+			<translate uptodate/dirty state to new ifs>
+			<swap ifs>
+			<free old ifs>
+		}
+	}
+
+	filemap_invalidate_unlock()
+	inode_unlock()
+}
+
+--D
+
+> > --D
+> >
+> > >           folio_unlock(folio);
+> > >     }
+> > >     xa_unlock_irq(&mapping->i_pages);
+> > >     inode_unlock(inode);
+> > >
+> > >
+> > > I think this is the only approach that doesn't require changes to iomap.
+> > >
+> > > I'm going to think about this some more next week and will try to send
+> > > out a patch for this then.
+> > >
+> > >
+> > > Thanks,
+> > > Joanne
+> > >
+> > > > > >
+> > > > > > void fuse_iomap_set_i_blkbits(struct inode *inode, u8 new_blkbits)
+> > > > > > {
+> > > > > >         trace_fuse_iomap_set_i_blkbits(inode, new_blkbits);
+> > > > > >
+> > > > > >         if (inode->i_blkbits == new_blkbits)
+> > > > > >                 return;
+> > > > > >
+> > > > > >         if (!S_ISREG(inode->i_mode))
+> > > > > >                 goto set_it;
+> > > > > >
+> > > > > >         /*
+> > > > > >          * iomap attaches per-block state to each folio, so we cannot allow
+> > > > > >          * the file block size to change if there's anything in the page cache.
+> > > > > >          * In theory, fuse servers should never be doing this.
+> > > > > >          */
+> > > > > >         if (inode->i_mapping->nrpages > 0) {
+> > > > > >                 WARN_ON(inode->i_blkbits != new_blkbits &&
+> > > > > >                         inode->i_mapping->nrpages > 0);
+> > > > > >                 return;
+> > > > > >         }
+> > > > > >
+> > > > > > set_it:
+> > > > > >         inode->i_blkbits = new_blkbits;
+> > > > > > }
+> > > > > >
+> > > > > > https://git.kernel.org/pub/scm/linux/kernel/git/djwong/xfs-linux.git/commit/?h=fuse-iomap-attrs&id=da9b25d994c1140aae2f5ebf10e54d0872f5c884
+> > > > > >
+> > > > > > --D
+> > > > > >
+> > > > > > >
+> > > > > > > Thanks,
+> > > > > > > Joanne
+> > > > > > >
+> > >
 
