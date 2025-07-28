@@ -2,122 +2,133 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 50A4FC83F17
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 17:55:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8189FC83F26
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 18:17:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E807A6B0095; Mon, 28 Jul 2025 13:55:56 -0400 (EDT)
+	id 979F16B0088; Mon, 28 Jul 2025 14:17:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E57DA6B0096; Mon, 28 Jul 2025 13:55:56 -0400 (EDT)
+	id 92A9B6B0089; Mon, 28 Jul 2025 14:17:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D95636B0098; Mon, 28 Jul 2025 13:55:56 -0400 (EDT)
+	id 8407A6B008A; Mon, 28 Jul 2025 14:17:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C89C66B0095
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 13:55:56 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 496E7133AAA
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 17:55:56 +0000 (UTC)
-X-FDA: 83714426712.10.61386AA
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 5F910A0003
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 17:55:54 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ByTuySPE;
-	spf=pass (imf25.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7667C6B0088
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 14:17:55 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 264F71CFBBA
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 18:17:55 +0000 (UTC)
+X-FDA: 83714482110.15.9C70FD2
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 164AC12000A
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 18:17:52 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=RoE5P4Bw;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of asml.silence@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=asml.silence@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753726673; a=rsa-sha256;
+	cv=none;
+	b=wYvazv0pshAN4YKvdRckPfvIc8lS8ogjQWmZ16qlaFIQapUEDrrS53qAoCSXfE73ZU/V8y
+	fUD5bJW0ijs6Kw7RqimO5nI3nlH37ZF0ie6lfyHoLtzzaRgwT2d0Pxx27T3+Ru6pleKpPu
+	BVlVABcrNvNkzT655JADZxemjYhs4Ko=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=RoE5P4Bw;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of asml.silence@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=asml.silence@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753725354;
+	s=arc-20220608; t=1753726673;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aobxU+eSgbfZ9X4crn912/FDn8oN2UrA+EAoV9ASOEk=;
-	b=4pBUd7SWFvB/e3x2hL440mTsx02UhvdE/uaxtX6LpqY4dfiqoMgbtgdp0i5f1w5DT+D6v6
-	1JNWiqDIjlJw6iMNij+AXpONPvn0XWRQTrwuP9QghxytLM1TWbtmB/CBD4Y1z3GKh2OzpT
-	npAqfxN2aLy7AqyuD9VlE3oAPCpXkgc=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ByTuySPE;
-	spf=pass (imf25.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753725354; a=rsa-sha256;
-	cv=none;
-	b=nmKvak1LdIkj41y9zXJjqrp33G2xrC3MRshhSNA6hzWxIvNuLH7VnHppn2e02isVABdl92
-	FoIXFYi00H19vKOhMjqjMeveYEUaTrxlmjQD/ffwmSi6/NKl4FM3Dkyxvf8nYm91rk3ZGr
-	suWN0jlDRXMuItngSR7H/9rpjnz03vo=
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4aeb2e06b82so9744501cf.2
-        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 10:55:54 -0700 (PDT)
+	bh=2XImG3RY7RQ20GriC3ThDwzyOsZ+ZnkQcvN3PF0GjwU=;
+	b=xnFevpqbuMiIsKxaGx9+PppRolz5CscQEDHFsmXKKRp7VLVq5nuuAuksUVk4gVvYAowsOS
+	Zqcnx3VBvf/RWAzA2E9DiCZ2e+Q0lcuIOj7GAE+sr1s8f9YDBeJkJOV8oJf96J1k0W0GGe
+	TIU+mTm4F4VwFnONUHNNDoO6OEMSy48=
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-60c4521ae2cso8417419a12.0
+        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 11:17:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753725353; x=1754330153; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aobxU+eSgbfZ9X4crn912/FDn8oN2UrA+EAoV9ASOEk=;
-        b=ByTuySPEtrP5jYqLElpl7yZhVEFf+K7VNsn1ph+T88MVN4v2553/w5izGXddzY6aZZ
-         3JFA1LdzrjGF4asPqAQdsfAAeglF9Yzrve9p6rYjweKWH3GMIClyNAsfYxcqGHIyhGnt
-         ajQo8BfSQavkLGG+2XLieNKF6A7paC5PCQBCdv3RvXkeuwRnQ5FI1KD2XUUzjg3UHlD2
-         GwV1sji4JCKxJtOO9iwx6VUkYHUtDemDoF+2YoRXn9sHznWG1R4b3pMszAwMv6KHHKxp
-         ksht6yhHv2emukKeKncR34wbWoFj6UPJP5tzv3HxEmptmxQBxLsVEAjd0I1yL1AmUnbt
-         qc5A==
+        d=gmail.com; s=20230601; t=1753726671; x=1754331471; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2XImG3RY7RQ20GriC3ThDwzyOsZ+ZnkQcvN3PF0GjwU=;
+        b=RoE5P4BwIsRp8hC7z+oPz5cHyxypEkhuoKoC0ntGBy253cqhSNNIubbOsZPFqPBsDO
+         eHmVC3GGWXWkUDFEQuhB5RobFpRK1zGQQw6iEVWWgmxqZzS1qTmzh8/5p8xl+/3w7xAQ
+         1TWZeBuk1uJYrnehN8HfsgB+bhc6JCXh2Z9OJ4LWMBS3tfJIoFrI8ngApq67gOJDscAe
+         Dy9wVwxj/0r4BoIbrTa+flA7d0D2kLJWzhqS96KWXpJwVRbSvwGoPCz3d7KjmslEy7F7
+         C0Uufm9f7CrKYqQ/emZ+NhoYybgxpWu4vhBwOiq0MNCZPv+FzqFjTcdzOK7eBV5UN6bm
+         XP1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753725353; x=1754330153;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aobxU+eSgbfZ9X4crn912/FDn8oN2UrA+EAoV9ASOEk=;
-        b=WJdn2/gp1P7u68PoNG2O1z1+70jxjX6xjyJdn3A3Zq8AHg+dO9MxKNlYwjS6B5JUQs
-         txXQ9PEIGGL1v5zwhji5axLJXHEzaRwHorls1zd+zrP5lcq8N1qtQY4XV/VzazoiObMM
-         sgmL/ajkf2aostaIpipN2bqinNL7oGMm2AgVL3tGPcKhiTNgeyIv4bblLlS9hEWORvpW
-         8xgFK8KgtfTGkl+zGFYecWksmav6PpJcnIBLXwtE2g81IZjm96spxyDuiSDCfFZYuz0j
-         Tpc9cOcpmCSpd6n9Kj/Br9AWuVD4oc9fPVpjvmdWTXuxhDo5Pzo+hajMFckNFA1mLsZH
-         vnQw==
-X-Forwarded-Encrypted: i=1; AJvYcCXJ/2Z67V1hq3DOhyKsthESdINIAl/GiCmuCJJhGFwBa89FLkR0FUb03nFOoiEDB2jL0eG4f/3Acw==@kvack.org
-X-Gm-Message-State: AOJu0YwdNt6eCzMV1SuPosFTYYFtiiZwhHBxzoJIvAOtCyOV6lP+jk8U
-	iP7432croYZzspTdVyl+CG15HhcSmTntOJ/sua1UhwQsR6QkYZVy1CphUFy87COripmZ9eRawkg
-	jerFv+pbIxKyB1+/mVTD1bLffjjaWafOZWQh/
-X-Gm-Gg: ASbGncveNmnTZJVLBzLNL1/TyVyzn7Sukh9Krq3i+0Th+SMI0/zEqWeOU3GtAquAioN
-	wcqyzXzN/vIew/JGxOx/2Wr3ZbMPJ6FHViBHIp/beifj+HWFdB2Qm9DtExB/YN5Ex0qVh6DUDvP
-	xtVDfpLTqF+yW/CbDAGxQ4PU7qDfmDHUSRWMMLg5YO5dHLgakZBo1/9fkxUXGDXZolSw32rOJD4
-	O/VsXY=
-X-Google-Smtp-Source: AGHT+IFeHGuxtySi7CtxaGpGpFO7wyl1QhTknE5mS9v2TjN9AvzGwL7VxfaXPQJETF58ke+oTluka4/SUlAIU2Zvi+s=
-X-Received: by 2002:ac8:594e:0:b0:4ab:ab99:4de with SMTP id
- d75a77b69052e-4ae8f065189mr200798841cf.26.1753725353322; Mon, 28 Jul 2025
- 10:55:53 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1753726671; x=1754331471;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2XImG3RY7RQ20GriC3ThDwzyOsZ+ZnkQcvN3PF0GjwU=;
+        b=alHFGM31e8x1vFK6rMc/6b7wGysChYSLpcblk8ph6sonQ1vySTFmshUApMBhKGWlQj
+         gXJZaGID11Rde+cetKrlvLGDHirmzN0WK/Iw4OV/LfFPaUGRjMUUb9r9YmXbhr9BHq+F
+         HiDn4eK67Hou+epviaDhdcoZPK8QzOgcBLv2ui+f9B28SVjiStIHH76E++nSn3q6SMQL
+         SLIGGQTfcjIbwRQ98mO2iCh+MN+ZpcmIkC56j60S0KoJ9JGryhbPvGqEXRSW2RtRmsBT
+         fLlqcsAwG8k+xNa1drCDPwgy7Dhf/Xs5ltN5fJNaSXZM2v7vnJZ7PeWFOqANV+FIBet0
+         wTQA==
+X-Forwarded-Encrypted: i=1; AJvYcCUZ76HFUQhv11X+Dq8OY44EbBVMpZmdYRYdl3alH1HVOqlRMRI9qxTfqjYi/EhxgnQwaPVAqn9XwQ==@kvack.org
+X-Gm-Message-State: AOJu0Yxhv3QTdGye/zOFt71Kt7OmGnRNh2e5uOqWSdp8/76ZBhpm+9HD
+	Bsx8QG24pIOZq512iITXj1pauQhbUyNDooJdYHVhhUIhbhuDwjp65cjV
+X-Gm-Gg: ASbGncvY2vVGrqxEU7bYvuWtegjyB79exNCHnR0HnbDPVSPttHOjOcl9fmRa3MUOL5h
+	+hneajr5vF2iG+ak790Tqrh3yxc5w42q4qJggTMK4GRhGe1VX+hBSymhdRQUN6cZ/W+meMnJ0cI
+	aTbocl9Dhu1+f9tA7az87sJWtwVEyJH3oiA5BOSubnDSs0ScWxtirpxwnyPWW4Eg/duhQnj+qNC
+	g0XapVCtJJGrlhoFZjvkAI/f1lUJMsxtGmKf0RCg+0+XDXFcTj1oY7jWPYploO4uW91drQuI7Le
+	/LK/xjafJKH1JfCTRHMuyHtDVPppm9/LcMmIfmOBtwQDpuQ/yxrWXyz71e7rP//rrIbAdiVruBZ
+	7B9YFu40zYiIYZolGLUzkK1i87nMNB5c=
+X-Google-Smtp-Source: AGHT+IHE61hHXgBHYY7mn+Rm9n8UNepBWRf5ECBwt+Kj2Dy/Or/52jRxs31VW64wRWx15L3XVNwb2g==
+X-Received: by 2002:a05:6402:524a:b0:602:1d01:286a with SMTP id 4fb4d7f45d1cf-614f1bdd941mr12122182a12.6.1753726671077;
+        Mon, 28 Jul 2025 11:17:51 -0700 (PDT)
+Received: from [192.168.8.100] ([185.69.144.164])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-615400cebf0sm1481690a12.61.2025.07.28.11.17.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Jul 2025 11:17:50 -0700 (PDT)
+Message-ID: <72861320-2b54-47da-993d-a82050cf56c2@gmail.com>
+Date: Mon, 28 Jul 2025 19:19:11 +0100
 MIME-Version: 1.0
-References: <CA+G9fYs5AdVM-T2Tf3LciNCwLZEHetcnSkHsjZajVwwpM2HmJw@mail.gmail.com>
- <20250723144637.GW2672070@frogsfrogsfrogs> <CAJnrk1Z7wcB8uKWcrAuRAZ8B-f8SKnOuwtEr-=cHa+ApR_sgXQ@mail.gmail.com>
- <20250723212020.GY2672070@frogsfrogsfrogs> <CAJnrk1bFWRTGnpNhW_9MwSYZw3qPnPXZBeiwtPSrMhCvb9C3qg@mail.gmail.com>
- <CAJnrk1byTVJtuOyAyZSVYrusjhA-bW6pxBOQQopgHHbD3cDUHw@mail.gmail.com>
- <CAJnrk1ZYR=hM5k90H57tOv=fe6F-r8dO+f3wNuCT_w3j8YNYNQ@mail.gmail.com> <aIe0ouF9tsuIO58_@casper.infradead.org>
-In-Reply-To: <aIe0ouF9tsuIO58_@casper.infradead.org>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Mon, 28 Jul 2025 10:55:42 -0700
-X-Gm-Features: Ac12FXyI95ILYrO-ngDWtex6vWFELuWEcDgcFbDIGZdP_N1ojOFhNj_bSwihkWo
-Message-ID: <CAJnrk1aXvVf7jaK9_2PamK5X+1b+crT+kmn8vktv0nxqCtcW8g@mail.gmail.com>
-Subject: Re: next-20250721 arm64 16K and 64K page size WARNING fs fuse file.c
- at fuse_iomap_writeback_range
-To: Matthew Wilcox <willy@infradead.org>
-Cc: "Darrick J. Wong" <djwong@kernel.org>, Naresh Kamboju <naresh.kamboju@linaro.org>, 
-	linux-fsdevel@vger.kernel.org, linux-mm <linux-mm@kvack.org>, 
-	linux-xfs@vger.kernel.org, open list <linux-kernel@vger.kernel.org>, 
-	lkft-triage@lists.linaro.org, Linux Regressions <regressions@lists.linux.dev>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, Christian Brauner <brauner@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <liam.howlett@oracle.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Dan Carpenter <dan.carpenter@linaro.org>, 
-	Anders Roxell <anders.roxell@linaro.org>, Ben Copeland <benjamin.copeland@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v9 3/8] page_pool: access ->pp_magic through
+ struct netmem_desc in page_pool_page_is_pp()
+To: Byungchul Park <byungchul@sk.com>
+Cc: Mina Almasry <almasrymina@google.com>,
+ David Hildenbrand <david@redhat.com>,
+ "willy@infradead.org" <willy@infradead.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, kernel_team@skhynix.com,
+ kuba@kernel.org, ilias.apalodimas@linaro.org, harry.yoo@oracle.com,
+ hawk@kernel.org, akpm@linux-foundation.org, davem@davemloft.net,
+ john.fastabend@gmail.com, andrew+netdev@lunn.ch, toke@redhat.com,
+ tariqt@nvidia.com, edumazet@google.com, pabeni@redhat.com,
+ saeedm@nvidia.com, leon@kernel.org, ast@kernel.org, daniel@iogearbox.net,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, horms@kernel.org,
+ linux-rdma@vger.kernel.org, bpf@vger.kernel.org, vishal.moola@gmail.com,
+ hannes@cmpxchg.org, ziy@nvidia.com, jackmanb@google.com
+References: <20250710082807.27402-1-byungchul@sk.com>
+ <20250710082807.27402-4-byungchul@sk.com>
+ <CAHS8izMXkyGvYmf1u6r_kMY_QGSOoSCECkF0QJC4pdKx+DOq0A@mail.gmail.com>
+ <20250711011435.GC40145@system.software.com>
+ <582f41c0-2742-4400-9c81-0d46bf4e8314@gmail.com>
+ <20250717030858.GA26168@system.software.com>
+ <20250722012324.GA63367@system.software.com>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <20250722012324.GA63367@system.software.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 164AC12000A
+X-Stat-Signature: cm5j9et3mryynw1erp6q796zmsuawri7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5F910A0003
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 1tohy5azdnz1i7fswsx4eyhy4o8118it
-X-HE-Tag: 1753725354-798606
-X-HE-Meta: U2FsdGVkX1+NkrF1hUGwMJWUrBhiAXBBiEbjFh812vv06zoYuHYwdXBZY2wtNvYhda6zAdF+cvw0E86tIz7b77omJKTcD/eIwdp0y7B5TKgQF1TlNNb4Rq/lwSLdWKbcvpyq2mSqiApAqnE2L7yetatXkkK4tLkC3jRT8nlJsyV8gsR3E6wnaZFtSWPUilmAvh5uONqFYYp0P6VpuNdiacEQ45RsbmUd4GCytjeVvm37qNndkzVX+KGs3uWtHKIrbb1cqEXALx5ZL+IC5U26mSZc3+a871MhYoZNuXB7AliqhiMXtVUjiyb/a6/K8oE4swUc7RwjkfW8J/ou5wn5gwsN874vI39lBrWlQ20FqZuwQUgrDBVU5tXuVlqGmJ257WayGZqJ9Y6JJhjhBocMdD1/lqfgK9ajAzJ9CRMROiZt60sYjmd3xc1xob9f8RqA0Gm1iwj9EMMgzzJHVbrcJDIToDl0B7YfM3s4nwPW+jP8o2xpX35ahKTv8N6qrl5Vr31p1g9s6aYqil+F7aM9ZqRFWpYmnh3R/H0f/2kuRE2iiY3cQ9s/LUBPpJfnSR+piEk8QG3NVlZYOEl41muVaYkI8kbfbDCQTA7RrHMAU/oJ4AS2PgFjNtKifwxXmOAgjweuu8W4nONzQ44FObH3U/3t4xZ9npRkIahPcfgmf8+GmGTSnpYOR6PC+PsPuqvkJk5KSjLdZAAGPLkQ756X3/viTYWiVb+SRJ+3LxoMepz72k88X244u2cVE6vlJ0ESqXaoZIWtGtQ52+P/sHTHihTiIymPPCHUO9ZaKy5JS2a8lWhHBPzSoSK283OM3MdA59WmV8xW6F+0C/wDt7RNOj9G3p1l/BcycmR9ZDbn5RQkMpJ6R73EEsGSSZ3lxzE56Dbyq7YjqAdsWfHKImTGIAN8X6RuESjCs/nXbhRRa/G49bQQG30LEdGzc0uWVkSV635RRhlj/VnbDEKQbYC
- k7PkNL3A
- oRLDVTwXXrNzBv3lwmoLdOucyocHq0zQUkQ308bZG9YaCN6JSSKNgn2i7M63wwCAFGHmRHkQ8iZNAiX5+1s3lEV9Yftfvfj9tFssRhRz4k2yXMf5kESogpLpx+sdsKigdXf4GmP4lJYQCTav0ZNCa5nhWUhWOHTQ1JYhBwn9NPzrscWyKYElyVAZ/nZ6yeaYpQlF8/w73VdXgseZq4y1TNlZC55PMSSoWpHsIQ1vbacq1zFoOLauCNxSgePXlsZsUjZ0iyFBQsYjL5LTT4eyZnZ3j0gCm3Jg8GfeUes27b0qnGOYB+5f3u21sjjoqM80Ux9sw2UExwXqWR1/rycRU/2/S9vvCva71k0mQAxcqGf2uEGjuV/yTNzRA0MHvflxdgyIRGzadmnyPwLPQnZEvoyL7vFBQHQzFxwz4uxFZID9W0hVks1ahFSZMhoULM/ZvjflZl5y2iKRwpNMEy/7QMe2X53cNx2tTjmbFZiDR4mr5vG4INUKTxRIbQQ==
+X-HE-Tag: 1753726672-829033
+X-HE-Meta: U2FsdGVkX19IL8w8RnRV+FeTd2avI3L3PZEiMBvnco5b4F0IPHdwhGCwF6oek7SK/+G3/FvvA24V8+9A9/AZXVQ8/ffhUWE1ggA0Hh0WOKg5riATe9Z15kB67J3nYu1Pw1105xe77dLFRT6EPLHxinGH64h0ylvUOCzJPh7YpyjP3zu4jNuHDH8zGv9xsnKW9isqYEah3C0+rwIdR7ZgOkPfBmFHL3mpOkcaf3h9XLFSWUITkzbAaRvmdGZz3K7PMueZlty5i8oq02Mq3KEpJiHC/ajFFrufUuaY+gUCE8VYYZLr6bOmDXYTHCWbPi4nsy/CosPUi8xOyHjAIqpewyTVnMjFTyaebRIg6mVc/2O8qq8EQ+rBCn+/FmS0HsEefptL8DnLwbfp/idZ8uMHhP8ddTDmOS6s85uBgZdGes/mE0bvr6VuMwHjY9K5Cu5M3Z7hl9BQSCVncaDmQnaxuJCCSNA3LZqpdznlo++LxKpOgfokGFYtpjcmNa+PNUYXvkNvrD8fTNT6uiRuvK2A6RssbWxzH4qLQrk2BuLfqS6PUFqfbIY48rCJXAk2y46pSbRWBEb0nFjye2Y2bFSH0JOybrAypHpoL/mCgvYvru0sgQkC3Rw81xBBda32GB0+UlFCsjy+8KGrXpG56U1oeiqzk6FunjZii/09+btqcWLyFah15Z/hgZl8ZTWCmdZFHubdjhE281j31Y0MLsD3ToVzGwhEgjJFot858USYukzYOdhL3HUqVUVVip/nYl/RfQysuA9RFk60cVKNARATQwxVdobr5nKqfJTURHkvegYFMCabvOd/gZ8r8ytSLwQ7rDHfQncJWvlf9IrSyqGcx/7W9V8ROjxIRPSYF/gpk06MNQQGo87SQu/Djmjk3QclM0PjJYahtkt+UpkRvVowDrYjBuPoyFIssX25oDvpUP/47pL12h9QacAzAgYdoblo9Plv75N6pJOoQ/l4Uez
+ damLPPeN
+ am3Uk9uiH7Xs1+0zw/MF6BiBcP+zRj/0Rpoyqg9ytny4lbbrP3FEFJeq6CiHSOj5PmdCpHDaA2Ig259m0GtrYBPpCAmd/0pNZJ+tP5V8Ll2VU07lLyEC/n1v1a7baVA6WEmuTZpBoJSdtxZdlmOhTA3ChPdTxiY3Up2ZuY3W95eDK3wsZRsxqwY+pYKp00aJCsH/AYU8JKIPmTJR8LF7TOBtAxF3Mxcqn2j8ZvW5agzTkIrjg/kqjCWD2hLtRNaBAjrlwUeCad57NRfBzQVaEH/MxIxbKzbJFaImtrjV3qqMZwuGKYc8Bc8m9/Tc0zQNbaK0fdav/NGG8sg/FUAFlB3icI/eoXd6/XAHMb+zuQObO81EetHrvvWsi6paZpKD2GVY+F01MKTRoivNFBA3rDDNmUQqfq1pnSiXUZ19hOHkICX2EfwSi+Yc9DgrmhUbHj7qBr6HwUOpRBTCjdoTKJXRa1HrxStEfVbCjWAN3O5H267hXV7ok1k61O5xCmFtmATURWlzTIEksGMEgMKeRN7y+Kuyh6G1Ct4NKUJYffxNb76YP1+1Uw4lEyv2wjuO0MgvXhhrbo1PyyMApkPboipW+BKYlbkXTSHv3MNqEMjbFa3zHp/3J4JygmnEaGlT2D7tZW06EE8I9as2VixYiCQhLHoA+CPmfqpT6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,37 +137,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 28, 2025 at 10:34=E2=80=AFAM Matthew Wilcox <willy@infradead.or=
-g> wrote:
->
-> On Fri, Jul 25, 2025 at 06:16:15PM -0700, Joanne Koong wrote:
-> > > > > > Also, I just noticed that apparently the blocksize can change
-> > > > > > dynamically for an inode in fuse through getattr replies from t=
-he
-> > > > > > server (see fuse_change_attributes_common()). This is a problem=
- since
-> > > > > > the iomap uses inode->i_blkbits for reading/writing to the bitm=
-ap. I
-> > > > > > think we will have to cache the inode blkbits in the iomap_foli=
-o_state
-> > > > > > struct unfortunately :( I'll think about this some more and sen=
-d out a
-> > > > > > patch for this.
->
-> Does this actually happen in practice, once you've started _using_ the
-> block device?  Rather than all this complicated stuff to invalidate the
-> page cache based on the fuse server telling us something, maybe just
-> declare the server to be misbehaving and shut the whole filesystem down?
->
+On 7/22/25 02:23, Byungchul Park wrote:
+> On Thu, Jul 17, 2025 at 12:08:58PM +0900, Byungchul Park wrote:
+>> On Sat, Jul 12, 2025 at 02:58:14PM +0100, Pavel Begunkov wrote:
+>>> On 7/11/25 02:14, Byungchul Park wrote:
+...>>> commit 8fc2347fb3ff4a3fc7929c70a5a21e1128935d4a
+>>> Author: Pavel Begunkov <asml.silence@gmail.com>
+>>> Date:   Sat Jul 12 14:29:52 2025 +0100
+>>>
+>>>      net/mm: use PGTY for tracking page pool pages
+>>>
+>>>      Currently, we use page->pp_magic to determine whether a page belongs to
+>>>      a page pool. It's not ideal as the field is aliased with other page
+>>>      types, and thus needs to to rely on elaborated rules to work. Add a new
+>>>      page type for page pool.
+>>
+>> Hi Pavel,
+>>
+>> I need this work to be done to remove ->pp_magic in struct page.  Will
+>> you let me work on this work?  Or can you please refine and post this
+> 
+> No response I got.  Thus, I started.  I hope you understand.
+Missed the first message and then got busy. Anyway, sure, go ahead.
 
-I don't think this case is likely at all but I guess one scenario
-where the server might want to change the block size midway through is
-if they send the data to some network filesystem on the backend and if
-that backend shuts down or is at full capacity for whatever reason and
-they need to migrate to another backend that uses a different block
-size then I guess this would be useful for that.
+-- 
+Pavel Begunkov
 
-fuse currently does allow the block size to be changed dynamically so
-I'm not sure if we can change that behavior without breaking backwards
-compatibility.
 
