@@ -2,122 +2,180 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B4BB9C87FC9
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 14:51:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 912E9C83F17
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 15:06:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE51A6B0088; Mon, 28 Jul 2025 10:51:15 -0400 (EDT)
+	id 0BA646B008A; Mon, 28 Jul 2025 11:06:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBCF76B0089; Mon, 28 Jul 2025 10:51:15 -0400 (EDT)
+	id 06D836B008C; Mon, 28 Jul 2025 11:06:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CABC96B008A; Mon, 28 Jul 2025 10:51:15 -0400 (EDT)
+	id EC3776B0092; Mon, 28 Jul 2025 11:06:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BC76C6B0088
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 10:51:15 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 18E2B1402C4
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 14:51:15 +0000 (UTC)
-X-FDA: 83713961310.29.151FDB3
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 2072240005
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 14:51:12 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=AuqEWPO4;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf27.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.181 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id DD7D66B008A
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 11:06:47 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 96DEC802F3
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 15:06:47 +0000 (UTC)
+X-FDA: 83714000454.02.7689060
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 06015140010
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 15:06:44 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ESPW5u1A;
+	spf=pass (imf26.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753715205; a=rsa-sha256;
+	cv=none;
+	b=2VEo9nBoMUh0jfuImyiFGlRbpTi1YBhMfHhYaN1GorkC34Yul9GsYvsOzgFpfK2cH1/71U
+	ok3EOAsBs15uhX7uxnYS54HBDqEs5wFwzTw6LoEV6EHf7pk83O7RpkGKEvkx9CEqi/O4IC
+	Qq+lStsx3CFEzeHwgUvhT9yBllBSbx0=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ESPW5u1A;
+	spf=pass (imf26.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753714273;
+	s=arc-20220608; t=1753715205;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=plhcie/uWEJ2l8MLaYw41+bnUS5YGYhxQ5JWVcQv7gs=;
-	b=1HakLG4Id7jzvhyZKciwUFzhfUSUTLZmpa/8AXZV+Mo3VpN+wMUmXsPaKxA1vaOD70j/2u
-	VISzctXEykvYOZeGI1aVkSfj2N6xjQBNncNY7BXP5TfX9FvPqO0NXwaF4rRpypdFE4cw0i
-	o1KYxX38MAJc8vWFWwt4OyD4O2h5ZsA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753714273; a=rsa-sha256;
-	cv=none;
-	b=zaF1kcugA8X7N+ELF8CFcbdD7A9oZjwLS1Dm2bmU4cEWHpKbnajNLotYZx/ypSBPxc96TF
-	CUDzPPfkevrYhFm9GOrNBOb6KI91NvWSYYNry7Et7ZFIyhxqSFN7QpsovxDPhl1aW0wWgu
-	kClC0WUsz98A0JG8dSwhnhQm2J0dI4Y=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=AuqEWPO4;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf27.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.181 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-7183d264e55so41103887b3.2
-        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 07:51:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753714272; x=1754319072; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=plhcie/uWEJ2l8MLaYw41+bnUS5YGYhxQ5JWVcQv7gs=;
-        b=AuqEWPO40ik0m635qniQrRuYtRIMes1gDxTmrvuu6AJ9xmdXPCtZB3UrbOzcU8p9Qo
-         EZ2qnCyAOQk1hGX6Uy767PtnXEeFqN0XE5YxtkOyEeFJhkHDj4LJRnlf6+zKJm/azJ1Z
-         Myig7TN49PY1UxHflZ3gj140huTWxaImi82jQ3pQlktVdGcoNCPQQquvvr52iHqB93zA
-         nWe6edWDGnJ/LdSETLuv4dqWRTtd89ilKl9/reImLSJ+YngImlQciO0ROP1xZqtYYo4l
-         0KMcYHLt0zz8mzoKPkpjbDsji3v6ILaRDqS23aft4ZGXQpsTL7QhzHaV+5gWABMabi5Y
-         8IXA==
+	bh=YUi1XDTtiYjcSAgdzLC88rh3X0hvU+3avtLd78dgEV8=;
+	b=Mq+VXDxlAshcI+nQvSPQNHsMq+MexBL7IjyHSJ3hxCGBZpZZ8JKq4VNMbWkKXG9vpMonbG
+	P7StQU2Y5Jd6eG52BEhKqASzypC8gvO9WBTRSsdoufnE0KmK3roUvY7H5StGEdRQ409o8e
+	hokkmEsL8FCY77DNtvBmz0xEb7v+0/E=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1753715204;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=YUi1XDTtiYjcSAgdzLC88rh3X0hvU+3avtLd78dgEV8=;
+	b=ESPW5u1AmU4V+otF6HX4fm7r5l3DrFiYszxRO1xdXwhaLej/56pilRvn1UUbyK9VZ/uCkc
+	E2yQa8y4Qy5KX0R57VI3bMXGIiAnm0iq4qKu45LDXvxaGDxH838BxuKHVAmAp5lErbjLiK
+	QwZvYurfggjBtsOIFPPoYateLAdTI1U=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-638-uiaPsNtpMlaq-Qc7NvU8iw-1; Mon, 28 Jul 2025 11:06:43 -0400
+X-MC-Unique: uiaPsNtpMlaq-Qc7NvU8iw-1
+X-Mimecast-MFC-AGG-ID: uiaPsNtpMlaq-Qc7NvU8iw_1753715202
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45600d19a2aso34805685e9.1
+        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 08:06:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753714272; x=1754319072;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=plhcie/uWEJ2l8MLaYw41+bnUS5YGYhxQ5JWVcQv7gs=;
-        b=E+w0yraXwmMk2pSCShFfWt/71DTn+jWOIjFoEaduHIsq2cMsYdFBrdqy6BdGmatBs3
-         CU/sJo85m42qndnGxMzTpkEI4bb4UA2ErhuiIK8jMPRlWEQSHmo6NoikaiX2P6TrZHd1
-         ktgNYqu6P0mudPRU+e+NzImBxQiqQHBOYnersh7bwRnATptE7tt2QqXpcgMf22tNTRPo
-         vmkri8qHZIy0wuT6lqMxPve3YvRZZwBvFDWvoFrhCPg/j68bsoN6Y0bOW8GMJMy4RwrC
-         FCjDB3epGvNUtVShrBgGDw+hZHGSQqWlRup0qJ8azxPuzjgnd8epsnFIf2fjtXsZSRRa
-         A8Vw==
-X-Forwarded-Encrypted: i=1; AJvYcCW7BTFK0nZwnKE7FJ5mHWehgpJGQMBg6MMntT8ARixRgDWF6xk0RbhbN5DtUWgupmEeI7Wi7XKSHA==@kvack.org
-X-Gm-Message-State: AOJu0YwytwYxrsuRoopNLTq2UYCIKxp2MTAYwuiXO8sS/lo9flZ6rA57
-	edjxka8M/eUYMgqpq/+P6gg5/2F4mujzNajrFJ97GvMjbaoeP1YIcv7X
-X-Gm-Gg: ASbGncvl+qX57wITp4AWtWXfRxFryDFOfdlwIgReOtp+tGFwGqGFNeYXNm0TDpV+K1f
-	5k5OznmPpm3q1nCMP3CWlcNvtzP1ce2fierHTkogt6jCLauuIrPbLtC9Ip+V0DbTWaaHxgVDnt+
-	rRn3BfkcMBx27/a+987JFYzVnoPlktzkQkbihj24p+wiX6GM1t0pucC411PIv2U4OzphAAk6pg9
-	Um83bZp0fV2M8Km1Vlb6gjyfMp932rsR39HIPq3wUUpBJE8W6n55rNPZ0yqcw8d0eCbEIpMaAg2
-	y1aJzHP+k5uoFJ+78i4Zz47GxQxjVoQCanPAr31fM5lMUa/XURgoLt4DMNMbEB51EcgG5z/s4DD
-	oesQ1iLN0GPcghimzh0yc1w==
-X-Google-Smtp-Source: AGHT+IFqruB0onDGfKbcBKOJcNNcVE2gI40uibzJ64RLl9KiQFHtKm5sGT8a7BgrgZDLUKDPK7Q3kw==
-X-Received: by 2002:a05:690c:610a:b0:719:e1de:806a with SMTP id 00721157ae682-719e328a757mr160433217b3.2.1753714271906;
-        Mon, 28 Jul 2025 07:51:11 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:5b::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-719f215500dsm13050867b3.10.2025.07.28.07.51.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Jul 2025 07:51:11 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Alistair Popple <apopple@nvidia.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH] mempolicy: Clarify what RECLAIM_ZONE means
-Date: Mon, 28 Jul 2025 07:51:07 -0700
-Message-ID: <20250728145109.1524733-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <87ms8p2iop.fsf@DESKTOP-5N7EMDA>
-References: 
+        d=1e100.net; s=20230601; t=1753715202; x=1754320002;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=YUi1XDTtiYjcSAgdzLC88rh3X0hvU+3avtLd78dgEV8=;
+        b=gvdWZl82oVkak9g6zzl/J4Q4jEwm8TGUT3lVDGpL2Jl4JAAjx9573rcX2JN8anWKAG
+         5bBaDtr2av2mzUqNbYH338nASOS9ieJGRhnm5Kywps7nDz6TKBrysnEhZpqAv0ZoV9Pb
+         ay5MoUp4xh9EjrmLRLJ+2VeaVQ31LjIPS8dlyrz/b4rQ7Mz/GqaYJ6kReM9fmR+NrSPN
+         RzhxgJAe5EFoIuumPi2TiYAhpWpGpqo0o7iGXgp6Se9K93EB69gz6t1AnwmaBHD/qMMZ
+         sLMCmhTzWviFZLBO+D8aPKMTJzK5c3q6fAgK5ORY09ivsNhyxKbJZhAyBqDwOrSu1SgK
+         Aetg==
+X-Forwarded-Encrypted: i=1; AJvYcCWv6JzYRvUEFqzV5vlg0DGe484FJTGqSIvStzI2Ik0pca3obEfpWDrK3ZMbUvbCeSGNv+qod3/S2g==@kvack.org
+X-Gm-Message-State: AOJu0YxAoOG5kb8wMRMjMTQ85XG966mKfHm9HQvlgcrsN7SOUQHtqINe
+	a0hHT0cPOxe2ctmfdzXf/Kw6vDJFP69xwzHm2c08+WgmRBM9wMEV3rxObBrThvjMB238mFhpt2p
+	d1VIPHgyMiefaOW0ZFYlZZiIhVdJbyMxw+aaHtZToFNyHdcn9B5CB
+X-Gm-Gg: ASbGncsDwkCz1npUaAs2cCgOz0SiwHvimE4A0Z6oFBEVwyRzUZpaycUKqhYoBjUlicN
+	JlSQH4Bg9YFk4sU5lcJc1rSh7vDKHoe7Vp6ltzYzgAn8xMHULEMNj/1bdPlSoqtxX2zxLWzSNzn
+	HRr0Ag5mXBVZmSKOrCWeU8aDagVrrUzHCbXuunad1/CURcQS0ORtlku/od/1ylOWnBwaqB5Kb/D
+	FbF7CX0f96hdj2/3/zR3cVWnfybMrghhEHD4451KUSM35elYAV9ble1/natg96I5qNbKweWWXZC
+	4uOqlJDuP44OoSPAWGik9mHMUx4tgb4fopglZDw3NeeORwMPiNqiXttm3OrLPgkuRWCC0/Y5yQz
+	61NEyhFdgSZgiz059/1R+u0C9lASSfYW7r4l1sXK37lPMVRcIyDq3se96ezueEKAFbMI=
+X-Received: by 2002:a05:600c:83c9:b0:450:d04e:22d6 with SMTP id 5b1f17b1804b1-458762fcb8cmr93391175e9.7.1753715201618;
+        Mon, 28 Jul 2025 08:06:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH8y/k01+6pf881FBgdTOGh4dIwIsXNTHMk88WH2WhZwB/CzKNLtjbz7C+TgRP2GPYL26Xh3w==
+X-Received: by 2002:a05:600c:83c9:b0:450:d04e:22d6 with SMTP id 5b1f17b1804b1-458762fcb8cmr93390655e9.7.1753715200961;
+        Mon, 28 Jul 2025 08:06:40 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f47:2b00:c5f3:4053:2918:d17c? (p200300d82f472b00c5f340532918d17c.dip0.t-ipconnect.de. [2003:d8:2f47:2b00:c5f3:4053:2918:d17c])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4587ac58162sm101784195e9.18.2025.07.28.08.06.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Jul 2025 08:06:40 -0700 (PDT)
+Message-ID: <b9c72ab9-9687-4953-adfe-0a588a6dd0f7@redhat.com>
+Date: Mon, 28 Jul 2025 17:06:38 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2072240005
-X-Stat-Signature: 1y74acwr5chiq3zgzbyb34xkxuaoks31
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/5] selftests: prctl: introduce tests for disabling THPs
+ completely
+To: Usama Arif <usamaarif642@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Cc: linux-fsdevel@vger.kernel.org, corbet@lwn.net, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org, baohua@kernel.org,
+ shakeel.butt@linux.dev, riel@surriel.com, ziy@nvidia.com,
+ laoar.shao@gmail.com, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
+ npache@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ ryan.roberts@arm.com, vbabka@suse.cz, jannh@google.com,
+ Arnd Bergmann <arnd@arndb.de>, sj@kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, kernel-team@meta.com
+References: <20250725162258.1043176-1-usamaarif642@gmail.com>
+ <20250725162258.1043176-5-usamaarif642@gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ g3eXuA==
+Organization: Red Hat
+In-Reply-To: <20250725162258.1043176-5-usamaarif642@gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: uFHcbuZQqhKmXv266KbTOP5hbZHzMwRxKwnVsOYncxw_1753715202
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1753714272-633448
-X-HE-Meta: U2FsdGVkX1/5s1Tdf2M0R5ygKGVQ/YchL+z9hDsSdTGLPtiRElRJNQM01+Q6vmJnah7Y9H7Mq3htoH+y+lknt3F+HKptXGAiWF9m4F8Dmbu6BSB22y1ODBnvMXQW90lo2DFRuhukWMDVbAL0vMm+mCYeQTY8aSuquu1RE1ayd8nXLofPJFgJ/lzwNZ0mBw8zxDGZBtSYHd97moHCruVwvyjy0nSEEaiDp6lbNuN1veXZrA2k6MTJsjeUdsOYmC7rMt7Jrs5cuKkFlGcO04WFZ3AGuxMGFZrEKDlfA8esAIrtjtwd3SMcG452TmYiPo8AGqS60n5KUobas1aDCZy3JeA95jG6v6QF2+YrGVq+eJ1lahYcroUT517xwxv/30PZZIbh2ZjdFFjk3PCj7m3Z92lhLUicA8nAoFjN229lbfy5YmQJ00Rp/1s6xElKZlBAiDP1ipPrXHj0uHxiaggAXf+Sxyr2VsHYCNgtcR1ZbQNASXzihqODWCLS4VTc3AqbstJZ0mgu9w7mG9MoPC24NJTpQi+yS4oE00je++e+cOQGZofpXwxg3nIjCFFTe9etyArw+vjxCEkSF0hPwQbZCM6Fp2mdgJ0XImzrx1jMxDZ/B08MKwdSSaSwEPeyiCVDDJXCGrNrfLZrzqFyhZnmXmrftycS710vaI44UDSgVDnC2yDycTpX997OA/tFsyceBkm3KcHyOkj4Zb88FkebRdw6D3cNmFbIIezPu1njMP2KLQgG9s9HS3/SoFp6zPbEQ05Dg8GNyUx4zs/sgPg61agEz3pIL+R243+tP0By6QYh8boVY6FvOckLDm77BAwx8mIL6qXtq4FoxhWGZCxlCiyJTvgAy77ZM2/Neu2UWL67/c9WLyDNiXgnUBN2X5F0azzDotOjOdC10n699a5SBc+fPmQl43ZCAN0BRFYLq+YUeFCX3VELRFhcitVTnlHuSuDIRKH/SIbg7EjHKVq
- WtiK5GIP
- r4kD/ZB52V48cpTbKSieuMT5CaBG76UfAMZzYEkStxo2TanGg2iXwboGaEv1eQFqOIuVgkxymab5eExeocpRt0eina2OIaQpu5Ut7/f4gLHP5NHCZrOc73WUMC3LRG1uo0G/HyOD4nxzhCrYgBwo4ehM7aaPcZzXtz+E7QFvmYHUDb/bb8ytbsIGKT7iSxVTAH6TBcWLue+vOdrdOMpFeDyh5j2ROR/E5aiSMkavb3yElJsn3Mfrz/x8Zsna/Tt79RE6Z+yDM41YD/y+Os0BgZIgDoAbregtRH7F7hdqqeE0fnnO8y6I6bDC+lw326jI9NZb+7y6Pj+xOHt0v05NFLdcg5hEAXpsjKXscX6vWJWVK1QA3LLBoxLQZqjG/bmL5Y74J/62Cbn3oNMGOSJ1gnIT5VZjIli6UFGXljXQeBdJtZZrF17xy7CAZLyQau0tuptFE3oC0VI992DMqO3W+mueDp2G4hdOS/93KhvDebKIU/gOK3UCSB9kPKfGGbIddHHVZdWjBMf4nxDBPT5yl4SuuvlNv5gKqMcMAnjZPjsgG4owWcaB++ZLA9C8Dbp648wMqYT3Nf9NKijP6h1uLWh5AKQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 06015140010
+X-Stat-Signature: fmrituqdineem9pd5yq8quauoip7z9rc
+X-HE-Tag: 1753715204-671204
+X-HE-Meta: U2FsdGVkX19x0XPWX8ITh6cwd6bWflOVoaRHGPXaeMqchvHCMq3Ieq5hNv/yxjCi4Os1jnyqs+4xltlJP2kIughBLt1/qYjxBrwlES1sDineqzb4HybMdPPpUaaUHFXtRmY8ju4RflcirFveP5O6MEJUAgc4cyrAihWLpTynM86l6CQdDTC0koLNrdksNpEQIL5H03s1OoiDKtCosrW5R/BgFaRMmhNFURnlgcfn5zBpzCwzBjjZUnndkraPKyHvBaVCZaVSWoNNW4xWcO2MbplBfh0RxHf1MtuZw9IyEJPjf9h10XsBgrjO/qV9RtmJU9CEi2kWg9giX5WbsJTnOwzDgR9CN0afdAeGz7qHKjqH0KBbdH2oGeha3y7zNXVvxTNVNJVlrTm+e7FoQFC0Pa/yPmc8MktJJVaOmlN6oJlNtjSIMz2oMVPtFzwpiTlesd8VBU1HLNIgYexJ7ZAmRVl+aPnxXJ/Ki6eR0ymsRvm86p56F+Ny9PmRzF1X+az4wO3lSc8ptZLmmtBw9PIS6iYl2vzB3+7T1FlC5gKa4YRoHdQUQLSGnkqSzXNxAsAevy6q7PNL+gu/DbIRi5NPtswhZ3TaGPG+8Yivb4U+Vmq01FYGLha6XPPQyfiiXSvw27QFAXOQSLFELVWX2+5RrLZ/g7uFSHdMfwNepWWlL7ZDxaiUwk5Ddpye8v8zkBeEFs8COLuv5wtVWfZrgkhIw18xQCoemcmXAe2Dn9JKm+VY+yYYlVwvg3O7kccMgvPclBh99Uzd3H/oQ6TFCNox8ldW+onSkneSQ6BdeY3ndWjv6ieTenBNEj7taNn2QYtk43JQ2lXBHfEsVUZF2DYEfnDU63lLcCdikZRtodlhwO77iqxvmXFX0T+LWkaZqFe3UflbPsgCO5Wf1Up7iZlTx4eY7/lVXNPGKNmiUuAhQVjD0Py0zDCIIWR2o+2BGFUMsdiio1Wf+Hq2UpDbaxn
+ YopuPDB3
+ lxwChVNUgWTbjIDIt7kxbxUwOfKa9oFZoqFJUkJbEAaTXj7K4Nipvr4hvXU0XT+pCfRs1be+ycu2LANYKZNLASKqzCNoFMeskGtALqNG73ePG5PrhuGXpFtpaaoDdWXEfsZ7+jL5nrBMXf1T2QUCKrx0I++2qS/9HWI3uLMN5SrKzESJXhGrAuG2/CqgjwfwDx/IFE3Qxi0q0jT6c865lDzIW2uKqDHODqHJLGk6XRGPa7Adef5dSvibM7ox+VGmq79HcMFQaY67DpVkv5Ntjcw2cwOX0+h4X9Nc33kSWDMja81LBKFHDlT6+rkxdTrz9otI1o/fe9tl8pbsywik0hKrCQ6F8L7zhL5ZjxXg34Fjl+wl4rcAZGnA3u7jLZiBkiBup/YpW7Egw6T7NQk0GPtPgWtBwOePVAGTc8yrXXGkzvpojYj2TGGBwrPfv/pXS71o2ut/EwPefwQZ2JCDWX3aDllAqiqWSBDUbPiIzlHET0jiI0GPKbQtg75xGF3hO6Ke3m2MQ2pYcet8FtZnj46AD7E+88NJv6gjQKuw3v6t0lBQtVGNfqNddtg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,73 +184,243 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 28 Jul 2025 09:44:06 +0800 "Huang, Ying" <ying.huang@linux.alibaba.com> wrote:
-
-> Hi, Joshua,
+On 25.07.25 18:22, Usama Arif wrote:
+> The test will set the global system THP setting to madvise and
+> the 2M setting to inherit before it starts (and reset to original
+> at teardown)
 > 
-> Joshua Hahn <joshua.hahnjy@gmail.com> writes:
+> This tests if the process can:
+> - successfully set and get the policy to disable THPs completely.
+> - never get a hugepage when the THPs are completely disabled,
+>    including with MADV_HUGE and MADV_COLLAPSE.
+> - successfully reset the policy of the process.
+> - get hugepages only on MADV_HUGE and MADV_COLLAPSE after reset.
+> - repeat the above tests in a forked process to make sure
+>    the policy is carried across forks.
 > 
-> > The zone_reclaim_mode API controls reclaim behavior when a node runs out of
-> > memory. Contrary to its user-facing name, it is internally referred to as
-> > "node_reclaim_mode". This is slightly confusing but there is not much we can
-> > do given that it has already been exposed to userspace (since at least 2.6).
-> >
-> > However, what we can do is to make sure the internal description of what the
-> > bits inside zone_reclaim_mode aligns with what it does in practice.
-> > Setting RECLAIM_ZONE does indeed run shrink_inactive_list, but a more holistic
-> > description would be to explain that zone reclaim modulates whether page
-> > allocation (and khugepaged collapsing) prefers reclaiming & attempting to
-> > allocate locally or should fall back to the next node in the zonelist.
-> >
-> > Change the description to clarify what zone reclaim entails.
-> >
-> > Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-> > ---
-> >  include/uapi/linux/mempolicy.h | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/include/uapi/linux/mempolicy.h b/include/uapi/linux/mempolicy.h
-> > index 1f9bb10d1a47..24083809d920 100644
-> > --- a/include/uapi/linux/mempolicy.h
-> > +++ b/include/uapi/linux/mempolicy.h
-> > @@ -69,7 +69,7 @@ enum {
-> >   * These bit locations are exposed in the vm.zone_reclaim_mode sysctl
-> >   * ABI.  New bits are OK, but existing bits can never change.
-> >   */
-> > -#define RECLAIM_ZONE	(1<<0)	/* Run shrink_inactive_list on the zone */
-> > +#define RECLAIM_ZONE	(1<<0)	/* Prefer reclaiming & allocating locally */
-> >  #define RECLAIM_WRITE	(1<<1)	/* Writeout pages during reclaim */
-> >  #define RECLAIM_UNMAP	(1<<2)	/* Unmap pages during reclaim */
-> >  
-> >
-> > base-commit: 25fae0b93d1d7ddb25958bcb90c3c0e5e0e202bd
-
-Hi Ying, thanks for your review, as always!
-
-> Please consider the document of zone_reclaim_mode in
-> Documentation/admin-guide/sysctl/vm.rst too.
-
-Yes, will do. Along with SJ's comment, I think that the information in the
-admin-guide should be sufficient enough to explain what these bits do, so
-I think my patch is not very necessary.
-
-> And, IIUC, RECLAIM_ZONE doesn't mean "locally" exactly.  It's legal to
-> bind to some node other than "local node".
-
-You are correct, it seems you can also reclaim on non-local nodes once you
-go further down in the zonelist. I think my intent with the new comment was just
-to indicate a preference to reclaim and allocate on the *current* node, as
-opposed to falling back to the next node in the zonelist.
-
-With that said, I think your comment along with SJ's feedback have gotten me
-to understand that we proably don't need this change : -) 
-
-Thank you, and have a great day!
-Joshua
-
+> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
 > ---
-> Best Regards,
-> Huang, Ying
+>   tools/testing/selftests/mm/.gitignore         |   1 +
+>   tools/testing/selftests/mm/Makefile           |   1 +
+>   .../testing/selftests/mm/prctl_thp_disable.c  | 162 ++++++++++++++++++
+>   3 files changed, 164 insertions(+)
+>   create mode 100644 tools/testing/selftests/mm/prctl_thp_disable.c
+> 
+> diff --git a/tools/testing/selftests/mm/.gitignore b/tools/testing/selftests/mm/.gitignore
+> index e7b23a8a05fe..eb023ea857b3 100644
+> --- a/tools/testing/selftests/mm/.gitignore
+> +++ b/tools/testing/selftests/mm/.gitignore
+> @@ -58,3 +58,4 @@ pkey_sighandler_tests_32
+>   pkey_sighandler_tests_64
+>   guard-regions
+>   merge
+> +prctl_thp_disable
+> diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+> index d13b3cef2a2b..2bb8d3ebc17c 100644
+> --- a/tools/testing/selftests/mm/Makefile
+> +++ b/tools/testing/selftests/mm/Makefile
+> @@ -86,6 +86,7 @@ TEST_GEN_FILES += on-fault-limit
+>   TEST_GEN_FILES += pagemap_ioctl
+>   TEST_GEN_FILES += pfnmap
+>   TEST_GEN_FILES += process_madv
+> +TEST_GEN_FILES += prctl_thp_disable
+>   TEST_GEN_FILES += thuge-gen
+>   TEST_GEN_FILES += transhuge-stress
+>   TEST_GEN_FILES += uffd-stress
+> diff --git a/tools/testing/selftests/mm/prctl_thp_disable.c b/tools/testing/selftests/mm/prctl_thp_disable.c
+> new file mode 100644
+> index 000000000000..52f7e6659b1f
+> --- /dev/null
+> +++ b/tools/testing/selftests/mm/prctl_thp_disable.c
+> @@ -0,0 +1,162 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Basic tests for PR_GET/SET_THP_DISABLE prctl calls
+> + *
+> + * Author(s): Usama Arif <usamaarif642@gmail.com>
+> + */
+> +#include <stdio.h>
+> +#include <stdlib.h>
+> +#include <string.h>
+> +#include <unistd.h>
+> +#include <sys/mman.h>
+> +#include <sys/prctl.h>
+> +#include <sys/wait.h>
+> +
+> +#include "../kselftest_harness.h"
+> +#include "thp_settings.h"
+> +#include "vm_util.h"
+> +
+> +#ifndef PR_THP_DISABLE_EXCEPT_ADVISED
+> +#define PR_THP_DISABLE_EXCEPT_ADVISED (1 << 1)
+> +#endif
 
-Sent using hkml (https://github.com/sjp38/hackermail)
+Into patch #2 I guess.
+
+> +
+> +#define NR_HUGEPAGES 6
+> +
+> +static int sz2ord(size_t size, size_t pagesize)
+> +{
+> +	return __builtin_ctzll(size / pagesize);
+> +}
+> +
+> +enum madvise_buffer {
+> +	NONE,
+> +	HUGE,
+> +	COLLAPSE
+> +};
+
+Is that rather something like:
+
+enum thp_collapse_type {
+	THP_COLLAPSE_NONE,
+	THP_COLLAPSE_MADV_HUGEPAGE, /* MADV_HUGEPAGE before access */
+	THP_COLLAPSE_MADV_COLLAPSE, /* MADV_COLLAPSE after access */
+};
+
+> +
+> +/*
+> + * Function to mmap a buffer, fault it in, madvise it appropriately (before
+> + * page fault for MADV_HUGE, and after for MADV_COLLAPSE), and check if the
+> + * mmap region is huge.
+> + * returns:
+> + * 0 if test doesn't give hugepage
+> + * 1 if test gives a hugepage
+> + * -1 if mmap fails
+> + */
+> +static int test_mmap_thp(enum madvise_buffer madvise_buf, size_t pmdsize)
+> +{
+> +	int ret;
+> +	int buf_size = NR_HUGEPAGES * pmdsize;
+> +
+> +	char *buffer = (char *)mmap(NULL, buf_size, PROT_READ | PROT_WRITE,
+> +				    MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+
+Can we get rid of NR_HUGEPAGES and just use a single one, aligning in a bigger area? This is similar to what we do in cow.c
+
+/* For alignment purposes, we need twice the thp size. */
+mmap_size = 2 * pmdsize;
+mmap_area = mmap(NULL, mmap_size, PROT_READ | PROT_WRITE,
+		 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+
+if (mmap_area == MAP_FAILED)
+	return -errno; /* todo, document that above */
+
+buffer = (char *)(((uintptr_t)mmap_area + pmdsize) & ~(pmdsize - 1));
+
+...
+
+ret = check_huge_anon(buffer, NR_HUGEPAGES, pmdsize);
+
+...
+
+munmap(mmap_area, mmap_size);
+
+> +	if (buffer == MAP_FAILED)
+> +		return -1;
+> +
+> +	if (madvise_buf == HUGE)
+> +		madvise(buffer, buf_size, MADV_HUGEPAGE);
+> +
+> +	/* Ensure memory is allocated */
+> +	memset(buffer, 1, buf_size);
+> +
+> +	if (madvise_buf == COLLAPSE)
+> +		madvise(buffer, buf_size, MADV_COLLAPSE);
+> +
+> +	ret = check_huge_anon(buffer, NR_HUGEPAGES, pmdsize);
+> +	munmap(buffer, buf_size);
+> +	return ret;
+> +}
+
+Empty line missing :)
+
+> +FIXTURE(prctl_thp_disable_completely)
+> +{
+> +	struct thp_settings settings;
+> +	size_t pmdsize;
+> +};
+> +
+> +FIXTURE_SETUP(prctl_thp_disable_completely)
+> +{
+> +	if (!thp_is_enabled())
+> +		SKIP(return, "Transparent Hugepages not available\n");
+
+Heh, not completely correct. enabled != available.
+
+Do we want a thp_available() that is essentially the first part of thp_is_enabled() ?
+
+> +
+> +	self->pmdsize = read_pmd_pagesize();
+> +	if (!self->pmdsize)
+> +		SKIP(return, "Unable to read PMD size\n");
+> +
+> +	thp_read_settings(&self->settings);
+> +	self->settings.thp_enabled = THP_MADVISE;
+> +	self->settings.hugepages[sz2ord(self->pmdsize, getpagesize())].enabled = THP_INHERIT;
+> +	thp_save_settings();
+> +	thp_push_settings(&self->settings);
+
+push without pop, should that be alarming? :)
+
+Can we just use thp_write_settings()? (not sure why that push/pop is required ... is it?)
+
+> +}
+> +
+> +FIXTURE_TEARDOWN(prctl_thp_disable_completely)
+> +{> +	thp_restore_settings();
+> +}
+> +
+> +/* prctl_thp_disable_except_madvise fixture sets system THP setting to madvise */
+> +static void prctl_thp_disable_completely(struct __test_metadata *const _metadata,
+> +					 size_t pmdsize)
+> +{
+> +	int res = 0;
+> +
+> +	res = prctl(PR_GET_THP_DISABLE, NULL, NULL, NULL, NULL);
+> +	ASSERT_EQ(res, 1);
+> +
+> +	/* global = madvise, process = never, we shouldn't get HPs even with madvise */
+
+s/HPs/THPs/
+
+> +	res = test_mmap_thp(NONE, pmdsize);
+> +	ASSERT_EQ(res, 0);
+> +
+> +	res = test_mmap_thp(HUGE, pmdsize);
+> +	ASSERT_EQ(res, 0);
+> +
+> +	res = test_mmap_thp(COLLAPSE, pmdsize);
+> +	ASSERT_EQ(res, 0);
+> +
+> +	/* Reset to system policy */
+> +	res =  prctl(PR_SET_THP_DISABLE, 0, NULL, NULL, NULL);
+> +	ASSERT_EQ(res, 0);
+> +
+> +	/* global = madvise */
+> +	res = test_mmap_thp(NONE, pmdsize);
+> +	ASSERT_EQ(res, 0);
+> +
+> +	res = test_mmap_thp(HUGE, pmdsize);
+> +	ASSERT_EQ(res, 1);
+> +
+> +	res = test_mmap_thp(COLLAPSE, pmdsize);
+> +	ASSERT_EQ(res, 1);
+
+
+Makes me wonder: should we test for global=always and global=always?
+
+(or simply for all possible values, including global=never if easily possible?)
+
+At least testing with global=always should exercise more possible paths
+than global=always (esp., test_mmap_thp(NONE, pmdsize) which would
+never apply in madvise mode).
+
+
+-- 
+Cheers,
+
+David / dhildenb
+
 
