@@ -2,123 +2,96 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B5BFFC83F17
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 21:28:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 10256C83F17
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 21:30:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 401716B0088; Mon, 28 Jul 2025 17:28:46 -0400 (EDT)
+	id 935366B008A; Mon, 28 Jul 2025 17:30:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3641D6B0089; Mon, 28 Jul 2025 17:28:46 -0400 (EDT)
+	id 8BEC36B008C; Mon, 28 Jul 2025 17:30:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 204BE6B008A; Mon, 28 Jul 2025 17:28:46 -0400 (EDT)
+	id 786766B0092; Mon, 28 Jul 2025 17:30:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0719B6B0088
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 17:28:46 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6510C58EB8
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 21:28:45 +0000 (UTC)
-X-FDA: 83714963010.19.E609412
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 7DC64180004
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 21:28:43 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 626236B008A
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 17:30:31 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2680BB9784
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 21:30:31 +0000 (UTC)
+X-FDA: 83714967462.01.81D40E1
+Received: from mail-io1-f78.google.com (mail-io1-f78.google.com [209.85.166.78])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 578FD180006
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 21:30:29 +0000 (UTC)
 Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="Mk2/KpCy";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753738123; a=rsa-sha256;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf16.hostedemail.com: domain of 39OuHaAkbADclrsdTeeXkTiibW.ZhhZeXnlXkVhgmXgm.Vhf@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.78 as permitted sender) smtp.mailfrom=39OuHaAkbADclrsdTeeXkTiibW.ZhhZeXnlXkVhgmXgm.Vhf@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753738229;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=cAAVpHi2dnL2vQU9XMWpO330RRdxmeuo4AaHAIxsSyk=;
+	b=NoUD+YHHio2G19LGUbfO3qiWGjq5JoqPxaOPVEvBSVL0z6CxpKzRAtFX28s+Wqyy1joC8j
+	YVP/0wOICxcFh95jJBar+dJwrJLgfzVNilKYH1Nu2W5eGOHu0KqZQjzapYVi4hqAQM49Fc
+	6ec2jhoqFgl7VvwcrUNF8yyaqVHJZ4A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753738229; a=rsa-sha256;
 	cv=none;
-	b=eXIjxo394frMqKSZHWHaF6unYw4iOn7ii62qvo1VhdxcPiSpMtlVAm9rNKODRZbkdNdGz+
-	tcvhr6v6Nt9VmpVHaqnpUzGNqsPxgZ9UTTVyHS3SAXOAXkg8p/m/9VojtyZJitpDjqCn07
-	TlyCpBkY4GOzsBDtziJxW5QS6LAttDY=
+	b=5t8GiabXJNzK/3oFNLAEXs04NMR2IaWclrIr8e18s7aFQsa096uu4QCD6cV5RhJgXeHyRP
+	yyKc6P2IA+ELCZkYxie3p7z4L4fqYRLvZuWKwGLyTLU7wUNTs3/PUwJjWLNkbu0F24tdSk
+	pamVw1jmPXSEc/eUeWJETrXcDbpUmBg=
 ARC-Authentication-Results: i=1;
 	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="Mk2/KpCy";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753738123;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZneXYaFQqRFzc5Typc3+x1A+h4NqvmfdYJJXUBl9f5k=;
-	b=7ESpvl3xDdfZ3unzHaH2MDUOIljUQddDQ0mdcIjP/193KsZyZdcEZ2bLz6G2/QDOwUtff0
-	rvpt7Nek3dPYZHFJasDfJrhn4sMSLVlAai18ygOFN0JBoEdtMSZl3wjF5SrKuW/+uY/XmB
-	CrJae4eXrIGqw0yFRCdylpjgaojBdFg=
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4ab92d06ddeso65011091cf.3
-        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 14:28:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753738122; x=1754342922; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZneXYaFQqRFzc5Typc3+x1A+h4NqvmfdYJJXUBl9f5k=;
-        b=Mk2/KpCyLFnhww1FDXgFIjusis6qb4Z9sfLfzOE7gDVROuCudMmNb5grK64UZx/u0c
-         xGl+ssEuZuBgCP0RzrAIEpmeYtH9vAzXUdT5owxyrVe8YHpauv8yy7B7e7TnjIIxzKlG
-         mHRE0mfwff5QGQu8AhwrxyKf0s93O8criOBXvqTehNQQ8CJkjCD815o8PEky7beg+HGh
-         +DUxa+cwKKEmYG0lGafOxh9Fna3S6dd0OtNr+ONnAKPlqouieKRWnj9m1DNo50sN3YZM
-         7tJlPCvsJmASNX98q8LhjXL94LpNpjYp0n/K42YSYcMlyOqeMKvKjN3sMEAwt4supjW4
-         vx0g==
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf16.hostedemail.com: domain of 39OuHaAkbADclrsdTeeXkTiibW.ZhhZeXnlXkVhgmXgm.Vhf@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.78 as permitted sender) smtp.mailfrom=39OuHaAkbADclrsdTeeXkTiibW.ZhhZeXnlXkVhgmXgm.Vhf@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f78.google.com with SMTP id ca18e2360f4ac-87b2a58a4c0so511186339f.0
+        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 14:30:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753738122; x=1754342922;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZneXYaFQqRFzc5Typc3+x1A+h4NqvmfdYJJXUBl9f5k=;
-        b=khNTBxkeMolboprQbfmIXX217oMCfUoDhNBysAyjo/yqSQPesubOxqW3IC4qJiFdz5
-         YsHlbSwnfRORY+c7EdMll/fWLusXHWsW8vdKdKL5+UMWv4HIm3nhe2QvhNUzvEuhUoIE
-         DTqHlRNjo+7kl+6w2uIb36p+amfUb55G8RYyBCYCHgPovszL0m3OdYRsyGgZp9pFgUMv
-         zdqaa18IfumIh9GcPZfB2Hck7Zn0ftLO22hD/fT2JeZdrJoyw7JacfKH6NdgMh3mJxT7
-         mVvEfdtonCWuumzCjEKkNCvotPeLHTlyZp9CmpkMLOrvdriQ+nzXjlcMnpvaXjv+W/oQ
-         NjkA==
-X-Forwarded-Encrypted: i=1; AJvYcCWZVgQCtqOlTwuJyoA52lQLi85tVBTnnvohd4K7RhM+vFQuO6FnxzjRleN4zfEtk1sMu7hybttRcQ==@kvack.org
-X-Gm-Message-State: AOJu0YxN/WULLejCSNHrJ745Gv/5G4nRAVQf0UMI/J1Y0L3rtap9OGIN
-	8EtZtiUQmn/0zFVfh1I5isv7EmErxIIRg6YZQuhAZg8I48BOjq0QQIG90wr4mxD7S7BUvU1zFr2
-	DlLmtmlz7dBCNLQs13CM67dePn9SqtZs=
-X-Gm-Gg: ASbGncsF4XruOVeZzo7tKUhMipA2cNorSsV5WvY+cVDKugw89mUpMLUp+ed7dKzZANz
-	zOYk69MM9t6gkqWwURUT0VERfI56QRlH9RYHQNmhjxWmASIF7k5sqw+LuNlvm1Z4WLtLNFmxgDe
-	0HdsEty0MMzb+Q3IV0xUJE35Ga48eku7Ftp3zxmrlV6Wy2rzA5EcX/xTA0SrIEqustkK2xph5Hj
-	S5X1KU=
-X-Google-Smtp-Source: AGHT+IGpshBgXQ7U+MDDP9pZt9MZQFWNWDud5gzczcYQsSqnHcLkucfw/67HUIu/F7G55XnBhEoxT9W/2r5VX/Q4DKA=
-X-Received: by 2002:a05:622a:a30f:b0:4ae:cc2b:77ce with SMTP id
- d75a77b69052e-4aecc2b839bmr18026601cf.60.1753738122289; Mon, 28 Jul 2025
- 14:28:42 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1753738228; x=1754343028;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cAAVpHi2dnL2vQU9XMWpO330RRdxmeuo4AaHAIxsSyk=;
+        b=vJANiKfIosyWkXhSW7+pmgh2lzXHETZK9JhsD25NHVc6HTBdWunq2YB+kvn0jgxUmf
+         QrWM4Ac33LtcZdsZXGlq25O8uSL0XScoSCqUqgiVJqwHBvfreNr0OasW3tvcPO0ASibQ
+         4rNGKenpxc37nyVJtyPr4+63SBocIOq2XWsOY3CTduMH2zSgoV2R2E3TcKFYe2JdqRE+
+         ggeDloMIuq6u9UQ0YmK5cH8RY2GVXGFL7l8cqxMHznar5xbQ9Y2sN1lISr4fyAB1/Qqb
+         l27ZwoR6JJ8lZDggzsiA5yPeekxVjULr06cUdglPih0rTMskSn9TJyIjCb6f5abZIm2X
+         YkIw==
+X-Forwarded-Encrypted: i=1; AJvYcCXBXcXZ3zlEEXaWN5+vcNmdcvP1fb0sx/L+PxtSKJ8bvC2D7QJTmAgt3NC6Dia5tPKeZ4sGOSgz0A==@kvack.org
+X-Gm-Message-State: AOJu0YwpCXkthqGCxiK2dSLPhQThUVDixRGE3dxIDjT+JQjer7iUE60K
+	Hw2/KhHjrQzFnVeZfmrynmTknmHGYXg4PvDoKJnRwtKTFjoka/l35dWjDP9L7UKtvuiOoZ3V/P7
+	OfKP/1Z6S8AAaZltH+7rBkkO8SCyBrmclWkNug1bN5Y+kjj1bwb1b30AuDS4=
+X-Google-Smtp-Source: AGHT+IHlf2gExfOweoRKA8xQ8U2obLJdnB/6OhrAm7XdIqeHnIUBha7KQ8KV8Q29kA1uuaIzMfe1bycPWFiD+3a6gOfQFLxPtl5n
 MIME-Version: 1.0
-References: <CA+G9fYs5AdVM-T2Tf3LciNCwLZEHetcnSkHsjZajVwwpM2HmJw@mail.gmail.com>
- <20250723144637.GW2672070@frogsfrogsfrogs> <CAJnrk1Z7wcB8uKWcrAuRAZ8B-f8SKnOuwtEr-=cHa+ApR_sgXQ@mail.gmail.com>
- <20250723212020.GY2672070@frogsfrogsfrogs> <CAJnrk1bFWRTGnpNhW_9MwSYZw3qPnPXZBeiwtPSrMhCvb9C3qg@mail.gmail.com>
- <CAJnrk1byTVJtuOyAyZSVYrusjhA-bW6pxBOQQopgHHbD3cDUHw@mail.gmail.com>
- <CAJnrk1ZYR=hM5k90H57tOv=fe6F-r8dO+f3wNuCT_w3j8YNYNQ@mail.gmail.com>
- <20250728171425.GR2672029@frogsfrogsfrogs> <CAJnrk1bBesBijYRD1Wf_01OSBykJ0VzwFZKZFev0wPn9wYc98Q@mail.gmail.com>
- <20250728191117.GE2672070@frogsfrogsfrogs>
-In-Reply-To: <20250728191117.GE2672070@frogsfrogsfrogs>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Mon, 28 Jul 2025 14:28:31 -0700
-X-Gm-Features: Ac12FXwQypfcuflR6PeoeGonrJscLSoGlm7JYS7bzfTRsF2cl4KDjPb0EDDvOeo
-Message-ID: <CAJnrk1bTgTcb4aUWqczXEH+7+SWQAdppxYbSAPNCVY6xXb-=hQ@mail.gmail.com>
-Subject: Re: next-20250721 arm64 16K and 64K page size WARNING fs fuse file.c
- at fuse_iomap_writeback_range
-To: "Darrick J. Wong" <djwong@kernel.org>
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, linux-fsdevel@vger.kernel.org, 
-	linux-mm <linux-mm@kvack.org>, linux-xfs@vger.kernel.org, 
-	open list <linux-kernel@vger.kernel.org>, lkft-triage@lists.linaro.org, 
-	Linux Regressions <regressions@lists.linux.dev>, Miklos Szeredi <miklos@szeredi.hu>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, Christian Brauner <brauner@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <liam.howlett@oracle.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Dan Carpenter <dan.carpenter@linaro.org>, 
-	Anders Roxell <anders.roxell@linaro.org>, Ben Copeland <benjamin.copeland@linaro.org>
+X-Received: by 2002:a05:6e02:2681:b0:3dc:7f3b:acb1 with SMTP id
+ e9e14a558f8ab-3e3c52c7ec8mr221635275ab.13.1753738228350; Mon, 28 Jul 2025
+ 14:30:28 -0700 (PDT)
+Date: Mon, 28 Jul 2025 14:30:28 -0700
+In-Reply-To: <6856d355.a00a0220.137b3.007d.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6887ebf4.a00a0220.b12ec.00ae.GAE@google.com>
+Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in exit_to_user_mode_loop
+From: syzbot <syzbot+2642f347f7309b4880dc@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, cgroups@vger.kernel.org, hannes@cmpxchg.org, 
+	jackmanb@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	mhocko@kernel.org, mhocko@suse.com, muchun.song@linux.dev, 
+	netdev@vger.kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
+	surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@suse.cz, 
+	ziy@nvidia.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: yt5mbsynqmpnnzinrcgbw4pcuc6y6axo
+X-Rspamd-Queue-Id: 578FD180006
+X-Stat-Signature: zaithy16kmerheccaezbacc3trrmepui
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7DC64180004
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1753738123-325727
-X-HE-Meta: U2FsdGVkX1+Su7YjKyJGxFXqwYmW/Q6I0IfInHZskYoFdS55/uAwLKV7PqdU24OHcrvkest2Mniz2SaElotOJkvgEQHXLbMg954eiGdoy/OLUCzAzt3M5/b1aQw41YzNPMCniW6QCn5ThYO10lUyNVEjP2oVJmAUl6C36uSacY4UmvtB0PE/bp8mL3ErkdTVA/Sy8DyGaU6/3rxaYwE8t0ZF6GtmBASs1Z0ngBQOKQMZ3suy7E7CaGKjx+aeth+I01OkaEg+p+b2LqICxgOjIBeh5LRmlVyU+6FlKQoybBlIwlWwT9CO+a8/EDBcwXmR+8ev14HBFN3vIv04MWspQwY21h7qwTciZNN//hQwDYg+eGM49DdZp9Ygz4Z6LZ8/5VpLq/2CUPjsllKAbQ9FeSuBc/A78+NsR/Zwf/QM+lKpTi4T7pZzyXP4WsbveiMxgFuJ5BFK43sAkcZ9cs7/y8aGjYjMB6K2XvtHzMkDMsz5xgmsMpcgAw5X7FE2rBjZB5ozX0TAXctE2ScgSWc2VPfJop6Q4JPz3pYf/G4eRHrCizz3m+FCq4T8Xfw7EmK+A2ur/l5NiNVcm9pKfUtfJEzym6OcwHQRb6gLq40UI4IjKYb4L/2Nx+XBNJ+X4oKnGhEA2493t2FLpSdb3dFYXvPn141/HMWeIRYAKw/qwtgJGFnGRZC1gveeILKyntJ4chTiPb4k/GdQtv4RzFSpY14H7u1zIILNWy2fAZjuKaAQZDORjgNNOSxcLBn4I2nC2Nk4n+hYYKIDHXrW2v4TaPIa5+3x0RDh15hRBURHmoAiphriTVd+vBJaf1MGepvmRhsQLh157CWGykYaDlB+10ActSS3K+uOXXU9NWf/xoBIxEQzcDCeu42BLkUB858fvqsNymVwEjPSKYHd9cZiSEiXqulP9PD3Gs7y5ZhGPBkpcPnkXr/2b5gfr8m3g2rLl1x+xpWWkYRsHsho6MW
- ghHJs5se
- D2UIPhkIfClhBg0KGEEOedLzp5dLbqory98SlWCE4wdLKx2IG+i/8rQW/otjgmRXPv1IpRcajSd1bltMxuflXZcs1gs+Ybr/VEFw14826arQ3i0BQiW1DGxb7A74E67ZOvU2Cs9A6QNB8MpoQWPtsfTk+IMleV9kVXsCy+x6RTK3Ur+lB/7Q1wYa8jPaAtKQfOKeK1BfxrPdj80x0+/6uNXQL6HXruRBaKiyoubPOo5edscR3kTLVMyKN5NxTnHHcIkF150utsPRXb7qfyKDhdqi6uxOh9Mta7uCMU7gb6DCilHlE8d+/g4CX2Mp13v6HBnfbjVVGkCtJLUgPwIb7daOWhmXEHa+jzG10fjXxiYZFbV1C7qoWPuAcxHLo48pGVM+ZjEP7d8YmTz2ySGJkBzkl/85rkmdPd95XBkUOO7uLcgXc9gs/7dg7Sua6orVLg9qnuDLeKuxOg8TamV5j/4EhM4+gDdZDRpTSJmR0wQd3/TvZcySFG+gdO5M4vTn/EIfmqeIIJXnQLeOZNkjgzOrylFgq7dr9sINj
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1753738229-268616
+X-HE-Meta: U2FsdGVkX191+sOzk/fH+xaQ0LiNTED2GDUAvpLAbzq0jKBV1HGrbCTbZc32vOnnQBJ8UL5LgZCjP0DXBo9PLfXEE9mYNFwGBnMcYNhNTBkGS7sVWc2IcHQqq78gm2Inw5WN3oftoogtW+SM+qdvrWm9eNIw33NFoY3bslMHdZmGwtiMiAP1+E5rueIgzgRW0EudaTYnnMucxd32a0fZXW/TsKU2mSG4uf4VKWFcwUbXCTMFTXcu4tifcpm+asDj4BAOeV1b6ZAowvYSJ6gfxhaDYp6ZYYNWsuYuLP+q2Om0JfrKg92Uvb5xrOLzwJtNd7NBHagsYmTJvVPtgICL1By8+xPyXp/PV0PoBAkM4mtQnG5i86mLvlxjKkPvt8pCi2y02IFFDx1vvRkxzCDu/kZo2zyckxY4GXwCa62zadVZib1WR8bT34jY0c9d+IktTwfalxXpaNkerLlry1ApcVxycQgKpcuLQ3RSW+N5Q5uLrDhT6iG+/mn65Jm8ZKqJTq1zHsvntIl1lO9q27D7IBakoo2Z/g+BgQFrgQc02w5CppD8zqS/b57F6RW23f53/+wuhqA6owF32cd72SiFlzUq0gCxMa1yReEGpNGzn4I/ejn3XdUHyXXec6BqXiiqpaBGErs1PVlWyMCCbo6BrM54C3CNFCN8meA0681ku5aPIpVMur0T445fJkL6iwiKr+IFTk+KvuxVOwQjkbT2DScKilmL+0gn2tnaSo0KWvvJzNnb4S+VfYUtyf131asLBEjNJV7XRPKa12mEP+XRCBQ0MpF7vYsgCdrmLznDipru80T0G/u8B46Jr3TjdMxDrL4WAk2qNF/0Q+Ul1T8Njkvm5pC7Izodz7HGx1AZ0278z0Yg/bmeMp6d2oXjIDhXAvRaj+Xwjm7tOW/wUicPvEhixdafCG79OEVbQiWCCPE6DxME6lxhTO4glammskZ6JjHdL0Hb4EMS2PLtcdY
+ h3n1K4JU
+ 9Is4bcLPIlGlP8B71Wg+AT4QFlpYc5DqrClC+e9H1tCV6clNZs7Wwi3KRpWTamfjFU/P4z1y4FpcDbS++++Zq+bGYleFOV5kjCWYFWTg937UVLrL19FTStBS+AhD2FDM+KoANBVurlqpUJ5xxWGQkG0PJoMdl2D6B/N2PlfQBLQhmlbQGEAnqsaU7qIIrjQqpy3lh2qoe8eqeYNnAzT9LGLcjTKtVLMeDGG25dQAvlTEfsM9SGc/H3XjIT53dsIfXl26BXjwqtDsr/9dc8QzEJWigLR+nx9SS9lscqjx1zvabt9CjrhDaTShpnbMtiJZYBibYLBYwSY6tykY1RiGt1R/tkpvQd0emALfzv/ChabMYI7/2rFmEUZyxzjXlHms8QrA8XzuXaCBPbWGXg3mt+0OnIFH2jWwbE45hWpb9VPY9DLgJ075mgafb9SokzwQVJOXMftwcCPKw48qA6hZ20QEqAq1IuB93cJlUzDV8SBOR+YuTjpkZmqvLuEPjRuoWlpkhYnSj7ejvs6DaVaHx12bXYCr8B5Ugy31e5qaAHJikitdynAy/EW4EergSvtyeEUOwTkE4ocEJaQt3oN/BviqJsK7lF5MF6pwUmjEzm8hqJ+zr6jWh1ram0tOlgK5sNXElg0ymutK5hooPZ2T1A2ivdfOTv0RwzB59tORVDb6cT1190/naYaPgmb9a6AjHvzxTkcST6ZNeSqBAczpoBQ6rlv5Ph64i8luH6VmJD33e0USDe5zJ6VewQ+HhyrRaYrE02JaEnlUw4JDl3kzESSiphXGBqnjaOCleDAT8gRVuxKax8+yoGS81hKar/RGH5yRvLmCqzUXTvMx3xYCF0TuFBf5ep+7sDXRsxHtHU27CfIE75dJLfEbwZnaP0LzUsxAwDGxl5ulzhNWnMT8gq6GDAx0ZFtc7R6a/eoB5A0KDrb+tl6jNhxwQqkTnUcnRmU9O5k7pJcZrzeJI/BmZLba5yW3P
+ Ia+rdOs3
+ tl9L6mC/0jm6pOEaclxwxU9aiCuCiPMTrKRL8ODTh/GvtF8+25PseWgyk0XkAq5W1qI9Y5NbUGsk0IKnsRRoX1rieGibseFjfMNgr6zhaju1T7OYXaSfKEaD0fqJfvVleb6rfwqM7uzy3utfKAv8pVqeUoiUONtDJnKU/2RoJ0Uo2eFbdSCgCmoJeFnrllc0wfZJtYUJLcY+2rcBdqrWf5B2QfT7xxuz3+jWR0R6zmtkkRg75gFmQnQW100RcMyhORAXQ55eYZRFexnCdSkBywMmTa7HvXO7vU257Pfzb3RHR8cB3tsYYxbrOWqnQyDIFDHq2N/nCdLe9VlpBxexd1tnokWbdA3j4lriOg4fWOXs29zyJgxXZvbi9ARQmk2T
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,366 +100,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 28, 2025 at 12:11=E2=80=AFPM Darrick J. Wong <djwong@kernel.org=
-> wrote:
->
-> On Mon, Jul 28, 2025 at 10:44:01AM -0700, Joanne Koong wrote:
-> > On Mon, Jul 28, 2025 at 10:14=E2=80=AFAM Darrick J. Wong <djwong@kernel=
-.org> wrote:
-> > >
-> > > On Fri, Jul 25, 2025 at 06:16:15PM -0700, Joanne Koong wrote:
-> > > > On Thu, Jul 24, 2025 at 12:14=E2=80=AFPM Joanne Koong <joannelkoong=
-@gmail.com> wrote:
-> > > > >
-> > > > > On Wed, Jul 23, 2025 at 3:37=E2=80=AFPM Joanne Koong <joannelkoon=
-g@gmail.com> wrote:
-> > > > > >
-> > > > > > On Wed, Jul 23, 2025 at 2:20=E2=80=AFPM Darrick J. Wong <djwong=
-@kernel.org> wrote:
-> > > > > > >
-> > > > > > > On Wed, Jul 23, 2025 at 11:42:42AM -0700, Joanne Koong wrote:
-> > > > > > > > On Wed, Jul 23, 2025 at 7:46=E2=80=AFAM Darrick J. Wong <dj=
-wong@kernel.org> wrote:
-> > > > > > > > >
-> > > > > > > > > [cc Joanne]
-> > > > > > > > >
-> > > > > > > > > On Wed, Jul 23, 2025 at 05:14:28PM +0530, Naresh Kamboju =
-wrote:
-> > > > > > > > > > Test regression: next-20250721 arm64 16K and 64K page s=
-ize WARNING fs
-> > > > > > > > > > fuse file.c at fuse_iomap_writeback_range
-> > > > > > > > > >
-> > > > > > > > > > Reported-by: Linux Kernel Functional Testing <lkft@lina=
-ro.org>
-> > > > > > > > > >
-> > > > > > > > > > ## Test log
-> > > > > > > > > > ------------[ cut here ]------------
-> > > > > > > > > > [  343.828105] WARNING: fs/fuse/file.c:2146 at
-> > > > > > > > > > fuse_iomap_writeback_range+0x478/0x558 [fuse], CPU#0: m=
-sync04/4190
-> > > > > > > > >
-> > > > > > > > >         WARN_ON_ONCE(len & (PAGE_SIZE - 1));
-> > > > > > > > >
-> > > > > > > > > /me speculates that this might be triggered by an attempt=
- to write back
-> > > > > > > > > some 4k fsblock within a 16/64k base page?
-> > > > > > > > >
-> > > > > > > >
-> > > > > > > > I think this can happen on 4k base pages as well actually. =
-On the
-> > > > > > > > iomap side, the length passed is always block-aligned and i=
-n fuse, we
-> > > > > > > > set blkbits to be PAGE_SHIFT so theoretically block-aligned=
- is always
-> > > > > > > > page-aligned, but I missed that if it's a "fuseblk" filesys=
-tem, that
-> > > > > > > > isn't true and the blocksize is initialized to a default si=
-ze of 512
-> > > > > > > > or whatever block size is passed in when it's mounted.
-> > > > > > >
-> > > > > > > <nod> I think you're correct.
-> > > > > > >
-> > > > > > > > I'll send out a patch to remove this line. It doesn't make =
-any
-> > > > > > > > difference for fuse_iomap_writeback_range() logic whether l=
-en is
-> > > > > > > > page-aligned or not; I had added it as a sanity-check again=
-st sketchy
-> > > > > > > > ranges.
-> > > > > > > >
-> > > > > > > > Also, I just noticed that apparently the blocksize can chan=
-ge
-> > > > > > > > dynamically for an inode in fuse through getattr replies fr=
-om the
-> > > > > > > > server (see fuse_change_attributes_common()). This is a pro=
-blem since
-> > > > > > > > the iomap uses inode->i_blkbits for reading/writing to the =
-bitmap. I
-> > > > > > > > think we will have to cache the inode blkbits in the iomap_=
-folio_state
-> > > > > > > > struct unfortunately :( I'll think about this some more and=
- send out a
-> > > > > > > > patch for this.
-> > > > > > >
-> > > > > > > From my understanding of the iomap code, it's possible to do =
-that if you
-> > > > > > > flush and unmap the entire pagecache (whilst holding i_rwsem =
-and
-> > > > > > > mmap_invalidate_lock) before you change i_blkbits.  Nobody *d=
-oes* this
-> > > > > > > so I have no idea if it actually works, however.  Note that e=
-ven I don't
-> > > > > > > implement the flush and unmap bit; I just scream loudly and d=
-o nothing:
-> > > > > >
-> > > > > > lol! i wish I could scream loudly and do nothing too for my cas=
-e.
-> > > > > >
-> > > > > > AFAICT, I think I just need to flush and unmap that file and ca=
-n leave
-> > > > > > the rest of the files/folios in the pagecache as is? But then i=
-f the
-> > > > > > file has active refcounts on it or has been pinned into memory,=
- can I
-> > > > > > still unmap and remove it from the page cache? I see the
-> > > > > > invalidate_inode_pages2() function but my understanding is that=
- the
-> > > > > > page still stays in the cache if it has has active references, =
-and if
-> > > > > > the page gets mmaped and there's a page fault on it, it'll end =
-up
-> > > > > > using the preexisting old page in the page cache.
-> > > > >
-> > > > > Never mind, I was mistaken about this. Johannes confirmed that ev=
-en if
-> > > > > there's active refcounts on the folio, it'll still get removed fr=
-om
-> > > > > the page cache after unmapping and the page cache reference will =
-get
-> > > > > dropped.
-> > > > >
-> > > > > I think I can just do what you suggested and call
-> > > > > filemap_invalidate_inode() in fuse_change_attributes_common() the=
-n if
-> > > > > the inode blksize gets changed. Thanks for the suggestion!
-> > > > >
-> > > >
-> > > > Thinking about this some more, I don't think this works after all
-> > > > because the writeback + page cache removal and inode blkbits update
-> > > > needs to be atomic, else after we write back and remove the pages f=
-rom
-> > > > the page cache, a write could be issued right before we update the
-> > > > inode blkbits. I don't think we can hold the inode lock the whole t=
-ime
-> > > > for it either since writeback could be intensive. (also btw, I
-> > > > realized in hindsight that invalidate_inode_pages2_range() would ha=
-ve
-> > > > been the better function to call instead of
-> > > > filemap_invalidate_inode()).
-> > > >
-> > > > > >
-> > > > > > I don't think I really need to have it removed from the page ca=
-che so
-> > > > > > much as just have the ifs state for all the folios in the file =
-freed
-> > > > > > (after flushing the file) so that it can start over with a new =
-ifs.
-> > > > > > Ideally we could just flush the file, then iterate through all =
-the
-> > > > > > folios in the mapping in order of ascending index, and kfree th=
-eir
-> > > > > > ->private, but I'm not seeing how we can prevent the case of ne=
-w
-> > > > > > writes / a new ifs getting allocated for folios at previous ind=
-exes
-> > > > > > while we're trying to do the iteration/kfreeing.
-> > > > > >
-> > > >
-> > > > Going back to this idea, I think this can work. I realized we don't
-> > > > need to flush the file, it's enough to free the ifs, then update th=
-e
-> > > > inode->i_blkbits, then reallocate the ifs (which will now use the
-> > > > updated blkbits size), and if we hold the inode lock throughout, th=
-at
-> > > > prevents any concurrent writes.
-> > > > Something like:
-> > > >      inode_lock(inode);
-> > > >      XA_STATE(xas, &mapping->i_pages, 0);
-> > > >      xa_lock_irq(&mapping->i_pages);
-> > > >      xas_for_each_marked(&xas, folio, ULONG_MAX, PAGECACHE_TAG_DIRT=
-Y) {
-> > > >           folio_lock(folio);
-> > > >           if (folio_test_dirty(folio)) {
-> > > >                   folio_wait_writeback(folio);
-> > > >                   kfree(folio->private);
-> > > >           }
->
-> Heh, I didn't even see this chunk, distracted as I am today. :/
->
-> So this doesn't actually /initiate/ writeback, it just waits
-> (potentially for a long time) for someone else to come along and do it.
-> That might not be what you want since the blocksize change will appear
-> to stall while nothing else is going on in the system.
+syzbot has found a reproducer for the following issue on:
 
-I thought if the folio isn't under writeback then
-folio_wait_writeback() just returns immediately as a no-op.
-I don't think we need/want to initiate writeback, I think we only need
-to ensure that if it is already under writeback, that writeback
-finishes while it uses the old i_blksize so nothing gets corrupted. As
-I understand it (but maybe I'm misjudging this), holding the inode
-lock and then initiating writeback is too much given that writeback
-can take a long time (eg if the fuse server writes the data over some
-network).
+HEAD commit:    afd8c2c9e2e2 Merge branch 'ipv6-f6i-fib6_siblings-and-rt-f..
+git tree:       net
+console output: https://syzkaller.appspot.com/x/log.txt?x=13c71034580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=a4bcc0a11b3192be
+dashboard link: https://syzkaller.appspot.com/bug?extid=2642f347f7309b4880dc
+compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17b284a2580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17c71034580000
 
->
-> Also, unless you're going to put this in buffered-io.c, it's not
-> desirable for a piece of code to free something it didn't allocate.
-> IOWs, I don't think it's a good idea for *fuse* to go messing with a
-> folio->private that iomap set.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/6f29edec8e85/disk-afd8c2c9.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/8490ef85f5cd/vmlinux-afd8c2c9.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/1357e17669cb/bzImage-afd8c2c9.xz
 
-Okay, good point. I agree. I was hoping to have this not bleed into
-the iomap library but maybe there's no getting around that in a good
-way.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+2642f347f7309b4880dc@syzkaller.appspotmail.com
 
->
-> > > >           folio_unlock(folio);
-> > > >      }
-> > > >     inode->i_blkbits =3D new_blkbits_size;
-> > >
-> > > The trouble is, you also have to resize the iomap_folio_state objects
-> > > attached to each folio if you change i_blkbits...
-> >
-> > I think the iomap_folio_state objects automatically get resized here,
-> > no? We first kfree the folio->private which kfrees the entire ifs,
->
-> Err, right, it does free the ifs and recreate it later if necessary.
->
-> > then we change inode->i_blkbits to the new size, then when we call
-> > folio_mark_dirty(), it'll create the new ifs which creates a new folio
-> > state object using the new/updated i_blkbits size
-> >
-> > >
-> > > >     xas_set(&xas, 0);
-> > > >     xas_for_each_marked(&xas, folio, ULONG_MAX, PAGECACHE_TAG_DIRTY=
-) {
-> > > >           folio_lock(folio);
-> > > >           if (folio_test_dirty(folio) && !folio_test_writeback(foli=
-o))
-> > > >                  folio_mark_dirty(folio);
-> > >
-> > > ...because iomap_dirty_folio doesn't know how to reallocate the folio
-> > > state object in response to i_blkbits having changed.
->
-> Also, what about clean folios that have an ifs?  You'd still need to
-> handle the ifs's attached to those.
-
-Ah you're right, there could be clean folios there too that have an
-ifs. I think in the above logic, if we iterate through all
-mapping->i_pages (not just PAGECACHE_TAG_DIRTY marked ones) and move
-the kfree to after the "if (folio_test_dirty(folio))" block, then it
-addresses that case. eg something like this:
-
-     inode_lock(inode);
-     XA_STATE(xas, &mapping->i_pages, 0);
-     xa_lock_irq(&mapping->i_pages);
-     xas_for_each(&xas, folio, ULONG_MAX) {
-          folio_lock(folio);
-          if (folio_test_dirty(folio))
-                  folio_wait_writeback(folio);
-          kfree(folio->private);
-          folio_unlock(folio);
-     }
-    inode->i_blkbits =3D new_blkbits;
-    xas_set(&xas, 0);
-    xas_for_each_marked(&xas, folio, ULONG_MAX, PAGECACHE_TAG_DIRTY) {
-          folio_lock(folio);
-          if (folio_test_dirty(folio) && !folio_test_writeback(folio))
-                 folio_mark_dirty(folio);
-          folio_unlock(folio);
-    }
-    xa_unlock_irq(&mapping->i_pages);
-    inode_unlock(inode);
+rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+rcu: 	0-...!: (3 ticks this GP) idle=8da4/1/0x4000000000000000 softirq=18768/18768 fqs=0
+rcu: 	(detected by 1, t=10502 jiffies, g=13833, q=887 ncpus=2)
+Sending NMI from CPU 1 to CPUs 0:
+NMI backtrace for cpu 0
+CPU: 0 UID: 0 PID: 5983 Comm: syz-executor Not tainted 6.16.0-rc7-syzkaller-00100-gafd8c2c9e2e2 #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
+RIP: 0010:__lock_acquire+0x316/0xd20 kernel/locking/lockdep.c:5188
+Code: 8b 54 24 0c 83 e2 01 c1 e2 12 44 09 e2 41 c1 e6 14 41 09 d6 8b 54 24 10 c1 e2 13 c1 e5 15 09 d5 09 cd 44 09 f5 41 89 6c c7 20 <45> 89 44 c7 24 4c 89 7c 24 10 4d 8d 34 c7 81 e5 ff 1f 00 00 48 0f
+RSP: 0018:ffffc90000007b40 EFLAGS: 00000002
+RAX: 000000000000000a RBX: ffffffff8e13f0e0 RCX: 0000000000000007
+RDX: 0000000000080000 RSI: 0000000000004000 RDI: ffff88802c368000
+RBP: 00000000000a4007 R08: 0000000000000000 R09: ffffffff898d70e8
+R10: dffffc0000000000 R11: ffffed100fc2785e R12: 0000000000024000
+R13: 0000000000000000 R14: 0000000000024000 R15: ffff88802c368af0
+FS:  0000000000000000(0000) GS:ffff888125c23000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000055556e2015c8 CR3: 000000000df38000 CR4: 00000000003526f0
+Call Trace:
+ <IRQ>
+ lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5871
+ rcu_lock_acquire include/linux/rcupdate.h:331 [inline]
+ rcu_read_lock include/linux/rcupdate.h:841 [inline]
+ advance_sched+0xa14/0xc90 net/sched/sch_taprio.c:985
+ __run_hrtimer kernel/time/hrtimer.c:1761 [inline]
+ __hrtimer_run_queues+0x52c/0xc60 kernel/time/hrtimer.c:1825
+ hrtimer_interrupt+0x45b/0xaa0 kernel/time/hrtimer.c:1887
+ local_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1039 [inline]
+ __sysvec_apic_timer_interrupt+0x108/0x410 arch/x86/kernel/apic/apic.c:1056
+ instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1050 [inline]
+ sysvec_apic_timer_interrupt+0xa1/0xc0 arch/x86/kernel/apic/apic.c:1050
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
+RIP: 0010:debug_lockdep_rcu_enabled+0xf/0x40 kernel/rcu/update.c:320
+Code: cc cc cc cc cc cc cc cc cc cc cc 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 31 c0 83 3d 17 30 34 04 00 74 1e <83> 3d 3a 60 34 04 00 74 15 65 48 8b 0c 25 08 d0 9f 92 31 c0 83 b9
+RSP: 0018:ffffc90003f0ef70 EFLAGS: 00000202
+RAX: 0000000000000000 RBX: ffffffff90d8d001 RCX: ffffc90003f0ff60
+RDX: ffffc90003f0f001 RSI: dffffc0000000000 RDI: ffffc90003f0f050
+RBP: dffffc0000000000 R08: ffffc90003f0ff48 R09: 0000000000000000
+R10: ffffc90003f0f098 R11: fffff520007e1e15 R12: ffffc90003f0ff58
+R13: ffffc90003f08000 R14: ffffc90003f0f048 R15: ffffffff8172aae5
+ rcu_read_unlock include/linux/rcupdate.h:869 [inline]
+ class_rcu_destructor include/linux/rcupdate.h:1155 [inline]
+ unwind_next_frame+0x195c/0x2390 arch/x86/kernel/unwind_orc.c:680
+ arch_stack_walk+0x11c/0x150 arch/x86/kernel/stacktrace.c:25
+ stack_trace_save+0x9c/0xe0 kernel/stacktrace.c:122
+ save_stack+0xf5/0x1f0 mm/page_owner.c:156
+ __reset_page_owner+0x71/0x1f0 mm/page_owner.c:308
+ reset_page_owner include/linux/page_owner.h:25 [inline]
+ free_pages_prepare mm/page_alloc.c:1248 [inline]
+ free_unref_folios+0xc66/0x14d0 mm/page_alloc.c:2763
+ folios_put_refs+0x559/0x640 mm/swap.c:992
+ free_pages_and_swap_cache+0x277/0x520 mm/swap_state.c:264
+ __tlb_batch_free_encoded_pages mm/mmu_gather.c:136 [inline]
+ tlb_batch_pages_flush mm/mmu_gather.c:149 [inline]
+ tlb_flush_mmu_free mm/mmu_gather.c:397 [inline]
+ tlb_flush_mmu+0x3a0/0x680 mm/mmu_gather.c:404
+ tlb_finish_mmu+0xc3/0x1d0 mm/mmu_gather.c:497
+ exit_mmap+0x44c/0xb50 mm/mmap.c:1297
+ __mmput+0x118/0x420 kernel/fork.c:1121
+ exit_mm+0x1da/0x2c0 kernel/exit.c:581
+ do_exit+0x648/0x22e0 kernel/exit.c:952
+ do_group_exit+0x21c/0x2d0 kernel/exit.c:1105
+ get_signal+0x1286/0x1340 kernel/signal.c:3034
+ arch_do_signal_or_restart+0x9a/0x750 arch/x86/kernel/signal.c:337
+ exit_to_user_mode_loop+0x75/0x110 kernel/entry/common.c:111
+ exit_to_user_mode_prepare include/linux/entry-common.h:330 [inline]
+ syscall_exit_to_user_mode_work include/linux/entry-common.h:414 [inline]
+ syscall_exit_to_user_mode include/linux/entry-common.h:449 [inline]
+ do_syscall_64+0x2bd/0x3b0 arch/x86/entry/syscall_64.c:100
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f730c585213
+Code: Unable to access opcode bytes at 0x7f730c5851e9.
+RSP: 002b:00007ffe0103af48 EFLAGS: 00000246 ORIG_RAX: 0000000000000038
+RAX: fffffffffffffffc RBX: 0000000000000000 RCX: 00007f730c585213
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000001200011
+RBP: 0000000000000001 R08: 0000000000000000 R09: 0000000000000000
+R10: 000055556e1e67d0 R11: 0000000000000246 R12: 0000000000000000
+R13: 00000000000927c0 R14: 000000000003604b R15: 00007ffe0103b0e0
+ </TASK>
+rcu: rcu_preempt kthread timer wakeup didn't happen for 10501 jiffies! g13833 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402
+rcu: 	Possible timer handling issue on cpu=0 timer-softirq=10563
+rcu: rcu_preempt kthread starved for 10502 jiffies! g13833 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402 ->cpu=0
+rcu: 	Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
+rcu: RCU grace-period kthread stack dump:
+task:rcu_preempt     state:I stack:26792 pid:16    tgid:16    ppid:2      task_flags:0x208040 flags:0x00004000
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5397 [inline]
+ __schedule+0x16fd/0x4cf0 kernel/sched/core.c:6786
+ __schedule_loop kernel/sched/core.c:6864 [inline]
+ schedule+0x165/0x360 kernel/sched/core.c:6879
+ schedule_timeout+0x12b/0x270 kernel/time/sleep_timeout.c:99
+ rcu_gp_fqs_loop+0x301/0x1540 kernel/rcu/tree.c:2054
+ rcu_gp_kthread+0x99/0x390 kernel/rcu/tree.c:2256
+ kthread+0x70e/0x8a0 kernel/kthread.c:464
+ ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
 
 
->
-> So I guess if you wanted iomap to handle a blocksize change, you could
-> do something like:
->
-> iomap_change_file_blocksize(inode, new_blkbits) {
->         inode_lock()
->         filemap_invalidate_lock()
->
->         inode_dio_wait()
->         filemap_write_and_wait()
->         if (new_blkbits > mapping_min_folio_order()) {
->                 truncate_pagecache()
->                 inode->i_blkbits =3D new_blkbits;
->         } else {
->                 inode->i_blkbits =3D new_blkbits;
->                 xas_for_each(...) {
->                         <create new ifs>
->                         <translate uptodate/dirty state to new ifs>
->                         <swap ifs>
->                         <free old ifs>
->                 }
->         }
->
->         filemap_invalidate_unlock()
->         inode_unlock()
-> }
-
-Do you prefer this logic to the one above that walks through
-&mapping->i_pages? If so, then I'll go with this way.
-The part I'm unsure about is that this logic seems more disruptive (eg
-initiating writeback while holding the inode lock and doing work for
-unmapping/page cache removal) than the other approach, but I guess
-this is also rare enough that it doesn't matter much.
-
-
-Thanks,
-Joanne
-
->
-> --D
->
-> > > --D
-> > >
-> > > >           folio_unlock(folio);
-> > > >     }
-> > > >     xa_unlock_irq(&mapping->i_pages);
-> > > >     inode_unlock(inode);
-> > > >
-> > > >
-> > > > I think this is the only approach that doesn't require changes to i=
-omap.
-> > > >
-> > > > I'm going to think about this some more next week and will try to s=
-end
-> > > > out a patch for this then.
-> > > >
-> > > >
-> > > > Thanks,
-> > > > Joanne
-> > > >
-> > > > > > >
-> > > > > > > void fuse_iomap_set_i_blkbits(struct inode *inode, u8 new_blk=
-bits)
-> > > > > > > {
-> > > > > > >         trace_fuse_iomap_set_i_blkbits(inode, new_blkbits);
-> > > > > > >
-> > > > > > >         if (inode->i_blkbits =3D=3D new_blkbits)
-> > > > > > >                 return;
-> > > > > > >
-> > > > > > >         if (!S_ISREG(inode->i_mode))
-> > > > > > >                 goto set_it;
-> > > > > > >
-> > > > > > >         /*
-> > > > > > >          * iomap attaches per-block state to each folio, so w=
-e cannot allow
-> > > > > > >          * the file block size to change if there's anything =
-in the page cache.
-> > > > > > >          * In theory, fuse servers should never be doing this=
-.
-> > > > > > >          */
-> > > > > > >         if (inode->i_mapping->nrpages > 0) {
-> > > > > > >                 WARN_ON(inode->i_blkbits !=3D new_blkbits &&
-> > > > > > >                         inode->i_mapping->nrpages > 0);
-> > > > > > >                 return;
-> > > > > > >         }
-> > > > > > >
-> > > > > > > set_it:
-> > > > > > >         inode->i_blkbits =3D new_blkbits;
-> > > > > > > }
-> > > > > > >
-> > > > > > > https://git.kernel.org/pub/scm/linux/kernel/git/djwong/xfs-li=
-nux.git/commit/?h=3Dfuse-iomap-attrs&id=3Dda9b25d994c1140aae2f5ebf10e54d087=
-2f5c884
-> > > > > > >
-> > > > > > > --D
-> > > > > > >
-> > > > > > > >
-> > > > > > > > Thanks,
-> > > > > > > > Joanne
-> > > > > > > >
-> > > >
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
