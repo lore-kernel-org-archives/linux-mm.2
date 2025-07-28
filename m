@@ -2,96 +2,117 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C7F3C87FCE
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 08:04:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E00FFC83F26
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 08:15:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9694F6B008C; Mon, 28 Jul 2025 04:04:11 -0400 (EDT)
+	id 70E836B0088; Mon, 28 Jul 2025 04:15:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 940FB6B0093; Mon, 28 Jul 2025 04:04:11 -0400 (EDT)
+	id 6BF826B0095; Mon, 28 Jul 2025 04:15:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87DBA6B0096; Mon, 28 Jul 2025 04:04:11 -0400 (EDT)
+	id 5D4D16B009A; Mon, 28 Jul 2025 04:15:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A2036B008C
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 04:04:11 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F2E3E1401C3
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 08:04:10 +0000 (UTC)
-X-FDA: 83712935460.13.9AF7746
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id E858340012
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 08:04:06 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=kepHxj6K;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753689849; a=rsa-sha256;
-	cv=none;
-	b=J00DRhx6X6jjrVMBipbs4FUH7wTFuNtwucnZizRFI/ljGxI7HX3Osz31yT0MFi2L6Bl9mk
-	8TFuyA1A+zDfMjoIM5D5IIG6WoEcTr9cNo6wHl2ZBcAHB0EKAKfOaCujk3jlra9vB2RKF1
-	5SB3Wd0muHZr2Rwnbp9mZs4O4BMNWJE=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=kepHxj6K;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B4516B0088
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 04:15:58 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F024A10FE9B
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 08:15:57 +0000 (UTC)
+X-FDA: 83712965154.16.2BCC7D4
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf29.hostedemail.com (Postfix) with ESMTP id DFA76120007
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 08:15:55 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=YOHmIu6c;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=pQ+UXydN;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=YOHmIu6c;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=pQ+UXydN;
+	spf=pass (imf29.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753689849;
+	s=arc-20220608; t=1753690556;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=R5JhzFAe2+pi/8yqRFPN+PrUVu7txCrojFI/LNAgGtk=;
-	b=q+l9D9hQ73uYP84JuPhBnizolC/uENm6YuO6Uz/S4ZIJVpnkIAYGnBYZTyppyTSg8P5nNa
-	2wszePqlQOZH81YH4zjGtJSOU7oLVuVQgShadMb02VrzjCel+4/VkyhzBQeUfgZMK26fx2
-	xNrr/0MeHQqVZSMC4TgPoX5QTIWoXj0=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1753689843; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=R5JhzFAe2+pi/8yqRFPN+PrUVu7txCrojFI/LNAgGtk=;
-	b=kepHxj6K2WQ5b1O0Lk+ZXTbEgcjH7EbyQxYr62pv2TqS5uCU/qmJteoI0u3H0JOF/d6UzIcMP4XGTy6z4VvpeFC60qK8DqgpoVH3w0iJff0o67gPiyLAAFgweZ64trQ0XGtMFIGalkAmUbDK6hSKr87xy/oDyQRRETJ4kgRrtL4=
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WkFS0FZ_1753689841 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 28 Jul 2025 16:04:01 +0800
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-To: akpm@linux-foundation.org,
-	hughd@google.com
-Cc: patryk@kowalczyk.ws,
-	ville.syrjala@linux.intel.com,
-	david@redhat.com,
-	willy@infradead.org,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	jani.nikula@linux.intel.com,
-	joonas.lahtinen@linux.intel.com,
-	rodrigo.vivi@intel.com,
-	tursulin@ursulin.net,
-	christian.koenig@amd.com,
-	ray.huang@amd.com,
-	matthew.auld@intel.com,
-	matthew.brost@intel.com,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH] mm: shmem: fix the shmem large folio allocation for the i915 driver
-Date: Mon, 28 Jul 2025 16:03:53 +0800
-Message-ID: <0d734549d5ed073c80b11601da3abdd5223e1889.1753689802.git.baolin.wang@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.5
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=HXhzMaFuh7vb5Rrfd9w/8LMRu0pb0blUMzRiad8fKbo=;
+	b=LnaWpg4vO+8NQbprx887tp1hpSpHgnYbw/CZUM/MAEvGuSB3EXUajQGUrPOTd2fdbXdBPR
+	XCmmZ5hTsYcfSBog2yAwkYpcrEi6NcZvd3CEDiC5GVRJs0BOWYUe+pYP7rMyi01gC6Y8kJ
+	+IgGsfL3FgvnxO6QKYA93o/5z6MqI9w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753690556; a=rsa-sha256;
+	cv=none;
+	b=wsXxr9qRwwxM7WYd/GRbSCkc6uNfhnnPlXmFz7Bn03IVupZw9IHFa0ba7ywpKb8Pch/W6G
+	XDWFOpqsDFRSqN+mae/fQe3eIUctb6aEgpyjXM+vaewHWvzg7TtShf5pj2w/yY+DYdhYuk
+	t/M82CdUbevvxn57uNI1FcOMAF3YAIE=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=YOHmIu6c;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=pQ+UXydN;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=YOHmIu6c;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=pQ+UXydN;
+	spf=pass (imf29.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 35130216EE;
+	Mon, 28 Jul 2025 08:15:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1753690554; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type;
+	bh=HXhzMaFuh7vb5Rrfd9w/8LMRu0pb0blUMzRiad8fKbo=;
+	b=YOHmIu6cvuvYkmWFnd1acUhY1cMMwLMAoPiyU8zd6MVLu2mR/qKBHWvArwtJz2jYPOxGzM
+	rK+om4zwmjJt9NAMFlGRM0hC0fOmo+7JKOyu+yujxzdUCMLzJ9iRildyRljuqZpouVVCUN
+	4UXbK2eS1Xc385L9LHRJtNs5TSy/X7A=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1753690554;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type;
+	bh=HXhzMaFuh7vb5Rrfd9w/8LMRu0pb0blUMzRiad8fKbo=;
+	b=pQ+UXydNBn8vugRHXLpfN/zC9+2Y2K6NVoKYrKFd8fB67MbEnix0itIqkID7uar3NyA9lg
+	bX/HAeoUvc+tYnCQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1753690554; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type;
+	bh=HXhzMaFuh7vb5Rrfd9w/8LMRu0pb0blUMzRiad8fKbo=;
+	b=YOHmIu6cvuvYkmWFnd1acUhY1cMMwLMAoPiyU8zd6MVLu2mR/qKBHWvArwtJz2jYPOxGzM
+	rK+om4zwmjJt9NAMFlGRM0hC0fOmo+7JKOyu+yujxzdUCMLzJ9iRildyRljuqZpouVVCUN
+	4UXbK2eS1Xc385L9LHRJtNs5TSy/X7A=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1753690554;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type;
+	bh=HXhzMaFuh7vb5Rrfd9w/8LMRu0pb0blUMzRiad8fKbo=;
+	b=pQ+UXydNBn8vugRHXLpfN/zC9+2Y2K6NVoKYrKFd8fB67MbEnix0itIqkID7uar3NyA9lg
+	bX/HAeoUvc+tYnCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D7CB3138A5;
+	Mon, 28 Jul 2025 08:15:53 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id +3bxMbkxh2haFwAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Mon, 28 Jul 2025 08:15:53 +0000
+Date: Mon, 28 Jul 2025 10:15:47 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: david@redhat.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Michal Hocko <mhocko@suse.com>, Hannes Reinecke <hare@kernel.org>
+Subject: [RFC] Disable auto_movable_ratio for selfhosted memmap
+Message-ID: <aIcxs2nk3RNWWbD6@localhost.localdomain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E858340012
-X-Stat-Signature: mhu1n863cbzdza6czth56xj517ddk1ki
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Queue-Id: DFA76120007
 X-Rspam-User: 
-X-HE-Tag: 1753689846-430710
-X-HE-Meta: U2FsdGVkX1/JiHptBNNj9kLlxmlli7wKmAZouSiKeZfz8F56zI3sWe21bkREgLmdtESxe+r24cVi+PUl7cqx4cFN5Ze47rKMW1WuFoRGV+tzklXv5uE0lK4v+6NRiFiJ00tXF7yG1K3Nx4w34Ya2mwhKYnFC0ltxljZOpM1y4XckaPdVGhQRlmw99ztCal+BKbAdlFTCMHs6d9jBi+eTg/DcKYDmWbT7phQkRh665hb7cZ9ZDxe7ToMwbSHataH/KssizBZ1gm9mvp4YNf9zVC26JSgM+3XvIKottBOAsD0ouMWxRnyvbRA/SW/0FzzcJEN7VbUDWS+3U8v6gkS4qH0J6hJC4BR9bz6dq2+WQIyT+EFJK4o3yOSXhe5JWvOj+uKCCV90tto2RKgD1V2U8+boNVNhsMcE8UFI7NJyFHURKC6Y2fXZn1p2hxF3jSn1Eq8i3/GUGyRJa6HihuBmZzFyXTXIY4ZcgW9l7uOzvUCycOAAfn3V0phLvnohlkdYFgUoX5D5Rh+rY0DtKH7n6BnJn/00fhqNHW/HaNr8XmRV4uP4hTn4WflNaTbt04YHyy++zzbLLGsGO+5Tm6Lsq7EnreDtvx+ePh2/v8PtDraPWFshhDMdO6Xha1STntcWu884kEnoqDIss3pREDDxHeRlFzGk7ROo/nK7yk7cd/qC85bpPayVooezSAP2OwQL37BsKCEKF9B8zF0sOiudPwHpwcW/BiSQEGGdINmBfwlVoYGHfpLka4wwf47fC89uQLsSCXGzSutYeq21/JgoVhh/4vhiHpM7/SboNWevOr/d0uTPZgfw7dxsb57Es/5XwNVGfTriE4hIEaZL6jsF1h6a9W1jlgaweSDcfpfcAdV1J1LCtaF/NiNYgmA8kLnesU64x4bes3lMveNOVF1hal0H85pAq7vN8tdsmik32QlB6PKJ6Ma+scz++KcrKU650zMK9RGwNeaLfBv2JhS
- Zi/6E+6D
- HL3OeAW0MnV1Z798G8Ue/5Un/vC3qX8cfpuuce9YSfjeaGjstrvm1rPIiaLhfXgTX89OiSnQc3Q0hd4KsmGbkCxjAf5aRq/PulQXcnHcruSUH8xFFpnMu84FuPq3iZatF3rRBP/UnxGDwN/zTPJuYemv0DXEVYbEDOQvvmiWHc2aUkmdC/uDMS1l8XegoQdouqzBDwaSiXt4MpMx01gIJl/t4dwj02qcTrSdZ/tK/JHj51CVKAY1HwiDoQAP0nI/IsY/6NO1Fxy5cy27H44ojuO1VJsAAWcPduH3alXmV8DZdlC2Vg+gGhT5H+AckINlxJHv8QCAoSKdVFDVAAR7LwP5mwVWjPQec7Ior7vNtIwRnHHHWaRTd1ysNnZfcA+x7xX3H
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 3md14g7pn39xurrhkpyhfgy1ry4xg8pc
+X-HE-Tag: 1753690555-774093
+X-HE-Meta: U2FsdGVkX1/5tjbtRpqq5rF9IGhkszEjdFv3o0EL6kFeef98XoXJvELDRva9uuOSegpsrkEnsZ0gufnP7n3WlXdmOZPApsTsDkKfNon+1DPKeVq7Tfmr+hA5pbP0w1vS1xdw+55lwS1JvoZ+rZerdEiskK87rP8wi4Kk8GRax9mhVHQBedO6Gvxe1BQ5xqzakcPAWtVf3O1UGBVYwRs/tWG2JxPYKPVqdRnG6d9ZTFQ45JJcyKscVPeu9VufJdKJc1tm2FKYro2pG2exuHnUy+czpt0VEVNoOt6Rr/zW2OOsWlc7Ct4wLuhWyAt1umUvUyS+CZWo7Ba9iGl0hdqeAMtXVXQj0EWuei4PhoNKZruETMHeKVuOnHTTkFrTLYYjKMErIAvgy0GbYBFzRFDcAbuUFjSh9sAD9+RTEHYsauIoL+Cs6WjRMwknjdK2F87M2QAovIgSbp0g/mvTei7hJo+QiJNtanHq6Frz0xNfN4RXrzw4UAUUFCK1MiL4XjeWk3xm7MTvmrVuYGAwrW3Xfxh//SiHjyRBzOSkZs3n6VkrfAQNUAw/DDAGJt8HAGseMMbkBjlYNkqbAkgI2dcweGCjcqrEbpnc8fHR1UxoRoukvg1DCK/ay+UhP9rHaqQtNFRwTnSXyt8+96QxvvZplxPt8YHHVY19B/8/aIjnfsHN0ZgVdmZCf6hA2JKcBmnjzyZbdT/3xYWYhJ0nE5x8tnw8QqNgSfqgEjETTUzCU+orrfhoFLmajiFsdlSx4WrF3SiroaAZkNB4Zrq6EYXWjKJKBXUwjsvuO59A2MyiJG+o9BSfbhwqCSRu5Qf7xHq2CzQFRGnT09ej5SLZMOX4RAX0V48krRj2Q1tHijoiOw7lXWlqUrZBTP9hMEqrJYAmRdrHU6PMxGSbhTOhKohGKv5lN/zLDRl+0qb8IB89dWdc8rkgcgkN5MFnyHD7/C/CSIivcYsvd/QDlgQY9uJ
+ rFPvab7Z
+ zjnjKJnrpT2FBNEjBt54LUk0pfJHtKERW2fe9jMMzzcL9YMh7KQpdyz1bhj199LaeKNoK+couT7ZVCW1ppuDpwr3hg3ezgzaBSB22ml6jfD60bfj8gptg6oZkL0BpJdHp6i44ZXF3eNVtyezhHdWAtEpKCOtTldJGeCcY/B6IyyVLlzvk+zgNKq3zvpSHe69pTbQQnBY7coKbfNhenkYxx/Ob9b2J7WtwYIIGaLj+gMWzc65Lon5aSQfSO/9YoHqCNtdsy8tgVqAJxrZ/2RtAGFGbT+cVi5HdRbzgrD3hQsevKMXH7NaU8hXILVTPFwIMHxxUgcTz+cUJlgfoxmY182AtDyQhQa1ePQW4sLmG+MKCxKWETQf+VTJQDQGLtyglMGh4mRjAqKZdUKY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,152 +121,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-After commit acd7ccb284b8 ("mm: shmem: add large folio support for tmpfs"),
-we extend the 'huge=' option to allow any sized large folios for tmpfs,
-which means tmpfs will allow getting a highest order hint based on the size
-of write() and fallocate() paths, and then will try each allowable large order.
+Hi,
 
-However, when the i915 driver allocates shmem memory, it doesn't provide hint
-information about the size of the large folio to be allocated, resulting in
-the inability to allocate PMD-sized shmem, which in turn affects GPU performance.
+Currently, we have several mechanisms to pick a zone for the new memory we are
+onlining.
+Eventually, we will land on zone_for_pfn_range() which will pick the zone.
 
-To fix this issue, add the 'end' information for shmem_read_folio_gfp()  to help
-allocate PMD-sized large folios. Additionally, use the maximum allocation chunk
-(via mapping_max_folio_size()) to determine the size of the large folios to
-allocate in the i915 driver.
+Two of these mechanisms are 'movable_node' and 'auto-movable' policy.
+The former will put every single hotpluggled memory in ZONE_MOVABLE
+(unless we can keep zones contiguous by not doing so), while the latter
+will put it in ZONA_MOVABLE IFF we are within the established ratio
+MOVABLE:KERNEL.
 
-Fixes: acd7ccb284b8 ("mm: shmem: add large folio support for tmpfs")
-Reported-by: Patryk Kowalczyk <patryk@kowalczyk.ws>
-Reported-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Tested-by: Patryk Kowalczyk <patryk@kowalczyk.ws>
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
----
- drivers/gpu/drm/drm_gem.c                 | 2 +-
- drivers/gpu/drm/i915/gem/i915_gem_shmem.c | 7 ++++++-
- drivers/gpu/drm/ttm/ttm_backup.c          | 2 +-
- include/linux/shmem_fs.h                  | 4 ++--
- mm/shmem.c                                | 7 ++++---
- 5 files changed, 14 insertions(+), 8 deletions(-)
+It seems, the later doesn't play well with CXL memory where CXL cards hold really
+large amounts of memory, making the ratio fail, and since CXL cards must be removed
+as a unit, it can't be done if any memory block fell within
+!ZONE_MOVABLE zone.
 
-diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
-index 4bf0a76bb35e..5ed34a9211a4 100644
---- a/drivers/gpu/drm/drm_gem.c
-+++ b/drivers/gpu/drm/drm_gem.c
-@@ -627,7 +627,7 @@ struct page **drm_gem_get_pages(struct drm_gem_object *obj)
- 	i = 0;
- 	while (i < npages) {
- 		long nr;
--		folio = shmem_read_folio_gfp(mapping, i,
-+		folio = shmem_read_folio_gfp(mapping, i, 0,
- 				mapping_gfp_mask(mapping));
- 		if (IS_ERR(folio))
- 			goto fail;
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-index f263615f6ece..778290f49853 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-@@ -69,6 +69,7 @@ int shmem_sg_alloc_table(struct drm_i915_private *i915, struct sg_table *st,
- 	struct scatterlist *sg;
- 	unsigned long next_pfn = 0;	/* suppress gcc warning */
- 	gfp_t noreclaim;
-+	size_t chunk;
- 	int ret;
+One way to tackle this would be update the ratio every time a new CXL
+card gets inserted, but this seems suboptimal.
+Another way is that since CXL memory works with selfhosted memmap, we could relax
+the check when 'auto-movable' and only look at the ratio if we aren't
+working with selfhosted memmap.
+
+Something like the following (acthung: it's just a PoC)
+Comments? Ideas? 
+
+ diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+ index 5c6c1d6bb59f..ff87cfb3881a 100644
+ --- a/drivers/base/memory.c
+ +++ b/drivers/base/memory.c
+ @@ -234,7 +234,7 @@ static int memory_block_online(struct memory_block *mem)
+  		return -EHWPOISON;
  
- 	if (overflows_type(size / PAGE_SIZE, page_count))
-@@ -94,6 +95,7 @@ int shmem_sg_alloc_table(struct drm_i915_private *i915, struct sg_table *st,
- 	mapping_set_unevictable(mapping);
- 	noreclaim = mapping_gfp_constraint(mapping, ~__GFP_RECLAIM);
- 	noreclaim |= __GFP_NORETRY | __GFP_NOWARN;
-+	chunk = mapping_max_folio_size(mapping);
+  	zone = zone_for_pfn_range(mem->online_type, mem->nid, mem->group,
+ -				  start_pfn, nr_pages);
+ +				  start_pfn, nr_pages, mem->altmap);
  
- 	sg = st->sgl;
- 	st->nents = 0;
-@@ -105,10 +107,13 @@ int shmem_sg_alloc_table(struct drm_i915_private *i915, struct sg_table *st,
- 			0,
- 		}, *s = shrink;
- 		gfp_t gfp = noreclaim;
-+		loff_t bytes = (page_count - i) << PAGE_SHIFT;
-+		loff_t pos = i << PAGE_SHIFT;
+  	/*
+  	 * Although vmemmap pages have a different lifecycle than the pages
+ @@ -473,11 +473,11 @@ static ssize_t phys_device_show(struct device *dev,
+  static int print_allowed_zone(char *buf, int len, int nid,
+  			      struct memory_group *group,
+  			      unsigned long start_pfn, unsigned long nr_pages,
+ -			      int online_type, struct zone *default_zone)
+ +			      int online_type, struct zone *default_zone, struct vmem_altmap *altmap)
+  {
+  	struct zone *zone;
  
-+		bytes = min_t(loff_t, chunk, bytes);
- 		do {
- 			cond_resched();
--			folio = shmem_read_folio_gfp(mapping, i, gfp);
-+			folio = shmem_read_folio_gfp(mapping, i, pos + bytes, gfp);
- 			if (!IS_ERR(folio))
- 				break;
+ -	zone = zone_for_pfn_range(online_type, nid, group, start_pfn, nr_pages);
+ +	zone = zone_for_pfn_range(online_type, nid, group, start_pfn, nr_pages, altmap);
+  	if (zone == default_zone)
+  		return 0;
  
-diff --git a/drivers/gpu/drm/ttm/ttm_backup.c b/drivers/gpu/drm/ttm/ttm_backup.c
-index 6f2e58be4f3e..0c90ae338afb 100644
---- a/drivers/gpu/drm/ttm/ttm_backup.c
-+++ b/drivers/gpu/drm/ttm/ttm_backup.c
-@@ -100,7 +100,7 @@ ttm_backup_backup_page(struct file *backup, struct page *page,
- 	struct folio *to_folio;
- 	int ret;
+ @@ -509,13 +509,13 @@ static ssize_t valid_zones_show(struct device *dev,
+  	}
  
--	to_folio = shmem_read_folio_gfp(mapping, idx, alloc_gfp);
-+	to_folio = shmem_read_folio_gfp(mapping, idx, 0, alloc_gfp);
- 	if (IS_ERR(to_folio))
- 		return PTR_ERR(to_folio);
+  	default_zone = zone_for_pfn_range(MMOP_ONLINE, nid, group,
+ -					  start_pfn, nr_pages);
+ +					  start_pfn, nr_pages, mem->altmap);
  
-diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
-index 6d0f9c599ff7..203eebad6b38 100644
---- a/include/linux/shmem_fs.h
-+++ b/include/linux/shmem_fs.h
-@@ -156,12 +156,12 @@ enum sgp_type {
- int shmem_get_folio(struct inode *inode, pgoff_t index, loff_t write_end,
- 		struct folio **foliop, enum sgp_type sgp);
- struct folio *shmem_read_folio_gfp(struct address_space *mapping,
--		pgoff_t index, gfp_t gfp);
-+		pgoff_t index, loff_t end, gfp_t gfp);
+  	len = sysfs_emit(buf, "%s", default_zone->name);
+  	len += print_allowed_zone(buf, len, nid, group, start_pfn, nr_pages,
+ -				  MMOP_ONLINE_KERNEL, default_zone);
+ +				  MMOP_ONLINE_KERNEL, default_zone, mem->altmap);
+  	len += print_allowed_zone(buf, len, nid, group, start_pfn, nr_pages,
+ -				  MMOP_ONLINE_MOVABLE, default_zone);
+ +				  MMOP_ONLINE_MOVABLE, default_zone, mem->altmap);
+  	len += sysfs_emit_at(buf, len, "\n");
+  	return len;
+  }
+ diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
+ index 23f038a16231..89f7b9c5d995 100644
+ --- a/include/linux/memory_hotplug.h
+ +++ b/include/linux/memory_hotplug.h
+ @@ -328,7 +328,7 @@ extern struct page *sparse_decode_mem_map(unsigned long coded_mem_map,
+  					  unsigned long pnum);
+  extern struct zone *zone_for_pfn_range(int online_type, int nid,
+  		struct memory_group *group, unsigned long start_pfn,
+ -		unsigned long nr_pages);
+ +		unsigned long nr_pages, struct vmem_altmap *altmap);
+  extern int arch_create_linear_mapping(int nid, u64 start, u64 size,
+  				      struct mhp_params *params);
+  void arch_remove_linear_mapping(u64 start, u64 size);
+ diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+ index 69a636e20f7b..6c6600a9c839 100644
+ --- a/mm/memory_hotplug.c
+ +++ b/mm/memory_hotplug.c
+ @@ -1048,7 +1048,7 @@ static inline struct zone *default_zone_for_pfn(int nid, unsigned long start_pfn
  
- static inline struct folio *shmem_read_folio(struct address_space *mapping,
- 		pgoff_t index)
- {
--	return shmem_read_folio_gfp(mapping, index, mapping_gfp_mask(mapping));
-+	return shmem_read_folio_gfp(mapping, index, 0, mapping_gfp_mask(mapping));
- }
+  struct zone *zone_for_pfn_range(int online_type, int nid,
+  		struct memory_group *group, unsigned long start_pfn,
+ -		unsigned long nr_pages)
+ +		unsigned long nr_pages, struct vmem_altmap *altmap)
+  {
+  	if (online_type == MMOP_ONLINE_KERNEL)
+  		return default_kernel_zone_for_pfn(nid, start_pfn, nr_pages);
+ @@ -1056,6 +1056,10 @@ struct zone *zone_for_pfn_range(int online_type, int nid,
+  	if (online_type == MMOP_ONLINE_MOVABLE)
+  		return &NODE_DATA(nid)->node_zones[ZONE_MOVABLE];
  
- static inline struct page *shmem_read_mapping_page(
-diff --git a/mm/shmem.c b/mm/shmem.c
-index e6cdfda08aed..c79f5760cfc9 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -5960,6 +5960,7 @@ int shmem_zero_setup(struct vm_area_struct *vma)
-  * shmem_read_folio_gfp - read into page cache, using specified page allocation flags.
-  * @mapping:	the folio's address_space
-  * @index:	the folio index
-+ * @end:	end of a read if allocating a new folio
-  * @gfp:	the page allocator flags to use if allocating
-  *
-  * This behaves as a tmpfs "read_cache_page_gfp(mapping, index, gfp)",
-@@ -5972,14 +5973,14 @@ int shmem_zero_setup(struct vm_area_struct *vma)
-  * with the mapping_gfp_mask(), to avoid OOMing the machine unnecessarily.
-  */
- struct folio *shmem_read_folio_gfp(struct address_space *mapping,
--		pgoff_t index, gfp_t gfp)
-+		pgoff_t index, loff_t end, gfp_t gfp)
- {
- #ifdef CONFIG_SHMEM
- 	struct inode *inode = mapping->host;
- 	struct folio *folio;
- 	int error;
- 
--	error = shmem_get_folio_gfp(inode, index, 0, &folio, SGP_CACHE,
-+	error = shmem_get_folio_gfp(inode, index, end, &folio, SGP_CACHE,
- 				    gfp, NULL, NULL);
- 	if (error)
- 		return ERR_PTR(error);
-@@ -5998,7 +5999,7 @@ EXPORT_SYMBOL_GPL(shmem_read_folio_gfp);
- struct page *shmem_read_mapping_page_gfp(struct address_space *mapping,
- 					 pgoff_t index, gfp_t gfp)
- {
--	struct folio *folio = shmem_read_folio_gfp(mapping, index, gfp);
-+	struct folio *folio = shmem_read_folio_gfp(mapping, index, 0, gfp);
- 	struct page *page;
- 
- 	if (IS_ERR(folio))
+ +	/* Selfhosted memmap, skip ratio check */
+ +	if (online_policy == ONLINE_POLICY_AUTO_MOVABLE && altmap)
+ +		return &NODE_DATA(nid)->node_zones[ZONE_MOVABLE];
+ +
+  	if (online_policy == ONLINE_POLICY_AUTO_MOVABLE)
+  		return auto_movable_zone_for_pfn(nid, group, start_pfn, nr_pages);
+
 -- 
-2.43.5
-
+Oscar Salvador
+SUSE Labs
 
