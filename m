@@ -2,112 +2,122 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E3435C87FC9
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 14:12:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B4BB9C87FC9
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 14:51:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7FC926B007B; Mon, 28 Jul 2025 10:12:49 -0400 (EDT)
+	id DE51A6B0088; Mon, 28 Jul 2025 10:51:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7AD0F6B008C; Mon, 28 Jul 2025 10:12:49 -0400 (EDT)
+	id DBCF76B0089; Mon, 28 Jul 2025 10:51:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 69BA06B0098; Mon, 28 Jul 2025 10:12:49 -0400 (EDT)
+	id CABC96B008A; Mon, 28 Jul 2025 10:51:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 59E2B6B007B
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 10:12:49 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D38E01A02BA
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 14:12:48 +0000 (UTC)
-X-FDA: 83713864416.09.A21A653
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf03.hostedemail.com (Postfix) with ESMTP id DEE2420011
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 14:12:46 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=3E8eFVwH;
-	spf=pass (imf03.hostedemail.com: domain of jannh@google.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BC76C6B0088
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 10:51:15 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 18E2B1402C4
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 14:51:15 +0000 (UTC)
+X-FDA: 83713961310.29.151FDB3
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 2072240005
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 14:51:12 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AuqEWPO4;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.181 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753711967;
+	s=arc-20220608; t=1753714273;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eyO1Zh3JLq89LG2uKG9/+47hoHtzpYlBtMnkZyT0qW4=;
-	b=jjfovNipwqHhnybV6dmqMci9JgL+BH8UmSKUxrp4xD8MO1OiK6Tw/v69lX5RfBVm25bBnA
-	BkbsCd8r+7rQSoYHa9JiGBh4C6bsbr80fQ/KmQF9mf1DdgdB99sgMlZVzKdhz3xhJbwCXu
-	piUlmpDED1OGJFOEF7rasDVwdV378Fg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753711967; a=rsa-sha256;
+	bh=plhcie/uWEJ2l8MLaYw41+bnUS5YGYhxQ5JWVcQv7gs=;
+	b=1HakLG4Id7jzvhyZKciwUFzhfUSUTLZmpa/8AXZV+Mo3VpN+wMUmXsPaKxA1vaOD70j/2u
+	VISzctXEykvYOZeGI1aVkSfj2N6xjQBNncNY7BXP5TfX9FvPqO0NXwaF4rRpypdFE4cw0i
+	o1KYxX38MAJc8vWFWwt4OyD4O2h5ZsA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753714273; a=rsa-sha256;
 	cv=none;
-	b=Jr4wO7ma94c468FUJSP6v4PJYkueqToEU0VdJ76Tip0qzUz1+Sv49WuVyVwaBgK+6ZCZCm
-	0gUmBK+FEgS8QgPyE1Z/KthdWobT6L3tp9hgbPfWwGV6jbliV+ODQY2aa3+chOtEioAKy0
-	bz1M8SLPrKYsk/12ViZWbeCRPQIbQEg=
+	b=zaF1kcugA8X7N+ELF8CFcbdD7A9oZjwLS1Dm2bmU4cEWHpKbnajNLotYZx/ypSBPxc96TF
+	CUDzPPfkevrYhFm9GOrNBOb6KI91NvWSYYNry7Et7ZFIyhxqSFN7QpsovxDPhl1aW0wWgu
+	kClC0WUsz98A0JG8dSwhnhQm2J0dI4Y=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=3E8eFVwH;
-	spf=pass (imf03.hostedemail.com: domain of jannh@google.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-61543b05b7cso7441a12.0
-        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 07:12:46 -0700 (PDT)
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AuqEWPO4;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.181 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-7183d264e55so41103887b3.2
+        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 07:51:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753711965; x=1754316765; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1753714272; x=1754319072; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eyO1Zh3JLq89LG2uKG9/+47hoHtzpYlBtMnkZyT0qW4=;
-        b=3E8eFVwHjhSg67bnl08UpeCxqEJiCSxYCx0uDWS+R1ehCE+MwEfxNMKcAtw6iQgEFj
-         YEItF1KBxGHGjlsFE5YQ8FHhO/i/LczwE+4+NE6NCV88OvAmL+yDHrYqVye+J9c/gj9K
-         uy1msSMNVnsTPPCra8pbHSbMBoJTmLgxr7m37DT2U9eVOHzNwflffiGSMFRM+Mxz1qIZ
-         swR49i+nASBjwRhGMdauBlHEeuYOVMP6ktl9bwKBSqD1H+JrgYpnMjSSCxOX+1r8A6yt
-         hmbrV8oy1Dd7lTnt1WUp3NqpVLHwPZEBGR7GdiPt0k4O/efpYUmxUZr0Cobu6iidQdXC
-         p79A==
+        bh=plhcie/uWEJ2l8MLaYw41+bnUS5YGYhxQ5JWVcQv7gs=;
+        b=AuqEWPO40ik0m635qniQrRuYtRIMes1gDxTmrvuu6AJ9xmdXPCtZB3UrbOzcU8p9Qo
+         EZ2qnCyAOQk1hGX6Uy767PtnXEeFqN0XE5YxtkOyEeFJhkHDj4LJRnlf6+zKJm/azJ1Z
+         Myig7TN49PY1UxHflZ3gj140huTWxaImi82jQ3pQlktVdGcoNCPQQquvvr52iHqB93zA
+         nWe6edWDGnJ/LdSETLuv4dqWRTtd89ilKl9/reImLSJ+YngImlQciO0ROP1xZqtYYo4l
+         0KMcYHLt0zz8mzoKPkpjbDsji3v6ILaRDqS23aft4ZGXQpsTL7QhzHaV+5gWABMabi5Y
+         8IXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753711965; x=1754316765;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1753714272; x=1754319072;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eyO1Zh3JLq89LG2uKG9/+47hoHtzpYlBtMnkZyT0qW4=;
-        b=GIVhe6uTygj6xC9u/7T9q9ApapI3NxiRzAwqOnhJYDOLJM1xWNyAJtFgSUPldngITG
-         9pwcj6PyUkzNq7UYJxnKSi71hy/m6PHG9a7TDW07nTNkz2YsyArWhiL4A0F9R8rYeBgC
-         TUuYvUgZNOaafDjvbPfjOwLOI28509S6wkvBXtriPlhd7p3Gm1slWleoG9I5coiGTlvN
-         VUJOdhD7hG09Vt8XY9Gf1LVDSyaZ67rdEkS5/Nc0WSyhLUb5RxqUcxLhGLMTjQJ1/wt7
-         uRYPnU4utUW5EXpc7dwLO3raVd9rsGGKqCQkX0G+qMiENOPR+gEuAr+pxZJ/FljNclrG
-         +57g==
-X-Forwarded-Encrypted: i=1; AJvYcCUF9ZDw4mi3JpflpXFZWJlo5bFWpL2Q0MVZgxXfvfWdJOpzYimgr6WEqYVmx7SqVeBcQ92W2NVxqA==@kvack.org
-X-Gm-Message-State: AOJu0YxTkEuHWKIkOU5vScAWaQV+iTOHS8BVCFxj5FDXLwYm9kgItC1y
-	Hjga4Lo5aAnikEMlXDvp3iESUjkmyO7jQ9mvH7fJgZ83+NMavB/3dsWvt811Y5OHE3pMACbkT5L
-	MbQEUvR5tbXH2TlWhBpnMpZkS4fniGwUrD+oDxC+j
-X-Gm-Gg: ASbGnctK0UDiX2qtrzujnnJS1NQlYzlVXdJ4Lf2nw+veREzCT0B1WcUcnn5Nudqvmzu
-	yHF5TwixPfs1cl/WoqjZjJGzDPeMxwF+Y2LZjDXQAKajjMymbpR1/egy9CM9jkD5KGUa8DH+fs1
-	xlcDu9crej/EWtjiW+gtjXkm75GmDOXUSVtrkdhKsGRpn0poR5voYO1A9r54h7fYkYdJm5swsMq
-	xO1mC5lxyC2u4jZ5Pdcr5IIFOdOEoc7Cg==
-X-Google-Smtp-Source: AGHT+IGqSyVPEeBd1/C92xR8Yk5cwA35fb1bP695SMItcVpEcxcrhb8x+oSwZU4glMUFyz5GmbVv9lfOnFDdUmso97U=
-X-Received: by 2002:aa7:d793:0:b0:615:28c0:fac8 with SMTP id
- 4fb4d7f45d1cf-61528c0fd99mr103964a12.4.1753711965037; Mon, 28 Jul 2025
- 07:12:45 -0700 (PDT)
+        bh=plhcie/uWEJ2l8MLaYw41+bnUS5YGYhxQ5JWVcQv7gs=;
+        b=E+w0yraXwmMk2pSCShFfWt/71DTn+jWOIjFoEaduHIsq2cMsYdFBrdqy6BdGmatBs3
+         CU/sJo85m42qndnGxMzTpkEI4bb4UA2ErhuiIK8jMPRlWEQSHmo6NoikaiX2P6TrZHd1
+         ktgNYqu6P0mudPRU+e+NzImBxQiqQHBOYnersh7bwRnATptE7tt2QqXpcgMf22tNTRPo
+         vmkri8qHZIy0wuT6lqMxPve3YvRZZwBvFDWvoFrhCPg/j68bsoN6Y0bOW8GMJMy4RwrC
+         FCjDB3epGvNUtVShrBgGDw+hZHGSQqWlRup0qJ8azxPuzjgnd8epsnFIf2fjtXsZSRRa
+         A8Vw==
+X-Forwarded-Encrypted: i=1; AJvYcCW7BTFK0nZwnKE7FJ5mHWehgpJGQMBg6MMntT8ARixRgDWF6xk0RbhbN5DtUWgupmEeI7Wi7XKSHA==@kvack.org
+X-Gm-Message-State: AOJu0YwytwYxrsuRoopNLTq2UYCIKxp2MTAYwuiXO8sS/lo9flZ6rA57
+	edjxka8M/eUYMgqpq/+P6gg5/2F4mujzNajrFJ97GvMjbaoeP1YIcv7X
+X-Gm-Gg: ASbGncvl+qX57wITp4AWtWXfRxFryDFOfdlwIgReOtp+tGFwGqGFNeYXNm0TDpV+K1f
+	5k5OznmPpm3q1nCMP3CWlcNvtzP1ce2fierHTkogt6jCLauuIrPbLtC9Ip+V0DbTWaaHxgVDnt+
+	rRn3BfkcMBx27/a+987JFYzVnoPlktzkQkbihj24p+wiX6GM1t0pucC411PIv2U4OzphAAk6pg9
+	Um83bZp0fV2M8Km1Vlb6gjyfMp932rsR39HIPq3wUUpBJE8W6n55rNPZ0yqcw8d0eCbEIpMaAg2
+	y1aJzHP+k5uoFJ+78i4Zz47GxQxjVoQCanPAr31fM5lMUa/XURgoLt4DMNMbEB51EcgG5z/s4DD
+	oesQ1iLN0GPcghimzh0yc1w==
+X-Google-Smtp-Source: AGHT+IFqruB0onDGfKbcBKOJcNNcVE2gI40uibzJ64RLl9KiQFHtKm5sGT8a7BgrgZDLUKDPK7Q3kw==
+X-Received: by 2002:a05:690c:610a:b0:719:e1de:806a with SMTP id 00721157ae682-719e328a757mr160433217b3.2.1753714271906;
+        Mon, 28 Jul 2025 07:51:11 -0700 (PDT)
+Received: from localhost ([2a03:2880:25ff:5b::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-719f215500dsm13050867b3.10.2025.07.28.07.51.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Jul 2025 07:51:11 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Alistair Popple <apopple@nvidia.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH] mempolicy: Clarify what RECLAIM_ZONE means
+Date: Mon, 28 Jul 2025 07:51:07 -0700
+Message-ID: <20250728145109.1524733-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <87ms8p2iop.fsf@DESKTOP-5N7EMDA>
+References: 
 MIME-Version: 1.0
-References: <20250725-anonvma-uaf-debug-v2-1-bc3c7e5ba5b1@google.com> <aIb3In3G7XygrXNT@harry>
-In-Reply-To: <aIb3In3G7XygrXNT@harry>
-From: Jann Horn <jannh@google.com>
-Date: Mon, 28 Jul 2025 16:12:08 +0200
-X-Gm-Features: Ac12FXyCLEXjkKoQicke_OUqRIIitb9JxcenfQlHNDrm0vc-8LFcwy48OZbcVYg
-Message-ID: <CAG48ez0sfeF73sBK0V2TiYMc=grhM5fA-673xXNeCqQMYo2dug@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/rmap: Add anon_vma lifetime debug check
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Rik van Riel <riel@surriel.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: DEE2420011
-X-Stat-Signature: 3y57deaj8r7ez9itzcm33om1kc3shxmn
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 2072240005
+X-Stat-Signature: 1y74acwr5chiq3zgzbyb34xkxuaoks31
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1753711966-264493
-X-HE-Meta: U2FsdGVkX1+sez7KRk2lrt6CvilGgDV/8Y8AzaahA/w/EbY+A0gbUaQxiH/Egl/V1S+V+xAw4BHa9056JNFFy2aVL6zBoHxdTdkYm3GhJxPxEv25ePd5DtiEp8xirLYAry9ng5c3KJZ69u67lFt5g1C41Qqj3N1e0Df+E9uIea5A8fq4xy/LYI+sPN7Fl5rHdZKPFhlkz7aEuyXg1UUMMwdGHqgn6H2rTteP//1IExxg9+5bqoGSRnxixQoevSfIUxAj7CPr/2ejuXl2zaQjsy8/vHb+p8JdNhKNC0FJmboKWi69NfeiZetNFjxnrrdxuVRPT2hByxm9u9B8UHjPUJSRvH7/D5SB7N7AOv6HbtvWwEZRZnzW0wp1fElvo9/2fbnDTzopzhYTujiIktnI05M7DaHtloEwvfQdmAJED3QlOthTYDZ43xAJmcs+W7MPdLyam065XE1swGBLEGOnGcWgTZWWSQ8hCG7FpDVnlqg63VO1nNczj5zL6aTcjiiTGy9LDlqbY5XgpOgjTcnT06PlBl6pqEIwMGds2kIO5ic+vJYUFWo7kuvM3XbpHbxuFiZJyXVf4CXL8QMptehVK46hvYz22rPURQi+N1mmOHF7WjcOxYnp0tPadyIMthxnVuYpbGMq/0GAkHh1Gv4x8AcZQa1blvJJFC9FtZedShOJgbyX3EeyHpT3tyvagU6xNU0kyIhqKo3iwq1AQQ9KLuMYFg0s/BXVNxbQGZeSSuAVQBi4b8rDz/XzcLGIl2Q+iJSuMmKxthmUOQtMrRG6G0rIzGWimQw2f4iWxTlhQvNAwzlGb5pElR/0JF7D6I5ckPNkfZd1dc0XVoqWDC1o6azteTAhGYST8IK5Ees0zp+uXMo2fEkA2+Q/sJaRm5vwFyrylogXz1Tz39Xw5Awim4DD7vWwWeoiR1QeDSc3IXW88ghWBXAKbB2nnC4cy7VrOW16Yz5+kDXBltJTgoe
- XtJKXSZZ
- HcvYTLJGJHs6WnQyD7w2tyz1iTqcERc2MEcOB3sQP0mQy6OW2juTRY4vJL/laKcmQNOCoSOOqTnkBtyZkB++X9y3tV3+VC6hwmVnF+xsI9z/kDyoR1hiFEsspqSlpdLmYlz3MjTQbNIOZLuY8GLhfh90gnPFg7wPzcWivZXM6xcnWaZlVNQzuobyQs/7ZOgDN6wSmnoBecvtOnSEQSYX14rJFKPdgm2UM5+YA
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1753714272-633448
+X-HE-Meta: U2FsdGVkX1/5s1Tdf2M0R5ygKGVQ/YchL+z9hDsSdTGLPtiRElRJNQM01+Q6vmJnah7Y9H7Mq3htoH+y+lknt3F+HKptXGAiWF9m4F8Dmbu6BSB22y1ODBnvMXQW90lo2DFRuhukWMDVbAL0vMm+mCYeQTY8aSuquu1RE1ayd8nXLofPJFgJ/lzwNZ0mBw8zxDGZBtSYHd97moHCruVwvyjy0nSEEaiDp6lbNuN1veXZrA2k6MTJsjeUdsOYmC7rMt7Jrs5cuKkFlGcO04WFZ3AGuxMGFZrEKDlfA8esAIrtjtwd3SMcG452TmYiPo8AGqS60n5KUobas1aDCZy3JeA95jG6v6QF2+YrGVq+eJ1lahYcroUT517xwxv/30PZZIbh2ZjdFFjk3PCj7m3Z92lhLUicA8nAoFjN229lbfy5YmQJ00Rp/1s6xElKZlBAiDP1ipPrXHj0uHxiaggAXf+Sxyr2VsHYCNgtcR1ZbQNASXzihqODWCLS4VTc3AqbstJZ0mgu9w7mG9MoPC24NJTpQi+yS4oE00je++e+cOQGZofpXwxg3nIjCFFTe9etyArw+vjxCEkSF0hPwQbZCM6Fp2mdgJ0XImzrx1jMxDZ/B08MKwdSSaSwEPeyiCVDDJXCGrNrfLZrzqFyhZnmXmrftycS710vaI44UDSgVDnC2yDycTpX997OA/tFsyceBkm3KcHyOkj4Zb88FkebRdw6D3cNmFbIIezPu1njMP2KLQgG9s9HS3/SoFp6zPbEQ05Dg8GNyUx4zs/sgPg61agEz3pIL+R243+tP0By6QYh8boVY6FvOckLDm77BAwx8mIL6qXtq4FoxhWGZCxlCiyJTvgAy77ZM2/Neu2UWL67/c9WLyDNiXgnUBN2X5F0azzDotOjOdC10n699a5SBc+fPmQl43ZCAN0BRFYLq+YUeFCX3VELRFhcitVTnlHuSuDIRKH/SIbg7EjHKVq
+ WtiK5GIP
+ r4kD/ZB52V48cpTbKSieuMT5CaBG76UfAMZzYEkStxo2TanGg2iXwboGaEv1eQFqOIuVgkxymab5eExeocpRt0eina2OIaQpu5Ut7/f4gLHP5NHCZrOc73WUMC3LRG1uo0G/HyOD4nxzhCrYgBwo4ehM7aaPcZzXtz+E7QFvmYHUDb/bb8ytbsIGKT7iSxVTAH6TBcWLue+vOdrdOMpFeDyh5j2ROR/E5aiSMkavb3yElJsn3Mfrz/x8Zsna/Tt79RE6Z+yDM41YD/y+Os0BgZIgDoAbregtRH7F7hdqqeE0fnnO8y6I6bDC+lw326jI9NZb+7y6Pj+xOHt0v05NFLdcg5hEAXpsjKXscX6vWJWVK1QA3LLBoxLQZqjG/bmL5Y74J/62Cbn3oNMGOSJ1gnIT5VZjIli6UFGXljXQeBdJtZZrF17xy7CAZLyQau0tuptFE3oC0VI992DMqO3W+mueDp2G4hdOS/93KhvDebKIU/gOK3UCSB9kPKfGGbIddHHVZdWjBMf4nxDBPT5yl4SuuvlNv5gKqMcMAnjZPjsgG4owWcaB++ZLA9C8Dbp648wMqYT3Nf9NKijP6h1uLWh5AKQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,38 +126,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 28, 2025 at 6:06=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com> wr=
-ote:
-> On Fri, Jul 25, 2025 at 02:16:24PM +0200, Jann Horn wrote:
-> > If an anon folio is mapped into userspace, its anon_vma must be alive,
-> > otherwise rmap walks can hit UAF.
+On Mon, 28 Jul 2025 09:44:06 +0800 "Huang, Ying" <ying.huang@linux.alibaba.com> wrote:
+
+> Hi, Joshua,
+> 
+> Joshua Hahn <joshua.hahnjy@gmail.com> writes:
+> 
+> > The zone_reclaim_mode API controls reclaim behavior when a node runs out of
+> > memory. Contrary to its user-facing name, it is internally referred to as
+> > "node_reclaim_mode". This is slightly confusing but there is not much we can
+> > do given that it has already been exposed to userspace (since at least 2.6).
 > >
-> > There have been syzkaller reports a few months ago[1][2] of UAF in rmap
-> > walks that seems to indicate that there can be pages with elevated mapc=
-ount
-> > whose anon_vma has already been freed, but I think we never figured out
-> > what the cause is; and syzkaller only hit these UAFs when memory pressu=
-re
-> > randomly caused reclaim to rmap-walk the affected pages, so it of cours=
-e
-> > didn't manage to create a reproducer.
+> > However, what we can do is to make sure the internal description of what the
+> > bits inside zone_reclaim_mode aligns with what it does in practice.
+> > Setting RECLAIM_ZONE does indeed run shrink_inactive_list, but a more holistic
+> > description would be to explain that zone reclaim modulates whether page
+> > allocation (and khugepaged collapsing) prefers reclaiming & attempting to
+> > allocate locally or should fall back to the next node in the zonelist.
 > >
-> > Add a VM_WARN_ON_FOLIO() when we add/remove mappings of anonymous folio=
-s to
-> > hopefully catch such issues more reliably.
-[...]
-> Oops, I'm late to the party.
->
-> A question; does it make sense to disable reuse of anon_vmas during
-> anon_vma_clone() to increase chances of detecting this? (of course,
-> for debugging-purpose only)
+> > Change the description to clarify what zone reclaim entails.
+> >
+> > Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> > ---
+> >  include/uapi/linux/mempolicy.h | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/include/uapi/linux/mempolicy.h b/include/uapi/linux/mempolicy.h
+> > index 1f9bb10d1a47..24083809d920 100644
+> > --- a/include/uapi/linux/mempolicy.h
+> > +++ b/include/uapi/linux/mempolicy.h
+> > @@ -69,7 +69,7 @@ enum {
+> >   * These bit locations are exposed in the vm.zone_reclaim_mode sysctl
+> >   * ABI.  New bits are OK, but existing bits can never change.
+> >   */
+> > -#define RECLAIM_ZONE	(1<<0)	/* Run shrink_inactive_list on the zone */
+> > +#define RECLAIM_ZONE	(1<<0)	/* Prefer reclaiming & allocating locally */
+> >  #define RECLAIM_WRITE	(1<<1)	/* Writeout pages during reclaim */
+> >  #define RECLAIM_UNMAP	(1<<2)	/* Unmap pages during reclaim */
+> >  
+> >
+> > base-commit: 25fae0b93d1d7ddb25958bcb90c3c0e5e0e202bd
 
-As Lorenzo said, I think making such a change would risk making it
-impossible to hit some bugs in debug builds even though they can
-happen in normal builds, which would be bad.
+Hi Ying, thanks for your review, as always!
 
-> Regardless of that:
-> Acked-by: Harry Yoo <harry.yoo@oracle.com>
+> Please consider the document of zone_reclaim_mode in
+> Documentation/admin-guide/sysctl/vm.rst too.
 
-Thanks!
+Yes, will do. Along with SJ's comment, I think that the information in the
+admin-guide should be sufficient enough to explain what these bits do, so
+I think my patch is not very necessary.
+
+> And, IIUC, RECLAIM_ZONE doesn't mean "locally" exactly.  It's legal to
+> bind to some node other than "local node".
+
+You are correct, it seems you can also reclaim on non-local nodes once you
+go further down in the zonelist. I think my intent with the new comment was just
+to indicate a preference to reclaim and allocate on the *current* node, as
+opposed to falling back to the next node in the zonelist.
+
+With that said, I think your comment along with SJ's feedback have gotten me
+to understand that we proably don't need this change : -) 
+
+Thank you, and have a great day!
+Joshua
+
+> ---
+> Best Regards,
+> Huang, Ying
+
+Sent using hkml (https://github.com/sjp38/hackermail)
 
