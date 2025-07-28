@@ -2,96 +2,125 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 10256C83F17
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 21:30:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 934CCC83F17
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 21:37:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 935366B008A; Mon, 28 Jul 2025 17:30:31 -0400 (EDT)
+	id 23D746B0088; Mon, 28 Jul 2025 17:37:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BEC36B008C; Mon, 28 Jul 2025 17:30:31 -0400 (EDT)
+	id 1EDC16B0089; Mon, 28 Jul 2025 17:37:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 786766B0092; Mon, 28 Jul 2025 17:30:31 -0400 (EDT)
+	id 0DCDC6B008A; Mon, 28 Jul 2025 17:37:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 626236B008A
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 17:30:31 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2680BB9784
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 21:30:31 +0000 (UTC)
-X-FDA: 83714967462.01.81D40E1
-Received: from mail-io1-f78.google.com (mail-io1-f78.google.com [209.85.166.78])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 578FD180006
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 21:30:29 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf16.hostedemail.com: domain of 39OuHaAkbADclrsdTeeXkTiibW.ZhhZeXnlXkVhgmXgm.Vhf@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.78 as permitted sender) smtp.mailfrom=39OuHaAkbADclrsdTeeXkTiibW.ZhhZeXnlXkVhgmXgm.Vhf@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753738229;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=cAAVpHi2dnL2vQU9XMWpO330RRdxmeuo4AaHAIxsSyk=;
-	b=NoUD+YHHio2G19LGUbfO3qiWGjq5JoqPxaOPVEvBSVL0z6CxpKzRAtFX28s+Wqyy1joC8j
-	YVP/0wOICxcFh95jJBar+dJwrJLgfzVNilKYH1Nu2W5eGOHu0KqZQjzapYVi4hqAQM49Fc
-	6ec2jhoqFgl7VvwcrUNF8yyaqVHJZ4A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753738229; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EE2506B0088
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 17:37:31 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6B3D3C042B
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 21:37:31 +0000 (UTC)
+X-FDA: 83714985102.25.083B03B
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 064F420013
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 21:37:28 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=cS3ukugG;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf03.hostedemail.com: domain of alex.williamson@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=alex.williamson@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753738649; a=rsa-sha256;
 	cv=none;
-	b=5t8GiabXJNzK/3oFNLAEXs04NMR2IaWclrIr8e18s7aFQsa096uu4QCD6cV5RhJgXeHyRP
-	yyKc6P2IA+ELCZkYxie3p7z4L4fqYRLvZuWKwGLyTLU7wUNTs3/PUwJjWLNkbu0F24tdSk
-	pamVw1jmPXSEc/eUeWJETrXcDbpUmBg=
+	b=Q3zNx/wLPp6FxynuSo9ijGD6txSCGR2fqkzGmcVGg3i/VqJXc5X6xFR1qcZWAorJT9jJJ5
+	16ouQcKHLhfiBRmzEQaezKFYqa1Mpj9uRAnihSVaWktSjYyQQTHcRP6M0q7vH4BU56VJ9P
+	8Wq8SzHIcnSKOBZ8t3NQvqC+GlaASN0=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf16.hostedemail.com: domain of 39OuHaAkbADclrsdTeeXkTiibW.ZhhZeXnlXkVhgmXgm.Vhf@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.78 as permitted sender) smtp.mailfrom=39OuHaAkbADclrsdTeeXkTiibW.ZhhZeXnlXkVhgmXgm.Vhf@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f78.google.com with SMTP id ca18e2360f4ac-87b2a58a4c0so511186339f.0
-        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 14:30:29 -0700 (PDT)
+	imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=cS3ukugG;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf03.hostedemail.com: domain of alex.williamson@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=alex.williamson@redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753738649;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=WSSUSvYO/OHvphkbSQkQlLCmeUpTcTQ6sJaW2h42KWU=;
+	b=DabJqFZzkaTC8NsebGNxdG7PCyynpfsmkyiDYHMbZdQCkgVJJ/75gqS10n4OUdpTJMP4qO
+	ys0kuSdaAoIpPZOwW396siTI/50XdTraR5sq54heGR+EnNYv0pLM1RTSKPywIl2gzm8fDy
+	BedPKrWu7HOuFJ79VPMLseP45/9glus=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1753738648;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WSSUSvYO/OHvphkbSQkQlLCmeUpTcTQ6sJaW2h42KWU=;
+	b=cS3ukugG1xNSEy7pUtKYUapHVCMr+ImAWUDJgENEWDNKjIKOWKNVG6wpXo7bivWcOmRFq2
+	0Dj3FVrpFmxLXp094jD7oxYdBtE97yp+71w5cisJosdbGlJSxuIJTE3k14siHAvRUt7vz6
+	snwAAizVf6EBGvzNX//KXO87HWb3SwQ=
+Received: from mail-il1-f199.google.com (mail-il1-f199.google.com
+ [209.85.166.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-490-iyhGwNMPMOa2HX78gYH_bA-1; Mon, 28 Jul 2025 17:37:26 -0400
+X-MC-Unique: iyhGwNMPMOa2HX78gYH_bA-1
+X-Mimecast-MFC-AGG-ID: iyhGwNMPMOa2HX78gYH_bA_1753738645
+Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-3ddc47aebc2so8246285ab.0
+        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 14:37:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753738228; x=1754343028;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cAAVpHi2dnL2vQU9XMWpO330RRdxmeuo4AaHAIxsSyk=;
-        b=vJANiKfIosyWkXhSW7+pmgh2lzXHETZK9JhsD25NHVc6HTBdWunq2YB+kvn0jgxUmf
-         QrWM4Ac33LtcZdsZXGlq25O8uSL0XScoSCqUqgiVJqwHBvfreNr0OasW3tvcPO0ASibQ
-         4rNGKenpxc37nyVJtyPr4+63SBocIOq2XWsOY3CTduMH2zSgoV2R2E3TcKFYe2JdqRE+
-         ggeDloMIuq6u9UQ0YmK5cH8RY2GVXGFL7l8cqxMHznar5xbQ9Y2sN1lISr4fyAB1/Qqb
-         l27ZwoR6JJ8lZDggzsiA5yPeekxVjULr06cUdglPih0rTMskSn9TJyIjCb6f5abZIm2X
-         YkIw==
-X-Forwarded-Encrypted: i=1; AJvYcCXBXcXZ3zlEEXaWN5+vcNmdcvP1fb0sx/L+PxtSKJ8bvC2D7QJTmAgt3NC6Dia5tPKeZ4sGOSgz0A==@kvack.org
-X-Gm-Message-State: AOJu0YwpCXkthqGCxiK2dSLPhQThUVDixRGE3dxIDjT+JQjer7iUE60K
-	Hw2/KhHjrQzFnVeZfmrynmTknmHGYXg4PvDoKJnRwtKTFjoka/l35dWjDP9L7UKtvuiOoZ3V/P7
-	OfKP/1Z6S8AAaZltH+7rBkkO8SCyBrmclWkNug1bN5Y+kjj1bwb1b30AuDS4=
-X-Google-Smtp-Source: AGHT+IHlf2gExfOweoRKA8xQ8U2obLJdnB/6OhrAm7XdIqeHnIUBha7KQ8KV8Q29kA1uuaIzMfe1bycPWFiD+3a6gOfQFLxPtl5n
+        d=1e100.net; s=20230601; t=1753738645; x=1754343445;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WSSUSvYO/OHvphkbSQkQlLCmeUpTcTQ6sJaW2h42KWU=;
+        b=kQuOIDqvOUeBXyftIC8TeZzg1ii2yNnr5Fa2ZOqozcUHMrfuIxHa39+vtbY8bf2pjr
+         g1zxrrums3Ow+wO2pfxfzYUyWCj1LemEASZk+Q7Zx1Nls1wKtyglhEQv0/ju7jyDXCd2
+         K3yuS7ql+M21B93fCtJRsIL6kohq2pWx8ascDGxGMgYKkCnpeH7Y4DMG+8pcXcB6acWL
+         PJ4ZGPZeuIILRRZGHqJyvVKAubCZw4Mtt/abJEIFSJWpy3DHGQkMvVAT6Mb0vxG9izdG
+         gf6gHvpxkeS3/bY7+mnFw+/hi2qns8muL8qtUYH4TdfeHIhJlMxU5HnlxhMarDruEB4x
+         a+pA==
+X-Forwarded-Encrypted: i=1; AJvYcCWjxQOQMaKlMblcJ/x5Gbg+7w5mAORYsbI24Qf/sz7pD/2tqysV5z5bXpNm1+wnd4uFlM3KJpzKMA==@kvack.org
+X-Gm-Message-State: AOJu0YyDcLr3X1X76iljw6t/aWyzwFqN0Q2VcdLhj5IpxA9jyJ3Yuvdb
+	jN8m5ldzWWIN+FtVeHTVFFdQlfuVOaA6VXMDUxAJBYz9gMMCT1Bg+vHiSuGpbH/rhp+PPiCOMzA
+	a4+ZscxXQJMRjw+4qa5AcQAi9BLYRd26/Z+Ub+if1Ik8VycqhF6t4
+X-Gm-Gg: ASbGncv/6zklQuZpMU0z2x8a0lAoFgy2aYDeLkUtOh5JwOmvO6c5RSytra+SFTcHV+I
+	1LWELbZCuuCRRKiRIN+NF00A/aH4INiul9rSB/arpdmOc5p6D2WVRfxQGzSKUAyd2SG8YsiM8Ox
+	jIRjrxrK/WJo3al+/1YZdfGvbgBeqteuYydeA+nfnt7eDzKhVDDFwKcbOVY0FOsD+pSwJLmSkDS
+	CmUPHdegjbJ0F46UpYnJyoUlBHXikB+6eBPGQ8m6h+KD+WiikqG5Cr1t7yepEmkcVzOg0TyBD8M
+	C1yjQZZJiBl0C/7EY534XBtEcqawrXP2Pkd3M7fSXNA=
+X-Received: by 2002:a05:6e02:3704:b0:3e2:94ec:e379 with SMTP id e9e14a558f8ab-3e3c5385e09mr67989275ab.7.1753738645029;
+        Mon, 28 Jul 2025 14:37:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IErX+WEsrqeHKni/uNNPldbJZPrUamuSASB+1k/g600fZ+i2JnjVLimIUTw7/v6P5+PLxYaZg==
+X-Received: by 2002:a05:6e02:3704:b0:3e2:94ec:e379 with SMTP id e9e14a558f8ab-3e3c5385e09mr67989095ab.7.1753738644528;
+        Mon, 28 Jul 2025 14:37:24 -0700 (PDT)
+Received: from redhat.com ([38.15.36.11])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-508c91edeb1sm2117893173.35.2025.07.28.14.37.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Jul 2025 14:37:23 -0700 (PDT)
+Date: Mon, 28 Jul 2025 15:37:22 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: lizhe.67@bytedance.com
+Cc: farman@linux.ibm.com, akpm@linux-foundation.org, david@redhat.com,
+ jgg@ziepe.ca, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, peterx@redhat.com
+Subject: Re: [FIXUP] vfio/type1: correct logic of vfio_find_vpfn()
+Message-ID: <20250728153722.4b4c1442.alex.williamson@redhat.com>
+In-Reply-To: <20250725070054.66497-1-lizhe.67@bytedance.com>
+References: <20250724105608.73b05a24.alex.williamson@redhat.com>
+	<20250725070054.66497-1-lizhe.67@bytedance.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:2681:b0:3dc:7f3b:acb1 with SMTP id
- e9e14a558f8ab-3e3c52c7ec8mr221635275ab.13.1753738228350; Mon, 28 Jul 2025
- 14:30:28 -0700 (PDT)
-Date: Mon, 28 Jul 2025 14:30:28 -0700
-In-Reply-To: <6856d355.a00a0220.137b3.007d.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6887ebf4.a00a0220.b12ec.00ae.GAE@google.com>
-Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in exit_to_user_mode_loop
-From: syzbot <syzbot+2642f347f7309b4880dc@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, cgroups@vger.kernel.org, hannes@cmpxchg.org, 
-	jackmanb@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	mhocko@kernel.org, mhocko@suse.com, muchun.song@linux.dev, 
-	netdev@vger.kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
-	surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@suse.cz, 
-	ziy@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 578FD180006
-X-Stat-Signature: zaithy16kmerheccaezbacc3trrmepui
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: i4kdcQhuTzUxXFuRILls6RoEM5jkMHnOsuhQb9V04NY_1753738645
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 064F420013
+X-Stat-Signature: 77z1798y9e4so4c4nxrxtkobr9tw65ch
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1753738229-268616
-X-HE-Meta: U2FsdGVkX191+sOzk/fH+xaQ0LiNTED2GDUAvpLAbzq0jKBV1HGrbCTbZc32vOnnQBJ8UL5LgZCjP0DXBo9PLfXEE9mYNFwGBnMcYNhNTBkGS7sVWc2IcHQqq78gm2Inw5WN3oftoogtW+SM+qdvrWm9eNIw33NFoY3bslMHdZmGwtiMiAP1+E5rueIgzgRW0EudaTYnnMucxd32a0fZXW/TsKU2mSG4uf4VKWFcwUbXCTMFTXcu4tifcpm+asDj4BAOeV1b6ZAowvYSJ6gfxhaDYp6ZYYNWsuYuLP+q2Om0JfrKg92Uvb5xrOLzwJtNd7NBHagsYmTJvVPtgICL1By8+xPyXp/PV0PoBAkM4mtQnG5i86mLvlxjKkPvt8pCi2y02IFFDx1vvRkxzCDu/kZo2zyckxY4GXwCa62zadVZib1WR8bT34jY0c9d+IktTwfalxXpaNkerLlry1ApcVxycQgKpcuLQ3RSW+N5Q5uLrDhT6iG+/mn65Jm8ZKqJTq1zHsvntIl1lO9q27D7IBakoo2Z/g+BgQFrgQc02w5CppD8zqS/b57F6RW23f53/+wuhqA6owF32cd72SiFlzUq0gCxMa1yReEGpNGzn4I/ejn3XdUHyXXec6BqXiiqpaBGErs1PVlWyMCCbo6BrM54C3CNFCN8meA0681ku5aPIpVMur0T445fJkL6iwiKr+IFTk+KvuxVOwQjkbT2DScKilmL+0gn2tnaSo0KWvvJzNnb4S+VfYUtyf131asLBEjNJV7XRPKa12mEP+XRCBQ0MpF7vYsgCdrmLznDipru80T0G/u8B46Jr3TjdMxDrL4WAk2qNF/0Q+Ul1T8Njkvm5pC7Izodz7HGx1AZ0278z0Yg/bmeMp6d2oXjIDhXAvRaj+Xwjm7tOW/wUicPvEhixdafCG79OEVbQiWCCPE6DxME6lxhTO4glammskZ6JjHdL0Hb4EMS2PLtcdY
- h3n1K4JU
- 9Is4bcLPIlGlP8B71Wg+AT4QFlpYc5DqrClC+e9H1tCV6clNZs7Wwi3KRpWTamfjFU/P4z1y4FpcDbS++++Zq+bGYleFOV5kjCWYFWTg937UVLrL19FTStBS+AhD2FDM+KoANBVurlqpUJ5xxWGQkG0PJoMdl2D6B/N2PlfQBLQhmlbQGEAnqsaU7qIIrjQqpy3lh2qoe8eqeYNnAzT9LGLcjTKtVLMeDGG25dQAvlTEfsM9SGc/H3XjIT53dsIfXl26BXjwqtDsr/9dc8QzEJWigLR+nx9SS9lscqjx1zvabt9CjrhDaTShpnbMtiJZYBibYLBYwSY6tykY1RiGt1R/tkpvQd0emALfzv/ChabMYI7/2rFmEUZyxzjXlHms8QrA8XzuXaCBPbWGXg3mt+0OnIFH2jWwbE45hWpb9VPY9DLgJ075mgafb9SokzwQVJOXMftwcCPKw48qA6hZ20QEqAq1IuB93cJlUzDV8SBOR+YuTjpkZmqvLuEPjRuoWlpkhYnSj7ejvs6DaVaHx12bXYCr8B5Ugy31e5qaAHJikitdynAy/EW4EergSvtyeEUOwTkE4ocEJaQt3oN/BviqJsK7lF5MF6pwUmjEzm8hqJ+zr6jWh1ram0tOlgK5sNXElg0ymutK5hooPZ2T1A2ivdfOTv0RwzB59tORVDb6cT1190/naYaPgmb9a6AjHvzxTkcST6ZNeSqBAczpoBQ6rlv5Ph64i8luH6VmJD33e0USDe5zJ6VewQ+HhyrRaYrE02JaEnlUw4JDl3kzESSiphXGBqnjaOCleDAT8gRVuxKax8+yoGS81hKar/RGH5yRvLmCqzUXTvMx3xYCF0TuFBf5ep+7sDXRsxHtHU27CfIE75dJLfEbwZnaP0LzUsxAwDGxl5ulzhNWnMT8gq6GDAx0ZFtc7R6a/eoB5A0KDrb+tl6jNhxwQqkTnUcnRmU9O5k7pJcZrzeJI/BmZLba5yW3P
- Ia+rdOs3
- tl9L6mC/0jm6pOEaclxwxU9aiCuCiPMTrKRL8ODTh/GvtF8+25PseWgyk0XkAq5W1qI9Y5NbUGsk0IKnsRRoX1rieGibseFjfMNgr6zhaju1T7OYXaSfKEaD0fqJfvVleb6rfwqM7uzy3utfKAv8pVqeUoiUONtDJnKU/2RoJ0Uo2eFbdSCgCmoJeFnrllc0wfZJtYUJLcY+2rcBdqrWf5B2QfT7xxuz3+jWR0R6zmtkkRg75gFmQnQW100RcMyhORAXQ55eYZRFexnCdSkBywMmTa7HvXO7vU257Pfzb3RHR8cB3tsYYxbrOWqnQyDIFDHq2N/nCdLe9VlpBxexd1tnokWbdA3j4lriOg4fWOXs29zyJgxXZvbi9ARQmk2T
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1753738648-763856
+X-HE-Meta: U2FsdGVkX19VzYPiUS9PVUK6uYRzXCg9GsCCEdYYXtZK5QP0+ujkWDaEze/ftyDIZYoe3GxhWQKZQelPdPJv39/17bWj7gEAtHq2vwGrITay91QeKxtxqQM3KKVV9MkWk2PfozkTwlF3l06QM1Iis1cbbadsRu4ItfP+rTxwTa0lMliicNhzOO8Iywdb+M+LpIb1yuHv2MnQv67E5zNEL9g/g1XhuMCkO/x8AzJbbDquhAS0B8kt+LCH4rIDVD947SeTu9thusXt73AS7ssSlzPWl2SL4Fgw+9b2FME1S/A/3aPCttWze+5SINFGOAeQfEjXAoj1QPf2D/YthqtXUzwLvlQGWLpLhqA8lIDr6zh7YeBQZZUjbdDfw+JXjVIxIPfHVRjrigBFRXO1bMbrzEM4WdElS9vngKV2dmtcVv3PXdoDjBIcdNVnCfnMucXrNxUUYyPdCTOY9mbE/nwTr3pLNaLrZlWQuIsAXMQmr/2kth/A0fTfo5a7veFZz6SRR+SS/8IDJC4lVb/2rZwuhlVwq1ksp8Id1LvwgHEU2g8WsB4ErikvSFLGnk2DqRawdL97f/3L5TOLAbAWaL/MTZC5S3tnQ4vx+qIq4kf01sxR78zPN9QUb2OBAh2pFxknh3wBd2pe7/tkgQ/5JURc5MGWqMNcVr6iKuao+u6jxfl07RjjkHer6/J0/XPxiUegrAiYM2mjzVAemknqelnVuNE2jkor6/I5el/htn/uAjjo9DEs55PG5hSxZipmRHWYvlbJgHwFlUPW2uisc7rENukQpGvxHFKz6B43XKzljGG4Z8IME533lTD8QyucjAJW/9aYCqCS4TBSDkoveKH3G5MhuNtdLcfue463yUKd1/sC6nqBlujA0x2T2NfsViOyUEcNgT6o3JOH76/Cu296jKOxNBMw10VcOmHR/XW6DTs387cfazrKrAi1/SKal0pefdDAKZtmGjnhAmzoWSU
+ 7JHp4WTF
+ Cx6TctVliuT/BmWfd0czs81hMXmfVFGYtBdvU63GZcF8XZ4ZHzLNuP0L0lY4t+6wbrjfnHksA+teNtH0fwZrqGPS0bnDWC8hY26Dq7tIXhLm6rTXnyzV4PZuYjpek8ZP+D83Zhv0psAKHT5pSg5Dz42TxqP1Fc+mTV3qfN1dvWhEBgRpnh/hNXy9WA6pNb+XudXYhAsMzbWeUi+/b52yDqgW7yomgXv50bFra8AY4F+T++W6qxdQOi5MfEkd7135Kxhidttb3RR/69b0jiEwGTPfBZIuI2To1emNFSkGjw14HZg6gqqJI8sozsUM+fbe4CWj8jRJ2zoKAK8OeohFadx+jo/h7L1lUCWdvp2z0DzmUheLVADvWe3TSLnodt5zj4UPmY9Iq6oPOsfo/f9Azy1k2Z/3p4X9ObmsLxqFgqJ2Ew8ikyxSh+AXCH5VGMgKbUwJ+cwfbDVQoe5Yq+7A67RK3+dnO468VLmdhJeXLoHNDoVBatmtlm1IcGVrWq2616o6N3d36OZcL7nOwrJRPc6BPZT0igNdvXe3+AsWw0MhDQ0nZg56CvgZdCw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,129 +129,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot has found a reproducer for the following issue on:
+On Fri, 25 Jul 2025 15:00:54 +0800
+lizhe.67@bytedance.com wrote:
 
-HEAD commit:    afd8c2c9e2e2 Merge branch 'ipv6-f6i-fib6_siblings-and-rt-f..
-git tree:       net
-console output: https://syzkaller.appspot.com/x/log.txt?x=13c71034580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=a4bcc0a11b3192be
-dashboard link: https://syzkaller.appspot.com/bug?extid=2642f347f7309b4880dc
-compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17b284a2580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17c71034580000
+> From: Li Zhe <lizhe.67@bytedance.com>
+> 
+> In commit 492d1e9f0df7 ("vfio/type1: optimize vfio_pin_pages_remote()"),
+> we changes vfio_find_vpfn() from exact-iova matching to the interval
+> [iova, iova + PAGE_SIZE), which may cause the following problem.
+> 
+> [  215.671885] ------------[ cut here ]------------
+> [  215.671893] WARNING: CPU: 10 PID: 6210 at drivers/vfio/vfio_iommu_type1.c:1204
+> vfio_remove_dma+0xda/0xf0 [vfio_iommu_type1]
+> [  215.671902] Modules linked in: vhost_vsock vmw_vsock_virtio_transport_common vsock vhost
+> vhost_iotlb algif_hash af_alg kvm nft_masq nft_ct nft_reject_ipv4 nf_reject_ipv4 nft_reject act_csum
+> cls_u32 sch_htb nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables pkey_pckmo
+> s390_trng pkey_ep11 pkey_cca zcrypt_cex4 zcrypt eadm_sch rng_core vfio_ccw mdev vfio_iommu_type1
+> vfio drm sch_fq_codel i2c_core drm_panel_orientation_quirks dm_multipath loop nfnetlink ctcm fsm
+> zfcp scsi_transport_fc mlx5_ib diag288_wdt mlx5_core ghash_s390 prng aes_s390 des_s390 libdes
+> sha3_512_s390 sha3_256_s390 sha512_s390 sha1_s390 sha_common rpcrdma sunrpc rdma_ucm rdma_cm
+> configfs iw_cm ib_cm ib_uverbs ib_core scsi_dh_rdac scsi_dh_emc scsi_dh_alua pkey autofs4
+> [  215.671946] CPU: 10 UID: 107 PID: 6210 Comm: qemu-system-s39 Kdump: loaded Not tainted 6.16.0-
+> rc7-00005-g4ff8295d8d61 #79 NONE
+> [  215.671950] Hardware name: IBM 3906 M05 780 (LPAR)
+> [  215.671951] Krnl PSW : 0704c00180000000 000002482f7ee55e (vfio_remove_dma+0xde/0xf0
+> [vfio_iommu_type1])
+> [  215.671956]            R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
+> [  215.671959] Krnl GPRS: 006d010100000000 000000009d8a4c40 000000008f3b1c80 0000000092ffad20
+> [  215.671961]            0000000090b57880 006e010100000000 000000008f3b1c80 000000008f3b1cc8
+> [  215.671963]            0000000085b3ff00 000000008f3b1cc0 000000008f3b1c80 0000000092ffad20
+> [  215.671964]            000003ff867acfa8 000000008f3b1ca0 000001c8b36c3be0 000001c8b36c3ba8
+> [  215.671972] Krnl Code: 000002482f7ee550: c0e53ff9fcc8	brasl	%r14,00000248af72dee0
+>            000002482f7ee556: a7f4ffcf		brc	15,000002482f7ee4f4
+>           #000002482f7ee55a: af000000		mc	0,0
+>           >000002482f7ee55e: a7f4ffa9		brc	15,000002482f7ee4b0  
+>            000002482f7ee562: 0707		bcr	0,%r7
+>            000002482f7ee564: 0707		bcr	0,%r7
+>            000002482f7ee566: 0707		bcr	0,%r7
+>            000002482f7ee568: 0707		bcr	0,%r7
+> [  215.672006] Call Trace:
+> [  215.672008]  [<000002482f7ee55e>] vfio_remove_dma+0xde/0xf0 [vfio_iommu_type1]
+> [  215.672013]  [<000002482f7f03de>] vfio_iommu_type1_detach_group+0x3de/0x5f0 [vfio_iommu_type1]
+> [  215.672016]  [<000002482f7d4c4e>] vfio_group_detach_container+0x5e/0x180 [vfio]
+> [  215.672023]  [<000002482f7d2ce0>] vfio_group_fops_release+0x50/0x90 [vfio]
+> [  215.672027]  [<00000248af25e1ee>] __fput+0xee/0x2e0
+> [  215.672031]  [<00000248aef19f18>] task_work_run+0x88/0xd0
+> [  215.672036]  [<00000248aeef559a>] do_exit+0x18a/0x4e0
+> [  215.672042]  [<00000248aeef5ab0>] do_group_exit+0x40/0xc0
+> [  215.672045]  [<00000248aeef5b5e>] __s390x_sys_exit_group+0x2e/0x30
+> [  215.672048]  [<00000248afc81e56>] __do_syscall+0x136/0x340
+> [  215.672054]  [<00000248afc8da7e>] system_call+0x6e/0x90
+> [  215.672058] Last Breaking-Event-Address:
+> [  215.672059]  [<000002482f7ee4aa>] vfio_remove_dma+0x2a/0xf0 [vfio_iommu_type1]
+> [  215.672062] ---[ end trace 0000000000000000 ]---
+> [  219.861940] ------------[ cut here ]------------
+> 
+> ...
+> 
+> [  241.164333] ------------[ cut here ]------------
+> [  241.164340] kernel BUG at drivers/vfio/vfio_iommu_type1.c:1480!
+> [  241.164358] monitor event: 0040 ilc:2 [#1]SMP
+> [  241.164363] Modules linked in: vhost_vsock vmw_vsock_virtio_transport_common vsock vhost
+> vhost_iotlb algif_hash af_alg kvm nft_masq nft_ct nft_reject_ipv4 nf_reject_ipv4 nft_reject act_csum
+> cls_u32 sch_htb nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables pkey_pckmo
+> s390_trng pkey_ep11 pkey_cca zcrypt_cex4 zcrypt eadm_sch rng_core vfio_ccw mdev vfio_iommu_type1
+> vfio drm sch_fq_codel i2c_core drm_panel_orientation_quirks dm_multipath loop nfnetlink ctcm fsm
+> zfcp scsi_transport_fc mlx5_ib diag288_wdt mlx5_core ghash_s390 prng aes_s390 des_s390 libdes
+> sha3_512_s390 sha3_256_s390 sha512_s390 sha1_s390 sha_common rpcrdma sunrpc rdma_ucm rdma_cm
+> configfs iw_cm ib_cm ib_uverbs ib_core scsi_dh_rdac scsi_dh_emc scsi_dh_alua pkey autofs4
+> [  241.164399] CPU: 14 UID: 107 PID: 6581 Comm: qemu-system-s39 Kdump: loaded Tainted: G        W
+> 6.16.0-rc7-00005-g4ff8295d8d61 #79 NONE
+> [  241.164403] Tainted: [W]=WARN
+> [  241.164404] Hardware name: IBM 3906 M05 780 (LPAR)
+> [  241.164406] Krnl PSW : 0704e00180000000 000002482f7f132a (vfio_dma_do_unmap+0x4aa/0x4b0
+> [vfio_iommu_type1])
+> [  241.164413]            R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:2 PM:0 RI:0 EA:3
+> [  241.164415] Krnl GPRS: 0000000000000000 000000000000000b 0000000040000000 000000008cfdcb40
+> [  241.164418]            0000000000001001 0000000000000001 0000000000000000 0000000040000000
+> [  241.164419]            0000000000000000 0000000000000000 00000001fbe7f140 000000008cfdcb40
+> [  241.164421]            000003ff97dacfa8 0000000000000000 00000000871582c0 000001c8b4177cd0
+> [  241.164428] Krnl Code: 000002482f7f131e: a7890000		lghi	%r8,0
+>            000002482f7f1322: a7f4feeb		brc	15,000002482f7f10f8
+>           #000002482f7f1326: af000000		mc	0,0
+>           >000002482f7f132a: 0707		bcr	0,%r7  
+>            000002482f7f132c: 0707		bcr	0,%r7
+>            000002482f7f132e: 0707		bcr	0,%r7
+>            000002482f7f1330: c0040000803c	brcl	0,000002482f8013a8
+>            000002482f7f1336: eb6ff0480024	stmg	%r6,%r15,72(%r15)
+> [  241.164458] Call Trace:
+> [  241.164459]  [<000002482f7f132a>] vfio_dma_do_unmap+0x4aa/0x4b0 [vfio_iommu_type1]
+> [  241.164463]  [<000002482f7f1d08>] vfio_iommu_type1_ioctl+0x1c8/0x370 [vfio_iommu_type1]
+> [  241.164466]  [<00000248af27704e>] vfs_ioctl+0x2e/0x70
+> [  241.164471]  [<00000248af278610>] __s390x_sys_ioctl+0xe0/0x100
+> [  241.164474]  [<00000248afc81e56>] __do_syscall+0x136/0x340
+> [  241.164477]  [<00000248afc8da7e>] system_call+0x6e/0x90
+> [  241.164481] Last Breaking-Event-Address:
+> [  241.164482]  [<000002482f7f1238>] vfio_dma_do_unmap+0x3b8/0x4b0 [vfio_iommu_type1]
+> [  241.164486] Kernel panic - not syncing: Fatal exception: panic_on_oops
+> 
+> This patch reverts vfio_find_vpfn() to exact iova matching, thereby
+> resolving the issue.
+> 
+> Fixes: 492d1e9f0df7 ("vfio/type1: optimize vfio_pin_pages_remote()")
+> Tested-by: Eric Farman <farman@linux.ibm.com>
+> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+> ---
+>  drivers/vfio/vfio_iommu_type1.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/6f29edec8e85/disk-afd8c2c9.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/8490ef85f5cd/vmlinux-afd8c2c9.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/1357e17669cb/bzImage-afd8c2c9.xz
+Applied to vfio next branch for v6.17.  Thanks,
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+2642f347f7309b4880dc@syzkaller.appspotmail.com
+Alex
 
-rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-rcu: 	0-...!: (3 ticks this GP) idle=8da4/1/0x4000000000000000 softirq=18768/18768 fqs=0
-rcu: 	(detected by 1, t=10502 jiffies, g=13833, q=887 ncpus=2)
-Sending NMI from CPU 1 to CPUs 0:
-NMI backtrace for cpu 0
-CPU: 0 UID: 0 PID: 5983 Comm: syz-executor Not tainted 6.16.0-rc7-syzkaller-00100-gafd8c2c9e2e2 #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
-RIP: 0010:__lock_acquire+0x316/0xd20 kernel/locking/lockdep.c:5188
-Code: 8b 54 24 0c 83 e2 01 c1 e2 12 44 09 e2 41 c1 e6 14 41 09 d6 8b 54 24 10 c1 e2 13 c1 e5 15 09 d5 09 cd 44 09 f5 41 89 6c c7 20 <45> 89 44 c7 24 4c 89 7c 24 10 4d 8d 34 c7 81 e5 ff 1f 00 00 48 0f
-RSP: 0018:ffffc90000007b40 EFLAGS: 00000002
-RAX: 000000000000000a RBX: ffffffff8e13f0e0 RCX: 0000000000000007
-RDX: 0000000000080000 RSI: 0000000000004000 RDI: ffff88802c368000
-RBP: 00000000000a4007 R08: 0000000000000000 R09: ffffffff898d70e8
-R10: dffffc0000000000 R11: ffffed100fc2785e R12: 0000000000024000
-R13: 0000000000000000 R14: 0000000000024000 R15: ffff88802c368af0
-FS:  0000000000000000(0000) GS:ffff888125c23000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055556e2015c8 CR3: 000000000df38000 CR4: 00000000003526f0
-Call Trace:
- <IRQ>
- lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5871
- rcu_lock_acquire include/linux/rcupdate.h:331 [inline]
- rcu_read_lock include/linux/rcupdate.h:841 [inline]
- advance_sched+0xa14/0xc90 net/sched/sch_taprio.c:985
- __run_hrtimer kernel/time/hrtimer.c:1761 [inline]
- __hrtimer_run_queues+0x52c/0xc60 kernel/time/hrtimer.c:1825
- hrtimer_interrupt+0x45b/0xaa0 kernel/time/hrtimer.c:1887
- local_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1039 [inline]
- __sysvec_apic_timer_interrupt+0x108/0x410 arch/x86/kernel/apic/apic.c:1056
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1050 [inline]
- sysvec_apic_timer_interrupt+0xa1/0xc0 arch/x86/kernel/apic/apic.c:1050
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
-RIP: 0010:debug_lockdep_rcu_enabled+0xf/0x40 kernel/rcu/update.c:320
-Code: cc cc cc cc cc cc cc cc cc cc cc 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 31 c0 83 3d 17 30 34 04 00 74 1e <83> 3d 3a 60 34 04 00 74 15 65 48 8b 0c 25 08 d0 9f 92 31 c0 83 b9
-RSP: 0018:ffffc90003f0ef70 EFLAGS: 00000202
-RAX: 0000000000000000 RBX: ffffffff90d8d001 RCX: ffffc90003f0ff60
-RDX: ffffc90003f0f001 RSI: dffffc0000000000 RDI: ffffc90003f0f050
-RBP: dffffc0000000000 R08: ffffc90003f0ff48 R09: 0000000000000000
-R10: ffffc90003f0f098 R11: fffff520007e1e15 R12: ffffc90003f0ff58
-R13: ffffc90003f08000 R14: ffffc90003f0f048 R15: ffffffff8172aae5
- rcu_read_unlock include/linux/rcupdate.h:869 [inline]
- class_rcu_destructor include/linux/rcupdate.h:1155 [inline]
- unwind_next_frame+0x195c/0x2390 arch/x86/kernel/unwind_orc.c:680
- arch_stack_walk+0x11c/0x150 arch/x86/kernel/stacktrace.c:25
- stack_trace_save+0x9c/0xe0 kernel/stacktrace.c:122
- save_stack+0xf5/0x1f0 mm/page_owner.c:156
- __reset_page_owner+0x71/0x1f0 mm/page_owner.c:308
- reset_page_owner include/linux/page_owner.h:25 [inline]
- free_pages_prepare mm/page_alloc.c:1248 [inline]
- free_unref_folios+0xc66/0x14d0 mm/page_alloc.c:2763
- folios_put_refs+0x559/0x640 mm/swap.c:992
- free_pages_and_swap_cache+0x277/0x520 mm/swap_state.c:264
- __tlb_batch_free_encoded_pages mm/mmu_gather.c:136 [inline]
- tlb_batch_pages_flush mm/mmu_gather.c:149 [inline]
- tlb_flush_mmu_free mm/mmu_gather.c:397 [inline]
- tlb_flush_mmu+0x3a0/0x680 mm/mmu_gather.c:404
- tlb_finish_mmu+0xc3/0x1d0 mm/mmu_gather.c:497
- exit_mmap+0x44c/0xb50 mm/mmap.c:1297
- __mmput+0x118/0x420 kernel/fork.c:1121
- exit_mm+0x1da/0x2c0 kernel/exit.c:581
- do_exit+0x648/0x22e0 kernel/exit.c:952
- do_group_exit+0x21c/0x2d0 kernel/exit.c:1105
- get_signal+0x1286/0x1340 kernel/signal.c:3034
- arch_do_signal_or_restart+0x9a/0x750 arch/x86/kernel/signal.c:337
- exit_to_user_mode_loop+0x75/0x110 kernel/entry/common.c:111
- exit_to_user_mode_prepare include/linux/entry-common.h:330 [inline]
- syscall_exit_to_user_mode_work include/linux/entry-common.h:414 [inline]
- syscall_exit_to_user_mode include/linux/entry-common.h:449 [inline]
- do_syscall_64+0x2bd/0x3b0 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f730c585213
-Code: Unable to access opcode bytes at 0x7f730c5851e9.
-RSP: 002b:00007ffe0103af48 EFLAGS: 00000246 ORIG_RAX: 0000000000000038
-RAX: fffffffffffffffc RBX: 0000000000000000 RCX: 00007f730c585213
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000001200011
-RBP: 0000000000000001 R08: 0000000000000000 R09: 0000000000000000
-R10: 000055556e1e67d0 R11: 0000000000000246 R12: 0000000000000000
-R13: 00000000000927c0 R14: 000000000003604b R15: 00007ffe0103b0e0
- </TASK>
-rcu: rcu_preempt kthread timer wakeup didn't happen for 10501 jiffies! g13833 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402
-rcu: 	Possible timer handling issue on cpu=0 timer-softirq=10563
-rcu: rcu_preempt kthread starved for 10502 jiffies! g13833 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402 ->cpu=0
-rcu: 	Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
-rcu: RCU grace-period kthread stack dump:
-task:rcu_preempt     state:I stack:26792 pid:16    tgid:16    ppid:2      task_flags:0x208040 flags:0x00004000
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5397 [inline]
- __schedule+0x16fd/0x4cf0 kernel/sched/core.c:6786
- __schedule_loop kernel/sched/core.c:6864 [inline]
- schedule+0x165/0x360 kernel/sched/core.c:6879
- schedule_timeout+0x12b/0x270 kernel/time/sleep_timeout.c:99
- rcu_gp_fqs_loop+0x301/0x1540 kernel/rcu/tree.c:2054
- rcu_gp_kthread+0x99/0x390 kernel/rcu/tree.c:2256
- kthread+0x70e/0x8a0 kernel/kthread.c:464
- ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
+> 
+> diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
+> index 6909275e46c2..827e0987fab5 100644
+> --- a/drivers/vfio/vfio_iommu_type1.c
+> +++ b/drivers/vfio/vfio_iommu_type1.c
+> @@ -344,7 +344,7 @@ static struct vfio_pfn *vfio_find_vpfn_range(struct vfio_dma *dma,
+>  
+>  static inline struct vfio_pfn *vfio_find_vpfn(struct vfio_dma *dma, dma_addr_t iova)
+>  {
+> -	return vfio_find_vpfn_range(dma, iova, iova + PAGE_SIZE);
+> +	return vfio_find_vpfn_range(dma, iova, iova + 1);
+>  }
+>  
+>  static void vfio_link_pfn(struct vfio_dma *dma,
 
-
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
 
