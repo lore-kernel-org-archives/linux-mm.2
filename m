@@ -2,160 +2,127 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B3A7C83F26
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 16:04:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5CA36C83F17
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 16:07:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E90756B0088; Mon, 28 Jul 2025 12:04:17 -0400 (EDT)
+	id BB1286B008C; Mon, 28 Jul 2025 12:07:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E41BE6B0089; Mon, 28 Jul 2025 12:04:17 -0400 (EDT)
+	id B614E6B0092; Mon, 28 Jul 2025 12:07:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D2FF66B008A; Mon, 28 Jul 2025 12:04:17 -0400 (EDT)
+	id A77446B0093; Mon, 28 Jul 2025 12:07:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C3BF36B0088
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 12:04:17 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7151A5886F
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 16:04:17 +0000 (UTC)
-X-FDA: 83714145354.28.DAA9AF3
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 2D225C0015
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 16:04:14 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ewv7sFcN;
-	spf=pass (imf28.hostedemail.com: domain of boqun.feng@gmail.com designates 209.85.222.171 as permitted sender) smtp.mailfrom=boqun.feng@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 96BFA6B008C
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 12:07:45 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 39B41C0341
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 16:07:45 +0000 (UTC)
+X-FDA: 83714154090.09.D228E66
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 51EB1A0012
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 16:07:43 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=zD9pPGbe;
+	spf=pass (imf15.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.46 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753718655;
+	s=arc-20220608; t=1753718863;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HgVIowzMLl/c31IEtlhtiNAMDBO1tT9OzRoFR/KHf0s=;
-	b=WZe0t5SQVBOMLF+/3SEIIzDB18LTke6W8kxY59H85HCKA+kSCAXtvSCofyEqBUxXMpRG8X
-	ef9khjNATFHR6dqSAsErUirSrkEU7cu+jvpsfP9VKvmElIE8uiCIRW6zSmkZEnOGvH72j0
-	fQq0Mfjn4rVa5JOwe6be7vuV8VTrmco=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753718655; a=rsa-sha256;
+	bh=aAw+2X708It0VR8pZYVOK00HQXozxtPn6s8nfVW4nlE=;
+	b=nVJAKuW1kXKgjjRxlQ6wKdk98WKNUAoiG6b2uw5jbekka9ougYZTnZdEMJAsFnVuSQ0vKd
+	eFz+1zbAjGJBEzFenHZEE2rkXyEiVUzcmqoChv/Lv18OXH4TNd1ivMCf2Yy7foCAqLkmtv
+	4xi/ohGfkcw3WhkERlTlRh05nBeZKo8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753718863; a=rsa-sha256;
 	cv=none;
-	b=Py1NHpiKxh5OqWU0xXg1gs4Ocgem9LKWUhW3v2lPekgFo8mxLO+eeeyfElFaP3FP585Hwx
-	wx36/Z/0BDtof+GrwTCFuMSf36UNHeCxu4zJz5+PwF/spgM7WBWOuGZ7bQ6bfLPLA99Qzz
-	NGugbZGQ8vaLbjKtFxUxn6l+pUuA2u0=
+	b=FvL1eiXwbsLn/NjlZMTU4rBboQX95acW4teK6NgylzX1UVBhw05dXq9eo/sGw+foVUkBV8
+	R9ymx1DXUmbi9zCS9nRFOWYxB9ocSJGw/BodyTK2dYAxo5BNorVUhR+o4jsI8wAQvAi9TY
+	C5OYYByd3UXWzGf5fAoSiLcfd1wLlUY=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ewv7sFcN;
-	spf=pass (imf28.hostedemail.com: domain of boqun.feng@gmail.com designates 209.85.222.171 as permitted sender) smtp.mailfrom=boqun.feng@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7df981428abso701297285a.1
-        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 09:04:14 -0700 (PDT)
+	imf15.hostedemail.com;
+	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=zD9pPGbe;
+	spf=pass (imf15.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.46 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-7073075c767so33458356d6.3
+        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 09:07:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753718654; x=1754323454; darn=kvack.org;
+        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1753718862; x=1754323662; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HgVIowzMLl/c31IEtlhtiNAMDBO1tT9OzRoFR/KHf0s=;
-        b=ewv7sFcNgUxWbTFC3+dCctWvAdb0kveZIj4S/Jq288kEx1iRMPUeWtRieMLA3VO+8Z
-         Vx6r/389loeuFV01J+hT2fmKug9zMOH6OXpBRsYK6MhDhH39jdYFfAVTndJZLTYd7AZL
-         9hvXd6n5Nflb+CmUijs6iTC5g8fb7lioDc/oxsoq2nQ7Lb1+yrNOQsayfdcVF6Q1NLYm
-         VREsiK7BX5RvDH3kkM7WBjD7PNUBWbqplLyfjvbI8PKxTDIdEuioifDKJFvDuHpGxLhE
-         WJ1vF1d5iKSj5UYTY9BSHaIQugvHuN2TP8P5v/dJXinJOoE4JQ+EiMCpRYHxuZbXPyna
-         C34A==
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=aAw+2X708It0VR8pZYVOK00HQXozxtPn6s8nfVW4nlE=;
+        b=zD9pPGbeeaROs4dSkYxJLCYJSfju4ReEAkgM5CEjkyLM4BhukVHJ14nlZol8rzQT4F
+         LTSpj5XKLC5OmVYaxtLbUF6TwT6c682vJ6jk/iJaTVTrNGrRxN44V7LJyOyIwkC7PC6A
+         A5YzI79NQ97pacsXJ6olgeDYYoUoC7KIk+uKPYYb0yi9fYJ7ZwYmfTpLVw7OiJinVpV8
+         g0lg2gJ3o7sKNXW9XppdII1f76mCoa+CO8pJRdB+xj4E0bLJcmeVxr4TGdSay2F5ZExg
+         KDRG+zkNgTNfxOmZTRQONlA2ZzZGbDhbFPwPacReJ3JAaGHY4WROPTVvevyuYHYKGr+v
+         Xy/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753718654; x=1754323454;
+        d=1e100.net; s=20230601; t=1753718862; x=1754323662;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HgVIowzMLl/c31IEtlhtiNAMDBO1tT9OzRoFR/KHf0s=;
-        b=o1WniHAhnNOknsctiS+uiyDEz3sXWotAGaYz6aKoNzjETZL0psLGIt5h4tHzzbYDND
-         CJ3zbL8WDzEAR27ohhAw99j1/16bRS3guCIq45sZWZmDjs6yc1hiFfBnvKPot5xNKuFp
-         vBlPk7Mk/DKAvAXfxd8ypzI3dHAFEWNC9QOMqOk0htxNQ2eGhkLVzQahl6woaUYSytg0
-         YajKHLlHmMZdb6u/aAkRj1+zb9ZRgXmPvi+mrOjU+D/L1egVWpz45YE5YrEVofQERY91
-         /HNZWFHsIUcs55j+UiM+uG7iXBsuwwtR690Cupfxx+RpkUVtVAA2/TPLUuYVCXWZo1FP
-         h6+A==
-X-Forwarded-Encrypted: i=1; AJvYcCU8Jh7zEo+SIZs/Pa5oC/h10B3elcVBmKSixHY4sJVPETRmcPPJ2k3t5R/rcBm+xPZZG8UIbtcjCQ==@kvack.org
-X-Gm-Message-State: AOJu0Yx8Ps2QwGE19YmtJSSWAaWJa9LDq13dICzFD4boyvEj+2mDX9dv
-	p67lgae2Nj/+DjfomgG6YnIFVJaJg5kVSH22Dd37UQQVimz7OcUwa9vy
-X-Gm-Gg: ASbGncuEtvRWKLUdqXpjgQEwje6rK+HMtTevn1uSJfmg1xGvHMN8lyNLF95UgDRm1x7
-	tIAXBfdEdihhAhYj+Y84Pm+hWCkR3ClnvaT3cbaOBR0BJZZTnxzgeZXmaXUfuYq3Ef7bNhNG4CA
-	CdqZZOeljsz/Q2BTuJtr8PFDVl0ihFwbakcjK4RzL2fWLMiYJsNPIuW0tF8t+vcZeAvHqSHtyAY
-	5xs0wSRC+h4tVtdXkRSXuj5T8actowhEgfkeLDo9DJ7bxf6fiwnjStXzT9cgo2fxoo/gLdZ6NuV
-	h2p9qe479Qh7n/h2tDolrEDEkHWW0KJa33tA18xo7Jn1XFSEGYrV8Zcjc0UPW/kvYjo1iUE1CoI
-	cLI/ShIgOnAlTuEKkiOmXuwEBXC2Fw+qsCCjKlgaY/KOJfScjB4sxe1xfRoJb1lJ0CQfIZu2ypa
-	5oi5dheqsw+y/JpY7Gd+wJyEA=
-X-Google-Smtp-Source: AGHT+IEmoTOimrTi2PNwl6GvbwncBwk/yYnnS0+QBiPbPf62rdY0sZGQQYXhaQaKI8ltuQpaCRWGkw==
-X-Received: by 2002:a05:620a:563c:b0:7e3:35dd:4829 with SMTP id af79cd13be357-7e63c1b69d0mr1382664085a.46.1753718653785;
-        Mon, 28 Jul 2025 09:04:13 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e64327a9f8sm310642085a.11.2025.07.28.09.04.13
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aAw+2X708It0VR8pZYVOK00HQXozxtPn6s8nfVW4nlE=;
+        b=T5/1LZciHRo0xVwQr7BzHXjS05cwGi7KSj5b5IgFsGX6Bag/u7gWBqHI3V2i4Ox69M
+         3DXdYLUAqHg8HMRiMiIcF8cR94YCsz9TN94KRab7ESqbL737cX8nUTsG/iGfoeCJvGWz
+         dlkb0WwT8V9r7SsY+kod0jBeusU0JD1juUASQSQzAkXd5gljywi8ZdZpUCZLxkNM28nA
+         VMApaF8UJs+kpy2Sq85svl8IslSg4p61o4o7gHdnP6os1Vzsf5kiWKmb8d/jzHm2fcZB
+         XJYq6xGFKLcw2hnAKxSZOq1vbE+ce4K2Ij0lRZNe4jb0J6Tn7VMtUfZw7nBYQ2pWKnL2
+         lKzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU8AfFFmSVAn0HpxsB7c4cq+LtBYLFsczrg28JvgmuKdYiMjhtIWfGwoU15snZc1IpOZrDvBVNtJw==@kvack.org
+X-Gm-Message-State: AOJu0YyWKwVbaP8xtlx4MD6yCFgCZqM5YArGPRdSjYc+RbkEMuHp+lkh
+	fZC/dMlOCpZX2QfO6pxyTNB78qrUET8xV6bJnEtDS6EBRhV3geICZmg2VRAqso/B5MQ=
+X-Gm-Gg: ASbGncs38iKtDJP4iINA24h76D0tu1tEqXyII6zNFHaSQqW3a3bd1cRzdPboP06wcD7
+	ciY1n1leU2Y2q6BZrbN0Gs4HdVd2zD/BglTfNmTft+ts8JKMGZpul8vVFWhRl89TQQZOIQ+B7zA
+	UKr4nPQlpRXhGD4ybRnmTALKy8gN1Ma9u7y9+w8603kWDl+0+5AK17C5ntFcO/KIJwATkChbfpl
+	xVRAroZA2KbAapv6th0B2kiWVujydvn4APwMkOFLscTTCfnH3ReL7tLO4m4hAGvWcqb/eXCtMEs
+	0IUsgVRONppp05DY3+FkuEfjJZMsoMb9YtoJu7yTqg5ghUo6OFxzdAm7WYoyaHiZw4gkF1dc8wd
+	pL+oZ85GuJ+KEiRg63B/qWQ==
+X-Google-Smtp-Source: AGHT+IEaDZooEETiaWkCw4px/kQlCCmeui047F+bWZwnIBB50xOtbajOnYToq+ch+2hvV2HYIRrO0A==
+X-Received: by 2002:a05:6214:76d:b0:700:fe38:6bd8 with SMTP id 6a1803df08f44-70720534e2fmr187905276d6.19.1753718861920;
+        Mon, 28 Jul 2025 09:07:41 -0700 (PDT)
+Received: from localhost ([2603:7000:c01:2716:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-70729a9657csm33250636d6.31.2025.07.28.09.07.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Jul 2025 09:04:13 -0700 (PDT)
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id C91B1F40068;
-	Mon, 28 Jul 2025 12:04:12 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-10.internal (MEProxy); Mon, 28 Jul 2025 12:04:12 -0400
-X-ME-Sender: <xms:fJ-HaJVwNHByxbizTaFL_NER2N37NTwgoKEb0jMl_OQ3uuyT1UGY6g>
-    <xme:fJ-HaETTgsEhTJJspf20pgVrxrirrLIuAUkbGpWuk_MnzyG8y31p7gVlOvYMUbARZ
-    w-OUHSWcJfW_OyAmQ>
-X-ME-Received: <xmr:fJ-HaOHVtFYOz-xyAP51tE2ZT7cGGndoVjmgWD9UoGjNqfN1scySsbEpqZ8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdelvdeitdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
-    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
-    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
-    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
-    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
-    drnhgrmhgvpdhnsggprhgtphhtthhopedujedpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtoheprghkph
-    hmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehlihgrmhdr
-    hhhofihlvghtthesohhrrggtlhgvrdgtohhmpdhrtghpthhtoheplhhorhgvnhiiohdrsh
-    htohgrkhgvshesohhrrggtlhgvrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgvrhhn
-    vghlrdhorhhgpdhrtghpthhtoheprghnughrvgifjhgsrghllhgrnhgtvgesghhmrghilh
-    drtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthho
-    pegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopehloh
-    hsshhinheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:fJ-HaDfZiGYJ_3Y_Tv78lK9koMKzRMQkbu7rYDJsdsrEbSNIOqdc-Q>
-    <xmx:fJ-HaFKlZNUj93B0NFuErw-NffZVTfT6I5JbtLUsxxYl9m3pfbB50A>
-    <xmx:fJ-HaCqs2447yRAv2B1Ykj6aWSNTyAolHdv0LNj7tNbnUbzNyX5fOg>
-    <xmx:fJ-HaLXik3XNSFJN8ohWVPRYXN1vi75UQF_g-Y_c0dyVx1NzL7qszw>
-    <xmx:fJ-HaN3XQe-MWz8vmkHtMpvdV3nVjiKoFXbQb-7JmpYAAkaNBgRNAID6>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 28 Jul 2025 12:04:12 -0400 (EDT)
-Date: Mon, 28 Jul 2025 09:04:11 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Andrew Ballance <andrewjballance@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
-	maple-tree@lists.infradead.org, rust-for-linux@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 1/3] rust: maple_tree: add MapleTree
-Message-ID: <aIefe_MEPd_yicde@tardis-2.local>
-References: <20250726-maple-tree-v1-0-27a3da7cb8e5@google.com>
- <20250726-maple-tree-v1-1-27a3da7cb8e5@google.com>
+        Mon, 28 Jul 2025 09:07:41 -0700 (PDT)
+Date: Mon, 28 Jul 2025 12:07:37 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Simon Horman <horms@kernel.org>, Geliang Tang <geliang@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org,
+	mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v1 net-next 13/13] net-memcg: Allow decoupling memcg from
+ global protocol memory accounting.
+Message-ID: <20250728160737.GE54289@cmpxchg.org>
+References: <20250721203624.3807041-1-kuniyu@google.com>
+ <20250721203624.3807041-14-kuniyu@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250726-maple-tree-v1-1-27a3da7cb8e5@google.com>
-X-Rspamd-Queue-Id: 2D225C0015
+In-Reply-To: <20250721203624.3807041-14-kuniyu@google.com>
+X-Rspamd-Queue-Id: 51EB1A0012
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Stat-Signature: skbwtzqs8dnm5mbosaqns5rbr8pgdhbo
-X-HE-Tag: 1753718654-784370
-X-HE-Meta: U2FsdGVkX1/en1EeVN+FR8e/sh1IgvNPu3SXu9eD294rnDNTe9qnrVZxKRYSy6/pa0ekBoMlk3/ctjFSxMPpOy4yHSxjh62bIIAI5Gn7moZKQRN66mMEgR0/Ylu2xz4mnUMfF04bwO6XsiLlo5905Cb3u94EaY3vA0DvVjXW/TtK1kQzfkrdQgFqD+4QJmrgD6Yb8NrU6isgQ+cB0usFB60cxD7Fnd3bzHaFr87Jbt/dYtTqEEmV6Bd3Gzxp+v0GYvyQDnHhPAYd1EErADy6lm7eR0f2JamIi5udqTwjRgpJcxqL2A27ZAMbneqihFW7LBlNJ9VVvIBe50d+S3QIMGn6YUMxufWYoMMaor81DRRr4rmTcWgEhtinT5oO0GydvvRX6pxwgUtrXux2GWxcF5VTpFYjpc5n6AHt9dZ4cmHyV/t4KkA/6d1N1D4DJ4YEA04xRTeaUXnSjNFARTo0/zh98JkJqDBlVJDVhFEjkfS1f2iTOJfvRGtVR/ZV8U7BkFtpZVTZUKpl/eGXJM82IsVSP+O/8dt8ukNj5GkgObaLqFzXOYvCsvoMAfFvOMyzvMjX9ZXrfjXvuNXly23WG4V/vXf3zKDQxfeWMp4Ui7eCfdMioEuQoG1AOB1u+xyJ1S+efv34h+gWlzdN6zGOCD2lFdV15adtG1/jmdirA/sUqKwUOiSsWHTMPtlcw3XCvKe+LVR44a7c/d6w8fuLUqOczhexnTUQlfvDtSzZQS5ndINpEaq5q4DkLSh+F0o8V0f3vktMiYtmI1LUNPygkyD+tdPJUF2VJtJD+gF1s7zch3akuID5L+cM8IBjmKzLuMADo52DduxDEA3F+y/CZqYlsoCzF215yzG3b0cA7Pmvh0KdmkWfTVHHeJJSLw2FVTvhDHaVOcIqLTTcSRrBO4WxSWE16M+4wW4U4/ZNIEohdI8xhfK/038Y/Z/399XwTBv0XOc/qKmFtRXveVM
- nCM5I7ov
- 4ZYy3L8qWAqH69c+u07GLLzanxOnXgA7Rw4u1Pi56ZA9iKZ+QrCrRSttB/NDDVwSz/mqO9dfqKzPqmfttORP1iPLfEytz21ViTH9uC96EF+CmsMHfSedjY9FtyKU8j4c68HYI5ggj2hd7DKyfpB1ScH6F/c6PPP9y+CNFjm/barAcucEQrVDYWiYtD1WeZY4t54VFZZCHMipsnF/Q18dXyq5/CWJD8JoFGV+IsMc9pwG0v/kjMJo5V7hltmli0OlFRPmGWnukCUHPACXEsrVh/fXti4wLdFz6YqRFL7z1sjNASYeUz/aCwiK04/0Wp58CwlTRDPkQ4qh+mcUVeUAALHLhl0UGrVqWxWtA1HpYFqIZwJhRxkICb43ofPiZtD6m4Jnq96aXqpeV3oeRE4Ub3JpElF2j0YMcD8inyDyeoJk+ubzM8+uqTywWEUFZW1qlJw0xZRh+bubTZ3VQd6Lak2Fg5C9wPJa8G98+qfG3yodLJOfIZCGGDd9Kkn1kN/xV5Isr
+X-Stat-Signature: yydpxxr138ntq9ap5mpsqx54sdqdno85
+X-HE-Tag: 1753718863-774602
+X-HE-Meta: U2FsdGVkX1/1tv627XGtmvElJExt7LJWRit4PkSnGwidcHeIaqkE+v5wpmG2ryOfNcW18nTDeYQtNtsAqRYadqvZJI5xmS9KcyoxxgE4PT5PV4Txq3GEq47n30XpojvKJvTiZuEW5lVgu3cjUJjIOer6W+gJ1oHDjQ6aZOWguej7OAASpcdf2vTIQqDuyaXEpnG0dq66Sl4LZOP+sOEaOR6GLgo7XDd1ysvb0slfXoyT03nxRIrEb0fmm9D3MZrvLXB9m0kLS6MWRfWBLlp2TIgGjOH8l99S/MCAUWwolBEWrR0QGIre2EbtY3vXKcXsAN49WI0KPrridvWjlSJDQrxTrctiR9CPXjiI97ulHpIj80Ert7X7Fc1+jBE+sYv8Cd5H1utG9HTR2P5rQjWHfifxCZL1zIERVBYLkX2mXvfo/y2YS0ywvA7PwolN6JzGB+Wurier/C/dI/fw6ppsR2qdFBSHi/B4fCnXxk7uf5iCymvxTB/BGLVqOo8H9/loKNEdj24FRHitc2sDc8oBYzh46tADZgxHGYO5tB/0dHwRjjyHdupFm/m8o4xiQ3+YGD8L89b33AOhBlse6eqekuaVtaOGP6fszSQuWl2Jy7fL6XcLAXfalyERj3R1UWgYPjjDbTyW3+012V7iv2DN5OyurA72MufV4jgMibjOuf26fouAR4XoYkigkgUDJy0ehrRPyckCIytZvwNnHCJazraGhhtuAElEV7+T4lW3Yar++oX7wsBQdTFihGRXwhhz3Sj2i+r+U9cqfW+iuX0ZdBjGjA7TwXmLtoyTyv//Q33rtsnb+ZLc0dhhz5BOSdDQMO9PIcSgJMhaSrLC2U5Ig5Ff9gQDyzlOnumdvnHnHCjp7qYnF1/8rCAWvAng6pmMH1e4YZBkFFPNQIzgGMMKmakha5iyoh0UTpz9sdaU1P5XRuXONgpO4a645IMKJZOjP5LaBsSf1NSi8A0V1r/
+ RgH6cgl5
+ Xy/n9TX/FIdiw7QaIXT7TggFcZTAgey8wqxBQHzCEzGr6++nyxJQG2CQaff3mheohhvpD/GAMASb2d99blw4sSouRpw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -164,65 +131,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jul 26, 2025 at 01:23:22PM +0000, Alice Ryhl wrote:
-> The maple tree will be used in the Tyr driver to allocate and keep track
-> of GPU allocations created internally (i.e. not by userspace). It will
-> likely also be used in the Nova driver eventually.
+On Mon, Jul 21, 2025 at 08:35:32PM +0000, Kuniyuki Iwashima wrote:
+> Some protocols (e.g., TCP, UDP) implement memory accounting for socket
+> buffers and charge memory to per-protocol global counters pointed to by
+> sk->sk_proto->memory_allocated.
 > 
-> This adds the simplest methods for additional and removal that do not
-> require any special care with respect to concurrency.
+> When running under a non-root cgroup, this memory is also charged to the
+> memcg as sock in memory.stat.
 > 
-> This implementation is based on the RFC by Andrew but with significant
-> changes to simplify the implementation.
+> Even when memory usage is controlled by memcg, sockets using such protocols
+> are still subject to global limits (e.g., /proc/sys/net/ipv4/tcp_mem).
 > 
-> Co-developed-by: Andrew Ballance <andrewjballance@gmail.com>
-> Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
-[...]
-> +    /// Free all `T` instances in this tree.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// This frees Rust data referenced by the maple tree without removing it from the maple tree.
-> +    /// The caller must ensure that no reference that remains in the maple tree is used incorrectly
-> +    /// after this call.
-> +    unsafe fn free_all_entries(self: Pin<&mut Self>) {
-> +        // SAFETY: The pointer references a valid maple tree.
-> +        let ma_state = unsafe { Opaque::new(bindings::MA_STATE(self.tree.get(), 0, usize::MAX)) };
-> +
+> This makes it difficult to accurately estimate and configure appropriate
+> global limits, especially in multi-tenant environments.
+> 
+> If all workloads were guaranteed to be controlled under memcg, the issue
+> could be worked around by setting tcp_mem[0~2] to UINT_MAX.
+> 
+> In reality, this assumption does not always hold, and a single workload
+> that opts out of memcg can consume memory up to the global limit,
+> becoming a noisy neighbour.
 
-A meta comment here for the future direction: I think it really makes a
-lot of sense if we could have the Rust abstraction for struct ma_state,
-that'll allow us to have flexible locking strategy and Iterator-like
-interface. Maybe it's something Andrew can take a deeper look when
-MapleTree binding is in-tree (no word play intented ;-))?
+Yes, an uncontrolled cgroup can consume all of a shared resource and
+thereby become a noisy neighbor. Why is network memory special?
 
-For example, with a ma_state binding, we can do:
+I assume you have some other mechanisms for curbing things like
+filesystem caches, anon memory, swap etc. of such otherwise
+uncontrolled groups, and this just happens to be your missing piece.
 
-    let mas = MAState::new(self, 0..);
+But at this point, you're operating so far out of the cgroup resource
+management model that I don't think it can be reasonably supported.
 
-    while let Some(v) = mas.next() {
-    	drop(v)
-    }
+I hate to say this, but can't you carry this out of tree until the
+transition is complete?
 
-Regards,
-Boqun
-
-> +        loop {
-> +            // SAFETY: The maple tree is valid. This call to `free_all_entries` has exclusive
-> +            // access to the maple tree, so no further synchronization is required.
-> +            let ptr = unsafe { bindings::mas_find(ma_state.get(), usize::MAX) };
-> +            if ptr.is_null() {
-> +                break;
-> +            }
-> +            // SAFETY: By the type invariants, this pointer references a valid value of type `T`.
-> +            // By the safety requirements, it is okay to free it without removing it from the maple
-> +            // tree.
-> +            unsafe { drop(T::from_foreign(ptr)) };
-> +        }
-> +    }
-> +}
-> +
-[...]
+I just don't think it makes any sense to have this as a permanent
+fixture in a general-purpose container management interface.
 
