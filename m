@@ -2,121 +2,121 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 56B7AC83F26
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 17:44:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 82443C83F26
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 17:51:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EDF456B0095; Mon, 28 Jul 2025 13:44:16 -0400 (EDT)
+	id 0BC826B0088; Mon, 28 Jul 2025 13:51:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB7516B0096; Mon, 28 Jul 2025 13:44:16 -0400 (EDT)
+	id 093AB6B0089; Mon, 28 Jul 2025 13:51:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCD596B0098; Mon, 28 Jul 2025 13:44:16 -0400 (EDT)
+	id EEB7C6B008A; Mon, 28 Jul 2025 13:51:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C997A6B0095
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 13:44:16 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 49B5F588FD
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 17:44:16 +0000 (UTC)
-X-FDA: 83714397312.06.41D81AE
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5428040005
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 17:44:14 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gomPqHCI;
-	spf=pass (imf12.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id DDAEA6B0088
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 13:51:13 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8D487113302
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 17:51:13 +0000 (UTC)
+X-FDA: 83714414826.14.A8D3F48
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 979451C0012
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 17:51:11 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=V5s0v+81;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf18.hostedemail.com: domain of almasrymina@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=almasrymina@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753725071; a=rsa-sha256;
+	cv=none;
+	b=4+ZMeMYi565SyELn96iHLKzbvfZPl4zI1y2Y4ReMcQsPhkGxzbPOpfIIJIgTMtjjGMRGB8
+	gGwa3lxoipo3uZI0fLtpi6gCQO6w7pwDjxIDsse6nlwKGs9oMzX9gzIKUi2tE2kOzWpMa2
+	mFd1atvFOTUtTOgWOgn68FYGIOKVO4E=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=V5s0v+81;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf18.hostedemail.com: domain of almasrymina@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=almasrymina@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753724654;
+	s=arc-20220608; t=1753725071;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WaNs6TAtiLS9Zn84sgyHz2QFRjPypF9PY+lV+Xzno3c=;
-	b=fRrOj8eAt9ZtuA8jGuchEoeuAtSpafwuCxYpQZho9npAxdQj8F9uvJR6WNdtuMapIWbJV7
-	p8KLsKQkWIQfK6XvP3/YjSkjD/UhPBBgacqt+XpGky9AnMgjM9HC23Uc2B/KTSLdZt8+aD
-	rusdhFFM6s4yHmgW3Urh+FKuTEwI8hk=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gomPqHCI;
-	spf=pass (imf12.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753724654; a=rsa-sha256;
-	cv=none;
-	b=yq8vdHsbAmNwwF75ep8TOHYedG/zrNo1aJoCE4oyJnlK4p+Tn0I8+bRYxZlOY+NXXDC6oZ
-	0mco6c4lGsCh7Qga2q4Bhi1S4zyv8VtveFImkJss6wGG4CHO4814SAsapw1zggzs6w8pOg
-	bTUvKh7EG6cLO+Rbk1yLPi3t1RYxHgc=
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4ab7082b3f7so56878911cf.3
-        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 10:44:14 -0700 (PDT)
+	bh=DBKeku6zVO55K67MLztQ2tt1Uyve6xAQKNrkkCjEuZI=;
+	b=WQZlR9RNYWAYb0uN+FI87uUBK2fAH4y3OW7nn/bNKpdcUhxo7wDkCyvGltaZ9osSBWsDTK
+	rWa5z9ZF2G4KMnunXlfNzZDuILSJMGBrQxL8Rby9/fSZnupxVTPzOlS6NYdTWmsNKfJQa2
+	5rKx1NOzTdTHf2vOIPunFH0BpqfRtw4=
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-23dd9ae5aacso17295ad.1
+        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 10:51:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753724653; x=1754329453; darn=kvack.org;
+        d=google.com; s=20230601; t=1753725070; x=1754329870; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WaNs6TAtiLS9Zn84sgyHz2QFRjPypF9PY+lV+Xzno3c=;
-        b=gomPqHCIjY7zG7LtJlsuS8VodzVRsbOTTyCC9NYYL69w4YwmduRiphVWPSfZ0bLfOr
-         Cwt2dowA1sZG4nQbR8FtWt9V6tzJ3lbmUZRftU3oBvNW+U29j/af8X4HlABSR+n+zFU4
-         DrerFv1xbIVonwo6jk4tGjM6vrt2IWK9XfdHfbXSRged2yAKUu/JJPK6z4NBoOfLRtHH
-         ZGZGf4KiDl2Cw/0tAfsuZlzu/9Jr/MGcI6dQ3Tns+iZ2dgO+hE090TjFiRlPFyRu19HH
-         CQEpxegxRKpO8kJVBizm6/tSV2jNXpbwaDBFrUGj8G2wFe3dml99gvwix5ag4XqtnMui
-         ps6Q==
+        bh=DBKeku6zVO55K67MLztQ2tt1Uyve6xAQKNrkkCjEuZI=;
+        b=V5s0v+818GYNMMS+CnsFtaH7Wum3YQ/UMhg1K0lkXRhJ3n6Q2lQf/mYBqpkjWMXaaW
+         nnOtQ3RsVltNIIfe9NtIM99EqrkhQQdKoPPQNGEhbAOX/IApNzVK4LevvWcKHOPKCqkb
+         ciY+lOkOKXAWkdES/62CnWrcuMhL8iW9CTA5vYc6nN5RdhkN/d+Quc5+mZl8x+ffqarV
+         n0ao6SndVanCBD7m4B/CvgfSoFBpQyG8pY4Isc+sf1R4e7eaNOPNHj7xuP1ymkcN5JOu
+         nmunG6QyNdHxFVUX2IS4JQlX69HWm08O9fHNEe8QSky6Jw0eCc+u8cavWwBnelrWG8fI
+         0AXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753724653; x=1754329453;
+        d=1e100.net; s=20230601; t=1753725070; x=1754329870;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=WaNs6TAtiLS9Zn84sgyHz2QFRjPypF9PY+lV+Xzno3c=;
-        b=MrJbqN9WhH06AtIsMRIFSQkMKuVJSobbwVc4AWLl0z84XYsox+hcPm37zIP3YJNe6M
-         apNzmw5jnlDJ3INK3z8Z0A+b4G5W0YDA3T9ZtBHqILg+fNEjV1yvVrFUbWdXfUgNdod8
-         3DBbVUQGzko8LMAzNgiH9MjywrWclPcihYrkoVkzn+TUENWzSfRPatW1Gac33zchlFlg
-         nRB4ZcCE8KMHPSazA4V2y5/FwUPvhN70HBXY303M8NOz8tKB3ImqJ5B9mhOqW9JsZvDB
-         xPd9V5/7hov/M/JsxYcPEPWkmXxhTngUCOIbNBnj9uM8pjCX9UmnLfmXPatvB99OmRuQ
-         GYIw==
-X-Forwarded-Encrypted: i=1; AJvYcCUdfjAAocGM0DR4Wsjz2axZhhE6SkIRwOX1Bs/YO3gq1pCaDy89Yk8Kz4+7+tA66mFs57ut1Is54Q==@kvack.org
-X-Gm-Message-State: AOJu0Yyo5Om+ZpKNMvlqLJwFVI0VuNU4ZnL030ATfVvR2o4DO/OhVGR7
-	RB8FtB+zLoKWZAsrm59xNSrxOoBB4pH3lf30ehwsf0JGliMMJYvs+2r8p5PTLQFroYWnhGlr0c2
-	u6+PUCoa0qt78wHvi9IBzHXcX+Rnmo3U=
-X-Gm-Gg: ASbGncuEZuKYsLJfcs0btbQrDsIeKKcH0vAkcXz74bI9LiY+m3LhgqRhZJuyxAgX/8B
-	Ce6DFM/YY0cUex9QhmorHrFx6UN/ZkbNrbiGt8QiQW0xFvO467/UrIte3Zd8C9k9FvDvXvBzJIg
-	ee0WWCvLli8ZmoR4wRzprOmszGl2RZT19L3X80O0Xmxwg2ZATV5A6Ur6+nQcAhbFUmKUBF2552/
-	jlf3wDoxlqMbQXHgA==
-X-Google-Smtp-Source: AGHT+IGte50fwChvEi9kJQNzD68kbG1EMNvci8he6MVBVKPQmFhf/9CW//FXjrAlW6QX8pLJYLCknnZzhpsStOhCE6k=
-X-Received: by 2002:ac8:5a44:0:b0:4ab:6c75:620 with SMTP id
- d75a77b69052e-4ae8ef62b14mr151522531cf.1.1753724652975; Mon, 28 Jul 2025
- 10:44:12 -0700 (PDT)
+        bh=DBKeku6zVO55K67MLztQ2tt1Uyve6xAQKNrkkCjEuZI=;
+        b=ovPEw/N0ASP+IZPk07Ic7YwtVfL+0qmt7yOFPGdbpFBByTvN6idxUumcMiPBNhIcDK
+         rVbtJp74uIVEk1r5OHlb122iLetRNjPJpycOtXCXfYFQHE5NfF88hxIn/CIVH+kLV0RR
+         uRjjlouJrGj7GydV5ZESbO7CJXo01y4ApkQ+LcToP9gTIrq3VBWux6zZWKKUUy1xWspD
+         2JK6h4fBWShOxzOHV8I5CAH76LFVQ3Bktb5gCq4v7OAuBEByn2Ysrl6ZyWU5MRAHP8cj
+         E9JgoQvQ2CiQVN2mWWKJ+Q2BAXpC9JyKsUTbAy5j4gZn0S7JPNO2Q//SOsq72H1ARmEX
+         NqYw==
+X-Gm-Message-State: AOJu0YwkGl6VW+b/S0iOiDtmtzjwAiTVRo7iGveoeQ+5Y0Y0NUT3QLXE
+	IKroZqF52xMybQ+6tYXPN1iTBs5P0VVRpK2FkqXPngzyIqRAAoXY0AHEap76k5AleuibFwn6Jh2
+	Z0dHw5StpYoVWmh5wZ+RFpU4pNT2T+bB3GkbNp9jK
+X-Gm-Gg: ASbGnctk/n0OFAVp7TaXhACFxp6pJFf9AuHM1ewmz/dQhCJU62SRHPZHpu3calXyCh2
+	HZmMBknMCr0RI3m1Qt62dw1muDDwU4OUkvh5LMUPoat/kN9Yrc6bK39qkjjxNdbfuacar6Y+A0F
+	LrqLUR1PUoqgTS4kEChpyHQ9CZmgxf7Tu5V698+u0r4DMc3WYPtTd9kIBVOVRpqddvNw8Art9QQ
+	+r3t68HscVBUGa+ks3X2Iw4xojVNRba67jI9A==
+X-Google-Smtp-Source: AGHT+IHcYeKC05850F4TTaw5KxBzxMXvA6FA4+SMB9VpNRlorOlyAj+f8QimcI7qy9S+bhrDnuKB9SXXwdjOVkm0pSM=
+X-Received: by 2002:a17:903:94c:b0:240:58bd:11ba with SMTP id
+ d9443c01a7336-24058cc56cemr1345875ad.23.1753725069763; Mon, 28 Jul 2025
+ 10:51:09 -0700 (PDT)
 MIME-Version: 1.0
-References: <CA+G9fYs5AdVM-T2Tf3LciNCwLZEHetcnSkHsjZajVwwpM2HmJw@mail.gmail.com>
- <20250723144637.GW2672070@frogsfrogsfrogs> <CAJnrk1Z7wcB8uKWcrAuRAZ8B-f8SKnOuwtEr-=cHa+ApR_sgXQ@mail.gmail.com>
- <20250723212020.GY2672070@frogsfrogsfrogs> <CAJnrk1bFWRTGnpNhW_9MwSYZw3qPnPXZBeiwtPSrMhCvb9C3qg@mail.gmail.com>
- <CAJnrk1byTVJtuOyAyZSVYrusjhA-bW6pxBOQQopgHHbD3cDUHw@mail.gmail.com>
- <CAJnrk1ZYR=hM5k90H57tOv=fe6F-r8dO+f3wNuCT_w3j8YNYNQ@mail.gmail.com> <20250728171425.GR2672029@frogsfrogsfrogs>
-In-Reply-To: <20250728171425.GR2672029@frogsfrogsfrogs>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Mon, 28 Jul 2025 10:44:01 -0700
-X-Gm-Features: Ac12FXwC8Bb-k9tFwYfIA8TgFEpNMPte-Anh_9X52L95AlRm8wPx7oIuVouRTN8
-Message-ID: <CAJnrk1bBesBijYRD1Wf_01OSBykJ0VzwFZKZFev0wPn9wYc98Q@mail.gmail.com>
-Subject: Re: next-20250721 arm64 16K and 64K page size WARNING fs fuse file.c
- at fuse_iomap_writeback_range
-To: "Darrick J. Wong" <djwong@kernel.org>
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, linux-fsdevel@vger.kernel.org, 
-	linux-mm <linux-mm@kvack.org>, linux-xfs@vger.kernel.org, 
-	open list <linux-kernel@vger.kernel.org>, lkft-triage@lists.linaro.org, 
-	Linux Regressions <regressions@lists.linux.dev>, Miklos Szeredi <miklos@szeredi.hu>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, Christian Brauner <brauner@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <liam.howlett@oracle.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Dan Carpenter <dan.carpenter@linaro.org>, 
-	Anders Roxell <anders.roxell@linaro.org>, Ben Copeland <benjamin.copeland@linaro.org>
+References: <20250728052742.81294-1-byungchul@sk.com> <20250728082008.34091-1-byungchul@sk.com>
+In-Reply-To: <20250728082008.34091-1-byungchul@sk.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Mon, 28 Jul 2025 10:50:55 -0700
+X-Gm-Features: Ac12FXxVdVrRJS8-nghy7iGoNOdvPeYRQkCbX14O9WycDp4E_Y6QBKwCNMt-Clw
+Message-ID: <CAHS8izPTLSdN7uqPN7n97ovkdvc1vLc46EgyxDYSbAM6bdLUjg@mail.gmail.com>
+Subject: Re: [PATCH v2 rebase as of Jul 28] mm, page_pool: introduce a new
+ page type for page pool in page type
+To: Byungchul Park <byungchul@sk.com>
+Cc: linux-mm@kvack.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kernel_team@skhynix.com, harry.yoo@oracle.com, ast@kernel.org, 
+	daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org, hawk@kernel.org, 
+	john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com, leon@kernel.org, 
+	tariqt@nvidia.com, mbloch@nvidia.com, andrew+netdev@lunn.ch, 
+	edumazet@google.com, pabeni@redhat.com, akpm@linux-foundation.org, 
+	david@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, 
+	vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	horms@kernel.org, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, 
+	ilias.apalodimas@linaro.org, willy@infradead.org, brauner@kernel.org, 
+	kas@kernel.org, yuzhao@google.com, usamaarif642@gmail.com, 
+	baolin.wang@linux.alibaba.com, toke@redhat.com, asml.silence@gmail.com, 
+	bpf@vger.kernel.org, linux-rdma@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: mgkdz8qdh98jw19aftz86qr95no7fryc
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5428040005
+X-Stat-Signature: 54gaxae4kdm93x3oucmegyn4thaq6jur
 X-Rspam-User: 
-X-HE-Tag: 1753724654-572012
-X-HE-Meta: U2FsdGVkX19sgWl2RKoS8VWi6PZOqo2GONp7x+ekbwhuYJDePatGZBdMmpBNJomy9tk701fKJdCDlgLpthFndPlu60kQUmBJ5ujbU0Z3/PshsP1y07qrXue7mnKlE3DE/zIrenni4G/Qjh3tjRJtbNUGkz8LhhaGFAXdyy9mkmo5NOOwsQHeT+AW/wA9bhe8QP/eLz+msfZXbVlZXbsnuiUAZlyDBlfMf1D5+D/DAvDkwVKVx2U6KdzACS+GcDsCIbcVJaI1Dt8JNBd+/Lv9kXahUMWmBqrOu9h1w79alUrlcaOta99q9S2iItDa+sQmfD5jDoY5/ZBGRDia8IWyohCZ5+66gmb9RrmqhHxyu1OgyKCar9+Yskx2+ntfhw4JJTMdzNvzIoMuEnsvxKfYKvbR7sWvbIX37mmHKnFte34Rqv7GIsbRrKf5J8jbWZ/x58Ch1Vy4uKdaokFcKgLfWI1tKFMZHjmHPd0Mpao+2C4WmgP6qqisV494orWYLZSjAUNE87qhhfKWH4r5sFXQSBjJwRJiZekqzDaGO/AGFrZq0pRExF1dwQFDDidB0bdqsn8JN0Tj9omDtBILspnG8jHe+zVb0wlmtEQhfHik7JY7YvPExPxk3EuIaQEH140Ivne+/ZEhySorr40GVqq/CaJzkihh+iuFeiVShIW/hbbEER98rKqbOTnx6HLcLMV4ayuG1fAOy1i4juuHILVIFH+xt8+wXAK8GW3tdsse809v2Uye8nxGMX4xEFYB9op3phPo1skUfR86zUujD5Qcs00Ef4r4Aiz/A77EuOdRHftBsBXMYVT/ykZQndBAamtkdE/rgOcdDsgJFsATynPk/6S33GahO4gAgfwoP+M9hI+WsMFTLojZ1P/Xm9lX/f/R+DvCaBbX+jONficjIZIbVmf9+YUmGyglB/GOyQMNqzlurXWZPQKo+TZje6setwVwPxfdZFEpVB5/k44qrpV
- lemsitOz
- irtk4N9QvBZQQax8dKVI18LJeM7wv3BshtA9k1S/c+UZczPTvKOZOTYPsCCOlg3B6Jvt47EIlPooKatsJk7AHTreG6QoK71OlexxZgTl0XKYafOMRtZMPuHdPNIyIb3h5Ss6WuaW2CMnQHU96pdggSJUaBcoRAC5mNErDFeHYZDjkeeIV7gD4S1ntIimyvCrVm0nj4kw0VAFx2BQrFsgFxxxF+zOJ4I0RnMpIqrX5T8YX4NJqqFDGqZ33AYPIsWQPtIf7r5uEypTXwebcJ9xxUC7GG8vtec9nETQQ1drzXZJen+KC1B4oJ18X/k/9zwSN7fQTSovn8TyOgGG2LZVuHcT9fuRlsgJeyEXatlhGATtFKbIx1ZjwcQRvmpH9ELp0W36sTPr6bU02HH9bpLHi5yY9+nlNlWZQhxovNfl0odxOcdZNyvFtYLEaN/Wd97GwmP1OIdXI3IZSSz5x3j90YtSZ9oQ1HxupXYOCWixvXgazZUsVqqCsuuzd3bWktkfQDwKn957EvWqrj7htkhjoNebZjQLBflmJoZ43
+X-Rspamd-Queue-Id: 979451C0012
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1753725071-807824
+X-HE-Meta: U2FsdGVkX1+qdtm/KJPkzt0JRdqrnLeY6PYxbNrkg3SFKXxAI7Ac3VBNdQbd6fuoDy3ZQz7ihC2T+b7oUf9cq9KGfREs2tSCOsoNfJ67BqC2rUPF9R17xlQMBhHmhlL1LuEwpMSBAvbMN4GomAekvr6/5ivCfew7Z05B4YkjOCTxJmj1tj2HSctA+MdgJBAZnD4msnOFaH4NL5QsfZL1TvPaUDOFhlAesm9Qt658hwuRRvAQEYhV/l/PTXbHequgi56HZ2y4OTOmqSv41LgE8vh1rubL3tCt1ekAucUBsEriWu/QVk5UFn+NiOqiMpgJSlLG7an0/RPeTDxBHclbShrrgLWozDCGe1bF7vH3KQgSPuZH/PZmp/XS5Oa8mJLA1q2SiGkv7x2B6MV/+Gs2Kt4hBUCcUEV7qZvI6STlpUE9bKcFsgYVDtCoo5Dx38kLLmQWzL21y6FV0dIBQsZdC+sTF8mVzcxjIeOh8dwgkwSXGrYM4K/rHcDLrVkxCRUa/ewUsK8EW3gSbaKuVBidTvdv1o4hEVX6nD/Ax1QEA+kI5VnYuLDX7aM1Y/JxKUIFBDmY4byFqxpmDeDpEArfbHaZjK/uj+wyXnbjSQ5X6ezrgFaeduF7E56spnBl7zd3vAxmeLY4CMgolBr43q8H/fJkHi4NLXeCnxYpm4vyZ1gXMGW1QIZR4jvCzNmYi3U8YtgCK2xJVDP7IuioJawHpsqHZSvMoEs5tbVlN7cROK5HrLI19pqFL7ZRi1hwhQK3JvRtf54NIPjX3i5r89UwjlQdCnYLoNtByJ7Jo9rmv5QVXmRTzwbf1yOlvUNyK9aQ4GKw2FrzaV3m2f9uvj93on2Rvdx/q6LhhtZD9KLkRYLCmfZkgtEBllWkyxCqxACqPnbV719mBYp5BxX/j90/X8SvhttGdoona79I4YZ3yFsESiVl7WU/Oljf5TJSSCvBZ2hs17l0JXDkROFoKEz
+ RFSMijPM
+ fZwX7iYFzzgaOznllXvJ9C0NERg4c+4oCBwAHEFaZIGLTOduXzTXcXG2GI+5xJsdHav23zh5dUAGLv+jvfZzpgisv9ieLMBEY6GebfVAvsMasrWqKlTOxhVV1ZIdPNm8u0ieL/5SX0gUKcyaF+qepJji9w+ht2XTg7IOts/lJh+VLJxBeOyR7eh0ZKgsXjEbNrRt6OHwtTkRLfT2sZEH14478jR4N4KoylMxMKW/RAEiv3wODXJJey/AmxkH2+OtPZgP4b27miTZDJ4B4hyOYI5QItqS+OvqF0WX7T3rQmEVuK6Zdwm+rpeIoewOcwFRjYM1XI2dnJNyhQy3CrUha0B4HEEOLarRyw4LOH2+RjUeAjwCTe1KXLa5DIsheRW1aVywF/hmT5p+RAnQr+eFXerDHEigI2wkPWwYRNiQVcC504WhrnTBAgry/J+/sBFfgvC7jGJ5tbchLbv7OkkGvaFXteheFzk9qbpieALm/PjgI56/D/OJz3RJGNYf3RfU0lJgIHsXq69r2lQ1j5IRKT0NPPG7XPt/6cIL0
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,265 +125,332 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 28, 2025 at 10:14=E2=80=AFAM Darrick J. Wong <djwong@kernel.org=
-> wrote:
+On Mon, Jul 28, 2025 at 1:20=E2=80=AFAM Byungchul Park <byungchul@sk.com> w=
+rote:
 >
-> On Fri, Jul 25, 2025 at 06:16:15PM -0700, Joanne Koong wrote:
-> > On Thu, Jul 24, 2025 at 12:14=E2=80=AFPM Joanne Koong <joannelkoong@gma=
-il.com> wrote:
-> > >
-> > > On Wed, Jul 23, 2025 at 3:37=E2=80=AFPM Joanne Koong <joannelkoong@gm=
-ail.com> wrote:
-> > > >
-> > > > On Wed, Jul 23, 2025 at 2:20=E2=80=AFPM Darrick J. Wong <djwong@ker=
-nel.org> wrote:
-> > > > >
-> > > > > On Wed, Jul 23, 2025 at 11:42:42AM -0700, Joanne Koong wrote:
-> > > > > > On Wed, Jul 23, 2025 at 7:46=E2=80=AFAM Darrick J. Wong <djwong=
-@kernel.org> wrote:
-> > > > > > >
-> > > > > > > [cc Joanne]
-> > > > > > >
-> > > > > > > On Wed, Jul 23, 2025 at 05:14:28PM +0530, Naresh Kamboju wrot=
-e:
-> > > > > > > > Regressions found while running LTP msync04 tests on qemu-a=
-rm64 running
-> > > > > > > > Linux next-20250721, next-20250722 and next-20250723 with 1=
-6K and 64K
-> > > > > > > > page size enabled builds.
-> > > > > > > >
-> > > > > > > > CONFIG_ARM64_64K_PAGES=3Dy ( kernel warning as below )
-> > > > > > > > CONFIG_ARM64_16K_PAGES=3Dy ( kernel warning as below )
-> > > > > > > >
-> > > > > > > > No warning noticed with 4K page size.
-> > > > > > > > CONFIG_ARM64_4K_PAGES=3Dy works as expected
-> > > > > > >
-> > > > > > > You might want to cc Joanne since she's been working on large=
- folio
-> > > > > > > support in fuse.
-> > > > > > >
-> > > > > > > > First seen on the tag next-20250721.
-> > > > > > > > Good: next-20250718
-> > > > > > > > Bad:  next-20250721 to next-20250723
-> > > > > >
-> > > > > > Thanks for the report. Is there a link to the script that mount=
-s the
-> > > > > > fuse server for these tests? I'm curious whether this was mount=
-ed as a
-> > > > > > fuseblk filesystem.
-> > > > > >
-> > > > > > > >
-> > > > > > > > Regression Analysis:
-> > > > > > > > - New regression? Yes
-> > > > > > > > - Reproducibility? Yes
-> > > > > > > >
-> > > > > > > > Test regression: next-20250721 arm64 16K and 64K page size =
-WARNING fs
-> > > > > > > > fuse file.c at fuse_iomap_writeback_range
-> > > > > > > >
-> > > > > > > > Reported-by: Linux Kernel Functional Testing <lkft@linaro.o=
-rg>
-> > > > > > > >
-> > > > > > > > ## Test log
-> > > > > > > > ------------[ cut here ]------------
-> > > > > > > > [  343.828105] WARNING: fs/fuse/file.c:2146 at
-> > > > > > > > fuse_iomap_writeback_range+0x478/0x558 [fuse], CPU#0: msync=
-04/4190
-> > > > > > >
-> > > > > > >         WARN_ON_ONCE(len & (PAGE_SIZE - 1));
-> > > > > > >
-> > > > > > > /me speculates that this might be triggered by an attempt to =
-write back
-> > > > > > > some 4k fsblock within a 16/64k base page?
-> > > > > > >
-> > > > > >
-> > > > > > I think this can happen on 4k base pages as well actually. On t=
-he
-> > > > > > iomap side, the length passed is always block-aligned and in fu=
-se, we
-> > > > > > set blkbits to be PAGE_SHIFT so theoretically block-aligned is =
-always
-> > > > > > page-aligned, but I missed that if it's a "fuseblk" filesystem,=
- that
-> > > > > > isn't true and the blocksize is initialized to a default size o=
-f 512
-> > > > > > or whatever block size is passed in when it's mounted.
-> > > > >
-> > > > > <nod> I think you're correct.
-> > > > >
-> > > > > > I'll send out a patch to remove this line. It doesn't make any
-> > > > > > difference for fuse_iomap_writeback_range() logic whether len i=
-s
-> > > > > > page-aligned or not; I had added it as a sanity-check against s=
-ketchy
-> > > > > > ranges.
-> > > > > >
-> > > > > > Also, I just noticed that apparently the blocksize can change
-> > > > > > dynamically for an inode in fuse through getattr replies from t=
-he
-> > > > > > server (see fuse_change_attributes_common()). This is a problem=
- since
-> > > > > > the iomap uses inode->i_blkbits for reading/writing to the bitm=
-ap. I
-> > > > > > think we will have to cache the inode blkbits in the iomap_foli=
-o_state
-> > > > > > struct unfortunately :( I'll think about this some more and sen=
-d out a
-> > > > > > patch for this.
-> > > > >
-> > > > > From my understanding of the iomap code, it's possible to do that=
- if you
-> > > > > flush and unmap the entire pagecache (whilst holding i_rwsem and
-> > > > > mmap_invalidate_lock) before you change i_blkbits.  Nobody *does*=
- this
-> > > > > so I have no idea if it actually works, however.  Note that even =
-I don't
-> > > > > implement the flush and unmap bit; I just scream loudly and do no=
-thing:
-> > > >
-> > > > lol! i wish I could scream loudly and do nothing too for my case.
-> > > >
-> > > > AFAICT, I think I just need to flush and unmap that file and can le=
-ave
-> > > > the rest of the files/folios in the pagecache as is? But then if th=
-e
-> > > > file has active refcounts on it or has been pinned into memory, can=
- I
-> > > > still unmap and remove it from the page cache? I see the
-> > > > invalidate_inode_pages2() function but my understanding is that the
-> > > > page still stays in the cache if it has has active references, and =
-if
-> > > > the page gets mmaped and there's a page fault on it, it'll end up
-> > > > using the preexisting old page in the page cache.
-> > >
-> > > Never mind, I was mistaken about this. Johannes confirmed that even i=
-f
-> > > there's active refcounts on the folio, it'll still get removed from
-> > > the page cache after unmapping and the page cache reference will get
-> > > dropped.
-> > >
-> > > I think I can just do what you suggested and call
-> > > filemap_invalidate_inode() in fuse_change_attributes_common() then if
-> > > the inode blksize gets changed. Thanks for the suggestion!
-> > >
-> >
-> > Thinking about this some more, I don't think this works after all
-> > because the writeback + page cache removal and inode blkbits update
-> > needs to be atomic, else after we write back and remove the pages from
-> > the page cache, a write could be issued right before we update the
-> > inode blkbits. I don't think we can hold the inode lock the whole time
-> > for it either since writeback could be intensive. (also btw, I
-> > realized in hindsight that invalidate_inode_pages2_range() would have
-> > been the better function to call instead of
-> > filemap_invalidate_inode()).
-> >
-> > > >
-> > > > I don't think I really need to have it removed from the page cache =
-so
-> > > > much as just have the ifs state for all the folios in the file free=
-d
-> > > > (after flushing the file) so that it can start over with a new ifs.
-> > > > Ideally we could just flush the file, then iterate through all the
-> > > > folios in the mapping in order of ascending index, and kfree their
-> > > > ->private, but I'm not seeing how we can prevent the case of new
-> > > > writes / a new ifs getting allocated for folios at previous indexes
-> > > > while we're trying to do the iteration/kfreeing.
-> > > >
-> >
-> > Going back to this idea, I think this can work. I realized we don't
-> > need to flush the file, it's enough to free the ifs, then update the
-> > inode->i_blkbits, then reallocate the ifs (which will now use the
-> > updated blkbits size), and if we hold the inode lock throughout, that
-> > prevents any concurrent writes.
-> > Something like:
-> >      inode_lock(inode);
-> >      XA_STATE(xas, &mapping->i_pages, 0);
-> >      xa_lock_irq(&mapping->i_pages);
-> >      xas_for_each_marked(&xas, folio, ULONG_MAX, PAGECACHE_TAG_DIRTY) {
-> >           folio_lock(folio);
-> >           if (folio_test_dirty(folio)) {
-> >                   folio_wait_writeback(folio);
-> >                   kfree(folio->private);
-> >           }
-> >           folio_unlock(folio);
-> >      }
-> >     inode->i_blkbits =3D new_blkbits_size;
+> Rebasing on the latest linux-next/master is required.  Otherwise, a
+> build fail is observed.  Sorry about the noise.
 >
-> The trouble is, you also have to resize the iomap_folio_state objects
-> attached to each folio if you change i_blkbits...
+> Changes from v1:
+>         1. Rebase on linux-next.
+>         2. Initialize net_iov->pp =3D NULL when allocating net_iov in
+>            net_devmem_bind_dmabuf() and io_zcrx_create_area().
+>         3. Use ->pp for net_iov to identify if it's pp rather than
+>            always consider net_iov as pp.
+>         4. Add Suggested-by: David Hildenbrand <david@redhat.com>.
+>
+> ---8<---
+> From 26c9a731f388b788d6ea972c313bc8da8831412b Mon Sep 17 00:00:00 2001
+> From: Byungchul Park <byungchul@sk.com>
+> Date: Mon, 28 Jul 2025 17:09:20 +0900
+> Subject: [PATCH v2 rebase as of Jul 28] mm, page_pool: introduce a new pa=
+ge type for page pool in page type
+>
+> ->pp_magic field in struct page is current used to identify if a page
+> belongs to a page pool.  However, ->pp_magic will be removed and page
+> type bit in struct page e.i. PGTY_netpp can be used for that purpose.
+>
+> Introduce and use the page type APIs e.g. PageNetpp(), __SetPageNetpp(),
+> and __ClearPageNetpp() instead, and remove the existing APIs accessing
+> ->pp_magic e.g. page_pool_page_is_pp(), netmem_or_pp_magic(), and
+> netmem_clear_pp_magic().
+>
+> For net_iov, use ->pp to identify if it's pp, with making sure that ->pp
+> is NULL for non-pp net_iov.
+>
+> This work was inspired by the following link:
+>
+> [1] https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@gmai=
+l.com/
+>
+> While at it, move the sanity check for page pool to on free.
+>
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Byungchul Park <byungchul@sk.com>
+> ---
+>  .../net/ethernet/mellanox/mlx5/core/en/xdp.c  |  2 +-
+>  include/linux/mm.h                            | 27 +++----------------
+>  include/linux/page-flags.h                    |  6 +++++
+>  include/net/netmem.h                          |  2 +-
+>  io_uring/zcrx.c                               |  1 +
+>  mm/page_alloc.c                               |  7 +++--
+>  net/core/devmem.c                             |  1 +
+>  net/core/netmem_priv.h                        | 23 +++++++---------
+>  net/core/page_pool.c                          | 10 +++++--
+>  9 files changed, 34 insertions(+), 45 deletions(-)
+>
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/drivers/n=
+et/ethernet/mellanox/mlx5/core/en/xdp.c
+> index 5d51600935a6..def274f5c1ca 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+> @@ -707,7 +707,7 @@ static void mlx5e_free_xdpsq_desc(struct mlx5e_xdpsq =
+*sq,
+>                                 xdpi =3D mlx5e_xdpi_fifo_pop(xdpi_fifo);
+>                                 page =3D xdpi.page.page;
+>
+> -                               /* No need to check page_pool_page_is_pp(=
+) as we
+> +                               /* No need to check PageNetpp() as we
+>                                  * know this is a page_pool page.
+>                                  */
+>                                 page_pool_recycle_direct(pp_page_to_nmdes=
+c(page)->pp,
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 0d4ee569aa6b..d01b296e7184 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -4171,10 +4171,9 @@ int arch_lock_shadow_stack_status(struct task_stru=
+ct *t, unsigned long status);
+>   * DMA mapping IDs for page_pool
+>   *
+>   * When DMA-mapping a page, page_pool allocates an ID (from an xarray) a=
+nd
+> - * stashes it in the upper bits of page->pp_magic. We always want to be =
+able to
+> - * unambiguously identify page pool pages (using page_pool_page_is_pp())=
+. Non-PP
+> - * pages can have arbitrary kernel pointers stored in the same field as =
+pp_magic
+> - * (since it overlaps with page->lru.next), so we must ensure that we ca=
+nnot
+> + * stashes it in the upper bits of page->pp_magic. Non-PP pages can have
+> + * arbitrary kernel pointers stored in the same field as pp_magic (since
+> + * it overlaps with page->lru.next), so we must ensure that we cannot
+>   * mistake a valid kernel pointer with any of the values we write into t=
+his
+>   * field.
+>   *
+> @@ -4205,26 +4204,6 @@ int arch_lock_shadow_stack_status(struct task_stru=
+ct *t, unsigned long status);
+>  #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SHIFT=
+ - 1, \
+>                                   PP_DMA_INDEX_SHIFT)
+>
+> -/* Mask used for checking in page_pool_page_is_pp() below. page->pp_magi=
+c is
+> - * OR'ed with PP_SIGNATURE after the allocation in order to preserve bit=
+ 0 for
+> - * the head page of compound page and bit 1 for pfmemalloc page, as well=
+ as the
+> - * bits used for the DMA index. page_is_pfmemalloc() is checked in
+> - * __page_pool_put_page() to avoid recycling the pfmemalloc page.
+> - */
+> -#define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
+> -
+> -#ifdef CONFIG_PAGE_POOL
+> -static inline bool page_pool_page_is_pp(const struct page *page)
+> -{
+> -       return (page->pp_magic & PP_MAGIC_MASK) =3D=3D PP_SIGNATURE;
+> -}
+> -#else
+> -static inline bool page_pool_page_is_pp(const struct page *page)
+> -{
+> -       return false;
+> -}
+> -#endif
+> -
+>  #define PAGE_SNAPSHOT_FAITHFUL (1 << 0)
+>  #define PAGE_SNAPSHOT_PG_BUDDY (1 << 1)
+>  #define PAGE_SNAPSHOT_PG_IDLE  (1 << 2)
+> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+> index 8d3fa3a91ce4..84247e39e9e7 100644
+> --- a/include/linux/page-flags.h
+> +++ b/include/linux/page-flags.h
+> @@ -933,6 +933,7 @@ enum pagetype {
+>         PGTY_zsmalloc           =3D 0xf6,
+>         PGTY_unaccepted         =3D 0xf7,
+>         PGTY_large_kmalloc      =3D 0xf8,
+> +       PGTY_netpp              =3D 0xf9,
+>
+>         PGTY_mapcount_underflow =3D 0xff
+>  };
+> @@ -1077,6 +1078,11 @@ PAGE_TYPE_OPS(Zsmalloc, zsmalloc, zsmalloc)
+>  PAGE_TYPE_OPS(Unaccepted, unaccepted, unaccepted)
+>  FOLIO_TYPE_OPS(large_kmalloc, large_kmalloc)
+>
+> +/*
+> + * Marks page_pool allocated pages.
+> + */
+> +PAGE_TYPE_OPS(Netpp, netpp, netpp)
+> +
+>  /**
+>   * PageHuge - Determine if the page belongs to hugetlbfs
+>   * @page: The page to test.
+> diff --git a/include/net/netmem.h b/include/net/netmem.h
+> index f7dacc9e75fd..3667334e16e7 100644
+> --- a/include/net/netmem.h
+> +++ b/include/net/netmem.h
+> @@ -298,7 +298,7 @@ static inline struct net_iov *__netmem_clear_lsb(netm=
+em_ref netmem)
+>   */
+>  #define pp_page_to_nmdesc(p)                                           \
+>  ({                                                                     \
+> -       DEBUG_NET_WARN_ON_ONCE(!page_pool_page_is_pp(p));               \
+> +       DEBUG_NET_WARN_ON_ONCE(!PageNetpp(p));                          \
+>         __pp_page_to_nmdesc(p);                                         \
+>  })
+>
+> diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
+> index e5ff49f3425e..4cceb97ca26a 100644
+> --- a/io_uring/zcrx.c
+> +++ b/io_uring/zcrx.c
+> @@ -444,6 +444,7 @@ static int io_zcrx_create_area(struct io_zcrx_ifq *if=
+q,
+>                 area->freelist[i] =3D i;
+>                 atomic_set(&area->user_refs[i], 0);
+>                 niov->type =3D NET_IOV_IOURING;
+> +               niov->pp =3D NULL;
+>         }
+>
+>         area->free_count =3D nr_iovs;
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index d1d037f97c5f..2f6a55fab942 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -1042,7 +1042,6 @@ static inline bool page_expected_state(struct page =
+*page,
+>  #ifdef CONFIG_MEMCG
+>                         page->memcg_data |
+>  #endif
+> -                       page_pool_page_is_pp(page) |
+>                         (page->flags & check_flags)))
+>                 return false;
+>
+> @@ -1069,8 +1068,6 @@ static const char *page_bad_reason(struct page *pag=
+e, unsigned long flags)
+>         if (unlikely(page->memcg_data))
+>                 bad_reason =3D "page still charged to cgroup";
+>  #endif
+> -       if (unlikely(page_pool_page_is_pp(page)))
+> -               bad_reason =3D "page_pool leak";
+>         return bad_reason;
+>  }
+>
+> @@ -1379,9 +1376,11 @@ __always_inline bool free_pages_prepare(struct pag=
+e *page,
+>                 mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
+>                 folio->mapping =3D NULL;
+>         }
+> -       if (unlikely(page_has_type(page)))
+> +       if (unlikely(page_has_type(page))) {
+> +               WARN_ON_ONCE(PageNetpp(page));
+>                 /* Reset the page_type (which overlays _mapcount) */
+>                 page->page_type =3D UINT_MAX;
+> +       }
+>
+>         if (is_check_pages_enabled()) {
+>                 if (free_page_is_bad(page))
+> diff --git a/net/core/devmem.c b/net/core/devmem.c
+> index b3a62ca0df65..40e7a4ec9009 100644
+> --- a/net/core/devmem.c
+> +++ b/net/core/devmem.c
+> @@ -285,6 +285,7 @@ net_devmem_bind_dmabuf(struct net_device *dev,
+>                         niov =3D &owner->area.niovs[i];
+>                         niov->type =3D NET_IOV_DMABUF;
+>                         niov->owner =3D &owner->area;
+> +                       niov->pp =3D NULL;
+>                         page_pool_set_dma_addr_netmem(net_iov_to_netmem(n=
+iov),
+>                                                       net_devmem_get_dma_=
+addr(niov));
+>                         if (direction =3D=3D DMA_TO_DEVICE)
+> diff --git a/net/core/netmem_priv.h b/net/core/netmem_priv.h
+> index cd95394399b4..4b90332d6c64 100644
+> --- a/net/core/netmem_priv.h
+> +++ b/net/core/netmem_priv.h
+> @@ -8,21 +8,18 @@ static inline unsigned long netmem_get_pp_magic(netmem_=
+ref netmem)
+>         return __netmem_clear_lsb(netmem)->pp_magic & ~PP_DMA_INDEX_MASK;
+>  }
+>
+> -static inline void netmem_or_pp_magic(netmem_ref netmem, unsigned long p=
+p_magic)
+> -{
+> -       __netmem_clear_lsb(netmem)->pp_magic |=3D pp_magic;
+> -}
+> -
+> -static inline void netmem_clear_pp_magic(netmem_ref netmem)
+> -{
+> -       WARN_ON_ONCE(__netmem_clear_lsb(netmem)->pp_magic & PP_DMA_INDEX_=
+MASK);
+> -
+> -       __netmem_clear_lsb(netmem)->pp_magic =3D 0;
+> -}
+> -
+>  static inline bool netmem_is_pp(netmem_ref netmem)
+>  {
+> -       return (netmem_get_pp_magic(netmem) & PP_MAGIC_MASK) =3D=3D PP_SI=
+GNATURE;
+> +       /* Use ->pp for net_iov to identify if it's pp, which requires
+> +        * that non-pp net_iov should have ->pp NULL'd.
+> +        */
+> +       if (netmem_is_net_iov(netmem))
+> +               return !!__netmem_clear_lsb(netmem)->pp;
+> +
+> +       /* For system memory, page type bit in struct page can be used
+> +        * to identify if it's pp.
+> +        */
+> +       return PageNetpp(__netmem_to_page(netmem));
+>  }
+>
+>  static inline void netmem_set_pp(netmem_ref netmem, struct page_pool *po=
+ol)
+> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+> index 05e2e22a8f7c..0a10f3026faa 100644
+> --- a/net/core/page_pool.c
+> +++ b/net/core/page_pool.c
+> @@ -654,7 +654,6 @@ s32 page_pool_inflight(const struct page_pool *pool, =
+bool strict)
+>  void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
+>  {
+>         netmem_set_pp(netmem, pool);
+> -       netmem_or_pp_magic(netmem, PP_SIGNATURE);
+>
+>         /* Ensuring all pages have been split into one fragment initially=
+:
+>          * page_pool_set_pp_info() is only called once for every page whe=
+n it
+> @@ -665,12 +664,19 @@ void page_pool_set_pp_info(struct page_pool *pool, =
+netmem_ref netmem)
+>         page_pool_fragment_netmem(netmem, 1);
+>         if (pool->has_init_callback)
+>                 pool->slow.init_callback(netmem, pool->slow.init_arg);
+> +
+> +       if (netmem_is_net_iov(netmem))
+> +               return;
+> +       __SetPageNetpp(__netmem_to_page(netmem));
 
-I think the iomap_folio_state objects automatically get resized here,
-no? We first kfree the folio->private which kfrees the entire ifs,
-then we change inode->i_blkbits to the new size, then when we call
-folio_mark_dirty(), it'll create the new ifs which creates a new folio
-state object using the new/updated i_blkbits size
+nit:
 
+if (!netmem_is_net_iov(netmem))
+  __SetPageNetpp(__netmem_to_page(netmem));
+
+i.e. no need for the early return. I would also move the diff to
+replace netmem_or_pp_magic.
+
+>  }
 >
-> >     xas_set(&xas, 0);
-> >     xas_for_each_marked(&xas, folio, ULONG_MAX, PAGECACHE_TAG_DIRTY) {
-> >           folio_lock(folio);
-> >           if (folio_test_dirty(folio) && !folio_test_writeback(folio))
-> >                  folio_mark_dirty(folio);
->
-> ...because iomap_dirty_folio doesn't know how to reallocate the folio
-> state object in response to i_blkbits having changed.
->
-> --D
->
-> >           folio_unlock(folio);
-> >     }
-> >     xa_unlock_irq(&mapping->i_pages);
-> >     inode_unlock(inode);
-> >
-> >
-> > I think this is the only approach that doesn't require changes to iomap=
-.
-> >
-> > I'm going to think about this some more next week and will try to send
-> > out a patch for this then.
-> >
-> >
-> > Thanks,
-> > Joanne
-> >
-> > > > >
-> > > > > void fuse_iomap_set_i_blkbits(struct inode *inode, u8 new_blkbits=
-)
-> > > > > {
-> > > > >         trace_fuse_iomap_set_i_blkbits(inode, new_blkbits);
-> > > > >
-> > > > >         if (inode->i_blkbits =3D=3D new_blkbits)
-> > > > >                 return;
-> > > > >
-> > > > >         if (!S_ISREG(inode->i_mode))
-> > > > >                 goto set_it;
-> > > > >
-> > > > >         /*
-> > > > >          * iomap attaches per-block state to each folio, so we ca=
-nnot allow
-> > > > >          * the file block size to change if there's anything in t=
-he page cache.
-> > > > >          * In theory, fuse servers should never be doing this.
-> > > > >          */
-> > > > >         if (inode->i_mapping->nrpages > 0) {
-> > > > >                 WARN_ON(inode->i_blkbits !=3D new_blkbits &&
-> > > > >                         inode->i_mapping->nrpages > 0);
-> > > > >                 return;
-> > > > >         }
-> > > > >
-> > > > > set_it:
-> > > > >         inode->i_blkbits =3D new_blkbits;
-> > > > > }
-> > > > >
-> > > > > https://git.kernel.org/pub/scm/linux/kernel/git/djwong/xfs-linux.=
-git/commit/?h=3Dfuse-iomap-attrs&id=3Dda9b25d994c1140aae2f5ebf10e54d0872f5c=
-884
-> > > > >
-> > > > > --D
-> > > > >
-> > > > > >
-> > > > > > Thanks,
-> > > > > > Joanne
-> > > > > >
-> >
+>  void page_pool_clear_pp_info(netmem_ref netmem)
+>  {
+> -       netmem_clear_pp_magic(netmem);
+>         netmem_set_pp(netmem, NULL);
+> +
+> +       if (netmem_is_net_iov(netmem))
+> +               return;
+> +       __ClearPageNetpp(__netmem_to_page(netmem));
+
+Same here. I would do:
+
+if (!netmem_is_net_iov(netmem))
+  __ClearPageNetpp(__netmem_to_page(netmem));
+
+and no need for the early return.
+
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+
+
+--=20
+Thanks,
+Mina
 
