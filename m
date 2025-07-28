@@ -2,83 +2,119 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 91537C87FCE
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 01:44:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2DCB4C87FCC
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 02:09:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABCFA6B007B; Sun, 27 Jul 2025 21:44:17 -0400 (EDT)
+	id 93F5F6B007B; Sun, 27 Jul 2025 22:09:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6E7E6B0088; Sun, 27 Jul 2025 21:44:17 -0400 (EDT)
+	id 8C9796B0088; Sun, 27 Jul 2025 22:09:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AB276B0089; Sun, 27 Jul 2025 21:44:17 -0400 (EDT)
+	id 791356B0089; Sun, 27 Jul 2025 22:09:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E2AE6B007B
-	for <linux-mm@kvack.org>; Sun, 27 Jul 2025 21:44:17 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AFD0B142042
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 01:44:16 +0000 (UTC)
-X-FDA: 83711978112.13.165AE3B
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 323EFA0003
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 01:44:12 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=xPOCyhAn;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf25.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6545E6B007B
+	for <linux-mm@kvack.org>; Sun, 27 Jul 2025 22:09:36 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 82274137647
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 02:09:35 +0000 (UTC)
+X-FDA: 83712041910.21.0485ADE
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	by imf05.hostedemail.com (Postfix) with ESMTP id A2386100008
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 02:09:33 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Gw2EI3VE;
+	spf=pass (imf05.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753668573; a=rsa-sha256;
+	cv=none;
+	b=izu9uUY37thlStJvFz0PpeI60Q5BYfwEaEvpTyvF8oXMTVTVy73uIS7I4Cdv6Z8gcPBq1t
+	/a31DcP41Fz3Ehvf3FuWJQspV3V1NXVtJZmuz2ko43bq7ldAi06CVAwSg28dWLnDhk554F
+	R4yKH2JRtJ6DLPBT4VyHLWnZgm4ttiE=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Gw2EI3VE;
+	spf=pass (imf05.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753667054;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1753668573;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=06xZ+bJju6hr8mDQ5HFTV8f7N7lQsAGxfNBuRYPHHVo=;
-	b=ZjFA/azzb9CX4Uaj0/GXvHKNUK3DAWiKrF6MzS+WIhIOZTX0UQa8z9WMBpXXe3pdiHCZyy
-	Kwiwcmxfi5cRHLauA7Kf8zzSlM37CBkP5SG9cTLuZCoE6SsPyhx0jvYojA6jzGvDXoAxSp
-	O9dKsSHV1U7Dmvq2H7v0OlR+Eu+S6zw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753667054; a=rsa-sha256;
-	cv=none;
-	b=wM1rFS9IbVfbmo+NvseENmla48d78dSU2qXwiOIaGIO3ot3znylJARQ2iTPWV2IuQynOP6
-	r1FixprJTSyKNpHKqq7Q2nxVsR81PmMN9hu1q1oxUtXKNDHzjkl5DbiC/+LU92G2btYQzg
-	HWplKGhflelo2YuiTUDjoV9feE+WwoM=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=xPOCyhAn;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf25.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1753667050; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=06xZ+bJju6hr8mDQ5HFTV8f7N7lQsAGxfNBuRYPHHVo=;
-	b=xPOCyhAnMTWwraPRn4aoaMdYGF1miD/gkCul6b9m9PT1sOOHisbrUZ5K0v7HagF9PrQIm6omTVi46H0azuPP96IUBdGZzqBWrhQ0bKGxJSgyF4E5v3GkAYYNnN50tiDwBSXYZgaiaKqG+UmejEH7oesy8KOhO3CDukuP/cF1KQc=
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WkBGr5i_1753667048 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 28 Jul 2025 09:44:08 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,  David Hildenbrand
- <david@redhat.com>,  Johannes Weiner <hannes@cmpxchg.org>,  Zi Yan
- <ziy@nvidia.com>,  Matthew Brost <matthew.brost@intel.com>,  Rakie Kim
- <rakie.kim@sk.com>,  Byungchul Park <byungchul@sk.com>,  Gregory Price
- <gourry@gourry.net>,  Alistair Popple <apopple@nvidia.com>,
-  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,  kernel-team@meta.com
-Subject: Re: [PATCH] mempolicy: Clarify what RECLAIM_ZONE means
-In-Reply-To: <20250725173546.2295177-1-joshua.hahnjy@gmail.com> (Joshua Hahn's
-	message of "Fri, 25 Jul 2025 10:35:45 -0700")
-References: <20250725173546.2295177-1-joshua.hahnjy@gmail.com>
-Date: Mon, 28 Jul 2025 09:44:06 +0800
-Message-ID: <87ms8p2iop.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=SegYKAhN6ojNlpIAhHg/DIVFTDWS2zr1wodaWRquMQs=;
+	b=26zlJ4PNFXzXF7IfTbkd4r5gPO/EQ1UG7/WRLchyGJ6ogAevJ+vSVj6Tb14ovzK/7U3goZ
+	tPBVh0fGlqd5GoXeIrQ55F57OadL5quyEw7Qj0ydU0lJ/0CWXBx4ZIjlJ8sg+iAT+YPP9z
+	dinXPQCzQtFMlTcp1OlaFJ7RobnQnfg=
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-ae0bde4d5c9so741713666b.3
+        for <linux-mm@kvack.org>; Sun, 27 Jul 2025 19:09:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753668572; x=1754273372; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SegYKAhN6ojNlpIAhHg/DIVFTDWS2zr1wodaWRquMQs=;
+        b=Gw2EI3VEpFCOCa3yHMHmd393sqm4HPxD3tICmZ59zACmP52MpwToFhpYeMyQJ9jicY
+         0mY8KcpOBDXdqZXzyvnGDKm3pGVmX+myZZcuQDV02nmhE8MN5xbFK9x7qvzEXu0V60R3
+         iwGdDZ/p/f2w+VoUVPJF1Em3PQA2LQWG9CDV4q9TN7v8udbGzLF/Lt2Ss5m+2qajgRnN
+         ntR/mWuka2fA2/ZR7MoMEaSAmPlPesNY0VC1jg2sWgDdSzVEG1JN3PQyHZVx870jMglD
+         7paGc5C2rympph1zE0EF+1AQysnh0Eq+SynvRGBupgWrIP0o19wp+mM/EA14PlTI9xCu
+         7Kzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753668572; x=1754273372;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=SegYKAhN6ojNlpIAhHg/DIVFTDWS2zr1wodaWRquMQs=;
+        b=cjK5Ml8I4qimKJbFFYP+HM4fvqv9Mp6oyI2aCUQDbpqhqRvQ7cH/rNus7bh8DCh6n1
+         +EHPnKgR/nMEj9T/XF8Ki8jUpa+9AxwFai/BZePf4AwFDl51pCOlBCax8SrGE+Jd1zVY
+         piXwr4uIiiBmZ5LVRn18Qeh6+3wtCz1x46AQplUtVhFMBsuUyyyZDjcEFadRGlto5LQ1
+         6DPxDd0jMFKtxOGKstYYYGw0oZ1fDHzl29HL5NGquwHiSRK8Yry136kcH2LRnH9HBRIi
+         FkpbXtCNbHbFh991EgiCjq731zPHwxh4V+xfgxPJsV9Aqapvtnj5mNTYHv8MrQlcO4OP
+         FnvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXQn57puIegcKn7Qy+m45DZMFMUhVCkiYGAKiTwxq1+z75nZg5Q0zsrfgbvdcMUdN4Xh1hYRazJBA==@kvack.org
+X-Gm-Message-State: AOJu0YwymvKnYf9Ol43mH2dDI+6RalZLwurexs6E03LVUlwSCueGiDzn
+	iDdtLma9akJ+ZjlNesGdDFc3ZIkfk2/r7Y0S4AhFxD6Vnp9bJme+RH5D
+X-Gm-Gg: ASbGncsJ8ov/cZeUvQ05moj9qOwJhDh7+YLwisv/o1qPv9fgLYs59YWwHD0aA98pRmS
+	lI0Xc1E9ZoRiO58o4k19FT7qZNlQXO387ZzoeRQYeh5yWLz7dUW4tj7m/fmJoRZrS3G14ByVQ1Y
+	g+4aNCFpTdxyPuzXMvELB2bd5wMQTtaFu4mM1A4CdGZbE4KnpWFBjpI7Rhcd568Ub0pjj+W8nqM
+	y1qAvxfuz2mzbxEsEobVd1EN5SK09MKjw0qmTU0Sy+6Sl6GBE8ax7KWCgd3QtRLsC1M6TCqPcPx
+	XwVgk5dS2byJM6wZBt/rlNH5BApoWwLl/5GBhlX05Kq6IdvDjedOapcw5/H3pG3oeO7jF6cTUlq
+	kP6F2ItK6U395DXztwLwbiQ==
+X-Google-Smtp-Source: AGHT+IHBh+AF5LYeeeuiwJHnb1+ByK7ooa8oMb0KBXNw6RrvnipsnZg9FxEjZFKZeUcJVTsmgY+MnQ==
+X-Received: by 2002:a17:907:3f12:b0:ad5:2e5b:d16b with SMTP id a640c23a62f3a-af617d0b1eamr1253813666b.27.1753668571717;
+        Sun, 27 Jul 2025 19:09:31 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af6358a2743sm359227966b.48.2025.07.27.19.09.30
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 27 Jul 2025 19:09:31 -0700 (PDT)
+Date: Mon, 28 Jul 2025 02:09:30 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Rik van Riel <riel@surriel.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>
+Subject: Re: [Patch v2 2/2] selftests/mm: assert rmap behave as expected
+Message-ID: <20250728020930.w7sv5eccp4kcizts@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20250726025223.350-1-richard.weiyang@gmail.com>
+ <20250726025223.350-3-richard.weiyang@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
-X-Rspamd-Queue-Id: 323EFA0003
-X-Stat-Signature: 3nz8gxrc5rskjwpeb19i4iog1qfg6zt8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250726025223.350-3-richard.weiyang@gmail.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1753667052-606180
-X-HE-Meta: U2FsdGVkX1+ZHPxd+EcuJiqMSDk5D90fRtFIRskjYzGW1aoHOgvejQrWkZQF8n9FYLHKgH6Ujs4T4ETntEKyx7hX+Sw/QBSYVrty/lU8jUCC5yDMOx0g9Qt22ZxV8J2RjFnUHqo8M520VtcRDQ5ugfz/SGI464VAnOB6+YLJQy0hmikwXmqloqERaB0kHZ9KBhLAJCFdtEzz+UAA8wJ3jVKhyn/DqvssFiEUFASwXoo2FMIwczyYgL10tCozLo0c+2MUGY/Q2EPAqjuoGwSxTHoKa6aDW/zk3d+yOXDkH7G89xzTtqyvzZdIBbWMbXiC/J7eVxc1qL1CH0eRRU5vhhcHlYW7cffpkqm1PCWc364WgNzfkRxzNtIBxmh/OWj7Rwmo43x6h1Q1ZaNlrAUnbHFg6hTr7CUv++YbBzsQFzjcqNcr817monrF+85A9szHAuk/OApQIYZ7yvLfOFsVvQlLbcyb46e08YgwpWC5iXtSbk9GMoO3cFsf8rb0S4/NjqpW7wSD8FO9GzSCXJN3SDfL85/R8y/rG51SL4uHiSnDwkECYFdimXGQ+kncGn7/SCGyIkqrwTJwNVr7T/i7cD+eQLz0gy3/YFulu6sRUY8m2UdXphhSPHwSYiCsLfJZZW+TtpjzYWu21tpkxUSDILtivDVfnS4/l4e9pO7HCUKQ1/sP+yoy6CXOU6rQpaf2+flRC1Izbfeto8SSHJid/apBvBunW+hAPfjZqmRbtJLJh096PdDQKqvYGys4iiCIJXau82jI9drWAnSJNosOtsDn/xdR7BtA9cd4Yui3emnj5bUIHg72yLxcZLrqg08DLxffaK1LO/XoK+nN4vtwRHdcExSIGYs7DX++UzE8PHnTbpym3VS4R4QQld+SEQOZSe4nwwVqA3FI1iQYoDQxBus0DTLDShYUKyNt3hrAfbwrYamaoFqXyR5RkqPpnOiJvkwjv6fXqZB7HX/6SaH
- 29xBQ6J2
- 7v4AoXSQvy2Rh+D0=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A2386100008
+X-Stat-Signature: dm1fihr318xbxndzzqif3gzsxcw876bq
+X-HE-Tag: 1753668573-14968
+X-HE-Meta: U2FsdGVkX1+gDrU2anOS+wUEkL0d1WBjAxreGDO+W2OrJ+rNA7cPwnZZM3qh1y6vcZK8VfTmp0LorfhKY9BInO8Vmk3V7hBuMQi0bCm10tQyaXPTYH0NmXf/ihvoroan/FRWPaRA0mEr0AXJZqJRdyeE+f5im5DuVsa3qTsD08+01P2HrSLlcop139SdBBJrjLv6YrvcXP26YR0452j8tY9rFBhXjmKA2u5OalLzsOWdMp9/21aaKyy59x/BKWA+CpGAHETdd+slTCBdHC52s0Gt2Zcjhc5yI5R2zGOp8qotEhfzjdbKWgE4G8KgU2LjKuq25tLdIxexGg7NV2/tuVa1inWNPWYAMuG1eRYFTi/iLfQqALhIQVzUWH7IckEUvRA8ILLrm6AawGnDdIMKwXYB4F3AR6YMvkZ53rBNv7h2NGeWyrVoO8zyEYVzTs3aGbt0LFjNk/0IxpW1o6FZWDii6OBv95DOWtQgm6auyXmcgaKhOho3M871IE/7f6Wk+kEp45JT98QxeRf1qWQWlUUfdgf5qaRrWOaiQ12wW0/Dh1Dcfq85mPDg2r3kP4SvsBKiJV7bPCpZodSTeQ0/BAITgAgheKymeXGwxHfKPjBR4955iruWOMt9dBo3aU3rd4vkOmPfz8amEyS5CvtS3tTa2ffYyAGTwEM+cuW35uh4/b/dYU+DZJQpk9WffTSyw5Ct7Wn1YX6TcAXyQ0S+FqoZTIDZUKkBDcxr8hRNhW9IGv28srm6ZWlL8XewzkyrBWYXZk0BCCx0CT11aBb4dL4t4VUjNj8hC9z9Nt+617qSaVKiqFkQLY0PvTsC3wDVPjp+cVS2nBsBhTayiXNNELj9NuZgFhNpCR8sUHT1JnLS0UDayCWo4/eh7EGEAnontmU4GT1MxbzYJBB1ZMDMN5IJR99bxvkJyGpyn3wgVXHtatV7nQay9JfoU5s/3CEWTYQbprUK3cMaW1xkPzJ
+ RbYbud0n
+ 0rfIehEqdN1s+is3VsUWM5jcDeAf3QbjH+Rgx4thTxHcq4niW1WZKEJedb+EfuRbKT/qJIUfdUP9Ml10mocokt83C9GycIsL8toXrXCvuhzzQzoXbF7eupJaMA/JTtgLXPjLGE31pmJfMjL/4CZFBsZFHyenjIiKrsXfPBGP3SZ06g13IxzzG/kNOHcJSAGiNVQszLn/l8oeUslRe21NPi6/bJ7rKOk6rxx07vNKZmnEH9mKsLnOC8tVBvwQ66VLp6yCPNa16N33hlrw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -87,52 +123,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, Joshua,
+On Sat, Jul 26, 2025 at 02:52:23AM +0000, Wei Yang wrote:
+[...]
+>+
+>+int merge_and_migrate(struct global_data *data)
+>+{
+>+	int pagemap_fd;
+>+	int ret = 0;
+>+
+>+	if (data->region == MAP_FAILED)
+>+		return FAIL_ON_WORK;
+>+
+>+	ksm_start();
 
-Joshua Hahn <joshua.hahnjy@gmail.com> writes:
+Forget to check the return value here.
 
-> The zone_reclaim_mode API controls reclaim behavior when a node runs out of
-> memory. Contrary to its user-facing name, it is internally referred to as
-> "node_reclaim_mode". This is slightly confusing but there is not much we can
-> do given that it has already been exposed to userspace (since at least 2.6).
->
-> However, what we can do is to make sure the internal description of what the
-> bits inside zone_reclaim_mode aligns with what it does in practice.
-> Setting RECLAIM_ZONE does indeed run shrink_inactive_list, but a more holistic
-> description would be to explain that zone reclaim modulates whether page
-> allocation (and khugepaged collapsing) prefers reclaiming & attempting to
-> allocate locally or should fall back to the next node in the zonelist.
->
-> Change the description to clarify what zone reclaim entails.
->
-> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-> ---
->  include/uapi/linux/mempolicy.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/include/uapi/linux/mempolicy.h b/include/uapi/linux/mempolicy.h
-> index 1f9bb10d1a47..24083809d920 100644
-> --- a/include/uapi/linux/mempolicy.h
-> +++ b/include/uapi/linux/mempolicy.h
-> @@ -69,7 +69,7 @@ enum {
->   * These bit locations are exposed in the vm.zone_reclaim_mode sysctl
->   * ABI.  New bits are OK, but existing bits can never change.
->   */
-> -#define RECLAIM_ZONE	(1<<0)	/* Run shrink_inactive_list on the zone */
-> +#define RECLAIM_ZONE	(1<<0)	/* Prefer reclaiming & allocating locally */
->  #define RECLAIM_WRITE	(1<<1)	/* Writeout pages during reclaim */
->  #define RECLAIM_UNMAP	(1<<2)	/* Unmap pages during reclaim */
->  
->
-> base-commit: 25fae0b93d1d7ddb25958bcb90c3c0e5e0e202bd
+Will update it.
 
-Please consider the document of zone_reclaim_mode in
-Documentation/admin-guide/sysctl/vm.rst too.
+>+
+>+	ret = try_to_move_page(data->region);
+>+
+>+	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
+>+	if (pagemap_fd == -1)
+>+		return FAIL_ON_WORK;
+>+	*data->expected_pfn = pagemap_get_pfn(pagemap_fd, data->region);
+>+
+>+	return ret;
+>+}
+>+
 
-And, IIUC, RECLAIM_ZONE doesn't mean "locally" exactly.  It's legal to
-bind to some node other than "local node".
-
----
-Best Regards,
-Huang, Ying
+-- 
+Wei Yang
+Help you, Help me
 
