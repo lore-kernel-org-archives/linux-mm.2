@@ -2,103 +2,194 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 938CDC87FCE
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 05:41:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1B536C87FCE
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 06:17:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F2086B008A; Mon, 28 Jul 2025 01:41:23 -0400 (EDT)
+	id 6C84A6B0088; Mon, 28 Jul 2025 02:17:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A2646B008C; Mon, 28 Jul 2025 01:41:23 -0400 (EDT)
+	id 67A576B0089; Mon, 28 Jul 2025 02:17:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 091676B0092; Mon, 28 Jul 2025 01:41:23 -0400 (EDT)
+	id 540B56B008A; Mon, 28 Jul 2025 02:17:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E79406B008A
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 01:41:22 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 95C9312DAB9
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 05:41:22 +0000 (UTC)
-X-FDA: 83712575604.03.E72587E
-Received: from techbitestudio.com (techbitestudio.com [75.119.147.106])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 69752180002
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 05:41:20 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kenip.in header.s=mail header.b=dNLi3xke;
-	spf=pass (imf16.hostedemail.com: domain of siddhartha@kenip.in designates 75.119.147.106 as permitted sender) smtp.mailfrom=siddhartha@kenip.in;
-	dmarc=pass (policy=none) header.from=kenip.in
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753681280;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 459046B0088
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 02:17:00 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8C75F12DD5A
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 06:16:59 +0000 (UTC)
+X-FDA: 83712665358.08.77986A9
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2073.outbound.protection.outlook.com [40.107.237.73])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9E961100006
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 06:16:56 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b="hL4hsHa/";
+	spf=pass (imf14.hostedemail.com: domain of Raghavendra.KodsaraThimmappa@amd.com designates 40.107.237.73 as permitted sender) smtp.mailfrom=Raghavendra.KodsaraThimmappa@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753683416;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=un3+I4PtG8unl1Hd7ukWnF6HXG0/MDVWa42ZNc5QU2Q=;
-	b=OJhkdfJZSyke86TjzeJ+yy5EP9rOBEKuAajeGgj3lTKDwWuog0EChGZRLBGDInZCStFcSy
-	cFhChSCyhi82fh72f3W+jdTQEs6HIs73NQaQp/fe2zV+nVhVYI03lRN1EdaiKbNtnOdpmC
-	Hxb5Zq4+CQD3ROs1NJG5+Wo2B45v1Xk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753681281; a=rsa-sha256;
-	cv=none;
-	b=WGrayF3MP6d7BUknGEoLCX7ijx1261T47c/sK1ivWMUjM78zT4QYgB6F0kLmkQSfJP/Mx4
-	hD0ol3dyjguTp+m9Y4heCQxXuMiFLA9OceSlLVFwUHgh+AHY5tU2V/MY858Q4yAk0P9OJl
-	A74DOvRvc1DVATpSnbdb0tkChuTClTM=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kenip.in header.s=mail header.b=dNLi3xke;
-	spf=pass (imf16.hostedemail.com: domain of siddhartha@kenip.in designates 75.119.147.106 as permitted sender) smtp.mailfrom=siddhartha@kenip.in;
-	dmarc=pass (policy=none) header.from=kenip.in
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=kenip.in;
-	 s=mail; h=Content-Transfer-Encoding:Content-Type:Message-ID:References:
-	In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=un3+I4PtG8unl1Hd7ukWnF6HXG0/MDVWa42ZNc5QU2Q=; b=dNLi3xkeInk/bmIW4O+MYUDGxe
-	bMqcetiLKlvQlywB3u/1boSNpctJ7EtawYRLurGlF3EzHVzFoitC+6mjlaHZMwhWq6MQXcByp4LfY
-	eUThx81GqPOZIxF8UeD3AwFztSE7WATbBC9GopBYnTa4T2lz7AwHR9DwiSMvjJnT3AWo=;
-Received: from localhost ([127.0.0.1] helo=kenip.in)
-	by techbitestudio.com with esmtpa (Exim 4.93)
-	(envelope-from <siddhartha@kenip.in>)
-	id 1ugGbr-0001EO-AY; Mon, 28 Jul 2025 11:11:15 +0530
+	bh=1PQTY8q4QfDnqBqQMyFugVtrUvoIsz0BxRY7MIknYCo=;
+	b=GAzKlpH1ZBi1beZIsCYl1Chhct84DNhFX4Q6Z6frQsL+VyjNyDejCCXMxqUOIaC80CNCLW
+	cJ0yF9z5BqSyS4Ipao8eS5xwPNajQNv8QLLWG/ZjHJVY4yF+8NYTvlWkpKt/hNx8kfpY6H
+	b0P3alhDsDtRsJy8n7qP6pecm9LZAu8=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b="hL4hsHa/";
+	spf=pass (imf14.hostedemail.com: domain of Raghavendra.KodsaraThimmappa@amd.com designates 40.107.237.73 as permitted sender) smtp.mailfrom=Raghavendra.KodsaraThimmappa@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753683416; a=rsa-sha256;
+	cv=pass;
+	b=bo0KPguoHgWnyKhkkIiJhNnvHzWd1a9x6A8mzZYiQNY2H/N08jWqbMHgt7xKQMrsOnlaI7
+	0Truk0rTqBaMOepGzE8ckoqgQfFkoVd3WzmVlRO7aigk8cTIkcxd5vRcAtGHAzsVvMHbIP
+	Kp+DomTKyEKqg0lbL4PXYlH2YCsUqxA=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hZta8VEBVFHZr7eLmMTMkYUjfgJCsl9nifj93e4IrKd+YyOTDkxXK/GmanVgy/krKSlBBDhr5n9hYFU9Q+Q68shzhdtdyQl7Ca4cEnWiwg9wkZWrZ3F8R8/+2HuZ3U//hfHmwwaHPstf8Oj7TD5hrYIoz1yr8JQo5b0lbQ3B4dUfEjP6Wcy94flq7Y2s9pwhDiKLaQsRZq15VyYZMZ2rS77tQjVyB4igMkX4lURmcQQaSPMxWVe9DxU3lYzwP6Zv2HYzRSnqxR4WTmTymEgTkNc+1500KrEPfkv70neRafVFlo/7kvCqHXYndyGMqCxsEYnntgIG/jsxwNqsqbg0SA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1PQTY8q4QfDnqBqQMyFugVtrUvoIsz0BxRY7MIknYCo=;
+ b=K74BY7OKAPKJi2yqozDbSZzQM0EOIcClOhV3vamdgduOPkvSXebVBS0WkyIgRKnvOjI4NGs0U54uXA/FuQT7xaQnTupTdgEOuxoDSId+DBIUzHuPSHi8uTcD+3/At9NxxvB3/q+qfLivFzyOs0pvRg0z8+zwJTg7j1eU3zH+kKqY7Qfa/czifogIcBrYyzLARdZR3D+Ca5vSDN+7PGVTUw+AyPEWZY80pPlXzu8zoDd+OVCXjMnSjo8ZDaM1k3Fbhe8aame1iHq2MBnCZcrnGcmCFywYnm8p9lbvVI4F2z+7QWdgrIpI4GVwPisj1DDAdU8D7+5MrF2pgwmp0N0rSA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1PQTY8q4QfDnqBqQMyFugVtrUvoIsz0BxRY7MIknYCo=;
+ b=hL4hsHa/UCVuhTiTnW5d9iFvdQp2OUHhvYZEAZlnrd2cB4QTYMMBm5QpYT7P79U+bC69aWn3BtGGukv3alTOn0ChRpbtXw9j8hj1ZPo3zIKY+Suy8KAWGiylbLdB9sCSR3BZFnrSnuqg5Ht2J5PCwKSQDhZ2E7FtP233TbKg7dE=
+Received: from PH7PR12MB5805.namprd12.prod.outlook.com (2603:10b6:510:1d1::13)
+ by MN2PR12MB4254.namprd12.prod.outlook.com (2603:10b6:208:1d0::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.21; Mon, 28 Jul
+ 2025 06:16:54 +0000
+Received: from PH7PR12MB5805.namprd12.prod.outlook.com
+ ([fe80::11c7:4914:62f4:f4a3]) by PH7PR12MB5805.namprd12.prod.outlook.com
+ ([fe80::11c7:4914:62f4:f4a3%5]) with mapi id 15.20.8964.025; Mon, 28 Jul 2025
+ 06:16:54 +0000
+Message-ID: <cb9945fc-6f8e-4054-8116-d3f78e10dcb6@amd.com>
+Date: Mon, 28 Jul 2025 11:46:25 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/damon/vaddr: Skip isolating folios already in
+ destination nid
+To: Bijan Tabatabai <bijan311@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, damon@lists.linux.dev
+Cc: sj@kernel.org, akpm@linux-foundation.org,
+ Bijan Tabatabai <bijantabatab@micron.com>
+References: <20250725163300.4602-1-bijan311@gmail.com>
+Content-Language: en-US
+From: Raghavendra K T <raghavendra.kt@amd.com>
+In-Reply-To: <20250725163300.4602-1-bijan311@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN4PR01CA0096.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:2af::8) To PH7PR12MB5805.namprd12.prod.outlook.com
+ (2603:10b6:510:1d1::13)
 MIME-Version: 1.0
-Date: Mon, 28 Jul 2025 11:11:15 +0530
-From: siddhartha@kenip.in
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>
-Subject: =?UTF-8?Q?Re=3A_=5BPATCH=5D_mm=3A_limit_THP_alignment_=E2=80=93_?=
- =?UTF-8?Q?performance_gain_observed_in_AI_inference_workloads?=
-Mail-Followup-To: Dev Jain <dev.jain@arm.com>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>
-In-Reply-To: <fd6cc30b-cc8d-4003-ba01-fefd5d696ec6@suse.cz>
-References: <d8ffe547-5516-43e5-9f33-56b2698a0b4f@arm.com>
- <ba2c89bd-88de-48f8-abd0-b62d8b1d50b3@lucifer.local>
- <5816677a-705e-4a8f-b598-d74ff6198a02@arm.com>
- <ee92d6a9-529a-4ac5-b3d0-0ff4e9085786@lucifer.local>
- <e7152150-2f3e-4ad7-a6c5-f4b77e5c0e05@arm.com>
- <f746d3aa-17e7-4b42-9e08-97cdb2cad89b@lucifer.local>
- <80b849d4-faf3-47a9-8b8c-e8053299cfb2@arm.com>
- <2e99712b-8dac-4762-9fc5-fe3ef569b65e@lucifer.local>
- <afe95bb0-185b-4c4a-ae41-e02457422cc3@arm.com>
- <787639a1e6a27c0f3b0e3ae658e1b8e7@kenip.in>
- <5c3d307f-d303-48c3-b730-99a83d4815ec@lucifer.local>
- <6eaaa2e4-9067-47bc-8dd4-d8ef56c26b3b@arm.com>
- <5D015E99-474A-4D98-8C43-488A46BEB2F5@nvidia.com>
- <fd6cc30b-cc8d-4003-ba01-fefd5d696ec6@suse.cz>
-Message-ID: <57c50dbbccf38a97e6e9cbb3f2f75f01@kenip.in>
-X-Sender: siddhartha@kenip.in
-X-Priority: 1 (Highest)
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 69752180002
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5805:EE_|MN2PR12MB4254:EE_
+X-MS-Office365-Filtering-Correlation-Id: 740be125-57e5-4780-1e46-08ddcd9e5897
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Qmg5bHY1c0QxMTBuall5WnMvbW1HaDV4djZMdm9CSCs1eHhOVVE1ZWdJWW5o?=
+ =?utf-8?B?dENYMGJERU1BNFE5NFdQYWV3TzhwYURUc29rMzN4eGtrZXNRQ0cwL3p2U241?=
+ =?utf-8?B?ckV4VDhteHdLTHE0ZHVRSkpUT1hCNDhISFZQR01mb3BzRnJRYWVCdEE4eTls?=
+ =?utf-8?B?aUFrbmdvRWxta1h6enVEVmpST21iaW1zWWhERmFEQmp0S3A4M0pkV0tUMnY5?=
+ =?utf-8?B?RUorQmhjSlRzQ1c4SzM2RFJlbWh3bk00VGY2c01lZG5wTEZpdE1mMWYwMzZJ?=
+ =?utf-8?B?aHFyR2RYbCt5ckRkK1VWWVVFNTVncDR6MFdXYUFmZnorS0dQRmtqQTVvYW1w?=
+ =?utf-8?B?b0pUSFNtQUV3YmpBUXBYWjlMdkpOL1c1ODl5RkxRQUpzNDJVbXlsTFhOOEZK?=
+ =?utf-8?B?NE1IMVdFY0RrdEQ3cUxTZ3hJemJvaGtHU0VCdExwZkZhQU94UnE3STNGeE9T?=
+ =?utf-8?B?WGpTYlZhdTVNdXhLbWZrVFNHSkoyQmdueTJ2aHZWTzJLUTdIci9wWkJyUnEr?=
+ =?utf-8?B?NHptNmdWRldCbHU1WklkQ3FQcnMxTnhkMVpla2tSWnZjWCtCaTA0TTY2SGVw?=
+ =?utf-8?B?RWIwMGM5TXJCUnpCTHlHZ0J3YWlDdXpjRFB1MWl6b3NuUVNaN25tb1orOVZG?=
+ =?utf-8?B?ZFlaNzZrdldQeG9qTDVpNGYwM2FZR2JnQ3Bhb210NVhIN2xkNjBIVW92L2hQ?=
+ =?utf-8?B?eW0wL25pUnY0TThFcndxbk9YQU0zcktMbzE0aVIvRUtoU2ZBVEZRM25HMjc1?=
+ =?utf-8?B?YVRSV1hBYzk1Y0VQMkN6ZktGWmFZMUlyQjVnMWhLdHdIaFBha2Y4VStFRGtw?=
+ =?utf-8?B?eVJMVDhrTGh1Y0tFU2lBOGxTdjhSaE9xK0FsKy9aYkVYRFFHRHZXVHpOZUdy?=
+ =?utf-8?B?Q253amUxdzJqU2RDSXloczhUMHJUUVZ3RTlrallxMXVucEZrZ21yUXhVNFZT?=
+ =?utf-8?B?bG12VXVOcHl2dGUyOU12MU9BbnpvTmJDNWFEd3k1SFFvNFpKVXFJSzFTUHFS?=
+ =?utf-8?B?VG5iZ0JYYWFZbEhQbndRbjRoVWtiYlVVcmJwZ1dQdTdVcklta3oyZk1BS1Av?=
+ =?utf-8?B?anA2bmo2WlNQRFYxaFNZQVM3RjFmNVgwQjc4TUx6dldLT3A2Z2NQNWxYbk5B?=
+ =?utf-8?B?WG5HODgwZHpHRlovbmI4VEJSMERZT3E1V1J5SWkvT3FqOHBMVUpvWVNXR0dD?=
+ =?utf-8?B?eTEwWWpXRTVPa29VMlRpb08wczRnYUpTbTRSTjlaRjBZRjk3Ty81MmRYSmhM?=
+ =?utf-8?B?eFJKTFdQT1U4dHd5b05hdFJOamx4TGsyakdHOTFXLzFRVE0rb1NnVW5GcktG?=
+ =?utf-8?B?Z21LMjBocUM3aldtVi8vMlc4ZjJBb1YwKzJ2TmFMK2Y1dmUyWVhTWnFpdXFH?=
+ =?utf-8?B?TllKb0ZIUkNLSU1GNmsyVW91T2prRHJGbjcxWFVrSkl5N2JMQXROelE3K08z?=
+ =?utf-8?B?bWdGaFNuUFZwMzRkNzdpaDNkSU5TWFh2c3RrdlpmZ2lWWml2dFZSWTJyaG5n?=
+ =?utf-8?B?OXBYTE16dnZQZFlmUWU2LzQ0blJXZDFEc1RYN2lCcGIxTy9GYnBEMVpuRE91?=
+ =?utf-8?B?L1FMWGt5cnFPUmZMdytwWThoNHNlWmRUV0drSWV3VWx5Q2pOSThqNjlZN0w1?=
+ =?utf-8?B?NnRrQXJrbkR1Z3BjcDdFSUtDd1VwN2Jndk8zQTVnai9lWEo1aXBhWEZDYnNU?=
+ =?utf-8?B?dkljQWxEbFhVZjVRUkFPanh1em9jTWZKeUFXeUc5NXArVU1vT1dVUDhLOVZ3?=
+ =?utf-8?B?bm5nSlZMTGVFMjcyRXdhVUR6U0JjTzVpd3E1c1BRV3MyWE1lNTJFei9wSFdK?=
+ =?utf-8?B?MFRWMDdyYmdsam9mMWw3N0syb1Q5VDEzR0NOaEJBOFFRYXM4RFRUOXNTb0Nl?=
+ =?utf-8?B?MEgxUnpXQ2tTaTN5OGdRYWMxVjhBelVFWTI3eDZuSy9XMGlkWWxVRHFqamU3?=
+ =?utf-8?Q?TCJKEOzXOY4=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5805.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SVNhNnJydkE4RVRiM0R1VjJqTWFCRnFQMitGOTVrUjNoZ3Z4SkdNVmF0a2tH?=
+ =?utf-8?B?clhnc0d1cFhaWGp2UEZja2N0UnhWNUFmRjlqZDNtMUtpWnl6RGFTNkZubVJJ?=
+ =?utf-8?B?enY2UFRhWkNXTUh6T0krcnJmWDIrTERBcUlTUFRCZUJ0RTNPMjU4K1pUa2FX?=
+ =?utf-8?B?enpUYTRHZlBMeTRlaHh4RnJoOTlHODhualJCWjIyNGg4OCs5a2Qwa3d5YjN6?=
+ =?utf-8?B?akIwOEdXc1pLWUhxMFo4YkF5VHM5YU1uaFlpYlljckNhUVRGNUlsY1UvbFNT?=
+ =?utf-8?B?ZDhuWmczL1d1UGZzR3dHcm11V2tvRHB4UWhLVWRWSlBiUUhkNUJMc1lERFg1?=
+ =?utf-8?B?U3NuNG9ZR1VsMjdSVUhQTGtHTlZSYnE5a2E2QzhaelplQzByaEl4bTQzVWZt?=
+ =?utf-8?B?cnM2WkVKVDhhUzhEYVFtb3dMdkF6ZFJ3NDdPT1RXSHFpS0RweHpRMnA0Mjky?=
+ =?utf-8?B?MTkxaEpBOUR6ZmZVZjYyVWNPYndXdTdCMVRGaW03a29UYTkrOGFjTkhWYW5G?=
+ =?utf-8?B?NDZBOGhEOEZSTkd2a0VnNWd6UlpOMWRhL1NtY1FFSngwL3RXb25pOEJwZEZF?=
+ =?utf-8?B?YmNWYmN0K0RTM3o1L1FINC9KS0M5RlM1bk9vSzd0eVhOWDk0VzNwRUF5QTVD?=
+ =?utf-8?B?WTJQb3NuWmRVYjRTV2RXRGRzVGJXM3ljWEJrdUNVWW0xUnRQSDJJcEx3VnpD?=
+ =?utf-8?B?UXo0UDNjc3pKWmVRbVF3ZEpHcU92S1dDWTJLb0IxajloUHJ5dnNNMUF0MDdF?=
+ =?utf-8?B?M0FmNGF6RlQvK3ZCV0RwVEpuUVJjTGlXbXlZOThTUkcvd0RNd0NzalFYaTl5?=
+ =?utf-8?B?empidmhmN0VHRUQ3N1NtaUJCbFpxajc1blp0d0kydVlndFpmSHZLbWRGVi90?=
+ =?utf-8?B?L1FkMEsvTEZkVGdTeHgrRDAvRk83Ymh6UzZjME5BaUY4N3FTdWJlalQvU2d5?=
+ =?utf-8?B?U28rQmJYbTVDUmNuU3dDV25jZEdGaG9NaVhVbk5hcEJtdlJOSFJqcmE2NlR3?=
+ =?utf-8?B?Z3FWTy9vV2dPL09yUDdTc3F6b1ppbjc4YVVTQ1E2Wldkb1lMQnhqUU44Ny9D?=
+ =?utf-8?B?cDdSZ2xjMGlqQXFsY0J4aVd6L2QxcDI3eWo2VFlGc29mM3BZQ2M4b1hXRXlP?=
+ =?utf-8?B?NlZPMlFzRU5tSGMxSDk2NlNaMVNGWnltaDF6MHFZSTNldjNmb21GeFoyL2pz?=
+ =?utf-8?B?R0t1SXdnUmg5bGF6QjVqdHZnNWlpWWhLR01GUFQ1OFk3QUhKazlHTXl1cUhB?=
+ =?utf-8?B?WVFSeEhkcFhMT0xTcXF2QTNnTGxsUmJLYmpXR21XaG4xR2JWTXNxY05XWGEr?=
+ =?utf-8?B?ZGNuQ0tlSHgyblY1K1ZTd0J1d09pOUdlU1F4ZjIzWHFqVVIyempkdllZODUw?=
+ =?utf-8?B?RlBCWjdRNHJwVzBSZW10OURzYTlIaGFsQlNMeStXQnh4YVR6blptTm9QUUhu?=
+ =?utf-8?B?MGdhYkI2ajlWVkRGVjB5Ync3bWtHbEU3ai9KaFdyV2ErdXYzTmtES0wzWXYz?=
+ =?utf-8?B?Z0M3ODAxZXF3cWVSaGVLZ2Y3ZktmT0FTakdpQTNPWFVsWHpYa0tZcEJYcjRN?=
+ =?utf-8?B?L25ERXdsRTk3MkdXc2V3Vis0aHJyTmxFOWFpalRKRTRUc3BhVXV4UEZLeVZp?=
+ =?utf-8?B?V1Fsb05CN2FIWVZHbUFmTUVmNTVJVnM4b0RkMmcxbU9OaE5NV1N5S0UyQ2FB?=
+ =?utf-8?B?VjZKSm5kR1V3Qlp3RUZJallsOU8wM01PbU8vL0RPU0FZa0E1ZkxKVUQwcUpw?=
+ =?utf-8?B?MjdZaVByU2EvSUlYVE5HV3ROQW13RkRHWHpzQzNlL0NFbitQMFN4TDYrRVph?=
+ =?utf-8?B?Zm9WVThXRG9adEVpeG1iT0FVWHMwbEtGYWVIL29uVEVNZ0RNRHFyTzhxY2tp?=
+ =?utf-8?B?UE8vMnRQZkNrUjlQV1NZN1NiTG1lNDFkeGlRT20xanNvcGpxNzlGY0x5OEJX?=
+ =?utf-8?B?STBUb1VSYmgvVnNtRWVoWHRzUFp5bDhQUHgyaEtkTEtWR3JFY0R4K2JOYTRS?=
+ =?utf-8?B?QUlqcXQ3T2lzWDhJaFhjODRxZEhhMmVHQ0tNbE9IOFo1ZHZLdERHL1hPa01N?=
+ =?utf-8?B?Znp2czErT1dyQzhPM3E0KyswN21aUStYQWJXTGozODZFenJBTXp4UXhTZlZh?=
+ =?utf-8?Q?dD4XJiegjkPlOvgm/S/VhLXry?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 740be125-57e5-4780-1e46-08ddcd9e5897
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5805.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2025 06:16:53.9687
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: LKsJQ8mcGVk50tUqQXx1y2M0Y+4wLV0RUp+VTGD36e1deHnwPMIbwh/izSUCq8+Youw3v7EQcLFcOPM+xZq7dw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4254
+X-Stat-Signature: ce4eestzw3zpk31hxx4y8cmtpaogj6n9
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9E961100006
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 7uk3dpc4m99xj96px5t48hooauje3q8y
-X-HE-Tag: 1753681280-161125
-X-HE-Meta: U2FsdGVkX19v2uUkrYeeo4F/3hYb7rFjJIFYecIZf/z3/UPBKFFq03vabRl8/rBQEXe3ykUXjiDd9dIpxfIzhtZrbl84Hp0jWbJNJ3Md54BQ4/Jr2bkEPZU5DY75bpQDNbFCU5v9vKWrz4MKIKEiFM+jJko2S6AdCNKi1x0LnaWTMG9+wLLjAKRRSpKQu10CnzOZhUJZPw1Obo5M9SpdanxqGdmsqG9hTxjT4KUofCMiKY1y3N9JdEm09dwAVG/F664H1bBaistcvHOCqFCxn7qWM90H8lsXpy/DQFHYvxd0etqPEFRawUuW338CZ9Q5z1TqTlFl6xYbG9nhSn0cNtQq+t9SpAoQAXyyhLFTbZqOPIMh5LU3q6G8APRI73ldFQeuFeC8ULvaucXl61LUUtBEgVBaL72wktzaaM0HQw8arWcYQwKX+gg7brHP9TzQiDFEgC+Y/7nNmDWaDMOA8gCVZleMGSMIGxXM8oXYEem46w76xrHOSw9VFav/mDpRd7lKu0aQ15ynEnW0bB61if8kMdowbZQUEqEPFdIXqZVTqzdfb6QVJNzd+9hUiWymZtxak5TRTJOCfWWm6m/qtUB1KTRvGCYsS25HRHsAH0HQHdesUpv+/EswVpMH2/z/JAUDJ/eIHBozGW87WJY67B65v8DfVmQKy2E9vIrvKVZAf3loEc5RGoPoeunWIOdjxqRYXBMy4Iq2v+2EnJvSjMg93ihbY6BYFgh7uQ+l8hX9477Bho0GSfPSHOaEYFoHCr8G0tZrrE07b9rY/Q+oB97e7hPF4DhYQQIDaYDojphZ+qMLCsQI2SZNja9IcnZfSpuaQd++Wj63V/fFGrL72QoIQiJIjCAbtuyLVRGvJXmJQwhwOm3fw9/5fLAVhizOyRUiwHbcljk7CQTwbfW09kDLxpg+WQWc3NBbTYT6hxuhGQ30aD8YSePTxf/63uyVvy2OxAmKjepa0T/firK
- JitCwwHd
- a/X5ZW2b2PGaRiEgwVfveKnup9RfAqSs64RT+BJEv8omx+Q5iGZR0cygP9oKsWAF52M/ktZDSnY/dqcWMwVAy3t9IpqMwJTxBsl2uJSBnI6RA0O8a72qf9G8Zmw3L9hwSgmB/+2vrLZ2PuROS93X1an43vWXTGcga6OBN+/CPHCyDGHBpWxcWApEdPW/ruxB6DF1W783d3QiyD5uL5giPFPFYMr/yyAS7o8fkJRQHa5PhLMNBLFZbOrKujssqpqM1eU8+pLbzHv54xLHuGz8bhZdl3aH2Au7PFkF81F0RxCoWT4w2bMyCX3HMEkOErhqqg2U81hil3YXdCttHbReQBnAq55KRRhxr7DhTkayjK4OGdi3kVAiNcbh/Ki6NWQ3mbULskVA8VqZPaJd2HpPIs6EAabIeID74TVJuw0LuvM4jSMjRqra25jTTpbcdLU5yZMtBMUsmvZ1gfDjwXI62WqOcgogrTZheXUcKkj8PsPYXkQpHKC+KLCXtYT7aBDa5IQSK3d3JL2/Ul/G8NdXTPWZjs/4BxmlLAukC
+X-HE-Tag: 1753683416-82859
+X-HE-Meta: U2FsdGVkX1/IyiHHj1XzGTFiIwbbNYl9sqtHtZPKOMHUy/4fbwalixcLWqfqt9sORk7GM3tLfoWNH6OC7BeWXjN5EwEEsAyac9Yk+W9sEPMiv/eJd30+vYimoGYg6jubMbMz/fpg8FMO8bFUZ4inOSvIrfD5kUaWSS+vBX/GdjPTroGphVA40YR0Rp8JozN6a2yq3c2o7/gK/Ya/sVC+CfmWaUd7cibb+FaXmpUZpDFPDY6FjvTaXkJNOKys70KnJZF4D+TjxleyZelLy8FQxBhQKunkd9RLm+kpFxoHBdCYzuZGAO49n7/HdgyG4ZP4rju+YiRWbWOp2CaNvEIjFd/pOSQWrx8Gc32I6MPvgKEoCR11TVtu1npgQ8OzSD88/7bNuOPOJ6QzFedeUl3/gizCRDdpR8WG7/hMXbk6OrnAvHZEyCgI5hN0MgIWYFV0594lyiXRnKNoQJ06OZ37r5NrdKS3JlntZvNymm4TKpbo6ebNtMr+C3HGydk1af1eGq6MUkKQ3F3rUImE9VLN2PL4t8BVcTKCRgCX/EYNKiO7FClVx659qVc0YynKuJh0aunAws6iIFkBaILv8T8Kf3qG1adkcrhmfXSvBhANBtU8V6/e+dUdJtLIBhpU6EQ7qi4qY2QjbHjEsRiLYJhwIi2G10iR/9coT8GsWmW0cEJE+vPYsJeCm/23C6hZG5VOCx24C8NNKXAphL7sPCOyuu3xMBn+Ltgan2TIYoTvtLwpciLcMS0nWttQ3veWx5n8wF+DD2ZrJ3FWKOpv88SBILm5C/yx2oHeS4uipjZSNW2oaAH837ap+i/SZx8q7tKjhCzUnrQQJOJDjaS+Ejfy7mbfkHB65LTEyF4EGLQlJpfcb//QV+pwNy6Q365ZPX0uZ3csw7Moa8t0uRci5gnb4kUcnsvIbe7RW/GSLlsldFGZVhon/ttw8KhIfLb/1vrLbk97xAAL2SN6t+eBkZE
+ /zCOLLB7
+ C9ajZRCknf4rV+TEhCNY3dmAKy/Z9gs1Z5BXvgbqoKtnUWwPuiPn422Js8ZWY1dCbLk/sKzZopbzfJ2fPb1P18oZdSDGubb7IBm+v5/OMhnyLLW701HIiqnikVt+qNpyGSRJrKtace5ckTZrx32pzLOHdNVFkhe+VMEPkzoMcLXBSVxlETmhhQ5bphTHBiq5K1Z/ASj9K9ECPSfuCacpSzTyPcXN6MmSJ4s1DufCosbrCy6nnwRISjC6ljmRmlLsTGhQWJ45kGi2+mrQtGtzqxBQeguyUnTe174Zx/D8cZdvj3RVEPTHBcFXxTV/WSrqas+0TBAYXrNnrgPgLI1+DCAcrxbIv20yPavOjSqX5OGv6oaBs3Jm0nqs0IWKgKOwHqQV13A867mUgzC7CW2T+4LQZyLhyUWA1ARd1JNwAk7UHJDLOZHdmwZCryu6zZxR761344Ns0VR7ej4M2lbQC1RMh4QYMVr/+oJsQWMYkaDf/HbdnaMJC1C1bbQ+qfszRVBJFDwHtiUg9jkHbh9vEC4D44QMDWXMCkM2r85ZqQSqxB+fdlg/YEA0ZFzJ4g6pPAVSoLWWViezLQseNOgHJMpdGzOw6RI6aEwv5VlVxnRkv3RG9Ei88IiVRm2py4ZCj+Wy8nYpm+fQwZMGug/G8dGRqBGq5MwpdydhstF9hdMryqqnWxWVqFP3mTdxjonVE3dIoEZsv9w/s4ienrco0hYesg1QAf84TdMuf83q9qSuzxRWc3ht15DO2PQ/ZlFyHnyDX2KdGl4KPAIY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,119 +198,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-07-07 14:26, Vlastimil Babka wrote:
-> On 7/1/25 20:49, Zi Yan wrote:
->>>> This is very useful information and it's appreciated! Let's not 
->>>> drown this
->>>> out with restatements of stuff already covered.
->>>> 
->>>>> ⚙️ 5. mTHP note
->>>>> Although this patch doesn’t target mTHP directly, I believe a 
->>>>> similar logic
->>>>> tweak could apply there too — especially with shmem-backed 
->>>>> workloads (common
->>>>> in model servers using shared tensor memory). I’d be happy to help 
->>>>> test any
->>>>> changes proposed there to derive the consequent results.
->>>> Dev - could we hold off on any effort to do something like this 
->>>> until I've
->>>> had a chance to refactor THP somewhat? This is already a mess and 
->>>> I'd like
->>>> to avoid us piling on more complexity.
->>>> 
->>>> We can revisit this at a later stage.
->>> 
->>> Yes of course. I had run a small benchmark on a quick dumb patch I 
->>> wrote and I
->>> don't see any measurable perf improvement, probably because the 
->>> highest THP order
->>> getting chosen is always PMD size.
->> 
->> I think mTHP is much more complicated, since mTHP has many sizes.
->> Trying to adjust VMA alignments to get mTHP might not work well, since
->> you never know what sizes new VMAs are going to have.
+On 7/25/2025 10:03 PM, Bijan Tabatabai wrote:
+> From: Bijan Tabatabai <bijantabatab@micron.com>
 > 
-> Yes I agree it's more complicated. In case there would be a stream of
-> allocations of varying small-ish sizes, aligning each of them to its
-> smallest applicable mTHP could create gaps that wouldn't exist if we 
-> ignored
-> the alignment and just find any free area and in the end merge it to an
-> existing one. Basically we'd risk recreating the issue with gaps.
+> damos_va_migrate_dests_add() determines the node a folio should be in
+> based on the struct damos_migrate_dests associated with the migration
+> scheme and adds the folio to the linked list corresponding to that node
+> so it can be migrated later. Currently, folios are isolated and added to
+> the list even if they are already in the node they should be in.
 > 
-> Sticking to one size (2MB) mitigates this to some extent. Unfortunately 
-> even
-> after my fix the heuristics might be prone to gaps:
+> In using damon weighted interleave more, I've found that the overhead of
+> needlessly adding these folios to the migration lists can be quite
+> high. The overhead comes from isolating folios and placing them in the
+> migration lists inside of damos_va_migrate_dests_add(), as well as the
+> cost of handling those folios in damon_migrate_pages(). This patch
+> eliminates that overhead by simply avoiding the addition of folios that
+> are already in their intended location to the migration list.
 > 
-> - all allocations not multiple of 2MB - will merge freely
+> To show the benefit of this patch, we start the test workload and start
+> a DAMON instance attached to that workload with a migrate_hot scheme
+> that has one dest field sending data to the local node. This way, we are
+> only measuring the overheads of the scheme, and not the cost of migrating
+> pages, since data will be allocated to the local node by default.
+> I tested with two workloads: the embedding reduction workload used in [1]
+> and a microbenchmark that allocates 20GB of data then sleeps, which is
+> similar to the memory usage of the embedding reduction workload.
 > 
-> - all allocations multiple of 2MB - the alignment heuristic will kick 
-> in,
-> but as a result allocations should still merge as all boundaries are 
-> 2MB
-> alignned
+> The time taken in damos_va_migrate_dests_add() and damon_migrate_pages()
+> each aggregation interval is shown below.
 > 
-> - allocations alternate between multiple of 2MB and non-multiple of 2MB 
-> -
-> this will still create gaps
+> Before this patch:
+>                         damos_va_migrate_dests_add damon_migrate_pages
+> microbenchmark                   ~2ms                      ~3ms
+> embedding reduction              ~1s                       ~3s
 > 
-> Note we already had a report about ebizzy regressing due to my commit 
-> [1]
-> and I suspect it might be due to this kind of scenario. A proper
-> investigation would be useful but I didn't get to it.
+> After this patch:
+>                         damos_va_migrate_dests_add damon_migrate_pages
+> microbenchmark                    0us                      ~40us
+> embedding reduction               0us                      ~100us
 > 
-> Maybe the solution is to first check if unaligned search gives us a 
-> range
-> that will merge with adjacent area, and only try the alignment 
-> heuristics if
-> it doesn't. This will still fail if mmap() is followed by e.g. 
-> mprotect() or
-> madvise() that will change an initially un-mergeable area to a 
-> mergeable
-> one. I have no ideas around that though. Just some thoughts to consider 
-> for
-> anyone wanting to change things here further :)
+> I did not do an in depth analysis for why things are much slower in the
+> embedding reduction workload than the microbenchmark. However, I assume
+> it's because the embedding reduction workload oversaturates the
+> bandwidth of the local memory node, increasing the memory access
+> latency, and in turn making the pointer chasing involved in iterating
+> through a linked list much slower.
+> Regardless of that, this patch results in a significant speedup.
 > 
-> [1] 
-> https://lore.kernel.org/all/019401db769f%24961e7e20%24c25b7a60%24@telus.net/
+> [1] https://lore.kernel.org/damon/20250709005952.17776-1-bijan311@gmail.com/
 > 
->> IMHO, it might be better to align VMA to PMD or the largest mTHP size
->> (for example, on ARM64 with 64KB base page, PMD THP is 512MB, a 2MB
->> mTHP sounds more reasonable there) if possible and enable
->> VMA merging as much as possible for future huge page collapse.
->> mTHP can be used to fill the non faulted holes in VMAs if necessary.
->> 
->>> 
->>> Out of curiosity, where do you plan to do the refactoring?
->> 
->> 
->> Best Regards,
->> Yan, Zi
->> 
-Hi Lorenzo, Dev, Mel,
+> Signed-off-by: Bijan Tabatabai <bijantabatab@micron.com>
+> ---
+> Sorry I missed this in the original patchset!
+> 
+>   mm/damon/vaddr.c | 4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
+> index 7f5dc9c221a0..4404c2ab0583 100644
+> --- a/mm/damon/vaddr.c
+> +++ b/mm/damon/vaddr.c
+> @@ -711,6 +711,10 @@ static void damos_va_migrate_dests_add(struct folio *folio,
+>   		target -= dests->weight_arr[i];
+>   	}
+>   
+> +	/* If the folio is already in the right node, don't do anything */
+> +	if (folio_nid(folio) == dests->node_id_arr[i])
+> +		return;
+> +
 
-I'm following up on this patch submission from earlier this month:
-"[PATCH] mm: limit THP alignment – performance gain observed in AI 
-inference workloads."
+I have seen good improvements with similar changes in PTE A bit scan
+based patches.
 
-The change limits THP alignment to PMD-sized mappings, avoiding 
-unnecessary hugepage over-allocations in scenarios where 2MB alignment 
-is not beneficial. We’ve observed consistent performance improvements in 
-inference pipelines (specifically with OpenVINO) where the workload 
-profile includes a mix of small and large allocations.
+Feel free to add
 
-Please let me know if:
-- There has been any progress or feedback from your end,
-- The patch needs to align with ongoing THP refactoring efforts,
-- Additional benchmarks, test traces, or system-level profiles would 
-help.
+Reviewed-by: Raghavendra K T <raghavendra.kt@amd.com>
 
-Happy to revise or refine the patch based on further discussion. Thanks 
-again for your time and input!
+>   isolate:
+>   	if (!folio_isolate_lru(folio))
+>   		return;
 
-For your information, I have also posted the same at Openvino and 
-Huggingface forums and currently waiting for review for the commit on 
-the Openvino github repository.
-
-Best regards,
-Siddhartha Sharma
 
