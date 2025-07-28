@@ -2,66 +2,66 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CE878C87FC9
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 10:15:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 554F2C83F17
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 10:15:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E1926B0099; Mon, 28 Jul 2025 06:15:01 -0400 (EDT)
+	id B9A5B6B009B; Mon, 28 Jul 2025 06:15:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4929E6B009A; Mon, 28 Jul 2025 06:15:01 -0400 (EDT)
+	id B23E26B009C; Mon, 28 Jul 2025 06:15:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 381896B009B; Mon, 28 Jul 2025 06:15:01 -0400 (EDT)
+	id 9EBBB6B009D; Mon, 28 Jul 2025 06:15:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F86D6B0099
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 06:15:01 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4CA3B1D8D6E
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 10:15:00 +0000 (UTC)
-X-FDA: 83713265160.14.D83CA76
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 8700F120004
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 10:14:58 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mWPJg6TU;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 894E46B009B
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 06:15:51 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 446A1B7141
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 10:15:51 +0000 (UTC)
+X-FDA: 83713267302.13.35CFC68
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 84F128000D
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 10:15:49 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D9dy97NL;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753697698;
+	s=arc-20220608; t=1753697749;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5mSl4IgZXqb1kR85wgS9E3HNg++J1cDMaQlcJtY6LSU=;
-	b=HxVZznuLcwBAIX17lnJVaDHJ508qUuN0N2eIXQiZ36Ai7mh6Og8+ChCNc80p8gPVmSPill
-	nab7sib0V5nBTQrImmjMiL8vCLdRJgs6/Nyz7GesDzizK/RsWdPR5CY6CjVMy/V6j14rye
-	n+i02vvreOg54X/wGGKnRwBC4l465g0=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mWPJg6TU;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753697698; a=rsa-sha256;
+	bh=PmHVNWL8en7hrOviYJv9levJ+kD10Oya00GNVd+k4b0=;
+	b=j88LfyRD+/kMM6CEobWeQ8OzOV3Ai5AycLDfaEYgJYR4HbECeMvSQlXf99RZbRnirBoTW9
+	yIiedn+VFCmI3DLHEyiNfteCUy6hCmG5NiwlBuCA6Anqf4ZKQkJm2r+cWpn5ll/Mw5qFdQ
+	GLwEm4tmJjYQlHY055MI1IHOfyf9MCc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753697749; a=rsa-sha256;
 	cv=none;
-	b=TmNEH1TQd8f6MC7ALtCUnOgLo4yA6RHxeASP7zYMvHaC3Krgf1DtzfklwLiHuRja/gwXGv
-	Ns9idXvQ7TfFB5GQrwwmVUq3tQztiKri7E7opQWHNlsbTtW4Fam6A6qZSO4X5D72BA/zIx
-	8wQId5B/q0v1YO0uUxN7QNj/Kh7NC4Q=
+	b=QWzF8jVD6fBCldakNlRFfsa64Q6JWwaA5BJtuv3BoQIWM/YxyLa3OzpgtHuZZW3mvRhcwW
+	GLxRvrLYk+pt1YBr8PtmGDxp2Nl7LMYw5pR2HrXV4W//1WfFu1rRK33Num5HLZaubCxmdw
+	bQjna5ibP2TP1FT7W0zNtv21NQl1WkQ=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D9dy97NL;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 725EA45C75;
-	Mon, 28 Jul 2025 10:14:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B98B9C4CEE7;
-	Mon, 28 Jul 2025 10:14:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 80150601BB;
+	Mon, 28 Jul 2025 10:15:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C482C4CEE7;
+	Mon, 28 Jul 2025 10:15:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753697697;
-	bh=Qmfdssha0pQC/Q7+oh1hSuVB4LZ1IZAFEMrXqsQ8Udg=;
+	s=k20201202; t=1753697748;
+	bh=slkf/CEUcS5BKPd4iT/cdxh3rsw6/TCS+iNm0nuYCWA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mWPJg6TUX4DvdY/7ZlZ5rFSxlzfkXMLo6Y+4tJzAIpixUbN/1b3g/3LhJwM+QGT9V
-	 uJpNPDJxKzps8hBfVhIw+Ar253PhuhPH9XqK2iBOH8H/iE3BNaN7/eYIvJHTaNXjQa
-	 hdOnEU/6eYupi4bro/sil1dpHZNrjqHO8dowC+2pGzJfK08C+xlUFj5fKXMjTle5HQ
-	 OorQ9lNK64e0YUvB+ZA3x6Nm9sGSfI7n4gnFt1wkTrlRxQn1+aJb/DV1lHvsH7vOI/
-	 2HOKB28YAvJ+GbNzrz7lc2ML3PQpAjmBievnS9vJgT7vMaSMHRWuBoWtZYeBVnw0NN
-	 l3svxY9hF4UHg==
-Date: Mon, 28 Jul 2025 13:14:31 +0300
+	b=D9dy97NLzTbR9r+tVuMA5GsO2jrgJHwsh7giEqcd/Yh32HdUlqywypP0lKq4VY70K
+	 dP11ec6+n6Y5aBw1Z3F44dKB5Ds3UV19fAbDLk8LgRMPvrv+Ye69CPdym0ZhoLZRy/
+	 +0iBSCBAqszcXRcbusHDs+1PI1KQSGU7lIaONpTgXnqL5f07K9v/Trnr233h50ATFl
+	 lkWi2oFUduKtQNNG+p2T8hCvoorjUvd0UeIm3oDZAVabmVWhaUmkVPMIDzQhMhhGfo
+	 SYbOj5Y/GCxzCVOMfR+sciBN9ysrdJCHXEiA7HDwrpGbdZ7vkhknVOHs0PACAFM5W/
+	 OC69K+1Rmyuag==
+Date: Mon, 28 Jul 2025 13:15:23 +0300
 From: Mike Rapoport <rppt@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
@@ -92,23 +92,22 @@ Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
 	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
 	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
 	leonro@nvidia.com, witu@nvidia.com
-Subject: Re: [PATCH v2 02/32] kho: mm: Don't allow deferred struct page with
- KHO
-Message-ID: <aIdNh-qqSqSUIr2V@kernel.org>
+Subject: Re: [PATCH v2 03/32] kho: warn if KHO is disabled due to an error
+Message-ID: <aIdNu7wwsbnVGbAN@kernel.org>
 References: <20250723144649.1696299-1-pasha.tatashin@soleen.com>
- <20250723144649.1696299-3-pasha.tatashin@soleen.com>
+ <20250723144649.1696299-4-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250723144649.1696299-3-pasha.tatashin@soleen.com>
+In-Reply-To: <20250723144649.1696299-4-pasha.tatashin@soleen.com>
+X-Rspamd-Queue-Id: 84F128000D
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8700F120004
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 8mrupdwtns5fhi39f7bzcuprqb3ruyc8
-X-HE-Tag: 1753697698-70018
-X-HE-Meta: U2FsdGVkX1+W84UejXViVc8jBfxawQJQMzoY3KELil3iaKR7ZiQTpACZwywZJHTI6xQOrQPVLziAwhQBhlgUdxJpfl043WtD5wH+YNnrSvRbuCHVzcdNtFkC6x6PfutVJyA9ECSrBIzrTW4jxbN52rdFKBHpkLMfll0vxim9WqrS/nhaR81VVwtUp9m200mAlxC1X6D2Q49ZmrG1tAqvf0WDZCrXzEVIAUR4qByi9LT5we8TFER8WjM3kamJUH1nTMWDZtkxaQLYabGfKbmkPMcns9IZLu2lMoWQxib1+R+g+eWppLMo6fGbHuqY5u+8aiCHGmIEWcqoGlrUneuulrWE0R3v0qJdXH0kNhUGbhhJY3QwHJD5/74zU4vRRO8nAPGy7Ow5OuSjHTZ3ig0dQn/eQGewzhlPCXNg9jp8bEYVEws3EubdtL0fqtvjEaAaEAHig3i9kpRYfP2tUIoAWr/wLoZckoi7GURsZe5TdNeH0kYD17Ca6XQtK0Pi6BtxpNVlYbVSXdsPfiuIEpAufTLEqcXSHdeGFPf+nqIvJcP4WXIVf5jgrkX/ZPpTOeESg0mtKoCfdTzLorF/gnVHhVgFhsMEI3SGxDnHPVn55x1zbgfpaYOApPsEdpDDF86yRtqiQZr8KP4UWySa1qR/fGFu7qp2U2WSDygJ2oUdNBrcWkR9EfTxjHtVHMI8zRrl2iYwg2Tb64XMSLDlw56aHata6dW0FGuO/sfvtHdTpN+Ow451Uky+pEoHZ5tW2nm+05bY/GI9HOkdcavLDVKFDTPSUxiATmemWn8lTCmIeGmBuggU1I05M81kfG+1doipUEwdJaFuWJdiuF/vYfan/2Ww147Ws4cK1V4oYP1k+KHxUk18bIHxlZ4vlkQQqvuHeGSbflPXCzffTIv4dnvA8Lck2m0ySnYCVrvXy2i8QjKKis7VEz2ZXM716n1ehT0qxXltYakAt3bS9KAm4bT
- Mhj+QoV/
- tp2nn0hqP4PV6KdDdjRYdN94sO8oAGvZpllYBu3zZafHUUNrTIurzRDiCkL01/g/fAVGriOj0BGp2foWfpQ8z5HfsvzWGXGG4vb7DRM9Pv/iy4GUI8eNrIi9EXyfIXoQ/qxXC9OS3pmP/JXYOFyU4vN/pmZ+AaFzh+Uifvpq5WfM7dwuf+I52tpIMN8ZSs+eXX5ZKQIvA8PnIDkFUn55Y1mdw1dTGbbBGu6l3f00lYbGiYwdIjAMEfGj4yvnclnoAVKqrrOADgTnuFzdOwNIwICs5LhwGnAyjxCfPt8fvvwOVzSrhNxqk+7Ssm73HuIDGpyjMxPVc8/uBpnCF6D4LzUDbP7PaPxL7R29emGwNvmna+HxusYTf4JD56uGRgVBHJG0kw5/Ffk5kuxKyUIvoERdNmg==
+X-Rspamd-Server: rspam09
+X-Stat-Signature: i8taqq53ubmyetzrz3bsjp1uzpaqok36
+X-HE-Tag: 1753697749-862982
+X-HE-Meta: U2FsdGVkX1811/NF0QMJ6x3423unKr9URbQDuG/aD138twiU0e1Yaku3nfnefauw/Bk9+xsaw3RMwEpPpnjzsDCEnkY/Rd4wgdJ+ObJqA1wXOYdnjWvJ+EbeUEo/Nt2AeKmtP+fG2YUgON32ZlU/PmfHcTaD/bfvQwt46QxkAae3pffianIggI2u75oB+JGyIfFIPS6RPX5nqrOw3veQRDz22Gi85cRNOMDUCAzZNLE/fM0y8d21J90oKGOi2Znh+JJu/r+xN5p4fTf1ak6kx4o1JtZbMOKAFh6aG9neXIkH20A7kA+mEtv9n4vqvbFNDBujD50QL3/JMxJpzO4BILuYQc0n4A9to2VQK+heU5T/Un3p0bsYxVaPOkHeIoxDKKzvU0qDdUGn+Fqxb9VuVZ4DAp8KtZIoSyb1vx8Roc+4MGp6My6A0CFgDRGQ6PsGlJBvmTTUAChEtOwl0rY/WLnE3JDRz+FjWI7vIfBRDgBW7FxMeXAjZ24FY9BdVGtf2mW0Hh20CC83nRflzkDLabilXbpYz063jaf2dTMqexXr7+kw5MKBcGJM2R5Zdkf/dYUtjPh7pw563TZlsvowaEbrLnrJ+Vl0j4CTncJzymn9tNkMk+f0rS2dipxjcwNpXDONNJl0M6sCrNPL+jkk/yhy71SUyDsK0TjLAfZu3pXNSR2odgLL8VnjIddd91VwcHnEyvItgqH/STc1XVOqBxmTEMBlLVvTVzccI8CsZv9BJ6Enwzq2SxSVi1gTeGc5ZhCa4MJFjGClr7CXajZRmOf0o+AYmQ8RBCL1RtwhS8B7+jfSJSdi0mAatWp5O7tylFgcsZPqFoYX3yqe5ctb6m/o6mvKy7qqg78I47LANq2qvlp7sGxZB14D0VGeeCKSweopu8cv8N5CnsJTp2OZrBWh89D0TI4IAbf0IUg3TKA2Z5TUPtcbd5wO20vubv+4IYLF2umBc1/XkhPv81n
+ jLMXon/u
+ gWNsQNwYM7OE/IRxIu6ncGcuybwB6//5h+DVSz6NpEV/Id5OJR0EgjWOAZ9zngcbD6KjUHQfNO2U9rYWo3C+l7P1oA/wcCa1mMhF/fFz9uZenrAdmFoKQEFTVxtJWuy/xif8f1NhgNQUy5Wp909b3bkJvwB1zf3cGQkbUEVdvcRYMK9Nmrpwz9Vr4oHIAd5wltCgfDTknKH+Qnaqpq/gsrBA13fAYJzidxVAKb5a9Es/ewPR1UTyElJqbOKMbIjCwPsgjft+CfPEMknz+384UNFZIbhnRWMX6EF/bzCAnymx/W5KVyYdObzdtrYvOqPwjs4m+vi4h/EP7M08zNBh2aF2Uqdm7HFBPr56GHh+srwzZ7VSvd01M8Rz+FVlj7PfoZFYw5Rrt6UYIhVBFFMn6ytPJkDtPiEOmikauJNAgdsJsQchdUtNvecJX3L5b+pxCfkW0
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,40 +116,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 23, 2025 at 02:46:15PM +0000, Pasha Tatashin wrote:
-> KHO uses struct pages for the preserved memory early in boot, however,
-> with deferred struct page initialization, only a small portion of
-> memory has properly initialized struct pages.
-> 
-> This problem was detected where vmemmap is poisoned, and illegal flag
-> combinations are detected.
-> 
-> Don't allow them to be enabled together, and later we will have to
-> teach KHO to work properly with deferred struct page init kernel
-> feature.
-> 
-> Fixes: 990a950fe8fd ("kexec: add config option for KHO")
+On Wed, Jul 23, 2025 at 02:46:16PM +0000, Pasha Tatashin wrote:
+> During boot scratch area is allocated based on command line
+> parameters or auto calculated. However, scratch area may fail
+> to allocate, and in that case KHO is disabled. Currently,
+> no warning is printed that KHO is disabled, which makes it
+> confusing for the end user to figure out why KHO is not
+> available. Add the missing warning message.
 > 
 > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 
 Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 > ---
->  kernel/Kconfig.kexec | 1 +
+>  kernel/kexec_handover.c | 1 +
 >  1 file changed, 1 insertion(+)
 > 
-> diff --git a/kernel/Kconfig.kexec b/kernel/Kconfig.kexec
-> index 2ee603a98813..1224dd937df0 100644
-> --- a/kernel/Kconfig.kexec
-> +++ b/kernel/Kconfig.kexec
-> @@ -97,6 +97,7 @@ config KEXEC_JUMP
->  config KEXEC_HANDOVER
->  	bool "kexec handover"
->  	depends on ARCH_SUPPORTS_KEXEC_HANDOVER && ARCH_SUPPORTS_KEXEC_FILE
-> +	depends on !DEFERRED_STRUCT_PAGE_INIT
->  	select MEMBLOCK_KHO_SCRATCH
->  	select KEXEC_FILE
->  	select DEBUG_FS
+> diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
+> index 1ff6b242f98c..368e23db0a17 100644
+> --- a/kernel/kexec_handover.c
+> +++ b/kernel/kexec_handover.c
+> @@ -565,6 +565,7 @@ static void __init kho_reserve_scratch(void)
+>  err_free_scratch_desc:
+>  	memblock_free(kho_scratch, kho_scratch_cnt * sizeof(*kho_scratch));
+>  err_disable_kho:
+> +	pr_warn("Failed to reserve scratch area, disabling kexec handover\n");
+>  	kho_enable = false;
+>  }
+>  
 > -- 
 > 2.50.0.727.gbf7dc18ff4-goog
 > 
