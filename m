@@ -2,119 +2,115 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 912E9C83F17
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 15:06:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 84FD5C83F17
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 15:15:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BA646B008A; Mon, 28 Jul 2025 11:06:48 -0400 (EDT)
+	id 228F76B0089; Mon, 28 Jul 2025 11:15:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06D836B008C; Mon, 28 Jul 2025 11:06:48 -0400 (EDT)
+	id 201176B0092; Mon, 28 Jul 2025 11:15:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC3776B0092; Mon, 28 Jul 2025 11:06:47 -0400 (EDT)
+	id 0F0086B0093; Mon, 28 Jul 2025 11:15:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DD7D66B008A
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 11:06:47 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 96DEC802F3
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 15:06:47 +0000 (UTC)
-X-FDA: 83714000454.02.7689060
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 06015140010
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 15:06:44 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ESPW5u1A;
-	spf=pass (imf26.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753715205; a=rsa-sha256;
-	cv=none;
-	b=2VEo9nBoMUh0jfuImyiFGlRbpTi1YBhMfHhYaN1GorkC34Yul9GsYvsOzgFpfK2cH1/71U
-	ok3EOAsBs15uhX7uxnYS54HBDqEs5wFwzTw6LoEV6EHf7pk83O7RpkGKEvkx9CEqi/O4IC
-	Qq+lStsx3CFEzeHwgUvhT9yBllBSbx0=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ESPW5u1A;
-	spf=pass (imf26.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0026E6B0089
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 11:15:10 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6A3F358766
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 15:15:10 +0000 (UTC)
+X-FDA: 83714021580.24.47C35FA
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf10.hostedemail.com (Postfix) with ESMTP id CCBC1C0019
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 15:15:07 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=i12jXtjY;
+	spf=pass (imf10.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753715205;
+	s=arc-20220608; t=1753715708;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YUi1XDTtiYjcSAgdzLC88rh3X0hvU+3avtLd78dgEV8=;
-	b=Mq+VXDxlAshcI+nQvSPQNHsMq+MexBL7IjyHSJ3hxCGBZpZZ8JKq4VNMbWkKXG9vpMonbG
-	P7StQU2Y5Jd6eG52BEhKqASzypC8gvO9WBTRSsdoufnE0KmK3roUvY7H5StGEdRQ409o8e
-	hokkmEsL8FCY77DNtvBmz0xEb7v+0/E=
+	bh=cFu6x9LoVQ1xdj0Ds1jK1/RRFvn+MmOixRu+6RDQgAk=;
+	b=c3Qv+QBEAjbPiiI5plbpO0exKE2nC//NvBPa6i3yN28nVlnOI1LFPPqp5gNXS9c2Gsb+xK
+	nMztZS63z/XltMkEvoCV1R2HXnbpNv3xjdMhNtGwXPOCi5gVEBXW3EgtL/z5PSkc4tBWK1
+	yGDo7It4B2y5QoduKCk9RLnE2aPiyiU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753715708; a=rsa-sha256;
+	cv=none;
+	b=tvAiTyGTSvA7T1/4XvkewPesGW1QMKphz0b2Hk+ziI31mlVG4oPk6PpFYpfN9mKiuV+MFn
+	R+EhbCgC/zeRx3Bfex+2AcO+ilpJxQeeINpu7vB3/wzFFKHsJN+8DRQHq+K/EhZzKflLIA
+	+bzIeLphi8wuGiY1aId9fuQQoRYLaRk=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=i12jXtjY;
+	spf=pass (imf10.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753715204;
+	s=mimecast20190719; t=1753715707;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=YUi1XDTtiYjcSAgdzLC88rh3X0hvU+3avtLd78dgEV8=;
-	b=ESPW5u1AmU4V+otF6HX4fm7r5l3DrFiYszxRO1xdXwhaLej/56pilRvn1UUbyK9VZ/uCkc
-	E2yQa8y4Qy5KX0R57VI3bMXGIiAnm0iq4qKu45LDXvxaGDxH838BxuKHVAmAp5lErbjLiK
-	QwZvYurfggjBtsOIFPPoYateLAdTI1U=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=cFu6x9LoVQ1xdj0Ds1jK1/RRFvn+MmOixRu+6RDQgAk=;
+	b=i12jXtjYUt0/u7lEJ1sb1Ts8WtkSX56CwudRjRjUJdRwaQLG+KAm1BNfC0BtL7/41j91AQ
+	pzn+ss8U8zxj65xNpttRm5ZxL7Vb8+JwgYzfdNuqrB6P2R39NM+zenslpZurX/3zFs0OUx
+	m/3gueGrNcGZqLu2K5N0ccTup5PdPPI=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-638-uiaPsNtpMlaq-Qc7NvU8iw-1; Mon, 28 Jul 2025 11:06:43 -0400
-X-MC-Unique: uiaPsNtpMlaq-Qc7NvU8iw-1
-X-Mimecast-MFC-AGG-ID: uiaPsNtpMlaq-Qc7NvU8iw_1753715202
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45600d19a2aso34805685e9.1
-        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 08:06:42 -0700 (PDT)
+ us-mta-139-GNqb9ppzNZmk3bW5u0RZrw-1; Mon, 28 Jul 2025 11:15:05 -0400
+X-MC-Unique: GNqb9ppzNZmk3bW5u0RZrw-1
+X-Mimecast-MFC-AGG-ID: GNqb9ppzNZmk3bW5u0RZrw_1753715704
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-456175dba68so27165605e9.2
+        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 08:15:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753715202; x=1754320002;
+        d=1e100.net; s=20230601; t=1753715704; x=1754320504;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=YUi1XDTtiYjcSAgdzLC88rh3X0hvU+3avtLd78dgEV8=;
-        b=gvdWZl82oVkak9g6zzl/J4Q4jEwm8TGUT3lVDGpL2Jl4JAAjx9573rcX2JN8anWKAG
-         5bBaDtr2av2mzUqNbYH338nASOS9ieJGRhnm5Kywps7nDz6TKBrysnEhZpqAv0ZoV9Pb
-         ay5MoUp4xh9EjrmLRLJ+2VeaVQ31LjIPS8dlyrz/b4rQ7Mz/GqaYJ6kReM9fmR+NrSPN
-         RzhxgJAe5EFoIuumPi2TiYAhpWpGpqo0o7iGXgp6Se9K93EB69gz6t1AnwmaBHD/qMMZ
-         sLMCmhTzWviFZLBO+D8aPKMTJzK5c3q6fAgK5ORY09ivsNhyxKbJZhAyBqDwOrSu1SgK
-         Aetg==
-X-Forwarded-Encrypted: i=1; AJvYcCWv6JzYRvUEFqzV5vlg0DGe484FJTGqSIvStzI2Ik0pca3obEfpWDrK3ZMbUvbCeSGNv+qod3/S2g==@kvack.org
-X-Gm-Message-State: AOJu0YxAoOG5kb8wMRMjMTQ85XG966mKfHm9HQvlgcrsN7SOUQHtqINe
-	a0hHT0cPOxe2ctmfdzXf/Kw6vDJFP69xwzHm2c08+WgmRBM9wMEV3rxObBrThvjMB238mFhpt2p
-	d1VIPHgyMiefaOW0ZFYlZZiIhVdJbyMxw+aaHtZToFNyHdcn9B5CB
-X-Gm-Gg: ASbGncsDwkCz1npUaAs2cCgOz0SiwHvimE4A0Z6oFBEVwyRzUZpaycUKqhYoBjUlicN
-	JlSQH4Bg9YFk4sU5lcJc1rSh7vDKHoe7Vp6ltzYzgAn8xMHULEMNj/1bdPlSoqtxX2zxLWzSNzn
-	HRr0Ag5mXBVZmSKOrCWeU8aDagVrrUzHCbXuunad1/CURcQS0ORtlku/od/1ylOWnBwaqB5Kb/D
-	FbF7CX0f96hdj2/3/zR3cVWnfybMrghhEHD4451KUSM35elYAV9ble1/natg96I5qNbKweWWXZC
-	4uOqlJDuP44OoSPAWGik9mHMUx4tgb4fopglZDw3NeeORwMPiNqiXttm3OrLPgkuRWCC0/Y5yQz
-	61NEyhFdgSZgiz059/1R+u0C9lASSfYW7r4l1sXK37lPMVRcIyDq3se96ezueEKAFbMI=
-X-Received: by 2002:a05:600c:83c9:b0:450:d04e:22d6 with SMTP id 5b1f17b1804b1-458762fcb8cmr93391175e9.7.1753715201618;
-        Mon, 28 Jul 2025 08:06:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH8y/k01+6pf881FBgdTOGh4dIwIsXNTHMk88WH2WhZwB/CzKNLtjbz7C+TgRP2GPYL26Xh3w==
-X-Received: by 2002:a05:600c:83c9:b0:450:d04e:22d6 with SMTP id 5b1f17b1804b1-458762fcb8cmr93390655e9.7.1753715200961;
-        Mon, 28 Jul 2025 08:06:40 -0700 (PDT)
+        bh=cFu6x9LoVQ1xdj0Ds1jK1/RRFvn+MmOixRu+6RDQgAk=;
+        b=AUvT8cl2I1ufcMgOQR64mBPzwp8xUqoHb2D160HXaNAkXnbVsT2fwfl9ljruEX1FHH
+         nwbLeTlbtFo33gUxFqNIigM16NbdyriETdD5r2wWJrTs3XzrIQPBf0mmhLEo+TT92/L7
+         /ZLeAZAUMg0i+ogz2YjGfNdQR0feRYzFquJFF0J2krGy2vPPbJTs4iIIIAp+Ygx2V3PB
+         ArBiWi0DMtNetfhEPI1lpnIe+T1PrkDK1NIeMbpJx2W3x+JFnoRySCh2oJVECyFcaXtd
+         XTOO9PVt7YGOZn/+tLJVLCOOsHvhHu8nL6PYiXKm1BzEF9JyQ1xzlzwZtg6etz4ggEy1
+         faIw==
+X-Forwarded-Encrypted: i=1; AJvYcCV5bJx/UPMUA62PrPp/A5qqGuhfwI4ms465wrn9aTg+XdXv29y42TFAPpoIFMDdtDkhB157zqrVdg==@kvack.org
+X-Gm-Message-State: AOJu0YwUpkTQtI/q6SOcBJLQW9r8XZjJ2ZAp/7mtaRngLqX58rTGx/ym
+	dfTDBQk0TW3TZ0dLKIcvDO3izxOEXsiEFX6pyF+7cASuJ4mcNXFtfeWODDQn7UU0sR83omVLoom
+	h0N/+bu/gf5DBh880hgNIl6A8z1X3+DWsCbQWEqdCUZiZujMNEMQ8
+X-Gm-Gg: ASbGncvm27rAAWBd0dLEMHrDONXO5B3xsv5CHZP58ex9lraKjs7XcZxmHseRHuNkJWP
+	FAagm2ujhHMx2Qo1lcNgBSPLlDIE71XrixDcvXpmX9902AlQhoWbkfJGUOznVAnrhncQOBKX3iU
+	o8LWHqhw2b1I5noiuZkgZzc31MT0SAnrTOXK4w4X49vm2IqgKIx7AvyCW+1LmQfYVgWZKvZblcJ
+	3pBcP9qsMV8dCctUh3t/SwThqClL9SH5fdMKbFqZ4ziAElCdCiszNfK5G9IzIAOGnmb//a9455T
+	SEZI/qATyCk2ybWZ2Ck0bF/Kgxy+Lr/s7fvpxiNehSZB9rc2x+HQT45gOBLaFMgR7sJTM5PQouT
+	snxug6YpbqBNpNDoGSc+aH4KQWPsXQKcZw0++ptnVYCRnBBJG8f03XMYvQ/xGVlpzO1M=
+X-Received: by 2002:a05:600c:1c94:b0:456:1442:86e with SMTP id 5b1f17b1804b1-4587911e78amr76809145e9.21.1753715704281;
+        Mon, 28 Jul 2025 08:15:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEYgLa7yl+fyDCD5pCKzn8BbvKweRCfmV2xlQtPD8ua6fwJTJSoqSSEdQnuHq68gLQ0j11fEQ==
+X-Received: by 2002:a05:600c:1c94:b0:456:1442:86e with SMTP id 5b1f17b1804b1-4587911e78amr76808825e9.21.1753715703645;
+        Mon, 28 Jul 2025 08:15:03 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f47:2b00:c5f3:4053:2918:d17c? (p200300d82f472b00c5f340532918d17c.dip0.t-ipconnect.de. [2003:d8:2f47:2b00:c5f3:4053:2918:d17c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4587ac58162sm101784195e9.18.2025.07.28.08.06.39
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458705377f0sm159681105e9.6.2025.07.28.08.15.02
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Jul 2025 08:06:40 -0700 (PDT)
-Message-ID: <b9c72ab9-9687-4953-adfe-0a588a6dd0f7@redhat.com>
-Date: Mon, 28 Jul 2025 17:06:38 +0200
+        Mon, 28 Jul 2025 08:15:03 -0700 (PDT)
+Message-ID: <09794c70-06a2-44dc-8e54-bc6e6a7d6c74@redhat.com>
+Date: Mon, 28 Jul 2025 17:15:02 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] selftests: prctl: introduce tests for disabling THPs
- completely
-To: Usama Arif <usamaarif642@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-Cc: linux-fsdevel@vger.kernel.org, corbet@lwn.net, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org, baohua@kernel.org,
- shakeel.butt@linux.dev, riel@surriel.com, ziy@nvidia.com,
- laoar.shao@gmail.com, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
- npache@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- ryan.roberts@arm.com, vbabka@suse.cz, jannh@google.com,
- Arnd Bergmann <arnd@arndb.de>, sj@kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, kernel-team@meta.com
-References: <20250725162258.1043176-1-usamaarif642@gmail.com>
- <20250725162258.1043176-5-usamaarif642@gmail.com>
+Subject: Re: [RFC] Disable auto_movable_ratio for selfhosted memmap
+To: Hannes Reinecke <hare@suse.de>, Michal Hocko <mhocko@suse.com>
+Cc: Oscar Salvador <osalvador@suse.de>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Hannes Reinecke <hare@kernel.org>
+References: <aIcxs2nk3RNWWbD6@localhost.localdomain>
+ <aIc5XxgkbAwF6wqE@tiehlicka>
+ <2f24e725-cddb-41c5-ba87-783930efb2aa@redhat.com>
+ <aIc9DQ1PwsbiOQwc@tiehlicka>
+ <79919ace-9cd2-4600-9615-6dc26ba19e19@redhat.com>
+ <f859e5c3-7c96-4d97-a447-75070813450c@suse.de>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -161,21 +157,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  WBe5lqcozu9LpNDH/brVSzHCSb7vjNGvvSVESDuoiHK8gNlf0v+epy5WYd7CGAgODPvDShGN
  g3eXuA==
 Organization: Red Hat
-In-Reply-To: <20250725162258.1043176-5-usamaarif642@gmail.com>
+In-Reply-To: <f859e5c3-7c96-4d97-a447-75070813450c@suse.de>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: uFHcbuZQqhKmXv266KbTOP5hbZHzMwRxKwnVsOYncxw_1753715202
+X-Mimecast-MFC-PROC-ID: AjNqnB3ZFTmZLJt7Ph3ckkGI8_IWsAt7OEjaShn3Zak_1753715704
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: CCBC1C0019
+X-Stat-Signature: digy3xxjxrwepwruq3j6dtyb88kucju6
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 06015140010
-X-Stat-Signature: fmrituqdineem9pd5yq8quauoip7z9rc
-X-HE-Tag: 1753715204-671204
-X-HE-Meta: U2FsdGVkX19x0XPWX8ITh6cwd6bWflOVoaRHGPXaeMqchvHCMq3Ieq5hNv/yxjCi4Os1jnyqs+4xltlJP2kIughBLt1/qYjxBrwlES1sDineqzb4HybMdPPpUaaUHFXtRmY8ju4RflcirFveP5O6MEJUAgc4cyrAihWLpTynM86l6CQdDTC0koLNrdksNpEQIL5H03s1OoiDKtCosrW5R/BgFaRMmhNFURnlgcfn5zBpzCwzBjjZUnndkraPKyHvBaVCZaVSWoNNW4xWcO2MbplBfh0RxHf1MtuZw9IyEJPjf9h10XsBgrjO/qV9RtmJU9CEi2kWg9giX5WbsJTnOwzDgR9CN0afdAeGz7qHKjqH0KBbdH2oGeha3y7zNXVvxTNVNJVlrTm+e7FoQFC0Pa/yPmc8MktJJVaOmlN6oJlNtjSIMz2oMVPtFzwpiTlesd8VBU1HLNIgYexJ7ZAmRVl+aPnxXJ/Ki6eR0ymsRvm86p56F+Ny9PmRzF1X+az4wO3lSc8ptZLmmtBw9PIS6iYl2vzB3+7T1FlC5gKa4YRoHdQUQLSGnkqSzXNxAsAevy6q7PNL+gu/DbIRi5NPtswhZ3TaGPG+8Yivb4U+Vmq01FYGLha6XPPQyfiiXSvw27QFAXOQSLFELVWX2+5RrLZ/g7uFSHdMfwNepWWlL7ZDxaiUwk5Ddpye8v8zkBeEFs8COLuv5wtVWfZrgkhIw18xQCoemcmXAe2Dn9JKm+VY+yYYlVwvg3O7kccMgvPclBh99Uzd3H/oQ6TFCNox8ldW+onSkneSQ6BdeY3ndWjv6ieTenBNEj7taNn2QYtk43JQ2lXBHfEsVUZF2DYEfnDU63lLcCdikZRtodlhwO77iqxvmXFX0T+LWkaZqFe3UflbPsgCO5Wf1Up7iZlTx4eY7/lVXNPGKNmiUuAhQVjD0Py0zDCIIWR2o+2BGFUMsdiio1Wf+Hq2UpDbaxn
- YopuPDB3
- lxwChVNUgWTbjIDIt7kxbxUwOfKa9oFZoqFJUkJbEAaTXj7K4Nipvr4hvXU0XT+pCfRs1be+ycu2LANYKZNLASKqzCNoFMeskGtALqNG73ePG5PrhuGXpFtpaaoDdWXEfsZ7+jL5nrBMXf1T2QUCKrx0I++2qS/9HWI3uLMN5SrKzESJXhGrAuG2/CqgjwfwDx/IFE3Qxi0q0jT6c865lDzIW2uKqDHODqHJLGk6XRGPa7Adef5dSvibM7ox+VGmq79HcMFQaY67DpVkv5Ntjcw2cwOX0+h4X9Nc33kSWDMja81LBKFHDlT6+rkxdTrz9otI1o/fe9tl8pbsywik0hKrCQ6F8L7zhL5ZjxXg34Fjl+wl4rcAZGnA3u7jLZiBkiBup/YpW7Egw6T7NQk0GPtPgWtBwOePVAGTc8yrXXGkzvpojYj2TGGBwrPfv/pXS71o2ut/EwPefwQZ2JCDWX3aDllAqiqWSBDUbPiIzlHET0jiI0GPKbQtg75xGF3hO6Ke3m2MQ2pYcet8FtZnj46AD7E+88NJv6gjQKuw3v6t0lBQtVGNfqNddtg==
+X-HE-Tag: 1753715707-979538
+X-HE-Meta: U2FsdGVkX19tid8IZRmTiRFJbd2AA6Hgdo2/2lVdRnun25IwgnfpsHYvsv+Hp4GxzFPIy8jSqiHc5JioYQmC0YrZXR1splcXssAdCjyLkMMvo20Pzw/DlqnaP7FNPSlS0+750In0/cfnbc4nzk9Kg8D2wKF21kJWjQAH6rgtAiabCbjyZahkXrUCmihwO1UGaDNoXIoVaAPox2C5zLbBIwdr4Ncfi4gF2h/+XUFjLKEf9nRtiYpOl30oCqVL5qjcddlQffOqjjQ5DqaJlJff7bkj0Gl29E2S2MqGcU0gRPst2arC4071K+96ZUqpkhqqJtkg3Q2NfIyBQfDazLO8S9KkCoOnlWswcMT/vL581Kcto46bPqKwSyNeNSALuB8fv9wh3kVq1uZzbvlTDoivwjbB4Yo9gxSJavAH9d8AmKXqRbxOIqfMTPuet00zt2p/7WyZlv5SgyfrAMvcqlBy7P76CuPN6L10RW41lpkdlwrkuWqN1FoM3eaagBp6dfZ5y1JmILsh3hslHqjR6/JDeHjDL10327UIHwtjYFMNG43gIehy3TXA/TIjgXUo4Sv0WGzmhTMpuNfUa8TiDt8qmS9SN4BtZQPfPfmbodi3/tzZED+rBoS/uJSsDx1a3ObNSV2NLrxIaIG83kk5BXhZrBJLBHIasrbXqFcNNEFn76Vn+wX5ehhvRKM2LLsrgOVlKTl+yJLWW7rhITUs9N5kbi6CyoCOEqkRCJTFCHMuYF3yeYDf7bLoZrK50j2d8XiyEypJ1VGFJOYKqd6YmX0rOQO5SvfBgP7t3hmThzA6/YFGB10k94DnpM6sjC0in0MXC3M1Dnaz+6qPXsSKszyVZBRzd/zVUqQEF7RYCoV1c5RxE1JnHtX9EM1JrTJFxOnu/Ex7BSZJ76Ky+L3BkuS+jtxJAn7B9ouEgF/UdhAAscEYwd6BC7nTevaT5w1DEnQ9TGBdonFlLOW2MG8JDAe
+ TFIdrAgx
+ dx3snu+qKJhYR6dMI5/H/if9RPSPHujoTJKkdUqq5wi/iP6lhULntzRs2ockR9xzlmdGpx/ZYe9Vs6Scvy0UE6w3kSPAohwlH17Ykwn7y5Y6ftVKosuLDtnhJsjKrxBJNmsiZEoeSqvoXL7m9u1ETPo+9iktgaq92Lc81P3ca7pQz9Sl0wsEv1AVjOKgfZq++kI4D2lhq0TS0lIDIW1Qs/K1huhRqMTl1uZXwLhBt8tSkKFJ1ZCezs08GF0bU+rOge8zmH7nz0rzO8agLWfnl6800/64HCBqbvwyATHdvXyPX6niYo/bB3eaBV5cJ0DhODOWGXAV87ST+1JWqjDphki9HVeq5xGBdrYG8baBnhr5sdTEBz71eTAC0/vkl3Kj/gq1T5XC+SddSSzzaMJ9mtmWZYFOZJMRT//895AtByeIoagUHkaTkA+tzvF9qJAxKClyLCHGrkpzWA0JoDMDtEEHgr1DmPdZygmPCMtY+EW3NL550c7aS5xjPjyzBo+RJeLkA
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -184,239 +180,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 25.07.25 18:22, Usama Arif wrote:
-> The test will set the global system THP setting to madvise and
-> the 2M setting to inherit before it starts (and reset to original
-> at teardown)
+On 28.07.25 11:37, Hannes Reinecke wrote:
+> On 7/28/25 11:10, David Hildenbrand wrote:
+>> On 28.07.25 11:04, Michal Hocko wrote:
+>>> On Mon 28-07-25 10:53:08, David Hildenbrand wrote:
+>>>> On 28.07.25 10:48, Michal Hocko wrote:
+>>>>> On Mon 28-07-25 10:15:47, Oscar Salvador wrote:
+>>>>>> Hi,
+>>>>>>
+>>>>>> Currently, we have several mechanisms to pick a zone for the new
+>>>>>> memory we are
+>>>>>> onlining.
+>>>>>> Eventually, we will land on zone_for_pfn_range() which will pick
+>>>>>> the zone.
+>>>>>>
+>>>>>> Two of these mechanisms are 'movable_node' and 'auto-movable' policy.
+>>>>>> The former will put every single hotpluggled memory in ZONE_MOVABLE
+>>>>>> (unless we can keep zones contiguous by not doing so), while the
+>>>>>> latter
+>>>>>> will put it in ZONA_MOVABLE IFF we are within the established ratio
+>>>>>> MOVABLE:KERNEL.
+>>>>>>
+>>>>>> It seems, the later doesn't play well with CXL memory where CXL
+>>>>>> cards hold really
+>>>>>> large amounts of memory, making the ratio fail, and since CXL cards
+>>>>>> must be removed
+>>>>>> as a unit, it can't be done if any memory block fell within
+>>>>>> !ZONE_MOVABLE zone.
+>>>>>
+>>>>> I suspect this is just an example of how our existing memory hotplug
+>>>>> interface based on memory blocks is just suoptimal and it doesn't fit
+>>>>> new usecases. We should start thinking about how a new v2 api should
+>>>>> look like. I am not sure how that should look like but I believe we
+>>>>> should be able to express a "device" as whole rather than having a very
+>>>>> loosely bound generic memblocks. Anyway this is likely for a longer
+>>>>> discussion and a long term plan rather than addressing this particular
+>>>>> issue.
+>>>>
+>>>> We have that concept with memory groups in the kernel already.
+>>>
+>>> I must have missed that. I will have a look, thanks! Do we have any
+>>> documentation for that? Memory group is an overloaded term in the
+>>> kernel.
+>>
+>> It's an internal concept so far, the grouping is not exposed to user space.
+>>
+>> We have kerneldoc for e.g., "struct memory_group". E.g., from there
+>>
+>> "A memory group logically groups memory blocks; each memory block
+>> belongs to at most one memory group. A memory group corresponds to a
+>> memory device, such as a DIMM or a NUMA node, which spans multiple
+>> memory blocks and might even span multiple non-contiguous physical
+>> memory ranges."
+>>
+>>>
+>>>> In dax/kmem we register a static memory group. It will be considered one
+>>>> union.
+>>>
+>>> But we still do export those memory blocks and let udev or whoever act
+>>> on those right? If that is the case then ....
+>>
+>> Yes.
+>>
+>>>
+>>> [...]
+>>>
+>>>> daxctl wants to online memory itself. We want to keep that memory
+>>>> offline
+>>>> from a kernel perspective and let daxctl handle it in this case.
+>>>>
+>>>> We have that problem in RHEL where we currently require user space to
+>>>> disable udev rules so daxctl "can win".
+>>>
+>>> ... this is the result. Those shouldn't really race. If udev is suppose
+>>> to see the device then only in its entirity so regular memory block
+>>> based onlining rules shouldn't even see that memory. Or am I completely
+>>> missing the picture?
+>>
+>> We can't break user space, which relies on individual memory blocks.
+>>
+>> So udev or $whatever will right now see individual memory blocks. We
+>> could export the group id to user space if that is of any help, but at
+>> least for daxctl purposes, it will be sufficient to identify "oh, this
+>> was added by dax/kmem" (which we can obtain from /proc/iomem) and say
+>> "okay, I'll let user-space deal with it."
+>>
+>> Having the whole thing exposed as a unit is not really solving any
+>> problems unless I am missing something important.
+>>
+> Basically it boils down to:
+> Who should be responsible for onlining the memory?
 > 
-> This tests if the process can:
-> - successfully set and get the policy to disable THPs completely.
-> - never get a hugepage when the THPs are completely disabled,
->    including with MADV_HUGE and MADV_COLLAPSE.
-> - successfully reset the policy of the process.
-> - get hugepages only on MADV_HUGE and MADV_COLLAPSE after reset.
-> - repeat the above tests in a forked process to make sure
->    the policy is carried across forks.
+> As it stands we have two methods:
+> - user-space as per sysfs attributes
+> - kernel policy
 > 
-> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
-> ---
->   tools/testing/selftests/mm/.gitignore         |   1 +
->   tools/testing/selftests/mm/Makefile           |   1 +
->   .../testing/selftests/mm/prctl_thp_disable.c  | 162 ++++++++++++++++++
->   3 files changed, 164 insertions(+)
->   create mode 100644 tools/testing/selftests/mm/prctl_thp_disable.c
+> And to make matters worse, we have two competing user-space programs:
+> - udev
+> - daxctl
+> neither of which is (or can be made) aware of each other.
+> This leads to races and/or inconsistencies.
 > 
-> diff --git a/tools/testing/selftests/mm/.gitignore b/tools/testing/selftests/mm/.gitignore
-> index e7b23a8a05fe..eb023ea857b3 100644
-> --- a/tools/testing/selftests/mm/.gitignore
-> +++ b/tools/testing/selftests/mm/.gitignore
-> @@ -58,3 +58,4 @@ pkey_sighandler_tests_32
->   pkey_sighandler_tests_64
->   guard-regions
->   merge
-> +prctl_thp_disable
-> diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-> index d13b3cef2a2b..2bb8d3ebc17c 100644
-> --- a/tools/testing/selftests/mm/Makefile
-> +++ b/tools/testing/selftests/mm/Makefile
-> @@ -86,6 +86,7 @@ TEST_GEN_FILES += on-fault-limit
->   TEST_GEN_FILES += pagemap_ioctl
->   TEST_GEN_FILES += pfnmap
->   TEST_GEN_FILES += process_madv
-> +TEST_GEN_FILES += prctl_thp_disable
->   TEST_GEN_FILES += thuge-gen
->   TEST_GEN_FILES += transhuge-stress
->   TEST_GEN_FILES += uffd-stress
-> diff --git a/tools/testing/selftests/mm/prctl_thp_disable.c b/tools/testing/selftests/mm/prctl_thp_disable.c
-> new file mode 100644
-> index 000000000000..52f7e6659b1f
-> --- /dev/null
-> +++ b/tools/testing/selftests/mm/prctl_thp_disable.c
-> @@ -0,0 +1,162 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Basic tests for PR_GET/SET_THP_DISABLE prctl calls
-> + *
-> + * Author(s): Usama Arif <usamaarif642@gmail.com>
-> + */
-> +#include <stdio.h>
-> +#include <stdlib.h>
-> +#include <string.h>
-> +#include <unistd.h>
-> +#include <sys/mman.h>
-> +#include <sys/prctl.h>
-> +#include <sys/wait.h>
-> +
-> +#include "../kselftest_harness.h"
-> +#include "thp_settings.h"
-> +#include "vm_util.h"
-> +
-> +#ifndef PR_THP_DISABLE_EXCEPT_ADVISED
-> +#define PR_THP_DISABLE_EXCEPT_ADVISED (1 << 1)
-> +#endif
+> As we've seen the current kernel policy (cf the 'ratio' discussion)
+> doesn't really fit how users expect CXL to work, so one is tempted to
+> not having the kernel to do the onlining. But then the user is caught
+> in the udev vs daxctl race, requiring awkward cludges on either side.
+ > > Can't we make daxctl aware of udev? IE updating daxctl call out to
+> udev and just wait for udev to complete its thing?
+> At worst we're running into a timeout if some udev rules are garbage,
+> but daxctl will be able to see the final state and we would avoid
+> the need for modifying and/or moving udev rules.
+> (Which, incidentally, is required on SLES, too :-)
 
-Into patch #2 I guess.
+I will try moving away from udev for memory onlining completely in RHEL 
+-- let's see if I will succeed ;) .
 
-> +
-> +#define NR_HUGEPAGES 6
-> +
-> +static int sz2ord(size_t size, size_t pagesize)
-> +{
-> +	return __builtin_ctzll(size / pagesize);
-> +}
-> +
-> +enum madvise_buffer {
-> +	NONE,
-> +	HUGE,
-> +	COLLAPSE
-> +};
-
-Is that rather something like:
-
-enum thp_collapse_type {
-	THP_COLLAPSE_NONE,
-	THP_COLLAPSE_MADV_HUGEPAGE, /* MADV_HUGEPAGE before access */
-	THP_COLLAPSE_MADV_COLLAPSE, /* MADV_COLLAPSE after access */
-};
-
-> +
-> +/*
-> + * Function to mmap a buffer, fault it in, madvise it appropriately (before
-> + * page fault for MADV_HUGE, and after for MADV_COLLAPSE), and check if the
-> + * mmap region is huge.
-> + * returns:
-> + * 0 if test doesn't give hugepage
-> + * 1 if test gives a hugepage
-> + * -1 if mmap fails
-> + */
-> +static int test_mmap_thp(enum madvise_buffer madvise_buf, size_t pmdsize)
-> +{
-> +	int ret;
-> +	int buf_size = NR_HUGEPAGES * pmdsize;
-> +
-> +	char *buffer = (char *)mmap(NULL, buf_size, PROT_READ | PROT_WRITE,
-> +				    MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-
-Can we get rid of NR_HUGEPAGES and just use a single one, aligning in a bigger area? This is similar to what we do in cow.c
-
-/* For alignment purposes, we need twice the thp size. */
-mmap_size = 2 * pmdsize;
-mmap_area = mmap(NULL, mmap_size, PROT_READ | PROT_WRITE,
-		 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-
-if (mmap_area == MAP_FAILED)
-	return -errno; /* todo, document that above */
-
-buffer = (char *)(((uintptr_t)mmap_area + pmdsize) & ~(pmdsize - 1));
-
-...
-
-ret = check_huge_anon(buffer, NR_HUGEPAGES, pmdsize);
-
-...
-
-munmap(mmap_area, mmap_size);
-
-> +	if (buffer == MAP_FAILED)
-> +		return -1;
-> +
-> +	if (madvise_buf == HUGE)
-> +		madvise(buffer, buf_size, MADV_HUGEPAGE);
-> +
-> +	/* Ensure memory is allocated */
-> +	memset(buffer, 1, buf_size);
-> +
-> +	if (madvise_buf == COLLAPSE)
-> +		madvise(buffer, buf_size, MADV_COLLAPSE);
-> +
-> +	ret = check_huge_anon(buffer, NR_HUGEPAGES, pmdsize);
-> +	munmap(buffer, buf_size);
-> +	return ret;
-> +}
-
-Empty line missing :)
-
-> +FIXTURE(prctl_thp_disable_completely)
-> +{
-> +	struct thp_settings settings;
-> +	size_t pmdsize;
-> +};
-> +
-> +FIXTURE_SETUP(prctl_thp_disable_completely)
-> +{
-> +	if (!thp_is_enabled())
-> +		SKIP(return, "Transparent Hugepages not available\n");
-
-Heh, not completely correct. enabled != available.
-
-Do we want a thp_available() that is essentially the first part of thp_is_enabled() ?
-
-> +
-> +	self->pmdsize = read_pmd_pagesize();
-> +	if (!self->pmdsize)
-> +		SKIP(return, "Unable to read PMD size\n");
-> +
-> +	thp_read_settings(&self->settings);
-> +	self->settings.thp_enabled = THP_MADVISE;
-> +	self->settings.hugepages[sz2ord(self->pmdsize, getpagesize())].enabled = THP_INHERIT;
-> +	thp_save_settings();
-> +	thp_push_settings(&self->settings);
-
-push without pop, should that be alarming? :)
-
-Can we just use thp_write_settings()? (not sure why that push/pop is required ... is it?)
-
-> +}
-> +
-> +FIXTURE_TEARDOWN(prctl_thp_disable_completely)
-> +{> +	thp_restore_settings();
-> +}
-> +
-> +/* prctl_thp_disable_except_madvise fixture sets system THP setting to madvise */
-> +static void prctl_thp_disable_completely(struct __test_metadata *const _metadata,
-> +					 size_t pmdsize)
-> +{
-> +	int res = 0;
-> +
-> +	res = prctl(PR_GET_THP_DISABLE, NULL, NULL, NULL, NULL);
-> +	ASSERT_EQ(res, 1);
-> +
-> +	/* global = madvise, process = never, we shouldn't get HPs even with madvise */
-
-s/HPs/THPs/
-
-> +	res = test_mmap_thp(NONE, pmdsize);
-> +	ASSERT_EQ(res, 0);
-> +
-> +	res = test_mmap_thp(HUGE, pmdsize);
-> +	ASSERT_EQ(res, 0);
-> +
-> +	res = test_mmap_thp(COLLAPSE, pmdsize);
-> +	ASSERT_EQ(res, 0);
-> +
-> +	/* Reset to system policy */
-> +	res =  prctl(PR_SET_THP_DISABLE, 0, NULL, NULL, NULL);
-> +	ASSERT_EQ(res, 0);
-> +
-> +	/* global = madvise */
-> +	res = test_mmap_thp(NONE, pmdsize);
-> +	ASSERT_EQ(res, 0);
-> +
-> +	res = test_mmap_thp(HUGE, pmdsize);
-> +	ASSERT_EQ(res, 1);
-> +
-> +	res = test_mmap_thp(COLLAPSE, pmdsize);
-> +	ASSERT_EQ(res, 1);
+We really want to make use of auto-onlining in the kernel where 
+possible, and do it manually in user space only in a handful of cases 
+(e.g., CXL, standby memory on s390x). Configuring auto-onlining is the 
+nasty bit that still needs to be done manually by the admin, and that's 
+really the nasty bit.
 
 
-Makes me wonder: should we test for global=always and global=always?
+> 
+> Discussion point for LPC?
 
-(or simply for all possible values, including global=never if easily possible?)
-
-At least testing with global=always should exercise more possible paths
-than global=always (esp., test_mmap_thp(NONE, pmdsize) which would
-never apply in madvise mode).
-
+Yes, probably.
 
 -- 
 Cheers,
