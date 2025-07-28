@@ -2,127 +2,114 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 45D80C83F26
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 20:18:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2EDE2C87FCB
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 20:34:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 85F576B0088; Mon, 28 Jul 2025 16:18:27 -0400 (EDT)
+	id 7B9B76B0088; Mon, 28 Jul 2025 16:34:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 80FBF6B0089; Mon, 28 Jul 2025 16:18:27 -0400 (EDT)
+	id 76A6F6B0089; Mon, 28 Jul 2025 16:34:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7258D6B008A; Mon, 28 Jul 2025 16:18:27 -0400 (EDT)
+	id 659406B008A; Mon, 28 Jul 2025 16:34:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 61A7D6B0088
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 16:18:27 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9A6A158DAA
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 20:18:25 +0000 (UTC)
-X-FDA: 83714785770.08.DC3222F
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 29EC520014
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 20:18:22 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=uhJOyUUX;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 587D46B0088
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 16:34:47 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D8B3B801BE
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 20:34:46 +0000 (UTC)
+X-FDA: 83714826972.17.0C4795B
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	by imf10.hostedemail.com (Postfix) with ESMTP id E865CC000B
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 20:34:44 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Tcnzx0dk;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf03.hostedemail.com: domain of jannh@google.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=jannh@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753733903; a=rsa-sha256;
+	spf=pass (imf10.hostedemail.com: domain of jannh@google.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=jannh@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753734885; a=rsa-sha256;
 	cv=none;
-	b=wqbjBV+JoeKr74kP0hf3Aa8Ym9SMg14zEiuB3OLJOmJEIEqifj+SaQI+5yBaxmw5dnInic
-	7djxvOjLVjlFW/myZ992ZWZXrEVu1ZfxEUBFWFNOmA1ebsut1KP7yFgLZLO/2NvVx8rywi
-	HAwg+xxRA0r5LvDJn3nsSZNwl2viKu0=
+	b=HMxAbsqUkbfu6Mz7ChZTyrD/CU0pVENSb3EYZaABt0mDggfEmx5NvJobsErvS9ag60Za++
+	zI/7NIZ6ihmCc5IlCAwiMM5DSh5trro19W2HK1DE2YhW+2aZ5SYplzq68YUoxg3maU4TY8
+	HAIVqt3T5mU1qFnMJ0+XjrDlhfg/rjQ=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=uhJOyUUX;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Tcnzx0dk;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf03.hostedemail.com: domain of jannh@google.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=jannh@google.com
+	spf=pass (imf10.hostedemail.com: domain of jannh@google.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=jannh@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753733903;
+	s=arc-20220608; t=1753734885;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=s0cHzSvxGHBD6anMEro7maJOsM/+ZwrFtNd3kS/G7GU=;
-	b=eVFAcIMYyqyNCBV2eBW9lSHHh19hSYhiN/zM/TGFId1rl1prBtvhPuQKOxQ9SZjGtonqYU
-	2CxIDPu63pzKSBQ7OeJjeTmegl/nOwsPK4X0f150xMI6eTmtTuuHaAoElFDKsmMXWBop0K
-	sC6drPi1pawzrc5/UtRyoynyIzqQR0A=
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-553a66c3567so334e87.1
-        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 13:18:22 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5cIuEYX17XiPrfyxPlwLzcOeQJGvPzMkyLjuQxbOTNU=;
+	b=ovnOoijS9pQZrlnMdRPICVagw+f5wlO7w0X1KQb/9LBxArPT9an6FF9RoL79597N1cRX0A
+	SAGgmH71W6w9fkVsFexOOuq/oN5hYvs8BuFbyTsi/1DOsqOyUukPdFOaqYJCEVYG7screC
+	549XiH+5ZqD97d8LT+Z+Zm2DmRSjB1k=
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-61548e5521bso601a12.1
+        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 13:34:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753733901; x=1754338701; darn=kvack.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=s0cHzSvxGHBD6anMEro7maJOsM/+ZwrFtNd3kS/G7GU=;
-        b=uhJOyUUXZpb3++KumtgDY+HYgsymtYerDa9nw9yHXpkLFYBKu/QBX2XNO59r9IowMt
-         /O8ea58RzjbnLU2yksH9tmzCkpudZXOCBaaPIrLrDgz9y1RS2GAe7icNt0GOkYBRhZwx
-         yX+LCgWEcrlOG865EshKd4E+SOxLDGZZBosYcqlmTxLY7LohM/76ugpBrtNlgQkOyWoo
-         jEfhVelWDyV4xN5NlTVn6U8jwyYJI+XILHuC/wk/aJ3t8RpifLrcgBxBfHPw2tNjspoi
-         HmdGu37EjHgs4eIbQAFLUW4f+E4mYymDMVA4Vd4Pz7wSG2s7w+5XmPc1lFxxoIqIxbfM
-         5caA==
+        d=google.com; s=20230601; t=1753734883; x=1754339683; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5cIuEYX17XiPrfyxPlwLzcOeQJGvPzMkyLjuQxbOTNU=;
+        b=Tcnzx0dkyGNejEuf3+bQdX/ZijOSezgN/S92cKNN9vFbMItXIswS3fXEkRlIqLpZdn
+         2CshGr0s0TjpfShtDKabfqw6XkZrUZEhYr1evpPJXPRBsN2CcZVYAV5lCgporJU0ZKcN
+         A595ZdQC9mX2W+l1PSjGlbPksSKzQbrarQxq3emkBdjcCkC1gIbMrAjaT8JG1IzSkGgC
+         XrEbpZvdPjc/BCWLUyIG6Ifv2v2Kp8SzcnXDIbKJnxPW7torZbIVXfOLvJojhrVTo+aY
+         d6uqzDL7DPtorX4f29Eju+YPUkYzm4JSOTVm3AD1LCua+gcOpL/IqACEy9mm1nIORvt0
+         4SxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753733901; x=1754338701;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=s0cHzSvxGHBD6anMEro7maJOsM/+ZwrFtNd3kS/G7GU=;
-        b=n737ARLJc6xhLNAMFz78ZHsyTEBfQFsnBhDrn5c4wu3YTA+CmC566R5D3E5PodgacK
-         RXbKTGoSBF1FgRKH5vHmKeqX9QDE5/agLUDicDYpyS/u4d+bO3FUARfczzdClpmT7dDS
-         +O/gEslQjY7/V791KTgCTdUsE1WEx+XYVcQu1l03+UfgIEtiHZVEuQY9WgWVk3GJTdFq
-         OaBC4YDJU0JvvsgAMxma5wUDDo2WwRMmjsYaIn1OSIjs1R9nC2iOqW8FfJfjCwqXWx3x
-         xhynaQlazR+x7ynrB9/egRmdGzSm5VK9tigrPsyUHxJ6rnH75Nv7nIqehG2ca2WlOl93
-         rZoA==
-X-Forwarded-Encrypted: i=1; AJvYcCWlcUWtBlbB74iyCid+E3W46vsv0vKTXZ5SUe6A7cACsxiUrH8EMCW3zTAAmzuGPhlkPJsIIazXmA==@kvack.org
-X-Gm-Message-State: AOJu0YyURAVbbtzDLTSLIM1/6nGgHFpfkffQms/I53eWQkWMzNKIE2My
-	rZSPwyy2gveZl+sijjHSDMRaxoDnZ/8MCmjpinRCwyVFjUfw3aMhDiqWqA/IjL79YgjhvSosJcs
-	+qOogjCho
-X-Gm-Gg: ASbGncsnmT6guTdT6lAETNpV3se3NAp0n5gHCraCSyz6mlcQoy0f8qo/4L5bEQ17egJ
-	at6xn2ZUtAOtfzGmrVVjSzWFykqzJHm6hlpz4VxBGy/2R/0xQBvOYhXZSOpSbF+bhcxLLtaaiSG
-	pm/1VdN0WBagfWDctpay6UbawK3dzL2PJPqoANW2TeWVWqH/8+3skoBd5HpDAXr25moiRJP0EWi
-	Z5O2D+FQ4S7dUNcRDEGyZ4pfMj9WMs3RtnxKDGs4dXTBJYY78tOM/lIFEeHF8fnxkXFaJPxt845
-	HEcZs6EvgsjAKVkRlL4M1C26+jfMDoGA3EX1V+pj0qObjiB+QxkcxeIERL/iJ6/hKpMWI3dkXpc
-	fqF2HPHWW65mpvJpq0LDj
-X-Google-Smtp-Source: AGHT+IHayh209RgU2OQ2Ql6nCDUMXhu0axdv21GxFZW8eJ+BL/8tzZhBPIchhicCa1tjRfY4ljX+Ww==
-X-Received: by 2002:a05:600c:1c8f:b0:456:e94:466c with SMTP id 5b1f17b1804b1-4588d6faea0mr193425e9.3.1753733519713;
-        Mon, 28 Jul 2025 13:11:59 -0700 (PDT)
-Received: from localhost ([2a00:79e0:9d:4:ec3e:2435:f96c:43d])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-458705c4fcfsm167139575e9.29.2025.07.28.13.11.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Jul 2025 13:11:59 -0700 (PDT)
-From: Jann Horn <jannh@google.com>
-Date: Mon, 28 Jul 2025 22:11:54 +0200
-Subject: [PATCH] kasan/test: fix protection against compiler elision
+        d=1e100.net; s=20230601; t=1753734883; x=1754339683;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5cIuEYX17XiPrfyxPlwLzcOeQJGvPzMkyLjuQxbOTNU=;
+        b=dYtZ1cyMI0GjbNTqZVmLEQf0DhWRFWMedaYLkDocauBzhBA/NsajFyDrJH119LwLAF
+         7parm0TaHj0Yez3MU5qlMNd3FT6YUE2S9puQ7ZT0vw35tfjJAeuxsCCqgCpjffxYXjOb
+         kiALexRy/VSBUW4H9kDcIVOrya2q645jmOeFCfG62kUJY5LfBGRKxaKXWB4ySHCss9oc
+         kCtmwAzXfw9bqCjdJMOOsLS6RbaVkYAq/8pYoEWnfg2bSxrVPlnTTfTO/RoNrFqt4g3z
+         Geb17EDKeeUnjP7YXK4FOGhioMg6C4Dac8WRHnF+BmRF0osL3cA/gc6SdysJ0SaR50CA
+         fFBA==
+X-Forwarded-Encrypted: i=1; AJvYcCUpA7dlzr1THn+OE4ruNRwknV0Po1Ra5Gy9aaEXNC5ovHMk8Q7H4YtZ5Jgw+XXrgdGkRKaK7YhT7g==@kvack.org
+X-Gm-Message-State: AOJu0YyGE/PrJ3xg5dgHax78c0mGuBBZ105UhKEUxBvOLC04fD1KyW7t
+	Zb8ww/0LYlJj1L8GwycjbnKnEoW7xObmIEQeawkSaf4V9oVIrpVnkb8qxOe5mNdJyByrMRiFlzz
+	A+ruU2F/CxDdZ0QAJmgY/pzNBLKMSvur0xEFE/+fVNIHIFMRXRss1Bbfp
+X-Gm-Gg: ASbGncsV7g4N/lFtVSGiSC1CnDXzuHWZQppw7V0QXyRsNc7i/niD9tHj3IOaYK5Hj/L
+	CKrfqacUBxeaCzQFr0HMd+0/hKZuWtzhBZrz1tuxOLhgs1ipHTT9p9sEnzndG6Hh8wGn/kmAz+r
+	3OWrh1ebx1C1LkAc+DlaL8ZeN9f6wV8VAaVEW+25QhFbAzRzOfgGUwKxutDtZLCdKRHFkaF8k9H
+	omYWP/gprp3GA3b16nnfYYmuaoiA29P+A==
+X-Google-Smtp-Source: AGHT+IGSwHNM1lMm6iRvrNhpLZM/44NLBcht7A9ZyhiiFAeshkQMQrkJ5OQp5Ak5DNIjWjjK+SMh7cZBKnKVJBMgOHw=
+X-Received: by 2002:a05:6402:2291:b0:615:3301:25c3 with SMTP id
+ 4fb4d7f45d1cf-61567304ce8mr13512a12.6.1753734883112; Mon, 28 Jul 2025
+ 13:34:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250728-kasan-kunit-fix-volatile-v1-1-e7157c9af82d@google.com>
-X-B4-Tracking: v=1; b=H4sIAInZh2gC/x2MSQqAMAwAvyI5G6gF16+Ih9SmGpQqrYog/t3ic
- RhmHogchCN02QOBL4my+QRFnsE4k58YxSYGrXSpat3gQpE8LqeXA53ceG0rHbIyWm1aVxlDdqw
- h5Xvg5P91P7zvBw59gk5qAAAA
-X-Change-ID: 20250728-kasan-kunit-fix-volatile-d2b9f6bbadc7
-To: Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
- Alexander Potapenko <glider@google.com>, 
- Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
- Vincenzo Frascino <vincenzo.frascino@arm.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Nihar Chaithanya <niharchaithanya@gmail.com>
-Cc: kasan-dev@googlegroups.com, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, Jann Horn <jannh@google.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1753733515; l=1506;
- i=jannh@google.com; s=20240730; h=from:subject:message-id;
- bh=Lw44dNghmCiq28TogKJdMlT60+fsL5APY9+7UOE+tB8=;
- b=C6lZbcU2X+AJW0vETjhTQhf3UGiePUoutVdYlhO5KePE7UNaPnUOl8JEhfpjN20q0CI8rf9es
- golCyt2pFHDBgyH8gSS+VI4ja5yi+aO2ecmGVWz3fDq3wNJKKFrjOeH
-X-Developer-Key: i=jannh@google.com; a=ed25519;
- pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
-X-Rspamd-Queue-Id: 29EC520014
-X-Stat-Signature: ft11hh6ctndg5aweh3p7ic4ufsxzwa88
+References: <cover.1753711160.git.lorenzo.stoakes@oracle.com> <386ba8fc99adb7c796d3fc5b867c581d0ad376c7.1753711160.git.lorenzo.stoakes@oracle.com>
+In-Reply-To: <386ba8fc99adb7c796d3fc5b867c581d0ad376c7.1753711160.git.lorenzo.stoakes@oracle.com>
+From: Jann Horn <jannh@google.com>
+Date: Mon, 28 Jul 2025 22:34:07 +0200
+X-Gm-Features: Ac12FXxZWrVG9lHiMIdLtQnur6MhrtrOas81mqHV8KcQZRHD1RU90YYt9ttm5Qw
+Message-ID: <CAG48ez2rQfWJwnpAspNr8OtLXgPadG55Re0KoK5ovBKqE3AcbQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] man/man2/mremap.2: describe multiple mapping move
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Alejandro Colomar <alx@kernel.org>, linux-man@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E865CC000B
+X-Stat-Signature: stwww8k4a5bpntr3xiemxruq6bu4b8ks
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1753733902-22271
-X-HE-Meta: U2FsdGVkX18E5WzQzwN57Av2ZCouhGyWeq24x/CPlwsP5bBWBJf0Uw5eCyIQX0ySg+QR7R29+vMLpRuEFmheUJ5ipG6ZccfWE535QsXbxz5/pTUABdB7L4hBRb83IGABqvicloL5y4/i8xl9gYvV3168GSnSVRXTyAz3VIdJcUgWLBvesuEbalmUIxUMTjwQxR05TWgGPZzMsQzeD1eWCWbpf+gIHuBnNoJaBmWIaFoItMkvaNGAMPVrge/rSECQWmH6v8u6T0GccsfA78p12cZVJlcFduMB+H6S2iUEkneiOO+L7pbos89WYq5z+V6V6pMqp9mFbCeP2NgHa36H7oQ9OPY2uFMEcVD9i08p3fzLUetkH41g5eUaXHqElFcbQUYo2NvaC+GUaejt2ot1BS66EApeHF7SsNeJ9ehvDt7Z/kxbxREfrTNKbsYx3fzUg15aUGfSQt2tpwe9hYXa3aqqV24HDgXD4gERlSks69sgC4dnms2LYo+9Vq+vR0yA+bwtaJmUq5A/5pgFp9/mI1UMo6uspje68mXkCM+/cwxwH6BNKQuT/+j2hDRGyjgUL9apzYlPR3WaVIbQUWYR4Xy5b/PMOb+MjMAbgdqBLJxB1IfaWu2fTKKIKks0N75ECFnVzmwKpvzFN5LF/BcIjk9thdkbVtPs2OaY4pyEWxX4tMJZ5uOHtGLVOZf0mlyEsWcl9OGfuIaQMzFEmnPRXg9i1ed6p71b/OFIxGf8mlCIAr8O8uCEWoV42XU3NdilllRX6dynwJCGuxxMCjfzS2g6netJS9e9Yo9lbm1nOcHVzxCDa08t4M4elMC6yhsiUftH11d2FsuAY61ilaLekbYfayP2MUCdw8SjCYg6OpyMBS5caJw6a6DDTMLxLg/kv8Vr7eG7NwOz2IiTJ0g/SGN1G3woh/slkL0DcOEkKZGl+McH4eKUweoaEUHgDIUDxzE0iP/pAjEXMljM/36
- XitF2qHQ
- MyfftzRKf37FRSxdsrFYV0cb1IRHyV4V+ZjEoU6QQI2FBWGhV0GB/VmUxPXU5Etfi4ffUEppj4svGSw8ym29qIMYGgBfDdCS3JUAR/DzlyG/bfyIvMBbl2c5xov+mgELbXO+cUmabvC/f9avflaNhAG2P6/Mwnowng7YFDtkBv+ybnIGoVwm+nu/BZqlGcDMFV2ukKvIfbft9ycXeT+TmxU5UD5p1vGAOaD83o1sauFA4n0UJ5MvBvNvvRZn4bltGkd00JbPVKHQb//z5uXQba73tzuYWkG549pwp06Xc/25RMcCvvfw+LbRLDD84Ejky/mgGXtCXHu3ao9QmVp2JWW45N4x2iJihzigbjfU947Yo108=
+X-HE-Tag: 1753734884-465278
+X-HE-Meta: U2FsdGVkX1+VCfIXUi8QgcxGeCAf1O74yeU4ZFmc4DL1YiukovycduHfwJpr9IFM/Iy7XNo4MsN7QI6LGjWpZRl+71TNUhF0QvZpijs2vqx1UHUJBnaKjt8EMOwKtgioS1JmP14+0Zh/ZTLRcHVSYluZzdd2CQH8lzxJD5rab9L0A2qGoKrZQb8zWH4QBxJveV1pMa9PlUtzFIqi0WZDsa2uW+iYXynB6RsyS9DlWFUv+u22fRVXj+jHSBaEzWdOIOIWuWod2oaCllWve07glca/3cMqiNHZ8N6J/FOOSpLfJkujlD6ZG66289VvwHEbfCz+TnaGFm5u4Qn4QuA50tAISJLQcDfSuffy5GQPK1bq4IQ0MJ9dHT/lX6FXq4jldzDiqPzFSZPaBAsJfCONjtP/XY7ICPujnlXoEDQUcOq/kbvdD400OSTnXVR1K76pZwQ2kiDLj5aZd7lmRxjmQfY/iX8KXP8Uqq4aaVUBfrgT8WfAM96ZLT+L0HwErLqM1H9iyk7d5EZOoAZ8QBULE94tZb3SsJvMrWQSjpCHqG0mz3Jia+Q1HjwJzWwaAGVijbKncSXOXqmG4RQtzFsbTP4J6DTjbPoiNKMDYHfN5MpBMrw0dDgvnRz2lGl3zS5YkPoP3J1s/AyodKhezlk9NchesjmEo1QMobpDigF4MW8n7l+Vy89pP+Hiagd8lPDgiNc6mRglzMQfwC8uv+To76jXgUiGRh+m527qN43O5dso3lmC7C3fJYvyKV84IEE0C0jazoY4CaPKCb7S1imH6Rcf0KZdwllEIHA+5uV6V/dmpDw2znUdP5Lq9fSfpwrMAcAGoF7lorX1Jyr0o03v296GB9YmZFJRlTPVmwur7j9cN7UcR0Mu+KGC88qfE0m+V19rOJk7WNQCD2VjvX6ub75vH0cec2K9Zqc0QXszbVpOwQqlVJUdAYzMTAcnpeDcLL6IW5NQg+JSn3gpKq5
+ tCJ9npgl
+ UlD21QNVSK5qO9x3xAYkbk3hSrczU7+0C9gRqsrObaYTKMK4BQy2Y2Ovm2qboP/VbYRk8rXJyba0oY+xZIrbEhGfF6evXUGuZNmfm+xrLWkgCnfqfrRcwP4PlO4mFLuvuFaUJSAPjUTBX/MoBTtQT4ouJEsjSM8u0hki7CE1UvoWv8DT71RiX6wf0gDwyxV+prxcHltUhsnPnfY6SLGioqKt1ixCrub6FBIT3
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,44 +118,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The kunit test is using assignments to
-"static volatile void *kasan_ptr_result" to prevent elision of memory
-loads, but that's not working:
-In this variable definition, the "volatile" applies to the "void", not to
-the pointer.
-To make "volatile" apply to the pointer as intended, it must follow
-after the "*".
+On Mon, Jul 28, 2025 at 4:05=E2=80=AFPM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+> Document the new behaviour introduced in Linux 6.17 whereby it is now
+> possible to move multiple mappings in a single operation, as long as the
+> operation is purely a move, that is old_size is equal to new_size and
+> MREMAP_FIXED is specified.
+>
+> To make things clearer, also describe this 'pure move' operation, before
+> expanding upon it to describe the newly introduced behaviour.
+>
+> This change also explains the limitations of of this method and the
+> possibility of partial failure.
+>
+> Finally, we pluralise language where it makes sense to so the documentati=
+on
+> does not contradict either this new capability nor the pre-existing edge
+> case.
+>
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> ---
+>  man/man2/mremap.2 | 78 ++++++++++++++++++++++++++++++++++++++++-------
+>  1 file changed, 67 insertions(+), 11 deletions(-)
+>
+> diff --git a/man/man2/mremap.2 b/man/man2/mremap.2
+> index 2168ca728..cb3412591 100644
+> --- a/man/man2/mremap.2
+> +++ b/man/man2/mremap.2
+> @@ -25,18 +25,41 @@ moving it at the same time (controlled by the
+>  argument and
+>  the available virtual address space).
+>  .P
+> +Mappings can simply be moved by specifying equal
 
-This makes the kasan_memchr test pass again on my system.
-The kasan_strings test is still failing because all the definitions of
-load_unaligned_zeropad() are lacking explicit instrumentation hooks and
-ASAN does not instrument asm() memory operands.
+(Bikeshedding: This "simply" sounds weird to me. If you're trying to
+define a "simple move" with this, the rest of this block is not very
+specific about what exactly that is supposed to be. In my opinion,
+"pure" would also be a nicer word than "simple" if you're looking for
+an expression that means "a move that doesn't do other things".)
 
-Fixes: 5f1c8108e7ad ("mm:kasan: fix sparse warnings: Should it be static?")
-Signed-off-by: Jann Horn <jannh@google.com>
----
- mm/kasan/kasan_test_c.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> +.I old_size
+> +and
+> +.I new_size
+> +and specifying
+> +.IR new_address ,
+> +see the description of
+> +.B MREMAP_FIXED
+> +below.
+> +Since Linux 6.17,
+> +while
+> +.I old_address
+> +must reside within a mapping,
+> +.I old_size
+> +may span multiple mappings
+> +which do not have to be
+> +adjacent to one another.
+> +.P
+> +If the operation is not a simple move
+> +then
+> +.I old_size
+> +must span only a single mapping.
 
-diff --git a/mm/kasan/kasan_test_c.c b/mm/kasan/kasan_test_c.c
-index 5f922dd38ffa..c9cdafdde132 100644
---- a/mm/kasan/kasan_test_c.c
-+++ b/mm/kasan/kasan_test_c.c
-@@ -47,7 +47,7 @@ static struct {
-  * Some tests use these global variables to store return values from function
-  * calls that could otherwise be eliminated by the compiler as dead code.
-  */
--static volatile void *kasan_ptr_result;
-+static void *volatile kasan_ptr_result;
- static volatile int kasan_int_result;
- 
- /* Probe for console output: obtains test_status lines of interest. */
+I'm reading between the lines that "simple move" is supposed to mean
+"the size is not changing and MREMAP_DONTUNMAP is not set", which then
+implies that in order to actually make anything happen, MREMAP_FIXED
+must be specified?
 
----
-base-commit: 01a412d06bc5786eb4e44a6c8f0f4659bd4c9864
-change-id: 20250728-kasan-kunit-fix-volatile-d2b9f6bbadc7
+> +.P
+>  .I old_address
+> -is the old address of the virtual memory block that you
+> -want to expand (or shrink).
+> +is the old address of the first virtual memory block that you
+> +want to expand, shrink, and/or move.
+>  Note that
+>  .I old_address
+>  has to be page aligned.
+>  .I old_size
+> -is the old size of the
+> -virtual memory block.
+> +is the size of the range containing
+> +virtual memory blocks to be manipulated.
+>  .I new_size
+>  is the requested size of the
+> -virtual memory block after the resize.
+> +virtual memory blocks after the resize.
+>  An optional fifth argument,
+>  .IR new_address ,
+>  may be provided; see the description of
+> @@ -105,13 +128,43 @@ If
+>  is specified, then
+>  .B MREMAP_MAYMOVE
+>  must also be specified.
+> +.IP
+> +Since Linux 6.17,
+> +if
+> +.I old_size
+> +is equal to
+> +.I new_size
+> +and
+> +.B MREMAP_FIXED
+> +is specified, then
+> +.I old_size
+> +may span beyond the mapping in which
+> +.I old_address
+> +resides.
+> +In this case,
+> +gaps between mappings in the original range
+> +are maintained in the new range.
+> +The whole operation is performed atomically
+> +unless an error arises,
+> +in which case the operation may be partially
+> +completed,
+> +that is,
+> +some mappings may be moved and others not.
 
--- 
-Jann Horn <jannh@google.com>
-
+This is much clearer to me.
 
