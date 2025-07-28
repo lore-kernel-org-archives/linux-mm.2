@@ -2,109 +2,124 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 57DB7C87FCE
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 08:44:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F2C76C87FCE
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 08:45:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D85CA6B0095; Mon, 28 Jul 2025 04:44:21 -0400 (EDT)
+	id 91B2D6B009A; Mon, 28 Jul 2025 04:45:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D36596B0098; Mon, 28 Jul 2025 04:44:21 -0400 (EDT)
+	id 8F2BE6B009B; Mon, 28 Jul 2025 04:45:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C24F66B0099; Mon, 28 Jul 2025 04:44:21 -0400 (EDT)
+	id 7E1B76B009C; Mon, 28 Jul 2025 04:45:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B1F5B6B0095
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 04:44:21 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6D6BE5643C
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 08:44:21 +0000 (UTC)
-X-FDA: 83713036722.23.27CAA8A
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf15.hostedemail.com (Postfix) with ESMTP id DA8A1A0002
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 08:44:18 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Z7aI8LO7;
-	spf=pass (imf15.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F9ED6B009A
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 04:45:34 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 18AFEC01BE
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 08:45:34 +0000 (UTC)
+X-FDA: 83713039788.09.8A9D3B9
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 99FF418000A
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 08:45:31 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=cX9YQp8d;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf16.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753692259;
+	s=arc-20220608; t=1753692331;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5z3VFCWPYn+gmTSxxeyfj7eJ1ITAoaTTjNvudffwKO0=;
-	b=lRCg91T0JQvqTI04L4Mb8TTQYlrByT/x9r6Co9ZaUDyghlWpHHFX8W4JYGPR1CSnXi1TvN
-	2MjbOTp5OkKPqiB+AwjJLei/B1jOE5jptrYthBqS1DkryEVFJX12ylXF4i1+1GbgH+daHF
-	7b3tK1IyJSI3+QXSZV2RvnOq2QjTibI=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Z7aI8LO7;
-	spf=pass (imf15.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753692259; a=rsa-sha256;
+	bh=xOI/nhsp0FQxSML+6RN9rUzsV1D1LgxO16j6gmYC+9k=;
+	b=KB+sThjTrlMbRNi50SmBBUm4KwuulBFfmwfKCMlSALJDnLTHaQOHTN6N3JVDKXxkoyLHJd
+	E61eH5qZYcTDC+6AvLI5OJpKzN+DdQ1PVd4Os1F0k/WxNNITp9bYXqxA3Vls3NcJ6XWQjw
+	2He8kiowP2T2eYV8MvLlPyOg4B1cCbQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753692331; a=rsa-sha256;
 	cv=none;
-	b=aIbALpbWwNUUSizYqqel9bRrUMh4DWipg27u2stVU5NcwKLOivW/PFSYPJdSFo2nm1mttX
-	rJPSK/Ww0r4BJNP3ceoqq4kRrVb48QfJ7CeDmaVncUG7s4Iu4G1pfx3qV9w+xFVrSpCmM4
-	UOMNyiMQ6LtNz0Q7pxMN6c5EYQXc6qw=
+	b=u188TpuFwbpicOflJVfcb0vY4oU5xx8zfsztUnlbzd7hREHJeIlfAkns+gvkLtB4ZXfs0A
+	AyN7vKgJu7u+VLGknQKZKvDZHD7wKzd+BlzrMVlAI5I4MrAuVEW9wfAZnOdxfRRbPz0Epv
+	Av+e6WJpvzDdaWSb4PTGvEngk55pyBA=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=cX9YQp8d;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf16.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753692258;
+	s=mimecast20190719; t=1753692331;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=5z3VFCWPYn+gmTSxxeyfj7eJ1ITAoaTTjNvudffwKO0=;
-	b=Z7aI8LO7JwauPGPdl4A6R6xRloruLiNcXTXq2a/viUAsBDd+7pcO0fSjaxHZxg1CbAESd5
-	5XoDsLIn9uke81dJGO3YYt0eLztQ+CG3M17gu2+IVWWtTMGLTLfz9uChZaEkoTO1tk9bDt
-	jLdkB1TTOQ5RPVZM+I7Rh+6h4OsdRtU=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=xOI/nhsp0FQxSML+6RN9rUzsV1D1LgxO16j6gmYC+9k=;
+	b=cX9YQp8d4tDASB7UilIfCtmzCAlddBxCXl7i+PzrwNN4eqZwyKsv1RBtRgrcokecXPrcoX
+	akR2FxFOMEEHOfS3/z8ThBMRV28L2HloZwbOS+TYwa8/v5x2EPUBq2WxFxBVwWskO86F3m
+	glz7EGwqdFscCA5r3NXwfZ2Rb6jNMQQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-411-Diy88BMuOM6cECr7rfQvCQ-1; Mon, 28 Jul 2025 04:44:16 -0400
-X-MC-Unique: Diy88BMuOM6cECr7rfQvCQ-1
-X-Mimecast-MFC-AGG-ID: Diy88BMuOM6cECr7rfQvCQ_1753692255
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3b782c29be3so1035430f8f.0
-        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 01:44:16 -0700 (PDT)
+ us-mta-446-gdBgZ-2bNoq_4_fKyfXggQ-1; Mon, 28 Jul 2025 04:45:28 -0400
+X-MC-Unique: gdBgZ-2bNoq_4_fKyfXggQ-1
+X-Mimecast-MFC-AGG-ID: gdBgZ-2bNoq_4_fKyfXggQ_1753692327
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-458881c3f76so4247935e9.0
+        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 01:45:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753692255; x=1754297055;
+        d=1e100.net; s=20230601; t=1753692327; x=1754297127;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=5z3VFCWPYn+gmTSxxeyfj7eJ1ITAoaTTjNvudffwKO0=;
-        b=baUYCzNuxOQ77q3Xja6UMuZYAUaN5+JkvyfqFRsbK3rzSmVsFUstPNSyT/8jz3OMHS
-         tesXIP3RnXUQBLciBklMy7MiB+6qxvVsnYkIRv/sWBZqJm1p3kBa9vDrUPcB2z3xotR2
-         LWoGyDjDhc7zglr1hM8w7fUaCQF282YK7dT1YnimeWywCbPb5CGIS55fUmEuLT3P6N1U
-         GduzD7M/m3T0FdHk03llGDAhCByTsMlHauaKXXHtLaNkFyApQo9J8z6w78aPzqNbzop0
-         zDlCKGATUi1vmJ4k3gKXjmFR+e37i5ZAEAIk3k9jVUCTfL7sLuTAhJFGaewgT4BY0ZB9
-         eydg==
-X-Gm-Message-State: AOJu0YxI9uGYC69SWAAr+pQJd1tUuAD+rQKmAk16SsEIzhpobo7iyO3i
-	pOxkL0DMkl7GVqcOuTzFQHRqyUcdSuOJCJiFaRFxl5x2EruLUkOe3szKE4OZwgJfUax8WjKkXfS
-	o4gaR1sNhU4Rg6KpcJ+Q7Bct7N01phM9dNctfLuyfsmT1FRWfVBjk
-X-Gm-Gg: ASbGncuobfarW3aaPkpon3NPIqpXGSBtCovKojJPuVeqVnDnYC7SK0+frVU7FYARgNR
-	+VNnb6dVTaTh+ftdvBcrT+G7sPLeIIw+mnnkThVzgRbagpT++uGcMBystWkV4KU7QKjsrw25irK
-	I9SO2KIegpSzYbywIViw2dmoJizUlykd1ZrOWcEZC4AUQsRNl84fizef9cs4cjAAiMJ66zci4MA
-	wGAqJr6+tJ+IZblb5Biv7eiM3xn3jDRdshu3YNxuiLcTVTlCZlW/KNzoV3tlxSO6gL9lOP+whym
-	BqIQ7W/oLlCOezKqFhmvlLnwxig0coRTzehRpt3B3jqJjqLkC9ddHa4v9jtsFoijM/c2WoWSxe/
-	sRC0G01MQDGURg/lPsSxJUbN3VMD51pB+yPCbdQo10HzmPn+tnjjjewqGdxX8rkUNhHs=
-X-Received: by 2002:a05:6000:3111:b0:3b7:6828:5f71 with SMTP id ffacd0b85a97d-3b7767269f8mr7807408f8f.9.1753692255081;
-        Mon, 28 Jul 2025 01:44:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHd6G4uLhKMUYr/Rv5FJNEPLTk3+fMSTOpDvXYMNFZlfI0HQaNGucKbuqA4Wirb9CWkg7bKLQ==
-X-Received: by 2002:a05:6000:3111:b0:3b7:6828:5f71 with SMTP id ffacd0b85a97d-3b7767269f8mr7807386f8f.9.1753692254590;
-        Mon, 28 Jul 2025 01:44:14 -0700 (PDT)
+        bh=xOI/nhsp0FQxSML+6RN9rUzsV1D1LgxO16j6gmYC+9k=;
+        b=t+elh8NqXcxjkt26AGZj97d5dRnuQEeHDlJeWTSUCo2FFzBit74Eg0+9SgT8SEqGSq
+         6P3L6CyBeRWNQMWvKOTclABoglju/55AddkKBCgYeZd5qBavGECnHtkZlTjk52nQSzRo
+         Q7ErzQJHN/+BiD332FB1wpwzXnMLusujk+KYygOZ3wcytaQ9rLP6Ds73qgtUwY7NsA4O
+         IP07MUPybJ5DjauAx2SREOFxGLUzYRJ6IA3FNXC3qvVSA2Vj2tCaHky27EKMtgkUgXvk
+         xbE+sLHZ6deMen3wfjnUOkM6fTL/GEmHWSR+RMHB0dp3oZCxWb9+O/rDzB58BWyGt7jW
+         5//A==
+X-Forwarded-Encrypted: i=1; AJvYcCXfIwzk3WXZlEVpvNVPE54GkkTh/uJMvejquXPY3efaWNmEyumEt+0U38t94WhVcwIJgqjNG1yQww==@kvack.org
+X-Gm-Message-State: AOJu0Yx6I/DrqhlGG9blXixzlMGNEXq6N2LgyfFVspLwz6YVlHoE4YBo
+	Kzq72u+3G7clsrHexTarFEVOV080oLM5WC4NiOVUV+nrC8QhXsTc2tVGv4w4aF21TCkFti2b3Tu
+	2uFnh9ujHwkokJX63M8ll0Mza8y+lYzC1o/eM4lDKghhHm1JHCuvg
+X-Gm-Gg: ASbGncshZFUCO8VKeObtFhRUtLrTxYI62q8h+A1IHXb9e6LieOZjKly8mX4/aym9qi5
+	8X83pRUhcoCIS6PEftpZN6p/Yg1p6ouknVZAwQSkNdHQHQXYuSo9cqIqQLXYUGpxtb8eZk7MTEW
+	xU8H5VWrC9mViUC/6xa9zOzXsN7wfWU2fHR+VMJME+isl+z/PXXqQe5pDOdxU39r0MYzcC0Ekyt
+	GeFPldMilYz+Tik/qX0ZPrTHFrWfRfF+6j9EM6IuGk1KdRl/YU40sXKY1IYTJmc7iucbNjLgHbK
+	R4hE8D4nTduYsCBsPIppTaKflWhMXGDnsaoJdlfBqcubh02FLXiz0lHo4Wkqpr0iLd0RQITAqAO
+	E7tIuHYF+ZxGSvlU8QzDURj3WMTzw3Nm2w8ilbN8wdDeL0+ElmRxelwQ/5sAiaElKchU=
+X-Received: by 2002:a05:600c:c4a5:b0:456:1006:5418 with SMTP id 5b1f17b1804b1-458763179bcmr74260285e9.13.1753692326825;
+        Mon, 28 Jul 2025 01:45:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH0ytbTFRQr+toJytfGYg9ytmkAf7bGWIT/KNRNPVSHmspPTjkBiFTwTnkeGrsjvDaNVuTIwA==
+X-Received: by 2002:a05:600c:c4a5:b0:456:1006:5418 with SMTP id 5b1f17b1804b1-458763179bcmr74259825e9.13.1753692326327;
+        Mon, 28 Jul 2025 01:45:26 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f47:2b00:c5f3:4053:2918:d17c? (p200300d82f472b00c5f340532918d17c.dip0.t-ipconnect.de. [2003:d8:2f47:2b00:c5f3:4053:2918:d17c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b7811b82c6sm6510602f8f.49.2025.07.28.01.44.13
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458705c4fa5sm151414405e9.26.2025.07.28.01.45.24
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Jul 2025 01:44:14 -0700 (PDT)
-Message-ID: <4057479d-6ece-49a2-b823-99748e8c9c35@redhat.com>
-Date: Mon, 28 Jul 2025 10:44:13 +0200
+        Mon, 28 Jul 2025 01:45:25 -0700 (PDT)
+Message-ID: <558720e0-f145-469b-89b8-c8d6ec41da0c@redhat.com>
+Date: Mon, 28 Jul 2025 10:45:23 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] Disable auto_movable_ratio for selfhosted memmap
-To: Oscar Salvador <osalvador@suse.de>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Michal Hocko <mhocko@suse.com>, Hannes Reinecke <hare@kernel.org>
-References: <aIcxs2nk3RNWWbD6@localhost.localdomain>
+Subject: Re: [PATCH v2] mm, page_pool: introduce a new page type for page pool
+ in page type
+To: Byungchul Park <byungchul@sk.com>, linux-mm@kvack.org,
+ netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+ harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
+ davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
+ john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
+ leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
+ andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
+ akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, horms@kernel.org, jackmanb@google.com, hannes@cmpxchg.org,
+ ziy@nvidia.com, ilias.apalodimas@linaro.org, willy@infradead.org,
+ brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
+ usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
+ almasrymina@google.com, toke@redhat.com, asml.silence@gmail.com,
+ bpf@vger.kernel.org, linux-rdma@vger.kernel.org
+References: <20250728052742.81294-1-byungchul@sk.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -151,21 +166,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  WBe5lqcozu9LpNDH/brVSzHCSb7vjNGvvSVESDuoiHK8gNlf0v+epy5WYd7CGAgODPvDShGN
  g3eXuA==
 Organization: Red Hat
-In-Reply-To: <aIcxs2nk3RNWWbD6@localhost.localdomain>
+In-Reply-To: <20250728052742.81294-1-byungchul@sk.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: fubghcnqVoZJ8dNxTbl6mqHPP-gpLZmqDn9L13blWcY_1753692255
+X-Mimecast-MFC-PROC-ID: 3Dad1lxgpwxFxmHJRAuew_IZNelIuCPCP4t_ip6-z6w_1753692327
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 99FF418000A
+X-Stat-Signature: w7x3q3md94sr88sazz4ewu6jp7druzsa
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DA8A1A0002
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 51yj41zicshhitknchtyhbucci3is3qw
-X-HE-Tag: 1753692258-438556
-X-HE-Meta: U2FsdGVkX1/hwmonR8e/HgzdjLIlWzm/w3FM8s/CKNH8v3jrMP+LB6KO2qL6AofTzuhI61vkyH7ycJVTCd1doxiPfz/beHxR+BU12v9j1ZAiLlkAMIPsLECh+/YGESTf12JRDaU9u/P/bt8h6tejMaUZ8cvthe73Xx4SJtVfCbHfOyuvq9S2n7ZzGFSpSVGYTFa7EbcBLPDvU+8lnxVBwtg1HIY/0ztOdv6XVoEPpWUr2DBc/leLn4rEDE9C3ylylbkeQ/WO0C6HLdmo5Fc/G9zMN0iv/MPOjCzZ2shGT6OXto1LCUN/AHUz2CcI8WSi1bNknwxA0n+f3TV3+4Ua0yI6YSwdKMmf9ybnLeQciENKgoNdReCPgP9NeOnrQdtSGHC2dsEbdxFSavf/eSJVeOrTf8aml03Ek5Pxmq+nrX+IXzzvA5DWxvRcK3xZKLAD3Fu0HByjXBY2QJBWYRwOZWLDErX4t2uDMLtoctGWtFYR/G7gvxV5G4DefmqLuqjNJ53CUkMT2i7hZP7ELCd6jJ2dmJK7lAY3gsStwlfFm3jQfOC9kWRxT7IwvwBmEejdyng/lvngV/cqgEOhbeWXlhobM5T0ncyGFB1+J+qYFR6STqB02hx0VHZTbDzL6qMLL560wtF9ZD5FuX3V7T9R3a1d5UsK2VoW0KGVc7XQTP/7frK9VnXYtLetscCYvJ4YC16ZQzHO6pAOleDNwuF3p+OICjJN5/EEM3jF/CPN2IjYgVnyuqcilOX4zSla55VWaiejCKxbdIfarJHKUrueMgqYdPz5QE34k9bHkevUPvT23WDfTjjPMasfGem8lCpo0G5rGC2OjmJcB42/qx8AEJIhO5LJ4sqF5zvMf6ne+TihkvciosLwhlAw49plI2qwhGxl7uoPd70XPIlzDN1s4mtRZI8F2YKw/7gMH9t0Hxb0D5RiDPHIqq2EdVBlJfhaRCTYElrMQvYvBp7ZMkT
- 6kbtrdRw
- rBszD2nUqlhtPZYZxq5N0OESxAHoMDCXNqdDZXSUZldde9Iwg8wvUiLwa4d8gH5nXtEfPRxFfb9/WIWTdj2dpbAgZtJvRcSy5R5i5C/jx1zxt9YmSmGs/uzteZtnP5peXZmHfmRHKm9maF+g7nHVy1aG6vu3ifAhyvRyxE3LSjfvnJvVUXIinpdA4f9N4MIlAaeC5mcRDsDd46K7jW91QdAub4AJkqRFNmbEixuiEiXYjfhhaBuLXJmDIhc76GDPjQlk5qlsT6MCl0djws0+lDdUoz/8vZymNM7WRMbEsCymEbafRemLF78lnDvTxWjNlYOwxKvqSwhWuBhYPILxFVaLuCniBj7Oy6mozoegZH/LRQGXF0RWqKlvxx/mblzaGMVZGcaIaRp7ORmrETavFYA8aFoYXMDjqmamkJkdkrevPoVX4smtHzVqNzoExkll9aJVGHc6uxSaa/cZnQwCiTKwhwRoTROX+JNjYh6ZHDb69yIHxIorNxNDJztxEcI3b1Yo3
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1753692331-51939
+X-HE-Meta: U2FsdGVkX1/J10z/N9a/HQUWjI/t8BdKgIlzI2ZUnLvWrw9F0LQJId4qosOG6ff4FELxUbff5EBU/LqTldSAzkXWTk1sCwGYNkU/MFJsfB6BdOlcGMEyEw3p6tWWcepf3GUfRkWyPxe3E/CeJPmDxaz0/ITJMovC8Y7rF9ze0R8jiUTStZ3xkLyl3xURepw45WG2HSmzZhPu1SXXzlniJSFqvYpAML+n1LC/pZs2pa2QkvpAhfPl+sy15BhyhdANAHao8Io6WVGXbRESWCOhT1N9HBpV38V1xEh2iudwArVqx4K27Om0LZN0UFgzIgwqPQ7c8W21It44CviPhi+BML/4sEcFOjQrfx2P0RTjlJJqbOBWrowgdDPBgmV2wb79h4/92lKPLnKeZxkeUBl6oVu9EK7DOepRrz2TEp/YrN7qNKo6rKJpjy8FIgTOvM7nfWxrbbDoac4Mj5lW3xAfoud5whXGWQeUFt58NtqaRIQg1+eAxuPbuWEQQed24wJyzKCb0eyJMLOrCcWVRQnzzsKu58mBFX5D5O33CAA6HH+3R9bxdP4WePW57NXuzryvtB7RvCPwfJno9wvX258GY1JnPZ4Sgyg2si9I0laiXPB034K5DKXY84NM1hEVNHbH3D6F17CH+ToANiyigaD2CY5ltBFUowmIFoUjsybnvMDFRiJdgH7+u0vxAt9GfpCcofkRhrFNDXxa88NW8vIFf73MgTTunWRAnvyT2pJfUWBh2+GFf9/aLqAoKn1boN5pNaWflLsnB+O1QQ/Q2/063PUUvM1dIPKoj/J6FDg6bCvDDsFzwE1OYohZDxZ/KfCQaTJzSHdAsfoZlJ6hLP8eZFOTIO5e7i7/kUlMc6Z8jU58lQJBz16ecqj448B0i2CJhKEi3CMtqP9l6fsQ5ECkX6d3GQWwbEH5CV6XcUehQ9upbFxNHENdlRyKUVrc+lh1bVB9ZWXiIOD+t1axdc8
+ HqjvMmDz
+ vERRqzAYok7T7Y5+18z6/m3xfDnaKAkrm1Nxg9QulC8gZhkdvFpKEfZRlU1sVWFkzs7OxhZ4EwpCbKLltehHw46X4ukTIg0IaDY/zI36MIiT/lvlDFY+xE9KgrmC90dS/8+LK1RGTNczpEnS7sq84UrJS7+dxP5huXs4yiPs8md42phakgkWcZMLJWchgByLhgZ3wP+b/MJ4RysscIKJAIOha8iPF85Y8aO3eoGfy5+hhUVhF1e3iWl6GvrsS8K4vGJqXDT7vHQCY8BE1GEi6JF33LkRssdar3a69UQek83NjqFi0mwEUb1a+X83aFocPqd6ohXw4nKpJFvbJwHqwz49SLPMnNq9YeDJMm5k77D2uxKKUdZAwqTxNlOlDsx+uBvxWJiUYqR5POdn9KIqo8rSCqriGy8yGHpavtNQSSRhQP01oHvYFM207UZB3R7NbAb1DH5oPi/pU1/coZMIUlE3eQ0WQtxLjQZA6CjkZ8HPpU+oulZ8NZTSSF1S1SpCZbMk1Uofuf0pU+1Ol+C6t0qt+ZV45udHnKRUJ5NqRPYdUWxC12SgfQiS5JDWkNUTyh84+EoAR9kNq7j1BS9ou7F04ydYeDChv1Lo1qN9h+4vpOAwuY1JFrEG54cKVW5pwBkaI0ikOYJNzwwAmwhEL5gkEgeZvQ9dPowdp9XwDD1fxgdl/nScXc+6HvGR2X5eXuBqm0s2PYyCj2vO3J0mNYYnHQg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -174,74 +189,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 28.07.25 10:15, Oscar Salvador wrote:
-> Hi,
-
-Hi,
-
+On 28.07.25 07:27, Byungchul Park wrote:
+> Changes from v1:
+> 	1. Rebase on linux-next.
+> 	2. Initialize net_iov->pp = NULL when allocating net_iov in
+> 	   net_devmem_bind_dmabuf() and io_zcrx_create_area().
+> 	3. Use ->pp for net_iov to identify if it's pp rather than
+> 	   always consider net_iov as pp.
+> 	4. Add Suggested-by: David Hildenbrand <david@redhat.com>.
 > 
-> Currently, we have several mechanisms to pick a zone for the new memory we are
-> onlining.
-> Eventually, we will land on zone_for_pfn_range() which will pick the zone.
+> ---8<---
+>  From 08b65324282bbe683a2479faef8eb24df249fd18 Mon Sep 17 00:00:00 2001
+> From: Byungchul Park <byungchul@sk.com>
+> Date: Mon, 28 Jul 2025 14:07:17 +0900
+> Subject: [PATCH v2] mm, page_pool: introduce a new page type for page pool in page type
 > 
-> Two of these mechanisms are 'movable_node' and 'auto-movable' policy.
-> The former will put every single hotpluggled memory in ZONE_MOVABLE
-> (unless we can keep zones contiguous by not doing so), while the latter
-> will put it in ZONA_MOVABLE IFF we are within the established ratio
-> MOVABLE:KERNEL.
-
-It's more complicated, because we have the concept of memory groups.
-
-Dynamic memory groups allow for a mixture of MOVABLE vs. NORMAL within 
-the group, static memory groups want a single type.
-
-Hotplugging a large DIMM would online it either as MOVABLE or NORMAL. 
-Similarly with CXL.
-
+> ->pp_magic field in struct page is current used to identify if a page
+> belongs to a page pool.  However, ->pp_magic will be removed and page
+> type bit in struct page e.i. PGTY_netpp can be used for that purpose.
 > 
-> It seems, the later doesn't play well with CXL memory where CXL cards hold really
-> large amounts of memory, making the ratio fail, and since CXL cards must be removed
-> as a unit, it can't be done if any memory block fell within
-> !ZONE_MOVABLE zone.
-
-So, user space configured a ratio and the kernel does exactly that: obey 
-the ratio.
-
+> Introduce and use the page type APIs e.g. PageNetpp(), __SetPageNetpp(),
+> and __ClearPageNetpp() instead, and remove the existing APIs accessing
+> ->pp_magic e.g. page_pool_page_is_pp(), netmem_or_pp_magic(), and
+> netmem_clear_pp_magic().
 > 
-> One way to tackle this would be update the ratio every time a new CXL
-> card gets inserted, but this seems suboptimal.
-> Another way is that since CXL memory works with selfhosted memmap, we could relax
-> the check when 'auto-movable' and only look at the ratio if we aren't
-> working with selfhosted memmap.
+> For net_iov, use ->pp to identify if it's pp, with making sure that ->pp
+> is NULL for non-pp net_iov.
+> 
+> This work was inspired by the following link:
+> 
+> [1] https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@gmail.com/
+> 
+> While at it, move the sanity check for page pool to on free.
+> 
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Byungchul Park <byungchul@sk.com>
+> ---
 
-The memmap is only a small piece of unmovable data we require late at 
-runtime (a bigger factor is user space page tables actually mapping that 
-memory). The zone ratio we have configured in the kernel dates back to 
-the highmem times, where such ratios were considered safe. Maybe there 
-are better defaults for the ratios today, but it really depends on the 
-workload.
+Nothing jumped at me, so
 
-One could find ways of subtracting the selfhosted part, to account it 
-differently in the kernel, but the memmap is not the only consumer that 
-affects the ratio.
+Acked-by: David Hildenbrand <david@redhat.com>
 
-I mean, the memmap is roughly 1.6%, I don't think that really makes a 
-difference for you, does it? Can you share some real-life examples?
-
-
-I have a colleague working on one of my old prototypes (memoryhotplugd) 
-for replacing udev rules.
-
-The idea there is, to detect that CXL memory is getting hotplugged and 
-keep it offline. Because user space hotplugging that memory (daxctl) 
-will explicitly online it to the proper zone.
-
-Things like virtio-mem, DIMMs etc can happily use the auto-movable 
-behavior. But the auto-movable behavior doesn't quite make sense if (a) 
-you want everything movable and (b) daxctl already expects to online the 
-memory itself, usually to ZONE_MOVABLE.
-
-So I think this is mostly a user-space problem to solve.
+for the MM bits.
 
 -- 
 Cheers,
