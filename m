@@ -2,101 +2,84 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BDAA2C83F26
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 17:34:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 26F9AC83F17
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 17:37:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 530BA6B0088; Mon, 28 Jul 2025 13:34:33 -0400 (EDT)
+	id AB3306B0088; Mon, 28 Jul 2025 13:37:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E1776B0089; Mon, 28 Jul 2025 13:34:33 -0400 (EDT)
+	id A3D276B0089; Mon, 28 Jul 2025 13:37:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F75A6B008A; Mon, 28 Jul 2025 13:34:33 -0400 (EDT)
+	id 92BD86B008A; Mon, 28 Jul 2025 13:37:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3032C6B0088
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 13:34:33 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D611058A19
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 17:34:32 +0000 (UTC)
-X-FDA: 83714372784.09.182E7F0
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 3EFA82000A
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 17:34:30 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=lfmn6Cqk
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7EDB16B0088
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 13:37:10 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 020FA13393A
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 17:37:09 +0000 (UTC)
+X-FDA: 83714379420.02.848B7C8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 64BFC16000B
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 17:37:08 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="G/hWdlN3";
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753724070;
+	s=arc-20220608; t=1753724228;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UqDXWAxgebVs6SjAbN0f5M+jCa7IiTLdF4RA9QqoSVg=;
-	b=jxQNfz8Q4bm+oznCGkChhrxiuH0Mi9tOvBk5pdM3l5D2I5HjOkl9F1LzUtkqLyiKt9wbqu
-	nNWEZ8bJ2yHzxwOFvQWGI/ZlvePCHYfbLSG24MRSg2NAjAnAM11nobLmT4QgGSvyk3LnlQ
-	LTe2DgVu9t38txVfq+fhk4xA86KzvIQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753724071; a=rsa-sha256;
-	cv=none;
-	b=RDKUILf7ysrpMNYjTgAU8UeuHiiV/Ygd7S+2SeUEkuHFjoSSUFjxjrIFp4g96c80crwlSr
-	L3Ywr75FEXBAxZH/sdGGgu8O1gK2G4+MypdWE+mw+mh+Au4Ijr6Y9fhKokZ4UlB+8rpFsf
-	kNxfhF7mUBrmtAsKoQxF6xhOKnamI48=
+	bh=cSK9HE2m4u6xZ+c1BZrTVF4ULoOPWicTEKQ9AdDTKRQ=;
+	b=1AuCKTAUY2rBPGkijfcleXN2BHtfMONGLV0FYW1CpG56GRBth34Y6t5OpTyrFIrDTd0P5J
+	1dhI8RbnLro6boi+e8gpgdqiT4Cr2K6SmMommXhhjD0uPcogWZI+2/BPTgE+2YWMofFhCJ
+	HAsEpwuBVO7mcQ5K2pOLfPqNkGqcsd0=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=lfmn6Cqk;
-	dmarc=none;
-	spf=none (imf13.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=UqDXWAxgebVs6SjAbN0f5M+jCa7IiTLdF4RA9QqoSVg=; b=lfmn6CqkKhTXqOeyMQ1VarfYAP
-	+btVaS1jPbtSnxWAdty5IIUiuM66govjO0Sho7Y5dOueCDjX+SJWeoUMPxnpt/2wNOBG5dB0ul1vZ
-	k0spiHeceACX7KDWckEZiOpcS0Pkl0nNeQkYeiJ5uIIoc1YIY5j+RRMUll5+eO030vwbcfYsYlxS6
-	UEyq5xgKSq+kG84qqFMi0Mi7+E44j42/OrE2WKnwF8iMnVH/yC+89p/iq40irvIkSHu3EZ92qipMX
-	JU28Ggr9sfmYB0E1d5IHq1YV+65QDsyLmTOJH0as7gLtBGgQh9ES37Dc5aVTW+S4EQ27GhNFPBrzl
-	XbO8XQNg==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ugRk2-0000000FyPy-11wc;
-	Mon, 28 Jul 2025 17:34:26 +0000
-Date: Mon, 28 Jul 2025 18:34:26 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: "Darrick J. Wong" <djwong@kernel.org>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	linux-fsdevel@vger.kernel.org, linux-mm <linux-mm@kvack.org>,
-	linux-xfs@vger.kernel.org, open list <linux-kernel@vger.kernel.org>,
-	lkft-triage@lists.linaro.org,
-	Linux Regressions <regressions@lists.linux.dev>,
-	Miklos Szeredi <miklos@szeredi.hu>, Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <liam.howlett@oracle.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Anders Roxell <anders.roxell@linaro.org>,
-	Ben Copeland <benjamin.copeland@linaro.org>
-Subject: Re: next-20250721 arm64 16K and 64K page size WARNING fs fuse file.c
- at fuse_iomap_writeback_range
-Message-ID: <aIe0ouF9tsuIO58_@casper.infradead.org>
-References: <CA+G9fYs5AdVM-T2Tf3LciNCwLZEHetcnSkHsjZajVwwpM2HmJw@mail.gmail.com>
- <20250723144637.GW2672070@frogsfrogsfrogs>
- <CAJnrk1Z7wcB8uKWcrAuRAZ8B-f8SKnOuwtEr-=cHa+ApR_sgXQ@mail.gmail.com>
- <20250723212020.GY2672070@frogsfrogsfrogs>
- <CAJnrk1bFWRTGnpNhW_9MwSYZw3qPnPXZBeiwtPSrMhCvb9C3qg@mail.gmail.com>
- <CAJnrk1byTVJtuOyAyZSVYrusjhA-bW6pxBOQQopgHHbD3cDUHw@mail.gmail.com>
- <CAJnrk1ZYR=hM5k90H57tOv=fe6F-r8dO+f3wNuCT_w3j8YNYNQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJnrk1ZYR=hM5k90H57tOv=fe6F-r8dO+f3wNuCT_w3j8YNYNQ@mail.gmail.com>
-X-Stat-Signature: e69h4fzk49143i5qgy896p3wbwnm3zu4
-X-Rspamd-Queue-Id: 3EFA82000A
-X-Rspamd-Server: rspam10
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="G/hWdlN3";
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753724228; a=rsa-sha256;
+	cv=none;
+	b=Rxf/fyE0SWgHpvMg/yDAcnMNoYnjNg/qSTGiNtXVqqtv4uDO7A7kyBHzQC1bCdnLVexRKg
+	H7QAAjlUQi0aHMTFqjiAdnsqHpulnUFNG2RRnAMpBQ6R49C1Z7HQ73r2ywQcpEe+outjla
+	XsaplnLYNMnNw8SaDgW/UBScMkLXLII=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id ABCD1601F8;
+	Mon, 28 Jul 2025 17:37:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 419F4C4CEE7;
+	Mon, 28 Jul 2025 17:37:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1753724227;
+	bh=cSK9HE2m4u6xZ+c1BZrTVF4ULoOPWicTEKQ9AdDTKRQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=G/hWdlN3yvstdBaKkjqftnG5aXqBHaOnE7r0j34FA7NyOMPgE1vQwWR9vZ3i1Vhw+
+	 ugWzpzuAfOIITCHW4HcEtYi0PVUsaLvkVTDv2vVsetMEk//3yw1VXlQogleFQAtYJu
+	 SfDGaTS35MhuYzncnwRlfbQKgg5aUsqKnfqv26gY=
+Date: Mon, 28 Jul 2025 10:37:06 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org, Marek
+ Szyprowski <m.szyprowski@samsung.com>
+Subject: Re: [PATCH] mm: Update MAINTAINERS entry for HMM
+Message-Id: <20250728103706.d3d0b968f9e092193a1ae196@linux-foundation.org>
+In-Reply-To: <20250728132128.GA36037@nvidia.com>
+References: <0-v1-a1df5219c7a3+1d981-hmm_maintainers_jgg@nvidia.com>
+	<pn4672gpfjtov7mbnzfhzdz6zdvb5f3sxaeo6cctvccvzn2y3m@bzpkkvmqnpm5>
+	<20250728132128.GA36037@nvidia.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: i3jhga8gdzufgnob9abrn5hgy5ioe4rc
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 64BFC16000B
 X-Rspam-User: 
-X-HE-Tag: 1753724070-318810
-X-HE-Meta: U2FsdGVkX19TnlOSPAuN48u0BphOC63WLatoYEa6twraRKmFMkfhmUqsBMK3JmYAC5SC9+QzPirCn9t13XpG6uYT0vgaJ2pWDKhwFae59aJJbmsYzIMTsAoHw7gehqJ5Zw0ds2/FHS7isyDsS80KWRIaYsym9mXNB2YAJA75RFG8xMmzVzMQefTC95K+squUIseSN6pDrDJo0Sdf1e2zvP2b7aYq2DZ5hCu7J6G+xeYclAtlnVZjlsACe36RPJyBbOCiIlFSfEcZ10hZT+LBwK6PeloFrVPNEHR0OtHyqVf/YH47veCqBo8qrEZ/yMnKupiGzpPFFFCM1onJGaylxAIL7wfcB7sM8JU86XzGs/0nQFY65VyH6nQdxXTLwkYy5jqoPTrUBFP7wd+RPsJ5ncCnjg18PqAUONYhNacsAUeU/JztFKYiyDVW6KD4DVFMj8b8CstnDihvftfZrjV68bnzvwnb2wCK5idoFfCLZP2Pfl9DaQY+lxE8/6hWZaMiKN56F3FoogSp7zBDxzoFutm6LgcBJ8vGXq0wBQcVmn6NrrXd1Oxl8gsALqo9Io+4YF3FhGgzjjGa5Bizz/M2WE+fnhd5iTBDdEpC941lFr3sEprCz+PU0oMtbODqJnMd3nytosyD8s2dgyXMrYgjK1w0pFrPdM7UyfdVxSaduZ2lzufCoyHAO1us3E9qOUf/vLWa2NWV4TPGBoXuiwfiOJZYua3pPoGeOWO5rdUC//OPWhGJRL/EqY3a+mKQJLODn7x+590VpxrOJm1JLlG12Y/OoXZdVZnLh9V/UfczuNKHXOomFvycL7L15Xj1c6MPBjR4ntx8U+GWphOJet2r+IXsh0dalt+D4/iQ5a6r/wxrCyX+kw/qbgsigsKDL01v8voq6KpMK1z3PD+cfwV/B78E7nT5x4OllT52FZdwNlqT550pzCXD2/6JbnnrUWoPWsrOJThpldHBRDHoPsY
- 9T9kurSd
- P4njxRnnBouQmpCiPXpsmfcvbvTYi1CuchTh2qddGZnYm/Xi0WQ4q4/uP8M7qLZIh+WsFpA/lAkNU/CYsyLrJZescJvAEZLrQKDOjQPZwCrNqjzeQGDTMiHSIRqa7yejGTkpaSS6qViMMVRq+Wt9fDs/cOrYGpQNz91adpxhMs0D/aQNa+/b2T5alSpMool2j3kbWIOufPXL9VQKoQaTf99veD6xAGPni9HJlhu40dopE6No6ojdVISW/z8cXJe3+zUbm
+X-HE-Tag: 1753724228-134346
+X-HE-Meta: U2FsdGVkX1/eZVrRVo2rzec45tApbvSvl0Uihe1vO/ta3mULqiRPqOnb9ZR5zRBlssn3o1EIjAtp1v9b1+lovwHWQ0dUbRKu1E8I285oyInLNBRmmrwLXtMderPnl2m8npXH/BZ7d3ocUG0Tz7v3F41mBQ4FBTYgxiH4B/DeuH0icmgr7rJ8uChCtFiTaTPkxIJAWk2BfbroY72cV/KRUm614UxWzm3qIdpIV0MNsQAsJvzthH8uHWqy61XtC+AMSGlyRwVFojhCIensGVJ/HHmnByaObyhPsv19ebP816/7eXXdnaxs56dBbr/Z+NSIg3YgUNb2YJXuB6DLm2DCUEiFQE0nXVK6sSOsk6dZT6axZauBf6V94puUChdNUipTf+b85tcxqBSUWLIE9K9QlI4MEUQm05z3O0L8y2iOekWUd0mrxbt55/TGzyXEq5WoAFHKGlTFxdFB8rSrRZY5dxOiWWOKmtVnyZ3Iu+wEfoJi8mAMRIXahWVmR9PSTsar2sdizJY/roxUTfrsMhDsT/hqxELzpYakOSjVX9mxL+yy70JZ+Gjfn6mzQJGJXFYUxJEO0xqRdrtj7Em6oqyf5L6vJsIMWjMgO1WPOdToWL8aQpu1UwPOAhUyVAmtomGMoLmubYg6lirPQVChgU18vTgJUX8Di4E9gFEZVUU3cTsIUxdzV9oxyCKpWPkByAk8kapm1pM1ZptmaCLUHnk/L2gRr4ROw9w7yfkKVKz1dFSeDAGp3009BoQYFGTLdkzG+Ck2LZGNZEiPLTseo31vHeZp3iAwfWMsfxa2cOukRh37jJI90BEK0nreLS2GJZL8Xtsh1PmYSbWFjSIiqELNSf24rE+zkzp1O3qQlk+Gh2YplZlIHjrA5HO1UuaRcujEd/yUqbP2rSs9Q2hXKzW1JPjhoHGNpImUBAtcqdBdUDA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,18 +88,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 25, 2025 at 06:16:15PM -0700, Joanne Koong wrote:
-> > > > > Also, I just noticed that apparently the blocksize can change
-> > > > > dynamically for an inode in fuse through getattr replies from the
-> > > > > server (see fuse_change_attributes_common()). This is a problem since
-> > > > > the iomap uses inode->i_blkbits for reading/writing to the bitmap. I
-> > > > > think we will have to cache the inode blkbits in the iomap_folio_state
-> > > > > struct unfortunately :( I'll think about this some more and send out a
-> > > > > patch for this.
+On Mon, 28 Jul 2025 10:21:28 -0300 Jason Gunthorpe <jgg@nvidia.com> wrote:
 
-Does this actually happen in practice, once you've started _using_ the
-block device?  Rather than all this complicated stuff to invalidate the
-page cache based on the fuse server telling us something, maybe just
-declare the server to be misbehaving and shut the whole filesystem down?
+> On Mon, Jul 21, 2025 at 11:28:27AM +1000, Alistair Popple wrote:
+> > On Fri, Jul 11, 2025 at 07:34:44PM -0300, Jason Gunthorpe wrote:
+> > > J=E9r=F4me has moved on from RH and has not been looking at HMM patch=
+es for
+> > > some time. I've made the most changes to the core code in the recent
+> > > period and Leon is now working on the HMM side from the RDMA ODP.
+> >=20
+> > I've spent way too long staring at the HMM code, feel free to add me as=
+ a
+> > reviewer.
+>=20
+> For sure, can you send a patch? I think this got picked up already?
 
+Yes, it's in 6.16 as d367a177e2e4.
 
