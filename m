@@ -2,108 +2,136 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A3CE9C83F17
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 20:47:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 84E2DC83F17
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 20:56:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44E256B0088; Mon, 28 Jul 2025 16:47:01 -0400 (EDT)
+	id EE6A96B0088; Mon, 28 Jul 2025 16:56:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D7AA6B0089; Mon, 28 Jul 2025 16:47:01 -0400 (EDT)
+	id E97596B0089; Mon, 28 Jul 2025 16:56:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 29EDB6B008A; Mon, 28 Jul 2025 16:47:01 -0400 (EDT)
+	id D85EB6B008A; Mon, 28 Jul 2025 16:56:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 11BA56B0088
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 16:47:01 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8571458D79
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 20:47:00 +0000 (UTC)
-X-FDA: 83714857800.21.1914C82
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C8C156B0088
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 16:56:03 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0B51B160437
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 20:56:03 +0000 (UTC)
+X-FDA: 83714880606.10.F294E2B
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 67BBC80009
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 20:46:58 +0000 (UTC)
+	by imf30.hostedemail.com (Postfix) with ESMTP id 877E38000A
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 20:56:00 +0000 (UTC)
 Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ArcG8R8S;
-	spf=pass (imf30.hostedemail.com: domain of dhowells@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=dhowells@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BksYy3et;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf30.hostedemail.com: domain of alex.williamson@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=alex.williamson@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753735618;
+	s=arc-20220608; t=1753736160;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wg5ivtWALNkMBQeNS8mFnEKygIvKZPICqN0FK/djSfk=;
-	b=e3jlkNrWqw5ZeMN6j+teyV/K1bh76QuGKR6g4zpJ7vmXMYCifEw8LbBSQVivKC9kzVZkBJ
-	ocsPML/n6Axje68QpHNG9j/wcfnXheIIJMnMPaxijn4a4W+2WhNutj/3jLqr1XQ5f3U9qT
-	Pydr2cnNvuGwfnm7YQku2AaW3raPu2E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753735618; a=rsa-sha256;
+	bh=3lAhpTjpbvFQu27uIQ7LZXIQUIKIfZHhU7pyfNlOjpc=;
+	b=SSFDTWKKKYJxlFvhYcO2qacB8P3Z97nJyYdP6+K9L+GWlC5L6EOPK9ht5dfCEKOqD+GTU7
+	5SlcwoRGQIbPu9wzIOqBjG6ipnM44u/20PhVsrDiATPA70haNuhpug7++TFeMY/NbvBqmF
+	mb64IWGobOC/jE/Tgpx4KVOfOQ8C2Is=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753736160; a=rsa-sha256;
 	cv=none;
-	b=bVvmNcNeHHXyNameFSKIIcFw9MrQLRN6IeXzFe6c/DKe13stK9l279GegPVE0B8tyvWEni
-	8fiy8srPBYf3WqEmccnBdylUkt5mKEuO8cT7EnjGoUpVr2AgbPUuG2RopuqHIhNzCFNzsB
-	t/QSzxuwsZUDgvuor2Fu7TZZMgYfMCo=
+	b=gkUBUd8CK6+RarKlGHnlttzkTwerF2F+g0UnWSGfqI1Gpk4wXeSVYfbpHmvekKsOMaFo9Y
+	gFmHZDhXjLKhIjVvzUCWEsb1/sQQ89f3n89lNmYyHP4/pwsCwrhn11H5322EId04piK0Vy
+	i+3ceaYEYU7f0XGYN1w6miJ2Jdw5tSI=
 ARC-Authentication-Results: i=1;
 	imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ArcG8R8S;
-	spf=pass (imf30.hostedemail.com: domain of dhowells@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=dhowells@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BksYy3et;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf30.hostedemail.com: domain of alex.williamson@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=alex.williamson@redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753735617;
+	s=mimecast20190719; t=1753736159;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wg5ivtWALNkMBQeNS8mFnEKygIvKZPICqN0FK/djSfk=;
-	b=ArcG8R8SjccGdlpu7/+7jd12BXPnPtYkiqwAMSQW3svS8NULl0+4qPI2G3lCLDUEUh3rhA
-	5F0tQpFq0rlugcQq3O8r/xTGBTAQuVO+QUs49D1jN62jE5DeQF++PoAHIJHAQacYTGrw09
-	i0RbcQsBIMsUf50ppkiibmd+tntmLks=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-62-VGIc3EEJN_O97Psf8GkLKA-1; Mon,
- 28 Jul 2025 16:46:54 -0400
-X-MC-Unique: VGIc3EEJN_O97Psf8GkLKA-1
-X-Mimecast-MFC-AGG-ID: VGIc3EEJN_O97Psf8GkLKA_1753735613
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F421019560AF;
-	Mon, 28 Jul 2025 20:46:52 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.11])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 017E91800359;
-	Mon, 28 Jul 2025 20:46:49 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <jehx7y7mwer77d2rrx323qixc456ffod3qrcssemkebjotstbh@fpklsa72lzky>
-References: <jehx7y7mwer77d2rrx323qixc456ffod3qrcssemkebjotstbh@fpklsa72lzky> <202507220801.50a7210-lkp@intel.com>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: dhowells@redhat.com, kernel test robot <oliver.sang@intel.com>,
-    Vlastimil Babka <vbabka@suse.cz>, oe-lkp@lists.linux.dev,
-    lkp@intel.com, Roman Gushchin <roman.gushchin@linux.dev>,
-    Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org
-Subject: Re: [linux-next:master] [mm, slab] 5660ee54e7: BUG:KASAN:stack-out-of-bounds_in_copy_from_iter
+	bh=3lAhpTjpbvFQu27uIQ7LZXIQUIKIfZHhU7pyfNlOjpc=;
+	b=BksYy3etYjW8K7sUTxLeFPie7KXRx9gJQ/sRIXOQjL/L9ALBu5I2yr4R5f4NiDCtD5+PvE
+	CKuTKYDC+hk1I9vxXzZZqsl4FgjlHMko4Uu8bw/QIZZlBIvxkvkHi/jV1nMNHpPmujxv/e
+	Tuu4KvgWYUSB2iogdIyG/pXMEShBn8M=
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com
+ [209.85.166.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-36-SVEQbD4gN5CSweWlwVZkMQ-1; Mon, 28 Jul 2025 16:55:58 -0400
+X-MC-Unique: SVEQbD4gN5CSweWlwVZkMQ-1
+X-Mimecast-MFC-AGG-ID: SVEQbD4gN5CSweWlwVZkMQ_1753736158
+Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3df57df1eb3so7487525ab.2
+        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 13:55:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753736158; x=1754340958;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3lAhpTjpbvFQu27uIQ7LZXIQUIKIfZHhU7pyfNlOjpc=;
+        b=O2Bcku236Tinv4t/yyzRWtKFtCjiApXPCrZ3JcXnNbPGnZHdvcpdJKth0bYGTVCAwn
+         /EhtM4j0pZry+z9b1Id56C7qB2SLexTxt8iqYurmpD2Xz2uHgdQfpLxVS0th6updadUT
+         HIuVJiHb/ODUhVO3BCCmvRYuJ4ctGrmy7EAdnNvs8wTw40i9eDA+LIoTJcXTUxtdNCdP
+         HLU8tm2QrZqT84+AH3egP+j5Z+N5UF9yh4Botlcl5So+XUMKmkXQeNj85Jmk3blYfc2b
+         P+NGt3MtiIm646+oakFxzMxnLeW6Mq9gryJqdyHsf2tuxN6XqIiGNAAxVfQF0qDnM4FZ
+         nTWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUZJEiO6qvFtuPrZegRGKQXd44Gj+8TCtWrtRar4PIT51+I9tmEaj/38ztZ6XetrGFJwtuefPEyxQ==@kvack.org
+X-Gm-Message-State: AOJu0YzaFXSAv6Qzpw+b03rJnSrAriCzfxA2Bxm3oqZ6O9lZ9wvDDvVZ
+	FhYcL/NzgNoQZeE9jxsL7a2ZP9gM8X1pMeQPdpBRvTrCyyyBb266KTJuhsfamexznu4ZFYJTXPO
+	QRXX4NdsGGpI5Vdr8Wa/sJlAK4w8TwEX6ex9IhFCkLuvQZlo2taxM
+X-Gm-Gg: ASbGncs2JQmeFFPstwgnqtFtfN5HG0Hgvw0IpuAUgoF5Q3Kn0dEqNZzZYockYDlDs7G
+	dK4rdrgKtAud/p597nstMb+OtL8JBzByuh3IhlWVYHVQrFGLD0MT5etZCTO/CjH2sWsdmRMcJvc
+	T7UGI+UT4CcXzcjVXHrrlmMGgSKllM3UW5ELc8hrIZN7VAluaE2iX0Hu+BHdD1iriqXOAm+/KMc
+	xSNUXSwjTothtT1CLdqnaloygCWJ4i76DjeYctvdi8iZqTG6C3NjlSSyaUSt4rywM7SNVFJOSIG
+	51FIYEgoE6tuOVgtVx64EfofA18erOABX/+IoxxHC70=
+X-Received: by 2002:a05:6e02:3389:b0:3e3:e461:4617 with SMTP id e9e14a558f8ab-3e3e4614777mr12699175ab.2.1753736157530;
+        Mon, 28 Jul 2025 13:55:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFaMLNGgu4ToITqnk/t+y4I2RkNZuq3J6YSgL+Stwkf8Y5Ta3HhAl493hrL7HwiUxfbSIOjGA==
+X-Received: by 2002:a05:6e02:3389:b0:3e3:e461:4617 with SMTP id e9e14a558f8ab-3e3e4614777mr12698925ab.2.1753736157034;
+        Mon, 28 Jul 2025 13:55:57 -0700 (PDT)
+Received: from redhat.com ([38.15.36.11])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-508c9341e4csm2109194173.76.2025.07.28.13.55.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Jul 2025 13:55:55 -0700 (PDT)
+Date: Mon, 28 Jul 2025 14:55:53 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>, Christoph Hellwig
+ <hch@lst.de>, Jason Gunthorpe <jgg@nvidia.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Bjorn Helgaas <bhelgaas@google.com>, Christian
+ =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+ dri-devel@lists.freedesktop.org, iommu@lists.linux.dev, Jens Axboe
+ <axboe@kernel.dk>, =?UTF-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>,
+ Joerg Roedel <joro@8bytes.org>, kvm@vger.kernel.org,
+ linaro-mm-sig@lists.linaro.org, linux-block@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-mm@kvack.org, linux-pci@vger.kernel.org, Logan Gunthorpe
+ <logang@deltatee.com>, Marek Szyprowski <m.szyprowski@samsung.com>, Robin
+ Murphy <robin.murphy@arm.com>, Sumit Semwal <sumit.semwal@linaro.org>, Will
+ Deacon <will@kernel.org>
+Subject: Re: [PATCH 09/10] vfio/pci: Share the core device pointer while
+ invoking feature functions
+Message-ID: <20250728145553.53e94d49.alex.williamson@redhat.com>
+In-Reply-To: <19f71a0f4d1a5db8c712cb4d094ccf2f10dc22c5.1753274085.git.leonro@nvidia.com>
+References: <cover.1753274085.git.leonro@nvidia.com>
+	<19f71a0f4d1a5db8c712cb4d094ccf2f10dc22c5.1753274085.git.leonro@nvidia.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Date: Mon, 28 Jul 2025 21:46:48 +0100
-Message-ID: <659285.1753735608@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: TwnxWleLPN8kUfnwzk9cs9Kv-0pzUVPYyps7GQQW-4g_1753735613
+X-Mimecast-MFC-PROC-ID: 9RAT6MILGwdtP9wmKfdHdsF1AAbVNLIAsqZhrlY-ulg_1753736158
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <659284.1753735608.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 67BBC80009
-X-Stat-Signature: wyd1aigd7xtoyo7cpc6desxkz4ugabsj
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: orxmry4khopk5ahjs4bb9yrapxws5syy
+X-Rspamd-Queue-Id: 877E38000A
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1753735618-429391
-X-HE-Meta: U2FsdGVkX1+X3CqUDvCcWh09wWLwYRQpV+spmDmZ0tnLnxnmUH8vecEX6ORL1dBK1JZHDYNYEiOluwJ6sQ93awyGrCUeq8X96jXtDDQRHf1olejKILqxAnHAtZReIw+cBN54gXb6sl/iCNXNR8rN4XeYPFjWR0qNGApjm1beAlEaAOox6JWBiykzHuF4J9UPCHuiWLlv1JktcYZkiZtM6LQBhbZHbx3j20US0BmvnY4gBwmTo4k2BG69MB36oNCuCL8oZCInrcpyn/ONi/zA7wD8B1OPMMhLMeKoeYcUi3BFrL6rox6q4x0wurtsHj3oHnglBtpKdRDDwlensP2c1HC6n/5rT0EMVSlumiEIszvkIWk1RcIWEomb85jUP69OU/0bhdxCfwPl9UYxIsMCpDORC30QXPt7MLEqGAO0tD7jzx3+INBY7f9849cDK5ke6ZXGQtfo5UpdavgdXrOD9vmmxLMXF56Ij8GgBaTb0fDxcRcQ3y7S4SLT/f++pQ4c8uiITW+0Bb6Kfa+/kwjapk41MJVpoxceaRpyZUot5Anwnx4bcyOBNxcXbjNvzZoY+mo8GjmNfpwSmpkXQII8xplaA66Dsg3wSnrEA+PZ+7EcliXHDvqdoHRhsQs5aw5jMSG++B9eXJWn/mwOR3W8kPlNSp/+ngwa06nTypMmt65pJL1jQwJEi6GxGnmPB1MMgDqK4MtCCVFmAjhYV7lvacjvXNlARoUe8o0B+pGHjocDvvzfLYgOO9YbRC59UlFwonMbeihBMMxef0IfOu/rOQ/Dwf30xE0x/h1bVUowgj9SxZVLDL8+plkqVcYBUtszj78HQaHNtieZVfioSLVEi4ZpD7xN+Ih1/eHZ+hUh00miHQY8+3eNdJ2zFnnMUIot193ZdaO3mnBMWtxZBooAPoSVtotMkvyal4xjbJqFvUVSV677WeirEWvI0hpgCBNogJFDySJM0biJ662XPuJ
- Nwl+6rCS
- QD+cnzdW2HFCZ6EKswkJXCQALJzlMm44oL/5YtS+1vqpstXoaAvEJjkZVlaeBgLpgY6v5AcHy2i3DrhW8XivVZ1euxV4NNMkbY2HJgJpmNOYW6WbhgT4x2RGfAk76Umz5w2Q2idrEOrbymYwD0PG+7sulhb/Bkp7AMnevpZEsgSkusWgpUHZ7nPB0ymvgvgKFqKxFi0uRPmADt0inUPfDeLP1S6OHSrpiQQXzpLL/7EpiZWsy5IWmOSJgNF+JjR06e6VAFn6QfCp0kwJjRQjawFKDRvfqMKbLkNau8ZmE1pFZh1vL/aIpE/6tPLNytriC/muVf5JElod2+EVXYZYdby93FAnkAjMhWAZBbZen8nOQ5z/X+dS69MBiHB96Jb29Km3G62OL+lg8MRY=
+X-HE-Tag: 1753736160-370768
+X-HE-Meta: U2FsdGVkX18TBRn2ur2AMUWjbXnjuscntjS1UucANHS574lSn++LT2avocBJj5v/HK6UVYuoM5zEDvhL4O1oCrLi14eV34Xyw2FudDFYPdH1L0IR1itbBKwHqpU/bHyhKgbqmXa+5rziXCa7pEXURgp2BBoVHeXFcmQRziGNGS34PuyijjYTjVC9WhqocJoxObDWSw9dsuLLgMHqhTrfWUpcdzBc+B5YTnG2AzmQH7qCf87s6BANQnvTiCbQZ9pw0ra6eEpFAT8Fq6UmfRaBkfMG36BvvmXIwh++4Agw/Eijsg4MnmhXKxoyIWmPwG2D+OB7XLWike4meT5nAK4voJvoQVORR7rlB/5vW1uaLAWX6rLxGRHu/XH/FkySpCSYS4UFNZUBnBe7Kk7naGCF3uXEOdk+Hhv6eu0lZCgaTSEfYVdA9f008kHr1HEr91Vknj29ZyzLIvVoiZzCos6Cb50YA9eBkW+igCjrUiATQMwaHbhVN/ZRbWlJYaxZtuwW2o9BHqkiULDQn+E0FXnwR1o51HVad+Hx1w94105hn1pktAVcrfetsdEIonqMcV6LRB+bdbA7Vx2jNp4ZEWwUcsqd1xzFcw+/zQFK2/CZw0vgQxGOVHju+B3l8R5nOnUg6IZ00hXAMdR9ZHoXSlZ4cWJ0R3LJvUPkeMm7tramzYfSbcYV2x6kMEBU9LVyln7FtplXnOzMPh4nWUbmdCGiEt0cZNP+VeQZ+oy24nyo3v0dpndGnVMzpzDOr90v69/ziwlzPbLwtkc+RniLZcSQxqTwdFnQj3pcI7rINHE4SK/oFqYhfIYNQCF+OU1LXMOlg+7vuGYQ43BeNUn9FC8fOr1JLIf1tjS+0DspN+QDen/MBApOsBNR0im/e0jdNXz3voTMHCP/cYr0hqwW19zSaQuPtg7YEL1bAvgBBerKhOx/nJKx0b4R3c8gU6nvqHQXpkmm46YJ38TzH7Z4OXH
+ YjgHFfcm
+ PzYFBVzb9DI07pPfYDwqxsGZ1klUNjyMj6u3Ynnwstwc4N2XipAsZyj2Fu8Xh4USxc1uxKfk8QzXCSJZ/wg/bcT8939/BWYgycU5zNqcuwqG7TKsqMryorVTwAaUT87HhfQZvq8jIBmlf8QQLmyRRTaow+M9/o+Oz4lRvWPL+pac+DLTQAqigXPyA3/fbwNpg03coiGf93O0PUBHnvuNjQRhduV1s9VEuIs7QhbQPIduMbpepo0M0/yEOBfK2SFTGKxT4T6T/QNK2QwzrMxBNiGe/uPqsChfvc7PWusYmLWMZfLJtMmF4mmFH18uBivpHnOP5SPtohA7fvm3LS73eWrbXOk+lh9LHhZ3FAdxTQ+ZPDpgQJBxobs/szAxvUoH3cjmIGntfXabJ2JOiFLzJmE6CaIRlo61WoYgPV9SXKfzDZQgMFVKrknOzFYqI7E+omn3l
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,30 +140,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Pedro Falcato <pfalcato@suse.de> wrote:
+On Wed, 23 Jul 2025 16:00:10 +0300
+Leon Romanovsky <leon@kernel.org> wrote:
 
-> --- a/drivers/infiniband/sw/siw/siw_qp_tx.c
-> +++ b/drivers/infiniband/sw/siw/siw_qp_tx.c
-> @@ -332,11 +332,11 @@ static int siw_tcp_sendpages(struct socket *s, stru=
-ct page **page, int offset,
->                 if (!sendpage_ok(page[i]))
->                         msg.msg_flags &=3D ~MSG_SPLICE_PAGES;
->                 bvec_set_page(&bvec, page[i], bytes, offset);
-> -               iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, size)=
-;
-> +               iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, bytes=
-);
->=20
->  try_page_again:
->                 lock_sock(sk);
-> -               rv =3D tcp_sendmsg_locked(sk, &msg, size);
-> +               rv =3D tcp_sendmsg_locked(sk, &msg, bytes);
->                 release_sock(sk);
->=20
->                 if (rv > 0) {
+> From: Vivek Kasireddy <vivek.kasireddy@intel.com>
+> 
+> There is no need to share the main device pointer (struct vfio_device *)
+> with all the feature functions as they only need the core device
+> pointer. Therefore, extract the core device pointer once in the
+> caller (vfio_pci_core_ioctl_feature) and share it instead.
+> 
+> Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> ---
+>  drivers/vfio/pci/vfio_pci_core.c | 30 +++++++++++++-----------------
+>  1 file changed, 13 insertions(+), 17 deletions(-)
+> 
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> index 1e675daab5753..5512d13bb8899 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -301,11 +301,9 @@ static int vfio_pci_runtime_pm_entry(struct vfio_pci_core_device *vdev,
+>  	return 0;
+>  }
+>  
+> -static int vfio_pci_core_pm_entry(struct vfio_device *device, u32 flags,
+> +static int vfio_pci_core_pm_entry(struct vfio_pci_core_device *vdev, u32 flags,
+>  				  void __user *arg, size_t argsz)
+>  {
+> -	struct vfio_pci_core_device *vdev =
+> -		container_of(device, struct vfio_pci_core_device, vdev);
+>  	int ret;
+>  
+>  	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_SET, 0);
+> @@ -322,12 +320,10 @@ static int vfio_pci_core_pm_entry(struct vfio_device *device, u32 flags,
+>  }
+>  
+>  static int vfio_pci_core_pm_entry_with_wakeup(
+> -	struct vfio_device *device, u32 flags,
+> +	struct vfio_pci_core_device *vdev, u32 flags,
+>  	struct vfio_device_low_power_entry_with_wakeup __user *arg,
+>  	size_t argsz)
 
-Looks good.
+I'm tempted to fix the line wrapping here, but I think this patch
+stands on its own.  Even if it's rather trivial, it makes sense to
+consolidate and standardize on the vfio_pci_core_device getting passed
+around within vfio_pci_core.c.  Any reason not to split this off?
+Thanks,
 
-Reviewed-by: David Howells <dhowells@redhat.com>
+Alex
+
+>  {
+> -	struct vfio_pci_core_device *vdev =
+> -		container_of(device, struct vfio_pci_core_device, vdev);
+>  	struct vfio_device_low_power_entry_with_wakeup entry;
+>  	struct eventfd_ctx *efdctx;
+>  	int ret;
+> @@ -378,11 +374,9 @@ static void vfio_pci_runtime_pm_exit(struct vfio_pci_core_device *vdev)
+>  	up_write(&vdev->memory_lock);
+>  }
+>  
+> -static int vfio_pci_core_pm_exit(struct vfio_device *device, u32 flags,
+> +static int vfio_pci_core_pm_exit(struct vfio_pci_core_device *vdev, u32 flags,
+>  				 void __user *arg, size_t argsz)
+>  {
+> -	struct vfio_pci_core_device *vdev =
+> -		container_of(device, struct vfio_pci_core_device, vdev);
+>  	int ret;
+>  
+>  	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_SET, 0);
+> @@ -1475,11 +1469,10 @@ long vfio_pci_core_ioctl(struct vfio_device *core_vdev, unsigned int cmd,
+>  }
+>  EXPORT_SYMBOL_GPL(vfio_pci_core_ioctl);
+>  
+> -static int vfio_pci_core_feature_token(struct vfio_device *device, u32 flags,
+> -				       uuid_t __user *arg, size_t argsz)
+> +static int vfio_pci_core_feature_token(struct vfio_pci_core_device *vdev,
+> +				       u32 flags, uuid_t __user *arg,
+> +				       size_t argsz)
+>  {
+> -	struct vfio_pci_core_device *vdev =
+> -		container_of(device, struct vfio_pci_core_device, vdev);
+>  	uuid_t uuid;
+>  	int ret;
+>  
+> @@ -1506,16 +1499,19 @@ static int vfio_pci_core_feature_token(struct vfio_device *device, u32 flags,
+>  int vfio_pci_core_ioctl_feature(struct vfio_device *device, u32 flags,
+>  				void __user *arg, size_t argsz)
+>  {
+> +	struct vfio_pci_core_device *vdev =
+> +		container_of(device, struct vfio_pci_core_device, vdev);
+> +
+>  	switch (flags & VFIO_DEVICE_FEATURE_MASK) {
+>  	case VFIO_DEVICE_FEATURE_LOW_POWER_ENTRY:
+> -		return vfio_pci_core_pm_entry(device, flags, arg, argsz);
+> +		return vfio_pci_core_pm_entry(vdev, flags, arg, argsz);
+>  	case VFIO_DEVICE_FEATURE_LOW_POWER_ENTRY_WITH_WAKEUP:
+> -		return vfio_pci_core_pm_entry_with_wakeup(device, flags,
+> +		return vfio_pci_core_pm_entry_with_wakeup(vdev, flags,
+>  							  arg, argsz);
+>  	case VFIO_DEVICE_FEATURE_LOW_POWER_EXIT:
+> -		return vfio_pci_core_pm_exit(device, flags, arg, argsz);
+> +		return vfio_pci_core_pm_exit(vdev, flags, arg, argsz);
+>  	case VFIO_DEVICE_FEATURE_PCI_VF_TOKEN:
+> -		return vfio_pci_core_feature_token(device, flags, arg, argsz);
+> +		return vfio_pci_core_feature_token(vdev, flags, arg, argsz);
+>  	default:
+>  		return -ENOTTY;
+>  	}
 
 
