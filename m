@@ -2,135 +2,177 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1E327C87FCE
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 08:50:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C0D0C83F26
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 08:52:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B462C6B008A; Mon, 28 Jul 2025 04:50:00 -0400 (EDT)
+	id 186CC6B0098; Mon, 28 Jul 2025 04:52:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF6BB6B008C; Mon, 28 Jul 2025 04:50:00 -0400 (EDT)
+	id 15F316B0099; Mon, 28 Jul 2025 04:52:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E6036B0093; Mon, 28 Jul 2025 04:50:00 -0400 (EDT)
+	id 04D586B009A; Mon, 28 Jul 2025 04:52:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 88DED6B008A
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 04:50:00 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3602AB6BD3
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 08:50:00 +0000 (UTC)
-X-FDA: 83713050960.29.29B2D46
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 2AD8D140006
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 08:49:57 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FXL6+lOg;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753692598; a=rsa-sha256;
-	cv=none;
-	b=f8KM8krIpJ17rJNMNbhABb/8/D7Z8LGGGLFcyuqqm08+aGoNVLbmnymxuS5uj0p4ySPkQz
-	TgUuAjaY6qzXxGs+/Kl+4fcVu1Eh64y0w+ffZQwb6ZhvhhnLMl/6mUqOF34eb+ACqeRL+h
-	yRvGlPtgKJfaoj5Egz4v2FAHLVEO89U=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FXL6+lOg;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E42D26B0098
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 04:52:27 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 96CAE160182
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 08:52:27 +0000 (UTC)
+X-FDA: 83713057134.17.350CBF7
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 351D6140009
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 08:52:24 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FXXNB5F0;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hxxRV9Ku;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=BJrDuZmf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="V/m5qpbx";
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753692598;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1753692745;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nsN7y/1kzG5yx277Iqzf5ufFB3MHq4CNNEmgUnJER1I=;
-	b=TUm1VEmXwHi4g7DG65x14rlKmoULReSTUHaoS6H1PwumuNG0Q5pY+9be8ce59bR6ZxIxyP
-	AO0w0WAhhixFol0og5LNipQP/lRFK1wSBD93nPaDeGypMTAq1EtFRfZfQqFxg7ZkmrbjNN
-	PaPQxxWF4NYmoNQVYdpINM1chb65R8s=
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-ae0c4945c76so579578066b.3
-        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 01:49:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753692597; x=1754297397; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nsN7y/1kzG5yx277Iqzf5ufFB3MHq4CNNEmgUnJER1I=;
-        b=FXL6+lOgB93JPwdxEqcLnadcLdU1i4L2saZpnx0XacB6FUvz01/iwdzftKF/pKZG7l
-         W0fDABo9cf1vjg+hqx64IplC3QCTRX3ckTeSPzATQlMSvDcOox6PTvVofAr8WCJAls1b
-         I0bDywHbAyIiLSpAMq8L7AoFGVkaScy0CK/yFws9mNv5p2eG72IKQLeCKANeVWudZ1BE
-         habnDkvQCYtfjMrHX0MFnieBnt39U4LFCmbWpJZdMnKOydg+X+mYBGFd/ucGXWbRKSNN
-         5glWNcxshri4FmOEDC5cTRvPH72y21dm8nRfrsrCYreAPLhfC0Tnhl19pKXvyIjzJl3a
-         GY6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753692597; x=1754297397;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=nsN7y/1kzG5yx277Iqzf5ufFB3MHq4CNNEmgUnJER1I=;
-        b=N30A97dArKvOo4TDhvNYN7OpAYCjghXla4KjZNd6aFT9B9dhbpflwXb8BuVbmBdOUO
-         +MK00x8B0hpvYSACXkgwtiszHEtmiXSJMPxNGO6CRKZexcInMBOS+33gz6IY8cZj/txF
-         JE+fioaPu0LkjtV56n+sNwn8//KiyyGj8oZn3blz48FDbOf1M+acjlypeVZu7q6tiLIY
-         7BbMe/iy8KEGz7ZrNw+xn+v3T4HDMIqGvzIwSEOlY5qRthGQ3hyXT9L2vDewyjgddP5i
-         7haH3l6ojc6tCZH5ZuPzKOk74BdLUGnrpEw/EbWBaIEiW/8Wzb125G6sDP366ek7DvQl
-         tQLw==
-X-Forwarded-Encrypted: i=1; AJvYcCWzH1JF49QO4l8OucaivRTPI/Y6we6kgPMjOfrhkAMDTZPc6R4/jngtjqA1vTUOCYqGlLh92rMPQg==@kvack.org
-X-Gm-Message-State: AOJu0Yzcfgs4OblNiSqvfwkwuG+ZFEqWuUBvYe2VprYEZvvrCMXhXRZZ
-	6u8XFc7EY49U+/EC2SJhDOC1EwvZq6baGNJSOYpzDVX67WfSJgXjGIXl
-X-Gm-Gg: ASbGncvBcYY5MQOMimtOQxrKA0FIwj0GA6jKSvYUmeNq4sjd+L2nTvKsjBglzfoN/s7
-	KXIfCOcHsE3Sgrs7Anx+nUMBEmu8ph44proo0h+NdT7PPP72VzgxrE2GvxmtT/xZvvHNY+teSFT
-	0UUlsaWPeil/FcRV3rZyNgbVz8APtHH9Q0dYUXo6decsk910dwJn9CtQfwuIB5bY03osIcLWI2U
-	P7O8wqcSNL+cVkHP7VPmXcK/d162oFab3ZeyScDzjwoDghGXF2kzDAsCNWUHY+xu/kUh0CyrYLO
-	My707uIOKNPaW5KMrM4pgpRvfr2CtuVnj49k43+nYaY+3ijf6C9FVkLgV9FLL70UoF9eCAcBfSf
-	2pC0xMHo7C8lhTgE3L+fv6A==
-X-Google-Smtp-Source: AGHT+IFaZJsTQLzzOiXfl1Nq1UVtUOTF8P3susmSPp5Bc8zyCjo/DGmP/Cxh+cs7YnmCiD5doe68aA==
-X-Received: by 2002:a17:907:3e10:b0:ae0:d798:2ebd with SMTP id a640c23a62f3a-af61940ce29mr1071644666b.35.1753692596383;
-        Mon, 28 Jul 2025 01:49:56 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af63589ff78sm394541266b.47.2025.07.28.01.49.55
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 28 Jul 2025 01:49:55 -0700 (PDT)
-Date: Mon, 28 Jul 2025 08:49:55 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	xen-devel@lists.xenproject.org, linux-fsdevel@vger.kernel.org,
-	nvdimm@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
-	Hugh Dickins <hughd@google.com>, Oscar Salvador <osalvador@suse.de>,
-	Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH v2 5/9] mm/huge_memory: mark PMD mappings of the huge
- zero folio special
-Message-ID: <20250728084955.uzobxwoqalcuhk72@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20250717115212.1825089-1-david@redhat.com>
- <20250717115212.1825089-6-david@redhat.com>
+	bh=BIY0azEbVgAAttF0kCKqxJbSfz2yFJuIv+U+aN+jZuw=;
+	b=IyH01X3xfxIQlL8T9Um0t1v/Zcb1yUhNko1AiLxknlcG+H9/gfszpUdAU4ewwfFeDHmPO9
+	+xDoBeR1hBBZOpWMJJ6GT5nsZ/20OGVkEZGi05ElErM/0ZFjg+OHogoyK4C5y0+FFpCpQs
+	VJvsTcJ5MgXaNqq4alInG/usy6levQ8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753692745; a=rsa-sha256;
+	cv=none;
+	b=4KDlk9WhcbGxNnX5JjTFyAO+NA0wwjj+TFL/sB6B/yvdTyGLJgFMMMVyW7nSd9cmG169bO
+	nEMS0xd7iG6jQi0iDKUpamgqJs7uY37Jo1iSsZ3gSc/+VQ3rrR84qkk8CWvp0W9+mmsdhU
+	VaAWOKeNtJpqeU/rscByQ1TuuzPXG+c=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FXXNB5F0;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hxxRV9Ku;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=BJrDuZmf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="V/m5qpbx";
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E10C81F444;
+	Mon, 28 Jul 2025 08:52:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1753692743; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=BIY0azEbVgAAttF0kCKqxJbSfz2yFJuIv+U+aN+jZuw=;
+	b=FXXNB5F0raH1n/DP3V0pgMKfrI8lxFpwYyEUmmr3tY4hI75d1gYG1vWpLB8v1zK3R4Zwo6
+	vsCJBVsBaa0WgZM8vZkOHf6bcuymEz8RtM/h/9rcNrofxo4rCnPEfdmnbSNFdV6/cqzfqq
+	831y4VL8rN64vNvhtOCCAH1fc228/DE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1753692743;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=BIY0azEbVgAAttF0kCKqxJbSfz2yFJuIv+U+aN+jZuw=;
+	b=hxxRV9Ku7/1/nVw57xI0kYGLrYT26eOePl0wRUzF1zGFbBDlqHFCo8Mr1Oew2StelmzMj2
+	C61NpOH1tnv/9PBQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1753692742; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=BIY0azEbVgAAttF0kCKqxJbSfz2yFJuIv+U+aN+jZuw=;
+	b=BJrDuZmfqf0uY5yKotHqnjtFefN7nlRMd5ydTqdFn02R42QWTz9n7+AIUwdn5PN8J4d7UP
+	aKMuzEJoRcWMFJK67xw+1J/rWN4k8T7qz40Z09axcDzGRy6dL0xTDUKDUSYVFEf4AKoc6o
+	xxnVW/1BWEUiYJ2BZeO+vfOz7GuKu1U=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1753692742;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=BIY0azEbVgAAttF0kCKqxJbSfz2yFJuIv+U+aN+jZuw=;
+	b=V/m5qpbx2umoA783kDyLRV3q3oGzpNGE8AW9e+sk2xaQuP5UjTA5NWgF1Oc4wv8Zoo/UD6
+	dMXnLAmADLoS2WDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CC7D9138A5;
+	Mon, 28 Jul 2025 08:52:22 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id fE6bMUY6h2i8IgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 28 Jul 2025 08:52:22 +0000
+Message-ID: <431bf109-2bc7-4284-9b3a-7b36c329f25b@suse.cz>
+Date: Mon, 28 Jul 2025 10:52:22 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250717115212.1825089-6-david@redhat.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Stat-Signature: n1mtrsuz5c9fm4tudtr813an6b7de7u9
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm: slub: avoid deref of free pointer in sanity checks
+ if object is invalid
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+To: Li Qiong <liqiong@nfschina.com>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Matthew Wilcox <willy@infradead.org>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>,
+ Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20250725064919.1785537-1-liqiong@nfschina.com>
+ <996a7622-219f-4e05-96ce-96bbc70068b0@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <996a7622-219f-4e05-96ce-96bbc70068b0@suse.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 351D6140009
+X-Stat-Signature: enmk8rn7wcno8oirn4xo4nqpo7mgbfy3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2AD8D140006
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1753692597-678973
-X-HE-Meta: U2FsdGVkX1+WWw5v9f7Ip+gEDYmXvfn+GA22aTo5T+c6rtIxunQXQA04DR0Pxdvlr2UgYB0gwSgdddhzbXpeVM7qLUB5Vmj7aPQdaOIquimdEdTNRaDM18h50GXmtPO7dn5FqAwRCY/e8mmczDRVAFEPAoXui1IRl3yZ9W8VthCcKhgVFo9WwpevV3isQ+MaiT/Z6z0t4kKG5+xogHq4tTmvRKqXT+HBYdpNgBKhDR5lZfwOLRqfSsKI6irNufexXNGQAWWVqs4tiD5w5JmqHv0jx7pfxcMjNZw5bsM+ENAbWFF2H4hw194Mw2zJVlySFnsqDBm6Ty1LZxT6+n92sXsFsVjHUtYxScSgu2OtlyarOq7AhCWjETkrhBnA7QZe80XueHFcyExvPQgIgiy6gah/vqCIHIbLYc2n5485qqz7br0X12HzII6U2AIpqHAJm80u3tizXi6yPJYXHXwCWvo/voKNI2NcxK7Zo1s7SPwfuc+XJ9Z+nEMki6A67pekkpHfaHCKfkDHwtT+vrlZEGHaa7G+hEb0oWEwBIGnf2/M+W8NI9ZR8mspE46OIBIVBaQYUJW4NNz3gaTjCxTVHrOjdbxhUbHEY7l5HAYildujx4T8LyziPGoyXzBFarGau9L6b5vBnebWvQse8h0IGYFH8US3X+dze9MHZPKOU5+k4VHeE/5ieRV1JobLC9/BMJv4ztqh0SarVDvvHIxUO56kYMII9xLtgUsTRH3uHIvZweiRHqPadn0tGCd6xy5yLueQ7uXcHmNrKJAr9OQzLWcnWf0sXP8nLzDWVxn8CIRXJlW2b0pvOGbx/NKXPOIrPjskikpC/jR1BrVZaxPexAVwyYMxeLpwBfHLmqYcgzzXXR6RbW3HeYHYZIwvHWxh4xZcQMbZh5dlLLAOsobMY5r5lO92dG0N5+70PPeHXmhfsnQ8+UKjg/bzcLcmW5B48CUI+wOiTz0T94CE39e
- lTcqG38P
- 8kQVHAElwv9vNTgd/dQ6FWJGOcKrV+NzWYEKZ1N/G4cKNIWOO9XrQWDSVPWI9yps5+M9FFI/3jY36XUku+P+C6aMdUqM3Omky1QbJ0fVYNUhR4EqekoMjJLBGS+bkSmJXD1l1fAexnr41Umn7SY5frpaZJYfxg+uQzt8dnJif00dKpRy3L7qcLck7fgZjY/ZXbbdCNmb6QsFwt6P3Nycbj2wmgPeVtv2VdGYNrkZfhuGPvYbhy+uoY7YiJnGcDPjWc+8cdh9Ti7rodjbWQR0e1KiNEeImKHyCw/zKr2i3KDgAMRrdxhKVmv0ucJTLRarFBinpbnSCqEx9FGpgd0oJ/P+hS4m/Hf36GyCI9Ow1Pf+5F6BUuQj+jZ33n42vC8QPvVYqee4nPFfYaEVJoLKKDpscFjXJd6wUlDMpBX6ERqprSdX/XJgCNs+nITzDrM1TN5iSW5YKvJz/p7V8ubSh8xOLXiU2EiHL+Ub3qQvIMhIJmwFNbcuvZ08QbOp75OveDBsrvi3rFQqgR2J2hJag9jwli89tbO2M3daA/GpwyvyFh5QHCyd+SJCrLpwUomJ+u/AxlbkABKbcImcQeq7QQEzTABgc9y+kY6HHoGIxr2Uk0GY9pefXxw7jQKF4pSShcryrR2LQIytVQtNrOvyflpr/knFz3zvZ+CEKftgUY4ZUydWIFeKMcZ/eKxxBAblBanurS8Y99/6XRVHmwcbLgA8MlJHdluJjNU0I
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1753692744-94252
+X-HE-Meta: U2FsdGVkX1+yaK6jZdqaf/T0JKoQxXq87NwW7pZ2UkB+jAVP4Dq5BC7uyuR5ToAqhieqK1MVuFB8AzbiULKZeGgYW+iQQyj5065FuPUUttxWnjeT0DV1XiXkoPNMisu8V5hfvuoaeIkt5vykAuNPfZqkDr9UmNtK8SE+Hj5SqqDt4mlWTr5DwFzM05hmRT7OUy0JNvf6VUjx16p0LQ/dQRClamQAlKQD0xUOKyODAkulShV3tG0bPt3YRY2sK6Cjc3aoVkyIk1APbuOqVTVuIwpQx2iA2qBHNrDXQQU/3fezQDKHoxdD1OAT1hWuYCQbki7L+1EHexDBk8f38lI071PUrHuAmKakN3HFoi3aWQ01RzwGAaTaLrbE3tZ171GxNz3CLLhNlhV08NemEx18BPq2ZZODLry63gdTPTEw5Oqc52Kb9XQIfwo/VJYZylnFvSq6lGeWFjsfAuhDoR322dx5+UM1jWf1rAIodBnBgwU/MkqneuS5yVOmIAuWBm5kTZ0yrFJvl12G2T6uoQ9CnM0jdnromPkcGkCRrT7tIm1aq080A6hkn4TKWJSV0bPT8ZCqB0tHaYswmD+VP8iIus8+58PAH06wrAS0qV29bGRFIWTJuaHU11GSXf70L5faeA7ykzgmaQYDFa0m+FP1c3HqQY5gloXV+QpgqipslRMRhw3HRudN7wAQ9zeVkmh2SynTGNtAefVZxql/ZDsPRa00+p4Ep8g3CwiUrZwyi9m6qXQ2usTPsD9gPuFvSCDhAomMS8OFBjnoM8ASQgP+5EmzrzGgitMBbAQCCl7zxrZRWW2f7/ZhucT4ZtyYjDmpihsrBVLCOcGBlorWKG8+pvM4bccHyR6g6QQDxljufuHHfxFlW9qwNxJqA/HYLyDJXF2e9yrM4gVbInfq24lQbYxErPZFXhD9av7+noSX4CssW1IPrkDlV5H6NoTN9HTQb+HpQuCJw+Ca6qvEWLN
+ qJjs7z3c
+ DybD0avA+8xu0En/D4BmMAY2zBJQjSIhmXvFJDO1JKKqOaWBLIFWwvk8QC5YztKIKl7eFe+l/Ifgka3CLunnXNbb22GDomDvHE+5d7VtIy5aX/26haQdscY+UkFtbCJXmlMsIpLBxVbjnpmtaEz3GxOVdoNw5Gvkxo2TaVkLkjDqlRQ2mSUGj8Oa6vv4vXyJa088jUzVYi6EcmeSDoe551qbWhSD2kcoMtqHCH2g2sASebWopl3J0MmUQ2dFJrfM9Xk7fGNjHCjVJ+5lVRvNgWBmfbwDaet5z13egLrHQtv/eB/6N4ZFKen+UmEvrAiCGKBZjqg7kYJGBwcY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,28 +181,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 17, 2025 at 01:52:08PM +0200, David Hildenbrand wrote:
->The huge zero folio is refcounted (+mapcounted -- is that a word?)
->differently than "normal" folios, similarly (but different) to the ordinary
->shared zeropage.
->
->For this reason, we special-case these pages in
->vm_normal_page*/vm_normal_folio*, and only allow selected callers to
->still use them (e.g., GUP can still take a reference on them).
->
->vm_normal_page_pmd() already filters out the huge zero folio. However,
->so far we are not marking it as special like we do with the ordinary
->shared zeropage. Let's mark it as special, so we can further refactor
->vm_normal_page_pmd() and vm_normal_page().
->
->While at it, update the doc regarding the shared zero folios.
->
->Reviewed-by: Oscar Salvador <osalvador@suse.de>
->Signed-off-by: David Hildenbrand <david@redhat.com>
+On 7/25/25 18:47, Vlastimil Babka wrote:
+> On 7/25/25 08:49, Li Qiong wrote:
+>> For debugging, object_err() prints free pointer of the object.
+>> However, if check_valid_pointer() returns false for a object,
+>> dereferncing `object + s->offset` can lead to a crash. Therefore,
+>> print the object's address in such cases.
+>> 
+>> Fixes: bb192ed9aa71 ("mm/slub: Convert most struct page to struct slab by spatch")
+> 
+> That was the last commit to change the line, but the problem existed before,
+> AFAICS all the time, so I did:
+> 
+>     Fixes: 7656c72b5a63 ("SLUB: add macros for scanning objects in a slab")
+>     Cc: <stable@vger.kernel.org>
+> 
+>> Signed-off-by: Li Qiong <liqiong@nfschina.com>
+> 
+> Added to slab/for-next, thanks!
 
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+Dropped based on Matthew's review
 
--- 
-Wei Yang
-Help you, Help me
+>> ---
+>> v2:
+>> - rephrase the commit message, add comment for object_err().
+>> ---
+>>  mm/slub.c | 6 +++++-
+>>  1 file changed, 5 insertions(+), 1 deletion(-)
+>> 
+>> diff --git a/mm/slub.c b/mm/slub.c
+>> index 31e11ef256f9..8b24f1cf3079 100644
+>> --- a/mm/slub.c
+>> +++ b/mm/slub.c
+>> @@ -1097,6 +1097,10 @@ static void print_trailer(struct kmem_cache *s, struct slab *slab, u8 *p)
+>>  			      size_from_object(s) - off);
+>>  }
+>>  
+>> +/*
+>> + * object - should be a valid object.
+>> + * check_valid_pointer(s, slab, object) should be true.
+>> + */
+>>  static void object_err(struct kmem_cache *s, struct slab *slab,
+>>  			u8 *object, const char *reason)
+>>  {
+>> @@ -1587,7 +1591,7 @@ static inline int alloc_consistency_checks(struct kmem_cache *s,
+>>  		return 0;
+>>  
+>>  	if (!check_valid_pointer(s, slab, object)) {
+>> -		object_err(s, slab, object, "Freelist Pointer check fails");
+>> +		slab_err(s, slab, "Invalid object pointer 0x%p", object);
+>>  		return 0;
+>>  	}
+>>  
+> 
+
 
