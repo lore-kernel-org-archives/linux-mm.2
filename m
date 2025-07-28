@@ -2,106 +2,110 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9DC99C83F17
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 16:41:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 750F2C83F26
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 16:55:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F2B16B0088; Mon, 28 Jul 2025 12:41:45 -0400 (EDT)
+	id ED0006B0088; Mon, 28 Jul 2025 12:55:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2CACB6B008C; Mon, 28 Jul 2025 12:41:45 -0400 (EDT)
+	id E80B46B0089; Mon, 28 Jul 2025 12:55:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 207006B0092; Mon, 28 Jul 2025 12:41:45 -0400 (EDT)
+	id D70176B008A; Mon, 28 Jul 2025 12:55:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0FB5B6B0088
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 12:41:45 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C94585864C
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 16:41:44 +0000 (UTC)
-X-FDA: 83714239728.18.AE75A83
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 25A8240006
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 16:41:42 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="B+keFTh/";
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C97A26B0088
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 12:55:55 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 787CC160361
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 16:55:55 +0000 (UTC)
+X-FDA: 83714275470.23.D1A76C5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id D962B18000B
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 16:55:53 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YKTrzBoG;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of leon@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=leon@kernel.org
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753721753; a=rsa-sha256;
+	cv=none;
+	b=7re4tgEQlfndTtyl7f66dDJDgoi+aTvt6rBJB2zt0UfNkjpkQbXMYEVYs9LVK1yQ0oSB4e
+	x0o6TWHABdcz0K39APTZlJquqyHTWBc+CFF+VGhyeqRsJ8MiOLpfZZHWY2l6fF3EVaKXkS
+	3WMR4vkDFDtpFFUxcyPTmzXBxZHsEng=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YKTrzBoG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753720903;
+	s=arc-20220608; t=1753721753;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sSqnk/cMg/Q/8oEDZWleWovMUF84tWWuIvUviAtEk1c=;
-	b=eu/a4Qp1hYQaPFHTAimjtqTkUW7oZCGS44wQlkY8zZyNddeYoVxNLcnYw6Ez5Pz3Ewb/YT
-	UlG0tHEVDWEKzLEhoV7KlN6PduDfxCoRIO6FdclHoUJ0k3x4gXMZt7eSqXxOQglLXJh8dz
-	bS/MbVvqPMQpwkgfXKflap2z0EMNc8w=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753720903; a=rsa-sha256;
-	cv=none;
-	b=u516zprtazvCo5QuBAXLNEX6ULDQHnMdl48hjnA8aGfhYVfJYTkyy9oNg2AfYcZ9QlSLpe
-	/Vw5Y9uQJ2HVGVFHPwpvj9Eqxr06qxsV/3VCJbIfr/ypoPnvlJUghb0ZS+NqFPtW7k+nnw
-	KXNJpzs+uLch457Rx5gcHBbKOEcFQEY=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="B+keFTh/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of leon@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=leon@kernel.org
+	bh=pmjI/Z3HB73LaDE6GF0ftzCT8oEFHeWFdL7Knzgt7yc=;
+	b=DJ1BfvzZPFMtDH9XeSxtJNcXnH/KtdrVz9gHdzneZL8X1tyjTn+mggVIOsfVZ6guPLB1c3
+	csVlAxmJYCoJ0iQeaks/wzgE28+K6FI9iFkSejzJ0XsHgiV2fNwTjTVU8cELk8b3HkgGpP
+	uQvKXRHc8V66H0ZaWkg5x4fPgcDqVhA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 66B4CA53E34;
-	Mon, 28 Jul 2025 16:41:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51E4FC4CEE7;
-	Mon, 28 Jul 2025 16:41:40 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 00CAB601EA;
+	Mon, 28 Jul 2025 16:55:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8146DC4CEE7;
+	Mon, 28 Jul 2025 16:55:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753720902;
-	bh=7x0ZgIgFMhmGblvNn1rp9l0J3jLs/NKo357QqFEU40c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B+keFTh/H3uyJm+2CRXywKicPx1XFBBkxeKmrZZbdSdo7TbhwSKWM+9PVaAkV/Ggd
-	 rdbs8jBkHbT/8OTgeGMPL4gfUOW2ABlcD8WUcg8AnFQUJTXwNmVXpc6MVeqX+1gX/B
-	 Hl4YyyFNqJKjrMehvwoAGQununhgEiDlRgPJ4pHhRsT2e9nnS0dUD7g029zGYqMvz0
-	 +n1X/yXScSmTwLjOGstVCV5NVXNowOdBanEpgP5gJZIZzUwp2PqhdbrI1ndD1ANzQ6
-	 U3SK+z5/iiu7H8t8oy3Nyrh+r+SHqvFdQXzv1CHbtq87l4SZmHe8/P8OoUYzv0vSLF
-	 T/9RjFtCR33XQ==
-Date: Mon, 28 Jul 2025 19:41:36 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Logan Gunthorpe <logang@deltatee.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, Christoph Hellwig <hch@lst.de>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	s=k20201202; t=1753721752;
+	bh=NQFaFtTN7N6BCj6w0IBTYBXcpqLFYEKBc4izu1Pcojo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=YKTrzBoG5SYEOWdZuwKRnsIaC3w6XuxfTZaFJLGqJ35KqvCGFbFKbP/Zw6QrXTMjh
+	 pGlx/nuMebKFFIX+3EJxaX5FTM5wRXtSIwYxipv9GK53Vc4oIfF18F3kEqOM6mBb7K
+	 8IaBXa/vJx5IhcWufXsj2TINNTL3q0dC244iiZS8li6hGUgs4ZPN5jinPNlEcDVhvd
+	 EuMLqKdNgIr5tUtL9RVJbaQIohQmDM9A3lSECcFV6At8+rRoRfFYLiZdqm1qGyuzHF
+	 NxTWzk4f4VY94O4I1a72SpeVP5Gx8lgWFAUoze8SO1S+rS/loRr6bfmMVwXgmjU6fr
+	 VoQrdZZkIR8Tg==
+From: SeongJae Park <sj@kernel.org>
+To: Usama Arif <usamaarif642@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
-	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
-	Joerg Roedel <joro@8bytes.org>, kvm@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Will Deacon <will@kernel.org>
-Subject: Re: [PATCH 05/10] PCI/P2PDMA: Export pci_p2pdma_map_type() function
-Message-ID: <20250728164136.GD402218@unreal>
-References: <cover.1753274085.git.leonro@nvidia.com>
- <82e62eb59afcd39b68ae143573d5ed113a92344e.1753274085.git.leonro@nvidia.com>
- <20250724080313.GA31887@lst.de>
- <20250724081321.GT402218@unreal>
- <b32ae619-6c4a-46fc-a368-6ad4e245d581@deltatee.com>
- <20250727190514.GG7551@nvidia.com>
- <d69e0d74-285e-4cde-a2e4-a803accfa9e1@deltatee.com>
+	david@redhat.com,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	corbet@lwn.net,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	hannes@cmpxchg.org,
+	baohua@kernel.org,
+	shakeel.butt@linux.dev,
+	riel@surriel.com,
+	ziy@nvidia.com,
+	laoar.shao@gmail.com,
+	dev.jain@arm.com,
+	baolin.wang@linux.alibaba.com,
+	npache@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	ryan.roberts@arm.com,
+	vbabka@suse.cz,
+	jannh@google.com,
+	Arnd Bergmann <arnd@arndb.de>,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH 5/5] selftests: prctl: introduce tests for disabling THPs except for madvise
+Date: Mon, 28 Jul 2025 09:55:49 -0700
+Message-Id: <20250728165549.62546-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250725162258.1043176-6-usamaarif642@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d69e0d74-285e-4cde-a2e4-a803accfa9e1@deltatee.com>
-X-Stat-Signature: g6g86g1opd1xrekwp36ri1x8tm3nrii5
-X-Rspamd-Queue-Id: 25A8240006
-X-Rspamd-Server: rspam10
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D962B18000B
+X-Stat-Signature: n31wfcrj14njb3mednkobox5c5y3msn1
 X-Rspam-User: 
-X-HE-Tag: 1753720902-533531
-X-HE-Meta: U2FsdGVkX1+3G/CLXxH2Wwf7+MUepSiypIX4Zc64TjfZML3DSBOsIqUSxpM1Rmf853eLQYAfhEpmwsyACVh3r/1PWkqk3/qSj/iRY1y7XoRiRihH6lGew73l6tjlPzsWMNsH77RBWvj4JS6iS5RRktii31l0joc0lqWLDnyRg9B8EvL3ml3jy5/NnIwmYQocrAvOHKwRLC6cx7AvUgktRg+BGE1H/A9cKIN5vCXu4UQaApsArOzHSkIFQY3l81Viq5m8e6scprTDNS/ODcWRaMtofvXgXT6Vj3BGVz+kry2Y6qtAEsMsF+bhSEYl6bSQXtMh1iT2WW+MBrLu6UYlqjCx/cUl2QXhAh2OkXdcqBkWVxmLf0vtPq1bgdYCtFpgpGmGPdt0Sd083w1QUBO7l5wqi18snnRiEhECCAr2ZlPjubdbMM5uGqqoR16aYjpdpIh1+HwjXdB2uCdbeN+/WbEYAhJ+LwZYdVERKLZBYupIVdj7XCTF2mu6YPTLapIViAjSCuV5ikBIfm/oOM98G99YaKetlW9uP2yJT4IE/tgIY7GhS9J5nvWlwmQt/4YzFPdChOXI807q+Ds49F902qyk8n+uNwfF+ShsvLR3oZwgmuTnWBgzYkttq+Ch2S1DXOnopcMXUBGRx/WGbZghUVDO8aXwgYs4N4HskxtWGGxyIHerVjNctv/duKWEJlRlHPPu4oRj0DeYI6lAU6OGVe12cenZRTpZa18/RsElGXKorkKpxW5s/4EM5EC2gE+2732VweTsxV6vSHRhUQNXJ4U0jEJzcrnOi3Rk8uGeGfOQWpVXSSVMBRZd85gTDze2iIDjqZKVYDc2Mb2mlO0AXq06BXBRGe3DymsizKCIYPx3F7sLtS3ZpLvv5harzp8mBzztWPyYILQAuwCkX4s/uYLy+ziDIJnpdLPA/qwzumMOONDD/JyKNXFX8hxdxyZ/wNTESsMtLKrEU1E7UQ/
- dxBvRRJc
- Cr2Zj7e/I3ojGOdgY9+1P1zxyr6xWvwNwfw5GcfC2JZyPdGMcJLGv3heALJzcGXmryt4WkY5leOU+QaNoeAiiSOmudQdTXLL2HCLu5EsMnV8cIlMQc6azxnUn2utiLazG6jZrgyR6SlUzXjFtmiBryOcQ3FtvMwSi5kgT7ekuoEZF4ZM28Bw1+fQ/OCnSxSKzbu/jT62uol5kEQJMRI8ALO1pCceWrJA2nqLaAYFazOixMoMNU2eF7n7qiPhZJVTiOWFl2evNWTX51by0mpP0fg4+iPd8/Ykn0vrTF6FRNvlD8Tg6LVjtfE+PGlDOiKyFHPit
+X-HE-Tag: 1753721753-632343
+X-HE-Meta: U2FsdGVkX1+74rmMh9nhdXCBOI2lfChqEOMjfhMnO+uPFBipFbWn46IrPcWCAe2DdcQXT3SxdfTRpmgD0gazOzuhJBUTW0Q+pRWxfJf5ack6rfxuMaTzgzXcEMZrmV9owoYxgd20MNxUj/3U+uq1LjPTTFwG6MYSIsT31auNjWcxFB3bdCg0rg5DKThmZxUrutiBV1if7Zpw01L54Rm7h0TzCQRlWLFuLNanea4i0YRo9jgYOAeaW4MV3Si8v+PrgP1cyAc1tXrrWp+hw6EiQh7d3AuieSYSECcMQkX3+cWjztLRTpngnLVCkD0x6vt3qTxRQWbL/xLPLmmqITw+SVMRkRt47rHGjjCLd4QXUkg9LrepGQHkzmaM2OAh/F3DeQbYiaKb+hcJ4aslTDCqD0ESlX3/Zh2c6OJJRgHFCTcMMoO/Ok/wTqAVscmu6C0SqE1rRwmDqiw1Icogowl+qOTPC7/iqOJLaY/1TzzktWi+ZnZGM051VKa8B3d6Sy6xuP0YjGy57ornd0pPhV+0I8mjq9ITDL5bA0znFeJd2YdezXvmrdgNZdKHJl5wb8sBl4HKRTNvAOl/kgrTFLzpEmL8NgY3zSST1pe9bvjOfLRzYjdDGAf9r15VSz45tGBh0RiPKImmDfNePUOCqzGyzqGY0s9KKoP10vgOG5mzLpxuOMhbpip81m4TNwc/Ppp4+7UmV8H7W0vgV5a+FgQpG4qabvIBv6IIMaeUZVAYPPjN11akScThh1/QgLwplpKxfz8ZGZpv8OLjVxDWQPr4QSHDpRMYkKgOcxrZeRDvKanN4hVXsugDXQuAAhTGTYezCIwqh1nCJJswYaRFDqAAe5uFDyT3Ou6oBVYDs0CP3dI3IU2NDvJL5TdpNTGh6T9NwPh3lfuQ3UoEsQNyAw2cCjo3HKPw/Csds1s8Qk/olBpYT5VnT3opNfVOB4uSyLfZR6jl5MUAo7E0C95yRZ4
+ QHQR6KYI
+ N3i3yJHllZEUrowAnQJBk4a3YYvquDrcq3N9y3qJfd7Qrkghc/F1q4f+Z8fjL7pSnZIkXKrN3ARpZLAcJXA4cWWQNSNdv5bP9ItZW3TEVNv+IOsoOsoodWpNqI8I3ZUYHyeLlsHNWnecn0+GjlaJ3gn3pHiE/kgehC1kvj+v6ALojphoqZZQMMlED7zJZ9tAJTtOas5wakqIWf6ZUWxtMFeSMY17QlQRWzGEiwbTgazQXga5u2gYyfToxHzW+oiQCIcdTB8Gf8ar+HwnTFLxQSu1xNePmJ6e7eGj+lwtioRhV5kxONaPGBANpjg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,72 +114,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 28, 2025 at 10:12:31AM -0600, Logan Gunthorpe wrote:
-> 
-> 
-> On 2025-07-27 13:05, Jason Gunthorpe wrote:
-> > On Fri, Jul 25, 2025 at 10:30:46AM -0600, Logan Gunthorpe wrote:
-> >>
-> >>
-> >> On 2025-07-24 02:13, Leon Romanovsky wrote:
-> >>> On Thu, Jul 24, 2025 at 10:03:13AM +0200, Christoph Hellwig wrote:
-> >>>> On Wed, Jul 23, 2025 at 04:00:06PM +0300, Leon Romanovsky wrote:
-> >>>>> From: Leon Romanovsky <leonro@nvidia.com>
-> >>>>>
-> >>>>> Export the pci_p2pdma_map_type() function to allow external modules
-> >>>>> and subsystems to determine the appropriate mapping type for P2PDMA
-> >>>>> transfers between a provider and target device.
-> >>>>
-> >>>> External modules have no business doing this.
-> >>>
-> >>> VFIO PCI code is built as module. There is no way to access PCI p2p code
-> >>> without exporting functions in it.
-> >>
-> >> The solution that would make more sense to me would be for either
-> >> dma_iova_try_alloc() or another helper in dma-iommu.c to handle the
-> >> P2PDMA case.
-> > 
-> > This has nothing to do with dma-iommu.c, the decisions here still need
-> > to be made even if dma-iommu.c is not compiled in.
-> 
-> Doesn't it though? Every single call in patch 10 to the newly exported
-> PCI functions calls into the the dma-iommu functions. If there were
-> non-iommu paths then I would expect the code would use the regular DMA
-> api directly which would then call in to dma-iommu.
+On Fri, 25 Jul 2025 17:22:44 +0100 Usama Arif <usamaarif642@gmail.com> wrote:
 
-If p2p type is PCI_P2PDMA_MAP_BUS_ADDR, there will no dma-iommu and DMA
-at all.
+> The test will set the global system THP setting to always and
+> the 2M setting to inherit before it starts (and reset to original
+> at teardown)
+> 
+> This tests if the process can:
+> - successfully set and get the policy to disable THPs expect for madvise.
 
-+static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
-+				   struct dma_buf_attachment *attachment)
-+{
-+	struct vfio_pci_dma_buf *priv = dmabuf->priv;
-+
-+	if (!attachment->peer2peer)
-+		return -EOPNOTSUPP;
-+
-+	if (priv->revoked)
-+		return -ENODEV;
-+
-+	switch (pci_p2pdma_map_type(priv->vdev->provider, attachment->dev)) {
-+	case PCI_P2PDMA_MAP_THRU_HOST_BRIDGE:
-+		break;
-+	case PCI_P2PDMA_MAP_BUS_ADDR:
-+		/*
-+		 * There is no need in IOVA at all for this flow.
-+		 * We rely on attachment->priv == NULL as a marker
-+		 * for this mode.
-+		 */
-+		return 0;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	attachment->priv = kzalloc(sizeof(struct dma_iova_state), GFP_KERNEL);
-+	if (!attachment->priv)
-+		return -ENOMEM;
-+
-+	dma_iova_try_alloc(attachment->dev, attachment->priv, 0, priv->phys_vec.len);
-+	return 0;
-+}
+s/expect/except/
+
+> - get hugepages only on MADV_HUGE and MADV_COLLAPSE after policy is set.
+> - successfully reset the policy of the process.
+> - get hugepages always after reset.
+> - repeat the above tests in a forked process to make sure  the policy is
+>   carried across forks.
+> 
+> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+> ---
+>  .../testing/selftests/mm/prctl_thp_disable.c  | 95 +++++++++++++++++++
+>  1 file changed, 95 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/mm/prctl_thp_disable.c b/tools/testing/selftests/mm/prctl_thp_disable.c
+> index 52f7e6659b1f..288d5ad6ffbb 100644
+> --- a/tools/testing/selftests/mm/prctl_thp_disable.c
+> +++ b/tools/testing/selftests/mm/prctl_thp_disable.c
+> @@ -65,6 +65,101 @@ static int test_mmap_thp(enum madvise_buffer madvise_buf, size_t pmdsize)
+>  	munmap(buffer, buf_size);
+>  	return ret;
+>  }
+> +
+> +FIXTURE(prctl_thp_disable_except_madvise)
+> +{
+> +	struct thp_settings settings;
+> +	size_t pmdsize;
+> +};
+> +
+> +FIXTURE_SETUP(prctl_thp_disable_except_madvise)
+> +{
+> +	if (!thp_is_enabled())
+> +		SKIP(return, "Transparent Hugepages not available\n");
+
+As David also pointed out on the other patch, the message and the function name
+would better to be consistent.
+
+> +
+> +	self->pmdsize = read_pmd_pagesize();
+> +	if (!self->pmdsize)
+> +		SKIP(return, "Unable to read PMD size\n");
+> +
+> +	thp_read_settings(&self->settings);
+> +	self->settings.thp_enabled = THP_ALWAYS;
+> +	self->settings.hugepages[sz2ord(self->pmdsize, getpagesize())].enabled = THP_INHERIT;
+> +	thp_save_settings();
+> +	thp_push_settings(&self->settings);
+> +
+
+Unnecessary empty line?
+
+> +}
+> +
+> +FIXTURE_TEARDOWN(prctl_thp_disable_except_madvise)
+> +{
+> +	thp_restore_settings();
+> +}
+> +
+> +/* prctl_thp_disable_except_madvise fixture sets system THP setting to always */
+> +static void prctl_thp_disable_except_madvise(struct __test_metadata *const _metadata,
+> +					     size_t pmdsize)
+> +{
+> +	int res = 0;
+> +
+> +	res = prctl(PR_GET_THP_DISABLE, NULL, NULL, NULL, NULL);
+> +	ASSERT_EQ(res, 3);
+> +
+> +	/* global = always, process = madvise, we shouldn't get HPs without madvise */
+> +	res = test_mmap_thp(NONE, pmdsize);
+> +	ASSERT_EQ(res, 0);
+> +
+> +	res = test_mmap_thp(HUGE, pmdsize);
+> +	ASSERT_EQ(res, 1);
+> +
+> +	res = test_mmap_thp(COLLAPSE, pmdsize);
+> +	ASSERT_EQ(res, 1);
+> +
+> +	/* Reset to system policy */
+> +	res =  prctl(PR_SET_THP_DISABLE, 0, NULL, NULL, NULL);
+> +	ASSERT_EQ(res, 0);
+> +
+> +	/* global = always, hence we should get HPs without madvise */
+> +	res = test_mmap_thp(NONE, pmdsize);
+> +	ASSERT_EQ(res, 1);
+> +
+> +	res = test_mmap_thp(HUGE, pmdsize);
+> +	ASSERT_EQ(res, 1);
+> +
+> +	res = test_mmap_thp(COLLAPSE, pmdsize);
+> +	ASSERT_EQ(res, 1);
+
+Seems res is not being used other than saving the return value for assertions.
+Why don't you do the assertion at once, e.g., ASSERT_EQ(test_mmap_thp(...), 1)?
+No strong opinion, but I think that could make code shorter and easier to read.
+
+> +}
+> +
+> +TEST_F(prctl_thp_disable_except_madvise, nofork)
+> +{
+> +	int res = 0;
+> +
+> +	res = prctl(PR_SET_THP_DISABLE, 1, PR_THP_DISABLE_EXCEPT_ADVISED, NULL, NULL);
+> +	ASSERT_EQ(res, 0);
+
+Again, I think 'res' can be removed.
+
+> +	prctl_thp_disable_except_madvise(_metadata, self->pmdsize);
+> +}
+> +
+> +TEST_F(prctl_thp_disable_except_madvise, fork)
+> +{
+> +	int res = 0, ret = 0;
+> +	pid_t pid;
+> +
+> +	res = prctl(PR_SET_THP_DISABLE, 1, PR_THP_DISABLE_EXCEPT_ADVISED, NULL, NULL);
+> +	ASSERT_EQ(res, 0);
+
+Ditto.
+
+> +
+> +	/* Make sure prctl changes are carried across fork */
+> +	pid = fork();
+> +	ASSERT_GE(pid, 0);
+> +
+> +	if (!pid)
+> +		prctl_thp_disable_except_madvise(_metadata, self->pmdsize);
+> +
+> +	wait(&ret);
+> +	if (WIFEXITED(ret))
+> +		ret = WEXITSTATUS(ret);
+> +	else
+> +		ret = -EINVAL;
+> +	ASSERT_EQ(ret, 0);
+> +}
+> +
+>  FIXTURE(prctl_thp_disable_completely)
+>  {
+>  	struct thp_settings settings;
+> -- 
+> 2.47.3
+
+
+Thanks,
+SJ
 
