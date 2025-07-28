@@ -2,125 +2,157 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BE8CC83F26
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 21:08:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D71BC83F26
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 21:19:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7BA46B0088; Mon, 28 Jul 2025 17:08:27 -0400 (EDT)
+	id A0B8E6B0088; Mon, 28 Jul 2025 17:19:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B05DA6B0089; Mon, 28 Jul 2025 17:08:27 -0400 (EDT)
+	id 9BBDB6B0089; Mon, 28 Jul 2025 17:19:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CD506B008A; Mon, 28 Jul 2025 17:08:27 -0400 (EDT)
+	id 8AAE26B008A; Mon, 28 Jul 2025 17:19:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 85DFC6B0088
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 17:08:27 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 14DAF12BCD4
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 21:08:27 +0000 (UTC)
-X-FDA: 83714911854.05.1E92806
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B3AD514000A
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 21:08:24 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DeHnmMVR;
-	spf=pass (imf26.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 7C6286B0088
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 17:19:52 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2786D1A03EE
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 21:19:52 +0000 (UTC)
+X-FDA: 83714940624.26.E45303B
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 272924000A
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 21:19:49 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=rivosinc-com.20230601.gappssmtp.com header.s=20230601 header.b=I2QvFwLw;
+	spf=pass (imf12.hostedemail.com: domain of debug@rivosinc.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753737590; a=rsa-sha256;
+	cv=none;
+	b=d9pbnelWZfrSrizGjIueQt3/PwknKPGQBE9yM566R3riKXuPRkjf+7TapHBXHGhKUFnqJA
+	qfEM6R7IK2ZyWJNDLgKKwYZAWgXUJqoc5M2Ez8HKm9UbPWfj2ADZaVOQt5DyhX8GYN8d2J
+	LU90ZAgjz145wymOrj9J9QlKHGiHLDk=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=rivosinc-com.20230601.gappssmtp.com header.s=20230601 header.b=I2QvFwLw;
+	spf=pass (imf12.hostedemail.com: domain of debug@rivosinc.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753736904;
+	s=arc-20220608; t=1753737590;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tcBiW6OrDuRkE61U2oZHQtibrdiKqEiJ1zyfrij+HuE=;
-	b=aj1YcsVMRvwmcOTnsUNWF4xZ3Po1aY4/s53JXHuIoDih3oUm1c1nMpGn10CFbUwH6nlUr8
-	tX0zUFPltHxQ9ULEbWBA25znk2QV9367BDAWGBRqWwvJwKEVssLknpnYLQ9BYuiIBRYMrG
-	cxs6EXJBCRlvZoqWRSv4z+WjYWImisM=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DeHnmMVR;
-	spf=pass (imf26.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753736904; a=rsa-sha256;
-	cv=none;
-	b=2NxkNISg7Za7HYFlhVj7L6uiOOn1PirYkxWKwV6il55iNNaCOgOYhfUnZ+9CAZBFkkv+Af
-	3uczlUzWzfOBMzK5ivCdTPkacACgLpKHLtj/B1z6vB8Px+3sV1vPZylqexpEACfUzmyMv6
-	u1cAtmm2JfwPqCR436j8Yv95HY4I5H0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753736904;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tcBiW6OrDuRkE61U2oZHQtibrdiKqEiJ1zyfrij+HuE=;
-	b=DeHnmMVRP/iocd8Qx7ArxF0YaB9TBpzjPiFCP+Ynaw8yIQks5uN3V/xs1XbY7WYdj4JjLZ
-	Vf+moJK/p+mVvZxen2dxNXLOVO2HBnaGCRAyQIhCNQlKdXQStS8n5f3PL17HZxgQxgjl4C
-	U/VwLPyF/KCEMcdNnZ7TkUFGsbsuoQ0=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-149-bje3N-WJPA2NtEX34tI-nQ-1; Mon, 28 Jul 2025 17:08:22 -0400
-X-MC-Unique: bje3N-WJPA2NtEX34tI-nQ-1
-X-Mimecast-MFC-AGG-ID: bje3N-WJPA2NtEX34tI-nQ_1753736902
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4ab87fec9e2so106139301cf.0
-        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 14:08:22 -0700 (PDT)
+	bh=fk12aZ1hILTEk1VujnCvLZyceUntOHKQSLYJRpJHq1U=;
+	b=gm7iBNfJDJ2Hp8xPhM42D92fzYm0+fOBqKuH7n1uUAxMldaEZTbaO1PNhIx/0kfOiSL9tr
+	A6Py3R09yzIqoXmhpbYOlUyFR+3YzoyEeF+FqN0si3zkNpQLG96qYy3m+nqf3GC++Oxc9p
+	ZJLU0Djn1b4nbBeB8GZNLN7jq/VRy7E=
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-748e81d37a7so3265897b3a.1
+        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 14:19:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1753737589; x=1754342389; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=fk12aZ1hILTEk1VujnCvLZyceUntOHKQSLYJRpJHq1U=;
+        b=I2QvFwLwtX3aPU39lmkMmtWkCkFni3lVgRJro37FqMW38ExFSoOU9FaOu6EPoWY5ZW
+         hlbbEdGGo4Q8mRl1FoD4H476JvXP/g/sfUWVc8TXo1Z96AKL/BJuUe1QIfaEQF+uf36r
+         vFQ1ScwC4ttw9tUFIwP0Rx6ZR7hx1+wZu26xkbsrcHXpidRnrgjUYkn3OB4RaKDob0SJ
+         +JwEYpbV3Iv31Dpt/nHUOBAeVE14hwB/Qr/w9gukux1yTyZSv+jDcCBoANDScd/fcqjB
+         o7b6AiAH2J1oFES+qmpEgxOdEs5wZtX3LcmKBae6a+xMUMV2KK6+5W6VmAfvRvc7ZH3a
+         KLxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753736902; x=1754341702;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tcBiW6OrDuRkE61U2oZHQtibrdiKqEiJ1zyfrij+HuE=;
-        b=xBE7JFGEh9/fzs0RmjVJbGrCBEKl2h0FwYJjIkAeZcBzoBymukMc3k4mgDvrjJHPfg
-         On1mDzjfgd6pS7quCnmwhULxpoxM3C/E7vfqg540kdDaHImzeTVwVnwwRNVGAXAqKtAI
-         WWuQ3vFI/bify55J2CKOMjMPyf9ZNcOLVppjgNd7wFJyDlZoetIEvBENHJO+TLMmyNmT
-         Qgas6cRCv//+xicIYPxA9QPzm23FHyfYzVJdYW34NZa//n6wnrHfH1bRBAjmt5gHqghe
-         DjVwWYaXdi49JgbnnGSYDhNZzMSKPTe0lPiyEYYkk1ZOSwGhoAIDu8hq2v8miPT/6UzE
-         FAqA==
-X-Forwarded-Encrypted: i=1; AJvYcCUjM7SUjGTIAQ4j/wgH1zDwEgoHytXBDMGifQzYsq/t4NaAoAykuzVv7tt2k4+i28mFvxyf6BkilQ==@kvack.org
-X-Gm-Message-State: AOJu0Yxqugf3X5ZnnoTWyAwoz6c5iS/+Qx3kaBGqHFtH+J5VYi6FdDR7
-	/rch0v7IAsWvPh2p46rI2rbHzli8FcZv4AXUlYIt3NvMgVJcC623CLGDjf+ZBaPX45VGoijeH9E
-	5DAG4MOCb2qGNTUOPaneED2BeEhT1Mk27fUPjZFLFtSBdSkVNikCQ
-X-Gm-Gg: ASbGncsp91rSNHWMghTOAGA3kSOgHW02nHT+ReqW4nT4r3lZJSiUjF3Gd7Ai1LvimBd
-	9OH+GzhIgyYATOk64h64hhEPdGsL4iKmvUXH48Ptry9aGJen8aS9zVOe8rb1IQthEM5CSupyo0Q
-	M9mbV2YxBu2vLFEzYdD1QZntHfM4tl2hKz3ZXMks16t6MO2TJE5br18QDc1Em1X8pxgpWEUO/ri
-	TB68PtyX5BfpAmAsUHX0w8mBxC8kFpqsGipEbpf3ua0SI6aiYP9Reolekgv016tmdflRUPj5Z+h
-	+lVzKe1MHV+NMiZWPGPkgtu9S/63hxE=
-X-Received: by 2002:a05:622a:13d3:b0:4ab:c00c:250b with SMTP id d75a77b69052e-4ae8f0ddb39mr185285201cf.40.1753736902124;
-        Mon, 28 Jul 2025 14:08:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFUd/cHhjwzB9/l8otidGgToOpAIoiGahsj8p23nz+4w2+2F/XUHPOFR0hUr0kib0c+Eh6EjA==
-X-Received: by 2002:a05:622a:13d3:b0:4ab:c00c:250b with SMTP id d75a77b69052e-4ae8f0ddb39mr185284811cf.40.1753736901647;
-        Mon, 28 Jul 2025 14:08:21 -0700 (PDT)
-Received: from x1.local ([142.189.11.29])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ae99516482sm39780351cf.7.2025.07.28.14.08.17
+        d=1e100.net; s=20230601; t=1753737589; x=1754342389;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fk12aZ1hILTEk1VujnCvLZyceUntOHKQSLYJRpJHq1U=;
+        b=Azf91YtDod44TVljeQ9HA9dFdiwu5yCZp1WOzwB5fr7OAfDQUdBRAa1vuI8g2Z4McC
+         W4Lh4+l2IiD00vj2yane5QrGlDnvZ41VlepIzd1ktebveWCA7iIbk2NITcf+rNqrtrxo
+         HVQDYYstgBCAUe4NPjcVO4PY833p+38PgIMdgOht2zhxNKcx4LQ4biXu+Axn3sMZgmzb
+         gI46hv0jU0Ex3Hc1SFn2R1YWChMLj7WSw91/lRaXQnQhrh3XpQBKAAnOYsHZQEK6fJUD
+         C22zwzE8LE61Y7yf8mv7FerL56Nz0vLhVCRA1jwGkI3sr+SU/zJiD1QFTDtTv7eOY9qc
+         ssOA==
+X-Forwarded-Encrypted: i=1; AJvYcCX0MiAJPODfwUOf2B7KtcWt49kM0/Hffopq6aEc9bHYNbfkZKhSIjIefR9Rc6r8kBeFNQuE3JXGtQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy9FKTqRPnsWwAE15mtHIURk9LntgCANKpwch2I0w2Uc+6I7BM1
+	2MiTO0t9+cuLP8EhA2mFmNvZmUjxLxmAYVd75N5st8GiR7wQnDKGH4m2+GNVncaCavw=
+X-Gm-Gg: ASbGncur1M3D8m7ggS2A5Vz/3v4jpy+xjfVmLO3nuL70wcy2WieWJAinPuGgLOsCteq
+	7ICN85kZt5n1j9PFFwn+HrXaLV5uWOQORqhA3FbCjpNpqCKIxy0VF/wkU9o05HJ/F6B0mjrcmP5
+	RgGbAC5qsObXQ8l2uQQhRxqmAEMpvIR8dogQIGwKAY7JnLmFCRZ1dS70kiWdz8f1n94EUIi1arM
+	d3bnX9e6Z+Yg0akHXArk2Ektz27Jhdv8W5sk7+uSvEEC1DO4VuWiJjvjiN2nR7YkyZW0pPvheVV
+	QIVM4hoTucDCLE59k5rhSGgXnyYKI+3mUDD3823/XDqspIuUNab/HHq+CObI/3V3D27m3pD6Kso
+	IzRQvzqhj6pM6aJQbCyJEcSzJb4JAVcCn
+X-Google-Smtp-Source: AGHT+IEnErxkfYjX+YJp8zR8qc4hw1otEJKlPu8QNYCPVpJ95RsieRy81jtW+UwHk4fD0hbvpRX7Lg==
+X-Received: by 2002:a05:6a00:c89:b0:748:fcfa:8bd5 with SMTP id d2e1a72fcca58-7633636aefemr19113589b3a.3.1753737588883;
+        Mon, 28 Jul 2025 14:19:48 -0700 (PDT)
+Received: from debug.ba.rivosinc.com ([64.71.180.162])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76408cf7759sm6272300b3a.31.2025.07.28.14.19.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Jul 2025 14:08:18 -0700 (PDT)
-Date: Mon, 28 Jul 2025 17:08:15 -0400
-From: Peter Xu <peterx@redhat.com>
-To: syzbot <syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com>
-Cc: akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, syzkaller-bugs@googlegroups.com,
-	Lokesh Gidra <lokeshgidra@google.com>,
-	Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [syzbot] [mm?] BUG: unable to handle kernel paging request in
- move_pages
-Message-ID: <aIfmv-qSxKxWgzur@x1.local>
-References: <68794b5c.a70a0220.693ce.0050.GAE@google.com>
+        Mon, 28 Jul 2025 14:19:48 -0700 (PDT)
+Date: Mon, 28 Jul 2025 14:19:45 -0700
+From: Deepak Gupta <debug@rivosinc.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "nathan@kernel.org" <nathan@kernel.org>,
+	"kito.cheng@sifive.com" <kito.cheng@sifive.com>,
+	"jeffreyalaw@gmail.com" <jeffreyalaw@gmail.com>,
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
+	"mhocko@suse.com" <mhocko@suse.com>,
+	"charlie@rivosinc.com" <charlie@rivosinc.com>,
+	"david@redhat.com" <david@redhat.com>,
+	"masahiroy@kernel.org" <masahiroy@kernel.org>,
+	"samitolvanen@google.com" <samitolvanen@google.com>,
+	"conor.dooley@microchip.com" <conor.dooley@microchip.com>,
+	"bjorn@rivosinc.com" <bjorn@rivosinc.com>,
+	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+	"nicolas.schier@linux.dev" <nicolas.schier@linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"andrew@sifive.com" <andrew@sifive.com>,
+	"monk.chiang@sifive.com" <monk.chiang@sifive.com>,
+	"justinstitt@google.com" <justinstitt@google.com>,
+	"palmer@dabbelt.com" <palmer@dabbelt.com>,
+	"morbo@google.com" <morbo@google.com>,
+	"aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
+	"nick.desaulniers+lkml@gmail.com" <nick.desaulniers+lkml@gmail.com>,
+	"rppt@kernel.org" <rppt@kernel.org>,
+	"broonie@kernel.org" <broonie@kernel.org>,
+	"ved@rivosinc.com" <ved@rivosinc.com>,
+	"heinrich.schuchardt@canonical.com" <heinrich.schuchardt@canonical.com>,
+	"vbabka@suse.cz" <vbabka@suse.cz>,
+	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
+	"alex@ghiti.fr" <alex@ghiti.fr>,
+	"fweimer@redhat.com" <fweimer@redhat.com>,
+	"surenb@google.com" <surenb@google.com>,
+	"linux-kbuild@vger.kernel.org" <linux-kbuild@vger.kernel.org>,
+	"cleger@rivosinc.com" <cleger@rivosinc.com>,
+	"samuel.holland@sifive.com" <samuel.holland@sifive.com>,
+	"llvm@lists.linux.dev" <llvm@lists.linux.dev>,
+	"paul.walmsley@sifive.com" <paul.walmsley@sifive.com>,
+	"ajones@ventanamicro.com" <ajones@ventanamicro.com>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"apatel@ventanamicro.com" <apatel@ventanamicro.com>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>
+Subject: Re: [PATCH 10/11] scs: generic scs code updated to leverage hw
+ assisted shadow stack
+Message-ID: <aIfpcUmNtLFPd2cO@debug.ba.rivosinc.com>
+References: <20250724-riscv_kcfi-v1-0-04b8fa44c98c@rivosinc.com>
+ <20250724-riscv_kcfi-v1-10-04b8fa44c98c@rivosinc.com>
+ <3d579a8c2558391ff6e33e7b45527a83aa67c7f5.camel@intel.com>
+ <aIO8uSqiplnyyNOd@debug.ba.rivosinc.com>
+ <a19c1338f2fa4cb19a4f8b7552ff54ded20b403a.camel@intel.com>
+ <aIfOTC6CfyCsaEpv@debug.ba.rivosinc.com>
 MIME-Version: 1.0
-In-Reply-To: <68794b5c.a70a0220.693ce.0050.GAE@google.com>
-X-Mimecast-Spam-Score: 1
-X-Mimecast-MFC-PROC-ID: 8vElI5g5UzEEUnTJjmIpVPZ7dPt9DIFxZ3VHP5QzkcQ_1753736902
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
 Content-Disposition: inline
-X-Stat-Signature: dbzzysb1c61p3dymzbiy7rdc6ri3kt77
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B3AD514000A
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aIfOTC6CfyCsaEpv@debug.ba.rivosinc.com>
 X-Rspam-User: 
-X-HE-Tag: 1753736904-5769
-X-HE-Meta: U2FsdGVkX1/ojFaJq+D8Oft4HmjgnXDsKA7HZDN7Fnl8NHZEFapShRqoDEk+ovoiKX97XD0bgwfYFC39TPsk05HgVKIOmgTggLbQkpxaiFMyx0wb7xCPCfhL/lXkbeG2syMpsegVtafjMzUp6Bez3K9m3LZrgEBxqnGjvefH8uBYtzd/jy6146a4mmreNEXkdSbhU+8d1thvp2AkjAeT2lX4k0PGmdekaneHVA/tpPonFoKtabX43aIqomDVnCpq7a1Z5aiM4TnchxxifNXBfwqLQrdoG7+2qUu+1ZX0Fif1tAUgzbgi3Ywv16l4qVsF3yiJ3cW/idWGyBzMwZsf8TdbX4LrFuBplK0pBZAMjtB83U67QLe03vdWY9dZruZJhGo+rbApKEhS04rEVlKG1/+HxxkiXQhTknGVTkCtU5JleOveWZOgEbLm1qVLjhXS9VU6foRF79OG41G3EeTnYtd0RMj5/wf4jJpZFCWmbD6N/mFtLb04Z84k+3gwI11acEsn9Gzp6V4BKSfptk/NSc75ABAj/wBymRlatrqkxq4K3L4bD6xdeVYtAl2s5xAgo7SwASNmbVS6fDTiSwmPVUOMoorE3bnnK/eq9qz25Fk8lj8mbTTtBOagdn+35aefYsyv5ZPsUMal5A6MlVLMcVIfekcyK8qEJmT9Ev4ni6AxHOC/HdCqFcfHK+c5dLzmrRP4megPi6u+pYfy/TLA1kUz2prO81M5HiUI552hQqKl82me84NeOh9Ld1MNuJNrKV7qqe2Hc38pieet4Mk6z0gCkyQ4IP6Qa2lm51KPONIBELo1DJP3f4MX7o0Nrpa7K2GLfneaOLb9ByoE3lIrjeDxR3i2qjoYQCxAKd9+jKrekwgTTEwruBAWI+okxAvC5ESULrEr8Wp1qbgBSViwBKARjAv+11gaVmDd/OE1L7BbplRjDQ/P8ca4OoCnLGHZf9uOqVhFY80tm88QxCp
- mVPl2+cq
- ZhrhXYV2SqITYhXZ1K/8FtPlwNVyBOumFC5H2/GlJ8za1l4W0s9bbHjFE+4kKnJYqGX5kVzhq6NWbIbbtO3GWtOk4TccJmmepYeX/+RHs+AKdjsgtgJ7/iAuUdlTLik15PFKpeXcqZDx0Rie5Pz2w9vqTFIgUsxDV1O13E6ln57TKL+seSEJskP73/iOI2X4MPNWxYVLaZykEjVuBRA7qG+x4TJ+XZMqWZsJAZTFISn+k+x0eEz8jKKWccHui7ekOmLLPaVm8ZztRRsFz8B1p3kKELZLPvtdUVUgWLjTtYLZgxrCLLqJKWG1BmizY+PXYoiYRENx9I2XrxDlpYzbh4eN+xzH9w4zSEKjVKPH0bVle/0MIfgvWGHVUlsmG7tl6n4dcf23b2u7PXpVlbGvHn+q1qYBQsFkb/GRDQrTvUVGBDyyma+7sdvUvF72puh0hDSSkHtG8U9ELc1VS7SkX1KN9aBsf2H7+qK7E5bcFbqt1B1fo9rSR7Ns/mdpsm71/PP6wImNRWeDrxjtGvlOZpzqAtWFxg1wjU3/Tn4Uovs5tFDDPJJ0wSv04IgmlVtGA69+yS4XZ0iNGOC3fu54QbNR5fXu4rpd5xHKP4qcIeFVSi4ycqk59Cfq/18LaPJcFQJ9IK9x4vUW54JCfLXF0t4WoFiLMuiK6nmkDwnGmMVVyW1TwYrIw301T+sbvkl+T9QzWMWhT3H/M6z/TzLZs0Vir2HAsmeDhAjXPjyLPnrgPSHpGJ9TZVLGc0bmTds/8579tXyYZhQ7rNsp+Sz8JF08PcADhY6HY3x3qt9A//Y57m20jSxiZQPh8yEbouMJaTZB0vamOJS2rc6Cd/CPDtSyh1gL/4wF1r9u6HPOttJ0VUhZtzGS8TXsPMXFJ8rae6T4cU6OoXJaBq2eUL0vdyf5FtAPFjo04pOVq837yCyVRhx9i8qR+JRfOTtlAcHQnfAptBHzcQsZVNzFQal6/xkEDJKP9
- Wbz4ozHf
- ZYH+gNfPVwGI6VahAc6DE1mHyO2xMOCHJ3dCXlbFKFhTTmdxmObOA6eBkvTAvAIqGdl4PN8mzlWqQs0E8uiExYXflwI5bPRJJhDg5i5y3ScC3Oj9lZ0CvJfRJrNCn7nDGA6v23skvulBmHyXyz0kpjsX0IQLbyYGz3ReHcLyu0g8BAeOKsSgd73IW7FDkmyI6Lwy+gh4BnghXNEuYwFN5iclkURBvuxujbhJUWKoW8juQVZHTJedS0roT2LNRJ1Wvk6Ib9YrL51ZYnp9ajJJvIor2Fw4ecVoMFATiUSCDwWJS9UVCvqBiw==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 272924000A
+X-Stat-Signature: yhaswhrmmd4z537cqhi9xt3bqehzepna
+X-HE-Tag: 1753737589-942481
+X-HE-Meta: U2FsdGVkX18VDxejUrHfm0FNcyTwrcS/3Mhu6JVhzGkS4yJQp5gLjrlnBlz8ESBKhwon4jknqidkcPkZGFvI77qhMPywLODvSIZiz/wd96AgNkq6EpIW86dGsr/Q8cozFND8JPetQLZORBbNJVcmXDY7hAAtnIsW70j6Jy68QgId7BZgZvl6XR2whaZyITSjkwEwp+MZQzdO8/vTEUSdZSH/qnt/53DLt+9AdO701KQSRway9eXKc6IaA90ZpvhR4Z1IpO8UUx+A6Bo/LS5ndGRUG+tLL9nqCfieOuyvAGxZAW6lUtmkELxtJqIcv+9k88/fbToYi1dd7nJtbyQppeot9WLzjfk490YuemdQ0dnoJBGLdcs0+0eChCx479XswSrM2IsrLzg0FXQXge4yZxdh9TPhQESZl/xamDiM6OmfqaaYvXK5zXldUWjIdkwPKayAlgo4YFxf2E5tYYHLsfgNlmC1dDkYH6N/B4bxUFcbfezZvD9Gy8H/O4PwWgNp1Je1ecwwld8x41OBRdkRouQv+RAL2OTbFssFGOzepFEiTrKkR4WrwNKJwbibS0JeS+/Xb8YY/wBLmkJcsm5Q5h3dpc2V9mQetHGvyqHSHlONaJJCW20KJtXrUAGX8xxGEEcTUCTMCpR5ENXUiftSQjeQetJgWJlxVAEEkB9BKDI5guRs4QIwJhG7z+5P5xn7U9MRn8j9KkIzJZJ2KV4mx+gCkDQ+FALfLyxRoMHZ1p4LrRdDHWqa4RmCE6na4ZI44yQDQEatPzhfC2SPS9F68BG4NiCzBxA/5XandkNZg1vQYZA+5wUFYmOHdXes6sGbiC0sw7bZcOvLaHwWADYu749PMa0mQQIuS78UWPUX39AsE56v8THdcUtbGlGNi1H926Z3QkvISNSBr4Y28uVcwVW813pfiFb6xbgzeue4yc8ie9EIKWyt7ANG1ySQLCD73v/XU4GjqO4UrQN1eB0
+ eYnMjUZE
+ S6yWxXNUVMlRbU6qnRT3XfP0McmG7SNktuK0M7rje9RaX54y1TKP+MFS808SfxmyEGGcA1iv48YJfqH5pAyfYNOVxayVmtgGJlV5eUHsGJSLuXqu3iNF7oH6UEajvvVUHl7abWUpJqihvllRcexfsEeZt2viuVCw7mF/bJk4xQattlNqoS/kcLnEf6aR0R7NuEB/2bGDrB4IR+jpw3aaRG0jKSAGPVywA9rkJQyVl6GHq2KZPOwbRv+Ac0/f7mUzEj47+lmcNabEDLeJwiXPM+qwwIT9b2B0tR1nNQKAgGSfGWXtIslfTVW1gIEnMUJ6bH/yYu+N7ugWPxwnjF0MMjOtJ8ZRIysNo//VNU6P7QprIn6eo8udV1cYfnXAm3z4fSgdYDOhQYROTEfZ7YFzHUb4xnwPicD9UxhDj9S4X3QbXchE0Tc0Xk0R5nTsK9iU8cIxJ9LeolrbjpkcpAslMG2R/iuyCSUCK10fQJPkgbJKO93Z/Ym5sY/xhtHZeEtOQAGxUauELPP0RlfBVvNPtofuw6KD2+L9l2lWI
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,133 +161,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Copy Lokesh and Suren.
+On Mon, Jul 28, 2025 at 12:23:56PM -0700, Deepak Gupta wrote:
+>On Fri, Jul 25, 2025 at 06:05:22PM +0000, Edgecombe, Rick P wrote:
+>>On Fri, 2025-07-25 at 10:19 -0700, Deepak Gupta wrote:
+>>>> This doesn't update the direct map alias I think. Do you want to protect it?
+>>>
+>>>Yes any alternate address mapping which is writeable is a problem and dilutes
+>>>the mechanism. How do I go about updating direct map ? (I pretty new to linux
+>>>kernel and have limited understanding on which kernel api's to use here to
+>>>unmap
+>>>direct map)
+>>
+>>Here is some info on how it works:
+>>
+>>set_memory_foo() variants should (I didn't check riscv implementation, but on
+>>x86) update the target addresses passed in *and* the direct map alias. And flush
+>>the TLB.
+>>
+>>vmalloc_node_range() will just set the permission on the vmalloc alias and not
+>>touch the direct map alias.
+>>
+>>vfree() works by trying to batch the flushing for unmap operations to avoid
+>>flushing the TLB too much. When memory is unmapped in userspace, it will only
+>>flush on the CPU's with that MM (process address space). But for kernel memory
+>>the mappings are shared between all CPUs. So, like on a big server or something,
+>>it requires way more work and distance IPIs, etc. So vmalloc will try to be
+>>efficient and keep zapped mappings unflushed until it has enough to clean them
+>>up in bulk. In the meantime it won't reuse that vmalloc address space.
+>>
+>>But this means there can also be other vmalloc aliases still in the TLB for any
+>>page that gets allocated from the page allocator. If you want to be fully sure
+>>there are no writable aliases, you need to call vm_unmap_aliases() each time you
+>>change kernel permissions, which will do the vmalloc TLB flush immediately. Many
+>>set_memory() implementations call this automatically, but it looks like not
+>>riscv.
+>>
+>>
+>>So doing something like vmalloc(), set_memory_shadow_stack() on alloc and
+>>set_memory_rw(), vfree() on free is doing the expensive flush (depends on the
+>>device how expensive) in a previously fast path. Ignoring the direct map alias
+>>is faster. A middle ground would be to do the allocation/conversion and freeing
+>>of a bunch of stacks at once, and recycle them.
+>>
+>>
+>>You could make it tidy first and then optimize it later, or make it faster first
+>>and maximally secure later. Or try to do it all at once. But there have long
+>>been discussions on batching type kernel memory permission solutions. So it
+>>would could be a whole project itself.
+>
+>Thanks Rick. Another approach I am thinking could be making vmalloc
+>intrinsically aware of certain range to be security sensitive. Meaning during
+>vmalloc initialization itself, it could reserve a range which is ensured to be
+>not direct mapped. Whenever `PAGE_SHADOWSTACK` is requested, it always comes
+>from this range (which is guaranteed to be never direct mapped).
+>
+>I do not expect hardware assisted shadow stack to be more than 4K in size
+>(should support should 512 call-depth). A system with 30,000 active threads
+>(taking a swag number here), will need 30,000 * 2 (one for guard) = 60000 pages.
+>That's like ~245 MB address range. We can be conservative and have 1GB range in
+>vmalloc larger range reserved for shadow stack. vmalloc ensures that this
+>range's direct mappping always have read-only encoding in ptes. Sure this number
+>(shadow stack range in larget vmalloc range) could be configured so that user
+>can do their own trade off.
+>
+>Does this approach look okay?
 
-On Thu, Jul 17, 2025 at 12:13:32PM -0700, syzbot wrote:
-> Hello,
-> 
-> syzbot found the following issue on:
-> 
-> HEAD commit:    e8352908bdcd Add linux-next specific files for 20250716
-> git tree:       linux-next
-> console+strace: https://syzkaller.appspot.com/x/log.txt?x=17f81382580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=b7b0e60e17dc5717
-> dashboard link: https://syzkaller.appspot.com/bug?extid=b446dbe27035ef6bd6c2
-> compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10041382580000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=10eb158c580000
-> 
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/ae8cc81c1781/disk-e8352908.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/57aaea991896/vmlinux-e8352908.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/feb871619bd4/bzImage-e8352908.xz
-> 
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com
-> 
-> BUG: unable to handle page fault for address: ffffea6000391008
-> #PF: supervisor read access in kernel mode
-> #PF: error_code(0x0000) - not-present page
-> PGD 13fff8067 P4D 13fff8067 PUD 0 
-> Oops: Oops: 0000 [#1] SMP KASAN PTI
-> CPU: 1 UID: 0 PID: 5860 Comm: syz-executor832 Not tainted 6.16.0-rc6-next-20250716-syzkaller #0 PREEMPT(full) 
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-> RIP: 0010:_compound_head include/linux/page-flags.h:284 [inline]
-> RIP: 0010:move_pages+0xbe6/0x1430 mm/userfaultfd.c:1824
-> Code: c1 ec 06 4b 8d 1c 2c 48 83 c3 08 48 89 d8 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df 80 3c 08 00 74 08 48 89 df e8 9a 30 f4 ff <48> 8b 1b 48 89 de 48 83 e6 01 31 ff e8 59 70 8f ff 48 89 d8 48 83
-> RSP: 0018:ffffc90003f778a8 EFLAGS: 00010246
-> RAX: 1ffffd4c00072201 RBX: ffffea6000391008 RCX: dffffc0000000000
-> RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-> RBP: 0000000000000000 R08: 0000000000000003 R09: 0000000000000004
-> R10: dffffc0000000000 R11: fffff520007eef00 R12: 0000006000391000
-> R13: ffffea0000000000 R14: 200018000e4401fd R15: 00002000003ab000
-> FS:  00007ff35708f6c0(0000) GS:ffff8881258aa000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: ffffea6000391008 CR3: 0000000074390000 CR4: 00000000003526f0
-> Call Trace:
->  <TASK>
->  userfaultfd_move fs/userfaultfd.c:1923 [inline]
->  userfaultfd_ioctl+0x2e8b/0x4c80 fs/userfaultfd.c:2046
->  vfs_ioctl fs/ioctl.c:51 [inline]
->  __do_sys_ioctl fs/ioctl.c:598 [inline]
->  __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:584
->  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->  do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x7ff3570d6519
-> Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 51 18 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-> RSP: 002b:00007ff35708f218 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-> RAX: ffffffffffffffda RBX: 00007ff357160308 RCX: 00007ff3570d6519
-> RDX: 0000200000000180 RSI: 00000000c028aa05 RDI: 0000000000000003
-> RBP: 00007ff357160300 R08: 0000000000000000 R09: 0000000000000000
-> R10: 0000000000000000 R11: 0000000000000246 R12: 00007ff35712d074
-> R13: 0000200000000180 R14: 0000200000000188 R15: 00002000002b9000
->  </TASK>
-> Modules linked in:
-> CR2: ffffea6000391008
-> ---[ end trace 0000000000000000 ]---
-> RIP: 0010:_compound_head include/linux/page-flags.h:284 [inline]
-> RIP: 0010:move_pages+0xbe6/0x1430 mm/userfaultfd.c:1824
-> Code: c1 ec 06 4b 8d 1c 2c 48 83 c3 08 48 89 d8 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df 80 3c 08 00 74 08 48 89 df e8 9a 30 f4 ff <48> 8b 1b 48 89 de 48 83 e6 01 31 ff e8 59 70 8f ff 48 89 d8 48 83
-> RSP: 0018:ffffc90003f778a8 EFLAGS: 00010246
-> RAX: 1ffffd4c00072201 RBX: ffffea6000391008 RCX: dffffc0000000000
-> RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-> RBP: 0000000000000000 R08: 0000000000000003 R09: 0000000000000004
-> R10: dffffc0000000000 R11: fffff520007eef00 R12: 0000006000391000
-> R13: ffffea0000000000 R14: 200018000e4401fd R15: 00002000003ab000
-> FS:  00007ff35708f6c0(0000) GS:ffff8881258aa000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: ffffea6000391008 CR3: 0000000074390000 CR4: 00000000003526f0
-> ----------------
-> Code disassembly (best guess):
->    0:	c1 ec 06             	shr    $0x6,%esp
->    3:	4b 8d 1c 2c          	lea    (%r12,%r13,1),%rbx
->    7:	48 83 c3 08          	add    $0x8,%rbx
->    b:	48 89 d8             	mov    %rbx,%rax
->    e:	48 c1 e8 03          	shr    $0x3,%rax
->   12:	48 b9 00 00 00 00 00 	movabs $0xdffffc0000000000,%rcx
->   19:	fc ff df
->   1c:	80 3c 08 00          	cmpb   $0x0,(%rax,%rcx,1)
->   20:	74 08                	je     0x2a
->   22:	48 89 df             	mov    %rbx,%rdi
->   25:	e8 9a 30 f4 ff       	call   0xfff430c4
-> * 2a:	48 8b 1b             	mov    (%rbx),%rbx <-- trapping instruction
->   2d:	48 89 de             	mov    %rbx,%rsi
->   30:	48 83 e6 01          	and    $0x1,%rsi
->   34:	31 ff                	xor    %edi,%edi
->   36:	e8 59 70 8f ff       	call   0xff8f7094
->   3b:	48 89 d8             	mov    %rbx,%rax
->   3e:	48                   	rex.W
->   3f:	83                   	.byte 0x83
-> 
-> 
-> ---
-> This report is generated by a bot. It may contain errors.
-> See https://goo.gl/tpsmEJ for more information about syzbot.
-> syzbot engineers can be reached at syzkaller@googlegroups.com.
-> 
-> syzbot will keep track of this issue. See:
-> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-> 
-> If the report is already addressed, let syzbot know by replying with:
-> #syz fix: exact-commit-title
-> 
-> If you want syzbot to run the reproducer, reply with:
-> #syz test: git://repo/address.git branch-or-commit-hash
-> If you attach or paste a git patch, syzbot will apply it before testing.
-> 
-> If you want to overwrite report's subsystems, reply with:
-> #syz set subsystems: new-subsystem
-> (See the list of subsystem names on the web dashboard)
-> 
-> If the report is a duplicate of another one, reply with:
-> #syz dup: exact-subject-of-another-report
-> 
-> If you want to undo deduplication, reply with:
-> #syz undup
-> 
+Never mind, maintaining free/allocated list by vmalloc would be problematic
+In that case this has to be something like a consumer of vmalloc, reserve a
+range and do free/alloc out of that. And then it starts looking like a cache
+of shadow stacks without direct mapping (as you suggested)
 
--- 
-Peter Xu
 
+>
+>>
+>>>
+>>>>
+>>>> >
+>>>> >   out:
+>>>> > @@ -59,7 +72,7 @@ void *scs_alloc(int node)
+>>>> >   	if (!s)
+>>>> >   		return NULL;
+>>>> >
+>>>> > -	*__scs_magic(s) = SCS_END_MAGIC;
+>>>> > +	__scs_store_magic(__scs_magic(s), SCS_END_MAGIC);
+>>>> >
+>>>> >   	/*
+>>>> >   	 * Poison the allocation to catch unintentional accesses to
+>>>> > @@ -87,6 +100,16 @@ void scs_free(void *s)
+>>>> >   			return;
+>>>> >
+>>>> >   	kasan_unpoison_vmalloc(s, SCS_SIZE, KASAN_VMALLOC_PROT_NORMAL);
+>>>> > +	/*
+>>>> > +	 * Hardware protected shadow stack is not writeable by regular
+>>>> > stores
+>>>> > +	 * Thus adding this back to free list will raise faults by
+>>>> > vmalloc
+>>>> > +	 * It needs to be writeable again. It's good sanity as well
+>>>> > because
+>>>> > +	 * then it can't be inadvertently accesses and if done, it will
+>>>> > fault.
+>>>> > +	 */
+>>>> > +#ifdef CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK
+>>>> > +	set_memory_rw((unsigned long)s, (SCS_SIZE/PAGE_SIZE));
+>>>>
+>>>> Above you don't update the direct map permissions. So I don't think you need
+>>>> this. vmalloc should flush the permissioned mapping before re-using it with
+>>>> the
+>>>> lazy cleanup scheme.
+>>>
+>>>If I didn't do this, I was getting a page fault on this vmalloc address. It
+>>>directly
+>>>uses first 8 bytes to add it into some list and that was the location of
+>>>fault.
+>>
+>>Ah right! Because it is using the vfree atomic variant.
+>>
+>>You could create your own WQ in SCS and call vfree() in non-atomic context. If
+>>you want to avoid thr set_memory_rw() on free, in the ignoring the direct map
+>>case.
 
