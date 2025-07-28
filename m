@@ -2,115 +2,89 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EB5D1C83F26
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 21:59:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B7B7DC83F17
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 22:03:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 525406B0088; Mon, 28 Jul 2025 17:59:39 -0400 (EDT)
+	id 48FAA6B008A; Mon, 28 Jul 2025 18:03:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FD496B0089; Mon, 28 Jul 2025 17:59:39 -0400 (EDT)
+	id 467A86B008C; Mon, 28 Jul 2025 18:03:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3ED086B008A; Mon, 28 Jul 2025 17:59:39 -0400 (EDT)
+	id 3A4446B0092; Mon, 28 Jul 2025 18:03:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BC1A6B0088
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 17:59:39 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 661EC160477
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 21:59:38 +0000 (UTC)
-X-FDA: 83715040836.18.95A8E77
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 5CFCC1C0009
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 21:59:36 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kowalczyk-ws.20230601.gappssmtp.com header.s=20230601 header.b="bpjIPqe/";
-	spf=pass (imf21.hostedemail.com: domain of patryk@kowalczyk.ws designates 209.85.208.44 as permitted sender) smtp.mailfrom=patryk@kowalczyk.ws;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B5D46B008A
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 18:03:03 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A89AD160227
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 22:03:02 +0000 (UTC)
+X-FDA: 83715049404.23.09C64A2
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	by imf26.hostedemail.com (Postfix) with ESMTP id C518B14000B
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 22:03:00 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=qlU5XJqj;
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753739976;
+	s=arc-20220608; t=1753740180;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZFQq9BS1AZDnONWjFjq6WhnDJjmdicQEDZuU+ciJV44=;
-	b=M0L8K+qf4tH2eOVnjj8q33kWhBvo5JwOaDVA6Xv5LM9FvTWUUwQXmeH+dvAb97sEqh5lIL
-	WGUv/G9NR5zX7/Ha7ocb7tF9KaOI2RktAW8eUb3i8Ei55SzXaSFT2920H2vfAw7kak9s3f
-	xH7M8dmWEDfXYFXeWZcATr7giVmJkmE=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kowalczyk-ws.20230601.gappssmtp.com header.s=20230601 header.b="bpjIPqe/";
-	spf=pass (imf21.hostedemail.com: domain of patryk@kowalczyk.ws designates 209.85.208.44 as permitted sender) smtp.mailfrom=patryk@kowalczyk.ws;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753739976; a=rsa-sha256;
+	bh=0FdxS+7kCDXvu8++0CCJfTtdZMISHX5BtUVb0h12Qo8=;
+	b=VvHX4k8ruknpBtebT7MIBbmoWpSg1Mh9UISYqqigtyC/w9bYqTfUa+BqYgQUntpFlRgSIh
+	TzHBF45DSQZQPNnJ97nA6pSJm6XFpuyfhVvEpQ89qkGhSrWK2+Xr5kMsWT1jQmvnr2NVl+
+	+nqDcbfagIgQnlkgA5kF5TeLBpSdeMI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753740180; a=rsa-sha256;
 	cv=none;
-	b=csKNE70VJaBa1Ccj/awNVyIjqKa//yQuJ4aSrf0rIJ1KOqhlG3nVRIcIchA8VTeJ1DG85+
-	pVRQo3/GJ0ZhG6e8GUEujsZr/djoTm+paGSgChQIQniYR+cPAHICivQum/irp+8odptPBl
-	pMqoszQKAPkELYpCZD9EkErFQLFcLcc=
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6153a19dddfso2580408a12.1
-        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 14:59:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kowalczyk-ws.20230601.gappssmtp.com; s=20230601; t=1753739974; x=1754344774; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZFQq9BS1AZDnONWjFjq6WhnDJjmdicQEDZuU+ciJV44=;
-        b=bpjIPqe/zr+Wu6zs+sKqLl8SxBm+Z/8q82sN1p4SdYdQFmzVuVuF7UCCd19nife+IK
-         T6DiMywXbhfwDT0FxElelAgF6Pa98x+Dfb0L3qogBAodc2buECAYgs7JOOgT9S7rqbkw
-         poeUMh7SxfQAjLUjPtg3rMMdpcCcl44avQ+wpsvylTF/l8vwsnuy6qZqUhLNs+j3XWUb
-         bJ4CTxhESNf1Xa6iLHYUnvU5pWQQ8o9mEy6wkPEqLb2E/MupRCyYpUgYf8SK86HMraZg
-         cLWz638DJgybBjMZ01dPm1fTDRE5RkI/2d3xIfoldkKnBX7hrvqK1RnnQmCwUUx47Zkf
-         96SQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753739974; x=1754344774;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZFQq9BS1AZDnONWjFjq6WhnDJjmdicQEDZuU+ciJV44=;
-        b=jojHs5LvXet+wG+ql58tu55KmxwAinRx+ApQvHHQfpLQd2YUnXYeV3N/N0vnr9KJMy
-         dJ60MLWEuaxXgWl7LXZqMgvjmRnJaGS72IG7mz2VJXMvwjqje8fqmkjSqbjvMxk9sRPH
-         tNxqORGyk/1g7GMwJKF15Oqof/qrejHAJ89v0zqOdM9PKdHRQl/0KHMgrJw5hTBXgk+L
-         NUWIOqkb3jsOx6r+L5OiolZtdO7Zq9VV34IxUMryEPBVOiAFCzUl3/j+SaePARN13GGJ
-         upF+XeoI7JHEX1gZ31/pTpeOQnJHg5Z/BcCMmAnZVaogdd9a7rogQFLtuH5MO4k1xJTb
-         nvkw==
-X-Forwarded-Encrypted: i=1; AJvYcCUhtxy7m2yxWDQ7nveDNLnQmaqrEOLl2kNHwaQHrangjtNAH90qLSx57FBe5gMcaFpktUIyFHmnjQ==@kvack.org
-X-Gm-Message-State: AOJu0YzzlXKw5fBxsZ3gTL3leAK1K528T7P0SblRG37Sd9ZFIkTB5ANa
-	e73sHWuxLuqdGLncLrdRj8tLXcsEiJhgoIN7qmmwAYfqWWo8rJTNZivd3KXO2mBIO+NPMqN57tn
-	/MfGQC+gzIqdpIcvNVOjVZ93q1XY0WMfzBDCN19Pb
-X-Gm-Gg: ASbGncvb8WCKiNbifLsmH1NGNIkxPZUMWBvVTosZQnZn51IuVgFBCX/yvKT+zZNpylZ
-	iK3G0pfK+l2VkqQHRZrreiRv6dznQVAjez9xmfBm8wQcVGnm1HdFE4WYgrEwzUnQ6s1TCeFKBBs
-	32d3Rh5hoJ7HYGZcxlB0dxzlgC7AqXKL0MI6b32yp6l8rtnurtfhmlce+5DrpzdOnE79fGJ0+W1
-	YXl
-X-Google-Smtp-Source: AGHT+IEceYjA6cxsSRdCMNyewOG3XPoHrKBCUR9gGBeKUYS35hxGkLKlNk7w2IS6opzkPla6j9Fi8GgCrh0dEXg1zB0=
-X-Received: by 2002:a05:6402:4602:20b0:615:539b:7adc with SMTP id
- 4fb4d7f45d1cf-615539b93d1mr2691395a12.27.1753739974395; Mon, 28 Jul 2025
- 14:59:34 -0700 (PDT)
-MIME-Version: 1.0
-References: <0d734549d5ed073c80b11601da3abdd5223e1889.1753689802.git.baolin.wang@linux.alibaba.com>
- <20250728144424.208d58d5a95057ee7081ccd8@linux-foundation.org>
-In-Reply-To: <20250728144424.208d58d5a95057ee7081ccd8@linux-foundation.org>
-From: Patryk Kowalczyk <patryk@kowalczyk.ws>
-Date: Mon, 28 Jul 2025 23:59:22 +0200
-X-Gm-Features: Ac12FXwwsiS4JI_-ICJdYNU4HPVvMiegzl4Qe4w16nBmZCl8pKBLj0t9-vRLQHg
-Message-ID: <CAJCW39+AS5poKu3A4Y88pH2y6CWbE0WnGZfe3kL99W3sJZjreA@mail.gmail.com>
-Subject: Re: [PATCH] mm: shmem: fix the shmem large folio allocation for the
- i915 driver
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>, hughd@google.com, 
-	ville.syrjala@linux.intel.com, david@redhat.com, willy@infradead.org, 
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, 
-	airlied@gmail.com, simona@ffwll.ch, jani.nikula@linux.intel.com, 
-	joonas.lahtinen@linux.intel.com, rodrigo.vivi@intel.com, tursulin@ursulin.net, 
-	christian.koenig@amd.com, ray.huang@amd.com, matthew.auld@intel.com, 
-	matthew.brost@intel.com, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Content-Type: multipart/alternative; boundary="00000000000033d963063b0468cf"
+	b=OrEKFO7SpPySKnIm3iSybF2tqyqWwjCGectYnbpzSePc9V/Vj71yXzlv09vkstXaTIOlrl
+	z6dezunLedAa5xw4wxNbBGTMnfWS+DPys9C9fYCmpsqTojnBEm7Fj66KbtbBDGBb6iAMY7
+	sY5IYELrzdpoBgkRyrkzPzM6aW23T5U=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=qlU5XJqj;
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 88A6F5C6266;
+	Mon, 28 Jul 2025 22:02:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C68EDC4CEE7;
+	Mon, 28 Jul 2025 22:02:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1753740179;
+	bh=LDH/rs291z2S/SYuUW3fXnmnbWkFpDl2lT7Ntr+CYX0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=qlU5XJqjrnuZquS8V78tNiqoYQMz8RZ3mC0qdcaposyqAb+jg9FoyJmAawXtGMCjr
+	 ncup94iwTCbXiJv5wNuuUqVQ4tHHimkVsebpVCOK7WW3/YHnyMJssY4t9d2FO5oXRl
+	 IQPes7E64cW8ihhuW//KY086C/6WtF0jJYWG/82g=
+Date: Mon, 28 Jul 2025 15:02:58 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Kairui Song <kasong@tencent.com>
+Cc: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org, Hugh Dickins
+ <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Matthew
+ Wilcox <willy@infradead.org>, Kemeng Shi <shikemeng@huaweicloud.com>, Chris
+ Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
+ <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 0/8] mm/shmem, swap: bugfix and improvement of mTHP
+ swap in
+Message-Id: <20250728150258.4cba730ba36da5cce659d067@linux-foundation.org>
+In-Reply-To: <20250728075306.12704-1-ryncsn@gmail.com>
+References: <20250728075306.12704-1-ryncsn@gmail.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: C518B14000B
+X-Stat-Signature: idwssn4657rnjiumt7646oj163p8rju6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5CFCC1C0009
-X-Rspamd-Server: rspam06
-X-Stat-Signature: jxwsxkte1wm8r36umayk3xc5zhfcdfhh
-X-HE-Tag: 1753739976-693123
-X-HE-Meta: U2FsdGVkX1/CN6p0l6r4Dkm6cz5RlkF0fjRXbNJAgH6W3sM2JVCQDn8On5o0Muqe1NCUZ6e9FvaglRelVusxNYFC+y1KEQBUpmyj5HG66ir+vVRn3L2BEitRsE5Lgpi9QQaU8yV7wnWNoK6LwgyhTFludiBXWUa+NIsu2zmddgYADCULBN6f2PHkRzZMJrPAxiIL3jScs/O5F6S4/aroG/1+b+Zch4j85DilNwoYRUeK2R5G3mzzvmpjsud5pAhxa1wjAjUZnxgmpIEFC+yaUBKlOsSeWxzr76+dILNGKZpuU5J9QEJqKaCcxeBoO6oiv7O0C57rWpVhl+GZaOZPfqmI1KGSRQdOWBMrYw7T5J84tAxOzHDuk9kw0ueSrmBaFDbKRyFJGUnkcfZ+7QH+fuBJuUin25kqBmhuQVsylrFYdyMjZMF9hcyHz2QaEanKTVKnN9Ah3Ld/EXbousuK529bGbyIVj7R5NBipDwGaP64KA6MHSb7iWT0lmkjbd3yWC7CHJi3Yige6ETaK8gj9M6rHE8kWQBQYxcBcwvBw+Ud8cMYxXrYMprV5RB9Fx0UeDQiSKswWYdZslP1eZ7Olc4xyVplZNwDYoRJPaQQlYIDZgFnLopP9PnzSflfhmgivLxwpDihsd08TRf7DyqXAtUBmKxIftq1LZeK19H2zHCndpXxgbB9AIp2dknspu04UPYz9bcIzUDBPWVfI4oPoqqQ5dIn9EnOcbcqfPFHaAteDqiwE3ob1n36wAu5YVOaTX8809T+m/5tv3wHqcdxSZBtbhqcDiRKPpNFmgsqlHqIC+xllMQSLMgj4HmUyoEGhK72vk4VLkLwR08G8UTmHjItP2giTNMVMVjRZkl25fyr4NwRKfDqJ9LMdF6f5gUd6+uScuw/8W5xiTdWNTaazTolQEJNIB17STikigUCjwWYGBJmAV3YZbTa5x+ItS/XN9RZCubWj5AzMG6tvsk
- P55vGezk
- 6e88oP3myUeWD/fKa9rK6WrhIJTqr6DXr8YGD1tjS6O9AgL7YybJS4qKYt66XFWr4WbHvyxw6IHJ/hvzhFv5dsRtoSWU/YiQcbjyjEPknmLdD3KK0O26UIuSlm9uSWylKwrYl/zRNs056MeDbVyPKyU4qvskfEvPefQymvy40rCyNL6JJCoaqwndiDEA/mPVJFs75s0kUJ2lCEYUcrclBnVVcKcDOMYnEPWBy5nfV1acuL+wNJhKpIf0tis0CoKm9b5jODi3sriA+7FXwbtzv98/EZ/2GCN111pajkPFTM2iO8XxCdEu7+d8k9cH79ogqvFN5d8UL1C3HnYi+gh8zXOoGJuBTfpr8OtjlokhUcdcpGYf+WnYg2yN89keo+37QSyBQgiRWiks5wurbaImjKXLRu+G5b2IGQtWy6PqSzHhmh3ZlscXMO4qr6RlFjP8W3yzQAplAM0udqTJKLEvSOSpH6oI5YzF0Cj/Wpf9OtV62ZlCO9cCFY9qcKbn6wF3xVCJkVVj7SfaRQho9KmKBJfTZkdzM++oN1siASQwU4mMG70VUz61Hlk3aVD2V3PRHZkfRmWhNlYEMwcyGFrmVqVY4gi0CRlHEcZ4V+mu2ciml22zlanMZaDeGmUTE+ozA65h13LQey/5ISbG+tJyDZjzR0sdao4mQNnV1
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1753740180-158713
+X-HE-Meta: U2FsdGVkX18f7kamSJtbEEqzjJobmugJhTsYhrGVhrAYn0gT0PRtEkT+biJ6SIFRA7vQ31eHJwyi3/ynFmxzDvIzXbopOWtCQ/qE4xpDk8p1PRlAOM1cezgvEk8CtYldFegizsW/BpmHUztYBIf88kmLp34bIK1S6nkA2O+fj5rEcQJOZXMLTFaZtgtfoJzjjWJYy0dq+tdkms2pffoPsTXwpVlGET9nlNIjo4GopQlbTqsZc511rkOnslfpOJ86uNrEiK2FkGT/Mc8PYJa0bBc5osg5l50l9gaCGUnsB5d9v/JldxVKk5kmVmca5xaDLyTiYSMWKDgbYhg0phyJLO9i70A9bAClfO+zasLh19FErXZsPbVKhsbAJjQmTODc7hDq1nPmYZoII+3tabvpRv6hnOBxWOWUD21yCC37WpM3636Wro+qAx4gCR0f1bgPl3ai1R3wp3axx/Y9EzxfiJeFNEA//vxNBBxWOR475b3KsuUc0UGwwS7vu6T3IAy+MrRwTYkaxCx/NTvt0sIbuM/ST+ypG2aTlIJD6WjcE6I0PnFQP58mxk8wj2BmMalE1YODo7wUoz7TqCPKnnHiMaZbiwIR07S4qNDtCh7lsHeKiinlJKzDH8YeYcZKF98iTZPhHhktPW6YYcW7Gp8UD/g59XU8OjI+ziO8XIBP4UraWLY9xObmQqcGcl6NsLnYiNS5c7no/MCtNmC7NgZOW7DiprSCRd2Bxs15+9p3wf+IGqiUNQT1W8rk7P4q/Za0C9cUi/ZqM0JFeffnU+mubbGGfRzIBHa/c9t9e/FOGZ4l+PpKHqRnwt4zmYchqvdMkvbWP//PUGhGphn1QOsd4KzNQH8/xvWOxJ6FAfoVGsAz56OKo38a+IMTgYJ195Q1NNUr1gdhDqVSZJ4Sk1Z0qJ4BZOrW+j/iybar7yvugpdPviP7vB9vc+AgE7kR7S1z71iBwhKcSSuPQsHaaCD
+ 5eovJ8TB
+ p/MNncWM35GSiGkX6d58OWqt0w1LXDcto8fGy/q3Uq+YZJhtjXnO3xc/nMFWCFAO8KlQPx29ovBohDUtxxnh10qZVhCVGe0w9HK7UJBsyBoNtUk9eTRPSQEXT5NO7nCgAYrDTJXjv2a8KZJ7BfoPdrdSJBZnU7I4jGMHQoqp31hknw8hljsc9s7xuRP51DappHMcoCg5c5doRiGA4Xh2p1TThRQ/VErEQgcdV+RF+1X1OzHHa7yhr712CyC64a5BE/di+C9ov1k2E4hDPz9Ljhy3h9SzXdA0yNwfyT4W7gS165eg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,142 +93,445 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---00000000000033d963063b0468cf
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Mon, 28 Jul 2025 15:52:58 +0800 Kairui Song <ryncsn@gmail.com> wrote:
 
-Hi,
-In my tests, the performance drop ranges from a few percent up to 13% in
-Unigine Superposition
-under heavy memory usage on the CPU Core Ultra 155H with the Xe 128 EU GPU.
-Other users have reported performance impact up to 30% on certain workloads=
-.
-Please find more  in the regressions reports:
-https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14645
-https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13845
+> From: Kairui Song <kasong@tencent.com>
+> 
+> The current THP swapin path have several problems. It may potentially
+> hang, may cause redundant faults due to false positive swap cache lookup,
+> and it issues redundant Xarray walks. !CONFIG_TRANSPARENT_HUGEPAGE
+> builds may also contain unnecessary THP checks.
+> 
+> This series fixes all of the mentioned issues, the code should be more
+> robust and prepared for the swap table series. Now 4 walks is reduced
+> to 3 (get order & confirm, confirm, insert folio), !CONFIG_TRANSPARENT_HUGEPAGE
+> build overhead is also minimized, and comes with a sanity check now.
+> 
 
-I believe the change should be backported to all active kernel branches
-after version 6.12.
+Below are the changes since v5 of this series.  It's a lot, and we're
+now in the merge window.
 
-best regards,
-Patryk
+So I'll merge this into mm.git's mm-new branch.  After -rc1 I'll move
+them into mm-unstable, targeting a 6.18-rc1 merge.  However at that
+time I'll move the [1/N] patch (which has cc:stable) into mm-hotfixes,
+planning to merge that into 6.17-rcX.
+
+Does this sound OK?
 
 
-pon., 28 lip 2025 o 23:44 Andrew Morton <akpm@linux-foundation.org>
-napisa=C5=82(a):
+ mm/shmem.c |  277 ++++++++++++++++++++++++++++-----------------------
+ 1 file changed, 153 insertions(+), 124 deletions(-)
 
-> On Mon, 28 Jul 2025 16:03:53 +0800 Baolin Wang <
-> baolin.wang@linux.alibaba.com> wrote:
->
-> > After commit acd7ccb284b8 ("mm: shmem: add large folio support for
-> tmpfs"),
-> > we extend the 'huge=3D' option to allow any sized large folios for tmpf=
-s,
-> > which means tmpfs will allow getting a highest order hint based on the
-> size
-> > of write() and fallocate() paths, and then will try each allowable larg=
-e
-> order.
-> >
-> > However, when the i915 driver allocates shmem memory, it doesn't provid=
-e
-> hint
-> > information about the size of the large folio to be allocated, resultin=
-g
-> in
-> > the inability to allocate PMD-sized shmem, which in turn affects GPU
-> performance.
-> >
-> > To fix this issue, add the 'end' information for shmem_read_folio_gfp()
-> to help
-> > allocate PMD-sized large folios. Additionally, use the maximum
-> allocation chunk
-> > (via mapping_max_folio_size()) to determine the size of the large folio=
-s
-> to
-> > allocate in the i915 driver.
->
-> What is the magnitude of the performance change?
->
-> > Fixes: acd7ccb284b8 ("mm: shmem: add large folio support for tmpfs")
-> > Reported-by: Patryk Kowalczyk <patryk@kowalczyk.ws>
-> > Reported-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
-> > Tested-by: Patryk Kowalczyk <patryk@kowalczyk.ws>
->
-> This isn't a regression fix, is it?  acd7ccb284b8 adds a new feature
-> and we have now found a flaw in it.
->
-> Still, we could bend the rules a little bit and backport this, depends
-> on how significant the runtime effect is.
->
+--- a/mm/shmem.c~new
++++ a/mm/shmem.c
+@@ -512,15 +512,27 @@ static int shmem_replace_entry(struct ad
+ 
+ /*
+  * Sometimes, before we decide whether to proceed or to fail, we must check
+- * that an entry was not already brought back from swap by a racing thread.
++ * that an entry was not already brought back or split by a racing thread.
+  *
+  * Checking folio is not enough: by the time a swapcache folio is locked, it
+  * might be reused, and again be swapcache, using the same swap as before.
++ * Returns the swap entry's order if it still presents, else returns -1.
+  */
+-static bool shmem_confirm_swap(struct address_space *mapping,
+-			       pgoff_t index, swp_entry_t swap)
++static int shmem_confirm_swap(struct address_space *mapping, pgoff_t index,
++			      swp_entry_t swap)
+ {
+-	return xa_load(&mapping->i_pages, index) == swp_to_radix_entry(swap);
++	XA_STATE(xas, &mapping->i_pages, index);
++	int ret = -1;
++	void *entry;
++
++	rcu_read_lock();
++	do {
++		entry = xas_load(&xas);
++		if (entry == swp_to_radix_entry(swap))
++			ret = xas_get_order(&xas);
++	} while (xas_retry(&xas, entry));
++	rcu_read_unlock();
++	return ret;
+ }
+ 
+ /*
+@@ -891,7 +903,9 @@ static int shmem_add_to_page_cache(struc
+ 				   pgoff_t index, void *expected, gfp_t gfp)
+ {
+ 	XA_STATE_ORDER(xas, &mapping->i_pages, index, folio_order(folio));
+-	long nr = folio_nr_pages(folio);
++	unsigned long nr = folio_nr_pages(folio);
++	swp_entry_t iter, swap;
++	void *entry;
+ 
+ 	VM_BUG_ON_FOLIO(index != round_down(index, nr), folio);
+ 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
+@@ -903,14 +917,25 @@ static int shmem_add_to_page_cache(struc
+ 
+ 	gfp &= GFP_RECLAIM_MASK;
+ 	folio_throttle_swaprate(folio, gfp);
++	swap = radix_to_swp_entry(expected);
+ 
+ 	do {
++		iter = swap;
+ 		xas_lock_irq(&xas);
+-		if (expected != xas_find_conflict(&xas)) {
+-			xas_set_err(&xas, -EEXIST);
+-			goto unlock;
++		xas_for_each_conflict(&xas, entry) {
++			/*
++			 * The range must either be empty, or filled with
++			 * expected swap entries. Shmem swap entries are never
++			 * partially freed without split of both entry and
++			 * folio, so there shouldn't be any holes.
++			 */
++			if (!expected || entry != swp_to_radix_entry(iter)) {
++				xas_set_err(&xas, -EEXIST);
++				goto unlock;
++			}
++			iter.val += 1 << xas_get_order(&xas);
+ 		}
+-		if (expected && xas_find_conflict(&xas)) {
++		if (expected && iter.val - nr != swap.val) {
+ 			xas_set_err(&xas, -EEXIST);
+ 			goto unlock;
+ 		}
+@@ -1992,30 +2017,47 @@ static struct folio *shmem_swap_alloc_fo
+ 		swp_entry_t entry, int order, gfp_t gfp)
+ {
+ 	struct shmem_inode_info *info = SHMEM_I(inode);
++	int nr_pages = 1 << order;
+ 	struct folio *new;
++	gfp_t alloc_gfp;
+ 	void *shadow;
+-	int nr_pages;
+ 
+ 	/*
+ 	 * We have arrived here because our zones are constrained, so don't
+ 	 * limit chance of success with further cpuset and node constraints.
+ 	 */
+ 	gfp &= ~GFP_CONSTRAINT_MASK;
+-	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && order > 0) {
+-		gfp_t huge_gfp = vma_thp_gfp_mask(vma);
+-
+-		gfp = limit_gfp_mask(huge_gfp, gfp);
++	alloc_gfp = gfp;
++	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
++		if (WARN_ON_ONCE(order))
++			return ERR_PTR(-EINVAL);
++	} else if (order) {
++		/*
++		 * If uffd is active for the vma, we need per-page fault
++		 * fidelity to maintain the uffd semantics, then fallback
++		 * to swapin order-0 folio, as well as for zswap case.
++		 * Any existing sub folio in the swap cache also blocks
++		 * mTHP swapin.
++		 */
++		if ((vma && unlikely(userfaultfd_armed(vma))) ||
++		     !zswap_never_enabled() ||
++		     non_swapcache_batch(entry, nr_pages) != nr_pages)
++			goto fallback;
++
++		alloc_gfp = limit_gfp_mask(vma_thp_gfp_mask(vma), gfp);
++	}
++retry:
++	new = shmem_alloc_folio(alloc_gfp, order, info, index);
++	if (!new) {
++		new = ERR_PTR(-ENOMEM);
++		goto fallback;
+ 	}
+ 
+-	new = shmem_alloc_folio(gfp, order, info, index);
+-	if (!new)
+-		return ERR_PTR(-ENOMEM);
+-
+-	nr_pages = folio_nr_pages(new);
+ 	if (mem_cgroup_swapin_charge_folio(new, vma ? vma->vm_mm : NULL,
+-					   gfp, entry)) {
++					   alloc_gfp, entry)) {
+ 		folio_put(new);
+-		return ERR_PTR(-ENOMEM);
++		new = ERR_PTR(-ENOMEM);
++		goto fallback;
+ 	}
+ 
+ 	/*
+@@ -2030,7 +2072,9 @@ static struct folio *shmem_swap_alloc_fo
+ 	 */
+ 	if (swapcache_prepare(entry, nr_pages)) {
+ 		folio_put(new);
+-		return ERR_PTR(-EEXIST);
++		new = ERR_PTR(-EEXIST);
++		/* Try smaller folio to avoid cache conflict */
++		goto fallback;
+ 	}
+ 
+ 	__folio_set_locked(new);
+@@ -2044,6 +2088,15 @@ static struct folio *shmem_swap_alloc_fo
+ 	folio_add_lru(new);
+ 	swap_read_folio(new, NULL);
+ 	return new;
++fallback:
++	/* Order 0 swapin failed, nothing to fallback to, abort */
++	if (!order)
++		return new;
++	entry.val += index - round_down(index, nr_pages);
++	alloc_gfp = gfp;
++	nr_pages = 1;
++	order = 0;
++	goto retry;
+ }
+ 
+ /*
+@@ -2249,7 +2302,7 @@ unlock:
+ 	if (xas_error(&xas))
+ 		return xas_error(&xas);
+ 
+-	return entry_order;
++	return 0;
+ }
+ 
+ /*
+@@ -2266,133 +2319,109 @@ static int shmem_swapin_folio(struct ino
+ 	struct address_space *mapping = inode->i_mapping;
+ 	struct mm_struct *fault_mm = vma ? vma->vm_mm : NULL;
+ 	struct shmem_inode_info *info = SHMEM_I(inode);
++	swp_entry_t swap, index_entry;
+ 	struct swap_info_struct *si;
+ 	struct folio *folio = NULL;
+ 	bool skip_swapcache = false;
+-	swp_entry_t swap;
+-	int error, nr_pages, order, split_order;
++	int error, nr_pages, order;
++	pgoff_t offset;
+ 
+ 	VM_BUG_ON(!*foliop || !xa_is_value(*foliop));
+-	swap = radix_to_swp_entry(*foliop);
++	index_entry = radix_to_swp_entry(*foliop);
++	swap = index_entry;
+ 	*foliop = NULL;
+ 
+-	if (is_poisoned_swp_entry(swap))
++	if (is_poisoned_swp_entry(index_entry))
+ 		return -EIO;
+ 
+-	si = get_swap_device(swap);
+-	if (!si) {
+-		if (!shmem_confirm_swap(mapping, index, swap))
++	si = get_swap_device(index_entry);
++	order = shmem_confirm_swap(mapping, index, index_entry);
++	if (unlikely(!si)) {
++		if (order < 0)
+ 			return -EEXIST;
+ 		else
+ 			return -EINVAL;
+ 	}
++	if (unlikely(order < 0)) {
++		put_swap_device(si);
++		return -EEXIST;
++	}
++
++	/* index may point to the middle of a large entry, get the sub entry */
++	if (order) {
++		offset = index - round_down(index, 1 << order);
++		swap = swp_entry(swp_type(swap), swp_offset(swap) + offset);
++	}
+ 
+ 	/* Look it up and read it in.. */
+ 	folio = swap_cache_get_folio(swap, NULL, 0);
+-	order = xa_get_order(&mapping->i_pages, index);
+ 	if (!folio) {
+-		int nr_pages = 1 << order;
+-		bool fallback_order0 = false;
+-
+-		/* Or update major stats only when swapin succeeds?? */
++		if (data_race(si->flags & SWP_SYNCHRONOUS_IO)) {
++			/* Direct swapin skipping swap cache & readahead */
++			folio = shmem_swap_alloc_folio(inode, vma, index,
++						       index_entry, order, gfp);
++			if (IS_ERR(folio)) {
++				error = PTR_ERR(folio);
++				folio = NULL;
++				goto failed;
++			}
++			skip_swapcache = true;
++		} else {
++			/* Cached swapin only supports order 0 folio */
++			folio = shmem_swapin_cluster(swap, gfp, info, index);
++			if (!folio) {
++				error = -ENOMEM;
++				goto failed;
++			}
++		}
+ 		if (fault_type) {
+ 			*fault_type |= VM_FAULT_MAJOR;
+ 			count_vm_event(PGMAJFAULT);
+ 			count_memcg_event_mm(fault_mm, PGMAJFAULT);
+ 		}
++	}
+ 
++	if (order > folio_order(folio)) {
+ 		/*
+-		 * If uffd is active for the vma, we need per-page fault
+-		 * fidelity to maintain the uffd semantics, then fallback
+-		 * to swapin order-0 folio, as well as for zswap case.
+-		 * Any existing sub folio in the swap cache also blocks
+-		 * mTHP swapin.
+-		 */
+-		if (order > 0 && ((vma && unlikely(userfaultfd_armed(vma))) ||
+-				  !zswap_never_enabled() ||
+-				  non_swapcache_batch(swap, nr_pages) != nr_pages))
+-			fallback_order0 = true;
+-
+-		/* Skip swapcache for synchronous device. */
+-		if (!fallback_order0 && data_race(si->flags & SWP_SYNCHRONOUS_IO)) {
+-			folio = shmem_swap_alloc_folio(inode, vma, index, swap, order, gfp);
+-			if (!IS_ERR(folio)) {
+-				skip_swapcache = true;
+-				goto alloced;
+-			}
+-
+-			/*
+-			 * Fallback to swapin order-0 folio unless the swap entry
+-			 * already exists.
+-			 */
+-			error = PTR_ERR(folio);
+-			folio = NULL;
+-			if (error == -EEXIST)
+-				goto failed;
+-		}
+-
+-		/*
+-		 * Now swap device can only swap in order 0 folio, then we
+-		 * should split the large swap entry stored in the pagecache
+-		 * if necessary.
+-		 */
+-		split_order = shmem_split_large_entry(inode, index, swap, gfp);
+-		if (split_order < 0) {
+-			error = split_order;
+-			goto failed;
+-		}
+-
+-		/*
+-		 * If the large swap entry has already been split, it is
+-		 * necessary to recalculate the new swap entry based on
+-		 * the old order alignment.
+-		 */
+-		if (split_order > 0) {
+-			pgoff_t offset = index - round_down(index, 1 << split_order);
+-
+-			swap = swp_entry(swp_type(swap), swp_offset(swap) + offset);
+-		}
+-
+-		/* Here we actually start the io */
+-		folio = shmem_swapin_cluster(swap, gfp, info, index);
+-		if (!folio) {
+-			error = -ENOMEM;
+-			goto failed;
+-		}
+-	} else if (order != folio_order(folio)) {
+-		/*
+-		 * Swap readahead may swap in order 0 folios into swapcache
++		 * Swapin may get smaller folios due to various reasons:
++		 * It may fallback to order 0 due to memory pressure or race,
++		 * swap readahead may swap in order 0 folios into swapcache
+ 		 * asynchronously, while the shmem mapping can still stores
+ 		 * large swap entries. In such cases, we should split the
+ 		 * large swap entry to prevent possible data corruption.
+ 		 */
+-		split_order = shmem_split_large_entry(inode, index, swap, gfp);
+-		if (split_order < 0) {
+-			folio_put(folio);
+-			folio = NULL;
+-			error = split_order;
+-			goto failed;
+-		}
+-
+-		/*
+-		 * If the large swap entry has already been split, it is
+-		 * necessary to recalculate the new swap entry based on
+-		 * the old order alignment.
+-		 */
+-		if (split_order > 0) {
+-			pgoff_t offset = index - round_down(index, 1 << split_order);
++		error = shmem_split_large_entry(inode, index, index_entry, gfp);
++		if (error)
++			goto failed_nolock;
++	}
+ 
+-			swap = swp_entry(swp_type(swap), swp_offset(swap) + offset);
+-		}
++	/*
++	 * If the folio is large, round down swap and index by folio size.
++	 * No matter what race occurs, the swap layer ensures we either get
++	 * a valid folio that has its swap entry aligned by size, or a
++	 * temporarily invalid one which we'll abort very soon and retry.
++	 *
++	 * shmem_add_to_page_cache ensures the whole range contains expected
++	 * entries and prevents any corruption, so any race split is fine
++	 * too, it will succeed as long as the entries are still there.
++	 */
++	nr_pages = folio_nr_pages(folio);
++	if (nr_pages > 1) {
++		swap.val = round_down(swap.val, nr_pages);
++		index = round_down(index, nr_pages);
+ 	}
+ 
+-alloced:
+-	/* We have to do this with folio locked to prevent races */
++	/*
++	 * We have to do this with the folio locked to prevent races.
++	 * The shmem_confirm_swap below only checks if the first swap
++	 * entry matches the folio, that's enough to ensure the folio
++	 * is not used outside of shmem, as shmem swap entries
++	 * and swap cache folios are never partially freed.
++	 */
+ 	folio_lock(folio);
+ 	if ((!skip_swapcache && !folio_test_swapcache(folio)) ||
+-	    folio->swap.val != swap.val ||
+-	    !shmem_confirm_swap(mapping, index, swap) ||
+-	    xa_get_order(&mapping->i_pages, index) != folio_order(folio)) {
++	    shmem_confirm_swap(mapping, index, swap) < 0 ||
++	    folio->swap.val != swap.val) {
+ 		error = -EEXIST;
+ 		goto unlock;
+ 	}
+@@ -2415,8 +2444,7 @@ alloced:
+ 			goto failed;
+ 	}
+ 
+-	error = shmem_add_to_page_cache(folio, mapping,
+-					round_down(index, nr_pages),
++	error = shmem_add_to_page_cache(folio, mapping, index,
+ 					swp_to_radix_entry(swap), gfp);
+ 	if (error)
+ 		goto failed;
+@@ -2439,18 +2467,19 @@ alloced:
+ 	*foliop = folio;
+ 	return 0;
+ failed:
+-	if (!shmem_confirm_swap(mapping, index, swap))
++	if (shmem_confirm_swap(mapping, index, swap) < 0)
+ 		error = -EEXIST;
+ 	if (error == -EIO)
+ 		shmem_set_folio_swapin_error(inode, index, folio, swap,
+ 					     skip_swapcache);
+ unlock:
+-	if (skip_swapcache)
+-		swapcache_clear(si, swap, folio_nr_pages(folio));
+-	if (folio) {
++	if (folio)
+ 		folio_unlock(folio);
++failed_nolock:
++	if (skip_swapcache)
++		swapcache_clear(si, folio->swap, folio_nr_pages(folio));
++	if (folio)
+ 		folio_put(folio);
+-	}
+ 	put_swap_device(si);
+ 
+ 	return error;
+_
 
---00000000000033d963063b0468cf
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>Hi,=C2=A0</div><div>In my tests, the performance drop=
- ranges from a few percent up to 13% in Unigine Superposition</div><div>und=
-er heavy memory usage on the CPU Core Ultra 155H with the Xe 128 EU GPU.=C2=
-=A0</div><div>Other users have reported performance impact up to 30% on cer=
-tain workloads.</div><div>Please find more=C2=A0 in the regressions reports=
-:</div><div><a href=3D"https://gitlab.freedesktop.org/drm/i915/kernel/-/iss=
-ues/14645">https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14645</a=
-></div><div><a href=3D"https://gitlab.freedesktop.org/drm/i915/kernel/-/iss=
-ues/13845">https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13845</a=
-><br><br></div><div>I believe the change should be backported to all active=
- kernel branches after version 6.12.</div><div><br></div><div>best regards,=
-</div><div>Patryk</div><div><br></div><br><div class=3D"gmail_quote gmail_q=
-uote_container"><div dir=3D"ltr" class=3D"gmail_attr">pon., 28 lip 2025 o 2=
-3:44=C2=A0Andrew Morton &lt;<a href=3D"mailto:akpm@linux-foundation.org">ak=
-pm@linux-foundation.org</a>&gt; napisa=C5=82(a):<br></div><blockquote class=
-=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rg=
-b(204,204,204);padding-left:1ex">On Mon, 28 Jul 2025 16:03:53 +0800 Baolin =
-Wang &lt;<a href=3D"mailto:baolin.wang@linux.alibaba.com" target=3D"_blank"=
->baolin.wang@linux.alibaba.com</a>&gt; wrote:<br>
-<br>
-&gt; After commit acd7ccb284b8 (&quot;mm: shmem: add large folio support fo=
-r tmpfs&quot;),<br>
-&gt; we extend the &#39;huge=3D&#39; option to allow any sized large folios=
- for tmpfs,<br>
-&gt; which means tmpfs will allow getting a highest order hint based on the=
- size<br>
-&gt; of write() and fallocate() paths, and then will try each allowable lar=
-ge order.<br>
-&gt; <br>
-&gt; However, when the i915 driver allocates shmem memory, it doesn&#39;t p=
-rovide hint<br>
-&gt; information about the size of the large folio to be allocated, resulti=
-ng in<br>
-&gt; the inability to allocate PMD-sized shmem, which in turn affects GPU p=
-erformance.<br>
-&gt; <br>
-&gt; To fix this issue, add the &#39;end&#39; information for shmem_read_fo=
-lio_gfp()=C2=A0 to help<br>
-&gt; allocate PMD-sized large folios. Additionally, use the maximum allocat=
-ion chunk<br>
-&gt; (via mapping_max_folio_size()) to determine the size of the large foli=
-os to<br>
-&gt; allocate in the i915 driver.<br>
-<br>
-What is the magnitude of the performance change?<br>
-<br>
-&gt; Fixes: acd7ccb284b8 (&quot;mm: shmem: add large folio support for tmpf=
-s&quot;)<br>
-&gt; Reported-by: Patryk Kowalczyk &lt;<a href=3D"mailto:patryk@kowalczyk.w=
-s" target=3D"_blank">patryk@kowalczyk.ws</a>&gt;<br>
-&gt; Reported-by: Ville Syrj=C3=A4l=C3=A4 &lt;<a href=3D"mailto:ville.syrja=
-la@linux.intel.com" target=3D"_blank">ville.syrjala@linux.intel.com</a>&gt;=
-<br>
-&gt; Tested-by: Patryk Kowalczyk &lt;<a href=3D"mailto:patryk@kowalczyk.ws"=
- target=3D"_blank">patryk@kowalczyk.ws</a>&gt;<br>
-<br>
-This isn&#39;t a regression fix, is it?=C2=A0 acd7ccb284b8 adds a new featu=
-re<br>
-and we have now found a flaw in it.<br>
-<br>
-Still, we could bend the rules a little bit and backport this, depends<br>
-on how significant the runtime effect is.<br>
-</blockquote></div></div>
-
---00000000000033d963063b0468cf--
 
