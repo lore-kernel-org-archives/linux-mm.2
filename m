@@ -2,186 +2,124 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F3E5C83F17
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 11:00:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 75E5EC87FC9
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 11:11:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1145E6B0089; Mon, 28 Jul 2025 07:00:09 -0400 (EDT)
+	id 065916B0089; Mon, 28 Jul 2025 07:11:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0ECFC6B008A; Mon, 28 Jul 2025 07:00:09 -0400 (EDT)
+	id 016496B008A; Mon, 28 Jul 2025 07:11:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F1D236B008C; Mon, 28 Jul 2025 07:00:08 -0400 (EDT)
+	id E471B6B008C; Mon, 28 Jul 2025 07:11:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E1AA56B0089
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 07:00:08 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 93AA41A01E0
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 11:00:08 +0000 (UTC)
-X-FDA: 83713378896.08.AF2600E
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 22150180011
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 11:00:05 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ng8IzceQ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Q7FUE0s0;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ljtXYZsO;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=tTqAoqf3;
-	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753700406; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D56A96B0089
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 07:11:09 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 679651118F2
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 11:11:09 +0000 (UTC)
+X-FDA: 83713406658.21.A532151
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 47D2C20006
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 11:11:07 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ak0t4WTl;
+	spf=pass (imf13.hostedemail.com: domain of andrewjballance@gmail.com designates 209.85.210.54 as permitted sender) smtp.mailfrom=andrewjballance@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753701067; a=rsa-sha256;
 	cv=none;
-	b=xKOtWcKAEus2QPSiIqE3/CftvZX7t4RE2BqiwkxaPVXNixeTJr3LSz3Bi2BTUNUkz9b91B
-	XkH/lt5eJnmek949iIgFceMMAjlRIGRDgrDIBrcU82xEGCARuPKVcCUU/5bG1MZ83wQlgu
-	XW7gi3giegA/2vqztwqvM/nMk9jzrsQ=
+	b=sdQHsLE84y7YNh7j0Hp9gGH1aHSMYB5O0mIc1c53shv9QPcXxY3m5Y0aQ2/FEUD727ryAH
+	KRll1yFrEnB91dJClIyx4FuoDE9Daa/1Ey2//7ntyB3+UDwnBchYq7F4juH5nW4vM6b7ZV
+	Blj6i9n63JDdcM7ZYHoi4DhyCpYAXeY=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ng8IzceQ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Q7FUE0s0;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ljtXYZsO;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=tTqAoqf3;
-	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ak0t4WTl;
+	spf=pass (imf13.hostedemail.com: domain of andrewjballance@gmail.com designates 209.85.210.54 as permitted sender) smtp.mailfrom=andrewjballance@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753700406;
+	s=arc-20220608; t=1753701067;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hmK2EGG/opQy2TemRI9zb7zj0UjzA9Rw7lDrKHGU0Gg=;
-	b=hwmH8zfuEy9JgQgn4vYh/daZkRDFs6cLY46Dd6dKkQC1JGpmsBl6ny3hvzkc9GquDCmsAy
-	kZz7e77JGzuL0tVdtlbWbXCAIVufN39npCfTAjj4IoYREg7xY1Ip5RI425LkHdoQ0jTmJI
-	oIv0BYl2TizU9ZJt0CEZw6y+iKkCdA0=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 330F21F86B;
-	Mon, 28 Jul 2025 11:00:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1753700404; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=hmK2EGG/opQy2TemRI9zb7zj0UjzA9Rw7lDrKHGU0Gg=;
-	b=ng8IzceQ8c6MkxXNmgRx/woPnGMkWw779Zv97FB/r3HLEn+A02O6w2fUFmoA2Xkw2uTvsS
-	lrfeul1TRVppe5ZAWxIK9C0iMBxpwGOAAb2VQqLyEKlwtRxngTZJYHGAPsXAa23bSnh5nP
-	85u7rt9hX2d/Bd/szTc/orVy/mr3m1s=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1753700404;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=hmK2EGG/opQy2TemRI9zb7zj0UjzA9Rw7lDrKHGU0Gg=;
-	b=Q7FUE0s0KBOvejJURa4bv1Cdrv8TOV3an/Js88KXuYBA9FAlv0w1GRlpHCvvmnpDOMcsGL
-	09TssHfhs5EhDaAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1753700403; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=hmK2EGG/opQy2TemRI9zb7zj0UjzA9Rw7lDrKHGU0Gg=;
-	b=ljtXYZsOeMP1MNQ+AzLaXj6UHtt7/jQhYLtXMcuePbf7bF+sqVpxDJlEVB+CN+BqrlqzsN
-	+Ds1rjRXqo0km8z/BA/5xa0umDpjdiA7z08AiJ8PyuGeMZUx2NK+fDrr5PhEzMSkXEFGKm
-	dHeI108seaM+H7rE+x/qrpDafg0Fyo8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1753700403;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=hmK2EGG/opQy2TemRI9zb7zj0UjzA9Rw7lDrKHGU0Gg=;
-	b=tTqAoqf3t0lAvauXnWOhvm2Fy5yrnW7NQIXnfPS2Z4zrXBYLxID5KPwl96QZT8DKxV9Nuw
-	3/+6SjFFyopMK1Bg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 24138138A5;
-	Mon, 28 Jul 2025 11:00:03 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id pVh7CDNYh2h9TAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 28 Jul 2025 11:00:03 +0000
-Message-ID: <b89b86a8-adf1-4669-a67f-da1377c220b0@suse.cz>
-Date: Mon, 28 Jul 2025 13:00:02 +0200
+	bh=YelJq5+KqwjZ5s+zSqyZgpj7s0sgr+POM2J5j33U9x0=;
+	b=I/p/BsZeKBYjQlfWDNOEMszLV6cRUy4Yjrf5PwyDMkldMyNYHPTFYkCwAhokF0VGXKlPMP
+	sPOxZWYFNEwLOEMMasOjsXyJg8QatlwGw+WF0A8TR6q82rgmPsX0yC6R81TWzXFXfS+kPs
+	JjWtZjrwwFpbGx78CWyY3ntc+Onsuk8=
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-72c47631b4cso2892367a34.1
+        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 04:11:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753701066; x=1754305866; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YelJq5+KqwjZ5s+zSqyZgpj7s0sgr+POM2J5j33U9x0=;
+        b=ak0t4WTluGK8VRFbCas3G0qr2nKQXQ2iM8yaVsV1yh6EeConv7ovzqGbv3uqLMj8OV
+         x5qg/pSe7ahuK1fQ/8d1fG7Y4q/ubIe5li2g/JfesHEaSScgAo4s8+6wcP+QGabq9Zac
+         RqyxWPC1EKzB9Vh6z7sKYWD5FXG2guew4EVdURnpSI0g6VE5uheNf2Y7BmXOzIBifsZW
+         uPe9QgyHxbYl8QJMzcEq6Q2nnVak4C7h7gY67oyug9qEAa+87KBsVNXiUKQwJZWckE1P
+         EgJy9hpO7XzziqkGu/Atns5b1MQVc2Q7gEo7fgG828l9tRAdRzWvvwwjewQHcSSIbkmd
+         EPhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753701066; x=1754305866;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YelJq5+KqwjZ5s+zSqyZgpj7s0sgr+POM2J5j33U9x0=;
+        b=afvC/Uc4Dm9jJ5GgSfhz9FE5RnIgc6iJYjNrAZdT0GHXAwTVNQgA7YA9/QLJYMLQqw
+         5hATAh1lJjwldPnoN0PuyZGSvQ25eWc5eecTyyc6tkFGlgrFdS0/jhHQOH4qLqRB5SGQ
+         y8gFtTZSIPpLDKaFALkw4pqeMwhm7nmCN5h6b90RXobVHD/chbl+beM1J5tMsiPmItzq
+         zN49RyI5EXFsqDXg3NCNfJM2kbpIEo2ElaXPPzb4VgTKx5dVqAbA2s8soYpWFZvkGZ4w
+         VdELpDGXeLuKNPq6bG8eQRg9iinsb0JbHLs0/iPNMxF0db4pZFZ6G5ri8Zh1+0BG+R6k
+         Bo3g==
+X-Forwarded-Encrypted: i=1; AJvYcCWYHKuFn/XcGEwLULQzePJwGnlWQM5RLePbM6Bg0Hob/a4HCksbKYsm+n0LRoB/DZAszglbtbYwVg==@kvack.org
+X-Gm-Message-State: AOJu0YwpWrejGVoYEPYlpF+nzNRttUoHzz4sYB+Eju0UFBBKfNQQO8so
+	QJzs0w9fCoVA0cwexEG1tIp7UNMmnFzYeO6tKN7BPvMTT82bheRKY//4
+X-Gm-Gg: ASbGncs4gBDeJhFBVtcxGlY/uH0c56Ptu/eqnxXcvMVT9UKo5ktjGEh4bxCVgn1xpOR
+	kjeFKhOiWwSMSo/rlrR/HVZz6vyoa3AdgUVDPErUFoF7oq3+Y3GXhnVfogcTNA0UmbigUpAYsUw
+	TlNLxyG0UOVRYYw3CAHRq63N+THVN6CgVR5ENv+pCm4AfUT0Gm2HX/tCz/tlN8NdIDI5qD2PLw4
+	xxUHgXtzdSRldDRpUUMjDjA4FI5GVK5Ab8z8S/Jc/KdCYA7zOm8ARo1pI+re53J87oAtqv2jbxj
+	hEAhQoGVdQgQSlCs+PzcuFYASa8v+eIag+4XUWL5HBZFhmf2BUJsKMbcUU3CWY4opngAHIEqJWY
+	6TbfmEIMMOxyWl4mfh6KMPAyhKgSLF88Fwb9pr7L7ooLou0xNI9yponmfs7ZNzCoIudwLaBiNDb
+	xiNld0
+X-Google-Smtp-Source: AGHT+IE0MGdMlJEMmoauyyGL5IGwz1RfJolQSIkKm13B128tgDOr9GHPwxPr5ZGTrFtGLyQRiODJSw==
+X-Received: by 2002:a05:6830:4d92:20b0:72b:8fd3:e2dc with SMTP id 46e09a7af769-7413dcd7b58mr5857781a34.21.1753701065943;
+        Mon, 28 Jul 2025 04:11:05 -0700 (PDT)
+Received: from [192.168.86.39] (c-73-76-29-249.hsd1.tx.comcast.net. [73.76.29.249])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-741481c5c92sm1027355a34.30.2025.07.28.04.11.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Jul 2025 04:11:05 -0700 (PDT)
+Message-ID: <a4b93eb0-9742-4f24-86d9-486ce87fbed8@gmail.com>
+Date: Mon, 28 Jul 2025 06:11:00 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: =?UTF-8?Q?Re=3A_=5BPATCH=5D_mm=3A_limit_THP_alignment_=E2=80=93_per?=
- =?UTF-8?Q?formance_gain_observed_in_AI_inference_workloads?=
+Subject: Re: [PATCH 2/3] rust: maple_tree: add MapleTree::lock() and load()
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, linux-kernel@vger.kernel.org,
+ maple-tree@lists.infradead.org, rust-for-linux@vger.kernel.org,
+ linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>
+References: <20250726-maple-tree-v1-0-27a3da7cb8e5@google.com>
+ <20250726-maple-tree-v1-2-27a3da7cb8e5@google.com>
 Content-Language: en-US
-To: Dev Jain <dev.jain@arm.com>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, siddhartha@kenip.in
-References: <d8ffe547-5516-43e5-9f33-56b2698a0b4f@arm.com>
- <ba2c89bd-88de-48f8-abd0-b62d8b1d50b3@lucifer.local>
- <5816677a-705e-4a8f-b598-d74ff6198a02@arm.com>
- <ee92d6a9-529a-4ac5-b3d0-0ff4e9085786@lucifer.local>
- <e7152150-2f3e-4ad7-a6c5-f4b77e5c0e05@arm.com>
- <f746d3aa-17e7-4b42-9e08-97cdb2cad89b@lucifer.local>
- <80b849d4-faf3-47a9-8b8c-e8053299cfb2@arm.com>
- <2e99712b-8dac-4762-9fc5-fe3ef569b65e@lucifer.local>
- <afe95bb0-185b-4c4a-ae41-e02457422cc3@arm.com>
- <787639a1e6a27c0f3b0e3ae658e1b8e7@kenip.in>
- <5c3d307f-d303-48c3-b730-99a83d4815ec@lucifer.local>
- <6eaaa2e4-9067-47bc-8dd4-d8ef56c26b3b@arm.com>
- <5D015E99-474A-4D98-8C43-488A46BEB2F5@nvidia.com>
- <fd6cc30b-cc8d-4003-ba01-fefd5d696ec6@suse.cz>
- <57c50dbbccf38a97e6e9cbb3f2f75f01@kenip.in>
-From: Vlastimil Babka <vbabka@suse.cz>
-Cc: Zi Yan <ziy@nvidia.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
- LKML <linux-kernel@vger.kernel.org>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <57c50dbbccf38a97e6e9cbb3f2f75f01@kenip.in>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ozcyeq3weh4z3nzensunhtqh7gy1m5ic
+From: Andrew Ballance <andrewjballance@gmail.com>
+In-Reply-To: <20250726-maple-tree-v1-2-27a3da7cb8e5@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 22150180011
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1753700405-645615
-X-HE-Meta: U2FsdGVkX193oJdsmr8HUeCYVifKOZcFFWWaorNuxoOUMV5N54jcjB3U7uBFSmfirB7LqxD+agovb992ZLzmXBDDtVB6EC2VNRWHjUxixypZ86vOsvrmO9lhr0wTgwpE0J3BxWBHJqm3jYZTs4xPX/WVUL23H1lVq2h59X0st2Plma26mcXwKsDpET8Qpmh2uVbKJG5pkQopifKrBKsJD5/NN/WqzMnDs1EJErCsP864Hujno1S+aJHNlWV3gXYXfUb0Gx5QK8MazHgpRF1oJB3H36v+7f2EbkGttSJHw2v9rj2+m6P4VxBkitFbAqfBKRdj+PWyRGHhWENHxBQRP9+rU4T3f9Kp+d3p3WVa9/9/EvlyiquOW9Ty4mm+9Bzc++2pxIkmb6ViFDAJFoejQSfg7lz6E95beltFtj14MZIDufSHpdIqmTX3vRyN6FMLOxN9GSjo4i1kGlN9KFCyi2ynUC7jltti3b2n4hE4Nu8vdgv3jTEl9QSeMghJuyurZERZBiLkjqBqaKnO4cAz1pvaPFoa8/HNErebb9pDCLcbaN8eibC64/XKZ6TEyUXi9bWO/3YLTzVJtMqqsbFGenuYIZWjmi7xdf+B4XOiVa5fCKUYu8qyrviVpyWUbhbjZoEqV1mXYwpw1qhE6ZVrwYG1eVN1l5pPY7rGS0tWEdJHNjvQkkvl/uQ4lDjgHPRGS7aVh3dQygsK3oPsVcZsQ5WgyEvKnAfmPdKST+QYr3c03uvFShG0ZtNx3LH/SkHJNhrU3BjMo0jPpkLZRI33PYFMb5DhLQ+sJ8xaWu8aHeu8N+WzXEMqOtRh5apRr/yeVDPwfap5BND0AuD1+HQgklRkpml5ph2G69CdLvbrNMttQoLH6Zex2DOiWtaJVq1/uTSXccTlTwW02xKf3LdfHN4s9OvbfIBybyKDyFGZxoLqKxm8MHecTLUPvAoBVk9WV72cySmLEzQFojEGXpV
- QjSdJm2g
- WP+Ry/+T55Tib4TFzC8juiOYQZitYIfdKFvfmZ5U0mQJxnXH6OZZryCsEG6zMSCcCqiLbCH9Z127b9oa3Gh5mBamKmZf/6hLmhpgWV3zSbcu8WC1+04t+BYWO28YyRbCdrn56xfxDYSCv5kjx1fppWrAV8PQsD3m5tRiFIKQ1Mrn0ImpFV+JLLru9NEF9730QOE500JU9RCKrPJ8s4dCfn4W9bsr0xFWL6dnRdZjrmAWTl7BOPU/BP/IgFckx2ZsddQ/Xh0qSrxXHrgZYzGoh+vkD1dqm6dfJJEN2R44o33PJdRAKTnRtSrVo1GAcybHUfVJCgxqZSVv6K3dquKf7QC+9pQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 47D2C20006
+X-Stat-Signature: haaqhmwtidc3qwhopy7w9sracu7rm118
+X-HE-Tag: 1753701067-557303
+X-HE-Meta: U2FsdGVkX19DnlPrY1oNzX/EtTqws/By5DOeqIFIsseMCKgzHHhFxzrlq1Uz4ubQ+/ZG1b9xCbl4UbCOgqFQ0H8aq6zg+zVrWMBnBDfI8y6oy0yAnA4NFMCktwguoU2e1tBOJ+qEmCJxAbpKlNJQq5vTPwEeQHtBpsVJJwweq5ie56PbVP2T5lJhocubJmLhtXzXI2uhb1Lsh9PyEFrtyviF+9dpKgEpsh/5Osmw2hziWhm8v8lA3pMP9j/cWuNZuQfGNJeEm36+D11uDmqGQRtbwQrzyCDtwVnOwTiapvwLI/y686lGv//f5579TmFZrU9uaHuh8Mz6DPpQK+aIaw0jo7TSh19FOuaYMSnSog3Y8T1oGXh7ooSRwmT9Qudu0pnnNMnsk6EK/BZRnzGE18HZe7mS8aFgabNTAffFavz/TXxKYnz2YjmJYoyCb4Wn8i8t9dk59LT8bR8kuRmRsiwozVB7Rd0BWtQF/r3+IZXWIRJEWuvx1wOCw3Xpa0ueDFM+IOrkFfUIu/h44QEOQXPs+603VmKVHlvJbTScFnAqcdqdpeQrKHP5but0sLJfThXocd9+7GULi+6NQU1dCyfkrks5cI2KHvedviZqE62MNaUHOdc/eUXcJfb7j+C75wau/OrKdHVygfPfUAi/pHCgLPbL3IhoJAz1YMU+leQIxwwO5zmo18yVKBWT8UPaMMpQIj5B4Y0ol40O6NrbbIPsagoz0Ur8bgwkU9I6BuxgnY0jAL2YFwHvvTc1EKOQTziZPr1+c+n5kiMjG88royFiQgyna3REb7psFe8TFWEYrsP/Qnvj1PWdDz+oZnMh91M/7L4P86JzJ0nxNz14JzNjc1XI2LHWcZzwmV14DWMcPuoRdWMEgW/mdPjgcJdW1ZYE7fIj9IEPsFY5l5ekvl7CZtD9cGnSKZreLz3y8DO9WxESheeIZ38rG83RGNgv7mWShT8mVD0Y5RAPtWe
+ hEabOt03
+ 6JG0xnH2xUnDRI0cRRwTY2IyC12uPVYJ0BCC6TMFZON6p9q5yQjgZk7BpjOfRkJUOHYyJ/7liPkfVff8inlQUVCNd0MhLSvcvBrJ0Nc0TTlJ9PXCfmcLfGV4Cs8wxkTg1oiwGXPVM2PH49lNfWfI164HP13JGPqz4GlGtYOEpXT6WWEIxtOYIYERa3MjNndxnflEVW6kjYvnEQ3DFgQG7koMLh9g7mXxDFjnsCdQsbXc0IxecP6r8O3n7b279XXg/bYTWHN5MJ4FhUHLtE/gjkg3rQWAfmMpnxnDPd1fKvonyS5AwgxCFFFQHwXQlnhoeMQMUD5+SarfbeGu3MDusSy/QdYvjRGYFOBOLnzVyhnBOTirzRwn1FpMz3mMa19jJvc9ePRCsYg0ZPNoBfXi8LT324qdyhnfoEHv7S6jSaiwx9YzZ7MMEJvWvsTsCD0vX/Is4oSZemoTMcf1divvIPN/i3kmAD7MJz7CYu4eNOovRW2wMD/8znxgoDDlgfEo+suyrgIbaVkkRP+7CIW5z6jPIQr6buzBs+jzg7gLn6vCDMlL0aC0M5ITuQhCbJf2QnKkMIPwHsQaD6sCvmd+98qnwR4GUegK1qTMf
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -190,25 +128,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/28/25 07:41, siddhartha@kenip.in wrote:
-> On 2025-07-07 14:26, Vlastimil Babka wrote:
-> Hi Lorenzo, Dev, Mel,
+On 7/26/25 8:23 AM, Alice Ryhl wrote:
+> To load a value, one must be careful to hold the lock while accessing
+> it. To enable this, we add a lock() method so that you can perform
+> operations on the value before the spinlock is released.
 > 
-> I'm following up on this patch submission from earlier this month:
-> "[PATCH] mm: limit THP alignment – performance gain observed in AI 
-> inference workloads."
+> Co-developed-by: Andrew Ballance <andrewjballance@gmail.com>
+> Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-I'm confused. That wasn't a patch submission, but reporting performance
-results for my patch from late 2024? (and thanks for those!)
+I have a couple of nits, but overall looks good to me.
 
-The patch was also already merged in late 2024:
+> ---
+>   rust/kernel/maple_tree.rs | 94 +++++++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 94 insertions(+)
+> 
+> diff --git a/rust/kernel/maple_tree.rs b/rust/kernel/maple_tree.rs
+> index 0f26c173eedc7c79bb8e2b56fe85e8a266b3ae0c..c7ef504a9c78065b3d5752b4f5337fb6277182d1 100644
+> --- a/rust/kernel/maple_tree.rs
+> +++ b/rust/kernel/maple_tree.rs
+> @@ -206,6 +206,23 @@ pub fn erase(&self, index: usize) -> Option<T> {
+>           unsafe { T::try_from_foreign(ret) }
+>       }
+>   
+> +    /// Lock the internal spinlock.
 
-commit d4148aeab412432bf928f311eca8a2ba52bb05df
-Author: Vlastimil Babka <vbabka@suse.cz>
-Date:   Thu Oct 24 17:12:29 2024 +0200
+probably should add #[must_use] here.
 
-    mm, mmap: limit THP alignment of anonymous mappings to PMD-aligned sizes
+> +    #[inline]
+> +    pub fn lock(&self) -> MapleLock<'_, T> {
+> +        // SAFETY: It's safe to lock the spinlock in a maple tree.
+> +        unsafe { bindings::spin_lock(self.ma_lock()) };
+> +
+> +        // INVARIANT: We just took the spinlock.
+> +        MapleLock(self)
+> +    }
+> +
+> +    #[inline]
+> +    fn ma_lock(&self) -> *mut bindings::spinlock_t {
+> +        // SAFETY: This pointer offset operation stays in-bounds.
+> +        let lock = unsafe { &raw mut (*self.tree.get()).__bindgen_anon_1.ma_lock };
+> +        lock.cast()
+
+This cast seems unneeded. lock should already be a *mut spinlock_t.
+
+> +    }
+> +
+>       /// Free all `T` instances in this tree.
+>       ///
+>       /// # Safety
+> @@ -248,6 +265,83 @@ fn drop(mut self: Pin<&mut Self>) {
+>       }
+>   }
+>   
+> +/// A reference to a [`MapleTree`] that owns the inner lock.
+> +///
+> +/// # Invariants
+> +///
+> +/// This guard owns the inner spinlock.
+> +pub struct MapleLock<'tree, T: ForeignOwnable>(&'tree MapleTree<T>);
+> +
+> +impl<'tree, T: ForeignOwnable> Drop for MapleLock<'tree, T> {
+> +    #[inline]
+> +    fn drop(&mut self) {
+> +        // SAFETY: By the type invariants, we hold this spinlock.
+> +        unsafe { bindings::spin_unlock(self.0.ma_lock()) };
+> +    }
+> +}
+> +
+> +impl<'tree, T: ForeignOwnable> MapleLock<'tree, T> {
+> +    /// Load the value at the given index.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// Read the value while holding the spinlock.
+> +    ///
+> +    /// ```
+> +    /// use kernel::maple_tree::{MapleTree, InsertErrorKind};
+> +    ///
+> +    /// let tree = KBox::pin_init(MapleTree::<KBox<i32>>::new(), GFP_KERNEL)?;
+> +    ///
+> +    /// let ten = KBox::new(10, GFP_KERNEL)?;
+> +    /// let twenty = KBox::new(20, GFP_KERNEL)?;
+> +    /// tree.insert(100, ten, GFP_KERNEL)?;
+> +    /// tree.insert(200, twenty, GFP_KERNEL)?;
+> +    ///
+> +    /// let mut lock = tree.lock();
+> +    /// assert_eq!(lock.load(100), Some(&mut 10));
+> +    /// assert_eq!(lock.load(200), Some(&mut 20));
+> +    /// assert_eq!(lock.load(300), None);
+> +    /// # Ok::<_, Error>(())
+> +    /// ```
+> +    ///
+> +    /// Increment refcount while holding spinlock and read afterwards.
+> +    ///
+> +    /// ```
+> +    /// use kernel::maple_tree::{MapleTree, InsertErrorKind};
+> +    /// use kernel::sync::Arc;
+> +    ///
+> +    /// let tree = KBox::pin_init(MapleTree::<Arc<i32>>::new(), GFP_KERNEL)?;
+> +    ///
+> +    /// let ten = Arc::new(10, GFP_KERNEL)?;
+> +    /// let twenty = Arc::new(20, GFP_KERNEL)?;
+> +    /// tree.insert(100, ten, GFP_KERNEL)?;
+> +    /// tree.insert(200, twenty, GFP_KERNEL)?;
+> +    ///
+> +    /// // Briefly take the lock to increment the refcount.
+> +    /// let value = Arc::from(tree.lock().load(100).unwrap());
+> +    ///
+> +    /// // At this point, another thread might remove the value.
+> +    /// tree.erase(100);
+> +    ///
+> +    /// // But we can still access it because we took a refcount.
+> +    /// assert_eq!(*value, 10);
+> +    /// # Ok::<_, Error>(())
+> +    /// ```
+> +    #[inline]
+> +    pub fn load(&mut self, index: usize) -> Option<T::BorrowedMut<'_>> {
+> +        // SAFETY: `self.tree` contains a valid maple tree.
+> +        let ret = unsafe { bindings::mtree_load(self.0.tree.get(), index) };
+> +        if ret.is_null() {
+> +            return None;
+> +        }
+> +
+> +        // SAFETY: If the pointer is not null, then it references a valid instance of `T`. It is
+> +        // safe to borrow the instance mutably because the signature of this function enforces that
+> +        // the mutable borrow is not used after the spinlock is dropped.
+> +        Some(unsafe { T::borrow_mut(ret) })
+> +    }
+> +}
+> +
+>   /// Error type for failure to insert a new value.
+>   pub struct InsertError<T> {
+>       /// The value that could not be inserted.
+> 
+
+with or without those fixes, for the entire series,
+Reviewed-by: Andrew Ballance <andrewjballance@gmail.com>
+
+Also, if you need one, I would be happy to be a co-maintainer of the
+rust maple tree bindings.
+
+Best Regards,
+Andrew Ballance
 
 
-So there's nothing more to do here AFAIK.
+
 
