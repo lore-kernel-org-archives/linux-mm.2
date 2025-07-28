@@ -2,121 +2,96 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E21F3C83F26
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 07:54:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C7F3C87FCE
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 08:04:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 81EE98E0006; Mon, 28 Jul 2025 03:54:08 -0400 (EDT)
+	id 9694F6B008C; Mon, 28 Jul 2025 04:04:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7CF3C8E0001; Mon, 28 Jul 2025 03:54:08 -0400 (EDT)
+	id 940FB6B0093; Mon, 28 Jul 2025 04:04:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6BDEE8E0006; Mon, 28 Jul 2025 03:54:08 -0400 (EDT)
+	id 87DBA6B0096; Mon, 28 Jul 2025 04:04:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 59A998E0001
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 03:54:08 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 35C7012F9FC
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 07:54:08 +0000 (UTC)
-X-FDA: 83712910176.11.9F45B36
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 4F0D910000A
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 07:54:06 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FkP+44dz;
-	spf=pass (imf05.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753689246;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Cd4AeVUs7V5lSylB8MQ/iKz7vLHt1zDPy5kzMmZDacY=;
-	b=zY9baXjeDXggGp6Up4e6hKyzQflEk0ZOvD532EN6dMP7egbTxqWOnGXML3dwQpV5q9epGr
-	Z3X3oIleFuzYEvwiWpeSmuMyoo+k4ysq/2Z/+k5bVt2GYBNqqGQFq+Rdkb9jwo7qvo9bWw
-	0/sEV5LLV8Fn3q91MFEGbru1POhanKM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753689246; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A2036B008C
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 04:04:11 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F2E3E1401C3
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 08:04:10 +0000 (UTC)
+X-FDA: 83712935460.13.9AF7746
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	by imf01.hostedemail.com (Postfix) with ESMTP id E858340012
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 08:04:06 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=kepHxj6K;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753689849; a=rsa-sha256;
 	cv=none;
-	b=rjynXQqY8XAG9mE4dSJskD86ayNqa2O1IHDOdn4wEKR9xEa2+oLAUgzzZRTEMBEqIZ/IeY
-	fPMxvywneOQ4YoYctut/7Q062I7gMvWH+fOhSOyUxcDBXg1+1tdgLV5ZUlGngEdOJHIu/j
-	epezZ4cUggje3DLw/Giql3DSYrJCaho=
+	b=J00DRhx6X6jjrVMBipbs4FUH7wTFuNtwucnZizRFI/ljGxI7HX3Osz31yT0MFi2L6Bl9mk
+	8TFuyA1A+zDfMjoIM5D5IIG6WoEcTr9cNo6wHl2ZBcAHB0EKAKfOaCujk3jlra9vB2RKF1
+	5SB3Wd0muHZr2Rwnbp9mZs4O4BMNWJE=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FkP+44dz;
-	spf=pass (imf05.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-236377f00a1so35450385ad.3
-        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 00:54:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753689244; x=1754294044; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:reply-to:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Cd4AeVUs7V5lSylB8MQ/iKz7vLHt1zDPy5kzMmZDacY=;
-        b=FkP+44dz9FKfuAe+MltL5HczVXta6NklFxjw2Eq/F7x8XqDPSrJChRLuSh0m8tlKIP
-         uhkXM1Aawqhym/Oj1VVlOrcoqjxXBAhfsVZncaeddEAvFYMtFz+muA4YYHgo1yVJFj6H
-         m/NoZ1/xykhF0xuM2VnM9NdhvWvK0OMf5IuUZBaNut88OViQWVxGt9/hXyGjmlitKteH
-         4NFXvpaNxq+dis/fZivkC7bLPBuVYSVd3WTvtzV3GDL4uZsshKksIzU0T6obJj+RskUp
-         692x39ndJrl/RO2rvdSlGUWUPKeiysoao1gcn1TVbAmNx2XuqEf8x7Cg5sWerF2goYNn
-         deIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753689244; x=1754294044;
-        h=content-transfer-encoding:mime-version:reply-to:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Cd4AeVUs7V5lSylB8MQ/iKz7vLHt1zDPy5kzMmZDacY=;
-        b=X6rfAyjWktTPM/C8bSaqJg2M8xc7Um37P9p1NCdxxiPHCfHTOf1YXJM3gKUh9v+FMq
-         TDrZZeXE3oOFyeSCrbouEGJm8GC7lai3motTF34B51TV3mYj6GjiXsGZ/xEd5WqdOcbu
-         I3Obz/03LWbX34D6RAdo/YExiYPrRJJxzr41umo66TDc+plaod6L/FrawN2srO52BYP5
-         vvbpzpUUQv0cSCml6wwnRnIoRzNUIguxWsGAFtiFUzj4Kn8Qjob9lSrv6M4sZnsvuAy2
-         Mry+cGuvl1oOpH3hf8BTLo46P21Hfj1Ahc5gychMuqfvZMI6fEg5kyRHAjScnDYshytK
-         JKrA==
-X-Gm-Message-State: AOJu0YwUczzRYc79wak732XK5+jzrNI8FbCuKjDoRQBM+yU/ngRu7/aI
-	0+6CaT5Di1akH8vDFs4MjtVkeYJvrs4hbmEpC29UTOs85hr9bOYR3B2HvKhi/ZqrLaQ=
-X-Gm-Gg: ASbGncs884eYZ5zKL+ylucmZXAVUWwMeixjNrixnxs3CcYsvygjCBrJQqhyzCrNTQir
-	skSCTcD1qZv/Th0wJbi95BRFh3UOsxpqF67yY5zcGmRglAEoA7EGERk0g5nyp5TyQkJKFk84yB9
-	F69VtIhKmK7L3ZpHOPFciXRj4zRZLuzkq8FSSbqtnvyJAZFzUanIo1uXlS53qR7EYcqfguEycyJ
-	VCnMNNpygLg6+TP/zpX0HnqS7CKS55kfM1/lX9gDA3BrYDP1+699iW5denyPsQCUiYPSV6n0UoY
-	4vEdC8qFmtwZ5mVawXm/0TzAoSBB2CYk8v/h/bdwv/jTsJ1NPVWGcTjmPRDHRuS/5iDu0XeyfGg
-	dFIIDtXvcCfSDNmNH4DkSpcD+Nu3y/VJcF9Qf
-X-Google-Smtp-Source: AGHT+IFb47kHtBhlXu+Lw2+aPCdPOkojIjE0li2wCg433P4HoUD2xs5ePpOf4KNv5nq2hut+xxfISQ==
-X-Received: by 2002:a17:903:181:b0:234:d679:72e3 with SMTP id d9443c01a7336-23fb3100766mr169960675ad.42.1753689244060;
-        Mon, 28 Jul 2025 00:54:04 -0700 (PDT)
-Received: from KASONG-MC4 ([43.132.141.24])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2401866c2a1sm20272305ad.4.2025.07.28.00.54.00
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 28 Jul 2025 00:54:03 -0700 (PDT)
-From: Kairui Song <ryncsn@gmail.com>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Chris Li <chrisl@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=kepHxj6K;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753689849;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=R5JhzFAe2+pi/8yqRFPN+PrUVu7txCrojFI/LNAgGtk=;
+	b=q+l9D9hQ73uYP84JuPhBnizolC/uENm6YuO6Uz/S4ZIJVpnkIAYGnBYZTyppyTSg8P5nNa
+	2wszePqlQOZH81YH4zjGtJSOU7oLVuVQgShadMb02VrzjCel+4/VkyhzBQeUfgZMK26fx2
+	xNrr/0MeHQqVZSMC4TgPoX5QTIWoXj0=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1753689843; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=R5JhzFAe2+pi/8yqRFPN+PrUVu7txCrojFI/LNAgGtk=;
+	b=kepHxj6K2WQ5b1O0Lk+ZXTbEgcjH7EbyQxYr62pv2TqS5uCU/qmJteoI0u3H0JOF/d6UzIcMP4XGTy6z4VvpeFC60qK8DqgpoVH3w0iJff0o67gPiyLAAFgweZ64trQ0XGtMFIGalkAmUbDK6hSKr87xy/oDyQRRETJ4kgRrtL4=
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WkFS0FZ_1753689841 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 28 Jul 2025 16:04:01 +0800
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+To: akpm@linux-foundation.org,
+	hughd@google.com
+Cc: patryk@kowalczyk.ws,
+	ville.syrjala@linux.intel.com,
+	david@redhat.com,
+	willy@infradead.org,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	jani.nikula@linux.intel.com,
+	joonas.lahtinen@linux.intel.com,
+	rodrigo.vivi@intel.com,
+	tursulin@ursulin.net,
+	christian.koenig@amd.com,
+	ray.huang@amd.com,
+	matthew.auld@intel.com,
+	matthew.brost@intel.com,
+	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
-	Kairui Song <kasong@tencent.com>
-Subject: [PATCH v6 8/8] mm/shmem, swap: fix major fault counting
-Date: Mon, 28 Jul 2025 15:53:06 +0800
-Message-ID: <20250728075306.12704-9-ryncsn@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250728075306.12704-1-ryncsn@gmail.com>
-References: <20250728075306.12704-1-ryncsn@gmail.com>
-Reply-To: Kairui Song <kasong@tencent.com>
+	linux-mm@kvack.org
+Subject: [PATCH] mm: shmem: fix the shmem large folio allocation for the i915 driver
+Date: Mon, 28 Jul 2025 16:03:53 +0800
+Message-ID: <0d734549d5ed073c80b11601da3abdd5223e1889.1753689802.git.baolin.wang@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4F0D910000A
-X-Stat-Signature: ojt4bq7z6q7jrfghrreuxd15wo6odahh
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E858340012
+X-Stat-Signature: mhu1n863cbzdza6czth56xj517ddk1ki
 X-Rspam-User: 
-X-HE-Tag: 1753689246-140395
-X-HE-Meta: U2FsdGVkX18cONY3UpxMwMzGBXv0MQqFZgN4GzgoK9Q3B4y5bkrg8YE3JweJDUQnKPMesdu6MLhEL39X694upfSh/I5BNpfNGC6EGfSuHarBbEkZsUhPe4hYxAu7yquyOWGX8HJG556FZKe8YMfryLAXwhnVsF+T7Ilon4j6UmDzF6ISP+d//eNfktVMK6wBX/d9DeLDjnZ06P9VZdtqfp2c378SlDXAOJZfE3PyWt/fv4e8V5B4Lo6W/2jyPJXNEONiwOoALFN1NVvUdXycIBmc+XWk/8MbmHOa3DvwIF1zFGI6NE2q4IJjX5+ZDXwOB10lABeYrzRxPhhIU6/vM2gin3oaeLsZpYACCIfxp2fWYc28touhmnyOXC4YnRnWkKJ5S/xM5xkYgJ5aSggJfcQUpZCdZAJ+fy2mesSMSosZ6/mJXBHm/hAFsI5IJd2HMKVCO4fbtdPv4zE8YjM+0mE9CMfRgEUfXunmP4Qw+CLNxAxqnm8IaMU/hV95TmwxIAEcqE8RU809CjS2gcTywNht76vcuLDQ2+TwRNhbNrgYxVumHOSJspj/T0pFJYE7tQPgdZomMX+uaiy0ucppza6W8PmCjCz/CUOsuVAWM/njbQSO/e2QkI9VN+6N+QADZfoAeJzoLJrTkDfCWvsnWbSKeBXmB3z0cAAa5klUDSxv/RTPcONq87oLpj6HQR+qOf3lZ5xC46I9G4akOhyFnWSk903idx4I0UnV2KoPVqOCSvdwv/d7EkPPs3Niql9iVOjkQIt3pNsfdtqWgUAgRCjg4SjXfxOsObwYQsM0ocbj+ZD22ijAQ5a2iNBxgag9FqJJVGuA+R4zRCmrtcs2X6tuLFljy60FI5mDkwyXkh0Fxp40Kdy1JMo4L+Kd95Hr1AINRnu8SVK+wTJdK4DFs6VZ/ONOHngM76bXwqsWhR5u4Wte8qsIbV06iM7hRaWVOyjlxC+bVv2M7lkA0+9
- 85sQ9Fbc
- f96zXMcVztoputVY6jfo5WxWY3K1kTD3lbI9u0k9uUDWOJ5mnVVgUQr9irOyjhOlu0ZiNxiv9BQ5ycbB43U6OO4gxQFbtIMEF3DxkfJI+SE7nYRL94HWkObpXQFMX4FhkykSRtEqk7O/k70IuxNXEo8gn/4TSq5vvDvQw3EwnAm5wa1wmL59qqIm3pZjqJnAFP0DPPkQP/XU3QQdPfuV3S9ZaEIYIj4v/r4TWh5MuUKE3rkvN03lRX/joNnmVunQk9fS9YKe0Pqu8WGreqn8vKyspnQF0IY/ICL1dIOf6eY/uwVK9wE3/hk2fgrQNwT5c7nWs+++64RtoXMOa3/Um46cMGm2TJDcJ4IhAj5f93d2ISv4Am8ybmnL2xxZGxOzcqnlVHhW850nXesxTcGV4Q9y25RMTrByRbUm9e8ya1hfwPAZWBu7QaC5DTpCdEVz10xQ5hGSPQmmEuPzhu3uk4mkrZYSMtvpB5QXmAVTKAT16jlznYH5fcfPj86FFcEuZe2w5Jgg+97aeStgFNReyEOeFuwmayncy7ebN0rytKtzTGXwdki+zDYNAarxV+oWGIqdcllRjP0ZdGshkGapyWxedOsJ0gRp45ckPqIgj6eXgkZZhcRFW63txT7UX0xrD6AVo
+X-HE-Tag: 1753689846-430710
+X-HE-Meta: U2FsdGVkX1/JiHptBNNj9kLlxmlli7wKmAZouSiKeZfz8F56zI3sWe21bkREgLmdtESxe+r24cVi+PUl7cqx4cFN5Ze47rKMW1WuFoRGV+tzklXv5uE0lK4v+6NRiFiJ00tXF7yG1K3Nx4w34Ya2mwhKYnFC0ltxljZOpM1y4XckaPdVGhQRlmw99ztCal+BKbAdlFTCMHs6d9jBi+eTg/DcKYDmWbT7phQkRh665hb7cZ9ZDxe7ToMwbSHataH/KssizBZ1gm9mvp4YNf9zVC26JSgM+3XvIKottBOAsD0ouMWxRnyvbRA/SW/0FzzcJEN7VbUDWS+3U8v6gkS4qH0J6hJC4BR9bz6dq2+WQIyT+EFJK4o3yOSXhe5JWvOj+uKCCV90tto2RKgD1V2U8+boNVNhsMcE8UFI7NJyFHURKC6Y2fXZn1p2hxF3jSn1Eq8i3/GUGyRJa6HihuBmZzFyXTXIY4ZcgW9l7uOzvUCycOAAfn3V0phLvnohlkdYFgUoX5D5Rh+rY0DtKH7n6BnJn/00fhqNHW/HaNr8XmRV4uP4hTn4WflNaTbt04YHyy++zzbLLGsGO+5Tm6Lsq7EnreDtvx+ePh2/v8PtDraPWFshhDMdO6Xha1STntcWu884kEnoqDIss3pREDDxHeRlFzGk7ROo/nK7yk7cd/qC85bpPayVooezSAP2OwQL37BsKCEKF9B8zF0sOiudPwHpwcW/BiSQEGGdINmBfwlVoYGHfpLka4wwf47fC89uQLsSCXGzSutYeq21/JgoVhh/4vhiHpM7/SboNWevOr/d0uTPZgfw7dxsb57Es/5XwNVGfTriE4hIEaZL6jsF1h6a9W1jlgaweSDcfpfcAdV1J1LCtaF/NiNYgmA8kLnesU64x4bes3lMveNOVF1hal0H85pAq7vN8tdsmik32QlB6PKJ6Ma+scz++KcrKU650zMK9RGwNeaLfBv2JhS
+ Zi/6E+6D
+ HL3OeAW0MnV1Z798G8Ue/5Un/vC3qX8cfpuuce9YSfjeaGjstrvm1rPIiaLhfXgTX89OiSnQc3Q0hd4KsmGbkCxjAf5aRq/PulQXcnHcruSUH8xFFpnMu84FuPq3iZatF3rRBP/UnxGDwN/zTPJuYemv0DXEVYbEDOQvvmiWHc2aUkmdC/uDMS1l8XegoQdouqzBDwaSiXt4MpMx01gIJl/t4dwj02qcTrSdZ/tK/JHj51CVKAY1HwiDoQAP0nI/IsY/6NO1Fxy5cy27H44ojuO1VJsAAWcPduH3alXmV8DZdlC2Vg+gGhT5H+AckINlxJHv8QCAoSKdVFDVAAR7LwP5mwVWjPQec7Ior7vNtIwRnHHHWaRTd1ysNnZfcA+x7xX3H
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,49 +100,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kairui Song <kasong@tencent.com>
+After commit acd7ccb284b8 ("mm: shmem: add large folio support for tmpfs"),
+we extend the 'huge=' option to allow any sized large folios for tmpfs,
+which means tmpfs will allow getting a highest order hint based on the size
+of write() and fallocate() paths, and then will try each allowable large order.
 
-If the swapin failed, don't update the major fault count.  There is a long
-existing comment for doing it this way, now with previous cleanups, we can
-finally fix it.
+However, when the i915 driver allocates shmem memory, it doesn't provide hint
+information about the size of the large folio to be allocated, resulting in
+the inability to allocate PMD-sized shmem, which in turn affects GPU performance.
 
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+To fix this issue, add the 'end' information for shmem_read_folio_gfp()  to help
+allocate PMD-sized large folios. Additionally, use the maximum allocation chunk
+(via mapping_max_folio_size()) to determine the size of the large folios to
+allocate in the i915 driver.
+
+Fixes: acd7ccb284b8 ("mm: shmem: add large folio support for tmpfs")
+Reported-by: Patryk Kowalczyk <patryk@kowalczyk.ws>
+Reported-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Tested-by: Patryk Kowalczyk <patryk@kowalczyk.ws>
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 ---
- mm/shmem.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/drm_gem.c                 | 2 +-
+ drivers/gpu/drm/i915/gem/i915_gem_shmem.c | 7 ++++++-
+ drivers/gpu/drm/ttm/ttm_backup.c          | 2 +-
+ include/linux/shmem_fs.h                  | 4 ++--
+ mm/shmem.c                                | 7 ++++---
+ 5 files changed, 14 insertions(+), 8 deletions(-)
 
+diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
+index 4bf0a76bb35e..5ed34a9211a4 100644
+--- a/drivers/gpu/drm/drm_gem.c
++++ b/drivers/gpu/drm/drm_gem.c
+@@ -627,7 +627,7 @@ struct page **drm_gem_get_pages(struct drm_gem_object *obj)
+ 	i = 0;
+ 	while (i < npages) {
+ 		long nr;
+-		folio = shmem_read_folio_gfp(mapping, i,
++		folio = shmem_read_folio_gfp(mapping, i, 0,
+ 				mapping_gfp_mask(mapping));
+ 		if (IS_ERR(folio))
+ 			goto fail;
+diff --git a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
+index f263615f6ece..778290f49853 100644
+--- a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
+@@ -69,6 +69,7 @@ int shmem_sg_alloc_table(struct drm_i915_private *i915, struct sg_table *st,
+ 	struct scatterlist *sg;
+ 	unsigned long next_pfn = 0;	/* suppress gcc warning */
+ 	gfp_t noreclaim;
++	size_t chunk;
+ 	int ret;
+ 
+ 	if (overflows_type(size / PAGE_SIZE, page_count))
+@@ -94,6 +95,7 @@ int shmem_sg_alloc_table(struct drm_i915_private *i915, struct sg_table *st,
+ 	mapping_set_unevictable(mapping);
+ 	noreclaim = mapping_gfp_constraint(mapping, ~__GFP_RECLAIM);
+ 	noreclaim |= __GFP_NORETRY | __GFP_NOWARN;
++	chunk = mapping_max_folio_size(mapping);
+ 
+ 	sg = st->sgl;
+ 	st->nents = 0;
+@@ -105,10 +107,13 @@ int shmem_sg_alloc_table(struct drm_i915_private *i915, struct sg_table *st,
+ 			0,
+ 		}, *s = shrink;
+ 		gfp_t gfp = noreclaim;
++		loff_t bytes = (page_count - i) << PAGE_SHIFT;
++		loff_t pos = i << PAGE_SHIFT;
+ 
++		bytes = min_t(loff_t, chunk, bytes);
+ 		do {
+ 			cond_resched();
+-			folio = shmem_read_folio_gfp(mapping, i, gfp);
++			folio = shmem_read_folio_gfp(mapping, i, pos + bytes, gfp);
+ 			if (!IS_ERR(folio))
+ 				break;
+ 
+diff --git a/drivers/gpu/drm/ttm/ttm_backup.c b/drivers/gpu/drm/ttm/ttm_backup.c
+index 6f2e58be4f3e..0c90ae338afb 100644
+--- a/drivers/gpu/drm/ttm/ttm_backup.c
++++ b/drivers/gpu/drm/ttm/ttm_backup.c
+@@ -100,7 +100,7 @@ ttm_backup_backup_page(struct file *backup, struct page *page,
+ 	struct folio *to_folio;
+ 	int ret;
+ 
+-	to_folio = shmem_read_folio_gfp(mapping, idx, alloc_gfp);
++	to_folio = shmem_read_folio_gfp(mapping, idx, 0, alloc_gfp);
+ 	if (IS_ERR(to_folio))
+ 		return PTR_ERR(to_folio);
+ 
+diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
+index 6d0f9c599ff7..203eebad6b38 100644
+--- a/include/linux/shmem_fs.h
++++ b/include/linux/shmem_fs.h
+@@ -156,12 +156,12 @@ enum sgp_type {
+ int shmem_get_folio(struct inode *inode, pgoff_t index, loff_t write_end,
+ 		struct folio **foliop, enum sgp_type sgp);
+ struct folio *shmem_read_folio_gfp(struct address_space *mapping,
+-		pgoff_t index, gfp_t gfp);
++		pgoff_t index, loff_t end, gfp_t gfp);
+ 
+ static inline struct folio *shmem_read_folio(struct address_space *mapping,
+ 		pgoff_t index)
+ {
+-	return shmem_read_folio_gfp(mapping, index, mapping_gfp_mask(mapping));
++	return shmem_read_folio_gfp(mapping, index, 0, mapping_gfp_mask(mapping));
+ }
+ 
+ static inline struct page *shmem_read_mapping_page(
 diff --git a/mm/shmem.c b/mm/shmem.c
-index aed5da693855..41eb4aa60be5 100644
+index e6cdfda08aed..c79f5760cfc9 100644
 --- a/mm/shmem.c
 +++ b/mm/shmem.c
-@@ -2356,13 +2356,6 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
- 	/* Look it up and read it in.. */
- 	folio = swap_cache_get_folio(swap, NULL, 0);
- 	if (!folio) {
--		/* Or update major stats only when swapin succeeds?? */
--		if (fault_type) {
--			*fault_type |= VM_FAULT_MAJOR;
--			count_vm_event(PGMAJFAULT);
--			count_memcg_event_mm(fault_mm, PGMAJFAULT);
--		}
--
- 		if (data_race(si->flags & SWP_SYNCHRONOUS_IO)) {
- 			/* Direct swapin skipping swap cache & readahead */
- 			folio = shmem_swap_alloc_folio(inode, vma, index,
-@@ -2381,6 +2374,11 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
- 				goto failed;
- 			}
- 		}
-+		if (fault_type) {
-+			*fault_type |= VM_FAULT_MAJOR;
-+			count_vm_event(PGMAJFAULT);
-+			count_memcg_event_mm(fault_mm, PGMAJFAULT);
-+		}
- 	}
+@@ -5960,6 +5960,7 @@ int shmem_zero_setup(struct vm_area_struct *vma)
+  * shmem_read_folio_gfp - read into page cache, using specified page allocation flags.
+  * @mapping:	the folio's address_space
+  * @index:	the folio index
++ * @end:	end of a read if allocating a new folio
+  * @gfp:	the page allocator flags to use if allocating
+  *
+  * This behaves as a tmpfs "read_cache_page_gfp(mapping, index, gfp)",
+@@ -5972,14 +5973,14 @@ int shmem_zero_setup(struct vm_area_struct *vma)
+  * with the mapping_gfp_mask(), to avoid OOMing the machine unnecessarily.
+  */
+ struct folio *shmem_read_folio_gfp(struct address_space *mapping,
+-		pgoff_t index, gfp_t gfp)
++		pgoff_t index, loff_t end, gfp_t gfp)
+ {
+ #ifdef CONFIG_SHMEM
+ 	struct inode *inode = mapping->host;
+ 	struct folio *folio;
+ 	int error;
  
- 	if (order > folio_order(folio)) {
+-	error = shmem_get_folio_gfp(inode, index, 0, &folio, SGP_CACHE,
++	error = shmem_get_folio_gfp(inode, index, end, &folio, SGP_CACHE,
+ 				    gfp, NULL, NULL);
+ 	if (error)
+ 		return ERR_PTR(error);
+@@ -5998,7 +5999,7 @@ EXPORT_SYMBOL_GPL(shmem_read_folio_gfp);
+ struct page *shmem_read_mapping_page_gfp(struct address_space *mapping,
+ 					 pgoff_t index, gfp_t gfp)
+ {
+-	struct folio *folio = shmem_read_folio_gfp(mapping, index, gfp);
++	struct folio *folio = shmem_read_folio_gfp(mapping, index, 0, gfp);
+ 	struct page *page;
+ 
+ 	if (IS_ERR(folio))
 -- 
-2.50.1
+2.43.5
 
 
