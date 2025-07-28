@@ -2,58 +2,58 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C7511C87FCE
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 08:40:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F26BCC87FCF
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 08:40:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 456006B008A; Mon, 28 Jul 2025 04:40:20 -0400 (EDT)
+	id 95D6F6B008C; Mon, 28 Jul 2025 04:40:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 406A46B008C; Mon, 28 Jul 2025 04:40:20 -0400 (EDT)
+	id 90FF16B0092; Mon, 28 Jul 2025 04:40:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 343826B0092; Mon, 28 Jul 2025 04:40:20 -0400 (EDT)
+	id 7FDFC6B0095; Mon, 28 Jul 2025 04:40:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 249F26B008A
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 712306B008C
 	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 04:40:20 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C390F12C7E5
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E58A71A014A
 	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 08:40:19 +0000 (UTC)
-X-FDA: 83713026558.25.062754C
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1E7DF180007
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 08:40:15 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=avRDumut;
-	spf=pass (imf06.hostedemail.com: domain of chizhiling@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=chizhiling@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+X-FDA: 83713026558.15.1E9D453
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 3B77D40008
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 08:40:16 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=S8+76Hp8;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf11.hostedemail.com: domain of chizhiling@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=chizhiling@163.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753692018; a=rsa-sha256;
 	cv=none;
-	b=07ZqN+NkbYDGuRzA4GtGULjAiyADlj4p2ETyDM/qL1GbUEfx6noQ6vWYJaeKXb6FHqMIO8
-	LOS+coAHDzx4R9Ykfmf1UbEHh9PlWcm5R5nV/FhNY8WmLXCITR8T++IZxyrxmG4/rLHAV6
-	G6s2SucAfxvOIbiRzhMYQb5qMvJMX5g=
+	b=AoKbME7vP9JGcGxFSy8stqhAgd5JF/0JZUAZiCAsY2s9l9Yph044Xc5IK1OCzAzfwCA7Cx
+	NVkSxxuFc3WUM2IT0d5GytvMy6f5db4hcPlzfW37LfGuGSr1QKaYeTv8CkKNdJlBa9os0t
+	nMeeVtmKl2rBDZjczkij8KQ1AUFu37g=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=avRDumut;
-	spf=pass (imf06.hostedemail.com: domain of chizhiling@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=chizhiling@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+	imf11.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=S8+76Hp8;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf11.hostedemail.com: domain of chizhiling@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=chizhiling@163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1753692018;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f/UKDMw0joXHfqIOWrWMvMtfuY+C4akEWZAyWYlG4oc=;
-	b=CC1qbCLGsA3/KTnfiF5uRV+dgNJIgbU0mtUHNqjza8nk6rHuMgYEAtUeVHSZTkyBp7KXYe
-	6YOZX1b4K0FKSgPYN8P5O5q3us9PSSVvVN7LLlI6faymSuLeJqWWV2HN0fJvzZM8q9rmfd
-	Ep3/UaMi3j8cZoqiarR6hchaBAaHWkw=
+	bh=zkiIDNJ189UN3Gvigro6HmhFmr3/xqt0rx4GudPl97g=;
+	b=hwDbKAukaKgwPMPLmvIP2QlQgte5Wp/41vjOnAIPIFq4adouLqIj8xYe1WwJa95yrF8QvU
+	w0GyXW7r/n22g5UMdcxGpfaMtKY75wCx9p+oF3mlcLDrk+z6oMvaFrtOQkKeIEOmq49IjG
+	yw+2dshpsjSGuwVoVax84/l41ejBZY0=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=f/
-	UKDMw0joXHfqIOWrWMvMtfuY+C4akEWZAyWYlG4oc=; b=avRDumutFFV7+/xhP7
-	lAv3mT4OTjWtezxFpYrmQJGArckPgmn+iy4Mo49wDJSbVrMnCuOlmccX3dK+vb/L
-	gYXpNEcfZLPuCGqHKuaiEedsDpCdn1dhaNCcuAONs4UxYY9lDxhIPBjCGRn8tcy1
-	5f3Yf8UaP+pM5zRjqclK2AwCw=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=zk
+	iIDNJ189UN3Gvigro6HmhFmr3/xqt0rx4GudPl97g=; b=S8+76Hp8/WS9fIVESB
+	XjqzjYH3q5dvVgttmr85KXXmZkxQv/Fc7tP6X/PEQclJaJW1leuYolTz4fzc3QGh
+	I9O54yDiJP9u6z0xuvBlBMMBl+L556ix+mYS6KtqPknJ2qUUuZGHKNtKc6OY80u0
+	FY1gdO3Ye056LnWIzNN/offTU=
 Received: from czl-ubuntu-pc.. (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id PSgvCgAH9a9hN4doAzUWCQ--.8415S3;
+	by gzsmtp2 (Coremail) with SMTP id PSgvCgAH9a9hN4doAzUWCQ--.8415S4;
 	Mon, 28 Jul 2025 16:40:03 +0800 (CST)
 From: Chi Zhiling <chizhiling@163.com>
 To: willy@infradead.org,
@@ -62,30 +62,30 @@ Cc: linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Chi Zhiling <chizhiling@kylinos.cn>
-Subject: [PATCH v1 1/2] mm/filemap: Do not use is_partially_uptodate for entire folio
-Date: Mon, 28 Jul 2025 16:39:51 +0800
-Message-ID: <20250728083952.75518-2-chizhiling@163.com>
+Subject: [PATCH v1 2/2] mm/filemap: Skip non-uptodate folio if there are available folios
+Date: Mon, 28 Jul 2025 16:39:52 +0800
+Message-ID: <20250728083952.75518-3-chizhiling@163.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250728083952.75518-1-chizhiling@163.com>
 References: <20250728083952.75518-1-chizhiling@163.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PSgvCgAH9a9hN4doAzUWCQ--.8415S3
-X-Coremail-Antispam: 1Uf129KBjvdXoWrZr4xXw1DGFyUtFy8GFWruFg_yoWftFg_Wr
-	W8Zw4kGa9xCF9xAr4IvF4DJr90qw1v9rWFvFZ0qF43A345A34kZFWqvF92gr47Jr4FkFs8
-	JwsFgr15Zr13ujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8EtC7UUUUU==
+X-CM-TRANSID:PSgvCgAH9a9hN4doAzUWCQ--.8415S4
+X-Coremail-Antispam: 1Uf129KBjvJXoW7tFy8WrWDCry7uw4fZry3twb_yoW8Zw1kpF
+	WagwnF93srXFy8Can7AwnruF4Ig39Yyay5Gry5KF95Awn8X3sa9ryIvF15t3W7AryrZr1I
+	qr1Fy340vanYv3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jDtxfUUUUU=
 X-Originating-IP: [116.128.244.169]
-X-CM-SenderInfo: hfkl6xxlol0wi6rwjhhfrp/1tbiFBSUnWiBj9Y5uAACs6
+X-CM-SenderInfo: hfkl6xxlol0wi6rwjhhfrp/xtbBgBSYnWiHLinmMQAAsu
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3B77D40008
+X-Stat-Signature: q77fbx6gg9h73u1x5n189qgnt9c7oaxu
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1E7DF180007
-X-Stat-Signature: 3ex8ibtnpqmea9gtjcszxus61tw8em6o
-X-HE-Tag: 1753692015-759193
-X-HE-Meta: U2FsdGVkX1+9GVPOKMIP0a9ELcWNfpj7aaSdwPIFTbWtEcPO21EszBohLjceZTUQRH0FXTy8Bv/Yms598Tt6GwG9W/ZCg4UCvccjj9pinNCzaTHol1a61ULdN5KsQBQWO/TSDroKRxdSzY7OCzDliqWbsdGJ7Eol2Ho0lF9w+TsYE9ygjQzSN2qO4e9nD4dkWS27eX717yeWQZHR9H1sE5KPLbIpp660pF6bq/D3C9ITbIieFXYhYGfs0bUEASvY7oXk/uEAsxVjMt4XxCiU5a7BQXO4W3kB1z8hgsjp7STzPHLJUgPulijGrMa6ZcDWrVYfFzg48Qxyw40bXbNTIwKAAoZ0Y1kS4ehkKWDbnPUUd5xtDvyzRz7/oTe5QOjI5b9fvocNW07nz4Dzsc6fysoQUPZ6ie4LcXa2fgJyTNKpDEF1WYEB/tkdgcLYxBdip4K3l1H4UmhrqYHcjMqG3y43TYXBL+100mYt4GI+PxeVfEQdQ9VTMklxNLOtcRbXfh1NClWgKsyJtf5rBXfVGvovjBQuUorbL8Sgw2vPAzsqL4gSMMsHp896tiLQBGMO1zcLZmwq7PdICvDkUYdMO0ujYQSTuIuFKTWdB0pn6AjHuAoCXRw2ukTZ7D0AlnIVdkzNEu9eAD23KhUDh/6DcsglAKszNcNaQ00dEe985yWawo9cYpWj3rljX1XQCjDRjNx03xkZezomrGvgbwzi/j785Gl8L1WS/pima7EYtfnecZ1p2mnbrEjEGU8DakngcTfJFhDmTuR2aloZ6v66XwL5lmNCnUjowpbEu7pmOjIhRzEnUcg0C7c/bAYJYG5mvtUR3y2lkfTRdcGVYrjfohtqrcJnMEWkZMPybMp4V/3bgeX6XEgWZyYhZbGxU2g49KYYXfA6dMQJMlDEcIXVXeC/aVpK4DKGM874Ds8qnDPANOjCwYgP89JdBiDG/uUqj0zpvfhZ4ZcC5C83yX5
- BJp7CSVs
- DjA1v0jxTm0GjbqmYYxmHmnIf03E+UjJU5gARwMmXBPI/EQkwqC/Dau/9FIh6++jrYpz6Dih0buY6VOQ8CQrMNmXkRr1k7swo9wNFmY2GR5jYzTH3rqlklk+ujALlufr5d/M9I6qnMWKkSpGlNQtsuBpVzizGp8Pci4022cOMtgmpiSmobdvqcCUd0b2/0MQdH/FL
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000078, version=1.2.4
+X-HE-Tag: 1753692016-983159
+X-HE-Meta: U2FsdGVkX1/Z1UdjMr45wdVuODvRv+0z7kmfbhb2N9AzCZ7L8MSWDZ7SiuhaXQYEsUQGgbGuip+cWBBJk/nEKnRpsH0NWtCJNekv5YpX6Pt2GcxtBBdx9C85echdLc74VS7T1K2lYtb+j6JyWWUFvBgDG8DPGACyfZq5RnLiKciXAmHtDS8AEX22ZapdnvndyEtTXuyqE0P2hX38Peh2pLXXY667cFUIRx73IjKfis2d3B6HtR19bThfuQ9nuYy+vSnRBTrGedRWhSjhGHbQQOf5oGQvo/kIFOX4yHM5lwxy6N0BBgQCdY4eNh+vQIaE222NAa1qHdzC0xCFPvsMrQgxqHXCgecXqGx1dsM9s3b3EZpljOL20MUw5OdQ8vbLirf29sN0WGVRxMVehhSYp0XTuZz4H6Md54pSdZ+SIgTGqPJTEXNWTt5RQZG1RP2snU2+Mn0RQRdZ2fJJbMfL65+ENe10GCNCXU2zGjmCeaBcJk0HRR2zMSlAnoHS8J/OYDptcY4rSIBdaUpmDABbhu0fwiG/TWDzzhHsiIt3oB/hX/N8as7eN3UyqCyC3wVEYyQF9P4kaLjE4Kv3OJSkJ50r3G4VNpm/F58UhFtVKgDUi8yhOFinPvLWnZXMTw/dPRgOd79fQryCxqiQWiyw/3JRrX2rjKm5gy3SdcBWBpvEiY6Vm+DXQEIbvX1lqZjp8vedw/Qgj89tqYGYTWofbh+kZsBPBQSceF8YZUEd/eRuTCD+zxgYFXT45JfOv4Wl+HxQlhi54jShGt8UfEOuP7szZ1S6qVqxrsF0nlYQ1Otj+H8eKSyriQHhQ1JEJbcIKiMTjOkDviqxCqJGemjosRHwcOvaVM5QrN/91huZzH094u186FrgIR8vbhXuN3kb23kW1+1OWniPu6PhBj06C35BSRlf2xYh5CNsxgP9ocBSmL8jjwWLvnvTHHdhV0JoqGxMO8uW6H19YzdkqCy
+ eiVqbzGj
+ CV38NPt0B1eKPPLebDUpM/KDp6VuTvTBczbjIKkgm7EQswYu8aqIKELyBNDz+rk+EMfrAaWJfOzdPAuR0/htUd2o41DZMq/UX8iluDvFFkAstz79pqBb7XTrh3NpkReib5eeGTNKE4+dfD0KvqEVyDV1ObWNvYxCOxAOIR05FMTXPKmsDHRHNcUjh4V52WjchrIGe4FetkS3sweyByYiHc0dFoxV/HDc6Z6ezNO4KsyGuWIzsyB8iuWUPtw8ZDFWJ1Tizm92EMO0BeytNw09A7/7kXweS2e6Lf3qokyXRpfj1dFL6FTslQTJszoNhZ6T4Kfn5SRBQt2yagn6hXIRBuMv+B1qaQB4PbhgvThSoQaRf/kfhUfX/uipdaqo3T4336+13t8jh4ovIREjh+TrtlrAwdzcekNThqFcgRmq5hNZ4FBGdG4WyI3x+vqni1UbP6uFdFpL1eCPJS9rlomSSUjeeG1aw176PLV5YFNLQ1tGVAHR6Ua+9qb0Lvo5c6tTBhvGI
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,33 +95,65 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Chi Zhiling <chizhiling@kylinos.cn>
 
-When a folio is marked as non-uptodate, it means the folio contains
-some non-uptodate data. Therefore, calling is_partially_uptodate()
-to recheck the entire folio is redundant.
+When reading data exceeding the maximum IO size, the operation is split
+into multiple IO requests, but the data isn't immediately copied to
+userspace after each IO completion.
 
-If all data in a folio is actually up-to-date but the folio lacks the
-uptodate flag, it will still be treated as non-uptodate in many other
-places. Thus, there should be no special case handling for filemap.
+For example, when reading 2560k data from a device with 1280k maximum IO
+size, the following sequence occurs:
 
+1. read 1280k
+2. copy 41 pages and issue read ahead for next 1280k
+3. copy 31 pages to user buffer
+4. wait the next 1280k
+5. copy 8 pages to user buffer
+6. copy 20 folios(64k) to user buffer
+
+The 8 pages in step 5 are copied after the second 1280k completes(step 4)
+due to waiting for a non-uptodate folio in filemap_update_page.
+We can copy the 8 pages before the second 1280k completes(step 4) to
+reduce the latency of this read operation.
+
+After applying the patch, these 8 pages will be copied before the next IO
+completes:
+
+1. read 1280k
+2. copy 41 pages and issue read ahead for next 1280k
+3. copy 31 pages to user buffer
+4. copy 8 pages to user buffer
+5. wait the next 1280k
+6. copy 20 folios(64k) to user buffer
+
+This patch drops a setting of IOCB_NOWAIT for AIO, which is fine because
+filemap_read will set it again for AIO.
+
+The final solution provided by Matthew Wilcox:
+Link: https://lore.kernel.org/linux-fsdevel/aIDy076Sxt544qja@casper.infradead.org/
+
+Suggested-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
 ---
- mm/filemap.c | 3 +++
- 1 file changed, 3 insertions(+)
+ mm/filemap.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/mm/filemap.c b/mm/filemap.c
-index 0e103fc99a8e..00c30f7f7dc3 100644
+index 00c30f7f7dc3..d2e07184b281 100644
 --- a/mm/filemap.c
 +++ b/mm/filemap.c
-@@ -2447,6 +2447,9 @@ static bool filemap_range_uptodate(struct address_space *mapping,
- 		pos -= folio_pos(folio);
+@@ -2623,9 +2623,10 @@ static int filemap_get_pages(struct kiocb *iocb, size_t count,
+ 			goto err;
  	}
- 
-+	if (pos == 0 && count >= folio_size(folio))
-+		return false;
-+
- 	return mapping->a_ops->is_partially_uptodate(folio, pos, count);
- }
- 
+ 	if (!folio_test_uptodate(folio)) {
+-		if ((iocb->ki_flags & IOCB_WAITQ) &&
+-		    folio_batch_count(fbatch) > 1)
+-			iocb->ki_flags |= IOCB_NOWAIT;
++		if (folio_batch_count(fbatch) > 1) {
++			err = -EAGAIN;
++			goto err;
++		}
+ 		err = filemap_update_page(iocb, mapping, count, folio,
+ 					  need_uptodate);
+ 		if (err)
 -- 
 2.43.0
 
