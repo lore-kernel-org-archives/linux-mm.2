@@ -2,112 +2,120 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D4C29C87FC9
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 10:18:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 75BBAC83F17
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 10:57:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 66FCD6B009D; Mon, 28 Jul 2025 06:18:54 -0400 (EDT)
+	id CCFAA6B0089; Mon, 28 Jul 2025 06:57:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 620BA6B009E; Mon, 28 Jul 2025 06:18:54 -0400 (EDT)
+	id C59586B008A; Mon, 28 Jul 2025 06:57:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50F726B009F; Mon, 28 Jul 2025 06:18:54 -0400 (EDT)
+	id B247F6B008C; Mon, 28 Jul 2025 06:57:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E8426B009D
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 06:18:54 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B7F5E11162D
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 10:18:53 +0000 (UTC)
-X-FDA: 83713274946.28.8125AE5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2A37B4000C
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 10:18:52 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lY7dVkWs;
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 9CFAF6B0089
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 06:57:12 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4F8781D58B8
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 10:57:12 +0000 (UTC)
+X-FDA: 83713371504.04.E30A1F0
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 98DED16000A
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 10:57:09 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	spf=pass (imf08.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753697932;
+	s=arc-20220608; t=1753700230;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SuKQIwxMxtzB1Mfv1YRMqvx0C5POtmNCmQhK4dN32xM=;
-	b=EzJpJHURFk+3i+2FL45c6KRdP4xfkgKLrJZTC7knkHTBMZ978N8xG51jkWgwiVnUXhRTX3
-	OFDMD43gX9q0SbGP5qeJMyDI12IecXmYBJTF8crGLL+72EuF1wbRyDbuJTRPylH48DjVr9
-	s4UqU1qnIWZ1VET/nHyNHAKUcbh5sA4=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lY7dVkWs;
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753697932; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=5UpYzpn7VIXBKCEFcqyopH5PUot+b66OXxIj+HGImKk=;
+	b=dohVDwk+dZXzuceA8w3fVgqryBN4cR/J4gPkp8wkiajgJBwgX2yP1XhHR5U9ufMlxCAhy7
+	U+ayYhduYkrHPU+ZT8acFYXGsj9gR7TnWMqJa60E/j/+kqpsA/coWfCnUZ81k2XEGOBkdO
+	SsSvtLF0J5G9y1m1OhMlEPWgGXz3AgQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753700230; a=rsa-sha256;
 	cv=none;
-	b=YEnKWacgxyoXtY5DDAkdbs1lSei5T+2k5iSKJ5Nc6NdNzcIzjOlS1uX2q6Ytnp1YnwhCDE
-	m/ROgSINaswqKqwl85/dx/P15Sr5D2xLszzwhyOiVdgWKpkdR+Ta//49BMiR9n+y2yedgp
-	ln1Bwrih7ESAeUDb2I/0eIAuVtONd48=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7DC5D601D0;
-	Mon, 28 Jul 2025 10:18:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE45C4CEE7;
-	Mon, 28 Jul 2025 10:18:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753697931;
-	bh=zVzQvvAddDP62V30se1D6wE63TQYVFTDCsf+N1N3pAk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lY7dVkWskMdiX3zYFhlvt9M8GbNXRdktQ2KO1GeMS8CxBSPoF3g3EyYYvZVi6rVHn
-	 o24oG5gpVcPqmMef98a/MgQ7qfHb9O2lAwY+Det1Cv+jj0aCXwcFUogaoLgG/VxNwl
-	 8GacG1Xsi1gGQVxTNHktfwVqRtSsaAP9ZGzDci13IP2NgzNOkFXfRYU+JVOb2YQ76O
-	 6ZCvA+4ywB4DSKZT0GpFpjW8KEJFh0fvX8kLV6EnwuLF7kdYUG5TW/r73ln5bZ67Zi
-	 4USeNV6riBWSQW1Q2tdOvlC7Rs0tfw2ZI3I4vmpaL904qlqD0mCpTwo/vb98XKR5c/
-	 0dtySijehknDQ==
-Date: Mon, 28 Jul 2025 13:18:26 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
-	changyuanl@google.com, dmatlack@google.com, rientjes@google.com,
-	corbet@lwn.net, rdunlap@infradead.org,
-	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com,
-	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org,
-	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr,
-	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com,
-	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com,
-	vincent.guittot@linaro.org, hannes@cmpxchg.org,
-	dan.j.williams@intel.com, david@redhat.com,
-	joel.granados@kernel.org, rostedt@goodmis.org,
-	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn,
-	linux@weissschuh.net, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-mm@kvack.org,
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com,
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
-	aleksander.lobakin@intel.com, ira.weiny@intel.com,
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
-	brauner@kernel.org, linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
-	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
-	leonro@nvidia.com, witu@nvidia.com
-Subject: Re: [PATCH v2 04/32] kho: allow to drive kho from within kernel
-Message-ID: <aIdOcmTl-zrxXKAB@kernel.org>
-References: <20250723144649.1696299-1-pasha.tatashin@soleen.com>
- <20250723144649.1696299-5-pasha.tatashin@soleen.com>
+	b=1yntwnTgjXjELHqHAXvAazf41i88bTF8FFG4mCw6OG+aPek2F5bZHqZVcnT1962gew1gmy
+	sdRv/cLcKx8f3m8MLcGuZ0YASXZBs5lzlIhr2ytvQ3VzNiiaUFExRJ+cZ1vq8PFHg/at6J
+	5uX/mlYuGABcKZWcezSiAHjZlaONqLM=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
+	dmarc=none
+X-AuditID: a67dfc5b-681ff7000002311f-ea-688757822918
+Date: Mon, 28 Jul 2025 19:57:01 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: linux-mm@kvack.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+	harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
+	davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
+	john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
+	leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
+	andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
+	akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, horms@kernel.org,
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+	ilias.apalodimas@linaro.org, willy@infradead.org,
+	brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
+	usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
+	almasrymina@google.com, toke@redhat.com, asml.silence@gmail.com,
+	bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
+	sfr@canb.auug.org.au
+Subject: Re: [PATCH] mm, page_pool: introduce a new page type for page pool
+ in page type
+Message-ID: <20250728105701.GA21732@system.software.com>
+References: <20250721054903.39833-1-byungchul@sk.com>
+ <e897e784-4403-467c-b3e4-4ac4dc7b2e25@redhat.com>
+ <20250721081910.GA21207@system.software.com>
+ <8b6e6547-cb39-4e64-8dff-6e16e27e7055@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250723144649.1696299-5-pasha.tatashin@soleen.com>
-X-Stat-Signature: db8y3kkwj43o5skgro4ejroeh3j8dyn7
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 2A37B4000C
+In-Reply-To: <8b6e6547-cb39-4e64-8dff-6e16e27e7055@redhat.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SaWxMURiGc+65c+/txMQ1imMJMWJJpbXE8lkifhBHRDTRkIxYJnpjJqZV
+	U6qVkIuJpUwVLTod6di6IWWq7bTpWLraW7XkqmprUEQVVU1Hq8wU4d+T9/2+5zs/joC1HtUw
+	wRS9RbJEG8w6Ts2qP/Y7Hbp75T7jZPtTAEfeRQ4udMVDVrNbBY7cQgQdvuc8/PRUIfhaUc3B
+	h/J2BGdPd2Jw1FhZ+Jb3HcObKi8PF1xLoSmzhYXSfUUYvIdvcWCzdmPw+Np42O3OZsCRL/NQ
+	W5ikgpTv5zEUyc08PCpxcNB48acKWspsLNy257DwObUCQ1PSfKhyDobOu60IKvKKGOg8dIqD
+	J2klDBR4nvBwrM7JwStrE4K6ci8LqT37OUjflYSgu8uvbEvuUEF6ZSM/fyLdpSgcLW/9hOnV
+	nGcMVa7dYWix/QVPna6tND87hCYqdZi6cg9w1NV+lKcNT0s5eutkN0uLX86ixe6vDLXtaePo
+	lzf1bHiwXj03UjKb4iTLpHnr1MYTn9/imLeq+N7STFZGBWwiChKIOI2UlGTwf7m7MI8JMCuO
+	JTX5KX05J44niuLDAQ4WJxDX3st+VgtYvMqT1I76vmKgqCe1sqdvWSMC6XH7+MCQVryHiPNK
+	+p9iALmd9rrvMhZDiNL73p8Lfh5OsnqFQBwkziOlR36PDBLHkBuF1UzAQ8RmgSTvyUC/XzqU
+	3MxW2GQk2v/T2v/T2v9pnQjnIq0pOi7KYDJPCzMmRJviw9ZvinIh/6fK3NGzyo3aa5eXIVFA
+	un6adzP3GrUqQ1xsQlQZIgLWBWtizvsjTaQhYbtk2bTWstUsxZah4QKrG6KZ2rktUituMGyR
+	NkpSjGT52zJC0DAZLbbph1obrEneNnP4gQVzHJsfRySGLoOmjtYz+aBvWbO6fNQMye6V792v
+	HCmn1vrqD1pSHs5eM0N5lTtixY0iU3VoY0H15iUfuurlM5U153omTo1YpJePRWxfeH/n9enJ
+	L/snXPoR1nDowXtrGrZpx9XZFlYej/cktvPhk0/S0abXOjbWaJgSgi2xhl8QJnYFUAMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUhTYRTHee5zd+91tbjZqovSl1VkUlZQdKI0C6KbZAQKgRS58tJG02RT
+	USuYL6ll6iwlnYtmoakZ6rQ5dfYyTbOiZGFNK996sUjMdzTN2qzIbz/+//M758thsPsNkQej
+	jIgS1BFylYwSk+JDO5M2Jh5JVWwu6l0FhopyCu5MxcLtXosIDGVmBOPTb2n41diCYKy5lYJv
+	TaMIbhVOYjC8TCZhouIHhk8t/TTcMQVCT/FnEqyptRj6s55QkJE8g6FxeoiGREsJAYZqLQ1N
+	19tE0G7OFEHOjyIMtdpeGl7VGyjoLv8lgs+2DBLa9KUkDOc2Y+jJ9IcW4wqYfDaIoLmiloDJ
+	y9cp6MivJ+BeYwcNV+1GCj4k9yCwN/WTkDubRkFBQiaCmSnnyiHduAgKHnfT/hv4BIeD4psG
+	v2O+prST4B33nxJ8nf49zRtN0Xx1iTd/yWHHvKnsIsWbRq/Q/LvXVop/kjdD8nV9O/g6yxjB
+	ZyQNUfzIpy7y8PIQ8a4wQaWMEdSb/ELFimvDAzhyQBQ7Zy0mtegeeQm5MRy7lZsxVxAuJtm1
+	3MvqHNrFFLuOczimsYulrBdnSql0spjBbA3N5Y53zRfL2BCuXds4L0tY4GYt07RryJ19jjhj
+	VcHfYinXlv9x/hpmvTnH3FdnzjjZk7s9x7hiN9aPs2b/GVnOruYemlsJHZLoF9j6Bbb+v21E
+	uAxJlREx4XKlapuP5rQiLkIZ63PyTLgJOd+m+PxstgWNv9pvQyyDZIslX7anKNxF8hhNXLgN
+	cQyWSSWRRc5IEiaPixfUZ46ro1WCxoY8GVK2UhJwRAh1Z0/Jo4TTghApqP+1BOPmoUW6lVBz
+	JR8lhEvyszpPsPsGCx22FQ+EpT17yh9Juh6lnchZbc7MTl2UPhvcR2FputdeQx9Oq9JVljc8
+	VsX/xGuiRoJHJ4LOBnv4t+7JO/cioDSw7+7Fm6G6yI4gsdtU5aolxwt2H6uasAbapbpDb9Zv
+	e99+9ODUyXSywdf3wIVsu4zUKORbvLFaI/8NkQW17zIDAAA=
+X-CFilter-Loop: Reflected
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 98DED16000A
+X-Stat-Signature: ydfwcassb36h1jf637mh7k9bjnznr4rt
 X-Rspam-User: 
-X-HE-Tag: 1753697932-89073
-X-HE-Meta: U2FsdGVkX185T9NJrAqzZ6E9VJiBmBzHZYVNegOVxQ3D6FKbkbXl/N8+QFPwb2DK6ZmGp8ObxTkcppMEwoL9vfqnwDAhTuuxmO4KaUGz0zFVmwJEVbHIdbvGOLolxLzWxa+3Vntk1jjnS3vWMYgpg3K0/1w/ok6ZFJhNMDpymxL4V7tS0+FWuaA2b3iCCmRPagFdQtQxw2BvZ77MAYLrUjFU9wAgesKW+I9Te7CznFe63W3RS2bwvjGXZZHkuTg3Sf2Ex+Bo9CacZtIvfdoR/H8TAAvfHGD1MBW2F0S2k9yX1zWqRi72m0Iou/hsue/qXP0mS4yOzpbskSv6DwPBOCCSINbWpN9Tu8vI4rCIIJR2OhhgO9so336d/ZfcQUcHogm2LTGrpzA84hlReS2uBjnjFUxNOtHgnzNRtyV1jRVYOJgepsix2xbKCFXc/D7LFs34seL1fjBiublEb1Cs6KTmztvj24vOrj6dyIahqPd/T0Rg1Giz/QIOb7JrtS0frdYyEjhlhHCjIf+qaxbSTb36nCCGJo/icM9aK3wbx/jyS8aL8CYwkbsNN8t420IkZYTov8IwDOhQrL15up2Rif/Syc7fW1P9F8aS4sHtSo1mFLl3ImtpbUZp9lYZnNkLvAtek89itsfgienmgD+6CF7GZEWhxZ2/s8il18o6gGbNf9yfk3LgP6OsIrwHrcpGL12OacFw88600NjsruSI8/kI4sNcrInprYaJuWy73yttet6LVh7H3XPSlclyC90RXeukGyXL+ookilI+PW3HuPC3pt6FjyazBHfR2wCri8W8b9ILuYv69LEHiB8rBXQYnI2TkKzeEy/jpg9uU2lTrRj5CNxLPszKWBZttinw5uKb2avluSgLXE1oxRZYtm5P/jM4iQqi51bM4+wGbj8mDKToWWEhFPZMmp4GXZPUNPVK/A4obAC/RyECJ+BS4LKzQnuFdWRiCAzfsaqcas+
- bRQ51taN
- AoUO3tQVZ5FzvQlWgDnEr+wXCm7sUrXqH2Avp5AvSX/Xj8tAolnMzsvRCLRwfV4ImV5X/9rYyslq8PG2KwLZwPRt5OAZT7PuRjEk+nOdilp3PawChzF3AwChhG5iT15doY5355UjjSswILnN2HlWn3y+aBWNzMHCo6dbPTmb0zN+EvzkBVGuCA78W3QLlZ9wi0gZhIBY+5gifC8nZ1EioVAcIZmYUa4E42AWGPvCslolSTe9b4PMT2cLCo9WJXQL1RpEQCelglETXJbmDK7Df+6bD7kspBwA1hyhkZkrnI9cFUlJzFeQoORVQjoX4EPzfAcH+VgOChyl5GBnWEv2pSn4AJyKpVBz1JSm1mTtrQTUWNEVnjEQpEXK9VrPXAJUiN8Cc
+X-HE-Tag: 1753700229-682686
+X-HE-Meta: U2FsdGVkX18paYL4NvBlshnMqLmFAaGjBHYqUwkIlY3h7a8M10PTxxdAUCGMeMQpCs9XUGQQ/O6dNl6/hxHmz696O314/ZofGyQ6M4SyTvkT/BN0zifdrKM4UxyK0wF6ylpQ8FLpUlpCr7JwzMi0boc2gGaZcyt2mVN099TVz6HbUsaC0AmSJNeGPz1I2gHtZnxC7gdubTc8Ewk4V6snJaM0KSMTKq8ZJw3mXfZW00rtNM7k/7s0A1yMrjVSEb47iHxf6MYGbnyGTDFmCpg2esT9rHH/Iw+73A1rhYcZpEiM33MPWufVMDjd82DsFB8QPaYRYGtRSd9jJxPpML873pQeIeGnV9a8dLHGE1GizqpQ2OT8YnKha7xq/GelzyJdJS8N6UQ4b6dNWIDn2CJA5YF4ceCaE0cxuTUagA2/lt/mdAW94+MfZ739KxaH5+XPn2or9NzcP3NUvxfDxaTJZ4kvrX0Bbxb9sEanZxHnRlq7FYYs6mgihxbxVGkehb+qr/jjC31uL3bZ0JtCKmKdqLHETmek0eIMr4/TVfvuQjgQckCdP0UuD71j1nAYAYkuTyGs+yWOYEEk7Zv580NmasLoza9rVK8cNBy4LCPLdSyOGoNaDogG43BP6c8d8lw9j5GZ5/o2PuCtvMXGCzkcXws3EVw+B/zo/nE6M0P0e2h4pSWGzNAGXQ0AMyWDAxPU2Ckk02mLYcwFNhRIeEqAwnkGCgMZD7JMmXbyJCmwidRj6AHxhV2PZnsqQ32awDG0J+6JJtkL+rOp5vAOfhq47KFnoVZ6rlrXMtwcRLsXTpHPHgdgHzYkmxS+6xFNpm65ZqP6P+gBp0mmbMy74u3MC3ksKlKn5bI5xJwOOzMnqZja/XkrkyUqsN7xRUhlNhGvCDfhLyQrOfd0ws07Z48qTqSR0CIvhwTS69yAgyf/892UwEOXvsaSU9XZdoCOwv57huWhKojZ34txChlQJMG
+ bhw86vUH
+ wvYweXxFP75Eoq8Ft1ZJWIX3lkhgDpCCUizZ4YnXTWVLJ7bfHwgBJYf/2A6/xBZL914fZasXZcLsSKd2kZcOh+REY5lcuLzIL4EE98XXggZASU/Hg2polNXTLlayIz60w8yB2
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,52 +124,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 23, 2025 at 02:46:17PM +0000, Pasha Tatashin wrote:
-> Allow to do finalize and abort from kernel modules, so LUO could
-> drive the KHO sequence via its own state machine.
+On Mon, Jul 21, 2025 at 10:49:37AM +0200, David Hildenbrand wrote:
+> > > 
+> > > This will not work they way you want it once you rebase on top of
+> > > linux-next, where we have (from mm/mm-stable)
+> > > 
+> > > commit 2dfcd1608f3a96364f10de7fcfe28727c0292e5d
+> > 
+> > I just checked this.
+> > 
+> > So is it sufficient that I rebase on mm/mm-stable?  Or should I wait for
+> > something else?  Or should I achieve this in other ways?
 > 
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> ---
->  include/linux/kexec_handover.h | 15 +++++++++
->  kernel/kexec_handover.c        | 58 ++++++++++++++++++++++++++++++++--
->  2 files changed, 71 insertions(+), 2 deletions(-)
+> Probably best to rebase (+test) to linux-next, where that commit should
+> be in.
+
++cc sfr@canb.auug.org.au
+
+	Byungchul
 > 
-> diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
-
-...
-
-> -static int kho_finalize(void)
-> +int kho_abort(void)
-> +{
-> +	int ret = 0;
-> +
-> +	if (!kho_enable)
-> +		return -EOPNOTSUPP;
-> +
-> +	mutex_lock(&kho_out.lock);
-> +
-> +	if (!kho_out.finalized) {
-> +		ret = -ENOENT;
-> +		goto unlock;
-> +	}
-> +
-> +	ret = __kho_abort();
-> +	if (ret)
-> +		goto unlock;
-> +
-> +	kho_out.finalized = false;
-> +	ret = kho_out_update_debugfs_fdt();
-> +
-> +unlock:
-> +	mutex_unlock(&kho_out.lock);
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(kho_abort);
-
-I don't think a module should be able to drive KHO. Please drop
-EXPORT_SYMBOL_GPL here and for kho_finalize().
-
--- 
-Sincerely yours,
-Mike.
+> Whatever is in mm-stable is expected to go upstream in the next merge
+> window (iow, soon), with stable commit ids.
+> 
+> --
+> Cheers,
+> 
+> David / dhildenb
 
