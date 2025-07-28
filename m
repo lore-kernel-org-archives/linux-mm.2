@@ -2,110 +2,170 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 750F2C83F26
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 16:55:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E824DC83F17
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 16:56:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED0006B0088; Mon, 28 Jul 2025 12:55:55 -0400 (EDT)
+	id 77F656B008A; Mon, 28 Jul 2025 12:56:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E80B46B0089; Mon, 28 Jul 2025 12:55:55 -0400 (EDT)
+	id 72FB66B008C; Mon, 28 Jul 2025 12:56:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D70176B008A; Mon, 28 Jul 2025 12:55:55 -0400 (EDT)
+	id 5F7396B0092; Mon, 28 Jul 2025 12:56:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C97A26B0088
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 12:55:55 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 787CC160361
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 16:55:55 +0000 (UTC)
-X-FDA: 83714275470.23.D1A76C5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id D962B18000B
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 16:55:53 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YKTrzBoG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753721753; a=rsa-sha256;
-	cv=none;
-	b=7re4tgEQlfndTtyl7f66dDJDgoi+aTvt6rBJB2zt0UfNkjpkQbXMYEVYs9LVK1yQ0oSB4e
-	x0o6TWHABdcz0K39APTZlJquqyHTWBc+CFF+VGhyeqRsJ8MiOLpfZZHWY2l6fF3EVaKXkS
-	3WMR4vkDFDtpFFUxcyPTmzXBxZHsEng=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YKTrzBoG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 49CCD6B008A
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 12:56:45 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EBEE2133AAD
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 16:56:44 +0000 (UTC)
+X-FDA: 83714277528.20.EF4742A
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 97F9B180007
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 16:56:42 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ui9QGaq5;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=p8NH4+hy;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ui9QGaq5;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=p8NH4+hy;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753721753;
+	s=arc-20220608; t=1753721803;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pmjI/Z3HB73LaDE6GF0ftzCT8oEFHeWFdL7Knzgt7yc=;
-	b=DJ1BfvzZPFMtDH9XeSxtJNcXnH/KtdrVz9gHdzneZL8X1tyjTn+mggVIOsfVZ6guPLB1c3
-	csVlAxmJYCoJ0iQeaks/wzgE28+K6FI9iFkSejzJ0XsHgiV2fNwTjTVU8cELk8b3HkgGpP
-	uQvKXRHc8V66H0ZaWkg5x4fPgcDqVhA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 00CAB601EA;
-	Mon, 28 Jul 2025 16:55:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8146DC4CEE7;
-	Mon, 28 Jul 2025 16:55:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753721752;
-	bh=NQFaFtTN7N6BCj6w0IBTYBXcpqLFYEKBc4izu1Pcojo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YKTrzBoG5SYEOWdZuwKRnsIaC3w6XuxfTZaFJLGqJ35KqvCGFbFKbP/Zw6QrXTMjh
-	 pGlx/nuMebKFFIX+3EJxaX5FTM5wRXtSIwYxipv9GK53Vc4oIfF18F3kEqOM6mBb7K
-	 8IaBXa/vJx5IhcWufXsj2TINNTL3q0dC244iiZS8li6hGUgs4ZPN5jinPNlEcDVhvd
-	 EuMLqKdNgIr5tUtL9RVJbaQIohQmDM9A3lSECcFV6At8+rRoRfFYLiZdqm1qGyuzHF
-	 NxTWzk4f4VY94O4I1a72SpeVP5Gx8lgWFAUoze8SO1S+rS/loRr6bfmMVwXgmjU6fr
-	 VoQrdZZkIR8Tg==
-From: SeongJae Park <sj@kernel.org>
-To: Usama Arif <usamaarif642@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	david@redhat.com,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	corbet@lwn.net,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	hannes@cmpxchg.org,
-	baohua@kernel.org,
-	shakeel.butt@linux.dev,
-	riel@surriel.com,
-	ziy@nvidia.com,
-	laoar.shao@gmail.com,
-	dev.jain@arm.com,
-	baolin.wang@linux.alibaba.com,
-	npache@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	ryan.roberts@arm.com,
-	vbabka@suse.cz,
-	jannh@google.com,
-	Arnd Bergmann <arnd@arndb.de>,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH 5/5] selftests: prctl: introduce tests for disabling THPs except for madvise
-Date: Mon, 28 Jul 2025 09:55:49 -0700
-Message-Id: <20250728165549.62546-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250725162258.1043176-6-usamaarif642@gmail.com>
-References: 
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=T4hxrER/Y5bQt1JVTtC7jjVd6hI2iYvgAd3Nm1Rz0kY=;
+	b=EvE43PeM1Xh3UV2Hd6UOKib6FWTJ4rnY26GcEsUuqWPy6u2zGYt+uZFyRPEL5tJqPVjf8H
+	NZmWk6JLdIduGDl0mHpxB8pPfp7JekDD5zhZKfypdFtDa2I6l9e6W+ZOWog63kSIii43KD
+	Pznl3dN0tDCophgCRSbl7IwcFS2/QJA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753721803; a=rsa-sha256;
+	cv=none;
+	b=8QDi6Cht3wcRQ4pkSXBT9KIfof1crE378uZbLcR1ODCwjz5XNvQMI+6Lax0SDWnDTf9DMZ
+	H3CUWG6en+1a7lndk0LzYT9FXBjhNrc/kMiil5yVh8jmu045/rXscp84/QPDvN4LkLpQWP
+	tHfDt/0ee3kjsfgFoDn+30yYZEG1KI4=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ui9QGaq5;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=p8NH4+hy;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ui9QGaq5;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=p8NH4+hy;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 032DD21235;
+	Mon, 28 Jul 2025 16:56:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1753721801; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
+	bh=T4hxrER/Y5bQt1JVTtC7jjVd6hI2iYvgAd3Nm1Rz0kY=;
+	b=ui9QGaq5b73c0I5teTjwg02Y+cUSwq1e5Z0ZKX2xNLJhf8US8Ae1tMtozgTyE2icr1KKjp
+	QqPGMXzriKfQoyyu4wGXRAQAc+3AcWgIvEn0ePS5VDOzsXYR/Fs/NqywbaQ9tM2DAAuN0K
+	ebLgecfYmKNeqt0irMID2cNN4JUE3TA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1753721801;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
+	bh=T4hxrER/Y5bQt1JVTtC7jjVd6hI2iYvgAd3Nm1Rz0kY=;
+	b=p8NH4+hyBGl8oORcTjkZLCeMBX4hUOhTCNX8ygV1yzMMk2clU7i20L2qKX+emAozrVIcmc
+	kmX7ESWYvR+vqPDw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1753721801; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
+	bh=T4hxrER/Y5bQt1JVTtC7jjVd6hI2iYvgAd3Nm1Rz0kY=;
+	b=ui9QGaq5b73c0I5teTjwg02Y+cUSwq1e5Z0ZKX2xNLJhf8US8Ae1tMtozgTyE2icr1KKjp
+	QqPGMXzriKfQoyyu4wGXRAQAc+3AcWgIvEn0ePS5VDOzsXYR/Fs/NqywbaQ9tM2DAAuN0K
+	ebLgecfYmKNeqt0irMID2cNN4JUE3TA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1753721801;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
+	bh=T4hxrER/Y5bQt1JVTtC7jjVd6hI2iYvgAd3Nm1Rz0kY=;
+	b=p8NH4+hyBGl8oORcTjkZLCeMBX4hUOhTCNX8ygV1yzMMk2clU7i20L2qKX+emAozrVIcmc
+	kmX7ESWYvR+vqPDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DC618138A5;
+	Mon, 28 Jul 2025 16:56:40 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id rxp3Ncirh2hBQgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 28 Jul 2025 16:56:40 +0000
+Message-ID: <450d3876-90a9-4b1c-8d73-62ac19048991@suse.cz>
+Date: Mon, 28 Jul 2025 18:56:40 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D962B18000B
-X-Stat-Signature: n31wfcrj14njb3mednkobox5c5y3msn1
+User-Agent: Mozilla Thunderbird
+From: Vlastimil Babka <vbabka@suse.cz>
+Subject: [GIT PULL] slab updates for 6.17
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Harry Yoo <harry.yoo@oracle.com>, David Rientjes <rientjes@google.com>,
+ Christoph Lameter <cl@gentwo.org>, Roman Gushchin
+ <roman.gushchin@linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ LKML <linux-kernel@vger.kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Pedro Falcato <pfalcato@suse.de>, Bernard Metzler
+ <bernard.metzler@linux.dev>,
+ "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+ David Howells <dhowells@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 97F9B180007
 X-Rspam-User: 
-X-HE-Tag: 1753721753-632343
-X-HE-Meta: U2FsdGVkX1+74rmMh9nhdXCBOI2lfChqEOMjfhMnO+uPFBipFbWn46IrPcWCAe2DdcQXT3SxdfTRpmgD0gazOzuhJBUTW0Q+pRWxfJf5ack6rfxuMaTzgzXcEMZrmV9owoYxgd20MNxUj/3U+uq1LjPTTFwG6MYSIsT31auNjWcxFB3bdCg0rg5DKThmZxUrutiBV1if7Zpw01L54Rm7h0TzCQRlWLFuLNanea4i0YRo9jgYOAeaW4MV3Si8v+PrgP1cyAc1tXrrWp+hw6EiQh7d3AuieSYSECcMQkX3+cWjztLRTpngnLVCkD0x6vt3qTxRQWbL/xLPLmmqITw+SVMRkRt47rHGjjCLd4QXUkg9LrepGQHkzmaM2OAh/F3DeQbYiaKb+hcJ4aslTDCqD0ESlX3/Zh2c6OJJRgHFCTcMMoO/Ok/wTqAVscmu6C0SqE1rRwmDqiw1Icogowl+qOTPC7/iqOJLaY/1TzzktWi+ZnZGM051VKa8B3d6Sy6xuP0YjGy57ornd0pPhV+0I8mjq9ITDL5bA0znFeJd2YdezXvmrdgNZdKHJl5wb8sBl4HKRTNvAOl/kgrTFLzpEmL8NgY3zSST1pe9bvjOfLRzYjdDGAf9r15VSz45tGBh0RiPKImmDfNePUOCqzGyzqGY0s9KKoP10vgOG5mzLpxuOMhbpip81m4TNwc/Ppp4+7UmV8H7W0vgV5a+FgQpG4qabvIBv6IIMaeUZVAYPPjN11akScThh1/QgLwplpKxfz8ZGZpv8OLjVxDWQPr4QSHDpRMYkKgOcxrZeRDvKanN4hVXsugDXQuAAhTGTYezCIwqh1nCJJswYaRFDqAAe5uFDyT3Ou6oBVYDs0CP3dI3IU2NDvJL5TdpNTGh6T9NwPh3lfuQ3UoEsQNyAw2cCjo3HKPw/Csds1s8Qk/olBpYT5VnT3opNfVOB4uSyLfZR6jl5MUAo7E0C95yRZ4
- QHQR6KYI
- N3i3yJHllZEUrowAnQJBk4a3YYvquDrcq3N9y3qJfd7Qrkghc/F1q4f+Z8fjL7pSnZIkXKrN3ARpZLAcJXA4cWWQNSNdv5bP9ItZW3TEVNv+IOsoOsoodWpNqI8I3ZUYHyeLlsHNWnecn0+GjlaJ3gn3pHiE/kgehC1kvj+v6ALojphoqZZQMMlED7zJZ9tAJTtOas5wakqIWf6ZUWxtMFeSMY17QlQRWzGEiwbTgazQXga5u2gYyfToxHzW+oiQCIcdTB8Gf8ar+HwnTFLxQSu1xNePmJ6e7eGj+lwtioRhV5kxONaPGBANpjg==
+X-Rspamd-Server: rspam09
+X-Stat-Signature: fgcfs375huyrmu8od8b8jnxpq43cfcog
+X-HE-Tag: 1753721802-241010
+X-HE-Meta: U2FsdGVkX1/fLBuAk8BAN4Ow+NRtkt07z2IfxIRMY4RzvK939GgtRivYaM8coE0YNTHkW/G4EmBZGzRhOMFvlHFfnHZbvUi5x/kpNZQPfBCDiaYRyvJ1RoRf0o/TU5qREKUYxh+EZmU7Jif9IZQimR9hLEkesU/xSSMCu6/CdSED1rtIOgZJ41oEiLEo+iOT9Cr4Kj5FCbb4xTSCs1FTV2LWLbrLSC4MX/KWOsxOIJTb3z/QkLTLWiNc3VXZ3TduiJhjkqq8JVShQT19h8eg7qtRLhnqGV3VxiHDZXWeQCWY7UAOIVi5RsOZMJPrMe73AO8vDTI97gxhx6TZWDv6EYdw1M0CGtNCObipSh8f1b0qXU5vOUcgsVzH5ybsH9rksWYhQyo+blOWoDFN98l6gBxS/6DTRyVsjHmr2jrCOsAXY4pjIFQQHctT5DHlofHdK6O8aG1cN3DBEwRn/ADUV2quW/tWoYxQEZzKHjG08UKOSW0OjlJb+lAUzrxAGH0hsD7ZSATvR/pJLzq1NWcLnbmqui7AtNicWwPVVwu3nUbKtOKqJ8kLh4p3lpt+7hA0AUeeqG7sx5bJ0IDrTaU9wup8hnm9E38+0R5dtBn/6280320eHHbQ07H8nYA4cM/Za2Icz0WPw2SWfj6d+SiGswZUSoF5o3W/hYVIvTy0iBd4UWLNANWyPAnBspDddkyuvsnrt7k56KT/6b26MhlWTcylOYQ0/cNtVDfb0HYvw+EvGzoYu6/MmUmy6BTpnJxLRGQOCNq1kMwIxdrycJz2Z5VzvF3z+McnG54TPoCfX4KemW1EEhSs84T4hKkkdGaTpeuAllufWV6L2Mt6QpL9wUZDDOmXOJoCosdzO2tQXzMILPJF60/dtdk0SQzG7YpB8FFICZKShLaevvb3ys4NcZNvRSW0rVz8m6lYUhsvY+W6mL/mpItynnhrtBhkgYo8gZzQky456Rr4j8hPnCy
+ U8t7ezBB
+ Kj9YVzG1tL4oL2D0rJzg1363eNSpbmMOWcBSBOWxVhSDdocQQocQeiaqmROAFjgm0BlL10S0sp/BigC1m7GjIpdKOVCLAqlu0mY6fTs3AZT3zUn75ZyY/NpXQXKXxYrbEQ58ewRzgZfI+eqY87IKSqE7LLLD6bLnkLOzBH8A7i/gpBEFh/nsxlZqmLhFKUGeJFmx2mwV2Hu9IXVrOxO/QeA42+HJtRAWLaEL6M610q6iqs4+you/Gs3Xb8U9SlmGUyajzZIGyoO4Sjwqw1K/YKzM+cAGYu14MFxjT3j00rP0VuVl3lGxgHC7DctTqUeG0UNvRiFrLkcMTWYG628wretU5YRJsglGrGAZxC0+hpVJl+GXOtteoZ/BHBw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,156 +174,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 25 Jul 2025 17:22:44 +0100 Usama Arif <usamaarif642@gmail.com> wrote:
+Hi Linus,
 
-> The test will set the global system THP setting to always and
-> the 2M setting to inherit before it starts (and reset to original
-> at teardown)
-> 
-> This tests if the process can:
-> - successfully set and get the policy to disable THPs expect for madvise.
+please pull the latest slab updates from:
 
-s/expect/except/
+  git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-6.17
 
-> - get hugepages only on MADV_HUGE and MADV_COLLAPSE after policy is set.
-> - successfully reset the policy of the process.
-> - get hugepages always after reset.
-> - repeat the above tests in a forked process to make sure  the policy is
->   carried across forks.
-> 
-> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
-> ---
->  .../testing/selftests/mm/prctl_thp_disable.c  | 95 +++++++++++++++++++
->  1 file changed, 95 insertions(+)
-> 
-> diff --git a/tools/testing/selftests/mm/prctl_thp_disable.c b/tools/testing/selftests/mm/prctl_thp_disable.c
-> index 52f7e6659b1f..288d5ad6ffbb 100644
-> --- a/tools/testing/selftests/mm/prctl_thp_disable.c
-> +++ b/tools/testing/selftests/mm/prctl_thp_disable.c
-> @@ -65,6 +65,101 @@ static int test_mmap_thp(enum madvise_buffer madvise_buf, size_t pmdsize)
->  	munmap(buffer, buf_size);
->  	return ret;
->  }
-> +
-> +FIXTURE(prctl_thp_disable_except_madvise)
-> +{
-> +	struct thp_settings settings;
-> +	size_t pmdsize;
-> +};
-> +
-> +FIXTURE_SETUP(prctl_thp_disable_except_madvise)
-> +{
-> +	if (!thp_is_enabled())
-> +		SKIP(return, "Transparent Hugepages not available\n");
+We've hit a last-minute snag last week when lkp reported [1] the commit
+"mm, slab: use frozen pages for large kmalloc" exposed a pre-existing bug
+in siw_tcp_sendpages(). Pedro has been fixing it [2] so hopefully that will
+result in a PR soon, which you can pull before this one - or perhaps take
+the fix directly. If that gets stuck for some reason and taking the fix
+later would be unacceptable, I can do another PR with my commit taken out.
 
-As David also pointed out on the other patch, the message and the function name
-would better to be consistent.
-
-> +
-> +	self->pmdsize = read_pmd_pagesize();
-> +	if (!self->pmdsize)
-> +		SKIP(return, "Unable to read PMD size\n");
-> +
-> +	thp_read_settings(&self->settings);
-> +	self->settings.thp_enabled = THP_ALWAYS;
-> +	self->settings.hugepages[sz2ord(self->pmdsize, getpagesize())].enabled = THP_INHERIT;
-> +	thp_save_settings();
-> +	thp_push_settings(&self->settings);
-> +
-
-Unnecessary empty line?
-
-> +}
-> +
-> +FIXTURE_TEARDOWN(prctl_thp_disable_except_madvise)
-> +{
-> +	thp_restore_settings();
-> +}
-> +
-> +/* prctl_thp_disable_except_madvise fixture sets system THP setting to always */
-> +static void prctl_thp_disable_except_madvise(struct __test_metadata *const _metadata,
-> +					     size_t pmdsize)
-> +{
-> +	int res = 0;
-> +
-> +	res = prctl(PR_GET_THP_DISABLE, NULL, NULL, NULL, NULL);
-> +	ASSERT_EQ(res, 3);
-> +
-> +	/* global = always, process = madvise, we shouldn't get HPs without madvise */
-> +	res = test_mmap_thp(NONE, pmdsize);
-> +	ASSERT_EQ(res, 0);
-> +
-> +	res = test_mmap_thp(HUGE, pmdsize);
-> +	ASSERT_EQ(res, 1);
-> +
-> +	res = test_mmap_thp(COLLAPSE, pmdsize);
-> +	ASSERT_EQ(res, 1);
-> +
-> +	/* Reset to system policy */
-> +	res =  prctl(PR_SET_THP_DISABLE, 0, NULL, NULL, NULL);
-> +	ASSERT_EQ(res, 0);
-> +
-> +	/* global = always, hence we should get HPs without madvise */
-> +	res = test_mmap_thp(NONE, pmdsize);
-> +	ASSERT_EQ(res, 1);
-> +
-> +	res = test_mmap_thp(HUGE, pmdsize);
-> +	ASSERT_EQ(res, 1);
-> +
-> +	res = test_mmap_thp(COLLAPSE, pmdsize);
-> +	ASSERT_EQ(res, 1);
-
-Seems res is not being used other than saving the return value for assertions.
-Why don't you do the assertion at once, e.g., ASSERT_EQ(test_mmap_thp(...), 1)?
-No strong opinion, but I think that could make code shorter and easier to read.
-
-> +}
-> +
-> +TEST_F(prctl_thp_disable_except_madvise, nofork)
-> +{
-> +	int res = 0;
-> +
-> +	res = prctl(PR_SET_THP_DISABLE, 1, PR_THP_DISABLE_EXCEPT_ADVISED, NULL, NULL);
-> +	ASSERT_EQ(res, 0);
-
-Again, I think 'res' can be removed.
-
-> +	prctl_thp_disable_except_madvise(_metadata, self->pmdsize);
-> +}
-> +
-> +TEST_F(prctl_thp_disable_except_madvise, fork)
-> +{
-> +	int res = 0, ret = 0;
-> +	pid_t pid;
-> +
-> +	res = prctl(PR_SET_THP_DISABLE, 1, PR_THP_DISABLE_EXCEPT_ADVISED, NULL, NULL);
-> +	ASSERT_EQ(res, 0);
-
-Ditto.
-
-> +
-> +	/* Make sure prctl changes are carried across fork */
-> +	pid = fork();
-> +	ASSERT_GE(pid, 0);
-> +
-> +	if (!pid)
-> +		prctl_thp_disable_except_madvise(_metadata, self->pmdsize);
-> +
-> +	wait(&ret);
-> +	if (WIFEXITED(ret))
-> +		ret = WEXITSTATUS(ret);
-> +	else
-> +		ret = -EINVAL;
-> +	ASSERT_EQ(ret, 0);
-> +}
-> +
->  FIXTURE(prctl_thp_disable_completely)
->  {
->  	struct thp_settings settings;
-> -- 
-> 2.47.3
-
+[1] https://lore.kernel.org/all/202507220801.50a7210-lkp@intel.com/
+[2] https://lore.kernel.org/all/20250723104123.190518-1-pfalcato@suse.de/
 
 Thanks,
-SJ
+Vlastimil
+
+======================================
+
+* Convert struct slab to its own flags instead of referencing page flags,
+  which is another preparation step before separating it from struct page
+  completely. Along with that, a bunch of documentation fixes and cleanups.
+  (Matthew Wilcox)
+
+* Convert large kmalloc to use frozen pages in order to be consistent with
+  non-large kmalloc slabs (Vlastimil Babka)
+
+* MAINTAINERS updates (Matthew Wilcox, Lorenzo Stoakes)
+
+* Restore NUMA policy support for large kmalloc, broken by mistake in v6.1
+  (Vlastimil Babka)
+
+----------------------------------------------------------------
+Jonathan Corbet (1):
+      slub: Fix a documentation build error for krealloc()
+
+Lorenzo Stoakes (1):
+      MAINTAINERS: add missing files to slab section
+
+Matthew Wilcox (Oracle) (9):
+      doc: Move SLUB documentation to the admin guide
+      slab: Rename slab->__page_flags to slab->flags
+      slab: Add SL_partial flag
+      slab: Add SL_pfmemalloc flag
+      doc: Add slab internal kernel-doc
+      vmcoreinfo: Remove documentation of PG_slab and PG_hugetlb
+      kfence: Remove mention of PG_slab
+      memcg_slabinfo: Fix use of PG_slab
+      slab: Update MAINTAINERS entry
+
+Vlastimil Babka (2):
+      mm, slab: restore NUMA policy support for large kmalloc
+      mm, slab: use frozen pages for large kmalloc
+
+ Documentation/ABI/testing/sysfs-kernel-slab        |  5 +-
+ Documentation/admin-guide/kdump/vmcoreinfo.rst     |  8 +--
+ Documentation/admin-guide/kernel-parameters.txt    | 12 ++--
+ Documentation/admin-guide/mm/index.rst             |  1 +
+ .../{mm/slub.rst => admin-guide/mm/slab.rst}       | 19 +++--
+ Documentation/mm/index.rst                         |  1 -
+ Documentation/mm/slab.rst                          |  7 ++
+ MAINTAINERS                                        | 17 +++--
+ include/linux/mm.h                                 |  4 +-
+ mm/kfence/core.c                                   |  4 +-
+ mm/slab.h                                          | 28 +-------
+ mm/slub.c                                          | 80 ++++++++++++++++------
+ tools/cgroup/memcg_slabinfo.py                     |  4 +-
+ 13 files changed, 110 insertions(+), 80 deletions(-)
+ rename Documentation/{mm/slub.rst => admin-guide/mm/slab.rst} (97%)
 
