@@ -2,125 +2,144 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F00D2C83F17
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 19:29:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 87C16C83F26
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 19:38:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 915A36B0089; Mon, 28 Jul 2025 15:29:56 -0400 (EDT)
+	id 2475B6B0089; Mon, 28 Jul 2025 15:38:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C6166B008C; Mon, 28 Jul 2025 15:29:56 -0400 (EDT)
+	id 1D0C16B008C; Mon, 28 Jul 2025 15:38:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B5746B0092; Mon, 28 Jul 2025 15:29:56 -0400 (EDT)
+	id 0C5436B0092; Mon, 28 Jul 2025 15:38:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 697B26B0089
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 15:29:56 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E1EBA12E2B7
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 19:29:55 +0000 (UTC)
-X-FDA: 83714663550.21.61DA269
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 94AEBC0007
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 19:29:53 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025072201 header.b=biJPsuNe;
-	dmarc=pass (policy=none) header.from=zytor.com;
-	spf=pass (imf28.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
+	by kanga.kvack.org (Postfix) with ESMTP id F06B86B0089
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 15:38:25 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9B1D5B94D0
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 19:38:25 +0000 (UTC)
+X-FDA: 83714684970.19.5FF7998
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 96CC116000D
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 19:38:23 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iTGm4SMz;
+	spf=pass (imf08.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753731503; a=rsa-sha256;
+	cv=none;
+	b=A51ggfaVnPr/4DaQnOsR8mj2v+AIj0itvg/ll91XkLdmRfu7uZcDy8eeFayQ0lMHO/0N6/
+	nZ47+xBntVPTmAjkC5q5e//K1fbnRsVtbiyeBJExPIryMES+mFczQ4nHgojVYS9Csxu7V9
+	+nscqLKEnkeBAeP3O70J5k/8ALM5D50=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iTGm4SMz;
+	spf=pass (imf08.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753730994;
+	s=arc-20220608; t=1753731503;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qaSC4sqEzLaCELCha6qIBiTeeIabGiKR5v+0QyZ4F8s=;
-	b=2GX+Dl4YtevlCMief4cLKQEv8XhDRCcdzVaFkIwk1cYyaOmD4iiCdbS25KnNaQxiH4FTB3
-	Ll2HsfxqnTetfy5ruqgXcRryRmntsB6r8pmz6FJxIScNLC28ZIGEz36SH+LxC3DWLt8aRc
-	HQ/SXJorAFyt4gWNIL8yFC20DSsnPdI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753730994; a=rsa-sha256;
-	cv=none;
-	b=42zlXgy+F4vVULMjLHMH/4MKcuJX61JtOdaKSAd3822uG/ZL5I9Qbn/w3tMnhxuIxIstkR
-	IxM6esZzhf0tSUqeGfoOClqBh+zbFKxcIWnkKaXxLPxWR8nPlkiglvm4LDrpXORXbJlA2w
-	6DC4uaXmGwb8mkdSRcmNfXSk2x08f8w=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025072201 header.b=biJPsuNe;
-	dmarc=pass (policy=none) header.from=zytor.com;
-	spf=pass (imf28.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
-Received: from [127.0.0.1] (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 56SJSYSu416102
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Mon, 28 Jul 2025 12:28:34 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 56SJSYSu416102
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025072201; t=1753730918;
-	bh=qaSC4sqEzLaCELCha6qIBiTeeIabGiKR5v+0QyZ4F8s=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=biJPsuNeTxri3H9MoWJpmgZkkGQNuk21lGUNd/UGX0E+jkA7IRHGFfwvqnzYLgjyI
-	 7IrpYPjZCNHFc5xhuao9cALcv4MeTy6uWXNU1I0k3t/294PzXyodbOHbGu2cA76VYo
-	 TAxPmVGfVrjyntoadhsM8Di3RcccftzUDh7SYtUkXoOYlXT4076MMnuuTCePmG1Tqd
-	 FZjJBQYK4/sS8CDtE3Qx7ADrtn5VrfwXWDV5MESUXcS0dk5cKyErIwQk/5eZz+uaQL
-	 KERCz0I6QmZGsVz49Hz5YeDL3KDckKzAv8qlRwG6LKQ+w+MVo+7L25amYHBzmODrCi
-	 cgqFA+v4RU8fg==
-Date: Mon, 28 Jul 2025 12:28:33 -0700
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: David Laight <david.laight.linux@gmail.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-CC: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Josh Poimboeuf <jpoimboe@kernel.org>,
-        Xiongwei Song <xiongwei.song@windriver.com>,
-        Xin Li <xin3.li@intel.com>, "Mike Rapoport (IBM)" <rppt@kernel.org>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Michael Roth <michael.roth@amd.com>, Tony Luck <tony.luck@intel.com>,
-        Alexey Kardashevskiy <aik@amd.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jonathan Corbet <corbet@lwn.net>, Sohil Mehta <sohil.mehta@intel.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-        Daniel Sneddon <daniel.sneddon@linux.intel.com>,
-        Kai Huang <kai.huang@intel.com>, Sandipan Das <sandipan.das@amd.com>,
-        Breno Leitao <leitao@debian.org>,
-        Rick Edgecombe <rick.p.edgecombe@intel.com>,
-        Alexei Starovoitov <ast@kernel.org>, Hou Tao <houtao1@huawei.com>,
-        Juergen Gross <jgross@suse.com>,
-        Vegard Nossum <vegard.nossum@oracle.com>, Kees Cook <kees@kernel.org>,
-        Eric Biggers <ebiggers@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Luis Chamberlain <mcgrof@kernel.org>, Yuntao Wang <ytcoode@gmail.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Tejun Heo <tj@kernel.org>, Changbin Du <changbin.du@huawei.com>,
-        Huang Shijie <shijie@os.amperecomputing.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        linux-mm@kvack.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCHv9_02/16=5D_x86/alternatives=3A_Disa?=
- =?US-ASCII?Q?ble_LASS_when_patching_kernel_alternatives?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20250728201137.113d0f45@pumpkin>
-References: <20250707080317.3791624-1-kirill.shutemov@linux.intel.com> <20250707080317.3791624-3-kirill.shutemov@linux.intel.com> <20250728201137.113d0f45@pumpkin>
-Message-ID: <98BE7799-DA6C-4267-9E03-E6F68263D250@zytor.com>
+	bh=F1B2C+lY8Ra0bLA0xRJ+Vif1wI60/oMtTqHhEqWZBaQ=;
+	b=5hfECLicyFuLk5Ds9r0YFEHhXQk641h31npbxIPcSblPLUuueMtQeYw/H4a1XwITuWMUQi
+	g45dly0IRQQ2nPxYnr6DqDlyCAp6+H+MKuhSouWVx1FX4mC3ML5THDq5xiE2wC1uCfnnx2
+	EhlQmZrMt6os1eZMCf+2QY86UyPnnU8=
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3b788feab29so1115408f8f.2
+        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 12:38:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753731502; x=1754336302; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=F1B2C+lY8Ra0bLA0xRJ+Vif1wI60/oMtTqHhEqWZBaQ=;
+        b=iTGm4SMzyPWlDXbmHf/aI3Ag5SL8Kl9fG8X4gqyzMXQTN1Y/fusJHhhowgzpB+4Rsp
+         VM2htz4910Glz8gcpg6b2H/nsHrA+K2JK1SkA0H2fuBOT7VUEmKwYhsHKq391DwYEVJ1
+         XDinzHDMIwC4TVUgd869uQU819vrnTu9ccUfHrNUXapiYt0HeflfDFnPQfRXInEVw4ML
+         TfTuwMHQmUnef2I9lP5fqol+UwpMhBBvg4q0HJiXddTuC5IEMxahZMYrcdQ0KVQXkYKZ
+         LsnC2se0vKxayZNB46MzQx7Xh4EJGh3FI3KIymQddjXECWvBPIpS0YFb7zMTMPSbrZat
+         oASQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753731502; x=1754336302;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=F1B2C+lY8Ra0bLA0xRJ+Vif1wI60/oMtTqHhEqWZBaQ=;
+        b=citwEFMqq2dm1pqzUsf+pSAymz2mJQDluL3Vw91q2wFc2/F7T0YdwnK/PPGeQzGYYa
+         ILGHp58wuJeIQvMIuF5agSrQupygMAtfedTHMTZefSFMMd9cGuvbGG840i36Z/YqRj9L
+         nuYTkD8gZRhFg+i/YIiH9xIszllokQFDdFL+tqOo1/ZnYGNgIvKEl+wz9EUZbwpJNMnb
+         HXAUhlFA5/+coJkhDVVVh0by6hJF5o0PwMLBolY3N3RIploVNovw8unU28eL3mOuXAuj
+         s93IEoeDOrVhNcWGgJOrgvBggTmk+WAmogpYKTbJMaLceJoUwePhP2e2PAmUeefA2h5Y
+         nzhw==
+X-Forwarded-Encrypted: i=1; AJvYcCUGWm9tQtPO0s2W9l4TubcC4ikdkxyRdOkF65HxZIlT5WzQAxS1AXahU6U/MwOHCW0BUJTJzRT8hw==@kvack.org
+X-Gm-Message-State: AOJu0YzDHqCEijjwxufD8M0t/cHhogMk88Xg3+y0ZL4Cugh4hn4a00si
+	+mXD/GgE/rchl3q0Vfy5y2dsWTszmwyyPm1YsSmI06mKwBKoEEoS2gpu
+X-Gm-Gg: ASbGnctZ1o7EbQSu4H7XUFAQKgh5447GbIbVe8HvwxSdOpDyiWCU/rLkKYonntOSYl6
+	AJsngZq2St4d4tH1/EURgGQDT5Lq9Nl+Uc3wL47MQkI2rySkFiThn1H8J2Sk7/uUN3GBlGFJu9F
+	yUmoMmn1HGtSinYzZ6dLCcKFy/VsWRX9WCs3RAXJu4iibvN+f8QKLQyf4BLYlNbB2lui/rUqL59
+	9ceca0OIYDajur4lzmXfHwWgsOt9nMTCGgwDgF06j2gkpj7THBM5BrsNb335x391Xsh+VIepCPT
+	fs3Ol3MjxWONRo7ix2JDLd+MROfxy1UMhG1q4ZozhSyyVUfJWKAd6CvN6jUEYxuspoZWVywz1WK
+	YoKYapBqyleR1e4/rUyqw2XOSXbrMPZckm3PiGRJ/gemW3bs+0EpVIRHRMJnS
+X-Google-Smtp-Source: AGHT+IHvIOBr6JyAvhaG41eHAIA1V3mtOhIAa1HkfuIyT7tnwt3aoMI/rHcc0qmMJHOGXfw3hW6a5w==
+X-Received: by 2002:a5d:5d86:0:b0:3b7:8fc4:2f4c with SMTP id ffacd0b85a97d-3b78fc430e0mr118658f8f.1.1753731501747;
+        Mon, 28 Jul 2025 12:38:21 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b77db8a944sm8455273f8f.52.2025.07.28.12.38.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Jul 2025 12:38:21 -0700 (PDT)
+Date: Mon, 28 Jul 2025 20:38:09 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Andy Lutomirski
+ <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
+ <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org, Peter Zijlstra
+ <peterz@infradead.org>, Ard Biesheuvel <ardb@kernel.org>, "Paul E.
+ McKenney" <paulmck@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>,
+ Xiongwei Song <xiongwei.song@windriver.com>, Xin Li <xin3.li@intel.com>,
+ "Mike Rapoport (IBM)" <rppt@kernel.org>, Brijesh Singh
+ <brijesh.singh@amd.com>, Michael Roth <michael.roth@amd.com>, Tony Luck
+ <tony.luck@intel.com>, Alexey Kardashevskiy <aik@amd.com>, Alexander
+ Shishkin <alexander.shishkin@linux.intel.com>, Jonathan Corbet
+ <corbet@lwn.net>, Sohil Mehta <sohil.mehta@intel.com>, Ingo Molnar
+ <mingo@kernel.org>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Daniel
+ Sneddon <daniel.sneddon@linux.intel.com>, Kai Huang <kai.huang@intel.com>,
+ Sandipan Das <sandipan.das@amd.com>, Breno Leitao <leitao@debian.org>, Rick
+ Edgecombe <rick.p.edgecombe@intel.com>, Alexei Starovoitov
+ <ast@kernel.org>, Hou Tao <houtao1@huawei.com>, Juergen Gross
+ <jgross@suse.com>, Vegard Nossum <vegard.nossum@oracle.com>, Kees Cook
+ <kees@kernel.org>, Eric Biggers <ebiggers@google.com>, Jason Gunthorpe
+ <jgg@ziepe.ca>, "Masami Hiramatsu (Google)" <mhiramat@kernel.org>, Andrew
+ Morton <akpm@linux-foundation.org>, Luis Chamberlain <mcgrof@kernel.org>,
+ Yuntao Wang <ytcoode@gmail.com>, Rasmus Villemoes
+ <linux@rasmusvillemoes.dk>, Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Tejun Heo <tj@kernel.org>, Changbin Du <changbin.du@huawei.com>, Huang
+ Shijie <shijie@os.amperecomputing.com>, Geert Uytterhoeven
+ <geert+renesas@glider.be>, Namhyung Kim <namhyung@kernel.org>, Arnaldo
+ Carvalho de Melo <acme@redhat.com>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCHv9 02/16] x86/alternatives: Disable LASS when patching
+ kernel alternatives
+Message-ID: <20250728203809.7bebf01c@pumpkin>
+In-Reply-To: <98BE7799-DA6C-4267-9E03-E6F68263D250@zytor.com>
+References: <20250707080317.3791624-1-kirill.shutemov@linux.intel.com>
+	<20250707080317.3791624-3-kirill.shutemov@linux.intel.com>
+	<20250728201137.113d0f45@pumpkin>
+	<98BE7799-DA6C-4267-9E03-E6F68263D250@zytor.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: s4hjptabk4ptx5by156p1bf617o6jxtz
-X-Rspamd-Queue-Id: 94AEBC0007
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1753730993-216965
-X-HE-Meta: U2FsdGVkX19qRK07kl+r8G4D7mcbDpw3YziMUYy8nfGKWNNDqChYhwouacieYOBDzfPrDv6nzKHuhv77LYMPk4M4o9uX6V7XZaRa62A6JaiiqLGgBGqMOcmiOk4piN3Xom5UDnLZOO0R0a1hzKIh2K2a9nCWz1ZfODm/4R0gHTKssvpp+ibisuOsVSon2R8z0ePSX687WEEpcq3MLffBu8saCOrsVRBhVGA1/UeR/CmBkNh8m0OPO7vZYfstfAf35/4++vyM4Oiq8ycBFDu+rD9I3nL2m/9xK2Cp/hSFTkG2AvNLMP+HnK9m6rABadXLcaKnjmHQ9oCIGdCXeRN5FX/BIT/5VseRNGsCLQM/OMqSRsyeNR/3hjl4bDaFOU4XOTvi2gmeD+6shwUYwuiSqcm/wkDXD/stZTm/OuJE146635aQUI6/7vXTdX16El9WbAcFn//1C2XpCWYRNmxkys9UlqztRrCGnBof0Bfic2yqa1kzzYcGucVVR981oFO7cXtvlzp+c7CadTkVmrAUQFRkfEDVhT0trvIy+b6h6/iKazNfkhGVdRvMqLKB9bfKDbXDye0OPW1a2IfZ/o8IQeWfG2H8eBVxdiCrnWGnKweGNL3mw5wDL6j2KoUGeCYk6aONuNsF3SuhDwR5Ih/Ygp9MuVxPAcXAus474LURiBFfyfSIgVMjIw91wiT3M0rY5ebIgDeB9M052XRhUWBMghblDgtAHK5HF9Wx2NRU4UtB4CqFW4JzgBGmXS9rV4tIbaClU76mwVfkgZy9AbVqxfth0WH+8IpLSBZSr9gF0liNwdlYX9zlVN8T0CNtuvPX1c+Kmgo97gaev/CMvXwZgjP9/n/ZUbDS0slC9RRcV7a2ZVO3dn2QHdPhNKxptrZI967NDlZLV3yN6cHTNwayXj2enFvIXlZJeYbcJPiJDoYu4Tr+m8r+2ESHayY0wkt8i7vXEU8vka7+waeThx7
- 8EyYT3e6
- KJdo6H6GoAJ6SAJvdJ7JjDTfWrvcHvjIdEQhw8Q4o20jinFRAYdgF4bk5XfpmsuKwlZ4rPmHQ3vG71oZzUFGvOIKebjQD1AqChQpvevs46+TCJMUwzMkg8EcPze5A+dVZDwvLAs4S8lKzmPgrjzS7tkr7FULSDLG7+gxARAfmvQSy2AFyMJG1/g32CDOQgKcGJ3+c6UHR7l1I6SUtxf9rwwbOUXykKlHZdKa4BT959be1UUwEW14Nh58tzVlXB0fO+Z3HU02FH/ZieUV5WzXQ0NVOJJ1762WGfENr9MbzxCfYITAggr9FDlKOvlDZuTXkp6eh+HdCdTzddQz+YywGPQofQZ/goCUhtDlfRr3MZLvBHJvli7M8Utwbt3CUnReCXBJ/6Fh6Aqnoo5Ax1VFf3Dw7HJu4Qr5VuFvLIKCWQVz3gTtJHG7hS48Uljvrt1hovsJEdkIrdjSVKKODReEmNwZbv7iG2HU/FyRe
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 96CC116000D
+X-Stat-Signature: u7wnzs3jt6ypw5ckk7or3xntxa3turbc
+X-HE-Tag: 1753731503-867481
+X-HE-Meta: U2FsdGVkX1+PenGrjqO343MKFlrpkJa7rhqdlcliemNxJ3JrR99n1l86O3wjtU5f9jFOmbGhKnC33fx5C+FWFdosMMUO+gEnVVVkE2OIPIAEhAg15nfur62Ewu0mlOCRw86lo1JnC7cRV2BRKBUOVyJBWCtyTkSRgBWgSJPxxfun1OrtqvjHMxVSfC9A+oS8dL0d1ZUhyJ4pY0/Jco99YNz0+NOJrMBk7ZuSxeQFKJ1OXTJBZ1bGQlF9+okVpgqTVULK21gckxN/Jf8QR1o86VLump3kev14EYzwcaT4LmHtzABamPAr+A+dv1Ogct2cP6AWwoO5ntNLOpQe43zU7WgN2bj6EW7a7rZ293Iz5Bq4RlP9p6BhvVWsN+qwC14eCK6RQ1s9SNMHODANGqxz+dJkAKVFQwx03V2XoAJPdLVsCxJdcEwy0nOo8Ozzs2KaAHVUizS42cZwfggfLtGyYE6Z8aatOVadjGRAXhN249RLQvq6PukE22nXVsmwwywX9M1qJwWdQvXRNe/JdkkCd2M2dhb5tzZ8sg4RRPMxP3vPALx3v8xZw4WfRU4+H4xrMV7cwBTgOWnndi/0IUb6Q6yHi9KjmxIDVKz3iWZvTKqDiHRtJo3L4GKfDZqNCwvg+JcStM+Z+C3MzmA55MbqMfmUTogRWJzQksnDRw980z4MJ8dg8+bmqXHQmSW8tzmPmi+56oes9X4WCTST5sYlvjrOTbE/GwZi/ygO5G5vceQ6pxvWbzBzqWaCnPs+5MWZ4mRoEniFkrWeWG6dT/B6UqagjjztHwgftoZkJB5pTzIDG00S7ovmnW/PAisAXynnuwqZQn3d36tC7+VwNr8BrwYa4vCjH8D8qa2akLGkjB8ntwWXmaNZtYU1lg0xw95c/pHkEaAY8DFm5JE48yrJaoGBVLT4dgVitVoqc9UX+Rjsa1UMqA7Ewib2Og0iTE6pS9oKws+Cm5tSJ1uxTFG
+ IplfR+5P
+ 10yx3h1Q8jFVMFCYJUoCfBCrVQ8EWm7uGl5/9KOuTXEycNzV7nGsLfXqKMQ8P8OlCsez3EdwiFKV4dyhjz1oG/FHoQg0yhmb8i40Jk73xM+l+O29RfEHo6dDiQvEpVQvayQM1c6+zlP6nB8cVUNSzYgVvTUa5ihWNrq9A1HMPMal8kZWUbG396FDeUybKEOmasMQdgSK3ePWeFFUXxJ0v5WeOaQzAZT/QTIDsuoSAUt/z2OpGri8uhbgP6+1CCYF350jKqZz8ike7KKZBC6ioCMYfh2SCR9EqNuxxg4dEm9kCXNPDoRAMAeRl6mMasbvnRSN8Tojcr39Mq3M4nnrevaUAJk5QU1CFNTm75qAZz657jdV2IxGXO0oM0rVlyq61/dfw1VT7+Q0971bVPAT0KsOd8NYckQKcVrts9u5w0m1BJIbscSe6Iy7+URQJOXIJQAtCNQQHAGa0O6wO8hoEPAa86oVqnuCq+xb60km9jZGEMDCM6xUV/4QtxW5NK8vn7d3kEtS/CEzT2a71QaMunjKhhSr778gx1RaQafhIAn9/HRUPt2ToZl01IRGTdk/uSPHaK5yWdIMENv+HeAKQ7iWMKd7G6U4rXMukBKMlbNsVs/g=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,35 +148,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On July 28, 2025 12:11:37 PM PDT, David Laight <david=2Elaight=2Elinux@gmai=
-l=2Ecom> wrote:
->On Mon,  7 Jul 2025 11:03:02 +0300
->"Kirill A=2E Shutemov" <kirill=2Eshutemov@linux=2Eintel=2Ecom> wrote:
->
->> From: Sohil Mehta <sohil=2Emehta@intel=2Ecom>
->>=20
->> For patching, the kernel initializes a temporary mm area in the lower
->> half of the address range=2E See commit 4fc19708b165 ("x86/alternatives=
-:
->> Initialize temporary mm for patching")=2E
->>=20
->> Disable LASS enforcement during patching to avoid triggering a #GP
->> fault=2E
->>=20
->> The objtool warns due to a call to a non-allowed function that exists
->> outside of the stac/clac guard, or references to any function with a
->> dynamic function pointer inside the guard=2E See the Objtool warnings
->> section #9 in the document tools/objtool/Documentation/objtool=2Etxt=2E
->>=20
->> Considering that patching is usually small, replace the memcpy() and
->> memset() functions in the text poking functions with their open coded
->> versions=2E
->=2E=2E=2E
->
->Or just write a byte copy loop in C with (eg) barrier() inside it
->to stop gcc converting it to memcpy()=2E
->
->	David
+On Mon, 28 Jul 2025 12:28:33 -0700
+"H. Peter Anvin" <hpa@zytor.com> wrote:
 
-Great=2E It's rep movsb without any of the performance=2E
+> On July 28, 2025 12:11:37 PM PDT, David Laight <david.laight.linux@gmail.com> wrote:
+> >On Mon,  7 Jul 2025 11:03:02 +0300
+> >"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com> wrote:
+> >  
+> >> From: Sohil Mehta <sohil.mehta@intel.com>
+> >> 
+> >> For patching, the kernel initializes a temporary mm area in the lower
+> >> half of the address range. See commit 4fc19708b165 ("x86/alternatives:
+> >> Initialize temporary mm for patching").
+> >> 
+> >> Disable LASS enforcement during patching to avoid triggering a #GP
+> >> fault.
+> >> 
+> >> The objtool warns due to a call to a non-allowed function that exists
+> >> outside of the stac/clac guard, or references to any function with a
+> >> dynamic function pointer inside the guard. See the Objtool warnings
+> >> section #9 in the document tools/objtool/Documentation/objtool.txt.
+> >> 
+> >> Considering that patching is usually small, replace the memcpy() and
+> >> memset() functions in the text poking functions with their open coded
+> >> versions.  
+> >...
+> >
+> >Or just write a byte copy loop in C with (eg) barrier() inside it
+> >to stop gcc converting it to memcpy().
+> >
+> >	David  
+> 
+> Great. It's rep movsb without any of the performance.
+
+And without the massive setup overhead that dominates short copies.
+Given the rest of the code I'm sure a byte copy loop won't make
+any difference to the overall performance.
+
+	David
 
