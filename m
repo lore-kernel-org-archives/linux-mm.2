@@ -2,111 +2,102 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 61D50C83F26
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 17:07:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DC439C83F26
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Jul 2025 17:09:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ACAF36B0088; Mon, 28 Jul 2025 13:07:51 -0400 (EDT)
+	id 6D7536B0088; Mon, 28 Jul 2025 13:09:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA2456B0089; Mon, 28 Jul 2025 13:07:51 -0400 (EDT)
+	id 6AED26B0089; Mon, 28 Jul 2025 13:09:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B8CE6B008A; Mon, 28 Jul 2025 13:07:51 -0400 (EDT)
+	id 5C4226B008A; Mon, 28 Jul 2025 13:09:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EE946B0088
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 13:07:51 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3B8021D897F
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 17:07:51 +0000 (UTC)
-X-FDA: 83714305542.21.685D9A3
-Received: from ale.deltatee.com (ale.deltatee.com [204.191.154.188])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 26E2618000D
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 17:07:49 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=deltatee.com header.s=20200525 header.b=XHjgXFrK;
-	dmarc=pass (policy=quarantine) header.from=deltatee.com;
-	spf=pass (imf24.hostedemail.com: domain of logang@deltatee.com designates 204.191.154.188 as permitted sender) smtp.mailfrom=logang@deltatee.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753722469; a=rsa-sha256;
-	cv=none;
-	b=QyadfNugc+MkM+jbsheQuiDCOsn2x2rsvyt0QwVPiFvMz8IDN+aNb+lerzcTybhBfHIyXl
-	8T/sHw5Yh0O7cCt5r3A6GxF+l2AOrjryW0enS5CJYibvzZyJKax+wkEBugU6U0O3ei1GzZ
-	6w+IZQiIJq0uGPIBFjDaMA3GD0H1zH8=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=deltatee.com header.s=20200525 header.b=XHjgXFrK;
-	dmarc=pass (policy=quarantine) header.from=deltatee.com;
-	spf=pass (imf24.hostedemail.com: domain of logang@deltatee.com designates 204.191.154.188 as permitted sender) smtp.mailfrom=logang@deltatee.com
+	by kanga.kvack.org (Postfix) with ESMTP id 4DD176B0088
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 13:09:58 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1C122160391
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 17:09:58 +0000 (UTC)
+X-FDA: 83714310876.26.4732153
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 5C3F340014
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 17:09:56 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=keMwUI35;
+	spf=pass (imf04.hostedemail.com: domain of 3466HaAYKCKocebOXLQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--surenb.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3466HaAYKCKocebOXLQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753722469;
+	s=arc-20220608; t=1753722596;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vCTi7Vmk9aRE1IKFUsfxXldYjrZeeC/iIVRDXKgVHWo=;
-	b=nDYKJVZ459O7Em6FovY4wtpKQDvYpbX5/LO0Fa98Pq3b45el846vQ8SJJj1msFM7NL2uBe
-	DJmX6D/WTEIRGmIaZ1JoyuSIfsIBRK+yOhvYc6PhEXdQ//73bgheNLQ3JKZWZmx5UN4VJG
-	oBO2cyhsWzTPGC9B1ZV76/Tn7FGe4Vs=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=deltatee.com; s=20200525; h=Subject:In-Reply-To:From:References:Cc:To:
-	MIME-Version:Date:Message-ID:content-disposition;
-	bh=vCTi7Vmk9aRE1IKFUsfxXldYjrZeeC/iIVRDXKgVHWo=; b=XHjgXFrKuAhiveJ6zCrvJT8Pvw
-	re9J8LZpJpl40TreVfHUPY2lnYVRFy+PufGoNxDVEgTuS0s84xxDxMwecbKLo3UpnvzoMVqFabY5O
-	fns6daDQC4GZzjzk81dgUnIBncap8IUcFBgRQ+FDj7GtQEkK7F51IIrGWpfK4rRTXW5sfS9q1MDKQ
-	6/wNP0s/OHbfhbpmZL9kyyw6F9TOJplnVRRzeSNunWZGOK7MaBeHKnz82mVkMDabojTslET5bVvMG
-	d6AG/BDnrsJDD6etzDoLtYTAaCoD+hgyhnRjFdBQiaqbGi/0dIRgNCr5slZOAZysPyyIWQSEA7f7t
-	Ibk+mOxA==;
-Received: from guinness.priv.deltatee.com ([172.16.1.162])
-	by ale.deltatee.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96)
-	(envelope-from <logang@deltatee.com>)
-	id 1ugRK6-008OdV-0r;
-	Mon, 28 Jul 2025 11:07:39 -0600
-Message-ID: <d3c8c573-f201-4450-9400-cc3ccafd2c04@deltatee.com>
-Date: Mon, 28 Jul 2025 11:07:34 -0600
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, Christoph Hellwig <hch@lst.de>,
- Alex Williamson <alex.williamson@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
- Jens Axboe <axboe@kernel.dk>, =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?=
- <jglisse@redhat.com>, Joerg Roedel <joro@8bytes.org>, kvm@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org, linux-block@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- linux-mm@kvack.org, linux-pci@vger.kernel.org,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Robin Murphy <robin.murphy@arm.com>, Sumit Semwal <sumit.semwal@linaro.org>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>, Will Deacon <will@kernel.org>
-References: <cover.1753274085.git.leonro@nvidia.com>
- <82e62eb59afcd39b68ae143573d5ed113a92344e.1753274085.git.leonro@nvidia.com>
- <20250724080313.GA31887@lst.de> <20250724081321.GT402218@unreal>
- <b32ae619-6c4a-46fc-a368-6ad4e245d581@deltatee.com>
- <20250727190514.GG7551@nvidia.com>
- <d69e0d74-285e-4cde-a2e4-a803accfa9e1@deltatee.com>
- <20250728164136.GD402218@unreal>
-Content-Language: en-CA
-From: Logan Gunthorpe <logang@deltatee.com>
-In-Reply-To: <20250728164136.GD402218@unreal>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 172.16.1.162
-X-SA-Exim-Rcpt-To: leon@kernel.org, jgg@nvidia.com, hch@lst.de, alex.williamson@redhat.com, akpm@linux-foundation.org, bhelgaas@google.com, christian.koenig@amd.com, dri-devel@lists.freedesktop.org, iommu@lists.linux.dev, axboe@kernel.dk, jglisse@redhat.com, joro@8bytes.org, kvm@vger.kernel.org, linaro-mm-sig@lists.linaro.org, linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org, m.szyprowski@samsung.com, robin.murphy@arm.com, sumit.semwal@linaro.org, vivek.kasireddy@intel.com, will@kernel.org
-X-SA-Exim-Mail-From: logang@deltatee.com
-Subject: Re: [PATCH 05/10] PCI/P2PDMA: Export pci_p2pdma_map_type() function
-X-SA-Exim-Version: 4.2.1 (built Wed, 06 Jul 2022 17:57:39 +0000)
-X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
-X-Rspamd-Queue-Id: 26E2618000D
-X-Stat-Signature: 4icaxkfbx3j9omfg8sfrjh3ddm1gffq4
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=eh6IvKrrVHAEt11I1o/Ron2ZJq2dRDEO+l/5Ggjas3E=;
+	b=T7OcdsxPTVzHD+oGa7+dUgJmYm0G1g3T4RCgiYqQDvuCJ8j/bx6SM2hIxHePG23u4w5TqS
+	OfkS4LrLqrIWWjyOhRAUgprjgfL8oLH2ARXIekvGEkjnYiYMiRZ3Pz+49RjRqJbZklZaL7
+	hK4yQpxqLOf9v4a9m5Ovl2sD+KQazQM=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=keMwUI35;
+	spf=pass (imf04.hostedemail.com: domain of 3466HaAYKCKocebOXLQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--surenb.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3466HaAYKCKocebOXLQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753722596; a=rsa-sha256;
+	cv=none;
+	b=Ugpw+0YjRr3Nmz+uvy4Ob2kXkxzv6Mx5czoeTcwBiVO4ta4W/Xh0Q8JwMY9LQsVSwYWZlu
+	ndH1vLggrrpvgmlpN/znW7YC3mcXi6JuyfqluVRbrtryydoYiTn6IHGk9JWJuOLhhNF7sA
+	maKf92dZbbLFR0/o9KRQjh/4ijGsGZo=
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-23fe984fe57so26736575ad.0
+        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 10:09:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753722595; x=1754327395; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=eh6IvKrrVHAEt11I1o/Ron2ZJq2dRDEO+l/5Ggjas3E=;
+        b=keMwUI353vUk7TJTqgC8p1Ef4BTNwWoWZ1UQNChAPsB2FrzNEVMmhsYexBTE3cle35
+         xcCxArw8eBq4vsyl88Bv4n+ITP5ZHLZOisOmsY0lyhm2Bn4yshoLyoOWJ4jDF9tWYjn2
+         ilHhlgDWec4oe/J0NIhWLQ5bd8CNgd2tF+poDo32ZC+plfC2suT4mNWb3cWllBbAuI4A
+         bQwiFfvX7llIGTrCk1n0bTahF5s6FwUJ6ztx8uddZo887xQK52Px21KiF1gQNd1LTEIq
+         y+BEHfYh7W+u8tiRdpm+U+QrEAYLbPq9rr+6zsBqj8CglCrrEVht8rvxssCSnzn7h5M3
+         xAwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753722595; x=1754327395;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=eh6IvKrrVHAEt11I1o/Ron2ZJq2dRDEO+l/5Ggjas3E=;
+        b=wqXaLg78Kn5cc/04yYpuFmq6hN97HSkkTaOt+adiXzxaopt6VR6rIR9+qhs/RCtIMn
+         YNvyfYetAJ/EvlCNoZdr49JzW2FBiaT3QNYAky3YVGcmWawfFcYva3cNQUyDVkXm4Di1
+         KkSUV48rigWjgp9yH02v3PGfs6tStZBjeiWb1T34cxLiiY+0DcN4O5RlZdqAwUV3Jkx7
+         EQHgMsxkRyrsxPUiXydAHuxy+Z7yT+QhyCuGPZxO1+/59vmEFS0m+cW2VJOAXiSP7paM
+         bGBP0Zeqe55pPwpA+wNNfGTHGPhVCTZV+1QgLzc6kXy1NIZTUeWB4DDDOLeq5v3d4IAz
+         P1lg==
+X-Forwarded-Encrypted: i=1; AJvYcCVd3b5EqQJitzMMIsImwzy/bdMfZaMQGkjmRaCbzhGJBF43iTb3FreZ5rtAHoWJRaSG220v32qFig==@kvack.org
+X-Gm-Message-State: AOJu0Yy03Ih56dA2jqCtnfnnjlNf3x2aXnfBfpJxqyv4+c4ugIrPhTWy
+	AILeqmDnevXRlr4hHUzgcflNk+isDWyjBvxt2ZNJIDmn3/l1+V8T9gVP+5qulf8v0RSpZJmDXq7
+	CX/e0uA==
+X-Google-Smtp-Source: AGHT+IFd2+VRWI3M+Kfoauwo/cT4HXIsIJL90+W0WrGWufYg6PKRrmk/3I6NP6HrbQ2n89hPQHxfP8Zj3x4=
+X-Received: from plwp15.prod.google.com ([2002:a17:903:248f:b0:240:1be2:19ee])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:4b07:b0:240:4b3b:334f
+ with SMTP id d9443c01a7336-2404b3b34a8mr26618875ad.34.1753722595188; Mon, 28
+ Jul 2025 10:09:55 -0700 (PDT)
+Date: Mon, 28 Jul 2025 10:09:50 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.50.1.487.gc89ff58d15-goog
+Message-ID: <20250728170950.2216966-1-surenb@google.com>
+Subject: [PATCH 1/1] mm: fix a UAF when vma->mm is freed after vma->vm_refcnt
+ got dropped
+From: Suren Baghdasaryan <surenb@google.com>
+To: akpm@linux-foundation.org
+Cc: jannh@google.com, Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com, 
+	vbabka@suse.cz, pfalcato@suse.de, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, surenb@google.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1753722469-323535
-X-HE-Meta: U2FsdGVkX18IBe3j233J+qPzmz6XA3EtN27EiWIUjHMM/iX0kEfoUuBviY2EdtXrMkKlq8kkGQQ3XmzrezoDYFTMpABKGyEY7e1hdtqBZMEcnrzuB2Z9jr9+dfQiwCz4WStMDufiy52IMbmxzBq6RdgfSE/EONP1zsVClIv8M43ywStZ0scjv5+Qmc2D434wN1xY9vihR8P42IvjMKk35RRuRfM4a4AaBm6Y8MJDwZfR1oLm2hrnSJf8Iuny/BHvWmGcCXzhM8wfiu2cJpcCVqHnSRGUHdaG/ogGkI6eisTT1cApZNWxKSTjkf+07MfXRhxfsjume3nu//kBT9Tdln2KhMVBHFiNhtzq1Ih64Fc4VEj3LlLZdF0cwfngd7pI2BOOyL7E/sGzSzK1EYHx2r25GEtjTDAldNbpJLdUPsOSrDY/51bpGAdJWJgIvTtS5l2ub3mdvhxKvURI4x6oGPoWOQF/PQFpNvvdzaiY4wYd2I/zKClyPBigiHPyO1I+/rxSccpVAraVl6FLHkVZsGNaSoyL6oGO8n03BFbmv0EH1NM5c1AmuS844bRTMULX1QiNd9R+y5qD7fpw4fd7FmVVhP4isteFLG6ZgNrHLghkLK1Bnh10kuPgSbJmXr805nBAbjxWv9ExIfONZmdYl/dDYQO+igj+5h7tbojJPV9BuFzMqm6YtcnDA8w+5wYnW/4t3kL7Rf8r3Ry7QQzLPdNQNlbS4T54r/rRgFxL6ESq7EPB8IQkUqy6bUgWsda15LNLdgQ5NxwRO+CNO6ONT8puTmHOyS1SfxSGIp2GTtGQP6sOILvmzGm9/47B00WPe5+NabjCjpy4FRWPYNRPwigN6CEyBIiSkcKi2pHkxE8hgK09IThzhiazISisVgYPNowNOdB+TyscwDd1h5eBhnu9cy6HMpI4rNow4JmXEBRJGPdytlLZ6j3tJ/pHGXRbxa6Y3PslrnD2x9t/n8r
- d2KAgU0b
- eIlQ9Ybhl+Is+5yS7H+ewidKiqAeCw2kvqG95OMTyAduKhktMbVsJnyVIp4zhBGz3lin5rWuZj+obrwiZYW0kqtdMnwSozQhi02uL07GZifatJM5Rq7RtmK9zCNeN62tf63IsANrDLe0LgkjNUMyCP1afClHYZMm+oiE0aBEayEZsRjwu97Xo68NZWwj3KLhtFyVbAiJzC6xOp/i0+XvfZGoWhv+wbrA+7nv4WUH03l5CkzEhuxW9ox64Iob0SqR9H0Ajt9gzV2I492pUkHnQkiLUosqZ3MXXByGZd1lnTT+SW4eT2ZJbWSJzegJWOhEfvp9rbYBT7Z32touDXg/Ep1Rn6GDBCHowq76dqf/1G16EI6ZQH+ZHOlQH+Q==
+X-Rspamd-Queue-Id: 5C3F340014
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 3s8cd5hmioqidsdxuke67astdo65k7mo
+X-HE-Tag: 1753722596-982413
+X-HE-Meta: U2FsdGVkX1/ANdPFrhsgI0DMTPgT81ueOtQ/WjH64W9U4jI+T3GflcoeH96Or4wY3jMvG9t1/K3R08jtx90FtPuRuJ79vrW5UaRIjCo6t2uUtT3FJhHoIytUmTPHK1XYvCJwG3TzZLYdI2S0vnUUANxNR72H6hG9Ioymd2PxB4bHpKBswKITtRBpeZ1gEFKbQKwY8xgINSG5KjVHdNWEcadnWTZnYndL5Vfl+CmuU4zPwZzTBTbjjNrv7bSSoRS8RpipdSKjVV3vMCwfxdY/ZviIhd/9twRh7ZvaEnlpD24gWw/CLT3tJqVvu5izc5Z5kfsoil6E+fQo6208kXdvNYQVobUTbodxTCOuHlKYSILQHl7Tdwa06EWyzNehyrZvGxZKS6ZiaLo7AXcawqiQR2D6qOWKtL/ixZ0pXi2k/moKL8sxDCsyF1Bq0VZ95jGwvND9/4SWb/9i+oJzUCHn/wdUL+OY7swX5TFnfOujb4vnh0YlK2UQlm36BRZU96H3XUZQFzEhJZcG3ZPUdWAhA353UtL8KbMNWzExAa4fAu1gzEwfifKnTlQeYFSzbqwTdcNRCRSQFj+yL3pAkVawitUHlW7k8hOa66K6I/6/0vA/OCrecQ/EBKYhq9OroMBcyo6agaNkrO/WwZeqBcFiqVS4jc0xDWLsyREzlnJZ4Sa1PJJXa5uoiQiv2PixyjQTfc51QUcOyb3c1CAIWIZlGAxWxylbxYhVzinxBcQ6ASNOAM0hFbIGNfTFUXxRv3C2jP4atyZD6rVG/mXbvkcqG1/xAoB9blX+M579KaPeTkg7wMlgHEXJNMJ36isQfuNUEWMpVwX6bwRm+ibjDX+viCWphcBuANeWHvxRkX0dkby70cvpMt8uhMpZnKSe+UD7qXglcL2M/x0z0pIj/XSOQfzg4vW9P0wUvRQHkUdeTtaNvvOctIUXUa8gXJyerp0FgSEdBiGyM1T45YzPeTi
+ mEkoqyqX
+ oHiZpAZhZsDIDws9SKt5vItsunv8m6PLNP2nAYAdIYi6DMh5XN/OzoxlYSMgJk+9OYAjpKkUS5co7JTKMIIONPGT0gmuDFytUoBk51IliGkX39rugpRvO3V5vs4LqdPxtI+WIwrwm2QPVNBg3iHIIR4lnI4m0GvXsfNSbrLqqqiCyNJbnkJatDIohDE/UtKOptceZ14HJSLxgy9Pd21ofdFQTBlx7G4JsrsXA4UiHDp0s6rwy8FfTczDHicuAqTc/8Qww/V03NMOnkzPQtrr2Y35smP8w/WG4P2sJse7XSt7eglp+/JDmRPeBUumTBSc0oL3SqblaInYA/rO7BPwJdwWyi/MoF0v6oijmEkzR43sgtILwDmACJGUVINy5B/BaRo8K4sfo5DRP7b2wG0m8rqSvBD5k2FFy7izI5UBHsnVyH7pLDjMpYGKxhKcpaFTzjJfC1G6aZUmNlNaCLj27oSBW0+s8ZttICetIz1KtyxYOK8bwh87bWwhPnxiPzV4iDmxAfOBwhAfx8dKxkxD4wjAVdH6ua5IdY1JWHD/DNdT0pF7KQQokz4y7B3I0+7RTnbGn/PGSL4TseFF9fpyD7r6cEIBCcBPkM8LkoyJG+4TKJPvB9xf7saE4mIUAaO+e5ZLgSTB4WeuJ2m9l12ocgiNZM9bbTAtp59+/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,55 +106,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+By inducing delays in the right places, Jann Horn created a reproducer
+for a hard to hit UAF issue that became possible after VMAs were allowed
+to be recycled by adding SLAB_TYPESAFE_BY_RCU to their cache.
 
+Race description is borrowed from Jann's discovery report:
+lock_vma_under_rcu() looks up a VMA locklessly with mas_walk() under
+rcu_read_lock(). At that point, the VMA may be concurrently freed, and
+it can be recycled by another process. vma_start_read() then
+increments the vma->vm_refcnt (if it is in an acceptable range), and
+if this succeeds, vma_start_read() can return a recycled VMA.
 
-On 2025-07-28 10:41, Leon Romanovsky wrote:
-> On Mon, Jul 28, 2025 at 10:12:31AM -0600, Logan Gunthorpe wrote:
->>
->>
->> On 2025-07-27 13:05, Jason Gunthorpe wrote:
->>> On Fri, Jul 25, 2025 at 10:30:46AM -0600, Logan Gunthorpe wrote:
->>>>
->>>>
->>>> On 2025-07-24 02:13, Leon Romanovsky wrote:
->>>>> On Thu, Jul 24, 2025 at 10:03:13AM +0200, Christoph Hellwig wrote:
->>>>>> On Wed, Jul 23, 2025 at 04:00:06PM +0300, Leon Romanovsky wrote:
->>>>>>> From: Leon Romanovsky <leonro@nvidia.com>
->>>>>>>
->>>>>>> Export the pci_p2pdma_map_type() function to allow external modules
->>>>>>> and subsystems to determine the appropriate mapping type for P2PDMA
->>>>>>> transfers between a provider and target device.
->>>>>>
->>>>>> External modules have no business doing this.
->>>>>
->>>>> VFIO PCI code is built as module. There is no way to access PCI p2p code
->>>>> without exporting functions in it.
->>>>
->>>> The solution that would make more sense to me would be for either
->>>> dma_iova_try_alloc() or another helper in dma-iommu.c to handle the
->>>> P2PDMA case.
->>>
->>> This has nothing to do with dma-iommu.c, the decisions here still need
->>> to be made even if dma-iommu.c is not compiled in.
->>
->> Doesn't it though? Every single call in patch 10 to the newly exported
->> PCI functions calls into the the dma-iommu functions. If there were
->> non-iommu paths then I would expect the code would use the regular DMA
->> api directly which would then call in to dma-iommu.
-> 
-> If p2p type is PCI_P2PDMA_MAP_BUS_ADDR, there will no dma-iommu and DMA
-> at all.
+In this scenario where the VMA has been recycled, lock_vma_under_rcu()
+will then detect the mismatching ->vm_mm pointer and drop the VMA
+through vma_end_read(), which calls vma_refcount_put().
+vma_refcount_put() drops the refcount and then calls rcuwait_wake_up()
+using a copy of vma->vm_mm. This is wrong: It implicitly assumes that
+the caller is keeping the VMA's mm alive, but in this scenario the caller
+has no relation to the VMA's mm, so the rcuwait_wake_up() can cause UAF.
 
-I understand that and it is completely beside my point.
+The diagram depicting the race:
+T1         T2         T3
+==         ==         ==
+lock_vma_under_rcu
+  mas_walk
+          <VMA gets removed from mm>
+                      mmap
+                        <the same VMA is reallocated>
+  vma_start_read
+    __refcount_inc_not_zero_limited_acquire
+                      munmap
+                        __vma_enter_locked
+                          refcount_add_not_zero
+  vma_end_read
+    vma_refcount_put
+      __refcount_dec_and_test
+                          rcuwait_wait_event
+                            <finish operation>
+      rcuwait_wake_up [UAF]
 
-If the dma mapping for P2P memory doesn't need to create an iommu
-mapping then that's fine. But it should be the dma-iommu layer to decide
-that. It's not a decision that should be made by every driver doing this
-kind of thing.
+Note that rcuwait_wait_event() in T3 does not block because refcount
+was already dropped by T1. At this point T3 can exit and free the mm
+causing UAF in T1.
+To avoid this we move vma->vm_mm verification into vma_start_read() and
+grab vma->vm_mm to stabilize it before vma_refcount_put() operation.
 
-With P2PDMA memory we are still creating a DMA mapping. It's just the
-dma address will be a PCI bus address instead of an IOVA. My opinion
-remains: none of these details should be exposed to the drivers.
+Fixes: 3104138517fc ("mm: make vma cache SLAB_TYPESAFE_BY_RCU")
+Reported-by: Jann Horn <jannh@google.com>
+Closes: https://lore.kernel.org/all/CAG48ez0-deFbVH=E3jbkWx=X3uVbd8nWeo6kbJPQ0KoUD+m2tA@mail.gmail.com/
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Cc: <stable@vger.kernel.org>
+---
+- Applies cleanly over mm-unstable.
+- Should be applied to 6.15 and 6.16 but these branches do not
+have lock_next_vma() function, so the change in lock_next_vma() should be
+skipped when applying to those branches.
 
-Logan
+ include/linux/mmap_lock.h | 21 +++++++++++++++++++++
+ mm/mmap_lock.c            | 10 +++-------
+ 2 files changed, 24 insertions(+), 7 deletions(-)
+
+diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+index 1f4f44951abe..4ee4ab835c41 100644
+--- a/include/linux/mmap_lock.h
++++ b/include/linux/mmap_lock.h
+@@ -12,6 +12,7 @@ extern int rcuwait_wake_up(struct rcuwait *w);
+ #include <linux/tracepoint-defs.h>
+ #include <linux/types.h>
+ #include <linux/cleanup.h>
++#include <linux/sched/mm.h>
+ 
+ #define MMAP_LOCK_INITIALIZER(name) \
+ 	.mmap_lock = __RWSEM_INITIALIZER((name).mmap_lock),
+@@ -183,6 +184,26 @@ static inline struct vm_area_struct *vma_start_read(struct mm_struct *mm,
+ 	}
+ 
+ 	rwsem_acquire_read(&vma->vmlock_dep_map, 0, 1, _RET_IP_);
++
++	/*
++	 * If vma got attached to another mm from under us, that mm is not
++	 * stable and can be freed in the narrow window after vma->vm_refcnt
++	 * is dropped and before rcuwait_wake_up(mm) is called. Grab it before
++	 * releasing vma->vm_refcnt.
++	 */
++	if (unlikely(vma->vm_mm != mm)) {
++		/*
++		 * __mmdrop() is a heavy operation and we don't need RCU
++		 * protection here. Release RCU lock during these operations.
++		 */
++		rcu_read_unlock();
++		mmgrab(vma->vm_mm);
++		vma_refcount_put(vma);
++		mmdrop(vma->vm_mm);
++		rcu_read_lock();
++		return NULL;
++	}
++
+ 	/*
+ 	 * Overflow of vm_lock_seq/mm_lock_seq might produce false locked result.
+ 	 * False unlocked result is impossible because we modify and check
+diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+index 729fb7d0dd59..aa3bc42ecde0 100644
+--- a/mm/mmap_lock.c
++++ b/mm/mmap_lock.c
+@@ -164,8 +164,7 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
+ 	 */
+ 
+ 	/* Check if the vma we locked is the right one. */
+-	if (unlikely(vma->vm_mm != mm ||
+-		     address < vma->vm_start || address >= vma->vm_end))
++	if (unlikely(address < vma->vm_start || address >= vma->vm_end))
+ 		goto inval_end_read;
+ 
+ 	rcu_read_unlock();
+@@ -236,11 +235,8 @@ struct vm_area_struct *lock_next_vma(struct mm_struct *mm,
+ 		goto fallback;
+ 	}
+ 
+-	/*
+-	 * Verify the vma we locked belongs to the same address space and it's
+-	 * not behind of the last search position.
+-	 */
+-	if (unlikely(vma->vm_mm != mm || from_addr >= vma->vm_end))
++	/* Verify the vma is not behind of the last search position. */
++	if (unlikely(from_addr >= vma->vm_end))
+ 		goto fallback_unlock;
+ 
+ 	/*
+
+base-commit: c617a4dd7102e691fa0fb2bc4f6b369e37d7f509
+-- 
+2.50.1.487.gc89ff58d15-goog
+
 
