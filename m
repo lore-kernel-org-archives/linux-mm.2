@@ -2,132 +2,112 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 632C7C83F26
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 14:22:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 77EC7C87FC9
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 14:24:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E087F6B0095; Tue, 29 Jul 2025 10:22:52 -0400 (EDT)
+	id 1AF598E0001; Tue, 29 Jul 2025 10:24:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB8FD6B0096; Tue, 29 Jul 2025 10:22:52 -0400 (EDT)
+	id 160486B0099; Tue, 29 Jul 2025 10:24:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA7B76B0098; Tue, 29 Jul 2025 10:22:52 -0400 (EDT)
+	id 076458E0001; Tue, 29 Jul 2025 10:24:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B5EEB6B0095
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 10:22:52 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 744451A012C
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 14:22:52 +0000 (UTC)
-X-FDA: 83717518584.27.5C7251F
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E86096B0098
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 10:24:38 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A59DF1A013E
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 14:24:38 +0000 (UTC)
+X-FDA: 83717523036.07.D749A36
 Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 4588C4000C
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 14:22:50 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=xXtrFjrs;
-	spf=pass (imf27.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	by imf25.hostedemail.com (Postfix) with ESMTP id BDA86A0005
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 14:24:36 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ZOk6Qc5c;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753798970;
+	s=arc-20220608; t=1753799076;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=COkIEuiWzegLgJMToflCtnJ3/8gZZNZmKmrpqxdoDwA=;
-	b=x8A9Ix2bIo2uIhx6IdIorZy2SSuf2BHmDVg58ixaLX2wy4gEmWPOIYg7+yNlpiA38pgfyG
-	iYxTQ8TYPbzZGg7kCH6fWGO8ciCUt9Cz7JrngPL0sisuFqE9cx+0Z3dOM9a1jVkk5Hv/lJ
-	WJ1lchF1ul1k4GWwVdi5yIOeL/5h5jI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753798970; a=rsa-sha256;
+	bh=qVNRcNSlbkisMQ7P3F3haQRx0uZA0/7rOJPK9raObGg=;
+	b=f1W4W5Ci64MpevEUE2fQEjfpAeHiy53dgjsZ3nxPExuXGy75KhJcazd+VWTPZ4qgbs+5LL
+	GdCOyS8iX4y9qhfgc1BgejWVVo52/PjgSQcodCx6pqKhU7KoBTZSuOO6HO7lxejBXSHBIB
+	FWj9ybyfwqezLvi+kQHIT0N7ujbeRnw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753799076; a=rsa-sha256;
 	cv=none;
-	b=WzFx2tIwb24uWuvH7G0akOQfjClVOxdd70ARYgO6MP2IaEZOdKnIoszG/OAZyzXcAxaJxL
-	NjPlhu13F1Js9OihOFKDWtz2+kyPnehb90wRFgK6BjcX8FAUkP4OcMwczTMT4sSNlyfre+
-	xoliASFedpcmKagK99PR7nx+gSOhDTU=
+	b=SRT0Gueh//da0L5/bEbhn7P67i0BaBtoSmWx1GizyKcJN5vWmL/DsELxTSizVmh7KeuWJh
+	tKw1y4FLHSmAfM3qRMYq+K0unn+9wNm/OLd0KA4Ft96o9KrWx4uKrsd6cyM6rTWVlbR3HP
+	0Vwn5s1NKwCKiTbaZwu28f15Aj/AaUg=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=xXtrFjrs;
-	spf=pass (imf27.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4aba19f4398so66835601cf.1
-        for <linux-mm@kvack.org>; Tue, 29 Jul 2025 07:22:49 -0700 (PDT)
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ZOk6Qc5c;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4ab3855fca3so314841cf.1
+        for <linux-mm@kvack.org>; Tue, 29 Jul 2025 07:24:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1753798969; x=1754403769; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=COkIEuiWzegLgJMToflCtnJ3/8gZZNZmKmrpqxdoDwA=;
-        b=xXtrFjrs8hqiLmO5d0lhq2SsgESREu/xY2OWSEqsxCZpayfl0F0/2TURMa97T2w0Tn
-         2aS+V64hb63Bseivdbfa4g5aSRlsxKmsefmGpuDp7ZjorJQG3gRDPDmFt4bXXngJ7Ucf
-         HC9fj/WwlMGfs1Elm3ZZyh7JhimPLxNmFfwmL+43Q/JYMvCWAh1cLTUni00JFnMqQWoq
-         UB3ukolTsOg94FX6bYWymT/tk4oX7M1u+lrZ0XkKBlnlg1zv4Y9Tydj/GDnaYyIfA4cV
-         syMGp6jHrxh3ztjx006gQhVvgDVcE37cY2eiKBkB1vZZWq/3uxeUc+/Xby6FOIVDoa1u
-         cRGw==
+        d=google.com; s=20230601; t=1753799076; x=1754403876; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qVNRcNSlbkisMQ7P3F3haQRx0uZA0/7rOJPK9raObGg=;
+        b=ZOk6Qc5cDJ8zljtgJJBovfIQU5ClK0+k2xwGXLdVqN4XeWsRIg2hfTykNqziFZvnXV
+         b/mo+3NOTu5mxPSLnJZJlBI4vZSvZnaKIyGD8lDlr4YNqwiXqeowl7Go6odpbD1QZO4O
+         hAkJOXg2oiAaJyX6Yl6ovtG1+E915G/ZekXM61MR6SMZ9MH59l0UlRkHbfl+DOBG0rKa
+         A9dxYdGnhKYWZXuA+Q6/5IqWKLaD71yfnsrlNqE0nn2EiOlGdnzYmitxtqMZzVQ52D5P
+         Xg8z9L/r0EK+rJOchfJSh7pHxGijkrYD1Dp2KpizU1ePpteXznJ2pvekpZvBxt7Hl6MF
+         xcTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753798969; x=1754403769;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=COkIEuiWzegLgJMToflCtnJ3/8gZZNZmKmrpqxdoDwA=;
-        b=L7J02S6wUlpaF5bWtEidP6SkQ3xJcId6VAGXs948Niayty4RAyVd2vhQbrudjduEKn
-         BSfzZZ/siaDI5qBhdSLyt1n8J9CRjVCN186Wo8LtQqJxdgE4VhxChvrvtxHuPFJ2yV2a
-         /Gq2B1Sv7mO4J4LyzeIBDoin6ZTfhrTOGecyloxuM/4yOlo0uEOPUYkY1k4/mbqfZgTh
-         3R/OJqqyPwF9M19jlu6acocQaadhVbNefMQKLFVUytalIZIExPo4gxhD1rjzfxYhFgB7
-         JP53wYLYOd5UoZn9qMN6qJHCWLMkT5ZG/ToYzDzgSqVOq/2FcqZBXDkY/L7rw4DVdNwE
-         HPXA==
-X-Forwarded-Encrypted: i=1; AJvYcCWDWE5iuw0Ds6+RX5lsmx1mxm14zjQgrRDXEiYtS2ciI4YF5A/7IYfjrs3+hMXM9hJ7dHR9q7TXWA==@kvack.org
-X-Gm-Message-State: AOJu0Ywp34g3790HycCseyvD3yNQtLg7WqKp7tB7zuKH1i6NHDOlHpwQ
-	iIpM79guooJjdMJ2HC6r0kXSkdt/zUDvkQ/aTMr5MOUnX2NkDo/x3eIUDizoPJVdFyU=
-X-Gm-Gg: ASbGncubalm36FjEKRv05Awax5UPE7yxzLR+QNMruZbHxL3b/EE4b+hVaooA4o8ynyF
-	MyeSiSdTP2Gkzys8HJvAasvo9iIybNppwi1Qi5iQX/eYAs5uXckK7rcz81H4u+b3rxtgdAwkuhQ
-	LvZfYSb7E4Zo3dlU1c189adZG5zeR2/Wy1JQKDrciKyoGhelB1Cvod1yuRDfxhyWngPDVkKTOjN
-	WqBXAfySW8jCEtWtcAhlAz0mWwsi32CrQ46n0G4nsVFVk/oiXg/ut6ef4KpRIyRpZFvfoOO4gAO
-	Lg8hDW6+bBiv87C5xP81oEfYNpSf9aB6Hhzs7NIAnB6Onua0Xvu7FE1L4Zkhmrhg25PRUMPb0T8
-	RaGtoPudcfUlg8g8ZntgjZtZ04cMSwx0B
-X-Google-Smtp-Source: AGHT+IEUceVkl40iNUbmH8CG0B9SvtBCZGSM71xkMe4dIMOtKKEAU9bj+x0vh8grcAXbbZcW59/UVg==
-X-Received: by 2002:a05:622a:3:b0:4a9:7725:b1be with SMTP id d75a77b69052e-4ae8ef406d4mr180745941cf.8.1753798968930;
-        Tue, 29 Jul 2025 07:22:48 -0700 (PDT)
-Received: from localhost ([2603:7000:c01:2716:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with UTF8SMTPSA id d75a77b69052e-4aea7d724d0sm38853931cf.23.2025.07.29.07.22.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Jul 2025 07:22:48 -0700 (PDT)
-Date: Tue, 29 Jul 2025 10:22:46 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Simon Horman <horms@kernel.org>, Geliang Tang <geliang@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org,
-	mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v1 net-next 13/13] net-memcg: Allow decoupling memcg from
- global protocol memory accounting.
-Message-ID: <20250729142246.GF54289@cmpxchg.org>
-References: <20250721203624.3807041-1-kuniyu@google.com>
- <20250721203624.3807041-14-kuniyu@google.com>
- <20250728160737.GE54289@cmpxchg.org>
- <CAAVpQUBYsRGkYsvf2JMTD+0t8OH41oZxmw46WTfPhEprTaS+Pw@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1753799076; x=1754403876;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qVNRcNSlbkisMQ7P3F3haQRx0uZA0/7rOJPK9raObGg=;
+        b=TP1yY4V8BJN73EAgPjdy45qWmsQdgv/DCxq2ONttLF2rnmJ1WpQa0u3qCnpXVT6ENP
+         IHelLVaqT2Z8O+QXCESGuCpfzQCZkx4xkIUTdso+mjowXyErfcQvjkRC1xEfd229xd5M
+         sfKClHT0S+xFZiYwFIWEmWjU8LAO14x+WuDgRNpyIfiq9hi0GWEumcS65XHHuEKOMqiT
+         hfjUO8O9/SEhJHnKJtd2NGtf5vNoog0t5yvS2l0N6EnertUuXBDSvaiQssGMQu5L7VIA
+         MVXSn1SEutEfyopRcDHyzc+rj2l3OiWwW9YIu6LaAh51oW6d2LDk7lLUba9yaDKUGLlV
+         w57Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVzzfiDgaRtGekhkqfiByLoH/ooFRy56wVFhEED2QdAkK6C+OJ59mosc4zpiF1t7DaPe43xV3cvAQ==@kvack.org
+X-Gm-Message-State: AOJu0YxGf+Eqhn2nLM0JYCG3+cvmTAkCt52WIz088nNtXIboLYwpmUqU
+	S/ws3FH9Oa+1XaFTVmNxHVJEG1ZbS9WhtlB5cLohLlX2xfUxN0IziK3wm2vMAjSZmk2UbJejxzl
+	fJ3WTV68XwmRccVUdlz7YFU9LXj+p3wabiUabCV2G
+X-Gm-Gg: ASbGncvcC3imCPFAjhVuqFkrp/PHlS332xS2rIWmyJy3sSUszutDFUzfoOFbvILERfe
+	GsFE3GtlEQDRUwDAPhZDKHfCaqPVLl+PiGL5yKEiB/L/WL9mnSj15pffm1wct7yhxQ5/VU9h3yC
+	vT0kP/l9oBF+cVPjOiA4XwN0iwgR0kUdYjALO9HOP0mesDYdpWJG2WUAaWEx1Yrf2fzXQLddj9a
+	U9eTL2GCCi9GjJDYESis/UABT5KPd37Db54fw==
+X-Google-Smtp-Source: AGHT+IEXo19Mea95cq4eF+yZwTGp8JvbbbpniaHFDfY2wI+smq2JppWdL8kf+LAMrq8yQm/JSqfb/IL1F9mrSpQdTpE=
+X-Received: by 2002:a05:622a:a:b0:4aa:cba2:2e67 with SMTP id
+ d75a77b69052e-4aecfa456f1mr4144421cf.21.1753799074080; Tue, 29 Jul 2025
+ 07:24:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAVpQUBYsRGkYsvf2JMTD+0t8OH41oZxmw46WTfPhEprTaS+Pw@mail.gmail.com>
-X-Rspamd-Queue-Id: 4588C4000C
+References: <20250728175355.2282375-1-surenb@google.com> <63d2682f-a24e-4fe2-82d1-fb58a8575c6c@lucifer.local>
+In-Reply-To: <63d2682f-a24e-4fe2-82d1-fb58a8575c6c@lucifer.local>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 29 Jul 2025 07:24:23 -0700
+X-Gm-Features: Ac12FXynCQs1QPHMicNL6A7GQQxpOS8RnWUYjhc0eE8qQpCjkBRUbMLdsSemDCk
+Message-ID: <CAJuCfpEHdv5VXrD06SO1WkB4itqNsaWq3YKoXVYtyLPP+Cq4Mg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] mm: fix a UAF when vma->mm is freed after
+ vma->vm_refcnt got dropped
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: akpm@linux-foundation.org, jannh@google.com, Liam.Howlett@oracle.com, 
+	vbabka@suse.cz, pfalcato@suse.de, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 776db5g4ah53m3sbkcs7m6c6yhgmj8ep
+X-Rspamd-Queue-Id: BDA86A0005
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: gmh7mpnkmukusomff51ee8xanothz8t3
-X-HE-Tag: 1753798970-638907
-X-HE-Meta: U2FsdGVkX19we6AoLrqheSi+huVqtmzNL+QCB2OU4Hm3jIKCuI7pFgkDPQXvouYxRcZs4nhbhlEGrwX167O9Kn38tEcJCTfQzCqx3RyMqwpagqx/tXUSPmNzOiiEA1fcdze/wTyGPXrriqqlnX5T7p0yI+c1NUhXLlMyjlmE0L6CKu19222g6leCY7WZDrbL4mD21pQe4amvDDBlhnaP+i5ynC+lyP+J8NhGOOQc/1v0hptzb+WHhSK1+qCJJCjsDBGFp3kHHQ5yh86kSBGYnPQU8G8q/IyPYlEzaJG6rXs9/ZJjMvvbG+VJi6Ds7picWWhDe6bgeH+0dtrFVmlFUj3nu2kTb7l2JuGKG6Xm6nmx1BYOwerhhrmkNUdwITQXmH+gw5/T9q7HZxvOJQsrPrX1ab1CuK7SPZqBr3BfbNV7+HwjCx8tdlpJUxLtvhz5QhlRSkTfdI0IWdr2vJEq/sJ/Mx7E8UtAfm/2YLNRheGMF20kCgIWNPDRp56F/SJipzp/fbkSBfa2ZWb88B68kH4z5RJcLexfZjeuYhA/RR8HuPOKBh0FvGVGnAJ4pQMYtBhuwM/CqigXc1V5s3Y/EhAVE0+K6U+l+weHXAQmunWiDgLwgB4Xl2+ieWWF3tlQ9k0QEzFRFXm2ZNByQGsNQ3fqFuJkUaUat/AgoYz/Wky+qffuTyhWh5uGhhSR5ZgSYmwG9UtvoZOQ654aBl0m0PBti/VXlrmDcynjx9ZmkaC5zJggI/yFErntBviSjUUioB/wiwu/5ckQt/Xy1sZXhO/oS/xqOkKITkEaEs9GOzbVSwq3QJLPXMFcqfmLYCw38TAE2yrKzP9ybj5Rpgh4OVisT4JYlY0/NGD8pcb0hce/5gbBnB+5kEkzf+7IM1n8mirc8SWkeNvAzd4+TTUkESgEEoEZEgXIRYkP+SjuOzxFATFzY882cy10NWOSuZHIyUOma7Q4mLr/Zd/Xu7R
- pxHi3Emr
- zI7b2IWyMpD0slOvAFFMB57gfby+mD6IJOj6EAEYBHtwnzsP6LDw+he5+n05HULTzOXHmmZJ6r3ttvhhVhQElPqFOXAFHX1HmiTWTibz4YLYu9BDsf/9psU52/lQtE4gZpsrPYHls3MoNmtxSVcaNjSlwLiRg6W07fNJHYlw9fs1NPZ2A24lVL538MyvUl1f9ofJ+e7yXNRNJKavNi6ABOpekOSIe6+djztsl5HE3q5O6wrDDuXfvEBYklrj4oUBtuer7xoyg2WzjTik345txKq0zfhwKRqyxtS/MoF2iDHX37SEFNAvMNjE5Mhdv776QOBFpgPR0B4IAhmGq++Lubj/0oTpFa6JL7WP0vdOTFk8PE2qkAId2ogI/Bis+gMx5DTRjE+jbUzpOose+CFw2CxV+ufNHB60xpqMaeK3IBJbhDuES6oQi4LJJRd9ZY8A3lyZgQa3zUnm9fgTBFDGY97nhVRhHd8YRnd2o71OkdIQAyrHLLM8Vsuln62ERyQ4XPrq3McTbfy5yDIj/sVqKao8SvVqUuYz8Jw+NunXHV7wyrA0=
+X-HE-Tag: 1753799076-812510
+X-HE-Meta: U2FsdGVkX19bxmvpR1aSTRz8NrPOL4q6RXaH18yHgLJKqAffMEAbuS7geVl69S1OMZVAC0hG8LqCMSMZRvpB0PyqGvyewq8uBTo5tVMn38Q/AvbhL+TVn1blWP3gwt84GkC6H+bIcktA/KL6Na9sJ2DaW6VPC5vcJYCTOCfFrVi44uSzHlIkY1bi1iy5ZIwn7ycon/XUP3Tq8Mc5AZ4UAdOFIJ0MGzUK4baILQf/3c7fO9o2XjCvj4uM9WTOaxZO3N/kMfD98l8C1O08jYunnIZaHkBuNuid0bH6J0h+tp8Lvd1la0fr/bOqOduoxoWHGbRQwM1m4kf6afKabUDzNlzi2Ts/KW9WViODkRsv//1YZsqzXUwBY8ArFwtvttdIBzgwTQ1enSSjjc564Xt2lJJCp7tHOhzo5333YHx84oNQuCe7Pv6me3e3TlDMgxmOQozUhxvbUAojf08b1NxJcxqz+8wdAcaDNnxjISTzEP10t38Qg7A5E0R5OKKcNZZsj3OdVnG76SSFv7AASNvMznTzv8r5icOMGJ9b8zUvkbV5LtGFFAGPxnQANoLDfDekxP+PN5gYrg1aBGG7cE2ynJF8a/WCIk3W3Dbqyaq83kw+K7ObAEnQstD1SfHkt8CpKiRCzM0WwUZ2mh3LHpgp+UexwSVE5zILthWpRd4ywy2WhPhNrSC0hUi6+a4h8x86cCGMaI2uJ6gvPVqeCS5HEaEV/H1Hyh/xDI9DA/ewv560mI5K3/X7QMJwLG6QRn09RS91TSbaMHYv7ecsBXKJitUNAiUwyxAdG8bTgqmp23SayyDBpgK7CUuuI5mEBcfFN/ti2agRwuPqOn2ubEnFrSFVAmGP1nG4XYRUUi7H9fwHyXdGxrNPXGoBR7Kzt5okf4Y3T1KuQ5Da6cHDztBsbc/Jzrfu5cnZ6dgRDl41ljPNnelnofd6vrgcISKn2VdcLME65w6ktXBsdJ3NGIy
+ gj4jL/L8
+ PIeQoJan3mv9QEfF/ZXvOYDT4WpZ3WVJIRWA7Wk/T3t8xLREilLEv7+aRSQFXIGCiaDNP4H4fjvuvpmNnYYY85k/SHeQvEsaS6P+bc/M5PbSnnNQCPMp4zUWKlL6bZKCnMiu3uCUrkS5z4A6koyuP4ACb7vws2pCPqd3apEum1D5zU3WALZ7kOc2+3U4co2aqtyxawzCz7iioYh5T6gPkezMcY/j3wWZbIIortAlwWDmDBCsBncH8OpVt8/SEPkya2jmoH/01PYwmQRsedk6I/lMU2ytCuxnYTgc4/j2ocPvBRWHxHVwdGiDN/55YALihIaQ2yma5LuIqAvGnkhUxK35i/SCKkSr6aGnEwJT2U7RXleg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,44 +116,195 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 28, 2025 at 02:41:38PM -0700, Kuniyuki Iwashima wrote:
-> On Mon, Jul 28, 2025 at 9:07 AM Johannes Weiner <hannes@cmpxchg.org> wrote:
+On Tue, Jul 29, 2025 at 2:57=E2=80=AFAM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+>
+> On Mon, Jul 28, 2025 at 10:53:55AM -0700, Suren Baghdasaryan wrote:
+> > By inducing delays in the right places, Jann Horn created a reproducer
+> > for a hard to hit UAF issue that became possible after VMAs were allowe=
+d
+> > to be recycled by adding SLAB_TYPESAFE_BY_RCU to their cache.
 > >
-> > On Mon, Jul 21, 2025 at 08:35:32PM +0000, Kuniyuki Iwashima wrote:
-> > > Some protocols (e.g., TCP, UDP) implement memory accounting for socket
-> > > buffers and charge memory to per-protocol global counters pointed to by
-> > > sk->sk_proto->memory_allocated.
-> > >
-> > > When running under a non-root cgroup, this memory is also charged to the
-> > > memcg as sock in memory.stat.
-> > >
-> > > Even when memory usage is controlled by memcg, sockets using such protocols
-> > > are still subject to global limits (e.g., /proc/sys/net/ipv4/tcp_mem).
-> > >
-> > > This makes it difficult to accurately estimate and configure appropriate
-> > > global limits, especially in multi-tenant environments.
-> > >
-> > > If all workloads were guaranteed to be controlled under memcg, the issue
-> > > could be worked around by setting tcp_mem[0~2] to UINT_MAX.
-> > >
-> > > In reality, this assumption does not always hold, and a single workload
-> > > that opts out of memcg can consume memory up to the global limit,
-> > > becoming a noisy neighbour.
+> > Race description is borrowed from Jann's discovery report:
+> > lock_vma_under_rcu() looks up a VMA locklessly with mas_walk() under
+> > rcu_read_lock(). At that point, the VMA may be concurrently freed, and
+> > it can be recycled by another process. vma_start_read() then
+> > increments the vma->vm_refcnt (if it is in an acceptable range), and
+> > if this succeeds, vma_start_read() can return a recycled VMA.
 > >
-> > Yes, an uncontrolled cgroup can consume all of a shared resource and
-> > thereby become a noisy neighbor. Why is network memory special?
+> > In this scenario where the VMA has been recycled, lock_vma_under_rcu()
+> > will then detect the mismatching ->vm_mm pointer and drop the VMA
+> > through vma_end_read(), which calls vma_refcount_put().
+> > vma_refcount_put() drops the refcount and then calls rcuwait_wake_up()
+> > using a copy of vma->vm_mm. This is wrong: It implicitly assumes that
+> > the caller is keeping the VMA's mm alive, but in this scenario the call=
+er
+> > has no relation to the VMA's mm, so the rcuwait_wake_up() can cause UAF=
+.
 > >
-> > I assume you have some other mechanisms for curbing things like
-> > filesystem caches, anon memory, swap etc. of such otherwise
-> > uncontrolled groups, and this just happens to be your missing piece.
-> 
-> I think that's the tcp_mem[] knob, limiting tcp mem globally for
-> the "uncontrolled" cgroup.  But we can't use it because the
-> "controlled" cgroup is also limited by this knob.
+> > The diagram depicting the race:
+> > T1         T2         T3
+> > =3D=3D         =3D=3D         =3D=3D
+> > lock_vma_under_rcu
+> >   mas_walk
+> >           <VMA gets removed from mm>
+> >                       mmap
+> >                         <the same VMA is reallocated>
+> >   vma_start_read
+> >     __refcount_inc_not_zero_limited_acquire
+> >                       munmap
+> >                         __vma_enter_locked
+> >                           refcount_add_not_zero
+> >   vma_end_read
+> >     vma_refcount_put
+> >       __refcount_dec_and_test
+> >                           rcuwait_wait_event
+> >                             <finish operation>
+> >       rcuwait_wake_up [UAF]
+> >
+> > Note that rcuwait_wait_event() in T3 does not block because refcount
+> > was already dropped by T1. At this point T3 can exit and free the mm
+> > causing UAF in T1.
+> > To avoid this we move vma->vm_mm verification into vma_start_read() and
+> > grab vma->vm_mm to stabilize it before vma_refcount_put() operation.
+> >
+> > Fixes: 3104138517fc ("mm: make vma cache SLAB_TYPESAFE_BY_RCU")
+> > Reported-by: Jann Horn <jannh@google.com>
+> > Closes: https://lore.kernel.org/all/CAG48ez0-deFbVH=3DE3jbkWx=3DX3uVbd8=
+nWeo6kbJPQ0KoUD+m2tA@mail.gmail.com/
+> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > Cc: <stable@vger.kernel.org>
+>
+> This LGTM AFAICT, so:
+>
+> Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-No, I was really asking what you do about other types of memory
-consumed by such uncontrolled cgroups.
+Thanks!
+I think I'll respin v3 to add a warning comment to vma_start_read(),
+so will address your nits there.
 
-You can't have uncontrolled groups and complain about their resource
-consumption.
+>
+> I'll fold a description of this check into the detailed impl notes I'm wr=
+iting.
+>
+> > ---
+> > Changes since v1 [1]
+> > - Made a copy of vma->mm before using it in vma_start_read(),
+> > per Vlastimil Babka
+> >
+> > Notes:
+> > - Applies cleanly over mm-unstable.
+> > - Should be applied to 6.15 and 6.16 but these branches do not
+> > have lock_next_vma() function, so the change in lock_next_vma() should =
+be
+> > skipped when applying to those branches.
+> >
+> > [1] https://lore.kernel.org/all/20250728170950.2216966-1-surenb@google.=
+com/
+> >
+> >  include/linux/mmap_lock.h | 23 +++++++++++++++++++++++
+> >  mm/mmap_lock.c            | 10 +++-------
+> >  2 files changed, 26 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+> > index 1f4f44951abe..da34afa2f8ef 100644
+> > --- a/include/linux/mmap_lock.h
+> > +++ b/include/linux/mmap_lock.h
+> > @@ -12,6 +12,7 @@ extern int rcuwait_wake_up(struct rcuwait *w);
+> >  #include <linux/tracepoint-defs.h>
+> >  #include <linux/types.h>
+> >  #include <linux/cleanup.h>
+> > +#include <linux/sched/mm.h>
+> >
+> >  #define MMAP_LOCK_INITIALIZER(name) \
+> >       .mmap_lock =3D __RWSEM_INITIALIZER((name).mmap_lock),
+> > @@ -183,6 +184,28 @@ static inline struct vm_area_struct *vma_start_rea=
+d(struct mm_struct *mm,
+> >       }
+> >
+> >       rwsem_acquire_read(&vma->vmlock_dep_map, 0, 1, _RET_IP_);
+> > +
+> > +     /*
+> > +      * If vma got attached to another mm from under us, that mm is no=
+t
+> > +      * stable and can be freed in the narrow window after vma->vm_ref=
+cnt
+> > +      * is dropped and before rcuwait_wake_up(mm) is called. Grab it b=
+efore
+> > +      * releasing vma->vm_refcnt.
+> > +      */
+> > +     if (unlikely(vma->vm_mm !=3D mm)) {
+> > +             /* Use a copy of vm_mm in case vma is freed after we drop=
+ vm_refcnt */
+> > +             struct mm_struct *other_mm =3D vma->vm_mm;
+>
+> NIT: Not sure if we should have a space before the comment below. But it =
+doesn't
+> matter... :)
+>
+> > +             /*
+> > +              * __mmdrop() is a heavy operation and we don't need RCU
+> > +              * protection here. Release RCU lock during these operati=
+ons.
+> > +              */
+>
+> NIT: Maybe worth saying 'we reinstate the RCU read lock as the caller exp=
+ects it
+> to be held when this functino returns even on error' or something like th=
+is.
+>
+> > +             rcu_read_unlock();
+> > +             mmgrab(other_mm);
+> > +             vma_refcount_put(vma);
+> > +             mmdrop(other_mm);
+> > +             rcu_read_lock();
+> > +             return NULL;
+> > +     }
+> > +
+> >       /*
+> >        * Overflow of vm_lock_seq/mm_lock_seq might produce false locked=
+ result.
+> >        * False unlocked result is impossible because we modify and chec=
+k
+> > diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+> > index 729fb7d0dd59..aa3bc42ecde0 100644
+> > --- a/mm/mmap_lock.c
+> > +++ b/mm/mmap_lock.c
+> > @@ -164,8 +164,7 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm=
+_struct *mm,
+> >        */
+> >
+> >       /* Check if the vma we locked is the right one. */
+> > -     if (unlikely(vma->vm_mm !=3D mm ||
+> > -                  address < vma->vm_start || address >=3D vma->vm_end)=
+)
+> > +     if (unlikely(address < vma->vm_start || address >=3D vma->vm_end)=
+)
+> >               goto inval_end_read;
+> >
+> >       rcu_read_unlock();
+> > @@ -236,11 +235,8 @@ struct vm_area_struct *lock_next_vma(struct mm_str=
+uct *mm,
+> >               goto fallback;
+> >       }
+> >
+> > -     /*
+> > -      * Verify the vma we locked belongs to the same address space and=
+ it's
+> > -      * not behind of the last search position.
+> > -      */
+> > -     if (unlikely(vma->vm_mm !=3D mm || from_addr >=3D vma->vm_end))
+> > +     /* Verify the vma is not behind of the last search position. */
+>
+> NIT: 'behind of' should be 'behind', 'behind of' is weird sounding here
+>
+> > +     if (unlikely(from_addr >=3D vma->vm_end))
+> >               goto fallback_unlock;
+> >
+> >       /*
+> >
+> > base-commit: c617a4dd7102e691fa0fb2bc4f6b369e37d7f509
+> > --
+> > 2.50.1.487.gc89ff58d15-goog
+> >
 
