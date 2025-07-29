@@ -2,128 +2,175 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EB563C87FC9
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 16:49:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2305CC87FC9
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 16:51:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44C436B0088; Tue, 29 Jul 2025 12:49:58 -0400 (EDT)
+	id 903206B007B; Tue, 29 Jul 2025 12:51:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F5DB6B008A; Tue, 29 Jul 2025 12:49:58 -0400 (EDT)
+	id 8B4106B0089; Tue, 29 Jul 2025 12:51:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E4BB6B008C; Tue, 29 Jul 2025 12:49:58 -0400 (EDT)
+	id 77BF76B008C; Tue, 29 Jul 2025 12:51:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 185216B0088
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 12:49:58 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A295156A64
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 16:49:57 +0000 (UTC)
-X-FDA: 83717889234.17.6B2AB1A
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 802E740007
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 16:49:55 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="Rv/EI3n9";
-	spf=pass (imf27.hostedemail.com: domain of jannh@google.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753807795; a=rsa-sha256;
-	cv=none;
-	b=pxhQ70IxKF8VNSpqdwfoL2VaNX9TV6TY42u2eSAzrh+MscPd0cv+ZDuOj2ZN7sKa4whhPY
-	gssgWIuo5jUzl5FcYhHPI9ihWmzhRBHAdY1o07C5R/ZdFQfLsdn4bZn+e//CqwGZdiPUk8
-	Td4NW61jOUT+80soQYIOQIEpXikgLjg=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="Rv/EI3n9";
-	spf=pass (imf27.hostedemail.com: domain of jannh@google.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 645856B007B
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 12:51:37 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 121F9C01B5
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 16:51:37 +0000 (UTC)
+X-FDA: 83717893434.26.243F1C8
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 85409160002
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 16:51:34 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yqzfRphf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=I48tmce0;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yX4hHVFV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=XaVHeA8d;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753807795;
+	s=arc-20220608; t=1753807894;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=eqFobIPQpQgCyyuokHwscyB7gthAuwhYB6CrRv1tkIY=;
-	b=YzpoZUmzAk6w6t9na2nZa60OTsYekdVpWQZIC+S4cPdbJR6bVXqbf1xHkkFMrR4wt+PHra
-	7l2D9bD2ZXvuJwlU39cMaf2oDLMhYqvxS8v4uoMC/ORDGxdurNJaQ1Bc4jEOlMb7iT8iAW
-	ykIgv88QUNXhT+Eb36W4zQY1DWhPUCU=
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-456007cfcd7so1155e9.1
-        for <linux-mm@kvack.org>; Tue, 29 Jul 2025 09:49:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753807794; x=1754412594; darn=kvack.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=eqFobIPQpQgCyyuokHwscyB7gthAuwhYB6CrRv1tkIY=;
-        b=Rv/EI3n9MHuMYpJp2pnM25dliPX+YcdvdWA9D4TwtKwIVt26e7X89NHTFzBjOSeWy8
-         NYPqYbg6Kkzqwex7AHihh1neFKcIlxz3xrUriwIvCv1REAE2ke+p4hl5QHF+IpQGwsuJ
-         91NtZUFlYYcjmnjLfG+0dd+q1OSYFBrhH+3RfefPee6tmgsBecU+NvwYWaMA140sfSqL
-         BxLfoGI78xT+zXGRPsqxixWpmUuHlCw2x828/l+6pTY8rDrc+8aKuIgE0x/ncAjJF9VL
-         pVXqsg3/bhKh+G4H6mWEy0CdUdc/1FMHJ3YqBN5VXFZb20sJVX/4kqlx+sxJ9m8hlOE0
-         3VkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753807794; x=1754412594;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eqFobIPQpQgCyyuokHwscyB7gthAuwhYB6CrRv1tkIY=;
-        b=CBo9F4NmnO0YSvbtUkdThCjpkdFGVJxOwjT1l/JY+WU/yMjnLu9PokQWCc34q4vHrl
-         nkd2zXgb1uz11v4+E63UU1/kIrJaF2NHEMWvaOmE3FxcZfxqESqOvL/g4LH79Gk5ZhEH
-         8tYq6U2VLhTeQXdIQxV3q4FFoyWRYCXOB9sxKFd3SUGcs/rR70+awavUcm41rMwubrn4
-         c1GSdQjHXAW9uRvMIpppi8CtQDGRkPuwkRGv29RZJp8AcGNiM7R2KU/0MAR/SIfL/knW
-         2GqOByzgK9qaOtyfcwp5hRtD8FNDkhBVIBOQY5s73oaI2z6HyNB7k7xSAk05wKNvR04P
-         JOZw==
-X-Forwarded-Encrypted: i=1; AJvYcCV11ScCHa8y0AASnbBohaA+BITPA/SbQJHrADGpt0r9C17n7F9zhRN/RP6aFGTTnaooZnsq8KnNIA==@kvack.org
-X-Gm-Message-State: AOJu0YxRFYWxR8gonPpBFPBqyuuVMP7S1fK5C/eodwVlQwDhKi4UZXK8
-	NY4Qf2G43z4GOnQ3/knRvj4qcUbImt+Pf8LIW3jtRf6+4BoMYoHiHMpBAsqBHIk0Fw==
-X-Gm-Gg: ASbGncvEFqdPBgg1OjWYuy7jitzilQAM4mT5uQhm0qRtQlY3v6iu394fq+B70c9H3zV
-	kNl0Yu2Co/FvB+HCLMUC8j3K6QxiopF7UwBAfSE5F/DZ6fOeYHPEhFeAXKpSGDCSgy328AB4wCj
-	taL3WfzramCbxGsV5GdPTpivZSJ4kx/xGuw7sBM5zEkp8Z269YHF2+oszaS372V5u8hz7YPwP4e
-	m+c25g2EljBLj/3rMh6RzZC5foHVsSF0UksVaZLLD8Gp83ZEfn+HdkOqRc7qPyoh3Om9BMUyL9e
-	XK22HuBgjwRaSqPwLpOyZgS3UoPAJwmtcKcMiiHxQgo5MyXXskfnIdBfkYY3RyLIJuh0WtZ+lEm
-	yc3CvJUkZM6o=
-X-Google-Smtp-Source: AGHT+IE9t3NsTP6znRXjaaDGX7JsRhLn6+ZFRfCZwRKt8rDACg1dE2PX2ZoFelIr5TaoYsY9wUeNiQ==
-X-Received: by 2002:a05:600c:1c9e:b0:442:feea:622d with SMTP id 5b1f17b1804b1-4588dc6d080mr2038245e9.1.1753807793858;
-        Tue, 29 Jul 2025 09:49:53 -0700 (PDT)
-Received: from localhost ([2a00:79e0:9d:4:fcf7:d8ea:691d:7dd3])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4588d900725sm24490935e9.1.2025.07.29.09.49.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Jul 2025 09:49:53 -0700 (PDT)
-From: Jann Horn <jannh@google.com>
-Date: Tue, 29 Jul 2025 18:49:40 +0200
-Subject: [PATCH v2] kasan: add test for SLAB_TYPESAFE_BY_RCU quarantine
- skipping
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=B9zblHd7B1NwjU/h+HwxYaQdPAptYF7/21/a0/VsbEc=;
+	b=qxLBvS0z3XBGhGtoFC8yH+rEkcYG5GOvLhg22+6gUhhYr3occFVprgV73ZhMs8CZmosfWd
+	ibR24yzUdOJVppffho6+kKe5gu50d7sg915qcMhzIv554xOk4nkwGxfkjzGtCbL+E08bn/
+	nnreYzGTCewqDGkOwfAO1sByYVyD7Kw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753807894; a=rsa-sha256;
+	cv=none;
+	b=RGMfMYhInwEQY3kt4wai4l1iYbjl/giJETHBZVm7dHeQmdxDNqB5g7NhRxAIFS5pCEhhkM
+	XX7Lgst0tOz+QgNvRHc6JxCP/g7hvhjv7O8rkP8E9y+BtD0K+ZsZEwg5x0sp/P8EIjCETU
+	I3DvxDRIJfTHFDXO+YQzcAT0vX73/IM=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yqzfRphf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=I48tmce0;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yX4hHVFV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=XaVHeA8d;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id EE6CD1F385;
+	Tue, 29 Jul 2025 16:51:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1753807893; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=B9zblHd7B1NwjU/h+HwxYaQdPAptYF7/21/a0/VsbEc=;
+	b=yqzfRphf9jC5BiFyxz3fXNnbJmByA+v9APZxQGIaP9Krk97OwRCMuTvlnOu4Owe6LcF7k7
+	TPHGUohLV7gU24pVyW3INz7OZ6NZ3RblqTlV6AuQpoX+0cLtybzcmXegGXlbeAFzmU4Ywz
+	S5li3mLTsZx6JkLwDzK26Pt4ewIuBn4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1753807893;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=B9zblHd7B1NwjU/h+HwxYaQdPAptYF7/21/a0/VsbEc=;
+	b=I48tmce0ZtJOcexFDq52omqHVzhRrINZ9jfwRmeTrUH+korNd75DytPlNw5mOHQUqlReSg
+	DraJ/rWVioA94NCQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1753807892; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=B9zblHd7B1NwjU/h+HwxYaQdPAptYF7/21/a0/VsbEc=;
+	b=yX4hHVFVhrQY1PQp6QbW6Jdq57HzpoeVRm4yX2IJVThIW0eH+nLYfZtuvTpkjxPZHNOhGG
+	UcY0xDGcykFn5DtDNC3qhO/IdFXudAcBALjtQbkR847Tnfu3UXjRSHm9qmka/FTqlNf83m
+	m94aIvlPyqheOWUqowyyQAb8yiHZQyE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1753807892;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=B9zblHd7B1NwjU/h+HwxYaQdPAptYF7/21/a0/VsbEc=;
+	b=XaVHeA8dY0LNEbmrPDrXmHXjJowE68u5ER+L4LkDC2qKC+xyJl8oAtOngCIlh2uV0B2oP1
+	9cHSDWMOeys6vgDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D477613876;
+	Tue, 29 Jul 2025 16:51:32 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id QTteMhT8iGhnZAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 29 Jul 2025 16:51:32 +0000
+Message-ID: <5109febc-21b4-43fb-98a2-14c552c27bfe@suse.cz>
+Date: Tue, 29 Jul 2025 18:51:32 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250729-kasan-tsbrcu-noquarantine-test-v2-1-d16bd99309c9@google.com>
-X-B4-Tracking: v=1; b=H4sIAKT7iGgC/33NywrCMBCF4VcpszYQJ6axfRXpIomjDkJqcylC6
- bsbzMKdy/8szrdBosiUYOw2iLRy4jnUwEMH/mHDnQRfawNK1NLgWTxtskHk5KIvIsxLsdGGzIF
- EppSF9gaV6g1J3UM9eUW68fsLXKbWkZZSndzGH1PVhqg/CKE0zg2DJDyN6xGmff8A68MMc8QAA
- AA=
-X-Change-ID: 20250728-kasan-tsbrcu-noquarantine-test-5c723367e056
-To: Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
- Alexander Potapenko <glider@google.com>, 
- Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
- Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] kasan: add test for SLAB_TYPESAFE_BY_RCU quarantine
+ skipping
+Content-Language: en-US
+To: Jann Horn <jannh@google.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+ Alexander Potapenko <glider@google.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
  Andrew Morton <akpm@linux-foundation.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>, kasan-dev@googlegroups.com, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Jann Horn <jannh@google.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1753807789; l=2477;
- i=jannh@google.com; s=20240730; h=from:subject:message-id;
- bh=xC2SGCiiovnqO7RAnpaQ8tLK7DE0kascKCn2FPGbvbY=;
- b=7zrrhKfOV53X6HcBNKhvT/AH+5h+FvXFq+iJcJVzFIKzpNbAkLCHo7AVIcx12OW73XbYHN9uW
- P6My267RH23AaWkKXPCuOAPAQBR5RpcleEVFcaYXJutPWNe59pnR50F
-X-Developer-Key: i=jannh@google.com; a=ed25519;
- pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
+Cc: kasan-dev@googlegroups.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20250729-kasan-tsbrcu-noquarantine-test-v2-1-d16bd99309c9@google.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20250729-kasan-tsbrcu-noquarantine-test-v2-1-d16bd99309c9@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 6wdecroy1p5y3rchfa6d9sbiotiusoir
+X-Rspamd-Queue-Id: 85409160002
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 802E740007
-X-Stat-Signature: a9gih3d8i1fpcxi6hrx7q699y8yzjme6
-X-HE-Tag: 1753807795-58749
-X-HE-Meta: U2FsdGVkX18noM4Swa+mSgBowOSGzGc5FIFWwbaNUgC4MogzCFYrPPAOIKtoEUT3xdhZScjKHsdi1aex+FyGpmKgDRl418Kc30uZB5+4yAdzeDMhwvJdiNBHeIRRKMpgiLs/eTt/OHw/CBNw39ASdg281KggALF8q1yQQQt+b6UsJEa8/LG/ensMtVMUzfIAnnr5Lcy/dwVG9uxxNNHQmjrErt2z81i4/FqfnlsGU9Ggz25iDDgVcm44E3WWxE8KA1suDqlzvlu/aeZ4UyEKQeBpySL65spnj/9Kq0m7B+pTz2GG5+dbt+i5kQRgHPrwruWzsvjPz169rDIOP3BLZD9l9WRKl/AznZHeoIEi43kWr/Bm/5F2LIgJPt0E3Lr4fty1p2qaZpmmb6HRr0CgnikLRskhBp/E8CgJLr+PnEj1a1K04d3wLWqkJS8tD3wee5OLiW5W6x63v2bV2lVSZuoqklNt8WJbuLz6FnM3TnlaPEFMy/nogBN9pEX71NWGmiIZ8u41nr0yBsuLnG8/INUQ4oFi7Pfx7cPra0clv5NG7WKrslse+bqMQ0y++XmB52yclfw1E0J70SxE6ney/WWWwDjrcnjl34L7BNBQJqqU1x1D7eMMc9xs2LeBD7PbrbigfNZ9QfudsrJEutXokaB8rSDpswIXDUNDvU/0gLBdpliQ42UBy+pVvdu8TuPVZucEc2ldc/c1t/LrkeInnC/3bIASwgc2dcCJPnQVU6ueziTNyyARzbT/2Noo5jGg8fQPXfXtwehWS33acoFez9Vbm02IF7azjCyYdctki1twYHOmnHVC1iZ1WkdiVVtmbG4L+i/ipiktjy4g4gtvX3kLhZ91VfywkFKZ4tDFAY7AYtwCQEqYS0+kaAYz3dBw6mTpTKV0wNyRmUgo80nf+g+8TDKsHWHP18fwaX25+WjhMXJKj32diB7oym69Fs0Hb+nNY/dxcM7mETZJei/
- 8lB7aNJ0
- iDRn6Z765MFNeC8yrwZCZ5Tk5AH5OW45t/22VVc/7EDfcJfsx8ZNlrxde+Na6NR8LKJx/WzW7WGZ117Yt92o7Ozc9m5gx6q6Jsi32v7mfoaaz0jwQIgdm+iIzNuZqLeSxZuF0vKK+bE6GsjxQW2Xy4IrRx4d5h6SYhMt33KJsCd+SV5rakvZLkx97oR62kAOl25P4vHRe5Z70JrLiiSXWcM2ZGRF30dlHNIdZS7RzGdiB1b/WpniJpQy4TprWDAaAuTjWgujTsgvjiR5esAUijvY24SckCxu0MJsUQ5cdN8o9ou4nIznttfue01f0wKA+tbUSaCJp1g3q1cV/K3rn92ZiT7aqijWqQS5TF7BXmZYwAAjqlLGD5NHfP53IHGtRG5uChg+W20KnJygIMxfGIcJtomH72Hg+/SZWKjXNWkcP8DDLPKyxrhZAVL9HlF1Kz3W9sNZ8y6IZ+QFfL4ALWO7lh9cw6oeXBr4Z
+X-HE-Tag: 1753807894-882880
+X-HE-Meta: U2FsdGVkX192XOZ1hWmO18MZHvKKTy9eJJCW9J7A/hsCVzdwog6iUy+mcpqDznjRT9Z8YODA2sWwuNdwP7uqe4k/VJt2nf3/XI4pNKMkxNC9LmodaM/6AKbF7mhiX+Idaa/NRdOCUZrA86Hi2L7yGnWzaRbrQghUkcUKF5FnRvQPXBsQAxfq0fc9rfI22e3pgV03HvlB0wmOA3nuJERMvDE+ymM4FobYBTJ3FUmPVQ8hc5VaLexvd/9zzktgtt34adgcjIa06B63RAJVnzaw/SWIqNu0n/bgGYI4isS2PIT08oXnacVI71IBstv2EKnMToauA+ZPRJ/qGvRu7Q+mdEuyb4FlP3modn6LeeBp1k4e412FmMMnfTTcYq1OM3IpwJoKiedyfv33VPVBqpS0ig63UGzJncaCeWM65p+ZpJfp/Wd9lGI9v7rE5hhuEBiJ4wN51GNkhoIuqe4QniAkHts+bTzHxZxThjLeQrCOvd2Dhg24rDQDSNqhBA7IGHL6HPW1QiCsG74cz4ZAYZf1DB9dkAmC78/0OkdRKx9uIouXxUAdol4s4CpZqK++1+4Cu0X06yKcHS4BWwkfc9lXgtcZ8bgZrRv9cH4AgE6lJgmRH3qvRHNIlGCeav9bgft0zEX14V4NHTiT3XhgbPYFhLM2FOMGBpxqFYz90bN5+CElWNDjqhN00Ddi9foNxXleA0yrrAqZn2mabDI6U2+DI02FG3Nrmol5KWejkk7xEP18ypetvDTQ0eLeL+MsxjhDIU9FffwYDIOJhcEHYGQCcWqs6T+Ut5TfspGlKDlnydR5n9C7I3wnQqRAhST0n6zCxOoGCdIZcxft/tbR55cT1uBmmJnxMLI5Jjkp//FTWeUeVH2yowmnQX3jOtml18DN7NNjMWmlZfBXdBRMYSjXHM61Pfp5ITJ71AuyTc2n3BAKry7J0NBk5r7Rq0VUCxZriiAVtyABEEWTiaEsv01
+ 0o8MDFSV
+ qSdsB0h3QID36rlS8+V9wTxDprDuVwZ8V2bN2Fj7jpRO8q0RWe/P+YLoI6OCi5GSRn8/uSR4IEPwr7DTOcwQjeE8HNN4CGc5G/7vUtA9nDzz6qNtQYyWGCogOMUZ5kGMIszg0z8tJoSXVXmiBPKi4HH2QvIbg6xdYMXL6BtaFEMkTKQVL5JZTTyL/t9uxAbl708eswWdT8LouhIliyiHc65BDu1qWyCuAqi17A568RD70rMpTF+mO//VuRh3NN2I3r23YD7f1JdULiJDxRXjnjo4QVFhz0IbTzGQ7SMWBfx5LBIsO5L16c0ATD0u2dVd6YyI2fp2nK9FXQ+y0n74Wsr/MJ2AxG1djD0T2r/qGOUV37eQSMJeLY3qu637zqwz+WGWMt9ukkhSaQUQnP+HaSv5XbgzN0Ng5y2R5cgRMqfbfiGSbc8lXmG+pWdBqAEBpmpHDFg/sAHEIeO6Igjlttvm1Zw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,85 +179,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Verify that KASAN does not quarantine objects in SLAB_TYPESAFE_BY_RCU slabs
-if CONFIG_SLUB_RCU_DEBUG is off.
+On 7/29/25 18:49, Jann Horn wrote:
+> Verify that KASAN does not quarantine objects in SLAB_TYPESAFE_BY_RCU slabs
+> if CONFIG_SLUB_RCU_DEBUG is off.
+> 
+> Signed-off-by: Jann Horn <jannh@google.com>
 
-Signed-off-by: Jann Horn <jannh@google.com>
----
-changes in v2:
- - disable migration to ensure that all SLUB operations use the same
-   percpu state (vbabka)
- - use EXPECT instead of ASSERT for pointer equality check so that
-   expectation failure doesn't terminate the test with migration still
-   disabled
----
- mm/kasan/kasan_test_c.c | 38 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
-diff --git a/mm/kasan/kasan_test_c.c b/mm/kasan/kasan_test_c.c
-index 5f922dd38ffa..0d50402d492c 100644
---- a/mm/kasan/kasan_test_c.c
-+++ b/mm/kasan/kasan_test_c.c
-@@ -1073,6 +1073,43 @@ static void kmem_cache_rcu_uaf(struct kunit *test)
- 	kmem_cache_destroy(cache);
- }
- 
-+/*
-+ * Check that SLAB_TYPESAFE_BY_RCU objects are immediately reused when
-+ * CONFIG_SLUB_RCU_DEBUG is off, and stay at the same address.
-+ */
-+static void kmem_cache_rcu_reuse(struct kunit *test)
-+{
-+	char *p, *p2;
-+	struct kmem_cache *cache;
-+
-+	KASAN_TEST_NEEDS_CONFIG_OFF(test, CONFIG_SLUB_RCU_DEBUG);
-+
-+	cache = kmem_cache_create("test_cache", 16, 0, SLAB_TYPESAFE_BY_RCU,
-+				  NULL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, cache);
-+
-+	migrate_disable();
-+	p = kmem_cache_alloc(cache, GFP_KERNEL);
-+	if (!p) {
-+		kunit_err(test, "Allocation failed: %s\n", __func__);
-+		goto out;
-+	}
-+
-+	kmem_cache_free(cache, p);
-+	p2 = kmem_cache_alloc(cache, GFP_KERNEL);
-+	if (!p2) {
-+		kunit_err(test, "Allocation failed: %s\n", __func__);
-+		goto out;
-+	}
-+	KUNIT_EXPECT_PTR_EQ(test, p, p2);
-+
-+	kmem_cache_free(cache, p2);
-+
-+out:
-+	migrate_enable();
-+	kmem_cache_destroy(cache);
-+}
-+
- static void kmem_cache_double_destroy(struct kunit *test)
- {
- 	struct kmem_cache *cache;
-@@ -2098,6 +2135,7 @@ static struct kunit_case kasan_kunit_test_cases[] = {
- 	KUNIT_CASE(kmem_cache_double_free),
- 	KUNIT_CASE(kmem_cache_invalid_free),
- 	KUNIT_CASE(kmem_cache_rcu_uaf),
-+	KUNIT_CASE(kmem_cache_rcu_reuse),
- 	KUNIT_CASE(kmem_cache_double_destroy),
- 	KUNIT_CASE(kmem_cache_accounted),
- 	KUNIT_CASE(kmem_cache_bulk),
-
----
-base-commit: 0df7d6c9705b283d5b71ee0ae86ead05bd3a55a9
-change-id: 20250728-kasan-tsbrcu-noquarantine-test-5c723367e056
-prerequisite-change-id: 20250723-kasan-tsbrcu-noquarantine-e207bb990e24:v1
-prerequisite-patch-id: 4fab9d3a121bfcaacc32a40f606b7c04e0c6fdd0
-
--- 
-Jann Horn <jannh@google.com>
+> ---
+> changes in v2:
+>  - disable migration to ensure that all SLUB operations use the same
+>    percpu state (vbabka)
+>  - use EXPECT instead of ASSERT for pointer equality check so that
+>    expectation failure doesn't terminate the test with migration still
+>    disabled
+> ---
+>  mm/kasan/kasan_test_c.c | 38 ++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 38 insertions(+)
+> 
+> diff --git a/mm/kasan/kasan_test_c.c b/mm/kasan/kasan_test_c.c
+> index 5f922dd38ffa..0d50402d492c 100644
+> --- a/mm/kasan/kasan_test_c.c
+> +++ b/mm/kasan/kasan_test_c.c
+> @@ -1073,6 +1073,43 @@ static void kmem_cache_rcu_uaf(struct kunit *test)
+>  	kmem_cache_destroy(cache);
+>  }
+>  
+> +/*
+> + * Check that SLAB_TYPESAFE_BY_RCU objects are immediately reused when
+> + * CONFIG_SLUB_RCU_DEBUG is off, and stay at the same address.
+> + */
+> +static void kmem_cache_rcu_reuse(struct kunit *test)
+> +{
+> +	char *p, *p2;
+> +	struct kmem_cache *cache;
+> +
+> +	KASAN_TEST_NEEDS_CONFIG_OFF(test, CONFIG_SLUB_RCU_DEBUG);
+> +
+> +	cache = kmem_cache_create("test_cache", 16, 0, SLAB_TYPESAFE_BY_RCU,
+> +				  NULL);
+> +	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, cache);
+> +
+> +	migrate_disable();
+> +	p = kmem_cache_alloc(cache, GFP_KERNEL);
+> +	if (!p) {
+> +		kunit_err(test, "Allocation failed: %s\n", __func__);
+> +		goto out;
+> +	}
+> +
+> +	kmem_cache_free(cache, p);
+> +	p2 = kmem_cache_alloc(cache, GFP_KERNEL);
+> +	if (!p2) {
+> +		kunit_err(test, "Allocation failed: %s\n", __func__);
+> +		goto out;
+> +	}
+> +	KUNIT_EXPECT_PTR_EQ(test, p, p2);
+> +
+> +	kmem_cache_free(cache, p2);
+> +
+> +out:
+> +	migrate_enable();
+> +	kmem_cache_destroy(cache);
+> +}
+> +
+>  static void kmem_cache_double_destroy(struct kunit *test)
+>  {
+>  	struct kmem_cache *cache;
+> @@ -2098,6 +2135,7 @@ static struct kunit_case kasan_kunit_test_cases[] = {
+>  	KUNIT_CASE(kmem_cache_double_free),
+>  	KUNIT_CASE(kmem_cache_invalid_free),
+>  	KUNIT_CASE(kmem_cache_rcu_uaf),
+> +	KUNIT_CASE(kmem_cache_rcu_reuse),
+>  	KUNIT_CASE(kmem_cache_double_destroy),
+>  	KUNIT_CASE(kmem_cache_accounted),
+>  	KUNIT_CASE(kmem_cache_bulk),
+> 
+> ---
+> base-commit: 0df7d6c9705b283d5b71ee0ae86ead05bd3a55a9
+> change-id: 20250728-kasan-tsbrcu-noquarantine-test-5c723367e056
+> prerequisite-change-id: 20250723-kasan-tsbrcu-noquarantine-e207bb990e24:v1
+> prerequisite-patch-id: 4fab9d3a121bfcaacc32a40f606b7c04e0c6fdd0
+> 
 
 
