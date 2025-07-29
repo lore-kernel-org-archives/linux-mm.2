@@ -2,87 +2,140 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 97128C87FC9
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 13:52:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F3CEC87FC9
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 13:52:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 287DC6B0092; Tue, 29 Jul 2025 09:52:29 -0400 (EDT)
+	id A76CF6B009B; Tue, 29 Jul 2025 09:52:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25EA56B0096; Tue, 29 Jul 2025 09:52:29 -0400 (EDT)
+	id A4E226B009C; Tue, 29 Jul 2025 09:52:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1744A6B0099; Tue, 29 Jul 2025 09:52:29 -0400 (EDT)
+	id 963EB6B009D; Tue, 29 Jul 2025 09:52:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 09B1A6B0092
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 09:52:29 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8B137140564
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 13:52:28 +0000 (UTC)
-X-FDA: 83717441976.01.8759752
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
-	by imf18.hostedemail.com (Postfix) with ESMTP id CAD011C000F
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 13:52:25 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf18.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 856D06B009B
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 09:52:43 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3561313429D
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 13:52:43 +0000 (UTC)
+X-FDA: 83717442606.16.8A986B5
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf03.hostedemail.com (Postfix) with ESMTP id D505420016
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 13:52:40 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=09CbSNjb;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Y30teTyJ;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=09CbSNjb;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Y30teTyJ;
+	spf=pass (imf03.hostedemail.com: domain of hare@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=hare@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753797146;
+	s=arc-20220608; t=1753797161;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DsK9L872Qkj26oGqeFB1SIud0TJmKPl61Td/yI0WZG4=;
-	b=F3VtzMl3q3B7SWQqdUswDcbxhmHhZWCDP2x5ZR+mjJgTUUPaFBydTQmlp+yKHwV1gRMxaH
-	4Tbsy/qMTK88PdAigugxSelueKFfFwSYJytr5PmtEoQiLdVB+CFDyxznEuPLJRx3VWZNy2
-	YHDSLQPE5Hhi/eToHk40I1UMDAqh+cw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753797146; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=T5UptxTlc7NV15QNmaQUOhxOZX0UPYQKqfHL7gIMJik=;
+	b=mjgm5C88rtKtmt0kQO9NAPirN4Dckh2+VsJSyitFE9dnWEhxl9mPC/lscz4Op2lhsd5NKX
+	xuQ9M6vJ7Gkn11/juZQDVc7Xx1KXPE8fxD7jULnjwGmyXd83muvvyLUfKMVo0wC12kdNQQ
+	S7MySZ8LWGlPvJrlzvHD83NKLAeIs50=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753797161; a=rsa-sha256;
 	cv=none;
-	b=1vy+LV9TbGuY/hKtuspE3LYxfthtqkWiGW3Dit/JHI+pYi6PnxadlyWgNGZX5Ag4EoB3En
-	bI0ms9qRD47nr5t9okngEHsDwzvYYozZnuaNV3GbiK4BerqNXh++HuFNL5qf7JwaTdmXhf
-	i6kMBTb2tk2R9CrvfM7avLVxPuvpi5A=
+	b=aQvNA3cQddgQJGzuTSA/gfAAyoO/YGOUG9TVMZvHmP1jg7LKMWTCQJg/d2ckBccjNsg+mN
+	RwzEhBaCNqhDBy+WWRtXzYaWyi1HI0f+dBzs5EC2xRTOlFGEBmP09do8Rbq+K6vFisCLCO
+	QbuDOmzjDe1rL19vMTJSFfOwGzu9SgU=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf18.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.17])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4brxYM0kHTz2RVvZ;
-	Tue, 29 Jul 2025 21:49:59 +0800 (CST)
-Received: from dggpemf200018.china.huawei.com (unknown [7.185.36.31])
-	by mail.maildlp.com (Postfix) with ESMTPS id 561E21A0188;
-	Tue, 29 Jul 2025 21:52:20 +0800 (CST)
-Received: from [10.174.176.250] (10.174.176.250) by
- dggpemf200018.china.huawei.com (7.185.36.31) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 29 Jul 2025 21:52:19 +0800
-Message-ID: <ab6b06d6-d2e8-4695-9eda-5bfaf507c2f1@huawei.com>
-Date: Tue, 29 Jul 2025 21:52:18 +0800
+	imf03.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=09CbSNjb;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Y30teTyJ;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=09CbSNjb;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Y30teTyJ;
+	spf=pass (imf03.hostedemail.com: domain of hare@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=hare@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 358F01F385;
+	Tue, 29 Jul 2025 13:52:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1753797159; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=T5UptxTlc7NV15QNmaQUOhxOZX0UPYQKqfHL7gIMJik=;
+	b=09CbSNjbuqrVikMD+7H4izSIWfIEYIC6+yBgvwka+tVU3JZ+6DYqAWCdh01Mo0gdkqVABk
+	z69i16Fsu0B05b/9evPTjsrPXac2fL0TY5TZUGJJK15uA6Zp4uZZzVXok86n/1oKHolTY1
+	UrkmncEXO4OkxEiiau2fbZwxW0q/Yqw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1753797159;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=T5UptxTlc7NV15QNmaQUOhxOZX0UPYQKqfHL7gIMJik=;
+	b=Y30teTyJHv1aRlrlTEZR0cVmdygViEie19/02UqXtJnHS2j4H6GezefvOkvFdGDLLQlq4D
+	dMNEnOuzQ/9F8eDg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1753797159; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=T5UptxTlc7NV15QNmaQUOhxOZX0UPYQKqfHL7gIMJik=;
+	b=09CbSNjbuqrVikMD+7H4izSIWfIEYIC6+yBgvwka+tVU3JZ+6DYqAWCdh01Mo0gdkqVABk
+	z69i16Fsu0B05b/9evPTjsrPXac2fL0TY5TZUGJJK15uA6Zp4uZZzVXok86n/1oKHolTY1
+	UrkmncEXO4OkxEiiau2fbZwxW0q/Yqw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1753797159;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=T5UptxTlc7NV15QNmaQUOhxOZX0UPYQKqfHL7gIMJik=;
+	b=Y30teTyJHv1aRlrlTEZR0cVmdygViEie19/02UqXtJnHS2j4H6GezefvOkvFdGDLLQlq4D
+	dMNEnOuzQ/9F8eDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1EF6013A73;
+	Tue, 29 Jul 2025 13:52:39 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 9+xVBifSiGiJJwAAD6G6ig
+	(envelope-from <hare@suse.de>); Tue, 29 Jul 2025 13:52:39 +0000
+Message-ID: <568fbe41-e73e-41b9-b147-a5ef419a2251@suse.de>
+Date: Tue, 29 Jul 2025 15:52:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] mm/damon: add full LPAE support for memory monitoring
- above 4GB
-To: SeongJae Park <sj@kernel.org>
-CC: zuoze <zuoze1@huawei.com>, <akpm@linux-foundation.org>,
-	<damon@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>, <wangkefeng.wang@huawei.com>
-References: <20250726171616.53704-1-sj@kernel.org>
-From: Quanmin Yan <yanquanmin1@huawei.com>
-In-Reply-To: <20250726171616.53704-1-sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Subject: Re: [RFC] Disable auto_movable_ratio for selfhosted memmap
+To: Michal Hocko <mhocko@suse.com>
+Cc: David Hildenbrand <david@redhat.com>, Oscar Salvador <osalvador@suse.de>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Hannes Reinecke <hare@kernel.org>
+References: <aIc5XxgkbAwF6wqE@tiehlicka>
+ <2f24e725-cddb-41c5-ba87-783930efb2aa@redhat.com>
+ <aIc9DQ1PwsbiOQwc@tiehlicka>
+ <79919ace-9cd2-4600-9615-6dc26ba19e19@redhat.com>
+ <f859e5c3-7c96-4d97-a447-75070813450c@suse.de> <aId16W4EaqjANtKR@tiehlicka>
+ <3e88642f-3914-42b0-b864-4ad374b659b5@redhat.com>
+ <ac7add36-808d-4883-a09e-ef1bf6fd6834@suse.de> <aIiSEpQhWqPsvaST@tiehlicka>
+ <41526d97-b3bc-423b-87f4-7e0ec6cd8292@suse.de> <aIi3ao2PV8GrYtRA@tiehlicka>
+Content-Language: en-US
+From: Hannes Reinecke <hare@suse.de>
+In-Reply-To: <aIi3ao2PV8GrYtRA@tiehlicka>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.176.250]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- dggpemf200018.china.huawei.com (7.185.36.31)
-X-Rspamd-Queue-Id: CAD011C000F
-X-Stat-Signature: odf6gq7nkwu4stra9ocjwbm78yzaiuqy
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: D505420016
+X-Stat-Signature: tjcdxmgkhirbo3bcp5ipanzi1h8cxsq9
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1753797145-192906
-X-HE-Meta: U2FsdGVkX1+gWv3Rrx2QuBzpvGv4E66q+2WHwgERK/7Lppw4BDLs318JXaq6kjDV/dCm31PiWEZbpTdCQEtcpIs0mGBRUZh5vmioSpm+FV3Vakc3rXhaNEIyLZl3SK7BUcVIX0iYnjo6fnWcotdx5UcKTAgyAvLnmXloZS8Z3A5GkNIVoyjTv8IcQB5EaTR350zf71tViwIyYPMH/cjjkLQBxe5Hhk8GwdHWW2tXYqBhPOePk6MaXRJoNz3Dt16u944bWVUnjF+xS/n0QPnDCgfE7Pa2Mfr9CTSaDfd9LMIRpI1PjbmAgw7Ma+NHjjj4e/qaXQbpOg7dsjfcLcr1hzMFzpPHE4zFzq67uRNkOrk/2vvHLuU8q/eeYkjJzD7ow3AhRGULPgXZ1SGPFXRiDzJ/4QF+RiX3vv/jQ8nx/3upvBya6kRG7fmPptMkF6LhatLbOhVMhYqU3zENchQRzsDJEcQ0qrhs1EmCOSUKNmOQlVV65icm2Q6K21DfFDJkQLQ3BTcoWNT+Wq0f2iWy9lw0oW1PN2z9DOOTa8HutZaYJKx00rGGLHuujq2WIOzcOFe4Z2vMphsoT+HX4qTwrpdT+/5ld4MWt4BIBC+9+oSf07/OSBy2+/EHX8gwTdSBTYhRz0NmilUXmNNR6K7jIJrsul3cA378KQvVpPfd8xcvJGL0PSq37gLIpzPCg+QOAEU/SHUL5X5QP1DGuQ5Q7Gvw+CsSuPLC1HL9Hv2IEex3z/PvpN0juLGYBgOr1589O0SpZ1/xYP1WX3keM+gwRzJFYemXzOkquyDMAo2mfwRckP5IZHHAk8r4pXL+5JweXvFVH/fQOx9r8YspQiM9dJ+zN/Yk2Pbid3rcUv/u14mIme+bhWV0WjgTyfxCXFeM7FiUz9r1m1JyqUWOCBx2M3T8c69BcJwaS1mkEedkRyafHCw16K/xFwuR+eeUwgf7iQnatxCoBGUBnleWCyr
- fNTSwLWC
- 6vLJuz4lwnuljfAStg8gJrz+q9YE54vtYdLQzt791ApBYgbJTb7E/7U07xsnY3AsgGADV2ndtPBdUx7ZTIiByxuHRvLetgTeGgH3z5nLMwIfKneHDYKonXC3rP8ohZXJBSQRUi1x4b6EOFCr7rBLdlAxWUucEZ72Bn8hc2hJ0boo4ku2fK5pVTVk7fu2ylqCvocfL9mo9gxSRf+QvereYgR15OOa1FwWiJdSLE4eDfUUldTh/jDioJPoW2v73EfUS9UE6d7gQY33uaAM=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1753797160-270306
+X-HE-Meta: U2FsdGVkX1+Lrbej/tM8VWkefXfqdJ1Hzmp+Yv1BPiNgDJd41Zu2nkEr6W+rS180WzBs72qg9OU1s6mPSiMxNEW00S8ofa0nNJeWF276XHTunwhtrmLFNrr8ZrjNY5j18ujhFcEprZIdmVqXyJwzNAKDWphpD0GwMveN/qzf2BF+NukZUsAEEEeQu3HDbyP6UABvd0MBfjYyAqS1xvK7W38P2NYXeBqqtxUzM0oy/FLzXTul5HXDm+HKiFwFFYgzTutE7Hk6nE9sF3hgUMroHKBmd2YdREW33Om9LLJ/c7TfTtlK823SYlyZJJwWevfdRnaRkZGadrrDIN/TAU7Nn9HFwg3G0yAQf9ljrDlNGy5amjx6yMebnz4wZIFjxwbnzEZm3jcsbNa4NRG7kaGkWCDqgTV7QkxCvttrXNk8DCVYLdRd6wsIBNORkjE39rq3ONHF82s+KQpm4NopSANvFuB9qtN/VeDn8iuJc0qHjXnxQuf3PoQbMAjpgpgFg54Fnp+LhYqnIHaUmYoNIqKcoDxpmUNXnngi7ILfWt65484BdDVY/7U+LUYgV43yAfQiojc1U7AcQPXLnrkH9XAKS391fPcB6pr50n9vcXTGYz7HOQ967wsnKL7UBjwmvtuhBdjIfmDxAon91l48VMTaoUStnSC3RP0tPBQOH2NXSfmDVyOs6T/THSLh5eirprThAn5ubol6QK43frUjCY0tQ7i+X5sqX7uu4Neqa1T0XaqPq5CxjaJokzOaGD3qUlMWX+DLZh1IcwSAnVznwWMuH7GMlVCeUbGRLdSp5fjdHRKyWOYI4FMDSRyhI41+peXZNArnixz5z+CP9wTGfA/m9bSIisyixMwe3YfeTqVdezGrz7I314i86IlO+tOurSyA2DLF+NuYSh5dZztjjppRUmTlGdLzrfgAonmMVe5lnTJgDo6VJG+x2949wllAuHUmWrQygzRI0yfshPU89Gl
+ tEIzZ+lr
+ b1b2wDZcNkkNEjZ4399r3zApCGHFeEQfZMIkW7Rn4APZgV0ZCTRyWs2+iRHKQr2Pt6exHZM/rRtKlwwv5HPCzMxdR8qduZPe/J7PvNWuPidjqzyk3UW+CzGFa86HvQpGsPM9Sypm14eCTkUGr1FFCR/LFTqSaKi1xUl2UyTjs3jIk4r8Gnm6HuHhxtxC6bgzyf3ZugALo2jFoFB2cpd15jtHQ3P5jFzcQ6NqBcJ3DBom5Am01r9Icyc2uVo8lM6+kAYn35HcYCoxckVbXzO/BKNb176ZccqRF5PM7mLTeT0Rvt0/Hide4QkRTsmkv/yvYC/+iu9zH8UWQ8CSd2LqnGPRG6E2Luq3XiRFby0wfkqCcshQTij1y2+HlBQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,172 +144,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-在 2025/7/27 1:16, SeongJae Park 写道:
-> Hi Quanmin,
->
-> On Sat, 26 Jul 2025 11:14:19 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
->
->> 在 2025/7/26 4:22, SeongJae Park 写道:
->>> On Fri, 25 Jul 2025 11:15:22 +0800 zuoze <zuoze1@huawei.com> wrote:
->>>
->>>> 在 2025/4/23 1:43, SeongJae Park 写道:
->>>>> On Tue, 22 Apr 2025 19:50:11 +0800 zuoze <zuoze1@huawei.com> wrote:
+On 7/29/25 13:58, Michal Hocko wrote:
+> On Tue 29-07-25 11:33:58, Hannes Reinecke wrote:
+>> On 7/29/25 11:19, Michal Hocko wrote:
+>>> On Tue 29-07-25 09:24:37, Hannes Reinecke wrote:
+>>>> On 7/28/25 15:08, David Hildenbrand wrote:
+>>>>> On 28.07.25 15:06, Michal Hocko wrote:
+>>>>>> On Mon 28-07-25 11:37:46, Hannes Reinecke wrote:
+>>>>>>> On 7/28/25 11:10, David Hildenbrand wrote:
+>>>>>>> And to make matters worse, we have two competing user-space programs:
+>>>>>>> - udev
+>>>>>>> - daxctl
+>>>>>>> neither of which is (or can be made) aware of each other.
+>>>>>>> This leads to races and/or inconsistencies.
+>>>>>>
+>>>>>> Would it help if generic udev memory hotplug rule exclude anything that
+>>>>>> is dax backed? Is there a way to check for that? Sorry if this is a
+>>>>>> stupid question.
+>>>>> Parsing /proc/iomem, it's indicated as "System RAM (kmem)".
 >>>>>
->>>>> [...]
->>>>>> Thanks for the patches - I’ve noted the RFC series and user-space
->>>>>> updates. Apologies for the delay; I’ll prioritize reviewing these soon
->>>>>> to verify they meet the intended tracking goals. Appreciate your
->>>>>> patience.
->>>>> No worry.  Please take your time and let me know if there is anything I can
->>>>> help.
->>>>>
->>>>> I think we can improve the user-space tool support better for usability.  For
->>>>> example, it could find LPAE case, set addr_unit parameter, and convert
->>>>> user-input and output address ranges on its own.  But hopefully the current
->>>>> support allows simple tests of the kernel side change, and we could do such
->>>>> improvement after the kernel side change is made.
->>>>>
->>>>>
->>>> Hi SJ,
->>>>
->>>> Apologies for the delayed response. We've verified your patch in our
->>>> environment and confirmed it supports LPAE address monitoring.
->>> No worry, thank you for testing that :)
+>>>> I would rather do it the other way round, and make daxctl aware of
+>>>> udev. In the end, even 'daxctl' uses the sysfs interface to online
+>>>> memory, which really is the territory of udev and can easily be
+>>>> done via udev rules (for static configuration).
 >>>
->>>> However,
->>>> we observed some anomalies in the reclaim functionality. During code
->>>> review, we identified a few issues:
->>>>
->>>> The semantic meaning of damon_region changed after addr_unit was
->>>> introduced. The units in damon_addr_range may no longer represent bytes
->>>> directly.
->>> You're right, and this is an intended change.
+>>> udev doesn't really have any context what user space wants to do with
+>>> the memory and therefore how to online it. Therefore we have (arguably)
+>>> ugly hacks like auto onlining and movable_ration etc. daxctl can take
+>>> information from the admin directly and therfore it can do what is
+>>> needed without further hacks.
 >>>
->>>> The size returned by damon_sz_region() now requires multiplication by
->>>> addr_unit to get the actual byte count.
->>> Again, this is an intended change.  damon_sz_region() callers should aware this
->>> semantic and updated accordingly, if it could make a real problem otherwise.
->>> If you found such changes required cases that this patch series is missing,
->>> could you please list up?
->>>
->>>> Heavy usage of damon_sz_region() and DAMON_MIN_REGION likely requires
->>>> addr_unit-aware adjustments throughout the codebase. While this approach
->>>> works, it would involve considerable changes.
->>> It has been a while since I wrote this patch series, but at least while writing
->>> it, I didn't find such required changes.  Of course I should missed something,
->>> though.  As I mentioned above, could you please list such changes required
->>> parts that makes problem?  That would be helpful at finding the path forward.
->>>
->>>> What's your perspective on
->>>> how we should proceed?
->>> Let's see the list of required additional changes with why those are required
->>> (what problems can happen if such chadnges are not made), and discuss.
->> Hi SJ,
->>
->> Thank you for your email reply. Let's discuss the impacts introduced after
->> incorporating addr_unit. First of all, it's essential to clarify that the
->> definition of damon_addr_range (in damon_region) has changed, we will now use
->> damon_addr_range * addr_unit to calculate physical addresses.
->>
->> I've noticed some issues, in mm/damon/core.c:
->>
->>    damos_apply_scheme()
->>        ...
->>        unsigned long sz = damon_sz_region(r);  // the unit of 'sz' is no longer bytes.
->>        ...
->>        if (c->ops.apply_scheme)
->>            if (quota->esz && quota->charged_sz + sz > quota->esz)
->>                sz = ALIGN_DOWN(quota->esz - quota->charged_sz,
->>                        DAMON_MIN_REGION);  // the core issue lies here.
->>            ...
->>            quota->charged_sz += sz;    // note the units.
->>        ...
->>        update_stat:
->>            // 'sz' should be multiplied by addr_unit:
->>            damos_update_stat(s, sz, sz_applied, sz_ops_filter_passed);
->>
->> Currently, DAMON_MIN_REGION is defined as PAGE_SIZE, therefore aligning
->> sz downward to DAMON_MIN_REGION is likely unreasonable. Meanwhile, the unit
->> of sz in damos_quota is also not bytes, which necessitates updates to comments
->> and user documentation. Additionally, the calculation involving DAMON_MIN_REGION
->> requires reconsideration. Here are a few examples:
->>
->>    damos_skip_charged_region()
->>        ...
->>        sz_to_skip = ALIGN_DOWN(quota->charge_addr_from -
->>                        r->ar.start, DAMON_MIN_REGION);
->>        ...
->>        if (damon_sz_region(r) <= DAMON_MIN_REGION)
->>                        return true;
->>        sz_to_skip = DAMON_MIN_REGION;
->>
->>    damon_region_sz_limit()
->>          ...
->>        if (sz < DAMON_MIN_REGION)
->>            sz = DAMON_MIN_REGION;
-> Thank you for this kind and detailed explanation of the issue!  I understand
-> adopting addr_unit would make DAMON_MINREGION 'addr_unit * 4096' bytes, and it
-> is not a desired result when 'addr_unit' is large.  For example, if 'addr_unit'
-> is set as 4096, the access monitoring and operation schemes will work in only
->> 16 MiB granularity at the best.
->> Now I can think of two approaches, one is to keep sz in bytes, this requires
->> modifications to many other call sites that use these two functions (at least
->> passing the corresponding ctx->addr_unit. By the way, should we restrict the
->> input of addr_unit?):
->>
->>    damos_apply_scheme()
->>        ...
->>    -    unsigned long sz = damon_sz_region(r);
->>    +    unsigned long sz = damon_sz_region(r) * c->addr_unit;
->>        ...
->>    -    damon_split_region_at(t, r, sz);
->>    +    damon_split_region_at(t, r, sz / c->addr_unit);
->>
->> The second approach is to divide by addr_unit when applying DAMON_MIN_REGION,
->> and revert to byte units for statistics, this approach seems to involve
->> significant changes as well:
->>
->>    damos_apply_scheme()
->>        ...
->>        sz = ALIGN_DOWN(quota->esz - quota->charged_sz,
->>    -                    DAMON_MIN_REGION);
->>    +                    DAMON_MIN_REGION / c->addr_unit);
->>        ...
->>    update_stat:
->>    -    damos_update_stat(s, sz, sz_applied, sz_ops_filter_passed);
->>    +    damos_update_stat(s, sz, sz_applied * c->addr_unit, sz_ops_filter_passed);
->>
->> These are my observations. What's your perspective on how we should proceed? Looking
->> forward to your reply.
-> I think the second approach is better.  But I want to avoid changing every
-> DAMON_MIN_REGION usage.  What about changing DAMON_MIN_REGION as 'max(4096 /
-> addr_unit, 1)' instead?  Specifically, we can change DAMON_MIN_REGION from a
-> global macro value to per-context variable (a field of damon_ctx), and set it
-> accordingly when the parameters are set.
->
-> For stats, I think the users should aware of the fact DAMON is working with the
-> addr_unit, so they should multiply addr_unit to the stats to get bytes
-> information.  So, I think the stats update in kernel is not really required.
-> DAMON user-space tool may need to be updated accordingly, though.
->
-> I didn't take time to think about all corner cases, so I may missing something.
-> Please let me knwo if you find such missing things.
+>> Huh?
+>> I thought udev was _all_ about userspace preferences...
+>> We can easily have udev rules onlining memory with whatever policy
+>> the user want; the whole point of udev rules is that they are dynamic
+>> and can include policy decisions.
+> 
+> My experience with memory hotplug and udev doesn't match that. Udev
+> sees memory blocks showing up rather than understanding any concept of
+> what is the memory behind that. So any actual policy is rather hard to
+> define. You would need to backtrack what kind of memory blocks you are
+> seeing and what the initiator could have intended with them.
+> 
+> While this could work reasonably for regular RAM appearing to your
+> system asynchronously (e.g. physical memory plugged in or virtual system
+> getting more memory) when you always want to online it in a certain way
+> I suspect this falls short for synchronous daxctl like usecase where you
+> know what to do with that memory and you can operate on sysfs directly.
+> Udev just makes the life much more complicated for the later IMO.
 
-Hi SJ,
+Not disagreeing with that.
+Problem is that memory hotplug is tied to sysfs (and, with that, to
+udev) such that currently there is no way of _not_ sending uevents
+(and, consequently, udev interfering).
 
-Apologies for the delayed response to this email. Following your suggested method,
-I added implementation damon_ctx->min_region, and also uncovered additional
-issues specific to 32-bit platforms. I've prepared a patch series, which is
-currently under testing. I'll get back to you as soon as the verification is complete.
+We could (for any of the 'auto' modes) disable uevent generation
+via the dev_set_uevent_suppress() thingie.
+Or we could teach daxctl to wait for uevents after an action has
+been triggered.
 
-Thanks,
-Quanmin Yan
+But the current situation is really daft, requiring the user to move
+away udev rules in specific situations.
 
->
-> Thanks,
-> SJ
->
-> [...]
->
+Cheers,
+
+Hannes
+-- 
+Dr. Hannes Reinecke                  Kernel Storage Architect
+hare@suse.de                                +49 911 74053 688
+SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
+HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
 
