@@ -2,147 +2,103 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E6D2EC87FC9
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 08:28:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E6ECC83F26
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 08:40:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B10B8E0002; Tue, 29 Jul 2025 04:28:45 -0400 (EDT)
+	id B60596B008A; Tue, 29 Jul 2025 04:40:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 861F18E0001; Tue, 29 Jul 2025 04:28:45 -0400 (EDT)
+	id B35A86B0092; Tue, 29 Jul 2025 04:40:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 750518E0002; Tue, 29 Jul 2025 04:28:45 -0400 (EDT)
+	id A727F6B0093; Tue, 29 Jul 2025 04:40:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 650718E0001
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 04:28:45 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D6F0E56A24
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 08:28:44 +0000 (UTC)
-X-FDA: 83716626168.19.18B4EB6
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 39BAA40007
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 08:28:43 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XKsDX+KR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753777723; a=rsa-sha256;
-	cv=none;
-	b=xvaacoJ0LYUB1/67m5dUmWdnmWyFIfGP4lzoR8SBWhdEf9HVyEk817PldFg+j2dFbQVzik
-	O6Q4qM3xXImUwE5IHOS6pLYXxPhIP6uffXAZTkBuxKNxF/ihQmz4iKPeg2+EF0ny07Ye5A
-	94of3ibInbZo/T9o4cFu1mtUTDGNONk=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XKsDX+KR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 987AC6B008A
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 04:40:02 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 44BF71D9234
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 08:40:02 +0000 (UTC)
+X-FDA: 83716654644.08.2AC823C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id AE2511C0009
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 08:40:00 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M5F0RFaA;
+	spf=pass (imf21.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753777723;
+	s=arc-20220608; t=1753778400;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n85pmn0u6Z+c4iXgUXsS+36jAK4nq/BZyup+CKlkXI4=;
-	b=QQtx3HTgsOxz9Izi5+0ck2znXxyovgvTfTbjPu1doXIyC8ex/g38/YLPfyKBVE591hcYL9
-	JND8epQo+wxLDrawott9qT4BrhURqHvJxyW81RD5ZPAD787TjkkGMEKQkPOcw0GqzpQRzx
-	uN0AUNPsjn3n3L5aSONg8l5JcX/fUOs=
+	bh=X6zU2eAU20NxxNc2u7uKj/gmIeCNNp+9/97JxBndC/Q=;
+	b=25y4HOnz0Do4qAH9jv/jkTTYw8CYvLD75X2bKYzRcFttzVD56M8gO/5v5+A0WwXczl3RuH
+	oOOl3PmtVI/tNaMEkAao93hDl9/X9PsjMAIb0qT2Z0OmOxy/WynSkvlWFBezQpdHZZmGMv
+	MjoSWVnCc6TBKQuJARlpKfvA5ip0/RM=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M5F0RFaA;
+	spf=pass (imf21.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753778400; a=rsa-sha256;
+	cv=none;
+	b=oHIvLK520FrxD8fwTICs2uXId3BJoAJAgw+UGyyVW7YqS4dJ7l2jnsebWCmunJ+CrIYGzD
+	zPNxA+vCwj0MQL9XvXO6PDAILvmTddqrvB2loxGroj8EKhjskd7Wtsq2HcFh3jnWAOC/+R
+	Ecp9wP9ATot2LFOqSfXpUDkUVLf1Kl4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 90E9A5C5B7A;
-	Tue, 29 Jul 2025 08:28:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D23CC4CEEF;
-	Tue, 29 Jul 2025 08:28:17 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id F0ABD601EC;
+	Tue, 29 Jul 2025 08:39:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8928C4CEEF;
+	Tue, 29 Jul 2025 08:39:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753777721;
-	bh=P+RKJolWrlScvE03/wuLDUcQEOrpyiH5p1dHdVtXVqk=;
+	s=k20201202; t=1753778399;
+	bh=OwIYfsDVT+NrTf9pe9SqTHnHnwWkQ93t/xB2WubT90E=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XKsDX+KRLzAFuf1kLKdAmDj9dggFsRzjLIQ05RDsi+xPOxdHLALkhNkurvUosgFfb
-	 ftJlhmN/pjoAT4/au8qTUftIBkqDaJhrJ9SmRZi3Ve7JVy7Eg31DCCYSekcyfaaJNQ
-	 JbMb4DIBM9PPiwPI8OZcRcytRu3/nqoGHVDzvP77YimImLNlQUbkZujH5O0JN2T+nM
-	 BtsmRo4XDjlCw0KnWSDM6rk+MZk6QP0uSqf7QW3w7lmJVVGYAkgz4EWZXggXy7tATT
-	 HSfQX1ig9jgw3cwDIYjp+vOlzwygxMw47ojEswZF9ZVaUkapQqAqU4ht2sNRBTvD+l
-	 uIGHhOPpyE+nA==
-Date: Tue, 29 Jul 2025 11:28:14 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Kees Cook <kees@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
-	Michal Wilczynski <michal.wilczynski@intel.com>,
-	Juergen Gross <jgross@suse.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Roger Pau Monne <roger.pau@citrix.com>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Usama Arif <usama.arif@bytedance.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Thomas Huth <thuth@redhat.com>, Brian Gerst <brgerst@gmail.com>,
-	kvm@vger.kernel.org, ibm-acpi-devel@lists.sourceforge.net,
-	platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-	linux-mm@kvack.org, Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Gavin Shan <gshan@redhat.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	James Morse <james.morse@arm.com>,
-	Oza Pawandeep <quic_poza@quicinc.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Hans de Goede <hansg@kernel.org>,
-	"Kirill A. Shutemov" <kas@kernel.org>,
-	Marco Elver <elver@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Hou Wenlong <houwenlong.hwl@antgroup.com>,
+	b=M5F0RFaAnIV1InpC5Z2ni72wX3Gt2VxXzbhksr3xOJ1TeTRCWQ0u8eCBRDawTegSU
+	 9WeyNAVLruaM4v0e5fxxVTwWe3R75xM9uuxh2YRgjFTScwkMi8pG+5t6Mg20IKrxGB
+	 NGcLT9dJY0mpUgWIP5dXln1PJIrr26Ba2JLQhTz2o4sB6ZuU1tih414TMIIriKtVb8
+	 oEvkOHh7OxqhOGrJbvZiu70ODXucDPABU9psK1pm3OKH5psLmA6+IVsT7RRXq5S+Ju
+	 8oo9d4NqyKlt/4eREWPutcfL1Jy1y7Tg38lMaB21tJigLyzQrhrUCKCq9BrO4s6YFz
+	 3z5QK7qlk7Drw==
+Date: Tue, 29 Jul 2025 11:39:54 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Alex Williamson <alex.williamson@redhat.com>
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Christoph Hellwig <hch@lst.de>, Jason Gunthorpe <jgg@nvidia.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>, Baoquan He <bhe@redhat.com>,
-	Alexander Graf <graf@amazon.com>,
-	Changyuan Lyu <changyuanl@google.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Jan Beulich <jbeulich@suse.com>, Boqun Feng <boqun.feng@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Bibo Mao <maobibo@loongson.cn>, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, kasan-dev@googlegroups.com,
-	linux-kbuild@vger.kernel.org, linux-hardening@vger.kernel.org,
-	kexec@lists.infradead.org, linux-security-module@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: Re: [PATCH v4 2/4] x86: Handle KCOV __init vs inline mismatches
-Message-ID: <aIiGHmw8IJb9vsM5@kernel.org>
-References: <20250724054419.it.405-kees@kernel.org>
- <20250724055029.3623499-2-kees@kernel.org>
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
+	Jens Axboe <axboe@kernel.dk>,
+	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+	Joerg Roedel <joro@8bytes.org>, kvm@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH 09/10] vfio/pci: Share the core device pointer while
+ invoking feature functions
+Message-ID: <20250729083954.GE402218@unreal>
+References: <cover.1753274085.git.leonro@nvidia.com>
+ <19f71a0f4d1a5db8c712cb4d094ccf2f10dc22c5.1753274085.git.leonro@nvidia.com>
+ <20250728145553.53e94d49.alex.williamson@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250724055029.3623499-2-kees@kernel.org>
-X-Rspamd-Queue-Id: 39BAA40007
-X-Stat-Signature: din9hz4ghx3mdiz94ejjegtkkmae6zjg
+In-Reply-To: <20250728145553.53e94d49.alex.williamson@redhat.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1753777723-201652
-X-HE-Meta: U2FsdGVkX1+67XrBv5+88aQ9jCqIG7+R9bbodUmnvWsGpCqLQaG2LpH8VqirFM4vPe+mvNzLx5JEmoX0yfJ5DKZN7Z0vMq6ZPqQZBflkBldyOlGYuH5QoarkmIFfC8fZMrMNDRBNCzWa57IqW+S6eiY2QbftjFfkL2sFCmLS8+tFzesHbYxlU0Cj6Y9T+YdTfg4J3zJKGhZdOSsSJXHE/5MAnCR3ah4iONsI+QWSh1ijDAl7KtjG5zgcdSx+xde72ft0knbaxmCMpYnW0h43zXT+DvzSPqOaMr5F+ZJZo7folHRi5uVNcNpe44teS8mA3GVqEOKROgVLQDIhaq3lhVkkVmcB4oVooa8hrpVSdZtkB2oWU0h47sFBTuKKVMdREXuE7+xGD2jA3mm66cc/KsSo5UjLpPLUS1T0ByNWYrKryHsobvD7M3QPsN6CE0Bpe6cO8RUIXgaBwCSVXP2pVdxqNsMkRvS5oksA5gT76SxLaKi2O20vf45NG8+kGfGgcJqbu08ZqLJhsQxSrnTvLZ37sw/lE1r38NUxKu9pHnXfaimv4U3qUB2JL1fI6QyOW0D4bNRQWt3NWYHtqWNLCESHcd6CJ2yP0je68rLrc/QeR3i/ZRf0ay40bMSV2b6KWUXrpjyu99vrLlEAR+oQg8rHxjO1C1Z7n+EqCcs8VmW1Etek4dvh+1baAwb4mcke1MvI+6zieAjFZuNQpnjcarQRbBAyQZMa90XW1/doxS9QQLL0crwYJt45BRfF9y6YEdMTBEfVhFG1ewL0pISVPY2dC/Eq+LoEhgclzRht82yAC1ivyGDePKrYdD8IVGwZAYACn3Dvxaestmad2Fr/ZALEG+auwlKMNtw3wnHaowRiRpLrqjS+rELQzJC23T5jx6pYZN8ZQ5TW5GoQsX5KMYf3eKVRh8oCL+5HmiqeEgghiRoHoDXI9Gfq6ktzT+JC9dAbm15mLtn/vbSZnz7
- 5gvFIqYf
- a+mASeEr7K3/ppDA+2pCtuAjxZts8DpiJWM+L43r32Yn9jvZUYA8l/j/v7NeJAtBpj9xe14yNQKf108ObqOKgb8V7ruHXCDbYU68PAea9Qc0xqqOpZtos62rT1vKE2+Ic7v3lcuGMHLJedXfnjhhh/thb6U9tVgrObGsglMfE02vJsEFccN62oIcXbr6zJIBfM7kUbmz9zgWI233f7W5pd4WvLgU3V8BARW1N2c6kYys5SGO2L0Yw7821L30t1n9iL3QuuXONyq4hWkTmW8b8Alg9V7j2NrB3moBu41v9sMu4dluRlRuGZo1zurUshFfvyYOACN01JX7lRO7umUMn6dc7ZTtqvnxwUngs1kgxfFSXwmtmEMl3dswZ/T8uEysjt5rM4uAqVDiwwGpO/n8/0b1pmWufklml/Lr0
+X-Rspamd-Queue-Id: AE2511C0009
+X-Rspamd-Server: rspam06
+X-Stat-Signature: wdjgmf9eesf7f9opkgrxswr3g43akr66
+X-HE-Tag: 1753778400-650571
+X-HE-Meta: U2FsdGVkX18AxTkVFZ+zjsLj5cfEfdvtBJ27E/vHZ9t2EfI7dUI1ijQFTA9CmKNYrnODeyoQ5a0f/ZhPxLN4hPXZd75T6jG4MkmrS/Q1663hNOMJKZiBJD5TT3PIOIcwhyzhMjwpj+d57KfklSuuVo9+MZD5kSpsSG8Lg5GEF27XipkNZlUFJiib0ZfKIlnAJu2PuDAIX/5WwMiCtWn3v7qrXkwKluy4s4AbVEdOrag1HD0mKuGpSWYHQgEmMnfSJAgqUJx/NzrvSDa97kHn4fk3PsJ2HUa+UT+EfbN6AJJOVpkTeQT9u2/TKDtNv0+1MTEPOKO0cD8+7n1YUiZIPxphxq1DGdorIjPp1w6Y+kxXsi7B0n6/iLXQfTttq2NiLfQF0/AJ1EaIOM91sMidOEGFHxcyU7ypHIFriD76pNnAfjvXic1AOpeMEqzNh0iluo1ovE2ArAe+rl95H5+vc8GMvXcop3YNDckTRn2J51luPpkdp77jOn32zqhxhd0hCJA+sULpx0BOM2c+3Aq6t6A2qok9jC/VkTm1eFbLfEp3poIqHykncc6nxqFaKTtSUDQrgoXJEq9Fo/e/0J3EGDotC5pmzBhYGP/3xCC7pKhhnGwy26d0LNPjEheAl3p78MIaJK2BFpIQBnlOW6m+24b/PitrGk20H05tt9Wve1M0D86y9eDacWsLq59nbkgE5XBjNj5jsjOO4OaWqVu8WV0AogOZCk8iiKqelfIaexThjElOYM78xHy3bHYjYF01vVIZnqvWPrqi0kPQWUb0kZB2kA8qstk0loy1zaEuGLF3qViLolQzyfMFNTIdFuG9arfufiJpIGDsMTHjyo9v2HkcF7h5oj5VbVO7ZqnnJCzQuTgnF4dJHKmj212wTwoXl5GWt8lxPfh5XxaK8Ot7nj8JrE/36vFQxpZYmFykNPZYfkfDHzxjULynYm0nX5QUyXCxWG2gJxM9OSIGFWk
+ rqBYnvqP
+ fEtaLavkdr5vizFssxG0fvI5TYTskaHKU4CwRYeXBoaljA+ArX5a+3ba04niczBfQj+7CjvfxYaSn4QlJCdEdA5w08HYymu4RsJ4Q9ZidBCvjVc9+cXcR2uuntr1hkVFGfFPUGHOIuJnaUU6drSieil3nE63UCDHBBHrPyGcPwm/zUML1/C1EiGaTMuwQ9CQ2ILk0wFKjcVlDyDoEMI7lccWXr+IjQCYwMh0LIRWk5yw5stB4PgdiimlgSVEwfVzECRmCgTuxmc/zoGS8IBLgQfvUqbp2R/1dP1ruyqffmTipCxBPPnQ7F5Dyo5PpBbuxNQ7D
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -151,39 +107,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 23, 2025 at 10:50:26PM -0700, Kees Cook wrote:
-> GCC appears to have kind of fragile inlining heuristics, in the
-> sense that it can change whether or not it inlines something based on
-> optimizations. It looks like the kcov instrumentation being added (or in
-> this case, removed) from a function changes the optimization results,
-> and some functions marked "inline" are _not_ inlined. In that case,
-> we end up with __init code calling a function not marked __init, and we
-> get the build warnings I'm trying to eliminate in the coming patch that
-> adds __no_sanitize_coverage to __init functions:
+On Mon, Jul 28, 2025 at 02:55:53PM -0600, Alex Williamson wrote:
+> On Wed, 23 Jul 2025 16:00:10 +0300
+> Leon Romanovsky <leon@kernel.org> wrote:
 > 
-> WARNING: modpost: vmlinux: section mismatch in reference: xbc_exit+0x8 (section: .text.unlikely) -> _xbc_exit (section: .init.text)
-> WARNING: modpost: vmlinux: section mismatch in reference: real_mode_size_needed+0x15 (section: .text.unlikely) -> real_mode_blob_end (section: .init.data)
-> WARNING: modpost: vmlinux: section mismatch in reference: __set_percpu_decrypted+0x16 (section: .text.unlikely) -> early_set_memory_decrypted (section: .init.text)
-> WARNING: modpost: vmlinux: section mismatch in reference: memblock_alloc_from+0x26 (section: .text.unlikely) -> memblock_alloc_try_nid (section: .init.text)
-> WARNING: modpost: vmlinux: section mismatch in reference: acpi_arch_set_root_pointer+0xc (section: .text.unlikely) -> x86_init (section: .init.data)
-> WARNING: modpost: vmlinux: section mismatch in reference: acpi_arch_get_root_pointer+0x8 (section: .text.unlikely) -> x86_init (section: .init.data)
-> WARNING: modpost: vmlinux: section mismatch in reference: efi_config_table_is_usable+0x16 (section: .text.unlikely) -> xen_efi_config_table_is_usable (section: .init.text)
-> 
-> This problem is somewhat fragile (though using either __always_inline
-> or __init will deterministically solve it), but we've tripped over
-> this before with GCC and the solution has usually been to just use
-> __always_inline and move on.
-> 
-> For x86 this means forcing several functions to be inline with
-> __always_inline.
-> 
-> Signed-off-by: Kees Cook <kees@kernel.org>
+> > From: Vivek Kasireddy <vivek.kasireddy@intel.com>
+> > 
+> > There is no need to share the main device pointer (struct vfio_device *)
+> > with all the feature functions as they only need the core device
+> > pointer. Therefore, extract the core device pointer once in the
+> > caller (vfio_pci_core_ioctl_feature) and share it instead.
+> > 
+> > Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+> > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> > ---
+> >  drivers/vfio/pci/vfio_pci_core.c | 30 +++++++++++++-----------------
+> >  1 file changed, 13 insertions(+), 17 deletions(-)
 
-For memblock bit:
+<...>
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> >  static int vfio_pci_core_pm_entry_with_wakeup(
+> > -	struct vfio_device *device, u32 flags,
+> > +	struct vfio_pci_core_device *vdev, u32 flags,
+> >  	struct vfio_device_low_power_entry_with_wakeup __user *arg,
+> >  	size_t argsz)
+> 
+> I'm tempted to fix the line wrapping here, but I think this patch
+> stands on its own.  Even if it's rather trivial, it makes sense to
+> consolidate and standardize on the vfio_pci_core_device getting passed
+> around within vfio_pci_core.c.  Any reason not to split this off?
 
--- 
-Sincerely yours,
-Mike.
+No problem, I will send it separately after merge window ends.
+
+Thanks
+
+> Thanks,
+> 
+> Alex
 
