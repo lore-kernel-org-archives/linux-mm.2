@@ -2,113 +2,126 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 90CC3C87FC9
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 20:54:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B6096C87FCA
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 22:13:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B40326B007B; Tue, 29 Jul 2025 16:54:45 -0400 (EDT)
+	id DF8616B007B; Tue, 29 Jul 2025 18:13:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF1586B0089; Tue, 29 Jul 2025 16:54:45 -0400 (EDT)
+	id DA91E6B0089; Tue, 29 Jul 2025 18:13:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DFF96B008A; Tue, 29 Jul 2025 16:54:45 -0400 (EDT)
+	id C97916B008A; Tue, 29 Jul 2025 18:13:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8DC016B007B
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 16:54:45 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EF8AD1D9348
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 20:54:44 +0000 (UTC)
-X-FDA: 83718506088.25.D30C514
-Received: from ale.deltatee.com (ale.deltatee.com [204.191.154.188])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 97B40140002
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 20:54:42 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=deltatee.com header.s=20200525 header.b=ShHf+ekc;
-	dmarc=pass (policy=quarantine) header.from=deltatee.com;
-	spf=pass (imf26.hostedemail.com: domain of logang@deltatee.com designates 204.191.154.188 as permitted sender) smtp.mailfrom=logang@deltatee.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753822483; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B982D6B007B
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 18:13:56 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3CB5014026F
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 22:13:56 +0000 (UTC)
+X-FDA: 83718705672.15.BE3065C
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 62ABB8000B
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 22:13:54 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AjnndyAY;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753827234; a=rsa-sha256;
 	cv=none;
-	b=F+KWUTE/V8wZosEDkbNLuCg6IMVKEPh4yLpsQ6KmSGRh8AtsMczvjkoRiBOEFXkTQRPYGH
-	O9sFO5gxRjWWTUfFtQLmhyMHO7Z6YJil7bzrfw53Sa32qZuUc0qw5ZbM57+Y8j/zNId2kH
-	DxaEESmgV1dgpJbTdFnKGI72lauf1g4=
+	b=fXT17PluW2yUobS2Pi21PQCjYd9vuN1uRUmJVFbl7J1TyKal73TlyPueOYFp1AryVKsIF8
+	iVqaaIgCKiouOihbgrapiIdAFAIxPHvZdzulhpJgLVoEAXcYDWHHAThiYNHYWt4t9+l1Sm
+	gJayVAC0WnlxsInjCDyklSi7vpAqs8A=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=deltatee.com header.s=20200525 header.b=ShHf+ekc;
-	dmarc=pass (policy=quarantine) header.from=deltatee.com;
-	spf=pass (imf26.hostedemail.com: domain of logang@deltatee.com designates 204.191.154.188 as permitted sender) smtp.mailfrom=logang@deltatee.com
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AjnndyAY;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753822483;
+	s=arc-20220608; t=1753827234;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NNh1yThG7TvPWKpLvY5OC7tLgkYClB2Gxhne1Vp0HTw=;
-	b=BCIlw4RQQ0E7DKKkiA96tZeBnAe13frb6ihWHU8LxuSKGb+rj4izHoXxcssDgHkXrYlcjy
-	WdHJaIF0NrNUOEtNMXV3q8N6+L6HfhmFtXMMNq8pMTlBUnnetBNxPy+euZK8dwRKu3TQ03
-	bJuyAirGJkK2fSY2I24Natn/Bbyn0VQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=deltatee.com; s=20200525; h=Subject:In-Reply-To:References:Cc:To:From:
-	MIME-Version:Date:Message-ID:content-disposition;
-	bh=NNh1yThG7TvPWKpLvY5OC7tLgkYClB2Gxhne1Vp0HTw=; b=ShHf+ekceHcINuu8D0K30j3qUO
-	L9xqTvYP9Zh8bk//ApqFzejUahb6bACPQNlM5iV2A1IRyuDGPfzEQSqmXhx/bf9dL9cTxYDN4p1dO
-	50kSae/x3VuYLc4DSVcE7A32AkN9a8vnc7cWq76JX7ZFC29ItBPasnUx2PUIOypT5NvQJIqqQpb+A
-	hKS/mcRzJw9NmBzbYunfCu5/y6lbCyBnLxF5fuWkORd2HDquxo3R8hxzx9e/Jxu7yv1HNrpU9R5TP
-	HOqWZkyevVjQIYp4dmyfA+4gv+aeKblKfLpxMhglWKNR2gAcipr0qNsWYlfNjGHBFoQ3Nad1bjaCo
-	0fckrAUw==;
-Received: from guinness.priv.deltatee.com ([172.16.1.162])
-	by ale.deltatee.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96)
-	(envelope-from <logang@deltatee.com>)
-	id 1ugrL8-009DTi-1i;
-	Tue, 29 Jul 2025 14:54:27 -0600
-Message-ID: <f332e2b9-151f-49ca-ac0c-8c9494c38027@deltatee.com>
-Date: Tue, 29 Jul 2025 14:54:13 -0600
+	bh=k4TdMm0dqbyPQgLDNL4WQ//dsNOz2sMfofhnU8OFQgg=;
+	b=onyI2lvtgpIw+wc+r2Vp7N1p5zVJ0BrTfF0KVsloKv+5apz7gPs3/RKwgjOlSgrt6ZX7mB
+	4ErQQLrxip6RqCyXjhiBwfAUem7fK8KoV2JWXiOXKpIShE5MddZd3Py3k5E49B6CBZ6UFA
+	UFvWPKEWJwMLSB3RjFzOUlnnSewfC/I=
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-45610582d07so39406855e9.0
+        for <linux-mm@kvack.org>; Tue, 29 Jul 2025 15:13:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753827233; x=1754432033; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=k4TdMm0dqbyPQgLDNL4WQ//dsNOz2sMfofhnU8OFQgg=;
+        b=AjnndyAYfotMw+JFfp4bsT903PkBKQWcQ6ccsgkz1XjyZqIrK3CZazlnuJy4lC+K6t
+         hXcX6gj8IMrmeSpweos2lsF5QDEpcekctHSmpQYBs0jiE0Srnsm02IiOEPv4wzVMXb7I
+         az8nOZ5drv86JJM4TpLZ06X2vJWfD+efQsVnAyez6avIciE07DM9H4hJxPzNCg085gfR
+         9EhtAKkDUF5v/vNhmB7aU5vgE2ayYkTszszYapq9ZfQAXYgJirHjEq1DdSPB+dRPBmP5
+         kKf8/eu4x5ycqaFDcedOuBz0xKGYh6lldi9ZRrZz5mhReR8gNaHiOqFwjZEjhZyYAxWI
+         Y2cw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753827233; x=1754432033;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=k4TdMm0dqbyPQgLDNL4WQ//dsNOz2sMfofhnU8OFQgg=;
+        b=msg1OiAeXU9a97Y6jUV6dGBa+GpQ2UzLaeehcfgJcP3o+UODL9tjTGe3Kyywb5jhDn
+         ISRlFxdLXiXP8m9inHhSvtBEXTs4G6XhY0zYN6ef2VJXaN0BLt40tNeuFmTEn2ewd0yg
+         hj46QV+YWAFm2sx60/jebbyLPsEb6SQMZjdFd8EFOZ6ULG+l2H/LLVg2iIW5a/ZbMcw/
+         +KsRqxACm+ZEowbRE7Bvglp/cgu+VUhRf44N7yW1pp6wzC63LjsUWQL7rWoEAuT3nOIE
+         uwWHsXEmuIwPlf4Rgl8AsK2PQNzPbKiNwDXNra1hdr3uGAd2tH3lHufjkYWg2gUELQkE
+         kJMA==
+X-Forwarded-Encrypted: i=1; AJvYcCX7TYgDKW5qiPLeVuwYOgH0T12B/Oe/H+54baZeGg7WFhfbTCspyOncSCvq2p/Ve913dmva4BcXPQ==@kvack.org
+X-Gm-Message-State: AOJu0Yyy7tfhky4ac7m99WjQq34GOJYLDV/lseROyHiM6eG1xoQ9gMZf
+	jNlndK6MahNO+EAYjpnJ9D0+bHt5VNlETqY9Y+8vuSXxelRNVVHqh3nN
+X-Gm-Gg: ASbGncvNnxtvcdJX7RGkQaBTX7X/m+xtURncgJaDn5rfL3FF4ekIRBIlnEJdncRS44n
+	eLiqHDgIy/zSkZWNiJxsVtPbSnuQybIhfYN5IzdRKrdouqw3zmoTZ9hC+3TraJmdvC8DxjdzPrN
+	t9OTXKLNXWe91Re35FXzvSRIHwhj42+5060SZbEs6YWWvmylg0QPRYsxf0D3xu3iCWhnlPxFpIX
+	83jQcxAJbWD9dQQTJ29ql3IX3PLW0kG0OwwGviN3VOZDDqBfJTL8yQvsPJ+fi23G7YdHuVpTGm4
+	3QLhpjxGD3cc0IjoKKL21rPuwEXsKCj4HU2o4f5fsi7sRzfE9yhQUvL964+8iybQauqcbf7PwVw
+	zNsofid+AqHB32p4pUWkYGl6Q9fF/mH9zJDnf0eZvHOfT+ppTGkrK1EhJ0oMVKkWnEG/HSWo5UL
+	rmEPcb2ffId8kShePpIPUC
+X-Google-Smtp-Source: AGHT+IEeWIQxoNPjyhb0qgajHm83bwS2o4UYVKQz54yvj8B5BNWBgnOWxAGCs5O9lSHAl/LE7QHulA==
+X-Received: by 2002:a05:600c:1d22:b0:453:23fe:ca86 with SMTP id 5b1f17b1804b1-45892b95320mr11780725e9.4.1753827232385;
+        Tue, 29 Jul 2025 15:13:52 -0700 (PDT)
+Received: from ?IPV6:2a02:6b6f:e759:7e00:8b4:7c1f:c64:2a4? ([2a02:6b6f:e759:7e00:8b4:7c1f:c64:2a4])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458953778c9sm2629375e9.14.2025.07.29.15.13.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 29 Jul 2025 15:13:51 -0700 (PDT)
+Message-ID: <4dc95e54-e0ef-4919-973a-748845897ef9@gmail.com>
+Date: Tue, 29 Jul 2025 23:13:50 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Logan Gunthorpe <logang@deltatee.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Leon Romanovsky <leon@kernel.org>, Christoph Hellwig <hch@lst.de>,
- Alex Williamson <alex.williamson@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
- Jens Axboe <axboe@kernel.dk>, =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?=
- <jglisse@redhat.com>, Joerg Roedel <joro@8bytes.org>, kvm@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org, linux-block@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- linux-mm@kvack.org, linux-pci@vger.kernel.org,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Robin Murphy <robin.murphy@arm.com>, Sumit Semwal <sumit.semwal@linaro.org>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>, Will Deacon <will@kernel.org>
-References: <cover.1753274085.git.leonro@nvidia.com>
- <82e62eb59afcd39b68ae143573d5ed113a92344e.1753274085.git.leonro@nvidia.com>
- <20250724080313.GA31887@lst.de> <20250724081321.GT402218@unreal>
- <b32ae619-6c4a-46fc-a368-6ad4e245d581@deltatee.com>
- <20250727190514.GG7551@nvidia.com>
- <d69e0d74-285e-4cde-a2e4-a803accfa9e1@deltatee.com>
- <20250728164136.GD402218@unreal>
- <d3c8c573-f201-4450-9400-cc3ccafd2c04@deltatee.com>
- <20250728231107.GE36037@nvidia.com>
-Content-Language: en-CA
-In-Reply-To: <20250728231107.GE36037@nvidia.com>
+Subject: Re: [PATCH 4/5] selftests: prctl: introduce tests for disabling THPs
+ completely
+To: David Hildenbrand <david@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Cc: linux-fsdevel@vger.kernel.org, corbet@lwn.net, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org, baohua@kernel.org,
+ shakeel.butt@linux.dev, riel@surriel.com, ziy@nvidia.com,
+ laoar.shao@gmail.com, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
+ npache@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ ryan.roberts@arm.com, vbabka@suse.cz, jannh@google.com,
+ Arnd Bergmann <arnd@arndb.de>, sj@kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, kernel-team@meta.com
+References: <20250725162258.1043176-1-usamaarif642@gmail.com>
+ <20250725162258.1043176-5-usamaarif642@gmail.com>
+ <b9c72ab9-9687-4953-adfe-0a588a6dd0f7@redhat.com>
+Content-Language: en-US
+From: Usama Arif <usamaarif642@gmail.com>
+In-Reply-To: <b9c72ab9-9687-4953-adfe-0a588a6dd0f7@redhat.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 172.16.1.162
-X-SA-Exim-Rcpt-To: jgg@nvidia.com, leon@kernel.org, hch@lst.de, alex.williamson@redhat.com, akpm@linux-foundation.org, bhelgaas@google.com, christian.koenig@amd.com, dri-devel@lists.freedesktop.org, iommu@lists.linux.dev, axboe@kernel.dk, jglisse@redhat.com, joro@8bytes.org, kvm@vger.kernel.org, linaro-mm-sig@lists.linaro.org, linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org, m.szyprowski@samsung.com, robin.murphy@arm.com, sumit.semwal@linaro.org, vivek.kasireddy@intel.com, will@kernel.org
-X-SA-Exim-Mail-From: logang@deltatee.com
-Subject: Re: [PATCH 05/10] PCI/P2PDMA: Export pci_p2pdma_map_type() function
-X-SA-Exim-Version: 4.2.1 (built Wed, 06 Jul 2022 17:57:39 +0000)
-X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 97B40140002
-X-Stat-Signature: p1cofge3whoi5p35gqj89tpt7tkcn1aw
+X-Rspamd-Queue-Id: 62ABB8000B
+X-Stat-Signature: 9q3y7ffhxdsskpz7y9xu8pnm1qkk9w8n
 X-Rspam-User: 
-X-HE-Tag: 1753822482-655383
-X-HE-Meta: U2FsdGVkX18KMWK0zzmpp1bQvyJQkpjHu4Im+wTkJNcStwCem13rCaT/srCr4vrNB5JuJFw18EdDJoIUDuwROC55xbsS/qb9twB7aEwbQc9SNScb1Sny7KyFVv7WUMW8YAm4jXzg+gkHq5OmmsgulwVGJ1814FzBWT04ryEMARSUOohbVsWRxuCq1f/pUF4P3YXKSkyYJyT4e9U+gYCkfiyJCdx1RJ+5sBCo1SPCXOeZ3RxANXgrsYgao5JNqOEC8uXzYLbq8d31vMZHYL+/DsluL+/zlQ6fBgziuHbvNJEZX3yhrP8LD2Ziekyxr6tEg5ZmhQ5XL9vmTPmfi0Gqdj1TvHyFaUpRt1lEhU5KND/LYatoSVmMf9sP8ehsiy2/hDoUjRz5+0mKdJzidVOJ94x3AsYfHPQvd4JwXjm9fanwZRVZexceXJ9xBMCoZIxwKir4pffGKlGLbNqABG1BN+YJHo8F4bBEMq7yGv/qk3yIaIjrXDVcOYAvbgiyaJdLNdGRNM2Ys/85WKwn+UAF66jo/aXcqYup1oqcXG0+QCGCl29r5yNuLgNNG35ZcxwekLkjEWfCLDlg3ZOoMIWHo32NMklSvcJvdm7VlpmE41qV1/K0uROgYk+kMWTtE8ehE/ZvYsBQKqb563fqpRE0ELlpQMZgjqS2nY/sr2dav0wSG1JEvsaJWF9wD63lyhCJGXi0XAhh2IYBfxTd6lh7rtRPTKgPml8xV5OoOBxIkWjtqYgJASSnSyQWo37DF5BN7Uy4ihplIbExAjR2yKsjO8DE1/pKAMcZX2A/g4PqJWs0awAiMo1xgEkqWoKiM+bmzDxOaHiwUNmNCQEqKq4YxDL10OMEL9ckfDOPBHCuOy6KuDKl7K3oyT0h6ivsh9ZbjgAwNlL1Wx41axQG7OddvXKWqo4nmIkDlxT/3uQSE6t0EFl6M7ZAoQu1opPsQEt7UCOOJazPgieY0jmUkPb
- IeH49JOm
- /+p5GFthPsWV+3lpt3fz8ZCFJNPka13+uYvbebpzr8sJhN1KTeUWsxpbs3FMbJdWRomXd0AuTgzuwHXLANvZSoH/0/a74VwSdtucbjlkOCK4Az778ekoYIJ3/Q2fhzPF0Qs7s5bZRkK6vQRKUy0x0h7b+dmq2p+gFkMP0qu9czxhkKaq7Ydd3fTs9uwMz09INCwTq2jdVnyOTXsEF58udSGyvc7Ep71jfKAUVbXGfrouIqPoMTGmXbfPonqMnnjaNqm0cIT0vnGZrEFLGS1tkScM3w6lTY8vkjH+1l6DWCNwPpw3sg8XpmRzaA3mFC0Pm68Bydz08qaTSFfz3+oPx8PPVdwlTVsjdY6v1
+X-HE-Tag: 1753827234-197476
+X-HE-Meta: U2FsdGVkX189Bo0PZY9Eadh76N5ojJt5S7uX4yVIq72IW52EEM3KRG0xF/HxTv0I7MZNt20LVv6L+0WcYE1LMoIyinod101gXKNYu+dyoRcAPYVK460rCQg334UA350Dp3aCzjNXQYeqJZStiZQWL6aidEr2VJC/cpMJ11A6aL2rBslhU0hBRoIogT2Z62lI9O0d3ah58a/GqQ12Wk/EhECDlpaZR3TUGwbeIP1kMhLhlzdF+8CNUX7ToBrjWqE7kSqHlgDWqNPC+4ggPy5ihNBsRmSjSUu9o5UABysjLjfMu+T5DjSpM5UuMNEkDfg99V7ewOgvb1mZLPBAdqifAs53GeTs0Dwx50Pw+xBa8/c6a78SJDjZ1H/U5iepTq3Oct9NyjqlQG6HtboUeMj2XY0S2QEiQF3AB/G+o8T/PZ3X3miLqTN7kOY7zG+s6+rMnR1A8jZWHWUGeWSsAuCfJ55t+3YIC3uYlHxn9DAe25sMbAUaLrY5zV8TiCjm8MXesTYA+IT/BtYw5CiJcX4KFwX5g2kAvzcsvCP6YzFDqY8rsATDpEyluPG4AOxH7U72+8EFurY62TnlyHa03UqCyzRLnhWxm/W1kR1dEnyOsOL+KRFBA0TvjbrBC/JLQDsdjtyZ4NFrBmhXGqmDgIa/0ciy94yKVFnKNIz3SpqxbqbyxWMT0QpDuxe/2SOUdmL1w9gG88TB5j6V28PvLMupCrNNUkb+oZwuy+Uj76j2IVjNBGwKYzxG9WAYyNGqXYzNj1TsMaGDAi9V3lW2KRmmwiFg0JlwVROuJMhuBaUgEHGF3FG5RzjQRrEQvNmxluVXY2g/z4AX5dQF/pdXGwd7CH4uEELCK/WGbZAyTxDzr1B6aGkb9+raPgOYb1mVgZsmd/vFunG8cC9Li7W2btttyf7y57W5dH4DNAC+HbWy+57QO5xuIy9bPSJUfc7AJsbwBpWsOClHouWlNjrrLvd
+ Vrx20yil
+ 0bA+g9N8kyPP/3/biViAKaZuD2iH5ZQjG/3Ks+wwQVVaVR8RzmVuCnCYw03r9I6WkF+kvpHzPPE6HMEoOxCzQ7UEOrA3qPGPDICKBRE9GbVrcC4aPGxmwfdDv0GRI+w1+pUKa
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,235 +130,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2025-07-28 17:11, Jason Gunthorpe wrote:
->> If the dma mapping for P2P memory doesn't need to create an iommu
->> mapping then that's fine. But it should be the dma-iommu layer to decide
->> that.
+>> +
+>> +    self->pmdsize = read_pmd_pagesize();
+>> +    if (!self->pmdsize)
+>> +        SKIP(return, "Unable to read PMD size\n");
+>> +
+>> +    thp_read_settings(&self->settings);
+>> +    self->settings.thp_enabled = THP_MADVISE;
+>> +    self->settings.hugepages[sz2ord(self->pmdsize, getpagesize())].enabled = THP_INHERIT;
+>> +    thp_save_settings();
+>> +    thp_push_settings(&self->settings);
 > 
-> So above, we can't use dma-iommu.c, it might not be compiled into the
-> kernel but the dma_map_phys() path is still valid.
+> push without pop, should that be alarming? :)
+> 
+> Can we just use thp_write_settings()? (not sure why that push/pop is required ... is it?)
+> 
 
-This is an easily solved problem. I did a very rough sketch below to say
-it's really not that hard. (Note it has some rough edges that could be
-cleaned up and I based it off Leon's git repo which appears to not be
-the same as what was posted, but the core concept is sound).
+Thanks for the reviews!
+Ack on the previous comments, I have fixed them and will include in next revision.
+Yes, I think we can replace thp_push_settings with thp_write_settings.
 
-Logan
+For this, I actually just copied what cow.c and uffd-wp-mremap.c are doing :)
+
+You can see in these 2 files that we do [1]
+- thp_read_settings / thp_save_settings
+- thp_push_settings
+
+Than we run the experiment
+
+and at the end we do [2]
+- thp_restore_settings
+
+i.e. there is no pop.
+
+I think we can change the thp_push_settings to thp_write_settings in [3] and [4] as well?
+I can fix and test it if it makes sense. It should prevent people like me from making a
+similar mistake when they just copy from it :)
+
+[1] https://elixir.bootlin.com/linux/v6.16/source/tools/testing/selftests/mm/cow.c#L1884
+[2] https://elixir.bootlin.com/linux/v6.16/source/tools/testing/selftests/mm/cow.c#L1911 
+[3] https://elixir.bootlin.com/linux/v6.16/source/tools/testing/selftests/mm/cow.c#L1886
+[4] https://elixir.bootlin.com/linux/v6.16/source/tools/testing/selftests/mm/uffd-wp-mremap.c#L355
 
 
-diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-index 1853a969e197..da1a6003620a 100644
---- a/drivers/iommu/dma-iommu.c
-+++ b/drivers/iommu/dma-iommu.c
-@@ -1806,6 +1806,22 @@ bool dma_iova_try_alloc(struct device *dev,
-struct dma_iova_state *state,
- }
- EXPORT_SYMBOL_GPL(dma_iova_try_alloc);
- +void dma_iova_try_alloc_p2p(struct p2pdma_provider *provider, struct
-device *dev,
-+		struct dma_iova_state *state, phys_addr_t phys, size_t size)
-+{
-+	switch (pci_p2pdma_map_type(provider, dev)) {
-+	case PCI_P2PDMA_MAP_THRU_HOST_BRIDGE:
-+		dma_iova_try_alloc(dev, state, phys, size);
-+		return;
-+	case PCI_P2PDMA_MAP_BUS_ADDR:
-+		state->bus_addr = true;
-+		return;
-+	default:
-+		return;
-+	}
-+}
-+EXPORT_SYMBOL_GPL(dma_iova_try_alloc_p2p);
-+
- /**
-  * dma_iova_free - Free an IOVA space
-  * @dev: Device to free the IOVA space for
-diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c
-b/drivers/vfio/pci/vfio_pci_dmabuf.c
-index 455541d21538..5749be3a9b58 100644
---- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-+++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-@@ -30,25 +30,12 @@ static int vfio_pci_dma_buf_attach(struct dma_buf
-*dmabuf,
- 	if (priv->revoked)
- 		return -ENODEV;
- -	switch (pci_p2pdma_map_type(priv->vdev->provider, attachment->dev)) {
--	case PCI_P2PDMA_MAP_THRU_HOST_BRIDGE:
--		break;
--	case PCI_P2PDMA_MAP_BUS_ADDR:
--		/*
--		 * There is no need in IOVA at all for this flow.
--		 * We rely on attachment->priv == NULL as a marker
--		 * for this mode.
--		 */
--		return 0;
--	default:
--		return -EINVAL;
--	}
--
- 	attachment->priv = kzalloc(sizeof(struct dma_iova_state), GFP_KERNEL);
- 	if (!attachment->priv)
- 		return -ENOMEM;
- -	dma_iova_try_alloc(attachment->dev, attachment->priv, 0, priv->size);
-+	dma_iova_try_alloc_p2p(priv->vdev->provider, attachment->dev,
-+			       attachment->priv, 0, priv->size);
- 	return 0;
- }
- @@ -98,26 +85,11 @@ vfio_pci_dma_buf_map(struct dma_buf_attachment
-*attachment,
- 	sgl = sgt->sgl;
-  	for (i = 0; i < priv->nr_ranges; i++) {
--		if (!state) {
--			addr = pci_p2pdma_bus_addr_map(provider,
--						       phys_vec[i].paddr);
--		} else if (dma_use_iova(state)) {
--			ret = dma_iova_link(attachment->dev, state,
--					    phys_vec[i].paddr, 0,
--					    phys_vec[i].len, dir, attrs);
--			if (ret)
--				goto err_unmap_dma;
--
--			mapped_len += phys_vec[i].len;
--		} else {
--			addr = dma_map_phys(attachment->dev, phys_vec[i].paddr,
--					    phys_vec[i].len, dir, attrs);
--			ret = dma_mapping_error(attachment->dev, addr);
--			if (ret)
--				goto err_unmap_dma;
--		}
-+		addr = dma_map_phys_prealloc(attachment->dev, phys_vec[i].paddr,
-+					     phys_vec[i].len, dir, attrs, state,
-+					     provider);
- -		if (!state || !dma_use_iova(state)) {
-+		if (addr != DMA_MAPPING_USE_IOVA) {
- 			/*
- 			 * In IOVA case, there is only one SG entry which spans
- 			 * for whole IOVA address space. So there is no need
-@@ -128,7 +100,7 @@ vfio_pci_dma_buf_map(struct dma_buf_attachment
-*attachment,
- 		}
- 	}
- -	if (state && dma_use_iova(state)) {
-+	if (addr == DMA_MAPPING_USE_IOVA) {
- 		WARN_ON_ONCE(mapped_len != priv->size);
- 		ret = dma_iova_sync(attachment->dev, state, 0, mapped_len);
- 		if (ret)
-@@ -139,7 +111,7 @@ vfio_pci_dma_buf_map(struct dma_buf_attachment
-*attachment,
- 	return sgt;
-  err_unmap_dma:
--	if (!i || !state)
-+	if (!i || state->bus_addr)
- 		; /* Do nothing */
- 	else if (dma_use_iova(state))
- 		dma_iova_destroy(attachment->dev, state, mapped_len, dir,
-@@ -164,7 +136,7 @@ static void vfio_pci_dma_buf_unmap(struct
-dma_buf_attachment *attachment,
- 	struct scatterlist *sgl;
- 	int i;
- -	if (!state)
-+	if (state->bus_addr)
- 		; /* Do nothing */
- 	else if (dma_use_iova(state))
- 		dma_iova_destroy(attachment->dev, state, priv->size, dir,
-diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-index ba54bbeca861..675e5ac13265 100644
---- a/include/linux/dma-mapping.h
-+++ b/include/linux/dma-mapping.h
-@@ -70,11 +70,14 @@
-  */
- #define DMA_MAPPING_ERROR		(~(dma_addr_t)0)
- +#define DMA_MAPPING_USE_IOVA		((dma_addr_t)-2)
-+
- #define DMA_BIT_MASK(n)	(((n) == 64) ? ~0ULL : ((1ULL<<(n))-1))
-  struct dma_iova_state {
- 	dma_addr_t addr;
- 	u64 __size;
-+	bool bus_addr;
- };
-  /*
-@@ -120,6 +123,12 @@ void dma_unmap_page_attrs(struct device *dev,
-dma_addr_t addr, size_t size,
- 		enum dma_data_direction dir, unsigned long attrs);
- dma_addr_t dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
- 		enum dma_data_direction dir, unsigned long attrs);
-+
-+struct p2pdma_provider;
-+dma_addr_t dma_map_phys_prealloc(struct device *dev, phys_addr_t phys,
-size_t size,
-+		enum dma_data_direction dir, unsigned long attrs,
-+		struct dma_iova_state *state, struct p2pdma_provider *provider);
-+
- void dma_unmap_phys(struct device *dev, dma_addr_t addr, size_t size,
- 		enum dma_data_direction dir, unsigned long attrs);
- unsigned int dma_map_sg_attrs(struct device *dev, struct scatterlist *sg,
-@@ -321,6 +330,8 @@ static inline bool dma_use_iova(struct
-dma_iova_state *state)
-  bool dma_iova_try_alloc(struct device *dev, struct dma_iova_state *state,
- 		phys_addr_t phys, size_t size);
-+void dma_iova_try_alloc_p2p(struct p2pdma_provider *provider, struct
-device *dev,
-+		struct dma_iova_state *state, phys_addr_t phys, size_t size);
- void dma_iova_free(struct device *dev, struct dma_iova_state *state);
- void dma_iova_destroy(struct device *dev, struct dma_iova_state *state,
- 		size_t mapped_len, enum dma_data_direction dir,
-@@ -343,6 +354,11 @@ static inline bool dma_iova_try_alloc(struct device
-*dev,
- {
- 	return false;
- }
-+static inline void dma_iova_try_alloc_p2p(struct p2pdma_provider *provider,
-+		struct device *dev, struct dma_iova_state *state, phys_addr_t phys,
-+		size_t size)
-+{
-+}
- static inline void dma_iova_free(struct device *dev,
- 		struct dma_iova_state *state)
- {
-diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index e1586eb52ab3..b2110098a29b 100644
---- a/kernel/dma/mapping.c
-+++ b/kernel/dma/mapping.c
-@@ -13,6 +13,7 @@
- #include <linux/iommu-dma.h>
- #include <linux/kmsan.h>
- #include <linux/of_device.h>
-+#include <linux/pci-p2pdma.h>
- #include <linux/slab.h>
- #include <linux/vmalloc.h>
- #include "debug.h"
-@@ -202,6 +203,27 @@ dma_addr_t dma_map_phys(struct device *dev,
-phys_addr_t phys, size_t size,
- }
- EXPORT_SYMBOL_GPL(dma_map_phys);
- +dma_addr_t dma_map_phys_prealloc(struct device *dev, phys_addr_t phys,
-size_t size,
-+		enum dma_data_direction dir, unsigned long attrs,
-+		struct dma_iova_state *state, struct p2pdma_provider *provider)
-+{
-+	int ret;
-+
-+	if (state->bus_addr)
-+		return pci_p2pdma_bus_addr_map(provider, phys);
-+
-+	if (dma_use_iova(state)) {
-+		ret = dma_iova_link(dev, state, phys, 0, size, dir, attrs);
-+		if (ret)
-+			return DMA_MAPPING_ERROR;
-+
-+		return DMA_MAPPING_USE_IOVA;
-+	}
-+
-+	return dma_map_phys(dev, phys, size, dir, attrs);
-+}
-+EXPORT_SYMBOL_GPL(dma_map_phys_prealloc);
-+
- dma_addr_t dma_map_page_attrs(struct device *dev, struct page *page,
- 		size_t offset, size_t size, enum dma_data_direction dir,
- 		unsigned long attrs)
+>> +}
+>> +
+>> +FIXTURE_TEARDOWN(prctl_thp_disable_completely)
+>> +{> +    thp_restore_settings();
+>> +}
+>> +
+>> +/* prctl_thp_disable_except_madvise fixture sets system THP setting to madvise */
+>> +static void prctl_thp_disable_completely(struct __test_metadata *const _metadata,
+>> +                     size_t pmdsize)
+>> +{
+>> +    int res = 0;
+>> +
+>> +    res = prctl(PR_GET_THP_DISABLE, NULL, NULL, NULL, NULL);
+>> +    ASSERT_EQ(res, 1);
+>> +
+>> +    /* global = madvise, process = never, we shouldn't get HPs even with madvise */
+> 
+> s/HPs/THPs/
+> 
+>> +    res = test_mmap_thp(NONE, pmdsize);
+>> +    ASSERT_EQ(res, 0);
+>> +
+>> +    res = test_mmap_thp(HUGE, pmdsize);
+>> +    ASSERT_EQ(res, 0);
+>> +
+>> +    res = test_mmap_thp(COLLAPSE, pmdsize);
+>> +    ASSERT_EQ(res, 0);
+>> +
+>> +    /* Reset to system policy */
+>> +    res =  prctl(PR_SET_THP_DISABLE, 0, NULL, NULL, NULL);
+>> +    ASSERT_EQ(res, 0);
+>> +
+>> +    /* global = madvise */
+>> +    res = test_mmap_thp(NONE, pmdsize);
+>> +    ASSERT_EQ(res, 0);
+>> +
+>> +    res = test_mmap_thp(HUGE, pmdsize);
+>> +    ASSERT_EQ(res, 1);
+>> +
+>> +    res = test_mmap_thp(COLLAPSE, pmdsize);
+>> +    ASSERT_EQ(res, 1);
+> 
+> 
+> Makes me wonder: should we test for global=always and global=always?
+
+Do you mean global=madvise and global=always?> 
+> (or simply for all possible values, including global=never if easily possible?)
+> 
+> At least testing with global=always should exercise more possible paths
+> than global=always (esp., test_mmap_thp(NONE, pmdsize) which would
+> never apply in madvise mode).
+> 
+
+lol I think over here as well you meant madvise in the 2nd instance.
+
+I was just looking at other selftests and I saw FIXTURE_VARIANT_ADD, I think we can
+use that to do it without replicating too much code. Let me see if I
+can use that and do it for never, madvise and always. If it doesnt help
+there might be some code replication, but that should be ok.
+
+Thanks!
+
+
 
 
 
