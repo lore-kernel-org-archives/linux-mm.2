@@ -2,102 +2,102 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F6DCC87FC9
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 09:24:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 44CCDC87FC9
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 09:27:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AEE046B00A1; Tue, 29 Jul 2025 05:24:10 -0400 (EDT)
+	id DB44C8E0006; Tue, 29 Jul 2025 05:27:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9F716B00A2; Tue, 29 Jul 2025 05:24:10 -0400 (EDT)
+	id D64D88E0001; Tue, 29 Jul 2025 05:27:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98D5D6B00A3; Tue, 29 Jul 2025 05:24:10 -0400 (EDT)
+	id C53308E0006; Tue, 29 Jul 2025 05:27:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 867A86B00A1
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 05:24:10 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0CA828055E
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 09:24:10 +0000 (UTC)
-X-FDA: 83716765860.04.89B0CAE
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	by imf18.hostedemail.com (Postfix) with ESMTP id DE3321C000B
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 09:24:07 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=xwtlrUrq
+	by kanga.kvack.org (Postfix) with ESMTP id B00B08E0001
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 05:27:58 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7AE25133B80
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 09:27:58 +0000 (UTC)
+X-FDA: 83716775436.03.7B93D27
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 8CE6E12000C
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 09:27:56 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b="EMOmzY/r"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753781048;
+	s=arc-20220608; t=1753781276;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OvMriwwuRsxStr2YyKe5TWPbRI0lQN4j3ZQYt22kpLE=;
-	b=S1bqLEwdyes84l05toRSvP+Z6DvneKOPDuSMn4TT+JEN4Vl864RnAr38eHacwZu+y5MSQG
-	tv2sCbPL9u7J5RSRb+RVZfg92TbXpxNI9M0YfrCSx2G027XT6+ZD1UsA5YSt069Jae47/o
-	ywualokdfJattWPfNy4wxBZgLamQHlk=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=xwtlrUrq;
-	spf=none (imf18.hostedemail.com: domain of brgl@bgdev.pl has no SPF policy when checking 209.85.208.170) smtp.mailfrom=brgl@bgdev.pl;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753781048; a=rsa-sha256;
+	bh=QuYSK4gM34dvKj46U2AHyFVlRRjXrZ8f8iJud63I7rk=;
+	b=OL4LZhl83RnD9dG9CSUuubbZlIMqfrdyINk+nfnx5XO4XroJic1zVPQhT8YKE+kL4OqL/F
+	ujC0s/z3XPNizfEZTagBSfc6BDnSJ5irkN8YzJhQquhKhe0iMeBKrD31L+EWLfmtZ+qZdO
+	PoaW5FeeGO2GhOvudhzrTECXtZwlrMU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753781276; a=rsa-sha256;
 	cv=none;
-	b=CjfvRrc0rN678GIMQg/u0zbPyCvXlz+y8b6NxtA97CT25a1Sf2ZBMF+JA+uXtPWLzJCHL6
-	ovpyr1NywYhmUWCHUYWkqqyO0nEPIeOEYOgdJDr5ukEx+YoBJ+F0fZ8sfaByGZZxZkpETu
-	2KV+benbB7GMICR37xtX13LKYNYh2Yk=
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-32b561a861fso45402731fa.0
-        for <linux-mm@kvack.org>; Tue, 29 Jul 2025 02:24:07 -0700 (PDT)
+	b=QRbF6C+onYoBlhezAHdD/tzerb6xX0ajnaBZk1iifhJXUuyQ2kUX+JkSGRMkrk0fsqdDrF
+	AsmsiVHek6/nFOMHmpiGWSiCetyGKvegIuOoGBGlpCajH4Kg9Mnlaur4al45lWXGkm9UoL
+	ltP6yPEM3VDoKVYPQZLHhBmgc+XQmus=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b="EMOmzY/r";
+	spf=none (imf29.hostedemail.com: domain of brgl@bgdev.pl has no SPF policy when checking 209.85.167.45) smtp.mailfrom=brgl@bgdev.pl;
+	dmarc=none
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-55a25635385so5974663e87.3
+        for <linux-mm@kvack.org>; Tue, 29 Jul 2025 02:27:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1753781046; x=1754385846; darn=kvack.org;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1753781275; x=1754386075; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OvMriwwuRsxStr2YyKe5TWPbRI0lQN4j3ZQYt22kpLE=;
-        b=xwtlrUrqRH08khr6S4ZDHW/VEDUCVsESp7gNzrhNK22r7AGl+cv/WKq+mBTBiaoemj
-         IV3vnpp9M1DDM/ftOixpUJSHfZCwcmf+K8WgL+sMEzOHpJCFR6tQ5OmSrGqJZselxU5B
-         vOIRoeCmeuVvwP277Q0xziTCEMslDd3uvBrf8gQpNYs/1T7cnc4KlgVfzpotu3EmTfnG
-         vBSEaFqIDJlDTjAYj3nCxqU4jTj26FfEOoue43sJAxAn2w3pDp6JEiOYz3hMdrTzXZKB
-         MwqgRHaO7RS+DOdfbpTW43V1QW4mqL3wyR3U0Zg+ZUrlWc8itc9pCxBSVGd7FOgagQSA
-         M1nw==
+        bh=QuYSK4gM34dvKj46U2AHyFVlRRjXrZ8f8iJud63I7rk=;
+        b=EMOmzY/rA0hAGH7elCSyu7pwuNf4hUs8+SW4L6RIGlBfmnejNlRNSrfRrGXR3bcI08
+         zrEkrqDcdoWdCqs/sxVczQIciHGb1e27WTNY4AyQiosLH4wCuShwSO8eaymZMZvu5xwx
+         1uOUuFp7cVRBFBsdt2cA/JIRzHJh6SDSShNO9yCunwcZkSTgNZTVlorpB8j2NFpFTmp7
+         /TLMWy6oc5FOcbynfTLqdZXb23bFma3HiOwDyrNkdbAwN5bHNY9DPmodfuSrK8iMGlHe
+         Af7A26rYNMst7iAF4IYjHIXhLSnAsl8gRoRtr5qfHxEaqG9UXyKtk/p3BlE58vDXhZua
+         hbvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753781046; x=1754385846;
+        d=1e100.net; s=20230601; t=1753781275; x=1754386075;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=OvMriwwuRsxStr2YyKe5TWPbRI0lQN4j3ZQYt22kpLE=;
-        b=DchPiwD1oua4kEmTohXHDPv6V5h+Qb5PL4DZEislvxAbeUJ7+VuyH2tnscBDsxOUR+
-         f4DpCRuLL5JZQZ/gpW0lkZnwycLK70r241rswR+Joe6l7tlEXoKK3IoVY+dKl+I4cICK
-         w3pc6u9iAHS0BIAvuyX3rDl2r5MkKLXGj2A7iMKhfETdGPDGbfJBvSv3zCG06R1x+kSk
-         Xw7OXa4UgtN9Ic5ALGHMIYG08Qtiwm0q/ZW3qNTam5i/fXqowueyUxytGBqGMIiiW6v9
-         xNVJHRbNCJrwfZ5OLi8+YJVCkObJ9zFOXBGrWqqdlVaHSCajr/wzflH3GS0b7wc6DdHS
-         hBvg==
-X-Forwarded-Encrypted: i=1; AJvYcCUk5TAJIGsKwV6UA/z7bAo8czdKm7Di4Q+M7lC3Ur6VxOqLnBKnf2aNCD8QF6MvBWv5iFu7eKDvfA==@kvack.org
-X-Gm-Message-State: AOJu0YwMd9n9k3lg5SQ48QUhWUbdbpEa1SNk1tSOS0+XTktELhxRiCx5
-	jFKfSpRkf2pdJe9hunFsPj4a82Mtg5JyJdJxi+LgAuDCtv4OMy8PeI9zfvOtgbCsQJOMgBdZ1La
-	OnHEM9dB+qrwa8si2nUrThGMO/XQocdrWwAFbMu397A==
-X-Gm-Gg: ASbGncsdzlmnyq71Djj+O2gvuTIKPnRBHFY4AeUzfKuFE7JYYtA9dxFFgPyVowrCUvh
-	1DxBNWusJgss5w0bS5BNdSyjIWKgusi3TWPU7EaKefaxufRWjXO6kToui4+PGV8+ZIbveSRvc5N
-	cAlsIkCHnGeuWpJUhabw4il487Jaq9j3Zac8y441RG9jLNILWveZbQBV52iz7/laL/n8v4RIrin
-	HAVTm8x5FxOPc7sWOkPR7xmyTBVSZKS2gYihBxDwhhprvieew==
-X-Google-Smtp-Source: AGHT+IG4d8eX8f04SwumbDn+t8ORtzgwAVwNB5BHKdmUryIfl8eqxh2e3123W81layXfFQt1IEka9/bpWuzrKar7j3E=
-X-Received: by 2002:a05:6512:3a86:b0:553:d910:9334 with SMTP id
- 2adb3069b0e04-55b5f4df595mr4041752e87.46.1753781045533; Tue, 29 Jul 2025
- 02:24:05 -0700 (PDT)
+        bh=QuYSK4gM34dvKj46U2AHyFVlRRjXrZ8f8iJud63I7rk=;
+        b=p/Lsmdk8L5eiWytF4kY23Rf6VQkuuwGWjp6pgNNHeoVGzugn0aAsjoy5QCwinsdbd5
+         zIuUIE74+ptwaTO8NK7jIZhSOGz8zYRBAv2qsGNCXgkESjFbJZFDb0FovI+jUMlaufSa
+         N2O331sx04nyytwVKUPfIgc9iM4tronDEwlfkFCbvawQDViGKC8XY3Qgn9Qr74JaW2B1
+         LmL9xZtd2ERf1XXpzAWZ7J7+expBs2lB8HjurOn+r2gg1Rx27NcFa+5CDhxGilNQrQTZ
+         jaGj7U0kn1/EsT7Fp4nQgBbBmfaZBtpRnwikL8u+NY90568ABS6r8Sh4F+DDC6Nn+DZ6
+         eCLA==
+X-Forwarded-Encrypted: i=1; AJvYcCX+3g6kkzBW8sNwjOA6rlcwdPBBFZ7UDcRMMQnFDb9EqnwOh6EcWS37zfSs0qt+0X0gLGg09yDvYg==@kvack.org
+X-Gm-Message-State: AOJu0Yw9ueD/QY4BtXQaY3Djoadoy9CAAzn/GzV1qPTFXWqusNNCToWo
+	uXfEJTpq5WDns1iB5uU2VLgxk+20uy2QB6cF1KfKYCE7j/l/lP+4MwtKReWyGpPbAQpRFL6wj+s
+	98tn9li83VPYwSNWNmop0gfWklGrHIKLqZiAM7lIwpg==
+X-Gm-Gg: ASbGncv4nMPJm5A+ZH+XwRXMnedheoN2X7Vyb9mIRAMwjlMDkYwFuoCub1YoHSG2D8K
+	WJfKii2/5Sh8VHV7X2P17zw0Y0QntooE2ZmsUiUni1zmJnuxa7kQQm+nzBay+EnQfvhq64Rgaqd
+	RAohxvY79YYh7Tv6r4M8qwFILypWNLJsHwOy6DTwgUb6fxjZ15NNhDKFq63srCCcc/Bmg0bx7mJ
+	IXJcNKk3usrY37QDOKZTnbIql4LzwtTGbqNEuM=
+X-Google-Smtp-Source: AGHT+IH1xjV/IusjYm7wD8jJwivk100eFvhpmAtG34em5DQvAFyq0WxlVADr0UXhPPNReVxqcy9+hVN8vSu0g22pdSc=
+X-Received: by 2002:a05:6512:1245:b0:55a:26ae:56e1 with SMTP id
+ 2adb3069b0e04-55b5f480918mr3865559e87.27.1753781274688; Tue, 29 Jul 2025
+ 02:27:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250724-pinctrl-gpio-pinfuncs-v3-0-af4db9302de4@linaro.org>
- <20250724-pinctrl-gpio-pinfuncs-v3-8-af4db9302de4@linaro.org> <CAHp75VdMmfV=z75K9AmB7GsWV8C1bZPLGi33duTCt+CM79spJg@mail.gmail.com>
-In-Reply-To: <CAHp75VdMmfV=z75K9AmB7GsWV8C1bZPLGi33duTCt+CM79spJg@mail.gmail.com>
+References: <20250724-pinctrl-gpio-pinfuncs-v3-10-af4db9302de4@linaro.org>
+ <202507261937.Txq9shpv-lkp@intel.com> <CAHp75VcrL56_8uKNrmLj9sk+t7qZfKNi6-W-yAKNZ+mSCXU8zw@mail.gmail.com>
+In-Reply-To: <CAHp75VcrL56_8uKNrmLj9sk+t7qZfKNi6-W-yAKNZ+mSCXU8zw@mail.gmail.com>
 From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Tue, 29 Jul 2025 11:23:54 +0200
-X-Gm-Features: Ac12FXwkqCsphx3p10ZENgy5ARM9FowTyJPFq-nwB_5x6uw2mPSH_J_dgheu8yg
-Message-ID: <CAMRc=MeEo6p=6Tp5kORi9y5tGNJKrzh0kq7tpe_E=5TasMjgbg@mail.gmail.com>
-Subject: Re: [PATCH v3 08/15] pinctrl: keembay: use a dedicated structure for
- the pinfunction description
+Date: Tue, 29 Jul 2025 11:27:43 +0200
+X-Gm-Features: Ac12FXzctTCjvP8s5v8QO4Q26z9E9jC3m2QKR1Qn8JCLGwl_tkRpE49-qECZAkg
+Message-ID: <CAMRc=MdfMEAjgkTNENZejzRPN4svCiy4VZS9Y5HG7Ht5XwqUgA@mail.gmail.com>
+Subject: Re: [PATCH v3 10/15] pinctrl: make struct pinfunction a pointer in
+ struct function_desc
 To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
+Cc: kernel test robot <lkp@intel.com>, Linus Walleij <linus.walleij@linaro.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Alexey Klimov <alexey.klimov@linaro.org>, Lorenzo Bianconi <lorenzo@kernel.org>, 
+	Sean Wang <sean.wang@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
 	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
 	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
@@ -109,22 +109,18 @@ Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.
 	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
 	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
 	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
-	linux-hardening@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
-	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+	llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, 
+	Linux Memory Management List <linux-mm@kvack.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: efcuqmxsq6ukup8481bthccoz9xs3xsz
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: DE3321C000B
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 8CE6E12000C
+X-Stat-Signature: sks4tfijz8s5yzhrjysm3fdnpwfbybpc
 X-Rspam-User: 
-X-HE-Tag: 1753781047-530712
-X-HE-Meta: U2FsdGVkX1/bDvFiTHHsUYO8u6GbDX9AeBSVseeqRHGiM8elDzpBeCuuEbLyj8665o9b/728rZn5wmZqPiK0aM0bE+wB/HhHhZvcREfjSDgqJCQWzuSYpjE6FNQ7/H0SY/lbKzsoLjzk7L9mY2TppO2KqhVZKXO9YkXKNKgTE4CU1WQOeI6lDZVF7KoSlJ21wvNMAkfOyNCAXxy0Ib5+0QGeUIw4RpPHXQCCjDw2g9xIbx/FMmCq6bQAF2281QAgp/mnMwGy0PdFvSrJCBcWleOuT3GQ9xSd+a4nmvQAOgvUwIU7jHVEhQ0LnEt4qYjMe9gC8GB4gBYRDsn+Z+yFL8wNxbAtxEu/HaK3GobCGbfqtAG1z48g+HOoUL49G0Hzw5jxLqzhKELCyIcYp6/MXf3GskDbM9cxtDwEosxyirZcopsckgPFIaW2kmwhiByQjbXfBKceNFg51EI4zuMMMrvBi3nJcTeFtw4/7z4Yp8ql0LH7GYPEj9Dxfkm4kY3SMxcoCjlsjIojC1lvPIwBqCn4SeNn/LFLwRk5LViIGqsoTe0srsacEJ/oRm6CuRwaEs/ni5Box77nqngYPtK6FNxVs1WjoEJxsvwmvvtbDiTfbdjaTQFfYXoM1lFE/IQfWkJtRhbGBIckZJwhvnWkTsS45vCAGY8tOKyFb60PjKbkVxXBRXshbLRpup5jjntr1rgBn6vViRCtRBE6wQet1htraV0AfjnV3lNADzSfV4rcSqOzANKJ/UaseZyJVX9EarqTgSw55goqF0r1hw1U9pL4kLhwIfYKSl8yNgB51EU1fxO2ebxTn/LWHg5omskz0+RTiPIeuSsLGdMrGkMnsoeDJRoGM1kb2Sz24GVTA5N+1eEp0wBNJp2G3hMVg14CGvSZ2UtVbmGBi6o3hFkc60qdY0oLgacFk4AYUmQjfxPi8yBka3+ucfMo43RRLqBx8LXB0TmYxIn9AchRFdT
- XN6uvVA9
- eB6mY3d+2Tu0u7JHq0HLCROUChRvMURYRzlikJih/QqIM27DKf2XAs4r4ojsS2kvIk58Va1hh+ISMraCTJHuq7yrAhGYKQFX+Fm6MH1a7n2mQrKG7jEIqCXFPP+UTNSx/7Jsyp7xRdqCJ+f1RPvEoHOYGwwM419sH35t6XBfbm/CrmlDm3uOylqqpx734pN6YrVSXZrIeQUbKEjCXGgB3goMogaDABqsNMANiVTw+HxrRWzBrHkOHgqPpbU+Jt0+tTRvh6zpKGsKQZRlRecCgdcNiBKP1/7WG79+RlMki7L/ASe0=
+X-HE-Tag: 1753781276-482936
+X-HE-Meta: U2FsdGVkX1+bxINOTllqN70MkJl+gRuSJm/PymVSJ1adxyCkui6Z4w+T674tnSMtbJf22YoH+RBho1Evy+Qvxaiy4CTcXuM4mxr7vUlju2AavUJKcCm5t3u/fA7jA7KjOOeS/TDV5e6xqKek5a8AWOQ8ikB+rG1095kb/lDFlNPdliA28FDp8rltpfwkdWIjS/vMvw/sMWz1fJmNVfpIFLGyhXxH7wB9qOuxMjLzG5HRMRvieXaUWiWZSqmsi6fcV+Tf5mFZee2pE8TEf7fz/BbEWqjQEixCiD2BlyNsFYxxUL+o1vcZCsznwpzI2u0TZsKmDKvz/4hf+fKmr5JKIiHf/QTUSSsJrlDY197YlFmIpBpWSMHxSIuepOPW71da2F5WlAvcSLQUyjbPTIec62E3rasFwOeYor8EYq+VpeaPkXYxXFGJtvgA27wNzXFlvv+vzThh8iRa3MEFe3PIkzN7AdQP7K07dTuIfaRsKLDTdZpGy2d5WzE3aBwmr1nSduPq4Muyl7xpdgJxiJe+emWgXTFmFILyq5iFJVRJQ49Y4TYfuO4LxAmC4xmWdcB0w7T1dnllmC+s+/HQMMDc0pGZ0RcwTMC+pD760VHuffEhNG+nHqKdx5sHf6lGQeXlE0S4Rz2z8MSVqoURPi1yqeiaRywKwlWnlpMynlCa+kkSfp63VERLVgDKmZ6XMnG50cNHr03HmDd4JMHy0HlMish5Nkg+zTN/7Hhl74JOZ8ML3g1J3++RH8FCp+SPtdDgjHgXwt6ev2KdGA0Xtll168gcFYs+5F0QHCrdok2sE3Q1Bc6YeOwUV/ZDtpLB6Sux6ZNJ9DZ797+8PwQGxxD1BryHOEn1atg/LP7kKXb0Goauff4sGK2JULjMyEn0NnuJmiH7pILnwYpGqQrqPNHQ7K4xgqDFy2dKvueefmIqXnSNljkAPrsYzAnb+x0/+LJcZemQM1HRmmTrNxdnEFh
+ k0Xv68T8
+ GhUENFJbQ/xMJ651hT8I5xbEMlE5i0OuXOOUk39leQ8UR0sPpQdSvC+YrOd53Jt/V6eGM5gUF2EwjyMvUhJcsGSc4g1ZpWWsZMac+P7Nr/hynREu1cY/Wc48Yq9wTJZ95wc6pZyAkIMJdPiE4rWSZ0A7KmyjykSyD4Eyy9wRCWh3aKyR7QnqeGoSHY15UGp9l2AfQTo02w+Ww/AihtDauwhkDtW2qkzP/KfCYJ4WeRBUwM0V+BzvMfWuom1/8p+726dF9mLvqXhlvBvQacybO7E5Jd1FBabiTzm6eRWk704SD/hnHwFZ6KOTWN561KAsPwZ042AZZfjLrmPk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,55 +129,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 24, 2025 at 1:11=E2=80=AFPM Andy Shevchenko
+On Sat, Jul 26, 2025 at 9:29=E2=80=AFPM Andy Shevchenko
 <andy.shevchenko@gmail.com> wrote:
 >
-> On Thu, Jul 24, 2025 at 11:25=E2=80=AFAM Bartosz Golaszewski <brgl@bgdev.=
-pl> wrote:
+> On Sat, Jul 26, 2025 at 1:31=E2=80=AFPM kernel test robot <lkp@intel.com>=
+ wrote:
 > >
-> > struct function_desc is a wrapper around struct pinfunction with an
-> > additional void *data pointer. We're working towards reducing the usage
-> > of struct function_desc in pinctrl drivers - they should only be create=
-d
-> > by pinmux core and accessed by drivers using
-> > pinmux_generic_get_function().
+> > Hi Bartosz,
+> >
+> > kernel test robot noticed the following build warnings:
+> >
 >
-> Any link to the discussion and perhaps an updated in-kernel
-> documentation and/or TODO?
+> > All warnings (new ones prefixed by >>):
+> >
+> > >> drivers/pinctrl/pinmux.c:917:7: warning: cast from 'void (*)(const v=
+oid *)' to 'void (*)(void *)' converts to incompatible function type [-Wcas=
+t-function-type-strict]
+> >      917 |                                          (void (*)(void *))k=
+free_const,
+> >          |                                          ^~~~~~~~~~~~~~~~~~~=
+~~~~~~~~~~
+> >    include/linux/device/devres.h:166:34: note: expanded from macro 'dev=
+m_add_action_or_reset'
+> >      166 |         __devm_add_action_or_reset(dev, action, data, #actio=
+n)
+> >          |                                         ^~~~~~
+> >    1 warning generated.
+>
+> Good catch, LKP!
 >
 
-The discussions happened under v1 and v2 of this series. The "reducing
-the usage ..." part refers to the need to avoid memory duplication of
-struct pinfunction really but it's a prerequisite.
+Ah, strict function type cast...
 
-> > This driver uses the data pointer so in
-> > order to stop using struct function_desc, we need to provide an
-> > alternative that also wraps the mux mode which is passed to pinctrl cor=
-e
-> > as user data.
->
 > ...
 >
-> > +struct keembay_pinfunction {
-> > +       struct pinfunction func;
-> > +       u8 mux_mode;
-> > +};
+> >    910          /*
+> >    911           * FIXME: It's generally a bad idea to use devres in su=
+bsystem core
+> >    912           * code - managed interfaces are aimed at drivers - but=
+ pinctrl already
+> >    913           * uses it all over the place so it's a larger piece of=
+ technical debt
+> >    914           * to fix.
+> >    915           */
 >
-> My gut's feeling that this type of construction will be in tons of the
-> drivers, perhaps better to provide an alternative like
-> struct pinfunction_with_mode {
->   ...
-
-Nah, literally only this one so far. And I bet we could rework it to
-avoid it altogether. Your proposal is too specific IMO. Let's cross
-that bridge when (if) we get there.
-
-> };
->
-> Or even with variadic arguments... (just saying)
+> Indeed, this has to be addressed first, and IIRC I also got something
+> like this in the past.
 >
 
-Oh please no. :)
+I mean, it doesn't have to be addressed first really, it's another big
+chunk of technical debt but we can live with it for now and address it
+in parallel.
 
-Bartosz
+Bart
+
+> >    916          error =3D devm_add_action_or_reset(pctldev->dev,
+> >  > 917                                           (void (*)(void *))kfre=
+e_const,
+> >    918                                           (void *)function->func=
+);
+> >    919          if (error)
+> >    920                  return error;
+>
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
 
