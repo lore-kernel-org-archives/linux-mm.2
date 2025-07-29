@@ -2,228 +2,79 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 56CA6C83F26
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 09:57:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E4243C87FC9
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 09:59:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3DDA8E0006; Tue, 29 Jul 2025 05:57:53 -0400 (EDT)
+	id 6C28E6B0099; Tue, 29 Jul 2025 05:59:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C15A98E0001; Tue, 29 Jul 2025 05:57:53 -0400 (EDT)
+	id 673D86B009A; Tue, 29 Jul 2025 05:59:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADD928E0006; Tue, 29 Jul 2025 05:57:53 -0400 (EDT)
+	id 5893E6B009B; Tue, 29 Jul 2025 05:59:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C4BB8E0001
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 05:57:53 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F21281A04DC
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 09:57:52 +0000 (UTC)
-X-FDA: 83716850784.20.7E4ED84
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 9B55BC0005
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 09:57:49 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ht2ch6y3;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=NK4RyLer;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf28.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753783069;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 494DC6B0099
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 05:59:37 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 003681DB484
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 09:59:36 +0000 (UTC)
+X-FDA: 83716855194.10.BD2565F
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf11.hostedemail.com (Postfix) with ESMTP id D905B40006
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 09:59:33 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="dd/BeePA";
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf11.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753783175; a=rsa-sha256;
+	cv=none;
+	b=76tAcozfCkJzfaj86nNGG7GkZPQ1ZMjl8Kgo2A/HdfOaTZBIy7zMWusQ8P5Cyt4u7Zam/j
+	ZAnTnvlBZr75GwWnikqmR2jyNbFbjEQykYLF2xjV+yfbNhlxVsjQ3Se5wyYVEVLQMEcURM
+	ZhgIAHgbiasqQ5ZCFF81+uMMnGqI0sI=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="dd/BeePA";
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf11.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753783175;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0gmm3a0i4AUQzOzB6xnn/lr3chBCcAUbr/xb3l1gPtk=;
-	b=0eOZ4QNauyg0wSKUaVRFj5BQmw0/10SB6yl65YdH8YVXQiSTLF3gWaVhttn3XELuYKrOAh
-	UCy2DIp1hQkiKbXJ7SF2aZdLyzhy3PZYJpYKw1BDiX8gQ6DcO0NVXGgXhXGqq/ycqJiAdb
-	Uf3iyK7NgQDVpTytk8YYQuekdG6KZDY=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753783069; a=rsa-sha256;
-	cv=pass;
-	b=FmAPGrJMz7QulEHOpEzKNreqBnS/2rsfxNDa+wsBzCbF9RX1fq/Yqsp+LOT9BwePAqnBd+
-	vIe9HDmBWmyAGzt3buWjdT805DBReNtLn6gaD4KERo1tpbxWk7/DlolND1L7WCDOH3LssN
-	eIBwBUTXOBBtIA6hHblW+PXEiShUL9o=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ht2ch6y3;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=NK4RyLer;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf28.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56T7g3rX025053;
-	Tue, 29 Jul 2025 09:57:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=0gmm3a0i4AUQzOzB6x
-	nn/lr3chBCcAUbr/xb3l1gPtk=; b=ht2ch6y3Oabd3DC4SQ6NAPR7OO9a45V0uS
-	mNGU/pSJdTDZvJWkaXoYzN8ctpl0MaueBNhyA/I+OPFYyOIZdQxdnI1EPj6NmV70
-	QndtO24dERbukUQAwGS79WM98rlbnjhI98o3eIEQwHwNE4Eb5yTbUQx1RXaW7nfV
-	kagzW49pLWCNQwaujcVU29mmKf+OcFaATvGfbADMtT8F68vlhgrI194bMLchaGus
-	ERP7WMWwQiB0Qv2lZ7D59VXv+9h/TuRTKiJ8Prz0HQRIW45NZkAhT/WVMVXAbzPq
-	1zNumbUbu8Moy6ZH7nUZGIqeXQxvApZ+KHI3Zimmf/zkdT14JhwA==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 484q4yfann-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 29 Jul 2025 09:57:47 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 56T919Rm021096;
-	Tue, 29 Jul 2025 09:57:46 GMT
-Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10on2059.outbound.protection.outlook.com [40.107.94.59])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 484nffynf0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 29 Jul 2025 09:57:46 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=n3Z7FWqwDST9u/gegEx32eOyMK8k2h8V2hPnAXHrxH45x6gSXeK9FqFEE6Rq/nzREO8E8IsSGPakN74xe6nA6pEbOK5TWkKH9+pAw+ex3F2JaGUE2FRLpNFtaaBG2ZkT01maI8AmoHbT5rfBIP9Qe2zv25mUBq2/8YGtAloqwhfBf4XsOpZgxAQUzgillmX+XkuPsGHiN8IickwERz3ueMN9J+hnKxs7DL6+kaShtDTHq0Xrf3s0xydhg+SBUg1mxVxj/jnoQyBBCmm6yYJnqDzf/gRj5fLypZH3s/95H/WUGbBfSYMB2CshoEC0e5cFItLed2MneigAePv/hrvOYw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0gmm3a0i4AUQzOzB6xnn/lr3chBCcAUbr/xb3l1gPtk=;
- b=NOs55r5H093ZuVzoM8EWw3tlNO69Rj7X6a5dY0JJMHb60Pa6BdggrbtER1U9E/ksM7cc7uXsk9xrVt7tIv4IaXbvkVka50XnM3OdqVTlZLig0Fsp8yrmJPcjnmexlSvtm8R5TyfFAlIhePVJAV1bJ5Q0kkWPfjTR23g7pBybsGFpg4KOOP6XADPrW5aquHO7d6WDZgTrLScD6/1XRSqlaJA/ustX9wsWyQHoODgHzQgle7byxTdX6/h01gjaQdlr9Zl0ypFMxGZCg+W3LLJrzDJlaMqQiP5UQuLGIE8irQWxmFd2NfQ+SU1D9gFEhMJF3aCb6twtyL2/b6oISeJwaw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0gmm3a0i4AUQzOzB6xnn/lr3chBCcAUbr/xb3l1gPtk=;
- b=NK4RyLerzWPwhmUpEQvN/HP4fYL2Rt+g8elAu7z+VpIQeMziK6xC2eMoCO2S++O8a7EgEktgez1kqgUXKU26VgeDpTYF9e6whnXrY3wAN/l9pKS9ihTnDmW3RBSTryrH5BYP6YDh8sKNjd+39vtLttxWxMdocrcBUSTfqprDJgM=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by SA6PR10MB8133.namprd10.prod.outlook.com (2603:10b6:806:436::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.23; Tue, 29 Jul
- 2025 09:57:43 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.8989.010; Tue, 29 Jul 2025
- 09:57:43 +0000
-Date: Tue, 29 Jul 2025 10:57:40 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, jannh@google.com, Liam.Howlett@oracle.com,
-        vbabka@suse.cz, pfalcato@suse.de, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] mm: fix a UAF when vma->mm is freed after
- vma->vm_refcnt got dropped
-Message-ID: <63d2682f-a24e-4fe2-82d1-fb58a8575c6c@lucifer.local>
-References: <20250728175355.2282375-1-surenb@google.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250728175355.2282375-1-surenb@google.com>
-X-ClientProxiedBy: MM0P280CA0106.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:190:9::25) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+	bh=7Rx6FSp83mZmyZ/jpMUszx56kknDj1q2uLEa+F6Q+tE=;
+	b=eBceTP+B9ftpN+Tpp7iRw24kJ6NoUXJSIOYGh2aPAVRhyM8Yaq/1Kju3HHAMrwz2RsP83R
+	RewR7jU6BYz7DHqNj90OdyztfooCnrWozuMHX+LJcATnSvPaBHHdtTruWjRFSJcNvyeMt/
+	bieTWQH+qMWrbP2GlletMQHnY6DV08o=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1753783171; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=7Rx6FSp83mZmyZ/jpMUszx56kknDj1q2uLEa+F6Q+tE=;
+	b=dd/BeePAXV1p4OsxwJMQHJoclHKfBCIrpvHpntkTHJlgT2vlPK+JKZg97T/VGDkh3hxe0X/P6kscgI9PcpxNyAOmBuMj/LnWr3Pa02VuXtuB3FwghBMjtO/701mBh1Ua1uixhce4blDcEbhYptJ2tzl8JoXT4OixTGfw749pEjQ=
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WkPqgWA_1753783169 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 29 Jul 2025 17:59:29 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: =?utf-8?B?5Y+y5ZiJ5oiQ?= <billsjc@sjtu.edu.cn>
+Cc: linux-mm@kvack.org
+Subject: Re: [Question] About the PCP free_high heuristic
+In-Reply-To: <212D6530-0FE8-4EA7-A599-48D71E8AFA23@sjtu.edu.cn>
+ (=?utf-8?B?IuWPsuWYieaIkCIncw==?=
+	message of "Tue, 29 Jul 2025 16:08:20 +0800")
+References: <212D6530-0FE8-4EA7-A599-48D71E8AFA23@sjtu.edu.cn>
+Date: Tue, 29 Jul 2025 17:59:28 +0800
+Message-ID: <87ldo7z5a7.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|SA6PR10MB8133:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6fb41e94-5fa1-4cec-a735-08ddce865cac
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?VD+vDVasex5KUuB9+09KPJoXAc/4fqFitzf22eh9Tv7AykG0wD0PBctvw2qq?=
- =?us-ascii?Q?qcXzTliEwNGQbf/D+DmMtaW5eZzv93NoLHGMasFQ7tLOKfvdo0ZT9U2If3wH?=
- =?us-ascii?Q?We3iZ8uewhYWlqAWVFdHOiHSpMRdKJL8SJgWG2wIiAaWZ9JkRpaTe+EnOeSQ?=
- =?us-ascii?Q?w9WzGZGWA7K9sYgqInqNf2qnEGW43GVPIDEYpIcn/2WldwN/u02mBX/B/qnc?=
- =?us-ascii?Q?AOBIoqi9N/2ZQn/BicvdmdY+zO4HSI8LanIsEH+1JYjJ3vSz06MgR0pvtywe?=
- =?us-ascii?Q?Dgr40jgaqNmtw/eiU008nFHn/pVDjDFPT/ob6YIW7jRmzqCBg6Whv+kHtO3P?=
- =?us-ascii?Q?1J2s5OyDu5o/X0RHJqNS5t+qfow2ijfWe0J3zv4yOvwtp7VHDeV5mjOpWCqG?=
- =?us-ascii?Q?Yt8Vhx8gkVWgKIccfxyDfcQHhBaUU72uSIufU9vMAijWdyHwZpMGHhaY/sT4?=
- =?us-ascii?Q?3o2xrp/jK2Zw+5nUdm6P8S5ZbH/hVa/ufddjtA5PTfahYSaTsZ0w3h5r/Iln?=
- =?us-ascii?Q?tFu3oY0uFHk/4MeQIYy/5nw2SE1uI+hONMuDfc+XfO8ZjHSzP9nKfztpGt2g?=
- =?us-ascii?Q?ihqcRXyFdq+GmfUrK5DSgoGlgbQ2vNWAYe/2g/PV8EBfxaRi7pM4Rpq7noPI?=
- =?us-ascii?Q?1muDlrSrECpHEA5oItpVLPH7MfBOSNUB86pY921I7Ei3+S/d1LTJ3Xnd4TBF?=
- =?us-ascii?Q?mHKBQ0GGV8ml9K19G521VPJUdjleG5PpfhE47hC8WP0yh/rgwi7cowcm7Rz5?=
- =?us-ascii?Q?+UuMptMImorVMxxOfic2CpmsWs8Y48oQoc2A7AQ2RvKRDMeJkXUOEmCrw94S?=
- =?us-ascii?Q?pX7fveVPSP4Wb9eDr6lbJcWUJyd3iZb6OMN8V7OPyGPnzYynjzVzI/h4RAiM?=
- =?us-ascii?Q?1XlexGwAVSLcxtEw366nlZdekOzrwXbpuYYVb50LnA7q1XhkRFHyaBNVfZ4X?=
- =?us-ascii?Q?L5KySCc9+40aSWsCeFztXkMPWKq7BFIHp/hPGu4n/r1YRYbJrQO3UbB5P1+L?=
- =?us-ascii?Q?zu4pK9nLrdDUR2tLGYCCK7xTk19+qCL7t1fzFQfhmMUmJ3ixPLJPXCQAmEKv?=
- =?us-ascii?Q?RHp7ixL2PKcdRN6FdhB3WagbEkJF8YGz+kCRXa7HAEtF/q9Desuwrli/7VGd?=
- =?us-ascii?Q?D7BITVTVD4fkrvLRafecv8mrf0Ziyw0tHsB0WNMfysWu97vbKypLAA8BtLFK?=
- =?us-ascii?Q?J/gNY7CcA79VLu0b8dpIH6BKLLg6XulwhYRaZlMy7Dmtc085QQ1JGKREdjWE?=
- =?us-ascii?Q?AnGp0Ai67fNAgFovkwQGD2CJXjUCbt9uRz6Qf+6ShJyHVjmLeRzkZtSfHOll?=
- =?us-ascii?Q?RmTajMrWM5SaKMUPKA/BoRepCF/9vb8ImAvRWm6BimSe89SUl4sbdyyMszRQ?=
- =?us-ascii?Q?45muu7HVZHCY4JA+hj5r52/1Y0v+fk3n704Y72ZE7jeVdGRIerbrN2hJyPC5?=
- =?us-ascii?Q?1VfFoaeWmaQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?3pdsMqWlAmGf3vnozqO9Eaf7dGMjsSfpTxONF9wITFw2y2n/MsIdZYVNESrv?=
- =?us-ascii?Q?PhjiNBSWewxF3PQyaeNP4xGXdugvqXPzH+Pe+10z02vgL8wvP/kdFbAKwnA6?=
- =?us-ascii?Q?ahPMP8oKd3W9BpLVxsb02X//mXxLmCLPU2PC0cXu6p3nqxd/w/8LBLi7cxbs?=
- =?us-ascii?Q?CYNsf7QiQ1dJJj6oZBFPM8HtloJavmMjv1idcfrW+r0a7wp1qfH7Sk+XNV6N?=
- =?us-ascii?Q?rJthvmMup6Ah1jtFMFF6tYkDs+qbo3lcRn/wXZ8qLnrs3m8pTSthVXy2GOpU?=
- =?us-ascii?Q?qAF0bxo7b67W0e9lb/8KH3JOAJ0093yYYSTng9q5ncMvlKOWcerDyPSB4AHu?=
- =?us-ascii?Q?zImBwV3pe2DxmsEkW+bJ8jlO9jp7EIkm2yK2SR0sL2291P3SFsKmLcdxyhd1?=
- =?us-ascii?Q?z7MYNJ3OvEEO638UmLgjFqe+iOWXX64R2MYxGoame/kWF6I+tWoSEXoqkoZf?=
- =?us-ascii?Q?45KxKKjg/KYWZtM+PwFcepggQQ0n5repWmHLLf/aw8Cotji65pxQ1Vvuxzz7?=
- =?us-ascii?Q?FKQNaVuLe9RK92uy1C6Ks+I4KZj+cJGoWvtoAcoCcwNS8x5t0EIXSbLsAlgD?=
- =?us-ascii?Q?mTEVIhciGhndejJzyQCmkxjJ0vrdYLD8UD5IziQszhTcDJou7CPjmLyegt5h?=
- =?us-ascii?Q?qH/6LunuGp6EnPqaw5MXI2J9Gf/Mun1/1/31jcZBLI5MZPmBLUb97osMiWJi?=
- =?us-ascii?Q?2WmsKIoR/WJECDNYgr5KRztbuI8OXN6gt5n6RsnN+HyGm+t5Z04D6/7m3Ux1?=
- =?us-ascii?Q?j4Ev7rHK50xkDJHpxIN2F4JEr9jdHeGnQq2CfaAM1rwcHUovfEWQUEnGs0KO?=
- =?us-ascii?Q?IDw+NG00xWBlrSyMc/BLqHjXyIom6TaZ6+VxKNpPDUxykkW5LMGTKR61DJvX?=
- =?us-ascii?Q?L9Oko0KFoSOFomkqgSs2LjB6iKICoXXsdkaOWWQU5v0SCVTtiUsCT/bxmwfZ?=
- =?us-ascii?Q?PAN6MCEa/XDD3lzrgE6NK1z1hFGUMXBTBGZl8S0yJ955pPzA828SxBv1iNVN?=
- =?us-ascii?Q?SVyYHrIwPgwipY2j8IVArVWvjyLJ4TqzlXAq+8+VoJJnK7sdVpJ4D0fzUjzI?=
- =?us-ascii?Q?cP4SDgUebi8x4WnHzeGOwM1Gyps7YZSqB6AgmChHvrzIJHt9anwXZYvTn7bA?=
- =?us-ascii?Q?oO9tZomVVkWjIRgO54W+HwqsetXqDgwViQIE86TQX/rj/C4hGe/WRZhKKo7w?=
- =?us-ascii?Q?ooK2S171uRrCeMX5tVpPCD0Zo44pNVKWWbx1+PmDR1bBcYQX2Af4gTmG7nWo?=
- =?us-ascii?Q?eU0LXEKZxFMeMmBTccyESkyxacYZMG17bXLfx99xJT0ucZwndhQD15vwaRte?=
- =?us-ascii?Q?8lpedHtDAzHPEGV26GEz0Mqu+DOaE8Ftmutsfw/zhj4Vu8umlKY5VFaVmzzV?=
- =?us-ascii?Q?RnKnPCQuZWzEua2ASrSlR/VrS5nToYrBbHrA90qxGkf3Eyo+Taa7YT4oAL7r?=
- =?us-ascii?Q?qyzu+X7dN2ea0gGVezujZi0ttG4kfRgP+uSUex3WVxrWt+XLQzSQVFzKsC3g?=
- =?us-ascii?Q?lwu4KxbOE8/ss1PVw32f772p91RsoG2dK/f7LIVtNpt3soJGHcu6RjqYjDz+?=
- =?us-ascii?Q?E7pxBhkLl+LXMNa9ubBsOTF1UjK9XDJGPMCtCtwy7wMlAcjIB8GHAvR76rqW?=
- =?us-ascii?Q?2g=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	R7zDsTp9sPH2rvLy6CkFDptFjs+o0awCWK+AWMlPRcmZC4Ux/H9PoK/gcSqZ/b3PMVRci6nfNaC4mBTB1vKlZEGb1/pKXZD4z+hH8NIiKeYmPhCa3jhXp91t0OluwcylBDvZ7/8WO5PGJqW0Pn+txJFjTyOQOmuDmRW9SyU3QHzEE/xVu2c3HRIV2oPdpwiMAZiPYElONa+Yp1qKpBR3CWTyfkjbfAbgkAZlXQoaj3KJUDJOkwGVbbTlHmYPUnNYPOR6yfglys9tSgmjSnNf9bRwzjd7y3KkC6ZfNn1KXqx6ynZn2QxKBrlqgneHFTJ55qVIGCdNTehCrGlCVDEtAy4G6JgoID3PJkOo5greskhX81B7f3VyqXVXBdW0znkX4aPDLQ5snerECdRnOUzo9rwS22PSjdBJjJCIpX/18PoSMn4JEZYfwQmRJF2ohz+/E7XWrwpjhphIFRKcMhAmnD+mQFLYWpVWcIKpP/tMbk63wqy0cHj7aL9tNqlXyVRgcpl2xt3pv8sm5csuxnJIyKjiK4AVr56VGJ3ha/abeEjGCm/m5fhM71pl2ov4ai/ktKzvqKvxsoE2Jhl6TuaYJBcLVAIuuNy6D/4EHilMOYo=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6fb41e94-5fa1-4cec-a735-08ddce865cac
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2025 09:57:43.2876
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uS6LSpzWdo61ACvxibvnREJWTwVO3XDRUB75vvY/Uoj+8rE1ew5pqAYn9hFc1kqxpVgPQIHjet+EwsM5A0wL67mBsURwOUZrGHPNeXpO8L8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA6PR10MB8133
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-29_02,2025-07-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=0 bulkscore=0
- malwarescore=0 mlxscore=0 adultscore=0 mlxlogscore=999 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2507290077
-X-Proofpoint-GUID: yG_YnX6xV5_hTqL-HYXICOsdK205p7hf
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI5MDA3NyBTYWx0ZWRfX++qvNQVpXjSa
- t07+jRduYEg+QPscRIbWzqhJxOHKRQunjx1bfwrG7PO8r/C5pRUCE6tQ4NnBJ5BUiTwgvuXIRS2
- 74VDzCJtI/93ZZVfAi/wKxPC89FsImrHZISudnDe9Q5ij+W0nVmWtZWDAKmS5IQdNGAwFG7lEfU
- eC9onJ07KmQcZtXkOP7eve3yKIjzLg+HAzM3MFc+J4+vBZHwBIcbLz3kUFnIuURnYXlK9eVp+np
- TWRbO7VP82m+T+A1Rf3gA4zhB3UbBVYV0IDYCEat3BMUZYRPMnmCY6JUBNu+++/77k7aYU/kOTM
- mIsfrk+ZpiVSjXEJ3wkkvXlf7NudmBdBIFGsXNRQEmSKv+NjQL3FzErpLk0Bch7UQiIqHxLSqsG
- BacT6lu0sq4OoJbQ6uxT7LdFrrZEeX43Q7ULmdgb0ZIiNbNye43YoDsXm8fbiZM6nFtFXOGB
-X-Authority-Analysis: v=2.4 cv=ZMjXmW7b c=1 sm=1 tr=0 ts=68889b1b b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=Wb1JkmetP80A:10 a=GoEa3M9JfhUA:10 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8
- a=1XWaLZrsAAAA:8 a=yPCof4ZbAAAA:8 a=2OiXAoeUM-DF6Iu2o8AA:9 a=CjuIK1q_8ugA:10
- cc=ntf awl=host:12071
-X-Proofpoint-ORIG-GUID: yG_YnX6xV5_hTqL-HYXICOsdK205p7hf
-X-Rspamd-Queue-Id: 9B55BC0005
-X-Stat-Signature: pd9nk9dxf9fxyk67wkm87okxsdsxsnt6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: D905B40006
+X-Stat-Signature: n3ay9hxaui3f4b8jm4zqwr4nhpxju4fr
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1753783069-919255
-X-HE-Meta: U2FsdGVkX191B2/yfvsUp1hl58TSzbemfP+vacDxuQxyYoZgSaMFmeXWW7TkE5JO6RDpn5KHTm67HvRHFwVWvlpePa3HSya75P0dySvf1yXSzbglhvy9JQ4HRf/Yn2j7IAsd1XVXzhHNonQvkgaEsZ1KQ+jcgvBgyUoMrrnqpHqgM1wfgTwmi3xvnqK5ClhB7l38Pn3d+tHHK+faHr79P2Q/oGWDQVW9+SK+ICc3fNnqfZXKGWEoYXfE6e23ndbU0rI14LPQErytWnzpFFEqnbYw40KRf1cjMGpwOrJhehIOIKFG1rUqrymCwu/a3GMEOzxvkrO/uR2rt11ayybjh4E3DV9H6ViTJTwj2cAPRFC3NWsYNMWeyAz+Qw582WZ0Jp7LQbeJxsqya/Iz6SllxDPuuiadN0K9t7R41we/O6I1ZXMkvfju7Sbibi1xjf9H0nQDhQhC+xq0h4OKBqrBenwSeAXWLbDtvGh2LApfF3RDgYHd5MIuPafMkTac4+a6nz/sToOhcAN+oNcw0Naa363QtMNHhQq/OXyfveXO8g5QF37t37tSa8+u3D0GliZfxmqLWV+Q64mA5yGWHdGCqVugUF63Vd6xcEogAVAXv3uQyuWCdYqsgQfRRMjG65mEr0+Cq6WG/TsSJtwJkMR6DdsmkNCsPGSFYQwU0lsDWnE+vAYwOWC1O9VPNb0L/UJ8bGrf7wBrwYCcuZRvXqiS1ZLEN9IGJ1fJB9OzSa1wl2q1BHNgS0yEAtTlC3L2uzuA6menVPdKPd+/NkDLTDhKe/raVwmyPQgScGljX1GTPEMYGaslpqBfRYDJQkMaefZEcYKo5ibEYBa/ERZdKlLTzr2vbMtewqsbmZuPUO++UgeW+k0s7lzeyJXncHaK39IrPG5yYOFIOFu6UML8g8U4PFoUYUIb9adGpr/Sr3HgMoN/IzSq0RQWnCjRSKHHvNjx3lgp8OAjOS4094suHQ6
- MF/cgr0O
- Yn5lbkuRl7wz3v+JJ5wu179dJE22XIoT7tZzHHo+ZUsFWj1DcSk24GW1QbzSObYqJAbbjaOXAErIS351jKaBnUVClVxG4DMKAFoCiA9CKOExJeGH5byCyVQ3BvlkfOhvZwAE33phdAJPmXVCwyQcjhWGoo6uVIKO4WrQX84O7vpj4cnraLOv2PPUaKye3Rs+m3v0ImfYFJqJeuI95xm/MRru+5WxutOgJm/+Ji+vjoP/aK6lE0AVtX0I1v/Mfzo0rRhaAmES+MZdjrr1QUiLy+5XjG6iOqJ0r/5weqCjOu4C7cIE+5CYNrYKIgzDIc7VGxbVF70QYOK5yDif8MDJGjAabq2Lx6KVTlQR4cBYK6Xf1Y9IdUzzeIPLcfjTwVvrJk+bGyAEIDl/29OXOnI1mJ3vNX4gLJP02Cp5ltTBmCK2UdwQKvZvL4Kh2GvQPbU1097VMXsPA1MqbppeV58dtofd1mGWRjESUOzlfoBhyN18x1D3h5gkG0C7PjJYHu7yrL2wkk+OmYuq/iQLxdqQSTDXk7SKXVy44k5QRMSimTI59k1P967/gyOO0hOYh2Vb9rVXPbBi7HWoXxXPwztJkG/RHGsSILDv+KJsoME5oFseK+AA5wW3tZRmDrJmG3M9BlfD2JncTG9C/Br7cD9KGGtCjw86+oD+j5MlaR58fSjr4FFQRXDmeagVJ0E9jiUue3Xz/5K0bYfh5IPU/N34pnpwIFZ2ipCrWsPzG0bE/veNKlMkf18GQchZBR3JRztwbJwnOgwgnRILT/Galizr12MNmwu5WAC0sQUrmXXtXsY0u4B13DR8yoMXrKroIQvtrYnUohnjnmK9Ub+mtt6RAE7mcOptFzWTXmVpNHzPGcdyCofs4K9l1nNt+dY5wbr7RPaG2hZ5DhDA2P2s=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1753783173-54488
+X-HE-Meta: U2FsdGVkX19NAODhhZfOpk54ELQ+NxCcxeAaK8WvTpcXR0hBX18dGd3LQ+Etl6u6K6gqwOC/GqmidgKaL1zrSv4XxWuW1q4sFWF5+ymKm06FBa42g674DoE2XHZmZ/l+8R2Kou0iaX/YrSMF7JDLnawbEG/2A5ntlS396ZxMT4FvoAGFZuPDW52weDS9cXmUNM7OBE2+Epy9ilPfPtR6rUH7zEXvTpmXe27jjA1VcHzCGMtVYJHu1kMirrcNEHk27mleHSxyqJ6kvqa5s/5cg1ZpQKw/1WulJCLEPAXjhol4D8geUDsHb6zZFe3rUbvGkK55ZwzwO6E2/VJseS4Z4hDcHnhk3VkJswnWUdb1WLfS+qNd9Iv8Zdq7lAZpbJiG2jap8nDizZG6voZwCxmU95KkMMVzvp+u62JdCaTwHz3eqWMPUPFsnpyLUmU58via/VAr1OB7UMvWREN4qHT+ZbIa8A5L7I3kfn83LapEk/Bf6JGeZCg2kX+QAR2G0+n5qv9hF3m9Xd+2OA1C9swascUIhgyJkMrJDpljCZuW23w2cFxOnlTuq6uhCGQR2z69YjQMFdsLDaUi13+nE/vZrNQdR+2DYUr9PmJgG5Wn8Uo3fzCjUK6QjgdTi3Wc+YQKuhc38q/RT8WQEXEMQlmR64P6fg4lS5L5TX8S7REWs5tdTkIDCiXb5qx7IzFrl0AnoZimchc5Or+W7k/SdKGxF/vQBchw5jCfxNdZbC0Tw/iXBqgVs6IWJ/KNObsGZtTUiwD4iJCLtrr49mie6lbwhLPfqGRcR1wqjSqSL6AwCdRqZPSTgpwwF2YyZfn6CtJKM25wHGklmZz2poVm+VOeiywsCyaiIMHFzuUHf8YSYGQA5UTN8cjTO0Yr25HgRNvpSxWFl2+zXWpHiXpCacfQG/zXTqjrwG8T
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -232,164 +83,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 28, 2025 at 10:53:55AM -0700, Suren Baghdasaryan wrote:
-> By inducing delays in the right places, Jann Horn created a reproducer
-> for a hard to hit UAF issue that became possible after VMAs were allowed
-> to be recycled by adding SLAB_TYPESAFE_BY_RCU to their cache.
->
-> Race description is borrowed from Jann's discovery report:
-> lock_vma_under_rcu() looks up a VMA locklessly with mas_walk() under
-> rcu_read_lock(). At that point, the VMA may be concurrently freed, and
-> it can be recycled by another process. vma_start_read() then
-> increments the vma->vm_refcnt (if it is in an acceptable range), and
-> if this succeeds, vma_start_read() can return a recycled VMA.
->
-> In this scenario where the VMA has been recycled, lock_vma_under_rcu()
-> will then detect the mismatching ->vm_mm pointer and drop the VMA
-> through vma_end_read(), which calls vma_refcount_put().
-> vma_refcount_put() drops the refcount and then calls rcuwait_wake_up()
-> using a copy of vma->vm_mm. This is wrong: It implicitly assumes that
-> the caller is keeping the VMA's mm alive, but in this scenario the caller
-> has no relation to the VMA's mm, so the rcuwait_wake_up() can cause UAF.
->
-> The diagram depicting the race:
-> T1         T2         T3
-> ==         ==         ==
-> lock_vma_under_rcu
->   mas_walk
->           <VMA gets removed from mm>
->                       mmap
->                         <the same VMA is reallocated>
->   vma_start_read
->     __refcount_inc_not_zero_limited_acquire
->                       munmap
->                         __vma_enter_locked
->                           refcount_add_not_zero
->   vma_end_read
->     vma_refcount_put
->       __refcount_dec_and_test
->                           rcuwait_wait_event
->                             <finish operation>
->       rcuwait_wake_up [UAF]
->
-> Note that rcuwait_wait_event() in T3 does not block because refcount
-> was already dropped by T1. At this point T3 can exit and free the mm
-> causing UAF in T1.
-> To avoid this we move vma->vm_mm verification into vma_start_read() and
-> grab vma->vm_mm to stabilize it before vma_refcount_put() operation.
->
-> Fixes: 3104138517fc ("mm: make vma cache SLAB_TYPESAFE_BY_RCU")
-> Reported-by: Jann Horn <jannh@google.com>
-> Closes: https://lore.kernel.org/all/CAG48ez0-deFbVH=E3jbkWx=X3uVbd8nWeo6kbJPQ0KoUD+m2tA@mail.gmail.com/
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> Cc: <stable@vger.kernel.org>
+Hi, Jiacheng,
 
-This LGTM AFAICT, so:
+=E5=8F=B2=E5=98=89=E6=88=90 <billsjc@sjtu.edu.cn> writes:
 
-Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Hi,
+>
+> I ran the bw_unix benchmark in lmbench on my test machine (EPYC-7T83, 32 =
+vCPUs,
+> 64 GB of memory):
+>     bin/x86_64-linux-gnu/bw_unix -P 16
+> The bandwidth result was 30511.63 MB/s when percpu_pagelist_high_fraction=
+ was
+> set to 8; however, the result drops to 21595.98 MB/s when
+> percpu_pagelist_high_fraction is set to 0 (enabling PCP high auto-tuning).
+>
+> I first inspected the auto-tuning code, but the root cause of the perform=
+ance
+> degradation lies in the triggering threshold of the free_high heuristic:
+>     pcp->free_count >=3D (batch + pcp->high_min / 2)
 
-I'll fold a description of this check into the detailed impl notes I'm writing.
+free_high heuristic is used to increase last level (shared) cache
+hotness via letting one core allocate cache-hot pages just freed by
+another core.  The target use case is network workload.
 
-> ---
-> Changes since v1 [1]
-> - Made a copy of vma->mm before using it in vma_start_read(),
-> per Vlastimil Babka
->
-> Notes:
-> - Applies cleanly over mm-unstable.
-> - Should be applied to 6.15 and 6.16 but these branches do not
-> have lock_next_vma() function, so the change in lock_next_vma() should be
-> skipped when applying to those branches.
->
-> [1] https://lore.kernel.org/all/20250728170950.2216966-1-surenb@google.com/
->
->  include/linux/mmap_lock.h | 23 +++++++++++++++++++++++
->  mm/mmap_lock.c            | 10 +++-------
->  2 files changed, 26 insertions(+), 7 deletions(-)
->
-> diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
-> index 1f4f44951abe..da34afa2f8ef 100644
-> --- a/include/linux/mmap_lock.h
-> +++ b/include/linux/mmap_lock.h
-> @@ -12,6 +12,7 @@ extern int rcuwait_wake_up(struct rcuwait *w);
->  #include <linux/tracepoint-defs.h>
->  #include <linux/types.h>
->  #include <linux/cleanup.h>
-> +#include <linux/sched/mm.h>
->
->  #define MMAP_LOCK_INITIALIZER(name) \
->  	.mmap_lock = __RWSEM_INITIALIZER((name).mmap_lock),
-> @@ -183,6 +184,28 @@ static inline struct vm_area_struct *vma_start_read(struct mm_struct *mm,
->  	}
->
->  	rwsem_acquire_read(&vma->vmlock_dep_map, 0, 1, _RET_IP_);
-> +
-> +	/*
-> +	 * If vma got attached to another mm from under us, that mm is not
-> +	 * stable and can be freed in the narrow window after vma->vm_refcnt
-> +	 * is dropped and before rcuwait_wake_up(mm) is called. Grab it before
-> +	 * releasing vma->vm_refcnt.
-> +	 */
-> +	if (unlikely(vma->vm_mm != mm)) {
-> +		/* Use a copy of vm_mm in case vma is freed after we drop vm_refcnt */
-> +		struct mm_struct *other_mm = vma->vm_mm;
+It appears that free_high heuristic hurts your performance.  One
+possible reason may be that the last level cache isn't always shared on
+AMD CPU.  Can you try to bind workload to one CCX and verify whether
+this is the root cause?
 
-NIT: Not sure if we should have a space before the comment below. But it doesn't
-matter... :)
+> I noticed that commit c544a95 increases this threshold, but pcp->high_min=
+ is
+> relatively small when auto-tuning is enabled, and the PCP draining leads =
+to
+> the performance degradation.
+>
+> The problem was fixed when increasing the threshold to (batch + pcp->high=
+ / 2).
+> Is it intended to use high_min instead of high in the threshold? Would it=
+ be
+> more adaptive to introduce some new tunables for the free_high threshold?
 
-> +		/*
-> +		 * __mmdrop() is a heavy operation and we don't need RCU
-> +		 * protection here. Release RCU lock during these operations.
-> +		 */
+In general, new knob isn't welcomed in community, because it's hard for
+users to tune so many knobs already.
 
-NIT: Maybe worth saying 'we reinstate the RCU read lock as the caller expects it
-to be held when this functino returns even on error' or something like this.
-
-> +		rcu_read_unlock();
-> +		mmgrab(other_mm);
-> +		vma_refcount_put(vma);
-> +		mmdrop(other_mm);
-> +		rcu_read_lock();
-> +		return NULL;
-> +	}
-> +
->  	/*
->  	 * Overflow of vm_lock_seq/mm_lock_seq might produce false locked result.
->  	 * False unlocked result is impossible because we modify and check
-> diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
-> index 729fb7d0dd59..aa3bc42ecde0 100644
-> --- a/mm/mmap_lock.c
-> +++ b/mm/mmap_lock.c
-> @@ -164,8 +164,7 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
->  	 */
->
->  	/* Check if the vma we locked is the right one. */
-> -	if (unlikely(vma->vm_mm != mm ||
-> -		     address < vma->vm_start || address >= vma->vm_end))
-> +	if (unlikely(address < vma->vm_start || address >= vma->vm_end))
->  		goto inval_end_read;
->
->  	rcu_read_unlock();
-> @@ -236,11 +235,8 @@ struct vm_area_struct *lock_next_vma(struct mm_struct *mm,
->  		goto fallback;
->  	}
->
-> -	/*
-> -	 * Verify the vma we locked belongs to the same address space and it's
-> -	 * not behind of the last search position.
-> -	 */
-> -	if (unlikely(vma->vm_mm != mm || from_addr >= vma->vm_end))
-> +	/* Verify the vma is not behind of the last search position. */
-
-NIT: 'behind of' should be 'behind', 'behind of' is weird sounding here
-
-> +	if (unlikely(from_addr >= vma->vm_end))
->  		goto fallback_unlock;
->
->  	/*
->
-> base-commit: c617a4dd7102e691fa0fb2bc4f6b369e37d7f509
-> --
-> 2.50.1.487.gc89ff58d15-goog
->
+---
+Best Regards,
+Huang, Ying
 
