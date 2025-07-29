@@ -2,126 +2,197 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B6096C87FCA
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 22:13:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C2643C87FCA
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 22:15:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF8616B007B; Tue, 29 Jul 2025 18:13:56 -0400 (EDT)
+	id 45EF36B008A; Tue, 29 Jul 2025 18:15:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA91E6B0089; Tue, 29 Jul 2025 18:13:56 -0400 (EDT)
+	id 40F826B008C; Tue, 29 Jul 2025 18:15:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C97916B008A; Tue, 29 Jul 2025 18:13:56 -0400 (EDT)
+	id 2D8D56B0092; Tue, 29 Jul 2025 18:15:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B982D6B007B
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 18:13:56 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3CB5014026F
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 22:13:56 +0000 (UTC)
-X-FDA: 83718705672.15.BE3065C
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 62ABB8000B
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 22:13:54 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=AjnndyAY;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753827234; a=rsa-sha256;
-	cv=none;
-	b=fXT17PluW2yUobS2Pi21PQCjYd9vuN1uRUmJVFbl7J1TyKal73TlyPueOYFp1AryVKsIF8
-	iVqaaIgCKiouOihbgrapiIdAFAIxPHvZdzulhpJgLVoEAXcYDWHHAThiYNHYWt4t9+l1Sm
-	gJayVAC0WnlxsInjCDyklSi7vpAqs8A=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=AjnndyAY;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753827234;
+	by kanga.kvack.org (Postfix) with ESMTP id 1D59C6B008A
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 18:15:28 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E2EC31D9688
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 22:15:27 +0000 (UTC)
+X-FDA: 83718709494.24.2ECB1A1
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2042.outbound.protection.outlook.com [40.107.96.42])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 422F52000C
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 22:15:24 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=j9weyLuZ;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf13.hostedemail.com: domain of jgg@nvidia.com designates 40.107.96.42 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753827324;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k4TdMm0dqbyPQgLDNL4WQ//dsNOz2sMfofhnU8OFQgg=;
-	b=onyI2lvtgpIw+wc+r2Vp7N1p5zVJ0BrTfF0KVsloKv+5apz7gPs3/RKwgjOlSgrt6ZX7mB
-	4ErQQLrxip6RqCyXjhiBwfAUem7fK8KoV2JWXiOXKpIShE5MddZd3Py3k5E49B6CBZ6UFA
-	UFvWPKEWJwMLSB3RjFzOUlnnSewfC/I=
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-45610582d07so39406855e9.0
-        for <linux-mm@kvack.org>; Tue, 29 Jul 2025 15:13:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753827233; x=1754432033; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=k4TdMm0dqbyPQgLDNL4WQ//dsNOz2sMfofhnU8OFQgg=;
-        b=AjnndyAYfotMw+JFfp4bsT903PkBKQWcQ6ccsgkz1XjyZqIrK3CZazlnuJy4lC+K6t
-         hXcX6gj8IMrmeSpweos2lsF5QDEpcekctHSmpQYBs0jiE0Srnsm02IiOEPv4wzVMXb7I
-         az8nOZ5drv86JJM4TpLZ06X2vJWfD+efQsVnAyez6avIciE07DM9H4hJxPzNCg085gfR
-         9EhtAKkDUF5v/vNhmB7aU5vgE2ayYkTszszYapq9ZfQAXYgJirHjEq1DdSPB+dRPBmP5
-         kKf8/eu4x5ycqaFDcedOuBz0xKGYh6lldi9ZRrZz5mhReR8gNaHiOqFwjZEjhZyYAxWI
-         Y2cw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753827233; x=1754432033;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=k4TdMm0dqbyPQgLDNL4WQ//dsNOz2sMfofhnU8OFQgg=;
-        b=msg1OiAeXU9a97Y6jUV6dGBa+GpQ2UzLaeehcfgJcP3o+UODL9tjTGe3Kyywb5jhDn
-         ISRlFxdLXiXP8m9inHhSvtBEXTs4G6XhY0zYN6ef2VJXaN0BLt40tNeuFmTEn2ewd0yg
-         hj46QV+YWAFm2sx60/jebbyLPsEb6SQMZjdFd8EFOZ6ULG+l2H/LLVg2iIW5a/ZbMcw/
-         +KsRqxACm+ZEowbRE7Bvglp/cgu+VUhRf44N7yW1pp6wzC63LjsUWQL7rWoEAuT3nOIE
-         uwWHsXEmuIwPlf4Rgl8AsK2PQNzPbKiNwDXNra1hdr3uGAd2tH3lHufjkYWg2gUELQkE
-         kJMA==
-X-Forwarded-Encrypted: i=1; AJvYcCX7TYgDKW5qiPLeVuwYOgH0T12B/Oe/H+54baZeGg7WFhfbTCspyOncSCvq2p/Ve913dmva4BcXPQ==@kvack.org
-X-Gm-Message-State: AOJu0Yyy7tfhky4ac7m99WjQq34GOJYLDV/lseROyHiM6eG1xoQ9gMZf
-	jNlndK6MahNO+EAYjpnJ9D0+bHt5VNlETqY9Y+8vuSXxelRNVVHqh3nN
-X-Gm-Gg: ASbGncvNnxtvcdJX7RGkQaBTX7X/m+xtURncgJaDn5rfL3FF4ekIRBIlnEJdncRS44n
-	eLiqHDgIy/zSkZWNiJxsVtPbSnuQybIhfYN5IzdRKrdouqw3zmoTZ9hC+3TraJmdvC8DxjdzPrN
-	t9OTXKLNXWe91Re35FXzvSRIHwhj42+5060SZbEs6YWWvmylg0QPRYsxf0D3xu3iCWhnlPxFpIX
-	83jQcxAJbWD9dQQTJ29ql3IX3PLW0kG0OwwGviN3VOZDDqBfJTL8yQvsPJ+fi23G7YdHuVpTGm4
-	3QLhpjxGD3cc0IjoKKL21rPuwEXsKCj4HU2o4f5fsi7sRzfE9yhQUvL964+8iybQauqcbf7PwVw
-	zNsofid+AqHB32p4pUWkYGl6Q9fF/mH9zJDnf0eZvHOfT+ppTGkrK1EhJ0oMVKkWnEG/HSWo5UL
-	rmEPcb2ffId8kShePpIPUC
-X-Google-Smtp-Source: AGHT+IEeWIQxoNPjyhb0qgajHm83bwS2o4UYVKQz54yvj8B5BNWBgnOWxAGCs5O9lSHAl/LE7QHulA==
-X-Received: by 2002:a05:600c:1d22:b0:453:23fe:ca86 with SMTP id 5b1f17b1804b1-45892b95320mr11780725e9.4.1753827232385;
-        Tue, 29 Jul 2025 15:13:52 -0700 (PDT)
-Received: from ?IPV6:2a02:6b6f:e759:7e00:8b4:7c1f:c64:2a4? ([2a02:6b6f:e759:7e00:8b4:7c1f:c64:2a4])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458953778c9sm2629375e9.14.2025.07.29.15.13.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Jul 2025 15:13:51 -0700 (PDT)
-Message-ID: <4dc95e54-e0ef-4919-973a-748845897ef9@gmail.com>
-Date: Tue, 29 Jul 2025 23:13:50 +0100
+	bh=OcdX1K5T1AZvkWtseRY5CLzuvhXArPhbeks5EEKiU5I=;
+	b=AiwvaHeZ/KMvqgE1Zxqrh84IIUuu1GryBzAw+ezWidULdft1noKPAviRmZQ/25FzbB2RnW
+	2jWhhjZHpY1Ee8reOXlMJerLX6NZG60A7uBXSGB13WHlQVGC4AmPSUKmFmFsObgvgPniUf
+	pFPs5YrIoKEfaJl4m1VuJsAXBU0VB/Y=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753827324; a=rsa-sha256;
+	cv=pass;
+	b=O5bJTzRlVKRKhQEPEWl8ZXwlLbfykD96Cd+cl0jZVicm8oW7jgLf+kRBZS7LoCBbPJwhsy
+	YpWbY6sKsrvoBkjRcXPORCkLDduqXO1GDaOZ1AjzTU8LnDiCQZ04i3/HBE+F7fKVwNyJAB
+	Ba9jo0jYhCj0/UgnI7on+EojJGeBG+w=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=j9weyLuZ;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf13.hostedemail.com: domain of jgg@nvidia.com designates 40.107.96.42 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Pgme0RAGQkyVK5DWf5EJcmwJglIwMy6JCWra4YKQ3Dt3Rr0sS1C6J6D5Tuo/MmeS+3sdqQUgMwIrh6JwJHao548IFbKEnyBKzHBePEJHqPjigW2su8D7EhOf8xVpznOBLcXNZ4qHGrC8aTv2LHm5m0lBbQIRF7SyioO5Bsd+KnmogqJL7QJxlggu+JBbzpsr4YRWSP1fBbAYr6mPQf7sTWhQdos/9e8hT9C9Wx+qEBDYg/Z+JIgivjFij+AnstkebhFsPe9k8/bbSWt8AhAYfBcgKruwebCslCi9LNAtqbzopcCJAgLSMvt220m4w1vRjdYupItFa5b1Jb5KV9grYA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OcdX1K5T1AZvkWtseRY5CLzuvhXArPhbeks5EEKiU5I=;
+ b=bdd/klzlk/VkQyD/JLniMlcFSBhMXTkRf1j1SwvnzzvyJFiTkZEj5POnyFP7zzalVnpoWjjepQQQq5QcqvLbe86GPD5WkGa8YQlCqexZU6bTg+15CNTF+xqBlKq8gdnJpO3zvCs2YVrJE9xk81svL1qi460wAk02CZnFVehg3z+7Mndr4O3GoO78mCrqIAiDUSBHZXZXeKRJ5QmxifYkYtexQkscyl0MOKaa68drLdp/1LWwfOpZXPF66hJsIlHCsTYWMeVODHBm/WGB736r5bvdjqU62d8pioj7kCONERBCVpoL1KwKt2hhegt23YotRfxGhySNV1ki0aXjQAFw+g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OcdX1K5T1AZvkWtseRY5CLzuvhXArPhbeks5EEKiU5I=;
+ b=j9weyLuZIpqjAPxcHQdXIFSD8/Fy3TTQA8euoS05iVX9VY4LOv5R3kDkTMRkmtD8WCJ2lPxFcmHdnRT/kknfXEIh9Fh2gLc6djrZNxXUcZ3vr6sheALQqEoBEpPmdNirkL1UTpVVctbFzw8Uty/hU/wBeaWoBk9OGL1y4vcK8GLP0glOPL2ivZy0chM8VQdQ7UBniBRwGZfUK6JUh7luijbEGBmwU1igBhyItmfsDEMehB4gP0ujYnvHX/gVobn71aqjrC0XPVCSM5q3pvhy8u0trnJZ2N8dCSCKYN2SnuaX6Ckm7Bvep3sqh6hAY5FEy/7Ja1PCfnfP7b1F/ilNDg==
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by DS0PR12MB8527.namprd12.prod.outlook.com (2603:10b6:8:161::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.11; Tue, 29 Jul
+ 2025 22:15:21 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%7]) with mapi id 15.20.8964.024; Tue, 29 Jul 2025
+ 22:15:20 +0000
+Date: Tue, 29 Jul 2025 19:14:28 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Logan Gunthorpe <logang@deltatee.com>
+Cc: Leon Romanovsky <leon@kernel.org>, Christoph Hellwig <hch@lst.de>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
+	Jens Axboe <axboe@kernel.dk>,
+	=?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>,
+	Joerg Roedel <joro@8bytes.org>, kvm@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH 05/10] PCI/P2PDMA: Export pci_p2pdma_map_type() function
+Message-ID: <20250729221428.GB82395@nvidia.com>
+References: <82e62eb59afcd39b68ae143573d5ed113a92344e.1753274085.git.leonro@nvidia.com>
+ <20250724080313.GA31887@lst.de>
+ <20250724081321.GT402218@unreal>
+ <b32ae619-6c4a-46fc-a368-6ad4e245d581@deltatee.com>
+ <20250727190514.GG7551@nvidia.com>
+ <d69e0d74-285e-4cde-a2e4-a803accfa9e1@deltatee.com>
+ <20250728164136.GD402218@unreal>
+ <d3c8c573-f201-4450-9400-cc3ccafd2c04@deltatee.com>
+ <20250728231107.GE36037@nvidia.com>
+ <f332e2b9-151f-49ca-ac0c-8c9494c38027@deltatee.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f332e2b9-151f-49ca-ac0c-8c9494c38027@deltatee.com>
+X-ClientProxiedBy: YT4PR01CA0181.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:110::8) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] selftests: prctl: introduce tests for disabling THPs
- completely
-To: David Hildenbrand <david@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-Cc: linux-fsdevel@vger.kernel.org, corbet@lwn.net, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org, baohua@kernel.org,
- shakeel.butt@linux.dev, riel@surriel.com, ziy@nvidia.com,
- laoar.shao@gmail.com, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
- npache@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- ryan.roberts@arm.com, vbabka@suse.cz, jannh@google.com,
- Arnd Bergmann <arnd@arndb.de>, sj@kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, kernel-team@meta.com
-References: <20250725162258.1043176-1-usamaarif642@gmail.com>
- <20250725162258.1043176-5-usamaarif642@gmail.com>
- <b9c72ab9-9687-4953-adfe-0a588a6dd0f7@redhat.com>
-Content-Language: en-US
-From: Usama Arif <usamaarif642@gmail.com>
-In-Reply-To: <b9c72ab9-9687-4953-adfe-0a588a6dd0f7@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 62ABB8000B
-X-Stat-Signature: 9q3y7ffhxdsskpz7y9xu8pnm1qkk9w8n
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|DS0PR12MB8527:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3c5f1f13-e926-4c18-8e2f-08ddceed681d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?V21jIgAfhwgoy4pJX3stt1U2HUcsdxHxDce4Unfnqv6lAZfeBRUbV74nxLxB?=
+ =?us-ascii?Q?Ss6ecX0nmFK/FzdemNMy1nXQPh+1H8URupJDFd+73Xmzz/9kfBZn9DqPTACn?=
+ =?us-ascii?Q?tnNwH8LTYOtadR8G5A8/WaRNcE/Gu0NIpl9DwCZkyHMLqCx3IWLvAnpJskof?=
+ =?us-ascii?Q?PCNouKtT41qPUQDk0uSqJAFztPpP6SShGU3rI/dsr47SW0a2KY68OITeoc2a?=
+ =?us-ascii?Q?p4DkhRxcYAxkqN1+nPdpJGOPgiis6Ay1Qir2VmKuvcgQVII6INTj5U/qCe3i?=
+ =?us-ascii?Q?QO6ElSJg52CDJ/xMaKzuqZG+19ZJoQUd98IIMr08Ji5fsvZdS5AxHKKh6hfQ?=
+ =?us-ascii?Q?bikVzV5tWkMGk/ybR4W+tdfLdLx3conc9lglZS18Jcl1mIXJWyooNaTbwEiF?=
+ =?us-ascii?Q?oc90UmKFqVdv1ZJmdXX2D/q+Rx6xCv4+xrNaY/f50n8FfJzI0AsQeSCoMdd4?=
+ =?us-ascii?Q?1UcsVo/HhlSFgDzqq1w6L7rvOIdzaYGPz+UpDncm7BWYE0IEN/Xie/4uzvYu?=
+ =?us-ascii?Q?VLJp1bfGXfXqJJZf8lTtnIci0DC/QyUtjQulvw00TeebEIwf6RELlwc9G87L?=
+ =?us-ascii?Q?a+teTU4D2UheaMVMKld6QdrA3fiNUyG1io9/wzFG8svxNIPQNYBOJWtcQ3oV?=
+ =?us-ascii?Q?SHs7afjoqnkgPGEt1xxs7XGmvcJjngnb3lHgTnBZYLWbLvPtAxtJOs7INUUE?=
+ =?us-ascii?Q?IsyUD60Hobqjm21pGEX+v7VbMUvztwNJJCglwB/HOJ7z0o/zdizg+3dNjgYa?=
+ =?us-ascii?Q?pNmnebpC0gEJkIC/wPjno6NSq/aqJZFQM3ADOciUoC2346InFksX/gIRbuV5?=
+ =?us-ascii?Q?6A+Jg618fr4dEYkOi8guppJllAw6TSKLDu6HWTjDUt7AKw1rX/pmlSW8L5Ql?=
+ =?us-ascii?Q?ZmauRKXf0gwAvoYSlPiPKhb9bRJaLt2EwJbt8ovfuCQHYYICOQMqv4B15R5M?=
+ =?us-ascii?Q?OsjB2PEISAtsB/rCHF2VhmAvVu90nQVnz9CE7cZtRllfj6doRBtERfMWHfzG?=
+ =?us-ascii?Q?AbF8H6FWPgM6o3Ip1tM+dLhuGgEsU419ZqYUbEZDBwTKKvsEEd61H9jT95tS?=
+ =?us-ascii?Q?stMAjHDJDZqwrAFD0M0tW6JFMNezVbx3To0dj97lVUQeDInVugOj0S9MoLtq?=
+ =?us-ascii?Q?6o3AePWZFb3FRRsJCRNkDmr/Y3aIptemZau2zIQ7ZsxBx23JSTbT0bnCICP8?=
+ =?us-ascii?Q?g4YJu0B5CijOmPjY6BFVBZW9mK88q8z2YWue6NSw1g8rqmW5lpqpUXBLHK3g?=
+ =?us-ascii?Q?Ji0/fOPbjvlmtrrVokxto5oPN21jNFAaGOjy/kw9uIAbSul5HbABe37/JXmU?=
+ =?us-ascii?Q?f5/Iswt9BbKhrzkkqO5VdiKrwFVCWkeNzgTntCEhBk9lNtGIlzAr7L4sYB83?=
+ =?us-ascii?Q?OT+02VXmZkhKkIdEgeNIs8wWrFuOX/gHWaYesFdOFwVoLX0FMak4KO3yBzEX?=
+ =?us-ascii?Q?/489aMngu08=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?S7rnikbmFGh2JoJ6IkermJR49GpfukJklLCzafyBW9yl45Vjjp1xnDXozcds?=
+ =?us-ascii?Q?znroJIFJpI0aBdZ9FMWviZMEcpsCXH3RBR0MnEDtojRdiwbW9a+9946L/oSR?=
+ =?us-ascii?Q?rQ+HUvps1TjvKhTms17gZYtzKNxjdeTjSQ/A3s/S+ymykDxPc1vrd1Oe2gJO?=
+ =?us-ascii?Q?N6ovCtGVcqL0HZD32BPOmUEx9h/buzx5uaaDQiWzUGFKFYItkPsvxXOQb/Pb?=
+ =?us-ascii?Q?Ae2nFgKQkMFiWxjdiijaJO/2gtz0IQbhIaUk/RIECSVa7Zw50uUS9wngqfo3?=
+ =?us-ascii?Q?TVfFOiZqT+DknXVn+zIf4UsCfVCA8JxrBL4Ws7ZLnE3jMOjeWidKWPByK6tq?=
+ =?us-ascii?Q?wBfRQOIeKEVeckM9yWRmPCtPjKy6m1ybFKSlPJsnYW+NnXxZe5WkRLvlB14U?=
+ =?us-ascii?Q?vo/yrN2a6oq9Ha9VK7e4vsX6zDhZMq+3uR3qxDQdbLRL7c9cMcmiLxAi6MN0?=
+ =?us-ascii?Q?m0YdWu3u575nm1Md5bfzJ7rv3ybZL/fTP2nsjOLxPvcXWJUkFH7TWRrkecrh?=
+ =?us-ascii?Q?r8KbSm8yXPa+VU5Nk9MwrvaSjPkucvvfu+W/OoCsevGT00m3oLqwjWMhJ68S?=
+ =?us-ascii?Q?vSZwG2MLCP4R5f11cQBSJKaD/ByuYxl7GJkSNtJN2axGz6AGrTgB+og6vM8B?=
+ =?us-ascii?Q?2/Bj74W0Zci+6EWtpMUs0qLX6GidTkAcOfhKWQs9MojoYKCzTKzUPVQ45EzJ?=
+ =?us-ascii?Q?q8ozm5jnOF7KOl3LQFzvvgTc7iIUYen5psWpPHZz/4zdbVY/zz/vIVpJdGk6?=
+ =?us-ascii?Q?pf1mj0eFTxdmDUQrB1fXJBgu2LcOgEmfemTW1+rbon+9HKcO89GEkZSNLnd9?=
+ =?us-ascii?Q?fyXD24uA3WbyzLR6kOroj7bZT8oTry1ijCp0bZJOrmwq1Eylx9EVomE3IG9s?=
+ =?us-ascii?Q?LbTG/nZQGGYzt8tvLKD43n4B6cgdqoifMTH/aSdpLFOfyYYi/uFGpDXOgGKe?=
+ =?us-ascii?Q?XU/moe2d7uqwyX2HoAK04KkGh4qDnJwm3ho2gv1nQCrW1kVSxDEkUnMEvuVU?=
+ =?us-ascii?Q?QbDd/qbAQZUGAzRUxKrYPqRr2Z9L+F2ZA2K38owGVTqnuFMZKgtldv9SLxF6?=
+ =?us-ascii?Q?haG113lgsCl5Cgs8r6bQiSX/eUER5ciZucCVuGFKwfSvNoGplla9e9nkKNwr?=
+ =?us-ascii?Q?OieIpphGyj2bDp6zONCextjKNPNwQC8pmllPoEFk6z+7aomI7nZ2/Nr1e987?=
+ =?us-ascii?Q?XluYyhsL5w5Ho8KRo9eykVES4B6OCve8gMlVfB99FqQljA1K2SKV6hOW83H5?=
+ =?us-ascii?Q?JhwQ2PK2OJK4A/JgsqitbldjuYY4iLVf+P8ZJ92/hyq+qS2T0E8LPCL8tvAX?=
+ =?us-ascii?Q?0iQ87qZ0+bupr8EELF5/zFCRv1ndogeg96eIQjAC58hV4/pCTDG8K+53XgtU?=
+ =?us-ascii?Q?DCNanRg3m868ADYNumb1GgvwR/7ARkKTVOlEP6akihkKLvHlSSY0zUJB5YKj?=
+ =?us-ascii?Q?LzGPHJb4DpJAZHJy8BIFzbfa3w/YlQ8ERb4kFK8kPfCiL6MYnyLzjr+bw1HQ?=
+ =?us-ascii?Q?3BKS8eSz08d+Uhl6620zcCMU8FWKuiFDUJaTrKMGjbsiAfHB8SpnDFWa04zh?=
+ =?us-ascii?Q?yJ+OMFpJb5MqzkWwtZo=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3c5f1f13-e926-4c18-8e2f-08ddceed681d
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2025 22:15:20.7500
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: p+eYr1GEjeWfjffBR335mwTee1PJd75EYCh0ECScn+RXQZ236Ueo0Om/ojC07uTS
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8527
+X-Rspamd-Queue-Id: 422F52000C
+X-Stat-Signature: 7m4ec7bza95d1uk5nacpm1kxr1giejyf
 X-Rspam-User: 
-X-HE-Tag: 1753827234-197476
-X-HE-Meta: U2FsdGVkX189Bo0PZY9Eadh76N5ojJt5S7uX4yVIq72IW52EEM3KRG0xF/HxTv0I7MZNt20LVv6L+0WcYE1LMoIyinod101gXKNYu+dyoRcAPYVK460rCQg334UA350Dp3aCzjNXQYeqJZStiZQWL6aidEr2VJC/cpMJ11A6aL2rBslhU0hBRoIogT2Z62lI9O0d3ah58a/GqQ12Wk/EhECDlpaZR3TUGwbeIP1kMhLhlzdF+8CNUX7ToBrjWqE7kSqHlgDWqNPC+4ggPy5ihNBsRmSjSUu9o5UABysjLjfMu+T5DjSpM5UuMNEkDfg99V7ewOgvb1mZLPBAdqifAs53GeTs0Dwx50Pw+xBa8/c6a78SJDjZ1H/U5iepTq3Oct9NyjqlQG6HtboUeMj2XY0S2QEiQF3AB/G+o8T/PZ3X3miLqTN7kOY7zG+s6+rMnR1A8jZWHWUGeWSsAuCfJ55t+3YIC3uYlHxn9DAe25sMbAUaLrY5zV8TiCjm8MXesTYA+IT/BtYw5CiJcX4KFwX5g2kAvzcsvCP6YzFDqY8rsATDpEyluPG4AOxH7U72+8EFurY62TnlyHa03UqCyzRLnhWxm/W1kR1dEnyOsOL+KRFBA0TvjbrBC/JLQDsdjtyZ4NFrBmhXGqmDgIa/0ciy94yKVFnKNIz3SpqxbqbyxWMT0QpDuxe/2SOUdmL1w9gG88TB5j6V28PvLMupCrNNUkb+oZwuy+Uj76j2IVjNBGwKYzxG9WAYyNGqXYzNj1TsMaGDAi9V3lW2KRmmwiFg0JlwVROuJMhuBaUgEHGF3FG5RzjQRrEQvNmxluVXY2g/z4AX5dQF/pdXGwd7CH4uEELCK/WGbZAyTxDzr1B6aGkb9+raPgOYb1mVgZsmd/vFunG8cC9Li7W2btttyf7y57W5dH4DNAC+HbWy+57QO5xuIy9bPSJUfc7AJsbwBpWsOClHouWlNjrrLvd
- Vrx20yil
- 0bA+g9N8kyPP/3/biViAKaZuD2iH5ZQjG/3Ks+wwQVVaVR8RzmVuCnCYw03r9I6WkF+kvpHzPPE6HMEoOxCzQ7UEOrA3qPGPDICKBRE9GbVrcC4aPGxmwfdDv0GRI+w1+pUKa
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1753827324-952447
+X-HE-Meta: U2FsdGVkX1/G+vo1VwzwMN2RS2bQiUefHad5Bju/5wiQ8j/Z35rMyC8fzthz+MIH2PtXBpPnt4T50nEIklyBQ9dhb0RZlw1/ol5Nd68mYTU9SSnkeoI2D2oSNjz085PtVEdZVWtdtraA481sYKCvZ2SZwwBbX9acWgqa/C5RFkH6hGAM2FwfiLl++PJlOij1qKP37A2T7F0qNj8L4OomtZmR2XA89PzuKEJgJT7C39zhVg0ysZwtoXzp2OoM7Ujwk0rEzi4DAiFyfnCBP/b3RnJ9ad5IaLqaJmjpORdrZn9uyGmxdOYyZ0gzhHfkS9EJ3hf1+X0unwkGcivQt+teBuRnGnnODzBjmtMqXTbZRXUFoMn1rqRhBToG0/R6oqLFwaX/h2q9qYmluXNP+IrdbKo/RBJz/cRYs9kCQAJRafzED3X3i8V7GI7KKZz/RNSmJGCVjQcIOTzOlaId230oDQhZUVrKTkNR7qK45USYG5l43SjKCVn0GKwRfeNralVfdAK76xfI5+JcD4brj6X6/8uG0OnqTGmXWEb+40bU18c4JKHvHG7MoQdUWcpGnEYlwzPBZezeQBMc5t3eLQFzggFrVjCkBzCWKZeCqvApNlkh1cppT2FgIKyXw2YRg4qUTxR78Xm3FWDBx8o2SZdJaPJ/YqP0R77xSkcvfiZHlZgTUjquAgAMvqF3EDMUb83NT5h6rtmwGFV6Fjh5KJlPQrh7WmDxrKsnKVGGA0cjFvI/e1i2nqfpuQn0J+UIapSXWfi4YmMyDE51us3R/CD0Uk92IOvbDEY+sGMuW2Z2zArKs9Zqlpa78TNtbgMeV77HViEgSbZF85t9pe68foxz3w26ur1pqJj9rnnucIf8809BozdQiSw5AxyHzBYXtccOB5LtmEaUtyt0vCGM/MYy5IuDDR+L+ZPwM6IePuBHq2OUqaBIsLIPgrygu9KWysHZa21xFFMo0lpM2zdEkAM
+ HAsOq3fD
+ 0go+paG3aqIs+0Jg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,112 +201,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->> +
->> +    self->pmdsize = read_pmd_pagesize();
->> +    if (!self->pmdsize)
->> +        SKIP(return, "Unable to read PMD size\n");
->> +
->> +    thp_read_settings(&self->settings);
->> +    self->settings.thp_enabled = THP_MADVISE;
->> +    self->settings.hugepages[sz2ord(self->pmdsize, getpagesize())].enabled = THP_INHERIT;
->> +    thp_save_settings();
->> +    thp_push_settings(&self->settings);
-> 
-> push without pop, should that be alarming? :)
-> 
-> Can we just use thp_write_settings()? (not sure why that push/pop is required ... is it?)
-> 
-
-Thanks for the reviews!
-Ack on the previous comments, I have fixed them and will include in next revision.
-Yes, I think we can replace thp_push_settings with thp_write_settings.
-
-For this, I actually just copied what cow.c and uffd-wp-mremap.c are doing :)
-
-You can see in these 2 files that we do [1]
-- thp_read_settings / thp_save_settings
-- thp_push_settings
-
-Than we run the experiment
-
-and at the end we do [2]
-- thp_restore_settings
-
-i.e. there is no pop.
-
-I think we can change the thp_push_settings to thp_write_settings in [3] and [4] as well?
-I can fix and test it if it makes sense. It should prevent people like me from making a
-similar mistake when they just copy from it :)
-
-[1] https://elixir.bootlin.com/linux/v6.16/source/tools/testing/selftests/mm/cow.c#L1884
-[2] https://elixir.bootlin.com/linux/v6.16/source/tools/testing/selftests/mm/cow.c#L1911 
-[3] https://elixir.bootlin.com/linux/v6.16/source/tools/testing/selftests/mm/cow.c#L1886
-[4] https://elixir.bootlin.com/linux/v6.16/source/tools/testing/selftests/mm/uffd-wp-mremap.c#L355
-
-
->> +}
->> +
->> +FIXTURE_TEARDOWN(prctl_thp_disable_completely)
->> +{> +    thp_restore_settings();
->> +}
->> +
->> +/* prctl_thp_disable_except_madvise fixture sets system THP setting to madvise */
->> +static void prctl_thp_disable_completely(struct __test_metadata *const _metadata,
->> +                     size_t pmdsize)
->> +{
->> +    int res = 0;
->> +
->> +    res = prctl(PR_GET_THP_DISABLE, NULL, NULL, NULL, NULL);
->> +    ASSERT_EQ(res, 1);
->> +
->> +    /* global = madvise, process = never, we shouldn't get HPs even with madvise */
-> 
-> s/HPs/THPs/
-> 
->> +    res = test_mmap_thp(NONE, pmdsize);
->> +    ASSERT_EQ(res, 0);
->> +
->> +    res = test_mmap_thp(HUGE, pmdsize);
->> +    ASSERT_EQ(res, 0);
->> +
->> +    res = test_mmap_thp(COLLAPSE, pmdsize);
->> +    ASSERT_EQ(res, 0);
->> +
->> +    /* Reset to system policy */
->> +    res =  prctl(PR_SET_THP_DISABLE, 0, NULL, NULL, NULL);
->> +    ASSERT_EQ(res, 0);
->> +
->> +    /* global = madvise */
->> +    res = test_mmap_thp(NONE, pmdsize);
->> +    ASSERT_EQ(res, 0);
->> +
->> +    res = test_mmap_thp(HUGE, pmdsize);
->> +    ASSERT_EQ(res, 1);
->> +
->> +    res = test_mmap_thp(COLLAPSE, pmdsize);
->> +    ASSERT_EQ(res, 1);
+On Tue, Jul 29, 2025 at 02:54:13PM -0600, Logan Gunthorpe wrote:
 > 
 > 
-> Makes me wonder: should we test for global=always and global=always?
-
-Do you mean global=madvise and global=always?> 
-> (or simply for all possible values, including global=never if easily possible?)
+> On 2025-07-28 17:11, Jason Gunthorpe wrote:
+> >> If the dma mapping for P2P memory doesn't need to create an iommu
+> >> mapping then that's fine. But it should be the dma-iommu layer to decide
+> >> that.
+> > 
+> > So above, we can't use dma-iommu.c, it might not be compiled into the
+> > kernel but the dma_map_phys() path is still valid.
 > 
-> At least testing with global=always should exercise more possible paths
-> than global=always (esp., test_mmap_thp(NONE, pmdsize) which would
-> never apply in madvise mode).
-> 
+> This is an easily solved problem. I did a very rough sketch below to say
+> it's really not that hard. (Note it has some rough edges that could be
+> cleaned up and I based it off Leon's git repo which appears to not be
+> the same as what was posted, but the core concept is sound).
 
-lol I think over here as well you meant madvise in the 2nd instance.
+I did hope for something like this in the early days, but it proved
+not so easy to get agreements on details :(
 
-I was just looking at other selftests and I saw FIXTURE_VARIANT_ADD, I think we can
-use that to do it without replicating too much code. Let me see if I
-can use that and do it for never, madvise and always. If it doesnt help
-there might be some code replication, but that should be ok.
+My feeling was we should get some actual examples of using this thing
+and then it is far easier to discuss ideas, like yours here, to
+improve it. Many of the discussions kind of got confused without
+enough actual usering code for everyone to refer to.
 
-Thanks!
+For instance the nvme use case is a big driver for the API design, and
+it is quite different from these simpler flows, this idea needs to see
+how it would work there.
 
+Maybe this idea could also have provider = NULL meaning it is CPU
+cachable memory?
 
+> +static inline void dma_iova_try_alloc_p2p(struct p2pdma_provider *provider,
+> +               struct device *dev, struct dma_iova_state *state, phys_addr_t phys,
+> +               size_t size)
+> +{
+> +}
 
+Can't be empty - PCI_P2PDMA_MAP_THRU_HOST_BRIDGE vs
+PCI_P2PDMA_MAP_BUS_ADDR still matters so it still must set
+dma_iova_state::bus_addr to get dma_map_phys_prealloc() to do the
+right thing.
 
+Still, it would make sense to put something like that in dma/mapping.c
+and rely on the static inline stub for dma_iova_try_alloc()..
+
+>   	for (i = 0; i < priv->nr_ranges; i++) {
+> -		if (!state) {
+> -			addr = pci_p2pdma_bus_addr_map(provider,
+> -						       phys_vec[i].paddr);
+> -		} else if (dma_use_iova(state)) {
+> -			ret = dma_iova_link(attachment->dev, state,
+> -					    phys_vec[i].paddr, 0,
+> -					    phys_vec[i].len, dir, attrs);
+> -			if (ret)
+> -				goto err_unmap_dma;
+> -
+> -			mapped_len += phys_vec[i].len;
+> -		} else {
+> -			addr = dma_map_phys(attachment->dev, phys_vec[i].paddr,
+> -					    phys_vec[i].len, dir, attrs);
+> -			ret = dma_mapping_error(attachment->dev, addr);
+> -			if (ret)
+> -				goto err_unmap_dma;
+> -		}
+> +		addr = dma_map_phys_prealloc(attachment->dev, phys_vec[i].paddr,
+> +					     phys_vec[i].len, dir, attrs, state,
+> +					     provider);
+
+There was a draft of something like this at some point. The
+DMA_MAPPING_USE_IOVA is a new twist though
+
+>  #define DMA_BIT_MASK(n)	(((n) == 64) ? ~0ULL : ((1ULL<<(n))-1))
+>   struct dma_iova_state {
+>  	dma_addr_t addr;
+>  	u64 __size;
+> +	bool bus_addr;
+>  };
+
+Gowing this structure has been strongly pushed back on. This probably
+can be solved in some other way, a bitfield on size perhaps..
+
+>  +dma_addr_t dma_map_phys_prealloc(struct device *dev, phys_addr_t phys,
+> size_t size,
+> +		enum dma_data_direction dir, unsigned long attrs,
+> +		struct dma_iova_state *state, struct p2pdma_provider *provider)
+> +{
+> +	int ret;
+> +
+> +	if (state->bus_addr)
+> +		return pci_p2pdma_bus_addr_map(provider, phys);
+> +
+> +	if (dma_use_iova(state)) {
+> +		ret = dma_iova_link(dev, state, phys, 0, size, dir, attrs);
+> +		if (ret)
+> +			return DMA_MAPPING_ERROR;
+> +
+> +		return DMA_MAPPING_USE_IOVA;
+> +	}
+> +
+> +	return dma_map_phys(dev, phys, size, dir, attrs);
+> +}
+> +EXPORT_SYMBOL_GPL(dma_map_phys_prealloc);
+
+I would be tempted to inline this
+
+Overall, yeah I would certainly welcome improvements like this if
+everyone can agree, but I'd really like to see nvme merged before we
+start working on ideas. That way the proposal can be properly
+evaluated by all the stake holders.
+
+Jason
 
