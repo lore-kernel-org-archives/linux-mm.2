@@ -2,114 +2,132 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 767DAC87FC9
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 08:47:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 45487C83F26
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 08:52:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 159E46B0098; Tue, 29 Jul 2025 04:47:40 -0400 (EDT)
+	id BC3056B008A; Tue, 29 Jul 2025 04:52:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10C696B0099; Tue, 29 Jul 2025 04:47:40 -0400 (EDT)
+	id B9B046B0092; Tue, 29 Jul 2025 04:52:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 020916B009A; Tue, 29 Jul 2025 04:47:39 -0400 (EDT)
+	id AB0706B0093; Tue, 29 Jul 2025 04:52:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E17596B0098
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 04:47:39 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id ADAFD1404A6
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 08:47:39 +0000 (UTC)
-X-FDA: 83716673838.30.D422734
-Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 7A0D7180007
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 08:47:35 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=FhSkqwt0;
-	spf=pass (imf24.hostedemail.com: domain of wangyuli@uniontech.com designates 52.59.177.22 as permitted sender) smtp.mailfrom=wangyuli@uniontech.com;
-	dmarc=pass (policy=none) header.from=uniontech.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B68B6B008A
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 04:52:16 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 51E72113BA6
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 08:52:16 +0000 (UTC)
+X-FDA: 83716685472.09.74B491B
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 515CB100003
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 08:52:14 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UR5gRV2b;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of asml.silence@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=asml.silence@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753778857;
+	s=arc-20220608; t=1753779134;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=VLq1PupNl4epQ/eqFgJeI/b4qy5mdRvi3g/owsVSuA0=;
-	b=oX0LEFO8t+KzSWfcgIN4xO7N1Mi/uCglX8G3GliWaMKgUCtAGeYI3H5W4pW52t7i5LaMWR
-	ixz2C230cKJltEc+pvYsGUl5KITNd1JB+JrIjQHtHKnSHFP2eTmjajNmUbwBoktB/Lgepm
-	HnZTuGMQC6oYy4+Quw/PqfR9QVx1JiE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753778857; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=puylhfEeh04//TXk56E+rvqvhJy4E6rc8s7DMainMJQ=;
+	b=FISMBGi9h+yhnSL42n9Q5ahMmXwa8cukBzlQbXdQuN2H9B6Q2hdu18E+S/kjGswCRUi8HE
+	Sqo7fAC0jlu11PlLaxSmFPIJ0nFEy7fYR8RchO3xqj97ps3cnJZEU8rkVl4JAvjaCeMHmm
+	Lw96EMFTsOtvJn6UOtOFf8QraD1Jb70=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753779134; a=rsa-sha256;
 	cv=none;
-	b=BHvTBXhpeHL2V1Z2jjH0iNWnWCxxth5/YysBboj1mpzM1VFk60VXafRHm8AAqB+4ETDJgp
-	aNfuiY/AENeqnq8+Mole8owkQAtHIirxuhGI+9TkdFo7dLBKMLKg/V6jRNlCfCG3vjj6qQ
-	RqBZLPbBR2g5Sw02NWSsaeJjolDAZnI=
+	b=dgmCVSyqy9cUiipAd8dN2l5xLie9HCfPdmNXiTglJlEwZeeuGAdtxJiCIX+gNArfc1poKF
+	6hS7jnK43pHVoIKgRCrDhasRINuuT9YTKq27Sb524+wWCoX/lXbb9YQW+UcNQ5OVB1eTTx
+	nbzZT49HViirzYw265i596Y51UO7pwE=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=FhSkqwt0;
-	spf=pass (imf24.hostedemail.com: domain of wangyuli@uniontech.com designates 52.59.177.22 as permitted sender) smtp.mailfrom=wangyuli@uniontech.com;
-	dmarc=pass (policy=none) header.from=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1753778838;
-	bh=VLq1PupNl4epQ/eqFgJeI/b4qy5mdRvi3g/owsVSuA0=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=FhSkqwt0nnPtAqm4q6BL39Jc3uxBS83jgcblHf5g0aqL3IzQBIZAoJIo5hkgPPTH3
-	 Jh4twdN2KH0rIeM0/PXyxbIuucpH7yIUzewM7GzlAiAB7D1+vuCeHHtjDmjmjffgn2
-	 seym/xN47xtjMvsj1hIbtGmwP6xnRS03ulKDDPzE=
-X-QQ-mid: zesmtpip3t1753778825te45995f8
-X-QQ-Originating-IP: tSCf3VyPzUnUetiPvgXt758R68S3WC3VgNrI2JAXLJI=
-Received: from avenger-e500 ( [localhost])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 29 Jul 2025 16:47:03 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 3458122844410139732
-EX-QQ-RecipientCnt: 12
-From: WangYuli <wangyuli@uniontech.com>
-To: akpm@linux-foundation.org,
-	Liam.Howlett@oracle.com,
-	lorenzo.stoakes@oracle.com,
-	vbabka@suse.cz,
-	jannh@google.com,
-	pfalcato@suse.de
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	niecheng1@uniontech.com,
-	guanwentao@uniontech.com,
-	WangYuli <wangyuli@uniontech.com>,
-	Jun Zhan <zhanjun@uniontech.com>
-Subject: [PATCH] tools/testing/vma: Fix function parameter declarations for GCC 8.3 compatibility
-Date: Tue, 29 Jul 2025 16:47:00 +0800
-Message-ID: <EFCEBE7E301589DE+20250729084700.208767-1-wangyuli@uniontech.com>
-X-Mailer: git-send-email 2.50.0
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UR5gRV2b;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of asml.silence@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=asml.silence@gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4550709f2c1so41375535e9.3
+        for <linux-mm@kvack.org>; Tue, 29 Jul 2025 01:52:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753779133; x=1754383933; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=puylhfEeh04//TXk56E+rvqvhJy4E6rc8s7DMainMJQ=;
+        b=UR5gRV2b815uUZ0KiH/mbIoa8XgMinywsRgHp4ta4aPPzaPl/ZhH/XebtLaDPXuPXu
+         D06UK3cIY6/twL5PeE2EPNDOMbGbqkJugXXz19WUY0if0mwEKuYzbHGjAw5hW7CeEWCA
+         Y7LSZTXrYHFybC8T3lLUbYXiD4JhhkL24duaiLF+4c+IUs00d8OaCBMb3Wi7lvpGjLvQ
+         Z+UGBkxcBcH98Gukn2o54PxoOs7RbYSy+wB1ZMHnXfYxRoGlBMD1VLyM6LRwGppfw2mw
+         Ye6MgeHwA8a+4thdr8lPNOXVV26wbAd/DAklT17RWYPh4q4vSgUnLBnEw4xTZfnZNesW
+         40+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753779133; x=1754383933;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=puylhfEeh04//TXk56E+rvqvhJy4E6rc8s7DMainMJQ=;
+        b=Y/9oI1kHEpkFuFxQvdgadtiCsA6GYxooewI5v3CMQUjqnoOMdPsC6zTvBX9xRVTX7v
+         za6fduPCF7sNqGLm/A9sMkU3Ig+qLBIlk0Kzrvngv3FFp0eOpdBkEw4Otg7e0LdkWX8k
+         UsyxTQtZEeZxWUJXHXsCMHizMJoiOLUjzhpuhZKtBS57qbjnNhvJHgTxVS0e+7Z8KBI3
+         CyJsATL8p9gY7vLaAgReklb/1QDNLig9kypS+ZELnI09tKdQ10+jORXC4UfD2Oc53L9c
+         IKy+jtZZY2fEOgT/fYKCeNU+JN09u5GROoc7UOnUCDBPiRy7QYhVtGDuipXSC/Y/+Nu2
+         P/xA==
+X-Forwarded-Encrypted: i=1; AJvYcCW1ZEwHQolhdiP0d10AkNx8BHl/0bsHXMAnITjSF4KVzT6Mx7SeDSH9khNOjTj84aG8+VhD9CGVFA==@kvack.org
+X-Gm-Message-State: AOJu0YxTpC7tFNozNxEr2oCnOfWAHLD9mI+33POcLFplxS1IGjePnXkt
+	DSTIcbFa9Vqz0DHq/4vlDhu4g2mPAcM9E4CJ8geudepacBgxhckW5984
+X-Gm-Gg: ASbGnctXmuBDFpJJLnb3JauIPUbhj58ag0bQiydxFlC5k6A3TkUqY/sG817k3lQHDoy
+	O7NZvAmhryBwlVzrkWit+/tnGGzur4UvQNlsYSYEKpHXpy3Mhs5CBStT/msZsLuh9jBN7B1bTqM
+	/tWq3b2RVXnvaMjLsdPkyGcvLo/FWFjWYBWQTEif59u5flYjepbS6pRCCyCp/sOxQtjx24iuyQb
+	qsMw2CRbC+3K0HDMXdj+c6iMBql77pydg40ZNVynH4K4WY+7eh8eSp/5ENx/NYrXS0mP8CHoGuD
+	rHpliNYcvVbYoLOQf3eoRW/1YCCGisVptFMUxdB5fzhYVTZND8WB6O1VvSrw8KJ2TY+mKE+7KsA
+	sNNigszftk3jMLCHnkAUpVeqkoRlni/TKFdM=
+X-Google-Smtp-Source: AGHT+IEm4VTiD/JSN689v0JLsMbYqbkmePqxtHqQp6IbEjtW00P2+vOo5p+wkfxwZCh3NLYlWmARzg==
+X-Received: by 2002:a05:600c:458d:b0:43d:9d5:474d with SMTP id 5b1f17b1804b1-4587b16efb2mr105032655e9.0.1753779132350;
+        Tue, 29 Jul 2025 01:52:12 -0700 (PDT)
+Received: from ?IPV6:2620:10d:c096:325::26f? ([2620:10d:c092:600::1:72ea])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b77e216516sm10225969f8f.72.2025.07.29.01.52.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 29 Jul 2025 01:52:11 -0700 (PDT)
+Message-ID: <7d7eb3cd-db7e-4a9e-8671-4185b716bbc8@gmail.com>
+Date: Tue, 29 Jul 2025 09:53:31 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm, page_pool: introduce a new page type for page pool
+ in page type
+To: Byungchul Park <byungchul@sk.com>
+Cc: Mina Almasry <almasrymina@google.com>, linux-mm@kvack.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel_team@skhynix.com, harry.yoo@oracle.com, ast@kernel.org,
+ daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
+ john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
+ leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
+ andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
+ akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, horms@kernel.org, jackmanb@google.com, hannes@cmpxchg.org,
+ ziy@nvidia.com, ilias.apalodimas@linaro.org, willy@infradead.org,
+ brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
+ usamaarif642@gmail.com, baolin.wang@linux.alibaba.com, toke@redhat.com,
+ bpf@vger.kernel.org, linux-rdma@vger.kernel.org
+References: <20250728052742.81294-1-byungchul@sk.com>
+ <fc1ed731-33f8-4754-949f-2c7e3ed76c7b@gmail.com>
+ <CAHS8izO6t0euQcNyhxXKPbrV7BZ1MfuMjrQiqKr-Y68t5XCGaA@mail.gmail.com>
+ <da4a9efd-64b3-4dc5-a613-b73e17f160d6@gmail.com>
+ <20250729010410.GC56089@system.software.com>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <20250729010410.GC56089@system.software.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: NDxI9psdf3YV3rs/Uk6soLGD5nAjI0/HXoDZ1p+2PYOPR2S2BFwIibmh
-	CsHbRkqMIPPkdWlFG5rjNvMG3WCYiXfHAj/PRqmur0tduhq9srmvTgKSRkimY4t/YPdDPF0
-	aO1qB6b4KrJRZF3VethuVNe4VvoyAeugA+JOFpYXos+CpcOLNFXVz8+qCRX8bAEgPEqpeS1
-	5SsFOnFWklX6AqoV+n0yFFP4MNXFmOfe1ngHweLQq7nqEZUK+hHxxU1ros2mbMFg/ARRJ8x
-	7cVIbCkrkQYku9hU2+570PZUT0EYZ8SGWeFZEJEBOYtMK+N05OkIldnBdmrQ+bsMh1C8gMW
-	FUCiYN1YkMX/uKRj/c/gM6D4n8JiG+06b17Mzi7TGCeduD4kyZ5mMMycXglG3hayVz9QUOd
-	Ac2x1erNlzJdS6Zv3DkeuOHo6Wse6jzyKMBBg8M+j+kAr7KwQirVv0F0bzZulxcVVKa8YW9
-	uesQToaiRpufzuXV1bZpWQy6vx70y/OCNy9czIJLyOYl0566tsTryX3jb0zcntJM1KueyZv
-	isn0nPjvq9nUS/hfvEB7a8aQRFFSzkTl06Zrqe5UYNFC2fyQUehdiLH6KtVSkTOalofpxpG
-	iSNTvTcBduH+STk51QwuvgC/ml130x8CoDRbezdTcfqgfVl/5gCWBRat7oJcW12GZVpig+r
-	dr7SOkzrPU6+q7/xsnDkcpko6iApNNTChMCpMEhTO20HcXI79bqgXJromyaP6dxWQiNkYem
-	YthoLCIdKm0HPHOu2X4YDDvh7ZJVP8c5aFLiGPpGPFmsZLTqTI6SjpW++QhakaCd3X5GQCl
-	/9S+8vEbqhUTvpiuOG/08a8x5nrimNoaUKYgx308FKnAed4vjADTzglwlnab8WBLIJyFSTk
-	/NUFeB20u8mEQcsHpwQs083W8dvHfWHJImgKyV3SFGto/9Tyhj3UkSZe2rvytmRQKpsknwC
-	34o1i8rFPXvRb74CC5bLSdU0Jh693hznUYKdxyJoas1IS8uskbBxHFu01e4ulKybOI78+3Q
-	m6M9ZFdYkwzHg6UTgD
-X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
-X-QQ-RECHKSPAM: 0
-X-Rspamd-Queue-Id: 7A0D7180007
+X-Stat-Signature: 8gr3fop71earjhabpm79nqocy6unghin
+X-Rspamd-Queue-Id: 515CB100003
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: ux3tuuf1anizejhtm3w84j8txg1je5fz
-X-HE-Tag: 1753778855-334352
-X-HE-Meta: U2FsdGVkX1/8kOkEz55ArhVnsI7OrxHIXVUpiAPos0XwQb7FnpZ5/HL22hg9VbDz1zdTSenlbTUuk+ayo0KMwymkiQ6Z0NIfuF+te7CGXqacXsURoRP+P22xqEGvHEOoQzE1tFZwtipNeB7YVz02pVBPNcmTWsRLNcSCKr3NvmzWuBgiGuRoTz4KzRYEEys5Thd2eyyHvlcaTRvqZKkww5YrxOs0fWMrLdoGwUR+MEUo6RWTI9H1z5xN9xrssOMbR7HHj3M2FUoeGdIMyk3qKugO9ReAnrCAykZhoHZAW/Kb10DUuUBp0GFaP3wvr7o4IR8rOX+BLS00wsC43mQQ4i4VKJbhsivCi+DxqHS8/NgoO/1tMCBb8Jnz0GORAovgT2szoHCUHGkrRMfePE2gJ178jTGN6wqqjQWOiHHEClSXBDrcblTtBHzBYNS3iZ9u+FYIEc2zmXJVolb49XhQOd9Jv0N38/HROqLDxzz/rt0wl1ImSgCnNpCvJrITgx34FtFcZ4Isu6DJRrJw8npEM9scTKeITWWVxtnC26XSzleAZB+H/WsZ76n3YGvnk+kn4yJt7SJqk+VwarxJyWeiSVOQ2Ca1bqYMxxGVeF2dM/n1N5UrEZ3vuQgI24RlDxUy2u7gpmFb/MYNOD/Q++VC0dMpI9KZADQ9tCIJwABj68QXbdizG1H5fsRZqO7JlLpD5CEApcnjab9lW/ffnD6nsg4vuafOP5ZROK0qWhTdNfq7cal+jdMku/hLSG1qcmAupqCGutTcC3utFuPj72u+LTC/gY4Ec4k2aYqOLGLGohmUgWnvGiIGGv5DJspTmwPAuyCDuIgKgWoy6MQeXFLp4q+ITn0ATVsUiU39oBkNM2Xpi9RoZ1yEZRwPVkLZHqenorDWD3z84YcPstZu5f4pWhQWHCzJI14iTUkEcJ0xH5WimmF3CepL/CK8JyP2HOrmi/bMCmM222G+T4g73JN
- F7F1Rdwn
- yGJ9pnOOtU+um2Cciylezhxon3QdGl80OihMFkz9W2115RlQPFDWOZ6r9WwH/qDn0ApTwq/6vvRHik+EkL5IHKZ3z82L0H+DdNJqipDKCCWb4d7P18fQJ4Tm2L+mG88FPuzFXrYJJ7VLi6OpmF42f2W/3zSAi6iAPOrFzRPr3iseFLdNIRK3eJF8sMGI5fIQ/5Af+sriN1nbZJ24tHuxMXwH2bHmdhFVVkbLtvfrYVmFVo/dvxS9cznkt0O+ofEAV+0lUAKG0mxoEQ3Rq50eg7RVXTINEL8qxTUWrBHL3sXogFRuKADEYgWaYf96pFJTEFSxeDnaF408DpR/MxYDdIgZCMA==
+X-HE-Tag: 1753779134-939362
+X-HE-Meta: U2FsdGVkX18eD5u7cIAfUs4Tp1kHB9QtVF1SeCL/taICeWM0bk3+WD76zX4KdZas5/RB9WagbQ0QFMvclLxhd+RGyY4lfjf8Gq5tXe8nHKcHjUsxqQnE9I/7COfMaRcdx+5Uk6th4AOzHwHGEV9/BR2fym3z6KNnksQ1/bOq9PQfSEdG9qHogH+BjAqFNGnYF2ZBUuw0EKHqb2VVpxKC9TTulfnU9bLVcVB1vVjBlEvbfI0m4f0zpxSQAXZCj5V0dC5kfJqjbAXDS9dd0uSurJs+rhooPEjXg9isUFAYainGZOz2cHoauNB2XJqGIxvwm6NWRfbCZt/VSYkXJN4dq5MiNhFsVEdodmXNYskth2Ho72wJ7CgASczkO7HNWuwT0tJaAUpZgnCPQxSL+c06EDFc2SkkQyoSaFUweVAdvrjt0n82D/qIoGqsJTHo4+sz4sryC7s4wxnmdZR/u4/jYTNgsoTaI9zlXwcUHAGl/EIfq46gG09nYezalfw12msDdcmTkZ2ShvAEw3AdY9Qck4S4lxqNsDKlGZyEmSlJRoBi0mX+e4HHVQCDsmVASsyBmtvuyZwnIob5juNODG1GSGa7qvuKQIKmsWjtsxGo19VMPEKbqnso0/l7ggkXP+o3u+62wiqu4c2nzUxgEjw71nXnpjyxEFKJsKGPPFrD8q+wKX5eDZ45Ahws9TmPylR7emYdOhsrXOGqIRXnXW3wBc03nSQLWAnJl2Gftz+LYMY7ElMRjWizKBX/ZtThQHWRwvlSQTbGFJXGB/pGr/BvMD2sqdfMEFUejDApVCphNGoxwAxdSdL8rHitbanQZsqwBOmkw4IIMKGx4IVx+UJeRkK6KjDBfcHg7iyV3AESrQYamfaKin61wFiaANFkWzKbTglP+9oCduF4RegdGcSQacEeDBt3l7fpF/4566/VkfHvq9EYMX8LVOnDHZSKK9RLeSzFt3PES+WFc6ElDGw
+ pviT/J6s
+ JD9H22CO1vG/BGAxvgq8o1fE+tM/LoJ27/juvvGydmZzQHDjFfCxfMhw633d3aC5N7kNTL0/cAf9rh9mMFfSewn+t7EMxPNsE6vmBQMu38VkZyto8UtV0yt/rjfNT1rEM1+Yd2qSnvKxm7kcR+XXKsMYoZDas3WPvBhZw81/R+ujwjsBp6wqZbOsnmo+jFflAZauxS8sfu4gpPPuGgty6AvFAuD8GMsOK8+2u4phh2BvsV/LLz6GiV3JAyuadG2hYI+x12RFEWYF28hsOApSRX5oDqNrYS+jcGRKZrxvMnWlHVXHUaPd4rGyaucVIrPZjtuHdvQscQLkASue0KhT3yUh9CGGuqPGcQwun6J3Xw2JYVk8pTWRjavtbg1cbuIwLFjhcg6VMaAMhQdJDO/CVbZVFO7lpMmIoJlgvzrgi1/kDJY7Bny0SwMDQh2WIvPuXAEBkfSPdTrO50GJH6XutbYI89fzj1mtaVjSEfG0pgmBfrXr+csH+L08KaAV2n3qH2/rxlUZOdLXD9ZgPR/O3fW6RkdJz7bWDsTgpBywU7H2mkPM2ETjo52wAQL9ij2v22q0hgxT6u3lWSxTdC/fmEQupuxly3+8b+PPGY8JfmfeqBR8mQschnnuEtDAt+uMQTdzZhwdmd4/A9+ehG3c7nTN/de12JEgYvtyeCVt4uSroCrjdSUh6haLQSA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,376 +136,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The Linux kernel's minimum GCC version requirement has been bumped
-from 4.3 to 8.3, but this tool still fails to compile with GCC 8.3.
+On 7/29/25 02:04, Byungchul Park wrote:
+> On Mon, Jul 28, 2025 at 07:49:30PM +0100, Pavel Begunkov wrote:
+>> On 7/28/25 19:39, Mina Almasry wrote:
+>>> On Mon, Jul 28, 2025 at 11:35 AM Pavel Begunkov <asml.silence@gmail.com> wrote:
 
-Older compilers would fail if did not include parameter names in
-function declarations that contained parameter types; newer compilers
-are more lenient about this.
+...>>> This may be my bad since I said we should check if it's 0 initialized.
+>>>
+>>> It looks like on the devmem side as well we kvmalloc_array the niovs,
+>>> and if I'm checking through the helpers right, kvmalloc_array does
+>>> 0-initialize indeed.
+>>
+>> I wouldn't rely on that, it's just for zcrx I do:
+>>
+>> kvmalloc_array(...,  GFP_KERNEL | __GFP_ZERO);
+> 
+> For net_devmem_bind_dmabuf(), __GFP_ZERO will add bigger overhead than
+> just assignment, 'niov->pp = NULL'.
 
-Fix many errors like this:
-  In file included from vma.c:10:
-  vma_internal.h: In function ‘arch_validate_flags’:
-  vma_internal.h:1218:40: error: parameter name omitted
-   static inline bool arch_validate_flags(unsigned long)
-                                        ^~~~~~~~~~~~~
-  vma.c: In function ‘dummy_close’:
-  vma.c:281:25: error: parameter name omitted
-   static void dummy_close(struct vm_area_struct *)
-                         ^~~~~~~~~~~~~~~~~~~~~~~
+That's not a place where you should care about zeroing overhead.
 
-Reported-by: Jun Zhan <zhanjun@uniontech.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
----
- tools/testing/vma/vma.c          |   2 +-
- tools/testing/vma/vma_internal.h | 110 +++++++++++++++----------------
- 2 files changed, 56 insertions(+), 56 deletions(-)
+> I'd like to ask you if you are still good with __GFP_ZERO overhead
+> before going ahead.
 
-diff --git a/tools/testing/vma/vma.c b/tools/testing/vma/vma.c
-index 2be7597a2ac2..390b6a711f97 100644
---- a/tools/testing/vma/vma.c
-+++ b/tools/testing/vma/vma.c
-@@ -278,7 +278,7 @@ static bool vma_write_started(struct vm_area_struct *vma)
- }
- 
- /* Helper function providing a dummy vm_ops->close() method.*/
--static void dummy_close(struct vm_area_struct *)
-+static void dummy_close(struct vm_area_struct *vma)
- {
- }
- 
-diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_internal.h
-index 816e7e057585..4935460102e5 100644
---- a/tools/testing/vma/vma_internal.h
-+++ b/tools/testing/vma/vma_internal.h
-@@ -288,8 +288,8 @@ struct vm_area_desc {
- };
- 
- struct file_operations {
--	int (*mmap)(struct file *, struct vm_area_struct *);
--	int (*mmap_prepare)(struct vm_area_desc *);
-+	int (*mmap)(struct file *file, struct vm_area_struct *vma);
-+	int (*mmap_prepare)(struct vm_area_desc *desc);
- };
- 
- struct file {
-@@ -840,11 +840,11 @@ static inline unsigned long vma_pages(struct vm_area_struct *vma)
- 	return (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
- }
- 
--static inline void fput(struct file *)
-+static inline void fput(struct file *file)
- {
- }
- 
--static inline void mpol_put(struct mempolicy *)
-+static inline void mpol_put(struct mempolicy *policy)
- {
- }
- 
-@@ -852,15 +852,15 @@ static inline void lru_add_drain(void)
- {
- }
- 
--static inline void tlb_gather_mmu(struct mmu_gather *, struct mm_struct *)
-+static inline void tlb_gather_mmu(struct mmu_gather *tlb, struct mm_struct *mm)
- {
- }
- 
--static inline void update_hiwater_rss(struct mm_struct *)
-+static inline void update_hiwater_rss(struct mm_struct *mm)
- {
- }
- 
--static inline void update_hiwater_vm(struct mm_struct *)
-+static inline void update_hiwater_vm(struct mm_struct *mm)
- {
- }
- 
-@@ -890,15 +890,15 @@ static inline void free_pgtables(struct mmu_gather *tlb, struct ma_state *mas,
- 	(void)mm_wr_locked;
- }
- 
--static inline void mapping_unmap_writable(struct address_space *)
-+static inline void mapping_unmap_writable(struct address_space *mapping)
- {
- }
- 
--static inline void flush_dcache_mmap_lock(struct address_space *)
-+static inline void flush_dcache_mmap_lock(struct address_space *mapping)
- {
- }
- 
--static inline void tlb_finish_mmu(struct mmu_gather *)
-+static inline void tlb_finish_mmu(struct mmu_gather *tlb)
- {
- }
- 
-@@ -907,7 +907,7 @@ static inline struct file *get_file(struct file *f)
- 	return f;
- }
- 
--static inline int vma_dup_policy(struct vm_area_struct *, struct vm_area_struct *)
-+static inline int vma_dup_policy(struct vm_area_struct *dst, struct vm_area_struct *src)
- {
- 	return 0;
- }
-@@ -940,7 +940,7 @@ static inline void vma_adjust_trans_huge(struct vm_area_struct *vma,
- 	(void)next;
- }
- 
--static inline void hugetlb_split(struct vm_area_struct *, unsigned long) {}
-+static inline void hugetlb_split(struct vm_area_struct *vma, unsigned long addr) {}
- 
- static inline void vma_iter_free(struct vma_iterator *vmi)
- {
-@@ -957,31 +957,31 @@ static inline void vm_acct_memory(long pages)
- {
- }
- 
--static inline void vma_interval_tree_insert(struct vm_area_struct *,
--					    struct rb_root_cached *)
-+static inline void vma_interval_tree_insert(struct vm_area_struct *vma,
-+					    struct rb_root_cached *root)
- {
- }
- 
--static inline void vma_interval_tree_remove(struct vm_area_struct *,
--					    struct rb_root_cached *)
-+static inline void vma_interval_tree_remove(struct vm_area_struct *vma,
-+					    struct rb_root_cached *root)
- {
- }
- 
--static inline void flush_dcache_mmap_unlock(struct address_space *)
-+static inline void flush_dcache_mmap_unlock(struct address_space *mapping)
- {
- }
- 
--static inline void anon_vma_interval_tree_insert(struct anon_vma_chain*,
--						 struct rb_root_cached *)
-+static inline void anon_vma_interval_tree_insert(struct anon_vma_chain *avc,
-+						 struct rb_root_cached *root)
- {
- }
- 
--static inline void anon_vma_interval_tree_remove(struct anon_vma_chain*,
--						 struct rb_root_cached *)
-+static inline void anon_vma_interval_tree_remove(struct anon_vma_chain *avc,
-+						 struct rb_root_cached *root)
- {
- }
- 
--static inline void uprobe_mmap(struct vm_area_struct *)
-+static inline void uprobe_mmap(struct vm_area_struct *vma)
- {
- }
- 
-@@ -993,15 +993,15 @@ static inline void uprobe_munmap(struct vm_area_struct *vma,
- 	(void)end;
- }
- 
--static inline void i_mmap_lock_write(struct address_space *)
-+static inline void i_mmap_lock_write(struct address_space *mapping)
- {
- }
- 
--static inline void anon_vma_lock_write(struct anon_vma *)
-+static inline void anon_vma_lock_write(struct anon_vma *anon_vma)
- {
- }
- 
--static inline void vma_assert_write_locked(struct vm_area_struct *)
-+static inline void vma_assert_write_locked(struct vm_area_struct *vma)
- {
- }
- 
-@@ -1011,16 +1011,16 @@ static inline void unlink_anon_vmas(struct vm_area_struct *vma)
- 	vma->anon_vma->was_unlinked = true;
- }
- 
--static inline void anon_vma_unlock_write(struct anon_vma *)
-+static inline void anon_vma_unlock_write(struct anon_vma *anon_vma)
- {
- }
- 
--static inline void i_mmap_unlock_write(struct address_space *)
-+static inline void i_mmap_unlock_write(struct address_space *mapping)
- {
- }
- 
--static inline void anon_vma_merge(struct vm_area_struct *,
--				  struct vm_area_struct *)
-+static inline void anon_vma_merge(struct vm_area_struct *vma,
-+				  struct vm_area_struct *prev)
- {
- }
- 
-@@ -1037,19 +1037,19 @@ static inline int userfaultfd_unmap_prep(struct vm_area_struct *vma,
- 	return 0;
- }
- 
--static inline void mmap_write_downgrade(struct mm_struct *)
-+static inline void mmap_write_downgrade(struct mm_struct *mm)
- {
- }
- 
--static inline void mmap_read_unlock(struct mm_struct *)
-+static inline void mmap_read_unlock(struct mm_struct *mm)
- {
- }
- 
--static inline void mmap_write_unlock(struct mm_struct *)
-+static inline void mmap_write_unlock(struct mm_struct *mm)
- {
- }
- 
--static inline int mmap_write_lock_killable(struct mm_struct *)
-+static inline int mmap_write_lock_killable(struct mm_struct *mm)
- {
- 	return 0;
- }
-@@ -1074,11 +1074,11 @@ static inline void arch_unmap(struct mm_struct *mm,
- 	(void)end;
- }
- 
--static inline void mmap_assert_locked(struct mm_struct *)
-+static inline void mmap_assert_locked(struct mm_struct *mm)
- {
- }
- 
--static inline bool mpol_equal(struct mempolicy *, struct mempolicy *)
-+static inline bool mpol_equal(struct mempolicy *a, struct mempolicy *b)
- {
- 	return true;
- }
-@@ -1090,59 +1090,59 @@ static inline void khugepaged_enter_vma(struct vm_area_struct *vma,
- 	(void)vm_flags;
- }
- 
--static inline bool mapping_can_writeback(struct address_space *)
-+static inline bool mapping_can_writeback(struct address_space *mapping)
- {
- 	return true;
- }
- 
--static inline bool is_vm_hugetlb_page(struct vm_area_struct *)
-+static inline bool is_vm_hugetlb_page(struct vm_area_struct *vma)
- {
- 	return false;
- }
- 
--static inline bool vma_soft_dirty_enabled(struct vm_area_struct *)
-+static inline bool vma_soft_dirty_enabled(struct vm_area_struct *vma)
- {
- 	return false;
- }
- 
--static inline bool userfaultfd_wp(struct vm_area_struct *)
-+static inline bool userfaultfd_wp(struct vm_area_struct *vma)
- {
- 	return false;
- }
- 
--static inline void mmap_assert_write_locked(struct mm_struct *)
-+static inline void mmap_assert_write_locked(struct mm_struct *mm)
- {
- }
- 
--static inline void mutex_lock(struct mutex *)
-+static inline void mutex_lock(struct mutex *lock)
- {
- }
- 
--static inline void mutex_unlock(struct mutex *)
-+static inline void mutex_unlock(struct mutex *lock)
- {
- }
- 
--static inline bool mutex_is_locked(struct mutex *)
-+static inline bool mutex_is_locked(struct mutex *lock)
- {
- 	return true;
- }
- 
--static inline bool signal_pending(void *)
-+static inline bool signal_pending(void *task)
- {
- 	return false;
- }
- 
--static inline bool is_file_hugepages(struct file *)
-+static inline bool is_file_hugepages(struct file *file)
- {
- 	return false;
- }
- 
--static inline int security_vm_enough_memory_mm(struct mm_struct *, long)
-+static inline int security_vm_enough_memory_mm(struct mm_struct *mm, long pages)
- {
- 	return 0;
- }
- 
--static inline bool may_expand_vm(struct mm_struct *, vm_flags_t, unsigned long)
-+static inline bool may_expand_vm(struct mm_struct *mm, vm_flags_t flags, unsigned long npages)
- {
- 	return true;
- }
-@@ -1167,7 +1167,7 @@ static inline void vm_flags_clear(struct vm_area_struct *vma,
- 	vma->__vm_flags &= ~flags;
- }
- 
--static inline int shmem_zero_setup(struct vm_area_struct *)
-+static inline int shmem_zero_setup(struct vm_area_struct *vma)
- {
- 	return 0;
- }
-@@ -1177,20 +1177,20 @@ static inline void vma_set_anonymous(struct vm_area_struct *vma)
- 	vma->vm_ops = NULL;
- }
- 
--static inline void ksm_add_vma(struct vm_area_struct *)
-+static inline void ksm_add_vma(struct vm_area_struct *vma)
- {
- }
- 
--static inline void perf_event_mmap(struct vm_area_struct *)
-+static inline void perf_event_mmap(struct vm_area_struct *vma)
- {
- }
- 
--static inline bool vma_is_dax(struct vm_area_struct *)
-+static inline bool vma_is_dax(struct vm_area_struct *vma)
- {
- 	return false;
- }
- 
--static inline struct vm_area_struct *get_gate_vma(struct mm_struct *)
-+static inline struct vm_area_struct *get_gate_vma(struct mm_struct *mm)
- {
- 	return NULL;
- }
-@@ -1215,16 +1215,16 @@ static inline void vma_set_page_prot(struct vm_area_struct *vma)
- 	WRITE_ONCE(vma->vm_page_prot, vm_page_prot);
- }
- 
--static inline bool arch_validate_flags(unsigned long)
-+static inline bool arch_validate_flags(unsigned long flags)
- {
- 	return true;
- }
- 
--static inline void vma_close(struct vm_area_struct *)
-+static inline void vma_close(struct vm_area_struct *vma)
- {
- }
- 
--static inline int mmap_file(struct file *, struct vm_area_struct *)
-+static inline int mmap_file(struct file *file, struct vm_area_struct *vma)
- {
- 	return 0;
- }
+However, it might be easier for you to just assign it directly
+for devmem and let Mina add GFP_ZERO if he fancy the idea.
+
 -- 
-2.50.0
+Pavel Begunkov
 
 
