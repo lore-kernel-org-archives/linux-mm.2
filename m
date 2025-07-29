@@ -2,176 +2,112 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D101C83F26
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 14:30:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 144C8C83F26
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 14:31:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F2A96B0092; Tue, 29 Jul 2025 10:30:22 -0400 (EDT)
+	id A96506B0095; Tue, 29 Jul 2025 10:31:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2CA886B0093; Tue, 29 Jul 2025 10:30:22 -0400 (EDT)
+	id A6DD66B0096; Tue, 29 Jul 2025 10:31:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1930A6B0099; Tue, 29 Jul 2025 10:30:22 -0400 (EDT)
+	id 984496B0099; Tue, 29 Jul 2025 10:31:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B4FA6B0092
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 10:30:22 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B03238012D
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 14:30:21 +0000 (UTC)
-X-FDA: 83717537442.01.4A27F62
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2079.outbound.protection.outlook.com [40.107.237.79])
-	by imf09.hostedemail.com (Postfix) with ESMTP id DB626140006
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 14:30:18 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="PtviqQ/7";
-	spf=pass (imf09.hostedemail.com: domain of ziy@nvidia.com designates 40.107.237.79 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753799419;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8675D6B0095
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 10:31:25 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4393512C8D5
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 14:31:25 +0000 (UTC)
+X-FDA: 83717540130.24.B60223A
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5D62F4000F
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 14:31:23 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=wrgIk6RN;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf12.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753799483; a=rsa-sha256;
+	cv=none;
+	b=Jris6ju5QBcjDxKf29tjadkI5sT93pQJEhDW14udGPt3l79+AI7G/WG9K9xbBBlKTEjeWz
+	PMO7VErP29YTvXuDhECU2ECS9dL2tZw4R3z/ykVk+CMrWJzftYE2SLitPs7qIlQ9DNhSwX
+	bOtDW1VJ6D9vBUX7HzydVP/JNy1yB4M=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=wrgIk6RN;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf12.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753799483;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lLx39eyTHOGatk/I49xFk1qBTIYABp35LFDVBx8byoo=;
-	b=ChzK6yxXU9z1rltFp0zqgQXe+jr9Qc3wMSikTepi1AJoS2N76ur0uQuWZ6lGm7HEHR7XhF
-	SP7WPNxLu1QsCmKDE5/GIwPRdXhy/hDF6zVeIFfnj9P5+GxEpLlcwpGTr4VZVrJ/Rk+iHH
-	0fNGabWuLwmwA/lGwp0SpC8DjYqCzhI=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753799419; a=rsa-sha256;
-	cv=pass;
-	b=ifkbcdhoit0VDTDH6HJ88Kx8+L5MPHa8SfSrWpdsngEwfnDoxYiSn0KpA4z/4SwWhymtz/
-	q7YGG4QpdBWLGKfIBDo8CLhGeLVzf5tpixXYliv0DksSnpKSVC4ve6Zn4F4A3frjzPdo/T
-	/HkCG09Kl4XEgNr/hwwq8kS90uIx70Q=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="PtviqQ/7";
-	spf=pass (imf09.hostedemail.com: domain of ziy@nvidia.com designates 40.107.237.79 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=C4PW6Wa5fVciBGyLoWXamdWdBjb4T7Rk5j4hIPm3jtDmYZj7lKK5n2me7zE3f06Yr7xYUsspK7YD+IAepjxiO29CYOvnj3yGnv0J/mz/wPUqv+uVmbXGwiCOZJ7ZbwLvSXF8Wl37oGa9482eIxtRrGyN00zYX6WQjduG8MiCvSBEcXsVY46hkX4gDAycxJPNFYl3xMgjtHhb1rbkLLCABFvlPfKDfNu8EKxJ66WCzXYCRP7k6KlGNacOd9EpgzQ97wQKh9zQOlsuPbT7+7QzM1vxLN8lAsyOTtkEf0q89DiriYGz4jjWXrIUQhn1f5Qtm+Yt8N9fXvCcdw6XceHE5w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lLx39eyTHOGatk/I49xFk1qBTIYABp35LFDVBx8byoo=;
- b=qKA0BcJj4fhc1weTxbrWfcipJ/khadty617H85leEKoVGcv6Uv88hn4WgS5yC3JF2YhSrMq/mwz/tC62jz0GiW0fXW4NaEag0grtgkxkFjCOl3T8JiblSMHfZO0fWhRPQvw4j7c/0dPwUMzwlIwe6/l2Cbvs278aCPw6RlgDdDCeIkR0e8AYYI+N6kMPbCkb+17h6AnSOOXG4n+l4E52qmRZyGporaFJhpxhwzytP6x3oPPHpBphJfYhjPpOxcn7gLoZ95DX6R+TyyFfzweuGNF6SQm1jkfxZQpNEGS2KjNPmoGZbvfT6d6plGj3yn0dyIufCImkHHXmjDRkx+mWQw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lLx39eyTHOGatk/I49xFk1qBTIYABp35LFDVBx8byoo=;
- b=PtviqQ/75aw85AXkKNj6qFt9k/kVsk76lqBWPs2OhONWpfQuigCrzO72WPiHV3yHWCn2RjTM017/Bcj0zzfee5qxfmyCM1aQR6DRDMZYeToTlmeKzNLM+ugAfIqvVAmAJFSC7p8/bncs/r3+EhDPNMeJsmNAm3xFIXBZPS+pmerssvxKOoideV6aFJ9wcDyvlbhs8CqsGxVo8rCL6HxTWfwE4UJdekba0DrvbU5OCMi7UjZhpZCoPo7sHj3TuvLOA4/pkd7H9QDQcz3Qf0rAwWEitdtr4ZJFGbLalB76WQm3vqvtbSrVyyWZX8kQGX6bxzIs23xdczha8uCIFzEP9A==
-Received: from BL4PR12MB9478.namprd12.prod.outlook.com (2603:10b6:208:58e::9)
- by MW6PR12MB9000.namprd12.prod.outlook.com (2603:10b6:303:24b::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.11; Tue, 29 Jul
- 2025 14:30:14 +0000
-Received: from BL4PR12MB9478.namprd12.prod.outlook.com
- ([fe80::b90:212f:996:6eb9]) by BL4PR12MB9478.namprd12.prod.outlook.com
- ([fe80::b90:212f:996:6eb9%4]) with mapi id 15.20.8964.026; Tue, 29 Jul 2025
- 14:30:14 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Dev Jain <dev.jain@arm.com>
-Cc: akpm@linux-foundation.org, david@redhat.com,
- baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
- baohua@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/3] mm: add get_and_clear_ptes() and clear_ptes()
-Date: Tue, 29 Jul 2025 10:30:09 -0400
-X-Mailer: MailMate (2.0r6272)
-Message-ID: <0B957D2C-130C-448E-B38E-C1E295C275C8@nvidia.com>
-In-Reply-To: <20250724052301.23844-2-dev.jain@arm.com>
-References: <20250724052301.23844-1-dev.jain@arm.com>
- <20250724052301.23844-2-dev.jain@arm.com>
-Content-Type: text/plain
-X-ClientProxiedBy: BY3PR03CA0009.namprd03.prod.outlook.com
- (2603:10b6:a03:39a::14) To BL4PR12MB9478.namprd12.prod.outlook.com
- (2603:10b6:208:58e::9)
+	bh=/ElbbAul9DmjYMfnPC5TQkAxMKcYjjk3KRBzaYjpxjg=;
+	b=pKPAL9v2QVRVjTbyd3iJDHWYG40ozzxQ6JubLGMo7mu3ZHQ874aiv58jfvEGSqWcqdWapb
+	xHh/gsCEN2GmkErzEBBX6QK+2IIuXhQFdB/y/4sL9LQuH8PJXq+JHewB4dLEimJUl4QOwo
+	qPT/8UsJzvJs12df6rpEIGf3MaPW8bA=
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4ab86a29c98so295011cf.0
+        for <linux-mm@kvack.org>; Tue, 29 Jul 2025 07:31:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753799482; x=1754404282; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/ElbbAul9DmjYMfnPC5TQkAxMKcYjjk3KRBzaYjpxjg=;
+        b=wrgIk6RN4cTFq/FYaZEIerVyRJut1CkkbJd9fAqJ9GvOqi+R6zK9tA0vvHyK1OkwOK
+         3dkF1CpKFQpMvlEcal4MX90XsbFvPanTCt0x1LfkGJS2wlHG7XVJMh54B5SNdnTqgnF9
+         yG49xQyhwQiuFgQIfArHuef9d6y4pkefIKV40dFmvH6LaBDIGwlaA68BbTngy8wn352T
+         dpX0uCUI+r5l4Y7o2rkvd4v2jUzu9KzE0lXbVAJPyh/cylPOBc4EQ3st/rIEhEp7Kh9R
+         zzPIEZe61Z2BXlj6tDo0GXlLMDI45SB3O6MZkDuevzEnJo6L+1NYZpPuSDXTydWK0grJ
+         D6EQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753799482; x=1754404282;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/ElbbAul9DmjYMfnPC5TQkAxMKcYjjk3KRBzaYjpxjg=;
+        b=o2ob9ZAN4P5NYqljkX8e22+7sZAn1leqyC4TOvcyz1bCk8umJSfZWW/6uYgL8WWD1d
+         mMGgVzKwO4H/+Kct5Lqa24aIIldpb9QPFZF0xKA3nDkH8HZrGMfIMvllw6POp82N5/YT
+         svCG5z55ruYfSTVq2gwaWxGJqXCgSm7tsW9FORco1EWzG8/HcaanNuodWNyCllGCfb0u
+         45wZFU1+ypASbgcllVRv7qo9DFo1ZstgTHoiGqPDXFXwtd8aSHwbwBD+vwbety+bjOuk
+         dIexCwnA+MaEIHY6CqF9KVMZZzmRlRP4m/mmBAd+JttR2vcSY4Ykda58vCcts8gsFWwE
+         EHiA==
+X-Forwarded-Encrypted: i=1; AJvYcCU4j4NKE3E2Bc6o46G57l4hknv8KZ48a1nxN9VYARoIeCVZ4D5p0dSPX6RwZpiIgWU4mkOgBX9xSw==@kvack.org
+X-Gm-Message-State: AOJu0YxYjcEIk9SFeK38opTuz2TZ2oCk8lNyrOfeVf/eC8zzYk3joleF
+	75w74gTzNeesJh1rF/uqSvB2xGjfmSkd4VZuo00ZQf2uI2nOf4qNTf9e49vTRJsG+RBUPNL+RJ6
+	6CyTdc0R/kZqv43P2CfQ9a3YW5oc8t+V827AOeWuqxAuUYEvxnRFYE3ZfEPY=
+X-Gm-Gg: ASbGncvGgFqh7xlo19dGq35KHPr5XxKrV6aHZ4n7lOF9hsy8IkB1urhNKoqaLeN+/9P
+	TjhoIpvR85h0+zbPl1Ku8Zj/OsdUnWKIk9PwdsWMej4uRYQET5YzFVRlDa5iWV6tmuEmCJBu6z+
+	aNNEdK3nj3cOK2vdNr3YdLvLfKqaJGGHaCxJ7kPAMrTuEh+YaopKEbUSCiQPxj2i5nfyYgRgxWj
+	4GQ6jFi8agpp9nKASrCLZHf/gwAoRgf2qZi3w==
+X-Google-Smtp-Source: AGHT+IGdl6AXgbdWoLsOYvwIWq5+uqEWUkN6UVFuEEGPrB/FwqSld5ISLVkEnPjv1C4r9M89ETi4WKoVgF6yNVc3La0=
+X-Received: by 2002:ac8:580b:0:b0:4a8:ea8:67e with SMTP id d75a77b69052e-4aecda096e6mr5199861cf.2.1753799481979;
+ Tue, 29 Jul 2025 07:31:21 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL4PR12MB9478:EE_|MW6PR12MB9000:EE_
-X-MS-Office365-Filtering-Correlation-Id: 25636748-3cd2-4683-f380-08ddceac6ebe
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?tDIrtbdZB1gv+pz8nH8qX+qyDPXu/ndKYBJkIzJoYFKFDkGTqjd78ECS3KNR?=
- =?us-ascii?Q?d2Z3epzbfhk47oPfFnbRTsV67G5r3dnMG5Ekul8P/dOKsfJ3c4sBkPxc3HCU?=
- =?us-ascii?Q?ZoD4mvibLVMZLAwwWJLMMls1hpHO3Jb1EzxGLsHdNUSHVn5JswZUATEdpWEC?=
- =?us-ascii?Q?Pbd4cl0QVUujWgy+6P/KfbKEiG0FzOO9RJy3+pLqtsvdkaU5KMputTJtvX+r?=
- =?us-ascii?Q?oJcMK7FBpnYy2/wXE7rUmEpxWi3ehsKduJGGIW38uqurWaZ1awYEO/rEpGWe?=
- =?us-ascii?Q?99NlsC4nuCU3qnUlRtL2r7/Fn30WU1TyT1n/2f26tGbDpKEkliISy2TYM+dM?=
- =?us-ascii?Q?3zApfICi8g9CNOMLXF0lTIm4i0mZDmrf9Rpxqf9wdDROFvW2Ksg2F/WuU+hw?=
- =?us-ascii?Q?UozTjdcYPBpm0M8ZiQi67KfzdEcswW8U4QYYQq/Ru/3Zo1UmTmmppnw9h6Gz?=
- =?us-ascii?Q?8Axg7q6Ndy9mD0SA+ntxOevg8vh6uRmFV03Fbv+lia6VKeYjDOoGXODtLRNo?=
- =?us-ascii?Q?zTvvTtXozpA242deL4+B7hPE2AESDuuH0ReEEAj1OaF4ycNXqbenAN5UGfWh?=
- =?us-ascii?Q?xYrncvj5xg8yE/Om8KQuBDjZLZ3kSLK+p0UQlUcsAikg5IP6giHRzdMZJncP?=
- =?us-ascii?Q?L6MJbzKtIlKy4SSHCT5b4wamz2Hi4D7PBgdPhMJfl3TOSf9Bmt5YX7XomECz?=
- =?us-ascii?Q?NOdH84RNCVJurYlpiFtyVwdUtcT63q78fovBwIgatoegjBzQigN6z0t5lMw/?=
- =?us-ascii?Q?aCZnZTtCqTkZeWhZ41lWJCkJDvCKHI2smZBhVUR+Fn1g5dW+ia3WujMZO4pj?=
- =?us-ascii?Q?b3QlIqTpZ2kRss7VPMkfozWFZDHkQYZWz0kKiqwHqIdhtVkncdwB3zfg5WSQ?=
- =?us-ascii?Q?ge7HQ87LwwTSLj+iF98/WmZ3+Mb27t25Dqm+vF3+8boGqrigJXWLgSgOod42?=
- =?us-ascii?Q?A4T9zWv5xj4Sy5py1qZuJbAEL++H48za4fEOhFixGlEQp9ZqS3diDvisbO5h?=
- =?us-ascii?Q?4ObzuOvDT3J/tKBJmOhtjPwDr10LR3Fhv5Uy3U94K28SM3EdP/DF9ma4k8LT?=
- =?us-ascii?Q?tTV+gWxmB/9lVqyYY5meyUFe+OrytCA2+5uR4XOMAJdTx1M4HqEzeGME2/yA?=
- =?us-ascii?Q?gaia1RLbi80OaGqSwNmecFRmQYYk3d+LtGnG6GERdWCCXB8fHkQFiG6fKnH0?=
- =?us-ascii?Q?X32X5t8QWD4Fv10tda+RUvbLXFDGwhBNogE6kwFFqL12RCgyiPRD3rVk4sZh?=
- =?us-ascii?Q?hRREHtjtUHF/Yg8pEezjyMTznJLB+aNZQPI0vyrMGpyJmwKWWcI9o1thFZet?=
- =?us-ascii?Q?BuyS6KoHJh3LqM+Eqiq5lMg17+qBMFuYmoHDOq0OZG0eRTCLbq41CsMm5eCv?=
- =?us-ascii?Q?2DueSGGc4bxnm0S+aKfc8KMVwDMPXzajueZQTtLpIP99FsPp7g=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR12MB9478.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?8QGuv1o9OBtBEWj348xbEDfwonGExw0iP2y8HQgBnqa2hQLpsEd8z4FA2GoF?=
- =?us-ascii?Q?+0+GDs8eYJ8Tg1g5Jc7wIL1FaReGoIJYVeSd6WrUmsEkGDYuK972775fVeGk?=
- =?us-ascii?Q?Ap+iyBPG4h1q42iG8Lb4o3rz/m6xRsOkGaqFyFVIzffUGny1yb5RlYSm/EgS?=
- =?us-ascii?Q?1jwaMla4QJaiKGyyGncfR9Fx+gInx1JSaaMhwqMz5p1kmJTqpYRhChtQnBK8?=
- =?us-ascii?Q?0todbU2RtpueBLqQgllLV8wHkh24+AQz43OAJKeOgTtEFkV2KPxbulsNWZ7p?=
- =?us-ascii?Q?j2QmQJLQpigawrppb4gK/qCifbpaFiY3pJ9GFzRsNCDXGdWxHG5CE2Q/cqKN?=
- =?us-ascii?Q?/A3k47m5fbR/UnEG0KmfApfcouBIzaA4tUdi8rg51NMNvZTlJU/bghq6e/UG?=
- =?us-ascii?Q?mOgEHmm60WxYAk95pyvLrS/ssHzVauYmqQ1XsdZIAHVMxNoMc9gynitJ9Poh?=
- =?us-ascii?Q?wPAynInF1o7mflTKCsnnQ8mU9j4xzp8OVl+WgAruhGinzINXUiZy/egmNVPP?=
- =?us-ascii?Q?Rzm3c0YWVqebHMw/eHH7Z0Did1vhHhw8ytSC+2+pxQXKCCr3zcIT3l4kDhHz?=
- =?us-ascii?Q?C32WIKHuVmTBch8GzEQ5N0yRe5GUq4wVDqKk5e0fEVnsmuakLq9L9KClmLu0?=
- =?us-ascii?Q?B61AM3FCOQ76KiNr9YzndJnzO5pFb5wrUQIlvzt5mhq1f6K/EfHpjltrRunh?=
- =?us-ascii?Q?k50d61Gxee3oeQAwvkR4M6jr7NO7jjXB5jUTua6eOd/ZIyvXUUqqF248hmQg?=
- =?us-ascii?Q?/TRzkRbY4iKVIWT2YVvo2UpekwOQLDQhgRu6C7aZ6i7vYPeEHAaeqqQgIfwp?=
- =?us-ascii?Q?jnGlTMEVCxi9UAO4U5OC1l9O4PzfntcWSr4hUnuCwxdEKpwxrn4Lyf5122Kk?=
- =?us-ascii?Q?r8OstDerKgXr17vWrp5Lugq5ntMLZcRW3Z999HhOzlqiyUVgmRm5QRVSiOF6?=
- =?us-ascii?Q?aay9b+Fa5LftL/NEGzL9+pbrclJPTc5Vl/vy8NU9dyGesdc0K30G21LbzSnD?=
- =?us-ascii?Q?Hmsz0Q877lnCvgtT3/cod+IyqbiCvyaxrmTRl4//SmoJDl5LgqYqMAmgGpsd?=
- =?us-ascii?Q?2yCjy+4/7LvREBj8Uw8a9Qifgf8zflb6fAc2esUYUnC3h/IWPrx6S+JccvLI?=
- =?us-ascii?Q?BSNPHTyPWZ499L81UvwVNX225JrkUR7wAn2bQjXPRNg0nbkpW7yUtaSUSBRq?=
- =?us-ascii?Q?+K1jS1b9WD1Vr3wJYbDkIlsu2wI1Hg3Y5T/qt/SfEFW76nMTfmCM3Juz6v/x?=
- =?us-ascii?Q?IQaQ9Srg0JGhLGNandPG7E1e7k/LfFwzTmxm6j8b5hT6b+2ctXsAmORWGPIQ?=
- =?us-ascii?Q?RbYa3Y6KiEBhIkDOkmbLRGsF2xHaVYMOgC81l0EMKJ1TPsDflUyMcWVUWQ/G?=
- =?us-ascii?Q?xjptwFwPG28A2UJFRkky9kQpWFR8UHfpxrbaJUxLoiHozRUIgIi2ueAAk5UD?=
- =?us-ascii?Q?8e2mx5sF/NijDKKEMFv41y4lmoxZB3ZrtACQ1Gri6TWJshyXeKKUg8ca6opq?=
- =?us-ascii?Q?wKzslFujeuYRWVJPeLkF1ahpbI0RBDaCPc1gWcBo4bUEzPScC1KajV1GcHcu?=
- =?us-ascii?Q?pBds73yqXEn7M4N9TUA=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 25636748-3cd2-4683-f380-08ddceac6ebe
-X-MS-Exchange-CrossTenant-AuthSource: BL4PR12MB9478.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2025 14:30:14.5506
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DIhjbPKwxsqwHMqkk7OZBEW8a63cgUC0HHgauwp3QUTcLqG4CyY4Kk8/LePkVHzb
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB9000
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: DB626140006
-X-Stat-Signature: cyju3wekgfzaszeufzsdrfpphtqkf8xd
+References: <20250728175355.2282375-1-surenb@google.com> <197389ce-9f42-4d6a-91c4-fce116e988b4@suse.cz>
+ <CAJuCfpFzxCayf083d35dS7Py0AK-CSr3H=_mymP9yXcyWzOqPQ@mail.gmail.com> <717f1f43-3ec0-41a7-b0a9-05383a4325d4@suse.cz>
+In-Reply-To: <717f1f43-3ec0-41a7-b0a9-05383a4325d4@suse.cz>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 29 Jul 2025 07:31:10 -0700
+X-Gm-Features: Ac12FXz_KOV-YfOYg-xXhwzGmtvp7EhVOk939edJ822ZJfzo6Pfs3_KFmp6ytRc
+Message-ID: <CAJuCfpEHCt0pczKG_W8X-e+Mi9yFMRpTeQRRS31Xq4fNfaFQ5g@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] mm: fix a UAF when vma->mm is freed after
+ vma->vm_refcnt got dropped
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: akpm@linux-foundation.org, jannh@google.com, Liam.Howlett@oracle.com, 
+	lorenzo.stoakes@oracle.com, pfalcato@suse.de, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: b6ykiwbidq73yw3jtdp918s47whf96xt
 X-Rspam-User: 
-X-HE-Tag: 1753799418-38793
-X-HE-Meta: U2FsdGVkX199z5JzkzH2KZTOEZPqwVGlSioIPYBudgNRvMcjPQn01sXi24tx7o6GWvEsQJXFPZJ870Sd2jvMwb37s5oGuR8UIJ84Mpjm6SJt6RTkQ6Or1mm0xieclv9KvZIZoQx9elWmt7dWV7mlSGnnJOlfKgrJq4000vNbnTgpzToD5JzouOgnkrsT8E6yFJE5pwdWyzSJcKNKOMtEq6j0JACQEyYwQgAp4ojtjuCTdWPXziAiwlEc0mLi4uBZ/dxbXqR4Lo+Q9+hnP5L0We6SKs0Wrs46bVL5raiGx9qGkXJvy48T/BjcGWWTeSTc5BIgjkErHpWEbR6i4kZyBlmrkdmI2n3NvqfAdXCvNZrtCpCpWuSOfb4a7yRa0FSGLnfmohgNy/wYXbCtJYao92pPp8+8q0hnw7Xj9nNUAKPL9li5zKwuk4DsFf1lTLxLSySymfNptCr+Qza3TBWnFSs0MwFOqjkflz0UFYj6AXA1K/awjDrROgIzy+hKfEBTWwTKHOU/TVFQAZSIAlAg1+yLbY3NyN6rciBamCCX6gLLVp7R8FPe9YYzQPR+35SEIjdl2uxuLlsvjz+EVAD+6dCOZHSGqgtXBMh7eurqHyV2bI2On//nUuILAlA5rumIvG8fKHdfLeWXGx7b6sU61tJ/HjUlcX0Kq3qhJYH+8OGmu3tGkI7EpDDX5bVZ+/UdKJtW7OBAce2MCnb4jJ8f0Zs5LhBG0YVAYVspB0uxV7prttnuE5CDyeoU5EuHaJdx25QWuJu6jCSyuHPJNKtWr2g18DeFmEP2eAZvR/+FxoRAz35422fDTKKG+puz5PwlGmZ5t0yCBYONxxmqptNFU5dy99TvjxtOtL+BxhAiYjKlbVi9Lg468TM86DmYBuB1fHnkHbo7bYN+pWXAS+4tqbHOnHZMB8k6tO//Ya7AIhr2WErzCiCvD9k+kXYBev9+moGuyXQfKOKnn+cnKZh
- pnI1FX12
- v43Ix6IatDH5nTzX+0kQCLgHut3KlVrWceyMeUvaQyEpNZkSIycgEw2eQII+nRMDANmakehu/6OzXprQVncJHUUMJrd4q7LqYH7+M4BN5EznDNp+wOPWUkQpo177kvp42uosZ4t2UI5R4YrO2YejHMHImkvFCPDCSkDJ3HdksylqdTH8cl9j/T75xQSYKk6F+P6vxLaSdCPn5taG+5B0RrdkQsSSmW5kCLhJJDYeipuVAQItT01dyAEBKk7pt23Ey9Y8yG1S4p8hvF0pO8IYCBIAguY3cNKTdr12Amm7t2Acs4F+UmPHKlKOdUOew1Amnm6YFHfEFc4NKZLX6wk5euyYAqSh8ethytMTLl83DxMAghdjqmbRsSJB/BzZc5sAPnYT7OYFe+iQt+tDxn+pmn04QohIvypv0BB3eFH4zMPaIwrYtq/kBE3hXrM2h2ZE+kg0BT+vjG7fUVISi4uSErYfvcc/JG4dZPUxrqB5VCHKpQsIYrYOW+OvBWFbM9cKWRgSUsJ3z9EdfMFZy2+Nfr0rNQASs/ksydwYKbLGtlUjnsau3lH+0b+yLv/7E4x11heiRQ1S0TNN4RwHg0nnkBfglOg==
+X-Rspamd-Queue-Id: 5D62F4000F
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1753799483-914115
+X-HE-Meta: U2FsdGVkX1/dgqV+ZmkxDo4QY5PPRD/KGPQWVaaX3Oa1VOKLuSAMBM3G+CsRCr9F3EYS4I0jQ4A4c2iCsY02ClLeXSsS9r1qAkfUbBNIsSQda85vJJkGhcK671NTHC+XlI4+8PRg8MgUd+xzVMc/nPwkVJN7/c9YXxcbLbn65LwCx0GmBMOby2gYGqeGjTYW2+ogHLT2fyMF1rbuObCc9BULE02xkg908GS92vWCZIrd7LV1BOtOcJyDyJfVBCLaBjstYZfJLvi6UJ/N9WPRnfu1p24SJBMxh59zOSbC/a0E+tQDP15/09DJ3HOMNkU4DyDYKFO0aW8nEkcDq0RTriGpMXnNJVkw0gj5RfIRvS7AVn0ZvQk0r4mJSuLUsz6nTHLHccXZSxE2llKjBVFv/7000AfNNV4+nZEyI8nnEZSwgQhtpDdSnya3yzAYxkjufdWmIzn6WitI8deB11g6gHxHFD2aaNm6cjtv/ok1RS1O/XowpBf+mn/WlvXngqFtbh7xo6r3EOIxqpMOJED+cUMZRctmTLzICV1U/lhQ9HOHENT4SmWen4nYCQogYOMeXHheSBTxkBDsOsD/3x2fXhMRsgy/NuA8BLBJoqroOtBzODh6cIZ//YFU+Owgo4OI9/ND+ufgXX7cKm1gEZVsZWWRR8Z7fhVy3QTXk44IS+avfj24e39KYfUEvsjYLmFAOTf1A53YXWFBBADI2F4iqCRzpmgJ1NYTWj5ansBw2Xn7WwFYs45l2G+5SrQ3kX7tdppel9ITuG3KSkMO/WbFtlbJQzXi2bs10N1gdu0htXC4+hMmCkImeNNfItSruHuLdzifhacVdUJaGD1FAf7LjPHstOHdeCL/1nWuMnmmAvFLOVnZHxubvzxzP6p/Iy5ow/5xxrr5hHjV15byc7VF4hrrBu7azqvGgT6yxk9MkFFBaoXk2TvGLPg9P8IK8aAUDmMekGjgI3IBImHRSmi
+ TvmS+cpp
+ hSY08ONvVwVj0mrg3h7boPJLufn2tL7VspeR5K6RRXPEeMCKVjGjO15FVD7u+Oo3TMcSlImm/Nkw6NuoOFHw53sqILDCdHzgComWoIkDcYssal5sPgOrwv2rkF9JS9obNuhih6ijUReU6yeQP9eBfCTTSFhqSWOG5fJKGrb2DaW7pFDRTPwOtHVz9Lc1UbfmL0ZkZXdgDo96F4lKaUPejHJCpYRnWq2lxYm/NWe63xguchzGAXcGUFFSTBskhv/ZILeMqPPdsqPiUJ9dp/0VPUdpIcrthEDug/nJ28WEQ0vQJH2vGKTEiK8rMOw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -180,29 +116,199 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 24 Jul 2025, at 1:22, Dev Jain wrote:
+On Tue, Jul 29, 2025 at 5:03=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
+ote:
+>
+> On 7/29/25 00:53, Suren Baghdasaryan wrote:
+> > On Mon, Jul 28, 2025 at 10:04=E2=80=AFPM Vlastimil Babka <vbabka@suse.c=
+z> wrote:
+> >>
+> >> As for further steps, considered replying to [1] but maybe it's better=
+ here.
+> >>
+> >> As for a KISS fix including stable, great. Seems a nice improvement to
+> >> actually handle "vma->vm_mm !=3D mm" in vma_start_read() like this - g=
+ood idea!
+> >>
+> >> Less great is that there's now a subtle assumption that some (but not =
+all!)
+> >> cases where vma_start_read() returns NULL imply that we dropped the rc=
+u
+> >> lock. And it doesn't matter as the callers abort or fallback to mmap s=
+em
+> >> anyway in that case. Hopefully we can improve that a bit.
+> >>
+> >> The idea of moving rcu lock and mas walk inside vma_start_read() is in=
+deed
+> >> busted with lock_next_vma(). The iterator difference could be perhaps =
+solved
+> >> by having lock_vma_under_rcu() set up its own one (instead of MA_STATE=
+) in a
+> >> way that vma_next() would do the right thing for it. However there wou=
+ld
+> >> still be the difference that lock_next_vma() expects we are already un=
+der
+> >> rcu lock, and lock_vma_under_rcu() doesn't.
+> >>
+> >> So what we can perhaps do instead is move vma_start_read() to mm/mmap_=
+lock.c
+> >> (no other users so why expose it in a header for potential misuse). An=
+d then
+> >> indeed just make it drop rcu lock completely (and not reacquire) any t=
+ime
+> >> it's returning NULL, document that and adjust callers to that. I think=
+ it's
+> >> less subtle than dropping and reacquring, and should simplify the erro=
+r
+> >> handling in the callers a bit.
+> >
+> > Thanks for the suggestion. That was actually exactly one of the
+> > options I was considering but I thought this dropping RCU schema would
+> > still be uglier than dropping and reacquiring the RCU lock. If you
+> > think otherwise I can make the change as you suggested for mm-unstable
+> > and keep this original change for stable only. Should I do that?
+>
+> If we decide anything, I would do it as a cleanup on top of the fix that
+> will now go to mainline and then stable. We don't want to deviate for sta=
+ble
+> unnecessarily (removing an extraneous hunk in stable backport is fine).
 
-> From: David Hildenbrand <david@redhat.com>
->
-> Let's add variants to be used where "full" does not apply -- which will
-> be the majority of cases in the future. "full" really only applies if
-> we are about to tear down a full MM.
->
-> Use get_and_clear_ptes() in existing code, clear_ptes() users will
-> be added next.
->
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
-> ---
->  arch/arm64/mm/mmu.c     |  2 +-
->  include/linux/pgtable.h | 45 +++++++++++++++++++++++++++++++++++++++++
->  mm/mremap.c             |  2 +-
->  mm/rmap.c               |  2 +-
->  4 files changed, 48 insertions(+), 3 deletions(-)
->
-Reviewed-by: Zi Yan <ziy@nvidia.com>
+Good point. I'll do the refactoring on top of this fix and that one
+does not need to go into stable branch.
 
-Best Regards,
-Yan, Zi
+>
+> As for which case is uglier, I don't know really. Dropping and reacquirin=
+g
+> rcy lock in very rare cases, leading to even rarer situations where it wo=
+uld
+> cause an issue, seems more dangerous to me than just dropping everytime w=
+e
+> return NULL for any of the reasons, which is hopefully less rare and an
+> error such as caller trying to drop rcu lock again will blow up immediate=
+ly.
+> Maybe others have opinions...
+
+Yeah, you are probably right. It would be more explicit that the VMA
+can't be used after a failed vma_start_read() if vma_start_read() were
+to always drop RCU on exit. Either way I think I should add a big fat
+warning to vma_start_read() comment that the VMA passed to
+vma_start_read() can't be used if this function fails to lock it. I'll
+post a v3 with that comment added and Lorenzo's nits addressed, then
+I'll prepare a refactoring patchset for mm-unstable to drop RCU upon
+vma_start_read() exit.
+
+>
+> >>
+> >> [1]
+> >> https://lore.kernel.org/all/CAJuCfpEMhGe_eZuFm__4CDstM9%3DOG2kTUTziNL-=
+f%3DM3BYQor2A@mail.gmail.com/
+> >>
+> >> > ---
+> >> > Changes since v1 [1]
+> >> > - Made a copy of vma->mm before using it in vma_start_read(),
+> >> > per Vlastimil Babka
+> >> >
+> >> > Notes:
+> >> > - Applies cleanly over mm-unstable.
+> >> > - Should be applied to 6.15 and 6.16 but these branches do not
+> >> > have lock_next_vma() function, so the change in lock_next_vma() shou=
+ld be
+> >> > skipped when applying to those branches.
+> >> >
+> >> > [1] https://lore.kernel.org/all/20250728170950.2216966-1-surenb@goog=
+le.com/
+> >> >
+> >> >  include/linux/mmap_lock.h | 23 +++++++++++++++++++++++
+> >> >  mm/mmap_lock.c            | 10 +++-------
+> >> >  2 files changed, 26 insertions(+), 7 deletions(-)
+> >> >
+> >> > diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+> >> > index 1f4f44951abe..da34afa2f8ef 100644
+> >> > --- a/include/linux/mmap_lock.h
+> >> > +++ b/include/linux/mmap_lock.h
+> >> > @@ -12,6 +12,7 @@ extern int rcuwait_wake_up(struct rcuwait *w);
+> >> >  #include <linux/tracepoint-defs.h>
+> >> >  #include <linux/types.h>
+> >> >  #include <linux/cleanup.h>
+> >> > +#include <linux/sched/mm.h>
+> >> >
+> >> >  #define MMAP_LOCK_INITIALIZER(name) \
+> >> >       .mmap_lock =3D __RWSEM_INITIALIZER((name).mmap_lock),
+> >> > @@ -183,6 +184,28 @@ static inline struct vm_area_struct *vma_start_=
+read(struct mm_struct *mm,
+> >> >       }
+> >> >
+> >> >       rwsem_acquire_read(&vma->vmlock_dep_map, 0, 1, _RET_IP_);
+> >> > +
+> >> > +     /*
+> >> > +      * If vma got attached to another mm from under us, that mm is=
+ not
+> >> > +      * stable and can be freed in the narrow window after vma->vm_=
+refcnt
+> >> > +      * is dropped and before rcuwait_wake_up(mm) is called. Grab i=
+t before
+> >> > +      * releasing vma->vm_refcnt.
+> >> > +      */
+> >> > +     if (unlikely(vma->vm_mm !=3D mm)) {
+> >> > +             /* Use a copy of vm_mm in case vma is freed after we d=
+rop vm_refcnt */
+> >> > +             struct mm_struct *other_mm =3D vma->vm_mm;
+> >> > +             /*
+> >> > +              * __mmdrop() is a heavy operation and we don't need R=
+CU
+> >> > +              * protection here. Release RCU lock during these oper=
+ations.
+> >> > +              */
+> >> > +             rcu_read_unlock();
+> >> > +             mmgrab(other_mm);
+> >> > +             vma_refcount_put(vma);
+> >> > +             mmdrop(other_mm);
+> >> > +             rcu_read_lock();
+> >> > +             return NULL;
+> >> > +     }
+> >> > +
+> >> >       /*
+> >> >        * Overflow of vm_lock_seq/mm_lock_seq might produce false loc=
+ked result.
+> >> >        * False unlocked result is impossible because we modify and c=
+heck
+> >> > diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+> >> > index 729fb7d0dd59..aa3bc42ecde0 100644
+> >> > --- a/mm/mmap_lock.c
+> >> > +++ b/mm/mmap_lock.c
+> >> > @@ -164,8 +164,7 @@ struct vm_area_struct *lock_vma_under_rcu(struct=
+ mm_struct *mm,
+> >> >        */
+> >> >
+> >> >       /* Check if the vma we locked is the right one. */
+> >> > -     if (unlikely(vma->vm_mm !=3D mm ||
+> >> > -                  address < vma->vm_start || address >=3D vma->vm_e=
+nd))
+> >> > +     if (unlikely(address < vma->vm_start || address >=3D vma->vm_e=
+nd))
+> >> >               goto inval_end_read;
+> >> >
+> >> >       rcu_read_unlock();
+> >> > @@ -236,11 +235,8 @@ struct vm_area_struct *lock_next_vma(struct mm_=
+struct *mm,
+> >> >               goto fallback;
+> >> >       }
+> >> >
+> >> > -     /*
+> >> > -      * Verify the vma we locked belongs to the same address space =
+and it's
+> >> > -      * not behind of the last search position.
+> >> > -      */
+> >> > -     if (unlikely(vma->vm_mm !=3D mm || from_addr >=3D vma->vm_end)=
+)
+> >> > +     /* Verify the vma is not behind of the last search position. *=
+/
+> >> > +     if (unlikely(from_addr >=3D vma->vm_end))
+> >> >               goto fallback_unlock;
+> >> >
+> >> >       /*
+> >> >
+> >> > base-commit: c617a4dd7102e691fa0fb2bc4f6b369e37d7f509
+> >>
+>
 
