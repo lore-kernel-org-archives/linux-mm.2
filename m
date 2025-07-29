@@ -2,102 +2,197 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 40F48C87FC9
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 14:57:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CD4E6C87FC9
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 15:08:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B640F6B008A; Tue, 29 Jul 2025 10:57:15 -0400 (EDT)
+	id 5361B6B0088; Tue, 29 Jul 2025 11:08:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3B1A6B0089; Tue, 29 Jul 2025 10:57:15 -0400 (EDT)
+	id 50DA96B0089; Tue, 29 Jul 2025 11:08:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A50646B008A; Tue, 29 Jul 2025 10:57:15 -0400 (EDT)
+	id 3D5A96B008A; Tue, 29 Jul 2025 11:08:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 989356B0088
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 10:57:15 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4408812B9F2
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 14:57:15 +0000 (UTC)
-X-FDA: 83717605230.06.4C55715
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 93075C000B
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 14:57:13 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=UNBRXsVp;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf22.hostedemail.com: domain of 3SOGIaAYKCHkprobkYdlldib.Zljifkru-jjhsXZh.lod@flex--surenb.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=3SOGIaAYKCHkprobkYdlldib.Zljifkru-jjhsXZh.lod@flex--surenb.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753801033; a=rsa-sha256;
-	cv=none;
-	b=YIJ5rTbC5hBUZXgUP0IafA5Y6eS5bzXDylg60ybeKvEA8PB9KZVYpqhvtJH7Q0gE/eSxHN
-	7jh8skvXD3QolLzFhECTxYAXsALuUEVmpgJW8ZA1odoyDknP9PXLAL+JtQkWkp+WqctHQU
-	jWirqSjYAK5/sk0WGnEUL8ntwAgYPDs=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=UNBRXsVp;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf22.hostedemail.com: domain of 3SOGIaAYKCHkprobkYdlldib.Zljifkru-jjhsXZh.lod@flex--surenb.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=3SOGIaAYKCHkprobkYdlldib.Zljifkru-jjhsXZh.lod@flex--surenb.bounces.google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753801033;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 295DF6B0088
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 11:08:04 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CC9D3C012B
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 15:08:03 +0000 (UTC)
+X-FDA: 83717632446.04.C2A1E0D
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2051.outbound.protection.outlook.com [40.107.101.51])
+	by imf05.hostedemail.com (Postfix) with ESMTP id C6AB4100009
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 15:08:00 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=O5mN8mlx;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf05.hostedemail.com: domain of ziy@nvidia.com designates 40.107.101.51 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753801680; a=rsa-sha256;
+	cv=pass;
+	b=7SrK8IikJV73aMTz3yogh8wHvR87dtDT8zmQDyJzihPUIkW0oX4eXtkMNGtdtsUDAGVNZE
+	4118rv7u1HHuXbQgcnIzibkjiOWgQFklcllx50nvQaj3vZhKF7hsv4xlsKHLzWBjU91c2v
+	76MeJmj7L5e0WJxfp/OwlMHczHu3VLk=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=O5mN8mlx;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf05.hostedemail.com: domain of ziy@nvidia.com designates 40.107.101.51 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753801680;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=rE5QaqGtBbgEZH/uZ7FzXjyerj3ccqofJgA61gtYGaw=;
-	b=yyDNhuXqFeryT0WoJhARRebBXsdVtukaSNcE+FCvYgnK2EGV4Uh/sjIUis0PArK4IoVh/L
-	RweXWMP3XBdGejKEWT/IDbOlRW9jz12vYiUHl5twR5VdJSJaVuI6RENl0jHj3yE1gwiD+6
-	ky+cjHvEbtV2OUd+8fM69gzyydxqBYw=
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-74b4d2f67d5so5588521b3a.3
-        for <linux-mm@kvack.org>; Tue, 29 Jul 2025 07:57:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753801032; x=1754405832; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=rE5QaqGtBbgEZH/uZ7FzXjyerj3ccqofJgA61gtYGaw=;
-        b=UNBRXsVpgtpJR/F73Yd+zR8qJaDQeMlhg4O3eW88PfJYoNLvb4onUrKH/avNkmG8As
-         VyF/PxHQEc9NgEl+C8w6wnfefyY6NaNLL9i6cbFu0HWfGXzdPiX6KkT/97KJsdco/Qvg
-         LNoi8R6BkN5hNbvpVCycXjB9hAX04eVSFqjsveTGCAhD4aYHrK0yu7ebF4NhIWt7t8G7
-         VpcI3Jp1cD1EZ4a7/3b1l7T051de13LO8nNeEsUsvI7OPEr5mDThPGuJCWERtf9yWRVS
-         J1yJBtw7/VNk2l8WffNkx4OmdoY/36FbD8FtqSS2rrqvXCxJ1FUZ9VBDJmcxa9ahPA4E
-         G88g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753801032; x=1754405832;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rE5QaqGtBbgEZH/uZ7FzXjyerj3ccqofJgA61gtYGaw=;
-        b=ASGaQ3Hs9WHmbL3y5LzZ8KVhaiijsDHWTFbA7t5u3tAKtVA0j5VHpMdIG6izTFgO9k
-         8CPxHXweO7WfWBqL2rPHxPPku/OM5He9ygCeb/9zkYVqd5f/ryWKLJVbyTmDg8O4rhbP
-         IvPqVua0cqpV4tBgE0g8pPguhSa8bR7tE6WJ45ouzwzD+9YHqTKbpCmuZTqSMSEphZGs
-         m1ONX10MkWczZr0P5ahr8cTdVD5+2WT9RIj6X3E+3+/afzX/4czTh6/Ttt29whVClgvZ
-         iZRgR1N+kmB6Ej1AJvIXJVQUBVpG/xoZfxi9W1UOXxDfEMRd9EJlifC5SRqlfdnhg+HD
-         2pZA==
-X-Forwarded-Encrypted: i=1; AJvYcCUdRT+XUBmVJYNj3z/4FwfsFuJIAPKDKZ91lFMv12FianiHrJnsLByI0hnxB9vcPuMLhiC88eFZYg==@kvack.org
-X-Gm-Message-State: AOJu0YzqfEflwcdxC9vPVhZNiwrk6KV0EOEaur5l/DVYSuk72fayvEaQ
-	WexEsl0nchEetZZHFeY5/naWrpFW99RgBd+/jGIK3MLI77YN8XB7soZJWwT+EbmZNgD392yzOYO
-	fwCe7Fw==
-X-Google-Smtp-Source: AGHT+IEyb7DFh1Ctr01+r2+P02e+x/ttb54C/yw3CRQSNoviHIgWG2NyMvi3eNyzh9bqPdN2qlAcWUvfG4c=
-X-Received: from pfbhm20.prod.google.com ([2002:a05:6a00:6714:b0:748:f270:c438])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:9999:b0:235:2cd8:6cd1
- with SMTP id adf61e73a8af0-23d701886f8mr24958186637.34.1753801032262; Tue, 29
- Jul 2025 07:57:12 -0700 (PDT)
-Date: Tue, 29 Jul 2025 07:57:09 -0700
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.50.1.487.gc89ff58d15-goog
-Message-ID: <20250729145709.2731370-1-surenb@google.com>
-Subject: [PATCH v3 1/1] mm: fix a UAF when vma->mm is freed after
- vma->vm_refcnt got dropped
-From: Suren Baghdasaryan <surenb@google.com>
-To: akpm@linux-foundation.org
-Cc: jannh@google.com, Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com, 
-	vbabka@suse.cz, pfalcato@suse.de, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, surenb@google.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xgQ6Q101bjf+9aMsyBEe0HD9e9PsDRi+fUIiYOHpkcA=;
+	b=yNr6vOXKtaX2ajkfZyAUdx6/leD8T2I4P0qBrr1vfHYON0AsAIlS48sr9Z9ypCkZtJyhvh
+	eeJFAhgsOd2V2r8sk+j02FA9gqip7SEXT884bzYMqs1EYQ5EUJtgwF7k8gekRtiTJdbvMV
+	ahqsa5hAYW9foAhJ9m6ViAS5gPbSOjM=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=o7qWNurtZdRbOXkAL9g5FnbQvUZ6beACDJcr3kkca7cZv2UwOOufA5zlpVVmSRH0jBaDEF7HxEyYHXHu6czau1EFq5iWQgQA4IUY1WgCJv40GN33FLHx6035fwGatxvLZ6bbkh3QBe8oUxAz7+IYpzWEjq2cFXo3Kc7Y+QQ2ZscxBwZTbIPCk6bOr3fBuwYhLyG+RS8nFj5FY6k1eXO3sU6v4go1YTmk/IEaHgkdE6k0NDYBL59HAtSDutm3r46hTK4K4Ctb/DAWRmFIf1dm8vqajlAlV7e04HKMUdX1r0ixIa9fqqwV2XBxJKgVVOpBrdlQlaUSWJsU4D+BSh4Flw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xgQ6Q101bjf+9aMsyBEe0HD9e9PsDRi+fUIiYOHpkcA=;
+ b=ajXmJ1YBVfw/n8Yp03EWredNL5ueOra9biKzgicNPJsxu3SY5AtJZZvODGdbmmc3SvgoFR7WOzPa/hbs6ViwUlmFCMBdT9RtHiQh6epM+O6LJm8kfu+SIyuehmNEfz2y6M8Bewrc0RCR3VKSEoV828EjxQitXuruVeTg9+nKw2jYlJ2IZlrApdJ4iE7RXEgerijO+yIsNpogc1IfAXIk5bOJwelTnNpobgDXyZJyPj1MqmuBNpnQqz8yBfsKlIPB+zf/TLs2frcqCoJzSGAseS1w6YWZzeO3k3zDdkizpWlsG1rTCJPAsjvWOnAYNu9P0VnyfmMLrqXgMnW3ZPiYHA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xgQ6Q101bjf+9aMsyBEe0HD9e9PsDRi+fUIiYOHpkcA=;
+ b=O5mN8mlxw634TpNulKs4iIIWiC/+KX6TI5/f4ATM6Wfy/y8ZrmhlI2ky8DEOSQSNH8X4UNqcY1OwyeIO5CEdpKng6U2nqnnN2WkueSIxOTTQXQ7kcQXs60/M8CIRLCvzHe6/DbcMRpBOry/7XsscmwBwGorUQeUlKKv1QGc+EAuBx2YLtYppsnAotlG96o/n48dimsmWGWJU87hsOR8Z4IqS2ZPrAPulFxthihoK8wfTlhz74WKFFU63jpNe/Y5et70+Nt8h5E/Z6KtYbgeQfXS9vsBp4L2j/TJQW/oCWrXxCqnX/XX3eW4h4c5WkKcdukT3gx/Qnz2sM/LtHb8ylQ==
+Received: from BL4PR12MB9478.namprd12.prod.outlook.com (2603:10b6:208:58e::9)
+ by SJ2PR12MB8718.namprd12.prod.outlook.com (2603:10b6:a03:540::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.26; Tue, 29 Jul
+ 2025 15:07:54 +0000
+Received: from BL4PR12MB9478.namprd12.prod.outlook.com
+ ([fe80::b90:212f:996:6eb9]) by BL4PR12MB9478.namprd12.prod.outlook.com
+ ([fe80::b90:212f:996:6eb9%4]) with mapi id 15.20.8964.026; Tue, 29 Jul 2025
+ 15:07:54 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Yafang Shao <laoar.shao@gmail.com>
+Cc: akpm@linux-foundation.org, david@redhat.com,
+ baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, hannes@cmpxchg.org, usamaarif642@gmail.com,
+ gutierrez.asier@huawei-partners.com, willy@infradead.org, ast@kernel.org,
+ daniel@iogearbox.net, andrii@kernel.org, ameryhung@gmail.com,
+ bpf@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [RFC PATCH v4 0/4] mm, bpf: BPF based THP order selection
+Date: Tue, 29 Jul 2025 11:07:46 -0400
+X-Mailer: MailMate (2.0r6272)
+Message-ID: <08D7155B-84F0-4575-B192-96901CFE690A@nvidia.com>
+In-Reply-To: <20250729091807.84310-1-laoar.shao@gmail.com>
+References: <20250729091807.84310-1-laoar.shao@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SJ0PR03CA0065.namprd03.prod.outlook.com
+ (2603:10b6:a03:331::10) To BL4PR12MB9478.namprd12.prod.outlook.com
+ (2603:10b6:208:58e::9)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL4PR12MB9478:EE_|SJ2PR12MB8718:EE_
+X-MS-Office365-Filtering-Correlation-Id: dfcd67b4-ecc4-433a-c118-08ddceb1b16c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?OUxkWWw1ckNPT1ZaL0w1blExVm1Hbks1RlI0MzRsamk5Z2xjMC8rV2ppL0JW?=
+ =?utf-8?B?YXVza3dZWVVkaG5YSVdXVUduTG1VUVE0Q2tMM0t3ejBxNk1GUlhPQmlvZlor?=
+ =?utf-8?B?OHB4VmljZSt5ejJwNWZnUm5OdEtYUjhFMS9naTlWc09GdVdhN21JcWRrU0tT?=
+ =?utf-8?B?TjZxaEFiZnByb01uU1JZNE9ENVVCblVFaE1JQkoxMXhLeGthMkZ6cWpCYWkx?=
+ =?utf-8?B?ck9qT2J3TlpGV0lDQk0yNDJBRnZCVGhqSmJQUCs5M2NCK3pFRjB0N3BlSDZL?=
+ =?utf-8?B?U0FHTHRTcThsaG5vYWtIUFliU1Vhc3FGdFg3bHpJZ2hDU3FQU3lkTWlvc3Fs?=
+ =?utf-8?B?OVF1ZWp4eHd2Z0ZLV1NLN2VoS1lldkVKZmlqS29leFlGQmtCdWM2R29reDB3?=
+ =?utf-8?B?N2VVbmFmZDZrUGI4eW9vUjB6dHdQaUczMjRJV2pYVFBQS3BWUkpOQm51L2hP?=
+ =?utf-8?B?Zml6UHV4aVJvSVBRTEN3b2RUdVl1N1JtdW16ZmJHOHN5Q1pJSEEwVEM4NnVz?=
+ =?utf-8?B?WnV4UThWRGxXM2pMRXlsbTU5NjNldU9jcDJYWmo2ZU1PU3JyZ2RjM2pPbGVX?=
+ =?utf-8?B?Z25TeWwyQWhITE44R2pQSnVjQUtuT2tsQ0VGQk5PWGgwNjlxN3FtbGZ0OWt0?=
+ =?utf-8?B?UnN6SFU4OEJmRzZmV3VFSFdqTEtBbHllTWJQbStrZkRweDU0d0lIT25md1N3?=
+ =?utf-8?B?SXZoMEQzUTRUS1loSkhaT1pvREhlcFhReU9ObnlsVVpOVTJBa2pSNlcweVJh?=
+ =?utf-8?B?VG9QVGZiV0x1aEVNSnUwaCtlVEowQStlVFBvRUhEVDlEM0ZNWXJmT1lzaGh6?=
+ =?utf-8?B?YTREZ3I1bWlJRmtvdEM0ZG81b1hLRHFnWFpiZ0YzQ0k4K21NMEJ1ODVrb2tO?=
+ =?utf-8?B?Vmg1VEQwa0VjUVNGMTNndmJ2SEJWTGdoaDdOUlFFYkZBNHNCbG9nY0lHTFlu?=
+ =?utf-8?B?SG1NSXNXMUd0K2o4dWtmOE10THR5dXdGaHd1Mm9FcFhMTFNTRnA4RDAzVWxi?=
+ =?utf-8?B?YWF5MVlYL3dpaE9pN2Z6TzZJVjc1K3E3SWxtN0kxV2RrbjExYS9TSGl5b1Av?=
+ =?utf-8?B?Y2lCQ2txU1g4QVFUVTFGNUpaTDRuWG9lMDhTQU1EcTRXLzVjZ1VzTWorUmdY?=
+ =?utf-8?B?TURkK3htaXlETGlxSDRhLzJIVHdaN2p0RDBUYmRKMzdRMVk5SFJEQ3I0UUxK?=
+ =?utf-8?B?V3dsT3BSTWg3SWRGS3JXSUVHeFFnV2ZBN0lLOFVvSm9lb0IrMitraTVZeWh0?=
+ =?utf-8?B?RHZKYkZXTEV6cmxoWXRoV3piN3ltbFhWdDdoU1V4bWU5YkRSa3YybEdpaUZ1?=
+ =?utf-8?B?R21LdHpRZ0sxdFZtU3BPcHpLbW5UM0E1YU9XMWtTNkkxSGVTa0RlNFJBaU0z?=
+ =?utf-8?B?bHEwZUFSQ21aZytkbUpHa2Ewb3E4c2R5Z1duK1l5WHRtUU9VUW56NnJVWll6?=
+ =?utf-8?B?SS90WVBiN093WS9FenFrblExRHc1T2dlTXdHNytmcVVzTnNQeVdoV1FGb0Uw?=
+ =?utf-8?B?YzF6NDJYOEM0YzN3aVp6OWtIcjdzSVRRWTIzNUV1NWFja0d0cllsM2VlRGJ1?=
+ =?utf-8?B?R2VUbVpGUFU3MlhRY3dWKzFGbTVPMklJRnhsZ200ODFSUkZ3ajQxcm1OcE9T?=
+ =?utf-8?B?U3ovS25ETDhJQXZsWUNoTHN5ZGRpclpLbENIaHd0MFVZQ0FWd0RrNWN5cFNP?=
+ =?utf-8?B?d0VPK3JPeE1lcUZMTlBqUFAzcUQ4YkM0VTU1MmdJUVlGQXovQ0NnYmtRR0RO?=
+ =?utf-8?B?N0N1MXlVMVlTR1h4a1VwL1pidmtXa0hPbVlDSkNmY3lTQm5rc3U3YVIwSnhs?=
+ =?utf-8?B?QVltWDZRME5aTEhSaWFiQytqVzBMRmRTbDZQVnkxZ25EUTFHMmQ4enJHVDJM?=
+ =?utf-8?B?SUtMckhxaEhoZ1pWcXhsMFBIaFRsaFVBOTcrMFFlY0hqYmsybUFyVE9NUWUz?=
+ =?utf-8?Q?tupE9lh/Hy0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR12MB9478.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZjROS2YzM054TFU1eTBaT25OUTVLVjdCcCt2NTBTbDZvWnlTZVpwTUUrYWxz?=
+ =?utf-8?B?R0tKamxPTnVZYXRRdFJVWm9ITkJLa0JkSWFXcjl1TDJ5cVJSVnpFbWMxeHNZ?=
+ =?utf-8?B?Vy9YVW5aYkJFSm9kcnpqRlBrYllwU3Z6WnZ5Y3prU2Ercy9VZWZONzFtV0kr?=
+ =?utf-8?B?cDlweEVUa0QvQTltR25rajJhR0N5dnB3U09GNjBBUTlvWEUrWHBIRVNTek9M?=
+ =?utf-8?B?Qmlzck5oVko2c3J3cUlSYVZaT3k1SW1USzVlckdEbkY2U1ZZYVJsMVVJN2Vn?=
+ =?utf-8?B?Q2k1QmNHWEU2N1NQUHlrV0p6Z0c0MVFsOWdQalROYVczUzNINU44Q0Q0TTE2?=
+ =?utf-8?B?ZE83RitFU2F5U2hibTNuSmkzOUo2bE1OQjBaTXpPYW5QejlYdDFqSkxZaHJt?=
+ =?utf-8?B?WUhhRHh3U2Ura3BWb3dnZytYTDNGQ0JNdi9Xb292dmJVWDdUdGdDSVVCcmdq?=
+ =?utf-8?B?bzJWSVRIMkhGTUdGQ1dRMmxQQXhtQS9OeEIrOVJpQU0vQjlsQ0FGdjBkWmlk?=
+ =?utf-8?B?TTlSdXFXSnVlWlBOV1dXQldFUXBqeXBFY1ErZHFRRjVFL3FkMmhqYzJialRX?=
+ =?utf-8?B?YVNxbXJacWRhVGNTWlhlRk4zdjdudFYwbnQ0UDJXd25aek04L1hEVHl0TjZB?=
+ =?utf-8?B?STNQQmNFbkFONXlnQ1pSbUtSUmE1dGVqWXU0ZWk5aWZMVVMrc1JZa3F4WVhY?=
+ =?utf-8?B?alorQnpJT1ExeTdpQndGSi9COUxBOVJtQTVmY25aRFZrOWV5Sm1vOGJOblMz?=
+ =?utf-8?B?T0RxNUllQkRrUGxaSzZEdXp4b3pyUEkyTmx1OWppa3NDQTdvbEFQM0JnTUJw?=
+ =?utf-8?B?MVQyZy8xbXJTbDNpQlFyb0taVlJ2OUpOWVZwNnZCVDZQTStFMDc0ZFlvblcz?=
+ =?utf-8?B?MW5kRUdac1U3bHVzVlNzS08rR3k3RnFCcHpPYXZPMkFsV0VJRzdaNXllN2Zm?=
+ =?utf-8?B?VmJ4aCtCYTYzeEFYaGd2OUJBNWhhMzVUcWpTMm1aZzJxRzdzVG14UCtWNmZY?=
+ =?utf-8?B?dnhTOUFFUXVuSkl2M3JtZTlrQ1NtdDJET21oQzFqaWpTaVBmaEVMRUpENnNG?=
+ =?utf-8?B?RGZrdk1NMlhFdzU5bFhxMERsWi9TUDBIUHU2VXN2bmEyZUF5L0czdlNVa1py?=
+ =?utf-8?B?UW1JWVpLZmMwWGxla2VWbm5uWlhwY0svMjJzZzd1Zk43c3ZqR0U4UElOaFRW?=
+ =?utf-8?B?cmZvaGJpbGh2TU5ERGJsS2hFblMxSklIU0pBVUtMSDRBZEYxSjFUN1lPYk1L?=
+ =?utf-8?B?NGZwc3dCbnJsUmpwL1ZtTm1JWUdsazZlaDEwR2VIaFpuUEZDUkhCNUJxRmUz?=
+ =?utf-8?B?WnpGNENKU2ZtRkQ0dWRvbnFVamczV1c4UEFhYVJVR1d6aDlYMFRxUXJyTjM3?=
+ =?utf-8?B?bGR2emFIUUNrSkZJaE1pc2QrZjFzWW1HbHc2T0RLd2NXR1o4TTVPVms4QXJF?=
+ =?utf-8?B?OVNTNHdtREtrVllDMEVUMXE1Y2hoNzZGeVZZVGRQZzdDbmZtalZxWm5xZ1ly?=
+ =?utf-8?B?VFd4eXY5WjdmV3ZQSE5ETnNab3RBbEtHbGpNQnRsbjhva1FBS1R0TGVTZjQ3?=
+ =?utf-8?B?Qk5HN2UrcE9TdXAwTHZZL01hU3F0Q2N5dE51SXQ1WTRtOUNmbkZPdWxvelp4?=
+ =?utf-8?B?MDZYV2ZZM1p0KzE0U3JGSG1SS3RYc3FYcStsZHZUTmZyNEh6OVJQc0FtMlJs?=
+ =?utf-8?B?SXdaSHVlZnZHQ3lwNWtySlgvakZXdzd5cnp5ZDRXWGxwUWNJVkVadE5LOEFN?=
+ =?utf-8?B?eERTdTdsNlpoUmIxeXVJd1RRUWI4MXkxaWVDVzRkT2NwMFIrWWJwR3UxVDFI?=
+ =?utf-8?B?Q3ZyQ25wMkY2KzdRT3dLallLTlB2cHpqVHllVmlMbVBYWDh3QXg3OHJsVFhY?=
+ =?utf-8?B?M1lsZW9iUkFmS2tZcCtHZEw5Q0tZSzBHalRNQk1JMERhV0k4bFlPWlMyUlJV?=
+ =?utf-8?B?emFScDQ0eEsvVDNYVGNHb2d6ODltbm92ZDNReU5UTFlxMG0wTTlYc1lHbjdT?=
+ =?utf-8?B?UHl1aEszaXlvbldhZW44akxFckZrUFJObnh6RlQxNGFvbWk3cUtSZFJuNnFh?=
+ =?utf-8?B?ZURKMjFUNVkrbVFhdWI3NnhMTHk3d0JzVy9FMmpId3g3dlk1V0ZnOUt1QlU1?=
+ =?utf-8?Q?PJrc=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dfcd67b4-ecc4-433a-c118-08ddceb1b16c
+X-MS-Exchange-CrossTenant-AuthSource: BL4PR12MB9478.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2025 15:07:53.9745
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ayvl+6sLzPIAgE8ylyicmtxSw44pMeCVrZ9Aqw5CxkgmkptBg5nARFe9Tk3AOt7D
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8718
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C6AB4100009
+X-Stat-Signature: awmx3z3fg394yrhirctkohx6ebm9z7tc
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 93075C000B
-X-Stat-Signature: jt6pniqdzspqttfon388ti8u7ucqpt1d
-X-HE-Tag: 1753801033-472614
-X-HE-Meta: U2FsdGVkX1/Rv2xko7NMW5/ibql3tuNANYdktDNoYCSne89yc9WJfzY4cs+GWtMz8egAkEuwkIhyg4pl/6iwjXc8wqsqCgp5opENZysUzlfjq8f0q7xd1CfVdDI33U9qL+r3+Wg56nkLE0br4HLxvSHQADK/nRVMaWYbI/js0WaloInG4uSWW/dgQIblHJQp4FkN+EDo8jKHcQ9D9b+JUM8bNhP9khWHIlB5FyozJFuvVAVco4sE29MvFCoK/sIRVNNmLmYGBk0Qmq7wQbE5R9QgnEQ32HHuNCWk7qw7rOfSWK6uc/bcEDcmP3PkeKPJiNgdMbJZDA+ilhqAWuTZFyIZu4SESlJZ+mI5mvjKfU5t1JE3nX/reLT+6aXxfkNfC7fU6LiIv5GXNZjgHaZ4TlJkQ+cvOn6hSdREdcBuHc3lN6F/6CH9jACwcEakWwCqbPyK7foQ+RzXqln5+qvDVZ2nsbJGierXPy+6kuw68X0wnTecKUsQTAo8zLUmMTpVlNe/+yqq4uv5qoeNa9ZyClv6V/9CLxK3XO1Fe1Nj5fH8uOnaPd2QtF6phfvXenIrqA26ajP/u02lVscXC9P9kKLL5FxOLhGozAm9RB0hG41c2N8kXu5C0XRjoMRMK1tPbNmef7ZrBuHC8g1LEUaemtOfdnhJmdRXAjx4neR38Ccx6XvW9ZnMeaaawMsWKXLD95WqjNYTF849/20l0tWcmyn6u4GnDo13kAlPwQK3laYHmDxpl+7HYAWYwMYdvIn0ClbuX3ZNwcXZqceFhAumCB6mxDPi7RKbspic6JKFgfengVC25H+OJWDXaaxZPE5OpXCOqRoJmLug22Gejx0cfk3y8YeUP5RI5JolW5X2kEwXt8rRq4v9Y3GKfMx7gtOJrpAwxCaVGe6pAzssbtzSiTD6tfqAXc1hLlaRO57qJ8zkQDNsmtd5ceBI1ej0LpE8Z0XEktpFVIRmXF55zQX
- FdhJ6U6V
- AOvrzp3yOStfvWyV/eri6XfWbbKk/VcXbulFiPAX7elDEtq52P4x6jQRy65ssd0Y8n5Ab6BO+eSuqcmHh+KYX1rw4Owk5S6jBoEKo1EmOO/7ZScG7EVaKicd/9/2XjwJxRUQRq+1y5ugu1hPxOvc1jkHWu6+iLsNJm2onRp6dyjfozf/VgsikU1XSXRHHJFmjwrNasDQnDTqZHsl1efOZJJJA0OyM+UdyiN0+nW9KkWHdducl0hlSX6sdFvtAuQA+/MHRJ2MoEtOYjGHuOqkRhUrbr/HvvV/9uGpP4iQCfNiBNF8GuPWWNWn7e6bkxcBY2ujc7XkHEesuTnYU0VSreiulJg==
+X-HE-Tag: 1753801680-837832
+X-HE-Meta: U2FsdGVkX18G4ner2HGjm8J1u9xu8N1GofJN2IkX3/Nq5j7Do2FwTLTdF1ztX6LOX7FulMLPM/EVBH/5Q4ppT+aZXzHeFMGQxIHtMs5KZTNxyLDoBYbzx/i36FcwtwJlGLOBVnGzw6ToklNFwk5OsFPSbZWiL8r74C/wNBy9PEbNkiJkVSspPatj6S6hYOP+hshKV7vnoOOUli4b/fUtptJOTfRH/Ll/eQ02ymhogu6LDXgrqIu7yN4gNl+7uU8EAQsPIs8OF8UAOKqZJ4S0LFCxseetbtifAq4csROwMClAySkotxuO+aJuHc8KYnYv2kxfRYWsqTlN0H9PxrNAGYGTc9ZY30Ht82Gje9CSNFGOu/YWvxQFkmU4TPOsZpSrP34DczJzMwtwJjgZp3+g4tbygrNtCGnWzdmc/wIDPpOGqN9PS+Czy1s2mLDGBQ5tQPd511B9WEX9DVk+kVNG2/vKUhXz4cRtyWkMHlmctYhmCq5sJiztx4pdfnGKhB+JS5GXFxWlQotE44XWOsIRRusCRkmTed6puNB/QJs1w/G0fIDFHnpBWkoDoHV1Vkgxv5h5g7ZNPqjvzUTAJ/RxWgaCJxbmnH8lB5QxFrRw0Y5psssrMqz8XJGyv8FA1dVR8om0oZTDL+zy8jiUQPCVcK4rveslGG4Z7uXEqtol3OY0AoTdkwHrzPdr8jVis06P0WIGiWwpESxYRzYi9WUZHuGfdK1rzO8uOZ/fGP1kcP4662ebngGfcN7TFCKsjE7DD6Z7cE0LdRrh/QEWjCsOQ6GTTilGqFO9p677qEQwQFhx1fCokmAVw5mFmyiG182N8cMts71akBQ919+Oq/cPi/bHy2DqynbOtezGqRuSmcF8m0Fiqlhrliu7ZymRN6l33UkcyVm1DlpfZ3bSuqeJmBpkeSiitT1YNt7nuzVofXWlqRC4NhLPPsl8qrWPrSPABkVIR/gLf78DOhdkgm4
+ 5ZEXvoVq
+ FVLoQAseOfYQq7oeFh6AqPsm7HNTEVcaEcmVxYhXafiTkXX0mmx5D6rbEuPUxXrJm0rkCQWD4rtcWR0u+i/I8WYbQMaXVDcn4HhoXIQ18UubUT1QmrSgFChu7+RsefPOfx+K+sEYsB5/dwNcmCJfO9KkqCgqX3R9KtJaI4memYBXQlcKcBNmNf+Jyu7+53yGVE3Og38tb+4pCQeADmQU3bMorGya164lMjtpnh9VW6uI7gA/pslWNCTyYWrz3C2S7LQD26Ob/aFJa8CuZvl+FsBwyuQlRqHt3adciKJ/9NQ9yYmUb5p1a67hM+QVhV9Pq4n9C5pUkMY7pw/9iemw3H6iBOZDDSfISFY0bBqScAFwtr2PP5ni3ax92xHSU2T2iaA2NMA1WvBmOxxOxiBejG2OBOnjZ4QRumox/DAQqx55vfJ7esBvlqGHWeP0jRQtUrzerNO3HW+Gb15d91AX3fo/tj4vs3+68ReCx0bSe9+VQELFRAKDf8EjzI5eaoStOYzh3LwwGtQfEWIUg1eiOPBJ9XNjnKftJTzrlthLtRZ4ocjtcpapv9e6SCYGvy3D7YIrcblqi5nNP4U6sFpEx2MH1z5nY+41+Xl91pdF4Z1kxk/VSItwyPu9f4g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,161 +201,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-By inducing delays in the right places, Jann Horn created a reproducer
-for a hard to hit UAF issue that became possible after VMAs were allowed
-to be recycled by adding SLAB_TYPESAFE_BY_RCU to their cache.
+On 29 Jul 2025, at 5:18, Yafang Shao wrote:
 
-Race description is borrowed from Jann's discovery report:
-lock_vma_under_rcu() looks up a VMA locklessly with mas_walk() under
-rcu_read_lock(). At that point, the VMA may be concurrently freed, and
-it can be recycled by another process. vma_start_read() then
-increments the vma->vm_refcnt (if it is in an acceptable range), and
-if this succeeds, vma_start_read() can return a recycled VMA.
+> Background
+> ----------
+>
+> Our production servers consistently configure THP to "never" due to
+> historical incidents caused by its behavior. Key issues include:
+> - Increased Memory Consumption
+>   THP significantly raises overall memory usage, reducing available memory
+>   for workloads.
+>
+> - Latency Spikes
+>   Random latency spikes occur due to frequent memory compaction triggered
+>   by THP.
+>
+> - Lack of Fine-Grained Control
+>   THP tuning is globally configured, making it unsuitable for containerized
+>   environments. When multiple workloads share a host, enabling THP without
+>   per-workload control leads to unpredictable behavior.
+>
+> Due to these issues, administrators avoid switching to madvise or always
+> modes—unless per-workload THP control is implemented.
+>
+> To address this, we propose BPF-based THP policy for flexible adjustment.
+> Additionally, as David mentioned [0], this mechanism can also serve as a
 
-In this scenario where the VMA has been recycled, lock_vma_under_rcu()
-will then detect the mismatching ->vm_mm pointer and drop the VMA
-through vma_end_read(), which calls vma_refcount_put().
-vma_refcount_put() drops the refcount and then calls rcuwait_wake_up()
-using a copy of vma->vm_mm. This is wrong: It implicitly assumes that
-the caller is keeping the VMA's mm alive, but in this scenario the caller
-has no relation to the VMA's mm, so the rcuwait_wake_up() can cause UAF.
+The link to [0] is missing. :)
 
-The diagram depicting the race:
-T1         T2         T3
-==         ==         ==
-lock_vma_under_rcu
-  mas_walk
-          <VMA gets removed from mm>
-                      mmap
-                        <the same VMA is reallocated>
-  vma_start_read
-    __refcount_inc_not_zero_limited_acquire
-                      munmap
-                        __vma_enter_locked
-                          refcount_add_not_zero
-  vma_end_read
-    vma_refcount_put
-      __refcount_dec_and_test
-                          rcuwait_wait_event
-                            <finish operation>
-      rcuwait_wake_up [UAF]
+> policy prototyping tool (test policies via BPF before upstreaming them).
+>
+> Proposed Solution
+> -----------------
+>
+> As suggested by David [0], we introduce a new BPF interface:
+>
+> /**
+>  * @get_suggested_order: Get the suggested highest THP order for allocation
+>  * @mm: mm_struct associated with the THP allocation
+>  * @tva_flags: TVA flags for current context
+>  *             %TVA_IN_PF: Set when in page fault context
+>  *             Other flags: Reserved for future use
+>  * @order: The highest order being considered for this THP allocation.
+>  *         %PUD_ORDER for PUD-mapped allocations
 
-Note that rcuwait_wait_event() in T3 does not block because refcount
-was already dropped by T1. At this point T3 can exit and free the mm
-causing UAF in T1.
-To avoid this we move vma->vm_mm verification into vma_start_read() and
-grab vma->vm_mm to stabilize it before vma_refcount_put() operation.
+There is no PUD THP yet and the highest THP order is PMD_ORDER. It is better
+to remove the line above to avoid confusion.
 
-Fixes: 3104138517fc ("mm: make vma cache SLAB_TYPESAFE_BY_RCU")
-Reported-by: Jann Horn <jannh@google.com>
-Closes: https://lore.kernel.org/all/CAG48ez0-deFbVH=E3jbkWx=X3uVbd8nWeo6kbJPQ0KoUD+m2tA@mail.gmail.com/
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: <stable@vger.kernel.org>
----
-Changes since v2 [1]
-- Addressed Lorenzo's nits, per Lorenzo Stoakes
-- Added a warning comment for vma_start_read()
-- Added Reviewed-by and Acked-by, per Vlastimil Babka and Lorenzo Stoakes
+>  *         %PMD_ORDER for PMD-mapped allocations
+>  *         %PMD_ORDER - 1 for mTHP allocations
+>  *
+>  * Rerurn: Suggested highest THP order to use for allocation. The returned
+>  * order will never exceed the input @order value.
+>  */
+> int (*get_suggested_order)(struct mm_struct *mm, unsigned long tva_flags, int order);
+>
+> This interface:
+> - Supports both use cases (per-workload tuning + policy prototyping).
+> - Can be extended with BPF helpers (e.g., for memory pressure awareness).
 
-Notes:
-- Applies cleanly over mm-unstable after reverting previous version of
-this patch [1].
-- Should be applied to 6.15 and 6.16 but these branches do not
-have lock_next_vma() function, so the change in lock_next_vma() should be
-skipped when applying to those branches.
+IIRC, your initial RFC works at VMA level, but this patch targets mm level.
+Is mm sufficient for your use case? Are you planning to extend the
+BFP interface to VMA in the future? Just curious.
 
-[1] https://lore.kernel.org/all/20250728175355.2282375-1-surenb@google.com/
+>
+> This is an experimental feature. To use it, you must enable
+> CONFIG_EXPERIMENTAL_BPF_ORDER_SELECTION.
+>
+> Warning:
+> - The interface may change
+> - Behavior may differ in future kernel versions
+> - We might remove it in the future
+>
+> A simple test case is included in Patch #4.
+>
+> Changes:
+> RFC v3->v4:
+> - Use a new interface get_suggested_order() (David)
+> - Mark it as experimental (David, Lorenzo)
+> - Code improvement in THP (Usama)
+> - Code improvement in BPF struct ops (Amery)
+>
+> RFC v2->v3: https://lwn.net/Articles/1024545/
+> - Finer-graind tuning based on madvise or always mode (David, Lorenzo)
+> - Use BPF to write more advanced policies logic (David, Lorenzo)
+>
+> RFC v1->v2: https://lwn.net/Articles/1021783/
+> The main changes are as follows,
+> - Use struct_ops instead of fmod_ret (Alexei)
+> - Introduce a new THP mode (Johannes)
+> - Introduce new helpers for BPF hook (Zi)
+> - Refine the commit log
+>
+> RFC v1: https://lwn.net/Articles/1019290/
+>
+> Yafang Shao (4):
+>   mm: thp: add support for BPF based THP order selection
+>   mm: thp: add a new kfunc bpf_mm_get_mem_cgroup()
+>   mm: thp: add a new kfunc bpf_mm_get_task()
+>   selftest/bpf: add selftest for BPF based THP order seletection
+>
+>  include/linux/huge_mm.h                       |  13 +
+>  include/linux/khugepaged.h                    |  12 +-
+>  mm/Kconfig                                    |  12 +
+>  mm/Makefile                                   |   1 +
+>  mm/bpf_thp.c                                  | 255 ++++++++++++++++++
+>  mm/huge_memory.c                              |   9 +
+>  mm/khugepaged.c                               |  18 +-
+>  mm/memory.c                                   |  14 +-
+>  tools/testing/selftests/bpf/config            |   2 +
+>  .../selftests/bpf/prog_tests/thp_adjust.c     | 183 +++++++++++++
+>  .../selftests/bpf/progs/test_thp_adjust.c     |  69 +++++
+>  .../bpf/progs/test_thp_adjust_failure.c       |  24 ++
+>  12 files changed, 605 insertions(+), 7 deletions(-)
+>  create mode 100644 mm/bpf_thp.c
+>  create mode 100644 tools/testing/selftests/bpf/prog_tests/thp_adjust.c
+>  create mode 100644 tools/testing/selftests/bpf/progs/test_thp_adjust.c
+>  create mode 100644 tools/testing/selftests/bpf/progs/test_thp_adjust_failure.c
+>
+> -- 
+> 2.43.5
 
- include/linux/mmap_lock.h | 30 ++++++++++++++++++++++++++++++
- mm/mmap_lock.c            | 10 +++-------
- 2 files changed, 33 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
-index 1f4f44951abe..11a078de9150 100644
---- a/include/linux/mmap_lock.h
-+++ b/include/linux/mmap_lock.h
-@@ -12,6 +12,7 @@ extern int rcuwait_wake_up(struct rcuwait *w);
- #include <linux/tracepoint-defs.h>
- #include <linux/types.h>
- #include <linux/cleanup.h>
-+#include <linux/sched/mm.h>
- 
- #define MMAP_LOCK_INITIALIZER(name) \
- 	.mmap_lock = __RWSEM_INITIALIZER((name).mmap_lock),
-@@ -154,6 +155,10 @@ static inline void vma_refcount_put(struct vm_area_struct *vma)
-  * reused and attached to a different mm before we lock it.
-  * Returns the vma on success, NULL on failure to lock and EAGAIN if vma got
-  * detached.
-+ *
-+ * WARNING! The vma passed to this function cannot be used if the function
-+ * fails to lock it because in certain cases RCU lock is dropped and then
-+ * reacquired. Once RCU lock is dropped the vma can be concurently freed.
-  */
- static inline struct vm_area_struct *vma_start_read(struct mm_struct *mm,
- 						    struct vm_area_struct *vma)
-@@ -183,6 +188,31 @@ static inline struct vm_area_struct *vma_start_read(struct mm_struct *mm,
- 	}
- 
- 	rwsem_acquire_read(&vma->vmlock_dep_map, 0, 1, _RET_IP_);
-+
-+	/*
-+	 * If vma got attached to another mm from under us, that mm is not
-+	 * stable and can be freed in the narrow window after vma->vm_refcnt
-+	 * is dropped and before rcuwait_wake_up(mm) is called. Grab it before
-+	 * releasing vma->vm_refcnt.
-+	 */
-+	if (unlikely(vma->vm_mm != mm)) {
-+		/* Use a copy of vm_mm in case vma is freed after we drop vm_refcnt */
-+		struct mm_struct *other_mm = vma->vm_mm;
-+
-+		/*
-+		 * __mmdrop() is a heavy operation and we don't need RCU
-+		 * protection here. Release RCU lock during these operations.
-+		 * We reinstate the RCU read lock as the caller expects it to
-+		 * be held when this function returns even on error.
-+		 */
-+		rcu_read_unlock();
-+		mmgrab(other_mm);
-+		vma_refcount_put(vma);
-+		mmdrop(other_mm);
-+		rcu_read_lock();
-+		return NULL;
-+	}
-+
- 	/*
- 	 * Overflow of vm_lock_seq/mm_lock_seq might produce false locked result.
- 	 * False unlocked result is impossible because we modify and check
-diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
-index 729fb7d0dd59..b006cec8e6fe 100644
---- a/mm/mmap_lock.c
-+++ b/mm/mmap_lock.c
-@@ -164,8 +164,7 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
- 	 */
- 
- 	/* Check if the vma we locked is the right one. */
--	if (unlikely(vma->vm_mm != mm ||
--		     address < vma->vm_start || address >= vma->vm_end))
-+	if (unlikely(address < vma->vm_start || address >= vma->vm_end))
- 		goto inval_end_read;
- 
- 	rcu_read_unlock();
-@@ -236,11 +235,8 @@ struct vm_area_struct *lock_next_vma(struct mm_struct *mm,
- 		goto fallback;
- 	}
- 
--	/*
--	 * Verify the vma we locked belongs to the same address space and it's
--	 * not behind of the last search position.
--	 */
--	if (unlikely(vma->vm_mm != mm || from_addr >= vma->vm_end))
-+	/* Verify the vma is not behind the last search position. */
-+	if (unlikely(from_addr >= vma->vm_end))
- 		goto fallback_unlock;
- 
- 	/*
--- 
-2.50.1.487.gc89ff58d15-goog
-
+Best Regards,
+Yan, Zi
 
