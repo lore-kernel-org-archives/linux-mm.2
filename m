@@ -2,189 +2,132 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F0C29C87FC9
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 14:20:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 632C7C83F26
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 14:22:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7EAAE6B0092; Tue, 29 Jul 2025 10:20:54 -0400 (EDT)
+	id E087F6B0095; Tue, 29 Jul 2025 10:22:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C1676B0096; Tue, 29 Jul 2025 10:20:54 -0400 (EDT)
+	id DB8FD6B0096; Tue, 29 Jul 2025 10:22:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6896C6B0098; Tue, 29 Jul 2025 10:20:54 -0400 (EDT)
+	id CA7B76B0098; Tue, 29 Jul 2025 10:22:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 525106B0092
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 10:20:54 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id ACE19C0114
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 14:20:53 +0000 (UTC)
-X-FDA: 83717513586.14.AE610FB
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2070.outbound.protection.outlook.com [40.107.237.70])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 9E42A140006
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 14:20:50 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ChnBxp4w;
-	spf=pass (imf23.hostedemail.com: domain of ziy@nvidia.com designates 40.107.237.70 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753798850;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B5EEB6B0095
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 10:22:52 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 744451A012C
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 14:22:52 +0000 (UTC)
+X-FDA: 83717518584.27.5C7251F
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 4588C4000C
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 14:22:50 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=xXtrFjrs;
+	spf=pass (imf27.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753798970;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wYE7ct58X0Smp5OfRwpbUhsbcptrI0nm1gCaj/eVpw0=;
-	b=IcuqcJ2Mfm6N+NpKJ6FnYIPW6+CLpLI+vRkVCj52gA8TcXHOpzbc+aulGHex9JzIdru1le
-	3jyh+NbBSCSiIMpaLAbKai/L9j8kzICgq0evalaW0+OV0Myn4tA2PVzC8ugKIoXpCd7CCt
-	+ZVxLFQn0FMAZUeyMMYeFw9ISxsj4wI=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753798851; a=rsa-sha256;
-	cv=pass;
-	b=585FzNBKS6d49S9XhlNNCo5n8S+mR/vYIyObg6AYzCXNU8DY3YtLkM1sjw7IK1ka/DAs+w
-	wARvSgShaE4pcH6Zv7t6nCuU7cifp+jLFP1oQeShMom0Ze5BQ1Ba48V4uIAKZ6K/UO9kEu
-	jaOtXw4iuZhdlrauDGNedUD3p8z+2ec=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ChnBxp4w;
-	spf=pass (imf23.hostedemail.com: domain of ziy@nvidia.com designates 40.107.237.70 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CSTDryfN7J1dQ1PceNU6iGaUsVrZAamgAF6nB7BnrV4cyAY2rqJtD6azxoIkrOFfmtwncRnOs5Td5MJr0m6Y1a5rYMRXeWV75fywYt9y/H0kdAakW3G/9OAOJsLDNyXJLt1Eqkc/LYdg+JW06sQ9Xd0IvMTxVDlGRo62J0HzrI6UgZ8hlf71Yj1wLgfXOywLu10IBg5XKT0hsWPk9L1PcrvvuKPBvGRoeLVVlj8+xbn7dwLsvrxiT8bY7p8Mm+pcfotnao1RAfIETGpA3PMA7SkIcxNygUSxWb/IKCJZDpGaPV3vruUPK4+lFasW4UrRsYHIGmY92PHr2gnhvQKWTQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wYE7ct58X0Smp5OfRwpbUhsbcptrI0nm1gCaj/eVpw0=;
- b=UJbTpadqH+wLvsNDUFdlE4LQCrH9Ucg5Ql/UIL9+HNG4/yw66lc3VUGvQ/YU+hbxRuVomzyj8MoJywNKLS0m5LfRe6phVTUnm0l+C3vUv4FeXmS37g5j6O0ODCvtMFlcz135DwDyzeqyDEFtVhM6GUMATp1UxgkT+M6spK/h0/Xvp6iRD3ZN2qJIMAXSPhRoCQKCYXrcThM00eDB6vqgizAC/SiR/okH2LDhCH5NsyU6nrwQ7QbDSiNW4R1eVtOP9vZLKOP+IP42QTKgb9JIs5iMblXwKWifdHrAg0aGvx7Li0hraa8jM1FpHoUloMwjpTHC8cfPJG/aCObyb6ipfQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wYE7ct58X0Smp5OfRwpbUhsbcptrI0nm1gCaj/eVpw0=;
- b=ChnBxp4wfwPIil1M3r+zIkLFQ3YJvWfx09gWD+Q+8orCQ19AmM3jHkRec+iy2oXLjTPNsapxj02hJ1KT63WqdGv5OQERD2JP0PRVGHglPWaT2eYbWXPksnbfBMSj/UorE0/7aL0h4TPyvedcqzuneEdJ3vTixPsKfAkUazFnAGAbt5rdpg5Cj7fG+2Fn2NhiKeUaHZmhRPy0ThPFaeJ3cXGdd9s9OOGMbc6/dneUSUsNQh+55j7Uu7ppkzOLrV3tbQXbov89IqgfwOBqOMP1QFGQDrH++CqR0D7HUCz4doyetr3iV0Wz0CqGovu+WOj0OnqEmHa6VB6PQ+Hsq30f2g==
-Received: from BL4PR12MB9478.namprd12.prod.outlook.com (2603:10b6:208:58e::9)
- by SA5PPF530AE3851.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8c9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8943.29; Tue, 29 Jul
- 2025 14:20:38 +0000
-Received: from BL4PR12MB9478.namprd12.prod.outlook.com
- ([fe80::b90:212f:996:6eb9]) by BL4PR12MB9478.namprd12.prod.outlook.com
- ([fe80::b90:212f:996:6eb9%4]) with mapi id 15.20.8964.026; Tue, 29 Jul 2025
- 14:20:37 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Byungchul Park <byungchul@sk.com>
-Cc: linux-mm@kvack.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel_team@skhynix.com, harry.yoo@oracle.com, ast@kernel.org,
- daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
- john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
- leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com, andrew+netdev@lunn.ch,
- edumazet@google.com, pabeni@redhat.com, akpm@linux-foundation.org,
- david@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- horms@kernel.org, jackmanb@google.com, hannes@cmpxchg.org,
- ilias.apalodimas@linaro.org, willy@infradead.org, brauner@kernel.org,
- kas@kernel.org, yuzhao@google.com, usamaarif642@gmail.com,
- baolin.wang@linux.alibaba.com, almasrymina@google.com, toke@redhat.com,
- asml.silence@gmail.com, bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
- sfr@canb.auug.org.au
-Subject: Re: [PATCH linux-next v3] mm, page_pool: introduce a new page type
- for page pool in page type
-Date: Tue, 29 Jul 2025 10:20:22 -0400
-X-Mailer: MailMate (2.0r6272)
-Message-ID: <951BA2D7-E220-4F41-BE16-C4C10318A627@nvidia.com>
-In-Reply-To: <20250729110210.48313-1-byungchul@sk.com>
-References: <20250729110210.48313-1-byungchul@sk.com>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: PH7P220CA0012.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:326::19) To BL4PR12MB9478.namprd12.prod.outlook.com
- (2603:10b6:208:58e::9)
+	bh=COkIEuiWzegLgJMToflCtnJ3/8gZZNZmKmrpqxdoDwA=;
+	b=x8A9Ix2bIo2uIhx6IdIorZy2SSuf2BHmDVg58ixaLX2wy4gEmWPOIYg7+yNlpiA38pgfyG
+	iYxTQ8TYPbzZGg7kCH6fWGO8ciCUt9Cz7JrngPL0sisuFqE9cx+0Z3dOM9a1jVkk5Hv/lJ
+	WJ1lchF1ul1k4GWwVdi5yIOeL/5h5jI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753798970; a=rsa-sha256;
+	cv=none;
+	b=WzFx2tIwb24uWuvH7G0akOQfjClVOxdd70ARYgO6MP2IaEZOdKnIoszG/OAZyzXcAxaJxL
+	NjPlhu13F1Js9OihOFKDWtz2+kyPnehb90wRFgK6BjcX8FAUkP4OcMwczTMT4sSNlyfre+
+	xoliASFedpcmKagK99PR7nx+gSOhDTU=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=xXtrFjrs;
+	spf=pass (imf27.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4aba19f4398so66835601cf.1
+        for <linux-mm@kvack.org>; Tue, 29 Jul 2025 07:22:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1753798969; x=1754403769; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=COkIEuiWzegLgJMToflCtnJ3/8gZZNZmKmrpqxdoDwA=;
+        b=xXtrFjrs8hqiLmO5d0lhq2SsgESREu/xY2OWSEqsxCZpayfl0F0/2TURMa97T2w0Tn
+         2aS+V64hb63Bseivdbfa4g5aSRlsxKmsefmGpuDp7ZjorJQG3gRDPDmFt4bXXngJ7Ucf
+         HC9fj/WwlMGfs1Elm3ZZyh7JhimPLxNmFfwmL+43Q/JYMvCWAh1cLTUni00JFnMqQWoq
+         UB3ukolTsOg94FX6bYWymT/tk4oX7M1u+lrZ0XkKBlnlg1zv4Y9Tydj/GDnaYyIfA4cV
+         syMGp6jHrxh3ztjx006gQhVvgDVcE37cY2eiKBkB1vZZWq/3uxeUc+/Xby6FOIVDoa1u
+         cRGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753798969; x=1754403769;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=COkIEuiWzegLgJMToflCtnJ3/8gZZNZmKmrpqxdoDwA=;
+        b=L7J02S6wUlpaF5bWtEidP6SkQ3xJcId6VAGXs948Niayty4RAyVd2vhQbrudjduEKn
+         BSfzZZ/siaDI5qBhdSLyt1n8J9CRjVCN186Wo8LtQqJxdgE4VhxChvrvtxHuPFJ2yV2a
+         /Gq2B1Sv7mO4J4LyzeIBDoin6ZTfhrTOGecyloxuM/4yOlo0uEOPUYkY1k4/mbqfZgTh
+         3R/OJqqyPwF9M19jlu6acocQaadhVbNefMQKLFVUytalIZIExPo4gxhD1rjzfxYhFgB7
+         JP53wYLYOd5UoZn9qMN6qJHCWLMkT5ZG/ToYzDzgSqVOq/2FcqZBXDkY/L7rw4DVdNwE
+         HPXA==
+X-Forwarded-Encrypted: i=1; AJvYcCWDWE5iuw0Ds6+RX5lsmx1mxm14zjQgrRDXEiYtS2ciI4YF5A/7IYfjrs3+hMXM9hJ7dHR9q7TXWA==@kvack.org
+X-Gm-Message-State: AOJu0Ywp34g3790HycCseyvD3yNQtLg7WqKp7tB7zuKH1i6NHDOlHpwQ
+	iIpM79guooJjdMJ2HC6r0kXSkdt/zUDvkQ/aTMr5MOUnX2NkDo/x3eIUDizoPJVdFyU=
+X-Gm-Gg: ASbGncubalm36FjEKRv05Awax5UPE7yxzLR+QNMruZbHxL3b/EE4b+hVaooA4o8ynyF
+	MyeSiSdTP2Gkzys8HJvAasvo9iIybNppwi1Qi5iQX/eYAs5uXckK7rcz81H4u+b3rxtgdAwkuhQ
+	LvZfYSb7E4Zo3dlU1c189adZG5zeR2/Wy1JQKDrciKyoGhelB1Cvod1yuRDfxhyWngPDVkKTOjN
+	WqBXAfySW8jCEtWtcAhlAz0mWwsi32CrQ46n0G4nsVFVk/oiXg/ut6ef4KpRIyRpZFvfoOO4gAO
+	Lg8hDW6+bBiv87C5xP81oEfYNpSf9aB6Hhzs7NIAnB6Onua0Xvu7FE1L4Zkhmrhg25PRUMPb0T8
+	RaGtoPudcfUlg8g8ZntgjZtZ04cMSwx0B
+X-Google-Smtp-Source: AGHT+IEUceVkl40iNUbmH8CG0B9SvtBCZGSM71xkMe4dIMOtKKEAU9bj+x0vh8grcAXbbZcW59/UVg==
+X-Received: by 2002:a05:622a:3:b0:4a9:7725:b1be with SMTP id d75a77b69052e-4ae8ef406d4mr180745941cf.8.1753798968930;
+        Tue, 29 Jul 2025 07:22:48 -0700 (PDT)
+Received: from localhost ([2603:7000:c01:2716:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with UTF8SMTPSA id d75a77b69052e-4aea7d724d0sm38853931cf.23.2025.07.29.07.22.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Jul 2025 07:22:48 -0700 (PDT)
+Date: Tue, 29 Jul 2025 10:22:46 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Simon Horman <horms@kernel.org>, Geliang Tang <geliang@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org,
+	mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v1 net-next 13/13] net-memcg: Allow decoupling memcg from
+ global protocol memory accounting.
+Message-ID: <20250729142246.GF54289@cmpxchg.org>
+References: <20250721203624.3807041-1-kuniyu@google.com>
+ <20250721203624.3807041-14-kuniyu@google.com>
+ <20250728160737.GE54289@cmpxchg.org>
+ <CAAVpQUBYsRGkYsvf2JMTD+0t8OH41oZxmw46WTfPhEprTaS+Pw@mail.gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL4PR12MB9478:EE_|SA5PPF530AE3851:EE_
-X-MS-Office365-Filtering-Correlation-Id: 313bb7fa-8144-4260-7dfc-08ddceab16db
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?AkX296tD2Y5wdAtjbafbXTPKOeVZsSFmcMgiWoflwwL1r5zlpF03Y6NPLmbA?=
- =?us-ascii?Q?fD2CB7PSe431EmYN1LuqOwfJvgzNvYgNj370CX+8//XDREKol7Mh4AbYvQRT?=
- =?us-ascii?Q?Wu65pL4f2nJmcZ2dz6TEanhXIx+/BYQTsTtEVDKie8hm4pf+GjvVn42C5EqC?=
- =?us-ascii?Q?VpfwBXVsGh2JDreNf8xHpqx4/MZ/m7g4HwEsC5PVJ+luFxcnGte5ZXCLA7yw?=
- =?us-ascii?Q?e/1t0yLFLzVQKStcXRi7vp5f7SqxuNid1FCdOBN9G7HlgD24A8TQiZe6MfdC?=
- =?us-ascii?Q?yY3M8WbkNtifi8gBHEWH5JP1YwMIy+gebhWc61qQvdJqzHnrh5eQcZDYVSWw?=
- =?us-ascii?Q?yLwVRIe0SPWaE/6pWNf9DBZCg6+UgV95D12vfEJYh650vU0udMf4MH45EBg/?=
- =?us-ascii?Q?RSty4FP9/50DWd6YE+rtkY8vvHhqVPm4UgEZbV3BSr93ufUQfaOcdEV8GlG7?=
- =?us-ascii?Q?fRRMDsz8MiPjIBryU8jgAhXz5UQAwHJ8c9xabA1bM7ELox7tG5ZmokMXx5KN?=
- =?us-ascii?Q?6BOr2iyGZeMVK1jSSiYguUfWagV7bOOiPQSJ0kEZC+ix7F2DG9V9t0QY9YrI?=
- =?us-ascii?Q?AFRddAY4GHT0D5cwTzF16j2Vtyi2z3e/z4oYLFWQbgsa2GQ44r+pzuMiAq/1?=
- =?us-ascii?Q?U7KHAc36wNdo+Iv61fAfnr86U3a0E6xt2MFvSTlC0TuQkehNF7UtcPbx7f5K?=
- =?us-ascii?Q?xvbpmHud8Mg8o5UtHEZF8QsGQIL5fRp2B4dOe66HZG53AxskqDq79NdLbsIT?=
- =?us-ascii?Q?P6xDjICH6Z6mn7mFk0h0biDOoR6hjmMigzaEjpfXU9rv2GhGpxkCM4R1jVp2?=
- =?us-ascii?Q?KzkP8B0pqkCMBGlHB16wIbnr+ACvs7K/bL5hv2UUxvsC1XU8BJetul4/XEe3?=
- =?us-ascii?Q?iAQF51d44k5QrJ4hHb0tATh6W4htgaIJhFDEtD3Z2dvMkxfGvp1uzquBMDww?=
- =?us-ascii?Q?1tJp8lEQ/zCWR6DBsQG5FcpxjeNZttAMM0E3ZB4fs9TAw1LKEpJhAXH7YnnY?=
- =?us-ascii?Q?K3lqQoISLxrAoOvI+mAasnBRP3azIUBOSotTRIvrgCVUBUqAeuE+bWt3SVjN?=
- =?us-ascii?Q?bQpRN2WJtkppdnbPS0hOodtRjMaVZNTlLQz1efZsqJKwKG5HbwOfbhtR/ZEN?=
- =?us-ascii?Q?+CTMJxn0pOES3jaXW4IzfXyPvPbfQ49sAt/wYvOglpBh1udzhwoJpRXS5IFn?=
- =?us-ascii?Q?wkQb3HEqMYQay/mm7OFzk+HWXoGZAratzQlP3sNs+RF691ILEwyTuZdWBl5v?=
- =?us-ascii?Q?zn27IHxzuIzDcE4jJtLAeLsTfOqXEMA3pBOvJEpIHGy9bGH3O1GGWS3rNjge?=
- =?us-ascii?Q?TrlnyRLZ5QTIX6qCRy1SQcs7XwnOqdrdTiwje/eW8egl7tFhykJR5CGwHP0y?=
- =?us-ascii?Q?k0AdvdS0TCZCz7p5UeP1xiv49ozmQfU6AuHYPpTZ46NYSLTToaC/tDb/Du0w?=
- =?us-ascii?Q?o7wOc9QNv+U=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR12MB9478.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?BrFkZz7efWdGhqyAdOwuZGXDcdDZKKejN6/OBLlLBaRFRvnBKs52DKVcgduC?=
- =?us-ascii?Q?8GIaOCu0+PbRAl2BaTP9UTkH2Wo7FWsk6d7OpyO+OGqjQiB0QdONKWQbS09R?=
- =?us-ascii?Q?WzzQlwsy2mz+UIcSa871cXM8tiLsVk65RGyEh4DUFUhweEA0o14gCDxEl8D6?=
- =?us-ascii?Q?B2Ud6HhQcQ0vuqaXteArTJHI9sIncTJdPCh5+P2Ygx/bQ41auPPyNrKghhJv?=
- =?us-ascii?Q?dqY3DJfjhKXHabHgM1rhbe4qvNsWzA4Ln4o52tgQ33jBGjiRFHBE+KHfbgWP?=
- =?us-ascii?Q?iW5+qt5vcfWofriDDKQfRfjZSqN/4gs2gNfJy8znXxeUSOEnOXboIntse+tQ?=
- =?us-ascii?Q?AYuIjGktiTy51idw8rByaWHCSv4XrJMYpPZCaagcI+853r6zsbwaw39Z/I4V?=
- =?us-ascii?Q?x+wTZxMJ8nPyxhxkp0QWvKDXREcyNYQZY6Qh1lqeguEuos97qzIQR4E6SKvW?=
- =?us-ascii?Q?HD343BOuVbGuRjlzscvXHj+KJRJrdhmrWxrlOIoNhj8lSngHmayH3MJUj/Oi?=
- =?us-ascii?Q?zjjXItY0t7YSU9shDHMKOy/NNUjFMVhw137PoyHebot4ahHaAPWmL/7z3x1X?=
- =?us-ascii?Q?ptgkrpDAYScdni02Z93ITuBA7yf4jZTkQID25Uo5xMsaW1Gji/kr8d+OSMss?=
- =?us-ascii?Q?dO7rKV8kOn1w0drlLtDbu8PsR3Zdv+qqhvsD9Ht+9QInQMOV/ACB5y37keAQ?=
- =?us-ascii?Q?hVSvO9Lt7oTT3TmYjAdM9jlMoLmrlaAputGyVN67orTV+KfHTO85gywizZMB?=
- =?us-ascii?Q?mnXlri8DX4nOozH0CppWle8yoKyzNXsdwVcL4VGGHCLkHY79C5bqK0Rgq2YB?=
- =?us-ascii?Q?Su0lFZ1LU+LcpeTNTi+BJQTqQNzBuUlwF1+TsaDbM3xiBwyBtavxVQsLIEid?=
- =?us-ascii?Q?yC9gcLkaq9DNSNYi95yKzEf34FxTirv3qixav00jMAfZV0BD1VhpbcosUkxy?=
- =?us-ascii?Q?b7R3UrIhXCHOcHoSi0FODrSky5OqebB9pdHleHixCp8Jt3lGP/W5EfEvVp40?=
- =?us-ascii?Q?rhicWazvZFOhSliUWciYULPiXncyeRWmfxT5NGrHvFhQ4jzofDatCQDxx83x?=
- =?us-ascii?Q?iXegzwlWgLd0OOpeIZzXpVqpzjHVAcVjesDX+olDVO0RTUMoBUE5V1uOlwFq?=
- =?us-ascii?Q?p+eD3AqN/8JVsY94iO820M0Ca7rN1UCakpstqK288cSKbRceD1Xkt38R59Gz?=
- =?us-ascii?Q?pl+9kUrzgOoQcLEAJnLEF5a0QJoNCOCzK3ComJIi0vMHN7D4EGk/ZSiblxKb?=
- =?us-ascii?Q?qrXwqA+vjf3js8EF9FQtCr/FGZ720H0xjzg8xRHQ6P1+LTKV7c2IjmQ7BQ4m?=
- =?us-ascii?Q?syp9DjGJ4Mb31mUzqXfB99tGiJ5l8nqw/NE68Oh63LdSb2B4t55So9XkXIt+?=
- =?us-ascii?Q?Wk6/4mCJq1juKKPOj8wUgQA3rNkJLX4y5y5TxAz2Pr7W0zHrJFCFNijQUpQ3?=
- =?us-ascii?Q?B9MLYceu2TOxp6Y1m6ghtfZAErj+kG4M+q2sKKIJOpLUfEGXJw8G5mvOkM+J?=
- =?us-ascii?Q?7fT0iUG6IVQg1cLPjxBO3+mozQLeF6GnscMZzLeFh19ks8asKBLHpdu83Mcq?=
- =?us-ascii?Q?o+55w/U12ZZKWp53m3s=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 313bb7fa-8144-4260-7dfc-08ddceab16db
-X-MS-Exchange-CrossTenant-AuthSource: BL4PR12MB9478.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2025 14:20:37.6349
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: m3Xg0U4L5jpzDOU9XQCP/FnYkytBziabkusMrcbnsqfWosQMM2Sl398dqVlcyCbb
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPF530AE3851
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 9E42A140006
-X-Stat-Signature: nfupdkh5c186pbeyghd1589j7nn461hs
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAVpQUBYsRGkYsvf2JMTD+0t8OH41oZxmw46WTfPhEprTaS+Pw@mail.gmail.com>
+X-Rspamd-Queue-Id: 4588C4000C
 X-Rspam-User: 
-X-HE-Tag: 1753798850-645949
-X-HE-Meta: U2FsdGVkX19zSa92UgIjK10kzvwQr90De810TdZ4ld/+BHDkVgzSpOkqWTwyxkFgncFfIcSXA/Q8UmQI11hi7RIEUjNf6qOqGJl4fvu1ZRSOfK9KFSTydHZNCU0TYTYuqMckI/gEbwXsqx//R924h4ifkpNvoIY0D+eelCQ8q6Bw/zFeVpOHMFpPdoyscMmFBMjOi1miKL7nSY2xQksmXYCKNEfx0ImD7TLIP64uK/LQHj1EEqBp2qTenzB/nx268MpQ9gKl1gLwHbKbne8hRPGZNAe8uCkPxkKLtPBi15B2eXAH7ULVjooxaTrcV0WRX4rhgwpctzT1U6LTqCzbVZJUZ/nwL8TmrQt/a6nfxEaNB0cZjtEaK4MG6gi4limlQUPPybQUTDqn3n7MdrjCRzErDHwzRFFGnylFp8ND8UFdMu8wyXvPMmzGjwPNueUu1Ta7EA/aA2czXHbazhrvHD/IEnAyeKg3SRmTpKuKqmPQuHbj7OgVh9l2Z6ys4qdehTn9zUoT9Zu89nIsJg9PlfeIRTlJyTqLk+KksgmnPIZv8J9HFX8y+N6WeYefmM6cw23kZBKlTYERwDtkMmwAtfJcNIlApNmM0swKRC2HLWSGIacRie13DhQaY1bPqtH8F0LV3OdBdDdw9co208GsL8ddWgFvYNgOvMhhGbp4q2wEH5igMSbx8fKXwCoRdu7dLGzFr3bak4Rxt7+U3a443XkEFPPcDVPw5f54eoIpuvBn66h0K+xidBJY7tJ+mM/0TB+J9Jt9App2fCe4QCrNcPpKEh2j/aCM7sYKmL4+UVyceOTg2gKvKJjgv31aTghD3bErd90F4wdAt8/wE4UV2+LGjUmcEc/g7+nTVcTVI5YOFRDwXTkIHRZtUnsehOJBNVe692Vc8YUFPawcbJiyP/8REWnCecj+ADJpK0lyXB2TKPNlN/PJ6TI92nK1zWazSfL8Kjf9vl8ebXuFPCH
- dBGonxS4
- WBdbDR1/0JmmtMJ9IwtawucP/WxrYTGF1NdcZazOIlfJm29RMgujkycPmhyPl0LjLF5NQhk+cexww2vXYaipz8JzA1oo3yx/x4AytAQSY1b2/k9Drh3d98u+MIG0Zl0O+OsyOzWOwF0xW1elKwqFbakplnlppxTmdeiH3o8K+7XafkvtF76zDmMM87H2H5qXMZFTJILaCFpmD+ouQGam2BVVB66z1wZj8p2P9ctoeXhkZOkZs1E8S9DxtWzaLPCsyI4AWfY3LisTXji4eo9ZcI5hXPBwwiQlE60z9R66Ypy+HvbWODXUE4/ummfdTENRG/wZ/pwSyLtkGDuW1woPLilCFiT1vIX1PRJ9b7hkk3jTpySTVfD+2tYkG019IrLqYZ2tmxdSko7DV0wojZH1BnorGYLyr/Q7gloWFL2J76Xeq0I8kv2PZh/1HHyAa105BX6jK4+7cZ0X8Megs6ZUDptB0a95razfgBNVSdg8wY55GtAEp16FOn5Ps2BlBm7Glkd8jq9pq63yGE+/4UeTN1j5MaeleN0KFXKudW63uvoMqMlc8veax98TckqbQskIE88IdtmYSDt+v09geUvztVXZ1gg6QV3ZhDXPIXml+1N82pUop5zADjQkDmqw9LoICsk37s5oblST0j91SpUcnR8Rt4rrDfGP+BniyOepnEv6LTRbN7AqCtmytZt/vuO9WaBkcKyS6o+fIgkPg1SKbws0AcasqK8KRyBy0kudY5NiNajHdv1D8ivngHuYUi1Cyi5BF4uPbTug2QW68WCWajo8dz+Alg6e0piQsIIXclPutHCdCiIgoD4RXRDE650LSPV02
+X-Rspamd-Server: rspam09
+X-Stat-Signature: gmh7mpnkmukusomff51ee8xanothz8t3
+X-HE-Tag: 1753798970-638907
+X-HE-Meta: U2FsdGVkX19we6AoLrqheSi+huVqtmzNL+QCB2OU4Hm3jIKCuI7pFgkDPQXvouYxRcZs4nhbhlEGrwX167O9Kn38tEcJCTfQzCqx3RyMqwpagqx/tXUSPmNzOiiEA1fcdze/wTyGPXrriqqlnX5T7p0yI+c1NUhXLlMyjlmE0L6CKu19222g6leCY7WZDrbL4mD21pQe4amvDDBlhnaP+i5ynC+lyP+J8NhGOOQc/1v0hptzb+WHhSK1+qCJJCjsDBGFp3kHHQ5yh86kSBGYnPQU8G8q/IyPYlEzaJG6rXs9/ZJjMvvbG+VJi6Ds7picWWhDe6bgeH+0dtrFVmlFUj3nu2kTb7l2JuGKG6Xm6nmx1BYOwerhhrmkNUdwITQXmH+gw5/T9q7HZxvOJQsrPrX1ab1CuK7SPZqBr3BfbNV7+HwjCx8tdlpJUxLtvhz5QhlRSkTfdI0IWdr2vJEq/sJ/Mx7E8UtAfm/2YLNRheGMF20kCgIWNPDRp56F/SJipzp/fbkSBfa2ZWb88B68kH4z5RJcLexfZjeuYhA/RR8HuPOKBh0FvGVGnAJ4pQMYtBhuwM/CqigXc1V5s3Y/EhAVE0+K6U+l+weHXAQmunWiDgLwgB4Xl2+ieWWF3tlQ9k0QEzFRFXm2ZNByQGsNQ3fqFuJkUaUat/AgoYz/Wky+qffuTyhWh5uGhhSR5ZgSYmwG9UtvoZOQ654aBl0m0PBti/VXlrmDcynjx9ZmkaC5zJggI/yFErntBviSjUUioB/wiwu/5ckQt/Xy1sZXhO/oS/xqOkKITkEaEs9GOzbVSwq3QJLPXMFcqfmLYCw38TAE2yrKzP9ybj5Rpgh4OVisT4JYlY0/NGD8pcb0hce/5gbBnB+5kEkzf+7IM1n8mirc8SWkeNvAzd4+TTUkESgEEoEZEgXIRYkP+SjuOzxFATFzY882cy10NWOSuZHIyUOma7Q4mLr/Zd/Xu7R
+ pxHi3Emr
+ zI7b2IWyMpD0slOvAFFMB57gfby+mD6IJOj6EAEYBHtwnzsP6LDw+he5+n05HULTzOXHmmZJ6r3ttvhhVhQElPqFOXAFHX1HmiTWTibz4YLYu9BDsf/9psU52/lQtE4gZpsrPYHls3MoNmtxSVcaNjSlwLiRg6W07fNJHYlw9fs1NPZ2A24lVL538MyvUl1f9ofJ+e7yXNRNJKavNi6ABOpekOSIe6+djztsl5HE3q5O6wrDDuXfvEBYklrj4oUBtuer7xoyg2WzjTik345txKq0zfhwKRqyxtS/MoF2iDHX37SEFNAvMNjE5Mhdv776QOBFpgPR0B4IAhmGq++Lubj/0oTpFa6JL7WP0vdOTFk8PE2qkAId2ogI/Bis+gMx5DTRjE+jbUzpOose+CFw2CxV+ufNHB60xpqMaeK3IBJbhDuES6oQi4LJJRd9ZY8A3lyZgQa3zUnm9fgTBFDGY97nhVRhHd8YRnd2o71OkdIQAyrHLLM8Vsuln62ERyQ4XPrq3McTbfy5yDIj/sVqKao8SvVqUuYz8Jw+NunXHV7wyrA0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -193,201 +136,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 29 Jul 2025, at 7:02, Byungchul Park wrote:
+On Mon, Jul 28, 2025 at 02:41:38PM -0700, Kuniyuki Iwashima wrote:
+> On Mon, Jul 28, 2025 at 9:07 AM Johannes Weiner <hannes@cmpxchg.org> wrote:
+> >
+> > On Mon, Jul 21, 2025 at 08:35:32PM +0000, Kuniyuki Iwashima wrote:
+> > > Some protocols (e.g., TCP, UDP) implement memory accounting for socket
+> > > buffers and charge memory to per-protocol global counters pointed to by
+> > > sk->sk_proto->memory_allocated.
+> > >
+> > > When running under a non-root cgroup, this memory is also charged to the
+> > > memcg as sock in memory.stat.
+> > >
+> > > Even when memory usage is controlled by memcg, sockets using such protocols
+> > > are still subject to global limits (e.g., /proc/sys/net/ipv4/tcp_mem).
+> > >
+> > > This makes it difficult to accurately estimate and configure appropriate
+> > > global limits, especially in multi-tenant environments.
+> > >
+> > > If all workloads were guaranteed to be controlled under memcg, the issue
+> > > could be worked around by setting tcp_mem[0~2] to UINT_MAX.
+> > >
+> > > In reality, this assumption does not always hold, and a single workload
+> > > that opts out of memcg can consume memory up to the global limit,
+> > > becoming a noisy neighbour.
+> >
+> > Yes, an uncontrolled cgroup can consume all of a shared resource and
+> > thereby become a noisy neighbor. Why is network memory special?
+> >
+> > I assume you have some other mechanisms for curbing things like
+> > filesystem caches, anon memory, swap etc. of such otherwise
+> > uncontrolled groups, and this just happens to be your missing piece.
+> 
+> I think that's the tcp_mem[] knob, limiting tcp mem globally for
+> the "uncontrolled" cgroup.  But we can't use it because the
+> "controlled" cgroup is also limited by this knob.
 
-> Changes from v2:
-> 	1. Rebase on linux-next as of Jul 29.
-> 	2. Skip 'niov->pp =3D NULL' when it's allocated using __GFP_ZERO.
-> 	3. Change trivial coding style. (feedbacked by Mina)
-> 	4. Add Co-developed-by, Acked-by, and Reviewed-by properly.
-> 	   Thanks to all.
->
-> Changes from v1:
-> 	1. Rebase on linux-next.
-> 	2. Initialize net_iov->pp =3D NULL when allocating net_iov in
-> 	   net_devmem_bind_dmabuf() and io_zcrx_create_area().
-> 	3. Use ->pp for net_iov to identify if it's pp rather than
-> 	   always consider net_iov as pp.
-> 	4. Add Suggested-by: David Hildenbrand <david@redhat.com>.
->
-> ---8<---
-> From 88bcb9907a0cef65a9c0adf35e144f9eb67e0542 Mon Sep 17 00:00:00 2001
-> From: Byungchul Park <byungchul@sk.com>
-> Date: Tue, 29 Jul 2025 19:49:44 +0900
-> Subject: [PATCH linux-next v3] mm, page_pool: introduce a new page type=
- for page pool in page type
->
-> ->pp_magic field in struct page is current used to identify if a page
-> belongs to a page pool.  However, ->pp_magic will be removed and page
-> type bit in struct page e.i. PGTY_netpp can be used for that purpose.
->
-> Introduce and use the page type APIs e.g. PageNetpp(), __SetPageNetpp()=
-,
-> and __ClearPageNetpp() instead, and remove the existing APIs accessing
-> ->pp_magic e.g. page_pool_page_is_pp(), netmem_or_pp_magic(), and
-> netmem_clear_pp_magic().
->
-> For net_iov, use ->pp to identify if it's pp, with making sure that ->p=
-p
-> is NULL for non-pp net_iov.
->
-> This work was inspired by the following link:
->
-> [1] https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@gm=
-ail.com/
->
-> While at it, move the sanity check for page pool to on free.
->
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Co-developed-by: Pavel Begunkov <asml.silence@gmail.com>
-> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-> Signed-off-by: Byungchul Park <byungchul@sk.com>
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Reviewed-by: Mina Almasry <almasrymina@google.com>
-> ---
->  .../net/ethernet/mellanox/mlx5/core/en/xdp.c  |  2 +-
->  include/linux/mm.h                            | 27 +++----------------=
+No, I was really asking what you do about other types of memory
+consumed by such uncontrolled cgroups.
 
->  include/linux/page-flags.h                    |  6 +++++
->  include/net/netmem.h                          |  2 +-
->  io_uring/zcrx.c                               |  4 +++
->  mm/page_alloc.c                               |  7 +++--
->  net/core/devmem.c                             |  1 +
->  net/core/netmem_priv.h                        | 23 +++++++---------
->  net/core/page_pool.c                          | 10 +++++--
->  9 files changed, 37 insertions(+), 45 deletions(-)
->
-
-<snip>
-
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 0d4ee569aa6b..d01b296e7184 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -4171,10 +4171,9 @@ int arch_lock_shadow_stack_status(struct task_st=
-ruct *t, unsigned long status);
->   * DMA mapping IDs for page_pool
->   *
->   * When DMA-mapping a page, page_pool allocates an ID (from an xarray)=
- and
-> - * stashes it in the upper bits of page->pp_magic. We always want to b=
-e able to
-> - * unambiguously identify page pool pages (using page_pool_page_is_pp(=
-)). Non-PP
-> - * pages can have arbitrary kernel pointers stored in the same field a=
-s pp_magic
-> - * (since it overlaps with page->lru.next), so we must ensure that we =
-cannot
-> + * stashes it in the upper bits of page->pp_magic. Non-PP pages can ha=
-ve
-> + * arbitrary kernel pointers stored in the same field as pp_magic (sin=
-ce
-> + * it overlaps with page->lru.next), so we must ensure that we cannot
->   * mistake a valid kernel pointer with any of the values we write into=
- this
->   * field.
->   *
-> @@ -4205,26 +4204,6 @@ int arch_lock_shadow_stack_status(struct task_st=
-ruct *t, unsigned long status);
->  #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SHI=
-FT - 1, \
->  				  PP_DMA_INDEX_SHIFT)
->
-> -/* Mask used for checking in page_pool_page_is_pp() below. page->pp_ma=
-gic is
-> - * OR'ed with PP_SIGNATURE after the allocation in order to preserve b=
-it 0 for
-> - * the head page of compound page and bit 1 for pfmemalloc page, as we=
-ll as the
-> - * bits used for the DMA index. page_is_pfmemalloc() is checked in
-> - * __page_pool_put_page() to avoid recycling the pfmemalloc page.
-> - */
-> -#define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
-> -
-> -#ifdef CONFIG_PAGE_POOL
-> -static inline bool page_pool_page_is_pp(const struct page *page)
-> -{
-> -	return (page->pp_magic & PP_MAGIC_MASK) =3D=3D PP_SIGNATURE;
-> -}
-> -#else
-> -static inline bool page_pool_page_is_pp(const struct page *page)
-> -{
-> -	return false;
-> -}
-> -#endif
-> -
->  #define PAGE_SNAPSHOT_FAITHFUL (1 << 0)
->  #define PAGE_SNAPSHOT_PG_BUDDY (1 << 1)
->  #define PAGE_SNAPSHOT_PG_IDLE  (1 << 2)
-> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-> index 8d3fa3a91ce4..84247e39e9e7 100644
-> --- a/include/linux/page-flags.h
-> +++ b/include/linux/page-flags.h
-> @@ -933,6 +933,7 @@ enum pagetype {
->  	PGTY_zsmalloc		=3D 0xf6,
->  	PGTY_unaccepted		=3D 0xf7,
->  	PGTY_large_kmalloc	=3D 0xf8,
-> +	PGTY_netpp		=3D 0xf9,
->
->  	PGTY_mapcount_underflow =3D 0xff
->  };
-> @@ -1077,6 +1078,11 @@ PAGE_TYPE_OPS(Zsmalloc, zsmalloc, zsmalloc)
->  PAGE_TYPE_OPS(Unaccepted, unaccepted, unaccepted)
->  FOLIO_TYPE_OPS(large_kmalloc, large_kmalloc)
->
-> +/*
-> + * Marks page_pool allocated pages.
-> + */
-> +PAGE_TYPE_OPS(Netpp, netpp, netpp)
-> +
->  /**
->   * PageHuge - Determine if the page belongs to hugetlbfs
->   * @page: The page to test.
-
-<snip>
-
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index d1d037f97c5f..2f6a55fab942 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -1042,7 +1042,6 @@ static inline bool page_expected_state(struct pag=
-e *page,
->  #ifdef CONFIG_MEMCG
->  			page->memcg_data |
->  #endif
-> -			page_pool_page_is_pp(page) |
->  			(page->flags & check_flags)))
->  		return false;
->
-> @@ -1069,8 +1068,6 @@ static const char *page_bad_reason(struct page *p=
-age, unsigned long flags)
->  	if (unlikely(page->memcg_data))
->  		bad_reason =3D "page still charged to cgroup";
->  #endif
-> -	if (unlikely(page_pool_page_is_pp(page)))
-> -		bad_reason =3D "page_pool leak";
->  	return bad_reason;
->  }
->
-> @@ -1379,9 +1376,11 @@ __always_inline bool free_pages_prepare(struct p=
-age *page,
->  		mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
->  		folio->mapping =3D NULL;
->  	}
-> -	if (unlikely(page_has_type(page)))
-> +	if (unlikely(page_has_type(page))) {
-> +		WARN_ON_ONCE(PageNetpp(page));
->  		/* Reset the page_type (which overlays _mapcount) */
->  		page->page_type =3D UINT_MAX;
-> +	}
->
->  	if (is_check_pages_enabled()) {
->  		if (free_page_is_bad(page))
-
-The mm part looks good to me.
-
-Acked-by: Zi Yan <ziy@nvidia.com>
-
-Best Regards,
-Yan, Zi
+You can't have uncontrolled groups and complain about their resource
+consumption.
 
