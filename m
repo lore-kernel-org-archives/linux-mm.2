@@ -2,139 +2,117 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2EC1EC83F26
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 00:36:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 78645C83F26
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 00:51:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 538D56B0088; Mon, 28 Jul 2025 20:36:17 -0400 (EDT)
+	id E55766B0088; Mon, 28 Jul 2025 20:51:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E98F6B0089; Mon, 28 Jul 2025 20:36:17 -0400 (EDT)
+	id E06176B0089; Mon, 28 Jul 2025 20:51:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D8926B008A; Mon, 28 Jul 2025 20:36:17 -0400 (EDT)
+	id D1BE16B008A; Mon, 28 Jul 2025 20:51:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E5F16B0088
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 20:36:17 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A5C941A040D
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 00:36:16 +0000 (UTC)
-X-FDA: 83715435552.30.925272D
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	by imf21.hostedemail.com (Postfix) with ESMTP id AEEC51C0003
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 00:36:14 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=rivosinc-com.20230601.gappssmtp.com header.s=20230601 header.b=frJQN9WE;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of debug@rivosinc.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=debug@rivosinc.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753749374; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C23B66B0088
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 20:51:16 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 36AF1140316
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 00:51:16 +0000 (UTC)
+X-FDA: 83715473352.05.3C82913
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8FFD54000C
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 00:51:13 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	spf=pass (imf04.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753750274; a=rsa-sha256;
 	cv=none;
-	b=2Zkz8icfmqs+MwgPTo5BKNmWH50J0FvgqVJA0e/twzqcClhFx7c7ULscygaHHwwY1jOFoF
-	+e8wiXslaKOgSPZVoKxs330OcO6Flk2tlAF7/3cE9gwA7uipocPCtbqH2TNHGZ4n9Mj85h
-	qs+/5fOy02miZeQEs1ybs0Df7/UGscM=
+	b=GU6uUTcX9AQRI6S1Dlc2mEHTmgWpCq+uG5K5C32QPoD+y2/qYI8x7KPPNbQbkyeEpn3I7h
+	ysWznx9wbuhNwiJWP3uM4LYrafv+U8J2if8uwTEilB4C3w3tSXI5Sz/OyaUxCQZTkx2WGq
+	8e8jRXDr5Kdp1M+34aUGZiJ3cuO7JG0=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=rivosinc-com.20230601.gappssmtp.com header.s=20230601 header.b=frJQN9WE;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of debug@rivosinc.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=debug@rivosinc.com
+	imf04.hostedemail.com;
+	dkim=none;
+	spf=pass (imf04.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753749374;
+	s=arc-20220608; t=1753750274;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/ETbDJbyMnJcJth9NSQ1EqJE54cIcDMP4wIxlGlnYcw=;
-	b=L3MSiSkv7lkw52jyyGdIoTnfVIz8yDqQDHnwREHIfsa5V+cxoYmgnUYfYZwRFT+8bz5ABh
-	UiC9OYaJMSouhw6fuT1z9eSVRb+90meZI6P6xiNdBhYzJPuuZHC/zh/Az7Usp29q3Q7kJ6
-	rcaxzwxEmHvOwPd/oOwIrbhRJxE/eGw=
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-879d2e419b9so3505465a12.2
-        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 17:36:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1753749373; x=1754354173; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/ETbDJbyMnJcJth9NSQ1EqJE54cIcDMP4wIxlGlnYcw=;
-        b=frJQN9WEYYvcgV9t2xQAO1m9IgZ6k1BMYXQIYmSHHfZPSjyh4dfCOHtSIfxrj4cL7w
-         xPOu3kbgWceHE2IOsXU46wHilJufaKzxmI4Vc2qdLpqeVuhdt/dyLPqB7A2UQgIxbExW
-         8KquSzCf8Vqpy5C/vPTUMFN5M39DpMxL9mJn4nNraKIw/b3hXdfWouvIG38NE5wsoGI+
-         2xlduSWz0lsKKa36N6I/B40/66sGic5DzZVSGGR7qgT5sAVK7ygaFpBmTajaFXUFjtvX
-         qBr4ZVb9AlsbPPEosNHKVGjNSJqUpqaMWxEaAl0AF2gGPn6O1LGNqKcWlks7RRyx5nfn
-         OUDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753749373; x=1754354173;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/ETbDJbyMnJcJth9NSQ1EqJE54cIcDMP4wIxlGlnYcw=;
-        b=LweywQzKnSW2BmG5ix1OqCCwbK8hCFPGbRah4neY/mZ3FHX7TQEnMJjn0fZTynrReE
-         BJrK6dhRuuR9LtNA2/zDY8/qvNxOhcvqduLZggdwaIwG/EJnaQXKZFDnPPhp+ldXoivv
-         ngEDLGFLgJOkYWxKAivM75qROUsP4r+gJ39vr7Xo33PgCdV0PaRl2KzVOSAHRuhq72KF
-         XaxLFeSzZz9iQzhH2ICZKK2Eh7giCIaLfsevROnRnc3CWAfkIGvVnjRSCda32sGTr/+S
-         RvCVcCyeQLJBSEOq3ZzXLXH4HVttETPAN+ZJkU9Q7PmUfsDx8Q/747SdgetOjMlV2pOz
-         ONpA==
-X-Forwarded-Encrypted: i=1; AJvYcCXVl6iWjtF9WiU/0JFqmqldwbpi9ElsLfyzZCgfV4vwaqw7HyZcxk+eqZoVjBBCMR2J5oM20foe3Q==@kvack.org
-X-Gm-Message-State: AOJu0Yw620xSe8R3LBtvDlny6yj21WvvExFwsfyBBWKCop52jCBB4Uf5
-	rco0A/vKmg6Gphw29vgoLvsRA75YB9u5EMHTehX08dnXE8LKQMW4hrfCE9RAzU+Q9dDl2mpRIXP
-	S8MAV
-X-Gm-Gg: ASbGncvCVClPLfvp2bkHgW+tJW97gfxbrmM0p1o28x4iJITddz3MinIjZ5/mc8de03J
-	kePDlQeW3eg0Pf6i8p9QWFIMqXvBmuWu/0vugaAt1GdB2UbuPW3G9u+1MHDvd6fEZSEp6p8IvLR
-	b2SjR3oh6QrAKeeLS0eb9dM4enc7qd0QmfTrORVmr2Ga3vLDbuOvJtFOM1Kh5kg1BTJ0SFTine5
-	L5ZBPTCPeIw5sKtv/iiikm7zE8wBLc/MR0YWCZNIBn12qKjecoPv0KbtVW8xDoIo6iuu1Es8c5U
-	fWMTz0uuqS81LPJHrOD7geAC06lBPKShN5GMGoRN8WasG6eQ79n/cRr1eZ0pi2sNMk/5J5RaWaL
-	DLZIwOHJzCUlhM6vnAlN/7mRS4Z1ZB2/1
-X-Google-Smtp-Source: AGHT+IEDJXqhf7DRrajAJZBJ8vJ6pYcfACWj1AXTIy+3dQeFkQYCW4S8o7ad1lMROev+GL8TvcTWBw==
-X-Received: by 2002:a17:90b:1b45:b0:311:f30b:c18 with SMTP id 98e67ed59e1d1-31e7785ee72mr17793124a91.4.1753749373373;
-        Mon, 28 Jul 2025 17:36:13 -0700 (PDT)
-Received: from debug.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31ecd1f0e80sm4264442a91.18.2025.07.28.17.36.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Jul 2025 17:36:12 -0700 (PDT)
-Date: Mon, 28 Jul 2025 17:36:09 -0700
-From: Deepak Gupta <debug@rivosinc.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Monk Chiang <monk.chiang@sifive.com>,
-	Kito Cheng <kito.cheng@sifive.com>,
-	Justin Stitt <justinstitt@google.com>,
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, linux-mm@kvack.org,
-	llvm@lists.linux.dev, rick.p.edgecombe@intel.com,
-	broonie@kernel.org, cleger@rivosinc.com, samitolvanen@google.com,
-	apatel@ventanamicro.com, ajones@ventanamicro.com,
-	conor.dooley@microchip.com, charlie@rivosinc.com,
-	samuel.holland@sifive.com, bjorn@rivosinc.com, fweimer@redhat.com,
-	jeffreyalaw@gmail.com, heinrich.schuchardt@canonical.com,
-	andrew@sifive.com, ved@rivosinc.com
-Subject: Re: [PATCH 06/11] mm: Introduce ARCH_HAS_KERNEL_SHADOW_STACK
-Message-ID: <aIgXeRDXNmOozRWp@debug.ba.rivosinc.com>
-References: <20250724-riscv_kcfi-v1-0-04b8fa44c98c@rivosinc.com>
- <20250724-riscv_kcfi-v1-6-04b8fa44c98c@rivosinc.com>
- <aISGypOAaDGaUZgd@kernel.org>
+	 in-reply-to:in-reply-to:references:references;
+	bh=UThrB75mgxXXHCGZSSrf3y5a8N801gx/AW406MakHe8=;
+	b=OG76fVnRUgUiCiJvwifVk+tTbYJeNOzeYFn7Ee9XHM9GSS0ZH8AxsUmUpJy9yNjj9eBrbu
+	Sdn840Tn3axqEbCnZ+Wd5j/BFsP73Rcg0QrSqzUcsRv36N/lYg69se+Xzz5eiFnDhwCp8+
+	9UxnaJ4rG+85qLJxo8D+r10hNhi1fxM=
+X-AuditID: a67dfc5b-681ff7000002311f-77-68881afed51a
+Date: Tue, 29 Jul 2025 09:51:05 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: Pavel Begunkov <asml.silence@gmail.com>
+Cc: linux-mm@kvack.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+	harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
+	davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
+	john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
+	leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
+	andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
+	akpm@linux-foundation.org, david@redhat.com,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	horms@kernel.org, jackmanb@google.com, hannes@cmpxchg.org,
+	ziy@nvidia.com, ilias.apalodimas@linaro.org, willy@infradead.org,
+	brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
+	usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
+	almasrymina@google.com, toke@redhat.com, bpf@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: Re: [PATCH v2] mm, page_pool: introduce a new page type for page
+ pool in page type
+Message-ID: <20250729005105.GA56089@system.software.com>
+References: <20250728052742.81294-1-byungchul@sk.com>
+ <fc1ed731-33f8-4754-949f-2c7e3ed76c7b@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aISGypOAaDGaUZgd@kernel.org>
+In-Reply-To: <fc1ed731-33f8-4754-949f-2c7e3ed76c7b@gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SWUwTYRDH/Xa3u0ulyVo8PuHFFAwRFbwzxiO+mOwL8XzwiNEiG9twppxF
+	JChVjnAUBZVSIkigHCaYghQQUMuphkAgYAGFgmKCVpBTLkULMfr2y39mfjMPw5LSCpEzqwwM
+	FVSBcn8ZLabE3xwf71x2TlDs6tWuBX3ZExpK5yLBYK0Sgb6kEsH0fD8Dy3XNCKYaW2j42jCJ
+	ID9vlgR9u4aCmbIFEkaahxkoNXrDYOFnCmrjTSQMp7XSkKJZJKFufoyBW1VFBOjLYxnoqEwV
+	QcZCAQmmWCsDXTV6GgaeLIvgszmFgte6Ygq+ZzaSMJh6DJpzN8LsWxuCxjITAbPJOTR0Z9UQ
+	cK8zl4aPmkEEnQ3DFGQuJdCQfTMVweLcH9uYdloE2U0DzDEPvsE2TvIVxb0Eb6l/Q/DVug8M
+	n2sM48uLPPgkSyfJG0sSad44eZfh3/fU0nzrw0WKrx46yFdXTRF8StwYzU+M9FH8eH03fdLp
+	gviwr+CvDBdUXkeviBVv6q1UcJZj5PKXIRSLMh2SEMtibh9uWwhNQg4rWKDJIO1McVtx04iG
+	sjPNuWOLZX4lX89tx1/fmZkkJGZJ7j6D48tqabvHibuEn744ZO+RcIC7DDkiO0s5BS5q16LV
+	fB1+nfVpxUlyHtjya5Swj5KcCzb8Yu2xA3cEtz3PW1m1gXPFLytbiNXTrCzu6d+6ypvxqyIL
+	pUWc7j+r7j+r7p81F5ElSKoMDA+QK/33eSrUgcpIz6tBAUb055cKbyxdrEKTHWfMiGORzFGi
+	SIxXSEXy8BB1gBlhlpStlwQX3FFIJb5ydZSgCrqsCvMXQszIhaVkmyR7ZiN8pdw1eajgJwjB
+	gupvlWAdnGORwXb+PBOdPuR+xHDdR277xiYfX0yPOps+E6euCbNVux2nYiYePe4a/HS7zmQ2
+	O/5Mizn1KPFOzOFGv5nuBzbvUXXEWJe7Ibsvf82w64G5oCZl51LbgLLDkLAl8cQz63jE6YfR
+	ph/pUfvhwKvygaVt1lP1XtsrNMEF59xiOrQ79vrIqBCFfLcHqQqR/wbFFJJgRwMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0hTcRTH+d3ffbk2uM2VFw2i9UIlSyo6YkVI0CUogogoqLzVrQ0fyZai
+	UWA52rQ0S41cM+zhe2Vs5aNMazPLQgztsR7OR6k9RMvMZprmjMj/PnzP+XzPP4fFyguUP6uN
+	PSzpYsVoNS0jZZvDU5aM+5s0yz4aV4Gl3EpDmScRijqqKLCUViAYGnnLwMS9BgTf6x/R8MU5
+	iODq5WEMlmYDCT/Kf2HobuhioMy2CdoLe0ioMVZi6DrzmIZ0wyiGeyP9DJyoKibAYk9mwJnX
+	SMGzigwKsn8VYKhM7mCg9Y6FBrd1goIeRzoJjeYSEr7m1GNoz1gHDfmzYfhpH4L68koChk/n
+	0fAi9w4BWS35NLw3tCNocXaRkDNmouHi8QwEo57Jtv7MIQouPnQz64IFZ98AFm6VvCYEV+0T
+	Qqg2tzFCvi1esBcHCWmuFizYSlNpwTZ4jhHevayhhccXRkmhujNMqK76TgjpKf208K37DSkM
+	1L6gt6h2ylbvl6K1CZJu6dpImeZJbQcZlytPnPjciZJRjk8a8mF5bgVfYMjGXia5hfzDbgPp
+	ZZpbzLtcI1O5igvmv7xyMGlIxmLuPMMby2voNMSyvtwu/mZduHdHwQHfWpRHeVnJafji5kz0
+	N5/JN+Z+mOrEXBDvGv9EeFXMBfBF46w39uHW8E13L0+dmsXN5+9XPCIykcI8zTZPs83/7XyE
+	S5FKG5sQI2qjV4boozRJsdrEkH2HYmxo8l8Kj42drUJDrRsciGORWq7QpBo1SkpM0CfFOBDP
+	YrVKEVdwUqNU7BeTjki6Q3t08dGS3oECWFLtp9i4XYpUcgfFw1KUJMVJun9TgvXxT0Ylvnut
+	t0X/+02B38qiPNkmye/pcP/gghM9iwIfrDbtyQpydi/HfqGiSTarrbbOE3n0dpTBbf+91fDR
+	fqPvEhUxZ82O8KYZoePb3EsLeuW01t77MzXu5d2w3dmjVve1611LfL8GH5hnnDP0XN7hlEc0
+	h1kDT3nUc7PK1qtagxdciVeTeo0YGoR1evEPOG9m1isDAAA=
+X-CFilter-Loop: Reflected
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: AEEC51C0003
-X-Stat-Signature: yzq4jeyur1h5dw1sz6qfxoeiib4jiyf6
+X-Rspamd-Queue-Id: 8FFD54000C
+X-Stat-Signature: fkyeqyd7ofiipgaa8e3mfo6rrwe9oct9
 X-Rspam-User: 
-X-HE-Tag: 1753749374-315727
-X-HE-Meta: U2FsdGVkX1/OxJ8SyztodM6bIANVdSotsvf5u/YM4ZVHT+fAa/2CiMg5712KK/A2FJrc2NXcxMcXFYGIfE0fCRH5gy97NvCtYKTXtpV1FrFMvuCJs5/s9365P/jpN9ZKlvr7dJB0yWAsVOJy2IQUGooXDW4rMvflqQkzCETG0y2hz68RZyQUBJf2a04sh0aFHX9ViU/P10U15Va0vvN0v3a7EyTg7aE28gPsa84SV2FbWUGJzTlkLZC5SFu5NtCOOVpebzBrdxnIJ1h6ZgBO3tKGTbFQC/Gv0fQXyCBXoB2m6deZtWDaIF1FnEBnmXmF2l5NmtmCPxDSBqN98qvrOxdm/Nxn1kvaBOfpP61u5YEQo8anuWpdeBuGeM0pom7UcWPZOO/6fJVzNRHWecl/WsIaLxDjLbFLDht/UfwAHJPlZTyYz8XJsFgmywJotfyOLBSGYFh8eOi19J41nm8m1xU9dZnzxeiMjtg+TFNEFUv2k4ezpUrOz/sZN4s0zNLEsk29yF7zNB0eIGPT3mCOBPyrV8crQRAP2fgKUUjsL9UnmvYj0rrxX2wwjJFnYOHErqgDt9edXQRDIUlL5ylGrVB9d8tUQx64zselWrYQhcKAJrjj8TNbTzFFuogS4NVZOcIa3RWLAV4hJrfjxZtDdPf9HUpFaRaqbv+8pmcQomNYXRr5gbdT5ArMyNTg9Sw8Ifg9wNFjway4DQlPCBJmSuvRDMjP/GzeGTBct0xj1q8rPvA52i2aACO1hNyRhH87LVb4kkOOeHAwtiIiPbba1sHY5l3aAe6YzKOih3WhUdqUxUFuugUVwpXw1X842OiMCbS+T25CYL/FGea3/w0pOINy3cMEs9urVqUE5iT0TddYxT/TFltl7oY7NlTEt06XEiav118vI1E25VvOk0sL3VUyRbkvJHJHafmWM817o+0bGtdlrOEbL7j7S+3dycFBqw+rxDPwJlpVDLrmiVt
- oMTHOpdT
- TqFAJ5m2cS4hw4aUnvrfAoEWeQPd3nRwPDW8jJ9lvmQ5osNqOhMxuNIhwWToeFqyASpA212rCuFeZufPFVHYJWqBNTTmn0tgYGPzDOTzPlUzMVnweGl05kdVAbJo1X9wmWNwxXRO06ndmJsLsqgnbbL3xBgQ+pfjHJx7aHS8UyG6gSv+L6lM3dJ1HFs/uks0pS/IcvY9h4zR/VLv4ifpDx6KjkkehBzi50mLcbwy0bc6EdZWm5o2iWDwp+8VMUeVx5Ew/3FKC25Wn/Z7HC470ifm2iScNFwOjq81G2BIeSzth3yQVIXZdhos0EczFebNViGo2AbsK3xLc4SjLEro/4CR/XesLJ8dVOKpKP6XRmDvRZdUSDy2yBUuMkqd7YRJp2moSUoZvLEA/lK/MR2hTGDW6xbkfzcCqxTcFeKLvHBHzQ+fgHqPZkjyazX1ixvRoLwtB79e8ZBW5T1Ue1W/EX+Oez4KXpcUeVJZpjfdVNxbi9Zp0sfpSFMLnNL1jqQE60lp++i2JXeu/sAYg5os3vWVSMy+j4mzQQrmyvWHp4oaGKHksU5/uYx46ftvGZ0XzIDyq5PqGHqxB7cg=
+X-HE-Tag: 1753750273-569101
+X-HE-Meta: U2FsdGVkX18+jy2YKt2D4c1XYGQOvzMT3rXKMhlZZ282lTVTkMCFIsGSvhnpcqRM0mFHzLRvz3PNGJXTLSVoopSEQ3PWVn6yGGwX2E8B/h5p9TJdEo9N2FsscrW4Q+R2I8OSfXPizb3GKb7rPTHG5Gu2HNtRndhFGIFf06Wi2O2nN25nNCOtl4u29eq0iHaJkm2bA4Sad7nWrkSGqyA52Zl/aVoQd4qGrOYjeqJbxCNv5RQiAKnuGhy02ckbSW/YRnIojpifDbYGsVJoFACgDIzDgALiXvUq1xRSRVRkaJ0Zv/2ksithvSfL7swUey6TVFlRBGKEwKhTqhAVHNGW4rdDQwV4EwV696GQC3h8Suid8m+gQXGXyyv8PTxK41NZDEpJPKlZ70suVxQgkvce83wRlroKwrQYA0cmOM7S2vr1DnLiv6Y6rUe1GBhnuV+r3mWsRPXjgj96XZeGiSg+Y5dndH/S+p0fsJacw9l3WtHb+ddrtK2eby6QXKQbFEPFFATCuNpISbB+Tm9Ei0p/BR0vSRIP4rnAgrzpAZ+5SnKkZObflxkwTLTd5Nr+dZ/skagf8Lvvz8AQI+BWZSMPkpj0dfZ7FXB9cWrQv0RF5m8SoVQtKeS39deJQuVmaY7SWfNZHYo3VIIUCH8Q2NuN4uOKQXyod6hhIX7nPaXzH0J+IgUWZ6ZGVWse+sRFE1M8NkgY+0ZzpNGxw9l2tk4ROvexnwt/RAvZSvtdwSBHFJE4Bw20hyn3XTM341g3spI6PtubsP76FlqL0JfW6mFcNRV/3l8wPja7q7BLvD0UdErIFIpNKTBfUJVnquu6NS84kIqFj/K+i8kEBuqoNRoEQ1exAB9sFAkuJlq2wLYHWyk1Lb3ZajmE0DZlpKaO/zxr5uLHnNAnjStrFAx872H9EFqK9JbrTCXwAFaIqz5cYOMeSTNOc3fpftBRTJFijkDSdOuMoOy1LiTNrEw4HX4
+ LRvOLeFY
+ ltSzu28OdV3nCnl8lyohZ9O+tEsoEu/FVWGH89v0bHtu6etaUyUSGyKcwi43I2VTBinXvCdmtJgoiUD3nzMx/o6DXm/fAYbKV9CkW
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,74 +121,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jul 26, 2025 at 10:42:02AM +0300, Mike Rapoport wrote:
->On Thu, Jul 24, 2025 at 04:36:59PM -0700, Deepak Gupta wrote:
->> commit bcc9d04e74 ("mm: Introduce ARCH_HAS_USER_SHADOW_STACK") introduced
->> `ARCH_HAS_USER_SHADOW_STACK`. Introducing `ARCH_HAS_KERNEL_SHADOW_STACK`
->> so that arches can enable hardware assistance for kernel shadow stack.
->>
->> If `CONFIG_DYNAMIC_SCS` or `CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK` are
->> selected, skip compiler flag `-fsanitizer=shadow-call-stack`.
->>
->> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
->> ---
->>  Makefile   | 2 +-
->>  mm/Kconfig | 6 ++++++
->>  2 files changed, 7 insertions(+), 1 deletion(-)
->>
->> diff --git a/Makefile b/Makefile
->> index 35e6e5240c61..7e3ecca9353d 100644
->> --- a/Makefile
->> +++ b/Makefile
->> @@ -987,7 +987,7 @@ LDFLAGS_vmlinux += --gc-sections
->>  endif
->>
->>  ifdef CONFIG_SHADOW_CALL_STACK
->> -ifndef CONFIG_DYNAMIC_SCS
->> +ifeq ($(or $(CONFIG_DYNAMIC_SCS),$(CONFIG_ARCH_HAS_KERNEL_SHADOW_STACK)),false)
->>  CC_FLAGS_SCS	:= -fsanitize=shadow-call-stack
->>  KBUILD_CFLAGS	+= $(CC_FLAGS_SCS)
->>  KBUILD_RUSTFLAGS += -Zsanitizer=shadow-call-stack
->> diff --git a/mm/Kconfig b/mm/Kconfig
->> index 781be3240e21..f295ea611cdb 100644
->> --- a/mm/Kconfig
->> +++ b/mm/Kconfig
->> @@ -1367,6 +1367,12 @@ config ARCH_HAS_USER_SHADOW_STACK
->>  	  The architecture has hardware support for userspace shadow call
->>            stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
->>
->> +config ARCH_HAS_KERNEL_SHADOW_STACK
->> +	bool
->> +	help
->> +	  The architecture has hardware support for kernel shadow call
->> +          stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
->
->nit: tab and two space for indentation of the help text
+On Mon, Jul 28, 2025 at 07:36:54PM +0100, Pavel Begunkov wrote:
+> On 7/28/25 06:27, Byungchul Park wrote:
+> > Changes from v1:
+> >       1. Rebase on linux-next.
+> 
+> net-next is closed, looks like until August 11.
+> 
+> >       2. Initialize net_iov->pp = NULL when allocating net_iov in
+> >          net_devmem_bind_dmabuf() and io_zcrx_create_area().
+> >       3. Use ->pp for net_iov to identify if it's pp rather than
+> >          always consider net_iov as pp.
+> >       4. Add Suggested-by: David Hildenbrand <david@redhat.com>.
+> 
+> Oops, looks you killed my suggested-by tag now. Since it's still
+> pretty much my diff spliced with David's suggestions, maybe
+> Co-developed-by sounds more appropriate. Even more so goes for
+> the second patch getting rid of __netmem_clear_lsb().
 
-Will fix it.
+Sure.  I will.
 
->
->> +
->
->I think both ARCH_HAS_USER_SHADOW_STACK and ARCH_HAS_KERNEL_SHADOW_STACK
->belong to arch/Kconfig rather than mm/Kconfig
+	Byungchul
 
-Do you want me to move it?
-This basically means that hardware shadow stack is supported or not.
-It needs mm support. I think thats why user one landed here. I followed.
-
-If it impacts mm, it should be here, right?
-
->
->>  config ARCH_SUPPORTS_PT_RECLAIM
->>  	def_bool n
->>
->>
->> --
->> 2.43.0
->>
->
->-- 
->Sincerely yours,
->Mike.
+> Looks fine, just one comment below.
+> 
+> ...> diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
+> > index 100b75ab1e64..34634552cf74 100644
+> > --- a/io_uring/zcrx.c
+> > +++ b/io_uring/zcrx.c
+> > @@ -444,6 +444,7 @@ static int io_zcrx_create_area(struct io_zcrx_ifq *ifq,
+> >               area->freelist[i] = i;
+> >               atomic_set(&area->user_refs[i], 0);
+> >               niov->type = NET_IOV_IOURING;
+> > +             niov->pp = NULL;
+> 
+> It's zero initialised, you don't need it.
+> 
+> And a friendly reminder, please never send patches modifying a
+> subsystem without CC'ing it, especially kept in another tree.
+> Sure, you CC'ed me, but it's easy to lose.
+> 
+> --
+> Pavel Begunkov
+> 
 
