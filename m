@@ -2,94 +2,115 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 56987C87FCC
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 19:44:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DCAB7C87FCA
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 19:53:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA3D46B007B; Tue, 29 Jul 2025 15:44:51 -0400 (EDT)
+	id 63A6E6B007B; Tue, 29 Jul 2025 15:53:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7C366B0089; Tue, 29 Jul 2025 15:44:51 -0400 (EDT)
+	id 5EB526B0089; Tue, 29 Jul 2025 15:53:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB8A26B008A; Tue, 29 Jul 2025 15:44:51 -0400 (EDT)
+	id 500F66B008A; Tue, 29 Jul 2025 15:53:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BA16D6B007B
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 15:44:51 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 147C11336E4
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 19:44:51 +0000 (UTC)
-X-FDA: 83718329982.03.9E62945
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id DFA3EC0004
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 19:44:48 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf10.hostedemail.com: domain of robin.murphy@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=robin.murphy@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753818289; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4446C6B007B
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 15:53:53 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BFFC91D9371
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 19:53:52 +0000 (UTC)
+X-FDA: 83718352704.06.B1E597A
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf28.hostedemail.com (Postfix) with ESMTP id EA647C0007
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 19:53:50 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=D8IHiYMq;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=84VB96h0;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf28.hostedemail.com: domain of tglx@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=tglx@linutronix.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753818831; a=rsa-sha256;
 	cv=none;
-	b=FeRGNramKzWPdy9AtMnfBBje6Q6ffXIel3fy//82fzZL81SOgMfSFPTrZaTHhPwEEAyVzd
-	XzkRrGqz06DkENVuRl90uldUKIRQjUQqtAG1Wjrg7gbWLsvf4xLFeWlivbs2IJeWjnrPw8
-	wSlHZO20rFELOBBMdZl3oW4N3n9VmsA=
+	b=2beUfOckIMBl4yyul2BTpf82rZQ+f45yf1SEYY+GWFNdNQXHvmxaNhJBfam7b00gKdSUXt
+	rdq8SSw5r2Ms+9wppzYvy7xzAaP+UAPOV2h1W3B4q69wJvAogSwfts+qxnlYEyW52fNkK8
+	u9flyuWe7jC1vpgWSNKYlcAT0RlVQUc=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf10.hostedemail.com: domain of robin.murphy@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=robin.murphy@arm.com
+	imf28.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=D8IHiYMq;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=84VB96h0;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf28.hostedemail.com: domain of tglx@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=tglx@linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753818289;
+	s=arc-20220608; t=1753818831;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=murAsIGdQ6vlzwol4uFiktJ1U9ZUZDAn3df7ASsCmD8=;
+	b=E17c408ecm0HTBGYzdJT73aMaJChTz96ZxZfxUgwt44pdskT2a7OmzyJfQgf3uKXCQ/ibd
+	KbRMNqZN86c57GXDEYAUE5Rjo+SrJMP7yWW9Jjp6gfIpogdIzqb7As/MjWeyRTrIG0OwYh
+	fhcXNJgyJz7YXnSNXeg5Dzsyriufcx8=
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1753818828;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SqeBcz2J/jm0Yq9dFG13AgVzU72MDPwRgQecrD3fw80=;
-	b=WVwymPNq2L4GKu51WsrgM71B8yTrjfvKFfqHSvhysHpmGFN26A8td73rpkXk4oIYVFuCYf
-	hRd0E7iwu/sJI8AMx7n8CgReEb/kqv/I1GHHEC5Nzj7idOxcro6BKM6oAUEF4k2fTTkvOm
-	vV3r+HpBVXGfd4wSxumFA1OXqYXqc8w=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BA8F71516;
-	Tue, 29 Jul 2025 12:44:39 -0700 (PDT)
-Received: from [10.57.1.109] (unknown [10.57.1.109])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C2D313F66E;
-	Tue, 29 Jul 2025 12:44:43 -0700 (PDT)
-Message-ID: <8f912671-f1d9-4f73-9c1d-e39938bfc09f@arm.com>
-Date: Tue, 29 Jul 2025 20:44:21 +0100
+	bh=murAsIGdQ6vlzwol4uFiktJ1U9ZUZDAn3df7ASsCmD8=;
+	b=D8IHiYMqln69olqi/6g6npXcLQVV9NhOPq9simOGPAORx1WCUp6Y9LvMbouMOkAxzIGru5
+	fzYmP78u1FWNs+tGfnQ5hVdCKKPy0IPZZDgIaQmQOhclLThxjS/nD7K2CRHRKoVs4t3viY
+	Q3hAdwKxD55M6PZgz8UY9xequNcgThPVkshUggBZwEq+omEWc/UjPuE3BOVgDhqoncku3A
+	Swf2RktBL3Y1jCSYd3heJ8dSP3bMTCYP4ijlJ5wiRKsusEYa/Qb8NSnMnfIefKUhjY1GFT
+	clXl/VuN7sODouU3zY35RaW02sJK3BMssK0iJMoHu4f272V8b8fzG5IflB/zNw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1753818828;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=murAsIGdQ6vlzwol4uFiktJ1U9ZUZDAn3df7ASsCmD8=;
+	b=84VB96h0nopNOInx6f3954BclIbhdj2VAKaaaPvyAxSCFL2P4Z8AoTongAesBct1K6fmYv
+	UacHzAa4keOqZWBw==
+To: Jason Gunthorpe <jgg@nvidia.com>, Pasha Tatashin
+ <pasha.tatashin@soleen.com>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
+ changyuanl@google.com, rppt@kernel.org, dmatlack@google.com,
+ rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org,
+ ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, ojeda@kernel.org,
+ aliceryhl@google.com, masahiroy@kernel.org, akpm@linux-foundation.org,
+ tj@kernel.org, yoann.congal@smile.fr, mmaurer@google.com,
+ roman.gushchin@linux.dev, chenridong@huawei.com, axboe@kernel.dk,
+ mark.rutland@arm.com, jannh@google.com, vincent.guittot@linaro.org,
+ hannes@cmpxchg.org, dan.j.williams@intel.com, david@redhat.com,
+ joel.granados@kernel.org, rostedt@goodmis.org, anna.schumaker@oracle.com,
+ song@kernel.org, zhangguopeng@kylinos.cn, linux@weissschuh.net,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-mm@kvack.org, gregkh@linuxfoundation.org, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org,
+ cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com,
+ Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
+ aleksander.lobakin@intel.com, ira.weiny@intel.com,
+ andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
+ bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
+ stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
+ brauner@kernel.org, linux-api@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, saeedm@nvidia.com, ajayachandra@nvidia.com,
+ parav@nvidia.com, leonro@nvidia.com, witu@nvidia.com
+Subject: Re: [PATCH v2 31/32] libluo: introduce luoctl
+In-Reply-To: <20250729161450.GM36037@nvidia.com>
+References: <20250723144649.1696299-1-pasha.tatashin@soleen.com>
+ <20250723144649.1696299-32-pasha.tatashin@soleen.com>
+ <20250729161450.GM36037@nvidia.com>
+Date: Tue, 29 Jul 2025 21:53:47 +0200
+Message-ID: <877bzqkc38.ffs@tglx>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/10] vfio/pci: Add dma-buf export support for MMIO
- regions
-To: Leon Romanovsky <leon@kernel.org>,
- Alex Williamson <alex.williamson@redhat.com>
-Cc: Leon Romanovsky <leonro@nvidia.com>, Christoph Hellwig <hch@lst.de>,
- Jason Gunthorpe <jgg@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
- Jens Axboe <axboe@kernel.dk>, =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?=
- <jglisse@redhat.com>, Joerg Roedel <joro@8bytes.org>, kvm@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org, linux-block@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- linux-mm@kvack.org, linux-pci@vger.kernel.org,
- Logan Gunthorpe <logang@deltatee.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Sumit Semwal <sumit.semwal@linaro.org>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>, Will Deacon <will@kernel.org>
-References: <cover.1753274085.git.leonro@nvidia.com>
- <aea452cc27ca9e5169f7279d7b524190c39e7260.1753274085.git.leonro@nvidia.com>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <aea452cc27ca9e5169f7279d7b524190c39e7260.1753274085.git.leonro@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: wcssbo5w63y3yhhxwnrua9px34kfhsxu
+Content-Type: text/plain
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: EA647C0007
+X-Stat-Signature: q9oahmka91hd797z9orto3moz617h18j
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DFA3EC0004
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1753818288-874801
-X-HE-Meta: U2FsdGVkX1/q2upBGka37RLWibxmXYh6ZLJvsca6wUs1a2Otu6dwurFYwkFgXEgSVP6hIAJBUqsIvQ7WAEo+mm+DeQw7PJ4mli5SYnJGIgPo7LMKDPRny5oMEV5olBZLGiPPYTKMr5wXdjFUReZtuKsQXKanK7Y4ttycP0kyGLzrWV6CptaQYQ1QNY4Cu5EHdIZA3Gp8PXxXjnMkXF2hhgoJo8AnpdkKWD0uLapZKKCVM5qs3E5wfjLnrDaJkc5Y7cIenXQIgG8Gjwx4UG76CV+DLENziKPeNl60ijig0jouqHi8//JN5TZIYMnLl1dhgcfUCHlI+ipH0Vv8tRjywRpyuPRFYQA/HG/gzeMrrzuv0weo2lIk1p8KN6nrwHR2PcTVdzafzz9SaWBUyPYx2Ia58sUgLWQ1uJ3yCCsvVBr6+Q3jG/d2I4xceok6BotQHwxgTC28HMKIu2I5Gafs3Q1kgkAbQb4jzExOYOKtlW2tYLosKdlPJsmKGP/DGHw50+oC6Li0CgWNKEwV75r2dlcfMQz4Vk0on1wd6J9cdvjsOfdkHoNa8Iv/pkWFkpBV2L+vjupDdhYCUCMbRFq/GhWRZyPmRBmOjzMdXqW4PYYjsLeVu9uFm/qhfycq1gmGaYuDGvqdH7Y8WFJJZW5TeSsCR8ef54iWI6Lp9bShN8Ru0vDfv5BYxEGHrG9/Qe0hT1xCkmfFYFvvs5xhEJsnidxQRoXbyZ8PEKgv+i3g9GMzeuafzmm7qCwkYwcU7WMZ1Lz3QxPyFuQQlgC1HEtXSwx+rBclFJzgksdi7nH6Seu24lbCPn/C/oTs4MvRRlB53DBou9UGgfQ2vGGDQsSWPe/tg3iSTyGM961CyI/FOeS/UfFf/JJ1BcHyoFb4vo0AMpo69EFwojfGr09qlv38naNQZLWqd382uqn3214OsCc3evbwAovJldu0N2nbrNTcnkE+LcSl7vNwF1fbYHG
- I8EoMl2N
- VeQ3dP1v5bHA1RR1ZxohYNyvcvE72Xg0O8BIrLRNEkt43qh4ZE0zd6ZpLFfe8zbMzUuDcqkIQSP0/cYUpAXkhqFttikL3ncynQl1lXmOdgfxcjGN3WTAIok4IBFcFB16u2Ov/Ph4Hc4TRvx0=
+X-HE-Tag: 1753818830-273003
+X-HE-Meta: U2FsdGVkX1/Q8xIlvWutXX2lsTwh0l9e3MHvpcZpeuWpXy/u8gjFKSkKg00LD9+TSkUFkDOVU672JWxl5sLtcSi69xD3rXXmROYBfKB6iI0a16Ci4mQ9qSu5QGohXmGeVbGyoWO1gFw6nmh79nksfoD6xEDWBJFWFad5lQgnXPrv1B5/dI8+RzH4oyUGc82K6nHKdGlZBx3Am1pDbWVff+7uH70CGEKBwL+Kji0b84MR2QPkTd4ERHCVmxa2wSytx0WhExxV6it390k7GIk6HuYNjSUDN9hn3tpdlE4ajlGISTcBgrYfwSb7kRMkRfG5MQ79E06q2IrxQSos4CyVJS5lMhmAEpnccYE0A2TCXl1lC4/9r8c9iML0TdS7Kz3w1zumbEsHZeL/9SoevJ0gDHwaGHAHJHgDE04iFcBCN1bdbH/Sskq2PMMteGrZ30GkpPWvxSHeJnlTuVLzjujKh2IDegtRIYobJAeQUa8aHBqhTMyg/WZlZG011S4JQWVeWHLUgJfWIhcBCcVlniR3eT/bmu+/ruvaaFkF4pQ2WYky4bZX7/oBQIdym/Q1Xe18TnPb2T3/x99GwAXVZRHfnDMGPAn1BCILaBZKBpkekaYuNmYTqpqvNhNzMPrjzrjPGBgX9D8hdXtCmwBFT+F2DBLM6OqEJ319bmiGvv6BI/L6GgEuGxpQRcYQ4+XJvcE6c3y9lCJ+HXeTrRfi76FDQeGZ9oHygfNuFCO7K5wkScsXOn/IFpBCRruiXkNyDirZCw01YPxVh6xXwymWDTzeN8w3IZvxIFbA898CvFManxkEhH37fs8U6RVByfxq3xuSoSB58EYMZTdqwsC8dkw4mHDivol21h07jwF3Uhh/rftYypqWOeKsDxhyG3wFlSZuqtYE8SpE+ZL5PL96+2uSFwwK6zuQhFLxbI/NsAVYC+ZpOmy9K0u2aDdSuxPw1mVKjIy9lCTO1ZNc+cAYz/b
+ 64HF5eZd
+ K67kdIxfRJfCK5KHEG3d6b3luc9ExO/x9V2HeyOSyBwn4LiYnkv4JENEZ/UhFYe16D3aaMEOXQqsIwh44AIWqi3gZbCeSrVisXjd/64hNMxfYtttr++D6Xhq/X9eiClhDgeJvNx8yzztrBnuK6JT3Z3uAXgqyV1pijKl/vlRRet6ZhhEQpG6f25I2fed63qF6CSF8wxM97O3mASDtP9aKRgRb+6gCtZOREEy8NVa/RUAY3bukRh1yMB+SOg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,124 +119,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-07-23 2:00 pm, Leon Romanovsky wrote:
-[...]
-> +static struct sg_table *
-> +vfio_pci_dma_buf_map(struct dma_buf_attachment *attachment,
-> +		     enum dma_data_direction dir)
-> +{
-> +	struct vfio_pci_dma_buf *priv = attachment->dmabuf->priv;
-> +	struct p2pdma_provider *provider = priv->vdev->provider;
-> +	struct dma_iova_state *state = attachment->priv;
-> +	struct phys_vec *phys_vec = &priv->phys_vec;
-> +	struct scatterlist *sgl;
-> +	struct sg_table *sgt;
-> +	dma_addr_t addr;
-> +	int ret;
-> +
-> +	dma_resv_assert_held(priv->dmabuf->resv);
-> +
-> +	sgt = kzalloc(sizeof(*sgt), GFP_KERNEL);
-> +	if (!sgt)
-> +		return ERR_PTR(-ENOMEM);
-> +
-> +	ret = sg_alloc_table(sgt, 1, GFP_KERNEL | __GFP_ZERO);
-> +	if (ret)
-> +		goto err_kfree_sgt;
-> +
-> +	sgl = sgt->sgl;
-> +
-> +	if (!state) {
-> +		addr = pci_p2pdma_bus_addr_map(provider, phys_vec->paddr);
-> +	} else if (dma_use_iova(state)) {
-> +		ret = dma_iova_link(attachment->dev, state, phys_vec->paddr, 0,
-> +				    phys_vec->len, dir, DMA_ATTR_SKIP_CPU_SYNC);
+On Tue, Jul 29 2025 at 13:14, Jason Gunthorpe wrote:
+> On Wed, Jul 23, 2025 at 02:46:44PM +0000, Pasha Tatashin wrote:
+>> From: Pratyush Yadav <ptyadav@amazon.de>
+>>  tools/lib/luo/Makefile       |   6 +-
+>>  tools/lib/luo/cli/.gitignore |   1 +
+>>  tools/lib/luo/cli/Makefile   |  18 ++++
+>>  tools/lib/luo/cli/luoctl.c   | 178 +++++++++++++++++++++++++++++++++++
+>>  4 files changed, 202 insertions(+), 1 deletion(-)
+>>  create mode 100644 tools/lib/luo/cli/.gitignore
+>>  create mode 100644 tools/lib/luo/cli/Makefile
+>>  create mode 100644 tools/lib/luo/cli/luoctl.c
+>
+> In the calls I thought the plan had changed to put libluo in its own
+> repository?
+>
+> There is nothing tightly linked to the kernel here, I think it would
+> be easier on everyone to not add ordinary libraries to the kernel
+> tree.
 
-The supposed benefits of this API are only for replacing scatterlists 
-where multiple disjoint pages are being mapped. In this case with just 
-one single contiguous mapping, it is clearly objectively worse to have 
-to bounce in and out of the IOMMU layer 3 separate times and store a 
-dma_map_state, to achieve the exact same operations that a single call 
-to iommu_dma_map_resource() will perform more efficiently and with no 
-external state required.
-
-Oh yeah, and mapping MMIO with regular memory attributes (IOMMU_CACHE) 
-rather than appropriate ones (IOMMU_MMIO), as this will end up doing, 
-isn't guaranteed not to end badly either (e.g. if the system 
-interconnect ends up merging consecutive write bursts and exceeding the 
-target root port's MPS.)
-
-> +		if (ret)
-> +			goto err_free_table;
-> +
-> +		ret = dma_iova_sync(attachment->dev, state, 0, phys_vec->len);
-> +		if (ret)
-> +			goto err_unmap_dma;
-> +
-> +		addr = state->addr;
-> +	} else {
-> +		addr = dma_map_phys(attachment->dev, phys_vec->paddr,
-> +				    phys_vec->len, dir, DMA_ATTR_SKIP_CPU_SYNC);
-
-And again, if the IOMMU is in bypass (the idea of P2P with vfio-noiommu 
-simply isn't worth entertaining) then what purpose do you imagine this 
-call serves at all, other than to hilariously crash under 
-"swiotlb=force"? Even in the case that phys_to_dma(phys_vec->paddr) != 
-phys_vec->paddr, in almost all circumstances (both hardware offsets and 
-CoCo environments with address-based aliasing), it is more likely than 
-not that the latter is still the address you want and the former is 
-wrong (and liable to lead to corruption or fatal system errors), because 
-MMIO and memory remain fundamentally different things.
-
-AFAICS you're *depending* on this call being an effective no-op, and 
-thus only demonstrating that the dma_map_phys() idea is still entirely 
-unnecessary.
-
-> +		ret = dma_mapping_error(attachment->dev, addr);
-> +		if (ret)
-> +			goto err_free_table;
-> +	}
-> +
-> +	fill_sg_entry(sgl, phys_vec->len, addr);
-> +	return sgt;
-> +
-> +err_unmap_dma:
-> +	dma_iova_destroy(attachment->dev, state, phys_vec->len, dir,
-> +			 DMA_ATTR_SKIP_CPU_SYNC);
-> +err_free_table:
-> +	sg_free_table(sgt);
-> +err_kfree_sgt:
-> +	kfree(sgt);
-> +	return ERR_PTR(ret);
-> +}
-> +
-> +static void vfio_pci_dma_buf_unmap(struct dma_buf_attachment *attachment,
-> +				   struct sg_table *sgt,
-> +				   enum dma_data_direction dir)
-> +{
-> +	struct vfio_pci_dma_buf *priv = attachment->dmabuf->priv;
-> +	struct dma_iova_state *state = attachment->priv;
-> +	struct scatterlist *sgl;
-> +	int i;
-> +
-> +	if (!state)
-> +		; /* Do nothing */
-> +	else if (dma_use_iova(state))
-> +		dma_iova_destroy(attachment->dev, state, priv->phys_vec.len,
-> +				 dir, DMA_ATTR_SKIP_CPU_SYNC);
-> +	else
-> +		for_each_sgtable_dma_sg(sgt, sgl, i)
-
-The table always has exactly one entry...
+As this is an evolving mechanism, having the corresponding library in
+the kernel similar to what we do with perf and other things makes a lot
+of sense.
 
 Thanks,
-Robin.
 
-> +			dma_unmap_phys(attachment->dev, sg_dma_address(sgl),
-> +				       sg_dma_len(sgl), dir,
-> +				       DMA_ATTR_SKIP_CPU_SYNC);
-> +
-> +	sg_free_table(sgt);
-> +	kfree(sgt);
-> +}
+        tglx
 
