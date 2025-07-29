@@ -2,183 +2,225 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 19770C87FC9
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 15:36:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 99CADC83F26
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 15:49:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9AA76B008A; Tue, 29 Jul 2025 11:36:37 -0400 (EDT)
+	id 1D9C96B0088; Tue, 29 Jul 2025 11:49:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A72D56B0092; Tue, 29 Jul 2025 11:36:37 -0400 (EDT)
+	id 18A796B0089; Tue, 29 Jul 2025 11:49:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 962706B0093; Tue, 29 Jul 2025 11:36:37 -0400 (EDT)
+	id 02AA46B008A; Tue, 29 Jul 2025 11:49:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8499F6B008A
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 11:36:37 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 37EB8C017A
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 15:36:37 +0000 (UTC)
-X-FDA: 83717704434.20.BD3D933
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2051.outbound.protection.outlook.com [40.107.237.51])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 4710E20013
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 15:36:34 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=us5fwJj6;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf03.hostedemail.com: domain of ziy@nvidia.com designates 40.107.237.51 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DEDE36B0088
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 11:49:11 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E7F5455F5A
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 15:49:10 +0000 (UTC)
+X-FDA: 83717736060.26.CFF1DC5
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 57AA2C000C
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 15:49:07 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=dSMR+t94;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Hxr9Y9jM;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf10.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753804147; a=rsa-sha256;
+	cv=pass;
+	b=zcKDav9jGX7ynFzmDAQSPuc+W2sP2Qu7Y5E235GLVZaSisaaIz2CS4cIjaLOyoAlqCEPXq
+	yA50M/TWJQInVWw8WmUEuQBLtGKfcR9GsmLu8cRxf2PI5zvhpuglcp5B/6WOSbjKeyMcE4
+	W6/zUKWEsA3xJEFMqUGkO1W9/fseX1g=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=dSMR+t94;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Hxr9Y9jM;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf10.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753803394;
+	s=arc-20220608; t=1753804147;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7Ln6UmBtI8yAcysOdPVy2kyFSY6c/SXtD1JFtbVYSQA=;
-	b=UVl/ndVtIXZx368msoT9wcZh2rYsS/2MsfK6H6O8v63AZGn6VrlWFs4fJP7zAkNo8c2t/E
-	PEhRu1wDsd+6hZjXM96ozQvI0l7rj1dN6l9jgBm9Tm2kDRt3iYXj2Yt8qrgNuscmPYKe/o
-	By+m/fZRjz5ODlzlgniTpjN5XTg/yzk=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753803394; a=rsa-sha256;
-	cv=pass;
-	b=CFualUqBZr2TqihoZzTvzjHeFWN2+e0zn5rwXUpHdutUdTuEPFN69BQtd8s+u45lrL0J4v
-	U4HZFtLAQIlqipXlFabOmdqxPSA1eaPxObH+Mgjr3rOg1wJ91x6ZsYM5vOjevZ44eFdiLI
-	TaaYZypeGVW9hRLs1KU7j+rxkmpVHVo=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=us5fwJj6;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf03.hostedemail.com: domain of ziy@nvidia.com designates 40.107.237.51 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+	bh=epAR2jk4Z1027su9ew8vZ1F+/KhubMdy8N7/wL+wPQ4=;
+	b=0qly38um0lQ8z47KO45v79PsSs50X3WZ6hziw6xRqeD6FTd1Omfe1dKqIkHNCpvqC78DoT
+	XdHgzVMmXirrqsJk02gCqd/X8MIhBke/iPsYHobPKqa/CHmhnD3d5nlCaa/wDWrOuuzM/j
+	YYk50pThK9dOex8TvKMgS8Hx4clmz8o=
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56TDu4GU002995;
+	Tue, 29 Jul 2025 15:48:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=epAR2jk4Z1027su9ew
+	8vZ1F+/KhubMdy8N7/wL+wPQ4=; b=dSMR+t94wZQtITdH1SokQzlpfiZPAATtY9
+	/Y7t/lyYhpVDiL4YnEvUP40klZdVKtU7h3O8AobjDGqMAjocn7NHy1Hu9zuNUnjx
+	mm2yh07qDzclTDWK9mP8hh/0MMSl/pGx/vFjovFXqdVtBJQexjTiZeQtR/FIhAFQ
+	KSpPw8EXXLKv4EniKhuWoDfGWechUMLaqUBfXXer3oXtULstfoyM4491EpxVEOkv
+	8t7LlSC+N/0mPufdN/9q+Vdb7qSQCKDMkA6nnvEpwe0ttn6Oh/aML8EpyiwquJEu
+	XEIK8d4D9yl20JABY7dSS97B1Jzv1oOtENDF1VaSSon+PCfY+UBg==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 484qjwr2dk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 29 Jul 2025 15:48:46 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 56TFOIqe034481;
+	Tue, 29 Jul 2025 15:48:46 GMT
+Received: from ph0pr06cu001.outbound.protection.outlook.com (mail-westus3azon11011029.outbound.protection.outlook.com [40.107.208.29])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 484nfaamu0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 29 Jul 2025 15:48:45 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TpnL286p/NYU6EJ8mhylfPDueVbqdWG06265KOaoeaUKv+unS45ZSWdWZJsWU+BJC8uoFSjzCADUZ9k93ldRfUB7NJwi+IhLdL8ZB5x2xbnHSRIlc05E/lpKmEXm/nvZDudUfk9NOHrTQObUUGqxOcLT9UpIIDZ7NMg9SvPxySlENXAaXokTAwQdeCxCuqdFWctR2Gf3v0NFSsa8fWZgjcEFJQY8j7cTltq0UQS3AyArbygMaO4eRCeN0X31hXMglkp2C8pJFAikCXnI8RxbeeoCKy2R179Q0o078QqQm7FIClsTGqWnMh2pRxUTmEWdyqYRS8nnwaEEtJu0XFrM8w==
+ b=L+Vs9wdX8BJn+h7lhSEbBpvmQr2ZjAW04Wwyjn8LCRUi6Av0mHRSLOOcyhHNixrKE7AB3Ca1h4sMvrj2gP+n71pWfla4BU6D9gOEoPkUVosd6qqE8W97TZRiH5nQHtGWJzWWHjpjsoELM4PJNPErAXWnyEfyRHj3dk97U4F8O6wTLQCtr+/p8qn1HVYV85FIB3wWymRb3tV4oRIyuLdhgE1TSa4P3CzOYwpJimKo2fCOP6WapHKgvBLQrijZd9DroGwLJbYPbD/KzKrdC1k7fy+tR0THN3VESMxlN8HL02uAdfztcZ/Jhw0aGY99m9EryOjszmzrJJ0l4b0UBlk90A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7Ln6UmBtI8yAcysOdPVy2kyFSY6c/SXtD1JFtbVYSQA=;
- b=yNJ4VAk2UgVFk5x/gHU7kC7tA+Ds8+tG4usCq4wNsuD6Z8KHGbkGo0MY8Es99ZxqM1mr8XI5A8OW34aFskJPW3UwvBAvYGLTN/KPTZBsPiADOMLVp7AfPAoR7WiC24jKeMouboSWFLzrKb7KI2j1m5x/f23ukmktaNinDj0NWEcOManhC5JuBbOjTexMGghprvgYTfrFmCjduOTCXJMZIJc3adA+rMjUTSNN5vILJm+GHCffnPzYHN9vRY+fvuipNG+PYw6YRKJ8utPTO9YZK2yS0A6qVDGMaatrHJvNA2GhyZohI5MoPBoC+jM6XE7r15DWv5Ci8qjHzOlEGOhbTA==
+ bh=epAR2jk4Z1027su9ew8vZ1F+/KhubMdy8N7/wL+wPQ4=;
+ b=vPr+aIjgaAxH502J7dlzuJwX7b8GAkmU7yulnBEvxh8fHZW5NrSsrXlOeKALgghnUPgigUtaw6VmtFTHeU7g0JDzMttT7EHFomEb9V5ATOzJirFX2xez7lmPylElckpMjWHgw4TB49OCofSNoReNeqnViatXcpJiYeyClc4dVh6RlhQL0DuuDgFtKqDg4Ef6n4gddAT5ZePXSMjgCiFa18VtdcKPPPAs3y/9sbZ771wNoCoqTc+yZS2OL/+2YKHqCwVgMCUQ37RBe9HLmiBKhr6TvgMGNwr14AUb0tkIg6Kegt3PBgkXY2fUx6pNC0fqxjakxSezvjoMowCj9/aTMg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7Ln6UmBtI8yAcysOdPVy2kyFSY6c/SXtD1JFtbVYSQA=;
- b=us5fwJj6mxodndDkNrMxVTJX/RilmwbmCZiPzPsAmOehgXADMNdi86g6yqHsYzn0Z+f+sE4ZCokDj6Qhas3HzYbQAAorfRxU72skub59paUg9rghIB16PhxmJXS6zaEZHrC73ia/MNDPlMsXpNpEdZvdQANcQ6KDpuqtI119zUp73z4CWhU3xJ6U0pV7vqXQROr3XyTnVTzWEIAXUzy95Pxb9R3K5MgQ/ucFlQEYFpMeFDLjq+VlEUZnKA/pugJexszbcwZS0zpbWsKrxgp4dw2raHh7xUXmQrz2yZBgyo+1iNici7/uID91hk8GeLXpIkksvW4DXrRKm3PQg6EmRw==
-Received: from BL4PR12MB9478.namprd12.prod.outlook.com (2603:10b6:208:58e::9)
- by DS7PR12MB5718.namprd12.prod.outlook.com (2603:10b6:8:71::10) with
+ bh=epAR2jk4Z1027su9ew8vZ1F+/KhubMdy8N7/wL+wPQ4=;
+ b=Hxr9Y9jMSTRnkHFQ1SA6oijeB5M/jwFA/MTf/2IdWPzDE3giVVUHKZzAfQpFSb61M3JJZ8NvfqvsJnDod5I4Ly9l4+9g2G82e0nn0xT6af5VaIeGBem7f2dwsAzpbkLFCs2ZLL7DK3XnCMZU0y59UGM4ZCI5s7iwKA0bIAG58dE=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by DM3PR10MB7926.namprd10.prod.outlook.com (2603:10b6:0:3d::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.11; Tue, 29 Jul
- 2025 15:36:30 +0000
-Received: from BL4PR12MB9478.namprd12.prod.outlook.com
- ([fe80::b90:212f:996:6eb9]) by BL4PR12MB9478.namprd12.prod.outlook.com
- ([fe80::b90:212f:996:6eb9%4]) with mapi id 15.20.8964.026; Tue, 29 Jul 2025
- 15:36:30 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Yafang Shao <laoar.shao@gmail.com>
-Cc: akpm@linux-foundation.org, david@redhat.com,
- baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, hannes@cmpxchg.org, usamaarif642@gmail.com,
- gutierrez.asier@huawei-partners.com, willy@infradead.org, ast@kernel.org,
- daniel@iogearbox.net, andrii@kernel.org, ameryhung@gmail.com,
- bpf@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH v4 4/4] selftest/bpf: add selftest for BPF based THP
- order seletection
-Date: Tue, 29 Jul 2025 11:36:23 -0400
-X-Mailer: MailMate (2.0r6272)
-Message-ID: <BADFCED9-4C30-4ED6-88F3-D8CB7054CC56@nvidia.com>
-In-Reply-To: <20250729091807.84310-5-laoar.shao@gmail.com>
-References: <20250729091807.84310-1-laoar.shao@gmail.com>
- <20250729091807.84310-5-laoar.shao@gmail.com>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: SJ0PR03CA0295.namprd03.prod.outlook.com
- (2603:10b6:a03:39e::30) To BL4PR12MB9478.namprd12.prod.outlook.com
- (2603:10b6:208:58e::9)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.26; Tue, 29 Jul
+ 2025 15:48:36 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.8989.010; Tue, 29 Jul 2025
+ 15:48:35 +0000
+Date: Tue, 29 Jul 2025 16:48:32 +0100
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Zhang Qilong <zhangqilong3@huawei.com>
+Cc: arnd@arndb.de, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, wangkefeng.wang@huawei.com, sunnanyong@huawei.com
+Subject: Re: [PATCH] /dev/zero: try to align PMD_SIZE for private mapping
+Message-ID: <3a5ed894-e9cd-4433-b82e-be4b049273e1@lucifer.local>
+References: <20250729134942.900517-1-zhangqilong3@huawei.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250729134942.900517-1-zhangqilong3@huawei.com>
+X-ClientProxiedBy: MM0P280CA0087.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:190:8::33) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL4PR12MB9478:EE_|DS7PR12MB5718:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6f72c5d9-cf64-4177-cc4c-08ddceb5b07b
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|DM3PR10MB7926:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2ebafd5e-54b4-47d0-5593-08ddceb760f9
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|7053199007;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?6Mw0gGxwykOzABN046uPE3NQAzaTd6cjIVs5wp9h4W66lPxwLAEckEwNOD7o?=
- =?us-ascii?Q?pTaDwZsnUNRWggR23TJX3LEVc2yU/qCBKf/Nkjm+3cQ7eLEiJaCWjenegyep?=
- =?us-ascii?Q?VJ2nIb9+4ZzVnN/JiXd0/FGAtB8JtNLcZrPQ/EIf24u9ldjyB7WPhUYnpMXe?=
- =?us-ascii?Q?qcHcMgCIquon0VjnbE2HUREXgRS7lKFd1GH55onfpMyFMLSlsNEiKEescc38?=
- =?us-ascii?Q?tjYCOw02JgfzXV0t4ebCzfOleamBamkTy16jZQb28uoas+zoLxS3NkhJ3SBA?=
- =?us-ascii?Q?r/eSXU3k1u7JTRVNXnlz7Y0MwdhKAoxfSGcIP5ndiSqRg/61669M4vlJur6j?=
- =?us-ascii?Q?tPCyjS0zwcSc5Ci5ljLlz5NwuLXpK2tSgM5yegd2F/xhzT6dbKm4hL/2SKnU?=
- =?us-ascii?Q?LY2DR3mvdvYrSE31d/Qhi25fSzF7QkiEYLT4bN6d9Kr+ck0ohYEQXD5WfvpY?=
- =?us-ascii?Q?M2zhyEbCGi5t3WNUBMg+9BX/MTMq7gry63Llxk2SdK3MRWAOUvq1Jg+AUkEc?=
- =?us-ascii?Q?I8mqxMpYh4T8vX1xKR1iL3tXsronw0Q9F6XDKD5rMJEi1XdOJuU0aLyYkJh6?=
- =?us-ascii?Q?i3SfMZ+NQWomLLAwGBaq/k4d7GKUzOwE67S+lqYJtsXe+dPVdSxTzgWShlGV?=
- =?us-ascii?Q?dSk+1GTexpYq3ud/zIS2CgYVmCcvvppZ2GimOICeaKWDM3zNzCaEu3pYXbph?=
- =?us-ascii?Q?BgQyvNoeleMLu3NJ+JQOi+AzzcQR6r5QzXagsZHmne51PcGdTK/YS2s1uFBB?=
- =?us-ascii?Q?Uhv+42yJQ7/R8nl243ZDTARJMzhuaUXgaAnsUUbq3Ef/IFwYMxO/+4AGXq3D?=
- =?us-ascii?Q?Iz3UHT/xC5IrujrE034Bn9FLdh3Nl1ptblx0RKJq2LiKfBXOhQXZxyrrFKNE?=
- =?us-ascii?Q?GlSiL4aZCNMtuYC97JRgXAMlcjDxgGdd27vbYAnQMEJsNby0zIHnr5rlccTu?=
- =?us-ascii?Q?mF1TCeDPp0enqpJNimCfZCRmbB4eytQ0odH0Y4MPAEp3Bsq620mQm6yHx+mp?=
- =?us-ascii?Q?NoztSB+uc+hnOn5/HBr2BFXqcoog6Iunv/cgmDlTH2jXns8Z5C4m5W+xdFcH?=
- =?us-ascii?Q?0PCb+m/g3xlEgUO9wnoSAQ/g/G0P9OSJBdFt2ATI2Hu8RvSR8Ggj/FdF7q8R?=
- =?us-ascii?Q?B5OW2/l+UOLKwscLiee8RDmg4U2noEPw4Qgs6EWTOmGrueoFXGDDRzfm4a5o?=
- =?us-ascii?Q?HsEN7VlrrjWV2R4nru1wmtSetp2Y78K5szB4Z9DFAHUWyj11EXZlV/aDd02d?=
- =?us-ascii?Q?2qv1lyeTHoRwo8cfjcVKxsCQSQcPOGI/ikpfU7VtCB31kFU6fbB/3XOm53Cz?=
- =?us-ascii?Q?gMsx6IvqP4XrkNHOjmurLHJjBtSdN57Rw24o5K7fgxlsyySxbDpnVyicdMhF?=
- =?us-ascii?Q?KmhBZTxIW0uxEmVbZYpfbav6u2UzZ/7OxJGQmgUt9ToWNiwtX6th2N9482Ik?=
- =?us-ascii?Q?5mSi73tj4LM=3D?=
+	=?us-ascii?Q?Dpo7x0nkJcv0ZnZmtfOtOZOwZeLsZgWWng/0fnbVBnnW4tDoi5/aJqHWup82?=
+ =?us-ascii?Q?C1uTaNBgSMVppxHh0T22+gG8IMTUCxJPW2GsSdSfKqDo8PPwQ2FrHDDCYMkJ?=
+ =?us-ascii?Q?5H2BFXQVQf22L0Hab2I/oIylUs2qXfizdfnCE8i/ZzPC2tBIrowLy40BlIdn?=
+ =?us-ascii?Q?nG9kOzqtqTTAyCZAFEP+Hkpw/uv8tv20rWLHK6hieDJ7tCEypiYFr+4ukru8?=
+ =?us-ascii?Q?ru99PIVlGKHUN0/WCNL1qa+vgGw83m+tBFc8d+PAMwUiR++axs9cG6rcUMiy?=
+ =?us-ascii?Q?fzTjOZnmgZq28ZzYiefqw/3EzzjGz8tKU3CEbqjRKaPDuaIL5fLQ+EWz557v?=
+ =?us-ascii?Q?se65/CenjP1JXnZ/HJ1wCDcv+gCvVmJE8i/LxvLP11Gu2Uds+e6CGaBFa7UK?=
+ =?us-ascii?Q?D5qU7igaj7OFH13NJINTqyLs54gIHLVTDffTLwUCP+97J0Hdh/N/tKNcBqdF?=
+ =?us-ascii?Q?QoVHxSOEZpzEoSFsHm7d8xAhYtFRdOVyJkKFWSxsCTQppuy8mqb/yIv2Hvpm?=
+ =?us-ascii?Q?Bn3WplQ03AD444Ww4Vnk98U/1wTxd+S9Ucbj0rMOUx8Ccyt6mpRywrtC1zsa?=
+ =?us-ascii?Q?5pjZfYUkwo2j5qufJMlW6tSjitdNCTbI1Sb9DgmhFfTi5GyMbE9iYUiwhU27?=
+ =?us-ascii?Q?6rGaBWlB/xyoxqCgX4xM6O6OHvnZwQcZtQyrqP9LZtqiSzUSgqiWgIDlmj4l?=
+ =?us-ascii?Q?eYX06H59s48Mcj6SbhY69FkYyslOfAqdHOhvTlTpAyA5GsjDD1eHyqPSiCf9?=
+ =?us-ascii?Q?1wmlUKFTwXjXmus2vxaACQeGXkSmUfHkZ+m2hkkfmn74LPduV377eiT+4tGa?=
+ =?us-ascii?Q?VzZwTO9Vt5Zdn67N3ioX+yg7sz5v66syzGRuctQR6fiCs/mDOV6DbWUEjunh?=
+ =?us-ascii?Q?rrwqBF/shFvoc5ZgPLwLM/h+JOvF0Q7Rb6/9KRzrfKI+ZjVRhVfoQBr1NlyM?=
+ =?us-ascii?Q?6+DuvMJCtWMcHkqAMKD46Q9pGNfVhmed6ZUGSAQOEnLX930npBmXZ8RdniU4?=
+ =?us-ascii?Q?CRecVYFy4UkPh8TVLGci88ltcZjB/8mjOykIQFjNJ4UygB/ot8GN9s8KOYeP?=
+ =?us-ascii?Q?0qje8s0P4gXubG2saskJvfkWocCBeLGgF1ESmv7H+0ZZ/wXfk1lK91xyYGSA?=
+ =?us-ascii?Q?Dl7o0q/wsf9WBx+oNvXgg6pVZwK6K/vM5C7f84IxHbKCNGuM9WdBPQu/ldQq?=
+ =?us-ascii?Q?24QZrR3b46wHuMIOhd8GjYSSrcpIuGnfnD3/HBr+Jmb+GuCD89QxGpCP7QGK?=
+ =?us-ascii?Q?zvcSJxHWzMlHN6o5MMv6bwx/97xS3l3ITAQuw8HtttWh8sJjv5Ff3YkuylGH?=
+ =?us-ascii?Q?5bf45RqN/sruAlmupSCAcC84iivoI+X7j9E6aNezuWgpFskxYj3eoznv5ami?=
+ =?us-ascii?Q?+rn+iNGzaDRW3zGQcOx9MoSjL/vDbuUlSdOMl/RhyEKXvqhzDuQqJzNdoVEl?=
+ =?us-ascii?Q?OBiFNcpVeC8=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR12MB9478.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+Uc3YMTOccrLjbYR/w/hX0N8RJpeqfdK9kRKxiptSyFZ+RJ6zEMLqzbVwZtv?=
- =?us-ascii?Q?y0uaag9BX481yyOOZZwimCdjtQ1GMNa6bjqMESsuo/bcMKYeQXy4H9oD9dgX?=
- =?us-ascii?Q?D5NLgIxTgeVNI63M11uQ+8BpL+BS+UJej1s/ctp9UaAr4b5H6nQNKnU4gdN0?=
- =?us-ascii?Q?5iWJcQWA8f7iCzp2ugk4vJEychcu8h39lbm/oQHMrm8pL8lRlYCdyT3YxeWp?=
- =?us-ascii?Q?+znbA2PccGgyaJbCrY2gHlH51hX6KEIRRBMx6P0FwzoGHmk9KaOs7S3OswUB?=
- =?us-ascii?Q?zSNKXxjMDTWwD2TZhet9FYNSe4mnI8IlzcSwu+0MJ7Uiqb7b/oy2z/4rEedf?=
- =?us-ascii?Q?6E+PoKwgvNuuh89i/nsNsduI6qbXKZwSZ/HgJjHYVB0uzoEXkVRGQfmZC4Px?=
- =?us-ascii?Q?h7uEhk28PVop5g386ZfiXXiH2iQlFxWmCzyVC9s5O8uIrCxvm11e/r+84MRf?=
- =?us-ascii?Q?pWrBOJgVN1ouMjpd+IvPKSvIWf2Ftka9HRi3Z2J2GZ0M6MYe2IYUK2cQDUCU?=
- =?us-ascii?Q?nVcNY+v5GT3bLlZLXpQeVMoOR7wXEwIP90a6mmSqQKvYz2xus5przpQ7OFWN?=
- =?us-ascii?Q?gpwNq1fHUFpWjAlBvAowHFYaq0QaSHvdDwbmq7/i5Mbj2kojSd455okZxIrP?=
- =?us-ascii?Q?wfDyCCNvGKVS2w41js2I3kWXcfHJCmdCybw8AgeCXpHcplWcF5GEuOmSHtVI?=
- =?us-ascii?Q?J+FfVnqgG+/BzP1pjTAyjOZ1LF0eUAoD8Hxjq0QhdwBTDWKEF0vD9lYRcXaO?=
- =?us-ascii?Q?a214bEIH4ujUfZDfoo/scsTjruWm6VkPz0DE1lYPV5OOdTrjMrQ8gS+nvYme?=
- =?us-ascii?Q?7L0NmRGujwUBHc/AdUXF5ShpkmRWz8sKPnzO9URm/je9HBgAlK9U99wl4OV/?=
- =?us-ascii?Q?GJwd/IZQeGoPT5WIlQHr2EKoTuVaUdN0UWS+0qVytK0rOCbIy6Ixk2d5soBo?=
- =?us-ascii?Q?6V/SlG5sMplUhU8SSW3AO4gtmHVpawoA5FapWWLnF0R2BWqXSKMCvd/L/xTF?=
- =?us-ascii?Q?+uM/zAGAOn/UwQEmCPDUJLuG+GpWhJ3LcmUlVPJYooz8/jonxkpQINbEjTcu?=
- =?us-ascii?Q?QB/SzA/OXW3KRbNh+D16P7S1hJvN6WAPNeptkCIINk3Fof4ES8GuaYxKQSLB?=
- =?us-ascii?Q?iaobWHt8f2U2OYEy7XtnqvF4cnkGTOa9UoEHfLOVvuN+C1N8FW1v9no9/Osm?=
- =?us-ascii?Q?SnK/RQ0sivRhdiXryy9AB6tkTY6C5lJz5bthra3suKtL6R3D6AL8tkWYBo3P?=
- =?us-ascii?Q?IrkuWGil3jz2NvDuxsC4mf6dHv5388e2QTA1hY39RH9S/zj1UtO4axTOQKSC?=
- =?us-ascii?Q?OEkUwxOE9T0U1VB09Fjd6q+Q0pFolk7GcZy/1MKncl/KGgALHdIhusBsxuDh?=
- =?us-ascii?Q?QoWamCg/KU+feoRQAjDctV+8Z87oi3XHCKNVKFLLaSIfLDKAap/ERk3GvNMY?=
- =?us-ascii?Q?BUDUy4gjHbklfVU2xqUip6ia5iNVN8VqlpMkuKAofp3sS4yvMpJEYLYCLmxY?=
- =?us-ascii?Q?qWPH3y6Z2qcHpevQsv62GDgVhmdda4aHWl9ih47Vuqk0S9IMRPWAhRadpGGb?=
- =?us-ascii?Q?i3+5umJgFGCcwu6kBFg=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6f72c5d9-cf64-4177-cc4c-08ddceb5b07b
-X-MS-Exchange-CrossTenant-AuthSource: BL4PR12MB9478.namprd12.prod.outlook.com
+	=?us-ascii?Q?CBujR2KgTIun/dporENwgv48uRLJHI6OroWbs3SAqSTlIF4G8Pwh91GWIYcb?=
+ =?us-ascii?Q?Ab8sDlQJDv0Vot1NH57QtLpiTPyiQC9mu6kRXHSOTVA50N7GoI4EHy78T/Nm?=
+ =?us-ascii?Q?szhAbCkropANKr5roGyMKCxxJ9dJAvHTaov6ZvWv4Gr8YpuuPPZATYUlvL8o?=
+ =?us-ascii?Q?U5XdYW8xcOIPL6y9IsMoVbkdrUO+cLVWgS+jcZbt5lzFUMGuy2NG2s5AgBtn?=
+ =?us-ascii?Q?I7+bu5Qs1LXitvockIZMQnQGF0dwqW/Ot69zUMGPgQBbROmouxTWyJSxweL3?=
+ =?us-ascii?Q?kWOuHQXs5kJ6XW96KxqhQ9n56vEDMJA0mauLL8ieTRNGdomeZny3LpEwZROd?=
+ =?us-ascii?Q?ED5DrRAm8HTXUT8fVvnLdLLpjmo0C1PTWbYN78T/UVGfKrLpOo8V7hRV6eb8?=
+ =?us-ascii?Q?X7uRBPDa6Qc9QIy3bWL3FsC0e6IHPlwR1k5W5fUSnpmvkvHLIDknZT+v3GVO?=
+ =?us-ascii?Q?bUyFhbtynI4hQywrU+Kq66+N7B4AIGdOOv6d0TZvGg/n1lzFfcpKln8hPX8U?=
+ =?us-ascii?Q?ktKDDv+Z+JFQbDxp9+lC3pHnO2KOPgORQLdRvZc0l4SyQnL/F8Y1iHFvrrS9?=
+ =?us-ascii?Q?2Fst193otcSIqTaGeSBBLfm1etE8mzRipKQacPJeO86OHcsFXJ4emoob9+gN?=
+ =?us-ascii?Q?pz7SAqH1Zzh0A7v90/vNeDyY6jbZ/1PlIh6TEQpYUxRtbinfXtTQK0y+/2Nh?=
+ =?us-ascii?Q?QhBgIMU6xMgaFDA4olDd51hd3tXnJ6SuSYgBe9jiswuzH8zkzsdVFWWkl5sd?=
+ =?us-ascii?Q?pr0Z08K41QQ5EHsz2PrCveKh6h+n2VhFK6Qx954VRQrs3/i16kfhxizhoLlA?=
+ =?us-ascii?Q?AzPc6g3Oqi9ABn5l9BxqcAGq9vQOSiXJCzI14euP8c+deXRLnP8IVcAXRDRW?=
+ =?us-ascii?Q?BKFMrQX8kCHxAy3mB45lNqmNNQ5aXoEVx4AqJ4RT+tSMgw70FpzEU+a3K4ZK?=
+ =?us-ascii?Q?oVcJTZ//wTnj9ZymUc3NI6MfP+CDnw8N9puObg4+MW644hxN3enY70yeZLFO?=
+ =?us-ascii?Q?TX62G0q8R3z0RJCXOO7Fa+p/mMgeC7bG8HrXMG8yildQS2Mr/l0/jCOc7ccj?=
+ =?us-ascii?Q?AQ16xU9BHSnQwtqW3Myy3TOA26ZWBOjdcA6BO+t5KIOijt/DeJZNOZ5DUMQd?=
+ =?us-ascii?Q?2aizrPYOEEzntG23rGxlU4e6S5Bk9+ez421qwgFSTcA/xMYEOa5RJq4xtjnu?=
+ =?us-ascii?Q?OUmv3Ge/3f/STcCFikLKwIKuOognVkouVk7y4ZH1vDUFDAuefDgRD+P2SuYV?=
+ =?us-ascii?Q?+vYoR6+3++TA3Y7+hNX07hYHROI4YsFdqQ0WxhyuOu4zhZ5RjSlWXQNM/ETQ?=
+ =?us-ascii?Q?7rsl3oKvpawyLrJWL0xKDPy+9pwLyqzkiEKjmAKCfDTsjvOGJK+7UgfnQc/W?=
+ =?us-ascii?Q?AksPSEtpPpVVz23XKQiHmbJICIVCa0hefDjB0ZJzuYhe90QWArjU+b8PT3nx?=
+ =?us-ascii?Q?DGBw0JMKWqCCrDDx3jgdqOe+LJc73dL4hAuKF58bUChtyh31y2q15cg+sAD/?=
+ =?us-ascii?Q?eWH+JSmsF22vwP+iMiqkXWG1IozwpY1XsogHHAWgSUrXHWIJT5Ik3tBzKiSH?=
+ =?us-ascii?Q?SLngESBcb1Hfz0c5YphWbD7GEuWfjyJ+m6oQxfY19L+w29N171FwU0qkndAI?=
+ =?us-ascii?Q?rw=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	5cFCyvjVl64eVzZKKrlAQWed7qg1yOcgLcUP9FtcZqnMe08lX8Dbo9BRWiTForsgDOyvUoySaYmZeEpF+ublMUehASAGEpWmmI8Mj2MmfPYlDTcTwmGGgtIL8/gZ2UK9G7nION8qi5pYFb8JlzQf1tWxcXrwRGdtC4jZk4vRxalF8QSI18O03ChTWWJPZLFBmeDdVP5VypuufhQhZzIV2jxw3skjF2TTpBomwkGaDz+Gba9pp+nLMYt7rxsWJcoDlnPw2ljRJ4PN9/e54n2jtrzvIKa+zfAN/OAd7w9cowJghbapnwx6a3ZMXdyJgIEmK86mC4tzNHRq5CFdiuoaDV1vedB18oxmcVzlBgzrgy3gCnm5ZQMXWEeIyG8moXLEgNGzxmrftvDft1xvldWVaST9hWOwieX2RfU/X7vOYNTYFgSDVoCORcxuz6WaBRE6DI1vsDvpzziHyrAZvhpb/T8lJ1Ibli6uVEcOxwwLg5/qPKgQiMUpDwwTFyXLOzQJnx1nnL6gx5cL1JKcrkAipspFeYgirEwn+EuO+WlxOfa4cJI40l+/6d3iM7sj0e9x6S1aahmIemHyApwQm7G4aQwn6AI4MxneW0O5Q2UAdtc=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2ebafd5e-54b4-47d0-5593-08ddceb760f9
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2025 15:36:30.3363
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2025 15:48:35.9017
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /VfuxnOMmyBt4kw39byv0w+Hg+lXoO2Sbs9ePmFXRE/WAb67O/IvehvGoJVC+P13
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5718
-X-Stat-Signature: s3qxbj7q1gq1sabtbwz1d7san68awat8
-X-Rspamd-Queue-Id: 4710E20013
-X-Rspamd-Server: rspam10
+X-MS-Exchange-CrossTenant-UserPrincipalName: DZU2ry0K+cLU2s0gegTmqwaKDf6WhpGCxoGiR96K7O4X78kL0ot6MCElwfHDJ8dfrQcriqfIsLsAsZ4lo/7IOmkiErV6n2xZTn5GitiBwIs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR10MB7926
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-29_03,2025-07-28_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 bulkscore=0
+ suspectscore=0 mlxscore=0 phishscore=0 spamscore=0 adultscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2505160000 definitions=main-2507290121
+X-Authority-Analysis: v=2.4 cv=OvdPyz/t c=1 sm=1 tr=0 ts=6888ed5e b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=Wb1JkmetP80A:10 a=GoEa3M9JfhUA:10 a=i0EeH86SAAAA:8 a=19IWuELmRu5mVkkd7pAA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: 4zPIhVKetFfFecK8FWZwfEHt6yuxpXua
+X-Proofpoint-ORIG-GUID: 4zPIhVKetFfFecK8FWZwfEHt6yuxpXua
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI5MDEyMSBTYWx0ZWRfX9p3qiv9qwSe3
+ +JNW5VcSCdiXU+exei7vkAjNozQtitnxfaZI9CpAncShPfhCp99IC/JJpw2QiVMQFsa0CCOBXfn
+ ZkcPyp+ZTnODOSsfz+DaI6ao2vqd4Arou6T47ClGeBO0vre8SwT1YguVOTcE33OvH5HsEy9r/Ih
+ 8WXrdbS363anTFIqzKOYhHFnwRr/IHXERWJcUIf3gl+HwwMSH32fAqj5FL+RExwy9/7i8G28e6/
+ UC7YpdaBUMWYNJt/fdDn15EDh8viqsi66HZCYxeA3WHZoxGmDEjLCNfDpVYcXPBRJI6Cmr3SkEX
+ ClsY8e5BwM6jm9LK0oFm8IvpV39Td7aNrPB3EvsK9iXKZ1KYQg05jMJT+sVjp+LJOslxvYIj3YQ
+ 0rHIHszEg57JV+poftZxFgkOAx/LzBa5DJ3Ofy1ofwlTdTcYKb0juhTePXLt7151h8T54wn8
 X-Rspam-User: 
-X-HE-Tag: 1753803394-658763
-X-HE-Meta: U2FsdGVkX19SdKl7aWe0TRd/mlD6FSlKoMpi2hq8Iz0dtTZMvhu4n14h6gQ8Qe/eePGcmFLUXFh2tqPJyrIlbNb+jNehJ+WFvnJZKUeN0mdy1BOgVL8g3kK3H0+RWoz/k873fTNHGLSX7Fvho0AAf3V6zTdmQTJTZoeGQybEGzaeoaecnjbEv4D6WgZ7SWwvY3LS3jSlmysKcNsJu69HI9BLx+BgFDhrHqGWRkJ48sOGJh1sSEJHmjMLH4zIZlP0s7RYCxY3D93KwLVrQ6WwWSZhlN8u2jgd1uNvYx9/77b22IAn/fs9IQZS2ocXzJeyqXgGXDOHQNal3uQMkncaiAEvupXchGeqOz5ZOtuqlafYGsXWpM0yc8752cRhQsDYLN2DNPK10wdgcYE4V4cBpAAliXOCriOQOuoDYRpO1huy0xr1hdXhZngSjJUlg37gHSpNyrrQ17wyid9oqdruJmaSyJw24oOuS4BIhT23oC+vEusSvO6LtTnzuIrvH2tNu9jTx61fUxwRswUSz28En834ZK1M1lT/luNBQ/7nLw2rQ0bz2zAWY+kAzsSKvjjhkscQo6SzoaLOKHSbUegdZ5EItxOC58vk4HkeNTfxxZDefOWXuBT88+C0xLBMs4zru14mm714ARC6F0WlFZU5xTiWDot/ToS+rI98ayO64u9K3WvCXdQB3Vh6fSFW7uHG2scnWbQ8i+gixKb615Mje1njbxZkeZFHchWYj2mmmy+4fKADm3nzouaebsKjw+LtzD3vHxEmwW4R4IyUaBPRoXHUF3d6c1SvsNlzGsxan8TPy39GRmNTZjhlsI/s6xruPqxhlzhvLAabtOG4mYJEjJA+Y4wRZ79YrEH1786fAVMCTo7na2PXe2b7VOIDSkXW/o1SIaqYbBTwHK2xo1NOpqPFn9uBLBvHYTc9dfzr6yZQ9K1Yzsh8OKQz9rrY27E4MeXApyisCKJmI7XDAtV
- +Ubzf+M/
- B0F77vRoW+0F3ez7n3wS518+7juQh8+2xeCI9KtWlRcERvAbXZ4ieP/fNRNwPLSxbYfb+gojG7IF9rtD8LTIZOiz1w2ZGhaT3KgAilID17K325rNoUpzupwtlSB1HfcDZjuxzJ5RGNORgHNTBHLsXQuyu/vPMV/0URSYkmbsxzaxdNZBZJghiBof6XWsaVNHcSCdHLMsUqaa9eCQprORQwU8DUr4MYLyVX5QGLDMC1q/lVUBqtjYmoEdUisV+8JanhVZ7hXiJXwzRMVKAztAlpFUTRacMtyXcbDSyTgE8KenusmvEx/2jKi5Cei5UY3Sb9IR4M8u6M80ali1Q5KBxpxwu0mB2UeTXQZd9j/6VdC4GlPWgdcJmmE/LKMGOCsKsHAtazgR6lpS47EJkXLjbAnt+U2IA1rbOSSf4m3Go7mMVtsZvU1JrjDAUBxT2W4a/I/F7eSp7k4qaLPEptD19g9Hie7+/wUeqqE43SX4dLqvsyGEEhGYMYXTUUyfwvdalGpOBvXh0l6pOcoUoFW1pFjbOmYTZv7jtpJak9ZF7d3H9IwI=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 57AA2C000C
+X-Stat-Signature: phphsuun75j6n7rys4m6whkohinq9q56
+X-HE-Tag: 1753804147-622441
+X-HE-Meta: U2FsdGVkX18H/8/F7oWVlPvU0GvE724GmvlTfjO5VVPltj8rOvtcZeTb1bXwuKBMhvNaE98j+drGt5TMg4BNl7UReST8MSdyLDpJ2QxPn3XzJ1qNRk8dOIAgpMV72SszpeqTwJqfNWMIsmSIp4MlnInNdhO8bbpyqoZbJ8D7NnbddODMjT9v7NyMOlYSCdWBkkDSv2FquF7MKcAIVUcYGQWegOeXieItX5yAAspWbahaFEyj/jEsBXsBTOcQDSRiNyHP08ge0Xzpy0t2OlnNMXqjGZLSToYN9yVukOHGWtfCaNtkz7xMfFVmU3jPX6dWrClSySgq6QhRR4UshaK6JcBHZRLuL3svdudBSAxUsNXp8szg4wuP+mDFU27y4NKBHtomyigCT6b4xu5rMefJ0mm7KQFqnuH/4tkODKl7VlbU0ePRvrF+cawzahqI3WX8XNSwGLz44ZxT+lCCPsX+tPnCkH5ZDdVJC2LywGik7xNjVS9UslO/8ycmA0aK4ACqBkx8VN448jsnHd3FyOCK7yryubm1/GO02moYNeS8JIOetxcZBQeVYx3FAxOjaOAwX4WE+qhx3tA4e2LgI5cdV3TXaaxGJT2aVuQccmYSjdYtKsFGxuURNtcRbUWDNRKMMEo2Il+Vx9zFvTpdHBXQTqpGQ0kiCy8QRqsNDJ80GaViwvZSROEIqtpr7c7KpMBXiLdq4HD3FbxVVdcuk4JE2Kk6AavzrJKvNjxOrBqTvMUb8cpTXN9gxelkimduCnbh4ZOSypaJaPYOy21snjrZHtt7NizPlgSiu95jlgE0RjAAkulbdYD1wO7yXKfHo2GSoKuX7OSvXx2dLX+6hnGbiSR8uKxbbdBR0GAUnFfzUMuMMkYpeAWKeI+NgYxVI0TlEuZ3ukblmq2NlT5Ig5R0uSFyJ/q22GhBblx7Em/j3WWdVzsasSqCZJ300JzNro0eN4Gy5wLBG5711X2lb4N
+ vTCa5DzB
+ v4cLOm+27vIfAkJWQnVp7A50CZzLg5h6AnlOf6z4YIylfNrHayAfCb0rg+aqps2A4ckEfuVJw5T1eNTAF4v1Yg2GS2zvYPVS4CSRUFqW1Dp8ZshL4rSa7iwP17YS+iXbATiHWScmGTsLP7E2x4JUkXgVFw3qKwl+RcE2gjk+kujF98snN0bXyu4qcccyqY9Y6LS1IY7jTAbLC082zqE5ioGZ9piU4LZodICJP8v2mR/9/s9fAIyosZ2jf9S45aWfgShexuZ/HqOp3bfMFaK7WQPHJ6pIjqSnlVAqKshuw5/50TIiEormgSMd6vGwKskmBIxLWFG0H6GWASn1r0JGC9Zdu3ZicFkNUuzGDs3s17B54X5wN2Ie6LDZ7lw5yn81YgZpMQTzPiv+XKEX8BdFzgdUv2NIYDxN7Vg3+Y2tK8mVPnXC1TJfbM0iJrhW2m+tkGZ5UFkyDLlsNyCc+sDTlZe+PJpZ+J6hdC3yttK0Wt8s1yi3/Mw+Kd0WsS4mU5rSZJiVu6fJItqgiMG0mLzhoX4jwR5DnRhhV8x+XSb56GKZ+IJCSxrI/TqfNhfy+3pAgvfZ9kDtt/45SkvzOFykEk/8e0QbQ163PpI+lD1H8WlQA/MmHzbeNoJ4d6rtuzVqJHhlWJpJixkCi0CEWBN4DZMkEyRKaPqpytcJoyTkul6+ZuFv3vWWENSFxtCrLly/3/Z9mgzOu0WS1J6cOiiJRU2jOoShFNLRC7gqNYZvk4FvqNzcWxtzCJNPVI6d8C1nNXEfK63PC8vlx0BE4sc3i2IDheRF45s0HOJqj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -187,367 +229,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 29 Jul 2025, at 5:18, Yafang Shao wrote:
+On Tue, Jul 29, 2025 at 09:49:41PM +0800, Zhang Qilong wrote:
+> By default, THP are usually enabled. Mapping /dev/zero with a size
 
-> This self-test verifies that PMD-mapped THP allocation is restricted in=
+Err... we can't rely on this.
 
-> page faults for tasks within a specific cgroup, while still permitting
-> THP allocation via khugepaged.
+As per below comments on code, I'd update this to say something about fallback
+if it's not.
+
+> larger than 2MB could achieve performance gains by allocating aligned
+> address. The mprot_tw4m in libMicro average execution time on arm64:
+>   - Test case:        mprot_tw4m
+>   - Before the patch:   22 us
+>   - After the patch:    17 us
 >
-> Since THP allocation depends on various factors (e.g., system memory
-> pressure), using the actual allocated THP size for validation is
-> unreliable. Instead, we check the return value of get_suggested_order()=
-,
-> which indicates whether the system intends to allocate a THP, regardles=
-s of
-> whether the allocation ultimately succeeds.
->
-> Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+> Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
+
+This looks ok to me because there's a precedent for using
+thp_get_unmapped_area() directly as a file_operations->get_unmapped_area e.g. in
+ext4.
+
+We also simply (amusingly, or perhaps not hugely amusingly, rather 'uniquely')
+establish an anonymous mapping on f_op->mmap via mmap_zero() using
+vma_set_anonymous(), so we can rely on the standard anon page memory faulting
+logic to sort out the actual allocation/mapping of the huge page via:
+
+__handle_mm_fault() -> create_huge_pmd() -> do_huge_pmd_anonymous_page() etc.
+
+So everything should 'just work', and fallback if not permitted.
+
+So in general seems fine.
+
 > ---
->  tools/testing/selftests/bpf/config            |   2 +
->  .../selftests/bpf/prog_tests/thp_adjust.c     | 183 ++++++++++++++++++=
+>  drivers/char/mem.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/drivers/char/mem.c b/drivers/char/mem.c
+> index 48839958b0b1..c57327ca9dd6 100644
+> --- a/drivers/char/mem.c
+> +++ b/drivers/char/mem.c
+> @@ -515,10 +515,12 @@ static int mmap_zero(struct file *file, struct vm_area_struct *vma)
+>  static unsigned long get_unmapped_area_zero(struct file *file,
+>  				unsigned long addr, unsigned long len,
+>  				unsigned long pgoff, unsigned long flags)
+>  {
+>  #ifdef CONFIG_MMU
+> +	unsigned long ret;
+> +
+>  	if (flags & MAP_SHARED) {
+>  		/*
+>  		 * mmap_zero() will call shmem_zero_setup() to create a file,
+>  		 * so use shmem's get_unmapped_area in case it can be huge;
+>  		 * and pass NULL for file as in mmap.c's get_unmapped_area(),
+> @@ -526,10 +528,13 @@ static unsigned long get_unmapped_area_zero(struct file *file,
+>  		 */
+>  		return shmem_get_unmapped_area(NULL, addr, len, pgoff, flags);
+>  	}
+>
+>  	/* Otherwise flags & MAP_PRIVATE: with no shmem object beneath it */
 
->  .../selftests/bpf/progs/test_thp_adjust.c     |  69 +++++++
->  .../bpf/progs/test_thp_adjust_failure.c       |  24 +++
->  4 files changed, 278 insertions(+)
->  create mode 100644 tools/testing/selftests/bpf/prog_tests/thp_adjust.c=
+Let's add a comment here like:
 
->  create mode 100644 tools/testing/selftests/bpf/progs/test_thp_adjust.c=
+	/*
+	 * Attempt to map aligned to huge page size if possible, otherwise we
+         * fall back to system page size mappings. If THP is not enabled, this
+         * returns NULL and we always fallback.
+	 */
 
->  create mode 100644 tools/testing/selftests/bpf/progs/test_thp_adjust_f=
-ailure.c
+I think it'd be sensible to have an #ifdef CONFIG_TRANSPARENT_HUGEPAGE here,
+because thp_get_unmapped_area() does the fallback for you, and then otherwise
+we'd be trying it twice which is weird.
+
+E.g.:
+
+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+	return thp_get_unmapped_area(file, addr, len, pgoff, flags);
+#else
+	return mm_get_unmapped_area(current->mm, file, addr, len, pgoff, flags);
+#endif
+
+> +	ret = thp_get_unmapped_area(file, addr, len, pgoff, flags);
+> +	if (ret)
+> +		return ret;
+>  	return mm_get_unmapped_area(current->mm, file, addr, len, pgoff, flags);
+>  #else
+>  	return -ENOSYS;
+>  #endif
+>  }
+> --
+> 2.43.0
 >
 
-The program below will only work on architectures with 4KB base page
-and PMD order is 9. It is better to read base page size and PMD page size=
-
-from the system.
-
-
-
-> diff --git a/tools/testing/selftests/bpf/config b/tools/testing/selftes=
-ts/bpf/config
-> index f74e1ea0ad3b..0364f945347d 100644
-> --- a/tools/testing/selftests/bpf/config
-> +++ b/tools/testing/selftests/bpf/config
-> @@ -118,3 +118,5 @@ CONFIG_XDP_SOCKETS=3Dy
->  CONFIG_XFRM_INTERFACE=3Dy
->  CONFIG_TCP_CONG_DCTCP=3Dy
->  CONFIG_TCP_CONG_BBR=3Dy
-> +CONFIG_TRANSPARENT_HUGEPAGE=3Dy
-> +CONFIG_MEMCG=3Dy
-> diff --git a/tools/testing/selftests/bpf/prog_tests/thp_adjust.c b/tool=
-s/testing/selftests/bpf/prog_tests/thp_adjust.c
-> new file mode 100644
-> index 000000000000..31d03383cbb8
-> --- /dev/null
-> +++ b/tools/testing/selftests/bpf/prog_tests/thp_adjust.c
-> @@ -0,0 +1,183 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#include <sys/mman.h>
-> +#include <test_progs.h>
-> +#include "cgroup_helpers.h"
-> +#include "test_thp_adjust.skel.h"
-> +#include "test_thp_adjust_failure.skel.h"
-> +
-> +#define LEN (16 * 1024 * 1024) /* 16MB */
-> +#define THP_ENABLED_PATH "/sys/kernel/mm/transparent_hugepage/enabled"=
-
-> +
-> +static char *thp_addr;
-> +static char old_mode[32];
-> +
-> +int thp_mode_save(void)
-> +{
-> +	const char *start, *end;
-> +	char buf[128];
-> +	int fd, err;
-> +	size_t len;
-> +
-> +	fd =3D open(THP_ENABLED_PATH, O_RDONLY);
-> +	if (fd =3D=3D -1)
-> +		return -1;
-> +
-> +	err =3D read(fd, buf, sizeof(buf) - 1);
-> +	if (err =3D=3D -1)
-> +		goto close;
-> +
-> +	start =3D strchr(buf, '[');
-> +	end =3D start ? strchr(start, ']') : NULL;
-> +	if (!start || !end || end <=3D start) {
-> +		err =3D -1;
-> +		goto close;
-> +	}
-> +
-> +	len =3D end - start - 1;
-> +	if (len >=3D sizeof(old_mode))
-> +		len =3D sizeof(old_mode) - 1;
-> +	strncpy(old_mode, start + 1, len);
-> +	old_mode[len] =3D '\0';
-> +
-> +close:
-> +	close(fd);
-> +	return err;
-> +}
-> +
-> +int thp_set(const char *desired_mode)
-> +{
-> +	int fd, err;
-> +
-> +	fd =3D open(THP_ENABLED_PATH, O_RDWR);
-> +	if (fd =3D=3D -1)
-> +		return -1;
-> +
-> +	err =3D write(fd, desired_mode, strlen(desired_mode));
-> +	close(fd);
-> +	return err;
-> +}
-> +
-> +int thp_reset(void)
-> +{
-> +	int fd, err;
-> +
-> +	fd =3D open(THP_ENABLED_PATH, O_WRONLY);
-> +	if (fd =3D=3D -1)
-> +		return -1;
-> +
-> +	err =3D write(fd, old_mode, strlen(old_mode));
-> +	close(fd);
-> +	return err;
-> +}
-> +
-> +int thp_alloc(void)
-> +{
-> +	int err, i;
-> +
-> +	thp_addr =3D mmap(NULL, LEN, PROT_READ | PROT_WRITE, MAP_PRIVATE | MA=
-P_ANON, -1, 0);
-> +	if (thp_addr =3D=3D MAP_FAILED)
-> +		return -1;
-> +
-> +	err =3D madvise(thp_addr, LEN, MADV_HUGEPAGE);
-> +	if (err =3D=3D -1)
-> +		goto unmap;
-> +
-> +	for (i =3D 0; i < LEN; i +=3D 4096)
-> +		thp_addr[i] =3D 1;
-> +	return 0;
-> +
-> +unmap:
-> +	munmap(thp_addr, LEN);
-> +	return -1;
-> +}
-> +
-> +void thp_free(void)
-> +{
-> +	if (!thp_addr)
-> +		return;
-> +	munmap(thp_addr, LEN);
-> +}
-> +
-> +void subtest_thp_adjust(void)
-> +{
-> +	struct bpf_link *fentry_link, *ops_link;
-> +	struct test_thp_adjust *skel;
-> +	int err, cgrp_fd, cgrp_id;
-> +
-> +	err =3D setup_cgroup_environment();
-> +	if (!ASSERT_OK(err, "cgrp_env_setup"))
-> +		return;
-> +
-> +	cgrp_fd =3D create_and_get_cgroup("thp_adjust");
-> +	if (!ASSERT_GE(cgrp_fd, 0, "create_and_get_cgroup"))
-> +		goto cleanup;
-> +
-> +	err =3D join_cgroup("thp_adjust");
-> +	if (!ASSERT_OK(err, "join_cgroup"))
-> +		goto close_fd;
-> +
-> +	cgrp_id =3D get_cgroup_id("thp_adjust");
-> +	if (!ASSERT_GE(cgrp_id, 0, "create_and_get_cgroup"))
-> +		goto join_root;
-> +
-> +	if (!ASSERT_NEQ(thp_mode_save(), -1, "THP mode save"))
-> +		goto join_root;
-> +	if (!ASSERT_GE(thp_set("madvise"), 0, "THP mode set"))
-> +		goto join_root;
-> +
-> +	skel =3D test_thp_adjust__open();
-> +	if (!ASSERT_OK_PTR(skel, "open"))
-> +		goto thp_reset;
-> +
-> +	skel->bss->cgrp_id =3D cgrp_id;
-> +	skel->bss->target_pid =3D getpid();
-> +
-> +	err =3D test_thp_adjust__load(skel);
-> +	if (!ASSERT_OK(err, "load"))
-> +		goto destroy;
-> +
-> +	fentry_link =3D bpf_program__attach_trace(skel->progs.thp_run);
-> +	if (!ASSERT_OK_PTR(fentry_link, "attach fentry"))
-> +		goto destroy;
-> +
-> +	ops_link =3D bpf_map__attach_struct_ops(skel->maps.thp);
-> +	if (!ASSERT_OK_PTR(ops_link, "attach struct_ops"))
-> +		goto destroy;
-> +
-> +	if (!ASSERT_NEQ(thp_alloc(), -1, "THP alloc"))
-> +		goto destroy;
-> +
-> +	/* After attaching struct_ops, THP will be allocated only in khugepag=
-ed . */
-> +	if (!ASSERT_EQ(skel->bss->pf_alloc, 0, "alloc_in_pf"))
-> +		goto thp_free;
-> +	if (!ASSERT_GT(skel->bss->pf_disallow, 0, "alloc_in_pf"))
-> +		goto thp_free;
-> +
-> +	if (!ASSERT_GT(skel->bss->khugepaged_alloc, 0, "alloc_in_khugepaged")=
-)
-> +		goto thp_free;
-> +	ASSERT_EQ(skel->bss->khugepaged_disallow, 0, "alloc_in_pf");
-> +
-> +thp_free:
-> +	thp_free();
-> +destroy:
-> +	test_thp_adjust__destroy(skel);
-> +thp_reset:
-> +	ASSERT_GE(thp_reset(), 0, "THP mode reset");
-> +join_root:
-> +	/* We must join the root cgroup before removing the created cgroup. *=
-/
-> +	err =3D join_root_cgroup();
-> +	ASSERT_OK(err, "join_cgroup to root");
-> +close_fd:
-> +	close(cgrp_fd);
-> +	remove_cgroup("thp_adjust");
-> +cleanup:
-> +	cleanup_cgroup_environment();
-> +}
-> +
-> +void test_thp_adjust(void)
-> +{
-> +	if (test__start_subtest("thp_adjust"))
-> +		subtest_thp_adjust();
-> +	RUN_TESTS(test_thp_adjust_failure);
-> +}
-> diff --git a/tools/testing/selftests/bpf/progs/test_thp_adjust.c b/tool=
-s/testing/selftests/bpf/progs/test_thp_adjust.c
-> new file mode 100644
-> index 000000000000..bb4aad50c7a8
-> --- /dev/null
-> +++ b/tools/testing/selftests/bpf/progs/test_thp_adjust.c
-> @@ -0,0 +1,69 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#include "vmlinux.h"
-> +#include <bpf/bpf_helpers.h>
-> +#include <bpf/bpf_tracing.h>
-> +
-> +char _license[] SEC("license") =3D "GPL";
-> +
-> +#define TVA_IN_PF (1 << 1)
-> +
-> +int pf_alloc, pf_disallow, khugepaged_alloc, khugepaged_disallow;
-> +int cgrp_id, target_pid;
-> +
-> +/* Detecting whether a task can successfully allocate THP is unreliabl=
-e because
-> + * it may be influenced by system memory pressure. Instead of making t=
-he result
-> + * dependent on unpredictable factors, we should simply check
-> + * get_suggested_order()'s return value, which is deterministic.
-> + */
-> +SEC("fexit/get_suggested_order")
-> +int BPF_PROG(thp_run, struct mm_struct *mm, unsigned long tva_flags, i=
-nt order, int retval)
-> +{
-> +	struct task_struct *current =3D bpf_get_current_task_btf();
-> +
-> +	if (current->pid !=3D target_pid || order !=3D 9)
-> +		return 0;
-> +
-> +	if (tva_flags & TVA_IN_PF) {
-> +		if (retval =3D=3D 9)
-> +			pf_alloc++;
-> +		else if (!retval)
-> +			pf_disallow++;
-> +	} else {
-> +		if (retval =3D=3D 9)
-> +			khugepaged_alloc++;
-> +		else if (!retval)
-> +			khugepaged_disallow++;
-> +	}
-> +	return 0;
-> +}
-> +
-> +SEC("struct_ops/get_suggested_order")
-> +int BPF_PROG(bpf_suggested_order, struct mm_struct *mm, unsigned long =
-tva_flags, int order)
-> +{
-> +	struct mem_cgroup *memcg =3D bpf_mm_get_mem_cgroup(mm);
-> +	int suggested_order =3D order;
-> +
-> +	/* Only works when CONFIG_MEMCG is enabled. */
-> +	if (!memcg)
-> +		return suggested_order;
-> +
-> +	if (memcg->css.cgroup->kn->id =3D=3D cgrp_id) {
-> +		/* BPF THP allocation policy:
-> +		 * - Disallow PMD allocation in page fault context
-> +		 */
-> +		if (tva_flags & TVA_IN_PF && order =3D=3D 9) {
-> +			suggested_order =3D 0;
-> +			goto out;
-> +		}
-> +	}
-> +
-> +out:
-> +	bpf_put_mem_cgroup(memcg);
-> +	return suggested_order;
-> +}
-> +
-> +SEC(".struct_ops.link")
-> +struct bpf_thp_ops thp =3D {
-> +	.get_suggested_order =3D (void *)bpf_suggested_order,
-> +};
-> diff --git a/tools/testing/selftests/bpf/progs/test_thp_adjust_failure.=
-c b/tools/testing/selftests/bpf/progs/test_thp_adjust_failure.c
-> new file mode 100644
-> index 000000000000..b080aead9b87
-> --- /dev/null
-> +++ b/tools/testing/selftests/bpf/progs/test_thp_adjust_failure.c
-> @@ -0,0 +1,24 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#include "vmlinux.h"
-> +#include <bpf/bpf_helpers.h>
-> +#include <bpf/bpf_tracing.h>
-> +
-> +#include "bpf_misc.h"
-> +
-> +char _license[] SEC("license") =3D "GPL";
-> +
-> +SEC("struct_ops/get_suggested_order")
-> +__failure __msg("Unreleased reference")
-> +int BPF_PROG(unreleased_task, struct mm_struct *mm, bool vma_madvised)=
-
-> +{
-> +	struct task_struct *p =3D bpf_mm_get_task(mm);
-> +
-> +	/* The task should be released with bpf_task_release() */
-> +	return p ? 9 : 0;
-> +}
-> +
-> +SEC(".struct_ops.link")
-> +struct bpf_thp_ops thp =3D {
-> +	.get_suggested_order =3D (void *)unreleased_task,
-> +};
-> -- =
-
-> 2.43.5
-
-
-Best Regards,
-Yan, Zi
+In _theory_ we should do the thing in mmap() where we check the size is
+PMD-aligned (see __get_unmapped_area()), but I don't think anybody's mapping a
+bunch of /dev/zero mappings next to each other or using them in any way where
+that'd matter... So yeah let's not :)
 
