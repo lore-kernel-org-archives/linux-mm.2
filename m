@@ -2,120 +2,84 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EF354C87FCB
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 00:53:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BA51C83F26
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 00:59:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 755B56B0088; Mon, 28 Jul 2025 20:53:58 -0400 (EDT)
+	id B2F556B007B; Mon, 28 Jul 2025 20:58:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72D386B0089; Mon, 28 Jul 2025 20:53:58 -0400 (EDT)
+	id AE03D6B0089; Mon, 28 Jul 2025 20:58:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66A4C6B008A; Mon, 28 Jul 2025 20:53:58 -0400 (EDT)
+	id A1CFA6B008A; Mon, 28 Jul 2025 20:58:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 58D046B0088
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 20:53:58 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C9E91133D8F
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 00:53:57 +0000 (UTC)
-X-FDA: 83715480114.01.519EB7B
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9012420005
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 00:53:55 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	spf=pass (imf13.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753750436; a=rsa-sha256;
-	cv=none;
-	b=UAR5DoZbuptUvc5R08eF0OJBDWP1jRPCmjCSEH/Vjy03X56gZkiR3SMvDXr1nc/HdqOllw
-	bafCK52a+ymDILNKlAz/aAuy4af8cTlkbgKArBzK1wR8oh0j78vshgIlC1KoGpG23XHVWr
-	rfz4UqLKwEpJK9a3j0EKdRN/RiRgwNo=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 94DE56B007B
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 20:58:59 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 21D5359001
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 00:58:59 +0000 (UTC)
+X-FDA: 83715492798.13.C4393DD
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 1EBF3180004
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 00:58:55 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=xrwEEQVv;
+	spf=pass (imf24.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753750435;
+	s=arc-20220608; t=1753750737;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cxXsokvgg2CpkCcmwdiuoNxZKNsJOfi1ZAxH0GtOnnc=;
-	b=Cdz5Emu6noRmxOSKvNFHmTPkBk6CUbowCh0N1Ni6EV2oXgwzE3wRj9ltyVRxQknnElrKv/
-	l/ID9kc5BMkVjoBX393x4WQOUNQPZVWQDLA6Dr8Od/sbd9w9z2drCtLP9FLuOf+hNLpFrN
-	NnnC+NT/L/pcZfx8Fcb98OIGpHliJ2w=
-X-AuditID: a67dfc5b-669ff7000002311f-fd-68881ba231f0
-Date: Tue, 29 Jul 2025 09:53:48 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Mina Almasry <almasrymina@google.com>
-Cc: Pavel Begunkov <asml.silence@gmail.com>, linux-mm@kvack.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel_team@skhynix.com, harry.yoo@oracle.com, ast@kernel.org,
-	daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org,
-	hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
-	saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com,
-	mbloch@nvidia.com, andrew+netdev@lunn.ch, edumazet@google.com,
-	pabeni@redhat.com, akpm@linux-foundation.org, david@redhat.com,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	horms@kernel.org, jackmanb@google.com, hannes@cmpxchg.org,
-	ziy@nvidia.com, ilias.apalodimas@linaro.org, willy@infradead.org,
-	brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
-	usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
-	toke@redhat.com, bpf@vger.kernel.org, linux-rdma@vger.kernel.org
-Subject: Re: [PATCH v2] mm, page_pool: introduce a new page type for page
- pool in page type
-Message-ID: <20250729005348.GB56089@system.software.com>
-References: <20250728052742.81294-1-byungchul@sk.com>
- <fc1ed731-33f8-4754-949f-2c7e3ed76c7b@gmail.com>
- <CAHS8izO6t0euQcNyhxXKPbrV7BZ1MfuMjrQiqKr-Y68t5XCGaA@mail.gmail.com>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8sHiU/z1+EfhzcvKq8hAl8DbAdb9A/SIystch4PdxfY=;
+	b=8f4gA74rkVODs2dDnCAbuUrprjkA6lItrl28A2v4iBYTlWhWq/W3hk1ydK+DakxPfTN6xJ
+	+Gy7zn1MLxoy3NmzFrBkIBPGduuRwWRAfT4O9AxKAcH5iX8lwE+w3youh6IX51+GkKmeBQ
+	iNjheTRdZ7I2RzHsevV8qidywJPVvBY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753750737; a=rsa-sha256;
+	cv=none;
+	b=yN431iicE2QWaUf5LTeBZ9/G88y+Be1IMcgcDlL9enDpMVPrKTe5F+RAySQlzOosBwVjkH
+	Wnf0lucMRanq6UDu/2wmbW136HwXjh/AGaU8UQFVVsqeI288mop4SsNNAiWWNPvWG/EDfq
+	sS3YQ4c4fo0LS0rYuD5ou4w7DwFss5U=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=xrwEEQVv;
+	spf=pass (imf24.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1753750733; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=8sHiU/z1+EfhzcvKq8hAl8DbAdb9A/SIystch4PdxfY=;
+	b=xrwEEQVve1hdA7jvf2x78zvLftnNc7oSXsyb08K9sz45qxTk2ofcEPWhyoPpJeDrT+N44ncLGhT+xbJp5jShxIgeFj3RViQ4oE8x4y+rebetnn2ZvgGsKDWVOP49ReOwi5MxMNJioIqkUD/gJRN6JAmvNxfF8/GMjbKdPu/8zfM=
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WkNec9L_1753750730 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 29 Jul 2025 08:58:50 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,  David Hildenbrand
+ <david@redhat.com>,  Johannes Weiner <hannes@cmpxchg.org>,  Zi Yan
+ <ziy@nvidia.com>,  Matthew Brost <matthew.brost@intel.com>,  Rakie Kim
+ <rakie.kim@sk.com>,  Byungchul Park <byungchul@sk.com>,  Gregory Price
+ <gourry@gourry.net>,  Alistair Popple <apopple@nvidia.com>,
+  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,  kernel-team@meta.com,
+ Dave Hansen <dave.hansen@linux.intel.com>
+Subject: Re: [PATCH] mempolicy: Clarify what RECLAIM_ZONE means
+In-Reply-To: <20250728145109.1524733-1-joshua.hahnjy@gmail.com> (Joshua Hahn's
+	message of "Mon, 28 Jul 2025 07:51:07 -0700")
+References: <20250728145109.1524733-1-joshua.hahnjy@gmail.com>
+Date: Tue, 29 Jul 2025 08:58:49 +0800
+Message-ID: <87tt2v24om.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHS8izO6t0euQcNyhxXKPbrV7BZ1MfuMjrQiqKr-Y68t5XCGaA@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SWUwTURSGvXOnM0OlZCgoV4lBq8QI7vHhuMTlQb0xajQa4xIjjUxsIyAW
-	RTAxKdIIEltco5ZKcEE2tabsClTL6gqpYOoKIsVEEBWEgDQqlRh5+/Of//zfeTgCVj6XTRa0
-	MYckXYw6SsXJWfkX36tzrgWnauZbW/3BYr3FQcFgAuS0lcnAkl+C4MfQGx5+V9Yh6Kup56Cr
-	uhfB9asDGCyNBhb6rT8xuOvaeSiwbYDWm50sVKSUYmhPb+DAaBjGUDnUw8PxslwGLIV6HppK
-	TDI4/zMbQ6m+jYcX9ywcvL/1WwadDiMLj8x5LHy7UIOh1bQS6rImwsCTbgQ11lIGBk5d4aDl
-	8j0GzjmzOPhoaEXgrG5n4YInlYOMJBOC4cGRtp7TP2SQUfueXxlGq7u/YlqU94qhrqrHDC03
-	v+Nplu0wLcwNo2kuJ6a2/JMctfWe5enblxUcbbg0zNLyD4tpeVkfQ43JPRz97n7N0q9VLdym
-	gJ3yZZFSlDZe0s1bHiHXeO4M87H9fgnJjalYjzLHpyEfgYiLSJunn/unG5pPYK9mxVDiND3j
-	vZoTZxKXa+ivHyjOIjeqzsjSkFzAYjZPKuxGlIYEIUDcTe7al3ozChHI/a5PvDejFK2IDDXk
-	4NGBP3l0uYP1ajxS6sl0Yu8uFoNJzi9h1A4hycUZf20fcTO5fT7Aa08Qp5MHJfWMt5KI3QJp
-	e/BONnrzJPIw18WeRv7mMQTzGIL5P8E8hpCF2Hyk1MbER6u1UYvmahJjtAlz9x6ItqGRL7t5
-	zLOrDPU2bXEgUUAqX4XmZIpGKVPHxyVGOxARsCpQEZt9QqNURKoTj0q6A3t0h6OkOAcKFlhV
-	kGLhwJFIpbhPfUjaL0mxku7flBF8JuvRjlX7hPQWu5/7WAobmGBJ6viuiHhKPIIDO1pCL7rp
-	3fVdiutHloTPnng0opmuydg6Yxze9KtzfVfRt+0d00x7TGtDQjZveR1UHz3VVfvZTz/YbFxT
-	vHqafYqiuijo7UtNX1hoXQ6T7Ybi3WftBwv9fFfYN64y7Ej/TGoN67YlhavYOI16QRjWxan/
-	AEcuyGVhAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SfUzMcRzH9/19f/f7/TqOnyv81AxnClGefcis+cd3nlbzh7GZbvrN3fRw
-	u6tb2VBKzk1HZLguMup6wLVDXY90JcVa3MkiijzN2IUe9DTpmOm/917v9+f114fD8lKJP6eO
-	SxC1ccoYBSOlpTvC0pZeDTColpV8CgOL7QYDJYNJYH3jkICluAxB31AHC2M1jQh6Gx4y8KX+
-	B4JrVwcwWFrTaei3DWP40NjNQol9O3QVfKSh+kQ5hu7TTQxkpo9gqBnysHDMUUiB5XYKC/W5
-	zRJ4UmaSQPZwPobylDcsuCstDHTeGJPAR2cmDc3mIhq+nW/A0GUKh8a8GTDw+CuCBls5BQOn
-	chlou1RJwTlXHgPv0rsQuOq7aTg/amAgJ9WEYGRw3OY50yeBnAedbHgwqf/ag8mdohcUaa99
-	RJEK82uW5NkTye3CxcTY7sLEXnySIfYfZ1ny6nk1Q5oujtCk4u06UuHopUhmmoch3z+8pElP
-	bRsT4bdHuiFajFHrRW3oxiipavTWCKvpn5KU1mrAKejyJCPy4QR+ldD0LAN7M80vEFymFtab
-	GT5IaG8f+sP9+EXC9dosiRFJOczns0L1vUxkRBzny+8VSu+FeTcyHoSqL59Y70bO25Aw1GTF
-	f4tpQvOl97Q343Hp6GUX9t5iPkCw/uL+4jlC2t2cP9iHjxRuZvt68XR+vnC/7CF1Bk0xTxCZ
-	J4jM/0XmCaI8RBcjP3WcPlapjlkdojuoSo5TJ4Xsj4+1o/E/Kjg8muVAfe7NTsRzSDFZpjp5
-	QiWXKPW65FgnEjis8JNp8jNUclm0MvmQqI3fp02MEXVOFMDRipmyLbvEKDl/QJkgHhRFjaj9
-	11Kcj38Kuha0RPN0paeoOHtqQem2uo7ywvSFvQ8iTkdaXNZUeDs5sEMxq8rtvFJ74YjhuH6t
-	9WcN9G9SzYsQs9a0Dkd6tlaFJkKdvmcFhzU2yqKgf+3Gn7emboienV0Z3hLo7iiLeuE796ih
-	IJ6a8Yiw603Xc1t3Ooxu09z14XdjUfBZBa1TKZcvxlqd8jfKgS4ZQwMAAA==
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=ascii
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 1EBF3180004
+X-Stat-Signature: ko6w68pqxnqzfayzzepmnsieisewtm33
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9012420005
-X-Stat-Signature: q9zonmhw16cjxub74oe8rk8seo3zyfwm
-X-HE-Tag: 1753750435-192174
-X-HE-Meta: U2FsdGVkX18fqLetZrU7eXoD/fqA2F60T+lY13NAa505WMvKQOvwrccuKX6zRFwPDW+LxRLJmFhF5iYx8Hn/SLPuJMs1NmVpogQWeKaXZFPt/CG4xJI8qiG6KGdoGhdfjUt1IvSeAxddSJP6C1W3voFXisLWRlxCn23r98Lo8z+hZI32LtfRr45zy5bZz8TQVuQ2XjGfvlPAvPV38Ssg27gLKEcjjeqwfSlL0dz7nIcJEP7omwxwk4jjR9YWgg9ey0IwudwNx9ba5GqZT9chwRdD448PFY2qWBspsw7p9ZCYnAoiQX8oqhZlrptPFixr3scFrfDxcYyzTEHRm6y7G1peva4C0wc7DvKd3nnxhWyFL90oPg4gSK5HLoj9Fu9fBMV275CMsTxm+kmMJvdFYJguaKNcpMkKpx0R3uvxGvXmUF4Q2MMChd2Fn8HUgoBef9P6ViJa06HxdFBuEEQo03q+skqTUZsvtBO26jxqK9/3VF7s2yDpPLku1NR6Q5kb3wsRGter01Djjh5vmvUKVJy4sX0FBh6VLynjPtjJuapoho/vaSuLy/jDdSO2z5PAdPtNXqrcc2ciN3rCBdccnR7Nj1Ceao6RGx4h5PCbckUynHJK02+cM6m4ulQFOgiPJFTvxRhG6IIzFjH9ri5bghxmQkZbE7AtRNl/Q5SBp4ZCVS37b/lfQooXAc5ZFHq3xirjKFATz5VpBQVYSS7Z7r62utZpJbMRwHbyG8NVfgjlk5dwE7u2pyi8Zi1iUp8ZYlGqya6+ZgS7py49D5ET2Lh+BcaeYyjdJwv+PxVm3EPAxCsBmswqTmYJxOiUsVsL6UEmvwAezM98Sul3Blc1FBXgnMlQwZ13SUhSVEqohM57iqi/mCElwkwviR7kbw/VxugBml0A6LeFxI+Fvp0rmv76J38sWnIltQnrD17h92mxDDK0T++o0xoPKlVJ4zI7vtbCKvTzaB+mzkZANZp
- 1buBtEXs
- tOcdM6IdAFnD3Dv7zI01MfQEMFAk3awrkHtP7GCK4q9iXvuloOY2wA/O/72EgM6+CieAOAXN3rP4FB6NSPNgePmhwfRPpXoWVDftUcC5XjJcoYlzNDh7ri29gzVaz5cKjhFCmRFoXZDulIx8=
+X-HE-Tag: 1753750735-925290
+X-HE-Meta: U2FsdGVkX19K4pmmMGcNbkZJTavZCv4AZecWkCYlsTUf+CZX+EaGyYkHKl1WCoQughzqzqlGLh0YqdKb0BxQ8hDCYCEqt7acQVx3hzM174wStU5esrn+NDZKzFoQpujzbjQtnRiWnpEYVwd037NEw8pFWJDK0jTPNOOtnayDGQo8hZ1HCvD4eVKf1F3cuKtmdY01MS9SKlrF1JwBN81gdpSzGFKzeFxHa3wOhZOVZv6Sfq8T6sHdFPYjod+s5bQBxYk8+5EMRzDoiT/mivDPbt+0rWypUriraOLrri6E6f2MwuALyY5aGkn9THzF0SM+csqOl/O0pnJyDkT16/cLtvEQc3hX7l6uisiiZOuExM3NAHYuHwUBmWVYmI+f8PGRyqTtJ9GSyx4CRNkHeMqDCHLSES5Z3Xrq0HlqnPXAGXJsm9yx2U+NFuzN6dAfdcOni2/YnwA9OGLPKaSjm5yOxkLLa2UaucmA5VR8NhXamJbByfeavFCgCi8fezjywhhNjiK9QItk9fjmr6MHh4fqTheXk0NKzmpBKR+SIAJNeN7/8YYuTJZuHJQ5bgH11jcR7mvkGC39hhe9LPXdlGJoK20zYU8/GGxUap7hLMAnJsIgTXihitFZxcz/cPkaZJSQxO5Y+tGU6J0zLtnpWzx0DUBABYPFJ0NiO2MQYCHbHIGuhm+NMnNMi8T441kmE8BIq+2djiz29sVRhEi+jaBv78OsBv+wsc2HnF1wH+CGQNmcq8q1SghoLJKJ5SIqFwXvRhLl1DTdI/j8OKLB6p7lZK9Nh01DtGMwOKtXtjOThZ3oPlVEVyzbtIbW79IbdqlqFeu9q7VB7etmLbIU7kIB/WJ4aS5HGCVhgebGJ+P9AmN1NN3zElHJ+744GSKjuutthBkNnaLQyPIFaH0/WQMfG5E5euWmhYzYsDtuVtDRp+lplLp2aYXmYiFCtVrwY+eg+DCXy4W8q03rvzBikDJ
+ B34vYQ6x
+ p3z7On34s6IGVaHQfXDDOe1+UQZa+s42cAkfrIx7qy9FImZU+sNmkD/a6OdLJ44TPy9rKgr5J/LtZG5A4qeGPWdUNTk9TMbKKRMMvQ+HfgRG/IA7JiLRJNvGhzeu0RETN+4HNw/Jn3/uhmpJy64F1Uu78DXkOhkZXO3/6PsYGwGl+M0t/lOaZS2D3rpbW4t3CfLLH7xosAB3QCicxmvwVxcDX+SlA6ZjqHqjCEcspMxbMuT9KbgzT96KZLhJgiAzzou4u2f77xSwjDIHggG5DAVjea9R12h3uB6IonCAkcEd62QMf6sqZPSB9Ymd781MYSJ3ohHaBzojkyhv0vQCndqqpdvDLbteqZSiF35JpdyIgo/3PWycIMYvz+JRmSOhGZCT1eKdm+WqAb9Brdc/ZihK2iaQgf0ewsR4I
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,54 +88,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 28, 2025 at 11:39:52AM -0700, Mina Almasry wrote:
-> On Mon, Jul 28, 2025 at 11:35 AM Pavel Begunkov <asml.silence@gmail.com> wrote:
-> >
-> > On 7/28/25 06:27, Byungchul Park wrote:
-> > > Changes from v1:
-> > >       1. Rebase on linux-next.
-> >
-> > net-next is closed, looks like until August 11.
-> >
-> > >       2. Initialize net_iov->pp = NULL when allocating net_iov in
-> > >          net_devmem_bind_dmabuf() and io_zcrx_create_area().
-> > >       3. Use ->pp for net_iov to identify if it's pp rather than
-> > >          always consider net_iov as pp.
-> > >       4. Add Suggested-by: David Hildenbrand <david@redhat.com>.
-> >
-> > Oops, looks you killed my suggested-by tag now. Since it's still
-> > pretty much my diff spliced with David's suggestions, maybe
-> > Co-developed-by sounds more appropriate. Even more so goes for
-> > the second patch getting rid of __netmem_clear_lsb().
-> >
-> > Looks fine, just one comment below.
-> >
-> > ...> diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-> > > index 100b75ab1e64..34634552cf74 100644
-> > > --- a/io_uring/zcrx.c
-> > > +++ b/io_uring/zcrx.c
-> > > @@ -444,6 +444,7 @@ static int io_zcrx_create_area(struct io_zcrx_ifq *ifq,
-> > >               area->freelist[i] = i;
-> > >               atomic_set(&area->user_refs[i], 0);
-> > >               niov->type = NET_IOV_IOURING;
-> > > +             niov->pp = NULL;
-> >
-> > It's zero initialised, you don't need it.
-> >
-> 
-> This may be my bad since I said we should check if it's 0 initialized.
+Joshua Hahn <joshua.hahnjy@gmail.com> writes:
 
-I thought you wanted to explicitly initialize it in the user sides, but
-seems not.  Okay, I won't include the explicit initialization from the
-next.
+> On Mon, 28 Jul 2025 09:44:06 +0800 "Huang, Ying" <ying.huang@linux.alibaba.com> wrote:
+>
+>> Hi, Joshua,
+>> 
+>> Joshua Hahn <joshua.hahnjy@gmail.com> writes:
+>> 
+>> > The zone_reclaim_mode API controls reclaim behavior when a node runs out of
+>> > memory. Contrary to its user-facing name, it is internally referred to as
+>> > "node_reclaim_mode". This is slightly confusing but there is not much we can
+>> > do given that it has already been exposed to userspace (since at least 2.6).
+>> >
+>> > However, what we can do is to make sure the internal description of what the
+>> > bits inside zone_reclaim_mode aligns with what it does in practice.
+>> > Setting RECLAIM_ZONE does indeed run shrink_inactive_list, but a more holistic
+>> > description would be to explain that zone reclaim modulates whether page
+>> > allocation (and khugepaged collapsing) prefers reclaiming & attempting to
+>> > allocate locally or should fall back to the next node in the zonelist.
+>> >
+>> > Change the description to clarify what zone reclaim entails.
+>> >
+>> > Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+>> > ---
+>> >  include/uapi/linux/mempolicy.h | 2 +-
+>> >  1 file changed, 1 insertion(+), 1 deletion(-)
+>> >
+>> > diff --git a/include/uapi/linux/mempolicy.h b/include/uapi/linux/mempolicy.h
+>> > index 1f9bb10d1a47..24083809d920 100644
+>> > --- a/include/uapi/linux/mempolicy.h
+>> > +++ b/include/uapi/linux/mempolicy.h
+>> > @@ -69,7 +69,7 @@ enum {
+>> >   * These bit locations are exposed in the vm.zone_reclaim_mode sysctl
+>> >   * ABI.  New bits are OK, but existing bits can never change.
+>> >   */
+>> > -#define RECLAIM_ZONE	(1<<0)	/* Run shrink_inactive_list on the zone */
+>> > +#define RECLAIM_ZONE	(1<<0)	/* Prefer reclaiming & allocating locally */
+>> >  #define RECLAIM_WRITE	(1<<1)	/* Writeout pages during reclaim */
+>> >  #define RECLAIM_UNMAP	(1<<2)	/* Unmap pages during reclaim */
+>> >  
+>> >
+>> > base-commit: 25fae0b93d1d7ddb25958bcb90c3c0e5e0e202bd
+>
+> Hi Ying, thanks for your review, as always!
+>
+>> Please consider the document of zone_reclaim_mode in
+>> Documentation/admin-guide/sysctl/vm.rst too.
+>
+> Yes, will do. Along with SJ's comment, I think that the information in the
+> admin-guide should be sufficient enough to explain what these bits do, so
+> I think my patch is not very necessary.
+>
+>> And, IIUC, RECLAIM_ZONE doesn't mean "locally" exactly.  It's legal to
+>> bind to some node other than "local node".
+>
+> You are correct, it seems you can also reclaim on non-local nodes once you
+> go further down in the zonelist. I think my intent with the new comment was just
+> to indicate a preference to reclaim and allocate on the *current* node, as
+> opposed to falling back to the next node in the zonelist.
+>
+> With that said, I think your comment along with SJ's feedback have gotten me
+> to understand that we proably don't need this change : -) 
 
-	Byungchul
+TBH, I think that it's good to make some change to the comments.
+Because IMHO, the original comments are bound to some specific
+implementation details.  Some more general words may be better for the
+user space API description.
 
-> It looks like on the devmem side as well we kvmalloc_array the niovs,
-> and if I'm checking through the helpers right, kvmalloc_array does
-> 0-initialize indeed.
-> 
-> --
-> Thanks,
-> Mina
+---
+Best Regards,
+Huang, Ying
 
