@@ -2,118 +2,113 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E2F49C83F26
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 01:19:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 63702C83F26
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 02:24:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6EA0D6B007B; Mon, 28 Jul 2025 21:19:51 -0400 (EDT)
+	id C93376B007B; Mon, 28 Jul 2025 22:24:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 69B7A6B0088; Mon, 28 Jul 2025 21:19:51 -0400 (EDT)
+	id C1D026B0089; Mon, 28 Jul 2025 22:24:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B0386B0089; Mon, 28 Jul 2025 21:19:51 -0400 (EDT)
+	id AE4CD6B008A; Mon, 28 Jul 2025 22:24:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EEE76B007B
-	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 21:19:51 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E9ED316048D
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 01:19:50 +0000 (UTC)
-X-FDA: 83715545340.05.CE45858
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 457A240006
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 01:19:47 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	spf=pass (imf01.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753751989; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9BC726B007B
+	for <linux-mm@kvack.org>; Mon, 28 Jul 2025 22:24:45 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1ECAE1DADA2
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 02:24:45 +0000 (UTC)
+X-FDA: 83715708930.01.1510888
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 350551C0005
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 02:24:42 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ro7dVf+i;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.178 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753755883; a=rsa-sha256;
 	cv=none;
-	b=EYOszbVQ+tnlVTlX0lVC+N+nujGB8QHsKXHD+RWkX0Gse9mobIuGshZWlGwHSDayjWBTse
-	74pKbCKeXXl1tWbNTHKE4aOlr9msT5xyC4tblgczC82hltK1vIn/23dbpfxjn2SiBQj/vI
-	5aYw3xmIMMMGkGidvD10F6VnQR97KTM=
+	b=f70BMr7dQ9QZMWIKBlid7VkKC6AbDfi3GpvV6sE+1KUJ3WiIBkY6YYjk+zey+cwbjQoWci
+	zpjWtWNKrT/ZAUYi/XBWdESsKJ6JDrzNaYMU8mzOmHwbfrexSknQ4AWbXonsP+D6uaUGms
+	RvWsedj7KXEpAdQ9lSHam6Lh1H9wKM0=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ro7dVf+i;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.178 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753751989;
+	s=arc-20220608; t=1753755883;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fEepzYMzG5pRwws2o6NcVSxqCuKtnS0JwxpVap3v3gg=;
-	b=NhNHAuMkt029mo3VvZG2V5IWIw1EYGRTyR1mcm3KdiQDglS1FcaIhgMroBJzXXSXANPEUD
-	1JIQlrz4ZfZTfHhBITVYyuZleLSxBOa9B7xRTh5dYUK/mDjYR0G7zWaE04AVZ5rtqkawM5
-	v9wCCuo7VXnVQR44Pq+Q/vQvk9vTC7Y=
-X-AuditID: a67dfc5b-669ff7000002311f-64-688821b27ee0
-Date: Tue, 29 Jul 2025 10:19:41 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Pavel Begunkov <asml.silence@gmail.com>
-Cc: linux-mm@kvack.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
-	harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
-	davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
-	john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
-	leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
-	andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
-	akpm@linux-foundation.org, david@redhat.com,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	horms@kernel.org, jackmanb@google.com, hannes@cmpxchg.org,
-	ziy@nvidia.com, ilias.apalodimas@linaro.org, willy@infradead.org,
-	brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
-	usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
-	almasrymina@google.com, toke@redhat.com, bpf@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: Re: [PATCH v2] mm, page_pool: introduce a new page type for page
- pool in page type
-Message-ID: <20250729011941.GA74655@system.software.com>
-References: <20250728052742.81294-1-byungchul@sk.com>
- <fc1ed731-33f8-4754-949f-2c7e3ed76c7b@gmail.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=zd+Dzg53O5t7UFkMgGNSFCBrYAjg0xRifizsUJq0KwI=;
+	b=VAaFfxxEvXxFS5z618Xh7mHOwn4z0Gf0qRpZ3oM9mqmudxwVJ9Bxlb0QAMVShZyeTg5Qoo
+	9t0zuPdyulIpsaacErB2gbYgZ9mqucZmJpIxt0soeuvVjaxISvDlJYgmohYs8lWzYuKhUF
+	wCdLMLXCGwg4dgHxkAi4XE0Yh7uMMKk=
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-32f144d0db8so3364421fa.0
+        for <linux-mm@kvack.org>; Mon, 28 Jul 2025 19:24:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753755881; x=1754360681; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zd+Dzg53O5t7UFkMgGNSFCBrYAjg0xRifizsUJq0KwI=;
+        b=Ro7dVf+idNyJhwA+sR1CWLXWm/6G1oS2WuUX7jKiKFrKDe2ok820Xnc5wONi3/RCFF
+         Ar9fKNANUs7YituCb6MhFXVnDo+joX6Qt0/lb7D+OIzBhmcWWoWKRYE+tAB65O8iajOa
+         gw1It+oqU5ZMXOHWnPjxFXJvzqxQ7avGbTLwy2zVTPvfcuOrppK1XTsLgPo8+yavVY3P
+         3la6j0zCP5LYBPspEIajYI21paUZcP2EEXDix7bM8/ri117iH2qq/odLybURDzTrQUtQ
+         kmkQFjw7tNuaTw17XUHT15QkbK+pE70YxAhswgHe7NlQOV0/sE2zql2C90oj6rxUiIXk
+         nNRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753755881; x=1754360681;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zd+Dzg53O5t7UFkMgGNSFCBrYAjg0xRifizsUJq0KwI=;
+        b=N2S58brn6eEa4P5xB5ypsNEFfyFHwZNQNLbcOS/J/LwWWFDpF9Z7dfL1z2QuDlU1JH
+         WCKIibRG/SzrzBLfQCOKNFE4LQQQ8S1hEJpCVyEkZUMznbLRXoKAMXHiuP8LUOv+ocJ1
+         78NZsiqMtJzDbePPLLrG+tz2EehTq51owhNHyopJzaTVnl/3zZXw7YYfjyswK3vY3vIF
+         h5Za4Lm/BKZIc8xOvWsr3VLPMegTtjBx4ne4SEwCSg94AuNUDZ3o0uuhxaJCqFdKrTwP
+         22PKYgrBlxD5n2O2uNg1xrbswnQQz4UQJYDWfHSzV74+A06nvu3EsLPPQ/IbC5cFcxtS
+         Afxg==
+X-Gm-Message-State: AOJu0Yy63khNyvfs9bdggEkTKDVzDRXWqPdcqpvwpbOJ6KYHYIneSfO4
+	5ER6Xe4qiWLgZn7LDOpiDGK43p2grCqBc7XM1bFAczhDRTor9qFS8RHYC3gGbp9VIJhcsu4IDEI
+	gZexX9HUGcyZ/sDIM3eFZPDQ1W5iPZ7s=
+X-Gm-Gg: ASbGnctinliqYQEFIYGHo6dmjEtjZjwDH+q0ViLOIencMj08NeN8npx54gi/bmONa1s
+	d36DRTYDiZb53nL92QP81C3zA+oT4F5tvBZDPcfjNun6JTyACfS4U5GQ2Q+Sf1LlKPSyz60QQVZ
+	2+Fywmk19juKbEnSU6mBJeFTT4K9D/DSI5WfesoIPRR3H7sJUCv97dqRQFtL2a+g/pdo9hFRDTY
+	N1YRWY=
+X-Google-Smtp-Source: AGHT+IFeymq4prHfwBj6WHOb8b1QylWEfWW4wNVKbT5mwWgYqJjzq9+ZEAAXpfqxDyYwZRsmMcrUGtpdFQuh0I4FNmg=
+X-Received: by 2002:a2e:a01c:0:b0:30b:b78e:c445 with SMTP id
+ 38308e7fff4ca-3321549ac3bmr2889191fa.17.1753755881077; Mon, 28 Jul 2025
+ 19:24:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fc1ed731-33f8-4754-949f-2c7e3ed76c7b@gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0yTZxTH87zPe6Np42tB94jRZFW2pMvEC4lH3YVEPzzReItLpjM6mvGG
-	txGQFKygMSmODSXAiHdLmxQXBCpZWYtQtHSjYBEvUdiY3URANolXQHANFQNSL9Fvv/zOOf9z
-	PhwRa89z8aIxM0c2ZRrSdbyKVT1RV3zq/vCQsrhzJBFsrloezo3nQlW/lwObswHBs8htAaaa
-	gwjG2tp5eNQ6iuDnijAG240CFv53PcdwLzggwDn3eug7O8iCr7ARw8BPl3koKZjA0BwZEuCg
-	t5oBm8ciwM2GUg6OPa/E0GjpF+CPCzYeemunOBgMlLDQYa1hYeR4G4a+0mQIOmZD+OpjBG2u
-	RgbCxXYeuk9fYOBol4OHfwv6EHS1DrBw/MUhHsrzSxFMjE+nDZU946D8Uq+QrKetj4cxra/5
-	m6Eh/xWGNlnvCNTh3kM91XpaFOrC1O08zFP36BGB9vzl4+nlUxMsbbq7gjZ5xxha8v0QT5/e
-	+4elw/5uflPsN6rPUuV0o1k2JX6RolJslR6cFVTnDnd2IwvyxRShGJFISeR+ezPzluudbi7K
-	rJRATp7oEqLMSx+TUCiCoxwnfUIe3QpMe5WIpRMCKXT5+CIkirHSDlL326poj0YCUtoUYaOs
-	lRRSfaMMvfYzScfp/155LOlJaPIBEx3F0lxSNSlGdYz0Obl+seLVqlnSAvJ7Q/ub03pE4rl/
-	4DXPIS3VIbYMSdb3Uq3vpVrfpToQdiKtMdOcYTCmJy1S8jKNuYu+253hRtPPdPbAi+1eNHpz
-	SwBJItKpNcrhQkXLGczZeRkBRESsi9NkVf6oaDWphrx9smn3t6Y96XJ2AM0VWd0HmqXhvala
-	Kc2QI++S5SzZ9LbKiDHxFvQRZ1aSuDX18WMJHcsrZtpTHC3L988fLLTlq/M2Fi/WTs7bYKw7
-	Y9kaCmlHOsD18GKny+ANqlbr/U89a2ntwy295lmTaQdrMtTJPfZ+d4J6ddV4+eZbfn9xy0bf
-	vnUzrv3wi92+curPu+GFc37d+dWIM3/V1/O21UaWNa6Z0fdlS46OzVYMS/TYlG14CeEPn9JI
-	AwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SfUyMcRzA93t+z1s3Z49zeCYW18xWXof5Wpi8PmzMX4wRR888x/XirlI2
-	HJXSKomi69rOKNVl2dWqI7G7nELikg4Roc20Xk/Ti9Jlxn+ffX7fz/f3z5fFimvUTFYTHiXq
-	wtVaFS0jZTuC4hda5yZLSxxmJZhKS2iw/IyFWx+rKDAVVyDwDL5jYOy+E0F/7WMavjv6ENy4
-	PoDB1JhAwo/SIQxfne0MWKzboa2gg4TqpEoM7RfraEhLGMZwf7CLgXNVhQSYygwMOPLqKXhR
-	kU7BlaF8DJWGjww03TXR8KFkjIIOexoJ9cYiEnqyajG0pa8Dp3k6DDztRFBbWknAQGoeDc05
-	dwm47DLT8DmhDYHL0U5C1kgyDbln0xEM/xzf1pXhoSD30QdmXaDg6OzGQnnRG0Jw1zwhBJvx
-	PSOYrdFCWWGAkOJ2YcFafIEWrH2ZjND6upoW6q4Nk4Lt0yrBVtVPCGnxXbTQ+/UtKXTXNNM7
-	lXtlq0NFrSZG1C1ee1AmmfLLcKRzUmz3y2ZkQNU+KciH5bnlfHmxlfIyyc3jr2a7GC/T3Hze
-	7R7EXlZygfz3Fvu4l7GYy2b4pNJqOgWx7FRuP3/nQZB3Rs4Bn24bJL2s4CS+sDED/fFT+Pqc
-	LxMecwG8e/Qb4U0x58vfGmW92odbwzfcuz7x1TTOn39Y8ZjIQHLjf7Xxv9r4rzYjXIyUmvCY
-	MLVGu2KR/pgUF66JXXQ4IsyKxu+l4NTIpSrkadpiRxyLVJPk0oUkSUGpY/RxYXbEs1illEfm
-	n5cU8lB13ElRF3FAF60V9Xbky5KqGfJtu8WDCu6IOko8JoqRou7vK8H6zDSg2wtobR93aM7y
-	zf01s1PTxE2GeKdnj9/plzMKfj1JWe9xzgl9kFgX+mLYcvJoozNfyny+UUtdalrbMuJ3oiF7
-	V4n/UHavo7Xcz9Ua3bCS/ZW3NcsyOWhZ2PxZpLIo1bw540bj6sToEMuGm7XB056eCXnW39Iz
-	q75jX6bfp+NLfsiDX6lIvaReGoB1evVvqtLRXSsDAAA=
-X-CFilter-Loop: Reflected
-X-Rspamd-Queue-Id: 457A240006
-X-Stat-Signature: 46ewo3ic998y5waqebezjro9g7auf7zy
+References: <20250728075306.12704-1-ryncsn@gmail.com> <20250728150258.4cba730ba36da5cce659d067@linux-foundation.org>
+In-Reply-To: <20250728150258.4cba730ba36da5cce659d067@linux-foundation.org>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Tue, 29 Jul 2025 10:24:03 +0800
+X-Gm-Features: Ac12FXyo5LUE90u4fcIAuGEL1tV1TPGLzOEP6TPG2-CxFPH7YHSLceFX52EBwVc
+Message-ID: <CAMgjq7BY4WG3pq4OhL3MRsCERXxSUuWNPA36uuYbDF7d5Sz_KQ@mail.gmail.com>
+Subject: Re: [PATCH v6 0/8] mm/shmem, swap: bugfix and improvement of mTHP
+ swap in
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm <linux-mm@kvack.org>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Matthew Wilcox <willy@infradead.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Chris Li <chrisl@kernel.org>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 350551C0005
+X-Stat-Signature: m5f3oo3gnaasriazw83atszycgdd465b
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1753751987-876808
-X-HE-Meta: U2FsdGVkX18aZSR+hfkkdJ/+8NTaC0wuTbIuUWHSNSFLh7xL4rDFZ372ugabqz7dyLdhPojyGRsqab0rdx3jsO9G38Om5jqucfoBNtACf97EzirXPp2iiYWvrec9Xf+YFRIlG4Goe1t6UcQ82nWzmLabel3woJgxwb6SCLRBKaAC57O5GkRld+og6Bg+PFFI27wCui23hx7syi783wdy45wc9EQTU8VR2Uq0YXWMvazC5mUKY+ACmDfjtGBB6vDJOAONTzVYfkbVoU5VivlIsy6NxoPrmuPzLkfpKpSpBE88RFU7imXVp3iIAoREBGCal9d96u83pdWBEzZla2YYBqTvBlueixMKiGQCRgFmrhR1ukRVY6TyaOrEsWtt2QVkmhN77cfPn5bCQdFjcegISIe9RH4oEd5D5+iSMfjywzuiGS2eyEUjfBp7j1/0RxI6RU5nu3Gx09yKbM8U7TwQEQI9SB5lpgWk/dj9cOlVWgq8jyEzvqzZzwdJZ/VxJ+JO1U5UZ2lQgMFW0oKkvJkY7K6CF3fFvV7Gm83tXjQgLR5tpl4UpZNpR5dzAIydp+ECt0z15SdeN2x5cb968xOf/dNL5A925GB5UqNLVEOo0t1txMOBjEdP+J2kbtwUV6J/1DgbmifRhhAPNSAreppzk2EKphdwid/wvZypM3GQoRiQ5U8uIzJ3KSHjsvp2hEcJPau+G1+YWAWEpys4gZDR6fpTK7+139H13sTrinNT34kKqLCLtt14cYiVNHiWxI3pYNLSO//ReCKz5KGu89fenzKtJBM0D0Fos1Q/BKaj5U0ASXXpLRopQgrOLYrq/EMDjM3X+CmoVIbGflS0+lTYlhqnt1SlArutzfyz1N/l5VUFTakPwnz4dU23pj3wDMP961gAtZydwot2Xra0PchTFvKlCDoh5WkqfZBvLV6yenI5UmwsgMI4C5RN5QRl2T6O2Zie/SVEMV9abujcRZn
- WY3ztjHE
- FGTIeeIcAZAx5VGrKXRHTTM7SEd9JT9fXWSskrlPWw1rn14pHiKYJqPrxtyKNXMgSVTbbdMN5GalgW+b4KSOb+KFscgfza54DdM/e
+X-HE-Tag: 1753755882-233995
+X-HE-Meta: U2FsdGVkX1/OHNQy7BSnuk2uL31yK8Wjrvbu7MU0/nDJcM0XYdyFJdyEuuiR5/2iGN6bdCVhgQiKH+1Z1a4FqKDnAe1lPb1+E2I8C/j6xoYK6+vukRDsimW1P5+gBzD//fjJRTtBnOuNup8QLbk//XTpCTz4jbS8EiV/orOSDHMCejfpVDXr+6xRQMFmIBTKb2gEATcM47LUORrTagH/Ic+5Yv3MAY1WBpwNdwaMsMrEM/KKE2QiQGumPHLw7YBsNVJaSfMBH19T96/q1L3zOJzDiR9UgBXzB6IW8FbagnT8ToBq5qrcWhN0mcFlKA70OJ3Zo9+twJdie8vv1WyOUQE4iNQjM01JUBqSTazhvDqF83967OPDC8L5OFHfGzKVqVyfh49dI9CXWKi+k3DBT/tFTY8hgxgLzN2bt8M2PziwO1HpgJrxSZlpGPARfg9BkoBfbGzvflzV2l05nu+rDyx0epgU9C8QdPwNiokyyqh6x2V7Rud83aNIIGfu/qPHUWIvZplpB/qFfOoTya4nXGTmp7Bgq3xk6FI4fwnqx041NzgAjydhTrZyaVa7yVbE4rMQ2AE317WHF52NYqFdRiepoe22QeOYBLLp0nASIQx5d+QpdrsCFwmxQbb9s9V6DIfHnEFdQVJIUISOS3ZwfytVoe2ys2XpHQTv8hADVQzZEL0YzU0PzOxcAeDYNuRsxntmfz1lNAKi7H2oIbJtj0aWyLXYso4d53H278cSnWkUl/iptN7WlVtc3yJBS/cvJkfCqQsI7Yhf5vvAOGxe2SiByihRkpLVGUIGtMpqN/VGnYvO7bhcMGGMkpm7QXcv0navTEzTEiQx6vIEkVemM4udP/QKst/HXA9vAtSCnRf9gijqErgOfiz9FLKCFq8WSfGUODWfPUTs9E2JTSltp2bQ78fN2gavhuBtTO0/qfkId+fp8bcoHjGmWjsTMrSr0vNWYT9Ugz/lRc6T3Uj
+ JNNdd/Ns
+ nvV/u0wAwf0glDmjEnHLjdv0cemBuNtS3MUUfgMdWWW/gpliD1R3XVk/7pd8AwtKxvb6c7uv1jPK0tmb3M6RXNvq/9ieh+qew9sc58PaxLDnh7cpZMbYEEkHm+b72sooONSwqnnPGQYnU1tloHVunk56rFnOZDRggYBA7+DkTRRu185T/Ah0R+PUwtTxDOJJuAcgD9m0sUQFH8rEN7NU1Swi0o1UImjTBF+MiRfxLSO9tKyhbDr3PbnFlJpybxxoL3DprFOg5NtOqUquNB8Ghf2WDESktZ4wntzwxSiP2RAIm46/2jvmDiLfN58bpeVJ/3uNADzqsAXem7uMyzU4b20qGu7k4qqfv+f6eED5nSDr6Pors+NmdoFEE2D8FSXAf+/PRG6rIOuNKO6ADWYlN9QYOez9haglGplNXe2KMDzYfbF2ayXxjFoZsvRv5hMOuqtSnImZLnP9FoGY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,47 +117,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 28, 2025 at 07:36:54PM +0100, Pavel Begunkov wrote:
-> On 7/28/25 06:27, Byungchul Park wrote:
-> > Changes from v1:
-> >       1. Rebase on linux-next.
-> 
-> net-next is closed, looks like until August 11.
+Andrew Morton <akpm@linux-foundation.org> =E4=BA=8E 2025=E5=B9=B47=E6=9C=88=
+29=E6=97=A5=E5=91=A8=E4=BA=8C 06:03=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Mon, 28 Jul 2025 15:52:58 +0800 Kairui Song <ryncsn@gmail.com> wrote:
+>
+> > From: Kairui Song <kasong@tencent.com>
+> >
+> > The current THP swapin path have several problems. It may potentially
+> > hang, may cause redundant faults due to false positive swap cache looku=
+p,
+> > and it issues redundant Xarray walks. !CONFIG_TRANSPARENT_HUGEPAGE
+> > builds may also contain unnecessary THP checks.
+> >
+> > This series fixes all of the mentioned issues, the code should be more
+> > robust and prepared for the swap table series. Now 4 walks is reduced
+> > to 3 (get order & confirm, confirm, insert folio), !CONFIG_TRANSPARENT_=
+HUGEPAGE
+> > build overhead is also minimized, and comes with a sanity check now.
+> >
+>
+> Below are the changes since v5 of this series.  It's a lot, and we're
+> now in the merge window.
+>
+> So I'll merge this into mm.git's mm-new branch.  After -rc1 I'll move
+> them into mm-unstable, targeting a 6.18-rc1 merge.  However at that
+> time I'll move the [1/N] patch (which has cc:stable) into mm-hotfixes,
+> planning to merge that into 6.17-rcX.
+>
+> Does this sound OK?
 
-Worth noting, this is based on linux-next, not net-next :-)
-
-	Byungchul
-
-> >       2. Initialize net_iov->pp = NULL when allocating net_iov in
-> >          net_devmem_bind_dmabuf() and io_zcrx_create_area().
-> >       3. Use ->pp for net_iov to identify if it's pp rather than
-> >          always consider net_iov as pp.
-> >       4. Add Suggested-by: David Hildenbrand <david@redhat.com>.
-> 
-> Oops, looks you killed my suggested-by tag now. Since it's still
-> pretty much my diff spliced with David's suggestions, maybe
-> Co-developed-by sounds more appropriate. Even more so goes for
-> the second patch getting rid of __netmem_clear_lsb().
-> 
-> Looks fine, just one comment below.
-> 
-> ...> diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-> > index 100b75ab1e64..34634552cf74 100644
-> > --- a/io_uring/zcrx.c
-> > +++ b/io_uring/zcrx.c
-> > @@ -444,6 +444,7 @@ static int io_zcrx_create_area(struct io_zcrx_ifq *ifq,
-> >               area->freelist[i] = i;
-> >               atomic_set(&area->user_refs[i], 0);
-> >               niov->type = NET_IOV_IOURING;
-> > +             niov->pp = NULL;
-> 
-> It's zero initialised, you don't need it.
-> 
-> And a friendly reminder, please never send patches modifying a
-> subsystem without CC'ing it, especially kept in another tree.
-> Sure, you CC'ed me, but it's easy to lose.
-> 
-> --
-> Pavel Begunkov
-> 
+Sounds good to me, thanks!
 
