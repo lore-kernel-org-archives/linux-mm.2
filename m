@@ -2,121 +2,129 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4B1D6C83F26
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 11:58:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D87B7C87FC9
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 12:00:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3AA36B0089; Tue, 29 Jul 2025 07:58:39 -0400 (EDT)
+	id 6707A6B008C; Tue, 29 Jul 2025 08:00:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C10C96B008A; Tue, 29 Jul 2025 07:58:39 -0400 (EDT)
+	id 6284F6B0092; Tue, 29 Jul 2025 08:00:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B26F56B008C; Tue, 29 Jul 2025 07:58:39 -0400 (EDT)
+	id 536D26B0093; Tue, 29 Jul 2025 08:00:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A3A666B0089
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 07:58:39 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 55F231605FA
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 11:58:39 +0000 (UTC)
-X-FDA: 83717155158.19.F547C09
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 4BE41100006
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 11:58:37 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=PxA3Jhyu;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf14.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4356F6B008C
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 08:00:47 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D58721340A5
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 12:00:46 +0000 (UTC)
+X-FDA: 83717160492.11.AB21EEB
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A861240016
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 12:00:44 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=M9DZVpBC;
+	spf=pass (imf12.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753790317;
+	s=arc-20220608; t=1753790444;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=POGWpZ6qfhFiTvd9Pz2ShFbRonEQM2kdGcmdneyMevg=;
-	b=rrfhwdbH4JoHQAhdqYykdZPxVqjTPDHU6qrd5ur/5wkNu1wvqZSIVlfmAzUEYlzEF+Qem7
-	401hgBgtqTKrHEt1z630t49JuC95Mm4U4KUrvohmOqsumer7dYJvTUIomr8g+m2Ku2XKzT
-	inK2L1oaVnNrzgAV3kthDSUmQAYB3gY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753790317; a=rsa-sha256;
+	bh=T71omp5VnPaPYUhkD5VGEAJJeTj3czjIV76TIGjrbtA=;
+	b=XAASkSJMjLILNrAKDMtUk0UU4ezYK7ularRc66jW0txFS2Vox1oCAYFLW6g8R3hx9YsK4Y
+	4bZgZytpViVpO7T+XL9yAesEiJXJqWBA/d+nx5Djzx9iJGaRdX+KOIAI5io/k6NjsSngv4
+	ccO3GvqDalPdMxzH2M7qZhezOG5VsF8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753790444; a=rsa-sha256;
 	cv=none;
-	b=TG57LOsMBoGMunfRMFY7viDo/5Aw8Zlsh9a5LMjmwRAyZMdupYEeNvOsi0I6Q0l9Pufjqg
-	33Nyy4PHVy7E11GI7M5Fo9nWCJQiTea7AjemMyWCRspSZ+G4kIFXi5cpO4DUXr7ABAuMiX
-	GH3tb17IRUIX9QKwcJBzi0VvOcFFPi0=
+	b=BsXtcFGpQkPbmJRoU55oF+DYIod7hCkNOKRLZ3W2nzMU/6lDZDB1ehz6BBCKgZVLd6DDG9
+	AJuGQe1c/RX6NsDCmlUY6ev6Jom9jt3sDHzBysqt0z/+9oh3vTtx1TlDEROTn0sIC3ls3v
+	Jj4wfCNSxR1IsjHhn/hfG8XVUC+Fh3w=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=PxA3Jhyu;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf14.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=mhocko@suse.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-ae36dc91dc7so915745366b.2
-        for <linux-mm@kvack.org>; Tue, 29 Jul 2025 04:58:36 -0700 (PDT)
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=M9DZVpBC;
+	spf=pass (imf12.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-ae0bc7aa21bso1115726966b.2
+        for <linux-mm@kvack.org>; Tue, 29 Jul 2025 05:00:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1753790316; x=1754395116; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=POGWpZ6qfhFiTvd9Pz2ShFbRonEQM2kdGcmdneyMevg=;
-        b=PxA3JhyuEuptKVUe5FlGcfLK2DVCYg8MX16Xdqcq+ilfY4wTmR5XvQdVHGPgJRYP0m
-         Q6u4+Jd+iBRz4lWsCUg4NHyWZaXgoVT9v8Q25lBZAy1oF67mzTeb4IGIET8d50cpvrAS
-         alDUdPoRTAAxSi/e7hFAfWbCd+V0kh6t/OR/ppH03GVJkWkImrIhOR9N9r4NlC19rBF7
-         wSncWIWkvJnckpA0JpPKE5mDls4vQ6/+w7wND3083cHWAytpLk6WO98Nvf3C99/OuzWC
-         N/DmhzvKmdbIw2Roo8PgwQZZfbACE+CWGtMezlOmOvvPlM3NhQ1bwUMxPbjYUDJILEDQ
-         ZiEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753790316; x=1754395116;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1753790443; x=1754395243; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=POGWpZ6qfhFiTvd9Pz2ShFbRonEQM2kdGcmdneyMevg=;
-        b=IYe7jyUWCyIhuISZFRTTTBMXgegOw9CanCyQ7vpPoIh0ABgCvzL0v5vc6zmkjyamk5
-         VrtV5U/WTQkDPSoU1EZpTpCm7jNlS/5osl+md6GXOcuEHlc+wMEsrwKazwvEeu8N3gbx
-         DMl4NheTcoLP9sER+MjZpbEJOlqFCeYhya9LCDXDLzAkXWXwLI+SnIAP7HoM5a8aXgUV
-         vaYmmsM29Czy6Gn2klXVLMdUfizQKmMincAJKZrgNIp5FA3oftcI4O8i4enCPEoE10X4
-         eJx3Akn8tBRD2lVmMEWD9n7PHpLfV8Zo7WOut0i2lqUfm+VO5vT8mhgqAMWmBMxrbkKg
-         PRFg==
-X-Forwarded-Encrypted: i=1; AJvYcCVyMDiBmJBhkUHp9GtZOfJ4qnxLR75zCUpub+j6QC8HwBMYi4gbglviYUJ4ebATneDrMMv1UQresg==@kvack.org
-X-Gm-Message-State: AOJu0YxsmkOipezTPdqRG248pJBLitWE4rRc1khEUGN6Gvp48fbt0f8P
-	FufK3lWaLL2u8LkfdY50h3V1lgbrg6Ep5dtYyhG6JiSzgus3/lXXFctPIDIDROTBFGE=
-X-Gm-Gg: ASbGncsiJ1wyrGvIBbzCx4uEz7seDsCIUfd9g4hHYAdZ3sWyNd5h2ip6WvTlVgnRMD3
-	Mn416NhAeGTZWxYNd2HjitJh3qxG4yGgpexqKiJ6hhOiVOKKRONOtUyfvimKnVROPzAtVrV0htS
-	sXd8nWNx6NjoSkHX7HhyZ/LHrWrclrLYbKBsThah/0b6XLtXo+i2ay4uYwELhoB0/zPh7BMBcuZ
-	gWAZ1WdZB+HigAcGbDMFlJRnWzXG9NJJRJlMlKXUpo2t2CIzuJMh/MTqm9WRtSR4j2/NNKemvSK
-	NP2by8XAYDW912zmid9Ok0KoaFfJFBpQ4hR7LoCACs103VwJ0nG8NOjP9fYM+a4JvkJTWO3BSD5
-	A8r5LS0m9baDqZjiXBegBSILmfsKHR70hmGA=
-X-Google-Smtp-Source: AGHT+IG1PlE2mU9I1BQPF6OmXGDdt5cctth20pJTLixg7HsQoYwzUDT2pBsAOMu+gzekNSgaFvaKhA==
-X-Received: by 2002:a17:907:c0e:b0:ae3:a240:7ad2 with SMTP id a640c23a62f3a-af61c2af050mr1685740766b.2.1753790315585;
-        Tue, 29 Jul 2025 04:58:35 -0700 (PDT)
-Received: from localhost (109-81-20-172.rct.o2.cz. [109.81.20.172])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-af635a63aecsm576919266b.85.2025.07.29.04.58.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Jul 2025 04:58:35 -0700 (PDT)
-Date: Tue, 29 Jul 2025 13:58:34 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Hannes Reinecke <hare@suse.de>
-Cc: David Hildenbrand <david@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Hannes Reinecke <hare@kernel.org>
-Subject: Re: [RFC] Disable auto_movable_ratio for selfhosted memmap
-Message-ID: <aIi3ao2PV8GrYtRA@tiehlicka>
-References: <aIc5XxgkbAwF6wqE@tiehlicka>
- <2f24e725-cddb-41c5-ba87-783930efb2aa@redhat.com>
- <aIc9DQ1PwsbiOQwc@tiehlicka>
- <79919ace-9cd2-4600-9615-6dc26ba19e19@redhat.com>
- <f859e5c3-7c96-4d97-a447-75070813450c@suse.de>
- <aId16W4EaqjANtKR@tiehlicka>
- <3e88642f-3914-42b0-b864-4ad374b659b5@redhat.com>
- <ac7add36-808d-4883-a09e-ef1bf6fd6834@suse.de>
- <aIiSEpQhWqPsvaST@tiehlicka>
- <41526d97-b3bc-423b-87f4-7e0ec6cd8292@suse.de>
+        bh=T71omp5VnPaPYUhkD5VGEAJJeTj3czjIV76TIGjrbtA=;
+        b=M9DZVpBCaVVTPhvcXxJMkj/cDYZ57iLaL0bFszzI/6jjG6iKZmp5BD158TrAIqZCk1
+         PFz41w38WCyFE8n0buV8hT//id2Vb0FCveMsY5tYVSFLvC8EDYqtChTAqXRuzTjoaE3K
+         tzPRHHor6u19UpUI4Rztjqvcme75UEfWW6Do2Kf8G/i/Uy8YqEQlo9zNau2dQNbR5bLF
+         BJOzkgAeiyemMyYcU1cxLiDKphmPileNWbW11SnZvLyzQ9wSJFrM4i07bM6yt+gTaTI2
+         ZOxqqH0M7rCrzEclxz618SveYKkIVy5yuglufh2J9N1L2sl0Jcsw49DNvFtrCdCV+Gru
+         M0hg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753790443; x=1754395243;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=T71omp5VnPaPYUhkD5VGEAJJeTj3czjIV76TIGjrbtA=;
+        b=SQIRbE+xxS8GhGE5G/v1COWyKTkNoYTSfas5qbQEacEJBfQZIlRl55VWSRwTUd+NWm
+         6LaB7e2RtQVkpxHizIeWPCtXWXefXBhPQ4Xrekalavm+1YB+gkxmG7D58bAJITRIlUaj
+         Lz2JW508EHDpVFhZNwj8/ztaUeVmYgbVXY2kF2aL+Xhk44KR/Pfo16BRpMtsyo5boFUW
+         ZupjdUD9IrMng7CSH+eQIzJu00uwstMJRE5XDgxHNBbo8NyU7sztudVjL2ALeTIcwKsA
+         2nSBm0R1TnDrmMg1PqkvF59+pkb7zc2o8S1LLOVjrm9lPwiA9FDZtmDB/nhwFFEOg22K
+         Hozg==
+X-Forwarded-Encrypted: i=1; AJvYcCUnMusDQJKtS8nuTwkT1eRYp7D65BFajmAAFZ+QQm/IgIGY8ybL1IkwS9unUd09urYPULpFJkOYxQ==@kvack.org
+X-Gm-Message-State: AOJu0YzIjWwUsVd5iuvnoCc223rVWAM+Ly+njbcoXU54p4TYA9gO3wzD
+	XWi7pHYuPMLoiQl/1vR8WJVYz++kVBqlivDQsFk9EedT8pcDPQqX20/EWl38Wv9TjVrtJJGP3Sk
+	t59TPuCg1T+ExXEzZ9/rfRqlKDlJTx5w=
+X-Gm-Gg: ASbGncsmYwz7QX9v5XNQJ2GqFB5LQmOAJEwrxInHMATXs3xFrwjlz+EY4oG/0o3z9Id
+	piMJbrok/hK0okjWQWV77LFAMIOj1/ic0X3ObY+Rnkpc4mxGo0qPEVnUwbnzAhQgqC80KTkGl11
+	aOO/kLTXoGAN/n0OuuijvEqCZjCCLPABO6eMHLWZ9MQtJrT3SF12ckm+DPwC2iQd3cb06KCdAw6
+	aFdxAKqj19SyN919AZX
+X-Google-Smtp-Source: AGHT+IHI50mh77+KmKYUPFMQpLDoGMPMeGaz5hvMplW+BGg6jqyM13nj/daE7kf3KpgtX2epm1dM6w59Adlag1YAld0=
+X-Received: by 2002:a17:907:3e12:b0:ae0:b847:435 with SMTP id
+ a640c23a62f3a-af61eb0d30dmr1821169466b.49.1753790441500; Tue, 29 Jul 2025
+ 05:00:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <41526d97-b3bc-423b-87f4-7e0ec6cd8292@suse.de>
-X-Stat-Signature: 3zk4596g6c6e453f3yji8pf6uecwr91g
-X-Rspamd-Queue-Id: 4BE41100006
-X-Rspamd-Server: rspam10
+References: <20250724-pinctrl-gpio-pinfuncs-v3-10-af4db9302de4@linaro.org>
+ <202507261937.Txq9shpv-lkp@intel.com> <CAHp75VcrL56_8uKNrmLj9sk+t7qZfKNi6-W-yAKNZ+mSCXU8zw@mail.gmail.com>
+ <CAMRc=MdfMEAjgkTNENZejzRPN4svCiy4VZS9Y5HG7Ht5XwqUgA@mail.gmail.com>
+ <CAHp75Vd6Vwk8pLarDk+hDQ2S_ufZ6wNw9xffMUJfQ5M8bPJubw@mail.gmail.com> <CAMRc=MdNN_J_uB4wxGgpvaxmhgGCYwu5LXCEFBOurNWc2OmSaw@mail.gmail.com>
+In-Reply-To: <CAMRc=MdNN_J_uB4wxGgpvaxmhgGCYwu5LXCEFBOurNWc2OmSaw@mail.gmail.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Tue, 29 Jul 2025 14:00:04 +0200
+X-Gm-Features: Ac12FXwnzreOOhB0DO10QJJwRXKbVGABZpGShwmlXbV7ZXNZ8Iy65zL8Tf8Pqqk
+Message-ID: <CAHp75VeJwGm2v=jGrd+cnitZ-cyy3bXoiDKkV5xQ70P-oecvyg@mail.gmail.com>
+Subject: Re: [PATCH v3 10/15] pinctrl: make struct pinfunction a pointer in
+ struct function_desc
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: kernel test robot <lkp@intel.com>, Linus Walleij <linus.walleij@linaro.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Alexey Klimov <alexey.klimov@linaro.org>, Lorenzo Bianconi <lorenzo@kernel.org>, 
+	Sean Wang <sean.wang@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
+	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
+	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, 
+	Linux Memory Management List <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: A861240016
+X-Stat-Signature: z8wwg7ohzfu1xys7dta1d49jgt3bbjdo
 X-Rspam-User: 
-X-HE-Tag: 1753790317-838653
-X-HE-Meta: U2FsdGVkX1/CcMmltUZRCCuyuvg9SbSJdLZtrgtGoLuTHbytjvpUjznVFdd+1oxE+qUklopolST5VpjSCXBLXeqky31vU8vwFonEiR/JWslDvbB6nFGhqeeraB5Z6oTM1HkrgLD/QN8BOKCNfERQ8ozkfpSQjh7z3+dv0iXNiHvVZCxN8RZCI3GZ4nOFPqR5W1QvVh1QnHOrAoRDIuasG2qLEG5fAbNV705818MZ1MA2lR63FqCtXfvKlnNfxLvYOwlgbLslFV2L/5OX6fwJhkzn1UuxMvTb6km9GbpHp/dImDsEqOZn8WdJf6AlSFNU+ISc/x3wioV3Hk4DahLPrpQhITwPR/C/PNz9iZs2kUKhy2+qsPDK3N31zx5EeUbNKXnw/0bQeodunsbhhmQ+f+RslsnPDU/bWV8ql7az8Jdixg0LSXkuoXLNIg+nEbPLwCz8IVIV1WOJB1ngkwD6wP7ONJtqNqVH8Ksr6mSjHoxSsTAtNHrUWycquRkPR7bygwzwPyUIvqdNLHZWDlhbTgwZF/ci2mhjBbeaIS1wYJsJpIIbD2oxceSaEg7sSpaQuKCJ4iOPHIpZgV4QAC57kIaLc2Fv4m2E0RjsaSoSQzIsDW3/zmBUx+GUK7qTciYMNzkO3yt30g+EH97+/QRb20ChSCccbFKDCgMpd4Y+zWkymBpTgq1ZdyXZb8FrEk78mWYLH4Ll9wIntbVaZ888BozEd1jMzOagji/78QsppNXcvGVksxKmE9b9eqpu0zCRbyHFrFBBqV/2F8VTutInO5E8kK2Y2Vkv3km2U/Qw956GUZ+dLgPccea8+S6OQT3b45e7mrT+mc/SIci0mtY8tRIP2yTNBA+YbPN2NWQTArsRDDDzPgCIsP/frHpmJpQ4u23R2Bnh6Q/KLNweH/HyOfWyYFicRLfWBYbOjTsoqSKfiPBqqB07eJuneptqVtzNvI4l8H0Uq66231FqvFH
- DnefYOt/
- wmfElsXxKuEu8sVeyOO2e3iTXxQ5tX9vJKzPfyTCBN5cqEEdqfqIG/pBiFibwYi4FEGFaUWCmP8upp6I7lBFfnt0zxutY4agfK0ot2iK/pMiAuKgqV+mbrbi1uh4UAaFsXIBWhbfZWC2oagJn/qVPPM64Afof7UOKnavObF2YefKrLDHPqeqvkY/Gu0q0VXz9hP7N4LAWBUdRZzMPOqJChHxR7mX+8BB162sNRTkRd/5pqw/tJLLCncJOYcbBAQOTq27mBsl8y3nRt6jtC5jKOf4eeLR+V3+5gzc/EysIa/mczICRS2hxHfaiC/CJCwgx1bxTAmktcewS7zpyg7LQvYH/AjJMVpUE+8eqvX60oyCfAEo=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1753790444-570062
+X-HE-Meta: U2FsdGVkX1928dxfsm0OgngjUXOs2CVmuw6sZgLEYjcLDLuE/q6sKrrGaCJ7F9FdqzrB1JzUYqnaPvB59KGtqXJQPiLWCZ2bQi1vIuWKFmNckvDSW3CD7nkGIXrSod9wAz4wdlVRbWgQbi8acF+cYTqmZ61253D/OOphiB56MxQQtchrdpq8NuqfNIaiS/YeAspqAGVAWw1VCyXf0NB7Vtbuh0hv1ua+m4mQNGCE7zLLfaKaNr/yYIEkMmsZqA/DM/NfpZm6exEyBnH+Owl7e3/oUrB6y341Xy4tKw2nhJqfrBvOkhD8twWrKjuev45u5xo781IPgBvWI5RjkAm9f+pat56auiMojqX8SP8+RjHRQfV3gHqwwA2ye8LlUrAkaGC67k6JtCxz+rRWSZ7WCCWoVz+EUGI5CC8FgoY2dPUzrXPG/n4/PB7my8x4N+dVqE/bcSYQ9rUICUVkeCLBdefJNxxBxWsJTUuxdE0O0uMGe2pC/ahabS9arqzWip7XdJ3KgdkUGbDkNULWb0vGgpZoDYOa3M6z7Xa7ID5F14JhXFSEfi2ql3m1XOMDaC07AyBBEiktMrV9uKjTGrbslY8+gQE3AeGw/JKgf4Ee0ZZVGDGPtid/3+d0pJe/jF3OW3jbXP1tCQrmX8PGiquWsMXar4EMF4kKF5oFKoLEF7oPp2JuLh74qO9CSynpFAHb7JqL1L88tAoquvaB15hmOIXVb/Jx4pIoJYdoFV0DjP0JLmssMVpcZ39cuTmDB3f52+hgVi1BNK1kZcsKtUdEH0KocTQtHZ5ynB9ZVzS+xUjwSJCHPrl4/qkr0AJEb/1e0pwVJERNk6FUgwkDHhJNBZ82O5DDpnWJzTnW8goE/GjjQUXJUULPRet1ccnvgfDe73E43OsKweMXLMn8TYIEdFbO890FbRwlHnJoJ8ybSupKHKnqtpyN/t1jJvIli72F2hBNi9AwVG3X4ZS9Kri
+ ZyA3HX5o
+ L8MyZorIgGLYv2hCruMd2bSn7JAfXEW0Oa3xdtr4tdwA3NwERst5IrInjbmUuIBbgjpioDcJDe20Hr4hoGUrypxJ2I4MAQ/y+t75fbSl5ucumLEVwxy2r1xKUG5d4APxNTLgwOGIrwxJTivJFkw51kP69mivufcAqY3D+ZPZlMPCqAwszkzDBVLSu+WaUaa7UFSXb3+L+s741eVnEv0qiE6uB0RJ2EBlpcUTS7+qTsdaUGlLtjwkyuR9JX/+9JH0smE/VvqDKQacc0aC7NYfB1j19afzAIbQsUwulNz8kgHQWyGOivWKsHfO+xDwf3IWDPHaMU4D0Tj+HYxaYRpsssskfllIe1fSkYCAwSaLQuQCsESli+v8hLJElVzdusST8aIfhgHcDS1rBCE4EX6iotWWmGu6mqW3L7A3TJOU/HcmBjp7tYSUmZqQPjmb+uvz1Q1Y8Xfvdurj4NY3UoeCigJ/VybnE1AjFA7SsoZrcHNpAnW4/QMhhR/KxzT+meURgUmU3E+QfbRwVN0XDQx/a4FBvE2Qkhet47XyiUDrtpN2ncbQRAVoFEL6VHg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,54 +133,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 29-07-25 11:33:58, Hannes Reinecke wrote:
-> On 7/29/25 11:19, Michal Hocko wrote:
-> > On Tue 29-07-25 09:24:37, Hannes Reinecke wrote:
-> > > On 7/28/25 15:08, David Hildenbrand wrote:
-> > > > On 28.07.25 15:06, Michal Hocko wrote:
-> > > > > On Mon 28-07-25 11:37:46, Hannes Reinecke wrote:
-> > > > > > On 7/28/25 11:10, David Hildenbrand wrote:
-> > > > > > And to make matters worse, we have two competing user-space programs:
-> > > > > > - udev
-> > > > > > - daxctl
-> > > > > > neither of which is (or can be made) aware of each other.
-> > > > > > This leads to races and/or inconsistencies.
-> > > > > 
-> > > > > Would it help if generic udev memory hotplug rule exclude anything that
-> > > > > is dax backed? Is there a way to check for that? Sorry if this is a
-> > > > > stupid question.
-> > > > Parsing /proc/iomem, it's indicated as "System RAM (kmem)".
-> > > > 
-> > > I would rather do it the other way round, and make daxctl aware of
-> > > udev. In the end, even 'daxctl' uses the sysfs interface to online
-> > > memory, which really is the territory of udev and can easily be
-> > > done via udev rules (for static configuration).
-> > 
-> > udev doesn't really have any context what user space wants to do with
-> > the memory and therefore how to online it. Therefore we have (arguably)
-> > ugly hacks like auto onlining and movable_ration etc. daxctl can take
-> > information from the admin directly and therfore it can do what is
-> > needed without further hacks.
-> > 
-> Huh?
-> I thought udev was _all_ about userspace preferences...
-> We can easily have udev rules onlining memory with whatever policy
-> the user want; the whole point of udev rules is that they are dynamic
-> and can include policy decisions.
+On Tue, Jul 29, 2025 at 1:06=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl>=
+ wrote:
+> On Tue, Jul 29, 2025 at 12:32=E2=80=AFPM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
+> > On Tue, Jul 29, 2025 at 11:27=E2=80=AFAM Bartosz Golaszewski <brgl@bgde=
+v.pl> wrote:
+> > > On Sat, Jul 26, 2025 at 9:29=E2=80=AFPM Andy Shevchenko
+> > > <andy.shevchenko@gmail.com> wrote:
+> > > > On Sat, Jul 26, 2025 at 1:31=E2=80=AFPM kernel test robot <lkp@inte=
+l.com> wrote:
 
-My experience with memory hotplug and udev doesn't match that. Udev
-sees memory blocks showing up rather than understanding any concept of
-what is the memory behind that. So any actual policy is rather hard to
-define. You would need to backtrack what kind of memory blocks you are
-seeing and what the initiator could have intended with them. 
+...
 
-While this could work reasonably for regular RAM appearing to your
-system asynchronously (e.g. physical memory plugged in or virtual system
-getting more memory) when you always want to online it in a certain way
-I suspect this falls short for synchronous daxctl like usecase where you
-know what to do with that memory and you can operate on sysfs directly.
-Udev just makes the life much more complicated for the later IMO.
--- 
-Michal Hocko
-SUSE Labs
+> > > > > All warnings (new ones prefixed by >>):
+> > > > >
+> > > > > >> drivers/pinctrl/pinmux.c:917:7: warning: cast from 'void (*)(c=
+onst void *)' to 'void (*)(void *)' converts to incompatible function type =
+[-Wcast-function-type-strict]
+> > > > >      917 |                                          (void (*)(voi=
+d *))kfree_const,
+> > > > >          |                                          ^~~~~~~~~~~~~=
+~~~~~~~~~~~~~~~~
+> > > > >    include/linux/device/devres.h:166:34: note: expanded from macr=
+o 'devm_add_action_or_reset'
+> > > > >      166 |         __devm_add_action_or_reset(dev, action, data, =
+#action)
+> > > > >          |                                         ^~~~~~
+> > > > >    1 warning generated.
+> > > >
+> > > > Good catch, LKP!
+> > >
+> > > Ah, strict function type cast...
+
+...
+
+> > > > >    910          /*
+> > > > >    911           * FIXME: It's generally a bad idea to use devres=
+ in subsystem core
+> > > > >    912           * code - managed interfaces are aimed at drivers=
+ - but pinctrl already
+> > > > >    913           * uses it all over the place so it's a larger pi=
+ece of technical debt
+> > > > >    914           * to fix.
+> > > > >    915           */
+> > > >
+> > > > Indeed, this has to be addressed first, and IIRC I also got somethi=
+ng
+> > > > like this in the past.
+> > >
+> > > I mean, it doesn't have to be addressed first really, it's another bi=
+g
+> > > chunk of technical debt but we can live with it for now and address i=
+t
+> > > in parallel.
+> >
+> > I don't know how you can solve this issue without addressing that
+> > first. I do not consider "fixing" by casting out const specifier (the
+> > whole point of which is to be not mangled).
+>
+> We can do nothing and keep on leaking this memory or we can
+> exceptionally cast out the const and pass it down to
+> devm_add_action_or_reset(). The scope of removing devres from pinctrl
+> core is quite big and honestly this series is already big as is. I
+> don't see it as a big issue. I can meet you in the middle and simply
+> implement devm_kmemdup_const() manually to avoid casting out the const
+> modifier.
+
+It sounds like a good compromise to me. You will have my tag for that,
+if it helps you.
+
+
+--=20
+With Best Regards,
+Andy Shevchenko
 
