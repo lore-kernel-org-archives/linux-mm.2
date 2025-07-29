@@ -2,73 +2,125 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 01DB0C83F26
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 11:29:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6EBA6C87FC9
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 11:32:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8564B6B0096; Tue, 29 Jul 2025 07:29:54 -0400 (EDT)
+	id 0BA036B0096; Tue, 29 Jul 2025 07:32:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8073A6B0099; Tue, 29 Jul 2025 07:29:54 -0400 (EDT)
+	id 091CD6B0099; Tue, 29 Jul 2025 07:32:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71E226B009A; Tue, 29 Jul 2025 07:29:54 -0400 (EDT)
+	id EC3E96B009A; Tue, 29 Jul 2025 07:32:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 614D56B0096
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 07:29:54 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E782E80648
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 11:29:53 +0000 (UTC)
-X-FDA: 83717082666.30.D429B3B
-Received: from smtp237.sjtu.edu.cn (smtp237.sjtu.edu.cn [202.120.2.237])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 45EDBC0004
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 11:29:50 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	spf=pass (imf10.hostedemail.com: domain of billsjc@sjtu.edu.cn designates 202.120.2.237 as permitted sender) smtp.mailfrom=billsjc@sjtu.edu.cn
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DB36F6B0096
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 07:32:23 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 92A011605EA
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 11:32:23 +0000 (UTC)
+X-FDA: 83717088966.16.A0AC7DA
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf20.hostedemail.com (Postfix) with ESMTP id B721F1C0006
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 11:32:21 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=U09IVyjW;
+	spf=pass (imf20.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753788592;
+	s=arc-20220608; t=1753788741;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QAECQfkrR4cV3aAGE95vDLmMbEnIP3Acl9U2Jr3qdm8=;
-	b=lghsKdsQwA275SGgp1eXYKeZ8bRiWSyjVByggbB+12BtTTntLNI/BbCs5o4vATjnShOiYo
-	THAfACPIw2R+ZPW8BHlQhtuFSvdWgc0Z0IRusuy4I852sNmFMjNWxO+nGsYpxh3Gq9sR+o
-	g9cWb7b3tu436HPhNVHy3QLyfkswm3U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753788592; a=rsa-sha256;
-	cv=none;
-	b=LjYljMAfZW3mkCEWoOQfRcUgifQQ1Hvbji5r7cHvNaXNK1tdcO3NBZsJ4igGl9q/9srRyf
-	mcb9DP2h4hhkZoPlqwDiQdjOqxfBya7zgvR35L/W41bTFcaf/sMEWRInMPOCkjETLyAfYM
-	DxLGdwXFm02zFNne2/v4CpoOAdjqDoQ=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=OHhUFJOea/Pd7a6BTVGSEExEjw5vXu28unEpKBj3Ibs=;
+	b=uLjCZJgkLeQm/+WWW1PUHRN8DckChX1xrhagX+NzX+wobXSfl0KVHSE809b+QaXFiclPvk
+	UwRA48+A1/4CdKzmVVio+/KjSzp8haNpVDC231o7TpRdFqL7pA5xzbNTnZjdJTY7vX+6qs
+	8v5E6ahzQw7KcdwsThoWCpkR2r1gMsM=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of billsjc@sjtu.edu.cn designates 202.120.2.237 as permitted sender) smtp.mailfrom=billsjc@sjtu.edu.cn
-Received: from proxy189.sjtu.edu.cn (smtp189.sjtu.edu.cn [202.120.2.189])
-	by smtp237.sjtu.edu.cn (Postfix) with ESMTPS id 365598BAA3;
-	Tue, 29 Jul 2025 19:29:46 +0800 (CST)
-Received: from smtpclient.apple (unknown [202.120.40.84])
-	by proxy189.sjtu.edu.cn (Postfix) with ESMTPSA id C01C53FC1C4;
-	Tue, 29 Jul 2025 19:29:43 +0800 (CST)
-From: "Shi, Jiacheng" <billsjc@sjtu.edu.cn>
-Message-Id: <93574E04-0528-4282-B1C3-4A16D9768EA5@sjtu.edu.cn>
-Content-Type: multipart/alternative;
-	boundary="Apple-Mail=_8411A966-6550-4981-8543-B66DF5E56084"
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.500.231\))
-Subject: Re: [Question] About the PCP free_high heuristic
-Date: Tue, 29 Jul 2025 19:29:32 +0800
-In-Reply-To: <87ldo7z5a7.fsf@DESKTOP-5N7EMDA>
-Cc: linux-mm@kvack.org
-To: "Huang, Ying" <ying.huang@linux.alibaba.com>
-References: <212D6530-0FE8-4EA7-A599-48D71E8AFA23@sjtu.edu.cn>
- <87ldo7z5a7.fsf@DESKTOP-5N7EMDA>
-X-Mailer: Apple Mail (2.3731.500.231)
-X-Rspamd-Queue-Id: 45EDBC0004
-X-Stat-Signature: ijrtgqrw37kiysdo5sfks8oficpgjw1o
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=U09IVyjW;
+	spf=pass (imf20.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753788741; a=rsa-sha256;
+	cv=none;
+	b=5qpkdvfKn/EATlubvzwXIo/GKooZANxRIrpvxOJZQ8wOS9etb0KcuC0+FBFM7wKPnaPvzd
+	xkQ1NtJYpnfg11IVC1q0MvK6T7BZCNmEqj/Gbky+Kp8wgHA1crWKnpM4SiQCHtlb0Qs6JN
+	k47DTwO6kfF+P+LG4Nn9FB1e+2TUxds=
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-23fe9a5e5e8so20807645ad.0
+        for <linux-mm@kvack.org>; Tue, 29 Jul 2025 04:32:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753788740; x=1754393540; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OHhUFJOea/Pd7a6BTVGSEExEjw5vXu28unEpKBj3Ibs=;
+        b=U09IVyjWLwGQGHSCnpbSWTYXL4bEl6Tidnn6bCZ3slP2HFpfevImsv2RbAY3TiPW7T
+         U0RI2RzEyX1ByDAQJNidrlS4eu+I4gRFIj7chMk+5jPu6Y4hx6AOB6OtWRbOCQDJju8H
+         wLkUf1+RwJBw5FJ6Wsqghx9t+O6KlSaPF7vpdZS6m1mAz03a2Y6ATnl6um131UjkKOEl
+         tIba1QhBz4Ey0p9O4oCtj+4ZmJ9svO5zq/KaWe2c2i9fjxUz5j49bGwbQew0T9cKGNAl
+         MMsbrSZEPesGRcqMFcfbx3QxeJ9TZ62N3tNsLZYD+Q3PKK0kkj/8DK4ocGyKL1umIVWr
+         vktA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753788740; x=1754393540;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OHhUFJOea/Pd7a6BTVGSEExEjw5vXu28unEpKBj3Ibs=;
+        b=gP2G3r4QBPDWebfZN4XYxjxKFhK4eTv0Tz502TiPH1C1w9GLqmbfQeCSioopef9/KV
+         ckmk/+Q92MMMl5vTBzH2huy0ciC+gSr99bqhvCxUYrjNm1fgXDmH5wen8lRq0Nl1HoXC
+         bigeGwmlGfPYAyfw1KBN83GD/MR6Yl/QKdvDc5gy2O9kSzqCIueEckmmEKpcE7cxno+z
+         8QCtjguxb/tVIeoGL6KCkUPMd1WbHQMC308Rc2k1os5PjbYgMSK+zSQqVydhkAXINWp4
+         AvjEgbb3vhHfX2YZUQAoue4icMHPXUUfykNUIPRxGvKhWNpmDAbarWUnGPun97hLZZjb
+         pzRg==
+X-Forwarded-Encrypted: i=1; AJvYcCXDFAFzyLij9GlGz64qyVeRfkFsFBRZRZFwbNV5jBrMUWA2uQnZ1PM4IJ0K659+ZB61m6sWqU1qLA==@kvack.org
+X-Gm-Message-State: AOJu0YyRDJgASzqEFvox7HD4n8IJ9/+UD9Ift7LMTuDhbzZvUkMWdgaS
+	cD6Xj+/K++wQ+z+VRxg9KmvjLgKbIMoFKlSRvoYsQwi938A7tUIxpGly
+X-Gm-Gg: ASbGnctLzWbEgWgIjAp52WGxLn1x9qgSCcbhOCtKYDYGfcanxFc4iCtXBdzlkt1Av7f
+	TNttZIgdapqXNVXT0LQncvalkdoomifM0bo/QP/pVWxOOCvuzLidTPv0AkL+JOEUB72QT3LyKtw
+	BBlIwfjCryzLKYY10GCQhr3EM+b/L9Mh1SVpUN67uRtY56bfml3iFU00djAZB2CbiiQ7onuGd8X
+	AVUARc8mJgLdy4wuCP0fgz68dySU2c/8wg+KHy+rAvQr12sjO0w1+TE93c/yXCxrzNkS7jA3Q89
+	xqzf/9oURWZfgw/oPON9XdcSgQxsMdgogw3uf65WO/HpVU8fCekw9v6SEVo2GFN1DTQk6djf1FR
+	6kyO41Pp+rkwArZFC3tSbsTb1yKsDGEimRC1Ha6LG0+oItjFP7zj3xn4A/wg=
+X-Google-Smtp-Source: AGHT+IFXzwzJWyCGho6shdLUUQN2sDwdI0rFz44svVIJGV/mIzME36PR/iNv/78wzMWtsb/GOcsAUQ==
+X-Received: by 2002:a17:902:d484:b0:240:640a:c560 with SMTP id d9443c01a7336-240640ac6d1mr55978525ad.24.1753788740276;
+        Tue, 29 Jul 2025 04:32:20 -0700 (PDT)
+Received: from DESKTOP-GIED850.localdomain ([114.255.249.137])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24007d9a31bsm54092565ad.103.2025.07.29.04.32.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Jul 2025 04:32:19 -0700 (PDT)
+From: wang lian <lianux.mm@gmail.com>
+To: akpm@linux-foundation.org,
+	broonie@kernel.org,
+	david@redhat.com,
+	sj@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	lianux.mm@gmail.com,
+	linux-kernel@vger.kernel.org
+Cc: brauner@kernel.org,
+	jannh@google.com,
+	Liam.Howlett@oracle.com,
+	shuah@kernel.org,
+	vbabka@suse.cz,
+	gkwang@linx-info.com,
+	p1ucky0923@gmail.com,
+	ryancsn@gmail.com,
+	zijing.zhang@proton.me,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v7] selftests/mm: add process_madvise() tests
+Date: Tue, 29 Jul 2025 19:31:09 +0800
+Message-ID: <20250729113109.12272-1-lianux.mm@gmail.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 757ecobts8jdbj375af1h8s1na5jbhop
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: B721F1C0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1753788590-466694
-X-HE-Meta: U2FsdGVkX19Q8/Rh1SHZTruA/Zi5ZKnq93D+v+U+CC5Zg93pldpJuOICWRzBfGyvtDabp5CvKxd2PbTODXiYXYJm523xfjceXCfxmQZsY8ijNJS4P02awX51tcckm9X+ZGhNjfuZYkEKs4zSQe4DW8eySYEkojA5cFImt9uXqCrlzwF3TbEbC7AtjgmWbjijHN3azRGw4gGNPTF/NV5wk/dsn1oKhMWBTT7IpPxshAj17a0aLYKDBVxPRlDmzIaKGZkpAKtiXo/KUIGpVORAF0rWhEsD4ThIecgkONeimx5rvy/sS0uY3n93vct3UyVSjOaCqKZ2QWoiC68/S05MttYiKQVKp4KRzN3ccr1Z5ik2e2gR6H1ERtJknFfiIFSpFQvqiCZdEOiPQg5Rbpw8dgf/C+K0MfUtMVRtsJF6ZR8oQftFFZeAXR9iQuskyRhI4De4ZhJDzX42jX08e27NmQzlrSgwKy3/rRdXn2mgV/KNf1Fzuu0L87TLS/GdkEBOH/eXS7rmlkMaigTtxOmqG4heJnixRhvJBM5u0Di30pRDOL0PssfQsUYZQD7xw/2C7o/KexsGotnq7wSuGnlkbkOnp79fxB5YRtNFyQ5GyqyPke/4wqsTxc/1ygW4YB5dl0lRubVQ6kzhuNIBz1uGcgOALP1BSa6pCtNMaudliaooAJHxq63bRl9sfCiF75fq5GouARvtVry858CE652ZkxqVtDi9rz3v0sb0Bcv4tkbg8BBp7H4E9i+LQZbElw9IZTRw/XTkaPAsunlFKHVOgjrvNvbWZ8R2uBzMBPaQJFZTpl3zkgYrXlgH+bDRd4jwzTRx7ZIbtLnBVyOEd/csOXNcODMmKyeKMZ7WJnadbr0nfUNhKINcCSVvLnslwyUU
+X-HE-Tag: 1753788741-468525
+X-HE-Meta: U2FsdGVkX1+vzt4yGhtLTnMGgCzxPgzBSI4COBnOkfKTvY4ZJkjoW0Xod/bZcry64RhqicF4UmbYMxkLlfa3rKZACmsf3XowlwZ2ETUYaJKGesKsmldKrkmnhc55DFyxaKIv1awR3+xC1wbUXPwXwkGX4aVvmQhTmzN3ggU8rIQvglSVgVLLESt6xP9jttreuZ948KlNf3ZaBCBuByeYuDd2abJtXsqfFCtPgLViCCq63NXHzV/F5sOmNPLyFu/eEbPyhsWqZvUxYj8/dvWcRX0Vp15FWvrJcLVV4PYnDIKDpd+Jep0f5HZwFc/UTqQ8oUKb3/E3ZwqIizBfxDOqt4pATZPP/FULOfQETbYwvNriYIRT6sM/t425pJoGL5refLepKzngLglRf2t9WPoKeDOcjWf/jCDRnC51gg41yAAJXsQ4FuegTke1/klvT0dJykiz3Q8k0PjeV2nVaLkCsqjxZuEfAD0vmzL0SPbleJDRuHDe5J1ZK75AVOEkSEKKDSO374Qz+sjGqmn87YLXYP/hQt6dVtTOagS9v9IhmxTTIfrro92LuJrz50A+mcOUnS+bnRl+3l0BUqEiiZwyjEvlAeuvL+5wL8HciM5UQr92DHLgO/6YxfAklOpThOMWg109ZEDOtKT9sSliCdX9rUkUR8Dn5GMdNEAe2+KKzd2xke096sgMrePMD7EOohakJHqtvLgfGQvmYQ1W2McKFTbzU0HDtAnxiY6h5TD0gmzye7QEHgbAD3eP2loKOHwTKKlb77TesIitb1xKcUwD0oy6qJF2noXfzNzfALkaAfcGZm7HZnTuKrXLzGmC6K4omGwc2gIZddu6yZj126I/1Rm5OIF19pSroLMycQp6Qvh8elL5U+65PMX2lJrt/Dgf+1oQRCDTawwvz4ew1IBC7oOaec86eQDZs9pV348gDOHiD2Qzb1XZpAsgiQGdxVgj0ugWtun8HfGHJQrs9HC
+ 1cJ/FEpo
+ /5VJHVZ56kkqszLeO+9n7vhw75aJ+xYTWEMgay2dENkJvQvyEhD+mHFsONTdh/D1MCFTu6P1koLjg7dtiVd4qkVVxv9CUE6olhmZiTqYkD4AU+isNTjacSqs0xp4NHx/MIvah9XmfJTg3QOFHvnfWtM/t/aSXWaUTEdOqHUEI+xVSJRM6JXXajrdzbmV4TnDUJ0qZ0zhz080cvrgpwGaOw7jCb5eOfnh+9SxMPQXj7YBx5oxBl85dFMtpTdLcv0vUFhISC9ANevXPaTJ39tLkN+hocHdT2O51JWyWEllpuR2YkSmzKWq+GoUYrU/hviqt7YhfgTULL+GlrmLys2t8fgcsCbQsZIQ78KI4yD13cI/V2+yE5+faL3gXmluuRQrwu37Y6rvgu+5uIJAJo8FvYDUZedIuxSsEQ+4WsR1/1MbByoRi1pWELVtshJhUssXKhOwHFJt/3ig04ofOHvgcr8Dps35/vAgb9px+1PF93a65fNpYf/pjwLbQbaUMQExfom0L0dKPnnKJMu2+Wyl+PHv3pC8PMtj4wGahGX86r32usXAjDcZQEDGpp9yvreAkpzrUcZJWfj6PwIYAVABw8P0JDMzIQlne+ARJ0+w33LI1/zTFQ11Tc2FjgQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -77,327 +129,464 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Add tests for process_madvise(), focusing on verifying behavior under
+various conditions including valid usage and error cases.
 
---Apple-Mail=_8411A966-6550-4981-8543-B66DF5E56084
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=utf-8
+Signed-off-by: wang lian <lianux.mm@gmail.com>
+Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Suggested-by: Mark Brown <broonie@kernel.org>
+Acked-by: SeongJae Park <sj@kernel.org>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Tested-by: Zi Yan <ziy@nvidia.com>
 
-Hi, Huang, Ying,
+---
+Changelog v7:
+- In the remote_collapse test, replace default_huge_page_size() with read_pmd_pagesize()
+- Add a new test, invalid_vlen, to verify that process_madvise() correctly 
+ fails with EINVAL when the vlen argument exceeds UIO_MAXIOV.
 
-You are right. Using high_min is better when the workload is located on =
-a single CCX.
+Changelog v6: https://lore.kernel.org/lkml/20250721114614.40996-1-lianux.mm@gmail.com/
+- Refactor child process and pidfd management to use the kselftest
+  fixture's setup and teardown mechanism. This ensures that child
+  processes are reliably terminated and file descriptors are closed, even
+  when a test is aborted by an ASSERT or SKIP macro. This resolves the
+  issue where a failed assertion could lead to a leaked child process.
 
-By the way, I'm wondering why the free_high heuristic is only applied to
-high-order pages. Would there also be cache misses if cache-hot order-0 =
-pages
-are not reused?
-
-Best,
-Jiacheng
-
-
-> Huang, Ying <ying.huang@linux.alibaba.com> writes=EF=BC=9A
->=20
-> Hi, Jiacheng,
->=20
-> =E5=8F=B2=E5=98=89=E6=88=90 <billsjc@sjtu.edu.cn =
-<mailto:billsjc@sjtu.edu.cn>> writes:
->=20
->> Hi,
->>=20
->> I ran the bw_unix benchmark in lmbench on my test machine (EPYC-7T83, =
-32 vCPUs,
->> 64 GB of memory):
->>    bin/x86_64-linux-gnu/bw_unix -P 16
->> The bandwidth result was 30511.63 MB/s when =
-percpu_pagelist_high_fraction was
->> set to 8; however, the result drops to 21595.98 MB/s when
->> percpu_pagelist_high_fraction is set to 0 (enabling PCP high =
-auto-tuning).
->>=20
->> I first inspected the auto-tuning code, but the root cause of the =
-performance
->> degradation lies in the triggering threshold of the free_high =
-heuristic:
->>    pcp->free_count >=3D (batch + pcp->high_min / 2)
->=20
-> free_high heuristic is used to increase last level (shared) cache
-> hotness via letting one core allocate cache-hot pages just freed by
-> another core.  The target use case is network workload.
->=20
-> It appears that free_high heuristic hurts your performance.  One
-> possible reason may be that the last level cache isn't always shared =
-on
-> AMD CPU.  Can you try to bind workload to one CCX and verify whether
-> this is the root cause?
->=20
->> I noticed that commit c544a95 increases this threshold, but =
-pcp->high_min is
->> relatively small when auto-tuning is enabled, and the PCP draining =
-leads to
->> the performance degradation.
->>=20
->> The problem was fixed when increasing the threshold to (batch + =
-pcp->high / 2).
->> Is it intended to use high_min instead of high in the threshold? =
-Would it be
->> more adaptive to introduce some new tunables for the free_high =
-threshold?
->=20
-> In general, new knob isn't welcomed in community, because it's hard =
-for
-> users to tune so many knobs already.
->=20
-> ---
-> Best Regards,
-> Huang, Ying
+Changelog v5: https://lore.kernel.org/lkml/20250714122533.3135-1-lianux.mm@gmail.com/
+- Refactor the remote_collapse test to concentrate on its primary goal
+  confirming the successful remote invocation of process_madvise() on a child process.
+- Split the validation logic for invalid pidfds out of the remote test and into two new
+  (`exited_process_pidfd` and `bad_pidfd`).
+- Based mm-new branch, can ensure clean application
 
 
---Apple-Mail=_8411A966-6550-4981-8543-B66DF5E56084
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html;
-	charset=utf-8
+Changelog v4: https://lore.kernel.org/lkml/20250710112249.58722-1-lianux.mm@gmail.com/
+- Refine resource cleanup logic in test teardown to be more robust.
+- Improve remote_collapse test to correctly handle different THP
+  (Transparent Huge Page) policies ('always', 'madvise', 'never'),
+  including handling race conditions with khugepaged.
+- Resolve build errors
 
-<html><head><meta http-equiv=3D"content-type" content=3D"text/html; =
-charset=3Dutf-8"></head><body style=3D"overflow-wrap: break-word; =
--webkit-nbsp-mode: space; line-break: after-white-space;"><div>Hi, =
-Huang, Ying,</div><div><br></div><div>You are right. Using high_min is =
-better when the workload is located on a single =
-CCX.</div><div><br></div><div>By the way, I'm wondering why the =
-free_high heuristic is only applied to</div><div>high-order pages. Would =
-there also be cache misses if cache-hot order-0 pages</div><div>are not =
-reused?</div><div><br></div><div>Best,</div><div>Jiacheng</div><div><br></=
-div><div><br><blockquote type=3D"cite"><div>Huang, Ying =
-&lt;ying.huang@linux.alibaba.com&gt; writes=EF=BC=9A</div><br =
-class=3D"Apple-interchange-newline"><div><meta charset=3D"UTF-8"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">Hi, Jiacheng,</span><br style=3D"caret-color:=
- rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
-normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
-normal; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"><span style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; float: none; display: inline =
-!important;">=E5=8F=B2=E5=98=89=E6=88=90 &lt;</span><a =
-href=3D"mailto:billsjc@sjtu.edu.cn" style=3D"font-family: Helvetica; =
-font-size: 12px; font-style: normal; font-variant-caps: normal; =
-font-weight: 400; letter-spacing: normal; orphans: auto; text-align: =
-start; text-indent: 0px; text-transform: none; white-space: normal; =
-widows: auto; word-spacing: 0px; -webkit-text-stroke-width: =
-0px;">billsjc@sjtu.edu.cn</a><span style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; float: none; display: inline !important;">&gt; =
-writes:</span><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; text-align: start; =
-text-indent: 0px; text-transform: none; white-space: normal; =
-word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
-none;"><br style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; =
-font-size: 12px; font-style: normal; font-variant-caps: normal; =
-font-weight: 400; letter-spacing: normal; text-align: start; =
-text-indent: 0px; text-transform: none; white-space: normal; =
-word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
-none;"><blockquote type=3D"cite" style=3D"font-family: Helvetica; =
-font-size: 12px; font-style: normal; font-variant-caps: normal; =
-font-weight: 400; letter-spacing: normal; orphans: auto; text-align: =
-start; text-indent: 0px; text-transform: none; white-space: normal; =
-widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;">Hi,<br><br>I ran the bw_unix benchmark in =
-lmbench on my test machine (EPYC-7T83, 32 vCPUs,<br>64 GB of =
-memory):<br>&nbsp;&nbsp;&nbsp;bin/x86_64-linux-gnu/bw_unix -P 16<br>The =
-bandwidth result was 30511.63 MB/s when percpu_pagelist_high_fraction =
-was<br>set to 8; however, the result drops to 21595.98 MB/s =
-when<br>percpu_pagelist_high_fraction is set to 0 (enabling PCP high =
-auto-tuning).<br><br>I first inspected the auto-tuning code, but the =
-root cause of the performance<br>degradation lies in the triggering =
-threshold of the free_high =
-heuristic:<br>&nbsp;&nbsp;&nbsp;pcp-&gt;free_count &gt;=3D (batch + =
-pcp-&gt;high_min / 2)<br></blockquote><br style=3D"caret-color: rgb(0, =
-0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"><span style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; float: none; display: inline =
-!important;">free_high heuristic is used to increase last level (shared) =
-cache</span><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; text-align: start; =
-text-indent: 0px; text-transform: none; white-space: normal; =
-word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
-none;"><span style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; =
-font-size: 12px; font-style: normal; font-variant-caps: normal; =
-font-weight: 400; letter-spacing: normal; text-align: start; =
-text-indent: 0px; text-transform: none; white-space: normal; =
-word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
-none; float: none; display: inline !important;">hotness via letting one =
-core allocate cache-hot pages just freed by</span><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">another core. &nbsp;The target use case is =
-network workload.</span><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"><span style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; float: none; display: inline !important;">It =
-appears that free_high heuristic hurts your performance. =
-&nbsp;One</span><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; text-align: start; =
-text-indent: 0px; text-transform: none; white-space: normal; =
-word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
-none;"><span style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; =
-font-size: 12px; font-style: normal; font-variant-caps: normal; =
-font-weight: 400; letter-spacing: normal; text-align: start; =
-text-indent: 0px; text-transform: none; white-space: normal; =
-word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
-none; float: none; display: inline !important;">possible reason may be =
-that the last level cache isn't always shared on</span><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">AMD CPU. &nbsp;Can you try to bind workload =
-to one CCX and verify whether</span><br style=3D"caret-color: rgb(0, 0, =
-0); font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"><span style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; float: none; display: inline !important;">this is =
-the root cause?</span><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"><blockquote type=3D"cite" style=3D"font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; orphans: auto; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;">I noticed that commit c544a95 increases this =
-threshold, but pcp-&gt;high_min is<br>relatively small when auto-tuning =
-is enabled, and the PCP draining leads to<br>the performance =
-degradation.<br><br>The problem was fixed when increasing the threshold =
-to (batch + pcp-&gt;high / 2).<br>Is it intended to use high_min instead =
-of high in the threshold? Would it be<br>more adaptive to introduce some =
-new tunables for the free_high threshold?<br></blockquote><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">In general, new knob isn't welcomed in =
-community, because it's hard for</span><br style=3D"caret-color: rgb(0, =
-0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"><span style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; float: none; display: inline !important;">users =
-to tune so many knobs already.</span><br style=3D"caret-color: rgb(0, 0, =
-0); font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"><span style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; float: none; display: inline =
-!important;">---</span><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"><span style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; float: none; display: inline !important;">Best =
-Regards,</span><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; text-align: start; =
-text-indent: 0px; text-transform: none; white-space: normal; =
-word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
-none;"><span style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; =
-font-size: 12px; font-style: normal; font-variant-caps: normal; =
-font-weight: 400; letter-spacing: normal; text-align: start; =
-text-indent: 0px; text-transform: none; white-space: normal; =
-word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
-none; float: none; display: inline !important;">Huang, =
-Ying</span></div></blockquote></div><br></body></html>=
+Changelog v3: https://lore.kernel.org/lkml/20250703044326.65061-1-lianux.mm@gmail.com/
+- Rebased onto the latest mm-stable branch to ensure clean application.
+- Refactor common signal handling logic into vm_util to reduce code duplication.
+- Improve test robustness and diagnostics based on community feedback.
+- Address minor code style and script corrections.
 
---Apple-Mail=_8411A966-6550-4981-8543-B66DF5E56084--
+Changelog v2: https://lore.kernel.org/lkml/20250630140957.4000-1-lianux.mm@gmail.com/
+- Drop MADV_DONTNEED tests based on feedback.
+- Focus solely on process_madvise() syscall.
+- Improve error handling and structure.
+- Add future-proof flag test.
+- Style and comment cleanups.
+
+-V1: https://lore.kernel.org/lkml/20250621133003.4733-1-lianux.mm@gmail.com/
+ tools/testing/selftests/mm/.gitignore     |   1 +
+ tools/testing/selftests/mm/Makefile       |   1 +
+ tools/testing/selftests/mm/process_madv.c | 344 ++++++++++++++++++++++
+ tools/testing/selftests/mm/run_vmtests.sh |   5 +
+ 4 files changed, 351 insertions(+)
+ create mode 100644 tools/testing/selftests/mm/process_madv.c
+
+diff --git a/tools/testing/selftests/mm/.gitignore b/tools/testing/selftests/mm/.gitignore
+index f2dafa0b700b..e7b23a8a05fe 100644
+--- a/tools/testing/selftests/mm/.gitignore
++++ b/tools/testing/selftests/mm/.gitignore
+@@ -21,6 +21,7 @@ on-fault-limit
+ transhuge-stress
+ pagemap_ioctl
+ pfnmap
++process_madv
+ *.tmp*
+ protection_keys
+ protection_keys_32
+diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+index ae6f994d3add..d13b3cef2a2b 100644
+--- a/tools/testing/selftests/mm/Makefile
++++ b/tools/testing/selftests/mm/Makefile
+@@ -85,6 +85,7 @@ TEST_GEN_FILES += mseal_test
+ TEST_GEN_FILES += on-fault-limit
+ TEST_GEN_FILES += pagemap_ioctl
+ TEST_GEN_FILES += pfnmap
++TEST_GEN_FILES += process_madv
+ TEST_GEN_FILES += thuge-gen
+ TEST_GEN_FILES += transhuge-stress
+ TEST_GEN_FILES += uffd-stress
+diff --git a/tools/testing/selftests/mm/process_madv.c b/tools/testing/selftests/mm/process_madv.c
+new file mode 100644
+index 000000000000..471cae8427f1
+--- /dev/null
++++ b/tools/testing/selftests/mm/process_madv.c
+@@ -0,0 +1,344 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++
++#define _GNU_SOURCE
++#include "../kselftest_harness.h"
++#include <errno.h>
++#include <setjmp.h>
++#include <signal.h>
++#include <stdbool.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <linux/mman.h>
++#include <sys/syscall.h>
++#include <unistd.h>
++#include <sched.h>
++#include "vm_util.h"
++
++#include "../pidfd/pidfd.h"
++
++FIXTURE(process_madvise)
++{
++	unsigned long page_size;
++	pid_t child_pid;
++	int remote_pidfd;
++	int pidfd;
++};
++
++FIXTURE_SETUP(process_madvise)
++{
++	self->page_size = (unsigned long)sysconf(_SC_PAGESIZE);
++	self->pidfd = PIDFD_SELF;
++	self->remote_pidfd = -1;
++	self->child_pid = -1;
++};
++
++FIXTURE_TEARDOWN_PARENT(process_madvise)
++{
++	/* This teardown is guaranteed to run, even if tests SKIP or ASSERT */
++	if (self->child_pid > 0) {
++		kill(self->child_pid, SIGKILL);
++		waitpid(self->child_pid, NULL, 0);
++	}
++
++	if (self->remote_pidfd >= 0)
++		close(self->remote_pidfd);
++}
++
++static ssize_t sys_process_madvise(int pidfd, const struct iovec *iovec,
++				   size_t vlen, int advice, unsigned int flags)
++{
++	return syscall(__NR_process_madvise, pidfd, iovec, vlen, advice, flags);
++}
++
++/*
++ * This test uses PIDFD_SELF to target the current process. The main
++ * goal is to verify the basic behavior of process_madvise() with
++ * a vector of non-contiguous memory ranges, not its cross-process
++ * capabilities.
++ */
++TEST_F(process_madvise, basic)
++{
++	const unsigned long pagesize = self->page_size;
++	const int madvise_pages = 4;
++	struct iovec vec[madvise_pages];
++	int pidfd = self->pidfd;
++	ssize_t ret;
++	char *map;
++
++	/*
++	 * Create a single large mapping. We will pick pages from this
++	 * mapping to advise on. This ensures we test non-contiguous iovecs.
++	 */
++	map = mmap(NULL, pagesize * 10, PROT_READ | PROT_WRITE,
++		   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++	if (map == MAP_FAILED)
++		SKIP(return, "mmap failed, not enough memory.\n");
++
++	/* Fill the entire region with a known pattern. */
++	memset(map, 'A', pagesize * 10);
++
++	/*
++	 * Setup the iovec to point to 4 non-contiguous pages
++	 * within the mapping.
++	 */
++	vec[0].iov_base = &map[0 * pagesize];
++	vec[0].iov_len = pagesize;
++	vec[1].iov_base = &map[3 * pagesize];
++	vec[1].iov_len = pagesize;
++	vec[2].iov_base = &map[5 * pagesize];
++	vec[2].iov_len = pagesize;
++	vec[3].iov_base = &map[8 * pagesize];
++	vec[3].iov_len = pagesize;
++
++	ret = sys_process_madvise(pidfd, vec, madvise_pages, MADV_DONTNEED, 0);
++	if (ret == -1 && errno == EPERM)
++		SKIP(return,
++			   "process_madvise() unsupported or permission denied, try running as root.\n");
++	else if (errno == EINVAL)
++		SKIP(return,
++			   "process_madvise() unsupported or parameter invalid, please check arguments.\n");
++
++	/* The call should succeed and report the total bytes processed. */
++	ASSERT_EQ(ret, madvise_pages * pagesize);
++
++	/* Check that advised pages are now zero. */
++	for (int i = 0; i < madvise_pages; i++) {
++		char *advised_page = (char *)vec[i].iov_base;
++
++		/* Content must be 0, not 'A'. */
++		ASSERT_EQ(*advised_page, '\0');
++	}
++
++	/* Check that an un-advised page in between is still 'A'. */
++	char *unadvised_page = &map[1 * pagesize];
++
++	for (int i = 0; i < pagesize; i++)
++		ASSERT_EQ(unadvised_page[i], 'A');
++
++	/* Cleanup. */
++	ASSERT_EQ(munmap(map, pagesize * 10), 0);
++}
++
++/*
++ * This test deterministically validates process_madvise() with MADV_COLLAPSE
++ * on a remote process, other advices are difficult to verify reliably.
++ *
++ * The test verifies that a memory region in a child process,
++ * focus on process_madv remote result, only check addresses and lengths.
++ * The correctness of the MADV_COLLAPSE can be found in the relevant test examples in khugepaged.
++ */
++TEST_F(process_madvise, remote_collapse)
++{
++	const unsigned long pagesize = self->page_size;
++	long huge_page_size;
++	int pipe_info[2];
++	ssize_t ret;
++	struct iovec vec;
++
++	struct child_info {
++		pid_t pid;
++		void *map_addr;
++	} info;
++
++	huge_page_size = read_pmd_pagesize();
++	if (huge_page_size <= 0)
++		SKIP(return, "Could not determine a valid huge page size.\n");
++
++	ASSERT_EQ(pipe(pipe_info), 0);
++
++	self->child_pid = fork();
++	ASSERT_NE(self->child_pid, -1);
++
++	if (self->child_pid == 0) {
++		char *map;
++		size_t map_size = 2 * huge_page_size;
++
++		close(pipe_info[0]);
++
++		map = mmap(NULL, map_size, PROT_READ | PROT_WRITE,
++			   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++		ASSERT_NE(map, MAP_FAILED);
++
++		/* Fault in as small pages */
++		for (size_t i = 0; i < map_size; i += pagesize)
++			map[i] = 'A';
++
++		/* Send info and pause */
++		info.pid = getpid();
++		info.map_addr = map;
++		ret = write(pipe_info[1], &info, sizeof(info));
++		ASSERT_EQ(ret, sizeof(info));
++		close(pipe_info[1]);
++
++		pause();
++		exit(0);
++	}
++
++	close(pipe_info[1]);
++
++	/* Receive child info */
++	ret = read(pipe_info[0], &info, sizeof(info));
++	if (ret <= 0) {
++		waitpid(self->child_pid, NULL, 0);
++		SKIP(return, "Failed to read child info from pipe.\n");
++	}
++	ASSERT_EQ(ret, sizeof(info));
++	close(pipe_info[0]);
++	self->child_pid = info.pid;
++
++	self->remote_pidfd = syscall(__NR_pidfd_open, self->child_pid, 0);
++	ASSERT_GE(self->remote_pidfd, 0);
++
++	vec.iov_base = info.map_addr;
++	vec.iov_len = huge_page_size;
++
++	ret = sys_process_madvise(self->remote_pidfd, &vec, 1, MADV_COLLAPSE,
++				  0);
++	if (ret == -1) {
++		if (errno == EINVAL)
++			SKIP(return, "PROCESS_MADV_ADVISE is not supported.\n");
++		else if (errno == EPERM)
++			SKIP(return,
++				   "No process_madvise() permissions, try running as root.\n");
++		return;
++	}
++
++	ASSERT_EQ(ret, huge_page_size);
++}
++
++/*
++ * Test process_madvise() with a pidfd for a process that has already
++ * exited to ensure correct error handling.
++ */
++TEST_F(process_madvise, exited_process_pidfd)
++{
++	const unsigned long pagesize = self->page_size;
++	struct iovec vec;
++	char *map;
++	ssize_t ret;
++
++	map = mmap(NULL, pagesize, PROT_READ, MAP_PRIVATE | MAP_ANONYMOUS, -1,
++		   0);
++	if (map == MAP_FAILED)
++		SKIP(return, "mmap failed, not enough memory.\n");
++
++	vec.iov_base = map;
++	vec.iov_len = pagesize;
++
++	/*
++	 * Using a pidfd for a process that has already exited should fail
++	 * with ESRCH.
++	 */
++	self->child_pid = fork();
++	ASSERT_NE(self->child_pid, -1);
++
++	if (self->child_pid == 0)
++		exit(0);
++
++	self->remote_pidfd = syscall(__NR_pidfd_open, self->child_pid, 0);
++	ASSERT_GE(self->remote_pidfd, 0);
++
++	/* Wait for the child to ensure it has terminated. */
++	waitpid(self->child_pid, NULL, 0);
++
++	ret = sys_process_madvise(self->remote_pidfd, &vec, 1, MADV_DONTNEED,
++				  0);
++	ASSERT_EQ(ret, -1);
++	ASSERT_EQ(errno, ESRCH);
++}
++
++/*
++ * Test process_madvise() with bad pidfds to ensure correct error
++ * handling.
++ */
++TEST_F(process_madvise, bad_pidfd)
++{
++	const unsigned long pagesize = self->page_size;
++	struct iovec vec;
++	char *map;
++	ssize_t ret;
++
++	map = mmap(NULL, pagesize, PROT_READ, MAP_PRIVATE | MAP_ANONYMOUS, -1,
++		   0);
++	if (map == MAP_FAILED)
++		SKIP(return, "mmap failed, not enough memory.\n");
++
++	vec.iov_base = map;
++	vec.iov_len = pagesize;
++
++	/* Using an invalid fd number (-1) should fail with EBADF. */
++	ret = sys_process_madvise(-1, &vec, 1, MADV_DONTNEED, 0);
++	ASSERT_EQ(ret, -1);
++	ASSERT_EQ(errno, EBADF);
++
++	/*
++	 * Using a valid fd that is not a pidfd (e.g. stdin) should fail
++	 * with EBADF.
++	 */
++	ret = sys_process_madvise(STDIN_FILENO, &vec, 1, MADV_DONTNEED, 0);
++	ASSERT_EQ(ret, -1);
++	ASSERT_EQ(errno, EBADF);
++}
++
++/*
++ * Test that process_madvise() rejects vlen > UIO_MAXIOV.
++ * The kernel should return -EINVAL when the number of iovecs exceeds 1024.
++ */
++TEST_F(process_madvise, invalid_vlen)
++{
++	const unsigned long pagesize = self->page_size;
++	int pidfd = self->pidfd;
++	struct iovec vec;
++	char *map;
++	ssize_t ret;
++
++	map = mmap(NULL, pagesize, PROT_READ, MAP_PRIVATE | MAP_ANONYMOUS, -1,
++		   0);
++	if (map == MAP_FAILED)
++		SKIP(return, "mmap failed, not enough memory.\n");
++
++	vec.iov_base = map;
++	vec.iov_len = pagesize;
++
++	ret = sys_process_madvise(pidfd, &vec, 1025, MADV_DONTNEED, 0);
++	ASSERT_EQ(ret, -1);
++	ASSERT_EQ(errno, EINVAL);
++
++	/* Cleanup. */
++	ASSERT_EQ(munmap(map, pagesize), 0);
++}
++
++/*
++ * Test process_madvise() with an invalid flag value. Currently, only a flag
++ * value of 0 is supported. This test is reserved for the future, e.g., if
++ * synchronous flags are added.
++ */
++TEST_F(process_madvise, flag)
++{
++	const unsigned long pagesize = self->page_size;
++	unsigned int invalid_flag;
++	int pidfd = self->pidfd;
++	struct iovec vec;
++	char *map;
++	ssize_t ret;
++
++	map = mmap(NULL, pagesize, PROT_READ, MAP_PRIVATE | MAP_ANONYMOUS, -1,
++		   0);
++	if (map == MAP_FAILED)
++		SKIP(return, "mmap failed, not enough memory.\n");
++
++	vec.iov_base = map;
++	vec.iov_len = pagesize;
++
++	invalid_flag = 0x80000000;
++
++	ret = sys_process_madvise(pidfd, &vec, 1, MADV_DONTNEED, invalid_flag);
++	ASSERT_EQ(ret, -1);
++	ASSERT_EQ(errno, EINVAL);
++
++	/* Cleanup. */
++	ASSERT_EQ(munmap(map, pagesize), 0);
++}
++
++TEST_HARNESS_MAIN
+diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
+index a38c984103ce..471e539d82b8 100755
+--- a/tools/testing/selftests/mm/run_vmtests.sh
++++ b/tools/testing/selftests/mm/run_vmtests.sh
+@@ -65,6 +65,8 @@ separated by spaces:
+ 	test pagemap_scan IOCTL
+ - pfnmap
+ 	tests for VM_PFNMAP handling
++- process_madv
++	test for process_madv
+ - cow
+ 	test copy-on-write semantics
+ - thp
+@@ -425,6 +427,9 @@ CATEGORY="madv_guard" run_test ./guard-regions
+ # MADV_POPULATE_READ and MADV_POPULATE_WRITE tests
+ CATEGORY="madv_populate" run_test ./madv_populate
+ 
++# PROCESS_MADV test
++CATEGORY="process_madv" run_test ./process_madv
++
+ CATEGORY="vma_merge" run_test ./merge
+ 
+ if [ -x ./memfd_secret ]
+-- 
+2.43.0
+
 
