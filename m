@@ -2,110 +2,92 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A3DECC87FC9
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 14:44:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A0BB1C87FC9
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 14:49:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 24ACA6B0088; Tue, 29 Jul 2025 10:44:53 -0400 (EDT)
+	id 402366B008C; Tue, 29 Jul 2025 10:49:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FBD96B0089; Tue, 29 Jul 2025 10:44:53 -0400 (EDT)
+	id 3D9DA6B0093; Tue, 29 Jul 2025 10:49:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C4D66B008A; Tue, 29 Jul 2025 10:44:53 -0400 (EDT)
+	id 316B56B0095; Tue, 29 Jul 2025 10:49:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EF91A6B0088
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 10:44:52 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 442C71D44E1
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 14:44:50 +0000 (UTC)
-X-FDA: 83717573940.21.72F6281
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 708D240008
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 14:44:48 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=R8KD7r8w;
-	spf=pass (imf17.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F6C96B008C
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 10:49:59 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D016C1A00E9
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 14:49:58 +0000 (UTC)
+X-FDA: 83717586876.10.88350B4
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	by imf15.hostedemail.com (Postfix) with ESMTP id A979FA000A
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 14:49:55 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=f0M8jh1E;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf15.hostedemail.com: domain of gregkh@linuxfoundation.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753800288;
+	s=arc-20220608; t=1753800597;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=+HTk2A+A73hmwRAbv/w2ew46OXVZ23/y0J+XLjG1S7w=;
-	b=Pkw3m7GHqft5DqlpgmHhjco4wtIQBUwJq6yZruTDuoROGcB9uYFz+ZzUD2PVZO/ZcrLAEm
-	rhIXR37jW9K75sD62UeUT63+ukvu09dUwPfhJDCwu5HG0yt2BCRdprEKrrXd7qqYzRxZ0N
-	ACototF2Gt8T0GfDyiLq8MFyxeHdbyI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753800288; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=SVKTJmQyfHUB47s4869m+0Nps+tqQ4H1sD3IUQa2NaI=;
+	b=8FR7wiLOv7Kop4n8cdz2xYxZuLeLXrUU3s599NV3wSVocUME+YBSgHzuzf3H8VnsriT78N
+	hyh66vK6SGt+bHw1ieXGEXhm3I4VfRypfEqo3IJX9xER2aPnj0nPyp6xIJJjQksTqdaHFe
+	Nh7HhP2SKbY3It0/ySt7TgB5W5t5zCo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753800597; a=rsa-sha256;
 	cv=none;
-	b=iMt5JS53zHkG0KQ5OQNPhrDc5VqSUHf2eAH8/aktL9taBFYbm3idf/7f36P9bnvduU4lh1
-	odUaYLB1f1Z/gbIurLx/J+y9cr4AomR+se4XKvxNdRYD7l1AakQfetPHRR6lgSMh3g2LoE
-	0dQc8WBUCrdU/l8DV4XTrqu5DdZw9s0=
+	b=Em5CUa/VQ1odVU0Su4nokJSJgE/JyH5/MtATsfDodgdHbN40gm837K/1qFmH/izQRyFBKj
+	jHsbMNSAYxK3gN42Nrj3cUlDmm+RqGNRCOi4udrkgH2TMZAWbprIefCsRiy/pDYRnnuGcc
+	JZiNi069OyWeXb/IsO6I/sgpKb7R3Fs=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=R8KD7r8w;
-	spf=pass (imf17.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-76a3374b143so697551b3a.0
-        for <linux-mm@kvack.org>; Tue, 29 Jul 2025 07:44:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753800287; x=1754405087; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+HTk2A+A73hmwRAbv/w2ew46OXVZ23/y0J+XLjG1S7w=;
-        b=R8KD7r8wuB/REM2icjNuhPJYb9jj9VBkoctvmNbyS90dcrjPHa/wFJ3qpke9rBCuxO
-         VjtAF64hbkHeTkIIqtVgQYl3DPK/DI/BY/rLZLYilB+G/qReWQArPBCJOgcB/9EzcgK3
-         8Y7T6VxJrwKGu5SCWkwbGl9+5fepkNxHisQ9abUseYVZuBo3U7lWp/eMXdcVHIdJAw4X
-         cx0I51M0075wfjXfQl3DQggt0BAiKxNhcsGs6+q7Vq17ajAzizSDIIv4Z7BsKtB9rE2b
-         IDhtDpgIzSbxVgi4SYMPSfurYiHVcnDVCdaq7Elj6OV0JnNJKpANeXxHv8BIbcj4bY1u
-         pz4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753800287; x=1754405087;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+HTk2A+A73hmwRAbv/w2ew46OXVZ23/y0J+XLjG1S7w=;
-        b=adCoe6Mse9zzysVkso7DuWQHo4pNJ7zheAqx2zbmXnp0K7KyJwptv7aJNnFawIGehW
-         TpkCvhn0bD997anOzrMgIu0jenj2GVU+cX3vqFeoRjAoTL0Q3Dq7AowtsDxdJlm7KFNn
-         mXayzWJfUYdl6+P37szalInIn/ZxqIC7iF+/GMUMrqlxvg5+i61w/HNlfksvL1ZnxmzY
-         yDomUDkHLp8zFk4t1u1ItdfDcnfU3lzh/eQ/UIl+cf/eDNjyct5SxGnLh3YvY97lAbLc
-         nROrkDywZoakDt9cHQSGbD/6SB4ryq9WO9diNBU3rUCfSXPz+uNSWREhKdnttQ+wD8ie
-         7m7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWOqLZAPa5/r3ENEG+tsI4nwkiYi2BwFKmljc3THd0WdGjD4WM17sd5goguENG4l/3PHFGnTmrTug==@kvack.org
-X-Gm-Message-State: AOJu0YzDCYVkxrYHuCFtG26YTqIuNtBjyBD2B2NuBCRwJic9F6GpxHUU
-	bN0laqhOWN3P3pPOJbDeNhhn2PPSnmAx5YSw2+hrxrv78a3/G3fe+bJRALNkxjl3W+g=
-X-Gm-Gg: ASbGncvvmIT+qiXJAwONo+4ZF0d0SYbFR/MxKFm3ulXq0gMrj3OHfVzsG8CfobIni4/
-	v22g0KEiAE0PbnYRDfKSf4EZipJQBCTobpTnoVixQM4G4m4a3b0golQ+8tfIwjwYgOEv5s8JdyX
-	KcCXpNvzv4R8+7hfhbqPhU7PqFWyrAkYVt0kCkK7L0ILEB3L7lemk1rU5y/SH+8TdQv5AflCXRr
-	cZbDna8zP+LHOskrJKmBBDrfUhqPFeWp/QoJBRvJ1s7k9U9UBBQz5K+JXGRu/QnWE232BgZXD+2
-	PVBTugo+9h2KV22sCqhdZT01WPocWTRNLGciOOt+1K4BO63ZMJFb+kGwQJZ2S2K7qcQtMG1/j6t
-	gbOQO/NcjdmJfTqBm
-X-Google-Smtp-Source: AGHT+IFWk9ARReG6XQopp7V7zsh3suvbk0HvFwJmFgTU4AFJ+iwnaGXqnNPcktMWy+/9+rFFzdRzdg==
-X-Received: by 2002:a05:6a20:6a0f:b0:1f5:72eb:8b62 with SMTP id adf61e73a8af0-23d70081497mr25300747637.20.1753800287170;
-        Tue, 29 Jul 2025 07:44:47 -0700 (PDT)
-Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7640b1e5c94sm8317223b3a.94.2025.07.29.07.44.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Jul 2025 07:44:46 -0700 (PDT)
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-To: sj@kernel.org
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	Sang-Heon Jeon <ekffu200098@gmail.com>
-Subject: [PATCH] docs/mm/damon/design: fix typo
-Date: Tue, 29 Jul 2025 23:44:14 +0900
-Message-ID: <20250729144414.31958-1-ekffu200098@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	imf15.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=f0M8jh1E;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf15.hostedemail.com: domain of gregkh@linuxfoundation.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id E343BA544D8;
+	Tue, 29 Jul 2025 14:49:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A41C4CEEF;
+	Tue, 29 Jul 2025 14:49:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1753800594;
+	bh=8WHu65Du/5RAZ7vIpLgroUB1ihWHIGMcCMvNDR1D48w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=f0M8jh1E567Dzc3VA74jPcIWNmhbrWXFrtgIR+481l4ITDFj3cWe2icTVpA176/Lk
+	 UxRnG1qinStkhCVNNpHX89TXWi14XyKBQKvWfXD//W1GQONi1zFZYJTGsbu+LAxBz5
+	 sYm3dQftOPHbWiU0MEKRivX361+bsOcsDozaG1vk=
+Date: Tue, 29 Jul 2025 16:49:51 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Jakub Acs <acsjakub@amazon.de>
+Cc: stable@vger.kernel.org, Liu Shixin <liushixin2@huawei.com>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	David Hildenbrand <david@redhat.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Mattew Wilcox <willy@infradead.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Nanyong Sun <sunnanyong@huawei.com>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Subject: Re: [PATCH 6.12.y] mm: khugepaged: fix call
+ hpage_collapse_scan_file() for anonymous vma
+Message-ID: <2025072932-scorer-manhood-b6fc@gregkh>
+References: <20250729090347.17922-1-acsjakub@amazon.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 708D240008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250729090347.17922-1-acsjakub@amazon.de>
+X-Rspamd-Queue-Id: A979FA000A
+X-Stat-Signature: qwfr8w738mw8ahsw4s14onhgzkf8wokn
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: qhsoa6475y1py3xzmhkf6xjhcn14r5z7
-X-HE-Tag: 1753800288-422691
-X-HE-Meta: U2FsdGVkX1+6lMaUXf4iSRx0uje/+hCNanYu584Fc9O+4nGhJUAFjriOKtAKtgjtOhzBp/ljhuJ0qVDxgNn7hirNY1By8/JuptcQi55dydOVKFc4wfsUtl4wRHXNmck1YZ5wGau676W65zI0lJ3sjdkJffrApwMbX9bWgae/EDcclI4y8F8IMudvD0ORA9XXXhxtYrk4QZOmP36gBPk0jDUFqFWv9kN04Vp2LqvDXI+x6zg4UdhtOhRwLqVmN3n6c9f+7z40kyjGHx4a/zMIiVqOOSWOdIwkzCpniNFJCdEfSaKzI26ajjmy+U2VQY57y7ueudWpp10WBX6bGvP8NFGBegEnv/gUKQZJ4WsAZAHq8+vd+ZMcJOMBnca+tyMcAZ5iOEUIKQ0EGVtB1h5MTe24TP/SWEp1TaItnIhOfv6Kc1J08+Be0hZujOV2iGLy1bTGHCp0x3oHkV2yvpKKOXsZDJsz/goDsZ2GMwuqMWfNe92rBVa6927qXRq2JUVpedMsSLvYdbmQ/WqzcVyMcgTHs0ThYrxA/TK4fs+2/5i8kigNUuIvnz62A4T7pY7Lf58ar7A7Oje5RxmsTg6p8PJqY00/6p97/+mQ280OczS+GOdSeIx5CCSAH5FxBovO6U/WBRaXoBP2hlBCE/38PJTmPYqFyQAr/DfMq/lOqDJbDWnboHqE1rDz2KsO9CQ6VtVdKfzj2ylR11PfmaFjRcdEdtRh2ItA5ZVIVywPbD/JhG2SoiE57/diBeRDIeXhlTn83YEhEAkqNvuQeu+tpNIlrzvInOIQTV7MP0rUGlrH81bpHL9DaTJycO0nY/T541e87YUmfls/1Zfg19jaFkISLZw/Bd3MePYkNDYYYvW/G9REog4eX/ZG230Xtvwt+R8RFIqeMOFylp8Z/hESdX2XxWVUdueLj1tAkSEHOocslrqe6CVynhDa112oAqLlNVa2ZftfrmWUwXl+vX8
- 1Co90S6+
- 8q0ySQuVl8bT8IiDldH7hzi0p0N3Kz8CggxvFQgig01iDUTGMXalagFbfGlt6FRbB39XiFmjKyZpByDWhD1byv8XXqKxEa0hRmV/Rx1ZPpym3RnKJNwVji1GiKdfVlYmqDK51LLYeYadFUKjOLNbB1PCTshWSMuM1qzUFssWPx9Oro6E/nqd5wFqYEYHS+GTYZSjxNnfGV1N7VIwVq1ile0/tahcMl9a8dBO8hDvHqsiQcAkXg5OJmoAgd/UTlcDSPgQbF1x9+jkNvG/LQ+AxGw9FznhHj3L5ZrVtAFOmtLBcKJ81NJiY5qs89xovIslT7OUETUjACIWZmm45pL/Un4CTt1KmgzSJQxKD4F0Gp4WKOlpGj0IIkv1r5A==
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1753800595-948427
+X-HE-Meta: U2FsdGVkX1+iRuk6/JiJHcAyusI7Ekd/8vleioNigrbaqbp5jlb4VHObbDwJvgTyUyOWYqwWHca/1LDh8vGGNJqeg/HP5JadQpN+1UyhOuRZh4beudHrGH74+R3WGaLdVXuPFFVDU/KbK2e2HQYdpezr+Ylhgvexgkz35ljAAHM/fuoMFU3lIl9kplU46BKIUDR1gKcIpEtgajty25pYvhhwdf+6TONy4CpFJpK7Cnl3UIxtVRcapUD+oJqN+0Hzcu7rWXsnEJNU2bg2efp8zMDrVBWFt/F6dIWRNLT/QI5X4zI+sTSBWlAwuAKglr7vDsK51+nb9Ku2eVwwVZDLf6iSZZs5SdDX8QXtftkVDHWl1ZDCX3AHcq+Em9qa07RksVMAvkIW+Z22R9fr8Gf+RP7U8LGCFHwRkXD2rGtUqLTzhLF5K5Eqz0Eq/BOUpgANitGBYxzuFyvtvrpW9N3diXUeY3/Cv7qhbC2iuBKYt/xEyngAgjZ5yV/aild5xn7UEeS5xW2meOx6PyRzpWrA7aK/C8WcQnbZdqTH6pWh+IGGPj9VTyoaKjPWmnMKW/49D2G+BKGBYqeuLQAYPZmYDX3SlNAg5MJxhSagCWBcNKe7RHypTTqx2i3W73lNOzarkEnIhYVOM/ob1icZmsfiSS8GMPuOfCGtNJcpIaVYMozFZ843d9sx+ecTY4bV0tAD10tODi+YkKEo1rIuqgUIiZM7YvCej9SYgKtlu+rHB9SRTz2Fc64ylvDA9v9HGBb/1ovEgsIzUS02/zIo3PrqVCmUP41l0Q4iCCZhD5HqqNTRpkmYzZP54JmniCGxRvKz5Q5oaDohkMl9/vLW4Tk/GyawciMkLTNTKA/teZgQiVJ7Glozq8enAOoC2WWmvJYv4L5eM8pxltyALKbMM+w4IThKWhdeu48JCwi7oYYa2kg8qlwNpV9CzJeX1WVa3uRI69QbJxn+Jgcxobcowkd
+ qakbl3jw
+ U8dQZgeLRFJcjTjvtF1jymDOo7BTAdIpf1u236953+OvYmFO00YhAEHzuE+Rx1f9lLha+E0bjvSRH8671My86bvwrAMaMpB3fAvbeFpk3C2GVCIqs1Od9OniCvO/UmPMsTv2w/uFwdx2zS1TifIf9XtYbhSkzLfsL7Zns7gMGJqTWGGFaMMqdeawWkj+VGtJKIO6VHGyhVpNUyQzHTA+wQOuLyjQ92GkceW6kf8jYKFWXPhupODJWBr5QGM20xdEzHOk/kgXoRT8PXtZKZzIGBjiUcf3e3BgFEW4ZvYO3U2joZH13fV0RO6Ggivlar/XaeRk0Bw38ldl46w+vuJFcvVlmAIZu0tx7d2bPT8sKJkCKnbP9P1+KAkEMSrDpVWfkEox8AAryIYyGxXPbIe+ioxXymkmSmqy+ejY7NR1mgGOaV+qEcU3bqFao3SWMvZyMI1NGADbaSUZAneWMPY83o11xJgYCVuHF447/euBOLp2Lg9LP9cguJVzfsZZmxmbe4xzcaiQ7ssaUtdIsfE1fBXkq6OifhITl8IRgYFf07pv91WBjCrL4zh9b+AUlrHleejYXzrk6jZCY54lWYhEqXcCJ1QsfJzPZtICSv3VSX1Q1N1eZw6WSQPgZrj17frhNk58KFnFIwZ5JVH6AMy+30o4cIZPNg/uDgJ2mVYQyuUPc7qhbKkxQkE0jjknGcn7I+yTE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,33 +96,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There are some typo in statistics section of DAMON design docs
-- sz_trtied -> sz_tried
+On Tue, Jul 29, 2025 at 09:03:47AM +0000, Jakub Acs wrote:
+> From: Liu Shixin <liushixin2@huawei.com>
+> 
+> commit f1897f2f08b28ae59476d8b73374b08f856973af upstream.
+> 
+> syzkaller reported such a BUG_ON():
+> 
+>  ------------[ cut here ]------------
+>  kernel BUG at mm/khugepaged.c:1835!
+>  Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
+>  ...
+>  CPU: 6 UID: 0 PID: 8009 Comm: syz.15.106 Kdump: loaded Tainted: G        W          6.13.0-rc6 #22
+>  Tainted: [W]=WARN
+>  Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
+>  pstate: 00400005 (nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+>  pc : collapse_file+0xa44/0x1400
+>  lr : collapse_file+0x88/0x1400
+>  sp : ffff80008afe3a60
+>  ...
+>  Call trace:
+>   collapse_file+0xa44/0x1400 (P)
+>   hpage_collapse_scan_file+0x278/0x400
+>   madvise_collapse+0x1bc/0x678
+>   madvise_vma_behavior+0x32c/0x448
+>   madvise_walk_vmas.constprop.0+0xbc/0x140
+>   do_madvise.part.0+0xdc/0x2c8
+>   __arm64_sys_madvise+0x68/0x88
+>   invoke_syscall+0x50/0x120
+>   el0_svc_common.constprop.0+0xc8/0xf0
+>   do_el0_svc+0x24/0x38
+>   el0_svc+0x34/0x128
+>   el0t_64_sync_handler+0xc8/0xd0
+>   el0t_64_sync+0x190/0x198
+> 
+> This indicates that the pgoff is unaligned.  After analysis, I confirm the
+> vma is mapped to /dev/zero.  Such a vma certainly has vm_file, but it is
+> set to anonymous by mmap_zero().  So even if it's mmapped by 2m-unaligned,
+> it can pass the check in thp_vma_allowable_order() as it is an
+> anonymous-mmap, but then be collapsed as a file-mmap.
+> 
+> It seems the problem has existed for a long time, but actually, since we
+> have khugepaged_max_ptes_none check before, we will skip collapse it as it
+> is /dev/zero and so has no present page.  But commit d8ea7cc8547c limit
+> the check for only khugepaged, so the BUG_ON() can be triggered by
+> madvise_collapse().
+> 
+> Add vma_is_anonymous() check to make such vma be processed by
+> hpage_collapse_scan_pmd().
+> 
+> Link: https://lkml.kernel.org/r/20250111034511.2223353-1-liushixin2@huawei.com
+> Fixes: d8ea7cc8547c ("mm/khugepaged: add flag to predicate khugepaged-only behavior")
+> Signed-off-by: Liu Shixin <liushixin2@huawei.com>
+> Reviewed-by: Yang Shi <yang@os.amperecomputing.com>
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Cc: Chengming Zhou <chengming.zhou@linux.dev>
+> Cc: Johannes Weiner <hannes@cmpxchg.org>
+> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+> Cc: Mattew Wilcox <willy@infradead.org>
+> Cc: Muchun Song <muchun.song@linux.dev>
+> Cc: Nanyong Sun <sunnanyong@huawei.com>
+> Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> [acsjakub: backport, clean apply]
+> Cc: Jakub Acs <acsjakub@amazon.de>
 
-Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
----
-While studying about DAMON subsystem, I found some typos in docs.
-This is my first kernel patch. So if there are any mistakes, please let
-me know. I'll try to fix as soon as possible. Thanks for reviewing.
+You need to sign off on patches you forward on.  Please fix that up and
+resend all of these.
 
----
- Documentation/mm/damon/design.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+thanks,
 
-diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-index 03f8137256f5..2f6ba5c7f4c7 100644
---- a/Documentation/mm/damon/design.rst
-+++ b/Documentation/mm/damon/design.rst
-@@ -689,7 +689,7 @@ DAMOS accounts below statistics for each scheme, from the beginning of the
- scheme's execution.
- 
- - ``nr_tried``: Total number of regions that the scheme is tried to be applied.
--- ``sz_trtied``: Total size of regions that the scheme is tried to be applied.
-+- ``sz_tried``: Total size of regions that the scheme is tried to be applied.
- - ``sz_ops_filter_passed``: Total bytes that passed operations set
-   layer-handled DAMOS filters.
- - ``nr_applied``: Total number of regions that the scheme is applied.
--- 
-2.43.0
-
+greg -h
 
