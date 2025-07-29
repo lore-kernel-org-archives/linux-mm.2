@@ -2,250 +2,127 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 231F0C83F26
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 09:06:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 144D6C87FC9
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 09:18:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B90B46B0092; Tue, 29 Jul 2025 05:06:54 -0400 (EDT)
+	id 5B3F38E0002; Tue, 29 Jul 2025 05:18:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B41276B0096; Tue, 29 Jul 2025 05:06:54 -0400 (EDT)
+	id 58A408E0001; Tue, 29 Jul 2025 05:18:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E1BC6B009A; Tue, 29 Jul 2025 05:06:54 -0400 (EDT)
+	id 4A00B8E0002; Tue, 29 Jul 2025 05:18:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 856BB6B0092
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 05:06:54 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5997880537
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 09:06:54 +0000 (UTC)
-X-FDA: 83716722348.21.1019912
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B0FBF14000E
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 09:06:50 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=lU60yyZA;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=nbZf19Qp;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf09.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753780011;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 39E698E0001
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 05:18:26 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B16E2133F91
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 09:18:25 +0000 (UTC)
+X-FDA: 83716751370.08.7ECCBEA
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D1A321C0009
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 09:18:23 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=H4bp+w7S;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753780703;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=scxHVMgsOueIgoc02KRJ2RWquc7IjLF997Gh8+8iph8=;
-	b=TMY1LbCVMkJPnj2OeFOBaPZXT0Mve4dSgeKnSMKZ7nie9ynRn445MjnVbN5DHP+CEk3RNe
-	43ljFZjWWth/B21737gmbrDfOgmwolsxfxhs+GjZT1TKpdZFL2Tijxn2ZdoUH8N0+Y6pYk
-	+QCB+eQ5Nh8EVHHL6S1itWYAi032eLI=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753780011; a=rsa-sha256;
-	cv=pass;
-	b=6Kyv/DpyJWHc2WU24ffsYKH4jRXtAjc7IAPzV6rg8IzGosjH9nnZJdmnTW0sohVsaA9W1Z
-	We8wfQUNeIsqaeOeqve03Mv+JJHColJLhVQ7hsS63qa/ej9iJu7LCRTiI6TWb9tHmsqZB8
-	UoB5yyQI5bxu/9HAo4i/6O8YB1SPmlE=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=lU60yyZA;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=nbZf19Qp;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf09.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56T7gRPF015348;
-	Tue, 29 Jul 2025 09:06:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=scxHVMgsOueIgoc02KRJ2RWquc7IjLF997Gh8+8iph8=; b=
-	lU60yyZAIn6QvRQf08WiILFHYRczc4Fhcm7/0QwwoSiB4NQRPyMgZebwMLJbbIqV
-	xYPWqpKcsGlcmyozgS6yQiMQ3cHwSLcI6VhTYrD3ZVebTDHV+nrDxKhPOeruLHWg
-	DLdoFws7RTeXT6SOpkX3AhILwROjsDZpDK59p9M6IX2kkLzq4slPaFzhcoXunc2V
-	VDw1KUX+gOm+LFNDtOxWsQchg5lgS8Cw6o1VDH8k2Spc5gThfuFmJVvRo9A3Idv/
-	uJnuyNeDiixeTwhIw/tuv3lnSnrwPVvyx896HEWYoDOJf1N3kpU/Vnp1cLjxR5Qs
-	SWop3Xu/kvUf03Rlfqlncg==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 484qjwq9as-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 29 Jul 2025 09:06:47 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 56T96XgU020528;
-	Tue, 29 Jul 2025 09:06:46 GMT
-Received: from nam02-dm3-obe.outbound.protection.outlook.com (mail-dm3nam02on2043.outbound.protection.outlook.com [40.107.95.43])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 484nffx84b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 29 Jul 2025 09:06:46 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DsSmovPwdR1hBN1N2sifr2QauaMq+meW1kDN9pmisp0C616/+NETFmcCqZcthuR7FipT50bX8mGIETJ2+jlOnuRLkSG6QosniPz6NQgtXPJ+sqPRirckQj0aiul+iIrbxDV9A3bhaPpdxX+Sq+FSCAQ3HnKwgsQ1GMpz+7bipKTrBENMaoubhzjgQWcfbV8mJ/i7Y8LOoA4b+/pNCsU+/LiaK6QBYVhqYdcHm5GygP8RBepmNO3fvkwKgELuHDImH8dSmiuFcdfzd7u7mu5wkiDAX4plBGnLz6wVQjNA7fJQtcxfIUum7Nb0JYboM0mrun52PRnYM1P+Z0/uqmw+lg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=scxHVMgsOueIgoc02KRJ2RWquc7IjLF997Gh8+8iph8=;
- b=Y1D1XG/YJwoMiytEmvXLrPm/Do3cBZ1PUbXDK9lIwa2vOYOimPxcNuzzg1M5T7odD5fh8k3Y74QFwtOG2eyJQxd7E5qYVQTeTeuwCwv8wG/CjBct+JtTdwGzz7yJxpo3kdr7s7O7OKRAgYo1cKoO/oikfjyTAUYYUpaCYfSnKXibI3gIsTfXD8WX28Nl9QSE7UpD2U0fBjCPgLF8EvwGXSO4YYv3USCnQQv+iKZYHMlnT9Nq3oYu5abQFTgqhxjFdza3XP8UkHlldVNmTAgI8Nq2SYtN6IF1GMUOhgWie1I/0sZ4XT+L1Q9ZFipSmfX/CBNOl6BIv7gopDCe49Mdvw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=VUZOWenIjy5GkEEwkSpdq0uykANnDNd/BlY3skqN8K4=;
+	b=y4MTRTvkvZIPjpZTpQh/ILm6TKDLOgm8yq1NfH8WEOb0HaYM/fS9LTMz2/DAgJy7ECXAJG
+	AAgcX2ehs0PCUOiUJBBMRdObcp52wqDqGJbEG+1ft/qq4NTfrr0KIzOfzm5hd7Mi/OA2qd
+	pGD37N0gAcGdCIfo+7c8CvPMQhZhhnA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753780703; a=rsa-sha256;
+	cv=none;
+	b=CcRkJitYsZgvb1ZnK+GFaX7DcDDSDdXv6y9M0mmzw3YldB5eiNf5QVcFgYpBIZZwVlBE55
+	c6Ej0MpGsqcuP50YpcGP9lpknDNJPOrbcAY/SmSunew3Lo4WAhPcdWEQGhQoR11cRj3L0x
+	xzIqcBDUM+Xjh4DOBNmPPMksnkdCPqU=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=H4bp+w7S;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-af51596da56so3792728a12.0
+        for <linux-mm@kvack.org>; Tue, 29 Jul 2025 02:18:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=scxHVMgsOueIgoc02KRJ2RWquc7IjLF997Gh8+8iph8=;
- b=nbZf19QpKaoUb/KofALLVBpJGvbtg4JGF1Q0YvBLd3uEcAZYGXIW9vwoqwatRDcaccL+j+xi8pL4T0aeR2+7ixOFiyVjq9FMDzPr8iBkh2vNzQyaUx0Y5faSgpHd1NyfS2gITCiUzj7WTlufketBUpBlzXBmPRhvkU42qmSUBFc=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by DS0PR10MB7524.namprd10.prod.outlook.com (2603:10b6:8:15c::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.11; Tue, 29 Jul
- 2025 09:06:44 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.8989.010; Tue, 29 Jul 2025
- 09:06:44 +0000
-Date: Tue, 29 Jul 2025 10:06:40 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: WangYuli <wangyuli@uniontech.com>
-Cc: akpm@linux-foundation.org, Liam.Howlett@oracle.com, vbabka@suse.cz,
-        jannh@google.com, pfalcato@suse.de, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, niecheng1@uniontech.com,
-        guanwentao@uniontech.com, Jun Zhan <zhanjun@uniontech.com>
-Subject: Re: [PATCH] tools/testing/vma: Fix function parameter declarations
- for GCC 8.3 compatibility
-Message-ID: <e7554f93-03e8-4315-acb7-a55312354485@lucifer.local>
-References: <EFCEBE7E301589DE+20250729084700.208767-1-wangyuli@uniontech.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <EFCEBE7E301589DE+20250729084700.208767-1-wangyuli@uniontech.com>
-X-ClientProxiedBy: MM0P280CA0047.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:190:b::28) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+        d=gmail.com; s=20230601; t=1753780702; x=1754385502; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VUZOWenIjy5GkEEwkSpdq0uykANnDNd/BlY3skqN8K4=;
+        b=H4bp+w7STWGui9oVHsZikVA9VDezLABiUVShpzvQ/0O7Cyj7Qeo4gJ/s4EJH5HKntZ
+         QSvxTIljzRV5iSPIojuXaxlDDEnCrO2204wIcYy8+8JBDt8l9RWbrpw9k4YXnvqqzdC6
+         n9Nhr39/f0kRn3aZ1ypE5+mmHNw+GhPWwX1ySkiboLwbFC8wxy1B+ApMyE3kXrfS2Ahk
+         VfTK5VOeaMqZs0OL1tX01L9FlZLoca6J57brF4lvpc/cURWu/tNvI3nkwWHQjmdIrISr
+         N6FGYZkYM4YhkckROVOXIoKL0LzngJHRkWN7ze13+7NCLNBv+EM8rzVhuFC66aUTg35k
+         bS4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753780702; x=1754385502;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VUZOWenIjy5GkEEwkSpdq0uykANnDNd/BlY3skqN8K4=;
+        b=qdrAR8NezGVMF1nnGx+amBfNOBCLUC4PxwlIDaiMMXeaaYLkSNJzZPzLxPmSpRkqQ5
+         VpURhWY2n0TBu/ObcUsr3F7MBu4JwsLgEjJt5EkYWt/PlknC72Darem8FOSmigbUcMF4
+         2b2sTqBh+7AlzgWsvk7EmeZCUTcB6quu3p+BZweM3lsx4hQj7lYoIk6P8ByhhEae5xbQ
+         tcfZ8VO5zSq8E76RN8qcw65w+fP04Di9LHGo40wybqJHEp0AHZPRpRTYWQDoEDKG6CiU
+         262f0SgKFe+iOgqRgf3UJbvFWqTMhd1iapqYDjan7rFGUYwqzGUK/gQfrL6zTCHKAlna
+         Jtiw==
+X-Forwarded-Encrypted: i=1; AJvYcCWje8IAzeNGgM/mnOhRyYGLGvBlvpGCbpXEbsPx/Pio7w3pCgB9kS5sHZTpEAIw+pbEP7Vpf5bFLw==@kvack.org
+X-Gm-Message-State: AOJu0Yx5HV4QnhKlARM1/z373dX/g3N7wAkelJAyScsVPqwl4OWOK7fx
+	UqqvcaofWUSjXjrQDkzomF1V2nfBtWmI/2Is58j14SGKUohi+sK/tP5j
+X-Gm-Gg: ASbGnctDjnWcI8BFU8wJNqfoNavXADq2jn6gjEf4SqSvwQN8LBeYkBWmk84i0KQ4nvk
+	TnCoKFBCuaBrnvx9sz9bCAiQTVyv/cqBPsqdC5r3FbwwaJ9injIQfGAxVkTe59qXUyi4waM65pY
+	baR9VeqBiCSkU2Bxg9gSXyugYAfa6LpX8iMRXdUtwMByNmbktH4e65iNPfx3sJIhwcwjQHJteQa
+	CcleMeISD9INi27XGlBgsdcjYzSsw9Ktfvd2kKpybHQAbPPsFwz7xvgOAlxw9O2rGzyMd0sA9Ku
+	UWbapza3j2FNLZ/tegJgPCF4mTD93TeszhqxEpZVT3tM+OLBUeZ5mXbDuvlDsbo6f0K/RkrsV2Y
+	0Rc4Z6JyzHjNKsGbB+qLsnpOzXekcx1WYkxFnLnemQiE/cBk/
+X-Google-Smtp-Source: AGHT+IHJP0Qz12f6zlitK4mLom0lbwKGaBLhvAfihe5cCg9wPlHM/Mw8pPhsa6MVIoqAAMdRnepRMA==
+X-Received: by 2002:a17:903:1a8c:b0:234:8e78:ce8a with SMTP id d9443c01a7336-23fb31c104bmr224767505ad.48.1753780702498;
+        Tue, 29 Jul 2025 02:18:22 -0700 (PDT)
+Received: from localhost.localdomain ([101.82.174.171])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23fbe30be01sm74337015ad.39.2025.07.29.02.18.13
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 29 Jul 2025 02:18:21 -0700 (PDT)
+From: Yafang Shao <laoar.shao@gmail.com>
+To: akpm@linux-foundation.org,
+	david@redhat.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	hannes@cmpxchg.org,
+	usamaarif642@gmail.com,
+	gutierrez.asier@huawei-partners.com,
+	willy@infradead.org,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	ameryhung@gmail.com
+Cc: bpf@vger.kernel.org,
+	linux-mm@kvack.org,
+	Yafang Shao <laoar.shao@gmail.com>
+Subject: [RFC PATCH v4 0/4] mm, bpf: BPF based THP order selection 
+Date: Tue, 29 Jul 2025 17:18:03 +0800
+Message-Id: <20250729091807.84310-1-laoar.shao@gmail.com>
+X-Mailer: git-send-email 2.37.1 (Apple Git-137.1)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|DS0PR10MB7524:EE_
-X-MS-Office365-Filtering-Correlation-Id: 14d53e1b-1885-41ae-5e0a-08ddce7f3d60
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QzZseUlRbEdocVpSUjhacFRGbWlwakpBQ05iMHNBVzRmbGd2VUZlUDNvQ2l0?=
- =?utf-8?B?eFY5bHNqWkJzYnVMMU9sSVU3dzFHdXl0REtQU3dmcU12a3RNZ1NXQzRZSlhV?=
- =?utf-8?B?cnNzY1RKS0R2bFdQREgyZFg5ZEQ3ZXdIS0dzYnlqbmtqcDBVcnQweVNHc0Jn?=
- =?utf-8?B?dkJDUndOM0kyOFVVN3ByQ05YN1ZUdEEzUmYvTm9ySWFYUHhCMGtIczRodlBq?=
- =?utf-8?B?dDJoTFRna0VCc0V2a2laMTQ3dTU2SUtiL09VTHFSTWNGanZuU2tBczkwNXNN?=
- =?utf-8?B?c0JhQ28zNXp3aXZyV29NZDhEWHdndk41WGRNZ0tnUnAxeGpYL0U1ZFJuRy9n?=
- =?utf-8?B?Q1JYYnFWNitiZmFtc0VFV0FMZVFLV2Z3aGY4WDY3RmdLTlpHZDkwblNEb0Rt?=
- =?utf-8?B?RlVoTTBOVVExYmJTb1JxSWNTZ3Y5NE5nYUludWhSZndiRVRTZnNkVmNZMGQ4?=
- =?utf-8?B?cEMra2RmdURiZ1ljejJmR0RvL0U3K3FUZld4ajVTTlh1eGlhRDNYakVTRWxi?=
- =?utf-8?B?NDBNV2toVXZvQUg5SGtnUlV2eXZZd2o4V1VTMmFrQ1B1dVdtd0RlaklUZDlI?=
- =?utf-8?B?T3J0QmE4Z0RnR1E5NlVhN0dyN1ZpTTNsa3dSUERBVjhmSnFZY2Z1ZGExeCtC?=
- =?utf-8?B?S2p1Q09TSDRjRDRqdFJodkxpdHJVZnVkZnU3ZysvL1R5RHRWNkgvOCtOZjhy?=
- =?utf-8?B?cjYvOFBaMktLalVDWGdrVUFFZTBsc3h0eDVtd0tSeUFmMTlJWHNLNHpmWnVY?=
- =?utf-8?B?bFFOWnN4M2pGMFliei9JNElqV2tPbHdpTG1oS2tOWURtUEtJRE1SYld1QmhP?=
- =?utf-8?B?eXh1M3BkS09SNU1RZnVKdFU3NDdhcDNyRk1tb00zWDFSUVJ2b2NIMDBVdzhX?=
- =?utf-8?B?VFhWaVFFcGtqN21weWl5THJpNnZtbmdwakdiS2R1Snk2V0xsdno4MzhlZktq?=
- =?utf-8?B?Q3RHL3EwakpvZTJLbHRNZk1zQW1aeklIaXNpOUFCb0RWY0FXOFlqZkMyTHBi?=
- =?utf-8?B?RWliTmdrTXNSTjUrb1ZtVWYxVXZncFJrTzEzTFNNY2NzVlBocEVOTVJzL2ky?=
- =?utf-8?B?VlRzREJiRm5lUGFGRHdLK1hQakUzN1ZzbER2djR1L2RXelhIV3ZQbEtIL1VN?=
- =?utf-8?B?S00rWDlvdW41U1FJeGYzMnEzRjNQV0I3YW1SUlE2cDVVcUdycnY1Wmk5eTZD?=
- =?utf-8?B?dGVKdWdDRWY2ellsajdEc3Q2R2JxaXlGenV5WkxnZXdjdE1XNTV1NGl1QkU5?=
- =?utf-8?B?TUdUa3g2M00wczZGalFINXIrMm5aT3pvZUMyaVV2eWwxSGY2QmdYNFFLaE1N?=
- =?utf-8?B?V0FpK29WamJjczZDSnJRZmxCTk1FU0lOKy9OUFNhWEpkVDBlaFhZZHZTUnJJ?=
- =?utf-8?B?d0pSUktrdDZoVERXc3JPaFhoRFVrRklaZHNoMVRMOUVmMDI0Sy9pdi9DT0g3?=
- =?utf-8?B?VU9qSHh6L3ZSNmlMUThlNVVjcWJ4NFlyMHFGY2swMmRWdzJHZHQvNnB0Unhn?=
- =?utf-8?B?T0tqVHc1MlpGUk9YMjJNT045ZmpmeUdrbzZwTXVHVlc1N0RWZElDZnZsVFpH?=
- =?utf-8?B?N2t6Mi9CcURPSE5sRnppV1JBb2lVOTIrcGNFamdHaVNCeU9FYlhJK3d3K1NH?=
- =?utf-8?B?enJvTFpaRTM1QmJNZmsyMWZMYnkwcER6YlFpaVF1dzgwaCtyWFNjblJIUlRp?=
- =?utf-8?B?NWgzV3BqaVB2Z2Z1YmVhTThZeFRtci9hY2FIdTlpWmVBUm9LRGsxVTdQdVZh?=
- =?utf-8?B?ZEdNa1lETFlFbHp2RCtxSEE3M0VMZHlYb3JVRlV4MHRyclVwa2RwQ0dsV2pn?=
- =?utf-8?B?aUFrQTlSN3J2YVd1eDhaRHZGMlJHNkkycmdNTUxXSHZoaGFHZ1pkSDJwcWYx?=
- =?utf-8?B?OWUyMTFCSDZOUmtRVmZYdnBrV0xpWlpBZnhvOG1jODlGMXI1NTF1azNJVFhZ?=
- =?utf-8?Q?y5LW/2bZsOs=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UDRwc2dFUnM5UkNmYXY0TFQ3RGFDMmRoODQ1R1NZRUlpOXNSY2VVTEloQ1pj?=
- =?utf-8?B?dGEzalJqQnY5VzdGbm1xbkVkREJNclRxSlBOZ0pUTjJTOW9jUlZPNmNZdzF2?=
- =?utf-8?B?UGhXODNoTHJlSjJDZTR6QnpGMUZPT1gvM1FhdjIwZUFWMDBBRjZoR0VSRldU?=
- =?utf-8?B?aE82d1NvaGNONmdtTC83M1AxSHFubmhvMVVUek1HbllqZ0xEQmgrZXNBMmRM?=
- =?utf-8?B?TWEyRkdnTnphSUVIYTNMdHhOc0RpZ3orY2NQNy9FdkdPMWZkVkNOMytTamJa?=
- =?utf-8?B?OGpHL1UwdWphRFZvUFFmZmwvRFlLbGwxT3VIRit2ck1rTUpPLy9UVHpFVVZj?=
- =?utf-8?B?ci9ZTllTSzJDd2hGbXl3Z0VWK0ZZelhFQWlyU09rRENKSmZxbXZzZ1laUjBK?=
- =?utf-8?B?WFp2K2lHbkJ1dDIyTGRuQVhPVzA0dFM0SWFMbldxSkRsTStJMmVqbnFxSDl1?=
- =?utf-8?B?NWV2WFp4Z0FmQis4ckpxOTdxK0dlcTRXa1UzL3RHQVNsZFRkUlp4MTRpdS9P?=
- =?utf-8?B?anZmQXN0b0lhRHo4bEJ0SzVWcllHZE5GMGpGV2VNb2tSNGp6K3ZaQ2k2T0Ew?=
- =?utf-8?B?Skc0Y2dEamdpUmpEMDVsSlNwZEdCd3ViS20reTgvL2NVa2IwWHRMNnJnaWZF?=
- =?utf-8?B?VlExb1ZpWUtSZ2FCY29Ga1RmeFpNODZBSGJTWmNJZkMwOE1JWGU3NUxJU3g0?=
- =?utf-8?B?Mnl0QmpGNmFoaktmdE1OajhmdWw5SVBQdmt0NTluUStZRkhYMjRxQ2xHOXZk?=
- =?utf-8?B?SndhN08zNE91VlN2SmxWSFJWWEYycUtyNm1lU3FuakUxMjN2RndGL3BtMUEw?=
- =?utf-8?B?Z2M1N1kvRWhub1FkK1laM3NLYlpsSEI5QWJkTDVURDU4K3Z3SVR4WTZ4ck8y?=
- =?utf-8?B?N1AzME1vUVhDZFkyRGpaTHdDV2hkUHd0cHlPWnB1NzQrRThuVXJVeWJ0TVBa?=
- =?utf-8?B?ZjhzbTVvdmprWWYxRVI4UHZMOU1RQTZzRmhDSC9ML1NHcDRVTWNpbStwSHVp?=
- =?utf-8?B?N01kdkNTUHdlSW9YV2Njc1VyeGZ5SERGZ3dBZ0pFTVhXcFlLYjJHcDFPYTlI?=
- =?utf-8?B?UlJ6Nm0wWUdnYlRPaDNLZmU0cG84aDRrS2tKS0NTOFV2b05nSlJuZjVvdFho?=
- =?utf-8?B?U3lobTRnRDJjTUdMaVVsSGw4M2JhdElCbDNIL2w5MU4rOHlsdDBXMkVFUTBY?=
- =?utf-8?B?U0xTb3NoWUcxdXg2clhJZm82V3ZUMjY4REJJU0N3Z3JNOVRNRDVKQ1Rqb0lp?=
- =?utf-8?B?QjgzM3NneDdER1JyQ1FzUXV6MHBzZVVNZWxmMUNKOTlQOFJub1lPYnE3Qkhy?=
- =?utf-8?B?S2lJei90S1NZdGZiQnJZQm5TSlVIUmFmNkpUbWttUmtuWW43TkJiMEhITnI4?=
- =?utf-8?B?YkM1T3Z2TC9taEFHT1I1MXdhRU45dFROemF3VldEY1luZDUyTWJWVnJSSkZy?=
- =?utf-8?B?aVVZMlBLU0tRL3lFZk5pVGxKdmVVUmdjQVQ3QjAwT2ttQlpQYklHcGpzRlE4?=
- =?utf-8?B?SVJMMEJlNEpJWFcrRnlyMkg1M3RQWGV0THM3bmhtK3VaRTVSS2R0MG1IRjRm?=
- =?utf-8?B?eXplQWxMaGw5b2F6ejFNNGxDNkhJaGMxR0pmcWhjL3hOb2pVbEtpZzVGWE5K?=
- =?utf-8?B?QzEvSjZHNmZEK1dlcjBkVEhpL0xiYnBBV29FRDhxWEJ6em0waDlyeFJvWWc0?=
- =?utf-8?B?RUZVUFdCR3puRzNhRlFjbkd0ajBVb0JQTlE5MWVTUzZWdXg2aGt5KzZZdUFC?=
- =?utf-8?B?VWhORi8wU3hiSU5oczMzekNHeFdiSzJFOUFnSmdubXUvY1hCK2JrT1MxRk9X?=
- =?utf-8?B?djBjS1dJYXZ6Z0RuQzF4WVVpOVBlSzJzSE9iaUtoKzJBVTB2alpudWk5MmNQ?=
- =?utf-8?B?QzlMU0R2Y3ROMEk5blV0V2JETzZack43bTJwWGRacEdVZ2I1dGFUTDNZRTFw?=
- =?utf-8?B?dTJLRldNVjgrSk1OdVN3M1RKNFlIQ01GaE94N2M2YzlhMHNaSG1PY3VVdlJT?=
- =?utf-8?B?MTdxSUZIOXhheVhxbFRzaWxzc0pYYUtDTERBejFEQTF3N0ozMlpVRjBKZnh0?=
- =?utf-8?B?a29CZFFmM25DSnNNYzRXUlduZHFrcFMreHVHTHN6YithL1dDMDdJckVRZEps?=
- =?utf-8?B?NXJJTk5QQjBJS2dBd0JNUWM2d0Y5SGZOdFgwUFpZL2FYUy96Sjg0SjhEZ2t5?=
- =?utf-8?B?ZUE9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	4L9/iqYaoSRCRKorGjkZmYaLEop2FGTq41Tf98/53GLqXTwLFPdPXaT3oX7pqJQFYEwDzrqAnRwEje1AiFUyuDkap84gRsLhzYq3ANxn/2SvtwdC8PQuwnXy3/OxLwWwK7w6WSiRlBiNHTUs3RQRAeJ/GYW3ExewuciHbxBQ5tU2ldeWA1/0KIdmpQn++B/MCIKL5EGOCBPM6A8nziGqHVKWB2oha36PSuePrUigvnqc4ERLbEQj46qszu9qqwbMPCOYjF25ALNM0M6KcWTZbYGtqZqc069NbGtT1agFVLK+8SWnl30gqJ5BhLM/BG+d2VgOvy8vMmNi3gbTP6J2pYwOHYfoe3JdNv7DQgPV9oOGt9KNjp8eAqBWd2uOay7hU70W3+gYhs1LohObK07b9FVRJQhbJvG5ZdCRPKrCa8qDm9SeRHTVnbI2krSJj2gsMqVqAqdvcnXZdL8C8TAOxZd1iKRCTk5/MCWO8IEzxNqKdd+df5nvsQWCK/SNr1n84eYPlW3aZsuUZ2YMl42CP6i73QLheenL0rWJ8mggXMW7e9KFghC0ZwLATSgCgtT6mNCknvVlw7l29SdBD6RrmpCF+pJAiJy8oDU2YQnHf/I=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 14d53e1b-1885-41ae-5e0a-08ddce7f3d60
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2025 09:06:44.2955
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LSOOBYtIYCcJmf35Euv6v/0x7vZ3QHzChjRE8xWV+C5/FSAgMCoSH+66RIm9UOSotpYe6nzoqhuupX/VPBbAdrFQsPKpdT37iYM/sDE47jA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR10MB7524
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-29_02,2025-07-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=0 bulkscore=0
- malwarescore=0 mlxscore=0 adultscore=0 mlxlogscore=766 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2507290070
-X-Authority-Analysis: v=2.4 cv=OvdPyz/t c=1 sm=1 tr=0 ts=68888f27 b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=Wb1JkmetP80A:10 a=GoEa3M9JfhUA:10 a=iHwBjlyiAAAA:8 a=i7JKvcW0x9HuoAmKtocA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=uNSKXYNwxGiU6LD0JREI:22 cc=ntf
- awl=host:12071
-X-Proofpoint-GUID: Sv8YXlRh7AZtlg3Q2rNJ9b-Ntnu9HITN
-X-Proofpoint-ORIG-GUID: Sv8YXlRh7AZtlg3Q2rNJ9b-Ntnu9HITN
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI5MDA3MCBTYWx0ZWRfXwmxT2S2TbL7v
- zSIAQ8yb7S+GLbO0Dt+V7ZeUHkI0a0/ecQObOe58yIZsenv0LU4gLMMVf1Isarb005FELbbhFh4
- SciQ0mCrYbE7vhsIy8rsxFwiM0N2psA6wZ17bFexby2nmcnQGNal+1VkvjIdEbsl4KdFhNVv0jN
- S4c1j3YV9rHmKZZ1SOpttuW+VhVEj/aZgXgpmPD/IXliymk+eS5CNT8v5UuqTS8+YjpIbZlCqUR
- Q/lri6OUEF3XFuGxidA2USJlJ2eFplTcDhneEBfom5p2V2b9nMGIJshY14XllAU9GjSKg8iCIAM
- Mjxqw/mLGa4Chpr5q/bkTT8Q150mS1NSSnxcsglTFb5pk3YEhbcJYBOCEqRX7y5pAP229ZPZZdN
- hV/jKo6TRGbdJt5pw9UmFlDdPP2g8KJ8CNlBqewF9m0iJNFa27s0CBZn6bBsltCsXyqrCo0i
-X-Rspamd-Queue-Id: B0FBF14000E
-X-Stat-Signature: 9ygd1gqmwbitwfjydyox4jw6qamg1h58
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: D1A321C0009
+X-Stat-Signature: wbynzhcjgi1cesujkuo1wdbk8j4dznk9
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-HE-Tag: 1753780010-941339
-X-HE-Meta: U2FsdGVkX1/JJueXKXNMkHJ7NJXEbYPaD1ayaAImE/pwtL0rLQYIZIOD/fnlzo5y1pXphiiC57YpML6+70KXGk0rCOLv7BFyORy2Aj6blHYYfQoxk/fPVBca0ADD+7CjaA58SQjp4kOg2eGSdYF2yzK+zTtPMzMpvfHkO4a+bD3evSoWj/cyRJnP745XWyRLNvvl4lmYBEcTxA35i4xSsD0Gh+vHJ05hXQkquWAyxw4WAk0siEjH8cX/gfKHeFpHEmB2DE14qH0Cq40hYOs9+cxRe5QZOsQ+pvB8Iby2sDSdI62udHpyZKxLYhHlZvPY/r1NMAzfnlrpDTcciletjF8FRn5hGWib7dfYDstEpYY/RSI2xo8MCMsOIOhzktQAeCtp4X/v1rKsAmlUj4s6uUykqQk4kMupiSVhS9QxSfT5T06hKl+wrcTuh4KqW9tTrhEqR4Zlikd/M/JvLP6cv0cgSxWqgnxqbx8kbJolJC5MAYYJsqz0uAV9gx2C7WIwzuwCQaKw4Z4o0oshsdAYVZXI38Zs1NpqfFrHMqTXeVILSkfBaHRPzQirAjNbvJdiwUth7w8MBLgTkifSRsbzh8UDASwTJGgMIqurOh91DR3Gw8VhZbMqaOam2ILhPCffmc03OzRgnRUPCvmxWSKz5TZS3qHcSLumg3FlCX2ysaci5uTujxLvogbluv1mVlWkEqyfLWNFUKms75619RKJqlAdBztAEqX+7poTCMMia4j4WfV7nRJ+yAYFj4g6dVkC1MOzVSGgofHc83iBhMRxKojq4LmCyGjsqP8h0K6hkwpOFffY9T8c3spmu+ze1dqnQh4dY+ki9FlSlo943gDeHtUQ2J+zIFwjEg7u6J3xDvgqJC6ehvlxwlqSbINlO6U+lT4MjfzQT6VKw2zq/kieQ/Ub6sgnA0kz10jLA+hL1upzEKj/rEg2kyeNgzJr7uSpZDJJ8Qn9rA+eyoCQcd+
- CCg5yVCr
- CR6VNYs/fVHR0yoxS0X8/9W+GNhSJGeN5uwRrgoAB1tv8bu8cE4LzDKObN6Rhh/Pq9FO8suZFXpkkmqZASeoWM0Lp26JQN9eEBPe+O7Mr7UjCuDUTc85ZvnppcXgd/qvRPTlD9D+9A02CN+hkD17T/+M/7AVS3xecsb09fL2UPhiDC3kZQXAdXP4WBahD6dAkreQPF93mYn8OtH8Yz/oVknD2FEw6GMTNlJgLr7fTbO3KT3vLC/Hpt5JX3G2jI8QQ4kPR3crADP7b/5cuz//Bn6UudGULELK43JBg1HEjxE5u5EcLFw6L83XyzCpUOKkxUXEkoBTp/q75a4qfiUK7LjVvznePZVYOJ+DnX6WPoLsEkmDGTFtqZ2PD6x9Cr/HRooKkpON6daHb9grWLp6LqE+mgq3tNUDV0hpdszT7zcpreJLf3aKVtgGMwdjdWz+H90BjCCv9HySa7/xlqm+kpWiCbiYD0qj1my7+hjyzYgGcb0jubJ+eLBgpEbFrm4vtCHLnjRGgZeJKCDSSdZZTzJGKK4iIfc+IMEpsHF64tWeX1BnkOhwyLEYUMMEYnZt8mSeVBpCOioLj5Ag9XoXrt2gH1+wnSgKRKYG4/BI16kxLkilNSlcTXDtVEf7EZtrshGhgMiPIKXktLlw4aaQ0MJay8T91cdNqLUfB+oVKr+bd/3lcx/J/v5rBIdDF0gn1KDDb43SYayRFSoPFv55U9nFVdznayF69YN5rkUPTRv/5Tr6r6REV+sk5/EGBr+tLYYSHFmLG4N16QdkvFs2sYS7Mh6OU9BOb05D9YQL1yS3QQ/vuyQOz2ERpnw==
+X-HE-Tag: 1753780703-500066
+X-HE-Meta: U2FsdGVkX1+6L/E6PwLRfGiMkapsGFk6zaHE7JrXolmXQo5QBzejd9hEgrIPGcx2RJK2Cp80pS2TK+tQOofb0+P3hEH0CjGh7OH6Nko8TI+9IeQ1bBu6HBGGjID11pEFickZXAl+tsG94i+9mdl8Ic149gXOYzKJGfZESl1PAwCK2us1kC1cCL3TMSSMV/e7gzHQH19yOcoaic4q0BNC7vM+AVBC8r4ja7sj6FmXypBzyx7fiYS56EcJXwJaot1D+OXbvYDb/vm4P4hDRpCTyzfReUJC9MOZ23kTCKGYS0d7aIFShQw0PAKnGx85BRsc1Woi7ir8H4tyohBhzU+iGIjir9iRK3TCTRv3dTUmTbjfwsEO+aVnUQb8i4hBga97k/DNXZCq02XqcBH0RY2M0tunWppHWfGoIrLf+sJvERj3gEcdLEpnB/jRQe42ceblSUkiGVE6hjrt4DOXnzsmgL6DOhMO3MLrQj4tNfU3m0pBNMNLqSaNqBxaxUR+WQqWPI369l0rVUR2krXE4606i6xNgyf/UQwSPsSwMpSgwvmS19u9NQXts0Uwi4QVyZHNO7diuYgiFqvuxI6rbyVO/YfQaVmFmMPilbuvAKCoF9Ua01exLCHaRlWxY83JmArhLCpE8/z47vrxLuY1u6xQMnLRRFl9oofRFTjDuxxpP/6q/VVZVO6dF5VOeTGy6OhsPPbrB6aqJYfSHIMSc+oMrBjlHyQFiqAHiu18GagEyI8IKXCbDlcGqBRZO3uPwN6DVDDcVsX3CpAssV8LsEk9JdYTZuuIpx7vrPBRqsNknOjK+LjK39gqD8Lr5C9QGtjoKUNtT9/7Mborm1v7HwSWwNwOJWr3yXEIOcKqqx/Bvo0mtoSFPMp3M6grB80YBhJRLKOxBsj0Y5xNz8FSUqZP5bWIT3vUkG+G7f630jMu5Q4UMBdiTJ+jg5CRlzHPeYbEW05pGfO0F31tQBt+NJS
+ nHm2wdFi
+ 07Wr+CCK2PSaQGHGre7i8yZUsBrJie3sWUTcbKvmTtRvLmaUrqy8ukPjW+vOXUCU89pW2oNBMmhMCLDBb2j+Xhr3uWx/h+kaOLMVeQgY7+F7OMk5kaYr616wR7ASjitmn2yT8Sx/8Sbw5eyeP1csAyX9w871aPOh4EDh4I0innYmvRe8MLdhlAxIINlMZXEFgfwj9o2jf16A0j6vE/Q/j6r0SUgh/idZwDZiV3JF5SUDvfITm69MODsZKrlWYH5M14dvBx/8qPA72B92f2H1BeYO2vU6B76QYDTS+Z7u0kypSD3+cZJ/Tc02/Ux6jbC4u8oW14RpNKiDwNLO61HPIrToGihAu3uCJeNrBOdw9tqwXHLqdZg6MwRdXyfobFKDKSBIgVi89S0qrJzwQ3IfDRhPqNSCVRRbvXGEn5EvR+9rcJ4sE/lZSIhuWOsL8qE/9bCDvepDQTDntm524IkiWIphwPzJ1FobSV6HXguajPF5D1wI1lOP/krEdhb3Q1muC+638R+oMb7wyiS53SM3dMrSRHSRLciWMK4XJzL1EHCN88cGJCmhNjy0di68GNOxGlC4eaZo5yob9vrjhYLj6YYLuOQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -254,52 +131,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 29, 2025 at 04:47:00PM +0800, WangYuli wrote:
-> The Linux kernel's minimum GCC version requirement has been bumped
-> from 4.3 to 8.3, but this tool still fails to compile with GCC 8.3.
+Background
+----------
 
-Why people keep reporting this for my VMA test series but _not_ the kernel
-as a whole I don't know.
+Our production servers consistently configure THP to "never" due to
+historical incidents caused by its behavior. Key issues include:
+- Increased Memory Consumption
+  THP significantly raises overall memory usage, reducing available memory
+  for workloads.
 
-$ grep "\*);" include/linux/mm.h | wc -l
-9
+- Latency Spikes
+  Random latency spikes occur due to frequent memory compaction triggered
+  by THP.
 
-^--- If you use such a compiler, the kernel won't build.
+- Lack of Fine-Grained Control
+  THP tuning is globally configured, making it unsuitable for containerized
+  environments. When multiple workloads share a host, enabling THP without
+  per-workload control leads to unpredictable behavior.
 
-So the bug is whoever is saying a version of gcc that does the below (I'll
-take your word for it that this is in a normal configuraiton) is OK for the
-kernel.
+Due to these issues, administrators avoid switching to madvise or always
+modes—unless per-workload THP control is implemented.
 
-It's clearly not.
+To address this, we propose BPF-based THP policy for flexible adjustment.
+Additionally, as David mentioned [0], this mechanism can also serve as a
+policy prototyping tool (test policies via BPF before upstreaming them).
 
-Oh just to underline things:
+Proposed Solution
+-----------------
 
-$ find include/linux -name '*.h' | xargs grep "\*);" | wc -l
-1899
+As suggested by David [0], we introduce a new BPF interface:
 
-So y'know.
+/**
+ * @get_suggested_order: Get the suggested highest THP order for allocation
+ * @mm: mm_struct associated with the THP allocation
+ * @tva_flags: TVA flags for current context
+ *             %TVA_IN_PF: Set when in page fault context
+ *             Other flags: Reserved for future use
+ * @order: The highest order being considered for this THP allocation.
+ *         %PUD_ORDER for PUD-mapped allocations
+ *         %PMD_ORDER for PMD-mapped allocations
+ *         %PMD_ORDER - 1 for mTHP allocations
+ *
+ * Rerurn: Suggested highest THP order to use for allocation. The returned
+ * order will never exceed the input @order value.
+ */
+int (*get_suggested_order)(struct mm_struct *mm, unsigned long tva_flags, int order);
 
->
-> Older compilers would fail if did not include parameter names in
-> function declarations that contained parameter types; newer compilers
-> are more lenient about this.
+This interface:
+- Supports both use cases (per-workload tuning + policy prototyping).
+- Can be extended with BPF helpers (e.g., for memory pressure awareness).
 
-You're using a compiler that won't build linux. Stop it?
+This is an experimental feature. To use it, you must enable
+CONFIG_EXPERIMENTAL_BPF_ORDER_SELECTION.
 
->
-> Fix many errors like this:
->   In file included from vma.c:10:
->   vma_internal.h: In function ‘arch_validate_flags’:
->   vma_internal.h:1218:40: error: parameter name omitted
->    static inline bool arch_validate_flags(unsigned long)
->                                         ^~~~~~~~~~~~~
->   vma.c: In function ‘dummy_close’:
->   vma.c:281:25: error: parameter name omitted
->    static void dummy_close(struct vm_area_struct *)
->                          ^~~~~~~~~~~~~~~~~~~~~~~
->
-> Reported-by: Jun Zhan <zhanjun@uniontech.com>
-> Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Warning:
+- The interface may change
+- Behavior may differ in future kernel versions
+- We might remove it in the future
 
-NAK.
+A simple test case is included in Patch #4.
+
+Changes:
+RFC v3->v4:
+- Use a new interface get_suggested_order() (David)
+- Mark it as experimental (David, Lorenzo)
+- Code improvement in THP (Usama)
+- Code improvement in BPF struct ops (Amery)
+
+RFC v2->v3: https://lwn.net/Articles/1024545/
+- Finer-graind tuning based on madvise or always mode (David, Lorenzo)
+- Use BPF to write more advanced policies logic (David, Lorenzo)
+
+RFC v1->v2: https://lwn.net/Articles/1021783/
+The main changes are as follows,
+- Use struct_ops instead of fmod_ret (Alexei)
+- Introduce a new THP mode (Johannes)
+- Introduce new helpers for BPF hook (Zi)
+- Refine the commit log
+
+RFC v1: https://lwn.net/Articles/1019290/
+
+Yafang Shao (4):
+  mm: thp: add support for BPF based THP order selection
+  mm: thp: add a new kfunc bpf_mm_get_mem_cgroup()
+  mm: thp: add a new kfunc bpf_mm_get_task()
+  selftest/bpf: add selftest for BPF based THP order seletection
+
+ include/linux/huge_mm.h                       |  13 +
+ include/linux/khugepaged.h                    |  12 +-
+ mm/Kconfig                                    |  12 +
+ mm/Makefile                                   |   1 +
+ mm/bpf_thp.c                                  | 255 ++++++++++++++++++
+ mm/huge_memory.c                              |   9 +
+ mm/khugepaged.c                               |  18 +-
+ mm/memory.c                                   |  14 +-
+ tools/testing/selftests/bpf/config            |   2 +
+ .../selftests/bpf/prog_tests/thp_adjust.c     | 183 +++++++++++++
+ .../selftests/bpf/progs/test_thp_adjust.c     |  69 +++++
+ .../bpf/progs/test_thp_adjust_failure.c       |  24 ++
+ 12 files changed, 605 insertions(+), 7 deletions(-)
+ create mode 100644 mm/bpf_thp.c
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/thp_adjust.c
+ create mode 100644 tools/testing/selftests/bpf/progs/test_thp_adjust.c
+ create mode 100644 tools/testing/selftests/bpf/progs/test_thp_adjust_failure.c
+
+-- 
+2.43.5
+
 
