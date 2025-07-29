@@ -2,65 +2,65 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 876F2C83F26
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 06:46:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 903B8C83F26
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 06:46:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 24DCA6B0089; Tue, 29 Jul 2025 02:46:47 -0400 (EDT)
+	id 707D96B008A; Tue, 29 Jul 2025 02:46:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D64F6B008A; Tue, 29 Jul 2025 02:46:47 -0400 (EDT)
+	id 6B8C96B0092; Tue, 29 Jul 2025 02:46:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0EC276B008C; Tue, 29 Jul 2025 02:46:47 -0400 (EDT)
+	id 5A85B6B0093; Tue, 29 Jul 2025 02:46:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F3DBD6B0089
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 02:46:46 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B3C50B9B49
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C05E6B008A
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 02:46:49 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A2F70113A71
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 06:46:48 +0000 (UTC)
+X-FDA: 83716369296.07.5E7D6BD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D44B11C0007
 	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 06:46:46 +0000 (UTC)
-X-FDA: 83716369212.16.9031520
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1BBFF180006
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 06:46:44 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DM4LSl+3;
-	spf=pass (imf24.hostedemail.com: domain of hare@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=hare@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dm8bncky;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of hare@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=hare@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753771607; a=rsa-sha256;
+	cv=none;
+	b=BprCB3sc/GSt6nKRShjVffiT5QzWrkTIeAAyvHygPPoVqOzTy/mQ3O/RxJNjrrzyG1vebo
+	fSybHRIpVcvderaQoNwAt5KLhiDVmuToM/bNEnScO1DWDQD/h5gd09lHLBvDVYhdoJQBvf
+	2vLJzwWW/pI6IaC66Vtzcnq5AeTW324=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dm8bncky;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of hare@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=hare@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753771605;
+	s=arc-20220608; t=1753771607;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GiWi5cqYUJYL6hdLRY90oEdIig8/O50aCA0RYeWFqYA=;
-	b=w/3LwQrm/r28Y6wXzSckFh32dHZRcmzPwWURIFo1zE9q+rjKy2OqgFBPGH5dhjMdFp5FXC
-	Np2wgf7xeHwmyNyGeNY+9r9CVeOOTnZxO1sP21IEoanhWtLOqo5bW7ADzobVNf57rD+g74
-	muFEOM/oKaWjIj2jNc5GfJ3vjeKmjzc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753771605; a=rsa-sha256;
-	cv=none;
-	b=kSkaF6y+G0m3esiVOSkgvkA3OuCJIvXLWXBEhADA7/+ozWvhAM3fbWoClEuXxLEAK6na6Z
-	H12m4+qZTUkagFsnMbWXTeCf9BOCQ6eIdUWVr/7zkZkSfS0CvOzux9JSTru3Pn8PpUxnbC
-	/cu+BP80g8ocuXIPh9XUyBkIsycvOh4=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DM4LSl+3;
-	spf=pass (imf24.hostedemail.com: domain of hare@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=hare@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=G9U+Ekkinyc0L6yvrjJausFAJdfCHa5YZP9PIw+E5Tw=;
+	b=AKaVeg+Q4tHrAK8wYGAbZTN73FUbED2Nj8w45A22aIWP4lrQih84oR8l10xkIYK85fjYXb
+	xwbwHTSKHG4DQRaxCDPpVfD2//sNIHy3N4OO0PWVSLx6NQ9/PZV7iaeGE5jNZFRyql807P
+	Sy6DXFZgzJvzELxIo1nR8oOqP+hAAOM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 187775C5CFE;
-	Tue, 29 Jul 2025 06:46:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44637C4CEF5;
-	Tue, 29 Jul 2025 06:46:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A883B44C3D;
+	Tue, 29 Jul 2025 06:46:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24342C4CEF8;
+	Tue, 29 Jul 2025 06:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753771603;
-	bh=lm/WwJ8vlY1XSlskrCOSQ9xiG5dGVZNjw1038Xlj7Yw=;
+	s=k20201202; t=1753771605;
+	bh=fkVU/PaDe0uUg8Y/ATbDEjMGjlyliNtfZWEmBsWcKVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DM4LSl+3rn8TX6zh62EpQxhhgyrNnTUMyZP/vY1Ko4FW0rOFIhkiS/xXqR0TNZaj8
-	 5lklHyGYabJ9gKb5zMmwf69S+hIzNUjvmlDpx1/wgl6wjWhePY+cqS2zHyD9amL2CR
-	 /2iJVykbSX0UB+AdElbd23VuyPwl6NdArqVOgK+hUHdwFVR9iLEnEndk2FN6gkb0cU
-	 GzYxkuSFl+Cus0kDY8AqPCHyaWpunq/9Yew5shWFscPv7pXMUmm4eODA+u/H5xRJmS
-	 IT/fqLIRoV61OSGqFLGQ4useVN1pWe9Nr7zN6lbjP7LlKrQe6rvOV6dnHZ/8KJTMEU
-	 28I1Kj9R9cZSw==
+	b=dm8bnckyHtvU3N09jvHFsVT1RLH4Sz2M6rRlZDa9urX5T+bzswmZzqAYoP12+HkBx
+	 3eiTlu5xrUZK+xJLpyVNmE28pSUMYEv2nRvxzyR2KJWN8ga753YmMQyKuVnpufXBRM
+	 WsP9bgd9F+YLr+o1fWlJjrq8x+DV+diMa0X7UNuyC/9rfLTMcKJkpQUgaCTbbJ4qaO
+	 duc0bIaAdPS7IBjUwjzr7hlLc82NNiugYgzPvuiKpsNkkt+ALANE7r7mfYeeK0SoB+
+	 Ny2wL8plIpAHTDC0BMupHKqukTGN/kO8hYaagIrwtuwCpspoSr1R+b01nbat83lj6A
+	 U2vgAQSQmGXpg==
 From: Hannes Reinecke <hare@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@redhat.com>,
@@ -68,22 +68,22 @@ Cc: David Hildenbrand <david@redhat.com>,
 	linux-mm@kvack.org,
 	Hannes Reinecke <hare@kernel.org>,
 	Donet Tom <donettom@linux.ibm.com>
-Subject: [PATCH 1/3] drivers/base/memory: add node id parameter to add_memory_block()
-Date: Tue, 29 Jul 2025 08:46:34 +0200
-Message-ID: <20250729064637.51662-2-hare@kernel.org>
+Subject: [PATCH 2/3] mm/memory_hotplug: activate node before adding new memory blocks
+Date: Tue, 29 Jul 2025 08:46:35 +0200
+Message-ID: <20250729064637.51662-3-hare@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250729064637.51662-1-hare@kernel.org>
 References: <20250729064637.51662-1-hare@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1BBFF180006
-X-Stat-Signature: ud97gkqbywuwjp475y7xbyrn8bogrjit
+X-Rspamd-Queue-Id: D44B11C0007
+X-Stat-Signature: x8j4n8h3m6crx3qpzdpmbtmbysem1wb5
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1753771604-519826
-X-HE-Meta: U2FsdGVkX1+dd6fyCBo6lmnbhBV1jO8S7eUs1vPI9MkeS0A+n1N+oo8EIKBZznp29qn8m0CpoDJjObevCGZifSuEl3wWnuv+eUfo57K/QNFu/J3ZITHDF62Ncde2K9z20b1+zijGikr1A93Dby6OAZYM0MJ8uLTzpk06hIeuxYvfenj2cG6+VZN9WCF9SnidzF/F3bl5Y6g1LNqZ2kCvUD9m3zKNbf+cyDeqHK0GwT306hibMInEM6xo/pA9nkLY1XCS1vuvqcyfdugPx6VlEYyVbYkcZrPKxUA+SNwhXuKyenriETpkOtxBrVeO77333HktjaTta6xX1uiaSyQ+2Fcexynnph9M92OiQ6aau8uFFLCiDGzTDDzA3MDNgB7H+NTllI2mRnlikNizh1ROdwSkdkjicvXZyvu2MVZFESkzYQmfms7tR7ugaPAJh5LQ3I16FZfl0BxE2kTHXq/YmHuEQDN4wqo09zDn+vXuRPo1T4U6ms+x6UYhdYz8e13dqa2INcYDVlI3yTE7gxxlNXzXZjtBN0m9/174KeIl+GRZ79s6BfTrs8kwjD/nHeDKS79am80GK2EuvmYUeiaJvloTPLK3FeSSOVXJkwFg/tRFf0QFzvfIOIv1pYcdCp6x+M17h6vfT9UmIYYX5bOiuIivOBJneN64pv7DBIZtq4UUAzHTIRlHFZBEeEwJwIuE87DB5ihxOa7ooqzQI8kc18WopkTYGo8g1yPfrkG+saFZa9SyLWkbj5aJsQBXBxETYxyzFQjrLZVPBrUXf4Um3jUmK1nxPqVeyVMWR5/hZ2mNUYWx2WJn8i9t4K3OVIsIsCM0YAVgh3fXef+bZmC55LIgoEtCGcd4WT0URQjwoMOlnjcU/QiUvRX3erxGeT856Fdu6H1LB7EKUCVGRHck46lwSn5ytAS8vBl8eJXYSYjC69UgVIwDr88p5s49SNRyipC+xJ1OwL0daOnInnn
- Ob47O953
- BHEUdJFcBCrQ4k+NFm2LbzNo42mZXqnp5KhvPFaN3bAnAuqES1BQu+eSEHsodngCt54XRAHu4SskaUxtgLz4GmCKjV5bsAO2VdjiIfkXMzLUoUk7VDUSlPd5E39+h9fyuMSMkCmzCpPLSj8Vd1FtGAbYIFP30ODvJxSY6LnMOqkAvi6wr67nRS3m0/G6y3te4P/gjPN1qa6koG5xg57UjH//+WJE3iWynnLd4JNoo0yAjEsaCnh7XMyJIX+S7dDUBNyuzJneWWYdrcmRaLGw+qj3xEz1khQDDItWiAEeynjHYE9S9tOUwXcOMFR+VchPxiZZiXfCy8RCErocpKDztvFgc/1NpbvXR7FGP6OHbUJfiUwM=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1753771606-391199
+X-HE-Meta: U2FsdGVkX19h0MPZrSLhZPfHciNWONOOuABCNn5FRw9A8fN0nV96iH1L58v9np4UDeFOc2cBFKLKNTgTy6X9RLNva7TxMhrO+rj4p5CYlSKUOMNBHGjVaWUWlPsotk5A9rK1Sf2n1enPmSegx6RCZ4aHxYSEB1sczHvQfH/aHJQ+xRUy0isW3sRt9C/Ruw1EPz9nKOfoZL1qp7521DozEegCu3oTg+MU56vYWPJYP+/tqMWZ+yLJTrJ5ImA3RBUgiwAoLlJ9XhhdLsdMoB9yPtvgVGEFoqFpSzBIVTrXH+t3tCBnZ6mk1zpIg9j81hdBWySbtCOsgcIwAFRR/SKtbFNV9VE0dJ2caSVYD83TSKn6440FOykVGwSghIAYBeOGTtPaYCGzpcxlL2LI3zr1sWvcYcXKpAGF7WlWE0eX7nzlk6+RiBTQoLUZhoLP756MIC6g+ZG82F9nyZN/z/f/0fcC4Hh6hGCDg/krCBnuUvVWKO1Cc5I5SYNIxglrBzbPBcn7MVsSgwuJy6pSWhvM8X6b90qETVKdKx5x2HzLQrq23Sa32kyuILv0IVeiPKjDsk7IQTcok2gmLimyHOgpNatxOAXG8eyxH84oQGDFqXRP80uRA2yrgYYTYtCahb6fvwUiHpUUKugf/BTvmv7VEcflx7V+GvrEMCtLhP2b7WfaF1PhMKWkafmZtl03Z/8IQIswzkXSAFphKt2K32ZYpIs4+/YxurYH3PG0MHa7WweZj5kJln93Xka+Bkz6z27dEB+exjlQB4rwzYh7/s8uBd7N82vtAYdZ893Ofd5Zg9FbbUnZ+oROALC8ViNwf5MHik2gt5H++mlfVfhn4W1fpjcWBGqv3tWcQrqQuRz5FKWm/1pRI1lQtrkXE63IuGnDUm2QmDpkK2UGHb6tcPf+UBZaJX+p44fzxkl+WFxPOKsRbFc0Lb34R40BApZixHiGJVn3pOfX1LSQ6A+Ae4a
+ v0Bps7BB
+ P49wKufOfwJ2EyCtGp6PErsXwJTJPenMrZgXfj/HuWopttA0LXoLrX20XUouRL3MJeiyuhOdXiODuvvmZG8FAxUl0I1g2UBxzHT4aEqfbaH/ZbBugd5E39CzQ7MelqTXuMvzURkiCB/U92Va+zocZYl4dHtJ1CO+IiXpY1EJzAsffsmbujnwQMVpjTUaBRhIEfF3UKNAVTTGh66CoUZXrYqZnochCAD9Yu4SeLYHWiCA/+UbaqgpSMn8OQMVTMqLmjvJyB0wVVfA1imoe6kVjnPSSHP/qoY8TkWYEWiD7WJaXd6AGn32yOvgP8D19QuHHKDQw1BaIYUPntp0PvOsy5ecMOzZKf+/ABkW7x6oHFiY12eM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,71 +92,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a 'nid' parameter to add_memory_block() to initialize the memory
-block with the correct node id.
+The sysfs attributes for memory blocks require the node ID to be
+set and initialized, so move the node activation before adding
+new memory blocks. This also has the nice side effect that the
+BUG_ON() can be converted into a WARN_ON() as we now can handle
+registration errors.
 
+Fixes: b9ff036082cd ("mm/memory_hotplug.c: make add_memory_resource use __try_online_node")
 Signed-off-by: Hannes Reinecke <hare@kernel.org>
 Acked-by: David Hildenbrand <david@redhat.com>
 Acked-by: Oscar Salvador <osalvador@suse.de>
 Reviewed-by: Donet Tom <donettom@linux.ibm.com>
 ---
- drivers/base/memory.c | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ drivers/base/memory.c  |  4 ++--
+ include/linux/memory.h |  2 +-
+ mm/memory_hotplug.c    | 32 +++++++++++++++++---------------
+ 3 files changed, 20 insertions(+), 18 deletions(-)
 
 diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-index 5c6c1d6bb59f..894d3891292b 100644
+index 894d3891292b..fb212a889e65 100644
 --- a/drivers/base/memory.c
 +++ b/drivers/base/memory.c
-@@ -809,7 +809,7 @@ void memory_block_add_nid(struct memory_block *mem, int nid,
- }
- #endif
- 
--static int add_memory_block(unsigned long block_id, unsigned long state,
-+static int add_memory_block(unsigned long block_id, int nid, unsigned long state,
- 			    struct vmem_altmap *altmap,
- 			    struct memory_group *group)
+@@ -879,7 +879,7 @@ static void remove_memory_block(struct memory_block *memory)
+  * Called under device_hotplug_lock.
+  */
+ int create_memory_block_devices(unsigned long start, unsigned long size,
+-				struct vmem_altmap *altmap,
++				int nid, struct vmem_altmap *altmap,
+ 				struct memory_group *group)
  {
-@@ -827,7 +827,7 @@ static int add_memory_block(unsigned long block_id, unsigned long state,
- 
- 	mem->start_section_nr = block_id * sections_per_block;
- 	mem->state = state;
--	mem->nid = NUMA_NO_NODE;
-+	mem->nid = nid;
- 	mem->altmap = altmap;
- 	INIT_LIST_HEAD(&mem->group_next);
- 
-@@ -854,13 +854,6 @@ static int add_memory_block(unsigned long block_id, unsigned long state,
- 	return 0;
- }
- 
--static int add_hotplug_memory_block(unsigned long block_id,
--				    struct vmem_altmap *altmap,
--				    struct memory_group *group)
--{
--	return add_memory_block(block_id, MEM_OFFLINE, altmap, group);
--}
--
- static void remove_memory_block(struct memory_block *memory)
- {
- 	if (WARN_ON_ONCE(memory->dev.bus != &memory_subsys))
-@@ -900,7 +893,7 @@ int create_memory_block_devices(unsigned long start, unsigned long size,
+ 	const unsigned long start_block_id = pfn_to_block_id(PFN_DOWN(start));
+@@ -893,7 +893,7 @@ int create_memory_block_devices(unsigned long start, unsigned long size,
  		return -EINVAL;
  
  	for (block_id = start_block_id; block_id != end_block_id; block_id++) {
--		ret = add_hotplug_memory_block(block_id, altmap, group);
-+		ret = add_memory_block(block_id, NUMA_NO_NODE, MEM_OFFLINE, altmap, group);
+-		ret = add_memory_block(block_id, NUMA_NO_NODE, MEM_OFFLINE, altmap, group);
++		ret = add_memory_block(block_id, nid, MEM_OFFLINE, altmap, group);
  		if (ret)
  			break;
  	}
-@@ -1005,7 +998,7 @@ void __init memory_dev_init(void)
- 			continue;
+diff --git a/include/linux/memory.h b/include/linux/memory.h
+index 40eb70ccb09d..4a29153e372e 100644
+--- a/include/linux/memory.h
++++ b/include/linux/memory.h
+@@ -159,7 +159,7 @@ static inline unsigned long memory_block_advised_max_size(void)
+ extern int register_memory_notifier(struct notifier_block *nb);
+ extern void unregister_memory_notifier(struct notifier_block *nb);
+ int create_memory_block_devices(unsigned long start, unsigned long size,
+-				struct vmem_altmap *altmap,
++				int nid, struct vmem_altmap *altmap,
+ 				struct memory_group *group);
+ void remove_memory_block_devices(unsigned long start, unsigned long size);
+ extern void memory_dev_init(void);
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index 69a636e20f7b..fa052001deab 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1477,7 +1477,7 @@ static int create_altmaps_and_memory_blocks(int nid, struct memory_group *group,
+ 		}
  
- 		block_id = memory_block_id(nr);
--		ret = add_memory_block(block_id, MEM_ONLINE, NULL, NULL);
-+		ret = add_memory_block(block_id, NUMA_NO_NODE, MEM_ONLINE, NULL, NULL);
+ 		/* create memory block devices after memory was added */
+-		ret = create_memory_block_devices(cur_start, memblock_size,
++		ret = create_memory_block_devices(cur_start, memblock_size, nid,
+ 						  params.altmap, group);
  		if (ret) {
- 			panic("%s() failed to add memory block: %d\n",
- 			      __func__, ret);
+ 			arch_remove_memory(cur_start, memblock_size, NULL);
+@@ -1539,8 +1539,16 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
+ 
+ 	ret = __try_online_node(nid, false);
+ 	if (ret < 0)
+-		goto error;
+-	new_node = ret;
++		goto error_memblock_remove;
++	if (ret) {
++		node_set_online(nid);
++		ret = register_one_node(nid);
++		if (WARN_ON(ret)) {
++			node_set_offline(nid);
++			goto error_memblock_remove;
++		}
++		new_node = true;
++	}
+ 
+ 	/*
+ 	 * Self hosted memmap array
+@@ -1556,24 +1564,13 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
+ 			goto error;
+ 
+ 		/* create memory block devices after memory was added */
+-		ret = create_memory_block_devices(start, size, NULL, group);
++		ret = create_memory_block_devices(start, size, nid, NULL, group);
+ 		if (ret) {
+ 			arch_remove_memory(start, size, params.altmap);
+ 			goto error;
+ 		}
+ 	}
+ 
+-	if (new_node) {
+-		/* If sysfs file of new node can't be created, cpu on the node
+-		 * can't be hot-added. There is no rollback way now.
+-		 * So, check by BUG_ON() to catch it reluctantly..
+-		 * We online node here. We can't roll back from here.
+-		 */
+-		node_set_online(nid);
+-		ret = register_one_node(nid);
+-		BUG_ON(ret);
+-	}
+-
+ 	register_memory_blocks_under_node_hotplug(nid, PFN_DOWN(start),
+ 					  PFN_UP(start + size - 1));
+ 
+@@ -1597,6 +1594,11 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
+ 
+ 	return ret;
+ error:
++	if (new_node) {
++		node_set_offline(nid);
++		unregister_one_node(nid);
++	}
++error_memblock_remove:
+ 	if (IS_ENABLED(CONFIG_ARCH_KEEP_MEMBLOCK))
+ 		memblock_remove(start, size);
+ error_mem_hotplug_end:
 -- 
 2.43.0
 
