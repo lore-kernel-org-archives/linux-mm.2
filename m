@@ -2,258 +2,115 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 06B67C83F26
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 08:00:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 53B22C83F26
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 08:08:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7915D6B0089; Tue, 29 Jul 2025 04:00:33 -0400 (EDT)
+	id D1E4B6B0089; Tue, 29 Jul 2025 04:08:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7423B6B008A; Tue, 29 Jul 2025 04:00:33 -0400 (EDT)
+	id CCF546B008A; Tue, 29 Jul 2025 04:08:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E2BA6B0092; Tue, 29 Jul 2025 04:00:33 -0400 (EDT)
+	id BE51D6B0093; Tue, 29 Jul 2025 04:08:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D58A6B0089
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 04:00:33 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 09A8D1A0430
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 08:00:33 +0000 (UTC)
-X-FDA: 83716555146.30.7AC4F83
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 991F41A0007
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 08:00:29 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=iZsNrOF5;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="FgZD/M8A";
-	spf=pass (imf19.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753776029;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A9C5F6B0089
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 04:08:16 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 546A859476
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 08:08:16 +0000 (UTC)
+X-FDA: 83716574592.23.D02403D
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5E50120002
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 08:08:14 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=vA3sKpPX;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf13.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=lokeshgidra@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753776494; a=rsa-sha256;
+	cv=none;
+	b=yNY/N0qM3auHVhC8Zs0kYRSAQL4dq5dDp6gBTg/8wlJ4sKNGx1s2dOqIVRcyNtsenVg7da
+	lsMvqVbmAfJ80FmCIIRIjOwdvE+tvXRfrVYI9dBg/28lj0RlPwS65H92aHS2rY/G5RJ8py
+	oElow9bOkdA+Svci3pLNWVX+zi+/5Vo=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=vA3sKpPX;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf13.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=lokeshgidra@google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753776494;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0JHqISb+5UnK95Ze0+YR2udw4nE2u1cfK8VmzHZsk5w=;
-	b=EF+wMAukPx4RXjWoKklfm7aZ6GggFrCYERWaBEDuvmHkhhE87CT6OZXihj5z0SHGhJkuAp
-	/rygMi/wDZ3quprfkl1pzsnRJLvXCXrUVNtt09G3eNrFzRbrkRv/FqjiXPIW/puKNpevpr
-	3Bq29RD4293Xs64exFqatGAd43rmi8M=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753776029; a=rsa-sha256;
-	cv=pass;
-	b=Og/ap1gusRec3iekgkRn1xWwZmyybRVJ3uCHl3mM0Yv+Liw6dO2Amw6T2t90NMUW6mJKGQ
-	R62LUyWyM+VwzgUFJRr0o2yJiQvoKXJv/x6MmXB8lgDsW9CG6IDqOo60aFhxJfq9Lvxqcs
-	90etEz9Q689LdRabVBrdVJCUqPjgFc8=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=iZsNrOF5;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="FgZD/M8A";
-	spf=pass (imf19.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56T7g7ss030244;
-	Tue, 29 Jul 2025 07:59:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=0JHqISb+5UnK95Ze0+
-	YR2udw4nE2u1cfK8VmzHZsk5w=; b=iZsNrOF5I1OszZAeThO5W3r/OwhiWBflQt
-	Be01qaYOBfsHVfSvGqLjaEciUHS+Qdih69Zqf3FXVKTsKMIy3N7jS5miy7hRTmqL
-	kbms4lW1Zt7XC1SAJY+ZNd5aKxuDArpkrvSbP/7lVSwBljVm2yU4w0GziWFVz/3Y
-	vr7zp6d3yZoEu52xUPxdaMdJEDM4OjUgsoBta1gnR9Wr1FnmI82bA+I7KLXkgI/S
-	8ETbPx7ecSCK4nbkSzC9GZC4IgnQ/wHfTvDLoh8S3cDW0NItcN2yxMfRLSPYpLV8
-	MPzsjsHPhYEYeROij48VpCeMEgFyP7rJQrw1s05ZkbiLqZw25cLQ==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 484q5wq0e2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 29 Jul 2025 07:59:45 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 56T5xNFQ003128;
-	Tue, 29 Jul 2025 07:59:44 GMT
-Received: from ch5pr02cu005.outbound.protection.outlook.com (mail-northcentralusazon11012041.outbound.protection.outlook.com [40.107.200.41])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 484nf9m8hf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 29 Jul 2025 07:59:44 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=c8YXPgftM46sZnwarnvoLdKgmeUx0e0Az31Ou8Mg6mUOuZwJTLQXtEH5FWQ3fePGE+Ntl1N0EiWpPR2yguXfyIy2mITGa3TENqU5IW8Th73z6UP0+Zf2g8lAyT7GJ8xNr6o8PKAwjKdA7ozJoDGaC+jp1nlmWGBZw4ld9ZL4Vw2KiRxmqJbhjgMmFUIEcKyfoi2rTx8rde1kC3zpcppTVu8JT1Tzi1cEyMbYGObHeAPwXHAUVsDt/ArrEk4krpzzmT+DnNRFgQ5cvhEmMwXr0P+L/R4sASa19/RpVjg8b6VyWHvi3aUWKxYc3bucAZYQeA+n9JYX+S99Rtf+k+S76g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0JHqISb+5UnK95Ze0+YR2udw4nE2u1cfK8VmzHZsk5w=;
- b=uZlviDuX8TQgipcYem9aSIroxNWf8Ni8O8eNNCIDwJlsrpJie3mj3SeKsB8oDb0HUqb+4ESiZlBex1f64kYkLsNsfblPceVTuhjLV1skGBf4sFyJf4X4Q1D1YVFYfh3FDi8zQUCzHLBFHc+FllgWLmzYMYNUDDHKw/ziCcasGTzxWMoCJ7GSJzLr1fKQtvm+a15XDxlUmJgaMhCG+BOcEmRlMfrpCHG3G46uiwsOAIhiB/82yMBqVFwueCthGthpVGTL1NSi2nnGIzJg7JpxMwL7La/84goGWg05juRQvMK5RX1Sx8GEhCvN28xLLNjAAKhXeYIBNhWjCnTaCn6cQA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	bh=4D+GIvBwkRTfSk18WRWL6ADC9Bi5jFYdl5q9R36jCus=;
+	b=E7yp8ipP8zhX4FI91+NtwhNMiFSqJB5cMe5cW9TNlGNw+kRWGJw14pjto9TX/mcO86Hu1v
+	LWaiZD0vFEZ4a6oN6pjaPpezj2ay019sGXNj3HKg1Qo156YIQYxCq9rGPyAoNOGNJfYWzM
+	kf7NzPFjz79fK4R5o82yYabwKooqlR4=
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6156c3301ccso4653a12.1
+        for <linux-mm@kvack.org>; Tue, 29 Jul 2025 01:08:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0JHqISb+5UnK95Ze0+YR2udw4nE2u1cfK8VmzHZsk5w=;
- b=FgZD/M8A3AaaBQ4eSYSlp0ysLjUrWl7ySz2Cg19Kl+erl2az7c4UD21sXGrHaaSEF1hFK841vDUqD4QJ7XH1HFJTj0qa8lUSV+bYzdRmzzoWyTD9+SxzzLp7NcZB+/FvgABp0Hn+QsqyAtFQf/3cID72QRtjKwfr0W6Dqs0PhAk=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by PH3PPF077CE0592.namprd10.prod.outlook.com (2603:10b6:518:1::785) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.21; Tue, 29 Jul
- 2025 07:59:38 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::f238:6143:104c:da23]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::f238:6143:104c:da23%7]) with mapi id 15.20.8964.026; Tue, 29 Jul 2025
- 07:59:38 +0000
-Date: Tue, 29 Jul 2025 16:59:18 +0900
-From: Harry Yoo <harry.yoo@oracle.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "H . Peter Anvin" <hpa@zyccr.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
-        Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-        Christoph Lameter <cl@gentwo.org>,
-        Alexander Potapenko <glider@google.com>,
-        Andrey Konovalov <andreyknvl@gmail.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Juergen Gross <jgross@suse.de>, Kevin Brodsky <kevin.brodsky@arm.com>,
-        Oscar Salvador <osalvador@suse.de>,
-        Joao Martins <joao.m.martins@oracle.com>,
-        Lorenzo Sccakes <lorenzo.stoakes@oracle.com>,
-        Jane Chu <jane.chu@oracle.com>, Alistair Popple <apopple@nvidia.com>,
-        Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@redhat.com>,
-        Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
-        "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
-        Uladzislau Rezki <urezki@gmail.com>,
-        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Qi Zheng <zhengqi.arch@bytedance.com>,
-        Ard Biesheuvel <ardb@kernel.org>, Thomas Huth <thuth@redhat.com>,
-        John Hubbard <jhubbard@nvidia.com>,
-        Ryan Roberts <ryan.roberts@arm.com>, Peter Xu <peterx@redhat.com>,
-        Dev Jain <dev.jain@arm.com>, Bibo Mao <maobibo@loongson.cn>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-mm@kvack.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3 mm-hotfixes 2/5] mm: introduce and use
- {pgd,p4d}_populate_kernel()
-Message-ID: <aIh_Vtqp-bBDGgO9@hyeyoo>
-References: <20250725012106.5316-1-harry.yoo@oracle.com>
- <20250725012106.5316-3-harry.yoo@oracle.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250725012106.5316-3-harry.yoo@oracle.com>
-X-ClientProxiedBy: SEWP216CA0008.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:2b4::15) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+        d=google.com; s=20230601; t=1753776493; x=1754381293; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4D+GIvBwkRTfSk18WRWL6ADC9Bi5jFYdl5q9R36jCus=;
+        b=vA3sKpPXzTMmvg51Ron+KMhjIjf4klu01vf2VpWNthNrCy7eCt8krA1FrRcLj96UrA
+         5ywQA/5/jJ0WUWYaObGMpeMF5jTfvfulbPAvwaPnuxBBKqI6p6ZEJSoGyZIdEG09+aX2
+         mLcfkESFZQbA29UG9Ttjd+jLRp2GmCy9Cot+S4o0uemoCOpMe/6It66Orc2NMfy0JdM0
+         Z+DjFUXM2JuxebwWj+TGRlVcfvztd/LBPFY30ymsaSnD5NcS598Wasvk2Tzk32FfcWqP
+         Pos+AfUdEZoBxehcUvTN40WiOASbohnwTS/LZ0zPRlmu/drdhRZj0G5zCbM1EU7CsAF8
+         d2Ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753776493; x=1754381293;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4D+GIvBwkRTfSk18WRWL6ADC9Bi5jFYdl5q9R36jCus=;
+        b=C480LQsDDeT0DgNu3CQaMF36+V0FtoWFG3ygLsHRExYol0qN+kqvlj3GPYX4TEhc2J
+         AbKlDQrIzeSOkm7dBnLT05Munv0zTYv4AgqhYTz+uDn/PXniRtxB27yhSuz25jpqqnSG
+         lw+94v02CFW0TcmyVlJItT6uwNFFuksgXw59ZeJrgzBNiBU6XAosS2trQ1zBUTMHYwBa
+         +fxFwZ6rcSkq9MPNeRiHsnMC1roE/guJHRzbH2aX68Bc3g9GNeUX90YUZMT/r8ajkth1
+         3WNzpifNpGpN2DcSM0TihPdZN0ye/Qw+V6IkFuhVFH1NjQ4341965Pu9oHuc627oiXYy
+         KN/w==
+X-Forwarded-Encrypted: i=1; AJvYcCVaBczzXZos4Db8xUdB3ngF1kBeVo5CLEJ9vxkA8KQm/F3JDz3p0nS6sRB4JwPM7rtLRGdQsOWx/w==@kvack.org
+X-Gm-Message-State: AOJu0YyUzjADNuHQrdp/5/JYEKt0Svqf5Pdde1YELvY1Ks92mmRcZoXG
+	+O8ri2pXO2wzk+AjNa6ol0kAe418ROqI6lPxcW5hRodZy0m8sUAfC4qQ9lnG355VaZIZO2sxRLD
+	imiTi5XApONs4T1bvxTEv4P+2S8s0C/y23FhPmV15
+X-Gm-Gg: ASbGncvxcQRT3MGmxB7BPjCpVXe8uEm5XUN5cIG1NUipQxVvBFh9uLjdnbp2iYUAPll
+	pJ4uCTmuy0WgZk1dMwANhCB8PYZe6WrX8JmSCLw7Gq0dR3RCQFVzsfwOGI2R9fsZ+ftI6Atgx4l
+	eSJtqiqr2eZ+OY7+KDE9vXm1NeDKzZch3Ejx/zGA8j9fHUO/wezU8ldaLhFbsEfBJIkDpFDNlj2
+	Xp+Jn+IIfBU5M9PwIHIn+IcvpVmreoVYm1cQrUT
+X-Google-Smtp-Source: AGHT+IGcXvGdAr6TvJhNCZ95eVsXRkJ3K3zE7LGz4EXE22eFx4/bx/BVWxGUSrbt/vmRmWcZ+uRVkIWt7pYofe7iL3s=
+X-Received: by 2002:a50:ccdc:0:b0:615:5ae7:a3ae with SMTP id
+ 4fb4d7f45d1cf-6156a4ce799mr41920a12.1.1753776492388; Tue, 29 Jul 2025
+ 01:08:12 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|PH3PPF077CE0592:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3279546b-600f-424c-924f-08ddce75dd73
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?LU8KfARf/owe413dujwqk6sP4Kcc6FoBm26yUqsb4l6yKOeTQ23KXby65EUM?=
- =?us-ascii?Q?kolCC6AcQi2lC/XPbYM8yi/XRqgY971Je6aqjxu3cK00t407hq4zjU1CBG/N?=
- =?us-ascii?Q?crcYahNY7YQPc+5ux/u+Yj+XtFHQgbqt1S+32UbbwT5m8n/dGBabtl6jxxFt?=
- =?us-ascii?Q?zrR3Pgsq2zW60hfVnBCA6zGT5yEKtx/djVpTLfFtsMYxLxUuR93Z/PFI7oV0?=
- =?us-ascii?Q?d0j3P/uDkePLiD9sjUCCdPEGu794Xd+DFX5X9S8AAVcjKqMTCpTM4+ucmzgu?=
- =?us-ascii?Q?dgIhdjaOBeeCMRdubZxuBT2HpkF+rtQ+OiYxzZHrUHAHR10SG0UFazlUjawM?=
- =?us-ascii?Q?QeIxVcXuRgeU5eAUcR4OdQms3FBxYJmZda5ux1ZU1zUh4mxkgRAMGC9+03FU?=
- =?us-ascii?Q?vuzDZkNSm21fGOA3l431NSaebR3dATsPgPHVmcr/RkQfQrSkY3uHA/BWouYR?=
- =?us-ascii?Q?M1+lf+Xxstkkbf67JAZAqOAZ/9z3cI9IkwtLMGtlpLOWdSJ9GzyM+WMPDRjo?=
- =?us-ascii?Q?SjpQPGrKg6BFa/T7WeyPb34gW/xBCsLFihAtxEeXD9kr6xmviSnoYtS8ZWG/?=
- =?us-ascii?Q?7+jpTuRCO0Ul+AHowLnUvEFihu5YY+jeI7Q2ukVGdfI4IuMs0a8I99U7/eSd?=
- =?us-ascii?Q?ii7QtBPmmRP8P58yns9C/DtjDCq3TZP54Ik/BvTkWLuFY4YAVZ6ZUPYG6538?=
- =?us-ascii?Q?u3ZbUBVZt5tkdT9PNSgzQSGoDWc6fJmZ7zJ+usoeirVXgvkXuh69B2OYkxjl?=
- =?us-ascii?Q?FuNIc1xD5J/AVcSBQuRpBRccB42IGbInvBEMVAcTbpmXe8zMotvBHdkAIodF?=
- =?us-ascii?Q?gsiYAPslcuDlTxuP6oqkUbg4Q1IvVOYh+zH5QpW7WXJl/AQ0llisoQgtA4Lk?=
- =?us-ascii?Q?9SgAkhhFWUtdQ2q88o5Vm5CjXpAWLBg1soiC1xZmzvbRtM7S1buUuSBguUkk?=
- =?us-ascii?Q?bJZgYNhbhgatE6pEvJwakF1/8QdqD7keUo7Qa0/soM+NE0M+ZVPwFeEsF3b6?=
- =?us-ascii?Q?nsLDTt304rBx60qdWdJC9dnB5UvIw5EGnnTCx8d1sDKh3N8x7MVeMoDXFQ7o?=
- =?us-ascii?Q?1FTtoyvw8EGLuF1LdaCYYqHrR60zQXT30QchaywHZePUeL80GVTw+5vFtSxI?=
- =?us-ascii?Q?cL3rbBPPQod5h5G83yREoiNpNCuJXCcNnxFZHQwxC++XN4bym9QbiLjsAFvV?=
- =?us-ascii?Q?gaddFmAnDG/hqiljZ7cPMrb1rBpzk6eJi9KaKWsBidGlNUgdIaFUtL4aUIZ2?=
- =?us-ascii?Q?CyKw3ZXzG6suOOH+dxJSnzpGrufUrcLqvW3//PEWYTKYBomOtRLZcI+Eqgtc?=
- =?us-ascii?Q?H0hmOZxlLFfOI3Z2eCpIazzDEAm0iwvpqh7RuX3LyAwHYHSzcxdPtGbURDv6?=
- =?us-ascii?Q?/ttkFaKeaAGmAMLff4j7INAajvcQO59x3QObA+UQ9BnAOP6AbkyYeMOwd0cu?=
- =?us-ascii?Q?5YzEnOWMUww=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Sr2aer3WFZrgOG/c67bGeyPE83yD1uk7+FZrRP14h9e6CAX499T0qsZeUdpz?=
- =?us-ascii?Q?vXeg8fjQg3Elv2ls1sO+2jmtRPEFYPvz61fZVikchnHxuDcYjqyv/wz/jGdu?=
- =?us-ascii?Q?cUpAezBGf0WfQwVKJh+jCb1KooOIyzB0TKpviEB4QIG5oczKumOurC9zZ89S?=
- =?us-ascii?Q?sX2sFNhYRpUOSDf3EoatqQPPDi2GF483x0d5IDlATL4bdQQw5xyS9ku8B+4N?=
- =?us-ascii?Q?Hr/1Jiwsbay7Jaoc32DWR+fNohAwXSt+ZT5WVHTW1SwGxMbz6AiMm3j1m6Mh?=
- =?us-ascii?Q?cA7/unnpvdYVbVGEqJuPoKPf1LHtMlu++yvglPTkuBUh5IVfpreIr+aO8s0B?=
- =?us-ascii?Q?X5uu17WWmHw9YkN2JQ8/usJdAjY7PFIcgBZX2C1zVLP8YrQ8Hpk0dccHIo+E?=
- =?us-ascii?Q?feaLaHYPpxWqmsFV2z20iwCQuB6Blu6oFxyIOPZ3PQjV/Wco3E7FF50gGoFF?=
- =?us-ascii?Q?dYJ8JGjzUlhdk8XCAAo8OHjdpjGVuHMgHro3q3iupMJXqFKWcPOBXJSKkFez?=
- =?us-ascii?Q?oUG8XmEXY/VJ9y/hUXgdS4p1bGi1KuHtZ6JcFZPliYsxZayGDsfQcIHfY8KC?=
- =?us-ascii?Q?N9/Ncnuxlf7cKC8lV4S3GakiD39qu/cBK/0Cvk2RByT7RyuGbDo7Lhaxk1vu?=
- =?us-ascii?Q?ujVDTfBsOZ53WzTZR6CAtiob/1IJWtVIbUsXhNb+fTpiy7XouHZGdYc6lzFF?=
- =?us-ascii?Q?svTRtbMEFOQvla//WNCcNw1KWZ7KM5I57zfaD3K9qghf3VkjKiium2GsXBMF?=
- =?us-ascii?Q?V0dEFZoeVfQ0dordO+j66IfVLUUqiynHcTbvA1HvT34X/A7OelAZkhMeWCrB?=
- =?us-ascii?Q?AXPUJcX7E3bblgEHZ8fVsk+V1PjvS66s7Ra8CjiCl4qSIZbZShbulBiE/QOn?=
- =?us-ascii?Q?XV+89YvVw0oVB21lDJ8e4W1oWaMPHUDiiMNEbJRbffLKzOjOEJVYnuLf3mQP?=
- =?us-ascii?Q?jKzPIhBhFnsXRQHhbB+6aU8UtNGh/Vtepw9QYiuAocwJgLK+JW7E9DSjVIzP?=
- =?us-ascii?Q?CRb0mjZeccT1GJ4LcRKkoUYpaDN/9JnWjhCkWxFTRf7i4gIaY0ijrqvlwOxR?=
- =?us-ascii?Q?kp8s1UA3qBvPH/mhOhETVWqhaGUDDUv05+S6WlnAMayjuXno43Ucw1j8NTsn?=
- =?us-ascii?Q?4Pe4rAYJry4afgDYTC53oRbl1hM9gCWlge2HdvocDmudI9a55bPy+BWWFUxJ?=
- =?us-ascii?Q?Jibqa/9GAQThHWCsJQsvbLo0uuWGa4I6MNXIF7YaDl6fzxTZ1R5vAxBMpP8m?=
- =?us-ascii?Q?75T+25ypNH8KfbG4Depms0mQAW5BdG+yXyuJSRZslAUroLqb899Wfn1+CDa3?=
- =?us-ascii?Q?+iZl0RyOZlxl6MdprwTTNO9zxvuA3b7SKkzF8hlX3mozjNbk9ICb4yNf9dei?=
- =?us-ascii?Q?JUlVNaFmYyJgac+QFed7Xv1/5pQHcjRXTbAN4Am8e61zGOhVPfcYFslkS8d+?=
- =?us-ascii?Q?LioQWHeo9a5MOsH6Zx64z7fA9yaE5L/rnFcVj/zoGdfAx7hax774qWYhKZVS?=
- =?us-ascii?Q?3JChE0SdQKYm1kFGSGkg5/qdXxqwbM0pS6TPyPN1AFzxBymkVrsEU5ACHoJB?=
- =?us-ascii?Q?WGVReMv35ygzlrKJo6mSEzHSmIfuv2UNK+J4NrWl?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	pxqXZF7lUfPPSIV1NxQTmqmHN9u9stMxlARgz0nmfk+Ld5AdP1pTSp9Key/WJ58InzmU+otFX4052LNkee0WAmgw8cjuduau7xBQVi2UE3HxR6HK/cXClbOUlG1Q0usdvd/lnKzuxbOvke2CK/YkuGy9N+yfu2h6s466u5eolmD224X43BQ6v4uV9mobffgcA/BukNQdOFQ6FQDVdCdrvoWY3KXDJCtdVOARkVirhfKmvjAtmefuG4nsHu38KHSCLhBciUuBR4LSt/FrRzR+g94K2zVJE8LsiHlOqegfNusWRA0pgZbID6yb2O4/tpZ1QuSg+sEhyDAiYDqK6sWe0Am+I6d5R3TEXsiRdmlIdlVkYWt2mQZwHIhnOaWNOp4gC4GXNcrMraxD1eeW2maW7Tjp7jefrUNslHESGvkt4k6vyoVilMkys5HnG9OEkvu59mSsGfQyzcwKYZLFmjZAJiTbcwPSrMYR8YUF3pPFv/yg8qvFHHezOnZVoeKIcr8HKpnwj8kJr5RHiqD6/SuXu6PEdIl6Q8gvmXd/7uxdgBrDfZomalrZ3ttXVtclYKSytmDIiTlq5kAJmmAGMW0D0PjTM3KLAs3/Ywx1LVb4ciY=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3279546b-600f-424c-924f-08ddce75dd73
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2025 07:59:38.1024
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Omf0DwbHmO0xcXSOcgpe6yfamultuEC0aOKGjlkYpXmG934O0epFRCxhxlgPIHqxLDWxZ3vhLCVRP/Z36GjQow==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH3PPF077CE0592
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-29_02,2025-07-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 bulkscore=0 spamscore=0
- mlxscore=0 phishscore=0 adultscore=0 suspectscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2507290061
-X-Proofpoint-ORIG-GUID: 0M6jx3aSxjLsMM8AG-rNvJlD0Cf2kA4c
-X-Authority-Analysis: v=2.4 cv=LdA86ifi c=1 sm=1 tr=0 ts=68887f71 cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=Wb1JkmetP80A:10 a=GoEa3M9JfhUA:10 a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8
- a=yPCof4ZbAAAA:8 a=qLPiMMKOEkLeJN1NtY4A:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI5MDA2MSBTYWx0ZWRfX505Ls/kNGNyt
- LkUSY3xU7LymSZi+49OeOhunhkjQDCb7D11KYofzt7oxm0XjhX0cgEkjwwkXR8t0y4VzkdqprtB
- mzjzw72QxAE93wsCy6FXreZWofFQhLzJjg49hWAeofxWcK0iRl1MzKBybvPxK14kxCXy89fFQty
- gvZ8hji89xFS2fRCt2Zwwh4NujczmcZoLJxbM7CRcuM606BW68t7+tc9Uyq5uE7SoLZWRgct8a6
- Tw45vE8wk51CN2WGlju0mtoSC92f7hwOGelZOp1umYrIgPc6gT/hxUz+hU4g3CcVv+nXLz3aBCF
- mWRHX41pkg/Gcw9UNXEK1yr3AN+itDb4Q+zMOOyJPDGA/1XRoBvLaZD4MFqx+Z46/UHtPOKuCB9
- Msptg194I0ziEswu6UecKKp3leUKNSIMEDiJKmddxPkICKyrqkf54Vv8INFR49VtqVLyTmPt
-X-Proofpoint-GUID: 0M6jx3aSxjLsMM8AG-rNvJlD0Cf2kA4c
-X-Rspamd-Queue-Id: 991F41A0007
-X-Stat-Signature: upcmb7b8y7gr1ehfr41kxj7e7imfaibz
+References: <68794b5c.a70a0220.693ce.0050.GAE@google.com> <aIfmv-qSxKxWgzur@x1.local>
+ <CAJuCfpFjvSQs2SomPpafw=H-z3fOBy_+K3qkdPa8wz_pH_C1pQ@mail.gmail.com>
+In-Reply-To: <CAJuCfpFjvSQs2SomPpafw=H-z3fOBy_+K3qkdPa8wz_pH_C1pQ@mail.gmail.com>
+From: Lokesh Gidra <lokeshgidra@google.com>
+Date: Tue, 29 Jul 2025 01:08:00 -0700
+X-Gm-Features: Ac12FXwTYz44HDx6ZFsvx6WVYP8tmyPvMZumxmqvdy7Xwd974aHyc3U4TnXF0DU
+Message-ID: <CA+EESO7goQHuAdobDvWMaYGiVw30g1=o_f5UzBceeSbS2n5MtA@mail.gmail.com>
+Subject: Re: [syzbot] [mm?] BUG: unable to handle kernel paging request in move_pages
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Peter Xu <peterx@redhat.com>, 
+	syzbot <syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com>, 
+	akpm@linux-foundation.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 5E50120002
+X-Stat-Signature: xkaqms9b1awbfiz8oxm6xxcgogcwob3h
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1753776029-343875
-X-HE-Meta: U2FsdGVkX1/fA+BzBzznIzwC4N8s51BqvDfj2aQiWtMceyKnmcnlfnuIxbDU+Lk5lifnqYP97XiMD8gnf4gGOQ5Ld0VjMr1UjAHCMoRKHKm1ioXo836OAFla4J1ibIkIxilwGdeTxTxCM5aW4Sbriqqs31H6XVcT+BVMW3Rbd7kPTHjbGcBYkyUygxd3inJv/kGXrqWpbmym2Gnv8PdLfsyXqX2QYhZVKHGVRxtyRr+AW5RXzDYuPUcvqPZ+Xtz8tu928ILA8eSlbMGbZ6ng0JsKW6OM+B/PjCW8tSFBGxPiCidT4Kmdf4lyMpJI/mdgBp1QT1WRAAJshPpV5gioqK7d54CWRMTza/elU8guFBILyu3CWmwzmZZ6VR+s6E1mfrIkPdBd9ilAVHl2PPohJFNls++g/oVDRdhVqjPMCsZLHSFM3izn2eoR8ZWgxJ8GlCPjrynpPvLk8Dre51cbK/Mk94xEnt3OYipO+AXJi9suMqJ3tKcbDR9LRXQ4eL19fVx95Q0tKakNNgz1/ZAZzs4YqvW4d1m8j+MqzMWU7RAMM2Rf6I2hq9A6ZDR9xOaAjVE1tzVsWGJysTX8AzUUy7T7+miR9ETOnrEquYuE2vgrwzW+7H2b8L5aSeEjbCjfyTDf+jXqtEcKCAtdFSgo8FE8xGisHVsa3MoK0x5EGYgC2tDQOvScP2AcnKYVoVJJD57Bq98m3iEAuFun6UL0GJDC8XxkL/hwtusXM8+CiXoIQOkAnkhTmE1TYNisEl6rpwDYTBHgw56nRo1IGea11//mNyUouuCDTMMJ5Z1/pERk/9JyevEWx6EupcLHJvfQRK7TjQd1KemtK9srdSJCF/nJT5rTnBUNfoexD7xnlG1/kSxlHa+EHKrx8S6ROsdtt+eupylvtwlrrpBCZ1YNmhO/0ufiVrgTfUbFbolsrdpBmwmjA34i7m/6009uPISb6F/yp/j1oeLEhsJ1S/p
- irxCV9IF
- enyCXGhPMacwcpnLUpL2rOA11KuL8IwBG2ja/gYcJSyqvEEFWJa8niDTmHyHRCIKD8W6xQ1hTNAQoQoXmLdHDAGivndSyKnbc9wSe2vQLGE7V2y9zbcmx4wSdycO9qBaxH56nYKAYsJoO7kwC4uVETrKjxrT/L2nPo7eQXxa4QbE9yuyCIYZtedWY6MiRTkvT0xdV76qyoEQaQ8a0N516wk4xp0f9U5cfc75Ykb5xNqgglFRWHGKc74ejvb+3i7Q4OLE1VM2ovERQiMl6TQetNI5LOSxzcgWwy4nF8Zb3n8Oc7gJhIE+Ig06oDFBN3iVZVwcdYXPPjG31GnEN3xc3Ii9YBzo27PLiwJBSmSM5emMFoLPW2QW47+kdJXYDK2nZSBQ3nwIwdRusQR9y+M0AKe32O2Ki+GdnZsMxLwnxE1sAUXPiAOr4uCZtGnz218yfnNo+cdQzxlPU+cUFoLdxjyuliezp6O9eACrBi3AQ80PvVhhJiiP+EIrxL8UINccJHrZSUz0qncgkApNnjcM9GzAt+tskldg1roGd5S99BhOYo72JJS5621h/YyPrCyK7j1ri7r6xrQ7d2VG9oDYqhNFLZkOgUn0KrWN9n3O0DvqaOJj0S2zZqHdDIIAQKo6Srp6fhuZEh3yJu3YiOpPpq56KgjuxxRiV5WIT6lI33vIZ7f4d0wPJFou5HNwnXXbos9wXqR7LbDEjHWcG6NDxQN/WAipx8BgIA2qCUUU6NEKW1otDeY+bmsifm+AFD3uCbPUazw110CukyK3MPzjtSVIlHFYQPqDljmbayruZVJ9ZVpYSvTOTEUQhwCOaEsDkhwGbvhGX0RBwSXuGURczVU1pCIlHumbq+xqilTFQKhbMIkxkEMaUqERYUbpaqam+n+3H/cciP10jgozTqHtJ6ji5bA==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1753776494-598535
+X-HE-Meta: U2FsdGVkX1/lLoZGor5li9KIdaOE+sO1kyJl+T0+RHy4TcUB4aJUTOdBXIE6UCHXBIhoAgAc0mUqAjGCoftx3GKtwVjx6D7/qpCmvsgXx446XQ0d9A0HwdOWe9q7K0U/9fw7di61EUS5CMTY+AiTyvjw/jQnw2DA+6+3jIcMmYkVOkhCMlXOJHRWBhF8Kpx1i9pjwX0pLRYTJe6+ROsY3PubcGKFR4VYw51Lvs58yOA6+oqbfxSvlvG9fFvFPn+y4cW7pyRF8QnkCKFr8xP3FvcGANH/eI433CFL8rILKfZ4EwAdo7xuewppfdbgN17vlXZlNuVbuZs7MHG2rxKvAwQgwJUpzuf0Qc41aYiZc6CyFnZecvgWNcecpjj5s/CQ/aSiIjCe/Z/LTtiFRI9kS4/wVFEhb6NtGlDfoOKoM/6yXWCSy9vdVF3CFlUGMwK+yunMit4ptvbUq9izoPfsR6K4H6AXVbLrd2glXVDGFrBiMTfL5h6w99s/sOJ3+OYLBP5hlk6ggBP3Heb+8sb0ZR3ZlTy9hdvVdf+J0MkYzC5sXBnzkpP86OMB/Z3NOiWcGeU459b8kO/x85YrJJWRfo8E3Y43Rn1PYMZ49ZMkgbwBOMvjttxWWcQU0CJfDBlr6h/3MLvX5DIW1S5dWrBTTcaMGqzF7wNiS5lLD5+e+m28TUAYUlfUfH8GLGrnQptz6sqRuRszm+8uPNQJROCdBaWPcP09k8xyErhwQErT4kk6zjGHq6Y4/0JB7H1PhLIzQBEUXaFhyefUAczvU2wexpA/wXObV350OX3T9ExXC5WEp25tED0GN0sg1y/XpUsHb6Wk8QN+/rM8PMfo2mR9WCpLqgbvpYDXTmeslqIWxofrV57NIu0krzov9eP6wePCOPp3eSJzfeiL6cMVoziF+32QgArO/rsCuEHS/I2SNOocbsp0kBQGFk3QmK1h8UBgdZeyWo0p/5VfCnwyT9T
+ 27SGDEhF
+ J64naWDgypJpnKfo6IgxL++FN3QNVpoUYLWXHR5vWU9hAulXCENAE5Ghz1M6M2QA7Q0FJB6X3ogyXvYr5/pVFb/P1BNvbfRBltvTV5aSNWYqhnmgNFayubbCkssw58jwV3+22wdW9FHJ29iOysarJogctJ/X5XYXpSmmyItb9cN+HV3JTLqMY1oPqRHActfsu7WHJx2d8JTiws5oeBhLkvv8mo25WzE9ju/RhGtq+rSNFlIofXLZ77aDih6SZtJmbNqtfgWXY6/HIwpGtprgR06Nj5s/OW5VB4F22u4/zSNGfD6GgUu7Rc3Kky31QYO40RAjmFv4ylYr5tWaChPdBcycJEA46tSp44Kbiez3DOmQCaBBJXPLt4V8+cuX3hyiyJ1ZjWnFhj1VKrlopBbs1jV1fOE0Z/wGDD46xOn8jNzjvzX1WxMx6DWLQHwk5P/g/Phw5hKKVEDKpAHr1v58EYtcQp+yhrC/FMXjXdjI8Uy7dNzuuO4aoOOU06dE9W0OThgTDlq3AUL8cU4ZO3hDOfZnWryON+MowcASk5DFvAwa1q8AyjtoZ+XwWOP40D0Em17hF6kk25lUVo0SBvLAZJTt2pKRuKFPgRQG4lAcnjFBD3p6BN6KtqimZAfL0GAvWGVqQ/OFtFhe+SWN4rMR+L7s/hG/v1cn2tMV9u1pP1YX1BUVYmmuWILzkBfhFadr0PMzQJ3hV8GuKRKDuzyzFoYZj5tnsaZoBZA/C6S1Jzb32T4n7VbED+a1HX/vwleSJgKdSELPByMiZJERJxe/Sjji4jhlr9ynltq+UKLIHn8Db7Nz4qHuclaM73BUrOU2AYKyoKF3cmUoUAfyyYbx6h5j/EO6T8wBZyBDZzo2UvnwAEP4bb+S2OI6V2E6IuUY1AVrTdKrrUsD3DbnJAT9Ao6TG5yN3nRJnNZMjhd1fn6D3pp9K1VDvuOttxAB0RIANLiFSmWq/u1MstGfzga/ia80BqGkk
+ gKficLwX
+ EI6x8ePnDGU/UgXe0R3Ront9KRWch/5RUlhYy0p4T/jxmT9o/RF6LgED+Hg1a/1/YFXGkkCoKjyzk1fth1NofCK12vItEpRcyzkrCRunFLLLvQqevUvA3Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -262,132 +119,180 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Adding some comment after looking at a kernel test robot report [1]
-that seems to be rejected by linux-mm.
+On Mon, Jul 28, 2025 at 7:51=E2=80=AFPM Suren Baghdasaryan <surenb@google.c=
+om> wrote:
+>
+> On Mon, Jul 28, 2025 at 9:08=E2=80=AFPM Peter Xu <peterx@redhat.com> wrot=
+e:
+> >
+> > Copy Lokesh and Suren.
 
-[1] https://lore.kernel.org/oe-kbuild-all/202507290917.T24WIcvt-lkp@intel.com
+Thanks Peter!
+>
+> Thanks! I'll take a closer look tomorrow morning.
+>
+I think the issue is that we are incorrectly handling src holes in the
+THP case. The reproducer is setting 'mode' to
+UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES and it seems like the src address is
+indeed untouched at the time MOVE ioctl is invoked and hence likely
+has a hole.
 
-I will post the next version with it fixed and including only first
-three patches that will be backported to -stable. (and post last 2
-patches as a follow-up after that)
+When this mode is set, we (correctly) don't fail with -ENOENT, but
+then instead of skipping the page, we keep going with THP move, which
+involves fetching the folio unconditionally from the src_pmd, which is
+expected to have no page mapped there.
 
-On Fri, Jul 25, 2025 at 10:21:03AM +0900, Harry Yoo wrote:
-> Introduce and use {pgd,p4d}_populate_kernel() in core MM code when
-> populating PGD and P4D entries for the kernel address space.
-> These helpers ensure proper synchronization of page tables when
-> updating the kernel portion of top-level page tables.
-> 
-> Until now, the kernel has relied on each architecture to handle
-> synchronization of top-level page tables in an ad-hoc manner.
-> For example, see commit 9b861528a801 ("x86-64, mem: Update all PGDs for
-> direct mapping and vmemmap mapping changes").
-> 
-> However, this approach has proven fragile for following reasons:
-> 
->   1) It is easy to forget to perform the necessary page table
->      synchronization when introducing new changes.
->      For instance, commit 4917f55b4ef9 ("mm/sparse-vmemmap: improve memory
->      savings for compound devmaps") overlooked the need to synchronize
->      page tables for the vmemmap area.
-> 
->   2) It is also easy to overlook that the vmemmap and direct mapping areas
->      must not be accessed before explicit page table synchronization.
->      For example, commit 8d400913c231 ("x86/vmemmap: handle unpopulated
->      sub-pmd ranges")) caused crashes by accessing the vmemmap area
->      before calling sync_global_pgds().
-> 
-> To address this, as suggested by Dave Hansen, introduce _kernel() variants
-> of the page table population helpers, which invoke architecture-specific
-> hooks to properly synchronize page tables.
-> 
-> They reuse existing infrastructure for vmalloc and ioremap.
-> Synchronization requirements are determined by ARCH_PAGE_TABLE_SYNC_MASK,
-> and the actual synchronization is performed by arch_sync_kernel_mappings().
-> 
-> This change currently targets only x86_64, so only PGD and P4D level
-> helpers are introduced. In theory, PUD and PMD level helpers can be added
-> later if needed by other architectures.
-> 
-> Currently this is a no-op, since no architecture sets
-> PGTBL_{PGD,P4D}_MODIFIED in ARCH_PAGE_TABLE_SYNC_MASK.
-> 
-> Cc: stable@vger.kernel.org
-> Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> ---
->  include/asm-generic/pgalloc.h | 16 ++++++++++++++++
->  include/linux/pgtable.h       |  4 ++--
->  mm/kasan/init.c               | 10 +++++-----
->  mm/percpu.c                   |  4 ++--
->  mm/sparse-vmemmap.c           |  4 ++--
->  5 files changed, 27 insertions(+), 11 deletions(-)
-> 
-> diff --git a/include/asm-generic/pgalloc.h b/include/asm-generic/pgalloc.h
-> index 3c8ec3bfea44..fc0ab8eed5a6 100644
-> --- a/include/asm-generic/pgalloc.h
-> +++ b/include/asm-generic/pgalloc.h
-> @@ -4,6 +4,8 @@
->  
->  #ifdef CONFIG_MMU
->  
-> +#include <linux/pgtable.h>
-> +
->  #define GFP_PGTABLE_KERNEL	(GFP_KERNEL | __GFP_ZERO)
->  #define GFP_PGTABLE_USER	(GFP_PGTABLE_KERNEL | __GFP_ACCOUNT)
->  
-> @@ -296,6 +298,20 @@ static inline void pgd_free(struct mm_struct *mm, pgd_t *pgd)
->  }
->  #endif
->  
-> +#define pgd_populate_kernel(addr, pgd, p4d)			\
-> +do {								\
-> +	pgd_populate(&init_mm, pgd, p4d);			\
-> +	if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_PGD_MODIFIED)	\
-> +		arch_sync_kernel_mappings(addr, addr);		\
-> +} while (0)
-> +
-> +#define p4d_populate_kernel(addr, p4d, pud)			\
-> +do {								\
-> +	p4d_populate(&init_mm, p4d, pud);			\
-> +	if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_P4D_MODIFIED)	\
-> +		arch_sync_kernel_mappings(addr, addr);		\
-> +} while (0)
-> +
->  #endif /* CONFIG_MMU */
-
-The report [1] complains that p*d_populate_kernel() is not defined:
-
-   mm/percpu.c: In function 'pcpu_populate_pte':
->> mm/percpu.c:3137:17: error: implicit declaration of function 'pgd_populate_kernel'; did you mean 'pmd_populate_kernel'? [-Wimplicit-function-declaration]
-    3137 |                 pgd_populate_kernel(addr, pgd, p4d);
-         |                 ^~~~~~~~~~~~~~~~~~~
-         |                 pmd_populate_kernel
->> mm/percpu.c:3143:17: error: implicit declaration of function 'p4d_populate_kernel'; did you mean 'pmd_populate_kernel'? [-Wimplicit-function-declaration]
-    3143 |                 p4d_populate_kernel(addr, p4d, pud);
-         |                 ^~~~~~~~~~~~~~~~~~~
-         |                 pmd_populate_kernel
---
-   mm/sparse-vmemmap.c: In function 'vmemmap_p4d_populate':
->> mm/sparse-vmemmap.c:232:17: error: implicit declaration of function 'p4d_populate_kernel'; did you mean 'pmd_populate_kernel'? [-Wimplicit-function-declaration]
-     232 |                 p4d_populate_kernel(addr, p4d, p);
-         |                 ^~~~~~~~~~~~~~~~~~~
-         |                 pmd_populate_kernel
-   mm/sparse-vmemmap.c: In function 'vmemmap_pgd_populate':
->> mm/sparse-vmemmap.c:244:17: error: implicit declaration of function 'pgd_populate_kernel'; did you mean 'pmd_populate_kernel'? [-Wimplicit-function-declaration]
-     244 |                 pgd_populate_kernel(addr, pgd, p);
-         |                 ^~~~~~~~~~~~~~~~~~~
-         |                 pmd_populate_kernel
-
-
-I had incorrectly assumed that asm/pgalloc.h in all architecture would
-include asm-generic/pgalloc.h. That's true for most architectures,
-but a few architectures (sparc, powerpc, s390) don't do that.
-
-As it turns out the assumption isn't valid on all arches, I think the
-right thing to do now is to introduce include/linux/pgalloc.h and put
-these helpers there, and include it from common code.
-
--- 
-Cheers,
-Harry / Hyeonggon
+Suren, can you please double check if my hypothesis is correct?
+> >
+> > On Thu, Jul 17, 2025 at 12:13:32PM -0700, syzbot wrote:
+> > > Hello,
+> > >
+> > > syzbot found the following issue on:
+> > >
+> > > HEAD commit:    e8352908bdcd Add linux-next specific files for 202507=
+16
+> > > git tree:       linux-next
+> > > console+strace: https://syzkaller.appspot.com/x/log.txt?x=3D17f813825=
+80000
+> > > kernel config:  https://syzkaller.appspot.com/x/.config?x=3Db7b0e60e1=
+7dc5717
+> > > dashboard link: https://syzkaller.appspot.com/bug?extid=3Db446dbe2703=
+5ef6bd6c2
+> > > compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88=
+f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+> > > syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D1004138=
+2580000
+> > > C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D10eb158c5=
+80000
+> > >
+> > > Downloadable assets:
+> > > disk image: https://storage.googleapis.com/syzbot-assets/ae8cc81c1781=
+/disk-e8352908.raw.xz
+> > > vmlinux: https://storage.googleapis.com/syzbot-assets/57aaea991896/vm=
+linux-e8352908.xz
+> > > kernel image: https://storage.googleapis.com/syzbot-assets/feb871619b=
+d4/bzImage-e8352908.xz
+> > >
+> > > IMPORTANT: if you fix the issue, please add the following tag to the =
+commit:
+> > > Reported-by: syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com
+> > >
+> > > BUG: unable to handle page fault for address: ffffea6000391008
+> > > #PF: supervisor read access in kernel mode
+> > > #PF: error_code(0x0000) - not-present page
+> > > PGD 13fff8067 P4D 13fff8067 PUD 0
+> > > Oops: Oops: 0000 [#1] SMP KASAN PTI
+> > > CPU: 1 UID: 0 PID: 5860 Comm: syz-executor832 Not tainted 6.16.0-rc6-=
+next-20250716-syzkaller #0 PREEMPT(full)
+> > > Hardware name: Google Google Compute Engine/Google Compute Engine, BI=
+OS Google 05/07/2025
+> > > RIP: 0010:_compound_head include/linux/page-flags.h:284 [inline]
+> > > RIP: 0010:move_pages+0xbe6/0x1430 mm/userfaultfd.c:1824
+> > > Code: c1 ec 06 4b 8d 1c 2c 48 83 c3 08 48 89 d8 48 c1 e8 03 48 b9 00 =
+00 00 00 00 fc ff df 80 3c 08 00 74 08 48 89 df e8 9a 30 f4 ff <48> 8b 1b 4=
+8 89 de 48 83 e6 01 31 ff e8 59 70 8f ff 48 89 d8 48 83
+> > > RSP: 0018:ffffc90003f778a8 EFLAGS: 00010246
+> > > RAX: 1ffffd4c00072201 RBX: ffffea6000391008 RCX: dffffc0000000000
+> > > RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+> > > RBP: 0000000000000000 R08: 0000000000000003 R09: 0000000000000004
+> > > R10: dffffc0000000000 R11: fffff520007eef00 R12: 0000006000391000
+> > > R13: ffffea0000000000 R14: 200018000e4401fd R15: 00002000003ab000
+> > > FS:  00007ff35708f6c0(0000) GS:ffff8881258aa000(0000) knlGS:000000000=
+0000000
+> > > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > > CR2: ffffea6000391008 CR3: 0000000074390000 CR4: 00000000003526f0
+> > > Call Trace:
+> > >  <TASK>
+> > >  userfaultfd_move fs/userfaultfd.c:1923 [inline]
+> > >  userfaultfd_ioctl+0x2e8b/0x4c80 fs/userfaultfd.c:2046
+> > >  vfs_ioctl fs/ioctl.c:51 [inline]
+> > >  __do_sys_ioctl fs/ioctl.c:598 [inline]
+> > >  __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:584
+> > >  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+> > >  do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+> > >  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> > > RIP: 0033:0x7ff3570d6519
+> > > Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 51 18 00 00 90 48 89 f8 48 =
+89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f=
+0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+> > > RSP: 002b:00007ff35708f218 EFLAGS: 00000246 ORIG_RAX: 000000000000001=
+0
+> > > RAX: ffffffffffffffda RBX: 00007ff357160308 RCX: 00007ff3570d6519
+> > > RDX: 0000200000000180 RSI: 00000000c028aa05 RDI: 0000000000000003
+> > > RBP: 00007ff357160300 R08: 0000000000000000 R09: 0000000000000000
+> > > R10: 0000000000000000 R11: 0000000000000246 R12: 00007ff35712d074
+> > > R13: 0000200000000180 R14: 0000200000000188 R15: 00002000002b9000
+> > >  </TASK>
+> > > Modules linked in:
+> > > CR2: ffffea6000391008
+> > > ---[ end trace 0000000000000000 ]---
+> > > RIP: 0010:_compound_head include/linux/page-flags.h:284 [inline]
+> > > RIP: 0010:move_pages+0xbe6/0x1430 mm/userfaultfd.c:1824
+> > > Code: c1 ec 06 4b 8d 1c 2c 48 83 c3 08 48 89 d8 48 c1 e8 03 48 b9 00 =
+00 00 00 00 fc ff df 80 3c 08 00 74 08 48 89 df e8 9a 30 f4 ff <48> 8b 1b 4=
+8 89 de 48 83 e6 01 31 ff e8 59 70 8f ff 48 89 d8 48 83
+> > > RSP: 0018:ffffc90003f778a8 EFLAGS: 00010246
+> > > RAX: 1ffffd4c00072201 RBX: ffffea6000391008 RCX: dffffc0000000000
+> > > RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+> > > RBP: 0000000000000000 R08: 0000000000000003 R09: 0000000000000004
+> > > R10: dffffc0000000000 R11: fffff520007eef00 R12: 0000006000391000
+> > > R13: ffffea0000000000 R14: 200018000e4401fd R15: 00002000003ab000
+> > > FS:  00007ff35708f6c0(0000) GS:ffff8881258aa000(0000) knlGS:000000000=
+0000000
+> > > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > > CR2: ffffea6000391008 CR3: 0000000074390000 CR4: 00000000003526f0
+> > > ----------------
+> > > Code disassembly (best guess):
+> > >    0: c1 ec 06                shr    $0x6,%esp
+> > >    3: 4b 8d 1c 2c             lea    (%r12,%r13,1),%rbx
+> > >    7: 48 83 c3 08             add    $0x8,%rbx
+> > >    b: 48 89 d8                mov    %rbx,%rax
+> > >    e: 48 c1 e8 03             shr    $0x3,%rax
+> > >   12: 48 b9 00 00 00 00 00    movabs $0xdffffc0000000000,%rcx
+> > >   19: fc ff df
+> > >   1c: 80 3c 08 00             cmpb   $0x0,(%rax,%rcx,1)
+> > >   20: 74 08                   je     0x2a
+> > >   22: 48 89 df                mov    %rbx,%rdi
+> > >   25: e8 9a 30 f4 ff          call   0xfff430c4
+> > > * 2a: 48 8b 1b                mov    (%rbx),%rbx <-- trapping instruc=
+tion
+> > >   2d: 48 89 de                mov    %rbx,%rsi
+> > >   30: 48 83 e6 01             and    $0x1,%rsi
+> > >   34: 31 ff                   xor    %edi,%edi
+> > >   36: e8 59 70 8f ff          call   0xff8f7094
+> > >   3b: 48 89 d8                mov    %rbx,%rax
+> > >   3e: 48                      rex.W
+> > >   3f: 83                      .byte 0x83
+> > >
+> > >
+> > > ---
+> > > This report is generated by a bot. It may contain errors.
+> > > See https://goo.gl/tpsmEJ for more information about syzbot.
+> > > syzbot engineers can be reached at syzkaller@googlegroups.com.
+> > >
+> > > syzbot will keep track of this issue. See:
+> > > https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+> > >
+> > > If the report is already addressed, let syzbot know by replying with:
+> > > #syz fix: exact-commit-title
+> > >
+> > > If you want syzbot to run the reproducer, reply with:
+> > > #syz test: git://repo/address.git branch-or-commit-hash
+> > > If you attach or paste a git patch, syzbot will apply it before testi=
+ng.
+> > >
+> > > If you want to overwrite report's subsystems, reply with:
+> > > #syz set subsystems: new-subsystem
+> > > (See the list of subsystem names on the web dashboard)
+> > >
+> > > If the report is a duplicate of another one, reply with:
+> > > #syz dup: exact-subject-of-another-report
+> > >
+> > > If you want to undo deduplication, reply with:
+> > > #syz undup
+> > >
+> >
+> > --
+> > Peter Xu
+> >
 
