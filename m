@@ -2,95 +2,90 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 757D8C83F26
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 07:28:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E451C83F26
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 07:52:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 077616B008A; Tue, 29 Jul 2025 03:28:02 -0400 (EDT)
+	id D763C6B007B; Tue, 29 Jul 2025 03:52:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 027C06B008C; Tue, 29 Jul 2025 03:28:01 -0400 (EDT)
+	id D26BC6B0089; Tue, 29 Jul 2025 03:52:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7F9B6B0092; Tue, 29 Jul 2025 03:28:01 -0400 (EDT)
+	id C3C406B008A; Tue, 29 Jul 2025 03:52:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D8B956B008A
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 03:28:01 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5F0771A049E
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 07:28:01 +0000 (UTC)
-X-FDA: 83716473162.10.FB872A3
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A865140011
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 07:27:59 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=eK4w4i7l;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=8P2C9jOT;
-	dmarc=pass (policy=none) header.from=linutronix.de;
-	spf=pass (imf27.hostedemail.com: domain of tglx@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=tglx@linutronix.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753774079; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B2F166B007B
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 03:52:24 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 00C5380563
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 07:52:23 +0000 (UTC)
+X-FDA: 83716534608.19.CB5F1A8
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7556B8000A
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 07:52:19 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lst.de;
+	spf=pass (imf02.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753775542; a=rsa-sha256;
 	cv=none;
-	b=3wJB+/NaENRm9uP3W9IWJuKOtWQFxqOM7blB+GzSZ1M4yj+8nJeamrsCyp7ohj+hCY+zf7
-	PQyeZNGxmao0A4cmyxzLrTP14qh/ckEOp84U34jjc/3T56dCKqZso69Z1J7B++SrefJ1SU
-	l4hbFCCqne5Qe4TcpvOYgCq4TPvrBTw=
+	b=rTHOIvn2O5gfibhBHFWLUmhjTyxd6EGvvAYPe0zSja/ZAiOGW2jOAjzxvF1Vj2wrHsueW9
+	wTwN4QI0mdD6J/PiAo3XOsdxK/bbZmhYnuZ8LRRjkKWQZc3ABu+jsGH6r6lMpnpt5K1nsy
+	n/WFnOJ7qIBIOnXJUcZ2hv13Eh+h5TE=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=eK4w4i7l;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=8P2C9jOT;
-	dmarc=pass (policy=none) header.from=linutronix.de;
-	spf=pass (imf27.hostedemail.com: domain of tglx@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=tglx@linutronix.de
+	imf02.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lst.de;
+	spf=pass (imf02.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753774079;
+	s=arc-20220608; t=1753775542;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8bBYSTZpcRwKvIkblTZvAnTSurmf8yAiPann+WMyjBQ=;
-	b=Z0z8sco7Vg2ytOCavDIki2WdOys86YYYgzRk/kXd3mBv9xhZZTPDUE+MaBaYkvwSbWVVVG
-	qYDFlro+MYzt64B30eTzcvWFSPPK1whAfoM4buEQsjG6UEh+Hn3fVZdzyIBs8Z86dBzsQA
-	HQHNPHfkhbRLhPAB4K1bTXxXEAZQzVU=
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1753774077;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8bBYSTZpcRwKvIkblTZvAnTSurmf8yAiPann+WMyjBQ=;
-	b=eK4w4i7lYj7DJFTnZu+4u/xtfibAeUVwOCGmq28M6sv/FW7HGnKxpF0hv3K1NhBMU5JGO8
-	yd6Bni0OIPp+rssxWbW6f8aEPOKLfQw9xomuwPvK+5fU3fItddhPKJQVMhOEdSMvtSWRfg
-	V3VamnBKS9UxD7I2ejvhfuj5jXwmdsX2XnSnyz6j9WairOFbJM3BoAkCB/6WLXrUROM4aK
-	QgtjFS8cQI3auT/EBLlOHx7iy45BKHBxxu0IwSEgrurubfawpexT1Sk3Lp20R6qvjs8OaV
-	8LmVxZ5Azpl1uBJCELw0h0kjfkSvyNpWWitpc3UTx1/Qvgq/L/zIBAff6LL4BA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1753774077;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8bBYSTZpcRwKvIkblTZvAnTSurmf8yAiPann+WMyjBQ=;
-	b=8P2C9jOTMPv3/SiXxbOC2HqnDfEuJZYCBPU5j0I5WryKLddPUv4BpvbMwSrbtQDpDb6WG2
-	mUr6nKY0LXmtDzBA==
-To: Oliver Sang <oliver.sang@intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, oe-lkp@lists.linux.dev,
- lkp@intel.com, linux-kernel@vger.kernel.org, x86@kernel.org, Sebastian
- Andrzej Siewior <bigeasy@linutronix.de>, linux-mm@kvack.org,
- ltp@lists.linux.it, oliver.sang@intel.com
-Subject: Re: [tip:locking/futex] [futex]  56180dd20c:
- BUG:sleeping_function_called_from_invalid_context_at_kernel/nsproxy.c
-In-Reply-To: <aIgUUhKWesDpM0BJ@xsang-OptiPlex-9020>
-References: <202507231021.dcf24373-lkp@intel.com> <87a54usty4.ffs@tglx>
- <aINKAQt3qcj2s38N@xsang-OptiPlex-9020> <87seikp94v.ffs@tglx>
- <aIgUUhKWesDpM0BJ@xsang-OptiPlex-9020>
-Date: Tue, 29 Jul 2025 09:27:56 +0200
-Message-ID: <87wm7ro3r7.ffs@tglx>
+	bh=4BqNBblvZFw4I2ah0IYwccgOe8bee7j+LEUqsvY0Jt0=;
+	b=xiLBbIlKYCswoOFahKo5itStZQYWuwtOFP0IJVMrNPgaMjwcxYwRt+khFfKOoFyaE7rbIL
+	mnOqaWz7gt8WeVt1OHEy8UZTDQ4bd4TAq0e7toSqTnDpMumpU6piGOpkjmrGzeYXG7dwHG
+	8WesQb/UxLouo61RRTBGSBEJ3/wEBJ0=
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 5B85168BFE; Tue, 29 Jul 2025 09:52:09 +0200 (CEST)
+Date: Tue, 29 Jul 2025 09:52:09 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Christoph Hellwig <hch@lst.de>, Leon Romanovsky <leon@kernel.org>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
+	Jens Axboe <axboe@kernel.dk>,
+	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+	Joerg Roedel <joro@8bytes.org>, kvm@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH 02/10] PCI/P2PDMA: Introduce p2pdma_provider structure
+ for cleaner abstraction
+Message-ID: <20250729075209.GA23823@lst.de>
+References: <cover.1753274085.git.leonro@nvidia.com> <c2307cb4c3f1af46da138f3410738754691fbb3d.1753274085.git.leonro@nvidia.com> <20250724075145.GB30590@lst.de> <20250724075533.GR402218@unreal> <20250724075922.GD30590@lst.de> <20250727185158.GE7551@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: zbbb19a6756jupsm56a8uz5igiqb64r4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250727185158.GE7551@nvidia.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Stat-Signature: qsznbt3kzmy3jb9peqt9fdc9m7y9g1u7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A865140011
+X-Rspamd-Queue-Id: 7556B8000A
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1753774079-571300
-X-HE-Meta: U2FsdGVkX18B2iG3IkLVcaHB+amoky+nlQjx3J8oQOOd+QoOTTdVFNBTNRweWxIQyPvUsPwJdgSynmosYnrIteWND4sZPM43JQhSubmucAWXhktc0JLX7yUdc5AdVIkavs78ArJ1IdfpwuZvWEjQHc+hLBjQV2TuLSiKtpePXGZuYFbh+H+Q9glXVhpDTWQCySWkLKyOcbihL72RPxzAZnHY1OSLT3hkUmhKRYfa00weXtKXZRDJTlvaQhdNtHKx5ZRCVJbT8huafmf9yR1l7oCG7TBIhzV6Aa3avgkI99kQXq0IJv8nnzUOMJuxe84qK7joOBi7wsueBFjsNqqiWhr4SvOYKf4N3T2SdR462ffH2UKfjsCms5kAHRScZOuJpB/9Tv1jaSRKxtRoY0JVpK7tRRUdwdad0Qc/fAfjjn4NJ8/YmJSsLDlX5tXzqf4q5jTdvTjz1C8FgsO7gXc4zOXch+OEGWSEhhXNrMAOjY1xEReid0Fgqt56qUolcNZHFwRtFOcMHh0ZkEr2KrvvQEmt7o02kH/Bc5wQjZ4HmY/kFpI1GSHnxTiyYlVDbMdxFCm087+uwFySr7uxvYgeRpuKiXW0fwF7uBtISfYNuEhxEtH19LO5GteTRtBAk5jyZmFl4sNkGSX5FsqxsMf6NebxRAFgsM8Ste+hJk+IC8qm899erW27UUjVZ5RynePzqUZnsIXoLg3qeIN126Pc8VizYr2mk1XvybW7LQgoiFia0yDFojeSajSAjUE5eZ4GsTeqxofqQcRaLyqFj2tw3Hq5OZRKYLYIRTv8FBn9FM8ss3RD83cAviQQA8cdiUL5orfWPavsztzjwqq9rTmS212atG75mryAhxL9kD79AbYhXkg8QhAEHLWsiBOsySVIW+Eh2xEn2Ta/0iIChrvtZF3VjXExbOAOjpoPFZAJCQksM6I9mhUVwlasSUlrWwqn+tfNSXG8pmLVkCbU1ja
- twnd7DZ9
- nTNwbaQoIKmdVr7lNxTgd68Ba2nDmPrSH3LkuyIZ4Q+vNRewiPKwcQzFSTVFo6kfOCNa6hThnfRzK3O4mLDBlw5g637mMs6+yD9sGnNcB5F/Yi9oSSKfrm9Vtgm3vX1n/jJ7AHm8o7sgyTBb/MB4RveC7nIfse8IIjWqDX/lNBqQ/fckv04obJK725FZMgYnNDcIe2Nor9TWNNIE7pVXuKj4VaYDR6sQpqRJJGJnp3lUQwtI=
+X-HE-Tag: 1753775539-457587
+X-HE-Meta: U2FsdGVkX1/X+FkzTDFetQGGUhX7zeVxJyFpvtqjXA3LMM3J2jbJDpsTmn3e8liKHX9Ag9KM1R/JsV8M6Rlt1JKwvI+kA4HfPOe5rRc/IfjBg91dxD5W+jFrdecSuR+fKR3xWVkjji7XBghxtPoYEPlwren1fdkKs8AYi4EDxJ0uFydQ3fu+syp+UY1u0tW7FEB/NGArrNpz16BXiSegi02R8j6gg/6dVzsN4QaWkdOwY6O3SM4jAKO1jZNXB64noQ5Xk0fRSU6G6NOpeIs5Sn8Iwj5B2xWfjB/VnXQnfNwWtqrvjChsf2h8GmHjIp1JX0Z/c5990kVOu69F7ncnoBsckEx58RLcWRBe5V4rgx+aTvQM4LxHZ88GRsEQLeJDk/YbpUBkZrf3zxpmIkHF22KQcfte0pe4jaEg3fLbKauCqzTwU5dgKS28FKqM2LoGIKkal1fxVvtv+sNyK+abSZ8C1LHr+coDt2bsiRkNim95IxEemZXv1/kdnjKLVrqo2DPtEb/z5hvBDIFxmDk6jifY5CS+x7Z1GIzVU4Csehz54pVJQCON8JNO+zHTZDM4AI8D9HLNXjh/ASpXy1KzaZyMjioXq7ZgUAWUAI2LaryIyvveSaLJJIfmSZNgg7sqLQDL9qYqbglga3gZmvRDK3ldxV7ASqPkbbYQoSMooEb3/VqFAGtEwqkhXCtE7AJTR4KTPf6t0yN88TZYsughVGjW90+y9ZK+G5oPhmNy2HfN3wW+vvMUANgfUY/OwgQa9gZAyTV7DTw45XCiEn7OkYkG41FGZM5zXvvLcuocMhYaqgcedvJifdSX62DTm+nz8nNIrDB2/uXzrNfWANy7zMjkXpGXuQx2qrVm66e5lutd7F93oSHzorB1B8Nh1+/fHcLu1s7QQBe67aA4B3XO/AP6Ei0gBlLOlxn5tO1F5O1V3ibqeNlBtZig/Ion8ebAC9W6SsqYKj0Q+Jwj6H3
+ wxBPiB+k
+ T6Arva5KOAN6dvrmHkXLnBiOkSMGt4cfyC30Vr2Xv9vZapV90DNOEd3AIJRbzJUd2lytoP7IbQ1+iiciPXhYefNWemVi/kG15B30XBdafUZxMzNjsU77CqqyS9L2EPcloGBCqbMHZTOR7GUvUtkNwsCPNbL4h87eUg2dwfO1UpJPrzHcsTDe2PocX+JUa3TwuHDSQ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,30 +94,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Oliver!
+On Sun, Jul 27, 2025 at 03:51:58PM -0300, Jason Gunthorpe wrote:
+> On Thu, Jul 24, 2025 at 09:59:22AM +0200, Christoph Hellwig wrote:
+> > On Thu, Jul 24, 2025 at 10:55:33AM +0300, Leon Romanovsky wrote:
+> > > Please, see last patch in the series https://lore.kernel.org/all/aea452cc27ca9e5169f7279d7b524190c39e7260.1753274085.git.leonro@nvidia.com
+> > > It gives me a way to call p2p code with stable pointer for whole BAR.
+> > > 
+> > 
+> > That simply can't work.
+> 
+> Why not?
+> 
+> That's the whole point of this, to remove struct page and use
+> something else as a handle for the p2p when doing the DMA API stuff.
 
-On Tue, Jul 29 2025 at 08:22, Oliver Sang wrote:
-> On Fri, Jul 25, 2025 at 05:45:04PM +0200, Thomas Gleixner wrote:
->> Can you please enable CONFIG_PREEMPT_TRACER and add
->> 
->> 'trace_event=preemptirq:preempt_disable,preemptirq:preempt_enable ftrace_dump_on_oops'
->> 
->> to the kernel command line. The latter will dump the recorded
->> preempt_enable/disable events and we can pinpoint the function which is
->> responsible for that.
->
-> the config with CONFIG_PREEMPT_TRACER enabled is attached as
-> config-6.16.0-rc5-00002-g56180dd20c19
->
-> by this config, we still see random
-> WARNING:at_kernel/sched/core.c:#preempt_count_sub
-...
-> but bot seems not be able to capture other new dmesg stats.
+Because the struct page is the only thing that:
 
-Ah. The tracer does not dump on warnings by default. You need
-'panic_on_warn' on the command line as well. Forgot about that earlier.
+ a) dma-mapping works on
+ b) is the only place we can discover the routing information, but also
+    more importantly ensure that the underlying page is still present
+    and the device is not hot unplugged, or in a very theoretical worst
+    case replaced by something else.
 
-Thanks,
-
-        tglx
 
