@@ -2,80 +2,80 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 85932C87FC9
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 09:04:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E201FC83F26
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 09:04:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 23C4A6B0098; Tue, 29 Jul 2025 05:04:00 -0400 (EDT)
+	id 830098E0002; Tue, 29 Jul 2025 05:04:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1ED656B0099; Tue, 29 Jul 2025 05:04:00 -0400 (EDT)
+	id 7E0B08E0001; Tue, 29 Jul 2025 05:04:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 129BB6B009A; Tue, 29 Jul 2025 05:04:00 -0400 (EDT)
+	id 6F6C38E0002; Tue, 29 Jul 2025 05:04:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 026406B0098
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 05:04:00 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B5F01110F03
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 09:03:59 +0000 (UTC)
-X-FDA: 83716714998.30.672E470
-Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
-	by imf04.hostedemail.com (Postfix) with ESMTP id CD7754000D
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 09:03:57 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=RcwSM5UC;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 626A88E0001
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 05:04:15 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id ED02E59185
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 09:04:14 +0000 (UTC)
+X-FDA: 83716715628.18.121A2BE
+Received: from smtp-fw-52005.amazon.com (smtp-fw-52005.amazon.com [52.119.213.156])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 3228510000A
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 09:04:13 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=AMZhx524;
 	dmarc=pass (policy=quarantine) header.from=amazon.de;
-	spf=pass (imf04.hostedemail.com: domain of "prvs=298daa15c=acsjakub@amazon.de" designates 52.95.49.90 as permitted sender) smtp.mailfrom="prvs=298daa15c=acsjakub@amazon.de"
+	spf=pass (imf05.hostedemail.com: domain of "prvs=298daa15c=acsjakub@amazon.de" designates 52.119.213.156 as permitted sender) smtp.mailfrom="prvs=298daa15c=acsjakub@amazon.de"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753779837;
+	s=arc-20220608; t=1753779853;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
 	 references:dkim-signature; bh=q3h1jVcZkOPlZ9Iqdiufq8QHLDIRYxNPqMVEVVeO8BM=;
-	b=LI9Saka6oWDNKaOCcRpchuwjSqQk3FT0V8+uQ/NHrkqdnVTwjQODC3nBKl9ub7balGK4sT
-	h7q5cET+vgAuSZIZNhrWgHbzQpmw07aeHhiM7qW2eRWyznLUBFzt8kSM0R5SaVgqaB3wgJ
-	C+o4XQcfe+gqKpLciuHxMnjzka66gNY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753779837; a=rsa-sha256;
+	b=dnSb4+Wr7bh62GaikkYD9Aj8UnG1fw1CyUcR9TkC4jJMgYi22cZaNrWDIFNsXZVQRUzMNd
+	FlNSu8EE59UrRs11ZhzbvQwE67MTgbnQpVotOLtvEWd7eqEyNAn1LUbji+rTp38TEJyTSu
+	qgRsm3rer4NI2OhU0lutLZNcwTCFhh8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753779853; a=rsa-sha256;
 	cv=none;
-	b=M8c0Q37MUezQs4SC2Q69No39M+zcOYQxrPvDajGuAbQk2j0H2fLUQDrNflFBymjtyOlipk
-	tNfuxfozLL0crVwSLnSp15dECnBUlHiDeFxspAkwKMafsoFjzMUrybPuRBHbug+yZ+PfVj
-	ERh8GJeb3ubr/WjsUr48YrtkqUIewsc=
+	b=YUOCgucBg59HgTn+YLWyZaFTuJ7Rcq2JisPFNlVfD4XKpKSsT0gp+Zun3q5HrqkOn6xSrm
+	nK5z24gRMGz/jAW9EzbRADV0dSLmPChNH651P9DZ6X/d41AqJMRfejHlxTDgz/MEsd9aMM
+	6JEkfcOihA9eouSQJ/YcZJfIJN1qA+0=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=RcwSM5UC;
+	imf05.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=AMZhx524;
 	dmarc=pass (policy=quarantine) header.from=amazon.de;
-	spf=pass (imf04.hostedemail.com: domain of "prvs=298daa15c=acsjakub@amazon.de" designates 52.95.49.90 as permitted sender) smtp.mailfrom="prvs=298daa15c=acsjakub@amazon.de"
+	spf=pass (imf05.hostedemail.com: domain of "prvs=298daa15c=acsjakub@amazon.de" designates 52.119.213.156 as permitted sender) smtp.mailfrom="prvs=298daa15c=acsjakub@amazon.de"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1753779838; x=1785315838;
+  t=1753779853; x=1785315853;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
   bh=q3h1jVcZkOPlZ9Iqdiufq8QHLDIRYxNPqMVEVVeO8BM=;
-  b=RcwSM5UCTMo3lvrnEuiosj8qfG/rnN3mo6rYQ/UqCUCoruNs2THgWSCy
-   hcjmq/d4kHg/ZB+b8GHO+UO9wWD/Qna4J1rC+oLCc+vXU60l7BnRRqnSg
-   uDzK5XbpeMGZPbTAJ9DvaZ8PfMvvVShksjQSUx6f4A7V8MgziT5vDOmNW
-   e8jICK22WC6BWFdQ7sRKR9LnbAq2+WbMwW/UfIOxFXRtQeInbLrW4NhYd
-   j3zv/4joWqe83FqrGfdPd2CKAmsFRmE/1c/H0flKYViUp0fFOnjhcGevP
-   A/YZt2vfLETfAj0RqqS472eiv8EslpgO8zwH6wbpWpiWXb5/4cYZH8B/w
-   w==;
+  b=AMZhx524xprm3gX3kvYKQ+rWcfqSz96zEZWAQddjoaJmSZhx3lkLknU2
+   HuvfGnft+EHDu0E7bejS2UebZ7wAdh6DtptkgVvJeHIyqvDMxSBQMt0+7
+   wV31DHR/lFq93psuEiq9SY5ue+Ezztoz8E6lL9riOdLK7Corhcqjfbuma
+   3sXTjZT19H8CgpynjmNjLmsWDhsAezlBAPI9L5GZ0iUbX6FaJ70f/Ed8v
+   P2ksPMeBeGh9dhJQoweseQVsfGPfbUnV2NuLHKAiCZhmfV5vNdYKggPCH
+   aIFrFJhV+RWUsNOFJFYOxHzb4Xu8+wVhWlv7mXLp4PBVpneg/NY26+2sG
+   Q==;
 X-IronPort-AV: E=Sophos;i="6.16,348,1744070400"; 
-   d="scan'208";a="519243793"
+   d="scan'208";a="766742606"
 Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-6002.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2025 09:03:55 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [10.0.7.35:52595]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.62.141:2525] with esmtp (Farcaster)
- id c149ebea-93f8-47d5-a118-6e4489a8d76a; Tue, 29 Jul 2025 09:03:54 +0000 (UTC)
-X-Farcaster-Flow-ID: c149ebea-93f8-47d5-a118-6e4489a8d76a
+  by smtp-border-fw-52005.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2025 09:04:09 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [10.0.38.20:59488]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.52.124:2525] with esmtp (Farcaster)
+ id 92270030-f242-4756-a15e-c972c16f08fb; Tue, 29 Jul 2025 09:04:08 +0000 (UTC)
+X-Farcaster-Flow-ID: 92270030-f242-4756-a15e-c972c16f08fb
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Tue, 29 Jul 2025 09:03:53 +0000
+ Tue, 29 Jul 2025 09:04:07 +0000
 Received: from dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com
  (172.19.75.107) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14; Tue, 29 Jul 2025
- 09:03:51 +0000
+ 09:04:05 +0000
 From: Jakub Acs <acsjakub@amazon.de>
 To: <stable@vger.kernel.org>
 CC: <acsjakub@amazon.de>, <gregkh@linuxfoundation.org>, Liu Shixin
@@ -86,24 +86,24 @@ CC: <acsjakub@amazon.de>, <gregkh@linuxfoundation.org>, Liu Shixin
  Song" <muchun.song@linux.dev>, Nanyong Sun <sunnanyong@huawei.com>, Qi Zheng
 	<zhengqi.arch@bytedance.com>, Andrew Morton <akpm@linux-foundation.org>,
 	<linux-mm@kvack.org>
-Subject: [PATCH 6.12.y] mm: khugepaged: fix call hpage_collapse_scan_file() for anonymous vma
-Date: Tue, 29 Jul 2025 09:03:47 +0000
-Message-ID: <20250729090347.17922-1-acsjakub@amazon.de>
+Subject: [PATCH 6.6.y] mm: khugepaged: fix call hpage_collapse_scan_file() for anonymous vma
+Date: Tue, 29 Jul 2025 09:04:01 +0000
+Message-ID: <20250729090401.18684-1-acsjakub@amazon.de>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 X-Originating-IP: [172.19.75.107]
-X-ClientProxiedBy: EX19D041UWB004.ant.amazon.com (10.13.139.143) To
+X-ClientProxiedBy: EX19D031UWC003.ant.amazon.com (10.13.139.252) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: e6hpdpy6kubk54kikniibszjtf5jzdqs
-X-Rspamd-Queue-Id: CD7754000D
+X-Stat-Signature: g8w5wwobohtea6u8f4kmzhfne63jwgmn
+X-Rspamd-Queue-Id: 3228510000A
 X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1753779837-747421
-X-HE-Meta: U2FsdGVkX1/5aPLY/BIYqey6qxIi0DNn4VGkgA4f6qlHoBHhHQCBYddeYTu0x5AwqsRrhWlOy8Z8K6YGY4L0oJLG1suysQDOzdSJOynsilrnRtlURa5i8AO/IC4u2moz4tzC8ATx+6Rsf9e97tNy7yVOk5sUWnShl9vFqNksmcAY/0bGaLFHuWPOJsYL+HHgPgvR6+Gof8l9UxLIal9IMvC7c+yjwtYQFi9PfQcpr+e1huAHjMKeRO65GqjbFh6RYRtTnuxUhx90lS1/2HrhJGyvLL7ytFxHDto91zlw1TGCMPpusfmmEnI0GlmTdgtS+INsWrrXC99CLMSgH836Vc2036cC5tHZGMErF5xhUG6dZEMqQjeG1vLLye7Q605QWABdGOHY+uAaKBX3Ial1Kc+ft3o9pNcbD/OJvbSK0IESuBR1Frp6DZDAbHAMIoBdOOVZA6xiQDXIJOU9tWy12afqJhRTb+eIcSkg38uXt/BEhTiJ/wiLYAy6Jwe5Z42cRxyKUV5Uixad1kD3dJwID0eLU4Od6b6R5zT9ie+PTJe4dh5JiJ267rJPpbzyuPmH+TeV7z9wAQh4FHHXoOaVpsVMaVmzpurCjy3AccvkALOLkWiNytb1pFY8ShqYNlSf91iPts8M9otMINh9K9hHFoGzupPwLcsqWuZMpXQtE7u9f7qlU5wAx3ERrSNgsYN7ZXgCjgDHhqA8nQ/e7pcwZ6kj8VopPv+AtJAygNUV5Jrxer9X3pkUfXmgga8HGlHpxk+rr33Fj9hMAdmJQ3jb2cvVqoElVq5D8kfrFZc4UVtXTF3Q9BlbImdJBkP1egpiFLBjBPacpO4YnVB7oayXMJv2QhA8DuTX/HHCPfvbA4UANgOs54baqVrxuo1tDZL+KwokZ5Gs6YWz9OQ8WqMdf30Nvx4D0dAZSuof51Yaw6lwZSlGmw7j6RfBz5ET0Znso5v7cT/CpjGlne/DgCd
- cnoRx8Wg
- N7RuBKcIXU7VrwTx4MFZuiGzgQHIxCgCsbkaNzyRzuEBww8g2M6xAxeyAmevPhYLXYXi7gVRC3FY8Ywn12sOjeKwO5B14p658yqECO1UQj6wOvUZFj4N5LqsUrxx01m8YHQEIZdA3jN2W+4RkkqUuFkJeeZm/Gm66+Yecrn3gNDajsdfYekRZRMFjSjoOBvdY8txJHJaB+RkTYvVoBjg4CH+H3iuZ+dvZl+JIwWaJnKjW8SNCmWOPaqKciLfhFFiUXZ2FVymacmnSCttzcIy9eCFjQGatzazFGUdNQud77n65zSG/wCiIrO9zbf1PEfAzQw1pTxBBAiY80PQ3o4q3FyrHG9ftcTn37vNmfdgs1awwjC54ltyOwQJFlzJffACcBo5IgWUz1J3oBfbzurJCbJ8mWuHEBmPl5rv2CT3ToOWL+KMIinqV4wZl51FlAPAudeoS+/a69YslP6vGSOryDgPwIcrUEXlE69LsjNGx2nv7ui3Ps32vIBAVEKWz/JmO0ydZ/XloP/i8PFxQfoEOMRyfRV9z90vZPPGOcDQNXBe7cSq3FgaYIY17iO7zEFcggwT12llNnYhaHNG5BvLHqVePdxWEUSu4ZCnWZb8mGa9TU9Ghr2+HMLbfEhWC0l8IfIYQLsBCPsRRX3bAnzeZSBbqM0WoeZ62WXzEYXDbqbjVyIXAQ/RoIjVJr2KEvyI/omOeALOEepegmpgTxiHcFqNe9vEtiKrns66gDxh0Www3DsdJYfPMyKU33XhuojvQQn1WAG10VoZdQUk4CqXBkTConv+YI/qgg4fZjuE4jMASX2+as+IyvWdYB3L0c/PJ5M0sabd+/66YGyajPjA7fyB4QkTyJH4CzB8+8PZqEzvqGVr7q/+32imj5e9jf0cqhvUR1IPvpUjZDgBGfW0X8FD8zz8JHHEb79Iruslc71K1mxLFNcb6TShpMMitGAas+118Yndr+aHsQzA=
+X-HE-Tag: 1753779853-831352
+X-HE-Meta: U2FsdGVkX182UqKasgYWzK/ROOqkgCYroLDvF+BnACFL59MPfGHO3q2Vd5IYJj7XU4KwDe43sN1Fe9IHcnBBrDIpQnT1IY+0gTjGqRKjjMtSn4IBLSv3nrVaSxXkGwuKqSWp2zzvCc5p/0DS6StjrNY3f+Uo0AX4pgs1CBVtaPKpGFM0t5eP/FrsUoEHmVTmLzDgKsePlQWex0UuVa5eP4+NSvXzkLxs5vHyIfxFRjMrYeEmb6r8yAFYicwj8N+R+KzCBhhQbHLw5YCePaL7Sq3uHnkKrIahIocqk4jE6PDVpx7qEml+wIQ5ahyLhaudwSdQ+Q7kmgYypu8o5PzWgzIaUbyWHNzZwo7NG4oxS2t8NfI97sjkcMbkGewmcdhFLgEIkT6MemS3R+iV2h4ty4PYcdurRwpAAE0/AKWUtC/vU56JGxZ26AQ3JGR3nh7ETYp1mSGZ1OcW6Fb6J8A/wMpRDoLIB8bGfMnjWwkZyUnvZWsYg3qeXNyXbMXw7AQWdWAQ2jIbLZeON9KrnVScnSt9s2gcJMCDBdJLgoRJgMrfF/rC53ikEKfUONPL3aBK78QXWo42VX+9eukyIgeNvPzm8DWitUQwUBsKCN0GNZr6LJbwgeCjV6t3f6xRsJc+10mIya7eB2NmfHS+l6ICGdYgxfUWCVGgkLHf5wH7HbZBuPrtoMreyW1TzM1uwfxp6PKVhoxd5cejwKUahi+EG22EEJkHyBFxuj2N4DnO7IS2rDT7HcCkESPuFwW28UvGVlo9xZwAaC5fXdQx4KqePDJiqgk/j5p4jcc7HGfysHJCe8pNIw3UqtH3RqkMladA6eU7TkWEc9mhfgw4g6c6aMCHB1fQfzbAWtP3RKRWjoMMYbNiNMaiaBe7PjbGWGuPmvrfdZRaXwgg/vsigKZYRVDq4H4mUfA+9APE6B3gTyvnaBtdNAS8DTEm7bQJr2Nx8TDS/rj6akWODtX+eHe
+ vzXz6YdT
+ GJkTk5hzPAJiNELjhOX14C20fJCDiW1CFEIcaAn4naILvdm5QTpRBF693OJ1gSD/eP6Mp/hKifKxODdbCp1NZWpl1n85MkQD8Qgjd+rTGIFXY5Y0pSXGYcmDYvTrnuEx4A6aoKqupQccqpNtqAXcdiATN2uKhpUQ+2zZYNFACcsOmEjGpPr5oENZQr5RD1KIxCPa/fzhdbPw1IosQhxIhiczb1g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
