@@ -2,163 +2,88 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2694FC87FCA
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 18:39:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F3B52C87FC9
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 18:53:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 958816B007B; Tue, 29 Jul 2025 14:39:11 -0400 (EDT)
+	id 839A76B0089; Tue, 29 Jul 2025 14:53:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 908DE6B0088; Tue, 29 Jul 2025 14:39:11 -0400 (EDT)
+	id 811736B008A; Tue, 29 Jul 2025 14:53:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D1576B0089; Tue, 29 Jul 2025 14:39:11 -0400 (EDT)
+	id 727996B008C; Tue, 29 Jul 2025 14:53:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 690326B007B
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 14:39:11 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 652116B0089
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 14:53:16 -0400 (EDT)
 Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B49F956E57
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 18:39:10 +0000 (UTC)
-X-FDA: 83718164460.17.B7D8E95
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 94AA81C000C
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 18:39:08 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=MeoDf6pW;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=urezki@gmail.com
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 46CB91D86E6
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 18:53:14 +0000 (UTC)
+X-FDA: 83718199908.17.B5EBD08
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 48023180006
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 18:53:11 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=j57oc76U;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of bernard.metzler@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=bernard.metzler@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753815192; a=rsa-sha256;
+	cv=none;
+	b=KkxxFickWm7XGtc0psXmJPq6XiWI45UvUvO0GZna328LPJsQ0nzop4yPwoitQVLVn4I1UE
+	BNS+N3NUsXqlSsmDvC+kDITU5r+Wed2P8Wu4cq2ZKG8JzpKUmDWW4HwgI48Uqh7gGWlCQ8
+	i4CjJgLS7fksFFBxfTbQKtbGwT7rNak=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=j57oc76U;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of bernard.metzler@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=bernard.metzler@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753814348;
+	s=arc-20220608; t=1753815192;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GYRfCV3hbQi5DsgzlDild2w/1OeWF4e+oM87WSvfwwM=;
-	b=kZM+VBtCl3SN/TxGJ5O8CAEmlzIlKzUL92umL0Y+WX1a1/h3UDHmT8gq2owll8m/DYoMGd
-	zm02U6J4gHvbIIe7Va30OVJP/Gq0BLcj3SS+4Fg+Qh80Qy53f3ilY235U+K+sk9llIrN+o
-	ySpsi4n4j8NstttihKluJM8WWsP0rUQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753814348; a=rsa-sha256;
-	cv=none;
-	b=abkkzhVHrdXNAR+eYc/kfgJEkNyChprT/8S05M1ctAlV2aoobfLwi4QCFP8htkEDkDiDKk
-	jor71FES9guY+d8WC8EqSb1PmmmNHqula+Ex7y2vZYj/0dV6RnkEH1ATXjY9uZiausBHxp
-	vIJLHWtHoHkmmTS7IKYQr4SwGWdzsXQ=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=MeoDf6pW;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=urezki@gmail.com
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-33212cf558fso14800031fa.0
-        for <linux-mm@kvack.org>; Tue, 29 Jul 2025 11:39:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753814347; x=1754419147; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GYRfCV3hbQi5DsgzlDild2w/1OeWF4e+oM87WSvfwwM=;
-        b=MeoDf6pW2iCe4dkpnj8F5g3bwTUoPUwNx21qcCHT+vTDHxeNnGy9HWtO5/xBkZRCgR
-         z8VeEcf8+MelW207nDcqjiIJhLNTgd30xL+XJGoJqPTSx3N2YTpFatH9f7wucoHA+K4+
-         bUc/8jSh7r7pjnvyO0ed8M3jmmSho/oojAyD4nxFmvrYhXD+DE5Qndceo9C3ou/I/wtw
-         9tVPcmKFCTcDe8AuujRlrti6CROqX9G9YvSM4P4m4Flml7ol8dYTQSzF3a8mVzYXljTA
-         cRdaR8rz0z3KC2LyQlghwkl0v0rfDHUlqa54FQUAxO6S/F+KLEmMHc7oO+M5D/VeOdu8
-         xOGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753814347; x=1754419147;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GYRfCV3hbQi5DsgzlDild2w/1OeWF4e+oM87WSvfwwM=;
-        b=GsUu+rD3Bfx+GHq1IglBfKLkEt5OmMkYICXFkKWfZU16Aieidgb57b5YNoRdw13F7o
-         v5yrRGqF8cOc0kzC1lQe1l+PJuD9jqPk6PlduzPBLDFnR/EddlGrwy1v+2gGhRcnHAPC
-         /5iSDsl/TC9OmgXzBYdGnh12iGW4EPj5y9bj/XETbXvtPsH2U285TqleWk72og96rOEg
-         SyFl0vRN0+KkErc+XJ3KEnprdxUUOsityLB19LW0vuxXQehRpLPqXABPiQhhi2LyiKis
-         BltTqXDSyFZZ2Bn8RcFaK79QdXM7HavhcFvTdj6Nls6HWh/1YkQ+EwcGSm6a0Z4sRUeR
-         1M+g==
-X-Forwarded-Encrypted: i=1; AJvYcCWNsh3lSQ53rMBMBEjcJI5wKSAesFTy6c95h5+XgMBonojWiONGjCVoEzKCv3Nd0KzUg4IuoRWSlg==@kvack.org
-X-Gm-Message-State: AOJu0Yx0q4LUSK9RJaikUC4W3xo+FoeaEGcfQISWpKKGFk0RcUqkpuue
-	GEmH4vqYctngWMxqvqHW1CKRVtCYJzUFmKSD1WyVnvniH6yqNLGn/Xvu
-X-Gm-Gg: ASbGncuqLgouky/5GLHsPq+1USaQE94uwAz2N2t/PWBfXu4QKUX1YOW9Dw2RV3dDUiv
-	m2jjqFTJ3SXCM4s6TEFjZG0SqhjNHL9jrKywkno77oZATrWZVLzYlf1xyq6hRlVt5DRAP896nVu
-	aY9s6dZYgbqPTIldd0VMt2Uuip8pQxyBUkY67L7TBXQVcV2NylAX/pVuW2GBYTefGokf0Y4ne51
-	qpo3gCW6CypL/L5BRvH+pddgboupLt09IB/RRTV52OY6WTwVzYOdVzT3h7A7Qo3moqPOsOkUCOe
-	bC4CRlDXqIJ0ZnkUblKICtsOekjuTi7lRwe8qHN02xD0cVT2qSrowSLA0FQXw1kN
-X-Google-Smtp-Source: AGHT+IF9yvJyPiTzwXfrNX8PT/G9myfdCCK3lbY+TklU3bxii0UFYjkiLDeONxAItTuHZBzIFqK+RA==
-X-Received: by 2002:a05:6512:3414:b0:553:241d:4e77 with SMTP id 2adb3069b0e04-55b7c011afdmr184040e87.22.1753814346295;
-        Tue, 29 Jul 2025 11:39:06 -0700 (PDT)
-Received: from pc636 ([2001:9b1:d5a0:a500::800])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-332219ce7aesm832441fa.34.2025.07.29.11.39.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Jul 2025 11:39:04 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Tue, 29 Jul 2025 20:39:01 +0200
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Harry Yoo <harry.yoo@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"David S . Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Kees Cook <kees@kernel.org>, Peter Xu <peterx@redhat.com>,
-	David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Xu Xin <xu.xin16@zte.com.cn>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Hugh Dickins <hughd@google.com>, Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-sgx@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	nvdimm@lists.linux.dev, linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] mm: update core kernel code to use vm_flags_t
- consistently
-Message-ID: <aIkVRTouPqhcxOes@pc636>
-References: <cover.1750274467.git.lorenzo.stoakes@oracle.com>
- <d1588e7bb96d1ea3fe7b9df2c699d5b4592d901d.1750274467.git.lorenzo.stoakes@oracle.com>
- <aIgSpAnU8EaIcqd9@hyeyoo>
- <73764aaa-2186-4c8e-8523-55705018d842@lucifer.local>
+	bh=m8uizJieSyqW56uosfxUJeKEVQ0kVEbrA+dUYFoOGRs=;
+	b=p3VEyZmmorhPgBjPeSXmKEbKJPnq6mYeLlADUllV1TBa7JS8rqRshvj+xXPOuRYuD517kI
+	ei7w2h9tv05zAXDesu38H9nVY7/OmDBQ1nV6JRtJD1WBRyXMVgbXOGOG55sm9DFvrnJPlV
+	W3+cm+9jb63nGdl489TFZQkoXuUQPGA=
+Message-ID: <8fad6c00-9c15-4315-a8c5-b8eac4281757@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1753815189;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=m8uizJieSyqW56uosfxUJeKEVQ0kVEbrA+dUYFoOGRs=;
+	b=j57oc76UIhZL5Xpcfh4U0tWr8C6enCpVQGbo2hG9G/0MM06fuiCJ8Y9RkLcRYz1x4orT97
+	JobdnhYCZ2iemZAIgxqDkCvYrqbLu0Qm1apgcZEDuQd2TzZ6hTyq50I2Vd3GHzTBw1Z8r+
+	6U+OU1uUSU0PwvKHE1NHrhjo/vcQR1Y=
+Date: Tue, 29 Jul 2025 20:53:02 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <73764aaa-2186-4c8e-8523-55705018d842@lucifer.local>
-X-Rspamd-Queue-Id: 94AA81C000C
-X-Stat-Signature: rn6uydrgejd5bgjbfr5w59zd7nc9yx71
+Subject: Re: [PATCH v2] RDMA/siw: Fix the sendmsg byte count in
+ siw_tcp_sendpages
+To: Pedro Falcato <pfalcato@suse.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Leon Romanovsky <leon@kernel.org>, Vlastimil Babka <vbabka@suse.cz>
+Cc: Jakub Kicinski <kuba@kernel.org>, David Howells <dhowells@redhat.com>,
+ Tom Talpey <tom@talpey.com>, linux-rdma@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ torvalds@linux-foundation.org, stable@vger.kernel.org,
+ kernel test robot <oliver.sang@intel.com>
+References: <20250729120348.495568-1-pfalcato@suse.de>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Bernard Metzler <bernard.metzler@linux.dev>
+In-Reply-To: <20250729120348.495568-1-pfalcato@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 48023180006
+X-Stat-Signature: dnxhcjntw4p9ckpiabbkpe71grq13s5g
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1753814348-112272
-X-HE-Meta: U2FsdGVkX182awwjRaE73xxT6UPkEw6b98L7hfVMdQg3iXNedw/JhHqwqAS7fB7g6rDkjdQ00sKiD5QpzYhdqdmQV/zvCKBknlUB1sPRQ5YgDIYDOjt0FYeEWydbmP7NVwukeKYd2C5VfKVwpLaUpa32tR1VMX2WYj7EpYHE9gzP+NCMaoiiB69eqVZE2ozkQu/GtFhjugE9y9uzd2PWuBQzZcTXWw4ZSiIXSEwbddflq7bZbTu//cLyXRxoTbSeBt8cFn74ZvdxB+E4B4vzHmha/1gXjmUe1YLjuHDFzVjH4+x3ZAWMrldfnI6944mf/IrPOCcWuAWEoOoLk+6F1aFqmF9SYgHGkESrhHSKLo4JM1qX1xTSww2aCjf0ksJsnYr93fZn0mYmuMNmqqZFn8BpeMhrNCncXfgnmv7DWVDnhI5cc/Pg1q5ODMRXQXALmzaMem6TUGIoxePGmfyG+gLXczyKOJAEo5sZCGjErXY7m9FSC9Gv35Rw9QcPgE3vZ8E07fHYUi4XHsBBCSIl3N52pVbDV7oNnRsAUMQtWFiCF0kfZRfE/OjfHS6YoBvGOlhwWmmAHXTSc2FveYbWNqic2dr4GK44Ye5mDTIM1g//QXOJnKFGRMGLCBe9WrVBUprPFs4VUkj33AEc3H81LFhh8ZYAODCLY8liXrTWkBtNHLnfXquV81Eb6cvOrdIRec3wzlk4wdvsZ6Z53BPrUaMk6PUHgasa9E9RGHLahURK4BD9O9NLFQOkGJmN2Aksmr+h+dkm38JGHBFaJ3RooyvFa4F7XAmKzVCzihXX8k6zLj+MXt5RtWsuesAibAoumBwZbgN7DPrZiQd5SvYOW2Vx9e5kBL8qVcTEd60FM4d5trWx6OQ5vdXzAq8rmFzjhxshFGz8g47fpw0G/cuD/hhUm+R7KJrIl8O2MmXI1iUa/IEdweF3aFmm8/m+WW0Ax7T39PhbKmoO+48VPBz
- bm6TLLO4
- cK7AgR616LDdxRh782B7zTeRGxO9faukyFTvVLpS0MI+HcQZ1v7dQlhEY3S05pWD5iNeDyPUuS8610ZfiFgB0xPOLkj6NKd+UAEKTgCLfQgI5QXNZgw5lMdXeF9MIUbVo2u1yWZbn3y/sK4X6UDHIXZCCVNRgWUKckCzfsIqa+J5zEmQXtMsG/wnq83NhucEB/NVvEh1YNer+H88ZkqPEdykz11Dz+SNnPX4DmkIvR0Mheay2PDVO8Bz531PInPYoc00Y7S2B4mGBaCAz/RycHB7x3Y3iq92DnQeOwKOtb4QRUDMXUeI664L0gpmx1SnwOpVjnmrglSjNYLxKN+MKkcBxbHfZvs5A7XfbcsOIV38lHtdyggXJOMq58SEsbZh9si8lXtX5b1oF8qQS4lsCgsS2vp6J75J5tNU2nURY2yAOMCjdVM/9LCnN82RIXAIRPSJhrew2j/uVXKfv2aj2z64FovHCV53dM/kPJ3qKKwbGGadyzicdldjDqO1tw/VbvYQTESWXnsjj5nrhySau6uCju7Kt+OzhzCrTOrdeQrL16BZbYga6X86vCA==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1753815191-923620
+X-HE-Meta: U2FsdGVkX1+WlIk9Dz22INuLS1A8uDl1qUSvCqk6npKtkrfaSXifuSCZaK9KHRIHZYSfe2x2/Ipb0ZXn59Fw5/xde7Pj2qsf51er6gIOauDTuncYZpJPoNio7IGimlKoKaUjvZ5it/fzShGFookdpVpyQpRJffyk5C+4hJubqHw6ZXdhVSJQYl97/p4YXtkF0lEkWGgT76Mi74jjdS+GfdNOIo7SqvxqP9SF7qK0akOz/99TYVKQrgkKh54pYTJ3Jtnyai3iZLzS3VckMza/a+PtNZ5ZjVCOqe1QTcwQWzNMOvgzZlLDQXmA4/JNz7KmguHop7wUYXMMxHYixBjJ8Mqcp/V2xPAhu7/mbFzuXblnZk3sAZt7KokUFlGMlKQOQB9N+UvzBA/fIsEICsp8Wug3b0eDmK+kutGssLQkeqUTkFY+JZ6/FnmrTGwRvHVQYHlQCv5GdsNtFUtQd0NTmr5ziMMRrDYqin/rp/eQGBhzPkn24N/KcOGTbdhriDQXuyf4SUsF4o6saF2wBvyj7e+A5z6I3PZgb6UyCjBJCMnqE1qDG2N+PW5YmAe/sMI1jM/P8OLJKlPnf98/C/kMfDl9vSziN4mz2aG66h0Pqn3mCWscPUBZzIWzeQPBYlJJzTXTaFaI1bYw1p+zGAb6KPiUUVrHmYJJ+aSGaChtvKuLnKphiEIvBQ3zey9Bg7IYRnbFAbb1RBK33jxSo5EHNj0YxJ5iWRnhSAirzEU8wd9fKiVueMlb1U6KQSMuiSA7l4wvTDWfoyppEEGt2IAmp+Qf2U40sD1AG8hcSpp3FhN/mzBOP6gw+P+7SBP6tfa19gTL0IM3S4Dbfcc3u+I8v3s7Zi05Ymet5S3fV+PxnCoh/FMdxwZri5hWnABWCceE623pMf4NKNjQGRJZdADb52Hky9pXSn6/WIf9ZVe4Sd4FUzb5gApxUpVCyg62VyeYxlJdhV2sEn2JYCTmm5x
+ 58uH85o1
+ cI/Wn7mALMqOD4okDRGobs365bzRR61z3MHAVxF1DHbRaxDv131jT/UeStI2bfrYOrXVTmaIvrPgzL7QDCWD825omdZBmpBpN9Fzx9gr/eFjA9qiYTwmaG2gqLE6GEm1DLKn0s3Jco5sPsjK+7FNm6J9YU7jYxzBjbn4uNYgq7aQY44iuI7J5KQaX7N4u47E3OYms9PHJVQCg/NMNSV/c8ywbGdjADlM3tiBGNRZCRYRTOPM7I7KIFg/eARu7THWo/lyAto7yU3wKB8NEXtxi76jiK/qWN6DaHBTeG0FbWfMuAOw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -167,58 +92,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 29, 2025 at 06:25:39AM +0100, Lorenzo Stoakes wrote:
-> Andrew - FYI there's nothing to worry about here, the type remains
-> precisely the same, and I'll send a patch to fix this trivial issue so when
-> later this type changes vmalloc will be uaffected.
-> 
-> On Tue, Jul 29, 2025 at 09:15:51AM +0900, Harry Yoo wrote:
-> > [Adding Uladzislau to Cc]
-> 
-> Ulad - could we PLEASE get rid of 'vm_flags' in vmalloc? It's the precise
-> same name and (currently) type as vma->vm_flags and is already the source
-> of confusion.
-> 
-You mean all "vm_flags" variable names? "vm_struct" has flags as a
-member. So you want:
+On 29.07.2025 14:03, Pedro Falcato wrote:
+> Ever since commit c2ff29e99a76 ("siw: Inline do_tcp_sendpages()"),
+> we have been doing this:
+>
+> static int siw_tcp_sendpages(struct socket *s, struct page **page, int offset,
+>                               size_t size)
+> [...]
+>          /* Calculate the number of bytes we need to push, for this page
+>           * specifically */
+>          size_t bytes = min_t(size_t, PAGE_SIZE - offset, size);
+>          /* If we can't splice it, then copy it in, as normal */
+>          if (!sendpage_ok(page[i]))
+>                  msg.msg_flags &= ~MSG_SPLICE_PAGES;
+>          /* Set the bvec pointing to the page, with len $bytes */
+>          bvec_set_page(&bvec, page[i], bytes, offset);
+>          /* Set the iter to $size, aka the size of the whole sendpages (!!!) */
+>          iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, size);
+> try_page_again:
+>          lock_sock(sk);
+>          /* Sendmsg with $size size (!!!) */
+>          rv = tcp_sendmsg_locked(sk, &msg, size);
+>
+> This means we've been sending oversized iov_iters and tcp_sendmsg calls
+> for a while. This has a been a benign bug because sendpage_ok() always
+> returned true. With the recent slab allocator changes being slowly
+> introduced into next (that disallow sendpage on large kmalloc
+> allocations), we have recently hit out-of-bounds crashes, due to slight
+> differences in iov_iter behavior between the MSG_SPLICE_PAGES and
+> "regular" copy paths:
+>
+> (MSG_SPLICE_PAGES)
+> skb_splice_from_iter
+>    iov_iter_extract_pages
+>      iov_iter_extract_bvec_pages
+>        uses i->nr_segs to correctly stop in its tracks before OoB'ing everywhere
+>    skb_splice_from_iter gets a "short" read
+>
+> (!MSG_SPLICE_PAGES)
+> skb_copy_to_page_nocache copy=iov_iter_count
+>   [...]
+>     copy_from_iter
+>          /* this doesn't help */
+>          if (unlikely(iter->count < len))
+>                  len = iter->count;
+>            iterate_bvec
+>              ... and we run off the bvecs
+>
+> Fix this by properly setting the iov_iter's byte count, plus sending the
+> correct byte count to tcp_sendmsg_locked.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: c2ff29e99a76 ("siw: Inline do_tcp_sendpages()")
+> Reported-by: kernel test robot <oliver.sang@intel.com>
+> Closes: https://lore.kernel.org/oe-lkp/202507220801.50a7210-lkp@intel.com
+> Reviewed-by: David Howells <dhowells@redhat.com>
+> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+> ---
+>
+> v2:
+>   - Add David Howells's Rb on the original patch
+>   - Remove the offset increment, since it's dead code
+>
+>   drivers/infiniband/sw/siw/siw_qp_tx.c | 5 ++---
+>   1 file changed, 2 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/infiniband/sw/siw/siw_qp_tx.c b/drivers/infiniband/sw/siw/siw_qp_tx.c
+> index 3a08f57d2211..f7dd32c6e5ba 100644
+> --- a/drivers/infiniband/sw/siw/siw_qp_tx.c
+> +++ b/drivers/infiniband/sw/siw/siw_qp_tx.c
+> @@ -340,18 +340,17 @@ static int siw_tcp_sendpages(struct socket *s, struct page **page, int offset,
+>   		if (!sendpage_ok(page[i]))
+>   			msg.msg_flags &= ~MSG_SPLICE_PAGES;
+>   		bvec_set_page(&bvec, page[i], bytes, offset);
+> -		iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, size);
+> +		iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, bytes);
+>   
+>   try_page_again:
+>   		lock_sock(sk);
+> -		rv = tcp_sendmsg_locked(sk, &msg, size);
+> +		rv = tcp_sendmsg_locked(sk, &msg, bytes)
+>   		release_sock(sk);
+>   
+>   		if (rv > 0) {
+>   			size -= rv;
+>   			sent += rv;
+>   			if (rv != bytes) {
+> -				offset += rv;
+>   				bytes -= rv;
+>   				goto try_page_again;
+>   			}
 
-urezki@pc638:~/data/backup/coding/linux-not-broken.git$ grep -rn vm_flags mm/execmem.c
-29:                          pgprot_t pgprot, unsigned long vm_flags)
-39:             vm_flags |= VM_DEFER_KMEMLEAK;
-41:     if (vm_flags & VM_ALLOW_HUGE_VMAP)
-45:                              pgprot, vm_flags, NUMA_NO_NODE,
-51:                                      pgprot, vm_flags, NUMA_NO_NODE,
-85:                          pgprot_t pgprot, unsigned long vm_flags)
-259:    unsigned long vm_flags = VM_ALLOW_HUGE_VMAP;
-266:    p = execmem_vmalloc(range, alloc_size, PAGE_KERNEL, vm_flags);
-376:    unsigned long vm_flags = VM_FLUSH_RESET_PERMS;
-385:            p = execmem_vmalloc(range, size, pgprot, vm_flags);
-urezki@pc638:~/data/backup/coding/linux-not-broken.git$ grep -rn vm_flags mm/vmalloc.c
-3853: * @vm_flags:                additional vm area flags (e.g. %VM_NO_GUARD)
-3875:                   pgprot_t prot, unsigned long vm_flags, int node,
-3894:   if (vmap_allow_huge && (vm_flags & VM_ALLOW_HUGE_VMAP)) {
-3912:                             VM_UNINITIALIZED | vm_flags, start, end, node,
-3977:   if (!(vm_flags & VM_DEFER_KMEMLEAK))
-4621:   vm_flags_set(vma, VM_DONTEXPAND | VM_DONTDUMP);
-urezki@pc638:~/data/backup/coding/linux-not-broken.git$ grep -rn vm_flags mm/execmem.c
-29:                          pgprot_t pgprot, unsigned long vm_flags)
-39:             vm_flags |= VM_DEFER_KMEMLEAK;
-41:     if (vm_flags & VM_ALLOW_HUGE_VMAP)
-45:                              pgprot, vm_flags, NUMA_NO_NODE,
-51:                                      pgprot, vm_flags, NUMA_NO_NODE,
-85:                          pgprot_t pgprot, unsigned long vm_flags)
-259:    unsigned long vm_flags = VM_ALLOW_HUGE_VMAP;
-266:    p = execmem_vmalloc(range, alloc_size, PAGE_KERNEL, vm_flags);
-376:    unsigned long vm_flags = VM_FLUSH_RESET_PERMS;
-385:            p = execmem_vmalloc(range, size, pgprot, vm_flags);
-urezki@pc638:~/data/backup/coding/linux-not-broken.git$ grep -rn vm_flags ./include/linux/vmalloc.h
-172:                    pgprot_t prot, unsigned long vm_flags, int node,
-urezki@pc638:~/data/backup/coding/linux-not-broken.git$
+Acked-by: Bernard Metzler <bernard.metzler@linux.dev>
 
-to rename all those "vm_flags" to something, for example, like "flags"?
-
-Thanks!
-
---
-Uladzislau Rezki
 
