@@ -2,89 +2,163 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C700EC87FCA
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 18:35:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2694FC87FCA
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Jul 2025 18:39:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 495D06B0089; Tue, 29 Jul 2025 14:35:06 -0400 (EDT)
+	id 958816B007B; Tue, 29 Jul 2025 14:39:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41F876B008A; Tue, 29 Jul 2025 14:35:06 -0400 (EDT)
+	id 908DE6B0088; Tue, 29 Jul 2025 14:39:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30E466B008C; Tue, 29 Jul 2025 14:35:06 -0400 (EDT)
+	id 7D1576B0089; Tue, 29 Jul 2025 14:39:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1DF2D6B0089
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 14:35:06 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C6335C01FE
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 18:35:05 +0000 (UTC)
-X-FDA: 83718154170.14.6C9A31F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 02A8E1C000E
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 18:35:03 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FqcTBmrz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753814104; a=rsa-sha256;
-	cv=none;
-	b=JbH2QtHywaH1UtDac2OEpwpF5rizNWEOxV+ZnHpYUY6l3Xa1lrxUp2cKvGAsaK+MvZK5H9
-	8oqAT3rqeJvdjhDvx7aWTkwMtrTGOiX9DOFi3pBB8CLHj2VD3A09nkf7VTXQAL4+7oqVkH
-	elk5cbC3w7TwiEY5JSjlIN8DvmBEloU=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FqcTBmrz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 690326B007B
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 14:39:11 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B49F956E57
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 18:39:10 +0000 (UTC)
+X-FDA: 83718164460.17.B7D8E95
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 94AA81C000C
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 18:39:08 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MeoDf6pW;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=urezki@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753814104;
+	s=arc-20220608; t=1753814348;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=86EtJrRDDi41hIxnr8VsBt2yyEIaqRZmpLENSjFJ6i0=;
-	b=s8UztSN0rTsCvaKsp/7/nMfAtNSGsj3GaDl54ESZdp5OLbvHWUZh+f578fAkOObWavmZJ3
-	iRKHIopyr9HdnfTYZCfc0B6XjK5jQN7ET/gqetQKVj1x4kRpkHjp9FRj5auMEBL+1rgizZ
-	Tf2OLTGy9hjM2NOm+LggjRhoik2dFHs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B9F2B43AFF;
-	Tue, 29 Jul 2025 18:35:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 694C4C4CEEF;
-	Tue, 29 Jul 2025 18:35:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753814102;
-	bh=Ad+h/78ZxwD6mSt4jRq861L+6lQvlmuf+yPcWZOe2h0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FqcTBmrzzYZcUzhXReID4UeShTvo4pQhNy/0QoDsD0t0I9owoNH47SutX7xO4TQn3
-	 xUA++PYUb9hFYYVcJbmoYsyZfUYHHV+3mcsCsmErI8quymCd2i1YBnTDJLXh31bQ00
-	 jUgJ1Cfr8ediO95VkPThcZuMZqH4AXiLGhLDFpiixssuvvgyobJTVaHyXDbdqvCXnc
-	 suyTMmswiUIK7mOFQIHWdGjqQE4nSg8/UqxEDozjioML+egMuP4RcD8a6Tol937srf
-	 HPVkLnKrYfxrCXtJPW2nPUS4FAIVj2EftUpWV7YrS5o49txRN6QV4fqLd4kkv34BOA
-	 oe8uRgVLTPutA==
-From: SeongJae Park <sj@kernel.org>
-To: Yueyang Pan <pyyjason@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
+	bh=GYRfCV3hbQi5DsgzlDild2w/1OeWF4e+oM87WSvfwwM=;
+	b=kZM+VBtCl3SN/TxGJ5O8CAEmlzIlKzUL92umL0Y+WX1a1/h3UDHmT8gq2owll8m/DYoMGd
+	zm02U6J4gHvbIIe7Va30OVJP/Gq0BLcj3SS+4Fg+Qh80Qy53f3ilY235U+K+sk9llIrN+o
+	ySpsi4n4j8NstttihKluJM8WWsP0rUQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753814348; a=rsa-sha256;
+	cv=none;
+	b=abkkzhVHrdXNAR+eYc/kfgJEkNyChprT/8S05M1ctAlV2aoobfLwi4QCFP8htkEDkDiDKk
+	jor71FES9guY+d8WC8EqSb1PmmmNHqula+Ex7y2vZYj/0dV6RnkEH1ATXjY9uZiausBHxp
+	vIJLHWtHoHkmmTS7IKYQr4SwGWdzsXQ=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MeoDf6pW;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=urezki@gmail.com
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-33212cf558fso14800031fa.0
+        for <linux-mm@kvack.org>; Tue, 29 Jul 2025 11:39:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753814347; x=1754419147; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=GYRfCV3hbQi5DsgzlDild2w/1OeWF4e+oM87WSvfwwM=;
+        b=MeoDf6pW2iCe4dkpnj8F5g3bwTUoPUwNx21qcCHT+vTDHxeNnGy9HWtO5/xBkZRCgR
+         z8VeEcf8+MelW207nDcqjiIJhLNTgd30xL+XJGoJqPTSx3N2YTpFatH9f7wucoHA+K4+
+         bUc/8jSh7r7pjnvyO0ed8M3jmmSho/oojAyD4nxFmvrYhXD+DE5Qndceo9C3ou/I/wtw
+         9tVPcmKFCTcDe8AuujRlrti6CROqX9G9YvSM4P4m4Flml7ol8dYTQSzF3a8mVzYXljTA
+         cRdaR8rz0z3KC2LyQlghwkl0v0rfDHUlqa54FQUAxO6S/F+KLEmMHc7oO+M5D/VeOdu8
+         xOGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753814347; x=1754419147;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GYRfCV3hbQi5DsgzlDild2w/1OeWF4e+oM87WSvfwwM=;
+        b=GsUu+rD3Bfx+GHq1IglBfKLkEt5OmMkYICXFkKWfZU16Aieidgb57b5YNoRdw13F7o
+         v5yrRGqF8cOc0kzC1lQe1l+PJuD9jqPk6PlduzPBLDFnR/EddlGrwy1v+2gGhRcnHAPC
+         /5iSDsl/TC9OmgXzBYdGnh12iGW4EPj5y9bj/XETbXvtPsH2U285TqleWk72og96rOEg
+         SyFl0vRN0+KkErc+XJ3KEnprdxUUOsityLB19LW0vuxXQehRpLPqXABPiQhhi2LyiKis
+         BltTqXDSyFZZ2Bn8RcFaK79QdXM7HavhcFvTdj6Nls6HWh/1YkQ+EwcGSm6a0Z4sRUeR
+         1M+g==
+X-Forwarded-Encrypted: i=1; AJvYcCWNsh3lSQ53rMBMBEjcJI5wKSAesFTy6c95h5+XgMBonojWiONGjCVoEzKCv3Nd0KzUg4IuoRWSlg==@kvack.org
+X-Gm-Message-State: AOJu0Yx0q4LUSK9RJaikUC4W3xo+FoeaEGcfQISWpKKGFk0RcUqkpuue
+	GEmH4vqYctngWMxqvqHW1CKRVtCYJzUFmKSD1WyVnvniH6yqNLGn/Xvu
+X-Gm-Gg: ASbGncuqLgouky/5GLHsPq+1USaQE94uwAz2N2t/PWBfXu4QKUX1YOW9Dw2RV3dDUiv
+	m2jjqFTJ3SXCM4s6TEFjZG0SqhjNHL9jrKywkno77oZATrWZVLzYlf1xyq6hRlVt5DRAP896nVu
+	aY9s6dZYgbqPTIldd0VMt2Uuip8pQxyBUkY67L7TBXQVcV2NylAX/pVuW2GBYTefGokf0Y4ne51
+	qpo3gCW6CypL/L5BRvH+pddgboupLt09IB/RRTV52OY6WTwVzYOdVzT3h7A7Qo3moqPOsOkUCOe
+	bC4CRlDXqIJ0ZnkUblKICtsOekjuTi7lRwe8qHN02xD0cVT2qSrowSLA0FQXw1kN
+X-Google-Smtp-Source: AGHT+IF9yvJyPiTzwXfrNX8PT/G9myfdCCK3lbY+TklU3bxii0UFYjkiLDeONxAItTuHZBzIFqK+RA==
+X-Received: by 2002:a05:6512:3414:b0:553:241d:4e77 with SMTP id 2adb3069b0e04-55b7c011afdmr184040e87.22.1753814346295;
+        Tue, 29 Jul 2025 11:39:06 -0700 (PDT)
+Received: from pc636 ([2001:9b1:d5a0:a500::800])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-332219ce7aesm832441fa.34.2025.07.29.11.39.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Jul 2025 11:39:04 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Tue, 29 Jul 2025 20:39:01 +0200
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Harry Yoo <harry.yoo@oracle.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Usama Arif <usamaarif642@gmail.com>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 0/2] mm/damon: Add damos_stat support for vaddr
-Date: Tue, 29 Jul 2025 11:34:59 -0700
-Message-Id: <20250729183459.56512-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <cover.1753794408.git.pyyjason@gmail.com>
-References: 
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"David S . Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Kees Cook <kees@kernel.org>, Peter Xu <peterx@redhat.com>,
+	David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Hugh Dickins <hughd@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-sgx@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	nvdimm@lists.linux.dev, linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] mm: update core kernel code to use vm_flags_t
+ consistently
+Message-ID: <aIkVRTouPqhcxOes@pc636>
+References: <cover.1750274467.git.lorenzo.stoakes@oracle.com>
+ <d1588e7bb96d1ea3fe7b9df2c699d5b4592d901d.1750274467.git.lorenzo.stoakes@oracle.com>
+ <aIgSpAnU8EaIcqd9@hyeyoo>
+ <73764aaa-2186-4c8e-8523-55705018d842@lucifer.local>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 02A8E1C000E
-X-Stat-Signature: z3jf96nmc7jz17ne4rec9gbco8in1pws
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <73764aaa-2186-4c8e-8523-55705018d842@lucifer.local>
+X-Rspamd-Queue-Id: 94AA81C000C
+X-Stat-Signature: rn6uydrgejd5bgjbfr5w59zd7nc9yx71
 X-Rspam-User: 
-X-HE-Tag: 1753814103-566998
-X-HE-Meta: U2FsdGVkX1/beEl9Ksuw9QLQGKGSaniAro/YVUUB+A8oNkAaMchqEw1e4J1zx8Sjn+P1b7qCD/nGx4EBZxXuej28WfkLmlTTBWyP3ClaD3yZU7JUuiGtTDdVtvxwWq0X9xiY7hw1NmmoMWx0WK3bAoxMU8XaMD4g96CIUlxup1WMhnm0zBDGmYwQV+FzeBLeaIz87YVOHke+23SspDwQMmQwWxmrh5O4+9obJI98SE67BYMJmmHX2spAiyAeNcW7kgk5yV1uFkYnWi2rkLviFa1S611sSqPJWmTsjNq0vQjWq04ag1/a4eMmED//1SqNA4Nq7MvMP3l07T1vtTqUeJ2FRxcy+fkNuGQFteCbxO9pFAEItRYEBUNnXRe/3ZTOQrs10n8YXVAwaxXYKQ9GN269RdovOk5IUX1q20BGQUFX8c7STs7nEfPVc1H7uV2cJ8vF2E1DoPM2Zwgo/l+Vs4nD0jB/8ydd0Uk5CB7DJY6wXdJwpnxIBV3EjAaFmxVRMnHeta7aLEAws/5CcggWBLxnwnpSVMdFklylwP9rdbDhAWf5iHipN3OLlLT3HvUrRyROT8quZjeESZDgmVp0AKQmD7lFajMxeLOiLVd5XXprHvHa84OmUXzWviD52Zhj+VDrW/xpYKate/qM/3L3tmWAoK1JK9p7yiiGb6S4KSI3NHq2XmVDICtB4NVLccvwKvKAmINQdA6HnxPm61ga4tsMtA4qPzjdaHExUdgi3+t3Y+HrHGGpi2oePeU9F544IpbCDES06CKdc67XMjqSJaTTCjmP8eoJgPIM36MXUBxZ5BusAydmm2t3ILwWTcf6jkqjOnAHifkh1vxnt+pXo/M5bYTMtj/bbl1mFPie6f55umEhv3plfhkSwy/OQUgzD+iajHuA//8/30fLFZrfqgv1BHTQ0q0e4vZJOFVpgRjOfWdBAcg1NFXGlbsLox95Cx+1OfvOK90pQvELyTi
- XZEAzS23
- 3UGm2O/Pcz3NicD2R0n2hwzU8Nc6rQApJ9JcDTBQJzGYB5hnYOrOObIxppSMtFE8Yvknj4XJLxA/wcNK4uEQ1zgcsdNDTvThQSCDkhh3t2u6QlRSXlRBoXHFq2muF0TjtA1m5UUCopbroPe1LJSoRfFXcI6mTjk5Ac2T30x8+gkrqPCKAgsfSDjfc2pVW7VJnlEkiwNPIHufrfiaws+4bckUPt5idQwMsU7NWx7XKr54YTORVi6GuLvFK9pxaP1T42xoSKqh7ysG1ImiaiHaHv0drsA==
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1753814348-112272
+X-HE-Meta: U2FsdGVkX182awwjRaE73xxT6UPkEw6b98L7hfVMdQg3iXNedw/JhHqwqAS7fB7g6rDkjdQ00sKiD5QpzYhdqdmQV/zvCKBknlUB1sPRQ5YgDIYDOjt0FYeEWydbmP7NVwukeKYd2C5VfKVwpLaUpa32tR1VMX2WYj7EpYHE9gzP+NCMaoiiB69eqVZE2ozkQu/GtFhjugE9y9uzd2PWuBQzZcTXWw4ZSiIXSEwbddflq7bZbTu//cLyXRxoTbSeBt8cFn74ZvdxB+E4B4vzHmha/1gXjmUe1YLjuHDFzVjH4+x3ZAWMrldfnI6944mf/IrPOCcWuAWEoOoLk+6F1aFqmF9SYgHGkESrhHSKLo4JM1qX1xTSww2aCjf0ksJsnYr93fZn0mYmuMNmqqZFn8BpeMhrNCncXfgnmv7DWVDnhI5cc/Pg1q5ODMRXQXALmzaMem6TUGIoxePGmfyG+gLXczyKOJAEo5sZCGjErXY7m9FSC9Gv35Rw9QcPgE3vZ8E07fHYUi4XHsBBCSIl3N52pVbDV7oNnRsAUMQtWFiCF0kfZRfE/OjfHS6YoBvGOlhwWmmAHXTSc2FveYbWNqic2dr4GK44Ye5mDTIM1g//QXOJnKFGRMGLCBe9WrVBUprPFs4VUkj33AEc3H81LFhh8ZYAODCLY8liXrTWkBtNHLnfXquV81Eb6cvOrdIRec3wzlk4wdvsZ6Z53BPrUaMk6PUHgasa9E9RGHLahURK4BD9O9NLFQOkGJmN2Aksmr+h+dkm38JGHBFaJ3RooyvFa4F7XAmKzVCzihXX8k6zLj+MXt5RtWsuesAibAoumBwZbgN7DPrZiQd5SvYOW2Vx9e5kBL8qVcTEd60FM4d5trWx6OQ5vdXzAq8rmFzjhxshFGz8g47fpw0G/cuD/hhUm+R7KJrIl8O2MmXI1iUa/IEdweF3aFmm8/m+WW0Ax7T39PhbKmoO+48VPBz
+ bm6TLLO4
+ cK7AgR616LDdxRh782B7zTeRGxO9faukyFTvVLpS0MI+HcQZ1v7dQlhEY3S05pWD5iNeDyPUuS8610ZfiFgB0xPOLkj6NKd+UAEKTgCLfQgI5QXNZgw5lMdXeF9MIUbVo2u1yWZbn3y/sK4X6UDHIXZCCVNRgWUKckCzfsIqa+J5zEmQXtMsG/wnq83NhucEB/NVvEh1YNer+H88ZkqPEdykz11Dz+SNnPX4DmkIvR0Mheay2PDVO8Bz531PInPYoc00Y7S2B4mGBaCAz/RycHB7x3Y3iq92DnQeOwKOtb4QRUDMXUeI664L0gpmx1SnwOpVjnmrglSjNYLxKN+MKkcBxbHfZvs5A7XfbcsOIV38lHtdyggXJOMq58SEsbZh9si8lXtX5b1oF8qQS4lsCgsS2vp6J75J5tNU2nURY2yAOMCjdVM/9LCnN82RIXAIRPSJhrew2j/uVXKfv2aj2z64FovHCV53dM/kPJ3qKKwbGGadyzicdldjDqO1tw/VbvYQTESWXnsjj5nrhySau6uCju7Kt+OzhzCrTOrdeQrL16BZbYga6X86vCA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,103 +167,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Pan (Or, should I call you Yueyang or Jason?  Please let me know your
-preferrence if you have),
-
-On Tue, 29 Jul 2025 06:53:28 -0700 Yueyang Pan <pyyjason@gmail.com> wrote:
-
-> From: PanJason <pyyjason@gmail.com>
+On Tue, Jul 29, 2025 at 06:25:39AM +0100, Lorenzo Stoakes wrote:
+> Andrew - FYI there's nothing to worry about here, the type remains
+> precisely the same, and I'll send a patch to fix this trivial issue so when
+> later this type changes vmalloc will be uaffected.
 > 
-> Previously damos_stat only supoort paddr. This patch set adds support 
-> for damos_stat for vaddr. Also all different types of filters are 
-> supported. 
+> On Tue, Jul 29, 2025 at 09:15:51AM +0900, Harry Yoo wrote:
+> > [Adding Uladzislau to Cc]
 > 
-> Functionality Test
-> ==================
-> I wrote a small test program which allocates 10GB of DRAM, use 
-> madvise(MADV_HUGEPAGE) to convert the base pages to 2MB huge pages
-> Then my program does the following things in order:
-> 1. Write sequentially to the whole 10GB region
-> 2. Read the first 5GB region sequentially for 10 times
-> 3. Sleep 5s
-> 4. Read the second 5GB region sequentially for 10 times
+> Ulad - could we PLEASE get rid of 'vm_flags' in vmalloc? It's the precise
+> same name and (currently) type as vma->vm_flags and is already the source
+> of confusion.
 > 
-> With a proper damon setting, we are expected to see df-passed to be 10GB
-> and hot region move around with the read
-> 
-> $ # Start damon record
-> $sudo ./damo/damo record "./my_test/test" --monitoring_intervals 100000\
-> 1000000 2000000
+You mean all "vm_flags" variable names? "vm_struct" has flags as a
+member. So you want:
 
-You can use 'start' instead of 'record' for this test purpose.
+urezki@pc638:~/data/backup/coding/linux-not-broken.git$ grep -rn vm_flags mm/execmem.c
+29:                          pgprot_t pgprot, unsigned long vm_flags)
+39:             vm_flags |= VM_DEFER_KMEMLEAK;
+41:     if (vm_flags & VM_ALLOW_HUGE_VMAP)
+45:                              pgprot, vm_flags, NUMA_NO_NODE,
+51:                                      pgprot, vm_flags, NUMA_NO_NODE,
+85:                          pgprot_t pgprot, unsigned long vm_flags)
+259:    unsigned long vm_flags = VM_ALLOW_HUGE_VMAP;
+266:    p = execmem_vmalloc(range, alloc_size, PAGE_KERNEL, vm_flags);
+376:    unsigned long vm_flags = VM_FLUSH_RESET_PERMS;
+385:            p = execmem_vmalloc(range, size, pgprot, vm_flags);
+urezki@pc638:~/data/backup/coding/linux-not-broken.git$ grep -rn vm_flags mm/vmalloc.c
+3853: * @vm_flags:                additional vm area flags (e.g. %VM_NO_GUARD)
+3875:                   pgprot_t prot, unsigned long vm_flags, int node,
+3894:   if (vmap_allow_huge && (vm_flags & VM_ALLOW_HUGE_VMAP)) {
+3912:                             VM_UNINITIALIZED | vm_flags, start, end, node,
+3977:   if (!(vm_flags & VM_DEFER_KMEMLEAK))
+4621:   vm_flags_set(vma, VM_DONTEXPAND | VM_DONTDUMP);
+urezki@pc638:~/data/backup/coding/linux-not-broken.git$ grep -rn vm_flags mm/execmem.c
+29:                          pgprot_t pgprot, unsigned long vm_flags)
+39:             vm_flags |= VM_DEFER_KMEMLEAK;
+41:     if (vm_flags & VM_ALLOW_HUGE_VMAP)
+45:                              pgprot, vm_flags, NUMA_NO_NODE,
+51:                                      pgprot, vm_flags, NUMA_NO_NODE,
+85:                          pgprot_t pgprot, unsigned long vm_flags)
+259:    unsigned long vm_flags = VM_ALLOW_HUGE_VMAP;
+266:    p = execmem_vmalloc(range, alloc_size, PAGE_KERNEL, vm_flags);
+376:    unsigned long vm_flags = VM_FLUSH_RESET_PERMS;
+385:            p = execmem_vmalloc(range, size, pgprot, vm_flags);
+urezki@pc638:~/data/backup/coding/linux-not-broken.git$ grep -rn vm_flags ./include/linux/vmalloc.h
+172:                    pgprot_t prot, unsigned long vm_flags, int node,
+urezki@pc638:~/data/backup/coding/linux-not-broken.git$
 
---monitoring_intervals receive more human-friendly format, so you can do
-'--monitoring_intervals 100ms 1s 2s'.
+to rename all those "vm_flags" to something, for example, like "flags"?
 
-> 
-> $ # damon report
-> $sudo ./damo/damo report access --snapshot_damos_filter reject none \
-> hugepage_size 2MiB 2MiB
+Thanks!
 
-The --snapshot_damos_filter option means you want to make folios that not
-having size 2 MiB not passed by the filter.  You can ask same thing in more
-intuitive way, like below.
-
-    --snapshot_damos_filter allow hugepage_size 2MiB 2MiB
-
-> heatmap:
-> # min/max temperatures: -900,000,000, 100,002,000, column size: 136.564 MiB
-
-checkpatch.pl gives me below warning:
-
-    WARNING: Commit log lines starting with '#' are dropped by git as comments
-
-I'd suggest adding four spaces prefix to quoted command outputs like this.
-
-> intervals: sample 100 ms aggr 1 s (max access hz 10)
-> # damos filters (df): reject none hugepage_size [2.000 MiB, 2.000 MiB]
-> df-pass:
-> # min/max temperatures: -663,075,528, 100,002,000, column size: 128.037 MiB
-> 0   addr 86.082 TiB   size 682.039 MiB access 0 hz   age 9 s           df-passed 0 B
-> 1   addr 127.225 TiB  size 466.039 MiB access 1.000 hz age 0 ns          df-passed 468.000 MiB
-[...]
-> memory bw estimate: 3.615 GiB per second  df-passed: 3.615 GiB per second
-> total size: 10.669 GiB  df-passed 10.000 GiB
-> record DAMON intervals: sample 100 ms, aggr 1 s
-> 
-> $ # damon report again
-> $sudo ./damo/damo report access --snapshot_damos_filter reject none \
-> hugepage_size 2MiB 2MiB
-> heatmap:
-> # min/max temperatures: -1,100,000,000, 300,001,000, column size: 136.564 MiB
-> intervals: sample 100 ms aggr 1 s (max access hz 10)
-> # damos filters (df): reject none hugepage_size [2.000 MiB, 2.000 MiB]
-> df-pass:
-> # min/max temperatures: -800,000,000, 300,001,000, column size: 128.037 MiB
-> 0   addr 86.082 TiB   size 682.039 MiB access 0 hz   age 11 s          df-passed 0 B
-> 1   addr 127.225 TiB  size 10.355 MiB  access 1.000 hz age 0 ns          df-passed 12.000 MiB
-> 2   addr 127.225 TiB  size 93.207 MiB  access 1.000 hz age 0 ns          df-passed 92.000 MiB
-> 3   addr 127.225 TiB  size 414.262 MiB access 1.000 hz age 0 ns          df-passed 414.000 MiB
-> 4   addr 127.225 TiB  size 706.695 MiB access 1.000 hz age 3 s           df-passed 708.000 MiB
-> 5   addr 127.226 TiB  size 78.523 MiB  access 1.000 hz age 3 s           df-passed 78.000 MiB
-[...]
-> total size: 10.669 GiB  df-passed 10.000 GiB
-> record DAMON intervals: sample 100 ms, aggr 1 s
-> 
-> As you can see the total df-passed region is 10GiB and the hot region
-> moves as the seq read keeps going
-> 
-> PanJason (2):
->   mm/damon: Move invalid folio and has filter to ops-common
->   mm/damon: Add damos_stat support for vaddr
-
-The changes look good overall, though I left a few comments for formatting and
-unnecessary folio references that inherited from my original sin.  Looking
-forward to more discussions and next version of this great patch series!
-
-
-Thanks,
-SJ
-
-[...]
+--
+Uladzislau Rezki
 
