@@ -2,116 +2,144 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C8B2C83F26
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 15:35:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CDD47C87FCB
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 15:40:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A98036B0089; Wed, 30 Jul 2025 11:35:08 -0400 (EDT)
+	id 301FB6B0092; Wed, 30 Jul 2025 11:40:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6FF16B008C; Wed, 30 Jul 2025 11:35:08 -0400 (EDT)
+	id 263A06B0093; Wed, 30 Jul 2025 11:40:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 986046B0092; Wed, 30 Jul 2025 11:35:08 -0400 (EDT)
+	id 12BAC6B0095; Wed, 30 Jul 2025 11:40:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8578E6B0089
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 11:35:08 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2FD5F114106
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 15:35:08 +0000 (UTC)
-X-FDA: 83721329496.06.66DDB81
-Received: from aposti.net (aposti.net [185.119.170.32])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 4A08840007
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 15:35:06 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=crapouillou.net header.s=mail header.b=4Q2yQiV6;
-	dmarc=pass (policy=none) header.from=crapouillou.net;
-	spf=pass (imf07.hostedemail.com: domain of paul@crapouillou.net designates 185.119.170.32 as permitted sender) smtp.mailfrom=paul@crapouillou.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753889706; a=rsa-sha256;
-	cv=none;
-	b=y7k+rslFSRIEMYoCBEdc2198ZgricwbtSWOJO89wPFqS2KFUmwqvO8qHk+Kn3sNb5CRVGo
-	+HTRwY2tomH0Cpj+u5GjsS7hKulSHJZqIxWTTDNocyTGIPGDOGJAxfHewqXp89dEdk37iN
-	3ptUDX88CmlhiLJBhlOUglZ6laX9lKk=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=crapouillou.net header.s=mail header.b=4Q2yQiV6;
-	dmarc=pass (policy=none) header.from=crapouillou.net;
-	spf=pass (imf07.hostedemail.com: domain of paul@crapouillou.net designates 185.119.170.32 as permitted sender) smtp.mailfrom=paul@crapouillou.net
+	by kanga.kvack.org (Postfix) with ESMTP id 000FF6B0092
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 11:40:27 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A12C8113E30
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 15:40:27 +0000 (UTC)
+X-FDA: 83721342894.22.F958A62
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 34B2D20017
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 15:40:25 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="d/XgFRyr";
+	spf=pass (imf03.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753889706;
+	s=arc-20220608; t=1753890025;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+A2EYSYGXUTyecspfSq8haW0lJ3/BUIyY65G7kmYoMc=;
-	b=1f/2lYkOTPJXJTqP/PBkqRtO/OXO47VJU+GOjzfpqLHzVi13qCj32fPxf4jG4XV4t+AGOz
-	yJ5qL2z40gkrJrR52VGoXA0UWJACU015ab6diFltcVSEIb8vrlfpqhjZXUgRcpjtzlaNBy
-	Vm5/cz+yQorQuQo6iLbFl5Lsvx0jy+M=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-	s=mail; t=1753889703;
+	bh=ZXVJcyzQitkg69HpKmss8HJpY0HtUIPZr8ZaGUiNEY8=;
+	b=efkVINYxnJdIbEJVBNh656R2m7eHA9GgfE3s/vpKKDA1KY788QCQPQmIUEyzMiP1cuZH9f
+	UIYtxwbuzCACxkZrpG+VyVGMH3BUU6356EqSUPVGV+B/O1LXj1bB6JZLGygBdqoN2sb47+
+	D6RRhDjhTYuBnCqfvYSq26qzUS9Lvg0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753890025; a=rsa-sha256;
+	cv=none;
+	b=7U/y9RsnwoQ/kcx/9FXscoJ1vUcqsA2r7zJxrN4kHMN7wm5E1JUL7bNWNzrRB3+lYaxjsS
+	B/jazYWg4R83SWebdYnE2jatCmRiIYsAJ4E6nPRwhN7dgOFJVKnanpcV0YhwoiF5HiONFL
+	sasGvgdpSuhNxZM9f8nnriRweb2vPpw=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="d/XgFRyr";
+	spf=pass (imf03.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1753890024;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=+A2EYSYGXUTyecspfSq8haW0lJ3/BUIyY65G7kmYoMc=;
-	b=4Q2yQiV6QHlq/IFSgYHLB3uaNuohZ1SaylFQ8oAG0sCUUlhcq5Kz8CnQPtqyzI2P3BVguF
-	AwOc7GkRyD8NrDR1MH6ywUtipiaON+KQPQBzJEvFa+BEZbKqWOpQshOpdwIQiwhWXrEyUb
-	J5YKvkmDnse9kc7aJ8EO1ZJq+1Y9bEc=
-Message-ID: <b254e3868cfca4785d9dfbd13d3cc8ad1f33b6db.camel@crapouillou.net>
-Subject: Re: [PATCH v3 02/15] pinctrl: ingenic: use struct pinfunction
- instead of struct function_desc
-From: Paul Cercueil <paul@crapouillou.net>
-To: Bartosz Golaszewski <brgl@bgdev.pl>, Linus Walleij	
- <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, Konrad
- Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>,
- Lorenzo Bianconi	 <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>,
- Matthias Brugger	 <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno	
- <angelogioacchino.delregno@collabora.com>, Kees Cook <kees@kernel.org>,
- Andy Shevchenko <andy@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, David Hildenbrand	 <david@redhat.com>, Lorenzo
- Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
- <rppt@kernel.org>,  Suren Baghdasaryan	 <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Dong Aisheng	 <aisheng.dong@nxp.com>, Fabio Estevam
- <festevam@gmail.com>, Shawn Guo	 <shawnguo@kernel.org>, Jacky Bai
- <ping.bai@nxp.com>, Pengutronix Kernel Team	 <kernel@pengutronix.de>, NXP
- S32 Linux Team <s32@nxp.com>, Sascha Hauer	 <s.hauer@pengutronix.de>, Tony
- Lindgren <tony@atomide.com>, Haojian Zhuang	 <haojian.zhuang@linaro.org>,
- Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
-	linux-hardening@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
-	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, Bartosz
- Golaszewski <bartosz.golaszewski@linaro.org>
-Date: Wed, 30 Jul 2025 17:35:00 +0200
-In-Reply-To: <20250724-pinctrl-gpio-pinfuncs-v3-2-af4db9302de4@linaro.org>
-References: <20250724-pinctrl-gpio-pinfuncs-v3-0-af4db9302de4@linaro.org>
-	 <20250724-pinctrl-gpio-pinfuncs-v3-2-af4db9302de4@linaro.org>
-Autocrypt: addr=paul@crapouillou.net; prefer-encrypt=mutual;
- keydata=mQENBF0KhcEBCADkfmrzdTOp/gFOMQX0QwKE2WgeCJiHPWkpEuPH81/HB2dpjPZNW03ZM
- LQfECbbaEkdbN4YnPfXgcc1uBe5mwOAPV1MBlaZcEt4M67iYQwSNrP7maPS3IaQJ18ES8JJ5Uf5Uz
- FZaUawgH+oipYGW+v31cX6L3k+dGsPRM0Pyo0sQt52fsopNPZ9iag0iY7dGNuKenaEqkYNjwEgTtN
- z8dt6s3hMpHIKZFL3OhAGi88wF/21isv0zkF4J0wlf9gYUTEEY3Eulx80PTVqGIcHZzfavlWIdzhe
- +rxHTDGVwseR2Y1WjgFGQ2F+vXetAB8NEeygXee+i9nY5qt9c07m8mzjABEBAAG0JFBhdWwgQ2VyY
- 3VlaWwgPHBhdWxAY3JhcG91aWxsb3UubmV0PokBTgQTAQoAOBYhBNdHYd8OeCBwpMuVxnPua9InSr
- 1BBQJdCoXBAhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEHPua9InSr1BgvIH/0kLyrI3V0f
- 33a6D3BJwc1grbygPVYGuC5l5eMnAI+rDmLR19E2yvibRpgUc87NmPEQPpbbtAZt8On/2WZoE5OIP
- dlId/AHNpdgAtGXo0ZX4LGeVPjxjdkbrKVHxbcdcnY+zzaFglpbVSvp76pxqgVg8PgxkAAeeJV+ET
- 4t0823Gz2HzCL/6JZhvKAEtHVulOWoBh368SYdolp1TSfORWmHzvQiCCCA+j0cMkYVGzIQzEQhX7U
- rf9N/nhU5/SGLFEi9DcBfXoGzhyQyLXflhJtKm3XGB1K/pPulbKaPcKAl6rIDWPuFpHkSbmZ9r4KF
- lBwgAhlGy6nqP7O3u7q23hRU=
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZXVJcyzQitkg69HpKmss8HJpY0HtUIPZr8ZaGUiNEY8=;
+	b=d/XgFRyrxEcONLXWVi8TUr8Wvxj5FlXancNQ0BNSsaStz8jus5KmoUpp5rf37g7JNmfLL1
+	bNTkGhZqJdioQZfPp7a+VkvLT5XhgYMYI1AxChcnpFteNsfClyMzQEUxA8qSVGJwAGrnr7
+	VfghjLoc+xJ8enkfODr4N2n+e+3dvU4=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-583-Hkw5sfkkNuevFQTYhRjVwQ-1; Wed, 30 Jul 2025 11:40:23 -0400
+X-MC-Unique: Hkw5sfkkNuevFQTYhRjVwQ-1
+X-Mimecast-MFC-AGG-ID: Hkw5sfkkNuevFQTYhRjVwQ_1753890021
+Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-553a89531fdso4736791e87.3
+        for <linux-mm@kvack.org>; Wed, 30 Jul 2025 08:40:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753890020; x=1754494820;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZXVJcyzQitkg69HpKmss8HJpY0HtUIPZr8ZaGUiNEY8=;
+        b=m/RRWFqwwVhKE6qujC8J66IyQjIaiwwgmnkzif1tHO+ai6gvxPb67K5dNnqLoWrApu
+         ZPiKbd3cvkZu7Yo/c6Xd2stwYTGd6pdtDOaFMNy8/C3wW1JCPybShv3qgGnDCQv9RHI5
+         gpabhm/rHFLWCwJm6HKPY0hAtxJe5U6JYR83OQEy/AMn7I4whrWLwb15sN3UCgEUftFI
+         LIUjdhlZPc+QfRfBpV/AprawMEdaqgO/O5toUlSwBhXOqaxPr97XrJfGA2MI+0QbwWVJ
+         1JFZp/yYZLX6vrg1l8jQwAy9Jw/GhaqhluXxTkUpODJgutc0fQg1rckYO2Xe+S2iH6r2
+         CM0g==
+X-Forwarded-Encrypted: i=1; AJvYcCWIAlG2gllNqCLJa4/Wfrv5HH28G3FXlMg6WdM2yWHhxYR7C3n8O4kC4RX0GI8M/p98pvcnwYvcqQ==@kvack.org
+X-Gm-Message-State: AOJu0YxrhPOZDDySMLbn8xf8wE1ZIZ8Dd2scj54UTDHhKoxPjD0+l4iw
+	xHlJj21rjY2RBME6mIaqfosc5nRzSSsc0roxuqbzonL3fo2LiWPZthhWJLx2F80EpLxJUoeinbR
+	UN+QFbsH3h2GsPioDV7ofsnkM1bfHTsUtK3L6y8LAJdLB2jlyVrQ=
+X-Gm-Gg: ASbGncs95sdXphZ0bW8psblxzBtOiLQKsht2VocwnJPgvbDdtMTgz9XpsLbycGHwjty
+	WHemj0rgZXQNd0C3EgKDyhNITqKd2CCw905IIuYY8L6RkIH0Q62LkU0AXBlD6UdymcQdglcc/iw
+	TyNCNvSNmdp+YyRCo28A2rdzZk7gyE2dYuOhkagQApNMJC93vH3v79LD4iq1PN7yY/owg0GDnyc
+	OZclI35Woy0iBcZ628I2r9xorxLtFQGvhxi7y0SZNwc29bI+nrP9CsP0bjknuZjtGWJAnWqh1gq
+	kQRtAgYXfJRrkvJV+vTCFLiYtJS9+0ZQV0AtxJOGCRWB7XGYBqBB5xxtV5hKLNLq/g==
+X-Received: by 2002:a05:6512:1188:b0:553:2668:6f34 with SMTP id 2adb3069b0e04-55b7c07f9ccmr1183028e87.45.1753890020330;
+        Wed, 30 Jul 2025 08:40:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFhHAkbosESgOHtK+TLbzZRkJ0+s3tZB6YDIybLt+V9RyMPuHRew80ikAzaLwrE9zZIHOcTgA==
+X-Received: by 2002:a05:6512:1188:b0:553:2668:6f34 with SMTP id 2adb3069b0e04-55b7c07f9ccmr1183009e87.45.1753890019823;
+        Wed, 30 Jul 2025 08:40:19 -0700 (PDT)
+Received: from [192.168.1.86] (85-23-48-6.bb.dnainternet.fi. [85.23.48.6])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55b6316d9bbsm2197627e87.9.2025.07.30.08.40.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 30 Jul 2025 08:40:19 -0700 (PDT)
+Message-ID: <2308291f-3afc-44b4-bfc9-c6cf0cdd6295@redhat.com>
+Date: Wed, 30 Jul 2025 18:40:18 +0300
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [v2 02/11] mm/thp: zone_device awareness in THP handling code
+To: Zi Yan <ziy@nvidia.com>
+Cc: Balbir Singh <balbirs@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Karol Herbst <kherbst@redhat.com>,
+ Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+ Shuah Khan <shuah@kernel.org>, David Hildenbrand <david@redhat.com>,
+ Barry Song <baohua@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Matthew Wilcox <willy@infradead.org>,
+ Peter Xu <peterx@redhat.com>, Kefeng Wang <wangkefeng.wang@huawei.com>,
+ Jane Chu <jane.chu@oracle.com>, Alistair Popple <apopple@nvidia.com>,
+ Donet Tom <donettom@linux.ibm.com>, Matthew Brost <matthew.brost@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>,
+ Ralph Campbell <rcampbell@nvidia.com>
+References: <20250730092139.3890844-1-balbirs@nvidia.com>
+ <20250730092139.3890844-3-balbirs@nvidia.com>
+ <c2f2fe52-a358-489e-a1f2-5c0a6f5b4db5@redhat.com>
+ <22D1AD52-F7DA-4184-85A7-0F14D2413591@nvidia.com>
+ <F60614E1-28D1-466B-A434-7FF1061B0778@nvidia.com>
+ <9f836828-4f53-41a0-b5f7-bbcd2084086e@redhat.com>
+ <884b9246-de7c-4536-821f-1bf35efe31c8@redhat.com>
+ <6291D401-1A45-4203-B552-79FE26E151E4@nvidia.com>
+ <b62234fc-051f-4b2a-b7da-0c0959fb269b@redhat.com>
+ <8E2CE1DF-4C37-4690-B968-AEA180FF44A1@nvidia.com>
+From: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>
+In-Reply-To: <8E2CE1DF-4C37-4690-B968-AEA180FF44A1@nvidia.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 22vGqDYMn_38f3N-ZOm-ckmlDIR2Kb4E26FPVkJUWbw_1753890021
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 34B2D20017
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4A08840007
-X-Stat-Signature: 75h7pd1ct59er148r36u5egrmxg4pggg
-X-HE-Tag: 1753889706-75801
-X-HE-Meta: U2FsdGVkX19GL5Nntb08p6NYZmYRG1p4xSvknx67ja5YG73Qk6LzRps95+NNl5Hi3jdpRB2KQm6AecjwuVXwCDDawIQpfXMFFcqPvdZD1HDvyrNmwGMM74Fj7SYnic0Zn/zYj4kQH1uzQz+MzKT0XVxee3lsPCsuEtiLF08EjMn6HO5NmBdff6FBbK7jkA1k+2aU/s0mOT6BH5toGYTYKisE0WK3FRNoi+0ZArhF633zFgloFdno0LOQozHX1NTS9UywBS9UaVNfTaPIyKcwIVZYmeB0Y0MXbCtTYy4sTLyWV2A60GpPaVSdl7thKOGQkOwFfqFg1TGUoMHJH+p/8mFkgv734H4lk24sCUKyr+6Sp+DxPgY7i4gyX8eJuy+4kHC/cMr3j0myG0iTPNZkMSFTmQRRd6z4TL61tJRgz0KcF9AVhISHN3fwhXofO12fdnnFISpF4koMk+KEOvldWpxl4xf9ydQswD+qhsKcawp5IV91hY881l7p9MnShAleOwG7AkClL5iFtyNSxKpt8o9h3b1AxZRI3ujv4wcek8+qP9U4xRk4iUNs9u5gbjr6czz1ZOQcuauI+km2XMb4hn3+T2tZXapUBdWZOMyO9oOWu2gvvcHEv09GlGTuoQQwRsib4dS+gchNly8u9K4H7yiOG1q1jNXH2ND8SyfODFK0MXH6/M024kOybxFG9M4Izmsa2IViHXa/S08oIp8KSzPxBrr9fwlT9+728KEJwXfqBDvQERWIDlfxxix6PXwDChE9J7u65MRvTzv9ZaKKUPvY+lTqNTPTICtdRXkkeWR6c4XC2zZHugjyoKsXkkzQRRSLNnpCEnDwrxLeBoSGCZej1UQRizMIX2LqPI7hk04PwVHE5aGCJNiZM8UwshmgnN152qc6OFIZVqEwya2BSFbLYxayIifbIs09J4GRdwss9PsZ/uk6bO2/yWm37mz4STI6lhsA2F8ZVdDYKck
- vf0Ar1NQ
- OqfmJWX3Rq7HfyoemnP3hf3nQ9pwEymnGTDLElt2lVHpBzqXDt9mUMpANF69LHbDUyekwd8sukzBeNIA172fJomicu2w5Yz7hfFzdxn+tNAOfCI21kTF3rQOXoULfrBSoKrNEni40N0vPP/Jt+FUKLYzWjqIfUAUzbxpIx734ay0lvxeptzRtzLb/My9/ilbHfqdvFB0o4o35H6+lHqOP5MTnUXPvK/q6/vgrFFxhsJ8RXvieIJ953uBqLZwuVJi/egvEsAfxFPngz2ZV/yz/qK4jtwJ6AcjrsRbGHFrAr+2wOfdTNdmgb3CpEM/zSmuU0IYSzTESHIyPRXhAkT8CcqrPsMcNNEBgvGQvkgqBXOtHqpkxoTvvJxO2SLwKXRfSJsM66t4/XWWOgIyyT+5M/YmDoZZz7Tswnhk8
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 5ugxksy8mxdxcwtyutyts6kxfjpir9pi
+X-HE-Tag: 1753890025-510426
+X-HE-Meta: U2FsdGVkX1+6Xx4Aci/A7DyAfiPhDNOHFJd5D95JTs7jLBg+rjJU1tMTedth3QCMonIfEmbXbcxu+K55FcDRCD/hCvwSQexovlSgiSSpF94zgDoL+TuX1jEOyos8rZmZoNj7SdSmEEqrGReNnmD4IjLZogCZIUDEM62e9Zp+TQ55H8pNy9bY/3BKT4S4/EDmgf7yS4jx9AeW/A9f0Q5Z/5S2jp3e7RAkvSNhZUUWDu/CfSPGXd/+FGQz1dOfsomo5uWR/TokcNE7U1WV4J/mGHir9Ff6Qm2rwSXcQNhB1Rr6kBmipFpZRD6irmAH/oyu8+sPQyRFNg6gEG1JUbVgafZRgWou8ZK2NF9iOoxeazz9wA7JDpojqhl1KMBof42Qm1f8vyqSrr4TyQdCDA0TRI2CdjjzB5O0RF8X6+32H4PT+wGmDsLDjMvvJNrd/38+Gja6iBClhKtUFrnT2z8mR09Z4hC4ebLH2kAFKHTtxIIzw0PB46/ed4+40od8/2tmGbxtMNIcFgkvWVWS8yHsC1330kkqf5cWgTP+dy1VBEhM8nvv3K6kNon+EP5satxeDuCvbvx/4MSLuWnlnxhQpNQiteOso5XUDBTSFPZ/hJa6+5M1AuAyGdxCxHCar/AjfZd/OHWobUXON4991fFzjpYqxGfrp+w09UK511meyH3z9NDxqz/E7vBUA4jNcSNXLghtGTfXuNW3HCrNnI3c8IlGfwO98Ng48ToTgaX2mrzr5zRk85lipDvga6b0kR/F54FdGH+J4D3nBKpAx8O7v+6Rk6dWTLdgKr+tYJJSeW9rr7yxtSRECPZDG2q157PTN5FJcBXoQIuRoO5vc6eoUjz2+iLEtDhg3M+z3Cc14Ozb0103oXQQJzAq0hB+bkH5/U4LAVIJSSfdUq8wIEQBbhPIPps88+uS2868xVDNi5WRAgTz8/sjKO69+RBajr6W9R1nV2vPMboSY7g38o3
+ HD18ve+r
+ 5NoODgIP7Wd0yxk0suw4FHfbt19yIqoqRR3M4CVYgPO5feHeL9msY2Gl46+BseEHhZcZsj7fYRrVH0zOhGZ2T+laUZHbtufuc0QeZsXyB6lYgvPDXS7sOSa1RXSUUkwxGyoCkG/CLvyWn4UwmST9xZD0ueobGIyDpTR2AaKPnPOQAT13rHFPsxktQOlSRmBQDMVYeyt4bvr0EJPHgZIivSgv2OA+NPQbyDgb7ZJXggkZ0tg522tQBA4sNK8+5LN9kEMLx03CLsolgbmvEBEUuVVue9itj7AHHM7oH9M9w7HQLFM5juXjZOfZ62ud0ksAUTCF2mIuiwk743QetSRtG/b1jSjzqSnej7l/MQU7t/0dBl830+PILpptGz27KGKtXk+N+3yi9wZMk5pMmYcsWR+XLFu77j394+DgA3Wd/lsXoFtYCnM2jIfKwAnlSzM/hlpvOnPOGacscYXPY2Bff0Voedd9R+MHEkbgSa4CvXGx71ujwOW8hC70MKGUtXQjGxlpmTqj8d64HfjF+5C//BFfA3oSn2CL0JLZ95y83xxztBhUw2Nvc2Gpi8txdehzngR3i0BB/pVBiKFIy4Znka0Xyv4Yk/gOLp2vJVU6sv7tW3h3bCzJuSMm9AYgcgXOyWu2Hlu7wIc29lEJIox445EUSyrBuVBDqDZq90HtPjqqM9sDc3i0gTakHh5tleubHEdcJTaYg16NITT8lZfOG8GDypUz8/iwSx78fjHsxjUOtsOgGtL9TO01PEapkxVpbbXlkDqdNO5ClfdseQm67u5BJ8J62SP5lSC1uumu3PXypk/VYt2KmSFtTxQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,246 +148,189 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Bartosz,
 
-Le jeudi 24 juillet 2025 =C3=A0 11:24 +0200, Bartosz Golaszewski a =C3=A9cr=
-it=C2=A0:
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->=20
-> struct function_desc is a wrapper around struct pinfunction with an
-> additional void *data pointer. This driver doesn't use the data
-> pointer.
-> We're also working towards reducing the usage of struct function_desc
-> in
-> pinctrl drivers - they should only be created by pinmux core and
-> accessed by drivers using pinmux_generic_get_function(). Replace the
-> struct function_desc objects in this driver with smaller struct
-> pinfunction instances.
->=20
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+On 7/30/25 18:10, Zi Yan wrote:
+> On 30 Jul 2025, at 8:49, Mika Penttilä wrote:
+>
+>> On 7/30/25 15:25, Zi Yan wrote:
+>>> On 30 Jul 2025, at 8:08, Mika Penttilä wrote:
+>>>
+>>>> On 7/30/25 14:42, Mika Penttilä wrote:
+>>>>> On 7/30/25 14:30, Zi Yan wrote:
+>>>>>> On 30 Jul 2025, at 7:27, Zi Yan wrote:
+>>>>>>
+>>>>>>> On 30 Jul 2025, at 7:16, Mika Penttilä wrote:
+>>>>>>>
+>>>>>>>> Hi,
+>>>>>>>>
+>>>>>>>> On 7/30/25 12:21, Balbir Singh wrote:
+>>>>>>>>> Make THP handling code in the mm subsystem for THP pages aware of zone
+>>>>>>>>> device pages. Although the code is designed to be generic when it comes
+>>>>>>>>> to handling splitting of pages, the code is designed to work for THP
+>>>>>>>>> page sizes corresponding to HPAGE_PMD_NR.
+>>>>>>>>>
+>>>>>>>>> Modify page_vma_mapped_walk() to return true when a zone device huge
+>>>>>>>>> entry is present, enabling try_to_migrate() and other code migration
+>>>>>>>>> paths to appropriately process the entry. page_vma_mapped_walk() will
+>>>>>>>>> return true for zone device private large folios only when
+>>>>>>>>> PVMW_THP_DEVICE_PRIVATE is passed. This is to prevent locations that are
+>>>>>>>>> not zone device private pages from having to add awareness. The key
+>>>>>>>>> callback that needs this flag is try_to_migrate_one(). The other
+>>>>>>>>> callbacks page idle, damon use it for setting young/dirty bits, which is
+>>>>>>>>> not significant when it comes to pmd level bit harvesting.
+>>>>>>>>>
+>>>>>>>>> pmd_pfn() does not work well with zone device entries, use
+>>>>>>>>> pfn_pmd_entry_to_swap() for checking and comparison as for zone device
+>>>>>>>>> entries.
+>>>>>>>>>
+>>>>>>>>> Zone device private entries when split via munmap go through pmd split,
+>>>>>>>>> but need to go through a folio split, deferred split does not work if a
+>>>>>>>>> fault is encountered because fault handling involves migration entries
+>>>>>>>>> (via folio_migrate_mapping) and the folio sizes are expected to be the
+>>>>>>>>> same there. This introduces the need to split the folio while handling
+>>>>>>>>> the pmd split. Because the folio is still mapped, but calling
+>>>>>>>>> folio_split() will cause lock recursion, the __split_unmapped_folio()
+>>>>>>>>> code is used with a new helper to wrap the code
+>>>>>>>>> split_device_private_folio(), which skips the checks around
+>>>>>>>>> folio->mapping, swapcache and the need to go through unmap and remap
+>>>>>>>>> folio.
+>>>>>>>>>
+>>>>>>>>> Cc: Karol Herbst <kherbst@redhat.com>
+>>>>>>>>> Cc: Lyude Paul <lyude@redhat.com>
+>>>>>>>>> Cc: Danilo Krummrich <dakr@kernel.org>
+>>>>>>>>> Cc: David Airlie <airlied@gmail.com>
+>>>>>>>>> Cc: Simona Vetter <simona@ffwll.ch>
+>>>>>>>>> Cc: "Jérôme Glisse" <jglisse@redhat.com>
+>>>>>>>>> Cc: Shuah Khan <shuah@kernel.org>
+>>>>>>>>> Cc: David Hildenbrand <david@redhat.com>
+>>>>>>>>> Cc: Barry Song <baohua@kernel.org>
+>>>>>>>>> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>>>>>>>> Cc: Ryan Roberts <ryan.roberts@arm.com>
+>>>>>>>>> Cc: Matthew Wilcox <willy@infradead.org>
+>>>>>>>>> Cc: Peter Xu <peterx@redhat.com>
+>>>>>>>>> Cc: Zi Yan <ziy@nvidia.com>
+>>>>>>>>> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+>>>>>>>>> Cc: Jane Chu <jane.chu@oracle.com>
+>>>>>>>>> Cc: Alistair Popple <apopple@nvidia.com>
+>>>>>>>>> Cc: Donet Tom <donettom@linux.ibm.com>
+>>>>>>>>> Cc: Mika Penttilä <mpenttil@redhat.com>
+>>>>>>>>> Cc: Matthew Brost <matthew.brost@intel.com>
+>>>>>>>>> Cc: Francois Dugast <francois.dugast@intel.com>
+>>>>>>>>> Cc: Ralph Campbell <rcampbell@nvidia.com>
+>>>>>>>>>
+>>>>>>>>> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+>>>>>>>>> Signed-off-by: Balbir Singh <balbirs@nvidia.com>
+>>>>>>>>> ---
+>>>>>>>>>  include/linux/huge_mm.h |   1 +
+>>>>>>>>>  include/linux/rmap.h    |   2 +
+>>>>>>>>>  include/linux/swapops.h |  17 +++
+>>>>>>>>>  mm/huge_memory.c        | 268 +++++++++++++++++++++++++++++++++-------
+>>>>>>>>>  mm/page_vma_mapped.c    |  13 +-
+>>>>>>>>>  mm/pgtable-generic.c    |   6 +
+>>>>>>>>>  mm/rmap.c               |  22 +++-
+>>>>>>>>>  7 files changed, 278 insertions(+), 51 deletions(-)
+>>>>>>>>>
+>>>>>>> <snip>
+>>>>>>>
+>>>>>>>>> +/**
+>>>>>>>>> + * split_huge_device_private_folio - split a huge device private folio into
+>>>>>>>>> + * smaller pages (of order 0), currently used by migrate_device logic to
+>>>>>>>>> + * split folios for pages that are partially mapped
+>>>>>>>>> + *
+>>>>>>>>> + * @folio: the folio to split
+>>>>>>>>> + *
+>>>>>>>>> + * The caller has to hold the folio_lock and a reference via folio_get
+>>>>>>>>> + */
+>>>>>>>>> +int split_device_private_folio(struct folio *folio)
+>>>>>>>>> +{
+>>>>>>>>> +	struct folio *end_folio = folio_next(folio);
+>>>>>>>>> +	struct folio *new_folio;
+>>>>>>>>> +	int ret = 0;
+>>>>>>>>> +
+>>>>>>>>> +	/*
+>>>>>>>>> +	 * Split the folio now. In the case of device
+>>>>>>>>> +	 * private pages, this path is executed when
+>>>>>>>>> +	 * the pmd is split and since freeze is not true
+>>>>>>>>> +	 * it is likely the folio will be deferred_split.
+>>>>>>>>> +	 *
+>>>>>>>>> +	 * With device private pages, deferred splits of
+>>>>>>>>> +	 * folios should be handled here to prevent partial
+>>>>>>>>> +	 * unmaps from causing issues later on in migration
+>>>>>>>>> +	 * and fault handling flows.
+>>>>>>>>> +	 */
+>>>>>>>>> +	folio_ref_freeze(folio, 1 + folio_expected_ref_count(folio));
+>>>>>>>> Why can't this freeze fail? The folio is still mapped afaics, why can't there be other references in addition to the caller?
+>>>>>>> Based on my off-list conversation with Balbir, the folio is unmapped in
+>>>>>>> CPU side but mapped in the device. folio_ref_freeeze() is not aware of
+>>>>>>> device side mapping.
+>>>>>> Maybe we should make it aware of device private mapping? So that the
+>>>>>> process mirrors CPU side folio split: 1) unmap device private mapping,
+>>>>>> 2) freeze device private folio, 3) split unmapped folio, 4) unfreeze,
+>>>>>> 5) remap device private mapping.
+>>>>> Ah ok this was about device private page obviously here, nevermind..
+>>>> Still, isn't this reachable from split_huge_pmd() paths and folio is mapped to CPU page tables as a huge device page by one or more task?
+>>> The folio only has migration entries pointing to it. From CPU perspective,
+>>> it is not mapped. The unmap_folio() used by __folio_split() unmaps a to-be-split
+>>> folio by replacing existing page table entries with migration entries
+>>> and after that the folio is regarded as “unmapped”.
+>>>
+>>> The migration entry is an invalid CPU page table entry, so it is not a CPU
+>> split_device_private_folio() is called for device private entry, not migrate entry afaics.
+> Yes, but from CPU perspective, both device private entry and migration entry
+> are invalid CPU page table entries, so the device private folio is “unmapped”
+> at CPU side.
 
-Acked-by: Paul Cercueil <paul@crapouillou.net>
+Yes both are "swap entries" but there's difference, the device private ones contribute to mapcount and refcount.
 
-Cheers,
--Paul
+Also which might confuse is that v1 of the series had only 
+  migrate_vma_split_pages()
+which operated only on truly unmapped (mapcount wise) folios. Which was a motivation for split_unmapped_folio()..
+Now, 
+  split_device_private_folio()
+operates on mapcount != 0 folios.
 
-> ---
-> =C2=A0drivers/pinctrl/pinctrl-ingenic.c | 45 +++++++++++++++++-----------=
--
-> ----------
-> =C2=A01 file changed, 20 insertions(+), 25 deletions(-)
->=20
-> diff --git a/drivers/pinctrl/pinctrl-ingenic.c
-> b/drivers/pinctrl/pinctrl-ingenic.c
-> index
-> 79119cf20efcf8cc701647d9ff979c2b71bf7589..0ee8554c5446c4167c9b0e6b939
-> 7a2507ca57419 100644
-> --- a/drivers/pinctrl/pinctrl-ingenic.c
-> +++ b/drivers/pinctrl/pinctrl-ingenic.c
-> @@ -96,11 +96,8 @@
-> =C2=A0		.data =3D (void
-> *)func,							\
-> =C2=A0	}
-> =C2=A0
-> -#define INGENIC_PIN_FUNCTION(_name_,
-> id)							\
-> -
-> 	{											\
-> -		.func =3D PINCTRL_PINFUNCTION(_name_, id##_groups,
-> ARRAY_SIZE(id##_groups)),	\
-> -		.data =3D
-> NULL,									\
-> -	}
-> +#define INGENIC_PIN_FUNCTION(_name_,
-> id)						\
-> +	PINCTRL_PINFUNCTION(_name_, id##_groups,
-> ARRAY_SIZE(id##_groups))
-> =C2=A0
-> =C2=A0enum jz_version {
-> =C2=A0	ID_JZ4730,
-> @@ -128,7 +125,7 @@ struct ingenic_chip_info {
-> =C2=A0	const struct group_desc *groups;
-> =C2=A0	unsigned int num_groups;
-> =C2=A0
-> -	const struct function_desc *functions;
-> +	const struct pinfunction *functions;
-> =C2=A0	unsigned int num_functions;
-> =C2=A0
-> =C2=A0	const u32 *pull_ups, *pull_downs;
-> @@ -263,7 +260,7 @@ static const char *jz4730_pwm1_groups[] =3D {
-> "pwm1", };
-> =C2=A0static const char *jz4730_mii_groups[] =3D { "mii", };
-> =C2=A0static const char *jz4730_i2s_groups[] =3D { "i2s-data", "i2s-maste=
-r",
-> "i2s-slave", };
-> =C2=A0
-> -static const struct function_desc jz4730_functions[] =3D {
-> +static const struct pinfunction jz4730_functions[] =3D {
-> =C2=A0	INGENIC_PIN_FUNCTION("mmc", jz4730_mmc),
-> =C2=A0	INGENIC_PIN_FUNCTION("uart0", jz4730_uart0),
-> =C2=A0	INGENIC_PIN_FUNCTION("uart1", jz4730_uart1),
-> @@ -370,7 +367,7 @@ static const char *jz4740_pwm5_groups[] =3D {
-> "pwm5", };
-> =C2=A0static const char *jz4740_pwm6_groups[] =3D { "pwm6", };
-> =C2=A0static const char *jz4740_pwm7_groups[] =3D { "pwm7", };
-> =C2=A0
-> -static const struct function_desc jz4740_functions[] =3D {
-> +static const struct pinfunction jz4740_functions[] =3D {
-> =C2=A0	INGENIC_PIN_FUNCTION("mmc", jz4740_mmc),
-> =C2=A0	INGENIC_PIN_FUNCTION("uart0", jz4740_uart0),
-> =C2=A0	INGENIC_PIN_FUNCTION("uart1", jz4740_uart1),
-> @@ -474,7 +471,7 @@ static const char *jz4725b_pwm3_groups[] =3D {
-> "pwm3", };
-> =C2=A0static const char *jz4725b_pwm4_groups[] =3D { "pwm4", };
-> =C2=A0static const char *jz4725b_pwm5_groups[] =3D { "pwm5", };
-> =C2=A0
-> -static const struct function_desc jz4725b_functions[] =3D {
-> +static const struct pinfunction jz4725b_functions[] =3D {
-> =C2=A0	INGENIC_PIN_FUNCTION("mmc0", jz4725b_mmc0),
-> =C2=A0	INGENIC_PIN_FUNCTION("mmc1", jz4725b_mmc1),
-> =C2=A0	INGENIC_PIN_FUNCTION("uart", jz4725b_uart),
-> @@ -606,7 +603,7 @@ static const char *jz4750_pwm3_groups[] =3D {
-> "pwm3", };
-> =C2=A0static const char *jz4750_pwm4_groups[] =3D { "pwm4", };
-> =C2=A0static const char *jz4750_pwm5_groups[] =3D { "pwm5", };
-> =C2=A0
-> -static const struct function_desc jz4750_functions[] =3D {
-> +static const struct pinfunction jz4750_functions[] =3D {
-> =C2=A0	INGENIC_PIN_FUNCTION("uart0", jz4750_uart0),
-> =C2=A0	INGENIC_PIN_FUNCTION("uart1", jz4750_uart1),
-> =C2=A0	INGENIC_PIN_FUNCTION("uart2", jz4750_uart2),
-> @@ -771,7 +768,7 @@ static const char *jz4755_pwm3_groups[] =3D {
-> "pwm3", };
-> =C2=A0static const char *jz4755_pwm4_groups[] =3D { "pwm4", };
-> =C2=A0static const char *jz4755_pwm5_groups[] =3D { "pwm5", };
-> =C2=A0
-> -static const struct function_desc jz4755_functions[] =3D {
-> +static const struct pinfunction jz4755_functions[] =3D {
-> =C2=A0	INGENIC_PIN_FUNCTION("uart0", jz4755_uart0),
-> =C2=A0	INGENIC_PIN_FUNCTION("uart1", jz4755_uart1),
-> =C2=A0	INGENIC_PIN_FUNCTION("uart2", jz4755_uart2),
-> @@ -1106,7 +1103,7 @@ static const char *jz4760_pwm6_groups[] =3D {
-> "pwm6", };
-> =C2=A0static const char *jz4760_pwm7_groups[] =3D { "pwm7", };
-> =C2=A0static const char *jz4760_otg_groups[] =3D { "otg-vbus", };
-> =C2=A0
-> -static const struct function_desc jz4760_functions[] =3D {
-> +static const struct pinfunction jz4760_functions[] =3D {
-> =C2=A0	INGENIC_PIN_FUNCTION("uart0", jz4760_uart0),
-> =C2=A0	INGENIC_PIN_FUNCTION("uart1", jz4760_uart1),
-> =C2=A0	INGENIC_PIN_FUNCTION("uart2", jz4760_uart2),
-> @@ -1444,7 +1441,7 @@ static const char *jz4770_pwm6_groups[] =3D {
-> "pwm6", };
-> =C2=A0static const char *jz4770_pwm7_groups[] =3D { "pwm7", };
-> =C2=A0static const char *jz4770_mac_groups[] =3D { "mac-rmii", "mac-mii",=
- };
-> =C2=A0
-> -static const struct function_desc jz4770_functions[] =3D {
-> +static const struct pinfunction jz4770_functions[] =3D {
-> =C2=A0	INGENIC_PIN_FUNCTION("uart0", jz4770_uart0),
-> =C2=A0	INGENIC_PIN_FUNCTION("uart1", jz4770_uart1),
-> =C2=A0	INGENIC_PIN_FUNCTION("uart2", jz4770_uart2),
-> @@ -1723,7 +1720,7 @@ static const char *jz4775_mac_groups[] =3D {
-> =C2=A0};
-> =C2=A0static const char *jz4775_otg_groups[] =3D { "otg-vbus", };
-> =C2=A0
-> -static const struct function_desc jz4775_functions[] =3D {
-> +static const struct pinfunction jz4775_functions[] =3D {
-> =C2=A0	INGENIC_PIN_FUNCTION("uart0", jz4775_uart0),
-> =C2=A0	INGENIC_PIN_FUNCTION("uart1", jz4775_uart1),
-> =C2=A0	INGENIC_PIN_FUNCTION("uart2", jz4775_uart2),
-> @@ -1976,7 +1973,7 @@ static const char *jz4780_dmic_groups[] =3D {
-> "dmic", };
-> =C2=A0static const char *jz4780_cim_groups[] =3D { "cim-data", };
-> =C2=A0static const char *jz4780_hdmi_ddc_groups[] =3D { "hdmi-ddc", };
-> =C2=A0
-> -static const struct function_desc jz4780_functions[] =3D {
-> +static const struct pinfunction jz4780_functions[] =3D {
-> =C2=A0	INGENIC_PIN_FUNCTION("uart0", jz4770_uart0),
-> =C2=A0	INGENIC_PIN_FUNCTION("uart1", jz4770_uart1),
-> =C2=A0	INGENIC_PIN_FUNCTION("uart2", jz4780_uart2),
-> @@ -2211,7 +2208,7 @@ static const char *x1000_pwm3_groups[] =3D {
-> "pwm3", };
-> =C2=A0static const char *x1000_pwm4_groups[] =3D { "pwm4", };
-> =C2=A0static const char *x1000_mac_groups[] =3D { "mac", };
-> =C2=A0
-> -static const struct function_desc x1000_functions[] =3D {
-> +static const struct pinfunction x1000_functions[] =3D {
-> =C2=A0	INGENIC_PIN_FUNCTION("uart0", x1000_uart0),
-> =C2=A0	INGENIC_PIN_FUNCTION("uart1", x1000_uart1),
-> =C2=A0	INGENIC_PIN_FUNCTION("uart2", x1000_uart2),
-> @@ -2341,7 +2338,7 @@ static const char *x1500_pwm2_groups[] =3D {
-> "pwm2", };
-> =C2=A0static const char *x1500_pwm3_groups[] =3D { "pwm3", };
-> =C2=A0static const char *x1500_pwm4_groups[] =3D { "pwm4", };
-> =C2=A0
-> -static const struct function_desc x1500_functions[] =3D {
-> +static const struct pinfunction x1500_functions[] =3D {
-> =C2=A0	INGENIC_PIN_FUNCTION("uart0", x1500_uart0),
-> =C2=A0	INGENIC_PIN_FUNCTION("uart1", x1500_uart1),
-> =C2=A0	INGENIC_PIN_FUNCTION("uart2", x1500_uart2),
-> @@ -2562,7 +2559,7 @@ static const char * const x1600_pwm7_groups[] =3D
-> { "pwm7-b10", "pwm7-b21", };
-> =C2=A0
-> =C2=A0static const char * const x1600_mac_groups[] =3D { "mac", };
-> =C2=A0
-> -static const struct function_desc x1600_functions[] =3D {
-> +static const struct pinfunction x1600_functions[] =3D {
-> =C2=A0	INGENIC_PIN_FUNCTION("uart0", x1600_uart0),
-> =C2=A0	INGENIC_PIN_FUNCTION("uart1", x1600_uart1),
-> =C2=A0	INGENIC_PIN_FUNCTION("uart2", x1600_uart2),
-> @@ -2779,7 +2776,7 @@ static const char *x1830_pwm6_groups[] =3D {
-> "pwm6-c-17", "pwm6-c-27", };
-> =C2=A0static const char *x1830_pwm7_groups[] =3D { "pwm7-c-18", "pwm7-c-2=
-8",
-> };
-> =C2=A0static const char *x1830_mac_groups[] =3D { "mac", };
-> =C2=A0
-> -static const struct function_desc x1830_functions[] =3D {
-> +static const struct pinfunction x1830_functions[] =3D {
-> =C2=A0	INGENIC_PIN_FUNCTION("uart0", x1830_uart0),
-> =C2=A0	INGENIC_PIN_FUNCTION("uart1", x1830_uart1),
-> =C2=A0	INGENIC_PIN_FUNCTION("sfc", x1830_sfc),
-> @@ -3225,7 +3222,7 @@ static const char *x2000_mac0_groups[] =3D {
-> "mac0-rmii", "mac0-rgmii", };
-> =C2=A0static const char *x2000_mac1_groups[] =3D { "mac1-rmii", "mac1-
-> rgmii", };
-> =C2=A0static const char *x2000_otg_groups[] =3D { "otg-vbus", };
-> =C2=A0
-> -static const struct function_desc x2000_functions[] =3D {
-> +static const struct pinfunction x2000_functions[] =3D {
-> =C2=A0	INGENIC_PIN_FUNCTION("uart0", x2000_uart0),
-> =C2=A0	INGENIC_PIN_FUNCTION("uart1", x2000_uart1),
-> =C2=A0	INGENIC_PIN_FUNCTION("uart2", x2000_uart2),
-> @@ -3449,7 +3446,7 @@ static const struct group_desc x2100_groups[] =3D
-> {
-> =C2=A0
-> =C2=A0static const char *x2100_mac_groups[] =3D { "mac", };
-> =C2=A0
-> -static const struct function_desc x2100_functions[] =3D {
-> +static const struct pinfunction x2100_functions[] =3D {
-> =C2=A0	INGENIC_PIN_FUNCTION("uart0", x2000_uart0),
-> =C2=A0	INGENIC_PIN_FUNCTION("uart1", x2000_uart1),
-> =C2=A0	INGENIC_PIN_FUNCTION("uart2", x2000_uart2),
-> @@ -4571,11 +4568,9 @@ static int __init ingenic_pinctrl_probe(struct
-> platform_device *pdev)
-> =C2=A0	}
-> =C2=A0
-> =C2=A0	for (i =3D 0; i < chip_info->num_functions; i++) {
-> -		const struct function_desc *function =3D &chip_info-
-> >functions[i];
-> -		const struct pinfunction *func =3D &function->func;
-> +		const struct pinfunction *func =3D &chip_info-
-> >functions[i];
-> =C2=A0
-> -		err =3D pinmux_generic_add_pinfunction(jzpc->pctl,
-> func,
-> -						=C2=A0=C2=A0=C2=A0=C2=A0 function-
-> >data);
-> +		err =3D pinmux_generic_add_pinfunction(jzpc->pctl,
-> func, NULL);
-> =C2=A0		if (err < 0) {
-> =C2=A0			dev_err(dev, "Failed to register function
-> %s\n", func->name);
-> =C2=A0			return err;
+>
+>
+>> And it is called from split_huge_pmd() with freeze == false, not from folio split but pmd split.
+> I am not sure that is the right timing of splitting a folio. The device private
+> folio can be kept without splitting at split_huge_pmd() time.
+
+Yes this doesn't look quite right, and also
++	folio_ref_freeze(folio, 1 + folio_expected_ref_count(folio));
+
+looks suspicious
+
+Maybe split_device_private_folio() tries to solve some corner case but maybe good to elaborate
+more the exact conditions, there might be a better fix.
+
+>
+> But from CPU perspective, a device private folio has no CPU mapping, no other
+> CPU can access or manipulate the folio. It should be OK to split it.
+>
+>>> mapping, IIUC.
+>>>
+>>>>>>>>> +	ret = __split_unmapped_folio(folio, 0, &folio->page, NULL, NULL, true);
+>>>>>>>> Confusing to  __split_unmapped_folio() if folio is mapped...
+>>>>>>> From driver point of view, __split_unmapped_folio() probably should be renamed
+>>>>>>> to __split_cpu_unmapped_folio(), since it is only dealing with CPU side
+>>>>>>> folio meta data for split.
+>>>>>>>
+>>>>>>>
+>>>>>>> Best Regards,
+>>>>>>> Yan, Zi
+>>>>>> Best Regards,
+>>>>>> Yan, Zi
+>>>>>>
+>>>> --Mika
+>>> Best Regards,
+>>> Yan, Zi
+>>>
+>> --Mika
+>
+> Best Regards,
+> Yan, Zi
+>
+--Mika
+
+
 
