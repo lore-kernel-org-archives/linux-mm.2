@@ -2,118 +2,82 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F96CC87FC9
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 00:59:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D5A2C87FC9
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 01:26:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C209C8E0005; Tue, 29 Jul 2025 20:59:01 -0400 (EDT)
+	id DDBAA6B0088; Tue, 29 Jul 2025 21:26:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD16A8E0001; Tue, 29 Jul 2025 20:59:01 -0400 (EDT)
+	id D8C9B6B0089; Tue, 29 Jul 2025 21:26:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC0628E0005; Tue, 29 Jul 2025 20:59:01 -0400 (EDT)
+	id CA1B06B008A; Tue, 29 Jul 2025 21:26:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CD4F8E0001
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 20:59:01 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 39ACD140265
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 00:59:01 +0000 (UTC)
-X-FDA: 83719121682.04.45E41CC
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 8BC40100002
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 00:58:59 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=0v0B7Bab;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf14.hostedemail.com: domain of 3Um6JaA4KCJ8HR99BL9MI9QQDRFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--isaacmanjarres.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3Um6JaA4KCJ8HR99BL9MI9QQDRFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--isaacmanjarres.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753837139; a=rsa-sha256;
-	cv=none;
-	b=zz+wtKRm08+ipwqawcAxS9KsrnNlaUqonsIycXGcaEQKkbKC2taXkXKy+UFJSehJ+6Mijd
-	dS2k3s2OQmaoqMaH5eA9e7BsoyQL6WFQuQS5Y6iUwY6WY0RP5zvCak4d6Ok0DgI2AyAwb/
-	1Srm6UZDL9+XvodnVN9Os2icV2JJfVE=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=0v0B7Bab;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf14.hostedemail.com: domain of 3Um6JaA4KCJ8HR99BL9MI9QQDRFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--isaacmanjarres.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3Um6JaA4KCJ8HR99BL9MI9QQDRFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--isaacmanjarres.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BB2E06B0088
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 21:26:41 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6E505C02BA
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 01:26:41 +0000 (UTC)
+X-FDA: 83719191402.11.029AA5F
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 7388640003
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 01:26:38 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=X655+ezo;
+	spf=pass (imf04.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753837139;
+	s=arc-20220608; t=1753838799;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jDQwseaUqKXgQMG0PL1emMIiquT/LrlyEZB+aSduFZ4=;
-	b=X6XccvN8wB9+Cxr1cmZPLKvKd48P2IAYZbGOA+vM+ir2AqAhuZOYkCbjEcp4H8mHKqBLoN
-	FBjxA5ntCNbOQlOLZl5/zlTWAQFL6l97Wsx9h1e97/ydiPjVmM2oOjfv+DgTKSFOM3U1sn
-	iQCAjhj+Gt15wrgTElH1QL2Oo1wZ7gw=
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-31f3cfdd3d3so1067036a91.3
-        for <linux-mm@kvack.org>; Tue, 29 Jul 2025 17:58:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753837138; x=1754441938; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jDQwseaUqKXgQMG0PL1emMIiquT/LrlyEZB+aSduFZ4=;
-        b=0v0B7Baba3TeyIf/uAUAaowQ7bMHhwvoo8CRs7vxo6DNTZ4lQCYndu/BF0T6Rnm5ZC
-         VIN2qrgwF09FDhtmKjYpGqh0tewzYgV6ppmWKpMdVy5nUlt/vsTNfVY2QuZNdqacFyRV
-         HDxyaKXPRIEzlaty7T+ownORPi4oPVipFtMxrOeDbY2rj9JYa87nuOSd1vZgDjGlcM7R
-         Id5+siHbvpXgRsYmCaxyiRuJUz+UlHwANoP8TRoRZYQr7xjANitVhxNZ77ghi1sv+EwH
-         UTh8NWf/k7CJFmvPHIWM6Ry4i6xiFuavjTx4wHAjCAT3UvArKWH1QEnZzBG0S0wJhw/P
-         byCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753837138; x=1754441938;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jDQwseaUqKXgQMG0PL1emMIiquT/LrlyEZB+aSduFZ4=;
-        b=Xh5TAcHzgCMtdFgQje/OwvUkrMyYF/88MBFwJU/2JVCdpZvenmfH4IZLCeeQyxVoGu
-         /DIlonb9IxCoNgA6e+yoOM9IQ9mZOtrJjY5J+VqaAfRoay0nZbqD5sPvVBnvBa0fM2e5
-         yZinbNJsiaa7Uba95Cku9lmZUkGF+8GXmdS7Um1d6HqceN9PegDqNO2zRssUZvzj+wTf
-         9zGya+QZzEBO70dJJkVBRYEw61OYCFsrJxi37zbN6jCC6IxWmXcRnPUNUur7yZm2WFhg
-         BUixQdYxQyW0yTXSqK19HfDYSYnDGsmdPwrxnzlIq10hRAGQWixIzdyW0TZo8CyZlExy
-         6cQg==
-X-Forwarded-Encrypted: i=1; AJvYcCVjde0Ycktdg6y9kT22LKVwiFstBOwCbnITvTCDhpygCOiwq65SxigQDpfLlMiiBRUFezUeprbxzA==@kvack.org
-X-Gm-Message-State: AOJu0YyR5lh2lQ2MdKnqYDdfCheBHoxd5PMITl93V4EB8ppiswySWA7c
-	XYndquhVnt5EbimKKKOOQUEBaO5FwHOs2AKKs6AJBgxMGpOCI4TFuUk1KP7yMDIWiTfFT1VdtgB
-	WoLB57La7zDkeHesOWTKr2xKCK4tHwAWmMYcaRA==
-X-Google-Smtp-Source: AGHT+IEGVoBAYELfdRdZ8xP5oRpoU0bK+jZlnzB/TmwUAobgxp21zhLfsqJQJKUf5/TTCLpNwHYxnC3kjLaDYc3GnzINcA==
-X-Received: from pjbpm8.prod.google.com ([2002:a17:90b:3c48:b0:31e:a865:8b32])
- (user=isaacmanjarres job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:4b83:b0:31c:3872:9411 with SMTP id 98e67ed59e1d1-31f5de63c28mr2092662a91.33.1753837138329;
- Tue, 29 Jul 2025 17:58:58 -0700 (PDT)
-Date: Tue, 29 Jul 2025 17:58:08 -0700
-In-Reply-To: <20250730005818.2793577-1-isaacmanjarres@google.com>
-Mime-Version: 1.0
-References: <20250730005818.2793577-1-isaacmanjarres@google.com>
-X-Mailer: git-send-email 2.50.1.552.g942d659e1b-goog
-Message-ID: <20250730005818.2793577-4-isaacmanjarres@google.com>
-Subject: [PATCH 5.4.y 3/3] mm: perform the mapping_map_writable() check after call_mmap()
-From: "Isaac J. Manjarres" <isaacmanjarres@google.com>
-To: lorenzo.stoakes@oracle.com, gregkh@linuxfoundation.org, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@redhat.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: aliceryhl@google.com, stable@vger.kernel.org, 
-	"Isaac J. Manjarres" <isaacmanjarres@google.com>, kernel-team@android.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	Lorenzo Stoakes <lstoakes@gmail.com>, Andy Lutomirski <luto@kernel.org>, 
-	Mike Kravetz <mike.kravetz@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
+	bh=66qP145Pokuu8JsiLXxLWcuYNVd+EPib7TlXMXGAKk4=;
+	b=BAw/3M98gYexNkxZxuoSlq6jXqc/UNorGsqmT+1QzM6Fd3Y5UGkH19G7CDaWhoxdozXbT5
+	/0oY/SEaWyBkLKnzRUQy/PkOTG5Y/OuHqj4L1FfbI+lGK94iiDjz06IJReKavbTz2YjhS6
+	EXidPtwNc1O41eTOyn1LS+EO5rjciGY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753838799; a=rsa-sha256;
+	cv=none;
+	b=j+HndQh35LEsPkAhOtTP27c0jSlXz4WVCPy5+TnVHdower8k8XYHvbqnkRaE74rDcw4kCs
+	4o8ibZdiI3rDmT22an42Ck3FHm2Bf5TS5fbyDCXgrmKkWAkUGFjOwnaTGaSt9XkbiK/uE/
+	6fyRsoY2/ukBkJL7mXrKe295IdYF4PI=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=X655+ezo;
+	spf=pass (imf04.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1753838795; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=66qP145Pokuu8JsiLXxLWcuYNVd+EPib7TlXMXGAKk4=;
+	b=X655+ezonDepPDo0G7rDeBYBlfTPWZxqk+BIkrvfDJPJDjpAL+jVy7UC32nXBCYyVZAi+BgE7P1bFNEINNSiGbHWiMw2uZ5Js6PE0eXWIB8HxuEgQFzX3iLEGEu6MmcN4AD1JyPvt86IU+evIDATyZkDHAXay/IWWzRao0RG0js=
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WkSOR14_1753838793 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 30 Jul 2025 09:26:33 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: "Shi, Jiacheng" <billsjc@sjtu.edu.cn>
+Cc: linux-mm@kvack.org
+Subject: Re: [Question] About the PCP free_high heuristic
+In-Reply-To: <93574E04-0528-4282-B1C3-4A16D9768EA5@sjtu.edu.cn> (Jiacheng
+	Shi's message of "Tue, 29 Jul 2025 19:29:32 +0800")
+References: <212D6530-0FE8-4EA7-A599-48D71E8AFA23@sjtu.edu.cn>
+	<87ldo7z5a7.fsf@DESKTOP-5N7EMDA>
+	<93574E04-0528-4282-B1C3-4A16D9768EA5@sjtu.edu.cn>
+Date: Wed, 30 Jul 2025 09:26:32 +0800
+Message-ID: <87cy9izcxj.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 7388640003
+X-Stat-Signature: k6zw6866odkn7j7a7xxp9wbya7eogbfm
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8BC40100002
-X-Stat-Signature: 8m6tkx47ic6rwq9tny687bwbcdowqksj
-X-HE-Tag: 1753837139-14094
-X-HE-Meta: U2FsdGVkX1/VdXY0CNXC5u3LbSC+IOo68SIrAEiACZyYmOkQDOucSSUHfFrmF7kWEHxo7hi46az0e6tQO1x26OOVnydOovRPOfgAzwnhGPd6bA/xbv6XnfU4uvJJFAhSvG89kvGGVd2oA6wEjsut+HUpXHGDvu+emD3cfMtMtg6jxyHveqETS6/j1GHrQvJSLMcGqCzu3Em/qM6M37Jy0zw1wtdqZOXVsOwLgteH71EqgUJHpVSTDxHym/DDEcCCcZFioNiwFM9HFAMnIvj2ztJ3scBTEavzB6G06RVnzXKknaKol+Qv17K0PbCpCUu+8zVIgtPAONRudCoxRmWgYqF31kz001U7z21G2F0u0vLwwnH3QwOJf8s9cUQ33y1KRpprW5Tj6oTZB7Kdr+vEUxS+JhmWlUlvaps4nh3INqb9vh5TZ2UTEnRNcUzMWIV08tjqJyyuE/Pl5Ti7qjaKBOb9ScMOfpJ6/GsZsCqCsptWj5gFpM0lIqgbe2SDytg7+JwerAA3NWmvuuKRw3lu8IXiVwWs55F+ZX0qzIyRTRoLw0nrI160WHlzRrS5RHZ+dr21lyDvldEZZegApL+xq1oBVVDvD1f2+MZyVG3fg7QfbZGyrWf4PWKgnBeLjficcaT8IzafuMTF03YUe2AxMaL9r4lq2uml78wpoZA6jfG6h+f4Z1QpSRSrVR0NO+Dy6VRVzvyY9ZteRyA/iGSyQ6FNtGjhA3hYJE+OdfJF9IUAOld887xysPiMAeaRn+OEwWPDV/mftPEEex1sQrIkO0U0u9J3NMttXAL63V4aLtIJhj5MacQ2zfXcgxUZ1OttLJv1ytq1VENEz1MapEUqU6aTGCJoPYr7ZkHNcvmEjsP1MpOs3N4lp3O185P/fE4T20gfw8SUrPBjup+svibWWrC397MY+2vAYTL2T7vFjbNjkRXy2z5yBku1WLE1UoRkRpUSyFw3fZ25jU8o/DB
- peDhDrhY
- UU1uAzrhZSdjN5RtmVVFTFLfost40qtSHCIjnoZAlR+LWwvuFscHmbDRP6K8JL6J2/QzQe/4HppVDBr0Z4TjbwAaCNx7vh5uyUhWwwen8qgDHvEuPXcYT+YlZEP+13wuqSE+i5UGA3R/qephrSzLFEfSSenNVq/G0MhuEhX2WdN958Q9d9KZWxbXBNdBGZFV0T0ipT/1QTywEGHLFAEWoIcet++SVnglviGFSaUkqyYrL2Sq4wlcsstAyalrgKvpu1cmv7tsPeGwGhTiITkwFdPaKFUhVg9LBUf4itTvUaLqX+XMvqq2UXlNjvAQpPTrzO+n1h1MPpFjJhCnrf7ivX+Eovn1Pmixh8gejdLgbtfPBOQJNKsKVlXDhPP+tmdYNJa0jY9njA3CX8iJNxU5wFfLRpA==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1753838798-467734
+X-HE-Meta: U2FsdGVkX1+4TBNJ9X3YqgPbkNBZiJjG9Q13lMPf5Xot9MbabJ2C2d13J1541YxN/GEorccukZd3f+8rKH4Pi4uX7oDLnaQUn2pgPNFdMUsBEa2BaJVPp7t3/wfV8gYrbv80wO+lPPYLe7oyJ9hwzPZvIoxnUfiatdo20XojM6KGsGlYq+hcnvUM+RcdMitxMMG/K8AZ8veqZrAzdheUBAWg0yZ6A6ikw4Rf16ydRtQK7E7RiOZfFspCU6Wt5lD6OiZz5OrSvS03rIW2Kw1ywwIWKv8XDPYq4Mil1UKSHI18cERUuBhvUcO8SOF55YgddZFQu1jTNDEWZtmcLXtLYMu6u8DXwxpn+4zxPqspMwjMsrB6IWHrVqb86fLh1ZiHApvknruc3wUa7ovezJxztl3aR1v7VTCBMS2F8pJ0Je1FT9+AFAtXhL6CCVsr4qWrxXF0tMJhavdPDAYsR2HE+ITTFIIzXZL7AbQ/9MDAc8FOOZPZcoolpSLgor5XLLO0i7M6ahHiKC9PQ/aj97xY/UPn8UbykKcvpw5G49xfWpCaWH8t0kXT9x/E0UZFjN+8N75A1kh95wiq+r0mTNbLZhKz2phQ2SzxoYKVm4yMze8apUKpM1uwP82moRhsCJ/FYwGsGtMYzwrwp30DZSj6R21w5Re1IPo+epLohRtAemICqYy0ptDKYKdCa6aCvGTFB1mGuWMsZciW2xptqziuPr/LQgTDmRun/srkdt4mqAEQvJymV6XXqUoWBJr+Fv/M7w9HJ/M1xdBjJafMst8KPLX1cmdthzfdD3s4wASC6M3nVgWn/xQUPH48TsdHjZVUx9X/1HHqqYAbVOUrPKYu6WMvH+TtZZG4Cdp1ngWPX7eGj2YzY+tAUpyTtVJEClm2Z/ubFZwZymL3W0+RQ3jrwkMHLNVfUZJc1MB4hl8x8VVoYjirjY2gmN3gK+i+IdEjwMUYit7nQg0ZZVG3u14
+ vKfzKsZU
+ bOHzvQMzk2jWCLPqpMm7HfKcUw20svZhfwH9XMUaY6ITNdBwKwflljpAsxRXimqJhawFqGi+/4GnK2Z42D6BKTtV4Gl1CF+1hLCBG13mIlOcRmn8ZWJnvg4lEAoo2OD4Z1kHfu8Qz6l93Rjortkkwyfj4/3UCynNkHXU5MBobbcNEPPMWSyFNXFUlzHNj3LtLkt1b69HnDoxTeR+mvZRjJmiduFbMtcMwfJBazalCjzhvA1MXMHmgr2hGNwKvSR+LR3rkEcl6Kpv/kOKoupMQ76pUaB7Xd+gDMCFEsgoGPnWM8sqVfK9w9PuM4Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,119 +86,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Lorenzo Stoakes <lstoakes@gmail.com>
+"Shi, Jiacheng" <billsjc@sjtu.edu.cn> writes:
 
-[ Upstream commit 158978945f3173b8c1a88f8c5684a629736a57ac ]
+> Hi, Huang, Ying,
+>
+> You are right. Using high_min is better when the workload is located on a=
+ single CCX.
+>
+> By the way, I'm wondering why the free_high heuristic is only applied to
+> high-order pages. Would there also be cache misses if cache-hot order-0 p=
+ages
+> are not reused?
 
-In order for a F_SEAL_WRITE sealed memfd mapping to have an opportunity to
-clear VM_MAYWRITE, we must be able to invoke the appropriate
-vm_ops->mmap() handler to do so.  We would otherwise fail the
-mapping_map_writable() check before we had the opportunity to avoid it.
+The heuristic is mainly for network workload, which uses high-order
+pages.  You can use `git blame` to try to find the commit which
+introduce the heuristic.  But it's not a trivial work.
 
-This patch moves this check after the call_mmap() invocation.  Only memfd
-actively denies write access causing a potential failure here (in
-memfd_add_seals()), so there should be no impact on non-memfd cases.
-
-This patch makes the userland-visible change that MAP_SHARED, PROT_READ
-mappings of an F_SEAL_WRITE sealed memfd mapping will now succeed.
-
-There is a delicate situation with cleanup paths assuming that a writable
-mapping must have occurred in circumstances where it may now not have.  In
-order to ensure we do not accidentally mark a writable file unwritable by
-mistake, we explicitly track whether we have a writable mapping and unmap
-only if we do.
-
-[lstoakes@gmail.com: do not set writable_file_mapping in inappropriate case]
-  Link: https://lkml.kernel.org/r/c9eb4cc6-7db4-4c2b-838d-43a0b319a4f0@lucifer.local
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217238
-Link: https://lkml.kernel.org/r/55e413d20678a1bb4c7cce889062bbb07b0df892.1697116581.git.lstoakes@gmail.com
-Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: stable@vger.kernel.org
-[isaacmanjarres: added error handling to cleanup the work done by the
-mmap() callback and removed unused label.]
-Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
 ---
- mm/mmap.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+Best Regards,
+Huang, Ying
 
-diff --git a/mm/mmap.c b/mm/mmap.c
-index cb712ae731cd..e591a82a26a8 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -1718,6 +1718,7 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
- {
- 	struct mm_struct *mm = current->mm;
- 	struct vm_area_struct *vma, *prev;
-+	bool writable_file_mapping = false;
- 	int error;
- 	struct rb_node **rb_link, *rb_parent;
- 	unsigned long charged = 0;
-@@ -1785,11 +1786,6 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
- 			if (error)
- 				goto free_vma;
- 		}
--		if (is_shared_maywrite(vm_flags)) {
--			error = mapping_map_writable(file->f_mapping);
--			if (error)
--				goto allow_write_and_free_vma;
--		}
- 
- 		/* ->mmap() can change vma->vm_file, but must guarantee that
- 		 * vma_link() below can deny write-access if VM_DENYWRITE is set
-@@ -1801,6 +1797,14 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
- 		if (error)
- 			goto unmap_and_free_vma;
- 
-+		if (vma_is_shared_maywrite(vma)) {
-+			error = mapping_map_writable(file->f_mapping);
-+			if (error)
-+				goto close_and_free_vma;
-+
-+			writable_file_mapping = true;
-+		}
-+
- 		/* Can addr have changed??
- 		 *
- 		 * Answer: Yes, several device drivers can do it in their
-@@ -1823,7 +1827,7 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
- 	vma_link(mm, vma, prev, rb_link, rb_parent);
- 	/* Once vma denies write, undo our temporary denial count */
- 	if (file) {
--		if (is_shared_maywrite(vm_flags))
-+		if (writable_file_mapping)
- 			mapping_unmap_writable(file->f_mapping);
- 		if (vm_flags & VM_DENYWRITE)
- 			allow_write_access(file);
-@@ -1858,15 +1862,17 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
- 
- 	return addr;
- 
-+close_and_free_vma:
-+	if (vma->vm_ops && vma->vm_ops->close)
-+		vma->vm_ops->close(vma);
- unmap_and_free_vma:
- 	vma->vm_file = NULL;
- 	fput(file);
- 
- 	/* Undo any partial mapping done by a device driver. */
- 	unmap_region(mm, vma, prev, vma->vm_start, vma->vm_end);
--	if (is_shared_maywrite(vm_flags))
-+	if (writable_file_mapping)
- 		mapping_unmap_writable(file->f_mapping);
--allow_write_and_free_vma:
- 	if (vm_flags & VM_DENYWRITE)
- 		allow_write_access(file);
- free_vma:
--- 
-2.50.1.552.g942d659e1b-goog
-
+>  Huang, Ying <ying.huang@linux.alibaba.com> writes=EF=BC=9A
+>
+>  Hi, Jiacheng,
+>
+>  =E5=8F=B2=E5=98=89=E6=88=90 <billsjc@sjtu.edu.cn> writes:
+>
+>  Hi,
+>
+>  I ran the bw_unix benchmark in lmbench on my test machine (EPYC-7T83, 32=
+ vCPUs,
+>  64 GB of memory):
+>     bin/x86_64-linux-gnu/bw_unix -P 16
+>  The bandwidth result was 30511.63 MB/s when percpu_pagelist_high_fractio=
+n was
+>  set to 8; however, the result drops to 21595.98 MB/s when
+>  percpu_pagelist_high_fraction is set to 0 (enabling PCP high auto-tuning=
+).
+>
+>  I first inspected the auto-tuning code, but the root cause of the perfor=
+mance
+>  degradation lies in the triggering threshold of the free_high heuristic:
+>     pcp->free_count >=3D (batch + pcp->high_min / 2)
+>
+>  free_high heuristic is used to increase last level (shared) cache
+>  hotness via letting one core allocate cache-hot pages just freed by
+>  another core.  The target use case is network workload.
+>
+>  It appears that free_high heuristic hurts your performance.  One
+>  possible reason may be that the last level cache isn't always shared on
+>  AMD CPU.  Can you try to bind workload to one CCX and verify whether
+>  this is the root cause?
+>
+>  I noticed that commit c544a95 increases this threshold, but pcp->high_mi=
+n is
+>  relatively small when auto-tuning is enabled, and the PCP draining leads=
+ to
+>  the performance degradation.
+>
+>  The problem was fixed when increasing the threshold to (batch + pcp->hig=
+h / 2).
+>  Is it intended to use high_min instead of high in the threshold? Would i=
+t be
+>  more adaptive to introduce some new tunables for the free_high threshold?
+>
+>  In general, new knob isn't welcomed in community, because it's hard for
+>  users to tune so many knobs already.
+>
+>  ---
+>  Best Regards,
+>  Huang, Ying
 
