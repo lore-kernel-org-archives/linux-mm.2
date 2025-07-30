@@ -2,133 +2,97 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B1009C83F26
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 14:45:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EECF1C83F26
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 14:49:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 49A236B008A; Wed, 30 Jul 2025 10:45:38 -0400 (EDT)
+	id 872166B0092; Wed, 30 Jul 2025 10:49:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 471556B008C; Wed, 30 Jul 2025 10:45:38 -0400 (EDT)
+	id 849C86B0093; Wed, 30 Jul 2025 10:49:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 361446B0092; Wed, 30 Jul 2025 10:45:38 -0400 (EDT)
+	id 7864F6B0095; Wed, 30 Jul 2025 10:49:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2400D6B008A
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 10:45:38 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 804428066E
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 14:45:37 +0000 (UTC)
-X-FDA: 83721204714.08.B564649
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 5A91614000A
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 14:45:35 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=ICCbGchV
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753886735; a=rsa-sha256;
-	cv=none;
-	b=6yuYt6C8W8TpHWOcyNZj+mq00byv0a2HtQloeKrqOXa4RtQsHnd1N5owzwKN9gt32qBeA0
-	ojs3sDgCDokbUTIToijh6yPhQ9hiSIVdZMxLg66vzK1TKc+Dly6brROvDp6t91F+C0rDyV
-	8HaGXOE7rj5wNl52UPtyLKAkaGLULKs=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=ICCbGchV;
-	dmarc=none;
-	spf=none (imf23.hostedemail.com: domain of brgl@bgdev.pl has no SPF policy when checking 209.85.167.45) smtp.mailfrom=brgl@bgdev.pl
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 69E336B0092
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 10:49:55 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E231C140417
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 14:49:54 +0000 (UTC)
+X-FDA: 83721215508.23.D5BF7B9
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf17.hostedemail.com (Postfix) with ESMTP id B331F40004
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 14:49:52 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf17.hostedemail.com: domain of robin.murphy@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=robin.murphy@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753886735;
+	s=arc-20220608; t=1753886993;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m6AXuDDeUL1WpUxErghD7iQZDxn7tXl0MHZ3gm9RjBI=;
-	b=m1nEClvPlnMLgtVfdwLuPocPGrN9tUK6omZRD786hKzLycyGUg8mBbzw00H0kqEYMbHljW
-	faccNCla5lRij14a4v4T3xMUENuOERuF/KfXPO9ZvEUP1BpIEIIdwuJGT7efix/pkFsLxY
-	ITF6R4Y27GdQzvh5pj24fwplEnQvdy0=
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-55b829c7f1aso612312e87.2
-        for <linux-mm@kvack.org>; Wed, 30 Jul 2025 07:45:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1753886733; x=1754491533; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=m6AXuDDeUL1WpUxErghD7iQZDxn7tXl0MHZ3gm9RjBI=;
-        b=ICCbGchV88MUe4/Iv9ilm2t7oOXU6w1pgLOswdglio79LtKswltxbUztoUE3OfqMhb
-         BDKspblr2PQjLvJEbgH3HYsSXe4Yia//S2U1NTpsIjz4lHYSK7nW4j87vCRP/SvpjzvJ
-         1GgOk4mfVRi2342oBDXyjYe9gUUuKa+vv1Upwm9/VxlbbHGPcRNBh2XBtTIq3xM+QUGK
-         lNsZCS7qd5I9gFXPvAEOSP/u3H5q3JW8cPw1UnzYR1K00WoHsZr2bt/rDglgX2SUsxWe
-         +oPfK5glKGH9RqCGvIDR30V6kHFxtOZZr6dJ5n9cb1mOcF5EWvQG5uqsV4Xu0SW9jjmL
-         sWdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753886733; x=1754491533;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=m6AXuDDeUL1WpUxErghD7iQZDxn7tXl0MHZ3gm9RjBI=;
-        b=LFoWeaSEzCK10IzzRvwkwkdQal/N65iw1ixjkuVEI8bIvHLyI9Pqt9+phYV85+aDzC
-         Mqr5f2wOHJtx74VYWaZMX1wemQWe+B2VXC5SuR6R45k7hbke/3iuwBBAHec9g1Fu9vwB
-         t1hqTLofE784MSi+jOkjuguy9hBU85qoEglZ7APyhYunyAQiq+B6WjPH7jbSJqfA20bO
-         g/V4P3c1zZ24TABz9XP7NBULqVH5r4KCoz0rq4S7+xSF68lKBlOi9LLE7HdRboPzK9bN
-         UPBuQgQUt5u0vf5E3VT1+rhpdpFIM9PMCpJux+g/yuhjzBlZCZDVhdxqYdymLwftjNVJ
-         Dn6A==
-X-Forwarded-Encrypted: i=1; AJvYcCWeJhyLrE1j4GexWjOKZlBT1xRf7xPJqJfC8CZy7sEGiBOX7MDo7ENiiij2zI5+jKgShCmVq1kI5Q==@kvack.org
-X-Gm-Message-State: AOJu0Yx1Pe52xLnjIH297U9N4MiCqRorimUamgNMfXAOjq/fT5PreyRy
-	p0zeQAkeeZIt/ym8ZUfX+zzrWETs7IFZ0p/UrbGfsPswk5dW3Xq6ElDuTqZY1NaKspCGHKoiWeR
-	LG39b7HbHBps1JE7T75UDXrqUqOqGBXct2qLPzE4sjg==
-X-Gm-Gg: ASbGncvnmtrxz/NSsyQBMczwgU5wfyQoJuPcQWyNiYu6T9JvLI8IE15mNrRBVHJil+E
-	vRX7R759V1DdCVlRL/hvB6zYxfgwWo2eRyvJzcz/KmgJb10xxqydyJNhURFFpepbCbIy71KTO6u
-	AbtICfK8y6SN5vMIayyXLq8Rv9wuChHWnFsDdjS+qaxMRlmMa2ir630qPrKKBL/3B6dNfyaWZkG
-	sRZInQ1IfEkaAMno2g6jzdT7lGOLLAnrB1peZQ=
-X-Google-Smtp-Source: AGHT+IG0Q6hH9i+UpqLftCvpSVBouzPpbLbuygIY2t4i0+nQyoHOVMz3gwtmG10RMLHn13yYgB8U2bSlEYWDzelEprk=
-X-Received: by 2002:a05:6512:23a3:b0:554:f7ec:3b23 with SMTP id
- 2adb3069b0e04-55b7c027afamr1034186e87.15.1753886733212; Wed, 30 Jul 2025
- 07:45:33 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references;
+	bh=Olx6ciszcXm17tbTrHlUUjKZbBMMa+33lfZr5m93qAE=;
+	b=MRmX2gfF40cKxekPt0jNsst9f7KjB/M8ij8fn2L4xTAGocBgbQKnCGg1wH5wRVP1GFxpXs
+	dOuYzUQ41YObN0QP23uAG6RFzVi6VZd9GgzviQvLA6PU2H8CmAmrznD79d8z0Kou2e9ZoY
+	p3hcIfyAwdpl3ni3U3iXLq8zmJpwcoU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753886993; a=rsa-sha256;
+	cv=none;
+	b=2SWkilBNHT4dJuOpmI+hfPsto2YlWH0hpbJKDR/oY2DL+a5n/PHl0DPbZYOPrwSc3Kx+Ho
+	9yrRCFnAt8au1EsiwMsdEWMOf+CulYlCI1ADtpJvHzCubGxR8LRKKlSPCw7iNaa3Tg3nYs
+	/IW+0/RtDww259g63IUk3nRSvlCw7PA=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf17.hostedemail.com: domain of robin.murphy@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=robin.murphy@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A671E1BC0;
+	Wed, 30 Jul 2025 07:49:43 -0700 (PDT)
+Received: from [10.57.3.116] (unknown [10.57.3.116])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9B8B53F673;
+	Wed, 30 Jul 2025 07:49:47 -0700 (PDT)
+Message-ID: <6c5fb9f0-c608-4e19-8c60-5d8cef3efbdf@arm.com>
+Date: Wed, 30 Jul 2025 15:49:45 +0100
 MIME-Version: 1.0
-References: <20250724-pinctrl-gpio-pinfuncs-v3-0-af4db9302de4@linaro.org>
- <20250724-pinctrl-gpio-pinfuncs-v3-12-af4db9302de4@linaro.org>
- <CAHp75Vc4vsJh_-GbP+YO50veoGoGtfAPL4tjcF+73uophfmnGw@mail.gmail.com>
- <CAMRc=Mc1ophkofB6MmtD4adBAi69C3JyovM-S9YD_y7UA3V1qA@mail.gmail.com>
- <CAHp75VcV=K-DfOGs0z64==nO+wQNoEB2Ngd2vc+dLYr3WLChjg@mail.gmail.com>
- <CAMRc=MeVOEFkdqf+SwQ-a=7ZPvpoerb4G_kn-aZgNLR3aTTUog@mail.gmail.com> <CAHp75Vd_5HVwzuiV17XKkzpEvzd8dzPDRRx5w-VqZnjuCz6m6A@mail.gmail.com>
-In-Reply-To: <CAHp75Vd_5HVwzuiV17XKkzpEvzd8dzPDRRx5w-VqZnjuCz6m6A@mail.gmail.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Wed, 30 Jul 2025 16:45:21 +0200
-X-Gm-Features: Ac12FXyd8ePQ6VSvFuinf3meGy3NBROTyjzQV07xe8o_XLvEkxT-hmgEmHvLoEA
-Message-ID: <CAMRc=McPvFzb7CSFSKOsQZD9ZPwtf+bCw+Ui=m6OoX0GxH9DtQ@mail.gmail.com>
-Subject: Re: [PATCH v3 12/15] pinctrl: allow to mark pin functions as
- requestable GPIOs
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
-	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
-	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
-	linux-hardening@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
-	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: tkyjhk9pdrukxqtou3y8nfjcexo584oz
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 10/10] vfio/pci: Add dma-buf export support for MMIO
+ regions
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Leon Romanovsky <leon@kernel.org>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Leon Romanovsky <leonro@nvidia.com>, Christoph Hellwig <hch@lst.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
+ Jens Axboe <axboe@kernel.dk>, =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?=
+ <jglisse@redhat.com>, Joerg Roedel <joro@8bytes.org>, kvm@vger.kernel.org,
+ linaro-mm-sig@lists.linaro.org, linux-block@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-mm@kvack.org, linux-pci@vger.kernel.org,
+ Logan Gunthorpe <logang@deltatee.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Sumit Semwal <sumit.semwal@linaro.org>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, Will Deacon <will@kernel.org>
+References: <cover.1753274085.git.leonro@nvidia.com>
+ <aea452cc27ca9e5169f7279d7b524190c39e7260.1753274085.git.leonro@nvidia.com>
+ <8f912671-f1d9-4f73-9c1d-e39938bfc09f@arm.com>
+ <20250729201351.GA82395@nvidia.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20250729201351.GA82395@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 6ja5wz1mc3n9xm9pmojkg7fj5q6bjqjb
+X-Rspamd-Queue-Id: B331F40004
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5A91614000A
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1753886735-302468
-X-HE-Meta: U2FsdGVkX1+ddM/5d2zwW7GjBjBAms+qd1f839xp6CewbL26YKFqP479SOwNZQQZvH6q7KMfGbJxuNQS9fmdQWfO4pC4jIsQHpnj08rogv6V4pXxzB+YApED4gx73H5OUUMp1fWldZUUIiQmfG42kEW4piyiYcgCMN9akd7goq078iJIru/0RbwTr0qpGKfV59NDs0WdxiTP89Uopx1ScnRcBQkuOeNAMqpq8uFsZulx35p5k+QUbWlKMqZg9ulck/3SGVAUqwbm5mM4XOGCs3sEjjSEqPIgqm421rDvfDNK2Q4kGcX5JBZ6FATvKSKDbvXpqiCLgv03f6Cemb5cGkejqAIej8Urx7XK9yXpvj8VDrL3e8kKL/EoyzlBF1NHwqvQDHfnD50YX8ZiB4W5eT/DHWqiCLaRzqLwQw6f7QbnY+0Vo0RaSZY5fDKIE2I3mSnOq6oEKTegIctlUwg5Ys2rZz1gaXrt1bmSbQwSW4zJmAFE5Fmw0wfHCJ90+mKWEuZlHTN76A3J4lDfAqQd6YusPGODiVyHrgaz1Qppano/n2LU732IswKrg7G6LEi+vgq4hJQUwD9oxXbcBr7X6wLJ8GLEYKB5/4v6Ar6hC72gJfbf7VFCTrEvzlKou27JmBMYR/n+R4bSC/+O3C3YcKzrYuqre7BKDT36/KQjQJrz2sKz402ARG7pzZ855TzCsJulE2G6Qg4cys1M6e6qQwT2AnzlwopkRuIwkvUhHKwqI5vPRpU5BNnBVwEfBw24WUQWw7Zz2DqKp4if/u2INGczL2T0SNoyEDT0LZeHuGhA2rUCJvdSIPSYyY7iu+3l9pDVYrjOZRnHnrWAMSnEMTCmJETOOGfwn8oPcXhO4wNOJuoDG0oD1+xoOf/oJ4lgZHBTVmx7vW6rx6D1bJb2SIEYI8UXDaSzd9zm64pfItMzFlQxH/GBoQliXBtrg2o2PnDm+CVPamHTrW7G2Rc
- GTWRDYNy
- m/5b0BkWPteimrU8+h4MjRTnE+ikxx5iy+lT71t6Rp2Kk+J9l0W69IaYHYPeRk45NIgMTgq2xo6f06GJAMG+2nJ2RndJD1C0H8hKSYe4GThghKBsiMXil1AY3MmqjLRmW0Ulkvsefl7OBwkzC6eIEglGxrn5Bf0uYlGodU6lcMs0oKex8ycZBtN0dYQx7gZHbJMCwkqJxcIxZ5lB8hQdpohTzwczEGBRMPSfUa9F6BHn9t2PdtUXpjSXG9tYa5P9SrZTCmTjDjZFQzR266jw0HRuoORatuPe0b5X3HoYJE4qFfe5Csmbr12QrTt3sC8+PK9XBLJW3qJey9eUnWeYdy9NEAw==
+X-HE-Tag: 1753886992-864245
+X-HE-Meta: U2FsdGVkX1+NfdAyGIs4p2taK6sO9vhhYhfvQ1REhTa4x19rbbqNmaoFjcGlSmBMvv4DV3hyfuRyXUyZ61dD27O+xEWwWcUQKxZSi0U2oATHugzQcjg7Q37xm0pinuOaeX8/hZZlz5ju0GQllfK9sNAOlHjroFKMfOwjBpg1qkegej867pFPCRR6fkqvNPAOQJx1aDreiaCFhRxAk856Km2WFfvXGugvLQosr2ah8iUTR/1n9g8A+c1Ti1Wn8lGOawqX0mE9mKb3Ba5sVEypt4UMb+vLhaFyMXVt5pKRlbvylK+O6UgMDQyHsRda1psrIFLNRnwdjLyXSHBbLgKdYsKkpqJwIf5BdOI9ACONEr6ejuaRsz8KIEJy8JdQdW2Zuavd9gyHwlWrGbW1vPP5CIepv4xPVlXIbf3amz1bMyJ48HtanvULRNj51M8C4amUiNsmkqNmclJ9r/5cJZv6kev1k2nmPFknC/7GOBJblezie8OceVSA6Wvi0TBgommhnEsa0R9PAGGgeW9jhwoopKIwEM/XzALiJ9rVhMb42zHfokNLfGD3QB1U305R5+U6gqQB/PC9V+pi9klOL8Xok6FJSJ627r8lNA7khMxebTc9YaOz8zCMJR49u2H+IEHDumq0pZRTRm8TnEednKiVIZh4BCDYOGX3/xU7/g29WoBBjqvm2l3CZf4j027NmkgD6Jwmt/iZ13r4D58Mhec6GIIVI3w1FvIWHhxIX7vQ1v0HMbTBY2ZfooZM7WxNWo4ya1TuweeeYTWqdlp325ynucZhxgXhDYS9hp/sn32PixThckPR7PfQI6/E7hvjuxMTfNrCw/cSzyzp2VKBpPJJtaI0htxI03OY+nK/97aimh4PHaW+cqE1zMZkivntIEjD0CRXul7fYG7vcswAnZHiHHLyraki4HcqNS1LZEccntvD6Xt54dFYx/yeYGJt+mstJMRHC7Hp8VKcfQwO/7g
+ ZwHBpB8G
+ PdzU2PR2Tu67Of5xK69yYLxzArY4zGzkTtu4sw5JmMGfaYuHdL4FK/LfiOR6XBMH2ByFONnGMkOBvZ6/dVXzOG5EEpO6D8hJ3oM47sHO9ypMEVWmgz4uVPeNSiBc7RLIIi1KgRkNXq5hkEQAczYsNsDTcJg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,65 +101,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 30, 2025 at 3:30=E2=80=AFPM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> On Wed, Jul 30, 2025 at 2:53=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.p=
-l> wrote:
-> > On Wed, Jul 30, 2025 at 2:50=E2=80=AFPM Andy Shevchenko
-> > <andy.shevchenko@gmail.com> wrote:
-> > > On Wed, Jul 30, 2025 at 11:54=E2=80=AFAM Bartosz Golaszewski <brgl@bg=
-dev.pl> wrote:
-> > > > On Thu, Jul 24, 2025 at 2:22=E2=80=AFPM Andy Shevchenko
-> > > > <andy.shevchenko@gmail.com> wrote:
-> > > > >
-> > > > > >  struct pinfunction {
-> > > > > >         const char *name;
-> > > > > >         const char * const *groups;
-> > > > > >         size_t ngroups;
-> > > > > > +       unsigned long flags;
-> > > > >
-> > > > > Not sure we need this. If the function is GPIO, pin control alrea=
-dy
-> > > > > knows about this. The pin muxing has gpio request / release callb=
-acks
-> > > > > that change the state. Why do we need an additional flag(s)?
-> > > >
-> > > > I'm not following, how does the pin controller know that the functi=
-on
-> > > > is GPIO exactly, other than by the bit set in this field?
-> > >
-> > > AFAICS the gpio_owner !=3D NULL means that. No need to have a duplica=
-te
-> > > of this information.
-> >
-> > No, that's not at all what this series does... gpio_owner is the
-> > consumer label of a pin used by the GPIOLIB framework. The flag I'm
-> > introducing it telling the pinctrl core - before GPIOLIB is ever
-> > involved - that *this pin can be requested as a GPIO by GPIOLIB*.
->
-> The certain pin control driver may even not know about this. But even
-> though the proposed change is an overkill. If it indeed needs to be
-> done, the solution of valid_mask approach sounds to me much better. It
-> will be a single bitmask per pin control to tell this.
->
-> > It's
-> > the other way around - without knowing this, for strict pinmuxers,
-> > GPIOLIB would never be able to request this pin if it was muxed to a
-> > function (even if the function is called "GPIO").
->
-> I need to read the series again, but I truly believe we don't need
-> this new field in the struct pinfunction.
->
+On 2025-07-29 9:13 pm, Jason Gunthorpe wrote:
+> On Tue, Jul 29, 2025 at 08:44:21PM +0100, Robin Murphy wrote:
+> 
+>> In this case with just one single
+>> contiguous mapping, it is clearly objectively worse to have to bounce in and
+>> out of the IOMMU layer 3 separate times and store a dma_map_state,
+> 
+> The non-contiguous mappings are comming back, it was in earlier drafts
+> of this. Regardless, the point is to show how to use the general API
+> that we would want to bring into the DRM drivers that don't have
+> contiguity even though VFIO is a bit special.
+> 
+>> Oh yeah, and mapping MMIO with regular memory attributes (IOMMU_CACHE)
+>> rather than appropriate ones (IOMMU_MMIO), as this will end up doing, isn't
+>> guaranteed not to end badly either (e.g. if the system interconnect ends up
+>> merging consecutive write bursts and exceeding the target root port's MPS.)
+> 
+> Yes, I recently noticed this too, it should be fixed..
+> 
+> But so we are all on the same page, alot of the PCI P2P systems are
+> setup so P2P does not transit through the iommu. It either takes the
+> ACS path through a switch or it uses ATS and takes a different ACS
+> path through a switch. It only transits through the iommu in
+> misconfigured systems or in the rarer case of P2P between root ports.
 
-Without a code example, I can't tell what you're imagining but let me
-give some more context: the flags field could only exist in the
-qualcomm drivers but the problem will be the same on all existing
-platforms so IMO it's better to centralize it right away. And if we're
-already centralizing it, let's make it future proof by making it
-possible to define more such flags if we need it. Since the GPIO
-category is a function property, it only makes sense to put it in the
-structure defining the function.
+For non-ATS (and ATS Untranslated traffic), my understanding is that we 
+rely on ACS upstream redirect to send transactions all the way up to the 
+root port for translation (and without that then they are indeed pure 
+bus addresses, take the pci_p2pdma_bus_addr_map() case, and the rest of 
+this is all irrelevant). In Arm system terms, simpler root ports may 
+well have to run that traffic out to an external SMMU TBU, at which 
+point any P2P would loop back externally through the memory space window 
+in the system interconnect PA space, as opposed to DTI-ATS root 
+complexes that effectively implement their own internal translation 
+agent on the PCIe side. Thus on some systems, even P2P behind a single 
+root port may end up looking functionally the same as the cross-RP case, 
+but in general cross-RP *is* something that people seem to care about as 
+well. We're seeing more and more systems where each slot has its own RP 
+as a separate segment, rather than giant root complexes with a host 
+bridge and everyone on one big happy root bus together.
 
-Bartosz
+>> And again, if the IOMMU is in bypass (the idea of P2P with vfio-noiommu simply
+>> isn't worth entertaining)
+> 
+> Not quite. DMABUF is sort of upside down.
+> 
+> For example if we are exporting a DMABUF from VFIO and importing it to
+> RDMA then RDMA will call VFIO to make an attachment and the above VFIO
+> code will perform the DMA map to the RDMA struct device. DMABUF
+> returns a dma mapped scatterlist back to the RDMA driver.
+> 
+> The above dma_map_phys(rdma_dev,...) can be in bypass because the rdma
+> device can legitimately be in bypass, or not have a iommu, or
+> whatever.
+
+I understand how dma-buf works - obviously DMA mapping for the VFIO 
+device itself while it's not even attached to its default domain would 
+be silly. I mean that any system that has 64-bit coherent PCIe behind an 
+IOMMU such that this VFIO exporter could exist, is realistically going 
+to have the same (or equivalent) IOMMU in front of any potential 
+importers as well. *Especially* if you expect the normal case for P2P to 
+be within a single hierarchy. Thus I was simply commenting that 
+IOMMU_DOMAIN_IDENTITY is the *only* realistic reason to actually expect 
+to interact with dma-direct here.
+
+But of course, if it's not dma-direct because we're on POWER with TCE, 
+rather than VFIO Type1 implying an iommu-dma/dma-direct arch, then who 
+knows? I imagine the complete absence of any mention means this hasn't 
+been tried, or possibly even considered?
+
+>> AFAICS you're *depending* on this call being an effective no-op, and thus
+>> only demonstrating that the dma_map_phys() idea is still entirely
+>> unnecessary.
+> 
+> It should not be a full no-op, and it should be closer to
+> dma map resource to avoid the mmio issues.
+
+I don't get what you mean by "not be a full no-op", can you clarify 
+exactly what you think it should be doing? Even if it's just the 
+dma_capable() mask check equivalent to dma_direct_map_resource(), you 
+don't actually want that here either - in that case you'd want to fail 
+the entire attachment to begin with since it can never work.
+
+> It should be failing for cases where it is not supported (ie
+> swiotlb=force), it should still be calling the legacy dma_ops, and it
+> should be undoing any CC mangling with the address. (also the
+> pci_p2pdma_bus_addr_map() needs to deal with any CC issues too)
+
+Um, my whole point is that the "legacy DMA ops" cannot be called, 
+because they still assume page-backed memory, so at best are guaranteed 
+to fail; any "CC mangling" assumed for memory is most likely wrong for 
+MMIO, and there simply is no "deal with" at this point.
+
+A device BAR is simply not under control of the trusted hypervisor the 
+same way memory is; whatever (I/G)PA it is at must already be the 
+correct address, if the aliasing scheme even applies at all. Sticking to 
+Arm CCA terminology for example, if a device in shared state tries to 
+import a BAR from a device in locked/private state, there is no notion 
+of touching the shared alias and hoping it somehow magically works (at 
+best it might throw the exporting device into TDISP error state 
+terminally); that attachment simply cannot be allowed. If an shared 
+resource exists in the shared IPA space to begin with, dma_to_phys() 
+will do the wrong thing, and even phys_to_dma() would technically not 
+walk dma_range_map correctly, because both assume "phys" represents 
+kernel memory. However it's also all moot since any attempt at any 
+combination will fail anyway due to SWIOTLB being forced by 
+is_realm_world().
+
+(OK, I admit "crash" wasn't strictly the right word to use there - I 
+keep forgetting that some of the P2P scatterlist support in dma-direct 
+ended up affecting the map_page path too, even though that was never 
+really the functional intent - but hey, the overall result of failing to 
+work as expected is the same.)
+
+Thanks,
+Robin.
 
