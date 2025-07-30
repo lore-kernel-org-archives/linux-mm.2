@@ -2,111 +2,97 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B83CC87FC9
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 04:11:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 48401C87FC9
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 04:21:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE19F6B0088; Wed, 30 Jul 2025 00:11:09 -0400 (EDT)
+	id B2ABA6B0088; Wed, 30 Jul 2025 00:21:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B8BF66B0089; Wed, 30 Jul 2025 00:11:09 -0400 (EDT)
+	id ADBBF6B0089; Wed, 30 Jul 2025 00:21:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7A626B008A; Wed, 30 Jul 2025 00:11:09 -0400 (EDT)
+	id 9F1A56B008A; Wed, 30 Jul 2025 00:21:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 94F2D6B0088
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 00:11:09 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 19350112194
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 04:11:09 +0000 (UTC)
-X-FDA: 83719605858.29.5DCE8C0
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 5ABD54000D
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 04:11:07 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=DXKddojH;
-	spf=pass (imf04.hostedemail.com: domain of rientjes@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 901C36B0088
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 00:21:13 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F0B231402EC
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 04:21:12 +0000 (UTC)
+X-FDA: 83719631184.19.30F493E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 2E1BAC0005
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 04:21:10 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aMfnaGa+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753849271; a=rsa-sha256;
+	cv=none;
+	b=p4XXAcJ0V1UKFBF5G0/mwwdrhQW0dFjU1d+tOO+TUGznfjpx9b+3HdeqKoOlnXxm4lGB5l
+	HCl9LuFk2YeG/USeWrNTA3Y51XdaO9YtCRjJa/ZDn8hSH0dl3afrVONrHN00Fq5fmqqkWQ
+	Kh62t4vv9TSdWv01zhO9vhnmJNnvZUY=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aMfnaGa+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753848667;
+	s=arc-20220608; t=1753849271;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=mmt5oFfYN5e1SsdVZLo2HKeKgtUA4pJEtINOylMnbVw=;
-	b=CdB5wFVF10TceNNRMy/AtzkPdG8KIdN+5ptGkEC2XfAzdbzP8Y1HzLVWWKF9tMs46699wi
-	XulE71SfEZkjHvSY1tbk/Wlz1CoIGiW/GO0XvZTT+fn3+tve4cW2VYoXcaL7OOR87qKm5s
-	jo/zmFggr+OITBy5tFBHVdRkr1rfAaU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753848667; a=rsa-sha256;
-	cv=none;
-	b=uSjg2aSVGuwRinxxGpyxODqSXWEnLqQ2pssh3ViYlqI2yLFqzDA+Ire6iGEHip7fdHvmo2
-	QCIFRpkRllDkZQ0XzMgnpbmt2dxhtilOopfwYc12WfLjZhpTFh7QyLh9NPv23VAGMCgcr7
-	RsXwgeLuiBtXue81odv+AAmgPTdEZNY=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=DXKddojH;
-	spf=pass (imf04.hostedemail.com: domain of rientjes@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-240708ba498so72765ad.1
-        for <linux-mm@kvack.org>; Tue, 29 Jul 2025 21:11:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753848666; x=1754453466; darn=kvack.org;
-        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=mmt5oFfYN5e1SsdVZLo2HKeKgtUA4pJEtINOylMnbVw=;
-        b=DXKddojHUHdEX39RewdzJ3XuTaiv6gbBKRQ9R3SHifCVR+ZK1+l/gil07wKbckZ6oa
-         JHTBPC19Y+K2qy8i6F7adEaHfDYGrcy1XLEYGwBR18iyKd0W7wPrbdVPwCL29UE7V8oZ
-         Dyg1t7+VT4NuTzK48gzdQCQ5EqMsqIMZU8sORNgBW04c8DyfvGoYwY/lrxa7mi4U+ubg
-         W8ajp2ddbfl7f6JvdLK9D3yr52atcIEXAIJ0g/WnespV2QkTH8DIJ3AIcs+3Vav8uMRx
-         0qJpqGtJiQ7VIxhpKBY7a1ClprqAqHRWBL2Xqn6TXlmVvVqsEi1pHrPqLka7TaDZ9RDX
-         D6lA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753848666; x=1754453466;
-        h=mime-version:message-id:subject:cc:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mmt5oFfYN5e1SsdVZLo2HKeKgtUA4pJEtINOylMnbVw=;
-        b=NZ2zMJEIKPFpwIvCPepQe2WXZjkChAX+ijmnOw7R/WtFdWhAfhGp6wGJCRx8y2FoKY
-         J1jevmlwOM/0P/W/Ul+JWjXqM/cpwKlYY+llgrtMfRsuSTDCyxURei/1fPfiOzB3vcxG
-         zqoAtIXndsjylRm+u1lWeTpT0P/E2hxVdo1bSSIyv19utNIPjHH0p8ljGauNZbePBVlh
-         c+VbCbas87fcjp3P9k6884dJjtK2FbjL4JBgK2umBqyt0fSa4ncHx+jo7vsIHXtZfwun
-         HC0UnUi14q0Eeb5+bTbEQgQ9xfJIZ/+Rf2rCDMNDUa9Nyj04iJ0uC9upwGLwuuzeU8Si
-         5SmQ==
-X-Gm-Message-State: AOJu0YyURNM0CY4qYwkp5Jvlm3JobjvdvfZsEueO1VFxzKMho8WwFvjJ
-	vA+u/ftEeLMXs9JEfR+lr1NEAnhNMnhKWOftcpC2siddtOE++JyAaipWeh/jF2IBwQ==
-X-Gm-Gg: ASbGncvOtSbT4FA5Nml5fB5ILJNNmYvBJkicf/LxiwncRwOhcPGQ62pWfg5Z/3hKdJv
-	GDATxca4yoE3oLHCgWVZNsC12iEjREiSekFSi8nsZQFlxvTVfEuAS9U4V4sx+fT4RrvA0c315bu
-	xfiKasr1VgaHozjGoM//xKgSpMoOTJSmxcjl+H24kVVBzk+2sTmIBkV73X3YY9ILalj+fqsRss9
-	M3AlF5eIpXaF8ATWSex55a1X1YHTSr95Sd2N/NuS6MK96tiH3fWq98edhQlWMdN3XoFV+tyKEYN
-	3Sc/51cGuOsDt/7mck8luoFfpK75k7qJSBgB3olou02K8YjKOXtWd88PKT6kEztPJTEWk4Vmow5
-	6Y4SzXM1ZK8SCjEPzxuOMHVncr8QTtKruH+YdNISWq5hSw12bGjiD9uyqhCHD9pjgALQLPy8A3z
-	zfVfndplQf+n4G0g==
-X-Google-Smtp-Source: AGHT+IE+1WfluDbMQ8ADb5FmNwmwidg7Fa/ThJsgjlVR3HQ6zBPbfoMQrvqVWITvEvFsGT8zVYF75Q==
-X-Received: by 2002:a17:902:d4c7:b0:240:6076:20cd with SMTP id d9443c01a7336-240a228b293mr1365745ad.15.1753848665715;
-        Tue, 29 Jul 2025 21:11:05 -0700 (PDT)
-Received: from [2a00:79e0:2eb0:8:fb61:a32f:4364:baa] ([2a00:79e0:2eb0:8:fb61:a32f:4364:baa])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23fd45617efsm83949345ad.176.2025.07.29.21.11.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Jul 2025 21:11:05 -0700 (PDT)
-Date: Tue, 29 Jul 2025 21:11:04 -0700 (PDT)
-From: David Rientjes <rientjes@google.com>
-To: Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <nifan.cxl@gmail.com>, 
-    Gregory Price <gourry@gourry.net>, 
-    Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-    Joshua Hahn <joshua.hahnjy@gmail.com>, Raghavendra K T <rkodsara@amd.com>, 
-    "Rao, Bharata Bhasker" <bharata@amd.com>, SeongJae Park <sj@kernel.org>, 
-    Wei Xu <weixugc@google.com>, Xuezheng Chu <xuezhengchu@huawei.com>, 
-    Yiannis Nikolakopoulos <yiannis@zptcorp.com>, Zi Yan <ziy@nvidia.com>
-cc: linux-mm@kvack.org
-Subject: [Linux Memory Hotness and Promotion] Notes from July 17, 2025
-Message-ID: <c2f5a8d7-061b-7649-2b9d-03e6314d1102@google.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ltJCzSb1v8c3jLL1aKVUAmO6dMeKJhT74EzoQZ2ZwQU=;
+	b=SvLCbZ+HFq50EbZ6iJrokSTadjpcrhqwTkRqyWunUpxA6154X3/xGdIcTEBPGGvf9dwVwH
+	V24gGAy+7afSsKjbX9xTjKaoh658YD3VSnwJ8TNMKXuGqhmW5zQlRvfB8g3LL6C2Kaq5oR
+	DLCYQ06TRJvsr8fDdEDHg9p7OAa4wfc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D195B45C17;
+	Wed, 30 Jul 2025 04:21:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E5ACC4CEE7;
+	Wed, 30 Jul 2025 04:21:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753849269;
+	bh=k/8G8hyODNHd1MnxESyODVAtIvqlJqbAiUqU3GNVU9k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=aMfnaGa+CQK2SCh2aG8cBF1BxlKL67zP5Bb0V7EECsve3ZlcwQGiBjtw++2of2VCU
+	 1f6pgkcCr97tmBUag60Cov86CkuhLnLzFgFRTn50SF99uZ225eKvUUh9BbM/bNPapg
+	 Xu81K3LsGq7D6zNG599XqcbHJbnhvqjedYrGv1RseNFCCkxBJNXNehUmTiC0xPw1e/
+	 vPjOOc+m4Nsh/P9r05aB6h1P4mvnv3jauAzxmBoL9r0A92OdVqj+EfO+relPCB4lRq
+	 F3KuikQ9d6xEFLp2QnCKtT+lrP4jaW8yTwEK8FOCXZqb2Uat7iq4V8kCfIQMhY7oLu
+	 vPrrDF3DYTuEw==
+From: SeongJae Park <sj@kernel.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Jann Horn <jannh@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	damon@lists.linux.dev,
+	kernel-team@meta.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [RFC v2 5/7] mm/memory: implement MM_CP_DAMON
+Date: Tue, 29 Jul 2025 21:21:06 -0700
+Message-Id: <20250730042106.54750-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <5acc6af3-91da-4dd3-834c-e8923e5d3320@lucifer.local>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 5ABD54000D
-X-Stat-Signature: cnkiewgw3thru1qcemrteausmznfpbye
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: pbskmor3upt65wki8xiqbj38jtf8fed3
 X-Rspam-User: 
-X-HE-Tag: 1753848667-176972
-X-HE-Meta: U2FsdGVkX1+9kIfjXmVFgQWLkQ2897Ikwo/ircOCcLH79oDPlo2IZy7+RhrOzp6qj1o2aoWSI8BCuR/vkBBx4o1IFcEupLoZobCX/JuvnA7gVj6SjNABF351n9oy4PNBFKncAl8Dt84i6V/BNgjUZ792AWD3IMG6BdCCG/E2ayOf4KYow+55a+PwYcTagiH4ztFah7xJwnRZqHyA7dALpOe86j5NoUQP+9VNKuF/TJXQztUmynX/UyPrCUD7QQQENQVfgUa9Psi+TfDF1ZM9UJUXrZhlxbklKHaF5lhYu+yzpFhs4kCDm3oNx0xRSxR6s5l/WQUjZKK/9Dzi8sIpIGuAqdy7UgQi9irNS6il29YxhpC6oiV90etEVGaMYux3fyzojVyDwX/pOqgihVqD6e+Di6mBX5zQiwxHolfWrtxTM0Djh+7B3Ruy3SDl0O8r30+J07sW+vzPN54me1b6LcVtqGNPN9GLfWdVZXrPl4ez5m2xYZy8vj1u7zI4nv55igBVjEt6XjUdWNWwbK8b7xUNMBGgsCgb6/bNekiFbbFRHc5ks6NVgzOkwkEKCmvP5gslUQfbD70iZnkMiQuArYtTBfS6HqACeyjmhKr2RJ9K0YEIMnFABPuXGjKwkWgdN//s0kK+/zTbad7cClQwrKsnqnkJB+3eQyfL5zSSRawj9uyWu4ok0Sslm/MIM7e9TCWsxE4eIQKAMIDffMfEiBfUZMvQzjybSadeWSJ9xodUcKj/79ty8QrXBW4EA4ZtfvCyMh5UDTeP5DsPPrnz8YO+xYpzfRRf2bRqpjULNfJzqOyysgmP4wUu0H6lHgvpKS+dDPwFaRltysGhDKOSLmJowpY2OWuDdiDbxPCoZqGLj6lozuS+/6jq7enxwU16X/gBA9BuF5dVMY7RV9KGoPSkdFmMGRLsfEI9YFVQQ92g0sQjNKcA24XF4e44AZr+Kh4EDTRhQD+TYMoM/1U
- zFujInVC
- Vawz8xqx6pqtzMzOVAnOuoGpTqtmFlBlpdFYcHXhwEnxbvvCM+gs3rsmcXT3x7KTnzEfJWrqohymf33di+f/z7PIow1ZT9hLNfY6nYYoirsMPus9cqo0+LzmiJH8xwDTyihcu5fmCYbJvxEI1YTTHGThJcb/cqEDkyveFHinUmcQjrOztHnk1L3fr+grLbkFYHqucfj1AXFeJn++dEQA0SqlqfRSd0L336HGnIt6+VpmatlCEVBGx6HB+JXyw8qjIbXZJJk2ozkVwCEMgBxBXFxv8lvi6w8me3xz7ONTVD9wxd//BH5AA+HEAbCW2vbg1fegGAsWZI0JIjlvFWgIhuFFjd1bkjYa+y0LsPIzriURp24FE3HiFgbhQde4H5fTFUdx1Jqd0ND3hb5U8zmiP0DoPADIlkyBqacsHzOzp5JkxxFIi+93JWpN3joGDq4YuWmPqE7cJpd7HrKSVvxF83Ar89K8PnFb/LCEbYvjX1gol0PiNtrkvaNaR8SZ5jooJu+ob
+X-Rspamd-Queue-Id: 2E1BAC0005
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1753849270-397617
+X-HE-Meta: U2FsdGVkX19Rj4bau6CpcBpmoyjff+usvmLdNejaeF750JGMYtFYR/K2lOMyPeFE1cKcJsx5z7PaoR3ji8e54aa/6f15PeFVEUfBnZyzGyhKhgCy2Eu6+f3FTSPf+mptPQXWEIme2Re9hPjrrlBLGb1rxtgs8D9MV6znNxRb7+A3zhp1CWPWV97G5BHy5iSGEoQE05HZSXV8HE8GZIYUqTxMAxmYI+lG/BoLiVpnkCzZ6EBj+tm4ER+gH+Phj9Lluvy2QyYk5rAu+SdUGf6IgAxp6t3OxdPTsB08rPR5gEPrnGj7NT3WU6CDsV5psDDi61z+aBcrWGLEVA0va/+BMfC882YCZfafvXErzqrG/cAjE4hCRztTlWxhH3mWEqPoF89SmJMLPiRsXSy99pKUvMDkGAebc0Ouliy5PPATOWFHwL0PlBXF4C/iDuUnqZl/n5DgYIkCoUesXKLRm8yuBeroOZWJ3rLDOwbVhqpYhx7VVnRqubesiIgQ3NPBnQZ8rsmdrwhNYHJrNN3pb2VwZkXqIrhgkrm9QCsCaTtkPYa07AknfpXFmhDfTWlGcznQZRTmEwyG6pdq0/q9PTnuTE2q99gSdLm9Y8Nd3FLLl2XwM9BWrkwWCU+0d6oEMYkjmTrCVIYi00I5L3fXDP6WE66eNp4o9Kib0+IvLqqvgQh5bWNhJRMeAZXvyK4BHfjIS2TnRvZPW6NyU0iMR0ZLZSWtfeI+22OZ//yt4E3bCTjst7+esdNrL9MnXhCdtWWSmYGpWq8tZoZ1A7aXojfjLMfREnjAfFxCMdaCSre3gagWQ+80D0zI6HTvMJvKdqNet0pOS2/yDXPg75/xziCrjz+cAnvN1dA4DOMI4t0PCkelf8/DOFeu/FaGcO/+bmKrU+JyRNuUBwdcfKm+FNLIZupTWEpsm06ANrBhdtYkUZValxHtpmdN0MOBrR5ONl1lEgdYX/94hGQWk7U0tj9
+ JzvBt6Or
+ yNLLBHfQrNOgPH8d1xI1iVgNBN2hTB9TTq7N1B/wKYnwCbqiWkWF56rktQWTD/uiS7FNKlxh/BdAvG0Seh9b51kP+3kcu2agz+8B3Ua8EmHNk1AZA2ESJoL2ObNE3znWMG8RYaw+IMEiH8BoPcaal7yAtP/ZpgflzT5E5H1A7byxFnH0982wb/MJT57RT/ofbkk3exZ1QSmOG80yODP/oP2DLW80b1AKefNzhJHMI2oIo0fGE42rzFeT7J9tkdna4sb5DBgaHNECNS5Gzih4m0SDAamki6Hd7tD7wpQfNVzIboMy6sG8EvTrAiA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,106 +101,224 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi everybody,
+On Tue, 29 Jul 2025 10:40:11 +0100 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
 
-Here are the notes from the last Linux Memory Hotness and Promotion call
-that happened on Thursday, July 17.  Thanks to everybody who was involved!
+> On Mon, Jul 28, 2025 at 08:06:32PM -0700, SeongJae Park wrote:
+> > On Mon, 28 Jul 2025 06:19:35 +0100 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
+> >
+> > > On Sun, Jul 27, 2025 at 01:18:11PM -0700, SeongJae Park wrote:
+> > > > DAMON is using Accessed bits of page table entries as the major source
+> > > > of the access information.  It lacks some additional information such as
+> > > > which CPU was making the access.  Page faults could be another source of
+> > > > information for such additional information.
+> > > >
+> > > > Implement another change_protection() flag for such use case, namely
+> > > > MM_CP_DAMON.  DAMON will install PAGE_NONE protections using the flag.
+> > > > To avoid interfering with NUMA_BALANCING, which is also using PAGE_NON
+> > > > protection, pass the faults to DAMON only when NUMA_BALANCING is
+> > > > disabled.
+> > > >
+> > > > Signed-off-by: SeongJae Park <sj@kernel.org>
+> > >
+> > > This seems to not be an upstreamable series right now unless I'm missing
+> > > something.
+> > >
+> > > Firstly, you're making a change in behaviour even when CONFIG_DAMON is not
+> > > specified, and Linus already told you we can't have that default-on.
+> > >
+> > > I'm very very much not happy with us doing something for 'damon'
+> > > unconditionaly when !CONFIG_DAMON on the assumption that an acessible
+> > > mapping has PROT_NONE set.
+> > >
+> > > This change makes me nervous in general ANYWAY as you are now changing core
+> > > mm and introducing a new faulting mechanism specifically for DAMON.
+> > >
+> > > And we are assuming that NUMA balancing being disabled is not racey in a
+> > > way that will cause things to break.
+> > >
+> > > I really also dislike the idea of an _implicit_ assumption that we are good
+> > > to use the NUMA balancing faulting mechanism to 'tack on' DAMON stuff.
+> > >
+> > > Is it really all that useful to provide a method that requires NUMA
+> > > balancing to be diabled?
+> > >
+> > > Finally, you're making it so DAMON can mprotect() something to use the
+> > > DAMON/NUMA balancing fault handler, which doesn't appaer to check to see if
+> > > NUMA balacing is disabled, but anyway it could be re-enabled?
+> > >
+> > > And then now DAMON is making stuff fault as NUMA balancing faults
+> > > incorrectly?
+> > >
+> > > This just seems broken.
+> > >
+> > > Unless there's really good justification I'm really not inclined for us to
+> > > merge this as-is right now unfortunately.
+> >
+> > Thank you for review and comments, Lorenzo.  I fundamentally agree all your
+> > points.  I don't aim to merge this as-is.  Actually this patch series is more
+> > like POC, but apparently I was rushing.  I will try to adjust your concerns in
+> > the next version.
+> 
+> Thanks.
+> 
+> I do wonder whether we really can have a whole new faulting mechanism just for
+> DAMON. Because if in future, we wanted to change how this worked, we'd be
+> constrained, and it is a very specific user.
+> 
+> The issue is you need the PTE to be restored to its previous state, just like
+> NUMA balancing.
+> 
+> And I really really do not like this 'oh if you turn it off you can use it for
+> DAMON' thing, it's just really odd and asking for trouble.
+> 
+> I think the only _workable_ version of this would be to convert the numa
+> handling to a generic 'fault then restore' type mechanism that could be hooked
+> in to by either NUMA or DAMON.
 
-These notes are intended to bring people up to speed who could not attend 
-the call as well as keep the conversation going in between meetings.
+I agree, and this is my current plan for the next version of this patch.
 
------>o-----
-I shared the news with the group that the Device and Specific Purpose
-Memory microconference is happening at LPC on December 11-13:
-https://lpc.events/event/19/contributions/2009/
+> 
+> But really I think you'd _need_ to not have significantly different behaviour
+> between the two and _not_ constrain this to being only when NUMA balancing is
+> disabled.
 
-This has a lot of overlap with this group, including hotness tracking and
-CXL memory expansion.
+I agree all the points.  Especially the current interface is ambiguous and easy
+to mistake.
 
------>o-----
-We chatted about the status of pfn tracked folios.  Bharata noted that he
-had updated the patch series for kmigrated and started experimenting with
-it.  Page hotness information was recorded per page with page flag
-extensions and then a kthread scanned the pfns to figure out which pfn
-needed to be migrated.
+> 
+> But then you'd need to know _this_ PTE is for NUMA balancing vs. another is for
+> this stuff.
 
-This turned out to be problematic: a bimodal behavior was observed based
-on when the kmigrated kthread could get to this page in its scan; it could
-either be very fast or it could be very slow depending on the scan period.
-As a result, the hot pages were not recognized in time which resulted in
-the worst case probability for benchmarks being used.
+Yes, this would be the ideal.  But, memorizing something in page level is ...
+always an interesting challenge in my opinion, and I have no good idea to do
+this for now :)
 
-Exempting some memory zones from the scan was insufficient itself due to
-the sheer amount of memory that could be present.  This led to a pivot to
-kpromoted that only manages the set of hot memory.  This had its own
-challenges, however, due to synchronization required between the producers
-and consumers.  The hot pfns were maintained in a hash bucket which was
-good for lookup, but if hot pfns must be extracted out of it then this was
-problematic for hash; a secondary data structure was going to be required
-that keeps this in priority based order (Max Heap).
+> 
+> I'm not really sure there is an upstreamable version of this, but it'd need to
+> be made generic like that if there were.
+> 
+> I think it might be worth taking some time to examine whether a version of this
+> that can be sensibly generic (which could have hooks for things) is _possible_
+> before sending a v2.
 
-This was working in practice but more testing was needed, including for
-scalability due to synchronization between the two data structures.  I
-asked about the testing methodology for kmigrated and Bharata noted that
-it was a very simple test that just simulates memory accesses on the
-remote node (traditional NUMA Balancing style testing).
+Agreed, I don't need to rush.  Let's take time and discuss sufficiently. :)
 
-Additionally, these data structures only need to be maintained for lower
-tier memory given the approach here is focused on kpromoted.
+Nonetheless, I may post a followup version of this patch series that contains
+this one, even before we get a conclusion about this specific one.  I think I
+may have to do that, for sharing the future idea in a way easy to understand
+and test.  I think it might also help us at understanding the real ROI of this
+patch, and if there is another option to move forward.  In the case, I will of
+course keep RFC tag and clearly note that this patch is still under the
+discussion and not willing to be merged as is before the discussion is done.
 
------>o-----
-Wei Xu asked if we need to allocate a node to maintain the data structures
-constantly.  Bharata noted this is why the shift happened toward page
-extensions instead.  Wei thought about maintaining multi-level bitmaps
-which avoids the allocations for every single page.
+> 
+> > >
+> > > Also are we 100% sure that there's no races here? When we disable numa
+> > > balancing do we correctly ensure that absolutely no racing NUMA balancing
+> > > faults can happen whatsever at this juncture?
+> >
+> > Enabling CONFIG_DAMON will not automatically invoke change_protection() with
+> > MM_CP_DAMON.  Such invocations will be made only if the user disables NUMA
+> > balancing and run DAMON in the reporting mode.
+> >
+> > So there can be two racy cases.
+> >
+> > If the user enables NUMA balancing and then disables it after a while, page
+> > faults for MM_CP_PROT_NUMA can be handled by DAMON.  That could look odd, but
+> > there should be no real problem in practice.  DAMON's fault handling will
+> > cleanup the PAGE_NONE protection like NUMA balancing, and DAMON has no problem
+> > at receiving such additional reports from MM_CP_PROT_NUMA-caused faults.  DAMON
+> > may show a few more than expected accesses, but that's no problem for DAMON.
+> >
+> > Similarly, if the user starts DAMON in the report mode, stops DAMON, and then
+> > enables NUMA balancing, faults for MM_CP_DAMON that installed while DAMON was
+> > running in the report mode can be handled by NUMA balancing.  This should also
+> > not make real problems in practice in my opinion.  NUMA balancing could see
+> > more accesses and migrate pages little bit more than expected, but that should
+> > be just for a moment.
+> 
+> I'm really concerned about these.
+> 
+> We're now introducing unexpected behaviour based on a race and allowing faults
+> to be mis-handled.
+> 
+> I'm maybe not as confident as you are that everything will 'just work' and it
+> seems like we're asking for obscure bugs in the future.
+> 
+> > > You really have to be 100% certain you're not going to wrongly handle NUMA
+> > > page faults this way, on a potentially non-CONFIG_DAMON kernel to boot.
+> >
+> > I will ensure that never happens on CONFIG_DAMON disabled kernels, in the next
+> > version.
+> 
+> Well, in the above you say that you can't help but do that when a race occurs?
 
-Bharata asked about hotness information itself, including access
-information.  Wei said described this data structure as similar to page
-flags but sparsely populated.  This was based on upcoming support for CHMU
-when a PFN is read, we can just immediately promote.  However, since there
-are two tasks involved (collection and promotion), a single thread is less
-than ideal.
+I mean, I can't help when CONFIG_DAMON is enabled.
 
-I asked how we could share the code between the groups so that people can
-work from a common understanding.  Wei mentioned that it would be possible
-to share soon.
+The race (or, handling faults that caused by other entity) can hppen if and
+only if all below things happen.
 
-Raghavendra discussed pfn scanning and the data structure that would be
-needed, similar to Maple Tree to store the range of memory.  Idea was to
-store the timestamp of the scan to avoid storing this information for
-every page.  He noted that in his RFC v2 patch series that the scanning
-and migration thread are separate.
+1. CONFIG_DAMON is enbled.
+2. CONFIG_NUMA_BALANCING is enabled.
+3. The user repeatedly turns on and off NUMA balancing and fault-based mode
+   DAMON in runtime.
 
-Raghavendra presented a slide that suggested a kpromoted interface to be
-used when the source does not maintain hotness information and a per-node
-kmigrated thread that does blind migration, throttling, and batching.
-Bharata noted that Raghu's PTE scanning series would use kmigrated
-directly and bypass kpromoted -- approaches that do not have complete
-hotness information themselves would instead use kpromoted.
+If any of these are not true, the race can completely avoided.  I was saying
+about the case that the first condition is not met.
 
-Kpromoted will maintain the hot page information, potentially based on
-multiple inputs, and then hand the information to kmigrated for the actual
-migration itself.
+> 
+> >
+> > >
+> > > Keep in mind fault handling is verrrry racey (purposefully) and can be done
+> > > under VMA read lock alone (and that's only very loosely a lock!).
+> > >
+> > > This is just, yeah, concerning.
+> >
+> > Thank you for the caution.  DAMON's fault handling code only saves the
+> > information in its internal ring buffer.  It doesn't touch vmas.  So I think
+> > there should be no such problems.  I will add the clarification on the next
+> > version.
+> 
+> Right, I'm just saying that this all being super racey between NUMA
+> enabled/disabled seems pretty unavoidable, but we covered above.
+> 
+> > >
+> > > Secondly, somebody can disable/enable NUMA balancing, and thus you are now
+> > > allowing this function to, when somebody specifies 'DAMON', get NUMA
+> > > balancing fault handling??
+> > >
+> > > If you don't bother checking whether NUMA balancing is disabled when you
+> > > set it, then boom - you've broken the faulting mechanism, but even if you
+> > > _do_, somebody can just switch it on again...
+> >
+> > As I explained on the two racy cases aboe, faults that caused by DAMON or NUMA
+> > balancing can be handled by the other's handling code, but only for a limited
+> > time under the user's controls.  But to my understanding that should not cause
+> > real problems in the practice, and users wouldn't be suggested to operate the
+> > system in such a way.  I will add more documents and cautions about that in the
+> > next version.
+> 
+> I really don't think a version of the code that results in the wrong handler
+> being used is upstreamable, sorry.
+> 
+> I've not dug into the nitty gritty details on what would happen in both cases,
+> but even if it were 100% fine _now_, this is _exactly_ the kind of thing that
+> results in horrible hard-to-debug issues later, should something change.
+> 
+> Implicitly 'just having to know' that we might be in the wrong fault handler
+> seems like asking for trouble, and the RoI on an optional profiling tool (this
+> is not to take away from DAMON which is a _great_ utility, I'm saying it's
+> simply not part of the _core_) isn't there.
 
------>o-----
-Next meeting will be on Thursday, July 31 at 8:30am PDT (UTC-7),
-everybody is welcome: https://meet.google.com/jak-ytdx-hnm
+I completely understand your concerns, thank you for nicely and patiently
+keeping this discussion.  I don't need to upstream this in short term, and open
+to every option.  So let's take sufficient time and discussions.
 
-Topics for the next meeting:
+I will take more time to think about a few potential options to move forward,
+and share those with a level of details that can help us easily further
+discuss, hopefully in a few days.
 
- - update on status of kpromoted (collector) and kmigrated (promoter)
-   approaches and testing
- - update on sharing Google approach for both to overlap the shared goals
-   and converge where possible
- - discuss proactive demotion interface as an extension to memory.reclaim
-   + possibly leveraging working set extensions on top of MGLRU
- - discuss overall testing and benchmarking methodology for various
-   approaches as we go along
-   + minimal viable infrastructure, testing workloads, and metrics of
-     interest to collect
- - enlightening migrate_pages() for hardware assists and how this work
-   will be charged to userspace
 
-Please let me know if you'd like to propose additional topics for
-discussion, thank you!
+Thanks,
+SJ
 
