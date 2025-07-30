@@ -2,83 +2,173 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 80557C87FCB
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 09:37:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B5586C87FC9
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 09:39:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1BBF58E0005; Wed, 30 Jul 2025 05:37:27 -0400 (EDT)
+	id 3921E8E0006; Wed, 30 Jul 2025 05:39:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 16BB78E0001; Wed, 30 Jul 2025 05:37:27 -0400 (EDT)
+	id 343958E0001; Wed, 30 Jul 2025 05:39:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 081308E0005; Wed, 30 Jul 2025 05:37:27 -0400 (EDT)
+	id 259928E0006; Wed, 30 Jul 2025 05:39:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EBB628E0001
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 05:37:26 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 97E4FC0355
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 09:37:26 +0000 (UTC)
-X-FDA: 83720428092.30.E0B6D5E
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 43AF31C000B
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 09:37:22 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of gubowen5@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=gubowen5@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753868245; a=rsa-sha256;
-	cv=none;
-	b=sLJffSRIt01+miAOOL4QR/aSN7bLOUjz76hbaF6qnHxm0U/5gEY8pG/y9zlMY/8Nt4j1m8
-	pZWN1ewdWdd7sVwqPMFpZcKNf0n53xoibm2UVtapMWB3JotiYZ1gfz87vnwDUglZ042ky5
-	RSGtHjXjHLN9aiipKsMjGPFRZOB/Yyk=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of gubowen5@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=gubowen5@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 173BA8E0001
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 05:39:23 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B0366C03A3
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 09:39:22 +0000 (UTC)
+X-FDA: 83720432964.18.B6367BA
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 5FD68C0002
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 09:39:20 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZwszenE7;
+	spf=pass (imf22.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753868245;
+	s=arc-20220608; t=1753868360;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=t4Y+TCE8rqlttGHiY7c8uINll71TiFgjRGSMVbS38yg=;
-	b=DcXeQwIws9+KNCXDyzwwARA1/AU70i5MFVLUN42Nx7YQrnmc8anv4ZDVLmsa1V+Zeh/DDS
-	PTeA85Z3cZxO1kCZ8eohKAV4EtkJSBKOUCLrqoL+ljv4yUEQzzJpSkhfgteV9F94gd2+bV
-	T8Uk5ql+x9CwhU/EzBpsmzh0H+jm5bQ=
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4bsRpT4k5RzphTk;
-	Wed, 30 Jul 2025 17:33:05 +0800 (CST)
-Received: from kwepemh100007.china.huawei.com (unknown [7.202.181.92])
-	by mail.maildlp.com (Postfix) with ESMTPS id E9F8B1A0171;
-	Wed, 30 Jul 2025 17:37:18 +0800 (CST)
-Received: from huawei.com (10.67.174.33) by kwepemh100007.china.huawei.com
- (7.202.181.92) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 30 Jul
- 2025 17:37:18 +0800
-From: Gu Bowen <gubowen5@huawei.com>
-To: Catalin Marinas <catalin.marinas@arm.com>, Andrew Morton
-	<akpm@linux-foundation.org>
-CC: <stable@vger.kernel.org>, <linux-mm@kvack.org>, Lu Jialin
-	<lujialin4@huawei.com>, Gu Bowen <gubowen5@huawei.com>
-Subject: [PATCH] mm: Fix possible deadlock in console_trylock_spinning
-Date: Wed, 30 Jul 2025 17:49:14 +0800
-Message-ID: <20250730094914.566582-1-gubowen5@huawei.com>
-X-Mailer: git-send-email 2.25.1
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vBb2D1EuitPhFOGonlD9FPgqvzl4qzBSMtXexC2pz54=;
+	b=Smy44mdpnjZ5xfKIwPhyfxZled6q1F0bIU5gt+8MWrdexHTVyijBAyioyiu88CTdKq3HgU
+	cXsq6QGHcxo2jdQqU75z5UveEUZSojdx0ALaXeTJZtA/QTciX04xD57nP/HOtR9PiJCZoV
+	rKqpbMh7LEcFQM7IZoCHmceg64w6DTc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753868360; a=rsa-sha256;
+	cv=none;
+	b=Nm8r1HzLCU5nj+9vo+HCKJtBaNezHNodv7hGdUVSuHwMLXpmDXSmFFv3mlt3Z/uE5PDkGI
+	B4cVEpQPID9mouXkceHiEyKRbaiOOqp8/4kjFargHhYBykIOZsSYE6QRu1ZyDFjOuTci4o
+	u4Sr6IxO0X+xnFxBRr4MO6tlSBZwey8=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZwszenE7;
+	spf=pass (imf22.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1753868359;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=vBb2D1EuitPhFOGonlD9FPgqvzl4qzBSMtXexC2pz54=;
+	b=ZwszenE72YyFqighRPCDHES/cZ5rv0Y0XN4S09+MS2yYt6r0IMfarJdr3mhE7Q/c1kfK45
+	2GAoShM5OA42y3CoTDc4JPIoJDvpLExOScjBTOJhFYh9CkYBBWICpPauF5DGsfC5HP+wVY
+	DE6ZDbSwzkvpG7ZuQg/NdIRZlXYDQ/4=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-155-IcvIy404MBmGfokQ8PHvlg-1; Wed, 30 Jul 2025 05:39:18 -0400
+X-MC-Unique: IcvIy404MBmGfokQ8PHvlg-1
+X-Mimecast-MFC-AGG-ID: IcvIy404MBmGfokQ8PHvlg_1753868357
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4588fb6854cso7139365e9.0
+        for <linux-mm@kvack.org>; Wed, 30 Jul 2025 02:39:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753868357; x=1754473157;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=vBb2D1EuitPhFOGonlD9FPgqvzl4qzBSMtXexC2pz54=;
+        b=mlVlBPoM/iFpU7dkXvHxrMJlWW/eRHUSHTsx1aHMML3XyKMoUyWwfbf3TvoAdt7vKy
+         ZyIAADnUt59Vvm7D2qhZzzUCTaDB0fehlimGzqfGNZUZZqS4IGXZr0L5h5kq1FnZUn2T
+         POljcvvFI/V5tW3TUVD346O54vIw6enQAufRAiSel2+wvY7BPzGeJibOPVdrBklKK8fp
+         bbo52Npjiv4XkLjrp7izAcjIUQ/bcu6ic88opVV7x4ICpf9MZunvG5++T4MFueVAxuEX
+         ef9FJQ7aIHxbMvmrAf5RlmbYP8Srp9UYJmnf0++Ka5jkbSVfNiIuXBvYCYlvGbSGzZKL
+         3P4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU1bMlIKw/gVhBrt+um0Vi6gWmnPp5o6K8KMa2EAbHcWavEKxQZa2tYze/Fu7tw6lgIUKix5U4C4g==@kvack.org
+X-Gm-Message-State: AOJu0YwtshoKERtns+In6XZcNEuaPdBw0K2dMlmUhqJGZmAXhBaSc1HI
+	Xn5U05YaXClw9ojRkM2R09pgsgBZiDZDc39N9TQnpFpfvG0m09qQeEADZvjGf3IUJkDRGwHIVA+
+	q7RsZsh4mlF94Agqiwla3X9LbpDwfUrvYFPlSFTypsczMNDCF/r0xGQDwjPY+FjiJOA==
+X-Gm-Gg: ASbGncsOglqy/89niRsSJPZMK7wmJbwYpa9H6tsiayHDxzZXtzTlPyzE4gNILhx5tSH
+	Eh8+Qna/m/7amGHx9s1A0q3/sAdn+vITg2pdgnLu3zZ4fPWaG6JWb4y1yuBPBjwegblGR3bdniz
+	mTFrPBirpUi981fJ7Y8CFqiBIX8ch9d5patwQintbmqqKxpDtiRlLtvcRiAhvhQSDoDOdsB/Fow
+	7sDlIBDzIXEfXjdQoIAaTY1WGqXSAZGR9BDK3cRimsGh1WEqQMFtAbqsasgaK2v/Ze6O4vrWsSN
+	vo0/V7C6HAvVzy93LYrzORXRIEV/7ByZ01OoCShhMD2Pirv2TzPOgWtbD6AXAg==
+X-Received: by 2002:a05:600c:3483:b0:456:8eb:a36a with SMTP id 5b1f17b1804b1-45892b9d8b9mr23572575e9.13.1753868356969;
+        Wed, 30 Jul 2025 02:39:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGSVYa1i2eUOdl8t2BxWHnL7M0RicJPCMguE6gSyTk5SMkJD18M7PgmwqcilerYSTujf41Jgw==
+X-Received: by 2002:a05:600c:3483:b0:456:8eb:a36a with SMTP id 5b1f17b1804b1-45892b9d8b9mr23572295e9.13.1753868356391;
+        Wed, 30 Jul 2025 02:39:16 -0700 (PDT)
+Received: from [10.32.64.156] (nat-pool-muc-t.redhat.com. [149.14.88.26])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45895375163sm19361165e9.9.2025.07.30.02.39.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 30 Jul 2025 02:39:15 -0700 (PDT)
+Message-ID: <e002f5b4-ed12-4229-a88f-33447990ba29@redhat.com>
+Date: Wed, 30 Jul 2025 11:39:15 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.67.174.33]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemh100007.china.huawei.com (7.202.181.92)
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 43AF31C000B
-X-Stat-Signature: y9y1ewohbx1soo9cx4wpme4jgtow9xqk
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv4 0/3] mm/memory_hotplug: fixup crash during uevent
+ handling
+To: Hannes Reinecke <hare@suse.de>, Andrew Morton
+ <akpm@linux-foundation.org>, Hannes Reinecke <hare@kernel.org>
+Cc: Oscar Salvador <osalvador@suse.de>, linux-mm@kvack.org
+References: <20250729064637.51662-1-hare@kernel.org>
+ <20250729133806.979475704b1162d7aea99b2b@linux-foundation.org>
+ <907ee759-6051-4d47-bf09-cea362ac0cd9@suse.de>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ g3eXuA==
+Organization: Red Hat
+In-Reply-To: <907ee759-6051-4d47-bf09-cea362ac0cd9@suse.de>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: xPPKU5zfJqoCPV54AxDocszRtxYDZHyGb4OurmLCCEA_1753868357
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 5FD68C0002
+X-Stat-Signature: nk6oj3am6hrdbjyttept1hbfepayyzhy
 X-Rspam-User: 
-X-HE-Tag: 1753868242-157379
-X-HE-Meta: U2FsdGVkX1+1+kXEi/U29oJFXIV8hl0+zPlpf0mzA+gNGozCfAUWa8PjmtwsZGIc+LC4sgtrpffJzspDqgm2R5p5DkhTns/ENOE6bA9GEkVgxawETaWncqNcHmzvH7AM2wjDDf4NToKjV8BCDNRwKNbeuSzec7zRMBecuZqv3tVTXB5BIhHaLdCLYUOea1+MctVqjRb9TaSLD5oQOYYSi+mQ+j6nwRTbjVG+jdC5kYn7y+4rdSaM8jdniwuXmXdvw3sAlvh4tasGsZZN9kBlbDCfrAra2L+l2KyP4HUJQ/cKeLaatIp3FXiNwYL9ENuJOpcYbivgQMqnd1j6uOftRHERQxs1SvynGi5HJffAPHOYM2xTXRS+E1jeD0TssB4NbjdagcwLhoLRGB7Lr+4NcRAYfHIT+1x+53W38oBygRs/a8erv4DIrcP/UZryt/23UYvNlaNVD6x8G5mm7K5iTwX+VdKFh0grH7OJCpfID55viNNAWX4x5s4bdm/yEPIQiHLB+g/8xf7aUfbrTnvmLP8N2167yLQyTL6PklBGE/pJmKM+bejo/CyjaBEjzuLp+ne3MG168F3KjjnD/8w8HLGpF3UDsZHwvkFMs9CwHaTstkAAV1zGFXWz1JwUr1NFA7sErsPeptKbaRpObtvguRMza9hswnBmlMkfC0rp+KjRI5e8kMDnryz8BR2hqSDNjGzVHNpZnnY6fV3bOtxNB18ACmI18eNz9Qfc3dwCE3U837hu/UU7vLRrzSljBsXVl2ZxHlo6b+us/khjwosAQUdA+xBZ4i4w5JoPYrrqY42p3I2YRQC7nM+4YJKn7HDgkVeo+3KwCSaV43/uEpxe/5vjfZ9QO/hQw4kiFvDycZlcEmB/y4Au144SF3HupkYFpKHJF6ss30khKtynHD8JOxw7QkC+Bs8NLVC9Q7RHk7K5VNMPXFHvWr8d5Bcf83OaB3TqZhiqBobmYVhscdp
- E47SsfJD
- zKGI5jknDZZyYrxZTHek0hsgcF/H1cMbCMmh1zeXSl1ahS9riSfPWxDOTLDVheC51TyxGnW4MFkoNG8kUWkM2ipIGYgHBSpZjDMpQCl2inMHD1DL/uaHLs85/vIABCCR4M8F96MRLXj3DqcceoENmJSMrxp9i7w+G5U6/Yg5LA0CO1orqEUw+DeVOIe3ucZ34MobzHcugA6CnnI0Hc3E0nVlk9OUeaFSo6ur7fsgzwj8fsqzLe0zf1fpDnCQCVQ/WC+YA
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1753868360-521234
+X-HE-Meta: U2FsdGVkX193VjZphv+tpivHtF8MQiAgz5xjKryvnc3KeMFONkUCv7q/1MiDJAQnIXaRxiwNRaC9zGRWbJrzF2WUI8+gectNMpSZfMjWmw57kAYtVrySzMzPGo0N0fEwc8/89NUm3HTL/d3BStto3qWKdPm1Db0OPG79WRU9Lpnfj/ABqzrNZHXf+J56tFp+IlEdMWtbWL8q9HKqz44wjXI8GpiCTpG1WprmnoYmt1N0cnI9yX4v3xNClaHG/beH6T7YGybEQbaLdKMmQOWCVIgGh/iIvVZmB9T+sfkPKnbT+hYhg4DcU6zoGJITy2VoAOtkBlA8ozzPd0fT6eYOjwqZO4ZpscS2YX6sP8Z0ISPxMRlasYkBKf4SG/aThZmhwesO92auG8SzSMwtaAt7MeRoojKmEhkZFuWMlbphKNdlRz/wunbmm2o4iJghnhc1SC3lwbS6HwF3CCmmt4ZxJcxAcv2V5WB4FwJGMzjEp5ExntcmUU2c6LWXSsOd4iVkT2zo2LgLzG/jp+if6QjNfRM7b5gyeZ4Y6X1m0HRfCe/E2/RTtd05A70457bbWVnkd9pdPLAqKmJqxuCMbYvPjIm82Nx84aPUczNdJbwqh41iIqmfWM9WzfpuuvDcSWSrXhIf8mSmP0yKdsKBM64meTkS7S2ZcW1In7tBO8CHNSfq2AhTH7GF9k2leOl7p59SdJG/Q4S+Rn531Uq38W7caUw9tkN74MLWiGH8rqQE+uBNXDF+WZOMNOaRtsvD/Lof2FOrdI5HCXRnCXRyjC6HNyAC680euVly/zz9vHe4uwfDo+/p/qYyLgmOdjXjf5izd2dk8GEJve8nQB9DurTymUlEFXSOTuDJHwEjn7RV6+qpJnx7OfvhQgWgMcN09xBss3peMAjXXNTPziSUi4dC/GR5CFtEciBEc8Q0qVONJo80wDnrNdUtUwK6JYXJgYnUU708UO2qnOuJUgUdBz3
+ Ha/GwDi8
+ 0v4eCudchq/zom6oun1Kby2aEOk1gG/C0DXy5gnwFg2UhKu5I4GhVrgXTaOHmEgVWJ8sc9148PNKJoW/i74lL/gH1zuEUHCICPvyvAy6929k4INumXwQe6j808EbmSElgnr5CGtjahHooU/Z9AzK+Ga+aEdZ3bHAa86bWaUBW5BQal5NP1rgwxofqU57j//EuoYVwDEpsytFTHzV5EFf/2VLKHdHgC1vbT/Izs8XDz0Uzh/v36oCcMHMBJOoPi1MkcizpM0iySsOF7aMupyZJ4PXFhzZEWau9Da6LxlsnyiM7rCbASwasV8zxyQEH2en57/k/27IEh6d7aZGfFQoYGlINO1pEvsf9TFdBnlLIjSe/RyVbaBjQ4metpU2LFsDuaoe9zV/g0FfvalQz3mfVWXAPN0l8Ck6Iovb7J2r91SXwQ3+q2vTTLYabyBJDROwZnA9KG7AwOd8Ptcnv/hdLOyfcPWBDRAwWRvq4wQA9/VV+xtA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -87,155 +177,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-kmemleak_scan_thread() invokes scan_block() which may invoke a nomal
-printk() to print warning message. This can cause a deadlock in the
-scenario reported below:
+On 30.07.25 07:49, Hannes Reinecke wrote:
+> On 7/29/25 22:38, Andrew Morton wrote:
+>> On Tue, 29 Jul 2025 08:46:33 +0200 Hannes Reinecke <hare@kernel.org> wrote:
+>>
+>>> we have some udev rules trying to read the sysfs attribute 'valid_zones' during
+>>> an memory 'add' event, causing a crash in zone_for_pfn_range(). Debugging found
+>>> that mem->nid was set to NUMA_NO_NODE, which crashed in NODE_DATA(nid).
+>>> Further analysis revealed that we're running into a race with udev event
+>>> processing: add_memory_resource() has this function calls:
+>>>
+>>> 1) __try_online_node()
+>>> 2) arch_add_memory()
+>>> 3) create_memory_block_devices()
+>>>     -> calls device_register() -> memory 'add' event
+>>> 4) node_set_online()/__register_one_node()
+>>>     -> calls device_register() -> node 'add' event
+>>> 5) register_memory_blocks_under_node()
+>>>     -> sets mem->nid
+>>>
+>>> Which, to the uninitated, is ... weird ...
+>>>
+>>> Why do we try to online the node in 1), but only register
+>>> the node in 4) _after_ we have created the memory blocks in 3) ?
+>>> And why do we set the 'nid' value in 5), when the uevent
+>>> (which might need to see the correct 'nid' value) is sent out
+>>> in 3) ?
+>>> There must be a reason, I'm sure ...
+>>>
+>>> So here's a small patchset to fixup uevent ordering.
+>>
+>> You know what I'm going to say :)
+>>
+>> Should we backport this into earlier kernels?  Seeing "crash" make me
+>> think yes.
+>>
+>> But only one patch has a Fixes: target, and it's with the Fixes: tag
+>> that we tell -stable maintainers which kernel version(s) we want
+>> patched.
+>>
+>> So, still assuming "yes": is it possible to redo all this as a simple
+>> minimal patch which is suitable for backporting?  And then a separate
+>> cleanup/refactoring series for future kernels?  [3/3] doesn't seem to
+>> be needed in earlier kernels?
+>>
+>> IOW, if we wish to fix this crash in earlier kernels, I really cant use
+>> this series as presented.  For now I'll add it to mm-new to get it a bit
+>> of exposure while we decide what to do.
+>>
+>>
+> And here's me who thought we were doing upstream work precisely to
+> _not_ having to do backports :-)
+> Oh well.
+> 
+> I see if we can roll patch 1&2 into one; guess I'll need to do it
+> anyway for our kernel.
 
-       CPU0                    CPU1
-       ----                    ----
-  lock(kmemleak_lock);
-                               lock(&port->lock);
-                               lock(kmemleak_lock);
-  lock(console_owner);
+I recall that for simple backports, it is possible to request 
+cherry-picking related cleanups.
 
-To solve this problem, switch to printk_safe mode before printing warning
-message, this will redirect all printk()-s to a special per-CPU buffer,
-which will be flushed later from a safe context (irq work), and this
-deadlock problem can be avoided.
+Patch #1 is super simple.
 
-Our syztester report the following lockdep error:
+So I assume this can easily handled on the backport side as is (with a 
+bit of manual work).
 
-======================================================
-WARNING: possible circular locking dependency detected
-5.10.0-22221-gca646a51dd00 #16 Not tainted
-------------------------------------------------------
-kmemleak/182 is trying to acquire lock:
-ffffffffaf9e9020 (console_owner){-...}-{0:0}, at: console_trylock_spinning+0xda/0x1d0 kernel/printk/printk.c:1900
+If need be, patch #1 and #2 could be squashed I guess.
 
-but task is already holding lock:
-ffffffffb007cf58 (kmemleak_lock){-.-.}-{2:2}, at: scan_block+0x3d/0x220 mm/kmemleak.c:1310
-
-which lock already depends on the new lock.
-
-the existing dependency chain (in reverse order) is:
-
--> #3 (kmemleak_lock){-.-.}-{2:2}:
-       validate_chain+0x5df/0xac0 kernel/locking/lockdep.c:3729
-       __lock_acquire+0x514/0x940 kernel/locking/lockdep.c:4958
-       lock_acquire+0x15a/0x3a0 kernel/locking/lockdep.c:5569
-       __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
-       _raw_spin_lock_irqsave+0x3b/0x60 kernel/locking/spinlock.c:164
-       create_object.isra.0+0x36/0x80 mm/kmemleak.c:691
-       kmemleak_alloc_recursive include/linux/kmemleak.h:43 [inline]
-       slab_post_alloc_hook mm/slab.h:518 [inline]
-       slab_alloc_node mm/slub.c:2987 [inline]
-       slab_alloc mm/slub.c:2995 [inline]
-       __kmalloc+0x637/0xb60 mm/slub.c:4100
-       kmalloc include/linux/slab.h:620 [inline]
-       tty_buffer_alloc+0x127/0x140 drivers/tty/tty_buffer.c:176
-       __tty_buffer_request_room+0x9b/0x110 drivers/tty/tty_buffer.c:276
-       tty_insert_flip_string_fixed_flag+0x60/0x130 drivers/tty/tty_buffer.c:321
-       tty_insert_flip_string include/linux/tty_flip.h:36 [inline]
-       tty_insert_flip_string_and_push_buffer+0x3a/0xb0 drivers/tty/tty_buffer.c:578
-       process_output_block+0xc2/0x2e0 drivers/tty/n_tty.c:592
-       n_tty_write+0x298/0x540 drivers/tty/n_tty.c:2433
-       do_tty_write drivers/tty/tty_io.c:1041 [inline]
-       file_tty_write.constprop.0+0x29b/0x4b0 drivers/tty/tty_io.c:1147
-       redirected_tty_write+0x51/0x90 drivers/tty/tty_io.c:1176
-       call_write_iter include/linux/fs.h:2117 [inline]
-       do_iter_readv_writev+0x274/0x350 fs/read_write.c:741
-       do_iter_write+0xbb/0x1f0 fs/read_write.c:867
-       vfs_writev+0xfa/0x380 fs/read_write.c:940
-       do_writev+0xd6/0x1d0 fs/read_write.c:983
-       do_syscall_64+0x2b/0x40 arch/x86/entry/common.c:46
-       entry_SYSCALL_64_after_hwframe+0x6c/0xd6
-
--> #2 (&port->lock){-.-.}-{2:2}:
-       validate_chain+0x5df/0xac0 kernel/locking/lockdep.c:3729
-       __lock_acquire+0x514/0x940 kernel/locking/lockdep.c:4958
-       lock_acquire+0x15a/0x3a0 kernel/locking/lockdep.c:5569
-       __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
-       _raw_spin_lock_irqsave+0x3b/0x60 kernel/locking/spinlock.c:164
-       tty_port_tty_get+0x1f/0xa0 drivers/tty/tty_port.c:289
-       tty_port_default_wakeup+0xb/0x30 drivers/tty/tty_port.c:48
-       serial8250_tx_chars+0x259/0x430 drivers/tty/serial/8250/8250_port.c:1906
-       __start_tx drivers/tty/serial/8250/8250_port.c:1598 [inline]
-       serial8250_start_tx+0x304/0x320 drivers/tty/serial/8250/8250_port.c:1720
-       uart_write+0x1a1/0x2e0 drivers/tty/serial/serial_core.c:635
-       do_output_char+0x2c0/0x370 drivers/tty/n_tty.c:444
-       process_output drivers/tty/n_tty.c:511 [inline]
-       n_tty_write+0x269/0x540 drivers/tty/n_tty.c:2445
-       do_tty_write drivers/tty/tty_io.c:1041 [inline]
-       file_tty_write.constprop.0+0x29b/0x4b0 drivers/tty/tty_io.c:1147
-       call_write_iter include/linux/fs.h:2117 [inline]
-       do_iter_readv_writev+0x274/0x350 fs/read_write.c:741
-       do_iter_write+0xbb/0x1f0 fs/read_write.c:867
-       vfs_writev+0xfa/0x380 fs/read_write.c:940
-       do_writev+0xd6/0x1d0 fs/read_write.c:983
-       do_syscall_64+0x2b/0x40 arch/x86/entry/common.c:46
-       entry_SYSCALL_64_after_hwframe+0x6c/0xd6
-
--> #1 (&port_lock_key){-.-.}-{2:2}:
-       validate_chain+0x5df/0xac0 kernel/locking/lockdep.c:3729
-       __lock_acquire+0x514/0x940 kernel/locking/lockdep.c:4958
-       lock_acquire+0x15a/0x3a0 kernel/locking/lockdep.c:5569
-       __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
-       _raw_spin_lock_irqsave+0x3b/0x60 kernel/locking/spinlock.c:164
-       serial8250_console_write+0x292/0x320 drivers/tty/serial/8250/8250_port.c:3458
-       call_console_drivers.constprop.0+0x185/0x240 kernel/printk/printk.c:1988
-       console_unlock+0x2b4/0x640 kernel/printk/printk.c:2648
-       register_console.part.0+0x2a1/0x390 kernel/printk/printk.c:3024
-       univ8250_console_init+0x24/0x2b drivers/tty/serial/8250/8250_core.c:724
-       console_init+0x188/0x24b kernel/printk/printk.c:3134
-       start_kernel+0x2b0/0x41e init/main.c:1072
-       secondary_startup_64_no_verify+0xc3/0xcb
-
--> #0 (console_owner){-...}-{0:0}:
-       check_prev_add+0xfa/0x1380 kernel/locking/lockdep.c:2988
-       check_prevs_add+0x1d8/0x3c0 kernel/locking/lockdep.c:3113
-       validate_chain+0x5df/0xac0 kernel/locking/lockdep.c:3729
-       __lock_acquire+0x514/0x940 kernel/locking/lockdep.c:4958
-       lock_acquire+0x15a/0x3a0 kernel/locking/lockdep.c:5569
-       console_trylock_spinning+0x10d/0x1d0 kernel/printk/printk.c:1921
-       vprintk_emit+0x1a5/0x270 kernel/printk/printk.c:2134
-       printk+0xb2/0xe7 kernel/printk/printk.c:2183
-       lookup_object.cold+0xf/0x24 mm/kmemleak.c:405
-       scan_block+0x1fa/0x220 mm/kmemleak.c:1357
-       scan_object+0xdd/0x140 mm/kmemleak.c:1415
-       scan_gray_list+0x8f/0x1c0 mm/kmemleak.c:1453
-       kmemleak_scan+0x649/0xf30 mm/kmemleak.c:1608
-       kmemleak_scan_thread+0x94/0xb6 mm/kmemleak.c:1721
-       kthread+0x1c4/0x210 kernel/kthread.c:328
-       ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:299
-
-other info that might help us debug this:
-
-Chain exists of:
-  console_owner --> &port->lock --> kmemleak_lock
-
-Cc: stable@vger.kernel.org # 5.10
-Signed-off-by: Gu Bowen <gubowen5@huawei.com>
----
- mm/kmemleak.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/mm/kmemleak.c b/mm/kmemleak.c
-index 4801751cb6b6..d322897a1de1 100644
---- a/mm/kmemleak.c
-+++ b/mm/kmemleak.c
-@@ -390,9 +390,11 @@ static struct kmemleak_object *lookup_object(unsigned long ptr, int alias)
- 		else if (object->pointer == ptr || alias)
- 			return object;
- 		else {
-+			__printk_safe_enter();
- 			kmemleak_warn("Found object by alias at 0x%08lx\n",
- 				      ptr);
- 			dump_object_info(object);
-+			__printk_safe_exit();
- 			break;
- 		}
- 	}
 -- 
-2.25.1
+Cheers,
+
+David / dhildenb
 
 
