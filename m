@@ -2,87 +2,118 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E687CC87FC9
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 06:31:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E663CC87FC9
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 06:55:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A1F96B008A; Wed, 30 Jul 2025 02:31:01 -0400 (EDT)
+	id 3E70C6B0088; Wed, 30 Jul 2025 02:55:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 652DA6B008C; Wed, 30 Jul 2025 02:31:01 -0400 (EDT)
+	id 370756B0089; Wed, 30 Jul 2025 02:55:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 590416B0092; Wed, 30 Jul 2025 02:31:01 -0400 (EDT)
+	id 2382E6B008A; Wed, 30 Jul 2025 02:55:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 492EE6B008A
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 02:31:01 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C8C0D8041A
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 06:31:00 +0000 (UTC)
-X-FDA: 83719958280.04.F6ACB79
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 20C5EA0006
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 06:30:58 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=rpOu97tU;
-	dmarc=none;
-	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by kanga.kvack.org (Postfix) with ESMTP id 0F53A6B0088
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 02:55:01 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 99DC7133C78
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 06:55:00 +0000 (UTC)
+X-FDA: 83720018760.22.7F7A25B
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
+	by imf13.hostedemail.com (Postfix) with ESMTP id CDE7F20006
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 06:54:58 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=vHE51Hiy;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf13.hostedemail.com: domain of hughd@google.com designates 209.85.219.180 as permitted sender) smtp.mailfrom=hughd@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753857059;
+	s=arc-20220608; t=1753858498;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wsdIZ1+Aa9Zb4OvCbgYo52FCKGd2vwNlEy0BgjnYGYI=;
-	b=6gw8Is+bqigxip3GlaCsnnVIYhVszgnjAarTaJ3/ljdd70X0kOqVRpm2ZynhJ60Y+9JH4v
-	eDNoQ5yOtZuwaWwbN6OBmvJqdqMCPSVskV22eQICXiMyBu/ZhgcfkIkPe0v60hHPwOLWMC
-	NyRZ7/jv/VlbT/xZIGmg6y5W5cPqYiU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753857059; a=rsa-sha256;
+	bh=xb9lxccqqzV/HuE6IBjo5UmOhzvTQ7eGMAvIhyfuiTI=;
+	b=KMlwZEn0Osmp4Tv+xOZ7sEPLDCYLGIEmILmI5xhkfrdCVKRP5eR6qoeDKRkOrcEqjT7Wir
+	cci6htjz+jsrusQWPFnD8v6vL3WUGLYZaW0XenUd7kjEQ2cNpFBLGz5FaFfZhH8w3VdiVw
+	G6Vbr8p3bgi3h49m52azZMlWh7yHKUA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753858498; a=rsa-sha256;
 	cv=none;
-	b=tWMJKjolnL1Xh0fbEykWKAp+g92175L5mXIRXBiacHWXWTktl/b8rp+K5GqKKP40lk51xI
-	dhlFHCjrf2X+5NX6lIEGTUuuE+bPpj1XmeT7f9t0TIpTB63szBxOYy6kh4vQ8K7VW7qqTz
-	gF9eLuab9Wb3GUrV1gUjU2z97LIBS9E=
+	b=W+T2ZMgJ03X452bkTyCPLoaemMvzLdvlp2Lz3sIjzVuZnheGvOaHn0FjF1vP6KE1ZohWoV
+	49ZktEMOUMUDPac/WAXmFHMwlb8Yjn/AAqHapwrruh1RJYrNzTUztztPSm1LDkMXXzVjHB
+	AENQ9fbytTGyH6Lta9SLYqfJ6rLj5AE=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=rpOu97tU;
-	dmarc=none;
-	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 51317A550BC;
-	Wed, 30 Jul 2025 06:30:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D8CDC4CEE7;
-	Wed, 30 Jul 2025 06:30:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1753857057;
-	bh=5m2AZ35qhad3lXHXJA7t4elsAqF/q7HnQ8CqvB4/gl0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rpOu97tUQeUvQad0ivYCzxEXw0diHHGGMNcbZ7olMYb7XpTMa7eofFRVOKihJ1dCH
-	 C52zPxO8001IaxGWgIr5PdH1aSOm+q0SIUdjApUnpsI5UuOymDwSuEdpfNitfVxoGp
-	 C7Rwxp1Sx5hQINaQ1+aqWKAqRD92SWIGxcimmZHw=
-Date: Tue, 29 Jul 2025 23:30:56 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Hannes Reinecke <hare@suse.de>
-Cc: Hannes Reinecke <hare@kernel.org>, David Hildenbrand <david@redhat.com>,
- Oscar Salvador <osalvador@suse.de>, linux-mm@kvack.org
-Subject: Re: [PATCHv4 0/3] mm/memory_hotplug: fixup crash during uevent
- handling
-Message-Id: <20250729233056.c45b9c2e21ee7838434024c6@linux-foundation.org>
-In-Reply-To: <907ee759-6051-4d47-bf09-cea362ac0cd9@suse.de>
-References: <20250729064637.51662-1-hare@kernel.org>
-	<20250729133806.979475704b1162d7aea99b2b@linux-foundation.org>
-	<907ee759-6051-4d47-bf09-cea362ac0cd9@suse.de>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: q8tc8axw71wok6pkqeqbszdioesc3jem
-X-Rspamd-Queue-Id: 20C5EA0006
-X-Rspamd-Server: rspam10
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=vHE51Hiy;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf13.hostedemail.com: domain of hughd@google.com designates 209.85.219.180 as permitted sender) smtp.mailfrom=hughd@google.com
+Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e8986a25cbfso4420239276.0
+        for <linux-mm@kvack.org>; Tue, 29 Jul 2025 23:54:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753858498; x=1754463298; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xb9lxccqqzV/HuE6IBjo5UmOhzvTQ7eGMAvIhyfuiTI=;
+        b=vHE51HiyAmkZoI6Fx1NfKANn0gsclUbcHvRvFDHeM2/ORMLyfF1ObrQ7Pp5Y5yO55Y
+         vZ29x650zp8mGlFtKlRV+2ER1f8hzUU1R+sTwPN8WwWwwF7QVSVW6Z1H6IKUHgU+jI5X
+         ouNnDXN4jv8zWi25frsyl+xOG1HY3ztQTbjiWGhTN58ttTH1i1hbr6v/DOjU2l+CB31o
+         5WDAjsbesF2dRIhCT7HBJQeiABG7dfRdeZuE6zhSWIXx144uDzfk0CASd8cpgwN7Dmam
+         TVXVuak5NXHkXBAH2MkzlvAsbXIMV3bEzMr8GBurPfMmQRJ0hoRXGxiTCQa6rFrfwhtL
+         UXpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753858498; x=1754463298;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xb9lxccqqzV/HuE6IBjo5UmOhzvTQ7eGMAvIhyfuiTI=;
+        b=HaZRWPAw27T13IZPTE644QLGs2/ZHfk6ivPJ4BTxf2SS/Vs8VphdUT/73QRk5hIdgP
+         bNh8VOnTM33747/ysnPYKHlp37WYpmp1TbLtflGu3gAcYjPscL/EHrr/ta+W1+QV0/YN
+         6guZjQTPz4fj+McUGEUJkOxFxSLSCevUgjeQt353k11UDUKzokXdKStIre2XVSMQTt7F
+         d/YhfJnTDZyDgZl96uWqi9hizstcq5f73T47sq+IAm4strAvVk+3seHQGWNJWrusfD3p
+         GhJQ7tpHtbaCTMGFq/BnTSoT0qGBqhIH53U7DvjzQkpDc03Ir7pZfqzLkr1iMQHTW0FG
+         IHKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXZsIg5JnQ3Y4axedKfYNp/Ozq80CWow8OkiKy9hfWBGdnG8jBFKLjZMOllEUD8AGKML2v4+vbxbg==@kvack.org
+X-Gm-Message-State: AOJu0Yx8Vlt4tcvTEV3eNjidLDYkOmwgG2OzaY+WKdiGoTMHnIt0Jiy4
+	yk1sWM5Bi5uLuPM8KytHYSjXbSGLyLA1WiN0Os7M948RXl2bEhd08SB4wzqgdGWvVQ==
+X-Gm-Gg: ASbGncsIn19gpmU7pi9Pqp42pD+iLwEPxXEIu2CJSuLr3xqp5WSLXlKcdGZpskWcmGk
+	F0krNQ9iRsr2CaCLTpgOToROyoQnbOx6m+xYj1TOK3V6kmXb4DnZpViFQRr9xkdrkoiN5qLjpnK
+	NuuHIM+7TQJ7enOysUOQjlj/4NL/mpJLy9uqeZ1H0asg+Bws6DjKO+x1ieEi6aS3Tdpesv82hOi
+	Lcixv2cP/jNdYKGe4Tb7afeoTdkARFh5Js6O3ukB9hqm7xz7tFPFh+0RhoofFP8nKp4ABuEoPzo
+	NUPbQ/xLmUK7B/L1UhviZiOK8pOdVNk2yYCGtEYVEqu9K8cy8Cirii4lXDMeNUSHQMFFv/tFIiE
+	Cc6R2UX+Vuq/crjwOFKdb0zmNjA0DCpwJ8mEHJAUQaqFkO/9ao3YqVMn6WszNgQc5RfF2if6yCf
+	iq/u9SKx4=
+X-Google-Smtp-Source: AGHT+IFRrK4i6oO1zKk7GnmCX4K+vLePl7LTsNrBKA6nlwjLECThBMqUufa7+jqHJdcW9Ic1/5Dy+A==
+X-Received: by 2002:a05:6902:921:b0:e8d:7451:d738 with SMTP id 3f1490d57ef6-e8e315bfb59mr2626997276.35.1753858497592;
+        Tue, 29 Jul 2025 23:54:57 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e8e3f3a46b3sm504319276.27.2025.07.29.23.54.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Jul 2025 23:54:55 -0700 (PDT)
+Date: Tue, 29 Jul 2025 23:54:43 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+cc: akpm@linux-foundation.org, hughd@google.com, patryk@kowalczyk.ws, 
+    ville.syrjala@linux.intel.com, david@redhat.com, willy@infradead.org, 
+    maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, 
+    airlied@gmail.com, simona@ffwll.ch, jani.nikula@linux.intel.com, 
+    joonas.lahtinen@linux.intel.com, rodrigo.vivi@intel.com, 
+    tursulin@ursulin.net, christian.koenig@amd.com, ray.huang@amd.com, 
+    matthew.auld@intel.com, matthew.brost@intel.com, 
+    dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+    linux-mm@kvack.org
+Subject: Re: [PATCH] mm: shmem: fix the shmem large folio allocation for the
+ i915 driver
+In-Reply-To: <0d734549d5ed073c80b11601da3abdd5223e1889.1753689802.git.baolin.wang@linux.alibaba.com>
+Message-ID: <ff93c415-7ce8-a331-9568-7543c6a37992@google.com>
+References: <0d734549d5ed073c80b11601da3abdd5223e1889.1753689802.git.baolin.wang@linux.alibaba.com>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="-1463770367-1769646309-1753858495=:2474"
+X-Rspamd-Queue-Id: CDE7F20006
+X-Stat-Signature: fq9r3em5wtaw7hpgbkk47jhrrdiiatsd
 X-Rspam-User: 
-X-HE-Tag: 1753857058-306899
-X-HE-Meta: U2FsdGVkX1/a2jxH5WFpZ4JRXFND5Q4aInJODpNNLPnzpjG5lV4O828zFHVYsR/6hw52UKoigsxdCAgWkv7tvEmOqeq9htcyj1RQu0vLsoPsz1XIGjdHh6MA97Iebv7jxUmvcBDtzRog2RazjflQz4N288VqEHt8bLaTXJHPWfkBXyztAJMSdb9mnqKPspuq5kqDMJhfREuuuzEd4y+WJ0E3Qkyd46meEgz2mrzVc+5/okQ1Clq5AjNhqjmzNh9Rl4RzFIXseFPT62YBawVpHWbS20qiGtGuHifvXyYMe0iE+3mTqoCKgQlDzpr2t0m45qm/XyiwqrDj4TqS5GAlWV0t42mUf2iuKF09loeGdG8ibE3cheVEcGiDlarJQQ3R+VCQJte257fhmiUQauostq1vGux7CTbWeizpVK215aDgFd2FdJTbanms17M/RyfxJ7pXhtCNyh2l+soJ2bJW6fuup8jiqodN33mu9xJHtG36I3dhGsaYMdP9NahFkzMGBx2wZFJSneYoouslSbx1naQC8JLcz8pSr8BUvArdRZIgHPNunJYnj1WXucEToOz5GxtKHIetbHFZmt3ufnr3uL/xQOH2uEzLvm42AE+e6OaV6G/6wmnmarMaqcyl5Y2467d/G8E3DejRwb/TDxaF8eTezsiynIHgboxgozxbUfFKK5+bBu+PrznjD5+gAoBiSmeFVjS/Ud3U2795B8mbjIWxOvT0iH5IgzGUcxAcaHu96XE0PjmG2EUq0n0DxjSoVO15AT4TLVl3aU9mG7M5BXRRYuw57IMNVFJCRmssC+qMhQriDYzAHjUagwscraUhDQ05sXz6ntKtPyUC08MPE1GE93Tc6BLAKK+GMuJJL63pRAutpemocl8fUUDIDofdhtyKVb4N7W2y9uQFCpO32K6fxx2hUmuDPTkWV0OMmjUYDYLPoCeQMx0uFu7gjzhv/yGUzxa7BrDxBv7CiqV
- Sh5ClP5/
- 3ZHuodE6EPFpukI4GN4BDngWrjCFcsEby6IOlXk9jtwO8enn/HBm8nv/F+vwcQBJj2yTgYEcuuNyanQNHxs6WHaO7fXEv/2evpTu21qVG9hicpHC7lR+LSsEe3CDawd+F4AQttmK1qYnCyMwu8CLsnBLd8cN8ymLSoXfc5PRJK24xMXXE5ZiG+VmVrdl/zXJgLjunoyCSFO1esG8BdbstsG8K0+ufGrfMixeYeMJ2t50C31PTa4ZDmiQm4N3Fkv3uByhgVRwuAP39oR4WmsJniJsflAm8iYSZy370uspnApct1se4bi4Eg+GFeSSCo8n1CNZj
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1753858498-566427
+X-HE-Meta: U2FsdGVkX1+gPs2dJpHHRbEQzPxfJWKz2p0ELgC8k2RJBONKrn+Gu3l4Je9SfRfyQufIyIhpRCgcWtd72jjLmH1VKojz03tD4LpMvAggdlu8NgZvBoPBHe6NgKeC0F4UrS+EPB+yEpZtd8kEWdfQJxxPhEB2CactpQvbpKyi14EeA4u2cw4Ow1GpOe4wq3Y4kbJcU7Rv2hnUKSHS4RlAQM/rDTrD+mpoORhwIihL/7yINc88IagDdOuBjrj337N5v426lYvUThLrZULxnnK9VnRADguCBe5RngRYEDysmxOT5fJOrKBqooI4n955NSIbPHY+jegdM+InRwja1g46VJLFDZD3QZanv2l65d+GUvLudazGg0DTe87XZhg3Dg09z20Del3Gp3RdBhPrEDe+5o0L/Hzm0aKEwgPClHWnUPDP1dlmrh8iC+5WHCoYC8uEfjHFjNba3hm/sp/iza61YMvBa9SzwAvKNphAsj/CX1PO/yAT5+m5EIb2n2g8YMjKcr7MwvRjvz5C728IUDh2438tpah0ym5P1eQF6H0ejCEpdvM857Usqfsgq4xdQlYlmB2qjgG7G46452Y0AwON/+vqsssoB5S4uG5fLvdLnzKgYx1uXQoff91+6YnRFeMRovIMxBWbsiMBbJoUlP973z4ORYRhdXYa6IwsZGqJfsSfsb2Q4gDtsoluxbSwtKlhiZLnMKTiO5Pi00u6KApjh1P1oGCbM6x4DxT91ah047yOAL7lTFhwvk8n+iy0IKweBRA4TQoTpyypgksMmuZH61Hk4JLguaAYw3rdePH57/cvqYCqKDB3p4NNyRrsT1ANXv9vPiOAPL4FQjYhVpDqcSnNEHrZatcIFeONkS4TLODOFGWhHSnhyBmObE+Aq6zeL178spk0415HjaIlqKWbdLaeVAwohpKlFsDF18ui35Ddx+ArZMmEZwTKLl52jOjL8t5hV7RkByOlUFV8rE7
+ WMldKkGr
+ 35knmqGpMarKNp6denW0yzsEEBINlTKTBnvrl5xgLMDdrftV+cazzSegkYfPwDrIAjgCJfaT/D7+zqLmzZOew1tCENWnhYGWmJUXDBlqYg4qyCD/PgRY03QG9dQXm22XR5fNu8qguEFGBjQ7mtIl2qn1Iii7q7JqEGUnYHJAnw7OI0jqTPSlWh1nMj6VooAj/snjfc0PJJ8LIYIJtRGrrfi/szQGdwC59EuESQ7DPVrJE3Q9SHMh/SyPexIC4fI81NMpvZYHvUrNkHxvLwZjviVL+DkvGm3Ksqcz4SXLLf4Y4orlqQ+fKCUlGBbpJixxI85Kk7LqAt3tet6EhvhiuCLvh2wg8M3cdkxGTJDbGb5WZId/6iOqqaWJjiA4GJu9uRenJSuKmGK7oricpW6Fj5g+XXDEF4HMlR9pg5h8S+1jz9e5MkShYfySkaMZPBuuoFjPMcjNyDptPF6kY+8Cf7u1BkTp9YUI5VwCqWDjpb0cr7D5Wkz5X9YPErSXL4PqtnC6sIdGNWwbEJFmDWX/m8jF8iAYyzMlJq0/R1yoQigJdTCA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,30 +122,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 30 Jul 2025 07:49:57 +0200 Hannes Reinecke <hare@suse.de> wrote:
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-> On 7/29/25 22:38, Andrew Morton wrote:
-> > On Tue, 29 Jul 2025 08:46:33 +0200 Hannes Reinecke <hare@kernel.org> wrote:
-> > be needed in earlier kernels?
-> > 
-> > IOW, if we wish to fix this crash in earlier kernels, I really cant use
-> > this series as presented.  For now I'll add it to mm-new to get it a bit
-> > of exposure while we decide what to do.
-> > 
-> > 
-> And here's me who thought we were doing upstream work precisely to
-> _not_ having to do backports :-)
+---1463770367-1769646309-1753858495=:2474
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-Yeah, well, maybe others aren't as keen on caring for -stable but I do
-think it's part of our role as kernel maintainers (as opposed to
-"developers"?).  And as a large number of MM developers work at
-organizations which use and ship older kernel releases, I assume
-they're on board with that!
+On Mon, 28 Jul 2025, Baolin Wang wrote:
 
-> I see if we can roll patch 1&2 into one; guess I'll need to do it
-> anyway for our kernel.
+> After commit acd7ccb284b8 ("mm: shmem: add large folio support for tmpfs"=
+),
+> we extend the 'huge=3D' option to allow any sized large folios for tmpfs,
+> which means tmpfs will allow getting a highest order hint based on the si=
+ze
+> of write() and fallocate() paths, and then will try each allowable large =
+order.
+>=20
+> However, when the i915 driver allocates shmem memory, it doesn't provide =
+hint
+> information about the size of the large folio to be allocated, resulting =
+in
+> the inability to allocate PMD-sized shmem, which in turn affects GPU perf=
+ormance.
+>=20
+> To fix this issue, add the 'end' information for shmem_read_folio_gfp()  =
+to help
+> allocate PMD-sized large folios. Additionally, use the maximum allocation=
+ chunk
+> (via mapping_max_folio_size()) to determine the size of the large folios =
+to
+> allocate in the i915 driver.
+>=20
+> Fixes: acd7ccb284b8 ("mm: shmem: add large folio support for tmpfs")
+> Reported-by: Patryk Kowalczyk <patryk@kowalczyk.ws>
+> Reported-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+> Tested-by: Patryk Kowalczyk <patryk@kowalczyk.ws>
+> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> ---
+>  drivers/gpu/drm/drm_gem.c                 | 2 +-
+>  drivers/gpu/drm/i915/gem/i915_gem_shmem.c | 7 ++++++-
+>  drivers/gpu/drm/ttm/ttm_backup.c          | 2 +-
+>  include/linux/shmem_fs.h                  | 4 ++--
+>  mm/shmem.c                                | 7 ++++---
+>  5 files changed, 14 insertions(+), 8 deletions(-)
 
-You too!
+I know I said "I shall not object to a temporary workaround to suit the
+i915 driver", but really, I have to question this patch.  Why should any
+change be required at the drivers/gpu/drm end?
 
-Thanks.
+And in drivers/gpu/drm/{i915,v3d} I find they are using huge=3Dwithin_size:
+I had been complaining about the userspace regression in huge=3Dalways,
+and thought it had been changed to behave like huge=3Dwithin_size,
+but apparently huge=3Dwithin_size has itself regressed too.
+
+Please explain why the below is not a better patch for i915 and v3d
+(but still a temporary workaround, because the root of the within_size
+regression must lie deeper, in the handling of write_end versus i_size).
+
+Hugh
+
+---
+ mm/shmem.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 3a5a65b1f41a..c67dfc17a819 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -5928,8 +5928,8 @@ struct folio *shmem_read_folio_gfp(struct address_spa=
+ce *mapping,
+ =09struct folio *folio;
+ =09int error;
+=20
+-=09error =3D shmem_get_folio_gfp(inode, index, 0, &folio, SGP_CACHE,
+-=09=09=09=09    gfp, NULL, NULL);
++=09error =3D shmem_get_folio_gfp(inode, index, i_size_read(inode),
++=09=09=09=09    &folio, SGP_CACHE, gfp, NULL, NULL);
+ =09if (error)
+ =09=09return ERR_PTR(error);
+=20
+---1463770367-1769646309-1753858495=:2474--
 
