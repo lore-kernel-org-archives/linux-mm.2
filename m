@@ -2,112 +2,109 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BCB5DC87FCB
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 07:52:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D0F8BC87FCC
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 08:03:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3DDF16B0088; Wed, 30 Jul 2025 03:52:35 -0400 (EDT)
+	id 552678E0002; Wed, 30 Jul 2025 04:03:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 38E7A6B0089; Wed, 30 Jul 2025 03:52:35 -0400 (EDT)
+	id 504458E0001; Wed, 30 Jul 2025 04:03:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A5526B0092; Wed, 30 Jul 2025 03:52:35 -0400 (EDT)
+	id 4408A8E0002; Wed, 30 Jul 2025 04:03:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C3506B0088
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 03:52:35 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B87C11A0250
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 07:52:34 +0000 (UTC)
-X-FDA: 83720163828.23.244E15A
-Received: from smtp-fw-80008.amazon.com (smtp-fw-80008.amazon.com [99.78.197.219])
-	by imf06.hostedemail.com (Postfix) with ESMTP id B5038180007
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 07:52:32 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=tHoTEQpc;
-	dmarc=pass (policy=quarantine) header.from=amazon.de;
-	spf=pass (imf06.hostedemail.com: domain of "prvs=2993f5a26=acsjakub@amazon.de" designates 99.78.197.219 as permitted sender) smtp.mailfrom="prvs=2993f5a26=acsjakub@amazon.de"
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753861952; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F7228E0001
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 04:03:27 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6A97F160365
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 08:03:26 +0000 (UTC)
+X-FDA: 83720191212.15.09503F0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id B5A5B160013
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 08:03:24 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Phq6ne8j;
+	spf=pass (imf08.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753862604; a=rsa-sha256;
 	cv=none;
-	b=Em7T0FfE7EKC9WvjIhr5D3TimqbPnjcPv7VmEYZPOh06wrCZ+zDiYqGT85ni0NNwgCtT+o
-	Oao9fuH2NFFB9bo72KDrpAidjrZXmzI/JIqanGP8CaoDxnNisxeSZM1UH/wvtH4Roobx9G
-	9bkKIBVgZR6XJDP4YmKCs5AVatirXEw=
+	b=wok7RAMxHzYZBo8cRFfef40VxYLwXr16hyBFuQ296k7evqUNFU7texLN5YCZ3NtRGweMdE
+	PaZTsyC5kqTmIzDttLvuQ0lN1lCmUD6L+EvoDOHkb57PxxnP0l8DgdAcOdoSeiIzrdyiJo
+	17XR91UVdcqS65bHw1eKWJFiZsJCO6o=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=tHoTEQpc;
-	dmarc=pass (policy=quarantine) header.from=amazon.de;
-	spf=pass (imf06.hostedemail.com: domain of "prvs=2993f5a26=acsjakub@amazon.de" designates 99.78.197.219 as permitted sender) smtp.mailfrom="prvs=2993f5a26=acsjakub@amazon.de"
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Phq6ne8j;
+	spf=pass (imf08.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753861952;
+	s=arc-20220608; t=1753862604;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ewmKg2qydsqsPsmwmuOE+1zussXmQpRpngogWAjgHX8=;
-	b=2yQ8FXpJ55bPnzuUW5Kl9hjX1P5Q3WVLnXOecbGp7aopnUVaDvzqDoNR8I9WE7vpYeomTH
-	qCH/nwA5MWOR9mZXq6lB2iRf68icLqEi1fwrG7XbMheIIijFDNzd3vtrmVkb+XpO/O9ZXO
-	9ntPXWo987khB7EarPiC0HkWe7tRpJU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1753861952; x=1785397952;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ewmKg2qydsqsPsmwmuOE+1zussXmQpRpngogWAjgHX8=;
-  b=tHoTEQpcMpxAJH8kTlOgA+dowGj4ZP+N2qD1igBOOJuh3guI1uhq1Z07
-   bUM0S4m/Q7lOHju4pbCtR+EtrzqT4Pv3RQoZkbCvdQhOn3YitB+tHyyVh
-   KEE+8oXQpJUzHCtZSxYdzVSWzf+gXLaul9/te5O2o8XT8t5OgVTbGeHaQ
-   oVP78e4PCTR7OzDcfxQGIWxnI8FbGBIgyDjlbozUe7l+dS0h02H55ofar
-   qBMz/awAHC1gmYuShpjeBcEcMuN2KloNfkQadD37zJm3xdy2NuoKtU8lY
-   gIdcL44hL4sPepZ3/6r6iXhzdt2thpnYCPKOq6I7VjToXiTeVPRg9fpBh
-   g==;
-X-IronPort-AV: E=Sophos;i="6.16,350,1744070400"; 
-   d="scan'208";a="218293529"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
-  by smtp-border-fw-80008.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2025 07:52:30 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [10.0.38.20:12002]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.62.141:2525] with esmtp (Farcaster)
- id bd670100-5b4c-4039-a6c9-e56ef9592578; Wed, 30 Jul 2025 07:52:30 +0000 (UTC)
-X-Farcaster-Flow-ID: bd670100-5b4c-4039-a6c9-e56ef9592578
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 30 Jul 2025 07:52:30 +0000
-Received: from dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com
- (172.19.75.107) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14; Wed, 30 Jul 2025
- 07:52:27 +0000
-Date: Wed, 30 Jul 2025 07:52:25 +0000
-From: Jakub Acs <acsjakub@amazon.de>
-To: Greg KH <gregkh@linuxfoundation.org>
-CC: <stable@vger.kernel.org>, Liu Shixin <liushixin2@huawei.com>, Yang Shi
-	<yang@os.amperecomputing.com>, David Hildenbrand <david@redhat.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>, Johannes Weiner
-	<hannes@cmpxchg.org>, Kefeng Wang <wangkefeng.wang@huawei.com>, Mattew Wilcox
-	<willy@infradead.org>, Muchun Song <muchun.song@linux.dev>, Nanyong Sun
-	<sunnanyong@huawei.com>, Qi Zheng <zhengqi.arch@bytedance.com>, Andrew Morton
-	<akpm@linux-foundation.org>, <linux-mm@kvack.org>, Jakub Acs
-	<acsjakub@amazon.de>
-Subject: Re: [PATCH 6.12.y] mm: khugepaged: fix call
- hpage_collapse_scan_file() for anonymous vma
-Message-ID: <20250730075225.GA39475@dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com>
-References: <20250729090347.17922-1-acsjakub@amazon.de>
- <2025072932-scorer-manhood-b6fc@gregkh>
+	bh=xatzGkHff3a+VG8MroN4dKCni5BF8oNRuK/K4ftkf9k=;
+	b=tK9gKd0SjdcznxzPP/Vmzai6o1CDCyoRUeWcuXqdfsKM9419HxYaqggOao2pWMjosL0X0+
+	T2bPnB7pAPoJwECULbCs4TTFNfvIw+mEj/bHWXN9BNMdQr5eWO5r9dAhhZ9rJaG3oUsIQn
+	+YesBpWt4UMSAXSVqKwjGIeMEuyfNq0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7CC0543D89;
+	Wed, 30 Jul 2025 08:03:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C439C4CEE7;
+	Wed, 30 Jul 2025 08:03:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753862603;
+	bh=HEgPRodovJalgZ/g1kb94tmKLk2QtGEpj7zW37uzKec=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Phq6ne8jeiHRh+g/jyaIbVu24BslXtOFr5jlNeVkeq5Pd4JP4IP/urevgfTH7y8Ng
+	 IM4N1EVTTw6lIyVWLMQ5K0tdY5QpmQj79Qaao8gIoOMRohyP/vZ3M9ekEqXib6GZL+
+	 Vd2t51G/uWQd6oD58QoSzV0VWLuJ8QqSIDQStXuXWQ5G8gEHsTZDXx81LTTpzH1daZ
+	 ezVZXuukAwl9TGk23btBxOterY1GjPt8BN4i8ULPTxzKhdnMZ1IhejtxHnXHMC5Wo6
+	 rXCmw6UrvY7ectigm1BvmYyiZfOF9dlvJf0mlr92yHUxxT/i06Xv2nhdtuZ9olDn3p
+	 c3RNuuUGIqBAg==
+Date: Wed, 30 Jul 2025 11:03:17 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Logan Gunthorpe <logang@deltatee.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, Christoph Hellwig <hch@lst.de>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
+	Jens Axboe <axboe@kernel.dk>,
+	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+	Joerg Roedel <joro@8bytes.org>, kvm@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH 05/10] PCI/P2PDMA: Export pci_p2pdma_map_type() function
+Message-ID: <20250730080317.GO402218@unreal>
+References: <82e62eb59afcd39b68ae143573d5ed113a92344e.1753274085.git.leonro@nvidia.com>
+ <20250724080313.GA31887@lst.de>
+ <20250724081321.GT402218@unreal>
+ <b32ae619-6c4a-46fc-a368-6ad4e245d581@deltatee.com>
+ <20250727190514.GG7551@nvidia.com>
+ <d69e0d74-285e-4cde-a2e4-a803accfa9e1@deltatee.com>
+ <20250728164136.GD402218@unreal>
+ <d3c8c573-f201-4450-9400-cc3ccafd2c04@deltatee.com>
+ <20250728231107.GE36037@nvidia.com>
+ <f332e2b9-151f-49ca-ac0c-8c9494c38027@deltatee.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2025072932-scorer-manhood-b6fc@gregkh>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Originating-IP: [172.19.75.107]
-X-ClientProxiedBy: EX19D032UWB003.ant.amazon.com (10.13.139.165) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-X-Rspamd-Queue-Id: B5038180007
-X-Stat-Signature: kwurtdoig8h31538944jzjxq6zn47i68
+In-Reply-To: <f332e2b9-151f-49ca-ac0c-8c9494c38027@deltatee.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1753861952-577564
-X-HE-Meta: U2FsdGVkX1+iewG6rZoEF4XkZVNTi93JPmrE3RdniYac8iJd+P2Ks2Sx+GjQmoKvJ9KRbhK8S29MjNf1i88tJkcziBGYU9seTLUzqPABjpXJbodmCUsoIUtPiXxTQHbacQTeGRuVsdjgj0IBcJki3wZYEpgLJtdX3PVk4FHQahGgRGhxFnXN6Lvkql2ic79sadNCGne8Li3UqjA1U4gfX8mQZ1ECSqzlnts/8GNXUKJuanVQXea3rTKQVX7WVpewRVLtBcJHLVp4WEyS/PXuFPU0lJ9ediyiem5Lw+6oWJU4Fo97YA3ZyooDPLNgA8fDRiQiynJi58oiuH/c+45pxLv/RRi7FGtz4jpReEQjeSqyDS0s7cB85hix2ZSLCcgIbc66IZhI/uG/RO5n2Ern9QexIhLHPMfwsRzq4/lIQO52Z/Pd0JhYhHF+18ymxb6UR/Xrx0Dd5RiDLWN6x3TL3w7/F5MmQT69+gOFhpdQygibvYiU5BtyYNcgvrsJz7C/yZEcnPtr3n16apfGxB5A9lehe1kPvlLoUyH3xtJUmS4bnJZLRZFeuQsHjdv3c6BcC1RIJMueUsKogJIkAphQmPDCQ7OODCgEfspHfV77Dnz13xUcAlHplZ8omWOZKAQggp200e0Eq/T75MtYVrdRuRJlRzzlc4KNKEK7+SRTlN8er0By5WnLoLSVXke+F3zC6ye8L1zP9k2SC1488l2tcTLAcCHOl/AjgID7LS2wy3dhHTexUQ3a3RRp8Lt6j6zMNIlRGn6T6usCxY1dseHPOz9qqSGcahm9lueTcvxGBZo81BcQ0S050We1PlfL7f1JbQtMxeZYH2FZCTkLu4nbW29Ytw8TD19vDv5BqP9A9GP7JCKpC4RxRbcrdATr7NuKcTxKygNXfxSC4ATVyOEx87Hdbc4wK1iUAIdGC9feRbyo5sIo5cnY0x3lVtK7960rbe6j/F8/2/NsroVlxe4
- XoEon5b4
- DwUYfbigzoz7y/no+KJcWN+DEVDXmCRx21jkpxNPitmFsKVR4mnnl5cS0LRblSEyGkPPQqMBOW0XtjRP5NEGVdsGafV0Xns5l7lRzWzsdUMT9nF+I1myNqVI228SF0Cuhqn6Hub1kHdWGY4M/NvEVW3nCUE3A4kJWYGnWYkn8GQ9tE8vZyd1ThK7kqeNBBY2mS/a96vXxK/jnuRp8KFwntxP5MZtXqsNISOE5dvIIRrEGaOeMviJ+e8jAquR9ZWseKyZewhBb53IfYGHvvt8WHfAXfVJ+MN7myOH6h3GZ7/XyoQj3/2I1kLkGJk040882pkJtgC6Yf3FN3ujd4B407cIgU7BBYz6IzLCBJK84a6nVQcJfvZYneTaHJWtsxGajyRlOXgmLVWEFdNXrnZIW+5pv2BnxRbbfBk3x6MerLjfx0ljARFpNFWZ1GQfZFe5ssTZDbuq/NpLrdcvYu3grm/2mWuuVHDcaUqMM1XMc7Ktn2d0jVHjYfPY2WLppCPe+q4gIdrFhHpcy7ORVc5OPvz9Ayo8Gwgz2NU7EI3FBb6o6qrrpk/oZcKMlLQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B5A5B160013
+X-Stat-Signature: 4gogs5fi1dmnqopcokwbiair8ctakmea
+X-HE-Tag: 1753862604-86386
+X-HE-Meta: U2FsdGVkX1+RoMSX3hNc8Gofk6O4qLQj6zon7nGb7HvVPofbrfuPJmqSYDbC7ad4R1ubb8gcyr5mTWF15rzvLz1G/hqLsaLt8k/3p64mgMzPUCGRJ2FGl/akJ/25LvCJz5yCI/P7E63dq+oBO0kkuxEX0niPvbGkeBTj3aIlExArkv789LNvQJ586sMEY6WXaUascaioN/wdAo8h/C6TNO8yE9heFxdjykqFftlSGqrgc9BacPoDCvw6kqt2fXQEuH6X4tZo0dapsLuJF7412WXyCUm7tZmu0pUnQraeZvzCCORB/lhNczx5ZkbUqlq4ObAiCeT5D2TmqojPEKiUNGYc1s3p351zfcNDB2fTVxP+E8mMpv6ka9kfkinqPgOBHCAH7/cs+MHaugz3+WGiArFhAkKIHpLg7YnAygA+WeS5GmPBxb08Km4pYTwPNA8khMA/TQrh8+Ll4QjNfdqniShtrPS4kUdzyD6bPTFFJURxHKpGA/uy6NdGbjf8aWBmoLKCqLTkeADIQ5l1Vu1qvpVFLh0z53DhfZOacx3nJI0nJRneptfMUTyEYmgRCgJHr0e4KuPcUn4+w9APeZvGKPUxledOd7ZV268VBRTSj3PwRVi61mdccQSfTtoAaitMuWbHZByDtJ6BTO7H6HxzdaYwMwQ8d95zXf0sEV60HA35mc9LMfAvPkSyBg2cujV/J/DAbov/yFEQOQ/CgdGiO7bFc1v8hcED7BJ5aRJEZduHK+uGwMs8WkaUNGEH/CbOeJmkUrl0FzZiwoP6Xloc+dHZIaCGP8oMiUxIMhM/0o1hPTpEGmmLPT74rLuFi2qYvLC0tFBgqraXiIB2931q13sLwe6XzYrfoJ8r3d68FBM+xqBt2lfmwYbASc/Eux/M6/9hD7gyHPK507j2Q3By7wlL2JcfQj0e1+sceWNVzkUaVRHK4D6qxkeHDGL1urcyu4fwr11IQA8Hwnxfb9B
+ fMJz+mDE
+ AAwFkd6yX0/z0luaFSami+Bo6S3jB1fGgOlXUdSiaqCSpH5CoaxFdZ95Uiy7yZshKrsQJrtHTyu+BRl6F1HQkOY4Zrv3B8a46jkntzHje/uXVnjmOHD2n12x1kChmPCPhUMsPmpSJs1EfxOytV6gVb1+2FnVeiQc+cblBkCwlwuhgWwDy24WpvtJN57Ts62Pp+GG4GqMCWlstwl9Dp5rXB9opkdrIoO92/HCdDdiV+qyzmmKCpfJY90jGmExlX3MDH1Aja9bn98sq6XjZkkOrX1x15xMk4xkNwoOE+62pmmsD2k0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,30 +113,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 29, 2025 at 04:49:51PM +0200, Greg KH wrote:
+On Tue, Jul 29, 2025 at 02:54:13PM -0600, Logan Gunthorpe wrote:
 > 
-> You need to sign off on patches you forward on.  Please fix that up and
-> resend all of these.
 > 
-> thanks,
+> On 2025-07-28 17:11, Jason Gunthorpe wrote:
+> >> If the dma mapping for P2P memory doesn't need to create an iommu
+> >> mapping then that's fine. But it should be the dma-iommu layer to decide
+> >> that.
+> > 
+> > So above, we can't use dma-iommu.c, it might not be compiled into the
+> > kernel but the dma_map_phys() path is still valid.
 > 
-> greg -h
+> This is an easily solved problem. I did a very rough sketch below to say
+> it's really not that hard. (Note it has some rough edges that could be
+> cleaned up and I based it off Leon's git repo which appears to not be
+> the same as what was posted, but the core concept is sound).
 
-Oh, that's embarrassing, my apologies for the miss, sent v2s:
-https://lore.kernel.org/all/20250730073927.27312-1-acsjakub@amazon.de/
-https://lore.kernel.org/all/20250730073956.28488-1-acsjakub@amazon.de/
-https://lore.kernel.org/all/20250730073945.27790-1-acsjakub@amazon.de/
+I started to prepare v2, this is why posted version is slightly
+different from dmabuf-vfio branch.
 
-Jakub
+In addition to what Jason wrote. there is an extra complexity with using
+state. The wrappers which operate on dma_iova_state assume that all memory,
+which is going to be mapped, is the same type: or p2p or not.
 
+This is not the cased for HMM/RDMA users, there you create state in
+advance and get mixed type of pages.
 
-
-Amazon Web Services Development Center Germany GmbH
-Tamara-Danz-Str. 13
-10243 Berlin
-Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
-Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
-Sitz: Berlin
-Ust-ID: DE 365 538 597
-
+Thanks
 
