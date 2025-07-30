@@ -2,111 +2,175 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CA82CC83F26
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 13:40:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 85AAEC87FCB
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 13:52:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 642EA6B008C; Wed, 30 Jul 2025 09:40:36 -0400 (EDT)
+	id E97286B008A; Wed, 30 Jul 2025 09:52:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F38D6B0092; Wed, 30 Jul 2025 09:40:36 -0400 (EDT)
+	id E48476B0092; Wed, 30 Jul 2025 09:52:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E2576B0095; Wed, 30 Jul 2025 09:40:36 -0400 (EDT)
+	id D36E66B0095; Wed, 30 Jul 2025 09:52:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E09D6B008C
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 09:40:36 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DFCD0C044F
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 13:40:35 +0000 (UTC)
-X-FDA: 83721040830.02.810E409
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 33D1F1A0011
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 13:40:33 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=m8TgLaML;
-	spf=pass (imf19.hostedemail.com: domain of leon@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C2FFC6B008A
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 09:52:53 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 70B7758C3B
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 13:52:53 +0000 (UTC)
+X-FDA: 83721071826.15.AA373E1
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf25.hostedemail.com (Postfix) with ESMTP id F0D7FA0008
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 13:52:50 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NnmcbnfJ;
+	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753882834;
+	s=arc-20220608; t=1753883571;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DwI8HW24x7jyl46fjynmA/WxmX0LnPGEQIHuMkllTKQ=;
-	b=oSg7+TWmALJ2tz1k/X84sO5/woqvL03RpAd2BKIZ2Csy+ik6qXV2voe3CGEDpUHl+7yWxY
-	uj1v2H057XUbKM8F+tZ9J7/Ko+c0KlzVNnXegHjjrp1nVX+LyYVAyHz1P/AMhFHx26vp0r
-	XxwQu5Iq7mLPJ51HVH0ALFfyJEozx8A=
+	bh=INvhw9PaQlqHnlfqMb8yKpdneujvD9kPiqSCHTmOp+c=;
+	b=7NmJpVpus6MPi9hzNVfnO68iH6YvDMHxmyZfs3GDvv+6lDHfOBkpEucGrqSnT9czy4FD0X
+	yJTjThdxAUeLNkNQgYo0FGzghz+Ih7zhZ2mwmJLfyOA/X5dLvygwnq7rp89ZsLVs5n7iPs
+	OxUlo8exFf/UjUSQtJjWnYLi5QvbCBM=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=m8TgLaML;
-	spf=pass (imf19.hostedemail.com: domain of leon@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753882834; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NnmcbnfJ;
+	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753883571; a=rsa-sha256;
 	cv=none;
-	b=Ub9nOyq0E9AefD8O8tT1H+Oen0OMLL9BMijivGCNGf1iVRfgSnnMlFNzDiqJC+qDiKTYXe
-	EGMN3eheYShzcwEX3N7PrDNB4ZdIzi+Z9RbnYGmoO2C2wp24EhP9fVA+i857dEKMPO+BuF
-	Qdaa3WJH0HtJoN48m71Ak0XcM5mbVGQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 67A16A5525C;
-	Wed, 30 Jul 2025 13:40:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 640CCC4CEE7;
-	Wed, 30 Jul 2025 13:40:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753882833;
-	bh=r3n99v7PlKiifLXLh9htJtFm2A7cf2OiYGh/qh9Hb1A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=m8TgLaMLadOIyx04mZ9ZYnn4myaayZRK7kgYZVWg3h0VvggYJqipkE7m8kihbxwWL
-	 9jKp14tTw38zaqtxLOs4+wPXQpdk5H5YuytkfRtotal19ho19vtLcN8uhZvhuvLRPX
-	 42c7rY/aM1/egztvkzXplhf+9bGFcggtgtx61kTgzCaXar98rSFW3YWyXa/FQaWlYW
-	 McArBA1HJxfYyEE59+8qhXBclPjUsdyQKbgOD5cwFnbRV+ycZ6W1VlL0iyN2sxk4Qa
-	 lAa5NhJYsRATLyxRQb00fyrj5qoDoGRC6J9qWpf+W0rI4zJpZixNNNgOGnHgjjxYGp
-	 gwqKIvjy1EGBw==
-Date: Wed, 30 Jul 2025 16:40:26 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Christoph Hellwig <hch@lst.de>, Jonathan Corbet <corbet@lwn.net>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, iommu@lists.linux.dev,
-	virtualization@lists.linux.dev, kasan-dev@googlegroups.com,
-	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
-	Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [PATCH 0/8] dma-mapping: migrate to physical address-based API
-Message-ID: <20250730134026.GQ402218@unreal>
-References: <CGME20250625131920eucas1p271b196cde042bd39ac08fb12beff5baf@eucas1p2.samsung.com>
- <cover.1750854543.git.leon@kernel.org>
- <35df6f2a-0010-41fe-b490-f52693fe4778@samsung.com>
- <20250627170213.GL17401@unreal>
- <20250630133839.GA26981@lst.de>
- <69b177dc-c149-40d3-bbde-3f6bad0efd0e@samsung.com>
- <f912c446-1ae9-4390-9c11-00dce7bf0fd3@arm.com>
+	b=KVjNh61VPbpFLK2dL7jX0qo1ho+gNdy8arhQWNf59KMGOnlRGVSGi1PyVkQHI6dfau4OqL
+	A82Uqho8kFCTMWTmOLrWFIwuiBMqwbepTFo1l32WRPRzhcA+xCa+yxv9ZlQTfaRNXvZmaJ
+	56+ZRgH7qPoxDLzZlcD1PK7QpPtVpUU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1753883570;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=INvhw9PaQlqHnlfqMb8yKpdneujvD9kPiqSCHTmOp+c=;
+	b=NnmcbnfJhU2/NmsRFZVrdqjNb5iMgOgQqbzK9LVodq8aDOuY6kCm/h/jNenCXHLdwak9Bf
+	6ihB/pUr2EfVQrfdqua1RmzzPZ1u+oQnEvsbeFbIqa1oGKbROs286G+gCPjrvmr2REfDDw
+	Ese/ZybnmLWigjzY9x/lgBKwH0D3M4Q=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-199-DyqcL7lhNzCq8x3momBl1Q-1; Wed, 30 Jul 2025 09:52:49 -0400
+X-MC-Unique: DyqcL7lhNzCq8x3momBl1Q-1
+X-Mimecast-MFC-AGG-ID: DyqcL7lhNzCq8x3momBl1Q_1753883568
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-ade6db50b9cso91028366b.1
+        for <linux-mm@kvack.org>; Wed, 30 Jul 2025 06:52:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753883568; x=1754488368;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=INvhw9PaQlqHnlfqMb8yKpdneujvD9kPiqSCHTmOp+c=;
+        b=Pi/3swlVGe6v9+SSoGFzkoOpVqqJyRytmG4r+gn2mDT34KeXpEJVtd90cQ0i1GzrhN
+         e4X3QWu+3/KsxKR9ABrO1IIqhj7e9mmzJLR/BIDhav+GqLyOWwJz3MwBhgNXlDoG5Tbf
+         DLYIsbFHVA/G62dz0PqCnU90zIJ+2iI4o33/9DVkKIKZO3DJ4wPg4wiBmKRcYvK9IrAr
+         wVBX83BbDP1lXyhJAeUj8oB0Mun61bacTnqasc+KXHI8iGpCDqItnL17Yp56Pj6G9oFZ
+         z1m0zbsOAdpWPCWkc8Op1Z7Z2AqFSzUMuieae2+uZ6xiFpB0Wf1NOzpWh34GUp1y16d4
+         Canw==
+X-Forwarded-Encrypted: i=1; AJvYcCXANRxCv4+KNyRdDUMcwwllqJkteBWL0JZvt/4DztE6pj9sYec5kuAHrPN4RyErtkJ+GUBic/YMhg==@kvack.org
+X-Gm-Message-State: AOJu0Yy7PI6fMev+NLTwtI8E+Awy99lJhzu0vSoot8Ml7RY9Iuda3HWa
+	zx88Vrrrlo9mpOUiEbgWWBxM+29ZbAie3IBAknMYQ0UQlf0AsXqspTAT0+t6YYFEGs3ogYQ+tGv
+	kBrm7mR1VMawHr75TX9lSGzaKjOHWNTGAOVs8JmNzATPv8OS7Ghib
+X-Gm-Gg: ASbGncsTrjgy/0xiV6rr9vRA4kZ/WU1Sm60TfLFwB1mBqHp5g2Ra77tzZXqAmd7Erqg
+	P+bzO+DuShSieXFsqg0SMLXVYywdyAvm8Lpj4276MuE8rqf/w74kVjKOn0g8LZq+S216BIyhfhJ
+	7M/hXlljXqeWHuoNXG5g7ra7uNv1vydk8ZQlohV/2r0aGqfx35N3dl5qTVZuySgI877Rkp9PgTk
+	w4dSPZubT7Lz9C8lN002Kl87lbN2sw9uExPfXa7g6x7GjaQlvn+07xkLlMEZEOwDEky17htxv68
+	uYUfMpL83ap7jJbpSU+f1IB7U76g6stGmEaLzDcqskhJrHCtr6f6XZEFyFDmLw==
+X-Received: by 2002:a17:907:7252:b0:ae6:e25b:2413 with SMTP id a640c23a62f3a-af8fda42a6emr459883966b.44.1753883567588;
+        Wed, 30 Jul 2025 06:52:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE2KhtHgQZ228r5yO4JfetEAu342+CZE6Zr5/g2fkWHPp7n9P5vjQqg7A7lY87sHfovdnuCuA==
+X-Received: by 2002:a17:907:7252:b0:ae6:e25b:2413 with SMTP id a640c23a62f3a-af8fda42a6emr459879766b.44.1753883567129;
+        Wed, 30 Jul 2025 06:52:47 -0700 (PDT)
+Received: from [10.32.64.156] (nat-pool-muc-t.redhat.com. [149.14.88.26])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af8f1b172f2sm210258566b.80.2025.07.30.06.52.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 30 Jul 2025 06:52:46 -0700 (PDT)
+Message-ID: <ffc43855-2263-408d-831c-33f518249f96@redhat.com>
+Date: Wed, 30 Jul 2025 15:52:45 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f912c446-1ae9-4390-9c11-00dce7bf0fd3@arm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC][PATCH v2 22/29] mm/numa: Register information into Kmemdump
+To: Eugen Hristev <eugen.hristev@linaro.org>, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-mm@kvack.org, tglx@linutronix.de, andersson@kernel.org,
+ pmladek@suse.com
+Cc: linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org,
+ corbet@lwn.net, mojha@qti.qualcomm.com, rostedt@goodmis.org,
+ jonechou@google.com, tudor.ambarus@linaro.org
+References: <20250724135512.518487-1-eugen.hristev@linaro.org>
+ <20250724135512.518487-23-eugen.hristev@linaro.org>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ g3eXuA==
+Organization: Red Hat
+In-Reply-To: <20250724135512.518487-23-eugen.hristev@linaro.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 8uflt7zKywy18PW4r9chduP-aGNHPF6uiYD8zrUYH4U_1753883568
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: skfph3ttjtcwoethgheastgzf1wpxxkf
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: F0D7FA0008
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 33D1F1A0011
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 9noo4ijuqqzia6edfpakm94cn7woaj64
-X-HE-Tag: 1753882833-953370
-X-HE-Meta: U2FsdGVkX18UyO4Xmw+LbyE/B9iCiq1OkeiSOo1zfIHeN8EV/AE5ezAgXCWXUIJdiqRWPi+u2mvbOFLZXRH7ZyNxsA0SpYlRgR3bqkoDYvx1XgOD9wba2OFxihB0JXE8wz8JLJLZyDpZUR/LOnHLTBtFFd2FyRY9nlS/DXPX6aS1t4K99PeizY2BeJXSeefPxZHrgoHReVVOjbHoYup7vTeOOY7S02cX42vUWeDZSYaWcQVs1S8rcV2ohbhjFdPnXV2u3rYfRo/08G2azgA0qBiV1z3ECaVIWethUqEL43VDBinS9MtDULHjxa2m3Ig2Ym26vp53ThrADeMUGAGyYxZsLLSltk/2nhSCrZO0iXN/6yqK47mUtEQSyn7nt6EQGnLIPtHwkrn+Dx3bDsG4kxwNR5vx41xkeFpQn5aC+AiXs8/Ex8Up+Z50Ni7eF9nu6SFaW8sqF8QlpaXmUMKSx4ZYTGkUgA0Hdtm0JRiVLwVgOfz+fKI4eFSpUvFXwI3XF7UzKcgjw2Y+bhGzPlh4r+QRN6XxSd8UifusNVFD+xli5xkKZL8N5mvFKknSGq7T4EsW9NBVyk8MkT68T41aNRno6ntgeI/lS0Pr+4J1mOosLNCTmnrw5GPErEKCLR6dSP0WHAA0Y/fma/oOKTj/qyhx0oOAPBSubAtVH2WIBI4x1E/CH4dYcaD42WRubu54rBO2tFSj3p3400tKM9zjDw53kGOG6cRvIE+05e68D+spUJi/2R+ANTe1N6Cztt4oyWeanb84Egbx+Lm8T/Zr5ayS+BaP3/dUxoMwRHA5dowIGbKyxHvOUjJH7Bk+cZHXu6/hfZRWeZVI05DubxARwbNhj6dpR1K2Cfd2axqEwt8TdXxrewd63h9IoD7y/feXjkP39WZRB+FuFo6TlPZgIW683iFQNnYUbCXQcEqOxj43M2TEMaZLaBVtQk4ZoTfWBcqJNt0hBtON1N5Huzh
- JdEU8etR
- dPhe2NbvoAy6qnhifJN7spF63X5O6svbUyzTqXbR2ovm2UtuxlTT5gFqMhihGAmGZQmhbwI/pbMMCqCBm1dqQQ5FC5YocfIGk5+CJdufTyWKuX5qQtV8lJvYdlKjaFi3jn715MSw6fdae69VgyXwaVQtyhhxO/Q+S86EqTN8AQ6Bk82TtxKPM42pT2G+qW7S27kFUStAHIUCEpEbpg4SSow1lY+UWU3vUIfPyFbr7HFDLsldTjclyXnPEFM3EuTK2NgUZ
+X-HE-Tag: 1753883570-38343
+X-HE-Meta: U2FsdGVkX1/RgOfD4Ie0hvmnydJzjbJ8kdJLWz3QPgByMjYGBx0blaj2LQqlzBRSlRf6CtfI3GOtRuonsnXwELSuLxIKrvcyTsOyOR5KlNvH3AHVs3/+uRUY4Lv4DR2gNGv9jSjffpQYcrfiOyP2zXHeF8dPo5Bb6SQ+8C+F1OHtobIm1sczZeBg4sNp+brTNeS+zSp9nwD802IvrYnLWMxkmMA8YYaN49XVo7REZIKa7tahx+rac4efeXbV5A0BOTGihqVMxqyecPAMrnYS+qTXfAAnJAKVas2BAs1ZZWR/SjrLKmiWt9qjB/JgKs1qa+5nYiSsR/YQrJBhxT+ZQC82fQhZ8XebGy18v1Qf5PHc11R0Z/TGFddvOKOoLIBzfsfk/XJqfGXFS9ypS1FdoejuOv7dIDxym32lZ1uyfiZmsBW3yTfsaibStT51awim8uWA23bFPTbYv4YKqBRtvt+OW2EqhUYQR/4bRaBdqMSptzDfK2bejSJ4p8w0kFtfKf4DUpOLlTJqTFJ8K0+BtyAGJUsL++DPXzWcXZMhCLVn6NbOfuau6UFSjy2Iy1PaVP4lDUNbmPLlH6CiugxzJB3GKyNAE7dUdA87tUcsJ2VdZXZo5h4w/57Nh4PA94r1ZN0paOD2zatlOsCmUeszB1JxAsJTSK25g+zS14vHmVWN+uFCOa9JDH2xzr52sSPfA/CgbE6KggAztxkhv4ppJ+7ultbzIJgeogvgAlVceTrFYXeQt7I872Y8dDryRsjuIQuL5WidfvjJMZ7DF4KNG+oNCtpqEjDUSNCD7pXqTsBhT5zy9IaDewAgw4SoWNDxudepHKRzAdftVgWSj2QRswWJJdXkqs5k65+mrosigYqDe4NQ9EkVf3+KfcxeppFAQ1C195nFcQB+pLKYwx1b2cp0IjcGnXiszY3ZMLYhEcue4MCWsNnH3KKazszLwMXhtrB7d7E2mIdlH7LWvuz
+ v/lzD3q1
+ FqmgBtoKd525Y6NWVlMUf4XGDM8df9PsJe09b6q8A3Sjd21/7zGNWt9NoOauoWGbxsZ0Xs05GZP9+7o2Exfm+VzQ927FxQQJEEWi+UquiKonVTCwZZrJXRj8Z2B27AvCotQZrLGQkK6Zi3s63vf99HB+O4/i7zsJ2OWv1COYroF1w4nGgIlSgeEBpJL53gOwMzWfWpZzTK52mz0b8DuM8O6G5TH0x7N6QbZbovOgpzB8/qJBIeVCN7erKVL7iShy/m7R7u73PS7zj9gMXpLQxOy6YEgoHI6p5fBNdv/8s+WM8YIRH/X8v7s/g0WuD8MITYhdy5DWVvzC0NbYxvnUjVi2klRNlASAj6UGkX1TZq/X5nk1WfIFRTe0X6hAdfo29gWcw6cShB5XhxK5v9CS0EkmpkqVaMEJYKjQIfTTeHrM482mV78/VvVwxZ/q3msNLRT86q0E40xjWUzfYd24NDmGQw8b6ITaIQ/N7nIxI5PKqlfep6qivul4KKa5cMMEIG8+zK/oat48ovPhD+ss6MWAdKlINiu8vKx2pqZO6ItiuZbY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,85 +179,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 30, 2025 at 12:11:32PM +0100, Robin Murphy wrote:
-> On 2025-07-08 11:27 am, Marek Szyprowski wrote:
-> > On 30.06.2025 15:38, Christoph Hellwig wrote:
-> > > On Fri, Jun 27, 2025 at 08:02:13PM +0300, Leon Romanovsky wrote:
-> > > > > Thanks for this rework! I assume that the next step is to add map_phys
-> > > > > callback also to the dma_map_ops and teach various dma-mapping providers
-> > > > > to use it to avoid more phys-to-page-to-phys conversions.
-> > > > Probably Christoph will say yes, however I personally don't see any
-> > > > benefit in this. Maybe I wrong here, but all existing .map_page()
-> > > > implementation platforms don't support p2p anyway. They won't benefit
-> > > > from this such conversion.
-> > > I think that conversion should eventually happen, and rather sooner than
-> > > later.
-> > 
-> > Agreed.
-> > 
-> > Applied patches 1-7 to my dma-mapping-next branch. Let me know if one
-> > needs a stable branch with it.
+On 24.07.25 15:55, Eugen Hristev wrote:
+> Annotate vital static information into kmemdump:
+>   - node_data
 > 
-> As the maintainer of iommu-dma, please drop the iommu-dma patch because it
-> is broken. It does not in any way remove the struct page dependency from
-> iommu-dma, it merely hides it so things can crash more easily in
-> circumstances that clearly nobody's bothered to test.
+> Information on these variables is stored into dedicated kmemdump section.
 > 
-> > Leon, it would be great if You could also prepare an incremental patch
-> > adding map_phys callback to the dma_maps_ops, so the individual
-> > arch-specific dma-mapping providers can be then converted (or simplified
-> > in many cases) too.
+> Register dynamic information into kmemdump:
+>   - dynamic node data for each node
 > 
-> Marek, I'm surprised that even you aren't seeing why that would at best be
-> pointless churn. The fundamental design of dma_map_page() operating on
-> struct page is that it sits in between alloc_pages() at the caller and
-> kmap_atomic() deep down in the DMA API implementation (which also subsumes
-> any dependencies on having a kernel virtual address at the implementation
-> end). The natural working unit for whatever replaces dma_map_page() will be
-> whatever the replacement for alloc_pages() returns, and the replacement for
-> kmap_atomic() operates on. Until that exists (and I simply cannot believe it
-> would be an unadorned physical address) there cannot be any *meaningful*
-> progress made towards removing the struct page dependency from the DMA API.
-> If there is also a goal to kill off highmem before then, then logically we
-> should just wait for that to land, then revert back to dma_map_single()
-> being the first-class interface, and dma_map_page() can turn into a trivial
-> page_to_virt() wrapper for the long tail of caller conversions.
+> This information is being allocated for each node, as physical address,
+> so call kmemdump_phys_alloc_size that will allocate an unique kmemdump
+> uid, and register the virtual address.
 > 
-> Simply obfuscating the struct page dependency today by dressing it up as a
-> phys_addr_t with implicit baggage is not not in any way helpful. It only
-> makes the code harder to understand and more bug-prone. Despite the
-> disingenuous claims, it is quite blatantly the opposite of "efficient" for
-> callers to do extra work to throw away useful information with
-> page_to_phys(), and the implementation then have to re-derive that
-> information with pfn_valid()/phys_to_page().
+> Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
+> ---
+>   mm/numa.c | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
 > 
-> And by "bug-prone" I also include greater distractions like this misguided
-> idea that the same API could somehow work for non-memory addresses too, so
-> then everyone can move on bikeshedding VFIO while overlooking the
-> fundamental flaws in the whole premise. I mean, besides all the issues I've
-> already pointed out in that regard, not least the glaring fact that it's
-> literally just a worse version of *an API we already have*, as DMA API
-> maintainer do you *really* approve of a design that depends on callers
-> abusing DMA_ATTR_SKIP_CPU_SYNC, yet will still readily blow up if they did
-> then call a dma_sync op?
+> diff --git a/mm/numa.c b/mm/numa.c
+> index 7d5e06fe5bd4..88cada571171 100644
+> --- a/mm/numa.c
+> +++ b/mm/numa.c
+> @@ -4,9 +4,11 @@
+>   #include <linux/printk.h>
+>   #include <linux/numa.h>
+>   #include <linux/numa_memblks.h>
+> +#include <linux/kmemdump.h>
+>   
+>   struct pglist_data *node_data[MAX_NUMNODES];
+>   EXPORT_SYMBOL(node_data);
+> +KMEMDUMP_VAR_CORE(node_data, MAX_NUMNODES * sizeof(struct pglist_data));
+>   
+>   /* Allocate NODE_DATA for a node on the local memory */
+>   void __init alloc_node_data(int nid)
+> @@ -16,7 +18,8 @@ void __init alloc_node_data(int nid)
+>   	int tnid;
+>   
+>   	/* Allocate node data.  Try node-local memory and then any node. */
+> -	nd_pa = memblock_phys_alloc_try_nid(nd_size, SMP_CACHE_BYTES, nid);
+> +	nd_pa = kmemdump_phys_alloc_size(nd_size, memblock_phys_alloc_try_nid,
+> +					 nd_size, SMP_CACHE_BYTES, nid);
 
-Robin, Marek
+Do we really want to wrap memblock allocations in such a way? :/
 
-I would like to ask you to do not drop this series and allow me to
-gradually change the code during my VFIO DMABUF adventure.
+Gah, no, no no.
 
-The most reasonable way to prevent DMA_ATTR_SKIP_CPU_SYNC leakage is to
-introduce new DMA attribute (let's call it DMA_ATTR_MMIO for now) and
-pass it to both dma_map_phys() and dma_iova_link(). This flag will
-indicate that p2p type is PCI_P2PDMA_MAP_THRU_HOST_BRIDGE and call to
-right callbacks which will set IOMMU_MMIO flag and skip CPU sync,
+Can't we pass that as some magical flag, or just ... register *after* 
+allocating?
 
-dma_map_phys() isn't entirely wrong, it just needs an extra tweaks.
+-- 
+Cheers,
 
-Thanks
+David / dhildenb
 
-> 
-> Thanks,
-> Robin.
-> 
 
