@@ -2,102 +2,100 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 69AB6C87FC9
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 12:53:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6561AC87FC9
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 12:53:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0457D6B0088; Wed, 30 Jul 2025 08:53:29 -0400 (EDT)
+	id F40FD6B0093; Wed, 30 Jul 2025 08:53:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F388A6B0089; Wed, 30 Jul 2025 08:53:28 -0400 (EDT)
+	id EEB0C6B0095; Wed, 30 Jul 2025 08:53:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E27396B0093; Wed, 30 Jul 2025 08:53:28 -0400 (EDT)
+	id DDA156B0096; Wed, 30 Jul 2025 08:53:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CF5556B0088
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 08:53:28 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 536DE803D1
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 12:53:28 +0000 (UTC)
-X-FDA: 83720922096.27.0293F9D
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 4C1DF1C0007
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 12:53:26 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nVW2Ha68;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf21.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753880006; a=rsa-sha256;
-	cv=none;
-	b=W+0kpSFg8QFNkD+pC19Lcr/N4TPQrfkNl4YvFZtdjjX4Crf6J7Sm3l0R5L5I7qm0Tnck5i
-	hyubbgoBZqTrTgm1mP1lZUeYD1JLb70ClYvBATeLG4DZiyWlJnNGFUv1rlIUDJLCbuhUM3
-	lWNoBAYKAtVJAcUtE7kHs0z5I5TNyic=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nVW2Ha68;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf21.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id CB8C06B0093
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 08:53:53 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 54AC080525
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 12:53:53 +0000 (UTC)
+X-FDA: 83720923146.04.A673183
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 332D3C000C
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 12:53:50 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=k3pctjtZ
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753880006;
+	s=arc-20220608; t=1753880031;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iHuGd1o3geC90thSCnWisGLP32owTrOKYJC4wfO+xvA=;
-	b=kjTIk8gu8evtxYsPGjRK9je3fpxccTzfnC1J0O+HzFZoprGp7pknwo28PblMKh+GjhsTne
-	XjB1Uvzt7ytQlnt6O4qGzzePTM8PxqRsPHDs9xljscp36+/z1VU4XFNY16y9Rr/SL17XXO
-	s3d7Q+UlbiS/62WtSBmVoILvSAEDang=
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-ae6fa02d8feso1040315866b.0
-        for <linux-mm@kvack.org>; Wed, 30 Jul 2025 05:53:25 -0700 (PDT)
+	bh=qUTEvgPr5pDo52lKZf6mOXPWs0RWvEkRiwEoyLLTu3o=;
+	b=7PNsWACtgZpNUx0I/3Oo0hlxv/N6KrohrXXNLUW60E34M4ZsvJWVOj1SrIZsJiyt+d7pIW
+	R5XeQfcx07kvNj4aPmHE/kCdQQ3VaaZL0y4LqvB589NugTUpkHnyZ1QfjfDtAYmq8aMKcX
+	D+6jK7eQpUKlAuVsNMYaiLlP5FYg8/I=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=k3pctjtZ;
+	spf=none (imf10.hostedemail.com: domain of brgl@bgdev.pl has no SPF policy when checking 209.85.208.173) smtp.mailfrom=brgl@bgdev.pl;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753880031; a=rsa-sha256;
+	cv=none;
+	b=7EsY2cT3p+UT7fEFcM3MdIV5xLWBeSM1fs78INtG4I/6Wri3RttvLx5+/k5a0hfCGKgNMW
+	GmniEw76DGqyzyvxmhi8YGuxJcjjusUlsAFayX4cXzZj++StWIZhICxwX1nJ1ULLPAeN8P
+	ch1CPQWxZ8FqHfjBiPU0mYRhT4OhsIU=
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-32b4876dfecso8579871fa.1
+        for <linux-mm@kvack.org>; Wed, 30 Jul 2025 05:53:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753880005; x=1754484805; darn=kvack.org;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1753880029; x=1754484829; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iHuGd1o3geC90thSCnWisGLP32owTrOKYJC4wfO+xvA=;
-        b=nVW2Ha68BQ+e2nkXIY3bkgje0g268RSAELPgtx1SO+ytP8QlYRHKU/E5PhmaFLyySG
-         e/t1rm74rrM6G1UR3kUv4d7yIPdL2lHT5LMFKWVHwPxYMvBHt8sovxA9QGOvUWt7rCAL
-         EFlD3gXRGi5LgZn3yIdYsKk67W6IU7NHwH0dVcC5paLFz5BGCvRHk2xxQ/8oFW6WixGI
-         T0JJtLMOL+MEc3VF9ULSRz9LtmBXlojNovYVMBeJixQX9F1gYJyJJe85WV2z8qCl/JhU
-         7jIuc5uNtV85IYnpUVLyBLhtzzb4sRK+1bSZZJUcMZ/k8frlhVjAZvF9DitbqWfddVd6
-         kmaA==
+        bh=qUTEvgPr5pDo52lKZf6mOXPWs0RWvEkRiwEoyLLTu3o=;
+        b=k3pctjtZ9Or506iLuWYZ6cBQ0wjudxz0FDYVCkCHpm5fUTImwehg8aDxcpqirwF2tj
+         LXOR3sj0xlyLkIWtW2mf8Ss0v4zuJMh/ywp463oVdAAffiCGSnx8eIJ2+L3QL6yP0g9H
+         C9gHpdUr19a+TU98ZBaD6DJLeQhPDKfHjFocb8wglfLBKzCMEfoUuSE0xQXczWA1tDPs
+         rigUYdk/7bn/NJNV+TngsE8z+Y26mUb77mEnBDyrXFTrHtkxLKiMXVc5HtRwG8Vr1/eq
+         RdaEKPYdd015eBtxe2bUrA752eKHcTi+DSJA+YYxKDHj0M2VAAtHTnoThZalH6WUXwBb
+         8BLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753880005; x=1754484805;
+        d=1e100.net; s=20230601; t=1753880029; x=1754484829;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=iHuGd1o3geC90thSCnWisGLP32owTrOKYJC4wfO+xvA=;
-        b=OKoesNvptVHmHiHahA3rBpBCr8Qs5hGEoTc7WV4W4PsJGKBl2COltH3mlZ+ivEqT1T
-         bx8BqC8ZzYvbUDCIJfuguDVls0Oip2WLuwX52AX9oPIhj6CKJ6bhAsQpvqDbHz4nYOkc
-         JgbwiCHb/2iluhCXWnZHSkuMteBqKsrZnf3Y1FhSdtPY+zFtIH1YrSjFrHREuoTK62gZ
-         /4UcXGcq3GxbQ2L8jAaliffFzGqLOj4cibLixGFNx1cHj5jzi5ad/uk/HUyZgTrFD7d/
-         4lwoa9l7xffJMnNsfzljo4S1319vHrXEHY7RMsfWuM+DA7qurfjghRIMIzFJmoWMefWt
-         HICA==
-X-Forwarded-Encrypted: i=1; AJvYcCX9ct+kV9uc+yKicG9Ug0J69NGAZZ2Owi7qfeqAAV2J4iGD+NMXZSGsrH5vopYYt0XT74vJLv+oTQ==@kvack.org
-X-Gm-Message-State: AOJu0YyR9D+FfYB5WM+SiLaioFa0xCXCDZHyt2sXz8R8lw4fYdMwHSJP
-	uCPZnBkFq1oPW+1jjwX/7MQheohQYPODbmte8VVRDMQ+TIf5yIsQPf5tv4skKy3keLyHbU4xL74
-	pVeNSZSOw0xH2Yv1+pFl1VfD5C6j+Wyo=
-X-Gm-Gg: ASbGncvvUdxqkPlqKXfwInegB783BFD58po6MeywBrVeoa9My/i0EDYGoXNJ0c04is1
-	9iefx1z45Uot0IMv1m1t/8HtPT8yedXHziEBdRXVV5p1kGZe3USNSWdgNywn8RLqYB1dOh0lQ89
-	Xz4r8z0CndpARq7fploTu73nDH969hLemGhhustlG1EE7X7loqGTYHAv0WO8IDTTDx4NPddhRZv
-	I1uQlvI1g==
-X-Google-Smtp-Source: AGHT+IExcFLcRiu5QtKTR/cGupB5CiCW+Pjw09y0EZqUm/lnXA4CrvfRLkkrfhzcJE8+pxyrQnSgTbf1NQKA1MoVcOw=
-X-Received: by 2002:a17:907:60d0:b0:ae1:1a30:6682 with SMTP id
- a640c23a62f3a-af8fd739a45mr409970266b.18.1753880004488; Wed, 30 Jul 2025
- 05:53:24 -0700 (PDT)
+        bh=qUTEvgPr5pDo52lKZf6mOXPWs0RWvEkRiwEoyLLTu3o=;
+        b=EUh5eevNQLvFzRELVw/ZpkcwtWKqahTph3FsxlL3qh25TLSfvlVK13qH9SR4hq7mIQ
+         WmxByGVKhYGTDX6YlJiFtqaS9GxNMTm+5YMGEnHc/6xHkJiN8eAXcem3erxRAGlAlPp6
+         qtJj7O2dbB7UNJ6ha5sls50hZ12X/GAAqAxWJpRlqf04w8sL+LTQnH/RaZHxkuCvYDcN
+         i1GvNjRxgAd5lDScvM+K2xJNFHb79Cxo8T1TuhzV3La2m7WnQUTEPVUERtr3ZjAGNhi3
+         uSHe11OqBGKGxNkLqep833GWaellbXLc6cMUTvOgHegHh5ammG4HzbTh70fj3w5hpcDt
+         xdTA==
+X-Forwarded-Encrypted: i=1; AJvYcCXKod8PebimGDsYSYms5I2dn/LYeAEc9s8raP+fbsezoRtj3DkNAjW7C2WFL7c1anZ1QQwlZomy2A==@kvack.org
+X-Gm-Message-State: AOJu0YzBviu6Tlpyp6+AkHvJVlo4lzRaQri7F/pTqFvgl+CW0dzayrAq
+	5CsfWKVuTrJisK+K/9saalPkRws/c/mcYWuNtR4ghRJdYAJjda/VVhG/ORulCvVNE2rrlBz24QQ
+	DL2i8RE/xT2Xdfkgt50FxJLfBN6cvEEOMnHe2THV8VQ==
+X-Gm-Gg: ASbGncu0cXfN6zqcnJtoEW9Jv5fK4dOnUZ0ZM8IJduE+uWbwRXXyr49zge3bMoM1TQA
+	tV/GJJkxIzwRQ5gkgOlxx1r3B+r9EkHDUGcTizlp5HWJNXgrjA0lvIJQvLxNwEZ9Ah1crHG+Zfe
+	8rwe6B+MF4YoT6Zi3QEV5FjLxI0rWjk26Y3fTgO3KQvD79vT42jqrSATuLvqQaqaUyxq6qmf8J2
+	ej3OWqxQT1Two0kGwnF3NqcGdpPrpMUZgwYqAM=
+X-Google-Smtp-Source: AGHT+IGSuyPnAInz8gQT37fKK4pgrT4+RIAYI9IrKjK2MWPd45oP6K0zUhD/GSonCiRI3dzBbJ8n7cWJZ+qNt54xgoU=
+X-Received: by 2002:a05:6512:ba1:b0:55b:83cf:b260 with SMTP id
+ 2adb3069b0e04-55b83cfb693mr305928e87.11.1753880028944; Wed, 30 Jul 2025
+ 05:53:48 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250724-pinctrl-gpio-pinfuncs-v3-0-af4db9302de4@linaro.org>
  <20250724-pinctrl-gpio-pinfuncs-v3-12-af4db9302de4@linaro.org>
  <CAHp75Vc4vsJh_-GbP+YO50veoGoGtfAPL4tjcF+73uophfmnGw@mail.gmail.com>
  <CAMRc=Mc1ophkofB6MmtD4adBAi69C3JyovM-S9YD_y7UA3V1qA@mail.gmail.com> <CAHp75VcV=K-DfOGs0z64==nO+wQNoEB2Ngd2vc+dLYr3WLChjg@mail.gmail.com>
 In-Reply-To: <CAHp75VcV=K-DfOGs0z64==nO+wQNoEB2Ngd2vc+dLYr3WLChjg@mail.gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 30 Jul 2025 14:52:47 +0200
-X-Gm-Features: Ac12FXy6gmS688CUsaG6BseFKvaIP4Sk1EUtOxMURXryhfGHjEY11oJr_rDyuZs
-Message-ID: <CAHp75Vc-kFPz9J5CQgrwb+5Wgzyxne4RVn5efEDwwATAHTxC+A@mail.gmail.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Wed, 30 Jul 2025 14:53:37 +0200
+X-Gm-Features: Ac12FXya2mYA_HSI46S7KktzTvTwdWuT-o4vBrrr3z0vtr46fp0gRnU_ZqynDBk
+Message-ID: <CAMRc=MeVOEFkdqf+SwQ-a=7ZPvpoerb4G_kn-aZgNLR3aTTUog@mail.gmail.com>
 Subject: Re: [PATCH v3 12/15] pinctrl: allow to mark pin functions as
  requestable GPIOs
-To: Bartosz Golaszewski <brgl@bgdev.pl>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
 	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
 	Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
@@ -121,14 +119,14 @@ Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.
 	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: a54hnnowau5ujcpp9g4zytrpgbgqjpjc
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 332D3C000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4C1DF1C0007
-X-Stat-Signature: 6o4kqizis1acpqokdu6tcmhdxpqwopwd
-X-HE-Tag: 1753880006-680971
-X-HE-Meta: U2FsdGVkX18saIp49zYIYfxaexqyP5iiw7G4JZg/AyxYuFq8JBTs0gBtEz5gCfnvu+fcMcqid8UKojW3lPEl7Ke2Kdfyd/UH1wjafgminK8AHvUZnGFpTynhLKOVmaPU8Um7PZyQr3NCNpUb9iVMLq9mI4ZAfeVeFs+Pr/rMWyElchdhFMw1CQ37BISb9smTBYL0IqScq+KLXW14ZjgBEOqMdQpCRRYMjZRUXMSgxCZmULJzEWQz3aQxkCPJ3ecAFPfIyLEnPpe+n2fVa1daL1/mJ7gU3MYKz7B0+N9tQAXQIrTF2kmrjvacF4y1dZIRJiHkOBH3Guak+qn4j2LGmKlRByfxmRsGQLi+yVsPgHLpfI/lKGoGEBJZIhIcaq4xMIoU5kIfTmqVecGyipRRfEzySJrHAb7bHnnYyoODgc9QHSiPcnyiM7e7ZZTLCWpG7FzURttEOVF4DhCJlsjguXwz/53mGk5P5pBlKuVZ9tqbHlu6MV/XSvlZ2oBRaQ/n4aE2NFb7b7FdMEWO+X5bJr9klHMTBbMj5dScSarYvKs5VeE4fzTnYet++baOrvQYWONwL01DEX+j/V5bmWaByDBm4aEaMlXxRqaFhihBOgBAQq2XGW57eyCWviv/7oqGRnJJqL0r2bMe6LuAK+NVhZ761c94daABFOLmPBH9HhSm70DGt+5YbZSYAv5X5X91WpjqsBhaCVnBkttsM9RxwnkjGr5CISB75a2FZmne2jKh6yTqUGayhlNXRkE5iwAtkOuu9C4uXhQd8AVNzz5WwQYRrG/JYv+5elh4IAoC7cfIkkWpPHKNknpthpCvb+dveckUhSRFQQMnPZ8JEvCiSWgxGuIn7+z3FIvE8zFCWRIrhiAVYICV6AeFzxTcX7IKRIrqP8VQj0suQ1s0tPzgt+smNzcME0CdzxtKNYZmDQv0cdEF7BArsWheN+2pvtvVnbKSboa5q+YzHRSwg7N
- pEMmhYMz
- 24sQ/3iIZjpeqRDyqB4Q56yI6JyYcRZWECujVyr+Fsb3jctz/VDEBazpDMzYVDC+xt4Rvq/+KfpXC1s19u3RPSzkJRO5tB0Ne3bW5XQ/0l2VfhVcdXl/R3kPA1y/XIRgHwcQt8ORwvLoEtaA5YK92TRtqtMg8tw7DgZh/4CkZc2gDWCA/4epQhscf+A4vyk6ov6moKVf6muTHdoo7jtPF++Mw69RhYXJqC/UmOoBQM6XIu/p4pESBQ+9n4tnKdayTLf4ywAELi9JPq5Gj1ji6Ku+eQeZxKOqWuK+pSok2HKzCvhtBmkuy8vo/jtPe5s5A0B72Us2eOo9U6AMQ5ztjKyj7OBvtaOAW0K4+/sJ5FZueX/CK64pSz/ELcBpXXc0b0kvNhBQjYXmg8pnieqjJFPr+kk0OZ5qbqfQAVgqd3HG+FBxAcI9WKHFCeroPoQfRznI2zFXOu2iBQcjA20R1cVOmgYKrNrKL8qApHgHqzxu3YKE=
+X-HE-Tag: 1753880030-40664
+X-HE-Meta: U2FsdGVkX18LWBBWn94S4pzu6cSpYWBASemalCFkIqRLoFfI+8nWB9MEn6REoJLyIqkkC8Pgqxf8k2FXDJ2PR9mrYyrI/gKVU4KbCkprGAGsm2DtL4Zne4/DoLkKVAAePm4//rep1V2FtVgGZCNFlcG84WzZyWexVE+NGhgKFEM4pnHr6kBIeLpzkunrE/gonGt5F4R7Kj05Y2WFB+wasI1MetUlslibzMot5i3zk42wMFMTSf2lkxg3EiiXF9pABQPShFAHYKiiR1lG5SjvcYhdAaM5aJyGP5LJYqsbgzkuuc98XdlbgkwL1tbZnvgz2gF8qhRk8MhXDnQoZxLq2xKFpPAOYYXQhr8VLpFFMput7TrEsEZT0RZzRdS2Y+pGXtTQ6GhFyHpvSXexwuMNrjlH52+okuxK1CyRD9gJhBZwrBmo/dZbATMtoLDWsP8r6yh8vULXGgMIkZ2edbRZAQZFd11siupoMQz0Pa0wWAOIkYnTuJiicNSiCqSqMi/5rO7j3QhITpHUh+g+RpuRf+ex03R2nE50tQhFfXoUXJMX+T6fwPBZpE0fEa4Hia17LFaGJKaWbKAUvBHwxb7pAHotWQNSd1fpRWln4rOHVBAD8JPVCBpjFUG6S2bLuAGnc3ajXpiKobSQr7FFTz60EOSsn6dkvYTYeFRwHzFhEP/cwOpt3JU9NO+s/Q7nTpoU39Z3j88Xatusvb3jeCiHmOhrU0EV2YplAwN0gYwPPETgCSZlYUrp0jVpws8HSZLvJBiPYV1Gy15JzZ0MwvJPA6vV6PmzWSAyJLjwFg7Ibnr2OmoxNp9sIVr31do7pzR/KCRcMAuTTpEmRa1kpr6AL9gG6WvI7mKjmYvbsd2AMqD5n6TpNeKzL6JBHjMZqqxtXOFVWn0pQPprYPfc9QzRWxTqH1PYKtnriinktnkOR3cKTdjooCGzieAwWr5yZkMoU/KNVxTipxojnSwOsr3
+ TxwU0rxl
+ P/K9V4fIrL9H/Q8njzkeVbXOcd7vAzGqtJFPEEmz8ykFt2T03dy+JEiEPdwVe0v3n1fTzIU+hEYhO/8ldUlf/8kzM9166pjtAkwGu2/vkJ/9XwTGpmcxtLQMlyKw7UUKKGTAzuVij4z0zq1eb8WzMgTZsIWWMRO16LD0jeXO6u2Zl9YWb285SVQvWGwRECA39NBtmksmD6gKQ2F/nTSnqQA9STkv91MOxNGEu8YU8GGChjP97xqDHyAqLdAJW7WYHXAE7mcrYxFT/ECQ6AO/KOBgf4rWkJAH24Obj3JXEHZT/1YI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,10 +135,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 30, 2025 at 2:49=E2=80=AFPM Andy Shevchenko
+On Wed, Jul 30, 2025 at 2:50=E2=80=AFPM Andy Shevchenko
 <andy.shevchenko@gmail.com> wrote:
+>
 > On Wed, Jul 30, 2025 at 11:54=E2=80=AFAM Bartosz Golaszewski <brgl@bgdev.=
 pl> wrote:
+> >
 > > On Thu, Jul 24, 2025 at 2:22=E2=80=AFPM Andy Shevchenko
 > > <andy.shevchenko@gmail.com> wrote:
 > > >
@@ -153,21 +153,22 @@ pl> wrote:
 > > > Not sure we need this. If the function is GPIO, pin control already
 > > > knows about this. The pin muxing has gpio request / release callbacks
 > > > that change the state. Why do we need an additional flag(s)?
+> > >
 > >
 > > I'm not following, how does the pin controller know that the function
 > > is GPIO exactly, other than by the bit set in this field?
 >
 > AFAICS the gpio_owner !=3D NULL means that. No need to have a duplicate
 > of this information.
+>
 
-To be clear, the pin control and muxing core knows about this, if the
-certain pin control driver needs that information it can request this
-from the core or do some other shortcuts (as it knows the state as
-well in the HW). So, I do not see any need for this flag. But again,
-maybe I'm missing the subtle corner case?
+No, that's not at all what this series does... gpio_owner is the
+consumer label of a pin used by the GPIOLIB framework. The flag I'm
+introducing it telling the pinctrl core - before GPIOLIB is ever
+involved - that *this pin can be requested as a GPIO by GPIOLIB*. It's
+the other way around - without knowing this, for strict pinmuxers,
+GPIOLIB would never be able to request this pin if it was muxed to a
+function (even if the function is called "GPIO").
 
-
---=20
-With Best Regards,
-Andy Shevchenko
+Bart
 
