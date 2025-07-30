@@ -2,143 +2,133 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C653C83F26
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 14:28:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B1009C83F26
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 14:45:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C7CA6B0089; Wed, 30 Jul 2025 10:28:24 -0400 (EDT)
+	id 49A236B008A; Wed, 30 Jul 2025 10:45:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49F5A6B008C; Wed, 30 Jul 2025 10:28:24 -0400 (EDT)
+	id 471556B008C; Wed, 30 Jul 2025 10:45:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B5CE6B0092; Wed, 30 Jul 2025 10:28:24 -0400 (EDT)
+	id 361446B0092; Wed, 30 Jul 2025 10:45:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F0806B0089
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 10:28:24 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AA57D1DA713
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 14:28:23 +0000 (UTC)
-X-FDA: 83721161286.23.4233141
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	by imf23.hostedemail.com (Postfix) with ESMTP id A9659140009
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 14:28:21 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2400D6B008A
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 10:45:38 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 804428066E
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 14:45:37 +0000 (UTC)
+X-FDA: 83721204714.08.B564649
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5A91614000A
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 14:45:35 +0000 (UTC)
 Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=ivepKDsg;
-	spf=pass (imf23.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.181 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753885701;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yXicpotvi3lyQ9AOXQWfwG3KeaAtrSGGP0WC4PeRJ0I=;
-	b=iRYaQKaPvEtE5WrujTbrl0XDo9GuUu4oOSgcjo63z30B6IdhrN0+g5R2UO6qCw73lNJSbA
-	qajqJxXhWU1xqrX9YNjU9ZGgZlSc82QZMszx0b5cqfYJg5/rqKg6Zutr//FPnz1c+tpGtG
-	WymHrGEY0RUuLp9hmA8FAq0iIIskFek=
+	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=ICCbGchV
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753886735; a=rsa-sha256;
+	cv=none;
+	b=6yuYt6C8W8TpHWOcyNZj+mq00byv0a2HtQloeKrqOXa4RtQsHnd1N5owzwKN9gt32qBeA0
+	ojs3sDgCDokbUTIToijh6yPhQ9hiSIVdZMxLg66vzK1TKc+Dly6brROvDp6t91F+C0rDyV
+	8HaGXOE7rj5wNl52UPtyLKAkaGLULKs=
 ARC-Authentication-Results: i=1;
 	imf23.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=ivepKDsg;
-	spf=pass (imf23.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.181 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753885701; a=rsa-sha256;
-	cv=none;
-	b=lgs0gHgd5A/UjwNCxED3tBbntLQlvWvjBwdy3ljHWQtMnyWq2VBR6PxWhhmLl8lmeTy6Ow
-	sCMoZ0d44iDXPBZ5cMOkbl9r+aXsKSYjcq81hILLIhQuAwdjp0qrBidnNy1XnJ4cPv/36C
-	Xoa9E0rdX451SX19fo+F2m3PstHSH68=
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4ab61ecc1e8so53617591cf.1
-        for <linux-mm@kvack.org>; Wed, 30 Jul 2025 07:28:21 -0700 (PDT)
+	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=ICCbGchV;
+	dmarc=none;
+	spf=none (imf23.hostedemail.com: domain of brgl@bgdev.pl has no SPF policy when checking 209.85.167.45) smtp.mailfrom=brgl@bgdev.pl
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753886735;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=m6AXuDDeUL1WpUxErghD7iQZDxn7tXl0MHZ3gm9RjBI=;
+	b=m1nEClvPlnMLgtVfdwLuPocPGrN9tUK6omZRD786hKzLycyGUg8mBbzw00H0kqEYMbHljW
+	faccNCla5lRij14a4v4T3xMUENuOERuF/KfXPO9ZvEUP1BpIEIIdwuJGT7efix/pkFsLxY
+	ITF6R4Y27GdQzvh5pj24fwplEnQvdy0=
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-55b829c7f1aso612312e87.2
+        for <linux-mm@kvack.org>; Wed, 30 Jul 2025 07:45:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1753885701; x=1754490501; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yXicpotvi3lyQ9AOXQWfwG3KeaAtrSGGP0WC4PeRJ0I=;
-        b=ivepKDsgA5+opb31RvJZ79SQEi3pMIJ4rvRLN70I03RiUqWH7gptYNrbUwvUJkoV7i
-         S8+GX+V87lQZUU2jR91fP9baOKNV1jyWmQEkKvu6GR6zktANYBLNpgxZRlOkzlz0iWUz
-         nB2SAe5gV0+OzygPQ8w683MTD3KT6Vf6DIxVS2F/vgiA0DVwmrAOsDTNSRSIzhGXTDbu
-         yvhXkpMX6FCqxKgiTRY55zJUvq6GKe/WG4X82aRjouA/INt/pxTsKOdNPGerx2mE2eM9
-         Y6E0e8A7nb17b7QGGRa1rYQAe5QbQwwEOXP/1ZZECt8JWiTopzwjFUK0XWWBRukZwMYj
-         R+Yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753885701; x=1754490501;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1753886733; x=1754491533; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yXicpotvi3lyQ9AOXQWfwG3KeaAtrSGGP0WC4PeRJ0I=;
-        b=LDoHGrTn7bhZYKL/TFY0AnbQj7hidaA3Xz6mOKMzuyPKSRzzpSZfexwvjBLDrO9wyo
-         m7cVEEdGhI1Mdw9fAoXCD0rIAnqnqvBPsZN50T97wQKLMg+aRdb6+tzejqwMVScM3BNR
-         EF7afciVZBrttG713E/QRXvqFNCuvmrrkDv1G/9jWZKMoVa3WZDnqkMYDyxb8Pgp3YRd
-         wpDhNcf4sWgwr9QP9//uTNn1ZxC8lrfpfXZqPVJsx1rPaZ+qzauZVlwm9jlLFa79v5gz
-         JTsrxBxqXqOXNcNWF2TNE4OwvDx5+fXm59EnYK5md49njkLDoSOIecxfBOEFzRi0DgaV
-         pHtw==
-X-Forwarded-Encrypted: i=1; AJvYcCWgtgVjILo5CD/MR/kE7dIzSNzaXuZLgEtQl+PEem788QbKlbshI5d+4N6DH8M+x6czP5jnIxZf8A==@kvack.org
-X-Gm-Message-State: AOJu0YyplmmZBiC5H1NVhjIf+6Cc5eWlANCGZHTCNsNT59wSRl2YQExS
-	BoubZ0x8WcACmpXxxsOLuUoj9nmRUVG7/20zoLE1omXRFmtbdNw2mfSP3yOgiFfiPW0=
-X-Gm-Gg: ASbGnctLn+RzIzJSF7X0oyDKGUg9/kILr6mMUvKP8243reFE5sK8unktj3oSl8pqOcr
-	WrT8qBH0VubPTxaYY49WadrofLKke9RAIiFJJ0Vlr5DJsHk9kZKkyWgxzEzTxJHYb166bYXFz0s
-	F79lHpXP0/b+gHW8IR2E7Kj5tE8ClfKVY9HHTIZGn3SZeUhFLpkaQkqaQ+HVacm5j2QPaLEKoRb
-	as907vp9MAvo/qhgBDY9OUhvjW1iB1d7LggNWh5z6/TLJyqah9+DqCRjawZ+49CeK4oAi0F8ezm
-	vWns7wmShV6YWuuWBQmBDCrGdHXThYemM6o0E8Vehr0tvunkwAkQoWrOgF5m/cWCdwy3Jv1BKsH
-	jL1Bp4va34jKzTg0Mws1rRnmYlEM1PzGdA+M4nNgpYIv5p2iCA1KFxThS3Z+0rSVFlbon
-X-Google-Smtp-Source: AGHT+IHCzPfwaMM+aIDs6tu6c39/KdwhCla3PbAO01xs1vOnpsn8EpRRsdfpw4N6uvD5MCuSC49wxQ==
-X-Received: by 2002:a05:622a:48:b0:4a9:cff3:68a2 with SMTP id d75a77b69052e-4aedbc3c0dbmr55369321cf.37.1753885700213;
-        Wed, 30 Jul 2025 07:28:20 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ae9963b6f9sm67178931cf.35.2025.07.30.07.28.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Jul 2025 07:28:19 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1uh7n0-00000000RbZ-432A;
-	Wed, 30 Jul 2025 11:28:18 -0300
-Date: Wed, 30 Jul 2025 11:28:18 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Leon Romanovsky <leon@kernel.org>, Matthew Wilcox <willy@infradead.org>,
-	David Hildenbrand <david@redhat.com>
-Cc: Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Christoph Hellwig <hch@lst.de>, Jonathan Corbet <corbet@lwn.net>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	=?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, iommu@lists.linux.dev,
-	virtualization@lists.linux.dev, kasan-dev@googlegroups.com,
-	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 0/8] dma-mapping: migrate to physical address-based API
-Message-ID: <20250730142818.GL26511@ziepe.ca>
-References: <CGME20250625131920eucas1p271b196cde042bd39ac08fb12beff5baf@eucas1p2.samsung.com>
- <cover.1750854543.git.leon@kernel.org>
- <35df6f2a-0010-41fe-b490-f52693fe4778@samsung.com>
- <20250627170213.GL17401@unreal>
- <20250630133839.GA26981@lst.de>
- <69b177dc-c149-40d3-bbde-3f6bad0efd0e@samsung.com>
- <f912c446-1ae9-4390-9c11-00dce7bf0fd3@arm.com>
- <20250730134026.GQ402218@unreal>
+        bh=m6AXuDDeUL1WpUxErghD7iQZDxn7tXl0MHZ3gm9RjBI=;
+        b=ICCbGchV88MUe4/Iv9ilm2t7oOXU6w1pgLOswdglio79LtKswltxbUztoUE3OfqMhb
+         BDKspblr2PQjLvJEbgH3HYsSXe4Yia//S2U1NTpsIjz4lHYSK7nW4j87vCRP/SvpjzvJ
+         1GgOk4mfVRi2342oBDXyjYe9gUUuKa+vv1Upwm9/VxlbbHGPcRNBh2XBtTIq3xM+QUGK
+         lNsZCS7qd5I9gFXPvAEOSP/u3H5q3JW8cPw1UnzYR1K00WoHsZr2bt/rDglgX2SUsxWe
+         +oPfK5glKGH9RqCGvIDR30V6kHFxtOZZr6dJ5n9cb1mOcF5EWvQG5uqsV4Xu0SW9jjmL
+         sWdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753886733; x=1754491533;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=m6AXuDDeUL1WpUxErghD7iQZDxn7tXl0MHZ3gm9RjBI=;
+        b=LFoWeaSEzCK10IzzRvwkwkdQal/N65iw1ixjkuVEI8bIvHLyI9Pqt9+phYV85+aDzC
+         Mqr5f2wOHJtx74VYWaZMX1wemQWe+B2VXC5SuR6R45k7hbke/3iuwBBAHec9g1Fu9vwB
+         t1hqTLofE784MSi+jOkjuguy9hBU85qoEglZ7APyhYunyAQiq+B6WjPH7jbSJqfA20bO
+         g/V4P3c1zZ24TABz9XP7NBULqVH5r4KCoz0rq4S7+xSF68lKBlOi9LLE7HdRboPzK9bN
+         UPBuQgQUt5u0vf5E3VT1+rhpdpFIM9PMCpJux+g/yuhjzBlZCZDVhdxqYdymLwftjNVJ
+         Dn6A==
+X-Forwarded-Encrypted: i=1; AJvYcCWeJhyLrE1j4GexWjOKZlBT1xRf7xPJqJfC8CZy7sEGiBOX7MDo7ENiiij2zI5+jKgShCmVq1kI5Q==@kvack.org
+X-Gm-Message-State: AOJu0Yx1Pe52xLnjIH297U9N4MiCqRorimUamgNMfXAOjq/fT5PreyRy
+	p0zeQAkeeZIt/ym8ZUfX+zzrWETs7IFZ0p/UrbGfsPswk5dW3Xq6ElDuTqZY1NaKspCGHKoiWeR
+	LG39b7HbHBps1JE7T75UDXrqUqOqGBXct2qLPzE4sjg==
+X-Gm-Gg: ASbGncvnmtrxz/NSsyQBMczwgU5wfyQoJuPcQWyNiYu6T9JvLI8IE15mNrRBVHJil+E
+	vRX7R759V1DdCVlRL/hvB6zYxfgwWo2eRyvJzcz/KmgJb10xxqydyJNhURFFpepbCbIy71KTO6u
+	AbtICfK8y6SN5vMIayyXLq8Rv9wuChHWnFsDdjS+qaxMRlmMa2ir630qPrKKBL/3B6dNfyaWZkG
+	sRZInQ1IfEkaAMno2g6jzdT7lGOLLAnrB1peZQ=
+X-Google-Smtp-Source: AGHT+IG0Q6hH9i+UpqLftCvpSVBouzPpbLbuygIY2t4i0+nQyoHOVMz3gwtmG10RMLHn13yYgB8U2bSlEYWDzelEprk=
+X-Received: by 2002:a05:6512:23a3:b0:554:f7ec:3b23 with SMTP id
+ 2adb3069b0e04-55b7c027afamr1034186e87.15.1753886733212; Wed, 30 Jul 2025
+ 07:45:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250730134026.GQ402218@unreal>
-X-Stat-Signature: 8tekturr1fmc7p9wc6tmf3pzzrnzwro6
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A9659140009
+References: <20250724-pinctrl-gpio-pinfuncs-v3-0-af4db9302de4@linaro.org>
+ <20250724-pinctrl-gpio-pinfuncs-v3-12-af4db9302de4@linaro.org>
+ <CAHp75Vc4vsJh_-GbP+YO50veoGoGtfAPL4tjcF+73uophfmnGw@mail.gmail.com>
+ <CAMRc=Mc1ophkofB6MmtD4adBAi69C3JyovM-S9YD_y7UA3V1qA@mail.gmail.com>
+ <CAHp75VcV=K-DfOGs0z64==nO+wQNoEB2Ngd2vc+dLYr3WLChjg@mail.gmail.com>
+ <CAMRc=MeVOEFkdqf+SwQ-a=7ZPvpoerb4G_kn-aZgNLR3aTTUog@mail.gmail.com> <CAHp75Vd_5HVwzuiV17XKkzpEvzd8dzPDRRx5w-VqZnjuCz6m6A@mail.gmail.com>
+In-Reply-To: <CAHp75Vd_5HVwzuiV17XKkzpEvzd8dzPDRRx5w-VqZnjuCz6m6A@mail.gmail.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Wed, 30 Jul 2025 16:45:21 +0200
+X-Gm-Features: Ac12FXyd8ePQ6VSvFuinf3meGy3NBROTyjzQV07xe8o_XLvEkxT-hmgEmHvLoEA
+Message-ID: <CAMRc=McPvFzb7CSFSKOsQZD9ZPwtf+bCw+Ui=m6OoX0GxH9DtQ@mail.gmail.com>
+Subject: Re: [PATCH v3 12/15] pinctrl: allow to mark pin functions as
+ requestable GPIOs
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
+	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
+	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
+	linux-hardening@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
+	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: tkyjhk9pdrukxqtou3y8nfjcexo584oz
 X-Rspam-User: 
-X-HE-Tag: 1753885701-417500
-X-HE-Meta: U2FsdGVkX187kP51rydfafgftof1i7Sr2v6rQ5+9y/PhlS5ZOaOfD42IKz4I2LGTTz6jBdeqzLyF43VhsPr6fXlhm+bUCEhP9saqE8mMSex0o7DLRuIaP3qghLadxUpyeWNUDlz4FJ2P0tpFW/pJ/KX/YQynsW+beElXNYDvU8PiEb3Hos149BMsCuH3kDBqGJchj5c6QTL1i4putGk+Bz9g8z479AFeB+yi42xBAmjLvf4kKUbZeyknqecyfaVfkKa49SMk5og19FjSe2HNxu/vpRBV9zOdpD0TSh5H1O2Re2Ic7uEYR4xAOcHTzyJNr5ve3iZYxa6S7XGMPccX4rV6GQUdWbFqYNpdySXdEhZWELVNEefIaonWclMUw7SWa1cj+RI/DTGVTbqJUS+hF0ctEQo50NsXBCu/V71cuu9O5qQ5uD37OW6uvGOT6S/p601yz3ES/NqS8Qdco69FI22syUYes5NNfOac27R8HhB+W2SIR8+TZxvNwjr+WOd4n3wh48BgyPHXvV/md3CP1C6DyFN4sVlu32cvRISg8w6ha6XBBNRjplyLfw9Pnbvevox1NTzcBWm0KXO7ruprM5M/8AS2BJvmsum8gImPe5H2M911EB4Ox0gq1NbqdhWB1D6ee2rC8r1JP3NydEKk2RcIe2VIS+PdKUPl61vWOJI7FTLkaARlWQmWd9uTAN6s8/JeHs3BYj6d8EoGY5qyu7x3tWR6wRKa6iK7Rx7Nh8WtvKMye1VxUaqgg1E1D+jO1kwRs+d5rujFwJokjXE4++TvzuHlgBR+r/jIVMEACn9HGzB7PORr0wJVdUW57rIyhfVeHw8duXXYwQ9xhhhV1uJaaPFDHnWWlbPX6ErDBMM77LEkIleyRRhTpnwBSlj33N8zLuouU6Lht5U1K0gISa2q/3L+kzpiQfXteExUZCEADxkqnnhdEzRqXX9entKq9++hXEjGadmBaX+jAvt
- vfPTudRl
- TWzCJDpNHMTD3xrzZg/OhGOAQ49C6uoEe9i3MIHTfymrEsuQPB1VD36nBHWI3V6eCO7Sz8naP2Z3KqxARnpyOvxR4/8b6ePxunZUOB+ilAsSUxOt1UVBFrj2iRXSFEIDUBvqsvcHrua33LWp8qYgmNAiV3XCiIqfWDe5O6d46RKBg0Q9N8eXJ91xHMZwTnpjkttQTQScFIVTneWLjXJJbuxBeix0Rwgp40rv8PZgsDvbo+SDsP4cbSAk9/TxwnpTmq8Ti3vBICDID8f1CRSS+CODituSuboBZi35IHYpdxexhxFgYf5X0v8r2rhCmGjkSXM5xTf5OVgAWonsucCZiOUWPVg==
+X-Rspamd-Queue-Id: 5A91614000A
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1753886735-302468
+X-HE-Meta: U2FsdGVkX1+ddM/5d2zwW7GjBjBAms+qd1f839xp6CewbL26YKFqP479SOwNZQQZvH6q7KMfGbJxuNQS9fmdQWfO4pC4jIsQHpnj08rogv6V4pXxzB+YApED4gx73H5OUUMp1fWldZUUIiQmfG42kEW4piyiYcgCMN9akd7goq078iJIru/0RbwTr0qpGKfV59NDs0WdxiTP89Uopx1ScnRcBQkuOeNAMqpq8uFsZulx35p5k+QUbWlKMqZg9ulck/3SGVAUqwbm5mM4XOGCs3sEjjSEqPIgqm421rDvfDNK2Q4kGcX5JBZ6FATvKSKDbvXpqiCLgv03f6Cemb5cGkejqAIej8Urx7XK9yXpvj8VDrL3e8kKL/EoyzlBF1NHwqvQDHfnD50YX8ZiB4W5eT/DHWqiCLaRzqLwQw6f7QbnY+0Vo0RaSZY5fDKIE2I3mSnOq6oEKTegIctlUwg5Ys2rZz1gaXrt1bmSbQwSW4zJmAFE5Fmw0wfHCJ90+mKWEuZlHTN76A3J4lDfAqQd6YusPGODiVyHrgaz1Qppano/n2LU732IswKrg7G6LEi+vgq4hJQUwD9oxXbcBr7X6wLJ8GLEYKB5/4v6Ar6hC72gJfbf7VFCTrEvzlKou27JmBMYR/n+R4bSC/+O3C3YcKzrYuqre7BKDT36/KQjQJrz2sKz402ARG7pzZ855TzCsJulE2G6Qg4cys1M6e6qQwT2AnzlwopkRuIwkvUhHKwqI5vPRpU5BNnBVwEfBw24WUQWw7Zz2DqKp4if/u2INGczL2T0SNoyEDT0LZeHuGhA2rUCJvdSIPSYyY7iu+3l9pDVYrjOZRnHnrWAMSnEMTCmJETOOGfwn8oPcXhO4wNOJuoDG0oD1+xoOf/oJ4lgZHBTVmx7vW6rx6D1bJb2SIEYI8UXDaSzd9zm64pfItMzFlQxH/GBoQliXBtrg2o2PnDm+CVPamHTrW7G2Rc
+ GTWRDYNy
+ m/5b0BkWPteimrU8+h4MjRTnE+ikxx5iy+lT71t6Rp2Kk+J9l0W69IaYHYPeRk45NIgMTgq2xo6f06GJAMG+2nJ2RndJD1C0H8hKSYe4GThghKBsiMXil1AY3MmqjLRmW0Ulkvsefl7OBwkzC6eIEglGxrn5Bf0uYlGodU6lcMs0oKex8ycZBtN0dYQx7gZHbJMCwkqJxcIxZ5lB8hQdpohTzwczEGBRMPSfUa9F6BHn9t2PdtUXpjSXG9tYa5P9SrZTCmTjDjZFQzR266jw0HRuoORatuPe0b5X3HoYJE4qFfe5Csmbr12QrTt3sC8+PK9XBLJW3qJey9eUnWeYdy9NEAw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,114 +137,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 30, 2025 at 04:40:26PM +0300, Leon Romanovsky wrote:
+On Wed, Jul 30, 2025 at 3:30=E2=80=AFPM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> On Wed, Jul 30, 2025 at 2:53=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.p=
+l> wrote:
+> > On Wed, Jul 30, 2025 at 2:50=E2=80=AFPM Andy Shevchenko
+> > <andy.shevchenko@gmail.com> wrote:
+> > > On Wed, Jul 30, 2025 at 11:54=E2=80=AFAM Bartosz Golaszewski <brgl@bg=
+dev.pl> wrote:
+> > > > On Thu, Jul 24, 2025 at 2:22=E2=80=AFPM Andy Shevchenko
+> > > > <andy.shevchenko@gmail.com> wrote:
+> > > > >
+> > > > > >  struct pinfunction {
+> > > > > >         const char *name;
+> > > > > >         const char * const *groups;
+> > > > > >         size_t ngroups;
+> > > > > > +       unsigned long flags;
+> > > > >
+> > > > > Not sure we need this. If the function is GPIO, pin control alrea=
+dy
+> > > > > knows about this. The pin muxing has gpio request / release callb=
+acks
+> > > > > that change the state. Why do we need an additional flag(s)?
+> > > >
+> > > > I'm not following, how does the pin controller know that the functi=
+on
+> > > > is GPIO exactly, other than by the bit set in this field?
+> > >
+> > > AFAICS the gpio_owner !=3D NULL means that. No need to have a duplica=
+te
+> > > of this information.
+> >
+> > No, that's not at all what this series does... gpio_owner is the
+> > consumer label of a pin used by the GPIOLIB framework. The flag I'm
+> > introducing it telling the pinctrl core - before GPIOLIB is ever
+> > involved - that *this pin can be requested as a GPIO by GPIOLIB*.
+>
+> The certain pin control driver may even not know about this. But even
+> though the proposed change is an overkill. If it indeed needs to be
+> done, the solution of valid_mask approach sounds to me much better. It
+> will be a single bitmask per pin control to tell this.
+>
+> > It's
+> > the other way around - without knowing this, for strict pinmuxers,
+> > GPIOLIB would never be able to request this pin if it was muxed to a
+> > function (even if the function is called "GPIO").
+>
+> I need to read the series again, but I truly believe we don't need
+> this new field in the struct pinfunction.
+>
 
-> > The natural working unit for whatever replaces dma_map_page() will be
-> > whatever the replacement for alloc_pages() returns, and the replacement for
-> > kmap_atomic() operates on. Until that exists (and I simply cannot believe it
-> > would be an unadorned physical address) there cannot be any
-> > *meaningful*
+Without a code example, I can't tell what you're imagining but let me
+give some more context: the flags field could only exist in the
+qualcomm drivers but the problem will be the same on all existing
+platforms so IMO it's better to centralize it right away. And if we're
+already centralizing it, let's make it future proof by making it
+possible to define more such flags if we need it. Since the GPIO
+category is a function property, it only makes sense to put it in the
+structure defining the function.
 
-alloc_pages becomes legacy.
-
-There will be some new API 'memdesc alloc'. If I understand Matthew's
-plan properly - here is a sketch of changing iommu-pages:
-
---- a/drivers/iommu/iommu-pages.c
-+++ b/drivers/iommu/iommu-pages.c
-@@ -36,9 +36,10 @@ static_assert(sizeof(struct ioptdesc) <= sizeof(struct page));
-  */
- void *iommu_alloc_pages_node_sz(int nid, gfp_t gfp, size_t size)
- {
-+       struct ioptdesc *desc;
-        unsigned long pgcnt;
--       struct folio *folio;
-        unsigned int order;
-+       void *addr;
- 
-        /* This uses page_address() on the memory. */
-        if (WARN_ON(gfp & __GFP_HIGHMEM))
-@@ -56,8 +57,8 @@ void *iommu_alloc_pages_node_sz(int nid, gfp_t gfp, size_t size)
-        if (nid == NUMA_NO_NODE)
-                nid = numa_mem_id();
- 
--       folio = __folio_alloc_node(gfp | __GFP_ZERO, order, nid);
--       if (unlikely(!folio))
-+       addr = memdesc_alloc_pages(&desc, gfp | __GFP_ZERO, order, nid);
-+       if (unlikely(!addr))
-                return NULL;
- 
-        /*
-@@ -73,7 +74,7 @@ void *iommu_alloc_pages_node_sz(int nid, gfp_t gfp, size_t size)
-        mod_node_page_state(folio_pgdat(folio), NR_IOMMU_PAGES, pgcnt);
-        lruvec_stat_mod_folio(folio, NR_SECONDARY_PAGETABLE, pgcnt);
- 
--       return folio_address(folio);
-+       return addr;
- }
-
-Where the memdesc_alloc_pages() will kmalloc a 'struct ioptdesc' and
-some other change so that virt_to_ioptdesc() indirects through a new
-memdesc. See here:
-
-https://kernelnewbies.org/MatthewWilcox/Memdescs
-
-We don't end up with some kind of catch-all struct to mean 'cachable
-CPU memory' anymore because every user gets their own unique "struct
-XXXdesc". So the thinking has been that the phys_addr_t is the best
-option. I guess the alternative would be the memdesc as a handle, but
-I'm not sure that is such a good idea. 
-
-People still express a desire to be able to do IO to cachable memory
-that has a KVA through phys_to_virt but no memdesc/page allocation. I
-don't know if this will happen but it doesn't seem like a good idea to
-make it impossible by forcing memdesc types into low level APIs that
-don't use them.
-
-Also, the bio/scatterlist code between pin_user_pages() and DMA
-mapping is consolidating physical contiguity. This runs faster if you
-don't have to to page_to_phys() because everything is already
-phys_addr_t.
-
-> > progress made towards removing the struct page dependency from the DMA API.
-> > If there is also a goal to kill off highmem before then, then logically we
-> > should just wait for that to land, then revert back to dma_map_single()
-> > being the first-class interface, and dma_map_page() can turn into a trivial
-> > page_to_virt() wrapper for the long tail of caller conversions.
-
-As I said there are many many projects related here and we can
-meaningfully make progress in parts. It is not functionally harmful to
-do the phys to page conversion before calling the legacy
-dma_ops/SWIOTLB etc. This avoids creating patch dependencies with
-highmem removal and other projects.
-
-So long as the legacy things (highmem, dma_ops, etc) continue to work
-I think it is OK to accept some obfuscation to allow the modern things
-to work better. The majority flow - no highmem, no dma ops, no
-swiotlb, does not require struct page. Having to do
-
-  PTE -> phys -> page -> phys -> DMA
-
-Does have a cost.
-
-> The most reasonable way to prevent DMA_ATTR_SKIP_CPU_SYNC leakage is to
-> introduce new DMA attribute (let's call it DMA_ATTR_MMIO for now) and
-> pass it to both dma_map_phys() and dma_iova_link(). This flag will
-> indicate that p2p type is PCI_P2PDMA_MAP_THRU_HOST_BRIDGE and call to
-> right callbacks which will set IOMMU_MMIO flag and skip CPU sync,
-
-So the idea is if the memory is non-cachable, no-KVA you'd call
-dma_iova_link(phys_addr, DMA_ATTR_MMIO) and dma_map_phys(phys_addr,
-DMA_ATTR_MMIO) ?
-
-And then internally the dma_ops and dma_iommu would use the existing
-map_page/map_resource variations based on the flag, thus ensuring that
-MMIO is never kmap'd or cache flushed?
-
-dma_map_resource is really then just
-dma_map_phys(phys_addr, DMA_ATTR_MMIO)?
-
-I like this, I think it well addresses the concerns.
-
-Jason
+Bartosz
 
