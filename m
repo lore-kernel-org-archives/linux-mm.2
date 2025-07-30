@@ -2,135 +2,91 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B2A97C87FCA
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 02:00:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D1C9CC87FC9
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 02:00:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F2B4B6B009B; Tue, 29 Jul 2025 22:00:02 -0400 (EDT)
+	id 6A16A8E0001; Tue, 29 Jul 2025 22:00:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDC5B6B00A0; Tue, 29 Jul 2025 22:00:02 -0400 (EDT)
+	id 6518B6B00A2; Tue, 29 Jul 2025 22:00:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCABC6B00A1; Tue, 29 Jul 2025 22:00:02 -0400 (EDT)
+	id 518E88E0001; Tue, 29 Jul 2025 22:00:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CA4016B009B
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 22:00:02 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 892CC1DA158
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 02:00:02 +0000 (UTC)
-X-FDA: 83719275444.01.C3F6F51
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 85482160002
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 02:00:00 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ET3bCpny;
-	spf=pass (imf08.hostedemail.com: domain of isaacmanjarres@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=isaacmanjarres@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 3F4E36B00A1
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 22:00:12 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 05E8E80314
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 02:00:12 +0000 (UTC)
+X-FDA: 83719275864.14.25DFB06
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 010051A0007
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 02:00:08 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=none;
+	spf=pass (imf19.hostedemail.com: domain of zhangqilong3@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=zhangqilong3@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753840810; a=rsa-sha256;
+	cv=none;
+	b=WSmljhLUl6m7YlhvjKnwDbKrO9tAA7wkyZe5kpt4CllDwFraxT9Se7RGsW150n1USCKnI3
+	2VArplkVK2/j3ZEozZfuhAkXz8pTDunxsQLBFMK8iQdy1h9CQVFQcEV1YnJsWtbjaZCBkZ
+	sFTBiA888McbZ/iFDP55i2UugU7MY2E=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=none;
+	spf=pass (imf19.hostedemail.com: domain of zhangqilong3@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=zhangqilong3@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753840800;
+	s=arc-20220608; t=1753840810;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QcSJTaElVVvYYo9nNi0EOGtYaOjMylV8RmeZ1BcyB1k=;
-	b=oE7EuEHKxz0AYr3RDQR1Y9vlO7y6HgcSxBUZVxINNEt+reP6csrl4RgNBKkDxg4p0OUvpw
-	l6k06F1LuTGAF05BnBbJ4obHontBS1/dXXCYrMDD2jI8jo5A+TIL0H1pdEZrmy+On/INim
-	GnyUfRt/zypiNc9MWLIyIk+WXXCFpNY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753840800; a=rsa-sha256;
-	cv=none;
-	b=6cP6BYQlehbj+o0RheUR75+TfHq4hHGd6L4iXSytvzLgd2nSLmoRufO2vAsgf17PY525Wl
-	MA8O2Y/vh2rK+jztjvm0/odTUxe/9FnVOUqyu/T7yNHgSkmgj5kou1bYJ2dcHB9NP7wXIz
-	NWQRIu9bh45VFmDPqg1CHFHzK7cqbSw=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ET3bCpny;
-	spf=pass (imf08.hostedemail.com: domain of isaacmanjarres@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=isaacmanjarres@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-240718d5920so72835ad.1
-        for <linux-mm@kvack.org>; Tue, 29 Jul 2025 19:00:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753840799; x=1754445599; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QcSJTaElVVvYYo9nNi0EOGtYaOjMylV8RmeZ1BcyB1k=;
-        b=ET3bCpnyPdfSjaXt4PCxCVqfS0ER2JYFeh3kvK1na/10EKnX6PHpcu0DL+6Y17saGe
-         ibY/+676ZHloX3zllvESg28ekMgeFCBpyUUEJEzlfzhigyn1xAQv9L3z9AOIHQ5PaPRd
-         t99Q/odeMAXr7q4U3j8aUOgdQZFHmAm22y3sgms+vK2L1BiBC7fI1k/yNZNe7fXUQ32p
-         w1alSW5D3PthQ+frFb/1lOQ5uscu7vgOW59hY1NzYDLK1t+/VKLlMUgVprweqWBWv6G/
-         TEsT+g70WCHGVs6RA42zux5DSYGPNd+1o7cbYMTA9krzAiSCRFPeVCqmV0ZC+T0L1VmX
-         tMeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753840799; x=1754445599;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QcSJTaElVVvYYo9nNi0EOGtYaOjMylV8RmeZ1BcyB1k=;
-        b=MRpPatCB9iX85RDxuT/vFLcNukF6F4H5NRdLslY/nejrPaJ6c7Fl5+d7ECnLKjeD50
-         6avBVc+nbezaFBzxbr7SPbjQsvgzIWnLdtRla/hHhUfL1IyF6z6Xfq1yLtCDZAy0VKg+
-         iQFT7GV2RL6p3o4QLvW5eY/woBtkfX1CmnJ9OP4lc8fCB7MtM0lu3KeyAHNldZwXUfE7
-         L5gtVMJAHTunq3T30FZKQXAqRUedt0C22h/c8F+ek4jkuzzPfFEYvZck6oALxl25eKxZ
-         VxESUSNuDSrDHxHIepRWDd0O9o7niEx6SZC9BBLlbszvDvGtYCmRjeacrIi4itR9CRLk
-         t7gQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXLsgZi3LmMvGWm86IOc4qRIwpfTpUC6hBJzdAMQEvnI5TmUyYyzOptRxnSinDflCbNrN+dKs68cw==@kvack.org
-X-Gm-Message-State: AOJu0Yyhoybj6s4Qil3zVhWd5cU+cpmmzVPCw7+XPhQNH+Xh7ROyiYqa
-	FZatYFspNUdOkDYdNlIWCakuBghENEEspLvJOdjfDkfA29qJpG/MAIOI+CkGSDxXNA==
-X-Gm-Gg: ASbGncsfhJc8QUWY5nPWnmYi8sf3AyhWCIjBqX3NBE623bRMJtfGC14BfxQRYz0J0Vb
-	RSfLQkZb1/on+EBDvJBdX/35GObpEEfjqunWAqrjjXf0aw1SEtGDnmE+35KgoX7wQlRYMxEI0Ul
-	LNShvtiLAZEMJqPL1frfrgfktKYCVVmfP1chNe6Rng4Wqze2aZKkng07gyul3+Y8eEs25aOf7BD
-	0KHiYBToMjGWLv+vYBOPMmSfzuOCnE4b4MVwOkciWTjaCtI1SkZtAAvBs5VEl0mBJKNPLxjbdDi
-	f0iQp29JefOyow/E25RLJZjD9gtgEjkW+DNrby2nr11BartyQgurP2f0yRRftgYEZxGpWKSveCL
-	gAg8mDGDwx6bXGNZjQX59YbEEwO1JKIPH3zB2cXPhQ9Xje8J8zl2yMyVYY5mSzEE=
-X-Google-Smtp-Source: AGHT+IGjlp72ezcaslBe/4Wam1DWdKTtFPAg2RfpZpa/ZWAp7fRLm64jv1x6op5wLdcpNXOdDDpIQg==
-X-Received: by 2002:a17:902:cf42:b0:240:5c75:4d29 with SMTP id d9443c01a7336-24099e4ecc0mr2140635ad.0.1753840798874;
-        Tue, 29 Jul 2025 18:59:58 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2e51:8:9606:2f93:add0:9255])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76408def71csm9185669b3a.56.2025.07.29.18.59.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Jul 2025 18:59:58 -0700 (PDT)
-Date: Tue, 29 Jul 2025 18:59:51 -0700
-From: Isaac Manjarres <isaacmanjarres@google.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: lorenzo.stoakes@oracle.com, gregkh@linuxfoundation.org,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@redhat.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>, aliceryhl@google.com,
-	stable@vger.kernel.org, kernel-team@android.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 5.4.y 0/3] Backport series: "permit write-sealed memfd
- read-only shared mappings"
-Message-ID: <aIl8lyrHJ4DAQkxg@google.com>
-References: <20250730005818.2793577-1-isaacmanjarres@google.com>
- <aIl1AbmESlTruw7K@casper.infradead.org>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=cjaLG03jGt3qvSpkYZeLoGMZcEMqmJAj+RhgIovZryc=;
+	b=jAujfRrdRDC5bnvkK6Fxf5B3ZHlb4+GteOR3T5/B7a6FVto9hyXpUDSpq2QLHB6IIiMeDr
+	XWzsxxi8Ds5kshymeLwx7eRtwRAzaTu+GdB4EJCjHL2z3BiBD9YUKS6LlFmheIw1z+DNfH
+	iNH0vC66NgPLPuopeQXRJPlrRGvbz0I=
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4bsFfT4qJBzSjfM;
+	Wed, 30 Jul 2025 09:55:29 +0800 (CST)
+Received: from dggpemf500008.china.huawei.com (unknown [7.185.36.156])
+	by mail.maildlp.com (Postfix) with ESMTPS id C1BE81402DA;
+	Wed, 30 Jul 2025 10:00:04 +0800 (CST)
+Received: from dggpemf500012.china.huawei.com (7.185.36.8) by
+ dggpemf500008.china.huawei.com (7.185.36.156) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 30 Jul 2025 10:00:04 +0800
+Received: from dggpemf500012.china.huawei.com ([7.185.36.8]) by
+ dggpemf500012.china.huawei.com ([7.185.36.8]) with mapi id 15.02.1544.011;
+ Wed, 30 Jul 2025 10:00:04 +0800
+From: zhangqilong <zhangqilong3@huawei.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+CC: "arnd@arndb.de" <arnd@arndb.de>, "gregkh@linuxfoundation.org"
+	<gregkh@linuxfoundation.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"Wangkefeng (OS Kernel Lab)" <wangkefeng.wang@huawei.com>, Sunnanyong
+	<sunnanyong@huawei.com>
+Subject: Re: [PATCH] /dev/zero: try to align PMD_SIZE for private mapping
+Thread-Topic: [PATCH] /dev/zero: try to align PMD_SIZE for private mapping
+Thread-Index: AdwA8B+aYBqfNHtAQZ+Ap7afBezwHQ==
+Date: Wed, 30 Jul 2025 02:00:04 +0000
+Message-ID: <2348ddc4573143e48de87cfc66e6748b@huawei.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [10.174.177.115]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aIl1AbmESlTruw7K@casper.infradead.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 85482160002
-X-Stat-Signature: 9zjrejthrmoc9yjjj5nkt9eeifjzg6oo
 X-Rspam-User: 
-X-HE-Tag: 1753840800-132287
-X-HE-Meta: U2FsdGVkX19wknl6BfY4NxhY3+NWVMsPOZYWNdWRwG2/ZkBO/8d3fcz/epXKxzWt17Y8ym4u73tisWcoW3W4om701zgBwu2T6DATxgT450/V0neW3bYXlWeieOq7bfFSkBb71uVNL2Db+AzI8Y6X2yCJq5zBfOtA4MlQyZxFkFlGx7ftweVvTpCpu7XK5Hkc4F4402hZBF+l678ElH8rD+uKp/FOpNRLn37x5NrI77nie3mO1PPxJDdITwpF38OQI1G9dIv65S0iJ4CIh+Q4i/DkuR9+xzmX6xKCDXXlpCc6XF6ZfWtEUhtYPrWkvmWwM4pYgMrYLHbQ+tLSjtR3nP8+5BHMoEFVqrKbdHQwUtwx855Nyf7D8HMec9j64rM5ysF30cu+6z6+OFRRBdMbyJZFslW1xnQPUaY/GOCD4cG3VDgsw2HjMND342Xgxvg/PtBAtAXx6PyeTx1eYP6zgXxwyQV31gkicfMSu0haaMHLFrZu1af1/n9XFMb7K0lYRyhfSyv91aTNj5klh+L+z1PC0If8QBPfLHsVe1xqjjpNkr22FMyDM7SS+7WTUxQ21VSCPgf7s2Mbui/Tdgg40IOWAI71uu25J7dFe4vNpPCAltCvg4i4QgBgnF6tkJN92t5MZku4Dm/sWxz5aDzaZ4nx6kgWeUj90mhqhLL2zqI27hUCTi8BGTim+cuIbgycKS6qAso2Pitd8DD/NWXtz7J9D7A455iZ7FOtJr1X/JRXq06fbuilmkhx6j1zXYv0IMNBXGk8h+TXl2vqSNSNxWx406tueMNgHxOfTo4kMFbLKdpmBQobcYDtbx2QGxzK3qJb8V44llamV6Nj5Me78vtA72qGK0ZXQyv23npb5FeDmrnZyYP8EXygB6pbz3KhpKKviBUnUrzBg/HJ4tu2weSM3x0ctFsuCHhaDJLl1feg0nz34aljazi/XWLd5gMkFqzVZN6cYwDLCdQ8xAu
- 4ZQh1bYa
- NE02wS1EkR3p7ENUiNDfPjGPRRHlHGvug9xkKkuvFCiT2qLcut8Mcwegioo31WPXy97hQV3h7ooz1n+QElI1V0LZetn+btKYbqQU7y5iDOx3oWXuLdsAKZCeiNYSwzl/7RH+IrSGrpJpdcviz/R5RY7eoen4LAhg61kDvdv036nQ1TBzvaDgDXzlmuxEx0NxVOD0u5di5+V6xU0y5K8usB8Jo9msu0hmHAuzulszFZVeiHhxXtrNgp5upGBH7iI30o7LgOnrIUTYg593IzrxvhL/T1vzoUSYgeGVn2A8ucsaMWv8bLK/e3H4v/rAfaZpWfbos/RVWNklRHZE3TOWFwY3bMWMHRX0kCYJdXwmQIroGVFHw9R0rSqRCXuXUffF5+dw1
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 010051A0007
+X-Stat-Signature: bq3mqxdzin4edws4ushtodhbtgt7yz4s
+X-HE-Tag: 1753840808-326682
+X-HE-Meta: U2FsdGVkX19P8TZtaNydmYTEk98WiVfQNN4cUhoZK0TMC3Ah73QMWMWdttHxk/zsWYqtgwh76p6uObvmq06g+llIAsdQ+uh57QNVfnMDf+AgGy7m1IQwrx8nrKpaourFTyfkipmXjQM6enj2XFEJ5QXGSfwbWMwAjAkqVuvfJcranb3dy7MyhRQC2Zdcwmdo15W6IzaHH3hG2pZJP7ome5u3TzQLzEdGWD/U0+PUYuxAPwpxqqPcd0n/tn2z0jTlXx+f15agSI56Ac7D9IuE5730jiT+dhYQYyH4Z2L1zGN96rXqjJwH0z7fZVNkMx6L35DiAGlMoYjFGO+9GIo/guHmfRbUbcLN7zp41KzzXd8fnHXKtVWAw6PqUrBkvsdZdiTWHQ0HxEM2XZ7cT0+5iM8gckenN0doKlGT5YzXgIgmi4jWbDOuxmr5bAkKFvciAsmE2TZi3v1S238GLLxSAWagrTw5GGoA6YOIgH6/pcwsxRnTDqKK7LKTvaMwkZOLDD5guJIvMMbtX0loaxmluitK1lWSZShl0bKkYG6c2Z70Sv7Km/lBfsnxamBxR6ZlFvvRpyUvG2IeGox61H//EDoVKqfVTzmSN91RDEXLQiEv92wCwtC+fFGVkHZ0i9mEA1XtcGiMwG/9IZbEGeMVQCtGQAKVCmH2punCEdrwqCkfSriyeDTPq+7GzUoEERKaLqFcoX8V3YNXxjdbAQD96nwHvjM1zRj0hM24UAJOUEcoK3wsY77k2V2+U2XT4pNwpSQGmsRgk6VjPe42LDAvoXp8W74LsF/MYVC9TAKb28kL6QhBbodiXblBnhxm87v8QDIfspKCOIGkMei5pDJLSvwiGlBEK3o2AnoZqt0GdgoRcLNEFrSmbgRK6hT4G8Rtep4q1vbC1jxfq/4Kib6RXPGYGJ+kugH6GtA/Sm/ocv5Hinmp37WVCLYc7rW5H6dFpI5ozuozDUWiZwiD6u3
+ QxYGZFIV
+ fWDFv0W4g2U0Uq62D1GWJy3Ixqnffx7vNFU/g6ukx53mGCDS17Zjwrs6oZSSIjHt2H1PcJ1Sl0ujWa+mRD599xYinCEW9SmC3LuMN/8RsTWXpJTUl9z5CBAmI9WYBTQCVXxxgYqFE+Y99h9+tif4BA2rr/l5fjdGVrdCy+ms/neEbbH5TAS43DCO7XUMSWzj3mxiaPbMf0awYXig66H36d91f9zQHOd6bnzPoHGDr0tQuTQJIC9twJsAjmy5+iP/dsNsODm+HQ9l6DxutrgbJCiptC/2dvxNt8/UOKUtsgz6U/X6zaUzs1u2ldataSCbGQGdpkWLvuJLnSVqUxAWa31ME2oDIAxeZ1ww6oAe5y4O9BoS7knKS9lCXD5ka+11JZaq0YhPXWHX3w/Q=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,35 +95,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 30, 2025 at 02:27:29AM +0100, Matthew Wilcox wrote:
-> On Tue, Jul 29, 2025 at 05:58:05PM -0700, Isaac J. Manjarres wrote:
-> > Lorenzo's series [2] fixed that issue and was merged in kernel version
-> > 6.7, but was not backported to older kernels. So, this issue is still
-> > present on kernels 5.4, 5.10, 5.15, 6.1, and 6.6.
-> > 
-> > This series backports Lorenzo's series to the 5.4 kernel.
-> 
-> That's not how this works.  First you do 6.6, then 6.1, then 5.15 ...
+>=20
+> On Tue, Jul 29, 2025 at 09:49:41PM +0800, Zhang Qilong wrote:
+> > By default, THP are usually enabled. Mapping /dev/zero with a size
+>=20
+> Err... we can't rely on this.
 
-Hey Matthew,
+OK, I will update this description in next version. =20
 
-Thanks for pointing that out. I'm sorry about the confusion. I did
-prepare backports for the other kernel versions too, and the intent
-was to send them together. However, my machine only sent the 5.4
-version of the patches and not the rest.
+>=20
+> As per below comments on code, I'd update this to say something about
+> fallback if it's not.
+>=20
+> > larger than 2MB could achieve performance gains by allocating aligned
+> > address. The mprot_tw4m in libMicro average execution time on arm64:
+> >   - Test case:        mprot_tw4m
+> >   - Before the patch:   22 us
+> >   - After the patch:    17 us
+> >
+> > Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
+>=20
+> This looks ok to me because there's a precedent for using
+> thp_get_unmapped_area() directly as a file_operations-
+> >get_unmapped_area e.g. in ext4.
+>=20
+> We also simply (amusingly, or perhaps not hugely amusingly, rather
+> 'uniquely') establish an anonymous mapping on f_op->mmap via
+> mmap_zero() using vma_set_anonymous(), so we can rely on the standard
+> anon page memory faulting logic to sort out the actual allocation/mapping=
+ of
+> the huge page via:
+>=20
+> __handle_mm_fault() -> create_huge_pmd() ->
+> do_huge_pmd_anonymous_page() etc.
+>=20
+> So everything should 'just work', and fallback if not permitted.
+>=20
+> So in general seems fine.
+>=20
+> > ---
+> >  drivers/char/mem.c | 5 +++++
+> >  1 file changed, 5 insertions(+)
+> >
+> > diff --git a/drivers/char/mem.c b/drivers/char/mem.c index
+> > 48839958b0b1..c57327ca9dd6 100644
+> > --- a/drivers/char/mem.c
+> > +++ b/drivers/char/mem.c
+> > @@ -515,10 +515,12 @@ static int mmap_zero(struct file *file, struct
+> > vm_area_struct *vma)  static unsigned long
+> get_unmapped_area_zero(struct file *file,
+> >  				unsigned long addr, unsigned long len,
+> >  				unsigned long pgoff, unsigned long flags)
+> {  #ifdef CONFIG_MMU
+> > +	unsigned long ret;
+> > +
+> >  	if (flags & MAP_SHARED) {
+> >  		/*
+> >  		 * mmap_zero() will call shmem_zero_setup() to create a file,
+> >  		 * so use shmem's get_unmapped_area in case it can be
+> huge;
+> >  		 * and pass NULL for file as in mmap.c's
+> get_unmapped_area(), @@
+> > -526,10 +528,13 @@ static unsigned long get_unmapped_area_zero(struct
+> file *file,
+> >  		 */
+> >  		return shmem_get_unmapped_area(NULL, addr, len, pgoff,
+> flags);
+> >  	}
+> >
+> >  	/* Otherwise flags & MAP_PRIVATE: with no shmem object beneath
+> it */
+>=20
+> Let's add a comment here like:
+>=20
+> 	/*
+> 	 * Attempt to map aligned to huge page size if possible, otherwise
+> we
+>          * fall back to system page size mappings. If THP is not enabled,=
+ this
+>          * returns NULL and we always fallback.
+> 	 */
+>=20
+> I think it'd be sensible to have an #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> here, because thp_get_unmapped_area() does the fallback for you, and
+> then otherwise we'd be trying it twice which is weird.
+>=20
+> E.g.:
+>=20
+> #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> 	return thp_get_unmapped_area(file, addr, len, pgoff, flags); #else
+> 	return mm_get_unmapped_area(current->mm, file, addr, len, pgoff,
+> flags); #endif
+>=20
 
-I sent the patches for each kernel version and here are the relevant
-links:
+Trying it twice is realy unnecessary. This looks clearer and better, I will=
+ refer
+to your suggestion in patch V2. Thanks a lot for your and helpful advice.
 
-6.6: https://lore.kernel.org/all/20250730015152.29758-1-isaacmanjarres@google.com/
-6.1: https://lore.kernel.org/all/20250730015247.30827-1-isaacmanjarres@google.com/
-5.15: https://lore.kernel.org/all/20250730015337.31730-1-isaacmanjarres@google.com/
-5.10: https://lore.kernel.org/all/20250730015406.32569-1-isaacmanjarres@google.com/
+> > +	ret =3D thp_get_unmapped_area(file, addr, len, pgoff, flags);
+> > +	if (ret)
+> > +		return ret;
+> >  	return mm_get_unmapped_area(current->mm, file, addr, len, pgoff,
+> > flags);  #else
+> >  	return -ENOSYS;
+> >  #endif
+> >  }
+> > --
+> > 2.43.0
+> >
+>=20
+> In _theory_ we should do the thing in mmap() where we check the size is
+> PMD-aligned (see __get_unmapped_area()), but I don't think anybody's
+> mapping a bunch of /dev/zero mappings next to each other or using them in
+> any way where that'd matter... So yeah let's not :)
 
-> Otherwise somebody might upgrade from 5.4 to 6.1 and see a regression.
+I agree with your thought. Do not make check here.
 
-Understood; sorry again for the confusion.
+Thanks.
+Zhang
 
-Thanks,
-Isaac
+
 
