@@ -2,103 +2,111 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C880C87FC9
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 03:37:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B83CC87FC9
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 04:11:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BEA676B0088; Tue, 29 Jul 2025 23:37:28 -0400 (EDT)
+	id BE19F6B0088; Wed, 30 Jul 2025 00:11:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9B206B0089; Tue, 29 Jul 2025 23:37:28 -0400 (EDT)
+	id B8BF66B0089; Wed, 30 Jul 2025 00:11:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB0C26B008A; Tue, 29 Jul 2025 23:37:28 -0400 (EDT)
+	id A7A626B008A; Wed, 30 Jul 2025 00:11:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D61A6B0088
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 23:37:28 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1FC821DA170
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 03:37:28 +0000 (UTC)
-X-FDA: 83719520976.27.DADB44C
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 34E1C1C0011
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 03:37:24 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=dT0qXdHD;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753846646; a=rsa-sha256;
-	cv=none;
-	b=TB/47ViByuo/oS6ehWps0f9JSYevW2+nNlyKDjD208ESRzTAq1rZf41WEyag5riw56AaMQ
-	bVNhDVR3ksfj0KkZIgPBo/1utg4rFM+pEWCc3v6EtLLwqPRtXg7N52xb9gGOV1wdnL0zhX
-	ETqGEdmVlOh/Y4lfugN6fFes1uaLK+w=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=dT0qXdHD;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 94F2D6B0088
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 00:11:09 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 19350112194
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 04:11:09 +0000 (UTC)
+X-FDA: 83719605858.29.5DCE8C0
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 5ABD54000D
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 04:11:07 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=DXKddojH;
+	spf=pass (imf04.hostedemail.com: domain of rientjes@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753846646;
+	s=arc-20220608; t=1753848667;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gr4BLJFJx7qvKKs257AqFW2YZaqfSdsv5b8ugL4qXKw=;
-	b=6Z56fXUe6sODkmQ7QkyMjDsk1SVXyzno15jSldQgq9PjBaboWbbXTt7c7pZuv7ESsz1teo
-	mhqGEROln7Kdq9h55lyjf+86KhURZNyb+lVkFCeDJjX7Bu7EUT/7hcWpYtdSkd/AcmoCo5
-	Eg4+7dg80L7QGjGzLA/M2M57Dd38dRs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753846645; x=1785382645;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=tErcFQmELNFkZAm+D7dIZT/EMgu6fqy/433QwaB7TmE=;
-  b=dT0qXdHDWno7IMifKCXmMF0GWtg2JpuCIAsPmUiuz6YZsmmEy1oToc+Z
-   RYaWv9NnB4s2p5eYtRM/0zz8s61s5xedSOpBuroW+/KPqjrMZpvbFJNwu
-   BMvxffGGA/vDz7nlqRyAMS2e8xN9Mcwb0Thgnl4rdykiaRvUapA0VfaFe
-   ahoFfBuraEtYtMsyQPXiKjrYY2cjlI0aD8ZmHxUSowKxSbUt8tb0nTrwd
-   D84PV5aY3YkSGMaMONjgm7eBoaqOIEzEeGGjzIp+8K8nB+azQy5FYQ2HE
-   /Z/ie/tBWijiKWqxCbiY6BJGHHC/Q5N0DW5NGHbfT5gR18EehMBq3yskq
-   g==;
-X-CSE-ConnectionGUID: SFDZq+pcSNiAWJ1xzkq1nQ==
-X-CSE-MsgGUID: +6Gm7gaDQ9yyG5W4hkWbCg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11506"; a="59962348"
-X-IronPort-AV: E=Sophos;i="6.16,350,1744095600"; 
-   d="scan'208";a="59962348"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2025 20:37:23 -0700
-X-CSE-ConnectionGUID: O4ZFxuSxRRmvq+dwbILU7Q==
-X-CSE-MsgGUID: bvmVB8HMQx6T0R2kOy7R4Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,350,1744095600"; 
-   d="scan'208";a="167051793"
-Received: from lkp-server01.sh.intel.com (HELO 160750d4a34c) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 29 Jul 2025 20:37:22 -0700
-Received: from kbuild by 160750d4a34c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1ugxd1-0001xw-0J;
-	Wed, 30 Jul 2025 03:37:19 +0000
-Date: Wed, 30 Jul 2025 11:36:22 +0800
-From: kernel test robot <lkp@intel.com>
-To: Zhang Qilong <zhangqilong3@huawei.com>, arnd@arndb.de,
-	gregkh@linuxfoundation.org
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, wangkefeng.wang@huawei.com,
-	zhangqilong3@huawei.com, sunnanyong@huawei.com
-Subject: Re: [PATCH] /dev/zero: try to align PMD_SIZE for private mapping
-Message-ID: <202507301149.ILLCBOyz-lkp@intel.com>
-References: <20250729134942.900517-1-zhangqilong3@huawei.com>
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=mmt5oFfYN5e1SsdVZLo2HKeKgtUA4pJEtINOylMnbVw=;
+	b=CdB5wFVF10TceNNRMy/AtzkPdG8KIdN+5ptGkEC2XfAzdbzP8Y1HzLVWWKF9tMs46699wi
+	XulE71SfEZkjHvSY1tbk/Wlz1CoIGiW/GO0XvZTT+fn3+tve4cW2VYoXcaL7OOR87qKm5s
+	jo/zmFggr+OITBy5tFBHVdRkr1rfAaU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753848667; a=rsa-sha256;
+	cv=none;
+	b=uSjg2aSVGuwRinxxGpyxODqSXWEnLqQ2pssh3ViYlqI2yLFqzDA+Ire6iGEHip7fdHvmo2
+	QCIFRpkRllDkZQ0XzMgnpbmt2dxhtilOopfwYc12WfLjZhpTFh7QyLh9NPv23VAGMCgcr7
+	RsXwgeLuiBtXue81odv+AAmgPTdEZNY=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=DXKddojH;
+	spf=pass (imf04.hostedemail.com: domain of rientjes@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-240708ba498so72765ad.1
+        for <linux-mm@kvack.org>; Tue, 29 Jul 2025 21:11:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753848666; x=1754453466; darn=kvack.org;
+        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=mmt5oFfYN5e1SsdVZLo2HKeKgtUA4pJEtINOylMnbVw=;
+        b=DXKddojHUHdEX39RewdzJ3XuTaiv6gbBKRQ9R3SHifCVR+ZK1+l/gil07wKbckZ6oa
+         JHTBPC19Y+K2qy8i6F7adEaHfDYGrcy1XLEYGwBR18iyKd0W7wPrbdVPwCL29UE7V8oZ
+         Dyg1t7+VT4NuTzK48gzdQCQ5EqMsqIMZU8sORNgBW04c8DyfvGoYwY/lrxa7mi4U+ubg
+         W8ajp2ddbfl7f6JvdLK9D3yr52atcIEXAIJ0g/WnespV2QkTH8DIJ3AIcs+3Vav8uMRx
+         0qJpqGtJiQ7VIxhpKBY7a1ClprqAqHRWBL2Xqn6TXlmVvVqsEi1pHrPqLka7TaDZ9RDX
+         D6lA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753848666; x=1754453466;
+        h=mime-version:message-id:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mmt5oFfYN5e1SsdVZLo2HKeKgtUA4pJEtINOylMnbVw=;
+        b=NZ2zMJEIKPFpwIvCPepQe2WXZjkChAX+ijmnOw7R/WtFdWhAfhGp6wGJCRx8y2FoKY
+         J1jevmlwOM/0P/W/Ul+JWjXqM/cpwKlYY+llgrtMfRsuSTDCyxURei/1fPfiOzB3vcxG
+         zqoAtIXndsjylRm+u1lWeTpT0P/E2hxVdo1bSSIyv19utNIPjHH0p8ljGauNZbePBVlh
+         c+VbCbas87fcjp3P9k6884dJjtK2FbjL4JBgK2umBqyt0fSa4ncHx+jo7vsIHXtZfwun
+         HC0UnUi14q0Eeb5+bTbEQgQ9xfJIZ/+Rf2rCDMNDUa9Nyj04iJ0uC9upwGLwuuzeU8Si
+         5SmQ==
+X-Gm-Message-State: AOJu0YyURNM0CY4qYwkp5Jvlm3JobjvdvfZsEueO1VFxzKMho8WwFvjJ
+	vA+u/ftEeLMXs9JEfR+lr1NEAnhNMnhKWOftcpC2siddtOE++JyAaipWeh/jF2IBwQ==
+X-Gm-Gg: ASbGncvOtSbT4FA5Nml5fB5ILJNNmYvBJkicf/LxiwncRwOhcPGQ62pWfg5Z/3hKdJv
+	GDATxca4yoE3oLHCgWVZNsC12iEjREiSekFSi8nsZQFlxvTVfEuAS9U4V4sx+fT4RrvA0c315bu
+	xfiKasr1VgaHozjGoM//xKgSpMoOTJSmxcjl+H24kVVBzk+2sTmIBkV73X3YY9ILalj+fqsRss9
+	M3AlF5eIpXaF8ATWSex55a1X1YHTSr95Sd2N/NuS6MK96tiH3fWq98edhQlWMdN3XoFV+tyKEYN
+	3Sc/51cGuOsDt/7mck8luoFfpK75k7qJSBgB3olou02K8YjKOXtWd88PKT6kEztPJTEWk4Vmow5
+	6Y4SzXM1ZK8SCjEPzxuOMHVncr8QTtKruH+YdNISWq5hSw12bGjiD9uyqhCHD9pjgALQLPy8A3z
+	zfVfndplQf+n4G0g==
+X-Google-Smtp-Source: AGHT+IE+1WfluDbMQ8ADb5FmNwmwidg7Fa/ThJsgjlVR3HQ6zBPbfoMQrvqVWITvEvFsGT8zVYF75Q==
+X-Received: by 2002:a17:902:d4c7:b0:240:6076:20cd with SMTP id d9443c01a7336-240a228b293mr1365745ad.15.1753848665715;
+        Tue, 29 Jul 2025 21:11:05 -0700 (PDT)
+Received: from [2a00:79e0:2eb0:8:fb61:a32f:4364:baa] ([2a00:79e0:2eb0:8:fb61:a32f:4364:baa])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23fd45617efsm83949345ad.176.2025.07.29.21.11.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Jul 2025 21:11:05 -0700 (PDT)
+Date: Tue, 29 Jul 2025 21:11:04 -0700 (PDT)
+From: David Rientjes <rientjes@google.com>
+To: Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <nifan.cxl@gmail.com>, 
+    Gregory Price <gourry@gourry.net>, 
+    Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+    Joshua Hahn <joshua.hahnjy@gmail.com>, Raghavendra K T <rkodsara@amd.com>, 
+    "Rao, Bharata Bhasker" <bharata@amd.com>, SeongJae Park <sj@kernel.org>, 
+    Wei Xu <weixugc@google.com>, Xuezheng Chu <xuezhengchu@huawei.com>, 
+    Yiannis Nikolakopoulos <yiannis@zptcorp.com>, Zi Yan <ziy@nvidia.com>
+cc: linux-mm@kvack.org
+Subject: [Linux Memory Hotness and Promotion] Notes from July 17, 2025
+Message-ID: <c2f5a8d7-061b-7649-2b9d-03e6314d1102@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250729134942.900517-1-zhangqilong3@huawei.com>
-X-Stat-Signature: c9u3aekfwatf48yascogfdufmgubia7e
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 5ABD54000D
+X-Stat-Signature: cnkiewgw3thru1qcemrteausmznfpbye
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 34E1C1C0011
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1753846644-984219
-X-HE-Meta: U2FsdGVkX18P4hHforZNUORvEi7YKtMbDXJ6cEcqiFxQ143xoQhK1jT5Ph/vhQvan7vBSlNPHNGrh+o2Tcrul5w6mCLAhcsyWtgWw9eI8v0VXrhJgHUDS4gDgnTkWCpwkcGrCRvSoFkSoyjrnCvsCOa434Zk4Vw/Ba9flQOOE86jjo44yUGq8m+oSay8ezf3WYFOKbxgbEyYgxVZRA7BWKUu3Z3JXhh5RVr6z+NrrBgwni8tfI7tzlw4Lw4BHTylIYhmEEN5QQOO6/zoqAD4/gPnVU6L/JVmhdz4X1PWiQI9LlF/W7YxEfLmcnzgnqx7X9ziGycIbkQojC0Hkd7N/YgBzcZxJYyPDDbmI3q2BEs+rxL9dP2A4PM2TgBzm79b5f4xlboBLgitdoecKyjyR8ZSRAMQJb4TItI/Nonq8R2JmicTShJS1el9/Ze33C4AXqlI9t61FQElEAPo1QBSGtES+94wJH5iVmt3kMMKup35pRIk98Qa3TGrDIaNeM+XIiJf+YhWFCcSkHAzTpQqjCDSKTQR7t5+v1T5JR9MtdTdRnamk48yFBLBAqqcckQY18V9BwcW6a8slznfuV0tqenuTBorE8obUQbcvwL/Kyhczh+IH8i7H/9jyx+bnTl5jxZcCdKQlubwJnCouNq8P7qtJS4jTKT2G3FR6d3j5F0g4MQDm2H2zIH5LMmh5XCeUsPn4rjLLP4D2CmTgBikYob/ZdyZUsa/TDgf2WnVeLuKNTPZWkJQbBpVIWwPXzUJSS9xLWfCiAO1ae1Ie3lTbLfgw+rl+pcElB9dKYJikluuV5J4WZaTd0aMhUOl3GN8XJef8RY1Oe7+KswFJCEvIUmsyH1eHiakqLPgiwPEVe/Vg0noFUBjx8ln1pSEHkGZ2RFTDUUGttw86NkGvjd80ZWf6kBpelDlb5Te64grmqkh2hRTv517idjmgqSp6RbsnJdxHd6fo7MAjZik/pG
- wBK/o9XF
- ngjm/gYeW9A0b0Ou2hv2mqMrJ8OZk/l5jB/kUDUdI01cqy/AxwL7uabwhK5yMqUNnMy3pBX4zPO17LpwlZQ7/7uLd8RpCgCCRZerR7OKO65tUjpJ47MTZVYPJeM+uybf9CkjoIW0yd2wfBhI941g4KTxl5XnvKRIbJCrAr8+qgvWDgd6UoBRPDO3K10SYfzzJ8U/oumC6D/FtlvQH+pnn3gdgbnZ7QU+cAab3dCeiF+ARVFcZLxlkycyp3WsU1FkniuDlxrWXss8XZz0sas4NsyOB3JBHyf7PqYy7P6ltJV/9Ok6Kl7XS/UKYTbOIyP+AD4eKttN9XtU1m1eTkhqF1HO2IzynqhEesLrXpJ/7QOBXxhPjWvTN2uBnbgpiCWKn79+3S3HlS5DkegCgk9JleptIufEXYQbFX08zDHro0nkcEJc=
+X-HE-Tag: 1753848667-176972
+X-HE-Meta: U2FsdGVkX1+9kIfjXmVFgQWLkQ2897Ikwo/ircOCcLH79oDPlo2IZy7+RhrOzp6qj1o2aoWSI8BCuR/vkBBx4o1IFcEupLoZobCX/JuvnA7gVj6SjNABF351n9oy4PNBFKncAl8Dt84i6V/BNgjUZ792AWD3IMG6BdCCG/E2ayOf4KYow+55a+PwYcTagiH4ztFah7xJwnRZqHyA7dALpOe86j5NoUQP+9VNKuF/TJXQztUmynX/UyPrCUD7QQQENQVfgUa9Psi+TfDF1ZM9UJUXrZhlxbklKHaF5lhYu+yzpFhs4kCDm3oNx0xRSxR6s5l/WQUjZKK/9Dzi8sIpIGuAqdy7UgQi9irNS6il29YxhpC6oiV90etEVGaMYux3fyzojVyDwX/pOqgihVqD6e+Di6mBX5zQiwxHolfWrtxTM0Djh+7B3Ruy3SDl0O8r30+J07sW+vzPN54me1b6LcVtqGNPN9GLfWdVZXrPl4ez5m2xYZy8vj1u7zI4nv55igBVjEt6XjUdWNWwbK8b7xUNMBGgsCgb6/bNekiFbbFRHc5ks6NVgzOkwkEKCmvP5gslUQfbD70iZnkMiQuArYtTBfS6HqACeyjmhKr2RJ9K0YEIMnFABPuXGjKwkWgdN//s0kK+/zTbad7cClQwrKsnqnkJB+3eQyfL5zSSRawj9uyWu4ok0Sslm/MIM7e9TCWsxE4eIQKAMIDffMfEiBfUZMvQzjybSadeWSJ9xodUcKj/79ty8QrXBW4EA4ZtfvCyMh5UDTeP5DsPPrnz8YO+xYpzfRRf2bRqpjULNfJzqOyysgmP4wUu0H6lHgvpKS+dDPwFaRltysGhDKOSLmJowpY2OWuDdiDbxPCoZqGLj6lozuS+/6jq7enxwU16X/gBA9BuF5dVMY7RV9KGoPSkdFmMGRLsfEI9YFVQQ92g0sQjNKcA24XF4e44AZr+Kh4EDTRhQD+TYMoM/1U
+ zFujInVC
+ Vawz8xqx6pqtzMzOVAnOuoGpTqtmFlBlpdFYcHXhwEnxbvvCM+gs3rsmcXT3x7KTnzEfJWrqohymf33di+f/z7PIow1ZT9hLNfY6nYYoirsMPus9cqo0+LzmiJH8xwDTyihcu5fmCYbJvxEI1YTTHGThJcb/cqEDkyveFHinUmcQjrOztHnk1L3fr+grLbkFYHqucfj1AXFeJn++dEQA0SqlqfRSd0L336HGnIt6+VpmatlCEVBGx6HB+JXyw8qjIbXZJJk2ozkVwCEMgBxBXFxv8lvi6w8me3xz7ONTVD9wxd//BH5AA+HEAbCW2vbg1fegGAsWZI0JIjlvFWgIhuFFjd1bkjYa+y0LsPIzriURp24FE3HiFgbhQde4H5fTFUdx1Jqd0ND3hb5U8zmiP0DoPADIlkyBqacsHzOzp5JkxxFIi+93JWpN3joGDq4YuWmPqE7cJpd7HrKSVvxF83Ar89K8PnFb/LCEbYvjX1gol0PiNtrkvaNaR8SZ5jooJu+ob
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,65 +115,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Zhang,
+Hi everybody,
 
-kernel test robot noticed the following build errors:
+Here are the notes from the last Linux Memory Hotness and Promotion call
+that happened on Thursday, July 17.  Thanks to everybody who was involved!
 
-[auto build test ERROR on char-misc/char-misc-testing]
-[also build test ERROR on char-misc/char-misc-next char-misc/char-misc-linus soc/for-next linus/master v6.16 next-20250729]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+These notes are intended to bring people up to speed who could not attend 
+the call as well as keep the conversation going in between meetings.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Zhang-Qilong/dev-zero-try-to-align-PMD_SIZE-for-private-mapping/20250729-215253
-base:   char-misc/char-misc-testing
-patch link:    https://lore.kernel.org/r/20250729134942.900517-1-zhangqilong3%40huawei.com
-patch subject: [PATCH] /dev/zero: try to align PMD_SIZE for private mapping
-config: alpha-allnoconfig (https://download.01.org/0day-ci/archive/20250730/202507301149.ILLCBOyz-lkp@intel.com/config)
-compiler: alpha-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250730/202507301149.ILLCBOyz-lkp@intel.com/reproduce)
+----->o-----
+I shared the news with the group that the Device and Specific Purpose
+Memory microconference is happening at LPC on December 11-13:
+https://lpc.events/event/19/contributions/2009/
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202507301149.ILLCBOyz-lkp@intel.com/
+This has a lot of overlap with this group, including hotness tracking and
+CXL memory expansion.
 
-All errors (new ones prefixed by >>):
+----->o-----
+We chatted about the status of pfn tracked folios.  Bharata noted that he
+had updated the patch series for kmigrated and started experimenting with
+it.  Page hotness information was recorded per page with page flag
+extensions and then a kthread scanned the pfns to figure out which pfn
+needed to be migrated.
 
-   In file included from include/uapi/linux/posix_types.h:5,
-                    from include/uapi/linux/types.h:14,
-                    from include/linux/types.h:6,
-                    from include/linux/kasan-checks.h:5,
-                    from include/asm-generic/rwonce.h:26,
-                    from arch/alpha/include/asm/rwonce.h:33,
-                    from include/linux/compiler.h:390,
-                    from include/linux/export.h:5,
-                    from include/linux/linkage.h:7,
-                    from arch/alpha/include/asm/bug.h:5,
-                    from include/linux/bug.h:5,
-                    from include/linux/mmdebug.h:5,
-                    from include/linux/mm.h:6,
-                    from drivers/char/mem.c:12:
-   drivers/char/mem.c: In function 'get_unmapped_area_zero':
->> include/linux/stddef.h:8:14: error: called object is not a function or function pointer
-       8 | #define NULL ((void *)0)
-         |              ^
-   include/linux/huge_mm.h:536:33: note: in expansion of macro 'NULL'
-     536 | #define thp_get_unmapped_area   NULL
-         |                                 ^~~~
-   drivers/char/mem.c:533:15: note: in expansion of macro 'thp_get_unmapped_area'
-     533 |         ret = thp_get_unmapped_area(file, addr, len, pgoff, flags);
-         |               ^~~~~~~~~~~~~~~~~~~~~
+This turned out to be problematic: a bimodal behavior was observed based
+on when the kmigrated kthread could get to this page in its scan; it could
+either be very fast or it could be very slow depending on the scan period.
+As a result, the hot pages were not recognized in time which resulted in
+the worst case probability for benchmarks being used.
 
+Exempting some memory zones from the scan was insufficient itself due to
+the sheer amount of memory that could be present.  This led to a pivot to
+kpromoted that only manages the set of hot memory.  This had its own
+challenges, however, due to synchronization required between the producers
+and consumers.  The hot pfns were maintained in a hash bucket which was
+good for lookup, but if hot pfns must be extracted out of it then this was
+problematic for hash; a secondary data structure was going to be required
+that keeps this in priority based order (Max Heap).
 
-vim +8 include/linux/stddef.h
+This was working in practice but more testing was needed, including for
+scalability due to synchronization between the two data structures.  I
+asked about the testing methodology for kmigrated and Bharata noted that
+it was a very simple test that just simulates memory accesses on the
+remote node (traditional NUMA Balancing style testing).
 
-^1da177e4c3f41 Linus Torvalds   2005-04-16  6  
-^1da177e4c3f41 Linus Torvalds   2005-04-16  7  #undef NULL
-^1da177e4c3f41 Linus Torvalds   2005-04-16 @8  #define NULL ((void *)0)
-6e218287432472 Richard Knutsson 2006-09-30  9  
+Additionally, these data structures only need to be maintained for lower
+tier memory given the approach here is focused on kpromoted.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+----->o-----
+Wei Xu asked if we need to allocate a node to maintain the data structures
+constantly.  Bharata noted this is why the shift happened toward page
+extensions instead.  Wei thought about maintaining multi-level bitmaps
+which avoids the allocations for every single page.
+
+Bharata asked about hotness information itself, including access
+information.  Wei said described this data structure as similar to page
+flags but sparsely populated.  This was based on upcoming support for CHMU
+when a PFN is read, we can just immediately promote.  However, since there
+are two tasks involved (collection and promotion), a single thread is less
+than ideal.
+
+I asked how we could share the code between the groups so that people can
+work from a common understanding.  Wei mentioned that it would be possible
+to share soon.
+
+Raghavendra discussed pfn scanning and the data structure that would be
+needed, similar to Maple Tree to store the range of memory.  Idea was to
+store the timestamp of the scan to avoid storing this information for
+every page.  He noted that in his RFC v2 patch series that the scanning
+and migration thread are separate.
+
+Raghavendra presented a slide that suggested a kpromoted interface to be
+used when the source does not maintain hotness information and a per-node
+kmigrated thread that does blind migration, throttling, and batching.
+Bharata noted that Raghu's PTE scanning series would use kmigrated
+directly and bypass kpromoted -- approaches that do not have complete
+hotness information themselves would instead use kpromoted.
+
+Kpromoted will maintain the hot page information, potentially based on
+multiple inputs, and then hand the information to kmigrated for the actual
+migration itself.
+
+----->o-----
+Next meeting will be on Thursday, July 31 at 8:30am PDT (UTC-7),
+everybody is welcome: https://meet.google.com/jak-ytdx-hnm
+
+Topics for the next meeting:
+
+ - update on status of kpromoted (collector) and kmigrated (promoter)
+   approaches and testing
+ - update on sharing Google approach for both to overlap the shared goals
+   and converge where possible
+ - discuss proactive demotion interface as an extension to memory.reclaim
+   + possibly leveraging working set extensions on top of MGLRU
+ - discuss overall testing and benchmarking methodology for various
+   approaches as we go along
+   + minimal viable infrastructure, testing workloads, and metrics of
+     interest to collect
+ - enlightening migrate_pages() for hardware assists and how this work
+   will be charged to userspace
+
+Please let me know if you'd like to propose additional topics for
+discussion, thank you!
 
