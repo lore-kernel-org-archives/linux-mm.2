@@ -2,83 +2,114 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A88EEC87FC9
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 02:23:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D5D9DC87FCA
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 02:32:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 237FF6B0093; Tue, 29 Jul 2025 22:23:35 -0400 (EDT)
+	id 492046B0092; Tue, 29 Jul 2025 22:32:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20FD16B0095; Tue, 29 Jul 2025 22:23:35 -0400 (EDT)
+	id 4432B6B0098; Tue, 29 Jul 2025 22:32:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14CC56B0096; Tue, 29 Jul 2025 22:23:35 -0400 (EDT)
+	id 37FFC6B0099; Tue, 29 Jul 2025 22:32:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 019176B0093
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 22:23:34 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 17A611601BC
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 02:23:33 +0000 (UTC)
-X-FDA: 83719334706.22.05FC021
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 66F96140007
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 02:23:30 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf23.hostedemail.com: domain of zhangqilong3@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=zhangqilong3@huawei.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 28F106B0092
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 22:32:24 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9AC42802DA
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 02:32:23 +0000 (UTC)
+X-FDA: 83719356966.15.2A548A5
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 911831C000D
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 02:32:21 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AYsLKaE5;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.50 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753842211;
+	s=arc-20220608; t=1753842741;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=w6MRxO4LqbvXokVHMH9r1toJ/I/9e98xgR38DZwX71Y=;
-	b=hD51Vn/PE3p9wMCPa+fz/IW8HHVxxPAp2+yAtceGpNl9dut8xWT3SGVyLI6ZP267GehlHA
-	A6doBj2dLZQIntUogJXHTqFxbWPxADZc3LVE8DCbuAmmhPRvnqqPUJslkxHsNKMTszOJ/+
-	/3tVJUe7d4GrzfazAC+nglW07tKurpc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753842211; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OSdrNqk7apN4PoKxo9JFJtvNeGWmBBKLJgsYG8mDMZU=;
+	b=Tj4aZUgYCVttnfZjfv91cdYzkUPQed3w3ljEmoUCFVaE1YCOriVopDAPhYcZhlIr1tfzIK
+	GctdaHVYujachUyHmqJYuucKDw/eJ9y701s0QSkFXa1/lqqRjc6WqiG95fg17t0SRP5XWT
+	OHVBAGXE4T2lSsAruC5nveU8ucdYdyk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753842741; a=rsa-sha256;
 	cv=none;
-	b=75KzK6gLaNNNHjkm8v+ZL2D33Rp5vA5qh0lZf97ATFjksCnstRT7D/pdg1qA1k8vLivlpm
-	5+2KIgRo53MSJ+5IDPOGfw5dghKD4UfHZZKxHtYTm3jGNrf7JL4r8o1qbNi/ChjczpIV8c
-	/+iJChzc/aL7doJkxaYFoFKWO5xo0vI=
+	b=dA5q6yOLxRG9HMej7rxC4JsIHV9DNZec0Ct4otpTuZFAD6jeMNmJMaJGLFp1ryrIvIPcs3
+	4km295vAhkBWsu4DkifGDwKgUyAQCvehCd2CPNrwhHL2CZkzY2yZhl97mJS64eVd3TDJO7
+	IVGX+YwOeV8QNTko2ng4jZsS/zZrtFg=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf23.hostedemail.com: domain of zhangqilong3@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=zhangqilong3@huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4bsGHv3N4wz27j6G;
-	Wed, 30 Jul 2025 10:24:27 +0800 (CST)
-Received: from dggpemf500012.china.huawei.com (unknown [7.185.36.8])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0A3B51401F1;
-	Wed, 30 Jul 2025 10:23:26 +0800 (CST)
-Received: from huawei.com (10.175.124.71) by dggpemf500012.china.huawei.com
- (7.185.36.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 30 Jul
- 2025 10:23:25 +0800
-From: Zhang Qilong <zhangqilong3@huawei.com>
-To: <arnd@arndb.de>, <gregkh@linuxfoundation.org>
-CC: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<lorenzo.stoakes@oracle.com>, <wangkefeng.wang@huawei.com>,
-	<zhangqilong3@huawei.com>, <sunnanyong@huawei.com>
-Subject: [PATCH v2] /dev/zero: try to align PMD_SIZE for private mapping
-Date: Wed, 30 Jul 2025 10:22:06 +0800
-Message-ID: <20250730022206.1349706-1-zhangqilong3@huawei.com>
-X-Mailer: git-send-email 2.43.0
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AYsLKaE5;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.50 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-70744e8ed6eso25228206d6.2
+        for <linux-mm@kvack.org>; Tue, 29 Jul 2025 19:32:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753842740; x=1754447540; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OSdrNqk7apN4PoKxo9JFJtvNeGWmBBKLJgsYG8mDMZU=;
+        b=AYsLKaE5+uDLjUmJhunSCVoEQNIB+afcMRGzAPn7GZBo3UnpV9b4QbSU3s3gEJiM0L
+         L7zcyNoU8xKr2MUxfcl4GNPSsMzgBOyq3KmwPNItMgDZtG+dYEXzaXXEjNAgJDZbRyyp
+         PNHcu6RJ9MiS2/SwyJRUf6XrL1uxqUEAqJ/0TTrd4d0efDKnN8c7C8do+4AAUQ+cUF4c
+         kAVY5xO+NWcXQ40HRrYVOIT8bqLhV5q4NP4ql3HRBCNGiDKDubq2zTuAC8qi22+WasD+
+         J+dfwVJnJZtZ2CgdzbHhPrVF81YmnDaI+Nc/zAgLmnMUDXhgpuE6QEwJe/t9XIH3pkHc
+         lIEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753842740; x=1754447540;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OSdrNqk7apN4PoKxo9JFJtvNeGWmBBKLJgsYG8mDMZU=;
+        b=eVfgOX4a15D7IP5/WooOiarGgJLr2x/k5C+3rE7VCOh3LUtdmcSLGhVVjU8tvZ99Y5
+         r8G8i3QGKwxwDl05FkfvglO3iFWiaInNYb37z+5fWFTBZjc/I8mCipHDdLKjtRoH00SR
+         JgL2qVXeIFls0lYrga3oIt0OyajohQccLaT56NUJu0ZhIwQVm+Qj/MdIdMinHjJJpRxt
+         anh2DRtmsqDvINkvT637h30zs2yHOmKEu3fpgxImjKSojvSV7aXtLLx9V5c7EM7MRSxY
+         cPzZZx/VUqQ2ancWUrj+7WZLG4hiAsYc2Vj0jfOc/0oB/qsysxi4ezsYg/dN8BpL3E64
+         JCzA==
+X-Forwarded-Encrypted: i=1; AJvYcCW+o9tENFkI2IJRlZDu6GjqBf/17Wi9veEvFjr/Et75KzLM4HUgFqYC42V+lHzI35qSHkmZ4gXmMA==@kvack.org
+X-Gm-Message-State: AOJu0YzoVp/q5LWxrbS/LP42mQZglgPNapn8ESF2eCTxH+CDb9yZ/zJC
+	relkXiwrMUsaP/+10IRcBG8qaT43Gl+gIU9NNPYVHYhJD+NuWfM3MuCS6/oY2cUKIdBrRPyviua
+	aV4h/EWzcdwXhHYvLOzM2G8bcO5LH0X0=
+X-Gm-Gg: ASbGncv8wQEmBvMvugNLF6WgRRUzru0ZHDfi6e6CGLKFPVOLJeHbZuwrN2pHfBi/3Ng
+	sbour6txjl2FjlgkP5RNh6nSy2zspikhzFTYTv+FfGD0nPLrxK7zWuNW2Sy53wAmVCQ41m4EWm4
+	EvfgHCbrORw1i5V9OfjWpKIZzI+8WcacK3ExauuDMYhidiMkcvrQ4dxbEONNIP5FaSQJJCJ8uXT
+	FmpAKM=
+X-Google-Smtp-Source: AGHT+IHRf5Cl5qaMXk0K+z+ITU7Etj+RVem/klgU5pn92p08+EgcJfhh6TqXxZMHFoSeOhbUtXNZkG6kszlvkafjTqc=
+X-Received: by 2002:a05:6214:f28:b0:707:3d2e:10b1 with SMTP id
+ 6a1803df08f44-70767114bccmr25338816d6.26.1753842740519; Tue, 29 Jul 2025
+ 19:32:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.175.124.71]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- dggpemf500012.china.huawei.com (7.185.36.8)
-X-Rspamd-Queue-Id: 66F96140007
-X-Stat-Signature: u3gqe8uhgqp98txhneuns1amr4ub351f
+References: <20250729091807.84310-1-laoar.shao@gmail.com> <08D7155B-84F0-4575-B192-96901CFE690A@nvidia.com>
+In-Reply-To: <08D7155B-84F0-4575-B192-96901CFE690A@nvidia.com>
+From: Yafang Shao <laoar.shao@gmail.com>
+Date: Wed, 30 Jul 2025 10:31:37 +0800
+X-Gm-Features: Ac12FXyVY7VxH-PclNWhwOUz4PaSKOLg-dKTL9OWN12oyQL1HTf3H_qW6d5Jd8k
+Message-ID: <CALOAHbDRBs8bdXB_LJjx-7gALOCLvmMxFD+c7MbHAiQ3htXawA@mail.gmail.com>
+Subject: Re: [RFC PATCH v4 0/4] mm, bpf: BPF based THP order selection
+To: Zi Yan <ziy@nvidia.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, baolin.wang@linux.alibaba.com, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, hannes@cmpxchg.org, 
+	usamaarif642@gmail.com, gutierrez.asier@huawei-partners.com, 
+	willy@infradead.org, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
+	ameryhung@gmail.com, bpf@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 911831C000D
+X-Stat-Signature: k1axcfqtf4qc54szieokuooh6qkzhrpo
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1753842210-77296
-X-HE-Meta: U2FsdGVkX1/nSNLUz/6G/SOJh3nX6CKJKVBG78u+WrIOVI2smWI8JKZBcZ5slrJucodGVYEjqegHAWH27ecOcgQDxZmuNFZiSNS5ixtnYOne+wv18/drv5Rf+sRqouAt5XTuPd3giXJygRo/qHGgUsq7CflFBrv6YJUPcxoy+xj1QMYonOwo417R7m0Vo3nsY7FJzVHrkU+XAUbzXbAAb1flYxZACC3FJj4BEqhEfoyixlml1k5LRWJA31J93MuJOfSa/rTzgsGu1oPQpW5GjuRi8ztdFV/KC4WOlcfi8+bB/MJrCdjhKdTYj4Z/absX2ue8FUgrBWCU9iKaWwvQU8VK7V7OZlp/3yd9Fz3JlHWkyN6AQdlzAfgAbrvCzk0M/CfFj/TgPnlZle4gkrgujw4RUQr0BFRRg9B4hxhaxC4jrf72LiwrD9zjjMUJSgbYcdo2tTg54v/7jbh8TUE4uIYQcnLHK0w701w7Hl8m9SpsQm7J3JHEWV8zYzKSxD7qO+mmPJ8eP6Dtb57Eizfeqo491n8mo8YruCv71WPMXBqLZ9x6kF1J0cFZtjTh0J7ohEQhN6xRXufv82nLOvXgfjhR0iHUUvfw30r/b/KZIklclGKVEDN1ytypqvkTUCB5z/qs1eCWMlXrP3ZHNATqeDXU6WTZ3dfU/uxfxO83+FFIeyHVClu/fm9ru4CjGP6JXWdPsOWlsUq4YOSK6lw2A+r3Bj0nm4E1UT6RavLepYQjY3dZK/HPLnaQy9/TCyY2gLrIfbKFC+8s9uk7BGV0540/xXuNojTgP3KrrRfXhi0n2Coc7yP++I+yEwinvWlz/fPyly6cSZft1CVoPfcRExf1cho0cyX9QNRcrAp1++fWiOxRq9z3Bm+NMwo1AByrJxnVyJEzR8pjKS2SHGLsl19XCwUduQMmVB0O9aPOPMlZQpJQe9o1GNknPpaC/vUZ65vo6ezrIB9FrZwMRxD
- dl2xy9nv
- k8qNP/Iku7E6FknXKav0bsnrJjWFVDiNo9PMz25o03PrNx6ERQlZPcjrmt9bC/dq8lp51D+HO1ScVsmMwN7Hjk1WewHKggUF1sdIKCtSU4vOGrCmnCdRHS2l4GiawWAXdsMSa2nnWXBEuyj49zqJjC3pBZTS0NbvzciW58TXqCb7ueoFmCa8OtX5Zujw8eXqd7mjGUxaG5XylQckD7tAmaHzi+xvYja8LuZURHbh/XpgqDbY=
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1753842741-677273
+X-HE-Meta: U2FsdGVkX1+3WksqCISx0m/q5+fUdpi34KrKPfnRJVPNLxsUTW3OOJ2CGiftJeHZFPkPLW2XFINpqxs7hzFWJkHZvmPwrdIU8NhAjz2MY4UKjei+2fkh3zF9UXYoW1/O/xVr3r4lm4Eiym1PvtiTnh5c8Nw4wpTZGHGmNh3fQsITTTI5r+oxjhf+iXvN6qzu03lH/YVpxhSZPkeF+e/P6vrEgbYxsU8CiMvJWltHBq33J4Svlq7upkXoCe3pRqeTPQM3vDZjkV3Ny1bbX0GNSii0H6TALV+Y85sINzem2pWXJtU3HX71zW9CGxSpcFwZkSv1dY7qQWW1Con+mXKq+pdSRHipIxPOSNSjrrBm2XOeZuJppFCvxOvxz/tkCchxZL2qZ2xaOlaMqaEi3WbcR6GgbxUNBLNXf35xcm4IabXduN6XhSRREACLWUkWM5vUVcN0VZhSOCrstGTTfjjVTPttE1zZPmvZqHev+qlD/m50BvZuSitWfyZZinpH5P5CzrGx9ZZdZGEo8Fart80Nf2s7MmzMFMO2T1iVzr60UEA+dBBAAg9jzK8gvkhK8OoUgQvoj6k3vhKcXFHerwALJ/N0YjSD+OudUz3N+DEAe4TKbbI153EKVNViCxxDqNJzEdtlVadyVEKPxoANbqAv8MsEDgo8DUFJJlAfv1WRYmS049oesTL2wS+PjCGZ4YXgHTlTZflHLetxArVUdTgsnMdt8Qfk3bKinkbZRIogDJEONC2Xr13g6JycotrmaevzhZ/1WSZl3B/X9rgV44vbbI8gChWaH6HCk0se4ipD2o9hiyYKUnY/rixh11vFMSXmZ6jJP6/JhoWBgESbZTOWWTE4kDtOl4/HGI7yPebBJWvsfEzPd78nxZDiMuY+5m+tf8ib9/iMsIU+0oEw0fyFgFajpy6beM+CYLhKdrvQs+qzRvZ4hWcy209idzNmNKbwyGLfE7+lKaCmMFKoDTE
+ tjBf2VaB
+ Nj5xeMQ57JKqfpYEIhEDNW4ojlianapZTDrGd5LftSMv+z+wYoW6jErsnoi4CoAwCmdOGTdh2kUq8YHQryBPgqveQTJE+OQDQorCF3N+Q+OHpwuY9X2YdGgQvqb5Ex3GGckXWdg8LxZKihlWFKj8HR4Okfw/U/Gv/uBJzPsV+UjU9OMtrOU3xFGxsVS8/i/2AWm0OHSaY3IDnD8tJoHTSYHcOju45Vs5JmkTxwzdLLMWPPPfl+hCgLjaING54lWvG+m2p+Zn1SGYjnuznTE+rkB0tzmM2rquTFylRmUKPyTkGpNzSG2aX3cvPePxwmuviIBGkI8yCwBI9DoTkkrWRqeiy+QN8kNrJVGscuXGtmvvU0y/Ox0omFpNgIN9fKLIuMjw/fAOR3gKP62RJjAvTxsMPkxLr81YEvlm6N9pcOQwySo6U45GjfxSlatjghmzcrVXsaILtO61cpmKlGD6I5rydQVBg0Jof0T7XatgHfLK9NMANROftUm9DAg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -87,44 +118,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If THP is enable, mapping /dev/zero with a size larger than 2MB could
-achieve performance gains by allocating aligned address. The mprot_tw4m
-in libMicro average execution time on arm64:
-  - Test case:        mprot_tw4m
-  - Before the patch:   22 us
-  - After the patch:    17 us
+On Tue, Jul 29, 2025 at 11:08=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
+>
+> On 29 Jul 2025, at 5:18, Yafang Shao wrote:
+>
+> > Background
+> > ----------
+> >
+> > Our production servers consistently configure THP to "never" due to
+> > historical incidents caused by its behavior. Key issues include:
+> > - Increased Memory Consumption
+> >   THP significantly raises overall memory usage, reducing available mem=
+ory
+> >   for workloads.
+> >
+> > - Latency Spikes
+> >   Random latency spikes occur due to frequent memory compaction trigger=
+ed
+> >   by THP.
+> >
+> > - Lack of Fine-Grained Control
+> >   THP tuning is globally configured, making it unsuitable for container=
+ized
+> >   environments. When multiple workloads share a host, enabling THP with=
+out
+> >   per-workload control leads to unpredictable behavior.
+> >
+> > Due to these issues, administrators avoid switching to madvise or alway=
+s
+> > modes=E2=80=94unless per-workload THP control is implemented.
+> >
+> > To address this, we propose BPF-based THP policy for flexible adjustmen=
+t.
+> > Additionally, as David mentioned [0], this mechanism can also serve as =
+a
+>
+> The link to [0] is missing. :)
 
-Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
----
- drivers/char/mem.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+I forgot to add it:
+https://lwn.net/ml/all/9bc57721-5287-416c-aa30-46932d605f63@redhat.com/
 
-diff --git a/drivers/char/mem.c b/drivers/char/mem.c
-index 48839958b0b1..3699e716b84e 100644
---- a/drivers/char/mem.c
-+++ b/drivers/char/mem.c
-@@ -525,12 +525,20 @@ static unsigned long get_unmapped_area_zero(struct file *file,
- 		 * so as not to confuse shmem with our handle on "/dev/zero".
- 		 */
- 		return shmem_get_unmapped_area(NULL, addr, len, pgoff, flags);
- 	}
- 
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-+	/*
-+	 * Attempt to map aligned to huge page size if possible, otherwise we
-+	 * fall back to system page size mappings in thp_get_unmapped_area.
-+	 */
-+	return thp_get_unmapped_area(file, addr, len, pgoff, flags);
-+#else
- 	/* Otherwise flags & MAP_PRIVATE: with no shmem object beneath it */
- 	return mm_get_unmapped_area(current->mm, file, addr, len, pgoff, flags);
-+#endif
- #else
- 	return -ENOSYS;
- #endif
- }
- 
--- 
-2.43.0
+>
+> > policy prototyping tool (test policies via BPF before upstreaming them)=
+.
+> >
+> > Proposed Solution
+> > -----------------
+> >
+> > As suggested by David [0], we introduce a new BPF interface:
+> >
+> > /**
+> >  * @get_suggested_order: Get the suggested highest THP order for alloca=
+tion
+> >  * @mm: mm_struct associated with the THP allocation
+> >  * @tva_flags: TVA flags for current context
+> >  *             %TVA_IN_PF: Set when in page fault context
+> >  *             Other flags: Reserved for future use
+> >  * @order: The highest order being considered for this THP allocation.
+> >  *         %PUD_ORDER for PUD-mapped allocations
+>
+> There is no PUD THP yet and the highest THP order is PMD_ORDER. It is bet=
+ter
+> to remove the line above to avoid confusion.
 
+Thanks for catching that. I=E2=80=99ll remove it.
+
+>
+> >  *         %PMD_ORDER for PMD-mapped allocations
+> >  *         %PMD_ORDER - 1 for mTHP allocations
+> >  *
+> >  * Rerurn: Suggested highest THP order to use for allocation. The retur=
+ned
+> >  * order will never exceed the input @order value.
+> >  */
+> > int (*get_suggested_order)(struct mm_struct *mm, unsigned long tva_flag=
+s, int order);
+> >
+> > This interface:
+> > - Supports both use cases (per-workload tuning + policy prototyping).
+> > - Can be extended with BPF helpers (e.g., for memory pressure awareness=
+).
+>
+> IIRC, your initial RFC works at VMA level, but this patch targets mm leve=
+l.
+> Is mm sufficient for your use case?
+
+Yes, mm is sufficient for our use cases.
+We've already deployed a variant of this patchset in our production
+environment, and it has been performing well under our workloads.
+
+> Are you planning to extend the
+> BFP interface to VMA in the future? Just curious.
+
+Our use cases don=E2=80=99t currently require the VMA.
+We can add it later if a clear need arises.
+
+--
+Regards
+
+Yafang
 
