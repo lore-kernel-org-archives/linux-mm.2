@@ -2,65 +2,65 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 03A01C83F26
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 17:45:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0A72DC87FCB
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 17:56:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F8C66B0093; Wed, 30 Jul 2025 13:45:13 -0400 (EDT)
+	id 90CDF6B0088; Wed, 30 Jul 2025 13:56:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D16E6B0096; Wed, 30 Jul 2025 13:45:13 -0400 (EDT)
+	id 8BBD96B0089; Wed, 30 Jul 2025 13:56:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60E146B0098; Wed, 30 Jul 2025 13:45:13 -0400 (EDT)
+	id 7D1B16B008A; Wed, 30 Jul 2025 13:56:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 559326B0093
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 13:45:13 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EA74A80741
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 17:45:12 +0000 (UTC)
-X-FDA: 83721657264.05.99CAE67
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 54FFB4000D
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 17:45:11 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JEP1lFUj;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 6C1F46B0088
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 13:56:59 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E8DDC1345D4
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 17:56:58 +0000 (UTC)
+X-FDA: 83721686916.22.D3BD093
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 5133C1C000B
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 17:56:57 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FmhIB6rw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753897511;
+	s=arc-20220608; t=1753898217;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hcnmGYLBaauTvnHPq2KiUHAVZoxDqvGssf3c58Pytc8=;
-	b=nKHZWvwTP9AjTRWXDM7XXI2Dww6krHr+L16cZ4dFRD6fAHXlHC/uBKkakwIUvK7aEjf/P5
-	Axr0W9+AgltOSJuZENoMUeZE31h0pGr+l0Flv8JjyD33fvLa1RYboUTjQDxnkI+XYCfeYE
-	qLDcurE8vDUsAH5EonfNxMWmM5c5P5E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753897511; a=rsa-sha256;
+	bh=dYgfJDyz2xwIXG5cQAozKpj0KEiIL+nHO0Hr7irD6zc=;
+	b=IedunSWrRV4UdZh1Ax9jLPgcsFAhaCnmJZvJri6JDu/Te8BBJjb7VCDI34pDScHn2VcOxs
+	xLe8h9li588N2rqoUnScB694VmGRNX2R+rZgYLKpYndX5NkAeaDrkafxNQlMO9tTDT93k6
+	RyoU7md+Iuw3zu3WdLUaRyEs4AUuwFo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753898217; a=rsa-sha256;
 	cv=none;
-	b=GArBvxHpEm1tPfnXtJ5Unm6GDWUZBkpCx3bVPHL3ejzzEek/R/LvCoAxRg7cK8wMJDSHI8
-	Y7CsfmO063+X6mnkewR3+HkGeM9y59AXoBNNjUDtCLjrFAKtJ3J44iergv6sqyhzNzEN8j
-	IIPEXMgam9AhT3tEf4ifOkf87qG3IvE=
+	b=48tEYR0bSKnP115aAZcCRUA8gO/Kd5dvGpas9qoZpH93c24Nvd5J3QIXlO56m1eiIK3Yrs
+	PsDi/Hmcl69kWxEyzPF0z2ls+D9udeIAPQanltphd8DqDUdVNrgHZA66DPagOB4Uww2puW
+	GINTV2SsHIQxvmW8UiczXNYvfFo23L0=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JEP1lFUj;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FmhIB6rw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 8F4B8A55410;
-	Wed, 30 Jul 2025 17:45:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10487C4CEE3;
-	Wed, 30 Jul 2025 17:45:10 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 2BC865C2609;
+	Wed, 30 Jul 2025 17:56:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1176C4CEE7;
+	Wed, 30 Jul 2025 17:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753897510;
-	bh=hs1BG8aT9FKJxFJ3orJrSyaFQ690x26pRpZbi29Wndk=;
+	s=k20201202; t=1753898215;
+	bh=LxlL3e6vR/HG4aAeNYWdTWRtYhjSKsDeB3n9zodRNKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JEP1lFUjEuHDMz5py9iUrVsEfEUE3+316GPzop2YCr8II6veIhr+2UKp3+HveEOt4
-	 McQndkN1Kv7EJVlTixbMJXxm4E51Dh9egxNyDeAdyYYY9BJocgN4F4s/wnO7virAn2
-	 gunidqgh+rTFBKl9cIDmX9H3a0j02bihNJ7LCDm47V4nZz/RyJ3Q4hDCmaV9SPQrJc
-	 X8wgSv62S+FnIk/OMBvPACfPGDalOkBwzkS0iyU/WX67vHEqZAWzE1Ynm9105LLd4i
-	 V1dhUvlBjvaKkaqpNpGtHIqoBjmI8Sedasm4GzRWBj1B8SX55DpwRpYgEgQ8xvkxSU
-	 cqwtdcytBispw==
+	b=FmhIB6rwEPaQO/Kz2XplzMkph3aNpT/mO8O9r3oM07r1u2d/KSkOmLDTwvIIVGs+9
+	 qrS9w9JcKtrEzhSH1eZVWTCgNdV9WqCbiFnGSf7fpfPJ9a1uXtQg2rnucfQbXyH7vt
+	 YpWeppA9eHbXki8P8Kpsuduy5rbUCSW7J3KH6wJ2gIXeNhmmVgjlC+aUguWjnEBVpI
+	 Kw5w8z0hcK/sfavGU6AsLX39TbLvXrJ+6c0x9xv3m/kukaKKBgFDqbSLuU1VS9paIp
+	 Mv37T8M6Bslm1zXa+gB5/ar0I71926sLzi6DcZRFjDj3mqUvRiMt2PyTVVnlwai9uj
+	 aqDRnYn18lDrQ==
 From: SeongJae Park <sj@kernel.org>
 To: Yueyang Pan <pyyjason@gmail.com>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -69,22 +69,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] mm/damon: Move has filter to ops-common
-Date: Wed, 30 Jul 2025 10:45:06 -0700
-Message-Id: <20250730174506.60001-1-sj@kernel.org>
+Subject: Re: [PATCH v2 2/2] mm/damon: Add damos_stat support for vaddr
+Date: Wed, 30 Jul 2025 10:56:52 -0700
+Message-Id: <20250730175652.60173-1-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <06734aa15198e542f9defbc1d29fc0731671c3d8.1753895066.git.pyyjason@gmail.com>
+In-Reply-To: <c05b1b4f66758c0154e4d037adcb15c43917f38b.1753895066.git.pyyjason@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 54FFB4000D
-X-Stat-Signature: 8ym4zbmsco7comdgsc7zchfmhjian8rq
+X-Rspamd-Queue-Id: 5133C1C000B
+X-Stat-Signature: 8bst39kwia3xkhnrt7p9p79ppdpihg7b
 X-Rspam-User: 
-X-HE-Tag: 1753897511-681673
-X-HE-Meta: U2FsdGVkX1/CtdS/ApBwI4nQNuYhXpkAi0WAW8Xgc0QkYLmfrLkUVFqNsJLSRr8RumjN3+iXs4Q+d1ASQJy8C0oN6XAFc2Hi5OpA1xSLszXYwegmgHopAA2+b5DlPZ1zB4f4kHyLnV3zzoK/EmNINenTxcPKL0i374PAwhDgXYMgnxyx2p9iyJf0AaXl2n6wQNj3gBgF4nYDDjZ0HqKxW06yYxSB/72GSmvKmKzroZZH1rbxw4CyhXZ5TXpSsLUqigdRVtCzI+aWIS0Mvu71GlG6c0lQfuJylu43MW2wQTndbUCJC28AjBOTOzZq6SNU4Uc9NsxBeQpwXBw3xMexhwO31GURMFoEO7OrtKa2wR3RXRZqFlVr1NCXci3TOyXvqS8TX/dzM8vD5NCO/lGJkQnArYV9TVv9JbndV5BxeIapP6e43Ee10IIRuTZqOmdgaTQnLED8pT1xTEs9uvjefjNGkBzk1StIi/ZHSnmV5k/MIl6YzeWQJLFkrT+JX5tJtsLwABmJxttRA8RStqRIHaGS4lJ0Z9DLKx5S9J1dOD5DuFBfVt+S3DqI/gNj6iDs6iLHSN3LX4Rem3kXsUloGGIi8woZWGYWJgTo01CDY1xtYDJn5HPRtg6j0JuLaDCbbh39dPwfi6xPVd0V+rLwjA9pTvIzYdIZ4r+hTggUgMJpu8XFz+Ik5claKeQsQoTjbVI3VPVq5G3o0Px6gg1rnZsKwPqor0i0NddJVUlQRD/oDcSYri7b9uBHLTA3blMgdOXRaHkPqrNR6593F8R3VQtuqBCYDA4qBrDn/GwY9rbSVCEBpZ/qyvYbY33oO2Sp1h7wXvXAIfykO2V3khyftAE7LmIBnSy60mpzBnRTOy3Qd52zjzNh++SnyHgik5iM6IIX37D9jUfhXsJK96LyorthLB0ctxErUWhtq9TmmjdcTqQrOmOuLJ1+llpK6enqdBt5JYlzxkeyxFaILOa
- 8+m72GsM
- Px5/PHZit9NNr1K83FeK7PcXaacLhENUFVE7dzlZ0RQAVye50QR2647xZ9phMpJa3kay07u2J4G/P+hQAxuKaKO6zj7Rzs2RoOJx38vVn4e8tZEWxoqZ/sbgjx7iKpsQWDzWoGdoT1YOimVSljDZfAaTI3Px6KkKMNgG0yMm+3tN9XK1FL2YxGQGxSW5HoUw9PYxwgRyNmYXTeHh+tKAWi1KC1toHiRIl0cFVRwhT8jX3oc4=
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1753898217-327498
+X-HE-Meta: U2FsdGVkX1/cleOrJbXOoKhlV8sQ/ijjCV2+YD8Eah0tm4K7wRqK1I024FBcluKbTF/oBzODslw6jSJw5JVXxmIbUjwhjmRSHUTScmqPnSNTTopGVA6XCMd2h+PNBR7kMRB59Jhh2crn3shQbxRNA21QV9nw7aIcrYdiG9pBZF8oqlEtmhq1j/X5aLBRWuiB/E+cIvRfHj8CLnBessvKyPrfRIA1Owg7aj+HwqSMcIqYObD/fDHBcxDhcsyuntEKBzOpOfPiwMh/7mlPRV5CAveKvOMs3jRjxHoMJR2RnZjf1yU+S5x2sZbMRu0GP/isc5TzqaVMetViXzuVSC3lknayC8eidJp3kHx0svX7/ay7iceaEGouqNbPuCrR7opugXegY+8cBs8JULFP9c1EOZ8DrhACrCZuhxEh4dz/ZsvW7A3ykkS9OjSrR3OUpJKk0POS+gwHvZnLU/Y7ut5gVyZDN4f0CeEhpAteeRtFaHibpw0mQdq/JgMYmsIr0KCKZOf6VLeIQ5aBBucXqkQ45g9WytR4epLDIXdCvM/DCkzVxzxJrjeIA5Gvyc7aRrgYosT3pmNXOgFpEKilJWSkkAqvdaN69tnr7e2x4v0Mf/fxTQHJMHmDWTMeOs8N6+DG3Yz04aSXw2n/NpngauLGfCtsFLRpHLfoY9hfUh6G38XLAmdomup7jQmqlwf6JjpeISOc9alBm8VNeKAmthxwWbCI3bFbVZ/+wIBTsRM5XwQYvuOsR6iYrF/PX6rE14BG5iZMqmh/CAscpiVx7Oz5Wt4aEi+xtJJEnAJxdFWn5TEkXfVSHCSinKaoOS/tYvDa60rt7+al5umHuRNodt/dLTxxoyBOBFlE/kL0VBbAcGRPmJjmsTjaEzm+vdLawOGot9jj+RNfsU22riaM9p91/xsMjdk/pJH+47OJhaVBKi+bbQY8awyT8Vr7sBeEKRt1hWQA9mdvBYBNjYTRp9g
+ ad9AQxY+
+ YhH7OBdR0R8Kq+7ze3qAr3ZL6cDSIpm06TuRaKY66d1UR8J77HFCybmeHtN4vw7qeYvfmp33OPCgKspwmVfD2U2LUxHvsghlO7U3LlLG/2wh6c8epGxw9/iovefbB8LHomtMGlKc5J66dlhLsbVYJ2FxAMbqc/Lykiqag3952B6/OiKYasnYR9tgCmYzWQefOpX0zsvLOVGq7OaluR6E1DmeYzUgH9tkziQ73TH/8CJoNHOFsfnPG3R8Du4IURDRgO1edoAsXLKzoqeOOshphtfhiIYvfYv1yHgM9ZN32N/5XD2UX320mYOOx/g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,92 +93,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 30 Jul 2025 10:19:55 -0700 Yueyang Pan <pyyjason@gmail.com> wrote:
+On Wed, 30 Jul 2025 10:19:56 -0700 Yueyang Pan <pyyjason@gmail.com> wrote:
 
-> This patch moves damon_pa_scheme_has_filter to ops-common. renaming
-> to damon_scheme_has_filter.
-> Doing so allows us to reuse its logic in the vaddr version
-> of DAMOS_STAT
+> This patch adds support for damos_stat in virtual address space.
+> It leverages the walk_page_range to walk the page table and gets
+> the folio from page table. The last folio scanned is stored in
+> damos->last_applied to prevent double counting.
 > 
 > Signed-off-by: Yueyang Pan <pyyjason@gmail.com>
 > ---
->  mm/damon/ops-common.c |  9 +++++++++
->  mm/damon/ops-common.h |  2 ++
->  mm/damon/paddr.c      | 11 +----------
->  3 files changed, 12 insertions(+), 10 deletions(-)
+>  mm/damon/vaddr.c | 105 ++++++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 104 insertions(+), 1 deletion(-)
 > 
-> diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
-> index 99321ff5cb92..3ebfa356ca46 100644
-> --- a/mm/damon/ops-common.c
-> +++ b/mm/damon/ops-common.c
-> @@ -412,3 +412,12 @@ unsigned long damon_migrate_pages(struct list_head *folio_list, int target_nid)
->  
->  	return nr_migrated;
->  }
-> +
-> +bool damon_scheme_has_filter(struct damos *s)
-> +{
-> +	struct damos_filter *f;
-> +
-> +	damos_for_each_ops_filter(f, s)
-> +		return true;
-> +	return false;
-> +}
-
-I should have tell this earlier, sorry.  I now think it would be good to have
-ops-common.c own prefix, since this namee makes me expect the function is on
-DAMON core layer.  Also, I use normal 'grep' and ctags at the best, and maybe
-I'm not the only one that that lazy at learning new tools.
-
-Following the weird and none-public naming convention we have on DAMON,
-damos_ops_ for DAMOS-related functions and damon_ops_ for monitoring-related
-functions would be the prefix for ops-common.c.
-
-So, what about renaming this to damos_ops_has_filter() if we have a chance to
-revision this once again?
-
-> diff --git a/mm/damon/ops-common.h b/mm/damon/ops-common.h
-> index 61ad54aaf256..8d5c5c7631ac 100644
-> --- a/mm/damon/ops-common.h
-> +++ b/mm/damon/ops-common.h
-> @@ -21,3 +21,5 @@ int damon_hot_score(struct damon_ctx *c, struct damon_region *r,
->  
->  bool damos_folio_filter_match(struct damos_filter *filter, struct folio *folio);
->  unsigned long damon_migrate_pages(struct list_head *folio_list, int target_nid);
-> +
-> +bool damon_scheme_has_filter(struct damos *s);
-> diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-> index 53a55c5114fb..daeceed981a0 100644
-> --- a/mm/damon/paddr.c
-> +++ b/mm/damon/paddr.c
-> @@ -262,22 +262,13 @@ static unsigned long damon_pa_migrate(struct damon_region *r, struct damos *s,
+> diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
+> index 87e825349bdf..6ed919e817e2 100644
+> --- a/mm/damon/vaddr.c
+> +++ b/mm/damon/vaddr.c
+> @@ -890,6 +890,109 @@ static unsigned long damos_va_migrate(struct damon_target *target,
 >  	return applied * PAGE_SIZE;
 >  }
 >  
-> -static bool damon_pa_scheme_has_filter(struct damos *s)
-> -{
-> -	struct damos_filter *f;
-> -
-> -	damos_for_each_ops_filter(f, s)
-> -		return true;
-> -	return false;
-> -}
-> -
->  static unsigned long damon_pa_stat(struct damon_region *r, struct damos *s,
->  		unsigned long *sz_filter_passed)
->  {
->  	unsigned long addr;
->  	struct folio *folio;
->  
-> -	if (!damon_pa_scheme_has_filter(s))
+> +struct damos_va_stat_private {
+> +	struct damos *scheme;
+> +	unsigned long *sz_filter_passed;
+> +};
+> +
+> +static inline bool damon_va_invalid_damos_folio(struct folio *folio, struct damos *s)
+
+Weirdly DAMON code usually keeps the 80 columns limit.  Could you please break
+down this line?
+
+Also, the name feels long to me.  What about damos_va_invalid_folio()?
+
+> +{
+> +	return !folio || folio == s->last_applied;
+> +}
+> +
+> +static int damos_va_stat_pmd_entry(pmd_t *pmd, unsigned long addr,
+> +		unsigned long next, struct mm_walk *walk)
+> +{
+> +	struct damos_va_stat_private *priv = walk->private;
+> +	struct damos *s = priv->scheme;
+> +	unsigned long *sz_filter_passed = priv->sz_filter_passed;
+> +	struct vm_area_struct *vma = walk->vma;
+> +	struct folio *folio;
+> +	spinlock_t *ptl;
+> +	pte_t *start_pte, *pte, ptent;
+> +	int nr;
+> +
+> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> +	if (pmd_trans_huge(*pmd)) {
+> +		pmd_t pmde;
+> +
+> +		ptl = pmd_trans_huge_lock(pmd, vma);
+> +		if (!ptl)
+> +			return 0;
+> +		pmde = pmdp_get(pmd);
+> +		if (!pmd_present(pmde))
+> +			goto huge_unlock;
+> +
+> +		folio = vm_normal_folio_pmd(vma, addr, pmde);
+> +
+> +		if (damon_va_invalid_damos_folio(folio, s))
+> +			goto huge_unlock;
+> +
+> +		if (!damos_va_filter_out(s, folio, vma, addr, NULL, pmd))
+> +			*sz_filter_passed += folio_size(folio);
+> +		s->last_applied = folio;
+> +
+> +huge_unlock:
+> +		spin_unlock(ptl);
+> +		return 0;
+> +	}
+> +#endif
+> +	start_pte = pte = pte_offset_map_lock(vma->vm_mm, pmd, addr, &ptl);
+> +	if (!start_pte)
+> +		return 0;
+> +
+> +	for (; addr < next; pte += nr, addr += nr * PAGE_SIZE) {
+> +		nr = 1;
+> +		ptent = ptep_get(pte);
+> +
+> +		if (pte_none(ptent) || !pte_present(ptent))
+> +			continue;
+> +
+> +		folio = vm_normal_folio(vma, addr, ptent);
+> +
+> +		if (damon_va_invalid_damos_folio(folio, s))
+> +			continue;
+> +
+> +		if (!damos_va_filter_out(s, folio, vma, addr, pte, NULL))
+> +			*sz_filter_passed += folio_size(folio);
+> +		nr = folio_nr_pages(folio);
+> +		s->last_applied = folio;
+> +	}
+> +
+> +	pte_unmap_unlock(start_pte, ptl);
+> +
+
+No strong opinion, but I'd like to drop above two blank lines (one after the
+for loop, and one after pte_unmap_unlock() if you don't mind.
+
+> +	return 0;
+> +}
+> +
+> +static unsigned long damos_va_stat(struct damon_target *target,
+> +		struct damon_region *r, struct damos *s,
+> +		unsigned long *sz_filter_passed)
+> +{
+> +
+
+Seems this is unnecessary blank line.  Let's remove it.
+
+> +	struct damos_va_stat_private priv;
+> +	struct mm_struct *mm;
+> +	struct mm_walk_ops walk_ops = {
+> +		.pmd_entry = damos_va_stat_pmd_entry,
+> +		.walk_lock = PGWALK_RDLOCK,
+> +	};
+> +
+> +	priv.scheme = s;
+> +	priv.sz_filter_passed = sz_filter_passed;
+> +
 > +	if (!damon_scheme_has_filter(s))
->  		return 0;
->  
->  	addr = r->ar.start;
+> +		return 0;
+> +
+> +	mm = damon_get_mm(target);
+> +	if (!mm)
+> +		return 0;
+> +
+> +	mmap_read_lock(mm);
+> +	walk_page_range(mm, r->ar.start, r->ar.end, &walk_ops, &priv);
+> +	mmap_read_unlock(mm);
+> +	mmput(mm);
+> +	return 0;
+> +}
+> +
+>  static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
+>  		struct damon_target *t, struct damon_region *r,
+>  		struct damos *scheme, unsigned long *sz_filter_passed)
+> @@ -916,7 +1019,7 @@ static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
+>  	case DAMOS_MIGRATE_COLD:
+>  		return damos_va_migrate(t, r, scheme, sz_filter_passed);
+>  	case DAMOS_STAT:
+> -		return 0;
+> +		return damos_va_stat(t, r, scheme, sz_filter_passed);
+>  	default:
+>  		/*
+>  		 * DAMOS actions that are not yet supported by 'vaddr'.
 > -- 
 > 2.47.3
-
-Otherwise, all looks good to me.
 
 
 Thanks,
