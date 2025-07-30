@@ -2,123 +2,104 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7539CC83F26
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 18:52:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F20EC87FCB
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 19:19:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 139F26B0089; Wed, 30 Jul 2025 14:52:52 -0400 (EDT)
+	id CB5836B007B; Wed, 30 Jul 2025 15:19:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EAF36B008A; Wed, 30 Jul 2025 14:52:52 -0400 (EDT)
+	id C8DDB6B0088; Wed, 30 Jul 2025 15:19:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF4E56B0095; Wed, 30 Jul 2025 14:52:51 -0400 (EDT)
+	id BCABA6B0089; Wed, 30 Jul 2025 15:19:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DD5CE6B0089
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 14:52:51 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7325011423B
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 18:52:51 +0000 (UTC)
-X-FDA: 83721827742.24.786944F
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 5912B16000D
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 18:52:49 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=Mt0lA7iH;
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.51 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753901569; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id ABDAF6B007B
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 15:19:35 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0703DB9E60
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 19:19:35 +0000 (UTC)
+X-FDA: 83721895110.23.5C08739
+Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
+	by imf18.hostedemail.com (Postfix) with ESMTP id C52311C000F
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 19:19:32 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=konsulko.se header.s=rsa1 header.b=S6px7Vmo;
+	dkim=pass header.d=konsulko.se header.s=ed1 header.b=9Rruzgnb
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753903173; a=rsa-sha256;
 	cv=none;
-	b=4M0h8z3hkxn3J9uZx2BocCy5fNNHJbdCp+x8aJ4lrbWZ/RmODKfUe28q8N/CzsdjvrQ7QS
-	UC4UklT+FHTOhM+Beu0ipgKEdmYWrUy2dsWHqrp1nCud3OHLAeRsH43K47SqHSu99hJBW1
-	ZIUl0MsKA476eX68IyawxV23VwT7wkY=
+	b=u18/ji+o850u2Tdx+0vArOEG07Qj40rjZ8Y2yrOheRmu5Qvknulgt7kqFaT74lyy0Cq+KR
+	ldaBfq6g1uZenk7uKglmpKrUf++3KgFTdZg9Uz/yMNcv/aleC8RfRhIznryqZrE2Wy6kVr
+	wb2CW1ES26uAVe997y/78CHb7/3eWjA=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=Mt0lA7iH;
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.51 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=konsulko.se header.s=rsa1 header.b=S6px7Vmo;
+	dkim=pass header.d=konsulko.se header.s=ed1 header.b=9Rruzgnb;
+	spf=none (imf18.hostedemail.com: domain of vitaly.wool@konsulko.se has no SPF policy when checking 46.30.212.3) smtp.mailfrom=vitaly.wool@konsulko.se;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753901569;
+	s=arc-20220608; t=1753903173;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=slAyeWyqtgn0qVMjTiorxiyOrDOZnrQB9QTmFJ0CFeE=;
-	b=ry5z/y8Z1lUXsE5TMl/KEk/TgJZv313boznGeNqjrDUi/fZEvEZFIOhLBl9xXODT56vqjs
-	t2mogIV9tNTkOg6xJk+rx80Tnndrd5PmkRIyrzAf08bKwRylx3zXb5Ycd8B/SOHo7oY2Qx
-	pC7sb72cE9Ytx7qtDOHo3UKz7FyUtC0=
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-af90fd52147so18416466b.3
-        for <linux-mm@kvack.org>; Wed, 30 Jul 2025 11:52:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1753901567; x=1754506367; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=slAyeWyqtgn0qVMjTiorxiyOrDOZnrQB9QTmFJ0CFeE=;
-        b=Mt0lA7iHAboab56CH9LjOycZUFJi7YfFRG2UmSNC1P8xeIijJ5yKzH3u8exiASOqLK
-         cOOd3aGy//nZoDJYBWjszTvZ/nx5LrxO3pbOhiexqH5Q6LXZE1Nk0F3Ri85uv8XmQFIa
-         Z0wpJU07uyjI1XqMDEVOUuIYlHqIemxAP2VEY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753901567; x=1754506367;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=slAyeWyqtgn0qVMjTiorxiyOrDOZnrQB9QTmFJ0CFeE=;
-        b=Zzq4C680/GchATRgKNtBUydwiPWhR7c4bSWYqRgZK+xIRDrYXe/tDIN3P/g0RmAMf7
-         d7bdmhjC5jkCLLIbi8i7WDXbtFEpcjDWFejZSY1wpWWAc3jjaY2Yc4ySb7QUAUB/16w9
-         FSt6Wtr1eHFZ5qAFjScKHVeonJR+6JFQJ+NAGmtxR6Oilr4lmWUrGi0m1s0YQmetfnM3
-         sSrR6lUDcJXk9/Vrd0smrZzWC3bVL78ZFFqFVHVyuOIS8Q9sSr+G/H5Uu0snLxiYECsO
-         Fb1YxQ3hA3bbXb5PPvJmnW/jqQJGWjtVElCKABCX6R1HGSOPQruTss+L5sbWC0ehoEzT
-         m3PQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXod6tGkIZo393d/deAxHKwzIqHIZygSFy1sCXaIxeOHghKu7uDhV7RqqfDXOosgJaDDnkikXYEOA==@kvack.org
-X-Gm-Message-State: AOJu0Yz45m+VznVriDmDwr0LdONy5kwNLklkEbCEf8BwONEhqqvBDJrz
-	ecHzNqRC0nVxETPh0MYn0xKxvCGqilOdlvmE6IMuXHY+WL3CFzKWE04oDEeQcZ316WOwuiV5zea
-	MXyfjkiY=
-X-Gm-Gg: ASbGncvFVOW5oEeWcWCBnPfish7jSRHQj/O3mTxELxG1gmrMM4+Nw6vlglOK74qLt8L
-	QBgeZ5ArrCs0aPBiSQpcE2MlT0guKLELmKDMWco3mCo57V6CbrC0fqkGkBOKaMFRqgtBozvP5OG
-	igGmGV/zlWjoI1v58pDq3O/1Wyl6PO8QWo371ZFOV9Jv17OIDRt6smBo9ivEtF9SE5rzes+hBej
-	Jqg4oDpBRI9R4EjPiJclao9BVAeWj+HGlkjuxIc9zw2+q9n36f0bPzDR52o7eFaapZBoIPON2rg
-	DCS5LYFkvw8NTeOPm6SefST44d0M1BPp4+Q3JEDOqz/jMkNAAGdNAxa9ov7CX98fTLi8fSSx48H
-	QeAIlsP3/p43jbNn7NA+ju0gYaqUIpUbOP03OZ9x9esp2KZrXiSlN7XsvOb75h+xAU6U6zqL4
-X-Google-Smtp-Source: AGHT+IEicBK0/RgDw6xUFOloTu5mWDEoxULaIMenxo4QvsDDj68Wt0wvPQKQu4hssmKI0XPwmsc4SA==
-X-Received: by 2002:a17:907:6093:b0:ae0:d1f3:f7f4 with SMTP id a640c23a62f3a-af8fd6b23eemr502542666b.13.1753901567665;
-        Wed, 30 Jul 2025 11:52:47 -0700 (PDT)
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com. [209.85.208.45])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-61536916dbasm4667996a12.43.2025.07.30.11.52.44
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Jul 2025 11:52:45 -0700 (PDT)
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-61521cd7be2so96005a12.3
-        for <linux-mm@kvack.org>; Wed, 30 Jul 2025 11:52:44 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXziiklRLwJiJnaTpwpzxyAtR3tZmq/bZbU9JvOn0KRHabP9RHvdFsL93zKT2XyZKH4sg7lVZ82mA==@kvack.org
-X-Received: by 2002:a05:6402:2708:b0:612:dfdd:46fc with SMTP id
- 4fb4d7f45d1cf-61586eecd21mr4741613a12.11.1753901564582; Wed, 30 Jul 2025
- 11:52:44 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=QmEEM2pn7Tus3BjInJV0eWX/l4iVKVBIqgB63o1NBvg=;
+	b=lk7NLbzKgnzzFTEzd0gY7zzFb1NobGDU3etAE7eoYcvJFnZEnmBk2fOiIMHGJsQ75gZsiT
+	0UGxZreWevtlVp9frpsx6UwydzqHU6rFCPU6hG/agRHnPERDQWWtOBaRAOplMxHIb1q29K
+	OLXFG0hIh0QML/aG5/7y5OoLN8VizXg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1753903170; x=1754507970;
+	d=konsulko.se; s=rsa1;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=QmEEM2pn7Tus3BjInJV0eWX/l4iVKVBIqgB63o1NBvg=;
+	b=S6px7Vmo1VB8ZlA7+0wJXegbsPHY+z4XjjHyKTMbPRjXtLETGlaMl/mQ6C0xVVFvqcuuKWTRlnND/
+	 30e7qqyYxtMS4O4ZeF0xbpIDPMp+rpcfb1wRycvzTpPI9p1TtJvCp4wK69fddukMhk9maAFOJ63YkK
+	 cQm9qvsMm4mJPBHO43wX3hhl+rb0XJI76vDFIptpnad4T5O2alVi49jc1PF+qN19/tSVO6EadaElBK
+	 48SKqlA0aKZwMP5+reLBJeAIOL1hYCGkkxUsgpnZWW0AfVMUJotfC2dbMo7OkVHFIMnZDaANqcK1hM
+	 hkgzMY2/2H1J5uSu4cL7P5tTirjTOrA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1753903170; x=1754507970;
+	d=konsulko.se; s=ed1;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=QmEEM2pn7Tus3BjInJV0eWX/l4iVKVBIqgB63o1NBvg=;
+	b=9RruzgnbAMugNfJmZEDTAoSVd5s12KCa3JKJ6AJiUKzoFR2TUrGXIM3x3cKEBHcJoy8l/dXCpFDLV
+	 jTnVBjuAA==
+X-HalOne-ID: 1c955182-6d7a-11f0-aff3-632fe8569f3f
+Received: from slottsdator.home (host-90-238-19-233.mobileonline.telia.com [90.238.19.233])
+	by mailrelay2.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
+	id 1c955182-6d7a-11f0-aff3-632fe8569f3f;
+	Wed, 30 Jul 2025 19:19:30 +0000 (UTC)
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	rust-for-linux@vger.kernel.org,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	linux-bcachefs@vger.kernel.org,
+	bpf@vger.kernel.org,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Vitaly Wool <vitaly.wool@konsulko.se>
+Subject: [PATCH v14 0/4] support large align and nid in Rust allocators
+Date: Wed, 30 Jul 2025 21:19:21 +0200
+Message-Id: <20250730191921.352591-1-vitaly.wool@konsulko.se>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <450d3876-90a9-4b1c-8d73-62ac19048991@suse.cz> <CAHk-=wg70=mihHE3_Te=t1Fmvrh22bcEs8bvH3tDEXZd6q+4_g@mail.gmail.com>
- <20250730184724.GC89283@nvidia.com>
-In-Reply-To: <20250730184724.GC89283@nvidia.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Wed, 30 Jul 2025 11:52:26 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wh_ukn6ESXTLKR9+g9hxVdop0sMe-Hu7AS8dinXGvYhJg@mail.gmail.com>
-X-Gm-Features: Ac12FXzOpWstClby8n_gZ1wN_LSRv3bSws6YzxdQ9YiX4spwxDywE66Yp6AB2ZU
-Message-ID: <CAHk-=wh_ukn6ESXTLKR9+g9hxVdop0sMe-Hu7AS8dinXGvYhJg@mail.gmail.com>
-Subject: Re: [GIT PULL] slab updates for 6.17
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-	Harry Yoo <harry.yoo@oracle.com>, David Rientjes <rientjes@google.com>, 
-	Christoph Lameter <cl@gentwo.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, Pedro Falcato <pfalcato@suse.de>, 
-	Bernard Metzler <bernard.metzler@linux.dev>, 
-	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>, David Howells <dhowells@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 5912B16000D
-X-Stat-Signature: pte5kya9pg6sy8cna9cok5jq8da6uj4u
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1753901569-809952
-X-HE-Meta: U2FsdGVkX1+EBIIIW1jUP2eH5flllzUvHPovl4Fo+l/HIgaocVPtN9F+PY9+sVCpXYDPd2r2RR9fVJUsc/GAETWcxS+8oV+RMUXTTYQCPO0jGw7cFlmQBldie6PWNvkYTYUcrbwk5J2q9O5Py945xtlUhFzk54EaFEHVnrAKtNzcG+q3atP8Zw/mOJERvAAmeNrmgQmaRFM5ypU3aJmMYk7P/yTwZHeBWFwUzgT1HQJbq4jIdV46ZYb7QrHMy34WM23Eu0yuWKaKNcarmo/CmBy/4jzi0xIHLtAj6mgM+iaicL9mxtp4CODzwUiX/q+doG+IZKCNq04lLx1A7qSkmVHV81I5ZZ8Ljq31p2T0GBBoSybpBfdzYhE6h4CULNKNHP3VNXapClVbcDyEvMEZvz/9imSlAfK2qVfVhfL1ScJmKy29DVCwYK92vzOIsuj0F6xkShXC/PkgGKjWImeW521Vbsjxd/9D7OtbJPggVOcg3xZMsb4LD9WPlCR7lot8OZvIW2omW2mLQOJYg8fOwUMD2GevKDm3cTLODsSchd2cg2BHJLTSqoiqIlsXmVzYelu3OjY2fZr2igWYqxyGW1+WrpWsyLtgyyi+1x8eCCsk4MuIWZRzeExya6U33MBnQdVHb/uBcPAsLSQlrznJNYF+e8VC2rQoMTGwK1fcObRv6D/6u6XtehIBmzUqZ0KRvGOXhBRC+BGXyPxjWawYaOwa86mD+Km2vQwHxTejExwe0XWSSIzJck/6jwBWuuLM+ro9eGKg2R+qyfak0Qeo9uhIorzOrnwpOxM2GChyMnGgyIYttR5m3UouqABEo8xQDvKoOhjUIbaadidU9sIHQCVvYkhOqKtnwsXrkC3V6lboUe9vtUPL2uojXTna63gyuD/FZ5MXwV5kzCCC+k5zyU5gFpNvbKFPjOKue+PfvGMlLPLAgcySVEg7z98/z+Ar4HiWFSkhIoW1FXOwRaV
- qcmK4Mh2
- ZITKmWFLfiYj5REhPyeG+0EFeHiFWQ6NsbDmMZRSBlUfwkM/Udg+LaN+YaqxtdL0rPNz9DcW0Uk29BT9Yl4C+cbAAfzGcB2SameWDlhqgc8d/kRbX4wAyiTh4CF9w0eKFgAIZ3rhJLyyt3XkMZwdtRHOtCJ/2gTriU0bBxXgwpp9ia51Yaz/81bPLeGY7eeZQhTggDW0K9UFiOuCDkKnZX7l0ejiTA/nvkCNUp1JfPfnuiTYMU1S9e6nzvc7VWLbVFZDyurMvdlBpdROlOfVpwU+nqlhp8fpDU0BZwLB354KGH6Mxg8mnj/OO5+d1eYRjXIZ66dSaFWraDtszO4gT4P8d+aRvZvVKp2yRNmvpbg5p9iMs7IYT7yl0hiBdNJnjGNqxOewzQrNF3pPIeCDop6rko3sGWu4eVguvPkmQf/CKroQN1ubkU+FHzm7rw0Mp1pQjz/Erje51xA1w+gCfmqdG11Tvp7a1p80BDJKHQWP5tj2IKzH8u7WPyFCR3cmIT7QRdB+TMAa7kp1pcNFbUeA4d6gBcKqTCS+0OQ6R0eiKgC3zynNF0jvraM/87JIG9e7QE+sWl5b2rO4ir9n5gGXCsd/bnW953dvN
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C52311C000F
+X-Stat-Signature: 9kucqyesfwii8fwr6e3h39zry9yfnmj1
+X-HE-Tag: 1753903172-663103
+X-HE-Meta: U2FsdGVkX19tiY8ZVfRAUaNmNS6VA8+LW3jm7Yy52eQL6jhrt2SX8y5dZdZrOi4onrvEjMutHtoFRN47M3iOKrLhS0qHEh312vShslTMktw95FXewgYYLC+Jx0O4mnxHEYfU5FQ/kc6bAJ0U+E524jK9ZGNCwfcoMGjSvlpqmdGfn9Zcy5iO/g4dqn3ltWAnlowcsXJZXvk3yy+PoKw7I4iXOrKwzEivw2MBhoh+10XcCXn2c4mA20xOitu0vovrVHG+gPy6aqzEM3yjpHQCeKE1gGtL/EBcZk0RTOClPwe7zdnxHJn8g990lMUW4SUYodVVKJk+ov9n5P1xOdBqUzM4x+wqZJ0Sih3hoc6J2hzETRwy0IKoo9UFHiyPeNTZ6+oclfTcVSvuGyMK8KMNs6eQHzmYWckIQstLKs3IKnqUPizNajHW40kgHxVCYnQu673uifLrcvk0cZ3ha4ZWEhIzh+drYavX971H786jwNttmPWpdIKH5ePu6fwfJ0yT3Y+jzFmXCzEPEVA5sSxEVcj1DANG0UbgnJ/Q9nSU4aE+eEpx7aNI9QwtjO9YjIG/I2MR09tk/c8JBu9nNACfOoJ/KFEqI3bD9t1bzaA59msb6Ilj7ziB8NpntKilyaN03RGGMVynow9V9b2VgYgbqPRXHy7Ribhl+DxyyFQeUdwWrxGEqQm6qh8fz8AK7pR/U9+VydIKfWz/Qgsmv3FeI+mCJxDqxzSNed1HeiUc0KrxEL5FMnzgCjRx+YqpiY+T2ZcWso6XI20Vf1mnrWiu6+82LZ1N3SC2GfTaXCiXwFdWrLHgA8x61r7if7zCBFFqhBOTHZ/574gVoMDW4/QKnHZ272HFHdWP1zzu26pGjWOW9tJ0AK78pMjdSkLcEkKHf/8KSHCr+CqvEJjmqLn3+kG1Cw0Cj8lcd55awa5YiiW0n4eRKbzkGkI4wU7ZAnkUb8otXWd6HWPEig9nJDQ
+ SzQPgqXh
+ UrfJKEmy40w3kU2ulV8Tehv5QEMml5qHdMgxc/DBzxUkjkKdnG2UbcQLLWW+C1tirXkydny8Vu5pCd9ctLUnDUrEzh6e9Q+oCWk6a1wy4pyuaoAlMgky+g3G8lee8SWon1FRrxonXjY2MCEY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,13 +108,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 30 Jul 2025 at 11:47, Jason Gunthorpe <jgg@nvidia.com> wrote:
->
-> I think it will be easiest for all if I send a one patch PR after you pick up
-> the main RDMA PR in the next few days. siw is not so critical that we
-> need to rush.
+The coming patches provide the ability for Rust allocators to set
+NUMA node and large alignment.
 
-Ack, sounds good.
+Changelog:
+v2 -> v3:
+* fixed the build breakage for non-MMU configs
+v3 -> v4:
+* added NUMA node support for k[v]realloc (patch #2)
+* removed extra logic in Rust helpers
+* patch for Rust allocators split into 2 (align: patch #3 and
+  NUMA ids: patch #4)
+v4 -> v5:
+* reworked NUMA node support for k[v]realloc for all 3 <alloc>_node
+  functions to have the same signature
+* all 3 <alloc>_node slab/vmalloc functions now support alignment
+  specification
+* Rust helpers are extended with new functions, the old ones are left
+  intact
+* Rust support for NUMA nodes comes first now (as patch #3)
+v5 -> v6:
+* added <alloc>_node_align functions to keep the existing interfaces
+  intact
+* clearer separation for Rust support of MUNA ids and large alignments
+v6 -> v7:
+* NUMA identifier as a new Rust type (NumaNode)
+* better documentation for changed and new functions and constants
+v7 -> v8:
+* removed NumaError
+* small cleanups per reviewers' comments
+v8 -> v9:
+* realloc functions can now reallocate memory for a different NUMA
+  node
+* better comments/explanations in the Rust part
+v9 -> v10:
+* refined behavior when memory is being reallocated for a different
+  NUMA node, comments added
+* cleanups in the Rust part, rustfmt ran
+* typos corrected
+v10 -> v11:
+* added documentation for the NO_NODE constant
+* added node parameter to Allocator's alloc/realloc instead of adding
+  separate alloc_node resp. realloc_node functions, modified users of
+  alloc/realloc in accordance with that
+v11 -> v12:
+* some redundant _noprof functions removed in patch 2/4
+* c'n'p error fixed in patch 2/4 (vmalloc_to_page -> virt_to_page)
+* some typo corrections and documentation updates, primarily in patch
+  3/4
+v12 -> v13:
+* fixed wording in comments (patches 1, 3)
+* fixed bigger alignment handling in krealloc (patch 2)
+* removed pr_warn import (patch 4)
+v13 -> v14:
+* addressed Vlastimil's comments for the slub allocator's alignment
+  handling
+* added cnages to allocator_test.rs to match the new API
+Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
+--
+ fs/bcachefs/darray.c                |    2 -
+ fs/bcachefs/util.h                  |    2 -
+ include/linux/bpfptr.h              |    2 -
+ include/linux/slab.h                |   39 +++++++++++++++++++++++--------------
+ include/linux/vmalloc.h             |   12 ++++++++---
+ lib/rhashtable.c                    |    4 +--
+ mm/nommu.c                          |    3 +-
+ mm/slub.c                           |   59 +++++++++++++++++++++++++++++++++++++++++++--------------
+ mm/vmalloc.c                        |   29 +++++++++++++++++++++++-----
+ rust/helpers/slab.c                 |   10 +++++----
+ rust/helpers/vmalloc.c              |    5 ++--
+ rust/kernel/alloc.rs                |   54 +++++++++++++++++++++++++++++++++++++++++++++++-----
+ rust/kernel/alloc/allocator.rs      |   49 ++++++++++++++++++++++-------------------------
+ rust/kernel/alloc/allocator_test.rs |    1 
+ rust/kernel/alloc/kbox.rs           |    4 +--
+ rust/kernel/alloc/kvec.rs           |   11 ++++++++--
+ 16 files changed, 202 insertions(+), 84 deletions(-)
 
-            Linus
 
