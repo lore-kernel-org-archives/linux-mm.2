@@ -2,82 +2,104 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D5A2C87FC9
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 01:26:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 056D4C87FCA
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 01:27:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DDBAA6B0088; Tue, 29 Jul 2025 21:26:41 -0400 (EDT)
+	id 85F146B008A; Tue, 29 Jul 2025 21:27:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D8C9B6B0089; Tue, 29 Jul 2025 21:26:41 -0400 (EDT)
+	id 836E06B008C; Tue, 29 Jul 2025 21:27:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA1B06B008A; Tue, 29 Jul 2025 21:26:41 -0400 (EDT)
+	id 773D56B0092; Tue, 29 Jul 2025 21:27:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BB2E06B0088
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 21:26:41 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6E505C02BA
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 01:26:41 +0000 (UTC)
-X-FDA: 83719191402.11.029AA5F
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 7388640003
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 01:26:38 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=X655+ezo;
-	spf=pass (imf04.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 67F4D6B008A
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 21:27:51 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E2E0411384B
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 01:27:50 +0000 (UTC)
+X-FDA: 83719194300.14.69DCC70
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 6866C80004
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 01:27:48 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="dX6s5/kz"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753838799;
+	s=arc-20220608; t=1753838869;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=66qP145Pokuu8JsiLXxLWcuYNVd+EPib7TlXMXGAKk4=;
-	b=BAw/3M98gYexNkxZxuoSlq6jXqc/UNorGsqmT+1QzM6Fd3Y5UGkH19G7CDaWhoxdozXbT5
-	/0oY/SEaWyBkLKnzRUQy/PkOTG5Y/OuHqj4L1FfbI+lGK94iiDjz06IJReKavbTz2YjhS6
-	EXidPtwNc1O41eTOyn1LS+EO5rjciGY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753838799; a=rsa-sha256;
+	bh=BqJo0Y4jq0wed5EnAFkc9W+LR5gtcBNRm3C9RAj6lqM=;
+	b=Hxm3MODtaBlZHhNyByl8RryN/0pLH8O8YNNUL4Sv5DdL/o85XMdluWgZA55P92Md7LNj0T
+	JwkgsRZLliJe3gfn5EBZO99hpjgOnfzvn4QwT5AuBmoYNgAM5S9zgT0xdUfA485BiLF41j
+	c/5pc33iFJZgo0x4Ji5rftHCCqLWXQc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753838869; a=rsa-sha256;
 	cv=none;
-	b=j+HndQh35LEsPkAhOtTP27c0jSlXz4WVCPy5+TnVHdower8k8XYHvbqnkRaE74rDcw4kCs
-	4o8ibZdiI3rDmT22an42Ck3FHm2Bf5TS5fbyDCXgrmKkWAkUGFjOwnaTGaSt9XkbiK/uE/
-	6fyRsoY2/ukBkJL7mXrKe295IdYF4PI=
+	b=Vt9zrbI1P6+czHMdnQRzgfK2bCtXlnPAtgB13Hgm3osWS98RfaqJvh6xVb+8R8MSBSgYag
+	XHm5EGMxK/ERCaLnAjr9Ej/HhclVpmvY6eotHKjCYm7nO7a5utKKQLD+WrV8PSdsZUJhZx
+	qLJmhR1Y4mMUQQWqQuxGMoavc2O/NdI=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=X655+ezo;
-	spf=pass (imf04.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1753838795; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=66qP145Pokuu8JsiLXxLWcuYNVd+EPib7TlXMXGAKk4=;
-	b=X655+ezonDepPDo0G7rDeBYBlfTPWZxqk+BIkrvfDJPJDjpAL+jVy7UC32nXBCYyVZAi+BgE7P1bFNEINNSiGbHWiMw2uZ5Js6PE0eXWIB8HxuEgQFzX3iLEGEu6MmcN4AD1JyPvt86IU+evIDATyZkDHAXay/IWWzRao0RG0js=
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WkSOR14_1753838793 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 30 Jul 2025 09:26:33 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: "Shi, Jiacheng" <billsjc@sjtu.edu.cn>
-Cc: linux-mm@kvack.org
-Subject: Re: [Question] About the PCP free_high heuristic
-In-Reply-To: <93574E04-0528-4282-B1C3-4A16D9768EA5@sjtu.edu.cn> (Jiacheng
-	Shi's message of "Tue, 29 Jul 2025 19:29:32 +0800")
-References: <212D6530-0FE8-4EA7-A599-48D71E8AFA23@sjtu.edu.cn>
-	<87ldo7z5a7.fsf@DESKTOP-5N7EMDA>
-	<93574E04-0528-4282-B1C3-4A16D9768EA5@sjtu.edu.cn>
-Date: Wed, 30 Jul 2025 09:26:32 +0800
-Message-ID: <87cy9izcxj.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="dX6s5/kz";
+	spf=none (imf30.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=none
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=BqJo0Y4jq0wed5EnAFkc9W+LR5gtcBNRm3C9RAj6lqM=; b=dX6s5/kzKLlo0cGDY7TRaTBZmf
+	ETcOMMlGUJ/zvUN0FuXvvQFnD0S0NhP15hWiCtPjGzBSGUyhANiaptZ5jrhR/pmeHSSbPXbYP3RH6
+	IvVgL3E54W7KroseoPMOaBWf35LWmiahGrkNpmrCvvfP81njyFE2siROdpapawtH7GMKTDBINMf6y
+	/E57+5sHe0V9uj1O6bBJ3hFKh+GU6iNWerZt3x7iua7UFYE1GPkheIymYpbitRX84zWmiNme8P4cj
+	FX7i07Sf/at1CyrtF/uxuRRucnlbQl1R4BRIEgSmXga3a7xYxltw1zu7K3lsn6xcsScGRJiYBG0ju
+	2vJPn+TQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1ugvbN-000000040Mh-31AT;
+	Wed, 30 Jul 2025 01:27:29 +0000
+Date: Wed, 30 Jul 2025 02:27:29 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: "Isaac J. Manjarres" <isaacmanjarres@google.com>
+Cc: lorenzo.stoakes@oracle.com, gregkh@linuxfoundation.org,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@redhat.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>, aliceryhl@google.com,
+	stable@vger.kernel.org, kernel-team@android.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 5.4.y 0/3] Backport series: "permit write-sealed memfd
+ read-only shared mappings"
+Message-ID: <aIl1AbmESlTruw7K@casper.infradead.org>
+References: <20250730005818.2793577-1-isaacmanjarres@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 7388640003
-X-Stat-Signature: k6zw6866odkn7j7a7xxp9wbya7eogbfm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250730005818.2793577-1-isaacmanjarres@google.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 6866C80004
+X-Stat-Signature: hdq5y4x57nydjokyuh8ig3i1ndef64wo
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1753838798-467734
-X-HE-Meta: U2FsdGVkX1+4TBNJ9X3YqgPbkNBZiJjG9Q13lMPf5Xot9MbabJ2C2d13J1541YxN/GEorccukZd3f+8rKH4Pi4uX7oDLnaQUn2pgPNFdMUsBEa2BaJVPp7t3/wfV8gYrbv80wO+lPPYLe7oyJ9hwzPZvIoxnUfiatdo20XojM6KGsGlYq+hcnvUM+RcdMitxMMG/K8AZ8veqZrAzdheUBAWg0yZ6A6ikw4Rf16ydRtQK7E7RiOZfFspCU6Wt5lD6OiZz5OrSvS03rIW2Kw1ywwIWKv8XDPYq4Mil1UKSHI18cERUuBhvUcO8SOF55YgddZFQu1jTNDEWZtmcLXtLYMu6u8DXwxpn+4zxPqspMwjMsrB6IWHrVqb86fLh1ZiHApvknruc3wUa7ovezJxztl3aR1v7VTCBMS2F8pJ0Je1FT9+AFAtXhL6CCVsr4qWrxXF0tMJhavdPDAYsR2HE+ITTFIIzXZL7AbQ/9MDAc8FOOZPZcoolpSLgor5XLLO0i7M6ahHiKC9PQ/aj97xY/UPn8UbykKcvpw5G49xfWpCaWH8t0kXT9x/E0UZFjN+8N75A1kh95wiq+r0mTNbLZhKz2phQ2SzxoYKVm4yMze8apUKpM1uwP82moRhsCJ/FYwGsGtMYzwrwp30DZSj6R21w5Re1IPo+epLohRtAemICqYy0ptDKYKdCa6aCvGTFB1mGuWMsZciW2xptqziuPr/LQgTDmRun/srkdt4mqAEQvJymV6XXqUoWBJr+Fv/M7w9HJ/M1xdBjJafMst8KPLX1cmdthzfdD3s4wASC6M3nVgWn/xQUPH48TsdHjZVUx9X/1HHqqYAbVOUrPKYu6WMvH+TtZZG4Cdp1ngWPX7eGj2YzY+tAUpyTtVJEClm2Z/ubFZwZymL3W0+RQ3jrwkMHLNVfUZJc1MB4hl8x8VVoYjirjY2gmN3gK+i+IdEjwMUYit7nQg0ZZVG3u14
- vKfzKsZU
- bOHzvQMzk2jWCLPqpMm7HfKcUw20svZhfwH9XMUaY6ITNdBwKwflljpAsxRXimqJhawFqGi+/4GnK2Z42D6BKTtV4Gl1CF+1hLCBG13mIlOcRmn8ZWJnvg4lEAoo2OD4Z1kHfu8Qz6l93Rjortkkwyfj4/3UCynNkHXU5MBobbcNEPPMWSyFNXFUlzHNj3LtLkt1b69HnDoxTeR+mvZRjJmiduFbMtcMwfJBazalCjzhvA1MXMHmgr2hGNwKvSR+LR3rkEcl6Kpv/kOKoupMQ76pUaB7Xd+gDMCFEsgoGPnWM8sqVfK9w9PuM4Q==
+X-HE-Tag: 1753838868-687032
+X-HE-Meta: U2FsdGVkX1+DUK+PfrJ1L6IoI95ptZmHcup142QKZH6vmllaMsV+uosWM2hrPErxuVDUW3oKKG1iGy1FIE9lGDvGsTHYZRn3Cw9Fw29dw7TlykFnW/DLIW0fUA7+qnodQ9tf+AygxW+ihBXuZxnWr/nWUdihEUCYT39/a8o9vrXMUo4qSJOUtxzwHc5TQv81tJ6jgtFlSuG5QXD175VojRNUh3CtI6GJxaW58e1D9RhkYC0ECvwcPm0PAJIEt+q3SmZL34xFH7XNhNEqhD3H3uTwIAEMmDng2M8DyVWVvnHJ+qWiyXnNjniSNt8GgAqQfSf0bm8Egu0cEVNDO36ota52qNHoMsCkUoFul3LJ1vrJTYPHWGKc6w6JSYIoOdK1k9Mmli9E9MWp4uBTHv2h1lIEelx8q5FEcLYPa7UbKSC2oaAyTl13jZIF9WJeMEnY3tYd5tnKmXyOWe3eFqJRBIAnpAfNE1MGJHgq8NmDfwwhLUp6kIoadwIVVF+RrXzcHHgdMGZjM4BBactMFgAxPOKz/ziwBuTuLQxCE+gggk6fqXSuxZxFWYM+JEDD7XSrtrUmKN7DYo7ROuMdI+jOCMRkeXMM+8dxauzV0qRvVmh/QvWr1V83+o6qzvRDlYe0m6GH4T9xMtLeAcR4siLfzIMYDNMq1x+9kaS3ZYuRWHkr9QsPXkfiSM2rfiNT3Ux2oSHj8/PGPlDbtCqAZzDF3NcxiKoN5uQd8b+R4VPI1gRw3QRYEy1WsyUD+29JJh0NBqrHOe7h7D6vcLHxcM9TPYh11ZmKNmEV4nfjCeKppOR5xmSMKKjexgyOnsGfKn1GJsVlLVgz3cE2Ak0B7SyJztzenPnR6BbiZ3WI8QEHQXznCL7Ctd5hrJI5UQPRa7+xR0Tc5xXNL0RtCXwEmNub1kq0+mCKBe+a6Hss0ospFXqsSyRkgzaGZlhTGk0G47gvU7HgnsvX4rPvChz9FMO
+ vwOOTQmR
+ 4FJ3Hju0f+KNC8YSt2++b+eySDeA3JZO/RQoLWurumZyDlEeU9rv9CM0Ww6p7V5MrSxnvgORdUIVMfgjj58vqdSi9Gjcfm4venoktZx/Pl4LWdt9siNeZa8wPrdEhY9KJeYpit53gGNIOZ9YPlBHWTBQ+HemehCtC40rgvLJjCntd0xW8lJ5YUsvgww==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -86,74 +108,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Shi, Jiacheng" <billsjc@sjtu.edu.cn> writes:
+On Tue, Jul 29, 2025 at 05:58:05PM -0700, Isaac J. Manjarres wrote:
+> Lorenzo's series [2] fixed that issue and was merged in kernel version
+> 6.7, but was not backported to older kernels. So, this issue is still
+> present on kernels 5.4, 5.10, 5.15, 6.1, and 6.6.
+> 
+> This series backports Lorenzo's series to the 5.4 kernel.
 
-> Hi, Huang, Ying,
->
-> You are right. Using high_min is better when the workload is located on a=
- single CCX.
->
-> By the way, I'm wondering why the free_high heuristic is only applied to
-> high-order pages. Would there also be cache misses if cache-hot order-0 p=
-ages
-> are not reused?
+That's not how this works.  First you do 6.6, then 6.1, then 5.15 ...
 
-The heuristic is mainly for network workload, which uses high-order
-pages.  You can use `git blame` to try to find the commit which
-introduce the heuristic.  But it's not a trivial work.
-
----
-Best Regards,
-Huang, Ying
-
->  Huang, Ying <ying.huang@linux.alibaba.com> writes=EF=BC=9A
->
->  Hi, Jiacheng,
->
->  =E5=8F=B2=E5=98=89=E6=88=90 <billsjc@sjtu.edu.cn> writes:
->
->  Hi,
->
->  I ran the bw_unix benchmark in lmbench on my test machine (EPYC-7T83, 32=
- vCPUs,
->  64 GB of memory):
->     bin/x86_64-linux-gnu/bw_unix -P 16
->  The bandwidth result was 30511.63 MB/s when percpu_pagelist_high_fractio=
-n was
->  set to 8; however, the result drops to 21595.98 MB/s when
->  percpu_pagelist_high_fraction is set to 0 (enabling PCP high auto-tuning=
-).
->
->  I first inspected the auto-tuning code, but the root cause of the perfor=
-mance
->  degradation lies in the triggering threshold of the free_high heuristic:
->     pcp->free_count >=3D (batch + pcp->high_min / 2)
->
->  free_high heuristic is used to increase last level (shared) cache
->  hotness via letting one core allocate cache-hot pages just freed by
->  another core.  The target use case is network workload.
->
->  It appears that free_high heuristic hurts your performance.  One
->  possible reason may be that the last level cache isn't always shared on
->  AMD CPU.  Can you try to bind workload to one CCX and verify whether
->  this is the root cause?
->
->  I noticed that commit c544a95 increases this threshold, but pcp->high_mi=
-n is
->  relatively small when auto-tuning is enabled, and the PCP draining leads=
- to
->  the performance degradation.
->
->  The problem was fixed when increasing the threshold to (batch + pcp->hig=
-h / 2).
->  Is it intended to use high_min instead of high in the threshold? Would i=
-t be
->  more adaptive to introduce some new tunables for the free_high threshold?
->
->  In general, new knob isn't welcomed in community, because it's hard for
->  users to tune so many knobs already.
->
->  ---
->  Best Regards,
->  Huang, Ying
+Otherwise somebody might upgrade from 5.4 to 6.1 and see a regression.
 
