@@ -2,135 +2,108 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D9CC4C87FC9
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 05:50:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 75B9DC87FC9
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 06:27:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4336C6B0088; Wed, 30 Jul 2025 01:50:03 -0400 (EDT)
+	id A6C686B0088; Wed, 30 Jul 2025 02:27:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E4746B0089; Wed, 30 Jul 2025 01:50:03 -0400 (EDT)
+	id A443B6B0089; Wed, 30 Jul 2025 02:27:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D4FE6B008A; Wed, 30 Jul 2025 01:50:03 -0400 (EDT)
+	id 980FA6B008A; Wed, 30 Jul 2025 02:27:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 19D686B0088
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 01:50:03 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8992AB8061
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 05:50:02 +0000 (UTC)
-X-FDA: 83719855044.06.2CEE2CA
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 2BBBC40002
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 05:49:59 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gVjgEgG8;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=3+K0Rg38;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gVjgEgG8;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=3+K0Rg38;
-	spf=pass (imf04.hostedemail.com: domain of hare@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=hare@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 84F046B0088
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 02:27:26 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E8B6AC0309
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 06:27:25 +0000 (UTC)
+X-FDA: 83719949250.15.CEDB34C
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 2242E16000C
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 06:27:22 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=jgcqt0VY;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf08.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753854600;
+	s=arc-20220608; t=1753856844;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yP69FByPBXhKkhsmmFgr+E2ZJ6RQumZOXnmg3P5mKM0=;
-	b=vFhslGCXz+KExAqFiK1sE4aIDTGufhRSNUpJbp3U9w8p0rapGVAxOcT3GOdbZLorYHGjDm
-	/S7PqiAVu0+Q+x6/ORn+kJcG9N6w5NmUMF6smts6NYNvPA9+kmKXu+JQlrzUQ5a+1ARVOf
-	L83iRyhDxK5pi0IggC7dymrTuEM7N5k=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gVjgEgG8;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=3+K0Rg38;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gVjgEgG8;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=3+K0Rg38;
-	spf=pass (imf04.hostedemail.com: domain of hare@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=hare@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753854600; a=rsa-sha256;
+	bh=6FfO44U2JX/fHJCCn3Slt3rnxu3k+Xa+Lub9X8BAvy0=;
+	b=ANLiNPdbw1MYs08OffVISAL2ixtTUDwbcozRCjNfSL2d4rRgVvYwk1sVH7O/VcULe51pJE
+	Ym+CrBgCoaFesVQrbw+V/w1Uza9qDTHqOKPJQZkE15vUOn5PdGrPieVmm9CeQ9CnGy1PKx
+	JzH5JZAg2E2+tZ1VUvA4Nj6h+G1aW/o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753856844; a=rsa-sha256;
 	cv=none;
-	b=PZiAPAq9SZ4ljRo1Rl46LW3i80WPLS1W7LbfQebEPN47s70bKsabEtxJJTSRytImmubR8S
-	uNvjdwtqpUJgfLggtBNzJ0pFBZH36lcbWJ5OBOn86aFNpGxJ+RzaW3258bBzVZH+M008r1
-	OKsHKLNRSBChP31CPd7HNXGvymafOHU=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 3D7B121A95;
-	Wed, 30 Jul 2025 05:49:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1753854598; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yP69FByPBXhKkhsmmFgr+E2ZJ6RQumZOXnmg3P5mKM0=;
-	b=gVjgEgG82/18GgMfqbrX1KUIeL3hBAsGTslKh+CV5JhdgdbZ7DKUGYA7RZeziATWxOyf7E
-	BpV6HC3cgOc5muyiEZqLcEDK/16KA07DVCXBBrBNm49e/0VTsMg26O0Xw1R+6mMkCZt9AK
-	4Xx73+LNWFi4rm8Hqpr7mNkI1tjkCvY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1753854598;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yP69FByPBXhKkhsmmFgr+E2ZJ6RQumZOXnmg3P5mKM0=;
-	b=3+K0Rg38Wy1W1hYJJtDqq9Ea/QIqoBUQScJSrxfe4FT4yN6yeeghU5kkYQwhNculNMbcZY
-	vJp4rPgqty7yo4Bg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1753854598; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yP69FByPBXhKkhsmmFgr+E2ZJ6RQumZOXnmg3P5mKM0=;
-	b=gVjgEgG82/18GgMfqbrX1KUIeL3hBAsGTslKh+CV5JhdgdbZ7DKUGYA7RZeziATWxOyf7E
-	BpV6HC3cgOc5muyiEZqLcEDK/16KA07DVCXBBrBNm49e/0VTsMg26O0Xw1R+6mMkCZt9AK
-	4Xx73+LNWFi4rm8Hqpr7mNkI1tjkCvY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1753854598;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yP69FByPBXhKkhsmmFgr+E2ZJ6RQumZOXnmg3P5mKM0=;
-	b=3+K0Rg38Wy1W1hYJJtDqq9Ea/QIqoBUQScJSrxfe4FT4yN6yeeghU5kkYQwhNculNMbcZY
-	vJp4rPgqty7yo4Bg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F19D613479;
-	Wed, 30 Jul 2025 05:49:57 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id y+1AOIWyiWhbKgAAD6G6ig
-	(envelope-from <hare@suse.de>); Wed, 30 Jul 2025 05:49:57 +0000
-Message-ID: <907ee759-6051-4d47-bf09-cea362ac0cd9@suse.de>
-Date: Wed, 30 Jul 2025 07:49:57 +0200
+	b=M25t/gcYpwkFMm6XHK0HEAnlnL2XeHc27lErc/M8pbu3F/hbrZgwuieFfBP+i+Wuw2hSd0
+	xPL+jCxBbSSuOurYn+9s0FaMwi5J8WGEVxeK1QhUen8wChfXTkqXCnl3B67i6FXDuanHK6
+	DSPI+YrbPUxHCTY9Btc5Hr5txl9D4Pk=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=jgcqt0VY;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf08.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753856843; x=1785392843;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=t6lKU18geCu0Nksnwnjhpo7QzjaPW74xkwpo0dYYKJQ=;
+  b=jgcqt0VYqVQXMiy731Yk3khgnvBogxloRGiYgsCof2lXgneJLBE7CJBc
+   pQKsA+Hrbp0MIjyFy5TcYPsUYSq40misBV3cCKAmPJWLebO0ivkeTbWYP
+   BIXFYF5IhdoHSwfRpivxWKLJ/9q7opPU30Ngswshklg1JQuxsVRhj2Ya9
+   z6VBNhDRZ9bGBV84h7qEhxG22blaY9moOh725pp3Gn6gstU8vEtt/rSZJ
+   846nOuu0Bg8iW2DTDPgqgk5dUyO4aHTnm19Nv+y5dsgD62wMq0FYMVfxO
+   eNm5fjpzOlbpx1A9DOkagoR5JGCq9X9UTJQ8FJDYLtP6cfqJv0j9sopHN
+   Q==;
+X-CSE-ConnectionGUID: 7N9ZKICBRKqOcx9RqJfRIA==
+X-CSE-MsgGUID: 5RbkP0TTTICC7giJQIgeAw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11506"; a="81590266"
+X-IronPort-AV: E=Sophos;i="6.16,350,1744095600"; 
+   d="scan'208";a="81590266"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2025 23:27:22 -0700
+X-CSE-ConnectionGUID: bR1T/FHFQoSIlTb6WTDKbA==
+X-CSE-MsgGUID: I9S+ys2JSAqiZKwz0H/ZtA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,350,1744095600"; 
+   d="scan'208";a="162487497"
+Received: from lkp-server01.sh.intel.com (HELO 160750d4a34c) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 29 Jul 2025 23:27:18 -0700
+Received: from kbuild by 160750d4a34c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uh0HT-00026s-2R;
+	Wed, 30 Jul 2025 06:27:15 +0000
+Date: Wed, 30 Jul 2025 14:27:08 +0800
+From: kernel test robot <lkp@intel.com>
+To: Steven Rostedt <rostedt@goodmis.org>, linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Randy Dunlap <rdunlap@infradead.org>
+Subject: Re: [PATCH v2 1/2] tracing: Have eprobes have their own config option
+Message-ID: <202507301452.JPAcMvT0-lkp@intel.com>
+References: <20250729161912.056641407@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv4 0/3] mm/memory_hotplug: fixup crash during uevent
- handling
-To: Andrew Morton <akpm@linux-foundation.org>,
- Hannes Reinecke <hare@kernel.org>
-Cc: David Hildenbrand <david@redhat.com>, Oscar Salvador <osalvador@suse.de>,
- linux-mm@kvack.org
-References: <20250729064637.51662-1-hare@kernel.org>
- <20250729133806.979475704b1162d7aea99b2b@linux-foundation.org>
-Content-Language: en-US
-From: Hannes Reinecke <hare@suse.de>
-In-Reply-To: <20250729133806.979475704b1162d7aea99b2b@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
-X-Stat-Signature: 7asungicawkpbhwcy5ynpx1rn3ngt1jf
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 2BBBC40002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250729161912.056641407@kernel.org>
+X-Stat-Signature: ket9k3entrkrod7prpe9chcsondo7udr
+X-Rspamd-Queue-Id: 2242E16000C
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1753854599-227376
-X-HE-Meta: U2FsdGVkX1+3AqvIFOJ1OgNLBwD7v62fy2kDrqk4dKVu1Cmdz0lHHI9SLQnt6ZOLtZKmq8unPC2/0VTHgpDn+c1UAQSyKVXJdMFO00L64KHW4Vc0dke62JybF3PQw9ChrPM+Bzwi5SaG4Ac54jCeE17uxv7Ue21nc/Evf02hV2Vkb1iZ3iZuhBjIeG93rBUKaYnNiYr92o/lPADVtciBXtPV1Jp8AvB77vQmS2oANPbFtyC0OZkRukeqYdBq4uTH4b35h9kvzBfuzPd7vAW2uS9ImBiWNST1CG1wceyZVkiYsvvTpcwMVqTyruxPG9MlZW1p6MBcjEx3FB3JNChMo0JC9V0AZFH4uzCck6tbIuzloyhgRigBKrMbBtGjMFA0itPGDYYzFC094K8sCwU4OxP/7CvTqKHf05wIZuCQT8CusU5WUdP2uMypk00t1g36D+UG5NPX/Le+LLVtHhmNK552JQ30N3ZoLchi/ck6hkl2oGuvhqESYZnmpXq0/WbpWt+y/h4f2iQ4l+of5no2Lanb01OTrwKFfzEHSj8hEmxU+B5bN0PCfEY4fR0MJzBkSLbVosi1JFPh++MIrnAIdkq1lz2EK+NETka3hW6H/+8xRJEJOnQVMwo1VK3tAIqFOSv8HTFS5tfxtWbOgzVlZd0xyfLVmuL/tfcijfp9dHwZ4G0vMJjmM9ipIAbOwtv7H+0weqxjPbMTFrzLXHmDmmu2tbI8uSJRvb9OQnKNhrZv1/VmauXyNMEl9W1DuqlZco8mzNuURCzGpJ9RW0vuWFpyWiyQOEJE2ytY3FM+lI17QW9f53cJL/EYyLRfDPFT1ElxWK+rX5YnO7bLUQw9Prh2xAUBJwv+X29/pI4ucYfdCm22THM33FLxZaYpCzLfoPecs6Ykpe0xAi76t/YyIVKqfjNfYwZbO82U6A4lajI/VyKIRGcbv8SoApqZaCOWgP0s4QAnIyCwkeQHnnm
- haGOYtjR
- Ut0BPkeeU5lAMNcDpwT13UIK/aSkYR+3niYc6z2aOEkr4Zj24uocfHWRRO4qSWtBe8bQpSpy/eIyu9EO+rXoT1F8CKtmEUw/c6PYiGsdAdiX7sJhYzM9YYAxg4eGvri7A3GNpY/I/GO6owZjHGirrDiiGhqyqQJaKRiSMqgOoTpY6Kp6s10Pf7MglMLYP2aKufQ9mIMJjPgIgLyJ82cPbyCQD2T0WBRkBgu7h3I2WC9kgiluZurFkcrFK7o5JWM4Djiet9pelJxEAxPai/6KnCF4rMOD9h/iGhuZ53upzVgoHC/k5ViMJMQ1cdCNdmCOh+ZsN6NgyTMit5R2+A8uj3+bfpZR6a/TE0d4vPbFdGtuv5N78reMj3W5vbDfTqxR8FIa1l5G4GHKbCOBGuAmN4vyf2w==
+X-HE-Tag: 1753856842-191505
+X-HE-Meta: U2FsdGVkX1/TRqfABlXCSptPdMehzk0Us6h8KnJzTyeFcIeSXsmGZuFSpDuqqLp+OEXGCEeZ0sv9LZYTkhVYR5p6wV5kTjS372HKD8vfAgBIz8p0qibW+cCfk4U5E5wBR1+ZdvecqgnkjACEoA3M197CdFrsdUnOpakJXLWQDo0zXwAuY+n8boqAvOwZhOnRiXEbIETsxj90OOO+R+oW4fIxt3krKn6UHeQDKpybYCW2TSdPdg8KpaUxlBWzCl/QzBsUufOjyaaSJtNNLXyZ9CRmKtIrrymriP8Q63oKCBHV0+ySIMh7irPSPRx8eZ6t1Se+vjA4bbDL/J+zNLScXvK5lJNOnTTkDVDvs1EdqQlUncmnoIVaQkvnX5kfGrzo8tLlNLwrL+ybMnhVUKRi2XBVpdwdlY9m/9o6EBItt4vUbnFNMBSh7+LleIlLdd4+f+oHlKK9RJLDrq2LbwKOVz5MwncxAXnmBzLRcRLiDtDWgQqXJ/vT7unCVbir795KgkB0CAAhFARgBDhXLb2TN+4npzJKGr0oeBPfR4WcMAssyb3yozbUn1vZWjxlMu4QH3/Xtq7yB+drFUpDt0qjRqxdmD8B1uEYR2Vklng6pennmoag8YAe82NkBPZV8tbhLXGaJ2Kl8O85hT1jkzWHlcvlcjWKIV6VW2Hq711eSKIlBA5fEYn7VRXuRbNCraje/fkK+ErKGMaUHTalIEQEokaIj0z6JbEbLdPsLEF8yszLjMpnK+V86w4p4UiSuEAlCfVWRGzGFwQqJ+prNElHKKEo6JPn0KEjrAAEvIcdDgggIJMDdyhotC6wcifyna6ojA5EHRHL291Om/FqPKJwc6BrHNBTrLbg8XDZmv058/TPhxaELk7DmBi6HtC7TZhUZ0w2BFCbontMze59q2LOpzdSH0Wel880DMn6FvqLSJ4ji5L/u20eevHqaTJ43p5LvbBVgDcjSKKxD2F3kHe
+ FaCUglAN
+ SsRY6A1siOocQ8/xxO88BrclBxDvK4yDaT+zTwVroq4kPQ8WQ9Gcp1B/Twd9r6RDNUahz1Tnccs4karYrzEOcQaV1av6iy0jZuIdfJGRQfFSn0zNPpSI/ohnQrbJMw96m1NE2AJAwo63WuGz1mcHlqlX8zJZXYavGA6j5qmD5p0nd7cKn1uAFHZx1jaTTgDc/OrP7iopdWFGNEKSehdnRSK9uAr8LwtF+i08z5swppdXJU/16YzYdEcXGQsM7r/q7jjtVctNSlPJ2/3XyNcPziV9j41uUg57CTgtwpeV7geCh0zjZJeO+YqgXKQUqiyfvx3ONXiQTSG0ilrPbyEyxBkLdK/38O2aihCnH
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,67 +112,216 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/29/25 22:38, Andrew Morton wrote:
-> On Tue, 29 Jul 2025 08:46:33 +0200 Hannes Reinecke <hare@kernel.org> wrote:
-> 
->> we have some udev rules trying to read the sysfs attribute 'valid_zones' during
->> an memory 'add' event, causing a crash in zone_for_pfn_range(). Debugging found
->> that mem->nid was set to NUMA_NO_NODE, which crashed in NODE_DATA(nid).
->> Further analysis revealed that we're running into a race with udev event
->> processing: add_memory_resource() has this function calls:
->>
->> 1) __try_online_node()
->> 2) arch_add_memory()
->> 3) create_memory_block_devices()
->>    -> calls device_register() -> memory 'add' event
->> 4) node_set_online()/__register_one_node()
->>    -> calls device_register() -> node 'add' event
->> 5) register_memory_blocks_under_node()
->>    -> sets mem->nid
->>
->> Which, to the uninitated, is ... weird ...
->>
->> Why do we try to online the node in 1), but only register
->> the node in 4) _after_ we have created the memory blocks in 3) ?
->> And why do we set the 'nid' value in 5), when the uevent
->> (which might need to see the correct 'nid' value) is sent out
->> in 3) ?
->> There must be a reason, I'm sure ...
->>
->> So here's a small patchset to fixup uevent ordering.
-> 
-> You know what I'm going to say :)
-> 
-> Should we backport this into earlier kernels?  Seeing "crash" make me
-> think yes.
-> 
-> But only one patch has a Fixes: target, and it's with the Fixes: tag
-> that we tell -stable maintainers which kernel version(s) we want
-> patched.
-> 
-> So, still assuming "yes": is it possible to redo all this as a simple
-> minimal patch which is suitable for backporting?  And then a separate
-> cleanup/refactoring series for future kernels?  [3/3] doesn't seem to
-> be needed in earlier kernels?
-> 
-> IOW, if we wish to fix this crash in earlier kernels, I really cant use
-> this series as presented.  For now I'll add it to mm-new to get it a bit
-> of exposure while we decide what to do.
-> 
-> 
-And here's me who thought we were doing upstream work precisely to
-_not_ having to do backports :-)
-Oh well.
+Hi Steven,
 
-I see if we can roll patch 1&2 into one; guess I'll need to do it
-anyway for our kernel.
+kernel test robot noticed the following build errors:
 
-Cheers,
+[auto build test ERROR on trace/for-next]
+[also build test ERROR on lwn/docs-next akpm-mm/mm-everything linus/master v6.16 next-20250729]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Hannes
+url:    https://github.com/intel-lab-lkp/linux/commits/Steven-Rostedt/tracing-Have-eprobes-have-their-own-config-option/20250730-001958
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace for-next
+patch link:    https://lore.kernel.org/r/20250729161912.056641407%40kernel.org
+patch subject: [PATCH v2 1/2] tracing: Have eprobes have their own config option
+config: xtensa-randconfig-002-20250730 (https://download.01.org/0day-ci/archive/20250730/202507301452.JPAcMvT0-lkp@intel.com/config)
+compiler: xtensa-linux-gcc (GCC) 12.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250730/202507301452.JPAcMvT0-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202507301452.JPAcMvT0-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   kernel/trace/trace_probe.c: In function 'parse_probe_arg':
+>> kernel/trace/trace_probe.c:1105:23: error: implicit declaration of function 'regs_query_register_offset'; did you mean 'ftrace_regs_query_register_offset'? [-Werror=implicit-function-declaration]
+    1105 |                 ret = regs_query_register_offset(arg + 1);
+         |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~
+         |                       ftrace_regs_query_register_offset
+   cc1: some warnings being treated as errors
+
+
+vim +1105 kernel/trace/trace_probe.c
+
+a42e3c4de9642d Masami Hiramatsu          2019-06-20  1080  
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1081  /* Recursive argument parser */
+533059281ee594 Masami Hiramatsu          2018-04-25  1082  static int
+533059281ee594 Masami Hiramatsu          2018-04-25  1083  parse_probe_arg(char *arg, const struct fetch_type *type,
+533059281ee594 Masami Hiramatsu          2018-04-25  1084  		struct fetch_insn **pcode, struct fetch_insn *end,
+1b8b0cd754cdbb Masami Hiramatsu (Google  2023-06-06  1085) 		struct traceprobe_parse_context *ctx)
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1086  {
+533059281ee594 Masami Hiramatsu          2018-04-25  1087  	struct fetch_insn *code = *pcode;
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1088  	unsigned long param;
+e65f7ae7f4da56 Masami Hiramatsu          2019-05-15  1089  	int deref = FETCH_OP_DEREF;
+bf173ca92da978 Steven Rostedt (VMware    2018-10-12  1090) 	long offset = 0;
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1091  	char *tmp;
+34fee3a104cea1 Namhyung Kim              2013-11-26  1092  	int ret = 0;
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1093  
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1094  	switch (arg[0]) {
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1095  	case '$':
+d157d7694460b9 Masami Hiramatsu (Google  2023-08-23  1096) 		ret = parse_probe_vars(arg, type, pcode, end, ctx);
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1097  		break;
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1098  
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1099  	case '%':	/* named register */
+1b8b0cd754cdbb Masami Hiramatsu (Google  2023-06-06  1100) 		if (ctx->flags & (TPARG_FL_TEVENT | TPARG_FL_FPROBE)) {
+334e5519c37570 Masami Hiramatsu (Google  2023-06-06  1101) 			/* eprobe and fprobe do not handle registers */
+1b8b0cd754cdbb Masami Hiramatsu (Google  2023-06-06  1102) 			trace_probe_log_err(ctx->offset, BAD_VAR);
+2673c60ee67e71 Steven Rostedt (Google    2022-08-20  1103) 			break;
+2673c60ee67e71 Steven Rostedt (Google    2022-08-20  1104) 		}
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09 @1105  		ret = regs_query_register_offset(arg + 1);
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1106  		if (ret >= 0) {
+533059281ee594 Masami Hiramatsu          2018-04-25  1107  			code->op = FETCH_OP_REG;
+533059281ee594 Masami Hiramatsu          2018-04-25  1108  			code->param = (unsigned int)ret;
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1109  			ret = 0;
+ab105a4fb89496 Masami Hiramatsu          2019-03-31  1110  		} else
+1b8b0cd754cdbb Masami Hiramatsu (Google  2023-06-06  1111) 			trace_probe_log_err(ctx->offset, BAD_REG_NAME);
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1112  		break;
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1113  
+b7e0bf341f6cfa Namhyung Kim              2013-11-25  1114  	case '@':	/* memory, file-offset or symbol */
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1115  		if (isdigit(arg[1])) {
+bcd83ea6cbfee5 Daniel Walter             2012-09-26  1116  			ret = kstrtoul(arg + 1, 0, &param);
+ab105a4fb89496 Masami Hiramatsu          2019-03-31  1117  			if (ret) {
+1b8b0cd754cdbb Masami Hiramatsu (Google  2023-06-06  1118) 				trace_probe_log_err(ctx->offset, BAD_MEM_ADDR);
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1119  				break;
+ab105a4fb89496 Masami Hiramatsu          2019-03-31  1120  			}
+533059281ee594 Masami Hiramatsu          2018-04-25  1121  			/* load address */
+533059281ee594 Masami Hiramatsu          2018-04-25  1122  			code->op = FETCH_OP_IMM;
+533059281ee594 Masami Hiramatsu          2018-04-25  1123  			code->immediate = param;
+b7e0bf341f6cfa Namhyung Kim              2013-11-25  1124  		} else if (arg[1] == '+') {
+b7e0bf341f6cfa Namhyung Kim              2013-11-25  1125  			/* kprobes don't support file offsets */
+1b8b0cd754cdbb Masami Hiramatsu (Google  2023-06-06  1126) 			if (ctx->flags & TPARG_FL_KERNEL) {
+1b8b0cd754cdbb Masami Hiramatsu (Google  2023-06-06  1127) 				trace_probe_log_err(ctx->offset, FILE_ON_KPROBE);
+b7e0bf341f6cfa Namhyung Kim              2013-11-25  1128  				return -EINVAL;
+ab105a4fb89496 Masami Hiramatsu          2019-03-31  1129  			}
+b7e0bf341f6cfa Namhyung Kim              2013-11-25  1130  			ret = kstrtol(arg + 2, 0, &offset);
+ab105a4fb89496 Masami Hiramatsu          2019-03-31  1131  			if (ret) {
+1b8b0cd754cdbb Masami Hiramatsu (Google  2023-06-06  1132) 				trace_probe_log_err(ctx->offset, BAD_FILE_OFFS);
+b7e0bf341f6cfa Namhyung Kim              2013-11-25  1133  				break;
+ab105a4fb89496 Masami Hiramatsu          2019-03-31  1134  			}
+b7e0bf341f6cfa Namhyung Kim              2013-11-25  1135  
+533059281ee594 Masami Hiramatsu          2018-04-25  1136  			code->op = FETCH_OP_FOFFS;
+533059281ee594 Masami Hiramatsu          2018-04-25  1137  			code->immediate = (unsigned long)offset;  // imm64?
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1138  		} else {
+b079d374fd8463 Namhyung Kim              2013-07-03  1139  			/* uprobes don't support symbols */
+1b8b0cd754cdbb Masami Hiramatsu (Google  2023-06-06  1140) 			if (!(ctx->flags & TPARG_FL_KERNEL)) {
+1b8b0cd754cdbb Masami Hiramatsu (Google  2023-06-06  1141) 				trace_probe_log_err(ctx->offset, SYM_ON_UPROBE);
+b079d374fd8463 Namhyung Kim              2013-07-03  1142  				return -EINVAL;
+ab105a4fb89496 Masami Hiramatsu          2019-03-31  1143  			}
+a6682814f37124 Masami Hiramatsu          2018-08-29  1144  			/* Preserve symbol for updating */
+a6682814f37124 Masami Hiramatsu          2018-08-29  1145  			code->op = FETCH_NOP_SYMBOL;
+a6682814f37124 Masami Hiramatsu          2018-08-29  1146  			code->data = kstrdup(arg + 1, GFP_KERNEL);
+a6682814f37124 Masami Hiramatsu          2018-08-29  1147  			if (!code->data)
+a6682814f37124 Masami Hiramatsu          2018-08-29  1148  				return -ENOMEM;
+ab105a4fb89496 Masami Hiramatsu          2019-03-31  1149  			if (++code == end) {
+1b8b0cd754cdbb Masami Hiramatsu (Google  2023-06-06  1150) 				trace_probe_log_err(ctx->offset, TOO_MANY_OPS);
+ab105a4fb89496 Masami Hiramatsu          2019-03-31  1151  				return -EINVAL;
+ab105a4fb89496 Masami Hiramatsu          2019-03-31  1152  			}
+533059281ee594 Masami Hiramatsu          2018-04-25  1153  			code->op = FETCH_OP_IMM;
+a6682814f37124 Masami Hiramatsu          2018-08-29  1154  			code->immediate = 0;
+533059281ee594 Masami Hiramatsu          2018-04-25  1155  		}
+533059281ee594 Masami Hiramatsu          2018-04-25  1156  		/* These are fetching from memory */
+ab105a4fb89496 Masami Hiramatsu          2019-03-31  1157  		if (++code == end) {
+1b8b0cd754cdbb Masami Hiramatsu (Google  2023-06-06  1158) 			trace_probe_log_err(ctx->offset, TOO_MANY_OPS);
+ab105a4fb89496 Masami Hiramatsu          2019-03-31  1159  			return -EINVAL;
+ab105a4fb89496 Masami Hiramatsu          2019-03-31  1160  		}
+533059281ee594 Masami Hiramatsu          2018-04-25  1161  		*pcode = code;
+533059281ee594 Masami Hiramatsu          2018-04-25  1162  		code->op = FETCH_OP_DEREF;
+533059281ee594 Masami Hiramatsu          2018-04-25  1163  		code->offset = offset;
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1164  		break;
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1165  
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1166  	case '+':	/* deref memory */
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1167  	case '-':
+e65f7ae7f4da56 Masami Hiramatsu          2019-05-15  1168  		if (arg[1] == 'u') {
+e65f7ae7f4da56 Masami Hiramatsu          2019-05-15  1169  			deref = FETCH_OP_UDEREF;
+e65f7ae7f4da56 Masami Hiramatsu          2019-05-15  1170  			arg[1] = arg[0];
+e65f7ae7f4da56 Masami Hiramatsu          2019-05-15  1171  			arg++;
+e65f7ae7f4da56 Masami Hiramatsu          2019-05-15  1172  		}
+e65f7ae7f4da56 Masami Hiramatsu          2019-05-15  1173  		if (arg[0] == '+')
+e65f7ae7f4da56 Masami Hiramatsu          2019-05-15  1174  			arg++;	/* Skip '+', because kstrtol() rejects it. */
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1175  		tmp = strchr(arg, '(');
+ab105a4fb89496 Masami Hiramatsu          2019-03-31  1176  		if (!tmp) {
+1b8b0cd754cdbb Masami Hiramatsu (Google  2023-06-06  1177) 			trace_probe_log_err(ctx->offset, DEREF_NEED_BRACE);
+533059281ee594 Masami Hiramatsu          2018-04-25  1178  			return -EINVAL;
+ab105a4fb89496 Masami Hiramatsu          2019-03-31  1179  		}
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1180  		*tmp = '\0';
+bcd83ea6cbfee5 Daniel Walter             2012-09-26  1181  		ret = kstrtol(arg, 0, &offset);
+ab105a4fb89496 Masami Hiramatsu          2019-03-31  1182  		if (ret) {
+1b8b0cd754cdbb Masami Hiramatsu (Google  2023-06-06  1183) 			trace_probe_log_err(ctx->offset, BAD_DEREF_OFFS);
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1184  			break;
+ab105a4fb89496 Masami Hiramatsu          2019-03-31  1185  		}
+1b8b0cd754cdbb Masami Hiramatsu (Google  2023-06-06  1186) 		ctx->offset += (tmp + 1 - arg) + (arg[0] != '-' ? 1 : 0);
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1187  		arg = tmp + 1;
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1188  		tmp = strrchr(arg, ')');
+ab105a4fb89496 Masami Hiramatsu          2019-03-31  1189  		if (!tmp) {
+1b8b0cd754cdbb Masami Hiramatsu (Google  2023-06-06  1190) 			trace_probe_log_err(ctx->offset + strlen(arg),
+ab105a4fb89496 Masami Hiramatsu          2019-03-31  1191  					    DEREF_OPEN_BRACE);
+ab105a4fb89496 Masami Hiramatsu          2019-03-31  1192  			return -EINVAL;
+ab105a4fb89496 Masami Hiramatsu          2019-03-31  1193  		} else {
+1b8b0cd754cdbb Masami Hiramatsu (Google  2023-06-06  1194) 			const struct fetch_type *t2 = find_fetch_type(NULL, ctx->flags);
+1b8b0cd754cdbb Masami Hiramatsu (Google  2023-06-06  1195) 			int cur_offs = ctx->offset;
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1196  
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1197  			*tmp = '\0';
+1b8b0cd754cdbb Masami Hiramatsu (Google  2023-06-06  1198) 			ret = parse_probe_arg(arg, t2, &code, end, ctx);
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1199  			if (ret)
+533059281ee594 Masami Hiramatsu          2018-04-25  1200  				break;
+1b8b0cd754cdbb Masami Hiramatsu (Google  2023-06-06  1201) 			ctx->offset = cur_offs;
+a42e3c4de9642d Masami Hiramatsu          2019-06-20  1202  			if (code->op == FETCH_OP_COMM ||
+a42e3c4de9642d Masami Hiramatsu          2019-06-20  1203  			    code->op == FETCH_OP_DATA) {
+1b8b0cd754cdbb Masami Hiramatsu (Google  2023-06-06  1204) 				trace_probe_log_err(ctx->offset, COMM_CANT_DEREF);
+533059281ee594 Masami Hiramatsu          2018-04-25  1205  				return -EINVAL;
+ab105a4fb89496 Masami Hiramatsu          2019-03-31  1206  			}
+ab105a4fb89496 Masami Hiramatsu          2019-03-31  1207  			if (++code == end) {
+1b8b0cd754cdbb Masami Hiramatsu (Google  2023-06-06  1208) 				trace_probe_log_err(ctx->offset, TOO_MANY_OPS);
+ab105a4fb89496 Masami Hiramatsu          2019-03-31  1209  				return -EINVAL;
+ab105a4fb89496 Masami Hiramatsu          2019-03-31  1210  			}
+533059281ee594 Masami Hiramatsu          2018-04-25  1211  			*pcode = code;
+533059281ee594 Masami Hiramatsu          2018-04-25  1212  
+e65f7ae7f4da56 Masami Hiramatsu          2019-05-15  1213  			code->op = deref;
+533059281ee594 Masami Hiramatsu          2018-04-25  1214  			code->offset = offset;
+c440adfbe30257 Masami Hiramatsu (Google  2023-08-23  1215) 			/* Reset the last type if used */
+c440adfbe30257 Masami Hiramatsu (Google  2023-08-23  1216) 			ctx->last_type = NULL;
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1217  		}
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1218  		break;
+6218bf9f4d2942 Masami Hiramatsu          2019-06-20  1219  	case '\\':	/* Immediate value */
+a42e3c4de9642d Masami Hiramatsu          2019-06-20  1220  		if (arg[1] == '"') {	/* Immediate string */
+1b8b0cd754cdbb Masami Hiramatsu (Google  2023-06-06  1221) 			ret = __parse_imm_string(arg + 2, &tmp, ctx->offset + 2);
+a42e3c4de9642d Masami Hiramatsu          2019-06-20  1222  			if (ret)
+a42e3c4de9642d Masami Hiramatsu          2019-06-20  1223  				break;
+a42e3c4de9642d Masami Hiramatsu          2019-06-20  1224  			code->op = FETCH_OP_DATA;
+a42e3c4de9642d Masami Hiramatsu          2019-06-20  1225  			code->data = tmp;
+a42e3c4de9642d Masami Hiramatsu          2019-06-20  1226  		} else {
+6218bf9f4d2942 Masami Hiramatsu          2019-06-20  1227  			ret = str_to_immediate(arg + 1, &code->immediate);
+6218bf9f4d2942 Masami Hiramatsu          2019-06-20  1228  			if (ret)
+1b8b0cd754cdbb Masami Hiramatsu (Google  2023-06-06  1229) 				trace_probe_log_err(ctx->offset + 1, BAD_IMM);
+6218bf9f4d2942 Masami Hiramatsu          2019-06-20  1230  			else
+6218bf9f4d2942 Masami Hiramatsu          2019-06-20  1231  				code->op = FETCH_OP_IMM;
+a42e3c4de9642d Masami Hiramatsu          2019-06-20  1232  		}
+6218bf9f4d2942 Masami Hiramatsu          2019-06-20  1233  		break;
+b576e09701c7d0 Masami Hiramatsu (Google  2023-06-06  1234) 	default:
+b576e09701c7d0 Masami Hiramatsu (Google  2023-06-06  1235) 		if (isalpha(arg[0]) || arg[0] == '_') {	/* BTF variable */
+25f00e40ce7953 Masami Hiramatsu (Google  2024-03-04  1236) 			if (!tparg_is_function_entry(ctx->flags) &&
+25f00e40ce7953 Masami Hiramatsu (Google  2024-03-04  1237) 			    !tparg_is_function_return(ctx->flags)) {
+b576e09701c7d0 Masami Hiramatsu (Google  2023-06-06  1238) 				trace_probe_log_err(ctx->offset, NOSUP_BTFARG);
+b576e09701c7d0 Masami Hiramatsu (Google  2023-06-06  1239) 				return -EINVAL;
+b576e09701c7d0 Masami Hiramatsu (Google  2023-06-06  1240) 			}
+c440adfbe30257 Masami Hiramatsu (Google  2023-08-23  1241) 			ret = parse_btf_arg(arg, pcode, end, ctx);
+b576e09701c7d0 Masami Hiramatsu (Google  2023-06-06  1242) 			break;
+b576e09701c7d0 Masami Hiramatsu (Google  2023-06-06  1243) 		}
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1244  	}
+533059281ee594 Masami Hiramatsu          2018-04-25  1245  	if (!ret && code->op == FETCH_OP_NOP) {
+533059281ee594 Masami Hiramatsu          2018-04-25  1246  		/* Parsed, but do not find fetch method */
+1b8b0cd754cdbb Masami Hiramatsu (Google  2023-06-06  1247) 		trace_probe_log_err(ctx->offset, BAD_FETCH_ARG);
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1248  		ret = -EINVAL;
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1249  	}
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1250  	return ret;
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1251  }
+8ab83f56475ec9 Srikar Dronamraju         2012-04-09  1252  
+
 -- 
-Dr. Hannes Reinecke                  Kernel Storage Architect
-hare@suse.de                                +49 911 74053 688
-SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
-HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
