@@ -2,84 +2,79 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AE48CC87FC9
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 01:28:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C9147C87FC9
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 01:33:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A7A06B008A; Tue, 29 Jul 2025 21:28:55 -0400 (EDT)
+	id 646496B0088; Tue, 29 Jul 2025 21:33:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37DDC6B008C; Tue, 29 Jul 2025 21:28:55 -0400 (EDT)
+	id 5F7436B0089; Tue, 29 Jul 2025 21:33:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BAD66B0092; Tue, 29 Jul 2025 21:28:55 -0400 (EDT)
+	id 50CB36B008A; Tue, 29 Jul 2025 21:33:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D4A66B008A
-	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 21:28:55 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A1E341602B1
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 01:28:54 +0000 (UTC)
-X-FDA: 83719196988.04.8D80851
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 7732740013
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 01:28:52 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=rM3lIhv+;
-	spf=pass (imf01.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 41CF86B0088
+	for <linux-mm@kvack.org>; Tue, 29 Jul 2025 21:33:14 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B2005801EA
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 01:33:13 +0000 (UTC)
+X-FDA: 83719207866.28.9B5FD3B
+Received: from smtp233.sjtu.edu.cn (smtp233.sjtu.edu.cn [202.120.2.233])
+	by imf12.hostedemail.com (Postfix) with ESMTP id E00AA40006
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 01:33:10 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	spf=pass (imf12.hostedemail.com: domain of billsjc@sjtu.edu.cn designates 202.120.2.233 as permitted sender) smtp.mailfrom=billsjc@sjtu.edu.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753838932;
+	s=arc-20220608; t=1753839191;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uVXUL3SYY4u26un88JxM93aVATKWntzTTRFMmp2lyOE=;
-	b=g6/N9lzX+RDtbcHaRifgb1z3rX7z5xeTyQGtIb6Fieh7cF8SIuyp9Kf3K0EGS2G+i5i9R5
-	G/SIgbxXOK/NSIPYGekq/GvrMaIWoUcYkNE9rGCaqqpyFVfq5Ok6j6L0mINlCwqyfAu57+
-	3AxPYA0c6+c0Q7emzclfKPIQBuTzArk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753838932; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=D6OFjto7PTscQZT0miszu9LQbwXIwKhs66DYveRMFiI=;
+	b=sp/YPzT5LkciPCji9Nto3gWWtydHYydxy47IVsLeZDboW6HsgzGiaYwJcf7LKmGRvxYg7U
+	DU6wHIgLkRxdh7ytIM8QP8WxF/Gg7Iva2Bjtm2/e9KvSmmlOjNBbHyy3PC4wdWVuk12SR7
+	iJxdcrcCghpPSJGbNh5bTPU17MXemgI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753839191; a=rsa-sha256;
 	cv=none;
-	b=ue4X+/K7fmaivJie1YNIVg4kvy3D0YnPRaXMh2e65eI1jbT6+t7qYtZHvfzAMXYFaezipl
-	ZO41DB7Qa5XZiHA/0neBA5if29PPjZMJw+AWn2cbQ1Np+inym2ixWVsYeEood4T2g24qk7
-	MMuAozv5HjXGucnTxHj+DP2PHeIF88U=
+	b=RqW6lfWX8moztYVjnUWggIJrrMVlSd1Z/U4CNlth+9oC2BA4vpRIof50Nyw2FarSaHInk6
+	LZ3Di1LbJEHZggawppGn3qpZW9Rsmi2P7vStbAd3kCnxIpZyOq/CCJ0Z5usBeoPJ6my74I
+	HIB6+5T/OSyE9ZMNGVr7Ynphmcw/EXU=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=rM3lIhv+;
-	spf=pass (imf01.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1753838929; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=uVXUL3SYY4u26un88JxM93aVATKWntzTTRFMmp2lyOE=;
-	b=rM3lIhv+8qub+ridQ8efp73LGn5n3NU9wy1UAkDxWTOPqZTf6Jde0B536tNL72ZHtbhEDwD28GLn4L3OjjoXPbUPl29/Uw2YqE/eQDVpSRMk6xXYhZd4JkPBVZTeH1yfLqN5uibv/7rITPHaf3wArj28+8PKx6xoU4n+OwVd+D8=
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WkSRRoH_1753838927 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 30 Jul 2025 09:28:47 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Ruan Shiyang <ruansy.fnst@fujitsu.com>
-Cc: linux-mm@kvack.org,  linux-kernel@vger.kernel.org,  lkp@intel.com,
-  akpm@linux-foundation.org,  y-goto@fujitsu.com,  mingo@redhat.com,
-  peterz@infradead.org,  juri.lelli@redhat.com,
-  vincent.guittot@linaro.org,  dietmar.eggemann@arm.com,
-  rostedt@goodmis.org,  mgorman@suse.de,  vschneid@redhat.com,  Ben Segall
- <bsegall@google.com>,  Li Zhijian <lizhijian@fujitsu.com>
-Subject: Re: [PATCH v1] mm: memory-tiering: Fix PGPROMOTE_CANDIDATE counting
-In-Reply-To: <20250729035101.1601407-1-ruansy.fnst@fujitsu.com> (Ruan
-	Shiyang's message of "Tue, 29 Jul 2025 11:51:01 +0800")
-References: <20250729035101.1601407-1-ruansy.fnst@fujitsu.com>
-Date: Wed, 30 Jul 2025 09:28:45 +0800
-Message-ID: <874iuuzctu.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	imf12.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of billsjc@sjtu.edu.cn designates 202.120.2.233 as permitted sender) smtp.mailfrom=billsjc@sjtu.edu.cn
+Received: from mta91.sjtu.edu.cn (unknown [10.118.0.91])
+	by smtp233.sjtu.edu.cn (Postfix) with ESMTPS id 0405011BD613A;
+	Wed, 30 Jul 2025 09:33:06 +0800 (CST)
+Received: from mstore139.sjtu.edu.cn (unknown [10.118.0.139])
+	by mta91.sjtu.edu.cn (Postfix) with ESMTP id D706E37EFFF;
+	Wed, 30 Jul 2025 09:33:05 +0800 (CST)
+Date: Wed, 30 Jul 2025 09:33:05 +0800 (CST)
+From: =?gb2312?B?yre8zrPJ?= <billsjc@sjtu.edu.cn>
+To: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: linux-mm@kvack.org
+Message-ID: <347115630.2886123.1753839185240.JavaMail.zimbra@sjtu.edu.cn>
+In-Reply-To: <87cy9izcxj.fsf@DESKTOP-5N7EMDA>
+References: <212D6530-0FE8-4EA7-A599-48D71E8AFA23@sjtu.edu.cn> <87ldo7z5a7.fsf@DESKTOP-5N7EMDA> <93574E04-0528-4282-B1C3-4A16D9768EA5@sjtu.edu.cn> <87cy9izcxj.fsf@DESKTOP-5N7EMDA>
+Subject: Re: [Question] About the PCP free_high heuristic
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
-X-Rspamd-Queue-Id: 7732740013
-X-Stat-Signature: qu1t5bufg4545fqtzgwm1q4bj3e654eu
+Content-Type: text/plain; charset=GB2312
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [202.120.40.84]
+X-Mailer: Zimbra 10.0.14_GA_4767 (ZimbraWebClient - SAF16.4 (Mac)/10.0.15_GA_4781)
+Thread-Topic: About the PCP free_high heuristic
+Thread-Index: bp6vOpbllXief0WSEV170JcAaY8XYg==
+X-Rspamd-Queue-Id: E00AA40006
+X-Stat-Signature: rqj818zr6dwbh6e4d1bgnqazdhnkdj8f
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1753838932-283114
-X-HE-Meta: U2FsdGVkX1/AuYENFPhE5o7/MwQhU/svtStPCD2kL5B/deDHXxgiTDNOYAJ+76f7T2Ldu35VQqz4P6QmYf5StrONH7HELWUWplk55YeOTqI/5Pyrbwjh72dXgwwQXtxi6hlNJPYGBi477zSHtwxuJteZvFATQ+d0paL3xAw9bKm2iEfD0tq+3gRIvhWDK6CaqF6okFHljBrnhZYETHu1RdwZx8T7bluoXvzmTpNUwFFGIjXGeEkvol9HyNHhxlIfdO0Obtu3NvPiEdftvE2bPAPI2lLGs7Sh4y7MBeOIkbyuRhVIRuZN18QXfh3Py48ShTl5OIgewnrO5SXVovbtn4Hwpq4lTGmvSgXN+JfFknR4yqFLPlhzO3YFZRR3hxAQHuasDjJpMpb5FNl6Vw6vczSsy6JCYpbiuO3gZToSdz9IwcoOxGcF21DQq1Vug2VPdYWM/DuplEI7XUQLVzyHKjMe+afngl/rmdKfHyhH8SMil1RGB3Nd6zCZfHA0gSCnMpPSEXGcw6esY1zoZBn3l03y42MycmwiwJUEzmoOrDiNAmKC725oEf0EeSOSLwVcRHpUcvnblAvJmLb3ds5SQPMfHoq0kUH7cDebdvO+Jpl/pzV6mK3GAJrmy2AD+18owGrnpwRYGf5SawVWaIFJv4tQfCWiJTsZD1oF2CnrKpN0sl9uWrp+QqC1vs4Wbsxl+G7ECLsSDsnlFVItWVU9csmujqojAiDrHw0TfmVrXBw7XemgXf1W5spVYoC2J1V8bAvEEoO2YcfqrAJNsMlct6+yezHyK7ue8+ayIzM/xJtPiD/DLWWsdGXaE+dlhiqLCSp8IbiSqxGxFDf0+9Mle9TwP83i8j0DqRNONHR73vUyyzEn18QDWdC+bBmGk6Lw8xTFe1nzACQWvDj4YQBoE89NCoz/JkqBcx4RRDtLzh823vUbzIUxKBQRG4OwkEBZmPVy7Xn2GoHqMhc1b/2
- FaDdksqL
- V5rUo6cW32N7xdFVenu0OUw4nweiyatwyqtZXQ2ddomsEBnE2ns33/ravF3w0KJio15hqf4swFKskMjgYN7Ptby4KR24ZgJnFwjPOmnQkAaoOWb+KsGyB3B0SkIIuJ6qRjSOU/uV8PTfFF0qWf3mCeD2lrgfzpec11IntMYeJ5nBdovNK6gNnnfKeTQ45BC+WvSjeTxvlh3wMssaK2DgkEBRvmLG0r+vgnh3Ug/1/RykUYlh9zLA7VW+OHtTjuh5KtnJh28PlAkW3lxWk525SDPpHKqfD1weQFe4r0k9sMl7G4Blgw3/RFacCDABuQfz2s7VDmpgLMDrYmXHjxhp2FYqS6lDY7tqOH9RnNEWsu7Mq6mFhqt3Dvv8sst+j/V+rgGxie/OnpiUtP4bVtoI2bgY/GFOTilZ8acVtoYn4CuUy0afc4HqSGL34B1hg+zOd/pYmwGYy+JifFrLtA7HWtGC+hjCBivoxO8g+YoZoNA0N2rrd+go374cxo3yUOE7vvMVLzApsOtkUPpHBLveSMsv3yGFgnraImRZVbCynSFe1Zl3w7Sh3jAaIg/RBp7ZOdfQSws90WPKStzvpLr8LkMTG/K/vz7AB5DN0IRJV76iKjCjy8fkwQutvdQ==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-HE-Tag: 1753839190-994584
+X-HE-Meta: U2FsdGVkX1+Mum5iZTo9rc0YGuDtOMjCs9+yFDgxmgvvfnBpyg/8/BkW/BYlDLqvRbdSnqAwvCuoSI1EGjDDN4v6Z22Xl7kgeEtwEydD+rZGuFTlwFWQym9KpeLo0kQad7Scw1LjMMNiGyclwechubYD/MucJG778oktLM0JYmo++3feWlAb6dUiUNO3RLrmNlEylRffbxnhgnr14CcYiX3/SC1XgBiCMyS3+ZbAHqvotZ3qw9Wgk95NeQgBhjNsZc01iiLiCrU4wXV+WbbZ5y32GlomVqH/C5Fa3IOoJ4F5Q+nNgwMx7Q56jYdH/DZaCIoM0ZxfgY2xEzurbWplnPnzml3FST1S3mPXbnSjS80lGFfBuLln2ePLy6xhjANYkBe5svxgFDnPOOAA6W6smXWAQXFLczqWwMiv7HM/eyUgESivSS0WYo+dMtMciTcaTHZALA24HLqivuykFx7RFmRy8IhYqsiQNawiJhic0NZYNFEjankIH3GiDmM1N+iqKKnq9vYfZe73fr+SKD22FT13QjFznku6B/hoNzY5wzZUSw5fB+L47zx22pYv1u5tkP5EqKyhVE/O7SaxMFcRcklrHXG/AxP8r2KeF2T/oOGxg0TzTGKzhQi5g07/GsRZno+9+5MGXHiPDri3ppaih+lhCFYSc9o4+K+HnISphww6P0tMgdTBgd4JP5Imc9hVhQek+Y/6d4NZiRUdUDD721gcYgzR2jQduTROX62U338APzlYQ/O0sAAzY4o/3LZTGlk1oKcN1e6JILJ6VVpgRmVyS2WsnVDJ7h7Y7b/vR0ju8UinQW+k8ks3gCDlK9S81JiJl8vLAFFTAmfN/SpOii1pTq2SOIJFDa2rxeiRkUsVnXSvUozGAhd8ycsuNR9HPt9j9TipGAxuMJhs4jt+EE7O3XklxW6lfg10MEGD441YyJbRUtlTWYp2kDar/NzJf7P8DZ+ke3AG1aWeJqb
+ F5LO7V9W
+ RFCdXszOzmS6TuzWZmeA7lh6GWKBN9zm5icDqzkdStOQWexcbZ+59QlD6y2fVg/FILNTkwdxEbtK+rx6kX50a+WWrjnBCInDjPMlLs2tmi2Mls7WEtWDlax+zPXEE1jxU6Sy6f2umsOPEmlx/WOV2NTpbsOTDtR1FtG9XFE2kLhzbEZBqy6860TJZD1CFvjz+c/HUK67lB9l9i3rwNsLliox8WNKqGF+GMzX7YECei5I18Y67BU6YYYRm6tFYTdcruWq1FwYQTUFh1hHIGujeY4m3ZJ9f33PEey7yHM0xGpG4LdmespfpaluPO3tzxyCZnhOav/CQfLk0/9NOVJX271WjaPaRGXE42TV+FImnU3v1XdV1baEM+Kl1LA==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000126, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,61 +82,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Ruan Shiyang <ruansy.fnst@fujitsu.com> writes:
+Got it. It's commit f26b3fa. I have read it.
 
-> Goto-san reported confusing pgpromote statistics where the
-> pgpromote_success count significantly exceeded pgpromote_candidate.
->
-> On a system with three nodes (nodes 0-1: DRAM 4GB, node 2: NVDIMM 4GB):
->  # Enable demotion only
->  echo 1 > /sys/kernel/mm/numa/demotion_enabled
->  numactl -m 0-1 memhog -r200 3500M >/dev/null &
->  pid=$!
->  sleep 2
->  numactl memhog -r100 2500M >/dev/null &
->  sleep 10
->  kill -9 $pid # terminate the 1st memhog
->  # Enable promotion
->  echo 2 > /proc/sys/kernel/numa_balancing
->
-> After a few seconds, we observeed `pgpromote_candidate < pgpromote_success`
-> $ grep -e pgpromote /proc/vmstat
-> pgpromote_success 2579
-> pgpromote_candidate 0
->
-> In this scenario, after terminating the first memhog, the conditions for
-> pgdat_free_space_enough() are quickly met, and triggers promotion.
-> However, these migrated pages are only counted for in PGPROMOTE_SUCCESS,
-> not in PGPROMOTE_CANDIDATE.
->
-> To solve this confusing statistics, introduce this PGPROMOTE_CANDIDATE_NRL
-> to count the missed promotion pages.  And also, not counting these pages
-> into PGPROMOTE_CANDIDATE is to avoid changing the existing algorithm or
-> performance of the promotion rate limit.
->
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Juri Lelli <juri.lelli@redhat.com>
-> Cc: Vincent Guittot <vincent.guittot@linaro.org>
-> Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-> Cc: Steven Rostedt <rostedt@goodmis.org>
-> Cc: Ben Segall <bsegall@google.com>
-> Cc: Mel Gorman <mgorman@suse.de>
-> Cc: Valentin Schneider <vschneid@redhat.com>
-> Reported-by: Yasunori Gotou (Fujitsu) <y-goto@fujitsu.com>
-> Suggested-by: Huang Ying <ying.huang@linux.alibaba.com>
-> Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-> Signed-off-by: Ruan Shiyang <ruansy.fnst@fujitsu.com>
+Thanks a lot for your reply!
 
-LGTM, feel free to add my
+Best Regards,
+Jiacheng
 
-Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
+----- =D4=AD=CA=BC=D3=CA=BC=FE -----
+=B7=A2=BC=FE=C8=CB: "Huang, Ying" <ying.huang@linux.alibaba.com>
+=CA=D5=BC=FE=C8=CB: "Shi, Jiacheng" <billsjc@sjtu.edu.cn>
+=B3=AD=CB=CD: linux-mm@kvack.org
+=B7=A2=CB=CD=CA=B1=BC=E4: =D0=C7=C6=DA=C8=FD, 2025=C4=EA 7 =D4=C2 30=C8=D5 =
+=C9=CF=CE=E7 9:26:32
+=D6=F7=CC=E2: Re: [Question] About the PCP free_high heuristic
 
-in the future version.
+"Shi, Jiacheng" <billsjc@sjtu.edu.cn> writes:
 
-[snip]
+> Hi, Huang, Ying,
+>
+> You are right. Using high_min is better when the workload is located on a=
+ single CCX.
+>
+> By the way, I'm wondering why the free_high heuristic is only applied to
+> high-order pages. Would there also be cache misses if cache-hot order-0 p=
+ages
+> are not reused?
+
+The heuristic is mainly for network workload, which uses high-order
+pages.  You can use `git blame` to try to find the commit which
+introduce the heuristic.  But it's not a trivial work.
 
 ---
 Best Regards,
 Huang, Ying
+
+>  Huang, Ying <ying.huang@linux.alibaba.com> writes=A3=BA
+>
+>  Hi, Jiacheng,
+>
+>  =CA=B7=BC=CE=B3=C9 <billsjc@sjtu.edu.cn> writes:
+>
+>  Hi,
+>
+>  I ran the bw_unix benchmark in lmbench on my test machine (EPYC-7T83, 32=
+ vCPUs,
+>  64 GB of memory):
+>     bin/x86_64-linux-gnu/bw_unix -P 16
+>  The bandwidth result was 30511.63 MB/s when percpu_pagelist_high_fractio=
+n was
+>  set to 8; however, the result drops to 21595.98 MB/s when
+>  percpu_pagelist_high_fraction is set to 0 (enabling PCP high auto-tuning=
+).
+>
+>  I first inspected the auto-tuning code, but the root cause of the perfor=
+mance
+>  degradation lies in the triggering threshold of the free_high heuristic:
+>     pcp->free_count >=3D (batch + pcp->high_min / 2)
+>
+>  free_high heuristic is used to increase last level (shared) cache
+>  hotness via letting one core allocate cache-hot pages just freed by
+>  another core.  The target use case is network workload.
+>
+>  It appears that free_high heuristic hurts your performance.  One
+>  possible reason may be that the last level cache isn't always shared on
+>  AMD CPU.  Can you try to bind workload to one CCX and verify whether
+>  this is the root cause?
+>
+>  I noticed that commit c544a95 increases this threshold, but pcp->high_mi=
+n is
+>  relatively small when auto-tuning is enabled, and the PCP draining leads=
+ to
+>  the performance degradation.
+>
+>  The problem was fixed when increasing the threshold to (batch + pcp->hig=
+h / 2).
+>  Is it intended to use high_min instead of high in the threshold? Would i=
+t be
+>  more adaptive to introduce some new tunables for the free_high threshold=
+?
+>
+>  In general, new knob isn't welcomed in community, because it's hard for
+>  users to tune so many knobs already.
+>
+>  ---
+>  Best Regards,
+>  Huang, Ying
 
