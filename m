@@ -2,123 +2,183 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5840CC87FC9
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 22:54:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B1B7C87FC9
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 23:18:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBFA16B007B; Wed, 30 Jul 2025 18:54:30 -0400 (EDT)
+	id 53CC76B007B; Wed, 30 Jul 2025 19:18:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C70F16B0088; Wed, 30 Jul 2025 18:54:30 -0400 (EDT)
+	id 4D5FC6B0088; Wed, 30 Jul 2025 19:18:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5F696B008A; Wed, 30 Jul 2025 18:54:30 -0400 (EDT)
+	id 3C4BD6B008A; Wed, 30 Jul 2025 19:18:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A0E0A6B007B
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 18:54:30 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D8F1D140538
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 22:54:29 +0000 (UTC)
-X-FDA: 83722436658.12.E6F5DA6
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	by imf12.hostedemail.com (Postfix) with ESMTP id ED1744000A
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 22:54:27 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=bCBrm0vk;
-	spf=pass (imf12.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753916068;
+	by kanga.kvack.org (Postfix) with ESMTP id 2CF6A6B007B
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 19:18:48 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id ACEDA140593
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 23:18:47 +0000 (UTC)
+X-FDA: 83722497894.28.DCA7A5F
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2083.outbound.protection.outlook.com [40.107.237.83])
+	by imf17.hostedemail.com (Postfix) with ESMTP id DC45C40003
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 23:18:44 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=gjcp16CT;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf17.hostedemail.com: domain of apopple@nvidia.com designates 40.107.237.83 as permitted sender) smtp.mailfrom=apopple@nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753917525; a=rsa-sha256;
+	cv=pass;
+	b=09Y6euI3Wlpgajsnb2UQ15nPb/3H36qC0iXMQTgGna6EAg+Yhqb4vkPe5RmLyjVp/F6/aT
+	u2FVj+1xan3QavSpWcpTtBvwetM6mjywjT3iGGGe2uMKLsiSPSpqTTh7Di9pk984H+Idhj
+	fsFomkRFjowHXJhB37OjCZF4u2zlyuI=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=gjcp16CT;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf17.hostedemail.com: domain of apopple@nvidia.com designates 40.107.237.83 as permitted sender) smtp.mailfrom=apopple@nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753917525;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t7x2O+/3mlZ+l6d/dEpYOvhMfX3zDYsyk28CoMvKB+w=;
-	b=v/poR7uXOOv3my5zkQZb6YFS6P/lO3Qx802E/x1qGpDggjj9fvdWDTHTIb3zIWjuejaoqE
-	LNnzuSWJKdTB5rohhTx4g5X2pV4OWt+AfmuaULM/BkUj04W+5KPRnmDbo/SXYSBqTpLnQF
-	uN+wl4Wob5cTgSNQktkj1L3hH5pTzdA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753916068; a=rsa-sha256;
-	cv=none;
-	b=3z/CSbnhFgzLZBx5uY6Mzaj1ih+D9M1YPBnB5jL6RvWdmgBfK3hoVnmUeqMRdN6toms0OA
-	FoNZzZdY8610a4ngqyKQxYytvMTjES7b2H198rjxxWwj5I2PW7yRxPXeelTYAnMRdHb/Bk
-	RuHQ0ksOZ9/GP7KgE2ahmRUa1N9hdTo=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=bCBrm0vk;
-	spf=pass (imf12.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4abac5b1f28so2862901cf.0
-        for <linux-mm@kvack.org>; Wed, 30 Jul 2025 15:54:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753916067; x=1754520867; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t7x2O+/3mlZ+l6d/dEpYOvhMfX3zDYsyk28CoMvKB+w=;
-        b=bCBrm0vkWMLFm/KctWl0tYFWj+ACrcmnghpnvo2TkOOQAMkn24mFPAeIvLPDSGHmWi
-         avjgdcCJjQWxiRleOKKqfosijWtJzEzFao6iuNxSp8mxsOpKYoeTP4B/tCct6DHLxRPr
-         mfQwASfobruIeIE0H5wFkSJMLGL7bbBbVHFiASObflt6enzB7pNtAOsCJ5SfnjVM0qzU
-         DsAt5+Y0lWc1bZWQYy0qW+AGeElWSgfI5PbNHmqb7DVC/5y3ep7THOPd0stt/fLr1jvf
-         kbYvP5NZoKy4ok3mkBC8h8Ff8ASLVcTACkrKbVLVgeauVBV5DU4Ln82qPeVR6YbIDGtM
-         VraA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753916067; x=1754520867;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=t7x2O+/3mlZ+l6d/dEpYOvhMfX3zDYsyk28CoMvKB+w=;
-        b=GIJFHtyf09suzoPKMifqowfNx2oSzMKWoUJdXDy0WqT8Q23DL6h2oSJOPJji51hpBa
-         MBnk3wbtdC11klnSUBDP2+PopKlBtZ07pa2Ey9ChtuYTASi/WKtb9ONFid3eMwHeKP6n
-         ae/cr3Q6mw5O1ZTf4oOxfdYiz6Nfc/97JbjcArKucWjlWA2QDwCcxMuQFVGdxnIcFsQP
-         nkiq7E1Hn+1MxjwtETdnZ3F8CHhPtU0XtRhzc8QOhqvL459Wt6mIWJEJ0jjdGTDal5Dl
-         GpgsDTkCiEvQL8cmL70RxyEtcleGnzhD2Ewq27udBe95jVXix6zsKENyW5s+0DIiNPPf
-         pdBw==
-X-Forwarded-Encrypted: i=1; AJvYcCXXHjUbXtFjl3t3eEo5zYeLhnXr66/vPHQeujJ3UGNhppm4bLQ7HEiZYE/IE67Tum8Js4FVy5pCkw==@kvack.org
-X-Gm-Message-State: AOJu0YwgwOO1Evk2A4P0LUSMsSlGCTiRQnniRbk4ZKd2djyzxj5ihhH4
-	tUbzW0F+2I7Y7JZKg3Ixfvo/sipHbjgnGSy6d6x0v8lAUHjzvdTCMq20CVMXDKYOLRudwTmpaFB
-	+nVeszVxm6e6DCpkhlmUEsJrA/mTrpu2pIfY1nAQ=
-X-Gm-Gg: ASbGnctl0mPkZE2YWH9RRgvQc1NAh4IN2vbn7rPF5Bsd2bhryQ1LkylRGc8+WbEzjGC
-	rW7oMvAc96oYUhe6Kx/opF1LfqeZiutpvOQOM2MNERkq0Q9ooYrsAgJKSJZlK0RnSn1qvhxbfu9
-	AyfvVFBnDThTvAfgOjLXUS72dioZmNb5uHueyiNf6pneocUZ81c+aJ0ItZk2ZkVAAmX2+b/vIKg
-	ISLcbG26lIUtZwG+g==
-X-Google-Smtp-Source: AGHT+IE3gTZ85BCBwLQ0fCe6kQ6ib21Oo5WSfpehSS1BBczqmefHEgbEcmysVIEVfQKV/+OP8jG24Ai+6x/al/9/eqk=
-X-Received: by 2002:ac8:580d:0:b0:4ab:667e:93f1 with SMTP id
- d75a77b69052e-4aedbc4b8aamr92091181cf.48.1753916066703; Wed, 30 Jul 2025
- 15:54:26 -0700 (PDT)
+	bh=ysgi9L6PUEGRPZbF+YJu6LnBcxVkvcRoWD30J+2+jmI=;
+	b=jMX8PSqrj6G3GOg1a6wiqM1Cwg1d3TrHwfd/IRvTI5BzAwVzxUJIAsiZsCaqo67AoYS+95
+	xoa++grYvWmR4g2HxeZ2cTtfArywf/5JuHsi/Rp/llKYMYfC5XL3/mgaE49gzcEBvIrSws
+	4BVS/jdqKp10zHBpOJDIdYMxrDLcR2E=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gMxDW4hL84Kbch3J5vHMPU2A6DKFp+td3zrxWGDsf4yEDc2HgnZJPjmVXKCO6Sb9Slu6dBDN8i5oChBt7tw03MmsNs/mf+errO41KkuYsUu4pgvBTanufnboZXybLCQ1CxRFYx+z2TNiB7tl932KAYH5AyHOy5T4qEQ/PDvekwXV2DXIQlsg5RPgBN6c7KRLYOojrpQQ+PBQSKql192v1I+/1XyqTMcflwlmnJJP4SwuEZIoqSILjXLNFfBaSdjcjO/YbMNpb4mDwx3xIYYVcEEhW0oc35hIhIpkHeUad/Wpk/jsi38B6007CIZ0wbD7Ny+77GGPq+HhWsSjsRfxSg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ysgi9L6PUEGRPZbF+YJu6LnBcxVkvcRoWD30J+2+jmI=;
+ b=U/LmwnqIvSxH9PClFHflPvxXKi5iMOtFgjUfXBiMw7T/HJ1oUi8EIoECnXYlKLvQ7LO6skhy9LQSZ5gsVcmab584hcObdAvXHDATey/QSgNZ9cvbEG5bl4RK1O76UBPAodP4JqYWpPmjXBAl6BrHQ/RhHLVmdHdhGYPcs58T39/lfMz79IxhCZQ78wn3PO0rcy8tumqZj9Y3KhdyqyRBm3+J4TSxSTkllxY+64h3lIZ5iZLpPe1HXzNtsxJwU5sSwQQlLwfnDdalk6UeiIgqr9VbicJ2L+bfYJKQE4oin2ao1RFeGtqsG7p45YtmxDYK7ZoXbjUf8HezFLagwdYHjA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ysgi9L6PUEGRPZbF+YJu6LnBcxVkvcRoWD30J+2+jmI=;
+ b=gjcp16CTNESeatHDdOJ8MaThYBIAAPmUScluhcLmjIT5Ig0M7DolaUlW9zhns+V6SbPxU/S8zUmOqK0IdFtdEEaiBzt0k4guxC9f7HjD2qSm8jExJMLJXcgCgLFbNnK2FA5oRRxeiFyDR3gmlSjlQ3rEEHo5SLlJQmZnVxgNRB4zqA85ul0xLGtyx8WUyR4P52Fe8Zn+IK8TLud6NT+EX4WeJS7ShYAUMUDpBMp19FKcTJtBYOJxJ4AvxGFDHnn0Duhu+1huE7xcqIbCezUjKCB0VRBj1sB+koJnFAFOZG2/DMzBkmSzBGeXdksoVwVVNErONAwdV1Y4CL1Gcr0I+Q==
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ DS5PPFFF21E27DC.namprd12.prod.outlook.com (2603:10b6:f:fc00::66b) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.29; Wed, 30 Jul
+ 2025 23:18:42 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe%3]) with mapi id 15.20.8989.011; Wed, 30 Jul 2025
+ 23:18:41 +0000
+Date: Thu, 31 Jul 2025 09:18:36 +1000
+From: Alistair Popple <apopple@nvidia.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: Balbir Singh <balbirs@nvidia.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Karol Herbst <kherbst@redhat.com>, Lyude Paul <lyude@redhat.com>, 
+	Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, =?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>, 
+	Shuah Khan <shuah@kernel.org>, Barry Song <baohua@kernel.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Matthew Wilcox <willy@infradead.org>, Peter Xu <peterx@redhat.com>, Zi Yan <ziy@nvidia.com>, 
+	Kefeng Wang <wangkefeng.wang@huawei.com>, Jane Chu <jane.chu@oracle.com>, 
+	Donet Tom <donettom@linux.ibm.com>, Ralph Campbell <rcampbell@nvidia.com>, 
+	Mika =?utf-8?B?UGVudHRpbMOk?= <mpenttil@redhat.com>, Matthew Brost <matthew.brost@intel.com>, 
+	Francois Dugast <francois.dugast@intel.com>
+Subject: Re: [v2 00/11] THP support for zone device page migration
+Message-ID: <xuogc6tjrstage6ezhk4kumqqjr6okogtd6nxdmanyqmhc44r6@eggx4qujdsav>
+References: <20250730092139.3890844-1-balbirs@nvidia.com>
+ <e0153fb2-af59-4bcf-a07c-d650fa56d55e@redhat.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e0153fb2-af59-4bcf-a07c-d650fa56d55e@redhat.com>
+X-ClientProxiedBy: MEWPR01CA0204.ausprd01.prod.outlook.com
+ (2603:10c6:220:1ee::15) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
 MIME-Version: 1.0
-References: <20250723212020.GY2672070@frogsfrogsfrogs> <CAJnrk1bFWRTGnpNhW_9MwSYZw3qPnPXZBeiwtPSrMhCvb9C3qg@mail.gmail.com>
- <CAJnrk1byTVJtuOyAyZSVYrusjhA-bW6pxBOQQopgHHbD3cDUHw@mail.gmail.com>
- <CAJnrk1ZYR=hM5k90H57tOv=fe6F-r8dO+f3wNuCT_w3j8YNYNQ@mail.gmail.com>
- <20250728171425.GR2672029@frogsfrogsfrogs> <CAJnrk1bBesBijYRD1Wf_01OSBykJ0VzwFZKZFev0wPn9wYc98Q@mail.gmail.com>
- <20250728191117.GE2672070@frogsfrogsfrogs> <CAJnrk1bTgTcb4aUWqczXEH+7+SWQAdppxYbSAPNCVY6xXb-=hQ@mail.gmail.com>
- <20250729202151.GD2672049@frogsfrogsfrogs> <CAJnrk1ZXN40WEwKXn7ycy2topGTvxFh_UfsM_vwhM+0CtTsJKQ@mail.gmail.com>
- <20250729234018.GW2672029@frogsfrogsfrogs>
-In-Reply-To: <20250729234018.GW2672029@frogsfrogsfrogs>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Wed, 30 Jul 2025 15:54:15 -0700
-X-Gm-Features: Ac12FXzGxWFWHF6oVrKTFLWe0DFHviK4ZwZ4SMKMH5xLKbAvpddy60UsHkq8GcU
-Message-ID: <CAJnrk1b691Z3=_V0dU2Vb2qbiQd+0JUMj1ABDMip6vzzGZAf3w@mail.gmail.com>
-Subject: Re: next-20250721 arm64 16K and 64K page size WARNING fs fuse file.c
- at fuse_iomap_writeback_range
-To: "Darrick J. Wong" <djwong@kernel.org>
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, linux-fsdevel@vger.kernel.org, 
-	linux-mm <linux-mm@kvack.org>, linux-xfs@vger.kernel.org, 
-	open list <linux-kernel@vger.kernel.org>, lkft-triage@lists.linaro.org, 
-	Linux Regressions <regressions@lists.linux.dev>, Miklos Szeredi <miklos@szeredi.hu>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, Christian Brauner <brauner@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <liam.howlett@oracle.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Dan Carpenter <dan.carpenter@linaro.org>, 
-	Anders Roxell <anders.roxell@linaro.org>, Ben Copeland <benjamin.copeland@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: ED1744000A
-X-Stat-Signature: jdbcp6juw4pwd1mi7hc6qsgfn5gh9apn
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|DS5PPFFF21E27DC:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6fe789f8-dd38-4019-4b41-08ddcfbf6c2c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?/PndvqDGUhmapuUST3w/m+jCG3D0m8CxqCgFJMOvPiVQSm65ZdB1FOmhiyOA?=
+ =?us-ascii?Q?/sCnFwTfhyQ9jt6emBYnmCvfc5JEcKyBxgl9Rbql5ttLFx+PMZUJYhJjsb28?=
+ =?us-ascii?Q?qLQyAGyK+kX569TTw2i5maVu/cc4MF3nDzTOF3vWjb9QI3Q3FJzZ7ZtyLfVE?=
+ =?us-ascii?Q?DfGkIKx8rnVfTZaUy4KLBATcvG1WZVbfg0eIEGe4T7G5xEwyFoalHatUBZxb?=
+ =?us-ascii?Q?2JbuObOd/Rw4olwdr6QyGpo72KsFKKTUUGzSiY/5F9Vb7kGcFU1wcaPgpzbG?=
+ =?us-ascii?Q?DjadBa36WY8uw/FH7ixdTSKEHfOLP9172aK7ri/EuIQbkY8+EtHNUkj+mnBb?=
+ =?us-ascii?Q?VSLWpx+WnQ87TazwNuEjNp/0sLEw8IdYKYHC9cgqOjpgzQEN2zHfYBMOhJ6e?=
+ =?us-ascii?Q?94hNe/zq3PWKBB4CD/f+maBvlDghqvOCoTDOf2BxOEgi5xScF2TN5FT0W2pF?=
+ =?us-ascii?Q?UXlOsE0blzZxmJDWir6xNdJZdX87D0p06HrFtDJB5COv+F2kJKwbGzfHhnvc?=
+ =?us-ascii?Q?Cpfb6VW07hh2zNSpdDbCaE92pu0DnN2wUZeP7M0zKKjUVw1qYwbO99fQXHBJ?=
+ =?us-ascii?Q?kCZa0h9YaJjETBrkhNDmm4xHIZZN1TzP5vfyHkwKp+HMryQdDkVIxG+goyCc?=
+ =?us-ascii?Q?xmRDN4j2l5g4tVdKNTAb4CUuvBxsi0NWIZAkcht87kGWRq+Qi3PWS/Gf3i5m?=
+ =?us-ascii?Q?SzTAl0585aN6DGtSIqoYrm/S/YS2HsF0kcQAyxL5KyZJQkR0oVG0bTOlpgw7?=
+ =?us-ascii?Q?gV9pu0aTyVS7CAHwX0J6pag62CEnnL5J7Jo14l1N+rJ9pgtTi64Dik4gH7OG?=
+ =?us-ascii?Q?JhAIV9cDpcb1P0tlCledkGdqFJLbSCq0fGnnmpN0bcE/9iOwrfsa24VXkfTs?=
+ =?us-ascii?Q?H2dYnRVIVqUpc68bJkWqM0yRCI0CTmj1yPkkDgb4KyIxeFP8bfbWoFCZVLvk?=
+ =?us-ascii?Q?PIgFBWy/zZ4WqXmQQgNRiv1iQVZJl0Ux26KCqb/DS5TN8JEQffBtDiB3mZud?=
+ =?us-ascii?Q?NlS9LU1QtmYPQwrrZVIQIWrhAGmfydYtrwJnlrQ3LIOyD3pNI2zoBeU+xohp?=
+ =?us-ascii?Q?sRsUezPdxPHoqDao5UCpanB87kqFZLHptDvJGeFTz7mxVj2tTY7eX8x2pJRJ?=
+ =?us-ascii?Q?s7U8FVvtJ02I/B7fjQOz9oEbUEvuGMiJdnOEEogYNh2Q1E9z9p59pcaXvj0u?=
+ =?us-ascii?Q?fRTaHw91uhSnCwtqJ9w701IEZCi3o5xbSqVrw0f71eNOTgjXfMNWEtlrwZwy?=
+ =?us-ascii?Q?K2mHeUknad3bF/9yPxiK+pTkeaSJqIBorgMwZAPtamgSigdlH5cO+KDNdDHo?=
+ =?us-ascii?Q?FbfIo8qzOF79Kko62yMJU4OYfaFMUX6UQu191EexYtxdR6+IsdL8RkJVAhTl?=
+ =?us-ascii?Q?xc8m7iqe4zG9i39+WYU34+2ZDMCq5A9ODw9KGScJ6oieXbLyKO1BAJPsgbsC?=
+ =?us-ascii?Q?6KZRUX0+gWE=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?jkgTrCbtbpEu5e58iEEpIbRzLw6WmJetqpo0OfXJCpLXKAyddZpDMxgfQTpE?=
+ =?us-ascii?Q?hSSYrsRnv7uN9Bmsd94NsEJKGrX+gB7cymmmNf875LHnRpmqFzHETfPL0uNu?=
+ =?us-ascii?Q?4chL5m9UQ+ObzPdHyfdzJZ7vzCbq6a8KrY0XxmUIHjkY9paItmFLhehEG+AW?=
+ =?us-ascii?Q?PflRWtjHKL/1khk4KkK7r5eH/6MtYQjH/f5uipEhBsKTa0Fm1/rikK7DK4wY?=
+ =?us-ascii?Q?cSnXU+pFzIcCSpSYdqwC9SLyEImc8qvuZnSHl4NzbV0S6l0ZCasaTsCC8xuw?=
+ =?us-ascii?Q?T7PeUnsVsF5Bn6H4yGyysPNOpf3JFOWvRiqRE6sYBYRPYvXaFe+iwLcpENPT?=
+ =?us-ascii?Q?J3mQ0kI1+PlXFLET7my5rp67VoTZj/jY4F6InEfvbUfU0qhL1bHp+VOJvN9n?=
+ =?us-ascii?Q?WvAC/RsbMHzmT3NERkdgF3fVu9PODEQKTJSVPjqvcWh6fdQaPLzV6x9wEyA+?=
+ =?us-ascii?Q?V2aJ2Du4Rvb2cTokHeMrEUWtRiKf9SQmgLvGWYw9MlsTIOMZu/cqXfnPiuyC?=
+ =?us-ascii?Q?9zgDIjAvIRp7dQtRMYoIofroTOy70ioYD+WY+FOuGWKVIQJEXT+CuRA9U2z5?=
+ =?us-ascii?Q?98cxEMiU5JUkGdaaIihRZLJzhN6HKth9PwQDrypibDYCE+jitv5wwfXglrvp?=
+ =?us-ascii?Q?sYSXC+WKFj5DbUK6q9+BgLdqNa3LvpcjxKP1MEzrRJbSUlQDQQCqtqL06ZLt?=
+ =?us-ascii?Q?nK3JMLKhjLSzZCro9t11AEc785zIFo3Qp299nFjpwEY24FO2LEBJVEB/OfBs?=
+ =?us-ascii?Q?eEP6OdIEurzlK6jo3EEWqWYa/hHUVEuGr1UxMLlaNx237osMpfmwaAuwaYF1?=
+ =?us-ascii?Q?cffMncb7S8/Di1Y4v4ROcMWDn/ycYvhDAT09VcqrbX3r8Cd2JwWJLRtYJ692?=
+ =?us-ascii?Q?ZEwSOFOrLCJEQePW5rWOfpIqWvC4Si2FBDy7wJa4AAg9yc0wTdRR/FY/KI1q?=
+ =?us-ascii?Q?lOUAhE8f4ZUSJF7bLvKOBD2nd0h0mk7E9mXCt7k2a0LQcmX76CLESK96feWz?=
+ =?us-ascii?Q?bFoQFqeqYZe9YfIc9/Nxi5hcuVcUlr40Bybt9m0INvn4ZrCqFF5Gl/lNzgaF?=
+ =?us-ascii?Q?OPC9QZ89HN0g8xcoKBriw6R7H4pyYyV0Zm3pB135cRfKGYonaOpUPK02dY18?=
+ =?us-ascii?Q?MVbyPE1HMt52v6rBCw8tA3kPPWQjmalfF2HEHcn56MV328U3gRZvmcbrm2BA?=
+ =?us-ascii?Q?+FJ9WFydl9+6TrpbwAvmUsOcpvX8q1FTYlqf7IfnNw32RccSoJSSiXKlyMP3?=
+ =?us-ascii?Q?spr0MaCWs+V2nCsuhghh+pCKnJHHjxHI+Mx3/lgkwwMkQaxsdkayDXUmPdIZ?=
+ =?us-ascii?Q?IaZdXAMtM0iOa78l282kDrxBo8Rp39qifnCWKXdmqi6Io7XbJp/MWwksEPn6?=
+ =?us-ascii?Q?uYTnCpmkkAbQs8KqkAIc7vCgcDYBm2qWu1K2PmmLRj40/mtMftD1pmYl0Ahs?=
+ =?us-ascii?Q?F5kLJHWg3pPX0HYyxKAlgIng3R5gf6ro3S2pEKRyAlPBU26Kf49NU/ao62GA?=
+ =?us-ascii?Q?LwtYgqxCY5SX6XsSmo6uvzoV4uqhkwyyWm/Jf26XEFUZYSITLxIv1H61mov6?=
+ =?us-ascii?Q?wsjeb87Zmzw1D9RVlAFEgBkH4eX+KpQtQENrLBxm?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6fe789f8-dd38-4019-4b41-08ddcfbf6c2c
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2025 23:18:41.8630
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: obKp+zgb2eUoI4XUaGhn7FC+7VVbSqTLGMki9mZCDPC5SC0+50UFb4sWrv9DDEQsbrjaVc/WmOe4LHHTAJakmg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPFFF21E27DC
+X-Stat-Signature: 9rbfrxczyfan5tkaaot3m3nb3i59kx4n
 X-Rspam-User: 
-X-HE-Tag: 1753916067-328062
-X-HE-Meta: U2FsdGVkX1/yrGQRUzDc807hwCXsuPEbxSpCxTC13Js/tSe0Y8vdkFsqbcS7fERLlr/R4h2o6CpgbLyhUmYMbgTJyL0RtpIeHttqw9g9FomOyTY5UHiT3oQhwtAyKT7PNpxBEWajO9UXdeY4f+F93wAKnkJl5tXel+5Y7WUd67g9R6HXAbcFFE2vdEA+ZzSLM64iNKH542eoPAFYOy/BnPvaTS5nEq36BVS8xn7eRG+5xo7LJo4IWccxMZvleMaHJgcoI12rOY4CBdzwIcB1cegLjz4MJv8RtOKzqbm7TGZWSqqUt6Z1wtxm+INFv3vQfi1GgABL3BPquQdoSuOM47HFA+AVB18CpxAW/McvDyGm4707/Nrf9Ffn35/5Re7tYM1eTQ0H8MDvyYgW79HRoLLniCdv94LP9uom+fO3BKDShG8B/79QTaxqtxY+xiPYj8ixZxtEDCz+tltWLCrkE97HJ6WVDBkDTTL7y1lElqKPXVCLUHnExc+3k/csz3TI3ntOOUiDM+ZqHv2tpgnSH1qwc838vlC9XqP5gjP7Tzibpvxt4FnNhC7ecyUYCJ7fntw9/c5So4DiBImMy0dTnxApip20JP8liaV6SH8MW1jkESt3D7eQ0bKXWuDHHnGYpuvy60k9+6e2UZDwKihV3F+4ailtQzcSCTuBeCY4idftYYZ4TYYSrcL69+Ec/UQokttanc4a0eIEWZBTcCAOwnBFZY9APkRFav/XBKS2iA2yDHm5EDEAFNd2wYDlx3sC05LexpfUP9De5a7BX8tksG8r5N7/ztHfeSnnQHy2pjxGACYglmELy23m9EXp3DEpOGcQHkE1U5wh+hlfHvPTFYCJ+EfUhquqQAQ8HusXlkTZP9U+vD35LMWgx46/EE3tW740Akv/E2N+UO+bgowh4hkdM96qzf441PzrPR8B2eiw7OwFzQTev1GS3VXC6YRMVm4bDHATz5L25x9HDqH
- JW4o+MbD
- dRzSImXrRZ3ELZNr8iKdKoqafvc7ZvF6tAppbZvtMBCPv8YZPx6AIrJwZPkkVwNGe+8IoX38g8a8b+VQnjtkgXsqoxwpi84mB6Q4CEtQmLKVp2Oq6S2rliF2D6K+drCtN+EIN3yoz0+JhbKRF1Fke2D/JPFGVnR9SRWwNASZmVJjAN/juk91mWd3LVVscmiGi5KBrVMCz2D5W5DX3vpywWv5vy458HclHMciit1I0pK6iofqxgBVLEnbEOW78zAqUha/yYdziK9V0AnYugAqNR1Q/D02FkkktqCp2PXeE42XdkzP4BuLJ/1uSHAC/rZV4BipB52NS4me8TKmubSWxJvR9PmIcLGXnUgGEUrAtqy4MD81ZwH/4v26+PLxe8nlWSD7gLvjzUc+gbZozO2qPmEflY8sZ6Ja2DcMhxjOqWvcSPCZF2RgI7TDo339w/ERdjz0Pq6mGLcxC+AOkeqblbKt0RqA6azVdbClwF+PlFc/Eqb7xF9EDcXEKV3s9voZH++63rJsuqUN+AwwMfl9Vg1aYFeqMCKMXWOJR
+X-Rspamd-Queue-Id: DC45C40003
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1753917524-682034
+X-HE-Meta: U2FsdGVkX180pqbdKMgtSh2cLDN6i6UoI/jHpReQiq9EFDWgvoXVNHISGoFSD3AD53xu8d03VoDbJJmW7hoRUAc7ki2lCRivAUC0NG/W2sm7LiRS1TIrrdXa88+bmpNeIpP2PhMbQRsHBpFzOKTgvyYKk3nWqJjKQjgXzCk42BdfTKRz0jOCSmBEW45s8+svV6Rfh5VfcDtk2Ra4tngLhLvZTffQhIuQ1/+O9q8rA08FCP5BqlBaQS5OgW/9OpV58PzC3A4lsA6FmCiNHIzrqit3aLGPAmmoZtH5dVibC6FEE+G5L00gSWbPj4BLsYqiPkeT+uZaK4GPFwhHSPQaXeA5FJvgNqw1SvBIPn2ug5Q93m08Ltt63m3UZ9i6bki3cqBKY/btsAYlmuJV7D63+hR9i/vM0CAGu4VA93NH0QTbktlzP1PZ7c0rOmZqkNWB7e/47KkjpzIcQ7WFbxatof8N9gefw19lXrwmnahJ4IVsYwTw94+YX7Lpm+wUaoB0+OvCM/+zzWvgEKurJaaEJwt5tMklKVyuAa+3iwVDlXVcyGulRnv1qjjTklAsdLkBD3ZW7DQsmN1AUvNyKQtppiPhYkWM9DyESMxvSspRmK5wG1eOA4WSnHwC4RRwqvCquS5d1bRULBctLH6VT0HSQAAjRfnNFa5LstswO3W6JypyX1QCE5CdIjoRO+8hezqmqt8F6skzjgBo81u5+3jJQT5MGOBp6ndSTyuEeWB6U2NWWRZF56Ee+TpDUvgWrhFtkpGaLxDtmUL9ZHqI/XKaD1wckkWpT9ZN9I/FywdvJuoNvGhslji5DtHoPfm9nFEXD1XM7oW3+l9HaW3yDsoQ5Aldm3SVDFG7RQzs9RgzPx48QEqdBzbjK7bnBTn1SCADqr1LezPW7sJZB1wcjd2lF5IXOOfWU1esqTT3coNQRQuUQbGaZ6j3cerA+yTwA6ChdDtsx4d+5mA+li/RhFK
+ WBntOGuU
+ CEEK9kSPnKJmKr1T3OyQ2YWpERndQUuvTqRWdSef+7i0sJFAgJ2qEc9Ruf5dFG+qPXU7gQO8cu8//PpH4gIn0czYmz3XVeffs2Vh/qVJCrW8Iuv8eZ3VmebrsjaQaoPQuAKy5GUnIzkvIIPjRLUilD3FDL2uKA5q/5//XAwkSbTNCOSfQ1b8XVppswcKm6BQiTpEUBvvaLyZ396tsK4VBkHSBbZbZ1tECrpG2/V7OmVyVnIZdgqKiLvrcCwhhYv6Sw/okpE+5FCT+uuxn9UJ7/oxJGtoeBlEwBwycoa2yzyZWdMvjcVoEw2bgtWEu/f9O1G0I4kaJTO3pFXEoXk4zvRmSDSzCgb1he2mb+rrktdbcv3bxwy1/t6H8OOAWBzI2oayGKs+xRRzcCXI5A+3GA+oa2yhgqwiaLqiozcmjXfzobZGpV60wV71Z5fP/pLsRMrOqa+PL5YeLFnGcNJq6l0mH/B+G9wpagiPoptZLyNs3tXkGA7IEZZJmew==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,495 +187,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 29, 2025 at 4:40=E2=80=AFPM Darrick J. Wong <djwong@kernel.org>=
- wrote:
->
-> On Tue, Jul 29, 2025 at 04:23:02PM -0700, Joanne Koong wrote:
-> > On Tue, Jul 29, 2025 at 1:21=E2=80=AFPM Darrick J. Wong <djwong@kernel.=
-org> wrote:
-> > >
-> > > On Mon, Jul 28, 2025 at 02:28:31PM -0700, Joanne Koong wrote:
-> > > > On Mon, Jul 28, 2025 at 12:11=E2=80=AFPM Darrick J. Wong <djwong@ke=
-rnel.org> wrote:
-> > > > >
-> > > > > On Mon, Jul 28, 2025 at 10:44:01AM -0700, Joanne Koong wrote:
-> > > > > > On Mon, Jul 28, 2025 at 10:14=E2=80=AFAM Darrick J. Wong <djwon=
-g@kernel.org> wrote:
-> > > > > > >
-> > > > > > > On Fri, Jul 25, 2025 at 06:16:15PM -0700, Joanne Koong wrote:
-> > > > > > > > On Thu, Jul 24, 2025 at 12:14=E2=80=AFPM Joanne Koong <joan=
-nelkoong@gmail.com> wrote:
-> > > > > > > > >
-> > > > > > > > > On Wed, Jul 23, 2025 at 3:37=E2=80=AFPM Joanne Koong <joa=
-nnelkoong@gmail.com> wrote:
-> > > > > > > > > >
-> > > > > > > > > > On Wed, Jul 23, 2025 at 2:20=E2=80=AFPM Darrick J. Wong=
- <djwong@kernel.org> wrote:
-> > > > > > > > > > >
-> > > > > > > > > > > On Wed, Jul 23, 2025 at 11:42:42AM -0700, Joanne Koon=
-g wrote:
-> > > > > > > > > > > > On Wed, Jul 23, 2025 at 7:46=E2=80=AFAM Darrick J. =
-Wong <djwong@kernel.org> wrote:
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > [cc Joanne]
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > On Wed, Jul 23, 2025 at 05:14:28PM +0530, Naresh =
-Kamboju wrote:
-> > > > > > > > > > > > > > Test regression: next-20250721 arm64 16K and 64=
-K page size WARNING fs
-> > > > > > > > > > > > > > fuse file.c at fuse_iomap_writeback_range
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > Reported-by: Linux Kernel Functional Testing <l=
-kft@linaro.org>
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > ## Test log
-> > > > > > > > > > > > > > ------------[ cut here ]------------
-> > > > > > > > > > > > > > [  343.828105] WARNING: fs/fuse/file.c:2146 at
-> > > > > > > > > > > > > > fuse_iomap_writeback_range+0x478/0x558 [fuse], =
-CPU#0: msync04/4190
-> > > > > > > > > > > > >
-> > > > > > > > > > > > >         WARN_ON_ONCE(len & (PAGE_SIZE - 1));
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > /me speculates that this might be triggered by an=
- attempt to write back
-> > > > > > > > > > > > > some 4k fsblock within a 16/64k base page?
-> > > > > > > > > > > > >
-> > > > > > > > > > > >
-> > > > > > > > > > > > I think this can happen on 4k base pages as well ac=
-tually. On the
-> > > > > > > > > > > > iomap side, the length passed is always block-align=
-ed and in fuse, we
-> > > > > > > > > > > > set blkbits to be PAGE_SHIFT so theoretically block=
--aligned is always
-> > > > > > > > > > > > page-aligned, but I missed that if it's a "fuseblk"=
- filesystem, that
-> > > > > > > > > > > > isn't true and the blocksize is initialized to a de=
-fault size of 512
-> > > > > > > > > > > > or whatever block size is passed in when it's mount=
-ed.
-> > > > > > > > > > >
-> > > > > > > > > > > <nod> I think you're correct.
-> > > > > > > > > > >
-> > > > > > > > > > > > I'll send out a patch to remove this line. It doesn=
-'t make any
-> > > > > > > > > > > > difference for fuse_iomap_writeback_range() logic w=
-hether len is
-> > > > > > > > > > > > page-aligned or not; I had added it as a sanity-che=
-ck against sketchy
-> > > > > > > > > > > > ranges.
-> > > > > > > > > > > >
-> > > > > > > > > > > > Also, I just noticed that apparently the blocksize =
-can change
-> > > > > > > > > > > > dynamically for an inode in fuse through getattr re=
-plies from the
-> > > > > > > > > > > > server (see fuse_change_attributes_common()). This =
-is a problem since
-> > > > > > > > > > > > the iomap uses inode->i_blkbits for reading/writing=
- to the bitmap. I
-> > > > > > > > > > > > think we will have to cache the inode blkbits in th=
-e iomap_folio_state
-> > > > > > > > > > > > struct unfortunately :( I'll think about this some =
-more and send out a
-> > > > > > > > > > > > patch for this.
-> > > > > > > > > > >
-> > > > > > > > > > > From my understanding of the iomap code, it's possibl=
-e to do that if you
-> > > > > > > > > > > flush and unmap the entire pagecache (whilst holding =
-i_rwsem and
-> > > > > > > > > > > mmap_invalidate_lock) before you change i_blkbits.  N=
-obody *does* this
-> > > > > > > > > > > so I have no idea if it actually works, however.  Not=
-e that even I don't
-> > > > > > > > > > > implement the flush and unmap bit; I just scream loud=
-ly and do nothing:
-> > > > > > > > > >
-> > > > > > > > > > lol! i wish I could scream loudly and do nothing too fo=
-r my case.
-> > > > > > > > > >
-> > > > > > > > > > AFAICT, I think I just need to flush and unmap that fil=
-e and can leave
-> > > > > > > > > > the rest of the files/folios in the pagecache as is? Bu=
-t then if the
-> > > > > > > > > > file has active refcounts on it or has been pinned into=
- memory, can I
-> > > > > > > > > > still unmap and remove it from the page cache? I see th=
-e
-> > > > > > > > > > invalidate_inode_pages2() function but my understanding=
- is that the
-> > > > > > > > > > page still stays in the cache if it has has active refe=
-rences, and if
-> > > > > > > > > > the page gets mmaped and there's a page fault on it, it=
-'ll end up
-> > > > > > > > > > using the preexisting old page in the page cache.
-> > > > > > > > >
-> > > > > > > > > Never mind, I was mistaken about this. Johannes confirmed=
- that even if
-> > > > > > > > > there's active refcounts on the folio, it'll still get re=
-moved from
-> > > > > > > > > the page cache after unmapping and the page cache referen=
-ce will get
-> > > > > > > > > dropped.
-> > > > > > > > >
-> > > > > > > > > I think I can just do what you suggested and call
-> > > > > > > > > filemap_invalidate_inode() in fuse_change_attributes_comm=
-on() then if
-> > > > > > > > > the inode blksize gets changed. Thanks for the suggestion=
-!
-> > > > > > > > >
-> > > > > > > >
-> > > > > > > > Thinking about this some more, I don't think this works aft=
-er all
-> > > > > > > > because the writeback + page cache removal and inode blkbit=
-s update
-> > > > > > > > needs to be atomic, else after we write back and remove the=
- pages from
-> > > > > > > > the page cache, a write could be issued right before we upd=
-ate the
-> > > > > > > > inode blkbits. I don't think we can hold the inode lock the=
- whole time
-> > > > > > > > for it either since writeback could be intensive. (also btw=
-, I
-> > > > > > > > realized in hindsight that invalidate_inode_pages2_range() =
-would have
-> > > > > > > > been the better function to call instead of
-> > > > > > > > filemap_invalidate_inode()).
-> > > > > > > >
-> > > > > > > > > >
-> > > > > > > > > > I don't think I really need to have it removed from the=
- page cache so
-> > > > > > > > > > much as just have the ifs state for all the folios in t=
-he file freed
-> > > > > > > > > > (after flushing the file) so that it can start over wit=
-h a new ifs.
-> > > > > > > > > > Ideally we could just flush the file, then iterate thro=
-ugh all the
-> > > > > > > > > > folios in the mapping in order of ascending index, and =
-kfree their
-> > > > > > > > > > ->private, but I'm not seeing how we can prevent the ca=
-se of new
-> > > > > > > > > > writes / a new ifs getting allocated for folios at prev=
-ious indexes
-> > > > > > > > > > while we're trying to do the iteration/kfreeing.
-> > > > > > > > > >
-> > > > > > > >
-> > > > > > > > Going back to this idea, I think this can work. I realized =
-we don't
-> > > > > > > > need to flush the file, it's enough to free the ifs, then u=
-pdate the
-> > > > > > > > inode->i_blkbits, then reallocate the ifs (which will now u=
-se the
-> > > > > > > > updated blkbits size), and if we hold the inode lock throug=
-hout, that
-> > > > > > > > prevents any concurrent writes.
-> > > > > > > > Something like:
-> > > > > > > >      inode_lock(inode);
-> > > > > > > >      XA_STATE(xas, &mapping->i_pages, 0);
-> > > > > > > >      xa_lock_irq(&mapping->i_pages);
-> > > > > > > >      xas_for_each_marked(&xas, folio, ULONG_MAX, PAGECACHE_=
-TAG_DIRTY) {
-> > > > > > > >           folio_lock(folio);
-> > > > > > > >           if (folio_test_dirty(folio)) {
-> > > > > > > >                   folio_wait_writeback(folio);
-> > > > > > > >                   kfree(folio->private);
-> > > > > > > >           }
-> > > > >
-> > > > > Heh, I didn't even see this chunk, distracted as I am today. :/
-> > > > >
-> > > > > So this doesn't actually /initiate/ writeback, it just waits
-> > > > > (potentially for a long time) for someone else to come along and =
-do it.
-> > > > > That might not be what you want since the blocksize change will a=
-ppear
-> > > > > to stall while nothing else is going on in the system.
-> > > >
-> > > > I thought if the folio isn't under writeback then
-> > > > folio_wait_writeback() just returns immediately as a no-op.
-> > > > I don't think we need/want to initiate writeback, I think we only n=
-eed
-> > > > to ensure that if it is already under writeback, that writeback
-> > > > finishes while it uses the old i_blksize so nothing gets corrupted.=
- As
-> > > > I understand it (but maybe I'm misjudging this), holding the inode
-> > > > lock and then initiating writeback is too much given that writeback
-> > > > can take a long time (eg if the fuse server writes the data over so=
-me
-> > > > network).
-> > > >
-> > > > >
-> > > > > Also, unless you're going to put this in buffered-io.c, it's not
-> > > > > desirable for a piece of code to free something it didn't allocat=
-e.
-> > > > > IOWs, I don't think it's a good idea for *fuse* to go messing wit=
-h a
-> > > > > folio->private that iomap set.
-> > > >
-> > > > Okay, good point. I agree. I was hoping to have this not bleed into
-> > > > the iomap library but maybe there's no getting around that in a goo=
-d
-> > > > way.
-> > >
-> > > <shrug> Any other filesystem that has mutable file block size is goin=
-g
-> > > to need something to enact a change.
-> > >
-> > > > >
-> > > > > > > >           folio_unlock(folio);
-> > > > > > > >      }
-> > > > > > > >     inode->i_blkbits =3D new_blkbits_size;
-> > > > > > >
-> > > > > > > The trouble is, you also have to resize the iomap_folio_state=
- objects
-> > > > > > > attached to each folio if you change i_blkbits...
-> > > > > >
-> > > > > > I think the iomap_folio_state objects automatically get resized=
- here,
-> > > > > > no? We first kfree the folio->private which kfrees the entire i=
-fs,
-> > > > >
-> > > > > Err, right, it does free the ifs and recreate it later if necessa=
-ry.
-> > > > >
-> > > > > > then we change inode->i_blkbits to the new size, then when we c=
-all
-> > > > > > folio_mark_dirty(), it'll create the new ifs which creates a ne=
-w folio
-> > > > > > state object using the new/updated i_blkbits size
-> > > > > >
-> > > > > > >
-> > > > > > > >     xas_set(&xas, 0);
-> > > > > > > >     xas_for_each_marked(&xas, folio, ULONG_MAX, PAGECACHE_T=
-AG_DIRTY) {
-> > > > > > > >           folio_lock(folio);
-> > > > > > > >           if (folio_test_dirty(folio) && !folio_test_writeb=
-ack(folio))
-> > > > > > > >                  folio_mark_dirty(folio);
-> > > > > > >
-> > > > > > > ...because iomap_dirty_folio doesn't know how to reallocate t=
-he folio
-> > > > > > > state object in response to i_blkbits having changed.
-> > > > >
-> > > > > Also, what about clean folios that have an ifs?  You'd still need=
- to
-> > > > > handle the ifs's attached to those.
-> > > >
-> > > > Ah you're right, there could be clean folios there too that have an
-> > > > ifs. I think in the above logic, if we iterate through all
-> > > > mapping->i_pages (not just PAGECACHE_TAG_DIRTY marked ones) and mov=
-e
-> > > > the kfree to after the "if (folio_test_dirty(folio))" block, then i=
-t
-> > > > addresses that case. eg something like this:
-> > > >
-> > > >      inode_lock(inode);
-> > > >      XA_STATE(xas, &mapping->i_pages, 0);
-> > > >      xa_lock_irq(&mapping->i_pages);
-> > > >      xas_for_each(&xas, folio, ULONG_MAX) {
-> > > >           folio_lock(folio);
-> > > >           if (folio_test_dirty(folio))
-> > > >                   folio_wait_writeback(folio);
-> > > >           kfree(folio->private);
-> > > >           folio_unlock(folio);
-> > > >      }
-> > > >     inode->i_blkbits =3D new_blkbits;
-> > > >     xas_set(&xas, 0);
-> > > >     xas_for_each_marked(&xas, folio, ULONG_MAX, PAGECACHE_TAG_DIRTY=
-) {
-> > > >           folio_lock(folio);
-> > > >           if (folio_test_dirty(folio) && !folio_test_writeback(foli=
-o))
-> > > >                  folio_mark_dirty(folio);
-> > > >           folio_unlock(folio);
-> > > >     }
-> > > >     xa_unlock_irq(&mapping->i_pages);
-> > > >     inode_unlock(inode);
-> > > >
-> > > >
-> > > > >
-> > > > > So I guess if you wanted iomap to handle a blocksize change, you =
-could
-> > > > > do something like:
-> > > > >
-> > > > > iomap_change_file_blocksize(inode, new_blkbits) {
-> > > > >         inode_lock()
-> > > > >         filemap_invalidate_lock()
-> > > > >
-> > > > >         inode_dio_wait()
-> > > > >         filemap_write_and_wait()
-> > > > >         if (new_blkbits > mapping_min_folio_order()) {
-> > > > >                 truncate_pagecache()
-> > > > >                 inode->i_blkbits =3D new_blkbits;
-> > > > >         } else {
-> > > > >                 inode->i_blkbits =3D new_blkbits;
-> > > > >                 xas_for_each(...) {
-> > > > >                         <create new ifs>
-> > > > >                         <translate uptodate/dirty state to new if=
-s>
-> > > > >                         <swap ifs>
-> > > > >                         <free old ifs>
-> > > > >                 }
-> > > > >         }
-> > > > >
-> > > > >         filemap_invalidate_unlock()
-> > > > >         inode_unlock()
-> > > > > }
-> > > >
-> > > > Do you prefer this logic to the one above that walks through
-> > > > &mapping->i_pages? If so, then I'll go with this way.
-> > >
-> > > Yes.  iomap should not be tightly bound to the pagecache's xarray; I
-> > > don't even really like the xas_for_each that I suggested above.
-> >
-> > Okay, sounds good.
-> >
-> > >
-> > > > The part I'm unsure about is that this logic seems more disruptive =
-(eg
-> > > > initiating writeback while holding the inode lock and doing work fo=
-r
-> > > > unmapping/page cache removal) than the other approach, but I guess
-> > > > this is also rare enough that it doesn't matter much.
-> > >
-> > > I hope it's rare enough that doing truncate_pagecache unconditionally
-> > > won't be seen as a huge burden.
-> > >
-> > > iomap_change_file_blocksize(inode, new_blkbits) {
-> > >         inode_dio_wait()
-> > >         filemap_write_and_wait()
-> > >         truncate_pagecache()
-> > >
-> > >         inode->i_blkbits =3D new_blkbits;
-> > > }
-> > >
-> > > fuse_file_change_blocksize(inode, new_blkbits) {
-> > >         inode_lock()
-> > >         filemap_invalidate_lock()
-> > >
-> > >         iomap_change_file_blocksize(inode, new_blkbits);
-> > >
-> > >         filemap_invalidate_unlock()
-> > >         inode_unlock()
-> > > }
-> > >
-> > > Though my question remains -- is there a fuse filesystem that changes
-> > > the blocksize at runtime such that we can test this??
-> >
-> > There's not one currently but I was planning to hack up the libfuse
-> > passthrough_hp server to test the change.
->
-> Heh, ok.
->
-> I guess I could also hack up fuse2fs to change its own blocksize
-> randomly to see how many programs that pisses off. :)
->
-> (Not right now though, gotta prepare for fossy tomorrow...)
->
+On Wed, Jul 30, 2025 at 01:30:13PM +0200, David Hildenbrand wrote:
+> On 30.07.25 11:21, Balbir Singh wrote:
+> 
+> BTW, I keep getting confused by the topic.
+> 
+> Isn't this essentially
+> 
+> "mm: support device-private THP"
+> 
+> and the support for migration is just a necessary requirement to *enable*
+> device private?
 
-What I've been using as a helpful sanity-check so far has been running
-fstests generic/750 after adding this line to libfuse:
+Yes, that's a good point. Migration is one component but there is also fault
+handling, etc. so I think calling this "support device-private THP" makes sense.
 
-+++ b/lib/fuse_lowlevel.c
-@@ -547,6 +547,8 @@ int fuse_reply_attr(fuse_req_t req, const struct stat *=
-attr,
-        arg.attr_valid_nsec =3D calc_timeout_nsec(attr_timeout);
-        convert_stat(attr, &arg.attr);
-+       arg.attr.blksize =3D 4096;
-        return send_reply_ok(req, &arg, size);
+ - Alistair
 
-and modifying the kernel side logic in fuse_change_attributes_common()
-to unconditionally execute the page cache removal logic if
-attr->blksize !=3D 0.
-
-
-While running this however, I discovered another problem :/ we can't
-grab the inode lock here in the fuse path because the vfs layer that
-calls into this logic may already be holding the inode lock (eg the
-stack traces I was seeing included path_openat()  ->
-inode_permission() -> fuse_permission() which then fetches the
-blksize, and the vfs rename path), while there are other call paths
-that may not be holding the lock already.
-
-I don't really see a good solution here. The simplest one imo would be
-to cache "u8 blkbits" in the iomap_folio_state struct - are you okay
-with that or do you think there's a better solution here?
-
-
-Thanks,
-Joanne
-
-> --D
->
-> > >
-> > > --D
-> > >
-> > > > Thanks,
-> > > > Joanne
-> > > >
-> > > > >
-> > > > > --D
-> > > > >
-> > > > > > > --D
-> > > > > > >
-> > > > > > > >           folio_unlock(folio);
-> > > > > > > >     }
-> > > > > > > >     xa_unlock_irq(&mapping->i_pages);
-> > > > > > > >     inode_unlock(inode);
-> > > > > > > >
-> > > > > > > >
-> > > > > > > > I think this is the only approach that doesn't require chan=
-ges to iomap.
-> > > > > > > >
-> > > > > > > > I'm going to think about this some more next week and will =
-try to send
-> > > > > > > > out a patch for this then.
-> > > > > > > >
-> > > > > > > >
-> > > > > > > > Thanks,
-> > > > > > > > Joanne
-> > > > > > > >
-> > > > > > > > > > >
-> > > > > > > > > > > void fuse_iomap_set_i_blkbits(struct inode *inode, u8=
- new_blkbits)
-> > > > > > > > > > > {
-> > > > > > > > > > >         trace_fuse_iomap_set_i_blkbits(inode, new_blk=
-bits);
-> > > > > > > > > > >
-> > > > > > > > > > >         if (inode->i_blkbits =3D=3D new_blkbits)
-> > > > > > > > > > >                 return;
-> > > > > > > > > > >
-> > > > > > > > > > >         if (!S_ISREG(inode->i_mode))
-> > > > > > > > > > >                 goto set_it;
-> > > > > > > > > > >
-> > > > > > > > > > >         /*
-> > > > > > > > > > >          * iomap attaches per-block state to each fol=
-io, so we cannot allow
-> > > > > > > > > > >          * the file block size to change if there's a=
-nything in the page cache.
-> > > > > > > > > > >          * In theory, fuse servers should never be do=
-ing this.
-> > > > > > > > > > >          */
-> > > > > > > > > > >         if (inode->i_mapping->nrpages > 0) {
-> > > > > > > > > > >                 WARN_ON(inode->i_blkbits !=3D new_blk=
-bits &&
-> > > > > > > > > > >                         inode->i_mapping->nrpages > 0=
-);
-> > > > > > > > > > >                 return;
-> > > > > > > > > > >         }
-> > > > > > > > > > >
-> > > > > > > > > > > set_it:
-> > > > > > > > > > >         inode->i_blkbits =3D new_blkbits;
-> > > > > > > > > > > }
-> > > > > > > > > > >
-> > > > > > > > > > > https://git.kernel.org/pub/scm/linux/kernel/git/djwon=
-g/xfs-linux.git/commit/?h=3Dfuse-iomap-attrs&id=3Dda9b25d994c1140aae2f5ebf1=
-0e54d0872f5c884
-> > > > > > > > > > >
-> > > > > > > > > > > --D
-> > > > > > > > > > >
-> > > > > > > > > > > >
-> > > > > > > > > > > > Thanks,
-> > > > > > > > > > > > Joanne
-> > > > > > > > > > > >
-> > > > > > > >
-> > > >
-> >
+> -- 
+> Cheers,
+> 
+> David / dhildenb
+> 
 
