@@ -2,91 +2,191 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 72886C87FC9
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Jul 2025 23:41:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B61BC87FCB
+	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 00:21:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA1956B007B; Wed, 30 Jul 2025 19:41:08 -0400 (EDT)
+	id 3C6766B007B; Wed, 30 Jul 2025 20:21:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C53156B0088; Wed, 30 Jul 2025 19:41:08 -0400 (EDT)
+	id 377936B0088; Wed, 30 Jul 2025 20:21:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B69526B008A; Wed, 30 Jul 2025 19:41:08 -0400 (EDT)
+	id 23F1F6B008A; Wed, 30 Jul 2025 20:21:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A4D006B007B
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 19:41:08 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 50E5E1A0584
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 23:41:08 +0000 (UTC)
-X-FDA: 83722554216.25.9F721D0
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf01.hostedemail.com (Postfix) with ESMTP id B96EF40012
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 23:41:06 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fxpBHqFz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753918866;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 14B156B007B
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 20:21:47 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 57B681343D7
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 00:21:46 +0000 (UTC)
+X-FDA: 83722656612.28.792913C
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2088.outbound.protection.outlook.com [40.107.92.88])
+	by imf26.hostedemail.com (Postfix) with ESMTP id F0542140009
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 00:21:42 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=S2KpM2d8;
+	spf=pass (imf26.hostedemail.com: domain of jgg@nvidia.com designates 40.107.92.88 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753921303; a=rsa-sha256;
+	cv=pass;
+	b=bVHbOJ0mZSOAqFvg03VH2ARACxnjIkvfuUi4aYNWKaijBWr9jzaBQL3ZEeO+XSHosiExUr
+	zyXF9ZfXFiJIO0W8A4fpXsrj0FDLeghwDflLuDTKf6sAuf20VQuysGLP1q/Rt0GXW6JuTZ
+	CJzoG/hxZLOk0UJcN2c182AQapar1iQ=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=S2KpM2d8;
+	spf=pass (imf26.hostedemail.com: domain of jgg@nvidia.com designates 40.107.92.88 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753921303;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=jfL75aUUuDP01DgkRy6i+6ErMPcTQ5l03FviSQcM6w0=;
-	b=uv5HUhPkKTTBZvgmM2e6BeZKjIHTFGnurRhJw9d2rjav5oPAi6bm3gorJqxN+zXN0HGjMz
-	3JtQwbhT3NfhaiohG1ccbzDYwD8SWbQGrOb6P7YlAz3aB6BZ5uD/GgSs5u/bDbbT644boZ
-	B0gK/wEeiJ86KLVTtBgEW6jLMuYTy4M=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753918866; a=rsa-sha256;
-	cv=none;
-	b=cW9C3MRcD6ca0yI2eJgzDTzv6/kMg931HhzI1ppaTaMaLy8JV/1CrOiZe2NR+4lobK4sJT
-	0H6Km7QlN75xGUBAOsy/s48fFto8LYxrLcvAcC78f8RO1X6kv4mGcGzsYa5j3ocwxVqlng
-	+5827QUJee/B10XVoLMAFjOivpF3F4s=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fxpBHqFz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id EAFC4A554F3;
-	Wed, 30 Jul 2025 23:41:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 606EAC4CEE3;
-	Wed, 30 Jul 2025 23:41:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753918865;
-	bh=+lHkUh0H44hhPseDEoyNcZJEQoFHl6NXX96JTxTqX7U=;
-	h=From:To:Cc:Subject:Date:From;
-	b=fxpBHqFzPkzrmD1L+ehP7qPjsRYnQtH+6WRiv0iI7/+Fk1KBSERZRgKlESZLqa+kv
-	 O8t6QeVJ7wQsJP0OIvyb2Wcd2xkTVQjYVMjq/uiup9ujWyrTJLRDMzYYX1Z34EOQYg
-	 Jy3r28bn4OYTC56EQ4sHXFpbbDdG8mnjLW7ZtIotm4M7nYGn53IMv9qVbzNiAaLbsF
-	 hQkSEyVeI/Kzu3gTsED5QXVsF+AH76hrSjroVYKKGxXdMu/tYJMc5OXStoUxngOtKA
-	 TNVC1bwf73PkOVChaNZ2BEpNE+3FrBn7eZsos20fFV3S5151LPkb2o7SQFb4m+G7ld
-	 yxPguxQkZBHiQ==
-From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IKc63Cawmn7SJjTjCyD85gAEB1IHRvkPC2bj/0KNU/A=;
+	b=aHAWZ8LZ5IfjNeMYuMWel+IZ1eBBRniYndGo8/RtkU6IF9YMI0FlZ43X5X26StFIjiK5W1
+	JnBC1sQl8uZKspfWVTk6yI6CWDc8g9xMOoGzMAyBQk9wVPHnrvR0adl07Zsja1BVWWwmRw
+	AA93RUcWtoq364HGJP2u1Fa1hXboVtY=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yv01aNHLgoFQNcGQcfjwFjxPM+lpExQRhQl2bdrBRQXt2Dy5a1V3LmeB5Rq/Q+xIZbWCU31Llf+IZVek09xBMDn/kgo17qU2JelQS763t/rSAri/Tcwc61uCInTQGj/Q2XQpPJarXVEh89to4aKzX+JgwtL55LH7qSgur4Dauq1GHIcIGO2CbHr/co0EdyH+ynW9wa7FmA0pYwpgki5HrpxC6U08G6Vwp+8xRFeuPyBtssGM8RFJReg4xMxs7b4juSuiaRM6A6PfcL/3YvTyR0PeaFsYEJuu5E/TtaJkb/l4EPE15Rb++E0etylJeiVgrKiz5vJfZTaAZQxFWfi0uw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IKc63Cawmn7SJjTjCyD85gAEB1IHRvkPC2bj/0KNU/A=;
+ b=WV0HTyjQpk9CcpjraftJGGNwQ2u6Q9ZaGvdj3eJGv0erTAIJDWhMOntuZqPfoFQQID0d6oMZ12oRabTtDd6IMNKCZgLsZsbr/vWD+5TvwWIriiQjsxP1mzzqxI5YeONGwJF9DaeeEjPLGcCG5old/bdyTqBe4lhlZYH8NhCp+uRmeq22hiPpWOQAqcDXtVejOLhWi7U59mjAFu9XKy4GsFvwke696yYpssa+0mnKNCM895mIshVtipy3qiE+4kgxrGE+jjOF1tvsozD9bU2AK6VbjRDT5y94BRttvYiUFInlZ2rBRaz1tXeHqnL5YlqaqyKTy2EZvcxOTPu1WEUaiA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IKc63Cawmn7SJjTjCyD85gAEB1IHRvkPC2bj/0KNU/A=;
+ b=S2KpM2d8/DX1kqdkMY+cvt2mKK5wtQH+6CCUGCoWe+50umC6gIG9fGI1rzPq2hODW4zfaoshtoA/NW8qGQWKRdCQ4Xw56wCDbw0pQrC+CNiCY24k6xxk6uGIUeSZFyNeQea66VL4a7IN6F59dt5HjaBOPI63wC4L7fjyGYAK50pw4tSrmkN8wFVWTVqh/lM2RSC8NcZvX3k0TZHbMMdVHNchh1JnxiSZRr5UUp/KN4bHuUQ9id2Cv6Pxjet7G8iKKz0fgvknj4b7hTvK7fKp/oWrIYbqUhKLf0AwkkOZlepY6ySsazchyn9LwAlnPbZ0QueE22yqtn1kwPIMZKbyFg==
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by BL1PR12MB5778.namprd12.prod.outlook.com (2603:10b6:208:391::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.24; Thu, 31 Jul
+ 2025 00:21:39 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%7]) with mapi id 15.20.8989.011; Thu, 31 Jul 2025
+ 00:21:39 +0000
+Date: Wed, 30 Jul 2025 21:21:38 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Alex Williamson <alex.williamson@redhat.com>
+Cc: Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Takero Funaki <flintglass@gmail.com>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	kernel-team@meta.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH] mm/zswap: store compression failed page as-is
-Date: Wed, 30 Jul 2025 16:40:59 -0700
-Message-Id: <20250730234059.4603-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
+	Jens Axboe <axboe@kernel.dk>,
+	=?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>,
+	Joerg Roedel <joro@8bytes.org>, kvm@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH 00/10] vfio/pci: Allow MMIO regions to be exported
+ through dma-buf
+Message-ID: <20250731002138.GD89283@nvidia.com>
+References: <cover.1753274085.git.leonro@nvidia.com>
+ <20250730135846.2208fe89.alex.williamson@redhat.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250730135846.2208fe89.alex.williamson@redhat.com>
+X-ClientProxiedBy: YT4PR01CA0073.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:ff::24) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: pwgcesigi1oyyx19aow5x7poyweq3gwp
-X-Rspamd-Queue-Id: B96EF40012
-X-Rspamd-Server: rspam10
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|BL1PR12MB5778:EE_
+X-MS-Office365-Filtering-Correlation-Id: d1ffe96d-a53d-47f9-aafa-08ddcfc837bf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?dxRWaf01AGlEQXan3FZtyaRabWJoZR+VzqRozd71Ryhs0/blct8Ty48AbqCL?=
+ =?us-ascii?Q?glyCF6l9Rsx7MRs1wuvlPpQhmd++NEWlApfzH2U9XUDmiCKD/2lPmk8ahGwr?=
+ =?us-ascii?Q?wd6bWFgyJlgG0R1cBk1mt9LWQj3eauRyrmSBKd6ya4QL3RcwUMq6EGBBYD7t?=
+ =?us-ascii?Q?lYghugsWSSzV1/XGdOnhqjcPdNP0S9j4MMxmdOc5cXcmzGjLLxs7Teq+MekX?=
+ =?us-ascii?Q?ny4DwdHBu7DDRMXWXZjAOXi3RdkpRnSVGekSyhnNJZndufX72SClTqrp+AvN?=
+ =?us-ascii?Q?D18x1cAFGAEN8cAQsSZTa8KRLnjjnBXik7e35QpnuUakU26+tNmrrWxEhAJi?=
+ =?us-ascii?Q?SYQrwAKODKD6Ds8GPJH/0SG8HOlhq+WR9dxYzyCUPNjDOjNqRsvIJHZL/8Js?=
+ =?us-ascii?Q?JdBpMtSigyvMryameBm1+yBd+ebmOjZcIKl1KqBese81HnyDPZ/UxJGUb1vS?=
+ =?us-ascii?Q?NfhIpszvAcyG9DtLirgTAZufDtB27HSBqYXo7mq2/w/nwLVPAd+DC8ASFj1H?=
+ =?us-ascii?Q?pSmtj6a+p/5C18rlWno/FbfJDiGjNdDuNvqHhB4hHvHCjGWKjvv3UUKP0ADX?=
+ =?us-ascii?Q?mtKP/1W9bwuc5efACcIBK4V86CnU5ulyvF4213KcQniGKFZ2LW2iUuVVB5ne?=
+ =?us-ascii?Q?7S0UDkE1lI3ZFSx+45nXN6OM77Gk9zWrjcnNtdnxmgRc8Ft8zGUX3f0PO1hB?=
+ =?us-ascii?Q?h70UuirG9/jK99+hMJM70I1Re2fxSh7KiKutWuzdXg+Y1269bm5ExRgtcDXP?=
+ =?us-ascii?Q?aJ5rLHwOnWWc7D6mUJTm7EUsdFOSlA31RuLofO74B+tF/3KEHh2RdphOCNjM?=
+ =?us-ascii?Q?rcNWEZQpJBeoXHMsAPoC9OzDwWlLINjsXOEmQFw0/L3jef2j049ffxeFwOgW?=
+ =?us-ascii?Q?hM1TbpjAWKsRinRtoZTdOAZaFNLJdemNV5UGMmDyYIgYyF3J/qfayJkdV5Ft?=
+ =?us-ascii?Q?KjtNeLFulf4VRQreCmj77OjiyaamLO1iYs8Adyz8nCxYjbJukOlb2vYceAvC?=
+ =?us-ascii?Q?SBwLkBqlCwBZNWE7r7209pPVOGTnThq3INdlRbHs7xXkxzMZ3kBn/D8dIH7f?=
+ =?us-ascii?Q?bx9W3OL+BDSNM9T+S/fB2SNciUCcPCRKPcySU0jEy9PRnmokMjvvmGePb6Fl?=
+ =?us-ascii?Q?8rzyUCQwzx1rpuOwklQfBBIOq8XETkIOgO4WAH1H1DKoQmxyqnh4fOL+0gRX?=
+ =?us-ascii?Q?kiPk9qwHf6mta9PbqwRUhLLfP9L3kMJyF3GIu1Vrm/LkL5DV5CKsFWXn/Gf0?=
+ =?us-ascii?Q?WB1LZdEIV+lUposIMC5WjzQz1RLBEsrKhkzVW9KFvTVwIRXvQcgP1xZJxTC4?=
+ =?us-ascii?Q?hQOvokPq7pbOIjV9CyWfRrzIPKWpkxNQVp5C6CzTcxO1ohy9V2oGbB0Oj0n0?=
+ =?us-ascii?Q?+B96NqUAyZJtBTq3rXYn7IVBefcJQ7jJBSTKN5XP0/BGJYzNollD2ipBsDgR?=
+ =?us-ascii?Q?DeAqypsi2EQ=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?xKQLOU782IHWQbOI9s+JVlVD4xQ/rfUmlW1rQIQq/0sMVjQC1VA1azM9HTyo?=
+ =?us-ascii?Q?GnRXQoIpRga5MeOOw0fgAgXpA4+dliSyHD7V3MKhPbebad79vk9aYyTj/iDm?=
+ =?us-ascii?Q?9YkoJvE9HpinruzZUAflCDip8YlSrBVEU02L8hOUhFNUfqkYdial4i6fWLd7?=
+ =?us-ascii?Q?KEhMWV+GGQ50RNfgo62kGN2VCiTTeuT6R++f2aPRPDdFJXtctxi8nEOu0Nbj?=
+ =?us-ascii?Q?pUH58e/xFFQ0ptDGGau5N+7ee+Z4L3WwR5qW0T4ITvdOQzk/QeAVLueMFVwg?=
+ =?us-ascii?Q?8QVn+8vqNzwvz3Q5B9OiW76E4nmQPYpK/xGQ/NJc8AAgK8VNxNKcEH1OHBc9?=
+ =?us-ascii?Q?Uh5B2D2/Yk3nWECmPh1Ix0FI9irisrVcbmYImzxMMj2ZTdJwMz6vLT1UdrvF?=
+ =?us-ascii?Q?xA2Hvqf7qS6gFIIKrBU4dKHGQFUGK0V+mLDgTTuWU68OXtrlNFqk2lPJDUNu?=
+ =?us-ascii?Q?8NG2AxuUZs5y9PZYpxcNIGxWBddcV6gbB2vbZiLe5ffPXwORPXt3BjR3j3tM?=
+ =?us-ascii?Q?TnkwrlOPG9UOcIr8Gs8Ee6kUnlZxp2rvNbjqfnnFRX9eIbcZNLVeiGApnRlb?=
+ =?us-ascii?Q?TGZP9LuP2GkoCDL8wGM7V0wA652ySoLgyElntR2a1GbiZVOMDBU03MFkZEZi?=
+ =?us-ascii?Q?29w5iMdg5qtN8mIx2iZix37lQsD1IeVBc37cjyZI7JfAETTdwTxrowJ7OqU+?=
+ =?us-ascii?Q?QmHvQB9vgduD/3c1o/C2T0vtHWG+pOB2nyOJdIB3J1TFfHxlIR3bV7zwWT11?=
+ =?us-ascii?Q?ur7uq4nv3lAjr5psmpwqRO8yaktD+GoG55vi37r44mIbVrnXHDq9cYXBOOtI?=
+ =?us-ascii?Q?ujS+Q1Sbz0SUhyuFCynx+YEaKMWu21GYLzEsxf1h5Ug94m0Fkk44rgvDnmq+?=
+ =?us-ascii?Q?J4YaI7iCidVdrcTfnRUIDTjJQRf3qYBMMdRgmsRGSn2xJJ0HNWTOJJ1XQZXZ?=
+ =?us-ascii?Q?efZCuTb+B7of7Dhh4u6ZxZiGi3Wfkeg4qGi/dy4BVf2FTRXRtJxHF/AHKheh?=
+ =?us-ascii?Q?QlEhxRUjd8N5OyiQnKysPbDDbJRCRiId7/IH/LzB60v1WyAKMdzxQNZ380n/?=
+ =?us-ascii?Q?K5FVno/DfooD9vcMAfJcglG68wvciNDC1yqo4507KbCIX19vUdTMSZQuMNRn?=
+ =?us-ascii?Q?Mbj7yPra5ROXAns9Fe/srSUb0rtjQy6Z4HTFTtTrdAhw+FOduBpv6rJXk3lW?=
+ =?us-ascii?Q?f4Y0mnoKMdDG8joSfiLQqGExVDAuwfq9Rum3y6aizAwEMA2dGjY7s2i2zkuz?=
+ =?us-ascii?Q?a73jNIIbynrNzFPjW1AXdw5d563pgyTfMOvWVWvAStDZjdVDqiShYhNc2W5E?=
+ =?us-ascii?Q?m+GtUf2xx4vbCAMrTjSt28QBNYkeML00GxcJYTK/j7oXQpCiOVTYXEphKxUD?=
+ =?us-ascii?Q?pOlDFmNVl3eeo27uFM61QXoRBuDbymIIcXISUF8664nxxSuRnr6Gr0nDpk/s?=
+ =?us-ascii?Q?GCFOaSnwtjSO7sAVT0hBmXVNcow0lHk2kG0aLXZW7ck8juVLh+SEXig/r9Br?=
+ =?us-ascii?Q?iUfdgQJiP56f7MscCEbI8jjoDwKWUouB6P84IR6Wgoljca7+oHUMaE/zcWF6?=
+ =?us-ascii?Q?TSbq4Nm5YgbQKZ2urxs=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d1ffe96d-a53d-47f9-aafa-08ddcfc837bf
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2025 00:21:39.5092
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fBZKic+StbzkFL29chHmNUk/woDv7MiDJk3hrz/b5ExZHWvZ5RyJI+O2dUe3aKYN
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5778
 X-Rspam-User: 
-X-HE-Tag: 1753918866-779621
-X-HE-Meta: U2FsdGVkX1/csFF1D8qFP9a+RK7rJGzhx1coxHZkTNpQskbKWRbS0NyA4SuufODMw936hcdcxp/uTwnLWyhWEhWwOU40a/KecuDe34ut4QCFoYDqMgpGPkFmFWMZ3VQaBfnhRQ9MBfO3V7fDhWFdMQsN2u4cmNLV1a84wmv9EGr6a2NY3HceMW+w7gDRlnFKOZpazIZty1F4GoS7JzrApJfcRH23rAzxdhtIDEhwmuqj70nddW/5qT0PCAxunRcpgVIV1+sYeNNVNkC0qwCnsWt5K/fttLx1pTOWXmDzk0mLoj3FwcS/h0snJxX+J6Y4eaWrhYBVEw+OxkVB4//hb1J8PXU5el7an9m0oUToKORbD/EfKvocEacW1KpqHe4iZ3y1FSohw8z14L8dRxlnYWNP0ISJFKJ/MNL3JIMB1zt1fnMk0DGMlHxqzOFcuL0nyL5VcJKzadHn2ZA/X/3E3mYobTixPveG1ZeKBJ/Gm9pAaHvF2ptVU0smv5zncfPdGELuvqxH6ulv0ysaBMASyt7CGCpflyrNYfZsya2N69zVquVS/Ueurc/LQJWZvTAnUmSd2mCmJFZSsSBdtG+9SRoww5s2UoqNsIUrg0Mi8b1iNnZpG/ePG6RYaP7c8Dwptaklh7JKR28i/OhK5I/lKLiEPooXRp7qxYMke6rEpFGIe4Iw0ErgPvdkgEVXkErRKbuFAF9Bujt+HFA/bTDWdPVU2MvRV8hWcJ/fNUHPYeUiJZmEEd3s4cvZ8vF5zUPl/9pPkm/dwEBn2TKruiil9rNsyvT5c8Fnjc/KYYXKcasrMpISLefUM9vHa6UljPmCFzEbxElkROhx0h6AQXCyxzv+tvUrTv6YVJaXWH9gp7CPSZegsNZ28CUoxzN5td6+MxITVsJOWyb+OFXrYjrUOrfHKmLGJfrTuZygAUpvW6lIvweTwokXLFv8JpzLBhYBNmZMXaK/S6OMOdo9wHe
- Jx7d2jGe
- ngJGdLHKrSlCj9hI/aIUt/3EISEfM2c8jHJCYwxkLFwplc/k3exfSBeBOgRZNKuj8bmbyv8iAs30QeAl8JNEvfhSKgw14wzY2+GNgnFm+D1JClaWdMpj30HVAATj8yABb9afhruTV72jjeOGBFiOWRKYR1+CW4L95bSWjOKWX1wWUFUmNShHpcQWIJWJQHszR5S2Rk0RPRaC2FbupA6LnvmefLXezQA1BBuJAhIJWiBal5wRuMoP6Ol2zKxi4kNaamFFY15SVTKHQe0Ysx4lbDIDOIA==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: F0542140009
+X-Stat-Signature: oeo51aq55nruwnnc3ubwp7ynmywr7wy5
+X-HE-Tag: 1753921302-893003
+X-HE-Meta: U2FsdGVkX18ComjndtZ5BwzWVitlKbG/0hq/3ijXLdVKsXrBsHoAVf0/Oy6O9h8HjUnuu9BOi9YTzmTGLTk1EMmTlCFzc122az3yZLj+ZlZHrSzU9AC+4x+zLHkDYyjMMSR41fK/8X2uKcc+P/0932gcJMa53FYBAli8gpduIBtoJ47o8+4GrB3qdImwsUcGKQavCbalAnkNRiOmS7j0rXMu3f0aDgBZ21yRjrhHY+bn5hodOA6bDLGQovHksbm/3KAeugAy+3gaMh1ebMad5EbAVRx4AO4zB2wwkZYG5ky2ac056VwoQLrj+G4TFFUdWg6rE0NOPjdVE9StfgCk8aD9fEDS6P127TZ5/ZdQaDVy8dss4IEAnJB55PyxBYz+gf0M5ntVBFW/cEBghk7cnqxZj/XbBxzb/t9QeJ2lLwj9AfviarNk5ugDbLDEGY5BmGzo6o1KkrHAT20Y4RJJ21SlqcNSS6/7ZRM1OecKUFJzBFR7sMtkmng44CcOYfS+mJaLPyO8JafJh5Or5HiNlWxcLRQv3CnoeeWgIu5GDBXzO59kvn7ogmPhKqSqwD7oTSffObqj4zEQp+zAml8UgZk3ls14+JaKoSehdQef527RB8dYonWBgej9va8zexVqMnKrheo9LqJLSmRXj/3eGhZ60vbb5I8iqQVFlJTA/81pt32gkVYDKqGqHrA0uInqzK6byiph/POMMSCzvQVfFnc3ogou6/mHorYyAD/uDGE7Tb/G2i+bSGPurcK4x/A9xahzLWltr5XhBbyMEihCUHZF490StAT4M2EWCUHt/50FqeeMxTuCRaNtTj323V12QbJRi8O3thC9SnniEUeFzILbPKhOCC/QqrGnM5EU7q5pZj7cZ1dnMLI+ed94I+RJKJk4B63U0MiH//O9RBl/ZEwz8Y/YT6O+gjgCSoyXMjQVw6ZNLfWR1CztIlv84U0D9flyxyf2Nmlw5UFNLWo
+ vkIdp/f8
+ zF2JukcgtSCEmd4rNmNwA/t1KCLUwNnFqd/0TY+9AsG3Vfurpjk0uKySA++FaYTkX8C4E/CmWKOMstGxN8eQNxUmwOVqntC21ZlVKuBH8YdxS0UINrqx6gNHKW5LfXfzGD11l/NvG6Vs6GX7F0rx5xGpoYNmFDz6EjiDD4VB7PjlxW8lbVOZ7LwPlJ9vzCbup+AHyIiibpS/X5qDzfq8hel5WD+f6wW05bd+AJR5eaE1ESwBPmv1Pa9s1Ykv2NbyZF84EMvQGYIuXy8Y4KDOhIcXUEXP/d7iXlKQiA/81tuufJEcd2iM2MC3nqGo1DSZOxDV53SD6ZC4OAAc25v9tcdSoQPeMPtPJ9kHUb+xZIGRGayxq6L0uVzGxWjHUFRkwn1bheKhGNmFtGWvG1enB/oENOXqbOUWdx4VnzTR/8xOcofFubBZzQ4LYBO5TtCjgs+ejCWzrLeSeyFM5JhwajfqpwlvB9LRjvUpgoTyUaoPKVXSiOXLJadXaMgCCbeTawtWlPED6acLZPaTzieUEC9gLrcdzy+WbPq9gwR6oUKerH/8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,327 +195,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When zswap writeback is enabled and it fails compressing a given page,
-zswap lets the page be swapped out to the backing swap device.  This
-behavior breaks the zswap's writeback LRU order, and hence users can
-experience unexpected latency spikes.
+On Wed, Jul 30, 2025 at 01:58:46PM -0600, Alex Williamson wrote:
+> On Wed, 23 Jul 2025 16:00:01 +0300
+> Leon Romanovsky <leon@kernel.org> wrote:
+> 
+> > From: Leon Romanovsky <leonro@nvidia.com>
+> > 
+> > ---------------------------------------------------------------------------
+> > Based on blk and DMA patches which will be sent during coming merge window.
+> > ---------------------------------------------------------------------------
+> > 
+> > This series extends the VFIO PCI subsystem to support exporting MMIO regions
+> > from PCI device BARs as dma-buf objects, enabling safe sharing of non-struct
+> > page memory with controlled lifetime management. This allows RDMA and other
+> > subsystems to import dma-buf FDs and build them into memory regions for PCI
+> > P2P operations.
+> > 
+> > The series supports a use case for SPDK where a NVMe device will be owned
+> > by SPDK through VFIO but interacting with a RDMA device. The RDMA device
+> > may directly access the NVMe CMB or directly manipulate the NVMe device's
+> > doorbell using PCI P2P.
+> > 
+> > However, as a general mechanism, it can support many other scenarios with
+> > VFIO. This dmabuf approach can be usable by iommufd as well for generic
+> > and safe P2P mappings.
+> 
+> I think this will eventually enable DMA mapping of device MMIO through
+> an IOMMUFD IOAS for the VM P2P use cases, right?  
 
-Keep the LRU order by storing the original content in zswap as-is.  The
-original content is saved in a dynamically allocated page size buffer,
-and the pointer to the buffer is kept in zswap_entry, on the space for
-zswap_entry->pool.  Whether the space is used for the original content
-or zpool is identified by 'zswap_entry->length == PAGE_SIZE'.
+This is the plan
 
-This avoids increasing per zswap entry metadata overhead.  But as the
-number of incompressible pages increases, zswap metadata overhead is
-proportionally increased.  The overhead should not be problematic in
-usual cases, since the zswap metadata for single zswap entry is much
-smaller than PAGE_SIZE, and in common zswap use cases there should be
-sufficient amount of compressible pages.  Also it can be mitigated by
-the zswap writeback.
+> How do we get from
+> what appears to be a point-to-point mapping between two devices to a
+> shared IOVA between multiple devices?
 
-When the memory pressure comes from memcg's memory.high and zswap
-writeback is set to be triggered for that, however, the penalty_jiffies
-sleep could degrade the performance.  Add a parameter, namely
-'save_incompressible_pages', to turn the feature on/off as users want.
-It is turned off by default.
+You have it right below, it is a point to point mapping between the
+vfio device and the iommufd.
 
-When the writeback is just disabled, the additional overhead could be
-problematic.  For the case, keep the behavior that just returns the
-failure and let swap_writeout() puts the page back to the active LRU
-list in the case.  It is known to be suboptimal when the incompressible
-pages are cold, since the incompressible pages will continuously be
-tried to be zswapped out, and burn CPU cycles for compression attempts
-that will anyway fails.  But that's out of the scope of this patch.
+> I'm guessing we need IOMMUFD to support something like
+> IOMMU_IOAS_MAP_FILE for dma-buf, 
 
-Tests
------
+1) The dma phys series which needs more work
+2) This series to get basic 'movable' DMABUF support in VFIO
+3) Add 'revokable' as a DMABUF concept and implement it with mlx5 and
+   vfio
+4) Add some way to get the phys_addr list from the DMABUF
+5) IOMMU_IOAS_MAP_FILE using a revokable attachment and the phys_addr
+   list. When VFIO does FLR the iommufd can remove the IOPTEs and then
+   put them back when FLR is done.
 
-I tested this patch using a simple self-written microbenchmark that is
-available at GitHub[1].  You can reproduce the test I did by executing
-run_tests.sh of the repo on your system.  Note that the repo's
-documentation is not good as of this writing, so you may need to read
-and use the code.
+It is not so much more code, but I think every step will take a lot of
+work to get agreements.
 
-The basic test scenario is simple.  Run a test program making artificial
-accesses to memory having artificial content under memory.high-set
-memory limit and measure how many accesses were made in given time.
+Then we reuse all of the above with some tweaks for the CC problems
+too.
 
-The test program repeatedly and randomly access three anonymous memory
-regions.  The regions are all 500 MiB size, and accessed in same
-probability.  Two of those are filled up with a simple content that can
-easily be compressed, while the remaining one is filled up with a
-content that read from /dev/urandom, which is easy to fail at
-compressing.  The program runs for two minutes and prints out the number
-of accesses made every five seconds.
-
-The test script runs the program under below seven configurations.
-
-- 0: memory.high is set to 2 GiB, zswap is disabled.
-- 1-1: memory.high is set to 1350 MiB, zswap is disabled.
-- 1-2: Same to 1-1, but zswap is enabled.
-- 1-3: Same to 1-2, but save_incompressible_pages is turned on.
-- 2-1: memory.high is set to 1200 MiB, zswap is disabled.
-- 2-2: Same to 2-1, but zswap is enabled.
-- 2-3: Same to 2-2, but save_incompressible_pages is turned on.
-
-Configuration '0' is for showing the original memory performance.
-Configurations 1-1, 1-2 and 1-3 are for showing the performance of swap,
-zswap, and this patch under a level of memory pressure (~10% of working
-set).
-
-Configurations 2-1, 2-2 and 2-3 are similar to 1-1, 1-2 and 1-3 but to
-show those under a severe level of memory pressure (~20% of the working
-set).
-
-Because the per-5 seconds performance is not very reliable, I measured
-the average of that for the last one minute period of the test program
-run.  I also measured a few vmstat counters including zswpin, zswpout,
-zswpwb, pswpin and pswpout during the test runs.
-
-The measurement results are as below.  To save space, I show performance
-numbers that are normalized to that of the configuration '0' (no memory
-pressure), only.  The averaged accesses per 5 seconds of configuration
-'0' was 34612740.66.
-
-    config            0       1-1     1-2      1-3      2-1     2-2      2-3
-    perf_normalized   1.0000  0.0060  0.0230   0.0310   0.0030  0.0116   0.0003
-    perf_stdev_ratio  0.06    0.04    0.11     0.14     0.03    0.05     0.26
-    zswpin            0       0       1701702  6982188  0       2479848  815742
-    zswpout           0       0       1725260  7048517  0       2535744  931420
-    zswpwb            0       0       0        0        0       0        0
-    pswpin            0       468612  481270   0        476434  535772   0
-    pswpout           0       574634  689625   0        612683  591881   0
-
-'perf_normalized' is the performance metric, normalized to that of
-configuration '0' (no pressure).  'perf_stdev_ratio' is the standard
-deviation of the averaged data points, as a ratio to the averaged metric
-value.  For example, configuration '0' performance was showing 6% stdev.
-Configurations 1-2 and 1-3 were having about 11% and 14% stdev.  So the
-measurement is not very stable.  Please keep this in your mind when
-reading these results.  It shows some rough patterns, though.
-
-Under about 10% of working set memory pressure, the performance was
-dropped to about 0.6% of no-pressure one, when the normal swap is used
-(1-1).  Actually ~10% working set pressure is not a mild one, at least
-on this test setup.
-
-By turning zswap on (1-2), the performance was improved about 4x,
-resulting in about 2.3% of no-pressure one.  Because of the
-incompressible pages in the third memory region, a significant amount of
-(non-zswap) swap I/O operations were made, though.
-
-By enabling the incompressible pages handling feature that is introduced
-by this patch (1-3), about 34% performance improvement was made,
-resulting in about 3.1% of no-pressure one.  As expected, compression
-failed pages were handled by zswap, and hence no (non-zswap) swap I/O
-was made in this configuration.
-
-Under about 20% of working set memory pressure, which could be extreme,
-the performance drops down to 0.3% of no-pressure one when only the
-normal swap is used (2-1).  Enabling zswap significantly improves it, up
-to 1.16%, though again showing a significant number of (non-zswap) swap
-I/O due to incompressible pages.
-
-Enabling the incompressible pages handling feature of this patch (2-3)
-reduced non-zswap swap I/O as expected, but the performance became
-worse, 0.03% of no-pressure one.  It turned out this is because of
-memory.high-imposed penalty_jiffies sleep.  By commenting out the
-penalty_jiffies sleep code of mem_cgroup_handle_over_high(), the
-performance became higher than 2-2.
-
-20% of working set memory pressure is pretty extreme, but anyway the
-incompressible pages handling feature could make it worse in certain
-setups.  Hence this version of the patch adds the parameter for turning
-the feature on/off as needed, and makes it disabled by default.
-
-Related Works
--------------
-
-This is not an entirely new attempt.  There were a couple of similar
-approaches in the past.  Nhat Pham tried a very same approach[2] in
-October 2023.  Takero Funaki also tried a very similar approach[3] in
-April 2024.
-
-The two approaches didn't get merged mainly due to the metadata overhead
-concern.  I described why I think that shouldn't be a problem for this
-change, which is automatically disabled when writeback is disabled, at
-the beginning of this changelog.
-
-This patch is not particularly different from those, and actually built
-upon those.  I wrote this from scratch again, though.  I have no good
-idea about how I can give credits to the authors of the previously made
-nearly-same attempts, and I should be responsible to maintain this
-change if this is upstreamed, so taking the authorship for now.  Please
-let me know if you know a better way to give them their deserved
-credits.
-
-[1] https://github.com/sjp38/eval_zswap/blob/master/run.sh
-[2] https://lore.kernel.org/20231017003519.1426574-3-nphamcs@gmail.com
-[3] https://lore.kernel.org/20240706022523.1104080-6-flintglass@gmail.com
-
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/zswap.c | 73 ++++++++++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 65 insertions(+), 8 deletions(-)
-
-diff --git a/mm/zswap.c b/mm/zswap.c
-index 7e02c760955f..e021865696c6 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -45,6 +45,9 @@
- /* The number of compressed pages currently stored in zswap */
- atomic_long_t zswap_stored_pages = ATOMIC_LONG_INIT(0);
- 
-+/* The number of uncompressed pages currently stored in zswap */
-+atomic_long_t zswap_stored_uncompressed_pages = ATOMIC_LONG_INIT(0);
-+
- /*
-  * The statistics below are not protected from concurrent access for
-  * performance reasons so they may not be a 100% accurate.  However,
-@@ -129,6 +132,11 @@ static bool zswap_shrinker_enabled = IS_ENABLED(
- 		CONFIG_ZSWAP_SHRINKER_DEFAULT_ON);
- module_param_named(shrinker_enabled, zswap_shrinker_enabled, bool, 0644);
- 
-+/* Store incompressible pages as is */
-+static bool zswap_save_incompressible_pages;
-+module_param_named(save_incompressible_pages, zswap_save_incompressible_pages,
-+		bool, 0644);
-+
- bool zswap_is_enabled(void)
- {
- 	return zswap_enabled;
-@@ -190,7 +198,8 @@ static struct shrinker *zswap_shrinker;
-  *              writeback logic. The entry is only reclaimed by the writeback
-  *              logic if referenced is unset. See comments in the shrinker
-  *              section for context.
-- * pool - the zswap_pool the entry's data is in
-+ * orig_data - uncompressed original data of the page, if length is PAGE_SIZE
-+ * pool - the zswap_pool the entry's data is in, if length is not PAGE_SIZE
-  * handle - zpool allocation handle that stores the compressed page data
-  * objcg - the obj_cgroup that the compressed memory is charged to
-  * lru - handle to the pool's lru used to evict pages.
-@@ -199,7 +208,10 @@ struct zswap_entry {
- 	swp_entry_t swpentry;
- 	unsigned int length;
- 	bool referenced;
--	struct zswap_pool *pool;
-+	union {
-+		void *orig_data;
-+		struct zswap_pool *pool;
-+	};
- 	unsigned long handle;
- 	struct obj_cgroup *objcg;
- 	struct list_head lru;
-@@ -500,7 +512,7 @@ unsigned long zswap_total_pages(void)
- 		total += zpool_get_total_pages(pool->zpool);
- 	rcu_read_unlock();
- 
--	return total;
-+	return total + atomic_long_read(&zswap_stored_uncompressed_pages);
- }
- 
- static bool zswap_check_limits(void)
-@@ -805,8 +817,13 @@ static void zswap_entry_cache_free(struct zswap_entry *entry)
- static void zswap_entry_free(struct zswap_entry *entry)
- {
- 	zswap_lru_del(&zswap_list_lru, entry);
--	zpool_free(entry->pool->zpool, entry->handle);
--	zswap_pool_put(entry->pool);
-+	if (entry->length == PAGE_SIZE) {
-+		kfree(entry->orig_data);
-+		atomic_long_dec(&zswap_stored_uncompressed_pages);
-+	} else {
-+		zpool_free(entry->pool->zpool, entry->handle);
-+		zswap_pool_put(entry->pool);
-+	}
- 	if (entry->objcg) {
- 		obj_cgroup_uncharge_zswap(entry->objcg, entry->length);
- 		obj_cgroup_put(entry->objcg);
-@@ -937,6 +954,36 @@ static void acomp_ctx_put_unlock(struct crypto_acomp_ctx *acomp_ctx)
- 	mutex_unlock(&acomp_ctx->mutex);
- }
- 
-+/*
-+ * If the compression is failed, try saving the content as is without
-+ * compression, to keep the LRU order.  This can increase memory overhead from
-+ * metadata, but in common zswap use cases where there are sufficient amount of
-+ * compressible pages, the overhead should be not ciritical, and can be
-+ * mitigated by the writeback.  Also, the decompression overhead is optimized.
-+ *
-+ * When the writeback is disabled, however, the additional overhead could be
-+ * problematic.  For the case, just return the failure.  swap_writeout() will
-+ * put the page back to the active LRU list in the case.
-+ */
-+static int zswap_handle_compression_failure(int comp_ret, struct page *page,
-+		struct zswap_entry *entry)
-+{
-+	if (!zswap_save_incompressible_pages)
-+		return comp_ret;
-+	if (!mem_cgroup_zswap_writeback_enabled(
-+				folio_memcg(page_folio(page))))
-+		return comp_ret;
-+
-+	entry->orig_data = kmalloc_node(PAGE_SIZE, GFP_NOWAIT | __GFP_NORETRY |
-+			__GFP_HIGHMEM | __GFP_MOVABLE, page_to_nid(page));
-+	if (!entry->orig_data)
-+		return -ENOMEM;
-+	memcpy_from_page(entry->orig_data, page, 0, PAGE_SIZE);
-+	entry->length = PAGE_SIZE;
-+	atomic_long_inc(&zswap_stored_uncompressed_pages);
-+	return 0;
-+}
-+
- static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 			   struct zswap_pool *pool)
- {
-@@ -976,8 +1023,11 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 	 */
- 	comp_ret = crypto_wait_req(crypto_acomp_compress(acomp_ctx->req), &acomp_ctx->wait);
- 	dlen = acomp_ctx->req->dlen;
--	if (comp_ret)
-+	if (comp_ret) {
-+		comp_ret = zswap_handle_compression_failure(comp_ret, page,
-+				entry);
- 		goto unlock;
-+	}
- 
- 	zpool = pool->zpool;
- 	gfp = GFP_NOWAIT | __GFP_NORETRY | __GFP_HIGHMEM | __GFP_MOVABLE;
-@@ -1009,6 +1059,11 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- 	int decomp_ret, dlen;
- 	u8 *src, *obj;
- 
-+	if (entry->length == PAGE_SIZE) {
-+		memcpy_to_folio(folio, 0, entry->orig_data, entry->length);
-+		return true;
-+	}
-+
- 	acomp_ctx = acomp_ctx_get_cpu_lock(entry->pool);
- 	obj = zpool_obj_read_begin(zpool, entry->handle, acomp_ctx->buffer);
- 
-@@ -1518,7 +1573,8 @@ static bool zswap_store_page(struct page *page,
- 	 * The opposite actions will be performed by zswap_entry_free()
- 	 * when the entry is removed from the tree.
- 	 */
--	zswap_pool_get(pool);
-+	if (entry->length != PAGE_SIZE)
-+		zswap_pool_get(pool);
- 	if (objcg) {
- 		obj_cgroup_get(objcg);
- 		obj_cgroup_charge_zswap(objcg, entry->length);
-@@ -1535,7 +1591,8 @@ static bool zswap_store_page(struct page *page,
- 	 *    The publishing order matters to prevent writeback from seeing
- 	 *    an incoherent entry.
- 	 */
--	entry->pool = pool;
-+	if (entry->length != PAGE_SIZE)
-+		entry->pool = pool;
- 	entry->swpentry = page_swpentry;
- 	entry->objcg = objcg;
- 	entry->referenced = true;
-
-base-commit: b771a67861b3538324c3df25d337f4713ee53e03
--- 
-2.39.5
+Jason
 
