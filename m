@@ -2,101 +2,103 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B07DC87FCA
-	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 15:29:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 31CE9C87FCA
+	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 15:44:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFE2C6B007B; Thu, 31 Jul 2025 11:29:55 -0400 (EDT)
+	id 9818C6B007B; Thu, 31 Jul 2025 11:44:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD5816B0088; Thu, 31 Jul 2025 11:29:55 -0400 (EDT)
+	id 932DA6B0088; Thu, 31 Jul 2025 11:44:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AEB5A6B0089; Thu, 31 Jul 2025 11:29:55 -0400 (EDT)
+	id 8487E6B008A; Thu, 31 Jul 2025 11:44:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A14EE6B007B
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 11:29:55 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 71210134AC4
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 15:29:55 +0000 (UTC)
-X-FDA: 83724945150.29.F2E31B0
-Received: from 004.mia.mailroute.net (004.mia.mailroute.net [199.89.3.7])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 826894000F
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 15:29:53 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=acm.org header.s=mr01 header.b=2fEYzxjp;
-	spf=pass (imf27.hostedemail.com: domain of bvanassche@acm.org designates 199.89.3.7 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
-	dmarc=pass (policy=reject) header.from=acm.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7526A6B007B
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 11:44:48 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 243841A0778
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 15:44:48 +0000 (UTC)
+X-FDA: 83724982656.19.861E75E
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 29827C0010
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 15:44:45 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=lYxZlNCF;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf28.hostedemail.com: domain of 3bI-LaAYKCAUxzwjsglttlqj.htrqnsz2-rrp0fhp.twl@flex--surenb.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3bI-LaAYKCAUxzwjsglttlqj.htrqnsz2-rrp0fhp.twl@flex--surenb.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753976686; a=rsa-sha256;
+	cv=none;
+	b=VfI+pi9ulycoWTpE9hg22wU+WJN0TPCBFgzSsQYvW4Uea5PQijrovUc3RWBSR+LUrjIwTP
+	BqRh8ADGJZOi9khFst2X7eYXvMSsarnYhvM1mxOHof5cjWRyrHDJsPJbeWtitmLkVxdnXH
+	1k3hnlpiIrwKtXIp265k9dNEpk/sr38=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=lYxZlNCF;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf28.hostedemail.com: domain of 3bI-LaAYKCAUxzwjsglttlqj.htrqnsz2-rrp0fhp.twl@flex--surenb.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3bI-LaAYKCAUxzwjsglttlqj.htrqnsz2-rrp0fhp.twl@flex--surenb.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753975793;
+	s=arc-20220608; t=1753976686;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xQRIHmeEidmmr3xvfnQM6kAnc4SlI1EPCVjCZw3NRPg=;
-	b=OY5DmgH5LYriQJEyYMdeZ4HJA1OTUipHMtC4bt6EVv9yZzlpGrf7MYIGYLgCC3G7RkWnfg
-	UEP7sdjj8AWmQg0ia61dVm9L++IDUGrQ7xhF88I16RDQhmeiqQQsuTYapZ00k8g94LbJw9
-	t5lF1ispNK5HAcZcAiWl6qhnKvSEBy0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753975793; a=rsa-sha256;
-	cv=none;
-	b=fepCVU93va+isFm7lVcC4blBMrcpZwSvVg9BMtioMwcgiee+PBp/OuOfA6WaErpABSUdCv
-	6bLOnyiS63pxLcRCu4arSUHbkIzFropGf3jzLus0PPTWuHha0o7LQo99oHktcFu+Avbd41
-	pwf7Co4L0B4qDQ3fpk18k7tI4IDneSk=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=acm.org header.s=mr01 header.b=2fEYzxjp;
-	spf=pass (imf27.hostedemail.com: domain of bvanassche@acm.org designates 199.89.3.7 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
-	dmarc=pass (policy=reject) header.from=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 004.mia.mailroute.net (Postfix) with ESMTP id 4btCgh5xSyzm1Hcb;
-	Thu, 31 Jul 2025 15:29:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1753975790; x=1756567791; bh=xQRIHmeEidmmr3xvfnQM6kAn
-	c4SlI1EPCVjCZw3NRPg=; b=2fEYzxjplvAfmVkNIGvySQhxqD9Q4wqkibkVgKpd
-	3/mrX86Mpu5Ll/B3Qxj5DogrJvQNCbkL2BzPhiQk3zjbVMHQzeQ0dJg9Yl0im9Tm
-	C/JYlgLsrzXGqwIS3qX3IyT2dthejrn9+NY1D3BNLab180I2Lzf5VPnmBEG3Mu52
-	DAFYRDyhgxFHXJrf1iD9Oo++cB58XF9UEzeWlfVBs9qrYFQegP+u9xHST+IVcW7y
-	eYpVsj4tkw7cwtE0GPsUhYzSYjewZcFk7zDlHRPg4hW6xfraaUdRXeZVpmake1Mu
-	0iJwE8za1XWoqB/A8tigvRoVY1eaCNKMysnUQb4DOif9xg==
-X-Virus-Scanned: by MailRoute
-Received: from 004.mia.mailroute.net ([127.0.0.1])
- by localhost (004.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id 1mtbCr0qwDCR; Thu, 31 Jul 2025 15:29:50 +0000 (UTC)
-Received: from [100.66.154.22] (unknown [104.135.204.82])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 004.mia.mailroute.net (Postfix) with ESMTPSA id 4btCgX3p62zm1Hcj;
-	Thu, 31 Jul 2025 15:29:43 +0000 (UTC)
-Message-ID: <4b24afa0-7e3c-411e-ae29-9ba58ed86386@acm.org>
-Date: Thu, 31 Jul 2025 08:29:42 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] zram: enable asynchronous writeback
-To: Richard Chang <richardycc@google.com>, Minchan Kim <minchan@kernel.org>,
- Sergey Senozhatsky <senozhatsky@chromium.org>, Jens Axboe <axboe@kernel.dk>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: bgeffon@google.com, liumartin@google.com, linux-kernel@vger.kernel.org,
- linux-block@vger.kernel.org, linux-mm@kvack.org
-References: <20250731064949.1690732-1-richardycc@google.com>
- <20250731064949.1690732-4-richardycc@google.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20250731064949.1690732-4-richardycc@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 826894000F
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=8D6H3TovcRUpDHrrv443Wy2kKrliHPbwf72lIkroPTg=;
+	b=eUfmPBxOFVugl5UR/Pne2KKVyVGoJH7tQw/2fnnT6/fCVd0kCtLLCicGDyPbVvNoOQK8L5
+	TtVfPm5SrN895hnpsXDWmTzD36FdqMiW/DWE/sv9KqE7Mf36v8OgDptW+BtkTdzJQvyq3v
+	5DMFyIFESosTJAIavEXsHctL1t9BJqU=
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-31f74a64da9so751763a91.2
+        for <linux-mm@kvack.org>; Thu, 31 Jul 2025 08:44:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753976685; x=1754581485; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=8D6H3TovcRUpDHrrv443Wy2kKrliHPbwf72lIkroPTg=;
+        b=lYxZlNCFLp1Ea278nziSFPtYQfnC+IRxrS/mTbJ9ZeQKOwZ1NAKrBImBn90uYx/Q2x
+         gWkM3ojmddc9i7O38+YNbivrIOxIv8quvBClpAKYkpODVl0V5BJB9w9QKRyD4f4MJ/SB
+         KcOLjTa1hj5TJL3akKVG9OdFZsDqE71xJNv+jH5EUPZaTr890hZ8R5Sh9zZi+5XNvQSO
+         xmRv3zsaI2CP28nWD2yFr/6pLqULRCrMS/V4QWJBnmk5vau3tvBZD+dZ/FEkHXa80sqJ
+         fA8TXYqSixaVk3Sb6+J8Io54N/aP7hkI15dvBgeYgg+pH9ak0LCVHnOX17k1yhpToU7u
+         gYdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753976685; x=1754581485;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8D6H3TovcRUpDHrrv443Wy2kKrliHPbwf72lIkroPTg=;
+        b=j4v0wUqd5iNjlHqHp4ASzoZT502dTXLG4nbdetmjODGNx7vF/IGJh9Z+BIrmxOvQJW
+         FXjXef5VUG5Jtf9sbUpOH3qKrxqPdR7eG1pE8Vz6xIqv/QsQ3M3LeRbUqTjO1UNFqgLY
+         kJ2K/VIAJGNibYntPlQVy4ZEa7L/XPVc0qIM93sqYhGWjYpybjXSAg0HsDV6t9kiat5Y
+         bJhV1coPiSDa3wLXEStTw24ABaPitSbmXJyWq+x7XVZvG3ctngFBIR2vl7lpPZlvcbGB
+         PpEKVrAzuH6biKKp9DUmjWa/yALjqyX8urYl32d8OXSBaKJG1ITJT/PqUTvRNM1k1WTM
+         AskA==
+X-Forwarded-Encrypted: i=1; AJvYcCUa6QX5jUb5EKxLptoaryhocIZsVaSGYR7qWfp90GL8atHFXe9v0GXRoH9n9ZWBOluKNqqbIC4/gw==@kvack.org
+X-Gm-Message-State: AOJu0Yx5sM8PtLkw83G/yAGyDE+YbivQcQk4+urC/Bg8mFGikXGNkV93
+	gaZK+gEL2rWOq84xLNP7iAJjjVrzwDBCOtge0IHmHvz6/sGyjM05b8NHeP4i1nNlQQ9dI6Amvsb
+	4Fw6ObA==
+X-Google-Smtp-Source: AGHT+IG5srnDugZwbzwxdO5CMVzSLz47ALstUwtxD0ry/hJIfF+IqAvaHkQ39SziNPkrw/OnSv1Kvb0DGBw=
+X-Received: from pjbqd15.prod.google.com ([2002:a17:90b:3ccf:b0:314:d44:4108])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:562b:b0:312:959:dc4f
+ with SMTP id 98e67ed59e1d1-31f5dd6b53amr9841464a91.5.1753976684978; Thu, 31
+ Jul 2025 08:44:44 -0700 (PDT)
+Date: Thu, 31 Jul 2025 08:44:41 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.50.1.552.g942d659e1b-goog
+Message-ID: <20250731154442.319568-1-surenb@google.com>
+Subject: [PATCH v2 1/1] userfaultfd: fix a crash when UFFDIO_MOVE handles a
+ THP hole
+From: Suren Baghdasaryan <surenb@google.com>
+To: akpm@linux-foundation.org
+Cc: peterx@redhat.com, david@redhat.com, aarcange@redhat.com, 
+	lokeshgidra@google.com, surenb@google.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, 
+	syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 4rpz88gcqym7o9k7xjsyy117cfj33n1d
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 4ihdj6uemxpd1d1b4ijbbryfpsbfxdhc
-X-HE-Tag: 1753975793-472694
-X-HE-Meta: U2FsdGVkX19xvf5DeCb45Mit5y8A5QJwN33zx/hv0d0tf4TepdXr/enxFStNA4BxYH0w3GQM4syldiFC9fK9pxsBW7fvyxV+7Ia7VnRziGB0OhItfANadqFoRb/pHfMUGKTFPyt1e34X6shTxVY5BQhZD+JMiYpEQjS4s2H/HxX8t5YQcyRh5XUQywXY/qJna96cbsU9QF8ZVRdvJn8CEDOaYQaoCJeMVfc1G5+gpz8xH0DRWfWMXmUPek5yvP2G5oTf5xz7FHqDrneKFeEXOzqltPIFDWkA0y489xmgpxodr9CX2Ac8ZCe4YHq96ocODKUcTyIMXB7oCJBlVFq+4CAZNs2k7jeUGU9RE4oxTAOcLxhTcSBsHj6bmxK6apzsEuyJRn2qvcXp/w+eTmERrMeUYl7YAFMdCrQfzOlLnq8kzC1k/IsiCUIgT0B6L+ZBDOCQC8oVxKRva+1CgjgGL1O97tRnwnAMCB+m9oxwabK9ul5DGAVWSvGtXrJIFr2Omvn4CaTeQtgLcC95nYkAgWM3CyEXycXKG8mC2I4WWNQajaCCRZjNhf8g2NCGhh22mNC/CLCNQaKGwxQ9RhX1QmX14qUBvdBCI479WSsrKselJJCLgtJkr3/ZKY7FQ57d4yAP05kkMLJq9NKoX7Zj8jpQRh+fUmXhjyu7jE47Fj5FUVzW6ejwef1b6fz3DYkSi2lBo45VW21pLG3dJSQirnkBOFICN13LS/kInezkuGsgiUWcNgJ1obRnPpf/Cp0/OSz8OqEeM6TBSppqQ+1BrFNcGNtyyb8mAZV5EUSWDCLCxyMQIkiLpb/InDQDwPg2N9gyB+wQyrzePZT4Bpr7Fzs4xSHKM6vQJPuI3XYTP8SU98UndLMO8vfms784M6LxKU6nVK7WuJ0NcbrjWc6gCKDppTnxsdMxJggtor+SxV+qJm0o0KVR2LL16rxKupsPE253lpf+C3IVZlplFfX
- cNZE6CC5
- M++5k70qmWXzSuMnO5Z3wg5WStT0ShaUwbylfxAyrmq5AurHdqq50fnjZ1z2yNpLA+Un3Xr5rVxRkMsGoXD5/x3t2mKr/g5B/ZDd85lWXkYWQLI+DdonXruWxt5IQg5rxCn1L5RvP7kjhoBq7HpEGAU2ta0ZbUfJei1wvORIFQlB1q575kks6j0urw0qzT0k3h8RVX/nL0cg2DwAzhLo85D7rctWW6pN7AY7Eqi/y8bJCl+d4Y+YtUfFhYQfr/IO+51V6Cqcz3CiaqJdZMqABAjd7js7MosFj91mx
+X-Rspamd-Queue-Id: 29827C0010
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1753976685-443425
+X-HE-Meta: U2FsdGVkX18oSg2GcHaCtiDqyQKCIfgDZvotNLJtLtKfr7PCCyfytpi2rjt35kI+6nVSd5F33T5qD++jNqnOehIIetpS/5yUanpH/oo+wE7/VxGMnqzefhkg4/3LteoKogODl0pe2oeW8aGbISqlzNWgNTeNdAEYfdV1SOKfDVOStnM2lmMOiSYzX5ZWbjUu1+54fpZRVQZtUBdzqVIE5+rVYL7PIoiecQMGa+b76rY0ga+z57avEOK+oVehnZaqdBNh3VZ7ULJhOfvH+monRfK0Fd6F/CdRnwtHrfXC0/MHRxzGStdJFxvCuxGAL0IBzef4PrbOd0ThhEiGuPWO2x7Sx0PGv35da/tgmJ9XOuBWurR5hn+4+qMhfTpKjfL++GyxhTrl+ukDeOSjbXfaBeVH0eQ4EjG8JVrm69FGkOB8OIjewMFBcUjOih0A6q8LLwSLkk+Zx4sI407L538YxMQN+NbKgCVABsuYT0S978JidSzmqEyKCW+fbxwDQ6Bf4DDCplTfN+40l3xFsMZ0ktKKWzWekQhEvpZm4GsJhQxRoswRWX9pj7SwZNegIBFpwjlZzJRc9pxO0MTk5JKeFVVC3NjV+NYEBNhdWDUcjwUrGfib4s/KagD3IexTB4b4shp9KfetzHOxeJ2pL0XEoBjiwhK0J3bR8IZEW07YP/XEcyPQ1bHntK94zYg4OtkCL4hA6N7QTdlPlWDq6eLGExGa+i6aQ1zk/2E2pHW18QczYgDPXBSBO/+AZQb0bvYsDPHpal6jGjFk4+N2cZQ8Zm8Krbur77rZtiZOR+bizzlx9SzorGMxIPWS9JunB5olBR+3xs2yKJQQwei27gTJsdSMGIrlna5M+8SHUgMpx7aw10tLzMe3/cuInpcPRE3zoa2hgyEJESMyDBqtZJO3/LtKuKW+Vbqrka4RGCClXIhpMSw6sHkZjvorpN5tvU3eTCfiG13L41PSCHwKuvl
+ 50U6vR60
+ o1MZmIEX/ixF70IMAlp31vSAK5ics/qCAs0bsvf+sfQ0h7qqLudG+yWTnUJeHQI4XMKM5X3a192TksSAESstc95GrwRcdCcwOQUjtHl2moe4JwS6BXHcLWYi4VQEfYedLF4v904uP1VpY7XgSn6fcUbbeTWBNzjNolDppe8SMVY8TBaEf+kduxbEVLqcXTP8pCfilT0geu1qJXaaxFQGPGCKZxtJTBZs92aSomCAmllWvT6ZLdbE2TpbVysbY3F3ARuwloeLpns8BzMWSuH9MagsgDErLGGVnWwXWAMfg69hlJKdjEZYT4Nv9OBwi0cjIXfyzrATrdCKDySegi8wG2kNZXxxGmyEu4VicmOp/vMBeOSDvvprUvj9BbxprbpA0icpKm73cfhJXZlrCfxQTaAMFzaRgIqa7rmc0J1Grcqy71yVskAGxjrEqoQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,23 +107,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/30/25 11:49 PM, Richard Chang wrote:
-> +	bio = bio_alloc(zram->bdev, 1, REQ_OP_WRITE, GFP_NOIO | __GFP_NOWARN);
-> +	if (!bio) {
-> +		err = -ENOMEM;
-> +		goto out_free_page;
-> +	}
-> +
-> +	req = kmalloc(sizeof(struct zram_wb_request), GFP_NOIO | __GFP_NOWARN);
-> +	if (!req) {
-> +		err = -ENOMEM;
-> +		goto out_free_bio;
-> +	}
+When UFFDIO_MOVE is used with UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES and it
+encounters a non-present THP, it fails to properly recognize an unmapped
+hole and tries to access a non-existent folio, resulting in
+a crash. Add a check to skip non-present THPs.
 
-Why are 'req' and 'bio' allocated separately instead of creating a
-bio_set with front padding? See also bioset_init().
+Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+Reported-by: syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68794b5c.a70a0220.693ce.0050.GAE@google.com/
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Cc: stable@vger.kernel.org
+---
+Changes since v1 [1]
+- Fixed step size calculation, per Lokesh Gidra
+- Added missing check for UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES, per Lokesh Gidra
 
-Thanks,
+[1] https://lore.kernel.org/all/20250730170733.3829267-1-surenb@google.com/
 
-Bart.
+ mm/userfaultfd.c | 45 +++++++++++++++++++++++++++++----------------
+ 1 file changed, 29 insertions(+), 16 deletions(-)
+
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index cbed91b09640..b5af31c22731 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -1818,28 +1818,41 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+ 
+ 		ptl = pmd_trans_huge_lock(src_pmd, src_vma);
+ 		if (ptl) {
+-			/* Check if we can move the pmd without splitting it. */
+-			if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
+-			    !pmd_none(dst_pmdval)) {
+-				struct folio *folio = pmd_folio(*src_pmd);
++			if (pmd_present(*src_pmd) || is_pmd_migration_entry(*src_pmd)) {
++				/* Check if we can move the pmd without splitting it. */
++				if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
++				    !pmd_none(dst_pmdval)) {
++					if (pmd_present(*src_pmd)) {
++						struct folio *folio = pmd_folio(*src_pmd);
++
++						if (!folio || (!is_huge_zero_folio(folio) &&
++							       !PageAnonExclusive(&folio->page))) {
++							spin_unlock(ptl);
++							err = -EBUSY;
++							break;
++						}
++					}
+ 
+-				if (!folio || (!is_huge_zero_folio(folio) &&
+-					       !PageAnonExclusive(&folio->page))) {
+ 					spin_unlock(ptl);
+-					err = -EBUSY;
+-					break;
++					split_huge_pmd(src_vma, src_pmd, src_addr);
++					/* The folio will be split by move_pages_pte() */
++					continue;
+ 				}
+ 
++				err = move_pages_huge_pmd(mm, dst_pmd, src_pmd,
++							  dst_pmdval, dst_vma, src_vma,
++							  dst_addr, src_addr);
++				step_size = HPAGE_PMD_SIZE;
++			} else {
+ 				spin_unlock(ptl);
+-				split_huge_pmd(src_vma, src_pmd, src_addr);
+-				/* The folio will be split by move_pages_pte() */
+-				continue;
++				if (!(mode & UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES)) {
++					err = -ENOENT;
++					break;
++				}
++				/* nothing to do to move a hole */
++				err = 0;
++				step_size = min(HPAGE_PMD_SIZE, src_start + len - src_addr);
+ 			}
+-
+-			err = move_pages_huge_pmd(mm, dst_pmd, src_pmd,
+-						  dst_pmdval, dst_vma, src_vma,
+-						  dst_addr, src_addr);
+-			step_size = HPAGE_PMD_SIZE;
+ 		} else {
+ 			if (pmd_none(*src_pmd)) {
+ 				if (!(mode & UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES)) {
+
+base-commit: 01da54f10fddf3b01c5a3b80f6b16bbad390c302
+-- 
+2.50.1.552.g942d659e1b-goog
+
 
