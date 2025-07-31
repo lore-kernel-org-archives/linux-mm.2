@@ -2,84 +2,130 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F31BBC87FCC
-	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 10:29:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 23974C83F17
+	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 10:32:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 79FF86B008A; Thu, 31 Jul 2025 06:29:16 -0400 (EDT)
+	id B76636B007B; Thu, 31 Jul 2025 06:32:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7507A6B008C; Thu, 31 Jul 2025 06:29:16 -0400 (EDT)
+	id B273D6B0088; Thu, 31 Jul 2025 06:32:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6668E6B0092; Thu, 31 Jul 2025 06:29:16 -0400 (EDT)
+	id A15C96B008A; Thu, 31 Jul 2025 06:32:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 52A386B008A
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 06:29:16 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E7ECF5A8E1
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 10:29:15 +0000 (UTC)
-X-FDA: 83724187470.21.A927FA9
-Received: from mta21.hihonor.com (mta21.hihonor.com [81.70.160.142])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 7C6588000B
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 10:29:13 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=honor.com;
-	spf=pass (imf30.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=zhongjinji@honor.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 914DC6B007B
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 06:32:22 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 134FCC05A6
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 10:32:22 +0000 (UTC)
+X-FDA: 83724195324.12.9E5A8AC
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 0B9471C0006
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 10:32:19 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=A2+Js8tQ;
+	spf=pass (imf20.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753957754;
+	s=arc-20220608; t=1753957940;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=b3pEOMzJ8pGqnPhaX1WnMkWLwQfHUY9HFc/1uVAGeQs=;
-	b=VTsct77NzcIVLVCVn27IfuilHZ3mjLMJO0cGoxmbUXmEEqD1J3QsASAsBPZErPiQAaJfcZ
-	wTjG3DQm8To9NNfl06scSwaZPITfT0Ik+lNrGgjezAtvqfHTainTHhEGgYu9RrrSM81fdk
-	ZwlbOOvzfuYtxjTVCroXkJaVKCbfqRU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753957754; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=P4QDe8KbBOKLJQJobc6zrBQ/jJOdEvFf9AqsfgSwuAE=;
+	b=SyG02SEvo4MOcR3DZYx5xzAZvB/8H42GLvx/kqW2IetesxOLNi2veObqMAaHu5am3U+OwB
+	z/+5dYplQ9goAUOBKFv9UijcrOc4qrLhC+/MxOaK5WBCqhy+pqp0dvvrDLx9cWoF07uMKi
+	qWLslzo0GcFi+ARcUSElgzRluWTS6Ow=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753957940; a=rsa-sha256;
 	cv=none;
-	b=5qbZPYqw3Nrh5FjJtUYhI9QAa5ne/n1bJVKczajNQIMr9wYbxT3WBkWmgwZimxBkVr7ASc
-	wZn0GBp5f//g24uTiwkqA9kf1+uf0itHSGqna9rfbwtFtlWlyCltr1n5UfzC2hPIHRQOX7
-	e4QOgPMH5i4iOVn89CEIBEtpzGOuSPE=
+	b=E/W2iELtWKGTDhYTBwjy3c1v9pcMyZ+7+iG4AQ3rsdXLmAoWSKrOZB9f2ezHdqBKi96MKa
+	yL3fPalIjmm8o23U9z+qp2uwqrCwncOYoI6vktCgDhZl2NZRtx7cTqp47gHUetsag4p9lE
+	ScPoGIpyqBXl5kw0IdxzrfYGDMFyqY4=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=honor.com;
-	spf=pass (imf30.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=zhongjinji@honor.com
-Received: from w012.hihonor.com (unknown [10.68.27.189])
-	by mta21.hihonor.com (SkyGuard) with ESMTPS id 4bt4xZ1knMzYm1Z0;
-	Thu, 31 Jul 2025 18:26:26 +0800 (CST)
-Received: from a018.hihonor.com (10.68.17.250) by w012.hihonor.com
- (10.68.27.189) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 31 Jul
- 2025 18:29:08 +0800
-Received: from localhost.localdomain (10.144.20.219) by a018.hihonor.com
- (10.68.17.250) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 31 Jul
- 2025 18:29:08 +0800
-From: <zhongjinji@honor.com>
-To: <linux-mm@kvack.org>
-CC: <akpm@linux-foundation.org>, <mhocko@suse.com>, <rientjes@google.com>,
-	<shakeel.butt@linux.dev>, <npache@redhat.com>, <liulu.liu@honor.com>,
-	<feng.han@honor.com>
-Subject: [PATCH] mm: delay oom_reaper only for the process using robust-futex
-Date: Thu, 31 Jul 2025 18:29:04 +0800
-Message-ID: <20250731102904.8615-1-zhongjinji@honor.com>
-X-Mailer: git-send-email 2.17.1
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=A2+Js8tQ;
+	spf=pass (imf20.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3b794a013bcso914299f8f.2
+        for <linux-mm@kvack.org>; Thu, 31 Jul 2025 03:32:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753957938; x=1754562738; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=P4QDe8KbBOKLJQJobc6zrBQ/jJOdEvFf9AqsfgSwuAE=;
+        b=A2+Js8tQGesy1LL9rdWFl/J15f4iTqsk217lofHrmjWMHY204XzNNgT0IUTm9mckeX
+         5kDlaBJO5UKTZVxdqmj8zjaT+X5Gs5NgJ4BTaD4ODdP3qZcO0GW5OO1FpCHgVw+xDFJ+
+         273CyosoKLV5n1ClgEVq0WADcc03ScgKK5yD80hxu2RrmnEThpodFOA682GuEwF6vFdY
+         zCPE5HYvaf7WuI9pl46rqVNa8muGkvi+8zL1b7IfTylrNuFzRPls1d5phFkSBz5KV36d
+         xMnfmU0vuuUt/bUT3KlcR7+aH1Dn5G1ZxoeD9GBck6RHTNcjctX1JIiyU66rMkC7446z
+         jXgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753957938; x=1754562738;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=P4QDe8KbBOKLJQJobc6zrBQ/jJOdEvFf9AqsfgSwuAE=;
+        b=X3R1SSEjc2nnvN1mwaEw5vxgg07Ql/q1id9bA76+dT/sh6k7eX40G+2fCDomu+we1n
+         6V3JveOTTXVLTFYKjTrVXQaW8Q9Pc6XDyGIlzeHSmCWFRluZHcRYs1gPfvfLqWnUJ29O
+         Uk802E4rCddlhevYcHozsOpMiotiCglwwxKxKfkxe/WKASDZVAEurAmL6OPSH7H73cJ0
+         lho8/S5W0M8KgKdxGf+RGixUD5WqTRFR4w6h+SYQwCnat+9i/c1zn/2NORVjwdM/d0Va
+         X3q+jqi/FpC/RsO8wPuC7jt2/DPaKY0Sq4y/Dyq9tybJS2Gwe9uTK+US2XC2DjXpo+VJ
+         w9cA==
+X-Forwarded-Encrypted: i=1; AJvYcCWiJXHuIdYf7xI6Hnt2/vr+LrUr6HAqNwQ/W/tBU3rHqbQ1ixPpW5tnhM1DEy6ejnZ/k3top21tUw==@kvack.org
+X-Gm-Message-State: AOJu0YwGQXoxpywTylprAJX+a2IqRKVGyjJfk9JaxN4z+LfUv2T5PQvB
+	izO8sFRa1IjfBB5BGjv5OabG9wGq4qs2puKwh+UVTB0nVyreGOXgDVvi
+X-Gm-Gg: ASbGncvL0mBOxjMpkj32C/TtDFKTcCxZje4k73IpoOkTJWF85l4IEZObNXSOGiydvvM
+	z9Ddb4/w8yXd885xlCbLEFqSdffxq4Y6IQezU5SR1nrX4O/UstCbr8zgibK0sgzHQjBLvjRPzxK
+	YHNZulIy7jAvXyMTYPbd2n0HE3wggjRYfseOcw6xWXONd0azZOSH4N04WWFI81ObW5jjizpIHKL
+	OLvu8h291WQukA+d+lMMpFlQzo9j9T2c7Ph/e6VZdpxN2IlSMu2km15ORIg6veZI53yTvnnLB6T
+	3mh5ljwfrE0lAhoknCcc/pH0sh4L/g1K8lU6uVj0JK+3c8WtpeilIuT0w9IXc6dP8AKqwgoROli
+	sybrzlTvwybEWNJRtAncmSGtLMuR1QcPu74F0yZs+P5dXIiWsqBtmoTYlNJPP6XcpdmY8dnN4iq
+	Kv2lrgjw==
+X-Google-Smtp-Source: AGHT+IFodhEvytOPDh6mSNjWVs7q0+m5DzyaOr1Qj+ffoHQglGyK9LooYmMshusN83lCfsEblfcqCw==
+X-Received: by 2002:a05:6000:144b:b0:3b5:f8b3:d4fc with SMTP id ffacd0b85a97d-3b7950190e7mr6335576f8f.53.1753957938232;
+        Thu, 31 Jul 2025 03:32:18 -0700 (PDT)
+Received: from ?IPV6:2a03:83e0:1126:4:14f1:c189:9748:5e5a? ([2620:10d:c092:500::4:3f35])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4589ee57922sm21572575e9.22.2025.07.31.03.32.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 31 Jul 2025 03:32:17 -0700 (PDT)
+Message-ID: <85a85f3d-8c3e-4159-b186-d1f9f0c5530d@gmail.com>
+Date: Thu, 31 Jul 2025 11:32:16 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/5] prctl: extend PR_SET_THP_DISABLE to optionally
+ exclude VM_HUGEPAGE
+To: David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, corbet@lwn.net, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org, baohua@kernel.org,
+ shakeel.butt@linux.dev, riel@surriel.com, ziy@nvidia.com,
+ laoar.shao@gmail.com, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
+ npache@redhat.com, Liam.Howlett@oracle.com, ryan.roberts@arm.com,
+ vbabka@suse.cz, jannh@google.com, Arnd Bergmann <arnd@arndb.de>,
+ sj@kernel.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ kernel-team@meta.com, Matthew Wilcox <willy@infradead.org>
+References: <20250725162258.1043176-1-usamaarif642@gmail.com>
+ <20250725162258.1043176-2-usamaarif642@gmail.com>
+ <8c5d607d-498e-4a34-a781-faafb3a5fdef@lucifer.local>
+ <6eab6447-d9cb-4bad-aecc-cc5a5cd192bb@gmail.com>
+ <41d8154f-7646-4cca-8b65-218827c1e7e4@lucifer.local>
+ <36cae7e8-97d0-4d53-968b-7f39b34fa5c0@redhat.com>
+Content-Language: en-US
+From: Usama Arif <usamaarif642@gmail.com>
+In-Reply-To: <36cae7e8-97d0-4d53-968b-7f39b34fa5c0@redhat.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.144.20.219]
-X-ClientProxiedBy: w001.hihonor.com (10.68.25.235) To a018.hihonor.com
- (10.68.17.250)
-X-Rspamd-Queue-Id: 7C6588000B
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 0B9471C0006
+X-Stat-Signature: ztr5npmdoun9qpkkwdniqqsii5yam91m
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: ghsgmjfnpd9kbfz1593szja5sjkwfn94
-X-HE-Tag: 1753957753-71990
-X-HE-Meta: U2FsdGVkX1+PNhzsjsDLtWSqzqlm9d8qtuqsEwlDKhMSIIuQn1UiokaAJ4f2aU+u92YfXfkfC+83w4nIfNPZGAlmC6Wa1xyMpX9NAZNX6MMlFR67f9SEzW3BM8cJVqJvqLj8SITt7+R5dzKEwikp5PZnv/EDzA94TTBDrIUQMg35iJvUFv0g85PWaHvs+5YgiuDxF6TEqtIj4fJ1F+oShwaeDytXHRqK6OtzsfMFX4pL7cdxFSl67xycWpa0oCTPcFfFVnSAulu+wnv42if5+QudZcDxyBRZsphY9jqgjsL6xKR1nN8j/Ebwhi0v6hMxicdzATF3FfTuKxU1D7OfnN7r6HzRSys7aO0SkczOsaHHBO7ynmVbE4/D6XVCyf1jXBUlMpg+Sqh5AOY64ipfbdoefeDKmyEPJiCcIUl4ixdhK1j0qZhmv6pQaBdZrSZn5cgcVHh113FPw+Ss1/8Vl0MZCIgNIPSzBJXVnS6tat21/7UwZz9/P5+AAhQdC8vj9+w+VGMic+L7ZZJGlOwlRBD+d0lftcrcen0uWM8V76TVMmg8+C4NwVkjP+YBreU6mBRMbNtCz3m4qU24bRfsWaaK0ng6SVI79lJFciitdntoXeJ1E10ADMkYwizkMhmJrrjA+9Du6+n4QILXQEfB7maTn8CWInvRnSApXOQb7BTkikiLaJD7tr33fI6uQgEwBDsz4/EvS0OiqTuXJRizwj7c1nJ/AG+q/kBVmhWA5cmvQivgXUqEWpMJt4JG98S/hrsQIuWi91Tn/wz5lP9fAB8ZRVyiKTbmZzFQ1FmAu9VidiDkQEyiA19+MmEExzForeWfUvv9HSbmiuTSRmwjOuBzKixlvqKuHAWDbYJ93Sexoty883E+SRB1B7mJ8nCKq6HQjIjBg6XK3TBXzVOh0C4SDp6sB4CR7ZiQIxns0TeegbHkify0DTvrqlghjxduf/oio8SQ488vzeYqIwC
- 4lyW04KU
- fxJJZ9ZbfKEJbEo9LxnwAUSpt2ZSnS0qT8GDPDzPacYuRxfQNelOZ+z3qnxNEtdGPNHCzsNaWHMzgG6h1r7Lkxr9fTgS2ytpwH2dotFmbfqDD2jWkT0zTR0Js4WkTe5GYSCqH3VseN4VTNF76+vI9kfbT4KqAMiBXt86vcycE/U9RVSRtFkriYHa+17qAsTtO65BZC6h9UwMKWBo2U7X57+VWLfpG2S7pNUtjy9njnAk5t8AeU0rukyEqYDV5RV/VoBCZytqBGMs8og89aZDmuZmSP+FibOUkerUe2yOSSuXzV8LENOlt0NIURM/BgBIyFc6rO/DWEh37gP6kzcX484aR2CoEp2dM59VZaI/xtLpEFM4hbCiQD0uMvA==
+X-HE-Tag: 1753957939-90994
+X-HE-Meta: U2FsdGVkX19YjAtJeO0R8PwnPOq6JIZRea2GSd0uUbnGZh5nDyOLTxQSm7wzq724w2fHD+uBw7trQjsI/2nFeIH3uCX8lPxJPMIQwKVqvpqHSKS/+I5zhbDurQoc7GOP+x2pFyQuUtfRIsB8I1tSxJqJZ2e/FXbNLlBUinFOOmx0eVjiO4fyTCY6bLfIXDOqFcwVsjsJRTRT1ehfHbcGENKrJs6TM6ySdNS94Rr0uPWixMv+aeKfQ3FTap1ZfErxEZy6GQRgpy65fPzJUFstqVLXMVjVJEI74ChOR4S0jOvhUHUH5uROTxx/KFNZI7S6yXwwij+DPhT/OKX4icQkW9fwLNzjDTl7Edoa/Q4M6jAavSOcwbPauw0HBca8N01MKK4wB68G2mJUb5yyEzwcA17OJT1pLNxhdutMWpm7n1EbFfVRgXqxjhrUf+6vr4s78oDHwppQ+bhMiuYlEJDnmRHvhiRvHfsdTC9t05ZWupS/t9Ayfrum3eTDa6T+qJ7ZM+7Y3hPqUg9nFa6m0ayz00F9ifmF7H9KjG+0Nxbb81Z4h4KeMTGrVpSbmrmcFr2W7noS91l1gMIE2g0KHpNVH7NghHj+THH4CPiFSy3hvmX3UKInq31zvzX0ARLrAE6KW1RarGG+PoKDHVJoGOLsuLJqjiyPqN06Pf6ZTg0aF3eoDSoI/WSyhW9tJ/GDmDqsxUEKiL0hpDvrdUBVEha3nhnS7OeR0oDNJnfm9awL8zORakWqSJoVCloUg8GsM94h42+fEA/BgJ56Av5lWWCX8m2lzKaj+mKrgjVTqGnz1Bf5JmDgP5iciwa9+mKiPUc1YLyRrvl985hYsIRwTnJ7yiSlurSmK40AfOg3gBqzreTWSWA3R8v/ICrw4bwlTsnOlHjGM5HJHgJ7H9PDdbN5z7tu/ClsXQVIH/bDHdEiDifT3Anvk3p2GDOLjfGs0frgI4xpogkDdGOPVgebsrE
+ kzs5cy5Z
+ EVST1zCrIPR6nmU5OJ3X08B1wF9UE0CL4uoqWKL5mqrKh42yVT97f+Yp8v85XtgSFrwsnm3Qhf8Moj4P7ww7Tv2rmdujvqdXfRq1lqkGainiO40cTZdFc8+LyG3wL+oRaHrYVD2IahlF1q5jH00RjrzJLwZrnUWclnGGARoGduMFXgTOU7ndUdoARl6GpAv0L4Ys2Xz71Ti5HSvyQPnLQQB2KKv8lVtCGnGQq0ZTkzz5gW516mpWrJBBfAbrNqLpW7J4cR0tuILirofMpMhMv9hgWanZ7Tl2YbaeLg4IK1OLp/tqK4dHbjQ3vZk2Xy1FaudRsseNdqUsfQlM4qoXfSdppEWcHdCLpeMnXQc2R51HKu/iEEGuXI+NtsdlwAYbYnLVe+QxiR+Nk/2GvecQSaFUOLHeJH2+watOKrmoSp9HPD0I2/JdsbhrUycwNhM6mbQy7NgF3H4DsDo2z/Vsfrjg+ZWvwwdd1Inn9ujxv3GsONBo4hpTXZPGWVN4D9oY6posu8hU3Jf+glTlgSk0cra2fhkSct6vsOP/P+2l4U5HtOJ68PnoJxGpgAQEIG2QdlG9Y6Do5U5meh/BgrOtKSJAtrpKb3iSTid7vlP0IfRN6lwwLM/K7vjYZtw34NW9gkg4Thcw1JzwFo0HnmgO2foMulQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,186 +134,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: zhongjinji <zhongjinji@honor.com>
 
-After the patch here:
-https://lore.kernel.org/all/20220414144042.677008-1-npache@redhat.com/T/#u
-was merged, the oom_reaper almost stops working.
 
-But I noticed that many processes do not use robust-futex, so they don’t
-access user-space memory during do_exit and don’t run into the problem
-mentioned in that patch.
+On 31/07/2025 09:38, David Hildenbrand wrote:
+> Thanks Lorenzo for the review, I'll leave handling all that to Usama from this point :)
+> 
+> On 31.07.25 10:29, Lorenzo Stoakes wrote:
+>> Just a ping on the man page stuff - you will do that right? :>)
+>>
+> 
+> I'm hoping that Usama can take over that part. If not, I'll handle it (had planned it for once it's in mm-stable / going upstream).
 
-So, this change delays the oom_reaper only when the process uses
-robust-futex, letting the oom_reaper work properly in more cases.
 
-Signed-off-by: zhongjinji <zhongjinji@honor.com>
----
- mm/oom_kill.c | 41 ++++++++++++++++++++++++++++++-----------
- 1 file changed, 30 insertions(+), 11 deletions(-)
+Yes, plan to take care of man page, systemd, etc once the patch makes it to mm-stable. 
 
-diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-index 25923cfec9c6..7e74dc0ac2a6 100644
---- a/mm/oom_kill.c
-+++ b/mm/oom_kill.c
-@@ -692,15 +692,18 @@ static void wake_oom_reaper(struct timer_list *timer)
-  * before the exit path is able to wake the futex waiters.
-  */
- #define OOM_REAPER_DELAY (2*HZ)
--static void queue_oom_reaper(struct task_struct *tsk)
-+static void queue_oom_reaper(struct task_struct *tsk, bool may_access_user)
- {
-+	unsigned long reaper_delay = 0;
-+
- 	/* mm is already queued? */
- 	if (test_and_set_bit(MMF_OOM_REAP_QUEUED, &tsk->signal->oom_mm->flags))
- 		return;
--
-+	if (may_access_user)
-+		reaper_delay = OOM_REAPER_DELAY;
- 	get_task_struct(tsk);
- 	timer_setup(&tsk->oom_reaper_timer, wake_oom_reaper, 0);
--	tsk->oom_reaper_timer.expires = jiffies + OOM_REAPER_DELAY;
-+	tsk->oom_reaper_timer.expires = jiffies + reaper_delay;
- 	add_timer(&tsk->oom_reaper_timer);
- }
- 
-@@ -742,7 +745,7 @@ static int __init oom_init(void)
- }
- subsys_initcall(oom_init)
- #else
--static inline void queue_oom_reaper(struct task_struct *tsk)
-+static inline void queue_oom_reaper(struct task_struct *tsk, bool may_access_user)
- {
- }
- #endif /* CONFIG_MMU */
-@@ -864,6 +867,11 @@ static inline bool __task_will_free_mem(struct task_struct *task)
- 	return false;
- }
- 
-+static inline bool exit_may_access_user(struct task_struct *task)
-+{
-+	return task->robust_list || task->compat_robust_list;
-+}
-+
- /*
-  * Checks whether the given task is dying or exiting and likely to
-  * release its address space. This means that all threads and processes
-@@ -871,11 +879,12 @@ static inline bool __task_will_free_mem(struct task_struct *task)
-  * Caller has to make sure that task->mm is stable (hold task_lock or
-  * it operates on the current).
-  */
--static bool task_will_free_mem(struct task_struct *task)
-+static bool task_will_free_mem(struct task_struct *task, bool *may_access_user)
- {
- 	struct mm_struct *mm = task->mm;
- 	struct task_struct *p;
- 	bool ret = true;
-+	bool access = false;
- 
- 	/*
- 	 * Skip tasks without mm because it might have passed its exit_mm and
-@@ -888,6 +897,8 @@ static bool task_will_free_mem(struct task_struct *task)
- 	if (!__task_will_free_mem(task))
- 		return false;
- 
-+	access |= exit_may_access_user(task);
-+
- 	/*
- 	 * This task has already been drained by the oom reaper so there are
- 	 * only small chances it will free some more
-@@ -912,8 +923,11 @@ static bool task_will_free_mem(struct task_struct *task)
- 		ret = __task_will_free_mem(p);
- 		if (!ret)
- 			break;
-+		access |= exit_may_access_user(p);
- 	}
- 	rcu_read_unlock();
-+	if (may_access_user)
-+		*may_access_user = access;
- 
- 	return ret;
- }
-@@ -923,6 +937,7 @@ static void __oom_kill_process(struct task_struct *victim, const char *message)
- 	struct task_struct *p;
- 	struct mm_struct *mm;
- 	bool can_oom_reap = true;
-+	bool may_access_user = false;
- 
- 	p = find_lock_task_mm(victim);
- 	if (!p) {
-@@ -950,6 +965,7 @@ static void __oom_kill_process(struct task_struct *victim, const char *message)
- 	 * reserves from the user space under its control.
- 	 */
- 	do_send_sig_info(SIGKILL, SEND_SIG_PRIV, victim, PIDTYPE_TGID);
-+	may_access_user |= exit_may_access_user(victim);
- 	mark_oom_victim(victim);
- 	pr_err("%s: Killed process %d (%s) total-vm:%lukB, anon-rss:%lukB, file-rss:%lukB, shmem-rss:%lukB, UID:%u pgtables:%lukB oom_score_adj:%hd\n",
- 		message, task_pid_nr(victim), victim->comm, K(mm->total_vm),
-@@ -990,11 +1006,12 @@ static void __oom_kill_process(struct task_struct *victim, const char *message)
- 		if (unlikely(p->flags & PF_KTHREAD))
- 			continue;
- 		do_send_sig_info(SIGKILL, SEND_SIG_PRIV, p, PIDTYPE_TGID);
-+		may_access_user |= exit_may_access_user(p);
- 	}
- 	rcu_read_unlock();
- 
- 	if (can_oom_reap)
--		queue_oom_reaper(victim);
-+		queue_oom_reaper(victim, may_access_user);
- 
- 	mmdrop(mm);
- 	put_task_struct(victim);
-@@ -1020,6 +1037,7 @@ static void oom_kill_process(struct oom_control *oc, const char *message)
- 	struct mem_cgroup *oom_group;
- 	static DEFINE_RATELIMIT_STATE(oom_rs, DEFAULT_RATELIMIT_INTERVAL,
- 					      DEFAULT_RATELIMIT_BURST);
-+	bool may_access_user = false;
- 
- 	/*
- 	 * If the task is already exiting, don't alarm the sysadmin or kill
-@@ -1027,9 +1045,9 @@ static void oom_kill_process(struct oom_control *oc, const char *message)
- 	 * so it can die quickly
- 	 */
- 	task_lock(victim);
--	if (task_will_free_mem(victim)) {
-+	if (task_will_free_mem(victim, &may_access_user)) {
- 		mark_oom_victim(victim);
--		queue_oom_reaper(victim);
-+		queue_oom_reaper(victim, may_access_user);
- 		task_unlock(victim);
- 		put_task_struct(victim);
- 		return;
-@@ -1112,6 +1130,7 @@ EXPORT_SYMBOL_GPL(unregister_oom_notifier);
- bool out_of_memory(struct oom_control *oc)
- {
- 	unsigned long freed = 0;
-+	bool may_access_user = false;
- 
- 	if (oom_killer_disabled)
- 		return false;
-@@ -1128,9 +1147,9 @@ bool out_of_memory(struct oom_control *oc)
- 	 * select it.  The goal is to allow it to allocate so that it may
- 	 * quickly exit and free its memory.
- 	 */
--	if (task_will_free_mem(current)) {
-+	if (task_will_free_mem(current, &may_access_user)) {
- 		mark_oom_victim(current);
--		queue_oom_reaper(current);
-+		queue_oom_reaper(current, may_access_user);
- 		return true;
- 	}
- 
-@@ -1231,7 +1250,7 @@ SYSCALL_DEFINE2(process_mrelease, int, pidfd, unsigned int, flags)
- 	mm = p->mm;
- 	mmgrab(mm);
- 
--	if (task_will_free_mem(p))
-+	if (task_will_free_mem(p, NULL))
- 		reap = true;
- 	else {
- 		/* Error only if the work has not been done already */
--- 
-2.17.1
+> 
+> [ ... ]
+> 
+>>>>> +/*
+>>>>> + * Don't disable THPs when explicitly advised (e.g., MADV_HUGEPAGE /
+>>>>> + * VM_HUGEPAGE).
+>>>>> + */
+>>>>> +# define PR_THP_DISABLE_EXCEPT_ADVISED    (1 << 1)
+>>>>
+>>>> NO space after # please.
+>>>>
+>>>
+>>> I think this is following the file convention, the space is there in other flags
+>>> all over this file. I dont like the space as well.
+>>
+>> Yeah yuck. It's not a big deal, but ideally I'd prefer us to be sane even
+>> if the rest of the header is less so here.
+> 
+> I'm afraid us doing something different here will not make prctl() any better as a whole, so let's keep it consistent in this questionable file.
+> 
+>>
+>>>
+>>>>>   #define PR_GET_THP_DISABLE    42
+>>>>>
+>>>>>   /*
+>>>>> diff --git a/kernel/sys.c b/kernel/sys.c
+>>>>> index b153fb345ada..b87d0acaab0b 100644
+>>>>> --- a/kernel/sys.c
+>>>>> +++ b/kernel/sys.c
+>>>>> @@ -2423,6 +2423,50 @@ static int prctl_get_auxv(void __user *addr, unsigned long len)
+>>>>>       return sizeof(mm->saved_auxv);
+>>>>>   }
+>>>>>
+>>>>> +static int prctl_get_thp_disable(unsigned long arg2, unsigned long arg3,
+>>>>> +                 unsigned long arg4, unsigned long arg5)
+>>>>> +{
+>>>>> +    unsigned long *mm_flags = &current->mm->flags;
+>>>>> +
+>>>>> +    if (arg2 || arg3 || arg4 || arg5)
+>>>>> +        return -EINVAL;
+>>>>> +
+>>>>
+>>>> Can we have a comment here about what we're doing below re: the return
+>>>> value?
+>>>>
+>>>
+>>> Do you mean add returning 1 for MMF_DISABLE_THP_COMPLETELY and 3 for MMF_DISABLE_THP_EXCEPT_ADVISED?
+>>
+>> Well more so something about we return essentially flags indicating what is
+>> enabled or not, if bit 0 is set then it's disabled, if bit 1 is set then
+>> it's that with the exception of VM_HUGEPAGE VMAs.
+> 
+> We have that documented above the defines for flags etc. Maybe simply here:
+> 
+> /* If disabled, we return "1 | flags", otherwise 0. */
+> 
+
+Thanks, will add this to next revision.
 
 
