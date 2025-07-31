@@ -2,149 +2,106 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 04DC1C87FCA
-	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 17:31:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 13D0BC87FCC
+	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 17:37:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CF726B008A; Thu, 31 Jul 2025 13:31:25 -0400 (EDT)
+	id A9E7D6B007B; Thu, 31 Jul 2025 13:37:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9804B6B008C; Thu, 31 Jul 2025 13:31:25 -0400 (EDT)
+	id A76656B0088; Thu, 31 Jul 2025 13:37:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8967E6B0092; Thu, 31 Jul 2025 13:31:25 -0400 (EDT)
+	id 9B4546B0089; Thu, 31 Jul 2025 13:37:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 758706B008A
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 13:31:25 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E5EF0C098E
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 17:31:24 +0000 (UTC)
-X-FDA: 83725251288.28.B559B23
-Received: from panther.cherry.relay.mailchannels.net (panther.cherry.relay.mailchannels.net [23.83.223.141])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 5CF8D4000B
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 17:31:22 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=stgolabs.net header.s=dreamhost header.b=Qo+ksQV8;
+	by kanga.kvack.org (Postfix) with ESMTP id 8EFF36B007B
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 13:37:43 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4BD97BC611
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 17:37:43 +0000 (UTC)
+X-FDA: 83725267206.07.4FB1CDD
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 4E826180012
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 17:37:41 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=iKWwh1a8
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753983461; a=rsa-sha256;
+	cv=none;
+	b=6lRfuIKyt+lwdiNai+ZsWy3d++emam5wWQ+trGrY5uxRxO72ppq8FMKkhJAk6MVrT9y+kl
+	WBQ/OwaJtabKRZ2w2foAruWuiubQ2mOk4gtCfaKXiTq9lOddWrpfUr3knAeZzQd4mGCeTS
+	6LOGwsBjwsZerWrGoQj6FemIbfI7mZ8=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=iKWwh1a8;
 	dmarc=none;
-	arc=pass ("mailchannels.net:s=arc-2022:i=1");
-	spf=pass (imf04.hostedemail.com: domain of dave@stgolabs.net designates 23.83.223.141 as permitted sender) smtp.mailfrom=dave@stgolabs.net
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753983082; a=rsa-sha256;
-	cv=pass;
-	b=ecWPDoY5S1yeQe0nAQmMLqXNfCTKNrA2XqyEdIa70cFYu0p+0fUixJd1s9AlnFoEZ2WFaj
-	xNdj7CmJHCaYQSwz4Z3OboE7m8Fz5kqkrpAJ7PzXFUJdWGp/eSAqsvUeS8Mlol+GT0+zId
-	Zp0pSPX63NEboMl55BUYQWXRDkjv1Sw=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=stgolabs.net header.s=dreamhost header.b=Qo+ksQV8;
-	dmarc=none;
-	arc=pass ("mailchannels.net:s=arc-2022:i=1");
-	spf=pass (imf04.hostedemail.com: domain of dave@stgolabs.net designates 23.83.223.141 as permitted sender) smtp.mailfrom=dave@stgolabs.net
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753983082;
+	spf=none (imf24.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753983461;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qWclPkMjxUD+/NTEaRJVfuw6R1asDfrzpU0eqwsClcc=;
-	b=NvNVgo/xHLVxnN/s4eGLPpRNADM7p1KXh3P/MANT02ieBzvN5b/+rZtrmeiFIIF1k2XQYt
-	9Cg435QiRNxSgEGBjcGQ3pWYiHEdhu4iPzZawCCngJTNBxUCGlMnfVwMEYxK9uBjIY6zNH
-	pczrvH8vPLxv+itf9S2P886WH4l86jE=
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id A30102C322C;
-	Thu, 31 Jul 2025 17:31:20 +0000 (UTC)
-Received: from pdx1-sub0-mail-a245.dreamhost.com (100-123-72-202.trex-nlb.outbound.svc.cluster.local [100.123.72.202])
-	(Authenticated sender: dreamhost)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 9B0242C2FD1;
-	Thu, 31 Jul 2025 17:31:19 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1753983079; a=rsa-sha256;
-	cv=none;
-	b=uyrzBjTtDWoV7Pl97ZqfJ5oCtbRqjabgvwspHeq7IX4Xs1TQLzNobaveG4B89TAMXo92ZQ
-	lIz6ri8HK9bdRfhSvD3CTf3OngBF35b6EyycwIyy+uwOPivJ9gR0tnyD4wYHljhoyhWamT
-	MVA3opk+Cj7mxyxA64L9WzzNuVjRfbP9IZkic0dAaWyZyr3UHTUEIdYgf9cgCzbYQKeZtC
-	NGwa4w2ulNq1QTZHIuv9MG2XvtpNrlcCc6EUqi6MCipoqy9nX+4g50NmTRtEfC0sI9r2es
-	C0ZDlc6IhFyFfbuxGOH5SQqQE0N3TGe9KJoOhN4tJ5bau2EcaryGIn4cSin7pQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1753983079;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qWclPkMjxUD+/NTEaRJVfuw6R1asDfrzpU0eqwsClcc=;
-	b=jbbEq8XIgwQvgjaCYy3YBVJGhp1VNRtI1dD7OVZWLqW2GVkdVwrO5Tq0tBuze5pANOFArF
-	TSSrt/lnTspvC0EGlpcJdQ3jEq7Du5MhM9q9ccwt2VpG3vuvH1tGI/Oz2BEcPmBKpbIMKV
-	yWrmXwqGtOYGQr93BTbquXiIqxKESu//KX/4dw9dlUUr2GbJ+uUccOmYQBpi+jLRU6LyMM
-	s3EmJSkpqU4qV1cNw/g5UkVJQhVUz5jOgdruTrJdSwn5lsNKBBTEt6R5qeapzZelfkUWj1
-	N5NUi3lOsCQS2CM9ws3vz9FD4TROXXOdDAxfTxa/rsuoQRaMK9dO/aGepWIDSQ==
-ARC-Authentication-Results: i=1;
-	rspamd-674584974d-lqgt6;
-	auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
-X-MailChannels-Auth-Id: dreamhost
-X-Eyes-Gusty: 6b12fe6574b28742_1753983079956_3957697839
-X-MC-Loop-Signature: 1753983079956:215934665
-X-MC-Ingress-Time: 1753983079955
-Received: from pdx1-sub0-mail-a245.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.123.72.202 (trex/7.1.3);
-	Thu, 31 Jul 2025 17:31:19 +0000
-Received: from offworld (syn-076-167-199-067.res.spectrum.com [76.167.199.67])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: dave@stgolabs.net)
-	by pdx1-sub0-mail-a245.dreamhost.com (Postfix) with ESMTPSA id 4btGMp5Pz6zB4;
-	Thu, 31 Jul 2025 10:31:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
-	s=dreamhost; t=1753983079;
-	bh=qWclPkMjxUD+/NTEaRJVfuw6R1asDfrzpU0eqwsClcc=;
-	h=Date:From:To:Cc:Subject:Content-Type;
-	b=Qo+ksQV8CHsEepnpUdcRI8W+C8SryZEte9fR7uMeynAaxpPwIhC9Z8tFnGQzi5gR0
-	 P0QwJ4a78Nv4dAGl8ifLr+3KtN8q/auF6YBjAnJXSL9PxK55QHzpLjMBCDg1YoKr8N
-	 s5aQ7zzYBURLnSNd9xCYalALwzN7qhiMuSEkjWyyevPuAJhJ20mNgO1qETPhE8UKOu
-	 i63k3pI/MLzOav8DRSW/pwGptfVO/+IbWC/lQjg/4Ag/ZoNH+jaTn/GUjv0YH1d7Yp
-	 /anUi523lxthZUHVattYUjjFA/50jId5zhlbJEVTkLVO2DtNhm8dFeFltwZXhqZIb4
-	 cBNIEFbYRw+KQ==
-Date: Thu, 31 Jul 2025 10:31:16 -0700
-From: Davidlohr Bueso <dave@stgolabs.net>
-To: David Rientjes <rientjes@google.com>
-Cc: Fan Ni <nifan.cxl@gmail.com>, Gregory Price <gourry@gourry.net>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Raghavendra K T <rkodsara@amd.com>,
-	"Rao, Bharata Bhasker" <bharata@amd.com>,
-	SeongJae Park <sj@kernel.org>, Wei Xu <weixugc@google.com>,
-	Xuezheng Chu <xuezhengchu@huawei.com>,
-	Yiannis Nikolakopoulos <yiannis@zptcorp.com>,
-	Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org
-Subject: Re: [Linux Memory Hotness and Promotion] Notes from July 17, 2025
-Message-ID: <20250731173116.jf7bex7evice7zhl@offworld>
-Mail-Followup-To: David Rientjes <rientjes@google.com>,
-	Fan Ni <nifan.cxl@gmail.com>, Gregory Price <gourry@gourry.net>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Raghavendra K T <rkodsara@amd.com>,
-	"Rao, Bharata Bhasker" <bharata@amd.com>,
-	SeongJae Park <sj@kernel.org>, Wei Xu <weixugc@google.com>,
-	Xuezheng Chu <xuezhengchu@huawei.com>,
-	Yiannis Nikolakopoulos <yiannis@zptcorp.com>,
-	Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org
-References: <c2f5a8d7-061b-7649-2b9d-03e6314d1102@google.com>
+	bh=p81bLGAEXCTve0S2bSlDolWBTWQ0gkC1ozZDbrTl9gw=;
+	b=vyYkU9GNDU13Ah5iFVq3vmlLd7KYwBv2xMbhRJaJU51vkXx2JbU7PbmEKCTScVD3p1Lj1v
+	P0ung8fCN/ghbwOceYOLG4k1UPVZS7v5l//IQ4/ZR8D7TUR0QSFrZ1bEu5c3LFFsceA/FU
+	izW0OiRk1x0CJp24nrTJGFLgut10fhk=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=p81bLGAEXCTve0S2bSlDolWBTWQ0gkC1ozZDbrTl9gw=; b=iKWwh1a88Q0pAf4bvxfAD5Txdc
+	EE90MjrkC8Uduz8SZ6vXiansbV8frsRKlWXThc48w73PhEqccyoX4tMljfHq+8Rhz9i2ceiiTpnNQ
+	7hjsoOf+OUPX+pHbDNVQLDykrMSNBfUePqaONzx/4EcyEuzR/wo0kYwvkbEPCkU9M1bzxAWY1d2bj
+	ohP5kNlKgUTJVA9ZUQHkyV+nsX3SWV9d4/YDSTVwIwFe2VNJRwzXwJ/sEIwEa9qaSxvuX+eYykKKV
+	Yo/BB2cxQ9KFglR+QaHCwdd6BFZFTPe+0RrFxYMe0Vnzv0Y1POwKGhi1jrFc7WsVSY+Z/IRvpV2Bt
+	sXEcrVpw==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uhXDL-0000000H6sX-2SDg;
+	Thu, 31 Jul 2025 17:37:11 +0000
+Date: Thu, 31 Jul 2025 18:37:11 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
+	Christoph Hellwig <hch@lst.de>, Leon Romanovsky <leon@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, iommu@lists.linux.dev,
+	virtualization@lists.linux.dev, kasan-dev@googlegroups.com,
+	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Jason Gunthorpe <jgg@ziepe.ca>
+Subject: Re: [PATCH 0/8] dma-mapping: migrate to physical address-based API
+Message-ID: <aIupx_8vOg8wQh6w@casper.infradead.org>
+References: <CGME20250625131920eucas1p271b196cde042bd39ac08fb12beff5baf@eucas1p2.samsung.com>
+ <cover.1750854543.git.leon@kernel.org>
+ <35df6f2a-0010-41fe-b490-f52693fe4778@samsung.com>
+ <20250627170213.GL17401@unreal>
+ <20250630133839.GA26981@lst.de>
+ <69b177dc-c149-40d3-bbde-3f6bad0efd0e@samsung.com>
+ <f912c446-1ae9-4390-9c11-00dce7bf0fd3@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c2f5a8d7-061b-7649-2b9d-03e6314d1102@google.com>
-User-Agent: NeoMutt/20220429
-X-Rspamd-Queue-Id: 5CF8D4000B
-X-Stat-Signature: 87kd1gdqt6kodx9rwqdoy7o3f7eoe1wz
+In-Reply-To: <f912c446-1ae9-4390-9c11-00dce7bf0fd3@arm.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4E826180012
+X-Stat-Signature: drdaj6rib7rtmamyjhk7d9qek3hmxyhe
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1753983082-773898
-X-HE-Meta: U2FsdGVkX1/SIy6kePwfFWrCXPz0ha37FlENRM0PCkbEvgiG/n3XDY6Sr+jjdZOSmfrJZ0mnpMaLwrtjxBw++cvmqTZ4Xzi6vPh49NpL8hM6vmw/a5oSPd0U3E8qF8lV8uVBLKNR8sib+sPNwBZng9KrfTYYzkpeAnalphzkwAzIR9gRx630deFhdh1N6oLCF5/yZFGDyPVixmOUl1gMuIFD+Muoj5IRJZs69hRQE7UvY3YDO36zxt49pxj4Pq/CQ36k50DianywfheaiuXB9t3M/fAyGlzEoJTz2Tknv8KTPl9r16eOYNXWDRWT8XzfChUP6gl6bX/vhjHCitLCZB8bvPNzF2pNAogXstGDpkOR8Wm8VBD84y6oe+qlpufNKK7l3w+Q8IN1aQc47b6VXQM6VQ7dIweT5nERwlTaIUfjoXSVxRKWuZBd5d6ZztLp7k6Ii7LGocT2uaRDyR4u6Qd5BZzMZbEBRxGeAT4dpnsbGI7d+GWtXuxp8haZEKV+qNf5tPJxcKo2yqza/3FRNtBFp3DuX743wE/qhC1W67LedDCPCA/QaA3fN1Xi0dG755HfiTDMk3DeFt4/JuSecnSdPHWz5DetBVH7XHZEuxk4ouUHHpHpkoRm00bO5xOy36Dwcohs8nOVbK0GV+V16fDcbugK34EjQmcKnQkWQeK3DDXSueWDzyJwOAZFBuqlXLRxSOjwaZCzdBw/E/0w4GaUS8plfZ13c82Fp4FrO/KtHPQpZL2T7s1oCDjuQGzDedTgsgUPwY2l0ef+SSpJgSKo9lMnLUszxubYmruTzvIFgLgOvpeA5xv5yqY6HfBADnqUJvwfSMXPA343ciBz7m3Lhpa7ndh5kWa9IK+yF7xMMzTK9XWeLVqcKmWHkbMNsBNQ3rDo+MMMVhfnAB7PzNFxG3RKQiDd/e0Fi7JV3FLSRYOWNC52PYcgqbxCHEHUK1OosIzSElZxy7bLfsP
- QTw7Pb9+
- vauG6/NF/FmJ0qmk9QwqdCyTIWExZlhwmhWBccvVvmRUl8qsGP7YseM/+i5bFpjcs8ZyYEpmzpf6vl9jL42Gd25JxbYeM/yl3xaj58KpYjvJjaXQhq6m+kDytLPT+1SZnFzDZdM59D+QaK2dTGUE4HwgaHIMgN7wkcepwlv/42zxhQ2iHxhpR2CniadP2XaV/dgjGoihyLxcGWExMV3MLnWO5cqWWmZnJ1isVd3RuwWH2YgDXdOFiUVxDigtyuBwppD3krdpoEZg88rYlRJy0CWxRbCKWQO1ive3LmAvPJBdd8H1gnye/Ya1wHWF8WhCld0yt8TFO3xyCFLGpetqJBzS+9LLYVrL0bqC8wOzjMP1WjAAARg0ou8tEpc7cy6FDMo75oyfrnnmgLgE=
+X-HE-Tag: 1753983461-274818
+X-HE-Meta: U2FsdGVkX1/VdxM6nCshg+/X9jwZWmBsMf143XhZOTcBC7q6W6N0ZVG9s8jVnnHW0X9Nd4m5be5S7lfcmC6fXKGdwfMGofE7dsjI1X6g+dI/b/GaG00XMDu0w44iBRlt4T1RoFdABnDkQsBzsELL77cd6/nB6R5vAeWfgj2J3QOwsLiHIRLCkPgfh148R/yssiz0BVZaKJhqyh7QoNmNaBNjgscBSZYhILzW7EkzioVcIjYZrqU5gqctnsRXpxoOEenc7FmIni3HW9tZJp+1tSvbMBnlBxxnsygyiLyNwFoJeWg4ff2tW2FG5bSvwBLlxiq3gys6Gq/aWiLft3T8GRh1pYEg7dAtPGcVfA/8pw37zID6TwZn+NLF/RvCvv8EGL8qcJVcb1vxyL/tEIt87T4xaWs8lgFvxdaVEe9n8K2pdLdQ5ZubIBX5vmPQ8WgkH8ni2rkqu8CJCC4dlcRNPxq7w1BItoUNaOz6KINYbTRVCZ1WY6zD5+KDB4/52zEDb4UsmKaEB2q6kXwsJIcef+4Jz4/a6jZxPDFFsU4IdRnkV9AyVGYO59SMJL6CJ2UoEBTaxGaPcaH0LXUXe7OJ+mVjwFK5wxhINm7p6kgdafyulon2qEtOrAMakOGWidu3Jgoxy/zO5dj40FkGGv+WkE2Vqbin+zcpqADOG+9/HIBGpRu1rk5+7RIt9McUpnOshjoIzFa/wdYa45wAYXSDJMqEQ7Ez48gQqfr+Tm4EZR8nhdzUtuTJhCuZH/2fvh64VLeV2Fqvms7Sp8KbT4cP8siqnuLztgKUidNwERlI+eoeEBICjrKX+gA6DF1RuzZlUA5TwFw6a8CLfByQSgxvCCoose0ApT5p
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -153,22 +110,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 29 Jul 2025, David Rientjes wrote:
+Hi Robin,
 
->Topics for the next meeting:
->
-> - update on status of kpromoted (collector) and kmigrated (promoter)
->   approaches and testing
-> - update on sharing Google approach for both to overlap the shared goals
->   and converge where possible
-> - discuss proactive demotion interface as an extension to memory.reclaim
->   + possibly leveraging working set extensions on top of MGLRU
+I don't know the DMA mapping code well and haven't reviewed this
+patch set in particular, but I wanted to comment on some of the things
+you say here.
 
-fyi the per-node interface to proactive reclaim has also recently been
-added.
+> Marek, I'm surprised that even you aren't seeing why that would at best be
+> pointless churn. The fundamental design of dma_map_page() operating on
+> struct page is that it sits in between alloc_pages() at the caller and
+> kmap_atomic() deep down in the DMA API implementation (which also subsumes
+> any dependencies on having a kernel virtual address at the implementation
+> end). The natural working unit for whatever replaces dma_map_page() will be
+> whatever the replacement for alloc_pages() returns, and the replacement for
+> kmap_atomic() operates on. Until that exists (and I simply cannot believe it
+> would be an unadorned physical address) there cannot be any *meaningful*
+> progress made towards removing the struct page dependency from the DMA API.
+> If there is also a goal to kill off highmem before then, then logically we
+> should just wait for that to land, then revert back to dma_map_single()
+> being the first-class interface, and dma_map_page() can turn into a trivial
+> page_to_virt() wrapper for the long tail of caller conversions.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=b980077899ea49cc747afe003e01ca303b00d463
+While I'm sure we'd all love to kill off highmem, that's not a realistic
+goal for another ten years or so.  There are meaningful improvements we
+can make, for example pulling page tables out of highmem, but we need to
+keep file data and anonymous memory in highmem, so we'll need to support
+DMA to highmem for the foreseeable future.
 
-Thanks,
-Davidlohr
+The replacement for kmap_atomic() is already here -- it's
+kmap_(atomic|local)_pfn().  If a simple wrapper like kmap_local_phys()
+would make this more palatable, that would be fine by me.  Might save
+a bit of messing around with calculating offsets in each caller.
+
+As far as replacing alloc_pages() goes, some callers will still use
+alloc_pages().  Others will use folio_alloc() or have used kmalloc().
+Or maybe the caller won't have used any kind of page allocation because
+they're doing I/O to something that isn't part of Linux's memory at all.
+Part of the Grand Plan here is for Linux to catch up with Xen's ability
+to do I/O to guests without allocating struct pages for every page of
+memory in the guests.
+
+You say that a physical address will need some adornment -- can you
+elaborate on that for me?  It may be that I'm missing something
+important here.
 
