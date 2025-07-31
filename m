@@ -2,111 +2,89 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9178EC87FCC
-	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 14:51:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BD047C87FCC
+	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 14:52:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1527C6B008A; Thu, 31 Jul 2025 10:51:15 -0400 (EDT)
+	id 5E9756B0092; Thu, 31 Jul 2025 10:52:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12B2E6B0093; Thu, 31 Jul 2025 10:51:15 -0400 (EDT)
+	id 5C17C6B0095; Thu, 31 Jul 2025 10:52:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0679C6B0095; Thu, 31 Jul 2025 10:51:15 -0400 (EDT)
+	id 4FE586B0096; Thu, 31 Jul 2025 10:52:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EA7216B008A
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 10:51:14 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B79F4160502
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 14:51:14 +0000 (UTC)
-X-FDA: 83724847668.12.B567FC0
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf19.hostedemail.com (Postfix) with ESMTP id AB0C31A0006
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 14:51:12 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kowalczyk-ws.20230601.gappssmtp.com header.s=20230601 header.b="TZk/l8yT";
-	spf=pass (imf19.hostedemail.com: domain of patryk@kowalczyk.ws designates 209.85.208.51 as permitted sender) smtp.mailfrom=patryk@kowalczyk.ws;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753973472;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IRJbAub8KuCgRqOk042KmktSaTt0LegPLtY8Icpmfw4=;
-	b=NxDmHS3dg/VGK6Q11Y4RbmBuIgLYVqhs8ohLj6tWMHRsvBJmHN6IQlif5CuyohtiCZeYjC
-	dT7lOOBOepj9nr/3Kw0b9huW9DstKzDB1AkyDqpHb8ILzLIoaUvwyGE0MvJCoE1ajTe4QY
-	gd0rxD5IYrEpGs4k7Z47hh4HhUoQ5yk=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kowalczyk-ws.20230601.gappssmtp.com header.s=20230601 header.b="TZk/l8yT";
-	spf=pass (imf19.hostedemail.com: domain of patryk@kowalczyk.ws designates 209.85.208.51 as permitted sender) smtp.mailfrom=patryk@kowalczyk.ws;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753973472; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 429AF6B0092
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 10:52:37 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 10CA01A06F5
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 14:52:37 +0000 (UTC)
+X-FDA: 83724851154.08.4D0BF2C
+Received: from mail-io1-f79.google.com (mail-io1-f79.google.com [209.85.166.79])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 8F93B1C0005
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 14:52:35 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf20.hostedemail.com: domain of 3MoOLaAkbALEjpqbRccViRggZU.XffXcVljViTfekVek.Tfd@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.79 as permitted sender) smtp.mailfrom=3MoOLaAkbALEjpqbRccViRggZU.XffXcVljViTfekVek.Tfd@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753973555; a=rsa-sha256;
 	cv=none;
-	b=ibS7B/WBiDO8GfpFIvSToMUgO6aeD7A74wz4yqPCzQ7tRb34QgfGJ05XqHppods/VCHT++
-	5KsmVvz5ZTrHfxZ0Mmn7wsxrhs0Dcu0x+HhgmJqDmoZktVtorSvQ6H74rxv9RSLOHzijIY
-	dj5oIRV8AmNPzJPaqULPQNcwzLkF93g=
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-615378b42ecso1692329a12.0
-        for <linux-mm@kvack.org>; Thu, 31 Jul 2025 07:51:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kowalczyk-ws.20230601.gappssmtp.com; s=20230601; t=1753973471; x=1754578271; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IRJbAub8KuCgRqOk042KmktSaTt0LegPLtY8Icpmfw4=;
-        b=TZk/l8yTu9zAhWB1RVSWu9dGD+gxscDePfd2Wvpi0w+AOULZa7eAQA0JFY9ea7YtOc
-         0NarfED5SDX8qsQ0Ztq9ds6dtY9UH19Y7YClP9j+1CiBrlzOFHRt9a8K/UZCUly1fbHn
-         /5nktSdnuXd7dlOjlQRtP7CI+SjGc23pqLCLZVJ3U8yHQHLMcd5NeQeWFLDQa04ifoC/
-         s/dSBIXOnxp4mz1rs6qwF4KlO0awAPI3UUJbKgsZ3FLgJWA3WqhLSlEUjIEaKcMzhoZI
-         CnOaKPqS6e2Ir/1Vx/fV60UQnItzzHpQG7hRVzfjOnkQTwcVmU/uHt4WMvIAbo5Bxikm
-         ey2A==
+	b=Nfpt/DHVCd+X2KJSKc2KOaeTbOR857uF8Mk4pMzyVnPVODwpuhvGK3IcUsTn439XoTx9/C
+	YS000/2VAXVIn7cVk8VqnrJMRQ1Ds3UxUsCiMgC1gln9obLc8udd+gOZSv87iCdNMLOa1g
+	7VTEI4Fz+BWsROgV7c7Fq7vDc3DJXlo=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf20.hostedemail.com: domain of 3MoOLaAkbALEjpqbRccViRggZU.XffXcVljViTfekVek.Tfd@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.79 as permitted sender) smtp.mailfrom=3MoOLaAkbALEjpqbRccViRggZU.XffXcVljViTfekVek.Tfd@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753973555;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=Ymwzw1M9GyTwkEtdG06+DHmrfOOeM02MHVcedVv5kx8=;
+	b=z3u9CJHOWSCzLV6iCLTXAzqApePbTSaNxltCybRjykaV6NDimo0uNW4cvaLEU2F2G1K2Aw
+	DV76BnK2nHglW5GDGXtvDLT7RpSWJTnOhpZuYnjNO99p1f8aNA3TMXkKhovuerm8qDR4Tc
+	Mjm9LZIEKv79oqePrylS1XmKN0mpPE4=
+Received: by mail-io1-f79.google.com with SMTP id ca18e2360f4ac-87c41047044so208989639f.3
+        for <linux-mm@kvack.org>; Thu, 31 Jul 2025 07:52:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753973471; x=1754578271;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IRJbAub8KuCgRqOk042KmktSaTt0LegPLtY8Icpmfw4=;
-        b=icQ7w47f3WmXTZMkqDgNp/eYE43DcWFJL6cYcq8l4KFRbTLqvSQYD0t8j8xEYMOCc2
-         ZN0+k1ukLA3RTvHxG7HM/1P96GPjIJLFQB8UxPBc2O0Q2p3uFLW8N/GcfptVN2h0kAHg
-         JXSq4/4rFFZCsK4J8OiLQnAgOSBaWAd7RlVqZwCF9Y8E5vM9EjO+vf4sc47ijijnvy0c
-         IC8rmXEDz8M3FLGn7LwA6dOgurf8cDSPZ33dcrVtDaGAuVQx6LwESHRM5aR1SiQeauvN
-         7j/fWFaJrl9IegamNCzP8Rktrr8VRTRO4AZcbIPupoV7WAXUa42M5U6cfKbeXhrx1b75
-         TeRA==
-X-Forwarded-Encrypted: i=1; AJvYcCXnizbC+/wDoFahWWFAsnYuNy6MBP9X24YeMiT0n+MIJJP6a0U9YFX5Y0Pdq2jO9szSD+JRE5UYIg==@kvack.org
-X-Gm-Message-State: AOJu0Yyra32DjR/0oBiWu2zOnJ5c+CDi16+w0IEF92IhxSGaktSwcDGn
-	TpTJaR+7UgjJXpwqRpYIQms2iRrz6HrOvAt+eAvnOgsZZSrzuPXGIOmC4N9Sj8DyQ2cIocII//z
-	+WvCiJZgrNOU+GKuDRKpSYX3kBq0+qFNojv38M+8V
-X-Gm-Gg: ASbGncuDvhr0uCslnXFJD99QmztvyMgJ34XBR5YeNJqm+pekPixPgZJVMG//syA1Bsl
-	o9nXwoUiJ09o96zAJV/MHx05Qsrp1DGQEwx3ezlmEvSy8frlTwKsucnPjQr0ONPAB9XA4TBwG1M
-	Ui/RiFh15IcQLIBRc1YyhZOEzlubWDw61bsvBp1vcljla6/v51B8Q9LmK7TnUB2chGb7BbLrLpk
-	u95
-X-Google-Smtp-Source: AGHT+IGZY7UseRYSFQBaSqdhffcEIF7jCfDrD9+0HtI82aHPApXaJSNDz5JLaBTvoWHQDv4aQl7vq9zDoYUPbWSh3NE=
-X-Received: by 2002:a05:6402:210a:b0:615:b6b9:d859 with SMTP id
- 4fb4d7f45d1cf-615b6b9db0dmr2004485a12.3.1753973470621; Thu, 31 Jul 2025
- 07:51:10 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1753973554; x=1754578354;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Ymwzw1M9GyTwkEtdG06+DHmrfOOeM02MHVcedVv5kx8=;
+        b=Wc6sGh8N7nvDD00AMRbfsVw0HS7C6qF20nNZQdIYKLoZ/iQBN8yhkE6GxaQMi02uHy
+         01Eeg5vLHyhb9CFgSl/CTJbkaz+Y12misAH+lS4H0k8qqeTonKq31Om/vz1Wt8ABJeB5
+         k3fXTp+mk2HVnSNGog/YXENoCEJ2Pq4Rr6QExmz7CFte5xQcURqa4PL1XFIiuf2u+8gn
+         aLXmr9xP0YU0/mWt7CtYrEJQiRH7plCp9QdRZNtKt8MT6ZIYqiLe4gsYTjv/Ew+vN+B+
+         YU2SKtiLo4vm2JbT3uTMdG5tIjx+pENHzB/TAqTnBZJPRoqgJ5YGDQ7eRtyng8ZAkSFn
+         Ngzg==
+X-Forwarded-Encrypted: i=1; AJvYcCWMLiWtviVEqe8mDxbciUDaCf/fsYabwIkQ33+UHN7NeEnhs/RAPn9EwBBy/8MrA/PlegfonaT7lw==@kvack.org
+X-Gm-Message-State: AOJu0YxRKxmzNIyGC0EmUwgNR6moDXTtsoU+uMVlAoKvGhTI6WWFVf8x
+	Y7jEOgZAh8wGk3wRdj8t1lOaWvE9Ie9UCHzRSeExhWRe8OE1o0wVt0hvl8kE0v2Vdz6uj3F+RqG
+	CBx3SZOApdS2aULFVQbPcq5CszM7snz3exx26A286D0t+sZbYUBBwBPYECDc=
+X-Google-Smtp-Source: AGHT+IG25XfNbNYUv28uJ3XUFspdMt70vNFmzQpYG4SVQz9FyRSMrC4L9Ta/bpkNQYeWCsCnyUrA/9iX2K79azVp/cNTsBE28sJ/
 MIME-Version: 1.0
-References: <f7e64e99a3a87a8144cc6b2f1dddf7a89c12ce44.1753926601.git.baolin.wang@linux.alibaba.com>
-In-Reply-To: <f7e64e99a3a87a8144cc6b2f1dddf7a89c12ce44.1753926601.git.baolin.wang@linux.alibaba.com>
-From: Patryk Kowalczyk <patryk@kowalczyk.ws>
-Date: Thu, 31 Jul 2025 16:50:59 +0200
-X-Gm-Features: Ac12FXz136963mYuJ5YCEu4SeKKHx8OQYOh5muD6VLWBOteHGPZjvJkpeAM4OC0
-Message-ID: <CAJCW39+3whWNZ7PV606cewqvdGrE18BTbnDLZ_Py=6nvV+vseQ@mail.gmail.com>
-Subject: Re: [PATCH v2] mm: shmem: fix the shmem large folio allocation for
- the i915 driver
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: akpm@linux-foundation.org, hughd@google.com, ville.syrjala@linux.intel.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+X-Received: by 2002:a92:cb83:0:b0:3e3:e732:aef6 with SMTP id
+ e9e14a558f8ab-3e3f62802e9mr126564965ab.18.1753973554618; Thu, 31 Jul 2025
+ 07:52:34 -0700 (PDT)
+Date: Thu, 31 Jul 2025 07:52:34 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <688b8332.a00a0220.26d0e1.0044.GAE@google.com>
+Subject: [syzbot] [bpf?] WARNING in trace_suspend_resume
+From: syzbot <syzbot+99d4fec338b62b703891@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, andrii@kernel.org, ast@kernel.org, 
+	bpf@vger.kernel.org, daniel@iogearbox.net, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: hufjqzyzzchhwfibo5arnadk4d9s4chj
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AB0C31A0006
-X-Rspamd-Server: rspam06
-X-Stat-Signature: rge844maeh8xezbfyik6ywgse6kdngy6
-X-HE-Tag: 1753973472-169351
-X-HE-Meta: U2FsdGVkX199qCuobzSXE5N3lqIfES2DIxpoONXEpJLbsFNcmIFuQmvQQlK3k+nVDVDCaciULaXqpRRqFQvD5CgyW9cbJzwXk1tkbOrObfoDOnJeMARE6Jl4i4sJRQvA+X3KM8r9b5NV/stRsOTXhRGQMT36wmLPM7Pqhhl0BnxSD9NqpDnalA8d355N3qfATIp/MQCjYjB8VPbmEVf/b4hjkzFPG65AtySApmNvV2KAbJd/u31XWGV57MntGlyptYpm1xhtbM75euIiuX1sF1E4wnANA3CbC9Mti7dvJCVjfOW+xZOIRxtKyFmaYkim1JYvMDpkiMUkULADhAsztqjUHCF+rPN1leaoIV8+9UtnZovEZZUclcK4Oj8OlAKty8EOMIw+dNVUZw4Pg8n1f73cUyY3u3VCo3L/KAa56WTC5erA1t1C2lmig/cSf19BO6J8azBFTgT5ye7Q1zB+RssNWKUHtBcITwCz8pc4OPwRgzJR5U8yQ+A4qKZz2ylwhKXYnFuJ01u0G3J9ViH5CYLNs90v3egWHuW9lytBAmyhtUHJTI+4eI0kBNlZYpTYP5OnnHd3rpZ760Uu5J5QcAWsOR0ngm8dKXnMHYVsKIrztFC6ucswXBMR0GdYzPDbX8Jn9YfaEHzu8som6E46qVJC8ksTXitdvC4enYMt7AJBGCEctYe2Z5KybYYPPorEBl5hEP0XkotCYrv2c5btbgWdYXuBWds1iSvrA7RjQR+UI7+HxuJ+zv0UvrWRV1JQANpKHLC3NrjHR0ACfW3OFdN8J1dNw0HsdZpzAuzr5aIvVFpwFN1WTA2Rql/uaDmsWON/tkqobndfgICDWkibgDP+MQzOxAJK1dkf5Al5s/zUXM/Xqp4p5q7hvL5hQ7Ve/av42x8toA1O4XZ3WQeP61BesmRST5uhscm8rUnqgmdDGP97oqHO7dCD+JQpSFeAMy2RlP/IOvuCbnaDfXv
- w7A3JRyZ
- XAmcym1bzU78+W4MKAHILxtwCAqOPRin+iinJ+MtFjKkrx2RgrD8Esfh3374aQg7FKhPALsv57ciU3sPawIDBGb5JDwUCw0C/1+07Y42epIOJjoA3xzg42RZgnkVv84hPQfSjR6qcaJTUV8YdWBTrRYZLVFEPqfAwdOgHtjmVAXIhY3UzzTMiljCVgsKk0o0xEXPJP84IiKa0nJygbmo6tmnIZfYlCl4DD6f7G468fYs7LvkRz4iE3xJaPB1DPIFFl5jE3kHfSUp7SXU1qro1xd5zWVVIeGobMiTTOjzPaagb5kEPAsjVYmthTCalz+O3QNkI3W/6PH5LSeEtQrNUxlZcvjKUmUPdPSMBMOThs+wYpNUV82xuEqlwmcYB4T3G5i4tQpXqTz2lYgRvIaqet5fvP+pZnf1oiEpsEq8/ErvvVl0q+7ugKdJ+ATj9kJ2mLW2+ZRnMKrZBpJoHAVnn1TBsGQRjYk6q7rJMp3XkFpYYP/L9qL6YdwlseK8huLpeDt8NOEdYk6jLiAc=
+X-Rspamd-Queue-Id: 8F93B1C0005
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1753973555-949487
+X-HE-Meta: U2FsdGVkX1/g6v7+EPlyvTbswZj+I6cGqlbC8J+Z2rdPa12yAi8tqmybDnXzeHXcpsA+gj5qltzPobE07XaPNYxLWqxh4E3WSdK64cKFoTiXzO7cY14NHpPmr6yoo7rKqNHYKTD9iGrEXLjYaNU0N96Dmus7m/K2g9dpgqKXKyHXXbjnK+8R0MklZFihpKKV97EjO6OGrPS4HF5ms/RXcHeyWjOMRddpJcAxs0/pppfvfuBD0uDNn7rNRyGJmQq8ALIfH/6/hdFFCCs3b+fb+OwFo1YSXCdDgO+D//zydGBeBJTfpezQ/7Qo6k211/VkfpuQCU5GdZ+dvh/ibutADWgpgB+6MPTGRygcxp1RxqOdezezTfE8GgedlIvThnlIrEHhiqYScmD9JO4f2K917x1P4oBoIg2fe5I8pyuATBA9tOfkpqeUOnyRn7jEfGO0LohhyfeXbMCs8wlWPS4DA12anXEQlFIFqqpSFTBoHYC5/gTcdTklpUbB+YgCCVbimtmQkKlJ7wYlAcCLCKElj0s1VnHxn2vIkuPWrdstvjuozn/5lJX0+aZNGOj4DujCOIXbMdrtzQ7h7qF1hAZFqdN4hhtVrUziXaqBFVwGNBTRBgXCuwhu/P7auQtPlQgaHFCwUPjIv5SyaFszbW+OsCnYjyfJZ6KN2Icea1eRfZvD0dEK72+XELu6umQBLsur4iuskbXur/OnkiXHr7AmXMdUTsDA1Kk3JFoKzJA5kOGd9UOiNR5RLaeDPfb747aPSfLO4pX3rS0y7YO48yUhTt5GLt3a10Bd5xfhYyF+pj1DzRhDC4XThiTmFL1K6OSAc2ECFJvfEPkhftkTi8cDrkz60DvK2f7yBNgmBc1OOjaWD3E3Nj9MUiZi7JJ5hXqH9NLy474mcDUWFxN039iBm5Y/3QiAjoe+QKTBU5Jth3uyb7l5q48gkqZywnRpz1eVSvOTHad6lWYwsnBGGX1
+ WUdQ0Czr
+ TwCIVmfg5hoYiTnoPP3VgUkrLfHd1SB6FcgokJbmFVHViO0V/EECGG9QpzvY/I9Fz6/UQMhXAwYY9SR0jSfOG9HiKbVFsLbSBVG0gvCk4MNF/bd7aODGXWwRy2ntlRW7xRlb+D4ZpThRENVqPROKri9DZzubi2dLYJe3K7hrFXReRnKMOZsSO68Y2Jy/DwRHgLR3I31UDgrJLCVrW/vPYnBWyOjrN98seO/RwahIAk4B9wjWiDLRL7YEFDTRaepTITGeI6RR15jkhJ3pv39Qzdh109rSZ8oCQ20nWzm5SGhUbqRUO5xZ44iKR5pYU7T9HvDS+Rv5A1Uh1tEU2kMoUCY91Pdz5J+yt36hqeekE6e44cHZjp5F9F0ndvDYGJc2/S8W4/Wb7N6LYDyXDydhNmIAfg9cXmT1+RZJ6xTeFmwNfzF7z3ApUixU3FIsALhMdXn2nS32jKmP+b85yFUAU1AiXRJDF8joNXEmzOWKxtBcU0RnEeU2sA9uZEJLbsK2ViPwOk7q1lejurPo1MufJbRhrEtHeubzQv0t6UW2eo79iezz67p7kOoPwm31vm5zbJVdBCXtmZYn7R4mM+rxiGPlngoZ0/+7SRQP/kl9HdC7jXzyIbIV+s/j8bo47vuOEecHjUWJFGHGo4BoMgwRsdMIpfCg+0hl2NVNeSV91Vm8yMjfRmm6BLfR1F4ETh0wR8YUesD+KG2YRM9o2Ol7QCm8b2D241vaqpwjvWCpAgaAQ8zk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,75 +93,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-That patch solved problem with the i915 performance regression, so the
-previous patch for the i915 driver shoudn't be merged.
-best regards,
-Patryk Kowalczyk
+Hello,
 
-czw., 31 lip 2025 o 03:54 Baolin Wang <baolin.wang@linux.alibaba.com>
-napisa=C5=82(a):
->
-> After commit acd7ccb284b8 ("mm: shmem: add large folio support for tmpfs"=
-),
-> we extend the 'huge=3D' option to allow any sized large folios for tmpfs,
-> which means tmpfs will allow getting a highest order hint based on the si=
-ze
-> of write() and fallocate() paths, and then will try each allowable large =
-order.
->
-> However, when the i915 driver allocates shmem memory, it doesn't provide =
-hint
-> information about the size of the large folio to be allocated, resulting =
-in
-> the inability to allocate PMD-sized shmem, which in turn affects GPU perf=
-ormance.
->
-> Patryk added:
->
-> : In my tests, the performance drop ranges from a few percent up to 13%
-> : in Unigine Superposition under heavy memory usage on the CPU Core Ultra
-> : 155H with the Xe 128 EU GPU.  Other users have reported performance
-> : impact up to 30% on certain workloads.  Please find more in the
-> : regressions reports:
-> : https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14645
-> : https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13845
-> :
-> : I believe the change should be backported to all active kernel branches
-> : after version 6.12.
->
-> To fix this issue, we can use the inode's size as a write size hint in
-> shmem_read_folio_gfp() to help allocate PMD-sized large folios.
->
-> Fixes: acd7ccb284b8 ("mm: shmem: add large folio support for tmpfs")
-> Reported-by: Patryk Kowalczyk <patryk@kowalczyk.ws>
-> Reported-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
-> Tested-by: Patryk Kowalczyk <patryk@kowalczyk.ws>
-> Suggested-by: Hugh Dickins <hughd@google.com>
-> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> ---
-> Changes from v1:
->  - Use inode size as the write size hint, per Hugh.
-> ---
->  mm/shmem.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 41eb4aa60be5..e1e5d5f7f58d 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -5989,8 +5989,8 @@ struct folio *shmem_read_folio_gfp(struct address_s=
-pace *mapping,
->         struct folio *folio;
->         int error;
->
-> -       error =3D shmem_get_folio_gfp(inode, index, 0, &folio, SGP_CACHE,
-> -                                   gfp, NULL, NULL);
-> +       error =3D shmem_get_folio_gfp(inode, index, i_size_read(inode),
-> +                                   &folio, SGP_CACHE, gfp, NULL, NULL);
->         if (error)
->                 return ERR_PTR(error);
->
-> --
-> 2.43.5
->
+syzbot found the following issue on:
+
+HEAD commit:    260f6f4fda93 Merge tag 'drm-next-2025-07-30' of https://gi..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=102f69bc580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=af26dbd5a30735
+dashboard link: https://syzkaller.appspot.com/bug?extid=99d4fec338b62b703891
+compiler:       arm-linux-gnueabi-gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+userspace arch: arm
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/98a89b9f34e4/non_bootable_disk-260f6f4f.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/091b40479433/vmlinux-260f6f4f.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/54ef37cd1da7/zImage-260f6f4f.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+99d4fec338b62b703891@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 4102 at mm/highmem.c:622 kunmap_local_indexed+0x20c/0x224 mm/highmem.c:622
+Modules linked in:
+Kernel panic - not syncing: kernel: panic_on_warn set ...
+CPU: 0 UID: 0 PID: 4102 Comm: syz.0.84 Not tainted 6.16.0-syzkaller #0 PREEMPT 
+Hardware name: ARM-Versatile Express
+Call trace: 
+[<80201a24>] (dump_backtrace) from [<80201b20>] (show_stack+0x18/0x1c arch/arm/kernel/traps.c:257)
+ r7:00000000 r6:8281f77c r5:00000000 r4:8224af5c
+[<80201b08>] (show_stack) from [<8021faf0>] (__dump_stack lib/dump_stack.c:94 [inline])
+[<80201b08>] (show_stack) from [<8021faf0>] (dump_stack_lvl+0x54/0x7c lib/dump_stack.c:120)
+[<8021fa9c>] (dump_stack_lvl) from [<8021fb30>] (dump_stack+0x18/0x1c lib/dump_stack.c:129)
+ r5:00000000 r4:82a6bd18
+[<8021fb18>] (dump_stack) from [<80202624>] (vpanic+0x10c/0x360 kernel/panic.c:440)
+[<80202518>] (vpanic) from [<802028ac>] (trace_suspend_resume+0x0/0xd8 kernel/panic.c:574)
+ r7:804bdb5c
+[<80202878>] (panic) from [<802548dc>] (check_panic_on_warn kernel/panic.c:333 [inline])
+[<80202878>] (panic) from [<802548dc>] (get_taint+0x0/0x1c kernel/panic.c:328)
+ r3:8280c684 r2:00000001 r1:82231a24 r0:822393ec
+[<80254868>] (check_panic_on_warn) from [<80254a40>] (__warn+0x80/0x188 kernel/panic.c:845)
+[<802549c0>] (__warn) from [<80254cc0>] (warn_slowpath_fmt+0x178/0x1f4 kernel/panic.c:872)
+ r8:00000009 r7:82265508 r6:df9f9d1c r5:83a93000 r4:00000000
+[<80254b4c>] (warn_slowpath_fmt) from [<804bdb5c>] (kunmap_local_indexed+0x20c/0x224 mm/highmem.c:622)
+ r10:00000000 r9:deb56a18 r8:debb2f48 r7:00a00000 r6:00000003 r5:83a93000
+ r4:ffefd000
+[<804bd950>] (kunmap_local_indexed) from [<80538be4>] (__kunmap_local include/linux/highmem-internal.h:102 [inline])
+[<804bd950>] (kunmap_local_indexed) from [<80538be4>] (move_pages_pte mm/userfaultfd.c:1457 [inline])
+[<804bd950>] (kunmap_local_indexed) from [<80538be4>] (move_pages+0xb24/0x19c8 mm/userfaultfd.c:1868)
+ r7:00a00000 r6:00000000 r5:846e9ec4 r4:84add6c0
+[<805380c0>] (move_pages) from [<805c02ec>] (userfaultfd_move fs/userfaultfd.c:1914 [inline])
+[<805380c0>] (move_pages) from [<805c02ec>] (userfaultfd_ioctl+0xff8/0x21c4 fs/userfaultfd.c:2037)
+ r10:84add6c0 r9:df9f9e98 r8:21000000 r7:00000001 r6:00000000 r5:20000040
+ r4:85955000
+[<805bf2f4>] (userfaultfd_ioctl) from [<80568ccc>] (vfs_ioctl fs/ioctl.c:51 [inline])
+[<805bf2f4>] (userfaultfd_ioctl) from [<80568ccc>] (do_vfs_ioctl fs/ioctl.c:552 [inline])
+[<805bf2f4>] (userfaultfd_ioctl) from [<80568ccc>] (__do_sys_ioctl fs/ioctl.c:596 [inline])
+[<805bf2f4>] (userfaultfd_ioctl) from [<80568ccc>] (sys_ioctl+0x130/0xba0 fs/ioctl.c:584)
+ r10:83a93000 r9:00000003 r8:85935840 r7:20000040 r6:85935841 r5:00000000
+ r4:c028aa05
+[<80568b9c>] (sys_ioctl) from [<80200060>] (ret_fast_syscall+0x0/0x1c arch/arm/mm/proc-v7.S:67)
+Exception stack(0xdf9f9fa8 to 0xdf9f9ff0)
+9fa0:                   00000000 00000000 00000003 c028aa05 20000040 00000000
+9fc0: 00000000 00000000 002f6300 00000036 002e0000 00000000 00006364 76b450bc
+9fe0: 76b44ec0 76b44eb0 000193a4 00131fc0
+ r10:00000036 r9:83a93000 r8:8020029c r7:00000036 r6:002f6300 r5:00000000
+ r4:00000000
+Rebooting in 86400 seconds..
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
