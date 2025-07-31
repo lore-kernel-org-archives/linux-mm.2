@@ -2,180 +2,90 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 306CDC87FCA
-	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 19:42:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9189CC87FCA
+	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 20:36:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0E866B007B; Thu, 31 Jul 2025 15:42:41 -0400 (EDT)
+	id 0D2406B007B; Thu, 31 Jul 2025 16:36:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABF6A6B0089; Thu, 31 Jul 2025 15:42:41 -0400 (EDT)
+	id 081766B0089; Thu, 31 Jul 2025 16:36:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9871F6B008A; Thu, 31 Jul 2025 15:42:41 -0400 (EDT)
+	id ED8CC6B008A; Thu, 31 Jul 2025 16:36:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 86CB96B007B
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 15:42:41 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 008DD80B2D
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 19:42:40 +0000 (UTC)
-X-FDA: 83725582122.14.E776DC5
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 86BBE100004
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 19:42:38 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MmL0zhde;
-	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BC2E16B007B
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 16:36:34 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B1030114C7D
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 20:20:10 +0000 (UTC)
+X-FDA: 83725676580.08.C54A1E5
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf16.hostedemail.com (Postfix) with ESMTP id A539418000E
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 20:20:08 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=r+B7kxPr;
+	spf=pass (imf16.hostedemail.com: domain of bernard.metzler@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=bernard.metzler@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753990958;
+	s=arc-20220608; t=1753993209;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ycs1g1B6Cy7/P7AyjBWJe4E4Uc8WvaNBjZRl6rpbaFI=;
-	b=evAgGBXj/HIXVmPnMhX7jwkGEaFe/4xDps89rE6LieC0CNzSme/0wXFo2DBei+gvxUY1Xk
-	KPaA/+PfU8o5RwejlI1+qn4oZUWtzQ3lzrCjdr0lsXqu+3fmhLX+//Ww0wvMJ2P405udX2
-	qLxK+h6dM53bVd/U6RYS5BTBmgcwn/I=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MmL0zhde;
-	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753990958; a=rsa-sha256;
+	bh=/N/Zzs9sQW4KIe9YYyHArbjN2w5AkIlMqy06wqviZAk=;
+	b=HEcM0Pf/9awJQ0FdklJqg9it/mHOMAlUOuTaC6CAPfk0h/MY95LyG8yxLTkxKRENUi+lqb
+	ZUH5a77C2BnZzVogAdFIB6v+u/R01DKKKvWTYNsgvWpKcZsQSGVGtX13P5TZ/2M8R7Pi1P
+	eJFtNNd4KpXWQjJJk8sDj3+BvdQcKBk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753993209; a=rsa-sha256;
 	cv=none;
-	b=aCadJumyopuzxnkgiliAD4hnvJJ4uBmOED7LDDAoaCeW44oeXLh+cJVk+8bUX27WHj002m
-	yREtz2p44R1gNf2/OSlZnA/OMUvJQdaUOQQ3zuVAzzRAVzg6YvWNlnGAtFeke2sejTaV7h
-	AQDkpulRUKBLz9G6y4IMIIcY7Hdhh9o=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753990957;
+	b=s4NOLzQvU3EYXIfrYfOcWzV8G42Urc2wgbtoD6nq4vpTes6FRu8oiJUUAb0NvxWrp7Nmaa
+	sJqc7jypMgOQZQ2ELIgqcqz19IbgoOAls0/shdA/Uv7fIEOuetw6MPP+7EBKUvG6dAbCPb
+	ekfn49ud22US786QTbgHNc5I+aLBYJg=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=r+B7kxPr;
+	spf=pass (imf16.hostedemail.com: domain of bernard.metzler@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=bernard.metzler@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <631a1251-5bbc-484d-9bd9-167c5e7cb69f@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1753993206;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ycs1g1B6Cy7/P7AyjBWJe4E4Uc8WvaNBjZRl6rpbaFI=;
-	b=MmL0zhde/YVu/pHeUfX2qmMO9p0uumL3mOcVw8to1wQVy9ViVFeQg6FVsToWCIs/rUlYHc
-	h924NZoalRuHPfKUJNSMgF06YfMjfi91MPlQ8UqXFhqIHhDkLGCyQQedxVn+doqWF9POi1
-	WF4VkA/ORV2qau3svjRJLhWRqq4ejHk=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-637-xCnDN4etP0y-wIeveD9ZYQ-1; Thu, 31 Jul 2025 15:42:35 -0400
-X-MC-Unique: xCnDN4etP0y-wIeveD9ZYQ-1
-X-Mimecast-MFC-AGG-ID: xCnDN4etP0y-wIeveD9ZYQ_1753990953
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-455e9e09afeso2808145e9.2
-        for <linux-mm@kvack.org>; Thu, 31 Jul 2025 12:42:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753990953; x=1754595753;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ycs1g1B6Cy7/P7AyjBWJe4E4Uc8WvaNBjZRl6rpbaFI=;
-        b=WMYqUHJF5WKAFmlYMAUK/z+SyG3C84UR6/9DCUemGqrnnZcHVTWHyZreRfRjmZNtud
-         j8pRSy8zTNZ0d1dWaBddxnwndLN4ry+iBVmGI758yfUPzewuFQcE789+PcGTWGPiqEg7
-         0x9M7EOJ2ogywVCsSAsJCn61ibLwErKM4xddyLduh8/ScdMBn01SSO44hvA9dUTT332T
-         p6/QGx3HEFpng5uQbRKgYePi+cPDxbNIG4fH+gzqBY00otngAfw2Pv2RPyrExO4UK7HM
-         LBcyWsuY97NAoDYthzQP3vt9I1cUFKLdjc9B8e+D3XosKM1yEQbhoZUYrI9tq3QWRwNE
-         yROg==
-X-Forwarded-Encrypted: i=1; AJvYcCW6Ac9r24xRWrUNbHejDzbukDaYWsVTcyPDOId2MaFDeQCLICXVQtcxvqnurW+UMXrFJ92haVMrnw==@kvack.org
-X-Gm-Message-State: AOJu0Yz+gNo+Qf6dvig2SvBjkzGBjEJgVdqKoAqMMZGKMphWYFoj6fVE
-	ihBZ0AMatDRn14zs89qJOkAXYvDxZNz1f8erU7dKHmhgCq1j2SRq7/c+sr6SxhrwlQjTZoBMFzk
-	s3IYy0Tr/so7Zzg8SyjDYkr2OCokFZ8t4FpOVNZinyGZwzhIW6VBe
-X-Gm-Gg: ASbGncvWbciYua0JihPBuFeTa1RSQ9JNpTQ8ObGn7qzPpWMAin+XRmkI1omflSkGBpv
-	pZwPzyAfiTV1ts7vLMdU1Ca5ixyzEb0ISc230VRGeMbK5b4hsk1nZIePzG6t8iGS26PXn7/HEsu
-	47Cmguc3mNmif6/g8VOV5mNQ8rIV/a/sdOKQH5Ljjh3tdIHjbMmgCPVqoa9JTxPIm20mQyafZDg
-	4M3DrI9Lp++xacBB3jFCQGFyeAlmjAZvlXi573gOlUr5tPBwRCcp9U1CaROIMJLfmZd4Xe0wBvh
-	Nky/YFbUkGJBtfAlZBDPqbqmUYcFJTkR48gaymrtiY/ZyuRutkiWgYICiTby3+2tT28Q6AQVLDD
-	elAaABq157yuvekQG5TCeUxedaowCS+cLYMdnoJOsKmyeR4uXssh5etr1GRSCH39xRUM=
-X-Received: by 2002:a05:600c:4f0d:b0:456:207e:fd83 with SMTP id 5b1f17b1804b1-45892b91175mr93599905e9.4.1753990953304;
-        Thu, 31 Jul 2025 12:42:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF0ShMhh6tiZwFcRCf+53pVIS0KqyVNX0UpSosXnZYpZI3UF4O5k5pa7V7O4sOynwE9eweSmw==
-X-Received: by 2002:a05:600c:4f0d:b0:456:207e:fd83 with SMTP id 5b1f17b1804b1-45892b91175mr93599625e9.4.1753990952854;
-        Thu, 31 Jul 2025 12:42:32 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f44:3700:be07:9a67:67f7:24e6? (p200300d82f443700be079a6767f724e6.dip0.t-ipconnect.de. [2003:d8:2f44:3700:be07:9a67:67f7:24e6])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458a99ce1d2sm415915e9.23.2025.07.31.12.42.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 31 Jul 2025 12:42:32 -0700 (PDT)
-Message-ID: <7b13d8b5-a534-47f8-b6c5-09a65bffc691@redhat.com>
-Date: Thu, 31 Jul 2025 21:42:30 +0200
+	 in-reply-to:in-reply-to:references:references;
+	bh=/N/Zzs9sQW4KIe9YYyHArbjN2w5AkIlMqy06wqviZAk=;
+	b=r+B7kxPr2Nbf13zeA7/xZqmltlK03ecVgTUdnlAAYQkAgEhI7ndwcqXZkJ4LLOO4TbARLW
+	wwJ7qUidPXIw+FS7mZPExq6awE96cWZzYHI4mrh21TIpC5fG17ogMRKji7T4rPsIGSs4fR
+	rQituKvDAcJNTmf+y9hpdAL0R0CBXQ0=
+Date: Thu, 31 Jul 2025 22:19:57 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/5] selftests: prctl: introduce tests for disabling
- THPs completely
-To: Usama Arif <usamaarif642@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-Cc: linux-fsdevel@vger.kernel.org, corbet@lwn.net, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org, baohua@kernel.org,
- shakeel.butt@linux.dev, riel@surriel.com, ziy@nvidia.com,
- laoar.shao@gmail.com, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
- npache@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- ryan.roberts@arm.com, vbabka@suse.cz, jannh@google.com,
- Arnd Bergmann <arnd@arndb.de>, sj@kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, kernel-team@meta.com
-References: <20250731122825.2102184-1-usamaarif642@gmail.com>
- <20250731122825.2102184-5-usamaarif642@gmail.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- g3eXuA==
-Organization: Red Hat
-In-Reply-To: <20250731122825.2102184-5-usamaarif642@gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: qkzj8k46_IXE8Kd3fYwjYuj1uJZpSwgJ10S8RfVLa4A_1753990953
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
+Subject: Re: [PATCH v2] RDMA/siw: Fix the sendmsg byte count in
+ siw_tcp_sendpages
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>, Jakub Kicinski <kuba@kernel.org>,
+ David Howells <dhowells@redhat.com>, Tom Talpey <tom@talpey.com>,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, torvalds@linux-foundation.org, stable@vger.kernel.org,
+ kernel test robot <oliver.sang@intel.com>
+References: <20250729120348.495568-1-pfalcato@suse.de>
+ <8fad6c00-9c15-4315-a8c5-b8eac4281757@linux.dev>
+ <x43xlqzuher54k3j4iwkos36jz5qkhtgxw4zh52j5cz6l2spzw@yips5h4liqbi>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Bernard Metzler <bernard.metzler@linux.dev>
+In-Reply-To: <x43xlqzuher54k3j4iwkos36jz5qkhtgxw4zh52j5cz6l2spzw@yips5h4liqbi>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: A539418000E
+X-Stat-Signature: 1ydt5jea8pz5dgkqecict5j3r84cmr7x
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 86BBE100004
-X-Rspamd-Server: rspam06
-X-Stat-Signature: thhwnzqdazqt1mfn16tqic4u656w9ofq
-X-HE-Tag: 1753990958-833661
-X-HE-Meta: U2FsdGVkX1+YWCbXG7xPXD+c6VmXX+XOuVXhVb2QTkycM3P7WAuhuIzPXRSFYZvjdWuPy3Igecq9u87Iug7wCkN/xBFxtxzdQwBBHDBHpWCqqgCK5DnYt9CxsxNmNpYY7QFKDB+IY3zll4nJ+CefV4Z8vAtQwM/r+dDMlZl1UK+YZ9UtazEssMhojMQk9H8bhkOhMEQg/1+AhGLabJ/ZKyIbB0poh2Mg1np0sBakV6jSB5tDM5M+VDAQgxgymLa6O2R5Ti2z2Sby7HRMgGoyKhwcqSnm1frNfzHMromJaMLRpwSGV4lBytCiB14EM77qVPTZST3pYw6tDi6910TsZFZK12KhwyoaHr7/klmix6o2vnsyYb6T/WyN1gU9buSN+kAPSW0iMw9EkO4K832uoBDjUUCOq1nDGAbHgQxYXQ9YkHu9K7rQ2gMDrJ/HfQS8iUUK5s2O5vY4bHKjaHB7ehHcBw8B4O6jA1/mlX1w00Gc6CTH1Z3nTk/y3WmyFluFq+sZPtGcz+bqBHeNOHNSpqVQooZaYf4o4gNXe1GxXrdeCmo4lzMGCpyvVzQHoH3TEjpXRZqwcEGOsM0kUCQeEynxnUS/1pOvGr8Do99ZLAumJN0IRzyRJxpMIbbEAsWFFXEW1EKSIxy8ORzpKvMJHPhoKt2gOO44SBqJnjeOBcu+N8wIVZdnuqj06kA2YmcCVRRtRMsfCP4eX22bODZZgYypaxLOIGZ/v55IVKvk1yRf/e7G2Vn3qxKWSMRZ+gs1RLfQp/hanxw06uxMIBWRerXIhnxsPU6QTOhZC9aNjLuks70MomFU0wCrOnMSNaMwC9EiEsuMQI04fcOUQB7MLm025aEhX5nAU2Dy5RSqpky2Z0L9pj2s/FxP/gERJdfJbbCAfTYCC6i1VN9oC+HQJrlr1SwBqJy6F3JfIbdxgPCpUaKNZ4aVgzoNIwIepDg80szchYVw/vb09YwZ/Hs
- igC9RSfr
- kEtdRfIMZkh/nmRs3vdST+KnRk/97OiH/ib1B4PZ3fFXK44TtIsAVSEaPOkMj79ZWAlVW1k8MoVok/R03LURivkStn0oBttJv7iYfgF2itqeUQH/jFPKxh4iMyMQLWGu7r114JKaRbS2UW2+QoXauv+7Wql+Jk0TUAUpCDozOi+WAHq0Kcr5RI/aNmYL27lWUJy6N2MlRporMOrDA3m3pAr2HX31ZFaqtSNJVXMlhf6eOVHBbgqalOLuRifnnnQvpZkdFSLfft+rpZArm5ktYwL6ExlacvFriCCa0mPWkuk5lCe5EGr/eYtQixEihzpC98drjFCdQQDogNX3wR2cGr610/GFn4cW9HFRw8y4EcVevWL7ubdS/LcF+ZgF9VnnreMCxqw6x5aBXuQllX+pYUtBJ4VQmhQl5aecECOWB8zqryUuP3ORE/Qrzbnwx0+V/MuXnnEbKTGivD7UONYdpW4/aVNxNcmxOngvJTbk3B+YK1pEknRDGl0sWpRCaqmuJzbsY9wjZTanL525yrV70zJNTMP1oHDvL0CUpUb5FAAahEhLCZtA7V7rtiQ==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1753993208-911496
+X-HE-Meta: U2FsdGVkX1/oSFoLQrY1PArG5jQYqJt4/wF9Mv2WKA0rhqLzVvCBnclZDdKx4YMf7vKM+OuoBRtRDP/jm9ICugynaYedya3TnXkwriBIVYWcWNcByVESI7tc39ssB1ZV70f4shQSsxjV5oEtjgUI+ddz75G3Nmcg2U2FQXQBH8yCihW2B7YuZcdXv8WhD8OMw7/lnlAqMJfhn+86goeYJ9o+9Q3Dfr7QTwjAAxH5bZ6gZQv9690AikE13nYmcgUBLVrIdRtUCng3GFmi56p0FcbKNU6ow+yW5xVJMcR/7cN4my+lXCuOFO/ecWfaZiumGlrIDtTB2WaHpbf8Eyv5jEECBAOvWsT6Ph9tpPYQPYah6rqWtX0lpA45zsN/441+PNrY00m894RefOHCIR3q2TRsYBBNQBq9Uf8WJWdQPAH0SSO8Q98y5G0QKPrs19v3ZNvcnOUZXmi1OFbKaCzipqbLM5aca0XbMVGpO37b79UOOMzp/EAJOzsPOxsFJG7X8p+Z9Qx718qHSmF45tySVULsVIizB1gsXEj6ROm+e+Xk5PTIaAxpzmBxaSg/08ZNqZzbK/8K9cbfl1mZN//K2HmFAlBS+VBmJP+aYxuR7hAorlT/4Bypr3kNGq1TSVuwcuGDcK4eS6KhwTKQTfnxYg78AGl83tzlrcCfsCpLRO1I/hyhduJ/d3UGgWgoG1JTYGipwDi6H5oshYaAZsamHqnYxkdetIotzLB2QXVv3xUKa7kLO01I9onsIgCvP6oJkuasvMrekHzhimK7yED05Z3JxT3HW2HxvTbXhdRHlGR9YzdCM/OroNgoqIpVDsqrBF0nc0ySA99Ml7EzzhOqFeVbxN8gKpYQxyPXDlwVK1lQa1iGIM7a3ZkRUltmxceD49DDqvAPtj5XHHwKo7dxevoRQiaiPhKUI/XuM5BvZeu/KEsIAFcfJMp3JBCcGWFx3jmLYpTIoL0X4uX9z6a
+ 7QgEcrQV
+ fR2dD10VcqqOhSF5B4k85OA6mbt1WLaVeS6OCPSbYaJ+34kY0gi8qvvzaM3K4aP+tCnxHK+VgWZFinPAnT5R444rVduk+RpeSUDJ1RC4wPEfFYMvPE2ePQGRpjb+mUE+Cw/st8GL9ydRKHhp813k/5frGXwhulvPpNiA0JulVx0fjDNSJXKjzTnRJu4eRCv4oFoY/BSNId4uvzZZtPYnr4F0c/uxCLdT9lGIgU/jMQXLLGzn5Irz9wfLPMRhu/BpKlG4un8keRyzwcJ8FyvGDbTtvmgid2DOS6vzShv5H9+XR4CVmf6aae48XveOX4ki7bl3UFgEH8f2JGs8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -184,182 +94,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 31.07.25 14:27, Usama Arif wrote:
-> The test will set the global system THP setting to never, madvise
-> or always depending on the fixture variant and the 2M setting to
-> inherit before it starts (and reset to original at teardown).
-> 
-> This tests if the process can:
-> - successfully set and get the policy to disable THPs completely.
-> - never get a hugepage when the THPs are completely disabled
->    with the prctl, including with MADV_HUGE and MADV_COLLAPSE.
-> - successfully reset the policy of the process.
-> - after reset, only get hugepages with:
->    - MADV_COLLAPSE when policy is set to never.
->    - MADV_HUGE and MADV_COLLAPSE when policy is set to madvise.
->    - always when policy is set to "always".
-> - repeat the above tests in a forked process to make sure
->    the policy is carried across forks.
-> 
-> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
-> ---
+On 30.07.2025 11:26, Pedro Falcato wrote:
+> On Tue, Jul 29, 2025 at 08:53:02PM +0200, Bernard Metzler wrote:
+>> On 29.07.2025 14:03, Pedro Falcato wrote:
+>>> Ever since commit c2ff29e99a76 ("siw: Inline do_tcp_sendpages()"),
+>>> we have been doing this:
+>>>
+>>> static int siw_tcp_sendpages(struct socket *s, struct page **page, int offset,
+>>>                                size_t size)
+>>> [...]
+>>>           /* Calculate the number of bytes we need to push, for this page
+>>>            * specifically */
+>>>           size_t bytes = min_t(size_t, PAGE_SIZE - offset, size);
+>>>           /* If we can't splice it, then copy it in, as normal */
+>>>           if (!sendpage_ok(page[i]))
+>>>                   msg.msg_flags &= ~MSG_SPLICE_PAGES;
+>>>           /* Set the bvec pointing to the page, with len $bytes */
+>>>           bvec_set_page(&bvec, page[i], bytes, offset);
+>>>           /* Set the iter to $size, aka the size of the whole sendpages (!!!) */
+>>>           iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, size);
+>>> try_page_again:
+>>>           lock_sock(sk);
+>>>           /* Sendmsg with $size size (!!!) */
+>>>           rv = tcp_sendmsg_locked(sk, &msg, size);
+>>>
+>>> This means we've been sending oversized iov_iters and tcp_sendmsg calls
+>>> for a while. This has a been a benign bug because sendpage_ok() always
+>>> returned true. With the recent slab allocator changes being slowly
+>>> introduced into next (that disallow sendpage on large kmalloc
+>>> allocations), we have recently hit out-of-bounds crashes, due to slight
+>>> differences in iov_iter behavior between the MSG_SPLICE_PAGES and
+>>> "regular" copy paths:
+>>>
+>>> (MSG_SPLICE_PAGES)
+>>> skb_splice_from_iter
+>>>     iov_iter_extract_pages
+>>>       iov_iter_extract_bvec_pages
+>>>         uses i->nr_segs to correctly stop in its tracks before OoB'ing everywhere
+>>>     skb_splice_from_iter gets a "short" read
+>>>
+>>> (!MSG_SPLICE_PAGES)
+>>> skb_copy_to_page_nocache copy=iov_iter_count
+>>>    [...]
+>>>      copy_from_iter
+>>>           /* this doesn't help */
+>>>           if (unlikely(iter->count < len))
+>>>                   len = iter->count;
+>>>             iterate_bvec
+>>>               ... and we run off the bvecs
+>>>
+>>> Fix this by properly setting the iov_iter's byte count, plus sending the
+>>> correct byte count to tcp_sendmsg_locked.
+>>>
+>>> Cc: stable@vger.kernel.org
+>>> Fixes: c2ff29e99a76 ("siw: Inline do_tcp_sendpages()")
+>>> Reported-by: kernel test robot <oliver.sang@intel.com>
+>>> Closes: https://lore.kernel.org/oe-lkp/202507220801.50a7210-lkp@intel.com
+>>> Reviewed-by: David Howells <dhowells@redhat.com>
+>>> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+>>> ---
+>>>
+>>> v2:
+>>>    - Add David Howells's Rb on the original patch
+>>>    - Remove the offset increment, since it's dead code
+>>>
+>>>    drivers/infiniband/sw/siw/siw_qp_tx.c | 5 ++---
+>>>    1 file changed, 2 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/drivers/infiniband/sw/siw/siw_qp_tx.c b/drivers/infiniband/sw/siw/siw_qp_tx.c
+>>> index 3a08f57d2211..f7dd32c6e5ba 100644
+>>> --- a/drivers/infiniband/sw/siw/siw_qp_tx.c
+>>> +++ b/drivers/infiniband/sw/siw/siw_qp_tx.c
+>>> @@ -340,18 +340,17 @@ static int siw_tcp_sendpages(struct socket *s, struct page **page, int offset,
+>>>    		if (!sendpage_ok(page[i]))
+>>>    			msg.msg_flags &= ~MSG_SPLICE_PAGES;
+>>>    		bvec_set_page(&bvec, page[i], bytes, offset);
+>>> -		iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, size);
+>>> +		iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, bytes);
+>>>    try_page_again:
+>>>    		lock_sock(sk);
+>>> -		rv = tcp_sendmsg_locked(sk, &msg, size);
+>>> +		rv = tcp_sendmsg_locked(sk, &msg, bytes)
+>>>    		release_sock(sk);
+>>>    		if (rv > 0) {
+>>>    			size -= rv;
+>>>    			sent += rv;
+>>>    			if (rv != bytes) {
+>>> -				offset += rv;
+>>>    				bytes -= rv;
+>>>    				goto try_page_again;
+>>>    			}
+>> Acked-by: Bernard Metzler <bernard.metzler@linux.dev>
+>
+> Thanks!
+>
+> Do you want to take the fix through your tree? Otherwise I suspect Vlastimil
+> could simply take it (and possibly resubmit the SLAB PR, which hasn't been
+> merged yet).
+>
+Thanks Pedro. Having Vlastimil taking care sounds good to me.
 
-[...]
+I am currently without development infrastructure (small village
 
-Looks much better already. Some quirks.
+in the mountains thing). And fixing the SLAB PR in the
 
-> +#include <stdio.h>
-> +#include <stdlib.h>
-> +#include <string.h>
-> +#include <unistd.h>
-> +#include <sys/mman.h>
-> +#include <sys/prctl.h>
-> +#include <sys/wait.h>
-> +
-> +#include "../kselftest_harness.h"
-> +#include "thp_settings.h"
-> +#include "vm_util.h"
-> +
-> +static int sz2ord(size_t size, size_t pagesize)
-> +{
-> +	return __builtin_ctzll(size / pagesize);
-> +}
-> +
-> +enum thp_collapse_type {
-> +	THP_COLLAPSE_NONE,
-> +	THP_COLLAPSE_MADV_HUGEPAGE,	/* MADV_HUGEPAGE before access */
-> +	THP_COLLAPSE_MADV_COLLAPSE,	/* MADV_COLLAPSE after access */
-> +};
-> +
-> +enum thp_policy {
-> +	THP_POLICY_NEVER,
-> +	THP_POLICY_MADVISE,
-> +	THP_POLICY_ALWAYS,
-> +};
-
-Couldn't you have reused "enum thp_enabled" end simply never specified 
-the "THP_INHERIT"? Then, you need to do less translation.
-
-> +
-> +struct test_results {
-> +	int prctl_get_thp_disable;
-
-The result is always one, does that here make sense?
-
-> +	int prctl_applied_collapse_none;
-
-"prctl_applied" is a bit confusing. And most of these always have the 
-same value.
-
-Can't we special case the remaining two cases on the current policy and 
-avoid this struct compeltely?
-
-
-> +	int prctl_applied_collapse_madv_huge;
-> +	int prctl_applied_collapse_madv_collapse;
-> +	int prctl_removed_collapse_none;
-> +	int prctl_removed_collapse_madv_huge;
-> +	int prctl_removed_collapse_madv_collapse;
-> +};
-> +
-> +/*
-> + * Function to mmap a buffer, fault it in, madvise it appropriately (before
-> + * page fault for MADV_HUGE, and after for MADV_COLLAPSE), and check if the
-> + * mmap region is huge.
-> + * Returns:
-> + * 0 if test doesn't give hugepage
-> + * 1 if test gives a hugepage
-> + * -errno if mmap fails
-> + */
-> +static int test_mmap_thp(enum thp_collapse_type madvise_buf, size_t pmdsize)
-> +{
-> +	char *mem, *mmap_mem;
-> +	size_t mmap_size;
-> +	int ret;
-> +
-> +	/* For alignment purposes, we need twice the THP size. */
-> +	mmap_size = 2 * pmdsize;
-> +	mmap_mem = (char *)mmap(NULL, mmap_size, PROT_READ | PROT_WRITE,
-> +				    MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-> +	if (mmap_mem == MAP_FAILED)
-> +		return -errno;
-> +
-> +	/* We need a THP-aligned memory area. */
-> +	mem = (char *)(((uintptr_t)mmap_mem + pmdsize) & ~(pmdsize - 1));
-> +
-> +	if (madvise_buf == THP_COLLAPSE_MADV_HUGEPAGE)
-> +		madvise(mem, pmdsize, MADV_HUGEPAGE);
-> +
-> +	/* Ensure memory is allocated */
-> +	memset(mem, 1, pmdsize);
-> +
-> +	if (madvise_buf == THP_COLLAPSE_MADV_COLLAPSE)
-> +		madvise(mem, pmdsize, MADV_COLLAPSE);
-> +
-
-To avoid even mmap_mem to get merged with some other VMA, maybe just do
-before reading the smap here:
-
-/* HACK: make sure we have a separate VMA that we can check reliably. */
-mprotect(mem, pmdsize, PROT_READ);
-
-or
-
-madvise(mem, pmdsize, MADV_DONTFORK);
-
-before reading smaps.
-
-That is probably the easiest approach. The you can drop the lengthy 
-comment and perform a single thp check.
+first place would be even better.
 
 
-[...]
+Best,
 
-> +
-> +static void prctl_thp_disable_test(struct __test_metadata *const _metadata,
-> +				   size_t pmdsize, struct test_results *results)
-> +{
-> +
-> +	ASSERT_EQ(prctl(PR_GET_THP_DISABLE, NULL, NULL, NULL, NULL),
-> +		  results->prctl_get_thp_disable);
-> +
-> +	/* tests after prctl overrides global policy */
-> +	ASSERT_EQ(test_mmap_thp(THP_COLLAPSE_NONE, pmdsize),
-> +		  results->prctl_applied_collapse_none);
-> +
-> +	ASSERT_EQ(test_mmap_thp(THP_COLLAPSE_MADV_HUGEPAGE, pmdsize),
-> +		  results->prctl_applied_collapse_madv_huge);
-> +
-> +	ASSERT_EQ(test_mmap_thp(THP_COLLAPSE_MADV_COLLAPSE, pmdsize),
-> +		  results->prctl_applied_collapse_madv_collapse);
-> +
-> +	/* Reset to global policy */
-> +	ASSERT_EQ(prctl(PR_SET_THP_DISABLE, 0, NULL, NULL, NULL), 0);
-> +
-> +	/* tests after prctl is cleared, and only global policy is effective */
-> +	ASSERT_EQ(test_mmap_thp(THP_COLLAPSE_NONE, pmdsize),
-> +		  results->prctl_removed_collapse_none);
-> +
-> +	ASSERT_EQ(test_mmap_thp(THP_COLLAPSE_MADV_HUGEPAGE, pmdsize),
-> +		  results->prctl_removed_collapse_madv_huge);
-> +
-> +	ASSERT_EQ(test_mmap_thp(THP_COLLAPSE_MADV_COLLAPSE, pmdsize),
-> +		  results->prctl_removed_collapse_madv_collapse);
-> +}
-> +
-> +FIXTURE(prctl_thp_disable_completely)
-> +{
-> +	struct thp_settings settings;
-> +	struct test_results results;
-
-Is this "expected_results" ?
-
-But again, hopefully we can remove that and instead just base it on the 
-polocy that we configured.
-
--- 
-Cheers,
-
-David / dhildenb
+Bernard.
 
 
