@@ -2,115 +2,111 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E8A08C87FCC
-	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 18:16:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C6303C87FCC
+	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 18:35:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C2DF6B0092; Thu, 31 Jul 2025 14:16:37 -0400 (EDT)
+	id 2CC5D6B007B; Thu, 31 Jul 2025 14:35:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8746D6B0093; Thu, 31 Jul 2025 14:16:37 -0400 (EDT)
+	id 27C806B0089; Thu, 31 Jul 2025 14:35:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78BBC6B0095; Thu, 31 Jul 2025 14:16:37 -0400 (EDT)
+	id 192326B008A; Thu, 31 Jul 2025 14:35:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 690336B0092
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 14:16:37 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 132D3160A09
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 18:16:37 +0000 (UTC)
-X-FDA: 83725365234.06.F3177B1
-Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 861E240005
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 18:16:33 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=FfMV7HvZ;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf17.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.217.51 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 09F926B007B
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 14:35:05 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 88D745C454
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 18:35:04 +0000 (UTC)
+X-FDA: 83725411728.21.55A1888
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 9DC1C40019
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 18:35:02 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=GqaV5H2t;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf01.hostedemail.com: domain of fvdl@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=fvdl@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753986902; a=rsa-sha256;
+	cv=none;
+	b=WU3i6j10IRt93ZYb+GtczdnYS5lac4fW19D2d9fDIdQ4MC5diMC+Bi8rsZjrPo2wQ+LCOj
+	5ztjZwjornUuEirsMHHvKvEAmD541ay1CQMLOw51E4ktJM5FsVsgLcQxVrqXe4j8hTWlzl
+	bzCndMreF1YmBCjPiyJFJULLM4UeJrE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=GqaV5H2t;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf01.hostedemail.com: domain of fvdl@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=fvdl@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753985795;
+	s=arc-20220608; t=1753986902;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zNycq62jXW8tjjm44f5hhjhcd4tsXOjyfLo6mreDnWc=;
-	b=Yd1mO67k0MLXUW0WaBx6abTKhgeFw4AjtEdcM3unXAzNCf8xuyuPhDICX46a2x0gH/lJhO
-	0ZC3fqmqhbH1u0gbVM8S9QNYpW6c7URubS/mTdFetJ9Mp3Kl/DxG0+MqHt+rySe+9ZfJNA
-	N7724MiD09uXtCCAigIVHAZ7YL7tNgY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753985795; a=rsa-sha256;
-	cv=none;
-	b=7b+ujStlxoCTgmPYS4g85s6o9g/skYyDIrITmOXGWbRppruZ/Y9JjQYj5vhnFuiTnetY5q
-	EguouBCDqYhikrBxujMrwnxguEkkC6MztDxVloiDp//sB9OWv+W0QKUwiUUb7yL0z1/km9
-	HGEM1iawUy70uhM0Y3fWhFt+9uZocdU=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=FfMV7HvZ;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf17.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.217.51 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-4e9c8a2026bso187991137.3
-        for <linux-mm@kvack.org>; Thu, 31 Jul 2025 11:16:33 -0700 (PDT)
+	bh=3sl94WIxMtBCkU36kfiKWNKynhVQAmpLF1VjfHVNOmI=;
+	b=4qg+ig1XT7Riga4Vfph4zHDHJ1+58QVHQ6EzPALqVDk3SgyJabEAtedtCBixImDx8QTRsS
+	qFnLI2gNPE8qU3urzuf7A41vVCpr+EU0iXNqj/Z8ijSxWOmBNA3ufMnB6qn1CgPIs30thH
+	PrvkwsuK5OKqfhl4Ltezeh/3mPtAlrw=
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4aaf43cbbdcso30311cf.1
+        for <linux-mm@kvack.org>; Thu, 31 Jul 2025 11:35:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1753985792; x=1754590592; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zNycq62jXW8tjjm44f5hhjhcd4tsXOjyfLo6mreDnWc=;
-        b=FfMV7HvZ2PUwTC/pk+oovoEnTIoaXfLZ+PgPTK/bbcFLvpLGJI5Lctn73n10qnvDoU
-         u97pRpC4aUZEZZLNcSQjUfljSqSgVgYQWjjppb9hW/zcvyf4ZW2O6ZIsFEeWbFYiPTU3
-         yJo/YVlQh6C41GuQbuX48MCm0U6ZpEjFVxV9cTzHd3uy0W+a0+837yY3Jhh1zSaCLwW5
-         /tmev5+vODtmQSu/vBL2S0aqzhMIr/y0f+uMnnwYmtpC3nPh6yvtngHAvQHZBqWpVYfk
-         FLYH6LzUwcPY79YB96lUbzgfnk4sGBNwpiSUHmGno9Krjui0sP4GF3uBUh2BqGVUlHQU
-         rJ8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753985792; x=1754590592;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1753986902; x=1754591702; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zNycq62jXW8tjjm44f5hhjhcd4tsXOjyfLo6mreDnWc=;
-        b=vNOUp9v3cP1o0QlOd0UDizfGSV/AM2yMCYZlRmvXPeGYlJKRSmfN032bWgyJdJX8MW
-         GmWYh3rft09ouZEN2rRqpMjwE7Cd71/ZbPFnXljOgSCWla7hisSgcUf43g60p+p7RhSa
-         cLX8tRfOXR4BTfx+j9ri6AAxcHmHYzc6v1ViPJ9I9BMxLcQaAriEbqDdUISPtAvvkqYW
-         UFQxjo/wje8j/KyOGFQaCkHmMydRa0gf79yWwEs/QxXtjClCbT8jX5DbmPpCvqFfiGnv
-         iEVNR6GhOjZ95D9PQsw/5InFbv9TSdpUGuZNhtQl46hM3JXnPWnlpNty7+6SpwPGekUC
-         9JPg==
-X-Forwarded-Encrypted: i=1; AJvYcCU/BZ6TPYaEQQZtEdS5Ojgd07SoEqt4VTKkW2mEHHBddwqsfu7rkw8Ydx3kpRIgCu1aS+JGbRLQsg==@kvack.org
-X-Gm-Message-State: AOJu0Yy0Ynd2Lds5UpH2bBLLJHiNVHKjW/QV69FBJEo44bL9CjWt8rbU
-	v6R8I3sdeSGJeh7r+yX1Pk3SMJSt/40BlXLFkrCYtAGOp22jtQ0PEAdKPsgWZCP/1DU=
-X-Gm-Gg: ASbGncs9jdEfzs7ddXNM1uZfbZ+PP0TcWzrMc1PMhuF4JN5h2V9lm2Ynp+MjmAGKtYs
-	SQElTSF1M5x1rr+4CVQsg+3tsV7+V+gCxL/nh/CSCcibh4GO4OQ7HIHR0Q/XHH5nNQoLcvg+SBQ
-	JxjNio5EZGTZ5T1+Vq/aOvU1M/+QjEtgnquLJ1SfEc9I/IVwyXObhts3Ip7MpY0aL/JbGKCOna+
-	XB6hq7iD32jOE49Pv2jvJ/XshJyHyb6IH63D43oX1GyBERCnaDVMHFakW5NUVForJJ6RZL+Npii
-	J9JEqSpklI0oUPVYX9JvoygiClE4FK+DXvAx4AqysjFEj3g/a1Y0Q3eDHVJqSoEfoS8rtkGyZxs
-	Pbi5Z07PFEPkICs1Q7FW4FEto/SyP6vQ3
-X-Google-Smtp-Source: AGHT+IGiF90gF2ac/IfeIfowe0tuCQyzVITlmCw/gArMykn5Hp8a2pCzf2lGGHyC9wsGOMaX2cNeJg==
-X-Received: by 2002:a05:6102:3c81:b0:4fb:dd65:b97f with SMTP id ada2fe7eead31-4fbe87dd1aamr6014065137.23.1753985792451;
-        Thu, 31 Jul 2025 11:16:32 -0700 (PDT)
-Received: from localhost ([2603:7000:c01:2716:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-7077cd69b86sm10763916d6.42.2025.07.31.11.16.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Jul 2025 11:16:31 -0700 (PDT)
-Date: Thu, 31 Jul 2025 14:16:30 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Nhat Pham <nphamcs@gmail.com>, Takero Funaki <flintglass@gmail.com>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>, kernel-team@meta.com,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH] mm/zswap: store compression failed page as-is
-Message-ID: <20250731181630.GB1055539@cmpxchg.org>
-References: <20250731152701.GA1055539@cmpxchg.org>
- <20250731170922.15509-1-sj@kernel.org>
+        bh=3sl94WIxMtBCkU36kfiKWNKynhVQAmpLF1VjfHVNOmI=;
+        b=GqaV5H2trmIvh6FLJVCwUuFwpgUoFCoWBbyCcBoy4Aj4lqTGxHDU+WCxaXhWowKnbl
+         OQmtkU6tGZsYUz177vk6RQzltKRcQd/WW3Mb+1Ig6INZPpxKlypZObnOx+vXoYIQYOoA
+         XysHlHo+sWhtRbgVkmIbCQNq5F5aoYuHtVickbXoxlmqjdEi2TpwByeGUbxIbUGO3wpK
+         eF1bL3TzuzNJulFwUculD8CKtCNXjq7e8kJ+CQtPIK+ila3vaWYmwX8HQFK14kMlsQMz
+         CBnSY92ptuxjX1qUzIpLQc0XqIZHnAoBPC3nzScchpvS+M6a9LqqpSyn5YClGjQ7ZhXt
+         HXcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753986902; x=1754591702;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3sl94WIxMtBCkU36kfiKWNKynhVQAmpLF1VjfHVNOmI=;
+        b=g4L+SCMbzhGS093bpu9nWM7twVSGZROfLZvoU6krz6lIzlTR2eVk5jjxvu73DEjN5O
+         q5q3mbc0balUNplC3mUrnYYglZR7nTvPG01ontcexNM+VYDU0JeiaKuCwzLJuNqOOxQU
+         B1Ddy7LAVyAdbQsvmFM2Jg7q4vw3xf+zFbwngOSOQQ9aTlz0Nnm79PTNIW9D9vn1Xp5d
+         OYsc2qmTxsi46UnSIx/gkjdwFxw3JcvzjEKgwohxe74AEew4Vj/hzHvW/y9SHMKy/m8w
+         Vllk/C454EllcL7e3mCcfk+Q79sz9oJtV0yuOaDbAEUU2o0RAIULY/QFrnRf7wh+PIBf
+         KE9A==
+X-Forwarded-Encrypted: i=1; AJvYcCUUKa9u/nBzsAYeSA0/9L/L66gCe+p+qXpSnqXAZTFdlwFcYeypE5xIP0QN6sDIplytjLngnBsp9g==@kvack.org
+X-Gm-Message-State: AOJu0YyX3sqPX2Qt5ACv35Y1FB3+YXxABHnC4m47A5cwlVsRCpwRuziW
+	OE16pCM0aaHIc+Q3gb8r+fMgV1mgWeUz5thhpQBpdyAD/Tl4TJ89yw5Q4cxSwEL/6YbTmzpbChu
+	cPiOMaZcSXNw+Az+hNEXZytBcqVHaKX+wt2KRCw+m
+X-Gm-Gg: ASbGncv6S0pKFvjt5GIsPoUyKOZE1CIjKxmjNbvJeKA9lu7b//x8T1I5bdoyDZXAQy0
+	YVQYnG8n+v+hhr5J9YfL3hLnhoMGgKLPFCa0Qssj1r9+wL+jRp0SsQIM8W3+AeDPdJ7dzUf1y9Z
+	9gA2xI6R3w7lpz4ilAecZKAbuBmJPnFVCWJbV2A7iJBSf2Z9IBT9b1pDISwxh8LOLypqKxpPahZ
+	+FE
+X-Google-Smtp-Source: AGHT+IG8dwAOmNJsGh6zbRM/I8aJX8Oc13ieikcMJPqAfmSx5slCeVWy09nxhdeNWTrV7C3cx23F34V9sDwqMcPRfbM=
+X-Received: by 2002:a05:622a:28d:b0:4a7:1743:106b with SMTP id
+ d75a77b69052e-4aefe4c6e4bmr401021cf.6.1753986901330; Thu, 31 Jul 2025
+ 11:35:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250731170922.15509-1-sj@kernel.org>
-X-Rspamd-Queue-Id: 861E240005
-X-Stat-Signature: u9me4odd6hphnchnhzquq8mk8qpsm4i5
+References: <DU0PR01MB10385345F7153F334100981888259A@DU0PR01MB10385.eurprd01.prod.exchangelabs.com>
+In-Reply-To: <DU0PR01MB10385345F7153F334100981888259A@DU0PR01MB10385.eurprd01.prod.exchangelabs.com>
+From: Frank van der Linden <fvdl@google.com>
+Date: Thu, 31 Jul 2025 11:34:50 -0700
+X-Gm-Features: Ac12FXyPY6jyMNK1z0Sa1pOKvQufurZYXqkKaBQWTzR7vxpq5Jd4_LdZXos92u0
+Message-ID: <CAPTztWYf82p6hq=Q2mVq6_9WTjRaQiH81z4idZL6MZ1PXufPwQ@mail.gmail.com>
+Subject: Re: Realtime threads delayed due to kcompactd0
+To: Alexander Krabler <Alexander.Krabler@kuka.com>
+Cc: "linux-rt-users@vger.kernel.org" <linux-rt-users@vger.kernel.org>, 
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, Dennis Schimmel <Dennis.Schimmel@kuka.com>, 
+	Daniel Braunwarth <Daniel.Braunwarth@kuka.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: fs1ww81ea777n494m7boamajy4xo584e
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1753985793-150306
-X-HE-Meta: U2FsdGVkX1/m7SX799CUI5q3kKYoJOT1hHjs+sWYpuCRCo+tt/jV0YXvCTzV/8Zfyh0p6hPacgizbb93BBTuzpq2guQnt8Me+3sc3q8AvsjeqMjtbyYkVim5JUGVjvU1SBOuWMT6tKhrRYU516QlkfKvyZ18nKdcs6YFEQyANR5aXd8R1iQIKbfU2a34NM4RNcLbLRy8KS7ObVYsixUTn1NuUmaJQppIMlCNPemluAddj4Gk+e5LvbOOFXdk9lZTKEJwOG/5gpRdOwxr8b9mIGMQGJJ43dJZCou11WlXqZQ7IbZWcO/44luICcVquE8V5iOeBeZTNUZMi9wUOqkx3txO1eW9rfnh6cjmM8n+DiOJSODq87L8I2z8dXqHNN8D4Hs+cQQlgkTKcY3UzDlR2fAVcV+irQNlAqfZG7wSNm8YSVhVwZ5+2e3VwkIn+5mU6esKY4DWOLS2vF68SVmEi2m1CNp0p7TJyJNyK14bmB6gG1R71u1zj0EHlT/CgTWogPbe6L5xixQ5aVpJsqn3l4Yy7cqv6qMf+o+Pvy431H7EV29kjUwGw/Yy20VcDAT9V0UVGanqffYtNlsXRIQtP+Dv/Rd+43SIxNZurqklM7oJCqkDcd5s0fPPO7b0RhTJblTBDPcbWTIF2xiCS1SEqOU2D3ZMJeutCpbr8HHL3B1/UENJEIl/xN4g0Ff3qcWakjxm1B03atxHPeO5hez/H866fQhba9PSJq9o6R7Z2e4CYpLCcuaCJIexx6MZ6+ULFmkeYfRC7FAf9zIwHuXZQJ8zP0KOfKd8m/fOAfMCLj2vEbdCgp5vFo4/3GwhL/8mqee3Vsgk8ln3ZzwPB7lU9N/iTuGYAlL1picnoKMfSMnrwkqNItCKxrHhUS3X3DGXiuE/zRAG7gV4ANE2HyyqVXszymfohRSHAuY2ylrrzIxlcK1W6tQ1NcRK4zdgGKalGQQeRDt7b3lj1fKH/ep
- UM9lRnVV
- RFZwhRu5BraLaHGjcw8XWpBNIa+7ri3NWCFnPDpxyYMOlcSFw+7j+dvBM8iFEtS7GC3M8hX0Ud/AMW3Zh+u9cRz7PlAm4st20qZdS8BS1PJkHnAfBLNJ1VmDKKDSj+CAX0I7ybnpTRTuzI6FcMjCDcH+2Y0QB4ncrNzakJKooRSPpwd5ueKcB+Dxinazd0tEOqdK98VHw8d2mj3pBxMUongmBbv6NGPSkiZMiD4XwhvB2+BAN4cjkMLqE8Y9sE+Z9SJ87Z+zc7uk6qgrncM7Pmp9cCOzGH9+9fXthr1pfDoKIBS4+0UUyNnh849IheRxKvdgZCs47L8chOi5LOF0QDLn2kDZ+hGKBbl6kJ+ThJ86xCh86un7MZpfxQXBophwMIHB1TB8BKCRMtzYpWXE/gw2JDWjuEBn3MuNtrT/HpbkEN9LYDh8huYCmtifPTxqoggdODjdogrHNAQrQD9qWPEhI8+9zyOz710gj7l2NKuoCWMqbDPGTnijS5346gQ9qL+KsRnTFBsMj7tg=
+X-Rspamd-Queue-Id: 9DC1C40019
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1753986902-620858
+X-HE-Meta: U2FsdGVkX1/nFCc0oW3cTdCN9mUDOmrbF70CnpKwgLkzQbSpfFAh05qVgtK++qSF9f/wLh/8lE7itkj8DOJ2qTXiGkxnEUuM50VgM+ZhY5v0FLUeX+lTl8NrRMXLAMRXYtZdZ2SFVM7++wpkvGaNuV+7hgftn+BLMu9t0PgBCvo4Jd+ou+4uAHna3kDsW3tzV6exSb9QqRL7TWWwD3BR/nx3JSSv/+TPa7lECdaLb/zKgpz8lyHeMY4IPKZBos8lMh53smA1vyI2vsYHspJW1IvV3gKCs3I55nBtZKyhDpVUOh6nL/TRWEl2qEulU+z2hps/0dsC1d1+ehLyf4bGGi26qQ7YfImK9tkQOf4JAJqwxhPRhH6CJePzYvo7YV9WET7mNoIbFgyI9rWSL1yH74WvQO5lLlEw4IT7qQ3DHq0sHrgB7aZ/tbnLAK+iVp+KksU2VKYy0IcbV0bIkdU1Qfr7YzfNU3KeIBs5/lqtMDgsaO6JT0uVmbpyBIfgqo1CPr5/SH+2dz+M97jwi7zhIFyTNyEXi4WqpZ9qQPzGocO9c6M32Rt6X0Eza91rvXFP5Y+Ayvay8LQaGCgXXSQIoPMsKTMe8at9IAc/xMixgTk1fIxTEYvo2HYp+Jd5+yV2HcylpLNiEpMK2nKXB33Z7/W5YG6K/qNsySf80rXFRJ1+jMxwauNwQpgu3/WapwJdAj4sUHOqIA9XpX2c8ucYMxZ73VwHcc5zMg6W+9Is1eJRM5BGV6dGFwbH7/VZCNHGjTeocfWUn5UURplxrVPHTVW7pDKtI1wdNoVtOWM3RNzrrJEwyV0j2qbPv6k77uQ4SWtkMToum89XzRYfkg+HNPqM/o952/AgPj64o9sEqXPk5ursxoQYYNRtCYkxDlYRaE742sxoGATFt8uO7Sl4FOGfzFOUgImefgnB6uEs5ApU6TT9C2W92z53x8K0Et3IZlc5nqIzFE8CtDu09qE
+ x12UWeon
+ 4mtD7zTkqrkcPttHFr99SHq0JZehSRaGTwxEtmDlyFHBjw90IihfqkfDfdbRoLfkDnp7QtXEPhsanNCB8wtVXCyefAX3sB2XwTkgnWv4xZsxm3VwDglb9volnx4XKH/r5GpUcJjfPXCjm0JoBe2i5O+Rn666UuEwTyC0NYEMQx0V3cmS8wVGbYne3qcohcODRbyXw2b1iVzR9GDxBG0TlzJoFmEmQ9wMQXSRl9Gyu9RvaXWhaiM0z957Ts5rctmFH7a1pYlMCtwXvXE35IZCbWVvcwsvXiIxcyPVyBPecsaZIE+KqxlDQvTkrWvh9g5VV+X6LI9/O4lLoNYo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,26 +115,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 31, 2025 at 10:09:22AM -0700, SeongJae Park wrote:
-> On Thu, 31 Jul 2025 11:27:01 -0400 Johannes Weiner <hannes@cmpxchg.org> wrote:
-> > So if compression fails, still do zpool_malloc(), but for PAGE_SIZE
-> > and copy over the uncompressed page contents.
-> > 
-> > struct zswap_entry has a hole after bool referenced, so you can add a
-> > flag to mark those uncompressed entries at no extra cost.
-> > 
-> > Then you can detect this case in zswap_decompress() and handle the
-> > uncompressed copy into @folio accordingly.
-> 
-> I think we could still use 'zswap_entry->length == PAGE_SIZE' as the indicator,
-> As long as we ensure that always means the content is incompressed, following
-> Nhat's suggestion[1].
-> 
-> Please let me know if I'm missing something.
+On Thu, Jul 24, 2025 at 10:30=E2=80=AFPM Alexander Krabler
+<Alexander.Krabler@kuka.com> wrote:
+>
+> Hi all,
+>
+> some of our realtime tasks get delayed from time to time due to activity =
+of kcompactd0.
+> Out of nothing, realtime tasks go into uninterruptable sleep for some tim=
+e.
+> This delay can be as much as 1.1ms, which is not acceptable for us.
+>
+> Our hardware is an aarch64-based SOC with 8 A72 cores, kernel is 6.12.17 =
+with PREEMPT_RT.
+> We have CONFIG_COMPACTION and CONFIG_MIGRATION enabled.
+>
+> Here are some snippets from ftrace:
+>              kcompactd0-88    [001] 13112.100041: mm_compaction_begin:  z=
+one_start=3D0x80000 migrate_pfn=3D0x80000 free_pfn=3D0xffe00 zone_end=3D0x1=
+00000, mode=3Dsync
+> ...
+>              kcompactd0-88    [001] 13112.159782: mm_compaction_isolate_m=
+igratepages: range=3D(0x85800 ~ 0x85841) nr_scanned=3D65 nr_taken=3D32
+>              kcompactd0-88    [001] 13112.159810: mm_compaction_isolate_f=
+reepages: range=3D(0xddc40 ~ 0xddc48) nr_scanned=3D8 nr_taken=3D8
+>              kcompactd0-88    [001] 13112.160002: irq_handler_entry:    i=
+rq=3D11 name=3Darch_timer
+>              kcompactd0-88    [001] 13112.160012: irq_handler_exit:     i=
+rq=3D11 ret=3Dhandled
+>              kcompactd0-88    [001] 13112.160121: mm_compaction_migratepa=
+ges: nr_migrated=3D32 nr_failed=3D0
+>              kcompactd0-88    [001] 13112.160122: mm_compaction_finished:=
+ node=3D0 zone=3DDMA      order=3D-1 ret=3Dcontinue
+>              kcompactd0-88    [001] 13112.160185: mm_compaction_isolate_m=
+igratepages: range=3D(0x85841 ~ 0x85a00) nr_scanned=3D447 nr_taken=3D166
+>              kcompactd0-88    [001] 13112.160204: mm_compaction_isolate_f=
+reepages: range=3D(0xddc48 ~ 0xddd80) nr_scanned=3D312 nr_taken=3D196
+>               tRealtime-16499 [004] 13112.160511: sched_switch:         t=
+Realtime:16499 [25] D =3D=3D> tKRC:16479 [39]
+>               tRealtime-16499 [004] 13112.160512: kernel_stack:         <=
+stack trace >
+> =3D> __schedule (ffffcde843022d6c)
+> =3D> schedule (ffffcde843023464)
+> =3D> io_schedule (ffffcde8430235ec)
+> =3D> migration_entry_wait_on_locked (ffffcde8424a1ad8)
+> =3D> migration_entry_wait (ffffcde84254c400)
+> =3D> do_swap_page (ffffcde8424f7fac)
+> =3D> __handle_mm_fault (ffffcde8424f8b64)
+> =3D> handle_mm_fault (ffffcde8424f9bc0)
+> =3D> do_page_fault (ffffcde843030380)
+> =3D> do_translation_fault (ffffcde84303072c)
+> =3D> do_mem_abort (ffffcde84222f674)
+> =3D> el0_ia (ffffcde84301eb20)
+> =3D> el0t_64_sync_handler (ffffcde84301f020)
+> =3D> el0t_64_sync (ffffcde842211514)
+>              kcompactd0-88    [001] 13112.160557: sched_pi_setprio:     c=
+omm=3Dkcompactd0 pid=3D88 oldprio=3D39 newprio=3D120
+>              kcompactd0-88    [001] 13112.160569: sched_waking:         c=
+omm=3DtKRC pid=3D16479 prio=3D39 target_cpu=3D004
+>              kcompactd0-88    [001] 13112.160986: sched_waking:         c=
+omm=3DtKRC pid=3D16479 prio=3D39 target_cpu=3D004
+>              kcompactd0-88    [001] 13112.161412: sched_waking:         c=
+omm=3DtOther pid=3D16520 prio=3D40 target_cpu=3D004
+>              kcompactd0-88    [001] 13112.161457: sched_pi_setprio:     c=
+omm=3Dkcompactd0 pid=3D88 oldprio=3D40 newprio=3D120
+>              kcompactd0-88    [001] 13112.161465: sched_waking:         c=
+omm=3DtOther pid=3D16520 prio=3D40 target_cpu=3D004
+>              kcompactd0-88    [001] 13112.161654: sched_waking:         c=
+omm=3DtRealtime pid=3D16499 prio=3D25 target_cpu=3D004
+>
+> In our setup kcompactd0 gets enough CPU time (on core 1), however, it see=
+ms strange that it doesn't get the priority inherited from blocked realtime=
+ tasks.
+> (It does for short amounts of time, which seems to be due to the locks in=
+side migration_entry_wait_on_locked.)
+>
+> Is there anything we can do here?
+>
+> Thanks,
+> Alexander
 
-Ah, right. So if compression succeeds but the result is still
-PAGE_SIZE you will treat it as failure and store it uncompressed. Then
-PAGE_SIZE always means uncompressed for the readers.
+Yes, we have (likely) seen this issue too, in a !CONFIG_PREEMPT setting.
 
-Even better.
+The basic problem is that the calling thread (kcompactd or it could be
+any thread that goes in to direct compaction) creates a resource that
+needs to be waited for until it's done, in the form of the migration
+PTEs. Since a migration PTE is not a lock that is held by the thread
+doing the migration, there is no priority inheritance in the realtime
+case, and priority inversion can happen.
+
+This issue has always been there, but it has been made more prominent
+with batch migration. With batch migration, all migration PTEs are set
+up in the first step, followed by a TLB flush, and then the copy / new
+map setup is done. So, the migration PTEs stick around for longer, and
+the chance that other threads block on them is higher. For the
+!CONFIG_PREEMPT case, the cond_resched() in the loop can also cause
+the thread creating the migration PTEs to be descheduled while a
+number of migration PTEs are in place, so there is a similar priority
+inversion chance.
+
+Not sure what the right thing to do would be. Either explicitly boost
+the priority of a thread temporarily during migrate_pages_batch, or
+mitigate the issue by dealing with 'busy' pages more quickly in
+migrate_pages_batch.
+
+- Frank
 
