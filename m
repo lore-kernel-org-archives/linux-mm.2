@@ -2,119 +2,239 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A8EC5C87FCA
-	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 07:47:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3022BC83F17
+	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 08:29:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B97B6B007B; Thu, 31 Jul 2025 03:47:28 -0400 (EDT)
+	id 56AB46B007B; Thu, 31 Jul 2025 04:29:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1919F6B0088; Thu, 31 Jul 2025 03:47:28 -0400 (EDT)
+	id 514B06B0088; Thu, 31 Jul 2025 04:29:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A7A76B008A; Thu, 31 Jul 2025 03:47:28 -0400 (EDT)
+	id 3DC8C6B008A; Thu, 31 Jul 2025 04:29:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F164A6B007B
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 03:47:27 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 29C1055202
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 07:47:27 +0000 (UTC)
-X-FDA: 83723779734.23.542B43C
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 6240E1A0006
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 07:47:24 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ZILjyc2Y;
-	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753948045;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DAC06B007B
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 04:29:38 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CF4E31A0677
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 08:29:37 +0000 (UTC)
+X-FDA: 83723885994.04.7D96470
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 4D5B94000B
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 08:29:34 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=oF5tW8Cy;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=biKrnuFv;
+	spf=pass (imf12.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753950574; a=rsa-sha256;
+	cv=pass;
+	b=pTuMCqTJUstKIxHbp6QXQJxweEu7TL96by//36bZAG1XVJVTqFpcQFOq6hkYtljRnU0hbd
+	kJTaFo/pTOJ/HAI+jiyOVDy6J5/2369IAnsPIaNXAt/x9ci6i6RbKde5F+AvNF8GOL3tRU
+	WGQlPKkX3TXSuO/4QmCAp8CkzwVNRBM=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=oF5tW8Cy;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=biKrnuFv;
+	spf=pass (imf12.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753950574;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ezu7WMA0/wsLXTAliviBOCWi9GB/73OIXFrtp9lPJow=;
-	b=tDAejgSOQpjcYrhTxxsYurBMITZE1TGdiG2rV3I9Vkd07ih9IYCBu/UGg8aUEUW3TSWUy4
-	mTETWB0hKmfO5TRSKPZgDBGhRPB/H26MmP0ei4jOyqR3FDbZcJk5JqGLZXr6iTZTXekx2Z
-	YQ5n1Xif3uQeEUZM/mrhS5fwtpIJY+8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753948045; a=rsa-sha256;
-	cv=none;
-	b=KRX3m7/yPYMqS80IK1czH8J7fOtqf/8CtGW5HQ368nmqcWTvQj74dNx08FyVAVOBFBbvdB
-	zrQ8xceufWha1QyWixwboYGVDUEAggJG36knI+R9smIZPoa22VBrUmXXsCODp0nA0v3Qma
-	Wd20tE8iV1BGnd6u7DSJ+SpeLIkLtD4=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ZILjyc2Y;
-	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753948044; x=1785484044;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=N4lFgM6enMi7egPgtoDq0LPj8fBAykO6vUSoTiVz3W4=;
-  b=ZILjyc2YYBuSbZCoWY6rO3msYXWxYE6j+PJtUhWznkjgpm8k8pQNRQzv
-   68T0czB9A5zd6lk7+yqP24A2iWQg7t0adqNRUOCNtk43S/buqLN8uGhId
-   oweatK/pg//lu88AXF5osXGobna0olDrNXNhbu9cWn8A4rS7e/kbArVc9
-   fxxTud5l5+d6rHr8QQC3ahOp1Owf0nVnp7I1lYplA1FyKlRpRy36kToET
-   bqB3GWh9cdlUOznn3PcrtFUT+6Xy4syBvezimBv3Zb5c98Xvkpt0DFs5a
-   pic+v1+/jJowL7ooRfif3NPFo2zQsSldSmqoMIpFZPnFbLaJ3XmLyqobQ
-   A==;
-X-CSE-ConnectionGUID: 8/LOa3DtQOaY1TEtR3WlwQ==
-X-CSE-MsgGUID: eLBqX1JMTVCQ7HuqxdLwoQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11507"; a="55467167"
-X-IronPort-AV: E=Sophos;i="6.16,353,1744095600"; 
-   d="scan'208";a="55467167"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2025 00:47:22 -0700
-X-CSE-ConnectionGUID: W6avIq26TRSoDeateIy+rA==
-X-CSE-MsgGUID: f7kTM5qYQVqW8c2vUKVuPw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,353,1744095600"; 
-   d="scan'208";a="163986194"
-Received: from lkp-server01.sh.intel.com (HELO 160750d4a34c) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 31 Jul 2025 00:47:15 -0700
-Received: from kbuild by 160750d4a34c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uhO0P-0003WW-1j;
-	Thu, 31 Jul 2025 07:47:13 +0000
-Date: Thu, 31 Jul 2025 15:47:03 +0800
-From: kernel test robot <lkp@intel.com>
-To: Yuzhuo Jing <yuzhuo@google.com>, Ian Rogers <irogers@google.com>,
-	Yuzhuo Jing <yzj@umich.edu>, Jonathan Corbet <corbet@lwn.net>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	"Paul E . McKenney" <paulmck@kernel.org>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Zqiang <qiang.zhang@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Frank van der Linden <fvdl@google.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rcu@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [PATCH v1 1/4] rcuscale: Create debugfs file for writer durations
-Message-ID: <202507311504.ttQGhW04-lkp@intel.com>
-References: <20250730022347.71722-2-yuzhuo@google.com>
-MIME-Version: 1.0
+	bh=xoeYKEl+Uh5PoYVMGEK/2dqD8XU1Ns8VqpAX2ayCbTs=;
+	b=qQBXxJTfw8f2ZRdTb7Ob/uuMrkh6o8jaSEwgWjgVkuSXQcCjmNvcmUc9y6vQAI1uUuxBWQ
+	xuTxfBtQYqQLvbEB5PxEb3iWwtle1f9N8ClT646QsazLHvcTyxzgbTY/YOiQrkzsIaf0rT
+	t0Ivwp3KxGKrgeBDip+xfLnuB0Bc0Ts=
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56V7C3nU009868;
+	Thu, 31 Jul 2025 08:29:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=xoeYKEl+Uh5PoYVMGE
+	K/2dqD8XU1Ns8VqpAX2ayCbTs=; b=oF5tW8CyG1U6eLHfTbQoaTB/JfKA+sTt9X
+	U7NOPF7LfAjzT/7Q1cYZji3Lwwkz7Njisun8yPvGgivRnUqlbWIU8lBpnXC1aukX
+	+Sq6M/HqbPBtvmkpNycIxAUMTdRygwDHV1Lwv3Da70FS3hsnSXMbBDwarWv4+4GB
+	k6opaoEcFTs3MfkVTHei+1jUwGBFJdOPjJBqKdsh+swp7X/JFMYE0CqaBNfbQD2d
+	4aNt2vC1ArO5/xvCMrfYLhIHYqMGYe4+5puTNKbxcZ8Yw0sFL/wdlMsXJaGwnR69
+	EBsmr3Jpi4njEmpZ0plaxHJtnxPuwY6N+kO25PVniJ8W6c5QerlQ==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 487y2p0fwv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 31 Jul 2025 08:29:22 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 56V6qk2O020347;
+	Thu, 31 Jul 2025 08:29:21 GMT
+Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12on2053.outbound.protection.outlook.com [40.107.243.53])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 484nfjh7e3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 31 Jul 2025 08:29:21 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JJISW/hfiC00gNbARRIh90Fj2X51ix00rB8AGRLVjerHmmQgPGL6t4DRQAMLqQYJksKEFiMdAIL8cd0MwtQbWgij4hiVXOZEF8nnmbG4PlvR1Un79efOSSdQjeeXQPJ3dDaNMSVYX3YVEufY9gWO+cgTiI2G8AB5N2c66G62ZRiGA8rLqyRnGdS7H8l9VS0PN93JXI7ZvjYE70BIoDXWkykfPsIgIPJNQtYwjcZHWkbQrYlYzOljQVRUuC760QyUtDOBZxHxzneJHBEunmnWt9R5XIwSnHhYCXa/zVOiD3J9ZReTmI1lKphl+XmICQu5qHblLgRWeydCnIT8nt1f3w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xoeYKEl+Uh5PoYVMGEK/2dqD8XU1Ns8VqpAX2ayCbTs=;
+ b=QwJFRDigZ/2Z7JHen8Odv6YeHwI/sNa7xtVlxTWdR60scEnsYgNpSF8zyRhGImC5326QSRUDuangsz1ye2reWAd4ykpXsqdOZd6J/CtwDBmYKyNjOMK3KKle37rmaoFjypEluw0oStUJ2AS2Ym/VKZJwljtl6VrUXjSA2pmVxmPxPe4iI9CxsqW3zZ68lRs6OpwuhoP7Dp2Fn8RULgPa5QVhv+XJjgnw/eQfNCv/wbBIB71RokmteMWWgYw4zIeR2XunRdn8vxHpWyuEBLGt9INUAqfOCYYvFKWUdeLlWBbOMLU/6roSiOdoMiEbHAbxZAUuX23Nobqf3qry8Cb/9Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xoeYKEl+Uh5PoYVMGEK/2dqD8XU1Ns8VqpAX2ayCbTs=;
+ b=biKrnuFvdJGs6x3KzdicF8rwzturc8rwA/b+Ni1W0a57Wyi4jSlA9AO+TQhseu8y5UCeIxvImIV2Yy6btXioMkdh7M8s491TCodKSkhs7yb7kjpgPx1LCFEWITm8SCIBoztDjPtXiv2be5csoEkoIi7HWgcQVSvlURiQifBOXlw=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by CYXPR10MB7923.namprd10.prod.outlook.com (2603:10b6:930:e8::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.11; Thu, 31 Jul
+ 2025 08:29:16 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.8989.010; Thu, 31 Jul 2025
+ 08:29:16 +0000
+Date: Thu, 31 Jul 2025 09:29:12 +0100
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Usama Arif <usamaarif642@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@redhat.com,
+        linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, corbet@lwn.net,
+        rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+        hannes@cmpxchg.org, baohua@kernel.org, shakeel.butt@linux.dev,
+        riel@surriel.com, ziy@nvidia.com, laoar.shao@gmail.com,
+        dev.jain@arm.com, baolin.wang@linux.alibaba.com, npache@redhat.com,
+        Liam.Howlett@oracle.com, ryan.roberts@arm.com, vbabka@suse.cz,
+        jannh@google.com, Arnd Bergmann <arnd@arndb.de>, sj@kernel.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+        kernel-team@meta.com, Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH 1/5] prctl: extend PR_SET_THP_DISABLE to optionally
+ exclude VM_HUGEPAGE
+Message-ID: <41d8154f-7646-4cca-8b65-218827c1e7e4@lucifer.local>
+References: <20250725162258.1043176-1-usamaarif642@gmail.com>
+ <20250725162258.1043176-2-usamaarif642@gmail.com>
+ <8c5d607d-498e-4a34-a781-faafb3a5fdef@lucifer.local>
+ <6eab6447-d9cb-4bad-aecc-cc5a5cd192bb@gmail.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250730022347.71722-2-yuzhuo@google.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 6240E1A0006
-X-Stat-Signature: 87m66cgaadkk9ed4zrgyz5pti7b4xg65
+In-Reply-To: <6eab6447-d9cb-4bad-aecc-cc5a5cd192bb@gmail.com>
+X-ClientProxiedBy: AM0PR06CA0125.eurprd06.prod.outlook.com
+ (2603:10a6:208:ab::30) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CYXPR10MB7923:EE_
+X-MS-Office365-Filtering-Correlation-Id: 40da8210-d7dd-44e5-7bdc-08ddd00c5650
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?BtPs9Ex6i4Xdi+C7GClURGck3rgDJPFbh00d7sFo488AmCQv3fsGM1Wy4bIT?=
+ =?us-ascii?Q?2wTipDNvZ4asa7FOXVckyenvEDiQewzzPRUEj/hhWKbcfEyRhYpx6m0L8yqJ?=
+ =?us-ascii?Q?R3Zt7GxczTluIMncgmPMqRLpVwRMdqQXQ1LCHa2ifLjmqfMr9Ne2ShxPtIpQ?=
+ =?us-ascii?Q?WHM3bH0QMYlz6KWIIYGSb2M7pEzwUzxEmyYXS9yW77ylZ3GvrZDFhdbRWaMC?=
+ =?us-ascii?Q?9uA4ve0ZaR7E7A7aZ5R0It4IvMb/8fpGivHQWChGtZ+kmdLgBUUgPSOfJCsf?=
+ =?us-ascii?Q?iXDiAxkq2juJYf1lGhHpB3HW8umNB+haeQ4m3hR+eiVr0rOpUgUvZroF/WMP?=
+ =?us-ascii?Q?vj1Q11VC7YCwIR4f37at7lKfiAJ0ztvkqIZn2V8u6RwnR8kIQ9Jv9A8ulmJj?=
+ =?us-ascii?Q?Ot3Y3cwQYdwDHwXNEfi0+BE/FQaj6Iaq2zDVUqm/S3xmPAEGhxDtrpA5gNel?=
+ =?us-ascii?Q?urctloCarEyjkBXzm8Z8IrAQLMHv8Q4PcZ/1BMNaZByt5SRRVOUT/XyN50Sk?=
+ =?us-ascii?Q?aQO4uvjtAsyWSSzsW2X28sI8Q14Kkhtc6WC3Rg9UiDN18P087ShaDNZt8/w5?=
+ =?us-ascii?Q?o7RaYrds1zMOTceEMTo+R1H6hylfCvoBT+hjynnt8LLdAuoK7uq8Z/HqYTB+?=
+ =?us-ascii?Q?0UV95Jwcyfcl7/ZyxW2uXEaHb//brnK2FYxEC4WqZw9AF4wMw7GevjCqBojo?=
+ =?us-ascii?Q?mnSvNpCOL38uuGFbyYmWuGI4h62vRKv9DWJJev6Hms0nozIZ0NK5xZnkv4aX?=
+ =?us-ascii?Q?EE+4K5z5msKWRJ2i0knkGB80uCO7dF73t+uoaYnENZR/MtyHoblaVBph+hdU?=
+ =?us-ascii?Q?GWwucKrAP3aqU7qsUdhS+XbQianG/bBmX/QNfsPnT3h6KscbibujWQOMBgOx?=
+ =?us-ascii?Q?99+TXVOHGo633QDMtJWrOwbhkRr9eTiv8pr5zPT5djdWPJuMkSIi5OzhF+2c?=
+ =?us-ascii?Q?JgX/LuJewCPR8+WagBh8TL+pya6D9O2dROMLxN37UQhdiaaHHx4j3iB2VCjl?=
+ =?us-ascii?Q?la9n2hByyO1mSHpbw1FjCNKXywhvPWm49JeqHNDoVjd6zBjpfu5t6DibOq0U?=
+ =?us-ascii?Q?0+0diyKf4TMzpLRGIo83cy6jXKCaIxPVzI0hdhzl2LlzPDfQhtMYBzw78vUY?=
+ =?us-ascii?Q?eaDemNhK7yWI2Fi7z10ByOV0aBJc9v69CjTU0joUdpmbezZjxSI5veDUKHHl?=
+ =?us-ascii?Q?YfUx/167j5MYkdJdIDGHKOrK6W+kKWUmNQ0KGEtTd9V+47ntGyhB6B+rxgKb?=
+ =?us-ascii?Q?XXrSe3hSmuOnjOL3wwo0ZoP3ZsNNjOsD3X073z9S8yuP0vbDJ+xje3o69llP?=
+ =?us-ascii?Q?mrQ331cjtSaqOy9MghiTsGzesOgXl3fNWaEBDkFyYHuglGzsLIcCGovpJCUc?=
+ =?us-ascii?Q?Ce7snsR2Mv/Rju2mWDdSEiWO0uHmnchvRocBVn5Y5cwkAtgyMgdZiSD1Sg1S?=
+ =?us-ascii?Q?x0NMBaS1kis=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?psDBmyiRxiudi4TOGr1C2arW/MioM+YFf62bCEZmW0Mwmmf7/C36WU9Wb0Xj?=
+ =?us-ascii?Q?tF76RV7WDUlV5PyiSSOl8mz3gRehmg/o7XLA3fUf17cCXsQIMVS6zI1bVtHP?=
+ =?us-ascii?Q?CMEAkr00gJuRiIfzoVfTd2s2hz8icWlUw9txkXvfos0l/x9q3BL2AlWWUQIz?=
+ =?us-ascii?Q?Q9OsLWXaq88mviAyjD5xXBiSnnmu6eslLDzRSlb/u55mqFRLFZOVAOPramEY?=
+ =?us-ascii?Q?fZufd+rgkPb8+GCBEN+FuRhKTyeiOMWPp7S/RVvmuzwzGk74WaZ/I/4lgcXT?=
+ =?us-ascii?Q?92kx7D+qR96VTFyg8ulAZkk6FG4uqs52tXExAwrfLwmPOUcdEs+Q0Wy9m9Yj?=
+ =?us-ascii?Q?WiTFpjUQNyr6oa6o9MebcVBXcZ8wQgGrhCDuQ3HZOBTq2S7vV4LI4CIlcY+w?=
+ =?us-ascii?Q?i7eYhK8zkmw+y7F+X2Wgg5iTGpe0oeoeF5jsbHJ13hGXQ0ywoJPr0ELfJ1AY?=
+ =?us-ascii?Q?yi2JXytkgWbWen+DHW1RvTVpyf91+DJZDnSHAzCT4zd31me4mIfc3XtDbWuj?=
+ =?us-ascii?Q?qwfECmX/VShDokPqdCrJfEj1P1U9YCnPMZ8QFtY6btN3UZ1pvfkdokI5jHKA?=
+ =?us-ascii?Q?dyNAfEsNWc9ANkWmOJfIikuwE+ijVP1jsPu/3+vuDcC5XYsM4+XAfJd4P7N2?=
+ =?us-ascii?Q?WCOTSexEuISWGZygdH3Fmj844s2JFwx9h1oC6UY/XlQS1fl4kkvz/sCwxJkc?=
+ =?us-ascii?Q?n4LTjKAz89TuBJnXIbmjcajK0Zl9mOwu24uonUhKFruW6SBiqrVvUkzxWIiH?=
+ =?us-ascii?Q?0dj5nybGJXnXKGvKIJhZKcv+Jo4FbF2wZJ8bQcpmyuG9o6tS498RQc5WC31W?=
+ =?us-ascii?Q?gRwtcAan7optQwQTyQ8HuE6pk5o1Q6iGCYvTIxmV35vlQsMNc5Lfyo3uGY9B?=
+ =?us-ascii?Q?1eHrIb+E7jFbwH52U+tWjzhHgTybYzX/P1NjG6ufdpOzpKGBsEA7Jjm/b6lO?=
+ =?us-ascii?Q?nQQwuBnTHRErA95n3669SMnxxUtM6AZnojWXfVGBlUZ5AWOmvDz3XN04POnw?=
+ =?us-ascii?Q?EtGtLDI7XtTTgsRAzXg888HOQemhabIwAYey+nBbYcdbF4fv2Pgwqk23Abvq?=
+ =?us-ascii?Q?EsYPd2C3UQ/rPWIqY0Q67nn7OHRTCtfpFwnlzgI3LL0SrhzuE6uiBl/8kb84?=
+ =?us-ascii?Q?K0G81IzLYnbOj2CHWsLF8KUzqq32wQqLoxO691H3U/klKsWRdtq3HBqPsOJQ?=
+ =?us-ascii?Q?2UBV7UMneUGoEzMLmdrRo+uuSUD6c0L+942WZ3N4KYrNtI9VP1Sw1A7HMpV+?=
+ =?us-ascii?Q?Alp7Mcme332ggEJLul65LbMV3r+bTKFYJ2PM9S01RN1EABIY9HwgqYtt05n8?=
+ =?us-ascii?Q?dVz177cYqE6001feO5OJKRz42JMA3YscEl5WSCzeidHnKDDZHQQebrg3zUS6?=
+ =?us-ascii?Q?l0ECqpUtKCH2+taa2pTBaMrJ4MAYpzmgW6aCs71K4bmONZFicoQjYd4TvOHz?=
+ =?us-ascii?Q?2JbYjHy3P+j4O1RG1/h91ku9MQ8LVNIsNNJDYcnugFYEzzmiRZ/TdoHISa/G?=
+ =?us-ascii?Q?KZRPakXNUSshNAr6enyG+oKeLKCxlajkbsuOyCoXxAn+uaDnS6Vr/JfxFfPr?=
+ =?us-ascii?Q?cfpX5beaHxQheyWx/gUnhMSYqs4MdeVOY10JmJVkZq9JqzNe+dfKlWgGzWW7?=
+ =?us-ascii?Q?cw=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	uT7MsZGxSZsNBiqipp+fX5DPjbXViH3tVKhcFeL5oqRPpSh8qDsK2nxHKTTsjzfVBoDaSHBbsTjNfmun/oV5XljXTlJOmp7+kQw/zaCTlYbLSiyYog+V5PTMGOGDNDgHD7JwUXvL6IwqE9x57zI9Epu+gz4KxFT5I3cpZMpPDV7LrJU/1L/NomZ+jauMBJ7QNJPw7lTCF5IUGJIr89B/DaZoTjz9b2cdTFC4TMvG71QSmsxbM1nRVkhXadhP9Xkpa3rjVLHBR0XL0r1c+ecEcAw+h41sT7dZ580V090p75hfjel7jyLbIn1QGuaScpT68NlcnPovKhL5xaW7X5MYCOjKKfDETf+HOyhW/QMgUInJCkis3i4Gsy+s8jQT/0FvCfsfvKyCMfkMRfBLb8N94ZFncqeqt8wO2hG1vOkTgQtyN4h5nzAjMvSWzf7sjmBNPqOHIU4VqsRHu+aYtEDWiw94qNdZG6bx3PekMrSbucLkpK0GB+7hgG2YxM3hb7XPiCE1u3xEUaBqjkpGL9OheB+eUeEyodyvxS+yOtHRUYvMi9er7ybFo25wAuZ4d02vhQUyFGPVBHFf61sBDieK6qYdkZrjv66vzVTSICAV9eI=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 40da8210-d7dd-44e5-7bdc-08ddd00c5650
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2025 08:29:16.4517
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bd8hiCc/9I/S5bH1MH8+8/uHJFWQyzwP8BS9JLRiMCPAc15MzeZUUxqTTB4abQCKguNqjz95ful28NNtBr/46XNGOuLKr89PguLdxpuwQn0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR10MB7923
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-31_01,2025-07-31_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=0 bulkscore=0
+ malwarescore=0 mlxscore=0 adultscore=0 mlxlogscore=999 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
+ definitions=main-2507310058
+X-Authority-Analysis: v=2.4 cv=COwqXQrD c=1 sm=1 tr=0 ts=688b2962 b=1 cx=c_pps
+ a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=Wb1JkmetP80A:10 a=GoEa3M9JfhUA:10 a=pGLkceISAAAA:8 a=20KFwNOVAAAA:8
+ a=yPCof4ZbAAAA:8 a=9t6k1dWA5BB_nFc6OMgA:9 a=CjuIK1q_8ugA:10 cc=ntf
+ awl=host:12071
+X-Proofpoint-ORIG-GUID: JsiCfdE5k5lBoYffx4TqkK-xC04M5z1O
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzMxMDA1OCBTYWx0ZWRfXxhhkSwibK09y
+ ZwBL4J7Hm+PlKmz+Hxxv5W2t4xnvNhae2P+ildTpaLL4U9aKfzj6S44lsbgLMf+f6AWa2fX9Ja9
+ 0FLxEd9BDgvBC48oxTizv7ZdGuYxL0UdmGECqkKep31OZ5EbMomIfGfQBJ8fdaSyopVXKFkZY2y
+ oWmWjQS0pKRiwYr885tBDWVfnt+ZkQJ5uiPAJa8T8vH7bl0TVkUTZ7nU5aStdTFZBelnsABR7iE
+ 3iW+IL3GfoFEXvCkMzFx20TXXaHVt5UmrBY5J80dHcRYWE8NE+i4avvXEYtqy+DCl4W0FEuKYb+
+ RvSXrUr7sykjSOnuq8KdjES6reiC6jteDahC6ecv4+hEpw7uOlSRlodGUUK0ew2EQ/7IO3hXpuh
+ 5m00qSOkt173Rl+N/QM2npnxqKOCopIfK40hkiN3f3MrG+IuQ9+5R7JXZrs2LLo8ypRcMR9m
+X-Proofpoint-GUID: JsiCfdE5k5lBoYffx4TqkK-xC04M5z1O
 X-Rspam-User: 
-X-HE-Tag: 1753948044-554155
-X-HE-Meta: U2FsdGVkX1+hcsmGpzQ2NtEPYigjAygQT1nOMkkXxTE7GxwePh80L1OV4LjOWM0zdvbATGCwIbcwxOBn/MVDvOHvNi1uTzuYZoF3fyH6D1/71U4Q8UTXIUBIzss2ntkNnNbKOQW/m6witveCSv+sZZ4yFzhmz/8G8mdBWRyebd6w4Lamnq+qh+FS3qCaleEoPmzgTXLNFVVn4PiOu393Cbfs7Sn/AuzQBZKMj/8ptczHL9QJYeEMoPy2eM3DPwAQddi1VNf+U+VnR137/+4I6M+LTb18lH4xu4Dn0+mKSVfVaEDQDzfCNcEUo1dpV8ubePNxFPTzeRlXi6ohdJ1qCPQN+45rsaq4qsASAkv5DMYi5uljCB2MG1/AHYHr+vuGw4dABkgN/rngvcwC4s8dHTVVcwdABSLQl30dRFYW8ZgEf9MduTrKMT7PVdx+7XjpCr6TSc1jqUm8Mw3XHNAsDXuPd14XGele0J16S6+PqAf1udRtoU8QcAOHpkQhkWeK/puZrOzsFU9ol9QDcu4gp2EIi+D7QerrA9McRljF1vs3MnFV5y0o9jPg2bn7e2Wl5CPFebHh1ACxAdiDu8dC1EVz9AYGzUJ3/nkzrGH0EZe4cEzLYOE5DGkuoy+rPWXx9FRWE31sOReN7MVUanBeyWk1x+8biBpHXwoaOg0VqlVDwkPjh06KKj99gIxQ6WSfq98rRMwvzo+wM0ji19w8FQl0wBYLgdL/RVRGe07GRXJpkwcsz5t+F+JHztmDMcD+m0Lbz0ZCXZ9RtvHkkY6rhQwN38NjTP10QUGuZ2UUR80A/J1HIUO5UOZXRNdpJ/Nxl+Zexm+4GCHPvXpasouf7WYoSqvO6dUI20xYQnAxvJU64SXuLg59sIukuTOOaJ5UokKBnAa+AhxkciSjmaW/zfJlmsZaXwCM0SoH/UOk+NQi3qOdITTRpfRPuGwLPo4k82BuMyO8yT4NrCSz4oe
- v336mrbH
- uTJf6g6FUSPafdAbXIOZXJdX7bAOFzOpXGFzIUS6/tLVU+tKQp00zrp+GTwU7TQ+kAfJHta7Csw5jLGW7fL3HXnM1M9olM2F5mL6nDJPIVwRjjXd8IDJ1IQH6wWxCeDz2V/yiN6EMMcufSDlyw21sI6aAB03DDGKa2uHmj+5ra7Tn5EpFd+KSObWzifoBx6yC5Uctuj+uOuXWE+0A1s6yjw3zX6vWjYmnn9rTkl2ZsrZn85PGofYjlYc0OuT3082i7nZujXqZc1jP4WZY/Fs5ol1k4gDeDiBQJCJUyWF41RLcUQiZuFD2ZOP/9auAEkPtpgfNojeCc1ceI7LP8oDIr9W9VgIbK/df3VT77x9hhpkbti5MQFVg3y3pUjS6rxNkY8ztdWK8eSJ+QMz4yTopDGp8RPmdwUqqNOYhwQtR70e6eaXY6GO3vmpY1mueF0gYtxP8
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4D5B94000B
+X-Stat-Signature: fwja8x7z3ae4f693gptgnkpgh58nyz1y
+X-HE-Tag: 1753950574-47111
+X-HE-Meta: U2FsdGVkX18o+WsX/d8Zn1RMxW7t0LuVkqIMtq66xNB/U0Y0OtB+OWAPIEx/1RidDwVF7EbBiQWW433FF234OiMXhvmX/zMWp1qxblbXq0cmbxXmj+T15w6gkv0GV5A9Sa1OjAMJR8ginNaTr2QWrmq4dT/9szQ9p6FehY3OBczJ9Bph1xPJaKD846ZLA3Cs9ZqreStLYEl8KyKvGlg86M42o5nvU9CxjWyTrFrr1/kpR0XKtbf5J1lsxve7t+hzK18UGSamgcwmHbO78/BjALtVcqh2JUN+pSv4bQC18Gy7mkCgwkiewCXVmWtEjnXt6o1FSOB4oZhKnDXouBqCRUbxFnJJRppiTR2xPvSASzlczsaL1bV30wmZwdBi0dLd43MDHvVu7xcAfwerPYi6OHm0EXcMQ48V+LJCIomAR5iwj/WH7f7ugsuwpiBFxU60IMxe65vQxoUCDHyVcTFDNdstB39tqX5TPeowjUxGtAYBz+pYa62ox9Iv31EbrGJ2AdKQqf6fnB8x37O0T4VAQYCnKOLClhAPqgc3gxNWfmBmTHlIAEV9f56+nRQ9MlDvrfoHx3Gs3uax162wPzd1hEHBreLnVYg7obYsGJ5e3DN9BSPdAeHzilTzXB4Hg9ykY3myG7fl370/uATcNuCdf8BmvL7F4UHrKjSSucAakRvwVrtAebwECOzAuLjnAzJ18x4B2flQQniVhVuWkRgiXM4pDLXO+bIdQY0SnoTaxTo6gVhreIfSLcaLUvV7PmBPGP/jU3jOsM305FhSuuJV2Im5KdZ6Lu0uH/l4rpKDLZbCkc6tlUAyi617oTXCTA4yaoRDNDgPX34vtlmBHoRdxejQNwcGAduS8XgZWwd1Q2EHQ9on9xpLSIMcShSuH/CvI0qZ27PvskSH2I1Mw2ZAjfxfQ2kWgsSwng6IvfBFXAzxGm07Lw+Pw262wG80TZYQQcbrJPZhSAYHO9t3K62
+ cSCPLiZW
+ JH5tuNQM+ObapDIztO945mZ+vNryBdFzrR93/395hJrg7uUh9sveqqKL4XVJzwtZqjFM3a/TYyTpJopHSovC4PdK/PmKQ6tvX2k9/RW9AKczG+0j8jNnoAtCFyYCXdSAN1pPEaPARSFp35qUgQ7rjeNcB9GsQdIO+so6qibZ/RXYRltZgeiEKq3+e//oDuuB7m5jlbxQ46aSH9OAaIo0DDxIjzLQLO85uF7dvqWsSsBKzCRgwSYfmud0R8IMQ0zF/Xn++ENHRFxlQMrfzMNEBeGZfQIhuHbt6g9VHFRwK7T4AMAbW+VLvE6g/OOmNf+uLTFUyTiJpFtgzFaq+7a5giYwQ6Pv0Wfe0e085JE/QkaUAK2OZMFNB1p0oZj/WDeNgkRND9oe7fuAdvFrbQBSVMKLkRtSkfRfgNiQbqDAy1dWHvcyxfssiVW9KAreqgcqZN7adc7FKl5wCYj7croY2j0zfCl6E2aw9RUN6fBoMtJxF1UiYslaOiOhTK+5aA2mRNyRbu00HXfDm/uIRniRjT8R9cmdrodKhlyMCTV/vdycFogOf+ACaFyheC/gjTaAz3cy6DZYd0PgzSU9NxEMoaU4llQBIpdv3nwatzyLjyePaUZTZ/8EyPur+YeHzNINMAKpqQ5tcJ1Bvi/p0ltH4EZ5aSMWn4cs/2mlzZ3VvrH+4X2ScJXiuvuSg4MIeExhGTGxYiZvZ0ziAhdT01sRpOJSaMIdcn/fys9XFwwc64OWWU8KG7+PH9RMw+4FCkFd5+p2Al77ucssxfG7e8UcMbK1mlItytL3pdXUB8rvDpBCSVjdVS4vLykpKxyfIDux7pueLVjex7osWg7qmnui/pD/uiP1vV6oF5JxTUk4P+7KeHqkl23e9bBtWALB6e0da1Bf6EQPfDr15paaKkRzoFhlvRg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,233 +243,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Yuzhuo,
+Just a ping on the man page stuff - you will do that right? :>)
 
-kernel test robot noticed the following build errors:
+Probably best at end of 6.18 cycle when this is about to go to Linus.
 
-[auto build test ERROR on rcu/rcu/dev]
-[also build test ERROR on linus/master v6.16 next-20250731]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+I can give you some details on how that all works if it'd be helpful.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Yuzhuo-Jing/rcuscale-Create-debugfs-file-for-writer-durations/20250730-102613
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rcu/linux.git rcu/dev
-patch link:    https://lore.kernel.org/r/20250730022347.71722-2-yuzhuo%40google.com
-patch subject: [PATCH v1 1/4] rcuscale: Create debugfs file for writer durations
-config: i386-randconfig-002-20250731 (https://download.01.org/0day-ci/archive/20250731/202507311504.ttQGhW04-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14+deb12u1) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250731/202507311504.ttQGhW04-lkp@intel.com/reproduce)
+On Wed, Jul 30, 2025 at 08:42:04PM +0100, Usama Arif wrote:
+> >> Acked-by: Usama Arif <usamaarif642@gmail.com>
+> >> Tested-by: Usama Arif <usamaarif642@gmail.com>
+[snip]
+> >> Signed-off-by: David Hildenbrand <david@redhat.com>
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202507311504.ttQGhW04-lkp@intel.com/
+All looks good aside from nits, so:
 
-All errors (new ones prefixed by >>):
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-   In file included from <command-line>:
-   kernel/rcu/rcuscale.c: In function 'rcu_scale_writer':
->> kernel/rcu/rcuscale.c:630:44: error: 'test_complete' undeclared (first use in this function); did you mean 'complete'?
-     630 |                                 WRITE_ONCE(test_complete, true);
-         |                                            ^~~~~~~~~~~~~
-   include/linux/compiler_types.h:548:23: note: in definition of macro '__compiletime_assert'
-     548 |                 if (!(condition))                                       \
-         |                       ^~~~~~~~~
-   include/linux/compiler_types.h:568:9: note: in expansion of macro '_compiletime_assert'
-     568 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |         ^~~~~~~~~~~~~~~~~~~
-   include/asm-generic/rwonce.h:36:9: note: in expansion of macro 'compiletime_assert'
-      36 |         compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long),  \
-         |         ^~~~~~~~~~~~~~~~~~
-   include/asm-generic/rwonce.h:36:28: note: in expansion of macro '__native_word'
-      36 |         compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long),  \
-         |                            ^~~~~~~~~~~~~
-   include/asm-generic/rwonce.h:60:9: note: in expansion of macro 'compiletime_assert_rwonce_type'
-      60 |         compiletime_assert_rwonce_type(x);                              \
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   kernel/rcu/rcuscale.c:630:33: note: in expansion of macro 'WRITE_ONCE'
-     630 |                                 WRITE_ONCE(test_complete, true);
-         |                                 ^~~~~~~~~~
-   kernel/rcu/rcuscale.c:630:44: note: each undeclared identifier is reported only once for each function it appears in
-     630 |                                 WRITE_ONCE(test_complete, true);
-         |                                            ^~~~~~~~~~~~~
-   include/linux/compiler_types.h:548:23: note: in definition of macro '__compiletime_assert'
-     548 |                 if (!(condition))                                       \
-         |                       ^~~~~~~~~
-   include/linux/compiler_types.h:568:9: note: in expansion of macro '_compiletime_assert'
-     568 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |         ^~~~~~~~~~~~~~~~~~~
-   include/asm-generic/rwonce.h:36:9: note: in expansion of macro 'compiletime_assert'
-      36 |         compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long),  \
-         |         ^~~~~~~~~~~~~~~~~~
-   include/asm-generic/rwonce.h:36:28: note: in expansion of macro '__native_word'
-      36 |         compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long),  \
-         |                            ^~~~~~~~~~~~~
-   include/asm-generic/rwonce.h:60:9: note: in expansion of macro 'compiletime_assert_rwonce_type'
-      60 |         compiletime_assert_rwonce_type(x);                              \
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   kernel/rcu/rcuscale.c:630:33: note: in expansion of macro 'WRITE_ONCE'
-     630 |                                 WRITE_ONCE(test_complete, true);
-         |                                 ^~~~~~~~~~
-   kernel/rcu/rcuscale.c: In function 'writer_durations_start':
-   kernel/rcu/rcuscale.c:959:14: error: 'test_complete' undeclared (first use in this function); did you mean 'complete'?
-     959 |         if (!test_complete || writer_id < 0 || writer_id >= nrealwriters)
-         |              ^~~~~~~~~~~~~
-         |              complete
+> >> +/*
+> >> + * Check whether THPs are explicitly disabled for this VMA, for example,
+> >> + * through madvise or prctl.
+> >> + */
+> >>  static inline bool vma_thp_disabled(struct vm_area_struct *vma,
+> >>  		vm_flags_t vm_flags)
+> >>  {
+> >> +	/* Are THPs disabled for this VMA? */
+> >> +	if (vm_flags & VM_NOHUGEPAGE)
+> >> +		return true;
+>
+> VM_NOHUGEPAGE will cause the THP being disabled here.
+>
+> >> +	/* Are THPs disabled for all VMAs in the whole process? */
+> >> +	if (test_bit(MMF_DISABLE_THP_COMPLETELY, &vma->vm_mm->flags))
+> >> +		return true;
+> >>  	/*
+> >> -	 * Explicitly disabled through madvise or prctl, or some
+> >> -	 * architectures may disable THP for some mappings, for
+> >> -	 * example, s390 kvm.
+> >> +	 * Are THPs disabled only for VMAs where we didn't get an explicit
+> >> +	 * advise to use them?
+> >>  	 */
+> >> -	return (vm_flags & VM_NOHUGEPAGE) ||
+> >> -	       test_bit(MMF_DISABLE_THP, &vma->vm_mm->flags);
+> >> +	if (vm_flags & VM_HUGEPAGE)
+> >> +		return false;
+> >
+> > Hm is this correct? This means that VM_NOHUGEPAGE no longer results in THP being
+> > disabled here no?
+>
+> Lorenzo, pointed to VM_NOHUGEPAGE case above.>
 
+Haha doh! OK cool, obviously I did this review a little too late in the day
+when Mr. Brain was not on best form :P
 
-vim +630 kernel/rcu/rcuscale.c
+All good, thanks!
 
-   534	
-   535	/*
-   536	 * RCU scale writer kthread.  Repeatedly does a grace period.
-   537	 */
-   538	static int
-   539	rcu_scale_writer(void *arg)
-   540	{
-   541		int i = 0;
-   542		int i_max;
-   543		unsigned long jdone;
-   544		long me = (long)arg;
-   545		bool selfreport = false;
-   546		bool started = false, done = false, alldone = false;
-   547		u64 t;
-   548		DEFINE_TORTURE_RANDOM(tr);
-   549		u64 *wdp;
-   550		u64 *wdpp = writer_durations[me];
-   551		struct writer_freelist *wflp = &writer_freelists[me];
-   552		struct writer_mblock *wmbp = NULL;
-   553	
-   554		VERBOSE_SCALEOUT_STRING("rcu_scale_writer task started");
-   555		WARN_ON(!wdpp);
-   556		set_cpus_allowed_ptr(current, cpumask_of(me % nr_cpu_ids));
-   557		current->flags |= PF_NO_SETAFFINITY;
-   558		sched_set_fifo_low(current);
-   559	
-   560		if (holdoff)
-   561			schedule_timeout_idle(holdoff * HZ);
-   562	
-   563		/*
-   564		 * Wait until rcu_end_inkernel_boot() is called for normal GP tests
-   565		 * so that RCU is not always expedited for normal GP tests.
-   566		 * The system_state test is approximate, but works well in practice.
-   567		 */
-   568		while (!gp_exp && system_state != SYSTEM_RUNNING)
-   569			schedule_timeout_uninterruptible(1);
-   570	
-   571		t = ktime_get_mono_fast_ns();
-   572		if (atomic_inc_return(&n_rcu_scale_writer_started) >= nrealwriters) {
-   573			t_rcu_scale_writer_started = t;
-   574			if (gp_exp) {
-   575				b_rcu_gp_test_started =
-   576					cur_ops->exp_completed() / 2;
-   577			} else {
-   578				b_rcu_gp_test_started = cur_ops->get_gp_seq();
-   579			}
-   580		}
-   581	
-   582		jdone = jiffies + minruntime * HZ;
-   583		do {
-   584			bool gp_succeeded = false;
-   585	
-   586			if (writer_holdoff)
-   587				udelay(writer_holdoff);
-   588			if (writer_holdoff_jiffies)
-   589				schedule_timeout_idle(torture_random(&tr) % writer_holdoff_jiffies + 1);
-   590			wdp = &wdpp[i];
-   591			*wdp = ktime_get_mono_fast_ns();
-   592			if (gp_async && !WARN_ON_ONCE(!cur_ops->async)) {
-   593				if (!wmbp)
-   594					wmbp = rcu_scale_alloc(me);
-   595				if (wmbp && atomic_read(&wflp->ws_inflight) < gp_async_max) {
-   596					atomic_inc(&wflp->ws_inflight);
-   597					cur_ops->async(&wmbp->wmb_rh, rcu_scale_async_cb);
-   598					wmbp = NULL;
-   599					gp_succeeded = true;
-   600				} else if (!kthread_should_stop()) {
-   601					cur_ops->gp_barrier();
-   602				} else {
-   603					rcu_scale_free(wmbp); /* Because we are stopping. */
-   604					wmbp = NULL;
-   605				}
-   606			} else if (gp_exp) {
-   607				cur_ops->exp_sync();
-   608				gp_succeeded = true;
-   609			} else {
-   610				cur_ops->sync();
-   611				gp_succeeded = true;
-   612			}
-   613			t = ktime_get_mono_fast_ns();
-   614			*wdp = t - *wdp;
-   615			i_max = i;
-   616			writer_n_durations[me] = i_max + 1;
-   617			if (!started &&
-   618			    atomic_read(&n_rcu_scale_writer_started) >= nrealwriters)
-   619				started = true;
-   620			if (!done && i >= MIN_MEAS && time_after(jiffies, jdone)) {
-   621				done = true;
-   622				WRITE_ONCE(writer_done[me], true);
-   623				sched_set_normal(current, 0);
-   624				pr_alert("%s%s rcu_scale_writer %ld has %d measurements\n",
-   625					 scale_type, SCALE_FLAG, me, MIN_MEAS);
-   626				if (atomic_inc_return(&n_rcu_scale_writer_finished) >=
-   627				    nrealwriters) {
-   628					schedule_timeout_interruptible(10);
-   629					rcu_ftrace_dump(DUMP_ALL);
- > 630					WRITE_ONCE(test_complete, true);
-   631					SCALEOUT_STRING("Test complete");
-   632					t_rcu_scale_writer_finished = t;
-   633					if (gp_exp) {
-   634						b_rcu_gp_test_finished =
-   635							cur_ops->exp_completed() / 2;
-   636					} else {
-   637						b_rcu_gp_test_finished =
-   638							cur_ops->get_gp_seq();
-   639					}
-   640					if (shutdown) {
-   641						smp_mb(); /* Assign before wake. */
-   642						wake_up(&shutdown_wq);
-   643					}
-   644				}
-   645			}
-   646			if (done && !alldone &&
-   647			    atomic_read(&n_rcu_scale_writer_finished) >= nrealwriters)
-   648				alldone = true;
-   649			if (done && !alldone && time_after(jiffies, jdone + HZ * 60)) {
-   650				static atomic_t dumped;
-   651				int i;
-   652	
-   653				if (!atomic_xchg(&dumped, 1)) {
-   654					for (i = 0; i < nrealwriters; i++) {
-   655						if (writer_done[i])
-   656							continue;
-   657						pr_info("%s: Task %ld flags writer %d:\n", __func__, me, i);
-   658						sched_show_task(writer_tasks[i]);
-   659					}
-   660					if (cur_ops->stats)
-   661						cur_ops->stats();
-   662				}
-   663			}
-   664			if (!selfreport && time_after(jiffies, jdone + HZ * (70 + me))) {
-   665				pr_info("%s: Writer %ld self-report: started %d done %d/%d->%d i %d jdone %lu.\n",
-   666					__func__, me, started, done, writer_done[me], atomic_read(&n_rcu_scale_writer_finished), i, jiffies - jdone);
-   667				selfreport = true;
-   668			}
-   669			if (gp_succeeded && started && !alldone && i < MAX_MEAS - 1)
-   670				i++;
-   671			rcu_scale_wait_shutdown();
-   672		} while (!torture_must_stop());
-   673		if (gp_async && cur_ops->async) {
-   674			rcu_scale_free(wmbp);
-   675			cur_ops->gp_barrier();
-   676		}
-   677		torture_kthread_stopping("rcu_scale_writer");
-   678		return 0;
-   679	}
-   680	
+And of course this now enforces the 'except advised' logic below it.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> >> +/*
+> >> + * Don't disable THPs when explicitly advised (e.g., MADV_HUGEPAGE /
+> >> + * VM_HUGEPAGE).
+> >> + */
+> >> +# define PR_THP_DISABLE_EXCEPT_ADVISED	(1 << 1)
+> >
+> > NO space after # please.
+> >
+>
+> I think this is following the file convention, the space is there in other flags
+> all over this file. I dont like the space as well.
+
+Yeah yuck. It's not a big deal, but ideally I'd prefer us to be sane even
+if the rest of the header is less so here.
+
+>
+> >>  #define PR_GET_THP_DISABLE	42
+> >>
+> >>  /*
+> >> diff --git a/kernel/sys.c b/kernel/sys.c
+> >> index b153fb345ada..b87d0acaab0b 100644
+> >> --- a/kernel/sys.c
+> >> +++ b/kernel/sys.c
+> >> @@ -2423,6 +2423,50 @@ static int prctl_get_auxv(void __user *addr, unsigned long len)
+> >>  	return sizeof(mm->saved_auxv);
+> >>  }
+> >>
+> >> +static int prctl_get_thp_disable(unsigned long arg2, unsigned long arg3,
+> >> +				 unsigned long arg4, unsigned long arg5)
+> >> +{
+> >> +	unsigned long *mm_flags = &current->mm->flags;
+> >> +
+> >> +	if (arg2 || arg3 || arg4 || arg5)
+> >> +		return -EINVAL;
+> >> +
+> >
+> > Can we have a comment here about what we're doing below re: the return
+> > value?
+> >
+>
+> Do you mean add returning 1 for MMF_DISABLE_THP_COMPLETELY and 3 for MMF_DISABLE_THP_EXCEPT_ADVISED?
+
+Well more so something about we return essentially flags indicating what is
+enabled or not, if bit 0 is set then it's disabled, if bit 1 is set then
+it's that with the exception of VM_HUGEPAGE VMAs.
+
+>
+> I will add it in next revision.
+
+Thanks!
 
