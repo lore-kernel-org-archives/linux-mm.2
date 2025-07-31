@@ -2,119 +2,227 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 792AEC87FCC
-	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 10:04:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D39E5C87FCC
+	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 10:21:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 17E456B008A; Thu, 31 Jul 2025 06:04:41 -0400 (EDT)
+	id 45D666B007B; Thu, 31 Jul 2025 06:21:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12F436B008C; Thu, 31 Jul 2025 06:04:41 -0400 (EDT)
+	id 40E416B0088; Thu, 31 Jul 2025 06:21:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01E3E6B0092; Thu, 31 Jul 2025 06:04:40 -0400 (EDT)
+	id 2AEC16B008A; Thu, 31 Jul 2025 06:21:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E587B6B008A
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 06:04:40 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9F64C8087C
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 10:04:39 +0000 (UTC)
-X-FDA: 83724125478.27.128188C
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	by imf16.hostedemail.com (Postfix) with ESMTP id EB695180011
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 10:04:36 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=HeGuNe9W;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753956277; a=rsa-sha256;
-	cv=none;
-	b=O3dmI4JZfprwdRJeOsTs9503LpSg4Qj/fLHdA+3WzTe8uHRp0jlnSVcsSQYDpEGaFwj7sf
-	YbJU4o5Cxtf8+WeZMXphbe2SOribwWE9CpQFTVCZFPAc6ZDPO+wgPY/7ee4TiM3eRrxw4O
-	XXqTXF3Zyw9kllfceKZj5hcSJw48U+o=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=HeGuNe9W;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753956277;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 16A026B007B
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 06:21:32 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 817541DB9C6
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 10:21:31 +0000 (UTC)
+X-FDA: 83724167982.18.3D02E73
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf18.hostedemail.com (Postfix) with ESMTP id E1F601C0008
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 10:21:27 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=SB4y3OBZ;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=w6ZRRl0u;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf18.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753957288; a=rsa-sha256;
+	cv=pass;
+	b=RRN6HF2A66XroR1rfmwbCE6dv0bSiAF8lI8VuQv2kOFnii38vZDjfBHNdVHc7L8mggX14r
+	VlRccQbwhnfVCnMMuSdSYGL6PsOukxjCt27kQOQSvgwC9uk0NACKYVjsRSSaOIg677y6uj
+	hnk+E9G1Om/MiZOojqo4jUF9G1ila5Y=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=SB4y3OBZ;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=w6ZRRl0u;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf18.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753957288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SYIYDKE7YjdKcHoQ/rqt6bnOC6iezVempkuuGY16b/o=;
-	b=Yh1qG+bgRt9C5tqUYWoDQBOJMoe+bEzkf/eTaliFL0LM/G2baIh0HgjVtfyd4r4zUFly12
-	SOSl7/tzrrCpyiSoCLzr7nYMBnzk8es3DaW9VB0/THoM009hUSg6FfY8kVjLCTSnYtUQAv
-	tQ9FROZTWo/K9fxeRK8dlL11BQzj0K4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753956277; x=1785492277;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=6+ao0BB2eP9Lbd+emGj1G640tLXJbZdN7LjBCYC17sI=;
-  b=HeGuNe9WK66PN5Tuqlpc5mSYpCvPIrpThgz26d8pkEj2gFyIWgrrCwnc
-   s6gUtKVtFyEFyivRSY+gflOszfRWQJFC2qYOhQMOYeBdf1mBF1SlfK/9a
-   AS7m05T5ZSuR3l4LK+ggGFDQV327TEgnkCEfVVCze7kaFed69sc+3tong
-   vHy8gfrK/KUkUuf0taLiggaro17p+RUX8qudHzCGA1rKQz0noafj8xmSM
-   ikaHGxnwpXkb8QsGBpvuJmqcUO4B9Ah6jQ5VBT//tbivKVuCYXZts1w+s
-   4hzMfKb2Y8znU5YjVwJvQ5xXAmyau9BxDLYatZdED1Tat38KmWK4cgSYx
-   A==;
-X-CSE-ConnectionGUID: 2TcPyhJDQ2ukh7D23IDabQ==
-X-CSE-MsgGUID: L32m6t1UTOSHidBcWBozRQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11507"; a="60098339"
-X-IronPort-AV: E=Sophos;i="6.16,353,1744095600"; 
-   d="scan'208";a="60098339"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2025 03:04:35 -0700
-X-CSE-ConnectionGUID: /YULmVUrS1OPxbNT2GS1mg==
-X-CSE-MsgGUID: b+5Hrj5WR82NXclqcajgyQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,353,1744095600"; 
-   d="scan'208";a="167398722"
-Received: from lkp-server01.sh.intel.com (HELO 160750d4a34c) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 31 Jul 2025 03:04:29 -0700
-Received: from kbuild by 160750d4a34c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uhQ9D-0003ds-23;
-	Thu, 31 Jul 2025 10:04:27 +0000
-Date: Thu, 31 Jul 2025 18:04:07 +0800
-From: kernel test robot <lkp@intel.com>
-To: Balbir Singh <balbirs@nvidia.com>, linux-mm@kvack.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Balbir Singh <balbirs@nvidia.com>,
-	Karol Herbst <kherbst@redhat.com>, Lyude Paul <lyude@redhat.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Matthew Wilcox <willy@infradead.org>, Peter Xu <peterx@redhat.com>,
-	Zi Yan <ziy@nvidia.com>, Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Jane Chu <jane.chu@oracle.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Donet Tom <donettom@linux.ibm.com>,
-	Ralph Campbell <rcampbell@nvidia.com>,
-	Mika =?iso-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Francois Dugast <francois.dugast@intel.com>
-Subject: Re: [v2 07/11] mm/thp: add split during migration support
-Message-ID: <202507311724.mavZerV1-lkp@intel.com>
-References: <20250730092139.3890844-8-balbirs@nvidia.com>
-MIME-Version: 1.0
+	bh=DnMCMwvYdmuvkHKTYWeZsgtBZoZRZM0qwVtQ56ww+8g=;
+	b=MkIBysoXLcMVfH+VF77O+QAMJOdvPcJGjeMZncf5zKyF+/1rPHmiqJkB2O0O75sG+JVmYp
+	hmZl+OZ16kQ6IhS11GqllkansQLqbSdj6ZABXBlFFLAZhtxMrAAEJCeV0/lmDSyIdiO1Mm
+	UdxTg62p9w9IE2c+7yL+7HUKMGjpUBM=
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56V7C4eC008507;
+	Thu, 31 Jul 2025 10:21:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=DnMCMwvYdmuvkHKTYW
+	eZsgtBZoZRZM0qwVtQ56ww+8g=; b=SB4y3OBZpCMeeI1Edc3DM84e53q1kfD1mD
+	ZRPTKsjEHMLNv+VjURaAUSVLEBxYL/J/yTXnwbrUMTKClkZNrqhBXDqTUxoa2doR
+	D2S9/rbjjb40y6sfq4sJQQL7YelhHknNxA+bnLN6PeHJIRRifM/86rzhtR0mC9Po
+	UNy1PzQ4UuvjZTuhFD39bv3gRaitoJPc42RMtEgzCbevOdEW2WhM4mqJQsdVF9s1
+	48nVMfccZ9U/30RZBgXybksaVtUQikxaKEMUU6Bs5aUhx6ydTtsvMzhmk1U6T2qb
+	31wPTj6WqSZLdyHH2U8JZBZO12+kr3o8IEvpUZqw1Kl6I437OH3A==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 484q5x3n92-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 31 Jul 2025 10:21:08 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 56V8hVbp038709;
+	Thu, 31 Jul 2025 10:20:58 GMT
+Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10on2041.outbound.protection.outlook.com [40.107.93.41])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 484nfc250d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 31 Jul 2025 10:20:58 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BN3kd0fEfKPNOUU2YyINC1akiu3ccCvNKn//vfUZAQ0yoVTGd4T/PiNosCvdrearr34pCESYbtNVyYsxjRCjvflCOh+BvRqfBjBEddotXgx4UBB6frYoU6JFSBr0APX0c74SUA/bg1Nth3gR2hwAmtyhZvvTuOi3wtarBZqKNX1RuW1UlODKZJVwEwlMUsFFpNFV7r4DyZvXo5dmQTgwytLPiM6VwX7Wvs/HlAjIG0OoSClcSjkvJ5OTXC8MGjnh0ikHaXcSDgZ87KPVxHPpfTVk4xPENkh/FxmzdvXOidkNtTXBGNZQzp7oY8+x+cmTatyuEHkuFV63ypQpBR+X2Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DnMCMwvYdmuvkHKTYWeZsgtBZoZRZM0qwVtQ56ww+8g=;
+ b=b2W0ZboZlPKioaUQz3byxAB9Ac3lY33CPjux4vTREAKWAfWgWdTqpIcNXuTfZgwmITeEDM9p4eg74oMyyZ4e7gdSkRji+ljqEMSTeFqipDLmltpvDp+GJpxDzML6+VR+cZPFhCN59LvUlLrWTtpX61jrN+UwHruxQEtPCHCIHk8ui8zVjFCNdiI9j9uFZtq/u+zDiIjUdXgf1OcZK9v9dNceFCkcu0J6wHFmSsRxMOw8wWSb28AlymJsIjK6ZAmNShV4tu/K8spotSY8tO8iA8VTDzsnaEaxoztrr1Wnw4Ggm00X/neTTQ9u0vn7RGDEb7g3DUukbmtBreUG9OiJIw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DnMCMwvYdmuvkHKTYWeZsgtBZoZRZM0qwVtQ56ww+8g=;
+ b=w6ZRRl0u6+ZYQnS4BIV+GpLwUdLg9tDWDOfb5J4u8fXxm4fCIdJHD+7FMQ0W7uR0X0aPRq5qF/MspTPn56PJet/c2Oi5kGyiEZQRJxoFYsfQrtnmqwmG3D526glAEemqzQqLAYbNdR0MEgI3I2iRZaDC9ublIgr/1HT6ZpCbMDY=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by SA2PR10MB4793.namprd10.prod.outlook.com (2603:10b6:806:110::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.14; Thu, 31 Jul
+ 2025 10:20:55 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.8989.013; Thu, 31 Jul 2025
+ 10:20:55 +0000
+Date: Thu, 31 Jul 2025 11:20:52 +0100
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Zhang Qilong <zhangqilong3@huawei.com>
+Cc: arnd@arndb.de, gregkh@linuxfoundation.org, akpm@linux-foundation.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        wangkefeng.wang@huawei.com, sunnanyong@huawei.com,
+        David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH v3] /dev/zero: try to align PMD_SIZE for private mapping
+Message-ID: <5dd6063a-4b67-4345-bd89-32085bb5923f@lucifer.local>
+References: <20250731083655.1558076-1-zhangqilong3@huawei.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250730092139.3890844-8-balbirs@nvidia.com>
+In-Reply-To: <20250731083655.1558076-1-zhangqilong3@huawei.com>
+X-ClientProxiedBy: GVZP280CA0055.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:150:271::12) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|SA2PR10MB4793:EE_
+X-MS-Office365-Filtering-Correlation-Id: 856de995-0b82-4d62-aedb-08ddd01bef6f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?03A+gZtui7GLZZZ6h+fzYu1r5VjT/sWPixAj78L2a0KeEfTd/sOFqNXpXH2s?=
+ =?us-ascii?Q?rbLBXD72pVX6yQ3WtXF8Dlbty3+U+NDduueA+IZC8YSyCQ5zxPCKmbEor1hO?=
+ =?us-ascii?Q?LWLqXbg7xF6yuIjAG3xZaNiWGg8uzRY94nwrVtiwc5s69O0Df3LjBp+tyI/O?=
+ =?us-ascii?Q?EFDkN5OSx9jt2+T1vc948LekxYn7LbQTSJqr/rILGF2jKE8Wh8BDTfzT4cuE?=
+ =?us-ascii?Q?o8Uw4ib3Gvz+JANO6+H7SEQyn/h2v7QGO8LYqaFI4+x3zXV5iPi8znLGA67j?=
+ =?us-ascii?Q?1ny95C3YKNglVbFYntTKX+DTNpXqA+BwgkjceEtnoj9apUHd/+mfBrF/zfG/?=
+ =?us-ascii?Q?cIrnpQVfgKNGp74v5KwvXecg+T8ZlZo2bMTwAmqcso8ghJ2/QGH5L8KD94/7?=
+ =?us-ascii?Q?RTT2iv/a4HDssuz0dSsv5h9XKZ7Dbo9C922a+lv/i+lFBIIGMOQYWC1q3R5C?=
+ =?us-ascii?Q?E2eY1IfEvNsm4AR3liozjNLCCzXQ47bQ8SKoub1P69dnYGhGms/ATeyxgpjK?=
+ =?us-ascii?Q?hfcFFehOuQEOWgC5lEqh6ROhpSzcMg+RYlZK2N3sxbUqYD5elhVvzetZElwe?=
+ =?us-ascii?Q?7HkQYGCCFJkiiPBwiGsQtXFTcJ6IyTivGjVfGleKrBiJNcGfCRdCXo3GxQTP?=
+ =?us-ascii?Q?cXJFiq3gJ6cucKw2tjQCRQuFz+Rlbr1d1P6J+Y6vfesTrIsgAMRf+RXyYIIV?=
+ =?us-ascii?Q?BvgAk1bGZQn75ocjdxGZGSUs+/rZDfOoFVIO2DXCQFCC3ZPapK9psMZuRjce?=
+ =?us-ascii?Q?1BGabrtDKmYYHYzCgwLVpobuqTlOPI/qAcDITwdKMX+MQ2GKdKUJKUaNvia8?=
+ =?us-ascii?Q?KtwvIrqR3G5m3fH97XnVdwjoko+lPfW6h40DSSczR93G8Zu+9NIFn0w/6WSh?=
+ =?us-ascii?Q?hWK6N0Ya7MRxvrU/GlvQnYaE3+pupvmfFPntWg3114HKf0mvos5d+bgHPwky?=
+ =?us-ascii?Q?6/xRnle1lRNOeLgiSKuNC53RC9XhW5kZSMfpQwpjqPyYYc9JIlR8VrYzyz6V?=
+ =?us-ascii?Q?nL/V9bL1+Ek08iPQIUNZ5hOMCqfEoM8/h8mzVgb9RH8kmZ5OlKy5S8RzfJ5+?=
+ =?us-ascii?Q?cRQx/TIEJbcGiPj7CcLHn7EIlukz+Rj/2acJIEdSemULBlfbLeGGMHURdZ8C?=
+ =?us-ascii?Q?6QKLWCEShO6hSPjpYnO1wbaWxvv/PP7cYXRunXH/r2NuV4yuSBpD6/pHkW2I?=
+ =?us-ascii?Q?c1dQVR00B3vze9PhyACcIaumRFoxMmX0vQ1slmyvCHchzXflZpERJ5gYJMDP?=
+ =?us-ascii?Q?53poUdYwhTDmnlxLYGHAeMv9bniNNjd5xL0TpURBxChgF/meR9bg3c2XrJmV?=
+ =?us-ascii?Q?4GWABZ8NjZ1VuWTOD1jSJIxBnBUoD2fA4mhD9HlZqMHw6ig8xYOsVEiN7Lgv?=
+ =?us-ascii?Q?o13ERV0p+3YIqrvOXnZ/2+5n8auVZ+ys7R6Pg/H54VzHnY+I9oX43Wv7TCGr?=
+ =?us-ascii?Q?hT2SXw6FOio=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?a6LQY3sEGnjEbmL/I2Ei4lUDVQ1QhGk+e1h/2gkkhkCAkWhGbjxGTPT3/vzH?=
+ =?us-ascii?Q?f/iBUpRfd6A3jTjpTlnBYYzclxn5281DFuA/frMZHhYnJTv284FzTwb0rN7D?=
+ =?us-ascii?Q?xdXNxZ0tF9PYPVd3oGjqbHNLG/CWbfiykIf9vU9ZLTQatnfLJ1Wk2Ad7Lin1?=
+ =?us-ascii?Q?tVsLbt4eA7jJ3V7FyPpesxqfcG30Ay9FVBMUmMwIMNvyVah2K2X+Ax906pXU?=
+ =?us-ascii?Q?g8FdMSAJutnNLbKyxHCj7PLr+o5UoJa2ZpsVfmRtq4qJqOLF8KT4HBxu5BwW?=
+ =?us-ascii?Q?iGFplcesDd/I//BGPbgC83pD/kvs0CIFQh/cjfjeekMsbWUGJRXvm5S9PkiO?=
+ =?us-ascii?Q?NVM7mVrm3uAMKsu2J+FXI3HWV+TiLvZo65tcRSpMTCpiblhRzyyKAVApxQWV?=
+ =?us-ascii?Q?oG6BGyWBN4G+xD/VKHv+0Bbm3eQxYkWQ+4MvFn7sZgm+nTWSsKak3qB0oMYI?=
+ =?us-ascii?Q?HdT8gZ/O9s/JgbathEvLr578BU+vg5UZnl4tzXiGzBCQk4D7Oqwj2Foyz59S?=
+ =?us-ascii?Q?8cBisycVYkw6d1RbscmYFsviesxJ/CMFfVsg6O8qPCIAWSmZt9dBtmu/ekL7?=
+ =?us-ascii?Q?uNwQiYx83AHDQiaTbPTGFHiXjyqpeyQGHUDhQqAewubWs/N91/LYzSJZV0Js?=
+ =?us-ascii?Q?88DYk9s4kjCuZTezlsUKiSjLoZhGTaSAPlbwZYMQQuhvaSbQmzfWGaaxTrT0?=
+ =?us-ascii?Q?XfVUSqwUJ/SZ4n6FiVIYqVu7C8SfgPsSRX/pd7GljmSaF+ivg+y7yc05irND?=
+ =?us-ascii?Q?oq7XyLDCaL6Iatvr7br1QkpkhFdOopCb9A1FYkI6pYmtVUQsVN2W5nDMKD8c?=
+ =?us-ascii?Q?gt1eqSNR6e8Z0v2OMo2Y2Yjxc8DmZWTIA6Wx4CuTB8rnZE1rkVyyDEw7G8gV?=
+ =?us-ascii?Q?uQK4XG62uR9KfnRROdET3TjJAYpU8K5lIlX5wCnLJcabEkCYQE9rVwhkPTcD?=
+ =?us-ascii?Q?Mj7e9OXi3gUvQsGaTHAokF3cAwP7PPz9w+REpMLCI56Bdge7EoaVASPz/1AT?=
+ =?us-ascii?Q?JzlTZGvD/bwO2iBit77S7t9euLc82znSwf1AMuj7WOFeZOeq7M71lkkYv8Wp?=
+ =?us-ascii?Q?lG5KdDWRDBajaxYMEX4q2+pF08R2Rastxeb/DJlXmvzvxbdQGtkgStd6uCVk?=
+ =?us-ascii?Q?ZfhWo4OgtCAuNAwnpoQ+SvaUqsSlVpki9N7Nx9LDwtKt+MlDTLFByliK9It4?=
+ =?us-ascii?Q?3glhE4FAbE9kX9VAq+YYun1qX5TQSrS3cEz2KIR/7KykMA97Y8aoKv+AQsmq?=
+ =?us-ascii?Q?cR7PgU5XsBcRAl/HhcpP6g492Kzn/zr/CnaNGmS1egjwr0vDZd7WZHmTphlX?=
+ =?us-ascii?Q?RRIiKTrmZbvd1ZsP/AWQmo55VDxnm3Wgn3v9HE7wVwtYLsbiTCPscz0I75Xo?=
+ =?us-ascii?Q?4MISJBRSGL+3K1jERUxaMTphu6A9gDm1GPDiF1Cz+6pF4cpee+MH6s5pbGYZ?=
+ =?us-ascii?Q?VjzY2po/JaJJvtAlqr9rKncQpDKxCCjmHEfbCUQLNyYkezVstjb4IeCM0NdL?=
+ =?us-ascii?Q?AtISVcu+cenppedyqdaA3HiGtT21nx7iQUakXtapTF+xpUBiejS8nQGy6FYI?=
+ =?us-ascii?Q?gouXUnzmWMvrtB+Niit2Fa2HkTqxpbQ9nu9DAlLCEibTQ5gxkEAdxbl7+Glt?=
+ =?us-ascii?Q?wA=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	TIlSRkbiD0qHDJmdtzYzP66U6rsCgSy1zQyWaT+HBIt+D2gKgLtD10IPo/O640/uvp/N5buTlBpi7/6DtEcG4S8Vh34gMgvl/X5Xev4h38jFSJV5/ZnSc9DuHkvQdsYgRsYd8SBuLcTgOGWy78mLuJfeT75NZBoIBcTn+aAkCm1SQs2N86+frKdwaymEjp9sYw9G/nCIR3Obz0jFSn72gGV86W+bDanbqQFBIbPf3VnL+Lg5RRcObhDZRZj1SOT8SXf/9uSv+4pE++v4Nq3LUvDDdJkO2OWlIrExD7OhMAzrhuUSPZmbroIPrqE6MF8XYPw7WJJyktci6WtA9e95pi11I6mj4g37655vM+SJ7SAuWZf8dE2sbioxm9KzC82i44HGM3czPKuuIyUco3FPVJce8WfLENTXrw9p07MSKkBD3f0Imji+OXnav6tK6I3beOpF7uj3BqQeLA3jFaxhI7L/RaGsKI9bHUwr/p4FdUIq+Y8acEPdwI2hnLB5JWfdqV76Ss9XtkvZaMq3sr4AV/apDlGjrKHMOd+kBa3zo3LPYfwzAt3L6z0nBlSH4GZE85Cr3g4VINiZdHQue2XH3FPh/I+T9nCBrK6lel8JhRE=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 856de995-0b82-4d62-aedb-08ddd01bef6f
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2025 10:20:55.6927
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: f918CiXgMeONzcdNh1GmsK5ctkJLck8pQLkXq7hnn9+PZNd2mRNXvY1PnQLH1TYkHqEFnv+WL969Xg1Pou9CuWNZpDS6b5mLbwrd6JcZhGQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR10MB4793
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-31_01,2025-07-31_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 suspectscore=0
+ spamscore=0 mlxlogscore=999 phishscore=0 bulkscore=0 mlxscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2505160000 definitions=main-2507310070
+X-Authority-Analysis: v=2.4 cv=X+lSKHTe c=1 sm=1 tr=0 ts=688b4394 cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=Wb1JkmetP80A:10 a=GoEa3M9JfhUA:10 a=20KFwNOVAAAA:8 a=i0EeH86SAAAA:8
+ a=yPCof4ZbAAAA:8 a=GchUzKuH8IJvYVf1HKYA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: g_0wJNSZzqEyjCqQ3mvYfIk-Lpa2Jc-S
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzMxMDA3MSBTYWx0ZWRfX4qvThrWZruH3
+ wsyJipQy0Y6uZh2Ci+rofpbSElF3xHYbyAlzlMK5yKLf5N3HgAB9cOGsm1T3p1KUrWXl4/zWpkR
+ 1pKl99S68yeAzJHwrVlGxjCv1QTKcA3/Zq8eZVm1Ou2Fjf0x9/FK/L4Tb45b/AuQl+vXqun189d
+ b2OBxNSxJyl+BNbqIzJjeNGNZua9zoNX0mUW2iTDNNNy6ZYSMVijXgBBJRZQL3j9VkbtujTS7Jg
+ gNferdRIzbJegzdTKGOlYbvZwrzeQ6z6QuOJnXuNfuq7vUPyx3GpmqB/BoC7LoaPp+iMdw9Yitj
+ LJx+LXFewWJ9GDrptYzzMVFksNwtMl2ZxRtrd8LX8w39B21z8Gqw7TTQNjiLV5XBWAwqsG4WXFa
+ yL4k5Rom+izAX0mihDUN4ogCMqaRzzSuveW8TYtHd5ZW8NwfBvRb5hQ+awm+A/aeHLgscsob
+X-Proofpoint-ORIG-GUID: g_0wJNSZzqEyjCqQ3mvYfIk-Lpa2Jc-S
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E1F601C0008
+X-Stat-Signature: xu37tho9yins7qte4z19nrrnxt9caa9j
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: EB695180011
-X-Stat-Signature: xfipj1dbrynjrs9j9n4jd4ydp3k361q3
-X-HE-Tag: 1753956276-241695
-X-HE-Meta: U2FsdGVkX18t3gQE6ZpQbeV7+laSs/8aufHRXjBITOlgwseVH6EPYTvYWvMxs4+2hKrhwfCU/kBV24DIYU5q+wc+QVNIrZfeuNKTvCa9y2I7ThvRpVLd9eTRxmO9EwKKwv6Vo9OQlC22WPJADBQd2k0Wrm+mC/M3qKGeVPX7e9/hfL/M+00XRtSCGbrflxkR9wLc9a2Rwnd5spikftMU+EfWZrmXQ0K6WO5Ootd1GrCWm+a3dof9uKHuthHQHqoPwIUAsM3vAihuxIR+sgnN+hc2VK9VofLJDaEaMkIIYH+CC9b0olgsNVU7OpMW0FeXDYhgK300lru6LxjVM5cTGtuUMZ8wYbm2jwoMLHrpB64Vf7zabpbcPWayVFBQxbuf/AdZ2oY8C6+SYTkYyMX75/eGzu6l7LsTDeKfSJwcvSIV7Y5Bp4mhWqN4UjHNztuwDn8h+OTCD2npy8iimow0IHKgVr2iWv1ofVBBhlgAv5wQYVhAKsM/KiXhTnIF+Xw4yqew2EMrNRqcDNX8prWSPDKT7SCAgjWVprUF4e6Gi/Df43B2rYCJpItqC8nRxlxs8CeoD4Hz3OJ41u6u7g/BO0pCytwYX73sReWfDzIEUecBhFywtlGOrjteiMyO3MluCOiol2gNDT3hTVQR/cWM0XltnNcPuNXv2i/KRd5rtf6ZIGyMR3RIbrtlBsUwI/dUyVsLVAMyQU2Wz0O53Of/Q8rDCD71P5qSbaxa2OIHYj2oiySqcy4pUnoZlRm6p/Nf6B3RzeL/uINUpRpUvXCsrtMmOWZifygCDDvutUhWdSTt5U+sPtGJdptmUBH4czCOBU95o3vvBoOaBtuyaSLUS46FQWiAaennSmMDPYw72/kzp1hKLDZyCvuf8UM2EWan5jd4ME9bVjwlfVe7jeAP2nPEwSBAulwkocmPr6po5rlyp8ph4w0OwaMWu8a7111HMtYZseFHpFB+2f7hShV
- ICzxUEfX
- oBb49OPqZQ3FcqLfuzibWvmnD6QUM3RHCbd6USoDwx3TknhWVLkG8gJmGnOK1XGeBF0owTqy7R9sZNPn6yKoo3relxhZ1AUnIzA8CPQoF6YdVZPlbgAmATcWrqtPcElU1MH/zaezOqtyP4RPeWhgZXwTpVn8l7xvU3OrxN6bJfUT8FSkVAVRKL2PRNwYkZLba+ENuFodzv+wTsm7U0j8ePi5AA/Ptau2agw+//hWS41GGJBoFgMQknhMi8FItbLSxzAWQkBvvCHKJAS+5HpCXW6Piho6W4ELO9pKFKmaWUgY2OsNDVAYVnPA5kCEu/yGSdcrwKQGwxw+StKq4HDiU5bh/vJPl0KQxAKHlAxrZOR2xAM6CUTrjmOPsdw==
+X-HE-Tag: 1753957287-600295
+X-HE-Meta: U2FsdGVkX19k+Qbyd+uj21KzekmpWUTcBaUiQa+qUwXDVyqWEJY+FevbVS0wY+ZBhVlS7f6Xx1tdg1uUJYrd1wH+9LDOq6+J5nNvABXEv6Ea83kZ9CraHcXDEak2jQxObH4WH++fTK8HBOxrBRtt6wNMxXjE+3eBWBdQQRfwII7J1uQQL8BQDz6W+qrB+iJYmbsRhDuzTzR43VFL5ieDuY9RcMlFUOwFWdBViEr43iJwFCtVeEVN/LEvPgBCG9Es6duRyCex3Vom5pPP8GGXgqIEZDqkX89k7Ok8P0Meii633l05EvHGqQVPcRRivzyCSIYjZq7XxqvX7uZBeYdgnA7s9yS3RfG3pNSaoIb91blVSlTS/5oXbv0300c5Vb9in77jQA847F8CeKr55EhUHGIo108rk/wvVGIj9cJD/vM8ncpdJzZTgjKiIhXytenvL/KKi9M6+NyFGbnB1sjcksXHXjiKZhKbCEUgt/Midr8EIH04hFuLd2ICzKldQf9gyBw62WNbdjaVGzXrsuSXuOzMCtPDEqhqDPQUial7dWt5E4TwrKGUGKQ64l/4WbBEQKxTPlZkihob3M3PCPptmIpBX6XP86EGnposi+oMLE4keJYfSs4U94pOFT5efDGcawPdo+QatulE4hTpefbmz97Q71+tEA8bQXAM0AxYraypc5sGo0RF/UaeF9674Dm5mULV5/Sk8LPqmyfqr1aawD5DpCwNIbP/2jytdkg+cOY5GglD/R2UCN4Rv7BGjABnnQazPUAcm8YdjpWLBQA/jBNortmmkaZepapxyDhP02YSOO8fbPLFWCFY5KQDq/HWEH6lcNZbJM1uP+mI0JHTTaj4IBnEyRY4A1FmzOKp6002sb9CuxeekOimxTpHbMkpBRABkvomUIi4SV3o6awIvnNei2aqf/IYyiBXQpKSRVG1IxZzORbmDDL4L/Dp/V22kqoy084UHkv2oou/rFB
+ LaWcwhkn
+ +FwIiefaAyzuDOLyYRB2MNxuJNG3QuW77B797JqlhvhM0qW6VTopiCOBqzGFHB8PPR990Pa0kzo/NR7vRLUKaovOiHOVgbXFpD3UKTnlws+pYMeOW8AX9l0JYzCWDlH7e1s1nIuGAsM5N3BGbEw5rkb9v/c5jCtrwpf2mAIrQRH0npq9Qv2Af8bCiAmnE7qFjf0nyHt80jeBAJtUg2sZ9Y84mnOyJzp7BGH+d5kc1R9yIk2V+3boibOEWQ+aXFt0VZCWe8pw+iCJXnVohLVFQuFi+4YWltmnfHFKCOfX4n97J6AikQRCMriFwAfrHSoVNab4wdYxAzmrCsybr73v97c8LANVBkucWKlpWdKPKaQec2tEMS+CxDTkadKhnlN2AiFlxg1Alqb2mb6ubyoCHnrDYdnJ+I8ms6JJGUlZ5zWBNyNmsn1a03QQ6zyQt1TFZmP2Ex5tVedde/7SGzPW4ryDomMJ7M7MAFdyACPf6v9zUuxZVs3wtNtmd0SHvFFTy3tgHg1bi3gm1fMGGTSWO+QQU1yZF3+fDwoCyXcs6nxxBo6/x8SF++C017/pA5N81vMU5FYsDfo71lS+D6Wl6MVL1S2GQNz9aeriF4/0lccnENUsq7TsIHsOAnFOkdcSfSCsdpfv4TrYWPGRZWSMHOPCgG0CrRBH7LlBotSQAUBDQwLawKRZ1vzcZ/GeBDmPUxbFiek+FN7HR4irOqH6Ix4EASVgyzDhVMvEc2okuG2bCNfgNSVKV002mubDYmHj46os58qWdZ5a2ZLjYITOXh+nftzXr6G/V/0aS
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,186 +231,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Balbir,
+On Thu, Jul 31, 2025 at 04:36:55PM +0800, Zhang Qilong wrote:
+> Attempt to map aligned to huge page size for private mapping which
+> could achieve performance gains, the mprot_tw4m in libMicro average
+> execution time on arm64:
+>   - Test case:        mprot_tw4m
+>   - Before the patch:   22 us
+>   - After the patch:    17 us
+>
+> If THP config is not set, we fall back to system page size mappings.
+>
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
 
-kernel test robot noticed the following build errors:
+LGTM, so:
 
-[auto build test ERROR on akpm-mm/mm-everything]
-[also build test ERROR on next-20250731]
-[cannot apply to akpm-mm/mm-nonmm-unstable shuah-kselftest/next shuah-kselftest/fixes linus/master v6.16]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Balbir-Singh/mm-zone_device-support-large-zone-device-private-folios/20250730-172600
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20250730092139.3890844-8-balbirs%40nvidia.com
-patch subject: [v2 07/11] mm/thp: add split during migration support
-config: x86_64-randconfig-071-20250731 (https://download.01.org/0day-ci/archive/20250731/202507311724.mavZerV1-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250731/202507311724.mavZerV1-lkp@intel.com/reproduce)
+I did some rudimentary testing on this with a simple MAP_PRIVATE thing
+which caused no issues and I observed a 20 MB mapping getting aligned and
+thus benefitting from 10 x huge PMD mappings vs. mainline benefitting from
+9 due to misalignment.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202507311724.mavZerV1-lkp@intel.com/
+So feel free to add:
 
-All errors (new ones prefixed by >>):
+Tested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
->> mm/migrate_device.c:1082:5: error: statement requires expression of scalar type ('void' invalid)
-    1082 |                                 if (migrate_vma_split_pages(migrate, i, addr,
-         |                                 ^   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    1083 |                                                                 folio)) {
-         |                                                                 ~~~~~~
-   1 error generated.
+Cheers, Lorenzo
 
+> ---
+> v3:
+> - collect Acked-by
+> - factor out the #ifdef CONFIG_MMU in get_unmapped_area_zero(), per Lorenzo
+> - explicitly use #ifdef CONFIG_TRANSPARENT_HUGEPAGE, per Lorenzo and Matthew
+>
+> v2:
+> - add comments on code suggested by Lorenzo
+> - use IS_ENABLED to check THP config
+>
+>  drivers/char/mem.c | 21 +++++++++++++++++----
+>  1 file changed, 17 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/char/mem.c b/drivers/char/mem.c
+> index 48839958b0b1..b7c4dbe4d2c1 100644
+> --- a/drivers/char/mem.c
+> +++ b/drivers/char/mem.c
+> @@ -510,31 +510,44 @@ static int mmap_zero(struct file *file, struct vm_area_struct *vma)
+>  		return shmem_zero_setup(vma);
+>  	vma_set_anonymous(vma);
+>  	return 0;
+>  }
+>
+> +#ifndef CONFIG_MMU
 
-vim +1082 mm/migrate_device.c
+OK, the convention in this file is to invert this check so this is fine.
 
-   999	
-  1000	static void __migrate_device_pages(unsigned long *src_pfns,
-  1001					unsigned long *dst_pfns, unsigned long npages,
-  1002					struct migrate_vma *migrate)
-  1003	{
-  1004		struct mmu_notifier_range range;
-  1005		unsigned long i, j;
-  1006		bool notified = false;
-  1007		unsigned long addr;
-  1008	
-  1009		for (i = 0; i < npages; ) {
-  1010			struct page *newpage = migrate_pfn_to_page(dst_pfns[i]);
-  1011			struct page *page = migrate_pfn_to_page(src_pfns[i]);
-  1012			struct address_space *mapping;
-  1013			struct folio *newfolio, *folio;
-  1014			int r, extra_cnt = 0;
-  1015			unsigned long nr = 1;
-  1016	
-  1017			if (!newpage) {
-  1018				src_pfns[i] &= ~MIGRATE_PFN_MIGRATE;
-  1019				goto next;
-  1020			}
-  1021	
-  1022			if (!page) {
-  1023				unsigned long addr;
-  1024	
-  1025				if (!(src_pfns[i] & MIGRATE_PFN_MIGRATE))
-  1026					goto next;
-  1027	
-  1028				/*
-  1029				 * The only time there is no vma is when called from
-  1030				 * migrate_device_coherent_folio(). However this isn't
-  1031				 * called if the page could not be unmapped.
-  1032				 */
-  1033				VM_BUG_ON(!migrate);
-  1034				addr = migrate->start + i*PAGE_SIZE;
-  1035				if (!notified) {
-  1036					notified = true;
-  1037	
-  1038					mmu_notifier_range_init_owner(&range,
-  1039						MMU_NOTIFY_MIGRATE, 0,
-  1040						migrate->vma->vm_mm, addr, migrate->end,
-  1041						migrate->pgmap_owner);
-  1042					mmu_notifier_invalidate_range_start(&range);
-  1043				}
-  1044	
-  1045				if ((src_pfns[i] & MIGRATE_PFN_COMPOUND) &&
-  1046					(!(dst_pfns[i] & MIGRATE_PFN_COMPOUND))) {
-  1047					nr = HPAGE_PMD_NR;
-  1048					src_pfns[i] &= ~MIGRATE_PFN_COMPOUND;
-  1049				} else {
-  1050					nr = 1;
-  1051				}
-  1052	
-  1053				for (j = 0; j < nr && i + j < npages; j++) {
-  1054					src_pfns[i+j] |= MIGRATE_PFN_MIGRATE;
-  1055					migrate_vma_insert_page(migrate,
-  1056						addr + j * PAGE_SIZE,
-  1057						&dst_pfns[i+j], &src_pfns[i+j]);
-  1058				}
-  1059				goto next;
-  1060			}
-  1061	
-  1062			newfolio = page_folio(newpage);
-  1063			folio = page_folio(page);
-  1064			mapping = folio_mapping(folio);
-  1065	
-  1066			/*
-  1067			 * If THP migration is enabled, check if both src and dst
-  1068			 * can migrate large pages
-  1069			 */
-  1070			if (thp_migration_supported()) {
-  1071				if ((src_pfns[i] & MIGRATE_PFN_MIGRATE) &&
-  1072					(src_pfns[i] & MIGRATE_PFN_COMPOUND) &&
-  1073					!(dst_pfns[i] & MIGRATE_PFN_COMPOUND)) {
-  1074	
-  1075					if (!migrate) {
-  1076						src_pfns[i] &= ~(MIGRATE_PFN_MIGRATE |
-  1077								 MIGRATE_PFN_COMPOUND);
-  1078						goto next;
-  1079					}
-  1080					nr = 1 << folio_order(folio);
-  1081					addr = migrate->start + i * PAGE_SIZE;
-> 1082					if (migrate_vma_split_pages(migrate, i, addr,
-  1083									folio)) {
-  1084						src_pfns[i] &= ~(MIGRATE_PFN_MIGRATE |
-  1085								 MIGRATE_PFN_COMPOUND);
-  1086						goto next;
-  1087					}
-  1088				} else if ((src_pfns[i] & MIGRATE_PFN_MIGRATE) &&
-  1089					(dst_pfns[i] & MIGRATE_PFN_COMPOUND) &&
-  1090					!(src_pfns[i] & MIGRATE_PFN_COMPOUND)) {
-  1091					src_pfns[i] &= ~MIGRATE_PFN_MIGRATE;
-  1092				}
-  1093			}
-  1094	
-  1095	
-  1096			if (folio_is_device_private(newfolio) ||
-  1097			    folio_is_device_coherent(newfolio)) {
-  1098				if (mapping) {
-  1099					/*
-  1100					 * For now only support anonymous memory migrating to
-  1101					 * device private or coherent memory.
-  1102					 *
-  1103					 * Try to get rid of swap cache if possible.
-  1104					 */
-  1105					if (!folio_test_anon(folio) ||
-  1106					    !folio_free_swap(folio)) {
-  1107						src_pfns[i] &= ~MIGRATE_PFN_MIGRATE;
-  1108						goto next;
-  1109					}
-  1110				}
-  1111			} else if (folio_is_zone_device(newfolio)) {
-  1112				/*
-  1113				 * Other types of ZONE_DEVICE page are not supported.
-  1114				 */
-  1115				src_pfns[i] &= ~MIGRATE_PFN_MIGRATE;
-  1116				goto next;
-  1117			}
-  1118	
-  1119			BUG_ON(folio_test_writeback(folio));
-  1120	
-  1121			if (migrate && migrate->fault_page == page)
-  1122				extra_cnt++;
-  1123			for (j = 0; j < nr && i + j < npages; j++) {
-  1124				folio = page_folio(migrate_pfn_to_page(src_pfns[i+j]));
-  1125				newfolio = page_folio(migrate_pfn_to_page(dst_pfns[i+j]));
-  1126	
-  1127				r = folio_migrate_mapping(mapping, newfolio, folio, extra_cnt);
-  1128				if (r != MIGRATEPAGE_SUCCESS)
-  1129					src_pfns[i+j] &= ~MIGRATE_PFN_MIGRATE;
-  1130				else
-  1131					folio_migrate_flags(newfolio, folio);
-  1132			}
-  1133	next:
-  1134			i += nr;
-  1135		}
-  1136	
-  1137		if (notified)
-  1138			mmu_notifier_invalidate_range_end(&range);
-  1139	}
-  1140	
+> +static unsigned long get_unmapped_area_zero(struct file *file,
+> +				unsigned long addr, unsigned long len,
+> +				unsigned long pgoff, unsigned long flags)
+> +{
+> +	return -ENOSYS;
+> +}
+> +#else
+>  static unsigned long get_unmapped_area_zero(struct file *file,
+>  				unsigned long addr, unsigned long len,
+>  				unsigned long pgoff, unsigned long flags)
+>  {
+> -#ifdef CONFIG_MMU
+>  	if (flags & MAP_SHARED) {
+>  		/*
+>  		 * mmap_zero() will call shmem_zero_setup() to create a file,
+>  		 * so use shmem's get_unmapped_area in case it can be huge;
+>  		 * and pass NULL for file as in mmap.c's get_unmapped_area(),
+>  		 * so as not to confuse shmem with our handle on "/dev/zero".
+>  		 */
+>  		return shmem_get_unmapped_area(NULL, addr, len, pgoff, flags);
+>  	}
+>
+> -	/* Otherwise flags & MAP_PRIVATE: with no shmem object beneath it */
+> -	return mm_get_unmapped_area(current->mm, file, addr, len, pgoff, flags);
+> +	/*
+> +	 * Otherwise flags & MAP_PRIVATE: with no shmem object beneath it,
+> +	 * attempt to map aligned to huge page size if possible, otherwise we
+> +	 * fall back to system page size mappings.
+> +	 */
+> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> +	return thp_get_unmapped_area(file, addr, len, pgoff, flags);
+>  #else
+> -	return -ENOSYS;
+> +	return mm_get_unmapped_area(current->mm, file, addr, len, pgoff, flags);
+>  #endif
+>  }
+> +#endif
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Nit, but can we add a /* CONFIG_MMU */ here please since we have a bunch of
+ifdef's and it's noisy.
+
+>
+>  static ssize_t write_full(struct file *file, const char __user *buf,
+>  			  size_t count, loff_t *ppos)
+>  {
+>  	return -ENOSPC;
+> --
+> 2.43.0
+>
 
