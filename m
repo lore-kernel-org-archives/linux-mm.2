@@ -2,72 +2,72 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F413C87FCC
-	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 16:02:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CD3A2C87FCA
+	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 16:02:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 229B26B0092; Thu, 31 Jul 2025 12:02:50 -0400 (EDT)
+	id 6E5F76B0095; Thu, 31 Jul 2025 12:02:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1DA216B0093; Thu, 31 Jul 2025 12:02:50 -0400 (EDT)
+	id 6BCCC6B0096; Thu, 31 Jul 2025 12:02:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C9456B0095; Thu, 31 Jul 2025 12:02:50 -0400 (EDT)
+	id 5D2716B0098; Thu, 31 Jul 2025 12:02:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EC6DD6B0092
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 12:02:49 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 60CE580B42
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 16:02:49 +0000 (UTC)
-X-FDA: 83725028058.01.BC588D4
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4864A6B0095
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 12:02:59 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 060D0134BA1
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 16:02:59 +0000 (UTC)
+X-FDA: 83725028478.18.AF69E2E
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 62F4F40002
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 16:02:47 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=zohomail header.b=bcQ9Gw+j;
-	dmarc=pass (policy=none) header.from=collabora.com;
+	by imf13.hostedemail.com (Postfix) with ESMTP id E771B20011
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 16:02:56 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=zohomail header.b=S1rC1MQy;
+	spf=pass (imf13.hostedemail.com: domain of usama.anjum@collabora.com designates 136.143.188.112 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com;
 	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf01.hostedemail.com: domain of usama.anjum@collabora.com designates 136.143.188.112 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753977767; a=rsa-sha256;
-	cv=pass;
-	b=yw+jSW56vv2q/ELoFxddwtJAwlGvxMqe/2Yu8iIk38SuGWnHjPwHg8JLvTmwRd+moHRCnu
-	5iM5b/SDvois0Y4Umoixni7tNinAhoQJJuCia+jrQyQleWKhFB+sP7/uwghBLTWd5KYpBq
-	6JxSKUqRZL3rXkUYrAoki42iQwztW74=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=zohomail header.b=bcQ9Gw+j;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf01.hostedemail.com: domain of usama.anjum@collabora.com designates 136.143.188.112 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com
+	dmarc=pass (policy=none) header.from=collabora.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753977767;
+	s=arc-20220608; t=1753977777;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jsundmjk432Nmx+yxivH/Xk7ers/4Sj7qV5Y59avV5g=;
-	b=aLtr3YAfsG0NSXp2dgAYJQIQwKld7QiKTYZsIB7WpYVWYILQLXvUMP+LnauXhqfwBEPkOL
-	cvnHW/X+dxVZNdqwlVICn2/45Jush59n0NT4KKeR0WOCJP6Ly6UX+dPFqdIjx91UvJVHNr
-	DiGi6KcvADyHvBvaf6AYIVRYwAHAnaI=
-ARC-Seal: i=1; a=rsa-sha256; t=1753977750; cv=none; 
+	bh=CXpQvoH9jL/54pJyNmcqlS3Y6t709TK/3sP/jYyYCZU=;
+	b=xWpLf3pPAxwqI9Fa3Mr8ktVjsEW4REaOYQbI+/hU6G1MuivEj0QzbuWPoG0GkJL9Z1lhZ8
+	KhAcqWyQbOhu3DYE+qSGqIqzXQrBkeBfXeiNQWz3obDKipXlxewx8cgZrZP6DcCOrx9osJ
+	YFC6uZbN3dg6YnBn4SyFry/P7V9LDAw=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753977777; a=rsa-sha256;
+	cv=pass;
+	b=0x+XxzSxzBr7Sm9SpHIkmpEjBAHaywAPGRLPCkBqANS602ijgTuZxoXonk0kN80Pf0zCqR
+	f3XSQ5afD6IT5q2+YD7CJS7zK5Mzz8o3pNuFHPS8tWG03bLKYacZbcEVBqR3q0usHUTCk6
+	3BsIl6l30JPKXluHd913cOwSeRbnn+g=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=zohomail header.b=S1rC1MQy;
+	spf=pass (imf13.hostedemail.com: domain of usama.anjum@collabora.com designates 136.143.188.112 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com;
+	arc=pass ("zohomail.com:s=zohoarc:i=1");
+	dmarc=pass (policy=none) header.from=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1753977760; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=DGVGICaTwhhJr59gs+cfZIQtxM2SepPnYLR/ivuLXW+6ONYxfFOmF/m90Avpb5zRkiM1CFHFsumMTL5pQP5LO1apBSZ7JW974L42i0iGtZSOqi4uwI3I8+yLa6jQUhNFDDrbLhA4XVB9LBEQb0FMYKWiQMPUu36H2bUQlgA1vE8=
+	b=kNoE6JDxCi1zslQy1xpg+mF1/vsqY1D3IqpBnpStBmj+OXDL0sRiK9X/8RP0WJWhQV9EKf6arQbng8mdB1tISDmG3vzzJlBS5uQb92J4ctr3c0tK6Divd0PQ7nSxl5QW/LjfuA7kV1cn+p7frVI8nWvHO6p15RpIQAnQ81pLKM0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1753977750; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=jsundmjk432Nmx+yxivH/Xk7ers/4Sj7qV5Y59avV5g=; 
-	b=jXJ5PIT9OftLeQJq9Mgv/O2RwZNvlA+Z3/MdnDE2IeJIf3jCRszZlUXaespC1q5Mk6PBc2z0B9VvyXApz7fOQZoih+KbUnPvx40pLpTlBGtYPffCH1x2waK7hFVc/SGJtRiNLorQwf95kuIHn8kXKMqQbLcC73lXCUFlrR1blZE=
+	t=1753977760; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=CXpQvoH9jL/54pJyNmcqlS3Y6t709TK/3sP/jYyYCZU=; 
+	b=NZyZzrXp0QdTzwxwKsCxIjIaiVVOA+no4R91yXoWdSxF0z/gyHj5/Gpjidw12oRfYSrdld3Yzur+XoJDWV9ZfNDjTkCXXsjngucvUvvrykcXVyW/yAXYwv+80v8ozhEpkkaUKJGM7OqeS8arsYYbWWHWniiSLhs950yL99WZQRg=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=usama.anjum@collabora.com;
 	dmarc=pass header.from=<usama.anjum@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1753977749;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1753977760;
 	s=zohomail; d=collabora.com; i=usama.anjum@collabora.com;
 	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Reply-To;
-	bh=jsundmjk432Nmx+yxivH/Xk7ers/4Sj7qV5Y59avV5g=;
-	b=bcQ9Gw+jfHYzvDinaxptTQseABCW6dyLRb4HAE/vHF5+bg6OQXjqZtEp9b2szz6N
-	kw6Iy4yI6w830plPR6802G9dUD4zErzqq7DnRMDJwv+r/eeEeorIPNi2MJYsXxMd65y
-	3aSpCymxEyWj7fLqY8U5Q2VgOHl1NstMwA1xXyMc=
-Received: by mx.zohomail.com with SMTPS id 17539777482221004.5959311406996;
-	Thu, 31 Jul 2025 09:02:28 -0700 (PDT)
+	bh=CXpQvoH9jL/54pJyNmcqlS3Y6t709TK/3sP/jYyYCZU=;
+	b=S1rC1MQyyVxUh5al7QzD/wEtVu0CmD2bLe+i9LKJ+7ptHaYzR0G48z6r+BrAVQW7
+	jYiG5zrcVD4s2Lfc/fxvmu6Yth9ziyoLW5uiVmJVlmwAKFvZM2WY+t0wU4jbYoDkg5t
+	7ThNDHHQcLZAZz6U2Oa5pA93JU1WwkDUolq7NmkI=
+Received: by mx.zohomail.com with SMTPS id 1753977758262407.9841044700861;
+	Thu, 31 Jul 2025 09:02:38 -0700 (PDT)
 From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@redhat.com>,
@@ -98,23 +98,23 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	Shuah Khan <shuah@kernel.org>
 Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>,
 	kernel@collabora.com
-Subject: [PATCH v2 2/8] selftests/mm: protection_keys: Fix dead code
-Date: Thu, 31 Jul 2025 21:01:26 +0500
-Message-Id: <20250731160132.1795351-3-usama.anjum@collabora.com>
+Subject: [PATCH v2 3/8] selftests: kselftest.h: Add __unused macro
+Date: Thu, 31 Jul 2025 21:01:27 +0500
+Message-Id: <20250731160132.1795351-4-usama.anjum@collabora.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250731160132.1795351-1-usama.anjum@collabora.com>
 References: <20250731160132.1795351-1-usama.anjum@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-ZohoMailClient: External
-X-Rspamd-Queue-Id: 62F4F40002
-X-Stat-Signature: 5quuzcc4spabh9hdig9sd48izdc9wafw
+X-Rspamd-Queue-Id: E771B20011
+X-Stat-Signature: aefbnx8b8ni5nqyn4zpw6rrqa3zpzipt
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1753977767-294730
-X-HE-Meta: U2FsdGVkX19WtLPxI51R/Oz/EkCMb1qtkn6qIMcpoaijBIoIS41b04hXlXKzHS/buFWSz0WmxfE1BWIZd0HCNxNGOOt09OhU43gFWGjHhNvhso1q+l1Li95AwmeUjvygHjVENyo1f5yKpTmwFDGt89nATE33c72d1Z+JpPcUhzi/LLwJqNK3/zQfydGmTYGM2SqXnkLEvBlMhxCK8hcqsoFbLRggKx9V2uqS33E1nDamfR6kGjE4kQjtCTkElU5HTNBqFPm+FKimeo1EcowUfqCqWOpdBt61llGyKoMytZT75asyazFye3A5EE35XU6Zo6lYF5pVjvlY7p1KfZ3RKI6lrdSVsYDBUQXslOQCOEBfzZmXuYovYAFeJ9nCqnfcKiGJTCI2YN8Ck3Qtd+tgvl8RD26YYsi4o+4g9YuAvZZEqv0+bkLjZnXQeJ69raOYQLmrrLvVpd1pFXDlqa8ubUx3XK6qxNXFqtkvGPJsOM/uqLlLSckrpi+HBoTkvSPbn0eRxjGv1q2Rsdxoqjyr6k3HXV+lnnqSJVIk1rTDEnwRSLP1vN+dEyZ9RsLwaPEoRDvo6/xUbzfAQlXwxelW03OxOHNryJ8gBb7pRkeJJw7F+410UYSR7SliB+Bplr2u9kzufARslK/EgSjCKSRjKJUcvXn9mhG57l8CvjWuKfz1LJH3n27W7YHBpoVjCMBHyiSta1Dl7pGZa5K6sp2LgMFdC17BLV/6Vad4SelBkm+6m280aXVm3U8WcoljzelIXwGlF746I843Ar5lSAgD+y10ctVKQbgpfzAkRJV6Udvi3yxqzcnOKpsYySPVisJXPLb7Tu2iIOq5LixRSXyXU4AbBukMeR8FuzrfykCvG+xMfwPckgEGS2X7WOIXB5ZJvvl4Qsrl9dm07lQSXvvRtL2FsqAsGADsrAwT4YUDFinIuLwwsOklruvYxO8jcIA4qFWVqK3c0a7lGb0tFDT
- Ru/JhWs1
- VlczXjemzuKrUpo3WCQ4zV701yNwRP8rwsVTZuzFgK5trU8+WyiodA8WFZfrQ8Runt5GfvHgrM5u2MoV+/f9UHd4z1hIks/OsurBGExn8CPKfpEH/cYn930bLd2G+Ab5D8ArnWg7rkvtq4gd2qfUyFxHsSAVMoqYFF1UR/y+0OgTJSPxeVrrAIkjAGS4IKCmVfAnRK0GwLKSD9ivR+jqBUfI7BuyH3XECH5ruPDCCueVqZ0D3MTDuAc6mudNy8OL0kcg9D8SeTs8LhljOBeHBXyANrbUlPD3nShk7fxp2BnBtR4LaaGuDHzF/wylR7evL4qIJw13MRiK5AonC0PakKgocilDeg7LobQ1JdzkztzcfeawGnKfV3iIxtoE5rI9GL89MmshJBEpFcodX2nkojZ9LRKHGRWvhXrUo8rq+D6FZrHayItNQohv2HQ==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1753977776-524123
+X-HE-Meta: U2FsdGVkX18+5LZfi7SlRoxjkvltzF4AysHOwyS031jTtcJVuFRXXGDLqz2PD8nta3tFiJPXFj8k4oVpHEJF75QGaFhzZrxT+b9k2WdeeBjZl2HxyxPj5wwdU3GSdkLPITiE8OaoAqeFQWcxsdryGA3W4icjFdc0vQrHKx8vGFd/OUmtiYSlyxSQD8naQaLkbWyVjqRqug04r7zhw3l6o8EQATqcM9It3j7Oxn6y0OZb8wSeTbSeC2F1yQI4n+KeGZ8hjR60kpQ5dE1qTvAiu90uVrcRjhnScuwGwrLfHGvwnTdmXls+lq54Lj+CQaoB85XtPCNwsw6OsNi5tZmUVHaOlP3JSwkA6vQmCZwWTTj3n0qaNYpLWy1hs0tg0lL5/qOPwNdwd5wvL1S5dCjquaME8MYV9YfiY8iCb+5j+3AA5laxHIor+N+ZaQO/onOrzAHTM3uERMk9Z1r4pCS5lT3p/sp9PyDRCeYgiqKccqJofDQOKt+7fd7/9QSxcy4Y8FnIyb10dEFcd+q91PjpdS4ltZwr8+I8N4PBNv4OsFhBe02hMZn5aZCGIKaE75gr7icSX17vZbK+V3ETAF01zlypCQfB49MeWzVFr3fjtFfy1rzenUWXP4ZNDd0YFyqlsx9H0e1QUzVkLpRPJVe69L8rgIr3icp873SawKGelXWgVIAuKioU+15WojISCVQ1x2MfcPGASO3BtQI+G9yPesn6cUOOegS5MhXrAIeUWwJRQChomN6HBmJYnZKSjRheJLlLWo5Qh/3pJGRNXtpt930gSgm86+hrQ6LBwSLwxpyCWsukjCCLxpyUrqyW5AKy1WJGLrRdzD/vhWmc/4FP8L6zCo6q0K89f7u7vb/f6Cr1dRgZ6sl8MHkceXNeB8Rpbt99e0WMPPo21zRZu6/VTRgQKID23tHDN+vm9W4HOUQktUrBQtSGq1tpgKue4/rO9Qkjt9pNasEXXU8ZdWR
+ hqxP7Ugb
+ REXKdPcXbqje/UIxB1ijpJnAJ1TJwqFet3lpFHVtVle1L5GQadyjFwD7Wco6t7FjTwuZG2l+3dBbcG+Bw8gugimF/OycTt9C0cYrEO7n7K584zq52uIYOegSNhI8tPD1taVy649ITkNqXKW6CSsKBMW+hwQLOsSn+7XXGwoElvOgt02nbJzW6fj8GqYyDghjoDa9s4A1briboX5j65ziEpir2wMYOpeeUSKv2fNfgXd13EIOhN1dkRtAciFV4dYS3ZLgreMvlDWLFqaXl3NShgpZizXsCVXRuQzS4GpuFeQPq03aVoQqzFih+OPmf16Ql8FiJL0lP6x4VuD2D3JqYNbxsg6BhMn30Fl8SGdWe3+1bIVnxzaFjtKRXfqifa6yh1ni0oFnFZtUunLZzG1CoBVgD+SSAeT8KQCOgGxNMSsPYRudloASP4aJvXw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,39 +123,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The while loop doesn't execute and following warning gets generated:
-
-protection_keys.c:561:15: warning: code will never be executed
-[-Wunreachable-code]
-                int rpkey = alloc_random_pkey();
-
-Let's enable the while loop such that it gets executed nr_iterations
-times. Simplify the code a bit as well.
+Add __unused macro instead of using the complete verbose unused compiler
+attribute. The raw __attribute__((__unused__)) is quite long and makes
+code too much verbose to the kernel developer's taste.
 
 Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
 ---
- tools/testing/selftests/mm/protection_keys.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ tools/testing/selftests/kselftest.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tools/testing/selftests/mm/protection_keys.c b/tools/testing/selftests/mm/protection_keys.c
-index 23ebec367015f..6281d4c61b50e 100644
---- a/tools/testing/selftests/mm/protection_keys.c
-+++ b/tools/testing/selftests/mm/protection_keys.c
-@@ -557,13 +557,11 @@ int mprotect_pkey(void *ptr, size_t size, unsigned long orig_prot,
- 	int nr_iterations = random() % 100;
- 	int ret;
+diff --git a/tools/testing/selftests/kselftest.h b/tools/testing/selftests/kselftest.h
+index c3b6d2604b1e4..8d17036d88396 100644
+--- a/tools/testing/selftests/kselftest.h
++++ b/tools/testing/selftests/kselftest.h
+@@ -92,6 +92,10 @@
+ #endif
+ #define __printf(a, b)   __attribute__((format(printf, a, b)))
  
--	while (0) {
-+	while (nr_iterations-- >= 0) {
- 		int rpkey = alloc_random_pkey();
- 		ret = sys_mprotect_pkey(ptr, size, orig_prot, pkey);
- 		dprintf1("sys_mprotect_pkey(%p, %zx, prot=0x%lx, pkey=%ld) ret: %d\n",
- 				ptr, size, orig_prot, pkey, ret);
--		if (nr_iterations-- < 0)
--			break;
- 
- 		dprintf1("%s()::%d, ret: %d pkey_reg: 0x%016llx"
- 			" shadow: 0x%016llx\n",
++#ifndef __unused
++#define __unused         __attribute__((__unused__))
++#endif
++
+ /* counters */
+ struct ksft_count {
+ 	unsigned int ksft_pass;
 -- 
 2.39.5
 
