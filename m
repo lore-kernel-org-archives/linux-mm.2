@@ -2,105 +2,195 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 14EEAC83F17
-	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 06:51:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B0E99C83F17
+	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 07:15:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A86D6B0092; Thu, 31 Jul 2025 02:51:05 -0400 (EDT)
+	id 0E07A6B007B; Thu, 31 Jul 2025 03:15:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45A7B6B0093; Thu, 31 Jul 2025 02:51:05 -0400 (EDT)
+	id 0B8116B0088; Thu, 31 Jul 2025 03:15:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D3296B0095; Thu, 31 Jul 2025 02:51:05 -0400 (EDT)
+	id EE8CD6B008A; Thu, 31 Jul 2025 03:15:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 113346B0092
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 02:51:05 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D5BF3160615
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 06:51:04 +0000 (UTC)
-X-FDA: 83723637648.17.412BFD1
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1208E180002
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 06:51:02 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=xVDHxDHQ;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf06.hostedemail.com: domain of 3VRKLaAoKCPAjaUZSjVqUUYggYdW.Ugedafmp-eecnSUc.gjY@flex--richardycc.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3VRKLaAoKCPAjaUZSjVqUUYggYdW.Ugedafmp-eecnSUc.gjY@flex--richardycc.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753944663; a=rsa-sha256;
-	cv=none;
-	b=d7s/UiZdRc8C57Aw5IlzvcmZZo62oQ7ebWNeZR0n3Tfq841nlfrnKC0EXdVueRXYV5io9T
-	qc3KkTiBEpFPnRrJBd05NQ/ThoFQvuT5A8OqXuBgn7GF8Yxv9L1OkoSCZ5glUNd3AmSRp6
-	jik1VCAIqaruVCmNM9eOJZ75JsL7tzo=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=xVDHxDHQ;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf06.hostedemail.com: domain of 3VRKLaAoKCPAjaUZSjVqUUYggYdW.Ugedafmp-eecnSUc.gjY@flex--richardycc.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3VRKLaAoKCPAjaUZSjVqUUYggYdW.Ugedafmp-eecnSUc.gjY@flex--richardycc.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DEB226B007B
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 03:15:46 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6AE00160673
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 07:15:46 +0000 (UTC)
+X-FDA: 83723699892.05.86343F7
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf26.hostedemail.com (Postfix) with ESMTP id DD9F414000A
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 07:15:43 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=jHIxBMJE;
+	spf=pass (imf26.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753944663;
+	s=arc-20220608; t=1753946144;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J9HBBhNz4JX/02iQNqHxMkOYIhfKJVrRepRJjtX/gUI=;
-	b=ElzgW1wJd5i0JmXLXaYx6cQGpejPjDyt4YNhT7A/NKy4rxmganGzR9G3Jca8fefiykDumD
-	R+5EzX7AWHE9YH3uFasQ8YlfFnwKRHDdAXaQp88hmvmEjoL3L7Y054Nds3q8+0WIPpce9d
-	jLtYpWhBGu1167YB9aBP8xhTvhu3slY=
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b421b51c478so478658a12.3
-        for <linux-mm@kvack.org>; Wed, 30 Jul 2025 23:51:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753944662; x=1754549462; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=J9HBBhNz4JX/02iQNqHxMkOYIhfKJVrRepRJjtX/gUI=;
-        b=xVDHxDHQK9AeUAZFQJXllLAsWmL4FykmCIivT0Ym5em0DvC82ToDUCDPLV5lm8CSNL
-         kHpQtSbRnvlk+uwOtCZ7XD7XirXG2bEn7eQlb3Ch+GK/Dku+A7dato+jXEaUPxnXthl6
-         ei15yBFbE7ArBLKcBxfbIr9slWD2SQnGZn0B1ms/T7njxYESWBqc0t2UKPcHD53AtKBl
-         RMB/QqYjXuJICh1LeEsgcvpIt/E9Tmfx69R4R7B3QLuw1fN0nrwnCVzMbSXYIFBOCfIO
-         wOCIOllELIUAJAKBw6l4Cvgs7rTGRaAekzXQA0A+bgki6S/LBLDl0MVOL7Z3Pgf0xYcl
-         maXw==
+	bh=RawxxfpyMyuGADa6bsr2uGYdFSt+x4/OF9m+6fZhIG0=;
+	b=stxh0ZV2h9TU69v5SFT+pCC2zVF7eERjuakUOIzNJwfvg12M0nNtijmz7qRkmJyhy+1a7S
+	5bHYxgonQXRpxVioWJ8iTgyohR0ep53fH3ZPvLvrKx+NJBjxelCOKUdwcWmhLVontwmFp3
+	fFBDgrdxztQghFs+GzA5J3gwLI0i70s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753946144; a=rsa-sha256;
+	cv=none;
+	b=20+EQzP7cCqunyqVBvkla1EWEbMt9s26zY1pdT6eOLN3gAiu5CzLq2V7pnZB+shzOSPK5K
+	1/ILbPCP3vw3cgWwuI3EOi66kI+70WjqvQCCdDEZnNeu/l5SVIdM9FxfRXyVaaEcZkHs8n
+	/UuChuFC3arm23W4L59esrR7/6/59hE=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=jHIxBMJE;
+	spf=pass (imf26.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1753946143;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=RawxxfpyMyuGADa6bsr2uGYdFSt+x4/OF9m+6fZhIG0=;
+	b=jHIxBMJEczR+duOzRL6I9RUkCB+jZqmwmXWEqW3be4e2VCnyB5n465DEVKlKYWk5ZbbxUp
+	bAmM7dN7QDHmwtsYw5bPo2GJTxTqyADZkBGmw7qvv5athCQOg8xmWFgmkzkZi3hvnys7ZK
+	k1+eUlQo/BLupzPwQ6ZG871C6qnpiTA=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-121-Kec3RXLeMlOZmfCRmZNrkg-1; Thu, 31 Jul 2025 03:15:41 -0400
+X-MC-Unique: Kec3RXLeMlOZmfCRmZNrkg-1
+X-Mimecast-MFC-AGG-ID: Kec3RXLeMlOZmfCRmZNrkg_1753946140
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-456175dba68so3867815e9.2
+        for <linux-mm@kvack.org>; Thu, 31 Jul 2025 00:15:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753944662; x=1754549462;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=J9HBBhNz4JX/02iQNqHxMkOYIhfKJVrRepRJjtX/gUI=;
-        b=mlpbTadopIBY+GqOQOxBq9kHe/KNUhz+AEJs9IKtsb8yCSh3k9HVjnT8g37ITTpVdM
-         aPm7oS74h3brYH/p3v/7y+CjxZWjKrJAQbyOKwvTTyDrpt89miZMP9w9HDNfg90436mM
-         UkDHCxkTo4sW6XzrjmX0VBk2PVNo7VN+w0lWwfVu/liXN92GHgsOVbEpp4OW0zzLKDmE
-         7oE2/CJxy/najdEPvq35aYVAB5l8740l4aCAqZPuO8G5nabnfyudDKE1fibxVNMJ/Sli
-         OCLwUbpxCbzWNXCvg8tnFdIkVhrOdMhAu/RNMaNYgecdsZOZhdooqtsKBgdCNYuaj3ak
-         AXug==
-X-Forwarded-Encrypted: i=1; AJvYcCV22tcAmbbSLMnIn4HxuiztigDqIqRbOgSM4XT8f2koeli0sjSWKBBGB4lIu9NOkGXZ23tUgtA3UQ==@kvack.org
-X-Gm-Message-State: AOJu0Yyh9pMtr0fc+Aq5CEvLi+7kne7s5TRsV10yKdDCHtxA2iIJkpsD
-	/FEcwFCle53JLjpJwq6hNq3LST2TscCFE5MRu9wIV7VO3wxcRcJY13WQ2hsY8NzxlqsVARePaT7
-	8bNJhXxuf605mWcASwIXd
-X-Google-Smtp-Source: AGHT+IHwD0DQee4gELDZbn1uwpxGmpeIotkHWXAUCxbVBgG5s7/AREeRYCR5fiI/9tCEtbg+9OUAskPwVsXk7or5
-X-Received: from pgbfq19.prod.google.com ([2002:a05:6a02:2993:b0:b1f:fd39:8314])
- (user=richardycc job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:4322:b0:231:e2e:95e4 with SMTP id adf61e73a8af0-23dc0d57f48mr10285018637.16.1753944661925;
- Wed, 30 Jul 2025 23:51:01 -0700 (PDT)
-Date: Thu, 31 Jul 2025 06:49:49 +0000
-In-Reply-To: <20250731064949.1690732-1-richardycc@google.com>
-Mime-Version: 1.0
-References: <20250731064949.1690732-1-richardycc@google.com>
-X-Mailer: git-send-email 2.50.1.565.gc32cd1483b-goog
-Message-ID: <20250731064949.1690732-4-richardycc@google.com>
-Subject: [PATCH v2 3/3] zram: enable asynchronous writeback
-From: Richard Chang <richardycc@google.com>
-To: Minchan Kim <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Jens Axboe <axboe@kernel.dk>, Andrew Morton <akpm@linux-foundation.org>
-Cc: bgeffon@google.com, liumartin@google.com, linux-kernel@vger.kernel.org, 
-	linux-block@vger.kernel.org, linux-mm@kvack.org, 
-	Richard Chang <richardycc@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 1208E180002
-X-Stat-Signature: 73tdp7sfzhxwum3kt7ah7k43jgzg1oa7
+        d=1e100.net; s=20230601; t=1753946140; x=1754550940;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=RawxxfpyMyuGADa6bsr2uGYdFSt+x4/OF9m+6fZhIG0=;
+        b=PqGmNBYtvgCH4Qnzp++I3PNeodPiNBecd38Z2caXEVoMV1yIgDFW9OZnuGAEjFNoJq
+         pa5P4qyAh7mUKVTebzVF/E/ifB+I8riQgTFIE0nzNLMzblyEOhLkiwoLpy7BMriYgU3Y
+         1MVhMMe4ZaY9sTvCB47gc4Pm9eJZH/cqcgAc4smWTh4ghCnYSjqwGHP8HQzR4xoGsa5f
+         5Lq2MUQpc7w5UEG3A1w38/BKJJP5XqdKkP3nk35HMtBQFj3KkwD5meDm8U5CdmeJZRxy
+         mV6Vss5ZR3yVhVkS62/KSRnjEQnF9oYMBu2scHHktNmubUMzyebYUsmkdHlDotHZHho/
+         HEsw==
+X-Forwarded-Encrypted: i=1; AJvYcCUG7WswUr3fbnoTJumluU/3RfLiAdQ7vpFy/A+ko7TMWn2mcuTPTjrYto+6hbp85PU1m/5tYHdZhA==@kvack.org
+X-Gm-Message-State: AOJu0YwzehrxfCwHnIk87EsyzB8w2zJM9JmBD8A+aIE3HJWSswWg+dPC
+	zfx/ohw2+0g4YRRtTNy09a7rx2U5+EAb7Yk+341PMLlooC3AmDg/a+M7iJvGtjbzTdCogF2v8BB
+	3L8iXNXEd52jz9zL1Jj0l99JXpY4Lni2xvmusSEjNLqsdCw3NknZw
+X-Gm-Gg: ASbGncttrQbePwqD8a4rxSUJBY+bPHniiCeAogXtxUs13dizBpD2OxzacPYMyEu1LIa
+	oOuMKG5h2RrpC1hBMUBrfk9/5/Dl0wNcwSuhhUJYQk+fwxgL176TYpCTUoqOIWiM4K1d35ceSFm
+	9ZJBfflwXO3E7bbNXzWHEgNpeIC4Y/qVpn94spKoxsTuDsfuAAqoLGUprbtFx7N8YYwFMBH8qkF
+	NLjhy2iIxcjs8U7pgG7DETdrs4dJCToLqbDtCAEcmU2fFXA4NwM+N+M+k8HJ98qbWUwJ/3/OLFb
+	InaKhVy50DRG9Tvcxc36FemgkZ7MbzW2XHMGJHegvPnh+tZjH4ToUAEVj8m5+icKlcsviaV8nzk
+	zFWRpfNxBWovyYeOFiBb/DFbOReq4rshgOhkOBhK+nGTR+LbKqqsvsU35k7FtQSwzm2I=
+X-Received: by 2002:a05:600c:4450:b0:456:1442:86e with SMTP id 5b1f17b1804b1-45892bc5fecmr53890935e9.21.1753946140278;
+        Thu, 31 Jul 2025 00:15:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHvO9EQTDfetaDZ/IOkenlXpiTLTHtn2OQfXIVfiUGimQndVHp19prtzhTSQCtI3ggEZ4VuwQ==
+X-Received: by 2002:a05:600c:4450:b0:456:1442:86e with SMTP id 5b1f17b1804b1-45892bc5fecmr53890405e9.21.1753946139743;
+        Thu, 31 Jul 2025 00:15:39 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f44:3700:be07:9a67:67f7:24e6? (p200300d82f443700be079a6767f724e6.dip0.t-ipconnect.de. [2003:d8:2f44:3700:be07:9a67:67f7:24e6])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c469b4csm1360576f8f.56.2025.07.31.00.15.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 31 Jul 2025 00:15:38 -0700 (PDT)
+Message-ID: <b5fa0989-a64a-4c91-ac34-6fb29ee6d132@redhat.com>
+Date: Thu, 31 Jul 2025 09:15:36 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [v2 02/11] mm/thp: zone_device awareness in THP handling code
+To: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
+ Zi Yan <ziy@nvidia.com>
+Cc: Balbir Singh <balbirs@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Karol Herbst <kherbst@redhat.com>,
+ Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+ Shuah Khan <shuah@kernel.org>, Barry Song <baohua@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Matthew Wilcox <willy@infradead.org>,
+ Peter Xu <peterx@redhat.com>, Kefeng Wang <wangkefeng.wang@huawei.com>,
+ Jane Chu <jane.chu@oracle.com>, Alistair Popple <apopple@nvidia.com>,
+ Donet Tom <donettom@linux.ibm.com>, Matthew Brost <matthew.brost@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>,
+ Ralph Campbell <rcampbell@nvidia.com>
+References: <20250730092139.3890844-1-balbirs@nvidia.com>
+ <20250730092139.3890844-3-balbirs@nvidia.com>
+ <c2f2fe52-a358-489e-a1f2-5c0a6f5b4db5@redhat.com>
+ <22D1AD52-F7DA-4184-85A7-0F14D2413591@nvidia.com>
+ <F60614E1-28D1-466B-A434-7FF1061B0778@nvidia.com>
+ <9f836828-4f53-41a0-b5f7-bbcd2084086e@redhat.com>
+ <884b9246-de7c-4536-821f-1bf35efe31c8@redhat.com>
+ <6291D401-1A45-4203-B552-79FE26E151E4@nvidia.com>
+ <b62234fc-051f-4b2a-b7da-0c0959fb269b@redhat.com>
+ <8E2CE1DF-4C37-4690-B968-AEA180FF44A1@nvidia.com>
+ <2308291f-3afc-44b4-bfc9-c6cf0cdd6295@redhat.com>
+ <9FBDBFB9-8B27-459C-8047-055F90607D60@nvidia.com>
+ <11ee9c5e-3e74-4858-bf8d-94daf1530314@redhat.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ g3eXuA==
+Organization: Red Hat
+In-Reply-To: <11ee9c5e-3e74-4858-bf8d-94daf1530314@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: xq0zB9_J0YuJftuC_vZquBYNYnOHNBvxxjRyr7zc3Zw_1753946140
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: DD9F414000A
+X-Stat-Signature: dmkmoem8okuc1np34izb1je7wapfbsn3
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1753944662-610547
-X-HE-Meta: U2FsdGVkX18WTfZwoUA+ajD0SnUwUQBFK7DbHrdS2T86YM2EBwpeZUXgZ3sCrCC+J+Au7iZUHMb8iQZjyqPK97EAajz9hVnr16BvEPLl6Z8iUoBeSzbnYVwPjsYdCVDt6e2Fk4I9J6TS9xVIWK3aRNc4tmCOYs09WtnAvboa/y6hPKNxj7h+KbkOeQ8YHgkktxgFd0JwIXNeE4j0apOjh0YOzNknvxj4zR23R8udAbwJEsRAt+wbkV5R+2GoVXzPnuY358g/LR0tx6glXAiu92Y/FsXdiNYC9KhjN9rpJvUFHnA8TS7nFhnH+2PCeqUwOOhz7sL5fk+l/JXbdUbxZLXG7SjK4JnCJ2EEt9soKAvnSruj54pHvwStyYanFzpA4qOiCIYm07aRJmPEQz/z+RP5RbYGC83LIiPs4lGRoNvGIMLtKGONzGGg2aC3NCZ9i2sOLKv6jx/T+jGBLEhloVXjMu+ByY2oowcTk8ZuvXhz+eJl0Cw/uhHFPIC1EEBZd2Ri25AOKfVVQUaPvJU+SuVtX8hoiqm9/YIULFe+yElH/4PVmqXTZoacuHo1XMGkbyd/Qm7XbmUb3YeXvJ7P1vp4orqiz6u1x9S5iEVY093gV+m+xhdD3lZ8nK9rqE+DKWYjsABN36oLcZzLICdP9UIBCX4TFyQypMywmuxZiYSze+YRkRBwhlstjsbT6zqLwCk2IABBxfROCWQkncCl868H1euydFUK6g92hyXczaShpPSC8ZYn/bIOZdnHTI4S1epcowNmfC+5dKi72rjQH3v0n5gexzI/p/nOAXmHQQMRn+BYhcmwvpQZvchMREK68gk6uA/l3JOjSgl+VBqrkTr1eizv7Hbum9trsJ4CxkOqksoOFnoOJlU9lMBjhxzsRX1wpqT3+vMURq5IhWwwhhUZ3geLYxg0IO9bUELchC9GmspsY930mHgR323Nw2rf1jAOnoPa1x7GkiF2MBm
- +KmaJmgR
- ATCEV7dmVpeQ0JMKPchX6l7hAAUsuW2+khcEzAUQWt55fxmstvWsQAzOwF6tgeswq36n/ce0fEyHF9nXuoRw5CI9YNapGwKgwMrWRHSy76L/+yY/MLVmloSGme8q69Oww4811SoF94HTuUK9pBi8iYXh7RSchyJAWu/nTfv41lZdLPrANxMHT+1d1slt4SGBWPHrKWyldnHFXZihMCDih4yf2/o6LVPpVQngFBZ/WTe5Zjf71kjWqe2JztL2r6oj9wRVE89c9pHNHRwFv73Va+Xp3ZBhDvH+oGrst20meXys737+Crz1qr/IViDbH60/Ecdf/5yzrvmTtT2UHp81W9ASF8FkLWINZlStob9M43EHqwqDtJa+kdPgcZSc8gBeoZpOyv+22SaVAQY3+kfOwHtuhatoZTIzgEzOnv/qMkifWN+i8pZgGhGo5YJyzM/utAzNAg3yZSHZZ3A/cEKKkhqPDOrqAkPO8cBF5vJJ1c/eqoDdS1nS6/zwI7OQKYaluMt3FY4Z5Ym2cOQCKq3er6qvUfoZPovHmFr/l/XJJivWc9PDqkBuMhnhLSaDSjawVb+d8
+X-HE-Tag: 1753946143-7663
+X-HE-Meta: U2FsdGVkX1+fP87tSTZc/MSbJVwps8s3YtDzL3eWRcY+hC2FDl1c7jRvBV+a5AlcwYmNg/iz15Fe8T+JBTAFo+3tz+42DIuiJr1DtNtrKAlGyW4E+D8M4FNAtUX15atvsh+ahwwXeOOfTCG44iMCXD7E1A1rHWXBHBBmvvuhu4FxELsPFENQ4Ue/GUdrGfAb8s2nt/lEj8+577vlIcgl/83l7RxMv/yAck45H5jGiz4zEtlN8oYEBT2rHwVXZBnuQu3FL6LxM5MoqZCKHGXUpJzMBUuJYKSLBHnwhkj8bMhTMMGuUoAXD6gfosriXfIsdh08AFRsGqrkx9Fakgu8FQv+CoIY0vO6SP6CLaLPCjef8PMBHDhArC5gzeDuWlZwYY2fepF92M/LAUNuBRmuGvcm0v9YHqd+PPPZbfQe80/FWo+rSC4OiLtPUKBHAK42z761yXh1TP9jUAFD9sg2upGiJszxzN2VCBDpWqgv4qpVOt/7Qr4n3KtUsnESRZViZP13Zpsj5gZk8RM8m2T6fN9cLuwg1kU8noOLP61aJf+SisCG7GS+SYFQEVIXYkQT7tvvnZPjU/7F+LvfkzX7RmzsAebuORSpzth0FKaYfkbS2NQmjTyAcm7dG9aVAF9EUhdiPOPO0jZJyCIUipEB3LqbDP1lrTH5zwnFtJJbXLJeAam8izahw86uru3ZHKT/jfUgcFmdO9wpBNlMDmrL0qfWBLmjHKeSVeHzwQkYwuWyrpUzKu6T8gHjhj1HnqL9ZVc83bhRSvEA+/nFGf/aBW8vcdjCDLhHP6UZFxVIfgVBySqJfU4Mg/QL7Nuf2/c15n1F/NpuXpgDNTmTkrkaVYTE/LkqfeXDqyZtIrUp6UcGBVvHP0+NT5iYcy8mcWzuhZSeawAGe+OUdLdcZFgrbw67TcuU1rP3GeHB4gjbOZqPLW23AY5GP8u93k9wnr4tjD4GrMlDefFa+xjAWs3
+ NQoTVv/i
+ 9PP/w2yE8YXvhynI9JiQHIuw70mUFrKolgeNK6G+ynJxPrTgBXpZ14r6f85rpxzq81+xwH51Y2D9KpqUe8zfG2fERpV2i/550ttplnmBS+F1W2NtWO7dX7k0bycTLRFLNRnbGMjY/Ui5qDsu2lp/dHuy5aD5uCvAx82waRj0eL1RI2a7PM2rFn77AeXjdlhC65EnaPLZtmAwIHdG4SoSMlpaT5+6GM7bFwDIcIJBl8jUYiLha5UdKPH5tiGRxsbrG1bMiqinjWdZtyIUnBttexujaHNepo5ImeFQve2Xz83J6T+VRlAcjANH0S5Bz/DcEBWxNbF3aninaHzmUHhWU44xv31v7mSSBVRqoRLjxPaIa6oWue5k9cH8vRtGweqBeoP84/Ftm52EhTCcHR+p7n/3N/mzr0t+bgiRhxxb1riFmyQUCWady0GduLnsj7ufOz9mUyC1mBL96ZOc/vIoAZKoz1uUX1gtcZ1tf42tUIZFV2ZlQdNOnTph+b2o10vyKx6PrizqwdPSHe19dQUxcIv+a4PE2rAYXCWoKwDLQuf2JFejvin8iOAgtzG/66KPhPQm73IHmMUUh/DS7pJ/+aoxe7HbANHIxTBfmpFfh+KxMJ2+eOEQ4TkJzCXWQg+UjVr9Os5qeLs7XcvFgRigeeB8TrufXvhMVy+62+KbjAHwIAJDii9Auqs8SdKpDcEdLjnpoEyWpsbzkH5qAM+rw7DTRB7yzpKoF+PLDS0IIa3//dNhPBhwTTrBPwBR0jowU2/+Jx73p45xBMsY6wSBFzPnpfQboBPtwPt3ol1XLl8HGlA9pr2ph4ExQWnZV+BKNdpyH
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,450 +199,185 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Replace the synchronous `submit_bio_wait()` with the non-blocking
-`submit_bio()` to perform writeback operations asynchronously. This
-leverages the infrastructure added in the previous commit to handle
-the completion of I/O operations in a dedicated kthread.
+On 30.07.25 18:29, Mika Penttilä wrote:
+> 
+> On 7/30/25 18:58, Zi Yan wrote:
+>> On 30 Jul 2025, at 11:40, Mika Penttilä wrote:
+>>
+>>> On 7/30/25 18:10, Zi Yan wrote:
+>>>> On 30 Jul 2025, at 8:49, Mika Penttilä wrote:
+>>>>
+>>>>> On 7/30/25 15:25, Zi Yan wrote:
+>>>>>> On 30 Jul 2025, at 8:08, Mika Penttilä wrote:
+>>>>>>
+>>>>>>> On 7/30/25 14:42, Mika Penttilä wrote:
+>>>>>>>> On 7/30/25 14:30, Zi Yan wrote:
+>>>>>>>>> On 30 Jul 2025, at 7:27, Zi Yan wrote:
+>>>>>>>>>
+>>>>>>>>>> On 30 Jul 2025, at 7:16, Mika Penttilä wrote:
+>>>>>>>>>>
+>>>>>>>>>>> Hi,
+>>>>>>>>>>>
+>>>>>>>>>>> On 7/30/25 12:21, Balbir Singh wrote:
+>>>>>>>>>>>> Make THP handling code in the mm subsystem for THP pages aware of zone
+>>>>>>>>>>>> device pages. Although the code is designed to be generic when it comes
+>>>>>>>>>>>> to handling splitting of pages, the code is designed to work for THP
+>>>>>>>>>>>> page sizes corresponding to HPAGE_PMD_NR.
+>>>>>>>>>>>>
+>>>>>>>>>>>> Modify page_vma_mapped_walk() to return true when a zone device huge
+>>>>>>>>>>>> entry is present, enabling try_to_migrate() and other code migration
+>>>>>>>>>>>> paths to appropriately process the entry. page_vma_mapped_walk() will
+>>>>>>>>>>>> return true for zone device private large folios only when
+>>>>>>>>>>>> PVMW_THP_DEVICE_PRIVATE is passed. This is to prevent locations that are
+>>>>>>>>>>>> not zone device private pages from having to add awareness. The key
+>>>>>>>>>>>> callback that needs this flag is try_to_migrate_one(). The other
+>>>>>>>>>>>> callbacks page idle, damon use it for setting young/dirty bits, which is
+>>>>>>>>>>>> not significant when it comes to pmd level bit harvesting.
+>>>>>>>>>>>>
+>>>>>>>>>>>> pmd_pfn() does not work well with zone device entries, use
+>>>>>>>>>>>> pfn_pmd_entry_to_swap() for checking and comparison as for zone device
+>>>>>>>>>>>> entries.
+>>>>>>>>>>>>
+>>>>>>>>>>>> Zone device private entries when split via munmap go through pmd split,
+>>>>>>>>>>>> but need to go through a folio split, deferred split does not work if a
+>>>>>>>>>>>> fault is encountered because fault handling involves migration entries
+>>>>>>>>>>>> (via folio_migrate_mapping) and the folio sizes are expected to be the
+>>>>>>>>>>>> same there. This introduces the need to split the folio while handling
+>>>>>>>>>>>> the pmd split. Because the folio is still mapped, but calling
+>>>>>>>>>>>> folio_split() will cause lock recursion, the __split_unmapped_folio()
+>>>>>>>>>>>> code is used with a new helper to wrap the code
+>>>>>>>>>>>> split_device_private_folio(), which skips the checks around
+>>>>>>>>>>>> folio->mapping, swapcache and the need to go through unmap and remap
+>>>>>>>>>>>> folio.
+>>>>>>>>>>>>
+>>>>>>>>>>>> Cc: Karol Herbst <kherbst@redhat.com>
+>>>>>>>>>>>> Cc: Lyude Paul <lyude@redhat.com>
+>>>>>>>>>>>> Cc: Danilo Krummrich <dakr@kernel.org>
+>>>>>>>>>>>> Cc: David Airlie <airlied@gmail.com>
+>>>>>>>>>>>> Cc: Simona Vetter <simona@ffwll.ch>
+>>>>>>>>>>>> Cc: "Jérôme Glisse" <jglisse@redhat.com>
+>>>>>>>>>>>> Cc: Shuah Khan <shuah@kernel.org>
+>>>>>>>>>>>> Cc: David Hildenbrand <david@redhat.com>
+>>>>>>>>>>>> Cc: Barry Song <baohua@kernel.org>
+>>>>>>>>>>>> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>>>>>>>>>>> Cc: Ryan Roberts <ryan.roberts@arm.com>
+>>>>>>>>>>>> Cc: Matthew Wilcox <willy@infradead.org>
+>>>>>>>>>>>> Cc: Peter Xu <peterx@redhat.com>
+>>>>>>>>>>>> Cc: Zi Yan <ziy@nvidia.com>
+>>>>>>>>>>>> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+>>>>>>>>>>>> Cc: Jane Chu <jane.chu@oracle.com>
+>>>>>>>>>>>> Cc: Alistair Popple <apopple@nvidia.com>
+>>>>>>>>>>>> Cc: Donet Tom <donettom@linux.ibm.com>
+>>>>>>>>>>>> Cc: Mika Penttilä <mpenttil@redhat.com>
+>>>>>>>>>>>> Cc: Matthew Brost <matthew.brost@intel.com>
+>>>>>>>>>>>> Cc: Francois Dugast <francois.dugast@intel.com>
+>>>>>>>>>>>> Cc: Ralph Campbell <rcampbell@nvidia.com>
+>>>>>>>>>>>>
+>>>>>>>>>>>> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+>>>>>>>>>>>> Signed-off-by: Balbir Singh <balbirs@nvidia.com>
+>>>>>>>>>>>> ---
+>>>>>>>>>>>>   include/linux/huge_mm.h |   1 +
+>>>>>>>>>>>>   include/linux/rmap.h    |   2 +
+>>>>>>>>>>>>   include/linux/swapops.h |  17 +++
+>>>>>>>>>>>>   mm/huge_memory.c        | 268 +++++++++++++++++++++++++++++++++-------
+>>>>>>>>>>>>   mm/page_vma_mapped.c    |  13 +-
+>>>>>>>>>>>>   mm/pgtable-generic.c    |   6 +
+>>>>>>>>>>>>   mm/rmap.c               |  22 +++-
+>>>>>>>>>>>>   7 files changed, 278 insertions(+), 51 deletions(-)
+>>>>>>>>>>>>
+>>>>>>>>>> <snip>
+>>>>>>>>>>
+>>>>>>>>>>>> +/**
+>>>>>>>>>>>> + * split_huge_device_private_folio - split a huge device private folio into
+>>>>>>>>>>>> + * smaller pages (of order 0), currently used by migrate_device logic to
+>>>>>>>>>>>> + * split folios for pages that are partially mapped
+>>>>>>>>>>>> + *
+>>>>>>>>>>>> + * @folio: the folio to split
+>>>>>>>>>>>> + *
+>>>>>>>>>>>> + * The caller has to hold the folio_lock and a reference via folio_get
+>>>>>>>>>>>> + */
+>>>>>>>>>>>> +int split_device_private_folio(struct folio *folio)
+>>>>>>>>>>>> +{
+>>>>>>>>>>>> +	struct folio *end_folio = folio_next(folio);
+>>>>>>>>>>>> +	struct folio *new_folio;
+>>>>>>>>>>>> +	int ret = 0;
+>>>>>>>>>>>> +
+>>>>>>>>>>>> +	/*
+>>>>>>>>>>>> +	 * Split the folio now. In the case of device
+>>>>>>>>>>>> +	 * private pages, this path is executed when
+>>>>>>>>>>>> +	 * the pmd is split and since freeze is not true
+>>>>>>>>>>>> +	 * it is likely the folio will be deferred_split.
+>>>>>>>>>>>> +	 *
+>>>>>>>>>>>> +	 * With device private pages, deferred splits of
+>>>>>>>>>>>> +	 * folios should be handled here to prevent partial
+>>>>>>>>>>>> +	 * unmaps from causing issues later on in migration
+>>>>>>>>>>>> +	 * and fault handling flows.
+>>>>>>>>>>>> +	 */
+>>>>>>>>>>>> +	folio_ref_freeze(folio, 1 + folio_expected_ref_count(folio));
+>>>>>>>>>>> Why can't this freeze fail? The folio is still mapped afaics, why can't there be other references in addition to the caller?
+>>>>>>>>>> Based on my off-list conversation with Balbir, the folio is unmapped in
+>>>>>>>>>> CPU side but mapped in the device. folio_ref_freeeze() is not aware of
+>>>>>>>>>> device side mapping.
+>>>>>>>>> Maybe we should make it aware of device private mapping? So that the
+>>>>>>>>> process mirrors CPU side folio split: 1) unmap device private mapping,
+>>>>>>>>> 2) freeze device private folio, 3) split unmapped folio, 4) unfreeze,
+>>>>>>>>> 5) remap device private mapping.
+>>>>>>>> Ah ok this was about device private page obviously here, nevermind..
+>>>>>>> Still, isn't this reachable from split_huge_pmd() paths and folio is mapped to CPU page tables as a huge device page by one or more task?
+>>>>>> The folio only has migration entries pointing to it. From CPU perspective,
+>>>>>> it is not mapped. The unmap_folio() used by __folio_split() unmaps a to-be-split
+>>>>>> folio by replacing existing page table entries with migration entries
+>>>>>> and after that the folio is regarded as “unmapped”.
+>>>>>>
+>>>>>> The migration entry is an invalid CPU page table entry, so it is not a CPU
+>>>>> split_device_private_folio() is called for device private entry, not migrate entry afaics.
+>>>> Yes, but from CPU perspective, both device private entry and migration entry
+>>>> are invalid CPU page table entries, so the device private folio is “unmapped”
+>>>> at CPU side.
+>>> Yes both are "swap entries" but there's difference, the device private ones contribute to mapcount and refcount.
+>> Right. That confused me when I was talking to Balbir and looking at v1.
+>> When a device private folio is processed in __folio_split(), Balbir needed to
+>> add code to skip CPU mapping handling code. Basically device private folios are
+>> CPU unmapped and device mapped.
+>>
+>> Here are my questions on device private folios:
+>> 1. How is mapcount used for device private folios? Why is it needed from CPU
+>>     perspective? Can it be stored in a device private specific data structure?
+> 
+> Mostly like for normal folios, for instance rmap when doing migrate. I think it would make
+> common code more messy if not done that way but sure possible.
+> And not consuming pfns (address space) at all would have benefits.
+> 
+>> 2. When a device private folio is mapped on device, can someone other than
+>>     the device driver manipulate it assuming core-mm just skips device private
+>>     folios (barring the CPU access fault handling)?
+>>
+>> Where I am going is that can device private folios be treated as unmapped folios
+>> by CPU and only device driver manipulates their mappings?
+>>
+> Yes not present by CPU but mm has bookkeeping on them. The private page has no content
+> someone could change while in device, it's just pfn.
 
-This change shows 27% speed improvement of idle writeback on Android
-platform.
+Just to clarify: a device-private entry, like a device-exclusive entry, 
+is a *page table mapping* tracked through the rmap -- even though they 
+are not present page table entries.
 
-Test Flow:
-- mkfs on the zram device, mount it
-- cp three linux-6.16-rc2.tar.gz tarball files as the data
-- do idle writeback
-- check bd_stat writes 185072 pages
+It would be better if they would be present page table entries that are 
+PROT_NONE, but it's tricky to mark them as being "special" 
+device-private, device-exclusive etc. Maybe there are ways to do that in 
+the future.
 
-Test Result:
-idle writeback for 185072 4k-pages (~723 MiB)
-$ echo all > /sys/block/zram0/idle
-$ time echo idle > /sys/block/zram0/writeback
+Maybe device-private could just be PROT_NONE, because we can identify 
+the entry type based on the folio. device-exclusive is harder ...
 
-Async writeback:
-0m02.49s real     0m00.00s user     0m01.19s system
-0m02.32s real     0m00.00s user     0m00.89s system
-0m02.35s real     0m00.00s user     0m00.93s system
-0m02.29s real     0m00.00s user     0m00.88s system
 
-Sync writeback:
-0m03.09s real     0m00.00s user     0m01.07s system
-0m03.18s real     0m00.00s user     0m01.12s system
-0m03.47s real     0m00.00s user     0m01.16s system
-0m03.36s real     0m00.00s user     0m01.27s system
+So consider device-private entries just like PROT_NONE present page 
+table entries. Refcount and mapcount is adjusted accordingly by rmap 
+functions.
 
-Signed-off-by: Richard Chang <richardycc@google.com>
----
- drivers/block/zram/zram_drv.c | 109 ++++++++++++++--------------------
- drivers/block/zram/zram_drv.h |  11 ++++
- drivers/block/zram/zram_wb.c  | 103 +++++++++++++++++++++++++++++++-
- drivers/block/zram/zram_wb.h  |   6 +-
- 4 files changed, 161 insertions(+), 68 deletions(-)
-
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index 6098c0bb773c..f459d889fa44 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -57,7 +57,6 @@ static size_t huge_class_size;
- 
- static const struct block_device_operations zram_devops;
- 
--static void zram_free_page(struct zram *zram, size_t index);
- static int zram_read_from_zspool(struct zram *zram, struct page *page,
- 				 u32 index);
- 
-@@ -96,7 +95,7 @@ static __must_check bool zram_slot_trylock(struct zram *zram, u32 index)
- 	return false;
- }
- 
--static void zram_slot_lock(struct zram *zram, u32 index)
-+void zram_slot_lock(struct zram *zram, u32 index)
- {
- 	unsigned long *lock = &zram->table[index].flags;
- 
-@@ -105,7 +104,7 @@ static void zram_slot_lock(struct zram *zram, u32 index)
- 	lock_acquired(slot_dep_map(zram, index), _RET_IP_);
- }
- 
--static void zram_slot_unlock(struct zram *zram, u32 index)
-+void zram_slot_unlock(struct zram *zram, u32 index)
- {
- 	unsigned long *lock = &zram->table[index].flags;
- 
-@@ -128,19 +127,17 @@ static unsigned long zram_get_handle(struct zram *zram, u32 index)
- 	return zram->table[index].handle;
- }
- 
--static void zram_set_handle(struct zram *zram, u32 index, unsigned long handle)
-+void zram_set_handle(struct zram *zram, u32 index, unsigned long handle)
- {
- 	zram->table[index].handle = handle;
- }
- 
--static bool zram_test_flag(struct zram *zram, u32 index,
--			enum zram_pageflags flag)
-+bool zram_test_flag(struct zram *zram, u32 index, enum zram_pageflags flag)
- {
- 	return zram->table[index].flags & BIT(flag);
- }
- 
--static void zram_set_flag(struct zram *zram, u32 index,
--			enum zram_pageflags flag)
-+void zram_set_flag(struct zram *zram, u32 index, enum zram_pageflags flag)
- {
- 	zram->table[index].flags |= BIT(flag);
- }
-@@ -243,15 +240,20 @@ static struct zram_pp_ctl *init_pp_ctl(void)
- 	if (!ctl)
- 		return NULL;
- 
-+	init_completion(&ctl->all_done);
-+	atomic_set(&ctl->num_pp_slots, 0);
- 	for (idx = 0; idx < NUM_PP_BUCKETS; idx++)
- 		INIT_LIST_HEAD(&ctl->pp_buckets[idx]);
- 	return ctl;
- }
- 
--static void release_pp_slot(struct zram *zram, struct zram_pp_slot *pps)
-+static void remove_pp_slot_from_ctl(struct zram_pp_slot *pps)
- {
- 	list_del_init(&pps->entry);
-+}
- 
-+void free_pp_slot(struct zram *zram, struct zram_pp_slot *pps)
-+{
- 	zram_slot_lock(zram, pps->index);
- 	zram_clear_flag(zram, pps->index, ZRAM_PP_SLOT);
- 	zram_slot_unlock(zram, pps->index);
-@@ -259,6 +261,12 @@ static void release_pp_slot(struct zram *zram, struct zram_pp_slot *pps)
- 	kfree(pps);
- }
- 
-+static void release_pp_slot(struct zram *zram, struct zram_pp_slot *pps)
-+{
-+	remove_pp_slot_from_ctl(pps);
-+	free_pp_slot(zram, pps);
-+}
-+
- static void release_pp_ctl(struct zram *zram, struct zram_pp_ctl *ctl)
- {
- 	u32 idx;
-@@ -297,6 +305,7 @@ static bool place_pp_slot(struct zram *zram, struct zram_pp_ctl *ctl,
- 	list_add(&pps->entry, &ctl->pp_buckets[bid]);
- 
- 	zram_set_flag(zram, pps->index, ZRAM_PP_SLOT);
-+	atomic_inc(&ctl->num_pp_slots);
- 	return true;
- }
- 
-@@ -697,18 +706,18 @@ static void read_from_bdev_async(struct zram *zram, struct page *page,
- static int zram_writeback_slots(struct zram *zram, struct zram_pp_ctl *ctl)
- {
- 	unsigned long blk_idx = 0;
--	struct page *page = NULL;
- 	struct zram_pp_slot *pps;
--	struct bio_vec bio_vec;
--	struct bio bio;
--	int ret = 0, err;
-+	int ret = 0;
- 	u32 index;
-+	int nr_pps = atomic_read(&ctl->num_pp_slots);
- 
--	page = alloc_page(GFP_KERNEL);
--	if (!page)
--		return -ENOMEM;
-+	if (!nr_pps)
-+		return 0;
- 
- 	while ((pps = select_pp_slot(ctl))) {
-+		struct zram_wb_request *req;
-+		struct page *page;
-+
- 		spin_lock(&zram->wb_limit_lock);
- 		if (zram->wb_limit_enable && !zram->bd_wb_limit) {
- 			spin_unlock(&zram->wb_limit_lock);
-@@ -725,6 +734,13 @@ static int zram_writeback_slots(struct zram *zram, struct zram_pp_ctl *ctl)
- 			}
- 		}
- 
-+		req = alloc_wb_request(zram, pps, ctl, blk_idx);
-+		if (IS_ERR(req)) {
-+			ret = PTR_ERR(req);
-+			break;
-+		}
-+		page = bio_first_page_all(req->bio);
-+
- 		index = pps->index;
- 		zram_slot_lock(zram, index);
- 		/*
-@@ -739,63 +755,28 @@ static int zram_writeback_slots(struct zram *zram, struct zram_pp_ctl *ctl)
- 			goto next;
- 		zram_slot_unlock(zram, index);
- 
--		bio_init(&bio, zram->bdev, &bio_vec, 1,
--			 REQ_OP_WRITE | REQ_SYNC);
--		bio.bi_iter.bi_sector = blk_idx * (PAGE_SIZE >> 9);
--		__bio_add_page(&bio, page, PAGE_SIZE, 0);
--
--		/*
--		 * XXX: A single page IO would be inefficient for write
--		 * but it would be not bad as starter.
--		 */
--		err = submit_bio_wait(&bio);
--		if (err) {
--			release_pp_slot(zram, pps);
--			/*
--			 * BIO errors are not fatal, we continue and simply
--			 * attempt to writeback the remaining objects (pages).
--			 * At the same time we need to signal user-space that
--			 * some writes (at least one, but also could be all of
--			 * them) were not successful and we do so by returning
--			 * the most recent BIO error.
--			 */
--			ret = err;
--			continue;
--		}
--
--		atomic64_inc(&zram->stats.bd_writes);
--		zram_slot_lock(zram, index);
--		/*
--		 * Same as above, we release slot lock during writeback so
--		 * slot can change under us: slot_free() or slot_free() and
--		 * reallocation (zram_write_page()). In both cases slot loses
--		 * ZRAM_PP_SLOT flag. No concurrent post-processing can set
--		 * ZRAM_PP_SLOT on such slots until current post-processing
--		 * finishes.
--		 */
--		if (!zram_test_flag(zram, index, ZRAM_PP_SLOT))
--			goto next;
--
--		zram_free_page(zram, index);
--		zram_set_flag(zram, index, ZRAM_WB);
--		zram_set_handle(zram, index, blk_idx);
-+		nr_pps--;
-+		remove_pp_slot_from_ctl(pps);
- 		blk_idx = 0;
--		atomic64_inc(&zram->stats.pages_stored);
--		spin_lock(&zram->wb_limit_lock);
--		if (zram->wb_limit_enable && zram->bd_wb_limit > 0)
--			zram->bd_wb_limit -=  1UL << (PAGE_SHIFT - 12);
--		spin_unlock(&zram->wb_limit_lock);
-+		submit_bio(req->bio);
-+		continue;
-+
- next:
- 		zram_slot_unlock(zram, index);
- 		release_pp_slot(zram, pps);
-+		free_wb_request(req);
- 
- 		cond_resched();
- 	}
- 
- 	if (blk_idx)
- 		free_block_bdev(zram, blk_idx);
--	if (page)
--		__free_page(page);
-+
-+	if (nr_pps && atomic_sub_and_test(nr_pps, &ctl->num_pp_slots))
-+		complete(&ctl->all_done);
-+
-+	/* wait until all async bios completed */
-+	wait_for_completion(&ctl->all_done);
- 
- 	return ret;
- }
-@@ -1579,7 +1560,7 @@ static bool zram_meta_alloc(struct zram *zram, u64 disksize)
- 	return true;
- }
- 
--static void zram_free_page(struct zram *zram, size_t index)
-+void zram_free_page(struct zram *zram, size_t index)
- {
- 	unsigned long handle;
- 
-diff --git a/drivers/block/zram/zram_drv.h b/drivers/block/zram/zram_drv.h
-index 2c7bc05fb186..ab5ceecc8ed8 100644
---- a/drivers/block/zram/zram_drv.h
-+++ b/drivers/block/zram/zram_drv.h
-@@ -140,6 +140,13 @@ struct zram {
- 	atomic_t pp_in_progress;
- };
- 
-+void zram_slot_lock(struct zram *zram, u32 index);
-+void zram_slot_unlock(struct zram *zram, u32 index);
-+void zram_set_handle(struct zram *zram, u32 index, unsigned long handle);
-+bool zram_test_flag(struct zram *zram, u32 index, enum zram_pageflags flag);
-+void zram_set_flag(struct zram *zram, u32 index, enum zram_pageflags flag);
-+void zram_free_page(struct zram *zram, size_t index);
-+
- #if defined CONFIG_ZRAM_WRITEBACK || defined CONFIG_ZRAM_MULTI_COMP
- struct zram_pp_slot {
- 	unsigned long		index;
-@@ -155,7 +162,11 @@ struct zram_pp_slot {
- 
- struct zram_pp_ctl {
- 	struct list_head	pp_buckets[NUM_PP_BUCKETS];
-+	struct completion	all_done;
-+	atomic_t		num_pp_slots;
- };
-+
-+void free_pp_slot(struct zram *zram, struct zram_pp_slot *pps);
- #endif
- 
- #endif
-diff --git a/drivers/block/zram/zram_wb.c b/drivers/block/zram/zram_wb.c
-index 63a16dae5796..3b8edd048dcb 100644
---- a/drivers/block/zram/zram_wb.c
-+++ b/drivers/block/zram/zram_wb.c
-@@ -43,15 +43,60 @@ void free_block_bdev(struct zram *zram, unsigned long blk_idx)
- static void complete_wb_request(struct zram_wb_request *req)
- {
- 	struct zram *zram = req->zram;
-+	struct zram_pp_slot *pps = req->pps;
-+	struct zram_pp_ctl *ctl = req->ppctl;
-+	unsigned long index = pps->index;
- 	unsigned long blk_idx = req->blk_idx;
-+	struct bio *bio = req->bio;
-+
-+	if (bio->bi_status)
-+		goto out_err;
-+
-+	atomic64_inc(&zram->stats.bd_writes);
-+	zram_slot_lock(zram, index);
-+
-+	/*
-+	 * We release slot lock during writeback so slot can change
-+	 * under us: slot_free() or slot_free() and reallocation
-+	 * (zram_write_page()). In both cases slot loses
-+	 * ZRAM_PP_SLOT flag. No concurrent post-processing can set
-+	 * ZRAM_PP_SLOT on such slots until current post-processing
-+	 * finishes.
-+	 */
-+	if (!zram_test_flag(zram, index, ZRAM_PP_SLOT)) {
-+		zram_slot_unlock(zram, index);
-+		goto out_err;
-+	}
- 
-+	zram_free_page(zram, index);
-+	zram_set_flag(zram, index, ZRAM_WB);
-+	zram_set_handle(zram, index, blk_idx);
-+	atomic64_inc(&zram->stats.pages_stored);
-+	spin_lock(&zram->wb_limit_lock);
-+	if (zram->wb_limit_enable && zram->bd_wb_limit > 0)
-+		zram->bd_wb_limit -=  1UL << (PAGE_SHIFT - 12);
-+	spin_unlock(&zram->wb_limit_lock);
-+	zram_slot_unlock(zram, index);
-+	goto end;
-+
-+out_err:
- 	free_block_bdev(zram, blk_idx);
-+end:
-+	free_pp_slot(zram, pps);
- 	free_wb_request(req);
-+
-+	if (atomic_dec_and_test(&ctl->num_pp_slots))
-+		complete(&ctl->all_done);
- }
- 
--void enqueue_wb_request(struct zram_wb_request_list *req_list,
--			struct zram_wb_request *req)
-+static void enqueue_wb_request(struct zram_wb_request_list *req_list,
-+			       struct zram_wb_request *req)
- {
-+	/*
-+	 * The enqueue path comes from softirq context:
-+	 * blk_done_softirq -> bio_endio -> zram_writeback_end_io
-+	 * Use spin_lock_bh for locking.
-+	 */
- 	spin_lock_bh(&req_list->lock);
- 	list_add_tail(&req->node, &req_list->head);
- 	req_list->count++;
-@@ -83,6 +128,7 @@ static void destroy_wb_request_list(struct zram_wb_request_list *req_list)
- 	while (!list_empty(&req_list->head)) {
- 		req = dequeue_wb_request(req_list);
- 		free_block_bdev(req->zram, req->blk_idx);
-+		free_pp_slot(req->zram, req->pps);
- 		free_wb_request(req);
- 	}
- }
-@@ -117,6 +163,59 @@ static int wb_thread_func(void *data)
- 	return 0;
- }
- 
-+static void zram_writeback_end_io(struct bio *bio)
-+{
-+	struct zram_wb_request *req =
-+		(struct zram_wb_request *)bio->bi_private;
-+
-+	enqueue_wb_request(&wb_req_list, req);
-+	wake_up(&wb_wq);
-+}
-+
-+struct zram_wb_request *alloc_wb_request(struct zram *zram,
-+					 struct zram_pp_slot *pps,
-+					 struct zram_pp_ctl *ppctl,
-+					 unsigned long blk_idx)
-+{
-+	struct zram_wb_request *req;
-+	struct page *page;
-+	struct bio *bio;
-+	int err = 0;
-+
-+	page = alloc_page(GFP_NOIO | __GFP_NOWARN);
-+	if (!page)
-+		return ERR_PTR(-ENOMEM);
-+
-+	bio = bio_alloc(zram->bdev, 1, REQ_OP_WRITE, GFP_NOIO | __GFP_NOWARN);
-+	if (!bio) {
-+		err = -ENOMEM;
-+		goto out_free_page;
-+	}
-+
-+	req = kmalloc(sizeof(struct zram_wb_request), GFP_NOIO | __GFP_NOWARN);
-+	if (!req) {
-+		err = -ENOMEM;
-+		goto out_free_bio;
-+	}
-+	req->zram = zram;
-+	req->pps = pps;
-+	req->ppctl = ppctl;
-+	req->blk_idx = blk_idx;
-+	req->bio = bio;
-+
-+	bio->bi_iter.bi_sector = blk_idx * (PAGE_SIZE >> 9);
-+	__bio_add_page(bio, page, PAGE_SIZE, 0);
-+	bio->bi_private = req;
-+	bio->bi_end_io = zram_writeback_end_io;
-+	return req;
-+
-+out_free_bio:
-+	bio_put(bio);
-+out_free_page:
-+	__free_page(page);
-+	return ERR_PTR(err);
-+}
-+
- void free_wb_request(struct zram_wb_request *req)
- {
- 	struct bio *bio = req->bio;
-diff --git a/drivers/block/zram/zram_wb.h b/drivers/block/zram/zram_wb.h
-index b86de0398346..f6fe7c51d496 100644
---- a/drivers/block/zram/zram_wb.h
-+++ b/drivers/block/zram/zram_wb.h
-@@ -26,9 +26,11 @@ unsigned long alloc_block_bdev(struct zram *zram);
- void free_block_bdev(struct zram *zram, unsigned long blk_idx);
- int setup_zram_writeback(void);
- void destroy_zram_writeback(void);
-+struct zram_wb_request *alloc_wb_request(struct zram *zram,
-+					 struct zram_pp_slot *pps,
-+					 struct zram_pp_ctl *ppctl,
-+					 unsigned long blk_idx);
- void free_wb_request(struct zram_wb_request *req);
--void enqueue_wb_request(struct zram_wb_request_list *req_list,
--			struct zram_wb_request *req);
- #else
- inline unsigned long alloc_block_bdev(struct zram *zram) { return 0; }
- inline void free_block_bdev(struct zram *zram, unsigned long blk_idx) {};
 -- 
-2.50.1.565.gc32cd1483b-goog
+Cheers,
+
+David / dhildenb
 
 
