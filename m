@@ -2,84 +2,90 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D09F6C87FCB
-	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 02:58:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 528D9C87FCB
+	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 02:58:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7184F6B0093; Wed, 30 Jul 2025 22:58:04 -0400 (EDT)
+	id E65E26B0095; Wed, 30 Jul 2025 22:58:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C1D46B0095; Wed, 30 Jul 2025 22:58:04 -0400 (EDT)
+	id DF0FB6B0096; Wed, 30 Jul 2025 22:58:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B17D6B0096; Wed, 30 Jul 2025 22:58:04 -0400 (EDT)
+	id D2C5D6B0098; Wed, 30 Jul 2025 22:58:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 483B36B0093
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 22:58:04 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BC0178057B
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 02:58:03 +0000 (UTC)
-X-FDA: 83723050446.01.58190EC
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 0E2261C0008
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 02:58:00 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=RiArcWtE;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf18.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753930682; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BEA206B0095
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 22:58:45 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3FA57C0519
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 02:58:45 +0000 (UTC)
+X-FDA: 83723052210.14.2EFB5AD
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 70635C000B
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 02:58:43 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qODRXZlu;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf10.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753930723; a=rsa-sha256;
 	cv=none;
-	b=MKOOVqkj7L3zWlx6xq7fWh9MtuxCQAmvYFxE8c4VAAyqkFBpfA6MUV02FSYaR2Z5VnK+LX
-	1ZcYSinnoC8vG8mHGjg9nHYUIT+QTHQ+PrFRmaH7rMoJadZNVr4mTQqjWkkqBpg/blWST8
-	4dnQgwp/1dBZFTdffULefHrTo0EReFI=
+	b=MCFgBzDEsOSeIQAGGnI5xlXb8e773NAfIlTfskvwuTnFu/BIUrW1AWQJuIkJgelx/18pto
+	KXYcx+yeZJVMa9b9672kjOxHLg35UeIZNGh6QEJKmDDvmu5WIPMwQVaDv73WU6os4g0MrR
+	xA0VXXKk2mglJFjqLo5fGfnMXEFlMpo=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=RiArcWtE;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf18.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qODRXZlu;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf10.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753930682;
+	s=arc-20220608; t=1753930723;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0DMe1rYjfdKcGwYqc0RA2Njo+26yNUA5TqRbqsuCvok=;
-	b=Xf89b1lREKGM/dmn6+NKduTwxjWSlwweQ2HTNNqT2Nc135UYmKYlzxGEfs8BvfYM8dR7OH
-	IwR1QAOVUC2k5wx/drCsLgxahgS+Pa7Piq351RPXL9gg3QJnlWbx6AZYDgydiwovaZgJua
-	7bO1PFRPfGiwmEMT2IvnXBreRGCZToU=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1753930678; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=0DMe1rYjfdKcGwYqc0RA2Njo+26yNUA5TqRbqsuCvok=;
-	b=RiArcWtEcSucS0zekfL6tQyYkIWR8wLDkc7eE7QYCUMJzGAAt/QcuUKsALbRQzXU6bJd1WW5xWUtzBK4htbDPmZaO39og3XEphwfREIK8y2WU8xNQSx6btgTBAjm1W1zE8PEg1mANGjesowAn2UcQumHM/N4pN11VXHZasXM3WI=
-Received: from 30.74.144.125(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WkWYsmM_1753930676 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 31 Jul 2025 10:57:56 +0800
-Message-ID: <7ee29e25-d4d5-4e3f-816c-a877f1a5e7de@linux.alibaba.com>
-Date: Thu, 31 Jul 2025 10:57:55 +0800
+	bh=hO4jQq8PLpE3srsD0rPnbC1MtEeo3jkBhYPUfq1jFi8=;
+	b=M8P3gL1VLL7Huv4KrHoa9E5rOYi1pxtpzKunRGoqd5nsRX3kITj42KDRb8dLra4g6KeFsB
+	3Jbbop9qlAtB11BTrdQ6KpAm5LuZKib1xOU0rO+YAxjC4CX4j+ssUTI3TTSpfI4sBh6ajy
+	JKV4nomFtOKJw2fZvl0LnS4OIDiyjAY=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1753930720;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hO4jQq8PLpE3srsD0rPnbC1MtEeo3jkBhYPUfq1jFi8=;
+	b=qODRXZluoTdZwsqIuRfPB+EmJlGTteKL3nnL/Ucebe10AjPqn+1D455FmrTHJPFgnZI0Jh
+	JMNnJ6aM2zKV+49b9RReayHJAoHS8GgGkLFGaAFI3DdlOr+/X3+3i7whoAoR7V9v4nUV5l
+	Lb4LEniPT+7zzehE3Z3mfWCDC1JYkBE=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>,  Eric Dumazet
+ <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Neal Cardwell
+ <ncardwell@google.com>,  Paolo Abeni <pabeni@redhat.com>,  Willem de
+ Bruijn <willemb@google.com>,  Matthieu Baerts <matttbe@kernel.org>,  Mat
+ Martineau <martineau@kernel.org>,  Johannes Weiner <hannes@cmpxchg.org>,
+  Michal Hocko <mhocko@kernel.org>,  Shakeel Butt <shakeel.butt@linux.dev>,
+  Andrew Morton <akpm@linux-foundation.org>,  Simon Horman
+ <horms@kernel.org>,  Geliang Tang <geliang@kernel.org>,  Muchun Song
+ <muchun.song@linux.dev>,  Kuniyuki Iwashima <kuni1840@gmail.com>,
+  netdev@vger.kernel.org,  mptcp@lists.linux.dev,  cgroups@vger.kernel.org,
+  linux-mm@kvack.org
+Subject: Re: [PATCH v1 net-next 13/13] net-memcg: Allow decoupling memcg
+ from global protocol memory accounting.
+In-Reply-To: <20250721203624.3807041-14-kuniyu@google.com> (Kuniyuki
+	Iwashima's message of "Mon, 21 Jul 2025 20:35:32 +0000")
+References: <20250721203624.3807041-1-kuniyu@google.com>
+	<20250721203624.3807041-14-kuniyu@google.com>
+Date: Wed, 30 Jul 2025 19:58:32 -0700
+Message-ID: <87pldhf4mf.fsf@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] mm: shmem: fix the strategy for the tmpfs 'huge='
- options
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: akpm@linux-foundation.org, hughd@google.com, willy@infradead.org,
- david@redhat.com, ziy@nvidia.com, Liam.Howlett@oracle.com,
- npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <701271092af74c2d969b195321c2c22e15e3c694.1753863013.git.baolin.wang@linux.alibaba.com>
- <5578907d-3583-4a87-8b60-0cda0284a358@lucifer.local>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <5578907d-3583-4a87-8b60-0cda0284a358@lucifer.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 0E2261C0008
-X-Stat-Signature: n4m15m3wsckhfunrangs4w34hknsetfs
+X-Rspamd-Queue-Id: 70635C000B
+X-Stat-Signature: yoq4fgwt951ogitmngj6aia6manzfdi5
 X-Rspam-User: 
-X-HE-Tag: 1753930680-100357
-X-HE-Meta: U2FsdGVkX19pekF/CIBM1c7QwoSH3XtKh/ftq9+DsBgvDh6/kJcL1Xya8uSpTMwNSSUnoHcLlE7r0u6R51jtpRdSHL8lMfVAJ9aS0hrQ74H1KcDM4IwqlcacGn+GGaMC7DJrXK8hXbwFzF4OxvcsW4i89ibmf4AHvbvnA840i7Do6wXM2ztK+Muw9sI+C6VXV2SQY4nSgPf8XQWVUfEBW0K8RdEh3zNpFTSHL0HO65D3aJkoXKXDD0XsDmbNDKm9wJaMeNp/b4pmJlC09FQyzJoM8UTd5h0ISSJNFB0nT3YQHGDnvgl/Ny8oKRXmpE9F3Lsf3Y9DNI3/sZ12o5pMPU2BJ9Cu5jhQP+MIF14OIBe8uzbHZs7Qd6bi6xtZCbQA2iolrwg48/2GA71hwzJyW8UQJAQAspwR9ee8OiWIMHw72iTdB9Ak4eDhlugWzDWY1uJBKeZhPCH66LZfcrB6fzB/erPwWyd3yNFF2ViwL4F8cU7FDbLFL6q+hHRvhKqIGUV16KXGMYZDMQwdxRsUqI+6IdVuMZKyjsNrCmUr7uJtKGhO7Lw9G3eR2EJdJ4LccPHvkQR69QqxHnWJpIHNrbGiQuVg5PBUZ8gpIvlLfBDr9SNCurJo656i5/QGElN3dfx7olfW3M/BrSfzrSCYO44WkDAC4qUDXEXdhQPiL1gBipj8ftkZaQcmycXUBs1/Ad4wBp2lYIVdo9gnGFSGuQGDzOX7RU/pwG7IAtqGxkdUyrdd9NfHinqaNofkdTvlgegm+dj4oE0ctUHV+odR1U8Mt7zUIfnOMkBB+Btll/BqlNwNzTGAROyyYAySdJguTEuWz0y+/awTv8QWwJIrCpl1XI5rJH66lr1qHPzybFHtmuFrh56NXgVQmxJd84vTBMbjcI5T1mVN6bmgNsS7x3bHAgUSXXWbCerN8NelySoeuzZQ8yWPcRPHuwyPWdJTPNGehAqZWzsIbAUIsVY
- Ynx5LgMo
- UJIt+aYoHL6z17o5Qt9iZfm/borBMAuwgFgW4JNoqHwi3HKPxRhMtNfbFkM4bbSNi82wIX7S+miY/dWVYiheSpREUEYDa17XC+s6PrzzLQcR49gPw4zAdFFYivV0iNYetybHm0RWqCQ+7xsXKq4hmyJZwPRnIY7pQdC3CaC85PDkr3FQQy36NcJ1uQmlP+Amc/aWUQGbXbunhBGhIh++gCQb2dqbVd7pqbbs0plI1yuIst4rUsIaP8y+Owm2xnEMqfqB7up5caSW10MFzBMdGr06yLVNdcFh2kaRtu9J6iVkttwh3PtFhYhAqkHHa7s5N1/VOoK+eRV1eQQsU4OIR4Xn5IKt+rGWwglvR
+X-HE-Tag: 1753930723-390505
+X-HE-Meta: U2FsdGVkX18pv5C+XGlx8C6BgmsxbqzC/ZpvCBYQDCA++gHfF/lmTvZt+UUvg9lx/gP/LM8vpi+a5DcR8y54MXvz1BxW7cBNKLGTU7WtDeeAZ6eD21FDdx10gO6tDjsOOoLBufAH9nJn0n37+nKAAWHrwCjZQ03ktN+L2ga6yzRhFLAU1MPI9fGclDAU2Yzsd4DxNDA/83yuEHwx+lEWGoCqL+28s1JXnqNUVGl1QBu7bTDLhhUZ5BBUWCM9PFsW21CzdWeqrHnsqvVekSDQ8L3YRW6s5Yu4LBq3Pgb09TRvnQkxfTnawg88O7E+HgWexRWMn22HsXyFdGET4Jad1L9Y0MWxJnNbABOwl3Zh3lpDr4RWshZ/ar7a7rzuKDF8nyHi0k7ZzckUDWlYjBquZcVZXd3cX3tnETpZDEgE4l/sYHrbXUNMclE3iDPICZBc92jyqDNvGuM5+0x/idl5LNibIsp7KdJxYU5BtpWaM2hYFRssrltVHgwlT8BrpZms65kCCTXKgD0MiOXHwzRTCdP7dah4V1HmtjC5mkHgwJsBNNoCx6AvcMIWr3ExVM8wupFH3M2jkJmIGfW4DEVoRMry6YqogynMTlFK8m8cNHCrFZfd57Zz8Bl8P5swG8pdOUhvrIm37MTANEpHlGVrLAejF+iOe/qm6tpRES64dmx4AVez1s0/HOCqHqXfcTdT1xj692AesKwbPi5TqqBY+oRPTluoxDInyatFEiVJDIbtf84ugqUWIQmsGSyJusbGrrOjNbU/WhZM3lv5ob1DhrLedJHw28L+PPd6an2ktXQ+apKfm3/us8G15yNvEqfdvMkTHDjjPqqEUQuIJFSMp6aWcdR0p4d5tNALI1S1/2olFNaaaOJYHw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,214 +94,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Kuniyuki Iwashima <kuniyu@google.com> writes:
 
+> Some protocols (e.g., TCP, UDP) implement memory accounting for socket
+> buffers and charge memory to per-protocol global counters pointed to by
+> sk->sk_proto->memory_allocated.
+>
+> When running under a non-root cgroup, this memory is also charged to the
+> memcg as sock in memory.stat.
+>
+> Even when memory usage is controlled by memcg, sockets using such protocols
+> are still subject to global limits (e.g., /proc/sys/net/ipv4/tcp_mem).
+>
+> This makes it difficult to accurately estimate and configure appropriate
+> global limits, especially in multi-tenant environments.
+>
+> If all workloads were guaranteed to be controlled under memcg, the issue
+> could be worked around by setting tcp_mem[0~2] to UINT_MAX.
+>
+> In reality, this assumption does not always hold, and a single workload
+> that opts out of memcg can consume memory up to the global limit,
+> becoming a noisy neighbour.
+>
+> Let's decouple memcg from the global per-protocol memory accounting.
+>
+> This simplifies memcg configuration while keeping the global limits
+> within a reasonable range.
 
-On 2025/7/30 23:17, Lorenzo Stoakes wrote:
-> On Wed, Jul 30, 2025 at 04:14:55PM +0800, Baolin Wang wrote:
->> After commit acd7ccb284b8 ("mm: shmem: add large folio support for tmpfs"),
->> we have extended tmpfs to allow any sized large folios, rather than just
->> PMD-sized large folios.
->>
->> The strategy discussed previously was:
->>
->> "
->> Considering that tmpfs already has the 'huge=' option to control the
->> PMD-sized large folios allocation, we can extend the 'huge=' option to
->> allow any sized large folios.  The semantics of the 'huge=' mount option
->> are:
->>
->>      huge=never: no any sized large folios
->>      huge=always: any sized large folios
->>      huge=within_size: like 'always' but respect the i_size
->>      huge=advise: like 'always' if requested with madvise()
-> 
-> Sort of hate we have a million different ways of setting behaviour for THP
-> and they all differ in subtle ways.
-> 
-> Also this is similar to sysfs settings but with slightly different
-> semantics... <insert appropriate meme here>.
-> 
->>
->> Note: for tmpfs mmap() faults, due to the lack of a write size hint, still
->> allocate the PMD-sized huge folios if huge=always/within_size/advise is
->> set.
->>
->> Moreover, the 'deny' and 'force' testing options controlled by
->> '/sys/kernel/mm/transparent_hugepage/shmem_enabled', still retain the same
->> semantics.  The 'deny' can disable any sized large folios for tmpfs, while
->> the 'force' can enable PMD sized large folios for tmpfs.
-> 
-> And what about MADV_COLLAPSE?
+I don't think it should be a memcg feature. In fact, it doesn't have
+much to do with cgroups at all (it's not hierarchical, it doesn't
+control the resource allocation, and in the end it controls an
+alternative to memory cgroups memory accounting system).
 
-As Hugh mentioned beore, the 'deny' option will prohibit MADV_COLLAPSE 
-for shmem, while 'force' option will allow it.
+Instead, it can be a per-process prctl option.
 
->> This means that when tmpfs is mounted with 'huge=always' or 'huge=within_size',
->> tmpfs will allow getting a highest order hint based on the size of write() and
->> fallocate() paths. It will then try each allowable large order, rather than
->> continually attempting to allocate PMD-sized large folios as before.
->>
->> However, this might break some user scenarios for those who want to use
->> PMD-sized large folios, such as the i915 driver which did not supply a write
->> size hint when allocating shmem [1].
-> 
-> Hmm, this is unclear to me, surely because it doesn't provide a write size
-> hint it's not this behaviour that breaks anything, but rather the fact that
-> we base things on the write hint at all?
+(Assuming the feature is really needed - I'm also curious why some
+processes have to be excluded from the memcg accounting - it sounds like
+generally a bad idea).
 
-Yes, we changed the allocation strategy for shmem large folios, but 
-forgot to update the shmem allocation method for the i915 driver.
-
->> Moreover, Hugh also complained that this will cause a regression in userspace
->> with 'huge=always' or 'huge=within_size'.
-> 
-> Will cause? Is this not already the case?
-> 
-> And what is the regression precisely? That i915 doesn't get huge pages
-> because it doesn't provide a hint?
-
-Yes, see above.
-
->> So, let's revisit the strategy for tmpfs large page allocation. A simple fix
->> would be to always try PMD-sized large folios first, and if that fails, fall
->> back to smaller large folios. However, this approach differs from the strategy
->> for large folio allocation used by other file systems. Is this acceptable?
-> 
-> Doesn't this imply a waste of memory?
-
-Right. As I replied to David, using the write size as an indication to 
-allocate large folios is certainly reasonable in some scenarios, as it 
-avoids memory bloat while leveraging the advantages of large folios.
-
-However, there may be scenarios where PMD-sized large folios are always 
-expected, such as the i915 driver. It's uncertain whether user-space 
-tmpfs mounts with 'huge=' options have such scenarios, but we do have 
-this concern.
-
-> I mean if the 'implicit' semantics now are 'always ...but respecting a
-> write size hint' (which kind of sucks), is changing this ok?
-> 
-> Maybe somebody relies on that?
-> 
-> It seems (unless I'm missing something here) that in THP we've both made
-> never not mean never, and always not mean always.
-> 
->>
->> [1] https://lore.kernel.org/lkml/0d734549d5ed073c80b11601da3abdd5223e1889.1753689802.git.baolin.wang@linux.alibaba.com/
->> Fixes: acd7ccb284b8 ("mm: shmem: add large folio support for tmpfs")
->> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->> ---
->> Note: this is just an RFC patch. I would like to hear others' opinions or
->> see if there is a better way to address Hugh's concern.
->> ---
->>   Documentation/admin-guide/mm/transhuge.rst |  6 ++-
->>   mm/shmem.c                                 | 47 +++-------------------
->>   2 files changed, 10 insertions(+), 43 deletions(-)
->>
->> diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
->> index 878796b4d7d3..121cbb3a72f7 100644
->> --- a/Documentation/admin-guide/mm/transhuge.rst
->> +++ b/Documentation/admin-guide/mm/transhuge.rst
->> @@ -383,12 +383,16 @@ option: ``huge=``. It can have following values:
->>
->>   always
->>       Attempt to allocate huge pages every time we need a new page;
->> +    Always try PMD-sized huge pages first, and fall back to smaller-sized
->> +    huge pages if the PMD-sized huge page allocation fails;
->>
->>   never
->>       Do not allocate huge pages;
->>
->>   within_size
->> -    Only allocate huge page if it will be fully within i_size.
->> +    Only allocate huge page if it will be fully within i_size;
->> +    Always try PMD-sized huge pages first, and fall back to smaller-sized
->> +    huge pages if the PMD-sized huge page allocation fails;
->>       Also respect madvise() hints;
->>
->>   advise
->> diff --git a/mm/shmem.c b/mm/shmem.c
->> index 75cc2cb92950..c1040a115f08 100644
->> --- a/mm/shmem.c
->> +++ b/mm/shmem.c
->> @@ -566,42 +566,6 @@ static int shmem_confirm_swap(struct address_space *mapping, pgoff_t index,
->>   static int shmem_huge __read_mostly = SHMEM_HUGE_NEVER;
->>   static int tmpfs_huge __read_mostly = SHMEM_HUGE_NEVER;
->>
->> -/**
->> - * shmem_mapping_size_orders - Get allowable folio orders for the given file size.
->> - * @mapping: Target address_space.
->> - * @index: The page index.
->> - * @write_end: end of a write, could extend inode size.
->> - *
->> - * This returns huge orders for folios (when supported) based on the file size
->> - * which the mapping currently allows at the given index. The index is relevant
->> - * due to alignment considerations the mapping might have. The returned order
->> - * may be less than the size passed.
->> - *
->> - * Return: The orders.
->> - */
->> -static inline unsigned int
->> -shmem_mapping_size_orders(struct address_space *mapping, pgoff_t index, loff_t write_end)
->> -{
->> -	unsigned int order;
->> -	size_t size;
->> -
->> -	if (!mapping_large_folio_support(mapping) || !write_end)
->> -		return 0;
->> -
->> -	/* Calculate the write size based on the write_end */
->> -	size = write_end - (index << PAGE_SHIFT);
->> -	order = filemap_get_order(size);
->> -	if (!order)
->> -		return 0;
->> -
->> -	/* If we're not aligned, allocate a smaller folio */
->> -	if (index & ((1UL << order) - 1))
->> -		order = __ffs(index);
-> 
-> We need to care about alignment still no?
-
-We‘ve already done alignment during shmem allocation.
-
->> -
->> -	order = min_t(size_t, order, MAX_PAGECACHE_ORDER);
->> -	return order > 0 ? BIT(order + 1) - 1 : 0;
->> -}
->> -
->>   static unsigned int shmem_get_orders_within_size(struct inode *inode,
->>   		unsigned long within_size_orders, pgoff_t index,
->>   		loff_t write_end)
->> @@ -648,22 +612,21 @@ static unsigned int shmem_huge_global_enabled(struct inode *inode, pgoff_t index
->>   	 * For tmpfs mmap()'s huge order, we still use PMD-sized order to
->>   	 * allocate huge pages due to lack of a write size hint.
->>   	 *
->> -	 * Otherwise, tmpfs will allow getting a highest order hint based on
->> -	 * the size of write and fallocate paths, then will try each allowable
->> -	 * huge orders.
->> +	 * For tmpfs with 'huge=always' or 'huge=within_size' mount option,
->> +	 * we will always try PMD-sized order first. If that failed, it will
->> +	 * fall back to small large folios.
->>   	 */
->>   	switch (SHMEM_SB(inode->i_sb)->huge) {
->>   	case SHMEM_HUGE_ALWAYS:
->>   		if (vma)
->>   			return maybe_pmd_order;
->>
->> -		return shmem_mapping_size_orders(inode->i_mapping, index, write_end);
->> +		return THP_ORDERS_ALL_FILE_DEFAULT;
->>   	case SHMEM_HUGE_WITHIN_SIZE:
->>   		if (vma)
->>   			within_size_orders = maybe_pmd_order;
->>   		else
->> -			within_size_orders = shmem_mapping_size_orders(inode->i_mapping,
->> -								       index, write_end);
->> +			within_size_orders = THP_ORDERS_ALL_FILE_DEFAULT;
->>
->>   		within_size_orders = shmem_get_orders_within_size(inode, within_size_orders,
->>   								  index, write_end);
->> --
->> 2.43.5
->>
-
+Thanks
 
