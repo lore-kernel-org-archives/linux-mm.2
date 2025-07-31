@@ -2,111 +2,114 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8CFA9C87FD2
-	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 22:00:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1BA9BC87FCA
+	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 22:03:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB4706B008C; Thu, 31 Jul 2025 18:00:37 -0400 (EDT)
+	id B55886B0098; Thu, 31 Jul 2025 18:03:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A65246B0092; Thu, 31 Jul 2025 18:00:37 -0400 (EDT)
+	id B073D6B0099; Thu, 31 Jul 2025 18:03:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A3256B0093; Thu, 31 Jul 2025 18:00:37 -0400 (EDT)
+	id A43056B009A; Thu, 31 Jul 2025 18:03:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 896F76B008C
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 18:00:37 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0FB4D114D2C
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 22:00:37 +0000 (UTC)
-X-FDA: 83725929714.20.5F4E5C1
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 2B56318000B
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 22:00:34 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=buDh7+8Q;
-	spf=pass (imf06.hostedemail.com: domain of 3geeLaAYKCMo8A7u3rw44w1u.s421y3AD-220Bqs0.47w@flex--surenb.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3geeLaAYKCMo8A7u3rw44w1u.s421y3AD-220Bqs0.47w@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753999235; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9063D6B0098
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 18:03:37 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0E5B3135499
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 22:03:37 +0000 (UTC)
+X-FDA: 83725937274.22.9ED61C7
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 2122280009
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 22:03:34 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ac65Y+Ql;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=pyyjason@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753999415; a=rsa-sha256;
 	cv=none;
-	b=lezxAAnr16frhOGom04yCsrmTUaqsfnOTMflFxsBZMVVkfRpKWwErc8PVzfqKEU26m/kxw
-	2gTpeRJIwCg3f14GAucoh3hs2qxPFNH1bhenlTrc7mjRajJPKA05D5AKJ2rWKBkHNCp7B8
-	uAKRg3JKESe0uSxQpzzjJoASLT1sUI0=
+	b=LVTCb13vnZF79rhgUGawc0U8W7X/YmMlASnqzFmniW1XmQW/6xJ+tbjc5QM9lhCWHUDW/t
+	yzG5rS4TOsP78qOGGkLc0pBFbOnky5nh1Jzg0eY6eSlQHxvjWRh5B/ohlH8+GHgh2yYAA5
+	fB+3ftHDmQCIzvCfpLH1FAA1vt55BYw=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=buDh7+8Q;
-	spf=pass (imf06.hostedemail.com: domain of 3geeLaAYKCMo8A7u3rw44w1u.s421y3AD-220Bqs0.47w@flex--surenb.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3geeLaAYKCMo8A7u3rw44w1u.s421y3AD-220Bqs0.47w@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ac65Y+Ql;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=pyyjason@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753999235;
+	s=arc-20220608; t=1753999415;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vSpqmXgbYV8j5bsB4IVuVf0tack8DQaHL/QU05OaXgY=;
-	b=RKG1EV50qlJFNOs+D4VoZvfrJ70rXsVR2Ds2NPlBjXwzAZWj0E/4iCzRMRpLck3WmDzONF
-	ZJgCcTLAEz0n+WTaBKjT/k764dVY7Tg7ZRzWPvPF6RJrnysiO6x53SA6nEP45fIKIcO/XW
-	4LTgkxwzufFIEaCtEbkq6p4210lViqA=
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2407248a180so6700295ad.3
-        for <linux-mm@kvack.org>; Thu, 31 Jul 2025 15:00:34 -0700 (PDT)
+	bh=EGu/ALKuNn9LH5k5HOTa1HKwUmJnZbmVQXYYh6YCD4M=;
+	b=CCoTunm8dqh7s8QCtJZhdz01UstgfOYulyhqIR2J/nhhSTfMxZ/D5orWtcS+l7D4pmLalf
+	LvhtE/AfJMzhZGR7zREv+F+pSPoS89Wf7Pv3nHs7Yak/47094fdJ2qxNtoHUDY7HBlKm0Y
+	J3Wa8WzLWbBVtMmj8xIql635pF+60Zw=
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4538bc52a8dso7732965e9.2
+        for <linux-mm@kvack.org>; Thu, 31 Jul 2025 15:03:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753999234; x=1754604034; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vSpqmXgbYV8j5bsB4IVuVf0tack8DQaHL/QU05OaXgY=;
-        b=buDh7+8QSXnF4amqkLqdQtpZH76z2/iJq6kt3TOi5RVPMnyxkMfyZcwaIrEFIWsfgN
-         BZgAdh8T8jx05B8r93qTIQWUzaB0PWGdhqXqMcWGiiwYc/4Umphb0cgkv6Uw3bwJ7VsR
-         tE7IbipMFz8fbtK4Bv5mt9QA4Vq5IyF2uttyHHc2AuhTonLB5kLWpru+YrOE1+9YEba6
-         aTegWTx2iRzx0+R8thLup+wLTor3PJuFePCmjCSbQRYYeMLuzJJO86e659zDyA1EbGfk
-         Kcwjv2gQyn7/g3HLFUrDBakFqw6YehfRY1KEBd2wEqA08tVKb/7T0vJsqDu3zPanqw1j
-         CPgA==
+        d=gmail.com; s=20230601; t=1753999413; x=1754604213; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EGu/ALKuNn9LH5k5HOTa1HKwUmJnZbmVQXYYh6YCD4M=;
+        b=Ac65Y+QlRgvEei2hm2inMloS+m1Cm9vagZ8N5CPboRcTqa1T4BhFkDm8Sshm5pY8Uf
+         yQvG+R9+6dU8FFTWWR1a5oXoGQFVbm/M9Vm4vWCJzh5vOsrCArKSNGaOMCRVp9dQ69CI
+         kDoLqOizG5ZXqbB3cSUAf7XQ0RbbpjXbDruZxH97sCjwK3LD8ydKHDecV6JcqSAyVsPY
+         t/EBggguTdMvHxyd3dGB2/MW3uyyvdWOqUeC9CcnR9wbgErQqmVKArdHJQve1xFAsEpa
+         VExysLzIBTLfKO5uF34rthsJeg4/v+nOk1Hq68uZTswBFuwRExWelSg7l9kxZxt1USKJ
+         bTJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753999234; x=1754604034;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vSpqmXgbYV8j5bsB4IVuVf0tack8DQaHL/QU05OaXgY=;
-        b=wxFGsnBU6hEYDkaDbjuJS3pPLf7+Vf+L2UW8hRZ0At1ps53NoCEqSYzoZZg8CT83xq
-         58FU8/JbSg7VXoFfCsGTbOjxdLJ4n2Q6R66D1Ejo0bCipGuYoBwWeLofwkaLA/6+SQF0
-         1BuMgSjDF0+qfDd/7LPBUaKQOa7zw+fe+mqF6vVTa6UAKIb/5Un8ls3qniKox78pHdpa
-         Ec79UQcDorCRgBDuNAfqelGe2ffIlgiGPHhHqSI0+6GISbJnx8qVlqcB9uWW+KWs2WRS
-         HDmYokGWVqOed3wf2YJ4Sv8Vwt4QGUnqAWKbD7xTh3XzoPv1gT6McE4clBC7k3afO9vm
-         UsAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVBG5fE5Z7VGH5FiE4Xtjl7EfhB+Pl1CbAYdzzUlRgt88dcV28J00gYPyatBPVTVhfQzFBQJjxfMQ==@kvack.org
-X-Gm-Message-State: AOJu0YzO72mrNAKxN1EYEg4TAmhhnhlaMmCeSK/G7PUq7U971OV1JIRm
-	SNHM0nYLy8nI8UuUalRvkSBZ4mEu0Z+BysRVaTeDyqg0t7qDD9COf1PXNhWLCA9CQ/gnevdme5X
-	n8lnHcA==
-X-Google-Smtp-Source: AGHT+IG9WPhm5XE/ZfgGaQtzh+SWoXfTwZ/PnXrEVOaIZ7eiVoVCEnZsOmLu+uDuAMPetyxG7jZDFNEKyv8=
-X-Received: from plai12.prod.google.com ([2002:a17:902:c94c:b0:240:2b97:90f6])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:234d:b0:23f:adc0:8cc2
- with SMTP id d9443c01a7336-2422a699c3amr3040655ad.27.1753999233810; Thu, 31
- Jul 2025 15:00:33 -0700 (PDT)
-Date: Thu, 31 Jul 2025 15:00:24 -0700
-In-Reply-To: <20250731220024.702621-1-surenb@google.com>
-Mime-Version: 1.0
-References: <20250731220024.702621-1-surenb@google.com>
-X-Mailer: git-send-email 2.50.1.565.gc32cd1483b-goog
-Message-ID: <20250731220024.702621-4-surenb@google.com>
-Subject: [PATCH 3/3] fs/proc/task_mmu: execute PROCMAP_QUERY ioctl under
- per-vma locks
-From: Suren Baghdasaryan <surenb@google.com>
-To: akpm@linux-foundation.org
-Cc: Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com, david@redhat.com, 
-	vbabka@suse.cz, peterx@redhat.com, jannh@google.com, hannes@cmpxchg.org, 
-	mhocko@kernel.org, paulmck@kernel.org, shuah@kernel.org, adobriyan@gmail.com, 
-	brauner@kernel.org, josef@toxicpanda.com, yebin10@huawei.com, 
-	linux@weissschuh.net, willy@infradead.org, osalvador@suse.de, 
-	andrii@kernel.org, ryan.roberts@arm.com, christophe.leroy@csgroup.eu, 
-	tjmercier@google.com, kaleshsingh@google.com, aha310510@gmail.com, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, surenb@google.com
-Content-Type: text/plain; charset="UTF-8"
+        d=1e100.net; s=20230601; t=1753999413; x=1754604213;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EGu/ALKuNn9LH5k5HOTa1HKwUmJnZbmVQXYYh6YCD4M=;
+        b=vKoUkxQtXwww55BFos8AiQMXOrd82apQNrdhhz4M2FBlqB65XVR3+DizUksfkZmswJ
+         DaYiiQgnnJeRDOLDNx4fmNyxUyLURaGHCWo+N7ycXRFle5m79yfFpWgspmoT3bc9FPLB
+         bOo3y4SwVK/RWIk+RjA6MUtQ46bCQgbu9yh6OZSUQyZKe/wQxymb+baikwZEUmaicoZ6
+         yjpHrnnmYTgriEC3WFJdJ5v8uOrBGwuqOBwRhRWAanc3/MXj5IEX/1fCBrIZNQVJ/774
+         /rH3oYIzv9Qp47BgnFKD8DGP5wGQfrijWLX1IfwDDe4luYww08DMOwsVGflTjdNJZNRv
+         D/Tw==
+X-Forwarded-Encrypted: i=1; AJvYcCWUhXEifGG8K9uEiAbPR3Ezpgt9Ml5w9q4VG0juJXTTT3DktS2DXxxW61ddWpYcU3C1flLlCGJYcQ==@kvack.org
+X-Gm-Message-State: AOJu0YzMWew29hKzu0Mq4vx8U90y98nFPWK1FNlXyWwBAMHOMejwN4z1
+	gQBD+jhOLHW2dUQeDN41djPgzUGuVAqpP6mp/CMcalwsCkgb4Eq1Lmri
+X-Gm-Gg: ASbGnctDRVyDbqPnViwCMsNiNYSxCjlgWcZI/YNUhiJ4rWZJSD0KyVzxiF2Ud8ySK4a
+	qxJG2smUGt0hhiPe8+5cUO7HnEmjtO5lCCp5M1jWk1RCiyB/zPZqPSVQoXCrHn1W4JrPf46xvGj
+	yNNCC0ldv9b0UlFmJ8UHhWKzBnJXjv2vvrB6sbSGSQIYisC9xeMp1a6w9NJc+QxGN3KdM+OPpIC
+	aCu6bzm6UBVlDRWfcwtYv9dg8PomejfATEnITnr5aX3OvNy/kDGAQ19zNDLs5tGm+fYiomVIxFN
+	HtO6s7WApHFuEGtyF9Qf7BjlsQdYCkGgoBdCxIW8YTlm8G2kDnsOEuQoPCCTd59+9pYDVG9v0N9
+	eslXfsGy0MC7ZDYSFvv/4yYQVpoCfYxy+32Mug0/wuVrMpkyC2suj4vJYHs0CX02v0B99C5nAxa
+	tqRYFec0SUsdOMoTjE3w==
+X-Google-Smtp-Source: AGHT+IEpQU5RUUY6u5gnu7NyPeCEdAAfsGAjn+vhiZE1PCPsLtEeTjEmZhRhMRAnMw5GEfshKbtFxA==
+X-Received: by 2002:a05:600c:3483:b0:456:8eb:a36a with SMTP id 5b1f17b1804b1-45892b9d8b9mr85100285e9.13.1753999413041;
+        Thu, 31 Jul 2025 15:03:33 -0700 (PDT)
+Received: from Yueyangs-MacBook-Pro.local (vpn-254-003.epfl.ch. [128.179.254.3])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c453c80sm3623933f8f.43.2025.07.31.15.03.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 31 Jul 2025 15:03:32 -0700 (PDT)
+Date: Thu, 31 Jul 2025 23:03:29 +0100
+From: YUEYANG PAN <pyyjason@gmail.com>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Usama Arif <usamaarif642@gmail.com>, damon@lists.linux.dev,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] mm/damon: Add damos_stat support for vaddr
+Message-ID: <aIvoMbici26ekErC@Yueyangs-MacBook-Pro.local>
+References: <c05b1b4f66758c0154e4d037adcb15c43917f38b.1753895066.git.pyyjason@gmail.com>
+ <20250730175652.60173-1-sj@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250730175652.60173-1-sj@kernel.org>
+X-Rspamd-Queue-Id: 2122280009
+X-Stat-Signature: s16eidrpzwq6e7jmjgtdi1p9ghi9c1pt
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 2B56318000B
-X-Stat-Signature: kssk856n8booku15yazooeem9w5qhpyt
-X-HE-Tag: 1753999234-885074
-X-HE-Meta: U2FsdGVkX18ckNeTHLt6ljrNIvoPkWP6SL6JgrNpqTnFmVmvi/uypOhFskJQlyeK6r94smpkJI1naOL8zhOS2iZzANzCDvdMZneHo+E5AhV0c/i/NUImD9DLtpE6LbC1PRP9fGrmYh516m3TJxKAAUF7KMmFS4mVX6H4JCxrG9ml7opSkriisqf3iLSVX6TfqvKU3phdWTm1d35J2Wwq54xlySYw13vIniWYd3rEQ9m4eH3KOG3lL7t2aI60e/6Aloe7tSBmwUlcZJ584SVdjcc4ztvcrkCI57zioa51MR6e8+H7jfTlZ5ZGfe/H6BQ7/0vWoUV8Z0YBOYlT5MkRCeoS9GRrYjBSBln+0rLfflTwFeLvSPc4hS0Klv0iziiWVZ70kGHr7E3P/IiAiziGYaR4fUvU03cKtqPGw8mWnC5bTfaTNNBLjJ5npVArvpkXXIHRCY4ihXrVHGDfa7tIHetMY93zokms0FJobR2QbUShuNT9Kp+vdPN03K0P5uI1isoOwYoh1G4gj+uAceLj3swAxZk8vTHcv/cjdqfUEuCGzMtNKmhB6EKlMTb3O1bzxSc10+nBTe++Ufgs1YFyP+JrC4TQOILlHzWVAb7gZINfgpxVfFtkRnKzFFQq85kJ9jR6nqqmdtwS/qa7ZbBaqIOYP0ovJD4JGn+bdpln4B8avnkJvwUPJ2mTJi77fiMhH/7NpeZfrYVnCC4ZfQg5YtvkjGT8yYiUf8FqZiaS+t3g0fAgft2kLN09iTCXopQMnwANl5ep5rC3TgxluxGKzwvPe9mESdzCxTn8/EXW97ua2Esg1DnM3DjcwnHEYm9keEY/ifUiRLUWs8km5FJtV9rLDgmwRi0DsKE18APc9OZTlfnbtEaqfXCy8533gK+jMkW8xX8neLHifhKU0aiMznH2yQUAP6Flgz6MTL+VMh9AjjrioS2kFMKYNUzSlwVgy7kzUqYt9pl7/aWjlDZ
- s5q2LHUR
- fEXOgbwtnZuxIvmoBozTuJpMB1ZEa+2xbZxm88LcFMcve1OqcbBCS2wYR9gyIo9kn+I8owUsbX9fkod5gRdZs9Df4MkZBqJiARtzSoOFOntzVV4Q+4NGEVo88cSaqaw2M5WXbShuQZhO+SqV2BhsNrHvySTMsQx/fMl6xddFxJJLhaoqCIzDIEIOmOJ8mEHvSsYluhDLv0uNX/SAme1bAkO7UA3JoD1F+r2nyOYZwacNZGTHXRWnV3YYA//QnHkmmGBxZj6PlVFuF8fjR0CYU3bWSZOpwIEsZVsXFpmq43IZqm2W5CQ7y9lpCPQP50GqX/8uWRBWRUaX/sIXB/97HJSV2x5/yeStvORoDB358u6uViEaUFpgIXzAkCmttJjcapgdYzrePLIAAcW1T6Gkock8QiU0jWr4Os8iuETnLEcR7xYYSXCvOCzMA/JHXJfEaQMswaZSOrskP74eaLVU8Ws2aOnYG9UU+z3icXoUs468nG7CXIpc2gSHdKK6C5HBc+76wA0HNN3aT3Li44DbrNZBWGrQZ0SQ3/i/MKHrNGwVYcHwh7wAE+8qAdGIt6Ha/yj5/DpT3/J4qCQvSD045zRMoYAUaQ7T7ea9WJUe/L9g2Ezr0APgRdgFM8w==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1753999414-508563
+X-HE-Meta: U2FsdGVkX18s5u2kQurjNhgRNffSOL1J2qPo+Ojw1gphu/qAc2wnQ/P6pOMNveDbqEBs0ea34LC+Sz/kY5c6k8rMYjhbb3gbFykzjtvIST+zoJjltSeupEym8WLUYEqDGoHr+c3I5FvpDeyXRab/JBxVnxVYicpFs6s9h240G+bslaIZ/Ph+5b1hYsTUgMkQ+JmrfZ+pemuRzvA7cFJIo9znavq5DU6Mknx9fsGdpRWPJcSnANvFzsAJim6+eFm1rXySibAobJwatQ/NiYiFejZuQjVXi2sXo+PrI33sI6niFaYfQE+cCrPkPQ7cFgN947WXP8oj1b0320txFTaVZ2NvgHlKe/93Z7qOsdoQwmkWN/gEBDnUZZPKzDkirFRr421JIOFI0IuujAM3FwBM+C5fZGSM3YY+raLnkhDcdgd2s5dN6kqIOz+ZRKqtM2b7BzZAhf6RQLVzDE8BsUv78E/uFph2T9nBz1O/nU8uDhdIZNjY+Gl5XGkkntlgkOLicKN50Z/XGErtjFFBpPwAruFgeQYFYWZECgJVxXnU0a41+FoizzTktoKSy8P8aj6Q+SF1MLUxLwheSj++JMFPxGZzAUUWWvb5ML7ol8TZwF/CG5xzWjcJy7gZe1lftWwhcKXF4GjELbDtEFVuVLDGa81roufxbkjtgYzHVzrRt2+tIbiHj8XYzq08Lfr0/dbdVnfxaNlPJlyxRWslaL7DHEC2Q0F5iiK72qlsPBhG7O/pN/LSfKT5MXIhVsYQZpMh7RUmoj9Tezr0UW2GQYkzIChzfmgc4WvBVql3ZiV4kGg1BbIkmuXojNv7Bd80p5Pvs31yByTedrijTC4C0R4ztuWYKoEhP+CMzCJY/FNdcm00CH3aJ+SLc7/oi6GbGIg8nuLV/EWyu8CXp3EBWEZfu603kKyUEQabCb/lLDsP+sGoI4wmWqSlBATxfXyVKBnaxEdbzx8Zi/h1p/esy7a
+ 4QrSupbI
+ Kdn4I3PpHv7oWvLiOugmfEiPpqm8HiOrXbR9Xn2Wy2aUa3adwuD/4jYc7arRzDtQsGHUbP1vV0ce38ynOzuDaLT2z0X7xOWEfAoRvBl+LZSDSpSwkWcdmlhiklqVjlKKU0sn0ZDMCa1t40YVZxKe7sqOAdczzESXnaWM5J3dYt01S42GnkVFDG1jtlKONeUDa/MUNUq502yfpJB2DJ8wgvR5qjSQ1bgYvBpR+sOYI0giIHF8f+q4hAOUe1rIh4nAVN7gtn5G3+qLPl1qNpn743+HasTVH0g8yBUFP+IW5lQB4pk2KpHHyCtxXwUkwyMKAaRaBp3hcne/eGlQGkkm0XflzZct9Mww9Rub5jkzqnjWXz99RNcC2d5hvLNcTQf+jvXP8ELC21qMjJ94Yj2W+F8kDdJCrj2nJOsQwlmgls03GmZ6fBZuBCx/VlXMk8DMxRniBmsVeWn364vuhzsK9zBWNz0RyGgyMTcShkFhUTaXhAcT5yA87RD7OCYqv2sLEDdE+EwurItc74OVEocMp5ID7Y6z5fp0LkTcK
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,174 +118,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Utilize per-vma locks to stabilize vma after lookup without taking
-mmap_lock during PROCMAP_QUERY ioctl execution. If vma lock is
-contended, we fall back to mmap_lock but take it only momentarily
-to lock the vma and release the mmap_lock. In a very unlikely case
-of vm_refcnt overflow, this fall back path will fail and ioctl is
-done under mmap_lock protection.
+On Wed, Jul 30, 2025 at 10:56:52AM -0700, SeongJae Park wrote:
+> On Wed, 30 Jul 2025 10:19:56 -0700 Yueyang Pan <pyyjason@gmail.com> wrote:
+> 
+> > This patch adds support for damos_stat in virtual address space.
+> > It leverages the walk_page_range to walk the page table and gets
+> > the folio from page table. The last folio scanned is stored in
+> > damos->last_applied to prevent double counting.
+> > 
+> > Signed-off-by: Yueyang Pan <pyyjason@gmail.com>
+> > ---
+> >  mm/damon/vaddr.c | 105 ++++++++++++++++++++++++++++++++++++++++++++++-
+> >  1 file changed, 104 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
+> > index 87e825349bdf..6ed919e817e2 100644
+> > --- a/mm/damon/vaddr.c
+> > +++ b/mm/damon/vaddr.c
+> > @@ -890,6 +890,109 @@ static unsigned long damos_va_migrate(struct damon_target *target,
+> >  	return applied * PAGE_SIZE;
+> >  }
+> >  
+> > +struct damos_va_stat_private {
+> > +	struct damos *scheme;
+> > +	unsigned long *sz_filter_passed;
+> > +};
+> > +
+> > +static inline bool damon_va_invalid_damos_folio(struct folio *folio, struct damos *s)
+> 
+> Weirdly DAMON code usually keeps the 80 columns limit.  Could you please break
+> down this line?
+> 
+> Also, the name feels long to me.  What about damos_va_invalid_folio()?
+> 
 
-This change is designed to reduce mmap_lock contention and prevent
-PROCMAP_QUERY ioctl calls from blocking address space updates.
+Thanks. I will fix it in the next version.
 
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
----
- fs/proc/task_mmu.c | 81 +++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 65 insertions(+), 16 deletions(-)
+> > +{
+> > +	return !folio || folio == s->last_applied;
+> > +}
+> > +
+> > +static int damos_va_stat_pmd_entry(pmd_t *pmd, unsigned long addr,
+> > +		unsigned long next, struct mm_walk *walk)
+> > +{
+> > +	struct damos_va_stat_private *priv = walk->private;
+> > +	struct damos *s = priv->scheme;
+> > +	unsigned long *sz_filter_passed = priv->sz_filter_passed;
+> > +	struct vm_area_struct *vma = walk->vma;
+> > +	struct folio *folio;
+> > +	spinlock_t *ptl;
+> > +	pte_t *start_pte, *pte, ptent;
+> > +	int nr;
+> > +
+> > +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> > +	if (pmd_trans_huge(*pmd)) {
+> > +		pmd_t pmde;
+> > +
+> > +		ptl = pmd_trans_huge_lock(pmd, vma);
+> > +		if (!ptl)
+> > +			return 0;
+> > +		pmde = pmdp_get(pmd);
+> > +		if (!pmd_present(pmde))
+> > +			goto huge_unlock;
+> > +
+> > +		folio = vm_normal_folio_pmd(vma, addr, pmde);
+> > +
+> > +		if (damon_va_invalid_damos_folio(folio, s))
+> > +			goto huge_unlock;
+> > +
+> > +		if (!damos_va_filter_out(s, folio, vma, addr, NULL, pmd))
+> > +			*sz_filter_passed += folio_size(folio);
+> > +		s->last_applied = folio;
+> > +
+> > +huge_unlock:
+> > +		spin_unlock(ptl);
+> > +		return 0;
+> > +	}
+> > +#endif
+> > +	start_pte = pte = pte_offset_map_lock(vma->vm_mm, pmd, addr, &ptl);
+> > +	if (!start_pte)
+> > +		return 0;
+> > +
+> > +	for (; addr < next; pte += nr, addr += nr * PAGE_SIZE) {
+> > +		nr = 1;
+> > +		ptent = ptep_get(pte);
+> > +
+> > +		if (pte_none(ptent) || !pte_present(ptent))
+> > +			continue;
+> > +
+> > +		folio = vm_normal_folio(vma, addr, ptent);
+> > +
+> > +		if (damon_va_invalid_damos_folio(folio, s))
+> > +			continue;
+> > +
+> > +		if (!damos_va_filter_out(s, folio, vma, addr, pte, NULL))
+> > +			*sz_filter_passed += folio_size(folio);
+> > +		nr = folio_nr_pages(folio);
+> > +		s->last_applied = folio;
+> > +	}
+> > +
+> > +	pte_unmap_unlock(start_pte, ptl);
+> > +
+> 
+> No strong opinion, but I'd like to drop above two blank lines (one after the
+> for loop, and one after pte_unmap_unlock() if you don't mind.
+> 
 
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index 509fa162760a..b504b798e8fe 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -517,28 +517,78 @@ static int pid_maps_open(struct inode *inode, struct file *file)
- 		PROCMAP_QUERY_VMA_FLAGS				\
- )
- 
--static int query_vma_setup(struct mm_struct *mm)
-+#ifdef CONFIG_PER_VMA_LOCK
-+
-+static int query_vma_setup(struct proc_maps_query_data *query)
- {
--	return mmap_read_lock_killable(mm);
-+	query->locked_vma = NULL;
-+	query->mmap_locked = false;
-+
-+	return 0;
- }
- 
--static void query_vma_teardown(struct mm_struct *mm, struct vm_area_struct *vma)
-+static void query_vma_teardown(struct proc_maps_query_data *query)
- {
--	mmap_read_unlock(mm);
-+	if (query->mmap_locked)
-+		mmap_read_unlock(query->mm);
-+	else
-+		unlock_vma(query);
- }
- 
--static struct vm_area_struct *query_vma_find_by_addr(struct mm_struct *mm, unsigned long addr)
-+static struct vm_area_struct *query_vma_find_by_addr(struct proc_maps_query_data *query,
-+						     unsigned long addr)
- {
--	return find_vma(mm, addr);
-+	struct vm_area_struct *vma;
-+	struct vma_iterator vmi;
-+
-+	unlock_vma(query);
-+	rcu_read_lock();
-+	vma_iter_init(&vmi, query->mm, addr);
-+	vma = lock_next_vma(query->mm, &vmi, addr);
-+	rcu_read_unlock();
-+
-+	if (!IS_ERR_OR_NULL(vma)) {
-+		query->locked_vma = vma;
-+	} else if (PTR_ERR(vma) == -EAGAIN) {
-+		/* Fallback to mmap_lock on vma->vm_refcnt overflow */
-+		mmap_read_lock(query->mm);
-+		vma = find_vma(query->mm, addr);
-+		query->mmap_locked = true;
-+	}
-+
-+	return vma;
- }
- 
--static struct vm_area_struct *query_matching_vma(struct mm_struct *mm,
-+#else /* CONFIG_PER_VMA_LOCK */
-+
-+static int query_vma_setup(struct proc_maps_query_data *query)
-+{
-+	return mmap_read_lock_killable(query->mm);
-+}
-+
-+static void query_vma_teardown(struct proc_maps_query_data *query)
-+{
-+	mmap_read_unlock(query->mm);
-+}
-+
-+static struct vm_area_struct *query_vma_find_by_addr(struct proc_maps_query_data *query,
-+						     unsigned long addr)
-+{
-+	return find_vma(query->mm, addr);
-+}
-+
-+#endif  /* CONFIG_PER_VMA_LOCK */
-+
-+static struct vm_area_struct *query_matching_vma(struct proc_maps_query_data *query,
- 						 unsigned long addr, u32 flags)
- {
- 	struct vm_area_struct *vma;
- 
- next_vma:
--	vma = query_vma_find_by_addr(mm, addr);
-+	vma = query_vma_find_by_addr(query, addr);
-+	if (IS_ERR(vma))
-+		return vma;
-+
- 	if (!vma)
- 		goto no_vma;
- 
-@@ -579,11 +629,11 @@ static struct vm_area_struct *query_matching_vma(struct mm_struct *mm,
- 	return ERR_PTR(-ENOENT);
- }
- 
--static int do_procmap_query(struct proc_maps_private *priv, void __user *uarg)
-+static int do_procmap_query(struct mm_struct *mm, void __user *uarg)
- {
-+	struct proc_maps_query_data query = { .mm = mm };
- 	struct procmap_query karg;
- 	struct vm_area_struct *vma;
--	struct mm_struct *mm;
- 	const char *name = NULL;
- 	char build_id_buf[BUILD_ID_SIZE_MAX], *name_buf = NULL;
- 	__u64 usize;
-@@ -610,17 +660,16 @@ static int do_procmap_query(struct proc_maps_private *priv, void __user *uarg)
- 	if (!!karg.build_id_size != !!karg.build_id_addr)
- 		return -EINVAL;
- 
--	mm = priv->query.mm;
- 	if (!mm || !mmget_not_zero(mm))
- 		return -ESRCH;
- 
--	err = query_vma_setup(mm);
-+	err = query_vma_setup(&query);
- 	if (err) {
- 		mmput(mm);
- 		return err;
- 	}
- 
--	vma = query_matching_vma(mm, karg.query_addr, karg.query_flags);
-+	vma = query_matching_vma(&query, karg.query_addr, karg.query_flags);
- 	if (IS_ERR(vma)) {
- 		err = PTR_ERR(vma);
- 		vma = NULL;
-@@ -705,7 +754,7 @@ static int do_procmap_query(struct proc_maps_private *priv, void __user *uarg)
- 	}
- 
- 	/* unlock vma or mmap_lock, and put mm_struct before copying data to user */
--	query_vma_teardown(mm, vma);
-+	query_vma_teardown(&query);
- 	mmput(mm);
- 
- 	if (karg.vma_name_size && copy_to_user(u64_to_user_ptr(karg.vma_name_addr),
-@@ -725,7 +774,7 @@ static int do_procmap_query(struct proc_maps_private *priv, void __user *uarg)
- 	return 0;
- 
- out:
--	query_vma_teardown(mm, vma);
-+	query_vma_teardown(&query);
- 	mmput(mm);
- 	kfree(name_buf);
- 	return err;
-@@ -738,7 +787,7 @@ static long procfs_procmap_ioctl(struct file *file, unsigned int cmd, unsigned l
- 
- 	switch (cmd) {
- 	case PROCMAP_QUERY:
--		return do_procmap_query(priv, (void __user *)arg);
-+		return do_procmap_query(priv->query.mm, (void __user *)arg);
- 	default:
- 		return -ENOIOCTLCMD;
- 	}
--- 
-2.50.1.565.gc32cd1483b-goog
+Will remove it in the next version.
 
+> > +	return 0;
+> > +}
+> > +
+> > +static unsigned long damos_va_stat(struct damon_target *target,
+> > +		struct damon_region *r, struct damos *s,
+> > +		unsigned long *sz_filter_passed)
+> > +{
+> > +
+> 
+> Seems this is unnecessary blank line.  Let's remove it.
+
+Will remove it in the next version.
+
+> 
+> > +	struct damos_va_stat_private priv;
+> > +	struct mm_struct *mm;
+> > +	struct mm_walk_ops walk_ops = {
+> > +		.pmd_entry = damos_va_stat_pmd_entry,
+> > +		.walk_lock = PGWALK_RDLOCK,
+> > +	};
+> > +
+> > +	priv.scheme = s;
+> > +	priv.sz_filter_passed = sz_filter_passed;
+> > +
+> > +	if (!damon_scheme_has_filter(s))
+> > +		return 0;
+> > +
+> > +	mm = damon_get_mm(target);
+> > +	if (!mm)
+> > +		return 0;
+> > +
+> > +	mmap_read_lock(mm);
+> > +	walk_page_range(mm, r->ar.start, r->ar.end, &walk_ops, &priv);
+> > +	mmap_read_unlock(mm);
+> > +	mmput(mm);
+> > +	return 0;
+> > +}
+> > +
+> >  static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
+> >  		struct damon_target *t, struct damon_region *r,
+> >  		struct damos *scheme, unsigned long *sz_filter_passed)
+> > @@ -916,7 +1019,7 @@ static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
+> >  	case DAMOS_MIGRATE_COLD:
+> >  		return damos_va_migrate(t, r, scheme, sz_filter_passed);
+> >  	case DAMOS_STAT:
+> > -		return 0;
+> > +		return damos_va_stat(t, r, scheme, sz_filter_passed);
+> >  	default:
+> >  		/*
+> >  		 * DAMOS actions that are not yet supported by 'vaddr'.
+> > -- 
+> > 2.47.3
+> 
+> 
+> Thanks,
+> SJ
+
+Best Wishes
+Pan
 
