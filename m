@@ -2,239 +2,84 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3022BC83F17
-	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 08:29:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 21CFCC87FCC
+	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 08:38:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 56AB46B007B; Thu, 31 Jul 2025 04:29:38 -0400 (EDT)
+	id A54976B008A; Thu, 31 Jul 2025 04:38:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 514B06B0088; Thu, 31 Jul 2025 04:29:38 -0400 (EDT)
+	id A2C6C6B008C; Thu, 31 Jul 2025 04:38:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3DC8C6B008A; Thu, 31 Jul 2025 04:29:38 -0400 (EDT)
+	id 969666B0092; Thu, 31 Jul 2025 04:38:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2DAC06B007B
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 04:29:38 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CF4E31A0677
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 08:29:37 +0000 (UTC)
-X-FDA: 83723885994.04.7D96470
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 4D5B94000B
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 08:29:34 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=oF5tW8Cy;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=biKrnuFv;
-	spf=pass (imf12.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753950574; a=rsa-sha256;
-	cv=pass;
-	b=pTuMCqTJUstKIxHbp6QXQJxweEu7TL96by//36bZAG1XVJVTqFpcQFOq6hkYtljRnU0hbd
-	kJTaFo/pTOJ/HAI+jiyOVDy6J5/2369IAnsPIaNXAt/x9ci6i6RbKde5F+AvNF8GOL3tRU
-	WGQlPKkX3TXSuO/4QmCAp8CkzwVNRBM=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=oF5tW8Cy;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=biKrnuFv;
-	spf=pass (imf12.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753950574;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 821E06B008A
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 04:38:24 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F312B5A283
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 08:38:23 +0000 (UTC)
+X-FDA: 83723908086.22.558FA6E
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 14284A0006
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 08:38:20 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of zhangqilong3@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=zhangqilong3@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753951102;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xoeYKEl+Uh5PoYVMGEK/2dqD8XU1Ns8VqpAX2ayCbTs=;
-	b=qQBXxJTfw8f2ZRdTb7Ob/uuMrkh6o8jaSEwgWjgVkuSXQcCjmNvcmUc9y6vQAI1uUuxBWQ
-	xuTxfBtQYqQLvbEB5PxEb3iWwtle1f9N8ClT646QsazLHvcTyxzgbTY/YOiQrkzsIaf0rT
-	t0Ivwp3KxGKrgeBDip+xfLnuB0Bc0Ts=
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56V7C3nU009868;
-	Thu, 31 Jul 2025 08:29:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=xoeYKEl+Uh5PoYVMGE
-	K/2dqD8XU1Ns8VqpAX2ayCbTs=; b=oF5tW8CyG1U6eLHfTbQoaTB/JfKA+sTt9X
-	U7NOPF7LfAjzT/7Q1cYZji3Lwwkz7Njisun8yPvGgivRnUqlbWIU8lBpnXC1aukX
-	+Sq6M/HqbPBtvmkpNycIxAUMTdRygwDHV1Lwv3Da70FS3hsnSXMbBDwarWv4+4GB
-	k6opaoEcFTs3MfkVTHei+1jUwGBFJdOPjJBqKdsh+swp7X/JFMYE0CqaBNfbQD2d
-	4aNt2vC1ArO5/xvCMrfYLhIHYqMGYe4+5puTNKbxcZ8Yw0sFL/wdlMsXJaGwnR69
-	EBsmr3Jpi4njEmpZ0plaxHJtnxPuwY6N+kO25PVniJ8W6c5QerlQ==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 487y2p0fwv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 31 Jul 2025 08:29:22 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 56V6qk2O020347;
-	Thu, 31 Jul 2025 08:29:21 GMT
-Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12on2053.outbound.protection.outlook.com [40.107.243.53])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 484nfjh7e3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 31 Jul 2025 08:29:21 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JJISW/hfiC00gNbARRIh90Fj2X51ix00rB8AGRLVjerHmmQgPGL6t4DRQAMLqQYJksKEFiMdAIL8cd0MwtQbWgij4hiVXOZEF8nnmbG4PlvR1Un79efOSSdQjeeXQPJ3dDaNMSVYX3YVEufY9gWO+cgTiI2G8AB5N2c66G62ZRiGA8rLqyRnGdS7H8l9VS0PN93JXI7ZvjYE70BIoDXWkykfPsIgIPJNQtYwjcZHWkbQrYlYzOljQVRUuC760QyUtDOBZxHxzneJHBEunmnWt9R5XIwSnHhYCXa/zVOiD3J9ZReTmI1lKphl+XmICQu5qHblLgRWeydCnIT8nt1f3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xoeYKEl+Uh5PoYVMGEK/2dqD8XU1Ns8VqpAX2ayCbTs=;
- b=QwJFRDigZ/2Z7JHen8Odv6YeHwI/sNa7xtVlxTWdR60scEnsYgNpSF8zyRhGImC5326QSRUDuangsz1ye2reWAd4ykpXsqdOZd6J/CtwDBmYKyNjOMK3KKle37rmaoFjypEluw0oStUJ2AS2Ym/VKZJwljtl6VrUXjSA2pmVxmPxPe4iI9CxsqW3zZ68lRs6OpwuhoP7Dp2Fn8RULgPa5QVhv+XJjgnw/eQfNCv/wbBIB71RokmteMWWgYw4zIeR2XunRdn8vxHpWyuEBLGt9INUAqfOCYYvFKWUdeLlWBbOMLU/6roSiOdoMiEbHAbxZAUuX23Nobqf3qry8Cb/9Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xoeYKEl+Uh5PoYVMGEK/2dqD8XU1Ns8VqpAX2ayCbTs=;
- b=biKrnuFvdJGs6x3KzdicF8rwzturc8rwA/b+Ni1W0a57Wyi4jSlA9AO+TQhseu8y5UCeIxvImIV2Yy6btXioMkdh7M8s491TCodKSkhs7yb7kjpgPx1LCFEWITm8SCIBoztDjPtXiv2be5csoEkoIi7HWgcQVSvlURiQifBOXlw=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by CYXPR10MB7923.namprd10.prod.outlook.com (2603:10b6:930:e8::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.11; Thu, 31 Jul
- 2025 08:29:16 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.8989.010; Thu, 31 Jul 2025
- 08:29:16 +0000
-Date: Thu, 31 Jul 2025 09:29:12 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Usama Arif <usamaarif642@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@redhat.com,
-        linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, corbet@lwn.net,
-        rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-        hannes@cmpxchg.org, baohua@kernel.org, shakeel.butt@linux.dev,
-        riel@surriel.com, ziy@nvidia.com, laoar.shao@gmail.com,
-        dev.jain@arm.com, baolin.wang@linux.alibaba.com, npache@redhat.com,
-        Liam.Howlett@oracle.com, ryan.roberts@arm.com, vbabka@suse.cz,
-        jannh@google.com, Arnd Bergmann <arnd@arndb.de>, sj@kernel.org,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-        kernel-team@meta.com, Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH 1/5] prctl: extend PR_SET_THP_DISABLE to optionally
- exclude VM_HUGEPAGE
-Message-ID: <41d8154f-7646-4cca-8b65-218827c1e7e4@lucifer.local>
-References: <20250725162258.1043176-1-usamaarif642@gmail.com>
- <20250725162258.1043176-2-usamaarif642@gmail.com>
- <8c5d607d-498e-4a34-a781-faafb3a5fdef@lucifer.local>
- <6eab6447-d9cb-4bad-aecc-cc5a5cd192bb@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6eab6447-d9cb-4bad-aecc-cc5a5cd192bb@gmail.com>
-X-ClientProxiedBy: AM0PR06CA0125.eurprd06.prod.outlook.com
- (2603:10a6:208:ab::30) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=fgbKQXt0aTnTjACwPCtjF03PBrVGPY0jEJ7fUHExZz0=;
+	b=nBRpbIkz7HFfIuzGhhglgx0+on28VHixqkGe4w0N0coT2jMIspP4VxXMGrXoGf1p3+x45Y
+	JpqjfDl7Z7DW+4zd7gGPsB3CEFDzNjs09jb9v3Pq9J/Ve9Ay+vFhThiKk9XmhsybTsHpno
+	2NurjzdW/nEETDc44J+TLL+7QVl5GKQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753951102; a=rsa-sha256;
+	cv=none;
+	b=6fsLg5n2qEyNTv5vgk291Wc54LKCijsY0wGa839PWg1mS7+nMsUBPWzu/ImUOhy9KaBZSJ
+	aNo8AeUg+MPEHEsRQIiA6VqeIjra2WPraE3mXVKsHfu7SLR97LlJ6dDc6Tk/ry89We9ynm
+	1gSJLcZc++my9ad6jy67UJhIqK6uvI0=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of zhangqilong3@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=zhangqilong3@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4bt2V15H6Gz23jd5;
+	Thu, 31 Jul 2025 16:35:53 +0800 (CST)
+Received: from dggpemf500012.china.huawei.com (unknown [7.185.36.8])
+	by mail.maildlp.com (Postfix) with ESMTPS id C78091A016C;
+	Thu, 31 Jul 2025 16:38:16 +0800 (CST)
+Received: from huawei.com (10.175.124.71) by dggpemf500012.china.huawei.com
+ (7.185.36.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 31 Jul
+ 2025 16:38:15 +0800
+From: Zhang Qilong <zhangqilong3@huawei.com>
+To: <arnd@arndb.de>, <gregkh@linuxfoundation.org>, <akpm@linux-foundation.org>
+CC: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<lorenzo.stoakes@oracle.com>, <wangkefeng.wang@huawei.com>,
+	<sunnanyong@huawei.com>, Zhang Qilong <zhangqilong3@huawei.com>, David
+ Hildenbrand <david@redhat.com>
+Subject: [PATCH v3] /dev/zero: try to align PMD_SIZE for private mapping
+Date: Thu, 31 Jul 2025 16:36:55 +0800
+Message-ID: <20250731083655.1558076-1-zhangqilong3@huawei.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CYXPR10MB7923:EE_
-X-MS-Office365-Filtering-Correlation-Id: 40da8210-d7dd-44e5-7bdc-08ddd00c5650
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?BtPs9Ex6i4Xdi+C7GClURGck3rgDJPFbh00d7sFo488AmCQv3fsGM1Wy4bIT?=
- =?us-ascii?Q?2wTipDNvZ4asa7FOXVckyenvEDiQewzzPRUEj/hhWKbcfEyRhYpx6m0L8yqJ?=
- =?us-ascii?Q?R3Zt7GxczTluIMncgmPMqRLpVwRMdqQXQ1LCHa2ifLjmqfMr9Ne2ShxPtIpQ?=
- =?us-ascii?Q?WHM3bH0QMYlz6KWIIYGSb2M7pEzwUzxEmyYXS9yW77ylZ3GvrZDFhdbRWaMC?=
- =?us-ascii?Q?9uA4ve0ZaR7E7A7aZ5R0It4IvMb/8fpGivHQWChGtZ+kmdLgBUUgPSOfJCsf?=
- =?us-ascii?Q?iXDiAxkq2juJYf1lGhHpB3HW8umNB+haeQ4m3hR+eiVr0rOpUgUvZroF/WMP?=
- =?us-ascii?Q?vj1Q11VC7YCwIR4f37at7lKfiAJ0ztvkqIZn2V8u6RwnR8kIQ9Jv9A8ulmJj?=
- =?us-ascii?Q?Ot3Y3cwQYdwDHwXNEfi0+BE/FQaj6Iaq2zDVUqm/S3xmPAEGhxDtrpA5gNel?=
- =?us-ascii?Q?urctloCarEyjkBXzm8Z8IrAQLMHv8Q4PcZ/1BMNaZByt5SRRVOUT/XyN50Sk?=
- =?us-ascii?Q?aQO4uvjtAsyWSSzsW2X28sI8Q14Kkhtc6WC3Rg9UiDN18P087ShaDNZt8/w5?=
- =?us-ascii?Q?o7RaYrds1zMOTceEMTo+R1H6hylfCvoBT+hjynnt8LLdAuoK7uq8Z/HqYTB+?=
- =?us-ascii?Q?0UV95Jwcyfcl7/ZyxW2uXEaHb//brnK2FYxEC4WqZw9AF4wMw7GevjCqBojo?=
- =?us-ascii?Q?mnSvNpCOL38uuGFbyYmWuGI4h62vRKv9DWJJev6Hms0nozIZ0NK5xZnkv4aX?=
- =?us-ascii?Q?EE+4K5z5msKWRJ2i0knkGB80uCO7dF73t+uoaYnENZR/MtyHoblaVBph+hdU?=
- =?us-ascii?Q?GWwucKrAP3aqU7qsUdhS+XbQianG/bBmX/QNfsPnT3h6KscbibujWQOMBgOx?=
- =?us-ascii?Q?99+TXVOHGo633QDMtJWrOwbhkRr9eTiv8pr5zPT5djdWPJuMkSIi5OzhF+2c?=
- =?us-ascii?Q?JgX/LuJewCPR8+WagBh8TL+pya6D9O2dROMLxN37UQhdiaaHHx4j3iB2VCjl?=
- =?us-ascii?Q?la9n2hByyO1mSHpbw1FjCNKXywhvPWm49JeqHNDoVjd6zBjpfu5t6DibOq0U?=
- =?us-ascii?Q?0+0diyKf4TMzpLRGIo83cy6jXKCaIxPVzI0hdhzl2LlzPDfQhtMYBzw78vUY?=
- =?us-ascii?Q?eaDemNhK7yWI2Fi7z10ByOV0aBJc9v69CjTU0joUdpmbezZjxSI5veDUKHHl?=
- =?us-ascii?Q?YfUx/167j5MYkdJdIDGHKOrK6W+kKWUmNQ0KGEtTd9V+47ntGyhB6B+rxgKb?=
- =?us-ascii?Q?XXrSe3hSmuOnjOL3wwo0ZoP3ZsNNjOsD3X073z9S8yuP0vbDJ+xje3o69llP?=
- =?us-ascii?Q?mrQ331cjtSaqOy9MghiTsGzesOgXl3fNWaEBDkFyYHuglGzsLIcCGovpJCUc?=
- =?us-ascii?Q?Ce7snsR2Mv/Rju2mWDdSEiWO0uHmnchvRocBVn5Y5cwkAtgyMgdZiSD1Sg1S?=
- =?us-ascii?Q?x0NMBaS1kis=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?psDBmyiRxiudi4TOGr1C2arW/MioM+YFf62bCEZmW0Mwmmf7/C36WU9Wb0Xj?=
- =?us-ascii?Q?tF76RV7WDUlV5PyiSSOl8mz3gRehmg/o7XLA3fUf17cCXsQIMVS6zI1bVtHP?=
- =?us-ascii?Q?CMEAkr00gJuRiIfzoVfTd2s2hz8icWlUw9txkXvfos0l/x9q3BL2AlWWUQIz?=
- =?us-ascii?Q?Q9OsLWXaq88mviAyjD5xXBiSnnmu6eslLDzRSlb/u55mqFRLFZOVAOPramEY?=
- =?us-ascii?Q?fZufd+rgkPb8+GCBEN+FuRhKTyeiOMWPp7S/RVvmuzwzGk74WaZ/I/4lgcXT?=
- =?us-ascii?Q?92kx7D+qR96VTFyg8ulAZkk6FG4uqs52tXExAwrfLwmPOUcdEs+Q0Wy9m9Yj?=
- =?us-ascii?Q?WiTFpjUQNyr6oa6o9MebcVBXcZ8wQgGrhCDuQ3HZOBTq2S7vV4LI4CIlcY+w?=
- =?us-ascii?Q?i7eYhK8zkmw+y7F+X2Wgg5iTGpe0oeoeF5jsbHJ13hGXQ0ywoJPr0ELfJ1AY?=
- =?us-ascii?Q?yi2JXytkgWbWen+DHW1RvTVpyf91+DJZDnSHAzCT4zd31me4mIfc3XtDbWuj?=
- =?us-ascii?Q?qwfECmX/VShDokPqdCrJfEj1P1U9YCnPMZ8QFtY6btN3UZ1pvfkdokI5jHKA?=
- =?us-ascii?Q?dyNAfEsNWc9ANkWmOJfIikuwE+ijVP1jsPu/3+vuDcC5XYsM4+XAfJd4P7N2?=
- =?us-ascii?Q?WCOTSexEuISWGZygdH3Fmj844s2JFwx9h1oC6UY/XlQS1fl4kkvz/sCwxJkc?=
- =?us-ascii?Q?n4LTjKAz89TuBJnXIbmjcajK0Zl9mOwu24uonUhKFruW6SBiqrVvUkzxWIiH?=
- =?us-ascii?Q?0dj5nybGJXnXKGvKIJhZKcv+Jo4FbF2wZJ8bQcpmyuG9o6tS498RQc5WC31W?=
- =?us-ascii?Q?gRwtcAan7optQwQTyQ8HuE6pk5o1Q6iGCYvTIxmV35vlQsMNc5Lfyo3uGY9B?=
- =?us-ascii?Q?1eHrIb+E7jFbwH52U+tWjzhHgTybYzX/P1NjG6ufdpOzpKGBsEA7Jjm/b6lO?=
- =?us-ascii?Q?nQQwuBnTHRErA95n3669SMnxxUtM6AZnojWXfVGBlUZ5AWOmvDz3XN04POnw?=
- =?us-ascii?Q?EtGtLDI7XtTTgsRAzXg888HOQemhabIwAYey+nBbYcdbF4fv2Pgwqk23Abvq?=
- =?us-ascii?Q?EsYPd2C3UQ/rPWIqY0Q67nn7OHRTCtfpFwnlzgI3LL0SrhzuE6uiBl/8kb84?=
- =?us-ascii?Q?K0G81IzLYnbOj2CHWsLF8KUzqq32wQqLoxO691H3U/klKsWRdtq3HBqPsOJQ?=
- =?us-ascii?Q?2UBV7UMneUGoEzMLmdrRo+uuSUD6c0L+942WZ3N4KYrNtI9VP1Sw1A7HMpV+?=
- =?us-ascii?Q?Alp7Mcme332ggEJLul65LbMV3r+bTKFYJ2PM9S01RN1EABIY9HwgqYtt05n8?=
- =?us-ascii?Q?dVz177cYqE6001feO5OJKRz42JMA3YscEl5WSCzeidHnKDDZHQQebrg3zUS6?=
- =?us-ascii?Q?l0ECqpUtKCH2+taa2pTBaMrJ4MAYpzmgW6aCs71K4bmONZFicoQjYd4TvOHz?=
- =?us-ascii?Q?2JbYjHy3P+j4O1RG1/h91ku9MQ8LVNIsNNJDYcnugFYEzzmiRZ/TdoHISa/G?=
- =?us-ascii?Q?KZRPakXNUSshNAr6enyG+oKeLKCxlajkbsuOyCoXxAn+uaDnS6Vr/JfxFfPr?=
- =?us-ascii?Q?cfpX5beaHxQheyWx/gUnhMSYqs4MdeVOY10JmJVkZq9JqzNe+dfKlWgGzWW7?=
- =?us-ascii?Q?cw=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	uT7MsZGxSZsNBiqipp+fX5DPjbXViH3tVKhcFeL5oqRPpSh8qDsK2nxHKTTsjzfVBoDaSHBbsTjNfmun/oV5XljXTlJOmp7+kQw/zaCTlYbLSiyYog+V5PTMGOGDNDgHD7JwUXvL6IwqE9x57zI9Epu+gz4KxFT5I3cpZMpPDV7LrJU/1L/NomZ+jauMBJ7QNJPw7lTCF5IUGJIr89B/DaZoTjz9b2cdTFC4TMvG71QSmsxbM1nRVkhXadhP9Xkpa3rjVLHBR0XL0r1c+ecEcAw+h41sT7dZ580V090p75hfjel7jyLbIn1QGuaScpT68NlcnPovKhL5xaW7X5MYCOjKKfDETf+HOyhW/QMgUInJCkis3i4Gsy+s8jQT/0FvCfsfvKyCMfkMRfBLb8N94ZFncqeqt8wO2hG1vOkTgQtyN4h5nzAjMvSWzf7sjmBNPqOHIU4VqsRHu+aYtEDWiw94qNdZG6bx3PekMrSbucLkpK0GB+7hgG2YxM3hb7XPiCE1u3xEUaBqjkpGL9OheB+eUeEyodyvxS+yOtHRUYvMi9er7ybFo25wAuZ4d02vhQUyFGPVBHFf61sBDieK6qYdkZrjv66vzVTSICAV9eI=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 40da8210-d7dd-44e5-7bdc-08ddd00c5650
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2025 08:29:16.4517
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bd8hiCc/9I/S5bH1MH8+8/uHJFWQyzwP8BS9JLRiMCPAc15MzeZUUxqTTB4abQCKguNqjz95ful28NNtBr/46XNGOuLKr89PguLdxpuwQn0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR10MB7923
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-31_01,2025-07-31_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=0 bulkscore=0
- malwarescore=0 mlxscore=0 adultscore=0 mlxlogscore=999 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2507310058
-X-Authority-Analysis: v=2.4 cv=COwqXQrD c=1 sm=1 tr=0 ts=688b2962 b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=Wb1JkmetP80A:10 a=GoEa3M9JfhUA:10 a=pGLkceISAAAA:8 a=20KFwNOVAAAA:8
- a=yPCof4ZbAAAA:8 a=9t6k1dWA5BB_nFc6OMgA:9 a=CjuIK1q_8ugA:10 cc=ntf
- awl=host:12071
-X-Proofpoint-ORIG-GUID: JsiCfdE5k5lBoYffx4TqkK-xC04M5z1O
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzMxMDA1OCBTYWx0ZWRfXxhhkSwibK09y
- ZwBL4J7Hm+PlKmz+Hxxv5W2t4xnvNhae2P+ildTpaLL4U9aKfzj6S44lsbgLMf+f6AWa2fX9Ja9
- 0FLxEd9BDgvBC48oxTizv7ZdGuYxL0UdmGECqkKep31OZ5EbMomIfGfQBJ8fdaSyopVXKFkZY2y
- oWmWjQS0pKRiwYr885tBDWVfnt+ZkQJ5uiPAJa8T8vH7bl0TVkUTZ7nU5aStdTFZBelnsABR7iE
- 3iW+IL3GfoFEXvCkMzFx20TXXaHVt5UmrBY5J80dHcRYWE8NE+i4avvXEYtqy+DCl4W0FEuKYb+
- RvSXrUr7sykjSOnuq8KdjES6reiC6jteDahC6ecv4+hEpw7uOlSRlodGUUK0ew2EQ/7IO3hXpuh
- 5m00qSOkt173Rl+N/QM2npnxqKOCopIfK40hkiN3f3MrG+IuQ9+5R7JXZrs2LLo8ypRcMR9m
-X-Proofpoint-GUID: JsiCfdE5k5lBoYffx4TqkK-xC04M5z1O
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.175.124.71]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ dggpemf500012.china.huawei.com (7.185.36.8)
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 14284A0006
+X-Stat-Signature: wdrmdn19e4iua81w5xazkcatjszzngzc
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4D5B94000B
-X-Stat-Signature: fwja8x7z3ae4f693gptgnkpgh58nyz1y
-X-HE-Tag: 1753950574-47111
-X-HE-Meta: U2FsdGVkX18o+WsX/d8Zn1RMxW7t0LuVkqIMtq66xNB/U0Y0OtB+OWAPIEx/1RidDwVF7EbBiQWW433FF234OiMXhvmX/zMWp1qxblbXq0cmbxXmj+T15w6gkv0GV5A9Sa1OjAMJR8ginNaTr2QWrmq4dT/9szQ9p6FehY3OBczJ9Bph1xPJaKD846ZLA3Cs9ZqreStLYEl8KyKvGlg86M42o5nvU9CxjWyTrFrr1/kpR0XKtbf5J1lsxve7t+hzK18UGSamgcwmHbO78/BjALtVcqh2JUN+pSv4bQC18Gy7mkCgwkiewCXVmWtEjnXt6o1FSOB4oZhKnDXouBqCRUbxFnJJRppiTR2xPvSASzlczsaL1bV30wmZwdBi0dLd43MDHvVu7xcAfwerPYi6OHm0EXcMQ48V+LJCIomAR5iwj/WH7f7ugsuwpiBFxU60IMxe65vQxoUCDHyVcTFDNdstB39tqX5TPeowjUxGtAYBz+pYa62ox9Iv31EbrGJ2AdKQqf6fnB8x37O0T4VAQYCnKOLClhAPqgc3gxNWfmBmTHlIAEV9f56+nRQ9MlDvrfoHx3Gs3uax162wPzd1hEHBreLnVYg7obYsGJ5e3DN9BSPdAeHzilTzXB4Hg9ykY3myG7fl370/uATcNuCdf8BmvL7F4UHrKjSSucAakRvwVrtAebwECOzAuLjnAzJ18x4B2flQQniVhVuWkRgiXM4pDLXO+bIdQY0SnoTaxTo6gVhreIfSLcaLUvV7PmBPGP/jU3jOsM305FhSuuJV2Im5KdZ6Lu0uH/l4rpKDLZbCkc6tlUAyi617oTXCTA4yaoRDNDgPX34vtlmBHoRdxejQNwcGAduS8XgZWwd1Q2EHQ9on9xpLSIMcShSuH/CvI0qZ27PvskSH2I1Mw2ZAjfxfQ2kWgsSwng6IvfBFXAzxGm07Lw+Pw262wG80TZYQQcbrJPZhSAYHO9t3K62
- cSCPLiZW
- JH5tuNQM+ObapDIztO945mZ+vNryBdFzrR93/395hJrg7uUh9sveqqKL4XVJzwtZqjFM3a/TYyTpJopHSovC4PdK/PmKQ6tvX2k9/RW9AKczG+0j8jNnoAtCFyYCXdSAN1pPEaPARSFp35qUgQ7rjeNcB9GsQdIO+so6qibZ/RXYRltZgeiEKq3+e//oDuuB7m5jlbxQ46aSH9OAaIo0DDxIjzLQLO85uF7dvqWsSsBKzCRgwSYfmud0R8IMQ0zF/Xn++ENHRFxlQMrfzMNEBeGZfQIhuHbt6g9VHFRwK7T4AMAbW+VLvE6g/OOmNf+uLTFUyTiJpFtgzFaq+7a5giYwQ6Pv0Wfe0e085JE/QkaUAK2OZMFNB1p0oZj/WDeNgkRND9oe7fuAdvFrbQBSVMKLkRtSkfRfgNiQbqDAy1dWHvcyxfssiVW9KAreqgcqZN7adc7FKl5wCYj7croY2j0zfCl6E2aw9RUN6fBoMtJxF1UiYslaOiOhTK+5aA2mRNyRbu00HXfDm/uIRniRjT8R9cmdrodKhlyMCTV/vdycFogOf+ACaFyheC/gjTaAz3cy6DZYd0PgzSU9NxEMoaU4llQBIpdv3nwatzyLjyePaUZTZ/8EyPur+YeHzNINMAKpqQ5tcJ1Bvi/p0ltH4EZ5aSMWn4cs/2mlzZ3VvrH+4X2ScJXiuvuSg4MIeExhGTGxYiZvZ0ziAhdT01sRpOJSaMIdcn/fys9XFwwc64OWWU8KG7+PH9RMw+4FCkFd5+p2Al77ucssxfG7e8UcMbK1mlItytL3pdXUB8rvDpBCSVjdVS4vLykpKxyfIDux7pueLVjex7osWg7qmnui/pD/uiP1vV6oF5JxTUk4P+7KeHqkl23e9bBtWALB6e0da1Bf6EQPfDr15paaKkRzoFhlvRg==
+X-HE-Tag: 1753951100-523053
+X-HE-Meta: U2FsdGVkX19ghaj8tscfWZSQrxw+AG+0E20Cv5cAo6HTKvsBgA3cdeysSxNmMvLrnfmzJdlnWBXaWgCzPUoGlUTw+AP4iTZmk2MqeVk/u2zhMXn6HvfrFex2ylpihtQCYeoKB0T98FbaHTRU7fY6uDFyif5l/SWpP116Bu0007Qnv99drM0n0lgixv29bLW1T3wmPenYwBifVNbNE9QGvUIwtA6Z3ZP7zuQFAJwO/S2MpwQ0hKp1V/HBFLGET34mejUM9jbAgn8Suume0ca9jbE66SiNkCOGqy2O3A1pLU9IaFJSC5IzMPsBROzSoY7mRAf67D+9t27c5ijkk7+ep+NTCsh66WMagBtsni0C+w5g1wtUVdL+Kzp2EeV/c9HXlgFmpI86o4Ql+eoHPiS5+ngfbt/dkUZh0xUDJVsHmnjRQ2wC4uNx96V9LMTnGu/6cOaRk8NT/iD566YHkvZRJAZKCfWtv/4kd71vzUFJSxJR65yLTXahK4dsercG5HwGk1DSn3p6b4sf94eVUsLpH+9A4+EQl5auGf9i+3MXPqg1Met75CAc2zV2edqSfB1iEMbGfSSJjJyYT6jXlFVumgalkew1v7zvHWkZhynYoA/4tNidwf+JVSA+0/oqbvT8/PhT+bU2rmGSrkSZhA7obJ15uFr2f3DXWjM0eXBdm3pqeM1oMkcg80CcNxAapjuOJcd8a9qo0M/I+/di3RPLqHvVVStaIaKbaW+M5tJUptqoH0XMWLMr6rH7uZ/gWNA+80Q2T+lfuCbwLBWrjx4bitCzRFaPqg/7dt1IgPUM5Esbr6/meic/VHrkQpRhSVyTJnMwAxndmvFanGBnRthJVgQKCqJAyjGj8khm4LNM7COpDgltyptW7RZwmHSvLuogwUbEsSfIKeqQAkw1O23+IF0voq1RJnQMjmYshNQ0bblldIV4kOzxrWUH8PLkFMh8TXetUcAqupqq2PzGt5G
+ LzXHjkAv
+ KAQkPLwUy7gqp1ytI+0zyTjzo4ygrx/FqvW6MObd8K+INfZDNZFCh0Dw0T+nNGrKUKZc3VjQCihkaHvAMi1i3GGwjPz0J3mCJ28x3LGHJgR9vaP0yUu9VVtvyIPACPOFe8MpwFNtKG4Iin3QnMnWGaeqeo9Rg1oa2MUj2eCAb1AsijqnrifdoSl49NT0z/GJNNjH0MFV6VXuPDRH8IZ28bFPFf9tIWAnU7EJVO7DVMxRZtbgNRt326GtlsJp0g8vRkhX5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -243,110 +88,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Just a ping on the man page stuff - you will do that right? :>)
+Attempt to map aligned to huge page size for private mapping which
+could achieve performance gains, the mprot_tw4m in libMicro average
+execution time on arm64:
+  - Test case:        mprot_tw4m
+  - Before the patch:   22 us
+  - After the patch:    17 us
 
-Probably best at end of 6.18 cycle when this is about to go to Linus.
+If THP config is not set, we fall back to system page size mappings.
 
-I can give you some details on how that all works if it'd be helpful.
+Acked-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
+---
+v3:
+- collect Acked-by
+- factor out the #ifdef CONFIG_MMU in get_unmapped_area_zero(), per Lorenzo
+- explicitly use #ifdef CONFIG_TRANSPARENT_HUGEPAGE, per Lorenzo and Matthew
 
-On Wed, Jul 30, 2025 at 08:42:04PM +0100, Usama Arif wrote:
-> >> Acked-by: Usama Arif <usamaarif642@gmail.com>
-> >> Tested-by: Usama Arif <usamaarif642@gmail.com>
-[snip]
-> >> Signed-off-by: David Hildenbrand <david@redhat.com>
+v2:
+- add comments on code suggested by Lorenzo
+- use IS_ENABLED to check THP config
 
-All looks good aside from nits, so:
+ drivers/char/mem.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+diff --git a/drivers/char/mem.c b/drivers/char/mem.c
+index 48839958b0b1..b7c4dbe4d2c1 100644
+--- a/drivers/char/mem.c
++++ b/drivers/char/mem.c
+@@ -510,31 +510,44 @@ static int mmap_zero(struct file *file, struct vm_area_struct *vma)
+ 		return shmem_zero_setup(vma);
+ 	vma_set_anonymous(vma);
+ 	return 0;
+ }
+ 
++#ifndef CONFIG_MMU
++static unsigned long get_unmapped_area_zero(struct file *file,
++				unsigned long addr, unsigned long len,
++				unsigned long pgoff, unsigned long flags)
++{
++	return -ENOSYS;
++}
++#else
+ static unsigned long get_unmapped_area_zero(struct file *file,
+ 				unsigned long addr, unsigned long len,
+ 				unsigned long pgoff, unsigned long flags)
+ {
+-#ifdef CONFIG_MMU
+ 	if (flags & MAP_SHARED) {
+ 		/*
+ 		 * mmap_zero() will call shmem_zero_setup() to create a file,
+ 		 * so use shmem's get_unmapped_area in case it can be huge;
+ 		 * and pass NULL for file as in mmap.c's get_unmapped_area(),
+ 		 * so as not to confuse shmem with our handle on "/dev/zero".
+ 		 */
+ 		return shmem_get_unmapped_area(NULL, addr, len, pgoff, flags);
+ 	}
+ 
+-	/* Otherwise flags & MAP_PRIVATE: with no shmem object beneath it */
+-	return mm_get_unmapped_area(current->mm, file, addr, len, pgoff, flags);
++	/*
++	 * Otherwise flags & MAP_PRIVATE: with no shmem object beneath it,
++	 * attempt to map aligned to huge page size if possible, otherwise we
++	 * fall back to system page size mappings.
++	 */
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++	return thp_get_unmapped_area(file, addr, len, pgoff, flags);
+ #else
+-	return -ENOSYS;
++	return mm_get_unmapped_area(current->mm, file, addr, len, pgoff, flags);
+ #endif
+ }
++#endif
+ 
+ static ssize_t write_full(struct file *file, const char __user *buf,
+ 			  size_t count, loff_t *ppos)
+ {
+ 	return -ENOSPC;
+-- 
+2.43.0
 
-> >> +/*
-> >> + * Check whether THPs are explicitly disabled for this VMA, for example,
-> >> + * through madvise or prctl.
-> >> + */
-> >>  static inline bool vma_thp_disabled(struct vm_area_struct *vma,
-> >>  		vm_flags_t vm_flags)
-> >>  {
-> >> +	/* Are THPs disabled for this VMA? */
-> >> +	if (vm_flags & VM_NOHUGEPAGE)
-> >> +		return true;
->
-> VM_NOHUGEPAGE will cause the THP being disabled here.
->
-> >> +	/* Are THPs disabled for all VMAs in the whole process? */
-> >> +	if (test_bit(MMF_DISABLE_THP_COMPLETELY, &vma->vm_mm->flags))
-> >> +		return true;
-> >>  	/*
-> >> -	 * Explicitly disabled through madvise or prctl, or some
-> >> -	 * architectures may disable THP for some mappings, for
-> >> -	 * example, s390 kvm.
-> >> +	 * Are THPs disabled only for VMAs where we didn't get an explicit
-> >> +	 * advise to use them?
-> >>  	 */
-> >> -	return (vm_flags & VM_NOHUGEPAGE) ||
-> >> -	       test_bit(MMF_DISABLE_THP, &vma->vm_mm->flags);
-> >> +	if (vm_flags & VM_HUGEPAGE)
-> >> +		return false;
-> >
-> > Hm is this correct? This means that VM_NOHUGEPAGE no longer results in THP being
-> > disabled here no?
->
-> Lorenzo, pointed to VM_NOHUGEPAGE case above.>
-
-Haha doh! OK cool, obviously I did this review a little too late in the day
-when Mr. Brain was not on best form :P
-
-All good, thanks!
-
-And of course this now enforces the 'except advised' logic below it.
-
-> >> +/*
-> >> + * Don't disable THPs when explicitly advised (e.g., MADV_HUGEPAGE /
-> >> + * VM_HUGEPAGE).
-> >> + */
-> >> +# define PR_THP_DISABLE_EXCEPT_ADVISED	(1 << 1)
-> >
-> > NO space after # please.
-> >
->
-> I think this is following the file convention, the space is there in other flags
-> all over this file. I dont like the space as well.
-
-Yeah yuck. It's not a big deal, but ideally I'd prefer us to be sane even
-if the rest of the header is less so here.
-
->
-> >>  #define PR_GET_THP_DISABLE	42
-> >>
-> >>  /*
-> >> diff --git a/kernel/sys.c b/kernel/sys.c
-> >> index b153fb345ada..b87d0acaab0b 100644
-> >> --- a/kernel/sys.c
-> >> +++ b/kernel/sys.c
-> >> @@ -2423,6 +2423,50 @@ static int prctl_get_auxv(void __user *addr, unsigned long len)
-> >>  	return sizeof(mm->saved_auxv);
-> >>  }
-> >>
-> >> +static int prctl_get_thp_disable(unsigned long arg2, unsigned long arg3,
-> >> +				 unsigned long arg4, unsigned long arg5)
-> >> +{
-> >> +	unsigned long *mm_flags = &current->mm->flags;
-> >> +
-> >> +	if (arg2 || arg3 || arg4 || arg5)
-> >> +		return -EINVAL;
-> >> +
-> >
-> > Can we have a comment here about what we're doing below re: the return
-> > value?
-> >
->
-> Do you mean add returning 1 for MMF_DISABLE_THP_COMPLETELY and 3 for MMF_DISABLE_THP_EXCEPT_ADVISED?
-
-Well more so something about we return essentially flags indicating what is
-enabled or not, if bit 0 is set then it's disabled, if bit 1 is set then
-it's that with the exception of VM_HUGEPAGE VMAs.
-
->
-> I will add it in next revision.
-
-Thanks!
 
