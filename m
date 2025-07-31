@@ -2,123 +2,84 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CE0FDC87FC9
-	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 02:56:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D09F6C87FCB
+	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 02:58:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 735E36B008C; Wed, 30 Jul 2025 22:56:30 -0400 (EDT)
+	id 7184F6B0093; Wed, 30 Jul 2025 22:58:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E6366B0092; Wed, 30 Jul 2025 22:56:30 -0400 (EDT)
+	id 6C1D46B0095; Wed, 30 Jul 2025 22:58:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D5CE6B0093; Wed, 30 Jul 2025 22:56:30 -0400 (EDT)
+	id 5B17D6B0096; Wed, 30 Jul 2025 22:58:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B2BA6B008C
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 22:56:30 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E5D83C05C8
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 02:56:29 +0000 (UTC)
-X-FDA: 83723046498.23.ED8657A
-Received: from smtpbg150.qq.com (smtpbg150.qq.com [18.132.163.193])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 8D73580006
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 02:56:26 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=cdlIuucb;
-	dmarc=pass (policy=none) header.from=uniontech.com;
-	spf=pass (imf30.hostedemail.com: domain of wangyuli@uniontech.com designates 18.132.163.193 as permitted sender) smtp.mailfrom=wangyuli@uniontech.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753930587; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 483B36B0093
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 22:58:04 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BC0178057B
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 02:58:03 +0000 (UTC)
+X-FDA: 83723050446.01.58190EC
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 0E2261C0008
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 02:58:00 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=RiArcWtE;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf18.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753930682; a=rsa-sha256;
 	cv=none;
-	b=bQCTPt4ZH4tZ0c05XDG3gx6wbmpRfs/le9m2U6IaNHC1L3V3qjwKidMSQl6xMlHovM0cxe
-	g23b4rZQn3Te+081UlWjoamqOm76DZGoWp4eld4/tLBdHJILp0dVu8bl/hAglsjie+TtDr
-	24TPpw41hhJxEurqZxIiujWbkQno67w=
+	b=MKOOVqkj7L3zWlx6xq7fWh9MtuxCQAmvYFxE8c4VAAyqkFBpfA6MUV02FSYaR2Z5VnK+LX
+	1ZcYSinnoC8vG8mHGjg9nHYUIT+QTHQ+PrFRmaH7rMoJadZNVr4mTQqjWkkqBpg/blWST8
+	4dnQgwp/1dBZFTdffULefHrTo0EReFI=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=cdlIuucb;
-	dmarc=pass (policy=none) header.from=uniontech.com;
-	spf=pass (imf30.hostedemail.com: domain of wangyuli@uniontech.com designates 18.132.163.193 as permitted sender) smtp.mailfrom=wangyuli@uniontech.com
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=RiArcWtE;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf18.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753930587;
+	s=arc-20220608; t=1753930682;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MgbZ3YyNWnwH2YIV4X4szaoztLdViaFZVXSfMrwpF8g=;
-	b=TVm8i0+vLAIcZ8X4H5p8V39AN28EPMsmriN8ciQJyiggM4DM+FVIH7P02FbEqqG/lhQ4rl
-	wt5QTzDfR0jORSHHTVz+0WIUOoGxcSwEi63AxAKiywAqpNZCazcXOLklWOcOKNFA2Kyf1J
-	rME3wX7ocZPk8lBIn2nwPc5Ro8M+N9M=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1753930574;
-	bh=MgbZ3YyNWnwH2YIV4X4szaoztLdViaFZVXSfMrwpF8g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=cdlIuucbaq/Nx4rOkomjybf+zhjwZFurw/u7EW4BpKa3l/Cz9heQupXdj1XNrbCBf
-	 eQ9EY7klIT8QW/kz9y5fJjSxBMHdikwpGwtLucr0IaWETuWb38zaTE6vLAxxcWfKbF
-	 Tq3q02SGoAC/kDp10s2hWyr+BbvWbBJL3vzFu8Mw=
-X-QQ-mid: zesmtpip3t1753930534tc3c683a5
-X-QQ-Originating-IP: 31YheQE0waYNv4OuiEWCRbjjtK1GdnDLJ6NrBrV6QB0=
-Received: from [IPV6:240e:668:120a::212:232] ( [localhost])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 31 Jul 2025 10:55:32 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 10925081017224793869
-EX-QQ-RecipientCnt: 12
-Message-ID: <CB890ABC56C2FA67+56b95783-ed70-4744-9fc5-f2d93ddf2c12@uniontech.com>
-Date: Thu, 31 Jul 2025 10:55:32 +0800
+	bh=0DMe1rYjfdKcGwYqc0RA2Njo+26yNUA5TqRbqsuCvok=;
+	b=Xf89b1lREKGM/dmn6+NKduTwxjWSlwweQ2HTNNqT2Nc135UYmKYlzxGEfs8BvfYM8dR7OH
+	IwR1QAOVUC2k5wx/drCsLgxahgS+Pa7Piq351RPXL9gg3QJnlWbx6AZYDgydiwovaZgJua
+	7bO1PFRPfGiwmEMT2IvnXBreRGCZToU=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1753930678; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=0DMe1rYjfdKcGwYqc0RA2Njo+26yNUA5TqRbqsuCvok=;
+	b=RiArcWtEcSucS0zekfL6tQyYkIWR8wLDkc7eE7QYCUMJzGAAt/QcuUKsALbRQzXU6bJd1WW5xWUtzBK4htbDPmZaO39og3XEphwfREIK8y2WU8xNQSx6btgTBAjm1W1zE8PEg1mANGjesowAn2UcQumHM/N4pN11VXHZasXM3WI=
+Received: from 30.74.144.125(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WkWYsmM_1753930676 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 31 Jul 2025 10:57:56 +0800
+Message-ID: <7ee29e25-d4d5-4e3f-816c-a877f1a5e7de@linux.alibaba.com>
+Date: Thu, 31 Jul 2025 10:57:55 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tools/testing/vma: Fix function parameter declarations
- for GCC 8.3 compatibility
+Subject: Re: [RFC PATCH] mm: shmem: fix the strategy for the tmpfs 'huge='
+ options
 To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: akpm@linux-foundation.org, Liam.Howlett@oracle.com, vbabka@suse.cz,
- jannh@google.com, pfalcato@suse.de, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, niecheng1@uniontech.com,
- guanwentao@uniontech.com, Jun Zhan <zhanjun@uniontech.com>,
- linux-kbuild@vger.kernel.org
-References: <EFCEBE7E301589DE+20250729084700.208767-1-wangyuli@uniontech.com>
- <e7554f93-03e8-4315-acb7-a55312354485@lucifer.local>
-Content-Language: en-US
-From: WangYuli <wangyuli@uniontech.com>
-Autocrypt: addr=wangyuli@uniontech.com; keydata=
- xjMEZoEsiBYJKwYBBAHaRw8BAQdAyDPzcbPnchbIhweThfNK1tg1imM+5kgDBJSKP+nX39DN
- IVdhbmdZdWxpIDx3YW5neXVsaUB1bmlvbnRlY2guY29tPsKJBBMWCAAxFiEEa1GMzYeuKPkg
- qDuvxdofMEb0C+4FAmaBLIgCGwMECwkIBwUVCAkKCwUWAgMBAAAKCRDF2h8wRvQL7g0UAQCH
- 3mrGM0HzOaARhBeA/Q3AIVfhS010a0MZmPTRGVfPbwD/SrncJwwPAL4GiLPEC4XssV6FPUAY
- 0rA68eNNI9cJLArOOARmgSyJEgorBgEEAZdVAQUBAQdA88W4CTLDD9fKwW9PB5yurCNdWNS7
- VTL0dvPDofBTjFYDAQgHwngEGBYIACAWIQRrUYzNh64o+SCoO6/F2h8wRvQL7gUCZoEsiQIb
- DAAKCRDF2h8wRvQL7sKvAP4mBvm7Zn1OUjFViwkma8IGRGosXAvMUFyOHVcl1RTgFQEAuJkU
- o9ERi7qS/hbUdUgtitI89efbY0TVetgDsyeQiwU=
-In-Reply-To: <e7554f93-03e8-4315-acb7-a55312354485@lucifer.local>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------IvwDcfDvu0SkH02Eh8025qiE"
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: OST2d686M2k2lfT27lqzImNt0uyjqr1GLVt9r6CxohpXWB9znx1VWiy/
-	mEwJabWaQe4nSCI6Eh+hYLZ1jjhhchGs2+PCMCwaF1nRKMXFXg6xFVl6jdPR5a0iqfkRCLU
-	IHBzxEudILFLcyWQJ2phvWEhBmKN8Z5PRoN0a7ejGi5R+XvHTnD5H9VOw3cn8SeCQIz/kk4
-	jZWP3D2dch1dc9YtRnyxtSMfqodLpgrcEDvnuvhDHa/az2n3uMOHzZIUw8Yci4vrKdgvq0J
-	obqFTwbG9UAZLM95a4HXslPzYcYIxx6fJlPBTOG0saIakRaQJ6Ks0wA5adWVVP9ZQ4siVn5
-	aLzIwHuTXyuCWTilpO3A4mkKErKbTgxbqa9+a+UWFdw27xpsygsrtZh6r18h+FIoD9UP6cc
-	OftYU5Z6Ebni/35BsUILtwIUcHXtpLtJr7Rt1bVKVqnEXothL9E67WMPN1nXntf4PqxMw3I
-	9L+p37QE0kebKlFdvapmKlZPysrl23Jv9PloGIKo8eEQd7YG5G9W7SYvzr4SMeKjaC8EXH0
-	2p8s8vnYW20nYoGZ1WExwsm7IOyCFF19nEDH9IXwiZiJxc0tCFfhWEG6raKRzE5Rqaws3u9
-	3sp7vvWq0I4qKLDgxHqoiS4babDlqW9yHk4ZNMxY4rFwrZVDieHDHtPKdT9dtIbey9nU8h+
-	m4TV6M0LyoLcNktArgxIAFMf9ZcT7UAuCi7RToCyb/U6UW13+nh5cVtNkqbR0ebF3kfZu+6
-	2hsT9WOB8sjCFez52JBB//wZULvRFfSd0gBAQ4eUVx+NdQJyPDSk8Fg59zVJbt4ZsE6g5c9
-	W6It7qEd9MiV/f8R4mdK6k6dwEePaaiLPGsenkUaS2yS+IbCzl7q+bn/4MKAGLBYC6wOZz1
-	fqXEg4MNGrdSDcK1+k6KOT8h0HwhZRxj/rhADeITE+fi3zI2+44efGVjFxE+w2hJem+S1lF
-	TEODXsyQR9UZq6V/fy1iRagcDsW1aUoS06oUfDDE020Su1bl94Nyuvro8q299unK8OyUqNF
-	9GZ5N/M0yNq6ZxJw2GVGleS1nN+rHH0dNIwL89WxAlunx3ppFg
-X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
-X-QQ-RECHKSPAM: 0
-X-Stat-Signature: wpjf61dur7xgpnpts1o3ei4q1sudze9x
+Cc: akpm@linux-foundation.org, hughd@google.com, willy@infradead.org,
+ david@redhat.com, ziy@nvidia.com, Liam.Howlett@oracle.com,
+ npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <701271092af74c2d969b195321c2c22e15e3c694.1753863013.git.baolin.wang@linux.alibaba.com>
+ <5578907d-3583-4a87-8b60-0cda0284a358@lucifer.local>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <5578907d-3583-4a87-8b60-0cda0284a358@lucifer.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0E2261C0008
+X-Stat-Signature: n4m15m3wsckhfunrangs4w34hknsetfs
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8D73580006
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1753930586-901192
-X-HE-Meta: U2FsdGVkX193P1cwVDFTrjfRQJi4y8GDzW7Kxwgdf5qnBO5227rqvC4TPNe5DqzEZfgh7OLm2lAAO/XVy2xI/vzgX8WOpbVnGnGOwoEoWxfKrH3UYvqzrzaON/vn708rVeUHFPYf6ZP9f/C2StqWJZRR3PwXL083//YNgNvrfTCIkCdTKt1xqIYac/7c8SkmzzScsHV07lDtrOwMAxbcPkDwp1a2gyrN4g7AzzGvLYBC5FxjVRi8HH4ar5OjJL/NskTmVXEC5vq2R7895on5LZ8sI2kAkRGGBbmsd+h8qqw/waB0+/5ACwsWxonhD+gqqSq6OtqAqBMYx/5DXwZkFX8tghw4BGscXPLfWr4WndISMa+p0aHXAqQGnjzvTu1B5yjaAblos1/xKKcrAw2x0IQC1HP+aoebAzKKGnD7GRHa8aOMlaWYdfhdqBf+4CqWkCqSgWZP9hq+tqe8i0Qx+xALLT+IbGQ7rebYDpMk9U/l9QBOTzldRqUVb6yltQ7BYZ+azCKuNfmEtzvbeyamUkzUPJYtyzZtfEAxBBPPpmfVok8yKrNrx4XlmvnFmVEHcPOX8W4CFxnsUYPLxMukdIa6oR/oUpGwst3B5Nsp6f6tqJr2BsBJittoSFVwNgfXunCOdVzjJ3BcEoHEBIwEsZaDZ5PePKswrnoZhNKxAbdT6P2xXSEkno7ZFuXQrAT92dPIpghDwLOLT54ZCtWIeVV9iDxOBQNGWuscIASx1OAkV6kGl21kUQ2Hj+qDswJjI3QZU0AcJpQ6YBfrzLB9m67IbmYbzwiP17Ow304f8MMK6YRdzCdAqBxkd8HJga5p/QrimpVQEDNam1UwZ1PwVy1p9xitZbOR3tJZbHunYOGqPjT3q2R3eyhh/WwUTU5ABvcKOjnxNIUY23gtR/26ufqs+Hr/+igmw1/1bnmjUBlVUDvARo8KOi8xO0oSE6pD+MMbOVyecaNDOB+N8gP
- s7CjCl8r
- VsuaWuNuUu10R8jlD7N2yf9u99Vqm2jTieLXf21GoVXfWzo0/Ye5IiP9w16lfHoTRP0lVFvQIQHdcRK+f5zWuW+I7IzxF4wJPuxyi2ZNjF+Q6uajfZPX1OfQ+qTr0ga+RxQHJ++q4m7D8vcSxf6lajgjGpyRscGu2bxc47XQYvrZF5aSD3DYWpGI4Ho/BPfayNAqdcomSmhFvrw5tXBNHiC+l60Sl0y3ggEbcSOx7bTn6mggHqCKClPYwFQTeKddPG08QbNGYXoV8kkXKQX7vNCH1R32ONlsN6HgnK5iw4uh1a2cYea0ZdMOkGLyx9pgu+B0mdlzx8Iw2Ym+nPYeuQlceVdO2HRGeKnx/oMACD0XMR47TY02PZ+57bmnIU1i670xvPrI+8taeaXOXoNX8rusPfNqnj4ZslXJUo7gzDopUgSJAlwlEyhnTeO/7RmFLCF0ATFux5Hx60zV+yyGfVM4Qkqn5SmBim1TVGYOUKJYSavH0FsJ6+AIKKOglmICChPPdFJap7TkSieUHwNez57EoXtE3ar/CGm85UlJI42uw9pMRfpDVYf2n0xgo1KppX3v715LiuRIUAkJQ7CyGuR2aqU649LZ6BdEqM03Ulalw4tRU/GazhoFiIRPuU82Ao0aYUE2t997SGACtJGHalCjr+nagCrR1zjEz83w3NbSo8pR7u3VvTl0KcWeFExFzoyh3+MwK/dEP8cjM7CKy9vycU8N3XjICqzl/ylTipKTVVPa2DeMWeqIq1uxuZtHlGhHlq3ADTNXaCkc5IJVRucaJew==
+X-HE-Tag: 1753930680-100357
+X-HE-Meta: U2FsdGVkX19pekF/CIBM1c7QwoSH3XtKh/ftq9+DsBgvDh6/kJcL1Xya8uSpTMwNSSUnoHcLlE7r0u6R51jtpRdSHL8lMfVAJ9aS0hrQ74H1KcDM4IwqlcacGn+GGaMC7DJrXK8hXbwFzF4OxvcsW4i89ibmf4AHvbvnA840i7Do6wXM2ztK+Muw9sI+C6VXV2SQY4nSgPf8XQWVUfEBW0K8RdEh3zNpFTSHL0HO65D3aJkoXKXDD0XsDmbNDKm9wJaMeNp/b4pmJlC09FQyzJoM8UTd5h0ISSJNFB0nT3YQHGDnvgl/Ny8oKRXmpE9F3Lsf3Y9DNI3/sZ12o5pMPU2BJ9Cu5jhQP+MIF14OIBe8uzbHZs7Qd6bi6xtZCbQA2iolrwg48/2GA71hwzJyW8UQJAQAspwR9ee8OiWIMHw72iTdB9Ak4eDhlugWzDWY1uJBKeZhPCH66LZfcrB6fzB/erPwWyd3yNFF2ViwL4F8cU7FDbLFL6q+hHRvhKqIGUV16KXGMYZDMQwdxRsUqI+6IdVuMZKyjsNrCmUr7uJtKGhO7Lw9G3eR2EJdJ4LccPHvkQR69QqxHnWJpIHNrbGiQuVg5PBUZ8gpIvlLfBDr9SNCurJo656i5/QGElN3dfx7olfW3M/BrSfzrSCYO44WkDAC4qUDXEXdhQPiL1gBipj8ftkZaQcmycXUBs1/Ad4wBp2lYIVdo9gnGFSGuQGDzOX7RU/pwG7IAtqGxkdUyrdd9NfHinqaNofkdTvlgegm+dj4oE0ctUHV+odR1U8Mt7zUIfnOMkBB+Btll/BqlNwNzTGAROyyYAySdJguTEuWz0y+/awTv8QWwJIrCpl1XI5rJH66lr1qHPzybFHtmuFrh56NXgVQmxJd84vTBMbjcI5T1mVN6bmgNsS7x3bHAgUSXXWbCerN8NelySoeuzZQ8yWPcRPHuwyPWdJTPNGehAqZWzsIbAUIsVY
+ Ynx5LgMo
+ UJIt+aYoHL6z17o5Qt9iZfm/borBMAuwgFgW4JNoqHwi3HKPxRhMtNfbFkM4bbSNi82wIX7S+miY/dWVYiheSpREUEYDa17XC+s6PrzzLQcR49gPw4zAdFFYivV0iNYetybHm0RWqCQ+7xsXKq4hmyJZwPRnIY7pQdC3CaC85PDkr3FQQy36NcJ1uQmlP+Amc/aWUQGbXbunhBGhIh++gCQb2dqbVd7pqbbs0plI1yuIst4rUsIaP8y+Owm2xnEMqfqB7up5caSW10MFzBMdGr06yLVNdcFh2kaRtu9J6iVkttwh3PtFhYhAqkHHa7s5N1/VOoK+eRV1eQQsU4OIR4Xn5IKt+rGWwglvR
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,113 +88,214 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------IvwDcfDvu0SkH02Eh8025qiE
-Content-Type: multipart/mixed; boundary="------------4K1WZL7K3syHT0zLd9vYGe9R";
- protected-headers="v1"
-From: WangYuli <wangyuli@uniontech.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: akpm@linux-foundation.org, Liam.Howlett@oracle.com, vbabka@suse.cz,
- jannh@google.com, pfalcato@suse.de, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, niecheng1@uniontech.com,
- guanwentao@uniontech.com, Jun Zhan <zhanjun@uniontech.com>,
- linux-kbuild@vger.kernel.org
-Message-ID: <56b95783-ed70-4744-9fc5-f2d93ddf2c12@uniontech.com>
-Subject: Re: [PATCH] tools/testing/vma: Fix function parameter declarations
- for GCC 8.3 compatibility
-References: <EFCEBE7E301589DE+20250729084700.208767-1-wangyuli@uniontech.com>
- <e7554f93-03e8-4315-acb7-a55312354485@lucifer.local>
-In-Reply-To: <e7554f93-03e8-4315-acb7-a55312354485@lucifer.local>
 
---------------4K1WZL7K3syHT0zLd9vYGe9R
-Content-Type: multipart/mixed; boundary="------------I4Ek084y2FxmUsLmcyEuhTCG"
 
---------------I4Ek084y2FxmUsLmcyEuhTCG
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+On 2025/7/30 23:17, Lorenzo Stoakes wrote:
+> On Wed, Jul 30, 2025 at 04:14:55PM +0800, Baolin Wang wrote:
+>> After commit acd7ccb284b8 ("mm: shmem: add large folio support for tmpfs"),
+>> we have extended tmpfs to allow any sized large folios, rather than just
+>> PMD-sized large folios.
+>>
+>> The strategy discussed previously was:
+>>
+>> "
+>> Considering that tmpfs already has the 'huge=' option to control the
+>> PMD-sized large folios allocation, we can extend the 'huge=' option to
+>> allow any sized large folios.  The semantics of the 'huge=' mount option
+>> are:
+>>
+>>      huge=never: no any sized large folios
+>>      huge=always: any sized large folios
+>>      huge=within_size: like 'always' but respect the i_size
+>>      huge=advise: like 'always' if requested with madvise()
+> 
+> Sort of hate we have a million different ways of setting behaviour for THP
+> and they all differ in subtle ways.
+> 
+> Also this is similar to sysfs settings but with slightly different
+> semantics... <insert appropriate meme here>.
+> 
+>>
+>> Note: for tmpfs mmap() faults, due to the lack of a write size hint, still
+>> allocate the PMD-sized huge folios if huge=always/within_size/advise is
+>> set.
+>>
+>> Moreover, the 'deny' and 'force' testing options controlled by
+>> '/sys/kernel/mm/transparent_hugepage/shmem_enabled', still retain the same
+>> semantics.  The 'deny' can disable any sized large folios for tmpfs, while
+>> the 'force' can enable PMD sized large folios for tmpfs.
+> 
+> And what about MADV_COLLAPSE?
 
-SGkgTG9yZW56byBTdG9ha2VzLA0KDQpPbiAyMDI1LzcvMjkgMTc6MDYsIExvcmVuem8gU3Rv
-YWtlcyB3cm90ZToNCj4gT24gVHVlLCBKdWwgMjksIDIwMjUgYXQgMDQ6NDc6MDBQTSArMDgw
-MCwgV2FuZ1l1bGkgd3JvdGU6DQo+PiBUaGUgTGludXgga2VybmVsJ3MgbWluaW11bSBHQ0Mg
-dmVyc2lvbiByZXF1aXJlbWVudCBoYXMgYmVlbiBidW1wZWQNCj4+IGZyb20gNC4zIHRvIDgu
-MywgYnV0IHRoaXMgdG9vbCBzdGlsbCBmYWlscyB0byBjb21waWxlIHdpdGggR0NDIDguMy4N
-Cj4gV2h5IHBlb3BsZSBrZWVwIHJlcG9ydGluZyB0aGlzIGZvciBteSBWTUEgdGVzdCBzZXJp
-ZXMgYnV0IF9ub3RfIHRoZSBrZXJuZWwNCj4gYXMgYSB3aG9sZSBJIGRvbid0IGtub3cuDQo+
-DQo+ICQgZ3JlcCAiXCopOyIgaW5jbHVkZS9saW51eC9tbS5oIHwgd2MgLWwNCj4gOQ0KPg0K
-PiBeLS0tIElmIHlvdSB1c2Ugc3VjaCBhIGNvbXBpbGVyLCB0aGUga2VybmVsIHdvbid0IGJ1
-aWxkLg0KPg0KPiBTbyB0aGUgYnVnIGlzIHdob2V2ZXIgaXMgc2F5aW5nIGEgdmVyc2lvbiBv
-ZiBnY2MgdGhhdCBkb2VzIHRoZSBiZWxvdyAoSSdsbA0KPiB0YWtlIHlvdXIgd29yZCBmb3Ig
-aXQgdGhhdCB0aGlzIGlzIGluIGEgbm9ybWFsIGNvbmZpZ3VyYWl0b24pIGlzIE9LIGZvciB0
-aGUNCj4ga2VybmVsLg0KPg0KPiBJdCdzIGNsZWFybHkgbm90Lg0KPg0KPiBPaCBqdXN0IHRv
-IHVuZGVybGluZSB0aGluZ3M6DQo+DQo+ICQgZmluZCBpbmNsdWRlL2xpbnV4IC1uYW1lICcq
-LmgnIHwgeGFyZ3MgZ3JlcCAiXCopOyIgfCB3YyAtbA0KPiAxODk5DQo+DQo+IFNvIHkna25v
-dy4NCj4NCj4+IE9sZGVyIGNvbXBpbGVycyB3b3VsZCBmYWlsIGlmIGRpZCBub3QgaW5jbHVk
-ZSBwYXJhbWV0ZXIgbmFtZXMgaW4NCj4+IGZ1bmN0aW9uIGRlY2xhcmF0aW9ucyB0aGF0IGNv
-bnRhaW5lZCBwYXJhbWV0ZXIgdHlwZXM7IG5ld2VyIGNvbXBpbGVycw0KPj4gYXJlIG1vcmUg
-bGVuaWVudCBhYm91dCB0aGlzLg0KPiBZb3UncmUgdXNpbmcgYSBjb21waWxlciB0aGF0IHdv
-bid0IGJ1aWxkIGxpbnV4LiBTdG9wIGl0Pw0KPg0KPj4gRml4IG1hbnkgZXJyb3JzIGxpa2Ug
-dGhpczoNCj4+ICAgIEluIGZpbGUgaW5jbHVkZWQgZnJvbSB2bWEuYzoxMDoNCj4+ICAgIHZt
-YV9pbnRlcm5hbC5oOiBJbiBmdW5jdGlvbiDigJhhcmNoX3ZhbGlkYXRlX2ZsYWdz4oCZOg0K
-Pj4gICAgdm1hX2ludGVybmFsLmg6MTIxODo0MDogZXJyb3I6IHBhcmFtZXRlciBuYW1lIG9t
-aXR0ZWQNCj4+ICAgICBzdGF0aWMgaW5saW5lIGJvb2wgYXJjaF92YWxpZGF0ZV9mbGFncyh1
-bnNpZ25lZCBsb25nKQ0KPj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICBefn5+fn5+fn5+fn5+DQo+PiAgICB2bWEuYzogSW4gZnVuY3Rpb24g4oCYZHVtbXlf
-Y2xvc2XigJk6DQo+PiAgICB2bWEuYzoyODE6MjU6IGVycm9yOiBwYXJhbWV0ZXIgbmFtZSBv
-bWl0dGVkDQo+PiAgICAgc3RhdGljIHZvaWQgZHVtbXlfY2xvc2Uoc3RydWN0IHZtX2FyZWFf
-c3RydWN0ICopDQo+PiAgICAgICAgICAgICAgICAgICAgICAgICAgIF5+fn5+fn5+fn5+fn5+
-fn5+fn5+fn5+DQo+Pg0KPj4gUmVwb3J0ZWQtYnk6IEp1biBaaGFuIDx6aGFuanVuQHVuaW9u
-dGVjaC5jb20+DQo+PiBTaWduZWQtb2ZmLWJ5OiBXYW5nWXVsaSA8d2FuZ3l1bGlAdW5pb250
-ZWNoLmNvbT4NCj4gTkFLLg0KPg0KVGhhbmtzIGZvciB0aGUgaGVhZHMtdXAhIEkgbm90aWNl
-ZCB0aGF0IGNvZGluZyBzdHlsZSBpbiB0aGUga2VybmVsIGNvZGUgDQphcyB3ZWxsLg0KDQpI
-b3dldmVyLCBHQ0MgOC4zICh3aGljaCBkb2VzIG1lZXQgdGhlIGtlcm5lbCdzIGNvbXBpbGVy
-IHZlcnNpb24gDQpyZXF1aXJlbWVudHMpIGNhbiBjb21waWxlIHRoZSBrZXJuZWwgY29kZSBu
-b3JtYWxseSwgYnV0IGl0IGNhbid0IGNvbXBpbGUgDQp2bWEncyB0ZXN0IGNvcnJlY3RseS4N
-Cg0KQ291bGQgdGhlIGlzc3VlIGJlIHJlbGF0ZWQgdG8gZGlmZmVyZW5jZXMgaW4gY29tcGls
-YXRpb24gcGFyYW1ldGVycz8gDQpJJ2xsIG5lZWQgdG8gc3BlbmQgc29tZSB0aW1lIGxvb2tp
-bmcgaW50byB0aGlzIG1vcmUgY2xvc2VseS4uLg0KDQpCeSB0aGUgd2F5LCB0aGlzIGNvZGlu
-ZyBzdHlsZSBoYXMgYmVlbiBhIEdOVSBDIGV4dGVuc2lvbiB1bnRpbCB0aGUgSVNPIA0KQzIz
-IHN0YW5kYXJkLiBTbywgdW50aWwgdGhlIGtlcm5lbCdzIEMgbGFuZ3VhZ2Ugc3RhbmRhcmQg
-aXMgdXBncmFkZWQgdG8gDQpDMjMgKHdoaWNoIHNlZW1zIHVubGlrZWx5IHRvIGhhcHBlbiBh
-bnl0aW1lIHNvb24sIHBlcmhhcHMgeWVhcnMgZG93biB0aGUgDQpsaW5lKSwgaXQgYWN0dWFs
-bHkgbWFrZXMgc2Vuc2UgdG8gbW9kaWZ5IHRoaXMgc3R5bGUgZm9yIGEgcHJhY3RpY2FsIA0K
-cHVycG9zZS4uLg0KDQpbIENjIHRoZSBrYnVpbGQgbGlzdC4gXQ0KDQpUaGFua3MsDQoNCi0t
-IA0KV2FuZ1l1bGkNCg==
---------------I4Ek084y2FxmUsLmcyEuhTCG
-Content-Type: application/pgp-keys; name="OpenPGP_0xC5DA1F3046F40BEE.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xC5DA1F3046F40BEE.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
+As Hugh mentioned beore, the 'deny' option will prohibit MADV_COLLAPSE 
+for shmem, while 'force' option will allow it.
 
------BEGIN PGP PUBLIC KEY BLOCK-----
+>> This means that when tmpfs is mounted with 'huge=always' or 'huge=within_size',
+>> tmpfs will allow getting a highest order hint based on the size of write() and
+>> fallocate() paths. It will then try each allowable large order, rather than
+>> continually attempting to allocate PMD-sized large folios as before.
+>>
+>> However, this might break some user scenarios for those who want to use
+>> PMD-sized large folios, such as the i915 driver which did not supply a write
+>> size hint when allocating shmem [1].
+> 
+> Hmm, this is unclear to me, surely because it doesn't provide a write size
+> hint it's not this behaviour that breaks anything, but rather the fact that
+> we base things on the write hint at all?
 
-xjMEZoEsiBYJKwYBBAHaRw8BAQdAyDPzcbPnchbIhweThfNK1tg1imM+5kgDBJSK
-P+nX39DNIVdhbmdZdWxpIDx3YW5neXVsaUB1bmlvbnRlY2guY29tPsKJBBMWCAAx
-FiEEa1GMzYeuKPkgqDuvxdofMEb0C+4FAmaBLIgCGwMECwkIBwUVCAkKCwUWAgMB
-AAAKCRDF2h8wRvQL7g0UAQCH3mrGM0HzOaARhBeA/Q3AIVfhS010a0MZmPTRGVfP
-bwD/SrncJwwPAL4GiLPEC4XssV6FPUAY0rA68eNNI9cJLArOOARmgSyJEgorBgEE
-AZdVAQUBAQdA88W4CTLDD9fKwW9PB5yurCNdWNS7VTL0dvPDofBTjFYDAQgHwngE
-GBYIACAWIQRrUYzNh64o+SCoO6/F2h8wRvQL7gUCZoEsiQIbDAAKCRDF2h8wRvQL
-7sKvAP4mBvm7Zn1OUjFViwkma8IGRGosXAvMUFyOHVcl1RTgFQEAuJkUo9ERi7qS
-/hbUdUgtitI89efbY0TVetgDsyeQiwU=3D
-=3DBlkq
------END PGP PUBLIC KEY BLOCK-----
+Yes, we changed the allocation strategy for shmem large folios, but 
+forgot to update the shmem allocation method for the i915 driver.
 
---------------I4Ek084y2FxmUsLmcyEuhTCG--
+>> Moreover, Hugh also complained that this will cause a regression in userspace
+>> with 'huge=always' or 'huge=within_size'.
+> 
+> Will cause? Is this not already the case?
+> 
+> And what is the regression precisely? That i915 doesn't get huge pages
+> because it doesn't provide a hint?
 
---------------4K1WZL7K3syHT0zLd9vYGe9R--
+Yes, see above.
 
---------------IvwDcfDvu0SkH02Eh8025qiE
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+>> So, let's revisit the strategy for tmpfs large page allocation. A simple fix
+>> would be to always try PMD-sized large folios first, and if that fails, fall
+>> back to smaller large folios. However, this approach differs from the strategy
+>> for large folio allocation used by other file systems. Is this acceptable?
+> 
+> Doesn't this imply a waste of memory?
 
------BEGIN PGP SIGNATURE-----
+Right. As I replied to David, using the write size as an indication to 
+allocate large folios is certainly reasonable in some scenarios, as it 
+avoids memory bloat while leveraging the advantages of large folios.
 
-wnsEABYIACMWIQRrUYzNh64o+SCoO6/F2h8wRvQL7gUCaIrbJAUDAAAAAAAKCRDF2h8wRvQL7ofF
-AP9uzDaVXJpePVW7A1LWIO7EFvEMZ0Ww89aZfSRBDXJKdAEArKSnnLp3GdzCgUX2YfG84LJp7Sr+
-rkgxUj5hEo6rKgU=
-=H+qA
------END PGP SIGNATURE-----
+However, there may be scenarios where PMD-sized large folios are always 
+expected, such as the i915 driver. It's uncertain whether user-space 
+tmpfs mounts with 'huge=' options have such scenarios, but we do have 
+this concern.
 
---------------IvwDcfDvu0SkH02Eh8025qiE--
+> I mean if the 'implicit' semantics now are 'always ...but respecting a
+> write size hint' (which kind of sucks), is changing this ok?
+> 
+> Maybe somebody relies on that?
+> 
+> It seems (unless I'm missing something here) that in THP we've both made
+> never not mean never, and always not mean always.
+> 
+>>
+>> [1] https://lore.kernel.org/lkml/0d734549d5ed073c80b11601da3abdd5223e1889.1753689802.git.baolin.wang@linux.alibaba.com/
+>> Fixes: acd7ccb284b8 ("mm: shmem: add large folio support for tmpfs")
+>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> ---
+>> Note: this is just an RFC patch. I would like to hear others' opinions or
+>> see if there is a better way to address Hugh's concern.
+>> ---
+>>   Documentation/admin-guide/mm/transhuge.rst |  6 ++-
+>>   mm/shmem.c                                 | 47 +++-------------------
+>>   2 files changed, 10 insertions(+), 43 deletions(-)
+>>
+>> diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
+>> index 878796b4d7d3..121cbb3a72f7 100644
+>> --- a/Documentation/admin-guide/mm/transhuge.rst
+>> +++ b/Documentation/admin-guide/mm/transhuge.rst
+>> @@ -383,12 +383,16 @@ option: ``huge=``. It can have following values:
+>>
+>>   always
+>>       Attempt to allocate huge pages every time we need a new page;
+>> +    Always try PMD-sized huge pages first, and fall back to smaller-sized
+>> +    huge pages if the PMD-sized huge page allocation fails;
+>>
+>>   never
+>>       Do not allocate huge pages;
+>>
+>>   within_size
+>> -    Only allocate huge page if it will be fully within i_size.
+>> +    Only allocate huge page if it will be fully within i_size;
+>> +    Always try PMD-sized huge pages first, and fall back to smaller-sized
+>> +    huge pages if the PMD-sized huge page allocation fails;
+>>       Also respect madvise() hints;
+>>
+>>   advise
+>> diff --git a/mm/shmem.c b/mm/shmem.c
+>> index 75cc2cb92950..c1040a115f08 100644
+>> --- a/mm/shmem.c
+>> +++ b/mm/shmem.c
+>> @@ -566,42 +566,6 @@ static int shmem_confirm_swap(struct address_space *mapping, pgoff_t index,
+>>   static int shmem_huge __read_mostly = SHMEM_HUGE_NEVER;
+>>   static int tmpfs_huge __read_mostly = SHMEM_HUGE_NEVER;
+>>
+>> -/**
+>> - * shmem_mapping_size_orders - Get allowable folio orders for the given file size.
+>> - * @mapping: Target address_space.
+>> - * @index: The page index.
+>> - * @write_end: end of a write, could extend inode size.
+>> - *
+>> - * This returns huge orders for folios (when supported) based on the file size
+>> - * which the mapping currently allows at the given index. The index is relevant
+>> - * due to alignment considerations the mapping might have. The returned order
+>> - * may be less than the size passed.
+>> - *
+>> - * Return: The orders.
+>> - */
+>> -static inline unsigned int
+>> -shmem_mapping_size_orders(struct address_space *mapping, pgoff_t index, loff_t write_end)
+>> -{
+>> -	unsigned int order;
+>> -	size_t size;
+>> -
+>> -	if (!mapping_large_folio_support(mapping) || !write_end)
+>> -		return 0;
+>> -
+>> -	/* Calculate the write size based on the write_end */
+>> -	size = write_end - (index << PAGE_SHIFT);
+>> -	order = filemap_get_order(size);
+>> -	if (!order)
+>> -		return 0;
+>> -
+>> -	/* If we're not aligned, allocate a smaller folio */
+>> -	if (index & ((1UL << order) - 1))
+>> -		order = __ffs(index);
+> 
+> We need to care about alignment still no?
+
+We‘ve already done alignment during shmem allocation.
+
+>> -
+>> -	order = min_t(size_t, order, MAX_PAGECACHE_ORDER);
+>> -	return order > 0 ? BIT(order + 1) - 1 : 0;
+>> -}
+>> -
+>>   static unsigned int shmem_get_orders_within_size(struct inode *inode,
+>>   		unsigned long within_size_orders, pgoff_t index,
+>>   		loff_t write_end)
+>> @@ -648,22 +612,21 @@ static unsigned int shmem_huge_global_enabled(struct inode *inode, pgoff_t index
+>>   	 * For tmpfs mmap()'s huge order, we still use PMD-sized order to
+>>   	 * allocate huge pages due to lack of a write size hint.
+>>   	 *
+>> -	 * Otherwise, tmpfs will allow getting a highest order hint based on
+>> -	 * the size of write and fallocate paths, then will try each allowable
+>> -	 * huge orders.
+>> +	 * For tmpfs with 'huge=always' or 'huge=within_size' mount option,
+>> +	 * we will always try PMD-sized order first. If that failed, it will
+>> +	 * fall back to small large folios.
+>>   	 */
+>>   	switch (SHMEM_SB(inode->i_sb)->huge) {
+>>   	case SHMEM_HUGE_ALWAYS:
+>>   		if (vma)
+>>   			return maybe_pmd_order;
+>>
+>> -		return shmem_mapping_size_orders(inode->i_mapping, index, write_end);
+>> +		return THP_ORDERS_ALL_FILE_DEFAULT;
+>>   	case SHMEM_HUGE_WITHIN_SIZE:
+>>   		if (vma)
+>>   			within_size_orders = maybe_pmd_order;
+>>   		else
+>> -			within_size_orders = shmem_mapping_size_orders(inode->i_mapping,
+>> -								       index, write_end);
+>> +			within_size_orders = THP_ORDERS_ALL_FILE_DEFAULT;
+>>
+>>   		within_size_orders = shmem_get_orders_within_size(inode, within_size_orders,
+>>   								  index, write_end);
+>> --
+>> 2.43.5
+>>
+
 
