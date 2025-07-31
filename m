@@ -2,103 +2,117 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 31CE9C87FCA
-	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 15:44:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 26467C87FCA
+	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 16:02:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9818C6B007B; Thu, 31 Jul 2025 11:44:48 -0400 (EDT)
+	id A18436B007B; Thu, 31 Jul 2025 12:02:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 932DA6B0088; Thu, 31 Jul 2025 11:44:48 -0400 (EDT)
+	id 9C91C6B0088; Thu, 31 Jul 2025 12:02:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8487E6B008A; Thu, 31 Jul 2025 11:44:48 -0400 (EDT)
+	id 8B79A6B008A; Thu, 31 Jul 2025 12:02:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7526A6B007B
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 11:44:48 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 243841A0778
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 15:44:48 +0000 (UTC)
-X-FDA: 83724982656.19.861E75E
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 29827C0010
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 15:44:45 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=lYxZlNCF;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf28.hostedemail.com: domain of 3bI-LaAYKCAUxzwjsglttlqj.htrqnsz2-rrp0fhp.twl@flex--surenb.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3bI-LaAYKCAUxzwjsglttlqj.htrqnsz2-rrp0fhp.twl@flex--surenb.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753976686; a=rsa-sha256;
-	cv=none;
-	b=VfI+pi9ulycoWTpE9hg22wU+WJN0TPCBFgzSsQYvW4Uea5PQijrovUc3RWBSR+LUrjIwTP
-	BqRh8ADGJZOi9khFst2X7eYXvMSsarnYhvM1mxOHof5cjWRyrHDJsPJbeWtitmLkVxdnXH
-	1k3hnlpiIrwKtXIp265k9dNEpk/sr38=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=lYxZlNCF;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf28.hostedemail.com: domain of 3bI-LaAYKCAUxzwjsglttlqj.htrqnsz2-rrp0fhp.twl@flex--surenb.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3bI-LaAYKCAUxzwjsglttlqj.htrqnsz2-rrp0fhp.twl@flex--surenb.bounces.google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753976686;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 787D86B007B
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 12:02:35 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EBF581146EB
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 16:02:34 +0000 (UTC)
+X-FDA: 83725027428.30.91732D0
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 16417180018
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 16:02:32 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=zohomail header.b=kBCYLhCZ;
+	spf=pass (imf24.hostedemail.com: domain of usama.anjum@collabora.com designates 136.143.188.112 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com;
+	arc=pass ("zohomail.com:s=zohoarc:i=1");
+	dmarc=pass (policy=none) header.from=collabora.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1753977753;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=8D6H3TovcRUpDHrrv443Wy2kKrliHPbwf72lIkroPTg=;
-	b=eUfmPBxOFVugl5UR/Pne2KKVyVGoJH7tQw/2fnnT6/fCVd0kCtLLCicGDyPbVvNoOQK8L5
-	TtVfPm5SrN895hnpsXDWmTzD36FdqMiW/DWE/sv9KqE7Mf36v8OgDptW+BtkTdzJQvyq3v
-	5DMFyIFESosTJAIavEXsHctL1t9BJqU=
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-31f74a64da9so751763a91.2
-        for <linux-mm@kvack.org>; Thu, 31 Jul 2025 08:44:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753976685; x=1754581485; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=8D6H3TovcRUpDHrrv443Wy2kKrliHPbwf72lIkroPTg=;
-        b=lYxZlNCFLp1Ea278nziSFPtYQfnC+IRxrS/mTbJ9ZeQKOwZ1NAKrBImBn90uYx/Q2x
-         gWkM3ojmddc9i7O38+YNbivrIOxIv8quvBClpAKYkpODVl0V5BJB9w9QKRyD4f4MJ/SB
-         KcOLjTa1hj5TJL3akKVG9OdFZsDqE71xJNv+jH5EUPZaTr890hZ8R5Sh9zZi+5XNvQSO
-         xmRv3zsaI2CP28nWD2yFr/6pLqULRCrMS/V4QWJBnmk5vau3tvBZD+dZ/FEkHXa80sqJ
-         fA8TXYqSixaVk3Sb6+J8Io54N/aP7hkI15dvBgeYgg+pH9ak0LCVHnOX17k1yhpToU7u
-         gYdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753976685; x=1754581485;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8D6H3TovcRUpDHrrv443Wy2kKrliHPbwf72lIkroPTg=;
-        b=j4v0wUqd5iNjlHqHp4ASzoZT502dTXLG4nbdetmjODGNx7vF/IGJh9Z+BIrmxOvQJW
-         FXjXef5VUG5Jtf9sbUpOH3qKrxqPdR7eG1pE8Vz6xIqv/QsQ3M3LeRbUqTjO1UNFqgLY
-         kJ2K/VIAJGNibYntPlQVy4ZEa7L/XPVc0qIM93sqYhGWjYpybjXSAg0HsDV6t9kiat5Y
-         bJhV1coPiSDa3wLXEStTw24ABaPitSbmXJyWq+x7XVZvG3ctngFBIR2vl7lpPZlvcbGB
-         PpEKVrAzuH6biKKp9DUmjWa/yALjqyX8urYl32d8OXSBaKJG1ITJT/PqUTvRNM1k1WTM
-         AskA==
-X-Forwarded-Encrypted: i=1; AJvYcCUa6QX5jUb5EKxLptoaryhocIZsVaSGYR7qWfp90GL8atHFXe9v0GXRoH9n9ZWBOluKNqqbIC4/gw==@kvack.org
-X-Gm-Message-State: AOJu0Yx5sM8PtLkw83G/yAGyDE+YbivQcQk4+urC/Bg8mFGikXGNkV93
-	gaZK+gEL2rWOq84xLNP7iAJjjVrzwDBCOtge0IHmHvz6/sGyjM05b8NHeP4i1nNlQQ9dI6Amvsb
-	4Fw6ObA==
-X-Google-Smtp-Source: AGHT+IG5srnDugZwbzwxdO5CMVzSLz47ALstUwtxD0ry/hJIfF+IqAvaHkQ39SziNPkrw/OnSv1Kvb0DGBw=
-X-Received: from pjbqd15.prod.google.com ([2002:a17:90b:3ccf:b0:314:d44:4108])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:562b:b0:312:959:dc4f
- with SMTP id 98e67ed59e1d1-31f5dd6b53amr9841464a91.5.1753976684978; Thu, 31
- Jul 2025 08:44:44 -0700 (PDT)
-Date: Thu, 31 Jul 2025 08:44:41 -0700
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.50.1.552.g942d659e1b-goog
-Message-ID: <20250731154442.319568-1-surenb@google.com>
-Subject: [PATCH v2 1/1] userfaultfd: fix a crash when UFFDIO_MOVE handles a
- THP hole
-From: Suren Baghdasaryan <surenb@google.com>
-To: akpm@linux-foundation.org
-Cc: peterx@redhat.com, david@redhat.com, aarcange@redhat.com, 
-	lokeshgidra@google.com, surenb@google.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, 
-	syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 4rpz88gcqym7o9k7xjsyy117cfj33n1d
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=meNELh8LR1NAeAvdziO/ZgYgHuiniypSBrawhPsx+G4=;
+	b=k9WO7DjeUuktIs9yOFs/67Bh33wpXbWDNU71/5y8O3oF5Gveib/Gj6nD+Qg6zMnmsKo4O7
+	l61BneTT12Z8+5OYBOmCY9o6srZpJFWpnqj4HJ/fRYzbv/TpOGrYa0PZv0IULuTeS01tj2
+	UrCoD4J5cua3xJc5+/vftV/ihCiRyFI=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753977753; a=rsa-sha256;
+	cv=pass;
+	b=WytelUh1S/IQk4DvDWoxoxTbsk61hyJclPF3XZxnJsK9lZgtSt/y6/vXQT6szqmjFMWz0b
+	Ed05THrAQqJdVu/D7s7xrCbjKAD0CZFs0MYapvoLUHthZbO6Mxn+UfFtNAM+/xUJiL55aN
+	uYKIovbSEJuyXLPRNiQpQ7VsSALN2I0=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=zohomail header.b=kBCYLhCZ;
+	spf=pass (imf24.hostedemail.com: domain of usama.anjum@collabora.com designates 136.143.188.112 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com;
+	arc=pass ("zohomail.com:s=zohoarc:i=1");
+	dmarc=pass (policy=none) header.from=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1753977731; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=ZEWeWRS9NSRtAoYJxrk6zRnSS7qa1OVpBdM2SJ3xXuAG6R+eXaSMCIA8RNptxud6zJNpzEJC5teZqBpSmHzg8QBojAmMCg/fxqV2N8FDI/+fAZy01OKFsin5Ai4uGkvKTtO8U9wrHCbcJg1hK6DcO0uC06o2t0tEApFWiaylDDU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1753977731; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=meNELh8LR1NAeAvdziO/ZgYgHuiniypSBrawhPsx+G4=; 
+	b=jHVH1kgjVLXRvCR1F5I0VoPOPqohdomaXMIZAhRmwEtfMjpLxBCNC/mepNDk3dJdLvqCyO29aEzfE010htlexxv9SyI4l+/nXqZq6pZa5UuBftOcXTj8quN2lBKIuAJWbOOAyFPRWtHm0iydZq7ygxyLuea7862o7QbiHn3R7UM=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=usama.anjum@collabora.com;
+	dmarc=pass header.from=<usama.anjum@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1753977731;
+	s=zohomail; d=collabora.com; i=usama.anjum@collabora.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
+	bh=meNELh8LR1NAeAvdziO/ZgYgHuiniypSBrawhPsx+G4=;
+	b=kBCYLhCZOgzVeWLofV1x57vA+k/CUZJZToOl5buYcqBdy2YTFJGa6G+bdE2wyS7g
+	LN6BRD4KO/J+zQ/2kjx2Qz6vDoj0JQIIzGh+lG55+SYCNMDIx1VlY8YgwgWJbVtyDT2
+	uj+RMFayNJ6gciYtQVYIp+1rscQQVv2cQUoqxLe4=
+Received: by mx.zohomail.com with SMTPS id 1753977728569555.2914754706031;
+	Thu, 31 Jul 2025 09:02:08 -0700 (PDT)
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Peter Xu <peterx@redhat.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-riscv@lists.infradead.org,
+	Shuah Khan <shuah@kernel.org>
+Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	kernel@collabora.com
+Subject: [PATCH v2 0/8] selftests/mm: Add compiler flags and fix found warnings
+Date: Thu, 31 Jul 2025 21:01:24 +0500
+Message-Id: <20250731160132.1795351-1-usama.anjum@collabora.com>
+X-Mailer: git-send-email 2.39.5
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
+X-Rspamd-Queue-Id: 16417180018
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 29827C0010
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1753976685-443425
-X-HE-Meta: U2FsdGVkX18oSg2GcHaCtiDqyQKCIfgDZvotNLJtLtKfr7PCCyfytpi2rjt35kI+6nVSd5F33T5qD++jNqnOehIIetpS/5yUanpH/oo+wE7/VxGMnqzefhkg4/3LteoKogODl0pe2oeW8aGbISqlzNWgNTeNdAEYfdV1SOKfDVOStnM2lmMOiSYzX5ZWbjUu1+54fpZRVQZtUBdzqVIE5+rVYL7PIoiecQMGa+b76rY0ga+z57avEOK+oVehnZaqdBNh3VZ7ULJhOfvH+monRfK0Fd6F/CdRnwtHrfXC0/MHRxzGStdJFxvCuxGAL0IBzef4PrbOd0ThhEiGuPWO2x7Sx0PGv35da/tgmJ9XOuBWurR5hn+4+qMhfTpKjfL++GyxhTrl+ukDeOSjbXfaBeVH0eQ4EjG8JVrm69FGkOB8OIjewMFBcUjOih0A6q8LLwSLkk+Zx4sI407L538YxMQN+NbKgCVABsuYT0S978JidSzmqEyKCW+fbxwDQ6Bf4DDCplTfN+40l3xFsMZ0ktKKWzWekQhEvpZm4GsJhQxRoswRWX9pj7SwZNegIBFpwjlZzJRc9pxO0MTk5JKeFVVC3NjV+NYEBNhdWDUcjwUrGfib4s/KagD3IexTB4b4shp9KfetzHOxeJ2pL0XEoBjiwhK0J3bR8IZEW07YP/XEcyPQ1bHntK94zYg4OtkCL4hA6N7QTdlPlWDq6eLGExGa+i6aQ1zk/2E2pHW18QczYgDPXBSBO/+AZQb0bvYsDPHpal6jGjFk4+N2cZQ8Zm8Krbur77rZtiZOR+bizzlx9SzorGMxIPWS9JunB5olBR+3xs2yKJQQwei27gTJsdSMGIrlna5M+8SHUgMpx7aw10tLzMe3/cuInpcPRE3zoa2hgyEJESMyDBqtZJO3/LtKuKW+Vbqrka4RGCClXIhpMSw6sHkZjvorpN5tvU3eTCfiG13L41PSCHwKuvl
- 50U6vR60
- o1MZmIEX/ixF70IMAlp31vSAK5ics/qCAs0bsvf+sfQ0h7qqLudG+yWTnUJeHQI4XMKM5X3a192TksSAESstc95GrwRcdCcwOQUjtHl2moe4JwS6BXHcLWYi4VQEfYedLF4v904uP1VpY7XgSn6fcUbbeTWBNzjNolDppe8SMVY8TBaEf+kduxbEVLqcXTP8pCfilT0geu1qJXaaxFQGPGCKZxtJTBZs92aSomCAmllWvT6ZLdbE2TpbVysbY3F3ARuwloeLpns8BzMWSuH9MagsgDErLGGVnWwXWAMfg69hlJKdjEZYT4Nv9OBwi0cjIXfyzrATrdCKDySegi8wG2kNZXxxGmyEu4VicmOp/vMBeOSDvvprUvj9BbxprbpA0icpKm73cfhJXZlrCfxQTaAMFzaRgIqa7rmc0J1Grcqy71yVskAGxjrEqoQ==
+X-Rspamd-Server: rspam09
+X-Stat-Signature: hwggx1offxsskt98z69k6ywyxm3jccij
+X-HE-Tag: 1753977752-853505
+X-HE-Meta: U2FsdGVkX1//kJrj1rF02tkIQneXjO4Zmd9vpdlIBjj6qBZYTHVT//N+l4HagZpDV45ZGEIL3Jz6kFOQL8eiP+8M/PpTLpW49/ormonCJ6Pc1WvRRC8ZVeitYXaH+/U/X/GPoq+pn5UV6Yopvr0owFl94fGlEzso7prZGwX1EVg4fgT/sYsyxn4X3ZpbzMH6qlfzpa6q9l2eeor6fzjKXgoRSog9eSa9XC5Y0bRX2kzNdJtdKuBShfdcaRXURb7d55yYUBCsOWmqgHxXil1c6ylAPxIyBUiOvG25irFm6GVqy3ynPsmzZG1vlgksZCJUGusoHMDtNLvmZ2YuWdfyTGxclBC8IDuKdeX30A7awkLuvv3A9kbNunFPoaZcPkHX1aq6QIDv7wh5cWLmOxI7rPJrUvJeSjYwY+td1EXyo9B8kEXu4OnQAtScTgIuuSQ9prH3rhESm5ELZO65hPEHoeQQZE5pToxvv3y6OAwzmg/gOSV+ivsZsVR6Q0UoztSa635KgZ9YpQQgcB+XLL8fEC01ISYRcIYBqxKyIr4ACpi3dsrxemY4LQtq7KBN+kumP26XAv8Vat1HM6I9LKCmcSV5eodzAQNW+sei3/hSpaUC6JrcyfIsodUuk31DbaJGOCXLdbC86e4ibxxo11W99q6bRRTVsTkXNs1nMFSwxpMjvBmqQULtAkC9euRU7omK4lq81E7cHMRtWmcWmgs4s8Yxjq/SvmsHd2parAV1H1V4SHFSb+LO+ewZwdlvlDgFekuih0odMD0TPGQcBp/Iy+iN0xPJZNRd63ue2YQ+T7nzd9rTXrY8oh6Pgb5AEtr5GwwwGQmPUg6WD2ThQQlGUuGKiG5Y5D0MR5fdJGkLnzHpLkNgXPOw6yV0D2206B3DRls0jhOd8UBy4mkt/QRqnhkU8nU2cIfhDsvzV2CwlabsFBMkYGih9GgoQVxMmHmoHdE40TY2BBqeEpib91X
+ EQOGos39
+ Rcu1ojLgx/sk9WVL0+tnZ15a813clOLIfYJMKYZmdDEI/5uTuT0M4XiuJ3KolCY4a8c27LnDiIBfkyphmcnTbzKsb2CssJUQ4P9rFErAcRBmYFmLP2Fa8TRqbGsEcID1btLTLTT5+Y7T2r4mLvo5Nqfhh6KUU5sbh1FTK+VUasGU08/dqehroMD5JYpS1j75ijHWl7I39xjHiZ0XIGoqp8XMc5b3TeAYyd554JUR5vPLL8l5G0aZ6g2PoJAYRGotY3unxxNhTcfTcBoH5fPPk8WAtmbqsFOD7WuwRAiFZsS5WoRugehF9kgoPf7SZcItmBjZLK+e/g8AOTDFtNVr2eS9ozMbTF/J9yJDVbdAEx7mNHlM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,91 +121,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When UFFDIO_MOVE is used with UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES and it
-encounters a non-present THP, it fails to properly recognize an unmapped
-hole and tries to access a non-existent folio, resulting in
-a crash. Add a check to skip non-present THPs.
+Recently, I reviewed a patch on the mm/kselftest mailing list about a
+test which had obvious type mismatch fix in it. It was strange why that
+wasn't caught during development and when patch was accepted. This led
+me to discover that those extra compiler options to catch these warnings
+aren't being used. When I added them, I found tens of warnings in just
+mm suite.
 
-Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-Reported-by: syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68794b5c.a70a0220.693ce.0050.GAE@google.com/
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Cc: stable@vger.kernel.org
+In this series, I'm adding these flags and fixing those warnings. In the
+last try several months ago [1], I'd patches for individual tests. I've
+made patches better by grouping the same type of fixes together. Hence
+there is no changelog for individual patches.
+
+The changes have been build tested on x86_64, arm64, powerpc64 and partially
+on riscv64. The test run with and without this series has been done on
+x86_64.
+
 ---
-Changes since v1 [1]
-- Fixed step size calculation, per Lokesh Gidra
-- Added missing check for UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES, per Lokesh Gidra
+Changes since v1:
+- Drop test harness patch which isn't needed anymore
+- Revamp how patches are written per same kind of failure
 
-[1] https://lore.kernel.org/all/20250730170733.3829267-1-surenb@google.com/
+Muhammad Usama Anjum (8):
+  selftests/mm: Add -Wunreachable-code and fix warnings
+  selftests/mm: protection_keys: Fix dead code
+  selftests: kselftest.h: Add __unused macro
+  selftests/mm: Add -Wunused family of flags
+  selftests/mm: Remove unused parameters
+  selftests/mm: Mark unused arguments with __unused
+  selftests/mm: Mark unused arguments with __unused
+  selftests/mm: Fix unused parameter warnings for different
+    architectures
 
- mm/userfaultfd.c | 45 +++++++++++++++++++++++++++++----------------
- 1 file changed, 29 insertions(+), 16 deletions(-)
+ tools/testing/selftests/kselftest.h           |  4 ++
+ tools/testing/selftests/mm/Makefile           |  3 +-
+ tools/testing/selftests/mm/compaction_test.c  |  2 +-
+ tools/testing/selftests/mm/cow.c              | 22 +++++------
+ tools/testing/selftests/mm/droppable.c        |  2 +-
+ tools/testing/selftests/mm/gup_longterm.c     |  2 +-
+ tools/testing/selftests/mm/hmm-tests.c        |  5 +--
+ tools/testing/selftests/mm/hugepage-vmemmap.c |  2 +-
+ tools/testing/selftests/mm/hugetlb-madvise.c  |  2 +-
+ .../selftests/mm/hugetlb-soft-offline.c       |  2 +-
+ .../selftests/mm/hugetlb_fault_after_madv.c   |  4 +-
+ .../selftests/mm/hugetlb_madv_vs_map.c        |  6 +--
+ tools/testing/selftests/mm/ksm_tests.c        | 17 ++++-----
+ tools/testing/selftests/mm/madv_populate.c    |  2 +-
+ tools/testing/selftests/mm/map_populate.c     |  2 +-
+ tools/testing/selftests/mm/memfd_secret.c     |  6 +--
+ .../testing/selftests/mm/mlock-random-test.c  |  2 +-
+ tools/testing/selftests/mm/mlock2-tests.c     |  2 +-
+ tools/testing/selftests/mm/mseal_test.c       |  8 +++-
+ tools/testing/selftests/mm/on-fault-limit.c   |  2 +-
+ tools/testing/selftests/mm/pfnmap.c           |  2 +-
+ tools/testing/selftests/mm/pkey-arm64.h       |  5 ++-
+ tools/testing/selftests/mm/pkey-powerpc.h     |  2 +-
+ tools/testing/selftests/mm/pkey-x86.h         |  3 +-
+ .../selftests/mm/pkey_sighandler_tests.c      | 35 ++++++++++++-----
+ tools/testing/selftests/mm/protection_keys.c  | 22 +++++------
+ tools/testing/selftests/mm/soft-dirty.c       |  6 +--
+ .../selftests/mm/split_huge_page_test.c       |  8 ++--
+ tools/testing/selftests/mm/uffd-common.c      | 15 ++++----
+ tools/testing/selftests/mm/uffd-common.h      |  2 +-
+ tools/testing/selftests/mm/uffd-stress.c      |  2 +-
+ tools/testing/selftests/mm/uffd-unit-tests.c  | 38 +++++++++----------
+ tools/testing/selftests/mm/uffd-wp-mremap.c   |  2 +-
+ .../selftests/mm/virtual_address_range.c      |  2 +-
+ 34 files changed, 130 insertions(+), 111 deletions(-)
 
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index cbed91b09640..b5af31c22731 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -1818,28 +1818,41 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
- 
- 		ptl = pmd_trans_huge_lock(src_pmd, src_vma);
- 		if (ptl) {
--			/* Check if we can move the pmd without splitting it. */
--			if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
--			    !pmd_none(dst_pmdval)) {
--				struct folio *folio = pmd_folio(*src_pmd);
-+			if (pmd_present(*src_pmd) || is_pmd_migration_entry(*src_pmd)) {
-+				/* Check if we can move the pmd without splitting it. */
-+				if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
-+				    !pmd_none(dst_pmdval)) {
-+					if (pmd_present(*src_pmd)) {
-+						struct folio *folio = pmd_folio(*src_pmd);
-+
-+						if (!folio || (!is_huge_zero_folio(folio) &&
-+							       !PageAnonExclusive(&folio->page))) {
-+							spin_unlock(ptl);
-+							err = -EBUSY;
-+							break;
-+						}
-+					}
- 
--				if (!folio || (!is_huge_zero_folio(folio) &&
--					       !PageAnonExclusive(&folio->page))) {
- 					spin_unlock(ptl);
--					err = -EBUSY;
--					break;
-+					split_huge_pmd(src_vma, src_pmd, src_addr);
-+					/* The folio will be split by move_pages_pte() */
-+					continue;
- 				}
- 
-+				err = move_pages_huge_pmd(mm, dst_pmd, src_pmd,
-+							  dst_pmdval, dst_vma, src_vma,
-+							  dst_addr, src_addr);
-+				step_size = HPAGE_PMD_SIZE;
-+			} else {
- 				spin_unlock(ptl);
--				split_huge_pmd(src_vma, src_pmd, src_addr);
--				/* The folio will be split by move_pages_pte() */
--				continue;
-+				if (!(mode & UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES)) {
-+					err = -ENOENT;
-+					break;
-+				}
-+				/* nothing to do to move a hole */
-+				err = 0;
-+				step_size = min(HPAGE_PMD_SIZE, src_start + len - src_addr);
- 			}
--
--			err = move_pages_huge_pmd(mm, dst_pmd, src_pmd,
--						  dst_pmdval, dst_vma, src_vma,
--						  dst_addr, src_addr);
--			step_size = HPAGE_PMD_SIZE;
- 		} else {
- 			if (pmd_none(*src_pmd)) {
- 				if (!(mode & UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES)) {
-
-base-commit: 01da54f10fddf3b01c5a3b80f6b16bbad390c302
 -- 
-2.50.1.552.g942d659e1b-goog
+2.39.5
 
 
