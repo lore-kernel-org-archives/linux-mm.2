@@ -2,84 +2,89 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E7FCC87FCB
-	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 01:49:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BBBD8C87FC9
+	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 01:53:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFF1E6B008A; Wed, 30 Jul 2025 21:49:22 -0400 (EDT)
+	id 587FE6B0088; Wed, 30 Jul 2025 21:53:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD50E6B008C; Wed, 30 Jul 2025 21:49:22 -0400 (EDT)
+	id 5369F6B0092; Wed, 30 Jul 2025 21:53:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A12096B0092; Wed, 30 Jul 2025 21:49:22 -0400 (EDT)
+	id 44C636B0093; Wed, 30 Jul 2025 21:53:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 927E46B008A
-	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 21:49:22 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1143F16059B
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 01:49:22 +0000 (UTC)
-X-FDA: 83722877364.12.96C61FC
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 4FB17100002
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 01:49:18 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=iW3lBMCI;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf14.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753926560; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DF2A6B0092
+	for <linux-mm@kvack.org>; Wed, 30 Jul 2025 21:53:02 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A24841347EB
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 01:53:01 +0000 (UTC)
+X-FDA: 83722886562.16.E41887E
+Received: from smtp153-163.sina.com.cn (smtp153-163.sina.com.cn [61.135.153.163])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 7DDB9180008
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 01:52:58 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b=oMwMOpe8;
+	dmarc=pass (policy=none) header.from=sina.com;
+	spf=pass (imf06.hostedemail.com: domain of hdanton@sina.com designates 61.135.153.163 as permitted sender) smtp.mailfrom=hdanton@sina.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753926780; a=rsa-sha256;
 	cv=none;
-	b=4V24eP7/z1wTCu2XVwKjqJT1nlW4m+Q+BMaDCqsv9RvGNPIc18pPDLCAzN2GYFmIFCF0Bm
-	9AgXkY84783wVG9p/Ks+ajdDLiEt08OROdO06bp0kvQW1SrJuWBgFSfXjmUaE+PLl4JhTe
-	QehodfH+WCKbJ14h5R65oglHEryDsxI=
+	b=54LwEDiGPBuzY/36kV4dWb430MCZ/bKjoKATzQ1lyPUADhpNxDFRzAZ25mxH3d8cxqZScb
+	PryXbfBYjDGgQPnaYwAIuSyLQlvciRKsVTlhdAVw4z1r2CnF0wRp5BEaWWODtKPSe86jJq
+	GYl9O+SGlXzRef+j6aFrJ4yFislZSbA=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=iW3lBMCI;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf14.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+	imf06.hostedemail.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b=oMwMOpe8;
+	dmarc=pass (policy=none) header.from=sina.com;
+	spf=pass (imf06.hostedemail.com: domain of hdanton@sina.com designates 61.135.153.163 as permitted sender) smtp.mailfrom=hdanton@sina.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753926560;
+	s=arc-20220608; t=1753926780;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FoVQBKqrO0J50OdfYlBRAT9heWx+qni6PljTTrIPCl4=;
-	b=mA+yrBWQqTZklGUpIoFwE+uJMs6pHJ2ZL6Vw7i2nxA7T1kUIcRfRgpX1CxeEjX76R3z5L0
-	8Ghe56dXR2RsAKBJbZ/0SGah1BNq3SxIu3B5rSg96TWcRIx2DRXq3bi7gvK0AJjv4vHlIg
-	4o/dA9+xuPAQ4iEKxxknpMPel2p/6NQ=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1753926556; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=FoVQBKqrO0J50OdfYlBRAT9heWx+qni6PljTTrIPCl4=;
-	b=iW3lBMCIEhMek+VOvbjIDEjTYOw0ONTDHCRWEH0PPO6TpKzfcP5lOyrQ8ival9oZLFvgFTzkQKtJ94IiOhjxL0qQw1+sdOVsrfob8wQMmg6oSx32PnIbCXH1HOlF3He2Hh80wtc+ML2/JJainzcedKXNkImmQkOVJKz+9u+sHqI=
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WkWQwrt_1753926535 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 31 Jul 2025 09:49:14 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,  David Hildenbrand
- <david@redhat.com>,  Johannes Weiner <hannes@cmpxchg.org>,  Zi Yan
- <ziy@nvidia.com>,  Matthew Brost <matthew.brost@intel.com>,  Rakie Kim
- <rakie.kim@sk.com>,  Byungchul Park <byungchul@sk.com>,  Gregory Price
- <gourry@gourry.net>,  Alistair Popple <apopple@nvidia.com>,
-  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,  kernel-team@meta.com,
-  Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [PATCH] mempolicy: Clarify what RECLAIM_ZONE means
-In-Reply-To: <20250730201908.2395933-1-joshua.hahnjy@gmail.com> (Joshua Hahn's
-	message of "Wed, 30 Jul 2025 13:19:07 -0700")
-References: <20250730201908.2395933-1-joshua.hahnjy@gmail.com>
-Date: Thu, 31 Jul 2025 09:48:54 +0800
-Message-ID: <87tt2t9lkp.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=ROXTcu3NC59udh5UXJspljhoslQrPWl0Sx4aF8K9Emw=;
+	b=ZGmbhCnvuYGiyyygKox4gi5XHQeC+0JZtYvaqyUp+oao5YWh5FwP19S51b7cwFvPElgpB3
+	sdH+Anu37Sz/MD+kvkUi0h+TCoGaYj7I082WFke8CSccI+ezSiBJOrsW4lgXN54vEXxwBT
+	n0wbV+6Wo3kjR9mNuIGiUts8iOYzdKU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1753926778;
+	bh=ROXTcu3NC59udh5UXJspljhoslQrPWl0Sx4aF8K9Emw=;
+	h=From:Subject:Date:Message-ID;
+	b=oMwMOpe8GAGbAs5N1qlgsPbfS3W/142TLnJOqQN29NYwUagZOwFeDyuCCNzuH6Nxf
+	 Dh6Vh9z5LhRBA8ZMt+50rfz2kiNEzi/hNJytokfFMTiSGM8gL/NhWKDK90XM56heqb
+	 PVwixV3SVgQtlnZLdc/cUJMnA3iDrCZSLzB5cPrE=
+X-SMAIL-HELO: localhost.localdomain
+Received: from unknown (HELO localhost.localdomain)([114.249.58.236])
+	by sina.com (10.54.253.32) with ESMTP
+	id 688ACC73000065B1; Thu, 31 Jul 2025 09:52:53 +0800 (CST)
+X-Sender: hdanton@sina.com
+X-Auth-ID: hdanton@sina.com
+X-SMAIL-MID: 9109934456634
+X-SMAIL-UIID: E9F0BA989AA444DF88B0D3645AEDC517-20250731-095253-1
+From: Hillf Danton <hdanton@sina.com>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org,
+	peterx@redhat.com,
+	lokeshgidra@google.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	syzkaller-bugs@googlegroups.com,
+	syzbot <syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] userfaultfd: fix a crash when UFFDIO_MOVE handles a THP hole
+Date: Thu, 31 Jul 2025 09:52:40 +0800
+Message-ID: <20250731015241.3576-1-hdanton@sina.com>
+In-Reply-To: <20250730170733.3829267-1-surenb@google.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 4FB17100002
-X-Stat-Signature: g1rfr96ktqmdmnd3ntcyg56e6iretpmq
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: b14e3zcmpnqw8iny9ae7qismr44kyj8y
 X-Rspam-User: 
-X-HE-Tag: 1753926558-532157
-X-HE-Meta: U2FsdGVkX18IX4RBgsULxFr0lDsHXxt6x6oTezrdBCHeobSPRz6Xnc9M4jw9P2M2PUvDUQe5rhHvm7MJMgjWD1kOEFgTkrj72pEBI0SBEcvCTUGWHuGoYn6fkbx2u7MgvoDfm0MDd/AaMa4GxItmF6dNmeZvVjQLet45+/8ory9+jgokUDO8pIrLhyG+3ZiZxlAdpzK7hcaB1SBfE58Q3oqktZ5nGCAdsnlbnTMJcxehAlSpjXNW/n2EqbM6gR3HIuRazoWpcaki4SwfjtiSYXZ52SKDTcxhyQF5YtfCd0PK2mnYtlCQJe2DjQJ+3nQWbqmxDGRMfoquvsb4obR3ZRnwf2L2a8WojnGMD1hE3Ae8jWPrQaFgcmWrXXXOtoIPFUu14pofLiIhYRFCFlNsHl48yxJ8iL9MjbZGSfiT/p3VsWaUqPoHeh+S7zrr9gmRjsfDthraqDXDz1LBCk1t1SfAj7qYu61HAmFRzXkC9z1KKy+zWPRoqEorKviSb4ZK4plBh4zptQXvqniHQ5kkZVe3+CUAblJ7hRT1h3sWNWAJA1Msuf1M5sx1BClqMAjxW3lef+q3e0OIZ1vT6qsUheO5HxHpfHELfLcRPdX+rc9GEF4SFl/YNdUyYBp/JWEl8vVkjjAHv/DLKmi3ykdvu7gY8gvfOcm8pK8g3PyNwrMjHCsxEI8qJDFptsXTTjr2jmpOTY0xU87YxiEBqN5kmGdK2WcbYQJFYYS0JdfYZq4//LUH6CMVXx2i0GOfp2NvDE7RX8idVCZ80bOQrq4uM1zB7Rl617a0R856uyXnaCOGgm50r7B2THRP+ORHwtCTrRv+iwhzwxvAsdgyc9dN6c6P/A3nJaugb4bi3OeRSzgIcDFja9ps3FUZpnJFCc4HRCub+jynKgtOM683aTohvEl6f90HIlgkJThIP7Xz/ZV492i9nCcx65TosUaLxBWmFU8iKm284cDWt6dIk2z
- IV09hUR0
- xNX7geufBgH5KGjctYCYhRUXh/MntZy8QvVddE6y0EoNhp1oJ2RJNAiSStKn6eMl9s95OMG5jb4YQbyGlHD60cyjggSJp3VkNE4MvDyPbefyD899fRFqXRXRkTZw9Jn6YgvKbzTgIXO8o9KcMUpeggHoT5IBGtw2eWAZyBBV5lo3cXz+QQpvrvSa8NQ1PwhuDIjj9gQ5OEk4cTrAW8z6lcFsTaVenJo24BYmw6lqPPn8aosIuYNAv9qQfqNWaswLSIpLQYtxCRycJRIWa+FnfdE3DuwxaeApFsWss5FNQdcXcmftLCl+3TgERtPmWNQnSnb+8jw/MNG0QF6ibK0lizQP5PCL7kkkryxiNuyPRm/1Z7DWOBszE1nqtR68AbDtx+Mq/2MJ5QCmfGSyHTGSBV1iPDA==
+X-Rspamd-Queue-Id: 7DDB9180008
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1753926778-153978
+X-HE-Meta: U2FsdGVkX1+n24A/fQ56dZTnGrYu8xmFbvOs+rH8ThUJuinorJbfMEBSYXLiswgvo1BSiSfb9CTb0wNhdpdOPJKSv7iNz0/oJcm/K8U1K+AhtLrFNH5Ba/Q3CiMOrX/wqOANVphClSfF9tj3UT30ZHpNNhDRQL3d+9TAIo4o6SyoPl8E253HWr6xCjv5XbLcO2b8MbeRfdAlrmzSV+vgvRdgnnSZhb/c9kNNYkeRGEn4V2UaLLOsxCBwzKR4UC/cdj6bs/owKtqxxbIrgG3CFqpleHJ0iaOQ10KVcWw/sssMH+FoQQ84vdVYU6R0upTOFps8nBcG/PdjkZk5jUOHZh+8qXe/COjbS/lgU9sec9+FSSvLnTLvgcRAIySsn6O86LMEeHu9ysglGU2saFF23BuwEBVDEaFfog/K6GZUgf6sAoXTY5ToaYEQQ/N0x8r+jkKGmUhSTbrbLiA2VMqRPKBe5gnLwE/QabldQGpossVPSv3OUQ+1ApJxN2xU4WgNhnPrRXB94bPH/IVl2A0hA35MiCZx5sObIyrA8ePx4lSKkOaR8X4Zh6yBlv1FjWazY+mgzfL1HHzxsCOReecPG6QspBaCUiL8WcVIJFJisB9SK+YSHqd3RXpqxVXbX1x72s6fFMF9QCbebyBsOwxN0ejDWsrDx742gEkfHiZXLq4+hthDS2NEaDlT2m4siSCzehuByj5gsgaiv6TrcfTb2YII7b7JC2xlfVArid/0ZHpoA2ZchRpU4We9DikoejN3MTcR9Iw0EXScAWC0vKmwJbbG5SiL6S10SGLL16444MwbEiFbTzOIRBHsAtZQhmqC40zdAX6SsLEN/0amX2FwxkX3CiUk5psgz5UX0rsQyypzHWel6RXniLqROzBYrjxsLXXKk15jJwcQsIcbloS5F4pv6CNGFU48CUB/oNqL83So6xbSsT07xVmcWxby2Wws99pGHuPqhNRpZ4eOhE9
+ x+zkVSGg
+ 07lhV2qUoHoQpGCuN1BDG3sGLtnQsmGIFG1tUQZUJExOfVLcW4Mnru432uY4RrIhw7LyIuV/geKtTknAvSGk6Ip/6CdRDgk4c1ACBS7A6MRa90XD3oPsRMhLoQbZfLrcVRfuDMpxfUKI7JiJZPUGtMcSKUYeeQQ0W3QJK3AYlTPHl8amuTBw7jWQ1e1ENMLUAvuPCaXlCT4FUWYvtHP7p2WCLuWvy0wvFnMltVotixUbxPUFS5GyXqo7pmi7n8QuBy9Aqug4ibjZi/qPdkIDmDhhUvZobGgXKCLm3TcaIJnRArOBjTSuXZLK8dEMzG5JHvGhY0wu+fWwtHeo90ggGfmdAkvUXpAuz32xY+p+l8AyT1CsmO69Wo1wqaskZfle05laR0hdAaFA+jcw/G8OGiyK9cKIWgUn9i3F3qzpxqbUsGxi7NYCOO8wuAVp78ORUjFA/fN9PEiG6+qa5rMjiVYzQD2cUvR/aBvGHzISQWGbljq/8IVBeBz4wd3mDVS8JzaFNylh84g14vmEeH5BTuTLGBUzGcPjBYwPFft+xZ5zFv3fQFcMWSGfbdB66XAQrEPptlqF/6O+RABX2MDnTwicx045UV6SxQuOWLCKFuCoIJH3udwDTZHKHGCtYmdag/LIE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,112 +93,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Joshua Hahn <joshua.hahnjy@gmail.com> writes:
+#syz test
 
-> On Tue, 29 Jul 2025 08:58:49 +0800 "Huang, Ying" <ying.huang@linux.alibaba.com> wrote:
->
->> Joshua Hahn <joshua.hahnjy@gmail.com> writes:
->> 
->> > On Mon, 28 Jul 2025 09:44:06 +0800 "Huang, Ying" <ying.huang@linux.alibaba.com> wrote:
->> >
->> >> Hi, Joshua,
->> >> 
->> >> Joshua Hahn <joshua.hahnjy@gmail.com> writes:
->> >> 
->> >> > The zone_reclaim_mode API controls reclaim behavior when a node runs out of
->> >> > memory. Contrary to its user-facing name, it is internally referred to as
->> >> > "node_reclaim_mode". This is slightly confusing but there is not much we can
->> >> > do given that it has already been exposed to userspace (since at least 2.6).
->> >> >
->> >> > However, what we can do is to make sure the internal description of what the
->> >> > bits inside zone_reclaim_mode aligns with what it does in practice.
->> >> > Setting RECLAIM_ZONE does indeed run shrink_inactive_list, but a more holistic
->> >> > description would be to explain that zone reclaim modulates whether page
->> >> > allocation (and khugepaged collapsing) prefers reclaiming & attempting to
->> >> > allocate locally or should fall back to the next node in the zonelist.
->> >> >
->> >> > Change the description to clarify what zone reclaim entails.
->> >> >
->> >> > Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
->> >> > ---
->> >> >  include/uapi/linux/mempolicy.h | 2 +-
->> >> >  1 file changed, 1 insertion(+), 1 deletion(-)
->> >> >
->> >> > diff --git a/include/uapi/linux/mempolicy.h b/include/uapi/linux/mempolicy.h
->> >> > index 1f9bb10d1a47..24083809d920 100644
->> >> > --- a/include/uapi/linux/mempolicy.h
->> >> > +++ b/include/uapi/linux/mempolicy.h
->> >> > @@ -69,7 +69,7 @@ enum {
->> >> >   * These bit locations are exposed in the vm.zone_reclaim_mode sysctl
->> >> >   * ABI.  New bits are OK, but existing bits can never change.
->> >> >   */
->> >> > -#define RECLAIM_ZONE	(1<<0)	/* Run shrink_inactive_list on the zone */
->> >> > +#define RECLAIM_ZONE	(1<<0)	/* Prefer reclaiming & allocating locally */
->> >> >  #define RECLAIM_WRITE	(1<<1)	/* Writeout pages during reclaim */
->> >> >  #define RECLAIM_UNMAP	(1<<2)	/* Unmap pages during reclaim */
->> >> >  
->> >> >
->> >> > base-commit: 25fae0b93d1d7ddb25958bcb90c3c0e5e0e202bd
->> >
->> > Hi Ying, thanks for your review, as always!
->> >
->> >> Please consider the document of zone_reclaim_mode in
->> >> Documentation/admin-guide/sysctl/vm.rst too.
->> >
->> > Yes, will do. Along with SJ's comment, I think that the information in the
->> > admin-guide should be sufficient enough to explain what these bits do, so
->> > I think my patch is not very necessary.
->> >
->> >> And, IIUC, RECLAIM_ZONE doesn't mean "locally" exactly.  It's legal to
->> >> bind to some node other than "local node".
->> >
->> > You are correct, it seems you can also reclaim on non-local nodes once you
->> > go further down in the zonelist. I think my intent with the new comment was just
->> > to indicate a preference to reclaim and allocate on the *current* node, as
->> > opposed to falling back to the next node in the zonelist.
->> >
->> > With that said, I think your comment along with SJ's feedback have gotten me
->> > to understand that we proably don't need this change : -) 
->> 
->> TBH, I think that it's good to make some change to the comments.
->> Because IMHO, the original comments are bound to some specific
->> implementation details.  Some more general words may be better for the
->> user space API description.
->
-> Hi Ying, sorry for the late reply.
->
-> I think that is a good point. Then maybe in that case, we can take SJ's comment
-> and leave information about both the implementation detail (i.e. that it will
-> perform shrink inactive_list on the zone), and that it will prefer this over
-> allocating on the next node as a general description of what happens?
+When UFFDIO_MOVE is used with UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES and it
+encounters a non-present THP, it fails to properly recognize an unmapped
+hole and tries to access a non-existent folio, resulting in
+a crash. Add a check to skip non-present THPs.
 
-Yes.  Something like this, or
-
-Try to reclaim in the current node/zone before allocating on the fallback.
-
-> On that note, one thing that I felt was slightly undercaptured in
-> Documentation/admin-guide is what "zone reclaim" actually means. What it does
-> is of course well captured by its name, but it misses the nuance of preferring
-> reclaim over fallback allocation.
->
-> Actually the whole motivation behind all of this conversation is because I saw
-> zone reclaim preventing allocation into a second node in a 2-NUMA node system
-> and was a bit confused until I understood what the implication of having
-> zone reclaim was.
-
-Yes.  It's good to improve the document.  If it makes you confusing, it
-may make others confusing too.
-
-> Anyways, I can probably spin the patch to include information about what
-> zone reclaim is, in the comment block above the bits.
->
-> But please feel free to correct me if you feel that the descriptions available
-> in both the mempolicy.h uapi file or the Documentation/admin-guide is already
-> enough.
-
-Thanks for doing this.
-
+Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+Reported-by: syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68794b5c.a70a0220.693ce.0050.GAE@google.com/
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Cc: stable@vger.kernel.org
 ---
-Best Regards,
-Huang, Ying
+ mm/userfaultfd.c | 38 +++++++++++++++++++++++---------------
+ 1 file changed, 23 insertions(+), 15 deletions(-)
+
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index cbed91b09640..60be8080ddd0 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -1818,27 +1818,35 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+ 
+ 		ptl = pmd_trans_huge_lock(src_pmd, src_vma);
+ 		if (ptl) {
+-			/* Check if we can move the pmd without splitting it. */
+-			if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
+-			    !pmd_none(dst_pmdval)) {
+-				struct folio *folio = pmd_folio(*src_pmd);
++			if (pmd_present(*src_pmd) || is_pmd_migration_entry(*src_pmd)) {
++				/* Check if we can move the pmd without splitting it. */
++				if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
++				    !pmd_none(dst_pmdval)) {
++					if (pmd_present(*src_pmd)) {
++						struct folio *folio = pmd_folio(*src_pmd);
++
++						if (!folio || (!is_huge_zero_folio(folio) &&
++							       !PageAnonExclusive(&folio->page))) {
++							spin_unlock(ptl);
++							err = -EBUSY;
++							break;
++						}
++					}
+ 
+-				if (!folio || (!is_huge_zero_folio(folio) &&
+-					       !PageAnonExclusive(&folio->page))) {
+ 					spin_unlock(ptl);
+-					err = -EBUSY;
+-					break;
++					split_huge_pmd(src_vma, src_pmd, src_addr);
++					/* The folio will be split by move_pages_pte() */
++					continue;
+ 				}
+ 
++				err = move_pages_huge_pmd(mm, dst_pmd, src_pmd,
++							  dst_pmdval, dst_vma, src_vma,
++							  dst_addr, src_addr);
++			} else {
++				/* nothing to do to move a hole */
+ 				spin_unlock(ptl);
+-				split_huge_pmd(src_vma, src_pmd, src_addr);
+-				/* The folio will be split by move_pages_pte() */
+-				continue;
++				err = 0;
+ 			}
+-
+-			err = move_pages_huge_pmd(mm, dst_pmd, src_pmd,
+-						  dst_pmdval, dst_vma, src_vma,
+-						  dst_addr, src_addr);
+ 			step_size = HPAGE_PMD_SIZE;
+ 		} else {
+ 			if (pmd_none(*src_pmd)) {
+
+base-commit: 01da54f10fddf3b01c5a3b80f6b16bbad390c302
+-- 
+2.50.1.552.g942d659e1b-goog
 
