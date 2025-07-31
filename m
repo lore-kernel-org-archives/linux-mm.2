@@ -2,95 +2,107 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BD642C87FD3
-	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 21:41:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F453C87FD2
+	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 22:00:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2245B6B0088; Thu, 31 Jul 2025 17:41:02 -0400 (EDT)
+	id 13D286B0088; Thu, 31 Jul 2025 18:00:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D5AD6B0089; Thu, 31 Jul 2025 17:41:02 -0400 (EDT)
+	id 0F0966B0089; Thu, 31 Jul 2025 18:00:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09D8B6B008A; Thu, 31 Jul 2025 17:41:02 -0400 (EDT)
+	id 006136B008A; Thu, 31 Jul 2025 18:00:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E1A566B0088
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 17:41:01 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DDBCD6B0088
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 18:00:30 -0400 (EDT)
 Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5C3B711498D
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 21:41:01 +0000 (UTC)
-X-FDA: 83725880322.10.DD75F63
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf11.hostedemail.com (Postfix) with ESMTP id A64AB40002
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 21:40:59 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OJb5NJG8;
-	spf=pass (imf11.hostedemail.com: domain of herton@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=herton@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 575A4160C3E
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 22:00:30 +0000 (UTC)
+X-FDA: 83725929420.10.5195A19
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	by imf23.hostedemail.com (Postfix) with ESMTP id A232814000F
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 22:00:28 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=DZFfyWio;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf23.hostedemail.com: domain of 3e-eLaAYKCMQ241oxlqyyqvo.mywvsx47-wwu5kmu.y1q@flex--surenb.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3e-eLaAYKCMQ241oxlqyyqvo.mywvsx47-wwu5kmu.y1q@flex--surenb.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753999228; a=rsa-sha256;
+	cv=none;
+	b=lhVbKkwE9zNsxAVXA7i/ZZf3W+YQ/8GtpnT+tUOWRX9mALa/YwTAQ+UPsgMJlnMnS5xfB4
+	zg/oDt2Kx31ym/mLNvQdsUZLojO/NGbTVIG1aK2t+5n9TeDM5Q0TJQlcgZf1hMGU4HmFaq
+	B0o9NaLQG6efXIf3Ojvg9JjpGVFXYeU=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=DZFfyWio;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf23.hostedemail.com: domain of 3e-eLaAYKCMQ241oxlqyyqvo.mywvsx47-wwu5kmu.y1q@flex--surenb.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3e-eLaAYKCMQ241oxlqyyqvo.mywvsx47-wwu5kmu.y1q@flex--surenb.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753998059;
+	s=arc-20220608; t=1753999228;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=JlsU4UAqSZQRdqGvx8oaC4/kh3OoM15U/EG/gdrxGFs=;
-	b=JbsoWu7lghefRVJl50LzffNawQs/vo8Q13WtafHlg4nX5zQ4xalzWLV45WBSzelyS1quzg
-	m2DiACLnvkMlkKMtRndQSklV3S+a8V7tC3q77GTIFbWttIMaesDNUCa9NsVBfdzfokaq4k
-	IxVlHWAY44nyAOPqcrngIXSEkuDvxto=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OJb5NJG8;
-	spf=pass (imf11.hostedemail.com: domain of herton@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=herton@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753998059; a=rsa-sha256;
-	cv=none;
-	b=SqaBB4i6/nk5PyB3q9Batb3cSc5saDyxMQPfCkImaK/gwopXJB7vILnkn/kM11SW61WlDU
-	lh3gHvOpKoUjc62KAPwKDWi9REsOloxoAOLI3LzFMstRVsJF/gLITbB/mooqmoM0AB/4+I
-	+BgLNFVBorTlkHT/tz8nBz126vTV5CM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753998058;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=JlsU4UAqSZQRdqGvx8oaC4/kh3OoM15U/EG/gdrxGFs=;
-	b=OJb5NJG8GvKZ7xS6EKNGEbDQyYkJolG/iUksa4Tj7WIgLasQwhFl49vOA/Mz+qEWvo6uYi
-	F7SxyOgrgoTtP5xabsLUnpKkwaJsb9pFm+RVxKNUhfuQZi9RY482MBEOd+qUfE4U6Kmxiw
-	C7Mp1YOFXGDNvhS/4lCiRAjnfXO0te0=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-543-WG9EfwGcNjK5HLMRx3-M5A-1; Thu,
- 31 Jul 2025 17:40:54 -0400
-X-MC-Unique: WG9EfwGcNjK5HLMRx3-M5A-1
-X-Mimecast-MFC-AGG-ID: WG9EfwGcNjK5HLMRx3-M5A_1753998054
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 954861800360;
-	Thu, 31 Jul 2025 21:40:53 +0000 (UTC)
-Received: from redhat.com (unknown [10.96.134.7])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B1523180035E;
-	Thu, 31 Jul 2025 21:40:52 +0000 (UTC)
-From: "Herton R. Krzesinski" <herton@redhat.com>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	herton@redhat.com,
-	anshuman.khandual@arm.com
-Subject: [PATCH] mm/debug_vm_pgtable: clear page table entries at destroy_args()
-Date: Thu, 31 Jul 2025 18:40:51 -0300
-Message-ID: <20250731214051.4115182-1-herton@redhat.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=cCSvQKtWkk35NnkkH+OyPH5z8EOYlo24FiwE70HiXFE=;
+	b=1sTNAy5z3pC0AL5g53vBg9E4XHGUxEsrvpz5XA9tGQiA+ge2tuX7UIevuoQq7zgx5h+YIX
+	fl25TL6UGRPtNupETeR4YibCgJIdzp5utt/fMvv6ckyTfVMZJWB+/gwEteyixt0xdQ27yt
+	vNHsmu8LUqj+7DZDypj2+khEgXRZcHU=
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-240012b74dfso1684995ad.2
+        for <linux-mm@kvack.org>; Thu, 31 Jul 2025 15:00:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753999227; x=1754604027; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=cCSvQKtWkk35NnkkH+OyPH5z8EOYlo24FiwE70HiXFE=;
+        b=DZFfyWioGu0XU+cMpa6nQbqEJfyu/rmF1H4mb++oNkpbqXACoEnzaQd89PrhYRG0Yz
+         bnFi6nee/QJcWih+wR472d0sEmw4gg64xSdbm/xFDQu4MQr6eCg+5jsAUoKOw2Rpjbqf
+         Y8QPY5Pg1qUijP0BZMWMX1waIK7edeV3kpwmVBIUrTxcWBG5RSQNhnfpbzngMuKrEOuK
+         pkGaUefXlHg5QC97V5RN9EZBtiKEkw+iH4+WTjL026GnaVUuQ8xgkn9GX30ItN2oaodo
+         IDfrwqdlP4+YxkUf05YbOeToZu83SBOzA3cn8h9KmQduTeN1r4G8Ww8fIM8OluHbzXFc
+         rZug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753999227; x=1754604027;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=cCSvQKtWkk35NnkkH+OyPH5z8EOYlo24FiwE70HiXFE=;
+        b=pPV+kUy0T0sr8J5hCOcPyfb+SmMAnpteK33Ad4J75w8PclSxQx4ZQh57Xqe6cWZYuv
+         PhuRgq8h/Ya9JhXK/SxhuRKEIPqRE2Ps+fb4+Q8qHajFaeT6Dgls5mfpi5Dn6P+Fze0G
+         zyP7KjFjZxTDSGS19INgrFY9VQFiPxL6kUYyFcxf9cQ0OSXfvCIMioJ8yrEwEStLPhfs
+         Qlothyhy8RBm1JTLV6Mf3ianM6xCcXNus7ZZKhPvRBgLUEetAL985TNtZLzEARIfTPIq
+         3qkOIqcPuBfLyjU4vs/jY9Rp5WrYpqKRkBvw3NMjNGGBCV/3+N7DLDdia1fchk7I/ibQ
+         IpSg==
+X-Forwarded-Encrypted: i=1; AJvYcCUcVYW0MCOQNN2SO2Khn6Nlp4qPNj58APHrV7Q1X94w0x04uB4zWzYeK+2JjD+iEDkL6zEcXbFAoQ==@kvack.org
+X-Gm-Message-State: AOJu0YxB58OUZ5wteE5LtjKMx6FeAVE6xMS7ZXcPpHOjnRfvSYmMBU9E
+	fwmVZGggHZ8+KYj2C3xwj238+Gd8RZ/pbW1Rvyi4KscREO7PqNq3e9sq8FK7AQEvk9UuQ8+l7Xi
+	q9KC3Hg==
+X-Google-Smtp-Source: AGHT+IGtegZ8YgQm2ROATdnX6in35bV2Ie8nf5pnKlyAF9NAZgIOc92HgxdoMwUjsjKWnQz4jS6av6uz+y0=
+X-Received: from plkl11.prod.google.com ([2002:a17:902:d34b:b0:240:11bf:3c68])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:acc:b0:240:3e40:43b0
+ with SMTP id d9443c01a7336-24096be1970mr126184995ad.43.1753999227429; Thu, 31
+ Jul 2025 15:00:27 -0700 (PDT)
+Date: Thu, 31 Jul 2025 15:00:21 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.50.1.565.gc32cd1483b-goog
+Message-ID: <20250731220024.702621-1-surenb@google.com>
+Subject: [PATCH 0/3] execute PROCMAP_QUERY ioctl under per-vma lock
+From: Suren Baghdasaryan <surenb@google.com>
+To: akpm@linux-foundation.org
+Cc: Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com, david@redhat.com, 
+	vbabka@suse.cz, peterx@redhat.com, jannh@google.com, hannes@cmpxchg.org, 
+	mhocko@kernel.org, paulmck@kernel.org, shuah@kernel.org, adobriyan@gmail.com, 
+	brauner@kernel.org, josef@toxicpanda.com, yebin10@huawei.com, 
+	linux@weissschuh.net, willy@infradead.org, osalvador@suse.de, 
+	andrii@kernel.org, ryan.roberts@arm.com, christophe.leroy@csgroup.eu, 
+	tjmercier@google.com, kaleshsingh@google.com, aha310510@gmail.com, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, surenb@google.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A64AB40002
-X-Rspamd-Server: rspam06
-X-Stat-Signature: t7dxixwaomh9f3u593moiw4uf8s53h9o
-X-HE-Tag: 1753998059-816357
-X-HE-Meta: U2FsdGVkX1+dCWwayM2bZyi7gMGkyE900pLghkFVQTkV20X+LgNJ35hP3BAq+uV3vMNh+Y8QBpha55ooZ1g3bWh7vX+3G1TNQrYcXUvu96RtjRa0EQPsZ6Gk7Lk6YmJxzLdD24t4CrEAGK/vkyzz/lALv8QcnBKN801MbH0uSRj9siYSgX87mX0BvqS+vo3mwOmNoA45AmyZ2yq5GLbuPgzfVtSBxLgY01ezq5Vc0d3fp7BNoERwQGPPW1iJVAybmuQgfa5EEMCdyddhlAvzi6ygQj1ETEH2piFxDPrsbkz4oTcD2cvsG8SbrHHUY6QJTvd3oY5LfePVwYqxn3Uxg29D0FZnNRsZ2s0kKb5P7/GDXvgdPETKhspfu2Y/EgrLNW2ED1iYG1zxMAK1z83oe9FOLibbVjmL1xtF9Vk7CeUGCzqkYciv1lxh8MPp4sXgtjtNDxj6lhvkgDLAx3GTJ9EFik4rgE/lILgbU1Yek8tw1hr6uOTryoixQGDhOq3mMLxLmC4xVyBmRQhzo0Ea+tJRkeDMQQ4vi0BcbBwrXqNah05j9FdWwnpq+EGtgdeQTULU6jZkDvgjQ9kPqzZblpgYxxibaEeKHYPJZXSrvb5v3kiq5+XOwXcj/6xNTuPelKVxqFrTw60OZc+ipCmEULP2i3WmwuxT96ZfRz52lq/xGxFEHCxK+Cc7Vr/Hhxi1drodGHUylDzbX+QiiT4BV3GKquwdrCRiJsSfkuPq3TT0/ox5nhOPgwCzc+CInYGzHJ9Sn3OApREfNHfLf8JydTfK8BHdvFvZmGqDAFygTD2wrY+Mqh+K8X7VJFLRqO032WVpTdZ0iyFdmRqeWfANk/wVInKY0g4a48y3GTzAclYcA7HbSwJi0MOfv5DdMRv5ERgYwab9Ni8WvhzbjvK0XH4rlSi+GKTf+sQ1IWlL26yIPhogZhUYxZUuobV3/Pd0/6v7+WxXBEEbM+KF7eS
- 8lov3Pog
- 2vUFNvyFOBB87VzKV3fxzjuO57Pxou5/1UfEtJ9Ve77mS08AESeqicslhL1+i51MkHpP5laW6pukF7qhp7AVQK4jfEamSFj6gaGX6Vs5bazl6hCR1IhRtdnwJ8dE/OXhBqTC9bQM3uL5DRSR9DiYH/89QICFh1QpAfUeGVH9IvMoeV68JVF6vLAZuWlbIf0NFdJ0469N0zBr66yO4dlLW/LFxocHUXr3JSo0N3bQ8Coc3preZrpKFl1Xao5x5085v6eJFyk4z6FjTXJILiDhGOYdeWXMrRcr112nlNddDnh+3BhsLqAmL5y4KqJqxYAfpvVYQ/yBE2SkIpPzCCcdoLDcYlzoW/9kUZgDmT9gehJxQD4d2Ga1vBmQROw==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: A232814000F
+X-Stat-Signature: 6at6bum78rzib45rode37moozbzx9z8i
+X-HE-Tag: 1753999228-395891
+X-HE-Meta: U2FsdGVkX1+Jb/S8OnSWj2AGiZ7q9sF+CGZ6WGZfV+5ze6I47hqaLIE0XiGBeVo9O8f5kRUYaHuqBb5s2ZGPhpgW6gFE30to9fFVu0bOFWUlleLEn88rWuKVZythrKTAC2TVWvZOHK+WM8odxYqEBT9DAzzvLrOpVBUYk35jDBSKNK5q/onJxWTzFc7XwQ161p+nlyC1VY7+1DPBdxGk3AKKn1ALN/6X21dT+zkBt0ZvD/pKg9tM7bliXng9jnE+TTrpgRoX33qc+iKtVWyBJ/1kz0jcLd72cJfEjm571mozJKq/melDNyTJDLm+n69Hzh08djWwtTE2/Sl1YiAy/CDW6P2lZZfpra3DMxVBxo1LPGwyAfFYYON0SH4nJAsGD2CyQDC0HL7DkhnCS0P+ipz7Syo7dgcBvq1JFtv6DghNXPjc7McjpZDsN5i4do8HTvwtmQAzNLc/ocS8luyWUtN2PER4qzHem+f9c924hpjkLIdnIO+95+EFdq5TBg9+izu1HixrEu2MtMbf6lgFf/vGltAZtUbJ1GF2GoII8ursqk6OZagjFejTwiHZLuYT5nI4O9EMp8T6R7o4UL0hL0079zoOGjzeCPWdzGtmmhxzYx9V/hgNcR/T+8eVWhw5qeGRrAuuAp66YljKf1W5d7JU0V51jeVdfbrr4OfvbhiQkDLb0ZBS9iVP5nAoJef6ul8FYH/YjNQYH4hoIE6rB3vrOa/1IPaSfmzfGZxVYi38fadyXlpeJvRZCr3+V3JaH62jb4liwDDULjreJBt1/mG6rqQhqtpZ/FD6EUJSNtH5FiTThS6/yCt10CpNobXp2APgGng6kfWmbq00VbsJRGDFv11Lu7eScWrZ3n0xeX4yMl6TUQza9bX83EUXdOmK6pVp12rqr+9fRrFjkqTOrJ294wdTMjQer6DAcTD6PR16kPkH+lLcsSodGResRIfpCzzbo5HZl+UFzDptKxw
+ YxJKDVyg
+ fmINTZ0zTpLU87ANq1gObYl1GCWLvG9ScPtYRwABsgNkSc7MOvrYBRO8QFfLhUoXVZjCoX5o1bR6liRDQAruH9GrsxFERnpp9Q1JymLcRy76x6WyCyWEr5rNEII7J9rPx1V9F9Lrh2OVkvhcHaIj7D5TCoDQ8iyAzg/eqTGl/wDPKwbdpnyTbUSgjRwDKlcVk2C4SypTyWKLAxgNmROGHcMS8hqFme2azAjrVqkGjPgRVXbeYnoCEyqlFVTvUuUQYk6O5OFFvg1QGFqjIR/HVy6oKzRdhHjZTZ9d3c5ZaCbIeMp/CnxtW4e3AGQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,135 +111,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The mm/debug_vm_pagetable test allocates manually page table entries for the
-tests it runs, using also its manually allocated mm_struct. That in itself is
-ok, but when it exits, at destroy_args() it fails to clear those entries with
-the *_clear functions.
+With /proc/pid/maps now being read under per-vma lock protection we can
+reuse parts of that code to execute PROCMAP_QUERY ioctl also without
+taking mmap_lock. The change is designed to reduce mmap_lock contention
+and prevent PROCMAP_QUERY ioctl calls from blocking address space updates.
 
-The problem is that leaves stale entries. If another process allocates
-an mm_struct with a pgd at the same address, it may end up running into
-the stale entry. This is happening in practice on a debug kernel with
-CONFIG_DEBUG_VM_PGTABLE=y, for example this is the output with some
-extra debugging I added (it prints a warning trace if pgtables_bytes goes
-negative, in addition to the warning at check_mm() function):
+This patchset was split out of the original patchset [1] that introduced
+per-vma lock usage for /proc/pid/maps reading. It contains PROCMAP_QUERY
+tests, code refactoring patch to simplify the main change and the actual
+transition to per-vma lock.
 
-[    2.539353] debug_vm_pgtable: [get_random_vaddr         ]: random_vaddr is 0x7ea247140000
-[    2.539366] kmem_cache info
-[    2.539374] kmem_cachep 0x000000002ce82385 - freelist 0x0000000000000000 - offset 0x508
-[    2.539447] debug_vm_pgtable: [init_args                ]: args->mm is 0x000000002267cc9e
-(...)
-[    2.552800] WARNING: CPU: 5 PID: 116 at include/linux/mm.h:2841 free_pud_range+0x8bc/0x8d0
-[    2.552816] Modules linked in:
-[    2.552843] CPU: 5 UID: 0 PID: 116 Comm: modprobe Not tainted 6.12.0-105.debug_vm2.el10.ppc64le+debug #1 VOLUNTARY
-[    2.552859] Hardware name: IBM,9009-41A POWER9 (architected) 0x4e0202 0xf000005 of:IBM,FW910.00 (VL910_062) hv:phyp pSeries
-[    2.552872] NIP:  c0000000007eef3c LR: c0000000007eef30 CTR: c0000000003d8c90
-[    2.552885] REGS: c0000000622e73b0 TRAP: 0700   Not tainted  (6.12.0-105.debug_vm2.el10.ppc64le+debug)
-[    2.552899] MSR:  800000000282b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 24002822  XER: 0000000a
-[    2.552954] CFAR: c0000000008f03f0 IRQMASK: 0
-[    2.552954] GPR00: c0000000007eef30 c0000000622e7650 c000000002b1ac00 0000000000000001
-[    2.552954] GPR04: 0000000000000008 0000000000000000 c0000000007eef30 ffffffffffffffff
-[    2.552954] GPR08: 00000000ffff00f5 0000000000000001 0000000000000048 0000000000004000
-[    2.552954] GPR12: 00000003fa440000 c000000017ffa300 c0000000051d9f80 ffffffffffffffdb
-[    2.552954] GPR16: 0000000000000000 0000000000000008 000000000000000a 60000000000000e0
-[    2.552954] GPR20: 4080000000000000 c0000000113af038 00007fffcf130000 0000700000000000
-[    2.552954] GPR24: c000000062a6a000 0000000000000001 8000000062a68000 0000000000000001
-[    2.552954] GPR28: 000000000000000a c000000062ebc600 0000000000002000 c000000062ebc760
-[    2.553170] NIP [c0000000007eef3c] free_pud_range+0x8bc/0x8d0
-[    2.553185] LR [c0000000007eef30] free_pud_range+0x8b0/0x8d0
-[    2.553199] Call Trace:
-[    2.553207] [c0000000622e7650] [c0000000007eef30] free_pud_range+0x8b0/0x8d0 (unreliable)
-[    2.553229] [c0000000622e7750] [c0000000007f40b4] free_pgd_range+0x284/0x3b0
-[    2.553248] [c0000000622e7800] [c0000000007f4630] free_pgtables+0x450/0x570
-[    2.553274] [c0000000622e78e0] [c0000000008161c0] exit_mmap+0x250/0x650
-[    2.553292] [c0000000622e7a30] [c0000000001b95b8] __mmput+0x98/0x290
-[    2.558344] [c0000000622e7a80] [c0000000001d1018] exit_mm+0x118/0x1b0
-[    2.558361] [c0000000622e7ac0] [c0000000001d141c] do_exit+0x2ec/0x870
-[    2.558376] [c0000000622e7b60] [c0000000001d1ca8] do_group_exit+0x88/0x150
-[    2.558391] [c0000000622e7bb0] [c0000000001d1db8] sys_exit_group+0x48/0x50
-[    2.558407] [c0000000622e7be0] [c00000000003d810] system_call_exception+0x1e0/0x4c0
-[    2.558423] [c0000000622e7e50] [c00000000000d05c] system_call_vectored_common+0x15c/0x2ec
-(...)
-[    2.558892] ---[ end trace 0000000000000000 ]---
-[    2.559022] BUG: Bad rss-counter state mm:000000002267cc9e type:MM_ANONPAGES val:1
-[    2.559037] BUG: non-zero pgtables_bytes on freeing mm: -6144
+[1] https://lore.kernel.org/all/20250704060727.724817-1-surenb@google.com/
 
-Here the modprobe process ended up with an allocated mm_struct from the
-mm_struct slab that was used before by the debug_vm_pgtable test. That is not a
-problem, since the mm_struct is initialized again etc., however, if it ends up
-using the same pgd table, it bumps into the old stale entry when clearing/freeing
-the page table entries, so it tries to free an entry already gone (that one
-which was allocated by the debug_vm_pgtable test), which also explains the
-negative pgtables_bytes since it's accounting for not allocated entries in the
-current process. As far as I looked pgd_{alloc,free} etc. does not clear entries,
-and clearing of the entries is explicitly done in the free_pgtables->
-free_pgd_range->free_p4d_range->free_pud_range->free_pmd_range->
-free_pte_range path. However, the debug_vm_pgtable test does not call
-free_pgtables, since it allocates mm_struct and entries manually for its test
-and eg. not goes through page faults. So it also should clear manually the
-entries before exit at destroy_args().
+Suren Baghdasaryan (3):
+  selftests/proc: test PROCMAP_QUERY ioctl while vma is concurrently
+    modified
+  fs/proc/task_mmu: factor out proc_maps_private fields used by
+    PROCMAP_QUERY
+  fs/proc/task_mmu: execute PROCMAP_QUERY ioctl under per-vma locks
 
-This problem was noticed on a reboot X number of times test being done
-on a powerpc host, with a debug kernel with CONFIG_DEBUG_VM_PGTABLE
-enabled. Depends on the system, but on a 100 times reboot loop the
-problem could manifest once or twice, if a process ends up getting the
-right mm->pgd entry with the stale entries used by mm/debug_vm_pagetable.
-After using this patch, I couldn't reproduce/experience the problems
-anymore. I was able to reproduce the problem as well on latest upstream
-kernel (6.16).
+ fs/proc/internal.h                            |  15 +-
+ fs/proc/task_mmu.c                            | 149 ++++++++++++------
+ tools/testing/selftests/proc/proc-maps-race.c |  65 ++++++++
+ 3 files changed, 174 insertions(+), 55 deletions(-)
 
-I also modified destroy_args() to use mmput() instead of mmdrop(), there
-is no reason to hold mm_users reference and not release the mm_struct
-entirely, and in the output above with my debugging prints I already
-had patched it to use mmput, it did not fix the problem, but helped
-in the debugging as well.
 
-Signed-off-by: Herton R. Krzesinski <herton@redhat.com>
----
- mm/debug_vm_pgtable.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-index 7731b238b534..0f5ddefd128a 100644
---- a/mm/debug_vm_pgtable.c
-+++ b/mm/debug_vm_pgtable.c
-@@ -1041,29 +1041,34 @@ static void __init destroy_args(struct pgtable_debug_args *args)
- 
- 	/* Free page table entries */
- 	if (args->start_ptep) {
-+		pmd_clear(args->pmdp);
- 		pte_free(args->mm, args->start_ptep);
- 		mm_dec_nr_ptes(args->mm);
- 	}
- 
- 	if (args->start_pmdp) {
-+		pud_clear(args->pudp);
- 		pmd_free(args->mm, args->start_pmdp);
- 		mm_dec_nr_pmds(args->mm);
- 	}
- 
- 	if (args->start_pudp) {
-+		p4d_clear(args->p4dp);
- 		pud_free(args->mm, args->start_pudp);
- 		mm_dec_nr_puds(args->mm);
- 	}
- 
--	if (args->start_p4dp)
-+	if (args->start_p4dp) {
-+		pgd_clear(args->pgdp);
- 		p4d_free(args->mm, args->start_p4dp);
-+	}
- 
- 	/* Free vma and mm struct */
- 	if (args->vma)
- 		vm_area_free(args->vma);
- 
- 	if (args->mm)
--		mmdrop(args->mm);
-+		mmput(args->mm);
- }
- 
- static struct page * __init
+base-commit: 01da54f10fddf3b01c5a3b80f6b16bbad390c302
 -- 
-2.47.1
+2.50.1.565.gc32cd1483b-goog
 
 
