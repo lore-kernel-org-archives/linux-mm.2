@@ -2,235 +2,232 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B0333C83F17
-	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 12:07:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 69EEAC83F17
+	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 12:18:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 412396B007B; Thu, 31 Jul 2025 08:07:43 -0400 (EDT)
+	id E11DC6B007B; Thu, 31 Jul 2025 08:18:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C2A36B0088; Thu, 31 Jul 2025 08:07:43 -0400 (EDT)
+	id DEB846B0088; Thu, 31 Jul 2025 08:18:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 262F86B008A; Thu, 31 Jul 2025 08:07:43 -0400 (EDT)
+	id C8A7F6B008C; Thu, 31 Jul 2025 08:18:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E65B6B007B
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 08:07:43 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B9F1A1DAF43
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 12:07:42 +0000 (UTC)
-X-FDA: 83724435564.05.AC01336
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B9FC56B007B
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 08:18:52 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7E888BB20E
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 12:18:52 +0000 (UTC)
+X-FDA: 83724463704.20.CCDA0F8
 Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 69ED1C0002
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 12:07:39 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=SEwGCWH7;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="XF/45A5w";
-	spf=pass (imf10.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753963659; a=rsa-sha256;
-	cv=pass;
-	b=xFFAFHvV21KOwtRhA4ut9C/5Y38l++/cGFhElDimGB7HpKI4uL+eTiuUHC79kA0r3DpjPk
-	ev5e3hzUnVSgb6EA7Q1KP+ihFmEUGp1QeH/LIy088eJaM2VF5lCDmDOR5Kz5+fsZbX2s3h
-	lHzEZYIouj8L5JV3f//fKUEeAZcu7Tg=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=SEwGCWH7;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="XF/45A5w";
-	spf=pass (imf10.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4D28D20002
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 12:18:49 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ILxreK4J;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=UbBYa670;
+	spf=pass (imf13.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
 	dmarc=pass (policy=reject) header.from=oracle.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753963659;
+	s=arc-20220608; t=1753964329;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6uNRe5cFelaUvLJUoeBxcrgFTrJ0EKKKfWAbuFf17Gw=;
-	b=hsl1NumkeApAYTvFoZ+/rtlLa91nOtnxbHfgH7+m9OKHXvzbr7IwTEBLM+WQ7MoYBgnYps
-	nZOR1Bo6pKOdhf5/5RWQZm9IDZnZAq/Kl8wEvtYLCEUP5525kMBZeQnH8kprKWeRoTdaBf
-	Fj3I0Qvu4gNifhudapQ7UD4szOagPRs=
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56VAsR5A010690;
-	Thu, 31 Jul 2025 12:07:28 GMT
+	bh=ariRJ9Wldf28lyVl4FN6kbOhp1K5ajtdiwOBueIcjIQ=;
+	b=QbvCF+cVGqHvX36uTlJ6Ni5vMxrgM1klD7TN5C0eGwDt9YJC/nk1IRUYIstSWZblcc6Eky
+	7p8fF72UniKDAVFJRQdFNM7D7s7FvNMXGgm97DQr0TCrHVlMWa1u6ENMmmf5SxIrcwGJlB
+	WjSjME0I4iEEI2AwkZgxMC3d9vhqApw=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ILxreK4J;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=UbBYa670;
+	spf=pass (imf13.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1753964329; a=rsa-sha256;
+	cv=pass;
+	b=ZyYxhlRoHxWW7BINBwMRJIBt+/97SFRYQHb+PV+bhV/Z1qp7o7UVo6eymWnuJ9HwdXrJkJ
+	L5qBPmYE+XvHx0Z+WBNlavqYR3LVkyjWB3R0zU0eBP6SsRj+1KhriGS+wZ+hebKgCqjF4j
+	Ea8R3TS74l0q5p3VTyGJQfph+n01H/s=
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56VAsjVi030876;
+	Thu, 31 Jul 2025 12:18:43 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
 	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=6uNRe5cFelaUvLJUoe
-	BxcrgFTrJ0EKKKfWAbuFf17Gw=; b=SEwGCWH7Avx/MkTdqQwDf+AR9o+sVXAynE
-	3L94k96E4H/vsaBy+/0jGge4JHIU2Kbhq+VKNGWbM5Agr6OABxYy9xVCHtDk1smC
-	iqJiKn7DtRz+hXa5Lo6zLPuURlepVULazcL3YWbywAmpkPahkwQxlw9X+gGHW1nT
-	CuRGa0308xVbPlmrxLfMcRwm+F38zYDhZDuHm43Qww02ildTnWuKrw40J2OZUQkl
-	Kj+4R1O6Alx5FYWiaUBntdZp7/WGcTZS64dgPO/QwmmAtGfsoEYrkbFhQdIPH4Tr
-	z4EmUSbqJ0JPYCd42BjvZvdW61FNxDXqrE83riY8YLSUXIeXLeMA==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 484q733yb6-1
+	:references:subject:to; s=corp-2025-04-25; bh=ariRJ9Wldf28lyVl4F
+	N6kbOhp1K5ajtdiwOBueIcjIQ=; b=ILxreK4JxdJW/n0s8aNh9h3ejnB+K1rDxw
+	OL7ZBJ+8f3UkYtAFMLmgt2hCr93KunnNaVF8heDEWo8WyX9Bflb35eZDeFUNYs1Z
+	FknOm/3wMuVF9onlNY0Alg2kbB3NxxcBZLhl5Qi0e0/Oxf5RscWr93WFUZWuLZOM
+	z/nrww99VSBFN7SGdGDuyVWSTskIFARKiFXs5ud2y6DHjFZsqHjtSWPFAC/33JTR
+	97WXtYccR7qoSzkWJmeXR2HsJYObA88icCVQn4BMaqBUHRmIgQaqeoOJg1z6BfO/
+	Y+wt1sO1/vsfln3BtIMByZXEiXXOmgHDNpvtiMPZn2H4NuH+daRA==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 484q2e46cu-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 31 Jul 2025 12:07:27 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 56VALipZ016791;
-	Thu, 31 Jul 2025 12:07:27 GMT
-Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11on2053.outbound.protection.outlook.com [40.107.236.53])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 484nfjqu73-1
+	Thu, 31 Jul 2025 12:18:43 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 56VBZ5fU003128;
+	Thu, 31 Jul 2025 12:18:42 GMT
+Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11on2044.outbound.protection.outlook.com [40.107.236.44])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 484nfcdyx9-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 31 Jul 2025 12:07:27 +0000
+	Thu, 31 Jul 2025 12:18:42 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XWRVv6sDrVUM39jV8VU0aOkjXtEmaEyuD1nIQSJCRruuOYzK8U1p7dhxe7DKRE74hRZTixnMWxmnwjTnVqxSY6XdhsLATPTc8cofEtO08gYsZWnlWIoRQJ8s031ybTM8LHwsoIqDOpulyP6d4yDbfrQ/S68pYsDqHIYUHqAqzDa8M9hmJ9tCRpexIBzRaxPScVobb5+LafvQ5LW+QMPMY+TCHhTyupdfc5NKIzZ+w2+82OWN0J0psSQmkAhvOjCjq/sJFaZc6N/74/w2cMelNC/9eeuH7wRc08RHodKcBcN3yXBihiUqilW97R8CfcbOSaIzk0UssEEL/h3faWzUyw==
+ b=oaoZm/Vno6i+Jw05KUbqgplyPNHLkCm9G3dvskPW4lyAcrqqBBLOoCPgh3PJ+mALk7tescnGvXgnJmutimUae0fevOyn9FPaAykTqYUt7kFziF7iZaAii3CrWYNjTv2ufTB/CWBE9a8FMbrRdcpUiA1rCe65sMhTYpLHpphhNQZHQt8dr8N4sxmvFxtF7KL+NemShXFthpOWmrv+J4Jdq2md0t5XNIqIbVrOewnT3/+VPAJXDXiqu0GFuD971TCcpB1W4QEJgBJVaEhPkRiJOyjAime/uQmPSq1cSCtK6ViOK9LdhMyhhYMkpvbGJmk2ewWxF7HVFStOnQKTqadBEQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6uNRe5cFelaUvLJUoeBxcrgFTrJ0EKKKfWAbuFf17Gw=;
- b=zKkijN8X4//kuqnrsRWaHb/CM8G/HbCZS9MSW3DNf4hmYZ7cObtiwd8memPihhXNHqk+jh7My9LWoyxCzKVhhhJOA7VfBvtsWrpb4tdoRTUVpkpmjIL8FnVCFn8xlosAWeZW/34RwWIN/2hxg8UxuA4YCF2wmwU5TyaJAUeAjBXhWSOoXvyx1qaMokE3t9zDUQOKq937aSzmlvWaw3v8vGFZM5kVc60oSTY0HxwBh+InkpGZpjIK5/J6Myn8PTQ/XoAkoDttkSnHFxKmumwb3SM7yq6LT4s8u8e4xloX/O2rpGGItN4XrWf5K1+9fRT/YtY2TTcihJQXBOY9h3aIxQ==
+ bh=ariRJ9Wldf28lyVl4FN6kbOhp1K5ajtdiwOBueIcjIQ=;
+ b=ZGtnVY/K+9pjNHeJABo0KV+fcEuBIvMrtSFDCYO5t2M0I06Hir62TJZCJXLUorfTxQngGGBPye5Kaap0ttvg6LP3Lkom6QUaiHl/1l990IQcItofGkN5frb+mqRL8nV+bL49aN78djAiaaTeJr2DGrM3Tr2nUL/GgkpYjMZVsG0fmhNQLvbK4UYPEDE6Z/6lttek/IKR9Hx2UsJCQxTgQ7rE1UHf8+wmZuUJDb+UiHyrwQ9tFstUJE+UDytGsVQuRc6W5nIxaOeO4L4O/sVrEkmXOW2FAFBYyCZroL7W0VRzWSEFuj4uAseo3Y/kRjpQn92A8fyBmQQJ5gxg+fcsbA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6uNRe5cFelaUvLJUoeBxcrgFTrJ0EKKKfWAbuFf17Gw=;
- b=XF/45A5wImJwFtMXKNhzHVKDtUAvAyh66SSu5IfZUrIbxTzxwAsLy581+ijF+KeGXqpG4ZYlEg1WeoI5M0B0+ZmnaaAycrfMxpGH8KNUxJluCUpmmmzgpHr05E+F26PZ4upRRWokfHQS4LE3uZlwoSgVr4GDUxcMTw5/9XS698Y=
+ bh=ariRJ9Wldf28lyVl4FN6kbOhp1K5ajtdiwOBueIcjIQ=;
+ b=UbBYa670ZRFRX1nMkVIJp9LRvvxm51Be5EVt5BFxCoQdixf93XctIADzmuVII7pXBzm7+4Z51rFVwdtO9totxtAvlSyCM+04OXGEgQBoy8mYd/H1VbESZ9O7EuBfhCIaZ/UWAeQY6NDJAhpcyTsPsE6Zs4Sv+LSJj0dhfASKWDU=
 Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by SJ0PR10MB4416.namprd10.prod.outlook.com (2603:10b6:a03:2ae::16) with
+ by LV3PR10MB8058.namprd10.prod.outlook.com (2603:10b6:408:286::22) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.13; Thu, 31 Jul
- 2025 12:07:24 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.11; Thu, 31 Jul
+ 2025 12:18:31 +0000
 Received: from DM4PR10MB8218.namprd10.prod.outlook.com
  ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
  ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.8989.013; Thu, 31 Jul 2025
- 12:07:24 +0000
-Date: Thu, 31 Jul 2025 13:07:21 +0100
+ 12:18:31 +0000
+Date: Thu, 31 Jul 2025 13:18:29 +0100
 From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Vitaly Wool <vitaly.wool@konsulko.se>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org,
-        linux-kernel@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>,
-        Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>, rust-for-linux@vger.kernel.org,
-        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-        Kent Overstreet <kent.overstreet@linux.dev>,
-        linux-bcachefs@vger.kernel.org, bpf@vger.kernel.org,
-        Herbert Xu <herbert@gondor.apana.org.au>, Jann Horn <jannh@google.com>,
-        Pedro Falcato <pfalcato@suse.de>
-Subject: Re: [PATCH v14 1/4] :mm/vmalloc: allow to set node and align in
- vrealloc
-Message-ID: <2c2f397b-e829-48f6-a8b8-29619439fef8@lucifer.local>
-References: <20250730191921.352591-1-vitaly.wool@konsulko.se>
- <20250730192002.355169-1-vitaly.wool@konsulko.se>
+To: SeongJae Park <sj@kernel.org>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@redhat.com>, Jann Horn <jannh@google.com>,
+        Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+        Pedro Falcato <pfalcato@suse.de>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>, damon@lists.linux.dev,
+        kernel-team@meta.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [RFC v2 5/7] mm/memory: implement MM_CP_DAMON
+Message-ID: <dd5cd44f-3107-4337-8673-2d5667dd9ff4@lucifer.local>
+References: <5acc6af3-91da-4dd3-834c-e8923e5d3320@lucifer.local>
+ <20250730042106.54750-1-sj@kernel.org>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250730192002.355169-1-vitaly.wool@konsulko.se>
-X-ClientProxiedBy: GV2PEPF00006632.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:158:401::3c8) To BL4PR10MB8229.namprd10.prod.outlook.com
- (2603:10b6:208:4e6::14)
+In-Reply-To: <20250730042106.54750-1-sj@kernel.org>
+X-ClientProxiedBy: GVX0EPF00014AF7.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:158:401::31e) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|SJ0PR10MB4416:EE_
-X-MS-Office365-Filtering-Correlation-Id: d1708b46-989a-4359-ddcf-08ddd02acf5c
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|LV3PR10MB8058:EE_
+X-MS-Office365-Filtering-Correlation-Id: fedc49f5-f0c8-44df-0b77-08ddd02c5d2b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|7053199007;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|366016|1800799024|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?vTlVGyZPSOvyrGY6+x0l+frcEFc9Ox8qQg3AaWvS4xjH+CAzZ4juOieFxg0q?=
- =?us-ascii?Q?PsgQ0Nuo6aJ9vPUTDUElk905oBQ/qb4wUavbnW12qIQOwS7Q/49O5B8oaBWQ?=
- =?us-ascii?Q?TcKE4to4Yr8ft+ZFCgwU4K6fXc6pEA4qfBFPwIBojpu+5sSIPqZe+2YD2GYB?=
- =?us-ascii?Q?ygCRh9er45kJZImkRTHhJZlrna7edEBdifteCJb3Mi7hpOoVGN9j+Ytb0j0o?=
- =?us-ascii?Q?fXD0sgDWf48Wkmwg+vkFgIySFZLq7okbqrAAZzJwwRtLNzhG/uyZ7fAhudEX?=
- =?us-ascii?Q?R0hx+XL2SGenqgdV56BhwsnEDt5Jf5lFYkPiJGICgjSWbDPUD5yxkjS4N8JI?=
- =?us-ascii?Q?vE2uTMIsdPB4gffU80WRL9ozwxRz51zjeVv/7iG5WUANRChubKl0gu7oM4vF?=
- =?us-ascii?Q?Q0vzOeAjSP4DjW4q3eFAenLxclaf/0k6YFuTAmz+lZ0YcBsD7s5vMAFajob4?=
- =?us-ascii?Q?rO5ZkePx6j17EOA8OL2WodHQ2p8bjg0JCqlLkc2tzKoYNiCizfdXnawKxQ6S?=
- =?us-ascii?Q?6yecaD3rU+UtehA98h3LCHBcDP4kEh3O5fDbtIByT++KjnQYx3whmrVk09nE?=
- =?us-ascii?Q?fRfSJyykWzEksrkaAS6fwJU3xp67+XZm8sGXBRiETHaCryjP70Znrv94mXmE?=
- =?us-ascii?Q?56jA1oam9Av6WJTmncpK7yOERxxyBhz5kfP1v1uDNvEisuuMvCx5zUazLc4L?=
- =?us-ascii?Q?tlfz3wqiIBtnxvB5yXeDqypID3wy64u4/CoRGpP31aAOuxzntTdEGFLDRZ/F?=
- =?us-ascii?Q?Vgx8t/JO4IffZgJ1rglrJWfLt2qKJrinNcby13FcDQDN1dYkQGp93gTlzhWd?=
- =?us-ascii?Q?eV9mk9gHYuDiYIQTigdwVgZWPgoE7RhPjidFOZip0iPyKweYzi91NAaYT3CR?=
- =?us-ascii?Q?gKyp3IhuTi/ryYydB8BMOR8tpkdSWNJ9jg1hLGkfuX89GtJLBROCHmExPI0o?=
- =?us-ascii?Q?es/dIYARSUDsRCIheGRF3eVytiFDoQCVCW1GvQ41Tgm4S+JaFUerVroW9Cek?=
- =?us-ascii?Q?Vaq5/TrrW+ZU6Cr0/9Cf/eyjEFf6a8tezCmnIQu/eHZVPdLo7IVO5C0r8NYu?=
- =?us-ascii?Q?kQbj51LpLwhZebQIs1UgqpVQSpxMddt0VHi4U5mE1ARr9ZBdwQlFl3zcfjRq?=
- =?us-ascii?Q?BFXaQGgkjb3P7HtbLZhn2kRxBPLz3J5RqiHj06D2qwa4gRNpQzE31MgwgzNb?=
- =?us-ascii?Q?v3IKjhGyioBMcw/SX1xtwkYdIroZY6mZ60KE7uuHVCgopMa9iAengxVd6SaH?=
- =?us-ascii?Q?NhBluF2RN80FdfkmuhDerphuW2BDh2wgd0UDg/uZF/hEZ3a937b0fUPL1awZ?=
- =?us-ascii?Q?aD1is8c/IeDV6CkrHJFS3xBlrWovk3VRI2nYMH1RqWY5cm1Lf2L4Mo4SBQjI?=
- =?us-ascii?Q?v4+t/IiKXghj3vfMVTrCzQ7wlQE5HmMQ5j5l0HXCsz5g+8oXkH0/RrYHpOiL?=
- =?us-ascii?Q?h95S20L6vRQ=3D?=
+	=?us-ascii?Q?NtswpY7dk5qZ9xMnvd0919HrztODGGY3/8f73a3+sEtMnrykAssvPL0RO96i?=
+ =?us-ascii?Q?/4elVEOIYZ6hEjzTnVPw4uDgCXn2vvqdib/ww6WHMLa+EZNRvLcnU8m5oxtV?=
+ =?us-ascii?Q?VYwLWKhbHgicZjZapQkZPEJPT5ncqS/6KUqOUEXnjq8HU5tkgfwzURH+Us1n?=
+ =?us-ascii?Q?9H/DLCDn/L2Z/3OWHuOOdwD03Un+Rrom7r406PXSq8IX7u9rSG4/H8DyRDMD?=
+ =?us-ascii?Q?rbOkVphZJAgfytoQgNoAAbR1YG17MKOrwP98VEv2bbbbYw7BNFjVfsd34mjw?=
+ =?us-ascii?Q?X4vZtCpHu0mdtCM1v1nQiQfzewowPeWp+iO3YWQShmSTLcPlJMY9pfIEYEL2?=
+ =?us-ascii?Q?ij1XlSqq+51YVOPwZGo0k1Zu40HcpbzYJ72hWzf8PKGwrsjFtLGclLusIJ+u?=
+ =?us-ascii?Q?qApDXOiokDbBA6kILFVKiEFn9FhWYb1lo1R5sF0iWn4idhOpTb1iqdXNivxP?=
+ =?us-ascii?Q?XPSNp58UNamKqA0+N1opMZ7nTz7uQIE7Ix+kakNKdI9L/xGEt1X3uCDz0byB?=
+ =?us-ascii?Q?uApzYQbwR+v1XvRFNcOlXTGoZuJnqrq/Ri0OxY6X7jPYZQaoqKgC7kEWx1PY?=
+ =?us-ascii?Q?grQtafoOAArlZOlBoWZiV0k5J6ZwcZoKa9EqkraLDE0UYInfHkkYAv7p1+rb?=
+ =?us-ascii?Q?CqYPn7XBfcITMW4cRjNZDDrcEBKnJ/RgS6N6apzEG3EGl3RMdmCi/muxd2S5?=
+ =?us-ascii?Q?p+wEZLURSximtfL7GtrCk1T+6M3Y+G4vqtqKn+rCJ5rPZiBqm0gbqFCMF//3?=
+ =?us-ascii?Q?rTgLAYBqbV6FgOXxog0AWzANSf4IJ6T75ecVJaFUFMP5orT9SNnopnGLmWiz?=
+ =?us-ascii?Q?60PLodKo64wnF+g00/+tJAs5GPs4mskLQcpX/S63DOHJjdoL/psIgHUCMAUz?=
+ =?us-ascii?Q?S9cfk2jcVVtISFLfjKuQDItbU1th9PasQNycnGiwURke9he9NftPKja7BaEQ?=
+ =?us-ascii?Q?UFlwSMk1rExJGK5sTjPNezmLGL2lGy117vndmQ7NimHaozpY6aEOmk1Xs6o+?=
+ =?us-ascii?Q?IXCOpz7jn3r5KhVaba+ZOsJz/HX9CtJ4V3rxT6cvpK2GVSUTeWqrdcyv9tEW?=
+ =?us-ascii?Q?T203TPJolW8cIM/GZ7OQYEDYCoZBxShuJ1UiqAwXQBX7RoHxzczfWX6qtsio?=
+ =?us-ascii?Q?4qCvj10Dj4nL1zO8wNFx4i7hoCCilpAlu4gtZbX/LOEcwkmZxvvuAxjnZM4J?=
+ =?us-ascii?Q?D2vXnSma/tLNH8POZPyjHa5FcyLmO2FCjXVA1lcfhXu76PDaaUjLBZXUoN5D?=
+ =?us-ascii?Q?PSr2C6bQL2S2p7AXp0B8249XJyNfgFgKIuVnRBLv0gx+QHIoRw5id9liARaM?=
+ =?us-ascii?Q?6BtDVhYIUthyErdMNX64vuYwjlGZvzLOUzizRfrqEOzXy8ne7dmRKgeqn344?=
+ =?us-ascii?Q?3JdqFGypoXVHk5Kn9pemNdTyRT0O8j3jk3xdFr5Gfz9DhK1KOAprdNLfPcsO?=
+ =?us-ascii?Q?mYktXTorI70=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?T63dGUa7pTi4g2nZJR17XwI//tIDI46HAK/VJXVYnhMayT4bAqxAIUtBMDXg?=
- =?us-ascii?Q?CCEsdErnBd5/A2E1VytqhUdexidGsxA0ZKOLa4kEUod4Bf2LuTGz5ov2VQz3?=
- =?us-ascii?Q?qr2WSigk8XE/U619a3vsjYwGvqbXhjhTUfffB6D49jwBkUstCHPdPd6SPirO?=
- =?us-ascii?Q?Gq3xkkeT/b0zJz6ExrQZEREmU/v6Jk0d/UcoUTdhvwL4w0us/QDOtTyyTIl2?=
- =?us-ascii?Q?TRBwbuwvuQ4LQcC0ArzDLIChqpTpaPGxIVz8pbuvkU+MxJmGPZ0psyPUqQ3X?=
- =?us-ascii?Q?42oxnNnaRaQU1yCLzvcg88B1jWOXIvtZMbFjoxv3Ik9aUAa9u1yHKoz57F/5?=
- =?us-ascii?Q?cGRp9JL6lV8RAQsxhiuur+6H4+0ERZmQAII9UuLZaP7mkwBvsAkKEspd+XJx?=
- =?us-ascii?Q?lMpvXvzlecKL2/KWXEtTMPxhJFnABikvipi6jyFDe2KS0JclnE7r564nXVk9?=
- =?us-ascii?Q?7J0QY+NbTaZPguJoV/xJ2X/BmvenT00MFr8U1+oOWYwMRufqq5/MhWen+11/?=
- =?us-ascii?Q?MC+7MiZuCkKZMjS+OtEAcsmRDWyBiH+8EPu1Nk07iVMn6Hdc5HGBB3bFjHyP?=
- =?us-ascii?Q?PPlWdG5sTMIugF3/wU3jiYNgUr6lUfPC0FGKvXno/lpzyx9/y9dxKa5P/MQ1?=
- =?us-ascii?Q?ihJhDubfkWkreWf0dEPcx+seCP2MvUJHjT+D+4t/BJo9evuCu2BPxLpEg3X4?=
- =?us-ascii?Q?zw1jJvqUowiYjwHsNM7/8cBohGHkkH7YNnBrcKoGM3XuMyPriSo/NnmKvVBw?=
- =?us-ascii?Q?/5st0XlsJ0vmRiU88oU/9efM69QZBWaAd/t4+Yv+u67Y58RQd5j14RLCuAvd?=
- =?us-ascii?Q?QpgDzfi2cjoNvVTeFQJOLf6o7QLNHKQSt9AEPuWN1+Mai0oHAV90wnHH2/OH?=
- =?us-ascii?Q?lT2GWman3RD0/+hOoWJOfHhgvzHzUdtbsJcPFQcM/zMzpq6uZ7Ecrs9BEojt?=
- =?us-ascii?Q?ff9k5jqx4J8C/hyODjkkOHYeCNQ7vRev74bKHj1Sh4JhxaPDBux19USs8+JD?=
- =?us-ascii?Q?46SVl++v6KDP49AIUoYpEvcV8C8361wFGdXAf/JCafbD2p3vGIpqkrJK50mG?=
- =?us-ascii?Q?Bo5yfq//YmZfCds+XhJw/LNYBOZlCnNkxUR8609rUDj2tCKaIVfgHyTuDPIK?=
- =?us-ascii?Q?rSLgsnEEenq7sn5KlJdVqJOhwrG52lp3rb3mOJi+jp06A5Mmz16F6Ykb0uHz?=
- =?us-ascii?Q?F4RcM72EEn9SZusP8ajSEeVvU7bFD1NChNuV+91+pN1xJgZFkKnjAmRLgEZ9?=
- =?us-ascii?Q?twqcsWcpeRBZ2itG+c8EtObbg7MRpaMfg0FdTwKqlpvKf3YZTxX9C8cD/+wZ?=
- =?us-ascii?Q?eitqKNVLMaclWXL9iBHhEAmv/f71M+WdQz21ivFdodO3S3cZe7+sBOPQpYJa?=
- =?us-ascii?Q?6fyU80rrzDj7eimf6nvhy7+AYQ125J4WnqI83ROId13CtktLFusM3Ez/3v4v?=
- =?us-ascii?Q?djYnzEWEW/3RgIGNxafgjnwQstndgraLS75VAMA9Thbya05G0PwhXGn4nt+Q?=
- =?us-ascii?Q?qUVVV/L85+CUerBlfJvWCwrtm9BoGOughk7Qp+gLYxGXZy9AMBnmqxlLint2?=
- =?us-ascii?Q?vP3YC0cs0PTU8MMmp/THFKR0dKS7dLdRGtvB61WVMuf5rH1BhGfaSW5aK2x0?=
- =?us-ascii?Q?IA=3D=3D?=
+	=?us-ascii?Q?rlgaeW++bm4eGAJ81n12c+P7wyyLNeHUvK5Hwv7f2sx9010pHkjp3PgXZmOn?=
+ =?us-ascii?Q?dapJ/4+R+uC3L7YnPOpHQTp/NJrs2518S8awtRYfJwuESL7x+edocKXjO4zF?=
+ =?us-ascii?Q?eupTkiWBWepN97W2xfPA3ff28oMzd1+WN4nMQGkkJQfFltvvAoMyVCsRcjg1?=
+ =?us-ascii?Q?2HWYo3OvE+n2i/RoyPUziqAaD9rdCxe41R0xQIBvl76KB8hW2t2H+KPfdxRV?=
+ =?us-ascii?Q?Z+A/S3Z5s72Zb39WedcuhPn7t3rynbGPzZYJs5aVcfC5HRthl02sLTzALKTw?=
+ =?us-ascii?Q?XUlewK8LWWeaidGnTBoyuMjohus/TLqqmlp/TQ8B5jC+nbtxwsvniS3NM5HG?=
+ =?us-ascii?Q?XFH4rkW/ABD06R2KER0OOqhThpW+EXWXEODCaEeGiv85f68JonVr0qVdBQ4N?=
+ =?us-ascii?Q?/npd66hWcpSD3ZUXxj61tFfj8m2kYGEHtgGD6ikC7LlkENCH7X5rIbVE8TJn?=
+ =?us-ascii?Q?p1MZ+8t92aVrWTGSNYkOUdz8a7F17wGXfTF1dakCOQrnIA9wG0kKc4HPmr5R?=
+ =?us-ascii?Q?KhSWlYj5JmN5CUeba4qN1i5PrH5hzlmLTCWEvQ5bfwawzjOLHVXKxzNpplmS?=
+ =?us-ascii?Q?1RExgmnUD2rB/jiFkxgT4MaVd4Pf7f2u95aV2aeAl6+adZbUMm+/4ktKbDtP?=
+ =?us-ascii?Q?0GECi+z7dGAm4qIuKbmneH2pSJe7wacB96r6wcVZq7AAOx8wfaAR90DiC5am?=
+ =?us-ascii?Q?fvEQ+4mdzelQPMJULt2dX+q8mg81/QNNjFzp66RIh2AbCyO4g3SqI5r7QBxh?=
+ =?us-ascii?Q?yyg+sxerCwa4nQYLodcJVqkRls1U9iQA7qOE35ztKx7FSrHh1H5Fm4TMSj7d?=
+ =?us-ascii?Q?1hklZFaBeuHG5FRMhVrbdZ6a+Dvj3pwbrbu7K3dakrDIYIp8BviVfzBzJfV2?=
+ =?us-ascii?Q?I8XLvJsuuUG3c3N8q6Oz/P0Uzlv8di76ietNBvARrT10tQE5EJ1YofxV5YLY?=
+ =?us-ascii?Q?qD4njZHsNBI5XerlrjtaZlEWPfyE0vZAJfZvKyTbsWeCN0qJOICoykmWaA42?=
+ =?us-ascii?Q?prh8hX62ouu7LVg0ELZ4fswDTTnDSaqYtLSsnC7dwZw+CIICk/t1KjAZ/QQN?=
+ =?us-ascii?Q?11fRISkx16q4m5g6fa6U0rqne3hnTHuRWmS4bKd9HScIbjhNejVsG7qieRRM?=
+ =?us-ascii?Q?yQpsU5I/zlLZfR69Iz3+/rDbwXoHDdpDFAkeP8YH56yLCTC2NV59gEedGxBC?=
+ =?us-ascii?Q?UxK2UZWOS3o0Hgw2s8VCSRrMR15YAMLsFjHlg+SeDKKxFt3sGYWQaRpQeUIm?=
+ =?us-ascii?Q?lPS2qqrrZYtN+cqsQZUOmPHkdxgB9y3LXOX66xftacml6YVIUmDcTHx8qF4I?=
+ =?us-ascii?Q?KYrTBmXORMt/YauODhpFvSJOXDdY7MfBKeTU4c7zz+w7m2fxznmjs1kYSJ2U?=
+ =?us-ascii?Q?9eyRPZacpQ3oqcf05h8vRa2PdwKIpB7odhZNR2qwgizTzD4u3iQY9wzpJnHO?=
+ =?us-ascii?Q?UUrMamGw0kibXEy6mgu/nOBKoJL8AUc/5yAmwEfAUsqBR2qNmzbC0UC4GeXe?=
+ =?us-ascii?Q?TTgrpOHB/CwwSqNJ/rx6vbZhmcGb7IlEh2FHGWDDlN6KQ3Qec2a+DrvLv0FO?=
+ =?us-ascii?Q?TiDSNqZnV/zsMQwTqksxhO1B0MSxUMmRV6dl6lGLA5kECxWn8I+W0bibTcav?=
+ =?us-ascii?Q?1g=3D=3D?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	eedyfT7wrT/SAbVpBxl4pLNRzE6eiONhehAUXOFCNC9u0KhJPFnr5Pkfvf9q4BVyO0H3FnUEbL4To7W9A3Dl/x9ZqVC2Jt6uuWD6WcjBdVAwmcHi5YuOxc5UdNspM+QVE4FXQVd83co/g4PFzyE5lrOOdKAeuL3MwI0slM6q+UTOhCkNHusn8VRfWBazji+/KKeEYHn5kiauJo3O0TdZ5IGU/xnBzX1IJyhVSXRXgIrBRxNhCECs5yVkB6eGbKf8rU+2TlZmNI9c+jbLaIwUK86MwQbrHMkx5kf22jp9FTdeT3AGWOLIH/foU26dwt5mgYne9pUXhruUcd9R8tYPsllJutnUW812krhfG3uB2gjHaNkYZbs+WglQSPA00PPQ1BiegbBq9Xh5JVW93ANH6ZI04SDfICcqRxuYbyRwq5NwmTktGDFY4MLalAB7eFF2cjmNwvc7hYUXdUSFP01D/0Vc050bPu+b+A6teJXxcBCP46OXLy47o5CsrXjvFUrH6B8TLpKuE7is/cNT54wbp/pfvonsIvPOKvDGRfG1BAzipY9W1RGux6/5XnnbUsv6d9xT9Urw+c0U1H92KMibU7B5hkEMHuQQI2YI8nZ9LPQ=
+	BHqAILAKujLNv+QSwJQ+wrgBZAEcbUzQfTvZMq5xwxiqfXyNlHh7e/tcHeAokYtpt8UMUzV9XRrgrEcPb4URlIa7dTGpLC5yPSEBuuMSlXhH0RzmGmZk22Y7fardiq9XSClxPpA2fFwY5ztfz00mSMF/CqMNYdWmBO8YvysjqaylCp7Eb/l8jQuXCKlB2/Tzb+3cMmxcd30uCt5xPHjDU3okox5xhEUSRIeJr5EhOHBlU8BlCephQSGWv8Qjej6UqT6AzHl4MlnRW2KNJwrIh7OHGDI/0gjrgroQR9Hj9bf4pAnzLRYmISGVP0yjxjm1rqFPsLeFUUVf471s8s/mD64bYSGDotD0pDN7oTwnMSK4TqE9E22/b25iUX8l2KDZmnynA60im6c8ZUJ+TrEMM152AIptrFgjL2ii1Fw/zdgmOJIwy0ijNbYGFvWb0up7pNYgpeW86D52e2evFiQSRDyMoaGoj9YyLmNn8Xpuzr2k2T/o2yin+RkSnUxuzYCWvTyQr+8DYT+gnu+x/Y3AblQtl8fODcOsVx/jgBO0/Kz6iA73VPCRSkouqp+hZ4njw6I2wo6b9yhHjH723k029jivnKw0fXESRtnmkIl7ehY=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d1708b46-989a-4359-ddcf-08ddd02acf5c
-X-MS-Exchange-CrossTenant-AuthSource: BL4PR10MB8229.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fedc49f5-f0c8-44df-0b77-08ddd02c5d2b
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2025 12:07:24.8464
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2025 12:18:31.7692
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tFRaZG43OLQE2U4iut6jKCC5OZciWF6Osp+UBxYZEgvZ0gBHw8bCuC0spyDOFus+cdl2gJbzVs3ncbNAqKmvTxD9MSKxFVi2DnXZ+zRRtWs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB4416
+X-MS-Exchange-CrossTenant-UserPrincipalName: /q+TqZcFeI3drcJfBoZkcqhzEm5UvI49xPnUbZjWhJwjMfgUL4AtDCs41rwRbrcgUVm1no80S7+IS3oGIo7Plt+uBjvVDTIBzfHFAa319/w=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR10MB8058
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-07-31_02,2025-07-31_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 spamscore=0 mlxscore=0
- phishscore=0 suspectscore=0 mlxlogscore=999 adultscore=0 malwarescore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 bulkscore=0 spamscore=0
+ mlxscore=0 phishscore=0 adultscore=0 suspectscore=0 mlxlogscore=999
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2507310083
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzMxMDA4MyBTYWx0ZWRfX+qTyKKbaIG7C
- MsLRcEK23HeK7qn8KQpFiw97z9FweKds9ALFB207QLGFHYO7UVgcQO8GDdUqIJ/Yg5YwbhbS4yg
- gaEohlGKCtLN5j52t+l1DbH7+QhHfBqfsYpfWWvg5XeycojYQBa9qyWNLpbtDxrgO08Ug7Gb9KS
- yS/DxcNutXcw3Nte7l5BwikS0+uNapZjtZlSDCgDTSmJqCUUc/YD4CD1xnDmDwkkDV0yg7cD9XP
- pc6z5VAQcWyfF3Boef3Uc/CMFb4NYP29HYwXxB7pUi65kky8qFAPx+OXaheQ7N5IGZyjtqhuOYJ
- q+QCODVEnENf5CTW1rj1uI5NN4gpN9G81XmnITQvD+QBSepzxL98FtefoGbzUhrKK4+SwO5Qotj
- SFOeoBuvT7foFTHFEfZuxhSORekXNo71gvnkOEFhMgQi3wlypSVB1IwWaBAaXmlNQGlXJxpm
-X-Authority-Analysis: v=2.4 cv=ZO3XmW7b c=1 sm=1 tr=0 ts=688b5c7f b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
+ definitions=main-2507310085
+X-Proofpoint-GUID: x6_YTbrynTcYbzWHjf6HTtqVAR3S25-j
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzMxMDA4NCBTYWx0ZWRfX8FbRY2BdEBmp
+ nJ6YVUhT3shimUuj3wyjohrNMNlJZie4DahYUutGZUUjHJuGdwbqaqScBs3mUH/aUnGz6NElC1j
+ jC72CbvRBoICOyglvnnFx/5iilErjFmodIbUK0Nm2v6h6GaTuaxoEo9Rl/2SX4OTsWPBRDjXntI
+ aWFYPb7MXtsjvFfMa+QjsPGCVtisgvZ9edy3XJ29DYTTMLgD1eb7IqwjSN1PIF2Qi8ARPS2ABUh
+ MnBxaqD76gSDfucSjw0uRxAqvShSTT6MpxWJQhKHFqxwcIf8oFuLS1+GfVHWDaYVMqtTDIlPLF0
+ 8kpmJc814vqkncVP3wbXcTxAxpO/aNPCLTqgwGwS1ZCN8nqlsMPFRogunKAxnpGSW9u9QcQ/E8H
+ 4UeQVI2tMZpGEqLx++VB9RWygShfjP6xli70tAOdejvGBdJolnjtStXdQoKd19Xy07ask/8h
+X-Proofpoint-ORIG-GUID: x6_YTbrynTcYbzWHjf6HTtqVAR3S25-j
+X-Authority-Analysis: v=2.4 cv=A+5sP7WG c=1 sm=1 tr=0 ts=688b5f23 cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
  a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
  a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
  a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=Wb1JkmetP80A:10 a=GoEa3M9JfhUA:10 a=pGLkceISAAAA:8 a=yPCof4ZbAAAA:8
- a=Y8mYsLuOk6LQwvwhDr0A:9 a=CjuIK1q_8ugA:10 cc=ntf awl=host:12070
-X-Proofpoint-GUID: 5jHaAPz4RTCvVmWEa7qsKt9picrk58j2
-X-Proofpoint-ORIG-GUID: 5jHaAPz4RTCvVmWEa7qsKt9picrk58j2
+ a=Wb1JkmetP80A:10 a=GoEa3M9JfhUA:10 a=mwxirpOD2YPB6wsPFj8A:9
+ a=CjuIK1q_8ugA:10
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 69ED1C0002
-X-Stat-Signature: ogi9eexjg6ou8gb7a6qyk8jw96xajpaz
-X-HE-Tag: 1753963659-69810
-X-HE-Meta: U2FsdGVkX19fdmd4Vi5bKneoioas6bYHtJrfv3YdXMb/h9t/dauKBr2+r9lZb2QHgT3wVl5y2GDb5tr/jn+zhgU7cAQsi5j8hvCQmwm24fTqBWdVwklLWp3B1uipyvq8Stz1I80p5IJprgD64eJJjgN/jQFRblefeomGiPrzTfDIKuE9/zSIkH/DBp1xUx5SvO2nCYRRGF/+uFa+JTChZtVf3mTvxlJgc2ojzM2NOHm16ptcbq+47HhRjFLuUS+0G5eJlKL+tepe/sppytyMZupzxcohPEUGPA3QkZinZpWwpCI5+WBJzwhZlEJowQ0MtPymiBal073HtawbZCrZeC7R/KWH3pdRhcR/hVfOuxB3MoZY9FmgjQ7AXopbpFyVWYiHl2hk9CODJcoNdih3YJXl5G+GQypS+gv28CNBnvi2mCmOvw1c0jGcaiO22vnoc9fBox1HCcqv8S7X6PIVFu7CR4JF/dRrpXmhCoCW9PP9JwGEEZxiIYOoeY2RlffWokALev1ShqLwc9NZP6dNcp08aR2GfU5BirDPmhFjGDDFrBhP69LR4HFaGw7zow4so7jAaXHQgOD6+jmf9euey8jwxKxYe/7IddHutUNo5pvWxKNt3vAxKIilWssTIzTIrHwbtshXDqJgLSildaZyhzEs0PWI1U77C409eaO7Gs0wjq1WdpB5k5SY5O/257lCasE/aWQKss5PI+xzgvftFFYP7O47mg2nPheEZmF1zthExxOhvxFYDMPkJYS+lr2zdigTqt/UUemIad4rwkfzcRKpWGkBOgpm3efCz+bwOijhbq6J2+cWExrzYPIaUF2Uiw1TXOUDTJoJ04WHkzzETBcMYFaEKRbjiC/DA0F5h5ZkhbPemq1y1G04k5qTHFotZ/H1oJw9Z3vNwYCxXh1JoUT0r6VMgky1y51myLmaz9n1tg7ZdH2y2KzS9D1YnRriI+jcOdfjW1VSu3MqeYg
- gF0yHbNH
- 7gD/i+bd+3U5QEsgnLwiuEVcBIL7J/HsMswmSyoRVrKSk4ErJpfrbKpKqFb/ttueb93J+nI0y7rmobACser/n8tw6zKRtq4PU90qZQLwEYjtmn1KBpfK7Aw7Elh3+PrZpPjQ9w8bf8PG54gXLTFJGvLGS+e/XMCohPI+7qi9pXflkj4fQ0xGML7nqYXtTcRb2XTjE3SqUlr+1teyk0TbtuchRHAvLgxw7TACJJRlCfZWrTAqO7zJFpFQmP/tYTJ42FnB04+yQ98NKLZs2tLEjDPWk/6v9MbSFKEN1szZ8yz6vwSY1QOAMai3ZXYcI71Go38uqhEJNvtaO0zyo1wtAek76CLROFCR6to3DCn5sf1UL/Dip+iGCXz1vYZgtePI5fHTMiXXtFXzWQ5cilCjm0jhB7KksQhsx7TogQY6etxgF/jSAaAG4WSmN1Z0XvML1rhrwALvc3v80BTbCm+hQZVdD2wm3CAKdjkmQcI64mJQ+g3HtOsccIPbNpPy7F/82CAbegX7w44YUllhKEVbuBhNzKE1n9pQzxNVilMVNTIa2/hAei6zDf6qFVzKeE9KUq70+BIjecmksT3FIj8kIITHWBCX0XPB4a8oUmGHz1Y0+p2Ej5jUNz1WfvFl/T+K7dJYPCexDlW2gwJw9kvRXbMyG5X6icpdYwKHQJ7BXbjT1+sp62Slkc8ajh0qVanPjtioTSPmivi0lqb1LIGssiz73YVazEWV/gKDasgsshQpXaIseZ/Z0Q4rR5QM6ISoKbGj1wDJzj2/CJEbzkUj0qW7V4Rgwkbn715iu
+X-Rspamd-Queue-Id: 4D28D20002
+X-Rspamd-Server: rspam06
+X-Stat-Signature: dusnu6tn9d1i7qrukyeku3t1ijbxmmw3
+X-HE-Tag: 1753964329-672378
+X-HE-Meta: U2FsdGVkX19W2TG+MLEde2a3xuzfDFjaN8I4bsPddlfNusSxa9HTsC05cuZVODieEjxcocTKasSs2i5u4laYW//SD2pO+P7arF3NTO8IDtd+1PV6cPV2a9OloKCkeir/b6Jr1LAlTG0iK8bNwp8G2jOO7u9bGDycBqbWpn05x+WKL9ZpHVYevOuaRAUvrPSQfN7A00m5b9Qh+wGBwW5TRzSxioRtmEGG+4SvlJ2XVw6CLaJhvEodkjB7r17Ez9fC8UY13NvqFgHziP21ugnRPsjfUJutZ2tjGQt17bqXvitgGb4VhlwteO1UILa7unkmhKFW7lMcAVTPhdTgotRVfDixEF2b7vBdcQJyOOdKlntqPpZ/TzEPJQ8NtcQgRGUFTuEqGsH84ETK8qr22KdK79X3KkS0yR5I5PT/kliJcENCzJRBlGGNnQM17UswABfl31QuNOWBmNfBQzUYtDNM20wbcFbfy9htHNFxpZR2TBUR5c8Z/QRXkVwY8n5b508mSO3ZjKo4bW70FEgceOGsdyK9uLBylC7Pz6rmjV1aViiU4LlXV34zhs18zrbcHUiPJAdBa4Yi9LDdop9lBnKwp9vz+eweh9KovdZsNMxlSf+qR05gorWY1jwIicXAf0uj59YAOdMvo7Hs/mGPeTu7MheJW5tpTV0hPdKcR0Nwc2XD/yGPM3POC2Om1QOeXw+HBzH+6gNU+MrrP5eVIa0dqvGnY/3lvy/YJjXcIYYuGuez8FrTvvI6MdnHomeQvvZg3klDyH9LfLsDw8jShd/oTrIOa3sBOd+SqDlsOOwRMruXDEu21LY+LXsGy+i+dtjvXSZypBcVSIcTMAgyEjgVJo5WRuBabWAdMJJUMrfzca8zZ6+rzYWjdgpuA9I5vqUBZ77+6BkwPUGRc1c7C6VHEKcd8PYCchZiYd/HcZAN0y6vhwGxbttvjAkJ72AL3wHAr9BXQoFJlJJxaufwsYN
+ CmSO399r
+ WC728KCzGrzQFmOOPfOYVexZRijdDViI+x+OV8gg8jrrCMSRyD3n2GsOSGHun7DFYYkl5R9p0bL7J5jZKAuJCG+LeBw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -239,145 +236,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-NIT: Subject line here is typo'd, you prefixed a : by mistake. I'm sure
-Andrew can yank this out though.
+On Tue, Jul 29, 2025 at 09:21:06PM -0700, SeongJae Park wrote:
+> > > Thank you for review and comments, Lorenzo.  I fundamentally agree all your
+> > > points.  I don't aim to merge this as-is.  Actually this patch series is more
+> > > like POC, but apparently I was rushing.  I will try to adjust your concerns in
+> > > the next version.
+> >
+> > Thanks.
+> >
+> > I do wonder whether we really can have a whole new faulting mechanism just for
+> > DAMON. Because if in future, we wanted to change how this worked, we'd be
+> > constrained, and it is a very specific user.
+> >
+> > The issue is you need the PTE to be restored to its previous state, just like
+> > NUMA balancing.
+> >
+> > And I really really do not like this 'oh if you turn it off you can use it for
+> > DAMON' thing, it's just really odd and asking for trouble.
+> >
+> > I think the only _workable_ version of this would be to convert the numa
+> > handling to a generic 'fault then restore' type mechanism that could be hooked
+> > in to by either NUMA or DAMON.
+>
+> I agree, and this is my current plan for the next version of this patch.
 
-On Wed, Jul 30, 2025 at 09:20:02PM +0200, Vitaly Wool wrote:
-> Reimplement vrealloc() to be able to set node and alignment should
-> a user need to do so. Rename the function to vrealloc_node_align()
-> to better match what it actually does now and introduce macros for
-> vrealloc() and friends for backward compatibility.
->
-> With that change we also provide the ability for the Rust part of
-> the kernel to set node and alignment in its allocations.
->
-> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
-> Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+I think we'd need some way to embed this information somehow, but I'll see what
+you come up with :)
 
-Thanks for improving the comment, so:
+>
+> >
+> > But really I think you'd _need_ to not have significantly different behaviour
+> > between the two and _not_ constrain this to being only when NUMA balancing is
+> > disabled.
+>
+> I agree all the points.  Especially the current interface is ambiguous and easy
+> to mistake.
+>
+> >
+> > But then you'd need to know _this_ PTE is for NUMA balancing vs. another is for
+> > this stuff.
+>
+> Yes, this would be the ideal.  But, memorizing something in page level is ...
+> always an interesting challenge in my opinion, and I have no good idea to do
+> this for now :)
 
-Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Yes this is the crux, or another approach will need to be taken.
 
-> ---
->  include/linux/vmalloc.h | 12 +++++++++---
->  mm/nommu.c              |  3 ++-
->  mm/vmalloc.c            | 29 ++++++++++++++++++++++++-----
->  3 files changed, 35 insertions(+), 9 deletions(-)
 >
-> diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
-> index fdc9aeb74a44..68791f7cb3ba 100644
-> --- a/include/linux/vmalloc.h
-> +++ b/include/linux/vmalloc.h
-> @@ -197,9 +197,15 @@ extern void *__vcalloc_noprof(size_t n, size_t size, gfp_t flags) __alloc_size(1
->  extern void *vcalloc_noprof(size_t n, size_t size) __alloc_size(1, 2);
->  #define vcalloc(...)		alloc_hooks(vcalloc_noprof(__VA_ARGS__))
+> >
+> > I'm not really sure there is an upstreamable version of this, but it'd need to
+> > be made generic like that if there were.
+> >
+> > I think it might be worth taking some time to examine whether a version of this
+> > that can be sensibly generic (which could have hooks for things) is _possible_
+> > before sending a v2.
 >
-> -void * __must_check vrealloc_noprof(const void *p, size_t size, gfp_t flags)
-> -		__realloc_size(2);
-> -#define vrealloc(...)		alloc_hooks(vrealloc_noprof(__VA_ARGS__))
-> +void *__must_check vrealloc_node_align_noprof(const void *p, size_t size,
-> +		unsigned long align, gfp_t flags, int nid) __realloc_size(2);
-> +#define vrealloc_node_noprof(_p, _s, _f, _nid)	\
-> +	vrealloc_node_align_noprof(_p, _s, 1, _f, _nid)
-> +#define vrealloc_noprof(_p, _s, _f)		\
-> +	vrealloc_node_align_noprof(_p, _s, 1, _f, NUMA_NO_NODE)
-> +#define vrealloc_node_align(...)		alloc_hooks(vrealloc_node_align_noprof(__VA_ARGS__))
-> +#define vrealloc_node(...)			alloc_hooks(vrealloc_node_noprof(__VA_ARGS__))
-> +#define vrealloc(...)				alloc_hooks(vrealloc_noprof(__VA_ARGS__))
->
->  extern void vfree(const void *addr);
->  extern void vfree_atomic(const void *addr);
-> diff --git a/mm/nommu.c b/mm/nommu.c
-> index 07504d666d6a..3bb62b779ef4 100644
-> --- a/mm/nommu.c
-> +++ b/mm/nommu.c
-> @@ -119,7 +119,8 @@ void *__vmalloc_noprof(unsigned long size, gfp_t gfp_mask)
->  }
->  EXPORT_SYMBOL(__vmalloc_noprof);
->
-> -void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
-> +void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align,
-> +				 gfp_t flags, int node)
->  {
->  	return krealloc_noprof(p, size, (flags | __GFP_COMP) & ~__GFP_HIGHMEM);
->  }
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 6dbcdceecae1..e299b51bd922 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -4089,19 +4089,29 @@ void *vzalloc_node_noprof(unsigned long size, int node)
->  EXPORT_SYMBOL(vzalloc_node_noprof);
->
->  /**
-> - * vrealloc - reallocate virtually contiguous memory; contents remain unchanged
-> + * vrealloc_node_align_noprof - reallocate virtually contiguous memory; contents
-> + * remain unchanged
->   * @p: object to reallocate memory for
->   * @size: the size to reallocate
-> + * @align: requested alignment
->   * @flags: the flags for the page level allocator
-> + * @nid: node number of the target node
-> + *
-> + * If @p is %NULL, vrealloc_XXX() behaves exactly like vmalloc_XXX(). If @size
-> + * is 0 and @p is not a %NULL pointer, the object pointed to is freed.
->   *
-> - * If @p is %NULL, vrealloc() behaves exactly like vmalloc(). If @size is 0 and
-> - * @p is not a %NULL pointer, the object pointed to is freed.
-> + * If the caller wants the new memory to be on specific node *only*,
-> + * __GFP_THISNODE flag should be set, otherwise the function will try to avoid
-> + * reallocation and possibly disregard the specified @nid.
->   *
->   * If __GFP_ZERO logic is requested, callers must ensure that, starting with the
->   * initial memory allocation, every subsequent call to this API for the same
->   * memory allocation is flagged with __GFP_ZERO. Otherwise, it is possible that
->   * __GFP_ZERO is not fully honored by this API.
->   *
-> + * Requesting an alignment that is bigger than the alignment of the existing
-> + * allocation will fail.
-> + *
->   * In any case, the contents of the object pointed to are preserved up to the
->   * lesser of the new and old sizes.
->   *
-> @@ -4111,7 +4121,8 @@ EXPORT_SYMBOL(vzalloc_node_noprof);
->   * Return: pointer to the allocated memory; %NULL if @size is zero or in case of
->   *         failure
->   */
+> Agreed, I don't need to rush.  Let's take time and discuss sufficiently. :)
 
-Much better thanks!
+Worth just playing wtih different solution.
 
-> -void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
-> +void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align,
-> +				 gfp_t flags, int nid)
->  {
->  	struct vm_struct *vm = NULL;
->  	size_t alloced_size = 0;
-> @@ -4135,6 +4146,12 @@ void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
->  		if (WARN(alloced_size < old_size,
->  			 "vrealloc() has mismatched area vs requested sizes (%p)\n", p))
->  			return NULL;
-> +		if (WARN(!IS_ALIGNED((unsigned long)p, align),
-> +			 "will not reallocate with a bigger alignment (0x%lx)\n", align))
-> +			return NULL;
-> +		if (unlikely(flags & __GFP_THISNODE) && nid != NUMA_NO_NODE &&
-> +			     nid != page_to_nid(vmalloc_to_page(p)))
-> +			goto need_realloc;
->  	}
 >
->  	/*
-> @@ -4165,8 +4182,10 @@ void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
->  		return (void *)p;
->  	}
+> Nonetheless, I may post a followup version of this patch series that contains
+> this one, even before we get a conclusion about this specific one.  I think I
+> may have to do that, for sharing the future idea in a way easy to understand
+> and test.  I think it might also help us at understanding the real ROI of this
+> patch, and if there is another option to move forward.  In the case, I will of
+> course keep RFC tag and clearly note that this patch is still under the
+> discussion and not willing to be merged as is before the discussion is done.
+
+OK, as long as you please highlight this, indicating that you ack it's not
+mergeable with the current approach.
+
+> > Well, in the above you say that you can't help but do that when a race occurs?
 >
-> +need_realloc:
->  	/* TODO: Grow the vm_area, i.e. allocate and map additional pages. */
-> -	n = __vmalloc_noprof(size, flags);
-> +	n = __vmalloc_node_noprof(size, align, flags, nid, __builtin_return_address(0));
-> +
->  	if (!n)
->  		return NULL;
+> I mean, I can't help when CONFIG_DAMON is enabled.
 >
-> --
-> 2.39.2
+> The race (or, handling faults that caused by other entity) can hppen if and
+> only if all below things happen.
 >
+> 1. CONFIG_DAMON is enbled.
+> 2. CONFIG_NUMA_BALANCING is enabled.
+> 3. The user repeatedly turns on and off NUMA balancing and fault-based mode
+>    DAMON in runtime.
+>
+> If any of these are not true, the race can completely avoided.  I was saying
+> about the case that the first condition is not met.
+
+Well not necessarily continually, just at any stage.
+
+I do think you're limiting yourself rather by requiring NUMA balancing to be
+switched off.
+
+But in any case, for reasons previously mentioned, I don't like this approach
+and I don't think it's at all workable, rather we either need a generic 'restore
+PTE state' mechanism (that can somehow store 'both OR either' NUMA/DAMON state
+with them), or an entirely different approach.
+
+Another idea might be that of converting the current NUMA balancing to something
+generic, whose semantics are such that:
+
+- It restores PTE state
+- It 'happens' to relocate the mapping to the node the CPU from which the access
+  was made resides upon
+- It also calls a hook.
+
+So treat the NUMA balancing aspect as sort of implicit.
+
+Then you can just use the machinery for marking ranges for NUMA balancing for
+this, having defined a hook.
+
+If you're indifferent as to whether you get the hook called for arbitrary NUMA
+balancing faults, or have a way to identify whether or not those mappings were
+marked for DAMON stats, then you have what you need without having to customise
+_anything_ in the general faulting code for DAMON.
+
+Instead you'd just set up the hook for DAMON.
+
+This is just an untested and highly theoretical thought :)
+
+> >
+> > I really don't think a version of the code that results in the wrong handler
+> > being used is upstreamable, sorry.
+> >
+> > I've not dug into the nitty gritty details on what would happen in both cases,
+> > but even if it were 100% fine _now_, this is _exactly_ the kind of thing that
+> > results in horrible hard-to-debug issues later, should something change.
+> >
+> > Implicitly 'just having to know' that we might be in the wrong fault handler
+> > seems like asking for trouble, and the RoI on an optional profiling tool (this
+> > is not to take away from DAMON which is a _great_ utility, I'm saying it's
+> > simply not part of the _core_) isn't there.
+>
+> I completely understand your concerns, thank you for nicely and patiently
+> keeping this discussion.  I don't need to upstream this in short term, and open
+> to every option.  So let's take sufficient time and discussions.
+>
+> I will take more time to think about a few potential options to move forward,
+> and share those with a level of details that can help us easily further
+> discuss, hopefully in a few days.
+
+Thanks!
 
