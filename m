@@ -2,87 +2,178 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 68641C87FCC
-	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 17:58:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C7E79C87FCC
+	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 18:14:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E20336B008A; Thu, 31 Jul 2025 13:58:34 -0400 (EDT)
+	id 3B57A6B007B; Thu, 31 Jul 2025 14:14:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD11E6B008C; Thu, 31 Jul 2025 13:58:34 -0400 (EDT)
+	id 3677A6B0089; Thu, 31 Jul 2025 14:14:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE6006B0092; Thu, 31 Jul 2025 13:58:34 -0400 (EDT)
+	id 22DD76B008A; Thu, 31 Jul 2025 14:14:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C17506B008A
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 13:58:34 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6EA9D1609E7
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 17:58:34 +0000 (UTC)
-X-FDA: 83725319748.28.537DEA9
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf12.hostedemail.com (Postfix) with ESMTP id BCB144000D
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 17:58:32 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="t1xK/czb";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1210B6B007B
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 14:14:03 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8AC6913474A
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 18:14:02 +0000 (UTC)
+X-FDA: 83725358724.19.C0CF731
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 3242B180011
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 18:13:59 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PEZVT0RQ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=tnfFpMsP;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="wHK/Rw0e";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=NJcxuv3s;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1753984712;
+	s=arc-20220608; t=1753985640;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RbCAFN9BJB3ZOi4JNeNZED8yVCL7XwQBMtX7VxroTCY=;
-	b=f7s+nBUqJ9KHU3LgS+kxdNTN1vBma8rlcNZClqFWLeeQUGEdLs68cjF7MrGmONgwjJTCdI
-	MH7Q7Fk7QwwPK+zzbHgKI0lQe9ej2RuR4jTiJO3zQejV9dQYohcb3pKzYfaYL0fzlezFPY
-	k2lDKYL26FKwTv1G97Nl1Yd9O4Kg23Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753984712; a=rsa-sha256;
+	bh=bw+dB7ipEpqHtBDc8pfVR005esOq9VNlEJZn2+7JoJc=;
+	b=EFcOWzajA+QtDX4KqiBFb5/SCPGESl/GfwxYRsDYqUXSvlTIVlJ6jRUBxwMIUJzlIXlrM7
+	oyNO+TMt1xP0i0KdX0h3GHXmdEx4CuI5seq8T7bVzfWc3JmesgOETEJ5NYnsqzvfI2tzPx
+	HZIFXaDX2/FahwXyFkqQ+vQVv9whYcY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1753985640; a=rsa-sha256;
 	cv=none;
-	b=i97/EvMx+4u7n714JeQSnuDcbZ29lz8s5yBp0f3dOhJem6bYBOqfoZ1sNv9SQhOrqbKcmu
-	3pyoUpQBcgKTYG4Kvpk5stE4c3wg43aHNgR6uW2J1h1NUOr6tibFWQ6kishgXQRBisYYuV
-	452hCfar47m6b8Vlfpt6C0aIugisITw=
+	b=VhBDNkgI+MBwta1vAbm9MRdn3l8XrM/WSoj51zfYOqtdEBBvLV0SPksrBtvTikmjG0VFcT
+	6jYctUk+/FYsS6C+ZHCXK3ZC9rDqSu1k00SiSa3kH/Qh01J+vZ7v4VCVt4Yk2Xb3M6ZvIQ
+	OPa9ipEGFtlDiWF/FxVLJG/nK/HMY4w=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="t1xK/czb";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id AF8115C62AD;
-	Thu, 31 Jul 2025 17:58:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB8C0C4CEEF;
-	Thu, 31 Jul 2025 17:58:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753984711;
-	bh=3Md3e/uSIQs0aF7CCYWxANDDnjRBzUvnUohCGN3vc4Y=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t1xK/czb/C4PFt3IF1V0vOT65+aZYuahcyp+0/buONZPYGyIZ5ROEQzIWjRtHfzko
-	 HJ27jmAEDquL78HdnaGa7HtlRrDzuxywd4EAxm+4J3UvnSoTrDgUUHr/G9Y53sCPxR
-	 UIdR7Uknw61s1xFywlHr0weNZIeDMakB6PYS+PhZ5Ac0pJKY6wIX14POYgyYZEUTBs
-	 YkiWlL8/PGM9HnRu0QdSg1Fp7d9Gej++fvVgMVrMGfzxVMakvCzNJJagocHCqIl/sc
-	 Lz8P91FvrnqjAX/jC6gpQUQZ2R7OnTeomvpnVt6tl2n85hyrCxKe1nbICyjAgMy9mY
-	 ne9nPoj7x/Fcw==
-From: SeongJae Park <sj@kernel.org>
-To: Sang-Heon Jeon <ekffu200098@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	honggyu.kim@sk.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] mm/damon: update expired description of damos_action
-Date: Thu, 31 Jul 2025 10:58:27 -0700
-Message-Id: <20250731175827.16060-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250731132230.80046-1-ekffu200098@gmail.com>
-References: 
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PEZVT0RQ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=tnfFpMsP;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="wHK/Rw0e";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=NJcxuv3s;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 0EC541F7ED;
+	Thu, 31 Jul 2025 18:13:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1753985638; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=bw+dB7ipEpqHtBDc8pfVR005esOq9VNlEJZn2+7JoJc=;
+	b=PEZVT0RQBMGl1GrF5K28duDaKBGAJx0vtCx8RQ66KQ7sqsYlg6fhLwdVbYsAmQBuLUw51+
+	fTeY1NckElAjnjeqMOXL1l83ZWrbaXMFjwOyZDGcBBH0r+8Z9XwWKacr5H8VNVRliEtPZA
+	DGrGVWLllyooWT93ZNtXzaWsdJ7Yydo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1753985638;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=bw+dB7ipEpqHtBDc8pfVR005esOq9VNlEJZn2+7JoJc=;
+	b=tnfFpMsP1rhII/68mZ/jja9Oi8XNIhzo9XO3zliiqLhKX+ae5eAYkIXgUdxNR25B/Au9xU
+	YlbOG55fkHrhv4AQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1753985636; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=bw+dB7ipEpqHtBDc8pfVR005esOq9VNlEJZn2+7JoJc=;
+	b=wHK/Rw0erHGVz/IRvtURk1v9SOeNG7uEc/u/miqZiaE7xypi5gwkxWJ+zwrqcLwd7Nx0/3
+	xZGMezwNt2OwIM5eI7KHJr6oFnE7f7qEdANy8PjQSaZy+IU/0eMSzx/JMwC0LzKvMquprw
+	+AdAaYaxRnWz0lAZZDl3ZyMSpe+PsNQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1753985636;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=bw+dB7ipEpqHtBDc8pfVR005esOq9VNlEJZn2+7JoJc=;
+	b=NJcxuv3sRzsMBrnMAy8kTkA7R/QjxAyFdG4oX9sN5Wl3RS+roppasI8KgfeJQIc0oTQngb
+	lhBYBnpWFSKKRFDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E5F0613A43;
+	Thu, 31 Jul 2025 18:13:55 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id zoLMN2Oyi2hVQwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 31 Jul 2025 18:13:55 +0000
+Message-ID: <d31803bb-fb32-4a94-aa89-83b02757d650@suse.cz>
+Date: Thu, 31 Jul 2025 20:13:55 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BCB144000D
-X-Stat-Signature: qpas14x8dth4knmiycok7x1b1h6tyzse
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tools/testing/vma: Fix function parameter declarations
+ for GCC 8.3 compatibility
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ WangYuli <wangyuli@uniontech.com>
+Cc: akpm@linux-foundation.org, Liam.Howlett@oracle.com, jannh@google.com,
+ pfalcato@suse.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ niecheng1@uniontech.com, guanwentao@uniontech.com,
+ Jun Zhan <zhanjun@uniontech.com>, linux-kbuild@vger.kernel.org
+References: <EFCEBE7E301589DE+20250729084700.208767-1-wangyuli@uniontech.com>
+ <e7554f93-03e8-4315-acb7-a55312354485@lucifer.local>
+ <CB890ABC56C2FA67+56b95783-ed70-4744-9fc5-f2d93ddf2c12@uniontech.com>
+ <37b606a7-17c6-4865-a78a-ddde1bc15649@lucifer.local>
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <37b606a7-17c6-4865-a78a-ddde1bc15649@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Stat-Signature: asib7j3br5xisp6489hnnufjhoehjz4k
+X-Rspamd-Queue-Id: 3242B180011
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1753984712-253381
-X-HE-Meta: U2FsdGVkX18SEdn/c03qmkVbhxOP8QUEjTqHISMBQZtoVGPiq6Ced0MvGa7TtdOl9yY3iQNxIkyMuLaJbKYNwEXgTxmrE1NxdlezWTezwfTxj4dSSf/FLnxrkbgZFXOyrqCTqe+MEO1nGw8sfdJsO+YSqRs7YMqYEn7ZG79jstN+A8/0lNHAkaPmRiyqhmPQzk//iUN1ScO7ao1NA3oKZHlJDyBtFrIvq+FU/f0HYjTBTWAgWPsLemP4SCs4C0yNRJh3UFdlr7Tf3Yn83BpeXHt8rUjGAu4BXgyp5Kd/E7CArn7u0swBDd/jePHqbSXdZRBnV+8ajhHnAZ2Y5j1mYmbzWEB6uY5vkfKHANet4qv3pllkk54gV6aDOPUsJIglbEi8pgXcxSLNR3efKFhi7WKwQWEYmUp1LFaX7wQUt6fFSMjTh1pxo+b9XM3oyyyroTgfYxnZuv41C9VUiMsfnuTdoDeTFe4dzXn6B1LVRLI9A7ewxpSwHhNDJfRTYgEnKwwBClVx0MI9wgqQXa7EoOrAAmjI6fuqACzRa3Wyz/LyoT6wxvxeUD+TqkJg5bdIBfQbM1IKL260+O7nJt6KzyIkbHSPMkUwodnju/Iq3LRArSlxRg+hNmWEChURr48HiQMGPuXjkYBNej+gGlaZxhHgMZdJzrln8GC8sEjP+2fY5SDKvM35jfpTn2B5FL6Ubw7+/kthK4ZxFVd7glYBZOCPUOdGeBh0XJqTT0UI+eXIzbTkh5IFE3I2Mgr1dh+5gGl5R/TQItnKSYlA6k7r/5mPUV6MuoGdw+Xau3DICxx2InoE/W/TIhJxxQcskiGxy0wDtGqfnOIIHRYOhYZsS7oNvnep1kyi/R652M6p3a23YpxQYA4djS7nKTc6K6ZmlgkOh1jDizkGmUBpTgVCwJlpkAr6OW2yoDU208Gc8HkRfje7BJi6Lm6/N5qaAl4bCs/m2/LEwW1fkwpADEk
- dozf+zgX
- VzI+3jYXQuOm6Xg3Hi0w7EXG56EdKAdnkpqfE4kalrXmy7M9kOMZ9WxooUc5+oA4xxwCep2edV0fiVFK2j/8Z2NQ/mEiJhVc3stHaxFEoq4PeHIjrKkM66edoPUFm3ninuRnTEwUuM28CSVKM+kgEv0CD+ma8a8ZzJlGusx3fM4vs8eeNM5IZTxQtIAtqkgqhvCBLoISfqcu0P4fYSFrH6+nOnnQGH92iKb1pLpcjzQE7xSDf3ErQDkoqNeA5f1dQ/IWnQ8Kxq9kLmA66v9cSch3kITEJdgV5BoChA7OuPKdD8oGzcElrrJn+3HH4D9CuiGxnzFsQZPQzQ4K0tKYrOa08wwAkTdkT5hqJ
+X-HE-Tag: 1753985639-135143
+X-HE-Meta: U2FsdGVkX1/vB3z+rR4VDJbVLoTdu5BH1BvPvjUMjPLq+Y9C7WBLNZQjzo4aQrYNinz8nmCn4Mb4xXE1reJeSBhHnC0gy4NYhwm4O/Wa6RovqRaVJsU2KKokhRi91+k/BSGYP/XTPxYanRW3+cAgbDFGq76Rpa846YISj2MjcCDMJ7j+ZeZizRLw7qj9i1ulctGiGgh7dMvqLfnfcSo4sNKSItgRk03gi6NDWyumJKIW9a1AIDFaRq2wMoEd9xxa2fKfzHZZHURnmJG+lPd8ASZmD0dArFs2TsR/oBoivGrxA6HUJZAvKnnqkEYlkrr0iIj0I5GohxBW8pFSpkTcwGOmTnbVmd3anq6SOJTay2S2bkI7B9a9MDs5unfiIrm0UZORbqwdj3lseR5j/4pKllHBXHOcspWWFDfW1kyPR1wLWP1FaDQshI6eL+3GYgUdEs9Ig4kOp2x9q6a6aquD8mrkRi+NkQ6pksmetDNPhqN4lO6ebTmzTMMDlQrQ5dZNUd3XpAad2sNNziZVq/qWV5lAG9m28tzDN7cF1yKbG7IdczkhP9zTLasbXerMweiYq9PiURboWoiLK4yoRK/lNKLD7du/e/arm9U78greiqKrPkvWaPwlo+yVS2unrQ1mhanWX2qTusXM4GaxJsrOivdcLTZjXk98ggp6eU8NE45IAi9kNNiK4uZDwmWw1gNx4U8QzCKZDN/9ejg1MLb0+P5JBIvu3U7z2B8In6+LbDC/fzGkQmbuVeQU3iXmqpG+I2552z/BwOfDOaSE9qSJRM79U44LsbXLwDxqJXytJpNDPGqJ/0aJ1+0/1e/zXJcut7TXsEnyk/IrWEjgJj2/dbn6O3tXL/ibF+h5YwkCsriZTc6v01MXgCqBC5eFS/HMSsBqbafkU8gnfUGueOzEjYcVFtxc7Vmj8r3R8PwlPOmylEqkYYimPA1nGQS1wT+Jl6H5H22GRpSaVlFKlOC
+ pBd8XZYR
+ QWcwJsn4j9/mvdNb+vZodaNUjyQNnOuiRJmNPlR6RRRaFNeogZacsil6mUXgNKQZU8wG7yWkm6iEV8AjSW+XPem+Ajyg9u7gKHsGSn/wFx1uuaDx/p+jK2ebYSFRoZXmo26eKVN+/xk/3qEqx2OyinAamz0OXcBqtR/zMKb+kUTi2wNZG2w/bMhYtsI7Dcwd9XGkyUZKeRRjqs5fjkRrjdJacs5ggh6dO3csNa2N/iaGo1ZQn8RW5/HPCJnOF9aRPG1BAw5CnZsxConZPlBF/RRlExLOuip8Now6H
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,95 +182,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Sang-Heon,
-
-On Thu, 31 Jul 2025 22:22:30 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
-
-> Nowadays, damos operation actions support more various operation set.
-> But comments(also, generated documentation) doesn't updated.
-> So, fix the comments with current support status.
-
-Thank you for catching this and fixing!
-
+On 7/31/25 12:24, Lorenzo Stoakes wrote:
+> On Thu, Jul 31, 2025 at 10:55:32AM +0800, WangYuli wrote:
+>> >
+>> Thanks for the heads-up! I noticed that coding style in the kernel code as
+>> well.
+>>
+>> However, GCC 8.3 (which does meet the kernel's compiler version
+>> requirements) can compile the kernel code normally, but it can't compile
+>> vma's test correctly.
+>>
+>> Could the issue be related to differences in compilation parameters? I'll
+>> need to spend some time looking into this more closely...
 > 
-> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-> ---
-> I also found below patch(https://lore.kernel.org/damon/20250730200239.60984-1-sj@kernel.org/T/#t)
-> So, Is it means that DAMOS_STAT is only supported by paddr now?
-
-No.  'vaddr' supports DAMOS_STAT.  The patch is not adding DAMOS_STAT support
-on vaddr, but extending the support for DAMOS filters.
-
-Thank you for checking the thread and asking this question, though.  I see this
-as an important signal of another rooms to improve on the documentation.
-
-> If my understanding is correct, then we need to fix Design documentation
-> and comments both.
+> OK thanks please do check, am happy to have a patch to add a flag if
+> appropriate! :)
 > 
-> However, since it will be fixed soon. Keeping current status is also
-> affordable. So could you check this point as well? 
+>>
+>> By the way, this coding style has been a GNU C extension until the ISO C23
+>> standard. So, until the kernel's C language standard is upgraded to C23
+>> (which seems unlikely to happen anytime soon, perhaps years down the line),
+>> it actually makes sense to modify this style for a practical purpose...
 > 
-> ---
+> Kernel always uses the GNU C standard by convention, so we should be good,
+> but indeed I think this is the case!
+
+I think it's not "by convention" but quite explicitly by:
+
+Makefile:KBUILD_CFLAGS += -std=gnu11
+
+I think this is not automatically used by tools/ build?
+
+If you git grep gnu11, you'll find various Makefile's under tools/ adding
+that to CFLAGS. Maybe we can simply do that also with
+tools/testing/shared/shared.mk
+that's included for the vma tests.
+
+I don't have this gcc version so can't try myself if it helps.
+
+> The irony here is that I actually intend to change stubs in this header to
+> remove parameter names (previously had review on this :).
 > 
->  include/linux/damon.h | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+>>
+>> [ Cc the kbuild list. ]
 > 
-> diff --git a/include/linux/damon.h b/include/linux/damon.h
-> index cddf82eaac4e..0870e9f48b0f 100644
-> --- a/include/linux/damon.h
-> +++ b/include/linux/damon.h
-> @@ -128,7 +128,7 @@ struct damon_access_report {
+> Thanks
+> 
+>>
+>> Thanks,
+>>
+>> --
+>> WangYuli
+> 
+> Cheers, Lorenzo
 
-Seems you are using damon/next as your baseline.  If there is no real
-dependencies to damon/next, please use mm-new as your baseline.  For more
-contexts about that, please refer to the DAMON maintainer-profile[1].
-
->   *
->   * @DAMOS_WILLNEED:	Call ``madvise()`` for the region with MADV_WILLNEED.
->   * @DAMOS_COLD:		Call ``madvise()`` for the region with MADV_COLD.
-> - * @DAMOS_PAGEOUT:	Call ``madvise()`` for the region with MADV_PAGEOUT.
-> + * @DAMOS_PAGEOUT:	Reclaim the region.
-
-Nice!
-
->   * @DAMOS_HUGEPAGE:	Call ``madvise()`` for the region with MADV_HUGEPAGE.
->   * @DAMOS_NOHUGEPAGE:	Call ``madvise()`` for the region with MADV_NOHUGEPAGE.
->   * @DAMOS_LRU_PRIO:	Prioritize the region on its LRU lists.
-> @@ -146,8 +146,8 @@ struct damon_access_report {
->   * The support of each action is up to running &struct damon_operations.
->   * &enum DAMON_OPS_VADDR and &enum DAMON_OPS_FVADDR supports all actions except
->   * &enum DAMOS_LRU_PRIO and &enum DAMOS_LRU_DEPRIO.  &enum DAMON_OPS_PADDR
-> - * supports only &enum DAMOS_PAGEOUT, &enum DAMOS_LRU_PRIO, &enum
-> - * DAMOS_LRU_DEPRIO, and &DAMOS_STAT.
-> + * supports all actions except &enum DAMOS_WILLNEED, &enum DAMOS_COLD,
-> + * &enum DAMOS_HUGEPAGE, &enum DAMOS_NOHUGEPAGE.
-
-Thank you for updating this!
-
-But, now I find this place is having outdated information that partially
-duplicated with the DAMON design document[2].  I think the design document is
-better to maintain this kind of details.  What about keeping the high level
-information but giving a reference to the documentation for details, for
-example, like below?
-
-    @@ -143,11 +143,9 @@ struct damon_access_report {
-      * @DAMOS_STAT:                Do nothing but count the stat.
-      * @NR_DAMOS_ACTIONS:  Total number of DAMOS actions
-      *
-    - * The support of each action is up to running &struct damon_operations.
-    - * &enum DAMON_OPS_VADDR and &enum DAMON_OPS_FVADDR supports all actions except
-    - * &enum DAMOS_LRU_PRIO and &enum DAMOS_LRU_DEPRIO.  &enum DAMON_OPS_PADDR
-    - * supports only &enum DAMOS_PAGEOUT, &enum DAMOS_LRU_PRIO, &enum
-    - * DAMOS_LRU_DEPRIO, and &DAMOS_STAT.
-    + * The support of each action is up to running &struct damon_operations.  Refer
-    + * to 'Operation Action' section of Documentation/mm/damon/design.rst for
-    + * status of the supports.
-      */
-
-Thanks,
-SJ
-
-
-[1] https://origin.kernel.org/doc/html/next/mm/damon/maintainer-profile.html#scm-trees
-[2] https://origin.kernel.org/doc/html/next/mm/damon/design.html#operation-action
 
