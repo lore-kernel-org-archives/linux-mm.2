@@ -2,97 +2,143 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DC7E2C87FD2
-	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 22:42:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 453D1C87FD2
+	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 23:19:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4CFBD6B007B; Thu, 31 Jul 2025 18:42:02 -0400 (EDT)
+	id 943AA6B0089; Thu, 31 Jul 2025 19:19:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 482696B0089; Thu, 31 Jul 2025 18:42:02 -0400 (EDT)
+	id 91BFB6B008A; Thu, 31 Jul 2025 19:19:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 396B76B008A; Thu, 31 Jul 2025 18:42:02 -0400 (EDT)
+	id 7E42D6B008C; Thu, 31 Jul 2025 19:19:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 23EC36B007B
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 18:42:02 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C404FC098D
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 22:42:01 +0000 (UTC)
-X-FDA: 83726034042.12.CEDEE99
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 01A0B1A0006
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 22:41:59 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qdkKqmjm;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CAD46B0089
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 19:19:24 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 32C665D0BF
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 23:19:24 +0000 (UTC)
+X-FDA: 83726128248.07.4F5C3F8
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 419A1140004
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 23:19:22 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=rivosinc-com.20230601.gappssmtp.com header.s=20230601 header.b=JzIVl2Co;
+	spf=pass (imf26.hostedemail.com: domain of debug@rivosinc.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754001720;
+	s=arc-20220608; t=1754003962;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6JU6ErdyoxvaosduHZiX5FtqAgqZCbLAXCMaW7QjJoM=;
-	b=Ka5jYCT/6mICtxLWaTRFxwA7R+DcTmu/jtzu7m8lZefX02qUYIFsbyO/hOX69ERUjelHWW
-	+WalrWxZyRsj8R0YfYVEOuRJkJ1a1KTJ7Uhsgi3Jok0UiQpeqGcBCGU9e2yfiE3BUHWiTJ
-	4M0xZInnu320s2oPhxbXHmC5x7uYPI8=
+	bh=t5+3IuIbTGtFY2nGYSuEXP86kkX+tfkAPCryfH6oHp8=;
+	b=0EWWInzhSvMyBxWKXbl2DyHryMmECCoZ6McdC9FVZa5pvOQeh6SRTByeemC9vpJ3Bq7UTZ
+	qYH+yMNBp2XqfG7Y0Kbib7jP1rNjRTe/NNkeuzOuGMqVGOtbORLgU4UmuE6YDN312G2cVQ
+	y4Nu1CproYBlid8lUQBbFBeSRur5zeU=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qdkKqmjm;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754001720; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=rivosinc-com.20230601.gappssmtp.com header.s=20230601 header.b=JzIVl2Co;
+	spf=pass (imf26.hostedemail.com: domain of debug@rivosinc.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754003962; a=rsa-sha256;
 	cv=none;
-	b=DfCE7dfpPawnRL/jgSfNybz3/Gki+xCW7501uviAoPMGEW1hZIak+MPyG3fsMAQzLHXSu5
-	fiKcwBTN1LIxXB77TjAUz07wPI5PVBy2L6xVisZbaxuO8/vFM+7zKas1v6PE7BqR4LCCeh
-	FNxwK4+DFV4+CCNWl/e32N66FkP8qRM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C5AAC41758;
-	Thu, 31 Jul 2025 22:41:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D68BC4CEEF;
-	Thu, 31 Jul 2025 22:41:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754001718;
-	bh=NX3VDwS2KlMRe0hwzmcACuSTvo8Y4CFQGjFkgf0LbB8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qdkKqmjmcmujLYDVA5N7mG/bn/cMLxTSmWjFuCttZmMsEQRupy82AlwKaJq3+KwEw
-	 k/ROFw7V5Dkrusts59WmZt321IrJwdzsGdwY5g1Bv/Aovc4CG1IrKMztyydubQEPev
-	 VPGUPCMBIT65IWwB6Nb4V9kJ0q4vJJCsG2U7ck2GU0qOyYhQVyZkurTVQLAz5FgVSj
-	 GDn6gDB1PitRorEcCfea5Q77DucDNa3SsZAttjWsBrzC5l/FBHpgK281t/sIYdux6M
-	 p/xFQhB2r8cJCagWBny6OmwjOxcnajRn9G38Q7Bgj0PtgXm/8PWl9MLZAa5YfCyiEq
-	 A50uiISpybLtg==
-From: SeongJae Park <sj@kernel.org>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	David Hildenbrand <david@redhat.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Alistair Popple <apopple@nvidia.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v2] mempolicy: Clarify what zone reclaim means
-Date: Thu, 31 Jul 2025 15:41:55 -0700
-Message-Id: <20250731224155.1646-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250731210738.1451854-1-joshua.hahnjy@gmail.com>
-References: 
+	b=abjlEbxfvxBzHwOS/uRglZVCqeiQ2/kZnOVaGJyfXwPkBL/2kSHvqjB3csDf8GHIStwm4T
+	O2YfN46A4qgZL0IElHb9/IoU/Bq0as4LayFsez6zKSZQaKSsBnd/lV79fCgeux1qT47iF+
+	h/KIQUo7PcOG0kiv7Cx7a8CSOb9N2Nw=
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-313eeb77b1fso198234a91.1
+        for <linux-mm@kvack.org>; Thu, 31 Jul 2025 16:19:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1754003961; x=1754608761; darn=kvack.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=t5+3IuIbTGtFY2nGYSuEXP86kkX+tfkAPCryfH6oHp8=;
+        b=JzIVl2ColnKHqMwM2qvwQcpgOAcdA4DZaFB0HYEZTgvEfxNl01aJWete8edTlNn8N8
+         JC7rDsw/TfZxOPYrp0VCFSgu46tFSO/VV7o5Ma7d1GPwl4LiGl/emqv+zBklOrk0r/2x
+         rBJPp8/O6cdKKVcnqit4jkBdL2sgOKTKt1oRSmYzlSbMEfo5p/kynS5dtZcAHAtLrGG5
+         CwHqCch++5kHlbyhCkZJggIXVN1ajXBEmwV0n3S38bhsOZcOwupxbwhvtnr8OPLJKww9
+         Z4wEjYflbE+aoE9PahMaE6sJFrctHAHQqP4rE3nGKFnnl2A2I4gu/cQZT1y2E+83KvPp
+         IkNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754003961; x=1754608761;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=t5+3IuIbTGtFY2nGYSuEXP86kkX+tfkAPCryfH6oHp8=;
+        b=clOfBXtTDlzSaKsEMuPjOBQ+BjR/oNnDkw0vAcJEXhT0IrREY86sXTDrolOYST10Lf
+         p1ENAXmUX89D/k/rnIUByRlGDBYJJA+kmPwT2/BwtuXDyYuNhDShxcB+AUrHnWlNyWtY
+         qiO6pl/+krOQuuYWptRh2g9DN/VFoUCDfO7/qxuHSdF+AC1l2rAB4R0noIh735qaeIZ+
+         kMj6cnRPwBYA03vJ1fQSt1sQdGrGxfH5ua8JezoesKBH/91QaTE8Q4ZvdOqJ7meVtrc9
+         G8EYeVaXqx/tY1+pysFtM2IEZmd0in5tM3WjvzRwU1kC9Q8QPSSngfD6Ff8DVagKZf1K
+         2t2A==
+X-Forwarded-Encrypted: i=1; AJvYcCVuu4oUmUdunD9G/zJjqgF2L/GAXTCyRLbEUsRZaEKyl5m/2cyJGgRNTaucRoBMYRY6XDCeZzZyNg==@kvack.org
+X-Gm-Message-State: AOJu0YwH9FEQFkC68/Af/B58omKXGTKKnzBqPUgHAnJf7KMlIciJmYnL
+	UVLGcZJEZcWln/INqM1XzhCRPdr1CAARhQp7ZvfqnMcpf/vwqE8zZiRCoM3LGupTjAI=
+X-Gm-Gg: ASbGncuXdJmDt9ET68MuaZeaC57Wu5/hh38XB5Un3JbZj0eOEo8WLZWRAWy6HlhwJiR
+	aoNB4dlVbOha3MBOa4CAJPbqx4HEBdH5axbZ3jUcRKpSGVKtGfSdOdKsS1+Wg8ALwyDSUa5evHB
+	f3se3kcgErcMOy9mwDCP3DGlGLrPttqqe32jhK+8pM7jw1Ws8xCPdNGdUx5djA9pqQT2gI3HlTL
+	Mtu5rD8Jat6a1EvANyLw804gXixEW/jJeMf2kbyg2v5Noh5OJgsTKkfm5fmGHw8ANAp/QFosbQY
+	BQ8leuAMxqGupXrhB4LVeLAk/GGGIx62/SA7P+w8TMZaLGDWVyex+5alm7jCkmxkJcay0HzPKUO
+	yIHG1UChjU3FafguFPTn4DRcyfaRX8XLO
+X-Google-Smtp-Source: AGHT+IEH44+OPKURq8+T8AnOKShWurctpSh+ROm/XJMSmxz+G/vZXXdz2Ne+7bhpwqTninNTw5WBuQ==
+X-Received: by 2002:a17:90b:55c8:b0:311:f05b:869b with SMTP id 98e67ed59e1d1-31f5de58622mr12166749a91.30.1754003961009;
+        Thu, 31 Jul 2025 16:19:21 -0700 (PDT)
+Received: from debug.ba.rivosinc.com ([64.71.180.162])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31f63da8fcfsm5773085a91.7.2025.07.31.16.19.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 31 Jul 2025 16:19:20 -0700 (PDT)
+From: Deepak Gupta <debug@rivosinc.com>
+Date: Thu, 31 Jul 2025 16:19:11 -0700
+Subject: [PATCH v19 01/27] mm: VM_SHADOW_STACK definition for riscv
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 41aif4ddaqgpg3fi3mxqg4kuez3e4pm1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250731-v5_user_cfi_series-v19-1-09b468d7beab@rivosinc.com>
+References: <20250731-v5_user_cfi_series-v19-0-09b468d7beab@rivosinc.com>
+In-Reply-To: <20250731-v5_user_cfi_series-v19-0-09b468d7beab@rivosinc.com>
+To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Vlastimil Babka <vbabka@suse.cz>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ Paul Walmsley <paul.walmsley@sifive.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+ Christian Brauner <brauner@kernel.org>, 
+ Peter Zijlstra <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>, 
+ Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
+ Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ linux-mm@kvack.org, linux-riscv@lists.infradead.org, 
+ devicetree@vger.kernel.org, linux-arch@vger.kernel.org, 
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ alistair.francis@wdc.com, richard.henderson@linaro.org, jim.shu@sifive.com, 
+ andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com, 
+ atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com, 
+ alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org, 
+ rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org, 
+ Zong Li <zong.li@sifive.com>, David Hildenbrand <david@redhat.com>, 
+ Deepak Gupta <debug@rivosinc.com>
+X-Mailer: b4 0.13.0
+X-Stat-Signature: x9twrp1bb7wioekpys7pkh9ntyqknqs3
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 01A0B1A0006
+X-Rspamd-Queue-Id: 419A1140004
 X-Rspam-User: 
-X-HE-Tag: 1754001719-536456
-X-HE-Meta: U2FsdGVkX1/99epr2tLT3xdo3bEmx+SgKSPJjBZZ539Zc0GyM6tKoymlv4ERL+ze9MtcSC8ViTUlI6wtyuoXJfojCmYMWLFN82qhb0Oz35PP3TQJ7ePom8UzLB3bIRF9biniPvmTHcXNcPAKmrJw6Wm/GLBSgSqjYutmWn8quiF0D9mE/MnXPCCFo4PZQpMZtRlKpFhSHvks7/C/XdJwyTOrNCNuyAEXwUEgzXAMK71tBBYf6RWeP1v/OF/1cwsz1SaY82ROXwvkOiQw2zURHK1TmyuQsI47w4jVizs27EqU5RVGSGDiULpONBrB9XTVLgD9NHALAHPSoRNN57TSYAr2hfLZmG7lU7AS3B28AV9QyvZmIDcSLQU5/hSOkTmX+DW/fLGOnUVQH+MSaYeaFVjXYpZyII0JXU9iTQG5pzYhD6SaQFio/RUHh43MgorAa3WHQUWqs/eGY/Lw+qjOA9ZYmNUhy8MPYPVI3DaX3BsXyRK9DV7c5Fb0y8fDifZ/varoYawxqcfCRIfFob1iAHEywJFtMAdjs+HMtlfATXwPn3CinkdLGsVq4m1FZnUMs8ywwi7/d7r+rrDDFNeiKiP0TbvXxtlmzQGx1TJxnUGHS2789hlE85Cxh6eYgy2v/A+U54aa/5Js1+SbiN2V5HE0xswQVoijarOWekwynsWblzjxlEu3NpgSS+jkAxkFxwQHHumT0JVj7q00ZqT6Wv2giQFfjKU3W6bHaX2yZxB/3J7V6FyKJd52NJDLhZ/8PYzb9YDLuHNcFV3TWxuCpWFtnMuHsVqTStd9ccqcqIWmOX2wah26XGjZUi5Bt3Wz3YfChmoT8Yt707G8Z+FaWCPg1wMFB0HxjtdlIYForvCq3kyYOdAz28EqXsrFE+luMR5YBfFOukI5Cf4wMTefXNKaMQrD/Mnf/71jMSHt6c3M3g5dK+kOFSZCqOeix7pvLBTXAkGqC798ZF6u82r
- 7G48Ur1u
- uQa7Qn3DEt7/SCO8bBSRV+Zjc5Qpc+S0UxVugUvCPT7lomjs2sLPjidmIXtzpa5Ic/nP6Q0JIxd6bIN/t/K3urvG/EoIb3Ehg4F05oXSvonRd/D0NeFmHrvrGaoGBziomfe0pY+QAY7FkLAR/YXTyHcElNP2kMmEYe2Yn2Sqniagk3ftNHqfUkVrc+pFb/99Unyqsjji8Ao1i5+gAibKeS6xmQeC4QwDFN5jCZo27q/BvaAQAV/mB+9di829gdUgJPg4jGf4h33J9I6O3R66/w7CCgtyHrS3yYv4Q5mW4yr+qcXL+jW9dAfnSzfg9cDuDiPOeNhZTwx0sHVJXgmOlLdW6hKPtF1CdXSoJ4ASUjdgF8mBfRz4tvEUPdQ==
+X-HE-Tag: 1754003962-313188
+X-HE-Meta: U2FsdGVkX1/dltJ40eAT7y2s8eUfBwqtlgCxo5haojhBLYAI6R1xXoPR3SRSifGbLJmhrs/lqjfLT1VipS9kbVnYPtkwHPVXv6bEKuAnLaJW10mKduroceGup507SePbAyw1J/+G56zihqEqpIMuULDznLBdXYR8pIMbdfioNvsbkIs91PQemSRgLevarbScWZV79NmsssH4Xpjp24iU7wM9Q4+dd3jp0DBvZx1q26Plc3AaVhjw82mRZbgDM32Him5RnObQAVsqafJeTnSlXjku92In05AsRJ1Wvwpz/cg5/BKNKkH+jpTWHs0gBWijPxsLvSaQb5Cgk1T0Cg2KERp1CL8GQtav7YD1Z2zdYyvG/IDsi6hlEqTDASYhd3VKsumTqRUYN+9/zCPmg80N17DoxnTo1s66jxztN8xPy8BqGkZI/8hcSO+GJAhfr9chRANRYzyZd/L9zyOC25ktrz7xchbKhdLqV+mTGKcwTRnYU9lhuVZoR3HsOVxMG/LvgtCq0O/DqiOMrDhM0Doczl1RR5680IX4dd8nEKuEa1Jroty6S6JgEBk+I3gWtrbjO45h6uGKahKKVAtvVOyYfzXi3UZ8NtaQQBfUNPP1hZRwhR+RXncEAdPRSo/5NMdpSAfI/Y+Gn2XR1ls9SENnDw15hyndHQrbtfRR8FpTyy6E6fNuDCMmheqvpWfDuYYHgJ2Q/zOkkk9u4IpQUqRahYCVPS7Bk/t5UM4Oy1NZgV/TTJOLzqcNF6NxjjjkzIx+hWA/aujayNqRUT2dp4JDzQ+uUkj11TAyXTFzxVpCLECi3wrb/8oHGtv/8KQWLWhsaV1rKsSnckgvGxjDQ0kjqBLZ8lKBFchPq9yLDKK+l0eCM7Ech+O9Sx0uWRyoV2PY2Ji5JS4qDYey+jVFFuXRKJS6hnsGdsKz/TLnLDzNH5/lPBwFT+enwZwryx5hHA9hfsSD8InoGlUvnNQkNwe
+ sUSVhGtE
+ NjPYRXEV9Hk3ITo99KQBxuQBDKyJsujJiTx8JPie3CbiEkkGPhx81RDnRAFi7CQ73jXsBPeQcSLgRp3biaP4pIfVIoc/Rk7qF2fqjMeorlPNHCVnuCadj0pJTAkenpQSGbudHKzCag09HazZqlpjqshXKDUwEMjY3E0k75gL0ZhD9f0xjt5wt6KPcUjFqoecGSbLQ0TGjiLMHQ4ULNCE+6TtCxW09NZSJB46DMPnSuB+b5sLP1WGrbvHMKXUxWMPVscItiMCMvrRlAklRPTojMfJ2RGEApxw9serN4RQcBEptq1ITTjif/0EgP+LeEfUlzOLAjOkCnzvLYNk/QnxsB0qJm0qThksi4h6sI/RKFCYeF78MQx4K+zi4R664cA8+ivKrMcG8u/ym1jxiw5u9lLY3cOKVsW7PuAYN0m6nGU6cTbuEFiL7fa7xDA3VBjUMxIxv08RHtV7ir318qRPSbuZarYHh46V69biqz2chwEsYEgVIHOcZwadlfsymBdooOyKoQ4hJPoBH3N7YFxl+t6icnH0AeBx/5mmMQwecTSE17EirR5fe+dNWOJtum8BI9Or+i9a+yBnjN8UynYmKWYrRm3FrrCANjFiF/u7rU3ZdIP7XWUTLtEQTCMe0plFzjMF1wsQfXXzOA4lrH0Kphhx0qMqKPLxFF2Hl
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,64 +147,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 31 Jul 2025 14:07:37 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+VM_HIGH_ARCH_5 is used for riscv
 
-> The zone_reclaim_mode API controls the reclaim behavior when a node runs out of
-> memory. Contrary to its user-facing name, it is internally referred to as
-> "node_reclaim_mode".
-> 
-> This can be confusing. But because we cannot change the name of the API since
-> it has been in place since at least 2.6, let's try to be more explicit about
-> what the behavior of this API is. 
-> 
-> Change the description to clarify what zone reclaim entails, and be explicit
-> about the RECLAIM_ZONE bit, whose purpose has led to some confusion in the
-> past already [1] [2].
-> 
-> [1] https://lore.kernel.org/linux-mm/1579005573-58923-1-git-send-email-alex.shi@linux.alibaba.com/
-> [2] https://lore.kernel.org/linux-mm/20200626003459.D8E015CA@viggo.jf.intel.com/
-> 
-> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-> ---
->  include/uapi/linux/mempolicy.h | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/uapi/linux/mempolicy.h b/include/uapi/linux/mempolicy.h
-> index 1f9bb10d1a47..6c9c9385ff89 100644
-> --- a/include/uapi/linux/mempolicy.h
-> +++ b/include/uapi/linux/mempolicy.h
-> @@ -66,10 +66,16 @@ enum {
->  #define MPOL_F_MORON	(1 << 4) /* Migrate On protnone Reference On Node */
->  
->  /*
-> + * Enabling zone reclaim means the page allocator will attempt to fulfill
-> + * the allocation request on the current node by triggering reclaim and
-> + * trying to shrink the current node.
-> + * Fallback allocations on the next candidates in the zonelist are considered
-> + * zone when reclaim fails to free up enough memory in the current node/zone.
+Reviewed-by: Zong Li <zong.li@sifive.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+---
+ include/linux/mm.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-s/zone when reclaim fails/when reclaim fails/ ?
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 0ef2ba0c667a..eb48924105c4 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -353,6 +353,13 @@ extern unsigned int kobjsize(const void *objp);
+ # define VM_SHADOW_STACK	VM_HIGH_ARCH_6
+ #endif
+ 
++#if defined(CONFIG_RISCV_USER_CFI)
++/*
++ * Following x86 and picking up the same bitpos.
++ */
++# define VM_SHADOW_STACK	VM_HIGH_ARCH_5
++#endif
++
+ #ifndef VM_SHADOW_STACK
+ # define VM_SHADOW_STACK	VM_NONE
+ #endif
 
-> + *
->   * These bit locations are exposed in the vm.zone_reclaim_mode sysctl
->   * ABI.  New bits are OK, but existing bits can never change.
->   */
-> -#define RECLAIM_ZONE	(1<<0)	/* Run shrink_inactive_list on the zone */
-> +#define RECLAIM_ZONE	(1<<0)	/* Enable zone reclaim */
->  #define RECLAIM_WRITE	(1<<1)	/* Writeout pages during reclaim */
->  #define RECLAIM_UNMAP	(1<<2)	/* Unmap pages during reclaim */
->  
-> 
-> base-commit: 260f6f4fda93c8485c8037865c941b42b9cba5d2
-> -- 
-> 2.47.3
-> 
+-- 
+2.43.0
 
-Other than the above trivial thing,
-
-Acked-by: SeongJae Park <sj@kernel.org>
-
-
-Thanks,
-SJ
 
