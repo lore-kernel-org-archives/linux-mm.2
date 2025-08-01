@@ -2,125 +2,181 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 55B3AC87FCA
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 14:16:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C63C3C87FCB
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 14:22:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E8E8F6B008A; Fri,  1 Aug 2025 10:16:24 -0400 (EDT)
+	id 687556B0088; Fri,  1 Aug 2025 10:22:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E3F956B008C; Fri,  1 Aug 2025 10:16:24 -0400 (EDT)
+	id 65F276B0092; Fri,  1 Aug 2025 10:22:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D2DF36B0092; Fri,  1 Aug 2025 10:16:24 -0400 (EDT)
+	id 5748F6B0098; Fri,  1 Aug 2025 10:22:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C3C6E6B008A
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 10:16:24 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 499F66B0088
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 10:22:52 -0400 (EDT)
 Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 535BD1A0152
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 14:16:24 +0000 (UTC)
-X-FDA: 83728388688.05.ECF9D43
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 10528120011
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 14:16:21 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="JQrB/Zo+";
-	spf=pass (imf29.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E12F2140210
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 14:22:51 +0000 (UTC)
+X-FDA: 83728404942.05.B632731
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	by imf25.hostedemail.com (Postfix) with ESMTP id CBE7FA000B
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 14:22:48 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="F74/a2Go";
+	spf=pass (imf25.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754057782;
+	s=arc-20220608; t=1754058169;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OxZ9pu4hPNnD/ub+/DxG4Ghav/BT/6VOf4b/nhk7vKQ=;
-	b=z3sB01zgRJ/TgCELrUSUePhiu6eBBW76Q0SvYqAnrPDTFHXsSTE3nhRZM3wgGN5/nYe8EF
-	FbB82JDJLg8etUC3naUDwV95SyX1B9NLdPBwRi4Ch+3hI2auO46AQofnXEME9CS2o07vqE
-	dU9yTAZ2R1etci/4dwHoC6iiusP1GM0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754057782; a=rsa-sha256;
+	bh=PrKvqOTTeDmmlK2wPlGTzcr6zzrYd71zNNQRYkXXFHg=;
+	b=PPwos2YtEmigNZtRqoHkGx5MwpmCLpmGCIionQjnIqb0m4SK51hphMII+oDMerJJTj7VYp
+	fly/xCw5R2PlQW1QLrrwCTb831bmeAeKfI87nY3XmpWwr8lm1ezMdRiTjSNxqxBilbsVwq
+	qUz7PtXTFTBaAjy2/TQ020CO27rnxRk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754058169; a=rsa-sha256;
 	cv=none;
-	b=lcH4iJCLKJ1H4PmD5UJyatYy9sYv3rYnKixU7LrNGDJmGZRybOL5iBlqCQPij095WI+sAR
-	iGq+OgD9wjCDLFbU2pUoqK+ivHADd6F6KuoL4Uf5Jsgx1L9xRKmNFg2hSeZ0R54qGMoQpm
-	AULwJzFA8OqJLVyankrzDNTAnyIQyuY=
+	b=Lv2J1h8W9W5zrsb3pCuA6iN/Sfd/SZTLgGjnzP7HV4cA662s7v+qk5E1AWZ2VMTZh7zOMm
+	ScLnT/YGuWwpnyoqF37mZglxt5XWYy0jey9hlzcIuKrzTVpPm8Op+5OmDAZsjHtULlh9Zf
+	u0h0Vay/T2hrJJyB2uU2JxXqtAMCmrY=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="JQrB/Zo+";
-	spf=pass (imf29.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754057781;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OxZ9pu4hPNnD/ub+/DxG4Ghav/BT/6VOf4b/nhk7vKQ=;
-	b=JQrB/Zo+zjsJ6p+hz9v8U7xfDzl9MvOB6NcrRA+r9JVzAA5HOAXX3cxbwFMhTfiY7aT/UP
-	E9uuQ5DHpULqj4qASUoVsyzMvTP/5/uYLqccv2A5VqRAEgOSY/F3a0nxsCUDfpmzMtFVIk
-	IqRY8VFAMuT/RiDdxZpkxnPI4w4wWeE=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-216-ByCtnRSrMmiYd8t8lM6dDA-1; Fri, 01 Aug 2025 10:16:20 -0400
-X-MC-Unique: ByCtnRSrMmiYd8t8lM6dDA-1
-X-Mimecast-MFC-AGG-ID: ByCtnRSrMmiYd8t8lM6dDA_1754057780
-Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-71839bc5591so31251927b3.2
-        for <linux-mm@kvack.org>; Fri, 01 Aug 2025 07:16:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754057779; x=1754662579;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OxZ9pu4hPNnD/ub+/DxG4Ghav/BT/6VOf4b/nhk7vKQ=;
-        b=o+QagSgUbTC5m3TOKdOb9WNSJMaaZIqYZp3ZTgJ2IenrGQot4KLh3wc1z6IjHksZEF
-         auaqN4nX0R2oX4CHBGyFDJmLBt9fcWog5FtqGnRefdE2f8NIED5lW4XistDrwCLOgh1U
-         5zE9wdNaFO4j/XKrko6+zXrUDFgTzM4pKUT2G1KtdlAARpXt2LqQuursdQEiJfkryLWX
-         H10zoJaBrve5UqrJUNC2Vowa2JhSrtm1sGOMYkUrj2jgqmlzAa5XA/Xdn4jazFnwvL7i
-         5mjMCQKDOHuz8MK6KpugMU/UP+ehO10Typ5PnGg91tEkdEetQG8xvYMz07rYZEhyLxOj
-         qqlg==
-X-Forwarded-Encrypted: i=1; AJvYcCUaReHSp1f1bCMqVnQMvaaJJ6qfbpYBOw6iajc9lIOwxIsNNpTfOWCC1KKO8+B/iEq39qMq0ozP0Q==@kvack.org
-X-Gm-Message-State: AOJu0Yy2wU4/0odCOsVrV0MqmVUwLvqE+d280v56iLlagKReQK+Q+rCd
-	VFp+DA1h4vk+q36NKOIc9Enzlq98TpmDg2Ud/b474nlM/a0hIqHJ0Lb/VmsV/VoFF1DzkVBmw2O
-	ULYrVLlrBPLmlIocwSemH82Hb+dlkR4b9dMe4GF0Q4EiVVV+4no03RYoem1e4
-X-Gm-Gg: ASbGnctvpBkGKgid2/7QaBfaQ32kwKRkQZAxy8JEglCvI0QR7IDDl9jfR7BdfveWJPJ
-	ORR3FZi0WDs2WTwUX2dZarGpjlb4U4AUyTApWCUHz8/0XrfP2CoIIPc9Gdt2MeM2Cat3RFV8cdU
-	3R0cbpJefbyeGwATQXoDJeW104ckGYQ2R8zGUeuWjw4JLCkqiklNFkxlS4n/MUwlz8kHb4a5r/V
-	Y6s+MPnmC1IkrHJt64PvdwQf0X9NxeLhirbwnFm+Yi5SwF3MPgASn0c7RFNyaFi8P8OCnINUBm8
-	+PjNfHeC7jPBASEnkwof8ugVmwTKYtVq
-X-Received: by 2002:a05:690c:650f:b0:6fb:1c5a:80ea with SMTP id 00721157ae682-71a466bf02cmr159522117b3.32.1754057778946;
-        Fri, 01 Aug 2025 07:16:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF0HREDaQfPbkGMZZI9Cdn9rppctb576Z8m/N9WTc3IgN7JerdXDwBFB53QUPtyMVn+vGbl1g==
-X-Received: by 2002:a05:6214:494:b0:709:355d:6bbb with SMTP id 6a1803df08f44-709355d6d79mr522926d6.19.1754057766004;
-        Fri, 01 Aug 2025 07:16:06 -0700 (PDT)
-Received: from x1.local ([174.89.135.171])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-7077ca3621asm21820476d6.33.2025.08.01.07.16.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Aug 2025 07:16:05 -0700 (PDT)
-Date: Fri, 1 Aug 2025 10:15:54 -0400
-From: Peter Xu <peterx@redhat.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org,
-	aarcange@redhat.com, lokeshgidra@google.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] userfaultfd: fix a crash when UFFDIO_MOVE handles
- a THP hole
-Message-ID: <aIzMGlrR1SL5Y_Gp@x1.local>
-References: <20250731154442.319568-1-surenb@google.com>
- <d2b6be85-44d5-4a87-bfe5-4a9e80f95bb8@redhat.com>
+	imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="F74/a2Go";
+	spf=pass (imf25.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754058168; x=1785594168;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=R8gdx/rlUEZmt+RtRpsjUtcCGgtiXFr2+h4yEpIqmpA=;
+  b=F74/a2GogSaAksiewwbi8/IIHb1gf3zoVIYbhVG5YyYQYEXQ0BdklRRG
+   hsmYf9x78m1hQpJVOHmj8tgsqO3XX6OpXPWxFitkIDfu2ChvjoaoTNaWf
+   MVxhGvOeqtV5tBc3++GQqaEl0OCcUPwarM3DCkA2Nc1e/Dt4VLgtu3OPs
+   eLE2RQvLjrYiJ4VAbQYU16eWQO8NP1G+NCkVgGhaKLqlU02pSN6KKllhH
+   IZorr8G7N2iY+Qp3uYaQW0kc+iH5ufG7t1VDkQxxUJ33QKS16+mFjwOdn
+   rv7CceIy8Y/vkH05seT4t+D1RBHUDyhh4HNqrdNl8yFWK2MXSb57t6rPy
+   w==;
+X-CSE-ConnectionGUID: ZSotWJwlTF+sMwmL3ilEng==
+X-CSE-MsgGUID: Ob5my1v2Qh6v8VQ/GJr24g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11508"; a="60223926"
+X-IronPort-AV: E=Sophos;i="6.17,255,1747724400"; 
+   d="scan'208";a="60223926"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Aug 2025 07:22:47 -0700
+X-CSE-ConnectionGUID: 6hznr9LGQhKITDFl+xzaWg==
+X-CSE-MsgGUID: rkSxHCIaQDaZGP+fdThzoA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,255,1747724400"; 
+   d="scan'208";a="163949374"
+Received: from aschofie-mobl2.amr.corp.intel.com (HELO [10.125.109.249]) ([10.125.109.249])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Aug 2025 07:22:45 -0700
+Message-ID: <c59aa7ac-62a6-45ec-b626-de518b25f7d9@intel.com>
+Date: Fri, 1 Aug 2025 07:22:44 -0700
 MIME-Version: 1.0
-In-Reply-To: <d2b6be85-44d5-4a87-bfe5-4a9e80f95bb8@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: SYV-dfRKiOUNT6oSTgUVEns4guR-Mm00mbuX7DLsP0k_1754057780
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-X-Rspamd-Queue-Id: 10528120011
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv9 04/16] x86/cpu: Defer CR pinning setup until core
+ initcall
+To: Sohil Mehta <sohil.mehta@intel.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Kees Cook <kees@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, Ingo Molnar <mingo@kernel.org>,
+ Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+ Daniel Sneddon <daniel.sneddon@linux.intel.com>,
+ Kai Huang <kai.huang@intel.com>, Sandipan Das <sandipan.das@amd.com>,
+ Breno Leitao <leitao@debian.org>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, Alexei Starovoitov <ast@kernel.org>,
+ Hou Tao <houtao1@huawei.com>, Juergen Gross <jgross@suse.com>,
+ Vegard Nossum <vegard.nossum@oracle.com>, Eric Biggers
+ <ebiggers@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Yuntao Wang <ytcoode@gmail.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, Tejun Heo <tj@kernel.org>,
+ Changbin Du <changbin.du@huawei.com>,
+ Huang Shijie <shijie@os.amperecomputing.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Namhyung Kim <namhyung@kernel.org>,
+ Arnaldo Carvalho de Melo <acme@redhat.com>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, linux-mm@kvack.org,
+ "Kirill A. Shutemov" <kas@kernel.org>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Andy Lutomirski <luto@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ard Biesheuvel <ardb@kernel.org>,
+ "Paul E. McKenney" <paulmck@kernel.org>, Josh Poimboeuf
+ <jpoimboe@kernel.org>, Xiongwei Song <xiongwei.song@windriver.com>,
+ Xin Li <xin3.li@intel.com>, "Mike Rapoport (IBM)" <rppt@kernel.org>,
+ Brijesh Singh <brijesh.singh@amd.com>, Michael Roth <michael.roth@amd.com>,
+ Tony Luck <tony.luck@intel.com>, Alexey Kardashevskiy <aik@amd.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ X86-kernel <x86@kernel.org>
+References: <20250707080317.3791624-1-kirill.shutemov@linux.intel.com>
+ <20250707080317.3791624-5-kirill.shutemov@linux.intel.com>
+ <6075af69-299f-43d2-a3c8-353a2a3b7ee7@intel.com>
+ <98a7a91b-3b46-4407-82a7-5f80443b7e00@intel.com>
+ <6e768f25-3a1c-48b9-bc53-56877a556a83@intel.com>
+ <1c42680f-c962-4a75-998f-031008dd8343@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <1c42680f-c962-4a75-998f-031008dd8343@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: CBE7FA000B
+X-Stat-Signature: aw6k3uwxsndoottrd1azf47ets958zmg
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: tm3kojxp61xzrzenmzmsixm4yt97czxg
-X-HE-Tag: 1754057781-179437
-X-HE-Meta: U2FsdGVkX1+tCZufvA2qzr7A+twqSh2nFj3NHzAACgB56V9MrP9PTw4LmeQHMmncu4wUeCzHDQgZTgPqVcKFE+dYRQac0gwoUunQIC2RRrI1vppEI1AyWpxNpwUnrKfSEF9wEcheJrEFkzJpvuhc98a9eHA/sUixJer4jAGOkkIxiNL6sSNFhTjwEKsHEsflaLylrqu666EOztqibbXffHQiVaLL/rQTmVz7744n53569asCDwqBcWXhmGepQicQEV5TPjElW06RtpwYaRzIEaIc0cGkwgeq7fbFtX4GMsnUXJDgGayFtBONSNwVfoqcbuYW5xKl97wqslGGM6hlcmczqMq3hFK1v38dCVtWhZMTOgqvX82W9vsswKR+9hrKMYfO/GzbWvyMK3evyYFLn3no3zmMacDkSaFtFPQRTGXJozO3Ho2utr3P8NtmT+wul//3A2yLuCwgtHFQFgDTLSEGHyIG4V9Fnz8DjOvMYDia7MUy+CbEFkHar1+974ZZtPcrOFjy2tkoUjz+ibfOqhCCPoeiS/RK9f/bQrArOkbMXtlJIbhZj1i9gXA09uDh3BVtO6DpFjTfZInAQB6cl0icWq3KhcFSsoIcNSK733cNRRc/Wo/TT8zc1udcYUbIf9eJTGX4RjP0ttTEgDJLPRLuhbdvH8UeRJKY34yv3pX5vpzJskUYgaPUvja/hkyiIIsapbXMpidoyR8nZ8ony4rUTNMZUm2kIP5iivTqZW6ODnEWrn3Yelhlmpm8VqjiogkNpuPjdI/fAHVviODKpqIP0QucaGk+OP0AVRwFhOmqLRr01zwHLF9dbWe7UoCxQj+HSzy2FJxqo2hQONhFWwzfCjDteVNCvxaVvvSlaMWUAgQaoLVGTQNe+61+lrTkme3xz1+2I9jcRdWNZy5bjH7DeYmNdJiB/AufEi3eSddzjR0KkdgOJYz1iJDKgjzHrU665+zc3wpWTz6mtFo
- 5nQanGzd
- iYUh/u6EvOTH4GpdoSdNo1w/6sYsSTdoLCH6k7DXcbKvB7HAcPloXlIUKH7g65PWI3kIBnnSPdsxw862VziCUUaqLdcQPQpvgb2L167uK2JxLU3GTNDkETqwhsKueFpVIBaWX9iu520CstSOgBODUZJRC4rSvn2a5U4NoNOFXhA/sv3VVCAghbeUAbakJqIdCtGl4VIcxI1bSLOTQYdKJ4WxSTi7N2AouyqQyIhc2OAmg7df6BKr8YgUjUac0OcymzAC0xOrA6hR5pRcupY8DN4ZbNiLlU9q5rPxxQzWnmoU+e48lBS8liHgLhOYUq9VJI2C0jaBxj+zCDUPgX+Qn2x9rZO6HWiTEPRa4XDK9obCoVJaKFopKAPx7Zn3hEuLFkf2kdl6xExNs8QgI79OiB0wXTXF5k3IMH1/3QIvixtXEF7Qrn3dWAIL0dLDF089wt6yQA9fYHqQJdCcadrJn/rtFDDsN8t4a3/l+dp5vtNphWAX27XpFIJK5PsDS/q7xPwV3k6Tq1pPxMoHkfkbsX2CPuNK5hxeOTbLy4cb8I5KRVILriKqS6JxABmyqBDAPa/ZPiOSZFfziqMBYNBeMFoHE9svHX4bTDRBR61IDLydp6nA/9wKdXXjGK9512Fps1rt/MKSDY4WN6oECvo0QkutHN5ckdAsnCgNdNWPLs4JcfYI=
+X-HE-Tag: 1754058168-857173
+X-HE-Meta: U2FsdGVkX1+D/YUCsEqnbGFLpk8DySbznhDFlUkg7fLXroYyAYlhoiCmTW5i0hg/v9BKxJlLxd9JiVv6bTruMidiTxydK2DYuH6Qk3GWrLwIX88NYOBNdYQFhcZ4WQ0hOQVXybaOaptzq//mDhaWtJiUD7n+HjOFwNbaCo378AXl11qyzKIxWo0o+bjiRWkQSBotdMmiiBfwS/nn/toi2/adD8Rcm3Yic1dvhiDEYY0oZzcni2LrBdmXx/IyY3HPOCJYVgBQPexp1XAImaShAQCjmyQq2STvNPwbC6i18A8eru9qbhkdxDrjZPb+V4WqLPnlwEw8wJtVTT90QK701kVnsVEvgqII+jiy7vB4wMGcJyLxehxrHWN4q5aFGrvXQ8AIGCtEHKq2eWmwcjFrWyb048TC7rTgFpvpb90B0dlLhj7/9juY6rxlmx8EHIDkW9YfrkGvQA70q8oelBndrDo1tlUvKbswAMcDdMZZnqjHlaWZE3DktOOblHNKphhfN+RtObEwRMWIoIxQcLiNHcz5IeyLF0YUj/zfYEAtQ5qf1mbSLyMdrs4rnL3vG3RCGxeYDnXiBP8zhZm/c/1uaax2cnkHjnVaPRiTklLmzLCye4ft3i39S+EHFrSNM2NDzjP3TKux4aAJlXBbXXG028sJr6VAMh1jyAGe2Soa3lUAie9NeOuuB3js5YR2O7K5rTg8RJVrenFtzcRwFkXNJVZx5s2++7cM+8oh1lD6rJMEb1ygtqmQnEQ1hACQBoC27626dMbDnuH55cWPRUFqBUXl50ErbkmKqI1axpNLYHw5+5UILwPIpBBKuxG05M7UVl8FIyjVI/valA73Ni+TD4fnCQvoTBdTSknPjl7j0xlFBokpbqH5ReiHOEFR6hNvkia3Gh8YfiViQui7i7Y7cARtLaGD/O46Ax4aEMrB9SBX/rwx+AMyHTM42I4C5VkMQ6lgd+eQVFawMavCYyP
+ H8e2n2Oh
+ eYAFYJFjpqUXv0n+32I3wfY5Tog/ayt0UyFTKKMoUEU9raKJRPSjqu/zGK1SJ4us0wksAuO4wEicIYvNMB07pitCuS80IRZZJHidb+0QLBis7Mj6/44+PoqwXxszn2BF/N07VBXeH6liKhKVCAEWqEkMTAINO5M3oNcLm1rUfgeO54cmKKK9wkVJm0TPhvcMHigod049ukUppawPDfS1BKizwKFkAjlSFvdRn+WDhIzfHskOkQ2+2VtPFZ8yCaJAnBgu+DYWMZ/k0q2YF4EzVx0I4mHnxSts12ecV
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,90 +185,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 01, 2025 at 09:21:30AM +0200, David Hildenbrand wrote:
-> On 31.07.25 17:44, Suren Baghdasaryan wrote:
-> 
-> Hi!
-> 
-> Did you mean in you patch description:
-> 
-> "userfaultfd: fix a crash in UFFDIO_MOVE with some non-present PMDs"
-> 
-> Talking about THP holes is very very confusing.
-> 
-> > When UFFDIO_MOVE is used with UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES and it
-> > encounters a non-present THP, it fails to properly recognize an unmapped
-> 
-> You mean a "non-present PMD that is not a migration entry".
-> 
-> > hole and tries to access a non-existent folio, resulting in
-> > a crash. Add a check to skip non-present THPs.
-> 
-> That makes sense. The code we have after this patch is rather complicated
-> and hard to read.
-> 
-> > 
-> > Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-> > Reported-by: syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com
-> > Closes: https://lore.kernel.org/all/68794b5c.a70a0220.693ce.0050.GAE@google.com/
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > Cc: stable@vger.kernel.org
-> > ---
-> > Changes since v1 [1]
-> > - Fixed step size calculation, per Lokesh Gidra
-> > - Added missing check for UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES, per Lokesh Gidra
-> > 
-> > [1] https://lore.kernel.org/all/20250730170733.3829267-1-surenb@google.com/
-> > 
-> >   mm/userfaultfd.c | 45 +++++++++++++++++++++++++++++----------------
-> >   1 file changed, 29 insertions(+), 16 deletions(-)
-> > 
-> > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> > index cbed91b09640..b5af31c22731 100644
-> > --- a/mm/userfaultfd.c
-> > +++ b/mm/userfaultfd.c
-> > @@ -1818,28 +1818,41 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
-> >   		ptl = pmd_trans_huge_lock(src_pmd, src_vma);
-> >   		if (ptl) {
-> > -			/* Check if we can move the pmd without splitting it. */
-> > -			if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
-> > -			    !pmd_none(dst_pmdval)) {
-> > -				struct folio *folio = pmd_folio(*src_pmd);
-> > +			if (pmd_present(*src_pmd) || is_pmd_migration_entry(*src_pmd)) {
+On 7/31/25 21:43, Sohil Mehta wrote:
+...
+> Could deferring enforcement lead to a scenario where we end up with
+> different CR4 values on different CPUs? Maybe I am misinterpreting this
+> and protecting against in-kernel errors is not a goal.
 
-[1]
+Sure, theoretically.
 
-> > +				/* Check if we can move the pmd without splitting it. */
-> > +				if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
-> > +				    !pmd_none(dst_pmdval)) {
-> > +					if (pmd_present(*src_pmd)) {
-> > +						struct folio *folio = pmd_folio(*src_pmd);
-> > +
-> > +						if (!folio || (!is_huge_zero_folio(folio) &&
-> > +							       !PageAnonExclusive(&folio->page))) {
-> > +							spin_unlock(ptl);
-> > +							err = -EBUSY;
-> > +							break;
-> > +						}
-> > +					}
+But if that's a concern, it can be checked at the time that enforcement
+starts:
+
+	for_each_online_cpu(cpu) {
+		unsigned long cr4 = per_cpu(cpu_tlbstate.cr4, cpu);
+		if ((cr4 & cr4_pinned_mask) == cr4_pinned_bits))
+			continue;
+		WARN("blah blah");
+	}
+
+Or use smp_call_function() to check each CPU's CR4 directly.
+
+Or, the next time that CPU does a TLB flush that toggles X86_CR4_PGE,
+it'll get the warning from the regular pinning path.
+
+So, sure, this does widen the window during boot where a secondary CPU
+might get a bad CR4 value, and it would make it harder to track down
+where it happened. We _could_ print a pr_debug() message when the bit
+gets cleared but not enforce things if anyone is super worried about this.
+
+> In general, you want to delay the CR pinning enforcement until
+> absolutely needed. I am curious about the motivation. I understand we
+> should avoid doing it at arbitrary points in the boot. But,
+> arch_cpu_finalize_init() and early_initcall() seem to be decent
+> mileposts to me.
 > 
-> ... in particular that. Is there some way to make this code simpler / easier
-> to read? Like moving that whole last folio-check thingy into a helper?
-
-One question might be relevant is, whether the check above [1] can be
-dropped.
-
-The thing is __pmd_trans_huge_lock() does double check the pmd to be !none
-before returning the ptl.  I didn't follow closely on the recent changes on
-mm side on possible new pmd swap entries, if migration is the only possible
-one then it looks like [1] can be avoided.
-
-And it also looks applicable to also drop the "else" later, because in "if
-(ptl)" it cannot hit pmd_none().
-
-Thanks,
-
--- 
-Peter Xu
-
+> Are you anticipating that we would need to move setup_cr_pinning() again
+> when another user similar to EFI shows up?
+Yep.
 
