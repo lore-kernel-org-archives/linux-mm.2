@@ -2,84 +2,85 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 27D96C87FCB
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 22:02:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 44E3DC87FCA
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 22:33:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 978EE6B007B; Fri,  1 Aug 2025 18:02:30 -0400 (EDT)
+	id A33936B007B; Fri,  1 Aug 2025 18:33:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92A026B0089; Fri,  1 Aug 2025 18:02:30 -0400 (EDT)
+	id 9E47A6B0089; Fri,  1 Aug 2025 18:33:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 866CF6B008A; Fri,  1 Aug 2025 18:02:30 -0400 (EDT)
+	id 8FA806B008A; Fri,  1 Aug 2025 18:33:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 74E2A6B007B
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 18:02:30 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 824E76B007B
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 18:33:08 -0400 (EDT)
 Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 40BC8113B7F
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 22:02:29 +0000 (UTC)
-X-FDA: 83729563218.19.5FAFB5A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 883854000D
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 22:02:27 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=OE8yYfkl;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 14DA21D45B1
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 22:33:08 +0000 (UTC)
+X-FDA: 83729640456.19.EBF16C1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 532711C000D
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 22:33:06 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Z2t43Xrf;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754085747;
+	s=arc-20220608; t=1754087586;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gv0daDqYl3yFE8Pb++EctJOUqoqWOe2FcCXUxom5ywg=;
-	b=zFdurUxfqMuX5ceIUcLrqSG4/cMGBaoC/ke39CD4ANd309LsE5d6Ms9cnNv0wR4R/4Dis8
-	EoeNj2E8XOjXVNiZ2L81CDt5nWB/rP7HAyJnQf6hxFn7kB7kj9WJoTxagI+RxYH6FAwt0A
-	fmAnIt1brn7+pvgoZDS1g8+0Gp2ZN0c=
+	bh=O3rvO60USj+pNn9wBxV6mgnX3Qsjz8RAeBti/NlzG2k=;
+	b=LeOTk2p3dZ7CS7l9g+EkyJsEBoBQld08zzk994pZMQZu14f9U4+1pio4ScnJmON2oOStB1
+	3Sq7GMBsKlDUATFb+ZadQUFRrXnYPyerCOYkkc2zjWlPfpdFk1dmbOoTUT4FZHbYFd5v1Q
+	a/gqXta1yFaAQhOFuWQyVsaPRf/B7+Q=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=OE8yYfkl;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Z2t43Xrf;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754085747; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754087586; a=rsa-sha256;
 	cv=none;
-	b=cJc5o7QD2iS/bCLiavZfPLGCJ1u+MyEOWChPxuL7sfyjgopPjM7sm22slTYen0zLR47iAj
-	Nfuj5/i7LXF0Lw6kuY5svuKJF1h7q/aXRutgIkDagPVGGNlk7x4lqDqoYvp4siH5LHFQxq
-	wHZsbo2mlEgNcqeBlUumj1tgUg0YlwA=
+	b=2p8dWkE4rKhY+G1n3akq6G068HnW2Nq77tXb9bnf9viWpvwtnEIF3FXXzTe8XAPOdxnibR
+	S7awnAcvyTAK0e31iuvpusVD7zKfuk/bx2f2rjRFb6RSHAIAGx0tTQq2NfsXLp+DoWGMap
+	fVn7wWc7QfLD110cz/uzqcl2RNUzeIQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C667C61130;
-	Fri,  1 Aug 2025 22:02:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E024C4CEE7;
-	Fri,  1 Aug 2025 22:02:26 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id F13CD4562C;
+	Fri,  1 Aug 2025 22:33:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A50FC4CEE7;
+	Fri,  1 Aug 2025 22:33:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1754085746;
-	bh=4F6coz0MQMZE0I8tpxLsayuZ26sod/oOCtXdM8eyugE=;
+	s=korg; t=1754087584;
+	bh=4kH6/3TqERspQwzYdE0tlDFh29jyX5Ih63V/qtXMhHE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=OE8yYfkltKGteePz9G6PQt3VxFdg6L088voeIglN9qAsQFxrfGJnCXKjV3w1PhX+h
-	 sxPtJ+WjjTLeAl3/ZOpip4gQT7E0Ei88WWhjaqaYOfHJZBF4DQ/vA7BV9jdpqc+g5j
-	 7vljBY63yUCgmmA3MXQ/5ZB68kH/esIk5rMvsRuE=
-Date: Fri, 1 Aug 2025 15:02:25 -0700
+	b=Z2t43Xrf8h3ahfFXNjE5y0PbgmYRz9EBtP5vAY/GQatZizhbqzzGTrlJat3hCMqEo
+	 c1Z59sbU6OonZ93Yv1+yrOUDWq64RzdEH25Ep04T4/pFdwsf2/Pw3zGKIpkxQbyCm0
+	 Qj4i2r4oXj0jCDrznoF0nH2+nabWYTUiKO8InlCg=
+Date: Fri, 1 Aug 2025 15:33:03 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
-Cc: Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftests/mm: Fix typos and improve output messages
-Message-Id: <20250801150225.2f32b042735d68f8aec203a5@linux-foundation.org>
-In-Reply-To: <20250731000251.5412-1-swarajgaikwad1925@gmail.com>
-References: <20250731000251.5412-1-swarajgaikwad1925@gmail.com>
+To: Gu Bowen <gubowen5@huawei.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, <stable@vger.kernel.org>,
+ <linux-mm@kvack.org>, Lu Jialin <lujialin4@huawei.com>, Waiman Long
+ <longman@redhat.com>, Breno Leitao <leitao@debian.org>
+Subject: Re: [PATCH] mm: Fix possible deadlock in console_trylock_spinning
+Message-Id: <20250801153303.cee42dcfc94c63fb5026bba0@linux-foundation.org>
+In-Reply-To: <20250730094914.566582-1-gubowen5@huawei.com>
+References: <20250730094914.566582-1-gubowen5@huawei.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: hcgjy7kgfwdtmtpsz8byof538sahpxc5
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 883854000D
 X-Rspam-User: 
-X-HE-Tag: 1754085747-868505
-X-HE-Meta: U2FsdGVkX18mYEyxGxEdjsTnZwE8G/rIoi0Zntt2Mpv1tr5yDRMLUAp7e19lMlzusJElD//XuUws4j1OwQ1UtSWZHr9+75Ht/skM5w+vsKBF/xdnq8/eiqqzWpZnjm1UNE8bnjRxwjpWFiUOAcPQLZrcPg2WYMMIojZbE4ULVdB30Z1693sdZoC0LNt0rLoA/KbUD/ahI1QnngjD4Si5noO+TS/Lga1uu9mwQtn9GXDBdkWOYAEtIXMAdNJ6/PPaPxmfXxshPV4jnlIlxCzCTxS/ZU/CAa5jqiu0Ro+NO3URCZsA/v8KfHkmOK7d9rUyEkSJYJF+Pi+US1Tfkbg9fDJyH7fbiO/+A+HaivI+Q6AfIphL2WoQzmc5GkO/Ee50uKrmGnGStSxMgsyppcX89ePWrJvbgg9WNAbyrxBrxvj0I908BYxVD8x7oYGkhrKNjsSJKdPvfT5cTbcprRhUL9W1B/sA3N6QyTeI/E3JIgRQkU943cNy5OMdwRvEMARWX1FXNErUisffZXT7093f+sJjsJMi2SjeecvJq2u704sGBvsyBTeP0C2l1jeVTvzQRNOTMkQVTjJ1Ek1ONVfir0NeL+q3TvQejA867GVv81RA+EG/JvFUeNZqef6jfF6C/h9zhiKUD9T2/FHWQ5rQmS9jSLS5nBDRsHmT10cWyA0BQo2E1pzddJlHxr3K8AymY6GEbew5iLvNqIPBSo0obUI/HStdR3MyGVJlxa5L6hi76BQvp0WVr83SQyG08ZTlD9JmY8B+o66qK0G46s7+UDV66y9xzmG+J+53ZpocjdWTmAi5cX1lmo7KHG8MxYXdY5dUCBM1eRulVNgqy3dMFT+In2vV+LlGg9aM6Tsv1NoJ2xv9StbzgO/QfnAAltVPu4Rr9ak9teK0i1De5aIV4wZ70O3sOvhcBRBLDIxpos9aLQTQNy2Pur4PWGfk+oG+oDGNPcFPRrNgh5Ps7xu
- 21NFkdkk
- s4DXW8Z4fxFmlqdmpOCfvMNZTp198haYvw59mQ/H3SAR3uFIRBrOGKXr6WbWIBuVyhx/eRhz3m6yPWSUX8BCiSfXazJBbjFibgYzi34yBA1gji/L2K7qsQnI7hueoqKvAW0t1PSsOBmC24JWj2mNfUFNDwApMrNydY74V+NW4Yl3sZUX1+cLoZDoJhc8c6RYMta+Ow8j6LbgJxs8Tg1RqNFgPWwrYPTl+NpVcFEF9P+Fll0FdVEhtedHUuMZpYdzZfbj+ZelUhuLW06s=
+X-Rspamd-Queue-Id: 532711C000D
+X-Rspamd-Server: rspam06
+X-Stat-Signature: hdxtzd9otip6mt3hnuphsf8cwyuc93zx
+X-HE-Tag: 1754087586-380652
+X-HE-Meta: U2FsdGVkX19sqnSocd+SPYW6gcLZG4PZMytXtfw0erxaNRFQe7CUadH6AE+xNP2a1SMO96QcROMYxoYZ0mCWyzXew9iYQWxpsTOTKT/TiyA8f1GFye6eKMy2E1Z2CZmFoPQM8HoXfO2BFwoCxRsHdDIVTtms98Sk48quoc4txbW3+udggUkSPfcdfWMqCF1E2VUwXDfDxl0aP8iWmo+/zZhxP8KrJJsCFY4Bk3ZxLg8+T9xPQUy8VgkoqkS3nYq9QgL+XOsfodUZzQkp6XDNmGX8LdD38MqI/A6G20L3AUBsfO2XW5yNDlR3gV/1vqmvdfF4ent8Ojnl1CDGKhMNjfAkMsXyWHy/w1tlrU6i2BJb49WBEXaB3/zTCvfqTu4/Rn0/RkdsFufzj5cFH0wino7fNC3DGe6vx+pAOmC6whoLMkogrezKXD2iXratq2xdKfuMj9x0CzSjnCwswYC9utW8GIF42fko2Abq+BWwRIMPQMW1lV41jf47C9vsEfgyLLLEh8JkaPJn6NjHn5dzq0UoTWi01zQTupfQqfOvz3y2zGA1dphpZYgixEpUhPVmqwwKBafxaQkCcPMuEpfI3dzWUJObrKIe4x51bgC6R5Dkde9pbc4OO8t+wwsS1dJGiGdlGT4pyS2P18nFQnJFWvwp1BihKdqtgmMXThCWTROCuZ8WHmsha7DBct5F1dEmU+rsagedzYhKTcpxfbqIqIw8WfAS9Nm64U0VsBrEuD0+HJz4lxk8Z9BQ7+IteKU1iRS1rFnABlCaNn4bcY8VZZE6+M6xV6uMEY2QxexNm32KWT3znS3GC8vc9BgkhzNuQuhJ+5fxu2kReCdk05AnzeB1hzHsd14UTNgYuKQcegbaHerkcRXxHEaqpnMib6NvOdmnUhHCgvaq9vHgKdNvJtBgurG0Gi35vvr6nmANXqkdU7hvRYiXqs6SfiD4UF5YE1Jt8ss/t+utLpfr3Uf
+ UFAIzzcb
+ 3F6aO0XkI2eW2o3/hO0oV+QKpnqeAPIiBwNgMgs2kwEdIfgrwTQAPOjLfA3vP48qKi8oyG05pHnKv8WSvDEY5/XhM9oN7ouqFP3gwdot9sYkakEElNGCNOT67ps/UHWmQSCgu0eHzEBPoxcXVDxWdIsPMD22ouTlgWkYIsvV6HEHXiepXfCWBkiWK7WC61sk0eiBr1e4ApnWrX1x+rcZYbCHV4zcIS2kYi0ughdP99EsY0zikEpW8dxrkpi8+5yFeahzWpepz3CuDRjpFP/Y5u0BzOAiX5rxrnYfffcYZOovLoOJQm1hfe5s0AZ1xLiwl6QQMaKYdbUruxDrPBHVqyFZCEJCGk3m0N+67
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,48 +89,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 31 Jul 2025 00:02:51 +0000 Swaraj Gaikwad <swarajgaikwad1925@gmail.com> wrote:
+On Wed, 30 Jul 2025 17:49:14 +0800 Gu Bowen <gubowen5@huawei.com> wrote:
 
-> From: Swaraj-1925 <swarajgaikwad1925@gmail.com>
-
-We prefer that real names be used, please.
-
-> Fixed spelling and grammar issues in test output messages
-> to improve readability.
+> kmemleak_scan_thread() invokes scan_block() which may invoke a nomal
+> printk() to print warning message. This can cause a deadlock in the
+> scenario reported below:
 > 
-> Signed-off-by: swarajgaikwad1925@gmail.com
+>        CPU0                    CPU1
+>        ----                    ----
+>   lock(kmemleak_lock);
+>                                lock(&port->lock);
+>                                lock(kmemleak_lock);
+>   lock(console_owner);
+> 
+> To solve this problem, switch to printk_safe mode before printing warning
+> message, this will redirect all printk()-s to a special per-CPU buffer,
+> which will be flushed later from a safe context (irq work), and this
+> deadlock problem can be avoided.
+> 
+> Our syztester report the following lockdep error:
+> 
+> ...
+>
+> index 4801751cb6b6..d322897a1de1 100644
+> --- a/mm/kmemleak.c
+> +++ b/mm/kmemleak.c
+> @@ -390,9 +390,11 @@ static struct kmemleak_object *lookup_object(unsigned long ptr, int alias)
+>  		else if (object->pointer == ptr || alias)
+>  			return object;
+>  		else {
+> +			__printk_safe_enter();
+>  			kmemleak_warn("Found object by alias at 0x%08lx\n",
+>  				      ptr);
+>  			dump_object_info(object);
+> +			__printk_safe_exit();
+>  			break;
+>  		}
+>  	}
 
-Ditto.
+Thanks.
 
-> --- a/tools/testing/selftests/mm/Makefile
-> +++ b/tools/testing/selftests/mm/Makefile
-> @@ -48,10 +48,10 @@ ifneq (,$(wildcard $(KDIR)/Module.symvers))
->  ifneq (,$(wildcard $(KDIR)/include/linux/page_frag_cache.h))
->  TEST_GEN_MODS_DIR := page_frag
->  else
-> -PAGE_FRAG_WARNING = "missing page_frag_cache.h, please use a newer kernel"
-> +PAGE_FRAG_WARNING = "Missing page_frag_cache.h, Please use a newer kernel"
+There have been a few kmemleak locking fixes lately.
 
-A capital letter after a comma is incorrect.
+I believe this fix is independent from the previous ones:
 
->  endif
->  else
-> -PAGE_FRAG_WARNING = "missing Module.symvers, please have the kernel built first"
-> +PAGE_FRAG_WARNING = "Missing Module.symvers, Please build the kernel first"
->  endif
->  
->  TEST_GEN_FILES = cow
-> @@ -202,8 +202,8 @@ ifeq ($(CAN_BUILD_I386)$(CAN_BUILD_X86_64),01)
->  all: warn_32bit_failure
->  
->  warn_32bit_failure:
-> -	@echo "Warning: you seem to have a broken 32-bit build" 2>&1;		\
-> -	echo  "environment. This will reduce test coverage of 64-bit" 2>&1;	\
-> +	@echo "Warning: you seem to have a broken 32-bit build environment." 2>&1;		\
-> +	echo  "This will reduce test coverage of 64-bit" 2>&1;	\
->  	echo  "kernels. If you are using a Debian-like distribution," 2>&1;	\
->  	echo  "try:"; 2>&1;							\
->  	echo  "";								\
+https://lkml.kernel.org/r/20250731-kmemleak_lock-v1-1-728fd470198f@debian.org
+https://lkml.kernel.org/r/20250728190248.605750-1-longman@redhat.com
 
-Overall, this patch is hitting the too-trivial-to-merge threshold, sorry.
+But can people please check?
 
