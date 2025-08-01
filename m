@@ -2,120 +2,120 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E531FC87FCB
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 15:33:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A500DC87FCB
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 15:33:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 887FA6B007B; Fri,  1 Aug 2025 11:33:09 -0400 (EDT)
+	id 48FEA8E0003; Fri,  1 Aug 2025 11:33:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85E376B0089; Fri,  1 Aug 2025 11:33:09 -0400 (EDT)
+	id 440718E0001; Fri,  1 Aug 2025 11:33:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 774626B008A; Fri,  1 Aug 2025 11:33:09 -0400 (EDT)
+	id 356B88E0003; Fri,  1 Aug 2025 11:33:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 669CB6B007B
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 11:33:09 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DE515C0238
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 15:33:08 +0000 (UTC)
-X-FDA: 83728582056.28.836BB43
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 08B0E10000A
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 15:33:06 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=I9fIku14;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf05.hostedemail.com: domain of dmatlack@google.com designates 209.85.208.175 as permitted sender) smtp.mailfrom=dmatlack@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754062387; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 22D5F8E0001
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 11:33:39 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E7F07113BD7
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 15:33:38 +0000 (UTC)
+X-FDA: 83728583316.07.8E9CBDD
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 1BE5B1C0003
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 15:33:36 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=niSUZijf;
+	spf=pass (imf21.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754062417; a=rsa-sha256;
 	cv=none;
-	b=F3bK0Cm6zfF43t7hJHKDoG+Ugp9JUlCfzhNm3tYUFOjRk4S30vJPBY9dZTn6ngyR0Wl8uE
-	wUq7CmCXF51Uuxmw6GAeSZOuAlwQ763ehgjs+9reIvqTSnBx62Z8otOHlCnDKzCqQ0ez39
-	OWo07pLEgeTybq34A5bOPYyz6QzW2BY=
+	b=I4+Y0bWVfKwB9cjvvgbYfKU79svqLwtk/jg7ksQVHSJMh2qZhQnABIzKCKXzZ1cL0tXrwJ
+	KfSQCuhO8FGdPtxjz+/6N0E/PnJPOelg4G79/+O1vUUPC18SGRYXdxa3mQGCzuruRezoh9
+	IQsmfL+l6fnrdoGUmvx3lt9pVgrE/Lw=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=I9fIku14;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf05.hostedemail.com: domain of dmatlack@google.com designates 209.85.208.175 as permitted sender) smtp.mailfrom=dmatlack@google.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=niSUZijf;
+	spf=pass (imf21.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754062387;
+	s=arc-20220608; t=1754062417;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=8l68DoeiceI3IKbSzGhlcOAyQDPZ9AokScWPeUJfCvI=;
-	b=ZIA3Y5S+pLo9gnOQWoZimya5WaPV85GxvRL1U4cHf+wR3hRaY6OsayILpH6MDtQoAORLje
-	5rcgxHAeVpf7pMMNlDt21R8ZNpq50qAg505gfgvhTt5Gj0Nr0co/qmdx9R8cO92iZkv5z4
-	EXOZQnabcBzHK52y3hmuv01rYkpvC5k=
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-33250b6be11so3301741fa.1
-        for <linux-mm@kvack.org>; Fri, 01 Aug 2025 08:33:06 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Hlg5IiIUSg37cw8hEXFqC6WPT7GHYQIYrncw2fqeeFs=;
+	b=UvarFTeHr2pb0Pz5m4Ot0rxdYgiptnaOtmYS5qSXVf15bzxTkTanKSF7DV3/I/ZTE2ncf1
+	FERPNoIZy5/acOwNOtI8gdAlMzyuELxvYrpNHe+eRpmTKw8TADu7TaSl5o0zeA15+jGMq4
+	C9CKdfh3f2ytKjspcNirNM1SINgLIt8=
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4ab3ad4c61fso481771cf.0
+        for <linux-mm@kvack.org>; Fri, 01 Aug 2025 08:33:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754062385; x=1754667185; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=8l68DoeiceI3IKbSzGhlcOAyQDPZ9AokScWPeUJfCvI=;
-        b=I9fIku14+cW9oPveUbLWP8cq9ov8/M3CTmY1PgamjdHKH2irV329qo/Mii/NshQylQ
-         FOI30MM+FDF4YFxrbXw6nYUFyByPdlb7zhSX2bvqQmwz4mIvC3nKukX8BQ6PS2PfVu5l
-         hYNM3Yc8QmhXqkqsyFCDlT8g/pYa7JMWcSa2Y3eeXSC9+eCDvX02MK/m2IyPZ/tFRN3p
-         wBO3P1xVveBMxUw7RqDsGcNtVbxwSP+9tM/SSJlsxKyibgBtZ4TlrEcJWAdVIVywps1V
-         RVyR7jNahDOAcf4kyhFYMbLPLvBr9DP2RkAYDy6aqpkAgMlT5A1YEVMn7nZbwHTg8mep
-         fuww==
+        d=google.com; s=20230601; t=1754062416; x=1754667216; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Hlg5IiIUSg37cw8hEXFqC6WPT7GHYQIYrncw2fqeeFs=;
+        b=niSUZijfYPYtR5f7G/23ZDiRngkAYg7QD2iusBIldGWtzwJOp5jQ+YbnnQZElfxsgd
+         9U/wPCTroeuJM/+7BbeGKf51lphZQrUm6wnAGuA5ePAOGBgfr46p50iVuHHfiMwWemmo
+         2gBQTBDR0fme5t7goxiH0/6ZCj0nXEVuPIqrtccf3+K0um01xRJWR26QbcThkbdaKqTf
+         XdRxBUyD70A9uLLZ2oKczUsGGz8Dq699KmLoKPLKT/Rv+FKF55u4/MWvrTvjEE08cu0B
+         0XNb2gk9QAvoIjJvW4828xRgccUxsNwRsgys5c7ttqB6DFnE03On3WOa566cgf+kczTh
+         5hjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754062385; x=1754667185;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8l68DoeiceI3IKbSzGhlcOAyQDPZ9AokScWPeUJfCvI=;
-        b=EsJMzIkxpuiKo52kaBp7LJpT4Lsfq3jI2VVLhQB4/nB0xzCEJwnXnqhsFJSlmXkgRQ
-         zgIx5FWHtZpyecbS2yLsKFui7QqtUKAF88txSc9ndc7ITNiX/ReCp+uup7diO5e7qgoo
-         KACgtuMLkL5R2hQ8GQXSU8Kjjb0hvEKBNLzSc8O3KA2lQAylbKeA5exnbZ0HyapiHXjk
-         3PqNpSvB+yNoPURRf715FTUECXafbaVUGMHRTN4yu9RAAeDVCCfFUeYDxJbkLo32swGQ
-         YMR9lJ23eQcALI+svbMriqi9mkHgUcFqOywwdl/h9XqjPRR9sRJ1GFRlBCz8Y9MEFD7s
-         /WoA==
-X-Forwarded-Encrypted: i=1; AJvYcCVbjteR9oS04JEVqs71MT98A6LmleRyTSbncjaieWzpwuom7R9sU2l+9O4jxQ0EmybfWwEOFAsrLw==@kvack.org
-X-Gm-Message-State: AOJu0YzMZ6aG5tJjBHZQr3PvQ/GZbT59XfYYtdy9pJZZKzxX5Z+nNFIJ
-	LFWFbyoqucymeKD8yrwBZD92Iwh9MCh2/NkDyxOQQ2I2jrUlKkSn5naJdejIQ85KRAQu1eP8qs1
-	7/ilDtImC1aJndhvlKzkUT6wqujnAdNJmm/gGeSWj
-X-Gm-Gg: ASbGncuBMi3FUxWVRNJApyFUTEh8cnUNqYPDS3nIbmlxinVj8Bemk26kvaTokKQ2bvd
-	a0U0M0xWysrGq5ijK1C3PZHAtZK0LZnQasETqbk/I5kYhLiIlkjtQiiBq7ldRpLa7IiBmpG49zN
-	iF82qiBdSG4JfHm0EgNpfxiDYea22YV0YOgnfG90ktvXna5u639qMoTMITI3/04okaluQOWwQXD
-	Cxh+6qZKS/X3IMuzA==
-X-Google-Smtp-Source: AGHT+IElqGqJCtZOhO3R6EOALjhIxAosCdG4c6JAw0Ii5GIvvlZsjTd7NWmVyt9CTRdEgA600P6iKWvTGZcKiA6jmn0=
-X-Received: by 2002:a05:651c:4117:b0:32e:aaa0:b06a with SMTP id
- 38308e7fff4ca-33224a5e95emr27853181fa.8.1754062384765; Fri, 01 Aug 2025
- 08:33:04 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1754062416; x=1754667216;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Hlg5IiIUSg37cw8hEXFqC6WPT7GHYQIYrncw2fqeeFs=;
+        b=l6adR/xKuOSYben/AUvC2J2BvXM9jssuKV595GgvRGjL/OTSti1wH6pROFHz+rzWUb
+         w4MCy4ET4SLcDjC+P0WPFhUTUE4LbG6wonl5P/C4dux0YYLTMlgA0WVZqcjEomMZDW53
+         AgpXqHPx9CCfCbta1A8XSf3iK77hVnF/apta4OtWBYb1lPwx1xkojkxcfFm0HhYXOxHK
+         E0EVa0sAsyrBLVy5pZDvuuNQSTZfLWU+CE6P+YUb95hLRuyxFmbC+Ws+RQ7CC4NhyWip
+         RxotK5ObsvSPGduPhSlismUhzlbBzTpFJmvR99d7USU5jmd936qwgrqiRCAfrBct3nj4
+         SZXw==
+X-Forwarded-Encrypted: i=1; AJvYcCV3vcDRlyGKqSfFIf7qhC3Q0awH6BwhKAKuydphCXIMLL2sHPknl4gbV9h+V/ztHGZdOBsVdyTTTg==@kvack.org
+X-Gm-Message-State: AOJu0Yw4W+FXXwHR7T/lgysG9RV56oz2E8k5lMSQFgW4RYCFQwN4aSMw
+	S+GkltoQpDg0w9UujvHqq68n1mxS6m5NqLeC6W7ju4zNVbDjBQAk7A+bYuWHzEV5ajvfp3sav7R
+	rhQMN0fFjtCi7EJcZFczQ3aptOobBHlIm41qfr9NH
+X-Gm-Gg: ASbGnctvla9QkCdPQ0dbcy0QBW4jACXS/syKI6LFR9RtRiTQHptQEJz4QYlNevsiLxk
+	rkImJTovObmnCFjLYk5pK27JghWOWhoVoWLqpxTX06tYVOET2LsGP6aC3Yuop36BmtITpTKZkAz
+	a1iKYfdkNoeSTS9daQr63s3sgZqWf0mLFr4latKMcR+wB/9xQaOqCqPJLj9rSmFiUMjwo7Ej9I+
+	LBGGA==
+X-Google-Smtp-Source: AGHT+IEsz7cqbW/kEbKXp/wzbnkRSdJg8iPGlbcCDsMA3W/EALhw5TKX2XX+IJPal4VjoqUJ4+13OZd6BTyXLQ5Nvpk=
+X-Received: by 2002:a05:622a:1652:b0:4ab:54d2:3666 with SMTP id
+ d75a77b69052e-4af00896fccmr5243681cf.25.1754062415661; Fri, 01 Aug 2025
+ 08:33:35 -0700 (PDT)
 MIME-Version: 1.0
-From: David Matlack <dmatlack@google.com>
-Date: Fri, 1 Aug 2025 08:32:37 -0700
-X-Gm-Features: Ac12FXzLKnSwpLBskXSaJfx0o2ePwkZV7fNIT0lZA44HGFkBJgr6jkivWR4r114
-Message-ID: <CALzav=d_Bjfy=6if+rPmxgGJfUV8ijnQ5hf40HoH6Yozg_H6Ew@mail.gmail.com>
-Subject: Live Update MC (LPC): Call for Presentations
-To: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "iommu@lists.linux.dev" <iommu@lists.linux.dev>, kexec@lists.infradead.org, 
-	Linux MM Mailing List <linux-mm@kvack.org>, linux-pci@vger.kernel.org, X86 ML <x86@kernel.org>
-Cc: "pasha.tatashin@soleen.com" <pasha.tatashin@soleen.com>, David Rientjes <rientjes@google.com>, 
-	Chris Li <chriscli@google.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, Vipin Sharma <vipinsh@google.com>, 
-	Josh Hilke <jrhilke@google.com>, Changyuan Lyu <changyuanl@google.com>, 
-	"graf@amazon.com" <graf@amazon.com>, "dwmw2@infradead.org" <dwmw2@infradead.org>, 
-	"jgowans@amazon.com" <jgowans@amazon.com>, "ptyadav@amazon.de" <ptyadav@amazon.de>, 
-	"jgg@nvidia.com" <jgg@nvidia.com>, "rppt@kernel.org" <rppt@kernel.org>, 
-	"alex.williamson@redhat.com" <alex.williamson@redhat.com>, "tglx@linutronix.de" <tglx@linutronix.de>, 
-	"dan.j.williams@intel.com" <dan.j.williams@intel.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, William Tu US <witu@nvidia.com>, 
-	"anthony.yznaga@oracle.com" <anthony.yznaga@oracle.com>, dave.hansen@intel.com, 
-	David Hildenbrand <david@redhat.com>, Frank van der Linden <fvdl@google.com>, jork.loeser@microsoft.com, 
-	Junaid Shahid <junaids@google.com>, pankaj.gupta.linux@gmail.com, 
-	Pratyush Yadav <pratyush@kernel.org>, kpraveen.lkml@gmail.com, 
-	Vishal Annapurve <vannapurve@google.com>, Steve Sistare <steven.sistare@oracle.com>, 
-	Zhu Yanjun <yanjun.zhu@linux.dev>
+References: <20250731220024.702621-1-surenb@google.com> <20250731220024.702621-3-surenb@google.com>
+ <7821b672-eae7-4730-afe4-b72b80ac6ea2@suse.cz>
+In-Reply-To: <7821b672-eae7-4730-afe4-b72b80ac6ea2@suse.cz>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Fri, 1 Aug 2025 08:33:24 -0700
+X-Gm-Features: Ac12FXwW-ZHVyxPhLTgiyxybxi8oKVAlrLZn75JD6yLNdxGMHYIyQEgr1Szxvd0
+Message-ID: <CAJuCfpEhC77ZD7Zvg+9nqb=DAj2kufnLGpD72gXFbQ5Bbp-ayQ@mail.gmail.com>
+Subject: Re: [PATCH 2/3] fs/proc/task_mmu: factor out proc_maps_private fields
+ used by PROCMAP_QUERY
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: akpm@linux-foundation.org, Liam.Howlett@oracle.com, 
+	lorenzo.stoakes@oracle.com, david@redhat.com, peterx@redhat.com, 
+	jannh@google.com, hannes@cmpxchg.org, mhocko@kernel.org, paulmck@kernel.org, 
+	shuah@kernel.org, adobriyan@gmail.com, brauner@kernel.org, 
+	josef@toxicpanda.com, yebin10@huawei.com, linux@weissschuh.net, 
+	willy@infradead.org, osalvador@suse.de, andrii@kernel.org, 
+	ryan.roberts@arm.com, christophe.leroy@csgroup.eu, tjmercier@google.com, 
+	kaleshsingh@google.com, aha310510@gmail.com, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 08B0E10000A
-X-Stat-Signature: u4cybdzm6jj4qwzxszpdq9aqz78tjozz
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1754062386-766778
-X-HE-Meta: U2FsdGVkX18R/m8+4D87gD04ywx6HZmdzTlG8Bxe4DKf8Z4Tve+u7n/VaeGF78I0hjphsqWQa4gZObfcaoNQ8A8qeE0fox6QAnHYoRZlKW7l2LMJJ8RvR4knU5JdrnCtCvVUK5qR1rbejKe3VB4DwN8p0FPXfvdTHGv3GC8rJ0eo80PsutpnJbl7JCzvt4K+lqWnTkaMfrfEAhJOg12tkVoOBeqrhtPI8Cvt5noMcEm1Efaw3VuxfjB6eDornHXqurppQFT9KsCssk9ThdjIebsZhEd0xJF9lt5NnBlnjFO4NcTUbOGvCoACXfA8I2Gx0kD0f4Q3W495czQW0mUWxzhbQj3IY/vOrc8HT3Kys0aeMuKIxrGuhea0Erz7m3l820dGOPDGk01ut6WuwGl5Y2Hf5LhPg/sxwqREQFMvqjLZwG/lzWWFKNDNeG6RH5FyFZpzFSIBjdNtFHFrD2sYEF5lMDl4riLbjKNjVvWQ7cddiNi1V3oJiHzvlE4zuvRQaKduzQr3g/PLLKg4RTqza+Qth2cEL0TcRVvImYM8WaSrPbLbohMGQln5kQLcOF7vhpO4DpZoHz0zgmKEsVJF8ZVtCQZsMKSKJQHX+EWgLTkvpdW8XA4FqKHVmaHw6TDhm0uLiXxpDwFwAiZUONxBVpDQCAPaZXLYWTY1UIrh3//GT7707HjHkXDtDF9AeV4sqHdCtaI+o/aDodSyttyhpJfKRRGUQsELG/vnN5KWvdzbJd8MvbZCN7Jh7pjNsAVBMmEYX1gxsDTKAjWSv8HF9spXH9oRC4/hZTZeyibyU4KyYGarYgUaKUkvQL5qIjD/axcf5w9xwPAPeli38QYyAh2cm0h8mIxl3Yjp/mwfSic5vCHs1JHN1zp1+i9nU5QiCij98187mAPdti8/0Q2oIu2ZOUNM4VqbHp0or/N36twFwJ84DFPs4Ylu9OwJADW0jfRX9CALy27CHASRfFA
- 2aDbo2AC
- T+xvKQ5Xe6XZr25XkQeinK0PR9KQJBMAC51DcdpDn6UYDEKezi4Nfk53/EWw3YzLAUPqQXoi/SgZ3E5fC9sVkU/vjG9fKXGxgVbcoVLr+7YMEM3zn+XQjBSwNMtNX9rkbcMRSqECBNmwpb4O2+vxX5n5y4jGmW1GkDDzJc1wvHX/N4rLmg3y6THWDG2sRFOKJ2oj1qkD5JUzZb1wkq2LCQ2NZ4vV/qC+aP4Io2hCLiZEWwrduxaC8wNMdj7XlpwQ13MfQcwehS6GFSMKzUx+MJfroot6X/M8dx6lCE6SZySMd+NhSw16jKC/+UNjB/PIxZ8yNBfNlQsD7W5/Ba3aBM5xgdM2NfRlVQOWeBVwoky4o/v8G+FFNT+ryatP27Fib3ExO3FqUjP2OmEk=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1BE5B1C0003
+X-Stat-Signature: bx8eb3izbqbx44uwfiymhjrsdhd3zexx
+X-HE-Tag: 1754062416-879192
+X-HE-Meta: U2FsdGVkX1/jNefyBi1kP48VD3HRvz7DcrJTc1Eys7wctvvjyIeD5uK5Qykhiel4L+7NDkgQjmWiMMcUyBAaevk66JG/a5iAWIOuJ/0NwKAMnX3yUtaE9pD/GFaz3IoJ/aJIWWvxLAsUZPPnx6wKvQ+6ZC6fb9FvE2w74YZLupkWdKEuo2BXMfuYQD0amyXMroTF+n2YC6FuJamibzA7D7kRiKvEPjNMB12sXUEUC4fCN03t9N1DC01SUFVSYPMAMVgjFeFGws0r4mAPZTLidoLKUqiPnc+8rGtrOKKSWpU67a8c2GsK2ePC4t7kC1vKCOpVHWj/rCEtVtE/3ogcX2wPL6a1VrCtySCX0myUYTNNnyGQex8h2JZrKTbReh32VfJ0pdPGZTbNz/2rXXC1VpNvgA1cHH7x6xxMl++UMPfnCHochF3Azzlxi6380041Hwf8V/Ln0Y7Iu1pOtaqEvd8LiDqN232Z4l3095vCkftcSTP7fDit6tidhjLBxZzgBOFVbkMe8KTcesd6L5Wm0D6k5rdRGB8Gj2tVb6ugIDNccGftaTxTo8vbFc5OeCdwSszvsUuDIVytmn+TLZ6SeZKMKeV4FXl6Qo3I1NgfuYRjCPrcCPpeOVWkp9QEUSE+/W1axkaHHkeSf9k1lBwhAb7q4b3xHzHDcF2U1iQNiFkgq0GOXrLPieGX9q3/ZtIe3Mn1JxzyFQPSrTn460DYbf0M3+jXOw9UdhU62AZ2VcVS6Ag9wORrRmQ/Z9Zt/08wLrltHkK23/Qd/IgtbgUDAmdoIVH690AGSt70qY7rrRsUweYsNrdoSwrCzxFuMvwMJZ/hz6ZsE/fCELwPyvW+98bnelKtlB5n5OhZHLnKqXhJjXh7Fw7jelMY9abG2FFtdC234tE3WGFJ3DOB2JW8v88nhkvBFy5odJ1S2gGX7ktm/oV6g5lZN3UukSzhminaF0D4S6whKobv4p3OeH9
+ WICcs3Au
+ eXm+rI95yJKYRyfahhSAOQn6M23yjqkmIzBBWmWgBDspKaZZAzc1KUPlwWA0p8/tm5gu/KG52rYyiJCP6VBeknAewPV6KnewofYDzQ6lpDWoDKubM/QU3zjFpvT5SbeAp/tsub8M0plk8gqqqOQNeqPxgWXbRusaNTDqxYegA9/bkda1I47wYkVkW2tIn5kJAggq1GP7RgQEBXci1TGQ34GOJi2ydKkQ2Lcy4lKTxCWbM1Ec=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,44 +124,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We are pleased to announce that there will be a Live Update Microconference at
-Linux Plumbers 2025: https://lpc.events/event/19/contributions/2004/
+On Fri, Aug 1, 2025 at 3:55=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wro=
+te:
+>
+> On 8/1/25 00:00, Suren Baghdasaryan wrote:
+> > Refactor struct proc_maps_private so that the fields used by PROCMAP_QU=
+ERY
+> > ioctl are moved into a separate structure. In the next patch this allow=
+s
+> > ioctl to reuse some of the functions used for reading /proc/pid/maps
+> > without using file->private_data. This prevents concurrent modification
+> > of file->private_data members by ioctl and /proc/pid/maps readers.
+> >
+> > The change is pure code refactoring and has no functional changes.
+>
+> I think you'll need to adjust task_nommu.c as well, minimally I see it al=
+so
+> has m_start() acceding priv->mm directly so it won't compile now?
 
-This microconference aims to bring together developers from across the kernel
-to discuss topics related to Live Update support in Linux. Live Update is a
-specialized reboot process where selected devices are kept operational and
-kernel state is preserved and recreated across a kexec. For devices, DMA and
-interrupts may continue during the reboot.
+Ugh, yes, you are right. I'll need to adjust NOMMU code as well. And
+kernel test bot seems to be complaining already :)
 
-The primary use-case of Live Update is to enable hypervisor updates in cloud
-environments with minimal disruption to running virtual machines. During a Live
-Update, a VM can pause and its state is stored to memory while the hypervisor
-reboots. PCIe devices attached to those VMs (such as GPUs, NICs, and SSDs), are
-kept running during the Live Update. After the reboot, VMs are recreated and
-restored from memory, reattached to devices, and resumed. The disruption is
-limited to the time it takes to complete this entire process.
+>
+> Also not sure about the naming, struct is named "proc_maps_query_data" an=
+d
+> priv field named "query" but the read() implementation uses it too, via
+> priv->query, although it does no PROCMAP_QUERY.
+>
+> Seems to me it's actually something like a mm+vma locking context? Which =
+can
+> be either stored in proc_maps_private for read() operations, or local
+> on-stack for ioctl().
 
-With Live Update infrastructure in place, other use-cases may emerge, like for
-example preserving the state of GPU doing LLM, freezing running containers with
-CRIU, and preserving large in-memory databases.
-
-Topics to be discussed at the microconference include:
-  - Live Update Orchestrator (state machine, userspace API, implementation)
-  - Generic infrastructure for preserving file descriptors across Live Updates
-  - Live Update support for specific files (memfd, iommufd, VFIO cdev, etc.)
-  - Integration of Live Update with the PCI subsystem and Linux device model
-  - Integration of Live Update with IOMMU and Interrupt Remapping drivers
-  - Serializing, deserializing, and versioning kernel state that is passed
-    across Live Update
-  - Persistence of movable memory
-  - Leveraging suspend/resume functionality for device state preservation
-  - Optimizing kernel shutdown and boot times
-  - Support for Confidential VMs
-  - Automated testing
-
-Please submit your proposals at https://lpc.events/event/19/abstracts/ and
-select "Live Update MC" as the track. Submissions are due on or before 11:59PM
-UTC on Wednesday, September 10, 2025.
-
-We look forward to seeing you at LPC!
+Yes, I struggled with the naming of this structure. Any help with this
+is highly appreciated.
 
