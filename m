@@ -2,85 +2,111 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EB416C87FCB
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 21:11:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 77862C87FCB
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 21:47:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7CD906B007B; Fri,  1 Aug 2025 17:11:06 -0400 (EDT)
+	id BF1066B007B; Fri,  1 Aug 2025 17:47:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 77EA86B0089; Fri,  1 Aug 2025 17:11:06 -0400 (EDT)
+	id BA12B6B0089; Fri,  1 Aug 2025 17:47:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 694906B008A; Fri,  1 Aug 2025 17:11:06 -0400 (EDT)
+	id AB6A76B008A; Fri,  1 Aug 2025 17:47:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 58F216B007B
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 17:11:06 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E15651A01EF
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 21:11:05 +0000 (UTC)
-X-FDA: 83729433690.01.1F10129
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 3279DC000B
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 21:11:04 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=f9X+OE6T;
-	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C54C6B007B
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 17:47:44 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E0CE880536
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 21:47:43 +0000 (UTC)
+X-FDA: 83729526006.26.5FECBBD
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 1596C140002
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 21:47:41 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LwiVmyq0;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754082664;
+	s=arc-20220608; t=1754084862;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dMJ7k8h29jIKsM889GWGLoUPmzzUzdKWH9QApyFj4LQ=;
-	b=smqOM5MnPYWTAFkx7+2YlaO9tIqEsr5PyFa+7V6bnQuM77Dd8gX2AMHehpg6o8YWmX75Y6
-	P2hzRhaayCmnjiRq2H/ulDBW0ivrqKdolXD93Kx0ZBkkvyTMgRLdPa3U9PRPMY1kIKx9CJ
-	XAXjeYCGYdEdHAXxjTnNcjiuuT+7sew=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754082664; a=rsa-sha256;
+	bh=qzab8vfejFy6BGVYexdP79Amr1wH4zaNM7RRQ0cASzc=;
+	b=ZCbCXIvYuVnqQt6HUyMHpLG8356OYK6/fo0kzErsnwrleieP1kMzle9WuP2hb07+SqSRhX
+	wmCVZDFYN9AYZ/AlA6BTUYzhH0bHWkE9duLdobjtv2rRcG40KmgtXpMrSxS+V4E/NzUsSb
+	3sOYDnVHeBUaiQVVnQFfQQeGgbmdG1k=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754084862; a=rsa-sha256;
 	cv=none;
-	b=OKXqoHxJ8DtiJmcZL+tKDm/mVYeuXexEI4Ewa4NDuoJ575MxyYWZDZ7JRaf5jkgACIhrtP
-	/8eI7Gwkwepg8evDaafWsuWF4+KajLgs6xWjFvivsDIhKDWfqQbqDDZdfutnJR/rneBSnf
-	Ygg5YZcW9uT32rxd9P4/UyayxGtS3Nc=
+	b=y83JCdGQJJYdkl/cdQ82p7uxD1oe06mb/HPJlZRBk9Wf47AOFgcHSkZZ4mPEC+H033E25Q
+	Nfwe0EWQ/6cHvNCKZlTi2Y2iIuFm8yn1yId8MkMIsmQnLVvRVYMHaJ2m52nwGGjhHcvT0d
+	DhoRX4Dp1MTiVl4BSJNNQalREt8J798=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=f9X+OE6T;
-	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id DFE775C699A;
-	Fri,  1 Aug 2025 21:11:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55AEEC4CEE7;
-	Fri,  1 Aug 2025 21:11:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1754082662;
-	bh=ww7t1UI4eak/tTR1kr/oRbXmt8cJpLrpmmFrejZkmk8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=f9X+OE6T2ufAtHATllC8W5aKWaZ12A5bdEZvrMetKyo7MIpzCOJKgiBQi1bvRSZvJ
-	 ZRy/aKgf6gcmVyJDMpIgJ5zgTtgQ7Vo4mk3M9ynRhfptQvDRrDWCQPMSrakeUQ6azD
-	 jU/4m1DF7WMHLXmSWPs4vrDjdq1j6PitZ1vd3uBQ=
-Date: Fri, 1 Aug 2025 14:11:01 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: david@redhat.com, surenb@google.com, aarcange@redhat.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/userfaultfd: fix kmap_local LIFO ordering for
- CONFIG_HIGHPTE
-Message-Id: <20250801141101.9f3555a172609cb64fde7f71@linux-foundation.org>
-In-Reply-To: <20250731144431.773923-1-sashal@kernel.org>
-References: <20250731144431.773923-1-sashal@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 3279DC000B
-X-Stat-Signature: exd7peh75wnoungg4b59d5zgkjk8rm96
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LwiVmyq0;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4ab8403b6daso22506471cf.2
+        for <linux-mm@kvack.org>; Fri, 01 Aug 2025 14:47:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754084861; x=1754689661; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qzab8vfejFy6BGVYexdP79Amr1wH4zaNM7RRQ0cASzc=;
+        b=LwiVmyq0iOjQFASYbgVRGPQCxR96VBkmMGtRkEZPAK2pTm8arEcfIqHKjCzUZMzlSu
+         YnQPhtzN8CejLxO9Xisppsuhu/jgXXzpI54TRZ6/8P01NZlscah085wiMeK3h0PJP2Xq
+         BYfttBlSdHMOJx8VK6o0iiu6aYnvJKVu5rWkyThnwebOb3oSaDcHZSveDk/5chwEWHri
+         xtaASmWBQzuuGkxdOw150Xt4xB8SlgzSYztqAuz4DUdF17YBkYq8wRXcTNKCaldupB3/
+         5mlv2YOOqgvWQRm5IC+rmEZ3s+WugxDFZztuV7DwPrE///R32HB2slK6+PipzuCCIu8P
+         eLOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754084861; x=1754689661;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qzab8vfejFy6BGVYexdP79Amr1wH4zaNM7RRQ0cASzc=;
+        b=iLMbYz+lj/OWQzJ/iyw2m+hIHAUy62D5nbjTXsAF0f2pFFUYd04ZBTm8xGwJq7tOCY
+         TpjZ7XurguU1F5q37bk713m54JmgA6MgreH0pZnGfZ2+gI8Q1TJU1W+VPqwYUIeM9Zbg
+         +gmMUkDKdm7lbdZnGCslkhtnz7lBJ+JsMhQhM0FHUYbytcPSC8r+2aUC5WbwQP0E3WZm
+         qtvE4K9h08CYvuOUIDAeqerO+Gj4QLTu9gZAqtEvNUsW0xNt8fOu4RO4b42gkifwBLa1
+         VSPJes+wUH/oTboMuYjUd+bT/+HQVaRBjRS2/pw+gim2bGReVDBp9Aj2qfMhtx0q+jry
+         QVwQ==
+X-Gm-Message-State: AOJu0YzhY5mjQ67sDK2knQk7iEuX27WrtJd3yc10YRozNxlmemwl/pzB
+	6G/cZdU3MjruQ4pcc4DUmUJfyI4M3WhbVoFC2z3q4hjod6FkaJcEEb/RGDvjTv/DCfcVAQMqA8D
+	N19UCfMD5vFsMMmkyK8fM/H4M3ogFSSg=
+X-Gm-Gg: ASbGncufwiuRmwx7bLpk9Jv7MAlPnEuJcSCsR01MnMEOYs2//FCvPQR+pAn3vUWhomM
+	itZrmf4HwCKm2dwI38kSxWx2y4/i8DN+/AiSY4CqpHAbrCFHoMvQ/fmrU1nVVqBX1vq682huIkc
+	B98bwztysqeVjtx47sD63NIMd3RyzTWL/Hlg+SxGb7n2AwbMjuDrMWby6QyL2EysGgSLo+xppEE
+	dEHbY9B9Xv/R49i/w==
+X-Google-Smtp-Source: AGHT+IF8Bkr7PS7/P+w37YpYpvkm4jMRLLF3escBy9onGRRvAuSm5oEUYJawRmHEiGCmm5CjW7kphVKyIhE0/EfAlgM=
+X-Received: by 2002:ac8:5716:0:b0:4ae:fa71:9ea5 with SMTP id
+ d75a77b69052e-4af10d11525mr19086791cf.48.1754084860965; Fri, 01 Aug 2025
+ 14:47:40 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250801002131.255068-1-joannelkoong@gmail.com>
+ <20250801002131.255068-6-joannelkoong@gmail.com> <ghghf7cynwbmthtozlthggdscnmgvkmnq6s3gkcl4qp2zxubee@azmf2dxubund>
+In-Reply-To: <ghghf7cynwbmthtozlthggdscnmgvkmnq6s3gkcl4qp2zxubee@azmf2dxubund>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Fri, 1 Aug 2025 14:47:30 -0700
+X-Gm-Features: Ac12FXxaOUKnRnhsre2EUbUqbED2JQEbEAQrHEZ5LNAO58jwZ4eXF6jMaZEnX1g
+Message-ID: <CAJnrk1awAjCY6HNp0F2QUEkA10O_ZABr_QpJ29JdzRGq7E0ffw@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 05/10] mm: add filemap_dirty_folio_pages() helper
+To: Jan Kara <jack@suse.cz>
+Cc: linux-mm@kvack.org, brauner@kernel.org, willy@infradead.org, 
+	hch@infradead.org, djwong@kernel.org, linux-fsdevel@vger.kernel.org, 
+	kernel-team@meta.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: d6znztasixzu4snuwue744stq9ambswe
+X-Rspamd-Queue-Id: 1596C140002
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1754082664-158915
-X-HE-Meta: U2FsdGVkX199H1cXQPVb717kaOg/WJoUzY5kU6YTNiNfvKHfLxXxZkZzsxOzFC5lPFKN1GVhpobK6Relf7j5SzZ6gIu+HAnFB/qYn/HhlS8AEUHZ+VukH2PwUYjuiYMPqMxD0GYrU4L7/jEFaGwuZn5HZgaENsXJAQdoJckLdLWm7hymeBPzSl+fd80H8J9R+f6NQf0Ran+U1xclet0FOAo26nbPTCr+rRUJBYvtKN647E4AY7b+Odrid8adka1Wdd+ZBMdsYWgBb6siQ+Kbwevs9G7DVRfIul9Fmps0EnJH7eur3CW0YGjUibq2O7mZrEHpm5DsHH9zWCetyHSwu2XzJ3OZYfyeLwqPfyJbmGf0IABqLGIEjOjqXf/yVDp7G4YBPguCSGoNYRxEffTvgH3eQTY1kRHQ4GaEbo+/MhYjedfv9KF8QUntUAhQ6pukn0H4FV0ZKu5D1Wavr4UKfpGzCXoornx3yxFWsjncViI3D8bG5S8RajmS5RHHUwY34vdwvx7MYphMwhOCrM5AGl/59oMi0QfBDStUmdm4QT/HBMec2uNdWc4G9Ir6sOgaByNUFwhi5PLTf7g+xRK5WCjZpS8Vfrd8LFNO8ubb+RPVIMtsDy31Av+EOf0jd2jUHJVbU1Tt4tCqQEDlVd2BAUyFAWEZKHOtXzEHH6sBeimSSIcAXQgE4vrpEXEmh6jmiR39+Y/uOEQlDX532vfOkFK+K5rGnNjpGdRUFGY5CvRfee+XLZq/E9UTRburCLvMrbrF7HGgy9Y+OsgZ+YzxwlNsDPmGY09uD0JpqKPKdSRHRuViS1blR1sVMgLxRk/N/86LbfUwSice0bBZZNM1abvNos3aO6UrpSMfLdUIWG3frO5xcnWoA0LWCpvQI0lB+0v7jyVyKLxp534GeD5FFh+bghwLUSwBuDTUkdf5fPy6D57Cfu+MiH1CSxdMLu8gEmlBXr7nAZyauOVw/En
- BMFmiL6d
- GOd4KMzLnCwLMTGONI5EY+P021dTLf6Y+bT5uZ+ntZREqtmZZexZUUyeZ7b2uoc+F42GQEGHn5y/ChKBWsEAVRb+Fv9dEQPyfYqPh4/FKoVYtG2WFeqKFf/HKMSYA7OvIifdloSuKdslARv8CjaFAVEvc1iGK3wC6oxMqj7w1BzFpc0iT2an4T5dPa7K8OkMgr4Fa8LBMwLwZbNPUrXKrjeUOGzsNNgajsxWstj/IBq899M0vc4wsBQjmXkR74rM9dPaWuNnyzPn7Qzjjc4Ftf6RhWfWFz8yNZYe0rjWuSeW2GToWtKe7ymrbqTh9rmwq739X
+X-HE-Tag: 1754084861-556224
+X-HE-Meta: U2FsdGVkX18CkUzTDCOOvtIlygMf8Z3zgF/WVZ3+AbI89aXtBAqtfoucrpb2iHckRdMVDm1WUXZKKSh7ilTxW2F4Tz698cztq4xZOpAjhNneeK4E3shup/9Ef6RSHeOlP+mzSe/De5r0vtJ4VB//Guh4jrKTy+HcKs3Zf9NRbfxS+mDiIKfTn4wk83oMyC4K4370tn6kpn8zhxLyWFGfJ1OGr+r8vgLCEIRoQWkggOQsj2N0bJk4rFlTNDWNe5WPuFAeVDDhKOEj72/3aHJDuSx29dD/442gezypHeptkTzOszgBkdpR1EkuKixfTyo30CgZswfHpMRvJ+ax69EOTwYkD8Yb+0DUtdcy2pAKpup0ekYpiwLM0hbLkMZRipckpg1DJJpb1rPWYXae8IaiZxef2r2rlErj0Ye3Hqlo5XUcEapffj8jHWWXZhYG/nHcB9px/Z92MtO2agvYLorZkVbhQc+Q96yTJSHmjvWx7bRt/a/8Pxd9b2X6rzMKg6cfzYb6Umg+58xTnAFVCcbtY0NC18xQMjmKZxqTeNQqYDOErztZC7acnz4nV/run0bIw6t+tfaA0WKYWxxR6/KOJO8xyUW6K7MPcGMWupB4OtPrT3Zw+IIfCQv51CUcPBXfkrvfEWoa4PmRMmAGfuG3bUqqjTDEO7J4i1psKAFTI597eswUP79bzbo3Feb1/rMf/6wDt9uesofX/vDJ8mntaNzWcsE5ddwA4qtyfjMfQxs9xST2FcaUD1ncaPqBXdrDsdtAMG9aoAeW4srEGY8tAxAumF0Odwic5rFRsfXuoCTVTKSXQgYkpTRiZMeE7SYRjaMszyJi43a+7wDB/cfOFEtLHo7ss5JNruYKe6K/A5EE6sHvYdkl7fhx/cjtBFwBC8qLZ8ByRTzPuBuq6MmfitlBNo7GCjLUV41dqmX4u0gJPjfIcyr/+QLaZv4WHu9YZrQ8bgPEn389aiGdIsB
+ YSfLqF2p
+ Z148nj9fwispyhBtSvL7oOZAGkETDiFFH0lFMYIeuoDaGWk0L0OpnwbwIJoa+gz8MkLCM2byNnX4Iu2D1m+Z+pXDPGkwMQNaJ4bYKZJFrWJI7YejcoctUrhS6yhuLRaCFAYaSNbLs7hdzv5rNytQS9UET94UmDEcCz9oO4Ik5fyFGjxPk1a//hSZslxE2iTaxr239pLAZNWdZ6TXnCKGRl2U9HKD5jcjy8xrCPWOQlgfq16rbKy1GJurQyfwSAEQrza6hlkFQJmLZnof7aqjq0SKHDeTixISfVEn2KnrNaGeEZBRvcGsy3X41VoOFXXzEIQDil7cN4cAMjTZumA8MI4Mmc6vA3Nj0U1DZf+WC3HVEnxPRIaJHDh7Skg7/jBhzJP8DR6oQliUm+xPdr3hQSHrZ1lR4+sgg2bJbNFzZCFljjqWufuwHFq2v/nwsVZ0ZNmSzQ1tOHJgu1HKij4R6mkH0Bf3qIUyvICxH3NxNsdwccDs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,39 +115,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 31 Jul 2025 10:44:31 -0400 Sasha Levin <sashal@kernel.org> wrote:
+On Fri, Aug 1, 2025 at 10:07=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
+>
+> On Thu 31-07-25 17:21:26, Joanne Koong wrote:
+> > Add filemap_dirty_folio_pages() which takes in the number of pages to d=
+irty.
+> >
+> > Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+> ...
+> > diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+> > index b0ae10a6687d..a3805988f3ad 100644
+> > --- a/mm/page-writeback.c
+> > +++ b/mm/page-writeback.c
+> > @@ -2732,7 +2732,7 @@ void folio_account_cleaned(struct folio *folio, s=
+truct bdi_writeback *wb)
+> >   * try_to_free_buffers() to fail.
+> >   */
+> >  void __folio_mark_dirty(struct folio *folio, struct address_space *map=
+ping,
+> > -                          int warn, long nr_pages)
+> > +                          int warn, long nr_pages, bool newly_dirty)
+> >  {
+> >       unsigned long flags;
+> >
+> > @@ -2740,12 +2740,29 @@ void __folio_mark_dirty(struct folio *folio, st=
+ruct address_space *mapping,
+> >       if (folio->mapping) {   /* Race with truncate? */
+> >               WARN_ON_ONCE(warn && !folio_test_uptodate(folio));
+> >               folio_account_dirtied(folio, mapping, nr_pages);
+> > -             __xa_set_mark(&mapping->i_pages, folio_index(folio),
+> > -                             PAGECACHE_TAG_DIRTY);
+> > +             if (newly_dirty)
+> > +                     __xa_set_mark(&mapping->i_pages, folio_index(foli=
+o),
+> > +                                     PAGECACHE_TAG_DIRTY);
+> >       }
+> >       xa_unlock_irqrestore(&mapping->i_pages, flags);
+>
+> I think this is a dangerous coding pattern. What is making sure that by t=
+he
+> time you get here newly_dirty is still valid? I mean the dirtying can rac=
+e
+> e.g. with writeback and so it can happen that the page is clean by the ti=
+me
+> we get here but newly_dirty is false. We are often protected by page lock
+> when dirtying a folio but not always... So if nothing else this requires =
+a
+> careful documentation about correct use.
+>
+>                                                                 Honza
 
-> With CONFIG_HIGHPTE on 32-bit ARM, move_pages_pte() maps PTE pages using
-> kmap_local_page(), which requires unmapping in Last-In-First-Out order.
-> 
-> The current code maps dst_pte first, then src_pte, but unmaps them in
-> the same order (dst_pte, src_pte), violating the LIFO requirement.
-> This causes the warning in kunmap_local_indexed():
-> 
->   WARNING: CPU: 0 PID: 604 at mm/highmem.c:622 kunmap_local_indexed+0x178/0x17c
->   addr \!= __fix_to_virt(FIX_KMAP_BEGIN + idx)
-> 
-> Fix this by reversing the unmap order to respect LIFO ordering.
-> 
-> This issue follows the same pattern as similar fixes:
-> - commit eca6828403b8 ("crypto: skcipher - fix mismatch between mapping and unmapping order")
-> - commit 8cf57c6df818 ("nilfs2: eliminate staggered calls to kunmap in nilfs_rename")
-> 
-> Both of which addressed the same fundamental requirement that kmap_local
-> operations must follow LIFO ordering.
-> 
-> Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-> Co-developed-by: Claude claude-opus-4-20250514
+I think races against writeback and truncation could already exist
+here prior to this patch. afaict from the function documentation for
+__folio_mark_dirty(), it's up to the caller to prevent this:
 
-Well this is innovative.  I doubt if Co-developed-by: is appropriate
-for this (where's Claude's Signed-off-by:?)
+ * It is the caller's responsibility to prevent the folio from being trunca=
+ted
+ * while this function is in progress, although it may have been truncated
+ * before this function is called.  Most callers have the folio locked.
+ * A few have the folio blocked from truncation through other means (e.g.
+ * zap_vma_pages() has it mapped and is holding the page table lock).
 
-I'd support creating a new changelog tag for this case.
+The documentation doesn't mention anything about writeback but I think
+it applies here similarly.
 
-And really, if AI was recruited in developing a kernel patch, it would
-be helpful if the changelog were to have a paragraph describing just
-how the AI assist was used.  At least, until everyone knows all about
-this?  You probably already have a presentation or a web page, so
-adding a link to that would suffice, thanks.
+I'm happy to do this another way though if there's a better approach here.
 
+Thanks,
+Joanne
+
+> --
+> Jan Kara <jack@suse.com>
+> SUSE Labs, CR
 
