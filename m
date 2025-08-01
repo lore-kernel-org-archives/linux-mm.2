@@ -2,89 +2,128 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C07ECC87FCB
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 17:02:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EE9B5C87FCB
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 17:07:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CB886B0093; Fri,  1 Aug 2025 13:02:37 -0400 (EDT)
+	id 7D2306B0088; Fri,  1 Aug 2025 13:07:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A3386B0096; Fri,  1 Aug 2025 13:02:37 -0400 (EDT)
+	id 783056B0089; Fri,  1 Aug 2025 13:07:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B97B6B0098; Fri,  1 Aug 2025 13:02:37 -0400 (EDT)
+	id 671AE6B0092; Fri,  1 Aug 2025 13:07:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C6F16B0093
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 13:02:37 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B05F658660
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 17:02:36 +0000 (UTC)
-X-FDA: 83728807512.20.4BEFEE6
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 060C9140006
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 17:02:34 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="X/UTCOQc";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754067755; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5127F6B0088
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 13:07:33 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 07732140300
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 17:07:33 +0000 (UTC)
+X-FDA: 83728819986.13.4E50494
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf01.hostedemail.com (Postfix) with ESMTP id B41DC4001F
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 17:07:30 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dTvMd8fP;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=G8rG1Y2T;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dTvMd8fP;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=G8rG1Y2T;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754068051; a=rsa-sha256;
 	cv=none;
-	b=45p5vzn81TLJviPuNcoJltoImqvTaz00e6h7sKZJewLkp3YK0nsloJ2O0g9SoAgE8VZqjV
-	39/dKYlRU5ulj6Dwi6UDaWwpOiiCUkYPti/K0ZFDNIBTwvj4nACptG42ebepthlzWu9mus
-	QpweVaJilczOO440QoAHYx/rUVlxxwc=
+	b=LSjYkLWhgtA0ClReovyLPFYv8bkPl2x2Pg68+5MHqOfq34NjLeA8EsTSeazHdnxDiT95PD
+	lk4N0n0xRj8ucNRDVe4rIsM9ggomWS7lx+QS4lsrIuiQlLhdyCJ6ayk/9FayuIH2rx9r0V
+	64+XMydVmL7nHUGjh7LY6NWqXf3PKrs=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="X/UTCOQc";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dTvMd8fP;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=G8rG1Y2T;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dTvMd8fP;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=G8rG1Y2T;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754067755;
+	s=arc-20220608; t=1754068051;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B0K65Ou1ZrDTo0CD+g+qMDJCatPT/nxLwNJQiBg59ak=;
-	b=yjnMPOflZ9b1t/2Hn+XBLjN/Ycxdy3e77++XZddegaFEVKSRbWqTFcdxAbAcz6YZXHAYlB
-	EdJaX6n5QsRamtzPLI1LRWy4yiYOwiXZyEk2sxiNuWHCOmAGieAuZO2BHyTUwzuKtku91G
-	a8eG2LY7vUttNkUVRsVJ+daTc5xS8xQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 4D575A555A3;
-	Fri,  1 Aug 2025 17:02:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE1ECC4CEE7;
-	Fri,  1 Aug 2025 17:02:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754067754;
-	bh=UcW2O+y87SzU13pq/hmDWWAZ/pxri1/7132KbeXpyMw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X/UTCOQcXcyIQd1cFZ95Gx8uHlZCZT1BawtuiTbHHW9WrS0EyoVSe3HUUymBPEuIA
-	 2XazgA7JBNBm4FktMi8wDjMTJXFo+MDyjqCMocOVgmptxPRQ3NM1hIMQHZerOML004
-	 X66XVgljocps091k6fR/y2fgsnCbWPjTo+2SFwNuhq4h8bmY/vWK9KHgdcSuhHfDY3
-	 wY5sBUJF764SpcFD9ySMNRcu76OcxsnrWXt/OHBGAQHZYJmyNHpnLUnf02Y7keuZxF
-	 eirQXyUJ+FP7b2faz5aa0LMFhOAbnmRs7S5jN9WkO2kgXyJQPaD99dmDqraV33+9fh
-	 QI7yu1HChdNdA==
-From: SeongJae Park <sj@kernel.org>
-To: Sang-Heon Jeon <ekffu200098@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	honggyu.kim@sk.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] mm/damon: update expired description of damos_action
-Date: Fri,  1 Aug 2025 10:02:31 -0700
-Message-Id: <20250801170231.8532-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <CABFDxMGh7-vDgNzepJKtrhdOF40_U7=NT6Jvm85qtdwGpBZawg@mail.gmail.com>
-References: 
+	bh=BIn07FzSOON6Sss2YzS5j+2jnVsbdr3lR+vtWJREsnc=;
+	b=dmzXj7RfcVOKMbQGdMd7A6l9moZpPQyE57PYk1kBpzIBbl/tp23SQcFMoGhs6f+2l00e5s
+	xXHPyCgete38nxA7LQbnzw95lE8LDuuK21k1QKBBpnXWct7LGsre/ryg2CgPE2ZPa9keRn
+	v5BwzTZR1EkdTZikr3GCN6vUf+STO98=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 28BF61F807;
+	Fri,  1 Aug 2025 17:07:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1754068049; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BIn07FzSOON6Sss2YzS5j+2jnVsbdr3lR+vtWJREsnc=;
+	b=dTvMd8fPb8gGc6GhZknZCTjPtDcLg3ghKhGpoUh4JrdKviglDTsyYpzv/Y5UyiAjDZKO8X
+	lW1HIODrh4itndKGaG7oM33oEC+nfhcmCXasa0PF4/nxs3j20Iz2uaQyt33nP1fJxf8u8c
+	0+6W5BfWPvnRrrICYtGX8wOOXQzWNjo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1754068049;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BIn07FzSOON6Sss2YzS5j+2jnVsbdr3lR+vtWJREsnc=;
+	b=G8rG1Y2TTTfn3/O5bnuG6GmLI9tQj+vFm46NVWyAtcipq5grjegc02U5LSzbty18tkePWX
+	cIpN0KuRoFuKn3Dg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1754068049; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BIn07FzSOON6Sss2YzS5j+2jnVsbdr3lR+vtWJREsnc=;
+	b=dTvMd8fPb8gGc6GhZknZCTjPtDcLg3ghKhGpoUh4JrdKviglDTsyYpzv/Y5UyiAjDZKO8X
+	lW1HIODrh4itndKGaG7oM33oEC+nfhcmCXasa0PF4/nxs3j20Iz2uaQyt33nP1fJxf8u8c
+	0+6W5BfWPvnRrrICYtGX8wOOXQzWNjo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1754068049;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BIn07FzSOON6Sss2YzS5j+2jnVsbdr3lR+vtWJREsnc=;
+	b=G8rG1Y2TTTfn3/O5bnuG6GmLI9tQj+vFm46NVWyAtcipq5grjegc02U5LSzbty18tkePWX
+	cIpN0KuRoFuKn3Dg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1414B13876;
+	Fri,  1 Aug 2025 17:07:29 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id QAChBFH0jGjxTAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Fri, 01 Aug 2025 17:07:29 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 65535A09FB; Fri,  1 Aug 2025 19:07:28 +0200 (CEST)
+Date: Fri, 1 Aug 2025 19:07:28 +0200
+From: Jan Kara <jack@suse.cz>
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: linux-mm@kvack.org, brauner@kernel.org, willy@infradead.org, 
+	jack@suse.cz, hch@infradead.org, djwong@kernel.org, 
+	linux-fsdevel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [RFC PATCH v1 05/10] mm: add filemap_dirty_folio_pages() helper
+Message-ID: <ghghf7cynwbmthtozlthggdscnmgvkmnq6s3gkcl4qp2zxubee@azmf2dxubund>
+References: <20250801002131.255068-1-joannelkoong@gmail.com>
+ <20250801002131.255068-6-joannelkoong@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 060C9140006
-X-Stat-Signature: qbe1nisxchdymet56yb6jcrkyfprrxas
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250801002131.255068-6-joannelkoong@gmail.com>
+X-Stat-Signature: uge3r7dn581yqu6d4q811n1iqbkhc7ow
 X-Rspam-User: 
-X-HE-Tag: 1754067754-62781
-X-HE-Meta: U2FsdGVkX1+yoZjgusEAp6Xh/26x1CKtX3Nr73sQtYSbVA+L82FxG5Y8iAe5Sr4z98tssr99tnZG1gPl7lU9ZIfj0TctUYJPVt9T9wGz2yC5n/Xo/DOs69mpltf8jiOIbsh1fA/ilyFPwmIOL03VxAtQon9REEwdC9uRyIID1aqGc5E18k/ojaJ95uE1PESaS1htDRpwkFo5bwwx0lZkqhvohi+wGMC0oIafDkgIdRDa8btqiW2XWbjrvLhBPeI14+pNI1NdO1C2ubp3M04YAQmnGfu4x7wdlWcvY0sDZCQ5bXY62hLiBiMsKvp4ELJpzat+f7sor3K2qSjv86venGKbxs9vmxjrihbR8f8eMjR+jVtYvv4d75A7lw+j8UJqG/1tBHtQlzegqlTs41+YqrCoQc6VJ4fzcnf5UHjjY7GdRatD3ZhADutOIe4+0q5XYaiZSEdEAyWqdMPbyuPunUPcZebNc6kJL5c8PbvRPzeLyO6+7c5O8mzqA4VQMA4+oZZHyvybk96bPfPXTcCU9gMnk2orYTmAxJBqB9yZN5w9WblM8GmopSRZJNuRoaPGVMQe4zhzxiUk12xa2UDCpFlLozC0mG+WThJfu2S5XgwVRNNA7EjHt0ku32Loz/FQtimX/TiEKsI+yprnLZIj8tIyEMRuND+vFUQbKOldxBnYW/WZaZMk1KZ8L3GFNJoDG8CaHuj7RSL+Ou0e/UrbQ3cTFXYla+KOTSVW3ErmCBKc/IxeDEUlPuxz47yRW3zFUJpwz1NExZ/p/+pBAkmXrUsgJ+8GU+0bR9ZG+8gv7DEAKJgml9bVMt0KAGNhJSMtiaUYLMfeZkd3dMtHq+tjo3RJKZ7q9AZqZYcStH5IraZTtzY2V5ZzSxP7remSdOOdo43qqz7VLHoBoGEa5C2t7HncdR8aWvZtW8LC8+jX3Gemw3CzQKxWrRoN3NnY4ghUgQGB5FrpCJWu/hgmQZe
- Hrz6rDLN
- jxxIP5JX8HKBcE9mW2dG8V7C+U3g++3pcmgRM8MfmNovO2wMFWKJFUC1VWM9QBrZk5LZ8xkreyOyaDhHm9ey55vgvZRYe11ozFo8CXE+WKu5rQaFxAfKgt1XsRf8n3s6GTAvbhr343bL03DpLLOaKyQNBMZXfUBW5YTBkkgTIcS7RM/+K3NBp6tYK5FxLWA4jPdTA+P0rjopdnnj7M96PpsPzzR9V6xkJQxnq+U9AWw3PkQH3CqEjlU0JbHS6rHN3XSxlF3AorBuCJn3MJfhHVGEAi/lE14WoRDFsbdpZpRgb79WIGKyhZh9cL02V1b5ohfWSLG9WHFpdyTU=
+X-Rspamd-Queue-Id: B41DC4001F
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1754068050-69147
+X-HE-Meta: U2FsdGVkX18DkwCA+pcmXO6sPJC2M1QcXrXYeOYXBGJc088F8R8/7yK2774hs/btwQkGQmB65CpAMYLgqN+zm9N46gWpYDSnS74uWBBONdtw3Z3m+LWB4bENDV0wvNhN7FzFWI6gbTLDyhhRlo7bSJQR4ooTF5egzUfjICGSKucmFAwCr/HOjoOd1r/rmhvPrKO/Te7Gdb7dXxj0KKhrMM7dMXPA8oZczhRliRHCLA+WxykT+SXF6Tj2pBF12JGC64xKvFbPzjqJDDvBiAJKWL9TzpCEyTAfxS4rF57uWp7pNHSBXZMFkI29LmtaTNB4FfZoIryPgDd3o0idDzdYLGeJMnmMfrdIohbfI9pTHzNzv/THNyq1m8olWdwRTkN6HvremloQKTH/FUzXDOr4niMT3VLJQtMS/WFwVTa3T0KBCmNxk0dQMXIpPUF5jIGKXBEmU6Vn1PhrKLpH+2JaYJ6MqGsngB4R4ufQN8Kz4Xn8vmL28xQbC0chQNjqdnOJX2czpHPIx/9aMDsmhCaQ8RwY1mWJJW9+kgST2b4cs0B7ME2CFV2Oy08+MDOteOXUjSJMS9t2+4tJdiEa+mzKRuRbbPRz6GIMxPAcQ8a7OXcXuG5TYfdM0aVIofhQogmTnS+SDI6JDiUWsohxxzsOB3wubTx/wT4aDnP5RZru3AnCjJmdfr6ELV3Av5eNFj/H5UmjQPkBsAgCMN15CePpQg5rr0pUq+1geadv54GUx2QT+fAa5jIMCC9+ltm+b1KZd4uaVci/C5ZYNuYdhAmeB/yPKpRiYPBoZsXqG7iD/yyfk0EmC/zGGapWAZdGtOY+SlcYPA2Q97vMKid2I+StRfxg2DHZkcOaxpBp0k1xgEJmDcN0A8ewRlN17HZOdeHpRWG+0HmUxQxRm6v0VciSKBC2+1drJMRB+lVin5ig0veWhcW5AZiKjUYA1J5nU96fkgOMG7hnSFGDcIoGtth
+ EiVP8xoL
+ MXEfnqvA83HZYvZRh28Yb5ja3hUoF7GGIuSLy5zobz14L17ZRhOKCNEI+ln7BI+93LjEMEuDG5ftkWYI5JOLpt0ZXfKcsPEYkYPzj6OlmmWc0BSbiC/lZ+cSrIWkSbaTSLFGuk0upJQkyj4pwk8EvNXJ1mIliT2bMgXGh/7NTnpG3FcCb8EP3Y2wu2SaufXU2Z8ZIXKiNh8i5OUzC/mlat/a5RYkCpM+9O6fdV/u6Cmw2v0/sV/z4COMLY8M/6KBd+iYaZ92mgI6CWX+2rI0kdJ9rIstQgQQGxLlwugK60u5KUFtbB63Y/O4jBlBe0GPd8fTPe5oukGti0UjYir236gZBtBPHaIFuiaiohc2cFd4miQ3rU+uyHWS/7ziCvii/EExtu/6pp5WE4qaM2LOKesl3Uulvf/B8kkUC+sFj2kCxE3jIEYwfJcVpi5yqhJeaDHA1
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,70 +132,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 2 Aug 2025 00:34:30 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
-
-> Hi, SeongJae
+On Thu 31-07-25 17:21:26, Joanne Koong wrote:
+> Add filemap_dirty_folio_pages() which takes in the number of pages to dirty.
 > 
-> On Fri, Aug 1, 2025 at 2:58 AM SeongJae Park <sj@kernel.org> wrote:
-> >
-> > Hello Sang-Heon,
-> >
-> > On Thu, 31 Jul 2025 22:22:30 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
-> >
-> > > Nowadays, damos operation actions support more various operation set.
-> > > But comments(also, generated documentation) doesn't updated.
-> > > So, fix the comments with current support status.
-> >
-> > Thank you for catching this and fixing!
-> 
-> :)
-> 
-> > >
-> > > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-> > > ---
-> > > I also found below patch(https://lore.kernel.org/damon/20250730200239.60984-1-sj@kernel.org/T/#t)
-> > > So, Is it means that DAMOS_STAT is only supported by paddr now?
-> >
-> > No.  'vaddr' supports DAMOS_STAT.  The patch is not adding DAMOS_STAT support
-> > on vaddr, but extending the support for DAMOS filters.
-> >
-> > Thank you for checking the thread and asking this question, though.  I see this
-> > as an important signal of another rooms to improve on the documentation.
-> 
-> Thanks for your kind review. I really don't want to bother you
-> anymore. But I would like to check my understanding.
+> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+...
+> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+> index b0ae10a6687d..a3805988f3ad 100644
+> --- a/mm/page-writeback.c
+> +++ b/mm/page-writeback.c
+> @@ -2732,7 +2732,7 @@ void folio_account_cleaned(struct folio *folio, struct bdi_writeback *wb)
+>   * try_to_free_buffers() to fail.
+>   */
+>  void __folio_mark_dirty(struct folio *folio, struct address_space *mapping,
+> -			     int warn, long nr_pages)
+> +			     int warn, long nr_pages, bool newly_dirty)
+>  {
+>  	unsigned long flags;
+>  
+> @@ -2740,12 +2740,29 @@ void __folio_mark_dirty(struct folio *folio, struct address_space *mapping,
+>  	if (folio->mapping) {	/* Race with truncate? */
+>  		WARN_ON_ONCE(warn && !folio_test_uptodate(folio));
+>  		folio_account_dirtied(folio, mapping, nr_pages);
+> -		__xa_set_mark(&mapping->i_pages, folio_index(folio),
+> -				PAGECACHE_TAG_DIRTY);
+> +		if (newly_dirty)
+> +			__xa_set_mark(&mapping->i_pages, folio_index(folio),
+> +					PAGECACHE_TAG_DIRTY);
+>  	}
+>  	xa_unlock_irqrestore(&mapping->i_pages, flags);
 
-No worry, questions about DAMON never bother me.
+I think this is a dangerous coding pattern. What is making sure that by the
+time you get here newly_dirty is still valid? I mean the dirtying can race
+e.g. with writeback and so it can happen that the page is clean by the time
+we get here but newly_dirty is false. We are often protected by page lock
+when dirtying a folio but not always... So if nothing else this requires a
+careful documentation about correct use.
 
-> 
-> So the basic operation of stat is covered by outside of
-> `damon_pa_apply_scheme` and `damon_va_apply_scheme`.
-> If it's not too much trouble, could you point me to where they are?
-
-It is covered by damos_update_stat() in core.c file.
-
-> 
-> And some extension stat (maybe it only renewed that filter exists) is
-> covered inside of upper functions. Is it also right point?
-
-Depending on what you mean with "upper functions".
-
-damos_apply_scheme() in DAMON core layer calls
-damon_operationss->apply_scheme() callback of the current operations set.  The
-callback may handle DAMOS filters or not.  The callback of paddr.c handles the
-filters for DAMOS_STAT.  The callback of vaddr.c does not, and Pan is extending
-it to handle filters.
-
-[...]
-> So, I think that I need to send v2 patch, If that's right, which way
-> would you prefer?
-> reply to this thread or make a new thread?
-
-I prefer making a new thread :)
-
-
-Thanks,
-SJ
-
-[...]
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
