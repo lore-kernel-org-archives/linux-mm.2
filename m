@@ -2,118 +2,100 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BEB86C87FCA
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 23:00:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5014FC87FCB
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 23:08:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 51EF58E0003; Fri,  1 Aug 2025 19:00:37 -0400 (EDT)
+	id C33CC6B0092; Fri,  1 Aug 2025 19:08:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F5218E0001; Fri,  1 Aug 2025 19:00:37 -0400 (EDT)
+	id C0BC06B0093; Fri,  1 Aug 2025 19:08:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E4688E0003; Fri,  1 Aug 2025 19:00:37 -0400 (EDT)
+	id B21C06B0095; Fri,  1 Aug 2025 19:08:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F5D88E0001
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 19:00:37 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CA0D11346B6
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 23:00:36 +0000 (UTC)
-X-FDA: 83729709672.04.96FE1BE
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D9DDC80011
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 23:00:34 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A41996B0092
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 19:08:11 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 508D016031A
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 23:08:11 +0000 (UTC)
+X-FDA: 83729728782.16.3239519
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 88C6A80010
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 23:08:09 +0000 (UTC)
 Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ToFBK3lx;
-	spf=pass (imf30.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dj4UyGcG;
+	spf=pass (imf30.hostedemail.com: domain of kuba@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kuba@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754089235;
+	s=arc-20220608; t=1754089689;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7UIQftffFi5dmDZFojFIrkTA5pAdhvl7y5sSZY3E7b4=;
-	b=MiHbGXu/Eojjq/+Xa71vbR/XRWRwqQhrvJsonEvLDpG9SFp/pYel5M+kt5NUZyPKOrK36r
-	Pg+hVCRLuUff5ekFAjbc/Hmee8dVgcuZ0n8hx6n9KN1m+RLwtTOHFCVvN2WjV0Q6YVTCgz
-	QJle74F25DLDjjyZLzGkyKec5jYj77Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754089235; a=rsa-sha256;
+	bh=G0S3szeJAlU80mk+/W50EtKyLt6yvbLEZazkw9uRti0=;
+	b=H6ixASxtpEzHpFIvM2hkodvuewDo3Z3w/HrPINii+KHvlWJs67RpxG6I12yPtYa5oyA39i
+	pV4DXhdupGnnOk4jBhECRjS4kMLYTbudoVBiGyJhrnEnBxtuwbXinFrojq77hcEriY5wL6
+	GrcEGk7Tv3xDe5AJpwqDY0u4Hlik/Cg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754089689; a=rsa-sha256;
 	cv=none;
-	b=KbjdOcymktleSW03Uzt0HZmXPBcvZx6NFw5sUL+6nL/ZUeg0ltus+ZF1fxmu2sJr6TOS6K
-	ytgDeLS3TgMrmiTQgjdAPFq6lsCsQn4OtEcux2d7mAAeai7p9KvGOHwRqSsAKQv7SWyUkp
-	4/edbNz02Ztj+ahoUFjG91REVVoBKxU=
+	b=J/j8h+cG3pDyqt0N2g6FKx07JaD3yWov5NTyo32h93YTUgddijmwhWIxaTF+8gPp3WsKos
+	6YW9VxaoRjMu0q+W3Qlek8zySlEdt0gis67/DLmeAj9kWML1/yV+fpBY+HCV4tMTQ5xjXl
+	5fzC9dliHGvoS/rPW2Ht7gSe1/+M2I0=
 ARC-Authentication-Results: i=1;
 	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ToFBK3lx;
-	spf=pass (imf30.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-61589705b08so5447951a12.0
-        for <linux-mm@kvack.org>; Fri, 01 Aug 2025 16:00:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754089233; x=1754694033; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7UIQftffFi5dmDZFojFIrkTA5pAdhvl7y5sSZY3E7b4=;
-        b=ToFBK3lxdI7LVBAa+9yEAveaUEfGXP8FZlihrABzp5kH+Pd3KgGkT2OSJHsGfD1tv2
-         uKdILXbPTADiaqjScRQXkOEWfMD+hQTrzkLgi9btgVpshx6tsXlrjJ27is7q8ca7V9mI
-         /NYagRUJgMFE5S0gEE94XmCJYXSBifush8eFdz6jqg8FNIsOsvXJj1mDQluWOprWplXw
-         oU1/9G/2ouazSKYZYMHA/3GXohfPWiAmf1gFhp3dbk4CLcaEjk+m4JABVdLSGZyP4dLs
-         crra+6LuMuL3LyIMoLe0WlVw37XKXRNWN6zbbsc00rSKKJ3WIXmLzb9U0E2U8ozvCAeC
-         bWOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754089233; x=1754694033;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7UIQftffFi5dmDZFojFIrkTA5pAdhvl7y5sSZY3E7b4=;
-        b=a3ixZVu+NCEHPhlf1MWfpOjn0kylk/R8dqr1prfo71LrgMvD7tFQNacz6/BCpcsf2Q
-         MstlVwUd0r0Dad6gV08bSLyvrTBt3JSXVEqpCOqUtFQONs1UQ7OfAL4MFgHoPdPcG/uk
-         HSJ9RPqayXGAoxYbkImCEEHCVovmG26Nd75XFmlZ2h2DOwvYHBJCoZxhdWbDF/IBnsym
-         Hp+zBnjW4BBAXSWzUzNWr7n2+h2xqVCelssGWN2tl+xskWmeDNse80G2vMkTc5wbNx/n
-         f2ZMYoHYFHEsMd8Ihb/9MnC9aJP4tFFbW0Y83uUn4vgusm89pfCghA8aCbmsQBLcK2BN
-         twVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU/cWWizd22lDJ6dVUmWy+tzqVotArbeqk7gq26EKB/iyf1ockSbbdukTKBwee/0vIkzE+3UusTHw==@kvack.org
-X-Gm-Message-State: AOJu0Yw8cXO4PS2fa8wawRvdymMXk2AOcHD9aXL36wAL1SQuzcRuUURT
-	nQVKOtBsbJ5GiRmYENFXRMEirlYS+GcY5JvKd9vnTVSY9RMnNGLCmlM/
-X-Gm-Gg: ASbGncvGWvrjYKlwL3+OxkU0MoMFATcdUc70MzfF5NF33T7JnrLOb+jrU05qsN6r4kj
-	4P9GR5Royyy+RFSiEVPO7OaK2QfAmYond1no+wkI/mDo6Rq80UYTt4sVcmE1RHbHf5K30/FtTcO
-	qLP94uM3WKeibbqCKpuLlHZtbfBw+L/uIkHj0c9IVz/rqA6R7geH46sRYobmYgUUfJZD81yQFhZ
-	043G3cJSUgD4frt9pQSOCubIxUNX5ZqIgDUAiKk5MuSdYILcQPRwCN/oeQiTkSPZh3qUhHu8N66
-	afwHGd9vUq7/tWIkfkXdRd22Mhs9yrW+xYFISH403Q/qymsWkjLgSITKgFGeW86psEd7dYuoTJy
-	Q2VYr7ix2ifF+uNBifOXpa6vC5rG9Vjhur8AH+bewwGG6ksjikyOynXepEwkh6B/h5W5C9pXqdi
-	Nz9ip0wQ==
-X-Google-Smtp-Source: AGHT+IH5K61GDg0ZUw4ARCfYbwftv+OGfOfF0Y0bqBEfg6jRNeqG2wf12EBb3f41tEzQLAjAwRKi6g==
-X-Received: by 2002:a05:6402:3553:b0:615:9c3b:17f with SMTP id 4fb4d7f45d1cf-615e6ef235cmr916363a12.15.1754089233322;
-        Fri, 01 Aug 2025 16:00:33 -0700 (PDT)
-Received: from rs3labsrv8.iccluster.epfl.ch (nat-icclus-192-26-29-9.epfl.ch. [192.26.29.9])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-615a8ffa17csm3279290a12.49.2025.08.01.16.00.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Aug 2025 16:00:32 -0700 (PDT)
-From: pyyjason@gmail.com
-To: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Usama Arif <usamaarif642@gmail.com>
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	Yueyang Pan <pyyjason@gmail.com>
-Subject: [PATCH v3 2/2] mm/damon: Add damos_stat support for vaddr
-Date: Fri,  1 Aug 2025 22:59:51 +0000
-Message-ID: <88cc271642476fa6025f3789781dfc8c2f576eab.1754088635.git.pyyjason@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1754088635.git.pyyjason@gmail.com>
-References: <cover.1754088635.git.pyyjason@gmail.com>
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dj4UyGcG;
+	spf=pass (imf30.hostedemail.com: domain of kuba@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kuba@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1175044014;
+	Fri,  1 Aug 2025 23:08:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96870C4CEE7;
+	Fri,  1 Aug 2025 23:08:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754089687;
+	bh=6pOY9vWaKIl9etre7R8PY0gT1B9BcwDb9n4CCJLLzNo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=dj4UyGcGbuIkBc98+22HPLqigl8NgNkMOdvw1zAqKlBQbRiiBxUzvRfWrVyzOtC6D
+	 cjuiqHDMdxYBp16KLznBJPAhgVMiEnno49wryNNiuQ5AIayb0Lzi/MAMXBDmJHtduV
+	 atkxVrhkNH6oExT6DhZwgH4YEXVh0epCd6rbjc37Rud5naxpUDu9/SX15b0QuZeA2G
+	 Go7Lyxio35OeHyJsgXdE/F2mkL3LAAOw5HayQ4Me9AMRRIbkXeJ9elEBJHllp+5v7C
+	 4RpA+plFtMLbsK5xWsInIJVj3hWYYCznrcH0gHUz+H3oxe5ida+og57qZTFXSnj0Nh
+	 B4pJak/XeYcjw==
+Date: Fri, 1 Aug 2025 16:08:05 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Byungchul Park <byungchul@sk.com>
+Cc: linux-mm@kvack.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+ harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
+ davem@davemloft.net, hawk@kernel.org, john.fastabend@gmail.com,
+ sdf@fomichev.me, saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com,
+ mbloch@nvidia.com, andrew+netdev@lunn.ch, edumazet@google.com,
+ pabeni@redhat.com, akpm@linux-foundation.org, david@redhat.com,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, horms@kernel.org,
+ jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ ilias.apalodimas@linaro.org, willy@infradead.org, brauner@kernel.org,
+ kas@kernel.org, yuzhao@google.com, usamaarif642@gmail.com,
+ baolin.wang@linux.alibaba.com, almasrymina@google.com, toke@redhat.com,
+ asml.silence@gmail.com, bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
+ sfr@canb.auug.org.au
+Subject: Re: [PATCH linux-next v3] mm, page_pool: introduce a new page type
+ for page pool in page type
+Message-ID: <20250801160805.28fa1e05@kernel.org>
+In-Reply-To: <20250729110210.48313-1-byungchul@sk.com>
+References: <20250729110210.48313-1-byungchul@sk.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D9DDC80011
-X-Stat-Signature: 9q6xw64bpiqfbmfw3foh8icph53p57y8
+X-Rspamd-Queue-Id: 88C6A80010
+X-Stat-Signature: jzwgo3e9du5yc6o5wteuotcqxu9n7aok
 X-Rspam-User: 
-X-HE-Tag: 1754089234-118951
-X-HE-Meta: U2FsdGVkX1/1tzH6MNECI9Ru/LP1SNIezVbGgBtIzabLM8QA3F3GwAks1h4CmifpwgBzgZZU0KcAaaINryI3CcNV0evZk+1QPm6psVaTqs7iM6WnN3r9lsgnyv0CP9kJSwOGgxOqkiS8W+Y8wBGPw4rY2yO//ZrHJwxoDkiy4j9A7pc1lKdRhBC9oCKCNo/N6YGbltG0NJbbSXlkdYA5Phd01el0baoHpwfSaL9RW7cHbgk2tnaEtkI9DXZx6eyyhpc3qZrjvCIy7HB5GRfZqZDWYGSM8UpWZoqzKOtqeE5WwQd5ots0fCH2pIwUfVwrl21CbFtv3CF6rXh2jG+MDt6mJtGgRfuAQg5B0zhNTJ6vPLccwdMcEuDtgUU5uLrR9g2F4RVivK70dlc6jf6+LFv9oiQ9TO6tjmmG4Ai30TbjNWgTiXtksaWD7cC89tb3b0mzClfXwC7G4rsbWAqeFHxuSRw0sHny+WbjO9Hxd0Y9KysAD8bt86XJ+zGMFirlJsoTBUZunCIYhP6dcpXoKnCJYlAk2eYSv3Wp3Oj7tFXxQQEoIx3TFqEVcKQSiiMU8b7UMCuLPnvgv0OyGm73Pshji1jsRFSgS/XWktXgeMRf6LVaxjZFl04D9FWUsL/DxjU6pzRL4ELTam9CjnntVq5H5vuoYDHJasnm+fVMf1WhXsm6SBavIyO5fnJXgE5tFqXQDNiiWyqm0SKUzcNksEI81zVinUzH2UNzSL79kmlP+BU1jjZ4SVAp96Iy1qMjJk7vz7MMNj1ffZmQ0Lcpo9bXoZT9v+ZUtDjENkqokCe2fEUbIyZWdqrKoBBhQNLXXs8GqbaejzAy0VZttkY97cVUZb4KvMCILo/BCN7G2fw7V0Zascd8bMZ8lI7YEMKNwVWRNQwGX1b9ItrB3ClaWYWS482N/718gtYGqV7wvkjGWnCDvZEzR/M53WjguFvsn8Y/wl7mJX7UB309qxz
- DqThhWon
- Z8AlcqlRhwhhs0rKY2yg+WcIsvYK/2XWDd09lm+IG+N3t3zFffX0VN8YTOb02oU+PPjbdIZV6H9NQABMy5r4O7hW02f6MWFt0zY2Kf6KmwrjRxc0ghr1+11ilPFSdvUR9XSWvixRsOaE9GcKXryfj0DthDjg7D+gzAtK69eS0vHBU8k25xjBOMT9+85TzB9kQTfeZQDovRbvxPZFdvAnfuPsrW6nI4So9hpdHyKrBG1kdPqsW9KN9sQ2HPcW7tMwZMaKqSD3amrCVXFBaPVwP/9mMGPWzYjLvwnxNPza84kMxldbGZKsNbSaNdJ4udZxm/Di1JivDxdGwnliieLuRkLR+IALNpfTRzS1u+fbN5SOzXrc/AqXNSTiKsauYeYyQlwzdMqADMc/Ii9VTKMDHi04D6O0JgxkutPiY1B7DLkWXd0ZCQsfc6qfwl8cPUGSEDP4kssjMFlkcBZpzOaGGYnVoqGb6XSCxTu3xSVfLS+oUbJE=
+X-HE-Tag: 1754089689-535013
+X-HE-Meta: U2FsdGVkX1/u1ODRK9Hk8ggYrxRbKO2cGAzP3QU95US/ERZFIXYaejoaaSjAxIk62hJGDFxzwtkaOwk1qVQMaaiaPdElOcqr9PKps8QUvZpAQcd8NQZ3Bs5J2OQyJD8gOnCSx3kFTx4Qa2Ba3sAQmu/Yb9hPuY6jTgJKUhr0YbpfsqmvXKvUbF0m0GK0L2zt5lx+AXMDNCDbTQl2iqoDhoiO/ONPr1hysp7zxd7PVZv3B2DUw4U9UXZHx7mGuTKGgRM+0hj0xk3HJrJ7kSGqX0C1JEa3z/pAfQMMMjVUeRb5GNWz1ywp/VGjkHmU0FoB/FQDTLUeYQAr271Fnw8N5BfIDV8lzEexrEQ0PkNmFXkdq43h0OHT881xhTy4ITLQ46n+Sxy4Xeaikvn9milz0W4gr8456TDqdT/YswqQk0cxDn6/UIO2vDpiV3c2g/Aj2UG03ivyyZE25c4XJ5Zp/DHf0ylUIkK2Pzk9qceSPbEKOPoEYQMjY/hpYS9biXBD44jU3UQMs9rxzCVhs+mx5Jfvc9KjtRyZLXUDzfIJJjZ5Tgw35q++9N38eU0ohTvfwiFqrEcXdgkhGHZUvFzeR1ChwjGfL4h3Ldjv6p8mnY3YhxBH1CNaDMGDeAti0A7VJpAZYUcUNOkEzqslxRSlcbr7PmNfDwjJoCYw/AJ8z83rsr3IiNTMyJwxHXsFpygibeZ5jYJw1GF8jHj92gMpxTnDa4/MKFNUH2q8EiCEKVtqZCEFpKfXpdqX4G2IhGuLh3crZFdK0DA0D8hhRceMAJ7DEvlApOD9jWqdtg/pOW7XfqS0vyEzoI7F2ZMswQMxVNQ0wmPzdN/xaCwJvoy8HZV9IBHxFWY4a9tb3dHHBDPF87JlERtejhI+xilvxw43CiV07kMEA263UlZCrB7E9rhcKlaiUlbg92HKTrnjRiM6VUHjvX1FSIqe+bt+9kQU+oHxMJeArnOqHPMK/XL
+ mPNgCX/Z
+ ti7kYvvNVH4lWpd0qnrt5m0mnJIVomNbc2Hm7lW9CffIkg919sRTFzasVsvQmiQ+UQwreqCFiuvfu/xhH7JPmZNZ3KOosrtzJcCkclGV1KlnHHydi76vM3twsnrmZa/WvC7F87MrnL0kKAelw/9iszfKl5f90ZSfnagwd972/LldcQQBahKCbd1AOish4ZxgXq16F7nzRX5z4pWVDDtDOc7A4GPSJHoz8E6NWA85rx3qo1IYLfK4JbaL/lPLovBF47OHmTNog6w6A7J46mt3Qx3NYobND3Ecyk+3Q4d/l+8mrkva4yseskkPzYcBbMnMLg1wHdmMEJdwNxVedPhKU8YTqFcvfKgcVGR+LlhYwsb9QbBmaCKcwIqK2gRLjDvukGTUfsdGbnYOt4bkDB7TcLoLq0upYYng0P2gj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,140 +104,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Yueyang Pan <pyyjason@gmail.com>
+On Tue, 29 Jul 2025 20:02:10 +0900 Byungchul Park wrote:
+> [PATCH linux-next v3] mm, page_pool: introduce a new page type for page pool in page type
 
-This patch adds support for damos_stat in virtual address space.
-It leverages the walk_page_range to walk the page table and gets
-the folio from page table. The last folio scanned is stored in
-damos->last_applied to prevent double counting.
+linux-next does not accept patches. This has to go either via networking or MM.
 
-Signed-off-by: Yueyang Pan <pyyjason@gmail.com>
----
- mm/damon/vaddr.c | 103 ++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 102 insertions(+), 1 deletion(-)
+> -	if (unlikely(page_has_type(page)))
+> +	if (unlikely(page_has_type(page))) {
 
-diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-index 87e825349bdf..5960d5d36123 100644
---- a/mm/damon/vaddr.c
-+++ b/mm/damon/vaddr.c
-@@ -890,6 +890,107 @@ static unsigned long damos_va_migrate(struct damon_target *target,
- 	return applied * PAGE_SIZE;
- }
- 
-+struct damos_va_stat_private {
-+	struct damos *scheme;
-+	unsigned long *sz_filter_passed;
-+};
-+
-+static inline bool damos_va_invalid_folio(struct folio *folio,
-+		struct damos *s)
-+{
-+	return !folio || folio == s->last_applied;
-+}
-+
-+static int damos_va_stat_pmd_entry(pmd_t *pmd, unsigned long addr,
-+		unsigned long next, struct mm_walk *walk)
-+{
-+	struct damos_va_stat_private *priv = walk->private;
-+	struct damos *s = priv->scheme;
-+	unsigned long *sz_filter_passed = priv->sz_filter_passed;
-+	struct vm_area_struct *vma = walk->vma;
-+	struct folio *folio;
-+	spinlock_t *ptl;
-+	pte_t *start_pte, *pte, ptent;
-+	int nr;
-+
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-+	if (pmd_trans_huge(*pmd)) {
-+		pmd_t pmde;
-+
-+		ptl = pmd_trans_huge_lock(pmd, vma);
-+		if (!ptl)
-+			return 0;
-+		pmde = pmdp_get(pmd);
-+		if (!pmd_present(pmde))
-+			goto huge_unlock;
-+
-+		folio = vm_normal_folio_pmd(vma, addr, pmde);
-+
-+		if (damos_va_invalid_folio(folio, s))
-+			goto huge_unlock;
-+
-+		if (!damos_va_filter_out(s, folio, vma, addr, NULL, pmd))
-+			*sz_filter_passed += folio_size(folio);
-+		s->last_applied = folio;
-+
-+huge_unlock:
-+		spin_unlock(ptl);
-+		return 0;
-+	}
-+#endif
-+	start_pte = pte = pte_offset_map_lock(vma->vm_mm, pmd, addr, &ptl);
-+	if (!start_pte)
-+		return 0;
-+
-+	for (; addr < next; pte += nr, addr += nr * PAGE_SIZE) {
-+		nr = 1;
-+		ptent = ptep_get(pte);
-+
-+		if (pte_none(ptent) || !pte_present(ptent))
-+			continue;
-+
-+		folio = vm_normal_folio(vma, addr, ptent);
-+
-+		if (damos_va_invalid_folio(folio, s))
-+			continue;
-+
-+		if (!damos_va_filter_out(s, folio, vma, addr, pte, NULL))
-+			*sz_filter_passed += folio_size(folio);
-+		nr = folio_nr_pages(folio);
-+		s->last_applied = folio;
-+	}
-+	pte_unmap_unlock(start_pte, ptl);
-+	return 0;
-+}
-+
-+static unsigned long damos_va_stat(struct damon_target *target,
-+		struct damon_region *r, struct damos *s,
-+		unsigned long *sz_filter_passed)
-+{
-+	struct damos_va_stat_private priv;
-+	struct mm_struct *mm;
-+	struct mm_walk_ops walk_ops = {
-+		.pmd_entry = damos_va_stat_pmd_entry,
-+		.walk_lock = PGWALK_RDLOCK,
-+	};
-+
-+	priv.scheme = s;
-+	priv.sz_filter_passed = sz_filter_passed;
-+
-+	if (!damon_ops_has_filter(s))
-+		return 0;
-+
-+	mm = damon_get_mm(target);
-+	if (!mm)
-+		return 0;
-+
-+	mmap_read_lock(mm);
-+	walk_page_range(mm, r->ar.start, r->ar.end, &walk_ops, &priv);
-+	mmap_read_unlock(mm);
-+	mmput(mm);
-+	return 0;
-+}
-+
- static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
- 		struct damon_target *t, struct damon_region *r,
- 		struct damos *scheme, unsigned long *sz_filter_passed)
-@@ -916,7 +1017,7 @@ static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
- 	case DAMOS_MIGRATE_COLD:
- 		return damos_va_migrate(t, r, scheme, sz_filter_passed);
- 	case DAMOS_STAT:
--		return 0;
-+		return damos_va_stat(t, r, scheme, sz_filter_passed);
- 	default:
- 		/*
- 		 * DAMOS actions that are not yet supported by 'vaddr'.
--- 
-2.43.0
+Maybe add :
 
+		/* networking expects to clear its page type before releasing */
+
+> +		WARN_ON_ONCE(PageNetpp(page));
+>  		/* Reset the page_type (which overlays _mapcount) */
+>  		page->page_type = UINT_MAX;
+> +	}
+
+>  static inline bool netmem_is_pp(netmem_ref netmem)
+>  {
+> -	return (netmem_get_pp_magic(netmem) & PP_MAGIC_MASK) == PP_SIGNATURE;
+> +	/* Use ->pp for net_iov to identify if it's pp, 
+
+Please try to use precise language, this code is confusing as is.
+net_iov may _belong_ to a page pool.
+
+	* which requires that non-pp net_iov should have ->pp NULL'd.
+
+I don't think this adds any information.
+
+> +	 */
+> +	if (netmem_is_net_iov(netmem))
+> +		return !!__netmem_clear_lsb(netmem)->pp;
+> +
+> +	/* For system memory, page type bit in struct page can be used
+
+"page type bit" -> "page type", it's not a bit.
+
+> +	 * to identify if it's pp.
+
+... to identify pages which belong to a page pool.
+
+> +	 */
+> +	return PageNetpp(__netmem_to_page(netmem));
+>  }
+>  
+>  static inline void netmem_set_pp(netmem_ref netmem, struct page_pool *pool)
+> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+> index 05e2e22a8f7c..37eeab76c41c 100644
+> --- a/net/core/page_pool.c
+> +++ b/net/core/page_pool.c
+> @@ -654,7 +654,6 @@ s32 page_pool_inflight(const struct page_pool *pool, bool strict)
+>  void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
+>  {
+>  	netmem_set_pp(netmem, pool);
+> -	netmem_or_pp_magic(netmem, PP_SIGNATURE);
+>  
+>  	/* Ensuring all pages have been split into one fragment initially:
+>  	 * page_pool_set_pp_info() is only called once for every page when it
+> @@ -665,12 +664,19 @@ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
+>  	page_pool_fragment_netmem(netmem, 1);
+>  	if (pool->has_init_callback)
+>  		pool->slow.init_callback(netmem, pool->slow.init_arg);
+> +
+> +	/* If it's page-backed */
+
+Please don't add obvious comments.
+
+> +	if (!netmem_is_net_iov(netmem))
+> +		__SetPageNetpp(__netmem_to_page(netmem));
 
