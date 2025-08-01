@@ -2,112 +2,97 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 30DA0C87FCB
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 15:12:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 81978C87FCB
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 15:24:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB3D06B007B; Fri,  1 Aug 2025 11:12:10 -0400 (EDT)
+	id F29216B007B; Fri,  1 Aug 2025 11:24:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6A256B0089; Fri,  1 Aug 2025 11:12:10 -0400 (EDT)
+	id ED9BF6B0089; Fri,  1 Aug 2025 11:24:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7A8D6B008A; Fri,  1 Aug 2025 11:12:10 -0400 (EDT)
+	id DC87A6B008A; Fri,  1 Aug 2025 11:24:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 951F16B007B
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 11:12:10 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3FE34802AF
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 15:12:10 +0000 (UTC)
-X-FDA: 83728529220.29.C2EFA1C
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 49AEA1A000F
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 15:12:08 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=MsfUnsBl;
-	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C4DB76B007B
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 11:24:03 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2E7A01A01C5
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 15:24:03 +0000 (UTC)
+X-FDA: 83728559166.07.1A89086
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	by imf28.hostedemail.com (Postfix) with ESMTP id B0416C0012
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 15:24:01 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ybhceot0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of kbusch@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=kbusch@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754061841; a=rsa-sha256;
+	cv=none;
+	b=C86fV3GnEqRchpisPkMkiW7cRU7yByCFqCipfh/S0QIJ5b1b8GTkCIpRW1dZ2FlLyzWcML
+	qmw0/2kzm1eOmYKeTa0OTPHFeovm2cSOXnBawTnG5fSVUx/gcwE/jnj/nUuYw8oJLkX3f1
+	8mZt9kVMhg2iLfw4dxKuHuZGZdGKgyY=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ybhceot0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of kbusch@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=kbusch@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754061128;
+	s=arc-20220608; t=1754061841;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SoCvDf2STWqjlVzd+8uazfHv+yAfec07kh2ZhHKg+3g=;
-	b=VcxNopjKiROV+LxxO420o4BJJcpt8w19ss3gtahJpP9lnOZgbh87VsY1lImMQMam+i55n5
-	tuUy+HLDrmZR+lQprdNTFflW+AtLMeEA6+edDjiVQ6z64L0POewZwKrF2nlSP4d5bdSJkO
-	VOfgil251DRKQF/54gcG30OfwukN1iA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754061128; a=rsa-sha256;
-	cv=none;
-	b=Vph0sB1aNJWYhHNP70UvQ3JCXEoshLBPh1/3FAANpspugJJHo80+wDUrsXlICDWHJ1/E/+
-	/VM4uy495g2TlIe50Eun8Casfgr2zHMc1H1lYU3anFhsGx3KiLGKHN0mAuT1+5i4KRpm+Q
-	onQR2GvKrTbp/UpBFKQLomttsnDzHI4=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=MsfUnsBl;
-	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4aef56cea5bso186891cf.1
-        for <linux-mm@kvack.org>; Fri, 01 Aug 2025 08:12:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754061127; x=1754665927; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SoCvDf2STWqjlVzd+8uazfHv+yAfec07kh2ZhHKg+3g=;
-        b=MsfUnsBl4z8dKCQjyS+kgDER+eV4xhSZSXKlOTNJKn/lk9hnPhByBCmL+ZfPufR5Az
-         ee75oFWioNa5KDXrFdhTywth5CQyDyPI0BlEACspmSwanXkI4XET7pOnoH4qJJbx8lhq
-         qOy3Gvz02GvvGS4F3vYxJxrnYufJfSc7DwDf/vbT4bzmsS5iRmiKgR83xmixf+QzBI16
-         hsG/s3vqLb36dshqCLNOFGShMIe7kmOG+mAANOs0Ma7NHMy3JRxI1O9wQrIgcc21k2TF
-         8WQrKkjBppNqxRT6kXX1WNXMtEQAORR3fVWa/0rVmsET/WU9cFySxylqPFrkmUTiI3el
-         wxHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754061127; x=1754665927;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SoCvDf2STWqjlVzd+8uazfHv+yAfec07kh2ZhHKg+3g=;
-        b=Tlx6oIVXNkF+EQ4DpcTGNK/cObnJndFZt4vf+dmZOQwdm2ArpotLKk23ilODfI7Agf
-         6gL44ZSPg0rakx6Hd9C+Gd+n9+gRpWcgBlhin8H+Uuh1SF2Rv9RNgoha8YVt+sdWZF+4
-         InnCXVmaG/0tVnpyqnnG+of+db+8JDSIVIDnB04QXjmZ6ISAft/PfW6f+/DCdITmlk6q
-         Thy3dSHJnz0RPEiTqcu1DQes6n6F8WsRmIgyB+J4ldZmkvEX0yk512q453q1gi4+QEkK
-         u3bKVqoyIfpPANdWbCflgGXPqzXo5gTKq7ENtrPpZtHZfpq1Id+7M81h9biSBQqhA/AD
-         EPAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVB+X3k7BLplgOBKs/ZrUWYqMl/cC0vveTfysFoMvLttsumUbHVJO/Vb4OkCP1S0VoxDNMVzRnIWg==@kvack.org
-X-Gm-Message-State: AOJu0YzY6S7fGXMmrWMJy7jnyttiE8nN5uN6gGzUQXH9or4olDuSCHbB
-	OeCxlzw+QvuggT/MheUbiTzjw07g0o6qGyYqJeiIv3NivXtgDf6t3SYT9vRnfnMGTgwSN/7LxBl
-	Z89eM7lexMa+zZEXonoFSQQu5vod+F5oD7lI5Sre3mtzG0fL513ZQCTpR
-X-Gm-Gg: ASbGncvqrJZD+XhY2rNK6qdCefAbhChLO/ucpGjB6V6Qg/v3Sk9fxOarAIQoRPd/dLF
-	MwUJFYzQ7FAMGWo9yxVBQ4hjLnAAtN3dYv6t9E5hNYw3RwCCtBEXedZmQY6nG9jA7ZRcFjkABnB
-	dynlGX0TUzxgQZ+gdn9EnZR6Nm8qhIm6uU/aLCwI+5E6TnHECJFd/OXYQEY8rr5mnCCU0Dr9Oqt
-	VXBqQiMfB1DZYxSRbtqF9QKpaLZ8ey4WyEH9A==
-X-Google-Smtp-Source: AGHT+IEcXXFNQJXhQXaLDDs9kA4bqVnd84TK3sznmDH2mazS4z6rzXjrqdGlkijgDyhkzMQKRWnLp921znoYXPeBhuo=
-X-Received: by 2002:a05:622a:86:b0:4ae:e478:268d with SMTP id
- d75a77b69052e-4af0079bc5cmr4436381cf.5.1754061126793; Fri, 01 Aug 2025
- 08:12:06 -0700 (PDT)
+	bh=1UFtN9NtY5FawUY5cUaVLl/Cv3X6ygngKZaP/vZlQgg=;
+	b=s3pSUdaqU2WKKRy8Ijr8eV5q9j3rbwvNoPi/2p2ROF7csCoxV5jUlSeZg9iGbaqStf/Mon
+	x1RygUewMNZt4QvwoIbAcAFNZJIdUflaYr1mV3WF5ociqT6I5He8LGslWjRTtsHNHzo+Hr
+	Lq5wutfunS8CdrTIyqg8IBBgpQB3kyI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 0DB61A555B0;
+	Fri,  1 Aug 2025 15:24:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A58FAC4CEE7;
+	Fri,  1 Aug 2025 15:23:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754061840;
+	bh=V7o+bgdIVb3UeWT9T9ZBWSzxBOn3tlnld7jHt8D6nY0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ybhceot0jd3NpcVE68V3hffEIFciXXEDBhjIaKXz332hFSSfx0AqiPsjCqVZy83nx
+	 lAfuvilvWGyzU2IfQAHDzIKP1ti3QEeYv9itO2ZrlaCYbS1VGE3W59SyeBmQUg/atc
+	 8eo6qeiX5fSw65opeVQ9s7aw/ZnheG5MN6Tpn6oa/bB13+7Xd5kv7/wkAc8P2lnjZM
+	 O/rETg1ptKlD8rBYCZ92dDr+IQGRdOLRYcmujdb8wNNnoYVMdi5/vtSIT8yuE6WfRo
+	 3+DYHooEua8tiPh/rKkJ35XmULNgY9ZsHPw9cwf/+2nBW5sxgI+Tmdb9sp41+JBR/t
+	 s8Zar1Rc2DFMg==
+Date: Fri, 1 Aug 2025 09:23:57 -0600
+From: Keith Busch <kbusch@kernel.org>
+To: Mike Snitzer <snitzer@kernel.org>
+Cc: Ming Lei <ming.lei@redhat.com>, Jens Axboe <axboe@kernel.dk>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>, linux-nfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	hch@infradead.org, linux-block@vger.kernel.org
+Subject: Re: [RFC PATCH v2 4/8] lib/iov_iter: remove piecewise bvec length
+ checking in iov_iter_aligned_bvec
+Message-ID: <aIzcDWJyft7kzGi3@kbusch-mbp>
+References: <20250708160619.64800-1-snitzer@kernel.org>
+ <20250708160619.64800-5-snitzer@kernel.org>
+ <5819d6c5bb194613a14d2dcf05605e701683ba49.camel@kernel.org>
+ <aG_SpLuUv4EH7fAb@kbusch-mbp>
+ <aG_mbURjwxk3vZlX@kernel.org>
 MIME-Version: 1.0
-References: <20250731154442.319568-1-surenb@google.com> <d2b6be85-44d5-4a87-bfe5-4a9e80f95bb8@redhat.com>
-In-Reply-To: <d2b6be85-44d5-4a87-bfe5-4a9e80f95bb8@redhat.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 1 Aug 2025 08:11:54 -0700
-X-Gm-Features: Ac12FXwHTk6dY4NJRJgP0bh8zoHGQ_RejUiRmgYpnRzf77eWrvYI8LNs-_ARMGI
-Message-ID: <CAJuCfpHkxe1Sb3jL6hK02+zQVFw7yOYte3BR5XDnHRvx7aTjNg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] userfaultfd: fix a crash when UFFDIO_MOVE handles
- a THP hole
-To: David Hildenbrand <david@redhat.com>
-Cc: akpm@linux-foundation.org, peterx@redhat.com, aarcange@redhat.com, 
-	lokeshgidra@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 49AEA1A000F
-X-Stat-Signature: 79n165ey8b3qwewxfpm1s543gmo7rtd6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aG_mbURjwxk3vZlX@kernel.org>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B0416C0012
+X-Stat-Signature: gxmcnypnfedk4y5ckoeguj4ib7sh3qw7
 X-Rspam-User: 
-X-HE-Tag: 1754061128-294105
-X-HE-Meta: U2FsdGVkX19tBaJm9QZMZiSd3mE1r1KMc/Ed+jJDJvRXy1cJs87d5ksmIIkc+jVQrzfzTVTLZL91gRPTVcSa6OQYJPv/HQoxjpEraMcFSKT2NmjohCI/rYOzLVgE0ihvyAF0POQnl1hqofc2QpjPUVrnXa0YlfuaXbKSXrn1XJ414/L4CfxulJ1kuTXZ1VAVcdoRqHiKY8ko8vP1slNtfJullO+S9rtnZ/PyyD27R28ydMPO4NEF+q85wgthjrr00alt0NhKxhdS69VHT+c80cBytdkAn3MqMlAoEXmYwiZd3I43mHhT9Uoau5Mp2GHpa6O57Z+vcIDwKc7C2Dqw2gNv9/ZRAcxDuCCZNZ+y0Y2l5PrFo4L8LztCq/DOc+Pw4kKr1pqJWx9lnDFoO+ozI41i77Bm5vZRICVk4Hj2cb/bTYH/FR7+XU7L6vWsQGELffDCMjU53Gkoz4Gow1FGby9jkWEmxitp5pgS9Q56yXX8ICwFpfhKx6q7le5JyCXSk1mYqROr/46TeBRz/5sDt93NKDm7n37+o37NppQ/5nOVz8S3BjG4XRCJNByBisiaiCGS7bsdp46v4eplJUz90HvV1nr854VQpAdo/GWUwWabVi44Sm1Osuqie/0yWz66DD6SZ8BBA2RhDN9DUg3vW5RJTrK8qdAWSWfLM1KW8SByu5RbJfF1d602015Rr4IHgp1Uvz6+CyvyIJLicXUZ4dM+ebkW3Rr7i6kS6Y8rhHVGIsTqzXzUe6waxRJlHs2G3tM5W1kUQWzZ7bdBTGE2N2uBVTL5MyV2H0VlGINaDZeDncl33Hh+rl/VxwQt4xJlj7ONxT2w6dfa+HDbzVFudKEtIkVYtSkH+BdIcDNUkkwoxun+HjGbdle/qailAAd7wlRUu3bch80Mi56oBOSXxAlRB4zwEVprZ8jCSr9ZU+EbdEtUTCjCLAyNgZpzytdrwyLWE0zuNVSBnjyszyQ
- MqrpWkfS
- 4WHfbYm6+1n7JNRncBxYq5RkOe/00Vr7QEawqTVyp4+H1Kqbh2Y3RObr68ctbo8sTg2mgcFSZmHsbvLwu2oXSRnr1tLQkT07EBDOGpdYQap0dlkjioWKE/dLa6cQc3uVKmM6LqLU1RFrt/hzSJbraEuEIw8Ur8bApj7SDkKxTYPNktutPYB6BijpIitzqldJpE07x7IJA6Sfpk8qQ0RN87i6dBKmIOXympU6+MV+8WSYDEo8frgNCiKUNUq7e6CQ5trSnTZT+WE6WPHRouiE59HO+8id5E198EO+8kyRWEd8aAt0QYys5w1bO8fQKYf+emgdTVVtBNRv2pMGMV84aPTQ9sfHRVSCFWaqHxLKkJQ2JX27XRLQ+XuqNC+czMN9xaH/7Fbr1xWCImwTB+2MFf3wWT75ey2tQ/ZNe6wCA7FwTZmE=
+X-HE-Tag: 1754061841-697639
+X-HE-Meta: U2FsdGVkX18lBJ5VhJQ8rxi8ZDkLbv232pHxnREVRlTq3ASrzZi1BN6UfImAapZxmpkwnfxdsFd55taKC+f40vfXr/1Vw9m9CrJuhZLWWpIAQzFGAVHv5dcv8m3nF6uUZAkLPeyyepz4gl+KLiAtqebjc35lMR5ElITkqUUosp8wuRDqLsp31dtLSFkxT733ZBCVH+9CUYu/xxS5luFr5YxdwfvpQrQlnT42ID3uiuFnJroPs+F/T5igwa2WzeATvvYUltRoiRk1kbj1TzOkZo3L3PttqPaFmzzmSV4NLsNGwj2/OKA89VAFG8wA+mLCAvDekgR0BN0xwgxw9oudkCd6z/ZwCKnxyqwb2UbB+vIT7b0TPxPuo7eMYuymXljvdARvrEZVRZLJdK2zK2KrjPurpuRzG4dTwYZe/b/gShB11qL8FFbOxkyOxJvQ2s9FQ938sTDTdR+LfQ1d6ANKXUL5jKCtzx9FlZxryk4qP5jN5+By30Xo/yZCNdYWC0bP+GL2O7Dz//gvAtHTm84hJoER939l84J6rP+pVk5MPaShNF1c1HD+y2JrMIvH0DmCafFp18DBrsqVUlgq1GGtv5JNi/OUw2ttJWlbuLDnOPCwYldAFI8SlYw3nt6GQKxZcP7gNXkwGqcIor4QfQoTMxLyx2fR/Tb4I7IC8E81d2g1Wm1tbi65T31hrVksv4qh3OsmRtywDDmiEOTC+Jw5ljYtutRSAiArNWuabqaGGWa7kESh7Zt124HeZpXu3TxvWJNgmPdGkjXNZv8I9f2+F3hdbeBLo5c6dtLtjK/oGkPL2Jf34Fwgvop1XWkpLuTe7s3z2hNVqTIFM4Uuq8z00lO7DcCXrviPvvJvES6eqI3LcVOQvEVILLCurA8fJHByvm9cgOeuIHvD5Y0w/lPEvDHcMOwWkTcqxFRRXeAXxzOLUteKyfbKoeqgR6ANGq/0sw6HRs4pT5kJZX2dXWY
+ V7Z8OIGD
+ 6S1V5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,112 +101,164 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 1, 2025 at 7:21=E2=80=AFAM David Hildenbrand <david@redhat.com>=
- wrote:
->
-> On 31.07.25 17:44, Suren Baghdasaryan wrote:
->
-> Hi!
->
-> Did you mean in you patch description:
->
-> "userfaultfd: fix a crash in UFFDIO_MOVE with some non-present PMDs"
->
-> Talking about THP holes is very very confusing.
+On Thu, Jul 10, 2025 at 12:12:29PM -0400, Mike Snitzer wrote:
+> All said, in practice I haven't had any issues with this patch.  But
+> it could just be I don't have the stars aligned to test the case that
+> might have problems.  If you know of such a case I'd welcome
+> suggestions.
 
-Hi David,
-Yes, "hole" is not a technical term, so I'll change as you suggested.
+This is something I threw together that appears to be successful with
+NVMe through raw block direct-io. This will defer catching an invalid io
+vector to much later in the block stack, which should be okay, and
+removes one of the vector walks in the fast path, so that's a bonus.
 
->
-> > When UFFDIO_MOVE is used with UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES and it
-> > encounters a non-present THP, it fails to properly recognize an unmappe=
-d
->
-> You mean a "non-present PMD that is not a migration entry".
+While this is testing okay with NVMe so far, I haven't tested any more
+complicated setups yet, and I probably need to get filesystems using
+this relaxed limit too.
 
-Yes, will fix.
-
-
->
-> > hole and tries to access a non-existent folio, resulting in
-> > a crash. Add a check to skip non-present THPs.
->
-> That makes sense. The code we have after this patch is rather
-> complicated and hard to read.
->
-> >
-> > Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-> > Reported-by: syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com
-> > Closes: https://lore.kernel.org/all/68794b5c.a70a0220.693ce.0050.GAE@go=
-ogle.com/
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > Cc: stable@vger.kernel.org
-> > ---
-> > Changes since v1 [1]
-> > - Fixed step size calculation, per Lokesh Gidra
-> > - Added missing check for UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES, per Lokesh =
-Gidra
-> >
-> > [1] https://lore.kernel.org/all/20250730170733.3829267-1-surenb@google.=
-com/
-> >
-> >   mm/userfaultfd.c | 45 +++++++++++++++++++++++++++++----------------
-> >   1 file changed, 29 insertions(+), 16 deletions(-)
-> >
-> > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> > index cbed91b09640..b5af31c22731 100644
-> > --- a/mm/userfaultfd.c
-> > +++ b/mm/userfaultfd.c
-> > @@ -1818,28 +1818,41 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx,=
- unsigned long dst_start,
-> >
-> >               ptl =3D pmd_trans_huge_lock(src_pmd, src_vma);
-> >               if (ptl) {
-> > -                     /* Check if we can move the pmd without splitting=
- it. */
-> > -                     if (move_splits_huge_pmd(dst_addr, src_addr, src_=
-start + len) ||
-> > -                         !pmd_none(dst_pmdval)) {
-> > -                             struct folio *folio =3D pmd_folio(*src_pm=
-d);
-> > +                     if (pmd_present(*src_pmd) || is_pmd_migration_ent=
-ry(*src_pmd)) {
-> > +                             /* Check if we can move the pmd without s=
-plitting it. */
-> > +                             if (move_splits_huge_pmd(dst_addr, src_ad=
-dr, src_start + len) ||
-> > +                                 !pmd_none(dst_pmdval)) {
-> > +                                     if (pmd_present(*src_pmd)) {
-> > +                                             struct folio *folio =3D p=
-md_folio(*src_pmd);
-> > +
-> > +                                             if (!folio || (!is_huge_z=
-ero_folio(folio) &&
-> > +                                                            !PageAnonE=
-xclusive(&folio->page))) {
-> > +                                                     spin_unlock(ptl);
-> > +                                                     err =3D -EBUSY;
-> > +                                                     break;
-> > +                                             }
-> > +                                     }
->
-> ... in particular that. Is there some way to make this code simpler /
-> easier to read? Like moving that whole last folio-check thingy into a
-> helper?
-
-Do you mean refactor the section after "if (ptf)" into a separate function?
-I was trying to minimize the code changes to simplify backporting but
-since additional indentation changes this whole block, I think it does
-not make much difference. Please let me know if I understood you
-correctly and I'll move the code into a separate function.
-Thanks,
-Suren.
-
->
->
-> --
-> Cheers,
->
-> David / dhildenb
->
+---
+diff --git a/block/bio.c b/block/bio.c
+index 92c512e876c8d..634b2031c4829 100644
+--- a/block/bio.c
++++ b/block/bio.c
+@@ -1227,13 +1227,6 @@ static int __bio_iov_iter_get_pages(struct bio *bio, struct iov_iter *iter)
+ 	if (bio->bi_bdev && blk_queue_pci_p2pdma(bio->bi_bdev->bd_disk->queue))
+ 		extraction_flags |= ITER_ALLOW_P2PDMA;
+ 
+-	/*
+-	 * Each segment in the iov is required to be a block size multiple.
+-	 * However, we may not be able to get the entire segment if it spans
+-	 * more pages than bi_max_vecs allows, so we have to ALIGN_DOWN the
+-	 * result to ensure the bio's total size is correct. The remainder of
+-	 * the iov data will be picked up in the next bio iteration.
+-	 */
+ 	size = iov_iter_extract_pages(iter, &pages,
+ 				      UINT_MAX - bio->bi_iter.bi_size,
+ 				      nr_pages, extraction_flags, &offset);
+@@ -1241,18 +1234,6 @@ static int __bio_iov_iter_get_pages(struct bio *bio, struct iov_iter *iter)
+ 		return size ? size : -EFAULT;
+ 
+ 	nr_pages = DIV_ROUND_UP(offset + size, PAGE_SIZE);
+-
+-	if (bio->bi_bdev) {
+-		size_t trim = size & (bdev_logical_block_size(bio->bi_bdev) - 1);
+-		iov_iter_revert(iter, trim);
+-		size -= trim;
+-	}
+-
+-	if (unlikely(!size)) {
+-		ret = -EFAULT;
+-		goto out;
+-	}
+-
+ 	for (left = size, i = 0; left > 0; left -= len, i += num_pages) {
+ 		struct page *page = pages[i];
+ 		struct folio *folio = page_folio(page);
+@@ -1297,6 +1278,23 @@ static int __bio_iov_iter_get_pages(struct bio *bio, struct iov_iter *iter)
+ 	return ret;
+ }
+ 
++static int bio_align_to_bs(struct bio *bio, struct iov_iter *iter)
++{
++	unsigned int mask = bdev_logical_block_size(bio->bi_bdev) - 1;
++	unsigned int total = bio->bi_iter.bi_size;
++	size_t trim = total & mask;
++
++	if (!trim)
++	        return 0;
++
++	/* FIXME: might be leaking pages */
++	bio_revert(bio, trim);
++	iov_iter_revert(iter, trim);
++	if (total == trim)
++	        return -EFAULT;
++	return 0;
++}
++
+ /**
+  * bio_iov_iter_get_pages - add user or kernel pages to a bio
+  * @bio: bio to add pages to
+@@ -1327,7 +1325,7 @@ int bio_iov_iter_get_pages(struct bio *bio, struct iov_iter *iter)
+ 	if (iov_iter_is_bvec(iter)) {
+ 		bio_iov_bvec_set(bio, iter);
+ 		iov_iter_advance(iter, bio->bi_iter.bi_size);
+-		return 0;
++		return bio_align_to_bs(bio, iter);
+ 	}
+ 
+ 	if (iov_iter_extract_will_pin(iter))
+@@ -1336,6 +1334,7 @@ int bio_iov_iter_get_pages(struct bio *bio, struct iov_iter *iter)
+ 		ret = __bio_iov_iter_get_pages(bio, iter);
+ 	} while (!ret && iov_iter_count(iter) && !bio_full(bio, 0));
+ 
++	ret = bio_align_to_bs(bio, iter);
+ 	return bio->bi_vcnt ? 0 : ret;
+ }
+ EXPORT_SYMBOL_GPL(bio_iov_iter_get_pages);
+diff --git a/block/blk-merge.c b/block/blk-merge.c
+index 70d704615be52..a3acfef8eb81d 100644
+--- a/block/blk-merge.c
++++ b/block/blk-merge.c
+@@ -298,6 +298,9 @@ int bio_split_rw_at(struct bio *bio, const struct queue_limits *lim,
+ 	unsigned nsegs = 0, bytes = 0;
+ 
+ 	bio_for_each_bvec(bv, bio, iter) {
++		if (bv.bv_offset & lim->dma_alignment)
++			return -EFAULT;
++
+ 		/*
+ 		 * If the queue doesn't support SG gaps and adding this
+ 		 * offset would create a gap, disallow it.
+@@ -341,6 +344,8 @@ int bio_split_rw_at(struct bio *bio, const struct queue_limits *lim,
+ 	 * we do not use the full hardware limits.
+ 	 */
+ 	bytes = ALIGN_DOWN(bytes, bio_split_alignment(bio, lim));
++	if (!bytes)
++		return -EFAULT;
+ 
+ 	/*
+ 	 * Bio splitting may cause subtle trouble such as hang when doing sync
+diff --git a/block/fops.c b/block/fops.c
+index 82451ac8ff25d..820902cf10730 100644
+--- a/block/fops.c
++++ b/block/fops.c
+@@ -38,8 +38,8 @@ static blk_opf_t dio_bio_write_op(struct kiocb *iocb)
+ static bool blkdev_dio_invalid(struct block_device *bdev, struct kiocb *iocb,
+ 				struct iov_iter *iter)
+ {
+-	return iocb->ki_pos & (bdev_logical_block_size(bdev) - 1) ||
+-		!bdev_iter_is_aligned(bdev, iter);
++	return (iocb->ki_pos | iov_iter_count(iter)) &
++			(bdev_logical_block_size(bdev) - 1);
+ }
+ 
+ #define DIO_INLINE_BIO_VECS 4
+diff --git a/include/linux/bio.h b/include/linux/bio.h
+index 46ffac5caab78..d3ddf78d1f35e 100644
+--- a/include/linux/bio.h
++++ b/include/linux/bio.h
+@@ -169,6 +169,22 @@ static inline void bio_advance(struct bio *bio, unsigned int nbytes)
+ 
+ #define bio_iter_last(bvec, iter) ((iter).bi_size == (bvec).bv_len)
+ 
++static inline void bio_revert(struct bio *bio, unsigned int nbytes)
++{
++	bio->bi_iter.bi_size -= nbytes;
++
++	while (nbytes) {
++		struct bio_vec *bv = &bio->bi_io_vec[bio->bi_vcnt - 1];
++
++		if (nbytes < bv->bv_len) {
++			bv->bv_len -= nbytes;
++			return;
++		}
++		bio->bi_vcnt--;
++		nbytes -= bv->bv_len;
++       }
++}
++
+ static inline unsigned bio_segments(struct bio *bio)
+ {
+ 	unsigned segs = 0;
+--
 
