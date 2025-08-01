@@ -2,119 +2,179 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 87E45C87FD3
-	for <linux-mm@archiver.kernel.org>; Thu, 31 Jul 2025 23:51:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C390C87FD3
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 00:01:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F32F56B009F; Thu, 31 Jul 2025 19:51:58 -0400 (EDT)
+	id BA4BE8E0002; Thu, 31 Jul 2025 20:01:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE1896B00A1; Thu, 31 Jul 2025 19:51:58 -0400 (EDT)
+	id B4EA98E0001; Thu, 31 Jul 2025 20:01:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA9346B00A2; Thu, 31 Jul 2025 19:51:58 -0400 (EDT)
+	id A16358E0002; Thu, 31 Jul 2025 20:01:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 699D46B009F
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 19:51:58 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1EA1E80FCA
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 23:51:58 +0000 (UTC)
-X-FDA: 83726210316.17.C25BD7B
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 3C8E31C0003
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 23:51:56 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=UDmXuaK7;
-	spf=pass (imf20.hostedemail.com: domain of kuniyu@google.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=kuniyu@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D0C68E0001
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 20:01:51 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3E8F11148A2
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 00:01:51 +0000 (UTC)
+X-FDA: 83726235222.07.90C7400
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D79CC80002
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 00:01:48 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=bNHy4J7c;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf02.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754006509; a=rsa-sha256;
+	cv=none;
+	b=x0QYm9l81fG6h2ZRyaV+Jrvp2dXdOrbIH8jqhsBrnCl0d3Q8fbfgUXssNM37NHtrveR5wP
+	CFc5wVI+eIYRK0Tn24kFCMAWoPuZMbFefAgmOIhMvEjZDfgSRO1Mo+ANp1kiGfnnim/qUs
+	cC0A8/5Q3DRaMyAK9Rh/mkAAPVEi/D4=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=bNHy4J7c;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf02.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754005916;
+	s=arc-20220608; t=1754006509;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x1pY4t9vVS5jlHwuXly55Cv9xSzwUaUm6zW230XbJ2A=;
-	b=t1WvpS7I5AVTYNYEqMr/751xLTxibsT+/rT5vWySpu64rWQuKAQXkpZcyaRbOdiN0LwsSr
-	QF9XyqVZgkmPihgTgi/a/bNCjIGYuobAKOaJjX4eKISiKZv5uE3gTLfOCpp49ytjHjfwrj
-	RRX6RYgezdVCBpi3j8i7TSE4kriiGm4=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=UDmXuaK7;
-	spf=pass (imf20.hostedemail.com: domain of kuniyu@google.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=kuniyu@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754005916; a=rsa-sha256;
-	cv=none;
-	b=Nwakw+cRoPnFKFJYmwuiPVOQvlk4bbZUyomIrHCBIZu9k9Rp7mpe+ahwJOWrfjaHFa3UL7
-	YerDrmKcSsRQz/Wxxhj2knvrZAKUA880sE8Ng7mXZd78He0xj3AwiGF41L9+NYSVAZ2Ike
-	vIgrIj39GXtKgzCX11qBdSSq3O6akdc=
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b391ca6146eso1232771a12.3
-        for <linux-mm@kvack.org>; Thu, 31 Jul 2025 16:51:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754005915; x=1754610715; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=x1pY4t9vVS5jlHwuXly55Cv9xSzwUaUm6zW230XbJ2A=;
-        b=UDmXuaK7cHLoF5EaX31TPbhENz0sIvUGy2uMRU0Oa9RHOQ4KNikMYnbBJlQJy5WzU2
-         zIG/i9B+6jn8XXE8DXacKm41jpn6bwJGsNp9iMLG0il2Qk9okdRKQLxmsetp2hXAvjpr
-         UtMQeVMa2RKXv+Wf7Zfg8wIh4/Porodu/S6PTiUF+dDxHg4mdDagbUZJ/THhJh6TBiEx
-         Bydi3rAu4ypwFvzQgCzedmATOXg9SSrtcXkBckKYdrC2cVTwX0wFalhPdOJgSr2cwlR+
-         7jMJN7thJeF85TcTLRFhmqCrSL/QSZc4+fVgL3ZuWinH5gUER9CVsd9Hi9GSsqCyrFn0
-         l/5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754005915; x=1754610715;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=x1pY4t9vVS5jlHwuXly55Cv9xSzwUaUm6zW230XbJ2A=;
-        b=VENFdzRHIPjW/mmozOm3g5toCrqU/zgFXaG775w18niHORaW8jMGNbBK8VdVZYycfx
-         4+G20IQ1yn545Z4mE17+94N1P5E/+b/y5VJWWfgAL29oRp9XNhIhKNUKkgU6fR4kpxw0
-         1eZ0GjyQTtf77Sdfz0pwE7BJ5/zS2flrzdgiHPY4ncw1PCMpOOFtAQ1e3bq3mMfFq7tP
-         implQJ3VAX1RBcS6Z0PD2KslZsJ+3crKlPz/wNWvZJQd2t/eU/6qmnCNfJPhzqz9VN7K
-         MQSPNZPdEBCj/w0iXSlQ2L5BIkkItXRJf5rsz1+tmdDRN6dW4eiRcZIlw5w+DA0CFOfu
-         LgWw==
-X-Forwarded-Encrypted: i=1; AJvYcCVR56NbLz9PDWaRylruK5hrenmPr/zBLTIpg2ho/bBXa7qiToeD9L9hgCDmAMlDxNSrVAw3LzIYbg==@kvack.org
-X-Gm-Message-State: AOJu0Yyb/0Jg2g0fIw7+Fu2P/LZZRBwEAk0adpwDRJFzSjoB/lA8kE2f
-	sJ17y6IBhY15U4GWWEOy9d/FQJk4cCWsziGI8LtSnSQD4uwbpitsf3sBSam15wt0HiDbdIqjIKf
-	TAPOPCMu7Yb+KfBE+0G3fogmr5mfz8vgjaX0YRndN
-X-Gm-Gg: ASbGncusxXQUpTI6bFLLxBr5JW/eShFPho4CgmbWCtVdICH61KO2WfO7MbfWOZ+TKkF
-	927XqNX/zBxVVBvOq2FV8iCrdQmDoX+azDNmyrCH81EMDNpmKSvVkVMDH/oashXpuOVQVezMUPU
-	SKgY7MlCdcmyL4ve+Kl8UrcBIChrOU4W+4hVBu6tth6K87Lxrab6cO1/qZ8zvggwxxRnis6oXE/
-	pzVkeXP5u4dprvCBFujgLEAtsg2s/N8dpF6YhE0eM5fTeDt
-X-Google-Smtp-Source: AGHT+IGMdr5+ZltYc/B0msRqSn8S05vopIUSrPrZpbCyE1ibrXKKkFxzUCv9+aOryf0B15tqU6r7DGOpYwl+1TOpJ8U=
-X-Received: by 2002:a17:90b:3952:b0:31e:ec58:62e2 with SMTP id
- 98e67ed59e1d1-31f5de4197dmr12628654a91.19.1754005914820; Thu, 31 Jul 2025
- 16:51:54 -0700 (PDT)
+	bh=ySpoEGAAgT62IgZjG7h3TunT6qx8sRaYDgbb77t0uVk=;
+	b=FBe30/FYS8xslWeb0kZSNU4S5IBfWtU9K29fu2K+QXaTi3jFAjQhFxNiDo5Va3en4+hl5G
+	MxwFBQ36qbTrCmIUhA+qA042DAe2YOmFv4sjCGKKrd49htINvfRvYezvxVGabt/iihH2Nx
+	Vs+rfXj+J51HOj42E0oaBLZRNoy3Qyg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754006509; x=1785542509;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=1eMiJ7biR+ze6mCfiSgA6AfqPnXORCkRF7qJ0xrnJ/Y=;
+  b=bNHy4J7cokFRCGB+rLw81Bn4tPw4L06/dUcfvLJVmn43ihfU7pCOTcmN
+   jDdjaSUm6/ujm5avtssK7fVmjeLot6t6qSZqVFGayQ4ixcwT+2DZzRhHj
+   yEhH8DftKqC8kzfJlm+jFqnXE9WrovCVaaiPfCAcqTBLbaPjRiqD/J5/u
+   WgNCrylUkw2MIMDBjcBbLkY/dG1GuT2EoZJQZgRNNxz6rlhtFWKMBygFK
+   KTaASGYWxr1PjBKKND3o9lcOhKgQczvf9yM9elM8MzIvqGRS5zezYPl7T
+   wStvvDznhLJwVQ4rIv9pfLKpH8rmMP0+/eRmIBVFQnZKy6c3yjHTXO3fE
+   w==;
+X-CSE-ConnectionGUID: RA6XDHwJR+mRX92RyhRvzA==
+X-CSE-MsgGUID: AIj0OyjUQR20Aetp25ebLg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11508"; a="56043753"
+X-IronPort-AV: E=Sophos;i="6.17,255,1747724400"; 
+   d="scan'208";a="56043753"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2025 17:01:41 -0700
+X-CSE-ConnectionGUID: KF8Fav4TTe+6FIeh6in4Qg==
+X-CSE-MsgGUID: QxlgbGzmTCClfHyUq4ajLQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,255,1747724400"; 
+   d="scan'208";a="194235490"
+Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.109.228]) ([10.125.109.228])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2025 17:01:39 -0700
+Message-ID: <6e768f25-3a1c-48b9-bc53-56877a556a83@intel.com>
+Date: Thu, 31 Jul 2025 17:01:37 -0700
 MIME-Version: 1.0
-References: <20250721203624.3807041-1-kuniyu@google.com> <20250721203624.3807041-14-kuniyu@google.com>
- <fq3wlkkedbv6ijj7pgc7haopgafoovd7qem7myccqg2ot43kzk@dui4war55ufk>
-In-Reply-To: <fq3wlkkedbv6ijj7pgc7haopgafoovd7qem7myccqg2ot43kzk@dui4war55ufk>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Thu, 31 Jul 2025 16:51:43 -0700
-X-Gm-Features: Ac12FXyRo64aj2tAOXgVRHN2Olp9-pPfFQKxGBKy5bgLlQjCQOCZQOdKisc5o28
-Message-ID: <CAAVpQUAFAsmPPF0gRMqDNWJmktegk6w=s1TPS9hGJpHQzXT-sg@mail.gmail.com>
-Subject: Re: [PATCH v1 net-next 13/13] net-memcg: Allow decoupling memcg from
- global protocol memory accounting.
-To: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Neal Cardwell <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>, Matthieu Baerts <matttbe@kernel.org>, 
-	Mat Martineau <martineau@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Simon Horman <horms@kernel.org>, Geliang Tang <geliang@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
-	mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: j7zj4jjbsxibfcwnga4p3kcoqixcuqff
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 3C8E31C0003
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv9 04/16] x86/cpu: Defer CR pinning setup until core
+ initcall
+To: Sohil Mehta <sohil.mehta@intel.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Kees Cook <kees@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, Ingo Molnar <mingo@kernel.org>,
+ Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+ Daniel Sneddon <daniel.sneddon@linux.intel.com>,
+ Kai Huang <kai.huang@intel.com>, Sandipan Das <sandipan.das@amd.com>,
+ Breno Leitao <leitao@debian.org>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, Alexei Starovoitov <ast@kernel.org>,
+ Hou Tao <houtao1@huawei.com>, Juergen Gross <jgross@suse.com>,
+ Vegard Nossum <vegard.nossum@oracle.com>, Eric Biggers
+ <ebiggers@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Yuntao Wang <ytcoode@gmail.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, Tejun Heo <tj@kernel.org>,
+ Changbin Du <changbin.du@huawei.com>,
+ Huang Shijie <shijie@os.amperecomputing.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Namhyung Kim <namhyung@kernel.org>,
+ Arnaldo Carvalho de Melo <acme@redhat.com>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, linux-mm@kvack.org,
+ "Kirill A. Shutemov" <kas@kernel.org>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Andy Lutomirski <luto@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ard Biesheuvel <ardb@kernel.org>,
+ "Paul E. McKenney" <paulmck@kernel.org>, Josh Poimboeuf
+ <jpoimboe@kernel.org>, Xiongwei Song <xiongwei.song@windriver.com>,
+ Xin Li <xin3.li@intel.com>, "Mike Rapoport (IBM)" <rppt@kernel.org>,
+ Brijesh Singh <brijesh.singh@amd.com>, Michael Roth <michael.roth@amd.com>,
+ Tony Luck <tony.luck@intel.com>, Alexey Kardashevskiy <aik@amd.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ X86-kernel <x86@kernel.org>
+References: <20250707080317.3791624-1-kirill.shutemov@linux.intel.com>
+ <20250707080317.3791624-5-kirill.shutemov@linux.intel.com>
+ <6075af69-299f-43d2-a3c8-353a2a3b7ee7@intel.com>
+ <98a7a91b-3b46-4407-82a7-5f80443b7e00@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <98a7a91b-3b46-4407-82a7-5f80443b7e00@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1754005916-196578
-X-HE-Meta: U2FsdGVkX18SjG7DAecwf7WEhW0NFe/j0sSNNyuwPYfW0Q8jAYMZv/QXBANo+YQzuH1Slf3deDwCXX/qhzEnj/4j8G6vqEQUh0p3WMeruEiEJCy5eYzafZtG2vGYg15+RH2ATJrPevpzFJmO0TqcE1Wp1p0P/6ZVJJ2i3px09xjHOFTA4P7eOAE1PCVmaeoCqzTunKC336mJ6ODBaQUZ/SpEOu2QpkCEf9UL1mQl5hTxoG508vScnvjb/1UzT/zWLzcZYdrtB3AJ1/0iS5ANsSKm/8GdmG92s3FIEIsB8mLJPL0EgwFHVqZUj03OWqGnTRFyLMDSQtYFMwSFctJ0vyQiIzDG39WTvnupJxoBFicSkOWS0JSKnCRItLidzg6muOnn2Y7zFh3ePO+12AcyRmJiMEV/v8yMrOrOxo9zoO/6BzTA8XNySQ755eoEES713EDFIAk6P84oXgbkOQODOG1lcAhrUjuZtyg13MvdtLmjoJmEihiK66DcqZsQHvgRn9HJO3qIkPrrghwMjstqZIhpFqnx8PTFBw+pCC/JeXqA4QNJAoPVPHQ37rYCnlZpIOxyJF8IVvot6BpUksreZldtFSTiA481xorCEmeSGZ7jLsW28muQ1awkJd9TxEbYPZsmLPErJJHct0xo5LR/mSD50VG2Fc/pc8GqEFO3JqWHFw9pE3DoTYtRWG7AC9rj/sVPe4Vg5SVu5RY9E/OhkC7YdQFzr5vi6TZKB8R+NhR7h4xl8JqNLtwwl3iKKHLn73yXWz2RoWGm01KPvHcxeRZl6B3KNwykZQvThDGLaC4Z1Y8XEcX5b+WB2ooKTjYIfPiy//apc/PoUcLSiju+s50FpsJw1ii/9AI4FYwGznB3L+EVJny9lDbscesJqiTVtuEA7AEQBkz9jd2t4t68pqJgk2Ua8yZcoHlD67Kyj5pZicHz8mUjdZRxTpktvZRtoATF7jLZ3DZnyT6XEQd
- C7pdHVZ6
- Bg8iuO81Mda2W8wWD2UEFRHlTjDILoCFBqhwd3T/g21VJ1dBTZbXEA8DxPXkliL1ZVKomVvZ48ZpOK+7oXeuTAmBnrFPojZnLoNz3LGRm61X+zk0yOtQsNP7HumHEqWOx7vwtT77IQdMrYM1QFbrs10fdjJYxMvgaT9nXYwMm4t0KAMP0zV39qLpTYl7x2/Sd1Q+gQaZNngSdK9tc13cmRHd3+GDtx1IC3dfqVxtCNKDEy9j3pVeToxSrqfr0Bs0akZH/rmk0D8aYZvXDrUmsKoeUKA==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D79CC80002
+X-Stat-Signature: 4zhiqtdw4k7dzeqrgu349dkwtuozw9wn
+X-HE-Tag: 1754006508-467827
+X-HE-Meta: U2FsdGVkX187XQuuoxMXKzsb0auQiylBDgSyB//p91yxCCUsDSn+pjUCkRROf6qDxAdMIvC/nSJXtWTTSl+7p5SP+kPrgZi5gtpalm1TQO6F4Jl7XMCZiE6aexVDq73aiHNCJZVzLByloi1Hmy7M52agSZFvRVN/7/PLzB23c+63HFDt0EHMUM5i/bDLDcId8yBOGL/qC1i5JoVQyaFTKBEdoBGN5VzkxhQxgxLXaKoPvvMx2UMyDncK2sq0CjIrHkwt28dolulyTBzqlfBYI/Jf4o5C0iIb7reM05hP7/5no+4KVq2CyQmTzyHrO7Dzk2JHvuHJ1GHczUPCNoCmUpdxT2BQLOlIvMnZwCoy6GMlwuAjUTOF/EAjB/D1JwS0eZGYX2wsQGYBMaJ8SF4+a7IXs/ZXcGEKhEVlKVKu7NBlT740HDqooOLtzzGVGWUKXw4WJnJv/mmMhIM5vECFC8Qd3w1RAlclh5wP534iPaXBtkNb1Ir5Jc1JWahVo8Z15klILE1TTstbLa5hBNQ1W/0ZNJremku+7njRp/cATBdB6JuORt8WZMdBB+A1Qet8LL0RMMvVYqYSJp5C5KZR4kFulYKnffNbZvRpyhoS1lTFt3l6OmR4utEONUQ+6TFmURmgkw69JaOIs7NEiN/ind5Tz2cfblA8FYzAEAW17tarEBZcqBmHPCZp//9r538ycOxGuMBqKIx9H3OpKHqMP+wOw7Na1jGxYKFrVXOe2iseOEF5MrK6+axoHiW/jyakbk90WKo5HASnL2sYh8ONjCSLVH4QuHo8BUl3HxrSUjLfXk5yiPrzwUkt0boY1D6c97aRJu8mqTSy/nB4XxMOKLQ+3zCkIMZ87iu6/AamL5Y5YzvY5eXwMU0s1yfD7Em6xXgeNAKK0O1iWW/l10/6eerjO94fgFCSBUwCjfYQU4MAflEDoFXiF1iGDjl+0t9fXaXLspl8FF/I7Pepos2
+ wpu5Tc5v
+ Euxl5U9Uh/chUMkvU++WEqGJlQYN1j8bZkS5NoSV4tfLVp09i+4dNSdt832HslTjGAYo1SAG+/JMj+lwfl8lt8bo6WDnrx49j19rHCQ9gFXPuxwIt9UOI4eyMVolJk5jfCo4VsAgPRANyVibTUjIj7vvejNekJLqihwS8bhSXP0jlXHySXTV3NfQk2sZ1z8G2RzwmDjb143dRW4/M71Yv87KDJlQ8/MBXZZzZK3KucNHgPS7BdXhionvFg412an1f0L+lMifK8iCAcAHXmhyAnw3/eg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,56 +183,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 31, 2025 at 6:39=E2=80=AFAM Michal Koutn=C3=BD <mkoutny@suse.co=
-m> wrote:
->
-> On Mon, Jul 21, 2025 at 08:35:32PM +0000, Kuniyuki Iwashima <kuniyu@googl=
-e.com> wrote:
-> > Some protocols (e.g., TCP, UDP) implement memory accounting for socket
-> > buffers and charge memory to per-protocol global counters pointed to by
-> > sk->sk_proto->memory_allocated.
-> >
-> > When running under a non-root cgroup, this memory is also charged to th=
-e
-> > memcg as sock in memory.stat.
-> >
-> > Even when memory usage is controlled by memcg, sockets using such proto=
-cols
-> > are still subject to global limits (e.g., /proc/sys/net/ipv4/tcp_mem).
->
-> IIUC the envisioned use case is that some cgroups feed from global
-> resource and some from their own limit.
-> It means the admin knows both:
->   a) how to configure individual cgroup,
->   b) how to configure global limit (for the rest).
-> So why cannot they stick to a single model only?
->
-> > This makes it difficult to accurately estimate and configure appropriat=
-e
-> > global limits, especially in multi-tenant environments.
-> >
-> > If all workloads were guaranteed to be controlled under memcg, the issu=
-e
-> > could be worked around by setting tcp_mem[0~2] to UINT_MAX.
-> >
-> > In reality, this assumption does not always hold, and a single workload
-> > that opts out of memcg can consume memory up to the global limit,
-> > becoming a noisy neighbour.
->
-> That doesn't like a good idea to remove limits from possibly noisy
-> units.
->
-> > Let's decouple memcg from the global per-protocol memory accounting.
-> >
-> > This simplifies memcg configuration while keeping the global limits
-> > within a reasonable range.
->
-> I think this is a configuration issue only, i.e. instead of preserving
-> the global limit because of _some_ memcgs, the configuration management
-> could have a default memcg limit that is substituted to those memcgs so
-> that there's no risk of runaways even in absence of global limit.
+On 7/31/25 16:45, Sohil Mehta wrote:
+> On 7/9/2025 10:00 AM, Dave Hansen wrote:
+>> On 7/7/25 01:03, Kirill A. Shutemov wrote:
+>>> Instead of moving setup_cr_pinning() below efi_enter_virtual_mode() in
+>>> arch_cpu_finalize_init(), defer it until core initcall.
+>> What are the side effects of this move? Are there other benefits? What
+>> are the risks?
+>>
+> Picking this up from Kirill.. Reevaluating this, core_initcall() seems
+> too late for setup_cr_pinning().
+> 
+> We need to have CR pinning completed, and the associated static key
+> enabled before AP bring up. start_secondary()->cr4_init() depends on the
+> cr_pinning static key to initialize CR4 for APs.
 
-Doesn't that end up implementing another tcp_mem[] which now
-enforce limits on uncontrolled cgroups (memory.max =3D=3D max) ?
-Or it will simply end up with the system-wide OOM killer ?
+Sure, if you leave cr4_init() completely as-is.
+
+'cr4_pinned_bits' should be set by the boot CPU. Secondary CPUs should
+also read 'cr4_pinned_bits' when setting up their own cr4's,
+unconditionally, independent of 'cr_pinning'.
+
+The thing I think we should change is the pinning _enforcement_. The
+easiest way to do that is to remove the static_branch_likely() in
+cr4_init() and then delay flipping the static branch until just before
+userspace starts.
+
+Basically, split up the:
+
+static void __init setup_cr_pinning(void)
+{
+    cr4_pinned_bits = this_cpu_read(cpu_tlbstate.cr4) & cr4_pinned_mask;
+    static_key_enable(&cr_pinning.key);
+}
+
+code into its two logical pieces:
+
+ 1. Populate 'cr4_pinned_bits' from the boot CPU so the secondaries can
+    use it
+ 2. Enable the static key so pinning enforcement is enabled
 
