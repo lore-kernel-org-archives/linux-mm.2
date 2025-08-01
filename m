@@ -2,129 +2,128 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 67F94C87FCB
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 08:04:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0AAFEC87FCB
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 08:13:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 071076B008C; Fri,  1 Aug 2025 04:04:18 -0400 (EDT)
+	id A48696B009A; Fri,  1 Aug 2025 04:13:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 021BC6B00A5; Fri,  1 Aug 2025 04:04:17 -0400 (EDT)
+	id A20516B009B; Fri,  1 Aug 2025 04:13:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E53196B00AA; Fri,  1 Aug 2025 04:04:17 -0400 (EDT)
+	id 936306B00A3; Fri,  1 Aug 2025 04:13:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D30096B008C
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 04:04:17 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 66B225EFCC
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 08:04:17 +0000 (UTC)
-X-FDA: 83727450954.07.EBC961F
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 83ABF6B009A
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 04:13:02 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 350BF8179E
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 08:13:02 +0000 (UTC)
+X-FDA: 83727473004.04.80AF4BB
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 078931C0003
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 08:04:14 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1rEoBOK2;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=WwmNjGIC;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=t0gvoKhh;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=K6dLrwhA;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	by imf09.hostedemail.com (Postfix) with ESMTP id CEA99140007
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 08:12:59 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qHxSWG4l;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="SIuZh/k4";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qHxSWG4l;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="SIuZh/k4";
+	spf=pass (imf09.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754035980; a=rsa-sha256;
+	cv=none;
+	b=RKqQn0+xC6FCFGNtkCXJvYh5cKRkCFgLNByz/BSwU856SoEWmaABxVTUv4ZqIG9CeWv7Oh
+	vMmedujNNw0gBjMkyUy8FpSO+wbOlfQlQAbhN/Twt8kqqjjYHV5htSzkQHYaCa38XkU2ug
+	p7NXuiPpHnfyThCBGYEIKuD8//OET90=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qHxSWG4l;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="SIuZh/k4";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qHxSWG4l;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="SIuZh/k4";
+	spf=pass (imf09.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754035455;
+	s=arc-20220608; t=1754035980;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Oikzn63/fOVVD7UWS2dDPKH8nm8rUvD3FPtyYMZjfb8=;
-	b=H8MbW8eeVrZZJbrRebpQ9OeT3ZsZZnwLc01pV0v/05AVm86NAtxX1ZAgfGG50WDWqRLPYJ
-	xwg6MxQBMvrTv9HQ7cSJQSh8n0Iv5DRLQ+rYTBrRwKob6scSkvh1vVhbxv3wZq3JqOY+WK
-	OumQU+4uU6scyjn1S9TCTauFjGWdtqY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754035455; a=rsa-sha256;
-	cv=none;
-	b=QTvZaN6mCEa1RzoOJqn0QCoyYiJdPNXusnweJDXfiXQXHzhXxoyS58uDDyQJ/Nm7sR5AcR
-	pgamlJbS8YUsUYziUANYTHESc2alAAZynvvbdEXUBpfEyDa4MTh2zwilXQJqaGSRiKwDcZ
-	IOQjZHFZpTZZEcy2GjyeHDpIOBjY6N8=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1rEoBOK2;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=WwmNjGIC;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=t0gvoKhh;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=K6dLrwhA;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	bh=UwIzklYubVz/GvYPz2IwlXbYM1AY7MxAqx56MYh3lpk=;
+	b=5Akxr9REh+ccPw51CYDkoBm9Vp3B7y3KRuTVO8eRizSnimHyiMPgnlvsz7y3GHcs7JKHXw
+	z9g65iGzlUoSGyk1gcmEXq3gNA6EuPu4gwo9nFhMwTRsLb7Bz4Xf2dLDf87z+u92tRzLxt
+	rQi8W6YsICKZhxmSVTBOMAt+NN11AHg=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 18E6621B96;
-	Fri,  1 Aug 2025 08:04:12 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 5B46A21A77;
+	Fri,  1 Aug 2025 08:12:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1754035453; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1754035978; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Oikzn63/fOVVD7UWS2dDPKH8nm8rUvD3FPtyYMZjfb8=;
-	b=1rEoBOK2yE4nkvM9dJGzn94RCfChMiGzD4B28cKj5EwQD6uLuCWowb7E3+XXlvhqLjoy/5
-	43IWu8GZwkynIDXe8oktT4IKMO1FL4lfGjH5ZoeyB/tjYsj7rrt6/9QDFh+wKLUfL5nw66
-	I+QNOhsk3/qnZAww0HD3TXaqT36Hubc=
+	bh=UwIzklYubVz/GvYPz2IwlXbYM1AY7MxAqx56MYh3lpk=;
+	b=qHxSWG4lVOhtunEgOG+lOXQhDj90+bIIRUIJ/gvA1/vZlxCPPciEI2T89crwxCAySoWrf4
+	03l4pqtkcXHzgsdfj34DNb2L/kMoOCxi7m7xLB1zV2cac/GudccoLJEvzaweKE8Ob4+iOO
+	sMfqOcPz9cQ1e+YGvvBf7FPyDfA05Ho=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1754035453;
+	s=susede2_ed25519; t=1754035978;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Oikzn63/fOVVD7UWS2dDPKH8nm8rUvD3FPtyYMZjfb8=;
-	b=WwmNjGICF96penYCdc7fFO5AQ3FjsrO7A9D3pBFdXlE7mVkt7ENCgMd10HqyjRP2MMYcXc
-	m+mjYJkhtmxjTlDg==
+	bh=UwIzklYubVz/GvYPz2IwlXbYM1AY7MxAqx56MYh3lpk=;
+	b=SIuZh/k48X1aZC5n/Ywqt5RKbUXPKbevte5ioyqkuYQZz/9f0mk4rkZ8wZ1ZQf5YUITEMd
+	n6DHA2Tfgn/wNjCA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1754035452; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1754035978; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Oikzn63/fOVVD7UWS2dDPKH8nm8rUvD3FPtyYMZjfb8=;
-	b=t0gvoKhhw2+PMOdlN2cbT6VLZixfx8Kv/D8XtXtJry2IkIKMaG5wVZCVP1B7bn1MTtwACj
-	No1Sz6SEqwVocaeeCJtcEGw3ucA7TocdvbG7uyU/poKcLZ4PAZjGQcM+daQc6EEHbJ4Jut
-	Xsvo1AXJTBQ88ejtORnI2vao6NpiLag=
+	bh=UwIzklYubVz/GvYPz2IwlXbYM1AY7MxAqx56MYh3lpk=;
+	b=qHxSWG4lVOhtunEgOG+lOXQhDj90+bIIRUIJ/gvA1/vZlxCPPciEI2T89crwxCAySoWrf4
+	03l4pqtkcXHzgsdfj34DNb2L/kMoOCxi7m7xLB1zV2cac/GudccoLJEvzaweKE8Ob4+iOO
+	sMfqOcPz9cQ1e+YGvvBf7FPyDfA05Ho=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1754035452;
+	s=susede2_ed25519; t=1754035978;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Oikzn63/fOVVD7UWS2dDPKH8nm8rUvD3FPtyYMZjfb8=;
-	b=K6dLrwhAkNY2qFNBfRwkTJG/RYtDpcH2N1xEOphIPMhbb7sshD1hwhD+ec7x4fru7jJQBW
-	TBfZrrE+Eg5pvKBw==
+	bh=UwIzklYubVz/GvYPz2IwlXbYM1AY7MxAqx56MYh3lpk=;
+	b=SIuZh/k48X1aZC5n/Ywqt5RKbUXPKbevte5ioyqkuYQZz/9f0mk4rkZ8wZ1ZQf5YUITEMd
+	n6DHA2Tfgn/wNjCA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E840F138A5;
-	Fri,  1 Aug 2025 08:04:11 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2B5E5138A5;
+	Fri,  1 Aug 2025 08:12:58 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ZAgwN/t0jGgBHwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 01 Aug 2025 08:04:11 +0000
-Message-ID: <20baf9ac-9328-4110-97f1-91e9e76b8914@suse.cz>
-Date: Fri, 1 Aug 2025 10:04:11 +0200
+	id NX07Cgp3jGgoIgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 01 Aug 2025 08:12:58 +0000
+Message-ID: <f37ec25e-70b1-4f24-9d18-d869576aa7eb@suse.cz>
+Date: Fri, 1 Aug 2025 10:12:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tools/testing/vma: Fix function parameter declarations
- for GCC 8.3 compatibility
-To: WangYuli <wangyuli@uniontech.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: akpm@linux-foundation.org, Liam.Howlett@oracle.com, jannh@google.com,
- pfalcato@suse.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- niecheng1@uniontech.com, guanwentao@uniontech.com,
- Jun Zhan <zhanjun@uniontech.com>, linux-kbuild@vger.kernel.org
-References: <EFCEBE7E301589DE+20250729084700.208767-1-wangyuli@uniontech.com>
- <e7554f93-03e8-4315-acb7-a55312354485@lucifer.local>
- <CB890ABC56C2FA67+56b95783-ed70-4744-9fc5-f2d93ddf2c12@uniontech.com>
- <37b606a7-17c6-4865-a78a-ddde1bc15649@lucifer.local>
- <d31803bb-fb32-4a94-aa89-83b02757d650@suse.cz>
- <12cba6b8-6853-477d-aa6d-23180c2fec75@lucifer.local>
- <671CE9DD76801AE4+34f3e3b7-4684-4fe2-80a9-93de1dde9c31@uniontech.com>
+Subject: Re: [PATCH v2] RDMA/siw: Fix the sendmsg byte count in
+ siw_tcp_sendpages
 Content-Language: en-US
+To: Bernard Metzler <bernard.metzler@linux.dev>,
+ Pedro Falcato <pfalcato@suse.de>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, David Howells <dhowells@redhat.com>,
+ Tom Talpey <tom@talpey.com>, linux-rdma@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ torvalds@linux-foundation.org, stable@vger.kernel.org,
+ kernel test robot <oliver.sang@intel.com>
+References: <20250729120348.495568-1-pfalcato@suse.de>
+ <8fad6c00-9c15-4315-a8c5-b8eac4281757@linux.dev>
+ <x43xlqzuher54k3j4iwkos36jz5qkhtgxw4zh52j5cz6l2spzw@yips5h4liqbi>
+ <631a1251-5bbc-484d-9bd9-167c5e7cb69f@linux.dev>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -165,18 +164,17 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <671CE9DD76801AE4+34f3e3b7-4684-4fe2-80a9-93de1dde9c31@uniontech.com>
+In-Reply-To: <631a1251-5bbc-484d-9bd9-167c5e7cb69f@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 078931C0003
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: hijz3xzxeh9k45utdwt9sts3qd88973a
-X-HE-Tag: 1754035454-978855
-X-HE-Meta: U2FsdGVkX19hcIID1MfWK+dRwcheFqZzzD2A8M4j1uqriEIdRl4SFTfXZfyJv5SCSvnR/O+gtKmWA4xVrSghWbHyqU2ASV82nbCWUfdtfT8/6bSDPg4p7VuYVQtHEtjcbN7cV2Cdfkk9STFJAzM/Q8PotLgPl2NmroGkX/bQUJXVyTBqjwemNmJ2wlw25g0aYud90TJ3FSwP28sPILW7U+9CHcHtrE+KQM6zuUJhx+Pj+YIqswwcKgh7Q4psEGF6aqVuvwv4EJX6MUNSeGt2xahby1zvwVFLhtIRb2Zn2lAY4EwgsIl4R+UptDSPqvxpcFQQO4M/NcnLESILGzV4pkUyb7NGcBFX5K/VPo4LycLhMNg8l0wzT8JVzPa3XtEjZSj40KWMSl4A7m/arv1kvSohZxhH/pY+kI7mHgvDZYzw/e5uFFFMfFphrXtAhAlvKE16oufeyImXY4HsHP6RYxVvLe0RGoXjQKN6B4uSlRTHhAGZE72r19YBTo8PBvrdBOTW/LEWp5mluJwRk/f973jS2NkeVD4r5UNpZE2yBwBsXOWaRX235Qmp/r5Zbie0IeLvimp+E5VWVaI8SMHv+39MRTOhL9nv9+C66Va5HlrQTYSwmqR4S6rwKsgE6vqT/WPNyqEsAqUDrSEetBvyaAq529QgwMSRcPSwxD9FDiU8hZ+M4AQCc9m9Hh8fuyo7CMsjWySibQqwzz/g+4/h7C3rcU0e7iaqFRILo5o7/1y7zOhl+8mEtoZSB/lqobOd83+IJi7agtjxOJwl8XtCF5fvTSlm+nuJearuvoyXHB48eeavINUik8N3OTpUws+UMCA2lk1kZofTGy/Pre0wRccf0a6fKt8j8zlTZ800Z4gDhAT5GcqTQv6b385e2DP7RZ/qZIS/HuoY6w7/S7X5sG3tubNFRyoChA+tkkxvX5XOIXl0dXhXWojN1JDbbPmLvOevOYVEhpHOijsdavv
- 0gC9Blkl
- cQLUo4WAbLFkgI9rBWinD1nlFPkNRnJnm4yH/1hTSzXKKaU6RNRfTXQPXz6UR49xKsr49XfEu1sC1ZzqWkKaY/fcTJ/Eov9FFE3Tolsz2vEJRa4do8nOYYJ5QE/xO+4PRD7GguE3zIiu8MtOL33KDKJPSAewPyuXPrSA4BbaLTcbGjqVSCss4dlmPk2V3dqJONH1q/ELyBe7Fdnfgh6pAUTfOaq8B3TY0uPmfQqEdecQyQdexmyE3uvNk4gIbOU87WVc9hItz1Z5cAXsTGDFh+df2Fme9xUKaPpiaYqugpsKNET3OgA0CiWnaNg==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: CEA99140007
+X-Stat-Signature: q5donq9yxunafu3xcjw4b97qzsp7hyg1
+X-HE-Tag: 1754035979-785245
+X-HE-Meta: U2FsdGVkX1/MkPXb5U/hML0cSJ1ynR8fjdNZ0+y77+/PvsNjfr5dJLoQTgI+vgmSTMV3tFUkGApgif9dHnPDhHNgO0brfRcoJat2TiprvU9Ry409S3/lzztz8vID2mzc22ylfoNulJtPSjPYSCh/1w9PNsmKWPpQggRBkZ6vHJGYWldQVpUHgiWgdLNRCXP3igmsrI8N68PIolVmJn9pVi7S9/xaD0Z/OTu9GpzDmQY0uk/nPC63Hy1rdUcTlSoGemApHpxram2DLNtiA+uDCyM4UPX49wtwKYhLAEr9BCO1TT2UP/w408ydh7UMJcqfEGO1SpWhnNnvLZP+1BuMFKkZe7QV1b9dvvSoD4qInsgCChBMRHJlxspDPw8LgkhEFS/ZQO40TGm5IE1HD2s+t4UWQ0bT+8cEVPCOrmL9+RQ4chp3KlOQjO3KkurUJtIyRi8fdOOHtqrRYazuF3IPHvXxzTl+aPiQagmgyZM4IpJfAcvLM3TcmUaQmgjJ8TyE3h/L4RdrgRTndfcbDcf/WW+htHep79Uss5U3dk6oopjSlw+xck51l70rTZMbEeI5Ugo3659ffTH3MWsIM8+dkwO6LW9Lo9j/i5k58SAGQZfZXOCLxMQj4fFfTzxnSzlf8FM3tTHwsQJ3bDVGLmQ+vjIpF8L7hEPbfTlRrbdTSc9kQg+nzngxNZssiSXHxpa53F3YhOteRcsgFhQ6SkFNri7TLyCg4Ld+nH+QLbPIfLygatuPN8eywWgjNH4fYhEfkaYugcNS0QnAPPaVpql48C1KIxqdxOpidHMBM5MLilpRHgRTHjxazEp8n3MbdJBmdnPYp5yNvOQAdMbUFHDNW5K7qR5U9N3xUmdfbGzy7uQKATbQ8LBIifa2n81k1JE5WS715lXkQ6AmJWo/IFZNjsM/KjCl9i52fy8maMOq18tm2eYclDBfePRXUHk9BPHgXAEPPbb75WOGwIO46m7
+ NJrR44bV
+ +jr3hqV+qdbli0Tj55is/ajD38q34rjXp3N8a3BszVnE3CZNwuLlbx6/yBp/SSVjDQDJ5UicX7Ep1i3lq6AKDn6dgUcquYoI2yEccFYhwP/RoR3596hmJT/63PdlnIQiMKr5kgNTap68Tao29jLu+DU+fDiEgxw3Qn1iNk81yR+bba//nofH8ohZT1gdrxMauuof5ld3b4IKi2M6HnfCK9cwNjEoV6TXJHojMqeCRxvu4dN5Dc9U1Ey+dGYTC/U8Hs1B//BeFMFqfcKlcL63t4IZhlkQlwvIAGMhA4l6cAQHT7OK03DEq6qTh/IxYt2jLqrAOtaQMxZ9/YvrZgQ0C5LDbLudgzlWvWBbDxTVorduuFosJpij8o7ZhIpGHriqZelUA
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -185,33 +183,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/1/25 07:57, WangYuli wrote:
-> Hi all,
-> 
-> On 2025/8/1 13:14, Lorenzo Stoakes wrote:
->> WangYuli - could you check? If it's as simple as this, feel free to send a patch
->> making this change.
+On 7/31/25 22:19, Bernard Metzler wrote:
+> On 30.07.2025 11:26, Pedro Falcato wrote:
+>> On Tue, Jul 29, 2025 at 08:53:02PM +0200, Bernard Metzler wrote:
+>>> On 29.07.2025 14:03, Pedro Falcato wrote:
+>> Thanks!
 >>
->> Thanks, Lorenzo
+>> Do you want to take the fix through your tree? Otherwise I suspect Vlastimil
+>> could simply take it (and possibly resubmit the SLAB PR, which hasn't been
+>> merged yet).
 >>
-> It's not that simple, of course... That didn't work.
-
-Yeah seems I can reproduce it with gcc-7.5 and it doesn't work.
-
-I think there is a difference with the other instances of omitted names
-found by grep as Lorenzo suggested earlier - those seem to all be
-declarations. But here in vma_internal.h they are (empty) static inline
-definitions.
-
-Seems like newer gcc versions got more lenient. Haven't found why, but seems
-they want it to stay like this:
-https://gcc.gnu.org/bugzilla/show_bug.cgi?id=113825
-
-But I don't know if there's a way to make older gcc's lenient too.
-
-> I'll take another look.
+> Thanks Pedro. Having Vlastimil taking care sounds good to me.
 > 
-> Thanks,
+> I am currently without development infrastructure (small village
+> 
+> in the mountains thing). And fixing the SLAB PR in the
+> 
+> first place would be even better.
+
+The SLAB PR was meanwhile merged and Jason said he would take care of
+sending a PR with the fix:
+https://lore.kernel.org/all/20250730184724.GC89283@nvidia.com/
+
+> Best,
+> 
+> Bernard.
 > 
 
 
