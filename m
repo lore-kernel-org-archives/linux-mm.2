@@ -2,60 +2,61 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 19A9EC87FCB
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 17:21:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B2B3C87FCA
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 17:21:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8DB526B007B; Fri,  1 Aug 2025 13:21:08 -0400 (EDT)
+	id A3B6B6B0089; Fri,  1 Aug 2025 13:21:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88C496B0089; Fri,  1 Aug 2025 13:21:08 -0400 (EDT)
+	id 9C6E16B008A; Fri,  1 Aug 2025 13:21:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A2186B008A; Fri,  1 Aug 2025 13:21:08 -0400 (EDT)
+	id 88D646B008C; Fri,  1 Aug 2025 13:21:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6863E6B007B
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 13:21:08 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id ECBB41A01E8
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 17:21:07 +0000 (UTC)
-X-FDA: 83728854174.14.0249791
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B7B36B0089
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 13:21:09 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3E23C113FC6
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 17:21:09 +0000 (UTC)
+X-FDA: 83728854258.05.FCBD601
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E2B83A000B
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 17:21:04 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 3B2AA40008
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 17:21:07 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf15.hostedemail.com: domain of shiju.jose@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=shiju.jose@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754068865; a=rsa-sha256;
-	cv=none;
-	b=EbWkQU0QOWJEyaFtdiXXX4f/mGcuDUdqYL/jIF7Ozh6om5A8Wmsxl6Vd8I1rQORR6Gc37I
-	EK+TBAtdDh8ng0+teZBE02eMIlsCdS8uBgqg2DDVhqADvHvw6O78qYkAjwgflXNQ71JqBW
-	0SwTDsLLcRVjaiGaKnKnRURGYcNQ4hE=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf15.hostedemail.com: domain of shiju.jose@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=shiju.jose@huawei.com
+	spf=pass (imf07.hostedemail.com: domain of shiju.jose@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=shiju.jose@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754068865;
+	s=arc-20220608; t=1754068867;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=F49yqaeuM2gwQm01vYx7gH/IE2LS6Ds6ze5FPkFVca0=;
-	b=GQQkLteFghq0o63cywENZDQpeXcRHeYXV6Jf7ZdDjhLC3tPMF9BzVrSwEwAUYIye1o/XNT
-	gB7V/JMZe+KafN2iqNcgI+Bqkn9uuFgWVXO9pM82IYarXD7ku6w2fZm8gplZdlgzE0HcFE
-	R+sJNmfN7lCkaIUh/4Xr1eZTPrcJS70=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=V96ziGpZpdAuZZcz/ARa78aqHPMzhR/tEerHldHLr18=;
+	b=3Iaj0ZY/BRZceUpXRigkd4gCF8Edbo4x5VQwKUGM/P+a4W9eVaJEiL+mSvCl6lpgG685PL
+	7AGbplzdIjh0+LKD9p25eKnT/qI9bIQSHjQejMAn9pef0QcN+p3G/GNaYBpCR0hnbssdRB
+	/W7IK6V5pGpxjeVTty+sGSU/onG8NR8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754068867; a=rsa-sha256;
+	cv=none;
+	b=xS8F3DlAcNVTkdtZM57v1rm17tjFv5MsLog1b/V+6GPwpcgvWFkosiXW9zcWwKGPxLtPJm
+	VN/+UZZmRoIQmrVpirWsULnKoWVt+sPE7nS4t4VrxWC9uecjCN++2nvdMijTHqrmgUTYH8
+	oVLEEdvTNXQM68RRfdE/9h33LoUN4P4=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=none;
+	spf=pass (imf07.hostedemail.com: domain of shiju.jose@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=shiju.jose@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4btt372pgDz6L56C;
-	Sat,  2 Aug 2025 01:18:59 +0800 (CST)
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4btt3B6q3Vz6L5BD;
+	Sat,  2 Aug 2025 01:19:02 +0800 (CST)
 Received: from frapeml500007.china.huawei.com (unknown [7.182.85.172])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1B2DD1400D4;
-	Sat,  2 Aug 2025 01:21:02 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id A50E51400D4;
+	Sat,  2 Aug 2025 01:21:05 +0800 (CST)
 Received: from P_UKIT01-A7bmah.china.huawei.com (10.195.32.206) by
  frapeml500007.china.huawei.com (7.182.85.172) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 1 Aug 2025 19:20:59 +0200
+ 15.1.2507.39; Fri, 1 Aug 2025 19:21:02 +0200
 From: <shiju.jose@huawei.com>
 To: <rafael@kernel.org>, <bp@alien8.de>, <akpm@linux-foundation.org>,
 	<rppt@kernel.org>, <dferguson@amperecomputing.com>,
@@ -73,24 +74,26 @@ CC: <jonathan.cameron@huawei.com>, <linuxarm@huawei.com>,
 	<prime.zeng@hisilicon.com>, <roberto.sassu@huawei.com>,
 	<kangkang.shen@futurewei.com>, <wanghuiqiang@huawei.com>,
 	<shiju.jose@huawei.com>
-Subject: [PATCH v10 0/3] ACPI: Add support for ACPI RAS2 feature table
-Date: Fri, 1 Aug 2025 18:20:26 +0100
-Message-ID: <20250801172040.2175-1-shiju.jose@huawei.com>
+Subject: [PATCH v10 1/3] mm: Add node_to_range lookup facility to numa_memblks
+Date: Fri, 1 Aug 2025 18:20:27 +0100
+Message-ID: <20250801172040.2175-2-shiju.jose@huawei.com>
 X-Mailer: git-send-email 2.43.0.windows.1
+In-Reply-To: <20250801172040.2175-1-shiju.jose@huawei.com>
+References: <20250801172040.2175-1-shiju.jose@huawei.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [10.195.32.206]
 X-ClientProxiedBy: lhrpeml500012.china.huawei.com (7.191.174.4) To
  frapeml500007.china.huawei.com (7.182.85.172)
-X-Rspamd-Queue-Id: E2B83A000B
-X-Stat-Signature: nri3fwzgiwnb6gmwji3whejuj5jgou5g
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 3B2AA40008
+X-Stat-Signature: rkaj7e7xdifnyg4ogtnooqgh4wk5uh9u
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1754068864-696624
-X-HE-Meta: U2FsdGVkX1/36hD4csuyoQgMKPwxUVgcr7yhCdMKJZrtCeNliVv+vD9DhHKuVKO86HTctgR5LSXYLn3chsEQ8W77b27Gc1hRw8Qb4hZ9CXU7UPRcwmMYvYmX/8UdSYKFxPFA5ZBszLA5+kTzcn9pqAICt//5NFnmTfniuKOcjgg3pEZ7AeH5suNjOQ1gGhbFE+Aq00O7ksUFzu1BaYw3Nplof6FehGfbOwbA/eEY08n3Lt5Mpef1Py9b/DKklaNDEPxw59l1IcC9+8KPl1FHRisPTs2BJtRNqB5RwzPFsNGXeEsExNnEZ4hsaapSLPQvbPVMZQoLXEg16bdr8PkkuUEwu9eQYCpsfwDskSxqkd3b+Fe/jiLk0u0/ZwZfYEQyW8aXX3EGo/kDqa6jMUuktdMCW+TvDqbKAoenARTCGL/jk9IYM7bmNgNCx1FPPUktjZNWeZ/S9NGs4yzbwJNr/UsU/Bef/MUwpSGeMcOOnGxux1OHueTic9xp1m9J3FeF+op3D/SM20+lTQlmSw0g7+mQd2aGwFXgXobThrywF86b39IA6OcUupumqDZdsgL0XpFEQOQ/Dom3nKE8RxKR0gk5EgSrEx+gv/wO0e9osmU6EguAM1IycuCnVQuX6DMhiTeLiusH4vVHHC1bcZHcMHybA+4DSsHGRV1VHC6Qm5DD+RF2sseW9gctxYuIx3XwqXYWtT8njSD3845+mX4uKqLAJFC+SurJPSRhdaTKLePURNnK1oTH+VZzk1Dt4kxvZesvWpXnsmjP3k+RXNu/QPsD+fpFTzm3tWKTZBGfqpHR+GhFp+1ygt2WApWLbw3n9AWMRpSppd9kRzAZs/slWsapr3P/1Pu77R+SamK+ZMKH5yAhc0PmLUZiSlnX4OeV0zYl1IPB88ntFMlDNkCglm11H6j3Ex9RxXLxAlBOe2K1VRyy4ck2brhpdHvvIGKi6MK/L1QHObixtH3BdsO
- Z2W4qQOb
- Q6aLkt0hL/5xayN/vccGKBv/Qp7CuZu4zLz532JkiS7pJtF1Fjq4r/zuyMNkR5LV22Qb0v1FwDgN8/lJ5UbKelhPbOs7Xd5p7NEYIXD2YEi4TwuMnIZaz7rXnFOm+jeC18MVbbyR6VmtQal7Ti29fq7AvOuG53r8h6zSLpfSbMpougF6K5/uLsYX9qtvZn3eoSKnhI5/irGqIrd6SWokfn2j41ruf8znjoHCZvxnXS8jpFrA3b8kAf+KJIDxSYMuJ+Cgim/cQXupW5ROYewzpTmtmrI4s0384taN3ooAfgpBkZzcMwY8tgxAvJZQCTSP/2vew9rW+z4RpGtAbU1rZlUCzTM1OXcKqnJbMMHiMBXAOumDZoZzz4B/8jxPDH6iEcqV6
+X-HE-Tag: 1754068867-490928
+X-HE-Meta: U2FsdGVkX19CVh/Casil4m4EBkDFUcV2IxYqz/CBBWEt6GnfGVa4alNNi2FYk/ZPMZdcaSGUif+OnJibCB5lRVZo0pzizc4zxmr8t2reQ4PJhIu0Ty9/eiO0sBsHpsXvZlm4QCxwAL+EuyRDGceTLtEYqpSsw+Fgn2czZigfnJ95tws68Rc4yjKhDQ5bQJY6lbBy/91zmnmA/DdwErlecxOwQ28PHw8OenZy8agtXBWb5TbKt2pQiagWqtxQIn1E+2vZcR2HP59rgfq+ZvMyWCEx8CQXN5UnEnj80eZ12SPlURDTGNvR3QR5EWU8KgnrNVWI5UQTbYfuKRkiEOltYfvZ7rsAynKcJc3ZHgsh7T+sF9CDchKi6JPuNkOljgDw74lafthj4fwUyyWp4f+3bZhLV2iwLbJaCk9BlSNkzcc/khXDt6SmjQfhiEgf+/sGQBH5N/jRkcCVkylMv7isCWdzMm/LJRwk2+Uve+4Q0J8EdHr3hjrcw6rdgD3Zyq4pe4I6HN4z6cLOIk7yGYxVCbeS7wO9BxyCvw3TCewH8jqYRH8G/ku8pEn/LVlBNgbmlECwcxYqTCqUEZ39lBaeU+VB1xl6Y3YUVIKIFAM6Gp6uWtLgXC0Yd2NJomM3n0WwyWPjcpWxPeEQK38zL+NQaJUxmPw5h5C/XpByTkRidDbjtMQSdb8h1wKctXMihwmZyK3xTvzMb2jGX1KPBbCOUMgyMcjLzIj/OeuThhM74MeNZ3vZYxEJM++5cxx/lTn7sQOpf8+OkSiZE49ufBy8QkQ2vcpHGCHnmDqqPqf82ftmbw3S3PaO/WIjTBWvcHZM0cD1H12BGPGziZyqxFOlpT631XW+Eq6Gww9iRyAbfRHBY1dfupkzGhGyepeGwAxrdOos+qLDlUaAwUXMeHMFNS2fbwmql9TyT5PqSrIVaOCc4MAxY04xtw/DMQZXbcGE63hHn/btydMsorIWhFC
+ 5tpEk0Hs
+ cLeqvwRTCqMTuhxCkgZLZuojaKX04BIPsl4S5JtSed8TWqdVIG7XWbFR4NzFZypQcKi78Q8QaYezgpQ93Bd5koS6ZM44F/e1VWAvhifIqG4IoD9GMUCygEdlFISZ7PAVFfI3ziMt3zJggAOHHsGgUdKHOcEsT5XsO6tlCvWfucNt+bAJL5bIDkDlX18xcHi5sjdOpJxw8Cr0GkXzuCurbAtayX0Rz194Ml2brBsRR7Z8RZW/WgokHnzHfQTvj04qXJEs/5Zm9GVXxTyKckVRYDoZI4bpZI3XjabW8bdXvypBO05i1SmNe+wI7gaa2fi4TWR8Z7mQ8aJMNWRKxilGSh2L+evU51my+v6qIpDFQr1B69myoIYiE0rzpWg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,141 +104,110 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Shiju Jose <shiju.jose@huawei.com>
 
-1. Add node_to_range lookup facility to numa_memblks, which is
-   required for the ACPI RAS2 memory features.
-   
-2. Add support for ACPI RAS2 feature table (RAS2) defined in the
-   ACPI 6.5 specification, section 5.2.21 and RAS2 HW based memory
-   scrubbing feature.
+Lookup facility to retrieve memory phys lowest continuous range for
+a NUMA node is required in the numa_memblks for the ACPI RAS2 memory
+scrub use case.
 
-ACPI RAS2 patches were part of the EDAC series [1].
+Suggested-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+---
+ include/linux/numa.h         | 10 ++++++++++
+ include/linux/numa_memblks.h |  2 ++
+ mm/numa.c                    | 10 ++++++++++
+ mm/numa_memblks.c            | 23 +++++++++++++++++++++++
+ 4 files changed, 45 insertions(+)
 
-The code is based on linux.git v6.16-rc7 [2].
-
-1. https://lore.kernel.org/linux-cxl/20250212143654.1893-1-shiju.jose@huawei.com/
-2. https://github.com/torvalds/linux.git
-
-Changes
-=======
-v9 -> v10:
-1. Use pcc_chan->shmem instead of 
-   acpi_os_ioremap(pcc_chan->shmem_base_addr,...) as it was
-   acpi_os_ioremap internally by the PCC driver to pcc_chan->shmem.
-   
-2. Changes required for the Ampere Computing system where uses a single
-   PCC channel for RAS2 memory features across all NUMA domains. Based on the
-   requirements from by Daniel on V9
-   https://lore.kernel.org/all/547ed8fb-d6b7-4b6b-a38b-bf13223971b1@os.amperecomputing.com/
-   and discussion with Jonathan.
-2.1 Add node_to_range lookup facility to numa_memblks. This is to retrieve the lowest
-    physical continuous memory range of the memory associated with a NUMA domain.
-2.2. Set requested addr range to the memory region's base addr and size
-   while send RAS2 cmd GET_PATROL_PARAMETER 
-   in functions ras2_update_patrol_scrub_params_cache() &
-   ras2_get_patrol_scrub_running().
-2.3. Split struct ras2_mem_ctx into struct ras2_mem_ctx_hdr and struct ras2_pxm_domain
-   to support cases, uses a single PCC channel for RAS2 scrubbers across all NUMA
-   domains and PCC channel per RAS2 scrub instance. Provided ACPI spec define single
-   memory scrub per NUMA domain.
-2.4. EDAC feature sysfs folder for RAS2 changed from "acpi_ras_memX" to  "acpi_ras_mem_idX"
-   because memory scrub instances across all NUMA domains would present under
-   "acpi_ras_mem_id0" when a system uses a single PCC channel for RAS2 scrubbers across
-   all NUMA domains etc.
-2.5. Removed Acked-by: Rafael from patch [2], because of the several above changes from v9.
-
-v8 -> v9:
-1. Added following changes for feedback from Yazen.
- 1.1 In ras2_check_pcc_chan(..) function
-    - u32 variables moved to the same line.
-    - Updated error log for readw_relaxed_poll_timeout()
-    - Added error log for if (status & PCC_STATUS_ERROR), error condition.
-    - Removed an impossible condition check.
-  1.2. Added guard for ras2_pc_list_lock in ras2_get_pcc_subspace().
-        
-2. Rebased to linux.git v6.16-rc2 [2].
-
-v7 -> v8:
-1. Rebased to linux.git v6.16-rc1 [2].
-
-v6 -> v7:
-1. Fix for the issue reported by Daniel,
-   In ras2_check_pcc_chan(), add read, clear and check RAS2 set_cap_status outside
-   if (status & PCC_STATUS_ERROR) check. 
-   https://lore.kernel.org/all/51bcb52c-4132-4daf-8903-29b121c485a1@os.amperecomputing.com/
-
-v5 -> v6:
-1. Fix for the issue reported by Daniel, in start scrubbing with correct addr and size
-   after firmware return INVALID DATA error for scrub request with invalid addr or size.
-   https://lore.kernel.org/all/8cdf7885-31b3-4308-8a7c-f4e427486429@os.amperecomputing.com/
-   
-v4 -> v5:
-1. Fix for the build warnings reported by kernel test robot.
-   https://patchwork.kernel.org/project/linux-edac/patch/20250423163511.1412-3-shiju.jose@huawei.com/
-2. Removed patch "ACPI: ACPI 6.5: RAS2: Rename RAS2 table structure and field names"
-   from the series as the patch was merged to linux-pm.git : branch linux-next
-3. Rebased to ras.git: edac-for-next branch merged with linux-pm.git : linux-next branch.
-      
-v3 -> v4:
-1.  Changes for feedbacks from Yazen on v3.
-    https://lore.kernel.org/all/20250415210504.GA854098@yaz-khff2.amd.com/
-
-v2 -> v3:
-1. Rename RAS2 table structure and field names in 
-   include/acpi/actbl2.h limited to only necessary
-   for RAS2 scrub feature.
-2. Changes for feedbacks from Jonathan on v2.
-3. Daniel reported a known behaviour: when readback 'size' attribute after
-   setting in, returns 0 before starting scrubbing via 'addr' attribute.
-   Changes added to fix this.
-4. Daniel reported that firmware cannot update status of demand scrubbing
-   via the 'Actual Address Range (OUTPUT)', thus add workaround in the
-   kernel to update sysfs 'addr' attribute with the status of demand
-   scrubbing.
-5. Optimized logic in ras2_check_pcc_chan() function
-   (patch - ACPI:RAS2: Add ACPI RAS2 driver).
-6. Add PCC channel lock to struct ras2_pcc_subspace and change
-   lock in ras2_mem_ctx as a pointer to pcc channel lock to make sure
-   writing to PCC subspace shared memory is protected from race conditions.
-   
-v1 -> v2:
-1.  Changes for feedbacks from Borislav.
-    - Shorten ACPI RAS2 structures and variables names.
-    - Shorten some of the other variables in the RAS2 drivers.
-    - Fixed few CamelCases.
-
-2.  Changes for feedbacks from Yazen.
-    - Added newline after number of '}' and return statements.
-    - Changed return type for "ras2_add_aux_device() to 'int'.
-    - Deleted a duplication of acpi_get_table("RAS2",...) in the ras2_acpi_parse_table().
-    - Add "FW_WARN" to few error logs in the ras2_acpi_parse_table().
-    - Rename ras2_acpi_init() to acpi_ras2_init() and modified to call acpi_ras2_init()
-      function from the acpi_init().
-    - Moved scrub related variables from the struct ras2_mem_ctx from  patch
-      "ACPI:RAS2: Add ACPI RAS2 driver" to "ras: mem: Add memory ACPI RAS2 driver".
-
-Shiju Jose (3):
-  mm: Add node_to_range lookup facility to numa_memblks
-  ACPI:RAS2: Add ACPI RAS2 driver
-  ras: mem: Add memory ACPI RAS2 driver
-
- Documentation/edac/scrub.rst |  79 ++++++
- drivers/acpi/Kconfig         |  12 +
- drivers/acpi/Makefile        |   1 +
- drivers/acpi/bus.c           |   3 +
- drivers/acpi/ras2.c          | 493 +++++++++++++++++++++++++++++++++++
- drivers/ras/Kconfig          |  11 +
- drivers/ras/Makefile         |   1 +
- drivers/ras/acpi_ras2.c      | 464 +++++++++++++++++++++++++++++++++
- include/acpi/ras2.h          |  99 +++++++
- include/linux/numa.h         |  10 +
- include/linux/numa_memblks.h |   2 +
- mm/numa.c                    |  10 +
- mm/numa_memblks.c            |  23 ++
- 13 files changed, 1208 insertions(+)
- create mode 100644 drivers/acpi/ras2.c
- create mode 100644 drivers/ras/acpi_ras2.c
- create mode 100644 include/acpi/ras2.h
-
+diff --git a/include/linux/numa.h b/include/linux/numa.h
+index e6baaf6051bc..d41e583a902d 100644
+--- a/include/linux/numa.h
++++ b/include/linux/numa.h
+@@ -41,6 +41,10 @@ int memory_add_physaddr_to_nid(u64 start);
+ int phys_to_target_node(u64 start);
+ #endif
+ 
++#ifndef node_to_phys_lowest_continuous_range
++int node_to_phys_lowest_continuous_range(int nid, u64 *start, u64 *end);
++#endif
++
+ int numa_fill_memblks(u64 start, u64 end);
+ 
+ #else /* !CONFIG_NUMA */
+@@ -63,6 +67,12 @@ static inline int phys_to_target_node(u64 start)
+ 	return 0;
+ }
+ 
++static inline int node_to_phys_lowest_continuous_range(int nid, u64 *start,
++						       u64 *end)
++{
++	return 0;
++}
++
+ static inline void alloc_offline_node_data(int nid) {}
+ #endif
+ 
+diff --git a/include/linux/numa_memblks.h b/include/linux/numa_memblks.h
+index 991076cba7c5..ccc53029de8b 100644
+--- a/include/linux/numa_memblks.h
++++ b/include/linux/numa_memblks.h
+@@ -55,6 +55,8 @@ extern int phys_to_target_node(u64 start);
+ #define phys_to_target_node phys_to_target_node
+ extern int memory_add_physaddr_to_nid(u64 start);
+ #define memory_add_physaddr_to_nid memory_add_physaddr_to_nid
++extern int node_to_phys_lowest_continuous_range(int nid, u64 *start, u64 *end);
++#define node_to_phys_lowest_continuous_range node_to_phys_lowest_continuous_range
+ #endif /* CONFIG_NUMA_KEEP_MEMINFO */
+ 
+ #endif /* CONFIG_NUMA_MEMBLKS */
+diff --git a/mm/numa.c b/mm/numa.c
+index 7d5e06fe5bd4..0affb56ef4f2 100644
+--- a/mm/numa.c
++++ b/mm/numa.c
+@@ -59,3 +59,13 @@ int phys_to_target_node(u64 start)
+ }
+ EXPORT_SYMBOL_GPL(phys_to_target_node);
+ #endif
++
++#ifndef node_to_phys_lowest_continuous_range
++int node_to_phys_lowest_continuous_range(int nid, u64 *start, u64 *end)
++{
++	pr_info_once("Unknown target phys addr range for node=%d\n", nid);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(node_to_phys_lowest_continuous_range);
++#endif
+diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
+index 541a99c4071a..9cbaa38cb92d 100644
+--- a/mm/numa_memblks.c
++++ b/mm/numa_memblks.c
+@@ -590,4 +590,27 @@ int memory_add_physaddr_to_nid(u64 start)
+ }
+ EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
+ 
++static int nid_to_meminfo(struct numa_meminfo *mi, int nid, u64 *start, u64 *end)
++{
++	int i;
++
++	if (!numa_valid_node(nid))
++		return -EINVAL;
++
++	for (i = 0; i < mi->nr_blks; i++) {
++		if (mi->blk[i].nid == nid) {
++			*start = mi->blk[i].start;
++			*end = mi->blk[i].end;
++			return 0;
++		}
++	}
++
++	return -ENODEV;
++}
++
++int node_to_phys_lowest_continuous_range(int nid, u64 *start, u64 *end)
++{
++	return nid_to_meminfo(&numa_meminfo, nid, start, end);
++}
++EXPORT_SYMBOL_GPL(node_to_phys_lowest_continuous_range);
+ #endif /* CONFIG_NUMA_KEEP_MEMINFO */
 -- 
 2.43.0
 
