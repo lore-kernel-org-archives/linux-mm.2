@@ -2,110 +2,130 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E78BC87FCA
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 16:11:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E4D6AC87FCB
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 16:23:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 224386B008A; Fri,  1 Aug 2025 12:11:25 -0400 (EDT)
+	id 6ABAA6B0088; Fri,  1 Aug 2025 12:23:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D49C6B008C; Fri,  1 Aug 2025 12:11:25 -0400 (EDT)
+	id 683356B0089; Fri,  1 Aug 2025 12:23:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C3BC6B0092; Fri,  1 Aug 2025 12:11:25 -0400 (EDT)
+	id 572096B008A; Fri,  1 Aug 2025 12:23:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EF5336B008A
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 12:11:24 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A0D051A0219
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 16:11:24 +0000 (UTC)
-X-FDA: 83728678488.30.C357ABF
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D5DC4140010
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 16:11:22 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=P2BWe3Hb;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.160.52 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754064682; a=rsa-sha256;
-	cv=none;
-	b=0hv48AvInZNFAKQgyta9W4HDQie2g8PKRhIhJtdFdQ/PQpY4Lq9n5ifA6TkVRHsbCQiJUv
-	dHPYOSokbVxh4pCnYlFfF0oRkp9T+EH/CYAunxdYZcf6EBTH2ePdjQpIDG5a1FEQs4kSaq
-	UMyf9lVgfu3SgiNINjALnotxCH4pZK4=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=P2BWe3Hb;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.160.52 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 48A686B0088
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 12:23:27 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 072C31D97BF
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 16:23:27 +0000 (UTC)
+X-FDA: 83728708854.29.6B907D9
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 4D7E1140006
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 16:23:24 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Ks1tUdyB;
+	spf=pass (imf26.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754064682;
+	s=arc-20220608; t=1754065404;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fDM74AkLUFGDbMniQpaGkJ4N3t+PhBITmSskxxmk844=;
-	b=Lu6zDre2b/fdNTvBoIXVSNhGHCWB5gT4eEChPugBLt2Kw+8S26+qAVb/0E7Ds3wSDIrfTN
-	1WC9gLPPACGLXNJo9TY7O1UT+Lk7XtCAVCyHGSi7l6nqxqas4AYhwuv0sgCJxMziVdD8+2
-	Tj6TK1rJxk75YQh0kfY44pKzsJeByHw=
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-2eb6c422828so2453938fac.1
-        for <linux-mm@kvack.org>; Fri, 01 Aug 2025 09:11:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754064682; x=1754669482; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fDM74AkLUFGDbMniQpaGkJ4N3t+PhBITmSskxxmk844=;
-        b=P2BWe3Hbg75n3994NDElRwsJbRsDRHaLFqmuEKLTZyzk90iT6L1Djh4eC65yW1BTLH
-         oOaBIkucLdzGSfhiLqFhH8q59F0xCqV0aIw6yOJjnDAND2pAdFf/515H1LAZ+k6r5rSl
-         gvQKPqJbvkOIyR7EqlS1cuRE4iO9Jp2L9vbVq+k6C/isJALG9KKxzpFXejukvrk9bh56
-         ncO3DK1Xs7/dZO4ARms6B2TyDP6cSYX6q/VfnMIosi15PuGCrkbBW2DhcZym+quoDNyn
-         0kjr1gupMr4i6t2fWuuU3sk+BXQ/SwTGkGl0+kte8lNXwwnybEUqNwOrc4om7M/LdDtM
-         bL1w==
+	bh=2Sqvb7JAqSKhuY6yKaHlPytiCq88KcrtpeNVaMME5GA=;
+	b=G2ifNOHBJ80cT7ePqZqG9Ss+6lJuAEStL/vVMTYFupB9mmRF0g6tMnu46vYi91HnwHQFrR
+	Chfir3r2opB0Wc/v6h1T8fIEYlwgAhwe4vtgKfz7abGW50nx52RV/cSjjNdqQzzi4B/mX7
+	hRzTIjwEtvbwsmlwPR1QdrpejUPaS8Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754065404; a=rsa-sha256;
+	cv=none;
+	b=dvu90FmrRP18zlPg77UVjBeZULnkO41R4A2pjRV0dIN/cM0/kKeZedN8H8NYRBOx3aHfSN
+	O56XUWye22XE0fkCtaZYUj8S/gEVXB1OP2RptVeVvZ4My9H9HXpXyrl8FShOX8ItxSZbxi
+	VvKprgxd8Ah/6HL8Xyn9oE4JamlbKLA=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Ks1tUdyB;
+	spf=pass (imf26.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1754065403;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2Sqvb7JAqSKhuY6yKaHlPytiCq88KcrtpeNVaMME5GA=;
+	b=Ks1tUdyBdCLAs43b9oSd5j8/5xJeB7FtQy33XTqwEfBox7FCi3oUlQE+WKxzJ+Uh1X2ws5
+	a4kKFY4Lbn1p2BKieSzr7+G7CRulVoc6StPMcKo136zTozJf/PB/7IKUog3pC5K6748Ac+
+	DlnMVwFJCrFVdv1E0XcAHBYv4LmchSY=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-167-TYIphVYDPzyd-cnWL4PUGQ-1; Fri, 01 Aug 2025 12:23:20 -0400
+X-MC-Unique: TYIphVYDPzyd-cnWL4PUGQ-1
+X-Mimecast-MFC-AGG-ID: TYIphVYDPzyd-cnWL4PUGQ_1754065400
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-707722d08d9so39262166d6.3
+        for <linux-mm@kvack.org>; Fri, 01 Aug 2025 09:23:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754064682; x=1754669482;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fDM74AkLUFGDbMniQpaGkJ4N3t+PhBITmSskxxmk844=;
-        b=EGGwz5pm8d0eaH69nZ4Vj009KCJsyDhDDJ9MclxUnucza87cb3suo5wjgmtZbwDFZ1
-         upohMdXABufCg5ozbhkkzR6qS9pPqSjqnuOqPwkFiOJEpYaHx0BsCKNvpSFYw2a6aSv9
-         KWEefwk+TMNzHVqC/EpJ7I13rYBr+OW4G77MpJpzbQU5nYnXE4yIERo2+qsxrgiY8GAs
-         flDdDMicwz0DDOozkWwhKHawfsPj6yg7RZ+Td+iS0joJ1Jls/WajEVaEH0xE5kSDTk8o
-         GgFOagXE9P7adU3rduiAh4TroIf6j4zewO4xPYJcKqn32KzDIlIOLs1yb4FGZEvyFAaF
-         o66g==
-X-Forwarded-Encrypted: i=1; AJvYcCVOKcdPO/bpkaoDTuGCf+aSvCBgaVH/CpuhBn928nBuo4suuHVXJ7/3EcCrl5GmmC9LF6WupZp4Lw==@kvack.org
-X-Gm-Message-State: AOJu0YwRUF4w1wQ+9izKv9hPdmYCFniawVw1wTtKb8ffC8/3AyFBuKqd
-	u89O+HeAiqQH5HKZT5XXYrhkONGtxasrcuTLc7foOjHiS/wPDOHQek/BJ8H8n9YL0voM9ZDvZsT
-	L/2nlLSlvYzXnSg2/1VcQ1fRaSgHPXRo=
-X-Gm-Gg: ASbGncsI+Rtsr2Oc6iwBek81JHYXA9guQiN0eZDXxruu5fjSMZscU7GMd8pbc7hJCMA
-	yJXCovX5wsKkOrkVV4ECcjeMBbTXJgCL595I39pGCGjr3OM7t/ri9rNUjcTcrYHWpN6tYauudOQ
-	Razk6+vg6FsObOVdXQGyE9C3PxrowhiATMq4X/YL1pyJi6o3HJmzRf5hpaKHPBCEy/3Fjq2j8wu
-	qbw
-X-Google-Smtp-Source: AGHT+IH2Nb7B8EopMRNCEjFAeodu4t1D/XqmvTxU9PJF2g4XsvjezeiAFWqhc86hVcoLxEDqbT84ahs9DxtNkrc2VWw=
-X-Received: by 2002:a05:6870:9e95:b0:2ea:83c5:1e27 with SMTP id
- 586e51a60fabf-30b66ad7e05mr167005fac.12.1754064681671; Fri, 01 Aug 2025
- 09:11:21 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1754065400; x=1754670200;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2Sqvb7JAqSKhuY6yKaHlPytiCq88KcrtpeNVaMME5GA=;
+        b=symcQFilXzrw4U+u5Scizp04DXhgy+cQE9Wii+2jgeyNNVwBQEg1WxbmCZftDQFsgb
+         4xJW7EEcTUbh4lJKowR8DqeVisudQRHi0vG26Azfydu87ubP14dWJkBGUsJo+36TRkHm
+         vH/OtivwZaLaEEJUVy6yLXToWf2i2vJJSPBhexobC5j8IfniQswoi61e+d1iiRevDL8e
+         aXuj2YYaa5YA/c7s0jYrANWwgt6fMAWVzwKF4CRZWJEOVXfuPsgRA2feacZ2ko0gvYuL
+         1gW0+flHKy7kWcaZ6c1i8P3Q6aDxKgDon1LDLX1RmeQ3kXe2IGs5GOkM1G7QuN7ijd8X
+         o8FA==
+X-Forwarded-Encrypted: i=1; AJvYcCU3fPHZB543tMVxOIfmp0BD5hbaJbQM6+eYmcK39OiVgXtxUqkYr1wMTQrIpe9jt3NwxmkOVFZWmQ==@kvack.org
+X-Gm-Message-State: AOJu0Yxrs7kD8htb/+aQQ+Xu+yd1MahdJry8ANmK1vJdsGnyLQT2Yszg
+	kF2LW4wKGtBL6wQ6vvMV56irakVjd6NZTDNS9wSYb1PA6y1phLKGfRTxFteLw+m21eOnooqnxdN
+	KrpfxV8OEpMu+zxgc4GPZqwewGDP6eWZGX63WqTAsUTscDM0WVFgV
+X-Gm-Gg: ASbGnctlvwt/KlVlNMrFQ16gJgKYnF+qO9wtGXrvni4PYrBdiAk04DTrbY7xwTkfYEA
+	/4BNrpz/8aHjFA7J3e3cgkeglvqis13lpuHZWLVZso6BNTLNNaCm0VQWvs+3+ouqgt1VWNIhlf7
+	/uWcFAhn4dZgQPUCJIjy/0zPCr8FBTfVWL+zEUn+mf+7VkdlrFUaKuG+ijiJMnh8rhlO6moSFbX
+	qlHpEbK9C1OPNdN45hdLjQnmdIuRS3gT1H6Hr03z/tOjQI+jtCdvqaiGwenAUmb1kwK2ggoI7Bs
+	O3yDTafbXgPfjJ1aaHuVXoyIDk2PvbCR
+X-Received: by 2002:a05:6214:623:b0:707:1eae:17e9 with SMTP id 6a1803df08f44-70935f6c42emr3328426d6.21.1754065399946;
+        Fri, 01 Aug 2025 09:23:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEpZI71GEayMeGwYSIqUSspyQlyLLtHuQaSsWRKAdHTVneK9AyXLakZUxoMF71iimA1I9hOJg==
+X-Received: by 2002:a05:6214:623:b0:707:1eae:17e9 with SMTP id 6a1803df08f44-70935f6c42emr3327936d6.21.1754065399325;
+        Fri, 01 Aug 2025 09:23:19 -0700 (PDT)
+Received: from x1.local ([174.89.135.171])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-7077c9dc383sm22996276d6.16.2025.08.01.09.23.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Aug 2025 09:23:18 -0700 (PDT)
+Date: Fri, 1 Aug 2025 12:23:05 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org,
+	aarcange@redhat.com, lokeshgidra@google.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] userfaultfd: fix a crash when UFFDIO_MOVE handles
+ a THP hole
+Message-ID: <aIzp6WqdzhomPhhf@x1.local>
+References: <20250731154442.319568-1-surenb@google.com>
+ <d2b6be85-44d5-4a87-bfe5-4a9e80f95bb8@redhat.com>
+ <aIzMGlrR1SL5Y_Gp@x1.local>
+ <CAJuCfpEqOUj8VPybstQjoJvCzyZtG6Q5Vr4WT0Lx_r3LFVS7og@mail.gmail.com>
 MIME-Version: 1.0
-References: <20250731175827.16060-1-sj@kernel.org> <679e90f5-cbeb-4078-ad76-a075fa5d7afa@sk.com>
-In-Reply-To: <679e90f5-cbeb-4078-ad76-a075fa5d7afa@sk.com>
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-Date: Sat, 2 Aug 2025 01:11:09 +0900
-X-Gm-Features: Ac12FXwjNZJQjbIOiTgT3KYsCiAQtRxXi14dWMv04SFrqWS0XfUeDLfizECzg_M
-Message-ID: <CABFDxMHamJ0m8Nq1L-4WNz4OwLaLVQdwV=X4_ZpK7Vd+RSTHVA@mail.gmail.com>
-Subject: Re: [PATCH] mm/damon: update expired description of damos_action
-To: Honggyu Kim <honggyu.kim@sk.com>
-Cc: SeongJae Park <sj@kernel.org>, kernel_team@skhynix.com, damon@lists.linux.dev, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D5DC4140010
-X-Stat-Signature: b3nmhy7rn696ccqqjr6ws46zwyzc9fgq
+In-Reply-To: <CAJuCfpEqOUj8VPybstQjoJvCzyZtG6Q5Vr4WT0Lx_r3LFVS7og@mail.gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 4NpiyBJQrsQgM5KoainCEbsA1PQ6TG20vbjKzXNxY00_1754065400
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4D7E1140006
+X-Stat-Signature: t7mdiq5qn8xrax1ydj3yy6pncjuwtjor
 X-Rspam-User: 
-X-HE-Tag: 1754064682-279607
-X-HE-Meta: U2FsdGVkX19rUvYyswQyzzLk3NDj0XeaXyJhh24kCfbDcdIEUCLtgGL/KpX5V8AWcZnIduCo/VwKyg2hnQhudNOLXWKWn+PbVL3d2PsuKHKvBw+5L0nR6M++usnM5/oKaFXeNeOHu+MoYoPRrP9+YfXCSMYkzGo3YvAqXnXWJPrkPP1vlooLPbaVFFbqj6wPEjI5U3hYEFDKUqOzUEvdcn2atOpgHmcMk8M78dnvdaX/a87JtIUmtcaN2feSTk015MOfff5q6138a3mBR//RgV8YFpQwKmlRPnjGWLykOQM29LGxDpsun6HfH/DfBehCNlxSBQVqIfYBjgzlGpw5o7z3hcf7tYsxb8GImWitQKc7dMzQ7EeVifSjWdERsk5/5+p+5Uq++JsUEgfJ+AZVEmP6ki4AwKD+htXMFkDrZTiLuCismht+wTGANzB58YdbZ+wzz7eDGOhmszwTBFgTGzQTkDcn7avz3WFMLuXPdo5Q0iDFSNUSob+eeAWEDHTqG6Ykq+NJp6BG+Uu858zcKYMxJRg3BchD1GCaSUB0c839Zh+uOBaomFWVUJBkPRoYK9VuQOkYCKLr82eJQIUTnW75TztM0hf3pvNHn5KGRJp3L16IpJKo5YimiIAznl5eGRbzJzK5gbvbyNHuNpmUNEq5a1QYm/SihG+N+bn3Q/WN+XzL0CLsjcH77lanRGglMjJKPW0BX9O44MqW3rrKVnpMUG0jh7mS0bRm7bcAeYXMtI8Za/OozIGO1xyMv9iRiOAP9IEbUA6TYcYfPiUdUPeL76kvJjndqJLkSL2PP+zo/787t7br4ivpztsf+OxLbRtQa26j+eOwspvPGRo35/+pQZcYu1Gne3mcSXjgUCyJHPHsRglJJz8p7c/046ywfPoBddtXotiwx2O2xFLK1qiyTcEgekYThfl2nfNfcujHJ1jzUG6Fs++IC+k1CPauqHHBLQZ9gKQi9aLM1/1
- S4GPO9Jt
- sOLLvixDor0gSxdDmXZQM+qd93EJcxyjmWI/EsXaVwTifALZlKAPZ8EAeyg==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1754065404-411783
+X-HE-Meta: U2FsdGVkX193K6eORfyhv2nOL24uQkIWcX8iXAaNgDAKU0nTYuYyfMxOZ/sKRBj8RLzeKdUl35w5VNy/gl/AkgkViKLhWR/E7VuRX1wTlg9r/l5rH6rKCOH1ijQKpMzEqf3gIxmkp5yRvai7h/UgkOF4vmoA4Sq8FJ9sgA+9fSgufiRri405D62hzLdqV5Z4gJI0y81Z4S0xU1XTkGEarKwaZjt/DPeeRfadj0NBB7XdT5CIzTUeHUfsVvtXR4ZkgmFol4Vzsl1utuvEqS7705+TEXGOB6HBV7Ov/5jnNHnJdSl/aV/fiELZGviBejFfyNNUVApvqXQlNcocfx6PdlgHoYvsVt7QXQALday7VpOpBJ8y7SVCql7B53vEPE7Q0cVpOE5ozPmNklT7E7AVFB9N3Y2oPrTZUiNxB+cKllCNSMKNiqAY7VScV0hfB79PgsTbDx7/+nOerrQZj0SPIl4G5l8emPGhHaK7W5wXea04UJWhslZclwfOZs3EJJhCfqwO5uHOqqw0ikM9VUd6Sd/XXgvEU8iCiEmAcNbHysVVl/WiiTaSij3grUcI7jdNNxvnHmBwSfB0eMnTZliZN+WlTMLC3WaBfQGWrU43QS2SmGnFxXC6z1dggWPIjpCKMxZJoUY8oAPPFjFZk9c/LTbFbVwmR5XsMC4Ij331dzE1ZAidA2bT7Pq79qLHoCr6wGOtTf+017Gzw1kSn9j8vpHBwOy+mD0fm6fvFL7njaVFQiu191HFrd10RSON7nEjR5lwljjSAlJonWXztCMz3aY4Evg5KMPGTpBrUnnR+ueBsHGER1o6BbTb30dPI2pJXL5PzTrDdj31qzB9khYiVt6V31zSAYO11J+l9k1sMNqmnfae+gty9LwmutP42s1apoAvyZrTtEd5sV2xeeO1lUrjYxw7TevojZRXbIGcdP2yGe0nZIb6A1BMvEFZMgRCq/aMIm27g2sY0JjyEBr
+ o8Rv2n3i
+ fBeiy85lekm1imE5uCQIqQRWESxx3qnj/GGAsLJH7ogEpSQyd/8N6k2/W/KmnuE1D0pesZIHnj6y83DJB5rNnsqqxcxCx+B5tuZdkKspnIOHvurDpl6S6dDtcdFk6KZVIBnIxxmr73BFCR8pHyWnQult6k4KJiB7mFMj8shQqAA34oYwgGdiNtxsprToMFWMbk0r76O7FpEqdqwyOHbH410S1LNFyNWewg6uE2wv6drzRXOXWO3wTdNzeFxUhhrf+1Yyo1rOZxfxdxVYf1NNguRRa+WVHjt79ihK8Am9ALgqFpcemPu4OxiHITTswltz/y5FmTUCcmlX/0oktlKFxuHg8WnVWqv8UDmgQyXIinWPUmX9/s7vWA/wxGiXSw+8w6iTov5WcG5qt0V0f14QehHKuwpj3N/Cu6yXizSm+dKK/N62QV93yA5rzFCxkiUo/knG+pIcGFsB766N39p4pBDmqcZzeDNGo+XEEOZC72IaCREC3VFwk5XpfhHo2LA4m9uUR16ynywCJNfI19VhYqTGq2GUJyWisST8s6+Dvigfp9poXgvgr/YITXNb6nZ77306g38SC6ZUtYFyg75AFweRKWviN6Xst/h9c
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,151 +134,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, Honggyu
+On Fri, Aug 01, 2025 at 08:28:38AM -0700, Suren Baghdasaryan wrote:
+> On Fri, Aug 1, 2025 at 7:16 AM Peter Xu <peterx@redhat.com> wrote:
+> >
+> > On Fri, Aug 01, 2025 at 09:21:30AM +0200, David Hildenbrand wrote:
+> > > On 31.07.25 17:44, Suren Baghdasaryan wrote:
+> > >
+> > > Hi!
+> > >
+> > > Did you mean in you patch description:
+> > >
+> > > "userfaultfd: fix a crash in UFFDIO_MOVE with some non-present PMDs"
+> > >
+> > > Talking about THP holes is very very confusing.
+> > >
+> > > > When UFFDIO_MOVE is used with UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES and it
+> > > > encounters a non-present THP, it fails to properly recognize an unmapped
+> > >
+> > > You mean a "non-present PMD that is not a migration entry".
+> > >
+> > > > hole and tries to access a non-existent folio, resulting in
+> > > > a crash. Add a check to skip non-present THPs.
+> > >
+> > > That makes sense. The code we have after this patch is rather complicated
+> > > and hard to read.
+> > >
+> > > >
+> > > > Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+> > > > Reported-by: syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com
+> > > > Closes: https://lore.kernel.org/all/68794b5c.a70a0220.693ce.0050.GAE@google.com/
+> > > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > > > Cc: stable@vger.kernel.org
+> > > > ---
+> > > > Changes since v1 [1]
+> > > > - Fixed step size calculation, per Lokesh Gidra
+> > > > - Added missing check for UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES, per Lokesh Gidra
+> > > >
+> > > > [1] https://lore.kernel.org/all/20250730170733.3829267-1-surenb@google.com/
+> > > >
+> > > >   mm/userfaultfd.c | 45 +++++++++++++++++++++++++++++----------------
+> > > >   1 file changed, 29 insertions(+), 16 deletions(-)
+> > > >
+> > > > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> > > > index cbed91b09640..b5af31c22731 100644
+> > > > --- a/mm/userfaultfd.c
+> > > > +++ b/mm/userfaultfd.c
+> > > > @@ -1818,28 +1818,41 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+> > > >             ptl = pmd_trans_huge_lock(src_pmd, src_vma);
+> > > >             if (ptl) {
+> > > > -                   /* Check if we can move the pmd without splitting it. */
+> > > > -                   if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
+> > > > -                       !pmd_none(dst_pmdval)) {
+> > > > -                           struct folio *folio = pmd_folio(*src_pmd);
+> > > > +                   if (pmd_present(*src_pmd) || is_pmd_migration_entry(*src_pmd)) {
+> >
+> > [1]
+> >
+> > > > +                           /* Check if we can move the pmd without splitting it. */
+> > > > +                           if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
+> > > > +                               !pmd_none(dst_pmdval)) {
+> > > > +                                   if (pmd_present(*src_pmd)) {
 
-On Fri, Aug 1, 2025 at 8:35=E2=80=AFPM Honggyu Kim <honggyu.kim@sk.com> wro=
-te:
->
-> Hi Sang-Heon and SeongJae,
->
-> On 8/1/2025 2:58 AM, SeongJae Park wrote:
-> > Hello Sang-Heon,
-> >
-> > On Thu, 31 Jul 2025 22:22:30 +0900 Sang-Heon Jeon <ekffu200098@gmail.co=
-m> wrote:
-> >
-> >> Nowadays, damos operation actions support more various operation set.
-> >> But comments(also, generated documentation) doesn't updated.
-> >> So, fix the comments with current support status.
-> >
-> > Thank you for catching this and fixing!
-> >
-> >>
-> >> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-> >> ---
-> >> I also found below patch(https://lore.kernel.org/damon/20250730200239.=
-60984-1-sj@kernel.org/T/#t)
-> >> So, Is it means that DAMOS_STAT is only supported by paddr now?
-> >
-> > No.  'vaddr' supports DAMOS_STAT.  The patch is not adding DAMOS_STAT s=
-upport
-> > on vaddr, but extending the support for DAMOS filters.
-> >
-> > Thank you for checking the thread and asking this question, though.  I =
-see this
-> > as an important signal of another rooms to improve on the documentation=
-.
-> >
-> >> If my understanding is correct, then we need to fix Design documentati=
-on
-> >> and comments both.
-> >>
-> >> However, since it will be fixed soon. Keeping current status is also
-> >> affordable. So could you check this point as well?
-> >>
-> >> ---
-> >>
-> >>   include/linux/damon.h | 6 +++---
-> >>   1 file changed, 3 insertions(+), 3 deletions(-)
-> >>
-> >> diff --git a/include/linux/damon.h b/include/linux/damon.h
-> >> index cddf82eaac4e..0870e9f48b0f 100644
-> >> --- a/include/linux/damon.h
-> >> +++ b/include/linux/damon.h
-> >> @@ -128,7 +128,7 @@ struct damon_access_report {
-> >
-> > Seems you are using damon/next as your baseline.  If there is no real
-> > dependencies to damon/next, please use mm-new as your baseline.  For mo=
-re
-> > contexts about that, please refer to the DAMON maintainer-profile[1].
-> >
-> >>    *
-> >>    * @DAMOS_WILLNEED:  Call ``madvise()`` for the region with MADV_WIL=
-LNEED.
-> >>    * @DAMOS_COLD:              Call ``madvise()`` for the region with =
-MADV_COLD.
-> >> - * @DAMOS_PAGEOUT:   Call ``madvise()`` for the region with MADV_PAGE=
-OUT.
-> >> + * @DAMOS_PAGEOUT:   Reclaim the region.
-> >
-> > Nice!
->
-> But doesn't it make confusion about whether this pages out to disk or doe=
-s
-> demotion to the lower tier memory?  It's because PAGEOUT action doesn't d=
-o
-> demotion, but it looks "reclaim" includes pageout and demotion together i=
-n my
-> understanding since /sys/kernel/mm/numa/demotion_enabled was introduced.
+[2]
 
-My intention was just to synchronize with the Design documentation.
+> > > > +                                           struct folio *folio = pmd_folio(*src_pmd);
 
-So how about changing the description to `Page out the region`, Would
-this be also confusing?
-I feel like it would be clearer than using word "reclaim"
+[3]
 
-> Thanks,
-> Honggyu
->
-> >>    * @DAMOS_HUGEPAGE:  Call ``madvise()`` for the region with MADV_HUG=
-EPAGE.
-> >>    * @DAMOS_NOHUGEPAGE:        Call ``madvise()`` for the region with =
-MADV_NOHUGEPAGE.
-> >>    * @DAMOS_LRU_PRIO:  Prioritize the region on its LRU lists.
-> >> @@ -146,8 +146,8 @@ struct damon_access_report {
-> >>    * The support of each action is up to running &struct damon_operati=
-ons.
-> >>    * &enum DAMON_OPS_VADDR and &enum DAMON_OPS_FVADDR supports all act=
-ions except
-> >>    * &enum DAMOS_LRU_PRIO and &enum DAMOS_LRU_DEPRIO.  &enum DAMON_OPS=
-_PADDR
-> >> - * supports only &enum DAMOS_PAGEOUT, &enum DAMOS_LRU_PRIO, &enum
-> >> - * DAMOS_LRU_DEPRIO, and &DAMOS_STAT.
-> >> + * supports all actions except &enum DAMOS_WILLNEED, &enum DAMOS_COLD=
-,
-> >> + * &enum DAMOS_HUGEPAGE, &enum DAMOS_NOHUGEPAGE.
+> > > > +
+> > > > +                                           if (!folio || (!is_huge_zero_folio(folio) &&
+> > > > +                                                          !PageAnonExclusive(&folio->page))) {
+> > > > +                                                   spin_unlock(ptl);
+> > > > +                                                   err = -EBUSY;
+> > > > +                                                   break;
+> > > > +                                           }
+> > > > +                                   }
+> > >
+> > > ... in particular that. Is there some way to make this code simpler / easier
+> > > to read? Like moving that whole last folio-check thingy into a helper?
 > >
-> > Thank you for updating this!
+> > One question might be relevant is, whether the check above [1] can be
+> > dropped.
 > >
-> > But, now I find this place is having outdated information that partiall=
-y
-> > duplicated with the DAMON design document[2].  I think the design docum=
-ent is
-> > better to maintain this kind of details.  What about keeping the high l=
-evel
-> > information but giving a reference to the documentation for details, fo=
-r
-> > example, like below?
+> > The thing is __pmd_trans_huge_lock() does double check the pmd to be !none
+> > before returning the ptl.  I didn't follow closely on the recent changes on
+> > mm side on possible new pmd swap entries, if migration is the only possible
+> > one then it looks like [1] can be avoided.
+> 
+> Hi Peter,
+> is_swap_pmd() check in __pmd_trans_huge_lock() allows for (!pmd_none()
+> && !pmd_present()) PMD to pass and that's when this crash is hit.
+
+First for all, thanks for looking into the issue with Lokesh; I am still
+catching up with emails after taking weeks off.
+
+I didn't yet read into the syzbot report, but I thought the bug was about
+referencing the folio on top of a swap entry after reading your current
+patch, which has:
+
+	if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
+	    !pmd_none(dst_pmdval)) {
+		struct folio *folio = pmd_folio(*src_pmd); <----
+
+Here looks like *src_pmd can be a migration entry. Is my understanding
+correct?
+
+> If we drop the check at [1] then the path that takes us to
+
+If my above understanding is correct, IMHO it should be [2] above that
+makes sure the reference won't happen on a swap entry, not necessarily [1]?
+
+> split_huge_pmd() will bail out inside split_huge_pmd_locked() with no
+> indication that split did not happen. Afterwards we will retry
+
+So we're talking about the case where it's a swap pmd entry, right?  Could
+you elaborate why the split would fail?  AFAIU, split_huge_pmd_locked()
+should still work for a migration pmd entry.
+
+Thanks,
+
+> thinking that PMD got split and leaving further remapping to
+> move_pages_pte() (see the comment before "continue"). I think in this
+> case it will end up in the same path again instead (infinite loop). I
+> didn't test this but from the code I think that's what would happen.
+> Does that make sense?
+> 
 > >
-> >      @@ -143,11 +143,9 @@ struct damon_access_report {
-> >        * @DAMOS_STAT:                Do nothing but count the stat.
-> >        * @NR_DAMOS_ACTIONS:  Total number of DAMOS actions
-> >        *
-> >      - * The support of each action is up to running &struct damon_oper=
-ations.
-> >      - * &enum DAMON_OPS_VADDR and &enum DAMON_OPS_FVADDR supports all =
-actions except
-> >      - * &enum DAMOS_LRU_PRIO and &enum DAMOS_LRU_DEPRIO.  &enum DAMON_=
-OPS_PADDR
-> >      - * supports only &enum DAMOS_PAGEOUT, &enum DAMOS_LRU_PRIO, &enum
-> >      - * DAMOS_LRU_DEPRIO, and &DAMOS_STAT.
-> >      + * The support of each action is up to running &struct damon_oper=
-ations.  Refer
-> >      + * to 'Operation Action' section of Documentation/mm/damon/design=
-.rst for
-> >      + * status of the supports.
-> >        */
+> > And it also looks applicable to also drop the "else" later, because in "if
+> > (ptl)" it cannot hit pmd_none().
 > >
 > > Thanks,
-> > SJ
 > >
+> > --
+> > Peter Xu
 > >
-> > [1] https://origin.kernel.org/doc/html/next/mm/damon/maintainer-profile=
-.html#scm-trees
-> > [2] https://origin.kernel.org/doc/html/next/mm/damon/design.html#operat=
-ion-action
->
+> 
 
-Best Regards.
-Sang-Heon Jeon
+-- 
+Peter Xu
+
 
