@@ -2,119 +2,93 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 81BB2C87FD2
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 19:31:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 24AD8C87FCB
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 19:35:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 25A956B0092; Fri,  1 Aug 2025 15:31:01 -0400 (EDT)
+	id B8BA26B0089; Fri,  1 Aug 2025 15:35:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2308F6B0093; Fri,  1 Aug 2025 15:31:01 -0400 (EDT)
+	id B635E6B008A; Fri,  1 Aug 2025 15:35:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16E146B0095; Fri,  1 Aug 2025 15:31:01 -0400 (EDT)
+	id A9FDC6B008C; Fri,  1 Aug 2025 15:35:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 082A76B0092
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 15:31:01 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C732EC021C
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 19:31:00 +0000 (UTC)
-X-FDA: 83729181480.05.737CEE7
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	by imf02.hostedemail.com (Postfix) with ESMTP id EE69580004
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 19:30:58 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=TDVS6FJI;
-	spf=pass (imf02.hostedemail.com: domain of surenb@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E2A36B0089
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 15:35:43 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4F46F160154
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 19:35:43 +0000 (UTC)
+X-FDA: 83729193366.14.5F0C3DF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id BA4C6100005
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 19:35:41 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MLZV5Olb;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754076659;
+	s=arc-20220608; t=1754076941;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Tn75XQYhjJo+TWDkRdCfnZdS3TGmeZchqZWPBeig22E=;
-	b=GR3Y62fTbg9kT/K/Jg1kdmmhadY+eck2oj22V04XnrqeiyMlwBkOBO2/NhWLA99jTAcxiV
-	TuguzLQZqXb4RKWgDy/93X6qrfx2i3I3h4CeELDoNcW8JAUjUlfRXVO+biqf2jtgkt9+wZ
-	6JENfEHEQpLEv1lTYV+b+tYMJRKDnm8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754076659; a=rsa-sha256;
+	bh=VG74Xjxww0kY/xkAidIKhxJHl3ErUsN7G3TG0s+PFk0=;
+	b=tzxFI6Zuz1hvEDMbxcCReBna6begSaov82aOTApvX2dVsNXbbLWKB5+0SDlLRgqdQTeSl3
+	nKFQpR8iWD4Szvnnu2+qn/qvi4F29RuHw4F9e6PflpSzW8ebRxkBEbd6bHN+Ynpl3uw0Ff
+	OlC1swHONKQsrC1EeHvnDdY3v8Dd4d4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754076941; a=rsa-sha256;
 	cv=none;
-	b=RjiRtsdraerDT47QgeIzRcZjFwwof+hoSBZbJ/T2/jHjueophWtdz9O00ProDN7XlWW0Zg
-	9OQbqfShhKqWFbqtw+UJTguQQVRCxbaM1jy7ZYOdXpcTLbixwHx8Zn7wAIyopp1D9VYngV
-	Xiaa70kKbYycuey+dVj0rhL4cCPe77A=
+	b=MJ9egTYKP5vKO6giEdUIa4V/rp+Zat4juCLdVsfzECTKbSRi3joMeTp8+FVOlT42RqQQFj
+	vriddE1P9lxLxj2lza6nMQnhRGqyM6f8tjYj4JNwYPS2k4zgXQ049PdOkOG2djlNjuod2M
+	G0B7OI0WPgn8qwhO7TETqqkGVPYhsVo=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=TDVS6FJI;
-	spf=pass (imf02.hostedemail.com: domain of surenb@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4aaf43cbbdcso481cf.1
-        for <linux-mm@kvack.org>; Fri, 01 Aug 2025 12:30:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754076658; x=1754681458; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Tn75XQYhjJo+TWDkRdCfnZdS3TGmeZchqZWPBeig22E=;
-        b=TDVS6FJIapq1Z4flQFSDK7K8IzbUUkK4zF1r6nUTZlgj08hqNoQDTBw+BJQPBpK4KD
-         1EnnLU26pQpLYL2QSMq4Ypiv0kDizDM9ydrVBTEcZQQSPHWgRfRny03CAREwRQ47rnQW
-         4bv6yxasE/JXIFr/L+u0boCqOxp+R/sKYY/azG3KD+f9u5NepPDvN/d+mSCgaQekvN6T
-         lKD7E+vIebwnt9kOM2lMstAb3ZqgpSouUDWEvSSIbO7/3V1rB22lCfhvpPz43HIuWA+c
-         K/uUXeZpCFnCGWxxuUXDqcup7AU/G5Wei6OKp2SQKF4MLQBQGLVLZm1am2srT4lzKqkD
-         3kug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754076658; x=1754681458;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Tn75XQYhjJo+TWDkRdCfnZdS3TGmeZchqZWPBeig22E=;
-        b=a6Ij/kDMFKyrag1dcus3ZAbtKCfW/HYExExrOu1bJvJob1W9teE9zMxGhUCs3PzmtB
-         6MHxsGLY1m8wIdEz1pjQyCiz0RKtpd9Yja1DXlpjQXWVpMEqP5uQzMjMg99aAeHq0N+z
-         ZFO48VWaNM/5WwARXYRcE82R4CEm9CSj/8Q0o3cdo8ZGKCUFZkNVcwSmJ9jvKprTquKb
-         2qlgmmqNTF/r79pwGtLzFc5dxLWYU8ORo0N6mFJc3dNGfrsqCXQf5NksnPItH0AY7Kau
-         dv0u8TkYsFhFMzW5ALCPWf5qVUAgd3Lig3OE8CSAEOh/R6i6Qftn/acFlpf0NUGHdPS/
-         /qPg==
-X-Forwarded-Encrypted: i=1; AJvYcCUUHesQYiA6UH8O8WDOcxk6bvkceplW3RfNEZOUUysf5z+uu5V2qvKcb9Ds774JWF/eLPsBfrJpxg==@kvack.org
-X-Gm-Message-State: AOJu0YxP9iqtP6evmjLNi7cBw3LzVTwYDv66sc9vFSXoriRayp1Xw8VY
-	j58DSdskIvMsIHPwM8MEz+kXMuzmgbhDfcMOhIeWDo1dov/r1rs1rkVb+XK+iE8T4zuNChGvfot
-	ef5hRTGpLd5ZY7ldCJHpveBIoXocUaVvaH5d93tk8
-X-Gm-Gg: ASbGncug9dAldHGm5jW8sNu+tr7dB4eVy9IutwYGYA7pBCoXINrtWvr74m4NJLeLBx1
-	52OANCL/0nBBzuoSyEsliAibhrvyL+7GIcSjwMGaB9Hxu5aLSLIoQpv3g/j68+z48K3pG082rPU
-	8EJeFwWu+L6WZDdWjl7gLbodNyxA1mPxVjcyZ+aS3bU19ektanbWtEYp/ue5qSzr159Rgv80tbt
-	Ai49yBF8CsOkgVm0X8c9V+Ep4JZecQHuQs=
-X-Google-Smtp-Source: AGHT+IH0mW5f/qmqu9jwFpseJ5sBEGT+3smSxDV4uopSaI0KwsbmE/+dq3CsqpUFK06gNcNwwYnxKt51RS3MEF3u6D0=
-X-Received: by 2002:a05:622a:1984:b0:4a7:1743:106b with SMTP id
- d75a77b69052e-4af12de2691mr759991cf.6.1754076657499; Fri, 01 Aug 2025
- 12:30:57 -0700 (PDT)
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MLZV5Olb;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 248E46112D;
+	Fri,  1 Aug 2025 19:35:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8589C4CEE7;
+	Fri,  1 Aug 2025 19:35:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754076940;
+	bh=N4zcWxz0G70Gk7ZR1SotpUujN9s9JmpktFgtGaCKwN4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=MLZV5OlbajLgE60JrNadzVZxjWK7VS0m42e2TNn6c+TEg9vu7pw3tsZmpKAcV6c4Q
+	 zhsBn6Bc6EtM4AwoZaQ7bL/ygInRzT725Tz77TO8jgrjhcZY/LCuy5qv0WAVhTBBOq
+	 ZYC+MgrCc6R6pnOuWcvhiAxJ2l46PW4ZPg9FSz8F8nIE/hCUaux8Oh1YWBtzzJfL5K
+	 IojollchCFzQw8OPB8CwLdfCMxZr9je0nRrnVswN5dbJI+qQc96ydQcOcPlf3rcrg6
+	 f5cQOcWgz0C9X7iVDLuBGqwMz6AdnK3LWefoZjvraJ/olE6oTX+8B3Hp1UxRxSO0qC
+	 SRiZxRyc+6njw==
+From: SeongJae Park <sj@kernel.org>
+To: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	willy@infradead.org,
+	vbabka@suse.cz,
+	jannh@google.com,
+	pfalcato@suse.de,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com
+Subject: Re: [PATCH] mm/nommu: convert kobjsize() to folios
+Date: Fri,  1 Aug 2025 12:35:37 -0700
+Message-Id: <20250801193537.1149-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250731202629.3729139-1-sidhartha.kumar@oracle.com>
+References: 
 MIME-Version: 1.0
-References: <20250731220024.702621-2-surenb@google.com> <20250801183833.30370-1-sj@kernel.org>
-In-Reply-To: <20250801183833.30370-1-sj@kernel.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 1 Aug 2025 19:30:45 +0000
-X-Gm-Features: Ac12FXxvF4QVnElqOuim-YcXYx27wMsfO8zYCFlPV8Iub6EM4IPZ7MZ5jF-KLug
-Message-ID: <CAJuCfpH+bXgm0RK=CRxD_evnwkdeqg=-hrf5dtejCMXhxg5cpg@mail.gmail.com>
-Subject: Re: [PATCH 1/3] selftests/proc: test PROCMAP_QUERY ioctl while vma is
- concurrently modified
-To: SeongJae Park <sj@kernel.org>
-Cc: akpm@linux-foundation.org, Liam.Howlett@oracle.com, 
-	lorenzo.stoakes@oracle.com, david@redhat.com, vbabka@suse.cz, 
-	peterx@redhat.com, jannh@google.com, hannes@cmpxchg.org, mhocko@kernel.org, 
-	paulmck@kernel.org, shuah@kernel.org, adobriyan@gmail.com, brauner@kernel.org, 
-	josef@toxicpanda.com, yebin10@huawei.com, linux@weissschuh.net, 
-	willy@infradead.org, osalvador@suse.de, andrii@kernel.org, 
-	ryan.roberts@arm.com, christophe.leroy@csgroup.eu, tjmercier@google.com, 
-	kaleshsingh@google.com, aha310510@gmail.com, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: EE69580004
-X-Stat-Signature: xb7m1r7p7swggwkhd5efnpz9g5oyppp1
+X-Rspamd-Queue-Id: BA4C6100005
+X-Stat-Signature: q4mbd3i4a17boerrnk8n1z51cjzbwi1n
 X-Rspam-User: 
-X-HE-Tag: 1754076658-369837
-X-HE-Meta: U2FsdGVkX1/lGVFq4fedo0Wusc1DWc9jYzCt4IJfoY+qscuVSf3JoqTxF2vdWOgGCCDUNmbmEgSfNsSKQ++RDNJgJ3ExM4bv3fNKtitSCWRVVu8YixHJw0s+Ml20InWsO/yjzXYANP5pyYpQyTJtvN5+zV3NSnFVT3enObwom6x5/JVkPHico/JWLoUCnAORwYlO33tMridXXTmcleBSimHk0+n8DF/P1Tsa/LDWLzR3eg7V4TG9X3REET87KroYXIlKFVd6fSr059vufFUjIt+LwZrDLtXwXO0hfw5rHAZiZPm6ZPH+bvdgYDHjyukjA/6ExjiIhdq5AkAJuI2oN66V8M+46kc1m0wv/OZHcHEDhhJcxzTqpRmEUSlh+i3pcM6g4C0PeC+wcWFu0sE05YJVlfiafegY/JG9brTVPmWUVRGIYixGPMZayZeGXm/yzapxqp59R6+zmJaJHp92pJrIqpQwsqL6C38Nmf102I0a/N0ytU9PS5PW1RqDGFFRGjfp/z+AH1Uw6qXPf4N8bdVFULIkjB7j2eileufqHt+yxIHgyqC+txzMu/fIsHMz0Bs2kNXncwOeXH5suVDPQjMsdQCwtG91IXoBPAFRtfwW+2I5nEHLNBy6aWIuMhh7KcMWQzY/xJ4iohYorQI4OaQwJROmZbxRvjHcjtdQeG+NffU/xd58SlJo5RFG/dQS2yV+U4KcWHGkdc1j3ZxZgUNIXRLt/N82qftp7KjOzu1l9rJ5Rhxqdw9aPV30N/n5v0+rghPq0KAAvU7ltMzFvZWWMvD+AMlpPmxmNrX/WoIw4jZ11/kn5fSP0s2Ood1sUZ5zQsjNVm7zzubh2pb6SL4s4NrzjJyXVlPv8Kzs8kgCu4WgAa39IXYduj33qpMFH6hh8/78ql4o1MIE9BkDO6QxHZZ6XoTG5XQhfyEJjuiQ1Cc0/ivE4P5GIuADLWvutXhItjgBJAZszJQI69/
- Vil+aOZ+
- bZLDk3Yx+uNiAKqPuGgyJnf7Tdf/rSvIwQsu3Y4FsmRaYW1XnMvwJNz5z0kkcGVMh5VeLC8W130idJT8FditsrFNOxF6m2d5mt9lMKKwWK9mSmpSTn5thnfcRv9Q0jbdxCzL5ZhN7OgTGobZ0ypLN4SupMaGsHbc4LhmA2BYn//N3AAjC3P+EWjhJ2Jc9FCM+mQC7hXY3Vvnb8LYAkthDPGBaZOZg41l3ZJp2qb/r60hgx8D2Y/KPqLipWyfYxFbSwoGiRTEhClwm3UwgjfhfAdIhgElBvlMZDuJSx4zcDcSbxPAdV7MTrqC8yA==
+X-HE-Tag: 1754076941-205178
+X-HE-Meta: U2FsdGVkX1+OoLa9YvmUggzEJ7CFVggOJijjk/JbvTRyV6HqnDz4RCcoa8V57u72g5hvj+mgo0TqMJ6+5u/tFiqKP8RpY023VcnIJW+HHTqrRxO9006rG1vo+PNfo2zu8T0he0UFc0LirAqiYdYgZoqTGYBqs/Firv9mEbmgwgqqAjv4MVF4I84WFEa68DNDDLLHR8cpE3/4E+Q581D3T2t37NL85b0CQAcSupejveaVo94A0zGiQsUAf3sjHPb3MIY5bnh5uwkosofE93Luz8GdVWsOR577zJWIKS9Tbr7yKk9TyadRquhZj44T9AyRziNEVSJc6kpX8/4eOxYIJaSgPHMN8TaI1KeXq8jkSMw8uKgaCBBAuruWgRaq+EtTHt3r+nVGN0Uk1cjuwRdFZVrVliU2WWXcnTJNTUPeF/lIvA24ogDfI31q2eW6cMbnKiAxUNgCFic1WIaoZOm97SQxLPvoZfJv1wEfpvFcIJ48cTtz6QbX32bUDP/GVjIWeaFgT9KfI8091NlO+mIU2reqVODKaL7vlFdQwl+7T4EQ6lYznxj/jWYZ/KtGTty1j2eH0i2GgSmCSDf+TXhOhbwpNmiP7/qG50Jhy2uG9XCsBO5Xq/6XNebX6lf19aq3WKJjs78bk4bbq2Kamt66yZncLejiguJaYn36Lxgx3ZeOkZJ/3Rm6H6qzeUtFU9iRik69k5AYMmqzFFRHI9LYm09xTVYjhI7S6q8UjJQeLApX2fJLGsaP7ZH8UQ09w1HoTjnZLUtVv8r6roP1RHqfESzkwi4P3ifvonzH1xXBDfK2wlNaiK0r5bw7yG0jL9T08YNxXQ3DrbMz2lDNztiBtz+3qDib8NWLuxwu798kYMFBOeEM51YtGwLAMrV4B9Nas3RaO935oxUD8p07vsQTtWKkL7M9a2Y1B4XZhvP8vdk2leTN+fIT5CYobheeu+dxccZ8b4HH7sY3AUDZr+V
+ BIITyYK/
+ cylQ7eZ01pjc+osEnOdRU3BmtC2FKlamB3VDCOT3D5HFnTZZLMd50Ro/MAaFH6CkStpr3lrR44zljJSqXbUAV/oLPWEh3PQM5UNjWVvcOYOWf6kEZKDvQfln9CUnIjkZ1x272QiH4TYyiy34OUPI/MyeXiPeh4coZTOFKT6He4R6XGqsH5mInriVUibOTY8cHN+tAsoFxTCnstJn37MZnLaleBQFyCd/kFckOQApi7sOvE4MSP2yoVL0+a7qk3CqGAAYg
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,26 +97,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 1, 2025 at 6:38=E2=80=AFPM SeongJae Park <sj@kernel.org> wrote:
->
-> On Thu, 31 Jul 2025 15:00:22 -0700 Suren Baghdasaryan <surenb@google.com>=
- wrote:
->
-> > Extend /proc/pid/maps tearing tests to verify PROCMAP_QUERY ioctl opera=
-tion
-> > correctness while the vma is being concurrently modified.
-> >
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
->
-> Acked-by: SeongJae Park <sj@kernel.org>
-> Tested-by: SeongJae Park <sj@kernel.org>
+On Thu, 31 Jul 2025 20:26:29 +0000 Sidhartha Kumar <sidhartha.kumar@oracle.com> wrote:
 
-Thanks SJ! I'll include this in my next respin.
+> Simple folio conversion to remove a user of PageSlab() and
+> PageCompound().
+> 
+> Signed-off-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
 
->
->
-> Thanks,
-> SJ
->
-> [...]
+I have a trivial comment below, but since it is just a trivial one that I don't
+really care,
+
+Reviewed-by: SeongJae Park <sj@kernel.org>
+
+> ---
+>  mm/nommu.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
+> 
+> diff --git a/mm/nommu.c b/mm/nommu.c
+> index 07504d666d6a..a00f8fc316c1 100644
+> --- a/mm/nommu.c
+> +++ b/mm/nommu.c
+> @@ -64,7 +64,7 @@ const struct vm_operations_struct generic_file_vm_ops = {
+>   */
+>  unsigned int kobjsize(const void *objp)
+>  {
+> -	struct page *page;
+> +	struct folio *folio;
+>  
+>  	/*
+>  	 * If the object we have should not have ksize performed on it,
+> @@ -73,22 +73,22 @@ unsigned int kobjsize(const void *objp)
+>  	if (!objp || !virt_addr_valid(objp))
+>  		return 0;
+>  
+> -	page = virt_to_head_page(objp);
+> +	folio = virt_to_folio(objp);
+>  
+>  	/*
+>  	 * If the allocator sets PageSlab, we know the pointer came from
+>  	 * kmalloc().
+>  	 */
+> -	if (PageSlab(page))
+> +	if (folio_test_slab(folio))
+>  		return ksize(objp);
+>  
+>  	/*
+> -	 * If it's not a compound page, see if we have a matching VMA
+> +	 * If it's not a compound folio, see if we have a matching VMA
+
+Nit.  I think "a large folio" rather than "a compound folio" is more consistent
+and easier to read/understand.  No strong opinion, though.
+
+>  	 * region. This test is intentionally done in reverse order,
+>  	 * so if there's no VMA, we still fall through and hand back
+> -	 * PAGE_SIZE for 0-order pages.
+> +	 * PAGE_SIZE for 0-order folios.
+>  	 */
+> -	if (!PageCompound(page)) {
+> +	if (!folio_test_large(folio)) {
+>  		struct vm_area_struct *vma;
+>  
+>  		vma = find_vma(current->mm, (unsigned long)objp);
+> @@ -100,7 +100,7 @@ unsigned int kobjsize(const void *objp)
+>  	 * The ksize() function is only guaranteed to work for pointers
+>  	 * returned by kmalloc(). So handle arbitrary pointers here.
+>  	 */
+> -	return page_size(page);
+> +	return folio_size(folio);
+>  }
+>  
+>  void vfree(const void *addr)
+> -- 
+> 2.43.0
+
+
+Thanks,
+SJ
 
