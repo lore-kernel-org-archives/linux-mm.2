@@ -2,185 +2,109 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BDA4EC87FCA
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 15:34:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3BC1DC87FCA
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 15:34:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 617B78E0005; Fri,  1 Aug 2025 11:34:05 -0400 (EDT)
+	id CF8138E0006; Fri,  1 Aug 2025 11:34:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5EF428E0001; Fri,  1 Aug 2025 11:34:05 -0400 (EDT)
+	id CCF4D8E0001; Fri,  1 Aug 2025 11:34:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4DEA48E0005; Fri,  1 Aug 2025 11:34:05 -0400 (EDT)
+	id BE5588E0006; Fri,  1 Aug 2025 11:34:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3CF2E8E0001
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 11:34:05 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0371A535C5
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 15:34:04 +0000 (UTC)
-X-FDA: 83728584450.14.D516296
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9E57040008
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 15:34:02 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZYbekagL;
-	spf=pass (imf11.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AC9178E0001
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 11:34:44 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 63BEF577E2
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 15:34:44 +0000 (UTC)
+X-FDA: 83728586088.15.C2CF886
+Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 6CD8010000A
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 15:34:42 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="g8/f34sc";
+	spf=pass (imf14.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.160.54 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754062442;
+	s=arc-20220608; t=1754062482;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JHgBzHC9Il8/iD1hFbNzn8RBxkEg4S2pBSlpVReUImg=;
-	b=lGGkBJMO1IXxbSgkmy1xNiPxbm/z9rSDB7y7vPATBMmikSE7s9OcYLNk2l+8eWmVacS8V+
-	hS0exrVzQ6ptvdnlwmCAkrEZld6gs70jSGlYSqGT8yv1UdyRldlSZb1RqxwU1bUumu9CdS
-	dr9qEOPohzClJNLYEfxX5TDxnAGatuk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754062442; a=rsa-sha256;
-	cv=none;
-	b=q4GEZFOHC8iuce8bl6WKMmI5vaCZw2tS0P49p3E1lOpzLxEvbZeI0Xp2RPOcoqz7qNSxVM
-	hZ7+Gafqke9fyYOckOuvSlbzHNtBYVjT9DQj46UIJFyuL/qF2/Z47f6uK4GLnZfzbR42wK
-	2w62ZB8wB/xQly9uDBSG/SRH4T2xdeY=
+	bh=Ofe6Q9A+agjL2oCVwUrX1X8DXac9+wkgPKORpc2QcHk=;
+	b=uaWcubQdGGZ+QoB52Zrm3plJ8VmYAWZl87XfUFOoi9MqCxPFrlOwNC3RZsAnwQzw2b8FIy
+	Fl0A36Tm/3jCTd0slAbbQSKr6GxhZa76ojnS3YRj34Q9QJ7oBnVVhFFGNV5n65OPKzNi2P
+	abbOejVCWOF5yDGOpVGEVDcYHucXbz4=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZYbekagL;
-	spf=pass (imf11.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754062441;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=JHgBzHC9Il8/iD1hFbNzn8RBxkEg4S2pBSlpVReUImg=;
-	b=ZYbekagLtj65JDZ89cqE4XuntVSEBBhNvt+sXogw999U7xD8sdZJ1sPz+BXcIlVBgxqKm8
-	7ovHDQxmbH2Vh4kxrn5+NtygnqSy3kxfMrbNNgFjYc75XSXlLd0WrYBzyeFtt+p8PwTOgR
-	TTNFhZVR6c8cAyxT862GnU6lICPGqyY=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-52-cF29On_YPzuyBEFrDtMLIw-1; Fri, 01 Aug 2025 11:34:00 -0400
-X-MC-Unique: cF29On_YPzuyBEFrDtMLIw-1
-X-Mimecast-MFC-AGG-ID: cF29On_YPzuyBEFrDtMLIw_1754062440
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4561611dc2aso20947315e9.0
-        for <linux-mm@kvack.org>; Fri, 01 Aug 2025 08:34:00 -0700 (PDT)
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="g8/f34sc";
+	spf=pass (imf14.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.160.54 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754062482; a=rsa-sha256;
+	cv=none;
+	b=AmNtVIYneXq9tqwpVc95SX4KnLvnWI+ok/CKWoUi5PcXpghN+QNHF4vY+df2hBITJCZptQ
+	+lPvoHU1OtqJ4UyoFKZGGxvnAPQVr+0iMdCDUGS2sgAvVmHWXO2xv27NB1Bog8w4+tFw8S
+	T6FicjOuPietI+RKQ2zvJx4b9DAMlT0=
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-306b7eb492aso1265324fac.0
+        for <linux-mm@kvack.org>; Fri, 01 Aug 2025 08:34:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754062481; x=1754667281; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ofe6Q9A+agjL2oCVwUrX1X8DXac9+wkgPKORpc2QcHk=;
+        b=g8/f34scwpj/5DuMjqZtTiz/5obcbdRF0nJdbzwFAHvuwNn6al24kTgHFnUmJ2isuk
+         Z0/7BXpAtq4pdWdbPJuitj+3986rq82W49gxbmU4sqMoBk3SgYU8HCJL3U3jynL/eQfL
+         kULpupLWGCLGWbuMIb5JISNlimm0jA2FEVN6SfeCgkOxSiQziSbxwVg9AQtN0vjZTgxW
+         dUI2osAPi0DUrvqghT/KtycDNR/KDSCfE94uWhwW0752z1VBnrbEsgTDH+oJUhDVpgtG
+         DCH2Mv73gJDLTgLMnxlH/BeogTmARIfyatHcPIJUpU7YzIyC0OKFziX83swlvutChOla
+         covw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754062439; x=1754667239;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=JHgBzHC9Il8/iD1hFbNzn8RBxkEg4S2pBSlpVReUImg=;
-        b=AGuHiELPL2ixCLnFdnkL/qfzYlPm0Qg5v52eU1Eobeu5w4+Zk38+F5ZaRpcRc2A1Wi
-         +5yAoOUHDDN3IeVIXoGV850cbibqP26Wp8lz1XTNreZKLxF8BfV6yDrrdYffaatX6zPj
-         aVsBHthWB0ulLaRqGNs7cMYkN3UWILITpV4YqMRIYiu7u9hVWx8d7tFT8PzAAMQ/pvs/
-         UjVC7lrstr8Dj/3auB35c8wAIFXtJIp+k8on3GBMrTZ05aUdIc0OoRotFrra+1Y6cXo3
-         wkwyOnF53NvoKVeA7byl4GtRHgSk4/xY6r36SX02nbIbNMSpqzhh7XzNerkTUu1FlgM4
-         ZJ+g==
-X-Forwarded-Encrypted: i=1; AJvYcCWpyvsX1Mg/WEC2GhLOoxs461wEKGeMzo5a5I7EE6ihoWcHPLnYuO52DfbnXUYGOx0N0OsQ0io8XA==@kvack.org
-X-Gm-Message-State: AOJu0YxMTDLFyYpFUCmfomBXMfbg+R5kGw8vCSEPfwBY2ojVZP8BYkGO
-	vTIaqd34X/05obOA0+3SmldaZNZ41+NZqpundg9/vcLVZhiOZ2lgwGIV1K0VTMhnNpPGSYBL3fi
-	L1GfBdlpSc7yl7evUs/NI1lKqIRSdZWBRb3KWCdA9Di/bPQa3T8BW
-X-Gm-Gg: ASbGncu1xiWlZ0iuHMWQ9H+pQUtJ3mpocqaPW/sxoZtaNCA4ePSJZEXYIN5Fg6fYLEF
-	T+uoi+nKa4M5Jb0TRk9OawtXxlAChnMKJTY0upBbHzf73uwd5EuXFYPQWpuP9lIhJQa5jXpfejg
-	FcO1suMEQTT3w+q5F753KZtknsnPVMY9PTszkNO/qbkLACz+++y/rQ9i+3UXQxYE32opSXcXFyk
-	BvlrObaVs2B4QjrnL/xBPMAK3k6OR/h+PCZuvHrJxL6634Z/4UNhEXPDSRIygsvNEKuHWWEjSHd
-	+5VPKrgv/ooUYUL7KVwuaEZKmurIvZt/iu1nEF3DQUV/FpFHQoBKhJZhaUc/5vKRPlTaCogmnIx
-	l8/gXxpvDIyLIQd68TuoC1NEImstnydoNNWAyKTGTSCjSFh/TFK9qc0Eq78JCk7KA
-X-Received: by 2002:a05:600c:8812:b0:456:2397:817 with SMTP id 5b1f17b1804b1-458930ecbccmr78899405e9.13.1754062439572;
-        Fri, 01 Aug 2025 08:33:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEVwQY4nbqQJMBDn5fImafjO6gVC20KrAkByKenJ+HrlbIwqOuIdKFnknmS+j6WRtdBcgZGsw==
-X-Received: by 2002:a05:600c:8812:b0:456:2397:817 with SMTP id 5b1f17b1804b1-458930ecbccmr78898885e9.13.1754062439134;
-        Fri, 01 Aug 2025 08:33:59 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f20:7500:5f99:9633:990e:138? (p200300d82f2075005f999633990e0138.dip0.t-ipconnect.de. [2003:d8:2f20:7500:5f99:9633:990e:138])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458953eb7acsm105359625e9.28.2025.08.01.08.33.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 Aug 2025 08:33:58 -0700 (PDT)
-Message-ID: <8368f30f-19dc-4272-bc36-13d6c2377bdb@redhat.com>
-Date: Fri, 1 Aug 2025 17:33:56 +0200
+        d=1e100.net; s=20230601; t=1754062481; x=1754667281;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ofe6Q9A+agjL2oCVwUrX1X8DXac9+wkgPKORpc2QcHk=;
+        b=nBTDOrKwtY+NKfB0dNRKQ961yxlaoRS1Zzb1AHaSY7G0xUIQW9J1P8fK8CLTLjqnQM
+         SO/NScfISbEGvvPCZeIWltZqQeVW7+k25/IEx2VbTeOQHntPVvmnZVU63Hypxt6aMWuf
+         +3IomRLTdaaaPQaZxZCrHQMJKQz9amSQZMcpFZwR5XaRYT3Xx9COEWGPEtHeOpQqzy1g
+         E2ULnqHtPNWiyy+6PwMNjdDPF204JJ+vEr1AoaqXFEzI7XmeFbV1U+TaN/+hcMWPTWRo
+         gddBpajCTXShKTwIxh7nspua4jaYDq0gfhBosav5M5vYym8u7I/cq96ZOoqWR252SexS
+         LmOA==
+X-Forwarded-Encrypted: i=1; AJvYcCVF+8JQxNPYeBQ41rAOFWcyhyZFljFVX2fxYgcTIoe3NPCuvYfb9hReeF12Ki4lTrb6TjeO7193bQ==@kvack.org
+X-Gm-Message-State: AOJu0YwX1mM4syoJv5oi1eIYMmmLmOA6BajHTFK2krKjLUfs36J6Mf5J
+	ylb6LPEcqYKcEysI8sPlMGnq3T/AuFJeiv3SqBhZNQfhco7VRLS0NwgcXOb328t2iTGLILkMUjY
+	276cE4Z4VfUGZmXdhHMFfEEFbTxUu3kjiTLTVzi0=
+X-Gm-Gg: ASbGncsbsE6QHPOMwKek3KnINzayyjf6U9dbaXnFC1hjn2qVsI2B39zkUKtyj+DHSxz
+	wfMg4I7Wab3QP0kt2csL/7DEPF15OduT5GpHwFsSf4vdP2yb9uUP5gD9UB567fAHUFKqj33nBoh
+	BB6mYv9U/1ov4KNmGg7hbjjr7wEACpPQBlkLtN1+50f5Mil449SAIbuQgdcR9ij31tWnyeyck5S
+	6BJ
+X-Google-Smtp-Source: AGHT+IHN/OaWoq1Bl0J7hNhQm2fN8vIhDjZXkH9pvZf1y8Kg55hrcYAt9FM7VpJ1+NJ7ArOll3YbDfO7FWH0OYoFrVY=
+X-Received: by 2002:a05:6870:63a0:b0:2ef:88fa:e0c3 with SMTP id
+ 586e51a60fabf-307aa6cfa18mr4334721fac.13.1754062481183; Fri, 01 Aug 2025
+ 08:34:41 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v2 3/4] mm: add largest_zero_folio() routine
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,
- Suren Baghdasaryan <surenb@google.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Borislav Petkov <bp@alien8.de>,
- Ingo Molnar <mingo@redhat.com>, "H . Peter Anvin" <hpa@zytor.com>,
- Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>,
- Mike Rapoport <rppt@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
- Michal Hocko <mhocko@suse.com>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, Andrew Morton <akpm@linux-foundation.org>,
- Thomas Gleixner <tglx@linutronix.de>, Nico Pache <npache@redhat.com>,
- Dev Jain <dev.jain@arm.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Jens Axboe <axboe@kernel.dk>
-Cc: linux-kernel@vger.kernel.org, willy@infradead.org, linux-mm@kvack.org,
- x86@kernel.org, linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- "Darrick J . Wong" <djwong@kernel.org>, mcgrof@kernel.org,
- gost.dev@samsung.com, hch@lst.de, Pankaj Raghav <p.raghav@samsung.com>
-References: <20250724145001.487878-1-kernel@pankajraghav.com>
- <20250724145001.487878-4-kernel@pankajraghav.com> <87seibr7do.fsf@gmail.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- g3eXuA==
-Organization: Red Hat
-In-Reply-To: <87seibr7do.fsf@gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: adsX30g0HWtAJSxKCUdTKgE0gaTasl3tLpsZ40OUrcI_1754062440
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 9E57040008
-X-Stat-Signature: jer4nxoif6b5yaspp7g1aa7nu1ijafep
+References: <20250731132230.80046-1-ekffu200098@gmail.com> <20250731175827.16060-1-sj@kernel.org>
+In-Reply-To: <20250731175827.16060-1-sj@kernel.org>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Date: Sat, 2 Aug 2025 00:34:30 +0900
+X-Gm-Features: Ac12FXyO7ed5ZJI89Xk8AfdlvOmHKkfzcePLUQXPj3FxvakC6lnlPmJPlnQCHP4
+Message-ID: <CABFDxMGh7-vDgNzepJKtrhdOF40_U7=NT6Jvm85qtdwGpBZawg@mail.gmail.com>
+Subject: Re: [PATCH] mm/damon: update expired description of damos_action
+To: SeongJae Park <sj@kernel.org>
+Cc: honggyu.kim@sk.com, damon@lists.linux.dev, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: j5rjcinsybsmrmh9mqdh9njnsjw9o96m
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 6CD8010000A
 X-Rspam-User: 
-X-HE-Tag: 1754062442-302752
-X-HE-Meta: U2FsdGVkX19eiCO3RyotxBxGZr93BinDqMFwPux2G4xrAZScJRlZ0MAVpI+XCdd02h2kihrguniZqu4fHLPqbQJM/tsq5HMg/p6IeD46USWW2Q06O9o62oaMECCfspAqsqU9G8ZEwybW3R/zgLa2cxi+afZI0PTYUNO/BW9kt4qCdVNKq3qucJpzh4eZksGHHvAib7lEnnvAZjvzwLfRVs1ot4wSeJXv1HYDjCadtoG1qjJ4gnK9QCpzyvr95Trk7SgJ+Sg23l4Mc/b3vJrR082+xX750C8yY6iNrvYr3QJAzf4F/9vl5wuUv2/L0VqgkgTP6m0nteJUUihuSOnYJOVM3NU9zyfcRbJj6aZZVXWykv9zngwyYegk+S43T3Uu6xZM5mkt0Zklox0wMqRqwWfdb7I+1cEjotXhAsl3iGTJmJT2h3Ob8htHlmbHGddQIkexArcvIGdrdvCQy4A+MNdK3BAKe7A3fkXqt2qb750zBp93zRbZR9B0Yk/Y7856MdanP1a3z9BMU3Rk7+/f54zMIyA48LkNoCME3MvGmyW96KtIipO12tYAcvaGwFF0dyTQjyhlAyTHbztkmvZlpT050FupRqGQRGKyY7oPXBwX2DlEAGYGvH740r8Cr1K8QaOVU7C5fAjfmvvo62Ha6d1ylgBXcO+7bUMZa3TJql4bshZk6Rj0uCzFJ2nEQtWFq3s7TzAJAQA/OvrYXRBYIe/c1QkhJ6+XRlINhPWnkHfSCrZ6Mf+rOAT3o2cVmIeIVl4Ou/2Ig/pW4LfBnxQPpXEKWTQHxB7WmgqMMjxz+tGox4V0meWoitK+2pj4e7QbuN6zGh6FQJUAwg1VErJE7eggi951G0O5xYucm9DMORHt3wiba4IU094HJLvEpq+MUlj+C8gEiqpqxD2GoDE95N44R1HX8V8j6FfyrHI9oMlBQJ0Iy/wpw2hNW+I3bF1Kj58ET4L40YSo3cbHRQy
- sh/QTy1s
- 43DLprd2OZKlXzDDyfpSgpGVyIMGYqRIbVZ43oRV5DHZ5w3waA9k0u/Y14dJEISU6/h2hM3uq+7MJZGjUP13qLwJ+QBSESjof1BaJmy8FzRPZKnlwJYvOR74B9QI1ulol+3BDw3vo695rAGqjujn4GtwfQBVHn0RrOfq0yPjkqFuQ+cjc11ceXu0X7hkBKi84j1FKjnwbs9bQrFB+9hy9QtM+qaYN70mSpeXSgqcpfIDSAqr915pkMvKPX2OXXwFL1uVwQy2f00BpspwVgPNi4FWZs1N0PfYp7/5z7VY+DTdaqM3+mybwe1mwCoKQ3N5qrePPbtggbD/67cMFPLlGlZoGC0uIL7I8nlqGBjflFB4wUSdY+YgWwGtU6k6YjdY/Fi05raaf8QrSRaCudX2wlDsPSvXR/CU7/iaAWfym8t8dzfoi4o16HbZXEMAwWrQTbXsDFiHh3C/Ojt9B4PgKx14vhJHmTjXFbr0nDnvlFaHesWsAwkEwceRcUVRz2ubiaNzkIfLqZXHedo2M0gEJYw5HhUrGd83XCUS3xSwCOMV4SFUXH6mqeg6NJA889a89VCgULkyOgmnH9JkqdpFbTgIj3jEaVGtUD0s7QIdyypphP+y5xcBpjBni9vPJSOL58WhQKmM4vl5NMcIHn9vPy0hAWQy+FPGsJfFB
+X-HE-Tag: 1754062482-892687
+X-HE-Meta: U2FsdGVkX1+iYp+O+dAj95Gnv+Inz5gFM1fguYkI2HD/yOxYZybD6Ieil0LFjfrj06gZm8qMqpwvbhKz2Zo/yGiCCgxBJq+sxYyUUpAlOcSDISVlhYjkEESjT8VlN5W7pB8QBZK9noHAN8OTIxiqKI5m0SWo/wtUHEeTfHNi1yS8cxflvdtWdFf+gQan6l3NtHKVMO0eKJCqbQXdWyzbtvIGvrKYhKZe0HyDuHDb15X0Umar6UdcDdWnA/OujW+Gsn0OxdV5O7w7eFvjyu6nE2Q8k2ZK7vCHR/aBGa5N+4yOz5C+UcnfJdmORsRoYasDDV+cA4sEAi5cpD3Q0u2Ro9csbyYbicoHGpTdQxXu88mV2SSeSScE6FWe8N5Q/pAfYs2wKBfe7+9aGCI/96cjq+P86GJjjlLVwILnynWK7TCxh3R29WiWvdb3tttwiI6Ec+f/2EzhsB225Ogo2N77ebgBrgzUiL9FBMQtIkklrs0CTSizxvko10Ux5aXh+m6FMtcjBc4w7cqDsRqL3aAm07vbiuaEuQ6uR1LC/gDwsT51LQMJSKeOUVV6Zoby+csl8RVr0AjDiaFgpWxaqgRiYRN5M5bkFalZGNMpcu1mzLdd3QBM5iOP4HIJ/SYLJKO1Zb6hejvXWM4bmag/cZH2LMco6MkTAZN+S7PFUvdbMhzNTMKEwVk2ku8AIvA2hTZOQ1Ng2PvkBtmzxmxVukpMN08q1bYXII81y06zm7HLkT/04j0o5kzKwF/TaDAclXAdoF4vaihkhZFZeyvhiUqc/qqgt5gYq2FlwKabUnSUyOkyU6YaVdQOEWjOO5WESUQ+rpHvK428yc0u6VTWrGqSJZJ+9RdvRdBEpWvKQhlAMHLi9WoK7QUeqslUMqjUGYdkkJ5Wa/m41gmdBCWkSFr1/qe8+vszpwUrsPDoHOXYbZctxPIgYrBEDjKpuJQ9VfesM7CywsBkF/4WaWsCBTF
+ 3gxhOmqv
+ lIfmMbuIl3BT6pisxNadA5OKPDkVgQKK1zlUBO47c9V2+w96fUYuOpsbn1fIRc/nzk/39CCCRQcfJgsb3dHjKILJNTIa1VT15A8gw/0zyZrgZwRTRi42MDR48S60o11x3tXRmyB5qdw4LcdGoA3f8lUS22FtNjbSuaUdWgM6lVDg5/SDpFSbbzEucjJUEK+4DeBawJB3BhqfVib/bIMN0JaZcrmSYGg7FdDJ2n1JwspVb8IJodO7YZsSYyS+U8vGQI8WaOhnsEtPQgaLbL2QcgOLB2A73yvHI+zCCl1EfQqujiTdrqqtL5RPuHvCzmDxiIu3P9OxMgIqoaXqsuU7hDnKcyXHgRTsmds7HmAUSeAimhsS3eq2fxF+dR2ffI3FVwbjQYA2Wgrse8b2+rjeS+P8uVbbSJDEB0qRRkaPurT3W8NgyffqJ/OvzqKmwCqq+pjvsd4B34CCidhyT5FsvVnM6Hn+Kw8XK5M2Q0n37jY5IFj6bO4eB99rTLw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -189,24 +113,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 01.08.25 06:30, Ritesh Harjani (IBM) wrote:
-> "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com> writes:
-> 
->> From: Pankaj Raghav <p.raghav@samsung.com>
->>
->> Add largest_zero_folio() routine so that huge_zero_folio can be
-> 
-> [largest]_zero_folio() can sound a bit confusing with largest in it's
-> name. Maybe optimal_zero_folio()?
+Hi, SeongJae
 
-I prefer largest, it clearly documents what you get.
+On Fri, Aug 1, 2025 at 2:58=E2=80=AFAM SeongJae Park <sj@kernel.org> wrote:
+>
+> Hello Sang-Heon,
+>
+> On Thu, 31 Jul 2025 22:22:30 +0900 Sang-Heon Jeon <ekffu200098@gmail.com>=
+ wrote:
+>
+> > Nowadays, damos operation actions support more various operation set.
+> > But comments(also, generated documentation) doesn't updated.
+> > So, fix the comments with current support status.
+>
+> Thank you for catching this and fixing!
 
-huge vs large is a different discussion that goes back to "huge pages -> 
-huge zero page".
+:)
 
--- 
-Cheers,
+> >
+> > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> > ---
+> > I also found below patch(https://lore.kernel.org/damon/20250730200239.6=
+0984-1-sj@kernel.org/T/#t)
+> > So, Is it means that DAMOS_STAT is only supported by paddr now?
+>
+> No.  'vaddr' supports DAMOS_STAT.  The patch is not adding DAMOS_STAT sup=
+port
+> on vaddr, but extending the support for DAMOS filters.
+>
+> Thank you for checking the thread and asking this question, though.  I se=
+e this
+> as an important signal of another rooms to improve on the documentation.
 
-David / dhildenb
+Thanks for your kind review. I really don't want to bother you
+anymore. But I would like to check my understanding.
 
+So the basic operation of stat is covered by outside of
+`damon_pa_apply_scheme` and `damon_va_apply_scheme`.
+If it's not too much trouble, could you point me to where they are?
+
+And some extension stat (maybe it only renewed that filter exists) is
+covered inside of upper functions. Is it also right point?
+
+> > If my understanding is correct, then we need to fix Design documentatio=
+n
+> > and comments both.
+> >
+> > However, since it will be fixed soon. Keeping current status is also
+> > affordable. So could you check this point as well?
+> >
+> > ---
+> >
+> >  include/linux/damon.h | 6 +++---
+> >  1 file changed, 3 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/include/linux/damon.h b/include/linux/damon.h
+> > index cddf82eaac4e..0870e9f48b0f 100644
+> > --- a/include/linux/damon.h
+> > +++ b/include/linux/damon.h
+> > @@ -128,7 +128,7 @@ struct damon_access_report {
+>
+> Seems you are using damon/next as your baseline.  If there is no real
+> dependencies to damon/next, please use mm-new as your baseline.  For more
+> contexts about that, please refer to the DAMON maintainer-profile[1].
+
+I see. I'll keep this in my mind. Thank you for telling me!
+
+> >   *
+> >   * @DAMOS_WILLNEED:  Call ``madvise()`` for the region with MADV_WILLN=
+EED.
+> >   * @DAMOS_COLD:              Call ``madvise()`` for the region with MA=
+DV_COLD.
+> > - * @DAMOS_PAGEOUT:   Call ``madvise()`` for the region with MADV_PAGEO=
+UT.
+> > + * @DAMOS_PAGEOUT:   Reclaim the region.
+>
+> Nice!
+>
+> >   * @DAMOS_HUGEPAGE:  Call ``madvise()`` for the region with MADV_HUGEP=
+AGE.
+> >   * @DAMOS_NOHUGEPAGE:        Call ``madvise()`` for the region with MA=
+DV_NOHUGEPAGE.
+> >   * @DAMOS_LRU_PRIO:  Prioritize the region on its LRU lists.
+> > @@ -146,8 +146,8 @@ struct damon_access_report {
+> >   * The support of each action is up to running &struct damon_operation=
+s.
+> >   * &enum DAMON_OPS_VADDR and &enum DAMON_OPS_FVADDR supports all actio=
+ns except
+> >   * &enum DAMOS_LRU_PRIO and &enum DAMOS_LRU_DEPRIO.  &enum DAMON_OPS_P=
+ADDR
+> > - * supports only &enum DAMOS_PAGEOUT, &enum DAMOS_LRU_PRIO, &enum
+> > - * DAMOS_LRU_DEPRIO, and &DAMOS_STAT.
+> > + * supports all actions except &enum DAMOS_WILLNEED, &enum DAMOS_COLD,
+> > + * &enum DAMOS_HUGEPAGE, &enum DAMOS_NOHUGEPAGE.
+>
+> Thank you for updating this!
+>
+> But, now I find this place is having outdated information that partially
+> duplicated with the DAMON design document[2].  I think the design documen=
+t is
+> better to maintain this kind of details.  What about keeping the high lev=
+el
+> information but giving a reference to the documentation for details, for
+> example, like below?
+
+I totally agree with you. Unexpected duplication sometimes leads to
+unexpected expiration like this one
+So, I think that I need to send v2 patch, If that's right, which way
+would you prefer?
+reply to this thread or make a new thread?
+
+>     @@ -143,11 +143,9 @@ struct damon_access_report {
+>       * @DAMOS_STAT:                Do nothing but count the stat.
+>       * @NR_DAMOS_ACTIONS:  Total number of DAMOS actions
+>       *
+>     - * The support of each action is up to running &struct damon_operati=
+ons.
+>     - * &enum DAMON_OPS_VADDR and &enum DAMON_OPS_FVADDR supports all act=
+ions except
+>     - * &enum DAMOS_LRU_PRIO and &enum DAMOS_LRU_DEPRIO.  &enum DAMON_OPS=
+_PADDR
+>     - * supports only &enum DAMOS_PAGEOUT, &enum DAMOS_LRU_PRIO, &enum
+>     - * DAMOS_LRU_DEPRIO, and &DAMOS_STAT.
+>     + * The support of each action is up to running &struct damon_operati=
+ons.  Refer
+>     + * to 'Operation Action' section of Documentation/mm/damon/design.rs=
+t for
+>     + * status of the supports.
+>       */
+>
+> Thanks,
+> SJ
+>
+>
+> [1] https://origin.kernel.org/doc/html/next/mm/damon/maintainer-profile.h=
+tml#scm-trees
+> [2] https://origin.kernel.org/doc/html/next/mm/damon/design.html#operatio=
+n-action
+
+Best Regards.
+Sang-Heon Jeon
 
