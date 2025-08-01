@@ -2,92 +2,93 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 01987C87FCB
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 23:00:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BEB86C87FCA
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 23:00:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98BD48E0002; Fri,  1 Aug 2025 19:00:34 -0400 (EDT)
+	id 51EF58E0003; Fri,  1 Aug 2025 19:00:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 961F08E0001; Fri,  1 Aug 2025 19:00:34 -0400 (EDT)
+	id 4F5218E0001; Fri,  1 Aug 2025 19:00:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 878118E0002; Fri,  1 Aug 2025 19:00:34 -0400 (EDT)
+	id 3E4688E0003; Fri,  1 Aug 2025 19:00:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 76DE88E0001
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 19:00:34 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0062016031A
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 23:00:33 +0000 (UTC)
-X-FDA: 83729709546.26.F8DA5D0
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 0F639C0012
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 23:00:31 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VhZqdn+8;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=pyyjason@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754089232; a=rsa-sha256;
-	cv=none;
-	b=qFHSeRY/0a/0Oji/2QA4raJnChcXHbcLwqxD4OCOx1+pU+GRYLWYHLUYgvN1GqijLe7y0M
-	nedouyyI4TscTdtt39s8YDr/VyvtSk9E7gO5R9MnxrXfObvwRnF4DmZwmwukQpfpEJWYFH
-	shDSFdse2zt20IliRWICSr0BvpqoZOk=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VhZqdn+8;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=pyyjason@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F5D88E0001
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 19:00:37 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CA0D11346B6
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 23:00:36 +0000 (UTC)
+X-FDA: 83729709672.04.96FE1BE
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	by imf30.hostedemail.com (Postfix) with ESMTP id D9DDC80011
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 23:00:34 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ToFBK3lx;
+	spf=pass (imf30.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754089232;
+	s=arc-20220608; t=1754089235;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=abqEG4k6EI+O4I+vteJ6XJztfIuJJUkYy/PS43p6Afw=;
-	b=Tk7DvLp+IPjwe+4yHIxskob86dCg94BwiXgwp8KWKfmFJ/+/Eh+32pLTAHMmVHRXC5TNQv
-	RM1WpOP42ZBD+tavZDvnXuobwM2L2Mbr0YmDqtWmnoXrqdPP0n/MopPW5C472Ua6WWkiQ3
-	shvNvri9tFfsw1nvAhMGmc7251OoUvE=
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-61571192c3aso1778299a12.2
-        for <linux-mm@kvack.org>; Fri, 01 Aug 2025 16:00:31 -0700 (PDT)
+	bh=7UIQftffFi5dmDZFojFIrkTA5pAdhvl7y5sSZY3E7b4=;
+	b=MiHbGXu/Eojjq/+Xa71vbR/XRWRwqQhrvJsonEvLDpG9SFp/pYel5M+kt5NUZyPKOrK36r
+	Pg+hVCRLuUff5ekFAjbc/Hmee8dVgcuZ0n8hx6n9KN1m+RLwtTOHFCVvN2WjV0Q6YVTCgz
+	QJle74F25DLDjjyZLzGkyKec5jYj77Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754089235; a=rsa-sha256;
+	cv=none;
+	b=KbjdOcymktleSW03Uzt0HZmXPBcvZx6NFw5sUL+6nL/ZUeg0ltus+ZF1fxmu2sJr6TOS6K
+	ytgDeLS3TgMrmiTQgjdAPFq6lsCsQn4OtEcux2d7mAAeai7p9KvGOHwRqSsAKQv7SWyUkp
+	4/edbNz02Ztj+ahoUFjG91REVVoBKxU=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ToFBK3lx;
+	spf=pass (imf30.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-61589705b08so5447951a12.0
+        for <linux-mm@kvack.org>; Fri, 01 Aug 2025 16:00:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754089230; x=1754694030; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1754089233; x=1754694033; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=abqEG4k6EI+O4I+vteJ6XJztfIuJJUkYy/PS43p6Afw=;
-        b=VhZqdn+8vtArfO6b79iXwzD0mzGjSJnEoPOoB5KL/hebBpHAVaEf1WhV+SlFe0wVm4
-         BoRvOktW+LtSvAOwDsc/n5jc4aeahxFgB43L6wqt9BWZN3hnbLIlVK4VLEa77iy/qO59
-         Q1rr3FknRKLpzISXYb7jL0Lj5ZD929kZT7QZiRiHICfUnEpJlsxJPUjrYsmf3XTGlpSn
-         xKx7jawVVLAVQ9za3k4bAvxim2yvWfMbHB1wOntAAjVzyjlho5iGLa3QUNg7a8QNNSu3
-         HAZzNymyYhk9WNyzhASms7SZHDOJ3uoOxAgp5kwJZcetImNiVzjJcTQT46yABBFYxtUO
-         /s8w==
+        bh=7UIQftffFi5dmDZFojFIrkTA5pAdhvl7y5sSZY3E7b4=;
+        b=ToFBK3lxdI7LVBAa+9yEAveaUEfGXP8FZlihrABzp5kH+Pd3KgGkT2OSJHsGfD1tv2
+         uKdILXbPTADiaqjScRQXkOEWfMD+hQTrzkLgi9btgVpshx6tsXlrjJ27is7q8ca7V9mI
+         /NYagRUJgMFE5S0gEE94XmCJYXSBifush8eFdz6jqg8FNIsOsvXJj1mDQluWOprWplXw
+         oU1/9G/2ouazSKYZYMHA/3GXohfPWiAmf1gFhp3dbk4CLcaEjk+m4JABVdLSGZyP4dLs
+         crra+6LuMuL3LyIMoLe0WlVw37XKXRNWN6zbbsc00rSKKJ3WIXmLzb9U0E2U8ozvCAeC
+         bWOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754089230; x=1754694030;
+        d=1e100.net; s=20230601; t=1754089233; x=1754694033;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=abqEG4k6EI+O4I+vteJ6XJztfIuJJUkYy/PS43p6Afw=;
-        b=U96FKv+1ibetCOywbhj8EBWvmMN/ksIur/J0WcHuecnRFIMTkA8M+s4D3+qBHcc1q2
-         p00Gc0mlhfRvQX1iSgPXX+sMompnMtkT+3Gwe85t4oVa1rq9Xk1NyYWQ1LgIHfZwpC3B
-         aIAoaOiOt2ZQrsh4Ib3IQPbpw829bpuAVd5aX1xOMVpptDstEK9WFxi0oO87nzOG/W+1
-         7+xpjEal+OZoB41zCB135rs+aa7Mq7t8YsZDJ8Jxnzx7ArzPB+V5NdtjsUDiJ4eLwqgo
-         gkUBI2dWMilYCONYCe+AOq2Gmzf0cff+ZOUQ7pBAUGMImQtKcfVkacsSEo4dhgUM0lr4
-         8Glw==
-X-Forwarded-Encrypted: i=1; AJvYcCVPJrjG/JHskuUf7NcXyyjx8fPc/yzJddo7hklURizExtKhsN88esf3bDVwvvJtNrls6Thdb6lVIw==@kvack.org
-X-Gm-Message-State: AOJu0YxUxE39gC9Ccrq5bREYYcorowvg3CJgaOH3RSPbiDs83h9wul88
-	t1PZnwNovHBkGhz6F2xEq6x5M+2XaQjHd5x3fpzrKorq05F51EGtTJXSCMNE1kIqa4mOfg==
-X-Gm-Gg: ASbGncvkKqMFwYYdSUVNkuupkAWHVljmoGfzOLVvlczmxSSaHEt5LV4VEkTdNt1DVbk
-	nmXPFMnbohbjHYm9RX5+lEvdpXhoD3X4HkU1o6CvSQcVhBF3jf+mpx1GQEzC4lIdIomjlTQ/kzV
-	N1iaOmbkeqNrLwNAlOWHD7xsbbnhmpYR/lvoj6ZEaBGDogfGDnYAtz/c3Tlu8g4BwWSMNWhdDoZ
-	aTbKwhn57DWCyVSIhumg4UDWnYC6DjwsdrP2XQ2eMTKWRtdFpCsIP0lbIgzLavvTT/b72aeLrw9
-	+2bjMIo5nj62YPulOCIl56jJxYZEJtNZtEawUB3Yku7Gr9ukwCzPsnc5iGNydFl3HkAQMx71MnI
-	PhmPeD1D9C0dsvd/EyRHR5arn6NSYAouP86yV/CbwZXL0HU+lietsI3xmkIoWddogdEZOMF4=
-X-Google-Smtp-Source: AGHT+IGJBab9bvw4VnN4YTk8kzAMWhGzABK21zAIbErqjtzD57IzqR8o7kVbKYxaiRnwlzZ5i9LCkw==
-X-Received: by 2002:a50:cc03:0:b0:615:b6b9:d873 with SMTP id 4fb4d7f45d1cf-615e715d669mr677090a12.24.1754089230336;
-        Fri, 01 Aug 2025 16:00:30 -0700 (PDT)
+        bh=7UIQftffFi5dmDZFojFIrkTA5pAdhvl7y5sSZY3E7b4=;
+        b=a3ixZVu+NCEHPhlf1MWfpOjn0kylk/R8dqr1prfo71LrgMvD7tFQNacz6/BCpcsf2Q
+         MstlVwUd0r0Dad6gV08bSLyvrTBt3JSXVEqpCOqUtFQONs1UQ7OfAL4MFgHoPdPcG/uk
+         HSJ9RPqayXGAoxYbkImCEEHCVovmG26Nd75XFmlZ2h2DOwvYHBJCoZxhdWbDF/IBnsym
+         Hp+zBnjW4BBAXSWzUzNWr7n2+h2xqVCelssGWN2tl+xskWmeDNse80G2vMkTc5wbNx/n
+         f2ZMYoHYFHEsMd8Ihb/9MnC9aJP4tFFbW0Y83uUn4vgusm89pfCghA8aCbmsQBLcK2BN
+         twVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU/cWWizd22lDJ6dVUmWy+tzqVotArbeqk7gq26EKB/iyf1ockSbbdukTKBwee/0vIkzE+3UusTHw==@kvack.org
+X-Gm-Message-State: AOJu0Yw8cXO4PS2fa8wawRvdymMXk2AOcHD9aXL36wAL1SQuzcRuUURT
+	nQVKOtBsbJ5GiRmYENFXRMEirlYS+GcY5JvKd9vnTVSY9RMnNGLCmlM/
+X-Gm-Gg: ASbGncvGWvrjYKlwL3+OxkU0MoMFATcdUc70MzfF5NF33T7JnrLOb+jrU05qsN6r4kj
+	4P9GR5Royyy+RFSiEVPO7OaK2QfAmYond1no+wkI/mDo6Rq80UYTt4sVcmE1RHbHf5K30/FtTcO
+	qLP94uM3WKeibbqCKpuLlHZtbfBw+L/uIkHj0c9IVz/rqA6R7geH46sRYobmYgUUfJZD81yQFhZ
+	043G3cJSUgD4frt9pQSOCubIxUNX5ZqIgDUAiKk5MuSdYILcQPRwCN/oeQiTkSPZh3qUhHu8N66
+	afwHGd9vUq7/tWIkfkXdRd22Mhs9yrW+xYFISH403Q/qymsWkjLgSITKgFGeW86psEd7dYuoTJy
+	Q2VYr7ix2ifF+uNBifOXpa6vC5rG9Vjhur8AH+bewwGG6ksjikyOynXepEwkh6B/h5W5C9pXqdi
+	Nz9ip0wQ==
+X-Google-Smtp-Source: AGHT+IH5K61GDg0ZUw4ARCfYbwftv+OGfOfF0Y0bqBEfg6jRNeqG2wf12EBb3f41tEzQLAjAwRKi6g==
+X-Received: by 2002:a05:6402:3553:b0:615:9c3b:17f with SMTP id 4fb4d7f45d1cf-615e6ef235cmr916363a12.15.1754089233322;
+        Fri, 01 Aug 2025 16:00:33 -0700 (PDT)
 Received: from rs3labsrv8.iccluster.epfl.ch (nat-icclus-192-26-29-9.epfl.ch. [192.26.29.9])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-615a8ffa17csm3279290a12.49.2025.08.01.16.00.29
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-615a8ffa17csm3279290a12.49.2025.08.01.16.00.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Aug 2025 16:00:29 -0700 (PDT)
+        Fri, 01 Aug 2025 16:00:32 -0700 (PDT)
 From: pyyjason@gmail.com
 To: SeongJae Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
@@ -97,22 +98,22 @@ Cc: damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	kernel-team@meta.com,
 	Yueyang Pan <pyyjason@gmail.com>
-Subject: [PATCH v3 1/2] mm/damon: Move has filter to ops-common
-Date: Fri,  1 Aug 2025 22:59:50 +0000
-Message-ID: <a290e7913a1c39f605b8cceafd86d41c2dbebf82.1754088635.git.pyyjason@gmail.com>
+Subject: [PATCH v3 2/2] mm/damon: Add damos_stat support for vaddr
+Date: Fri,  1 Aug 2025 22:59:51 +0000
+Message-ID: <88cc271642476fa6025f3789781dfc8c2f576eab.1754088635.git.pyyjason@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1754088635.git.pyyjason@gmail.com>
 References: <cover.1754088635.git.pyyjason@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D9DDC80011
+X-Stat-Signature: 9q6xw64bpiqfbmfw3foh8icph53p57y8
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0F639C0012
-X-Stat-Signature: 5yrzg18bejuoxz8s3i7mphdt5z4tbxhb
-X-HE-Tag: 1754089231-748249
-X-HE-Meta: U2FsdGVkX19+Gtf6+gMVKmN0bqFpPv84GYxa5vAgxCVyCIsvxny/bvLPv+7G/fboIc/NdfJqawHDxvSgNRN468tCQu65Qpg2rHaMb7lh9/EdMiiGFrOw2iOZCDl7nh3Ng3lhedcciUjd54isVq6PfmpUh9dFIRzbQM5cOkeqBjF7i4iLjmfqcEhY/INwoFwBDROq5iG7vMdYuXD4LUb+zgjftplMndyf/1lAXdYbrJdaQosL0p8mV8SfITuTD0nVNjoYOCkdWJXbYJ2pdoao6sBNHSwjQgd0VJD6rx0ipWdSf93YzYJNTwxTG5Rrz+vC4kWAzk3+rfLR6kLuY7fmI4Rr1fLxo1Tj0iEBqlWLnaHjzDavfdAmMBZ9wVq9puJ2zfMbca4Cpi1jR7Sl5Ag8Vn69slnsfJoW5IRJpwJwEibe8TdLxOxsLzdMLh9+m5q4Z2z2ezMU9z7p0VKl4cuj0KB7jXcbxq52NhWBhVGiL/SP+kJV60PAY7Jv3IE8IxS1tCTaFtjCNsz0TlLzd0uJyGLs3KYY8/lb8aS1PoRUg0p9o5A1nxO+gdMJ6Y1Dl70YC6rHc7us/fNbYrLlK2SsSnXw9WtLa/tw03Jpt2DJdOIYkJlC5Uqo53xJgimDHsmcet2PfPFKWNcms2b6dSYr2jESd7cGeUlYSpBoGMJSYdJwnIrDJXu0Q4IxasGhCIo6VYADFReLaFOc2YQy0GTiONbT+EaLKchszLebh12xBl9heDBPZ/aMudwh2z5wWoJR3v29caBx7KuAQUAK0VY1tiXsmWHMQ51PZKPN/Rpepau6setHmYWwB7NnrKc94SlK6S3trHtdY1Myj9BonE8pOhI6QQ1xD7R2D2eFUTkH31Sh/vB8G/VoaqJZYFhT3x4IJuPE5fYuIY/cPfC7VhwebOi7px7GF6hZCiAWQDebO/A8eV4sMUvHW7ABTAZ9zJmJ0QuyI1j8vSM5+teFIl1
- XPP0VoRM
- 7dajrKMXev5omYe95Ja4Ma2dw3sdAcg144NJ2w5V5FqoKd7O/zLo03iidRBXzs/32YZha6wS+yhgYp62EjpINiJKbopWt4BrY6mLP8Mam2BjRzgwaLApAh/iwviaTHpMvLM5jz1iblH56+G4tIz8Mvj257NMlKrpg9SmuGJ2QRcWOYUmN7iGT6UO9/PmIvmvqfRTnwOHp85/wx4JTFjQxGgg6UhQGkLuDhCVMsFAbjHT1TZCiHL+JZXrgM6NvsM6ebvUNVx0kQNi3z20820bE9rO8uh65Ta4UKbjM0Wa4wGGmUIIp1WPYgDNkHHXAbVt4OKsea7eXPcknUnTFFcS/djm6jdFG0xedLKnsBVOdNI/vcsaRZWu2PZ8V4m4Mo+RzHrgTJ9ucchbCB37vPq+oa/mUMg==
+X-HE-Tag: 1754089234-118951
+X-HE-Meta: U2FsdGVkX1/1tzH6MNECI9Ru/LP1SNIezVbGgBtIzabLM8QA3F3GwAks1h4CmifpwgBzgZZU0KcAaaINryI3CcNV0evZk+1QPm6psVaTqs7iM6WnN3r9lsgnyv0CP9kJSwOGgxOqkiS8W+Y8wBGPw4rY2yO//ZrHJwxoDkiy4j9A7pc1lKdRhBC9oCKCNo/N6YGbltG0NJbbSXlkdYA5Phd01el0baoHpwfSaL9RW7cHbgk2tnaEtkI9DXZx6eyyhpc3qZrjvCIy7HB5GRfZqZDWYGSM8UpWZoqzKOtqeE5WwQd5ots0fCH2pIwUfVwrl21CbFtv3CF6rXh2jG+MDt6mJtGgRfuAQg5B0zhNTJ6vPLccwdMcEuDtgUU5uLrR9g2F4RVivK70dlc6jf6+LFv9oiQ9TO6tjmmG4Ai30TbjNWgTiXtksaWD7cC89tb3b0mzClfXwC7G4rsbWAqeFHxuSRw0sHny+WbjO9Hxd0Y9KysAD8bt86XJ+zGMFirlJsoTBUZunCIYhP6dcpXoKnCJYlAk2eYSv3Wp3Oj7tFXxQQEoIx3TFqEVcKQSiiMU8b7UMCuLPnvgv0OyGm73Pshji1jsRFSgS/XWktXgeMRf6LVaxjZFl04D9FWUsL/DxjU6pzRL4ELTam9CjnntVq5H5vuoYDHJasnm+fVMf1WhXsm6SBavIyO5fnJXgE5tFqXQDNiiWyqm0SKUzcNksEI81zVinUzH2UNzSL79kmlP+BU1jjZ4SVAp96Iy1qMjJk7vz7MMNj1ffZmQ0Lcpo9bXoZT9v+ZUtDjENkqokCe2fEUbIyZWdqrKoBBhQNLXXs8GqbaejzAy0VZttkY97cVUZb4KvMCILo/BCN7G2fw7V0Zascd8bMZ8lI7YEMKNwVWRNQwGX1b9ItrB3ClaWYWS482N/718gtYGqV7wvkjGWnCDvZEzR/M53WjguFvsn8Y/wl7mJX7UB309qxz
+ DqThhWon
+ Z8AlcqlRhwhhs0rKY2yg+WcIsvYK/2XWDd09lm+IG+N3t3zFffX0VN8YTOb02oU+PPjbdIZV6H9NQABMy5r4O7hW02f6MWFt0zY2Kf6KmwrjRxc0ghr1+11ilPFSdvUR9XSWvixRsOaE9GcKXryfj0DthDjg7D+gzAtK69eS0vHBU8k25xjBOMT9+85TzB9kQTfeZQDovRbvxPZFdvAnfuPsrW6nI4So9hpdHyKrBG1kdPqsW9KN9sQ2HPcW7tMwZMaKqSD3amrCVXFBaPVwP/9mMGPWzYjLvwnxNPza84kMxldbGZKsNbSaNdJ4udZxm/Di1JivDxdGwnliieLuRkLR+IALNpfTRzS1u+fbN5SOzXrc/AqXNSTiKsauYeYyQlwzdMqADMc/Ii9VTKMDHi04D6O0JgxkutPiY1B7DLkWXd0ZCQsfc6qfwl8cPUGSEDP4kssjMFlkcBZpzOaGGYnVoqGb6XSCxTu3xSVfLS+oUbJE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,73 +124,137 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Yueyang Pan <pyyjason@gmail.com>
 
-This patch moves damon_pa_scheme_has_filter to ops-common. renaming
-to damon_ops_has_filter.
-Doing so allows us to reuse its logic in the vaddr version
-of DAMOS_STAT
+This patch adds support for damos_stat in virtual address space.
+It leverages the walk_page_range to walk the page table and gets
+the folio from page table. The last folio scanned is stored in
+damos->last_applied to prevent double counting.
 
 Signed-off-by: Yueyang Pan <pyyjason@gmail.com>
 ---
- mm/damon/ops-common.c |  9 +++++++++
- mm/damon/ops-common.h |  2 ++
- mm/damon/paddr.c      | 11 +----------
- 3 files changed, 12 insertions(+), 10 deletions(-)
+ mm/damon/vaddr.c | 103 ++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 102 insertions(+), 1 deletion(-)
 
-diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
-index 99321ff5cb92..de5404477242 100644
---- a/mm/damon/ops-common.c
-+++ b/mm/damon/ops-common.c
-@@ -412,3 +412,12 @@ unsigned long damon_migrate_pages(struct list_head *folio_list, int target_nid)
- 
- 	return nr_migrated;
- }
-+
-+bool damon_ops_has_filter(struct damos *s)
-+{
-+	struct damos_filter *f;
-+
-+	damos_for_each_ops_filter(f, s)
-+		return true;
-+	return false;
-+}
-diff --git a/mm/damon/ops-common.h b/mm/damon/ops-common.h
-index 61ad54aaf256..d3d36bca90b9 100644
---- a/mm/damon/ops-common.h
-+++ b/mm/damon/ops-common.h
-@@ -21,3 +21,5 @@ int damon_hot_score(struct damon_ctx *c, struct damon_region *r,
- 
- bool damos_folio_filter_match(struct damos_filter *filter, struct folio *folio);
- unsigned long damon_migrate_pages(struct list_head *folio_list, int target_nid);
-+
-+bool damon_ops_has_filter(struct damos *s);
-diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-index 53a55c5114fb..9d9cdcc10b8e 100644
---- a/mm/damon/paddr.c
-+++ b/mm/damon/paddr.c
-@@ -262,22 +262,13 @@ static unsigned long damon_pa_migrate(struct damon_region *r, struct damos *s,
+diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
+index 87e825349bdf..5960d5d36123 100644
+--- a/mm/damon/vaddr.c
++++ b/mm/damon/vaddr.c
+@@ -890,6 +890,107 @@ static unsigned long damos_va_migrate(struct damon_target *target,
  	return applied * PAGE_SIZE;
  }
  
--static bool damon_pa_scheme_has_filter(struct damos *s)
--{
--	struct damos_filter *f;
--
--	damos_for_each_ops_filter(f, s)
--		return true;
--	return false;
--}
--
- static unsigned long damon_pa_stat(struct damon_region *r, struct damos *s,
- 		unsigned long *sz_filter_passed)
- {
- 	unsigned long addr;
- 	struct folio *folio;
- 
--	if (!damon_pa_scheme_has_filter(s))
++struct damos_va_stat_private {
++	struct damos *scheme;
++	unsigned long *sz_filter_passed;
++};
++
++static inline bool damos_va_invalid_folio(struct folio *folio,
++		struct damos *s)
++{
++	return !folio || folio == s->last_applied;
++}
++
++static int damos_va_stat_pmd_entry(pmd_t *pmd, unsigned long addr,
++		unsigned long next, struct mm_walk *walk)
++{
++	struct damos_va_stat_private *priv = walk->private;
++	struct damos *s = priv->scheme;
++	unsigned long *sz_filter_passed = priv->sz_filter_passed;
++	struct vm_area_struct *vma = walk->vma;
++	struct folio *folio;
++	spinlock_t *ptl;
++	pte_t *start_pte, *pte, ptent;
++	int nr;
++
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++	if (pmd_trans_huge(*pmd)) {
++		pmd_t pmde;
++
++		ptl = pmd_trans_huge_lock(pmd, vma);
++		if (!ptl)
++			return 0;
++		pmde = pmdp_get(pmd);
++		if (!pmd_present(pmde))
++			goto huge_unlock;
++
++		folio = vm_normal_folio_pmd(vma, addr, pmde);
++
++		if (damos_va_invalid_folio(folio, s))
++			goto huge_unlock;
++
++		if (!damos_va_filter_out(s, folio, vma, addr, NULL, pmd))
++			*sz_filter_passed += folio_size(folio);
++		s->last_applied = folio;
++
++huge_unlock:
++		spin_unlock(ptl);
++		return 0;
++	}
++#endif
++	start_pte = pte = pte_offset_map_lock(vma->vm_mm, pmd, addr, &ptl);
++	if (!start_pte)
++		return 0;
++
++	for (; addr < next; pte += nr, addr += nr * PAGE_SIZE) {
++		nr = 1;
++		ptent = ptep_get(pte);
++
++		if (pte_none(ptent) || !pte_present(ptent))
++			continue;
++
++		folio = vm_normal_folio(vma, addr, ptent);
++
++		if (damos_va_invalid_folio(folio, s))
++			continue;
++
++		if (!damos_va_filter_out(s, folio, vma, addr, pte, NULL))
++			*sz_filter_passed += folio_size(folio);
++		nr = folio_nr_pages(folio);
++		s->last_applied = folio;
++	}
++	pte_unmap_unlock(start_pte, ptl);
++	return 0;
++}
++
++static unsigned long damos_va_stat(struct damon_target *target,
++		struct damon_region *r, struct damos *s,
++		unsigned long *sz_filter_passed)
++{
++	struct damos_va_stat_private priv;
++	struct mm_struct *mm;
++	struct mm_walk_ops walk_ops = {
++		.pmd_entry = damos_va_stat_pmd_entry,
++		.walk_lock = PGWALK_RDLOCK,
++	};
++
++	priv.scheme = s;
++	priv.sz_filter_passed = sz_filter_passed;
++
 +	if (!damon_ops_has_filter(s))
- 		return 0;
- 
- 	addr = r->ar.start;
++		return 0;
++
++	mm = damon_get_mm(target);
++	if (!mm)
++		return 0;
++
++	mmap_read_lock(mm);
++	walk_page_range(mm, r->ar.start, r->ar.end, &walk_ops, &priv);
++	mmap_read_unlock(mm);
++	mmput(mm);
++	return 0;
++}
++
+ static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
+ 		struct damon_target *t, struct damon_region *r,
+ 		struct damos *scheme, unsigned long *sz_filter_passed)
+@@ -916,7 +1017,7 @@ static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
+ 	case DAMOS_MIGRATE_COLD:
+ 		return damos_va_migrate(t, r, scheme, sz_filter_passed);
+ 	case DAMOS_STAT:
+-		return 0;
++		return damos_va_stat(t, r, scheme, sz_filter_passed);
+ 	default:
+ 		/*
+ 		 * DAMOS actions that are not yet supported by 'vaddr'.
 -- 
 2.43.0
 
