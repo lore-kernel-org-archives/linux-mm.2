@@ -2,126 +2,228 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E5221C87FCB
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 11:42:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 34676C87FCA
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 12:00:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 793476B008C; Fri,  1 Aug 2025 07:42:44 -0400 (EDT)
+	id BFD996B0092; Fri,  1 Aug 2025 08:00:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 741F16B0093; Fri,  1 Aug 2025 07:42:44 -0400 (EDT)
+	id BAE606B0093; Fri,  1 Aug 2025 08:00:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 630676B0095; Fri,  1 Aug 2025 07:42:44 -0400 (EDT)
+	id A27B06B0095; Fri,  1 Aug 2025 08:00:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 545286B008C
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 07:42:44 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0035D13530E
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 11:42:43 +0000 (UTC)
-X-FDA: 83728001406.10.77D5196
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	by imf09.hostedemail.com (Postfix) with ESMTP id EC621140012
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 11:42:41 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=heJOV96L;
-	spf=pass (imf09.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754048562;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 930D16B0092
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 08:00:11 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 50A1D1A091A
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 12:00:11 +0000 (UTC)
+X-FDA: 83728045422.03.4CF1EAD
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011006.outbound.protection.outlook.com [52.101.70.6])
+	by imf01.hostedemail.com (Postfix) with ESMTP id EEA3F40017
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 12:00:05 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=ME442LoW;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=ME442LoW;
+	dmarc=pass (policy=none) header.from=arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");
+	spf=pass (imf01.hostedemail.com: domain of YeoReum.Yun@arm.com designates 52.101.70.6 as permitted sender) smtp.mailfrom=YeoReum.Yun@arm.com
+ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1754049607; a=rsa-sha256;
+	cv=pass;
+	b=Vq8VPeICZh3/OfrDMkO5BmrMTZN5lXL2YjX37NUKbeQp/Vm9oXVTmAv5qwJSzr4c6U/o5u
+	FAOBfR5o7lrBUXsPeNkmXaDbF+VQ7TM0OSC0sOG2fvQPug56h/72NByiOz5fMDVGwP6F5l
+	RCFBUMcP6tpIrkvn+gFQlOw/nwQYQ34=
+ARC-Authentication-Results: i=3;
+	imf01.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=ME442LoW;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=ME442LoW;
+	dmarc=pass (policy=none) header.from=arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");
+	spf=pass (imf01.hostedemail.com: domain of YeoReum.Yun@arm.com designates 52.101.70.6 as permitted sender) smtp.mailfrom=YeoReum.Yun@arm.com
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754049607;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=momi1YfOHTpFLGKMVxFm/VGFaTZTo2hyfea3bMFo1dk=;
-	b=zVbNrM1qDfgj7lmMu2CGJnRM6pKFA5GmH+FGCtZFIuMniNHDvdCvFymWszz+STGXdZTeOp
-	Tiv7qk9zCf+FFtPS1s/LgfqZ4wB10nVtx2TqzuCNQoxQojxbpouXPNmIgMmjIzQmP21yG/
-	4Fzo/YrUas9kPUvNE+og/pw3q0K1SZE=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=heJOV96L;
-	spf=pass (imf09.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754048562; a=rsa-sha256;
-	cv=none;
-	b=1V3jaFXViIG4EvNh+gwAsYGXWPICydPvNXDZzlC1cE35ohWO1MGhiEKij4g23c/72GVlVk
-	Y3lyy5fB+2fwblxkIBTpMDdrdbO0bvGgEC9sv2zHdzoHGM2Rq5sXZDFccJ/5Vj1PSP4jvJ
-	Gh4I+MvCEe4xl9qR32wWVcoAompERbk=
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4560add6cd2so15358625e9.0
-        for <linux-mm@kvack.org>; Fri, 01 Aug 2025 04:42:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754048560; x=1754653360; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=momi1YfOHTpFLGKMVxFm/VGFaTZTo2hyfea3bMFo1dk=;
-        b=heJOV96L/tShWt3SR9wGlf3okx/ybtlZALSqtCzdqEixPC6UBFSvUX1NlBwQTl/YgF
-         wMTxwHAlb4jJL9vpHke2U6veXjHBSwYCY6JQuJsnjaSCrb79g7ZE+fTWYtM4QQ2D2RvD
-         vRxnbco2ALQwUNZEmuYmfW0T73HflvUk4p/1rR2SyCiO/GTOsEXDDZHmGEI/dM1iHJ2O
-         O9dxUMMUKwW+SpYYuww3nG+D/tLAuFSCkbqQsEeUXT7dZGPKFLGi/TZ+n2Amsl/F0F/6
-         5Y8c6AdWKiEfera6fYogHR+STRbLBKyepRMZQzMuP3iItVDWW7v2/wX/z9TdIpKDtYzQ
-         q7+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754048560; x=1754653360;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=momi1YfOHTpFLGKMVxFm/VGFaTZTo2hyfea3bMFo1dk=;
-        b=cKvaETPhLqTgOv0WCqptZ2kMtmM1N38BoSDac/X0WPtljx7gxQeuR/lVdZOgeDWpaF
-         sOgh0lHtyVRGJup2WiOzikkxKaLjQr+5TXyUuIKtxbSQsUhHf6n2UJTxbAEAqO23fLzq
-         l+dSeRzqQUHVXV4BmaUlJwY7XOJHhgW7quO9lAg1WphFHWd1IxQWNvum2CiHqiGXFIzl
-         lrpN9RLKgwYl7EFgleSsa1DPPpDKi78OFbMBkBqpPtqz4E4ynBsqPWfDScHearyJWAIE
-         /tKQUeu1r8Is6JNZe+bFZuaaD/E34pDJJ1MqDAxSfgyHuK0RsQqnTDTP9CkkO0dZ4jQE
-         +9Bg==
-X-Forwarded-Encrypted: i=1; AJvYcCXD6nV18mTmTTVb6GCV11V+rNCazCc5HxFdu8aztTOmwDIqBl8xqCe3LQSC+ZTefReiezK8HT54Hg==@kvack.org
-X-Gm-Message-State: AOJu0YwrwhRRgndQEgwM2CjMQsrDVbaMMTBU5qj29K4Jfj28aYzb63hi
-	rNfnDqBTeyIX6SxGqb4l6ecpJiAjYT2ki/fjWMsq0WqtUQl245Efnpq0
-X-Gm-Gg: ASbGnctbGAjK2mjSlmx7HPK7Pa9FB3pVXWL8VDTNv9txGozl5f+wMsCrHbYHO3jiMIf
-	5pfmMZYbgYdWzaLI1fDHONHQdehmaxoJAoEvzl54F5ETAtYBCxdaTHOKn3fStw/KZCzaOQ9XhJ1
-	6Lv2PvMGBEWQRtt7dTnx9CfV2lh0T6CQPXi0uawegcTKY/aCfUNuh9vWX1MZaDH+6WpH6c/N5gX
-	Df3tM4CREiJmsxnQCQqlaWRbEh5gUYdoL0OJU2RusrSaT1U5oU3z01r7h2ufgY9MY1DVi0Zw1TW
-	3UDYU7Brif2eHxIZD2AUmYIZttr/UvTpYTFwe3pvoLRmzeWoy0E/tn4ACMhMPgVvMki2q69Y3FY
-	iHABSTe1WAmPNGoKHUjaOlN3Q8Bw3/Mfj3hGcEjH8XeIE0AmBDFehzfTf3j1+X9Ejft7rvtFfMS
-	mY1InOrNqzSxCbrFWMXEto
-X-Google-Smtp-Source: AGHT+IFHDY7W3Ce5xcLtfL4XnnwU/a+0HjPBHBzmVsYbShhebd7Z21HrXzs3mc/awIMb9FyAT2pj+w==
-X-Received: by 2002:a05:600c:190a:b0:456:18e:eb7f with SMTP id 5b1f17b1804b1-458a1e0bf9emr62743245e9.3.1754048559998;
-        Fri, 01 Aug 2025 04:42:39 -0700 (PDT)
-Received: from ?IPV6:2a02:6b6f:e759:7e00:8b4:7c1f:c64:2a4? ([2a02:6b6f:e759:7e00:8b4:7c1f:c64:2a4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c46ee84sm5508760f8f.57.2025.08.01.04.42.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 Aug 2025 04:42:39 -0700 (PDT)
-Message-ID: <22e263a3-a1d2-4159-b3c8-44f7a29bace9@gmail.com>
-Date: Fri, 1 Aug 2025 12:42:38 +0100
+	bh=GerBoo9YYMKztWZljHsS0T5qv6yaH9BQiprdhoSYt/8=;
+	b=sZCcMfjA1PWd6kEmYzXQBGlwb0zB8SZu8hau9/2nB6hq75Tq5kdLYuDucxbTPBJTCuGnfN
+	Ru1qXQJphdH1uX36itW2OZUsCswtjQQkQqWZR9JiTurhUQtnxxk6MO/mTua1nNQVu9O4La
+	dFw0on6x1Jwunm71KWEcmxfAG21YisA=
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=Xdw6EV/mbziOMFRa1fz2CTpj/CHkf7GKCdlIpfwCkijk2kNZ3JFsD74K5EAyHrU3I28/ovLnYBGj5bvQloE/PRlDtbY+nRiimicdMrEmc/f47U9uSYRNiu09Cvu4G+EShbQoNV2/BHHs1yIBfAALpHEzeHTD0kJrx9tXwfFPntKFaI6LhwHN/7+dCzKUfpZQi/K7m/U+j6nDswpYjxESzy6sNWA4gX57554zLGSva7kFLz1t+ULmXStVoBR5nsjPeqx2j/3CABi+UuJpxQxmgeTLOh+LHzSRi936tAhNyznhzkf94W+lj28lKIFQCBmOsAEUmeezwXtcGbAFPvVaZw==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GerBoo9YYMKztWZljHsS0T5qv6yaH9BQiprdhoSYt/8=;
+ b=pItG4+qj8DFxexGFkJV6oDPLG2noLKgZRVChS259NzShIFrTnzsqoRuf0foLWYplyUyU6XHkwjcqRsohL9XRDxxFA7TiooFLFoMhL3uVeAQQR94VLVxn0Bks4HUpRhgIgMjCYBwstdDc4ELG7A6H9gWTdopgyXT3HqzQ2KtTFNUvM+0PEaTEmU9q0rosbn4msF1i6KRK2B8/O7iHvSWK/ZGE+5z02eofqWUMcaXtBTWmtBqKyU44Hp/TPJ8zwB3l/dfA059/cP8F5kw4kKB+ywYx2PDE0J8JoHHR6chPG5pmlF66NvpHg1U0lBgyyJXV7LbTHAvINCnc0k0wVKCSfA==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=gmail.com smtp.mailfrom=arm.com; dmarc=pass
+ (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
+ (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GerBoo9YYMKztWZljHsS0T5qv6yaH9BQiprdhoSYt/8=;
+ b=ME442LoWTDyYkI1xghSzIW2QZtcooU/c1bDj4egwEw56uogamv7gI66qOCjdaHJZZJDh83bYNgQoDPlTvsqc1Dg9QRAtf95aIFRhJNlqBQRyhD3WPWVp7HwaW2y2RlCedA3yeXs/KsswdDKSfresElhIfdteMfvWHxm/P51yP44=
+Received: from DUZPR01CA0117.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:4bc::23) by DU0PR08MB8066.eurprd08.prod.outlook.com
+ (2603:10a6:10:3e9::9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.14; Fri, 1 Aug
+ 2025 11:59:58 +0000
+Received: from DB1PEPF000509EB.eurprd03.prod.outlook.com
+ (2603:10a6:10:4bc:cafe::a9) by DUZPR01CA0117.outlook.office365.com
+ (2603:10a6:10:4bc::23) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8989.16 via Frontend Transport; Fri,
+ 1 Aug 2025 12:00:08 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ DB1PEPF000509EB.mail.protection.outlook.com (10.167.242.69) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9009.8
+ via Frontend Transport; Fri, 1 Aug 2025 11:59:58 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ElQ0sZdnc5UffWF2D9rVmbYzBHhsLj2H+ZAP6cgioaZ4qPOPN23UOueNEtki5Mv+MfDxkFtYU+Yc/EgK7sWSCY6O2+sGKVYuEcsCSnMgkqJT06NgjGr5135eONwHD1OvD9BTr4eLQ+G0WymucuLoEH4ug1CTknZ519ODNBS1cWONmT2XlHWiwgxpOngRbpnHvLm7XJpNA5BxljfO8QrbXGxRsojRJyCgX1t2oish9NWm4YLV+B0iR1rlpLGrbZTe0+trb5slSejoi+y82HEvYCxzZHzDUAIRLEp7t6ww85L1WHen2zNdOivw0vQCQQbZav+dFZ7djeR6+sHhe8n1Xg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GerBoo9YYMKztWZljHsS0T5qv6yaH9BQiprdhoSYt/8=;
+ b=xaSA3GAwCYd71a5JGTTSXDOB7n1LKMFnxwMH1zaQIci1UmOYUcDHmo0QO8iJNNzMpXy6mpJS8D+04olF7Y/thQb+V/J+TGD/1Dy3Mh190T48czL4yLEirRkeiq0mreLD/27sVpeiFICKnytUzG88vOidK8FqRRaZ8fJs2/w+raikRYt97ItFoenyTyhDjsAPPRd/XZyvcVe9siPUMCyaBL2dVBiliS3tEXzVAc7Nq6cFt3sO7opcJqNh9eLPJYP9jrneXYiEMfIav0CHcbhZNhSfVafPOsMJiWybGF/AQO4GpcC/o4XHC7p1XJhVLF6p9aUtS177GAdOcHR4TF9KTw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GerBoo9YYMKztWZljHsS0T5qv6yaH9BQiprdhoSYt/8=;
+ b=ME442LoWTDyYkI1xghSzIW2QZtcooU/c1bDj4egwEw56uogamv7gI66qOCjdaHJZZJDh83bYNgQoDPlTvsqc1Dg9QRAtf95aIFRhJNlqBQRyhD3WPWVp7HwaW2y2RlCedA3yeXs/KsswdDKSfresElhIfdteMfvWHxm/P51yP44=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from GV1PR08MB10521.eurprd08.prod.outlook.com
+ (2603:10a6:150:163::20) by GV1PR08MB10730.eurprd08.prod.outlook.com
+ (2603:10a6:150:162::17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8943.29; Fri, 1 Aug
+ 2025 11:59:24 +0000
+Received: from GV1PR08MB10521.eurprd08.prod.outlook.com
+ ([fe80::d430:4ef9:b30b:c739]) by GV1PR08MB10521.eurprd08.prod.outlook.com
+ ([fe80::d430:4ef9:b30b:c739%7]) with mapi id 15.20.8989.013; Fri, 1 Aug 2025
+ 11:59:24 +0000
+Date: Fri, 1 Aug 2025 12:59:21 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: thomas.weissschuh@linutronix.de, ryabinin.a.a@gmail.com,
+	glider@google.com, dvyukov@google.com, vincenzo.frascino@arm.com,
+	akpm@linux-foundation.org, kasan-dev@googlegroups.com,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] kasan: disable kasan_strings() kunit test when
+ CONFIG_FORTIFY_SOURCE enabled
+Message-ID: <aIysGSmWKIhQYid+@e129823.arm.com>
+References: <20250801092805.2602490-1-yeoreum.yun@arm.com>
+ <CA+fCnZdiwXXYmW9a0WVOm3dRGmNBT6J5Xjs8uvRtp7zdTBKPLA@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+fCnZdiwXXYmW9a0WVOm3dRGmNBT6J5Xjs8uvRtp7zdTBKPLA@mail.gmail.com>
+X-ClientProxiedBy: LO6P123CA0005.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:338::10) To GV1PR08MB10521.eurprd08.prod.outlook.com
+ (2603:10a6:150:163::20)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/5] selftests: prctl: introduce tests for disabling
- THPs completely
-To: David Hildenbrand <david@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-Cc: linux-fsdevel@vger.kernel.org, corbet@lwn.net, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org, baohua@kernel.org,
- shakeel.butt@linux.dev, riel@surriel.com, ziy@nvidia.com,
- laoar.shao@gmail.com, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
- npache@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- ryan.roberts@arm.com, vbabka@suse.cz, jannh@google.com,
- Arnd Bergmann <arnd@arndb.de>, sj@kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, kernel-team@meta.com
-References: <20250731122825.2102184-1-usamaarif642@gmail.com>
- <20250731122825.2102184-5-usamaarif642@gmail.com>
- <7b13d8b5-a534-47f8-b6c5-09a65bffc691@redhat.com>
-Content-Language: en-US
-From: Usama Arif <usamaarif642@gmail.com>
-In-Reply-To: <7b13d8b5-a534-47f8-b6c5-09a65bffc691@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: k1srnz3iw6r9i4inb8cjdmatburcrz35
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: EC621140012
+X-MS-TrafficTypeDiagnostic:
+	GV1PR08MB10521:EE_|GV1PR08MB10730:EE_|DB1PEPF000509EB:EE_|DU0PR08MB8066:EE_
+X-MS-Office365-Filtering-Correlation-Id: 11ff348b-e561-4830-d79c-08ddd0f2f020
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info-Original:
+ =?us-ascii?Q?0lWFv0Ygxr1r67WZutuOZCvalUGmnCNeb2VJAfUKRU0Q4f73QdN3VKX13mxl?=
+ =?us-ascii?Q?rh6HINEpiG6Z42JeF6VqXVdsRqFZZRvPld/u7IfhdN3ioNEFdSeQ3avgEUmZ?=
+ =?us-ascii?Q?HGJ2luo3F17WXFYAZ5At0ACLqskuF2dfgPOxILJr9OlBMbomSqhrI4sMttiR?=
+ =?us-ascii?Q?ojb1PvuDlMpehym95ePxw7Vf4hmDmVpjY96uDPSsRvm+52Dn577DP3XAuceq?=
+ =?us-ascii?Q?w/GQceAx31J9uoCXgw0E6wulZMPNGbFmYl5WbwOKbO+H0gZ0WqDtRzMOEY9v?=
+ =?us-ascii?Q?dp7xZOUf/c72fb+lu1kmh7LwNqajxR9XWYssZyyV7SEew8d1+x2fwgxF50qW?=
+ =?us-ascii?Q?t2Mkl+FrwwnW/4sed9VskosZ8Pc6Fh8MDw8rc9iQYbBorR8YCywEkl0JNNqd?=
+ =?us-ascii?Q?7YvjpSdfhf7Z74Blnyt1zj70zZHsvhkKe9YetyA4OlYAGJzz8UjPIUMQEv5l?=
+ =?us-ascii?Q?I4MogW9Y4FeBQ470QD+xAeoWzl7JDp6zj8lkzqzzelJqZNknW9bxNSG0jXNT?=
+ =?us-ascii?Q?xW5UZzuBdrD0T9j/JL/tWXi+XhU9Ey4Dycad64o2zayegqCPT7n5KzgP155i?=
+ =?us-ascii?Q?iuI4KsvSXEyiuV6Rq9vna+Q5dyrPNH+toT0YHJ/Dm4DnKUDWIXhDWUANzNyJ?=
+ =?us-ascii?Q?f9z8h1LadCUN68HU35Wsja/i/tF84QX93Qkeafe+eAhlziuV7gK4uU8HSBS5?=
+ =?us-ascii?Q?lBxRwh9rhwv5bAafZNK7a3LHPbMxoGkgS3qOMIoLgXZm8XOOzSOieqOndcnN?=
+ =?us-ascii?Q?dn/pvCycVpLDIf7IC9hIlIvCVzw7H9sfsF/oht0QoCaz9Y1v0zIP3028nEgE?=
+ =?us-ascii?Q?orUu2bjJ9bMtveXpI4NRq285Yfww685CWQJjeuy1IV87Y38zkeOJAGfXgwvP?=
+ =?us-ascii?Q?J5TLDqFYmLxiSWQSWWGGeWHXIYDIdsdntH6BCVcgz3Xyx3S8MxS8GPUOvG3a?=
+ =?us-ascii?Q?/I52RUKnWuYfXHw40dPzN76umZkDWQjyCJl5imxjRpX1NieEPfZBaFhegR4S?=
+ =?us-ascii?Q?uu8Tti90QvwC0EWWvUsDzxnFBmZOotlGTzihGT1hoaMXEfsK3y+8TkOrYOFK?=
+ =?us-ascii?Q?zHnXN5lKgA2IioYg3FafrXmrDAl+TEMh3LvPOCq/9/3IMA6XWz78XxmVo1wZ?=
+ =?us-ascii?Q?glJtXY+FAiyOcttXRH3hOQHmlqX7vNTyueNOynHCueWdQDRqetuB6+fzZ/WD?=
+ =?us-ascii?Q?FW0lBEHQOoMKuU7RCLj2wWG7w1nV4mnQBchdx7tAfU77xo0Zw0E6GYZ0EvAa?=
+ =?us-ascii?Q?lXlGksJv4wZuA70/ecdB5QCPs6n0qmboVFE+F5sD64c55wILppzdvTxMj/ep?=
+ =?us-ascii?Q?zEsyeiXxUAQpWNcAqQ/1oUwTA1B8yL+orAQC5SNkJlFXc3QnWA8MtmZc9LgR?=
+ =?us-ascii?Q?SzFnE2NDt+YjPPXzAx7MRZP1JrMZEVBEfQFKFBoiGhRmMwcY9wSQ9uA5VSpV?=
+ =?us-ascii?Q?VQsGDQ8MSQE=3D?=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR08MB10521.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR08MB10730
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ DB1PEPF000509EB.eurprd03.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	795b1588-222b-4a8c-e126-08ddd0f2dbb8
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|35042699022|14060799003|1800799024|82310400026|36860700013|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?4FEjbiUe9u0gXS0+kNMo10/XemxWr0Bs9QOX7H/AdwZuKYCdCm0ZsrxA6dgo?=
+ =?us-ascii?Q?PgRygpQe77V6TTzt/Vg/AoV5oRW32CFIsY8qjnEeWMFPPjbvm062vo16MTun?=
+ =?us-ascii?Q?u9cv0S7GHE90waJys0s3HjuN68kcnir6FAhD1hYY0CB6HcHFd0yUSFBH+8y0?=
+ =?us-ascii?Q?zTNiWSO6HHFiRy5tj6q1072b6o9VbSn4pamw7HHAEHHwfFG9d245MovrLm4d?=
+ =?us-ascii?Q?GW35R5KjZ3OKVSmxAt7gNGQzpKWhs/SaIIxyvtkU+86CCBGU/kwZGsyYYqdW?=
+ =?us-ascii?Q?F2wmp/2s/nYguuFhCCSN5uIrNVUQZfhd8LMUGUiCQGYDpIY0eeQMW8VRIxdt?=
+ =?us-ascii?Q?ZevBv62Zdgt7mIZ7oMLO3yIdBlZ9TRRv7vaq/gjaA7gKiu3nh0mItWtWQnWM?=
+ =?us-ascii?Q?g6y4EoQ0cySVqVB/5dvAQDZ06R5XcxhvHfltW/HJfNlC4t7BF6X1ESyem2oO?=
+ =?us-ascii?Q?nfEYm14rbBf1tct6K0BcYN0pjoZzyCbl75WpjbyVLgskDx9GnztNkJ3k+Hxm?=
+ =?us-ascii?Q?p3QMCnnrJEP2Oz8CobdUDBpDLCkggofEW81dbijXiIxt642yC8EdVui6jGn5?=
+ =?us-ascii?Q?xL/4n18fS219UOSdE5j4PwQsOoP8A7fK1cL24PIXt31R31gEMFpaGKLDqzpJ?=
+ =?us-ascii?Q?PELHzEjQY3v9lVoWI1pcYuyjC3vTc/Xom4exzCTkZFKydopNkTwI2menFPoo?=
+ =?us-ascii?Q?URzR4rG8Ncjqw9fFNWaFnmjDpU34Tw1R3SmOBHfTdTUswsmGQhsV313YR7OY?=
+ =?us-ascii?Q?Pi8dUFcWfxkcjrso3KZ4k/mwNPpCXjYVVq19OPPFQ3Sd4a/zhsrLjW9Xhjkd?=
+ =?us-ascii?Q?6evDtUUgljNiYWT6Y6ACMKDeujHCMdQ3rjYnG7qbPffg0B5iY1mUsdEStzLU?=
+ =?us-ascii?Q?iTE+vvBrEs26uUP3SOLrEoMaYmtOgS/vigWtThvKX8/qAVFdDhOJDexe46yj?=
+ =?us-ascii?Q?N6sk7T04HdWVs0rugZjNwRh4kuF0TAbG8ALD82FAxaR7LXApSqfLEhTZKFdG?=
+ =?us-ascii?Q?WG4XYweshs/Yk3lWw0064SGty2BvCPN7beHklGrBIEZcrEuLlFYKgR/zV2QV?=
+ =?us-ascii?Q?Q1u9JpEvk0p/ZicM6qmYBeVjLE7V8IzIDyLDSiLXqKgiRo/6nq65IWUNLaWG?=
+ =?us-ascii?Q?abtgikQU4ud3jMWn1nRHJmliqZcJXVP41Fx33YbL7NP9Nw/Fs3LuaWU7KJbX?=
+ =?us-ascii?Q?GsE9/tvD9O25Z+CTyw91bm5Pg8Z86EshzPCok0IFCPahiWj6T6u545AfMrEg?=
+ =?us-ascii?Q?h6TRV9CPiG1F6AplDHWeIYySpJY5JaS7QB/JqT/XJDarNtF5rOJe3csdlT5p?=
+ =?us-ascii?Q?NP5znV7XvCRKX3limZ9GAKcQ820dh1Oty7+WvBvUMuhY4bvEnlwK5aIHq0pH?=
+ =?us-ascii?Q?dPJI25XFK0ct40wpA876pmnuq/6aH0nV8o7QtrAA/TYVO2lCTuWxYy/hxYHC?=
+ =?us-ascii?Q?npNPFKaLiwLff5iM2hA6gCfNXWOj6pSlIGpyoaK6H031+AfTom7184Z0bNwo?=
+ =?us-ascii?Q?jAI1/sg4dORhqUlGwNf2mnE+mtq0qtWN+ULC?=
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(35042699022)(14060799003)(1800799024)(82310400026)(36860700013)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Aug 2025 11:59:58.4728
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 11ff348b-e561-4830-d79c-08ddd0f2f020
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB1PEPF000509EB.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR08MB8066
+X-Rspamd-Queue-Id: EEA3F40017
+X-Stat-Signature: 7pugyqahx4tapf3st1h8ew177ypqtbxm
 X-Rspam-User: 
-X-HE-Tag: 1754048561-785107
-X-HE-Meta: U2FsdGVkX18QsVD7ScLLXAkyKhTBZ6E+j+AVVzgfKp5BUwGMAf8r4wiFFnAyZ25cZ6RZVkcNiF8kJ4Wy++KJMnHmq2zH7+BpG5TneQP4MkYzElnxXItcD/ghKopGSRLtCqOgm30fhjv/xYh6BFs5t4YBArLAhJokZJRfdV1alpPXx6F2rZ8lX+7sIUcwTorWeljfAN3M2r3M4NzLeB1qXTj0jphLkmFZGhmC8LBHjWv8lUsa8KQAMGlgo9zoy2TE9TXqw11HcxhLJQ/b8VuTYMnZBdechchIJ9cq7Pz4i8qkHuyot08SLwZ+Rp2OwfaeR7x9+r2sW8KUPs4IecBFglnkO4gXseBIkrZ+a4HIN9zGSwTdnejOoQShXiHSCtEHo9v3LNuZYOfiDdBDwbWsJUE50NLS4aTVHzc0cBq9BDp1poAIceDds7Q6zO6vfSCJzB/Ocwdn/Se1b7JO65cdhYyWeZ7cb2mSsH2zwc7n63sWPWernIvKUbGPfaLkrgT0nGUsqg8DbMcTIxO4BYbPjuNBZyrnJ1OVUSTx42jITr7TVPBHZJ6a9iWMI3euNDDq9zvxLAVTylQxv2IA7pY2d6bDe4P/UifezL+m1fumPysoDM2SdUqJnebAqHBoKhB8Vo/UkjbquDe+uAEBiK3vwDeQI4ytQ/GV3d++p7EUw7yV2XbC+VpXvdUaZH3xtOPDLDeoBR61Z9PdDQNAucdNwmGAkmuusDz2SPsIJDkT2Jxmec091bXd3o5DNmT9i52MEvCYHnYpYyV2ULBRZqJ0mIpMCjvXp90QnHNYCtgyfB9ThJ2IqSUHfTNNK4tmvr9tgJG9/s+Z0LMQ3yp2brmOtEe+xOESwfZLUsFMugn0JseB+SmGKx6xPA2GDhGXhvRgz7sD74no5huMEniHSH9rxaGIiSXcAUYDoDC0cwtoukx7Rhz60kS/AUb0Fg9VMjjSJ+j19TVF0GmfvRdXId9
- /ui8kYIb
- afid+EK1SAkmCZGvIagjW9zwAVh0iv37mECKdD0rwDQgr0qaGc1ooOVP8CrERVEgWAAsJrdrm05OZrsX7IkaLdxFuKWbfzZ621lJoWWX8IeNDMgJe6y3EmI9weYyFolmUWuB+DJBKEu2Tj5I/pk7f+D/wzryKdPppf05Z4f6NiPS617s7Vfqj2rQPGy37ygC2g5kS51+t/KAhNxYnR5yyx+Gx7nJb+Rfxae+mB1NHw5g1jK06+JO5k+GNp1YYlzuxveED/S/S02Gxcz4+5JANmaaRxMwM0gL/w6utFvHtx5lZzxi0cBuaHoPbdV+jPmlgSRK2dl4Nwi21M5gwfWRaTel6sVALKFEI0UQpbbUHPCOE6LLMsw/b4inUlQsPpBTJEnvADvx9ObUN754E2iO7SD64iFaXhPYWuqGTD+Ww/saEwVprmiPThbg/a/Znytikb71ODNfR3QjN6GHhqI5dH9MEktoEZVQ9TLLJg5HmyzAWmWE1qHIgNHdIRT7szqTgx683tvWeQf86rdCsIHo8HQNzEtElF8aZfrhQ6FYoDHDVu6diNVxvgwaem3tA0SflVX1he5QXQbOpOKNmOEroTv8sKQ==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1754049605-354661
+X-HE-Meta: U2FsdGVkX18EZrJd/mh8zDcfVj/uMuqt45iKFWLbxkwoN8HqMLQnJxRQO5hNSwtbGOqPhoCgMV4cwvDMwa+uLXq/p0YsLUs908LncZZ6jlQ2IQbiqx6/OyJJ81j+WX19oKQAmTKfKlwFYCzCzXh1Cs2a33rifPZEvkIYtkLoAs9/RGNGuPFOgiJRMQSyFZyqXirGGQj14+aYAyg9dZct8e2vjfTq6OPj9pYNJCLSk0LzTHJjRreIT5+HfQUd0c2zNeCuHDhTkB7fVstFJhGRkliW1IETTVJ2JuAChSbL+DteHfy5FY4Ahj7aY1RqPfA5NCYVfFTdpU1xTk0nab95HeuTu3QIzNNdew7/PMfHr0u+ekN5Tjhml4BN/XDptfEnz0kPKuce5nFLMBN6taltvuO0EwTf0PQSDf9DSDRFL6UWlJ5310upY0VA9DF9BTo01VwNrQvqWOSfj+rKN6vsoGau9XSkNXVEmKUhNZka38CsJdXzXTA91Qs/7luB/ciX0XYjuOZTJKG6PTFvpZZW5lzsSOwJPV04V4/Vigu1BHF/MCsoAjDkH3wyvWCF6snc7tAKeuyTawfzuT+uxwHSVbBRp8f2Kn6ufsLBWNusv7wt9fnyDYCvid8R+kUhomy0Vl7EuZeElXmOWPCqwxzKPWPn1EMe/Tzr+yEHX0WBKpUfp0P9+AbA5dfXyUsVFRMNSZxagb9UwGGLeDOVlQK+2+YSDvpnszGKpYlmtRaPbjQzrUz5W0xZ9T+hEslcJAFwRXdG+VFEdJuhxBmQrLCm6iFmUb4Q0kc7MZLTo6U5z2SwEhd4EzMLnx1skIBQq03SmYegqfDHi28YAHeg13NoToHpGIE2HNAVS+qzSYQ1qoD4yjqRWZbYyk7kicLp3f0bOHF3C7rKfqq/ZvJM5ml6fNW4D0QXXeEZLrs/xluzxi8pDpwo6WbHXX6S6a/c2jX2EQBG8eRJDKj3Vgo0Wb3
+ j9rCm3Bt
+ WPLI4R8AFbeOl7GKV5/eCTohX/giECKrzT4GZH3hXW7hBOXxsL3LMaYf02bYiQtPEA98mFWjyYiildCFLv3xxVsMvM5AV5RDZl0MqkNGMeMtr/YwL539eIsKMfhWejDWXfKz9p5hw+3HZkwtizUoL1GJKf6zYJ76BSYOsrjuf6Gl3sVGq9zFA1iEwCa44VFpJfWge2U7bEgKnb1i5gFdUCldBFR6msOm4t/W4u/IZCEjP72w5RnuY8o/sg6nbDF8F42fJyIThY04nmqErSO2GLUr8O9FAQA3RCmWDs2SkOoL/TiQyxgK/CsdbStMS9xvhljrBCN1ntgfrp+3y6ukvbK3ZgU5jgQNjJBCC4hHua7vR/oCouDivH/hJ4owrZxDYMtkkDiSGhVI3vsExUI2uJIbJCgdEoftSW5FtWzuqiCxA16Go6QBSjj9bI0794UGQSNiUU/dyXum4ELZHc6QyBUALXYacgiSQvv0gNjg2R49rU/+bdHQdvn3ptSm9oALqR457sRyNFF01hGlyf6qlnroJw4JNhFQ6Ev534Lpi42P/sAflqF23QPWFPwDKK4SuGemrbirTAtJiaG2XT2pWGlUOcoOHQEzkkoGFbf+8+puYZ3o6uoIb45WZLUDXAV/WK1jNDS/oWyNub6lY7BQZW2l5Fsndip4TsRdWMIkWwiCplWohMoZG65cgYw36yFOaHapskzKlGCRHQ5G68tUoUa3+Uw/pW2AxW4wg
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,188 +232,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Andrey,
 
+> >
+> > When CONFIG_FORTIFY_SOURCE is enabled, invalid access from source
+> > triggers __fortify_panic() which kills running task.
+> >
+> > This makes failured of kasan_strings() kunit testcase since the
+> > kunit-try-cacth kthread running kasan_string() dies before checking the
+> > fault.
+> >
+> > To address this, add define for __NO_FORTIFY for kasan kunit test.
+> >
+> > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> > ---
+> >  mm/kasan/Makefile | 4 ++++
+> >  1 file changed, 4 insertions(+)
+> >
+> > diff --git a/mm/kasan/Makefile b/mm/kasan/Makefile
+> > index dd93ae8a6beb..b70d76c167ca 100644
+> > --- a/mm/kasan/Makefile
+> > +++ b/mm/kasan/Makefile
+> > @@ -44,6 +44,10 @@ ifndef CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX
+> >  CFLAGS_KASAN_TEST += -fno-builtin
+> >  endif
+> >
+> > +ifdef CONFIG_FORTIFY_SOURCE
+> > +CFLAGS_KASAN_TEST += -D__NO_FORTIFY
+> > +endif
+>
+> We should be able to use OPTIMIZER_HIDE_VAR() to deal with this
+> instead; see commits b2325bf860fa and 09c6304e38e4.
 
-On 31/07/2025 20:42, David Hildenbrand wrote:
-> On 31.07.25 14:27, Usama Arif wrote:
->> The test will set the global system THP setting to never, madvise
->> or always depending on the fixture variant and the 2M setting to
->> inherit before it starts (and reset to original at teardown).
->>
->> This tests if the process can:
->> - successfully set and get the policy to disable THPs completely.
->> - never get a hugepage when the THPs are completely disabled
->>    with the prctl, including with MADV_HUGE and MADV_COLLAPSE.
->> - successfully reset the policy of the process.
->> - after reset, only get hugepages with:
->>    - MADV_COLLAPSE when policy is set to never.
->>    - MADV_HUGE and MADV_COLLAPSE when policy is set to madvise.
->>    - always when policy is set to "always".
->> - repeat the above tests in a forked process to make sure
->>    the policy is carried across forks.
->>
->> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
->> ---
-> 
-> [...]
-> 
-> Looks much better already. Some quirks.
-> 
->> +#include <stdio.h>
->> +#include <stdlib.h>
->> +#include <string.h>
->> +#include <unistd.h>
->> +#include <sys/mman.h>
->> +#include <sys/prctl.h>
->> +#include <sys/wait.h>
->> +
->> +#include "../kselftest_harness.h"
->> +#include "thp_settings.h"
->> +#include "vm_util.h"
->> +
->> +static int sz2ord(size_t size, size_t pagesize)
->> +{
->> +    return __builtin_ctzll(size / pagesize);
->> +}
->> +
->> +enum thp_collapse_type {
->> +    THP_COLLAPSE_NONE,
->> +    THP_COLLAPSE_MADV_HUGEPAGE,    /* MADV_HUGEPAGE before access */
->> +    THP_COLLAPSE_MADV_COLLAPSE,    /* MADV_COLLAPSE after access */
->> +};
->> +
->> +enum thp_policy {
->> +    THP_POLICY_NEVER,
->> +    THP_POLICY_MADVISE,
->> +    THP_POLICY_ALWAYS,
->> +};
-> 
-> Couldn't you have reused "enum thp_enabled" end simply never specified the "THP_INHERIT"? Then, you need to do less translation.
+Thanks for sharing this!
+I'll update the patch!
 
-yes, introducing this enum was silly. Have removed it for next revision.> 
->> +
->> +struct test_results {
->> +    int prctl_get_thp_disable;
-> 
-> The result is always one, does that here make sense?
-
-Its 3 in the next patch for PR_THP_DISABLE_EXCEPT_ADVISED :)
-
-I will remove this struct, but I think maybe it might have been a good idea to squash this
-with the next patch to show why the struct was useful.
-
-> 
->> +    int prctl_applied_collapse_none;
-> 
-> "prctl_applied" is a bit confusing. And most of these always have the same value.
-> 
-> Can't we special case the remaining two cases on the current policy and avoid this struct compeltely?
-> 
-
-The values are different in the next patch when PR_THP_DISABLE_EXCEPT_ADVISED is used.
-
-Just to explain how I came about using this struct test_results (though it doesnt matter as
-I will remove it for the next revision):
-I wanted to maximise code reuse and only wanted to have one instance of prctl_thp_disable_test.
-I actually started with special casing, but went the brute force way of adding too many if else
-statements and it was looking quite messy after I added the tests for PR_THP_DISABLE_EXCEPT_ADVISED.
-I saw this struct test_results in another kselftest and thought this should make it much better and
-extendable.
-
-I have removed struct test_results and changed prctl_thp_disable_test to the following for next revision:
-
-static void prctl_thp_disable_test(struct __test_metadata *const _metadata,
-				   size_t pmdsize, enum thp_enabled thp_policy,
-				   int prctl_flags)
-{
-	ASSERT_EQ(prctl(PR_GET_THP_DISABLE, NULL, NULL, NULL, NULL),
-		  prctl_flags & PR_THP_DISABLE_EXCEPT_ADVISED ? 3 : 1);
-
-	/* tests after prctl overrides global policy */
-	ASSERT_EQ(test_mmap_thp(THP_COLLAPSE_NONE, pmdsize), 0);
-
-	ASSERT_EQ(test_mmap_thp(THP_COLLAPSE_MADV_HUGEPAGE, pmdsize),
-		  thp_policy == THP_NEVER || !prctl_flags ? 0 : 1);
-
-	ASSERT_EQ(test_mmap_thp(THP_COLLAPSE_MADV_COLLAPSE, pmdsize),
-		  !prctl_flags ? 0 : 1);
-
-	/* Reset to global policy */
-	ASSERT_EQ(prctl(PR_SET_THP_DISABLE, 0, NULL, NULL, NULL), 0);
-
-	/* tests after prctl is cleared, and only global policy is effective */
-	ASSERT_EQ(test_mmap_thp(THP_COLLAPSE_NONE, pmdsize),
-		  thp_policy == THP_ALWAYS ? 1 : 0);
-
-	ASSERT_EQ(test_mmap_thp(THP_COLLAPSE_MADV_HUGEPAGE, pmdsize),
-		  thp_policy == THP_NEVER ? 0 : 1);
-
-	ASSERT_EQ(test_mmap_thp(THP_COLLAPSE_MADV_COLLAPSE, pmdsize), 1);
-}
-
-
-
-
-> 
->> +    int prctl_applied_collapse_madv_huge;
->> +    int prctl_applied_collapse_madv_collapse;
->> +    int prctl_removed_collapse_none;
->> +    int prctl_removed_collapse_madv_huge;
->> +    int prctl_removed_collapse_madv_collapse;
->> +};
->> +
->> +/*
->> + * Function to mmap a buffer, fault it in, madvise it appropriately (before
->> + * page fault for MADV_HUGE, and after for MADV_COLLAPSE), and check if the
->> + * mmap region is huge.
->> + * Returns:
->> + * 0 if test doesn't give hugepage
->> + * 1 if test gives a hugepage
->> + * -errno if mmap fails
->> + */
->> +static int test_mmap_thp(enum thp_collapse_type madvise_buf, size_t pmdsize)
->> +{
->> +    char *mem, *mmap_mem;
->> +    size_t mmap_size;
->> +    int ret;
->> +
->> +    /* For alignment purposes, we need twice the THP size. */
->> +    mmap_size = 2 * pmdsize;
->> +    mmap_mem = (char *)mmap(NULL, mmap_size, PROT_READ | PROT_WRITE,
->> +                    MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
->> +    if (mmap_mem == MAP_FAILED)
->> +        return -errno;
->> +
->> +    /* We need a THP-aligned memory area. */
->> +    mem = (char *)(((uintptr_t)mmap_mem + pmdsize) & ~(pmdsize - 1));
->> +
->> +    if (madvise_buf == THP_COLLAPSE_MADV_HUGEPAGE)
->> +        madvise(mem, pmdsize, MADV_HUGEPAGE);
->> +
->> +    /* Ensure memory is allocated */
->> +    memset(mem, 1, pmdsize);
->> +
->> +    if (madvise_buf == THP_COLLAPSE_MADV_COLLAPSE)
->> +        madvise(mem, pmdsize, MADV_COLLAPSE);
->> +
-> 
-> To avoid even mmap_mem to get merged with some other VMA, maybe just do
-> before reading the smap here:
-> 
-> /* HACK: make sure we have a separate VMA that we can check reliably. */
-> mprotect(mem, pmdsize, PROT_READ);
-> 
-Thanks! Yeah this is a nice hack, have used it in the next revision.
-
-> or
-> 
-> madvise(mem, pmdsize, MADV_DONTFORK);
-> 
-> before reading smaps.
-> 
-> That is probably the easiest approach. The you can drop the lengthy comment and perform a single thp check.
-> 
-> 
-
-[...]
+--
+Sincerely,
+Yeoreum Yun
 
