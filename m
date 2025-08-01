@@ -2,100 +2,90 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5014FC87FCB
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 23:08:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 06FAEC87FCB
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 23:30:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C33CC6B0092; Fri,  1 Aug 2025 19:08:11 -0400 (EDT)
+	id 7ABB26B008C; Fri,  1 Aug 2025 19:30:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0BC06B0093; Fri,  1 Aug 2025 19:08:11 -0400 (EDT)
+	id 7836A6B0092; Fri,  1 Aug 2025 19:30:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B21C06B0095; Fri,  1 Aug 2025 19:08:11 -0400 (EDT)
+	id 6995A6B0093; Fri,  1 Aug 2025 19:30:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A41996B0092
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 19:08:11 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 508D016031A
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 23:08:11 +0000 (UTC)
-X-FDA: 83729728782.16.3239519
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 88C6A80010
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 23:08:09 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dj4UyGcG;
-	spf=pass (imf30.hostedemail.com: domain of kuba@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kuba@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BA9C6B008C
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 19:30:49 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2AD79134104
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 23:30:49 +0000 (UTC)
+X-FDA: 83729785818.13.E4B0E38
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A1ACCC0010
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 23:30:47 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RhT12GCY;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754091047; a=rsa-sha256;
+	cv=none;
+	b=M9QP8w/c9Ae2+LM/JXktYoPhFiEukAokMEK4nfYRpD/R4v80ZrUyyZMX/24uDJLph4wvHW
+	RuvVfjs8dmmbC3No6m53SRESkSRLCwOaTVfrU6CSWFvcQkH/ORay5AYNkmJjuuU6qLr3Fm
+	sBPp8p6U+dOgs8zUdy77vQQFyE3lPFE=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RhT12GCY;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754089689;
+	s=arc-20220608; t=1754091047;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G0S3szeJAlU80mk+/W50EtKyLt6yvbLEZazkw9uRti0=;
-	b=H6ixASxtpEzHpFIvM2hkodvuewDo3Z3w/HrPINii+KHvlWJs67RpxG6I12yPtYa5oyA39i
-	pV4DXhdupGnnOk4jBhECRjS4kMLYTbudoVBiGyJhrnEnBxtuwbXinFrojq77hcEriY5wL6
-	GrcEGk7Tv3xDe5AJpwqDY0u4Hlik/Cg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754089689; a=rsa-sha256;
-	cv=none;
-	b=J/j8h+cG3pDyqt0N2g6FKx07JaD3yWov5NTyo32h93YTUgddijmwhWIxaTF+8gPp3WsKos
-	6YW9VxaoRjMu0q+W3Qlek8zySlEdt0gis67/DLmeAj9kWML1/yV+fpBY+HCV4tMTQ5xjXl
-	5fzC9dliHGvoS/rPW2Ht7gSe1/+M2I0=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dj4UyGcG;
-	spf=pass (imf30.hostedemail.com: domain of kuba@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kuba@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=snoEGBjilpPo5MQRqlwWJb4KTVTcEVFOvS5Y+q7YA4I=;
+	b=p5MWO16CZpXIBCTXNy8L80RHbq/usoaMyaUjLBCVcKY5tRVlaYA3TmJxAJ80i64DtxX5hR
+	8AnI4plAn90pICJhKPaIOwNyG5tkesGaN50VOH0BwPPZKckc4jI3Gkw25oy+1h+vPxW5a/
+	zr6HyCKRqs3/oIKBioQnG/BROo5Z+QA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1175044014;
-	Fri,  1 Aug 2025 23:08:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96870C4CEE7;
-	Fri,  1 Aug 2025 23:08:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E211D6112D;
+	Fri,  1 Aug 2025 23:30:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73EF6C4CEE7;
+	Fri,  1 Aug 2025 23:30:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754089687;
-	bh=6pOY9vWaKIl9etre7R8PY0gT1B9BcwDb9n4CCJLLzNo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=dj4UyGcGbuIkBc98+22HPLqigl8NgNkMOdvw1zAqKlBQbRiiBxUzvRfWrVyzOtC6D
-	 cjuiqHDMdxYBp16KLznBJPAhgVMiEnno49wryNNiuQ5AIayb0Lzi/MAMXBDmJHtduV
-	 atkxVrhkNH6oExT6DhZwgH4YEXVh0epCd6rbjc37Rud5naxpUDu9/SX15b0QuZeA2G
-	 Go7Lyxio35OeHyJsgXdE/F2mkL3LAAOw5HayQ4Me9AMRRIbkXeJ9elEBJHllp+5v7C
-	 4RpA+plFtMLbsK5xWsInIJVj3hWYYCznrcH0gHUz+H3oxe5ida+og57qZTFXSnj0Nh
-	 B4pJak/XeYcjw==
-Date: Fri, 1 Aug 2025 16:08:05 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Byungchul Park <byungchul@sk.com>
-Cc: linux-mm@kvack.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
- harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
- davem@davemloft.net, hawk@kernel.org, john.fastabend@gmail.com,
- sdf@fomichev.me, saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com,
- mbloch@nvidia.com, andrew+netdev@lunn.ch, edumazet@google.com,
- pabeni@redhat.com, akpm@linux-foundation.org, david@redhat.com,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, horms@kernel.org,
- jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
- ilias.apalodimas@linaro.org, willy@infradead.org, brauner@kernel.org,
- kas@kernel.org, yuzhao@google.com, usamaarif642@gmail.com,
- baolin.wang@linux.alibaba.com, almasrymina@google.com, toke@redhat.com,
- asml.silence@gmail.com, bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
- sfr@canb.auug.org.au
-Subject: Re: [PATCH linux-next v3] mm, page_pool: introduce a new page type
- for page pool in page type
-Message-ID: <20250801160805.28fa1e05@kernel.org>
-In-Reply-To: <20250729110210.48313-1-byungchul@sk.com>
-References: <20250729110210.48313-1-byungchul@sk.com>
+	s=k20201202; t=1754091046;
+	bh=ctwKht944Ty5r59IlMbVaQb5+XsFWdWm6fDxZsJiL7Q=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=RhT12GCYqCttbObWM0kp9mAskV2wLU/cel7pO99XFGSosrg1ezGm1oQhnHIt5rVe0
+	 g9E9S4MljV1cYdcivwH0PAW26cDaFYkmxWNaBJ+Yz6RgAOhVfDWq1d29LAW3zZR9rq
+	 ZeJLpGy5laJ5wNupnSPF9/Y9NuuKevDafKTeQWBN15P8FoHjzAVjXW/Z6MGcrnM/DA
+	 FeMpaOMp85lvPHnef2IeuXMuvTKlzt5ZFe3MQUF5Wb4M5I94SsW2U4ZIxpjsld0rE6
+	 RU4S6QaiWPxNFW1tzTMEhZs1iSNpFJdi1Y2Ri8jWgPWHpoYOZRZYKtk5DHT3uUUZD4
+	 pRTFDNtF6GJJw==
+From: SeongJae Park <sj@kernel.org>
+To: pyyjason@gmail.com
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Usama Arif <usamaarif642@gmail.com>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v3 1/2] mm/damon: Move has filter to ops-common
+Date: Fri,  1 Aug 2025 16:30:44 -0700
+Message-Id: <20250801233044.1392-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <a290e7913a1c39f605b8cceafd86d41c2dbebf82.1754088635.git.pyyjason@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 88C6A80010
-X-Stat-Signature: jzwgo3e9du5yc6o5wteuotcqxu9n7aok
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1754089689-535013
-X-HE-Meta: U2FsdGVkX1/u1ODRK9Hk8ggYrxRbKO2cGAzP3QU95US/ERZFIXYaejoaaSjAxIk62hJGDFxzwtkaOwk1qVQMaaiaPdElOcqr9PKps8QUvZpAQcd8NQZ3Bs5J2OQyJD8gOnCSx3kFTx4Qa2Ba3sAQmu/Yb9hPuY6jTgJKUhr0YbpfsqmvXKvUbF0m0GK0L2zt5lx+AXMDNCDbTQl2iqoDhoiO/ONPr1hysp7zxd7PVZv3B2DUw4U9UXZHx7mGuTKGgRM+0hj0xk3HJrJ7kSGqX0C1JEa3z/pAfQMMMjVUeRb5GNWz1ywp/VGjkHmU0FoB/FQDTLUeYQAr271Fnw8N5BfIDV8lzEexrEQ0PkNmFXkdq43h0OHT881xhTy4ITLQ46n+Sxy4Xeaikvn9milz0W4gr8456TDqdT/YswqQk0cxDn6/UIO2vDpiV3c2g/Aj2UG03ivyyZE25c4XJ5Zp/DHf0ylUIkK2Pzk9qceSPbEKOPoEYQMjY/hpYS9biXBD44jU3UQMs9rxzCVhs+mx5Jfvc9KjtRyZLXUDzfIJJjZ5Tgw35q++9N38eU0ohTvfwiFqrEcXdgkhGHZUvFzeR1ChwjGfL4h3Ldjv6p8mnY3YhxBH1CNaDMGDeAti0A7VJpAZYUcUNOkEzqslxRSlcbr7PmNfDwjJoCYw/AJ8z83rsr3IiNTMyJwxHXsFpygibeZ5jYJw1GF8jHj92gMpxTnDa4/MKFNUH2q8EiCEKVtqZCEFpKfXpdqX4G2IhGuLh3crZFdK0DA0D8hhRceMAJ7DEvlApOD9jWqdtg/pOW7XfqS0vyEzoI7F2ZMswQMxVNQ0wmPzdN/xaCwJvoy8HZV9IBHxFWY4a9tb3dHHBDPF87JlERtejhI+xilvxw43CiV07kMEA263UlZCrB7E9rhcKlaiUlbg92HKTrnjRiM6VUHjvX1FSIqe+bt+9kQU+oHxMJeArnOqHPMK/XL
- mPNgCX/Z
- ti7kYvvNVH4lWpd0qnrt5m0mnJIVomNbc2Hm7lW9CffIkg919sRTFzasVsvQmiQ+UQwreqCFiuvfu/xhH7JPmZNZ3KOosrtzJcCkclGV1KlnHHydi76vM3twsnrmZa/WvC7F87MrnL0kKAelw/9iszfKl5f90ZSfnagwd972/LldcQQBahKCbd1AOish4ZxgXq16F7nzRX5z4pWVDDtDOc7A4GPSJHoz8E6NWA85rx3qo1IYLfK4JbaL/lPLovBF47OHmTNog6w6A7J46mt3Qx3NYobND3Ecyk+3Q4d/l+8mrkva4yseskkPzYcBbMnMLg1wHdmMEJdwNxVedPhKU8YTqFcvfKgcVGR+LlhYwsb9QbBmaCKcwIqK2gRLjDvukGTUfsdGbnYOt4bkDB7TcLoLq0upYYng0P2gj
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A1ACCC0010
+X-Stat-Signature: f465sewnm5j6hww7e6ebkqjicfsx6r6t
+X-HE-Tag: 1754091047-184337
+X-HE-Meta: U2FsdGVkX1/5HxTu4gvjVZpluV43SQnOSFt4FOoLc3dHK8Aa/0Xkysy8iG4B0EN6bylDXJf65O4y/9AAJce4ArMMVtDI7+Y/cJiDbH0DBE29CuwXyUa70JlDC3w/+7CvzROL8u6McYWm382zZ1d6aOT1upc+CNajuI9+GbzUxf9So8iBITetaGeWRzywXPbh0PHPh7s7JA3t8v5aiwRZwQwqju3HTE4B94pMzIofelWTNW2c7RpP2SPQTgB435b65ME87g9jMFFawlocm1l2DUN7cI0og26uWXyna+sU2ef6sDfMgTED0dWXJ0SK1y8+A1TFnH1nXSM2T6LXrZ79h8vA3JqShOd0/a4mgxFQQJ54YCx10teI3XywxMzg96jCUAkJHCu3jseW2z3BegdWrT/86iiuILiVAxpnwlfAKugbs0IV9rxTKWVqH0O3O0hBDRFVhXZWPJRPiTHG+HfL44YLnEmS3BwU80TQK+3N3q3mN3Hv/29Y5SM3gKb+/kowpGfhNwaBXhgzh/t1MXVV4au7YpXbP5og6Ms2EiW3GJWDwkG0Keke2bQs/p1lcXSBW2z4p3GfipR5MRN2g+bGZHA86BVpMmruSza+37ZvR1Kh4QpbFSfAYQwkinLnZ4USw9YISWWQzeI6N7A/VjDDWn0jaOVuc4ShTiYYzFAFWeVkGk+wKRA5I6gt0ZCOIAu2BytD9gR8Dhgi3cxS+5C1dicWCerd1YOaZxCXnZeI9Yn4Ku497I9G2yTAa7qzE9vzPYwGjBAcpmtbJWWWoIrHhfqw1OKka6vVtOB0niJvx+vz+qKLczWqx0ceZM43xt+cVOhczJPNLA2DjNlUPkKukHPb+pAfUs75hcPmSuog8J3kLfqhHhICQBPae3FV/s6MPAx+XprfLVP30t2YpHdrQSjV0LiEYM//AzZZiXNe2LFe4fPAMHV9rh+a8QCMefO8+Syga3q/Btp1z9+ABr4
+ Gcfsrx04
+ z9vPQclPfDyHT2bXEntF4KIl9cnxkMN/AUR6YDWjsqF1YltGJ64k5fsqlU2+KPVlMsKn01M3zLUM6lQ999ucLDf5icJ0Lsa3KrvVLqI2klOkogMwM4zRVfJP4WMyc9df0TboPtGfubSpftNzU2dXTMW3raz6DoTeNSCv+YI9JBh20Gyq7nt9n2uTBZ1eUJpvuJRFC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,73 +94,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 29 Jul 2025 20:02:10 +0900 Byungchul Park wrote:
-> [PATCH linux-next v3] mm, page_pool: introduce a new page type for page pool in page type
+On Fri,  1 Aug 2025 22:59:50 +0000 pyyjason@gmail.com wrote:
 
-linux-next does not accept patches. This has to go either via networking or MM.
+> From: Yueyang Pan <pyyjason@gmail.com>
+> 
+> This patch moves damon_pa_scheme_has_filter to ops-common. renaming
+> to damon_ops_has_filter.
+> Doing so allows us to reuse its logic in the vaddr version
+> of DAMOS_STAT
 
-> -	if (unlikely(page_has_type(page)))
-> +	if (unlikely(page_has_type(page))) {
+Let's update the subject to better reflect the change, e.g.,
 
-Maybe add :
+    mm/damon/paddr: move filters existence check function to ops-common
 
-		/* networking expects to clear its page type before releasing */
-
-> +		WARN_ON_ONCE(PageNetpp(page));
->  		/* Reset the page_type (which overlays _mapcount) */
->  		page->page_type = UINT_MAX;
-> +	}
-
->  static inline bool netmem_is_pp(netmem_ref netmem)
->  {
-> -	return (netmem_get_pp_magic(netmem) & PP_MAGIC_MASK) == PP_SIGNATURE;
-> +	/* Use ->pp for net_iov to identify if it's pp, 
-
-Please try to use precise language, this code is confusing as is.
-net_iov may _belong_ to a page pool.
-
-	* which requires that non-pp net_iov should have ->pp NULL'd.
-
-I don't think this adds any information.
-
-> +	 */
-> +	if (netmem_is_net_iov(netmem))
-> +		return !!__netmem_clear_lsb(netmem)->pp;
+> 
+> Signed-off-by: Yueyang Pan <pyyjason@gmail.com>
+> ---
+>  mm/damon/ops-common.c |  9 +++++++++
+>  mm/damon/ops-common.h |  2 ++
+>  mm/damon/paddr.c      | 11 +----------
+>  3 files changed, 12 insertions(+), 10 deletions(-)
+> 
+> diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+> index 99321ff5cb92..de5404477242 100644
+> --- a/mm/damon/ops-common.c
+> +++ b/mm/damon/ops-common.c
+> @@ -412,3 +412,12 @@ unsigned long damon_migrate_pages(struct list_head *folio_list, int target_nid)
+>  
+>  	return nr_migrated;
+>  }
 > +
-> +	/* For system memory, page type bit in struct page can be used
+> +bool damon_ops_has_filter(struct damos *s)
 
-"page type bit" -> "page type", it's not a bit.
+Thank you for renaming this following my suggestion!  My suggestion was
+damos_ops_has_filter(), though?
 
-> +	 * to identify if it's pp.
-
-... to identify pages which belong to a page pool.
-
-> +	 */
-> +	return PageNetpp(__netmem_to_page(netmem));
+> +{
+> +	struct damos_filter *f;
+> +
+> +	damos_for_each_ops_filter(f, s)
+> +		return true;
+> +	return false;
+> +}
+> diff --git a/mm/damon/ops-common.h b/mm/damon/ops-common.h
+> index 61ad54aaf256..d3d36bca90b9 100644
+> --- a/mm/damon/ops-common.h
+> +++ b/mm/damon/ops-common.h
+> @@ -21,3 +21,5 @@ int damon_hot_score(struct damon_ctx *c, struct damon_region *r,
+>  
+>  bool damos_folio_filter_match(struct damos_filter *filter, struct folio *folio);
+>  unsigned long damon_migrate_pages(struct list_head *folio_list, int target_nid);
+> +
+> +bool damon_ops_has_filter(struct damos *s);
+> diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
+> index 53a55c5114fb..9d9cdcc10b8e 100644
+> --- a/mm/damon/paddr.c
+> +++ b/mm/damon/paddr.c
+> @@ -262,22 +262,13 @@ static unsigned long damon_pa_migrate(struct damon_region *r, struct damos *s,
+>  	return applied * PAGE_SIZE;
 >  }
 >  
->  static inline void netmem_set_pp(netmem_ref netmem, struct page_pool *pool)
-> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-> index 05e2e22a8f7c..37eeab76c41c 100644
-> --- a/net/core/page_pool.c
-> +++ b/net/core/page_pool.c
-> @@ -654,7 +654,6 @@ s32 page_pool_inflight(const struct page_pool *pool, bool strict)
->  void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
+> -static bool damon_pa_scheme_has_filter(struct damos *s)
+> -{
+> -	struct damos_filter *f;
+> -
+> -	damos_for_each_ops_filter(f, s)
+> -		return true;
+> -	return false;
+> -}
+> -
+>  static unsigned long damon_pa_stat(struct damon_region *r, struct damos *s,
+>  		unsigned long *sz_filter_passed)
 >  {
->  	netmem_set_pp(netmem, pool);
-> -	netmem_or_pp_magic(netmem, PP_SIGNATURE);
+>  	unsigned long addr;
+>  	struct folio *folio;
 >  
->  	/* Ensuring all pages have been split into one fragment initially:
->  	 * page_pool_set_pp_info() is only called once for every page when it
-> @@ -665,12 +664,19 @@ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
->  	page_pool_fragment_netmem(netmem, 1);
->  	if (pool->has_init_callback)
->  		pool->slow.init_callback(netmem, pool->slow.init_arg);
-> +
-> +	/* If it's page-backed */
+> -	if (!damon_pa_scheme_has_filter(s))
+> +	if (!damon_ops_has_filter(s))
+>  		return 0;
+>  
+>  	addr = r->ar.start;
+> -- 
+> 2.43.0
 
-Please don't add obvious comments.
+Looks good otherwise.
 
-> +	if (!netmem_is_net_iov(netmem))
-> +		__SetPageNetpp(__netmem_to_page(netmem));
+
+Thanks,
+SJ
 
