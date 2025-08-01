@@ -2,178 +2,112 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BA6B0C87FCB
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 10:23:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EA741C87FCB
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 10:30:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A8546B007B; Fri,  1 Aug 2025 06:23:03 -0400 (EDT)
+	id 762616B007B; Fri,  1 Aug 2025 06:30:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 358D96B0088; Fri,  1 Aug 2025 06:23:03 -0400 (EDT)
+	id 6EC6F6B0088; Fri,  1 Aug 2025 06:30:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 247AD6B008A; Fri,  1 Aug 2025 06:23:03 -0400 (EDT)
+	id 5B3A06B008A; Fri,  1 Aug 2025 06:30:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 140476B007B
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 06:23:03 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 78D0AC07FA
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 10:23:02 +0000 (UTC)
-X-FDA: 83727800604.12.4813F71
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 19CD6A0007
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 10:22:59 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LcUzxOaV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=x7xLNPL5;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=rkmvhwXa;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nylRbN6I;
-	dmarc=none;
-	spf=pass (imf15.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 43B3F6B007B
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 06:30:31 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F1D7BC08CD
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 10:30:30 +0000 (UTC)
+X-FDA: 83727819420.10.14B916A
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 035AA18000C
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 10:30:28 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AncwFI8D;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754043780;
+	s=arc-20220608; t=1754044229;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+/mttwEsHX709YDwlVU+ZGi3l/yWMWZKQA9ZzFewbak=;
-	b=PncYxxwISLaIjyQWoyuFt9ZJ6trwb+VxeY2/set3b0c+Nc3g2BAbHSFNQp323WPwUabuSJ
-	Tp00MM+9IEMcolg6xRRhXBb9qXU1x/2fyvJSzQNdIfBd30EonlZ7NPtnTydpdrNOi6bt1i
-	X3sr2fbVZ7zyLAUe//lsl+nOEhIYjwg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754043780; a=rsa-sha256;
+	bh=2R+MqrgO5Yl0URvHmsHiXNr06EO/8hBJAf8Kunyd3Fk=;
+	b=E3Jxzq8Xwv+QNZrDNGS7uAYF5Ij7ZgXhZIkF1HCB2c6Teld8of2RG6wcJXKkxB6WzBLFrQ
+	xcB3KqZ8+eBmiMXr8hUIcdIOEWAvrerjgi/WKM9VzPEwa8i++00RGHSX+dNe/LuZhZzfYh
+	qXkJ4SKWrDr2Vw5iYTyEfIDbF8XLimc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754044229; a=rsa-sha256;
 	cv=none;
-	b=olr0CKBciOPjPYz82M78RYg9mxtLmPFTw83RZqR/2MoLZJ9MT7PQMx9pX2GYMG27z+uSsS
-	XxvV1X2k0+INv7gWjU1xBoyBM4DmYvoeB8410So83epejjXEwwxe6VoqWPO9mTb4kfodis
-	QZVP1uEwHtwzW/KBI6UoVfjZRdmYcY8=
+	b=JlOEz0mWZ7X2dfSNDvMq0SA9zS5of95FbBEMjATC0MSRI9V95HE90G4Ogdzxp9wGFFMqTI
+	HPO2BD5wpMHyh/SSKoDaOvyxrHIAmIN/J/QnNyKlY9VjNZ0IDzLn5wcjEZgL3Etrtgd7ti
+	NnUbU/FTLBkwoM397pvI/FiHpZxUeLA=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LcUzxOaV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=x7xLNPL5;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=rkmvhwXa;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nylRbN6I;
-	dmarc=none;
-	spf=pass (imf15.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 5A95121B74;
-	Fri,  1 Aug 2025 10:22:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1754043778; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=+/mttwEsHX709YDwlVU+ZGi3l/yWMWZKQA9ZzFewbak=;
-	b=LcUzxOaV8EBJnI7oUHzumPHmHutfKhkZaUGXorFJkoODeP+xVa9NdkgvoFfrZUNsFPCeE7
-	RK7wzshg8CzfDA9B7vxtz8Y6ss1ovQKeId63Jnd2c/VPVZg8nbTXYQQgDJuXnZ80Z6mJTO
-	CnsT6iZvbyb76HsvyAPGmT44z+M3DOE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1754043778;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=+/mttwEsHX709YDwlVU+ZGi3l/yWMWZKQA9ZzFewbak=;
-	b=x7xLNPL5asUcyzJ59bjPh2dWcv1o3ap96slV9iiO01QIybF67aI3i6MLKYJLm7/jMFxTku
-	MiVgHWr5a/ljAHCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1754043777; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=+/mttwEsHX709YDwlVU+ZGi3l/yWMWZKQA9ZzFewbak=;
-	b=rkmvhwXaoem0d+wKEQ/0i/ZrLlmcmJN/WcUvOiWX09qsq65UU1IJOjAcN4100Fw7hD+gof
-	nAzVC8Jv3URrGRLTOf8WvOHMQt0s1An4S+6y7coCzTxwd9dvqQkfMWCHvYstwPX7pD4Ioz
-	WhCVLFbhnw8sF4Ci7J3vQeu0f3IQ8zc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1754043777;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=+/mttwEsHX709YDwlVU+ZGi3l/yWMWZKQA9ZzFewbak=;
-	b=nylRbN6I6rpif8yaqi3lMlabl//ni7rvPavKKEuw2Zl8t2DUhQ1wf+qxCIIYCZzn1vL/N0
-	H2sGYS0zAWCNDhBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 32127138A5;
-	Fri,  1 Aug 2025 10:22:57 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id KPu6CoGVjGhRSwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 01 Aug 2025 10:22:57 +0000
-Message-ID: <759cbc9a-bf34-4acc-87cf-6f1f708d985c@suse.cz>
-Date: Fri, 1 Aug 2025 12:22:56 +0200
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AncwFI8D;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3b7823559a5so1119365f8f.0
+        for <linux-mm@kvack.org>; Fri, 01 Aug 2025 03:30:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754044227; x=1754649027; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2R+MqrgO5Yl0URvHmsHiXNr06EO/8hBJAf8Kunyd3Fk=;
+        b=AncwFI8DCy7WzQvf+kZVaZdADgKus5qCdQo2nbY2uUPMkKRvukhPqRV9aeFsKjgEyM
+         0hvuWYLfWYHPFxctet9LfLxrKhQoqo909AZR5qqDxtBACYRfD6/RQXePcRp947LTOvnc
+         j5bdgt5J6guS5LVhB572XMvXbBpHBkSB4HBqVKCAyCSJj3wfRYTyR/kHChHTfVYJ45Fb
+         JOvDYeK4v88hhFqxS/Yrvq2GHVoA0S99DHecbDyBYWonWzWHzANK9U9EnH0WhQrljlTK
+         4GTu3aqUShXj/HHOYiQxAHW3p04CuBLXF9zMzyjrHGjpZD16PGCGq7yIalK6I+spvT80
+         ad3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754044227; x=1754649027;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2R+MqrgO5Yl0URvHmsHiXNr06EO/8hBJAf8Kunyd3Fk=;
+        b=FrRRGJs6uAyKlm7FwI1wA8W5N48GQudJ+YfIhKbJnby6logSGm2zXH5bk1/pX0KfSW
+         q2t7nMNS3UQbgyDn0kyYqTPYjkKrfh/zywv/8BeDGpqA48OQEKDB8TqWc83b3L06wPPP
+         hAENdqfBCFP6aTzahbbuwcpkZr/IhV03Ys3WPVafwUfCNN3V3hlxv2mYEZ+Ag308YtUU
+         WOKW8Sqw+hiHigXb15tdEf4iooS4++sEPH+MVQ7jCUVu1sSQshe/zEGF1L0A1nU8kb9B
+         LTDbSje3D77jHdKzPFCVU4ZFyHFTYQYcLdNFPqXJ3nyUsjhXMROOYXoApXLH070frm9m
+         2KRA==
+X-Forwarded-Encrypted: i=1; AJvYcCWZ2z3DhLMXYFvz9/iO4kNuAc1OOe8lAECtICi0eGR3nsBFD4WE/p7USau/8Eg1KBAK7+JKKJR/aw==@kvack.org
+X-Gm-Message-State: AOJu0YycThQS3za3dT9xPo6Q+4P1cdXIRAtDn1g4Pn7fg5gmuuaPlxxu
+	yQ8DcxTYLafwMlAUMX8jpMzrUrKRWBzrG0NAn9DXMjr6q8mIEx4iyLcEyS/eK0z5XNUNm3el957
+	ikYfvoZSCoqf8EXYYGOgk+1XdwaOdfb0=
+X-Gm-Gg: ASbGncuoa0qPk64DUoFETxPDLFGtQevce/551eCePOaleN+py7xfoagJUajh55n0CiP
+	9TnbuePJ2rcOi/vn5+uOs0ko9PlfKCnibpsbsDcAergeQCALceQPUCR9i7ZujB7+HLBoOraEwgJ
+	2wt50p10Ly4p/KthRarU7YaZg6Bp2OlL+QRNlEI6yxaBMDDYiv2ILnKVNgBwBmv92VFMgYVUNoq
+	M8SvpanKA==
+X-Google-Smtp-Source: AGHT+IHFfb9aylKzbGLPPo+9yypVoY7XdtvFrGtQic47H8I6uTq5dX/m0Fu7qM2GKR6tBwaCmTk4UWiTFQZcGNbSd3c=
+X-Received: by 2002:a05:6000:3101:b0:3a4:cfbf:51a0 with SMTP id
+ ffacd0b85a97d-3b794fed8bfmr8236846f8f.21.1754044227142; Fri, 01 Aug 2025
+ 03:30:27 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 2/4] mm/slub: allow to set node and align in
- k[v]realloc
-To: Vitaly Wool <vitaly.wool@konsulko.se>, linux-mm@kvack.org
-Cc: akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
- Uladzislau Rezki <urezki@gmail.com>, Danilo Krummrich <dakr@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Kent Overstreet <kent.overstreet@linux.dev>, linux-bcachefs@vger.kernel.org,
- bpf@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>
-References: <20250730191921.352591-1-vitaly.wool@konsulko.se>
- <20250730192017.356410-1-vitaly.wool@konsulko.se>
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20250730192017.356410-1-vitaly.wool@konsulko.se>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 19CD6A0007
-X-Stat-Signature: tw1i4qskhc8kdc6ok3mk8i5pfh43a43j
+References: <20250801092805.2602490-1-yeoreum.yun@arm.com>
+In-Reply-To: <20250801092805.2602490-1-yeoreum.yun@arm.com>
+From: Andrey Konovalov <andreyknvl@gmail.com>
+Date: Fri, 1 Aug 2025 12:30:15 +0200
+X-Gm-Features: Ac12FXwpbti9uxZkALv_-SQcxyY8JUp4abK1P5ZF80uVJbXi5SM7UT7UOWr81Jc
+Message-ID: <CA+fCnZdiwXXYmW9a0WVOm3dRGmNBT6J5Xjs8uvRtp7zdTBKPLA@mail.gmail.com>
+Subject: Re: [PATCH v2] kasan: disable kasan_strings() kunit test when
+ CONFIG_FORTIFY_SOURCE enabled
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: thomas.weissschuh@linutronix.de, ryabinin.a.a@gmail.com, glider@google.com, 
+	dvyukov@google.com, vincenzo.frascino@arm.com, akpm@linux-foundation.org, 
+	kasan-dev@googlegroups.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 035AA18000C
+X-Stat-Signature: zpnyi7qzp4t7mfrfqsmetxj8w7gdtsqi
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-HE-Tag: 1754043779-692536
-X-HE-Meta: U2FsdGVkX18T84rlajq1cuYyRN8+Z+clk2gS+3YSgn9XGR5R2LY/apRMpPEQUL1gMkF7upmZgee/r8DlfMcMwxLjxHr+FiXZb/NxSBXB2D3t/lfQx8JhXbOl4eSU318VX41d7/+75bhjRPsQLW8i2p/qFRA+aany9RLZuffhYuJd201lcAyVsN8iIBnsx+okN1gSjTNruQaf57xyS1g4rhg58OYWnyuPGJbBjBF1Qxtz6B5BUjO+FOHmaafUH6/XflhCzqnCXjlD8gpJVMlzu++67tJwYwcQhefhgXFcnNk4Uc4d/5aDWjQFDrMpUeA8JOI15k8XymjOWvCJjMMwa278zcOeb51EwrB441dBLct2joptaMPl3iWgZLInhjf5aOj9P2w0pKOQAuFXsCPeULVNt7TaPSYnkDJguh8k72JeevJHc/k9mKAoAr1da0LwWdQPKi6iFe5gTwXAj/GpjpzpPN51Vbhc3HIozdBovQtK5Q+uoa1VBHEiDqTe+89IoXSPuMxAZ2UoTNEA3C6n6jFqBe5C1A5avVNR8UMdFv5NLIFNFFUe9eI5DebvyfXyM7eh3Vh36N5gmDwRblt1sLO69s0sdXHC0zu20lhEPyJ/D0beMeyXgQrZb5bu4jop97i5t7xGwkWfmZ9gPSijVqkpFT4l2clvawUMuVXp6yDxd4i3MpR+ad5BqneRBYx0Zzp4DLGpxzEQb5gNWxWYShWkkyxTSuS9HaCyp7i1gC2W0JuXcO7BWrWF1inYzy/QWM9yldPeY8+qyltkREs4uL86o13U6AYa/o8xlKz8bEsLwn3gZWoO1eZ/2+dZ6G8LCcQREubMnOXk72AScV1VRHJDOhPoecI/wvO1LOhZe2Lhng4+BWgghviSgD4PZhb3gHhjoBXC3salc0aHjk6QdAt41+sNXXj+jhIwNFHJgraTZ3BJVzBLujl5+Wu2Io52XmXkVlfIcuGhldUcC71
- f3F+gw7e
- qZLHAd3Yeo1C7nBF9aEMZQIRZVKxWTIWWNABUetpwgiGBgIPnJBkFIZQ/tYm5NxVAoQ6e1Rgoeh6yEbe5GzpKHaJcGD+LEztjzibT1BCaTLsN3kLam9nhWcGZoDCgvTaSbeybKBp2jj0AKpyoPVP7ddG5U7QRVfPHyuSkf98qjbVPoa2Iud40Oq6aH8UTYs4XN2+q+wi+5m0d8D8zQOMdm5z2AJFArYdU1ubAhTs6HOxO8/8d07nicN9iLw==
+X-HE-Tag: 1754044228-543322
+X-HE-Meta: U2FsdGVkX19GsfC86l6gVP2IDDk6i2nJhyAuFX21DXPB+RtiewmO+xr4WMH4cZsNIRfTndzpeFjxvQ4bqFZP+yOZVjr0SSEmrnCBjJtwQTt/nLLgH0DsFk0oCapZGfJUc+E7PV+L4hLtahixdZ4rJtgByLb0QyRSc1Bf00KDEXeh1wcYTFMdgqbPWhHSJeY7Y4+VCwgjbBXlRAOWTngpNnmOSNYKJrBLctpxvZSM+7b4bSxGKcvtzMuKwQSa/vJb3DCLeEryylGQZJmCbxbXP0Axjr4sbbLeB0Hv8YorPwQSlCMbUPqikWJjALMkFReHg360fIlg9apghhc4ZcCVL47KHGRJe90FIVFUu8yG+TVLK/mfTpAR9aorGa1Lv6yMz9cdKsxihcF5IaF73Xn1TJLwPKOJJqhMSAmjJ2sIV4PUvy8hD3NSnpwBb7Ly+aLGQGhisB38ic1EFhl/WIbCgrP7YGDclbg0LEggZvi9VtLD0yuizbsW9EuJ7eXYgJULbOlMg8RoeebBXe7GR8v9MygYZh/ADx0G5rsF4Oi9WHFGFxcBKs5gwwyXzGDpUfR91EDJ0z4KSSMYuoEmIOCY+wj5GNYZx0derHvGKTesOWR2OTK8wDmMCeNzjJtqcRbHpRk9SuxZCLuAP+4CPgdHuucXHGxzHsrQtmJZKFm1EkKlfd575NqkyQrzexTocezaKYUHCXXkVAWf69WXijOzd1iqpODtHLFBNpzUFdUexzzBRJ63vFDXrEuxzKp/ay+FeexpNCL6wJd5ziIHXx0F9KybbSG0f2djlbNV47ZcbRC1WDOSCXd5XI1OuqpfQ8mXqlI+cu0fP9/AEZpvcrIWszHY7aolRyoOMxTLamYwMd9MqIDcwr9BAx74GJKB+00LiZj7c47/f8svQuyJyQ3pL1EuSD/IkH5hrbKSetKm9eEvGpc8Dk8TCFZpdRum8XLs9UIrd/3HxZtY5Evbt/1
+ FEGcHCMR
+ fXZbBNTDk/U8vd18C8QPWQZ1FTS/ozg9T7YELRRxhY6l7yq4kRcy3N1sRi6A2QedVGQqATVd0On+in21O0DcU1Hl9KO045FQlA/tCDEfUHz/KrECIxzroRLPAk2wLZQ7f6olvhKPJzx9RDuRN+7fx5/2bs+e/of1OoOQDs624whPI95m51/hw1L5/V6EehQY755Pdw3qqIe1aJjm6Gn8nG3hIsxKuHZWiuPpe4iIYRn437PEhK4dApz6oOORrDHZ/cN88heFLXFdYmS0G5Dmrw9xwIY5qLWrbRntFyd1ZSgdh9t+EJ76paIn1YKNvh60Mllcq7mHxTtdAMFLlGx2mJgVtFGEp39zqXpGnhXzHa6HSxKvfPC3qYMViiiXQgxokYkZ6VESYPFqFQRiQ9GOHmNNxmyA/InDoXUki+A8N4wZfnFt18TRza6xG51ogoGU7Q0dynWx9igWZ1nRZocpAp6EuKjQchPMq2ilixg1kH9b6odpoJtH4JeRbFQmEI5LFfVS7xuQkM9Wpp07KqiYL+IZd4g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,23 +116,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/30/25 21:20, Vitaly Wool wrote:
-> Reimplement k[v]realloc_node() to be able to set node and
-> alignment should a user need to do so. In order to do that while
-> retaining the maximal backward compatibility, add
-> k[v]realloc_node_align() functions and redefine the rest of API
-> using these new ones.
-> 
-> While doing that, we also keep the number of  _noprof variants to a
-> minimum, which implies some changes to the existing users of older
-> _noprof functions, that basically being bcachefs.
-> 
-> With that change we also provide the ability for the Rust part of
-> the kernel to set node and alignment in its K[v]xxx
-> [re]allocations.
-> 
-> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
+On Fri, Aug 1, 2025 at 11:28=E2=80=AFAM Yeoreum Yun <yeoreum.yun@arm.com> w=
+rote:
+>
+> When CONFIG_FORTIFY_SOURCE is enabled, invalid access from source
+> triggers __fortify_panic() which kills running task.
+>
+> This makes failured of kasan_strings() kunit testcase since the
+> kunit-try-cacth kthread running kasan_string() dies before checking the
+> fault.
+>
+> To address this, add define for __NO_FORTIFY for kasan kunit test.
+>
+> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> ---
+>  mm/kasan/Makefile | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/mm/kasan/Makefile b/mm/kasan/Makefile
+> index dd93ae8a6beb..b70d76c167ca 100644
+> --- a/mm/kasan/Makefile
+> +++ b/mm/kasan/Makefile
+> @@ -44,6 +44,10 @@ ifndef CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX
+>  CFLAGS_KASAN_TEST +=3D -fno-builtin
+>  endif
+>
+> +ifdef CONFIG_FORTIFY_SOURCE
+> +CFLAGS_KASAN_TEST +=3D -D__NO_FORTIFY
+> +endif
 
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+We should be able to use OPTIMIZER_HIDE_VAR() to deal with this
+instead; see commits b2325bf860fa and 09c6304e38e4.
 
+> +
+>  CFLAGS_REMOVE_kasan_test_c.o +=3D $(call cc-option, -Wvla-larger-than=3D=
+1)
+>  CFLAGS_kasan_test_c.o :=3D $(CFLAGS_KASAN_TEST)
+>  RUSTFLAGS_kasan_test_rust.o :=3D $(RUSTFLAGS_KASAN)
+> --
+> LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
+>
 
