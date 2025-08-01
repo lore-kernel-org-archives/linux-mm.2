@@ -2,182 +2,113 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 69A11C87FCA
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 12:53:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4777BC87FCB
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 12:56:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D37CD6B007B; Fri,  1 Aug 2025 08:53:25 -0400 (EDT)
+	id DDA8E6B008A; Fri,  1 Aug 2025 08:56:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE8956B0088; Fri,  1 Aug 2025 08:53:25 -0400 (EDT)
+	id DB25D6B008C; Fri,  1 Aug 2025 08:56:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB0026B008A; Fri,  1 Aug 2025 08:53:25 -0400 (EDT)
+	id CEEB86B0092; Fri,  1 Aug 2025 08:56:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id AAEC66B007B
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 08:53:25 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id F04E51DC3AF
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 12:53:24 +0000 (UTC)
-X-FDA: 83728179528.25.DAF464C
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 60A4B40007
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 12:53:22 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=H6Nr6og6;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf27.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BF2DE6B008A
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 08:56:17 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 47B3114080C
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 12:56:17 +0000 (UTC)
+X-FDA: 83728186794.11.6378D3A
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 77417C000D
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 12:56:14 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=SHE97O80;
+	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754052802;
+	s=arc-20220608; t=1754052975;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h3ruNDNlPjMbrJaLbLdhknmMkmPcPZs8o/QuFn2NwxE=;
-	b=7GuPACN+mmNnFiaWudhg7Dh3rgvypFA+tHKF+xJeQdjlLfna0wp+X9zyPlB38wFMcj3mRJ
-	xohOhLaldRwkQKWKyGopipquz/mJ7KZl/mpUqk+o6R5QCOq6n+qstcT1+9qOx3+AHgyf0W
-	Z2Qx5X/2M/fhAWlpdDua2myHQ5Bmfn0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754052802; a=rsa-sha256;
-	cv=none;
-	b=xXwLfM6P6I0MmZLwk//9gbXs3IzCNvZIKLUHSFZ7r5tBORmTp/88oLZzv8o+uQviQE3p4T
-	dKcCGU9TPzDGwisUtXWNlBk7QdREWtxz034SjNEFLFsEsH9MNWlhv4KG51qDmTq2DsLyDe
-	JGGW4S0uWRDX8YKWeAYknk+ImSjEfIM=
+	bh=Z+DsoEtNA0IUK+GsNgyKyYxAv9c9X/6gEWV0IhG0ZcA=;
+	b=nQVGb/sVsN3kgQdtR6hI1AhOJEcEiIbilwxBCPx8QozGueP/CKZQ5pY9L+mk/lAdxodSXt
+	j9koPgO264oB0+Dyw6dlpHBO/60b1IakubgStmasoYAW5cTGcWTIcCcu5LgN582cN5UrJ1
+	VguvypAb6Yrzybzjtd1t+ZxVb03FB5I=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=H6Nr6og6;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf27.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754052801;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=h3ruNDNlPjMbrJaLbLdhknmMkmPcPZs8o/QuFn2NwxE=;
-	b=H6Nr6og6YmFWQMwJ5gVzWly92bsTpp5UXTmgfl+OTay177QxFKZDygEoT4mxjtukwR4qdc
-	oCoDFhH5GevqD+gnDDXryJA+xcuBYJ4sPr0bJxxSgm7ZR7Nyyl7paox+En4WaZOGQ1Cu+Z
-	FH0qnSvOXBwREluRjZ1dJizUAJTtSv0=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-631-_A3oegpHNJGfGIAYlirZjQ-1; Fri, 01 Aug 2025 08:53:20 -0400
-X-MC-Unique: _A3oegpHNJGfGIAYlirZjQ-1
-X-Mimecast-MFC-AGG-ID: _A3oegpHNJGfGIAYlirZjQ_1754052799
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45867ac308dso4572625e9.2
-        for <linux-mm@kvack.org>; Fri, 01 Aug 2025 05:53:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754052799; x=1754657599;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=h3ruNDNlPjMbrJaLbLdhknmMkmPcPZs8o/QuFn2NwxE=;
-        b=g+RHmekPTda0lsHCW/4oCANOeSbKY6T+juICJcF2rXW1rOiZUaiyY3LTvOwnnBBDlo
-         M9iR4sHCidk6w31QrgFsEtJVCivRm2bQz01geso2BXO6XApKlKbkQQ2uBVcqKJGHIu0k
-         JFOE/eoMlwEz0SyOsNrDQ6elVaw40rjypjtZR8QEfqPM4CiL+BSgm68VEul/prxe/MMa
-         xhUVXMCA07hexMXPD4vkmV62h1JOAAdsgZltpWo/lsRHmQOSjZtDXXidNHZJFolI0Hph
-         G64pb3kkCGxr/HvFMNHPZt1Bf9FQlMfVMtE4Yb/J+bQIJVvbYjMG5phRLcwXMENg+u6d
-         q4Gg==
-X-Forwarded-Encrypted: i=1; AJvYcCWqI2pcgDRhuJaozfFhGDGDFKBk4bc7hOAno1+rt1gxivaieW1l5spTuvFPLdWIdMvNCN5W3/hlEA==@kvack.org
-X-Gm-Message-State: AOJu0YxIGj4aIJpRk099nKEKrje2GoTsnAMhPS5QZxRN3XoDuTuuc9F3
-	YxZEU03y5VuODYL6iryLbYEJSVpp432aUcQxG62ol+XcDpfwdwtduPKF/kzqR4qJPyvEBPFKNzi
-	q8sGIs/kjQXTMPQTjuBehMtzJyi4B3+A1fDF1bUDG7kYt8QzX+Siw
-X-Gm-Gg: ASbGnctZdeGBvX+lF45uTo4UPk3/ywYv/MWsS2PXKz9CVlKW0c4lPE9hHZ3NbsjWClp
-	pkAbdLKC5ClGjCo3bYs1F7B5OJQXF644p2xK63v6Ym/6z5C+ja0xc3LSpia97rgEsqIqTBgRg4r
-	54pSvdTqYKlVOHiZFyVSQjm+s1WM7pt8cSToDqxQvrbOO1ctZJWlTnYEMrrFL9G/Xe0uqiaurWp
-	5uoU07Nj6M391SvnDQLLlnN33qosdxvIq8WM2f0ZZS7s2+T/iVbeA4dotoBdzFWiHgDyk1a3+o7
-	BG69ooHv/cbilsttKN5dMND2O9jlbShjRPza4egUPSftONPNlbjufVL4J1Z8pAaymuxcyNsICgE
-	RYPmjfZBkuXtjc+8y9M7ECHw/vPbKVxIcId6fcTcEsInjtAkyJmUQiNJQk62LBqxU
-X-Received: by 2002:a05:600c:8b6e:b0:456:27a4:50ad with SMTP id 5b1f17b1804b1-45892be4bf9mr87196845e9.33.1754052799309;
-        Fri, 01 Aug 2025 05:53:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFdOjdW1qaq63aXhEjK0A1+Z+TR4so0aHNv+en625bxoCoFF4KP1QmdOz4NRJh+MBuuVmlFrA==
-X-Received: by 2002:a05:600c:8b6e:b0:456:27a4:50ad with SMTP id 5b1f17b1804b1-45892be4bf9mr87196295e9.33.1754052798771;
-        Fri, 01 Aug 2025 05:53:18 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f20:7500:5f99:9633:990e:138? (p200300d82f2075005f999633990e0138.dip0.t-ipconnect.de. [2003:d8:2f20:7500:5f99:9633:990e:138])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458a99ce1d2sm26772525e9.23.2025.08.01.05.53.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 Aug 2025 05:53:17 -0700 (PDT)
-Message-ID: <8ba84519-7e69-4058-9ac1-d3e2e622a6ab@redhat.com>
-Date: Fri, 1 Aug 2025 14:53:16 +0200
+	imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=SHE97O80;
+	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754052975; a=rsa-sha256;
+	cv=none;
+	b=NjqpwFjbFJ+xe77gpMZ/y9IrxM223ioUM3Yl7FPJpyPV2cgfVM9t3BBDQoN+YDVKshs6la
+	uuqhpAZdeWb2PgHKURjKfX6DavqJLe42Igt+FFTje6DRwD+Vb6FDOPVZ8N51g4jebX6VRz
+	PgFasUWZn0dJBUrVVCbUjPathjU9nmc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754052974; x=1785588974;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Rtzfcvwkul30C1tQ3bVX6Wtto5iApIgC11igXrCtIyY=;
+  b=SHE97O80f0KOsTklh14ECZD0S8NxW2WzWVhnPfMfX6bmBSvnehURjw+D
+   GcghGjdNOgUNeqpMz05L6X7S5EBdz7PaMKjFiX0b+6EgnmcBBOXdeYQHM
+   aoO4//iI6fIV0xQNIKsMrXlc2YIAKY52WLqd6dyLCscVsAmc65fqcec1C
+   Vtp9oAKp0Ip1V7byepRbOPvr/TKDuRCmWYc/QGr1+NhhFaJHn56HYIaas
+   NLjj/a30lUfMBWZ4K2IDFb3eldUIhZbD+ptUhdMsgEveToQbjNcYbnzaj
+   kAUvmPmCVi7vsjubAyp3Wem/G94oSE7jo1BZb9Z2105CuVivVz4kCyPnB
+   w==;
+X-CSE-ConnectionGUID: QEK2DHblSlmLKQswBjJ/NA==
+X-CSE-MsgGUID: J7AWLwXeQ7mTztlxYAGMoA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11508"; a="56478311"
+X-IronPort-AV: E=Sophos;i="6.17,255,1747724400"; 
+   d="scan'208";a="56478311"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Aug 2025 05:56:13 -0700
+X-CSE-ConnectionGUID: BGb912eYQgiEW6HwicwKVQ==
+X-CSE-MsgGUID: WW8OaP5zRP2oOXCNEXCcJw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,255,1747724400"; 
+   d="scan'208";a="167820732"
+Received: from lkp-server01.sh.intel.com (HELO 160750d4a34c) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 01 Aug 2025 05:56:06 -0700
+Received: from kbuild by 160750d4a34c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uhpIq-0004dA-0y;
+	Fri, 01 Aug 2025 12:56:04 +0000
+Date: Fri, 1 Aug 2025 20:56:00 +0800
+From: kernel test robot <lkp@intel.com>
+To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com,
+	david@redhat.com, vbabka@suse.cz, peterx@redhat.com,
+	jannh@google.com, hannes@cmpxchg.org, mhocko@kernel.org,
+	paulmck@kernel.org, shuah@kernel.org, adobriyan@gmail.com,
+	brauner@kernel.org, josef@toxicpanda.com, yebin10@huawei.com,
+	linux@weissschuh.net, willy@infradead.org, osalvador@suse.de,
+	andrii@kernel.org, ryan.roberts@arm.com,
+	christophe.leroy@csgroup.eu, tjmercier@google.com,
+	kaleshsingh@google.com, aha310510@gmail.com,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+	surenb@google.com
+Subject: Re: [PATCH 2/3] fs/proc/task_mmu: factor out proc_maps_private
+ fields used by PROCMAP_QUERY
+Message-ID: <202508012010.9IA7JflG-lkp@intel.com>
+References: <20250731220024.702621-3-surenb@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/5] selftests: prctl: introduce tests for disabling
- THPs completely
-To: Usama Arif <usamaarif642@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-Cc: linux-fsdevel@vger.kernel.org, corbet@lwn.net, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org, baohua@kernel.org,
- shakeel.butt@linux.dev, riel@surriel.com, ziy@nvidia.com,
- laoar.shao@gmail.com, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
- npache@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- ryan.roberts@arm.com, vbabka@suse.cz, jannh@google.com,
- Arnd Bergmann <arnd@arndb.de>, sj@kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, kernel-team@meta.com
-References: <20250731122825.2102184-1-usamaarif642@gmail.com>
- <20250731122825.2102184-5-usamaarif642@gmail.com>
- <7b13d8b5-a534-47f8-b6c5-09a65bffc691@redhat.com>
- <22e263a3-a1d2-4159-b3c8-44f7a29bace9@gmail.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- g3eXuA==
-Organization: Red Hat
-In-Reply-To: <22e263a3-a1d2-4159-b3c8-44f7a29bace9@gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: vv2ngLdnRulDFy50K5-HL1_AOchJ0RXnlMbdTic9qSA_1754052799
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: e19zmkkpymwcwrpuju4xoytud9p4rk3b
-X-Rspamd-Queue-Id: 60A4B40007
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250731220024.702621-3-surenb@google.com>
+X-Stat-Signature: rxfdqmbruxu6nso337i364crw1pzgxcw
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 77417C000D
 X-Rspam-User: 
-X-HE-Tag: 1754052802-700363
-X-HE-Meta: U2FsdGVkX19v0ZgFDm0kdc8E+VSwAxYgfIeGlcgVa+RJPpFZzeoWA+VNY6S9lj6HHWnklOh9xmLMSVKfOXpeyhdp+sD8kXvwBGMyENuRKkeRSW3420pvczHnqm2mYqTAMI7ALd+d4iPMho2iLtWuLjD8Gxg5rEdeJN9JJehehF4km6//NTerd/y662nW2WpWYeMEeUnMRIyE5pqBek937fSnLFxCuP1Jr2+BmkVekrrt+50g2uhW5zkXb3E/gTdfswpeuWOZMQ+0LTUn49EMytuu/8LAAfNY8AQzPqEojk/fsSwFE395OBPzLozHUeOAtY2neeFbJoaoGjNEkx86lQO0GSgXSrzXveXgh9EF5xNRkA7ei3lDbft45au207sAiTN9Mbmvbm75lg80fWgQumgXQO7PmWS8z2WUK0RSDrs1qvzgdytVk10JTRi1pimQ3Z5yPIkDces6eCD+bYBeeo7tDMhfAFe+ZaLhs73XDtAlwR1O6M32U3a7MQEPtfid9YJraIs6EE6S3FwgaBNTALS91Myfscs1BN5oUwkQguGuum0I8OzTNciWHYT1qO/gkwGx4uaBzWgDzMBHVWCdf1jjjBDxXG7pE0DajV7sOf62vZhb3+bg9LiHIalmdoOR4GR7IO97/7IadQDuUqVeAaLoHQ7hcbmq613B6PRzYSRDGDugi99hIQ93Uc9GsKv+jlCy535/69Lmnn/Wql22ZfEgAwzHjxwM3HmeJap68RSAdR4sMbMvhAfDScDLx38X14Y5D9GxP75qVHWhzKnI38fa89g0aW2nBTpSZA1cPJIniZ43cN0oRK+qdRPO2yyNhIV5RRsCcIB5hT5BPX6YgVuQMYbjc2cHW9G3fFEL59pxRp1wltLyTWs9YoW+rky2FqQNlYyR9+TSjbjK56mgiVcpBvagLr3a35OVmkn7Bg1owO6VA3SbrS3dkmwDNdvfzraRrcEccQvS/syEt5J
- oq4ltHdK
- Q5OkPiTjsQvK35ATYALNn4IXcTMpwInRti0TYettRlbx2OASM/ejGANPSZbCikcbn+Ytz9PMudIIUh+CSyVS0g2gOoO/pOiRf8/wmLzDxkYiR9tJ90CSprwlsdXUCPQquEjvVfTtEbB3PTlSoT7CZXWCF6lnGfT2vepiUxfesHZkgKHGNuRYtd2EPs6q/GRrWOHC0Y5vzgj12+kNe7f/vyFWw/6QnaJyXjzwALtdRVNdQ9UBXIBTrQp33G21wz9U2MG5gLdKrOrCcihShI/49JYg4Fxs4rL8zHgBp1uJGEaYxC15F51sTUJdap81k6twwUNhzEmFC642fbEdTQmIiOcyZqIxZe5+A0RmuiSZmBC++K9XfXKI+bq7jlLLMN5b/9yu/MHDRlQ/Cta8ClN72SUmdXc2QkKLEoYmBYeYqTxScalmoLMkuzRwDtAbZIehadFiRLu7Tc8+ptBkGCh0v/HlS9+kqCm6Wc3Q2w75HfZnRGxDYkoUz6cPO9hAZnN5SpwBduAL9KZT9llYrqvwsIZe0QjAowbShv+6dQ3XfZndJve82BiUIJbcj5Q==
+X-HE-Tag: 1754052974-885833
+X-HE-Meta: U2FsdGVkX1+UH1i1cwtjE44/Hv4C67WQCU5fTv8IiaYa6eBAQ6ejtoJU1qu/Xszxp6RAImAv4QVGwc4ke/2l2WwJDIgigFY+yOEpT2NM+d81DDE4CF3dt8mZGpk6pAQImt3l1/b3gL9ax0GH92GKsdmyiDu2yodPxIWFK++1/NgQpq1+UQauwqDDuv/ZqKiEyhRNC8nhVtINuIoJlO4gMXmMKWvtwCxNjXtKSz1cBeiRZiL5icO5TbQGHgwcKlb5yAlDarpP/eIbXyKE7E/3LUtf/374VbKk38EYGcpHMrpHkZyJ6rnBFDpavcnDsOA94Rs6gBv7dVXarRtrCoJqeoUjrmuQA79xOILysepwGxAaG4LEDqpnnT5rmsPsOqf+fyTGyFhPdb6ouS8qKHrFZ+X56ItCsmxK4f5n2rQh13lS8vLKgesBZ5lv2wW7oqSXJ2AVFS6p9KBQ1q2hk36vDid1655WZccXH4UfOEpDaJMSbHk1D4S37ON4qOVd+kXx4FHEKSSJOn9FfdcvmT9/92YBvHU4a6aOphvkh692a+JEO4Mh0aCwRPveHTUYK/NdEhvJ0i/0djzdqXmsEmSc91milExJK19XeeVv4/DIaBgZiIgdvIrEoqz6OL5Sq9AN1L6GREHwCthcueQbxpHTlfGevDkuCXfNkvY7aHcAhF9XN/bv+fAjmxgyA1k79QyuVOyWHSTVuEg8vAIp58fTHj5/TuntivSGLzdIsp5x5zyYbRx/q9pHUOVmRNGDSgqGPhuF7deX05aF0Nd9m1MPA6+rKbyI6kcPlGaBCIcBlsOtvOG4yrdc6+bfk/kUZtURPmMcmErvsq+rn0MzV7WK1e9rus0bpj6hCCaOzw9Dh1nPjdPnXKFO7XAG5n3qy7/5dzKkLPniir9+s9Vrr29bqaEuY2cvMTMNePlPrLBzDLygTsW0EJki9MkgPq5Ol9Ym80qTh+d4p1R0r/zOJJo
+ xRevigcH
+ 2ePem9gAeKruU6SZ31QQJRBBM+aFhOBgkWpn8xzRqLIREl2h8vC1wxk+xbxLchbDzkAfCqsiIZ1nWt5PD4s3beIMARQ1AhjSOhssMThHJTS1/+lgZeaZuYxm5IQZ20gugIkWcWtb2lB439z4MGRBJvIfqsCaErwW/t8pYw/FUV/NnbimkVYK8zYIBr1BCGv1KU3iyXSSzn3H/jI/a51VMHElVE+2G5OO3e4poHSrd6CmoxK/DR27hjsOhe2ufdw0OJwg5m84aG9z58c9ed2J0JycpHslY3caW7Pn/5QVofxGm0GnBrEII95zuZ1AGW+jMOn8FWyFZwDMrR6VoCn98Pk1aZovMD0X6vZLRVJ4xbAqZfCXVl9WIZbum+oZhcZzMsGTmkgV7TXfK3rhv4XBpUObUjw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,48 +117,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->>> +
->>> +struct test_results {
->>> +    int prctl_get_thp_disable;
->>
->> The result is always one, does that here make sense?
-> 
-> Its 3 in the next patch for PR_THP_DISABLE_EXCEPT_ADVISED :)
-> 
-> I will remove this struct, but I think maybe it might have been a good idea to squash this
-> with the next patch to show why the struct was useful.
+Hi Suren,
 
-I think it's reasonable to keep them separate.
+kernel test robot noticed the following build errors:
 
-> 
->>
->>> +    int prctl_applied_collapse_none;
->>
->> "prctl_applied" is a bit confusing. And most of these always have the same value.
->>
->> Can't we special case the remaining two cases on the current policy and avoid this struct compeltely?
->>
-> 
-> The values are different in the next patch when PR_THP_DISABLE_EXCEPT_ADVISED is used.
-> 
-> Just to explain how I came about using this struct test_results (though it doesnt matter as
-> I will remove it for the next revision):
-> I wanted to maximise code reuse and only wanted to have one instance of prctl_thp_disable_test.
-> I actually started with special casing, but went the brute force way of adding too many if else
-> statements and it was looking quite messy after I added the tests for PR_THP_DISABLE_EXCEPT_ADVISED.
-> I saw this struct test_results in another kselftest and thought this should make it much better and
-> extendable.
-> 
-> I have removed struct test_results and changed prctl_thp_disable_test to the following for next revision:
+[auto build test ERROR on 01da54f10fddf3b01c5a3b80f6b16bbad390c302]
 
-Yeah, or just duplicate that function and call it 
-prctl_thp_disable_unless_advised_test() in the next patch.
+url:    https://github.com/intel-lab-lkp/linux/commits/Suren-Baghdasaryan/selftests-proc-test-PROCMAP_QUERY-ioctl-while-vma-is-concurrently-modified/20250801-060200
+base:   01da54f10fddf3b01c5a3b80f6b16bbad390c302
+patch link:    https://lore.kernel.org/r/20250731220024.702621-3-surenb%40google.com
+patch subject: [PATCH 2/3] fs/proc/task_mmu: factor out proc_maps_private fields used by PROCMAP_QUERY
+config: riscv-randconfig-002-20250801 (https://download.01.org/0day-ci/archive/20250801/202508012010.9IA7JflG-lkp@intel.com/config)
+compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250801/202508012010.9IA7JflG-lkp@intel.com/reproduce)
 
-Makes the code easier to read and the duplication is limited.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508012010.9IA7JflG-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> fs/proc/task_nommu.c:207:13: error: no member named 'mm' in 'struct proc_maps_private'
+     207 |         mm = priv->mm;
+         |              ~~~~  ^
+   fs/proc/task_nommu.c:229:31: error: no member named 'mm' in 'struct proc_maps_private'
+     229 |         struct mm_struct *mm = priv->mm;
+         |                                ~~~~  ^
+   fs/proc/task_nommu.c:262:8: error: no member named 'mm' in 'struct proc_maps_private'
+     262 |         priv->mm = proc_mem_open(inode, PTRACE_MODE_READ);
+         |         ~~~~  ^
+   fs/proc/task_nommu.c:263:27: error: no member named 'mm' in 'struct proc_maps_private'
+     263 |         if (IS_ERR_OR_NULL(priv->mm)) {
+         |                            ~~~~  ^
+   fs/proc/task_nommu.c:264:19: error: no member named 'mm' in 'struct proc_maps_private'
+     264 |                 int err = priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
+         |                           ~~~~  ^
+   fs/proc/task_nommu.c:264:38: error: no member named 'mm' in 'struct proc_maps_private'
+     264 |                 int err = priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
+         |                                              ~~~~  ^
+   fs/proc/task_nommu.c:279:12: error: no member named 'mm' in 'struct proc_maps_private'
+     279 |         if (priv->mm)
+         |             ~~~~  ^
+   fs/proc/task_nommu.c:280:16: error: no member named 'mm' in 'struct proc_maps_private'
+     280 |                 mmdrop(priv->mm);
+         |                        ~~~~  ^
+   8 errors generated.
+
+
+vim +207 fs/proc/task_nommu.c
+
+fe441980161751 Ben Wolsieffer          2023-09-15  191  
+fe441980161751 Ben Wolsieffer          2023-09-15  192  static void *m_start(struct seq_file *m, loff_t *ppos)
+^1da177e4c3f41 Linus Torvalds          2005-04-16  193  {
+dbf8685c8e2140 David Howells           2006-09-27  194  	struct proc_maps_private *priv = m->private;
+fe441980161751 Ben Wolsieffer          2023-09-15  195  	unsigned long last_addr = *ppos;
+dbf8685c8e2140 David Howells           2006-09-27  196  	struct mm_struct *mm;
+0c563f14804356 Matthew Wilcox (Oracle  2022-09-06  197) 
+fe441980161751 Ben Wolsieffer          2023-09-15  198  	/* See proc_get_vma(). Zero at the start or after lseek. */
+fe441980161751 Ben Wolsieffer          2023-09-15  199  	if (last_addr == -1UL)
+0c563f14804356 Matthew Wilcox (Oracle  2022-09-06  200) 		return NULL;
+dbf8685c8e2140 David Howells           2006-09-27  201  
+dbf8685c8e2140 David Howells           2006-09-27  202  	/* pin the task and mm whilst we play with them */
+2c03376d2db005 Oleg Nesterov           2014-10-09  203  	priv->task = get_proc_task(priv->inode);
+dbf8685c8e2140 David Howells           2006-09-27  204  	if (!priv->task)
+ec6fd8a4355cda Al Viro                 2011-02-15  205  		return ERR_PTR(-ESRCH);
+dbf8685c8e2140 David Howells           2006-09-27  206  
+27692cd56e2aa6 Oleg Nesterov           2014-10-09 @207  	mm = priv->mm;
+578d7699e5c2ad Ben Wolsieffer          2023-09-14  208  	if (!mm || !mmget_not_zero(mm)) {
+578d7699e5c2ad Ben Wolsieffer          2023-09-14  209  		put_task_struct(priv->task);
+578d7699e5c2ad Ben Wolsieffer          2023-09-14  210  		priv->task = NULL;
+27692cd56e2aa6 Oleg Nesterov           2014-10-09  211  		return NULL;
+578d7699e5c2ad Ben Wolsieffer          2023-09-14  212  	}
+dbf8685c8e2140 David Howells           2006-09-27  213  
+d8ed45c5dcd455 Michel Lespinasse       2020-06-08  214  	if (mmap_read_lock_killable(mm)) {
+8a713e7df3352b Konstantin Khlebnikov   2019-07-11  215  		mmput(mm);
+578d7699e5c2ad Ben Wolsieffer          2023-09-14  216  		put_task_struct(priv->task);
+578d7699e5c2ad Ben Wolsieffer          2023-09-14  217  		priv->task = NULL;
+8a713e7df3352b Konstantin Khlebnikov   2019-07-11  218  		return ERR_PTR(-EINTR);
+8a713e7df3352b Konstantin Khlebnikov   2019-07-11  219  	}
+8a713e7df3352b Konstantin Khlebnikov   2019-07-11  220  
+fe441980161751 Ben Wolsieffer          2023-09-15  221  	vma_iter_init(&priv->iter, mm, last_addr);
+47fecca15c0944 Oleg Nesterov           2014-10-09  222  
+fe441980161751 Ben Wolsieffer          2023-09-15  223  	return proc_get_vma(priv, ppos);
+dbf8685c8e2140 David Howells           2006-09-27  224  }
+dbf8685c8e2140 David Howells           2006-09-27  225  
 
 -- 
-Cheers,
-
-David / dhildenb
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
