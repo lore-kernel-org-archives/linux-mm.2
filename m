@@ -2,90 +2,101 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 67DD0C87FCA
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 23:39:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EAAC5C87FCB
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 23:46:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BB9F6B0092; Fri,  1 Aug 2025 19:39:48 -0400 (EDT)
+	id 893636B008C; Fri,  1 Aug 2025 19:46:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 093796B0093; Fri,  1 Aug 2025 19:39:48 -0400 (EDT)
+	id 86B366B0093; Fri,  1 Aug 2025 19:46:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEB176B0095; Fri,  1 Aug 2025 19:39:47 -0400 (EDT)
+	id 7811E6B0095; Fri,  1 Aug 2025 19:46:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E27306B0092
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 19:39:47 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B39A61A02A4
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 23:39:47 +0000 (UTC)
-X-FDA: 83729808414.09.FC32824
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1BE1740002
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 23:39:45 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SR+dMqyy;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 64AD26B008C
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 19:46:17 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D076DC02A7
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 23:46:16 +0000 (UTC)
+X-FDA: 83729824752.22.7370A0C
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 16A5414000C
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 23:46:14 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=s70L3y7q;
+	spf=pass (imf09.hostedemail.com: domain of 3xVGNaAkKCOgceNKbcKXWQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--sudarsanm.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3xVGNaAkKCOgceNKbcKXWQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--sudarsanm.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754091586;
+	s=arc-20220608; t=1754091975;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2wvjENDVfhyFo54QyWUld/7W4k1C2AP7Lw1nydGOemI=;
-	b=poQNKD4rjrMaDn6plA5vXcFSldPkNl4rN6fbhoU4q3zhmf7BakEoQNPfrvLXiAEeE4YY6J
-	NiUZHYetIN594gQ1EgUJH/e+3PWi4fIJcw2ENdYHH5S6JIoJgm5MATwT1gZKmS7nkUNcz+
-	aGGE0CkdgOKqhLURua8IsUf5pO9P4qA=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SR+dMqyy;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754091586; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=RCbUWFNAiQIE2SEZGiipZa782xmKSM+6i2HHrci0QuA=;
+	b=yPQJh1EaUt0IuV7n86Ea6ZUyYWTASKONA0uSlLC95nXoExe+bP/Y4oz/tKUKH49rDSTeTJ
+	+O9rYPrVmD5mnOPEBPjpl1uMnWhJ6lvOV/MXe4yNAlOtH7oeo5mjCr+jznzc+e3hth3IFx
+	36+e4cX3q3Rxu3YcVLkMItkqYlmAkmc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754091975; a=rsa-sha256;
 	cv=none;
-	b=HXjKv2YBy94nvEUyv7UExULa6bc0xGDZ9uK7wnWBJuJUoEk+u6VGyugrWQjPugqKmrcvQD
-	p7Cc0e8+PAuoyZvY/37RWc1n5SKardxymkoSNe1h6AyWZfBBirLJP1GYZBwx7e9WheqJdo
-	DuibLTSnOxkyuD1I92jxekg+wPwBCgM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 134755C69D2;
-	Fri,  1 Aug 2025 23:39:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E02EC4CEE7;
-	Fri,  1 Aug 2025 23:39:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754091584;
-	bh=5tJRCSbuSBYIOjiD+lXubjl8LyV9TAUxnOkonO+FxG8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SR+dMqyynB4Kf1Du44mgvAR58fTQ1TD0vFD/4VlOME/qAgvk0Aj9aYqefvY4VA4DV
-	 IAY1zgJnoEOcMzoKWmDyMsTOyaou6ItJXJG7xP/3iobGCfmJqjFrhIiaGvxfqqYe5+
-	 aAJ0UnM4TzQ/Jd3Th3KTXVRXY2nLNfBADBkf1KKwJSvotGYv9mWn0Pgy9ZpFXXF/D4
-	 oXWgsMVC4AokCvAhItulYq+ThaOrZvH3mqgL9Ys46OeaqowPGDVwn9BCyIHfWLVtlX
-	 noLxXHWVkqyBXsbfgOMdHNYfwcJvJEO9kM0ZXUNICESFGV6+2n+AkQIrDgs4X1J05u
-	 KH2p05N4aNojg==
-From: SeongJae Park <sj@kernel.org>
-To: pyyjason@gmail.com
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Usama Arif <usamaarif642@gmail.com>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v3 0/2] mm/damon: Add damos_stat support for vaddr
-Date: Fri,  1 Aug 2025 16:39:42 -0700
-Message-Id: <20250801233942.1614-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <cover.1754088635.git.pyyjason@gmail.com>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	b=oNkTtTrmh5YWxYarPPb0Z9/ja4lBvydPzc/vOe0OynGOxsWl1DXFv3V7EWdDBNjMIJnGPE
+	m3Es6pCU9OlhafYiWxKMgbMZ97ZB2VC0XJBH/oInTK9YiAEdFLTzcxZQujSj5A/MbvLvGS
+	C6eAxAxAoO2qhl77JomsRrLeY0b9Gdk=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=s70L3y7q;
+	spf=pass (imf09.hostedemail.com: domain of 3xVGNaAkKCOgceNKbcKXWQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--sudarsanm.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3xVGNaAkKCOgceNKbcKXWQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--sudarsanm.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-31ea10f801aso3644057a91.3
+        for <linux-mm@kvack.org>; Fri, 01 Aug 2025 16:46:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1754091974; x=1754696774; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=RCbUWFNAiQIE2SEZGiipZa782xmKSM+6i2HHrci0QuA=;
+        b=s70L3y7qqYxdTYF+ZBVLiOJPAlSftzFiAXWFhNLc+NfBVLaFeczGig9gxIbhFSAmY1
+         1FPItE0Iw1hhXhG+1yyMMvNvq2AX9UEuGuR5ESMtMSpE/Owvr+OjcXxo/k1nfOss7C8Q
+         MTnY6Vl2Bx8Bj1Fx9Y29hHUh9tvoWfuPkMtFljF1zGw6QYsUuxfXCTR6MlmjjtbHwEzQ
+         aySL8tz05dEE+ORUuW/N+GySZZQqPa4dtaWgyTsctH9PbWzcK29Ms7VtkUhCFDno7gfz
+         s/9RZ13+BZRR8SJ7/alPxe/YoZ9o7j7wJ5qCUyUOTbxibniLtr2+9OGvt5UF8UxM2iAa
+         JuUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754091974; x=1754696774;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RCbUWFNAiQIE2SEZGiipZa782xmKSM+6i2HHrci0QuA=;
+        b=cKd9pYJ+nOjKnstZUdxEZgdwXBCkedmI4arRU37C+4SNOh8WjppTHvBTFlwnRCrP09
+         +bdDEdFRElDZIT9ZxQDWi+2bJkKkOQhfOiIgmOWEw12u5UXT9T/7aM1OAIUHGQbbpE4m
+         hK48M+4gXiOtq06HPSe59y0aoTyBOmGfP0B/HjgREdsAXnPtBNN5XHrS8kdumHQ265Cu
+         FH1dSGoEUN84BeXGPZawug5dFvs3frNyuNUGh+RTdBq96pkn/15C815aqqaAD1SfSR9C
+         uSiyAbvSxW1z9s6Q1O5+BOd40gA+6rDeSdDRt8pa5aCyiK4wCUbWnqn0/ivF3m+W5lxY
+         JfAg==
+X-Forwarded-Encrypted: i=1; AJvYcCUEOEC64UdhGd9kB3gPX7V3vsMuzQ7I/jVBRrAiY/7uPhXlr8Qyk7X2ANNH6Dghlcw2e3K3fRB5ew==@kvack.org
+X-Gm-Message-State: AOJu0Yydm8McJsD2++qMdH4IryIGLqdiuwkwRGBwx5sUB4bOGOq2mzlz
+	Fx436AUM31QnKhDMh2tU+Rj4B5W9bhbeHgFC6k5ElpX2vhK9Us3po667cQyWUX3IimpJIZXC3zA
+	MmIruD5MfKWkOqIq1bw==
+X-Google-Smtp-Source: AGHT+IFb+ysewxBs4h3pIvhDOB58xFs76O5xVyYH3xfpChybjlsHQtJ6CB+wmDZbgnZS7YoS4QbL24y0lzKb8BA=
+X-Received: from pjvv13.prod.google.com ([2002:a17:90b:588d:b0:31e:cee1:4d04])
+ (user=sudarsanm job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:3e86:b0:31f:1a3e:fe31 with SMTP id 98e67ed59e1d1-321161ed89fmr1974835a91.11.1754091973873;
+ Fri, 01 Aug 2025 16:46:13 -0700 (PDT)
+Date: Fri,  1 Aug 2025 16:45:59 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.50.1.565.gc32cd1483b-goog
+Message-ID: <20250801234559.1178521-1-sudarsanm@google.com>
+Subject: [PATCH v2] selftests/mm: pass filename as input param to VM_PFNMAP tests
+From: Sudarsan Mahendran <sudarsanm@google.com>
+To: linux-kselftest@vger.kernel.org, David Hildenbrand <david@redhat.com>
+Cc: Shuah Khan <shuah@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org, 
+	trivial@kernel.org, Sudarsan Mahendran <sudarsanm@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 16A5414000C
+X-Stat-Signature: i6ndfkuk6r3oob6c3yj54t8d5sa3pxqr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1BE1740002
-X-Rspamd-Server: rspam06
-X-Stat-Signature: sqbu983mmyn16ibfy8bg75941o6c6sz6
-X-HE-Tag: 1754091585-316558
-X-HE-Meta: U2FsdGVkX1+KShICkg/7oHgQxpFUHtRkZUA8Z7mFPs0RWs95dDMA15vUeeE2G4Cc3O3LxirgaMFvcbUY0AHgVROW+X/4z2qVFXrr8a3UBjPWoPWZ3sJxqfqA10qoXwr65BA97M1tJw5HjaXFwX8H3Tfc7hUnALLGdShDvXu6VG8tWyY1h1ZbRGMf51a0hMQKFFl5G5/ta93elw2RCELJmdl6C/aQFMxfYXSgsLxOwD9tKXK2N4/scJC9WWiq8vfLnSyOxebQtwZ4ClMqef1YOwiiIu9f05LOKFBjL/XA60rRVqdg5e+AjkGK/q9PapdWaZrhsjbwRaFe6UtanYL8WeCPYwYvpWU77tebxgERg7zI0JWbdK0Ybdx93UFt7OuQC+YHwyo6gIhHrl9zfffiy7ffeb5cQsKMAqCM3FwWHHJ4n47wq/OB/HqHMriHRX/0PsIkpy9Vv84ETFemU6Hlzw5mgtvxkPh6cXUf8RckrO07ZCbAq34v3S7GNLUqPFSQkazf1hgx/zx4/4ET/mG+A4BV7yeC+W37YVx2kF9yB9a7Bhn+/W09JSNQMm5gMuOiUiMW9hbC80dPQLKt/NCL8UZwZHIg20FPS4bty+NGt1KVd302aJmTMstkhOsE/AoMiNCA6L9J4Jr94aKsqnf9iPrclc/LysFJHoEpX9Mm2y9N2AWh67dhXUIUFERfSU+IblPKYah9Vs9W5jBf7kmQ7P0dq04xNL7rEUksk4RkmXYkHExGtxjTZPx6IEhtzt7ph4zXFqzqDXZYC7FIFoxO43+e387Ogm4pMg0zD65f/E0gFMw7K3S2Ye5YGeHAs+jNhKy/hA6kzXg6lAT26FuznZSaP4hYpJunhmkgH0hoyZOtoLkqnGwPtquwYJhKja2u2YRgQpXMtKddiuuWrhRUeQkH8/8cyHl3lTcujW4DQK0foas/gKFXALSyhAYuB67zkHscp5Ol9B3YQblzikd
- LFlT9RGm
- FfGg9DpekR05S+aJ5wX+a3/s2JCcimyAxDFj6Xr1qUB1St+Tv0o69HhNWE5Z8oXt7FbYDbcGjp9pkh3bmrW84PwK78TzFbHHf7oA5IGuWnzBibLq1IbxxSxmFmf0NwthOKgxwJafwe/6A3R+018jqj5slElC8cw9tB9I1oCW9lHR73rgpDrXQCPtNP4NlSvzh105nVpweIEn7pnNQouHoxyOytkh47V7KmmcJ/sI3paqPbvG41WZ76cl0+Bc7+wO95t8BVmcEj54ODV6VNL7iVYg6FRiIrJ+YBIHoYERP9Cv0XAw=
+X-HE-Tag: 1754091974-426744
+X-HE-Meta: U2FsdGVkX18KxGmjv9a9c9TzPddNjZCb7uiIe9oMEe+Gi3zzome9YATDu5L8kH8zyDnFG6an/gtgcclmxF6BeWlU37VLYRs6/UxPUnSJdNWwLh8q1trwU+YGmIzzOF/zQdtFntkLG4o1nLtgHvp0+CVBNIOi4vese47NZQT9DWJt9uQvLw9GHrDTNkrgKyMrDpz5J4ravoiBQKfBElvAtn/BjzlkysDccDt2Y+FQHM4bsGyTauuvu++Kfq2ElBTMK+4b9dyv8nVTWDdy/53WfhzVPXYXG5SRhWvfNjdl4ev9uzaeg392ftjq/FXdhanlNB3BOQYRkYZTnBFR97+ZuFQMRHbclip3wXAREA1ou5DYPgOz6bw/0PkMsxJzDx+aN8WD3CT/vEAthoDG5hxjiT5u0trsFI5ISfHZWo8PdAKP4bkb4ESc79ggxo9Gnia3YTuo0N94cvSsiHGdQN+IO2V+M9OHr2//8k/8EyjV09+bAZaAh2U+Tfm7GOsuRzBSEy9LcAIgVQRyXUltdWB2Sb2xyzfS+GmcxV94twNc55vev5Xbi5CCQlsKMKF2fY2/HklHL9fLkHmOUXDIzdL7SCD7MZjllsJN8J8mP09+izyXQr7DBQZTREJWTeQl1zKrAY/SmcWpsneI53GKkerT4eMy3IlRnTNXidb5bXrwCM4Kw8zauAweQgpmemsg5ZW9RxU1Mogm/zT+VvQ+2HJCjBhYjPhS7xX/gZpRLi08QNIbZ0hfqT2IKZjXA0K+NT2JUYxyVvQ3Ya1emkwQqgCVfX+3bZ7/BOVL7cJz+n3b8LR149dvXb7LI8LO32aOySrRyc5Yi6iB/mNuIWBNbPyQAUlYXWRNSLNMChdC8+cYzxvaqcPTUwvEgKC9zeItISZUG0crLk8mXg78W+RTwZyMa2L68Gd3tn2KVdWoBexOIjLuCJKFVl0rC9jakgAAMHa9of4JU4MnRRsY7q0dV+9
+ O9qwqN9M
+ KIaqDHzxWH0wuTb8Mk6juuVmSpc7L4ZbF6GGADywWW12z5l0bMMU7lWjQ0XMk9zY4IP09FkboyablOiESYGN8Y+wHQNztQG/BTO0DTTMdNGQ7mwLspoDpBXuv3aYq6AomrRnNQ7LfwTmzZ6/BbY9gDn8o+8B/u8i8cXq9Ba4dJG/Frv70IqfwEPyAWLGqkIL4uFBiOa05siURYlnGbSsutzGVijIPWJbo/pCMkU7TYfy0z5+yctTrRKMfVMe7OK3xiaXP1fXKJsYnSUGDxgiUrwW42CD4C91kcfBqmm6rhpuxukKLAtQm580TnbVO6Zt8UA+nEq7NLOnb5yFZfrCOY6PQI4SmKWpeNz5DqE4reG+fX0x9SS8aPnCzT7oAvohHYdP+JEIsrAeoT+aSMk4Oh+cwqiyA0lo6ZW8AJ7aCg9rcHvQ1dX7H6IwXjio9wvNPdzxRTpWHloG/eIO2cQiY+TZ7UG2AgQaQDX3k/Vu5XuK/kt7UHnBUwxmdaBLVWIYdWKzRWz5rck0qTVhfZhYFKyTtZ0i/N1CLFVzT9zI9jwOvgLdrIo6VQ0rCkM8aNyDJIo9mhZfbdt85OpvtB5GuKt4zLRGrEdun9+cR2E+zhwitMOw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,84 +105,167 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri,  1 Aug 2025 22:59:49 +0000 pyyjason@gmail.com wrote:
+Enable these tests to be run on other pfnmap'ed memory like
+NVIDIA's EGM.
 
-> From: Yueyang Pan <pyyjason@gmail.com>
-> 
-> Previously damos_stat only supoort paddr. This patch set adds support 
-> for damos_stat for vaddr. Also all different types of filters are 
-> supported. 
+Add '--' as a separator to pass in file path. This allows
+passing of cmd line arguments to kselftest_harness.
+Use '/dev/mem' as default filename.
 
-This confused[1] a person.  Technically speaking, DAMOS_STAT action is already
-supported on vaddr.  The lack of support is ops level DAMOS filters combined
-with DAMOS_STAT action, and this patchset is adding the support.  Could you
-please rephrase the subject and the above paragraph?  For example,
+Existing test passes:
+	pfnmap
+	TAP version 13
+	1..6
+	# Starting 6 tests from 1 test cases.
+	# PASSED: 6 / 6 tests passed.
+	# Totals: pass:6 fail:0 xfail:0 xpass:0 skip:0 error:0
 
-    mm/damon/vaddr: support stat-purpose DAMOS filters
+Pass params to kselftest_harness:
+	pfnmap -r pfnmap:mremap_fixed
+	TAP version 13
+	1..1
+	# Starting 1 tests from 1 test cases.
+	#  RUN           pfnmap.mremap_fixed ...
+	#            OK  pfnmap.mremap_fixed
+	ok 1 pfnmap.mremap_fixed
+	# PASSED: 1 / 1 tests passed.
+	# Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
 
-    Extend DAMOS_STAT handling of the DAMON operations sets for virtual address
-    spaces for ops-level DAMOS filters.
+Pass non-existent file name as input:
+	pfnmap -- /dev/blah
+	TAP version 13
+	1..6
+	# Starting 6 tests from 1 test cases.
+	#  RUN           pfnmap.madvise_disallowed ...
+	#      SKIP      Cannot open '/dev/blah'
 
-> 
-> Functionality Test
-> ==================
-> I wrote a small test program which allocates 10GB of DRAM, use 
-> madvise(MADV_HUGEPAGE) to convert the base pages to 2MB huge pages
-> Then my program does the following things in order:
-> 1. Write sequentially to the whole 10GB region
-> 2. Read the first 5GB region sequentially for 10 times
-> 3. Sleep 5s
-> 4. Read the second 5GB region sequentially for 10 times
-> 
-> With a proper damon setting, we are expected to see df-passed to be 10GB
-> and hot region move around with the read
-> 
-> $ # Start damon record
-> $sudo ./damo/damo start "./my_test/test" --monitoring_intervals 100ms\
-> 1s 2s
+Pass non pfnmap'ed file as input:
+	pfnmap -r pfnmap.madvise_disallowed -- randfile
+	TAP version 13
+	1..1
+	# Starting 1 tests from 1 test cases.
+	#  RUN           pfnmap.madvise_disallowed ...
+	#      SKIP      Invalid file: 'randfile'. Not pfnmap'ed
 
-Seems you missed my comments[2] on your v2 cover letter.  Could you please take
-a look?
+Signed-off-by: Sudarsan Mahendran <sudarsanm@google.com>
+---
 
-> 
-> $ # damon report
-> $sudo ./damo/damo report access --snapshot_damos_filter allow \
-> hugepage_size 2MiB 2MiB
+v1 -> v2:
+* Add verify_pfnmap func to sanity check the input param
+* mmap with zero offset if filename != '/dev/mem'
 
-Ditto.  Please check my comments[2] on your v2 cover letter.
+---
+ tools/testing/selftests/mm/pfnmap.c | 62 ++++++++++++++++++++++++-----
+ 1 file changed, 53 insertions(+), 9 deletions(-)
 
-[...]
-> $ # damon report again
-> $sudo ./damo/damo report access --snapshot_damos_filter allow \
+diff --git a/tools/testing/selftests/mm/pfnmap.c b/tools/testing/selftests/mm/pfnmap.c
+index 866ac023baf5..e078b961c333 100644
+--- a/tools/testing/selftests/mm/pfnmap.c
++++ b/tools/testing/selftests/mm/pfnmap.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /*
+- * Basic VM_PFNMAP tests relying on mmap() of '/dev/mem'
++ * Basic VM_PFNMAP tests relying on mmap() of input file provided.
++ * Use '/dev/mem' as default.
+  *
+  * Copyright 2025, Red Hat, Inc.
+  *
+@@ -25,6 +26,7 @@
+ #include "vm_util.h"
+ 
+ static sigjmp_buf sigjmp_buf_env;
++static char *file = "/dev/mem";
+ 
+ static void signal_handler(int sig)
+ {
+@@ -98,6 +100,30 @@ static int find_ram_target(off_t *phys_addr,
+ 	return -ENOENT;
+ }
+ 
++static int verify_pfnmap(void)
++{
++	FILE *smaps_fp;
++	char line[512];
++	int found_mmap_entry = 0;
++
++	smaps_fp = fopen("/proc/self/smaps", "r");
++	if (!smaps_fp)
++		return -errno;
++	while (fgets(line, sizeof(line), smaps_fp) != NULL) {
++		if (strstr(line, file) && strstr(line, " r--s "))
++			found_mmap_entry = 1;
++
++		if (found_mmap_entry &&
++		    strncmp(line, "VmFlags:", strlen("VmFlags:")) == 0) {
++			if (strstr(line, " pf "))
++				return 0;
++			found_mmap_entry = 0;
++		}
++	}
++	fclose(smaps_fp);
++	return -ENOENT;
++}
++
+ FIXTURE(pfnmap)
+ {
+ 	off_t phys_addr;
+@@ -113,23 +139,31 @@ FIXTURE_SETUP(pfnmap)
+ {
+ 	self->pagesize = getpagesize();
+ 
+-	/* We'll require two physical pages throughout our tests ... */
+-	if (find_ram_target(&self->phys_addr, self->pagesize))
+-		SKIP(return, "Cannot find ram target in '/proc/iomem'\n");
++	if (strncmp(file, "/dev/mem", strlen("/dev/mem")) == 0) {
++		/* We'll require two physical pages throughout our tests ... */
++		if (find_ram_target(&self->phys_addr, self->pagesize))
++			SKIP(return,
++				   "Cannot find ram target in '/proc/iomem'\n");
++	} else {
++		self->phys_addr = 0;
++	}
+ 
+-	self->dev_mem_fd = open("/dev/mem", O_RDONLY);
++	self->dev_mem_fd = open(file, O_RDONLY);
+ 	if (self->dev_mem_fd < 0)
+-		SKIP(return, "Cannot open '/dev/mem'\n");
++		SKIP(return, "Cannot open '%s'\n", file);
+ 
+ 	self->size1 = self->pagesize * 2;
+ 	self->addr1 = mmap(NULL, self->size1, PROT_READ, MAP_SHARED,
+ 			   self->dev_mem_fd, self->phys_addr);
+ 	if (self->addr1 == MAP_FAILED)
+-		SKIP(return, "Cannot mmap '/dev/mem'\n");
++		SKIP(return, "Cannot mmap '%s'\n", file);
++
++	if (verify_pfnmap())
++		SKIP(return, "Invalid file: '%s'. Not pfnmap'ed\n", file);
+ 
+ 	/* ... and want to be able to read from them. */
+ 	if (test_read_access(self->addr1, self->size1, self->pagesize))
+-		SKIP(return, "Cannot read-access mmap'ed '/dev/mem'\n");
++		SKIP(return, "Cannot read-access mmap'ed '%s'\n", file);
+ 
+ 	self->size2 = 0;
+ 	self->addr2 = MAP_FAILED;
+@@ -246,4 +280,14 @@ TEST_F(pfnmap, fork)
+ 	ASSERT_EQ(ret, 0);
+ }
+ 
+-TEST_HARNESS_MAIN
++int main(int argc, char **argv)
++{
++	for (int i = 1; i < argc; i++) {
++		if (strcmp(argv[i], "--") == 0) {
++			if (i + 1 < argc && strlen(argv[i + 1]) > 0)
++				file = argv[i + 1];
++			return test_harness_run(i, argv);
++		}
++	}
++	return test_harness_run(argc, argv);
++}
+-- 
+2.50.1.565.gc32cd1483b-goog
 
-Again, please check my comments[2] on your v2 cover letter.
-
-[...]
-> 
-> Revision History
-> ================
-> Changes from v2 [2]:
-> - Fix some naming and format issues raised by SJ.
-
-Thank you for continuing this great work!
-
-> 
-> Changes from v1 [1]:
-> - Follow David's advise to combine *pmd_entry() and *pte_entry() into
->   one. Also remove manually setting walk->action
-> - Use vma_normal_page and vma_normal_page_pmd instead of damon_get_folio
->   to remove redundant folio_get and folio_put
-> - Follow SJ's advise to only move damon_pa_scheme_has_filter to
->   ops-common
-> - Change the command used in cover-letter for more natural illustration
-> 
-> [1] https://lore.kernel.org/all/cover.1753794408.git.pyyjason@gmail.com/
-> [2] https://lore.kernel.org/all/cover.1753895066.git.pyyjason@gmail.com/
-[...]
-
-Thanks,
-SJ
-
-[1] https://lore.kernel.org/20250731175827.16060-1-sj@kernel.org
-[2] https://lore.kernel.org/20250730200239.60984-1-sj@kernel.org
 
