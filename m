@@ -2,121 +2,131 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4AB8FC87FCB
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 09:09:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B27DAC87FCB
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 09:22:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CCC066B008C; Fri,  1 Aug 2025 05:09:20 -0400 (EDT)
+	id 23A4A6B007B; Fri,  1 Aug 2025 05:22:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C75D46B0092; Fri,  1 Aug 2025 05:09:20 -0400 (EDT)
+	id 1E5716B0088; Fri,  1 Aug 2025 05:22:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3D266B0093; Fri,  1 Aug 2025 05:09:20 -0400 (EDT)
+	id 0ACBF6B008A; Fri,  1 Aug 2025 05:22:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A26DF6B008C
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 05:09:20 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 44694C1382
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 09:09:20 +0000 (UTC)
-X-FDA: 83727614880.02.06CB220
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf05.hostedemail.com (Postfix) with ESMTP id DD1CD10000B
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 09:09:17 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mcXugp8Q;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=GoN+ii0L;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mcXugp8Q;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=GoN+ii0L;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EC89E6B007B
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 05:22:19 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 48D4D81BA1
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 09:22:19 +0000 (UTC)
+X-FDA: 83727647598.29.FF368AC
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf11.hostedemail.com (Postfix) with ESMTP id D87D440003
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 09:22:16 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="uUf/6dcX";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CFV0lfmc;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="uUf/6dcX";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CFV0lfmc;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754040137; a=rsa-sha256;
+	cv=none;
+	b=7zttQpM+35ABba3v719Hjpr79gaUg6+mHpvLSAwQjld+d0toWn/YFqaHzfJuS1qdnHFWRF
+	Ur2Fk5Qtr89bcn5uBD7d2VRk6J2i7IagGY/ubsGhj5NOQ8v5NLtENbm8h7Pwe2KqxIoygf
+	F7+AI/ovvqvbG9uUM9fVt7HrB7tkanQ=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="uUf/6dcX";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CFV0lfmc;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="uUf/6dcX";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CFV0lfmc;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754039358;
+	s=arc-20220608; t=1754040137;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/nWfWjsRxa4zZXPCyYoVYdfMMPMyCon5WH9IIv4kj0w=;
-	b=OxeXhlrvHGuN6m8xrJUSuRFErrm9OC/jjRMYXabXYrl4lAwDjcfCZ+RTSd9qW3Ne7BJZjd
-	DXE2wcVrUrSBV7VsobvV3njreRYfaQDa8q+7xsXOM2oFG94N3GnE5zPIZL+45rO48vD1Ag
-	KjitjcPALcgQWiplfzl4uDotH6UWF+o=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mcXugp8Q;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=GoN+ii0L;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mcXugp8Q;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=GoN+ii0L;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754039358; a=rsa-sha256;
-	cv=none;
-	b=L3XOIRrH9T3PN/6YzMyXYBPGz7a+VU6tebXGSR4fLasnJX04N730hhLJ/yOueBbtrFFHfY
-	WafrIzm6/VAKoS/1+r9GRE1VqzZlh2r4qN4FLf9lMrCywc9waSCEwY4VOkJofCamlWAwWM
-	4pT+2VPXdEGzStiEm0e8O/s04/H1u+s=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	bh=9awpCXb1LKtJUXfqyXMkzip6Tg7ORwMk1sJ+IoJaYGg=;
+	b=H5Znm2dgjbCrljSbGDxfsaaAh3N4iXgnBK2OwEVbPOYeYiHEZrWiFSlY6yruu/tuR7oNTU
+	u4etbVPp8FVs7xWg8SUBNHG21aPIfMFh/KBwlE2kU13Shkp+z5JQ4CpNnuDRtJm0h66W7t
+	ysRLR7P5IlSP1TkoMvraPG/v8Pk943c=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 585461F80E;
-	Fri,  1 Aug 2025 09:09:16 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 3360C21AB1;
+	Fri,  1 Aug 2025 09:22:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1754039356; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1754040135; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/nWfWjsRxa4zZXPCyYoVYdfMMPMyCon5WH9IIv4kj0w=;
-	b=mcXugp8Q8keXtokLcOzWbt23XCBEIXNuByQw/W92gdUFVaZfgJpBh70Eoe7Z98ARcbzlV7
-	RIASGKX55MQE1gZbgSRUsJb5A20ba8OJMtY9Aje18CdQXNg0mITM1Jdh+eKsmX03hROiq6
-	sf5wvJDaUrPmcXFbWPaKGAaICAzgXVo=
+	bh=9awpCXb1LKtJUXfqyXMkzip6Tg7ORwMk1sJ+IoJaYGg=;
+	b=uUf/6dcXKDZUw7tRDlDBk7SMNyye61EgucXaOHBrt/TRCIhDh8AbwNtyZirA8a081b6Zu7
+	qulAwsBG78Bum+FFCSMmjrBwBvDokxWj+eUnSglrMd1/LPwdUmkWh+jwVhpo8hHyiWNK+v
+	cq2vvNvQ+4PBLQad2eEnmDa5MPwtknA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1754039356;
+	s=susede2_ed25519; t=1754040135;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/nWfWjsRxa4zZXPCyYoVYdfMMPMyCon5WH9IIv4kj0w=;
-	b=GoN+ii0LAIUXDdF2VnCqC8K9Y4IoJE48bhgepE7XLdJNGSDThAg3LlncyE7T6K2Rh2x/RQ
-	8hrzpjydIZWjeVCg==
+	bh=9awpCXb1LKtJUXfqyXMkzip6Tg7ORwMk1sJ+IoJaYGg=;
+	b=CFV0lfmcpYkpVlwWUZpndvnUqHc6X0QErhmPO6RkUtb5tb0DjdXMuypObUhHieWswptZXK
+	psZcBnwCP+rTdqAA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1754039356; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1754040135; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/nWfWjsRxa4zZXPCyYoVYdfMMPMyCon5WH9IIv4kj0w=;
-	b=mcXugp8Q8keXtokLcOzWbt23XCBEIXNuByQw/W92gdUFVaZfgJpBh70Eoe7Z98ARcbzlV7
-	RIASGKX55MQE1gZbgSRUsJb5A20ba8OJMtY9Aje18CdQXNg0mITM1Jdh+eKsmX03hROiq6
-	sf5wvJDaUrPmcXFbWPaKGAaICAzgXVo=
+	bh=9awpCXb1LKtJUXfqyXMkzip6Tg7ORwMk1sJ+IoJaYGg=;
+	b=uUf/6dcXKDZUw7tRDlDBk7SMNyye61EgucXaOHBrt/TRCIhDh8AbwNtyZirA8a081b6Zu7
+	qulAwsBG78Bum+FFCSMmjrBwBvDokxWj+eUnSglrMd1/LPwdUmkWh+jwVhpo8hHyiWNK+v
+	cq2vvNvQ+4PBLQad2eEnmDa5MPwtknA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1754039356;
+	s=susede2_ed25519; t=1754040135;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/nWfWjsRxa4zZXPCyYoVYdfMMPMyCon5WH9IIv4kj0w=;
-	b=GoN+ii0LAIUXDdF2VnCqC8K9Y4IoJE48bhgepE7XLdJNGSDThAg3LlncyE7T6K2Rh2x/RQ
-	8hrzpjydIZWjeVCg==
+	bh=9awpCXb1LKtJUXfqyXMkzip6Tg7ORwMk1sJ+IoJaYGg=;
+	b=CFV0lfmcpYkpVlwWUZpndvnUqHc6X0QErhmPO6RkUtb5tb0DjdXMuypObUhHieWswptZXK
+	psZcBnwCP+rTdqAA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 359FC13876;
-	Fri,  1 Aug 2025 09:09:16 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0D1C913876;
+	Fri,  1 Aug 2025 09:22:15 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id VQvHDDyEjGiMNAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 01 Aug 2025 09:09:16 +0000
-Message-ID: <a58759b9-2847-4ffc-914b-c96336385c81@suse.cz>
-Date: Fri, 1 Aug 2025 11:09:15 +0200
+	id o1w0AkeHjGiHOAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 01 Aug 2025 09:22:15 +0000
+Message-ID: <6c81ed5c-32a6-4b4d-8468-770e0d375b00@suse.cz>
+Date: Fri, 1 Aug 2025 11:22:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] mm: change vma_start_read() to drop RCU lock on
- failure
+Subject: Re: [PATCH] tools/testing/vma: Fix function parameter declarations
+ for GCC 8.3 compatibility
 Content-Language: en-US
-To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
-Cc: jannh@google.com, Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com,
- pfalcato@suse.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20250731151919.212829-1-surenb@google.com>
- <20250731151919.212829-2-surenb@google.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: WangYuli <wangyuli@uniontech.com>, akpm@linux-foundation.org,
+ Liam.Howlett@oracle.com, jannh@google.com, pfalcato@suse.de,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, niecheng1@uniontech.com,
+ guanwentao@uniontech.com, Jun Zhan <zhanjun@uniontech.com>,
+ linux-kbuild@vger.kernel.org
+References: <EFCEBE7E301589DE+20250729084700.208767-1-wangyuli@uniontech.com>
+ <e7554f93-03e8-4315-acb7-a55312354485@lucifer.local>
+ <CB890ABC56C2FA67+56b95783-ed70-4744-9fc5-f2d93ddf2c12@uniontech.com>
+ <37b606a7-17c6-4865-a78a-ddde1bc15649@lucifer.local>
+ <d31803bb-fb32-4a94-aa89-83b02757d650@suse.cz>
+ <12cba6b8-6853-477d-aa6d-23180c2fec75@lucifer.local>
+ <671CE9DD76801AE4+34f3e3b7-4684-4fe2-80a9-93de1dde9c31@uniontech.com>
+ <20baf9ac-9328-4110-97f1-91e9e76b8914@suse.cz>
+ <27488afa-1d53-43eb-bc68-8e950d804000@lucifer.local>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -157,18 +167,17 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <20250731151919.212829-2-surenb@google.com>
+In-Reply-To: <27488afa-1d53-43eb-bc68-8e950d804000@lucifer.local>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Stat-Signature: 47utnwy58a5xftp6d6xo6bhjabxzaf7o
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: DD1CD10000B
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D87D440003
+X-Stat-Signature: wee4dn1hdo41gezdijh6ippit9xibrz1
 X-Rspam-User: 
-X-HE-Tag: 1754039357-183325
-X-HE-Meta: U2FsdGVkX18iQFveZqS2uB7QDkUFnLCk/I4z4zXuGecl7t/JwHRX3kRjOXpjcUFBoKrXaKq/8vHl/+V9GIiqpFjSMnTszFPhgH3SLvIc91zD45R9Aq2+oO1JFwqMH+hP4Mocj9wb60bfjJ0FO15dmPy69GiCxaBEcJLkLm5O8brn9VDwCo9AGq7/ztkDF+Cbh4j/2Bj9/GbuAQuJIcao1Uo1lDiGbE/VYF6CeRdazGG4sBYOOWC25N6mKXo+b6kWaiXTgHKEvvmg0Tm3vpxh+aJKvQzh4ANYH3KtwgAJI+RdO/lujZRnnUlq0axulq6F83TQB1wAxfVfIjwdlQtHJbG4duMlDK5o9bVFF24NOKKIs3aqMjVvY1C0bzF6xVk6EVntJ/eDZ9lkeVkkNYSmKUwnv7K9za7P8CA8juZBsi6pVDEa4bZObn+qVJ9DRFmotY2hUQX7lkHnRg8rD/9U8wYZVgUSwW7WZXCGj5jGM2DX8Uq4XlEktRLn3dlbhNhXgTnBORmfe3gNfIfxa/LR9yUQkwhnFEyO481/b19AP6tNxmmXoY1ZvxXHbAshgEfLYpiGtV1JzZQKb2AEzGuvNqyKzeYvYiqcsyUxlMw2y+GB4bU4WVMsa6H/ZfYbemZMFJYnMyl+jyr48xvsoywFwmiNBUhpINQYtv4V8ar6MFLgFAyQzIdQbGZHSroVeO+OaX33kmtS7KO3gP3ZZyCsTY4rriDbTztl5CBQK7GMN64y99gvajGQ3ITPumr5vOVxpODEvSObpP0YllWMwrWyf0aW4kiKpdvVqzDlbDCjuSYXXlAFGtUvahOox0W4zolHEYS5iZnL3uFR3N1zYPnNkZamv6xARIS2cPwc7pilSRBN4K9pg2pZPkscOtSKZR7tAtn3y1MEQ07NMZX2TvWnGE4iCrZe87+5Gjkthz/SD56qQWeKPi4OXUcEy6P3iP1Jg5FlTRYbzawiGc5aCq+
- sUEUiB3/
- VZMfeE8pSuYkLYRVjK9ACUG9wg6ktcL/Y7XDi8wRjXHAsc1TLK6X0QIs7lWxnx98IDK6XP0CUtrKWpQAPuEOhwLTA9NgjSxXiOZ0iCILsPXpPHm1A2gLrl9q3gLkEOm6DxkB5zNySy98Lh0ZmwzRBeqUfA1iWJ7dnbB19bx3rfA6N/NGLbGVgzUYkvckB8WszsEk7JPx3x7njsgcOmgeJHpbbuVvO3I6jnRpbw5SHZiJzv4q5pzUsYeKy1xfhP+eij7aMUV3lOgpRIs771QDxd7/8jgls0Gdr21In9K2beYTuNTCVDJmqA2qTvCp1szybQKGF86+PF/erPRQGVjOZWmuQwMv8IRy5pQFwh+YTyhuFGSOXigikAtGrAMnMTwR/rgpyOExoijGvlao=
+X-HE-Tag: 1754040136-508687
+X-HE-Meta: U2FsdGVkX1+pdcPdHfzglgTPkTHQd4SQnSth/Kbjkxfjwu2N2kI6WxRSLq+8VwZrDSxTKArBnsWLkiWxLCzSFBpX3K8lE7RZmpWNGMQ4qNZozc58kKt5PptMbWe4FKpFeiZIboG8CrDl7jm2hcNPOL6jhMdIMwVrPY1CD+OpSbtnaGu3+nRFuIEASSlxEQCSNQpZ5bWk0ahVqo87NT2dqoInsrHsG+QaEVVgJHzrG58gZWeXCMU3GIfO0TtY7Jw8jZwQZxJsaXgUG22q1JhUXrKqAtf82sXFa3HAkhjvCmgQCoOTRwLk8RvEQXCvcVCSKf9ZSDWx4s11o2NdV7T+6BUVtSBt5IpHXPs4lu01kTH1etSu1DuJV+v/MPWnEhPmRfX9vWBQItteR9uwFVsrwZejbW2TGQXCMCIGdnMwo+7gxgfT4Az+Nx8FX/Kc+cVqw2cLOkKgK54k6PQcuts6bcnKb6FsjYv/0dYvLt0pdBuCNJvDvotlGOKE6JOamUC0yUyN1uZMtJ+MsW9o6hAaV9q58c0buge6nDhvD5mx1q5/ON+0bReSE9gO+OyMKJsEP+8AY6ln2ld2LXoMhJuLxVt99zAbqoh1MhGiEgwOaNHo9x7WUuexL3oKAtihcQmr0kqWSO5+csEMZQiyZOsHqMwtOkMIgbWC3NUr5CXefQuZ/DtwiwAIISx70/gVPr88l2Ge7jfj75UukDYwS/gwIdIr4kL+qTvPsUYOZCkT/Cdvwg3qEqbRD4c2mW9mXx4lRrV7W73775zm3HQLm+2bT9wItnE3+cxb9UJvDS0ToZycNe4AqEFqKW6L2zptpnjfVoj3Kv+rDBJrvDZRYUeXkuXQNJj0S0iDtZOUwQUTgAmkNnyhCqaVnjxd4YrtW4CQpFQe48q/fi03uT2ZOwRzDHzAMwzo33plrrU2TjDlyBtfxX6ClFb63mLgM8xcu8g8Y/+XwTDJdp8Htle5p5g
+ RtCKQbpq
+ uY522PIugl7CPCwUUQrKJWJ0yLEZp+awlsjFp1Y91F2qwcFSGk45al8NRTkS6dciWMv0qoxVnKFkTelaWWkZGswHgmsnqxXn0LzpyQxfzLcMQiap8YM4Q1Mk//ZaSQDcaqz65Tal03UOnTp+uYUz5pKxL6lZf5oi+peaxZjTELVN2LboBPL598nRmSqtIazwojJ2EnxLvy7DsRrtHM6t+3B+YaHeGgAAobF0d+pa+Q7EEyxzfls8HfCQAjEwiK/SBvfC49ZAhqLp4MkysAcNdmTpLJzhNpzdZV+z5LMwHcAs6A7AJq+QaGm0wNg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -177,83 +186,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/31/25 17:19, Suren Baghdasaryan wrote:
-> vma_start_read() can drop and reacquire RCU lock in certain failure
-> cases. It's not apparent that the RCU session started by the caller of
-> this function might be interrupted when vma_start_read() fails to lock
-> the vma. This might become a source of subtle bugs and to prevent that
-> we change the locking rules for vma_start_read() to drop RCU read lock
-> upon failure. This way it's more obvious that RCU-protected objects are
-> unsafe after vma locking fails.
+On 8/1/25 10:50, Lorenzo Stoakes wrote:
+> On Fri, Aug 01, 2025 at 10:04:11AM +0200, Vlastimil Babka wrote:
+>>
+>> Seems like newer gcc versions got more lenient. Haven't found why, but seems
+>> they want it to stay like this:
+>> https://gcc.gnu.org/bugzilla/show_bug.cgi?id=113825
+>>
+>> But I don't know if there's a way to make older gcc's lenient too.
+>>
+>> > I'll take another look.
+>> >
+>> > Thanks,
+>> >
+>>
 > 
-> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+> WangYuli - apologies - this is my fault entirely, I misunderstood things
+> here.
+> 
+> I was wrong to dismiss this out of hand, I guess not many headers are doing
+> stubs like this, and I mistook this as being a general thing.
+> 
+> Could you please do a v2 where you add back in parameter names (and add
+> this compiler flag - I think we still should),
 
-IIRC you considered it yourself, I just convinced you to try :)
+It would be safer to add the compiler flag indeed, as we are including files
+from mm/ in vma.c here, so if some change in mm/ files makes them rely on
+syntax permitted only gnu11, we'd break the compilation of the test.
 
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Also please update the commit log to talk about function definitions and not
+function declarations, as that turned out to be the important detail. Thanks!
 
-I thought we didn't need the drop rcu lock for -EAGAIN, but that would just
-made it more complex for little gain, so this looks good to me.
-
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-
-Nit:
-
-> @@ -223,11 +227,13 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
->  	MA_STATE(mas, &mm->mm_mt, address, address);
->  	struct vm_area_struct *vma;
->  
-> -	rcu_read_lock();
->  retry:
-> +	rcu_read_lock();
->  	vma = mas_walk(&mas);
-> -	if (!vma)
-> +	if (!vma) {
-> +		rcu_read_unlock();
->  		goto inval;
-> +	}
->  
->  	vma = vma_start_read(mm, vma);
->  	if (IS_ERR_OR_NULL(vma)) {
-> @@ -241,6 +247,9 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
->  		/* Failed to lock the VMA */
->  		goto inval;
->  	}
-> +
-> +	rcu_read_unlock();
-
-Would it make sense to put this under the comment below?
-
-> +
->  	/*
->  	 * At this point, we have a stable reference to a VMA: The VMA is
->  	 * locked and we know it hasn't already been isolated.
-
-Give it continues like this:
-
-         * From here on, we can access the VMA without worrying about which
-
-         * fields are accessible for RCU readers.
-
-> @@ -249,16 +258,14 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
->  	 */
->  
->  	/* Check if the vma we locked is the right one. */
-> -	if (unlikely(address < vma->vm_start || address >= vma->vm_end))
-> -		goto inval_end_read;
-> +	if (unlikely(address < vma->vm_start || address >= vma->vm_end)) {
-> +		vma_end_read(vma);
-> +		goto inval;
-> +	}
->  
-> -	rcu_read_unlock();
->  	return vma;
->  
-> -inval_end_read:
-> -	vma_end_read(vma);
->  inval:
-> -	rcu_read_unlock();
->  	count_vm_vma_lock_event(VMA_LOCK_ABORT);
->  	return NULL;
->  }
 
