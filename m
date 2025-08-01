@@ -2,238 +2,177 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 19C02C87FCA
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 10:13:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C9BEFC87FCA
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 10:14:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A48256B0088; Fri,  1 Aug 2025 06:13:07 -0400 (EDT)
+	id 6F30E6B008A; Fri,  1 Aug 2025 06:14:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F91D6B008C; Fri,  1 Aug 2025 06:13:07 -0400 (EDT)
+	id 6C9296B008C; Fri,  1 Aug 2025 06:14:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 899BF6B0095; Fri,  1 Aug 2025 06:13:07 -0400 (EDT)
+	id 5B7ED8E0001; Fri,  1 Aug 2025 06:14:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FB656B0088
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 06:13:07 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1D3FE1DC657
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 10:13:07 +0000 (UTC)
-X-FDA: 83727775614.20.C2F91A7
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf02.hostedemail.com (Postfix) with ESMTP id C86738000C
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 10:13:03 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Yo0KPNv+;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=r+sMnjGc;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf02.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754043184; a=rsa-sha256;
-	cv=pass;
-	b=i471IbqIxJ0khUhF3AYZUJNZP7zcIipo19frrSG6jgA0h9Zscqnh/0cvKlhYs8frRUCuJg
-	uP9Vw4NMKo5Dx2nmseKfk1/dPFiRQmlnqziKqI5ZIK0Xj1PG44jZS3qdyu2s4NSU5bEpOw
-	ruIcIL7Y2w0AlKTJyTWIgT6jd6+qUkg=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Yo0KPNv+;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=r+sMnjGc;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf02.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754043184;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 472326B008A
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 06:14:56 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9A692C0863
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 10:14:55 +0000 (UTC)
+X-FDA: 83727780150.23.F434910
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 34AE44000E
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 10:14:53 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="eKF/9irT";
+	spf=pass (imf07.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754043293;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i/E7eqbELBV3eR1EFVAVfhc+KA7casTsq+jO51x2AbY=;
-	b=4H7rd5ZCy/1g3dq7/u/BkYExo4y13gNrnKuPuR8r3lafLJuh0aNmdP8PJ/1oJramkyVCKy
-	RK5Oy0P5ga2AYd/hZA6neH/C9S+mgcnmEAPpPoPxnCty5N/3ob++P9qGVIzkc1bCRulsd6
-	yUrD4kpJNC5sT7Ipoev29PkGsqUae0U=
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5717C5HV004687;
-	Fri, 1 Aug 2025 10:12:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=i/E7eqbELBV3eR1EFV
-	AVfhc+KA7casTsq+jO51x2AbY=; b=Yo0KPNv+k4XMJETWxuvg4tbWkvPE+HzYmn
-	NdSMJ8CnZybJIxd16HeR6LxpycJRg2X4QvY7A1k55lSdOAGP9brl9xh8UQuRwMbk
-	ac/yuYpArIuHdKPhNPR7arls1NgE1bluBO6z0npeQ9bp4Zkb1W4qFRLgEzEV1mxT
-	K2FYBNVbr7Fm0Z0pSIpz76aAzfUCR9SsY9h52/3poB1LR2bO8q04/MSXIQKZwwxX
-	fzGbVpC95ibSwhMy/NBPQyVlo5fppZLZv/5u5S4Jh5yMnJR6oxTlY+sNGR1fJjqi
-	rdT0qq8rnTRN/oZ2lbGUQ2CAdrbxPpNWMFY6ZZeGjOFVxTEDAvAg==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 484q29x3je-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 01 Aug 2025 10:12:52 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 571A6VTA020350;
-	Fri, 1 Aug 2025 10:12:51 GMT
-Received: from nam04-bn8-obe.outbound.protection.outlook.com (mail-bn8nam04on2045.outbound.protection.outlook.com [40.107.100.45])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 484nfkybkn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 01 Aug 2025 10:12:51 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fj57ciuEl/fLfa98wphwwChty3UcwVe5KSORXntH71CYsz0Z1GDvXsMSUly3Ax5o3wHzIh1Dkl2fEz6R5JKMtra0BpLOG7OjUWqVqeHga/qRdC3wxr5i560v+L5f+76/W3yaFRESpTkCPTKUKl1LizCPIEPOkQhVWqeQQN9WKcD6DN4dukG3t9PMR2Qjf+6AS0KxhxCf7i6RKdX407oD0GE+qVUKS4f2/yoR1JqhW7dQg1+bPs7AG/FRHNeNXTecxv0Dh0KO/1e1YMCj5PqvzDlNw2qqJ4Z0kjvTO/vKTeEZXkhvAOyDRmuWbU25S1IY0l3n1DKaVYmeU9ntztlD3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=i/E7eqbELBV3eR1EFVAVfhc+KA7casTsq+jO51x2AbY=;
- b=YpijLDzzOvTgYmiMdmqGr4clW++ek8vgzzRkFa0mOegSrpwsWq8lFo9QlVgLhXq+/0dRr4hXi3fJLJgUJva/mMVy/zXVUcOPrP+rTnvCvbJn52JZhw6qbImSpPsgtEUn/lm62M4UJdEosa1nOJx5axqwkjCXH9K4Ng5U8kvpHtk3VAsj4a0znfgjSQwexy1fCVXl2Vb1onHZYtbB1XA3YREZJoRJAzmtig4MJBEYhpCQU0jhYXdkkjmmC0C44cINQ32/+laz3l+GTwtNb6V5DdACwClUAKk4m90UpUpkCmmh1jwn14F0qlrmiilFbjwpzHebzfjO3rRsqkH2XXcygA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=i/E7eqbELBV3eR1EFVAVfhc+KA7casTsq+jO51x2AbY=;
- b=r+sMnjGcyhlGj7lX+DJV9It8JRINVhnVst+pKwULB1op/vdi+39tVmE8wGupCM9nW981sQbyT+NrqRcI2Smvl06WhmpDOd/BSBkzD1F+/DwmVNW0+XH78DXf53G6MfxECYGWGZNFpqoWSOKA+LVmpHbbQp9iK3Og0hvp54Ops7M=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by PH3PPF7B51A0F8B.namprd10.prod.outlook.com (2603:10b6:518:1::7ad) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.27; Fri, 1 Aug
- 2025 10:12:43 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.8989.013; Fri, 1 Aug 2025
- 10:12:43 +0000
-Date: Fri, 1 Aug 2025 11:12:40 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Usama Arif <usamaarif642@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@redhat.com,
-        linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, corbet@lwn.net,
-        rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-        hannes@cmpxchg.org, baohua@kernel.org, shakeel.butt@linux.dev,
-        riel@surriel.com, ziy@nvidia.com, laoar.shao@gmail.com,
-        dev.jain@arm.com, baolin.wang@linux.alibaba.com, npache@redhat.com,
-        Liam.Howlett@oracle.com, ryan.roberts@arm.com, vbabka@suse.cz,
-        jannh@google.com, Arnd Bergmann <arnd@arndb.de>, sj@kernel.org,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-        kernel-team@meta.com
-Subject: Re: [PATCH v2 2/5] mm/huge_memory: convert "tva_flags" to "enum
- tva_type" for thp_vma_allowable_order*()
-Message-ID: <de360a8e-6bfd-4033-b388-1ffae039dadd@lucifer.local>
-References: <20250731122825.2102184-1-usamaarif642@gmail.com>
- <20250731122825.2102184-3-usamaarif642@gmail.com>
- <c44cb864-3b36-4aa2-8040-60c97bfdc28e@lucifer.local>
- <6143b8ea-24c0-4446-a0cd-821837f6e74d@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6143b8ea-24c0-4446-a0cd-821837f6e74d@gmail.com>
-X-ClientProxiedBy: MM0P280CA0060.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:190:b::21) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+	bh=5f0ikHwLTTt3/O8uwlenMs9vmb7xQLN+kpZuqDeh9ZM=;
+	b=4/DCAhSvXrF+2Ic88diF+WTRvDT+1NPqCEa85ph8/Hw1rEgHlFWIQgv4obj03+Hv2AMCRL
+	1LVL1YbE3hH184j7i4wnbqn3o7LhzITkl6LCnUoMwYTaFeKBSO24e3yi8YAvOhE5/aq4JY
+	adHSsJth1Q89DIhKZh05EFJ+F32HBHo=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="eKF/9irT";
+	spf=pass (imf07.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754043293; a=rsa-sha256;
+	cv=none;
+	b=EpPe25+7Pc5TWukxpsSn79ekxNdxd/HdDaX41loUEFcAHJUS+uUYo5keqO1d5wNOlTYamm
+	DgVcg8OrvoSE+FfKw3npQhVwuJU+X0Klk9V5FunpdVU3Mf5muDidfe7i5Og4WUX/iN2bnf
+	6WES1MBcxQxBs368iaG9yiXbQZMxS1c=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1754043292;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=5f0ikHwLTTt3/O8uwlenMs9vmb7xQLN+kpZuqDeh9ZM=;
+	b=eKF/9irTnqEqy3Z2XxkDx0h2PJN+VdijW6qliQ+3by1R+GH6Hc3deIYjMQZC0beLZZgiPP
+	lVm2SrVwlGH594Ag93si6QhVMMn6J5Rq2Rz8nSFwbAAU2+8FFPudG/Od5DCKB6+tWGoyK7
+	xBTB7ro8BJt2J13C3Wrx5Gb/A82Hvns=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-647-jfG0ghytMXOjX58t_ESZ1w-1; Fri, 01 Aug 2025 06:14:49 -0400
+X-MC-Unique: jfG0ghytMXOjX58t_ESZ1w-1
+X-Mimecast-MFC-AGG-ID: jfG0ghytMXOjX58t_ESZ1w_1754043288
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-451ecc3be97so9239875e9.0
+        for <linux-mm@kvack.org>; Fri, 01 Aug 2025 03:14:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754043288; x=1754648088;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5f0ikHwLTTt3/O8uwlenMs9vmb7xQLN+kpZuqDeh9ZM=;
+        b=lVuSHOeAEmKhQ+UF+BIz6Mg5vsb0aW+O2YQqsutgxa93lx3IcPpxfdX7a/2Z3u/meb
+         VhF1Z3ajLZ1pf8Fhvt/HhtrMgqQDRxzGyBJb+1ts+mnafnxG3WZIswvZEIQgSH2KKjvV
+         Gm1YJmgcX7GzISFjorAvvAbvBtfobycE/tb1CqgIWRFUC9CRhDX7LiJjeEetd4fb1L2n
+         HR8GBh0kIAbM4CU8QEiXAus25PLGs2f3uVX2HHHA0DT8o+Q9NStTj5Spqx76+0X1nAFv
+         4gqmdEP7ePsZSNeNeGd3V9Xgg13RHecrn1Nsv/XtAsvWKoz8ude9YOxg3Vk8OVBybjEG
+         zYPg==
+X-Forwarded-Encrypted: i=1; AJvYcCVBArqC2Tf9xKNrlELMeF6n/Qjflyi+SNwSj8CkNk1aakw0nmLEqVW+bS5ZZfaKo/hSj0eJWtQzZw==@kvack.org
+X-Gm-Message-State: AOJu0YwSOw1vWiNGLRrmFJzYd7bhwebfsyXQfAkAlMfvkl+JEeMv6/oc
+	avugl7w0SnGDJBrMny/a1UVoSeX2mGnJZXfiFTgDoozQbuhEz9gM9Ch5vnZRhpBuI1FE01QcCs1
+	Hn93ZVkWDj+ofe82mwRrz9jirtfPeWFX5HdRDUp03tgTSbtK7A2BA
+X-Gm-Gg: ASbGncs9/ARWW+Eau4pjG6TTyXd/R+mOZRKadBML1A3dTkyOl+mc/qFcG7ox3m5EZLd
+	/fzW6vFww/jJfWEQcHGy+OR6Px8W4fztywMXWuZ++3FAHJZ3u7YXlAYsRdbc7n9b45oG16qK5Wg
+	F0BVEBgRnm1894ixZhSoIl07rrFn5YNaLIVbqHPyCMyrCaDzzd78X0+CO2X0s7M1dDbWURyac4o
+	pVlmau0nGMNryTO9gJAecT3XJSyaqPej93T8VNOqX/+4Jk3+csNBWZRJjxBOKqIhswm1neIrplN
+	qdLij5t2vebwajtn1DkEuqCTb3rw3B0fp7MUXVOl968rEov7eMekLz1rxa50kC+GJ1qtYD0Azc6
+	RSqDOtbaU9WWynhIcmrtjreQGqx+v68D+OGlatQQEfmXseDsgC26oJ6IaMhU/9Ch1
+X-Received: by 2002:a05:600c:810a:b0:43c:fbba:41ba with SMTP id 5b1f17b1804b1-45892bd1ecfmr88340775e9.28.1754043288107;
+        Fri, 01 Aug 2025 03:14:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEcNW9A99gwbz1/XGrQLX0CryukwzOCxu8d/MxqztwNcsfV6vrQMa1DlM86ZeUVO2ntIikTPg==
+X-Received: by 2002:a05:600c:810a:b0:43c:fbba:41ba with SMTP id 5b1f17b1804b1-45892bd1ecfmr88340295e9.28.1754043287521;
+        Fri, 01 Aug 2025 03:14:47 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f20:7500:5f99:9633:990e:138? (p200300d82f2075005f999633990e0138.dip0.t-ipconnect.de. [2003:d8:2f20:7500:5f99:9633:990e:138])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c4533e6sm5570881f8f.35.2025.08.01.03.14.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 01 Aug 2025 03:14:46 -0700 (PDT)
+Message-ID: <e9f2e391-5c83-481a-9fa4-727c25922f1c@redhat.com>
+Date: Fri, 1 Aug 2025 12:14:42 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|PH3PPF7B51A0F8B:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6d0d2828-39a4-468b-b6ce-08ddd0e3f4a1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?4K1Ti/4kx9/Z+Lie6ntZy+Fwz+y/Oe420J8rg9YWGTv6/c35mAV4YBqrIAnr?=
- =?us-ascii?Q?Pyjr9YU91UqreaYXg+hbdbgmHDTnm48zcWiAmmOGkVFkkmv2YSSiv/wg9dd7?=
- =?us-ascii?Q?KqPzieiPD5g+U8dUbCMQOYqocW5ymGRl+8OSV0Al6Eh3EkyUxTHOEnpXEznI?=
- =?us-ascii?Q?zoUc2FxABjMepNonDC0SF5QgfT1HS4JCbl7GEQzU+esNl9qooBWP5vDF0qXe?=
- =?us-ascii?Q?bCkyBVjL9eonaC6ttTCf3m6vUGsiuGUMFhkiP5T5OATRm4+WoPbvOMMbHAnT?=
- =?us-ascii?Q?Odniic10kpw8M0xo/R3ezMawJBiG+7ESAYi8NbuhwRHwfimwzYqfXBLvhZQ2?=
- =?us-ascii?Q?pSZfxXCnFMcP9vekFtSkeseAJqhUoTECozvrfIJmf8nLAQkAqkZYQg9Byfdk?=
- =?us-ascii?Q?qy1uaWIS5oZFcIXyfLEuC3DzM+lKgFV5HsTYvvHbn0D5Z3E4jcIXli+Md6Ht?=
- =?us-ascii?Q?JK8WLHruB4VlqFUsNzYnnySfBUZipEHl6ARxP+mkpvvDyHmv9x5NIndg41bX?=
- =?us-ascii?Q?ugXRPplzuC9jO5Wk71VBOgc8f39KQOAeetqlvM4wTQGyRlf3SEU/SKK7WX4N?=
- =?us-ascii?Q?dCeOYTmKd1UGug6OYbvaKXzRP38di+72GFs8tlXNs+cnBB/lDkgLEqF8IB05?=
- =?us-ascii?Q?HHxdwi7TMVn15x3YilF24TpGKOX7/tzNtBdviD7KHY2UcSoexJlodFZqfnv6?=
- =?us-ascii?Q?d2yJr3a6sh7XtWUKBgVBq8lFupHbFPfmhb6Rge3/uhjmtyw/N7aAAamNXDPE?=
- =?us-ascii?Q?XnGt89bIBUg1zKG6QC/hmtnlK+i2IMnNMKaNqVnzpxAarmzXX5ZgRtHP8IXV?=
- =?us-ascii?Q?dzldT0yhjJnW52cNRUNxPv/v+GDhC01C+2XleGdxUiD/4gmKjvOfh0pFAZ2Q?=
- =?us-ascii?Q?IEJMBeb14L4mX9eSTyVFVVzbF9D7EKbXvVBD8wiiBcpW78VMVe7EPbq/OOic?=
- =?us-ascii?Q?J70e+Tk2Phge39uAr8SJgMkVg9fAXqIAYkhlPKHzsjbz4uyDLPdrGCsvEHc9?=
- =?us-ascii?Q?ZcEEtwuRHc3cv/Nbq/YUEISvtPqskKhSIfKysaSZQE+wPQdmejkpHw6Btixy?=
- =?us-ascii?Q?Ghqm2zHMi+K2Q2lMX51wjCKoXKIhcmY840T+ZVinBj+8S9mmXIFJn9mvILtH?=
- =?us-ascii?Q?ElCNNXcFCz8vQHEemCedHVkZw+pAhvZUUVDTJ1cJLMUxnmIbsgyp8h3TuFZ3?=
- =?us-ascii?Q?oFumNScFbGx9lJMC+0O+OaPOhqyhPZDreONSmDYAski6AeDdQZvHdMs91qrp?=
- =?us-ascii?Q?+D92X9yDaGsGMYWcuBNVAZNPYgxTQ0h8pAvEpLzP5NlEhywfkElats73uLny?=
- =?us-ascii?Q?yUP8K1UCbV0kUW86B0b/SNJYpLe/ASveIaz4N3W2qVEfQNOtBB/tjh02YSmA?=
- =?us-ascii?Q?XTpxeOXqqlFq/qE76Y5g90vIMstd4FUyehWQqJuKWNGpeBzzDAoVkI1Mbmhf?=
- =?us-ascii?Q?QQHqmpkptHs=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?sYRGyiwl3uS8AlYQFP7fQtSE/tgC+7XCRpB/K11ic6RfZL3oVHc4QdDKP7Eb?=
- =?us-ascii?Q?W6980lpTdLbw2zm46SEcqk9gG0E/JiGxSsGtXd4BuNmOU5VzigoW2Mue4OxU?=
- =?us-ascii?Q?c+Zirupyj4R/9/aH8Bzj3lA0ZZlX0/Ml+jJ35vGkLKHzIR9697EG4TclXw1S?=
- =?us-ascii?Q?YBGPrjUSyaMv1Xr9rhyniyfK/DpGsAwxTf6YtNqyL5qQ4FoiSQflAbjKGEvq?=
- =?us-ascii?Q?iNhvJQ1q7BlDXyeLwjRpAVG/v1iIzIAGsVoVdVkP0yOad23H3TsBsYhYNipF?=
- =?us-ascii?Q?8+q1mK0tgHBH0eJCOcXi9v8V+riOOlvc1ao+gm/AxDMct4OrdtgdB9kLkbvW?=
- =?us-ascii?Q?TIjCevruwtzPo1s+b+ZObsoeM+6/BNMPWYYlutXYV/9xo30Es5jOfXQrorO1?=
- =?us-ascii?Q?QSB9dagmSo1vRr/nIZQnI8A0v0uCdNbhr3DFksKP46wJuNwYBIpJurKGksim?=
- =?us-ascii?Q?OR7L9UFVm5KUNvoOd92+e1e1wTnRU4vqfgKg5a2/V3tWomqGVBVzGFXouTcd?=
- =?us-ascii?Q?4SLp3qt9i3d17kvkycQCPN1EDWsoRdyOa1EsYMO2sJ0wsPzpbZpLHlAS9fkr?=
- =?us-ascii?Q?6U6lTs/oZEmTcZFYtqnRgvT4LCuC888Gd5KjU0/LP5ijnFEo+HVrQdgtEfry?=
- =?us-ascii?Q?L9IZH2Cox5b7XS79DJyQsLsxIq4xgVVq5hbYF1ABWQ+xAHVv3hWm1hitDWen?=
- =?us-ascii?Q?xMDMOfH3sMJE/rT+aSyR+tER/kpu+/MNIQHH6IrkWxWzhkYISJCKLhzIlUu3?=
- =?us-ascii?Q?peOkfm7GU3LooDVOf+k7z3FONlL3LpWdv4NGcOkhQ1i3nvLXtetetHep2EUf?=
- =?us-ascii?Q?zOspoOXYsv44z1odkpcCMAlKYqfDLDvgxYtXqAU5Uit9C7MS8WprsXBPfh79?=
- =?us-ascii?Q?QtiToau4iYl3x/5sjcimz+Zs/IqzMJJ0zBurIH627fW2WCFIkLo39lNh23pt?=
- =?us-ascii?Q?VioASWGN6ec/ZMmiyfFL1QwzR3YpkrxDBc7iXjvonWP3JPt/wgN22gyiqqmC?=
- =?us-ascii?Q?p2olkaNZgyAyFGWETjNfEL+pEpH78GztLOSXyoLa8S9scE9LP2nMqIfQ7A2z?=
- =?us-ascii?Q?+EB6RF6Edr0fqX5nyeeqDiKiJidXeQNhoiW9cV87pG1Y1QviV4k4QGVtGdq5?=
- =?us-ascii?Q?Pu9+uBI/Ej1hrGeT+HeCvEGHDoVYHR5YLo4A0ASeZz4xhsLqMW0DDk3SSVf9?=
- =?us-ascii?Q?UsjkIHkCHZy1CJc0BNBFiDuZ9fwR21zR6HZx9wUwvE5ZS8Zh6b4YZS7cd0lE?=
- =?us-ascii?Q?KJ+PS6bDQHCQJyUy43D3Etvxtqf3LZ8+YSg9Q1whQC6qJ4nQKxxw7tlfTSt7?=
- =?us-ascii?Q?a0PQW7jAnHapAWhcfQdhXBx+XfkdWbQ/OhQ9vMfoQEIwKwd5slqEDNhK8Rac?=
- =?us-ascii?Q?8Q88wzugtdaChqsUWnW84QIoJBlp7GG1CeO6kGcDekNkoAHZWBRNcb0fIvTt?=
- =?us-ascii?Q?pL/RnBJEje4WFugKhHStHEfz2Gq5+JlklM47Ai6BxpCz3O1g7v13HN58ce/d?=
- =?us-ascii?Q?W1oMpfYhhtI4HmJvxeSayyI1B+BW77pKdtj1tvwnLMOtWXvdvgl/u8ikDsr3?=
- =?us-ascii?Q?w2VQE/xcrjvOsOq+7DdZOVYT1JCwxnEPVb5MZzUdt5X0MKQco1wVuJ3VqlRk?=
- =?us-ascii?Q?cw=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	cjmvl8BcQqPsBCWxEGPGe1fcOQoq5suEGaCzSE0jzEtm8RfyLYknjA+gS/qGxHIWlfXxzWIdyz78tlyYU+ohuFrlrYhBp5o3NNbkZ0r67dI+ndZSkAWmLOWoVaHDKw5W55cBdqrazIEQVdXb3oE76fn1qq/f5UKHvZSTBA+0+MbYBd2m//VBkiaToKzSHYzZHIhtSSegYA6Q235DoapuYTW0sYJMxTBE0ZJFDQHhuaHRPyL2v7a1w+j3ro5VA0CcZElBspBBBDDxw69RTHpDj1FPZq4YaMoU+TNU+5ADFQw1pNZe7LTdwjGF9T47JMJY4cbLvGNW/4wd0P6VNbsXIuUkdO7zdOFNp1axQarFOa2VX7qyvvFKLAHQxH8cFfeLmRms0acxvm65h0lluiarlAVoTYiS7JUSRzRZ3NkLQ67ZS3v5AFo2idnkSS/e/Lj7Ixe8JFoi3JVYqNuBPolHLffwalPjszJFx28GHTF2UBA0AZWeWfooTXt1aN1TM7twEZiiDMAq8JS6Ncdt06AxyJS4Dk6e+LvHO5F2DqmUe+bJLDYmjIJyj6bZImlF6Tqe3imExUWL2UH+bcwBgyl3zIFgNtV7tfKxMtJINoDPNic=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6d0d2828-39a4-468b-b6ce-08ddd0e3f4a1
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Aug 2025 10:12:43.7784
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: o6s8oKH0R7mvekdlhLpzv2I/AUHy6XXGedsf0obg3QFI1jhS53l3FEwECM8OioS26jfR5v/Luxe+3GfiSQn0LCqdvhsJX+6PQvKhr3xAyKc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH3PPF7B51A0F8B
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-01_03,2025-07-31_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=0 bulkscore=0
- malwarescore=0 mlxscore=0 adultscore=0 mlxlogscore=999 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2508010075
-X-Proofpoint-ORIG-GUID: m_08y0IOTkZga7xFDx4ENnSVLuEmHkVj
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODAxMDA3NSBTYWx0ZWRfX2jA6jAuTq+3P
- k203WCDJcA5LiqQDYmiy9dXfLL2aTgYQzC4jl2fHOXExeQEabbpgHPh2GTNJcBSxxwtor3Gpx+W
- j5FTXn6ZiYG+1KcUcirvhyv3/cde2VrWSLQnYv2oAtWHwdCISwzSzrHHKhg0JTfVXI2Rg0iuxGk
- 5HZ2UiNHqTyqFK3I7Tz9swbpUpcSPnI3M65HOMwwk63KfcD9HxxdxxX3Wz/YF85QymYvKKE+qt5
- RryjoTeFAVHj2FbR4gRMZDqGWfOO3VrntC23IT9Mbi7CdpCxr6fGLhXR/m7FEJKoU/ENtamjgXs
- XVTr9eXrqdwIDTKCHYnJEItEX3UDAkQsrP6b7vc3t/fEHdgiRhtMiMAqVFEVTVseBWQ7uT2+a5/
- FoNaF/CJ/tNRwVzXthouxyVamg88/kYNcu6TIak/dbevac4SHpvNzYjTMU0C9Uko9hqsNklE
-X-Authority-Analysis: v=2.4 cv=FvIF/3rq c=1 sm=1 tr=0 ts=688c9324 b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=20KFwNOVAAAA:8 a=pGLkceISAAAA:8
- a=xR7C8T5FZ3QHdc8ZM9QA:9 a=CjuIK1q_8ugA:10 cc=ntf awl=host:12071
-X-Proofpoint-GUID: m_08y0IOTkZga7xFDx4ENnSVLuEmHkVj
-X-Stat-Signature: mfjy8pjyawz4jbz4paefxpejjzau4fyn
+User-Agent: Mozilla Thunderbird
+Subject: Re: [syzbot] [mm?] WARNING in trace_suspend_resume
+To: syzbot <syzbot+99d4fec338b62b703891@syzkaller.appspotmail.com>,
+ Liam.Howlett@oracle.com, akpm@linux-foundation.org, andrii@kernel.org,
+ ast@kernel.org, bpf@vger.kernel.org, daniel@iogearbox.net,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, mhocko@suse.com, rppt@kernel.org,
+ surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@suse.cz,
+ Sasha Levin <sashal@kernel.org>
+References: <688c9223.a00a0220.26d0e1.0068.GAE@google.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ g3eXuA==
+Organization: Red Hat
+In-Reply-To: <688c9223.a00a0220.26d0e1.0068.GAE@google.com>
+X-Mimecast-Spam-Score: 1
+X-Mimecast-MFC-PROC-ID: JKFDz4YQcyzPQG1TpeXlCtDjDIqjtXvNL0OCtJ3g-gs_1754043288
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C86738000C
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1754043183-292146
-X-HE-Meta: U2FsdGVkX1/WGUvw5E1bEEBqK1u5XZBu2aT8KYnugqarth6PnUBU8eNsWNbZbf+Beg+OJIZKEt+91pP/CeHFjWbhiWIyphx93/oYw7qffejL6wg2oWBPbTeuV8ZaanBs+rjurB9/xvRE80MUW7YZZ87zh3PzYhMidZowWnr6zoqvBSo1GPkNycWFrwPOZIOYfcJg96eMprlg2t+8jalesBCTKJp0Af7Wea6cERwRATxI3HUwxX4UzzwSHDeL4jcaavIaF3EPPTgqXA8yDhh1tydOc/Blz9724r1LTmB5cTPNkbaSJUmaRc6/9jPj/KHiCc7EEjngIBezrHN0ESdUiWQwKczin8CvMsVt6W9vwuhL2yQjHe3CndRme1mMMHg9zCdR7fpo/6QfRkfKkiMFzT5VGtRAkkWrlzqLH/JD2U5P9ys9ITeFbSY7DmF2OC10HfZHfEdfdErr/UziWOqRjpIeClVkkSVFZ1oGm6pziux4Eou64V/XllZjq0IYUZUNLws2HGBR+BJoY6aoUERPTLqKAhGz2h9y9ftn94iU7lo/j7k8/x+WYXt4JwQhnsKzL2UbWq16pHhbAzUQSGuJ+SWqlsslSjh6y9A98CddFP8psortvTVkSL8aftrZYoCMW9tJN792sHgNynQVX1x53nXz98jp2fw7ilX7ECi3j0WU/pjlbHHB/mnrNvEfDOQ9+Q3Lyg23ZK2t9A5RCaVArNWiY2b/U2x+12waHac5u2dIRlQzvCZjG2uHGevU8kbA+9Q1qvYo5nvgeApYtf6YXwWOMrJ0JBtnmKVJ11ZtPLKO2iCp20/NjugW9bcUcQvSlTvKlhdg5qjYg2TB5VPhzX8oUvDIkc/4eHZ6G+LTc92oZhbCPzph/SuTN2bdFjHt0rNICmIhSaevwjOA6/ypMYjj7KNbitLt8xuNqRShNwxKu8m/pzGchmz7R5NItuvRaGqiQDhfSz/yciqyYo1
- O7YQg8kP
- f9Go23xnDClEbgH4jHpP/VmSrtiB1im54itPU7vIDI6kqyajygF1SNWMG0fOmfBd7yKY4JrjbInIFscyL2qE2kHlj4S+1JxnBIZ/hjWGUL7hQ/ijWL1XkzB6LxOFDCzv2L2Adwh3ahhCoGsCPm7jTNe+Mz4HsxA2P8f3P6KwGrzm+XQQ+4hG+oAFMhD3txujtgGwN
+X-Rspamd-Queue-Id: 34AE44000E
+X-Rspamd-Server: rspam06
+X-Stat-Signature: kc47dzhuh7cmqfupz4detyse6rc3xnww
+X-HE-Tag: 1754043293-16797
+X-HE-Meta: U2FsdGVkX19MvWmLI6EYpPohsP6zoKRyrO+SFAFPmp4Ue/yiPRs2KQpqIAqmSY7E9K3cmtuk9CFkd376z2gMc+76FR8AKZahzD/5n79CNKo72454upYUsPRb2JXHxGmZgBzsdl8CeJiM+TGGFnjYAYT4Dqxw21QO+HImiK5xLWXnYJuWDlQhg2OK4SiZLzsQmm1Fhv7wqPURu+8gDF21qj2BTqnQPVh2Et5njS4uhLsvRXADqDIuQGq+gv9p7Eze1d2SDlCkcbN0BeQr/R0QPjfGwlEZyJLHNtXYhEy+XUEm74LE2E9324iEXurobzBytZoHHBWH2vfcmbTUI6Oso/iulqwAecgZnRqYRtVhAbFbjCMmoaAvzMaQ8F6g05HvNfEOhRwRwxIC7vCzOgQpdhp9RMlHBHctzTg5IEg1NQfzdo2m2ZmYtu5oXKiLtFdULz4e/agIvcLuTHlLpaTY4D4YLiSIZw4N2DoWXwdAxMVvzoZG29RzL4y+oPkGOBtSsldD/xx+TDIByguJdtQeOW8JyGnhl6jE57/UekixoAHnFQM+IziwB6azkIph91zvt07buNiRHmRiYhpQgZjHkMV5oWJIZSUMOKpp1uLa9vZ/T+SPsJurV6vH9Rimaecr3OsmopSTsE+Ciqc1DzBQWHZYYKObWNSBuzlXTi6sMJjtSl/31agK4RruqnNIMMk6F6M2JjcTCGFVCflgq8DCm5kbv0NT2VqzuoNplEX1qYogZuLqTG7tLX2qvh1eoI0SAmJdmJP/Mj1Cybg2aeXRZsCJiaWxD3cLrcy4PHXS7IygonPk754SKCOuwCBERAqN1a9DsdJwWmiIkF/oirGB2JGi/qhb0/W6I2Zee+shdcNZA8lMmKqqWW7LvINOoHqcjXAQf6LHvEeOJw1KGAry3DCnpAxXSpA5IxD9LcWdKy8RHFItPyitwbMcTF7tPhJjSacBlkBPFPYpt08+N+g
+ xLVPwUXq
+ X0iCSgNcGGRQhk5HuawdL9YwNzeVNsV+CF/+Cb26fgNQRaFTySVFCrtDETT3F94Is6/DcWL7I0ziUpGVqdt6xeln/WATjr3b4/faL5mvscnUElt5fxG99JEX7DgPmuDm8hBrt330f1gLbJfuCj+ltQVsJOIR9956TCm7UOL4aldQNipx7bUPtBLbMzSwiaGqk0T6+Uvro7rcZt0U6JNFltohNkEnWQaAbasaFR23X9rTJ3RZH37mZujZt2pdqFMb/KfQj8OGbVB8gyvBu/T2TV3DEuTwy/16K3dpaFZOmo1PQYIBqgmyI+trvNUQodpMZZRHFSSc5Y7qLS+2frRzui5XG8gSu520a6JQHtWqODoiXB0Vv140BiPFF1bPGpNiWfj8dLDvL3pz+Kb8QUqzFwUCLYksJ3z3lvP6eAPVLkcL2SW5dLLQu54vWiJjlN+4pl7/XOA+hXR3qHz8ZnlXEzN7D5IHmNR1hoKQX9eITFErC1KN4DtWbbUIXBY/FHAtdWFwYu2fT8tlrIY3Tk4N9E0kDG5NTXMHWdxNXI3uijsMD412PFmP0JPhQB9nAf6yhKraBK6sIfwjxf4FV0pOE9EOJsUMRkRKna1rfv7yOWnxnTZdoMXjZjCB519i/C5m9pxdIj9xXhuqZVTzmsfDZRmAeD15O9wnLTgenL0ah8+JKzpMq5cPcp21WMQEEtps7HbvOZn9vkhMeFS+FzOjL9o/WxyP6XFMtX0cqARZADsXRBty/rQls6ADV35vttrA6OV/PRVrUZee3IAK+fM4L0pdnDueCIJtVGanbhFI+2gpEaPJrwhH2xySLDLiZ1HnwHCP4PJggwrhY8FN9XBA7SXo6bd0BSKFM0mxCI49wEXCfKgoqCi0RXgBKgL6N053yg1uDKaitZGhl8QpowJ2lzimiI8MlSNOfmPuiQqPWuNXXSGd0kkQkGuwTMStCT/vgQ+kkdh5dPL8r6TcOZyK3XgHlRemY
+ gxBB6sCf
+ bA4yqPA1oJshAzKffP4Imy+zpgs3XUKwxNonsJsS2fHP7parL0TOze3xozQBB/YKM86mjPCxBq3qlY9zcJ8rxPus6sTi+U24S4LQbenv7VwQBeR/53b2ZWczTLeUdlbJXvqnOjDKQDYo6Vh8f2MXo4hu/nUlrEJSJtxLgdZlKyOwz0H84BVMFvD2KO14cV2XbLqWJTmlES4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -242,152 +181,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 31, 2025 at 08:20:18PM +0100, Usama Arif wrote:
-[snip]
-> >> Signed-off-by: David Hildenbrand <david@redhat.com>
-> >> Acked-by: Usama Arif <usamaarif642@gmail.com>
-> >> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
-> >
-> > Overall this is a great cleanup, some various nits however.
-> >
->
-> Thanks for the feedback Lorenzo!
+On 01.08.25 12:08, syzbot wrote:
+> syzbot has found a reproducer for the following issue on:
+> 
+> HEAD commit:    f2d282e1dfb3 Merge tag 'bitmap-for-6.17' of https://github..
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=11709cf0580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=c686e0c98d241433
+> dashboard link: https://syzkaller.appspot.com/bug?extid=99d4fec338b62b703891
+> compiler:       arm-linux-gnueabi-gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+> userspace arch: arm
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15e0e2a2580000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12a439bc580000
+> 
+> Downloadable assets:
+> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/98a89b9f34e4/non_bootable_disk-f2d282e1.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/25cab46afcee/vmlinux-f2d282e1.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/77cd04442f1b/zImage-f2d282e1.xz
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+99d4fec338b62b703891@syzkaller.appspotmail.com
+> 
+> ------------[ cut here ]------------
+> WARNING: CPU: 0 PID: 4155 at mm/highmem.c:622 kunmap_local_indexed+0x20c/0x224 mm/highmem.c:622
+> Modules linked in:
+> Kernel panic - not syncing: kernel: panic_on_warn set ...
+> CPU: 0 UID: 0 PID: 4155 Comm: syz.1.17 Not tainted 6.16.0-syzkaller #0 PREEMPT
+> Hardware name: ARM-Versatile Express
+> Call trace:
+> [<80201a24>] (dump_backtrace) from [<80201b20>] (show_stack+0x18/0x1c arch/arm/kernel/traps.c:257)
+>   r7:00000000 r6:8281f77c r5:00000000 r4:8224bc00
+> [<80201b08>] (show_stack) from [<8021fb00>] (__dump_stack lib/dump_stack.c:94 [inline])
+> [<80201b08>] (show_stack) from [<8021fb00>] (dump_stack_lvl+0x54/0x7c lib/dump_stack.c:120)
+> [<8021faac>] (dump_stack_lvl) from [<8021fb40>] (dump_stack+0x18/0x1c lib/dump_stack.c:129)
+>   r5:00000000 r4:82a76d18
+> [<8021fb28>] (dump_stack) from [<80202624>] (vpanic+0x10c/0x360 kernel/panic.c:440)
+> [<80202518>] (vpanic) from [<802028ac>] (trace_suspend_resume+0x0/0xd8 kernel/panic.c:574)
+>   r7:804be014
+> [<80202878>] (panic) from [<802548c4>] (check_panic_on_warn kernel/panic.c:333 [inline])
+> [<80202878>] (panic) from [<802548c4>] (get_taint+0x0/0x1c kernel/panic.c:328)
+>   r3:8280c684 r2:00000001 r1:822326d8 r0:8223a0a0
+> [<80254850>] (check_panic_on_warn) from [<80254a28>] (__warn+0x80/0x188 kernel/panic.c:845)
+> [<802549a8>] (__warn) from [<80254ca8>] (warn_slowpath_fmt+0x178/0x1f4 kernel/panic.c:872)
+>   r8:00000009 r7:82266338 r6:df985d14 r5:840d5400 r4:00000000
+> [<80254b34>] (warn_slowpath_fmt) from [<804be014>] (kunmap_local_indexed+0x20c/0x224 mm/highmem.c:622)
+>   r10:00000000 r9:ded86c30 r8:deb6caa4 r7:00a00000 r6:00000003 r5:840d5400
+>   r4:ffefd000
+> [<804bde08>] (kunmap_local_indexed) from [<8053ace8>] (__kunmap_local include/linux/highmem-internal.h:102 [inline])
+> [<804bde08>] (kunmap_local_indexed) from [<8053ace8>] (move_pages_pte mm/userfaultfd.c:1457 [inline])
+> [<804bde08>] (kunmap_local_indexed) from [<8053ace8>] (move_pages+0xb1c/0x1a00 mm/userfaultfd.c:1860)
+>   r7:00a00000 r6:00000000 r5:8490d6ac r4:ffefb000
+> [<8053a1cc>] (move_pages) from [<805c401c>] (userfaultfd_move fs/userfaultfd.c:1923 [inline])
+> [<8053a1cc>] (move_pages) from [<805c401c>] (userfaultfd_ioctl+0x1254/0x2408 fs/userfaultfd.c:2046)
+>   r10:8425d6c0 r9:df985e98 r8:00000001 r7:21000000 r6:00000000 r5:20000040
+>   r4:8486d000
+> [<805c2dc8>] (userfaultfd_ioctl) from [<8056c4d4>] (vfs_ioctl fs/ioctl.c:51 [inline])
+> [<805c2dc8>] (userfaultfd_ioctl) from [<8056c4d4>] (do_vfs_ioctl fs/ioctl.c:552 [inline])
+> [<805c2dc8>] (userfaultfd_ioctl) from [<8056c4d4>] (__do_sys_ioctl fs/ioctl.c:596 [inline])
+> [<805c2dc8>] (userfaultfd_ioctl) from [<8056c4d4>] (sys_ioctl+0x130/0xba0 fs/ioctl.c:584)
+>   r10:840d5400 r9:00000003 r8:8572d780 r7:20000040 r6:8572d780 r5:00000000
+>   r4:c028aa05
+> [<8056c3a4>] (sys_ioctl) from [<80200060>] (ret_fast_syscall+0x0/0x1c arch/arm/mm/proc-v7.S:67)
+> Exception stack(0xdf985fa8 to 0xdf985ff0)
+> 5fa0:                   00000000 00000000 00000003 c028aa05 20000040 00000000
+> 5fc0: 00000000 00000000 002f6300 00000036 00000000 002f62d4 00000938 00000000
+> 5fe0: 7eb28780 7eb28770 000193dc 001321f0
+>   r10:00000036 r9:840d5400 r8:8020029c r7:00000036 r6:002f6300 r5:00000000
+>   r4:00000000
+> Rebooting in 86400 seconds..
 
-No problem :) I'm glad by the way we've found a solution that serves the
-needs you and other's specified while not encountering the issues I raised
-concerns with, the approach of extending this interface I think is a good
-compromise.
+Probably fixed by
 
->
-> I have modified the commit message to be:
->
->     mm/huge_memory: convert "tva_flags" to "enum tva_type"
->
->     When determining which THP orders are eligible for a VMA mapping,
->     we have previously specified tva_flags, however it turns out it is
->     really not necessary to treat these as flags.
->
->     Rather, we distinguish between distinct modes.
->
->     The only case where we previously combined flags was with
->     TVA_ENFORCE_SYSFS, but we can avoid this by observing that this
->     is the default, except for MADV_COLLAPSE or an edge cases in
->     collapse_pte_mapped_thp() and hugepage_vma_revalidate(), and
->     adding a mode specifically for this case - TVA_FORCED_COLLAPSE.
->
->     We have:
->     * smaps handling for showing "THPeligible"
->     * Pagefault handling
->     * khugepaged handling
->     * Forced collapse handling: primarily MADV_COLLAPSE, but also for
->       an edge case in collapse_pte_mapped_thp()
->
->     Ignoring the collapse_pte_mapped_thp edgecase, we only want to
+	https://lore.kernel.org/r/20250731144431.773923-1-sashal@kernel.org/
 
-I'd say 'disregarding the edge cases,' here as there's also
-hugepage_vma_revalidate() above and being really really nitty we say
-'ignore' a 2nd time below which reads less well.
+#syz test
 
->     ignore sysfs only when we are forcing a collapse through
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -1453,10 +1453,15 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+  		folio_unlock(src_folio);
+  		folio_put(src_folio);
+  	}
+-	if (dst_pte)
+-		pte_unmap(dst_pte);
++	/*
++	 * Unmap in reverse order (LIFO) to maintain proper kmap_local
++	 * index ordering when CONFIG_HIGHPTE is enabled. We mapped dst_pte
++	 * first, then src_pte, so we must unmap src_pte first, then dst_pte.
++	 */
+  	if (src_pte)
+  		pte_unmap(src_pte);
++	if (dst_pte)
++		pte_unmap(dst_pte);
+  	mmu_notifier_invalidate_range_end(&range);
+  	if (si)
+  		put_swap_device(si);
+-- 
+2.39.5
 
-I'd say 'ignore sysfs settings' just to be clear.
 
->     MADV_COLLAPSE, otherwise we want to enforce it, hence this patch
->     does the following flag to enum conversions:
->
->     * TVA_SMAPS | TVA_ENFORCE_SYSFS -> TVA_SMAPS
->     * TVA_IN_PF | TVA_ENFORCE_SYSFS -> TVA_PAGEFAULT
->     * TVA_ENFORCE_SYSFS             -> TVA_KHUGEPAGED
->     * 0                             -> TVA_FORCED_COLLAPSE
->
->     With this change, we immediately know if we are in the forced collapse
->     case, which will be valuable next.
 
-Other than nits above this looks really good, thanks!
+-- 
+Cheers,
 
-[snip]
+David / dhildenb
 
-> >> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> >> index 2b4ea5a2ce7d..85252b468f80 100644
-> >> --- a/mm/huge_memory.c
-> >> +++ b/mm/huge_memory.c
-[snip]
-> >> @@ -921,7 +920,8 @@ static int hugepage_vma_revalidate(struct mm_struct *mm, unsigned long address,
-> >>  				   struct collapse_control *cc)
-> >>  {
-> >>  	struct vm_area_struct *vma;
-> >> -	unsigned long tva_flags = cc->is_khugepaged ? TVA_ENFORCE_SYSFS : 0;
-> >> +	enum tva_type tva_type = cc->is_khugepaged ? TVA_KHUGEPAGED :
-> >> +				 TVA_FORCED_COLLAPSE;
-> >
-> > This is great, this is so much clearer.
-> >
-> > A nit though, I mean I come back to my 'type' vs 'tva_type' nit above, this
-> > is inconsistent, so we should choose one approach and stick with it.
-> >
->
-> I dont exactly like the name "tva" (It has nothing to do with the fact it took
-> me more time than I would like to figure out that it meant THP VMA allowable :)),
-
-Hey, dude, at least you worked it out, I had to ask :P
-
-> so what I will do is use "type" everywhere if that is ok?
-
-Sure that's fine, it's not a big deal and I'd rather we just make it
-consistent.
-
-> But no strong opinion and can change the variable/macro args to tva_type if that
-> is preferred.
->
-> The diff over v2 after taking the review comments into account looks quite trivial:
->
-> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> index b0ff54eee81c..bd4f9e6327e0 100644
-> --- a/include/linux/huge_mm.h
-> +++ b/include/linux/huge_mm.h
-> @@ -98,7 +98,7 @@ enum tva_type {
->         TVA_SMAPS,              /* Exposing "THPeligible:" in smaps. */
->         TVA_PAGEFAULT,          /* Serving a page fault. */
->         TVA_KHUGEPAGED,         /* Khugepaged collapse. */
-> -       TVA_FORCED_COLLAPSE,    /* Forced collapse (i.e., MADV_COLLAPSE). */
-> +       TVA_FORCED_COLLAPSE,    /* Forced collapse (e.g. MADV_COLLAPSE). */
->  };
->
->  #define thp_vma_allowable_order(vma, vm_flags, type, order) \
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 7a54b6f2a346..88cb6339e910 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -920,7 +920,7 @@ static int hugepage_vma_revalidate(struct mm_struct *mm, unsigned long address,
->                                    struct collapse_control *cc)
->  {
->         struct vm_area_struct *vma;
-> -       enum tva_type tva_type = cc->is_khugepaged ? TVA_KHUGEPAGED :
-> +       enum tva_type type = cc->is_khugepaged ? TVA_KHUGEPAGED :
->                                  TVA_FORCED_COLLAPSE;
->
->         if (unlikely(hpage_collapse_test_exit_or_disable(mm)))
-> @@ -932,7 +932,7 @@ static int hugepage_vma_revalidate(struct mm_struct *mm, unsigned long address,
->
->         if (!thp_vma_suitable_order(vma, address, PMD_ORDER))
->                 return SCAN_ADDRESS_RANGE;
-> -       if (!thp_vma_allowable_order(vma, vma->vm_flags, tva_type, PMD_ORDER))
-> +       if (!thp_vma_allowable_order(vma, vma->vm_flags, type, PMD_ORDER))
->                 return SCAN_VMA_CHECK;
->         /*
->          * Anon VMA expected, the address may be unmapped then
-> @@ -1532,8 +1532,7 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
->          * in the page cache with a single hugepage. If a mm were to fault-in
->          * this memory (mapped by a suitably aligned VMA), we'd get the hugepage
->          * and map it by a PMD, regardless of sysfs THP settings. As such, let's
-> -        * analogously elide sysfs THP settings here and pretend we are
-> -        * collapsing.
-> +        * analogously elide sysfs THP settings here and force collapse.
->          */
->         if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_FORCED_COLLAPSE, PMD_ORDER))
->                 return SCAN_VMA_CHECK;
-
-Nice that's fine.
-
-Cheers, Lorenzo
 
