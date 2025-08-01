@@ -2,91 +2,91 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 09441C87FD2
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 00:27:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CD3DAC87FD2
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 00:27:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 71AF08E0003; Thu, 31 Jul 2025 20:27:53 -0400 (EDT)
+	id 98CAC8E0005; Thu, 31 Jul 2025 20:27:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CB498E0001; Thu, 31 Jul 2025 20:27:53 -0400 (EDT)
+	id 916D48E0001; Thu, 31 Jul 2025 20:27:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BC578E0003; Thu, 31 Jul 2025 20:27:53 -0400 (EDT)
+	id 804C48E0005; Thu, 31 Jul 2025 20:27:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 395248E0001
-	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 20:27:53 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 105AF1A0BEC
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 00:27:53 +0000 (UTC)
-X-FDA: 83726300826.18.F05B30D
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 1B241C000A
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 00:27:50 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hkbtdJ93;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CAF98E0001
+	for <linux-mm@kvack.org>; Thu, 31 Jul 2025 20:27:54 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3D1B7114E44
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 00:27:54 +0000 (UTC)
+X-FDA: 83726300868.12.D9DE648
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 64F3B8000A
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 00:27:52 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iDValKOK;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754008071; a=rsa-sha256;
+	spf=pass (imf30.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754008072; a=rsa-sha256;
 	cv=none;
-	b=uupd2C0L/08GkzYENtCtIjatG6nb77D9sjPap8FfUnmz9ii7woc5+jpZV7n0Ve+2jaCLvg
-	ZxDFad4ys/52BQra/u0tIqm89Te5dMv00Vs/OBEtjdYWUtI2BQ2M/1r823amv1UEz1DrsA
-	bpq4DK9vWca6X9tj1JGbX+GwMrLrFGc=
+	b=f+7vtqkxYRG5HJxhsLb1o9TQKGdpkx9aOb9SGvUHjYdamltjncJ5nUUy/SCHBqXizn8yJj
+	SFlmMtO4i1TQJIo6E6WwMBO0Iup2KWqezCXjn1ackHXYlfUcPiWi0vq6pxeai+8P60kDmm
+	mF6dooeYj2tvU2TsXsvCVk9eaVIaP+4=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hkbtdJ93;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iDValKOK;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+	spf=pass (imf30.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754008071;
+	s=arc-20220608; t=1754008072;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aYAnpVPSM3LLyQtjDYj5TRGoiDVKef8f89fRro6Pb9o=;
-	b=1Nxt/EjdlwOWxoU7AKJEp9cjrTH69QxG8sqnlBX8lKVWhpvkV2EHyOYexBy6fvLvG8C8cV
-	WmvgclIqWYRmtCkrM5LN4kpmHd6/uNuaG+yTjsIKCz3gnDpnovHJynySFfvvzqxQBAaWMR
-	Ul17oZX2C5DpJ57vOIIY/ERy9+D18FY=
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-23fd3fe0d81so10441835ad.3
-        for <linux-mm@kvack.org>; Thu, 31 Jul 2025 17:27:50 -0700 (PDT)
+	bh=z7z5+HbZuc9YunuPIlspdA93dn5EvXoJwr6yRZmAwcU=;
+	b=qNK0yOpUuX8lrYfLcUM7yjzwlfprg8dpWA9TttrcnppooXvx64Bty8uoFzmUDkr4c3bXyD
+	U2cf5W2eVWSklE6D8kBiJq976uy85Yr7fxl5on8EF1boHLMBrYRC5Hvn321LLK+zv2139/
+	FsSBZzTuUnOvJjSKNC+twgYtug+M3EE=
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2400f746440so8756185ad.2
+        for <linux-mm@kvack.org>; Thu, 31 Jul 2025 17:27:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754008070; x=1754612870; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1754008071; x=1754612871; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aYAnpVPSM3LLyQtjDYj5TRGoiDVKef8f89fRro6Pb9o=;
-        b=hkbtdJ93PKPLVmM+EaX8UPUYQGid0TUsGmIZ/V4lwrJUQOZSqP1nN0CN+WhUMUchmi
-         dJ4M6eDpsuwqYxDSgSCmiL5iOHeYu2M8RHoH04BxWs94MCfQKqcn2JVAW6DwoQ0jkG+z
-         zoVVqs/1Rz/XFHXceYAyHQ1w1cqwLFtyaSbXiZSmb5+QYc4D2qRntm6c94oCTSllwaQe
-         FMIflVer9Snqufzr1O6sDEtMzim1CEg1oYSmheMWF3r0VPTFsTdeEIbhtARyjgQomIEP
-         icB21xTj3GospprW494j5VX6BZiLjAvVISkuQqseQ6JTbzPsKsH+V3idlV5HvV5jy/Xg
-         K35A==
+        bh=z7z5+HbZuc9YunuPIlspdA93dn5EvXoJwr6yRZmAwcU=;
+        b=iDValKOKvgK1UowVVdjsfjC9Fe11e7tyrtmOvgXcoFtWSU+krUyixXeSoijCNj40N/
+         iw19bo7eGdI3YMsyWM1MgqulOEXreva0f7yPda0yusof1w3EL9rpTTgGmkkhRLyhuym5
+         l8lsybyoWbAu4Osy1BDKzfJBKur6bMGqc7Qd1KX20vsNA7vNSS5AmBRE+fnKXCBbWT/t
+         meCIPwUsak03uMGgItC4hauXJ6bdUroYn33rMNzQr0GW3wKzZ3/fICUKlGOZTaqGR2Kh
+         G5r3emiyA1DPpI26tBbedPnrznKq3fII5x4747ADigjrdbxT6C6ZYNfgtVsK8ViZGjF8
+         48tA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754008070; x=1754612870;
+        d=1e100.net; s=20230601; t=1754008071; x=1754612871;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=aYAnpVPSM3LLyQtjDYj5TRGoiDVKef8f89fRro6Pb9o=;
-        b=FEbqQf2kD0roBfuuC2eT+oJTBv99D9L1Dzg718omoRSWK7ILkJc/ZPMJdhSWAMGcLm
-         h3d8KPWlD2LBrXCkZiBLN1W0piHqR1OmIMwNzRvorhnPG50LjypXuElpK27aJNM/Z/Pd
-         OgMrFO86YgRffcrbFRaOGKzVeEcd2PS00MAw0YhayEdga7wBmvHQ90J6BNQpx3uJa7gx
-         IWBIAGjsgTSImHqcz0pTkdOLZinnA2wGTz4N4uFYRxqTTXhsyPb9ImmOqATOgDrUBoap
-         JqExLeHtY4kqnkDRsNQwlYN5EekgTXyVAz2oqDgqK2lw7s2seUi8lBDoV+Bs66NMhtVc
-         yDFQ==
-X-Gm-Message-State: AOJu0YyHmo2mD7/ucSyw0OX4+JNtxJxN7N5vunoXALZXmTJfUaFdcTQf
-	M+3f9Um5Vr6JWVpBgGDEPIiovcYguHNmorImHrcu+j4IQkr1klktU22iuKsspw==
-X-Gm-Gg: ASbGncvT/l4dSc2FriHhXnxutfArWWfuXeQlTDIkrdWUKReW6/3z6iIGEC0LMtUZxFR
-	tJT/4WFcjjPXz/br3HtUPIlgpfWyh1gVXt0fHDJ9025tpAjgRolbC1KgdO5AC2T1MHpghlgv3iJ
-	sO0Urg+jqmcBb2F96kNnmFF3kfeVSkiSEyp08AJ2iuK9pGSITk7eYunnH+7XjpAa2dlwjhW1Xre
-	IHiHFt/WlqTadGbrgdsdRsPrIM64UrwGKS8335YPe+3RleOlnDATUM4/jqHfim06pT/PIvPAed4
-	i3v12ir/cvHo6B1RK91YFKEHLFHroICA8nha+rVfJzgztbrP6mWeUxi+5649P/3GEOYjgEzJmgE
-	BHB61wh8TzRLGhfeQ
-X-Google-Smtp-Source: AGHT+IHkgrfXMOK7E9hIh8oKAzasFFpQtlF6FHk/9SufKadLPTcGomsVFWYRnOkmWX9ISV04zDo81g==
-X-Received: by 2002:a17:902:d492:b0:240:99d8:84 with SMTP id d9443c01a7336-2422a6d83f8mr8597165ad.52.1754008069628;
-        Thu, 31 Jul 2025 17:27:49 -0700 (PDT)
-Received: from localhost ([2a03:2880:ff:b::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241d1f0e81dsm28321855ad.46.2025.07.31.17.27.49
+        bh=z7z5+HbZuc9YunuPIlspdA93dn5EvXoJwr6yRZmAwcU=;
+        b=Kf+eA7pIspgkt73x2rw1i5RAM3e1JHtqk9FWVtos2VoDp0nRugBWDFtuVOs/sP/6ZG
+         nkqbhOusRX6bMtQ1y5WDOJp+/RALi8Bqm0IcZDgHTYJVM0CqE0ams/sNVJgWdGbk7SUe
+         5Gm3x7qwaihD8U1536O71w3FbvHGfdzEfAuS5focx5AMuTIATkC/Y8Er6cRGzLxArruj
+         M7y2uaFXXddwUr7fpCk9FbwxdrfNGinTR3EzXZi6FIP4wMQigoB+Z46NZAFcU+HgQAn9
+         NBLjSEi83bguvaYyu4kmipcHDWZKoAhjyD1/adT2xhLeTH8UE/RNMG9AYYRax105y4Ki
+         w51w==
+X-Gm-Message-State: AOJu0Yw3Iqg7RO8dEkYYvManQvFEuivCua7zpMV+CyPyQRYnHQixo04L
+	/6f6dh7FTSD02Y5gEJGmobWMnjXvdUWEFITUFvHCOAaJJR5LBQ3vxaYp5MrB2g==
+X-Gm-Gg: ASbGncu4Ib+SrF5xYLLXboA5m6UuC9XlB9mI3maEVJy54q/GTndLyeJXJN1V8I1F2lX
+	oOssEAMIGHiKAouNTRTnzEdRKH4KOWVgWNE85qamwtrJPCZ6w1/ax0Cc1I+L7ZIpTbuLSTQr0Mz
+	mIaC30iEjkP3NcLkXBtknZBP/F7qVZBsryeBthDE/2UxS4jFMZpL5nRO+S99v1qb0zzSzSuBi4s
+	QEcg03d1haeA5q8VNYAY7NdYCJ092jm6sK5hZWf36viwdSe5TELP2bSB/wfRfLQ/EY9qW7h5JY8
+	VwmaevjgI+i+smtM9tJwtwKVv5+sXyAdzw/7xKEuPYetKcHH+tD8oitxCGKUBTI/R8vq6AdrZ9Z
+	Jwwpa6/SHvLa9GoSZow==
+X-Google-Smtp-Source: AGHT+IFYmTAjVpt+7oBGfT3RIHk8CfJXE6Zr0DBlD9CkoTtvscoJm5dVQ4NSb12WkhTU0A/RSTNmRw==
+X-Received: by 2002:a17:902:ce92:b0:234:df51:d16c with SMTP id d9443c01a7336-2422a6bc4f8mr9251225ad.45.1754008071081;
+        Thu, 31 Jul 2025 17:27:51 -0700 (PDT)
+Received: from localhost ([2a03:2880:ff:71::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241d1ef6bcfsm28587855ad.5.2025.07.31.17.27.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Jul 2025 17:27:49 -0700 (PDT)
+        Thu, 31 Jul 2025 17:27:50 -0700 (PDT)
 From: Joanne Koong <joannelkoong@gmail.com>
 To: linux-mm@kvack.org,
 	brauner@kernel.org
@@ -96,22 +96,22 @@ Cc: willy@infradead.org,
 	djwong@kernel.org,
 	linux-fsdevel@vger.kernel.org,
 	kernel-team@meta.com
-Subject: [RFC PATCH v1 06/10] mm: add __folio_clear_dirty_for_io() helper
-Date: Thu, 31 Jul 2025 17:21:27 -0700
-Message-ID: <20250801002131.255068-7-joannelkoong@gmail.com>
+Subject: [RFC PATCH v1 07/10] mm: add no_stats_accounting bitfield to wbc
+Date: Thu, 31 Jul 2025 17:21:28 -0700
+Message-ID: <20250801002131.255068-8-joannelkoong@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250801002131.255068-1-joannelkoong@gmail.com>
 References: <20250801002131.255068-1-joannelkoong@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1B241C000A
-X-Stat-Signature: hmh1jz3xb87g1aykrb4snm7g44ac865g
 X-Rspam-User: 
-X-HE-Tag: 1754008070-738539
-X-HE-Meta: U2FsdGVkX1+nmXzRKuNjS2ijqQ4NrMMo1u2UHQTSc6Inxf6WG0xO5OLI3aArAfB6ABx9ftEKzjFQuc3phnqigNmvEoZF+VJM6SudNcZa+1F1lqgcQgjzus/l+cB9n13+4n/Glc0RlJLTnnDCsOk61K+ACLY4hSGBx6zWnefTIyAwE28plg9/0PCIzyA0377oW1P6dHMLPDzUEBGftpYCmssiopoMKZDZydpReQbb9VWBCVf9z7+91OvWv5JCIZsgAsgFjmP8tK+ATsx8MoGjAQN+JdsNvKr+ByGY2u7oGQQ/QCkkEcH1EnmJpTE07+Y4Shxx65Rrv+IObsVdtbFtn+rcg36LtmpocQ9mfnRdUj5nIc2q9kCjKidRNKzprPr+Attx4IL+UGyPY++0IgLOcoe4ES8QD/AeIcoIydl6pO+phZyipah2r60VH/1Ao+HOr6+yW63Ks/RZKRElnyVC/PGTsvtgMsKY8q8l+AcCeMiydABTlvRXWfdi9U8ENGnqLQLYouH6ormpZqWR59NwlaogB9dkz2JEJIsM3D9Em+ucbS28hFn1JOzv7u/SfnidOcGn3HBH8HTyWSOpJMRm+tWhuXlRiHGuu50KoDmmrGELxTsKlGBRn4cXQisqqeHupt0WGP7tssoEfhKRqO0ALYlEHct1iCIbos/nLMCobhbBhRRSZCCYpXmzkw+DrAQ9ZEUWIoD93RCmW/1v899v5I/MrI3Mlrx3JyhlCXwwbetT8WRj1V6eWsXyHCzSUfjJh5+H/anPcz8IaNRf/G3qtLfNAL8ISg03VJQtV0FufL2LSHiWQx2TraEWA1BJ+KC3pVycMCOrjWdVud6ctdeO22fEjhpoIHXJHVUUxcBHLSSprIrDrELuX83OowyeF6sZU/KNzgivlFsduKWZdscunpneSUXWFtsV8/uWXpWyPKl9nzjF4N1xbDdhQm/+JSuZmZwe8no0OW1woHqbm14
- DP+AIgjq
- JSG8BqExioac5jObIp5UyM5oYWlLoTrzcU23tKVbuxd+pBGU4Omb34SbcnfB6uJtHDZhMgmB0kcZTziS3fNSdP45w1ajhC3OyrhcMcZS+7DhotzDPiXr3hQuM4sIT/Y58fI23bAEEQQjkSAX8k9pRThh/7tUQqAOWsCv0SzXnvyAgBQE8lBBFMJcKTw6HohvbGs0Ry+IlbGr2Un5NoEfqqJqnhA94rcNIP/yqvwAbR1V998bfCcmGC4NiGOZnqTUWD41pTbtU44SSRmZuOaJOi91Og50UpvxAEQSW6Lu9/Hi0tVrKGhLwxhww+LQQLQLvp5LKPJDo9PZ/A0KKrEmJGj+eF+i0WdCz4CvqvqnexiRbsC6pAal5FOd1yaiMEF/XQjDzry/U+H5FcmboURR5bX/PjTZOiOCoWKA9BHSQmP77RT2zMa8gf8FmZgwnlzciYbt2Q62ntaB2ElWiCNnfV+rOQXmdFyXVd5+D6nLMdLFcQdbBBTynuq60TdsFPepemsPf
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 64F3B8000A
+X-Stat-Signature: xuw5oqs6f7qy94u56ogm8a8zip7689rp
+X-HE-Tag: 1754008072-892744
+X-HE-Meta: U2FsdGVkX1+ZkER7GXvswyfZ89VoPOk6m3GFPxlqI+WChmr70aPcHyjmfaJcU8MbyhaHNdO5VJIBj9vAIi43EZGL4EKAhDuwn8TsORM81srskjqDaOCkOTpUwGs/fc18QPOJpHoRpNk7H5oMA/+w9VCwcMTWIIVfVq7oE9ix6C0Jc0owijUfQnTQxMrboDRagzeVXUuWAwIt5U9LjnKRpe9yQw/y25ABYRPvGEqESjqgnExfkr6PoDYxd53wIZGu0nVv3Zi5MhS6r/lorXb73F0oZecdoufrcsPzMIFa2O417Mge/PJZHPHuaLoY66smNflzSbjeEE2De80wtK9gLNHenTq1Xi5XHLvDUMf4dGbA2PM8gwFLOsCgcJjcZpK0NtCgPzw2daeRWJ6ari+BoFMSCttjNMnH1ceZ7QXAWF8OmM7sP45LtPrx0b8kM4cpZLOITrbVLK8eVfrrhGXIozj4yTeieQp7ZILycI2oip4X3OuSFs91J9Ww/XhXcGcdYVat08/m0dnxqQVUbTM5OAsicPdtzAaOnw9MMXi1e6MTxhT4TGEP/NHR1+nq9Qsoq7dJRtu2RdNAazqFA6VvfXIKCBhprxEO7EK6o7O6IW7mpOhk1Rghf52jpTVuBSL07hMAOVL7pGy/CJjlyHN1aXiLRjGl/6Q5f4yRIQqcF+VvcLAOLC73iXe4x3jC/uBztGKEsgf9aeUYNyMqnQvpu4tfQ+LN2+2oRK87K7CVGHppOAQn/hX/JZit0bcHVVQYYFJFjoziQ/wTi81XX7gWqwkaEPjr63wfN8gCAahhdxWUU088L1x06S6tA1AoUe6RslaDk3TIZZTqePKASDVfIJS6vHZY/mwmTcfblcgRAH4R5b0anNcmJVJQtJWDUXOPbbNA4bo7J9Z2vnYi2J2N31FSOLZ/cp96NooL3U841sycYCx4lRFNu8bpss9mpsEjEGeLjNYJpUNYxbmtfpj
+ hxoBLUqt
+ K0xVPEL18rRn3Y7On1RJnBYHK8QC3ck44UmoEAgaWhjLP9E6pv6TcpoPxzbdh3/1jnBYcqkxeZgmGj7gphPRr1vbbnGvw3llr1GvijURZHxeIsxwYqww1Qb2GlCVvEDf/ZsVV7L8scIbt95Jlu7voeSjEXF4rLhKZmLTXB+VLTw1DKiXx5A6ctMOuR+DA6Dz7HTSZev3asCJ3GpdG3Ogsi/HEblorNh1mkdbwQOD+C+hlxOaVaYKxaeHAiSx2FJqQ7mbw7YK6Qj6vdyFZlFb5Inqm9TA/t/054H+tU1Qog2+9nl/EltjMfUUi17VDGHtxFozxVTL3sS2TSjWK13h8nfd+/AEULW6jOH2C4eiGQifqS8Zkd7fuE5VnnOyRDSSuCMeKYMt8JRK+1EiY9eOeq5G7/0QyQiX72uZMEEup4y0XccDcWYTgVXSG+BBIq05Zf/w6Fk0QM+xLG9rfY4MmBCWXc/UfN1XOTKF0V7qIoUnyI62y4oVerOVVXPEwLHUVD63q3y8pdVzwRASD6rq44CqbIjM4pKE4FSJ+YyH6ZEGQcFmhvoIMJA18aWC+Vyv1UMZO
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,86 +120,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add __folio_clear_dirty_for_io() which takes in an arg for whether the
-folio and wb stats should be updated as part of the call or not.
+Add a no_stats_accounting bitfield to wbc that callers can set. Hook
+this up to __folio_clear_dirty_for_io() when preparing writeback.
 
 Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
 ---
- mm/page-writeback.c | 47 +++++++++++++++++++++++++++------------------
- 1 file changed, 28 insertions(+), 19 deletions(-)
+ include/linux/writeback.h | 3 +++
+ mm/page-writeback.c       | 3 ++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
+diff --git a/include/linux/writeback.h b/include/linux/writeback.h
+index 34afa6912a1c..000795a47cb3 100644
+--- a/include/linux/writeback.h
++++ b/include/linux/writeback.h
+@@ -72,6 +72,9 @@ struct writeback_control {
+ 	 */
+ 	unsigned no_cgroup_owner:1;
+ 
++	/* Do not do any stats accounting. The caller will do this themselves */
++	unsigned no_stats_accounting:1;
++
+ 	/* To enable batching of swap writes to non-block-device backends,
+ 	 * "plug" can be set point to a 'struct swap_iocb *'.  When all swap
+ 	 * writes have been submitted, if with swap_iocb is not NULL,
 diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-index a3805988f3ad..77a46bf8052f 100644
+index 77a46bf8052f..c1fec76ee869 100644
 --- a/mm/page-writeback.c
 +++ b/mm/page-writeback.c
-@@ -2927,21 +2927,7 @@ void __folio_cancel_dirty(struct folio *folio)
+@@ -2404,6 +2404,7 @@ void tag_pages_for_writeback(struct address_space *mapping,
  }
- EXPORT_SYMBOL(__folio_cancel_dirty);
+ EXPORT_SYMBOL(tag_pages_for_writeback);
  
--/*
-- * Clear a folio's dirty flag, while caring for dirty memory accounting.
-- * Returns true if the folio was previously dirty.
-- *
-- * This is for preparing to put the folio under writeout.  We leave
-- * the folio tagged as dirty in the xarray so that a concurrent
-- * write-for-sync can discover it via a PAGECACHE_TAG_DIRTY walk.
-- * The ->writepage implementation will run either folio_start_writeback()
-- * or folio_mark_dirty(), at which stage we bring the folio's dirty flag
-- * and xarray dirty tag back into sync.
-- *
-- * This incoherency between the folio's dirty flag and xarray tag is
-- * unfortunate, but it only exists while the folio is locked.
-- */
--bool folio_clear_dirty_for_io(struct folio *folio)
-+static bool __folio_clear_dirty_for_io(struct folio *folio, bool update_stats)
++static bool __folio_clear_dirty_for_io(struct folio *folio, bool update_stats);
+ static bool folio_prepare_writeback(struct address_space *mapping,
+ 		struct writeback_control *wbc, struct folio *folio)
  {
- 	struct address_space *mapping = folio_mapping(folio);
- 	bool ret = false;
-@@ -2990,10 +2976,14 @@ bool folio_clear_dirty_for_io(struct folio *folio)
- 		 */
- 		wb = unlocked_inode_to_wb_begin(inode, &cookie);
- 		if (folio_test_clear_dirty(folio)) {
--			long nr = folio_nr_pages(folio);
--			lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, -nr);
--			zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, -nr);
--			wb_stat_mod(wb, WB_RECLAIMABLE, -nr);
-+			if (update_stats) {
-+				long nr = folio_nr_pages(folio);
-+				lruvec_stat_mod_folio(folio, NR_FILE_DIRTY,
-+						      -nr);
-+				zone_stat_mod_folio(folio,
-+						    NR_ZONE_WRITE_PENDING, -nr);
-+				wb_stat_mod(wb, WB_RECLAIMABLE, -nr);
-+			}
- 			ret = true;
- 		}
- 		unlocked_inode_to_wb_end(inode, &cookie);
-@@ -3001,6 +2991,25 @@ bool folio_clear_dirty_for_io(struct folio *folio)
+@@ -2430,7 +2431,7 @@ static bool folio_prepare_writeback(struct address_space *mapping,
  	}
- 	return folio_test_clear_dirty(folio);
- }
-+
-+/*
-+ * Clear a folio's dirty flag, while caring for dirty memory accounting.
-+ * Returns true if the folio was previously dirty.
-+ *
-+ * This is for preparing to put the folio under writeout.  We leave
-+ * the folio tagged as dirty in the xarray so that a concurrent
-+ * write-for-sync can discover it via a PAGECACHE_TAG_DIRTY walk.
-+ * The ->writepage implementation will run either folio_start_writeback()
-+ * or folio_mark_dirty(), at which stage we bring the folio's dirty flag
-+ * and xarray dirty tag back into sync.
-+ *
-+ * This incoherency between the folio's dirty flag and xarray tag is
-+ * unfortunate, but it only exists while the folio is locked.
-+ */
-+bool folio_clear_dirty_for_io(struct folio *folio)
-+{
-+	return __folio_clear_dirty_for_io(folio, true);
-+}
- EXPORT_SYMBOL(folio_clear_dirty_for_io);
+ 	BUG_ON(folio_test_writeback(folio));
  
- static void wb_inode_writeback_start(struct bdi_writeback *wb)
+-	if (!folio_clear_dirty_for_io(folio))
++	if (!__folio_clear_dirty_for_io(folio, !wbc->no_stats_accounting))
+ 		return false;
+ 
+ 	return true;
 -- 
 2.47.3
 
