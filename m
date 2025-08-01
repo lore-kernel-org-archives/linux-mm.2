@@ -2,132 +2,95 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E2BFAC87FCA
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 17:14:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 19A9EC87FCB
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 17:21:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D3D16B007B; Fri,  1 Aug 2025 13:14:01 -0400 (EDT)
+	id 8DB526B007B; Fri,  1 Aug 2025 13:21:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 484786B0089; Fri,  1 Aug 2025 13:14:01 -0400 (EDT)
+	id 88C496B0089; Fri,  1 Aug 2025 13:21:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 372CD6B008A; Fri,  1 Aug 2025 13:14:01 -0400 (EDT)
+	id 7A2186B008A; Fri,  1 Aug 2025 13:21:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 251146B007B
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 13:14:01 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9B7C1113E24
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 17:14:00 +0000 (UTC)
-X-FDA: 83728836240.09.8EDE8D6
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 512B44000B
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 17:13:58 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=E4bFfPKG;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf04.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 6863E6B007B
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 13:21:08 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id ECBB41A01E8
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 17:21:07 +0000 (UTC)
+X-FDA: 83728854174.14.0249791
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E2B83A000B
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 17:21:04 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf15.hostedemail.com: domain of shiju.jose@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=shiju.jose@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754068865; a=rsa-sha256;
+	cv=none;
+	b=EbWkQU0QOWJEyaFtdiXXX4f/mGcuDUdqYL/jIF7Ozh6om5A8Wmsxl6Vd8I1rQORR6Gc37I
+	EK+TBAtdDh8ng0+teZBE02eMIlsCdS8uBgqg2DDVhqADvHvw6O78qYkAjwgflXNQ71JqBW
+	0SwTDsLLcRVjaiGaKnKnRURGYcNQ4hE=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf15.hostedemail.com: domain of shiju.jose@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=shiju.jose@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754068438;
+	s=arc-20220608; t=1754068865;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UapQRB4TdH6jPVjzlLlw/CIcbZ+SS127yBars+dasnY=;
-	b=7HapIIaqjA8wjIx3B10obslR2CvT2uOqy45shjZK4rLzygss2yeaq9/rFnSnQvOmpm/ffA
-	09z3kGfvK7yxZBh5mlYHxMfGSqQMMWbyCWhu6mkJjrxhGR6cCiaRZUinbqRJxZJmcJnhCR
-	Boorc/Ro6zerncVS8l2mzEGxb1k7yRc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754068438; a=rsa-sha256;
-	cv=none;
-	b=kgNW+UKrLkgyMYL7Ah9AuSWwB/rTHNEAEObJCFgS0dFsNRs8b+akvcnqXAWA2Qa2vyGMPg
-	PnUrpdcTm+Auibs2gfK5YDEAULx5DeAGnh+b7a17gEHn1PCqJdSN4Y/znCWP1X2VxDriMU
-	NvODnj3qGP18mIYex4FXI5EXmDqWkA0=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=E4bFfPKG;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf04.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754068437;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UapQRB4TdH6jPVjzlLlw/CIcbZ+SS127yBars+dasnY=;
-	b=E4bFfPKGADA5XJIVWQDJfLrojC5d6uX81nDf3B5VpmMlLH9zgmLwky9qScNY4l05gIOosj
-	S39gQPof8EVukt7EvljDPsAYC0zlxSbbPaMxUcHdxaPmRcZEsE4QCT0lCqJ11qOHKLMwPw
-	cnbgxw2yf/DzcUr9OH+kk2OZYh+frxg=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-240-KF_qO0G3MOizA9mCJC99UA-1; Fri, 01 Aug 2025 13:13:56 -0400
-X-MC-Unique: KF_qO0G3MOizA9mCJC99UA-1
-X-Mimecast-MFC-AGG-ID: KF_qO0G3MOizA9mCJC99UA_1754068436
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4ab684d3b55so50821131cf.0
-        for <linux-mm@kvack.org>; Fri, 01 Aug 2025 10:13:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754068435; x=1754673235;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UapQRB4TdH6jPVjzlLlw/CIcbZ+SS127yBars+dasnY=;
-        b=sLRNSpjfW+dcVfYGrpEOlgKlkDtG7NjvtWfsatk9BmspZAXJeFBw4IwU2sARlmulPm
-         CvQUuMwRJKm0+kPQcSh2wLIEpgSmnl1Z0GkH/NmPcOhm3qjDyMrk66q0nD9oU3ZIIcWK
-         mX0NrHfxDemym78vbNYyPXaqz1Ng4kPi5lFhtrvUAd5QkkJxoIppu/tOUHuZXHjRcWea
-         J7npEjjF9U6UIZke/01kBf+/s0AiTnRigIN+/hE8Jn8LGcN5MkarWgxWtRZkOYrKSduf
-         ZVz5vT/gkDXeWu0UBPtCuQ94uKHOH07PA1iCLxSBkAA2p8C1mKSo3oyqQHxOetjx0kBm
-         1C3g==
-X-Forwarded-Encrypted: i=1; AJvYcCWpg9fKYjQEYD2Wqs2knOrqss/8OUyVMMf4j2YVR41IlKJVops4+23TlMVqkF7iDy0sQDMka/M7Wg==@kvack.org
-X-Gm-Message-State: AOJu0Yz05pjySQSJw1P5vxwtWIjjgekhuxoqTCt09PdTPiBx+vytm3PE
-	On7gTX1UBVxfpd64e18qE3L+INKTgXDslcOY/yGRrG45uBMde5LnUmpgNxbaM4LX15/QzbSGp08
-	mGnhXNCGXvsvV9ZTy53q6AV9pz3Iw+6UuNh2Nj+iCJzRCNB2sNQKx
-X-Gm-Gg: ASbGncvlnFxDfz1NXE2YbSp9gDho2WKqctVRGotC0d9kZFOaumztZHQK1ZBwLWRDpeH
-	D1mCHA21EmNWNTT811y7pD6xjKsBDTfb19+6ipQBcArtZkzMvrpDWg2pm8wm3TETilXvAnxcxsL
-	i8nsLeVKyivCmSpjhqHM39OmgiIe3hjzeFgJO5lFUokEkFStwxFKXMm5zE5aWIl8APZKYRIdhS2
-	IifkLKJ4JeAA/rKdERKtPc0EAibL0fTMGgjsxH4PHiex6Qsq7d4Ay79ooA62FfQycgVELfd70nr
-	ydidd59WAnhx3myfq/dKvVdlVGop1pXi
-X-Received: by 2002:a05:622a:a953:20b0:4af:36a:a60f with SMTP id d75a77b69052e-4af036aa957mr25038541cf.21.1754068435405;
-        Fri, 01 Aug 2025 10:13:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG8+K6i2QRol52KGBLA9S6CAT2dneVBlknXiG0f/LH2d8sJO8oI3hxjPNdTh/rQMWdVl3tj8g==
-X-Received: by 2002:a05:622a:a953:20b0:4af:36a:a60f with SMTP id d75a77b69052e-4af036aa957mr25037891cf.21.1754068434728;
-        Fri, 01 Aug 2025 10:13:54 -0700 (PDT)
-Received: from x1.local ([174.89.135.171])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4aeeebde17fsm22954801cf.1.2025.08.01.10.13.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Aug 2025 10:13:54 -0700 (PDT)
-Date: Fri, 1 Aug 2025 13:13:42 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org,
-	aarcange@redhat.com, lokeshgidra@google.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] userfaultfd: fix a crash when UFFDIO_MOVE handles
- a THP hole
-Message-ID: <aIz1xrzBc2Spa2OH@x1.local>
-References: <20250731154442.319568-1-surenb@google.com>
- <d2b6be85-44d5-4a87-bfe5-4a9e80f95bb8@redhat.com>
- <aIzMGlrR1SL5Y_Gp@x1.local>
- <CAJuCfpEqOUj8VPybstQjoJvCzyZtG6Q5Vr4WT0Lx_r3LFVS7og@mail.gmail.com>
- <aIzp6WqdzhomPhhf@x1.local>
- <CAJuCfpGWLnu+r2wvY2Egy2ESPD=tAVvfVvAKXUv1b+Z0hweeJg@mail.gmail.com>
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=F49yqaeuM2gwQm01vYx7gH/IE2LS6Ds6ze5FPkFVca0=;
+	b=GQQkLteFghq0o63cywENZDQpeXcRHeYXV6Jf7ZdDjhLC3tPMF9BzVrSwEwAUYIye1o/XNT
+	gB7V/JMZe+KafN2iqNcgI+Bqkn9uuFgWVXO9pM82IYarXD7ku6w2fZm8gplZdlgzE0HcFE
+	R+sJNmfN7lCkaIUh/4Xr1eZTPrcJS70=
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4btt372pgDz6L56C;
+	Sat,  2 Aug 2025 01:18:59 +0800 (CST)
+Received: from frapeml500007.china.huawei.com (unknown [7.182.85.172])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1B2DD1400D4;
+	Sat,  2 Aug 2025 01:21:02 +0800 (CST)
+Received: from P_UKIT01-A7bmah.china.huawei.com (10.195.32.206) by
+ frapeml500007.china.huawei.com (7.182.85.172) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 1 Aug 2025 19:20:59 +0200
+From: <shiju.jose@huawei.com>
+To: <rafael@kernel.org>, <bp@alien8.de>, <akpm@linux-foundation.org>,
+	<rppt@kernel.org>, <dferguson@amperecomputing.com>,
+	<linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-doc@vger.kernel.org>, <tony.luck@intel.com>,
+	<lenb@kernel.org>, <leo.duran@amd.com>, <Yazen.Ghannam@amd.com>,
+	<mchehab@kernel.org>
+CC: <jonathan.cameron@huawei.com>, <linuxarm@huawei.com>,
+	<rientjes@google.com>, <jiaqiyan@google.com>, <Jon.Grimm@amd.com>,
+	<dave.hansen@linux.intel.com>, <naoya.horiguchi@nec.com>,
+	<james.morse@arm.com>, <jthoughton@google.com>, <somasundaram.a@hpe.com>,
+	<erdemaktas@google.com>, <pgonda@google.com>, <duenwen@google.com>,
+	<gthelen@google.com>, <wschwartz@amperecomputing.com>,
+	<wbs@os.amperecomputing.com>, <nifan.cxl@gmail.com>, <tanxiaofei@huawei.com>,
+	<prime.zeng@hisilicon.com>, <roberto.sassu@huawei.com>,
+	<kangkang.shen@futurewei.com>, <wanghuiqiang@huawei.com>,
+	<shiju.jose@huawei.com>
+Subject: [PATCH v10 0/3] ACPI: Add support for ACPI RAS2 feature table
+Date: Fri, 1 Aug 2025 18:20:26 +0100
+Message-ID: <20250801172040.2175-1-shiju.jose@huawei.com>
+X-Mailer: git-send-email 2.43.0.windows.1
 MIME-Version: 1.0
-In-Reply-To: <CAJuCfpGWLnu+r2wvY2Egy2ESPD=tAVvfVvAKXUv1b+Z0hweeJg@mail.gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: u_fYO-lDOvoFuhlJgnRIWO7tiOfTSHbD-Xd8qkQXP3c_1754068436
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: okkkorneka78feyth7njssu5s54wgkjc
-X-Rspamd-Queue-Id: 512B44000B
-X-Rspamd-Server: rspam10
+Content-Type: text/plain
+X-Originating-IP: [10.195.32.206]
+X-ClientProxiedBy: lhrpeml500012.china.huawei.com (7.191.174.4) To
+ frapeml500007.china.huawei.com (7.182.85.172)
+X-Rspamd-Queue-Id: E2B83A000B
+X-Stat-Signature: nri3fwzgiwnb6gmwji3whejuj5jgou5g
 X-Rspam-User: 
-X-HE-Tag: 1754068438-145034
-X-HE-Meta: U2FsdGVkX18suKHvGfHaEwcqW70XsM+qytGcyD/Ea+8I+JFRw9mzPqcHZ6txaAH/u5KAt6/DLCNknlumawU61Tk7hx41GlN5RDrfxbW+YeJWzIzWEGSpUvRghRMScR6/N6/r8AwaHURSUY0BY6XQW5NHJu/QQ7ebZ7V4+vVZIPGFoDmpwqIaHSCxfFq9hGpnMNtvYw0QBJK3iiKlgIrjC227vD7WjHX45KkLqAdgRf1Y/TRNnSeJOcnxzBlobYVUdypQx0iZD1BB08hI5THmz0WSwmRiq5LlYf159ZPP5VTbimpdE75W7CUqUUsU9NGKZ3mQr2Ycu/SKAT+RRmcd6MxUtoJfwHycu8ZLip2TQO0o8tpi94N5DKK0Rb8x1HQeiH5EQl2lsDwa1uEj/z6eiAjCaIrsOCAn3MZtecrfEYBswdlO5Zza4+fAuknU2dxkdtltXNzDQhNSoesNsCA1Dh+0+ksS4uafeVooh6TMBjn85MB5c9AJAkFMqusSwV4CdwxPoQz8S8IbImX/J5wJybbeePjvSiaaCJSjbaPKHI7rLEaRQyxhg5qYYqhH+Qg9vFMAJSWAXBhLkAEkdg9HYyl6CA5NDtIDap2ZMI2yyHxN9xIMQBJ9mKELS0AcKAyvlyp2XC1rDxB8wxmRhDj7FSUXAC59scgtl5sd3GNXTMGmsbsy2EHHV36eQ7e5OnzU4iGP0X2cqAoMDaY1u4+dzGcvLqsxHrYafuS1cTTU3qgqEFaJxhGH6yN6UFXtpqilDy+WrqSGz4S5VNK146Uv9c+f1EPkZVrg9L/criHhS/a3d2009SDM5ix/+qgubqEMArOL0gUPmh106jkVbQLI5kPwr6l/TYCPWM1MbPLIdWxO6mo7kMDXAXs0bjxxJGUqAB+LHtnbka6lgnOBa6CoqVnT/9OYSTvD9avHpey92JeNWexX1zuioVoOKj/VeWiC/03A7/q3ob1qUvlO508
- b30s2feT
- lJ8aMrGC3NIqB7L9OZcar+7hCBPsPl0oui85kKgS66VOaDUlP6Ivh4o8hUihekdonIfONHHkobnd6QRx/ma2BgbmplFr3scCf8ldwtYXVwlzOzWJEw1qLn0/w4ETmamYlpoRkUp5CQ3is0dHjRzZzUwfoYvY9hSOJcUN1HZt/hh35MAPMhhdjMcurwxOHllIrBxH8VAv+jNhtSPnyxEWq5FIl19J5UHGSPDloi8GQMtfuEpYWYdu+CiYepWCn6SSxhmnTPxxOa8NghHTnJFkemjzL6UEkD0WpRBnmO1BKu7XX2Afq2DnD4dfHWiPbc5i7QLMtNonzuoRkYaiRTxn1Fpq0INDRVR8qHzu24QuIE+J0ZyNk+yW7FkibQVzVTjdCrhd79ORWHEkvjD+WsrWZejKtODFXYd9w/OLnfQbJIBExoUnIrXH/pN5kn/MP3diMO+4irCQyUkWLd5ruAJjwRDAzHQ2/y1ny+enx22cPwyrsq9fq2aIX28SRfk7qyu7qyBCSFCTGR8t2kdRb2Kr7rITpt1XnHpIvj9VahTWI0DuWYRtcS87g8WLlOBHY8rFUJRVEJhFw1F/wShu8i2+Xx130hUF4hZsaywidTKtvTyi52GrosL9Yb6i+o5Ao+AmEZV9/pPPj6dR+wSlHdVrHRlPSgvTDXkbzX7Qzuq0KuWm/zm76VYL9pvyh0Io26PJgSsH5lnSoT3e3LpJbwsCxGFQ3fA==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1754068864-696624
+X-HE-Meta: U2FsdGVkX1/36hD4csuyoQgMKPwxUVgcr7yhCdMKJZrtCeNliVv+vD9DhHKuVKO86HTctgR5LSXYLn3chsEQ8W77b27Gc1hRw8Qb4hZ9CXU7UPRcwmMYvYmX/8UdSYKFxPFA5ZBszLA5+kTzcn9pqAICt//5NFnmTfniuKOcjgg3pEZ7AeH5suNjOQ1gGhbFE+Aq00O7ksUFzu1BaYw3Nplof6FehGfbOwbA/eEY08n3Lt5Mpef1Py9b/DKklaNDEPxw59l1IcC9+8KPl1FHRisPTs2BJtRNqB5RwzPFsNGXeEsExNnEZ4hsaapSLPQvbPVMZQoLXEg16bdr8PkkuUEwu9eQYCpsfwDskSxqkd3b+Fe/jiLk0u0/ZwZfYEQyW8aXX3EGo/kDqa6jMUuktdMCW+TvDqbKAoenARTCGL/jk9IYM7bmNgNCx1FPPUktjZNWeZ/S9NGs4yzbwJNr/UsU/Bef/MUwpSGeMcOOnGxux1OHueTic9xp1m9J3FeF+op3D/SM20+lTQlmSw0g7+mQd2aGwFXgXobThrywF86b39IA6OcUupumqDZdsgL0XpFEQOQ/Dom3nKE8RxKR0gk5EgSrEx+gv/wO0e9osmU6EguAM1IycuCnVQuX6DMhiTeLiusH4vVHHC1bcZHcMHybA+4DSsHGRV1VHC6Qm5DD+RF2sseW9gctxYuIx3XwqXYWtT8njSD3845+mX4uKqLAJFC+SurJPSRhdaTKLePURNnK1oTH+VZzk1Dt4kxvZesvWpXnsmjP3k+RXNu/QPsD+fpFTzm3tWKTZBGfqpHR+GhFp+1ygt2WApWLbw3n9AWMRpSppd9kRzAZs/slWsapr3P/1Pu77R+SamK+ZMKH5yAhc0PmLUZiSlnX4OeV0zYl1IPB88ntFMlDNkCglm11H6j3Ex9RxXLxAlBOe2K1VRyy4ck2brhpdHvvIGKi6MK/L1QHObixtH3BdsO
+ Z2W4qQOb
+ Q6aLkt0hL/5xayN/vccGKBv/Qp7CuZu4zLz532JkiS7pJtF1Fjq4r/zuyMNkR5LV22Qb0v1FwDgN8/lJ5UbKelhPbOs7Xd5p7NEYIXD2YEi4TwuMnIZaz7rXnFOm+jeC18MVbbyR6VmtQal7Ti29fq7AvOuG53r8h6zSLpfSbMpougF6K5/uLsYX9qtvZn3eoSKnhI5/irGqIrd6SWokfn2j41ruf8znjoHCZvxnXS8jpFrA3b8kAf+KJIDxSYMuJ+Cgim/cQXupW5ROYewzpTmtmrI4s0384taN3ooAfgpBkZzcMwY8tgxAvJZQCTSP/2vew9rW+z4RpGtAbU1rZlUCzTM1OXcKqnJbMMHiMBXAOumDZoZzz4B/8jxPDH6iEcqV6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,159 +99,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 01, 2025 at 09:41:31AM -0700, Suren Baghdasaryan wrote:
-> On Fri, Aug 1, 2025 at 9:23 AM Peter Xu <peterx@redhat.com> wrote:
-> >
-> > On Fri, Aug 01, 2025 at 08:28:38AM -0700, Suren Baghdasaryan wrote:
-> > > On Fri, Aug 1, 2025 at 7:16 AM Peter Xu <peterx@redhat.com> wrote:
-> > > >
-> > > > On Fri, Aug 01, 2025 at 09:21:30AM +0200, David Hildenbrand wrote:
-> > > > > On 31.07.25 17:44, Suren Baghdasaryan wrote:
-> > > > >
-> > > > > Hi!
-> > > > >
-> > > > > Did you mean in you patch description:
-> > > > >
-> > > > > "userfaultfd: fix a crash in UFFDIO_MOVE with some non-present PMDs"
-> > > > >
-> > > > > Talking about THP holes is very very confusing.
-> > > > >
-> > > > > > When UFFDIO_MOVE is used with UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES and it
-> > > > > > encounters a non-present THP, it fails to properly recognize an unmapped
-> > > > >
-> > > > > You mean a "non-present PMD that is not a migration entry".
-> > > > >
-> > > > > > hole and tries to access a non-existent folio, resulting in
-> > > > > > a crash. Add a check to skip non-present THPs.
-> > > > >
-> > > > > That makes sense. The code we have after this patch is rather complicated
-> > > > > and hard to read.
-> > > > >
-> > > > > >
-> > > > > > Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-> > > > > > Reported-by: syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com
-> > > > > > Closes: https://lore.kernel.org/all/68794b5c.a70a0220.693ce.0050.GAE@google.com/
-> > > > > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > > > > > Cc: stable@vger.kernel.org
-> > > > > > ---
-> > > > > > Changes since v1 [1]
-> > > > > > - Fixed step size calculation, per Lokesh Gidra
-> > > > > > - Added missing check for UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES, per Lokesh Gidra
-> > > > > >
-> > > > > > [1] https://lore.kernel.org/all/20250730170733.3829267-1-surenb@google.com/
-> > > > > >
-> > > > > >   mm/userfaultfd.c | 45 +++++++++++++++++++++++++++++----------------
-> > > > > >   1 file changed, 29 insertions(+), 16 deletions(-)
-> > > > > >
-> > > > > > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> > > > > > index cbed91b09640..b5af31c22731 100644
-> > > > > > --- a/mm/userfaultfd.c
-> > > > > > +++ b/mm/userfaultfd.c
-> > > > > > @@ -1818,28 +1818,41 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
-> > > > > >             ptl = pmd_trans_huge_lock(src_pmd, src_vma);
-> > > > > >             if (ptl) {
-> > > > > > -                   /* Check if we can move the pmd without splitting it. */
-> > > > > > -                   if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
-> > > > > > -                       !pmd_none(dst_pmdval)) {
-> > > > > > -                           struct folio *folio = pmd_folio(*src_pmd);
-> > > > > > +                   if (pmd_present(*src_pmd) || is_pmd_migration_entry(*src_pmd)) {
-> > > >
-> > > > [1]
-> > > >
-> > > > > > +                           /* Check if we can move the pmd without splitting it. */
-> > > > > > +                           if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
-> > > > > > +                               !pmd_none(dst_pmdval)) {
-> > > > > > +                                   if (pmd_present(*src_pmd)) {
-> >
-> > [2]
-> >
-> > > > > > +                                           struct folio *folio = pmd_folio(*src_pmd);
-> >
-> > [3]
-> >
-> > > > > > +
-> > > > > > +                                           if (!folio || (!is_huge_zero_folio(folio) &&
-> > > > > > +                                                          !PageAnonExclusive(&folio->page))) {
-> > > > > > +                                                   spin_unlock(ptl);
-> > > > > > +                                                   err = -EBUSY;
-> > > > > > +                                                   break;
-> > > > > > +                                           }
-> > > > > > +                                   }
-> > > > >
-> > > > > ... in particular that. Is there some way to make this code simpler / easier
-> > > > > to read? Like moving that whole last folio-check thingy into a helper?
-> > > >
-> > > > One question might be relevant is, whether the check above [1] can be
-> > > > dropped.
-> > > >
-> > > > The thing is __pmd_trans_huge_lock() does double check the pmd to be !none
-> > > > before returning the ptl.  I didn't follow closely on the recent changes on
-> > > > mm side on possible new pmd swap entries, if migration is the only possible
-> > > > one then it looks like [1] can be avoided.
-> > >
-> > > Hi Peter,
-> > > is_swap_pmd() check in __pmd_trans_huge_lock() allows for (!pmd_none()
-> > > && !pmd_present()) PMD to pass and that's when this crash is hit.
-> >
-> > First for all, thanks for looking into the issue with Lokesh; I am still
-> > catching up with emails after taking weeks off.
-> >
-> > I didn't yet read into the syzbot report, but I thought the bug was about
-> > referencing the folio on top of a swap entry after reading your current
-> > patch, which has:
-> >
-> >         if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
-> >             !pmd_none(dst_pmdval)) {
-> >                 struct folio *folio = pmd_folio(*src_pmd); <----
-> >
-> > Here looks like *src_pmd can be a migration entry. Is my understanding
-> > correct?
-> 
-> Correct.
-> 
-> >
-> > > If we drop the check at [1] then the path that takes us to
-> >
-> > If my above understanding is correct, IMHO it should be [2] above that
-> > makes sure the reference won't happen on a swap entry, not necessarily [1]?
-> 
-> Yes, in case of migration entry this is what protects us.
-> 
-> >
-> > > split_huge_pmd() will bail out inside split_huge_pmd_locked() with no
-> > > indication that split did not happen. Afterwards we will retry
-> >
-> > So we're talking about the case where it's a swap pmd entry, right?
-> 
-> Hmm, my understanding is that it's being treated as a swap entry but
-> in reality is not. I thought THPs are always split before they get
-> swapped, no?
+From: Shiju Jose <shiju.jose@huawei.com>
 
-Yes they should be split, afaiu.
+1. Add node_to_range lookup facility to numa_memblks, which is
+   required for the ACPI RAS2 memory features.
+   
+2. Add support for ACPI RAS2 feature table (RAS2) defined in the
+   ACPI 6.5 specification, section 5.2.21 and RAS2 HW based memory
+   scrubbing feature.
 
-> 
-> > Could you elaborate why the split would fail?
-> 
-> Just looking at the code, split_huge_pmd_locked() checks for
-> (pmd_trans_huge(*pmd) || is_pmd_migration_entry(*pmd)).
-> pmd_trans_huge() is false if !pmd_present() and it's not a migration
-> entry, so __split_huge_pmd_locked() will be skipped.
+ACPI RAS2 patches were part of the EDAC series [1].
 
-Here might be the major part of where confusion came from: I thought it
-must be a migration pmd entry to hit the issue, so it's not?
+The code is based on linux.git v6.16-rc7 [2].
 
-I checked the code just now:
+1. https://lore.kernel.org/linux-cxl/20250212143654.1893-1-shiju.jose@huawei.com/
+2. https://github.com/torvalds/linux.git
 
-__handle_mm_fault:
-		if (unlikely(is_swap_pmd(vmf.orig_pmd))) {
-			VM_BUG_ON(thp_migration_supported() &&
-					  !is_pmd_migration_entry(vmf.orig_pmd));
+Changes
+=======
+v9 -> v10:
+1. Use pcc_chan->shmem instead of 
+   acpi_os_ioremap(pcc_chan->shmem_base_addr,...) as it was
+   acpi_os_ioremap internally by the PCC driver to pcc_chan->shmem.
+   
+2. Changes required for the Ampere Computing system where uses a single
+   PCC channel for RAS2 memory features across all NUMA domains. Based on the
+   requirements from by Daniel on V9
+   https://lore.kernel.org/all/547ed8fb-d6b7-4b6b-a38b-bf13223971b1@os.amperecomputing.com/
+   and discussion with Jonathan.
+2.1 Add node_to_range lookup facility to numa_memblks. This is to retrieve the lowest
+    physical continuous memory range of the memory associated with a NUMA domain.
+2.2. Set requested addr range to the memory region's base addr and size
+   while send RAS2 cmd GET_PATROL_PARAMETER 
+   in functions ras2_update_patrol_scrub_params_cache() &
+   ras2_get_patrol_scrub_running().
+2.3. Split struct ras2_mem_ctx into struct ras2_mem_ctx_hdr and struct ras2_pxm_domain
+   to support cases, uses a single PCC channel for RAS2 scrubbers across all NUMA
+   domains and PCC channel per RAS2 scrub instance. Provided ACPI spec define single
+   memory scrub per NUMA domain.
+2.4. EDAC feature sysfs folder for RAS2 changed from "acpi_ras_memX" to  "acpi_ras_mem_idX"
+   because memory scrub instances across all NUMA domains would present under
+   "acpi_ras_mem_id0" when a system uses a single PCC channel for RAS2 scrubbers across
+   all NUMA domains etc.
+2.5. Removed Acked-by: Rafael from patch [2], because of the several above changes from v9.
 
-So IIUC pmd migration entry is still the only possible way to have a swap
-entry.  It doesn't look like we have "real" swap entries for PMD (which can
-further points to some swapfiles)?
+v8 -> v9:
+1. Added following changes for feedback from Yazen.
+ 1.1 In ras2_check_pcc_chan(..) function
+    - u32 variables moved to the same line.
+    - Updated error log for readw_relaxed_poll_timeout()
+    - Added error log for if (status & PCC_STATUS_ERROR), error condition.
+    - Removed an impossible condition check.
+  1.2. Added guard for ras2_pc_list_lock in ras2_get_pcc_subspace().
+        
+2. Rebased to linux.git v6.16-rc2 [2].
+
+v7 -> v8:
+1. Rebased to linux.git v6.16-rc1 [2].
+
+v6 -> v7:
+1. Fix for the issue reported by Daniel,
+   In ras2_check_pcc_chan(), add read, clear and check RAS2 set_cap_status outside
+   if (status & PCC_STATUS_ERROR) check. 
+   https://lore.kernel.org/all/51bcb52c-4132-4daf-8903-29b121c485a1@os.amperecomputing.com/
+
+v5 -> v6:
+1. Fix for the issue reported by Daniel, in start scrubbing with correct addr and size
+   after firmware return INVALID DATA error for scrub request with invalid addr or size.
+   https://lore.kernel.org/all/8cdf7885-31b3-4308-8a7c-f4e427486429@os.amperecomputing.com/
+   
+v4 -> v5:
+1. Fix for the build warnings reported by kernel test robot.
+   https://patchwork.kernel.org/project/linux-edac/patch/20250423163511.1412-3-shiju.jose@huawei.com/
+2. Removed patch "ACPI: ACPI 6.5: RAS2: Rename RAS2 table structure and field names"
+   from the series as the patch was merged to linux-pm.git : branch linux-next
+3. Rebased to ras.git: edac-for-next branch merged with linux-pm.git : linux-next branch.
+      
+v3 -> v4:
+1.  Changes for feedbacks from Yazen on v3.
+    https://lore.kernel.org/all/20250415210504.GA854098@yaz-khff2.amd.com/
+
+v2 -> v3:
+1. Rename RAS2 table structure and field names in 
+   include/acpi/actbl2.h limited to only necessary
+   for RAS2 scrub feature.
+2. Changes for feedbacks from Jonathan on v2.
+3. Daniel reported a known behaviour: when readback 'size' attribute after
+   setting in, returns 0 before starting scrubbing via 'addr' attribute.
+   Changes added to fix this.
+4. Daniel reported that firmware cannot update status of demand scrubbing
+   via the 'Actual Address Range (OUTPUT)', thus add workaround in the
+   kernel to update sysfs 'addr' attribute with the status of demand
+   scrubbing.
+5. Optimized logic in ras2_check_pcc_chan() function
+   (patch - ACPI:RAS2: Add ACPI RAS2 driver).
+6. Add PCC channel lock to struct ras2_pcc_subspace and change
+   lock in ras2_mem_ctx as a pointer to pcc channel lock to make sure
+   writing to PCC subspace shared memory is protected from race conditions.
+   
+v1 -> v2:
+1.  Changes for feedbacks from Borislav.
+    - Shorten ACPI RAS2 structures and variables names.
+    - Shorten some of the other variables in the RAS2 drivers.
+    - Fixed few CamelCases.
+
+2.  Changes for feedbacks from Yazen.
+    - Added newline after number of '}' and return statements.
+    - Changed return type for "ras2_add_aux_device() to 'int'.
+    - Deleted a duplication of acpi_get_table("RAS2",...) in the ras2_acpi_parse_table().
+    - Add "FW_WARN" to few error logs in the ras2_acpi_parse_table().
+    - Rename ras2_acpi_init() to acpi_ras2_init() and modified to call acpi_ras2_init()
+      function from the acpi_init().
+    - Moved scrub related variables from the struct ras2_mem_ctx from  patch
+      "ACPI:RAS2: Add ACPI RAS2 driver" to "ras: mem: Add memory ACPI RAS2 driver".
+
+Shiju Jose (3):
+  mm: Add node_to_range lookup facility to numa_memblks
+  ACPI:RAS2: Add ACPI RAS2 driver
+  ras: mem: Add memory ACPI RAS2 driver
+
+ Documentation/edac/scrub.rst |  79 ++++++
+ drivers/acpi/Kconfig         |  12 +
+ drivers/acpi/Makefile        |   1 +
+ drivers/acpi/bus.c           |   3 +
+ drivers/acpi/ras2.c          | 493 +++++++++++++++++++++++++++++++++++
+ drivers/ras/Kconfig          |  11 +
+ drivers/ras/Makefile         |   1 +
+ drivers/ras/acpi_ras2.c      | 464 +++++++++++++++++++++++++++++++++
+ include/acpi/ras2.h          |  99 +++++++
+ include/linux/numa.h         |  10 +
+ include/linux/numa_memblks.h |   2 +
+ mm/numa.c                    |  10 +
+ mm/numa_memblks.c            |  23 ++
+ 13 files changed, 1208 insertions(+)
+ create mode 100644 drivers/acpi/ras2.c
+ create mode 100644 drivers/ras/acpi_ras2.c
+ create mode 100644 include/acpi/ras2.h
 
 -- 
-Peter Xu
+2.43.0
 
 
