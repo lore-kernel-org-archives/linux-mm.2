@@ -2,75 +2,75 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 35499C87FD2
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 04:37:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D8A96C87FD2
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 04:37:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40C946B00A2; Fri,  1 Aug 2025 00:36:58 -0400 (EDT)
+	id 4E5EF6B00A4; Fri,  1 Aug 2025 00:37:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3AD876B00A6; Fri,  1 Aug 2025 00:36:58 -0400 (EDT)
+	id 4BC4F6B00A6; Fri,  1 Aug 2025 00:37:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 163556B00A3; Fri,  1 Aug 2025 00:36:58 -0400 (EDT)
+	id 3ACD06B00A9; Fri,  1 Aug 2025 00:37:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EDE416B00A2
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 00:36:57 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C3D4C1DD890
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 04:36:57 +0000 (UTC)
-X-FDA: 83726928474.15.EF8F45B
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D4C56B00A6
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 00:37:00 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9A0A5114EF1
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 04:36:59 +0000 (UTC)
+X-FDA: 83726928558.18.1C4EB99
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	by imf23.hostedemail.com (Postfix) with ESMTP id E9DBC140007
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 04:36:55 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="La4S1M2/";
+	by imf04.hostedemail.com (Postfix) with ESMTP id 7D4DA40002
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 04:36:57 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=GtELuotO;
 	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf23.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754023016; a=rsa-sha256;
+	spf=pass (imf04.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754023017; a=rsa-sha256;
 	cv=none;
-	b=kE/ftlGATTRlEBitNQzo0QZ1k6lf6IYBHvC5HzaGXHA2UzAFOdMzWGCtz0ST4yz/WxvAg6
-	5Hvl+XITXrXkr3kxWEPADUYJWM0O/U6UELYl06AJJi9rmpOmkVkJe49v5ZQJamuT4pGvGa
-	KwR82LeHNdAYKgvnjHeP9/DZtXP2pug=
+	b=FvALnd1WAqZyILkHr7sp0W+mhui39hucrR/m/27oKMZFS/Tg7DO54m6rAJ807haMpAz9cP
+	LYU22TPcjlsjvmvWqLLSVn5qDR1sg04rxk4e8/NLO34PoQ3lyB+ANC0qZpUrTq/vDp2olM
+	98jOfjplhoaTZGtAOPtyYqwY4gOi2+0=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="La4S1M2/";
+	imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=GtELuotO;
 	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf23.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com
+	spf=pass (imf04.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754023016;
+	s=arc-20220608; t=1754023017;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GzFbI6au7GKFtXKcBr357XmMY2rngA6jZljtTNPfRGw=;
-	b=flqUdmurc94imdxKKY+Y1swv7u6KviYKm4l2uR5npjMhAdkrQQ6tNOLjvcPWTHjDL5cPMN
-	8KKFcAGqLSYwo62AKyKOecp4iGCxLWHjoeMCb8vgZLUj3+wKJMFDJmH5NGDD2IthJKUjGH
-	SzylE0WgFfBBVZ17ogDehoux9PZayY8=
+	bh=sMtvFjIRvgGSdUiz26EIr5tjNStNC55Qo6HGLhbwHBg=;
+	b=zxP4987wvVFdaFH2p010vDp8LxXh6fYUOFXH+fSpekKb9YSxH6Aqm62bDMKWSJNW6H4sQA
+	WfVxfBTUj6pfwJ6HGY59a/EfF10J3sGB04fI5QFfWhHD8O6O8TUUNgp+svNxYjHPVKA2HH
+	fHlkfrJ8neuh7G8z4qcPnRx4j7jP+3w=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754023016; x=1785559016;
+  t=1754023018; x=1785559018;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Gx3K9nc7SbqS7yUYzPYGDFgIwtQFFxvIkExs4HbX0c8=;
-  b=La4S1M2/p/1lrELmJWP7zhCh7Kqs+c1mpbZPLRjMP6Bhd3jmIEFOsnHd
-   iULAORxvbydxrtqDldAAB9nnhhHdZo53TDyJxdS+6QXoQo/XMkltME/xD
-   uAfcudv7OoiyfIOK2yy5CEI9txVJcp8Z14S3NW+XqzZZLgPbfbpj1XTRU
-   w7HAWny4R7oriZplgnPGC6y+1UfAZtBgJVaDMX4vGK38u7nQiewbyp4aw
-   oB2qAt2mrdeEHaXQHropaJGPaCLk/m+O7oLuVDPLuC/6b9N/EnbCBjpFZ
-   lJbyyGIRjic6s/OWVi06eZ7rA0avcTK8n2be6RRtny5rU6fdrSkaTCw1Q
-   A==;
-X-CSE-ConnectionGUID: djDUSp3gRFmh68UY0wP3Tg==
-X-CSE-MsgGUID: IPwnL4ZDRx2gQIjIiXEV0g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11508"; a="73820321"
+  bh=FnlvHyECT2St8FSdBB0bYZMpc5C8/71XEdNgjsZBPcA=;
+  b=GtELuotOf+A66br/esLzvLlOhOkG7BQsf/gFtCa4Vd20j+UHrHSGG3ci
+   J25hBniN4nOnsb4MrlcbNb03gyqqvTPZ3NeDK2o3BDkKo9x1DgwKIUFAC
+   RIk5erRSgK9Zv8oE+zwu2kinulrQUBr88cdosLaEsfzPp8vyJrR9YssRZ
+   W7Cpt5CZxioFyJpyst4xwfrJIl/mjMbfIma3yS0hH1dbzZ6QobKiLjPZO
+   DpAVldE+K+nYFPtILcLFmKugwx/vD8ozuvxwfC7S3WneamL8VU0HrTpPQ
+   ll/waKY5uZgI4T2JSnOaaPgnt8SOHwp6v5Cu2i2gPVLdLpfD0qZn8Ks7l
+   Q==;
+X-CSE-ConnectionGUID: gAMVXommR5OJEEDixU4txw==
+X-CSE-MsgGUID: soai9GY7RVWvNpQYlPDEKw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11508"; a="73820335"
 X-IronPort-AV: E=Sophos;i="6.17,255,1747724400"; 
-   d="scan'208";a="73820321"
+   d="scan'208";a="73820335"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
   by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2025 21:36:46 -0700
-X-CSE-ConnectionGUID: XWPtbTfHQgu+DgyqPU6tlg==
-X-CSE-MsgGUID: 11JsMHtRTsenZH6/gt4+cQ==
+X-CSE-ConnectionGUID: jHJ3MayyQP2+4e8ADCap6A==
+X-CSE-MsgGUID: gZpWz8pbQ1OwreRsJkAjyg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.17,255,1747724400"; 
-   d="scan'208";a="163796277"
+   d="scan'208";a="163796283"
 Received: from jf5300-b11a338t.jf.intel.com ([10.242.51.115])
   by orviesa008.jf.intel.com with ESMTP; 31 Jul 2025 21:36:45 -0700
 From: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
@@ -98,20 +98,22 @@ To: linux-kernel@vger.kernel.org,
 Cc: wajdi.k.feghali@intel.com,
 	vinodh.gopal@intel.com,
 	kanchana.p.sridhar@intel.com
-Subject: [PATCH v11 14/24] crypto: iaa - Enable async mode and make it the default.
-Date: Thu, 31 Jul 2025 21:36:32 -0700
-Message-Id: <20250801043642.8103-15-kanchana.p.sridhar@intel.com>
+Subject: [PATCH v11 15/24] crypto: iaa - Disable iaa_verify_compress by default.
+Date: Thu, 31 Jul 2025 21:36:33 -0700
+Message-Id: <20250801043642.8103-16-kanchana.p.sridhar@intel.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20250801043642.8103-1-kanchana.p.sridhar@intel.com>
 References: <20250801043642.8103-1-kanchana.p.sridhar@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E9DBC140007
-X-Stat-Signature: ynwhu86f76gw9rh1c8wfs1k4yy3669my
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1754023015-470520
-X-HE-Meta: U2FsdGVkX1+soqRFl7cdejbneHoAaZLALIxe2ZD/WD93X75J0abypwRrabDR5joNqp/0GfZuLvhow7zF0invf84kp+ynU3sP9qaC4H976sV4iazTvoOUcIBe+EXTWApZgGuONnTgVVqmNVwTTLf1Bm0Ssk97Zu80ZBIcP1kQXXJ7OXiyTCZcVFh57ccjYyMKDlQUH+5B3YxIgIiQBfWwJDA/ipc9FsqG/QxfeATDkUxUkWuIshXrxwxMRMqb5hKr/QcSZ2nJhe1TlD/m2ph9s14tvD+jxZwskyRhG5fVpdsaZ4OCo5d1JcVEldpsm0te3+DjkqTXpFpGbDngT80rFYyRN6CHrTbUY1klbRdmoap4bSJtpc6V6H2SuYjnOeMRn7T/GUUdgBd3MnaXJTpMFcEywDubTmcytLagLTxZTtnKdvd2mmhLp4KkiB68wLiTZcu8UIdlRrM+1oxH8jRW7tOxpf7iLMIO4IhjChs1KqhulH2X+6QE0bQO01O79nAWN7OItqzFsyMeftg4tyZ8yMLU4vFBmWJ99eq44Z90thvU06eRQQRHwq403O+ib518kbA2VNktoQdt1fL/7NZiA1QVPxsADtbmrHOeY7kjzfpVUDzSpd+cfaBE0uAgj6iFDHxx2/k09vU4lf1EZ+7YPO2aPxQShEIvk4Bkvu4kcQO9f/69/VSdu/Bwj25mPJFzKUIKkgaEa1TGepEuPH7wAZ2KxSdq2CEWPl9BBsOZIBbjNGUVHpQcrAQ2nI/iLEHisg1Qh/OLi1n60fAln1EvXM9rd/EA2tRMvFkP5CTIpPLlCbo7OU5d8tSCaCQxtgTrdOJO9sEB5aeMzuWtRcexZeLlhvqSP04mJJsh6L6ZsNZ3DJYMJqsPfAz+oI6i+BU7
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7D4DA40002
+X-Stat-Signature: a4aqun1obqj15na98wj3zgimjjcounre
+X-HE-Tag: 1754023017-314005
+X-HE-Meta: U2FsdGVkX19qDvZb9uKVoadcgzmAvL0Ty5v9k2thfr0O9eyiYzxPzhTjhLNGvy/whc3mM5cB14iylsxTtPo9YXx9/8D9NHWYusiG7bRgE2bOuNhrvY0kq4svs+m2IiXHQWL5w8TyXDOmyDOeNIABOjDYp3f98BY7me6NysIoE9aF4W7kVPQlueEHvUyH7FwaaVtHzTITs75XsnfnqA0rgedBNI5cHCa2DTNV3R8wfyuNgXTg6CfH8B8PAGou8W2VEsh8LH2rH9HQ5RT0Qy0fQUnN19hS2UIwSMWTlsRnQQZYWTocm3PNhPmPjbvTkeHxxmToDcdjUcqKchAo+vK9Wyty957+aEMKiZw2+BTJInaz1q+TXYU3CYoPRPgQCej209OiNUnEdqvCCHflxH1zym26zVF2kpd9qs7XSNSV2OAIAgkje4vI3SIzJYJCP8YyaKzvUgLOL1c3GUaHhTfSURFam3o1pBy2abIz9cxPGU5Kcgo2U+s2cM/yYKl6mXn+d6eFcX4CQHhD5bAEpvgQPd5NFvJZ2ctcG5o7GTHB/vLJQY76VowGN+/UOCtwSmvIz+wVJgZBFajoEYXay1LOD+C2+EL/U44RoDXGQgA0EfWPrq+buVp9sFlKqyMQUpwepBoFcda/OgWESERIZIepCiVyY+TNpVC9yL4peDSVTwx1LNV1k1sGmUJKDY9gci1N4iY+8773J9iXT7q/ZVo827aJ4DnFqNoYT4mPmSQsNV5FUrHOkLRyheG4iBCURHzWeTjaxZCsAknH0z8SVfNkHYu4/Lan3xvli50i2tPUE+S5d8gNLBLSZXjiEvbjpOGOXgTtFL8q8LPhr6ap0CaAY5dESt9DlsudoY8DH9YMRysgcUppLxtE++k3HePN071t7QiSlnaXR+9Teauxxub7aF3JNO/w6Xn2gl0+0Jsu/SujXaYgJPIuGV/wmQbjIM/Cniswe2Cr6NjlVZgdnSg
+ HMcax0ri
+ xSLeYXWWg2jasYp9BrUY7akGtC4Z6QCWqDMDaMRMw54nkWYe3PJGNJYa4GH35Nl/IU/9Qph2ZK3rOCSDOm19z7ems4w9w6+gPe2AxE1s47Ok7fkal2T2SCKFdDHflDkCWwA0RotlZQRmCfrsujAmkjYKtqR1t8vOQj2Zsea7UwFK1BRwCjizd6g9HzpEXJdBg7f3gixJaji0z0eVipQAvrcDK5Ya4YPxr77Rr
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,84 +122,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch enables the 'async' sync_mode in the driver. Further, it sets
-the default sync_mode to 'async', which makes it easier for IAA hardware
-acceleration in the iaa_crypto driver to be loaded by default in the most
-efficient/recommended 'async' mode for parallel
-compressions/decompressions, namely, asynchronous submission of
-descriptors, followed by polling for job completions. Earlier, the
-"sync" mode used to be the default.
+This patch makes it easier for IAA hardware acceleration in the iaa_crypto
+driver to be loaded by default with "iaa_verify_compress" disabled, to
+facilitate performance comparisons with software compressors (which also
+do not run compress verification by default). Earlier, iaa_crypto compress
+verification used to be enabled by default.
 
-The iaa_crypto driver documentation has been updated with these
-changes.
+The iaa_crypto driver documentation has been updated with this change.
 
-This way, anyone who wants to use IAA for zswap/zram can do so after
-building the kernel, and without having to go through these steps to use
-async mode:
+With this patch, if users want to enable compress verification, they can do
+so with these steps:
 
   1) disable all the IAA device/wq bindings that happen at boot time
   2) rmmod iaa_crypto
   3) modprobe iaa_crypto
-  4) echo async > /sys/bus/dsa/drivers/crypto/sync_mode
+  4) echo 1 > /sys/bus/dsa/drivers/crypto/verify_compress
   5) re-run initialization of the IAA devices and wqs
 
 Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
 ---
- Documentation/driver-api/crypto/iaa/iaa-crypto.rst | 11 ++---------
- drivers/crypto/intel/iaa/iaa_crypto_main.c         |  4 ++--
- 2 files changed, 4 insertions(+), 11 deletions(-)
+ Documentation/driver-api/crypto/iaa/iaa-crypto.rst | 2 +-
+ drivers/crypto/intel/iaa/iaa_crypto_main.c         | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/Documentation/driver-api/crypto/iaa/iaa-crypto.rst b/Documentation/driver-api/crypto/iaa/iaa-crypto.rst
-index 1c4c25f0dc5e4..4c235bf769824 100644
+index 4c235bf769824..9d2f3f895bdd8 100644
 --- a/Documentation/driver-api/crypto/iaa/iaa-crypto.rst
 +++ b/Documentation/driver-api/crypto/iaa/iaa-crypto.rst
-@@ -272,7 +272,7 @@ The available attributes are:
-       echo async_irq > /sys/bus/dsa/drivers/crypto/sync_mode
+@@ -239,7 +239,7 @@ The available attributes are:
  
-     Async mode without interrupts (caller must poll) can be enabled by
--    writing 'async' to it (please see Caveat)::
-+    writing 'async' to it::
+       echo 0 > /sys/bus/dsa/drivers/crypto/verify_compress
  
-       echo async > /sys/bus/dsa/drivers/crypto/sync_mode
+-    The default setting is '1' - verify all compresses.
++    The default setting is '0' - to not verify compresses.
  
-@@ -281,14 +281,7 @@ The available attributes are:
- 
-       echo sync > /sys/bus/dsa/drivers/crypto/sync_mode
- 
--    The default mode is 'sync'.
--
--    Caveat: since the only mechanism that iaa_crypto currently implements
--    for async polling without interrupts is via the 'sync' mode as
--    described earlier, writing 'async' to
--    '/sys/bus/dsa/drivers/crypto/sync_mode' will internally enable the
--    'sync' mode. This is to ensure correct iaa_crypto behavior until true
--    async polling without interrupts is enabled in iaa_crypto.
-+    The default mode is 'async'.
- 
-   - g_comp_wqs_per_iaa
+   - sync_mode
  
 diff --git a/drivers/crypto/intel/iaa/iaa_crypto_main.c b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-index 19f87923e2466..7b5b202a8021a 100644
+index 7b5b202a8021a..1166077900522 100644
 --- a/drivers/crypto/intel/iaa/iaa_crypto_main.c
 +++ b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-@@ -152,7 +152,7 @@ static bool iaa_verify_compress = true;
-  */
+@@ -120,7 +120,7 @@ static bool iaa_distribute_decomps;
+ static bool iaa_distribute_comps = true;
  
- /* Use async mode */
--static bool async_mode;
-+static bool async_mode = true;
- /* Use interrupts */
- static bool use_irq;
+ /* Verify results of IAA compress or not */
+-static bool iaa_verify_compress = true;
++static bool iaa_verify_compress;
  
-@@ -206,7 +206,7 @@ static int set_iaa_sync_mode(const char *name)
- 		async_mode = false;
- 		use_irq = false;
- 	} else if (sysfs_streq(name, "async")) {
--		async_mode = false;
-+		async_mode = true;
- 		use_irq = false;
- 	} else if (sysfs_streq(name, "async_irq")) {
- 		async_mode = true;
+ /*
+  * The iaa crypto driver supports three 'sync' methods determining how
 -- 
 2.27.0
 
