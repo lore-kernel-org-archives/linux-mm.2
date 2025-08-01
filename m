@@ -2,113 +2,112 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 53DAAC87FD2
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 07:01:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 07BD4C87FCB
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 07:04:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC5968E0005; Fri,  1 Aug 2025 03:01:52 -0400 (EDT)
+	id 9D5478E0003; Fri,  1 Aug 2025 03:04:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D9CA08E0001; Fri,  1 Aug 2025 03:01:52 -0400 (EDT)
+	id 9ABC48E0001; Fri,  1 Aug 2025 03:04:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C3D938E0005; Fri,  1 Aug 2025 03:01:52 -0400 (EDT)
+	id 84DBD8E0003; Fri,  1 Aug 2025 03:04:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AAE6B8E0001
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 03:01:52 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 00E071411A2
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 07:01:51 +0000 (UTC)
-X-FDA: 83727293664.10.D11CF64
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6EF498E0001
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 03:04:56 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DDC041411AD
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 07:04:55 +0000 (UTC)
+X-FDA: 83727301350.17.57C7DF1
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 711B240004
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 07:01:49 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=afsVjyi9;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 6484E40008
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 07:04:53 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=goJIW2gk;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754031709; a=rsa-sha256;
-	cv=none;
-	b=BeMoiU/lq2E2u02sgU/M+ETvvhcPHJ/uenaf4GtSUmgC600o+nh+E6sSLoUXLlOtBHKHnH
-	ReIK+9TOshehvVT8TWefTDfdiTgaxAdDFCAcjoDRBOsZ1taZfH9Y01Hg80L5rXPPu3k9TH
-	0pmR9u2zyK6FbF0pTGu7d3S0TCWJCXs=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=afsVjyi9;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	spf=pass (imf27.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754031709;
+	s=arc-20220608; t=1754031893;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pEHf1lf9BOIXXYXt4U1sbcIig+zl09vtDrsfXbGJuNc=;
-	b=OkUt2ZRBU/KcrDRp/bz4VLIaWjOkLdW3eVHeoI1IiGVmlQSxqUrkHmz2ngZJzYpnbjX29S
-	I/UaJFuY+NcUW5Sm9xg3kvBwmNODvH4ssxFDPE2+23hccs3ok5nHn4RNlfmsfHTM2u8LiV
-	DoTN4lYWrrXULXODCKUL+2WsX+4N9KM=
+	bh=QZB1JE8ru4mK4hnR9SsG1KVSQ/pprulHKoW6ee0NdMw=;
+	b=m1tmjk0iumcoPLtqrH30bA/asiiCUCy+oU8YtPqsiE/FnrhB2/wGuSbE7qndwGqJWBSiJi
+	6zMah1sqDFzSM3LOOIxvMnH/lhY/6ccATD1adsR7PZKA+U8QJvpiZskuLTzUz8775nip5k
+	q48VLt0LJ0OALfAwh6HKuass8XFqaaM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754031893; a=rsa-sha256;
+	cv=none;
+	b=6Drte2gRmaXzhw2HXgLeh9+o0XpBggpIddrwhnwvptktre5ufP5KwMzj2jIgGHZrDWDFsC
+	2SUWhZYQ5gEnqEb8OKgyeKTi1c8b2J+LA8FABkxMz2EUr9Wdrd4RfGzh6B1ftLqoqdKmon
+	mc9yysMIGK7PrkYFCdFW7q5KIWshRRk=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=goJIW2gk;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf27.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754031708;
+	s=mimecast20190719; t=1754031892;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=pEHf1lf9BOIXXYXt4U1sbcIig+zl09vtDrsfXbGJuNc=;
-	b=afsVjyi9Egx3wkvk8nnrblLMaacKC6M/HP34SmYQh2gvdIaERhAl8WKpdNsb+6tzFkrSE4
-	EkDx5+MpokB7mgU8EblvWofBCuuE0+VfbmYea3imSi1FGJvrFFbTDrJTL5+cCa+tAbwPCv
-	GrVOH/D3fr+jKojsIIVH0nwamI9kxT8=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=QZB1JE8ru4mK4hnR9SsG1KVSQ/pprulHKoW6ee0NdMw=;
+	b=goJIW2gk0TZoSSJfVlaInMwaK8+5ACdRO19cqkVZcVh2DRnqIUmlSpuOa0RGFekbOfjkcN
+	MIUOBtOawCy1+gZXvef6w0E14gTfBbLTweVz2moD3AU8Et7gK2lPleGTrc0iLjL5tvRayo
+	okeODpDdL2l8EbkbrvhJwPMOuUVysPI=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-688-TpdUNxJOMC-_RpcSrorCBA-1; Fri, 01 Aug 2025 03:01:47 -0400
-X-MC-Unique: TpdUNxJOMC-_RpcSrorCBA-1
-X-Mimecast-MFC-AGG-ID: TpdUNxJOMC-_RpcSrorCBA_1754031706
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-458aed20a9fso1321205e9.1
-        for <linux-mm@kvack.org>; Fri, 01 Aug 2025 00:01:47 -0700 (PDT)
+ us-mta-510-ntaZS_mQOCWU09rKDTVifw-1; Fri, 01 Aug 2025 03:04:51 -0400
+X-MC-Unique: ntaZS_mQOCWU09rKDTVifw-1
+X-Mimecast-MFC-AGG-ID: ntaZS_mQOCWU09rKDTVifw_1754031890
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3b81e16c17dso215761f8f.3
+        for <linux-mm@kvack.org>; Fri, 01 Aug 2025 00:04:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754031706; x=1754636506;
+        d=1e100.net; s=20230601; t=1754031890; x=1754636690;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=pEHf1lf9BOIXXYXt4U1sbcIig+zl09vtDrsfXbGJuNc=;
-        b=ebCI+7xtXgDCKt63RJR/vWAv/Nn3SvRRBnyuN+uGOHLOLOJBjlcaAr8Vcq1R/nclJL
-         5EdxC3PlNRsXB8drdihBkEGGGY8d9zzEMnwBPSOldEEM3FVd6rx/6Po+FR5A7CmqlM9G
-         ETTJU8VybP1UTWogM3Pm7mZ6nLPS9NfxllUWqKgJz6/e8e9iatRnkDA4vkQl49AcZWyc
-         LiGiy5uzMulOcVSMoYnTpm0J8AYU4Djgklk/vRUyoCgoIJ2netMM0EIbk8I4SEP9RY2k
-         wcXbo+XksESVV97y4Tq+qpnwHnzcmfwz/ExA2+WwSCAFZy0uDQJBg3zIxUJSvc0la124
-         xZag==
-X-Forwarded-Encrypted: i=1; AJvYcCUwA1vXDCOdc+8xoFAQZpqHCIPm4Ac5VWXJb625uLPL/XbmDvMoqvoPCMCg8NM5i7ruvPumqyGiTA==@kvack.org
-X-Gm-Message-State: AOJu0YwdeblD7MA8rMN9IwvT2xhQPUtIWolClqYEGWIuUqVbQfYItKkq
-	CxUHxeVNB3btnltHiKR+xtq3MCibGd8KCSfKX2j8jMlHQKnefyWzLANDbsDQIHj9ngnIuM2vIq+
-	ZUzFY/VW/bAjtgT1JJ4uhAnG/LKsDz812NMvXSP9bAE1PQ6icU9PR
-X-Gm-Gg: ASbGnctjlsX31DMktuO2YclgRjUWFj97GV+DjQA2KkjSLdhjaaBedYI1q9BSzpFARsv
-	0VtdE6HMQND9BoI3b4TgW1WB6tCOjgvT1ohXyNaW9kUKkALFPTJwzJGanFAZTx7Y35+RNR+2K4I
-	E95Zh5Vj2K3ZxrFiIIGy1H/gx49jbQZpPKsLHy8q8v+wPhRzrvx5Xy7ofmlPR/n/DZ5BqO2n584
-	ggnxlGAnNYLiPtVFDTXTNR/I2LM065U0x0Wykbja25Lxke8svNDTZEpFB3ls+wawq85FSeZEPmo
-	J05Li/NDcwk4XHb1QdL+fvJH9OFHYiyFeYmxbNumf6aKTpWYGZiu06aC9+qUHIVtUohw2A==
-X-Received: by 2002:a05:600c:1f92:b0:43c:f0ae:da7 with SMTP id 5b1f17b1804b1-45892b95237mr86051225e9.7.1754031706204;
-        Fri, 01 Aug 2025 00:01:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IErqucNH6Uk9qoz1h7M+ma0OZewrY6Jwo0tRumsqvq9Qg4RfQPmtdG2FxTmR7BhMagAPVGW2w==
-X-Received: by 2002:a05:600c:1f92:b0:43c:f0ae:da7 with SMTP id 5b1f17b1804b1-45892b95237mr86050575e9.7.1754031705603;
-        Fri, 01 Aug 2025 00:01:45 -0700 (PDT)
+        bh=QZB1JE8ru4mK4hnR9SsG1KVSQ/pprulHKoW6ee0NdMw=;
+        b=Hv9F0KFOg+ixJGcQjwECmwgNlbQUXvuOAA99i4M+UdE31SPZ83OUGnj9gxEHkfwlG8
+         i0RkYrx7NqzLBNFTR0u2CvZuCDOXj42YAzY87oMvwNNyKwjcttP1jsvxcSEdJs+9Ff7i
+         8TZ5rUsY8ET63qEa0/VrdgLYjpyhFYSm8LsWeipYuXbfZ/PHuppJCEuCSAkv9GIwxu0F
+         s8LC4cdag+JsRSZmw8eBZ/4pOp/5qtz4UwC1gTWvRdqYpBFJPsxtAgYjdJxCzMvf0AZ9
+         li4zwiuP8GWrxc1zkig5CXZKSSGvp1v5lwWNbO/rtBhI1DZNyaa7VrqGSu11bNdo5dis
+         nldA==
+X-Gm-Message-State: AOJu0YzMdQ7Q3pl2YEnydy9FtS8nIOitg0BbMW/vwo5DmKOFlxzPbHUf
+	gEOv2QTuDTPWn9EfSmwVfaAZUCHaOc4V/A8cSAIr/Jp/2oX7KfH7CQUY7T2fBeLPWGjFhrwdRMp
+	QoHIbbzCuK6NQ56kIdhM3PutIZznX9weWzRF+VMiR3sqqt6ktSNFo
+X-Gm-Gg: ASbGncsvKWLrxqz2wBrYmLXrwXXNc0+fUIk8JcNZaCLQ7pG6lllplVDGWs8/HQIcg+j
+	LnMQDmEGNO8Tu28r9+qcFf+Gn7191zzA4yuMhBfHBFnxld15XPMQpMQZu6YI7jbWpf3Bv1qDHa0
+	Vw12kPnkqU+l/Xt4EL+5+g1q6sR8/YDvRxFFiV1D0MmYyHKECRGVAu3i+FWaYj85qUha7Xf/qlp
+	F5D48t+qwaUNVUHohoIFQQodyfFkuYZSF0AMBv201XZ4lc0ShgNvqYiNJm37EzSDdiaAFBu4b62
+	+web03Mo5edNlSOZ2SoyD8mh/G57MHWUQ0mLR/PDMer//Ak089nvAsoMhFo7LKoTS9O5wA==
+X-Received: by 2002:a05:6000:2303:b0:3b7:9bfe:4f64 with SMTP id ffacd0b85a97d-3b79bfe50damr4381971f8f.54.1754031890110;
+        Fri, 01 Aug 2025 00:04:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH6hZNO2MOs+gHYmiW/mGq8CJn0yoVxXoy4BUDRU6DvzOkNMBu8QGtwGI2DcXSb21LZKGyUzQ==
+X-Received: by 2002:a05:6000:2303:b0:3b7:9bfe:4f64 with SMTP id ffacd0b85a97d-3b79bfe50damr4381943f8f.54.1754031889594;
+        Fri, 01 Aug 2025 00:04:49 -0700 (PDT)
 Received: from [192.168.3.141] (p4ff1fa24.dip0.t-ipconnect.de. [79.241.250.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4589ee57a95sm53702455e9.23.2025.08.01.00.01.44
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c47ae8esm4774774f8f.61.2025.08.01.00.04.47
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 Aug 2025 00:01:44 -0700 (PDT)
-Message-ID: <c25ec769-986c-4808-ad13-efe74807de48@redhat.com>
-Date: Fri, 1 Aug 2025 09:01:43 +0200
+        Fri, 01 Aug 2025 00:04:48 -0700 (PDT)
+Message-ID: <edbe38d4-3489-4c83-80fb-dc96a7684294@redhat.com>
+Date: Fri, 1 Aug 2025 09:04:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [v2 02/11] mm/thp: zone_device awareness in THP handling code
-To: Zi Yan <ziy@nvidia.com>, Balbir Singh <balbirs@nvidia.com>
-Cc: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Karol Herbst <kherbst@redhat.com>,
- Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Shuah Khan <shuah@kernel.org>, Barry Song <baohua@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
+To: Balbir Singh <balbirs@nvidia.com>, =?UTF-8?Q?Mika_Penttil=C3=A4?=
+ <mpenttil@redhat.com>, Zi Yan <ziy@nvidia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Karol Herbst <kherbst@redhat.com>, Lyude Paul <lyude@redhat.com>,
+ Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?=
+ <jglisse@redhat.com>, Shuah Khan <shuah@kernel.org>,
+ Barry Song <baohua@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>,
  Ryan Roberts <ryan.roberts@arm.com>, Matthew Wilcox <willy@infradead.org>,
  Peter Xu <peterx@redhat.com>, Kefeng Wang <wangkefeng.wang@huawei.com>,
  Jane Chu <jane.chu@oracle.com>, Alistair Popple <apopple@nvidia.com>,
@@ -131,7 +130,8 @@ References: <20250730092139.3890844-1-balbirs@nvidia.com>
  <b5fa0989-a64a-4c91-ac34-6fb29ee6d132@redhat.com>
  <EC99D49E-86FF-4A50-A1AA-FC43A7D3716C@nvidia.com>
  <14aeaecc-c394-41bf-ae30-24537eb299d9@nvidia.com>
- <D6489A94-4045-40C8-BF56-A378A5F52F12@nvidia.com>
+ <e5dd3f46-c063-45ff-8be7-64ac92534985@redhat.com>
+ <71c736e9-eb77-4e8e-bd6a-965a1bbcbaa8@nvidia.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -178,21 +178,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  WBe5lqcozu9LpNDH/brVSzHCSb7vjNGvvSVESDuoiHK8gNlf0v+epy5WYd7CGAgODPvDShGN
  g3eXuA==
 Organization: Red Hat
-In-Reply-To: <D6489A94-4045-40C8-BF56-A378A5F52F12@nvidia.com>
+In-Reply-To: <71c736e9-eb77-4e8e-bd6a-965a1bbcbaa8@nvidia.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: q93S93aUnoWdevWk32tFp-my_cs6yOOHvEz2JRQmyaA_1754031706
+X-Mimecast-MFC-PROC-ID: GBnraf3Vf5YxnJi2d9dsei95ORGV9Fi2qmpnKjRmi08_1754031890
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: gkmgehu56csdgn6hpiped5r1zratbgef
+X-Stat-Signature: pgoin8edxwqan9wr8h7k7n3r5bq9cmjf
+X-Rspamd-Queue-Id: 6484E40008
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 711B240004
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1754031709-327884
-X-HE-Meta: U2FsdGVkX1/EgwmPQX4Td1AOvG5Tz8sYmALO3/x21JyL5vgc46hhOPUTJN6Xr5dqkSrD/3bpBDbJDFquGNG9MdLofK6kmznUxDIWcg0ihgUPCWB+/QBRgPbNK7Q+cAyfS8+vgi7orXygYWc+CP9h7ZvXXymXEs+FJUA3O147Q98Tc7uTB9YCdKLh/PPsjQnO2A6JvA0H36adjL4boQII+m84s1Et4HMUbgC5fSE9GAJqcqOtHcgVaw4C1BH0F9owAk0jmDrK7Z3CKc2u6Q/asgZI6qlnb6g3rIdK/MpyhwnLST6EO47mpJyjMmIikwXe6TBePaxUVo0QaEqgaleE6fcrMpiH4s3TwALyYdisBhyvOQE6sre8gqao0HlQSxqCqCeNVHkMSQRrpempa89esBbKACIc57zmEH6ZS/XIA3H+v40iOb10VsAZxe0fuwGuP4tsGZuAwSOF3oRMVJ0mgSmrdVX6SRsK9Reeyv5b6oOLn6QU4c8EQI7p9MVzClmISF1FRc71swRAiyPEuv4LSOMH4oJOIycIY1giY2A194eaf9krYCRYmiTzmWThSgdyfHyas3+iH46Z+IFXlsGSIvoaQwy8fRHYi5LUMZkirEFzCqzAbBhCrvI9oVhI73BqhOemI5s6q4FPW9geY0rtBY6ullPT5jlQ6CHtKGUPkmDxzfxPptQLRJachvJbNvP2J76KhYaZJ8zRg8pzlzuK77gEVN1knaUe8HwdPlq0FvvC8S8Cr60sJ8aYEB/ZaEGQ3/11N/SzMFhlH/p+iKqd6aVFJPVcFSXgVD8Y0rbOPs7niQPKVpEIsthqKZJmj3Oo6XiuB/rvTiQmQ+DlueJx4+jy5h/tC0eL5zJmy0DFTyhkObNjqouI1WKUFvEHk4ZKIq1ZuP4ZepZ1iYnopXZNToFL+C+nR11kmahrIVJUZ+giB4ZivkSGSoDw/UhZUZtBe7x2GPy0qQFy7C3n1X4
- GhrLo/P1
- b3JVh5IV41G5hJHWR0G8wKel9j/HIFwgEKCDEfENxRSQptdP6ylVWqtG1aX8shNsPbqMManrMljWtX+WwWynfdmTgckM7sY3MQrGt5YNK9TNuuJA18E0G4Mh5Xw3B1wZG7Zofg/wKoq0rrdSseeutYMp9vsypO44tdNO2Uz+/kwieszbqLWuUkcBozjfYoYnqKWUGtuGde3RS61+akxW3UgMHnE+kpUydG15R6cRRhGxiaTOPbQySX5fmomOU/H1sPtRZsu5zNE2rAgY38M1AUjucKnCi188wsP3m0qGR71u9n/qWrrqybhhDNA8I+XaQYs/ZPmGhIpGtLg6H2N8l0ye6+JTvGQ1v6sfgjl87D1yHlUe4mBhBYSwquMmIvsJBWJ3CsAw0FE2L2gShpqF0GlxrsuB9Mj8QBKQ6BQZzqvEN+urANkJ5o5CJrTCIWAg/1jRwgFDV+bla/rR/P6WHO5SK5ZqHb5IRTOsi593qdEDJJ3YMyiFhqx6sSKnJQry8Z8GgpvIEvuDKheln1jlfh3EY3li4WRJRCxkx3zMS/87R4Tyw3eZ6ozZ6FL3TDEIpgFu/2KpFsmY4MobBNlnBi62Is9Tq3DgxrZ1ueXlCBl0Ks/he1t44PZtN42cTgotmCwdGOqlH+7fbKbEaryvQI1Jje6EHEv8uGAPtLCNaUCY+QlaCBbAbMSRjxIIkBGb6bhBn1CeYFin1nekL1kXQGyG1iSSjFSCVEFqMzkRXh56wJEuSdYqnoV4eFG7SrehbeKhYHlhJLS04h6Y6yMdRpLvKLg==
+X-HE-Tag: 1754031893-146430
+X-HE-Meta: U2FsdGVkX19aE9Uyiz3fsp7d//Qkp3D4bbW1TU8VCIwFo5x12unysyfcmH0hh/yUCNZ3HN3PZxm9++D0RZeWGM6rUOYCWTGl/5L24LvTE8WINR/xn3+4kWM+4s5vhbn6SZMHW4kZqsBVbFwCGYJPxHXxiraZrIi/vDb4KWttVXoKNSwszE+M28oWvUCmhC4F5P2wDgXxz/dVhgDIZWDGIGSCSsF391u52a7yl1z9J797BRkAdT0ehb4wWHEeF5UUZXRenHrM5n706Ct7A/6ko2vKtSXWq8viH/HB9XSlwi3SlWjFhSM9kb05jAQPN8935D2uDo56mttsI+enlQWbsAtVEDxj2tAJdz0SahE4W2s1Tl0betRKeBXFLPcn110EXXxiiMps1l7DVgpDqydWdJOkhET5eGwff5E3Gs7EEie4SKN393bplAislwrcAfdMbPsB4aMZYvgMzw/huHco3Li//kfLfEhknZHe2O5egUR9tUQ1UEHDXuMbrLhL2UeGZfkiCA5QUn5ZN44U8YXkmawtU8XanKlO62aMKBuTnqCQFHrTHfNaeNhkWlnIcbPN7S6BLMI8Lv7yAqP7wZw789U7vrGEHy6aL7wf3QOwl3XDHjsQKiXEZAEuZPNQwMEj3l8xHHRqp0vYEQ3ay1OdC7HxD8AObb4FXjyW//zxj6/fyKUj6Y+G95vWL0aeisHgO9+txZwAH5AZyFTsr9tyFstpTVwIKNNx9LwcAl8M+GMzbOgP8/T+fu2JdMx49cpxLaWrbnmCJDUgrbEC34/FQav1FeTZ/Y2yij9dqjyo9+WABWOm5UxPuHTZC7jrOXDd+vjoxAw8GQVhabncnRPPwrOPslqC34ojXnOzm1kInT7UMuKM/a7NBIbqusydRkjHu1Rpjk7nL/z26SRxmxvzW5oiMZ5JN8Vb1nhuB4kbqzS+he6jUxv9ZLsRfpHF5eTTgv5tc+zP1yyEyxKTa7E
+ PC2+dxB+
+ n8OUd5zbO2UtqGUxLLl/ylDUCWQwhNSDJsqyMuAzOU1llZ8VS/rr60XPImbd80migqKWbySrh/SM9Zw3Y9NZ3pj+HLHa516QzO9UXTBeRywWzO9st+RC1OEQtWH1X0YZjGEfeYVUyxCPk9OUJswRvicKr32hWIeNL/OVjSDmXuOCgH6SlZDoRrQGF5CS/4PVAp6LoJmozvGn3F644guVtW2kfcsR/sdiTzxiSo7yQb4V8Cpcglfzfia9RXmIxh5+G/qSVZLVrx3+sA6p4QpZmfHPgnzTI9xh+LstwYVsLfcl1GSQRlTDThC9V6nJXdKvIE3dFOYd749/s8qlCGsAzpuyYuyGsH2DWeiM+uQ8/8JJNbGIvfMTdyPMCvwQY+ybO4+LjWm2XKKorG3hp2ztr0+KUD/IQwNcbXr5FbrpssoYwRFkf4VMv3oyuOklF0UvynXLAspYBveXXd2zrsUVGOp5bKOyQ/zf7rbfP3AYI89VVFj5stg+ujHK+sl8CjkBwkyE0Ehx+TYdNBkYT4v+e5/M3Px21U5SxL1X8svGFn/Q8fGyrYTHj71rnBC2Y3tXK8qohTsNi4TCaAlm/wZUULSppOnc11CmbYcXvdjDv/etM7TH4mFl3dpH6CZyP1fQ//eoZNLfr2G6BhXbmHfqiZAUbO/vKsWGxvHZd++Jjvofh8p15r/ebMGM45rhw+vZRfTtOSVkC99WL/I3MjjTxIOtvdmyQhfnfKA5OINtb64RtSqtRTV6RXLosyhC4o66FaiOqBfjPQdZbmFd8Sqi7TBeILcVQsSf21luSmmZOYRCieeleBQWTAbE4nBJcgH/kVfzo
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -201,223 +201,243 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 01.08.25 03:09, Zi Yan wrote:
-> On 31 Jul 2025, at 20:49, Balbir Singh wrote:
-> 
->> On 7/31/25 21:26, Zi Yan wrote:
->>> On 31 Jul 2025, at 3:15, David Hildenbrand wrote:
->>>
->>>> On 30.07.25 18:29, Mika Penttilä wrote:
->>>>>
->>>>> On 7/30/25 18:58, Zi Yan wrote:
->>>>>> On 30 Jul 2025, at 11:40, Mika Penttilä wrote:
->>>>>>
->>>>>>> On 7/30/25 18:10, Zi Yan wrote:
->>>>>>>> On 30 Jul 2025, at 8:49, Mika Penttilä wrote:
->>>>>>>>
->>>>>>>>> On 7/30/25 15:25, Zi Yan wrote:
->>>>>>>>>> On 30 Jul 2025, at 8:08, Mika Penttilä wrote:
->>>>>>>>>>
->>>>>>>>>>> On 7/30/25 14:42, Mika Penttilä wrote:
->>>>>>>>>>>> On 7/30/25 14:30, Zi Yan wrote:
->>>>>>>>>>>>> On 30 Jul 2025, at 7:27, Zi Yan wrote:
->>>>>>>>>>>>>
->>>>>>>>>>>>>> On 30 Jul 2025, at 7:16, Mika Penttilä wrote:
+On 01.08.25 06:44, Balbir Singh wrote:
+> On 8/1/25 11:16, Mika Penttilä wrote:
+>> Hi,
+>>
+>> On 8/1/25 03:49, Balbir Singh wrote:
+>>
+>>> On 7/31/25 21:26, Zi Yan wrote:
+>>>> On 31 Jul 2025, at 3:15, David Hildenbrand wrote:
+>>>>
+>>>>> On 30.07.25 18:29, Mika Penttilä wrote:
+>>>>>> On 7/30/25 18:58, Zi Yan wrote:
+>>>>>>> On 30 Jul 2025, at 11:40, Mika Penttilä wrote:
+>>>>>>>
+>>>>>>>> On 7/30/25 18:10, Zi Yan wrote:
+>>>>>>>>> On 30 Jul 2025, at 8:49, Mika Penttilä wrote:
+>>>>>>>>>
+>>>>>>>>>> On 7/30/25 15:25, Zi Yan wrote:
+>>>>>>>>>>> On 30 Jul 2025, at 8:08, Mika Penttilä wrote:
+>>>>>>>>>>>
+>>>>>>>>>>>> On 7/30/25 14:42, Mika Penttilä wrote:
+>>>>>>>>>>>>> On 7/30/25 14:30, Zi Yan wrote:
+>>>>>>>>>>>>>> On 30 Jul 2025, at 7:27, Zi Yan wrote:
 >>>>>>>>>>>>>>
->>>>>>>>>>>>>>> Hi,
+>>>>>>>>>>>>>>> On 30 Jul 2025, at 7:16, Mika Penttilä wrote:
 >>>>>>>>>>>>>>>
->>>>>>>>>>>>>>> On 7/30/25 12:21, Balbir Singh wrote:
->>>>>>>>>>>>>>>> Make THP handling code in the mm subsystem for THP pages aware of zone
->>>>>>>>>>>>>>>> device pages. Although the code is designed to be generic when it comes
->>>>>>>>>>>>>>>> to handling splitting of pages, the code is designed to work for THP
->>>>>>>>>>>>>>>> page sizes corresponding to HPAGE_PMD_NR.
+>>>>>>>>>>>>>>>> Hi,
 >>>>>>>>>>>>>>>>
->>>>>>>>>>>>>>>> Modify page_vma_mapped_walk() to return true when a zone device huge
->>>>>>>>>>>>>>>> entry is present, enabling try_to_migrate() and other code migration
->>>>>>>>>>>>>>>> paths to appropriately process the entry. page_vma_mapped_walk() will
->>>>>>>>>>>>>>>> return true for zone device private large folios only when
->>>>>>>>>>>>>>>> PVMW_THP_DEVICE_PRIVATE is passed. This is to prevent locations that are
->>>>>>>>>>>>>>>> not zone device private pages from having to add awareness. The key
->>>>>>>>>>>>>>>> callback that needs this flag is try_to_migrate_one(). The other
->>>>>>>>>>>>>>>> callbacks page idle, damon use it for setting young/dirty bits, which is
->>>>>>>>>>>>>>>> not significant when it comes to pmd level bit harvesting.
->>>>>>>>>>>>>>>>
->>>>>>>>>>>>>>>> pmd_pfn() does not work well with zone device entries, use
->>>>>>>>>>>>>>>> pfn_pmd_entry_to_swap() for checking and comparison as for zone device
->>>>>>>>>>>>>>>> entries.
->>>>>>>>>>>>>>>>
->>>>>>>>>>>>>>>> Zone device private entries when split via munmap go through pmd split,
->>>>>>>>>>>>>>>> but need to go through a folio split, deferred split does not work if a
->>>>>>>>>>>>>>>> fault is encountered because fault handling involves migration entries
->>>>>>>>>>>>>>>> (via folio_migrate_mapping) and the folio sizes are expected to be the
->>>>>>>>>>>>>>>> same there. This introduces the need to split the folio while handling
->>>>>>>>>>>>>>>> the pmd split. Because the folio is still mapped, but calling
->>>>>>>>>>>>>>>> folio_split() will cause lock recursion, the __split_unmapped_folio()
->>>>>>>>>>>>>>>> code is used with a new helper to wrap the code
->>>>>>>>>>>>>>>> split_device_private_folio(), which skips the checks around
->>>>>>>>>>>>>>>> folio->mapping, swapcache and the need to go through unmap and remap
->>>>>>>>>>>>>>>> folio.
->>>>>>>>>>>>>>>>
->>>>>>>>>>>>>>>> Cc: Karol Herbst <kherbst@redhat.com>
->>>>>>>>>>>>>>>> Cc: Lyude Paul <lyude@redhat.com>
->>>>>>>>>>>>>>>> Cc: Danilo Krummrich <dakr@kernel.org>
->>>>>>>>>>>>>>>> Cc: David Airlie <airlied@gmail.com>
->>>>>>>>>>>>>>>> Cc: Simona Vetter <simona@ffwll.ch>
->>>>>>>>>>>>>>>> Cc: "Jérôme Glisse" <jglisse@redhat.com>
->>>>>>>>>>>>>>>> Cc: Shuah Khan <shuah@kernel.org>
->>>>>>>>>>>>>>>> Cc: David Hildenbrand <david@redhat.com>
->>>>>>>>>>>>>>>> Cc: Barry Song <baohua@kernel.org>
->>>>>>>>>>>>>>>> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
->>>>>>>>>>>>>>>> Cc: Ryan Roberts <ryan.roberts@arm.com>
->>>>>>>>>>>>>>>> Cc: Matthew Wilcox <willy@infradead.org>
->>>>>>>>>>>>>>>> Cc: Peter Xu <peterx@redhat.com>
->>>>>>>>>>>>>>>> Cc: Zi Yan <ziy@nvidia.com>
->>>>>>>>>>>>>>>> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
->>>>>>>>>>>>>>>> Cc: Jane Chu <jane.chu@oracle.com>
->>>>>>>>>>>>>>>> Cc: Alistair Popple <apopple@nvidia.com>
->>>>>>>>>>>>>>>> Cc: Donet Tom <donettom@linux.ibm.com>
->>>>>>>>>>>>>>>> Cc: Mika Penttilä <mpenttil@redhat.com>
->>>>>>>>>>>>>>>> Cc: Matthew Brost <matthew.brost@intel.com>
->>>>>>>>>>>>>>>> Cc: Francois Dugast <francois.dugast@intel.com>
->>>>>>>>>>>>>>>> Cc: Ralph Campbell <rcampbell@nvidia.com>
->>>>>>>>>>>>>>>>
->>>>>>>>>>>>>>>> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
->>>>>>>>>>>>>>>> Signed-off-by: Balbir Singh <balbirs@nvidia.com>
->>>>>>>>>>>>>>>> ---
->>>>>>>>>>>>>>>>    include/linux/huge_mm.h |   1 +
->>>>>>>>>>>>>>>>    include/linux/rmap.h    |   2 +
->>>>>>>>>>>>>>>>    include/linux/swapops.h |  17 +++
->>>>>>>>>>>>>>>>    mm/huge_memory.c        | 268 +++++++++++++++++++++++++++++++++-------
->>>>>>>>>>>>>>>>    mm/page_vma_mapped.c    |  13 +-
->>>>>>>>>>>>>>>>    mm/pgtable-generic.c    |   6 +
->>>>>>>>>>>>>>>>    mm/rmap.c               |  22 +++-
->>>>>>>>>>>>>>>>    7 files changed, 278 insertions(+), 51 deletions(-)
->>>>>>>>>>>>>>>>
->>>>>>>>>>>>>> <snip>
->>>>>>>>>>>>>>
->>>>>>>>>>>>>>>> +/**
->>>>>>>>>>>>>>>> + * split_huge_device_private_folio - split a huge device private folio into
->>>>>>>>>>>>>>>> + * smaller pages (of order 0), currently used by migrate_device logic to
->>>>>>>>>>>>>>>> + * split folios for pages that are partially mapped
->>>>>>>>>>>>>>>> + *
->>>>>>>>>>>>>>>> + * @folio: the folio to split
->>>>>>>>>>>>>>>> + *
->>>>>>>>>>>>>>>> + * The caller has to hold the folio_lock and a reference via folio_get
->>>>>>>>>>>>>>>> + */
->>>>>>>>>>>>>>>> +int split_device_private_folio(struct folio *folio)
->>>>>>>>>>>>>>>> +{
->>>>>>>>>>>>>>>> +	struct folio *end_folio = folio_next(folio);
->>>>>>>>>>>>>>>> +	struct folio *new_folio;
->>>>>>>>>>>>>>>> +	int ret = 0;
->>>>>>>>>>>>>>>> +
->>>>>>>>>>>>>>>> +	/*
->>>>>>>>>>>>>>>> +	 * Split the folio now. In the case of device
->>>>>>>>>>>>>>>> +	 * private pages, this path is executed when
->>>>>>>>>>>>>>>> +	 * the pmd is split and since freeze is not true
->>>>>>>>>>>>>>>> +	 * it is likely the folio will be deferred_split.
->>>>>>>>>>>>>>>> +	 *
->>>>>>>>>>>>>>>> +	 * With device private pages, deferred splits of
->>>>>>>>>>>>>>>> +	 * folios should be handled here to prevent partial
->>>>>>>>>>>>>>>> +	 * unmaps from causing issues later on in migration
->>>>>>>>>>>>>>>> +	 * and fault handling flows.
->>>>>>>>>>>>>>>> +	 */
->>>>>>>>>>>>>>>> +	folio_ref_freeze(folio, 1 + folio_expected_ref_count(folio));
->>>>>>>>>>>>>>> Why can't this freeze fail? The folio is still mapped afaics, why can't there be other references in addition to the caller?
->>>>>>>>>>>>>> Based on my off-list conversation with Balbir, the folio is unmapped in
->>>>>>>>>>>>>> CPU side but mapped in the device. folio_ref_freeeze() is not aware of
->>>>>>>>>>>>>> device side mapping.
->>>>>>>>>>>>> Maybe we should make it aware of device private mapping? So that the
->>>>>>>>>>>>> process mirrors CPU side folio split: 1) unmap device private mapping,
->>>>>>>>>>>>> 2) freeze device private folio, 3) split unmapped folio, 4) unfreeze,
->>>>>>>>>>>>> 5) remap device private mapping.
->>>>>>>>>>>> Ah ok this was about device private page obviously here, nevermind..
->>>>>>>>>>> Still, isn't this reachable from split_huge_pmd() paths and folio is mapped to CPU page tables as a huge device page by one or more task?
->>>>>>>>>> The folio only has migration entries pointing to it. From CPU perspective,
->>>>>>>>>> it is not mapped. The unmap_folio() used by __folio_split() unmaps a to-be-split
->>>>>>>>>> folio by replacing existing page table entries with migration entries
->>>>>>>>>> and after that the folio is regarded as “unmapped”.
->>>>>>>>>>
->>>>>>>>>> The migration entry is an invalid CPU page table entry, so it is not a CPU
->>>>>>>>> split_device_private_folio() is called for device private entry, not migrate entry afaics.
->>>>>>>> Yes, but from CPU perspective, both device private entry and migration entry
->>>>>>>> are invalid CPU page table entries, so the device private folio is “unmapped”
->>>>>>>> at CPU side.
->>>>>>> Yes both are "swap entries" but there's difference, the device private ones contribute to mapcount and refcount.
->>>>>> Right. That confused me when I was talking to Balbir and looking at v1.
->>>>>> When a device private folio is processed in __folio_split(), Balbir needed to
->>>>>> add code to skip CPU mapping handling code. Basically device private folios are
->>>>>> CPU unmapped and device mapped.
+>>>>>>>>>>>>>>>> On 7/30/25 12:21, Balbir Singh wrote:
+>>>>>>>>>>>>>>>>> Make THP handling code in the mm subsystem for THP pages aware of zone
+>>>>>>>>>>>>>>>>> device pages. Although the code is designed to be generic when it comes
+>>>>>>>>>>>>>>>>> to handling splitting of pages, the code is designed to work for THP
+>>>>>>>>>>>>>>>>> page sizes corresponding to HPAGE_PMD_NR.
+>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>> Modify page_vma_mapped_walk() to return true when a zone device huge
+>>>>>>>>>>>>>>>>> entry is present, enabling try_to_migrate() and other code migration
+>>>>>>>>>>>>>>>>> paths to appropriately process the entry. page_vma_mapped_walk() will
+>>>>>>>>>>>>>>>>> return true for zone device private large folios only when
+>>>>>>>>>>>>>>>>> PVMW_THP_DEVICE_PRIVATE is passed. This is to prevent locations that are
+>>>>>>>>>>>>>>>>> not zone device private pages from having to add awareness. The key
+>>>>>>>>>>>>>>>>> callback that needs this flag is try_to_migrate_one(). The other
+>>>>>>>>>>>>>>>>> callbacks page idle, damon use it for setting young/dirty bits, which is
+>>>>>>>>>>>>>>>>> not significant when it comes to pmd level bit harvesting.
+>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>> pmd_pfn() does not work well with zone device entries, use
+>>>>>>>>>>>>>>>>> pfn_pmd_entry_to_swap() for checking and comparison as for zone device
+>>>>>>>>>>>>>>>>> entries.
+>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>> Zone device private entries when split via munmap go through pmd split,
+>>>>>>>>>>>>>>>>> but need to go through a folio split, deferred split does not work if a
+>>>>>>>>>>>>>>>>> fault is encountered because fault handling involves migration entries
+>>>>>>>>>>>>>>>>> (via folio_migrate_mapping) and the folio sizes are expected to be the
+>>>>>>>>>>>>>>>>> same there. This introduces the need to split the folio while handling
+>>>>>>>>>>>>>>>>> the pmd split. Because the folio is still mapped, but calling
+>>>>>>>>>>>>>>>>> folio_split() will cause lock recursion, the __split_unmapped_folio()
+>>>>>>>>>>>>>>>>> code is used with a new helper to wrap the code
+>>>>>>>>>>>>>>>>> split_device_private_folio(), which skips the checks around
+>>>>>>>>>>>>>>>>> folio->mapping, swapcache and the need to go through unmap and remap
+>>>>>>>>>>>>>>>>> folio.
+>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>> Cc: Karol Herbst <kherbst@redhat.com>
+>>>>>>>>>>>>>>>>> Cc: Lyude Paul <lyude@redhat.com>
+>>>>>>>>>>>>>>>>> Cc: Danilo Krummrich <dakr@kernel.org>
+>>>>>>>>>>>>>>>>> Cc: David Airlie <airlied@gmail.com>
+>>>>>>>>>>>>>>>>> Cc: Simona Vetter <simona@ffwll.ch>
+>>>>>>>>>>>>>>>>> Cc: "Jérôme Glisse" <jglisse@redhat.com>
+>>>>>>>>>>>>>>>>> Cc: Shuah Khan <shuah@kernel.org>
+>>>>>>>>>>>>>>>>> Cc: David Hildenbrand <david@redhat.com>
+>>>>>>>>>>>>>>>>> Cc: Barry Song <baohua@kernel.org>
+>>>>>>>>>>>>>>>>> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>>>>>>>>>>>>>>>> Cc: Ryan Roberts <ryan.roberts@arm.com>
+>>>>>>>>>>>>>>>>> Cc: Matthew Wilcox <willy@infradead.org>
+>>>>>>>>>>>>>>>>> Cc: Peter Xu <peterx@redhat.com>
+>>>>>>>>>>>>>>>>> Cc: Zi Yan <ziy@nvidia.com>
+>>>>>>>>>>>>>>>>> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+>>>>>>>>>>>>>>>>> Cc: Jane Chu <jane.chu@oracle.com>
+>>>>>>>>>>>>>>>>> Cc: Alistair Popple <apopple@nvidia.com>
+>>>>>>>>>>>>>>>>> Cc: Donet Tom <donettom@linux.ibm.com>
+>>>>>>>>>>>>>>>>> Cc: Mika Penttilä <mpenttil@redhat.com>
+>>>>>>>>>>>>>>>>> Cc: Matthew Brost <matthew.brost@intel.com>
+>>>>>>>>>>>>>>>>> Cc: Francois Dugast <francois.dugast@intel.com>
+>>>>>>>>>>>>>>>>> Cc: Ralph Campbell <rcampbell@nvidia.com>
+>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+>>>>>>>>>>>>>>>>> Signed-off-by: Balbir Singh <balbirs@nvidia.com>
+>>>>>>>>>>>>>>>>> ---
+>>>>>>>>>>>>>>>>>    include/linux/huge_mm.h |   1 +
+>>>>>>>>>>>>>>>>>    include/linux/rmap.h    |   2 +
+>>>>>>>>>>>>>>>>>    include/linux/swapops.h |  17 +++
+>>>>>>>>>>>>>>>>>    mm/huge_memory.c        | 268 +++++++++++++++++++++++++++++++++-------
+>>>>>>>>>>>>>>>>>    mm/page_vma_mapped.c    |  13 +-
+>>>>>>>>>>>>>>>>>    mm/pgtable-generic.c    |   6 +
+>>>>>>>>>>>>>>>>>    mm/rmap.c               |  22 +++-
+>>>>>>>>>>>>>>>>>    7 files changed, 278 insertions(+), 51 deletions(-)
+>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>> <snip>
+>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>> +/**
+>>>>>>>>>>>>>>>>> + * split_huge_device_private_folio - split a huge device private folio into
+>>>>>>>>>>>>>>>>> + * smaller pages (of order 0), currently used by migrate_device logic to
+>>>>>>>>>>>>>>>>> + * split folios for pages that are partially mapped
+>>>>>>>>>>>>>>>>> + *
+>>>>>>>>>>>>>>>>> + * @folio: the folio to split
+>>>>>>>>>>>>>>>>> + *
+>>>>>>>>>>>>>>>>> + * The caller has to hold the folio_lock and a reference via folio_get
+>>>>>>>>>>>>>>>>> + */
+>>>>>>>>>>>>>>>>> +int split_device_private_folio(struct folio *folio)
+>>>>>>>>>>>>>>>>> +{
+>>>>>>>>>>>>>>>>> +	struct folio *end_folio = folio_next(folio);
+>>>>>>>>>>>>>>>>> +	struct folio *new_folio;
+>>>>>>>>>>>>>>>>> +	int ret = 0;
+>>>>>>>>>>>>>>>>> +
+>>>>>>>>>>>>>>>>> +	/*
+>>>>>>>>>>>>>>>>> +	 * Split the folio now. In the case of device
+>>>>>>>>>>>>>>>>> +	 * private pages, this path is executed when
+>>>>>>>>>>>>>>>>> +	 * the pmd is split and since freeze is not true
+>>>>>>>>>>>>>>>>> +	 * it is likely the folio will be deferred_split.
+>>>>>>>>>>>>>>>>> +	 *
+>>>>>>>>>>>>>>>>> +	 * With device private pages, deferred splits of
+>>>>>>>>>>>>>>>>> +	 * folios should be handled here to prevent partial
+>>>>>>>>>>>>>>>>> +	 * unmaps from causing issues later on in migration
+>>>>>>>>>>>>>>>>> +	 * and fault handling flows.
+>>>>>>>>>>>>>>>>> +	 */
+>>>>>>>>>>>>>>>>> +	folio_ref_freeze(folio, 1 + folio_expected_ref_count(folio));
+>>>>>>>>>>>>>>>> Why can't this freeze fail? The folio is still mapped afaics, why can't there be other references in addition to the caller?
+>>>>>>>>>>>>>>> Based on my off-list conversation with Balbir, the folio is unmapped in
+>>>>>>>>>>>>>>> CPU side but mapped in the device. folio_ref_freeeze() is not aware of
+>>>>>>>>>>>>>>> device side mapping.
+>>>>>>>>>>>>>> Maybe we should make it aware of device private mapping? So that the
+>>>>>>>>>>>>>> process mirrors CPU side folio split: 1) unmap device private mapping,
+>>>>>>>>>>>>>> 2) freeze device private folio, 3) split unmapped folio, 4) unfreeze,
+>>>>>>>>>>>>>> 5) remap device private mapping.
+>>>>>>>>>>>>> Ah ok this was about device private page obviously here, nevermind..
+>>>>>>>>>>>> Still, isn't this reachable from split_huge_pmd() paths and folio is mapped to CPU page tables as a huge device page by one or more task?
+>>>>>>>>>>> The folio only has migration entries pointing to it. From CPU perspective,
+>>>>>>>>>>> it is not mapped. The unmap_folio() used by __folio_split() unmaps a to-be-split
+>>>>>>>>>>> folio by replacing existing page table entries with migration entries
+>>>>>>>>>>> and after that the folio is regarded as “unmapped”.
+>>>>>>>>>>>
+>>>>>>>>>>> The migration entry is an invalid CPU page table entry, so it is not a CPU
+>>>>>>>>>> split_device_private_folio() is called for device private entry, not migrate entry afaics.
+>>>>>>>>> Yes, but from CPU perspective, both device private entry and migration entry
+>>>>>>>>> are invalid CPU page table entries, so the device private folio is “unmapped”
+>>>>>>>>> at CPU side.
+>>>>>>>> Yes both are "swap entries" but there's difference, the device private ones contribute to mapcount and refcount.
+>>>>>>> Right. That confused me when I was talking to Balbir and looking at v1.
+>>>>>>> When a device private folio is processed in __folio_split(), Balbir needed to
+>>>>>>> add code to skip CPU mapping handling code. Basically device private folios are
+>>>>>>> CPU unmapped and device mapped.
+>>>>>>>
+>>>>>>> Here are my questions on device private folios:
+>>>>>>> 1. How is mapcount used for device private folios? Why is it needed from CPU
+>>>>>>>      perspective? Can it be stored in a device private specific data structure?
+>>>>>> Mostly like for normal folios, for instance rmap when doing migrate. I think it would make
+>>>>>> common code more messy if not done that way but sure possible.
+>>>>>> And not consuming pfns (address space) at all would have benefits.
 >>>>>>
->>>>>> Here are my questions on device private folios:
->>>>>> 1. How is mapcount used for device private folios? Why is it needed from CPU
->>>>>>      perspective? Can it be stored in a device private specific data structure?
+>>>>>>> 2. When a device private folio is mapped on device, can someone other than
+>>>>>>>      the device driver manipulate it assuming core-mm just skips device private
+>>>>>>>      folios (barring the CPU access fault handling)?
+>>>>>>>
+>>>>>>> Where I am going is that can device private folios be treated as unmapped folios
+>>>>>>> by CPU and only device driver manipulates their mappings?
+>>>>>>>
+>>>>>> Yes not present by CPU but mm has bookkeeping on them. The private page has no content
+>>>>>> someone could change while in device, it's just pfn.
+>>>>> Just to clarify: a device-private entry, like a device-exclusive entry, is a *page table mapping* tracked through the rmap -- even though they are not present page table entries.
 >>>>>
->>>>> Mostly like for normal folios, for instance rmap when doing migrate. I think it would make
->>>>> common code more messy if not done that way but sure possible.
->>>>> And not consuming pfns (address space) at all would have benefits.
+>>>>> It would be better if they would be present page table entries that are PROT_NONE, but it's tricky to mark them as being "special" device-private, device-exclusive etc. Maybe there are ways to do that in the future.
 >>>>>
->>>>>> 2. When a device private folio is mapped on device, can someone other than
->>>>>>      the device driver manipulate it assuming core-mm just skips device private
->>>>>>      folios (barring the CPU access fault handling)?
->>>>>>
->>>>>> Where I am going is that can device private folios be treated as unmapped folios
->>>>>> by CPU and only device driver manipulates their mappings?
->>>>>>
->>>>> Yes not present by CPU but mm has bookkeeping on them. The private page has no content
->>>>> someone could change while in device, it's just pfn.
+>>>>> Maybe device-private could just be PROT_NONE, because we can identify the entry type based on the folio. device-exclusive is harder ...
+>>>>>
+>>>>>
+>>>>> So consider device-private entries just like PROT_NONE present page table entries. Refcount and mapcount is adjusted accordingly by rmap functions.
+>>>> Thanks for the clarification.
 >>>>
->>>> Just to clarify: a device-private entry, like a device-exclusive entry, is a *page table mapping* tracked through the rmap -- even though they are not present page table entries.
+>>>> So folio_mapcount() for device private folios should be treated the same
+>>>> as normal folios, even if the corresponding PTEs are not accessible from CPUs.
+>>>> Then I wonder if the device private large folio split should go through
+>>>> __folio_split(), the same as normal folios: unmap, freeze, split, unfreeze,
+>>>> remap. Otherwise, how can we prevent rmap changes during the split?
 >>>>
->>>> It would be better if they would be present page table entries that are PROT_NONE, but it's tricky to mark them as being "special" device-private, device-exclusive etc. Maybe there are ways to do that in the future.
->>>>
->>>> Maybe device-private could just be PROT_NONE, because we can identify the entry type based on the folio. device-exclusive is harder ...
->>>>
->>>>
->>>> So consider device-private entries just like PROT_NONE present page table entries. Refcount and mapcount is adjusted accordingly by rmap functions.
+>>> That is true in general, the special cases I mentioned are:
 >>>
->>> Thanks for the clarification.
+>>> 1. split during migration (where we the sizes on source/destination do not
+>>>     match) and so we need to split in the middle of migration. The entries
+>>>     there are already unmapped and hence the special handling
+>>> 2. Partial unmap case, where we need to split in the context of the unmap
+>>>     due to the isses mentioned in the patch. I expanded the folio split code
+>>>     for device private can be expanded into its own helper, which does not
+>>>     need to do the xas/mapped/lru folio handling. During partial unmap the
+>>>     original folio does get replaced by new anon rmap ptes (split_huge_pmd_locked)
 >>>
->>> So folio_mapcount() for device private folios should be treated the same
->>> as normal folios, even if the corresponding PTEs are not accessible from CPUs.
->>> Then I wonder if the device private large folio split should go through
->>> __folio_split(), the same as normal folios: unmap, freeze, split, unfreeze,
->>> remap. Otherwise, how can we prevent rmap changes during the split?
->>>
+>>> For (2), I spent some time examining the implications of not unmapping the
+>>> folios prior to split and in the partial unmap path, once we split the PMD
+>>> the folios diverge. I did not run into any particular race either with the
+>>> tests.
 >>
->> That is true in general, the special cases I mentioned are:
+>> 1) is totally fine. This was in v1 and lead to Zi's split_unmapped_folio()
 >>
->> 1. split during migration (where we the sizes on source/destination do not
->>     match) and so we need to split in the middle of migration. The entries
->>     there are already unmapped and hence the special handling
-> 
-> In this case, all device private entries pointing to this device private
-> folio should be turned into migration entries and folio_mapcount() should
-> be 0. The split_device_private_folio() is handling this situation, although
-> the function name is not very descriptive. You might want to add a comment
-> to this function about its use and add a check to make sure folio_mapcount()
-> is 0.
-> 
->> 2. Partial unmap case, where we need to split in the context of the unmap
->>     due to the isses mentioned in the patch. I expanded the folio split code
->>     for device private can be expanded into its own helper, which does not
->>     need to do the xas/mapped/lru folio handling. During partial unmap the
->>     original folio does get replaced by new anon rmap ptes (split_huge_pmd_locked)
+>> 2) is a problem because folio is mapped. split_huge_pmd() can be reached also from other than unmap path.
+>> It is vulnerable to races by rmap. And for instance this does not look right without checking:
 >>
->> For (2), I spent some time examining the implications of not unmapping the
->> folios prior to split and in the partial unmap path, once we split the PMD
->> the folios diverge. I did not run into any particular race either with the
->> tests.
+>>     folio_ref_freeze(folio, 1 + folio_expected_ref_count(folio));
+>>
 > 
-> For partial unmap case, you should be able to handle it in the same way
-> as normal PTE-mapped large folio. Since like David said, each device private
-> entry can be seen as a PROTNONE entry. At PMD split, PMD page table page
-> should be filled with device private PTEs. Each of them points to the
-> corresponding subpage. When device unmaps some of the PTEs, rmap code
-> should take care of the folio_mapcount().
+> I can add checks to make sure that the call does succeed.
+> 
+>> You mention 2) is needed because of some later problems in fault path after pmd split. Would it be
+>> possible to split the folio at fault time then?
+> 
+> So after the partial unmap, the folio ends up in a little strange situation, the folio is large,
+> but not mapped (since large_mapcount can be 0, after all the folio_rmap_remove_ptes). Calling folio_split()
+> on partially unmapped fails because folio_get_anon_vma() fails due to the folio_mapped() failures
+> related to folio_large_mapcount. There is also additional complexity with ref counts and mapping.
 
-Right. In general, no splitting of any THP with a mapcount > 0 
-(folio_mapped()). It's a clear indication that you are doing something 
-wrong.
+I think you mean "Calling folio_split() on a *fully* unmapped folio 
+fails ..."
+
+A partially mapped folio still has folio_mapcount() > 0 -> 
+folio_mapped() == true.
+
+> 
+> 
+>> Also, didn't quite follow what kind of lock recursion did you encounter doing proper split_folio()
+>> instead?
+>>
+>>
+> 
+> Splitting during partial unmap causes recursive locking issues with anon_vma when invoked from
+> split_huge_pmd_locked() path.
+
+Yes, that's very complicated.
+
+> Deferred splits do not work for device private pages, due to the
+> migration requirements for fault handling.
+
+Can you elaborate on that?
 
 -- 
 Cheers,
