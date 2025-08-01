@@ -2,112 +2,88 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8BCBCC87FCA
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 23:47:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F41C7C87FCB
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 23:52:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 143B96B007B; Fri,  1 Aug 2025 19:47:35 -0400 (EDT)
+	id 7DF9D6B007B; Fri,  1 Aug 2025 19:52:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11BEF6B0092; Fri,  1 Aug 2025 19:47:35 -0400 (EDT)
+	id 7B7056B0089; Fri,  1 Aug 2025 19:52:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00A186B0095; Fri,  1 Aug 2025 19:47:34 -0400 (EDT)
+	id 6F4196B008A; Fri,  1 Aug 2025 19:52:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E3E6F6B007B
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 19:47:34 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 60357111A81
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 23:47:34 +0000 (UTC)
-X-FDA: 83729828028.29.946F2CB
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 7110DC0002
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 23:47:32 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=OmKXsg3k;
-	spf=pass (imf10.hostedemail.com: domain of sudarsanm@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=sudarsanm@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 5F6556B007B
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 19:52:32 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 221871402CC
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 23:52:32 +0000 (UTC)
+X-FDA: 83729840544.30.E36B61A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 5DB5FC0005
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 23:52:30 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=euXxB757;
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754092052;
+	s=arc-20220608; t=1754092350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QLLO3Loo8NOpKwYsGoTU4cHzzMMA1rAQdIDBIoGAXoU=;
-	b=X7Z2GhFJ/VGFtbUUK0hTnAWr0/Nfl1F8xnZkS0WKFbqRzKDL7YQk7xwmCRRSV8TBDK/k4c
-	O5vkQTkno3OkngKihqm4uKUIJAzo151G/ZKLR4i0WjmocT+BbFOPOOGhHZ7mfh6OSLCUop
-	EC7494zM5ZbSRw4iZIbjy/PJUVE61SU=
+	bh=5bAODscGG3sVTeixKXm3sJhWh94hyqlrgf5TUGDb0Nc=;
+	b=IMhWSdGwkQc6zYPuNv7nvh7CgaHPurlBQyaEE916OLQ7XZa7B7gpcFrfOe53qObyFhyBXb
+	hCvd6HpyJ3VnBCtjKLjKJLM6SIJVnrOXxBvPUdT7Tg0QUQwNKGGPrCZLXfYcReP5trWP72
+	9sPl0394JIdtPaVFwsgHoWOfoFOEbI0=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=OmKXsg3k;
-	spf=pass (imf10.hostedemail.com: domain of sudarsanm@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=sudarsanm@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754092052; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=euXxB757;
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754092350; a=rsa-sha256;
 	cv=none;
-	b=XjJp2b/sVCQRX+w7k4zA5pWOZuBQNNUkrukP7LlKV1jU28DIblFrz1Yref/cvGzk/q91Yb
-	5LAoloduLsGgU/MXLjnCJ7VMuhL/hu9imvuL3wnrzIt3NE5UZuDXm7D5XDmqKLaDC6VUnM
-	dilQY+uAbcIg0lZOD8VzPnckLJplbR0=
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4538bc52a8dso15327955e9.2
-        for <linux-mm@kvack.org>; Fri, 01 Aug 2025 16:47:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754092051; x=1754696851; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QLLO3Loo8NOpKwYsGoTU4cHzzMMA1rAQdIDBIoGAXoU=;
-        b=OmKXsg3k0hyVxiu5+HTeCymYnqT+lBYM7JXQj6Fy5oKAHBwYVvuTJRU4NHQzRClh7m
-         BUGRUkqZTK2N8AcjOKSXnGKozQfWE3dvLyEWioBF4+tF4i77T+PrrswdRrglLfGa7wAp
-         UzvIYSjJtFdWyt9nyELVElYcDh7LwFzfxZT2DLvJ7T0UIjChhuZj1m4POIHFdGZud7q/
-         T3CZO9sJeYTYOl+L+emyPNhvzvIOrmzBcBiwiVvWWOuHRAR2NYIW3uO2jtTdmPHseywQ
-         kVk9lfmhXJ5kQjtBw0FQA4MByjyX1zAkmbqMQjcIjAcuCEULAG9l8oGdQXOGNsz0p+RX
-         1zEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754092051; x=1754696851;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QLLO3Loo8NOpKwYsGoTU4cHzzMMA1rAQdIDBIoGAXoU=;
-        b=hb9GNU7e/6gapcrBUQNo/AP0UUPq/Vhb0abPajdWagLcuCm/zA6+B4mgKtl4xUYcAl
-         dErG0zmOgVgiHSCieBB23uICxNc2xk3SGRXVIXh6jMeqvLrSxm1UI1jTu3aA0wyLhld7
-         tk2kzil235qMnj5XU3IPMEtb/tdFgBltNbfh4pBwQRDFQJ4YKMIEkwbsepgoBUVXD7hT
-         KXQfqLhqK22D+phLB1UIiFJjmmNMz7pe6D5FbrJrqxQ+ZA8WYNdZePZDU/T12Bt8Ydqz
-         iAYGL1fFsG6yPITlkrjU2MfTbYl5AOMtFB/CJi+oSfjuYyp95ajLk3dYxxxL7PcFfc9i
-         tTmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX8IgoSv/RzrMIXqlg3QshbMvKLnEFHbSR51TroeRQ1ikUoog+VM8AZ7RJ9BieooqHpCq+S2MwXkg==@kvack.org
-X-Gm-Message-State: AOJu0YyryTBYPhEVTu0wy0w/0utgVup3MmFuBM3uRxgIMKxEgP/lhMd5
-	o/jkAvpx/82A9yjXjH5UjnsRdfwp5WILTMGbfTIqaS95lILnrnwLUsANn2KnOayLJCxgJJfHrv3
-	gIfgJYtq1ggDpExIB96QhIWcHKgUyEmdx2B//0yF7HVn94zy1tFr2rYUM
-X-Gm-Gg: ASbGncuU6dcyomg+D/TToaPga+AHFHOZW/Mjik4ymnCt06jWfIved6bL/uIqXEOdgnT
-	PYKxM9QnhJHBIQN4N7tcjuqo13/g5Jxju2pGCf3cT6iiTeHHDpsPljfkdyFrMOLEjMChP3+zdi7
-	Yjjn+MR5J0NzPQAxUbZJKOJMuxxVx8oUKo65gChIF95tyD4s509Oe6bLI398/ZHtRbMlyxYSII1
-	98oCeF6y62OnqWW9NE=
-X-Google-Smtp-Source: AGHT+IFkeHX4fAYS31tnOgYxHE/1DKhEFnFigNT0fo/cE3XhN1SqQzHTWnPZni711yFy+uoLfpt/atMsuAMyUTuzXXI=
-X-Received: by 2002:a05:600c:3b87:b0:453:c39:d0a7 with SMTP id
- 5b1f17b1804b1-458b69ca0bbmr7346065e9.5.1754092050770; Fri, 01 Aug 2025
- 16:47:30 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250731201009.888945-1-sudarsanm@google.com> <1f95e865-ee09-4ddd-b6db-f2092f0d4b10@redhat.com>
-In-Reply-To: <1f95e865-ee09-4ddd-b6db-f2092f0d4b10@redhat.com>
-From: Sudarsan Mahendran <sudarsanm@google.com>
-Date: Fri, 1 Aug 2025 16:46:54 -0700
-X-Gm-Features: Ac12FXzWnMVAHJwon03ldywOBfIPOPXOVgEKP6J99gC3GAwOhyQE_8UHwRC7IeE
-Message-ID: <CAA9mObBMtE=w=PS8NpXsrHD5rs51pkDAA55Fi1dB0gCXwL9n+Q@mail.gmail.com>
-Subject: Re: [PATCH] selftests/mm: pass filename as input param to VM_PFNMAP tests
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org, 
-	trivial@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	b=RfaOMXmp78A/78KMNSoFGu7OU0A5aJYE5b/XGJ6Uj5wTWGwVKW/PBjvNNackSqruGHVSfZ
+	D1BayHo271bdbTSMsMRZGhKzz2txkY5vEWE+j0kJUqxF0vF85XrV4yd3LcNfWKTr+z527f
+	qgWTb4iZJ/a51yjqojdmZvJRHIxJ03Y=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 43732440D8;
+	Fri,  1 Aug 2025 23:52:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEAB2C4CEE7;
+	Fri,  1 Aug 2025 23:52:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1754092349;
+	bh=s9NmpPegCbHYz7FI1LwZFdpgkaCwgzBm+glcuL6J55c=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=euXxB757LCc3Gz0rChui3y8YBRmFXeu4DE9U9hoqjRAoThMBdFJOKE0KPoMUtwS1R
+	 mgWS+MHLoTdPYCXxrM9yGzMjiBpDiOcwt7g1qn3aHgeEPt80JErqj9jWoe/MRv13iC
+	 GLmDaz0uYVzoUG0bolBN4QsURWSw7a4EBhLL+xk0=
+Date: Fri, 1 Aug 2025 16:52:28 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Gu Bowen <gubowen5@huawei.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, <stable@vger.kernel.org>,
+ <linux-mm@kvack.org>, Lu Jialin <lujialin4@huawei.com>, Catalin Marinas
+ <catalin.marinas@arm.com>, <stable@vger.kernel.org>, <linux-mm@kvack.org>,
+ Lu Jialin <lujialin4@huawei.com>, Waiman Long <longman@redhat.com>, Breno
+ Leitao <leitao@debian.org>, Petr Mladek <pmladek@suse.com>, Steven Rostedt
+ <rostedt@goodmis.org>, John Ogness <john.ogness@linutronix.de>
+Subject: Re: [PATCH] mm: Fix possible deadlock in console_trylock_spinning
+Message-Id: <20250801165228.6c2a009c0fe439ddc438217e@linux-foundation.org>
+In-Reply-To: <20250730094914.566582-1-gubowen5@huawei.com>
+References: <20250730094914.566582-1-gubowen5@huawei.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7110DC0002
+X-Rspamd-Queue-Id: 5DB5FC0005
 X-Rspamd-Server: rspam06
-X-Stat-Signature: dbiwafu4iw7ujzme8s8bnrxy3hcixxn7
-X-HE-Tag: 1754092052-258974
-X-HE-Meta: U2FsdGVkX18nkZuaHKSOzB4+zvQ27nmvNG5UwwCNS4bRXBXt9KMDMrta6jw+E1yCmXhCiqDEcua8+XVecmNwXOHq6K1spmPxV1DkC80NNKsiKHXuq2n1O1TelztJeAyGWnL8jjwUF1pqjNwQxclRjNi32vOaImEwx7hxHcbGvzIq/EOIPE+cs01Oq4aGAFtRtRAub4w5QfhT10xISGIVSSSxytQ0wv+L7VYPQZ9P7/R73fnZxG1L6AUlE7Mb9gaTfkwNzNebYY5GG+cz0amY8GEJNi0vE1yJJXdddnDoDEo0gR+iBnoDWIr3ef5Ff/1Wp/Lqf4gfbIv+rbkAkeg1f/GhvJNQ21H03vnTKlJPYoIzKgMnusjuAu93byDd2GtsQNmGVg/tGuksBcCkclnOj5+gg2tqkNGviAv+u7y6C234Kla0UAt+0TYpCwZKoXE/7seEwCFyxwgquax0Y+FgZv3YF9KmtgF5SsMgjC1aBJ60nnKlElma7JXXDg4qZu/EEKpMVvyV+Zu5RvaUL7CZrqq230MYe7sC5UxQLqfPq5YPm67MInaQwLs821bj7puohTBsd33ljRr7ibFPEyjiFpC27AKdyr1SEcZvcnc5CnQ5lxVVlupZL1Fqj8Z6xeDiNjFasmHVu2hNsLQoiyTniGM7GbnKaD863EnZEohtLte2+0j40bCzZpu7s0gobWNpIKLUQupTwsNGlV8exCLzQZMBBhuE+xWDOHkkScOx/Rxd7r7Fa+rWQ0HDC6vJMojeWjEUrppt9JRZCTLme8ojPlfJK8k0MW9NArlS1trqWwDCBQWc9MS8Yg8A7xMR9tkPU3WrqmQ5MvOsauN69m4pFrZ3w6yW7htXYNweZlDcLvOHX/5KusrqBGlBHbe242+xqNc/KL2RlxZR8BD/Hfbt+pooOpauG3vIdfl0DC1CuOlKmyzmgmHOQyXtKLCVk5jLelJJNePE8+1ks2RD7hr
- 22CuKQyV
- clnPWXhrgTlJ1gkP8f6hK1afU1UDSkjk9iMWXL4RgG2CiSEDJCS2SAr5qU/nZWcJ6NS000B5D3aGzsTPGzHGUjL6S2qToH8uDFAX6TTBA6mwJSfIUs3+ypC5BEJ0JS/miB1W5PKDDWKdvFi+qObnJxlct6WycHgy6SfR+DFJRds4EiEMb3LRXos9kvv5c7SnVD4wN0j+oi6j+aehFyybRsPS3G7hon3sh3l5eGGkbJefLZNiU3aXefrY/o10PNJ5KyJ3Sv41IBiU8riQ=
+X-Stat-Signature: xm38mn4hq1adsaggc589g6h458p6smdw
+X-HE-Tag: 1754092350-543584
+X-HE-Meta: U2FsdGVkX1//poO2C2D3G1DdSBUMIEX5Xzj+635QpF1HlgL80UcbuaJUHNUSfmMEL8E3WIEOf+7bBaxs00S8T50Oebfx0b0RcZOeGbx1BIKtHIMn12MWlI1+u+KOSPUSOUMre36pfH6JWP3ilsE0f8USJL06YcHCL5+B9TgxI4j7hYASWdKlyh6OtOVV1ogr7f5F1UbU9PClunwc18/e2Oj4nkoQAu85DChDZahdltEDhmIIutlYzxYIls+LbkAwSAjlZbpjtj9ui1wXP/vr0TE1TBffrJGhw/f+P+VkXoclCkeSlhZco9hYGr0fus8wRkbIAkPnaH94CSHfO3YBWM17H1rJTfYSQ0e8oIGBM6yn+NfMA/mlY42qGsssF06cmFUKyGinbdLMSKufc92TfSm8QNvueGaNORV22oc1k7GiGky7URPEHL0lnVRPRKf/hZL8Pa8bmE4z5MxB3Ew3aHmwzxA93x2vgTu3s9ib/ToIxsRso48WskX3ZAFOzgN7ljC5IMYVy5Vm70UCOHpUqFVbdu6fOu90WdaBBCuk+1i1W+STTh8oib8WSWMdOFesLJoP+hmhwMrNrCEyIiJ+ToZouItaYMIpMPz15tl+gWCuUugnX7ZS6CWwdboW2PDm8dfs4+hCUpRGnBc4krfAbKdCjVZwhO0PdFYt0dghS8jAYuIlPOe6EufagIQpPvLrnWGp774KH7EHlY1OlScBsF5wD6F3CrVh61OM5gd7A7vUyJ+sxbCfpTFyHmjdllFIF8q0cnq71C7YRCd4BHhi9bDWrcQrP3An4g7/mHTup6S9LTPKaW1Mw/zVNPOXG07GAUEq8c2tyckSJmTHLTvCtdpeRw1Ot7vvrFuYbxTk2ytirJRxca/Nck25y++1E5M08LxMWJax1ve7/98BUMnb85SS0dZUaylV4GMWQzzxmQxxo3/CGHM2CaywEcWguQ3rO0EsWPxWcfribb2eX0e
+ dkrlWxj7
+ j02cXrCv2JjHYQDNzkURHlcLRA2JA35QStyimZrstD2YD+K//r+pjlyvEzrnlH/1rZ7emqxcNV36axp3oFQllH8TOk0AZ+5HGsqGDsZofd3eXFH8Tp+SwhO/en1Jlt4wRZ8Xvfj7eIVcyVG+TfbyHDJ1XdVz3AUv816VGK5wzlC/ZwgAwHQP4DmO513HUZkICEjx0aY8wybPSHAKCRfha2CObjvw5+mOU8njj7LCnLIhzmJAO/as/HqIHxmzhFkAtjZFSyS+jUT7l+7f0Skl9017jKnM+Ca0vhe1CrTQKxyPd0IeRRqNZs2cXPAYZyjHpPBqHge5vMjaFW3aRY7k2XnDRwR6a6+p1InTgKgpOvffr0qCMEdtFClTDVueVH8vSFgG0wd7LBE3EK0JGkzXJiNtXHctZfl0yA6Ki
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,70 +92,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thanks for the review!
-I've sent a follow up v2 patch.
+On Wed, 30 Jul 2025 17:49:14 +0800 Gu Bowen <gubowen5@huawei.com> wrote:
+
+> kmemleak_scan_thread() invokes scan_block() which may invoke a nomal
+> printk() to print warning message. This can cause a deadlock in the
+> scenario reported below:
+> 
+>        CPU0                    CPU1
+>        ----                    ----
+>   lock(kmemleak_lock);
+>                                lock(&port->lock);
+>                                lock(kmemleak_lock);
+>   lock(console_owner);
+> 
+> To solve this problem, switch to printk_safe mode before printing warning
+> message, this will redirect all printk()-s to a special per-CPU buffer,
+> which will be flushed later from a safe context (irq work), and this
+> deadlock problem can be avoided.
+> 
+> Our syztester report the following lockdep error:
+> 
+> ======================================================
+> WARNING: possible circular locking dependency detected
+> 5.10.0-22221-gca646a51dd00 #16 Not tainted
+> ------------------------------------------------------
+> 
+> ...
+>
+> Chain exists of:
+>   console_owner --> &port->lock --> kmemleak_lock
+> 
+> Cc: stable@vger.kernel.org # 5.10
+> Signed-off-by: Gu Bowen <gubowen5@huawei.com>
+> ---
+>  mm/kmemleak.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/mm/kmemleak.c b/mm/kmemleak.c
+> index 4801751cb6b6..d322897a1de1 100644
+> --- a/mm/kmemleak.c
+> +++ b/mm/kmemleak.c
+> @@ -390,9 +390,11 @@ static struct kmemleak_object *lookup_object(unsigned long ptr, int alias)
+>  		else if (object->pointer == ptr || alias)
+>  			return object;
+>  		else {
+> +			__printk_safe_enter();
+>  			kmemleak_warn("Found object by alias at 0x%08lx\n",
+>  				      ptr);
+>  			dump_object_info(object);
+> +			__printk_safe_exit();
+>  			break;
+>  		}
+>  	}
+
+umm,
+
+--- a/mm/kmemleak.c~a
++++ a/mm/kmemleak.c
+@@ -103,6 +103,8 @@
+ #include <linux/kmemleak.h>
+ #include <linux/memory_hotplug.h>
+ 
++#include "../kernel/printk/internal.h"		/* __printk_safe_enter */
++
+ /*
+  * Kmemleak configuration and common defines.
+  */
 
 
-On Fri, Aug 1, 2025 at 12:15=E2=80=AFAM David Hildenbrand <david@redhat.com=
-> wrote:
->
-> On 31.07.25 22:10, Sudarsan Mahendran wrote:
-> > Enable these tests to be run on other pfnmap'ed memory like
-> > NVIDIA's EGM.
-> >
-> > Add '--' as a separator to pass in file path. This allows
-> > passing of cmd line arguments to kselftest_harness.
-> > Use '/dev/mem' as default filename.
-> >
-> > Existing test passes:
-> >       pfnmap
-> >       TAP version 13
-> >       1..6
-> >       # Starting 6 tests from 1 test cases.
-> >       # PASSED: 6 / 6 tests passed.
-> >       # Totals: pass:6 fail:0 xfail:0 xpass:0 skip:0 error:0
-> >
-> > Pass params to kselftest_harness:
-> >       pfnmap -r pfnmap:mremap_fixed
-> >       TAP version 13
-> >       1..1
-> >       # Starting 1 tests from 1 test cases.
-> >       #  RUN           pfnmap.mremap_fixed ...
-> >       #            OK  pfnmap.mremap_fixed
-> >       ok 1 pfnmap.mremap_fixed
-> >       # PASSED: 1 / 1 tests passed.
-> >       # Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
-> >
-> > Pass random file name as input:
-> >       pfnmap -- /dev/blah
-> >       TAP version 13
-> >       1..6
-> >       # Starting 6 tests from 1 test cases.
-> >       #  RUN           pfnmap.madvise_disallowed ...
-> >       #      SKIP      Cannot open '/dev/blah'
->
-> Now, if you really just pass a random *actual file* that exists, the
-> test case will not actually test what we want.
->
-> Unless you have a way to verify that you actually get a PFNMAP mapping,
-> this extension is questionable. It will make the test report possibly
-> wrong results when wrong files are provided.
->
-> I think we can test whether we get a PFNMAP mapping by looking at the
-> flags in smaps output ("pf" in flags), so I would expect such a test to
-> be done in pfnmap, and the test should FAIL if the file would not create
-> a PFNMAP.
->
->
-> But more importantly, we rely on "/proc/iomem" to find a RAM target in
-> /dev/mem. That doesn't make any sense with what you are doing here.
->
-> If we are not provided /dev/mem, you should probably try mapping offset
-> 0 of the file.
->
-> --
-> Cheers,
->
-> David / dhildenb
->
+I'm not sure we're allowed to do that.  Is there an official way?
+
+
+
 
