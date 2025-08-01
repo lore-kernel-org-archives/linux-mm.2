@@ -2,82 +2,229 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 76949C87FCA
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 11:00:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E8801C87FCA
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 11:00:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5D8B6B008A; Fri,  1 Aug 2025 07:00:08 -0400 (EDT)
+	id 5FA566B0092; Fri,  1 Aug 2025 07:00:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E35E46B008C; Fri,  1 Aug 2025 07:00:08 -0400 (EDT)
+	id 5D26A6B0093; Fri,  1 Aug 2025 07:00:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4BAC6B0092; Fri,  1 Aug 2025 07:00:08 -0400 (EDT)
+	id 473426B0095; Fri,  1 Aug 2025 07:00:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BEC156B008A
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 07:00:08 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2786ABB9A9
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 11:00:08 +0000 (UTC)
-X-FDA: 83727894096.09.AA73F71
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 3F5F91C000D
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 11:00:06 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=weissschuh.net header.s=mail header.b=h5XcAc7o;
-	dmarc=pass (policy=quarantine) header.from=weissschuh.net;
-	spf=pass (imf21.hostedemail.com: domain of linux@weissschuh.net designates 159.69.126.157 as permitted sender) smtp.mailfrom=linux@weissschuh.net
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754046006;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F2CC6B0092
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 07:00:41 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D733CBBAEB
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 11:00:40 +0000 (UTC)
+X-FDA: 83727895440.25.AF1F957
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 661CB140014
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 11:00:37 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=XikW3R+L;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="f7Q/QHxl";
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf23.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754046037;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kTioCqvPRy4Kr/yOeoSKJ6C7AGXie8DKEeVszAcKMBk=;
-	b=TEWzlRcmvWcIKnBwvP2LUjcuwc/zOdayQibTe9/6UQSp60WAFqO8LFqMK7tRFoQJQ8KvWC
-	VBlKnx/2WzaArM3r10kUaj2sdo9SdlQvNbNsqIP0wcjKxRnionF0Tm/J0e9sLcDdUD4uYb
-	c1qdRh2NwGlB3JxGkZudwQQqlEoi0NU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754046006; a=rsa-sha256;
-	cv=none;
-	b=rb5+dZai3Utgtd4cyAhW5hheSgaCdehBogWeL+TCRxr9I/VBUqErf2Fye96ZfyBbW8L1aM
-	IW4VNpwMI7fqFpLx0ZGN4dtLj8ixvJq6hVtSycsKst7cGQHpMH996gBMwkxIfjsnVXOsZw
-	1yje2/UhWM447ZaO+sNhOxh6AybBkYM=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=weissschuh.net header.s=mail header.b=h5XcAc7o;
-	dmarc=pass (policy=quarantine) header.from=weissschuh.net;
-	spf=pass (imf21.hostedemail.com: domain of linux@weissschuh.net designates 159.69.126.157 as permitted sender) smtp.mailfrom=linux@weissschuh.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1754046003;
-	bh=SrU/DgzHeB8T3HhnNHwe7Wv/zYSsrNNui/GdxVK0W4E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=h5XcAc7orQ0efweZPqsyH2aaYb5dB1Cm4NdBXX4yXTCC1YJcN0it9EzLj5fUOjdl7
-	 1xJ43F93jc3ed/QfN/z3CSPwtFqMIqL5SuLReiJH9l4Ch+Hg2+hdLkAcv8TJTkBdDh
-	 WvSMwyX2w3I5uBA8hz//tzkBvBSQ2qqOri7p2I6k=
-Date: Fri, 1 Aug 2025 13:00:03 +0200
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Alexander Graf <graf@amazon.com>, Changyuan Lyu <changyuanl@google.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Shuah Khan <shuah@kernel.org>, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2] kho: add test for kexec handover
-Message-ID: <fae1936d-3f45-44d4-a9b0-43b29115d5ac@t-8ch.de>
-References: <20250801100630.3473918-1-rppt@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+	bh=QNEUzIdEQEMD28TtcXmPmSx9p5o5bdPH43XOSoAIDX4=;
+	b=639NKMl5Ci1w4ZB5ImWXUz/1120/pqx8KtEaFQk0OiZz+rijKu/JrH50GoA7vyNMKV75RT
+	8l5Z/ghNo4lypvA5ryg8OGGyQW4Xl/I/1GQI9tVWRWc/d8OOOMtJuGXAUUMoXkxnBxmXHr
+	rBooWIpSYXzvZsoFRCodO/kf7Xa+br4=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754046037; a=rsa-sha256;
+	cv=pass;
+	b=NjLAAq20K6NAYkB4drmO8TIf3ggbSDD5fUUbAtxJb33mP4tJR9vilAb8wbNWii8g/r+9Cz
+	Se6IWgXS8W1KB4mT13bLWEQWtpGvAPqrGQy3Pp8S/WRuKbJKspGfKv8SpRzfotAFmHZ+ci
+	ShPu8iEJItPB5IdQwcqB8LGz8V6B8Yg=
+ARC-Authentication-Results: i=2;
+	imf23.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=XikW3R+L;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="f7Q/QHxl";
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf23.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 571Au7HK016906;
+	Fri, 1 Aug 2025 11:00:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=QNEUzIdEQEMD28TtcX
+	mPmSx9p5o5bdPH43XOSoAIDX4=; b=XikW3R+L3W8mBXDQjHztDriG3CWohfV+GY
+	mCiAHSVoNcFSNyu6OGuoIeyRWZulUcekQtAPVlrDi5U6DBe0qlg0aQ0N7jniBAxJ
+	3JAF/CFaofiO/yarB+zxuVyQB4w8thqgwBC4P2CyY3LrryODFk1FnWHyD3+gGkvI
+	HgkzlZGEU49Hy4q2FPGY3xrKy7XLlsOG+x48VhpLIsiI/GmlZNeDPuIz4oNGL4yn
+	bkqJXB5S70qOaoToAHCm30ut2isxLT//itokycyxvuHxAIvbhhHfONJX7G5Qlp+N
+	DtjdbBO01BGL8sMJLJ/qADgNLFdgoT1Y+m8bbG2R7lndzL24JSsQ==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 484q4yp0ub-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 01 Aug 2025 11:00:35 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 571AjHWB010380;
+	Fri, 1 Aug 2025 11:00:34 GMT
+Received: from sn4pr2101cu001.outbound.protection.outlook.com (mail-southcentralusazon11012002.outbound.protection.outlook.com [40.93.195.2])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 484nfdhrgk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 01 Aug 2025 11:00:34 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PYhOpmw/zTbGITcexiJaGj7VSSAjHvfCPeSMqdCcfZx1YrqQ6E3y7skof/oki3US/qFs8qqfzgU2GR4Q7DK4t+JpLdqpIOtDPblLocst/w76054tRr1dbzzdwcLZr2Y863hOxK5P2rXzeLFREBg4311qf6V/jXSMu4K5GcbOrPoFNWDY/3hr6RTKos1FSekY/BpIFALLFaaAnO6jdKwmGfi1onl8efA7XwgqZP+nwplNT8vV+ofEg1ya1Pl0VVpfo0dxJZp7ZZmpP3hk8awIzFL8crOl7taeRyzz6lEneo8r+/E0xM4qT5TMYJ6u+LUarDcZ74o14uT6FQeAxFoRqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QNEUzIdEQEMD28TtcXmPmSx9p5o5bdPH43XOSoAIDX4=;
+ b=tqjESeEs3j07W58sNET8U6JKwxHcdlrZYLVjGLpjwHK423Xch5h7Mauhh3mCrPY200GATkpKOwke19HDSHmofNpA78dZz0jAi6IelOutrAPL64iTlRqBUuoWFr7pyYKfN89GsInznqK2fe8b2+d48PmhnQuSPgomMWx43m7YgKSaaN9asoEUbtTcc9r4EtllmdybfbAvANqgRcktvejVyFEY4TrpD6pwhA4jrr5y1vqdCNsP5k9vTVlV9SwVmIV873x3wXPwSYsM0A3GStaSDKjEL3TKN36v85FD6I+7DWirwKASM0BS0aM+PDZdxlQ2N1gOH8oTJ6d+XQE5P4xaeg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QNEUzIdEQEMD28TtcXmPmSx9p5o5bdPH43XOSoAIDX4=;
+ b=f7Q/QHxlvfzulmBQbFRYOoWqaUbmAU25sT7e9pnz8gsvwBMgGENOMGlzTRtn6A9kuFz16npUPcEFtAAP3JfzNgcvLxptCyhQy6shoMkl416qzvMMDMoOuY51LjWqpQq1DsGLxoFDnakkcdeGIIG2qzwk2W3rVgNZIEDNLGlXKOo=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by DM4PR10MB6181.namprd10.prod.outlook.com (2603:10b6:8:88::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.16; Fri, 1 Aug
+ 2025 11:00:31 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.8989.013; Fri, 1 Aug 2025
+ 11:00:31 +0000
+Date: Fri, 1 Aug 2025 12:00:20 +0100
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, jannh@google.com, Liam.Howlett@oracle.com,
+        vbabka@suse.cz, pfalcato@suse.de, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] mm: change vma_start_read() to drop RCU lock on
+ failure
+Message-ID: <4f2fa8d1-0f80-476c-9391-cbec67ec1ada@lucifer.local>
+References: <20250731151919.212829-1-surenb@google.com>
+ <20250731151919.212829-2-surenb@google.com>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250801100630.3473918-1-rppt@kernel.org>
-X-Stat-Signature: 988n8uoioyuxr1q6aibet1sc76kn35wq
-X-Rspamd-Queue-Id: 3F5F91C000D
-X-Rspamd-Server: rspam10
+In-Reply-To: <20250731151919.212829-2-surenb@google.com>
+X-ClientProxiedBy: MM0P280CA0062.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:190:8::16) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|DM4PR10MB6181:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2d4faf23-1655-4cd2-ad4c-08ddd0eaa197
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?lbC4GxTNto578FAa6+A8aSximyxZ8TGZFcR7iobE7SnHwkcuTDdJXzNq5IiS?=
+ =?us-ascii?Q?Ja5yH6MmIOh2sX4H5d39N2ZrhYJu95odjciN0022vRM/VgU8i2yVB6PNsbsT?=
+ =?us-ascii?Q?2coVcTqMu0qXPcpkn5DvbvTGXvXyPHqiuCBHYy1lXqgaNQ7YuYDvvgkXbn5l?=
+ =?us-ascii?Q?wJcjpmJy5exZmF6636fCtsPApSE+mIeXf+EeNhplEPyXsjILF0enNHbvGnFY?=
+ =?us-ascii?Q?MBw4HihsvwhO6dRJFFwtrftxe0Ii8h9657J8W/4qh4GqEYlDezAyU9ybEFQ2?=
+ =?us-ascii?Q?JGAE0cqaSxtghdaatw4FmSzp8uzg0BZ1kSVDS41sUOcqsMvuhIUIUnLDn9Kf?=
+ =?us-ascii?Q?Wl/ZEgRz68LrOIYgYrEpNUrFSKLzL18CHSkIfkApPRXplvCFmVW68HlASSbU?=
+ =?us-ascii?Q?oKS9TRYH2z7B2OKa5wO87UDKN0aORdK3b22FS7lW497kyDep0AySv4VI5PQe?=
+ =?us-ascii?Q?KUedo/gelEnHnBlXESntSjyXA3A8nLw88jMGfmAlyrqW86kcm0QKw56tNb/V?=
+ =?us-ascii?Q?exlagng91Q/ptZFzq1PzCDt17pIYt//C5sGK97/B9rkVBCJdif+7fXn0loPv?=
+ =?us-ascii?Q?T5LFH9mGQWOWusQKGbt4lxQqfhV1aSZyX9Cg41fJGjKMG1ZIUDcVflYEs3ex?=
+ =?us-ascii?Q?qfPbA550Ex+kWTIf+C3vBiGovRVFr+yi7y2K383dj9TxdN/o0qcGE3rT4LE2?=
+ =?us-ascii?Q?F4D2potJh8HFmYPE7/X5Lzv7zCJoGZQWoVcxlNoi3O/OD9/NRsw6T6bygE2v?=
+ =?us-ascii?Q?9iebsy/60AmF5uvya7A0Z90oPG+rJ3sckg0QVwPkyJ0odem0wm2cXhNNm0el?=
+ =?us-ascii?Q?dOrZ/b0kNZzayVic/i3DcC0+5CJ037YQr2O786ktOnJ1D49DqbGKXOJachFS?=
+ =?us-ascii?Q?0IxFHPPAUjn3r3W2RszQiGqKH6WBoYjCnWMRGC2ZokjhRCwVa9lFJvnbfj/R?=
+ =?us-ascii?Q?ZH9NC73VfxxXQLAlhLMQfZ2DtHQuTGGDk5BKEGbWA76lilRNjVdwNG8pszey?=
+ =?us-ascii?Q?dXzJ/yHHYt5be9Yb+wOCVuccoCASPbN8g+sSfYH/NjC//Igh7BDL74fjOk5l?=
+ =?us-ascii?Q?eWAaVeAncs6gd2yXke4Cc+2OVoorZSRFNAwpljwS0yCHOpK1YkbgSTBkPYl0?=
+ =?us-ascii?Q?VvzOqZQGuxrpHq8I0GgPpGezySyeedec1pvKWTEczjftBFeee8N5ensPBPPk?=
+ =?us-ascii?Q?ZEHEIZBuCqzXhVgS7hxej2dNbPBzAlC5lpblHJplYg5FHv5eMDqXRPPqrgsD?=
+ =?us-ascii?Q?d06pZ8kTrVtQcW/kPDMyRUYOvIXNvQdPcjk181cT/p6Zv+ry/JHHu4uXrbKL?=
+ =?us-ascii?Q?B39wOwRCRz+O8L3ihinEMy3vR16/pjb9wEt54J5gOugVwVieIuV7MPuM0qmI?=
+ =?us-ascii?Q?822rNRZqW+pRUsUxjWViZ0xM2RW9ofhwyU/5FyeWdrlGrNMqtbwvKgA0LfcX?=
+ =?us-ascii?Q?dMJM1ZIsLAs=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?a7RweX/Ri4Lgpy5YLP8yA8jQbiG2/MOBwL7QsmPJBYDzQ7FFxJE7opKR9Qut?=
+ =?us-ascii?Q?6i5nXsYDtT6R9VvAOE1nphgO3+0lLa1t+shhaC/71mEDwobz7y+wsEknZpET?=
+ =?us-ascii?Q?fBra5KSWcFelj1wdXKQ8zHCtvhDAdXF+WmVRQRQR28HW/xFXJyFNSJc/P8i1?=
+ =?us-ascii?Q?t0i5SvtDEb+cQHyLQVlrQSNP8r26/c9RfvfplZd8dhAXi2VC0IHnnyYL6GVS?=
+ =?us-ascii?Q?/n3kloaTCIK4AzIkOCf6QaXAvrROwsXlBxnUdWVV9VsyzKqJE/xpxEF0PW+Z?=
+ =?us-ascii?Q?/RvFbftngjEEmxZhWZOBeIoihXzNSv+h4p2qMXvp1TlcOsKvhPFaraKaMzWd?=
+ =?us-ascii?Q?aYozAzhqRRhY1Feaz5NMG2Cbho74hwAxy8inpB1po6AJQsLw3uIgtnBNPtjS?=
+ =?us-ascii?Q?lU3AjQZcfg6KTVUJbKDZCMaXnsALYvr1xciZFXvdRejPcGqZCR58Zb7FU9XI?=
+ =?us-ascii?Q?YHaLPkQUGtWQFinSCxB4uRltAJnCrevUR4M9mtQ1snF5ONQwJykOjo/MOt4P?=
+ =?us-ascii?Q?fRDqCvBO93ff+0dgg4XmP54igygUGVKhO6EISGuBBtUeiIbiBQAYAGkyrP4l?=
+ =?us-ascii?Q?USl2NsXVOP6rIP7CabhGDmclU6qKiul+P+4thgpAalF4LfNLKWdazR2aEjY7?=
+ =?us-ascii?Q?LAGSUMn9DRYwq4pVEFecsx9lFO9TFhXVAQbE1GRxWSs6waIkOuCQWwiQCZe9?=
+ =?us-ascii?Q?bjOOsVovx4sUJySqYGOOVZy7VBF9eQVWDeMBld5Oz2CPFRyIMvIF8ho0z8DH?=
+ =?us-ascii?Q?xyMOKD0xmM8JDrIHZbABYOL3FDmkpltG103zMCv5JMWpnsCmMMlxFncaIX3T?=
+ =?us-ascii?Q?aNjeSE26WpmgbD5NCRXU8S0/RgxVQMLm30TqBnQMGJ99WFsEm/MT6StuG0uY?=
+ =?us-ascii?Q?7xNs+W6wyCE7QituLxd6pQPhZAcvPY8jHLkSPqVk9WPFAk9KE/l9nhng+SxM?=
+ =?us-ascii?Q?Qp7+X4xqzUQ4dm5Vz+q1z10AsWQZNKuJjS7E4Ip5RatDuZqtOWTERf39PO/v?=
+ =?us-ascii?Q?KhOILZzx+Z3UxGD/InAgKmIY4VG/2hWgVnB809PjFb/KH+1XzXMdaXZLmals?=
+ =?us-ascii?Q?pnTZioBrNeIU0uqCX8JXX+A6K1NxOXQ2r1P97sbjDJnkfmNm5LQ39w1EII2z?=
+ =?us-ascii?Q?fPnukNZStx3RQxQNt1myxyBBPKdg+28GgjvTsXpbDXbhqbwcgAHpN4R0cRfc?=
+ =?us-ascii?Q?+VH0W67UFotxa8j22ehELeAtWJ92jcuyKD9ePk2Q3SSvOCgx0iInh779e8p5?=
+ =?us-ascii?Q?RBomXz7Oy2rfflXnS9IW6FsF0UfqYJiuhoBQP+33WcUuitn5UWS5+fUNCkq8?=
+ =?us-ascii?Q?xL4SOJbPOlLFyve3lDSBdYBGTvI5GniSK1PA0PWBBuTyDkVw13ajCz6txdKJ?=
+ =?us-ascii?Q?zf2Owgz7/0+2X1ZZTrLCjnuzicfiSfHOunimzlOVmHcv90HP2PS9Vv7gZho8?=
+ =?us-ascii?Q?RTxWiGkSBJAGhPQZoX1JY7mkdpPQGG5iht9wKz5Z6Nd8G+PBqmoEx97LzGq5?=
+ =?us-ascii?Q?u1SjnqEyoUopg1shrTcz4Cyui6++OaX0EOnhW4p9FNpHUhFnP/tY68vMJXTc?=
+ =?us-ascii?Q?Z0/9M8nWhxlItEeSsaeVoCxejSTSoS1i+3PqRoZACJzw9T5CGmnP5sVldQOa?=
+ =?us-ascii?Q?pA=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	tUxLWbOFiwMuBKtmpunFPIiX7CiPE1NsgcShX+55QRT1C+XO/PkdOwwApCUQHMFET4qCEnQWMGJ5qhrlX1F7zcgLG4WbFYrJN5UmOTwqs7NA6wlDNEyXGRgQUbB0x3Y+yWn/ukEjfB3mnVxbzwXsx4BATnU5KV9nnkj6QVlwLqyR7IPRY+VlQ5SqYmDSc6dITZ7LLfjIwq5w1XPD5MPcEwqM0JF9mZK+b5dkx2R2GuvT5YrI+O3BwMRdaPgFJLOd9hWr02x/9q9hZLxwV8Ko00xTYXSghIq74du+YfC+CS+TnL0pLDyisDcIs2lybLvS6RLxnsImnceltA+/n4clrl9puqa+cTfolTturkXnX+bWtyzsOrK7DT48TektwmSXkB4Aa0yjOk7RTDxC3PkWmqSpFtRl246y7FR2aAoBtJb3RqTnbMHRCKR3qwEoEyRYUrYpsbldSUpVVi6ElkVyRqb+6PaLb8c6xx639twx080RfuVeoBbnIBsOaTplboVf0Sq3tVouKIB0xoJ4WPtibLU7lnvKMJjtp8Plk146elHs2HpRO5JQpJMlPVIQgBPNDrwUHajFiDQZD4dzYAX+1UZTCDRr5o9SXEFCxESG6Q4=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2d4faf23-1655-4cd2-ad4c-08ddd0eaa197
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Aug 2025 11:00:30.9495
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: G42owfPGlzLFv53g+Nn2tqwD8mAcXAH2uLYYj/DTjO8syzIeL0S/OxWCcZGvk4uOYtwJmpsSuo6GULAH53WFNScay1Kp/raHe4vPg9eIad8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR10MB6181
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-01_03,2025-07-31_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=743
+ suspectscore=0 malwarescore=0 bulkscore=0 spamscore=0 mlxscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2505160000 definitions=main-2508010081
+X-Proofpoint-GUID: x23ajlINEfJPnya_xDIMsGM8jTifBEMn
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODAxMDA4MSBTYWx0ZWRfX9W2+EXHaWWYb
+ yfz/h7x1vRYQnrmWQQKHyNyGk+KA0a/NC+CxmACKNh+fyKKBQ8RmBHn4r3YTAkxkU4FhKzZPkn8
+ ofR8EYmA1ffj1ODaB05rQvm3dxgF99D8bFIHs39hSvzm7P17d2zKZIjqJyC9lNyctA0teaiHl1o
+ tv+iwHgUkcnFxX7RvEwaUA73scBRXIZ+jqzxYyQnsLDbNhoIGLsaLTX2spkV7sL0kOH/MjwrscN
+ lDMLIJ2HVBYiBsogpjKRdaP2f9oQaSO15jbfv4FabreiCASW50fJ/109x5vL0Gyb9mCDOZTLGwa
+ KjHz6G1CXF5nkqEFpgG9Xappk8ixxlrPJYgeaW8lAXPpGpOdRbinC3CPYpydwiKo/cofKOcCjG1
+ 6bJufPZC4jGLfSKEIOv1Thmi43krCGYQ0pEa2TVuzKEX+UVbNdRZaenkrpBvyrdhV11do32x
+X-Authority-Analysis: v=2.4 cv=ZMjXmW7b c=1 sm=1 tr=0 ts=688c9e53 b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=VwQbUJbxAAAA:8 a=1XWaLZrsAAAA:8
+ a=yPCof4ZbAAAA:8 a=E8FL2OH8mw8bT491xkMA:9 a=CjuIK1q_8ugA:10 cc=ntf
+ awl=host:13604
+X-Proofpoint-ORIG-GUID: x23ajlINEfJPnya_xDIMsGM8jTifBEMn
+X-Rspamd-Queue-Id: 661CB140014
+X-Stat-Signature: 7xgjp9uyt7jbhgpamj1aq3szd85a9goa
 X-Rspam-User: 
-X-HE-Tag: 1754046005-579785
-X-HE-Meta: U2FsdGVkX18qj3yjQnz8h+M+4i+o/tZ2w/vDtqy2loGsw+VNEXPpI3hwt1P1O6Xs7KJXyoBQfGxOYZOeWSjCth6V5Kv9zief09Mjcrh8xoLP34/ne4spwa/jijDgWMEyJ2m49Cu0//adsvfsotkNcKZRuyJpIEz8hg5LjetBJly+L+GZeePtu1gTpAWbS9KPr+4YpyLr2bqu8rfqcGarPd83AtVwJh6jo7xbBOTyZ/NqnUNx0gmmZJ4YlEFc7FfFWkZH9RItVCY1rBWCjV4wZpovYOODdRO2JpFiegOgubEe7zR1tDZdjp4ZLVdHdWtBWiqoNzyxyyXvYWCUfb9kgW90n/H1bnvolvfByGbDO1wPYXcDk9KKHnFskVUEYYnEN1FPDvDwJqm2jJkXTbq8aldVdS3dGA1bxlkREIA87It16YAO1LDEvOrFzpSkZfy0rWfrUAmkbsUWDC5KV3GtmS2jak9uEDK/a49Z5iqokBso8miLcr7X3oomIoZ4y/bADK+4dP9/bxQLoTaJoCDKz+zX/33jyiBvLyOQ8Te/525giF7NDzrHQ4+1HjHeIro7zv8/41zGVtpcTqenGJ1g1sCnySZvzgmBI5+r2V/ygOWRwlhFGr6K7Yaig+hl/TdkOrIaQafuU2AfMHAg3/AyorHi5a6TmKJ2geOtQV3Qp+8Jwp5tHP6cRiCNPfyb9nl8DjiPugxnQsVDSlHIA8s4+AvxIiYpFGoRcI0nFhmUt0slHk3nhKRkbvAAaozCgbynPdpKvpo+m+s7NJrqXvfGMhsWfbj2hBMQsh2p7K/rH1noYPUWOVMZurH7XTr2ZQDFjlFs47qrkitdRPtzBMHIKvrC9DVMUIwAbNj8N7jzKrsJLK1ifJOoa1xfMOl3af4wF3v5RCEEJtYlbUnPDfr0eO5+6uPLD6+wsVAETLqIVFUATuFIqaQkD21GjM6dsN5ajsvBB1HmAYoJ/ua2EKu
- DLlGgeKK
- ojcmsOn/YhvbZdhWlPqJVdGr2A/SS+pSRaSCkC0lcF4CH1vJsCMcxJ0jljwSFev5bHQM9j+8QRMVfhdgk0dpa/eLqVfnVim0C5SFb0VYLb+S5RqXwBUabh+RjCYg8fJnZ6HtP892+6oofisFwGwHi/IYUHA29qN/oWRy+kp7WI5Sz1HXyq94q2s9GGPiZKgahv0hHpQdJgangKkhBmW79866WYEhEJEGR7828FCRMEux+XPe1jpkqOr/w1B+JYXirhZHZgy/NwFC3Y2k=
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1754046037-452973
+X-HE-Meta: U2FsdGVkX188OUxggD8xh4W+r+qxgu0mO01VMjcAXTlvrJ1/l4H4cKmAASE7MMGuo11mq9M21094L426tlPSGVq/J829gFHZ2DRSizYuXpURY05tZr9i05GLHqWQIvAqzDLbQbR8eFzaTfpwIHKjhb76j9KDwutDW32BbyW5dsUyZNCHlcRrXH0lotMrO4K2tx/IP8pOrevYz2X9kdaBcg7+N54WY6/eKmBJz1AwF8qzHBjW4QRUannnhZXb8lB7iArNDzmH7NYULMU8rJyjSQe2TzKd8BRqhBs2KzkjH2v7rJ2tuutb4OqjwhqZviSpOJvsZpw9rvbTW2ehOjtqhMF2ZtpCMsq2m5wGOXHtXMrqVYl87pxislBO/UOJl1R13NsVBp/YEF6pO+j6NPSVljtTEBs7RJFMnuKBdNQNooOlIDweIqSBrHTNFL9XOaB3qoujLsLPzAWHs3U1pNMYRPsSY1IFUA/9A3YtRmRwNCo/I1BJTe0Q+Pif4/3AZ4J1PR1xML5t2j7NkrwjyiNpM2rBDpsmGi3i9BKpuuzO745PMro1yjkGPiODtnBQS2qzAaZM/3lAG0cfKSke+/gYVzS1r3xbnWVBITTfLSSnC6zi61ChYP1NYlmEvU31A2U5U5+H6wio6/p6d6W43FnkPO1rBP6xXWhX/6oR1vqUbBrd0gniAdO3EFKZiFxoO7Kh7zr7OCG0d6Wl5qjyHBVBkDQVBm+K3m2+kX40jHXqd68rINZ8qgWvk0i+n3ipXWGSf09GYjCTEIettMLJkdQKeyP10OOURxah6HnEs8He0NlbACMNKBQolcDv5s+v3/z9FtSrHbcdG+G3FXXdW+1wXiVIH/aa28ek1nuKc9314tqcNCiXylc4W+yvL1VXuE9PRJscVeYO4sQat3LKJs+2uN/5tfPfZcw8wZzjNdPo/fqY0vn+4BdHjzNhA94zi16fuKZm0zxaql4ye+PAt8e
+ 6LcMRum6
+ BTvVMDu0ygX9W97/7r2CJ9niVkcNVL6VqxHPrZVeKRn8aJvOUG9HoPqVsrXsU3vcgQSJj7tHUpoANcLGVDCgmQPWVGswl7MopghcGb/Woo4x/XeqvLKiRdazVMEPC1cQ8qK5sSqFk8nIhMuHSrbtpMbhOE1sBCCK0hQ1NPjc8mmhKSJ7WP1cbmpML1YK+kQW6Z/ZIS5mdWaLwZpQw91Yoc9NhS8R8MSYrtSJpCeiIVHBr5Z/55B/JZgOqoMGK7SM9Q8CoG04w+TjMGSKMQ+HBYihyJmJybg3q7Fu6mEkIngJqPyYeokzUXxkXEIlAR1CGx4CMbUFYarCJ4KBgQCPlZd4SBCnNgOfhJ9/dWmdOqVJlpXw32oT0UiEtcVNOI3BgeD2atP1rfqpQMrCoANqJS3YkQgLu/lpnDQG68kK9NxtOnBEWmnrjLmW2tvrs30qLUeqh/nCqshvOrjlR1xn3xYwQwIxfZibEi+zuM/Vd76qRxfp4K5IvRlUQFmygeTqkMhUjCjPlW63YD/GD8wa+8bzlHXkxsmLJgOhXos8jLFNFLb5pA2QA1xYOo4TrMMn8nQbjwOPx4vzxvN9AikDLPEsoXIS7+L4YOSV3fNlPtb7PN8OtMEhnmuI9O394HGusKBvdao7kdiVYyHw6R+ktywk+gv4aQcozb645KVjnK4+mxm/FRPUYQbcTSpcFGZ6G4RNEGyOmx1tvQ3duaXy4GmCLmExtbJOwN/nZN9o7K4rQgYeDO/WkS06tIUvJmFkuCP3GY7ZKmrwe2xgPxYSNoDcKKeGMURM7PYLw3T+BI8xRs7EMzDDw6JMQnS3vNZzqGOAOMMMvHfiptp24pm/i2yP5/r0rRGXkGuuA2kErrDVvvRI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -86,177 +233,225 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-08-01 13:06:30+0300, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> Testing kexec handover requires a kernel driver that will generate some
-> data and preserve it with KHO on the first boot and then restore that
-> data and verify it was preserved properly after kexec.
-> 
-> To facilitate such test, along with the kernel driver responsible for
-> data generation, preservation and restoration add a script that runs a
-> kernel in a VM with a minimal /init. The /init enables KHO, loads a
-> kernel image for kexec and runs kexec reboot. After the boot of the
-> kexeced kernel, the driver verifies that the data was properly
-> preserved.
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+On Thu, Jul 31, 2025 at 08:19:19AM -0700, Suren Baghdasaryan wrote:
+> vma_start_read() can drop and reacquire RCU lock in certain failure
+> cases. It's not apparent that the RCU session started by the caller of
+> this function might be interrupted when vma_start_read() fails to lock
+> the vma. This might become a source of subtle bugs and to prevent that
+> we change the locking rules for vma_start_read() to drop RCU read lock
+> upon failure. This way it's more obvious that RCU-protected objects are
+> unsafe after vma locking fails.
+>
+> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 
-Looking at it while awake brought up some more nitpicks.
-In any case:
-Reviewed-by: Thomas Weißschuh <linux@weissschuh.net> # for the nolibc usage
+Thanks for iterating on this so quickly - I think this is a good cleanup so
+well worth having.
 
-> diff --git a/tools/testing/selftests/kho/init.c b/tools/testing/selftests/kho/init.c
-> new file mode 100644
-> index 000000000000..8044ca56fff5
-> --- /dev/null
-> +++ b/tools/testing/selftests/kho/init.c
-> @@ -0,0 +1,98 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#include <errno.h>
+The change LGTM, so:
 
-Not actually used.
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-> +#include <stdio.h>
-> +#include <unistd.h>
-> +#include <fcntl.h>
-> +#include <sys/syscall.h>
-> +#include <sys/mount.h>
-> +#include <sys/reboot.h>
-> +
-> +/* from arch/x86/include/asm/setup.h */
-> +#define COMMAND_LINE_SIZE	2048
-> +
-> +/* from include/linux/kexex.h */
+I also confirmed this fixes the issue locally and ran mm self-tests so feel
+free to also add:
 
-"kexec.h"
+Tested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-> +#define KEXEC_FILE_NO_INITRAMFS	0x00000004
+> ---
+> Changes since v1 [1]:
+> - Fixed missing RCU unlock in lock_vma_under_rcu(), per Lorenzo Stoakes
+> - Modified comments, per Lorenzo Stoakes
+>
+> [1] https://lore.kernel.org/all/20250731013405.4066346-2-surenb@google.com/
+>
+>  mm/mmap_lock.c | 86 +++++++++++++++++++++++++++-----------------------
+>  1 file changed, 47 insertions(+), 39 deletions(-)
+>
+> diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+> index 10826f347a9f..7ea603f26975 100644
+> --- a/mm/mmap_lock.c
+> +++ b/mm/mmap_lock.c
+> @@ -136,15 +136,16 @@ void vma_mark_detached(struct vm_area_struct *vma)
+>   * Returns the vma on success, NULL on failure to lock and EAGAIN if vma got
+>   * detached.
+>   *
+> - * WARNING! The vma passed to this function cannot be used if the function
+> - * fails to lock it because in certain cases RCU lock is dropped and then
+> - * reacquired. Once RCU lock is dropped the vma can be concurently freed.
+> + * IMPORTANT: RCU lock must be held upon entering the function, but upon error
+> + *            IT IS RELEASED. The caller must handle this correctly.
+>   */
 
-This is actually part of the UAPI headers, why not use it from there?
+Actually maybe this is better replacing the original, as it is super clear
+and direct.
 
+>  static inline struct vm_area_struct *vma_start_read(struct mm_struct *mm,
+>  						    struct vm_area_struct *vma)
+>  {
+> +	struct mm_struct *other_mm;
+>  	int oldcnt;
+>
+> +	RCU_LOCKDEP_WARN(!rcu_read_lock_held(), "no rcu lock held");
+>  	/*
+>  	 * Check before locking. A race might cause false locked result.
+>  	 * We can use READ_ONCE() for the mm_lock_seq here, and don't need
+> @@ -152,8 +153,10 @@ static inline struct vm_area_struct *vma_start_read(struct mm_struct *mm,
+>  	 * we don't rely on for anything - the mm_lock_seq read against which we
+>  	 * need ordering is below.
+>  	 */
+> -	if (READ_ONCE(vma->vm_lock_seq) == READ_ONCE(mm->mm_lock_seq.sequence))
+> -		return NULL;
+> +	if (READ_ONCE(vma->vm_lock_seq) == READ_ONCE(mm->mm_lock_seq.sequence)) {
+> +		vma = NULL;
+> +		goto err;
+> +	}
+>
+>  	/*
+>  	 * If VMA_LOCK_OFFSET is set, __refcount_inc_not_zero_limited_acquire()
+> @@ -164,34 +167,14 @@ static inline struct vm_area_struct *vma_start_read(struct mm_struct *mm,
+>  	if (unlikely(!__refcount_inc_not_zero_limited_acquire(&vma->vm_refcnt, &oldcnt,
+>  							      VMA_REF_LIMIT))) {
+>  		/* return EAGAIN if vma got detached from under us */
+> -		return oldcnt ? NULL : ERR_PTR(-EAGAIN);
+> +		vma = oldcnt ? NULL : ERR_PTR(-EAGAIN);
+> +		goto err;
+>  	}
+>
+>  	rwsem_acquire_read(&vma->vmlock_dep_map, 0, 1, _RET_IP_);
+>
+> -	/*
+> -	 * If vma got attached to another mm from under us, that mm is not
+> -	 * stable and can be freed in the narrow window after vma->vm_refcnt
+> -	 * is dropped and before rcuwait_wake_up(mm) is called. Grab it before
+> -	 * releasing vma->vm_refcnt.
+> -	 */
+> -	if (unlikely(vma->vm_mm != mm)) {
+> -		/* Use a copy of vm_mm in case vma is freed after we drop vm_refcnt */
+> -		struct mm_struct *other_mm = vma->vm_mm;
+> -
+> -		/*
+> -		 * __mmdrop() is a heavy operation and we don't need RCU
+> -		 * protection here. Release RCU lock during these operations.
+> -		 * We reinstate the RCU read lock as the caller expects it to
+> -		 * be held when this function returns even on error.
+> -		 */
+> -		rcu_read_unlock();
+> -		mmgrab(other_mm);
+> -		vma_refcount_put(vma);
+> -		mmdrop(other_mm);
+> -		rcu_read_lock();
+> -		return NULL;
+> -	}
+> +	if (unlikely(vma->vm_mm != mm))
+> +		goto err_unstable;
+>
+>  	/*
+>  	 * Overflow of vm_lock_seq/mm_lock_seq might produce false locked result.
+> @@ -206,10 +189,31 @@ static inline struct vm_area_struct *vma_start_read(struct mm_struct *mm,
+>  	 */
+>  	if (unlikely(vma->vm_lock_seq == raw_read_seqcount(&mm->mm_lock_seq))) {
+>  		vma_refcount_put(vma);
+> -		return NULL;
+> +		vma = NULL;
+> +		goto err;
+>  	}
+>
+>  	return vma;
+> +err:
+> +	rcu_read_unlock();
 > +
-> +#define KHO_FINILIZE "/debugfs/kho/out/finalize"
+> +	return vma;
+> +err_unstable:
+> +	/*
+> +	 * If vma got attached to another mm from under us, that mm is not
+> +	 * stable and can be freed in the narrow window after vma->vm_refcnt
+> +	 * is dropped and before rcuwait_wake_up(mm) is called. Grab it before
+> +	 * releasing vma->vm_refcnt.
+> +	 */
+> +	other_mm = vma->vm_mm; /* use a copy as vma can be freed after we drop vm_refcnt */
+> +
+> +	/* __mmdrop() is a heavy operation, do it after dropping RCU lock. */
+> +	rcu_read_unlock();
+> +	mmgrab(other_mm);
+> +	vma_refcount_put(vma);
+> +	mmdrop(other_mm);
+> +
+> +	return NULL;
+>  }
+>
+>  /*
+> @@ -223,11 +227,13 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
+>  	MA_STATE(mas, &mm->mm_mt, address, address);
+>  	struct vm_area_struct *vma;
+>
+> -	rcu_read_lock();
+>  retry:
+> +	rcu_read_lock();
+>  	vma = mas_walk(&mas);
+> -	if (!vma)
+> +	if (!vma) {
+> +		rcu_read_unlock();
 
-KHO_FINALIZE
+Good :>)
 
-> +#define KERNEL_IMAGE "/kernel"
-> +
-> +static int mount_filesystems(void)
-> +{
-> +	if (mount("debugfs", "/debugfs", "debugfs", 0, NULL) < 0)
-> +		return -1;
-> +
-> +	return mount("proc", "/proc", "proc", 0, NULL);
-> +}
-> +
-> +static int kho_enable(void)
-> +{
-> +	const char enable[] = "1";
-> +	int fd;
-> +
-> +	fd = open(KHO_FINILIZE, O_RDWR);
-> +	if (fd < 0)
-> +		return -1;
-> +
-> +	if (write(fd, enable, sizeof(enable)) != sizeof(enable))
-> +		return 1;
-> +
-> +	close(fd);
-> +	return 0;
-> +}
-> +
-> +static long kexec_file_load(int kernel_fd, int initrd_fd,
-> +			    unsigned long cmdline_len, const char *cmdline,
-> +			    unsigned long flags)
-> +{
-> +	return syscall(__NR_kexec_file_load, kernel_fd, initrd_fd, cmdline_len,
-> +		       cmdline, flags);
-> +}
-> +
-> +static int kexec_load(void)
-> +{
-> +	char cmdline[COMMAND_LINE_SIZE];
-> +	ssize_t len;
-> +	int fd, err;
-> +
-> +	fd = open("/proc/cmdline", O_RDONLY);
-> +	if (fd < 0)
-> +		return -1;
-> +
-> +	len = read(fd, cmdline, sizeof(cmdline));
-> +	close(fd);
-> +	if (len < 0)
-> +		return -1;
-> +
-> +	/* replace \n with \0 */
-> +	cmdline[len - 1] = 0;
-> +	fd = open(KERNEL_IMAGE, O_RDONLY);
-> +	if (fd < 0)
-> +		return -1;
-> +
-> +	err = kexec_file_load(fd, -1, len, cmdline, KEXEC_FILE_NO_INITRAMFS);
-> +	close(fd);
-> +
-> +	return err ? : 0;
-> +}
-> +
-> +int main(int argc, char *argv[])
-> +{
-> +	if (mount_filesystems())
-> +		goto err_reboot;
-> +
-> +	if (kho_enable())
-> +		goto err_reboot;
-> +
-> +	if (kexec_load())
-> +		goto err_reboot;
-> +
-> +	if (reboot(RB_KEXEC))
-> +		goto err_reboot;
-> +
-> +	return 0;
-> +
-> +err_reboot:
-> +	reboot(RB_AUTOBOOT);
-> +	return -1;
-> +}
-> diff --git a/tools/testing/selftests/kho/vmtest.sh b/tools/testing/selftests/kho/vmtest.sh
-> new file mode 100755
-> index 000000000000..3f6c17166846
-> --- /dev/null
-> +++ b/tools/testing/selftests/kho/vmtest.sh
+Again, very easy thing to miss.
 
-(...)
-
-> +function mkinitrd() {
-> +	local kernel=$1
+>  		goto inval;
+> +	}
+>
+>  	vma = vma_start_read(mm, vma);
+>  	if (IS_ERR_OR_NULL(vma)) {
+> @@ -241,6 +247,9 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
+>  		/* Failed to lock the VMA */
+>  		goto inval;
+>  	}
 > +
-> +	"$CROSS_COMPILE"gcc -s -static -Os -nostdinc -nostdlib \
-> +			-fno-asynchronous-unwind-tables -fno-ident \
-> +			-I "$headers_dir/include" \
-> +			-I "$kernel_dir/tools/include/nolibc" \
-> +			-o "$tmp_dir/init" "$test_dir/init.c"
-
-You could build this as a userprog as part of kbuild.
-Then it will also work automatically with clang.
-
+> +	rcu_read_unlock();
 > +
-> +	cat > "$tmp_dir/cpio_list" <<EOF
-> +dir /dev 0755 0 0
-> +dir /proc 0755 0 0
-> +dir /debugfs 0755 0 0
-> +nod /dev/console 0600 0 0 c 5 1
-> +file /init $tmp_dir/init 0755 0 0
-> +file /kernel $kernel 0644 0 0
-> +EOF
-> +
-> +	"$build_dir/usr/gen_init_cpio" "$tmp_dir/cpio_list" > "$initrd"
-
-This could also be hooked up to kbuild.
-
-> +}
-
-(...)
+>  	/*
+>  	 * At this point, we have a stable reference to a VMA: The VMA is
+>  	 * locked and we know it hasn't already been isolated.
+> @@ -249,16 +258,14 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
+>  	 */
+>
+>  	/* Check if the vma we locked is the right one. */
+> -	if (unlikely(address < vma->vm_start || address >= vma->vm_end))
+> -		goto inval_end_read;
+> +	if (unlikely(address < vma->vm_start || address >= vma->vm_end)) {
+> +		vma_end_read(vma);
+> +		goto inval;
+> +	}
+>
+> -	rcu_read_unlock();
+>  	return vma;
+>
+> -inval_end_read:
+> -	vma_end_read(vma);
+>  inval:
+> -	rcu_read_unlock();
+>  	count_vm_vma_lock_event(VMA_LOCK_ABORT);
+>  	return NULL;
+>  }
+> @@ -313,6 +320,7 @@ struct vm_area_struct *lock_next_vma(struct mm_struct *mm,
+>  		 */
+>  		if (PTR_ERR(vma) == -EAGAIN) {
+>  			/* reset to search from the last address */
+> +			rcu_read_lock();
+>  			vma_iter_set(vmi, from_addr);
+>  			goto retry;
+>  		}
+> @@ -342,9 +350,9 @@ struct vm_area_struct *lock_next_vma(struct mm_struct *mm,
+>  	return vma;
+>
+>  fallback_unlock:
+> +	rcu_read_unlock();
+>  	vma_end_read(vma);
+>  fallback:
+> -	rcu_read_unlock();
+>  	vma = lock_next_vma_under_mmap_lock(mm, vmi, from_addr);
+>  	rcu_read_lock();
+>  	/* Reinitialize the iterator after re-entering rcu read section */
+> --
+> 2.50.1.552.g942d659e1b-goog
+>
 
