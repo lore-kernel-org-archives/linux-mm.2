@@ -2,177 +2,92 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 52D6FC87FCB
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 09:58:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D1CE9C87FCA
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 10:06:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D33656B007B; Fri,  1 Aug 2025 05:58:25 -0400 (EDT)
+	id 3F7B96B007B; Fri,  1 Aug 2025 06:06:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE4966B0088; Fri,  1 Aug 2025 05:58:25 -0400 (EDT)
+	id 3A8676B0088; Fri,  1 Aug 2025 06:06:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BAC6D6B008A; Fri,  1 Aug 2025 05:58:25 -0400 (EDT)
+	id 297716B008A; Fri,  1 Aug 2025 06:06:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AD5C16B007B
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 05:58:25 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5DB75BEEE3
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 09:58:25 +0000 (UTC)
-X-FDA: 83727738570.11.272BF88
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf03.hostedemail.com (Postfix) with ESMTP id DAABF20011
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 09:58:22 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=BGeTP7oW;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CyV28xq8;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=BGeTP7oW;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CyV28xq8;
-	spf=pass (imf03.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 0F0C06B007B
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 06:06:42 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B369D1A149B
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 10:06:41 +0000 (UTC)
+X-FDA: 83727759402.15.E42ABD9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 03BBD12000C
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 10:06:39 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AdjhJ4oL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754042800; a=rsa-sha256;
+	cv=none;
+	b=0N2TGJOWbvGnpwBIXAZMGsxuZaWsbIJ9dIWhDBLy5aL4lWTgAxSSerkbLNk2kOfKos3Z10
+	EeSvSTkXUcx7yVIdNsCIA8yaiJutDTaBx+dPOg+mF28v7haGxkUVH2qUdX3ugXrY6DqDEC
+	iFRvLLelWsNcCFPW1SvgJZ717CuJsFs=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AdjhJ4oL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754042303;
+	s=arc-20220608; t=1754042800;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XSeXoQGGBjQ3qsfMVMRj+BOL1M+cMszW9Zuw5XUauSg=;
-	b=RU1HW181/Ps/gDll8+cvDZhT5mQeG8K7nZyNppLMCMIrdrn5wcYJHJT9EO6Jw4YxY6EmBb
-	8JbZyjnJQNESBJsphUsRMA+HNE/9rrw41yztAb/HGsaN2DMeEYMo0oresrYpMG5k7Q7O6D
-	gPfMj5GZXdF9gYvd/nHibLN95edxaPw=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=BGeTP7oW;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CyV28xq8;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=BGeTP7oW;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CyV28xq8;
-	spf=pass (imf03.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754042303; a=rsa-sha256;
-	cv=none;
-	b=PhAFtkNljrYBGHsZgqadMVp/XrTR5UjaS9WJVVaCy0vyfcUekl244M92cnvIhM/YFqc/dW
-	IWI+ZPDYLuxH0FXlJnKeqqptZ529pB+0DWQe6oVydhA4I7qEIrfSrxzuH1eZ3w32p4Qa55
-	q9S3/TsYVFlMcEnm807gqQ5YjdF2hsI=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 10A771F38C;
-	Fri,  1 Aug 2025 09:58:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1754042301; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=XSeXoQGGBjQ3qsfMVMRj+BOL1M+cMszW9Zuw5XUauSg=;
-	b=BGeTP7oWISr0is28g1zqquLpkV90ngRr5nuDJxV64VVxDT8WmALza5MLDE0YYXAhJ7UEGn
-	INpJrCxh3w2AHjuLS6RLxamcvhakkziHu8razT5vgcxpa5n9R3tVBbxyIX+SMssIoR0o79
-	64/v+qqWdVSpP0hY7FIzcl9ZiBAXTA0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1754042301;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=XSeXoQGGBjQ3qsfMVMRj+BOL1M+cMszW9Zuw5XUauSg=;
-	b=CyV28xq8IPyLqt+9kllEjgdVYkp1wjYiHUZ3MnYeJwSqKUmffkZHHlf0eUvUXR6lr/DMNB
-	L8kqBs1r847cEUAQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1754042301; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=XSeXoQGGBjQ3qsfMVMRj+BOL1M+cMszW9Zuw5XUauSg=;
-	b=BGeTP7oWISr0is28g1zqquLpkV90ngRr5nuDJxV64VVxDT8WmALza5MLDE0YYXAhJ7UEGn
-	INpJrCxh3w2AHjuLS6RLxamcvhakkziHu8razT5vgcxpa5n9R3tVBbxyIX+SMssIoR0o79
-	64/v+qqWdVSpP0hY7FIzcl9ZiBAXTA0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1754042301;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=XSeXoQGGBjQ3qsfMVMRj+BOL1M+cMszW9Zuw5XUauSg=;
-	b=CyV28xq8IPyLqt+9kllEjgdVYkp1wjYiHUZ3MnYeJwSqKUmffkZHHlf0eUvUXR6lr/DMNB
-	L8kqBs1r847cEUAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C04F9138A5;
-	Fri,  1 Aug 2025 09:58:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ZfC9LbyPjGicQwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 01 Aug 2025 09:58:20 +0000
-Message-ID: <25ba0d77-eb61-4efc-b2fc-73878cbd85c1@suse.cz>
-Date: Fri, 1 Aug 2025 11:58:20 +0200
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ShUqQG6BjoxuL7p/FUlwcxPl6a9vn6L2r3Z/nAMiwPo=;
+	b=5JXYSXlhhq78tSWJdxXIWSqJ2DOX4/zbFvMk/7L4X2TfwCsNAeADhMkQyH18y0CdsOt/NT
+	MUrFNacc+0QBvZaas5n80I3A3c3hlo37etKCMwvrHFBrusT1jatZK1F23+N1Whe0Zud6jx
+	jawMCxksBbYS383K3aeMrI8WBHrgDJ0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B79EA41A14;
+	Fri,  1 Aug 2025 10:06:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D2FC4CEE7;
+	Fri,  1 Aug 2025 10:06:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754042798;
+	bh=z7l3h/eJxDqkOrIqr9TIJ3RWiy088wOwHcu0LhVd6CA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=AdjhJ4oLP5HPb7GpOKzMpQAyJUxgtAmo13AH20OvGzPDyd/QmujtR8oWONjd3m8Fu
+	 tPYwJq1PwenpUeqTrPDhtbOUaaYdHRpLXnwMqXk5reh6cNRzrj2S+lNKUH5NH+HAUV
+	 abASmBIB3peglZF8Wf25qIoHGn2DDwSeuhVEe7lYQsjbybk7U03WwHW7p75HV7oEq1
+	 Ls+pdOkkbxwZMn8Or3JNs3HVUWCAKH9o/swJ5nUjonp1srl3eeLE5FuW4zLT5+YWQc
+	 qXdN9PIjCMrFZh43YmL1IZUMJxUCSD/k/7LLPPmZEaafAFvzNR2xSgxZAY7XIi4kxo
+	 SzYjfNgH5S+aw==
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Alexander Graf <graf@amazon.com>,
+	Changyuan Lyu <changyuanl@google.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=DFschuh?= <linux@weissschuh.net>,
+	kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v2] kho: add test for kexec handover
+Date: Fri,  1 Aug 2025 13:06:30 +0300
+Message-ID: <20250801100630.3473918-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.47.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Realtime threads delayed due to kcompactd0
-Content-Language: en-US
-To: Mike Galbraith <efault@gmx.de>, Frank van der Linden <fvdl@google.com>,
- Alexander Krabler <Alexander.Krabler@kuka.com>
-Cc: "linux-rt-users@vger.kernel.org" <linux-rt-users@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- Dennis Schimmel <Dennis.Schimmel@kuka.com>,
- Daniel Braunwarth <Daniel.Braunwarth@kuka.com>
-References: <DU0PR01MB10385345F7153F334100981888259A@DU0PR01MB10385.eurprd01.prod.exchangelabs.com>
- <CAPTztWYf82p6hq=Q2mVq6_9WTjRaQiH81z4idZL6MZ1PXufPwQ@mail.gmail.com>
- <71df781c-3ef3-4b26-9ba8-93fc7d4f9eec@suse.cz>
- <026de9fcd4f0ed17c2df95c4f7c56b878a844012.camel@gmx.de>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <026de9fcd4f0ed17c2df95c4f7c56b878a844012.camel@gmx.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Stat-Signature: eb6jq3syj6ajhr6yrditbi9assf9bmtn
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: DAABF20011
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 03BBD12000C
+X-Stat-Signature: 9q4ns6y6hnprbqktpcizuhif1tdw7f8k
 X-Rspam-User: 
-X-HE-Tag: 1754042302-559823
-X-HE-Meta: U2FsdGVkX1/08JQSJkGszAZh1dR1dPzAafmNcylmypiWBRZKJGJbZWoY/1jge20pdO4vpXFucERN/vLbisKUMnThJv8c2QeqRtr1WHy9Ph4HAcg+Ymnfs65wbnoUVOukSE+7TOPCd7VtWPC+R+hb47K00WsS1tPPXSJVTjuo9lluyNrLCieNDkOAZUXN9lDAe5SGDB1sAN1zmW+5Nlcpd/+R4z4HEFaG1B3N/Mnvls7x0rWlPmz8y9IUvETb3744AFKOp15+z7pTXFhTwW26/ehjRYuCXLgXAyOyk14NILhrh6IZrdxwQbKIWUA8wOeMVv4+RyJJCbhBZ60R9Xx3IV1e91xv8rYOLiwt3N/zy/a8bKNSlRCPry7gmyOW2on03POJUpnJ9nzwA9ttu4B01OkZw56TdJ9VGH7h4qOouYlpNAAvXTW6dCZSXx3FeiG6rtwzgNvVMBJbtLqM/yKYRzlPOIkmt/BFIaw+7IhqTDJRmhcJKrgh5rkPr1isF4/Yqd0wEQ6QLAU4J2t1g5uEUo4crhPFlaGi2v78jubKumv93Gyb6DSSqMN83Uwbh8+jkZiIvrrVjgq9xNnvsDcQ0k+SjB3n7gQJ0adwdKrL5Ix3ssfel3j3TnbvPewJd996dVH0TDjyS3sCaM2dJMKKW1viJmrsW/xeeIQfcWSL3BxVoKFDvBYTjMJHgHA5n5E6aHxhdqsUiWzDF49Q6EW0fR2Ib4GmX6XwTi2iGuBPqzUh8/FNQ3Z22LTUAGXdSPKnpZ8BxfUresnn5B5zAL1xyNlsPtRVLHXrI7HDuC8wjlqseu5qAPiC0qdN6t8778Swn23xaA6zwbGDUcGEI0F+UEPdlmT4veRweWSJ+jWH9J3nS50LQse7LaxSVSWIKdpSKhAlNu53yGmQWfTUgJWhvsJWwoMA04qyRxkjbnOkMUfJNUvE+jrYPtYAjqXp0/brr8EQY6M0VhmGTO2+pDW
- R/6wnVD0
- wLVtN1FQESm7DaS8sfJ+HrGWiw078WU6sTWHCzcqoHXnWW/Sk1On/ZZVITBUqVan0SvRJ5PZXKdEIGwEsKqfUWJdSzgP55qUggHNAO3s+iYmx83tE6VgxyCdMEgl0XEnG7xOKnWhyS9h6FkiFn8eWJT/2mXtoeSMBhLaiKHg5YiwBm73RlmuFTUu6X8jCyaI5FEoEfRnKPJFOH0FU1B7SGrM07GBq9Iyec1GN78tlu/TcnrHJbXxQf9okPKudB7Eb4JeKlQN1wdmGD9gXwfXJW7Ppk2TLDUoz7+CQceaRcDRIUK57s7ts03XFCAOsBoPlGirQv0A8/ikf9eQ=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1754042799-6188
+X-HE-Meta: U2FsdGVkX19GfDpV7Dxq2/vP1XQfrqd3SgcMpHrI1R172Mg2/SllPPr7O4bBNOiEsVXYCIioNZr15vvetTlVYz8Ex0XBd9sFypqhnI5RbWOs5yYyPDouez83YZQSmbpO7AHn4jcbt3bcZvSd5MnHIwGUQUmJFxv2W4S1dVSzkCuOOAuQ5DocLoKsrBj7YDuyTaprcwy3/ny7C6/LLRaR+c5l6fas/Q1mhJ/I84JZ+bpbN9d5nfWEIkuuBAcj7jjA5Cs/ZsqZYE5zFID4ckQPg7ufMx6Tqb29FgBpRQPtJTrQlAMCV03qeKr4PM8v+B2jlTqiVtYHCxrefHGQbDsWk0c2kaKrRjfw8aBYBd296uofeM4srI6FNbI1DE1GtL7veV52ODJ2NhMb1dBxamN0L3cqg4S5szIUi6Q7UIF2BtnTrSUWrSCRovvhAuOhDUSvB1naSR3CUzcqk5RmddaqrAGVsvrYPj6KYno1Kxl7Xt4kPfLnggAHWsAadPI5kSNt2nv0pf3xwV7dIyBWOYKUjVO7JahnRONn8fcVVoTNAy0jU5tmWTwkrRPfPrOnRodb0huwIX2/+iggFS0oegzTPl9ZpJYmI98eClHmuj4raCHJFCFhIndgHuh3kdm0QSy/YNEN8rUueUoGgtCZ1YysobvreKY5CPTXGAbQ3iz8+Rwh+9u7493nvW9S7fmhcV9w3eXhbuzaxETmZ8Y+V5MbOFDyHvZfKTn8Q9CEMmmuULA6Fx59PU+NOZIQ2oy3uR8HUj7IPy3MVsm0Xstv+j8pLZlflfKr21bvSXdFfFlyDONNNMn8QqSKwtKV0cvSc5gruSesdq7M7rPNLt5FU4wYh8Ds5EPe8FEs2qwddu1zUTw+QtgrEdsfaPo6bx2BfBZ+2QxwZ+CubMOPG/qIXXt9vhYwZyj86QAH+1py20y3oe0UU+BvUNNRNZHbhxw2rR0UgzBhAmNZe5ISuYXH1b8
+ n74VpQkG
+ ZhDc7MSCi1OXOU85awPoxgUaZXfTn7M+xAiw2uZGyRtMmkGYihzL5oXdWUSkzxcyNAg8IhomTkm1gqlu/O1zP+fiHBDmE8BHZgfVkT1CGWI23tPC84oGD0YV54/K/p4d9Dn/l9a9TkwIZayLh0fgwrH9Mna0XTgcCNvMM6ttZ1OaAmPTsPY6o2kA+o8FM9/Ad16Id35UXJxb5lEyPBVQn0AXXM0/Kls5PPWaiH6eiaw1bBIhfKyZcBHS3WAayNdeV67JsbD8HNOCKGi9p3re51uN6gXQ+kLoqQTORZgzLsNRLWV5KkVZum7eMpQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -181,40 +96,735 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/1/25 04:46, Mike Galbraith wrote:
-> On Thu, 2025-07-31 at 20:41 +0200, Vlastimil Babka wrote:
->> On 7/31/25 20:34, Frank van der Linden wrote:
->> > Not sure what the right thing to do would be. Either explicitly boost
->> > the priority of a thread temporarily during migrate_pages_batch, or
->> > mitigate the issue by dealing with 'busy' pages more quickly in
->> > migrate_pages_batch.
->> 
->> There's a workaround for realtime tasks. If you mlock[all]() their memory,
->> setting sysctl vm.compact_unevictable_allowed to 0 should exclude these
->> pages from migration by compaction.
-> 
-> Hm, per documentation that's done automatically for PREEMPT_RT...
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Oh I see.
+Testing kexec handover requires a kernel driver that will generate some
+data and preserve it with KHO on the first boot and then restore that
+data and verify it was preserved properly after kexec.
 
-> On CONFIG_PREEMPT_RT the default value is 0 in order to avoid a page fault, due
-> to compaction, which would block the task from becoming active until the fault
-> is resolved.
+To facilitate such test, along with the kernel driver responsible for
+data generation, preservation and restoration add a script that runs a
+kernel in a VM with a minimal /init. The /init enables KHO, loads a
+kernel image for kexec and runs kexec reboot. After the boot of the
+kexeced kernel, the driver verifies that the data was properly
+preserved.
 
-So it's probably the mlock() part missing since that should otherwise apply
-to kcompactd.
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+---
+v2 changes:
+* fix section mismatch warning in lib/test_kho.c
+* address Thomas' comments about nolibc and initrd generation
 
-> ...but rummaging, seems other stuff can step on it (contiguous alloc?).
+v1: https://lore.kernel.org/all/20250727083733.2590139-1-rppt@kernel.org
 
-Yeah, there was time CMA was just something for mobile phone hardware. As
-usage increases beyond that maybe we'll have to tackle it. Ideally by not
-having mlock'd pages in CMA areas at all. And if contiguous alloc is
-attempted outside of CMA areas, respect the sysctl there too.
+ MAINTAINERS                            |   1 +
+ lib/Kconfig.debug                      |  21 ++
+ lib/Makefile                           |   1 +
+ lib/test_kho.c                         | 305 +++++++++++++++++++++++++
+ tools/testing/selftests/kho/arm64.conf |   9 +
+ tools/testing/selftests/kho/init.c     |  98 ++++++++
+ tools/testing/selftests/kho/vmtest.sh  | 185 +++++++++++++++
+ tools/testing/selftests/kho/x86.conf   |   7 +
+ 8 files changed, 627 insertions(+)
+ create mode 100644 lib/test_kho.c
+ create mode 100644 tools/testing/selftests/kho/arm64.conf
+ create mode 100644 tools/testing/selftests/kho/init.c
+ create mode 100755 tools/testing/selftests/kho/vmtest.sh
+ create mode 100644 tools/testing/selftests/kho/x86.conf
 
-There are also things like mbind() migrating pages for NUMA locality but I
-assume people just wouldn't try to do that with realtime workloads.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 10850512c118..7eada657c5e6 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -13356,6 +13356,7 @@ F:	Documentation/admin-guide/mm/kho.rst
+ F:	Documentation/core-api/kho/*
+ F:	include/linux/kexec_handover.h
+ F:	kernel/kexec_handover.c
++F:	tools/testing/selftests/kho/
+ 
+ KEYS-ENCRYPTED
+ M:	Mimi Zohar <zohar@linux.ibm.com>
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index ebe33181b6e6..4f82d38e3c45 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -3225,6 +3225,27 @@ config TEST_OBJPOOL
+ 
+ 	  If unsure, say N.
+ 
++config TEST_KEXEC_HANDOVER
++	bool "Test for Kexec HandOver"
++	default n
++	depends on KEXEC_HANDOVER
++	help
++	  This option enables test for Kexec HandOver (KHO).
++	  The test consists of two parts: saving kernel data before kexec and
++	  restoring the data after kexec and verifying that it was properly
++	  handed over. This test module creates and saves data on the boot of
++	  the first kernel and restores and verifies the data on the boot of
++	  kexec'ed kernel.
++
++	  For detailed documentation about KHO, see Documentation/core-api/kho.
++
++	  To run the test run:
++
++	  tools/testing/selftests/kho/vmtest.sh -h
++
++	  If unsure, say N.
++
++
+ config INT_POW_KUNIT_TEST
+ 	tristate "Integer exponentiation (int_pow) test" if !KUNIT_ALL_TESTS
+ 	depends on KUNIT
+diff --git a/lib/Makefile b/lib/Makefile
+index c38582f187dd..6a8d00aac3a8 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -102,6 +102,7 @@ obj-$(CONFIG_TEST_HMM) += test_hmm.o
+ obj-$(CONFIG_TEST_FREE_PAGES) += test_free_pages.o
+ obj-$(CONFIG_TEST_REF_TRACKER) += test_ref_tracker.o
+ obj-$(CONFIG_TEST_OBJPOOL) += test_objpool.o
++obj-$(CONFIG_TEST_KEXEC_HANDOVER) += test_kho.o
+ 
+ obj-$(CONFIG_TEST_FPU) += test_fpu.o
+ test_fpu-y := test_fpu_glue.o test_fpu_impl.o
+diff --git a/lib/test_kho.c b/lib/test_kho.c
+new file mode 100644
+index 000000000000..c2eb899c3b45
+--- /dev/null
++++ b/lib/test_kho.c
+@@ -0,0 +1,305 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Test module for KHO
++ * Copyright (c) 2025 Microsoft Corporation.
++ *
++ * Authors:
++ *   Saurabh Sengar <ssengar@microsoft.com>
++ *   Mike Rapoport <rppt@kernel.org>
++ */
++
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++
++#include <linux/mm.h>
++#include <linux/gfp.h>
++#include <linux/slab.h>
++#include <linux/kexec.h>
++#include <linux/libfdt.h>
++#include <linux/module.h>
++#include <linux/printk.h>
++#include <linux/vmalloc.h>
++#include <linux/kexec_handover.h>
++
++#include <net/checksum.h>
++
++#define KHO_TEST_MAGIC	0x4b484f21	/* KHO! */
++#define KHO_TEST_FDT	"kho_test"
++#define KHO_TEST_COMPAT "kho-test-v1"
++
++static long max_mem = (PAGE_SIZE << MAX_PAGE_ORDER) * 2;
++module_param(max_mem, long, 0644);
++
++struct kho_test_state {
++	unsigned int nr_folios;
++	struct folio **folios;
++	struct folio *fdt;
++	__wsum csum;
++};
++
++static struct kho_test_state kho_test_state;
++
++static int kho_test_notifier(struct notifier_block *self, unsigned long cmd,
++			     void *v)
++{
++	struct kho_test_state *state = &kho_test_state;
++	struct kho_serialization *ser = v;
++	int err = 0;
++
++	switch (cmd) {
++	case KEXEC_KHO_ABORT:
++		return NOTIFY_DONE;
++	case KEXEC_KHO_FINALIZE:
++		/* Handled below */
++		break;
++	default:
++		return NOTIFY_BAD;
++	}
++
++	err |= kho_preserve_folio(state->fdt);
++	err |= kho_add_subtree(ser, KHO_TEST_FDT, folio_address(state->fdt));
++
++	return err ? NOTIFY_BAD : NOTIFY_DONE;
++}
++
++static struct notifier_block kho_test_nb = {
++	.notifier_call = kho_test_notifier,
++};
++
++static int kho_test_save_data(struct kho_test_state *state, void *fdt)
++{
++	phys_addr_t *folios_info __free(kvfree) = NULL;
++	int err = 0;
++
++	folios_info = kvmalloc_array(state->nr_folios, sizeof(*folios_info),
++				     GFP_KERNEL);
++	if (!folios_info)
++		return -ENOMEM;
++
++	for (int i = 0; i < state->nr_folios; i++) {
++		struct folio *folio = state->folios[i];
++		unsigned int order = folio_order(folio);
++
++		folios_info[i] = virt_to_phys(folio_address(folio)) | order;
++
++		err = kho_preserve_folio(folio);
++		if (err)
++			return err;
++	}
++
++	err |= fdt_begin_node(fdt, "data");
++	err |= fdt_property(fdt, "nr_folios", &state->nr_folios,
++			    sizeof(state->nr_folios));
++	err |= fdt_property(fdt, "folios_info", folios_info,
++			    state->nr_folios * sizeof(*folios_info));
++	err |= fdt_property(fdt, "csum", &state->csum, sizeof(state->csum));
++	err |= fdt_end_node(fdt);
++
++	return err;
++}
++
++static int kho_test_prepare_fdt(struct kho_test_state *state)
++{
++	const char compatible[] = KHO_TEST_COMPAT;
++	unsigned int magic = KHO_TEST_MAGIC;
++	ssize_t fdt_size;
++	int err = 0;
++	void *fdt;
++
++	fdt_size = state->nr_folios * sizeof(phys_addr_t) + PAGE_SIZE;
++	state->fdt = folio_alloc(GFP_KERNEL, get_order(fdt_size));
++	if (!state->fdt)
++		return -ENOMEM;
++
++	fdt = folio_address(state->fdt);
++
++	err |= fdt_create(fdt, fdt_size);
++	err |= fdt_finish_reservemap(fdt);
++
++	err |= fdt_begin_node(fdt, "");
++	err |= fdt_property(fdt, "compatible", compatible, sizeof(compatible));
++	err |= fdt_property(fdt, "magic", &magic, sizeof(magic));
++	err |= kho_test_save_data(state, fdt);
++	err |= fdt_end_node(fdt);
++
++	err |= fdt_finish(fdt);
++
++	if (err)
++		folio_put(state->fdt);
++
++	return err;
++}
++
++static int kho_test_generate_data(struct kho_test_state *state)
++{
++	size_t alloc_size = 0;
++	__wsum csum = 0;
++
++	while (alloc_size < max_mem) {
++		int order = get_random_u32() % NR_PAGE_ORDERS;
++		struct folio *folio;
++		unsigned int size;
++		void *addr;
++
++		/* cap allocation so that we won't exceed max_mem */
++		if (alloc_size + (PAGE_SIZE << order) > max_mem) {
++			order = get_order(max_mem - alloc_size);
++			if (order)
++				order--;
++		}
++		size = PAGE_SIZE << order;
++
++		folio = folio_alloc(GFP_KERNEL | __GFP_NORETRY, order);
++		if (!folio)
++			goto err_free_folios;
++
++		state->folios[state->nr_folios++] = folio;
++		addr = folio_address(folio);
++		get_random_bytes(addr, size);
++		csum = csum_partial(addr, size, csum);
++		alloc_size += size;
++	}
++
++	state->csum = csum;
++	return 0;
++
++err_free_folios:
++	for (int i = 0; i < state->nr_folios; i++)
++		folio_put(state->folios[i]);
++	return -ENOMEM;
++}
++
++static int kho_test_save(void)
++{
++	struct kho_test_state *state = &kho_test_state;
++	struct folio **folios __free(kvfree) = NULL;
++	unsigned long max_nr;
++	int err;
++
++	max_mem = PAGE_ALIGN(max_mem);
++	max_nr = max_mem >> PAGE_SHIFT;
++
++	folios = kvmalloc_array(max_nr, sizeof(*state->folios), GFP_KERNEL);
++	if (!folios)
++		return -ENOMEM;
++	state->folios = folios;
++
++	err = kho_test_generate_data(state);
++	if (err)
++		return err;
++
++	err = kho_test_prepare_fdt(state);
++	if (err)
++		return err;
++
++	return register_kho_notifier(&kho_test_nb);
++}
++
++static int kho_test_restore_data(const void *fdt, int node)
++{
++	const unsigned int *nr_folios;
++	const phys_addr_t *folios_info;
++	const __wsum *old_csum;
++	__wsum csum = 0;
++	int len;
++
++	node = fdt_path_offset(fdt, "/data");
++
++	nr_folios = fdt_getprop(fdt, node, "nr_folios", &len);
++	if (!nr_folios || len != sizeof(*nr_folios))
++		return -EINVAL;
++
++	old_csum = fdt_getprop(fdt, node, "csum", &len);
++	if (!old_csum || len != sizeof(*old_csum))
++		return -EINVAL;
++
++	folios_info = fdt_getprop(fdt, node, "folios_info", &len);
++	if (!folios_info || len != sizeof(*folios_info) * *nr_folios)
++		return -EINVAL;
++
++	for (int i = 0; i < *nr_folios; i++) {
++		unsigned int order = folios_info[i] & ~PAGE_MASK;
++		phys_addr_t phys = folios_info[i] & PAGE_MASK;
++		unsigned int size = PAGE_SIZE << order;
++		struct folio *folio;
++
++		folio = kho_restore_folio(phys);
++		if (!folio)
++			break;
++
++		if (folio_order(folio) != order)
++			break;
++
++		csum = csum_partial(folio_address(folio), size, csum);
++		folio_put(folio);
++	}
++
++	if (csum != *old_csum)
++		return -EINVAL;
++
++	return 0;
++}
++
++static int kho_test_restore(phys_addr_t fdt_phys)
++{
++	void *fdt = phys_to_virt(fdt_phys);
++	const unsigned int *magic;
++	int node, len, err;
++
++	node = fdt_path_offset(fdt, "/");
++	if (node < 0)
++		return -EINVAL;
++
++	if (fdt_node_check_compatible(fdt, node, KHO_TEST_COMPAT))
++		return -EINVAL;
++
++	magic = fdt_getprop(fdt, node, "magic", &len);
++	if (!magic || len != sizeof(*magic))
++		return -EINVAL;
++
++	if (*magic != KHO_TEST_MAGIC)
++		return -EINVAL;
++
++	err = kho_test_restore_data(fdt, node);
++	if (err)
++		return err;
++
++	pr_info("KHO restore succeeded\n");
++	return 0;
++}
++
++static int __init kho_test_init(void)
++{
++	phys_addr_t fdt_phys;
++	int err;
++
++	err = kho_retrieve_subtree(KHO_TEST_FDT, &fdt_phys);
++	if (!err)
++		return kho_test_restore(fdt_phys);
++
++	if (err != -ENOENT) {
++		pr_warn("failed to retrieve %s FDT: %d\n", KHO_TEST_FDT, err);
++		return err;
++	}
++
++	return kho_test_save();
++}
++module_init(kho_test_init);
++
++static void kho_test_cleanup(void)
++{
++	for (int i = 0; i < kho_test_state.nr_folios; i++)
++		folio_put(kho_test_state.folios[i]);
++
++	kvfree(kho_test_state.folios);
++}
++
++static void __exit kho_test_exit(void)
++{
++	unregister_kho_notifier(&kho_test_nb);
++	kho_test_cleanup();
++}
++module_exit(kho_test_exit);
++
++MODULE_AUTHOR("Mike Rapoport <rppt@kernel.org>");
++MODULE_DESCRIPTION("KHO test module");
++MODULE_LICENSE("GPL");
+diff --git a/tools/testing/selftests/kho/arm64.conf b/tools/testing/selftests/kho/arm64.conf
+new file mode 100644
+index 000000000000..ee696807cd35
+--- /dev/null
++++ b/tools/testing/selftests/kho/arm64.conf
+@@ -0,0 +1,9 @@
++QEMU_CMD="qemu-system-aarch64 -M virt -cpu max"
++QEMU_KCONFIG="
++CONFIG_SERIAL_AMBA_PL010=y
++CONFIG_SERIAL_AMBA_PL010_CONSOLE=y
++CONFIG_SERIAL_AMBA_PL011=y
++CONFIG_SERIAL_AMBA_PL011_CONSOLE=y
++"
++KERNEL_IMAGE="Image"
++KERNEL_CMDLINE="console=ttyAMA0"
+diff --git a/tools/testing/selftests/kho/init.c b/tools/testing/selftests/kho/init.c
+new file mode 100644
+index 000000000000..8044ca56fff5
+--- /dev/null
++++ b/tools/testing/selftests/kho/init.c
+@@ -0,0 +1,98 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <errno.h>
++#include <stdio.h>
++#include <unistd.h>
++#include <fcntl.h>
++#include <sys/syscall.h>
++#include <sys/mount.h>
++#include <sys/reboot.h>
++
++/* from arch/x86/include/asm/setup.h */
++#define COMMAND_LINE_SIZE	2048
++
++/* from include/linux/kexex.h */
++#define KEXEC_FILE_NO_INITRAMFS	0x00000004
++
++#define KHO_FINILIZE "/debugfs/kho/out/finalize"
++#define KERNEL_IMAGE "/kernel"
++
++static int mount_filesystems(void)
++{
++	if (mount("debugfs", "/debugfs", "debugfs", 0, NULL) < 0)
++		return -1;
++
++	return mount("proc", "/proc", "proc", 0, NULL);
++}
++
++static int kho_enable(void)
++{
++	const char enable[] = "1";
++	int fd;
++
++	fd = open(KHO_FINILIZE, O_RDWR);
++	if (fd < 0)
++		return -1;
++
++	if (write(fd, enable, sizeof(enable)) != sizeof(enable))
++		return 1;
++
++	close(fd);
++	return 0;
++}
++
++static long kexec_file_load(int kernel_fd, int initrd_fd,
++			    unsigned long cmdline_len, const char *cmdline,
++			    unsigned long flags)
++{
++	return syscall(__NR_kexec_file_load, kernel_fd, initrd_fd, cmdline_len,
++		       cmdline, flags);
++}
++
++static int kexec_load(void)
++{
++	char cmdline[COMMAND_LINE_SIZE];
++	ssize_t len;
++	int fd, err;
++
++	fd = open("/proc/cmdline", O_RDONLY);
++	if (fd < 0)
++		return -1;
++
++	len = read(fd, cmdline, sizeof(cmdline));
++	close(fd);
++	if (len < 0)
++		return -1;
++
++	/* replace \n with \0 */
++	cmdline[len - 1] = 0;
++	fd = open(KERNEL_IMAGE, O_RDONLY);
++	if (fd < 0)
++		return -1;
++
++	err = kexec_file_load(fd, -1, len, cmdline, KEXEC_FILE_NO_INITRAMFS);
++	close(fd);
++
++	return err ? : 0;
++}
++
++int main(int argc, char *argv[])
++{
++	if (mount_filesystems())
++		goto err_reboot;
++
++	if (kho_enable())
++		goto err_reboot;
++
++	if (kexec_load())
++		goto err_reboot;
++
++	if (reboot(RB_KEXEC))
++		goto err_reboot;
++
++	return 0;
++
++err_reboot:
++	reboot(RB_AUTOBOOT);
++	return -1;
++}
+diff --git a/tools/testing/selftests/kho/vmtest.sh b/tools/testing/selftests/kho/vmtest.sh
+new file mode 100755
+index 000000000000..3f6c17166846
+--- /dev/null
++++ b/tools/testing/selftests/kho/vmtest.sh
+@@ -0,0 +1,185 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++
++set -ue
++
++CROSS_COMPILE="${CROSS_COMPILE:-""}"
++
++test_dir=$(realpath "$(dirname "$0")")
++kernel_dir=$(realpath "$test_dir/../../../..")
++
++tmp_dir=$(mktemp -d /tmp/kho-test.XXXXXXXX)
++headers_dir="$tmp_dir/usr"
++initrd="$tmp_dir/initrd.cpio"
++
++source "$test_dir/../kselftest/ktap_helpers.sh"
++
++function usage() {
++	cat <<EOF
++$0 [-d build_dir] [-j jobs] [-t target_arch] [-h]
++Options:
++	-d)	path to the kernel build directory
++	-j)	number of jobs for compilation, similar to -j in make
++	-t)	run test for target_arch, requires CROSS_COMPILE set
++		supported targets: aarch64, x86_64
++	-h)	display this help
++EOF
++}
++
++function cleanup() {
++	rm -fr "$tmp_dir"
++	ktap_finished
++}
++trap cleanup EXIT
++
++function skip() {
++	local msg=${1:-""}
++
++	ktap_test_skip "$msg"
++	exit "$KSFT_SKIP"
++}
++
++function fail() {
++	local msg=${1:-""}
++
++	ktap_test_fail "$msg"
++	exit "$KSFT_FAIL"
++}
++
++function build_kernel() {
++	local build_dir=$1
++	local make_cmd=$2
++	local arch_kconfig=$3
++	local kimage=$4
++
++	local kho_config="$tmp_dir/kho.config"
++	local kconfig="$build_dir/.config"
++
++	# enable initrd, KHO and KHO test in kernel configuration
++	tee "$kconfig" > "$kho_config" <<EOF
++CONFIG_BLK_DEV_INITRD=y
++CONFIG_KEXEC_HANDOVER=y
++CONFIG_TEST_KEXEC_HANDOVER=y
++CONFIG_DEBUG_KERNEL=y
++CONFIG_DEBUG_VM=y
++$arch_kconfig
++EOF
++
++	make_cmd="$make_cmd -C $kernel_dir O=$build_dir"
++	$make_cmd olddefconfig
++
++	# verify that kernel confiration has all necessary options
++	while read -r opt ; do
++		grep "$opt" "$kconfig" &>/dev/null || skip "$opt is missing"
++	done < "$kho_config"
++
++	$make_cmd "$kimage"
++	$make_cmd headers_install INSTALL_HDR_PATH="$headers_dir"
++}
++
++function mkinitrd() {
++	local kernel=$1
++
++	"$CROSS_COMPILE"gcc -s -static -Os -nostdinc -nostdlib \
++			-fno-asynchronous-unwind-tables -fno-ident \
++			-I "$headers_dir/include" \
++			-I "$kernel_dir/tools/include/nolibc" \
++			-o "$tmp_dir/init" "$test_dir/init.c"
++
++	cat > "$tmp_dir/cpio_list" <<EOF
++dir /dev 0755 0 0
++dir /proc 0755 0 0
++dir /debugfs 0755 0 0
++nod /dev/console 0600 0 0 c 5 1
++file /init $tmp_dir/init 0755 0 0
++file /kernel $kernel 0644 0 0
++EOF
++
++	"$build_dir/usr/gen_init_cpio" "$tmp_dir/cpio_list" > "$initrd"
++}
++
++function run_qemu() {
++	local qemu_cmd=$1
++	local cmdline=$2
++	local kernel=$3
++	local serial="$tmp_dir/qemu.serial"
++
++	cmdline="$cmdline kho=on panic=-1"
++
++	$qemu_cmd -m 1G -smp 2 -no-reboot -nographic -nodefaults \
++		  -accel kvm -accel hvf -accel tcg  \
++		  -serial file:"$serial" \
++		  -append "$cmdline" \
++		  -kernel "$kernel" \
++		  -initrd "$initrd"
++
++	grep "KHO restore succeeded" "$serial" &> /dev/null || fail "KHO failed"
++}
++
++function target_to_arch() {
++	local target=$1
++
++	case $target in
++	     aarch64) echo "arm64" ;;
++	     x86_64) echo "x86" ;;
++	     *) skip "architecture $target is not supported"
++	esac
++}
++
++function main() {
++	local build_dir="$kernel_dir/.kho"
++	local jobs=$(($(nproc) * 2))
++	local target="$(uname -m)"
++
++	# skip the test if any of the preparation steps fails
++	set -o errtrace
++	trap skip ERR
++
++	while getopts 'hd:j:t:' opt; do
++		case $opt in
++		d)
++			build_dir="$OPTARG"
++			;;
++		j)
++		        jobs="$OPTARG"
++			;;
++		t)
++			target="$OPTARG"
++			;;
++		h)
++			usage
++			exit 0
++			;;
++		*)
++			echo Unknown argument "$opt"
++			usage
++			exit 1
++			;;
++		esac
++	done
++
++	ktap_print_header
++	ktap_set_plan 1
++
++	if [[ "$target" != "$(uname -m)" ]] && [[ -z "$CROSS_COMPILE" ]]; then
++		skip "Cross-platform testing needs to specify CROSS_COMPILE"
++	fi
++
++	mkdir -p "$build_dir"
++	local arch=$(target_to_arch "$target")
++	source "$test_dir/$arch.conf"
++
++	# build the kernel and create initrd
++	# initrd includes the kernel image that will be kexec'ed
++	local make_cmd="make ARCH=$arch CROSS_COMPILE=$CROSS_COMPILE -j$jobs"
++	build_kernel "$build_dir" "$make_cmd" "$QEMU_KCONFIG" "$KERNEL_IMAGE"
++
++	local kernel="$build_dir/arch/$arch/boot/$KERNEL_IMAGE"
++	mkinitrd "$kernel"
++
++	run_qemu "$QEMU_CMD" "$KERNEL_CMDLINE" "$kernel"
++
++	ktap_test_pass "KHO succeeded"
++}
++
++main "$@"
+diff --git a/tools/testing/selftests/kho/x86.conf b/tools/testing/selftests/kho/x86.conf
+new file mode 100644
+index 000000000000..b419e610ca22
+--- /dev/null
++++ b/tools/testing/selftests/kho/x86.conf
+@@ -0,0 +1,7 @@
++QEMU_CMD=qemu-system-x86_64
++QEMU_KCONFIG="
++CONFIG_SERIAL_8250=y
++CONFIG_SERIAL_8250_CONSOLE=y
++"
++KERNEL_IMAGE="bzImage"
++KERNEL_CMDLINE="console=ttyS0"
 
-
-> 	-Mike
+base-commit: 89be9a83ccf1f88522317ce02f854f30d6115c41
+-- 
+2.47.2
 
 
