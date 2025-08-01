@@ -2,184 +2,241 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 739F6C87FCB
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 15:49:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A2D03C87FCA
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 15:53:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD9D66B007B; Fri,  1 Aug 2025 11:49:21 -0400 (EDT)
+	id 2E7C56B008A; Fri,  1 Aug 2025 11:53:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D63F36B0089; Fri,  1 Aug 2025 11:49:21 -0400 (EDT)
+	id 2C1386B008C; Fri,  1 Aug 2025 11:53:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C04996B008A; Fri,  1 Aug 2025 11:49:21 -0400 (EDT)
+	id 187126B0092; Fri,  1 Aug 2025 11:53:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A98F36B007B
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 11:49:21 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5C23D113626
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 15:49:21 +0000 (UTC)
-X-FDA: 83728622922.01.679EDB4
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf14.hostedemail.com (Postfix) with ESMTP id D8B54100008
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 15:49:18 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=aXmYBipX;
-	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754063359;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 08A166B008A
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 11:53:39 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A3FD5113B0B
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 15:53:38 +0000 (UTC)
+X-FDA: 83728633716.08.09AB73B
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 5787380004
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 15:53:35 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=bfLPMzse;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=PA2iNrYk;
+	spf=pass (imf02.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754063615;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Az/lcHresqK+moKhYaM464MNdTcCwiYM0QUDNB9aXcU=;
-	b=5MxcLr35T6h8hRhHZ/qbTJ1CrZRZBv0AnoicEsLR351M+ugtNAMZv+PWmTh0OgQj8lDzwm
-	qktjbCPDv+eiiAgGoaRCeVznCDhh9zNt+2QS0ZP/SRpMWYOQUrU2ZP0O/NHSMgFMXN5rwr
-	0dvZsIZLo3GB3DDsgesYrDsJZH4VNFo=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=aXmYBipX;
-	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754063359; a=rsa-sha256;
-	cv=none;
-	b=elcqYC76noNZW5e88Urm8Kzn9cdO6j7Of1OMlp1JxeYhpoYKNHGd4m14KiaKT+tWXmDZEu
-	t/mWQVdcLSR5J0v1vbmQslyBhE/nnWs3/I8kesTzPsw/NY8KIetaNbhh+ynvzWqwjq+r/w
-	W3fkzUBWwAWgSvOV7MHVnaugGV5Mkkw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754063358;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Az/lcHresqK+moKhYaM464MNdTcCwiYM0QUDNB9aXcU=;
-	b=aXmYBipXOBWoM1iBeEG7ILuHxIZCkijR2kn0eDjMexav3nohdpXCPmY1QAYGnsaoN20pZ+
-	aeYuLyoq0eGBw41kOPIb3WLKuXoS/w1618PHVwjAl7HWbZM7fmILrQs+PeIieZeDDa+FVn
-	I8A3QjKH0TxMLZiGIwuuigAciAJGNEM=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-228-iN58_KsXOQOV9emyJ7DFJw-1; Fri, 01 Aug 2025 11:49:15 -0400
-X-MC-Unique: iN58_KsXOQOV9emyJ7DFJw-1
-X-Mimecast-MFC-AGG-ID: iN58_KsXOQOV9emyJ7DFJw_1754063354
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3b79ad7b8a5so1556006f8f.3
-        for <linux-mm@kvack.org>; Fri, 01 Aug 2025 08:49:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754063354; x=1754668154;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Az/lcHresqK+moKhYaM464MNdTcCwiYM0QUDNB9aXcU=;
-        b=buIMe9DcelAOjHTT+4wmVv5NVvPMN8HBt7tCnf9C0zhEWu9ME6OqXguGUc+ebKfCno
-         zrb+n1GiHwsHJm89cCPe0S6jbnhnCT9w6AzTPpakQdBlMNQVIifRJ7m2XPHIn4lOqRCA
-         5ddbUCmAQqzGzN9SFOoC623K8yfM+xUvfQ007xy1nQGVIPkAyz/56lE8NaHfimsxX5hk
-         aSprN9g/nqiym3fZ3jyAs4jvh4BiTDkm/us/ezXrhe/Tk2Ne3QyzVWa3LlgHZ6+uthFS
-         NgoZ4OI6JKXd22SDE8gMwsaEpmBL4Tz3xZCLfI/SOrqa62r+NhApGsCFHhUnz9Dv6yjg
-         rYmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX2Gc1KCQYVPf50Jv/GQTkyK6/LeIjn6LmuNXtMi5bTnp7tWzaOF7cBMNUqg4rzys2Wyt6qJ2qLhg==@kvack.org
-X-Gm-Message-State: AOJu0Yz/s2TCF8nLgXUAHap+aaxVzow32Mh1SBiR14FejWJe490eoFgp
-	zelxBkKeDl0hK5ZRa9yZ0Dr6STcL36V2LqdH7dLuSH5cdz7CWSC2yslfwYGrGhPUodgfY1NpVeU
-	QSlQ1dYABN93dMPHU+SfuVRYVbWooklrpCdhCpSxLfowwmmStVRkQ
-X-Gm-Gg: ASbGncsZ3YoNnzpWI7es/u15qmuhWdJOsuYLS0bRHgM0Z3fXldj0b4kXJz43YXMUf7w
-	QwMgFuUkEz/094HPG35cSlgGJfn24KpFudVWUWh1S76wLzsPNGJgbCmYKotwrxbnt+tm7yxB+sj
-	Ua62vEUcBfQR46+tGWuji/ZKqG4WVJ47OWbcyuIG4QMDGDJqWoi76cA/E8dtnRdVY6yNiLmDdTN
-	Edn6yLHZbbBfWuSQZUfFjOgmAZ4q+9AXgw+zlbcUBUrFpYsjuTFP4aORgC9ncjjaTnS8PN5Uax2
-	XYgqYvvvzhq/nSn30+vRPp9w7bz1gazg17zNd1gfr4CP1fghPb+vd1RLhbGl8yzAfb9uGSao33/
-	dI8sgmTj/t937+QFRMvzXGv+DaELJLnqizhzdraXi6gEhhT7xtyKAPM501ItoKUW0
-X-Received: by 2002:a5d:5d0e:0:b0:3b7:89c2:464b with SMTP id ffacd0b85a97d-3b8d946ac69mr243872f8f.5.1754063353690;
-        Fri, 01 Aug 2025 08:49:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH2DBedDYQ23+gwq7i61urTwz0CARF2LptKXy1Zi0AMl+j8e9WYtV69W+oHsDf1pQvk2OOq0w==
-X-Received: by 2002:a5d:5d0e:0:b0:3b7:89c2:464b with SMTP id ffacd0b85a97d-3b8d946ac69mr243821f8f.5.1754063353088;
-        Fri, 01 Aug 2025 08:49:13 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f20:7500:5f99:9633:990e:138? (p200300d82f2075005f999633990e0138.dip0.t-ipconnect.de. [2003:d8:2f20:7500:5f99:9633:990e:138])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c4818c1sm6216272f8f.65.2025.08.01.08.49.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 Aug 2025 08:49:12 -0700 (PDT)
-Message-ID: <d8899e72-5735-4779-9222-5f27f8c16b80@redhat.com>
-Date: Fri, 1 Aug 2025 17:49:10 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v2 2/4] mm: add static huge zero folio
-To: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,
- Suren Baghdasaryan <surenb@google.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Borislav Petkov <bp@alien8.de>,
- Ingo Molnar <mingo@redhat.com>, "H . Peter Anvin" <hpa@zytor.com>,
- Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>,
- Mike Rapoport <rppt@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
- Michal Hocko <mhocko@suse.com>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, Andrew Morton <akpm@linux-foundation.org>,
- Thomas Gleixner <tglx@linutronix.de>, Nico Pache <npache@redhat.com>,
- Dev Jain <dev.jain@arm.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Jens Axboe <axboe@kernel.dk>
-Cc: linux-kernel@vger.kernel.org, willy@infradead.org, linux-mm@kvack.org,
- x86@kernel.org, linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- "Darrick J . Wong" <djwong@kernel.org>, mcgrof@kernel.org,
- gost.dev@samsung.com, hch@lst.de, Pankaj Raghav <p.raghav@samsung.com>
+	bh=NRw8m1a3px6az8NIWq/F+UeXaY6Z9h+KUFu5sNwsxz8=;
+	b=VkVA6AdgNdVqIhM62n+W2ZBGEvf+R4aubP0n4KBRBRJorjkzs1v9fwC0qzf2tf5yRafZFV
+	zlV/rIdsVYbmUVg0j61BgKx3EccPZAAYFlc97EeyX9yYW5K9iATJv/dG1TXifWys1Haom6
+	vPwYBUN8afNTdmpkRfF8uPqlTA1MUWE=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754063615; a=rsa-sha256;
+	cv=pass;
+	b=HVt/7q8SZiQAXVPTslcJELPiNAK0VFlQ2Q6B3oMDNjtIRzXH6DjqqSVxz1b68AKOf704sh
+	hJcGqmd5sLOLttmeVcvgA6kvE3EBGw8G2qI4hT20aNPN2N9QhSwZgVmQ42vNrjGsQ8QbUI
+	XCk05QPbGm3Bt/NcE0VVHxIj/pmRdIM=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=bfLPMzse;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=PA2iNrYk;
+	spf=pass (imf02.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=oracle.com
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 571EmxIY013929;
+	Fri, 1 Aug 2025 15:53:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=NRw8m1a3px6az8NIWq
+	/F+UeXaY6Z9h+KUFu5sNwsxz8=; b=bfLPMzse6mf49hisPMTuwKIJiy8eKO2HUb
+	pbx8AZt8dFhip7rlOzQNzuj6UcYpixHHWcfI+afGHwMHoOUIeZdbGj3EA65OsRlB
+	MxZS8yJVA/NkNxKtTQVKJBoz7bwcVwrEZuWPda0PwOi6myM9tmxK6/ieZOUBN+yt
+	2ikPbajJS6uTHGVb9KhqfHErpckR/TWHYwmyJbRialT0kNWPmXezmJ0rkZjQNZiY
+	IqPQAdIxxx7Dc/yTPwDEflwjtQwEq1uQ8DmQOUqsAvi3Yr8/lyRoZWzMAdHOmmoy
+	ZOMcgMNHthljo9nygA+4aqq1xP47I2QSgH2RM3ICXk1uSEMdBxBA==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 484q29xnec-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 01 Aug 2025 15:53:13 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 571FUn6X003459;
+	Fri, 1 Aug 2025 15:53:12 GMT
+Received: from ch4pr04cu002.outbound.protection.outlook.com (mail-northcentralusazon11013010.outbound.protection.outlook.com [40.107.201.10])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 484nfdyq0p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 01 Aug 2025 15:53:12 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pkTaLzR+btB8/oQvYQDTEaWgJFi3WPnS8hueSHYn/m8FeueT0FmfW1yzWLQQat44eDU86onEcWHqDTZTVtbzD3Sa2Ozifgk0ztK1GqsdyKlpMsmDiIJqhlQh4A4gco6/HjId0EMzS01SH54NlbMBDzeZ5wBvEWZgn2oVQS+Uipl1vZCz+CVosLhlxE4zHWep8JJqKiwQsqxMGkPggU8TelRDoWr0LlWwalV3NDdVmDspMBIZ/qt87WSR2gnd8Un/vxQFKhKamOdzJKLWTuOULmWZzWp6YzYpfT2mkrKkBXUsHaZ+g66/KgwDRNfrayx5iIrmdnNV2ILoD9M239weNg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NRw8m1a3px6az8NIWq/F+UeXaY6Z9h+KUFu5sNwsxz8=;
+ b=y3e6m//LZl4cOM9ahtimYPDq/eINLztsKybizaMp+9WfnHWSKcyWDNBchUKbaI0ovlXDiAKeXGzmZrpN68K+gjRMKvtOOdd0pzIn4+xZfGgA+dHrOdlHVMuL+3QWLliZcY38TH5lBy57lK5wx5+WCOCuZKcCkrSWZVy4kjn6aiqDuJEGqH3vkQEPRZJADEl43awioTb4ro1DiHldrEFxAYPUlLXEps0cTGJ64ZLTT6FzEmM7t/phCcpkjwUUKXGV1JT178nydtEob1khBzdkFXhOf/EH4yhyFdJfn7s+hYFBzipzb0qhFVhXBei1VHWJ/BgSkmrWGzREswapB1QUwQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NRw8m1a3px6az8NIWq/F+UeXaY6Z9h+KUFu5sNwsxz8=;
+ b=PA2iNrYkYA/gOb10ekq9rAbbrSaBnkkQYgrU3Uew/bZR7Gepxkcdw/NR+9kqtvOIj3ER9VeMqf9egBWrbh7/DsWhQXzGDY1w/FppQKnuIDFWYLQOL7Ms0mbXX15Hy9aJcPTIQMtRb7xQSxUALt97VP3gHD5MnNf1+YBV8gMH5Rc=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by CH3PR10MB7413.namprd10.prod.outlook.com (2603:10b6:610:154::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.16; Fri, 1 Aug
+ 2025 15:53:07 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.8989.013; Fri, 1 Aug 2025
+ 15:53:07 +0000
+Date: Fri, 1 Aug 2025 16:53:04 +0100
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>
+Cc: Suren Baghdasaryan <surenb@google.com>,
+        Ryan Roberts <ryan.roberts@arm.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@redhat.com>,
+        "H . Peter Anvin" <hpa@zytor.com>, Vlastimil Babka <vbabka@suse.cz>,
+        Zi Yan <ziy@nvidia.com>, Mike Rapoport <rppt@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Michal Hocko <mhocko@suse.com>, David Hildenbrand <david@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>, Nico Pache <npache@redhat.com>,
+        Dev Jain <dev.jain@arm.com>,
+        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+        Jens Axboe <axboe@kernel.dk>, linux-kernel@vger.kernel.org,
+        willy@infradead.org, linux-mm@kvack.org, x86@kernel.org,
+        linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        "Darrick J . Wong" <djwong@kernel.org>, mcgrof@kernel.org,
+        gost.dev@samsung.com, hch@lst.de, Pankaj Raghav <p.raghav@samsung.com>
+Subject: Re: [RFC v2 1/4] mm: rename huge_zero_page_shrinker to
+ huge_zero_folio_shrinker
+Message-ID: <f00bd734-df95-4057-8263-460c044298f8@lucifer.local>
 References: <20250724145001.487878-1-kernel@pankajraghav.com>
- <20250724145001.487878-3-kernel@pankajraghav.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- g3eXuA==
-Organization: Red Hat
-In-Reply-To: <20250724145001.487878-3-kernel@pankajraghav.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 7xue1pBZO4aF7ztm5R2zfX5Ng7oPG58QGbD04Ab4L1U_1754063354
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: qgpr4g1joc358am98npi8p5cswt6brp7
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D8B54100008
+ <20250724145001.487878-2-kernel@pankajraghav.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250724145001.487878-2-kernel@pankajraghav.com>
+X-ClientProxiedBy: MM0P280CA0060.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:190:b::21) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CH3PR10MB7413:EE_
+X-MS-Office365-Filtering-Correlation-Id: f8bf2a97-f003-486a-2604-08ddd1138236
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?oLGuwugyznZPaGLlyQtEiv4Nv/N+W16riU0WFFf5FkJDGsIM8A0Wi9+6/fHq?=
+ =?us-ascii?Q?Hc3Fb1fY8j1k2A9Cc6b/W4Ussz2bnKewaWb6ozgf2biTgyUO2wlctlEHsRGb?=
+ =?us-ascii?Q?8TclxVxpalYDrxa+1oQ+PfU3fWEYyuATsGTMiM+1KCDyxzcomQTTUzklLUr7?=
+ =?us-ascii?Q?NG/usLB1CBxRQs+/szIE7sg9BXxwI2yv2JaccPVdfnI921KtCPVdh+b55rRc?=
+ =?us-ascii?Q?2JTFYAM272BbMnplqMgngZvHmS/URu6AoAnIuJK0s35YeooYjVLI9iHP6COq?=
+ =?us-ascii?Q?B0wOMbKKkSGcmIiiQuP/eENVXBY/J6zyIp4ju1+5vsblWE0KIaYKHk0/bWGZ?=
+ =?us-ascii?Q?9uB9tt1pWrtJXZLPML/3CyNhSe0odChwFKeOMNDWo9kx7hiCbEW6tJMsLSqF?=
+ =?us-ascii?Q?3WXsRPJUC4GyHG+DUjfEh1EzL453hiZ9BcfFnqHTu6zFyhJ6ABe9vBYjift3?=
+ =?us-ascii?Q?DLLiomRc5cO4FdmxHR5wID6p6AdRz0UCQBzKBUzTxlUei2Cig/33g+LD8bsV?=
+ =?us-ascii?Q?2+XP07aWp0VM3ljFzPPVEGslf9Z0uJK3ZZ1ENOLeDQv7sJufEGUEiouydsi/?=
+ =?us-ascii?Q?fICqKgXSnqpzAwGqQmefQ2w6CuRL/KGVI1LKlzmXl2Vr3fUczkhw4kdlSXcu?=
+ =?us-ascii?Q?0Z+328VLlccqvbCze7931N1e6einhJgRhXnrw6F8x3BbTYwfMsfmqooTI18N?=
+ =?us-ascii?Q?4Q/mNpGCHXjlzGoZkbF8tjLq3tLNnQyCpjMmPPqYtO1TuIvw08GOgIPZpY5U?=
+ =?us-ascii?Q?wVBf3Yh1RApW/xuTxbsnVzBVnIyoNzSGdDdTSMEveIcJqpeUV1WbjQsKpcZo?=
+ =?us-ascii?Q?k2rwQkpr1TR1FCJj6iXXzH5pDeMb6p99xffUmAoAlMM7WRTKM4UhT0pPFxvz?=
+ =?us-ascii?Q?TBBANlI05yt1RLKZgBiuA6vYT4nfWqhGin90pMdGgNhdkAYZ6fwpDNEMAhiH?=
+ =?us-ascii?Q?xC3hjEDbtXrXQ7rwfp+ChgPkl1UHguBKVsOyPjJVs6/aneo3z9P+DL8hTyFN?=
+ =?us-ascii?Q?P2Sl8Zi+YOUqcg4m9XoO7riQzM4389/1fvUjEO2VgEvW+dFfblUu5cE4Sqwq?=
+ =?us-ascii?Q?vpVnwmCnT2pRK6nZ6DQcpSSqRxKmMVd1PxFOVTxI9CnRhN/JkLdShk6nvvK+?=
+ =?us-ascii?Q?daduuysrQCIQLwguIa5eSZ/Oaw6/8o1gtyOr17bx30W+h3aAvvN3eHPEWxkv?=
+ =?us-ascii?Q?VCb/QnNE7KyB7yFA+h+swaP6vrmixbolfEcfC6NsSKX63oZKFfbypOCORf/B?=
+ =?us-ascii?Q?4//NsySF++PcmQVofxlTfRI9iq0J2QziU813jIC/Zhx+49f4YQRId/OHFEPp?=
+ =?us-ascii?Q?fF9KeM3gh90EiSfWsEZhHeXbkdi3GVCV9xn6RW//WyMHf57cUPSAw5RRFb5N?=
+ =?us-ascii?Q?jjvkg3mBiW16HFLqcHiQ2cl/gPQMaxf5k+A0zFqE1jA9J+L3OQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?OV5HlXjK1MO3GNwkaODd0IEdkJMDLcotqdZnT7bqVLiANpHBlO0wmeqH0As9?=
+ =?us-ascii?Q?h6aofK7rzmgy2nkrqkXOKrhzWUuvl6+TbGBWo3MOuizQ2DKtjrt0ajuiONGW?=
+ =?us-ascii?Q?PpmQQxFgPU1yyhepx16v8QLfEaIvYiP/sqtNwQQk+M6EmoalN/6Rsfamt9rP?=
+ =?us-ascii?Q?+vpKMfQrYBSs/Btp/9UCdX5Jwn51XtauVm0KP6roUlKV8pDAWIqzLhJNmYOM?=
+ =?us-ascii?Q?eZeyX3Qfb4TOBQdpoRAWTIr0FcImJi1FbSUTHyGfEMnpr/s1QpVigVE2zTdt?=
+ =?us-ascii?Q?HXckoGlw6UhZDc/6BtwdkyKfr9NH2o5HaKrQB1tze5MRPNlZel8vBoNzg+6H?=
+ =?us-ascii?Q?mc29foOmD/UhRHbhLVGxj3WX2Toh2ABquqvieEDHOaw5tLaeq5mRulvPqja8?=
+ =?us-ascii?Q?GmLMKZI8YsCNxvqU+ANzh3hVjhAMo25F8SPS5kG8vgTfSW0PoPLraM6fE4ID?=
+ =?us-ascii?Q?NOl5pIFgdpja8DFofBUaRpy370RgFOHONuyjs+rzUR4AO+zsBtjDup0dgJYd?=
+ =?us-ascii?Q?Tv5QU6yHCFXUyMo6XdJuTmS6PaVMBHSigz0yJidTgNXRY/bZIpTTAFB47SMf?=
+ =?us-ascii?Q?9zOAvN9uvpAoQlALtU27/oe8GyZEFBoVI6mJH7hSh5y0EzLUe/eT9LOOs/je?=
+ =?us-ascii?Q?DKvig2d25hQEBlb3LOOM1+rfZN3eM/BWSie/6Blz55oMBn9TBVdKRCBqs4UA?=
+ =?us-ascii?Q?UqctMYjt3Wxjvwz8jh69BWH1OoZg/nKPXmF0+ryOc/IFXo7prN6SyuYzwwqw?=
+ =?us-ascii?Q?qW4i3SoIBYrOcwluAHlAwJISOovZBj67ZSXGVZ2CGy5rxZq34gaNzaojh/XH?=
+ =?us-ascii?Q?yuRovpIY247LAdTP1glJGwKvs4nZWKe+pxXurmw29HiWlSf3DVVoR7v/W07Y?=
+ =?us-ascii?Q?xAK4Ta6ADuyVg1NeIFU1SpKgeGsNsEDbJFO4IDwQx7RNeNfmSRxF5LpQvXsj?=
+ =?us-ascii?Q?9G4GJYc/cN8C4yMxLCjb+pYz3QQ0m+1rQi6Sx80F6B6nSiUhIroZKVDGxuER?=
+ =?us-ascii?Q?9q/VrXu5Qf3q0uK5LUPvcg2ZmaGHcXMJmjnXxhzKeJqKTQo5gXwElxijBjYF?=
+ =?us-ascii?Q?wd/AQcw4TtS7NOJTAhZUNSGVrW/53g135wOIx9s05ybEmpgFoD1qzUBup96O?=
+ =?us-ascii?Q?cjOMLtjg5WRJQ0S9REhuWKDqfQaeclRfmGjPpjFjDz09mdUFrfKVIKNYutud?=
+ =?us-ascii?Q?ixf6MZipygNphl5a8ui3oQKRjffdvxmwspwSGecGS4InUn0HeQ0VMB6MHRlc?=
+ =?us-ascii?Q?YmvDD1Wfuz7+oa/g45iPLSDjSbM3pJ9p05RtAhS4fpHl6SMBuGZ2gej4OxQe?=
+ =?us-ascii?Q?+dUfdtyaBfwqHC3oMtFQqEYyBB64Jb+nKhzuyym1Y0USzfJYUynA0LmPUsyb?=
+ =?us-ascii?Q?OLFQA9rrHSc/Hv84PMaFa79Oq1nSQwV9TYd1uy5puHoNkOFuiCh6+DxnYniG?=
+ =?us-ascii?Q?appdTf/bKyGChxM/2c24OLkwh3ghwWA3u+FNE3ULSilNik5ZUuvHtE8cCA+t?=
+ =?us-ascii?Q?yMAKH+cpiNuPrnrba4+apHqX0CiY5Uz1ojryVU0tvIPkD0kEWa6OeWWmodEJ?=
+ =?us-ascii?Q?YKrWWEkvHvGxCWBTaEoBbWmGMvyWqDw/R0Kg60cF6Bk3AlMgComntHq/7le7?=
+ =?us-ascii?Q?rg=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	qFeMtxpH9tCQpbmIEiOGPb7Ld0HCYQp1YO/8Z0li2uKSPmfXNTY+2VAd4mNiY4UsFvchRhZ9mh4uQqn5FCdnpTr/LKNPQUslS4V1g+GIoblNU+znIswQDm6McHG6+9nEy+R0myhs9oqlmehtpoL8b/8CgpoxCY38tXFOF6X53ZJ0GjDp3UENG7LdnbdUGfuRzMXsdly5Y8thus/blnfCFIPsl2SrYeC++Y41cLnZZKfztlvU5YkEy85Eq2Qvknb29PlCE9QOXEHmNKIROF+2thhzV4E5naR3q9h68F30tfU22V646yKfoDxPSha8REyeckB65uRVZmahgcCeAkMpSytbgw2kerF5ekpARMcShRImKydzj+QBtZ2kBjNhZSAIOoHjKRZpenQEzrdH1J2zrf1n/tq7cBxJPlKfAR0UxWWr2F3K/asdr6RgM4jVTsCf4lyA63dvTyPJWcep0DuR19jBXSaxXDRZJPm5QXnUdz44qI93/qolQLPqKm4qbhJkUZfhgppLYUHxNML4NeObcaHZTim3bD6+VdoS036Wo6hVZzH997VReuQFxqUbNpQ9VlICohR9ei5VPqD/sjnUuxW/xCBV30AQAs936OodBqY=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f8bf2a97-f003-486a-2604-08ddd1138236
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Aug 2025 15:53:07.6851
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pLIUE3st2IzuVHb4iTtka6h+Ae/TPUV3v3QsD3VbuPIQQjq5n1ylV5BdGW7bzdTL0q9RdUCwQRxqzAM+KfTLWhd9+754WZZcU26Mr/gK1g8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR10MB7413
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-01_05,2025-08-01_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 bulkscore=0 spamscore=0
+ mlxscore=0 phishscore=0 adultscore=0 suspectscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
+ definitions=main-2508010122
+X-Proofpoint-ORIG-GUID: l3EJicd3uklyJlAsSS4tRcj09mU74zmk
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODAxMDEyMiBTYWx0ZWRfX7gY1yrrHP5Cz
+ L+ow80N95O6GgIqcVkIQA/+09j6kXjhEkv16yMjXcFcQUhwrU4ISPjlyBrLXtdDv8AjhvOd9CK1
+ HGL4JKzX8ZxT9OizYVtxUKE5ohBUfLLea8JuVrxVwxQBl6XbyGH4vL+I0qivm5IvNP4pyKePe/0
+ uFQZbNXzw8twMU4XFscYmx4CE04Z1mCE7Fv/nvqRVzFabuP4pQuDYoZJ4M7wrBZrsUhLrCeZkyX
+ N7q6lxnXwpWf/NZfsR2MIQ5hp35DJ8J16V0OiW54M2p9QH51yI6B181+w8UYVvoQqwtxIRIv535
+ xGOLtOpGxa3Y+Wyp++G/LmDB2pfXohfDWbtipwUlDZdkXyFqDQrlqHZXnSiiw2665hjVQvZCyCc
+ SmL5JjOIiFZYPSzb9wf1PH+PAii6mFYFgLX3mGNo20etj3gnEcH6mYXxawibaKbR+QbMEobK
+X-Authority-Analysis: v=2.4 cv=FvIF/3rq c=1 sm=1 tr=0 ts=688ce2e9 cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=hD80L64hAAAA:8 a=20KFwNOVAAAA:8
+ a=yPCof4ZbAAAA:8 a=p5Tm_5Oj0aXCBKwpJbcA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: l3EJicd3uklyJlAsSS4tRcj09mU74zmk
+X-Rspamd-Queue-Id: 5787380004
+X-Stat-Signature: bajzap4p5a88mo4uxk9hb6rsjzgfaos1
 X-Rspam-User: 
-X-HE-Tag: 1754063358-222129
-X-HE-Meta: U2FsdGVkX19FYKe1KbI0awzubZQMRLEziRCybU7Eg1enuf64cEhrs7p0U4eAEF03pCIpAOx/NlbxNLp6HQx2WnimyfXSs977Z1K5eeDWcPl952HW73DWXE7DQMXIP5j/qEq2Wf3d/iOkmy4vTYMpQKzcI4OBl70Al+12HTHxhJ222myMze1mu0EJ+plEvmPnBUV5D2RYjxZCAePicn0avhALwHsg1f2r2XuF9rGWzNGJ+CAnXa3zc67JI61F/DCKEyTwjDnP0xLs6lPO9bWpARCZbcY1NUPNSuJM3TpR9MSdjjI+PMesMRbSDInsKFqXMz5u44GPOGgaU1Feq6ojRlwOQc4etjyEBTgu3VteaG3MrbScSiYsYPtv9vJyGoyFwFNxfwvSBH7TayV8SXTDuMvgb69bNQrMYuZ0NlJ5jEOUtGc0Kp04tDaD30/tix3vg6ZhFvWVtUuP1MsWyExLGXFlpNjhP0XNAFIgtCqfyKPHfFUl2Zz8ZuEMopn7b7HjaQqbS0jnPI0ZMZWI2jLBGa8vvAglurxFAYGdGCkd7tNIZ4woa5vbmR2e43YYZId6uMbGNAYL5FQPBYh44XCEJkUEA3bz5bTiJV2HcyHdWCjX5JeKOmkUzhsYT7S2vpFZCg15GcjdAWHo0oHhZl4AjHtIPuSAHAlhF9K4aPIt4nY5LG2ZfzdtquNXTxURCNsOX5dtZk/Rxv3nA69qzAOHEK6tXAwJM5HFc4Oh0ouM5hje8A8jDCCwUmC2QZX01nf86afnQ8HgQq1CB43j9BlnuFkKwcU6YfuHEIuQQKq9p+k9cymSAEIyjYhCBv4XGbUcXpbt1eIka6LtMgXCyVxLYeWsC5t2oe/bb4FsYyY9jd89O474DUgsIpwNG0I82tTRr7PAfda0FfD4K6K7XAEPsiH5PZzcAUZ0ST2BtV9sQN8HPbH8lKUS7Cd2g01tbOF7TD7DMsK72yStKXlYxbs
- X54yxBD5
- 9XpHZmnX4cmsoyioC6gORenprcT3fribp2cViUlaZU2QnuBzurPjsBpXU2MqFwLRk04nbPkbsjQgtFmB6aE2pGusW/lV8zJ2dYTJbI4pwlXaM4UHwihgQtA/u6XRk8qgUvVJCnQtgI3kDqUJ+QRBBuASS4yyrc6M10OaFlYTw/cuAyMAuws8FRZoGJc1Q452K1xZc3YZsLU7ia7UXXG+Nx8h07+sqjFSDy/wC+/afSKq76SOAkzwHLXuGYBrayrW54xv8p6uHe/dCo6yXqYh6oZd7+VGGy/u7CnZBQuGCL0RS/LdkB544O7Ayl62B9u1HDMmpeABaxy7l6ZpwnUAhU1Ij5ZmQKDMo6Rx/9EJLtqwpAr7IVd7pqHZEdV9Q+xVkiDT5nmFgsLHMVSg9fE8qLEFABiZ4RpFuOOqLTLvY3gofuQ/a0s40zGc0uXE8pAzrSR+X1kmUEIXvPGVFzwAwjvsVL+sdhLv5n25Am5oLuRKpBUagfEyZFRIxE54zpq25qhoiA+0K1SRO1rNPxrs8c98pIbeXcBnjcM6jrvmOU4yGpBrBDxSMUjxJl1+8gx9/mP+8M6VnsDggVXiRVN5fNuxjyw==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1754063615-768600
+X-HE-Meta: U2FsdGVkX1962nBv3SCaT4Ff0YOnqssTqp1PwDK2kHKd/WOX3M48k6bAtKFiEJjsAEKfM/ZP+9Jr1xttEzBkNv1Ov/gFBYWZz8A4POXN4c/S3udUWOdU6+bdgBAzU8Ijmjxyjcq3ojlSHspGwNFGDOO37kGAG255BK058IcM+kFFTbXZNLEUG4qO+IlHWJ851rK/GXXn9rVVRHvMNjLZYcrE2GiTbSNBFV+LKaspxDgG++bdBKkJ0Cb5k+3Z6dAHuSoQwoFffCo0l6+GsnSF1sAr6RKlQyXtcUs+RMoKRzGogdcNyuAGG7pwSyXE7PPAt69uDrQlPW5H1Zzo3VW4csoZX+BD95mx8iKr7ssmFlJEMxrZ9fc6L3q1pHIW7NHJHqZbbj5QvAArMVvPkOZ9B3/JduiQh2lL92JvwqgoTqC3ggRbmd+Vd6mQF5nUsbtmzY1/0/2s5MrkADgdjcyl90vZFnUleTpdPVRT28qPuWVdfv9uUv91rYe4lBb2Rg/rAfVwYWPiTzI/nPumVfoVzMvAzr1/T3iQIIiMt7E+m+7ugaZJStb00yNTn+cuR1qbgqRb1VVZh1q94YHBlXza67v1XDoQKo69k5Mm7e1EZKB3NQc5FjLdzUchB/rAiEChnDsGSjMzwudBR3xCweWBP8wu0C7UzVNXnTT2hCTebpqKGdEwbElZlameMUXEvKA6YddEpRjeiAeOBEdyRiEiZmCQLmG54RarwKoJhK8OOmVuHksBO/rbhZldJWG8QpVQeq/bh553BvdlMcFmNuf4HEudGadsNe3OxPbmQMB6KB2HB99SAQCWTQnD0/5KJFmexMKAPWJQJ07rFs4fhj8Hn8Ns9J8kj7JYNUz06uEa3RZyooWugrQVcbtwHCB7wzp92Rvj4tGy7viGzOa2mjoUo//dl2+CjfTPqV0eqFyQkIKpUXFjJXYPOZZOPRUA2G9mbVtOCWeHPtF5CCBGyLI
+ JkCwScZH
+ rHwwxPY55IJHAl2dxDukVv+SKigbXRPCYhW+jkqQkB9npc4Vrq/xhgPeP35oXRvYVLEPJc4udAxnMtweHu1gkrW8WClwHLjkjwiu2r4/6qh7UKj40iQV3rZrWGw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -188,210 +245,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 24.07.25 16:49, Pankaj Raghav (Samsung) wrote:
+On Thu, Jul 24, 2025 at 04:49:58PM +0200, Pankaj Raghav (Samsung) wrote:
 > From: Pankaj Raghav <p.raghav@samsung.com>
-> 
-> There are many places in the kernel where we need to zeroout larger
-> chunks but the maximum segment we can zeroout at a time by ZERO_PAGE
-> is limited by PAGE_SIZE.
-> 
-> This is especially annoying in block devices and filesystems where we
-> attach multiple ZERO_PAGEs to the bio in different bvecs. With multipage
-> bvec support in block layer, it is much more efficient to send out
-> larger zero pages as a part of single bvec.
-> 
-> This concern was raised during the review of adding LBS support to
-> XFS[1][2].
-> 
-> Usually huge_zero_folio is allocated on demand, and it will be
-> deallocated by the shrinker if there are no users of it left. At moment,
-> huge_zero_folio infrastructure refcount is tied to the process lifetime
-> that created it. This might not work for bio layer as the completions
-> can be async and the process that created the huge_zero_folio might no
-> longer be alive. And, one of the main point that came during discussion
-> is to have something bigger than zero page as a drop-in replacement.
-> 
-> Add a config option STATIC_HUGE_ZERO_FOLIO that will always allocate
-
-"... will result in allocating the huge zero folio on first request, if not already allocated, and turn it static such that it can never get freed."
-
-> the huge_zero_folio, and it will never drop the reference. This makes
-> using the huge_zero_folio without having to pass any mm struct and does
-> not tie the lifetime of the zero folio to anything, making it a drop-in
-> replacement for ZERO_PAGE.
-> 
-> If STATIC_HUGE_ZERO_FOLIO config option is enabled, then
-> mm_get_huge_zero_folio() will simply return this page instead of
-> dynamically allocating a new PMD page.
-> 
-> This option can waste memory in small systems or systems with 64k base
-> page size. So make it an opt-in and also add an option from individual
-> architecture so that we don't enable this feature for larger base page
-> size systems.
-> > [1] https://lore.kernel.org/linux-xfs/20231027051847.GA7885@lst.de/
-> [2] https://lore.kernel.org/linux-xfs/ZitIK5OnR7ZNY0IG@infradead.org/
-> 
-> Co-developed-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+>
+> As we already moved from exposing huge_zero_page to huge_zero_folio,
+> change the name of the shrinker to reflect that.
+>
+> No functional changes.
+>
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Acked-by: David Hildenbrand <david@redhat.com>
 > Signed-off-by: Pankaj Raghav <p.raghav@samsung.com>
+
+Makes sense to rename other related stuff as pointed out by Ritesh and
+David, but for this part:
+
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+
 > ---
->   arch/x86/Kconfig        |  1 +
->   include/linux/huge_mm.h | 18 ++++++++++++++++++
->   mm/Kconfig              | 21 +++++++++++++++++++++
->   mm/huge_memory.c        | 42 +++++++++++++++++++++++++++++++++++++++++
->   4 files changed, 82 insertions(+)
-> 
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index 0ce86e14ab5e..8e2aa1887309 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -153,6 +153,7 @@ config X86
->   	select ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP	if X86_64
->   	select ARCH_WANT_HUGETLB_VMEMMAP_PREINIT if X86_64
->   	select ARCH_WANTS_THP_SWAP		if X86_64
-> +	select ARCH_WANTS_STATIC_HUGE_ZERO_FOLIO if X86_64
->   	select ARCH_HAS_PARANOID_L1D_FLUSH
->   	select ARCH_WANT_IRQS_OFF_ACTIVATE_MM
->   	select BUILDTIME_TABLE_SORT
-> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> index 7748489fde1b..78ebceb61d0e 100644
-> --- a/include/linux/huge_mm.h
-> +++ b/include/linux/huge_mm.h
-> @@ -476,6 +476,7 @@ vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf);
->   
->   extern struct folio *huge_zero_folio;
->   extern unsigned long huge_zero_pfn;
-> +extern atomic_t huge_zero_folio_is_static;
->   
->   static inline bool is_huge_zero_folio(const struct folio *folio)
->   {
-> @@ -494,6 +495,18 @@ static inline bool is_huge_zero_pmd(pmd_t pmd)
->   
->   struct folio *mm_get_huge_zero_folio(struct mm_struct *mm);
->   void mm_put_huge_zero_folio(struct mm_struct *mm);
-> +struct folio *__get_static_huge_zero_folio(void);
-> +
-> +static inline struct folio *get_static_huge_zero_folio(void)
-> +{
-> +	if (!IS_ENABLED(CONFIG_STATIC_HUGE_ZERO_FOLIO))
-> +		return NULL;
-> +
-> +	if (likely(atomic_read(&huge_zero_folio_is_static)))
-> +		return huge_zero_folio;
-> +
-> +	return __get_static_huge_zero_folio();
-> +}
->   
->   static inline bool thp_migration_supported(void)
->   {
-> @@ -685,6 +698,11 @@ static inline int change_huge_pud(struct mmu_gather *tlb,
->   {
->   	return 0;
->   }
-> +
-> +static inline struct folio *get_static_huge_zero_folio(void)
-> +{
-> +	return NULL;
-> +}
->   #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
->   
->   static inline int split_folio_to_list_to_order(struct folio *folio,
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 0287e8d94aea..e2132fcf2ccb 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -835,6 +835,27 @@ config ARCH_WANT_GENERAL_HUGETLB
->   config ARCH_WANTS_THP_SWAP
->   	def_bool n
->   
-> +config ARCH_WANTS_STATIC_HUGE_ZERO_FOLIO
-> +	def_bool n
-> +
-> +config STATIC_HUGE_ZERO_FOLIO
-> +	bool "Allocate a PMD sized folio for zeroing"
-> +	depends on ARCH_WANTS_STATIC_HUGE_ZERO_FOLIO && TRANSPARENT_HUGEPAGE
-> +	help
-> +	  Without this config enabled, the huge zero folio is allocated on
-> +	  demand and freed under memory pressure once no longer in use.
-> +	  To detect remaining users reliably, references to the huge zero folio
-> +	  must be tracked precisely, so it is commonly only available for mapping
-> +	  it into user page tables.
-> +
-> +	  With this config enabled, the huge zero folio can also be used
-> +	  for other purposes that do not implement precise reference counting:
-> +	  it is still allocated on demand, but never freed, allowing for more
-> +	  wide-spread use, for example, when performing I/O similar to the
-> +	  traditional shared zeropage.
-> +
-> +	  Not suitable for memory constrained systems.
-> +
->   config MM_ID
->   	def_bool n
->   
+>  mm/huge_memory.c | 24 ++++++++++++------------
+>  1 file changed, 12 insertions(+), 12 deletions(-)
+>
 > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 5d8365d1d3e9..c160c37f4d31 100644
+> index 2b4ea5a2ce7d..5d8365d1d3e9 100644
 > --- a/mm/huge_memory.c
 > +++ b/mm/huge_memory.c
-> @@ -75,6 +75,7 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
->   static bool split_underused_thp = true;
->   
->   static atomic_t huge_zero_refcount;
-> +atomic_t huge_zero_folio_is_static __read_mostly;
->   struct folio *huge_zero_folio __read_mostly;
->   unsigned long huge_zero_pfn __read_mostly = ~0UL;
->   unsigned long huge_anon_orders_always __read_mostly;
-> @@ -266,6 +267,47 @@ void mm_put_huge_zero_folio(struct mm_struct *mm)
->   		put_huge_zero_page();
->   }
->   
-> +#ifdef CONFIG_STATIC_HUGE_ZERO_FOLIO
-> +#define FAIL_COUNT_LIMIT 2
-> +
-> +struct folio *__get_static_huge_zero_folio(void)
-> +{
-> +	static unsigned long fail_count_clear_timer;
-> +	static atomic_t huge_zero_static_fail_count __read_mostly;
-> +
-> +	if (unlikely(!slab_is_available()))
-> +		return NULL;
-> +
-> +	/*
-> +	 * If we failed to allocate a huge zero folio multiple times,
-> +	 * just refrain from trying for one minute before retrying to get
-> +	 * a reference again.
-> +	 */
-
-Is this "try twice" really worth it? Just try once, and if it fails, try only again in the future.
-
-I guess we'll learn how that will behave in practice, and how we'll have to fine-tune it :)
-
-
-In shrink_huge_zero_page_scan(), should we probably warn if something buggy happens?
-
-Something like
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 2b4ea5a2ce7d2..b1109f8699a24 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -277,7 +277,11 @@ static unsigned long shrink_huge_zero_page_scan(struct shrinker *shrink,
-                                        struct shrink_control *sc)
-  {
-         if (atomic_cmpxchg(&huge_zero_refcount, 1, 0) == 1) {
--               struct folio *zero_folio = xchg(&huge_zero_folio, NULL);
-+               struct folio *zero_folio;
-+
-+               if (WARN_ON_ONCE(atomic_read(&huge_zero_folio_is_static)))
-+                       return 0;
-+               zero_folio = xchg(&huge_zero_folio, NULL);
-                 BUG_ON(zero_folio == NULL);
-                 WRITE_ONCE(huge_zero_pfn, ~0UL);
-                 folio_put(zero_folio);
-
-
--- 
-Cheers,
-
-David / dhildenb
-
+> @@ -266,15 +266,15 @@ void mm_put_huge_zero_folio(struct mm_struct *mm)
+>  		put_huge_zero_page();
+>  }
+>
+> -static unsigned long shrink_huge_zero_page_count(struct shrinker *shrink,
+> -					struct shrink_control *sc)
+> +static unsigned long shrink_huge_zero_folio_count(struct shrinker *shrink,
+> +						  struct shrink_control *sc)
+>  {
+>  	/* we can free zero page only if last reference remains */
+>  	return atomic_read(&huge_zero_refcount) == 1 ? HPAGE_PMD_NR : 0;
+>  }
+>
+> -static unsigned long shrink_huge_zero_page_scan(struct shrinker *shrink,
+> -				       struct shrink_control *sc)
+> +static unsigned long shrink_huge_zero_folio_scan(struct shrinker *shrink,
+> +						 struct shrink_control *sc)
+>  {
+>  	if (atomic_cmpxchg(&huge_zero_refcount, 1, 0) == 1) {
+>  		struct folio *zero_folio = xchg(&huge_zero_folio, NULL);
+> @@ -287,7 +287,7 @@ static unsigned long shrink_huge_zero_page_scan(struct shrinker *shrink,
+>  	return 0;
+>  }
+>
+> -static struct shrinker *huge_zero_page_shrinker;
+> +static struct shrinker *huge_zero_folio_shrinker;
+>
+>  #ifdef CONFIG_SYSFS
+>  static ssize_t enabled_show(struct kobject *kobj,
+> @@ -849,8 +849,8 @@ static inline void hugepage_exit_sysfs(struct kobject *hugepage_kobj)
+>
+>  static int __init thp_shrinker_init(void)
+>  {
+> -	huge_zero_page_shrinker = shrinker_alloc(0, "thp-zero");
+> -	if (!huge_zero_page_shrinker)
+> +	huge_zero_folio_shrinker = shrinker_alloc(0, "thp-zero");
+> +	if (!huge_zero_folio_shrinker)
+>  		return -ENOMEM;
+>
+>  	deferred_split_shrinker = shrinker_alloc(SHRINKER_NUMA_AWARE |
+> @@ -858,13 +858,13 @@ static int __init thp_shrinker_init(void)
+>  						 SHRINKER_NONSLAB,
+>  						 "thp-deferred_split");
+>  	if (!deferred_split_shrinker) {
+> -		shrinker_free(huge_zero_page_shrinker);
+> +		shrinker_free(huge_zero_folio_shrinker);
+>  		return -ENOMEM;
+>  	}
+>
+> -	huge_zero_page_shrinker->count_objects = shrink_huge_zero_page_count;
+> -	huge_zero_page_shrinker->scan_objects = shrink_huge_zero_page_scan;
+> -	shrinker_register(huge_zero_page_shrinker);
+> +	huge_zero_folio_shrinker->count_objects = shrink_huge_zero_folio_count;
+> +	huge_zero_folio_shrinker->scan_objects = shrink_huge_zero_folio_scan;
+> +	shrinker_register(huge_zero_folio_shrinker);
+>
+>  	deferred_split_shrinker->count_objects = deferred_split_count;
+>  	deferred_split_shrinker->scan_objects = deferred_split_scan;
+> @@ -875,7 +875,7 @@ static int __init thp_shrinker_init(void)
+>
+>  static void __init thp_shrinker_exit(void)
+>  {
+> -	shrinker_free(huge_zero_page_shrinker);
+> +	shrinker_free(huge_zero_folio_shrinker);
+>  	shrinker_free(deferred_split_shrinker);
+>  }
+>
+> --
+> 2.49.0
+>
 
