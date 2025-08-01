@@ -2,93 +2,87 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 28DD7C87FCA
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 19:58:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B2F84C87FCA
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 20:13:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83A996B007B; Fri,  1 Aug 2025 15:58:03 -0400 (EDT)
+	id 465936B007B; Fri,  1 Aug 2025 16:13:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EB986B0089; Fri,  1 Aug 2025 15:58:03 -0400 (EDT)
+	id 416E66B0089; Fri,  1 Aug 2025 16:13:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 700E86B008A; Fri,  1 Aug 2025 15:58:03 -0400 (EDT)
+	id 32CD46B008A; Fri,  1 Aug 2025 16:13:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 604296B007B
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 15:58:03 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D7438B8270
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 19:58:02 +0000 (UTC)
-X-FDA: 83729249604.24.B7824C1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 49D75180005
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 19:58:01 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bLjlUGbR;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 227616B007B
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 16:13:32 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 78DA5C010F
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 20:13:31 +0000 (UTC)
+X-FDA: 83729288622.26.36AD5C7
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	by imf26.hostedemail.com (Postfix) with ESMTP id AF48314000C
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 20:13:29 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=W4canb2S;
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754079209; a=rsa-sha256;
+	cv=none;
+	b=qNVI0JjfpZh+C7qfTlFCf0N0QAA9ZIeqaMYSYzIgPQziQuEn0/bpCWwfp1iJHt4zM92dEY
+	tnVaVNZbKJ0FJIgDjWIoBq/XlvJZ+BC3Fh3xQV/rl7Pq5fAUVdRRe954Mmf6sYpt0Uel4i
+	dxYYHMemxC+fVPke9AVSUaK1kQnUWk4=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=W4canb2S;
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754078281;
+	s=arc-20220608; t=1754079209;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LzPgwqY3y6pBcHoAtzAgp1evz/IsYZ5M7IMBVPgZNcQ=;
-	b=XePgPVtvGfPmQtXEnk0TjUgt1mm5RrH6vJ+uH8AXL/6jifuZSsZS7Xaizid9A8/Il5T1pp
-	ZQguAsMzxcZKzpOs1Z9CSIaNepPMUGH/mmD0Uvf4LxS0WzgHktxWLRXkd3SKhRcleX61Co
-	WAQ/UENLbdUGj5bWsQf9i7OUYyX37I4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754078281; a=rsa-sha256;
-	cv=none;
-	b=pMRgig+dfUPLIyGN/+NhVs8Ps+mGf5jhhZfZE4+EoygROOTJefKVujTGg4LS/yx6TFa2rt
-	t8nBMdUmwDlKpYt9Kh+y+JF1CsJR6MYhX9OkdYZ2xXAaFxHdltDaAMnKT8BJu+feqodmQC
-	8DpSmF3q0YqEEX9/M8gylT3pfLZ4o58=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bLjlUGbR;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=tRxRA81UCOepWIEaQkaCu6xBDyfNQBkbQLYOh2c2n7k=;
+	b=Hw12a4IUW0N8SpHAcAeXkA9R5kjvkoiimM0d1ED4HxYou4ybrk1KebuJpuhJuWbPIWgE9H
+	Vll5eO75uEsXwlw9g0e5qIT8E6HLevxl2G9pf/xKwW6MlWzdN5KZAX+eleYdB5TtdBOKXx
+	v6BsG4+cnRXPdFCI6LNsIWx1H41M+MQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 787FD61130;
-	Fri,  1 Aug 2025 19:58:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6336C4CEF4;
-	Fri,  1 Aug 2025 19:57:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754078280;
-	bh=tUEYr3HZyXjC24pkcxwmm2u2X5diq/zyBh0xRAimDJU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bLjlUGbRDq+Ne0c/edVOLhD+pSlZxu5jCJKXP+FmnAkAmUzVkgi5bXyB/SsKO7S5x
-	 qz8uwOQsPEOAmhzXVKRIYT6SncnqduoPkjJC9N+SihafN7HOYyhGsCSIBp76xgPVUA
-	 8j0D88z9/2BDT8xU6TIbtTQpiVCiI2X/A7MXz62fJoZOA07nM3wMrPlqct+DLT4xBc
-	 XIynfZFssWNeZtVOUKMyLbMn+NnjQnXn5eYqQ/YLNAFJNIxUYqcT1Bhv88n7XcfeAh
-	 PurPB4AEgxBf/XB1dm76xfVH9iatPCxXp3gO8nHnfrOkuVQtoaMtzuEjj6D7fvUCE3
-	 HoikNGPOxnNcA==
-From: SeongJae Park <sj@kernel.org>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Takero Funaki <flintglass@gmail.com>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	kernel-team@meta.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH] mm/zswap: store compression failed page as-is
-Date: Fri,  1 Aug 2025 12:57:57 -0700
-Message-Id: <20250801195757.1384-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250731172009.108025-1-joshua.hahnjy@gmail.com>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 49D75180005
+	by nyc.source.kernel.org (Postfix) with ESMTP id D057EA5596F;
+	Fri,  1 Aug 2025 20:13:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 348F2C4CEE7;
+	Fri,  1 Aug 2025 20:13:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1754079208;
+	bh=Qg0kvxsXNNpQlr8Zn+FdmlEiWcpF6OIoZvDXUYGqrFg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=W4canb2SF5TnJOwxq82Fn+CSgL8a8vreR9ladXrIK9QT/uR42ZpwLxtto1soRZkt1
+	 MFi7dhpFK8Vrhxx7lo0QSpzhKWWGZrVqGPAmDvuDVpZlHuJ55EcSjbArnQLym4WYkv
+	 E8cngteSQ17Jk4ZPH81ClCD3K2q1Yc4wV8oFOHa0=
+Date: Fri, 1 Aug 2025 13:13:27 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: thomas.weissschuh@linutronix.de, ryabinin.a.a@gmail.com,
+ glider@google.com, andreyknvl@gmail.com, dvyukov@google.com,
+ vincenzo.frascino@arm.com, kasan-dev@googlegroups.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] kunit: kasan_test: disable fortify string checker on
+ kasan_strings() test
+Message-Id: <20250801131327.8627459bf3d94895d42b95b2@linux-foundation.org>
+In-Reply-To: <20250801120236.2962642-1-yeoreum.yun@arm.com>
+References: <20250801120236.2962642-1-yeoreum.yun@arm.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: AF48314000C
+X-Stat-Signature: fpq7tg8ibxepwqkqhx5trkcqbnra8ubr
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: dq3wy4xj6pp7agi8gwn4axgs8f8pwj5h
-X-HE-Tag: 1754078281-78401
-X-HE-Meta: U2FsdGVkX1/XCenZ9lzyIOigdtQCRrIo9l2BhV7REvgy1JMnDcO5xPBn00omdHu09wyYU9QM4IJoCbSVIrX8bcB8mN/QSjEomuXIc2a361krNazNMvjBkAUHrCKxcOFWsOMKpQ15yqnnBcIlRyUiFtI8SOfOT10wgJAgDUINh5MwCqTEna8XcxVZsBNIk9+rfuN1EGCulvoRILj1226hw2FtU67XWhhzRf9/KNnoI9VQg2v7G7VvRPBmNDG+RN2t0LGq7KvVaVBdzZLBsodqvDaCZiUJJFiJ79s3uKNIk1x/37HuE9NM+N8q05dRXpskjQrc2kX8W/lO+EA6C8d19Y+hoN3HxqFmnbLFVGzvITwn2Su/Z1dttewevTmucDtlX0NHbLRa8lABZpi75VnNAiAojDzoAFshYTkXy2lhO3Nhx1ELrS/pr2ReSozXzg26twp/zJxzFmoaCk0AZr0WylJXvf5qlZ7xKTpmH2UeloVOeEAt3vs4w9LZz+HbzS9qvzGl6n0zRB5JL0Y1KEHE8ADq1WJU18A3lRqcw91TjwdBy9aZOlrWoBdtGeRNPTHtBskGE7zqvCO4ljOh2rr+5Vy1l80zebcIhH1QIeV/LamvUe8LE2aZikP9oXuLfNp09/TkU2jGFQKVlJYrvu0Bz9hA9EaFfH1tT8UWdhXAMFj94HtoRXLG8iqsrwquUm5IiqzpIZWGZh9j31WD09OgbQRVIVYwOAmc6Z8ZyDkpDDQZVXfWUVWNlgRM50SGINjBNbCr02vcxhk2oJ+BwtyWsdI4RQi2SpaSqAKgvCMN9bMjoMyNReTINBub4nQxU/FX0B9LJhT26bdwTVL2eytXklYiC87XAK0dbUhTxCJU0N+7enm4tKRrDe8K9FNghR3RGlDYi0g16reEf0yLhlpHpjmNcQa4Rh++YLfqNw7CIOAqDfxtZOhBLy0ind2a3d3JQ2RpwwTF1jbzTmxknNq
- r6/YwGJX
- TRJfGJ0apjgtErpdN3aPiLP2IlxVc+iWcVgIYVgH3Jvt6bY1tRb5ulltNIFSoHCYOA3ItPOk7m0ThdsLoPX3u4/vNv1UtCpHWCCP7g+uh2bVXoqsyGmi2ndBMpkOZIfBZVeDL04PTLfpsq6bDy6khC1Z0lycSecoD7dVWyifNzMA2kJDO8ZMj480Ii5QAtCrtYmbvoB2Wxg+Tcf4IUuPE4txRZbuKIV9DLOJMw+kMw1xNy+Gw2235b+u7hM9kk4CR58cIg4gFSruxs6YEapc2bf37u06VaSv2lAaqP7KEML1Kbaf5+DXsaZAd3ZHrHT8jbJKfNm5AnnRi8uA=
+X-HE-Tag: 1754079209-364493
+X-HE-Meta: U2FsdGVkX1/U2OJvjCvoDkXLC9UiejyRDicS5/dw/JIu62gkZqD8BM1p/r6V6y6aWBgGiK+levXbZ2rHH3lHsVYRUz/VzaNao2zw4Ez/nRGByHV/YWctzG3CvhmdgrdImKIlLh8fDQXtNb8iufu79ysaW4XMpmn7Zy6L6MBKQ4YUZoKrSzYaB4+oa7DcOkYB1OMmify6NsiadNYb3vpcvK/QjbFGEBHLc3Ey0bBXlaEn3xpXtIpNXU8OunSmjPakDu+agNi3A4LjqFwAPAyOE6i25mBylk6Q9MdNXt0MoQViVNiX67Hk63JCW351iUhclGSJAZGVj5OLI6S7i3UAdvzurpR5wuf1B5KKD++7nWr+G3pQQ+3HMDyY3mm7Dep2CzwnqCsWpN8P3gNw4mBhdyA6iHWU0By4LKj7Qcp/8pgEhDNxQqmD3mV2qRGgUKMV2SeMVR2yWE6w0dVNAusTQup1kp5vgMfta5r3zkYnMxaPWTDXoxNVQEnRARoluNXOH2DvrnmiwSjyaIeXVWmsSXyQY/qzX0FuouuGxAf3HNExlCJ2dh8U3kSP8dD1lCpeMX+ir3U/Ab9JrxhfR+mH1QGADzHhGrGY0DazzthqIeuCiYLMQZs5pHz+kaqSb6oKOnLD7+2sqBHbZ4QyygCyDt5YpILGCSzj/oi/tR+jpVu3ITmiI2gT4QXy7jQXImUwc0kW0FpuMDNo6Ni1OjPNbO5FrRYa6BHTRdF+BmRvHEH08MJJGBnhNvEZ4v5xW0wGFUFUYZSG8AJL0Ls51gXvKytkHbsqLMdhPGCAenfSIu/CaU79JilSYQyX4Rh9wy715dJCIWMj4SH45702LewDBcTMr/kkgldsoS1FWCmQH36bDgFTNSFX+lzaUDoezdAYSBN8a2X+072Xfb1gWZMz0GQnfavVpCmX43wMbBysxaaGqsB5DhNGjm1e9FFHyW7ylyXEgNnjABLkffeYPyr
+ 52eR7f3r
+ Aa4BwBfd1OOkdLqB0s9pdIilKLJwHe64orNANE4vnKRNboAxW+n1SfgPL4sNc1JaFw+tKcPpXBh+X+y1pruCEymmdwxc1GKodCxmCcUg3q6bKJGeFK+46aXfdBTh/WFP+D4WN0tjzkyg+GG4nbOpr+6i51tA6nfZ2ed7Gs2501F5UYG04LJ67e/BlloN7dcqNMaP2IFbd9ffckZIp9k4riIP93ZidHoVFG8XDocY2EvkQmNhKJNW7AUeFLaquLa4HjAt870rY91eCRfJrxtzLGyae2IiNytiSnBigFrjwalJWGbRvUW6gW58Ol2M0Z9y+yUdskgQMcOC3OOIaLrq90az2BKmGjVkq/toht1MkSyfXEi+BqwpkRKS2BBjijxZdzniY90QY7u4cUHKorGBwu82DA/PnZFOQ2HbkbnfKz9DlctyM9KxqZRqTd39xhjUYFheL
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,197 +91,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 31 Jul 2025 10:20:05 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+On Fri,  1 Aug 2025 13:02:36 +0100 Yeoreum Yun <yeoreum.yun@arm.com> wrote:
 
-> On Wed, 30 Jul 2025 16:40:59 -0700 SeongJae Park <sj@kernel.org> wrote:
+> Similar to commit 09c6304e38e4 ("kasan: test: fix compatibility with
+> FORTIFY_SOURCE") the kernel is panicing in kasan_string().
 > 
-> Hi SJ, thank you for your patch! This is a really cool idea : -)
+> This is due to the `src` and `ptr` not being hidden from the optimizer
+> which would disable the runtime fortify string checker.
 > 
-> > When zswap writeback is enabled and it fails compressing a given page,
-> > zswap lets the page be swapped out to the backing swap device.  This
-> > behavior breaks the zswap's writeback LRU order, and hence users can
-> > experience unexpected latency spikes.
-> > 
-> > Keep the LRU order by storing the original content in zswap as-is.  The
-> > original content is saved in a dynamically allocated page size buffer,
-> > and the pointer to the buffer is kept in zswap_entry, on the space for
-> > zswap_entry->pool.  Whether the space is used for the original content
-> > or zpool is identified by 'zswap_entry->length == PAGE_SIZE'.
-> > 
-> > This avoids increasing per zswap entry metadata overhead.  But as the
-> > number of incompressible pages increases, zswap metadata overhead is
-> > proportionally increased.  The overhead should not be problematic in
-> > usual cases, since the zswap metadata for single zswap entry is much
-> > smaller than PAGE_SIZE, and in common zswap use cases there should be
-> > sufficient amount of compressible pages.  Also it can be mitigated by
-> > the zswap writeback.
+> Call trace:
+>   __fortify_panic+0x10/0x20 (P)
+>   kasan_strings+0x980/0x9b0
+>   kunit_try_run_case+0x68/0x190
+>   kunit_generic_run_threadfn_adapter+0x34/0x68
+>   kthread+0x1c4/0x228
+>   ret_from_fork+0x10/0x20
+>  Code: d503233f a9bf7bfd 910003fd 9424b243 (d4210000)
+>  ---[ end trace 0000000000000000 ]---
+>  note: kunit_try_catch[128] exited with irqs disabled
+>  note: kunit_try_catch[128] exited with preempt_count 1
+>      # kasan_strings: try faulted: last
+> ** replaying previous printk message **
+>      # kasan_strings: try faulted: last line seen mm/kasan/kasan_test_c.c:1600
+>      # kasan_strings: internal error occurred preventing test case from running: -4
 > 
-> I think one other benefit that is worth mentioning here is that by moving
-> the incompressible pages to the zswap LRU, we prevent wasting CPU cycles
-> on pages that have not changed since their last compression attempt.
 
-Thank you for adding this.  But, isn't this only for writeback-disabled case?
+We don't want -stable kernels to panic either.  I'm thinking
 
-If writeback is enabled and an incompressible page is tried to be zswapped-out,
-a compression of it is tried and failed, and the page is swapped out to disk.
-The compression will be tried again later only if it is accessed, swapped in,
-and then again tried to be zswapped-out.
+Fixes: 73228c7ecc5e ("KASAN: port KASAN Tests to KUnit")
+Cc: <stable@vger.kernel.org>
 
-After this patch, a compression is tried and failed, the page is kept in
-memory, linked on zswap's LRU list.  And the compression will be tried again
-later, if it is accessed, zswapped in, and then again tried to be zswapped-out.
+What do you think?
 
-So in terms of number of compression attempts, this patch is not making a
-direct difference, to my understanding.  The correct LRU order _might_ make
-some indirect help in some complicated scenarios, though, but I wouldn't dare
-to claim that.
-
-Am I missing something?
-
-> 
-> This concern is a real concern that we have seen manifest as wasted cycles
-> in zswap wasted on trying to compress the same pages over and over again,
-> and failing each time. This is also made worse by the fact that wasted CPU
-> cycles are bad, but even worse when we are reclaiming and must free up memory!
-> 
-> > When the memory pressure comes from memcg's memory.high and zswap
-> > writeback is set to be triggered for that, however, the penalty_jiffies
-> > sleep could degrade the performance.  Add a parameter, namely
-> > 'save_incompressible_pages', to turn the feature on/off as users want.
-> > It is turned off by default.
-> > 
-> > When the writeback is just disabled, the additional overhead could be
-> > problematic.  For the case, keep the behavior that just returns the
-> > failure and let swap_writeout() puts the page back to the active LRU
-> > list in the case.  It is known to be suboptimal when the incompressible
-> > pages are cold, since the incompressible pages will continuously be
-> > tried to be zswapped out, and burn CPU cycles for compression attempts
-> > that will anyway fails.  But that's out of the scope of this patch.
-> 
-> Indeed, and your patch fixes this problem, at least for the writeback
-> enabled case!
-
-Again, I don't think this patch is really fixing it unless I'm missing
-something.
-
-> 
-> [...snip...]
-> 
-> > Signed-off-by: SeongJae Park <sj@kernel.org>
-> > ---
-> >  mm/zswap.c | 73 ++++++++++++++++++++++++++++++++++++++++++++++++------
-> >  1 file changed, 65 insertions(+), 8 deletions(-)
-> > 
-> > diff --git a/mm/zswap.c b/mm/zswap.c
-> > index 7e02c760955f..e021865696c6 100644
-> > --- a/mm/zswap.c
-> > +++ b/mm/zswap.c
-> > @@ -45,6 +45,9 @@
-> >  /* The number of compressed pages currently stored in zswap */
-> >  atomic_long_t zswap_stored_pages = ATOMIC_LONG_INIT(0);
-> >  
-> > +/* The number of uncompressed pages currently stored in zswap */
-> > +atomic_long_t zswap_stored_uncompressed_pages = ATOMIC_LONG_INIT(0);
-> > +
-> >  /*
-> >   * The statistics below are not protected from concurrent access for
-> >   * performance reasons so they may not be a 100% accurate.  However,
-> > @@ -129,6 +132,11 @@ static bool zswap_shrinker_enabled = IS_ENABLED(
-> >  		CONFIG_ZSWAP_SHRINKER_DEFAULT_ON);
-> >  module_param_named(shrinker_enabled, zswap_shrinker_enabled, bool, 0644);
-> >  
-> > +/* Store incompressible pages as is */
-> > +static bool zswap_save_incompressible_pages;
-> > +module_param_named(save_incompressible_pages, zswap_save_incompressible_pages,
-> > +		bool, 0644);
-> > +
-> >  bool zswap_is_enabled(void)
-> >  {
-> >  	return zswap_enabled;
-> > @@ -190,7 +198,8 @@ static struct shrinker *zswap_shrinker;
-> >   *              writeback logic. The entry is only reclaimed by the writeback
-> >   *              logic if referenced is unset. See comments in the shrinker
-> >   *              section for context.
-> > - * pool - the zswap_pool the entry's data is in
-> > + * orig_data - uncompressed original data of the page, if length is PAGE_SIZE
-> > + * pool - the zswap_pool the entry's data is in, if length is not PAGE_SIZE
-> >   * handle - zpool allocation handle that stores the compressed page data
-> >   * objcg - the obj_cgroup that the compressed memory is charged to
-> >   * lru - handle to the pool's lru used to evict pages.
-> > @@ -199,7 +208,10 @@ struct zswap_entry {
-> >  	swp_entry_t swpentry;
-> >  	unsigned int length;
-> >  	bool referenced;
-> > -	struct zswap_pool *pool;
-> > +	union {
-> > +		void *orig_data;
-> > +		struct zswap_pool *pool;
-> > +	};
-> >  	unsigned long handle;
-> >  	struct obj_cgroup *objcg;
-> >  	struct list_head lru;
-> > @@ -500,7 +512,7 @@ unsigned long zswap_total_pages(void)
-> >  		total += zpool_get_total_pages(pool->zpool);
-> >  	rcu_read_unlock();
-> >  
-> > -	return total;
-> > +	return total + atomic_long_read(&zswap_stored_uncompressed_pages);
-> >  }
-> >  
-> >  static bool zswap_check_limits(void)
-> > @@ -805,8 +817,13 @@ static void zswap_entry_cache_free(struct zswap_entry *entry)
-> >  static void zswap_entry_free(struct zswap_entry *entry)
-> >  {
-> >  	zswap_lru_del(&zswap_list_lru, entry);
-> > -	zpool_free(entry->pool->zpool, entry->handle);
-> > -	zswap_pool_put(entry->pool);
-> > +	if (entry->length == PAGE_SIZE) {
-> > +		kfree(entry->orig_data);
-> > +		atomic_long_dec(&zswap_stored_uncompressed_pages);
-> > +	} else {
-> > +		zpool_free(entry->pool->zpool, entry->handle);
-> > +		zswap_pool_put(entry->pool);
-> > +	}
-> >  	if (entry->objcg) {
-> >  		obj_cgroup_uncharge_zswap(entry->objcg, entry->length);
-> >  		obj_cgroup_put(entry->objcg);
-> > @@ -937,6 +954,36 @@ static void acomp_ctx_put_unlock(struct crypto_acomp_ctx *acomp_ctx)
-> >  	mutex_unlock(&acomp_ctx->mutex);
-> >  }
-> >  
-> > +/*
-> > + * If the compression is failed, try saving the content as is without
-> > + * compression, to keep the LRU order.  This can increase memory overhead from
-> > + * metadata, but in common zswap use cases where there are sufficient amount of
-> > + * compressible pages, the overhead should be not ciritical, and can be
-> 
-> 					      NIT: s/ciritical/critical/?
-
-Thank you for finding this!
-
-> 
-> > + * mitigated by the writeback.  Also, the decompression overhead is optimized.
-> > + *
-> > + * When the writeback is disabled, however, the additional overhead could be
-> > + * problematic.  For the case, just return the failure.  swap_writeout() will
-> 
-> 					           NIT: s/  / /?
-
-I was intentionally adding two spaces between paragraphs.  I find a few other
-comments on zswap.c file are also using the convention...?
-
-> 
-> [...snip...]
-> 
-> And I think Nhat and Johannes have covered the other concerns.
-> 
-> Thanks again SJ for working on this, I hope you have a great day!
-
-Thank you, I appreciate your review!  Also, happy Friday!
-
-
-Thanks,
-SJ
-
-[...]
+We could perhaps go back earlier in time, but 73228c7ecc5e is 5 years
+old.
 
