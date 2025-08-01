@@ -2,111 +2,112 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A6DD1C87FCB
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 07:15:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A09FAC87FCB
+	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 07:21:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 223076B0088; Fri,  1 Aug 2025 03:15:08 -0400 (EDT)
+	id 20C336B0099; Fri,  1 Aug 2025 03:21:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FAAD6B00A9; Fri,  1 Aug 2025 03:15:08 -0400 (EDT)
+	id 1E34A6B009A; Fri,  1 Aug 2025 03:21:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 110B66B00AA; Fri,  1 Aug 2025 03:15:08 -0400 (EDT)
+	id 0F9956B009B; Fri,  1 Aug 2025 03:21:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id F216D6B0088
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 03:15:07 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 725835ED87
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 07:15:07 +0000 (UTC)
-X-FDA: 83727327054.08.FEC30F5
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 020F96B0099
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 03:21:40 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 806EF1A0FFE
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 07:21:39 +0000 (UTC)
+X-FDA: 83727343518.12.2CA50CE
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E2F9640005
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 07:15:04 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JxaNs6ww;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 11DEC20004
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 07:21:36 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ElAxXGFE;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754032505; a=rsa-sha256;
+	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754032897; a=rsa-sha256;
 	cv=none;
-	b=1Tg4H2Vb/WOB1VZREN044Qqa90hGQymUFE0AUX0UDM5dXNZbIQLlX/Tjj96qfmh6GwZC4u
-	0uFM+JoW87wRKqrWnL5jy1AwhgJnoS6OJEzQuU0hD0TjS7p/YgnjbbriFCyAtkdkIZTeSU
-	fgEIK7aSws5DinW0UhakkMql1vDlsus=
+	b=Bfkpnbim355KoWSR5gk4g1jKMTnoGcg++vBNMVUIxH3iQdPhBRb/Ow44U7ZlAeZYe595wE
+	JFSmW0bTz5FVPoN6zS+sEM0NUTo4ig+48fhhcp8OO6D5WX0eBujVQomqZ4m6MeAAYQ8YHz
+	uNHJqOgR1RWTj6JJQqYUnR9ED5HHtAU=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JxaNs6ww;
+	imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ElAxXGFE;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754032505;
+	s=arc-20220608; t=1754032897;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8zsP++KTNUaPodvSH4cDflu0en1lPWroDDUWAbpWBvg=;
-	b=3y97GJWt8zroJIt0W/EOrsy43BFSDMDDOrzKLEKvue5qInmQiRNKmuBUOLx/ZYHl0TLGrm
-	4OHlB+4uY6YBXarQfZrkmWBx+W18335aSegNisxQNO9u6k1E7lxbnEYvNBuSBU3fl3ftCH
-	9ci8kgrdoJHThHkntHq66CdCJZNwHco=
+	bh=k8xuj1kmMyeJuw59snTbgeRO/erNCN9chpx+Tbf452o=;
+	b=f7oguKSIuWrY9tGllpelMRCGEUbD8WwilJovrTbgjocnDH0Ka4G7Xx4K/96oxF3j6asU8w
+	rck1DGV93M/eHar8SK2IPsaZ5kItluf8yv57FOhr3vRFnAaXRpFfFvpGnZe8H1R1Jx3gzF
+	SslknHPBceJtJv3IlBwzTy7XTy4a3r0=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754032504;
+	s=mimecast20190719; t=1754032896;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=8zsP++KTNUaPodvSH4cDflu0en1lPWroDDUWAbpWBvg=;
-	b=JxaNs6ww4KWFXdZTg2CZ72v3ZTbUh3acBQ5ctywpe0GPgzXBjVthnXojDG/PcjVe8getcR
-	dGJGGm8d1eNZpfIqwZCSDHpx7xdmZskDuKFV7UOcwCi9Ix2kuimWBcB+WyPHlkyWb+RYwE
-	4DAWqwLLXcfZg5fz8O6JGUGdzDRMi08=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=k8xuj1kmMyeJuw59snTbgeRO/erNCN9chpx+Tbf452o=;
+	b=ElAxXGFEO4dILXuE7l+bruLQ3ng4p66DEJhY/p2/Kx2eRc6Pb+spwVyMm6BSt2sHMlMO0M
+	NJ2dTo8VLmelJb5lgmvaHbucwvUw3xGQGwSbwbRQlodtp0jyc0xp+8MM0ny6OoYyhegX6I
+	roefq/usztZ+TeXAqgmpAj6ewWUGwno=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-529-doUrBP4mNUmbxvCC1WVBng-1; Fri, 01 Aug 2025 03:15:03 -0400
-X-MC-Unique: doUrBP4mNUmbxvCC1WVBng-1
-X-Mimecast-MFC-AGG-ID: doUrBP4mNUmbxvCC1WVBng_1754032502
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-455e918d690so13243145e9.1
-        for <linux-mm@kvack.org>; Fri, 01 Aug 2025 00:15:02 -0700 (PDT)
+ us-mta-575-erSEZW6pPVyzf4DfvV06nw-1; Fri, 01 Aug 2025 03:21:34 -0400
+X-MC-Unique: erSEZW6pPVyzf4DfvV06nw-1
+X-Mimecast-MFC-AGG-ID: erSEZW6pPVyzf4DfvV06nw_1754032893
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45867ac308dso2853955e9.2
+        for <linux-mm@kvack.org>; Fri, 01 Aug 2025 00:21:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754032502; x=1754637302;
+        d=1e100.net; s=20230601; t=1754032893; x=1754637693;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=8zsP++KTNUaPodvSH4cDflu0en1lPWroDDUWAbpWBvg=;
-        b=LebBbqlDoMmLEt6mrXfja/5zBuzo1VmGHhtpFmrYtdBzmSOEEYuHXVSiON6NdKPbaY
-         yZv3sTMm6qrCK86662PYx8rQcxNLkbHPY2+twpuEPb8cYAD7h20xS5ccYrQdGADiRKD9
-         cXfjiCj8VtwWCPbd67jwow1kmgquk2nAK5XwEiPU5lyzoN+FXk10Sjqr7l1/hzniXmFy
-         Fwd4cisZSCglj6wGygBEJ0BtoRcx6q4+IzaHuyeZV87Yqn4/QA57I383WpKkFzuMFEfl
-         /4u48u+zNhNpONTpMoqCMDOarbThzY8v8+L+soGk88BkpTCE5IwVmnfv/FAffhw4o3KL
-         IeBA==
-X-Forwarded-Encrypted: i=1; AJvYcCXqmOs1LcAZWeLeMuRmfQtpzNH+NSl2yXnOkFr7iqG2zgSi0kmpL+Ph6wXlxMo8sPnGVVP88BvDoQ==@kvack.org
-X-Gm-Message-State: AOJu0Yzk/ovouZJ5SpCp1eY7XFAjMAh+deRpKND+BLwkylL2lfOBf7sD
-	E37QfbfeAcgBE68AAxhLkpViWnKk1eNIQfii7V97YVKXO3WVOLvlHnog8hexKCQUW55xyTX5iyG
-	dveWs1gWIRkHbDDAM+PtH2g6o6UQB79cgQ9EsodTztM2sOfQBc2Af
-X-Gm-Gg: ASbGncvcd1BEBM85VRSDVmwTuhafehKPqFhu6WDEiim/TmmaS6n/OfrRnDcgQmL4PSY
-	Tz2lniQRlAuCj4hNch44DD0PtuhjJJAwMpZSWdPq5PE/uwV7UKym+UD+SYe/H08UaiX6NyF2F+E
-	2YgUQJ666YCPEY5gsLhNctY7quIwLuRxODM4oYbVc+5RlI93Drm21z5/Vz/C98CTccdxgaF7bQJ
-	PI0XXsy6SDsvKdfmOJK3Foc0/pOtiIEZ2Gh15mqgTQdljCA6SXmfHfAWSYDYc3DBerx1ZttXsJh
-	V+EAjuG/LauA1iy+VZTuVOkJ9sj8+IVRpNPH85AtPzPit3/Ug3fLo/Kf/N0mA158BEXJsA==
-X-Received: by 2002:a05:600c:c093:b0:456:2257:3777 with SMTP id 5b1f17b1804b1-458a20032cfmr31372975e9.4.1754032501501;
-        Fri, 01 Aug 2025 00:15:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGqEgovPXS+bSOytnGo1/3qgezWi40htmY3CdWP2rI3GAwEe+kqxnaoSv2vjYTl7ueaCkadcA==
-X-Received: by 2002:a05:600c:c093:b0:456:2257:3777 with SMTP id 5b1f17b1804b1-458a20032cfmr31372845e9.4.1754032500946;
-        Fri, 01 Aug 2025 00:15:00 -0700 (PDT)
-Received: from [192.168.3.141] (p4ff1fa24.dip0.t-ipconnect.de. [79.241.250.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4589edfd983sm53298925e9.13.2025.08.01.00.14.59
+        bh=k8xuj1kmMyeJuw59snTbgeRO/erNCN9chpx+Tbf452o=;
+        b=amo3CVoXZFOwjFlwS9YLzX6BdDbaBNvJt65Ua7tJxdX6D8L3NC2Xh9Dd/C3C5LJMg1
+         4gXwXkujukCFW66rEyWutgzaJlEA0Zke+6Jp21tJ5DIpARrQ61UUwxdaXrNL2cCIMamI
+         92xv+VzEe3LUYkYJ5cTAto2N/P8NUkmhTi8OrHlxuICMV0D3wXT3auS95Ie9M0lGxPHv
+         2bSadrWi9Q7fyRXqPO9IIUb4MbxCubo58812jTiNhXwFlptLATwdmbb7hKVdfGMiN21n
+         TaMaKyiFb/fEIrO9pSOfGTnLUdiT5fpD1pmDj+EPhcs/FIY8nGl4y+qEqArFbWu+r9K+
+         3RgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCULdBmSaglU+k1zs+ONPB8CV50MLYqYFuAJXG3XGCxasWkrYJPeKc8HdDdg5DoJ+rjTtXiPo8tmgA==@kvack.org
+X-Gm-Message-State: AOJu0YzB0anOMod1m6FFCppqCi1JsrXbydApNIIesYbjM4X6vAcIM/C7
+	ILw13JM+0NJmuOw9mYyG98+af7M+Ai+CtitBOMsQVN1LHuXg4uWiQUVXrJpCNwugtbkKtrn9M8B
+	uo4Tsnegjr0ekeWdYs/JwVqWKW5fSneUgbVqoPH2i1BwV/cpCzpMp
+X-Gm-Gg: ASbGncv97+GL4B/IOmH8xZRTpXGZ4dotRWVBM5qJ4fqe887zAMGtGRX0ztMoBpX1ylE
+	4RrhyInGeItn5myzanzt1dTxNsZHs9KvQn+GdCh8UjwHpE5qxFWEKZj90twy+cu2wkSbkzExBVc
+	X47J0h5WeRZusXc/3NO14lkSIzxMmhZA8KWUwdVWJbDEjXSgYCLFxi92XPtL/VVvH8lM5Po0Eo0
+	TtgvswQVdupvsZWikohDrvUmeF7w9vW0Cr+Su0SUlIcm5iDdNfMBiToPWMZa++lMRDPEirgPcbl
+	dVUXYY/OKrxoUq9h4lIavRV5CmCYbH0+MLt72WNI6DYPyjOdS+qzvKr0/X/E1MsUbkYUjBkMqzV
+	gOY1ZISr5VT0l9p5fG3vU9iyjZybh0o+Jj/QNnTDes4ladsoph+h12g6ynt3k0bAv
+X-Received: by 2002:a05:600c:c166:b0:43d:abd:ad1c with SMTP id 5b1f17b1804b1-45892b95290mr88213705e9.6.1754032893000;
+        Fri, 01 Aug 2025 00:21:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGGnbWL+2Z46Bx7ewYm1BnyM3pVCWPyXd8fhCoLsU/ONtKYTdZJvEp9DlxsOJ15wsyICfx0Kw==
+X-Received: by 2002:a05:600c:c166:b0:43d:abd:ad1c with SMTP id 5b1f17b1804b1-45892b95290mr88213445e9.6.1754032892516;
+        Fri, 01 Aug 2025 00:21:32 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f20:7500:5f99:9633:990e:138? (p200300d82f2075005f999633990e0138.dip0.t-ipconnect.de. [2003:d8:2f20:7500:5f99:9633:990e:138])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c4696c8sm4788092f8f.55.2025.08.01.00.21.30
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 Aug 2025 00:15:00 -0700 (PDT)
-Message-ID: <1f95e865-ee09-4ddd-b6db-f2092f0d4b10@redhat.com>
-Date: Fri, 1 Aug 2025 09:14:58 +0200
+        Fri, 01 Aug 2025 00:21:31 -0700 (PDT)
+Message-ID: <d2b6be85-44d5-4a87-bfe5-4a9e80f95bb8@redhat.com>
+Date: Fri, 1 Aug 2025 09:21:30 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: pass filename as input param to VM_PFNMAP
- tests
-To: Sudarsan Mahendran <sudarsanm@google.com>, linux-kselftest@vger.kernel.org
-Cc: Shuah Khan <shuah@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
- linux-kernel@vger.kernel.org, trivial@kernel.org
-References: <20250731201009.888945-1-sudarsanm@google.com>
+Subject: Re: [PATCH v2 1/1] userfaultfd: fix a crash when UFFDIO_MOVE handles
+ a THP hole
+To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
+Cc: peterx@redhat.com, aarcange@redhat.com, lokeshgidra@google.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com, stable@vger.kernel.org
+References: <20250731154442.319568-1-surenb@google.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -153,21 +154,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  WBe5lqcozu9LpNDH/brVSzHCSb7vjNGvvSVESDuoiHK8gNlf0v+epy5WYd7CGAgODPvDShGN
  g3eXuA==
 Organization: Red Hat
-In-Reply-To: <20250731201009.888945-1-sudarsanm@google.com>
+In-Reply-To: <20250731154442.319568-1-surenb@google.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: bOvJqDxtMhEKdkak6pxQrzvZmH9jwno_sh-WHych6QA_1754032502
+X-Mimecast-MFC-PROC-ID: MzewNU7FeU7eLKs1jJtPvvrF6fpl-CaTwsHZq27_F7k_1754032893
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: hziabfcsfiokcu9cjoodsmywz4xysz3p
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E2F9640005
-X-Stat-Signature: sefp8rkhhy5paycf5bsyu4ajktyym86k
-X-HE-Tag: 1754032504-249128
-X-HE-Meta: U2FsdGVkX19hIly9ahTt0CDoKkULIvJ5nJmf9Y55uLTiwKrItVKs/Uy1hVdlf9dRv9H0w7PptUiHCllwSvHePD8whbIptKRFHLxTU7Dgq9D4Gtt1odwyrdJJ0UtOwmsurMEofyXByIFniBcE3AJFahukqCgq9Uw85hzfXayCiFvxmtz7v7uMzCM3YulSy0edLZ9v3A/LkI0m5AGdikysCvMNgK36zWUnpiAIaKLaofO03DQdNRsZ2/gHkzbh6V2/VEDIK9lV4sG1RuRhk+dcJp8ruYKylbppQ75XRlTqaTIAarou1CZ+e3A1jIaWpND+5hYymVcjZK6G+bj9RnUq5H8tliMro02T3wdRVGp/KVx48ZlumsGDxhzPx4JqPho+hCKz6DHfGyd9WYgNNDkJIn2rVcTLgBKTEty1utSKKvLYMrx0V5nhVkqerp5h3wUI/olZWToRLBQeLuMn4c9UN/ego7HL39Qt4+d6KB80jtwhMKG9ktWnqw85o6U3HRr2LnOs6dvqIoVrdi9njEG5jtD/PrT+Vgit8aRRwrpuzuOnonvRj0jvtaneyhCmU25LNTnjfAT9CNuYSMfuoUc0fUyU9LUh1iaZ5rt/oBOHwQYH2+an3fT+KwspQx+xmqwWWj47EiHb3T+ZC/ZI9VtworXbN3jSckimR8s8wQ8eLcmGFGO/noDY7OPHMPaiXRuBRB5RspPrd19NmFODzpnP9TgQKBXi9wWEMrjfy6LtkIw07rovIHTQslr157p0WX78j1sD64z2UHrxhnd4Om3yTUm4ZsO2AC4zYe8ns2q6ct3jsHxEUBp5SWphBQflmzmFzdlFt6GKnkLwOGpSqzTdBiPIRM2im7EYUvHdDoEa/wmQUQN6z+B+7g5mp8KhtOg5DTE/YS9uuISWUlvCIt5Ras2YZbBd7Ms9taWIb11B1xkc8u/WlUDrhdpxHra0lWamNFynP5aq90RREAhTXkv
- 07XXMrA+
- ltTfp5Fqlh3BktefI9+QyaiFuMtcGPUjzg8FC95V3biTZmUEjaa/LOrSPNs/etAAP0haq57KxCn90QagfeXoqCDWrYo/h/Qrq08OSXg4M7RM+eJub3N5w+FcVDgmch42ZLY7Z3U6N3WrvwlmNLXZ6qNLkmmVonrx/RwRy9sXERxVsUMjbuyAh0mhsOGiwBIjQZD8rxFrWC41yvHaHByxu5We3Xz2UU/IP/LsaKsVjmoUssbBv2nA73BuR4rJ/ikArx9bfiMj0myyK7WgbZkOFKT/OXOa7SEbi1o4k9pyPDAJUhO1Fj5VLSvDsJeuKidxus0G3k2Fzp0z6CbWhwCRsuc/+vnJCSmMM1Y0BU/cTNqi+vqJN1INGbwVgqbqRfcu0rwIFo6DvLTD7pUyqQJ7IEXHCfRVrIpOPD1gwZA0ME/LkqzMchvcIYv5S9YtB4c2W9Ee32CUo8sU3sC/DYQA1QiCwVg==
+X-Rspamd-Queue-Id: 11DEC20004
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1754032896-414423
+X-HE-Meta: U2FsdGVkX1/80/go4+nO37WQbo2XA9j3NSXHA/YVBdHKPK6O4H/qqhPsUnoTgBsaekRYjQ/KhF4TIzxGlZxHQ3DL9EhHJwtAsF0c3ULBu4dgmKIeQeEaLcfZhstg/eZYoky7iYGrL3NDq7ehbmWhomdHiQemCzSHUavXQ4MCOWrwpZ4rcelctM7k2icEUCDnsP1AcffHoJ/qLnGTH3VBpz40mbOyIU77HJ0MHFQFRdCP9on6UBBlrClz+9+ix8EGUjXVWhyOZLCmjfHRWiAGGaxFHh/LSkWXEDQAWaYbAwwIOmIICBD0Lv7Pbo/LzTBQivrYKiq61d28noPXdtQkY8QU5zSteK0Fna3rrfJH4BNJnQV36amBTU+OCUfLoAK4+6DMjaqHE16N9zZNFEG4u0tpPOc5Jz17Fob0hMZ0zsYMewP8juuu183OK0Bj3r/tMi4M1vCdbOgO7VYjfGf5+sHVzE+/6zQ4SGPsg+G+OYbYGgO6JIQxM/p5J7EvtuKQn5V2o2r2Bz/DskdO7kKL0mt1NQaIR0clQ2ryaLYv7kpJkqT69bAooF0xFvVtgT8U23VnoGfTAusMAyR1jNCA4uDzkfmoPSh24U9Sbz/hIxHWy3UOjsNLlQ7J5MiGU+aC3Is4+AWtT74V91ZqESzdZIhcpFM6h2YlhSTNfLxU+xaxmdFcfMb35Eaz75ILQvF3KRs+zAHxrzE+Am06PfVlca1WhcfMV6BycEfggoj2GXAkc8RvgUHaBfZA057t5aXPSk/3B25lzYYVOzKcyAiuU+QV3EQ4nmFZyMUANOTg2Ny1r2/oRUdvR+10Pjx/MGjRcLA/KtR0UpDncQvho5srGSjHRzi9JClwVI29cx9awtlVau9XhxA4iJSqnuTPSB8IjvTmOwPA70SQf11Xg16SsPNm6xuY8Rdl9g4nEO6J46/Sm3JKqVj3sQK8QYIzTkI7Yis7CHiZLlfLHxQG6IP
+ 3RV0XKPP
+ VmHvKLrdrEqFQ8yh46OGbWiKJaA9vaUdZaHUVOcCQHvU9+aFaU4+xGyCeMmH1Rg3y6lSaVyixBU1Z3TD3lZx8jneWfXjHItW8XY5XDqK9p8NkE64Sl4DAkx3zspmGoMPKfgzUtfO37sTMdr737sp4BNvG4QhomrG8EvdliEZdr+gNm3nXHcT0ETfMF9Er2oemjE5Nuer/oNuX7DCKZmvh35OI5tWNRgU15AOiLn1mnNwOGyzQvX1ad+ftpzk+0vLMoUUq1KIibCJIwUxpQC4YwDxJS8W3zjPT2Ndin8oLsEIkhWabrEiNlPmA2ddMMN6b10kdzTpSK4vd1X/NthFKPCvm8IvjCE6YfwwMRYvco+1U4mNKiHTMmBLL+X3Y0zSjC45E0jfdXNoVqSxocc8J8v+7dQGG2CfR29ih+xMzyE98hakv2Al1DOPowF3i64rlqumJIY1P4wKr5AwACtRNfR3cCWEHoJJNO/TNv0lHpEbaqlUy4QdhbqWw2p9ZNnyJ2fSfPptxQZaEaYb5XG2X2+cig0SxuB/hHMU1rcj2QOUxDRlD7wu9qYZBH9HEm+XGuecjg7oQIe3wf6UEv5Mc0BktlxyYqsalC++KfysKUPmrn59/S/SjKXg7e2MMYAhBVDL85GOvGAud1TCP5+KiO9pdGdwmEPnM48+ybZJ2g676zJchEd9/Qaf+4KDce6oNLatw8IYSeHOLp5s=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -176,59 +177,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 31.07.25 22:10, Sudarsan Mahendran wrote:
-> Enable these tests to be run on other pfnmap'ed memory like
-> NVIDIA's EGM.
+On 31.07.25 17:44, Suren Baghdasaryan wrote:
+
+Hi!
+
+Did you mean in you patch description:
+
+"userfaultfd: fix a crash in UFFDIO_MOVE with some non-present PMDs"
+
+Talking about THP holes is very very confusing.
+
+> When UFFDIO_MOVE is used with UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES and it
+> encounters a non-present THP, it fails to properly recognize an unmapped
+
+You mean a "non-present PMD that is not a migration entry".
+
+> hole and tries to access a non-existent folio, resulting in
+> a crash. Add a check to skip non-present THPs.
+
+That makes sense. The code we have after this patch is rather 
+complicated and hard to read.
+
 > 
-> Add '--' as a separator to pass in file path. This allows
-> passing of cmd line arguments to kselftest_harness.
-> Use '/dev/mem' as default filename.
+> Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+> Reported-by: syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/68794b5c.a70a0220.693ce.0050.GAE@google.com/
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> Cc: stable@vger.kernel.org
+> ---
+> Changes since v1 [1]
+> - Fixed step size calculation, per Lokesh Gidra
+> - Added missing check for UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES, per Lokesh Gidra
 > 
-> Existing test passes:
-> 	pfnmap
-> 	TAP version 13
-> 	1..6
-> 	# Starting 6 tests from 1 test cases.
-> 	# PASSED: 6 / 6 tests passed.
-> 	# Totals: pass:6 fail:0 xfail:0 xpass:0 skip:0 error:0
+> [1] https://lore.kernel.org/all/20250730170733.3829267-1-surenb@google.com/
 > 
-> Pass params to kselftest_harness:
-> 	pfnmap -r pfnmap:mremap_fixed
-> 	TAP version 13
-> 	1..1
-> 	# Starting 1 tests from 1 test cases.
-> 	#  RUN           pfnmap.mremap_fixed ...
-> 	#            OK  pfnmap.mremap_fixed
-> 	ok 1 pfnmap.mremap_fixed
-> 	# PASSED: 1 / 1 tests passed.
-> 	# Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
+>   mm/userfaultfd.c | 45 +++++++++++++++++++++++++++++----------------
+>   1 file changed, 29 insertions(+), 16 deletions(-)
 > 
-> Pass random file name as input:
-> 	pfnmap -- /dev/blah
-> 	TAP version 13
-> 	1..6
-> 	# Starting 6 tests from 1 test cases.
-> 	#  RUN           pfnmap.madvise_disallowed ...
-> 	#      SKIP      Cannot open '/dev/blah'
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index cbed91b09640..b5af31c22731 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -1818,28 +1818,41 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+>   
+>   		ptl = pmd_trans_huge_lock(src_pmd, src_vma);
+>   		if (ptl) {
+> -			/* Check if we can move the pmd without splitting it. */
+> -			if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
+> -			    !pmd_none(dst_pmdval)) {
+> -				struct folio *folio = pmd_folio(*src_pmd);
+> +			if (pmd_present(*src_pmd) || is_pmd_migration_entry(*src_pmd)) {
+> +				/* Check if we can move the pmd without splitting it. */
+> +				if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
+> +				    !pmd_none(dst_pmdval)) {
+> +					if (pmd_present(*src_pmd)) {
+> +						struct folio *folio = pmd_folio(*src_pmd);
+> +
+> +						if (!folio || (!is_huge_zero_folio(folio) &&
+> +							       !PageAnonExclusive(&folio->page))) {
+> +							spin_unlock(ptl);
+> +							err = -EBUSY;
+> +							break;
+> +						}
+> +					}
 
-Now, if you really just pass a random *actual file* that exists, the 
-test case will not actually test what we want.
+... in particular that. Is there some way to make this code simpler / 
+easier to read? Like moving that whole last folio-check thingy into a 
+helper?
 
-Unless you have a way to verify that you actually get a PFNMAP mapping, 
-this extension is questionable. It will make the test report possibly 
-wrong results when wrong files are provided.
-
-I think we can test whether we get a PFNMAP mapping by looking at the 
-flags in smaps output ("pf" in flags), so I would expect such a test to 
-be done in pfnmap, and the test should FAIL if the file would not create 
-a PFNMAP.
-
-
-But more importantly, we rely on "/proc/iomem" to find a RAM target in 
-/dev/mem. That doesn't make any sense with what you are doing here.
-
-If we are not provided /dev/mem, you should probably try mapping offset 
-0 of the file.
 
 -- 
 Cheers,
