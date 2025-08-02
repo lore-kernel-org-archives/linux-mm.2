@@ -2,120 +2,128 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 504D1C87FCA
-	for <linux-mm@archiver.kernel.org>; Sat,  2 Aug 2025 02:33:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 62508C87FCB
+	for <linux-mm@archiver.kernel.org>; Sat,  2 Aug 2025 03:09:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B45C06B008A; Fri,  1 Aug 2025 22:33:58 -0400 (EDT)
+	id AF8B56B0089; Fri,  1 Aug 2025 23:09:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF6976B008C; Fri,  1 Aug 2025 22:33:58 -0400 (EDT)
+	id AA9C36B008C; Fri,  1 Aug 2025 23:09:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E5B26B0092; Fri,  1 Aug 2025 22:33:58 -0400 (EDT)
+	id 9BFA96B0092; Fri,  1 Aug 2025 23:09:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E71A6B008A
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 22:33:58 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3B614590BF
-	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 02:33:58 +0000 (UTC)
-X-FDA: 83730247356.22.534A149
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 38A78180004
-	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 02:33:56 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=N8PVETmB;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754102036; a=rsa-sha256;
-	cv=none;
-	b=XTLWgoAyGGkCuqlSaEc6GRTHvW17eshjKoQJSSkbt+OKXYpOOKkDd4sSc/pweJPIs4TAyo
-	No//nRe4juu9F8O7xFIb88EhLglJeBMQBiiAlYSvc2c0jT3xZ+Y1AgO4n9eRH4ewtfkB/B
-	6xmO16TKlemjq3RYFQXEEM8aAHpHwUU=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=N8PVETmB;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 8CC786B0089
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 23:09:39 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1AD8BC0540
+	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 03:09:39 +0000 (UTC)
+X-FDA: 83730337278.04.A07F81C
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 9905EC000B
+	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 03:09:36 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="cTpK/6gG";
+	spf=pass (imf10.hostedemail.com: domain of llong@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=llong@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754102036;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1754104176;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r5hSBiZ/cKqJM58oRIaionb2Z3usqZlXR2SNTwitsQU=;
-	b=H0UQ51pY6DXclRgWf2LCguFhJnbwcOk58QXiv/4w6ui9BXMdd/J3kD9bILZX372B9oH4+6
-	Yz4CEDy2FjaxkZNnbm2TsmE9riRlHri0cCg1/vezUAbyr2qUjLO1WIpMWjuC4JuhvloqqM
-	BVoIwHrg6NVntPVWnMaxtxDQ0O0K4Z8=
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-615c29fc31eso3769077a12.0
-        for <linux-mm@kvack.org>; Fri, 01 Aug 2025 19:33:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754102035; x=1754706835; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r5hSBiZ/cKqJM58oRIaionb2Z3usqZlXR2SNTwitsQU=;
-        b=N8PVETmBw5Aw14B1t5atBI+CF/QcgfX80gVRuFxljdl30Gz2YxalsxLT5l6371sLr6
-         24ohntpqJcZoB2i3F1MSntT3rtVsqyqUsC0PVmjbRcBopdiUsdGDTR60fjtCSr2Vozq2
-         VCEhzpenNMnPa36ZC10VI2t8LwlHZS0XDcuCTUq7RcWxpCI747Q0qp3xioxuNAfDHp5E
-         vk/u7cD20wL69r4gZEc4bEfHE8lOlhOUItzbBZiiNrk8xyWBKFcKlJ4rhXfbxhE8l1BQ
-         8bdnt3VTuz80PHH200CneQQ1Z2TTDFeTv81tY+6zs63XxyqJP3vW056vJz6W8qCjM0un
-         WwPg==
+	bh=CL4g8u4o13/qjXRMNenpP//2ihYZ7pT9I+G1Zdq2UUI=;
+	b=pfgVU18Wf4WhhExtAMhHO/BdESFnpvPIZ4FZTrrAxx3/xzVBmubSJU7EI5wdZKIsuiCuIp
+	by0M600HdjU937VFzFSICdySaWPNwhxIANwPNhjY60mWkczJZ/aRFNJAbiHWEmDIip95vi
+	rhFZD9RE0S+Fj4tKAIJTC7sosIcG00Q=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="cTpK/6gG";
+	spf=pass (imf10.hostedemail.com: domain of llong@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=llong@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754104176; a=rsa-sha256;
+	cv=none;
+	b=5eR+Dov8hlidrSDntVrY0wMaUTRV/92u4NrZgURxTw4+FC1EhoOKmoJ6O2IA7uCocP6I16
+	kjRmiQqFPgHbWOp/LT1BJYVdhBh4sml0cegUFzzLoEIowCWHM94/naxdRFpWmij0PwOCD8
+	Nelk4LPx4e7uASbaWckBmpmD3ot08sU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1754104175;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CL4g8u4o13/qjXRMNenpP//2ihYZ7pT9I+G1Zdq2UUI=;
+	b=cTpK/6gGaGX3/OCBfwGp72/JzObXCDFIszg3pbCd7CAQW7afd87pi8cVugV/RgJTEeIpvI
+	9JSu6yjkb6Uf491WeazQNRRt9klWeSRR2bGE5uYWVDUX1vg79lQoX7mORZAUW5bOLQ2AdL
+	M7dN+YVzt/5CyqztHM/qgl9wJJwB/7w=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-355-UKLYxOdqOemYsb08TKoR2g-1; Fri, 01 Aug 2025 23:09:34 -0400
+X-MC-Unique: UKLYxOdqOemYsb08TKoR2g-1
+X-Mimecast-MFC-AGG-ID: UKLYxOdqOemYsb08TKoR2g_1754104174
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-7073b4fb53eso44136816d6.0
+        for <linux-mm@kvack.org>; Fri, 01 Aug 2025 20:09:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754102035; x=1754706835;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=r5hSBiZ/cKqJM58oRIaionb2Z3usqZlXR2SNTwitsQU=;
-        b=KMV55O2HzGD1b8cZzR22mifMfOZx5XS+DRr5B6bDB1NhPv6zCIEZa7W7C4WM679WRN
-         VbF0wY4KtCZHNYw3c/7IJU/nxDOLPb/NX5kKFoBWg5HSJ2G3jvNw/PxklZg/4o9dTTfy
-         FfmJC318o+i3c73OrC1qTY7Wh/LXTROxycfynYEnUr5tDaMrbedji1Yed8QUWjW5CrC/
-         gHaRAylFB0iyWVcQmQk9/eCgnhswTYDoeai3FWTeYulYeZPtF6uEZxToMprlC/5EOanp
-         TizigFpc2xisfekZo84gsAV2BKyVV2vg09ZgzlXcmjsXL7l9CTf6wR2t0mruT9idUVDd
-         1mcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWTqY+Z9jJXbMNZABXN6zwbEFqwjakR/ABdo+Cl0H5DDjbkjLsyHlzckgcV1PN9lm1u6EIl8qB58g==@kvack.org
-X-Gm-Message-State: AOJu0Yxd1YoluLg9URG6WqlGzMpJQ7lkHq2ZxPLMwl32Y6CRl+7IJkJk
-	Os6I9uA6/db/Wbpff30ptwE+FeQsSakCjXD3t1cDhw4om49EDOhLMOCX
-X-Gm-Gg: ASbGncu4xrwHGZgExxczkapY1RdTeIw1B2JhXNTD21oQTsvr6zMKLutwm8jN13touBW
-	wAkOO4pbNMAL7ylDExe/I/mfIsH714ig64YMXzyP0G0Z9hBpK8hRRpug2/pcaN9tRj5Pfpw+2rq
-	rQxoPwJnH+SxC3uJE6yKddFZnOq+rbYhJ+H56QfmBl0gdb/9XJgcHf27r2sJiMdLw2jY9N7tyCw
-	XMys2hCBfEhcfVS7i5npIwHqtA59eVPkzTheklnP59dvBt2nFaoMqX0585VWp63ZTphfB1o3otp
-	cJUCSU73WEXyDixJ5wi/HvVVllYVeThbwWKmeV+i+8S83h+fMioRZclGLqL2vhH3Qq+9pf0MYoB
-	D6TyNTnIcnWw/LRmdu/avjw==
-X-Google-Smtp-Source: AGHT+IEYXjXLB/W/F13Bzhx+kA582GaDn8mNpPncwxNcA1mYi2Mc3vcqPib7FOBB07/wQRnY02U11w==
-X-Received: by 2002:a05:6402:3510:b0:615:4728:f07 with SMTP id 4fb4d7f45d1cf-615e6ef372dmr1495701a12.15.1754102034533;
-        Fri, 01 Aug 2025 19:33:54 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-615a8f15a66sm3591482a12.16.2025.08.01.19.33.54
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 01 Aug 2025 19:33:54 -0700 (PDT)
-Date: Sat, 2 Aug 2025 02:33:53 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: David Hildenbrand <david@redhat.com>,
-	Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	Ryan Roberts <ryan.roberts@arm.com>
-Subject: Re: [PATCH] selftests/mm: link with thp_settings when necessary
-Message-ID: <20250802023353.jknszntp64x2lvih@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20250801085444.27182-1-richard.weiyang@gmail.com>
- <566ff1f0-e6f4-4888-a901-4995a84d15b7@redhat.com>
- <de1d81bd-0178-4649-97a7-016f6f349cf4@lucifer.local>
+        d=1e100.net; s=20230601; t=1754104174; x=1754708974;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CL4g8u4o13/qjXRMNenpP//2ihYZ7pT9I+G1Zdq2UUI=;
+        b=OHStOY5x43VpeBOUceCoy6sqPEZeIDnzfb8kq6gnfFDZyH5thV/F5+irSCMPuoD7Uu
+         gmHznnZQXzYMEnJiv/UcQY8COp8NAghO6n5wEHpbn0T1vudSpYKr60k2uPUZtqAqRKX3
+         CNGKMV2mXLpzYFw+EFHyZpngl0gvD5+J4ovcXpo88sZjDr/77KOdrdZ44T0s3Dtd1OId
+         utt5sBvyJIoQONztOi7itZ+6HX+dNSFs7CXZnXcl4ytszShbV4w383Gumz9vXI6ulz0J
+         YaXB66NrAJ4WcHfx5jLN1jNAW4jkRa3Z6OI/vLvED8EC33ckTDnaqgRUL0oYV0yq+V2n
+         UbQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWEP1Wy60AymLzO8GMo8G1bnslvtNrbQLpv+UcMCWukehymLqGxk7j2bhzTtrgD/0QU34uODa3+qA==@kvack.org
+X-Gm-Message-State: AOJu0YwrbaCKH1IcXh79gWUI1knfynUXpx1UQ//hM14JK9450fJ93tHW
+	Tt5fCNgefEbPXG8dPbPG93tVmACkIwcOgN4xLSBNmkioM/7XazItqwPa2Ufl4LUU29hnq2db21/
+	I7ZQzZCAa2XsZf4ZMj2sS2kWzY2t8WWuuddlCG821ZYxcFXUPtmo8
+X-Gm-Gg: ASbGncsOWhuwxx3ycmeh1oYAp6aQOikDGCmeUrQk0YkJT1UBNI34cI99GL7f4VOkUkU
+	SERwYyIJKUfeoHhnb1BWFOikx43Zg0nwrYbfEVjkCR5CB6x97t0P6rDpwLMR/EY0d8AIJNRPf8+
+	/5xCI9+i6IgvIoiG7k8qX3sw2s0paPAhZL9bRBOhaPHMNnonBAahnWca9e+0dki9u+plmDWjsc+
+	awREDrDT3y1jHWIFVYhvkqyVwOSaaD7VxXzh6PBwiQfaBG2xsZG2pUAGOwMq9gWbKQnNuaqJ5dW
+	YPMbT7e4tEQH/5KT5ThwlUEaK9XSbUMUT2hswSjO10SdJyy5MOpsEkg1pfIW5dwk/cSaiO9gIV/
+	I+WK1IUBeNw==
+X-Received: by 2002:ad4:5baa:0:b0:707:7090:5400 with SMTP id 6a1803df08f44-70935f8f7cbmr27351216d6.17.1754104174064;
+        Fri, 01 Aug 2025 20:09:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF1puuEw1P293tnjOkDiVKdYXSn6TSnuALZUCmtdCwjli+78ruN24cTnD1KiLalWtE0lBEqfw==
+X-Received: by 2002:ad4:5baa:0:b0:707:7090:5400 with SMTP id 6a1803df08f44-70935f8f7cbmr27351016d6.17.1754104173694;
+        Fri, 01 Aug 2025 20:09:33 -0700 (PDT)
+Received: from ?IPV6:2601:188:c180:4250:ecbe:130d:668d:951d? ([2601:188:c180:4250:ecbe:130d:668d:951d])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-7077c9d6db9sm28743746d6.14.2025.08.01.20.09.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 01 Aug 2025 20:09:32 -0700 (PDT)
+From: Waiman Long <llong@redhat.com>
+X-Google-Original-From: Waiman Long <longman@redhat.com>
+Message-ID: <5ca375cd-4a20-4807-b897-68b289626550@redhat.com>
+Date: Fri, 1 Aug 2025 23:09:31 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <de1d81bd-0178-4649-97a7-016f6f349cf4@lucifer.local>
-User-Agent: NeoMutt/20170113 (1.7.2)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: Fix possible deadlock in console_trylock_spinning
+To: Andrew Morton <akpm@linux-foundation.org>, Gu Bowen <gubowen5@huawei.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, stable@vger.kernel.org,
+ linux-mm@kvack.org, Lu Jialin <lujialin4@huawei.com>,
+ Breno Leitao <leitao@debian.org>
+References: <20250730094914.566582-1-gubowen5@huawei.com>
+ <20250801153303.cee42dcfc94c63fb5026bba0@linux-foundation.org>
+In-Reply-To: <20250801153303.cee42dcfc94c63fb5026bba0@linux-foundation.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: ZpszmKbTLh05ieP0iPEARaaJhtQ69bM2ANY_vzarQFQ_1754104174
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 7oz46ry1hmw6xhi6uwmidz77xfik9bwa
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9905EC000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 38A78180004
-X-Stat-Signature: 9zwmim9idqsg3kk1xgrapsjy7k9w4e8w
-X-HE-Tag: 1754102036-648997
-X-HE-Meta: U2FsdGVkX192JwH+ny7Q+lc3DiA3m3aKQ87GWZR46IPHPQB9PuySEh5caP8xrsVHOozMr3a715Eh9VUoReDuqAqh7pAOvYofDEocuiZq5inoTGv5Y5jCzeRtJo/mVFgjMkjly4/pjoXI/yMeHwrEVtZ6ouuxhMjzCmkQbC+sEXtNGWyZcy4RqzieTnIhw5/8MkdyTU+j9/S/FRDR+54qTSBViDhBKB5ZmoYA1ybjrFUNiOyE00UI5i2BFvz56Qa91xzE3uozEDrsTeJ4OVFrvK2Q3n/rlzsota/QtoHjB9Zbv3pPz7YHIJO2YoXXv1S4a9REoqhbLCK/9fEZHtcujVlmXolRyI2v59+ava5GUXzmdogl4ryWWIXG1Y1Siw6bXtdAAhJwFbuI3NZ5TJpm7B++OW8azddA9hlhlx0il4XtQmz7QbIoioYFXmKF5IaEJWAIu2ps/smEWO+rtTxE9rW6VDGLJWLa2PycFrLnIAE9WpKDZ0HgdnKbhvNJ83SmtriS6b+wT5mfdG2nWIbn22A8tOZtSAPloEn8fqhHSfKL1mm7j47EXZusi4c0eGPNkIc6yG2oWbJWbAchRwTdapwzt67fVm6uz4SKWqLzdZYdk/zMrzRV3e4VodMU0ansnZk6WpxPrOnKmrwWQeE0l5V+W+0dIoLt4EZt6mMpJEK92QUC6JyeWhpzKAQTeeY3CxTPdX8MkPBzNu6GkMOx6j/OP4OeLt8Cebzn6HvD7Phe1EI3Sapc3AFHT0K3GD4D4DFRQl7BLl0HVHAj/0JnKGWKeAveSeo7EVI4uhp89DNjq2nfggh0rSCPs2wehXngSlp8iAbEffLCZtCf+3CU4/F5ICNYjxkQh2TXv2XRnytLhNaECg7Qsp16zZPGTi3Aolp5GgtXhSzqlcJxkbDtADYxZJazenWPLZegZswx5dYsTt53PtL2zwfAnlYp2+/GgfbBLdr/eyyaWffmX/6
- MM0pgsU4
- QqnkvHAmiln5PE4r1lHv1ICpjvPEQ/J1/4p2bJbAkHi8A6pMv9ItRAXjHrmABhWcp8IIrzcEcwQSlIogyMZvyef9B4hKvjjhmlHCY06/OKBYzVm8TolKJ7DxibVLbZKaDCd5NzUds/syEkK+KLVzwHl9L9f3rM4x2xAlpEy83DRAopWNbdjCF+c/Mp9Vqj+4Tfl1rDcv+i6kjb/7MuR7E/Q3IXWxvYAY9apapQeUpvJtG7kzdRalY37tHw0CwQYo5dr5oCkLv0g7j3uq6ImYa/iU7hpoUAJXg3bDi6R6rlIyIm1Ey8uGkBr0WRjf3jV0/WIvmqgoHFKpkh3qB71Vf5M6gH4499jJrv4rw9AFMBaQPy4im6cmDsd+0nFoGldtWdz34y4dMEe49MS1kiR44NHjuNlznzawCuJjVJ6/oLDQDBYW1H61bv5gFRIfOOfLgKr7KTXKr8fAfo5qeEKUmrJYbig9FZ8ntd/q1DpOBpLIOeRMFtW9TY2ZyOeD+BXgUespamUVNqrzVEiPgTnduETzro3WyoQbJyNs1nUDNqo+a0dmXzDoyvjHrsyGDWIhfP8y1ZF/7dYD5Sum7ISGKfxOs6qNv3J6Nt6330DK3B5iLKHjiCZRX2M6htZVCOJRQEzQbTdYRKlNfGcMFN+AGwcI5gAsKHiBqgccak+QeZnS+oIW1Uhclx2HQEhizb3fX4DZx7zUHMFY3htYB+oognloZ9THgYaZ7DFAI5G+bPjbLI7WeRKF37urD6w==
+X-HE-Tag: 1754104176-975137
+X-HE-Meta: U2FsdGVkX1/fwE2m+290frDZ7vMqdNAVHAHjho/cHF7HJDjCAt/RElr3uieHWtUSf8FTNsaCOU0fgjXcIayYDMne+HkAEb29g5dnpZV4u6hF6pgzKxeziHl85D+JxlXzblMl6dyTARfF7gF0vuncIhoHZUYm9cOTeu3zwtoqptRZY52bRCmW4ow/7RThiF9OiEnbzzwlXYB+YLz9pRVdiivtGlrCkZpR8mlKJMkFeWq69AjUksxPUXiMFLDYDa7Z+/XU4F2LkUd6PNeR5pnRj8iA5dGBpwVjIUsTQPe4s1ZVGEIRl1/BqJRBlUJciahIgHSv19Usqev3J2P3rRmv3QxdL8Nq9+sja5TNMEPg0C2YRia44haolZDqTj0F6JhnODs8v3UcjxQld94uQzcTh/G8dhtmI16NZ1CgIjIFO0CA38BaRUluSU4g/BfchIJ5UulUO1S7FKtEfUFfUCasushhC0LfnlR9kN+SjICVSV0+NtUR8rGuT9bn511aVLzE4zBO3HTRjRoW3cNAF1oyOmUIECB6S8pbNeM/RTDrJvDwbqUt8xleIFT1PjmLmg9pyDMKXxJZBNERqPBfDhWy3rh0I96W4p4N/D0d49DMs05cEnD05Z16GSBZJPQ+1elLdEuo5XoqmVGsn0pe6pBBK+xfh1TY90h6VmQTizUnL5fV6Ye2IwHCR1pVfi6I5scPGICRwAYPF0yaHAlUn/3Anwo0SZqTQOLCmngBNaWZ3cv4JqLEPMSC/W9C3arSzejp6MDbwDle3wHTyDU+KdCX34VEI4w1jh2YaaMOtGsHRPcqOsC4wLTqsZLxL6K8wtc6awagYF43D79g1zD4pWgzj2+dMChTn0a8TFtGcgppQgogMLlTKUSMzWavmvIX19UbQA07sjzws+jk3yPLWLa0E2R77YWGxQCqxigeWPswRBIfE/PMPQnW0ZFYu5PnRFQ5v+GhS8bSvdvYIRDyIyl
+ Btiz9Bhw
+ 52F3WHcCLkCebVKEPE79bvMscMnWY4rj7BRR3TFrIbxs2jA9sg7QwYWeymiaang9A1piK50+sYR9C3ST6NA9B0wYL63BlCCPAy/CZZN2A44v63MC8OaZH1wlFgguxGSJdgvA0xe4J7PN0UxPOW087J8Bl1bfBo++JG4FWp9pZAz2Gs6cqqnei4pcNEfsXakK4VRxYu+05PrM6k1Lj9rfQZD47BpPBJoTxux8KMMyxcdh2Gx0sDxRbx3N/Jkv3IAELlN3fhs4UMmqSZvDATu2rqFERFfJou1JIKJKQooUEA2FrRCwFZ7l2YM2+QajHGDeJmBOChuUUuBJyOpwWhEON0fgxv6TGXkgqVLqlEnp62QYcObf4I17tBQcIlnUvgVEawl8BXPfFW+9zfvSaCrCCe/VAgUu7p5DZTYIsIofA8GODje97RJxN+OIuP9rLYBu0envQHm4SyHKh0FdsVgSA8P70XwmO551b5E/GEMm/kvFaU8q9TwxqRt3yPskVsg25tudXqg3Xud7WsU2H5jEZaBP6mA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,39 +132,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 01, 2025 at 12:14:34PM +0100, Lorenzo Stoakes wrote:
->On Fri, Aug 01, 2025 at 11:02:35AM +0200, David Hildenbrand wrote:
->> On 01.08.25 10:54, Wei Yang wrote:
->> > Currently all test cases are linked with thp_settings, while only 6
->> > out of 50+ targets rely on it.
->> >
->> > Instead of making thp_settings as a common dependency, link it only
->> > when necessary.
+On 8/1/25 6:33 PM, Andrew Morton wrote:
+> On Wed, 30 Jul 2025 17:49:14 +0800 Gu Bowen <gubowen5@huawei.com> wrote:
+>
+>> kmemleak_scan_thread() invokes scan_block() which may invoke a nomal
+>> printk() to print warning message. This can cause a deadlock in the
+>> scenario reported below:
 >>
+>>         CPU0                    CPU1
+>>         ----                    ----
+>>    lock(kmemleak_lock);
+>>                                 lock(&port->lock);
+>>                                 lock(kmemleak_lock);
+>>    lock(console_owner);
 >>
->> You don't state why we should care about that? I don't see how binary size
->> is a problem, why do you think it is?
+>> To solve this problem, switch to printk_safe mode before printing warning
+>> message, this will redirect all printk()-s to a special per-CPU buffer,
+>> which will be flushed later from a safe context (irq work), and this
+>> deadlock problem can be avoided.
+>>
+>> Our syztester report the following lockdep error:
+>>
+>> ...
+>>
+>> index 4801751cb6b6..d322897a1de1 100644
+>> --- a/mm/kmemleak.c
+>> +++ b/mm/kmemleak.c
+>> @@ -390,9 +390,11 @@ static struct kmemleak_object *lookup_object(unsigned long ptr, int alias)
+>>   		else if (object->pointer == ptr || alias)
+>>   			return object;
+>>   		else {
+>> +			__printk_safe_enter();
+>>   			kmemleak_warn("Found object by alias at 0x%08lx\n",
+>>   				      ptr);
+>>   			dump_object_info(object);
+>> +			__printk_safe_exit();
+>>   			break;
+>>   		}
+>>   	}
+> Thanks.
 >
->Yeah overall I'm with David on this, I'd rather we keep things simple (so
->you don't need to remember to link against this file) and just plonk all
->the stuff you need to link to together in the Makefile.
-
-I have thought about this, while current implementation do specify its
-necessary dependency for some target like uffd-common.c/pkey_util.c.
-
-So I thought we may keep the same style.
-
+> There have been a few kmemleak locking fixes lately.
 >
->It's not really a big deal when it comes to test stuff I don't think.
+> I believe this fix is independent from the previous ones:
 >
+> https://lkml.kernel.org/r/20250731-kmemleak_lock-v1-1-728fd470198f@debian.org
+> https://lkml.kernel.org/r/20250728190248.605750-1-longman@redhat.com
+>
+> But can people please check?
 
-Yes, this is not a big deal in general. I come up with this idea because my test
-machine is too old. This change could same me some time during
-coding/debugging.
+I believe that __printk_safe_enter()/_printk_safe_exit() are for printk 
+internal use only. The proper API to use should be 
+printk_deferred_enter()/printk_deferred_exit() if we want to deferred 
+the printing. Since kmemleak_lock will have been acquired with irq 
+disabled, it meets the condition that printk_deferred_*() APIs can be used.
 
->Cheers, Lorenzo
+Cheers,
+Longman
 
--- 
-Wei Yang
-Help you, Help me
 
