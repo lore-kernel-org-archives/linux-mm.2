@@ -2,65 +2,65 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BCE9CC87FD2
-	for <linux-mm@archiver.kernel.org>; Sat,  2 Aug 2025 16:55:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C682C87FC9
+	for <linux-mm@archiver.kernel.org>; Sat,  2 Aug 2025 16:58:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 435726B008A; Sat,  2 Aug 2025 12:55:04 -0400 (EDT)
+	id A56646B0088; Sat,  2 Aug 2025 12:58:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E5706B008C; Sat,  2 Aug 2025 12:55:04 -0400 (EDT)
+	id A07676B0089; Sat,  2 Aug 2025 12:58:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D48F6B0092; Sat,  2 Aug 2025 12:55:04 -0400 (EDT)
+	id 91D456B0092; Sat,  2 Aug 2025 12:58:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1ABEE6B008A
-	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 12:55:04 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9CDD514022D
-	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 16:55:03 +0000 (UTC)
-X-FDA: 83732417286.08.64C10F2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 397C120010
-	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 16:55:02 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uBD7JYsC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754153702; a=rsa-sha256;
-	cv=none;
-	b=XPbUPHPRlRMxZYxLfpaUKwHokPncQhNB37aupbTjoAd/SXjd89LRQZsNitdR/lG1+/uXLs
-	nZYnfQ+EU7/D01Ijefl7ydYvl8//n4YVFcZFdFw9RRZwuJfYkm3QigDSp4V+4wFw8YKg06
-	W3hECmYs4QNN8Kkqn6znsjN0a3ipJKA=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uBD7JYsC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 819A66B0088
+	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 12:58:29 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 44A9A114AAA
+	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 16:58:29 +0000 (UTC)
+X-FDA: 83732425938.10.5729116
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	by imf02.hostedemail.com (Postfix) with ESMTP id A20B08000B
+	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 16:58:27 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CFz4ra0H;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754153702;
+	s=arc-20220608; t=1754153907;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gjAIVcqDOE68F8Y4s96d3OXCQ/nWcSwu3GUlg8SCblE=;
-	b=5sCq3pI/nDOLKSVXZZpmLXCvKmo3Q4C1ZkY4F0qkNi9XKRIkPOStKucO8l31qC9akkVmUR
-	I6EUf0TnpY0HFRSs66xB9L5Wq4782NYkoSqBybWuQxA9y4rm9s6Thb775M1jgWGEky3nZi
-	sKnsbl0DaqGFRtZWgAiOi2m2zOXPtGk=
+	bh=H9BerpmcmHXgA4n6P8Lfh3Ui4Ass+HD7EIy/kZR0358=;
+	b=2D8mYN0L1pUimsAirPGwHAD99nKNMm1YQfjvC/EcHV3PGB7c+5lz1jp805L6MZKuHT+Bbq
+	ljgZiO05833aoFY5Kfe4bTdwRp/N8nF6vJ6Sxcx1egfaIAb9QaHEKosNnmSavuwCsNlNj9
+	HPFpqcxpURKthZGjrLO+9v95/JFbIHQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754153907; a=rsa-sha256;
+	cv=none;
+	b=mZkSBwAI10T5SrE0L2UWsfy++AkAqXgbUriO8jFkCSe+tCO+H2cL8b102AsDhuN4DKVMxu
+	BNPlA9fp7PYc9me745/j0RhSvYMOSiDJNDB1e0KvEbrRySjvJGQFSRPZXqafqkSAfUbLlj
+	a8N320xs8nq5DfOtSU+ZwRwGyrNj5cQ=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CFz4ra0H;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 614D9601CE;
-	Sat,  2 Aug 2025 16:55:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D47B0C4CEEF;
-	Sat,  2 Aug 2025 16:55:00 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id D77DAA526FC;
+	Sat,  2 Aug 2025 16:58:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 092CAC4CEEF;
+	Sat,  2 Aug 2025 16:58:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754153701;
-	bh=SEc7rHR48cU8PgjS4PgPLzAVHNEQ00U8BuoFzkBvLBM=;
+	s=k20201202; t=1754153906;
+	bh=QkfgJx+v+j5j666EMkLWa+Ni4oABKMVRYbpkq1C5Pqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uBD7JYsCVJcYeeLVVTvcguO5RB332MYn1vfjnyUcdMjIS3ssYYNeIgIFuPla+rRxA
-	 S3gIFA9AVENjcAsIZaajoAfLIw0xEtP5uFNAAo9TB5MO24NGzBPBTZJhc6TCHxhLqs
-	 AgdRp3NPsi6sjDFbuwtvDIVFw3vkxVLT8uOtRu2etrsX8eifX2ceegDy/L9zIHAmm5
-	 RxoHD90DySWrNxg1ON2U437wXmpMgfiqCr73kAjG7hqa9r7ouQ4zWM0YoipEqgjZRq
-	 dINMxlRkNRHyChkHv+hkGgmnwrjsVhKlJAkHrDWLqFosSHoH3FHpsalL4cq3DeUnut
-	 7ApJNGeb3UzIw==
+	b=CFz4ra0HgVtSHcTAmcCVXD1C0hJaB9hvr3xAMPT1lFdqYKFzv5l1n8Gd49YPYUC4v
+	 5ePJZ5qAxyAaqjrOInDLRUoZLmt+fwQt4JiacdHetK1hakwV6M5E8EzM5CFnuo8kBd
+	 2B03gB2jJ9hUwnx1dq9Zic3uTT2GmBXd4X3Td8rS2vLeusz3yaTVT0cCY25lPitBu+
+	 xrhlxZbGO3/Tca8nMtwk1zl1GGi51zOFomT6eR5LfI2Quw9EsYkrO3pHNDi5yfG1xn
+	 foAQUtJ6RxHZdOYCVSWHmofNPlZkMNDxJHqV1Vv/4LnakrhKwyu4vSTnLm4n+ZNxs6
+	 WT6s8nWY7srrQ==
 From: SeongJae Park <sj@kernel.org>
 To: Yueyang Pan <pyyjason@gmail.com>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -70,20 +70,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	kernel-team@meta.com
-Subject: Re: [PATCH v4 2/2] mm/damon/vaddr: support stat-purpose DAMOS filters
-Date: Sat,  2 Aug 2025 09:54:58 -0700
-Message-Id: <20250802165458.7179-1-sj@kernel.org>
+Subject: Re: [PATCH v4 0/2] mm/damon/vaddr: support stat-purpose DAMOS filters
+Date: Sat,  2 Aug 2025 09:58:23 -0700
+Message-Id: <20250802165823.7277-1-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <264a4b5ea202fd73c01b349c9694d8bf9978c441.1754135312.git.pyyjason@gmail.com>
+In-Reply-To: <cover.1754135312.git.pyyjason@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 397C120010
-X-Stat-Signature: bz6muhj31bbyxfhar94ymkspb5sfxpff
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: A20B08000B
+X-Stat-Signature: ifdxj3fh3hkwig4x5p5ghyaay5mocig1
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1754153702-462525
-X-HE-Meta: U2FsdGVkX1+1XkD0NTBITMmZT+fX1UQhTX8KUO0GlDzoplCt9e1rY4TpScGRpRcfWCDyrdRNfHPO3U4i1+PH6/uAEeDwJ/ehW6ERPejL9WKT7GmdauKMt+QZpY/s/+fDXUjxhjyg4ylCOFgmzZdh3HkqYC2u7IdYGWkwjSeq2bdly3q+ruVBa7XHgIVRBrkHRIKHc3o1DIeMK+7xXGZuPq9X2KR18UwrpoNNRaqzNLEToI7gHVTxg6fIxHBPzT+b1OjLNTf02wvaSC6CG+q+VxJF+l9VWgJdZ/t0ZmQoeUqG2IX7bAl/KNomymCe2f3r0h47sNaAionjhf4RX00LDADOkfTsdeIPxKzUuyJb294NCmQuSjuTtLbh0crupQfUCaD0aiFp7VdUEwErrvjAFFhHaectSvSoLCRKndV/YEv8eT6QlhF2UxMncb+sk9JsTVIq0mmWMcl6gSaWG566WcK+KQmJYP4LrK0rkZs0QagMXDGJ5sZeYEaXXicC24A+4c7He+akehROvhetgdmpkyEeLeitvy2QQZTxa5iwWjM87lW7OdGsnZADFgEzdENYkRVxHonADtFC4M18wQNE+M5w4EvO8SGi77jopNs4aAcH0Lld6jwo426BQxjNObwvc5P7xoLDh2UH6nGsXNksqi3Iw1xoFmtpaISCqSM681LA2klfpNocuRSLfUKC145TTrgPIqCI2USFRDL+CI3pjUvgJefcuh2OCNMqNl/J/y5k1ruOHx8cX1G00p5daboDYypmbkVX0D06IXcqLbyaAfJ8MrSS6SwwZNjlrbg/HKPWJynosIKg77qtKSJOiuyKBhDxUYOsakTj8fo/X5Sm1jj8DDZ8Pa8BBydogJ3msdog5YSvL+xH9J+uQz7K8b0RMwX/uVKoHJ6qUAJhcl+sp6OoRmDmpb6o5rIzG65bnVqZrNSVywk0fg==
+X-HE-Tag: 1754153907-865874
+X-HE-Meta: U2FsdGVkX18Pl17YPDfc+nStVxg5fvVX5soEZ3TDhWwYNQ8BqRbDcqYcPkOFlbm1SZI9bxsQCpx7L6eizMxj2jiwOSJmecJuuZmIxSUI/B/ol5B5DUc4aDaHeJmBBplzfGhkxdSe6vDl4yMFkYrWcX/pPp/PV7+H97LIt7gEN+FSM3t4BQio6/AibxL9D5Z8gIBSh5Q4P1Piow02xBi9tHeUgkaTLwo/s65Eb3M8lPPL26E50zRmGH4SGxvg1O0bHKR5FmZGXwvVp9n7ROsC7//TnG15HqLX/30ImXPeUsQE7KpfjSCgxPBKz2KvrGrvZ9A7N/GDV9jADvZ5DIwSSHeVYe/1XV4MaNP5T3tLcfU1AeerxYdRfKcHD08FVngFBiwbN/HtbNHL8BMRi3V1UTGwhqN8YdTWBHp1W7GZt4ldZy+cEogvI+vycu2lE/527MJELf3iIRsKkHivYPA6BFlmDJIHxSDP2SfSDlAMGVDmlrdwjVBd9HFr+AYoVwxNlvyAxPfYpPKdS3GJkolyDK7SoTzH6xt0TiylCy5EVktSaGMM7k/88PcG4Vi67kI9DbchD12dGePx1z2xfODgWQ2FjEK5TRhMsd2ZBd7VuE03BbHFIv2xzKFCeXTaKE6lNsbD5P+jLtHrevwcuqIbTEsFDYJvP01t1q/K3daTJ6axHn6AREmbyULKtPj5/Xfkz3sXmQnLzPVdjEyz41fOdC9RcdzZJrEbg0ofG0LyOGo6nQPuAzBIZZ1pPY3BuNAcPAd8EPSRx2ZcUH/SR6xgKlqkqUS1jBf5WI6NDQ5/nwH0VBYJREJ7PFpPGk5DUkued12A9iiNcomsBlL1ZOyCiiCHXKzDHy3PZ5qJIWHx9VKqqt4Ec1+D50F+A06aw85aXcjW11OzVKYYsH9E2H4r4CH7VPC5NUOrEtsHe4joTT1UOIGMZz+If97QBjJJIPz+ebhu5ftPXgsTEaFqLgA
+ MKxVVp7c
+ vVZQDgvNFa1o4zPaV/XUafY+8XpQd5Qu/4C3KMuP7NLOC7idGTmi4BWYdJpR0SGFb3TEo8Kk7wctUCvQCRI+B8bm02bo7lOzgdE1az8zp5KoWZETgtEcwJcTAyxYtFLB9M/ravrDBFweUao7rtr5d2IiJ3x4RCg0G6GacrJ3Ed6fyqnhGQRBLwGlxTzHrIep0F3Mq7/4iicKiqk8VvOQ6FojftsuX4Bk+joGIshgKpB3tq8c=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,17 +94,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat,  2 Aug 2025 11:52:46 +0000 Yueyang Pan <pyyjason@gmail.com> wrote:
+On Sat,  2 Aug 2025 11:52:44 +0000 Yueyang Pan <pyyjason@gmail.com> wrote:
 
-> This patch extends DAMOS_STAT handling of the DAMON operations
-> sets for virtual address spaces for ops-level DAMOS filters.
-> It leverages the walk_page_range to walk the page table and gets
-> the folio from page table. The last folio scanned is stored in
-> damos->last_applied to prevent double counting.
+> Extend DAMOS_STAT handling of the DAMON operations sets for virtual
+> address spaces for ops-level DAMOS filters.
 > 
-> Signed-off-by: Yueyang Pan <pyyjason@gmail.com>
+> Functionality Test
+> ==================
+> I wrote a small test program which allocates 10GB of DRAM, use 
+> madvise(MADV_HUGEPAGE) to convert the base pages to 2MB huge pages
+> Then my program does the following things in order:
+> 1. Write sequentially to the whole 10GB region
+> 2. Read the first 5GB region sequentially for 10 times
+> 3. Sleep 5s
+> 4. Read the second 5GB region sequentially for 10 times
+> 
+> With a proper damon setting, we are expected to see df-passed to be 10GB
+> and hot region move around with the read
+> 
+> $ # Start DAMON
+> $ sudo ./damo/damo start "./my_test/test" --monitoring_intervals 100ms\
+> 1s 2s
 
-Reviewed-by: SeongJae Park <sj@kernel.org>
+On v2, I also suggested adding indentation here, same to the outputs of the
+commands.  But, this is too trivial, so I wouldn't request a new version.
+
+[...]
+> Revision History
+> ================
+> Changes from v3 [3]:
+> - Fix some naming issues and improper text in cover letter raise by SJ.
+
+All looks good to me, I gave my Reviewed-by: tags to all patches.  Thank you
+for doing this great work, Pan!
 
 
 Thanks,
