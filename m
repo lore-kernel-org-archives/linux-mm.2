@@ -2,87 +2,73 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 587F1C87FC9
-	for <linux-mm@archiver.kernel.org>; Sat,  2 Aug 2025 03:53:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B90EC87FD2
+	for <linux-mm@archiver.kernel.org>; Sat,  2 Aug 2025 03:53:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD00D6B007B; Fri,  1 Aug 2025 23:53:28 -0400 (EDT)
+	id F2C246B008A; Fri,  1 Aug 2025 23:53:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B81236B0089; Fri,  1 Aug 2025 23:53:28 -0400 (EDT)
+	id EDCC26B008C; Fri,  1 Aug 2025 23:53:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A96D26B008A; Fri,  1 Aug 2025 23:53:28 -0400 (EDT)
+	id DF3956B0092; Fri,  1 Aug 2025 23:53:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 991516B007B
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 23:53:28 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id ED2FB135196
-	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 03:53:27 +0000 (UTC)
-X-FDA: 83730447654.03.7B2F093
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 58CAF100002
-	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 03:53:26 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yPITqYAp;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CE97E6B008A
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 23:53:42 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4846C59926
+	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 03:53:42 +0000 (UTC)
+X-FDA: 83730448284.10.C021C03
+Received: from iodev.co.uk (iodev.co.uk [46.30.189.100])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6FF0E40005
+	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 03:53:40 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=iodev.co.uk;
+	spf=pass (imf12.hostedemail.com: domain of ismael@iodev.co.uk designates 46.30.189.100 as permitted sender) smtp.mailfrom=ismael@iodev.co.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754106806;
+	s=arc-20220608; t=1754106820;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5Iwz2/QbMuVNf6m/aMmKX6JmYwcKzO/hW4LBQqb77X8=;
-	b=uKF3jRi1xNTAnLSd+E2iOS7ZjVzAby0LWBMO4eQuoDwssoPOtayD4WcL9UdX3cWMC8qD7Z
-	82nePTVpPeb1fsAFA0Kz2qrcLiTEx8/FTlN7czGxbrUPkLYz6r9lxMa5ZixGV7hxAF4vbu
-	qtCKzQpNdBodIclrv4U08qXiKMVNAB8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754106806; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=/jYhSCPGln3DnTEUEqg9bdXyN1YQw/iy1VN9AuqU/5c=;
+	b=t6vBjCGk7E1ilhTj94G0wfVFYeHtbFKQLM+itzOYat8aauvlPTtopST9/rlLfOcgVniL0z
+	18biLEDw/Vw60GY2U8mM3SPJA6Ip3meYdKx+QeshVjQkzYIcDMfJZxGegjCy9O3uy9xHuj
+	0oJtKGDfNkHf9WUVSKIsKxva8MvuRwY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754106820; a=rsa-sha256;
 	cv=none;
-	b=VjB8XJsfOZ0tJTE2TPfQ/g0xI7XNHTbXoJHdZ2rqVkLyyqZus2v2XQnlkrFqbI5r1sMEA5
-	jFRtQo3C5HNqDJjLh5rN/bwtHG/uUsmxSuu8rwU13/h3yKbgp+/tsaU7SkUduXxubp+MGf
-	xT85dPmnZBNI9Z8ThZL6QEm0Lijwg+4=
+	b=I9Os5lI85LAV3BM04TyGDgEkciIrb2boDu6tI80lyaKNceA2tlC+vZY7UFEopfIMVv2kMo
+	IB/HtrgTAi6ekKfDCY7e3shUswNt0BNXAUyh85wE3tUZD2GiNPSkPbm3+Lc+aXggM1Egmf
+	23tDxWFhkLz5TrvHAJHrz9LNLV4g004=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yPITqYAp;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6F3F5600AE;
-	Sat,  2 Aug 2025 03:53:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91322C4CEEF;
-	Sat,  2 Aug 2025 03:53:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1754106804;
-	bh=xNpaAbYMIRCCf6qEC+M9c6KCuXluSMu/QNeteQuQbcA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=yPITqYApklWsg7GXdNRWSYrT42/vqoyceqxpRWdnMClXlwluh0UGWLrcLU+kR3sB7
-	 rIlPtIibUq0cN4oBa30v+x2sfpyNUz4Dfy4c6m8LvXLq7O9M4cySB14QVonTSqiofo
-	 S1K/PMv7uS3ObPup2jZFrYazE+QhrFAs5AIBnReE=
-Date: Fri, 1 Aug 2025 20:53:23 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Waiman Long <llong@redhat.com>
-Cc: Gu Bowen <gubowen5@huawei.com>, Catalin Marinas
- <catalin.marinas@arm.com>, stable@vger.kernel.org, linux-mm@kvack.org, Lu
- Jialin <lujialin4@huawei.com>, Breno Leitao <leitao@debian.org>
-Subject: Re: [PATCH] mm: Fix possible deadlock in console_trylock_spinning
-Message-Id: <20250801205323.70c2fabe5f64d2fb7c64fd94@linux-foundation.org>
-In-Reply-To: <5ca375cd-4a20-4807-b897-68b289626550@redhat.com>
-References: <20250730094914.566582-1-gubowen5@huawei.com>
-	<20250801153303.cee42dcfc94c63fb5026bba0@linux-foundation.org>
-	<5ca375cd-4a20-4807-b897-68b289626550@redhat.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: m3ccibeps9kdjghah5u7qihg7n8t5jzb
-X-Rspamd-Queue-Id: 58CAF100002
-X-Rspamd-Server: rspam10
+	imf12.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=iodev.co.uk;
+	spf=pass (imf12.hostedemail.com: domain of ismael@iodev.co.uk designates 46.30.189.100 as permitted sender) smtp.mailfrom=ismael@iodev.co.uk
+Received: from pirotess (112.red-83-45-208.dynamicip.rima-tde.net [83.45.208.112])
+	by iodev.co.uk (Postfix) with ESMTPSA id E10AE453C4D;
+	Sat, 02 Aug 2025 05:53:38 +0200 (CEST)
+Date: Sat, 2 Aug 2025 05:53:37 +0200
+From: Ismael Luceno <ismael@iodev.co.uk>
+To: YinFengwei <fengwei_yin@linux.alibaba.com>, Kees Cook <kees@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	zhourundong.zrd@linux.alibaba.com
+Subject: Re: [PATCH] binfmt_elf: remove the 4k limitation of program header
+ size
+Message-ID: <aI2KQaWpPLSAqdXg@pirotess>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <xd6zp5ytq6iakxkqoqqtseomgu5oohau4ynj3xbo7ejohpv7dv@skp2v7awzab4>
+X-Rspamd-Queue-Id: 6FF0E40005
 X-Rspam-User: 
-X-HE-Tag: 1754106806-478999
-X-HE-Meta: U2FsdGVkX1/JPQfZ2wlH6Cz6NpVg4IKLh1rHvwi9rrdnnyRqyGkpbRE/6q2o0zgN/1H7QhSvsGv63pIA7OmGZbm4BnjlX7DUvnIdLqkH88ed3/lwPxSLXaRwyaC//DKYbzfkAz1uN9/5H57vYGOA7Og5PXp+LFo9vaVvL3sZyqBjPdhd1LqIMQIkl8fWGvM6ECg0JmHUi8rvKdluVOuC5tmfVOuwyiiORuE8UJE9gr+z+dZ8yLYPW9RNYuXoLKAixVD/1RVkswj/hjls3EAhMGOzqFS0QPmlBMPOjFNtRXKu28BgrTtBPBxaoa8vM7jzRuVEvzIxyMnr3q9/pBLNHDwjaCebFu1L8rtRkAJ9OScjSR02qMuj5sBRjkDckLfhTkxeh3PCHvZyP/SyNxAmZSoLj2dXCSOmpAtMewXcHAEg467uY3acU81bxQCk1FPrT3wCcxZa5+OVtKR8ttuKwPXZXeCdgdedAhDrRQPbFXJbCo7AIOCVoKYxK+t33kKNf2DhROMUFdb98OioahKk7+oyy6r+yDOvli97YdaWJe15aa2e8So3oG/Qu4UzjBHnG4bRmo2NsCpsEzk5Wf9SXLuEKFXZ/qnFptWpQFrufZTNPJ5Rz7JK5XPLKJPFC/GeCDJgPnPNiiGtSLBRUbsPbSgWQyQTaVDh6KpuQAKmh1srX9gH6odNLN2hoQyltlN6hgjtF2qFDDK6wwbFokT34NjrsJyhCqqyiYtPomjkFTPmgJEaaBOqkKpOhmIHYwXe2ED2gXNF4+R9OWTzW4GZicRuqo0QTOBhaJ/+3GGxcAHQ4dkPap/IGe6k3tnIur8BBaMhxOdP0JbKU5sG2bsGGVZUCPppmC03JHOpqhjqCz+qEi0Ea5e/DR8YBERf2413z2zK30tYvcWYa2RYGAE28sRxuZ5+2XYfCX0j1BPJDAzTU+tFj6+2qib6o9NDOTxVglZnpSnp/rH9xzI9u2u
- G3zM1Xxx
- ox2EfyOxdDJRWDAuVSL9t0vLuvRJYQDZ8eeotRo6PIoNWkA95DE2Rjug26IhftA6dtoY31xg/mt+YiMv8FINYMbAJfL6ia5yohDbjq/xBceumpa/SmAzZ9jE+s1G2tksQU6FkTmQ1yl5g9Zc1NvYsD/GaiPhW7YvL82j2nYM+b6W4hwbg6aEmQO6IECEBxiNAIYfWCoYbFqx785dBFKwhURZWl6E+upEhYWPaWVqRFADeHNmxkf/edHSmJa3tqf+7F6CcNfnRiPGBm/pym38x9FADpulIs/ElUQn5i6RhQOJZ+shHytyw/GNnRgXQSjh1cuEv7Yxn6vaNYfHZJrFOarEgeUeYZnFpWuNDeIUBYTCMBwNMgkriCpSY0cxiGsQAvba2Dxyde/5BBoA=
+X-Rspamd-Server: rspam09
+X-Stat-Signature: pzc9ojbm4ckjhw6hcfz9m5ponwsozqpi
+X-HE-Tag: 1754106820-961272
+X-HE-Meta: U2FsdGVkX196YUzsKWBNXT3PLI5C1sGPyt5BTX3akiIMcovUrXKM2fbEolRATFnP68/0tKx5Qf0jUkdu6868ZegNVUYC3YA/a9ziX6S08jpxf9FmaP/r5npJOf8EAtMwtM4XaBVyGbtK8vTuw0UW5bIxdStTs5lHrq56BPozsFReapv1CtdPSagAnXILae1ZPZFLi+5pgcSFmOYSPe3bfMhbkX52n65uv0huEA6gtdEnA/H6SauISNb29QgsoKzvOKDP0itqalIxpQ0GnThpduKGUTWVDQ47T1lvTid3UZLQI/OrZ4yjrfJu2Dbg2CsjFynOrC6iFc0j+yCevdr/hxWfGZRfbC7IHids3teUBk2jvWdeWJ13ph281ruH/Nj2B0jg3mKOcWtrKbHPCkCxpl5iwMTQe1JnW7Y61P0HpauUIORWVwsmVhG5nhJddgIflCYwxEL58hHej5VtIL+7qrXkwbUWWpDeBUQ7ZtUGqt+EvLXaekLo8/cwO++IhyFSRHUDh+vTmnB137LK7GyxekqOejdEhyyQ+eMTWo8VXqtmnU1D/oVeh9KdYHj6ApXk2qVPEwTZfANe9y5T8u4pXEzVG1nFlh5Zm98hStyWY+QmDDLs53n/pGaYNOInIwz9okKIMFfpx8JRjW/JsiVFRGBZSDVSBydJoueSaGEpG8FmjJ8qtVdUwPIweYob2LYQpUFC+4NXyN3DGcneHihsn7eWBNPsnFy/FOf022hclq6Ojeu5Y2I0t0hSoizJqhRNAe4MaaMDQbgZHKjpENZ0ZMwHcNq6jg1Cp3HOj2ag+GOkuPrCYginFJpIMFa9QT559DGsCI/zfYqyAuQ28qZP5sOicVSFMmD+OyT0lqQh2RYPI3m6TBaBCv/ga9Tq1iD6+OZ8UoFxwGZvDlTnZrZm7QwH3X75OU2RC8boQ6B2hneAe19/aXgjD9XHXtljW0c7fQJBzjistKC0UnmvdNA
+ r2FNJYtg
+ s0oab4mrmsxoY8xUB5peL/jZ3/KKO3VOWfp5C20/HK1OhRbUG5sTwGxS8BdLlpIivI2YKKmjjfp2i01m+e8m0H2Vd1/FVSVx/+ulWhjEF7IF20ehAHt2P/4U5UpjQEvBQvOtU6QneN4u4AF/7SCjM859yQu29Q33RXWJvnjRRkEFmUBk0CMhIdNycImMIKL/1tYTOTI2Cy0fSiexXVmaJvfy/cDx9zGn/ZM2/5OFVD0Aruz4gZcdWZNgPZEFzNoZ/IHcZzAs8k1dVJlg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,30 +77,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 1 Aug 2025 23:09:31 -0400 Waiman Long <llong@redhat.com> wrote:
-
-> > Thanks.
-> >
-> > There have been a few kmemleak locking fixes lately.
-> >
-> > I believe this fix is independent from the previous ones:
-> >
-> > https://lkml.kernel.org/r/20250731-kmemleak_lock-v1-1-728fd470198f@debian.org
-> > https://lkml.kernel.org/r/20250728190248.605750-1-longman@redhat.com
-> >
-> > But can people please check?
+On Sat, Jul 19, 2025 at 17:17:09 +0800, YinFengwei wrote:
+> On Thu, Jul 17, 2025 at 04:31:50PM +0800, Kees Cook wrote:
+> > On Thu, 17 Jul 2025 19:01:08 +0800, fengwei_yin@linux.alibaba.com wrote:
+> > > We have assembly code generated by a script. GCC successfully compiles
+> > > it. However, the kernel cannot load it on an ARM64 platform with a 4K
+> > > page size. In contrast, the same ELF file loads correctly on the same
+> > > platform with a 64K page size.
+> > > 
+> > > The root cause is the Linux kernel's ELF_MIN_ALIGN limitation on the
+> > > program headers of ELF files. The ELF file contains 78 program headers
+> > > (the script inserts many holes when generating the assembly code). On
+> > > ARM64 with a 4K page size, the ELF_MIN_ALLIGN enforces a maximum of 74
+> > > program headers, causing the ELF file to fail. However, with a 64K page
+> > > size, the ELF_MIN_ALIGN is relaxed to over 1,184 program headers, allowing
+> > > the file to run correctly.
+> > > 
+> > > [...]
+> > 
+> > Applied to for-next/execve, thanks!
+> Cook, thanks a lot.
 > 
-> I believe that __printk_safe_enter()/_printk_safe_exit() are for printk 
-> internal use only. The proper API to use should be 
-> printk_deferred_enter()/printk_deferred_exit() if we want to deferred 
-> the printing. Since kmemleak_lock will have been acquired with irq 
-> disabled, it meets the condition that printk_deferred_*() APIs can be used.
+> Regards
+> Yin, Fengwei
+> 
+> > 
+> > [1/1] binfmt_elf: remove the 4k limitation of program header size
+> >       https://git.kernel.org/kees/c/8030790477e8
+> > 
+> > Take care,
 
-Gotcha, thanks.
+Hi,
 
-kmemleak;c:__lookup_object() has a lot of callers.  I hope you're
-correct that all have local irqs enabled, but I'll ask Gu to verify
-that then please send along a new patch which uses
-printk_deferred_enter()?
+I noticed this removal and wonder whether it could be a problem on
+smaller platforms.
 
+IIRC that code has been there since ELF support was added in one
+form or another; and the idea behind it was to simplify the code
+by ensuring no cross-page reads could happen, as these could cause
+undefined behaviours or read abort exceptions.
+
+Best regards.
 
