@@ -2,88 +2,101 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F41C7C87FCB
-	for <linux-mm@archiver.kernel.org>; Fri,  1 Aug 2025 23:52:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0D3B2C87FCB
+	for <linux-mm@archiver.kernel.org>; Sat,  2 Aug 2025 00:21:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7DF9D6B007B; Fri,  1 Aug 2025 19:52:32 -0400 (EDT)
+	id 3410C6B007B; Fri,  1 Aug 2025 20:21:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B7056B0089; Fri,  1 Aug 2025 19:52:32 -0400 (EDT)
+	id 2F0496B0089; Fri,  1 Aug 2025 20:21:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F4196B008A; Fri,  1 Aug 2025 19:52:32 -0400 (EDT)
+	id 205D36B008A; Fri,  1 Aug 2025 20:21:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F6556B007B
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 19:52:32 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 221871402CC
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 23:52:32 +0000 (UTC)
-X-FDA: 83729840544.30.E36B61A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 5DB5FC0005
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 23:52:30 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=euXxB757;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 102DA6B007B
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 20:21:42 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5F96058A59
+	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 00:21:41 +0000 (UTC)
+X-FDA: 83729914002.03.7B59580
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 80BB440005
+	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 00:21:38 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="eyyEC/Tt";
+	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754094099; a=rsa-sha256;
+	cv=none;
+	b=DdKU1LCVqZ0ndy4Zqiqi/l6UNoQ8ZUw3VC/XwF3iXMyEPFXtB+/GaWTp9PbXhi3hVo+ZMy
+	OVA0MwvROIboQlYttxNckTqDKfduGrKYv6eTsedT2vPUGw8xTTpMBo5d1xlOjJVYDBkcFM
+	5jBACUAd5g6C1cUXygtPnWv02lx2ddQ=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="eyyEC/Tt";
+	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754092350;
+	s=arc-20220608; t=1754094099;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5bAODscGG3sVTeixKXm3sJhWh94hyqlrgf5TUGDb0Nc=;
-	b=IMhWSdGwkQc6zYPuNv7nvh7CgaHPurlBQyaEE916OLQ7XZa7B7gpcFrfOe53qObyFhyBXb
-	hCvd6HpyJ3VnBCtjKLjKJLM6SIJVnrOXxBvPUdT7Tg0QUQwNKGGPrCZLXfYcReP5trWP72
-	9sPl0394JIdtPaVFwsgHoWOfoFOEbI0=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=euXxB757;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754092350; a=rsa-sha256;
-	cv=none;
-	b=RfaOMXmp78A/78KMNSoFGu7OU0A5aJYE5b/XGJ6Uj5wTWGwVKW/PBjvNNackSqruGHVSfZ
-	D1BayHo271bdbTSMsMRZGhKzz2txkY5vEWE+j0kJUqxF0vF85XrV4yd3LcNfWKTr+z527f
-	qgWTb4iZJ/a51yjqojdmZvJRHIxJ03Y=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 43732440D8;
-	Fri,  1 Aug 2025 23:52:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEAB2C4CEE7;
-	Fri,  1 Aug 2025 23:52:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1754092349;
-	bh=s9NmpPegCbHYz7FI1LwZFdpgkaCwgzBm+glcuL6J55c=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=euXxB757LCc3Gz0rChui3y8YBRmFXeu4DE9U9hoqjRAoThMBdFJOKE0KPoMUtwS1R
-	 mgWS+MHLoTdPYCXxrM9yGzMjiBpDiOcwt7g1qn3aHgeEPt80JErqj9jWoe/MRv13iC
-	 GLmDaz0uYVzoUG0bolBN4QsURWSw7a4EBhLL+xk0=
-Date: Fri, 1 Aug 2025 16:52:28 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Gu Bowen <gubowen5@huawei.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, <stable@vger.kernel.org>,
- <linux-mm@kvack.org>, Lu Jialin <lujialin4@huawei.com>, Catalin Marinas
- <catalin.marinas@arm.com>, <stable@vger.kernel.org>, <linux-mm@kvack.org>,
- Lu Jialin <lujialin4@huawei.com>, Waiman Long <longman@redhat.com>, Breno
- Leitao <leitao@debian.org>, Petr Mladek <pmladek@suse.com>, Steven Rostedt
- <rostedt@goodmis.org>, John Ogness <john.ogness@linutronix.de>
-Subject: Re: [PATCH] mm: Fix possible deadlock in console_trylock_spinning
-Message-Id: <20250801165228.6c2a009c0fe439ddc438217e@linux-foundation.org>
-In-Reply-To: <20250730094914.566582-1-gubowen5@huawei.com>
-References: <20250730094914.566582-1-gubowen5@huawei.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=MpYOGh4qgwo1vvX6B7G/NV6bFJg00FDsqoBgvnrRBHE=;
+	b=DwGYR/8qWD9wbMAcRqCXhmxxON/N2IqdpZJiKuDik5a0vjI5JfGUU/D7t4I6zhdeh7/GRS
+	sxMIl+Tc2scRLGVq4R+iKeOcUuqi2copH2VT3wSGO2rssnMeSwxNo8f9qDsW6WTE7s+RA+
+	bOr3StMgsC3VPX6HObijSWDH8XiA5PM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754094099; x=1785630099;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=L5P8ubLtAZiGZ0+X+Jg9rPnQ5eZQ0Ngv0hj7RsufwaA=;
+  b=eyyEC/TtnNBWWoF+YMKaqYfxJl9ckmZV1EVfIH/pya3kfDDmli9gGkIU
+   QwY6CvFsptM6dssu1BhwHtvTAftgmw1Pe1fNzkkZZiCKM77f2gYLRrCHy
+   qBR9rRO2gyXuy1u0DjzAxMMZnZpcfhrDcY3GzOQCzztcAy0OxeD1WBZsD
+   85tsYBierT1LdwGnPvtX25xdqIS+VlRfWeTSMhik2HqHH5ZKE3py3k0YX
+   HqwQRkIndAJfFsjUKEKREo10zW1QYE1RyuAgE8qjs/Hx/64BSXi//rF01
+   ACYBwuPf44ScpYKdAM+YZ6Bscm9Lu8QefHSFBpqbtWObBl9U728AInjk9
+   g==;
+X-CSE-ConnectionGUID: m2dTultZR0eDQ9FBbXVXbQ==
+X-CSE-MsgGUID: IVhGki+2QsqYtJ7ywb33Ow==
+X-IronPort-AV: E=McAfee;i="6800,10657,11508"; a="60085599"
+X-IronPort-AV: E=Sophos;i="6.17,258,1747724400"; 
+   d="scan'208";a="60085599"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Aug 2025 17:21:37 -0700
+X-CSE-ConnectionGUID: 67ysIogySE6ggPfWoMVKKg==
+X-CSE-MsgGUID: Z7i7rOD8SHiLVCc4B6oC1Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,258,1747724400"; 
+   d="scan'208";a="168160504"
+Received: from igk-lkp-server01.igk.intel.com (HELO b3b7d4258b7c) ([10.91.175.65])
+  by orviesa004.jf.intel.com with ESMTP; 01 Aug 2025 17:21:35 -0700
+Received: from kbuild by b3b7d4258b7c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ui00C-0001KJ-33;
+	Sat, 02 Aug 2025 00:21:32 +0000
+Date: Sat, 2 Aug 2025 02:20:35 +0200
+From: kernel test robot <lkp@intel.com>
+To: Vitaly Wool <vitaly.wool@konsulko.se>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Igor Belousov <igor.b@beldev.am>
+Subject: [akpm-mm:mm-new 98/98] include/linux/compiler_types.h:568:38: error:
+ call to '__compiletime_assert_279' declared with attribute error:
+ BUILD_BUG_ON failed: ARRAY_SIZE(block_desc) > MAX_TABLE_SIZE
+Message-ID: <202508020214.8pUMOfI1-lkp@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5DB5FC0005
-X-Rspamd-Server: rspam06
-X-Stat-Signature: xm38mn4hq1adsaggc589g6h458p6smdw
-X-HE-Tag: 1754092350-543584
-X-HE-Meta: U2FsdGVkX1//poO2C2D3G1DdSBUMIEX5Xzj+635QpF1HlgL80UcbuaJUHNUSfmMEL8E3WIEOf+7bBaxs00S8T50Oebfx0b0RcZOeGbx1BIKtHIMn12MWlI1+u+KOSPUSOUMre36pfH6JWP3ilsE0f8USJL06YcHCL5+B9TgxI4j7hYASWdKlyh6OtOVV1ogr7f5F1UbU9PClunwc18/e2Oj4nkoQAu85DChDZahdltEDhmIIutlYzxYIls+LbkAwSAjlZbpjtj9ui1wXP/vr0TE1TBffrJGhw/f+P+VkXoclCkeSlhZco9hYGr0fus8wRkbIAkPnaH94CSHfO3YBWM17H1rJTfYSQ0e8oIGBM6yn+NfMA/mlY42qGsssF06cmFUKyGinbdLMSKufc92TfSm8QNvueGaNORV22oc1k7GiGky7URPEHL0lnVRPRKf/hZL8Pa8bmE4z5MxB3Ew3aHmwzxA93x2vgTu3s9ib/ToIxsRso48WskX3ZAFOzgN7ljC5IMYVy5Vm70UCOHpUqFVbdu6fOu90WdaBBCuk+1i1W+STTh8oib8WSWMdOFesLJoP+hmhwMrNrCEyIiJ+ToZouItaYMIpMPz15tl+gWCuUugnX7ZS6CWwdboW2PDm8dfs4+hCUpRGnBc4krfAbKdCjVZwhO0PdFYt0dghS8jAYuIlPOe6EufagIQpPvLrnWGp774KH7EHlY1OlScBsF5wD6F3CrVh61OM5gd7A7vUyJ+sxbCfpTFyHmjdllFIF8q0cnq71C7YRCd4BHhi9bDWrcQrP3An4g7/mHTup6S9LTPKaW1Mw/zVNPOXG07GAUEq8c2tyckSJmTHLTvCtdpeRw1Ot7vvrFuYbxTk2ytirJRxca/Nck25y++1E5M08LxMWJax1ve7/98BUMnb85SS0dZUaylV4GMWQzzxmQxxo3/CGHM2CaywEcWguQ3rO0EsWPxWcfribb2eX0e
- dkrlWxj7
- j02cXrCv2JjHYQDNzkURHlcLRA2JA35QStyimZrstD2YD+K//r+pjlyvEzrnlH/1rZ7emqxcNV36axp3oFQllH8TOk0AZ+5HGsqGDsZofd3eXFH8Tp+SwhO/en1Jlt4wRZ8Xvfj7eIVcyVG+TfbyHDJ1XdVz3AUv816VGK5wzlC/ZwgAwHQP4DmO513HUZkICEjx0aY8wybPSHAKCRfha2CObjvw5+mOU8njj7LCnLIhzmJAO/as/HqIHxmzhFkAtjZFSyS+jUT7l+7f0Skl9017jKnM+Ca0vhe1CrTQKxyPd0IeRRqNZs2cXPAYZyjHpPBqHge5vMjaFW3aRY7k2XnDRwR6a6+p1InTgKgpOvffr0qCMEdtFClTDVueVH8vSFgG0wd7LBE3EK0JGkzXJiNtXHctZfl0yA6Ki
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 80BB440005
+X-Stat-Signature: gagtoshjme69dhz75zfmr7p46r4pf9g6
+X-HE-Tag: 1754094098-725862
+X-HE-Meta: U2FsdGVkX1//sxP19uxG4wRONvwSnOLegP5Jff9Fx1bMGRdFL4emZ8ea49P6wyLCmfEwsojH9Fm6LHEiL/VlwsV+yH5PX6MVRSYJubwKuVnQ5PVKwP4GuNNYrYCQZhbKHbGJq6n9Yk6N1kMko4Brbk1SteftPGiCm6jjW98aeOnwiOh8/zqmjejh2oIknP/rMt+13TdBIhKj9aEcdj2QO7QZMNOqeo3QtGdQal0t87OlaJEQatgIxiS+EqbIygQyGRczJIO5SGiMGyt0kwzGl7gO/lvc0XFdp41ewQK44p2XILyQQa3iPBgMO3x25Rc42ewOkoltd3cJ281J3wt2YCQaAqFujruj7LZOHkHa1CUt/p6WnBBgBhhKP+wutjfxqp+OGsPTM/EAKOOVLaKJBTnrJQY74OilFLZ/bkWsAWOxEOMvJrzoMAwaSqKkvHOXyfOtBQiI0e0DdHgbz2iQkV50FHWIuLpXMpwmi7afwK0GcPc3IHA856A4qWayom8Xb6F2BdmvuwWRMSE0FBKgxPE5jhyK5BMeMltlOiKQ8IY/cgVtgkadP1C803D02yqqYJVfOFVD41gXyPRg3jbBBT2iK2HLaJX0xaNiZgPdolhlchWm5MrTtnaaBgbh1Iu98i/Q1b9viC4KwX3scY66+bijHkQpCWfGs4uJF/HxR0X94Yh/TWcgQUFoduoc98eR6bIM1Rmbk1OkFD2n/k1YFyfs23yvgOurCbFmpPsvS0y7Q9bsNflBbUm+S3AoFOYq6bVMGX91fhEmTlsOvvxTaijEKqNhlg28uGvDKuGvsiwtAtgOcn+gbBRNzrHrdCR+OR4wMNRYrDoASjFH2stJX5lna5Vol+PM+Lt6ii6x2J2vjMLcAt5xhUQl+zDSLX2sGw22wgjUCt2VaqvWXfvzsEqz7MYTyyUfE4pbBS87cB14xUq+xRmMZuwj2Y9hGSddFQc2AB1tXLmoHO3Rrup
+ fzbEalwA
+ 1OZOjz4mc2Ri23HJhoUP9Ebtq5pwOgvNiQ+SQcg+oE9sOXzykKN51dF1VBlUkUZEJ+DpN7rpVFG0g6DriRcd0c1Itt+c/DClZLKKF9vfOpYfwtqBl48ovc4Ab/37YNpa3rsubANETw1EQz9u8sY3P+XsBB65Wgq4wA4qGbZaaUZdr0l4n9NWcuFGBByBM9DlFUHbGFqltosH9tCfyMyZU0Fkz6QphOvBLnOWJnbl1DolZMqBBYE7zVVCMdFIXyxpIQFN9aEu5loERf8VWFFglw/4qkwW63cETlrJ2CucveGYxCWy36prbf/cLXyamVjw+iJbqmvRd2lpAcwwmLPyCBL6PZRDUcckv8PpnUWLHdC8rbFfvNALQ1gkeRA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,76 +105,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 30 Jul 2025 17:49:14 +0800 Gu Bowen <gubowen5@huawei.com> wrote:
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+head:   4e5e9d156393a3e06172b0c5962644c96c6f7f7c
+commit: 4e5e9d156393a3e06172b0c5962644c96c6f7f7c [98/98] mm: add zblock allocator
+config: sparc64-randconfig-2001-20250802 (https://download.01.org/0day-ci/archive/20250802/202508020214.8pUMOfI1-lkp@intel.com/config)
+compiler: sparc64-linux-gcc (GCC) 9.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250802/202508020214.8pUMOfI1-lkp@intel.com/reproduce)
 
-> kmemleak_scan_thread() invokes scan_block() which may invoke a nomal
-> printk() to print warning message. This can cause a deadlock in the
-> scenario reported below:
-> 
->        CPU0                    CPU1
->        ----                    ----
->   lock(kmemleak_lock);
->                                lock(&port->lock);
->                                lock(kmemleak_lock);
->   lock(console_owner);
-> 
-> To solve this problem, switch to printk_safe mode before printing warning
-> message, this will redirect all printk()-s to a special per-CPU buffer,
-> which will be flushed later from a safe context (irq work), and this
-> deadlock problem can be avoided.
-> 
-> Our syztester report the following lockdep error:
-> 
-> ======================================================
-> WARNING: possible circular locking dependency detected
-> 5.10.0-22221-gca646a51dd00 #16 Not tainted
-> ------------------------------------------------------
-> 
-> ...
->
-> Chain exists of:
->   console_owner --> &port->lock --> kmemleak_lock
-> 
-> Cc: stable@vger.kernel.org # 5.10
-> Signed-off-by: Gu Bowen <gubowen5@huawei.com>
-> ---
->  mm/kmemleak.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/mm/kmemleak.c b/mm/kmemleak.c
-> index 4801751cb6b6..d322897a1de1 100644
-> --- a/mm/kmemleak.c
-> +++ b/mm/kmemleak.c
-> @@ -390,9 +390,11 @@ static struct kmemleak_object *lookup_object(unsigned long ptr, int alias)
->  		else if (object->pointer == ptr || alias)
->  			return object;
->  		else {
-> +			__printk_safe_enter();
->  			kmemleak_warn("Found object by alias at 0x%08lx\n",
->  				      ptr);
->  			dump_object_info(object);
-> +			__printk_safe_exit();
->  			break;
->  		}
->  	}
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508020214.8pUMOfI1-lkp@intel.com/
 
-umm,
+All error/warnings (new ones prefixed by >>):
 
---- a/mm/kmemleak.c~a
-+++ a/mm/kmemleak.c
-@@ -103,6 +103,8 @@
- #include <linux/kmemleak.h>
- #include <linux/memory_hotplug.h>
- 
-+#include "../kernel/printk/internal.h"		/* __printk_safe_enter */
-+
- /*
-  * Kmemleak configuration and common defines.
-  */
+   In file included from mm/zblock.c:29:
+>> mm/zblock.h:21:2: warning: #warning This PAGE_SIZE is not quite supported yet [-Wcpp]
+      21 | #warning This PAGE_SIZE is not quite supported yet
+         |  ^~~~~~~
+   In file included from <command-line>:
+   In function 'create_rbtree',
+       inlined from 'init_zblock' at mm/zblock.c:450:12:
+>> include/linux/compiler_types.h:568:38: error: call to '__compiletime_assert_279' declared with attribute error: BUILD_BUG_ON failed: ARRAY_SIZE(block_desc) > MAX_TABLE_SIZE
+     568 |  _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |                                      ^
+   include/linux/compiler_types.h:549:4: note: in definition of macro '__compiletime_assert'
+     549 |    prefix ## suffix();    \
+         |    ^~~~~~
+   include/linux/compiler_types.h:568:2: note: in expansion of macro '_compiletime_assert'
+     568 |  _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |  ^~~~~~~~~~~~~~~~~~~
+   include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
+      39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+         |                                     ^~~~~~~~~~~~~~~~~~
+   include/linux/build_bug.h:50:2: note: in expansion of macro 'BUILD_BUG_ON_MSG'
+      50 |  BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
+         |  ^~~~~~~~~~~~~~~~
+   mm/zblock.c:415:2: note: in expansion of macro 'BUILD_BUG_ON'
+     415 |  BUILD_BUG_ON(ARRAY_SIZE(block_desc) > MAX_TABLE_SIZE);
+         |  ^~~~~~~~~~~~
 
 
-I'm not sure we're allowed to do that.  Is there an official way?
+vim +/__compiletime_assert_279 +568 include/linux/compiler_types.h
 
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  554  
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  555  #define _compiletime_assert(condition, msg, prefix, suffix) \
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  556  	__compiletime_assert(condition, msg, prefix, suffix)
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  557  
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  558  /**
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  559   * compiletime_assert - break build and emit msg if condition is false
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  560   * @condition: a compile-time constant condition to check
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  561   * @msg:       a message to emit if condition is false
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  562   *
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  563   * In tradition of POSIX assert, this macro will break the build if the
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  564   * supplied condition is *false*, emitting the supplied error message if the
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  565   * compiler has support to do so.
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  566   */
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  567  #define compiletime_assert(condition, msg) \
+eb5c2d4b45e3d2 Will Deacon 2020-07-21 @568  	_compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  569  
 
+:::::: The code at line 568 was first introduced by commit
+:::::: eb5c2d4b45e3d2d5d052ea6b8f1463976b1020d5 compiler.h: Move compiletime_assert() macros into compiler_types.h
 
+:::::: TO: Will Deacon <will@kernel.org>
+:::::: CC: Will Deacon <will@kernel.org>
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
