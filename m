@@ -2,91 +2,93 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C0CCAC87FC9
-	for <linux-mm@archiver.kernel.org>; Sat,  2 Aug 2025 11:53:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A602FC87FD3
+	for <linux-mm@archiver.kernel.org>; Sat,  2 Aug 2025 11:53:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 003CD6B007B; Sat,  2 Aug 2025 07:53:04 -0400 (EDT)
+	id 386106B008A; Sat,  2 Aug 2025 07:53:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF6AB6B0089; Sat,  2 Aug 2025 07:53:03 -0400 (EDT)
+	id 311EE6B008C; Sat,  2 Aug 2025 07:53:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0C1E6B008A; Sat,  2 Aug 2025 07:53:03 -0400 (EDT)
+	id 162626B0092; Sat,  2 Aug 2025 07:53:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D0DCB6B007B
-	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 07:53:03 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4499DC0139
-	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 11:53:03 +0000 (UTC)
-X-FDA: 83731656246.06.9F9F413
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 60A59180005
-	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 11:53:01 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Pb2xQJ0i;
-	spf=pass (imf06.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 082AD6B008A
+	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 07:53:07 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A50D11DADED
+	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 11:53:06 +0000 (UTC)
+X-FDA: 83731656372.21.A23297E
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	by imf29.hostedemail.com (Postfix) with ESMTP id C2D2012000A
+	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 11:53:04 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VUiSF4WA;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=pyyjason@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754135584; a=rsa-sha256;
+	cv=none;
+	b=QNjHfbHGlmXPe74PSKUb415bAZizIru6Iz8i1L2dGoChTawqdqoR3F6LyYwJkr8U+bD/8U
+	syq7xShQKQwB+G9KkxaAsmNx58O+I6Cn99ZXlVxAPL2Mz9fOyzpiN5kLnS0aYba6Bi9qIn
+	skTIgvFHSD0/YxUxRGU0v7+M5mmI6eM=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VUiSF4WA;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=pyyjason@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754135581;
+	s=arc-20220608; t=1754135584;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=V4brAoBW23LGCc+VB07OY1whyNY3DMBmIf8Vmk+ZO+U=;
-	b=FuH5Mq+HQFPQBQ/UMMJl4pUuxNqO2ugR6k+YYl4mO7efbZFM+nOgrccJ+jhCsRxlJxxmLY
-	kal30YjxvuwYDDlzv5wGXiXCQpR8YUjxFgdlQkgXsOZROjMKrsFFrq2D9ncyoikU/NpBpV
-	WnrK0+Z3Y1KExwNfxgXI8J/VALIPUxA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754135581; a=rsa-sha256;
-	cv=none;
-	b=gQJ3FWxbcLDvLLuMBLxqmAqbqqInBRwSNSNcFtpjuerNqKJvYK1FdqJ9GNC+5KCboFchV2
-	WUTaluA+WG4TMxWVmpGHa+4mMrfOz0H4Y9ibubshhkhimG7Tfyjvb22PXippPNdiklSUC5
-	qPAFxI+/cKSU92zKsIqby1dYKf4bis0=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Pb2xQJ0i;
-	spf=pass (imf06.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-ae9c2754a00so713451866b.2
-        for <linux-mm@kvack.org>; Sat, 02 Aug 2025 04:53:01 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=P1uRbOaPx516qagC6F0FtjjMT3s1w0dSsaUvr5gAnQo=;
+	b=HqB7ncB+D+EckZEgEdaEk+b/DzsY2HPh/MT6fn9VGA6SUcMjERwaaMjWwm+7ndcBxioYrc
+	Jist4TcvsIsXCkjwlA5iSekUiGMDuKjWWICiPbxK5erXByv7NJAmLMeK4qGJEsYl6EhY1S
+	Bcb5k09okd/toS0uBastp9WFhO8cWRg=
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-ae35f36da9dso532302866b.0
+        for <linux-mm@kvack.org>; Sat, 02 Aug 2025 04:53:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754135580; x=1754740380; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=V4brAoBW23LGCc+VB07OY1whyNY3DMBmIf8Vmk+ZO+U=;
-        b=Pb2xQJ0iS5y/yMFmnHiUefnSCb+gJLknIHPikCCh24AWJxEGB4ySzMqD017zqVOQhY
-         xuuitN1uOXm//EGvJ0oR0955S73Cqv2obJrW6HWDzXbd4SNk4w479vT+zm3ylDm1DM/9
-         6+/CKzUVysZJ8x/Ge48XPaBn365vRC8+jQa7YiEzwLzpafyZKSFCHRuBZd+iOLklvWQi
-         rdtOlsilKcJjMXPY8WEX5Z9Sw1JazCiy3rTqJp59h6pB6Kwg4O6Zc8IVySDAP4+9xWLt
-         NyiQEQJhjTj0OzQdBFeWLrQ40N/KA8K/SXD1VYJu+m1CA0hKBLQxd/3Q1IbMxHpEHG9J
-         DU4Q==
+        d=gmail.com; s=20230601; t=1754135583; x=1754740383; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=P1uRbOaPx516qagC6F0FtjjMT3s1w0dSsaUvr5gAnQo=;
+        b=VUiSF4WADT7JgbwUR9vp6NsbexwquHm0lE5K9UYbtRSnGv0iLwBIipjQfSQL3QH3vj
+         sgBHobzT7Bj01tdwgL1bmb8UhRRYzGK6DsDxgn5KBxvoK+gpon9xMx3tS9EWgykKIXVO
+         bJzo+Ulg1IUV+zvWwdi0WgoJGQs77f5oXN0bfH1uT1ygx2rphNdQs25r1k5yD1VDOKn7
+         navbaN7jrQ/NL5w90RnSwL+qaj9yKNrGQL0yculo5gsqoLHi0ERVL54l5b75+n+56aUW
+         yAVge6RwrRbSn+hKvcLb3lHrlOp0QtSoSNSHgOS5T+4hXXaudbv/0NyvjCrsJuaUCdMI
+         enMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754135580; x=1754740380;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=V4brAoBW23LGCc+VB07OY1whyNY3DMBmIf8Vmk+ZO+U=;
-        b=u1zVbKUHFnpqvAdEewDkn6czlvE2T0RnBud3KCjjOSjWHNlCKuZ4Brrj0k5IysbN4t
-         +DCtt+6JuS7Cfqb1JHKYURWbIt+96R9zeOlZ6ubS3wYpsjRe9X35mb3EiMgU3IRlnJD4
-         nSiWvdmap7dCkIMOMKRCTSZVrR1nJRAEVKquXhsgIg1eptA/7yAw5JPy70bBK1RZ3g72
-         zClRoOuvt24MyYINalidCOPHnU9oqUKE+lC6OB3TT37HWGIjdjBa98Q56KVJfK9sncWw
-         iQkHiQ36YhrVk5bFcWLGTddmk+VoXRJEkK0IHtwQxL66twa2MAyi/vAvZTA3sO2EWvlG
-         gDpw==
-X-Forwarded-Encrypted: i=1; AJvYcCUVfp+/7M/cGDqYwd9vUc2IL6ywPRsRQIHiMP4bUBknM3vE2BlYNNDvInycwvPbgSLy3qCaikiHtA==@kvack.org
-X-Gm-Message-State: AOJu0Yxb6Di95Nait1nrSlYnzO0FEbmoIaPHs7MriuaDK8cY8aE9cQna
-	fVaPLVADjlhNF04USa1O35xWPO3YGlPcxGEa5jObSFnMwyXnijfmHqJp
-X-Gm-Gg: ASbGncvrNefiLbiu+NtIEm1eGaUOPwdnnr6AT9BQxxRkqWJbDFsqKrTkTe5I3gHE0Hp
-	sjm5BR66oTNCL/sEQMC4hEJnaGG+oYCFy+UcLEd2LLQeXvj3/TX/wok3BXKd3FnCvs8zCQZAMbs
-	Lima4uioRW1NXXPLtOdLcB2riY8QA5pTVvquaNA9KWEM5vEqijTqDqrprwBz1yHiVUEXYcxRP4A
-	BHdXtW4N8GUuu/iG1OY9dd6nDAso8CZkh/1mPaF8i0K+S5OCSI7YidY47D3R2pBZ6nDSl+suaXb
-	9C4D6LiKM/oVKv44iKSNyRMgknPzZbb9glhfpZ+TKmj0ruTwjqDPJFE6ER3czc5Z1zDORWGcjsF
-	j/JX4iFB2483ebl8gM9WnNEaD4ZAml4T97zlJ7TFFg1UaaKL2Oq0d92634Xkc8rC79wb4W9Y=
-X-Google-Smtp-Source: AGHT+IHEgBsjwBarO7mciGajTi+ctVhNkkYuFAQHrt27NjJPcufQ7mQqgDlCHZbivMVkWnO16U7EBg==
-X-Received: by 2002:a17:907:3d90:b0:ae0:c6fa:ef45 with SMTP id a640c23a62f3a-af9401a5325mr328832866b.41.1754135579295;
-        Sat, 02 Aug 2025 04:52:59 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1754135583; x=1754740383;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=P1uRbOaPx516qagC6F0FtjjMT3s1w0dSsaUvr5gAnQo=;
+        b=cLorBC3BAiJzYuK7n07whiOtQmvH3tHt8H0jKC9A1gdjburDSu07BtY28mZ52Lr5Db
+         7TiddwXk4Na7Asr4Mf+uNIHTZqvxgIbAykEqE28YxcOjshdtOMiNtr66sKSXSrBK9eqI
+         P+uZNyGlSMwfA6wALGI/X7rKMeH3lrwVy0HK0/S+0C8g8gApy+0UXeky3bSfkAHD36nb
+         j2N6JwnVFtfXyhz/aYE9e9sVrZpH6Nh6dgn37aO2n+VPIcQSqb5RvmjVojgR18fgGQhv
+         Kbu7JRlE34JaIJq/tNhcd6CeSIAmuth3OlJ9bpIcOZ/hqByds2Q4/aXtIL1P0lUtpxQ3
+         jtzA==
+X-Forwarded-Encrypted: i=1; AJvYcCVy25NW9ykF3KrZZfKdu3Tpq6IqD/3NP9q5g9YnWoojSAu/feTZ9chF5XBZZjM8sUx2psFbnwzPBw==@kvack.org
+X-Gm-Message-State: AOJu0Yz0oTKY4tl0sAnUCTZMESSe0yEiP+zZ2b5eXFclqF7E6etdA7cp
+	6GGpamPIMf3X8Xw1ReGlH5B6X41jGzpMNapIsIIreEVlIkWBrsIZtt1t
+X-Gm-Gg: ASbGnctnHpT3TYWYnM9uCtqg8TFv7VJn6Kavqc7+1BB7DCMLLIULCgwHkuyK+0kxfNv
+	0jOV0hCDmqv+vokIrf6PjHttJHurkNzq7yjqiiX1a48I/v754UzJX5yHuX5HZpEmmp0JMiVLgUX
+	bHJ5TgGCjf7btytu3PdiUuyNz30ebWyhGqYA0NzrSXWcgrpSbI0WDfn13R/8zKTpIOu8+IF0MPq
+	jFXTQGBLgMD+z+763P/BGZYXcsS5KMPcVJgDU+OZdEDj6QVk51q5ePUXVPi6fN8RR8XurxgMBOv
+	nKeLa8aEMTCS+mumvy4rDA+jejNneqToikRmJ8AbdqnHWpXAmqv2gwbf3mjL4GhZBkuqDDVK02D
+	Sbi3Fv+rjh+ceh9YvvJgYETkULOeoFNHMvHDg8FJ5xcKL3uhRVJdUfKzIoX+T5tB+k5vsYCA6Zk
+	Mekkkv+g==
+X-Google-Smtp-Source: AGHT+IEeolrbK8Ju/4UkPkf+Jnhr2B2vqnQWZUQZZTD5vJyKAaB8n/76N2YQeS6F2uTGQIcJUUPDEg==
+X-Received: by 2002:a17:907:86ac:b0:ae0:ac28:ec21 with SMTP id a640c23a62f3a-af94001468bmr267338866b.13.1754135582908;
+        Sat, 02 Aug 2025 04:53:02 -0700 (PDT)
 Received: from rs3labsrv8.iccluster.epfl.ch (nat-icclus-192-26-29-9.epfl.ch. [192.26.29.9])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a0753f9sm425028166b.20.2025.08.02.04.52.58
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a0753f9sm425028166b.20.2025.08.02.04.53.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 02 Aug 2025 04:52:58 -0700 (PDT)
+        Sat, 02 Aug 2025 04:53:02 -0700 (PDT)
 From: Yueyang Pan <pyyjason@gmail.com>
 To: SeongJae Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
@@ -96,20 +98,22 @@ Cc: damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	kernel-team@meta.com,
 	Yueyang Pan <pyyjason@gmail.com>
-Subject: [PATCH v4 0/2] mm/damon/vaddr: support stat-purpose DAMOS filters
-Date: Sat,  2 Aug 2025 11:52:44 +0000
-Message-ID: <cover.1754135312.git.pyyjason@gmail.com>
+Subject: [PATCH v4 1/2] mm/damon/paddr: move filters existence check function to ops-common
+Date: Sat,  2 Aug 2025 11:52:45 +0000
+Message-ID: <cbe01740f7ac5ac7c9fd1ca367d297c3d7f2a69d.1754135312.git.pyyjason@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1754135312.git.pyyjason@gmail.com>
+References: <cover.1754135312.git.pyyjason@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 60A59180005
-X-Stat-Signature: 3fahakiitj5c7189ksrxwhf5fmxsm9js
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C2D2012000A
+X-Stat-Signature: 94xtsjrh3cfst91cyckhooodof3nf54c
 X-Rspam-User: 
-X-HE-Tag: 1754135581-401481
-X-HE-Meta: U2FsdGVkX1+2exSSXTnQtI5LigVU57V3QhJc2qwMOfhxZX0D39+5pPw+swhpu9vo1rahkNgppVvx8gUtQw9mbJsZ8QhRXNLuhmKLJmF1Bp9rDN7uX45ZLyq6fAQD7rQMSqR29bWsA0bS01+ZUM0PrbRk0t2cjNnaABneBYT7/jCElGXyfnbAmSiOb+/hDyF/PlWngc9NTCLbdYFYP/y/60OsrDWHdxirlc0fUsnQYlj7nAyfLcXrgR5mHKxYfponWcpKzwRE3JcNraCFKXB2TCia9y/dUjWWRBnt9XQaaIHf47cZBEg8VC8qjikIH20GyI1HMxqZ59pZTne/3lDCQQGI24h39s34RbZXOCgLo2fJ8kuLaDrVpwPWHbW0wHP9JBfC43oRaxGrtjvUxUaHJZiPHKlTKNxEtt0fTdpKacTYgLkWSfrV7l+xEZnAQV0Y/OOdegwJA4X4MtAGsgguEkruBBxfzhfPBj9JSlyVQ3HuTicj27iGJ4fl/8W7vQtIv4/yQcr7dUorggw7xDs/J17hRZ6vscwJza9uHjMw5FeXRbnAPe2/0mzvW/T3+2i7MW14DA+YqY5Q4C6bbkR5ZcUyU7iaBzd19TwH9rABvaIkoqVoWBryx6hIr9GRSKhSQqqZ5NVubQfKnjoUXHfui6nbeEhy2HX5sytGpom8uAdPIzKPMNeqmd3g1Sd1M6TkvzWtGpu22AmiUGn3FpUdKeOib2UxRLo0JWPM7iKRzt3IhpsIe28fTqGg8jyDTetMX/9FRiAF63FNIAi/wv6nZ/YOrO3Ubk1OP4ou3xCRWOR5HRBB1QG6PBKOGOZ6SHw54kHnifafnOTojamflT2DrMUdATcFGJW3/AJDD41LpDB4iZdChfmSHz4n+LsKPvFK4cmRAyVDrJvxEFGlriyV5wTpX9twjIV9hkdrEn/z1FYG2uuTerAjtdkK2h53DQJM2Z9TG8lFsHpQ+hiUWOW
- ATt96CVe
- RAAvVdlfQbhZ67UnmOu7UV61vAfRrEcc1DuC0JJtNRYhGtcmIsAdTU0ujJfRiASIdaNIY2imxkHneKydEjkO2W9mKYbIuCips2e06Ug2H5v5TjfCBX2V6c0d01emcI/PadOURZhuXHrm1pdUTOCbXMM1spsV6ul7szYUCz4TR7l7a4NuaWvWntJNdMtra70w6jzFcTWYkFdsgpbOEPKr2YFPvE1JZMblN+UwXWg4qRDlO2960pRZNL2u6ZNmjDEJp0vnIv23fq7vF0Dl16/los5xoR30DVVazxMDNrpzWAiQ5NxMwgJCGXCrYFrh3ptWUZDUaAjLwjV2000kH346FJORoqbgIsQk1qiQSL7Ths9rWfJzlKMIvb5ryF1Yzk0HtqKrtWnFl2rhGzjnei7/FebTyIOGudZMps38172Ua/f/RMcNFHe2NSeuV9g==
+X-HE-Tag: 1754135584-29651
+X-HE-Meta: U2FsdGVkX1/I83n1w9QQ5B0yrwaNpPDlnBK/1Cmx9cVOdoDiYh/7xhwB6GkQ7rzYEEWd9HMX5Ldg35qK65WL873bwQYIC5c4o0mftYRtWpOmEt6PGH0+4ubk2CJYt2hGBAIVrNkQlj86Saei1aydzQsLk1m+YtYg1OYJeWNn+6LbMhlQYlLAtmqpanZlTvWfwLt8/P0IY4jCClHu1F4F841en3L6Ae0G9uPdl1sXiVIGhYrRA2odrQYHdiNOf+qoAz1PUF5Hhwkys67A15nx7lq1eF4amBqb7z3/myo4AaVrRhJrU1IJBOfcRZb2+RDKOcJEW4EIm7dCP+C4YO//Bscad8VtZQ0XtGio2ErCYV9Fq4kk1Mg6IRDlSWWvfevESUfuGuMsYU0A+szAEAMzswhg44tlgqgDp6MZsgbEHht/9Nfm2Gosfnbc887fEfqDV7EBd6Rnq9XJaXctdUE+LkwroHhQn9VbCNc0hNHfpugC8BukTpvHrZYNx5b3IwKXrTmEyalSMad5TXB/tck+/QCE6JNaPWs06tQv2lhKq1IUMb3uOlZIPPhvepEA9kVk+qiG9Ad/vuZn9xjTB8cLF4lks8DgLG/z5cDWNHr4looH5BJSlGJjlz17JFImywnBo/NanDjBjuQJ808wm+p8GII14QEe7T8kQ/JLi1sT+rUP3dG5Bz8Poit5frEPc8Fw2xX96E0LgyS/gX7SN/PFpEOhrwhzMagFL6T0U1sgyER2pscEk6wkrXPgLiZIL9kJro2Soxz+2LRkngSMyUBM9N5npepF2yPPdsd2PwN0bSoH/hap5GYBplfOjOWoU6XbdngS4c4FWU3Q3qWqfkj3ghAEiTJVIpjBaI6M9UxGaA16ZegUAgBOEzpBZ75OU1RnuZ4N+lhjeBUBsr2nIcVuFIRu2XoQ4vX/bNCXyJl9hu5Ci4ddIogmfuftTp/o16FjieLQ+DnA371ZYKwskF8
+ 0y74DA6k
+ dbMQVRHaUYOcb16f8WGFwLdwVSMSOX7ymsDlZkl30Kf2RLs6V9Ev37H7JApezpQbt+THJQBl2SsD0AJ8y46wYoe3+IhaUbz6TggJ6gmhG5r+38ChGBZSC6z/dL+XYBWXYG9gvmYNUxKsDGh5fjzJJWhuebuc3ao9NCStEAMoXs5Hb27PZT04G4dxjp9Gy4KMtKcHRi134UiKZuiBlsniZ24bdpDwjtKji02kfkB8dVNoiVgOF2EnVggrMsC6HhZCXKXseevVRTljkXRaDwP8Ap72sCgpHolkFxAB9K7YxkZ0UQfFQfQt4/2JIpqAliWBKN0dY9wAZsjPw1q5z9+IXSDL8P04kTK5ahhG/vnprvdUDy62tH0yqdOXdlg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,141 +122,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Extend DAMOS_STAT handling of the DAMON operations sets for virtual
-address spaces for ops-level DAMOS filters.
+This patch moves damon_pa_scheme_has_filter to ops-common. renaming
+to damos_ops_has_filter.
+Doing so allows us to reuse its logic in the vaddr version
+of DAMOS_STAT
 
-Functionality Test
-==================
-I wrote a small test program which allocates 10GB of DRAM, use 
-madvise(MADV_HUGEPAGE) to convert the base pages to 2MB huge pages
-Then my program does the following things in order:
-1. Write sequentially to the whole 10GB region
-2. Read the first 5GB region sequentially for 10 times
-3. Sleep 5s
-4. Read the second 5GB region sequentially for 10 times
+Signed-off-by: Yueyang Pan <pyyjason@gmail.com>
+---
+ mm/damon/ops-common.c |  9 +++++++++
+ mm/damon/ops-common.h |  2 ++
+ mm/damon/paddr.c      | 11 +----------
+ 3 files changed, 12 insertions(+), 10 deletions(-)
 
-With a proper damon setting, we are expected to see df-passed to be 10GB
-and hot region move around with the read
-
-$ # Start DAMON
-$ sudo ./damo/damo start "./my_test/test" --monitoring_intervals 100ms\
-1s 2s
-
-$ # Show DAMON-generated access pattern snapshot
-$ sudo ./damo/damo report access --snapshot_damos_filter allow \
-hugepage_size 2MiB 2MiB
-    heatmap:
-    # min/max temperatures: -600,000,000, 100,001,000, column size: 137.352 MiB
-    intervals: sample 100 ms aggr 1 s (max access hz 10)
-    # damos filters (df): reject none hugepage_size [2.000 MiB, 2.000 MiB]
-    df-pass:
-    # min/max temperatures: -400,000,000, 100,001,000, column size: 128.031 MiB
-    0   addr 85.373 TiB   size 745.555 MiB access 0 hz   age 6 s           df-passed 0 B
-    1   addr 127.608 TiB  size 877.664 MiB access 3.000 hz age 0 ns          df-passed 878.000 MiB
-    2   addr 127.609 TiB  size 219.418 MiB access 2.000 hz age 0 ns          df-passed 220.000 MiB
-    3   addr 127.609 TiB  size 316.613 MiB access 1.000 hz age 1 s           df-passed 316.000 MiB
-    4   addr 127.609 TiB  size 474.922 MiB access 1.000 hz age 1 s           df-passed 476.000 MiB
-    5   addr 127.610 TiB  size 407.188 MiB access 1.000 hz age 0 ns          df-passed 406.000 MiB
-    6   addr 127.610 TiB  size 610.781 MiB access 1.000 hz age 0 ns          df-passed 612.000 MiB
-    7   addr 127.611 TiB  size 697.309 MiB access 0 hz   age 0 ns          df-passed 696.000 MiB
-    8   addr 127.611 TiB  size 77.480 MiB  access 1.000 hz age 0 ns          df-passed 78.000 MiB
-    9   addr 127.611 TiB  size 573.102 MiB access 1.000 hz age 0 ns          df-passed 574.000 MiB
-    10  addr 127.612 TiB  size 245.617 MiB access 2.000 hz age 0 ns          df-passed 246.000 MiB
-    11  addr 127.612 TiB  size 295.102 MiB access 1.000 hz age 1 s           df-passed 294.000 MiB
-    12  addr 127.612 TiB  size 295.105 MiB access 1.000 hz age 1 s           df-passed 296.000 MiB
-    13  addr 127.613 TiB  size 67.172 MiB  access 1.000 hz age 1 s           df-passed 66.000 MiB
-    14  addr 127.613 TiB  size 604.570 MiB access 0 hz   age 1 s           df-passed 606.000 MiB
-    15  addr 127.613 TiB  size 389.578 MiB access 0 hz   age 4 s           df-passed 388.000 MiB
-    16  addr 127.614 TiB  size 259.719 MiB access 0 hz   age 4 s           df-passed 260.000 MiB
-    17  addr 127.614 TiB  size 817.941 MiB access 0 hz   age 4 s           df-passed 818.000 MiB
-    18  addr 127.615 TiB  size 204.488 MiB access 0 hz   age 4 s           df-passed 204.000 MiB
-    19  addr 127.615 TiB  size 730.902 MiB access 0 hz   age 4 s           df-passed 732.000 MiB
-    20  addr 127.616 TiB  size 182.727 MiB access 0 hz   age 4 s           df-passed 182.000 MiB
-    21  addr 127.616 TiB  size 926.824 MiB access 0 hz   age 2 s           df-passed 928.000 MiB
-    22  addr 127.617 TiB  size 102.984 MiB access 0 hz   age 2 s           df-passed 102.000 MiB
-    23  addr 127.617 TiB  size 86.527 MiB  access 0 hz   age 2 s           df-passed 86.000 MiB
-    24  addr 127.617 TiB  size 778.777 MiB access 0 hz   age 2 s           df-passed 776.000 MiB
-    25  addr 127.999 TiB  size 132.000 KiB access 0 hz   age 6 s           df-passed 0 B
-    memory bw estimate: 6.524 GiB per second  df-passed: 6.527 GiB per second
-    total size: 10.731 GiB  df-passed 10.000 GiB
-    record DAMON intervals: sample 100 ms, aggr 1 s
-
-
-$ # Show DAMON-generated access pattern snapshot again
-$ sudo ./damo/damo report access --snapshot_damos_filter allow \
-hugepage_size 2MiB 2MiB
-    heatmap:
-    # min/max temperatures: -1,100,000,000, 2,000, column size: 137.352 MiB
-    intervals: sample 100 ms aggr 1 s (max access hz 10)
-    # damos filters (df): reject none hugepage_size [2.000 MiB, 2.000 MiB]
-    df-pass:
-    # min/max temperatures: -900,000,000, 2,000, column size: 128.031 MiB
-    0   addr 85.373 TiB   size 745.555 MiB access 0 hz   age 11 s          df-passed 0 B
-    1   addr 127.608 TiB  size 579.715 MiB access 2.000 hz age 0 ns          df-passed 580.000 MiB
-    2   addr 127.608 TiB  size 144.930 MiB access 2.000 hz age 0 ns          df-passed 146.000 MiB
-    3   addr 127.608 TiB  size 452.453 MiB access 2.000 hz age 0 ns          df-passed 452.000 MiB
-    4   addr 127.609 TiB  size 113.117 MiB access 1.000 hz age 0 ns          df-passed 114.000 MiB
-    5   addr 127.609 TiB  size 182.367 MiB access 2.000 hz age 0 ns          df-passed 182.000 MiB
-    6   addr 127.609 TiB  size 182.371 MiB access 2.000 hz age 0 ns          df-passed 182.000 MiB
-    7   addr 127.609 TiB  size 350.488 MiB access 1.000 hz age 0 ns          df-passed 350.000 MiB
-    8   addr 127.610 TiB  size 525.738 MiB access 1.000 hz age 0 ns          df-passed 526.000 MiB
-    9   addr 127.610 TiB  size 401.352 MiB access 1.000 hz age 0 ns          df-passed 402.000 MiB
-    10  addr 127.611 TiB  size 100.340 MiB access 1.000 hz age 0 ns          df-passed 100.000 MiB
-    11  addr 127.611 TiB  size 19.523 MiB  access 0 hz   age 0 ns          df-passed 20.000 MiB
-    12  addr 127.611 TiB  size 175.727 MiB access 0 hz   age 0 ns          df-passed 176.000 MiB
-    13  addr 127.611 TiB  size 106.629 MiB access 0 hz   age 0 ns          df-passed 106.000 MiB
-    14  addr 127.611 TiB  size 959.676 MiB access 0 hz   age 0 ns          df-passed 960.000 MiB
-    15  addr 127.612 TiB  size 424.469 MiB access 1.000 hz age 0 ns          df-passed 424.000 MiB
-    16  addr 127.612 TiB  size 424.469 MiB access 1.000 hz age 0 ns          df-passed 424.000 MiB
-    17  addr 127.613 TiB  size 201.648 MiB access 0 hz   age 6 s           df-passed 202.000 MiB
-    18  addr 127.613 TiB  size 806.609 MiB access 0 hz   age 6 s           df-passed 806.000 MiB
-    19  addr 127.614 TiB  size 862.125 MiB access 0 hz   age 9 s           df-passed 862.000 MiB
-    20  addr 127.614 TiB  size 215.535 MiB access 0 hz   age 9 s           df-passed 216.000 MiB
-    21  addr 127.615 TiB  size 104.500 MiB access 0 hz   age 9 s           df-passed 104.000 MiB
-    22  addr 127.615 TiB  size 940.523 MiB access 0 hz   age 9 s           df-passed 942.000 MiB
-    23  addr 127.616 TiB  size 640.281 MiB access 0 hz   age 7 s           df-passed 640.000 MiB
-    24  addr 127.616 TiB  size 426.855 MiB access 0 hz   age 7 s           df-passed 426.000 MiB
-    25  addr 127.617 TiB  size 90.105 MiB  access 0 hz   age 7 s           df-passed 90.000 MiB
-    26  addr 127.617 TiB  size 810.965 MiB access 0 hz   age 7 s           df-passed 808.000 MiB
-    27  addr 127.999 TiB  size 132.000 KiB access 0 hz   age 11 s          df-passed 0 B
-    memory bw estimate: 5.297 GiB per second  df-passed: 5.297 GiB per second
-    total size: 10.731 GiB  df-passed 10.000 GiB
-    record DAMON intervals: sample 100 ms, aggr 1 s
-
-As you can see the total df-passed region is 10GiB and the hot region
-moves as the seq read keeps going
-
-Revision History
-================
-Changes from v3 [3]:
-- Fix some naming issues and improper text in cover letter raise by SJ.
-
-Changes from v2 [2]:
-- Fix some naming and format issues raised by SJ.
-
-Changes from v1 [1]:
-- Follow David's advise to combine *pmd_entry() and *pte_entry() into
-  one. Also remove manually setting walk->action
-- Use vma_normal_page and vma_normal_page_pmd instead of damon_get_folio
-  to remove redundant folio_get and folio_put
-- Follow SJ's advise to only move damon_pa_scheme_has_filter to
-  ops-common
-- Change the command used in cover-letter for more natural illustration
-
-[1] https://lore.kernel.org/all/cover.1753794408.git.pyyjason@gmail.com/
-[2] https://lore.kernel.org/all/cover.1753895066.git.pyyjason@gmail.com/
-[3] https://lore.kernel.org/all/cover.1754088635.git.pyyjason@gmail.com/
-
-Yueyang Pan (2):
-  mm/damon/paddr: move filters existence check function to ops-common
-  mm/damon/vaddr: support stat-purpose DAMOS filters
-
- mm/damon/ops-common.c |   9 ++++
- mm/damon/ops-common.h |   2 +
- mm/damon/paddr.c      |  11 +----
- mm/damon/vaddr.c      | 103 +++++++++++++++++++++++++++++++++++++++++-
- 4 files changed, 114 insertions(+), 11 deletions(-)
-
+diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+index 99321ff5cb92..2e3409a6c8a4 100644
+--- a/mm/damon/ops-common.c
++++ b/mm/damon/ops-common.c
+@@ -412,3 +412,12 @@ unsigned long damon_migrate_pages(struct list_head *folio_list, int target_nid)
+ 
+ 	return nr_migrated;
+ }
++
++bool damos_ops_has_filter(struct damos *s)
++{
++	struct damos_filter *f;
++
++	damos_for_each_ops_filter(f, s)
++		return true;
++	return false;
++}
+diff --git a/mm/damon/ops-common.h b/mm/damon/ops-common.h
+index 61ad54aaf256..5efa5b5970de 100644
+--- a/mm/damon/ops-common.h
++++ b/mm/damon/ops-common.h
+@@ -21,3 +21,5 @@ int damon_hot_score(struct damon_ctx *c, struct damon_region *r,
+ 
+ bool damos_folio_filter_match(struct damos_filter *filter, struct folio *folio);
+ unsigned long damon_migrate_pages(struct list_head *folio_list, int target_nid);
++
++bool damos_ops_has_filter(struct damos *s);
+diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
+index 53a55c5114fb..0b67d9321460 100644
+--- a/mm/damon/paddr.c
++++ b/mm/damon/paddr.c
+@@ -262,22 +262,13 @@ static unsigned long damon_pa_migrate(struct damon_region *r, struct damos *s,
+ 	return applied * PAGE_SIZE;
+ }
+ 
+-static bool damon_pa_scheme_has_filter(struct damos *s)
+-{
+-	struct damos_filter *f;
+-
+-	damos_for_each_ops_filter(f, s)
+-		return true;
+-	return false;
+-}
+-
+ static unsigned long damon_pa_stat(struct damon_region *r, struct damos *s,
+ 		unsigned long *sz_filter_passed)
+ {
+ 	unsigned long addr;
+ 	struct folio *folio;
+ 
+-	if (!damon_pa_scheme_has_filter(s))
++	if (!damos_ops_has_filter(s))
+ 		return 0;
+ 
+ 	addr = r->ar.start;
 -- 
 2.43.0
 
