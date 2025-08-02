@@ -2,92 +2,118 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D0175C87FCB
-	for <linux-mm@archiver.kernel.org>; Sat,  2 Aug 2025 02:00:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 52D05C87FCB
+	for <linux-mm@archiver.kernel.org>; Sat,  2 Aug 2025 02:22:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D42796B007B; Fri,  1 Aug 2025 22:00:50 -0400 (EDT)
+	id C15536B007B; Fri,  1 Aug 2025 22:22:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1F526B0089; Fri,  1 Aug 2025 22:00:50 -0400 (EDT)
+	id B9F0B6B0089; Fri,  1 Aug 2025 22:22:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C56B46B008A; Fri,  1 Aug 2025 22:00:50 -0400 (EDT)
+	id A66866B008A; Fri,  1 Aug 2025 22:22:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B69FA6B007B
-	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 22:00:50 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 384241DB876
-	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 02:00:50 +0000 (UTC)
-X-FDA: 83730163860.05.0E6BB8C
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
-	by imf09.hostedemail.com (Postfix) with ESMTP id C46E5140008
-	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 02:00:46 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf09.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754100048;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v28SVHXOuEBn2vg7x94b2PP5f6c/vq1tubv0K4AzDXA=;
-	b=m5iWJ732CdUgk0mRrObHlUtoRIaTnAF2nVDxz964zqhgOd+bcvx9lWtV2WAkgGEA4MJJbb
-	Oe6X4WsRBuwp4Ns0DK/sXqb0VrXmqnXkx5k7JLlf1ZTsS2YgQ4srOpjWw36RIHnoHVAvGU
-	xomkIQrhsmPHig5wXHpIj/Qqw6o3bpQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754100048; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 92EF46B007B
+	for <linux-mm@kvack.org>; Fri,  1 Aug 2025 22:22:28 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 15E9211472A
+	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 02:22:28 +0000 (UTC)
+X-FDA: 83730218376.15.D49FEEF
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 0D94B40004
+	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 02:22:25 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FXOV0KA+;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754101346; a=rsa-sha256;
 	cv=none;
-	b=KGM/b6HBQAMzJdXaNELKhkX85P5VEcXjm2zdCiqV0mWbmuYJ/GsekPskwiyedxslYWYOYF
-	QGYMsGbkf8U7HSBYIGrvmjkbPAGrU2355aTG4QLjpN+95bNBHzB9lwtnTTgxpZBsr92dpj
-	5VoSjCZ33bv//pKJ4HXq9PmTTFnaiFA=
+	b=60JfQhRnS3incGAPa8UQbKN4mEdagdZE/++5j9IV7XJDZvLVe+BifhuB7ti8zHZL6vpoom
+	6IPu56z+wum3qBXf/y9kJsQtouo43GPjKANP/zNyqsKP75tDthJ+/m+GfrUaHz9/CcCWpz
+	kRr5cS/GdK8v6+BxfGS4k/t76rpCA5A=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf09.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4bv5fJ14mzz27j4R;
-	Sat,  2 Aug 2025 10:01:44 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id 27DF51A016C;
-	Sat,  2 Aug 2025 10:00:42 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Sat, 2 Aug 2025 10:00:41 +0800
-Message-ID: <dfdefd27-d395-4d42-8baf-6d83c24e7dd8@huawei.com>
-Date: Sat, 2 Aug 2025 10:00:40 +0800
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FXOV0KA+;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754101346;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hSG1LeV3cVwQV3wuVeNb8LQrAKUqxETgJKTWaJErw04=;
+	b=UVnpMHgUEICc7VvQxw+NavjwsOE/wxKgrZNpHC5bGS/aIsBf3osBs8OUJmc90JDRPvekUC
+	gdE1WA5l2DaLtqMuNYmpPkI9pjfh/ZvvR9I1rggElVcJs1U6pJFvaWOShFgMNM1dhUjYM/
+	ON5Zw3pF5ZgzJNjyMTEF9Ro5RZfnUJE=
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-ae361e8ec32so498893666b.3
+        for <linux-mm@kvack.org>; Fri, 01 Aug 2025 19:22:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754101344; x=1754706144; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hSG1LeV3cVwQV3wuVeNb8LQrAKUqxETgJKTWaJErw04=;
+        b=FXOV0KA+xRETmR86qmW1EZE2XNJps+j7sAuLTAZkAxu6D6enVgcBmWQqohUqc3SI95
+         Q/TWYUjFGMM+JPc9ZPLMQREH6EhZ+TowwgOe+UlMTVdNN1WeB0YhahkV8D3dSCnripVp
+         iD26dTea6fdLCOySxk7vJTzvBADZUWWHzLW1WhpEHiqZrziEqRptEIWV7Jqubmj9v5zU
+         HjaVMo2vuBkv+1lfOHqTLIRUwgxFjVNnL9TALHAT84zOj7qQr9HOr5vr/+kQcr4IxQDG
+         DSuqZP9pWGd9Fk7bMYEfrGYAyfKHy33Y1qv7Ad3NTGC8M4iv5/z14+ttBECVT2S8zsMG
+         i2aA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754101344; x=1754706144;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=hSG1LeV3cVwQV3wuVeNb8LQrAKUqxETgJKTWaJErw04=;
+        b=ga0ZogAbJAsGJX0ekwBGAFKjcBR9mCHo+nQSRFoYeFTxfx+rFdE8m1J2C/Xbsk5K0u
+         qeJvO3zxwIk4/GG2eLK4EiFL6arZHWCAfW5OSI2PslDaaa46jro3tQfG2Obv1965jgkS
+         YTgydhgG+KDkzBBDMi1Xn4jGM+05HJuA3s2zKmg2Gou35y0PoKbv8FPDLE9GHO7oXBXE
+         2XPxIMKDhoJZmq8koGXcxDF+CSUj2c0Nn3yc6x0im/fc4SJ+fgr7BNfpe10nwxueZn5e
+         zj9C1dtUAsp125979qxTwApITZUsWb0Kz0GSDNTswszl/46h77T43wPZDSO9IkbsW/Mb
+         tayQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW2aE+0rilI44wA0dASeTo2PvKzS+NkkpizmsWUsaypo2OslteUkb5hjy7449Z1IVrURh420TM1RQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz8G7P+LcU0FAKDnXQfJdFZi5adbLEyWxkrmejhsa5ED2jcuVXc
+	Kn+pxoeo5Ki9ADZxae7IRhdqCTT+7SXsiHTMqlGKITonIgjDjKK8qJKn
+X-Gm-Gg: ASbGncvn5+ttcVlwUG0GyAfsRseJb4lOtyKRuRga++i9R4MAnVJBY4WcqQAe72BxEVH
+	VtH1D7DoATL4DYKQeCKoUz0FRD4DPdXUatQmWB24rwe6bUL9msYfpJM3J+s8FhHyzVXjqQYaLJS
+	DjgGoYQSdptH8tMqt+KaXxMdH3O6M4x//FFGSYQJ4bBrY51PdI/7GWMCJ5p1tKoiRvknKr+l9F/
+	T4aLjnRX9QLESpYng21XN7egAmduRbm4qe7snfHqtQvblTvbO2DqFqAxTvncm0vCSnKJiv1K8YY
+	eFvBVIC32EkXh/R8mQJPoG7BKcvizjp4ZWeq1zdbjUNHUcSI+09yFs5mcIDDO6233lEgDyC9yEe
+	2ocU3O/+PvToSI3ZecKkJhw==
+X-Google-Smtp-Source: AGHT+IHDiFo+GXkK3xhr9Jlv8TPjtoUbMQljTtFnbkUlqH0I7+/3roo41mHr6kloA0aNXAxwf4/OXg==
+X-Received: by 2002:a17:907:3d90:b0:ad5:3a97:8438 with SMTP id a640c23a62f3a-af9401c3e49mr199013266b.41.1754101344137;
+        Fri, 01 Aug 2025 19:22:24 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a2436c2sm361389366b.141.2025.08.01.19.22.23
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 01 Aug 2025 19:22:23 -0700 (PDT)
+Date: Sat, 2 Aug 2025 02:22:23 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	rppt@kernel.org, surenb@google.com, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	Ryan Roberts <ryan.roberts@arm.com>
+Subject: Re: [PATCH] selftests/mm: link with thp_settings when necessary
+Message-ID: <20250802022223.qjzvuuhwm43hprpl@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20250801085444.27182-1-richard.weiyang@gmail.com>
+ <566ff1f0-e6f4-4888-a901-4995a84d15b7@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] mm: Support only one page_type per page
-To: Matthew Wilcox <willy@infradead.org>
-CC: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	<david@redhat.com>, Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-	<linux-mm@kvack.org>, Kent Overstreet <kent.overstreet@linux.dev>
-References: <20240821173914.2270383-1-willy@infradead.org>
- <20240821173914.2270383-4-willy@infradead.org>
- <2d19c48a-c550-4345-bf36-d05cd303c5de@huawei.com>
- <aIwp48CTft68fssD@casper.infradead.org>
- <6feb2506-aaa6-479f-a7e3-b4503b7d6ffc@huawei.com>
- <aIzO4OLr1GPK2RMm@casper.infradead.org>
-Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <aIzO4OLr1GPK2RMm@casper.infradead.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- dggpemf100008.china.huawei.com (7.185.36.138)
-X-Rspamd-Queue-Id: C46E5140008
-X-Stat-Signature: 4swk76u3ofbba74jazhjmn5thq8rfri7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <566ff1f0-e6f4-4888-a901-4995a84d15b7@redhat.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Queue-Id: 0D94B40004
+X-Stat-Signature: qrm1cp4gedkiueaj9j919bykpac8hnfp
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1754100046-300263
-X-HE-Meta: U2FsdGVkX1+0G3Xx52Vu0tCI9LzrL4+RZuvCVEOUykWnw4kSSCpRqUZ/FiLMsYUOS3HiHlayUxX1uUClQCh+quKyK7mbpSQTx5qM1hr6P3QpT5DCwpJSGAAx40TpUzKn7dkQ0RlppNVRLFp38+GI47V6+lW2T2wP9BLL9UFgK2P4+f+9SjHgpP2v3T3L4rACe4WEMPLQsbObVoBUMvHG3qNHOhX2r9zAdAimReaU3paABCC0/SjNkiEgQ1bcG6RkZ8uoY91aS91rcSRC6i8bxYVRvgYPJGD+1uMgnRgzUos7aiGqSmx8jTok5D6qD8178nANPwmea4csmxyu0K3RVBMecR0j7VH4LOCm6K0roICg5xU6cbqQuSDmzxHlR3qmGIijOC3f5Yk8evKWxpT45A9T0+kBXtHF5t9TFq6fd3u5yS3FbCOOafs//KWKMbJmFjpeDsEdk3aQTDyHJO37d6ih3TVBj8Ul60a6WbAQyAYWXI1E124bY9HYJSSW758WjAOuC0yTpEsSLZ51Hn4oH2KGPcWlFsW5oDQ4TlLs0zwUgJu8l30bHfG+fq8vbXlVBrS4pziHNzX5viCQvAy/6TpNBJ4hJjURHUGJRAfLu3paf0o2MwqztDeT8uftI1FARfd+XRa6KRA4sDIn97C+rpypfHljWXOeO7Fnt6ycv1Z0UXhvs5DdNgGzrfuDiqwCUbUEml/9Ys8ZbJkh4w9n7VIpKWQzISXTVo2YF/807/tP5soX33VfUs/j113kbqbrA4Mj50F7qwoaYRUZ7VRXVTRqAWX5wE1hApqpRKD5z+Jwta9ME4BVt6vaCcD3SQIwdszk8PPtqKSTYrfSyJIV+R0mmzdVTRwCHL7Gi3B0woDB2lTY5+awlsXYn5w5K6Jgw9mV4Gq7DiU5+H/RC+yeUK3hApny8687Q+/WIlEcJa+lvvWNRkN0fM+MkWCtcN7t02kVbWmydf6FXqlo6+X
- CbXMC5F0
- C2/bsJpx9MrZFfxF1r62nFz90DgpntvQgUOj7E1pab1ezrxUoIoPRkTNfhpYMkSd6xsQowAfoEfdFYwfRVuTe3uanq8cXKqueQQcWOHDmD4to9Ug5roycHaIYC7S8uxWt4/bDgIbJW19bhwXgTA1HYef/URFYX0813EPNT+nWJiSeqVpZ0UZhJ/DgbsNzlvY1nVqsyDRrZNc9BMQGaFQ4LduoLT/kfhbZA7TqoSjLSxXUcWd2uLnTfhaD3aQC8Hy8jyAbfQ+eJxd1ty6snZK5U+QofF2zbadwHvl4wTLP4tOtpIQN+/0U9dMmn+QX9mtCjloBWraUusI8uCw=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1754101345-957700
+X-HE-Meta: U2FsdGVkX1//ZWNOluAx0iRL650kSLUKtwDn65DT7t/2WX6RQmbHW1QigPL6d2u+erLsbuqisjiPunv0HMv5o4o8J9cshU3rSTNGd9aw3BiZB6ibLP2U+fdvjt5cOkS75Y+SoenD0jZvJ9kuIYzY85W/1dSY6DTmlBxWWV6veXlSnEFao9J1a8OgauZKhg4utz1S2EmL5xTZbVK2ot7YA1Qxye4WrJcSzcqONQovD99RARgkjjLF5m5q9aUHcsHyefm5cA4sGlnuWlx8KxXfnDGzfUKsCY+cFxU5rE6v/T/pfnbShZ69WTL36q2E1b2dSkQoIr2dSQzrQchIt5fYFyuIREH/XknSo3gDjR1oZOVyRsRUkZDfgQVeLLVwcLvhK7FAXWErocjz7n5qeSgQwdKx5ekq08VUX/OdN2Ywj+ikaOlh5+HgvLHnTFIM54FiaW3dFtMKViE8cwj2ZPqKjEr8pOuR3GCaN13DBUiP1jZku/lF1m32SXiFYTNh2bKwuxNfSf+IeCEl1wH9Leii2cCjCBOg8hWXUAiuc31bNs1edvdj7wtuMDfuZXGqUvbjueqkpJtpDDXH4h64SVD+nohKEaIwpcHj7fGMa+Q/8pv0a78FyYuGtaPDrPUc75uFntvVyPvcR5wAbl60WfoLJeUBn4JT0lzdptho3MhHCFg+5hZjRHdsIg0qywATg+mY3aBGfomv79fQ0AY6+g+yNxt7YDge+NlGkyNZ9rkuB/CGr9gtVgElFphOWrtGDLCRnbW+xGmyFjviLoFSIfNW+mi4gEQJvjz4C8hE9ljtzqtFR8cEkfi659L8v/LF/xxMucLBi0bM7ErfEQVq9IflWCP9E/IqPIQ1apx64SNPg/EWRZl7a5n5RhMEPCJrD6HP+DlvEvMO/TKqXU/Esaz93hO9aImO+89PHQW4jDv63iYRKyghpHiBNsldvfFyEB558vV/DLtLfo/5SVkOib3
+ 1WQv3y1D
+ MBmhpUzqVkt3F/e9/arV7czzJJlhFE8qTkXb6ZEIKm2xOeK1MQuewJGh9LzczE9+MIs4JGFj7zu2UJ9sCkGaHhKGxI8Bbbnm166J7IaXCHFPH3cRNBfOGtjAkuihwqGvgviTUt6oCKR350+d/TDGaz9io6IaEu7ZlSWStzveXCOFacid0f6JNR3f6dzJ/WJkC446Eb6Iaew/SHQA1dcwGVap//sovLdjqZKgpMcxG/WKckwR4xr+3yy31NIoZjxn5/EwG6Vlxwe4i7mYOr9/A0VSo4+SzHGiu3t64zKkuxIAXAAWFMVnLslUN2/oc3+AgtX8vsU9mKjDLD1nQQcXPqmjeBsVZjxP61NkaRsZXi63k9dMs+9iOa9wdfk99AmS5VXlfg125rmeYmZQjfqmlhb/DTJCQirKdd8ghGjnQPGg5j60vjLnUlNTwnsOUt5fO8D4sXXCZp5WQVzpq7cudccphuwc4S6bZsqZ02OebmxlwSEWxtVGljb/Z3nCyGCvxf6NShoZlzYiA74STJH3rvBmDhT3uqBqHoZQJoJccG6dDExH0rsJSgYNTZ5Ettppq7r2OhCFkwv7Y2c3sRlyKc716kVyquebK9KYLCCoYWy6iP3vM60MoXLiLWi3LnJUkSx01m9dFJN8QuJZNTQ2BoFMGe3MZsj888peim3VVdqAM5MuzCVyV1QwTqPMwXwQpIFeFeBK+g6jlfeDqJGVBNwKEzObR23v4g1SzQoOEVLuIDaMlkGoLGWnbzg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,43 +122,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Aug 01, 2025 at 11:02:35AM +0200, David Hildenbrand wrote:
+>On 01.08.25 10:54, Wei Yang wrote:
+>> Currently all test cases are linked with thp_settings, while only 6
+>> out of 50+ targets rely on it.
+>> 
+>> Instead of making thp_settings as a common dependency, link it only
+>> when necessary.
+>
+>
+>You don't state why we should care about that? I don't see how binary size is
+>a problem, why do you think it is?
+>
 
+Yes, it doesn't help on the binary size perspective.
 
-On 2025/8/1 22:27, Matthew Wilcox wrote:
-> On Fri, Aug 01, 2025 at 04:13:33PM +0800, Kefeng Wang wrote:
->> On 2025/8/1 10:43, Matthew Wilcox wrote:
->>> On Wed, Aug 28, 2024 at 11:35:28AM +0800, Kefeng Wang wrote:
->>>> There are some UBSAN warning about  __folio_set_##fname/__SetPage##uname,
->>>>
->>>> UBSAN: shift-out-of-bounds in ../include/linux/page-flags.h:998:1
->>>> left shift of 240 by 24 places cannot be represented in type 'int'
->>>
->>> I can't reproduce this.  I know Andrew merged this patch in, but I
->>> tried backing it out and enabling UBSAN and it doesn't show up for me.
->>> Relevant part of .config:
->>>
->>> CONFIG_ARCH_HAS_UBSAN=y
->>> CONFIG_UBSAN=y
->>> CONFIG_UBSAN_TRAP=y
->>> CONFIG_CC_HAS_UBSAN_BOUNDS_STRICT=y
->>> CONFIG_UBSAN_BOUNDS=y
->>> CONFIG_UBSAN_BOUNDS_STRICT=y
->>> CONFIG_UBSAN_SHIFT=y
->>> # CONFIG_UBSAN_DIV_ZERO is not set
->>> CONFIG_UBSAN_BOOL=y
->>> CONFIG_UBSAN_ENUM=y
->>> # CONFIG_TEST_UBSAN is not set
->>>
->>> (I tried CONFIG_UBSAN_TRAP both on and off)
->>
->> Hi Matthrew, I work on arm64, so the above OOB should occur on arm64,
->> I remember the OOB appears on linux-next, but I tried last kernel and
->> some old kernel version, but can't reproduce this too, it was too long ago,
->> maybe gcc version related or some other changes...
-> 
-> Yes, I can't reproduce it either with an arm64 build.  I'll ignore this
-> issue in my refactoring, and if it pops up again, we'll deal with it.
+I come up with this when doing some test. Each time a change in thp_settings
+would rebuild all the tests. My intent is to speed up the build during coding.
 
-Agree, it is easy to be fixed once it pops up again.
+Not sure it worth a change.
 
+>Cheers,
+>
+>David / dhildenb
+
+-- 
+Wei Yang
+Help you, Help me
 
