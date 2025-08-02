@@ -2,65 +2,65 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FD17C87FC9
-	for <linux-mm@archiver.kernel.org>; Sat,  2 Aug 2025 16:54:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BCE9CC87FD2
+	for <linux-mm@archiver.kernel.org>; Sat,  2 Aug 2025 16:55:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5FC46B0088; Sat,  2 Aug 2025 12:54:31 -0400 (EDT)
+	id 435726B008A; Sat,  2 Aug 2025 12:55:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B10156B0089; Sat,  2 Aug 2025 12:54:31 -0400 (EDT)
+	id 3E5706B008C; Sat,  2 Aug 2025 12:55:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A25A76B008A; Sat,  2 Aug 2025 12:54:31 -0400 (EDT)
+	id 2D48F6B0092; Sat,  2 Aug 2025 12:55:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EC126B0088
-	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 12:54:31 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C3DCDC0495
-	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 16:54:30 +0000 (UTC)
-X-FDA: 83732415900.13.C7651C9
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 34B661C0006
-	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 16:54:28 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="iKQi/ImC";
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 1ABEE6B008A
+	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 12:55:04 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9CDD514022D
+	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 16:55:03 +0000 (UTC)
+X-FDA: 83732417286.08.64C10F2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 397C120010
+	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 16:55:02 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uBD7JYsC;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754153702; a=rsa-sha256;
+	cv=none;
+	b=XPbUPHPRlRMxZYxLfpaUKwHokPncQhNB37aupbTjoAd/SXjd89LRQZsNitdR/lG1+/uXLs
+	nZYnfQ+EU7/D01Ijefl7ydYvl8//n4YVFcZFdFw9RRZwuJfYkm3QigDSp4V+4wFw8YKg06
+	W3hECmYs4QNN8Kkqn6znsjN0a3ipJKA=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uBD7JYsC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754153669;
+	s=arc-20220608; t=1754153702;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W+GGQ5NGNQtRYekGdswvcZiYxvhKkqGKPYapabXTylk=;
-	b=hH/6LbAWmuKWQo3D88fKyMZdjOU44aqj6uW1ELJbRNW2l5QN2o/WTwH2Clj8VJE3CVPSRt
-	NhqEtWnKROGaCOwA3Qi7D5dwGWb9I+ilclNFBacTakfaDTCR0aig8n3lZQotZSTHN/HzDm
-	uPIxjBEk+VDONp+6iDjQxDuiVP1zfUQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754153669; a=rsa-sha256;
-	cv=none;
-	b=NW6IdG4fn0RSLr9RU6BsNOy7WrKgyM5NmkyOb4FufuGNkkkivU5eOmXIbiLWhIWjsD+e7w
-	3A0RFAgswjEWrSuCAdrNnGnbDNxkT065oCMXrd8m7nHL+fsfiChNIJ6PoZRxgFRLBuoT5b
-	XqxDbTf8mlyRv2o31U4jhNrMuLNYGf8=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="iKQi/ImC";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org
+	bh=gjAIVcqDOE68F8Y4s96d3OXCQ/nWcSwu3GUlg8SCblE=;
+	b=5sCq3pI/nDOLKSVXZZpmLXCvKmo3Q4C1ZkY4F0qkNi9XKRIkPOStKucO8l31qC9akkVmUR
+	I6EUf0TnpY0HFRSs66xB9L5Wq4782NYkoSqBybWuQxA9y4rm9s6Thb775M1jgWGEky3nZi
+	sKnsbl0DaqGFRtZWgAiOi2m2zOXPtGk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 4E77C5C5B09;
-	Sat,  2 Aug 2025 16:54:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 949C4C4CEEF;
-	Sat,  2 Aug 2025 16:54:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 614D9601CE;
+	Sat,  2 Aug 2025 16:55:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D47B0C4CEEF;
+	Sat,  2 Aug 2025 16:55:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754153667;
-	bh=AX85VyhxhnSPCKuS6eMk7UaT+Kv8vjrbD1Hos2IBnSY=;
+	s=k20201202; t=1754153701;
+	bh=SEc7rHR48cU8PgjS4PgPLzAVHNEQ00U8BuoFzkBvLBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iKQi/ImCONVsu2B6kD6dPYytCnW0ab+2A7M7ls7rcuQZRn0pqtqh/2OMBFixaGt20
-	 MJey1bzkq+Kucqpmp9XBkHbmV0lR3eZTV8dwFbU2Sk6QIt3AjA6OxIxx86UtjY7cic
-	 f2v4mI+wZRiWpTStpK62oviabjvBd986b5lhblgfZduzSoKMcr/eMSYkiKX/kC7wqd
-	 6x9ZPoxiLiwcc0xH4X0kC2moSlE7cfifpVuTrM7OZ1gWuhvhel4mwNuICQ9mhvVwoN
-	 ugnkKuWPOcmx8h0n0rFvMcLg1wj4VuAGWAEt//0Rif/Xdh8tHaMEXwSuyVMw6W/mPd
-	 l9BnA5QabuikQ==
+	b=uBD7JYsCVJcYeeLVVTvcguO5RB332MYn1vfjnyUcdMjIS3ssYYNeIgIFuPla+rRxA
+	 S3gIFA9AVENjcAsIZaajoAfLIw0xEtP5uFNAAo9TB5MO24NGzBPBTZJhc6TCHxhLqs
+	 AgdRp3NPsi6sjDFbuwtvDIVFw3vkxVLT8uOtRu2etrsX8eifX2ceegDy/L9zIHAmm5
+	 RxoHD90DySWrNxg1ON2U437wXmpMgfiqCr73kAjG7hqa9r7ouQ4zWM0YoipEqgjZRq
+	 dINMxlRkNRHyChkHv+hkGgmnwrjsVhKlJAkHrDWLqFosSHoH3FHpsalL4cq3DeUnut
+	 7ApJNGeb3UzIw==
 From: SeongJae Park <sj@kernel.org>
 To: Yueyang Pan <pyyjason@gmail.com>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -70,22 +70,20 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	kernel-team@meta.com
-Subject: Re: [PATCH v4 1/2] mm/damon/paddr: move filters existence check function to ops-common
-Date: Sat,  2 Aug 2025 09:54:25 -0700
-Message-Id: <20250802165425.7088-1-sj@kernel.org>
+Subject: Re: [PATCH v4 2/2] mm/damon/vaddr: support stat-purpose DAMOS filters
+Date: Sat,  2 Aug 2025 09:54:58 -0700
+Message-Id: <20250802165458.7179-1-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <cbe01740f7ac5ac7c9fd1ca367d297c3d7f2a69d.1754135312.git.pyyjason@gmail.com>
+In-Reply-To: <264a4b5ea202fd73c01b349c9694d8bf9978c441.1754135312.git.pyyjason@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: m9akqey4yc9n453ayomw4e391xc1nzsm
-X-Rspamd-Queue-Id: 34B661C0006
-X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 397C120010
+X-Stat-Signature: bz6muhj31bbyxfhar94ymkspb5sfxpff
 X-Rspam-User: 
-X-HE-Tag: 1754153668-924294
-X-HE-Meta: U2FsdGVkX185mwFEEHFLjp8+JJDmN2e0Ik7VwmoXV7XlxSHlZlWuhVo1qE3YxVHL1RaY2yvFiPOsmE1GYdQyiFRfs1TMeMGz2n2WWhJ4mzBRKivcyOg347mqRJD5Id7E9V/MY/GWQCSgCoMfZH2KeNkqTQjgtmuHFS+Aa72KGikaz7EJu+hZRjSJoNoK7dtpZfbp/runfqrnfcAm6tg6ZA4HfMhEtxl1mLQt+SgqjCxF3uFtM5hz4uTuEAXLxtbQjflKb6O3pNvi7IBH1XoTVTcXTNilRqEebDZrG5z8zR170L/kalnchfXN/QaSfv5DqWYaNidmWHJXSPzRY7Uc9Gdiv8tCSU/eBBe2YeWNCHT60xDCOCA7Xn1Hru+krH5XkoUvds4A5+AhDGsVcD1wmY628qdO2tlsDf8BYW9CNpgzAo0Cyx2sVltLUv0So1lS8ES2C/YgrLGGCwQKctbYgKfYB1MD1ADai1ZRUk8UDE6f/UTgzOmyWPhhl8khGVsQfBrSkzRKMjWQVB+ZUAS+cevmRIZcTWGoxHvToXfdRZrLHUNHn9CfCNhSmcSw/ZPBYnfNd2z6CgOMApO2ID/AUOm2gwN1sioaDT6+9j/eqjagqdXhfOFXLSYA5ClDD0xmQWPmHm07ryXWQ9t05HpQaGm3IU7blx+54kC1IjmQyofrZF70oHeyMaBa7BmmHzuhIJxNIcbjrCNNztEn/sjE7RRbxOpaBt/F4h9zVDs9BYqQFG1A3nSMx3tD/W7ss7Kw7J8OBXm/4wBZeyYdowbgvGq9vYt3KHbaOVVOJOpaHYF9i4YYvNJI3LS7FP7w7nv3lSRY7hWoAwQi/VZP1oDIBUO0nui1uL4d7OSBFzArjmKztZH0WkS4NZ+wHlDTKv3FZKELtcB4gj1mQucVd2ckA9uHeCb7KmbYZQdQqm+O3S+8IAeRn4IY25K3kSvWyhRAcx0+cF/I1NOtsVKl/uE
- sp54TTQT
- +hOLvyKdvQk1vdN2qUEUM0e7bEUiVbiiWos7pXsaEaEJ15ZXYIjZXmpJEPhzrG+KdbbigknbWA9QUBQrUEDs+Jzu0Tn6eSv8HpU7cdKMLZlmeEQKHk4bnvjcPiD3fDWUxDkjnyuOebJBdNhf8px6T0LHPLqFF+GPTTMeDPkSgWiKW9ZhoZgIig4HywEROmdUUzuflEUbJzRMbbM+QqAhvKjsHovCrwGm+eeSmd2CZPuRcuYaEp+Rl2Bdg0Avn31I0JVB4
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1754153702-462525
+X-HE-Meta: U2FsdGVkX1+1XkD0NTBITMmZT+fX1UQhTX8KUO0GlDzoplCt9e1rY4TpScGRpRcfWCDyrdRNfHPO3U4i1+PH6/uAEeDwJ/ehW6ERPejL9WKT7GmdauKMt+QZpY/s/+fDXUjxhjyg4ylCOFgmzZdh3HkqYC2u7IdYGWkwjSeq2bdly3q+ruVBa7XHgIVRBrkHRIKHc3o1DIeMK+7xXGZuPq9X2KR18UwrpoNNRaqzNLEToI7gHVTxg6fIxHBPzT+b1OjLNTf02wvaSC6CG+q+VxJF+l9VWgJdZ/t0ZmQoeUqG2IX7bAl/KNomymCe2f3r0h47sNaAionjhf4RX00LDADOkfTsdeIPxKzUuyJb294NCmQuSjuTtLbh0crupQfUCaD0aiFp7VdUEwErrvjAFFhHaectSvSoLCRKndV/YEv8eT6QlhF2UxMncb+sk9JsTVIq0mmWMcl6gSaWG566WcK+KQmJYP4LrK0rkZs0QagMXDGJ5sZeYEaXXicC24A+4c7He+akehROvhetgdmpkyEeLeitvy2QQZTxa5iwWjM87lW7OdGsnZADFgEzdENYkRVxHonADtFC4M18wQNE+M5w4EvO8SGi77jopNs4aAcH0Lld6jwo426BQxjNObwvc5P7xoLDh2UH6nGsXNksqi3Iw1xoFmtpaISCqSM681LA2klfpNocuRSLfUKC145TTrgPIqCI2USFRDL+CI3pjUvgJefcuh2OCNMqNl/J/y5k1ruOHx8cX1G00p5daboDYypmbkVX0D06IXcqLbyaAfJ8MrSS6SwwZNjlrbg/HKPWJynosIKg77qtKSJOiuyKBhDxUYOsakTj8fo/X5Sm1jj8DDZ8Pa8BBydogJ3msdog5YSvL+xH9J+uQz7K8b0RMwX/uVKoHJ6qUAJhcl+sp6OoRmDmpb6o5rIzG65bnVqZrNSVywk0fg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,12 +92,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat,  2 Aug 2025 11:52:45 +0000 Yueyang Pan <pyyjason@gmail.com> wrote:
+On Sat,  2 Aug 2025 11:52:46 +0000 Yueyang Pan <pyyjason@gmail.com> wrote:
 
-> This patch moves damon_pa_scheme_has_filter to ops-common. renaming
-> to damos_ops_has_filter.
-> Doing so allows us to reuse its logic in the vaddr version
-> of DAMOS_STAT
+> This patch extends DAMOS_STAT handling of the DAMON operations
+> sets for virtual address spaces for ops-level DAMOS filters.
+> It leverages the walk_page_range to walk the page table and gets
+> the folio from page table. The last folio scanned is stored in
+> damos->last_applied to prevent double counting.
 > 
 > Signed-off-by: Yueyang Pan <pyyjason@gmail.com>
 
