@@ -2,223 +2,114 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 126CCC87FC9
-	for <linux-mm@archiver.kernel.org>; Sat,  2 Aug 2025 10:37:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C0CCAC87FC9
+	for <linux-mm@archiver.kernel.org>; Sat,  2 Aug 2025 11:53:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96C246B007B; Sat,  2 Aug 2025 06:37:59 -0400 (EDT)
+	id 003CD6B007B; Sat,  2 Aug 2025 07:53:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9446F6B0089; Sat,  2 Aug 2025 06:37:59 -0400 (EDT)
+	id EF6AB6B0089; Sat,  2 Aug 2025 07:53:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80BFF6B008A; Sat,  2 Aug 2025 06:37:59 -0400 (EDT)
+	id E0C1E6B008A; Sat,  2 Aug 2025 07:53:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E4EA6B007B
-	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 06:37:59 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E38BE80E5B
-	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 10:37:58 +0000 (UTC)
-X-FDA: 83731467036.16.21F277E
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2062.outbound.protection.outlook.com [40.107.220.62])
-	by imf25.hostedemail.com (Postfix) with ESMTP id BF066A0008
-	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 10:37:55 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=N4VvsISj;
-	spf=pass (imf25.hostedemail.com: domain of balbirs@nvidia.com designates 40.107.220.62 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754131076;
+	by kanga.kvack.org (Postfix) with ESMTP id D0DCB6B007B
+	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 07:53:03 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4499DC0139
+	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 11:53:03 +0000 (UTC)
+X-FDA: 83731656246.06.9F9F413
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 60A59180005
+	for <linux-mm@kvack.org>; Sat,  2 Aug 2025 11:53:01 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Pb2xQJ0i;
+	spf=pass (imf06.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754135581;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TtdMjt8DfLswmrapX3hflqxcaT6JR4lAozZvrT7ZCac=;
-	b=6Ej1d4AZX76J8K8JSaeHCeONFbOUBuimfYGOAvRU+ODNgdc1WYmc2Xj2caHo6x07+KaErC
-	mcbmrlbu5/X9FXIrNlugQ6aajHGPOa91TP+pbSG/ROmqNYpWMe5YsTuHBda1TODM+2SNT8
-	Xmuoza0IBaYawQ4wn1w4QL016AjJjDU=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=N4VvsISj;
-	spf=pass (imf25.hostedemail.com: domain of balbirs@nvidia.com designates 40.107.220.62 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754131076; a=rsa-sha256;
-	cv=pass;
-	b=aNxBw2qTEtxknwwKM0Cng32Zn9T3WzGj7tLxb0C2kJEyVKbgsLZh9PdazJXtuQHdsNX7sV
-	X8mLxxuR6apf4deiRsZqhM+jFr+YJEJV1XDzU+YdGfMvqngjCQcESbVgMNjUT9yaEPjiBY
-	Ioi2QX+r+RFMeXAKfo2giIrGzdelhpg=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kIoiAeuMjwXnbMl6hl6aD4SlxobBjankgciz4YO0bEDzUqmFkKZ4bIIZtzeI4yRNuwO8vR4XS74ezvHzBkrKHLkTQXjaS3LU+JCSHJDHL4HooaVwVKpRmWfxhp6kflGX00dZ+KCAGxMMRn8l7crjWqU1bi/dSGjkbyBccRD0K+swlxiUvtUwf54e3xsIggewT1vhpU1EGNMd2dtZYJPMuYdlqFFQf6Z6R26YPqaTpdb2PdFUDZE2qAmjFUiLDJzb0s3gHcWS8J2nlE0+ZDTSHiYQjS1eOM1bPlrNoG6ZZxHU0Ie8Tsl1JoDHCv7v63lnengyUPxrp19IcDaLm3Qm7g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TtdMjt8DfLswmrapX3hflqxcaT6JR4lAozZvrT7ZCac=;
- b=xa0Cd9Qi7BRePOpGlu2zLIrD6hntY2Bb/jMLxhZ0ZrIcORqh1VJ2CmAf333b8VYkW/zndMC+nV97bxyDgq0pRaPfn4LHbg+n+StkdYAAAQOMevUIhuP0artfdKgavk8m7T7qZAvCaJZ0Xt28vSNEh3/Gtxoel4Sk7wns9BC0jOBB0MTXFMwmH22nVuVt17hpk8hvFgNaSdbQ+btBRpgmlYg6kGMr1ZKxk2bgk9EbBhAcwkKu54DIfEn2JbBV5nKFLaXw1e6IlaqiT7on35DYwPPp7hKDbagC7zIv0eFw+GJ5r9k/2lxeR+eSjSdPQPbZ6By4afIyL5+W5x1gGKMETg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TtdMjt8DfLswmrapX3hflqxcaT6JR4lAozZvrT7ZCac=;
- b=N4VvsISjGEsONFvLrJPb2HY2wPOmY/nXjlC+VMk9h/BmGLj0nHHWD6BBT2BTXZLIixS617s75ov8KYcjCsGK+xuOUlETNOS+McA3CTgdg0k/97naBU3iXNSH0ZttX5qNLHSQwuJDCMjdT2PUtoXUMkrnJ8WBM4O5F1QLbQnQuPLXNNVf/naeP5FDvi0t7+GbTEofnP8pbKmgHRkmI5XuWHo37sqpCSiZRA6YY7YhpD7fEe+Syf67FMBoWNHgebVbjiqjzoYcfBzGf07wYo93hM4E2ZxBCLK9y9ldkY7GaLQstgsE6D030kPfFAcRprXzIOcdDE45Mx3XQc2azFlwaw==
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
- by IA0PR12MB8745.namprd12.prod.outlook.com (2603:10b6:208:48d::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.11; Sat, 2 Aug
- 2025 10:37:51 +0000
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::3a4:70ea:ff05:1251]) by PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::3a4:70ea:ff05:1251%5]) with mapi id 15.20.8989.017; Sat, 2 Aug 2025
- 10:37:51 +0000
-Message-ID: <ab46303e-a891-4f48-8a86-964155a1073d@nvidia.com>
-Date: Sat, 2 Aug 2025 20:37:44 +1000
-User-Agent: Mozilla Thunderbird
-Subject: Re: [v2 02/11] mm/thp: zone_device awareness in THP handling code
-To: Zi Yan <ziy@nvidia.com>, =?UTF-8?Q?Mika_Penttil=C3=A4?=
- <mpenttil@redhat.com>
-Cc: David Hildenbrand <david@redhat.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Karol Herbst <kherbst@redhat.com>,
- Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Shuah Khan <shuah@kernel.org>, Barry Song <baohua@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Matthew Wilcox <willy@infradead.org>,
- Peter Xu <peterx@redhat.com>, Kefeng Wang <wangkefeng.wang@huawei.com>,
- Jane Chu <jane.chu@oracle.com>, Alistair Popple <apopple@nvidia.com>,
- Donet Tom <donettom@linux.ibm.com>, Matthew Brost <matthew.brost@intel.com>,
- Francois Dugast <francois.dugast@intel.com>,
- Ralph Campbell <rcampbell@nvidia.com>
-References: <20250730092139.3890844-1-balbirs@nvidia.com>
- <884b9246-de7c-4536-821f-1bf35efe31c8@redhat.com>
- <6291D401-1A45-4203-B552-79FE26E151E4@nvidia.com>
- <b62234fc-051f-4b2a-b7da-0c0959fb269b@redhat.com>
- <8E2CE1DF-4C37-4690-B968-AEA180FF44A1@nvidia.com>
- <2308291f-3afc-44b4-bfc9-c6cf0cdd6295@redhat.com>
- <9FBDBFB9-8B27-459C-8047-055F90607D60@nvidia.com>
- <11ee9c5e-3e74-4858-bf8d-94daf1530314@redhat.com>
- <b5fa0989-a64a-4c91-ac34-6fb29ee6d132@redhat.com>
- <EC99D49E-86FF-4A50-A1AA-FC43A7D3716C@nvidia.com>
- <14aeaecc-c394-41bf-ae30-24537eb299d9@nvidia.com>
- <e5dd3f46-c063-45ff-8be7-64ac92534985@redhat.com>
- <71c736e9-eb77-4e8e-bd6a-965a1bbcbaa8@nvidia.com>
- <edbe38d4-3489-4c83-80fb-dc96a7684294@redhat.com>
- <e8f867cf-67f1-413a-a775-835a32861164@nvidia.com>
- <ee06bd19-4831-493f-ae88-f1d8a2fe9fa4@redhat.com>
- <47BC6D8B-7A78-4F2F-9D16-07D6C88C3661@nvidia.com>
- <2406521e-f5be-474e-b653-e5ad38a1d7de@redhat.com>
- <A813C8B0-325E-44F0-8E30-3D0CBACB6BE1@nvidia.com>
-Content-Language: en-US
-From: Balbir Singh <balbirs@nvidia.com>
-In-Reply-To: <A813C8B0-325E-44F0-8E30-3D0CBACB6BE1@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR03CA0204.namprd03.prod.outlook.com
- (2603:10b6:a03:2ef::29) To PH8PR12MB7277.namprd12.prod.outlook.com
- (2603:10b6:510:223::13)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=V4brAoBW23LGCc+VB07OY1whyNY3DMBmIf8Vmk+ZO+U=;
+	b=FuH5Mq+HQFPQBQ/UMMJl4pUuxNqO2ugR6k+YYl4mO7efbZFM+nOgrccJ+jhCsRxlJxxmLY
+	kal30YjxvuwYDDlzv5wGXiXCQpR8YUjxFgdlQkgXsOZROjMKrsFFrq2D9ncyoikU/NpBpV
+	WnrK0+Z3Y1KExwNfxgXI8J/VALIPUxA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754135581; a=rsa-sha256;
+	cv=none;
+	b=gQJ3FWxbcLDvLLuMBLxqmAqbqqInBRwSNSNcFtpjuerNqKJvYK1FdqJ9GNC+5KCboFchV2
+	WUTaluA+WG4TMxWVmpGHa+4mMrfOz0H4Y9ibubshhkhimG7Tfyjvb22PXippPNdiklSUC5
+	qPAFxI+/cKSU92zKsIqby1dYKf4bis0=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Pb2xQJ0i;
+	spf=pass (imf06.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-ae9c2754a00so713451866b.2
+        for <linux-mm@kvack.org>; Sat, 02 Aug 2025 04:53:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754135580; x=1754740380; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=V4brAoBW23LGCc+VB07OY1whyNY3DMBmIf8Vmk+ZO+U=;
+        b=Pb2xQJ0iS5y/yMFmnHiUefnSCb+gJLknIHPikCCh24AWJxEGB4ySzMqD017zqVOQhY
+         xuuitN1uOXm//EGvJ0oR0955S73Cqv2obJrW6HWDzXbd4SNk4w479vT+zm3ylDm1DM/9
+         6+/CKzUVysZJ8x/Ge48XPaBn365vRC8+jQa7YiEzwLzpafyZKSFCHRuBZd+iOLklvWQi
+         rdtOlsilKcJjMXPY8WEX5Z9Sw1JazCiy3rTqJp59h6pB6Kwg4O6Zc8IVySDAP4+9xWLt
+         NyiQEQJhjTj0OzQdBFeWLrQ40N/KA8K/SXD1VYJu+m1CA0hKBLQxd/3Q1IbMxHpEHG9J
+         DU4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754135580; x=1754740380;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=V4brAoBW23LGCc+VB07OY1whyNY3DMBmIf8Vmk+ZO+U=;
+        b=u1zVbKUHFnpqvAdEewDkn6czlvE2T0RnBud3KCjjOSjWHNlCKuZ4Brrj0k5IysbN4t
+         +DCtt+6JuS7Cfqb1JHKYURWbIt+96R9zeOlZ6ubS3wYpsjRe9X35mb3EiMgU3IRlnJD4
+         nSiWvdmap7dCkIMOMKRCTSZVrR1nJRAEVKquXhsgIg1eptA/7yAw5JPy70bBK1RZ3g72
+         zClRoOuvt24MyYINalidCOPHnU9oqUKE+lC6OB3TT37HWGIjdjBa98Q56KVJfK9sncWw
+         iQkHiQ36YhrVk5bFcWLGTddmk+VoXRJEkK0IHtwQxL66twa2MAyi/vAvZTA3sO2EWvlG
+         gDpw==
+X-Forwarded-Encrypted: i=1; AJvYcCUVfp+/7M/cGDqYwd9vUc2IL6ywPRsRQIHiMP4bUBknM3vE2BlYNNDvInycwvPbgSLy3qCaikiHtA==@kvack.org
+X-Gm-Message-State: AOJu0Yxb6Di95Nait1nrSlYnzO0FEbmoIaPHs7MriuaDK8cY8aE9cQna
+	fVaPLVADjlhNF04USa1O35xWPO3YGlPcxGEa5jObSFnMwyXnijfmHqJp
+X-Gm-Gg: ASbGncvrNefiLbiu+NtIEm1eGaUOPwdnnr6AT9BQxxRkqWJbDFsqKrTkTe5I3gHE0Hp
+	sjm5BR66oTNCL/sEQMC4hEJnaGG+oYCFy+UcLEd2LLQeXvj3/TX/wok3BXKd3FnCvs8zCQZAMbs
+	Lima4uioRW1NXXPLtOdLcB2riY8QA5pTVvquaNA9KWEM5vEqijTqDqrprwBz1yHiVUEXYcxRP4A
+	BHdXtW4N8GUuu/iG1OY9dd6nDAso8CZkh/1mPaF8i0K+S5OCSI7YidY47D3R2pBZ6nDSl+suaXb
+	9C4D6LiKM/oVKv44iKSNyRMgknPzZbb9glhfpZ+TKmj0ruTwjqDPJFE6ER3czc5Z1zDORWGcjsF
+	j/JX4iFB2483ebl8gM9WnNEaD4ZAml4T97zlJ7TFFg1UaaKL2Oq0d92634Xkc8rC79wb4W9Y=
+X-Google-Smtp-Source: AGHT+IHEgBsjwBarO7mciGajTi+ctVhNkkYuFAQHrt27NjJPcufQ7mQqgDlCHZbivMVkWnO16U7EBg==
+X-Received: by 2002:a17:907:3d90:b0:ae0:c6fa:ef45 with SMTP id a640c23a62f3a-af9401a5325mr328832866b.41.1754135579295;
+        Sat, 02 Aug 2025 04:52:59 -0700 (PDT)
+Received: from rs3labsrv8.iccluster.epfl.ch (nat-icclus-192-26-29-9.epfl.ch. [192.26.29.9])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a0753f9sm425028166b.20.2025.08.02.04.52.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 02 Aug 2025 04:52:58 -0700 (PDT)
+From: Yueyang Pan <pyyjason@gmail.com>
+To: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Usama Arif <usamaarif642@gmail.com>
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	Yueyang Pan <pyyjason@gmail.com>
+Subject: [PATCH v4 0/2] mm/damon/vaddr: support stat-purpose DAMOS filters
+Date: Sat,  2 Aug 2025 11:52:44 +0000
+Message-ID: <cover.1754135312.git.pyyjason@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|IA0PR12MB8745:EE_
-X-MS-Office365-Filtering-Correlation-Id: 81f8ecd2-2eb1-4715-cfe7-08ddd1b0a182
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?OG8zSEtJdzBObi9FTnZISlZzOXkrcDdieThCejhGb24yR2t3ZEQ5a25ua1Ew?=
- =?utf-8?B?Y2xXazYwaEc3SnAyelJiSmNNb1hrakg1b1hTYmticUFUNDN2UkgzL2hTdEkr?=
- =?utf-8?B?NXBiU2RhaWc3QWdhK204M1A5dStzK043U2MzRC9PVkJFNGI2enoxc25xUVpp?=
- =?utf-8?B?Qngrc215c2VuYkVEK21HZEFiTlBrcVlWQmNLR0hVa3hrTUtsbjFiMmp4cEVi?=
- =?utf-8?B?Z0plUm9lTTZwQmNlRks2cFhUSTh4RXJhL08wam5RSzlBOGU3R2NCL2QwV2dH?=
- =?utf-8?B?emVlWWpOc05KRmkyeGo2ZkV3VWpZemtJdlJhNDlTYXBJaVJTUEVKc0dadFU0?=
- =?utf-8?B?SHZaK3FXSDBIMDFBOFNSWmtaTVJ2VWd5OVMvc0dDYzh1WG00KzVkYWtLL05K?=
- =?utf-8?B?eFBwN2NtL1Z6b29YdWU0bXhMdFlOcUR2aXY5d1hJbmxBWFJKbXR4dkQ5SGd3?=
- =?utf-8?B?SUFFajFJYzd2ZmNHbnQ0MUU0MUs4RkJpM0ViWDlQdDN3eUhNc25Rd2dEQVBa?=
- =?utf-8?B?ZElPTklLaU5lb3pJMGJLV3Y0bGxJWGVwY3VFOGlVS1hqNEluNGg3YUtUS05F?=
- =?utf-8?B?aEtDa0ZxWk5CQjRUTVdFaFVJSVU1TTRSNE80dlNtYzZ6NnEwWkZXdXZPeURF?=
- =?utf-8?B?MnZuTWtjNW8zc0U1akxob2lyZ056clE4aXNaZW9neFRYSG41dDg0KzBLRnhR?=
- =?utf-8?B?MzR1Z0lxeGRZSXE5b3J5R1pPUTlVSTkvM3VpMTV6TGlqdmp1ZllyZTNPaXV3?=
- =?utf-8?B?bng3dkFWaFEvLzZQMFp2Qyt5SGxIc2dLRHg2RFNOTWNZeDkwOEgxUGxpNFQ5?=
- =?utf-8?B?MHQ2ZWRqRkFvd28xTTNoL1BsSHdmTVBHUkpRemtRNytFSXJxN0ZKNS90ZXlV?=
- =?utf-8?B?bWhmK2tabTkrZSsrYWRXbFdYbzIwTmk2UnRzNzBzYmZYcGR2VFFhdTBpL0dq?=
- =?utf-8?B?cHJ1bkdlb3pNT0hjVUZ0dy91OXlXZ0JOVTU0eUJQNGtjSTRIVFJIank4N1N2?=
- =?utf-8?B?Y3lBdlBtV1MxcmxPRUZueHBqNFZIcm12bm9nSUJyNkxCT0UwT2hBYkxGL3RF?=
- =?utf-8?B?RmNZSXZmTTF3cTM3V21FcWlRWTd6VjFkRWx1NnB4ellYc3N5S3VxSGVMeEFq?=
- =?utf-8?B?VWZwUzVYMFB3dzRuU3MzYlBMYk5JOTUyN0EwK0tIUjljTkFieU56MHVRQi90?=
- =?utf-8?B?RGxHdEJvUFRjMmRCZGU4SUkyQytnWHoxc3ZJbFlxWFREalU2MjFuNklUbUhW?=
- =?utf-8?B?M3VhRTlTckJYeXpUdnhBSnFYNVkxamZ4Y2JQU0M0Zlo0UmRLYm5tME1kbzRm?=
- =?utf-8?B?dlpQQnFZL1YreC9BazhLQVJtRlNBYU1VS0RzQzQ4MG1Md0J1RzhRMitCL1ZO?=
- =?utf-8?B?TCtHc2JyaExRZE1KcmZVNU13dWFTODJtZk1WKzVDYzR4TTA4bEM3cktLMWhz?=
- =?utf-8?B?VC91ZzN3LzUrQm1SYlZUVjYzSjNtenpJcDRRQnc2OGh1UytGUFphMm5WbGYz?=
- =?utf-8?B?RjBoelBUNENla21UeTBzeTd3YjZqWWw1dCtiMUthODJuM01GR1lOTCtLQ3FN?=
- =?utf-8?B?dGRUWk1VS3BWY0VtV2VOYXhxM05KOXRHU29DZ2dGb0ZyZGdzNEF6Kzc2VS9E?=
- =?utf-8?B?Tk5paEc0R09wNjM1WlpRNzJ3bGphSzZZUnVhWDBKSFNRSGJkMC9IY3VINWNh?=
- =?utf-8?B?bXBxNi9JMmk4L1JWZnI3TGdEZkQrd3NOcHVZeU9wZHR2MS9CZTdJVnRBK05r?=
- =?utf-8?B?MUdvL0ZrQmJsaWMxWTZRbTBJOVp1K3RDWlZIYlI3d3pSbXBUWGloUW1SbWN3?=
- =?utf-8?B?VU1ZdVlBb0E5MlpFV3lscU5tVzN6RnJnOUxMallxNW1lQ2hadDFqYkppZmgz?=
- =?utf-8?B?cmZKTzIrMldZNjhPZC9rSzErZWlGeUE1UldUaTBnMk1DQ1UwUVU5RGJTT0lN?=
- =?utf-8?Q?y/o9681MUrE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?d0JtS0kzTFc0U3k3djlSNmIvY1AxQTJkblp5NnBMQzdzRzAvUGQrWmVRRU1o?=
- =?utf-8?B?bVNEOGY2L3pBSEd2YzVOb3hpSzFxSEJlQVFUeGNpbmMwb1Qvc3FEYmRHK1BY?=
- =?utf-8?B?emxIZ2trbitPYU91WFN5QUd0bHB3bWlzV3h2VERGNTZkTFord1BrT3A3cGRx?=
- =?utf-8?B?NURDTDFwZi9TOEhpSmpES3h6WU5UbGhtT2grN2k2emt1QWIrcldrQkxuNVBN?=
- =?utf-8?B?TFJENVduV3E1Z1ZFRXA1V0RnQ0YrSWZFU05XTTNOZUhGQXF2bURLOEFsNzVu?=
- =?utf-8?B?blpYYW9IMFpQL0IydUtxcmwvaE1nS3VoTnhPRGM3dm5pKzBQeGltTE1xS3ha?=
- =?utf-8?B?NDlNekY3WW1GWVEzTUZDRi92TFFyN3dNWGlTYnpDYkx2Z0R2M1JHV1cxcHh3?=
- =?utf-8?B?V3B4dkxnbkVmMEF0dThvTDBYckVVWUVkUkJTajJSaHdJai94WUFzZ1Mycko2?=
- =?utf-8?B?N0VuS1ZUd0tQd3k4U1ZqRFEvcm9seXV6R2VHdnltS2xxLzB4SWRlQ0tjMlIx?=
- =?utf-8?B?MExVbHQ4ZjlHMXpScmExTEI1QVpWeWFQSjZsL0MvZVBFYWFMZy9iNzVzYW9O?=
- =?utf-8?B?N2J3TUVrWlA3RHpUSWttODJIbm1TZm56SWtvRW1mYThFcDZmZm9JNjlKQ0NW?=
- =?utf-8?B?UnkzRWszMFE0dXFLSW9JclpQOUw4WTRUNHZtRVdUNFNJUVN1YzdXVDA2QmlM?=
- =?utf-8?B?bW1JRU9Uc2VqbXpKVUI3VEY1V0k5UEZCblhVV2xkVHFBN082UGZjLzFSMXdr?=
- =?utf-8?B?VnV0N0JHS0lvZEZnWU5WRVRnL01McFhDcmQ5SGRHeUF1UEl0V0Z6K0FyRGM4?=
- =?utf-8?B?bTJBbmFEYzZMcUNNbzE3WW1rNisrVG9Cc00wNWZpZDhJU3RRZHJNVXQ4Q3lR?=
- =?utf-8?B?eXM1aldBS2dBckJHdkhYRTNUdHVjVjlUZmNOSEtBeWxmOXBDWWdtdjBDREEx?=
- =?utf-8?B?QjJIKy9GRURUd3Q1TlFPTW5hNnBMYkU0ZzhEU3RLcmhqamwzb25mMm1zUDRo?=
- =?utf-8?B?NlI1NHRrSEdHcngzbDVtYXZCMFlERFB6dCtBcDFBWWkzajYyQjVkVnZGUC9i?=
- =?utf-8?B?cmx5VXlmMjY1UFg3dGN6YVdLWmlsR21haFFUNmRkMFd2ZTU0MTlyTzNCWkVR?=
- =?utf-8?B?bzIyUTR0MTVsQWYzNklKS1lFSXB3bDZ0SkhBWUtNbWlTa3graEg5d2dnaDZG?=
- =?utf-8?B?Tktid1RncEZsWnZlbGxRdjliZmYzbFVuVHNkcFMyYjhVYUYxdGo2elZHZm9x?=
- =?utf-8?B?UldHMFJuMFMxaFNEWkFaSXRXVEVGa0NGdUJMYSs2VklkeE5mMXFuN3dxMUQ5?=
- =?utf-8?B?aFY1V2Y4Z2RwTi9FdWVYd3NSaHJxbGZuMXMyd295dm9tbDBwVkR4NXR2Ykc5?=
- =?utf-8?B?d1BmN2xKNS9BcE5RRC95aFh3dnIwUVJXNUM5TkdTanRyS2pxRXpTWFA5SFBz?=
- =?utf-8?B?dXppeVA0ZU8vUWt0MnM2cEE4V1NJcDYvMTRLUXlTL2dBVzV2OTdmVFVkZEM2?=
- =?utf-8?B?L1FvTWVRcEtLcU16d2UzSk9wdDZKeGxJVFJTMm9qOTY3a1UxbVJYQ0N0c1pJ?=
- =?utf-8?B?cHo5aXMrSGtFTXQvalVwMDFBa1lWbGVXelJLYjdLeTJIcE5ySTBLK0xCZWd2?=
- =?utf-8?B?VEFWNzEyUkcweVlmUWJyOWIwMzJHWDNXek5UU05yeFhLNnVRdHo3aTJhNUZS?=
- =?utf-8?B?U01rVHRnZjJvYW9Pc2dvMndqRTJ3d0VwQU5OTDc4RmxPQTVlN0VMTFlHUFZj?=
- =?utf-8?B?aHp5aFNkSU85cFR1cHFwd1FmUkhZeHlzSUJRWjkwUjN4Y0Zha0pXNXVKcm15?=
- =?utf-8?B?MjhWZ0VIUFRMcWlSSUNGTDJIWVIyL2dMSFh0N3VtdjZTZmZFdGZwNXJUSEpT?=
- =?utf-8?B?Vm5LNHcrQUdjNno4UUllbk9ZUTVjcFhHd0dDR2hIWGpzMFp3amNmRExNS09I?=
- =?utf-8?B?eUttZTArc1RGYnBFYk5OVTJ2NGN5K05SS2VDaGRuV1loNU5BcWk3MkZXbkRP?=
- =?utf-8?B?MDZCcTBlVFdidDUxNExIcW4rN3crRlowY1JZcm0wZ2VPQldPZWFBU3huVTVH?=
- =?utf-8?B?YTB2NlA0Vnp2YmlxWWRRa0ZwcTlsRGEzRVg0anVkQVhMRjY0OVhxcXFpWFd6?=
- =?utf-8?Q?qQRn/XnzrHU8fRxVLQUN4SknS?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 81f8ecd2-2eb1-4715-cfe7-08ddd1b0a182
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Aug 2025 10:37:51.2192
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4r3jwDXl8HEpgbP19ONAm4EEExDoKiuuJ/M3v2f5CNgQ7t+JGX7Gq3EmDLeKJanW0BmrgvuACYOep9PIdh7W6A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8745
-X-Stat-Signature: kjosyc7r8pxni791u7s7ttq3tjs6w9sr
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: BF066A0008
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 60A59180005
+X-Stat-Signature: 3fahakiitj5c7189ksrxwhf5fmxsm9js
 X-Rspam-User: 
-X-HE-Tag: 1754131075-140109
-X-HE-Meta: U2FsdGVkX1+lc9aOUyva45vM5ZJ+JXFTqGXBqCQtb3NELVWUF3yTt+Am8JDe0y5c7E+3TZodJwylygkr2d+yxNsOO+67qFCzZcxDVz0Wxxv/A5fEKFM9yi/9gx8XDu/X9bsoPF8u5G13ZguJIpqFkrS1saVR0PRcZByQkJR6m/wFpuN71eY7QD+gAeyYc8YMJG+qVUoSmLg8BQs3I3+iOVQ5PztfEZP2Tojymry16t4fY6AbY8o4LA/qK5Ex88MeLmtZ7jtMRWLvLc4zSDe/nXtg6OgPqfDDLmTkX7eEY0Ltv+SO0xPYma3s2iElnfrFVR15K0n6a6JAzlynPVMiTBsnJdhphw2upfkv6GH0x6MOqKEjkChvM1pMZOBq3ZBPOtNezQ52Gm1Yo7f17xfoabISquJL2e1FZ8SRlRJi5Sodj9MM9W+wm5eJu07syUPOugHcKspVwmMDAGHnBlTynyVDYB9mY+PAXe4NZn8Yz7Jq0V+n3KB2hJk8v6OEr6vyv92noKQKum7MxqzTu/ql7cv2pf1E9fLlCR9pBcssWVOpKGo0x24xVR/T2aNOrmjJRksjUrf61vG8Kv9fNSRjHohbOmM7plCSVByVp0jiwl6f0I04B4GWRLaodUrFPeEOnomaiDqH0AXUDTfcvR9J9OhG/Uv5ophpxOwQJ2QhIKt6pJDvDsagIMOhyjVcW8puihkc9v3ZteCCBzUZ3RFg/UYPS38kmIdDZ3IK9nbhlhRqHUs4rQ/u1+X9dCNE5HYMfPmwT0nZ45P++DuQSBO8rhi9USpj5qFatbnbOIY64X8bSkHOVbEOkpYgecRqf0eFHhW1Du/YivsZZ/tdX+75wKbbcRKTaxkb/Cm+WFhyko5IW2CIju29tjqp31UnAQ2z8i1UnulCisaVEQIZmko2qR2Wlgt5xzssYhndWJEztVAR5HMNHTOFrt+m+1UIh5ehcGYOU/hBaEYqJqaGpZs
- bmTI0AOF
- bKy5AT2JOn5WW99/Kas4Bkkj7MhASRXdtCioc9oD4DRrS+zqrm01E1NuyFU+C9gYCXIIe5QmZWx4PWguB2GAdVbYhb3DYlA+bPbirIIVDqNVm5S5rMXDGY/mU9lNIYso/HwRLXc1588eytRVpOjbC3MpWkSpr+ErgViMGhIid/L5g1VJw+NmzLg0GAbgw//3XsaNQMZBGeNq8IfYQU1Lz7FQ47GDV/Xg8u6nQfeneKrcZaY2lgjVCd6dsy6/+ky2otNFrioWOYEmDXqh2GugBZT2IbLw4nkBk6R2IjqdSP8bjUZAUhMygEjXsK6n3C7HXid+puJSeRPuhsrvoM1nLr/XCPiLEpEbV4ovpgyTeWyOgwW+ULAlOcoDe9vEscc8ZxcWfj1EAacOclvRDYGNDbkj3xN/J3qNW4+c8BPCtF/pr/fFOLnkwL+LGae7buY/5DVPT5vi7QlOZBFtJDwMeHI254HjT/g4bd3KaRjS9DoQFeQQ8fb8WmtfW+uwDiVVhYEO0VZhGvhLjV6j0h2IWKeTRG4TKUZekpelbcCSsNGz684uTa6j/QO33FyjpV//1PqoeSXDjxicsxIiJa+ivZUp7qRNsn7lOw186azh0Q6P1hZo=
+X-HE-Tag: 1754135581-401481
+X-HE-Meta: U2FsdGVkX1+2exSSXTnQtI5LigVU57V3QhJc2qwMOfhxZX0D39+5pPw+swhpu9vo1rahkNgppVvx8gUtQw9mbJsZ8QhRXNLuhmKLJmF1Bp9rDN7uX45ZLyq6fAQD7rQMSqR29bWsA0bS01+ZUM0PrbRk0t2cjNnaABneBYT7/jCElGXyfnbAmSiOb+/hDyF/PlWngc9NTCLbdYFYP/y/60OsrDWHdxirlc0fUsnQYlj7nAyfLcXrgR5mHKxYfponWcpKzwRE3JcNraCFKXB2TCia9y/dUjWWRBnt9XQaaIHf47cZBEg8VC8qjikIH20GyI1HMxqZ59pZTne/3lDCQQGI24h39s34RbZXOCgLo2fJ8kuLaDrVpwPWHbW0wHP9JBfC43oRaxGrtjvUxUaHJZiPHKlTKNxEtt0fTdpKacTYgLkWSfrV7l+xEZnAQV0Y/OOdegwJA4X4MtAGsgguEkruBBxfzhfPBj9JSlyVQ3HuTicj27iGJ4fl/8W7vQtIv4/yQcr7dUorggw7xDs/J17hRZ6vscwJza9uHjMw5FeXRbnAPe2/0mzvW/T3+2i7MW14DA+YqY5Q4C6bbkR5ZcUyU7iaBzd19TwH9rABvaIkoqVoWBryx6hIr9GRSKhSQqqZ5NVubQfKnjoUXHfui6nbeEhy2HX5sytGpom8uAdPIzKPMNeqmd3g1Sd1M6TkvzWtGpu22AmiUGn3FpUdKeOib2UxRLo0JWPM7iKRzt3IhpsIe28fTqGg8jyDTetMX/9FRiAF63FNIAi/wv6nZ/YOrO3Ubk1OP4ou3xCRWOR5HRBB1QG6PBKOGOZ6SHw54kHnifafnOTojamflT2DrMUdATcFGJW3/AJDD41LpDB4iZdChfmSHz4n+LsKPvFK4cmRAyVDrJvxEFGlriyV5wTpX9twjIV9hkdrEn/z1FYG2uuTerAjtdkK2h53DQJM2Z9TG8lFsHpQ+hiUWOW
+ ATt96CVe
+ RAAvVdlfQbhZ67UnmOu7UV61vAfRrEcc1DuC0JJtNRYhGtcmIsAdTU0ujJfRiASIdaNIY2imxkHneKydEjkO2W9mKYbIuCips2e06Ug2H5v5TjfCBX2V6c0d01emcI/PadOURZhuXHrm1pdUTOCbXMM1spsV6ul7szYUCz4TR7l7a4NuaWvWntJNdMtra70w6jzFcTWYkFdsgpbOEPKr2YFPvE1JZMblN+UwXWg4qRDlO2960pRZNL2u6ZNmjDEJp0vnIv23fq7vF0Dl16/los5xoR30DVVazxMDNrpzWAiQ5NxMwgJCGXCrYFrh3ptWUZDUaAjLwjV2000kH346FJORoqbgIsQk1qiQSL7Ths9rWfJzlKMIvb5ryF1Yzk0HtqKrtWnFl2rhGzjnei7/FebTyIOGudZMps38172Ua/f/RMcNFHe2NSeuV9g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -227,242 +118,142 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-FYI:
+Extend DAMOS_STAT handling of the DAMON operations sets for virtual
+address spaces for ops-level DAMOS filters.
 
-I have the following patch on top of my series that seems to make it work
-without requiring the helper to split device private folios
+Functionality Test
+==================
+I wrote a small test program which allocates 10GB of DRAM, use 
+madvise(MADV_HUGEPAGE) to convert the base pages to 2MB huge pages
+Then my program does the following things in order:
+1. Write sequentially to the whole 10GB region
+2. Read the first 5GB region sequentially for 10 times
+3. Sleep 5s
+4. Read the second 5GB region sequentially for 10 times
+
+With a proper damon setting, we are expected to see df-passed to be 10GB
+and hot region move around with the read
+
+$ # Start DAMON
+$ sudo ./damo/damo start "./my_test/test" --monitoring_intervals 100ms\
+1s 2s
+
+$ # Show DAMON-generated access pattern snapshot
+$ sudo ./damo/damo report access --snapshot_damos_filter allow \
+hugepage_size 2MiB 2MiB
+    heatmap:
+    # min/max temperatures: -600,000,000, 100,001,000, column size: 137.352 MiB
+    intervals: sample 100 ms aggr 1 s (max access hz 10)
+    # damos filters (df): reject none hugepage_size [2.000 MiB, 2.000 MiB]
+    df-pass:
+    # min/max temperatures: -400,000,000, 100,001,000, column size: 128.031 MiB
+    0   addr 85.373 TiB   size 745.555 MiB access 0 hz   age 6 s           df-passed 0 B
+    1   addr 127.608 TiB  size 877.664 MiB access 3.000 hz age 0 ns          df-passed 878.000 MiB
+    2   addr 127.609 TiB  size 219.418 MiB access 2.000 hz age 0 ns          df-passed 220.000 MiB
+    3   addr 127.609 TiB  size 316.613 MiB access 1.000 hz age 1 s           df-passed 316.000 MiB
+    4   addr 127.609 TiB  size 474.922 MiB access 1.000 hz age 1 s           df-passed 476.000 MiB
+    5   addr 127.610 TiB  size 407.188 MiB access 1.000 hz age 0 ns          df-passed 406.000 MiB
+    6   addr 127.610 TiB  size 610.781 MiB access 1.000 hz age 0 ns          df-passed 612.000 MiB
+    7   addr 127.611 TiB  size 697.309 MiB access 0 hz   age 0 ns          df-passed 696.000 MiB
+    8   addr 127.611 TiB  size 77.480 MiB  access 1.000 hz age 0 ns          df-passed 78.000 MiB
+    9   addr 127.611 TiB  size 573.102 MiB access 1.000 hz age 0 ns          df-passed 574.000 MiB
+    10  addr 127.612 TiB  size 245.617 MiB access 2.000 hz age 0 ns          df-passed 246.000 MiB
+    11  addr 127.612 TiB  size 295.102 MiB access 1.000 hz age 1 s           df-passed 294.000 MiB
+    12  addr 127.612 TiB  size 295.105 MiB access 1.000 hz age 1 s           df-passed 296.000 MiB
+    13  addr 127.613 TiB  size 67.172 MiB  access 1.000 hz age 1 s           df-passed 66.000 MiB
+    14  addr 127.613 TiB  size 604.570 MiB access 0 hz   age 1 s           df-passed 606.000 MiB
+    15  addr 127.613 TiB  size 389.578 MiB access 0 hz   age 4 s           df-passed 388.000 MiB
+    16  addr 127.614 TiB  size 259.719 MiB access 0 hz   age 4 s           df-passed 260.000 MiB
+    17  addr 127.614 TiB  size 817.941 MiB access 0 hz   age 4 s           df-passed 818.000 MiB
+    18  addr 127.615 TiB  size 204.488 MiB access 0 hz   age 4 s           df-passed 204.000 MiB
+    19  addr 127.615 TiB  size 730.902 MiB access 0 hz   age 4 s           df-passed 732.000 MiB
+    20  addr 127.616 TiB  size 182.727 MiB access 0 hz   age 4 s           df-passed 182.000 MiB
+    21  addr 127.616 TiB  size 926.824 MiB access 0 hz   age 2 s           df-passed 928.000 MiB
+    22  addr 127.617 TiB  size 102.984 MiB access 0 hz   age 2 s           df-passed 102.000 MiB
+    23  addr 127.617 TiB  size 86.527 MiB  access 0 hz   age 2 s           df-passed 86.000 MiB
+    24  addr 127.617 TiB  size 778.777 MiB access 0 hz   age 2 s           df-passed 776.000 MiB
+    25  addr 127.999 TiB  size 132.000 KiB access 0 hz   age 6 s           df-passed 0 B
+    memory bw estimate: 6.524 GiB per second  df-passed: 6.527 GiB per second
+    total size: 10.731 GiB  df-passed 10.000 GiB
+    record DAMON intervals: sample 100 ms, aggr 1 s
 
 
-Signed-off-by: Balbir Singh <balbirs@nvidia.com>
----
- include/linux/huge_mm.h |  1 -
- lib/test_hmm.c          | 11 +++++-
- mm/huge_memory.c        | 76 ++++-------------------------------------
- mm/migrate_device.c     | 51 +++++++++++++++++++++++++++
- 4 files changed, 67 insertions(+), 72 deletions(-)
+$ # Show DAMON-generated access pattern snapshot again
+$ sudo ./damo/damo report access --snapshot_damos_filter allow \
+hugepage_size 2MiB 2MiB
+    heatmap:
+    # min/max temperatures: -1,100,000,000, 2,000, column size: 137.352 MiB
+    intervals: sample 100 ms aggr 1 s (max access hz 10)
+    # damos filters (df): reject none hugepage_size [2.000 MiB, 2.000 MiB]
+    df-pass:
+    # min/max temperatures: -900,000,000, 2,000, column size: 128.031 MiB
+    0   addr 85.373 TiB   size 745.555 MiB access 0 hz   age 11 s          df-passed 0 B
+    1   addr 127.608 TiB  size 579.715 MiB access 2.000 hz age 0 ns          df-passed 580.000 MiB
+    2   addr 127.608 TiB  size 144.930 MiB access 2.000 hz age 0 ns          df-passed 146.000 MiB
+    3   addr 127.608 TiB  size 452.453 MiB access 2.000 hz age 0 ns          df-passed 452.000 MiB
+    4   addr 127.609 TiB  size 113.117 MiB access 1.000 hz age 0 ns          df-passed 114.000 MiB
+    5   addr 127.609 TiB  size 182.367 MiB access 2.000 hz age 0 ns          df-passed 182.000 MiB
+    6   addr 127.609 TiB  size 182.371 MiB access 2.000 hz age 0 ns          df-passed 182.000 MiB
+    7   addr 127.609 TiB  size 350.488 MiB access 1.000 hz age 0 ns          df-passed 350.000 MiB
+    8   addr 127.610 TiB  size 525.738 MiB access 1.000 hz age 0 ns          df-passed 526.000 MiB
+    9   addr 127.610 TiB  size 401.352 MiB access 1.000 hz age 0 ns          df-passed 402.000 MiB
+    10  addr 127.611 TiB  size 100.340 MiB access 1.000 hz age 0 ns          df-passed 100.000 MiB
+    11  addr 127.611 TiB  size 19.523 MiB  access 0 hz   age 0 ns          df-passed 20.000 MiB
+    12  addr 127.611 TiB  size 175.727 MiB access 0 hz   age 0 ns          df-passed 176.000 MiB
+    13  addr 127.611 TiB  size 106.629 MiB access 0 hz   age 0 ns          df-passed 106.000 MiB
+    14  addr 127.611 TiB  size 959.676 MiB access 0 hz   age 0 ns          df-passed 960.000 MiB
+    15  addr 127.612 TiB  size 424.469 MiB access 1.000 hz age 0 ns          df-passed 424.000 MiB
+    16  addr 127.612 TiB  size 424.469 MiB access 1.000 hz age 0 ns          df-passed 424.000 MiB
+    17  addr 127.613 TiB  size 201.648 MiB access 0 hz   age 6 s           df-passed 202.000 MiB
+    18  addr 127.613 TiB  size 806.609 MiB access 0 hz   age 6 s           df-passed 806.000 MiB
+    19  addr 127.614 TiB  size 862.125 MiB access 0 hz   age 9 s           df-passed 862.000 MiB
+    20  addr 127.614 TiB  size 215.535 MiB access 0 hz   age 9 s           df-passed 216.000 MiB
+    21  addr 127.615 TiB  size 104.500 MiB access 0 hz   age 9 s           df-passed 104.000 MiB
+    22  addr 127.615 TiB  size 940.523 MiB access 0 hz   age 9 s           df-passed 942.000 MiB
+    23  addr 127.616 TiB  size 640.281 MiB access 0 hz   age 7 s           df-passed 640.000 MiB
+    24  addr 127.616 TiB  size 426.855 MiB access 0 hz   age 7 s           df-passed 426.000 MiB
+    25  addr 127.617 TiB  size 90.105 MiB  access 0 hz   age 7 s           df-passed 90.000 MiB
+    26  addr 127.617 TiB  size 810.965 MiB access 0 hz   age 7 s           df-passed 808.000 MiB
+    27  addr 127.999 TiB  size 132.000 KiB access 0 hz   age 11 s          df-passed 0 B
+    memory bw estimate: 5.297 GiB per second  df-passed: 5.297 GiB per second
+    total size: 10.731 GiB  df-passed 10.000 GiB
+    record DAMON intervals: sample 100 ms, aggr 1 s
 
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index 19e7e3b7c2b7..52d8b435950b 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -343,7 +343,6 @@ unsigned long thp_get_unmapped_area_vmflags(struct file *filp, unsigned long add
- 		vm_flags_t vm_flags);
- 
- bool can_split_folio(struct folio *folio, int caller_pins, int *pextra_pins);
--int split_device_private_folio(struct folio *folio);
- int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
- 		unsigned int new_order, bool unmapped);
- int min_order_for_split(struct folio *folio);
-diff --git a/lib/test_hmm.c b/lib/test_hmm.c
-index 341ae2af44ec..444477785882 100644
---- a/lib/test_hmm.c
-+++ b/lib/test_hmm.c
-@@ -1625,13 +1625,22 @@ static vm_fault_t dmirror_devmem_fault(struct vm_fault *vmf)
- 	 * the mirror but here we use it to hold the page for the simulated
- 	 * device memory and that page holds the pointer to the mirror.
- 	 */
--	rpage = vmf->page->zone_device_data;
-+	rpage = folio_page(page_folio(vmf->page), 0)->zone_device_data;
- 	dmirror = rpage->zone_device_data;
- 
- 	/* FIXME demonstrate how we can adjust migrate range */
- 	order = folio_order(page_folio(vmf->page));
- 	nr = 1 << order;
- 
-+	/*
-+	 * When folios are partially mapped, we can't rely on the folio
-+	 * order of vmf->page as the folio might not be fully split yet
-+	 */
-+	if (vmf->pte) {
-+		order = 0;
-+		nr = 1;
-+	}
-+
- 	/*
- 	 * Consider a per-cpu cache of src and dst pfns, but with
- 	 * large number of cpus that might not scale well.
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 1fc1efa219c8..863393dec1f1 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -72,10 +72,6 @@ static unsigned long deferred_split_count(struct shrinker *shrink,
- 					  struct shrink_control *sc);
- static unsigned long deferred_split_scan(struct shrinker *shrink,
- 					 struct shrink_control *sc);
--static int __split_unmapped_folio(struct folio *folio, int new_order,
--		struct page *split_at, struct xa_state *xas,
--		struct address_space *mapping, bool uniform_split);
--
- static bool split_underused_thp = true;
- 
- static atomic_t huge_zero_refcount;
-@@ -2924,51 +2920,6 @@ static void __split_huge_zero_page_pmd(struct vm_area_struct *vma,
- 	pmd_populate(mm, pmd, pgtable);
- }
- 
--/**
-- * split_huge_device_private_folio - split a huge device private folio into
-- * smaller pages (of order 0), currently used by migrate_device logic to
-- * split folios for pages that are partially mapped
-- *
-- * @folio: the folio to split
-- *
-- * The caller has to hold the folio_lock and a reference via folio_get
-- */
--int split_device_private_folio(struct folio *folio)
--{
--	struct folio *end_folio = folio_next(folio);
--	struct folio *new_folio;
--	int ret = 0;
--
--	/*
--	 * Split the folio now. In the case of device
--	 * private pages, this path is executed when
--	 * the pmd is split and since freeze is not true
--	 * it is likely the folio will be deferred_split.
--	 *
--	 * With device private pages, deferred splits of
--	 * folios should be handled here to prevent partial
--	 * unmaps from causing issues later on in migration
--	 * and fault handling flows.
--	 */
--	folio_ref_freeze(folio, 1 + folio_expected_ref_count(folio));
--	ret = __split_unmapped_folio(folio, 0, &folio->page, NULL, NULL, true);
--	VM_WARN_ON(ret);
--	for (new_folio = folio_next(folio); new_folio != end_folio;
--					new_folio = folio_next(new_folio)) {
--		zone_device_private_split_cb(folio, new_folio);
--		folio_ref_unfreeze(new_folio, 1 + folio_expected_ref_count(
--								new_folio));
--	}
--
--	/*
--	 * Mark the end of the folio split for device private THP
--	 * split
--	 */
--	zone_device_private_split_cb(folio, NULL);
--	folio_ref_unfreeze(folio, 1 + folio_expected_ref_count(folio));
--	return ret;
--}
--
- static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
- 		unsigned long haddr, bool freeze)
- {
-@@ -3064,30 +3015,15 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
- 				freeze = false;
- 			if (!freeze) {
- 				rmap_t rmap_flags = RMAP_NONE;
--				unsigned long addr = haddr;
--				struct folio *new_folio;
--				struct folio *end_folio = folio_next(folio);
- 
- 				if (anon_exclusive)
- 					rmap_flags |= RMAP_EXCLUSIVE;
- 
--				folio_lock(folio);
--				folio_get(folio);
--
--				split_device_private_folio(folio);
--
--				for (new_folio = folio_next(folio);
--					new_folio != end_folio;
--					new_folio = folio_next(new_folio)) {
--					addr += PAGE_SIZE;
--					folio_unlock(new_folio);
--					folio_add_anon_rmap_ptes(new_folio,
--						&new_folio->page, 1,
--						vma, addr, rmap_flags);
--				}
--				folio_unlock(folio);
--				folio_add_anon_rmap_ptes(folio, &folio->page,
--						1, vma, haddr, rmap_flags);
-+				folio_ref_add(folio, HPAGE_PMD_NR - 1);
-+				if (anon_exclusive)
-+					rmap_flags |= RMAP_EXCLUSIVE;
-+				folio_add_anon_rmap_ptes(folio, page, HPAGE_PMD_NR,
-+						 vma, haddr, rmap_flags);
- 			}
- 		}
- 
-@@ -4065,7 +4001,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
- 	if (nr_shmem_dropped)
- 		shmem_uncharge(mapping->host, nr_shmem_dropped);
- 
--	if (!ret && is_anon)
-+	if (!ret && is_anon && !folio_is_device_private(folio))
- 		remap_flags = RMP_USE_SHARED_ZEROPAGE;
- 
- 	remap_page(folio, 1 << order, remap_flags);
-diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-index 49962ea19109..4264c0290d08 100644
---- a/mm/migrate_device.c
-+++ b/mm/migrate_device.c
-@@ -248,6 +248,8 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
- 			 * page table entry. Other special swap entries are not
- 			 * migratable, and we ignore regular swapped page.
- 			 */
-+			struct folio *folio;
-+
- 			entry = pte_to_swp_entry(pte);
- 			if (!is_device_private_entry(entry))
- 				goto next;
-@@ -259,6 +261,55 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
- 			    pgmap->owner != migrate->pgmap_owner)
- 				goto next;
- 
-+			folio = page_folio(page);
-+			if (folio_test_large(folio)) {
-+				struct folio *new_folio;
-+				struct folio *new_fault_folio;
-+
-+				/*
-+				 * The reason for finding pmd present with a
-+				 * device private pte and a large folio for the
-+				 * pte is partial unmaps. Split the folio now
-+				 * for the migration to be handled correctly
-+				 */
-+				pte_unmap_unlock(ptep, ptl);
-+
-+				folio_get(folio);
-+				if (folio != fault_folio)
-+					folio_lock(folio);
-+				if (split_folio(folio)) {
-+					if (folio != fault_folio)
-+						folio_unlock(folio);
-+					ptep = pte_offset_map_lock(mm, pmdp, addr, &ptl);
-+					goto next;
-+				}
-+
-+				/*
-+				 * After the split, get back the extra reference
-+				 * on the fault_page, this reference is checked during
-+				 * folio_migrate_mapping()
-+				 */
-+				if (migrate->fault_page) {
-+					new_fault_folio = page_folio(migrate->fault_page);
-+					folio_get(new_fault_folio);
-+				}
-+
-+				new_folio = page_folio(page);
-+				pfn = page_to_pfn(page);
-+
-+				/*
-+				 * Ensure the lock is held on the correct
-+				 * folio after the split
-+				 */
-+				if (folio != new_folio) {
-+					folio_unlock(folio);
-+					folio_lock(new_folio);
-+				}
-+				folio_put(folio);
-+				addr = start;
-+				goto again;
-+			}
-+
- 			mpfn = migrate_pfn(page_to_pfn(page)) |
- 					MIGRATE_PFN_MIGRATE;
- 			if (is_writable_device_private_entry(entry))
+As you can see the total df-passed region is 10GiB and the hot region
+moves as the seq read keeps going
+
+Revision History
+================
+Changes from v3 [3]:
+- Fix some naming issues and improper text in cover letter raise by SJ.
+
+Changes from v2 [2]:
+- Fix some naming and format issues raised by SJ.
+
+Changes from v1 [1]:
+- Follow David's advise to combine *pmd_entry() and *pte_entry() into
+  one. Also remove manually setting walk->action
+- Use vma_normal_page and vma_normal_page_pmd instead of damon_get_folio
+  to remove redundant folio_get and folio_put
+- Follow SJ's advise to only move damon_pa_scheme_has_filter to
+  ops-common
+- Change the command used in cover-letter for more natural illustration
+
+[1] https://lore.kernel.org/all/cover.1753794408.git.pyyjason@gmail.com/
+[2] https://lore.kernel.org/all/cover.1753895066.git.pyyjason@gmail.com/
+[3] https://lore.kernel.org/all/cover.1754088635.git.pyyjason@gmail.com/
+
+Yueyang Pan (2):
+  mm/damon/paddr: move filters existence check function to ops-common
+  mm/damon/vaddr: support stat-purpose DAMOS filters
+
+ mm/damon/ops-common.c |   9 ++++
+ mm/damon/ops-common.h |   2 +
+ mm/damon/paddr.c      |  11 +----
+ mm/damon/vaddr.c      | 103 +++++++++++++++++++++++++++++++++++++++++-
+ 4 files changed, 114 insertions(+), 11 deletions(-)
+
 -- 
-2.50.1
+2.43.0
 
 
