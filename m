@@ -2,143 +2,90 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 152DBC87FCB
-	for <linux-mm@archiver.kernel.org>; Sun,  3 Aug 2025 15:59:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E4D8C87FCB
+	for <linux-mm@archiver.kernel.org>; Sun,  3 Aug 2025 17:42:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A6C96B0088; Sun,  3 Aug 2025 11:59:12 -0400 (EDT)
+	id 18A036B0088; Sun,  3 Aug 2025 13:42:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0575D6B0089; Sun,  3 Aug 2025 11:59:11 -0400 (EDT)
+	id 161EC6B0089; Sun,  3 Aug 2025 13:42:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E88916B008A; Sun,  3 Aug 2025 11:59:11 -0400 (EDT)
+	id 09F0D6B008A; Sun,  3 Aug 2025 13:42:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D7D626B0088
-	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 11:59:11 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3024614076B
-	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 15:59:11 +0000 (UTC)
-X-FDA: 83735905302.12.07D9B8B
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 32F9AC0005
-	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 15:59:09 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=aAgGtNB6;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.177 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754236749; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EA7896B0088
+	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 13:42:41 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5186F1607F7
+	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 17:42:41 +0000 (UTC)
+X-FDA: 83736166122.04.1973298
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id AF38340008
+	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 17:42:39 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FspGJBtK;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754242959; a=rsa-sha256;
 	cv=none;
-	b=CtrZ0aeO4u/E7pSsQAzfVy6y4k6ICC5tS6Rd/tFDYsyCCh1NPNcGvgVUri3DP12GVzAZGn
-	sZizHqqwfzenZYCzn5n9DayTqKp7OKv/Hvm6Cm3STmbkjOpa2OjjN85v71RB7TkOg1cUtm
-	vgc/v6Np5afDU6uVfmxIwuRsvuX8Dw8=
+	b=cz7+RKeFTzpBQXFpqv2fmsG7xpMKD53s7F5mZ8on/62UuD6MsBYUAgAfAvi2itLreMSvpT
+	+XUtWkRyBXLUdkdqwEN3y0UKgtJn2M1g1AWo/lNbTZK4cX7yXzwP/1Ogl1RRG9QD4UlysC
+	GR8pqb3Bp3D8uIs+f7bzkoKEOuOx/iY=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=aAgGtNB6;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.177 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FspGJBtK;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754236749;
+	s=arc-20220608; t=1754242959;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8slyx6E/zt3CNU5aqFjzFMTLA7WC2ifuj8UOdB6q15U=;
-	b=59wJf6jfWkgyw33KYt2rKeogGa2x2yTNFJqpCmjklqijUcbc75poCkrIM6WnsiQ0kYXnNO
-	q8tnArMrssf4a9p4RBprJfwe/vlLP1Egpq+3TazFZeiKLv/94byaauzGG1iDT2AfSQBxPD
-	+ERt5/bq21KMgy7CoP9Q6m0gIdSweX0=
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4ab61ecc1e8so15770121cf.1
-        for <linux-mm@kvack.org>; Sun, 03 Aug 2025 08:59:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1754236748; x=1754841548; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8slyx6E/zt3CNU5aqFjzFMTLA7WC2ifuj8UOdB6q15U=;
-        b=aAgGtNB6RBqxtebzeMKOWPBHwSa+BJ7orF5Ihu3o58P9HkzJMcu2PBFN2Mp6EcTVhU
-         vA11Ew0duFSLH8eT+zn4IV522eWXtYF5oTkI3+sS2k9aP6yLof69uGjTxK9W86Eevkn0
-         nqL7ZNM7n5FG5F238BVGWLMCuFfH3WIisDOYUbqe96LzA7jlB7M+x+Qcd6+B6X642J/L
-         lORs94ju2yOhGWEP9Totl8WfjbQlO81atjIpiGpfqxEibI48vbT1h2lvcKBrSQuWHMUS
-         5/+MmZ9v7yrsik02NvNZgdubasnvmdYXE25sKx2UfH9X+Ea6Z1T87rlNw3bdYAJ9DW8R
-         TSMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754236748; x=1754841548;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8slyx6E/zt3CNU5aqFjzFMTLA7WC2ifuj8UOdB6q15U=;
-        b=pzsmkKofriaCTlKRqcdcg2586DqTKmW9sZcVwfo2TjhN8x1lymnVkpTOwuPyEJWApd
-         pbRLCKNFQQNMdHtWAp8TOvfoIOzR1xH37Fr/CCQpn7qsrAXEuLOdBUlb/I2NPc7yPKz7
-         Pmox7GZsw4jnko5qrPtX4WNFW8Nn7STta+/Z8wkCzBOxHn3hzdvhWVqrWPPBEtncjlFn
-         a5DtGhD6+cLMuqPLh1IcKlpwA2QiAgzGOMrQPI0P4EiOOuSgYliQAr1k9Kn5JEUW09qt
-         Ls5sy7FYBXxEJZIUUpeo05uqvGAZ5GqNgm6/h0k1Mmm8MGp8jd5s031IIxEra7kFX6OS
-         vvfw==
-X-Forwarded-Encrypted: i=1; AJvYcCWpVQmz/m347sttdolQL9+cUUP6ojrKgzRyU94OCxpCaKNW7oXvbFWIBYDwkXTvfmHd5v0kiLyYYw==@kvack.org
-X-Gm-Message-State: AOJu0YyaTWu1rL07uJdhoMsUp3sdkeJzwlNX4mFKzTMp4YjsVtPfcyGW
-	PXdC84dB5UXtA+E+s2VvWBCzaNtPxjhnZMMvQoErVLVPFIjZqv2kMpa+A0RWJE60OHw=
-X-Gm-Gg: ASbGnctNgsYSyE4+J3H1aqxjfEVcJ60ZG5odjETUZKRmtL5lDR3oyefDQblMFApmcca
-	awhN4J17byWvvv5+Z2aXZ/KzlAakGtg42Xu3OKHzaVwzpZw4n38fJQEeNLO2eut5CSEbvnMnqc0
-	vnRNrb29mw1wkwVbJPcIlc5n6coBD9CqiprtwxV74YoupAEnDigTvhoNu1/2MJEHsgJGhCLHqCe
-	vfXGHhAsaBgEKaTQWhA+0lriWSc5wES5VIJhtpvf7fF/sw33YjBxgDinxT4U/MP/JK0RG7L6w2O
-	sE2kcU+Fjmeu/Q2C0EKO4wzxjOdzYKuSrykSooWW9XFK9PztJwdUKjXLzvdkr3cx+ZhRSMGLG1F
-	ykYuqtT1/xtD2jO6n1tv4XFXJyoALSdW4masW0WUZCdlrIy4147uSDL+/GmgZIzUoISFO
-X-Google-Smtp-Source: AGHT+IGXTSS5qgdnpS/eJ13tqSItmWfAUC8meUEvOe7mj0qBpcNtZfptB2QZRGNN4fnSPsBSKZwvXw==
-X-Received: by 2002:a05:622a:1dc5:b0:4b0:6da3:26df with SMTP id d75a77b69052e-4b06da333ccmr13497821cf.29.1754236748067;
-        Sun, 03 Aug 2025 08:59:08 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4af01e4aa4dsm29318401cf.23.2025.08.03.08.59.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 03 Aug 2025 08:59:07 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1uib74-00000001Hym-2XZx;
-	Sun, 03 Aug 2025 12:59:06 -0300
-Date: Sun, 3 Aug 2025 12:59:06 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Christoph Hellwig <hch@lst.de>, Leon Romanovsky <leon@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	=?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, iommu@lists.linux.dev,
-	virtualization@lists.linux.dev, kasan-dev@googlegroups.com,
-	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 0/8] dma-mapping: migrate to physical address-based API
-Message-ID: <20250803155906.GM26511@ziepe.ca>
-References: <CGME20250625131920eucas1p271b196cde042bd39ac08fb12beff5baf@eucas1p2.samsung.com>
- <cover.1750854543.git.leon@kernel.org>
- <35df6f2a-0010-41fe-b490-f52693fe4778@samsung.com>
- <20250627170213.GL17401@unreal>
- <20250630133839.GA26981@lst.de>
- <69b177dc-c149-40d3-bbde-3f6bad0efd0e@samsung.com>
- <f912c446-1ae9-4390-9c11-00dce7bf0fd3@arm.com>
- <aIupx_8vOg8wQh6w@casper.infradead.org>
+	bh=WtlBW1C1g+tEbVVhgG1e6hE2ZYKfzijkewSuyki5MmU=;
+	b=RQiH50XOhZyrGkhNMFx8nZm2HMf7b3wmvws30wv8wmwwN5Uh3rsQFSbV4tDJGKk0MXqRwt
+	vJfkUUd+3ulQjSqeBJ6QlbGJ1aBiwiYap/x4BVSGLEVl+I7aEJREuX1wDUoplj9gXOzoWu
+	vUkKqcsB7v80Xn4sYvdgsP8tvW3tEV8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id CB78E601DD;
+	Sun,  3 Aug 2025 17:42:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44470C4CEEB;
+	Sun,  3 Aug 2025 17:42:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754242958;
+	bh=0AexdTSmWe/R0yl0rbF+c7H4VGOBukfpyCog3Tqe8xA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=FspGJBtKpuQ37fXykz8fzqu2dzo4KDUlZNXRVObfEzshf+GA2kWGy5uAWTjvvLtNu
+	 3YfdYE/N6QVW0yflvP3u2j+1pZs9a5nIPaDd2mwRLxkhynwcHFc3YX3NEk2PUoLorI
+	 74rGrnqy7gb/hABAZYNQx/fW+zHQFCDgQL5mj+6GcODUzrofhpiUf/6vBO0hGadOHg
+	 H8eqYUxaLFmzgljuRVhUKZDY0t+2dbBi/VAou3F7jefIkOOlLCGGz34wmDvPKYLXI0
+	 +Op+TVW4gaoaHW+FsfTTVGtZSmG1BjjULcZ8pMwFHsU2BZrx/ogzXlYZiKFxUkOU5d
+	 bR/R04IdflCKg==
+From: SeongJae Park <sj@kernel.org>
+To: Sang-Heon Jeon <ekffu200098@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	Honggyu Kim <honggyu.kim@sk.com>,
+	kernel_team@skhynix.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] mm/damon: update expired description of damos_action
+Date: Sun,  3 Aug 2025 10:42:35 -0700
+Message-Id: <20250803174235.55846-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <CABFDxME81-oWdDzc6EzCEgHnXDTe_fQT0s8c2YuqMA1EDbDZZw@mail.gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aIupx_8vOg8wQh6w@casper.infradead.org>
-X-Rspamd-Queue-Id: 32F9AC0005
-X-Stat-Signature: jwbgzkw4o38bnfp3cow7qh7jc8n5g6to
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1754236749-597228
-X-HE-Meta: U2FsdGVkX1+c5tvJybZKgDrXdjo5+t73XS3ofW+Q0qr0vct/bh3DHlckc25jOO7RAuD/h8xLT6e0ZyjSR6z8lVXpfvI2iOw1fJZDAVjfNu0eC+K8qzM2OieUCo35ZjWzcXz9j1dAS+kmw5LGpr3Vt79DNWIvlY7ktDP9w1DXOnl27hsMlIoRH9aWOyz9kfwgIUpxB0yaps2q4gxWi1jgAnv09ETyZ98MsAKl3WDIhTpCZxLj5GotrNSbGZpYzVMwtodoqlHno80zZbJOCGawWgThHn4BrHPWlFm6C2bojZLTqb+iPgb/OIDGQygyQM8QjqPb5Itixa9i+RB8CP4GgroBnlkxFc3PxGMgZsfumhbuc4dpUOxuNTI5+33+L90oQilaezqeb88ihcPysWm4AXums8WzaWAQYu7FleE5F6jDAUZ6aUHiVjMQmuVtX7gxA6Tcbdr1TQIdhfAoxwDrwY1EG3esID+hWuH+MLnulLisw+ncyzju12ra+uTpUfD0CwfnRdqO4HbehiY2YX3JKFyk267DxnrGgHkWGBhmcYelAhgiSxMxGZWA5tchFejhqfJjVI7bPgYmAYIhN/NTreOTe5mkEAQH4pBzbXmx2wX6x8vR5yIcuRmi6RZvRDd3PBMssdgzrontSF8qzJTwypf/QqULDgDh8wUL2TJNpYJkOQh3phxGu+wgmBnLbnQdH9WOGUBVYH0OJzT8o8+ZPeO6BQymN+NRxxj1M7rMmfs6TXpb2686SfKen5hlTDQ8iAtxKENa33lXuAAtStQyecg31KM8hXnHheTfRoDe9islQF+15V2OyR5wZzyTp6LjvP2pPqAyU/8P2i/N1KBSj+ULj6lxfOtyBtcsQqMNvzQ39lTltIzmqARc81OWg6wKSUb9dYz46fPq5br3IcBw/GqaxPfuS5a0uxKbCoOLWyEHaDUdHRJ9c6yTVj7XiGbyCt36FOBgDJPa0cqzPaC
- UwImGxfp
- rHeehO6cOUg5KbJWMjcq+v0Ke/x4ck0DNXcNYo2qXqqwuxvN07LM0drIImonAaBwfzoApDCKf33P7epwkd3T2hGt/lJ9sbipjQ2sxVM/0u3ZcogcIG0Aujv5Ex0WmB/eGIU37UeMoLzHR5qNjRSFa895RY2g+CX41XeKPSrTlgocw7k4U8DStXiK2rXoxC42XmlBkpKon0ECx1KXEZE1MEY+njnhiMX/3bmW2ARmhkCVNpDT7U++8f+Xs2vVUQr5+t/ZAXSFUG/nb1aAuwH7oMxEpfqPxIxUPBiXS
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: AF38340008
+X-Stat-Signature: a7uig1oyjhu578ic148zxue7rm46mjxn
+X-HE-Tag: 1754242959-839292
+X-HE-Meta: U2FsdGVkX1+vejz6HYqcFiXonS7luCjfEVYOeBc06S1MCP4+3C54QdGfqxcFzSu8nYN0Hkb44GU/t8hMp0y1jfmx5qMn8Ziq1uklVaCva3/Jhowjn/jpOiVuJrgTtUgFR6KpoDFqy1nX08vLLv97SVXTx6QQQ5+CTUf6dLkudTBXHrQvY2hHyMHeFl7SsVNUHH2vVAGhSHTBzp/aJ2TwM8aRYmvxEWzM2UNUTFGCbwwnKKOR1K719ou6pFCt/Crq4O9oeNFpUE+u/lDjcJLWjD7gwWl0oowBwrO0l2q7fFNdw4m7fC2jHiBGjoZdRI5nXw0UIO6kUcbta56wRHcK4+RaypDltnXH4X/L96m90kDUeMPaR0gFet0NvO0g2JmhE8XRgkJ0HDhOohctKRYRFwokXAzq5SxhbR5Yrh6f6F+K8faqtQ+SsfrX2TuRKAT3JzvCy5G0Wg0vnB4ADneS/7Ey1vJ7QDoV5n4l4G6CxqA+3mMJe/RieQWInMcXrTZO7MAHtnNRz/tQs4gmXjtmiwk94L0Ky+uc/pEpzQy144ZZgM5QV2fzhkesXQ+bnSeoHPxeEDyuulYwwyda82WKOT5IukpjQ+oMWzBO9ldDBwLDz+ItLjEu5olx4mFLaEMAnFk4Czjl6A3HFW6avQV/qLJCJOfEFaVbDxJa2iEyMWOSMt6wiL8Axb+OhYtK/nAwictKMl7fhklAzlAeuCMv7N0eaazg3SPCWbMB2uLVHOlLLVt/npsHmaDvFwXtExON2MoZhkbnntthNA4XE1qgoOtSNH1gOnjcj7J5R5uZQkwcqMktd7XSqO20S7uZsCvTkH7H75Tk8gy4zXk1qEyI6ar61v046tFLwoOhaRoigTwFc1Ys3tpLM5djHNJ0lfeicdwCGEr//ODRdSt+9oOj9uMHQn0cdXI7it0MqPkVYl2J3r4nKIPc1vuY+XaWK7miNsXOopQOkUzmblZsDeV
+ E/v/UYS+
+ t+9XfTzAclhboerw3JOwtBnfM5pd3oCZp/cLqhhbEfsccAAO7+r99LTjmuHPyWF2qk91Iw7a4Qujjg/mzI7TndN6aa0dn7DcRWGtfMHXq3fCxnmsKlBLyMZaHG1ySgkv3u7B8stgdBvK4IbR9CBDVoc44UmKyAw96PPK/9dKECJeqs3DbLFEoTPt5PaVbUAwIpJVPSjTHtMJ1ZZVIAXedsrnUC6xlRJKi0XisdjjDkR+d9Hp6amHC6QO6RkB8/ZZsiOaMri64NXAZSa17sMfoPOyKxZHfMtChtc9JOlfdjBA+Adk39TdzSfmdrsHHLBffLe9K457bCRMw4QL3XOIXcM5Rr56DDhW86a36KXYOdUR9E6DcYGIhDjRC4seS3ALLDoolLqgoTCjuyKx91/+4S8xwkaARiHlj/sqU
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,47 +94,188 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 31, 2025 at 06:37:11PM +0100, Matthew Wilcox wrote:
+On Sun, 3 Aug 2025 22:22:05 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
 
-> The replacement for kmap_atomic() is already here -- it's
-> kmap_(atomic|local)_pfn().  If a simple wrapper like kmap_local_phys()
-> would make this more palatable, that would be fine by me.  Might save
-> a bit of messing around with calculating offsets in each caller.
+> Hi, SeongJae and Honggyu,
+> 
+> On Sun, Aug 3, 2025 at 2:41 PM Honggyu Kim <honggyu.kim@sk.com> wrote:
+> >
+> >
+> >
+> > On 8/3/2025 2:30 PM, SeongJae Park wrote:
+> > > On Sun, 3 Aug 2025 13:43:03 +0900 Honggyu Kim <honggyu.kim@sk.com> wrote:
+> > >
+> > >> Hi SeongJae,
+> > >>
+> > >> On 8/3/2025 1:22 PM, SeongJae Park wrote:
+> > >>> On Sun, 3 Aug 2025 11:03:12 +0900 Honggyu Kim <honggyu.kim@sk.com> wrote:
+> > >>>
+> > >>>> Hi SeongJae and Sang-Heon,
+> > >>>>
+> > >>>> On 8/2/2025 1:50 AM, SeongJae Park wrote:
+> > >>>>> On Sat, 2 Aug 2025 01:11:09 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
+> > >>>>>
+> > >>>>>> Hi, Honggyu
+> > >>>>>>
+> > >>>>>> On Fri, Aug 1, 2025 at 8:35 PM Honggyu Kim <honggyu.kim@sk.com> wrote:
+> > >>>>>>>
+> > >>>>>>> Hi Sang-Heon and SeongJae,
+> > >>>>>>>
+> > >>>>>>> On 8/1/2025 2:58 AM, SeongJae Park wrote:
+> > >>>>>>>> Hello Sang-Heon,
+> > >>>>>>>>
+> > >>>>>>>> On Thu, 31 Jul 2025 22:22:30 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
+> > >>>>>>>>
+> > >>>>>>>>> Nowadays, damos operation actions support more various operation set.
+> > >>>>>>>>> But comments(also, generated documentation) doesn't updated.
+> > >>>>>>>>> So, fix the comments with current support status.
+> > >>>>> [...]
+> > >>>>>>>>> diff --git a/include/linux/damon.h b/include/linux/damon.h
+> > >>>>> [...]
+> > >>>>>>>>>       * @DAMOS_WILLNEED:  Call ``madvise()`` for the region with MADV_WILLNEED.
+> > >>>>>>>>>       * @DAMOS_COLD:              Call ``madvise()`` for the region with MADV_COLD.
+> > >>>>>>>>> - * @DAMOS_PAGEOUT:   Call ``madvise()`` for the region with MADV_PAGEOUT.
+> > >>>>>>>>> + * @DAMOS_PAGEOUT:   Reclaim the region.
+> > >>>>>>>>
+> > >>>>>>>> Nice!
+> > >>>>>>>
+> > >>>>>>> But doesn't it make confusion about whether this pages out to disk or does
+> > >>>>>>> demotion to the lower tier memory?  It's because PAGEOUT action doesn't do
+> > >>>>>>> demotion, but it looks "reclaim" includes pageout and demotion together in my
+> > >>>>>>> understanding since /sys/kernel/mm/numa/demotion_enabled was introduced.
+> > >>>>>
+> > >>>>> To my understanding, DAMOS_PAGEOUT can also do demotion when demotion_enabled
+> > >>>>> is set.  Am I missing something?
+> > >>>>
+> > >>>> Actually no, please see below.
+> > >>>
+> > >>> I'm unsure to what point you are saying "no".  Are you saying DAMOS_PAGEOUT can
+> > >>> also do demotion when demotion_enabled is set?  Or not?  Could you please
+> > >>> clarify, and add more explanations about why you think so?
+> > >>
+> > >> I checked it again and found I pointed out in the wrong place. Please see below.
+> > >>
+> > >>>
+> > >>>>
+> > >>>> do_demote_pass in shrink_folio_list()
+> > >>>> https://github.com/torvalds/linux/blob/v6.16/mm/vmscan.c#L1122
+> > >>>>
+> > >>>> The do_demote_pass is used here.
+> > >>>> https://github.com/torvalds/linux/blob/v6.16/mm/vmscan.c#L1293-L1302
+> > >>>>
+> > >>>> can_demote() implementation returns false when demotion_enabled is on.
+> > >>>> https://github.com/torvalds/linux/blob/v6.16/mm/vmscan.c#L350-L351
+> > >>>
+> > >>> I'm again get confused.  Isn't it opposite?
+> > >>
+> > >> The thing is that DAMOS_PAGEOUT call sequence is as follows.
+> > >>
+> > >>     DAMOS_PAGEOUT
+> > >>     -> damon_pa_pageout
+> > >>     -> reclaim_pages
+> > >>     -> reclaim_folio_list
+> > >>
+> > >> In reclaim_folio_list(), it sets "no_demotion = 1" in scan_control, then invokes
+> > >> shrink_folio_list().
+> > >
+> > > Thank you, this clarifies.  DAMOS_PAGEOUT doesn't demote pages even if
+> > > demotion_enabled is set.  Thank you for enlightening me.
+> >
+> > Thank you too. Glad to hear that.
+> >
+> > >
+> > > So, "reclaim" means "reclaim".  shrink_folio_list() can do demotions when
+> > > demotion_enabled is set.  I hence still don't think this patch is saying
+> > > something very wrong, and how it could be improved.  Do you have more specific
+> > > change suggestions for this patch for an improvment?
+> >
+> > I would just like to make the term "reclaim" clearer and we may be able to
+> > define what "reclaim" is.  I think we can choose between the following two
+> > different definitions.
+> >
+> > Definition 1. "reclaim" includes "pageout" and "demotion".
+> > In this case, we better clarify all the other documents that mentions about
+> > those terms.
+> >
+> > Definition 2. "reclaim" only includes "pageout", but "demotion" is out of scope.
+> > In this case, shrink_folio_list just do pageout, but "demotion" is only
+> > exceptional case so we can say the "demotion" escapes from "reclaim" logic.
 
-I think that makes the general plan clearer. We should be removing the
-struct pages entirely from the insides of DMA API layer and use the
-phys_addr_t, kmap_XX_phys(), phys_to_virt(), and so on.
+I was thinking in the first way, and apparently I was simply wrong.  Now I
+think the second one is more correct, at least for {DAMOS,MADV}_PAGEOUT.
 
-The request from Christoph and Marek to clean up the dma_ops makes
-sense in that context, we'd have to go into the ops and replace the
-struct page kmaps/etc with the phys based ones.
+Yet another way to do the reclaim would be memory.reclaim cgroup file.  Seems
+in the case, demotion can happen since user_proactive_reclaim() doesn't set
+scan_control->no_demotion.
 
-This hides the struct page requirement to get to a KVA inside the core
-mm code only and that sort of modularity is exactly the sort of thing
-that could help entirely remove a struct page requirement for some
-kinds of DMA someday.
+I didn't read the code, but apparently memory pressure-based reactive
+traditional reclaim logic would also do demotion?
 
-Matthew, do you think it makes sense to introduce types to make this
-clearer? We have two kinds of values that a phys_addr_t can store -
-something compatible with kmap_XX_phys(), and something that isn't.
+So, apparently "reclaim" can mean at least the two definitions.
 
-This was recently a long discussion in ARM KVM as well which had a
-similar confusion that a phys_addr_t was actually two very different
-things inside its logic.
+> >
+> > We might have to clarify the term "reclaim" for those cases whether it includes
+> > "demotion" or not.  We might have to discuss with other mm developers together.
 
-So what about some dedicated types:
- kphys_addr_t - A physical address that can be passed to
-     kmap_XX_phys(), phys_to_virt(), etc.
+I think that could be a nice discussion.  Looking forward to.  As I previously
+mentioned, I don't think we need to have only 1:1 mapping terminologies, though
+I have no strong opinion here.
 
- raw_phys_addr_t - A physical address that may not be cachable, may
-     not be DRAM, and does not work with kmap_XX_phys()/etc.
+Regardless of terms, I agree there are many rooms to improve on our
+documentation.  At least DAMOS_PAGEOUT documentation may better to clarify what
+you pointed out.
 
-We clearly have these two different ideas floating around in code,
-page tables, etc.
+> > Thanks,
+> > Honggyu
+> 
+> Because of the above thread, I got to know the details more clearly.
+> Thank you guys!
+> When the discussion of "reclaim" finishes, I'll make v2 patch as soon
+> as possible.
 
-I read some of Robin's concern that the struct page provided a certain
-amount of type safety in the DMA API, this could provide similar.
+I don't think we need to block v2 of this patch for the discussion.  What about
+adding a note about the demotion behavior on the details comment second, e.g.,
+
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -150,6 +150,8 @@ struct damon_access_report {
+  * &enum DAMOS_LRU_PRIO and &enum DAMOS_LRU_DEPRIO.  &enum DAMON_OPS_PADDR
+  * supports only &enum DAMOS_PAGEOUT, &enum DAMOS_LRU_PRIO, &enum
+  * DAMOS_LRU_DEPRIO, and &DAMOS_STAT.
++ *
++ * Note that DAMOS_PAGEOUT doesn't trigger demotions.
+  */
+ enum damos_action {
+        DAMOS_WILLNEED,
+
+> 
+> However, I want to talk about a slightly different topic. How about
+> adding support demotion to DAMOS operation action?
+> Maybe we can add another action type or change implementation of DAMOS_PAGEOUT.
+
+We actually tried to implement DAMOS_DEMOTE, but eventually decided[1] to have
+a more general action called DAMOS_MIGRATE_COLD.
+
+Do you think there are use cases where DAMOS_MIGRATE_COLD cannot cover?
+
+> 
+> IMHO, I think we should first check whether it's possible to set
+> no_demotion in the `madvise` -> `foilo` flow we're using.
+> Since I'm still quite new to these things, I'd like to check whether
+> my idea and direction are correct.
+> 
+> I can't thank you all enough for your kindness :)
+
+The pleasure is mine :)
+
+> 
+> Best Regards.
+> Sang-Heon Jeon
+> 
+
+[1] https://lore.kernel.org/all/20240614030010.751-1-honggyu.kim@sk.com/
+
 
 Thanks,
-Jason
+SJ
 
