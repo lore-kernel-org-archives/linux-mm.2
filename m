@@ -2,252 +2,115 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8EE39C87FCA
-	for <linux-mm@archiver.kernel.org>; Sun,  3 Aug 2025 19:08:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 32D17C87FCA
+	for <linux-mm@archiver.kernel.org>; Sun,  3 Aug 2025 19:27:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B4B866B0088; Sun,  3 Aug 2025 15:08:38 -0400 (EDT)
+	id A8D266B0088; Sun,  3 Aug 2025 15:27:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFC546B0089; Sun,  3 Aug 2025 15:08:38 -0400 (EDT)
+	id A3D596B0089; Sun,  3 Aug 2025 15:27:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 976316B008A; Sun,  3 Aug 2025 15:08:38 -0400 (EDT)
+	id 904DE6B008A; Sun,  3 Aug 2025 15:27:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 85ED96B0088
-	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 15:08:38 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 18B26135BEA
-	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 19:08:38 +0000 (UTC)
-X-FDA: 83736382716.07.D338FD5
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 530F8180007
-	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 19:08:34 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=TBDez3Ry;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=rjPqK1V9;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf06.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754248114;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 737606B0088
+	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 15:27:44 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DFFF15B798
+	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 19:27:43 +0000 (UTC)
+X-FDA: 83736430806.29.C01174A
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	by imf28.hostedemail.com (Postfix) with ESMTP id AF0BBC0007
+	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 19:27:41 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="kINdhp/c";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of snovitoll@gmail.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=snovitoll@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754249262; a=rsa-sha256;
+	cv=none;
+	b=zHWMr42I7/QLsGut+Q1H59QwikxxH7FmFwT+v15+C7TvOLl+kJXxqtUdZbTZ1Ru8e6/Lqp
+	vnvBIEbfZptzeKTNcFPpvg2Kdvirr5rHQ8sHtv7a/u0lp/3e/aAtU678sKikil7Kx6OcQY
+	deaIaDfEauWXD+8Pt1dBSeUFFJQhH8U=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="kINdhp/c";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of snovitoll@gmail.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=snovitoll@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754249262;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=89xDBxaVn7/uN55LEzWcAyW3vzqjMWsZyc8VUId2LfM=;
-	b=z915YNOoVERGAe3puOsmBZbacUbq4CFScB/Th5aP6BSWVEfAmYrwCjonP+1iwpLjt9G/7s
-	qUqNnpTnztJtOE6kCrqYcGH5HVPOgsC2Wm+ME+cpuZ/yBBB0iQJ804bZx659D7pVXTrxUr
-	VR++hrbYTh2CsL5zGYDoEpFYmyRw9kM=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754248114; a=rsa-sha256;
-	cv=pass;
-	b=QAcoJjC/OBnkIJV0Vtb9pzPBzGMlzlBpmbcyPlmSBWIEz4jG7HilRrJ73DCR45Zvfgevlq
-	Eh62+sEw9qs9mV5sVkIH0qjUFcGLI4/nz5cIvwJvbKGaZ2jd94uvltnx3hsHSkHImuyq7o
-	JTy6MP47YTJoQrZVmMm9om69p7Tdt1w=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=TBDez3Ry;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=rjPqK1V9;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf06.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 573J1U5A017777;
-	Sun, 3 Aug 2025 19:08:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=89xDBxaVn7/uN55LEzWcAyW3vzqjMWsZyc8VUId2LfM=; b=
-	TBDez3Ry7gALwefcuQP+cdGCM3KavO69+rAjGdznZDmjNmRYRbDdlDBgyP6bn9Se
-	fl0hDobUD45FmgYAQQhyLBTFXT61i5DGI87uWv8Aeg0WWo9W3SqQe/Fh/EwAUDMh
-	UAhw/oN3VNi3V0i1mkqigvri4iAplNwfM8m4Q6pYy4jgP3/z3J2ZeOZnmwJga/nQ
-	dAvR/Dun0psR8LNxukrd8Ul1jz3bkeFq6uu2+CIMEfFl5v2okQoGWbxDpuSYdgX5
-	EOSjrk2cSWl+dabpYL0MYZ8aog/yyy/LB+obseRlS4woVwTJBSIljV7JmEjmc1g1
-	7JGF00jGf6T1e1OW0jJpHg==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 489a9vsfbe-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 03 Aug 2025 19:08:14 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 573HRLcA013435;
-	Sun, 3 Aug 2025 19:08:13 GMT
-Received: from nam02-dm3-obe.outbound.protection.outlook.com (mail-dm3nam02on2071.outbound.protection.outlook.com [40.107.95.71])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 48a7mqnsyu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 03 Aug 2025 19:08:13 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eszn1Y506fBkHnaRcixlOcYfFkvczcB3l4CZh/3CcA3AZcbMrFcY6p2daUqFADW0KtmlAMfPIylM39z2JDLckn3wO491yn9w5CQDSKh+7acaUwRqMt5dtP6W5/Abw5E0KnwGnK94DVpuwx9c4k54FezzSXQ41Pe2mivXua8XlaaLLwrwuuF2OOkO8k9XX7dgjIbnBLUk36BDGwcqHp3lESBDimwpKWO4WnfIMLRFnZ0Tl3rMqfPkjIh/4F/Ke6WoJIxG32leIA79h97fU+2yiiAHIn3sUWRxhe+ngeydhqhT3ryVB15osbUPAlzr1AVhZaNlsw8ACNeAcz99DHAbCg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=89xDBxaVn7/uN55LEzWcAyW3vzqjMWsZyc8VUId2LfM=;
- b=bzgiRahYPeg4WZssFd3EC4GdcQcjE2XkRkE4FiPNW/tv9Vq2LHjZhH7Qg82KTg1IO16ltD1zOC8qFhrMjvJgZF4KuOlEWst3V4QyR8B4MsnI//AEVS/MK+I8z4XuusIfI8jnTp9yiyuRSEdm0Wwd1tDz5eBNuqWPbIVsbooQYcolhAAxnmY36J590GfM+KTbIbftYeICM9Wuqvv6AGoEln80p3awPRtFry+DG1lJDIFptGO3Chfy/RXZy5ptOb4PL+7jr3vwk9lf0ZV3b476JOYz1okuV8MrbThy5w6MXltTvayIlHUozC1CxIkmzmyzHCmvLT9p1y3FfSukRFijPQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	bh=RfrqAAo+hh5/BEGgrtHJRzmnixP9YlHQg7As53WrRgM=;
+	b=JmGWQhODYtePhoeawsbQ7EW8kPJSVNPskheA9lnCjQx5XYv7fxPFXkeyW115eYCc4Nj9qK
+	mnOS4yx+uZC+yDAAFqbVM/fS3IiRFhS84xWCdBcZ0+jw2eABe+ySW5p+5u9FlEIJ6oNzkB
+	xOBuZFLgLa9i+aZQuExt8lz2HJk+n7g=
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-55b93104888so2243953e87.1
+        for <linux-mm@kvack.org>; Sun, 03 Aug 2025 12:27:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=89xDBxaVn7/uN55LEzWcAyW3vzqjMWsZyc8VUId2LfM=;
- b=rjPqK1V9EQv9cJKFt7FMnz4FUj+NXKvKusLeJspIyGoOss62fwcR0CJhhHK8E3efuvT6LEeSjMA9fy1g9mXhlzSbKZEmvxnSxWvzGblMdPNmJSC9m09cHbnclWPSC4B/U/72dqETCkpOUoOJQwMTiSaAKkmhfEfnKY/9kYfGzb4=
-Received: from MW6PR10MB7660.namprd10.prod.outlook.com (2603:10b6:303:24b::12)
- by LV8PR10MB7989.namprd10.prod.outlook.com (2603:10b6:408:203::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.18; Sun, 3 Aug
- 2025 19:08:11 +0000
-Received: from MW6PR10MB7660.namprd10.prod.outlook.com
- ([fe80::41fa:92d3:28b9:2a15]) by MW6PR10MB7660.namprd10.prod.outlook.com
- ([fe80::41fa:92d3:28b9:2a15%7]) with mapi id 15.20.8989.017; Sun, 3 Aug 2025
- 19:08:10 +0000
-Message-ID: <83931f05-a613-4972-be76-80bc695915e4@oracle.com>
-Date: Sun, 3 Aug 2025 12:08:09 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 25/36] sparc64: Implement the new page table range API
-To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        linux-arch@vger.kernel.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org,
-        Andreas Larsson <andreas@gaisler.com>, Rod Schnell <rods@mw-radio.com>,
-        Sam James <sam@gentoo.org>
-References: <20230315051444.3229621-1-willy@infradead.org>
- <20230315051444.3229621-26-willy@infradead.org>
- <ce6337237169f179c75fe4a1ba1ce98843577360.camel@physik.fu-berlin.de>
-Content-Language: en-US
-From: Anthony Yznaga <anthony.yznaga@oracle.com>
-In-Reply-To: <ce6337237169f179c75fe4a1ba1ce98843577360.camel@physik.fu-berlin.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BYAPR01CA0029.prod.exchangelabs.com (2603:10b6:a02:80::42)
- To MW6PR10MB7660.namprd10.prod.outlook.com (2603:10b6:303:24b::12)
+        d=gmail.com; s=20230601; t=1754249260; x=1754854060; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RfrqAAo+hh5/BEGgrtHJRzmnixP9YlHQg7As53WrRgM=;
+        b=kINdhp/ct8sU035QpyxtbSupkOcjfOqOy1Xcr65TV3+KT8KADeznj6phF1kKYV4R2U
+         KUWkV29i2/j0MDk+t4MmMr0yb4UnRHVVWGFVI00/FuBIrSZ5fQo70VwHL7FlYx2TT4zw
+         GBN5uQ81xdrIH06qPQvXY7ASQ3BYXPOMDrav8kQDytUrryPxAyTOpTYUWeU11JZigldp
+         bybfFOWD2BVJg2hPWx7pF5VgRb2p/BF7gxg66rIMFZwupJi4uZpzc51RJh3zK0M3X3J+
+         jD6Ym+HGkzxgzZAPPkruRWOzHVHBMUmbUQkqvViO2baTDGEzo3XupAqQcY3dqGmoq72x
+         Uwkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754249260; x=1754854060;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RfrqAAo+hh5/BEGgrtHJRzmnixP9YlHQg7As53WrRgM=;
+        b=DHatwLwbyapGk6fFiJESD82B61xGrzVbZx+aLxu150WBjuQbpLy+dg3UFfKVZpAZ2/
+         DPecWKG6I0ARhCEM+K3IuB8jlVMFmP4/++CTrYLp2nUPqDYurj89ar11EJMb0DzzeSZd
+         fOrOT9AGTHP9cMYsRnvMRgYUxmCRgjOHtV90bsJ/0JTHBEnOHrfioTaGpyG4PcGwXrTW
+         E/Q1FzXSRKxKSoNzaMPrrs8WYfssmkyucIKdma60/Mer0dPVPrGiqsTAO1OzJ/k+NAvv
+         i9ZxYrOTRd27bGOSndNeZo23r979mmEitSyRtVXmmZjncpDTJFzwIy9ycqK0KJ2b6ZOj
+         kr4A==
+X-Forwarded-Encrypted: i=1; AJvYcCVTERFZ9vziA4ZFsZUEPi5OFkVhNSXFCdbIk6gQO+6FW0+7czQL9vcnMTPZKrde0GVtk7z+8o7qcg==@kvack.org
+X-Gm-Message-State: AOJu0Yw0sAPkrFHA8oOAUtZdqKzBZTH+vhQU7gD8Tq92H391ZOmNDwW1
+	v2ZF2G6qzmISOYGmaBfvnhugLg74Emb6DMFwBsO9Sw6MarG3WRcjG5ioKzqIiIpMxQOCYrTbhs5
+	M9ZwbMcJTLVaIkVCBjKKgM4VA9QP6nVY=
+X-Gm-Gg: ASbGncs0Lxaw2My7mCkBaCR+VZG2NawFE2808NBgwOcO2Ujtb50jNyDrPcq5k0ID8gM
+	4nob4IjV5Vx1TtU8p3NtkKCf9yjJ06QPn5R6e+ibQmtNkK9X+CnB3PGf0VYDwxnMiiMTuAb8npK
+	A8kNRieqVvXGeVTiSfAgemIlURRQXDPn24NC39WBe7VyUTjjuFG+En8m31GGIxL02ToD+18dqt2
+	cla0YI=
+X-Google-Smtp-Source: AGHT+IEh0pkPe95z3+vGGbihQ33Ty6irIuzQUDpa5OxuO3EiJmT/oYz/ntsug87P4Dyb4fZP+lu8a54BT1HcdNutw4I=
+X-Received: by 2002:ac2:4c46:0:b0:54b:117b:b54b with SMTP id
+ 2adb3069b0e04-55b97b87f09mr2012427e87.54.1754249259263; Sun, 03 Aug 2025
+ 12:27:39 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW6PR10MB7660:EE_|LV8PR10MB7989:EE_
-X-MS-Office365-Filtering-Correlation-Id: bf629809-80b0-4b99-86f4-08ddd2c11697
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cUFiMlFua3RWQzBkNzdudUVWMkprT3NjQ1djN2lnSHloSDlMdFNqYml3TkU5?=
- =?utf-8?B?dktlM1F3bm5Na1R0SlZRTVBzNEtPaUwydDRLN25rZEJScVNZYmdQdStORmxn?=
- =?utf-8?B?VzNSaW9YTGtza3h2RFdGQjJVNm5lOEkvVDFRUkM5VU50NU9SZ1lCZUE2bVRF?=
- =?utf-8?B?Njg2Zm1GOFlDUGcvMm9PQ05Bb1JPNnd4SDVPV3hyYXVSOEYweG85YlJLNEto?=
- =?utf-8?B?cDFvTytxN3crODcwdVczMHJwQzFlOTREY3NmZyt0dzhmMjczL1lxdC90OEV4?=
- =?utf-8?B?QzNJRXNWckJyaEtGL1l3Y1VxZzY3WlIzMGR0R0Rlb1h0R3BxcWt3RHp6TENp?=
- =?utf-8?B?d0h2anZPUEdZVW9XMDFodGw2cEY0Mmw3NURnTTFMb3JqMUp4ZWtPVW1tS2Np?=
- =?utf-8?B?YkQvSjV1RWNMcHhNcEV5S0M1VUl0ZzFud3JxY1hwMmlNSi9EMjNCK2dWb2hO?=
- =?utf-8?B?enlOd0pTeGk3bXBKemprdmd1M3FNazkvc2Zwd21FZUIzQjNZVlhIdjUyWW5p?=
- =?utf-8?B?ZFQvbkVWYWIrRXRwWXVvRFA1ZGtWaHMwREc4UVJpTXUvay9UVis0eERmSmZp?=
- =?utf-8?B?T1h4TWZHVkxKS3A4R21aQWQ5SVFYZ0pLYUZHcU9Yd1ZLYmpqNjZ6NXJ5K0I5?=
- =?utf-8?B?Ynd5bUJVOVRoY3BTUUtLZTVKMTJRaHpsZzgvcjdzRUZlZXNlQnJrZVY5ZGpt?=
- =?utf-8?B?VE1aWDBtdU1Yamk0M0k1bWRvMzRid1BnbS96RDdzYVVpUHBmWmpVVmtzb2hF?=
- =?utf-8?B?UlpKQmhPNUUvOG9MUVZaeEVBU1FkME5xd2Z4ekhFL2VyeG40UHF1Rk55UW8y?=
- =?utf-8?B?WWk4NlFadUZDZU5wTmROU1VMVVk3R29ndVQ1cDg1Ym0ybmRZQXlvREF6Z2xC?=
- =?utf-8?B?dW9vYjJrK01FelJLQjRlK05tV2haUXpCYnJtdFdReUtkOFJiMTZRWStpZmUx?=
- =?utf-8?B?N3pmRFdLTlBBd3dzY0ZxU3Z5Z04zQi91aThMS0pQcGhJUGlLV0s3RzlwQnVh?=
- =?utf-8?B?VDFxekVpL1VTcGJtTm1OQVVSR3NFU2Vzcmw3cDNhcEJiN2NLMVl0ekJtV2pK?=
- =?utf-8?B?K0xWQk1ybE0razFNK3hxMkVhdkY0Z1RObnJha1V2czZmcXk4bEI3ZFNpMGhn?=
- =?utf-8?B?WExHcVJha0lMOWhyeXBnckZQTEh4MVRqeC9jMUhZRzdPVEVZaE1QMVhhUmt4?=
- =?utf-8?B?VGVlb2hIdzk1VTFqNW02aDNaWDRXclNHaVdjUzFwSkp0RlczaU1ZaERWOG1X?=
- =?utf-8?B?RytMRGVZTFBnVUpWUDJvSnluOVR4cUlycE1oS3NRdWllQmFkODFXZmxjZHEr?=
- =?utf-8?B?a21EZXJHQUZOTGZwYzlrWHlsdjNCR0MxZFVpeXd4c3ZaSUt2OHoydWs5b0Mr?=
- =?utf-8?B?UHh2VjNYblRZMmFCZG42dDZsdWJoRVYxdGFxT3F1MkV1Sng1ZHYrQlFtMnlM?=
- =?utf-8?B?WCszT3lxV2ZxZFhiU0M5cDhTSTBic3p5L25OWlJnb2xJRnlVOEdZZDFOa3J1?=
- =?utf-8?B?RVM1bEZZVFJ0SkZjZkYrVmVBaUZtNThTcE8yV09FZ3B5c2MzZ0l0c0pIOWla?=
- =?utf-8?B?Q05aTGZTR1gzSCt0T0NJaWJ3MGlKZlMvL0NwWWRiT0F0aVBiakxqY1ZJSEdK?=
- =?utf-8?B?bnV3KzhkNEY2MFRkZTMvL0wvZVpKa1JqRVpZMDdkeGo4TC9HV3RQajVhU0Nv?=
- =?utf-8?B?RTZGeExZdjFSRWNXTEFsbXg2aGpsNnR4bVd6SkdDMDRRNENQUzNVUXFhdU5B?=
- =?utf-8?B?ckV0eDQ0a0ZzbGsvUndOUEhrY3dRUGk5UjhiL2E5ajFJQVVOZWRYK2xISXUz?=
- =?utf-8?B?RUVjSW4zb3BkTmdObTg0RFR5Z2Y0Z2d6bmdBc1gvaTN6bC9EaUU1dEw2WUJJ?=
- =?utf-8?B?NkpUcG9vNmZGUVkrY3l5blM3RlJCYWUrUjVibGpvRlBFb1RZRWtWeDYzOHhB?=
- =?utf-8?Q?DYO6VlV09Sw=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW6PR10MB7660.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dm5NcGN2bGMvNUZsemZidngyRHJtR0w1cUNKNXg2dVNPaUU4VVdOLy8ySFIr?=
- =?utf-8?B?TENEMnNUbkx2ekU2VnYrT28vMjRVaHJDanVaMEkxb0o3R2t4TzdZZzFvTUYx?=
- =?utf-8?B?QVkyKzlOOUt1aWdDSmg0c1IrK1ZpWkhYaVZFcElZZzV5Z2lyMkVLakhNMkZv?=
- =?utf-8?B?NDhrclhxNXptOFFrQjIwTGRqNzc3Nno4d0RUQjRaRmpSNk96WGFrTzdxd2hi?=
- =?utf-8?B?ZnJpZlc0YURxOXowd1ZYQ0lNdTVoSng1NFcxR1RkV1lKL3FZQ3RLcWtOcE05?=
- =?utf-8?B?N3ZIZ01qdWFLY3JBeU9sTXUxVXZYcVhERit6WDhRUTdsKytUQkhaK3ZRK1Vt?=
- =?utf-8?B?N2FqWVhlYmI1U0tlVXE0RXE5cmRFcmVVT25xQ0sycS9NSGIwdDZjM1ZHUU5D?=
- =?utf-8?B?T1JWcGl4Tzc1emljM2VrZ25nZzUzWkZiWHpNMVpUNXlmbFBua3FWenpmbnor?=
- =?utf-8?B?Y1RZZlQ0VFlCZGZCeDJ1Y2c0cVpyVThBZTRpQVgyS24zNXpLcThnaTdhakRa?=
- =?utf-8?B?Sjk5K0tNSVg3ZWI3Wm5NTHhoTFpLOXhiWjJSeUVjM1JTSmx2d1lOdDVDNjll?=
- =?utf-8?B?UFJtUlRRYVN3RVpjdnE1NWtHUmhaTjhjdXRlL1ZGdENRN3J3WFZ6Qnc0eVla?=
- =?utf-8?B?UHVkSFI1RnJwZVJ5MU5Ca0xvQzZFNndiY1Z2TU5NZyswZmRUck44dm1qTmxx?=
- =?utf-8?B?cHUzbjU5a3JlZlNYOGJKbHFMVXRIcmxWQ2x0a0NGRzlPWUFVTytEK1g5Mjlm?=
- =?utf-8?B?Tk1qRkRwbk5CQ0xxQm85NEN0dzM4SUU0VkdxUGlxelBHbytjc2lRUjUzMTYy?=
- =?utf-8?B?ZVcwQUptWGw0YXpCUlBtRndaY0swYWFubHV5ajVqcTBPMkNSNGFBNHM1dUJJ?=
- =?utf-8?B?T1ZwM2liTTRXc3FSK2thRmgvQVQyVStRd3N6UzBJYWtzYjRHbDRyeDM2bnla?=
- =?utf-8?B?YnE4dVVCZ1ZkSEgzTXJ2c0JJV1NIMThNTko0bld0Y09BRzZ0SUpLcmhmWVQ2?=
- =?utf-8?B?RStRUlFMWEc0NXhzN0xKT2gwYjRCRnBSUGp4RkR5dlpLUHZObUlwNE9lSlZm?=
- =?utf-8?B?QklmY3IvZ1IxUStMc2l4bzcvR0NKNzFXdkZ4ZFZ0QzR5Wk9zRjg0NXlxS016?=
- =?utf-8?B?WnluakNmUnJvd1QvVS83VmRVa3RNU2Fpekwvb05SZFNWYzNqaXdaUDlqVE04?=
- =?utf-8?B?ZnpLamRqaHpmZlAwTWxkQXBNalVnbmFLcFJaK1JzRlo1Rm1iVy9UTTgrNkdm?=
- =?utf-8?B?OGtxakJFTWwwVUkwOURrSk1LNlJLU0hBTG0wL1A0eVFIUjk4dnBhSjN2MU5X?=
- =?utf-8?B?VnFiWWNRcEo3Vmg1UkpSN0RjNkl5S1lkd0p5Wk8rZDRJTlBFQ1Via2h2NndS?=
- =?utf-8?B?dVY3dUREaHRUNmVEUm56MkkyRkdFbm5ybWh6ODIrU3V0Z0dIajhmZDl6ZUNY?=
- =?utf-8?B?WndHVGczdXErYlkwTlNNdk9BMGZZNFBoTjhxQXA1N3ZJN2V5TUdWcG9GbVV0?=
- =?utf-8?B?Nk11dncrY0daYy93N0ZPOVFsNC9QV3MxSUFHblNGNnpGRjYyWVJEZ2c4K1dz?=
- =?utf-8?B?TTZkWmZDV1hLOERuUTlaLy83a0ZTSkpsc3ZJenFWZkw5b3FIVXo4RU9XN2Qx?=
- =?utf-8?B?STZmemJBRzE3OEQrb3lRdG1Idm1mbmo1Vlk4bSt3b1pNMitaZ0U5em5iMXBQ?=
- =?utf-8?B?MGh2U29RdVBnSm9qRkJzZzZKYXhOUFhkcWM5RXAwbEc1eFVoVVZMay82Wngx?=
- =?utf-8?B?VlV5MDZjNE53TStnTSs4Ry9GbVdJYmlqYUNWWGZqenJEMEgyN1NXalpDalRW?=
- =?utf-8?B?RmV6K1E4RlI3UnZCTGc3cndVM1p2SnV1dTlMamFEeU91NkVBZUgvZEF6REUy?=
- =?utf-8?B?R0paRU0wY1dHQWJhTG0xL2pta1ZkeVZvTFhQY3MxbXEwNDNUMTBxSllOckd1?=
- =?utf-8?B?VHQzOUU1MlM2bGxKc0RLQkpHNEYvc1ZwdFo2U0tZYlFXcERDWFVYK2syZjZF?=
- =?utf-8?B?Q3Q4ZWZXMFg5NGRudFNQdDhReWdCU2NxT0R3VUtmalA4VlhVNzM5M0RtTU4v?=
- =?utf-8?B?alZHNmszaDNVL3VPbDFWM3pkMXZ0RUhnUmg4NnBLMlZGYWhORG1GZU02SGUv?=
- =?utf-8?B?eTNpa1EycHFERnk0N2N1clA4REU5NEYydThvbkowRXYxdnpQV1A0eGw0UTFG?=
- =?utf-8?B?dHc9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	l99nIWFkNxYxj9ZB2GFqzuXuTjm9Q4T68tkBPX4TI+YZ80q/1x8gOoWp2l6PmJUIoskaiaSsLApp4ijJEU4Ma8rLDwmW6MY3nOXd1riNBmUYjT9UvNIDbWs18Gt80vVsiRroUZDIddvEyk/Xumhdu5mf1tpaHcWhZC/17L8VqbS0SaafbXKRC5cAvA+a/fpJsGu0rOFartFsAwQYJJwh6TA6924AJ2k2HbgrDPBomrKVI2LIOSb5C3+TfUrF5z7Jzle8zvZy8uGMMLG9CkE6aBvG+kkMPQlIThzZ1wcFfehrZDg3b/inR8XJEPDZxM/kTwlWMqYj9vmS8YY7+uHdrOfJq2f2HFfVgCWSnBcfpGh15prAT0kwNKSUHBctKxv9GEJDbq671TYYeFuwWrVuHx3Ye1/mi1qpKizYgsjTHIDShmBpqSf/K6U/XaVKpelX/h9pbrFo0FFvx+vGnG9BykDdhkKz2KpFY18MLFahdEK6jJQlnsG7PTW7DNLkfoo+V4TaGOpCynvXq3NsOd2u1qR6fY2PrIGbJvCGAGRoy57GVn5ML+rYAzWGBDrBryr/u14gL1LHGg3GYz2/1VoHH8x7tFiQrk+Pu1Z0qfr6AVI=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bf629809-80b0-4b99-86f4-08ddd2c11697
-X-MS-Exchange-CrossTenant-AuthSource: MW6PR10MB7660.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2025 19:08:10.8151
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PKGZyvIq2zQfemMR1jsXQ8FeBoA5dNE2aKonyM/cS1sg5oL/8D8vGmM69+Tze95FY5Me/rNnXBGdkrNr4g11RYcgRofh8DeAERfjq2Fx4MM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR10MB7989
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-03_05,2025-08-01_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxscore=0 suspectscore=0
- adultscore=0 malwarescore=0 mlxlogscore=999 bulkscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2508030130
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODAzMDEzMCBTYWx0ZWRfX6zEfzrxe3CoZ
- ITdstSurA5suT9D3N+1rnuF/+sqI3IMewstOkFr2VgZumddo5MaAWgXzy0w4FafZvz2wOWyT5YB
- oOZIrfQJn/XEaRbb6OTDqzzEaM+p90338KNL/UgNagwCl0C+TKHbUnoiIWn9acdvjEOSavyqtpp
- 86lqKkNXcAQvwn7OOMpP07kst4WWXLQvRNdcKrY+njFu9XsRxxApap+10SwOr3EqbHyluaErFEV
- oBhvRH1NG3wcysHxrb2kFBOTD1o0RdkLOEgRSSwD3jrSDJrGamJRW9g8lK+ditofJKh0F99dXKD
- HANpvI7LmzSyzHs4pDY0RAQRcLQuYT/YH1iN+Z9gD5WXFH3voLruWrIsGxOJxuSz1em3DgiPQHz
- nVjWH7px1uE8bWO12xHLOihNGSvqJDp77AEnWdqUOsoXMHMFQ9pO5WMGcjRO1R/vwEyZBbFK
-X-Authority-Analysis: v=2.4 cv=SIhCVPvH c=1 sm=1 tr=0 ts=688fb39e b=1 cx=c_pps
- a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=JfrnYn6hAAAA:8 a=J1Y8HTJGAAAA:8
- a=VwQbUJbxAAAA:8 a=_6tRXDilHjbdGHO03RoA:9 a=QEXdDO2ut3YA:10
- a=1CNFftbPRP8L7MoqJWF3:22 a=y1Q9-5lHfBjTkpIzbSAN:22 cc=ntf awl=host:13596
-X-Proofpoint-GUID: t6CFumGAf-WetTE9JzHgYhFapN5IAPXV
-X-Proofpoint-ORIG-GUID: t6CFumGAf-WetTE9JzHgYhFapN5IAPXV
-X-Stat-Signature: ka4c7k9zbukwkyzrkito8bz4gae4c4t9
-X-Rspamd-Queue-Id: 530F8180007
-X-Rspamd-Server: rspam10
+References: <20250717142732.292822-1-snovitoll@gmail.com> <f10f3599-509d-4455-94a3-fcbeeffd8219@gmail.com>
+ <CACzwLxjD0oXGGm2dkDdXjX0sxoNC2asQbjigkDWGCn48bitxSw@mail.gmail.com> <f7051d82-559f-420d-a766-6126ba2ed5ab@gmail.com>
+In-Reply-To: <f7051d82-559f-420d-a766-6126ba2ed5ab@gmail.com>
+From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+Date: Mon, 4 Aug 2025 00:27:22 +0500
+X-Gm-Features: Ac12FXz3Md2skCIj9ydyyjC78Y0CTvtHNSbLgGPLYuzRDoF-sD3DGjiQZnIWPLk
+Message-ID: <CACzwLxjESCT_=1BG2rWiaxz1wCYbVWHAvf+v4=S5dzeHJ8c97g@mail.gmail.com>
+Subject: Re: [PATCH v3 00/12] kasan: unify kasan_arch_is_ready() and remove
+ arch-specific implementations
+To: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, linuxppc-dev@lists.ozlabs.org
+Cc: hca@linux.ibm.com, akpm@linux-foundation.org, 
+	kasan-dev <kasan-dev@googlegroups.com>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
+	Linux Memory Management List <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: AF0BBC0007
+X-Stat-Signature: b7frtpaqi156rudhopw9m7mb1nambhog
 X-Rspam-User: 
-X-HE-Tag: 1754248114-685603
-X-HE-Meta: U2FsdGVkX1/i4SKneHs6MsrQ2vKctE2pagGH7g1NngpMM730466M3lK9dQ1OBW1KRS8R5D9rFbt97kQjDnyTeXNdQPWj+L7CCaYl1t8FMfnYY1+h1/UFiHrdPw70KQhzqUNrwVRYqbJlzr7C8ApeuLxf/MV/MkONsw8jB6R1lcUbaZk16b87nN5KPLbSCDhgGbSVPtKquqpn8qO0Mpx5zz/tP2CjXFDsvOyJE/BSMwfGGUOCOkWPZnNqAOr1OGu9qZ0nosfmiPj5wPU79fUkh81eLbBYYlYZHARjJax0s+APqbgWYQKO+540MAz84s0naEPJL5RoT3vNYpv5mSADX05CicCTMKEBhiNS/papgN85A2a8vFkYuZnMnWz5jYPG4b7gKRAEb1mn7EII8+HWv3BLTVCnS461CH7Fljoa7FVWODDxNqiyKXQxoRT2O0dEtCsN1GzvwwB64fOndUG7x1Gowrv5QbWepaA8Y8Lf16K1h7tGMYyFCaxGXej1gy0PXkp39sHmz/4eBsT3WU820IzVXGY4wg5m7aE6HNbM0ygYZU7YmE02AMzl/4XJ43Nklo0yZZXu+VT4ieHnbM9734IyVo50Lywymcpm5wMIq/S9vtd0E6729DBDfUE+hR3fFGV9NaHMzh5HwmajzW91Pf9L14dxYLWwuh4YeRFlPa3osE9K4d0KTpNjct0GqB5kZ8VOYo9+AQPH3GMeiBTt5JHwSAJIOR2aSlUDOAY1qeuCF+st/rOolQzS7WJtEQ8FxChivlAsLQXCXbAMSGGFewCrScOVNigoWY6mfeO+erLkpYk2iZ/AAS556n4GYkQSPkWGGGTCtCexXop4PvY6BBUhl/Ss0XqdJVBTqV5fFadAM6PwzT0SXFFHR78Ls9hd9rGyP0C1qnqY80rIKPIHlSAkNyqd8kbsouEwdMNuLO++pQnMeBId5Fm+xrr5Z3WyXXCpPGhrKfvd5ninQG/
- fEiu1zm6
- lvL0wxAZW1mkDZGeyfDLET013EFnOMlqDmKvHo46zmT0D7dBKf1uV0gfjCJQlrH7+VtFVKoCMvOKXSIu2PrpYNQJ1wmZaxUZJPSZgfe8A80GOG7vypP7ltbLDzEtvk+OO445gGGk1sX0h01ewwLfAKQ1u73v2LdRnjV01NzJlhyx0dCqmJaO8gpVnpzsc4qpDA4qxsTAH4j7Xe0hSv3+dVtlJVW8sjvMvlWBM7sYls37/6IOplXXsNObQR7sEerRmmcpZ8yLLZD0YnqWiVQLFuCd6cXj1rvSa6rcr9aQQB7LFRdjKxmnge7pzJNHrc/izCdU6Z8vgEseM5boqj7rMid+2VgHWmtNiH2T84/r4fGk7DGUsC36VuC56lIIUyUK8OO5o+yFsVNqifHLov8RJ3oUUqWjjPiFyFUREPSMwDIatu84qSnEVlvWRq9zIyIzSCiw2+cSD6KVs92Pl5IA94Lb0oUphnZ0AwB/E5EQO2I+asFjxucpkLodNJBc0hqFO7Woiybvfzs6uoKxIKzqphmFiTS3Pqamg61y+ZRbM+NJqAI4Z1A4CQkGf/Nyq4wgq3R6ZN5FJNuLAHFcjcUCqakretj+Wv8mmmIqHznDM/8e2HHXxNYBX2v3ZMkn86GJzG4VLUIcUFF0Rq7ox41XscXQFfGEvcKV02AW1W7AhzJ1NmRL9nBaEVWbje2buQaFTXnWpw8w98ZEhYT3AOIJbTpJ/+Qhy79OPNdAN4DwuDHl2F8M2zjK2+2GbEdnN5BdHQyQ16I0D+WXc5B2sV6JqmG0CJBUmJD+cuEGrP+0nHTvIs6UGwmqHCst1+SE9VjW3ohZegAi52NjyJb9iwQvra81vQsSEDGyxGK/BYBjUz46NdP6RXwW0NpLo8OXQzvOT/Gqgfqazo6qLSsrUeTyaBI4W103CWqjhWw8dzJ8smt5w9sk=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1754249261-120793
+X-HE-Meta: U2FsdGVkX19gk1LNjAmy2I4NFuM+bB8j3W8iQRDE9COlOOuqorA3CSqcV0A6+2bbKY4EpSe6MjkQrXt938rHJR0keMLjsZCXRyLIdSanf6wfi2vp2RDKaPMboA4+mcBCSDQZTYCfziaXuxCYAsL35uoDIDLrKfbMd4W2J4ntyEWZpXpq9enkAhwkF+wsWv2eBjlZyOfytvuAGzgDJ5h8UWlgYu5upIijPLrAuqT10uN9lM+bCobQFwLTm4hI2ewxgGVn0VQkif0NFhmdoftG907sJzA594guBXj0kASem8I5GBq2Ql82ZSmNa4ZWjstcFof1qmcttvgCkyGiCYpCTRG4mkcLcTJNtCyDBL4dqiWLMLm/6jTTo+iyG4nEVKKLmWkMfqrF2NUxQ8mhhm0ydzwrsu4d4Xz/2GbW9S/GS6NgqOF5vqvmFp1stbhfecpwKL2FzLuGDBrfe55nW6jFtg1Exd9qDJV6DrpqfvhWXSthMfTfKRzbNAcTVfAkyj8TQ+tFAbqct5GBzRjSnMmPxYMsR4IPj6h3GBQyoiBWsTHCX5alGiQKgOloapsDs9AknEnFMXIwtmzvxdFkt75eszA5He48f57LOqC4lrZsjKbs72wynvnUQVJMGo7WSsnZ+XROGP7m5WpM1ExljVHXfvGu7Kek9Gt3gJWEpgTMxVxV7U7jtKy+HjgB3HD92JnGS7ES65O/YhlN+g+4X3K4VUoXdkUtHBpWpevU3e9WbYlodq0cGJ0dGypAZiJy2wnZH/rCEOALEAdtDgZe+U0gkH9Dis3a0o1nX6qchWxMCqs5SkWnVJJZrf9I//NjhmBQY7Mm4FFS6wD4HtZiWj7ie/dajkS6d1tNCcER6k9Kqe6u0IHIvyvvwYlYgmOlGaSyL1eh/OolJCylHyP3YW/07Pri0GPt+D/wCRIpFW5m4vrSmeG6UakvHo7HZK44KOTHVukcHsh5VTpyoPFxpwZ
+ Qgw/RSS2
+ S2JeR5tXLF6Wuqo8H06OYSlkyYyvoZXstWrS6cjiVlj3DbvlTq38spvww1jjpsSBi00SiaKhF47/hF/21b4SC/W9Mz3xA0vnfzrPi5GdvlDWg73Fu9yvfopYhx/gbbmDvC69nO55+fAXasnmEeWIGr12qd2VsIlNmsVqHvqVfjDFIwZpfkTCx/6K7xePcLXxNmkhJaqhqWtXlqEY9wocXGYALsFSa2v+muz59P2iPc2Al3TCSB6hvGgVokfkMxhvfRyT8khTF48zW1R3YN7MSnDCtmgTvbmloQ3mD8AJnDxFfRd7PYi97jYW1SL/43z5bljJhgt6lwePka5ZC82UBODg8npy7eua/sxhIMEedBRWDBgsi0BAmAZWPqAhZj3VPnMP/co86iAPA7xsyT6M3hdISsiu1kt+FFBZdqd/yRcVUnwTt7H0SmtssD03mSuqTkWK0vlDc8ua9fNwn/5Nnz87yQSw7W3xoSbf1FoittshGDXKyq7oFcnMeZOlcv40PAUBXtRTpMb+cYc+wxRDVwuSQ8lPCROsx8sAAplP1zC6OFZq2lakwfD7aFLgTu0+SPK7fWkRlmqqP4Db1F64p2jxWTOuR6AjZlYKv0EplNGX0LsSeLnxs8fXM/t2/PWTtbuw6LFsHykkWvPGDdvCiYK01U4VyepYB5XFCaCn52KTuf5dkLriMZr0eHQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -256,532 +119,926 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Adrian,
+On Wed, Jul 23, 2025 at 10:33=E2=80=AFPM Andrey Ryabinin <ryabinin.a.a@gmai=
+l.com> wrote:
+>
+> ...
+>
+> I don't know if it's a real problem or not. I'm just pointing out that we=
+ might
+> have tricky use case here and maybe that's a problem, because nobody had =
+such use
+> case in mind. But maybe it's just fine.
+> I think we just need to boot test it, to see if this works.
+> ...
+> powerpc used static key same way before your patches, so powerpc should b=
+e fine.
 
-On 8/3/25 5:05 AM, John Paul Adrian Glaubitz wrote:
-> Hi Matthew,
-> 
-> On Wed, 2023-03-15 at 05:14 +0000, Matthew Wilcox (Oracle) wrote:
->> Add set_ptes(), update_mmu_cache_range(), flush_dcache_folio() and
->> flush_icache_pages().  Convert the PG_dcache_dirty flag from being
->> per-page to per-folio.
->>
->> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
->> Cc: "David S. Miller" <davem@davemloft.net>
->> Cc: sparclinux@vger.kernel.org
->> ---
->>   arch/sparc/include/asm/cacheflush_64.h | 18 ++++--
->>   arch/sparc/include/asm/pgtable_64.h    | 24 ++++++--
->>   arch/sparc/kernel/smp_64.c             | 56 +++++++++++-------
->>   arch/sparc/mm/init_64.c                | 78 +++++++++++++++-----------
->>   arch/sparc/mm/tlb.c                    |  5 +-
->>   5 files changed, 116 insertions(+), 65 deletions(-)
->>
->> diff --git a/arch/sparc/include/asm/cacheflush_64.h b/arch/sparc/include/asm/cacheflush_64.h
->> index b9341836597e..a9a719f04d06 100644
->> --- a/arch/sparc/include/asm/cacheflush_64.h
->> +++ b/arch/sparc/include/asm/cacheflush_64.h
->> @@ -35,20 +35,26 @@ void flush_icache_range(unsigned long start, unsigned long end);
->>   void __flush_icache_page(unsigned long);
->>   
->>   void __flush_dcache_page(void *addr, int flush_icache);
->> -void flush_dcache_page_impl(struct page *page);
->> +void flush_dcache_folio_impl(struct folio *folio);
->>   #ifdef CONFIG_SMP
->> -void smp_flush_dcache_page_impl(struct page *page, int cpu);
->> -void flush_dcache_page_all(struct mm_struct *mm, struct page *page);
->> +void smp_flush_dcache_folio_impl(struct folio *folio, int cpu);
->> +void flush_dcache_folio_all(struct mm_struct *mm, struct folio *folio);
->>   #else
->> -#define smp_flush_dcache_page_impl(page,cpu) flush_dcache_page_impl(page)
->> -#define flush_dcache_page_all(mm,page) flush_dcache_page_impl(page)
->> +#define smp_flush_dcache_folio_impl(folio, cpu) flush_dcache_folio_impl(folio)
->> +#define flush_dcache_folio_all(mm, folio) flush_dcache_folio_impl(folio)
->>   #endif
->>   
->>   void __flush_dcache_range(unsigned long start, unsigned long end);
->>   #define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 1
->> -void flush_dcache_page(struct page *page);
->> +void flush_dcache_folio(struct folio *folio);
->> +#define flush_dcache_folio flush_dcache_folio
->> +static inline void flush_dcache_page(struct page *page)
->> +{
->> +	flush_dcache_folio(page_folio(page));
->> +}
->>   
->>   #define flush_icache_page(vma, pg)	do { } while(0)
->> +#define flush_icache_pages(vma, pg, nr)	do { } while(0)
->>   
->>   void flush_ptrace_access(struct vm_area_struct *, struct page *,
->>   			 unsigned long uaddr, void *kaddr,
->> diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
->> index 2dc8d4641734..49c37000e1b1 100644
->> --- a/arch/sparc/include/asm/pgtable_64.h
->> +++ b/arch/sparc/include/asm/pgtable_64.h
->> @@ -911,8 +911,19 @@ static inline void __set_pte_at(struct mm_struct *mm, unsigned long addr,
->>   	maybe_tlb_batch_add(mm, addr, ptep, orig, fullmm, PAGE_SHIFT);
->>   }
->>   
->> -#define set_pte_at(mm,addr,ptep,pte)	\
->> -	__set_pte_at((mm), (addr), (ptep), (pte), 0)
->> +static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
->> +		pte_t *ptep, pte_t pte, unsigned int nr)
->> +{
->> +	for (;;) {
->> +		__set_pte_at(mm, addr, ptep, pte, 0);
->> +		if (--nr == 0)
->> +			break;
->> +		ptep++;
->> +		pte_val(pte) += PAGE_SIZE;
->> +		addr += PAGE_SIZE;
->> +	}
->> +}
->> +#define set_ptes set_ptes
->>   
->>   #define pte_clear(mm,addr,ptep)		\
->>   	set_pte_at((mm), (addr), (ptep), __pte(0UL))
->> @@ -931,8 +942,8 @@ static inline void __set_pte_at(struct mm_struct *mm, unsigned long addr,
->>   									\
->>   		if (pfn_valid(this_pfn) &&				\
->>   		    (((old_addr) ^ (new_addr)) & (1 << 13)))		\
->> -			flush_dcache_page_all(current->mm,		\
->> -					      pfn_to_page(this_pfn));	\
->> +			flush_dcache_folio_all(current->mm,		\
->> +				page_folio(pfn_to_page(this_pfn)));	\
->>   	}								\
->>   	newpte;								\
->>   })
->> @@ -947,7 +958,10 @@ struct seq_file;
->>   void mmu_info(struct seq_file *);
->>   
->>   struct vm_area_struct;
->> -void update_mmu_cache(struct vm_area_struct *, unsigned long, pte_t *);
->> +void update_mmu_cache_range(struct vm_area_struct *, unsigned long addr,
->> +		pte_t *ptep, unsigned int nr);
->> +#define update_mmu_cache(vma, addr, ptep) \
->> +	update_mmu_cache_range(vma, addr, ptep, 1)
->>   #ifdef CONFIG_TRANSPARENT_HUGEPAGE
->>   void update_mmu_cache_pmd(struct vm_area_struct *vma, unsigned long addr,
->>   			  pmd_t *pmd);
->> diff --git a/arch/sparc/kernel/smp_64.c b/arch/sparc/kernel/smp_64.c
->> index a55295d1b924..90ef8677ac89 100644
->> --- a/arch/sparc/kernel/smp_64.c
->> +++ b/arch/sparc/kernel/smp_64.c
->> @@ -921,20 +921,26 @@ extern unsigned long xcall_flush_dcache_page_cheetah;
->>   #endif
->>   extern unsigned long xcall_flush_dcache_page_spitfire;
->>   
->> -static inline void __local_flush_dcache_page(struct page *page)
->> +static inline void __local_flush_dcache_folio(struct folio *folio)
->>   {
->> +	unsigned int i, nr = folio_nr_pages(folio);
->> +
->>   #ifdef DCACHE_ALIASING_POSSIBLE
->> -	__flush_dcache_page(page_address(page),
->> +	for (i = 0; i < nr; i++)
->> +		__flush_dcache_page(folio_address(folio) + i * PAGE_SIZE,
->>   			    ((tlb_type == spitfire) &&
->> -			     page_mapping_file(page) != NULL));
->> +			     folio_flush_mapping(folio) != NULL));
->>   #else
->> -	if (page_mapping_file(page) != NULL &&
->> -	    tlb_type == spitfire)
->> -		__flush_icache_page(__pa(page_address(page)));
->> +	if (folio_flush_mapping(folio) != NULL &&
->> +	    tlb_type == spitfire) {
->> +		unsigned long pfn = folio_pfn(folio)
->> +		for (i = 0; i < nr; i++)
->> +			__flush_icache_page((pfn + i) * PAGE_SIZE);
->> +	}
->>   #endif
->>   }
->>   
->> -void smp_flush_dcache_page_impl(struct page *page, int cpu)
->> +void smp_flush_dcache_folio_impl(struct folio *folio, int cpu)
->>   {
->>   	int this_cpu;
->>   
->> @@ -948,14 +954,14 @@ void smp_flush_dcache_page_impl(struct page *page, int cpu)
->>   	this_cpu = get_cpu();
->>   
->>   	if (cpu == this_cpu) {
->> -		__local_flush_dcache_page(page);
->> +		__local_flush_dcache_folio(folio);
->>   	} else if (cpu_online(cpu)) {
->> -		void *pg_addr = page_address(page);
->> +		void *pg_addr = folio_address(folio);
->>   		u64 data0 = 0;
->>   
->>   		if (tlb_type == spitfire) {
->>   			data0 = ((u64)&xcall_flush_dcache_page_spitfire);
->> -			if (page_mapping_file(page) != NULL)
->> +			if (folio_flush_mapping(folio) != NULL)
->>   				data0 |= ((u64)1 << 32);
->>   		} else if (tlb_type == cheetah || tlb_type == cheetah_plus) {
->>   #ifdef DCACHE_ALIASING_POSSIBLE
->> @@ -963,18 +969,23 @@ void smp_flush_dcache_page_impl(struct page *page, int cpu)
->>   #endif
->>   		}
->>   		if (data0) {
->> -			xcall_deliver(data0, __pa(pg_addr),
->> -				      (u64) pg_addr, cpumask_of(cpu));
->> +			unsigned int i, nr = folio_nr_pages(folio);
->> +
->> +			for (i = 0; i < nr; i++) {
->> +				xcall_deliver(data0, __pa(pg_addr),
->> +					      (u64) pg_addr, cpumask_of(cpu));
->>   #ifdef CONFIG_DEBUG_DCFLUSH
->> -			atomic_inc(&dcpage_flushes_xcall);
->> +				atomic_inc(&dcpage_flushes_xcall);
->>   #endif
->> +				pg_addr += PAGE_SIZE;
->> +			}
->>   		}
->>   	}
->>   
->>   	put_cpu();
->>   }
->>   
->> -void flush_dcache_page_all(struct mm_struct *mm, struct page *page)
->> +void flush_dcache_folio_all(struct mm_struct *mm, struct folio *folio)
->>   {
->>   	void *pg_addr;
->>   	u64 data0;
->> @@ -988,10 +999,10 @@ void flush_dcache_page_all(struct mm_struct *mm, struct page *page)
->>   	atomic_inc(&dcpage_flushes);
->>   #endif
->>   	data0 = 0;
->> -	pg_addr = page_address(page);
->> +	pg_addr = folio_address(folio);
->>   	if (tlb_type == spitfire) {
->>   		data0 = ((u64)&xcall_flush_dcache_page_spitfire);
->> -		if (page_mapping_file(page) != NULL)
->> +		if (folio_flush_mapping(folio) != NULL)
->>   			data0 |= ((u64)1 << 32);
->>   	} else if (tlb_type == cheetah || tlb_type == cheetah_plus) {
->>   #ifdef DCACHE_ALIASING_POSSIBLE
->> @@ -999,13 +1010,18 @@ void flush_dcache_page_all(struct mm_struct *mm, struct page *page)
->>   #endif
->>   	}
->>   	if (data0) {
->> -		xcall_deliver(data0, __pa(pg_addr),
->> -			      (u64) pg_addr, cpu_online_mask);
->> +		unsigned int i, nr = folio_nr_pages(folio);
->> +
->> +		for (i = 0; i < nr; i++) {
->> +			xcall_deliver(data0, __pa(pg_addr),
->> +				      (u64) pg_addr, cpu_online_mask);
->>   #ifdef CONFIG_DEBUG_DCFLUSH
->> -		atomic_inc(&dcpage_flushes_xcall);
->> +			atomic_inc(&dcpage_flushes_xcall);
->>   #endif
->> +			pg_addr += PAGE_SIZE;
->> +		}
->>   	}
->> -	__local_flush_dcache_page(page);
->> +	__local_flush_dcache_folio(folio);
->>   
->>   	preempt_enable();
->>   }
->> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
->> index 04f9db0c3111..ab9aacbaf43c 100644
->> --- a/arch/sparc/mm/init_64.c
->> +++ b/arch/sparc/mm/init_64.c
->> @@ -195,21 +195,26 @@ atomic_t dcpage_flushes_xcall = ATOMIC_INIT(0);
->>   #endif
->>   #endif
->>   
->> -inline void flush_dcache_page_impl(struct page *page)
->> +inline void flush_dcache_folio_impl(struct folio *folio)
->>   {
->> +	unsigned int i, nr = folio_nr_pages(folio);
->> +
->>   	BUG_ON(tlb_type == hypervisor);
->>   #ifdef CONFIG_DEBUG_DCFLUSH
->>   	atomic_inc(&dcpage_flushes);
->>   #endif
->>   
->>   #ifdef DCACHE_ALIASING_POSSIBLE
->> -	__flush_dcache_page(page_address(page),
->> -			    ((tlb_type == spitfire) &&
->> -			     page_mapping_file(page) != NULL));
->> +	for (i = 0; i < nr; i++)
->> +		__flush_dcache_page(folio_address(folio) + i * PAGE_SIZE,
->> +				    ((tlb_type == spitfire) &&
->> +				     folio_flush_mapping(folio) != NULL));
->>   #else
->> -	if (page_mapping_file(page) != NULL &&
->> -	    tlb_type == spitfire)
->> -		__flush_icache_page(__pa(page_address(page)));
->> +	if (folio_flush_mapping(folio) != NULL &&
->> +	    tlb_type == spitfire) {
->> +		for (i = 0; i < nr; i++)
->> +			__flush_icache_page((pfn + i) * PAGE_SIZE);
->> +	}
->>   #endif
->>   }
->>   
->> @@ -218,10 +223,10 @@ inline void flush_dcache_page_impl(struct page *page)
->>   #define PG_dcache_cpu_mask	\
->>   	((1UL<<ilog2(roundup_pow_of_two(NR_CPUS)))-1UL)
->>   
->> -#define dcache_dirty_cpu(page) \
->> -	(((page)->flags >> PG_dcache_cpu_shift) & PG_dcache_cpu_mask)
->> +#define dcache_dirty_cpu(folio) \
->> +	(((folio)->flags >> PG_dcache_cpu_shift) & PG_dcache_cpu_mask)
->>   
->> -static inline void set_dcache_dirty(struct page *page, int this_cpu)
->> +static inline void set_dcache_dirty(struct folio *folio, int this_cpu)
->>   {
->>   	unsigned long mask = this_cpu;
->>   	unsigned long non_cpu_bits;
->> @@ -238,11 +243,11 @@ static inline void set_dcache_dirty(struct page *page, int this_cpu)
->>   			     "bne,pn	%%xcc, 1b\n\t"
->>   			     " nop"
->>   			     : /* no outputs */
->> -			     : "r" (mask), "r" (non_cpu_bits), "r" (&page->flags)
->> +			     : "r" (mask), "r" (non_cpu_bits), "r" (&folio->flags)
->>   			     : "g1", "g7");
->>   }
->>   
->> -static inline void clear_dcache_dirty_cpu(struct page *page, unsigned long cpu)
->> +static inline void clear_dcache_dirty_cpu(struct folio *folio, unsigned long cpu)
->>   {
->>   	unsigned long mask = (1UL << PG_dcache_dirty);
->>   
->> @@ -260,7 +265,7 @@ static inline void clear_dcache_dirty_cpu(struct page *page, unsigned long cpu)
->>   			     " nop\n"
->>   			     "2:"
->>   			     : /* no outputs */
->> -			     : "r" (cpu), "r" (mask), "r" (&page->flags),
->> +			     : "r" (cpu), "r" (mask), "r" (&folio->flags),
->>   			       "i" (PG_dcache_cpu_mask),
->>   			       "i" (PG_dcache_cpu_shift)
->>   			     : "g1", "g7");
->> @@ -284,9 +289,10 @@ static void flush_dcache(unsigned long pfn)
->>   
->>   	page = pfn_to_page(pfn);
->>   	if (page) {
->> +		struct folio *folio = page_folio(page);
->>   		unsigned long pg_flags;
->>   
->> -		pg_flags = page->flags;
->> +		pg_flags = folio->flags;
->>   		if (pg_flags & (1UL << PG_dcache_dirty)) {
->>   			int cpu = ((pg_flags >> PG_dcache_cpu_shift) &
->>   				   PG_dcache_cpu_mask);
->> @@ -296,11 +302,11 @@ static void flush_dcache(unsigned long pfn)
->>   			 * in the SMP case.
->>   			 */
->>   			if (cpu == this_cpu)
->> -				flush_dcache_page_impl(page);
->> +				flush_dcache_folio_impl(folio);
->>   			else
->> -				smp_flush_dcache_page_impl(page, cpu);
->> +				smp_flush_dcache_folio_impl(folio, cpu);
->>   
->> -			clear_dcache_dirty_cpu(page, cpu);
->> +			clear_dcache_dirty_cpu(folio, cpu);
->>   
->>   			put_cpu();
->>   		}
->> @@ -388,12 +394,14 @@ bool __init arch_hugetlb_valid_size(unsigned long size)
->>   }
->>   #endif	/* CONFIG_HUGETLB_PAGE */
->>   
->> -void update_mmu_cache(struct vm_area_struct *vma, unsigned long address, pte_t *ptep)
->> +void update_mmu_cache_range(struct vm_area_struct *vma, unsigned long address,
->> +		pte_t *ptep, unsigned int nr)
->>   {
->>   	struct mm_struct *mm;
->>   	unsigned long flags;
->>   	bool is_huge_tsb;
->>   	pte_t pte = *ptep;
->> +	unsigned int i;
->>   
->>   	if (tlb_type != hypervisor) {
->>   		unsigned long pfn = pte_pfn(pte);
->> @@ -440,15 +448,21 @@ void update_mmu_cache(struct vm_area_struct *vma, unsigned long address, pte_t *
->>   		}
->>   	}
->>   #endif
->> -	if (!is_huge_tsb)
->> -		__update_mmu_tsb_insert(mm, MM_TSB_BASE, PAGE_SHIFT,
->> -					address, pte_val(pte));
->> +	if (!is_huge_tsb) {
->> +		for (i = 0; i < nr; i++) {
->> +			__update_mmu_tsb_insert(mm, MM_TSB_BASE, PAGE_SHIFT,
->> +						address, pte_val(pte));
->> +			address += PAGE_SIZE;
->> +			pte_val(pte) += PAGE_SIZE;
->> +		}
->> +	}
->>   
->>   	spin_unlock_irqrestore(&mm->context.lock, flags);
->>   }
->>   
->> -void flush_dcache_page(struct page *page)
->> +void flush_dcache_folio(struct folio *folio)
->>   {
->> +	unsigned long pfn = folio_pfn(folio);
->>   	struct address_space *mapping;
->>   	int this_cpu;
->>   
->> @@ -459,35 +473,35 @@ void flush_dcache_page(struct page *page)
->>   	 * is merely the zero page.  The 'bigcore' testcase in GDB
->>   	 * causes this case to run millions of times.
->>   	 */
->> -	if (page == ZERO_PAGE(0))
->> +	if (is_zero_pfn(pfn))
->>   		return;
->>   
->>   	this_cpu = get_cpu();
->>   
->> -	mapping = page_mapping_file(page);
->> +	mapping = folio_flush_mapping(folio);
->>   	if (mapping && !mapping_mapped(mapping)) {
->> -		int dirty = test_bit(PG_dcache_dirty, &page->flags);
->> +		bool dirty = test_bit(PG_dcache_dirty, &folio->flags);
->>   		if (dirty) {
->> -			int dirty_cpu = dcache_dirty_cpu(page);
->> +			int dirty_cpu = dcache_dirty_cpu(folio);
->>   
->>   			if (dirty_cpu == this_cpu)
->>   				goto out;
->> -			smp_flush_dcache_page_impl(page, dirty_cpu);
->> +			smp_flush_dcache_folio_impl(folio, dirty_cpu);
->>   		}
->> -		set_dcache_dirty(page, this_cpu);
->> +		set_dcache_dirty(folio, this_cpu);
->>   	} else {
->>   		/* We could delay the flush for the !page_mapping
->>   		 * case too.  But that case is for exec env/arg
->>   		 * pages and those are %99 certainly going to get
->>   		 * faulted into the tlb (and thus flushed) anyways.
->>   		 */
->> -		flush_dcache_page_impl(page);
->> +		flush_dcache_folio_impl(folio);
->>   	}
->>   
->>   out:
->>   	put_cpu();
->>   }
->> -EXPORT_SYMBOL(flush_dcache_page);
->> +EXPORT_SYMBOL(flush_dcache_folio);
->>   
->>   void __kprobes flush_icache_range(unsigned long start, unsigned long end)
->>   {
->> @@ -2280,10 +2294,10 @@ void __init paging_init(void)
->>   	setup_page_offset();
->>   
->>   	/* These build time checkes make sure that the dcache_dirty_cpu()
->> -	 * page->flags usage will work.
->> +	 * folio->flags usage will work.
->>   	 *
->>   	 * When a page gets marked as dcache-dirty, we store the
->> -	 * cpu number starting at bit 32 in the page->flags.  Also,
->> +	 * cpu number starting at bit 32 in the folio->flags.  Also,
->>   	 * functions like clear_dcache_dirty_cpu use the cpu mask
->>   	 * in 13-bit signed-immediate instruction fields.
->>   	 */
->> diff --git a/arch/sparc/mm/tlb.c b/arch/sparc/mm/tlb.c
->> index 9a725547578e..3fa6a070912d 100644
->> --- a/arch/sparc/mm/tlb.c
->> +++ b/arch/sparc/mm/tlb.c
->> @@ -118,6 +118,7 @@ void tlb_batch_add(struct mm_struct *mm, unsigned long vaddr,
->>   		unsigned long paddr, pfn = pte_pfn(orig);
->>   		struct address_space *mapping;
->>   		struct page *page;
->> +		struct folio *folio;
->>   
->>   		if (!pfn_valid(pfn))
->>   			goto no_cache_flush;
->> @@ -127,13 +128,13 @@ void tlb_batch_add(struct mm_struct *mm, unsigned long vaddr,
->>   			goto no_cache_flush;
->>   
->>   		/* A real file page? */
->> -		mapping = page_mapping_file(page);
->> +		mapping = folio_flush_mapping(folio);
->>   		if (!mapping)
->>   			goto no_cache_flush;
->>   
->>   		paddr = (unsigned long) page_address(page);
->>   		if ((paddr ^ vaddr) & (1 << 13))
->> -			flush_dcache_page_all(mm, page);
->> +			flush_dcache_folio_all(mm, folio);
->>   	}
->>   
->>   no_cache_flush:
-> 
-> This change broke the kernel on sun4u SPARC systems. This has been observed on a Sun Netra 240.
-> 
-> During boot, the kernel crashes with:
-> 
-> [   25.855163] Unable to handle kernel NULL pointer dereference
-> [   25.929588] tsk->{mm,active_mm}->context = 0000000000000001
-> [   26.002772] tsk->{mm,active_mm}->pgd = fff00000001bc000
-> [   26.071405]               \|/ ____ \|/
-> [   26.071405]               "@'/ .. \`@"
-> [   26.071405]               /_| \__/ |_\
-> [   26.071405]                  \__U_/
-> [   26.264705] modprobe(33): Oops [#1]
-> [   26.310445] CPU: 0 PID: 33 Comm: modprobe Not tainted 6.5.0-rc4+ #16
-> [   26.393937] TSTATE: 0000004411001601 TPC: 0000000000452a28 TNPC: 0000000000452a2c Y: 00000008    Not tainted
-> [   26.523184] TPC: <tlb_batch_add+0x108/0x1a0>
-> [   26.579221] g0: ace36c1f2cee4067 g1: 0000000000000028 g2: 00000000000a010c g3: 000c000000000000
-> [   26.693607] g4: fff0000001947000 g5: 0000000000000000 g6: fff0000001948000 g7: fff000023fe33f00
-> [   26.807978] o0: fff000000738fff8 o1: 000007feffffe000 o2: fff000000194b788 o3: 0000000000e3c038
-> [   26.922356] o4: ffffffffffffffff o5: 0000000000e3c038 sp: fff000000194aee1 ret_pc: 000000000065d194
-> [   27.041302] RPC: <__pte_offset_map_lock+0x14/0x60>
-> [   27.104203] l0: fff000000194b860 l1: 0000000000000001 l2: 0000000000000000 l3: fff000000194b850
-> [   27.218583] l4: 0000000000002000 l5: 00000000001010f8 l6: 0000000000000002 l7: 0000000000000040
-> [   27.332959] i0: fff000000194e400 i1: 000007feffffe000 i2: 000c000004857588 i3: 80000002026d3fb2
-> [   27.447334] i4: 0000000000000000 i5: 000000000000000d i6: fff000000194af91 i7: 0000000000659110
-> [   27.561709] I7: <change_protection+0x910/0xe00>
-> [   27.621178] Call Trace:
-> [   27.653202] [<0000000000659110>] change_protection+0x910/0xe00
-> [   27.729838] [<00000000006596f4>] mprotect_fixup+0xf4/0x2c0
-> [   27.801892] [<00000000006c754c>] setup_arg_pages+0x12c/0x2c0
-> [   27.876237] [<0000000000737d80>] load_elf_binary+0x360/0x1380
-> [   27.951722] [<00000000006c8564>] bprm_execve+0x1e4/0x560
-> [   28.021493] [<00000000006c8e8c>] kernel_execve+0x14c/0x200
-> [   28.093548] [<000000000047f6e8>] call_usermodehelper_exec_async+0xa8/0x140
-> [   28.183906] [<0000000000405fc8>] ret_from_fork+0x1c/0x2c
-> [   28.253672] [<0000000000000000>] 0x0
-> [   28.300568] Disabling lock debugging due to kernel taint
-> [   28.370336] Caller[0000000000659110]: change_protection+0x910/0xe00
-> [   28.452686] Caller[00000000006596f4]: mprotect_fixup+0xf4/0x2c0
-> [   28.530461] Caller[00000000006c754c]: setup_arg_pages+0x12c/0x2c0
-> [   28.610524] Caller[0000000000737d80]: load_elf_binary+0x360/0x1380
-> [   28.691730] Caller[00000000006c8564]: bprm_execve+0x1e4/0x560
-> [   28.767218] Caller[00000000006c8e8c]: kernel_execve+0x14c/0x200
-> [   28.844993] Caller[000000000047f6e8]: call_usermodehelper_exec_async+0xa8/0x140
-> [   28.941071] Caller[0000000000405fc8]: ret_from_fork+0x1c/0x2c
-> [   29.016554] Caller[0000000000000000]: 0x0
-> [   29.069167] Instruction DUMP:
-> [   29.069169]  80886001
-> [   29.108052]  126fffc8
-> [   29.138932]  01000000
-> [   29.169815] <c2582000>
-> [   29.200697]  83307013
-> [   29.231578]  80886001
-> [   29.262458]  02680007
-> [   29.293338]  01000000
-> [   29.324223]  c2582000
-> [   29.355102]
-> 
-> This crash is not observed on sun4v systems.
-> 
-> Any idea what could be the fix?
+Hello,
 
-There was a follow-on fix that addressed a bug with this patch:
+Just heads up that I am still working on v4.
+While I can verify the success on compile and booting with my changes
+on x86, arm with SW/HW_TAGS modes, I'm having issues with PowerPC, UML
+arch that selects ARCH_DEFER_KASAN.
 
-f4b4f3ec1a31 sparc64: add missing initialization of folio in tlb_batch_add()
+Adding Christophe Leroy in TO. Please advise on the powerpc panic issue.
 
-Anthony
+I started from scratch again, cherry picking changes one by one,
+and verifying on powerpc which does select ARCH_DEFER_KASAN
+and on arm64 with HW_TAGS on. While HW_TAGS works and boots
+with the git diff [4], powerpc panics on botting, so I could've used the he=
+lp,
+while I'm trying to figure it out myself.
 
-> 
-> Adrian
-> 
+I know that PowerPC used the static key before and
+I use the function to enable it and check it. Stuck in here.
 
+TL;DR of upcoming v4 changes:
+
+I've left the only check `kasan_enabled()` in include/linux/kasan-enabled.h
+for the upcoming PATCH v4, removing kasan_shadow_initialized() from v3.
+Because currently [1] in mainline, if HW_TAGS is enabled,
+kasan_enabled() checks the static flag, otherwise IS_ENABLED(CONFIG_KASAN).
+
+Andrey Konovalov mentioned in v2 to have a separate kasan_enabled()
+to check if KASAN enabled at all and kasan_shadow_initialized() if
+shadow memory is ready. AFAIU, the single kasan_enabled() covers both
+scenarios separately in ARCH_DEFER_KASAN, and it doesn't need to
+have a separate check in either case. Please correct me if I'm wrong.
+
+[1] https://elixir.bootlin.com/linux/v6.16/source/include/linux/kasan-enabl=
+ed.h#L11
+
+Also kasan_arch_is_ready() is replaced with kasan_enabled() as I did in v1-=
+v2,
+since we control runtime/compile time checks via the single function.
+
+#if defined(CONFIG_ARCH_DEFER_KASAN) || defined(CONFIG_KASAN_HW_TAGS)
+static __always_inline bool kasan_enabled(void)
+{
+        return static_branch_likely(&kasan_flag_enabled);
+}
+...
+
+=3D=3D UML issue
+
+Currently [2], UML uses integer flag, so adding ARCH_DEFER_KASAN
+which relies on CONFIG_STATIC_LINK to arch/um/Kconfig seems problematic, or=
+ no?
+I was trying to boot the ./linux ARCH=3Dum and replacing ".kasan_init"
+section with
+__init kasan_init
+
+and calling kasan_init() at the end of `__init arch_mm_preinit()` - I
+got segfault,
+couldn't get help from gdb or strace. I guess the patching just didn't work=
+.
+
+[2] https://elixir.bootlin.com/linux/v6.16/source/arch/um/kernel/mem.c#L35
+
+#ifdef CONFIG_KASAN
+void __init kasan_init(void)
+{
+        /*
+        * kasan_map_memory will map all of the required address space and
+        * the host machine will allocate physical memory as necessary.
+        */
+        kasan_map_memory((void *)KASAN_SHADOW_START, KASAN_SHADOW_SIZE);
+        init_task.kasan_depth =3D 0;
+        kasan_init_generic();
+}
+#endif
+
+and removed ".kasan_init" section from:
+arch/um/include/asm/common.lds.S
+arch/um/kernel/dyn.lds.S
+
+So not sure if I should actually keep kasan_arch_is_ready for UML code
+that can not
+use kasan_enabled() as STATIC_LINK is not enabled in UML defconfig.
+
+=3D=3D PowerPC panic
+
+I've following this instruction to compile properly kernel for powerpc
+https://github.com/linuxppc/wiki/wiki/Building-powerpc-kernels,
+
+because compiling with clang and defconfig didn't boot the QEMU.
+
+export CROSS_COMPILE=3Dpowerpc64le-linux-gnu-
+export ARCH=3Dpowerpc
+make ppc64le_defconfig
+
+Running it in QEMU, I'm currently receiving the kernel panic [3].
+**Without** git diff below [4], the QEMU boots with KASAN successfully.
+
+I'm trying to understand the root-cause:
+        ftrace_process_locs -> ftrace_init -> start_kernel()
+AFAIU, some code before kasan_init() is trying to do an instrumented
+access(store/load) that ends up in __asan_*,
+but shadow memory is not mapped yet.
+
+My guess is that the issue is how we prepare the shadow mem.
+differently in PPC_BOOK3S_64:
+arch/powerpc/mm/kasan/init_book3s_64.c
+and in PPC_BOOK3E_64:
+arch/powerpc/mm/kasan/init_book3e_64.c
+
+Like BOOK3S requires RADIX_MMU,
+so I can't verify ARCH_DEFER_KASAN on BOOK3E.
+
+
+
+[3]
+$ ./run-qemu-powerpc.sh ./linux-kasan
++ IMAGE=3D./images/rootfs-el.cpio.gz
++ KERNEL=3D./linux-kasan
++ qemu-system-ppc64 -M pseries -m 1G -nographic -vga none -kernel
+./linux-kasan/vmlinux -initrd ./images/rootfs-el.cpio.gz -append
+noreboot -device e1000e,netdev=3Dnic -netdev user,id=3Dnic -s -pidfile
+vm.pid
+qemu-system-ppc64: warning: TCG doesn't support requested feature,
+cap-cfpc=3Dworkaround
+qemu-system-ppc64: warning: TCG doesn't support requested feature,
+cap-sbbc=3Dworkaround
+qemu-system-ppc64: warning: TCG doesn't support requested feature,
+cap-ibs=3Dworkaround
+qemu-system-ppc64: warning: TCG doesn't support requested feature,
+cap-ccf-assist=3Don
+
+
+SLOF **********************************************************************
+QEMU Starting
+ Build Date =3D Mar  5 2025 10:48:26
+ FW Version =3D release 20210711
+ Press "s" to enter Open Firmware.
+
+Populating /vdevice methods
+Populating /vdevice/vty@71000000
+Populating /vdevice/nvram@71000001
+Populating /vdevice/v-scsi@71000002
+       SCSI: Looking for devices
+          8200000000000000 CD-ROM   : "QEMU     QEMU CD-ROM      2.5+"
+Populating /pci@800000020000000
+                     00 0000 (D) : 8086 10d3    network [ ethernet ]
+No NVRAM common partition, re-initializing...
+Scanning USB
+Using default console: /vdevice/vty@71000000
+Detected RAM kernel at 400000 (497c180 bytes)
+
+  Welcome to Open Firmware
+
+  Copyright (c) 2004, 2017 IBM Corporation All rights reserved.
+  This program and the accompanying materials are made available
+  under the terms of the BSD License available at
+  http://www.opensource.org/licenses/bsd-license.php
+
+Booting from memory...
+OF stdout device is: /vdevice/vty@71000000
+Preparing to boot Linux version 6.16.0-g9a9f7176fa9d-dirty
+(novitoll@PC) (powerpc64le-linux-gnu-gcc (Ubuntu
+11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GNU Binutils for Ubuntu) 2.38)
+#64 SMP Sun Aug  3 19:58:23 +05 2025
+Detected machine type: 0000000000000101
+command line: noreboot
+Max number of cores passed to firmware: 2048 (NR_CPUS =3D 2048)
+Calling ibm,client-architecture-support... done
+memory layout at init:
+  memory_limit : 0000000000000000 (16 MB aligned)
+  alloc_bottom : 00000000053b0000
+  alloc_top    : 0000000030000000
+  alloc_top_hi : 0000000040000000
+  rmo_top      : 0000000030000000
+  ram_top      : 0000000040000000
+instantiating rtas at 0x000000002fff0000... done
+prom_hold_cpus: skipped
+copying OF device tree...
+Building dt strings...
+Building dt structure...
+Device tree strings 0x00000000053c0000 -> 0x00000000053c0b78
+Device tree struct  0x00000000053d0000 -> 0x00000000053e0000
+Quiescing Open Firmware ...
+Booting Linux via __start() @ 0x0000000000400000 ...
+[    0.000000][    T0] radix-mmu: Page sizes from device-tree:
+[    0.000000][    T0] radix-mmu: Page size shift =3D 12 AP=3D0x0
+[    0.000000][    T0] radix-mmu: Page size shift =3D 16 AP=3D0x5
+[    0.000000][    T0] radix-mmu: Page size shift =3D 21 AP=3D0x1
+[    0.000000][    T0] radix-mmu: Page size shift =3D 30 AP=3D0x2
+[    0.000000][    T0] Activating Kernel Userspace Access Prevention
+[    0.000000][    T0] Activating Kernel Userspace Execution Prevention
+[    0.000000][    T0] radix-mmu: Mapped
+0x0000000000000000-0x0000000003e00000 with 2.00 MiB pages (exec)
+[    0.000000][    T0] radix-mmu: Mapped
+0x0000000003e00000-0x0000000040000000 with 2.00 MiB pages
+[    0.000000][    T0] lpar: Using radix MMU under hypervisor
+[    0.000000][    T0] Linux version 6.16.0-g9a9f7176fa9d-dirty
+(novitoll@PC) (powerpc64le-linux-gnu-gcc (Ubuntu
+11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GNU Binutils for Ubuntu) 2.38)
+#64 SMP Sun Aug  3 19:58:23 +05 2025
+[    0.000000][    T0] KernelAddressSanitizer initialized (generic)
+[    0.000000][    T0] OF: reserved mem: Reserved memory: No
+reserved-memory node in the DT
+[    0.000000][    T0] Found initrd at 0xc000000004d90000:0xc0000000053ad15=
+a
+[    0.000000][    T0] Hardware name: IBM pSeries (emulated by qemu)
+POWER9 (architected) 0x4e1200 0xf000005 of:SLOF,HEAD pSeries
+[    0.000000][    T0] printk: legacy bootconsole [udbg0] enabled
+[    0.000000][    T0] Partition configured for 1 cpus.
+[    0.000000][    T0] CPU maps initialized for 1 thread per core
+[    0.000000][    T0] numa: Partition configured for 1 NUMA nodes.
+[    0.000000][    T0] ----------------------------------------------------=
+-
+[    0.000000][    T0] phys_mem_size     =3D 0x40000000
+[    0.000000][    T0] dcache_bsize      =3D 0x80
+[    0.000000][    T0] icache_bsize      =3D 0x80
+[    0.000000][    T0] cpu_features      =3D 0x0001c06b8f4f9187
+[    0.000000][    T0]   possible        =3D 0x003ffbfbffffb18f
+[    0.000000][    T0]   always          =3D 0x0000000000000180
+[    0.000000][    T0] cpu_user_features =3D 0xdc0065c2 0xaef00000
+[    0.000000][    T0] mmu_features      =3D 0x3c007641
+[    0.000000][    T0] firmware_features =3D 0x00000285455a445f
+[    0.000000][    T0] vmalloc start     =3D 0xc008000000000000
+[    0.000000][    T0] IO start          =3D 0xc00a000000000000
+[    0.000000][    T0] vmemmap start     =3D 0xc00c000000000000
+[    0.000000][    T0] ----------------------------------------------------=
+-
+[    0.000000][    T0] NODE_DATA(0) allocated [mem 0x3fb28800-0x3fb2ffff]
+[    0.000000][    T0] rfi-flush: fallback displacement flush available
+[    0.000000][    T0] rfi-flush: ori type flush available
+[    0.000000][    T0] rfi-flush: mttrig type flush available
+[    0.000000][    T0] count-cache-flush: hardware flush enabled.
+[    0.000000][    T0] link-stack-flush: software flush enabled.
+[    0.000000][    T0] stf-barrier: eieio barrier available
+[    0.000000][    T0] PPC64 nvram contains 65536 bytes
+[    0.000000][    T0] barrier-nospec: using ORI speculation barrier
+[    0.000000][    T0] Zone ranges:
+[    0.000000][    T0]   Normal   [mem 0x0000000000000000-0x000000003ffffff=
+f]
+[    0.000000][    T0]   Device   empty
+[    0.000000][    T0] Movable zone start for each node
+[    0.000000][    T0] Early memory node ranges
+[    0.000000][    T0]   node   0: [mem 0x0000000000000000-0x000000003fffff=
+ff]
+[    0.000000][    T0] Initmem setup node 0 [mem
+0x0000000000000000-0x000000003fffffff]
+[    0.000000][    T0] percpu: Embedded 3 pages/cpu s122904 r0 d73704 u1966=
+08
+[    0.000000][    T0] Kernel command line: noreboot
+[    0.000000][    T0] Unknown kernel command line parameters
+"noreboot", will be passed to user space.
+[    0.000000][    T0] printk: log buffer data + meta data: 262144 +
+917504 =3D 1179648 bytes
+[    0.000000][    T0] Dentry cache hash table entries: 131072 (order:
+4, 1048576 bytes, linear)
+[    0.000000][    T0] Inode-cache hash table entries: 65536 (order:
+3, 524288 bytes, linear)
+[    0.000000][    T0] Fallback order for Node 0: 0
+[    0.000000][    T0] Built 1 zonelists, mobility grouping on.  Total
+pages: 16384
+[    0.000000][    T0] Policy zone: Normal
+[    0.000000][    T0] mem auto-init: stack:off, heap alloc:off, heap free:=
+off
+[    0.000000][    T0] stackdepot: allocating hash table via
+alloc_large_system_hash
+[    0.000000][    T0] stackdepot hash table entries: 1048576 (order:
+8, 16777216 bytes, linear)
+[    0.000000][    T0] SLUB: HWalign=3D128, Order=3D0-3, MinObjects=3D0,
+CPUs=3D1, Nodes=3D1
+[    0.000000][    T0] BUG: Unable to handle kernel data access on
+read at 0xc00e0000a83f4ff0
+[    0.000000][    T0] Faulting instruction address: 0xc000000000761aec
+[    0.000000][    T0] Oops: Kernel access of bad area, sig: 11 [#1]
+[    0.000000][    T0] BE PAGE_SIZE=3D64K MMU=3DRadix  SMP NR_CPUS=3D2048 N=
+UMA pSeries
+[    0.000000][    T0] Modules linked in:
+[    0.000000][    T0] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted
+6.16.0-g9a9f7176fa9d-dirty #64 VOLUNTARY
+[    0.000000][    T0] Hardware name: IBM pSeries (emulated by qemu)
+POWER9 (architected) 0x4e1200 0xf000005 of:SLOF,HEAD pSeries
+[    0.000000][    T0] NIP:  c000000000761aec LR: c0000000003fa48c
+CTR: c000000000302db4
+[    0.000000][    T0] REGS: c000000004687b20 TRAP: 0300   Not tainted
+ (6.16.0-g9a9f7176fa9d-dirty)
+[    0.000000][    T0] MSR:  8000000002001032 <SF,VEC,ME,IR,DR,RI>
+CR: 24082424  XER: 00000000
+[    0.000000][    T0] CFAR: c0000000003fa488 DAR: c00e0000a83f4ff0
+DSISR: 40000000 IRQMASK: 3
+[    0.000000][    T0] GPR00: c0000000003fa48c c000000004687dc0
+c00000000230a500 c000000541fa7f80
+[    0.000000][    T0] GPR04: 0000000000000008 0000000000000001
+c0000000019cf044 0000000000000001
+[    0.000000][    T0] GPR08: a80e000000000000 18000000a83f4ff0
+0000000000000007 a80e000000000000
+[    0.000000][    T0] GPR12: c00e0000008d0fb6 c000000004980000
+0000000000000002 0000000002579c28
+[    0.000000][    T0] GPR16: c0000000040824c0 000000000000000c
+c000000006a80000 c00000000000e9f8
+[    0.000000][    T0] GPR20: 0000000000010000 c0000000031e4568
+c000000004840860 0000000000000000
+[    0.000000][    T0] GPR24: 000000000000b9f4 0000000053b527f9
+0000000000000000 c0000000031875d0
+[    0.000000][    T0] GPR28: 000000053b527f80 c0000000068d0340
+c0000000068d0380 0000000000000000
+[    0.000000][    T0] NIP [c000000000761aec] __asan_store8+0x60/0xe0
+[    0.000000][    T0] LR [c0000000003fa48c] ftrace_process_locs+0x3c0/0xa2=
+0
+[    0.000000][    T0] Call Trace:
+[    0.000000][    T0] [c000000004687dc0] [0000000000000002] 0x2 (unreliabl=
+e)
+[    0.000000][    T0] [c000000004687de0] [c0000000003fa48c]
+ftrace_process_locs+0x3c0/0xa20
+[    0.000000][    T0] [c000000004687ee0] [c000000003065c14]
+ftrace_init+0x68/0x1cc
+[    0.000000][    T0] [c000000004687f50] [c00000000300a57c]
+start_kernel+0x1d8/0x4e0
+[    0.000000][    T0] [c000000004687fe0] [c00000000000da4c]
+start_here_common+0x1c/0x20
+[    0.000000][    T0] Code: 792907c6 6529ffff 6129ffff 7c234840
+4081005c 39230007 792a0760 2c2a0007 40820034 3d00a80e 7929e8c2
+790807c6 <7d2940ae> 7d290775 4082006c 38210020
+[    0.000000][    T0] ---[ end trace 0000000000000000 ]---
+[    0.000000][    T0]
+[    0.000000][    T0] Kernel panic - not syncing: Attempted to kill
+the idle task!
+qemu-system-ppc64: OS terminated: `
+
+
+
+[4]
+---
+arch/powerpc/Kconfig | 1 +
+arch/powerpc/include/asm/kasan.h | 13 ----------
+arch/powerpc/mm/kasan/init_32.c | 2 +-
+arch/powerpc/mm/kasan/init_book3e_64.c | 2 +-
+arch/powerpc/mm/kasan/init_book3s_64.c | 6 +----
+include/linux/kasan-enabled.h | 24 +++++++++++++----
+include/linux/kasan.h | 28 ++++++++++++++++++--
+lib/Kconfig.kasan | 8 ++++++
+mm/kasan/common.c | 18 ++++++++-----
+mm/kasan/generic.c | 23 +++++++++-------
+mm/kasan/hw_tags.c | 9 +------
+mm/kasan/kasan.h | 36 +++++++++++++++++++-------
+mm/kasan/shadow.c | 32 +++++------------------
+mm/kasan/sw_tags.c | 2 ++
+mm/kasan/tags.c | 2 +-
+15 files changed, 120 insertions(+), 86 deletions(-)
+
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 93402a1d9c9..11c8ef2d88e 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -122,6 +122,7 @@ config PPC
+# Please keep this list sorted alphabetically.
+#
+select ARCH_32BIT_OFF_T if PPC32
++ select ARCH_DEFER_KASAN if PPC_RADIX_MMU
+select ARCH_DISABLE_KASAN_INLINE if PPC_RADIX_MMU
+select ARCH_DMA_DEFAULT_COHERENT if !NOT_COHERENT_CACHE
+select ARCH_ENABLE_MEMORY_HOTPLUG
+diff --git a/arch/powerpc/include/asm/kasan.h b/arch/powerpc/include/asm/ka=
+san.h
+index b5bbb94c51f..73466d3ff30 100644
+--- a/arch/powerpc/include/asm/kasan.h
++++ b/arch/powerpc/include/asm/kasan.h
+@@ -53,19 +53,6 @@
+#endif
+#ifdef CONFIG_KASAN
+-#ifdef CONFIG_PPC_BOOK3S_64
+-DECLARE_STATIC_KEY_FALSE(powerpc_kasan_enabled_key);
+-
+-static __always_inline bool kasan_arch_is_ready(void)
+-{
+- if (static_branch_likely(&powerpc_kasan_enabled_key))
+- return true;
+- return false;
+-}
+-
+-#define kasan_arch_is_ready kasan_arch_is_ready
+-#endif
+-
+void kasan_early_init(void);
+void kasan_mmu_init(void);
+void kasan_init(void);
+diff --git a/arch/powerpc/mm/kasan/init_32.c b/arch/powerpc/mm/kasan/init_3=
+2.c
+index 03666d790a5..1d083597464 100644
+--- a/arch/powerpc/mm/kasan/init_32.c
++++ b/arch/powerpc/mm/kasan/init_32.c
+@@ -165,7 +165,7 @@ void __init kasan_init(void)
+/* At this point kasan is fully initialized. Enable error messages */
+init_task.kasan_depth =3D 0;
+- pr_info("KASAN init done\n");
++ kasan_init_generic();
+}
+void __init kasan_late_init(void)
+diff --git a/arch/powerpc/mm/kasan/init_book3e_64.c
+b/arch/powerpc/mm/kasan/init_book3e_64.c
+index 60c78aac0f6..0d3a73d6d4b 100644
+--- a/arch/powerpc/mm/kasan/init_book3e_64.c
++++ b/arch/powerpc/mm/kasan/init_book3e_64.c
+@@ -127,7 +127,7 @@ void __init kasan_init(void)
+/* Enable error messages */
+init_task.kasan_depth =3D 0;
+- pr_info("KASAN init done\n");
++ kasan_init_generic();
+}
+void __init kasan_late_init(void) { }
+diff --git a/arch/powerpc/mm/kasan/init_book3s_64.c
+b/arch/powerpc/mm/kasan/init_book3s_64.c
+index 7d959544c07..dcafa641804 100644
+--- a/arch/powerpc/mm/kasan/init_book3s_64.c
++++ b/arch/powerpc/mm/kasan/init_book3s_64.c
+@@ -19,8 +19,6 @@
+#include <linux/memblock.h>
+#include <asm/pgalloc.h>
+-DEFINE_STATIC_KEY_FALSE(powerpc_kasan_enabled_key);
+-
+static void __init kasan_init_phys_region(void *start, void *end)
+{
+unsigned long k_start, k_end, k_cur;
+@@ -92,11 +90,9 @@ void __init kasan_init(void)
+*/
+memset(kasan_early_shadow_page, 0, PAGE_SIZE);
+- static_branch_inc(&powerpc_kasan_enabled_key);
+-
+/* Enable error messages */
+init_task.kasan_depth =3D 0;
+- pr_info("KASAN init done\n");
++ kasan_init_generic();
+}
+void __init kasan_early_init(void) { }
+diff --git a/include/linux/kasan-enabled.h b/include/linux/kasan-enabled.h
+index 6f612d69ea0..32db31b6418 100644
+--- a/include/linux/kasan-enabled.h
++++ b/include/linux/kasan-enabled.h
+@@ -4,32 +4,46 @@
+#include <linux/static_key.h>
+-#ifdef CONFIG_KASAN_HW_TAGS
+-
++#if defined(CONFIG_ARCH_DEFER_KASAN) || defined(CONFIG_KASAN_HW_TAGS)
++/*
++ * Global runtime flag for KASAN modes that need runtime control.
++ * Used by ARCH_DEFER_KASAN architectures and HW_TAGS mode.
++ */
+DECLARE_STATIC_KEY_FALSE(kasan_flag_enabled);
++/*
++ * Runtime control for shadow memory initialization or HW_TAGS mode.
++ * Uses static key for architectures that need deferred KASAN or HW_TAGS.
++ */
+static __always_inline bool kasan_enabled(void)
+{
+return static_branch_likely(&kasan_flag_enabled);
+}
++static inline void kasan_enable(void)
++{
++ static_branch_enable(&kasan_flag_enabled);
++}
++
+static inline bool kasan_hw_tags_enabled(void)
+{
+return kasan_enabled();
+}
++#else
+-#else /* CONFIG_KASAN_HW_TAGS */
+-
++/* Controls whether KASAN is enabled at all (compile-time check). */
+static inline bool kasan_enabled(void)
+{
+return IS_ENABLED(CONFIG_KASAN);
+}
++static inline void kasan_enable(void) { }
++
+static inline bool kasan_hw_tags_enabled(void)
+{
+return false;
+}
+-#endif /* CONFIG_KASAN_HW_TAGS */
++#endif /* CONFIG_ARCH_DEFER_KASAN || CONFIG_KASAN_HW_TAGS */
+#endif /* LINUX_KASAN_ENABLED_H */
+diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+index 890011071f2..8bf0efbb751 100644
+--- a/include/linux/kasan.h
++++ b/include/linux/kasan.h
+@@ -543,6 +543,12 @@ void kasan_report_async(void);
+#endif /* CONFIG_KASAN_HW_TAGS */
++#ifdef CONFIG_KASAN_GENERIC
++void __init kasan_init_generic(void);
++#else
++static inline void kasan_init_generic(void) { }
++#endif
++
+#ifdef CONFIG_KASAN_SW_TAGS
+void __init kasan_init_sw_tags(void);
+#else
+@@ -562,11 +568,29 @@ static inline void kasan_init_hw_tags(void) { }
+#if defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)
+void kasan_populate_early_vm_area_shadow(void *start, unsigned long size);
+-int kasan_populate_vmalloc(unsigned long addr, unsigned long size);
+-void kasan_release_vmalloc(unsigned long start, unsigned long end,
++
++int __kasan_populate_vmalloc(unsigned long addr, unsigned long size);
++static inline int kasan_populate_vmalloc(unsigned long addr, unsigned
+long size)
++{
++ if (!kasan_enabled())
++ return 0;
++ return __kasan_populate_vmalloc(addr, size);
++}
++
++void __kasan_release_vmalloc(unsigned long start, unsigned long end,
+unsigned long free_region_start,
+unsigned long free_region_end,
+unsigned long flags);
++static inline void kasan_release_vmalloc(unsigned long start,
++ unsigned long end,
++ unsigned long free_region_start,
++ unsigned long free_region_end,
++ unsigned long flags)
++{
++ if (kasan_enabled())
++ __kasan_release_vmalloc(start, end, free_region_start,
++ free_region_end, flags);
++}
+#else /* CONFIG_KASAN_GENERIC || CONFIG_KASAN_SW_TAGS */
+diff --git a/lib/Kconfig.kasan b/lib/Kconfig.kasan
+index f82889a830f..4e0508022ce 100644
+--- a/lib/Kconfig.kasan
++++ b/lib/Kconfig.kasan
+@@ -49,6 +49,14 @@ menuconfig KASAN
+if KASAN
++config ARCH_DEFER_KASAN
++ bool
++ help
++ Architectures should select this if they need to defer KASAN
++ initialization until shadow memory is properly set up. This
++ enables runtime control via static keys. Otherwise, KASAN uses
++ compile-time constants for better performance.
++
+config CC_HAS_KASAN_MEMINTRINSIC_PREFIX
+def_bool (CC_IS_CLANG && $(cc-option,-fsanitize=3Dkernel-address -mllvm
+-asan-kernel-mem-intrinsic-prefix=3D1)) || \
+(CC_IS_GCC && $(cc-option,-fsanitize=3Dkernel-address --param
+asan-kernel-mem-intrinsic-prefix=3D1))
+diff --git a/mm/kasan/common.c b/mm/kasan/common.c
+index ed4873e18c7..dff5f7bfad1 100644
+--- a/mm/kasan/common.c
++++ b/mm/kasan/common.c
+@@ -32,6 +32,15 @@
+#include "kasan.h"
+#include "../slab.h"
++#if defined(CONFIG_ARCH_DEFER_KASAN) || defined(CONFIG_KASAN_HW_TAGS)
++/*
++ * Definition of the unified static key declared in kasan-enabled.h.
++ * This provides consistent runtime enable/disable across KASAN modes.
++ */
++DEFINE_STATIC_KEY_FALSE(kasan_flag_enabled);
++EXPORT_SYMBOL(kasan_flag_enabled);
++#endif
++
+struct slab *kasan_addr_to_slab(const void *addr)
+{
+if (virt_addr_valid(addr))
+@@ -250,7 +259,7 @@ static inline void poison_slab_object(struct
+kmem_cache *cache, void *object,
+bool __kasan_slab_pre_free(struct kmem_cache *cache, void *object,
+unsigned long ip)
+{
+- if (!kasan_arch_is_ready() || is_kfence_address(object))
++ if (is_kfence_address(object))
+return false;
+return check_slab_allocation(cache, object, ip);
+}
+@@ -258,7 +267,7 @@ bool __kasan_slab_pre_free(struct kmem_cache
+*cache, void *object,
+bool __kasan_slab_free(struct kmem_cache *cache, void *object, bool init,
+bool still_accessible)
+{
+- if (!kasan_arch_is_ready() || is_kfence_address(object))
++ if (is_kfence_address(object))
+return false;
+poison_slab_object(cache, object, init, still_accessible);
+@@ -282,9 +291,6 @@ bool __kasan_slab_free(struct kmem_cache *cache,
+void *object, bool init,
+static inline bool check_page_allocation(void *ptr, unsigned long ip)
+{
+- if (!kasan_arch_is_ready())
+- return false;
+-
+if (ptr !=3D page_address(virt_to_head_page(ptr))) {
+kasan_report_invalid_free(ptr, ip, KASAN_REPORT_INVALID_FREE);
+return true;
+@@ -511,7 +517,7 @@ bool __kasan_mempool_poison_object(void *ptr,
+unsigned long ip)
+return true;
+}
+- if (is_kfence_address(ptr) || !kasan_arch_is_ready())
++ if (is_kfence_address(ptr))
+return true;
+slab =3D folio_slab(folio);
+diff --git a/mm/kasan/generic.c b/mm/kasan/generic.c
+index d54e89f8c3e..8e597cf8fdd 100644
+--- a/mm/kasan/generic.c
++++ b/mm/kasan/generic.c
+@@ -36,6 +36,17 @@
+#include "kasan.h"
+#include "../slab.h"
++/*
++ * Initialize Generic KASAN and enable runtime checks.
++ * This should be called from arch kasan_init() once shadow memory is read=
+y.
++ */
++void __init kasan_init_generic(void)
++{
++ kasan_enable();
++
++ pr_info("KernelAddressSanitizer initialized (generic)\n");
++}
++
+/*
+* All functions below always inlined so compiler could
+* perform better optimizations in each of __asan_loadX/__assn_storeX
+@@ -165,7 +176,7 @@ static __always_inline bool
+check_region_inline(const void *addr,
+size_t size, bool write,
+unsigned long ret_ip)
+{
+- if (!kasan_arch_is_ready())
++ if (!kasan_enabled())
+return true;
+if (unlikely(size =3D=3D 0))
+@@ -189,13 +200,10 @@ bool kasan_check_range(const void *addr, size_t
+size, bool write,
+return check_region_inline(addr, size, write, ret_ip);
+}
+-bool kasan_byte_accessible(const void *addr)
++bool __kasan_byte_accessible(const void *addr)
+{
+s8 shadow_byte;
+- if (!kasan_arch_is_ready())
+- return true;
+-
+shadow_byte =3D READ_ONCE(*(s8 *)kasan_mem_to_shadow(addr));
+return shadow_byte >=3D 0 && shadow_byte < KASAN_GRANULE_SIZE;
+@@ -495,9 +503,6 @@ static void release_alloc_meta(struct
+kasan_alloc_meta *meta)
+static void release_free_meta(const void *object, struct kasan_free_meta *m=
+eta)
+{
+- if (!kasan_arch_is_ready())
+- return;
+-
+/* Check if free meta is valid. */
+if (*(u8 *)kasan_mem_to_shadow(object) !=3D KASAN_SLAB_FREE_META)
+return;
+@@ -562,7 +567,7 @@ void kasan_save_alloc_info(struct kmem_cache
+*cache, void *object, gfp_t flags)
+kasan_save_track(&alloc_meta->alloc_track, flags);
+}
+-void kasan_save_free_info(struct kmem_cache *cache, void *object)
++void __kasan_save_free_info(struct kmem_cache *cache, void *object)
+{
+struct kasan_free_meta *free_meta;
+diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
+index 9a6927394b5..c8289a3feab 100644
+--- a/mm/kasan/hw_tags.c
++++ b/mm/kasan/hw_tags.c
+@@ -45,13 +45,6 @@ static enum kasan_arg kasan_arg __ro_after_init;
+static enum kasan_arg_mode kasan_arg_mode __ro_after_init;
+static enum kasan_arg_vmalloc kasan_arg_vmalloc __initdata;
+-/*
+- * Whether KASAN is enabled at all.
+- * The value remains false until KASAN is initialized by kasan_init_hw_tag=
+s().
+- */
+-DEFINE_STATIC_KEY_FALSE(kasan_flag_enabled);
+-EXPORT_SYMBOL(kasan_flag_enabled);
+-
+/*
+* Whether the selected mode is synchronous, asynchronous, or asymmetric.
+* Defaults to KASAN_MODE_SYNC.
+@@ -260,7 +253,7 @@ void __init kasan_init_hw_tags(void)
+kasan_init_tags();
+/* KASAN is now initialized, enable it. */
+- static_branch_enable(&kasan_flag_enabled);
++ kasan_enable();
+pr_info("KernelAddressSanitizer initialized (hw-tags, mode=3D%s,
+vmalloc=3D%s, stacktrace=3D%s)\n",
+kasan_mode_info(),
+diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
+index 129178be5e6..ecb0dccfca9 100644
+--- a/mm/kasan/kasan.h
++++ b/mm/kasan/kasan.h
+@@ -398,7 +398,13 @@ depot_stack_handle_t kasan_save_stack(gfp_t
+flags, depot_flags_t depot_flags);
+void kasan_set_track(struct kasan_track *track, depot_stack_handle_t stack)=
+;
+void kasan_save_track(struct kasan_track *track, gfp_t flags);
+void kasan_save_alloc_info(struct kmem_cache *cache, void *object, gfp_t fl=
+ags);
+-void kasan_save_free_info(struct kmem_cache *cache, void *object);
++
++void __kasan_save_free_info(struct kmem_cache *cache, void *object);
++static inline void kasan_save_free_info(struct kmem_cache *cache, void *ob=
+ject)
++{
++ if (kasan_enabled())
++ __kasan_save_free_info(cache, object);
++}
+#ifdef CONFIG_KASAN_GENERIC
+bool kasan_quarantine_put(struct kmem_cache *cache, void *object);
+@@ -499,6 +505,7 @@ static inline bool kasan_byte_accessible(const void *ad=
+dr)
+#else /* CONFIG_KASAN_HW_TAGS */
++void __kasan_poison(const void *addr, size_t size, u8 value, bool init);
+/**
+* kasan_poison - mark the memory range as inaccessible
+* @addr: range start address, must be aligned to KASAN_GRANULE_SIZE
+@@ -506,7 +513,11 @@ static inline bool kasan_byte_accessible(const void *a=
+ddr)
+* @value: value that's written to metadata for the range
+* @init: whether to initialize the memory range (only for hardware tag-base=
+d)
+*/
+-void kasan_poison(const void *addr, size_t size, u8 value, bool init);
++static inline void kasan_poison(const void *addr, size_t size, u8
+value, bool init)
++{
++ if (kasan_enabled())
++ __kasan_poison(addr, size, value, init);
++}
+/**
+* kasan_unpoison - mark the memory range as accessible
+@@ -521,12 +532,19 @@ void kasan_poison(const void *addr, size_t size,
+u8 value, bool init);
+*/
+void kasan_unpoison(const void *addr, size_t size, bool init);
+-bool kasan_byte_accessible(const void *addr);
++bool __kasan_byte_accessible(const void *addr);
++static inline bool kasan_byte_accessible(const void *addr)
++{
++ if (!kasan_enabled())
++ return true;
++ return __kasan_byte_accessible(addr);
++}
+#endif /* CONFIG_KASAN_HW_TAGS */
+#ifdef CONFIG_KASAN_GENERIC
++void __kasan_poison_last_granule(const void *address, size_t size);
+/**
+* kasan_poison_last_granule - mark the last granule of the memory range as
+* inaccessible
+@@ -536,7 +554,11 @@ bool kasan_byte_accessible(const void *addr);
+* This function is only available for the generic mode, as it's the only mo=
+de
+* that has partially poisoned memory granules.
+*/
+-void kasan_poison_last_granule(const void *address, size_t size);
++static inline void kasan_poison_last_granule(const void *address, size_t s=
+ize)
++{
++ if (kasan_enabled())
++ __kasan_poison_last_granule(address, size);
++}
+#else /* CONFIG_KASAN_GENERIC */
+@@ -544,12 +566,6 @@ static inline void
+kasan_poison_last_granule(const void *address, size_t size) {
+#endif /* CONFIG_KASAN_GENERIC */
+-#ifndef kasan_arch_is_ready
+-static inline bool kasan_arch_is_ready(void) { return true; }
+-#elif !defined(CONFIG_KASAN_GENERIC) || !defined(CONFIG_KASAN_OUTLINE)
+-#error kasan_arch_is_ready only works in KASAN generic outline mode!
+-#endif
+-
+#if IS_ENABLED(CONFIG_KASAN_KUNIT_TEST)
+void kasan_kunit_test_suite_start(void);
+diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
+index d2c70cd2afb..90c508cad63 100644
+--- a/mm/kasan/shadow.c
++++ b/mm/kasan/shadow.c
+@@ -121,13 +121,10 @@ void *__hwasan_memcpy(void *dest, const void
+*src, ssize_t len) __alias(__asan_m
+EXPORT_SYMBOL(__hwasan_memcpy);
+#endif
+-void kasan_poison(const void *addr, size_t size, u8 value, bool init)
++void __kasan_poison(const void *addr, size_t size, u8 value, bool init)
+{
+void *shadow_start, *shadow_end;
+- if (!kasan_arch_is_ready())
+- return;
+-
+/*
+* Perform shadow offset calculation based on untagged address, as
+* some of the callers (e.g. kasan_poison_new_object) pass tagged
+@@ -145,14 +142,11 @@ void kasan_poison(const void *addr, size_t size,
+u8 value, bool init)
+__memset(shadow_start, value, shadow_end - shadow_start);
+}
+-EXPORT_SYMBOL_GPL(kasan_poison);
++EXPORT_SYMBOL_GPL(__kasan_poison);
+#ifdef CONFIG_KASAN_GENERIC
+-void kasan_poison_last_granule(const void *addr, size_t size)
++void __kasan_poison_last_granule(const void *addr, size_t size)
+{
+- if (!kasan_arch_is_ready())
+- return;
+-
+if (size & KASAN_GRANULE_MASK) {
+u8 *shadow =3D (u8 *)kasan_mem_to_shadow(addr + size);
+*shadow =3D size & KASAN_GRANULE_MASK;
+@@ -353,7 +347,7 @@ static int ___alloc_pages_bulk(struct page
+**pages, int nr_pages)
+return 0;
+}
+-static int __kasan_populate_vmalloc(unsigned long start, unsigned long end=
+)
++static int __kasan_populate_vmalloc_do(unsigned long start, unsigned long =
+end)
+{
+unsigned long nr_pages, nr_total =3D PFN_UP(end - start);
+struct vmalloc_populate_data data;
+@@ -385,14 +379,11 @@ static int __kasan_populate_vmalloc(unsigned
+long start, unsigned long end)
+return ret;
+}
+-int kasan_populate_vmalloc(unsigned long addr, unsigned long size)
++int __kasan_populate_vmalloc(unsigned long addr, unsigned long size)
+{
+unsigned long shadow_start, shadow_end;
+int ret;
+- if (!kasan_arch_is_ready())
+- return 0;
+-
+if (!is_vmalloc_or_module_addr((void *)addr))
+return 0;
+@@ -414,7 +405,7 @@ int kasan_populate_vmalloc(unsigned long addr,
+unsigned long size)
+shadow_start =3D PAGE_ALIGN_DOWN(shadow_start);
+shadow_end =3D PAGE_ALIGN(shadow_end);
+- ret =3D __kasan_populate_vmalloc(shadow_start, shadow_end);
++ ret =3D __kasan_populate_vmalloc_do(shadow_start, shadow_end);
+if (ret)
+return ret;
+@@ -551,7 +542,7 @@ static int kasan_depopulate_vmalloc_pte(pte_t
+*ptep, unsigned long addr,
+* pages entirely covered by the free region, we will not run in to any
+* trouble - any simultaneous allocations will be for disjoint regions.
+*/
+-void kasan_release_vmalloc(unsigned long start, unsigned long end,
++void __kasan_release_vmalloc(unsigned long start, unsigned long end,
+unsigned long free_region_start,
+unsigned long free_region_end,
+unsigned long flags)
+@@ -560,9 +551,6 @@ void kasan_release_vmalloc(unsigned long start,
+unsigned long end,
+unsigned long region_start, region_end;
+unsigned long size;
+- if (!kasan_arch_is_ready())
+- return;
+-
+region_start =3D ALIGN(start, KASAN_MEMORY_PER_SHADOW_PAGE);
+region_end =3D ALIGN_DOWN(end, KASAN_MEMORY_PER_SHADOW_PAGE);
+@@ -611,9 +599,6 @@ void *__kasan_unpoison_vmalloc(const void *start,
+unsigned long size,
+* with setting memory tags, so the KASAN_VMALLOC_INIT flag is ignored.
+*/
+- if (!kasan_arch_is_ready())
+- return (void *)start;
+-
+if (!is_vmalloc_or_module_addr(start))
+return (void *)start;
+@@ -636,9 +621,6 @@ void *__kasan_unpoison_vmalloc(const void *start,
+unsigned long size,
+*/
+void __kasan_poison_vmalloc(const void *start, unsigned long size)
+{
+- if (!kasan_arch_is_ready())
+- return;
+-
+if (!is_vmalloc_or_module_addr(start))
+return;
+diff --git a/mm/kasan/sw_tags.c b/mm/kasan/sw_tags.c
+index b9382b5b6a3..275bcbbf612 100644
+--- a/mm/kasan/sw_tags.c
++++ b/mm/kasan/sw_tags.c
+@@ -45,6 +45,8 @@ void __init kasan_init_sw_tags(void)
+kasan_init_tags();
++ kasan_enable();
++
+pr_info("KernelAddressSanitizer initialized (sw-tags, stacktrace=3D%s)\n",
+str_on_off(kasan_stack_collection_enabled()));
+}
+diff --git a/mm/kasan/tags.c b/mm/kasan/tags.c
+index d65d48b85f9..b9f31293622 100644
+--- a/mm/kasan/tags.c
++++ b/mm/kasan/tags.c
+@@ -142,7 +142,7 @@ void kasan_save_alloc_info(struct kmem_cache
+*cache, void *object, gfp_t flags)
+save_stack_info(cache, object, flags, false);
+}
+-void kasan_save_free_info(struct kmem_cache *cache, void *object)
++void __kasan_save_free_info(struct kmem_cache *cache, void *object)
+{
+save_stack_info(cache, object, 0, true);
+}
+
+--
+2.34.1
 
