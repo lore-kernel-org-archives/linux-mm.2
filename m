@@ -2,95 +2,90 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 668A5C87FCB
-	for <linux-mm@archiver.kernel.org>; Sun,  3 Aug 2025 05:42:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ABAD9C87FCB
+	for <linux-mm@archiver.kernel.org>; Sun,  3 Aug 2025 06:47:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8C336B0088; Sun,  3 Aug 2025 01:42:09 -0400 (EDT)
+	id D03B36B0088; Sun,  3 Aug 2025 02:47:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D16356B0089; Sun,  3 Aug 2025 01:42:09 -0400 (EDT)
+	id CDA686B0089; Sun,  3 Aug 2025 02:47:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BDD326B008A; Sun,  3 Aug 2025 01:42:09 -0400 (EDT)
+	id C17486B008A; Sun,  3 Aug 2025 02:47:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id AB6316B0088
-	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 01:42:09 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3B6D1BAA50
-	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 05:42:09 +0000 (UTC)
-X-FDA: 83734350378.01.B158CF8
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 63682A000C
-	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 05:42:05 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	spf=pass (imf15.hostedemail.com: domain of honggyu.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=honggyu.kim@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754199727; a=rsa-sha256;
-	cv=none;
-	b=1Ks5G2ge0Zw/1z8VqJM8FFA52TWs61hnVaNnvR411LVFHiIJ4JAp/8C8EG7VPdCmmmQ4OU
-	9/w4yDCyVr7QOhT4IUovpfbR2/BLJlLhISAjgmlQYD58f20qWiCobTopcPz9JQ9JVYSeHG
-	axfEsm99sQYJHVigisLZY911s8KcUXs=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of honggyu.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=honggyu.kim@sk.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B2F816B0088
+	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 02:47:38 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 09AB51607A9
+	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 06:47:38 +0000 (UTC)
+X-FDA: 83734515396.02.E7AE6DB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 4CCE980002
+	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 06:47:36 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sulPqGIQ;
+	spf=pass (imf30.hostedemail.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754199727;
+	s=arc-20220608; t=1754203656;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ogwyqp0vCMrwlryfrNmNznQZIqhYceTiMjxDAv++QVE=;
-	b=nPLg3DyvkJ+c/P/V3VDzGq5jrRqA9ll6tVOuqgerQiO6NBMTu3l8rKg6KaH2spOIDo4HDy
-	D7wOKQb+2IxlWQIzXI4JGS0MMTHX9OT6kx4Bc210175ZuZLc77I9LA9UYR27W2fct8HA/H
-	fkICNma5nxL4q8LVhc1M3SVCsjCiEKA=
-X-AuditID: a67dfc5b-681ff7000002311f-8c-688ef6a62620
-Message-ID: <356d8739-d47a-4d62-bec2-38ce8f4a91a1@sk.com>
-Date: Sun, 3 Aug 2025 14:41:58 +0900
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=BcLV3nNEamOy0YpK5l9Lk4RoB5NHRXwyZO/dOGM+CCI=;
+	b=Xqoeijfm7vfRDVvu1FWcJKfD5Alk51Tnheudt17Ln7Yp3rSUSpDJa8edLdmjsjVd4lGWm2
+	xL1cp77rTqauxowVwX2vESoTUyTbnf+uLWzCCG/GV1/1ABPNvezZgJR43y9i/uVXsDMWt8
+	n78rrWGcSzFlWJBR372BMAAiYW54eF4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754203656; a=rsa-sha256;
+	cv=none;
+	b=cHivmGPQ0p+fphshYOhO6J7v3dSVCXzajPRlQNw3eeG8sEFkWgcwircuO+sL6CPbLo/wd7
+	0Qq5wfwvBJv6NcLCCvC/teuTuT4aYEjSlPBLK6y2jTyZX+d9CHImhSj0nxXg/hZQbaDYzQ
+	IBkEjvGeI7zQoQ2OGTqKVp2WnqYe6YQ=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sulPqGIQ;
+	spf=pass (imf30.hostedemail.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 175F9416AE;
+	Sun,  3 Aug 2025 06:47:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6938AC4CEEB;
+	Sun,  3 Aug 2025 06:47:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754203654;
+	bh=d1CztXE2nxIStxY5iQfmoDrEvdtgUVV7MjZV4daxJbo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sulPqGIQZvDPo/kxDy94EVz3bSUYuxoGHoJokqpytgVkXzoxIQg7kB+hrUBncxzO3
+	 RlVDThUlgZIkWbzcxYS5LqCJPnjwFFsbnJVq6D8iBq4mxSxs63f2KmDWR4xRdKm8iZ
+	 hbcR+TtWwM5JKECVUz75ery9pguse69UYjJNpV3hEjn28sFBtNua2Vj7iHhT7IJYe9
+	 +VSOwl20lS/yq62OpyLVLd60JQh+ZrYpC5mHFEWsm6txGt3xitn0yot6UGjInmENBw
+	 rSNQ1Ck68OommRgaaY4xvpXNN9qL2FEZV3qDtQzktOvCdd8YJe5UoGdTeyaGIQibM2
+	 Jy8oEGQPdYEXA==
+Date: Sun, 3 Aug 2025 08:47:28 +0200
+From: Alejandro Colomar <alx@kernel.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: linux-man@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Peter Xu <peterx@redhat.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] man/man2/mremap.2: describe multiple mapping move
+Message-ID: <ngytuoex4uvu5epsdqhvhypnhqidkr7cpwmmcxrml6kpftgusb@jo5ql6eko2ir>
+References: <cover.1753795807.git.lorenzo.stoakes@oracle.com>
+ <1fd0223a6f903ffdd8ba644d0b67820b1921671f.1753795807.git.lorenzo.stoakes@oracle.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: kernel_team@skhynix.com, Sang-Heon Jeon <ekffu200098@gmail.com>,
- damon@lists.linux.dev, linux-mm@kvack.org
-Subject: Re: [PATCH] mm/damon: update expired description of damos_action
-Content-Language: ko
-To: SeongJae Park <sj@kernel.org>
-References: <20250803053028.51309-1-sj@kernel.org>
-From: Honggyu Kim <honggyu.kim@sk.com>
-In-Reply-To: <20250803053028.51309-1-sj@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrFLMWRmVeSWpSXmKPExsXC9ZZnke6yb30ZBj3z5S2e/P/NanHiRYLF
-	vTX/WS0Of33D5MDisXPWXXaPTas62Tw2fZrE7vFi80zGAJYoLpuU1JzMstQifbsEroyZfz0L
-	9ipWLPnwlK2Bcbt0FyMnh4SAiUT/p2vsMHbn5V+sIDavgKXEpUMP2EBsFgEViQd71zNCxAUl
-	Ts58wgJiiwrIS9y/NQOsl1mgQOLxuTdgvcICnhK7H31igoiLSMzubGMGsUUEFCXOPb4IVMPB
-	ISRgJLF+WyRImE1ATeLKy0lg5ZwCxhJb9kOUMwuYSXRt7WKEsOUlmrfOBopzAZ05g01i5vn3
-	rBA3S0ocXHGDZQKj4Cwk581CsnoWklmzkMxawMiyilEoM68sNzEzx0QvozIvs0IvOT93EyMw
-	xJfV/onewfjpQvAhRgEORiUe3h3fejOEWBPLiitzDzFKcDArifCe6+rOEOJNSaysSi3Kjy8q
-	zUktPsQozcGiJM5r9K08RUggPbEkNTs1tSC1CCbLxMEp1cBYVXr2sOM6tkhZeY9tr/J+lcgc
-	uPxqew3T/derkxrd/NoW88tPNpv6lynxv8KdMFMp4Z3XJ/ZkXvvAfk1j97abWpPqFvD2J0to
-	JZhHCL+bMPGhR5Hv/Yif3WUXP3Q557OsqLIQMazX/28s/t9mq/put6KJj99v054w934i57WT
-	evvOLpt3fbWDEktxRqKhFnNRcSIAFzshh20CAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrILMWRmVeSWpSXmKPExsXCNUNLT3fZt74Mg4PLJC2e/P/NanHiRYLF
-	4bknWS3urfnPanH46xsmB1aPnbPusntsWtXJ5rHp0yR2jxebZzJ6LH7xgSmANYrLJiU1J7Ms
-	tUjfLoErY+Zfz4K9ihVLPjxla2DcLt3FyMkhIWAi0Xn5FyuIzStgKXHp0AM2EJtFQEXiwd71
-	jBBxQYmTM5+wgNiiAvIS92/NYAexmQUKJB6fewPWKyzgKbH70ScmiLiIxOzONmYQW0RAUeLc
-	44tANRwcQgJGEuu3RYKE2QTUJK68nARWzilgLLFlP0Q5s4CZRNfWLkYIW16ieets5gmMfLOQ
-	XDELyYZZSFpmIWlZwMiyilEkM68sNzEzx1SvODujMi+zQi85P3cTIzBgl9X+mbiD8ctl90OM
-	AhyMSjy8O771ZgixJpYVV+YeYpTgYFYS4T3X1Z0hxJuSWFmVWpQfX1Sak1p8iFGag0VJnNcr
-	PDVBSCA9sSQ1OzW1ILUIJsvEwSnVwBg7RWgN053jD/c+q+QQP8DlEd97y5Z/9Y0YBf0psn8T
-	gxuUZ6inx6/PU0suXbFo5ak6zmPl7ixlu5LjcvVlio8edC3wOvMyQfTvHJ4dN4+nX5/clHhz
-	peOdddzaNZNTzAKl+etNXzctK+zPFHVR19yyJEyx4+X7M1snVBzw37bVYoLhpsXyDkosxRmJ
-	hlrMRcWJAIspxaFUAgAA
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <1fd0223a6f903ffdd8ba644d0b67820b1921671f.1753795807.git.lorenzo.stoakes@oracle.com>
+X-Rspamd-Queue-Id: 4CCE980002
+X-Stat-Signature: 5bikhf53mef9jsky55kfuypkdt6ta63i
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 63682A000C
-X-Stat-Signature: zqzngrzstm8qh396wpxb5benbr7qd64b
-X-HE-Tag: 1754199725-770020
-X-HE-Meta: U2FsdGVkX18K53OekDBD8fBV3HMfcu5gcp6QyApRdcTuYWzZeW269o2f5lAiSfMeon2pH6cCPM7qYUO6kAq9xXQ9PKWI38TnkhTAtMHBJkK0MAV0M/qbbd+6ATR4XJshiFGevDZmShNXr7cJLNNiCfXmlyNkOws8CgQgOzjPWubfKfOMb2/kAo1vDA4utEfiJ2NJAdkZZSTAqy4HDe24rYU7I0+BggZPu5wVZezDMZgztOpd3QaHJ7xcpmnMUDEdZIwDCsd49Ua2YkWbAtM//Xz220eZQZrGfrTOqrl2Rc37F3OvUlWEx5iWRauHZ17tdGwyIYug8U/6sRn67aSRDps54VnnabzpmpBmqqdZw5gnfwoT3jOq8Njil82RCIC2SEeyAJJw/WMvc4z6BT18LL2Tgz5FGYfe8JnKFgvhknIYRo+J36gZ45IygEKxwsmlGu2TXRs0A0cSHuPxTrKzEN/8kroQ/Ap/GGsjiK1eeekw5d4ufjMggF6fNCxwLAze46GaVhsyJf+u24g18uuFt1Kf74wz7qW6zGh1vR2OKGttnckb11mR+m8D/KXQ/o9jo7kHvqSmpjlhI4SI5XIRqs75cRwtg/pEMS8yeYjSyGoGDObzMCJ+ubk6/Fl3RNDaEKvqyy9WIWSdNqSCTC4wiow8c07RNuBn/85TpckJ0JAzwCKupwCDXC221DyroMvPBTRtUwpvLQjo7wDMYn+JLkHFtuy7j3M90ORnQyg+kCE+LSkD4yUFaryZ5v4rUkL3mX4nRxbuMEPwxKKgoyPVDYCELsB4u467Tt9tYClAVEJ5y9J29f5bJxS+2Sa6QJJQzkMKgcari23SASw7ggr6h/ZHRXn+/IUtyKkrjNhTKpTGWNkhIy//VFG0PkS2A8RW/NRe5HMlDkYuPJeO+p80Lsc0PT7q1U3AZJQ2yjtqTvxF8+cSMoIYXcRiFM2RPltylP/V8hyMGNz5WuF4YQL
- AsVMjC4G
- SgZ21Ow9Yu3YwcBaBt5Uxc8Ni/t88HHGF9eVoaB//Cd8Y7QtpqLbH0B1fMbRrwJ5RYFUYHwdMPcHUgWVvRIOI9NXZknCYRDWWwMihvRZFLfX0IRjchNif3Ws+XNM7Iu5PRBcXx91DWIYm1/c+KjKWFRvcvYvIZNZ9iPAfFnLpCMaaV4A=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1754203656-477258
+X-HE-Meta: U2FsdGVkX1+gha+AB79JysvELSdZ9CQ+Vnts1lrjoHcr7mjfm6bhRJBuxGAmeKBAyqw0wYvdTNNzzmFbG0/LO/8u0dgw2GH/WaQTLz2KiGiSUPF/KtdCFEMe4tMtiJDUO3Wofv0CU6NBeysaZ1CD/pkEj6oUI4MRnoQPkEl8qMhvuwi75kOoVW6tlbf+SvicGTH/Z6fNUZCIHOCowpSYjE9TeYHP9F9YpzgqcgT1f0HM101jS6Uhca2xHfv2tw0uthgIaTNUuZrGZN4iTL9eJZDHGSftYk6QVaiK4Ss5ebXWyxw7fzSgbriJ4qec5CcvWvqCKkZy49NxSKOud3sgh7SbLFCkqbfV56gqSKCJgWnk/5fHpE9SUVfkxqX8nAUT9TtWWe+ZkMg92BnWZZNnrEjkEQMv5pgPS9b664YeILxOZxA5GDfnQpw2Aaqt/Z4RkMSKorqE/uZtwFV1axVQuxg0Sw/6yRQRZdHHszMoue49Yz6WMS2r1wRyB3Yf59Z1f+gIqJ9p0FS0esyyyWt8rQVls66SU2XNnD5sZDLkJwuacvNMPhChiPxHDPusZWPDyW9lbt7qlfzJC1GP4oJBCTxTF7g+D1QYjDlg4xgFNghiIh5Hs8sVY6ORaAiMnqk5yJnnH8ETYnx3naEYuPIRsNXBwCwUyLPJOMzCxXP7LYi0a2XTtakHvuldpiP91WLXjGKkZ4NdbRv+CHMSHkyZr5JqQJNXiJEXvqszfqqBp2zEGzlCWnYYcn12FkHBWJhdGl4ZKtYlOME7CbsLOtTKHPP+9DPmacVyiUYkrz9/UF8JRmwVoUl2P6PLJm7GHa2NsC6yX0BfiGcPaqSFXmhwekGniHbpdKPH8CBsN4uZYrCgprIRQZg+qY0aX1/UGuHtCzR+gjcKdM2+6Ca6fN9iZsrXYbrrbHeko8yHyTelsjpG0L1SH5KWTyaMOIUmsEnULJfWzIoFb7MxX1rnQz/
+ iVVtkpgG
+ IXQYZbM8utF9Ok2jlGwfYiPsTDb9ji2BoSgaYMH2n7j6sbtUWdlSvkNb5aKR+Tx/GL+RkbjRaymk26MaZ3QCqoP0Qdp6WVXAKK3hvo1lgNa9z4/yOoOlPv/iJWleVO6yEY/irP90vZ2TW8UZZ350TQa2ZfMysxsXC7xL7vHzLPfvj3Pzrynafo2Jn+259tgdRs8JtEA92ytTMsHg9wWN92Z+5EWLPO8XGIOr+Wy6RpjQS4qMHAHCiT7Jeh+LI8osazlnRzkxOnG0HOaoqcQzNwU5uIcGgaZuTpn99n3TOMLVi/B2feTxcag+wm0nRhh7dvV/k9qBpHWcybhdamUVtdbsNRA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,110 +94,172 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Lorenzo,
 
-
-On 8/3/2025 2:30 PM, SeongJae Park wrote:
-> On Sun, 3 Aug 2025 13:43:03 +0900 Honggyu Kim <honggyu.kim@sk.com> wrote:
+On Tue, Jul 29, 2025 at 02:47:35PM +0100, Lorenzo Stoakes wrote:
+> Document the new behaviour introduced in Linux 6.17 whereby it is now
+> possible to move multiple mappings in a single operation, as long as the
+> operation is simply an MREMAP_FIXED move - that is old_size is equal to
+> new_size and MREMAP_FIXED is specified.
 > 
->> Hi SeongJae,
->>
->> On 8/3/2025 1:22 PM, SeongJae Park wrote:
->>> On Sun, 3 Aug 2025 11:03:12 +0900 Honggyu Kim <honggyu.kim@sk.com> wrote:
->>>
->>>> Hi SeongJae and Sang-Heon,
->>>>
->>>> On 8/2/2025 1:50 AM, SeongJae Park wrote:
->>>>> On Sat, 2 Aug 2025 01:11:09 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
->>>>>
->>>>>> Hi, Honggyu
->>>>>>
->>>>>> On Fri, Aug 1, 2025 at 8:35 PM Honggyu Kim <honggyu.kim@sk.com> wrote:
->>>>>>>
->>>>>>> Hi Sang-Heon and SeongJae,
->>>>>>>
->>>>>>> On 8/1/2025 2:58 AM, SeongJae Park wrote:
->>>>>>>> Hello Sang-Heon,
->>>>>>>>
->>>>>>>> On Thu, 31 Jul 2025 22:22:30 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
->>>>>>>>
->>>>>>>>> Nowadays, damos operation actions support more various operation set.
->>>>>>>>> But comments(also, generated documentation) doesn't updated.
->>>>>>>>> So, fix the comments with current support status.
->>>>> [...]
->>>>>>>>> diff --git a/include/linux/damon.h b/include/linux/damon.h
->>>>> [...]
->>>>>>>>>       * @DAMOS_WILLNEED:  Call ``madvise()`` for the region with MADV_WILLNEED.
->>>>>>>>>       * @DAMOS_COLD:              Call ``madvise()`` for the region with MADV_COLD.
->>>>>>>>> - * @DAMOS_PAGEOUT:   Call ``madvise()`` for the region with MADV_PAGEOUT.
->>>>>>>>> + * @DAMOS_PAGEOUT:   Reclaim the region.
->>>>>>>>
->>>>>>>> Nice!
->>>>>>>
->>>>>>> But doesn't it make confusion about whether this pages out to disk or does
->>>>>>> demotion to the lower tier memory?  It's because PAGEOUT action doesn't do
->>>>>>> demotion, but it looks "reclaim" includes pageout and demotion together in my
->>>>>>> understanding since /sys/kernel/mm/numa/demotion_enabled was introduced.
->>>>>
->>>>> To my understanding, DAMOS_PAGEOUT can also do demotion when demotion_enabled
->>>>> is set.  Am I missing something?
->>>>
->>>> Actually no, please see below.
->>>
->>> I'm unsure to what point you are saying "no".  Are you saying DAMOS_PAGEOUT can
->>> also do demotion when demotion_enabled is set?  Or not?  Could you please
->>> clarify, and add more explanations about why you think so?
->>
->> I checked it again and found I pointed out in the wrong place. Please see below.
->>
->>>
->>>>
->>>> do_demote_pass in shrink_folio_list()
->>>> https://github.com/torvalds/linux/blob/v6.16/mm/vmscan.c#L1122
->>>>
->>>> The do_demote_pass is used here.
->>>> https://github.com/torvalds/linux/blob/v6.16/mm/vmscan.c#L1293-L1302
->>>>
->>>> can_demote() implementation returns false when demotion_enabled is on.
->>>> https://github.com/torvalds/linux/blob/v6.16/mm/vmscan.c#L350-L351
->>>
->>> I'm again get confused.  Isn't it opposite?
->>
->> The thing is that DAMOS_PAGEOUT call sequence is as follows.
->>
->>     DAMOS_PAGEOUT
->>     -> damon_pa_pageout
->>     -> reclaim_pages
->>     -> reclaim_folio_list
->>
->> In reclaim_folio_list(), it sets "no_demotion = 1" in scan_control, then invokes
->> shrink_folio_list().
+> To make things clearer, also describe this kind of move operation, before
+> expanding upon it to describe the newly introduced behaviour.
 > 
-> Thank you, this clarifies.  DAMOS_PAGEOUT doesn't demote pages even if
-> demotion_enabled is set.  Thank you for enlightening me.
-
-Thank you too. Glad to hear that.
-
+> This change also explains the limitations of of this method and the
+> possibility of partial failure.
 > 
-> So, "reclaim" means "reclaim".  shrink_folio_list() can do demotions when
-> demotion_enabled is set.  I hence still don't think this patch is saying
-> something very wrong, and how it could be improved.  Do you have more specific
-> change suggestions for this patch for an improvment?
+> Finally, we pluralise language where it makes sense to do so such that the
+> documentation does not contradict either this new capability nor the
+> pre-existing edge case.
+> 
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-I would just like to make the term "reclaim" clearer and we may be able to 
-define what "reclaim" is.  I think we can choose between the following two
-different definitions.
+Would it be possible to write a small C program that uses this new
+feature?
 
-Definition 1. "reclaim" includes "pageout" and "demotion".
-In this case, we better clarify all the other documents that mentions about
-those terms.
 
-Definition 2. "reclaim" only includes "pageout", but "demotion" is out of scope.
-In this case, shrink_folio_list just do pageout, but "demotion" is only
-exceptional case so we can say the "demotion" escapes from "reclaim" logic.
+Cheers,
+Alex
 
-We might have to clarify the term "reclaim" for those cases whether it includes 
-"demotion" or not.  We might have to discuss with other mm developers together.
+> ---
+>  man/man2/mremap.2 | 84 ++++++++++++++++++++++++++++++++++++++++-------
+>  1 file changed, 73 insertions(+), 11 deletions(-)
+> 
+> diff --git a/man/man2/mremap.2 b/man/man2/mremap.2
+> index 2168ca728..6ba51310c 100644
+> --- a/man/man2/mremap.2
+> +++ b/man/man2/mremap.2
+> @@ -25,18 +25,47 @@ moving it at the same time (controlled by the
+>  argument and
+>  the available virtual address space).
+>  .P
+> +Mappings can also simply be moved
+> +(without any resizing)
+> +by specifying equal
+> +.I old_size
+> +and
+> +.I new_size
+> +and using the
+> +.B MREMAP_FIXED
+> +flag
+> +(see below).
+> +Since Linux 6.17,
+> +while
+> +.I old_address
+> +must reside within a mapping,
+> +.I old_size
+> +may span multiple mappings
+> +which do not have to be
+> +adjacent to one another when
+> +performing a move like this.
+> +The
+> +.B MREMAP_DONTUNMAP
+> +flag may be specified.
+> +.P
+> +If the operation is not
+> +simply moving mappings,
+> +then
+> +.I old_size
+> +must span only a single mapping.
+> +.P
+>  .I old_address
+> -is the old address of the virtual memory block that you
+> -want to expand (or shrink).
+> +is the old address of the first virtual memory block that you
+> +want to expand, shrink, and/or move.
+>  Note that
+>  .I old_address
+>  has to be page aligned.
+>  .I old_size
+> -is the old size of the
+> -virtual memory block.
+> +is the size of the range containing
+> +virtual memory blocks to be manipulated.
+>  .I new_size
+>  is the requested size of the
+> -virtual memory block after the resize.
+> +virtual memory blocks after the resize.
+>  An optional fifth argument,
+>  .IR new_address ,
+>  may be provided; see the description of
+> @@ -105,13 +134,43 @@ If
+>  is specified, then
+>  .B MREMAP_MAYMOVE
+>  must also be specified.
+> +.IP
+> +Since Linux 6.17,
+> +if
+> +.I old_size
+> +is equal to
+> +.I new_size
+> +and
+> +.B MREMAP_FIXED
+> +is specified, then
+> +.I old_size
+> +may span beyond the mapping in which
+> +.I old_address
+> +resides.
+> +In this case,
+> +gaps between mappings in the original range
+> +are maintained in the new range.
+> +The whole operation is performed atomically
+> +unless an error arises,
+> +in which case the operation may be partially
+> +completed,
+> +that is,
+> +some mappings may be moved and others not.
+> +.IP
+> +
+> +Moving multiple mappings is not permitted if
+> +any of those mappings have either
+> +been registered with
+> +.BR userfaultfd (2) ,
+> +or map drivers that
+> +specify their own custom address mapping logic.
+>  .TP
+>  .BR MREMAP_DONTUNMAP " (since Linux 5.7)"
+>  .\" commit e346b3813067d4b17383f975f197a9aa28a3b077
+>  This flag, which must be used in conjunction with
+>  .BR MREMAP_MAYMOVE ,
+> -remaps a mapping to a new address but does not unmap the mapping at
+> -.IR old_address .
+> +remaps mappings to a new address but does not unmap them
+> +from their original address.
+>  .IP
+>  The
+>  .B MREMAP_DONTUNMAP
+> @@ -149,13 +208,13 @@ mapped.
+>  See NOTES for some possible applications of
+>  .BR MREMAP_DONTUNMAP .
+>  .P
+> -If the memory segment specified by
+> +If the memory segments specified by
+>  .I old_address
+>  and
+>  .I old_size
+> -is locked (using
+> +are locked (using
+>  .BR mlock (2)
+> -or similar), then this lock is maintained when the segment is
+> +or similar), then this lock is maintained when the segments are
+>  resized and/or relocated.
+>  As a consequence, the amount of memory locked by the process may change.
+>  .SH RETURN VALUE
+> @@ -188,7 +247,10 @@ virtual memory address for this process.
+>  You can also get
+>  .B EFAULT
+>  even if there exist mappings that cover the
+> -whole address space requested, but those mappings are of different types.
+> +whole address space requested, but those mappings are of different types,
+> +and the
+> +.BR mremap ()
+> +operation being performed does not support this.
+>  .TP
+>  .B EINVAL
+>  An invalid argument was given.
+> --
+> 2.50.1
 
-Thanks,
-Honggyu
+-- 
+<https://www.alejandro-colomar.es/>
 
