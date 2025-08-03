@@ -2,115 +2,81 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 32D17C87FCA
-	for <linux-mm@archiver.kernel.org>; Sun,  3 Aug 2025 19:27:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 09223C87FCB
+	for <linux-mm@archiver.kernel.org>; Sun,  3 Aug 2025 19:48:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8D266B0088; Sun,  3 Aug 2025 15:27:44 -0400 (EDT)
+	id 516086B008A; Sun,  3 Aug 2025 15:48:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A3D596B0089; Sun,  3 Aug 2025 15:27:44 -0400 (EDT)
+	id 49FCF6B008C; Sun,  3 Aug 2025 15:48:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 904DE6B008A; Sun,  3 Aug 2025 15:27:44 -0400 (EDT)
+	id 367146B0092; Sun,  3 Aug 2025 15:48:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 737606B0088
-	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 15:27:44 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A25A6B008A
+	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 15:48:47 -0400 (EDT)
 Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DFFF15B798
-	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 19:27:43 +0000 (UTC)
-X-FDA: 83736430806.29.C01174A
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	by imf28.hostedemail.com (Postfix) with ESMTP id AF0BBC0007
-	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 19:27:41 +0000 (UTC)
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7FDF9135B6E
+	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 19:48:46 +0000 (UTC)
+X-FDA: 83736483852.29.715EAB3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id B8A67C0007
+	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 19:48:44 +0000 (UTC)
 Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="kINdhp/c";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of snovitoll@gmail.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=snovitoll@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754249262; a=rsa-sha256;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="tum60HC/";
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754250525; a=rsa-sha256;
 	cv=none;
-	b=zHWMr42I7/QLsGut+Q1H59QwikxxH7FmFwT+v15+C7TvOLl+kJXxqtUdZbTZ1Ru8e6/Lqp
-	vnvBIEbfZptzeKTNcFPpvg2Kdvirr5rHQ8sHtv7a/u0lp/3e/aAtU678sKikil7Kx6OcQY
-	deaIaDfEauWXD+8Pt1dBSeUFFJQhH8U=
+	b=ktikEdW+q2YO+FaMvt686bIWe14iaT1Yemjn1x7cqoS/eBgR5LvLSoWu9nIDEM3YnR84Yq
+	fpEDEX2GhiKjHt8qgSTjHcMrHIsVDREnb54REFqY698Oht8puC4yiNCS42stFjL0yeqA9B
+	4vOUS2urpfJj9YKF53jrGhAGDhv5npU=
 ARC-Authentication-Results: i=1;
 	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="kINdhp/c";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of snovitoll@gmail.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=snovitoll@gmail.com
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="tum60HC/";
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754249262;
+	s=arc-20220608; t=1754250525;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RfrqAAo+hh5/BEGgrtHJRzmnixP9YlHQg7As53WrRgM=;
-	b=JmGWQhODYtePhoeawsbQ7EW8kPJSVNPskheA9lnCjQx5XYv7fxPFXkeyW115eYCc4Nj9qK
-	mnOS4yx+uZC+yDAAFqbVM/fS3IiRFhS84xWCdBcZ0+jw2eABe+ySW5p+5u9FlEIJ6oNzkB
-	xOBuZFLgLa9i+aZQuExt8lz2HJk+n7g=
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-55b93104888so2243953e87.1
-        for <linux-mm@kvack.org>; Sun, 03 Aug 2025 12:27:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754249260; x=1754854060; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RfrqAAo+hh5/BEGgrtHJRzmnixP9YlHQg7As53WrRgM=;
-        b=kINdhp/ct8sU035QpyxtbSupkOcjfOqOy1Xcr65TV3+KT8KADeznj6phF1kKYV4R2U
-         KUWkV29i2/j0MDk+t4MmMr0yb4UnRHVVWGFVI00/FuBIrSZ5fQo70VwHL7FlYx2TT4zw
-         GBN5uQ81xdrIH06qPQvXY7ASQ3BYXPOMDrav8kQDytUrryPxAyTOpTYUWeU11JZigldp
-         bybfFOWD2BVJg2hPWx7pF5VgRb2p/BF7gxg66rIMFZwupJi4uZpzc51RJh3zK0M3X3J+
-         jD6Ym+HGkzxgzZAPPkruRWOzHVHBMUmbUQkqvViO2baTDGEzo3XupAqQcY3dqGmoq72x
-         Uwkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754249260; x=1754854060;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RfrqAAo+hh5/BEGgrtHJRzmnixP9YlHQg7As53WrRgM=;
-        b=DHatwLwbyapGk6fFiJESD82B61xGrzVbZx+aLxu150WBjuQbpLy+dg3UFfKVZpAZ2/
-         DPecWKG6I0ARhCEM+K3IuB8jlVMFmP4/++CTrYLp2nUPqDYurj89ar11EJMb0DzzeSZd
-         fOrOT9AGTHP9cMYsRnvMRgYUxmCRgjOHtV90bsJ/0JTHBEnOHrfioTaGpyG4PcGwXrTW
-         E/Q1FzXSRKxKSoNzaMPrrs8WYfssmkyucIKdma60/Mer0dPVPrGiqsTAO1OzJ/k+NAvv
-         i9ZxYrOTRd27bGOSndNeZo23r979mmEitSyRtVXmmZjncpDTJFzwIy9ycqK0KJ2b6ZOj
-         kr4A==
-X-Forwarded-Encrypted: i=1; AJvYcCVTERFZ9vziA4ZFsZUEPi5OFkVhNSXFCdbIk6gQO+6FW0+7czQL9vcnMTPZKrde0GVtk7z+8o7qcg==@kvack.org
-X-Gm-Message-State: AOJu0Yw0sAPkrFHA8oOAUtZdqKzBZTH+vhQU7gD8Tq92H391ZOmNDwW1
-	v2ZF2G6qzmISOYGmaBfvnhugLg74Emb6DMFwBsO9Sw6MarG3WRcjG5ioKzqIiIpMxQOCYrTbhs5
-	M9ZwbMcJTLVaIkVCBjKKgM4VA9QP6nVY=
-X-Gm-Gg: ASbGncs0Lxaw2My7mCkBaCR+VZG2NawFE2808NBgwOcO2Ujtb50jNyDrPcq5k0ID8gM
-	4nob4IjV5Vx1TtU8p3NtkKCf9yjJ06QPn5R6e+ibQmtNkK9X+CnB3PGf0VYDwxnMiiMTuAb8npK
-	A8kNRieqVvXGeVTiSfAgemIlURRQXDPn24NC39WBe7VyUTjjuFG+En8m31GGIxL02ToD+18dqt2
-	cla0YI=
-X-Google-Smtp-Source: AGHT+IEh0pkPe95z3+vGGbihQ33Ty6irIuzQUDpa5OxuO3EiJmT/oYz/ntsug87P4Dyb4fZP+lu8a54BT1HcdNutw4I=
-X-Received: by 2002:ac2:4c46:0:b0:54b:117b:b54b with SMTP id
- 2adb3069b0e04-55b97b87f09mr2012427e87.54.1754249259263; Sun, 03 Aug 2025
- 12:27:39 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250717142732.292822-1-snovitoll@gmail.com> <f10f3599-509d-4455-94a3-fcbeeffd8219@gmail.com>
- <CACzwLxjD0oXGGm2dkDdXjX0sxoNC2asQbjigkDWGCn48bitxSw@mail.gmail.com> <f7051d82-559f-420d-a766-6126ba2ed5ab@gmail.com>
-In-Reply-To: <f7051d82-559f-420d-a766-6126ba2ed5ab@gmail.com>
-From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Date: Mon, 4 Aug 2025 00:27:22 +0500
-X-Gm-Features: Ac12FXz3Md2skCIj9ydyyjC78Y0CTvtHNSbLgGPLYuzRDoF-sD3DGjiQZnIWPLk
-Message-ID: <CACzwLxjESCT_=1BG2rWiaxz1wCYbVWHAvf+v4=S5dzeHJ8c97g@mail.gmail.com>
-Subject: Re: [PATCH v3 00/12] kasan: unify kasan_arch_is_ready() and remove
- arch-specific implementations
-To: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, linuxppc-dev@lists.ozlabs.org
-Cc: hca@linux.ibm.com, akpm@linux-foundation.org, 
-	kasan-dev <kasan-dev@googlegroups.com>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
-	Linux Memory Management List <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: AF0BBC0007
-X-Stat-Signature: b7frtpaqi156rudhopw9m7mb1nambhog
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=MGRTev+VrBaYoTCbKAWJ9ognQhHYMGL3T+b3QVz3dmM=;
+	b=ju/rGYPnYX2LkPc5smPZtfpeVTuQmVo/+F383g6sm4T6WrvCgCuQTAUy+y1abbIcyzdbnx
+	E/ViBTONAfEMBylaCvT3i3ln6Pf3xbgj551BcCSkqcBLtE7VyaDj4xn4cw5ZXi1juT3dQL
+	uqkYOqFEIydL8pN/hU9wTn3vgTVRMJk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 60B2B43B72;
+	Sun,  3 Aug 2025 19:48:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1454BC4CEEB;
+	Sun,  3 Aug 2025 19:48:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1754250523;
+	bh=oK3+32AASLLCn5GpgJ7coQwD5pzJnQ+87aLPltZf5yE=;
+	h=Date:From:To:Cc:Subject:From;
+	b=tum60HC/vkdMclHZvlYV9q2MgWZhoMhDTOAFQPhQNul6rxsvEea1u3Ak0Svdu2NgK
+	 7z35RFvwIPUhHPtr/26NA79dD7Fnk3R72YNRCFV/L56vb8dpYv7RPi2MVNbzDbDYZW
+	 /26c7e1P0I6GVX808gDZ49M55IsqfV2PDXIEoEf4=
+Date: Sun, 3 Aug 2025 12:48:42 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-mm@kvack.org, mm-commits@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: [GIT PULL] non-MM udpates for 6.17-rc1
+Message-Id: <20250803124842.f3412ea09d7396677e270ab8@linux-foundation.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1754249261-120793
-X-HE-Meta: U2FsdGVkX19gk1LNjAmy2I4NFuM+bB8j3W8iQRDE9COlOOuqorA3CSqcV0A6+2bbKY4EpSe6MjkQrXt938rHJR0keMLjsZCXRyLIdSanf6wfi2vp2RDKaPMboA4+mcBCSDQZTYCfziaXuxCYAsL35uoDIDLrKfbMd4W2J4ntyEWZpXpq9enkAhwkF+wsWv2eBjlZyOfytvuAGzgDJ5h8UWlgYu5upIijPLrAuqT10uN9lM+bCobQFwLTm4hI2ewxgGVn0VQkif0NFhmdoftG907sJzA594guBXj0kASem8I5GBq2Ql82ZSmNa4ZWjstcFof1qmcttvgCkyGiCYpCTRG4mkcLcTJNtCyDBL4dqiWLMLm/6jTTo+iyG4nEVKKLmWkMfqrF2NUxQ8mhhm0ydzwrsu4d4Xz/2GbW9S/GS6NgqOF5vqvmFp1stbhfecpwKL2FzLuGDBrfe55nW6jFtg1Exd9qDJV6DrpqfvhWXSthMfTfKRzbNAcTVfAkyj8TQ+tFAbqct5GBzRjSnMmPxYMsR4IPj6h3GBQyoiBWsTHCX5alGiQKgOloapsDs9AknEnFMXIwtmzvxdFkt75eszA5He48f57LOqC4lrZsjKbs72wynvnUQVJMGo7WSsnZ+XROGP7m5WpM1ExljVHXfvGu7Kek9Gt3gJWEpgTMxVxV7U7jtKy+HjgB3HD92JnGS7ES65O/YhlN+g+4X3K4VUoXdkUtHBpWpevU3e9WbYlodq0cGJ0dGypAZiJy2wnZH/rCEOALEAdtDgZe+U0gkH9Dis3a0o1nX6qchWxMCqs5SkWnVJJZrf9I//NjhmBQY7Mm4FFS6wD4HtZiWj7ie/dajkS6d1tNCcER6k9Kqe6u0IHIvyvvwYlYgmOlGaSyL1eh/OolJCylHyP3YW/07Pri0GPt+D/wCRIpFW5m4vrSmeG6UakvHo7HZK44KOTHVukcHsh5VTpyoPFxpwZ
- Qgw/RSS2
- S2JeR5tXLF6Wuqo8H06OYSlkyYyvoZXstWrS6cjiVlj3DbvlTq38spvww1jjpsSBi00SiaKhF47/hF/21b4SC/W9Mz3xA0vnfzrPi5GdvlDWg73Fu9yvfopYhx/gbbmDvC69nO55+fAXasnmEeWIGr12qd2VsIlNmsVqHvqVfjDFIwZpfkTCx/6K7xePcLXxNmkhJaqhqWtXlqEY9wocXGYALsFSa2v+muz59P2iPc2Al3TCSB6hvGgVokfkMxhvfRyT8khTF48zW1R3YN7MSnDCtmgTvbmloQ3mD8AJnDxFfRd7PYi97jYW1SL/43z5bljJhgt6lwePka5ZC82UBODg8npy7eua/sxhIMEedBRWDBgsi0BAmAZWPqAhZj3VPnMP/co86iAPA7xsyT6M3hdISsiu1kt+FFBZdqd/yRcVUnwTt7H0SmtssD03mSuqTkWK0vlDc8ua9fNwn/5Nnz87yQSw7W3xoSbf1FoittshGDXKyq7oFcnMeZOlcv40PAUBXtRTpMb+cYc+wxRDVwuSQ8lPCROsx8sAAplP1zC6OFZq2lakwfD7aFLgTu0+SPK7fWkRlmqqP4Db1F64p2jxWTOuR6AjZlYKv0EplNGX0LsSeLnxs8fXM/t2/PWTtbuw6LFsHykkWvPGDdvCiYK01U4VyepYB5XFCaCn52KTuf5dkLriMZr0eHQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B8A67C0007
+X-Stat-Signature: scrogfgftgp1qqbpukiefkdj5wxardkd
+X-HE-Tag: 1754250524-723651
+X-HE-Meta: U2FsdGVkX1+hZEM/SkrUxmLVqsVui2LYwFUlYj8k00EVfzai8Wk1pEEB6Z7TSTwgfrkZXuksUudg+HIVRFYVJ7gD8W19jl9AEe3CgUoHqNatSam4MoUgUupD2pi7r41bEOgELKKcQalr4FB2aqDAXI0FpD3Wb4BcaNCcPgXoitxv+xGZYj3ZKhuAP6Lv0bxXH0MiP72j4Kt9IE3vTzZo0lngNnSh7udnqROn4f6IcczBFQSbTG3SN8RK92fd494pUcqqUDi8kKIAthDVjCdW/wgTtxCPIIubPQj4bvrxD03mUyx6Jo+5Gx5G305q4H0rzBB0Xue4vaEfw1U/lTlZB1ibHQwo0vCIox+0U1hDNkUrmUbuysJDkT27loIV0nfqFnRqQapa46wdB4UgTPRxZowq9QyKvHhxApEBe+QXhDAm3dB4X6p0/Z0+hvB9+x0WulhzIVk1Ej9v04VLgoImRhb9v/U1nG6Bz0tWNAPfp7ZMnARFRuIKVtqR7d9jYFgmueUSpM1wZka9EgRsJA/VHbVCSMfXtkrFQXufdnUlC2W2tIIf+qikaEV7MkXZlKQsFhSKcNkKx6NctppBWaWCTUb5dEvuYQXggLVvm5GI6pNl0uaGR6RoLv3wNU0jbL4UcLN433dy0blKz1h8UokDbmSZw18tIYQbVqON5cgkE84e5W7rmdPwi5R0cxpgOV1G5aLnIvkzXRnz2K2wi05E3EWkYAzIL9upY4gykWelPeEA1bsg/gKRWFKrQE163NuyGM5Cd/zlFpCoFFqInzqm5wiZS8F5jIZappgOi7sZwoZhsrvW6y3g562lTyXttmx1GUf9qvAYfVxkN/hsPrL+RF4yJROceSvfqeeRu0RgFJzGhzNMila1OUAz+h4I0pUT+BkHim+Sru84dTr1RprTrbxTp1N+0gdm02fGpjyJLCOZZUnn4h2OLwQOz7/pzNhJDhXkE9LceGahTxFloiE
+ p3gPAi+d
+ 5QfRLLvBi9i37NtWTNSi8rcTdgYos/xUbFn5DrB1grWAk1n3PwcC6o+k2JPnLeJxC2iuxgyoCrT8bwfvV5gHkr/hrVKnn4suY3y2GO9K2IlXu7ywNDSSrAA+6aNDC6tQrlgfiHb1MqPEbtdVxnlxrNh/J5N26/kmOZ2iNfbuyEu6n1XVU5xTHzl8S/zaSz/l8nV/SIPBZm/bxlVbENRnd46xTo5qPt169qguU7emAokyA/X5WeAxYRE6RioQCjAqUnfebGX+ipE3DQ/LEPWLcYXckRIpTYS+bjDTH1qv1KF7S4Td4R13VFtCkvsnOitIqbs8omNxjBg368uJLfEu/tQhC4+W5uw4RPK2nYN5s6Bkp9P/ztnNkddwztzIg1H5x12hUtJQjwD+Zwmj5DL0NRnuN55Ir7QrB16ol
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,926 +85,343 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 23, 2025 at 10:33=E2=80=AFPM Andrey Ryabinin <ryabinin.a.a@gmai=
-l.com> wrote:
->
-> ...
->
-> I don't know if it's a real problem or not. I'm just pointing out that we=
- might
-> have tricky use case here and maybe that's a problem, because nobody had =
-such use
-> case in mind. But maybe it's just fine.
-> I think we just need to boot test it, to see if this works.
-> ...
-> powerpc used static key same way before your patches, so powerpc should b=
-e fine.
 
-Hello,
-
-Just heads up that I am still working on v4.
-While I can verify the success on compile and booting with my changes
-on x86, arm with SW/HW_TAGS modes, I'm having issues with PowerPC, UML
-arch that selects ARCH_DEFER_KASAN.
-
-Adding Christophe Leroy in TO. Please advise on the powerpc panic issue.
-
-I started from scratch again, cherry picking changes one by one,
-and verifying on powerpc which does select ARCH_DEFER_KASAN
-and on arm64 with HW_TAGS on. While HW_TAGS works and boots
-with the git diff [4], powerpc panics on botting, so I could've used the he=
-lp,
-while I'm trying to figure it out myself.
-
-I know that PowerPC used the static key before and
-I use the function to enable it and check it. Stuck in here.
-
-TL;DR of upcoming v4 changes:
-
-I've left the only check `kasan_enabled()` in include/linux/kasan-enabled.h
-for the upcoming PATCH v4, removing kasan_shadow_initialized() from v3.
-Because currently [1] in mainline, if HW_TAGS is enabled,
-kasan_enabled() checks the static flag, otherwise IS_ENABLED(CONFIG_KASAN).
-
-Andrey Konovalov mentioned in v2 to have a separate kasan_enabled()
-to check if KASAN enabled at all and kasan_shadow_initialized() if
-shadow memory is ready. AFAIU, the single kasan_enabled() covers both
-scenarios separately in ARCH_DEFER_KASAN, and it doesn't need to
-have a separate check in either case. Please correct me if I'm wrong.
-
-[1] https://elixir.bootlin.com/linux/v6.16/source/include/linux/kasan-enabl=
-ed.h#L11
-
-Also kasan_arch_is_ready() is replaced with kasan_enabled() as I did in v1-=
-v2,
-since we control runtime/compile time checks via the single function.
-
-#if defined(CONFIG_ARCH_DEFER_KASAN) || defined(CONFIG_KASAN_HW_TAGS)
-static __always_inline bool kasan_enabled(void)
-{
-        return static_branch_likely(&kasan_flag_enabled);
-}
-...
-
-=3D=3D UML issue
-
-Currently [2], UML uses integer flag, so adding ARCH_DEFER_KASAN
-which relies on CONFIG_STATIC_LINK to arch/um/Kconfig seems problematic, or=
- no?
-I was trying to boot the ./linux ARCH=3Dum and replacing ".kasan_init"
-section with
-__init kasan_init
-
-and calling kasan_init() at the end of `__init arch_mm_preinit()` - I
-got segfault,
-couldn't get help from gdb or strace. I guess the patching just didn't work=
-.
-
-[2] https://elixir.bootlin.com/linux/v6.16/source/arch/um/kernel/mem.c#L35
-
-#ifdef CONFIG_KASAN
-void __init kasan_init(void)
-{
-        /*
-        * kasan_map_memory will map all of the required address space and
-        * the host machine will allocate physical memory as necessary.
-        */
-        kasan_map_memory((void *)KASAN_SHADOW_START, KASAN_SHADOW_SIZE);
-        init_task.kasan_depth =3D 0;
-        kasan_init_generic();
-}
-#endif
-
-and removed ".kasan_init" section from:
-arch/um/include/asm/common.lds.S
-arch/um/kernel/dyn.lds.S
-
-So not sure if I should actually keep kasan_arch_is_ready for UML code
-that can not
-use kasan_enabled() as STATIC_LINK is not enabled in UML defconfig.
-
-=3D=3D PowerPC panic
-
-I've following this instruction to compile properly kernel for powerpc
-https://github.com/linuxppc/wiki/wiki/Building-powerpc-kernels,
-
-because compiling with clang and defconfig didn't boot the QEMU.
-
-export CROSS_COMPILE=3Dpowerpc64le-linux-gnu-
-export ARCH=3Dpowerpc
-make ppc64le_defconfig
-
-Running it in QEMU, I'm currently receiving the kernel panic [3].
-**Without** git diff below [4], the QEMU boots with KASAN successfully.
-
-I'm trying to understand the root-cause:
-        ftrace_process_locs -> ftrace_init -> start_kernel()
-AFAIU, some code before kasan_init() is trying to do an instrumented
-access(store/load) that ends up in __asan_*,
-but shadow memory is not mapped yet.
-
-My guess is that the issue is how we prepare the shadow mem.
-differently in PPC_BOOK3S_64:
-arch/powerpc/mm/kasan/init_book3s_64.c
-and in PPC_BOOK3E_64:
-arch/powerpc/mm/kasan/init_book3e_64.c
-
-Like BOOK3S requires RADIX_MMU,
-so I can't verify ARCH_DEFER_KASAN on BOOK3E.
+Linus, please merge mm.git's non-MM updates for the next -rc1 cycle,
 
 
+I'm seeing two conflicts against your current tree.  Those, along with
+their linux-next resolutions are:
 
-[3]
-$ ./run-qemu-powerpc.sh ./linux-kasan
-+ IMAGE=3D./images/rootfs-el.cpio.gz
-+ KERNEL=3D./linux-kasan
-+ qemu-system-ppc64 -M pseries -m 1G -nographic -vga none -kernel
-./linux-kasan/vmlinux -initrd ./images/rootfs-el.cpio.gz -append
-noreboot -device e1000e,netdev=3Dnic -netdev user,id=3Dnic -s -pidfile
-vm.pid
-qemu-system-ppc64: warning: TCG doesn't support requested feature,
-cap-cfpc=3Dworkaround
-qemu-system-ppc64: warning: TCG doesn't support requested feature,
-cap-sbbc=3Dworkaround
-qemu-system-ppc64: warning: TCG doesn't support requested feature,
-cap-ibs=3Dworkaround
-qemu-system-ppc64: warning: TCG doesn't support requested feature,
-cap-ccf-assist=3Don
+kernel/panic.c, vs sysctl tree:
+https://lkml.kernel.org/r/20250708190003.4eabc8ab@canb.auug.org.au
+
+lib/Kconfig.debug, vs paulmck tree:
+https://lkml.kernel.org/r/20250729104245.6be6957a@canb.auug.org.au
 
 
-SLOF **********************************************************************
-QEMU Starting
- Build Date =3D Mar  5 2025 10:48:26
- FW Version =3D release 20210711
- Press "s" to enter Open Firmware.
-
-Populating /vdevice methods
-Populating /vdevice/vty@71000000
-Populating /vdevice/nvram@71000001
-Populating /vdevice/v-scsi@71000002
-       SCSI: Looking for devices
-          8200000000000000 CD-ROM   : "QEMU     QEMU CD-ROM      2.5+"
-Populating /pci@800000020000000
-                     00 0000 (D) : 8086 10d3    network [ ethernet ]
-No NVRAM common partition, re-initializing...
-Scanning USB
-Using default console: /vdevice/vty@71000000
-Detected RAM kernel at 400000 (497c180 bytes)
-
-  Welcome to Open Firmware
-
-  Copyright (c) 2004, 2017 IBM Corporation All rights reserved.
-  This program and the accompanying materials are made available
-  under the terms of the BSD License available at
-  http://www.opensource.org/licenses/bsd-license.php
-
-Booting from memory...
-OF stdout device is: /vdevice/vty@71000000
-Preparing to boot Linux version 6.16.0-g9a9f7176fa9d-dirty
-(novitoll@PC) (powerpc64le-linux-gnu-gcc (Ubuntu
-11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GNU Binutils for Ubuntu) 2.38)
-#64 SMP Sun Aug  3 19:58:23 +05 2025
-Detected machine type: 0000000000000101
-command line: noreboot
-Max number of cores passed to firmware: 2048 (NR_CPUS =3D 2048)
-Calling ibm,client-architecture-support... done
-memory layout at init:
-  memory_limit : 0000000000000000 (16 MB aligned)
-  alloc_bottom : 00000000053b0000
-  alloc_top    : 0000000030000000
-  alloc_top_hi : 0000000040000000
-  rmo_top      : 0000000030000000
-  ram_top      : 0000000040000000
-instantiating rtas at 0x000000002fff0000... done
-prom_hold_cpus: skipped
-copying OF device tree...
-Building dt strings...
-Building dt structure...
-Device tree strings 0x00000000053c0000 -> 0x00000000053c0b78
-Device tree struct  0x00000000053d0000 -> 0x00000000053e0000
-Quiescing Open Firmware ...
-Booting Linux via __start() @ 0x0000000000400000 ...
-[    0.000000][    T0] radix-mmu: Page sizes from device-tree:
-[    0.000000][    T0] radix-mmu: Page size shift =3D 12 AP=3D0x0
-[    0.000000][    T0] radix-mmu: Page size shift =3D 16 AP=3D0x5
-[    0.000000][    T0] radix-mmu: Page size shift =3D 21 AP=3D0x1
-[    0.000000][    T0] radix-mmu: Page size shift =3D 30 AP=3D0x2
-[    0.000000][    T0] Activating Kernel Userspace Access Prevention
-[    0.000000][    T0] Activating Kernel Userspace Execution Prevention
-[    0.000000][    T0] radix-mmu: Mapped
-0x0000000000000000-0x0000000003e00000 with 2.00 MiB pages (exec)
-[    0.000000][    T0] radix-mmu: Mapped
-0x0000000003e00000-0x0000000040000000 with 2.00 MiB pages
-[    0.000000][    T0] lpar: Using radix MMU under hypervisor
-[    0.000000][    T0] Linux version 6.16.0-g9a9f7176fa9d-dirty
-(novitoll@PC) (powerpc64le-linux-gnu-gcc (Ubuntu
-11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GNU Binutils for Ubuntu) 2.38)
-#64 SMP Sun Aug  3 19:58:23 +05 2025
-[    0.000000][    T0] KernelAddressSanitizer initialized (generic)
-[    0.000000][    T0] OF: reserved mem: Reserved memory: No
-reserved-memory node in the DT
-[    0.000000][    T0] Found initrd at 0xc000000004d90000:0xc0000000053ad15=
-a
-[    0.000000][    T0] Hardware name: IBM pSeries (emulated by qemu)
-POWER9 (architected) 0x4e1200 0xf000005 of:SLOF,HEAD pSeries
-[    0.000000][    T0] printk: legacy bootconsole [udbg0] enabled
-[    0.000000][    T0] Partition configured for 1 cpus.
-[    0.000000][    T0] CPU maps initialized for 1 thread per core
-[    0.000000][    T0] numa: Partition configured for 1 NUMA nodes.
-[    0.000000][    T0] ----------------------------------------------------=
--
-[    0.000000][    T0] phys_mem_size     =3D 0x40000000
-[    0.000000][    T0] dcache_bsize      =3D 0x80
-[    0.000000][    T0] icache_bsize      =3D 0x80
-[    0.000000][    T0] cpu_features      =3D 0x0001c06b8f4f9187
-[    0.000000][    T0]   possible        =3D 0x003ffbfbffffb18f
-[    0.000000][    T0]   always          =3D 0x0000000000000180
-[    0.000000][    T0] cpu_user_features =3D 0xdc0065c2 0xaef00000
-[    0.000000][    T0] mmu_features      =3D 0x3c007641
-[    0.000000][    T0] firmware_features =3D 0x00000285455a445f
-[    0.000000][    T0] vmalloc start     =3D 0xc008000000000000
-[    0.000000][    T0] IO start          =3D 0xc00a000000000000
-[    0.000000][    T0] vmemmap start     =3D 0xc00c000000000000
-[    0.000000][    T0] ----------------------------------------------------=
--
-[    0.000000][    T0] NODE_DATA(0) allocated [mem 0x3fb28800-0x3fb2ffff]
-[    0.000000][    T0] rfi-flush: fallback displacement flush available
-[    0.000000][    T0] rfi-flush: ori type flush available
-[    0.000000][    T0] rfi-flush: mttrig type flush available
-[    0.000000][    T0] count-cache-flush: hardware flush enabled.
-[    0.000000][    T0] link-stack-flush: software flush enabled.
-[    0.000000][    T0] stf-barrier: eieio barrier available
-[    0.000000][    T0] PPC64 nvram contains 65536 bytes
-[    0.000000][    T0] barrier-nospec: using ORI speculation barrier
-[    0.000000][    T0] Zone ranges:
-[    0.000000][    T0]   Normal   [mem 0x0000000000000000-0x000000003ffffff=
-f]
-[    0.000000][    T0]   Device   empty
-[    0.000000][    T0] Movable zone start for each node
-[    0.000000][    T0] Early memory node ranges
-[    0.000000][    T0]   node   0: [mem 0x0000000000000000-0x000000003fffff=
-ff]
-[    0.000000][    T0] Initmem setup node 0 [mem
-0x0000000000000000-0x000000003fffffff]
-[    0.000000][    T0] percpu: Embedded 3 pages/cpu s122904 r0 d73704 u1966=
-08
-[    0.000000][    T0] Kernel command line: noreboot
-[    0.000000][    T0] Unknown kernel command line parameters
-"noreboot", will be passed to user space.
-[    0.000000][    T0] printk: log buffer data + meta data: 262144 +
-917504 =3D 1179648 bytes
-[    0.000000][    T0] Dentry cache hash table entries: 131072 (order:
-4, 1048576 bytes, linear)
-[    0.000000][    T0] Inode-cache hash table entries: 65536 (order:
-3, 524288 bytes, linear)
-[    0.000000][    T0] Fallback order for Node 0: 0
-[    0.000000][    T0] Built 1 zonelists, mobility grouping on.  Total
-pages: 16384
-[    0.000000][    T0] Policy zone: Normal
-[    0.000000][    T0] mem auto-init: stack:off, heap alloc:off, heap free:=
-off
-[    0.000000][    T0] stackdepot: allocating hash table via
-alloc_large_system_hash
-[    0.000000][    T0] stackdepot hash table entries: 1048576 (order:
-8, 16777216 bytes, linear)
-[    0.000000][    T0] SLUB: HWalign=3D128, Order=3D0-3, MinObjects=3D0,
-CPUs=3D1, Nodes=3D1
-[    0.000000][    T0] BUG: Unable to handle kernel data access on
-read at 0xc00e0000a83f4ff0
-[    0.000000][    T0] Faulting instruction address: 0xc000000000761aec
-[    0.000000][    T0] Oops: Kernel access of bad area, sig: 11 [#1]
-[    0.000000][    T0] BE PAGE_SIZE=3D64K MMU=3DRadix  SMP NR_CPUS=3D2048 N=
-UMA pSeries
-[    0.000000][    T0] Modules linked in:
-[    0.000000][    T0] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted
-6.16.0-g9a9f7176fa9d-dirty #64 VOLUNTARY
-[    0.000000][    T0] Hardware name: IBM pSeries (emulated by qemu)
-POWER9 (architected) 0x4e1200 0xf000005 of:SLOF,HEAD pSeries
-[    0.000000][    T0] NIP:  c000000000761aec LR: c0000000003fa48c
-CTR: c000000000302db4
-[    0.000000][    T0] REGS: c000000004687b20 TRAP: 0300   Not tainted
- (6.16.0-g9a9f7176fa9d-dirty)
-[    0.000000][    T0] MSR:  8000000002001032 <SF,VEC,ME,IR,DR,RI>
-CR: 24082424  XER: 00000000
-[    0.000000][    T0] CFAR: c0000000003fa488 DAR: c00e0000a83f4ff0
-DSISR: 40000000 IRQMASK: 3
-[    0.000000][    T0] GPR00: c0000000003fa48c c000000004687dc0
-c00000000230a500 c000000541fa7f80
-[    0.000000][    T0] GPR04: 0000000000000008 0000000000000001
-c0000000019cf044 0000000000000001
-[    0.000000][    T0] GPR08: a80e000000000000 18000000a83f4ff0
-0000000000000007 a80e000000000000
-[    0.000000][    T0] GPR12: c00e0000008d0fb6 c000000004980000
-0000000000000002 0000000002579c28
-[    0.000000][    T0] GPR16: c0000000040824c0 000000000000000c
-c000000006a80000 c00000000000e9f8
-[    0.000000][    T0] GPR20: 0000000000010000 c0000000031e4568
-c000000004840860 0000000000000000
-[    0.000000][    T0] GPR24: 000000000000b9f4 0000000053b527f9
-0000000000000000 c0000000031875d0
-[    0.000000][    T0] GPR28: 000000053b527f80 c0000000068d0340
-c0000000068d0380 0000000000000000
-[    0.000000][    T0] NIP [c000000000761aec] __asan_store8+0x60/0xe0
-[    0.000000][    T0] LR [c0000000003fa48c] ftrace_process_locs+0x3c0/0xa2=
-0
-[    0.000000][    T0] Call Trace:
-[    0.000000][    T0] [c000000004687dc0] [0000000000000002] 0x2 (unreliabl=
-e)
-[    0.000000][    T0] [c000000004687de0] [c0000000003fa48c]
-ftrace_process_locs+0x3c0/0xa20
-[    0.000000][    T0] [c000000004687ee0] [c000000003065c14]
-ftrace_init+0x68/0x1cc
-[    0.000000][    T0] [c000000004687f50] [c00000000300a57c]
-start_kernel+0x1d8/0x4e0
-[    0.000000][    T0] [c000000004687fe0] [c00000000000da4c]
-start_here_common+0x1c/0x20
-[    0.000000][    T0] Code: 792907c6 6529ffff 6129ffff 7c234840
-4081005c 39230007 792a0760 2c2a0007 40820034 3d00a80e 7929e8c2
-790807c6 <7d2940ae> 7d290775 4082006c 38210020
-[    0.000000][    T0] ---[ end trace 0000000000000000 ]---
-[    0.000000][    T0]
-[    0.000000][    T0] Kernel panic - not syncing: Attempted to kill
-the idle task!
-qemu-system-ppc64: OS terminated: `
+Thanks.
 
 
+The following changes since commit d7b8f8e20813f0179d8ef519541a3527e7661d3a:
 
-[4]
----
-arch/powerpc/Kconfig | 1 +
-arch/powerpc/include/asm/kasan.h | 13 ----------
-arch/powerpc/mm/kasan/init_32.c | 2 +-
-arch/powerpc/mm/kasan/init_book3e_64.c | 2 +-
-arch/powerpc/mm/kasan/init_book3s_64.c | 6 +----
-include/linux/kasan-enabled.h | 24 +++++++++++++----
-include/linux/kasan.h | 28 ++++++++++++++++++--
-lib/Kconfig.kasan | 8 ++++++
-mm/kasan/common.c | 18 ++++++++-----
-mm/kasan/generic.c | 23 +++++++++-------
-mm/kasan/hw_tags.c | 9 +------
-mm/kasan/kasan.h | 36 +++++++++++++++++++-------
-mm/kasan/shadow.c | 32 +++++------------------
-mm/kasan/sw_tags.c | 2 ++
-mm/kasan/tags.c | 2 +-
-15 files changed, 120 insertions(+), 86 deletions(-)
+  Linux 6.16-rc5 (2025-07-06 14:10:26 -0700)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 93402a1d9c9..11c8ef2d88e 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -122,6 +122,7 @@ config PPC
-# Please keep this list sorted alphabetically.
-#
-select ARCH_32BIT_OFF_T if PPC32
-+ select ARCH_DEFER_KASAN if PPC_RADIX_MMU
-select ARCH_DISABLE_KASAN_INLINE if PPC_RADIX_MMU
-select ARCH_DMA_DEFAULT_COHERENT if !NOT_COHERENT_CACHE
-select ARCH_ENABLE_MEMORY_HOTPLUG
-diff --git a/arch/powerpc/include/asm/kasan.h b/arch/powerpc/include/asm/ka=
-san.h
-index b5bbb94c51f..73466d3ff30 100644
---- a/arch/powerpc/include/asm/kasan.h
-+++ b/arch/powerpc/include/asm/kasan.h
-@@ -53,19 +53,6 @@
-#endif
-#ifdef CONFIG_KASAN
--#ifdef CONFIG_PPC_BOOK3S_64
--DECLARE_STATIC_KEY_FALSE(powerpc_kasan_enabled_key);
--
--static __always_inline bool kasan_arch_is_ready(void)
--{
-- if (static_branch_likely(&powerpc_kasan_enabled_key))
-- return true;
-- return false;
--}
--
--#define kasan_arch_is_ready kasan_arch_is_ready
--#endif
--
-void kasan_early_init(void);
-void kasan_mmu_init(void);
-void kasan_init(void);
-diff --git a/arch/powerpc/mm/kasan/init_32.c b/arch/powerpc/mm/kasan/init_3=
-2.c
-index 03666d790a5..1d083597464 100644
---- a/arch/powerpc/mm/kasan/init_32.c
-+++ b/arch/powerpc/mm/kasan/init_32.c
-@@ -165,7 +165,7 @@ void __init kasan_init(void)
-/* At this point kasan is fully initialized. Enable error messages */
-init_task.kasan_depth =3D 0;
-- pr_info("KASAN init done\n");
-+ kasan_init_generic();
-}
-void __init kasan_late_init(void)
-diff --git a/arch/powerpc/mm/kasan/init_book3e_64.c
-b/arch/powerpc/mm/kasan/init_book3e_64.c
-index 60c78aac0f6..0d3a73d6d4b 100644
---- a/arch/powerpc/mm/kasan/init_book3e_64.c
-+++ b/arch/powerpc/mm/kasan/init_book3e_64.c
-@@ -127,7 +127,7 @@ void __init kasan_init(void)
-/* Enable error messages */
-init_task.kasan_depth =3D 0;
-- pr_info("KASAN init done\n");
-+ kasan_init_generic();
-}
-void __init kasan_late_init(void) { }
-diff --git a/arch/powerpc/mm/kasan/init_book3s_64.c
-b/arch/powerpc/mm/kasan/init_book3s_64.c
-index 7d959544c07..dcafa641804 100644
---- a/arch/powerpc/mm/kasan/init_book3s_64.c
-+++ b/arch/powerpc/mm/kasan/init_book3s_64.c
-@@ -19,8 +19,6 @@
-#include <linux/memblock.h>
-#include <asm/pgalloc.h>
--DEFINE_STATIC_KEY_FALSE(powerpc_kasan_enabled_key);
--
-static void __init kasan_init_phys_region(void *start, void *end)
-{
-unsigned long k_start, k_end, k_cur;
-@@ -92,11 +90,9 @@ void __init kasan_init(void)
-*/
-memset(kasan_early_shadow_page, 0, PAGE_SIZE);
-- static_branch_inc(&powerpc_kasan_enabled_key);
--
-/* Enable error messages */
-init_task.kasan_depth =3D 0;
-- pr_info("KASAN init done\n");
-+ kasan_init_generic();
-}
-void __init kasan_early_init(void) { }
-diff --git a/include/linux/kasan-enabled.h b/include/linux/kasan-enabled.h
-index 6f612d69ea0..32db31b6418 100644
---- a/include/linux/kasan-enabled.h
-+++ b/include/linux/kasan-enabled.h
-@@ -4,32 +4,46 @@
-#include <linux/static_key.h>
--#ifdef CONFIG_KASAN_HW_TAGS
--
-+#if defined(CONFIG_ARCH_DEFER_KASAN) || defined(CONFIG_KASAN_HW_TAGS)
-+/*
-+ * Global runtime flag for KASAN modes that need runtime control.
-+ * Used by ARCH_DEFER_KASAN architectures and HW_TAGS mode.
-+ */
-DECLARE_STATIC_KEY_FALSE(kasan_flag_enabled);
-+/*
-+ * Runtime control for shadow memory initialization or HW_TAGS mode.
-+ * Uses static key for architectures that need deferred KASAN or HW_TAGS.
-+ */
-static __always_inline bool kasan_enabled(void)
-{
-return static_branch_likely(&kasan_flag_enabled);
-}
-+static inline void kasan_enable(void)
-+{
-+ static_branch_enable(&kasan_flag_enabled);
-+}
-+
-static inline bool kasan_hw_tags_enabled(void)
-{
-return kasan_enabled();
-}
-+#else
--#else /* CONFIG_KASAN_HW_TAGS */
--
-+/* Controls whether KASAN is enabled at all (compile-time check). */
-static inline bool kasan_enabled(void)
-{
-return IS_ENABLED(CONFIG_KASAN);
-}
-+static inline void kasan_enable(void) { }
-+
-static inline bool kasan_hw_tags_enabled(void)
-{
-return false;
-}
--#endif /* CONFIG_KASAN_HW_TAGS */
-+#endif /* CONFIG_ARCH_DEFER_KASAN || CONFIG_KASAN_HW_TAGS */
-#endif /* LINUX_KASAN_ENABLED_H */
-diff --git a/include/linux/kasan.h b/include/linux/kasan.h
-index 890011071f2..8bf0efbb751 100644
---- a/include/linux/kasan.h
-+++ b/include/linux/kasan.h
-@@ -543,6 +543,12 @@ void kasan_report_async(void);
-#endif /* CONFIG_KASAN_HW_TAGS */
-+#ifdef CONFIG_KASAN_GENERIC
-+void __init kasan_init_generic(void);
-+#else
-+static inline void kasan_init_generic(void) { }
-+#endif
-+
-#ifdef CONFIG_KASAN_SW_TAGS
-void __init kasan_init_sw_tags(void);
-#else
-@@ -562,11 +568,29 @@ static inline void kasan_init_hw_tags(void) { }
-#if defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)
-void kasan_populate_early_vm_area_shadow(void *start, unsigned long size);
--int kasan_populate_vmalloc(unsigned long addr, unsigned long size);
--void kasan_release_vmalloc(unsigned long start, unsigned long end,
-+
-+int __kasan_populate_vmalloc(unsigned long addr, unsigned long size);
-+static inline int kasan_populate_vmalloc(unsigned long addr, unsigned
-long size)
-+{
-+ if (!kasan_enabled())
-+ return 0;
-+ return __kasan_populate_vmalloc(addr, size);
-+}
-+
-+void __kasan_release_vmalloc(unsigned long start, unsigned long end,
-unsigned long free_region_start,
-unsigned long free_region_end,
-unsigned long flags);
-+static inline void kasan_release_vmalloc(unsigned long start,
-+ unsigned long end,
-+ unsigned long free_region_start,
-+ unsigned long free_region_end,
-+ unsigned long flags)
-+{
-+ if (kasan_enabled())
-+ __kasan_release_vmalloc(start, end, free_region_start,
-+ free_region_end, flags);
-+}
-#else /* CONFIG_KASAN_GENERIC || CONFIG_KASAN_SW_TAGS */
-diff --git a/lib/Kconfig.kasan b/lib/Kconfig.kasan
-index f82889a830f..4e0508022ce 100644
---- a/lib/Kconfig.kasan
-+++ b/lib/Kconfig.kasan
-@@ -49,6 +49,14 @@ menuconfig KASAN
-if KASAN
-+config ARCH_DEFER_KASAN
-+ bool
-+ help
-+ Architectures should select this if they need to defer KASAN
-+ initialization until shadow memory is properly set up. This
-+ enables runtime control via static keys. Otherwise, KASAN uses
-+ compile-time constants for better performance.
-+
-config CC_HAS_KASAN_MEMINTRINSIC_PREFIX
-def_bool (CC_IS_CLANG && $(cc-option,-fsanitize=3Dkernel-address -mllvm
--asan-kernel-mem-intrinsic-prefix=3D1)) || \
-(CC_IS_GCC && $(cc-option,-fsanitize=3Dkernel-address --param
-asan-kernel-mem-intrinsic-prefix=3D1))
-diff --git a/mm/kasan/common.c b/mm/kasan/common.c
-index ed4873e18c7..dff5f7bfad1 100644
---- a/mm/kasan/common.c
-+++ b/mm/kasan/common.c
-@@ -32,6 +32,15 @@
-#include "kasan.h"
-#include "../slab.h"
-+#if defined(CONFIG_ARCH_DEFER_KASAN) || defined(CONFIG_KASAN_HW_TAGS)
-+/*
-+ * Definition of the unified static key declared in kasan-enabled.h.
-+ * This provides consistent runtime enable/disable across KASAN modes.
-+ */
-+DEFINE_STATIC_KEY_FALSE(kasan_flag_enabled);
-+EXPORT_SYMBOL(kasan_flag_enabled);
-+#endif
-+
-struct slab *kasan_addr_to_slab(const void *addr)
-{
-if (virt_addr_valid(addr))
-@@ -250,7 +259,7 @@ static inline void poison_slab_object(struct
-kmem_cache *cache, void *object,
-bool __kasan_slab_pre_free(struct kmem_cache *cache, void *object,
-unsigned long ip)
-{
-- if (!kasan_arch_is_ready() || is_kfence_address(object))
-+ if (is_kfence_address(object))
-return false;
-return check_slab_allocation(cache, object, ip);
-}
-@@ -258,7 +267,7 @@ bool __kasan_slab_pre_free(struct kmem_cache
-*cache, void *object,
-bool __kasan_slab_free(struct kmem_cache *cache, void *object, bool init,
-bool still_accessible)
-{
-- if (!kasan_arch_is_ready() || is_kfence_address(object))
-+ if (is_kfence_address(object))
-return false;
-poison_slab_object(cache, object, init, still_accessible);
-@@ -282,9 +291,6 @@ bool __kasan_slab_free(struct kmem_cache *cache,
-void *object, bool init,
-static inline bool check_page_allocation(void *ptr, unsigned long ip)
-{
-- if (!kasan_arch_is_ready())
-- return false;
--
-if (ptr !=3D page_address(virt_to_head_page(ptr))) {
-kasan_report_invalid_free(ptr, ip, KASAN_REPORT_INVALID_FREE);
-return true;
-@@ -511,7 +517,7 @@ bool __kasan_mempool_poison_object(void *ptr,
-unsigned long ip)
-return true;
-}
-- if (is_kfence_address(ptr) || !kasan_arch_is_ready())
-+ if (is_kfence_address(ptr))
-return true;
-slab =3D folio_slab(folio);
-diff --git a/mm/kasan/generic.c b/mm/kasan/generic.c
-index d54e89f8c3e..8e597cf8fdd 100644
---- a/mm/kasan/generic.c
-+++ b/mm/kasan/generic.c
-@@ -36,6 +36,17 @@
-#include "kasan.h"
-#include "../slab.h"
-+/*
-+ * Initialize Generic KASAN and enable runtime checks.
-+ * This should be called from arch kasan_init() once shadow memory is read=
-y.
-+ */
-+void __init kasan_init_generic(void)
-+{
-+ kasan_enable();
-+
-+ pr_info("KernelAddressSanitizer initialized (generic)\n");
-+}
-+
-/*
-* All functions below always inlined so compiler could
-* perform better optimizations in each of __asan_loadX/__assn_storeX
-@@ -165,7 +176,7 @@ static __always_inline bool
-check_region_inline(const void *addr,
-size_t size, bool write,
-unsigned long ret_ip)
-{
-- if (!kasan_arch_is_ready())
-+ if (!kasan_enabled())
-return true;
-if (unlikely(size =3D=3D 0))
-@@ -189,13 +200,10 @@ bool kasan_check_range(const void *addr, size_t
-size, bool write,
-return check_region_inline(addr, size, write, ret_ip);
-}
--bool kasan_byte_accessible(const void *addr)
-+bool __kasan_byte_accessible(const void *addr)
-{
-s8 shadow_byte;
-- if (!kasan_arch_is_ready())
-- return true;
--
-shadow_byte =3D READ_ONCE(*(s8 *)kasan_mem_to_shadow(addr));
-return shadow_byte >=3D 0 && shadow_byte < KASAN_GRANULE_SIZE;
-@@ -495,9 +503,6 @@ static void release_alloc_meta(struct
-kasan_alloc_meta *meta)
-static void release_free_meta(const void *object, struct kasan_free_meta *m=
-eta)
-{
-- if (!kasan_arch_is_ready())
-- return;
--
-/* Check if free meta is valid. */
-if (*(u8 *)kasan_mem_to_shadow(object) !=3D KASAN_SLAB_FREE_META)
-return;
-@@ -562,7 +567,7 @@ void kasan_save_alloc_info(struct kmem_cache
-*cache, void *object, gfp_t flags)
-kasan_save_track(&alloc_meta->alloc_track, flags);
-}
--void kasan_save_free_info(struct kmem_cache *cache, void *object)
-+void __kasan_save_free_info(struct kmem_cache *cache, void *object)
-{
-struct kasan_free_meta *free_meta;
-diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
-index 9a6927394b5..c8289a3feab 100644
---- a/mm/kasan/hw_tags.c
-+++ b/mm/kasan/hw_tags.c
-@@ -45,13 +45,6 @@ static enum kasan_arg kasan_arg __ro_after_init;
-static enum kasan_arg_mode kasan_arg_mode __ro_after_init;
-static enum kasan_arg_vmalloc kasan_arg_vmalloc __initdata;
--/*
-- * Whether KASAN is enabled at all.
-- * The value remains false until KASAN is initialized by kasan_init_hw_tag=
-s().
-- */
--DEFINE_STATIC_KEY_FALSE(kasan_flag_enabled);
--EXPORT_SYMBOL(kasan_flag_enabled);
--
-/*
-* Whether the selected mode is synchronous, asynchronous, or asymmetric.
-* Defaults to KASAN_MODE_SYNC.
-@@ -260,7 +253,7 @@ void __init kasan_init_hw_tags(void)
-kasan_init_tags();
-/* KASAN is now initialized, enable it. */
-- static_branch_enable(&kasan_flag_enabled);
-+ kasan_enable();
-pr_info("KernelAddressSanitizer initialized (hw-tags, mode=3D%s,
-vmalloc=3D%s, stacktrace=3D%s)\n",
-kasan_mode_info(),
-diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
-index 129178be5e6..ecb0dccfca9 100644
---- a/mm/kasan/kasan.h
-+++ b/mm/kasan/kasan.h
-@@ -398,7 +398,13 @@ depot_stack_handle_t kasan_save_stack(gfp_t
-flags, depot_flags_t depot_flags);
-void kasan_set_track(struct kasan_track *track, depot_stack_handle_t stack)=
-;
-void kasan_save_track(struct kasan_track *track, gfp_t flags);
-void kasan_save_alloc_info(struct kmem_cache *cache, void *object, gfp_t fl=
-ags);
--void kasan_save_free_info(struct kmem_cache *cache, void *object);
-+
-+void __kasan_save_free_info(struct kmem_cache *cache, void *object);
-+static inline void kasan_save_free_info(struct kmem_cache *cache, void *ob=
-ject)
-+{
-+ if (kasan_enabled())
-+ __kasan_save_free_info(cache, object);
-+}
-#ifdef CONFIG_KASAN_GENERIC
-bool kasan_quarantine_put(struct kmem_cache *cache, void *object);
-@@ -499,6 +505,7 @@ static inline bool kasan_byte_accessible(const void *ad=
-dr)
-#else /* CONFIG_KASAN_HW_TAGS */
-+void __kasan_poison(const void *addr, size_t size, u8 value, bool init);
-/**
-* kasan_poison - mark the memory range as inaccessible
-* @addr: range start address, must be aligned to KASAN_GRANULE_SIZE
-@@ -506,7 +513,11 @@ static inline bool kasan_byte_accessible(const void *a=
-ddr)
-* @value: value that's written to metadata for the range
-* @init: whether to initialize the memory range (only for hardware tag-base=
-d)
-*/
--void kasan_poison(const void *addr, size_t size, u8 value, bool init);
-+static inline void kasan_poison(const void *addr, size_t size, u8
-value, bool init)
-+{
-+ if (kasan_enabled())
-+ __kasan_poison(addr, size, value, init);
-+}
-/**
-* kasan_unpoison - mark the memory range as accessible
-@@ -521,12 +532,19 @@ void kasan_poison(const void *addr, size_t size,
-u8 value, bool init);
-*/
-void kasan_unpoison(const void *addr, size_t size, bool init);
--bool kasan_byte_accessible(const void *addr);
-+bool __kasan_byte_accessible(const void *addr);
-+static inline bool kasan_byte_accessible(const void *addr)
-+{
-+ if (!kasan_enabled())
-+ return true;
-+ return __kasan_byte_accessible(addr);
-+}
-#endif /* CONFIG_KASAN_HW_TAGS */
-#ifdef CONFIG_KASAN_GENERIC
-+void __kasan_poison_last_granule(const void *address, size_t size);
-/**
-* kasan_poison_last_granule - mark the last granule of the memory range as
-* inaccessible
-@@ -536,7 +554,11 @@ bool kasan_byte_accessible(const void *addr);
-* This function is only available for the generic mode, as it's the only mo=
-de
-* that has partially poisoned memory granules.
-*/
--void kasan_poison_last_granule(const void *address, size_t size);
-+static inline void kasan_poison_last_granule(const void *address, size_t s=
-ize)
-+{
-+ if (kasan_enabled())
-+ __kasan_poison_last_granule(address, size);
-+}
-#else /* CONFIG_KASAN_GENERIC */
-@@ -544,12 +566,6 @@ static inline void
-kasan_poison_last_granule(const void *address, size_t size) {
-#endif /* CONFIG_KASAN_GENERIC */
--#ifndef kasan_arch_is_ready
--static inline bool kasan_arch_is_ready(void) { return true; }
--#elif !defined(CONFIG_KASAN_GENERIC) || !defined(CONFIG_KASAN_OUTLINE)
--#error kasan_arch_is_ready only works in KASAN generic outline mode!
--#endif
--
-#if IS_ENABLED(CONFIG_KASAN_KUNIT_TEST)
-void kasan_kunit_test_suite_start(void);
-diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
-index d2c70cd2afb..90c508cad63 100644
---- a/mm/kasan/shadow.c
-+++ b/mm/kasan/shadow.c
-@@ -121,13 +121,10 @@ void *__hwasan_memcpy(void *dest, const void
-*src, ssize_t len) __alias(__asan_m
-EXPORT_SYMBOL(__hwasan_memcpy);
-#endif
--void kasan_poison(const void *addr, size_t size, u8 value, bool init)
-+void __kasan_poison(const void *addr, size_t size, u8 value, bool init)
-{
-void *shadow_start, *shadow_end;
-- if (!kasan_arch_is_ready())
-- return;
--
-/*
-* Perform shadow offset calculation based on untagged address, as
-* some of the callers (e.g. kasan_poison_new_object) pass tagged
-@@ -145,14 +142,11 @@ void kasan_poison(const void *addr, size_t size,
-u8 value, bool init)
-__memset(shadow_start, value, shadow_end - shadow_start);
-}
--EXPORT_SYMBOL_GPL(kasan_poison);
-+EXPORT_SYMBOL_GPL(__kasan_poison);
-#ifdef CONFIG_KASAN_GENERIC
--void kasan_poison_last_granule(const void *addr, size_t size)
-+void __kasan_poison_last_granule(const void *addr, size_t size)
-{
-- if (!kasan_arch_is_ready())
-- return;
--
-if (size & KASAN_GRANULE_MASK) {
-u8 *shadow =3D (u8 *)kasan_mem_to_shadow(addr + size);
-*shadow =3D size & KASAN_GRANULE_MASK;
-@@ -353,7 +347,7 @@ static int ___alloc_pages_bulk(struct page
-**pages, int nr_pages)
-return 0;
-}
--static int __kasan_populate_vmalloc(unsigned long start, unsigned long end=
-)
-+static int __kasan_populate_vmalloc_do(unsigned long start, unsigned long =
-end)
-{
-unsigned long nr_pages, nr_total =3D PFN_UP(end - start);
-struct vmalloc_populate_data data;
-@@ -385,14 +379,11 @@ static int __kasan_populate_vmalloc(unsigned
-long start, unsigned long end)
-return ret;
-}
--int kasan_populate_vmalloc(unsigned long addr, unsigned long size)
-+int __kasan_populate_vmalloc(unsigned long addr, unsigned long size)
-{
-unsigned long shadow_start, shadow_end;
-int ret;
-- if (!kasan_arch_is_ready())
-- return 0;
--
-if (!is_vmalloc_or_module_addr((void *)addr))
-return 0;
-@@ -414,7 +405,7 @@ int kasan_populate_vmalloc(unsigned long addr,
-unsigned long size)
-shadow_start =3D PAGE_ALIGN_DOWN(shadow_start);
-shadow_end =3D PAGE_ALIGN(shadow_end);
-- ret =3D __kasan_populate_vmalloc(shadow_start, shadow_end);
-+ ret =3D __kasan_populate_vmalloc_do(shadow_start, shadow_end);
-if (ret)
-return ret;
-@@ -551,7 +542,7 @@ static int kasan_depopulate_vmalloc_pte(pte_t
-*ptep, unsigned long addr,
-* pages entirely covered by the free region, we will not run in to any
-* trouble - any simultaneous allocations will be for disjoint regions.
-*/
--void kasan_release_vmalloc(unsigned long start, unsigned long end,
-+void __kasan_release_vmalloc(unsigned long start, unsigned long end,
-unsigned long free_region_start,
-unsigned long free_region_end,
-unsigned long flags)
-@@ -560,9 +551,6 @@ void kasan_release_vmalloc(unsigned long start,
-unsigned long end,
-unsigned long region_start, region_end;
-unsigned long size;
-- if (!kasan_arch_is_ready())
-- return;
--
-region_start =3D ALIGN(start, KASAN_MEMORY_PER_SHADOW_PAGE);
-region_end =3D ALIGN_DOWN(end, KASAN_MEMORY_PER_SHADOW_PAGE);
-@@ -611,9 +599,6 @@ void *__kasan_unpoison_vmalloc(const void *start,
-unsigned long size,
-* with setting memory tags, so the KASAN_VMALLOC_INIT flag is ignored.
-*/
-- if (!kasan_arch_is_ready())
-- return (void *)start;
--
-if (!is_vmalloc_or_module_addr(start))
-return (void *)start;
-@@ -636,9 +621,6 @@ void *__kasan_unpoison_vmalloc(const void *start,
-unsigned long size,
-*/
-void __kasan_poison_vmalloc(const void *start, unsigned long size)
-{
-- if (!kasan_arch_is_ready())
-- return;
--
-if (!is_vmalloc_or_module_addr(start))
-return;
-diff --git a/mm/kasan/sw_tags.c b/mm/kasan/sw_tags.c
-index b9382b5b6a3..275bcbbf612 100644
---- a/mm/kasan/sw_tags.c
-+++ b/mm/kasan/sw_tags.c
-@@ -45,6 +45,8 @@ void __init kasan_init_sw_tags(void)
-kasan_init_tags();
-+ kasan_enable();
-+
-pr_info("KernelAddressSanitizer initialized (sw-tags, stacktrace=3D%s)\n",
-str_on_off(kasan_stack_collection_enabled()));
-}
-diff --git a/mm/kasan/tags.c b/mm/kasan/tags.c
-index d65d48b85f9..b9f31293622 100644
---- a/mm/kasan/tags.c
-+++ b/mm/kasan/tags.c
-@@ -142,7 +142,7 @@ void kasan_save_alloc_info(struct kmem_cache
-*cache, void *object, gfp_t flags)
-save_stack_info(cache, object, flags, false);
-}
--void kasan_save_free_info(struct kmem_cache *cache, void *object)
-+void __kasan_save_free_info(struct kmem_cache *cache, void *object)
-{
-save_stack_info(cache, object, 0, true);
-}
+are available in the Git repository at:
 
---
-2.34.1
+  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-nonmm-stable-2025-08-03-12-47
+
+for you to fetch changes up to 085dece6cc88b5c6fc6f2eca0403bfd2c5fbc7cb:
+
+  tools/getdelays: add backward compatibility for taskstats version (2025-08-02 12:01:41 -0700)
+
+----------------------------------------------------------------
+Significant patch series in this pull request:
+
+- The 2 patch series "squashfs: Remove page->mapping references" from
+  Matthew Wilcox gets us closer to being able to remove page->mapping.
+
+- The 5 patch series "relayfs: misc changes" from Jason Xing does some
+  maintenance and minor feature addition work in relayfs.
+
+- The 5 patch series "kdump: crashkernel reservation from CMA" from Jiri
+  Bohac switches us from static preallocation of the kdump crashkernel's
+  working memory over to dynamic allocation.  So the difficulty of
+  a-priori estimation of the second kernel's needs is removed and the
+  first kernel obtains extra memory.
+
+- The 5 patch series "generalize panic_print's dump function to be used
+  by other kernel parts" from Feng Tang implements some consolidation and
+  rationalizatio of the various ways in which a faiing kernel splats
+  information at the operator.
+
+----------------------------------------------------------------
+Ahelenia Ziemiańska (1):
+      ocfs2/dlm: fix "take a while" typo
+
+Alexander Graf (1):
+      kexec: enable CMA based contiguous allocation
+
+Andrew Morton (2):
+      MAINTAINERS: add lib/raid6/ to "SOFTWARE RAID"
+      init/Kconfig: restore CONFIG_BROKEN help text
+
+Antonio Borneo (1):
+      checkpatch: use utf-8 match for spell checking
+
+Arnd Bergmann (1):
+      lib: test_objagg: split test_hints_case() into two functions
+
+Brian Norris (1):
+      checkpatch: check for missing sentinels in ID arrays
+
+Colin Ian King (3):
+      squashfs: replace ;; with ; and end of fi declaration
+      squashfs: fix incorrect argument to sizeof in kmalloc_array call
+      samples: Kconfig: fix spelling mistake "instancess" -> "instances"
+
+Dr. David Alan Gilbert (1):
+      lib/xxhash: remove unused functions
+
+Easwar Hariharan (1):
+      coccinelle: misc: secs_to_jiffies: implement context and report modes
+
+Elijah Wright (1):
+      kernel: relay: use __GFP_ZERO in relay_alloc_buf
+
+Fan Yu (1):
+      tools/getdelays: add backward compatibility for taskstats version
+
+Feng Tang (5):
+      panic: clean up code for console replay
+      panic: generalize panic_print's function to show sys info
+      panic: add 'panic_sys_info' sysctl to take human readable string parameter
+      panic: add 'panic_sys_info=' setup option for kernel cmdline
+      panic: add note that panic_print sysctl interface is deprecated
+
+Fushuai Wang (1):
+      exit: fix misleading comment in forget_original_parent()
+
+Herbert Xu (2):
+      lib/raid6: replace custom zero page with ZERO_PAGE
+      lib/raid6: update recov_rvv.c zero page usage
+
+Ivan Pravdin (2):
+      ocfs2: avoid NULL pointer dereference in dx_dir_lookup_rec()
+      ocfs2: avoid potential ABBA deadlock by reordering tl_inode lock
+
+Jason Xing (5):
+      relayfs: abolish prev_padding
+      relayfs: support a counter tracking if per-cpu buffers is full
+      relayfs: introduce getting relayfs statistics function
+      blktrace: use rbuf->stats.full as a drop indicator in relayfs
+      relayfs: support a counter tracking if data is too big to write
+
+Jiazi Li (1):
+      kthread: update comment for __to_kthread
+
+Jiri Bohac (5):
+      Add a new optional ",cma" suffix to the crashkernel= command line option
+      kdump: implement reserve_crashkernel_cma
+      kdump, documentation: describe craskernel CMA reservation
+      kdump: wait for DMA to finish when using CMA
+      x86: implement crashkernel cma reservation
+
+Jiri Olsa (1):
+      uprobes: revert ref_ctr_offset in uprobe_unregister error path
+
+Johannes Berg (1):
+      scripts: gdb: move MNT_* constants to gdb-parsed
+
+Julian Vetter (1):
+      include/linux/jhash.h: replace __get_unaligned_cpu32 in jhash function
+
+Kuan-Wei Chiu (3):
+      lib/math/gcd: use static key to select implementation at runtime
+      riscv: optimize gcd() code size when CONFIG_RISCV_ISA_ZBB is disabled
+      riscv: optimize gcd() performance on RISC-V without Zbb extension
+
+Lance Yang (2):
+      locking/rwsem: make owner helpers globally available
+      hung_task: extend hung task blocker tracking to rwsems
+
+Li Chen (1):
+      fs: fat: Prevent fsfuzzer from dominating the console
+
+Lillian Berry (1):
+      init/main.c: add warning when file specified in rdinit is inaccessible
+
+Linus Walleij (1):
+      fork: define a local GFP_VMAP_STACK
+
+Lizhi Xu (1):
+      ocfs2: reset folio to NULL when get folio fails
+
+Long Li (1):
+      ocfs2: remove redundant NULL check in rename path
+
+Matt Fleming (1):
+      stackdepot: make max number of pools boot-time configurable
+
+Matthew Wilcox (Oracle) (2):
+      squashfs: pass the inode to squashfs_readahead_fragment()
+      squashfs: use folios in squashfs_bio_read_cached()
+
+Mike Rapoport (Microsoft) (1):
+      kho: add test for kexec handover
+
+Moon Hee Lee (1):
+      selftests: ptrace: add set_syscall_info to .gitignore
+
+Nicolas Pitre (1):
+      mul_u64_u64_div_u64: fix the division-by-zero behavior
+
+OGAWA Hirofumi (1):
+      fat: fix too many log in fat_chain_add()
+
+Pasha Tatashin (2):
+      fork: clean-up naming of vm_stack/vm_struct variables in vmap stacks code
+      fork: clean up ifdef logic around stack allocation
+
+Sachin Mokashi (1):
+      mailmap: update Sachin Mokashi's email address
+
+Su Hui (2):
+      ocfs2: replace simple_strtol with kstrtol
+      fs/proc/vmcore: a few cleanups for vmcore_add_device_dump()
+
+Tetsuo Handa (2):
+      ocfs2: embed actual values into ocfs2_sysfile_lock_key names
+      ocfs2: update d_splice_alias() return code checking
+
+Thorsten Blum (1):
+      alpha: replace sprintf()/strcpy() with scnprintf()/strscpy()
+
+Uros Bizjak (2):
+      ucount: fix atomic_long_inc_below() argument type
+      ucount: use atomic_long_try_cmpxchg() in atomic_long_inc_below()
+
+Wang Yaxin (3):
+      delaytop: add psi info to show system delay
+      docs: update docs after introducing delaytop
+      MAINTAINERS: add maintainers for delaytop
+
+WangYuli (8):
+      selftests/thermal: remove duplicate sprintf() call in workload_hint_test
+      selftests/thermal: remove duplicate newlines in perror calls
+      KVM: x86: fix typo "notifer"
+      cxl: mce: fix typo "notifer"
+      drm/xe: fix typo "notifer"
+      net: mvneta: fix typo "notifer"
+      xen/xenbus: fix typo "notifer"
+      scripts/spelling.txt: add notifer||notifier to spelling.txt
+
+Wei Nanxin (1):
+      kcov: fix typo in comment of kcov_fault_in_area
+
+Yaxin Wang (1):
+      tools/accounting/delaytop: add delaytop to record top-n task delay
+
+Zi Li (1):
+      samples: enhance hung_task detector test with read-write semaphore support
+
+fan.yu9@zte.com.cn (1):
+      delaytop: enhance error logging and add PSI feature description
+
+ .mailmap                                           |   1 +
+ Documentation/accounting/delay-accounting.rst      |  56 ++
+ Documentation/admin-guide/kdump/kdump.rst          |  21 +
+ Documentation/admin-guide/kernel-parameters.txt    |  48 +-
+ Documentation/admin-guide/sysctl/kernel.rst        |  20 +-
+ MAINTAINERS                                        |  12 +
+ arch/alpha/kernel/core_marvel.c                    |  11 +-
+ arch/arm/kernel/setup.c                            |   2 +-
+ arch/arm64/mm/init.c                               |   2 +-
+ arch/loongarch/kernel/setup.c                      |   2 +-
+ arch/mips/kernel/setup.c                           |   2 +-
+ arch/powerpc/kernel/fadump.c                       |   2 +-
+ arch/powerpc/kexec/core.c                          |   2 +-
+ arch/powerpc/mm/nohash/kaslr_booke.c               |   2 +-
+ arch/riscv/Kconfig                                 |   1 +
+ arch/riscv/kernel/kexec_elf.c                      |   1 +
+ arch/riscv/kernel/setup.c                          |   5 +
+ arch/riscv/mm/init.c                               |   2 +-
+ arch/s390/kernel/setup.c                           |   2 +-
+ arch/sh/kernel/machine_kexec.c                     |   2 +-
+ arch/x86/kernel/crash.c                            |  26 +-
+ arch/x86/kernel/setup.c                            |   5 +-
+ arch/x86/kvm/i8254.c                               |   4 +-
+ crypto/async_tx/async_pq.c                         |   2 +-
+ crypto/async_tx/async_raid6_recov.c                |   4 +-
+ drivers/cxl/core/mce.h                             |   2 +-
+ drivers/gpu/drm/i915/gt/uc/intel_guc_log.c         |   3 +-
+ drivers/gpu/drm/xe/xe_vm_types.h                   |   2 +-
+ drivers/net/ethernet/marvell/mvneta.c              |   2 +-
+ drivers/net/wwan/iosm/iosm_ipc_trace.c             |   3 +-
+ drivers/net/wwan/t7xx/t7xx_port_trace.c            |   2 +-
+ fs/fat/fatent.c                                    |   2 +-
+ fs/fat/misc.c                                      |   6 +-
+ fs/ocfs2/aops.c                                    |   1 +
+ fs/ocfs2/dir.c                                     |   8 +
+ fs/ocfs2/dlm/dlmrecovery.c                         |   2 +-
+ fs/ocfs2/inode.c                                   |  70 +-
+ fs/ocfs2/move_extents.c                            |  19 +-
+ fs/ocfs2/namei.c                                   |  11 +-
+ fs/ocfs2/stack_user.c                              |  15 +-
+ fs/proc/vmcore.c                                   |  29 +-
+ fs/squashfs/block.c                                |  47 +-
+ fs/squashfs/file.c                                 |   7 +-
+ include/linux/crash_reserve.h                      |  15 +-
+ include/linux/gcd.h                                |   3 +
+ include/linux/hung_task.h                          |  18 +-
+ include/linux/jhash.h                              |   8 +-
+ include/linux/kexec.h                              |  10 +
+ include/linux/raid/pq.h                            |  12 +-
+ include/linux/relay.h                              |  24 +-
+ include/linux/rwsem.h                              |  12 +
+ include/linux/sys_info.h                           |  28 +
+ include/linux/xxhash.h                             |  26 -
+ include/uapi/linux/kexec.h                         |   1 +
+ include/xen/xenbus.h                               |   2 +-
+ init/Kconfig                                       |   4 +
+ init/main.c                                        |   6 +-
+ kernel/crash_core.c                                |  15 +
+ kernel/crash_reserve.c                             |  68 +-
+ kernel/events/uprobes.c                            |   4 +-
+ kernel/exit.c                                      |   7 +-
+ kernel/fork.c                                      |  95 ++-
+ kernel/hung_task.c                                 |  29 +-
+ kernel/kcov.c                                      |   2 +-
+ kernel/kexec.c                                     |   2 +-
+ kernel/kexec_core.c                                | 100 ++-
+ kernel/kexec_file.c                                |  51 +-
+ kernel/kexec_internal.h                            |   2 +-
+ kernel/kthread.c                                   |  11 +-
+ kernel/locking/rwsem.c                             |  31 +-
+ kernel/panic.c                                     |  71 +-
+ kernel/relay.c                                     |  69 +-
+ kernel/trace/blktrace.c                            |  22 +-
+ kernel/ucount.c                                    |  16 +-
+ lib/Kconfig.debug                                  |  21 +
+ lib/Makefile                                       |   3 +-
+ lib/math/div64.c                                   |  13 +-
+ lib/math/gcd.c                                     |  27 +-
+ lib/raid6/algos.c                                  |   3 -
+ lib/raid6/recov.c                                  |   6 +-
+ lib/raid6/recov_avx2.c                             |   6 +-
+ lib/raid6/recov_avx512.c                           |   6 +-
+ lib/raid6/recov_loongarch_simd.c                   |  12 +-
+ lib/raid6/recov_neon.c                             |   6 +-
+ lib/raid6/recov_rvv.c                              |   6 +-
+ lib/raid6/recov_s390xc.c                           |   6 +-
+ lib/raid6/recov_ssse3.c                            |   6 +-
+ lib/stackdepot.c                                   |  67 +-
+ lib/sys_info.c                                     | 122 +++
+ lib/test_kho.c                                     | 305 ++++++++
+ lib/test_objagg.c                                  |  77 +-
+ lib/xxhash.c                                       | 107 ---
+ samples/Kconfig                                    |   9 +-
+ samples/hung_task/hung_task_tests.c                |  81 +-
+ scripts/checkpatch.pl                              |  33 +-
+ scripts/coccinelle/misc/secs_to_jiffies.cocci      |  49 +-
+ scripts/gdb/linux/constants.py.in                  |  12 +-
+ scripts/spelling.txt                               |   1 +
+ tools/accounting/Makefile                          |   2 +-
+ tools/accounting/delaytop.c                        | 862 +++++++++++++++++++++
+ tools/accounting/getdelays.c                       | 167 ++--
+ tools/testing/selftests/kho/arm64.conf             |   9 +
+ tools/testing/selftests/kho/init.c                 | 100 +++
+ tools/testing/selftests/kho/vmtest.sh              | 183 +++++
+ tools/testing/selftests/kho/x86.conf               |   7 +
+ tools/testing/selftests/ptrace/.gitignore          |   1 +
+ .../intel/workload_hint/workload_hint_test.c       |  16 +-
+ 107 files changed, 2931 insertions(+), 632 deletions(-)
+ create mode 100644 include/linux/sys_info.h
+ create mode 100644 lib/sys_info.c
+ create mode 100644 lib/test_kho.c
+ create mode 100644 tools/accounting/delaytop.c
+ create mode 100644 tools/testing/selftests/kho/arm64.conf
+ create mode 100644 tools/testing/selftests/kho/init.c
+ create mode 100755 tools/testing/selftests/kho/vmtest.sh
+ create mode 100644 tools/testing/selftests/kho/x86.conf
+
 
