@@ -2,103 +2,110 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CA587C87FCA
-	for <linux-mm@archiver.kernel.org>; Sun,  3 Aug 2025 12:05:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F257C87FCB
+	for <linux-mm@archiver.kernel.org>; Sun,  3 Aug 2025 12:44:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 108F76B0088; Sun,  3 Aug 2025 08:05:55 -0400 (EDT)
+	id B011A6B0088; Sun,  3 Aug 2025 08:44:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BA2B6B0089; Sun,  3 Aug 2025 08:05:55 -0400 (EDT)
+	id A8AD96B0089; Sun,  3 Aug 2025 08:44:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEA226B008A; Sun,  3 Aug 2025 08:05:54 -0400 (EDT)
+	id 97A0E6B008A; Sun,  3 Aug 2025 08:44:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DB7926B0088
-	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 08:05:54 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8E1AE81643
-	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 12:05:54 +0000 (UTC)
-X-FDA: 83735317428.09.2AE079F
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 20B2B10000B
-	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 12:05:51 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=fu-berlin.de header.s=fub01 header.b=Qu5+NkaX;
-	spf=pass (imf14.hostedemail.com: domain of glaubitz@zedat.fu-berlin.de designates 130.133.4.66 as permitted sender) smtp.mailfrom=glaubitz@zedat.fu-berlin.de;
-	dmarc=pass (policy=none) header.from=fu-berlin.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7EFEA6B0088
+	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 08:44:25 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EF83DC0B30
+	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 12:44:24 +0000 (UTC)
+X-FDA: 83735414448.19.6FD7971
+Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1B2B620004
+	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 12:44:22 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=d5b9cg+p;
+	spf=pass (imf03.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.161.42 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754225063; a=rsa-sha256;
+	cv=none;
+	b=MVg0gkjB2aN21gdW476BRFl/Ho1LAH9i2XVhfust+Amc/Ow3cyF6UiX1MXcujyJsIN1sSw
+	DbP70aQjsKLm4+bb5RHiqVlZ216klEbvvCMSZExOfm4LHOE0a3ndQ7lJ/kqUT9JGOPoH4H
+	FPxWTwLc7SVm9Jnk9YacheF1IRUf+U8=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=d5b9cg+p;
+	spf=pass (imf03.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.161.42 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754222752;
+	s=arc-20220608; t=1754225063;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4B0pN/JVFT6zpDZpE67T74gedNOFDRMip2sKdLIkDKM=;
-	b=qLbsckQAFyYvY2mNgly8q3Sb45yZUWBg4JFgGVkSZ5NpOWl+RYm0Zb1DlE8BoIT+vMtQ0l
-	bbopm3jgIYqw5X3UMdusnh7IgqtJymDfsnDQJw9fKv+z36OCirR+SpDFpkse7x5Md75SuT
-	CvzESBsM+hmVg+lkrjg/WVW4jDWtU30=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754222752; a=rsa-sha256;
-	cv=none;
-	b=JvY/MYcnforTrFmchPckE9ah4PzpudYMQpaHQjnVpJZ8MtuxpXhkyERAb8foGK7iEQ8boA
-	zE/oe82JI1AxHPkBw+NXQ0ZdZ9cfkKdpoE73svMuFmhEbaOqw/rzQ1M/oWyqlmQOh/BnSL
-	M6m4Rpn5eD3o17BbiKKtLBaSzxtuOTI=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=fu-berlin.de header.s=fub01 header.b=Qu5+NkaX;
-	spf=pass (imf14.hostedemail.com: domain of glaubitz@zedat.fu-berlin.de designates 130.133.4.66 as permitted sender) smtp.mailfrom=glaubitz@zedat.fu-berlin.de;
-	dmarc=pass (policy=none) header.from=fu-berlin.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=4B0pN/JVFT6zpDZpE67T74gedNOFDRMip2sKdLIkDKM=; t=1754222752; x=1754827552; 
-	b=Qu5+NkaXNX7cV6QoxM9QGgB6G5nYOh/4fMVjkDGFIQql8+zOrCpSYAElwveoXbtdEFodEr7M8jG
-	TN1PDc6t5J1EF0cHr8Z4K9jIdrbiAYoWirDV/W/l9wHNE3ZXTY7XaWg67+VQ9Q7cz8K18KZ64nqP5
-	f6mF+oPzH7cva/I0C4vC+ZiYuO3e6dw+oyHD0tQl+hG5xvLtNZ8aHkzio9aF4hRdXyRHMXE/bxoFb
-	HCb/mVh28iQZ6nTZxuMDdL93kiTY1l58kuaSm7/5IFShxkl4Fc6JgK3x7jByvyqitl3kQzyUFh1VO
-	9cIaZJYA+2w9HKmvROHG8VXPuLdpkMuywJpQ==;
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.98)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1uiXTF-000000038cX-25d4; Sun, 03 Aug 2025 14:05:45 +0200
-Received: from p57bd96d0.dip0.t-ipconnect.de ([87.189.150.208] helo=[192.168.178.61])
-          by inpost2.zedat.fu-berlin.de (Exim 4.98)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1uiXTF-00000001t9E-0qh5; Sun, 03 Aug 2025 14:05:45 +0200
-Message-ID: <ce6337237169f179c75fe4a1ba1ce98843577360.camel@physik.fu-berlin.de>
-Subject: Re: [PATCH v4 25/36] sparc64: Implement the new page table range API
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	linux-arch@vger.kernel.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, "David S. Miller"	
- <davem@davemloft.net>, sparclinux@vger.kernel.org, Andreas Larsson	
- <andreas@gaisler.com>, Rod Schnell <rods@mw-radio.com>, Sam James
- <sam@gentoo.org>,  Anthony Yznaga <anthony.yznaga@oracle.com>
-Date: Sun, 03 Aug 2025 14:05:44 +0200
-In-Reply-To: <20230315051444.3229621-26-willy@infradead.org>
-References: <20230315051444.3229621-1-willy@infradead.org>
-	 <20230315051444.3229621-26-willy@infradead.org>
+	bh=GyXXliHYkRsANTFZ/BhTtFGJcz7TAeDhl3fkIu9ScTo=;
+	b=5zSKYHOGzQBBMKXQo9E4YdOJySf59gKpTD2/lEmsWLG4ZW0Qiyh3O4ZvbeVignffoVjOdF
+	WHW7RivsNGldekVGuy1yfpszFbRiZyCELIY5m9Wh3X0ea94oFO670dZbovbCtlM+d2d8Sf
+	BSbZp3jbkNJf8cd0xW47L1djBUpPH3g=
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-6199e7dea32so245486eaf.2
+        for <linux-mm@kvack.org>; Sun, 03 Aug 2025 05:44:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754225062; x=1754829862; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GyXXliHYkRsANTFZ/BhTtFGJcz7TAeDhl3fkIu9ScTo=;
+        b=d5b9cg+pPqw01HY7eFjs1dShrxYcsdGj8Rj7IXpFlUdXtcNnRG1Gg06tJq+AUs4IMW
+         8FgJd2HVxhPGZdknjQIv92qTL8Ve8dxpj3aeXks8CKLBYyeODIKHSp04zdH46ElhOE/w
+         phvaUQJIqL1sD3YB0vfBZ4bLni0t1LjAbbBUOeKmgvzq8BjdlsHShBnVbRTXsQH0SBMA
+         IXzNTbV4vd59rdE7lCNkFZ1DdPHdQOFvUBOz4Z/4JXsCzMwBcLOcdwnHkNG6uOy1yhf9
+         2aziuAlV/KvQ1onmeQZWDL/cA6Nk6inP1rJjVh+s1tBV3kkP3OccIBI5TEaz94mgup6m
+         jP3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754225062; x=1754829862;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GyXXliHYkRsANTFZ/BhTtFGJcz7TAeDhl3fkIu9ScTo=;
+        b=waDb7YRikAbZx4LT22xONaORn9GMIOcr6hyfbE4O9qckaleo54YhoqxS4b0RIxIml5
+         QapfVQ0HoDGgvTT19C2u4JOizzR4GU4xHF3suYgzt2sfZjYILwt9oU6b6ADt9ucyOtPL
+         Pn/DdaspBKtncWc+rZB6dw1saYoRUYbMP5jIVe5XRDs10k4MCIJWfcHp0G2BLxMwI76I
+         67X2RPWP9XyZVzxEdu80J6LKsRIrLst2Wi03JY/3UXiC41r0PiLfj1ONv35cW/vP6yom
+         SX9LxXC2JFzMjpxiekYrDw/QoUWIl44NO9+bPRlFA1kzNYDhhw8O4blWqt2EKLP1JkNT
+         E/hQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVphv8xWX2xuHl9fcc68TPn5+u3i0KWHntEFXdUGaBhlDCSSDiv2tqzkEsP5Yv7tPQEHu5hNqvJJg==@kvack.org
+X-Gm-Message-State: AOJu0YwXhKBVDK7nXJgsd8jFB84E25pkYHRWANWVz7p3H2S0frHC4/5g
+	IXWYc63qZtlOMAHgjoqKVjXnotviEmXLoh7Ozd+BGG35on1nOdiiknxR2JPjC6lIG8vbNzv0vd1
+	u1jnihek8JyVnF+GGCN+zyYXFDiqskSA=
+X-Gm-Gg: ASbGncturlw5R+t4n8IS5pR9R6G9O0cnxns/bY0BqtT5vErO1FTA8nG4lTVVvBof2p2
+	w63foqcBTCYLTEjZaAxW5mDWlY9MD2hapCaUxP+giHwoUOMI14iYWRV2w0HOLQ3wXdBnwhWs0uv
+	L7dVgzsVi/IqLWuZ5gM+JeT6Ui4bO1qv6afWDK00lPD31CyJS3sRyYWpv34tk2fRSZwDXK+y5A+
+	dPF
+X-Google-Smtp-Source: AGHT+IFjKUOh+KeyE08rDNkVXHT8x/gmFVbAcXE87p3aPPCD4UC1L4QICQk/l9A/N3vMB3az3LC3RFYnYoAhZ5NtAX0=
+X-Received: by 2002:a4a:edc5:0:b0:619:844f:2d0e with SMTP id
+ 006d021491bc7-6198f2a39c6mr2981579eaf.8.1754225062000; Sun, 03 Aug 2025
+ 05:44:22 -0700 (PDT)
+MIME-Version: 1.0
+References: <CABFDxMGh7-vDgNzepJKtrhdOF40_U7=NT6Jvm85qtdwGpBZawg@mail.gmail.com>
+ <20250801170231.8532-1-sj@kernel.org>
+In-Reply-To: <20250801170231.8532-1-sj@kernel.org>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Date: Sun, 3 Aug 2025 21:44:10 +0900
+X-Gm-Features: Ac12FXwNKGXN07u7GF6ggxSzpPebZHeA4eQy-Z85lrBCXYiqs3Nq__NxBhynJ7I
+Message-ID: <CABFDxMGUO88-CkHa8E79TTkoEm_j5FX3ZBVjChXJ5w0eL3mNSA@mail.gmail.com>
+Subject: Re: [PATCH] mm/damon: update expired description of damos_action
+To: SeongJae Park <sj@kernel.org>
+Cc: honggyu.kim@sk.com, damon@lists.linux.dev, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 
-MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.189.150.208
-X-ZEDAT-Hint: PO
-X-Rspamd-Queue-Id: 20B2B10000B
-X-Stat-Signature: 5jywjkmtwa3w6zozpssftnjuzjj67jyo
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1754222751-454566
-X-HE-Meta: U2FsdGVkX19M620jv37vsQf70aIB+W/JrPuyc9qev0b71jwUJdAG5z+/WlWGoK3A0p/O/2qePsWc9uw0q0a3K253CKnD+XTmHGXCuhozT8HPt+9OK+XmM2eZYJrMslMPc3vdVWiWYa6jP1/MPAwZW9F3Eojn1lkI6nnH72jAJh/SV1SHunMkLX7LZ9Mw6pYJt24l0VVqsUrqS0z8jAkeu3niTgfVkGba9aD5KRhQa1XlQVJEjjCwQJzEXO+yPX6oqpID05bg86+TwbuUfkhm+CKOrL9w0nr1y0igafFwLrowmC0hwWgdxJKCqmLCm5PxGMUGCLFNasM0VNZn9uzPqfj+iHixzAvzeVLLJWMW67fdMcTHuovLczKxsoYZV0nxROEp6yjB716VnqZ6RUbU4cs8Umc/KW3Vo8sde8XFUO2w8WgVSdGsjHv7jwa7KI9/ZgNUj382fwZZA+TAyMh/4MmFe+ZgefhBs8iFKyrEza+egKmiQnwVtQCcjrii8+fR1BE+9PVXv8WyEjerF21UIdDhTio3jQx4lsP0GA2EOzmNVBmZ1pGCglm6960B74OdkzpKxfXaloOh3U9vpuJOowoTS93ufzUqtVsklsChTUTYLQzXTcGLjwan4s2NZRxPmCpE68B49aXRePtpFTF5GRFHi2Z72zHA4RmWvxkaCBZxOGhdIkVShk2lh36GjAt9L5X/W6sY6L1N2y1Bj5fc87ayc4mFzEjkmrACSFGI02vd8vnkzs27NKYu+zhd/R2Jn4Qu7JKpdO2TqGJxlmNYSKB3KKZ4G9WeqYtyh1OI0lOxGM+XcjMwn/WaTP4JaIjyr7cHjyHNWNeaYEmTv9H8X6OnUOsjzNvWG8rSW/tgkRQ9eyTMtlqZmXauYuUXneXzM5gqbHIQd8YggXHTekp/NvYP7wAYwCzPH0gAS3okEuIHSLpVi850ahlexXDF1fi+rrE1fcINHaDnX+36upQ
- A2n7CqwH
- g25nhpMvrsA/AkKayhEdBWErnEWjJsSMcVPXDulRrM3wHDfK5UDhwwDIY1Uo1RnYOFRMfc8OTQ9qf7zbu+2ISWZavvf6h8RV56S2eEOzzMD3l6C6qISrQSTUEaZog/DB1wo4n3fdqJ1Jo+NGqZI0Kr3loPTG79afgzBMDF9chwjB550Q7JtSeipNp02ADp0b40CnZppfrAHcn6aa+iusi1pbbaNCLcJVdjsUA9GBEX0oEKURy4figW73YJjyhxMHKryKvBLfEW9efmuiMkGuqC0EBJxSB3K4219vaVTXlsjP5DAe0F4my9lOyo0mEwSTjmoTwcRd7eLZ2WlmYcwOzIUSX5YDgLR0jT51QYik3MpBPX6Ht32syqhs6S8fEVDGNdNiB3jZ4+jkK//R78zrfsPJSzrfuO798yfKy7C70RHI9hS/yYr/yAkzhxpm+8vKoH3NxXLzTQuh/WJOTSve/el/7+5I9PKHgXxDBAEcquqtUfW6l7uNpn7NWaqpjQfZY53TwRElz5sw+IDTjr+0jpTbmeT0usukNO5CJm7ca6Y5Pc+TRXFmrbcGI5NHWlNQvWs/G8M7o+AB5me4eTZS0cWOBl1oAnFDyn3qAiHaJ9mlvcPPtVy300l1Xy08fSs7NaxaoFnPEXOt3gUZwFNKrG+UBb8i29tteRg+B
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1B2B620004
+X-Stat-Signature: hekgaa7dufzfamqjcunyokcs8g73xaht
+X-HE-Tag: 1754225062-951222
+X-HE-Meta: U2FsdGVkX19/zBOFJ4dOChThtQuIBUFzHjhgJ0cWjbEx5QyinAl2YrwCJFilKkW8Xh7WznB0oGw16LYhbRW+Qgj4ZVbWogunjKmoTD6HPNKFdbUG3ebMfA+7axGzSasD97rWH0ZcAKq1dfeaTNuyaARH+5QrJhR5PwgwoTIccKXM7W8uOY3kJS2FnYl/WBVK0aNiquHpmFRqo/lqsEgJ5QnfySnfCs8zAri522s16CFBEwjnYr+gQ3OOQG+4KnSJUAwyczZzXCDbVtboNfiRPH1FQ5QP221UGWEI0UqhV9ODZY4urIGZeSYGutnrs3hSWrsxUsCfcv4X6dxVS4uXyjhH2OlWKn3+DaQIXC1G4Y1ZEzHMGn9oKbFp3zP4idp3MkSAyCJqQZbanRzFbSeWYg8ifQGTrsUKGwafb2ffDBzmDx4dQC7SYZiVpV7AuemVszaeJ+9JukXNLTJMC1HScdOAghSu8bb69vgAd2GVL1obMCGB9DQXHP5zn/22mjMZ2EH19R9UVA/MAa+XYGcZdP4ZEq4jqh0paYbJqEQMaorA0T1pzdeY3DDvD0kj/K3loiljw5ca+fY25vr/6iCmBRTAUA+AQG1QMvjgOCH0/3swW7qVJ3wGtwqxXoCneGNGu0iuqoqBU8l65EAjSatUreR4D03E8u0cq+9z6osLvtYfPEIUHTy9L9q8L59uFmmXE0HdC6YoZHh5TvbJE07hB20l74rDMvNtmeWozciR+K7AA4Ze0+0tekieBLd+YeLH4/MlVbpwlp7kYLN6xFQDC1j72b1nii3BvxtAFXWU09bAS8x/F2JT6p3fkvmKE1AOmCiuKF6Us3out2J0/1i3MtHPv43yq5fmozt9bUJ30L9wf7YsWV8S780M3dq9ZyI2nxsCtU1W2UUNKk3t0kjSy0Ui8MbOh+iR0UOEa+WIGSgCpT3C9/qTiQiUz+FR0tDTuhxdHKCWdOLXSUQrSph
+ BzEGNiMg
+ Nzxh3v66Yg7+PbeNiZASYlS4MHE1kk0LJffYg8yCAOQTGX/J5b5u35BKkM4cig0vJ1QUh3vz7fPbqbgH+eM7OAimSO5pQcFXTzWc+vgBHmrJUOm65x8J0eZ3Aq0M+1sRJKuVhwbbe02JI2Ht8NJgora6npra4xuc6jk8sS0h+3Gh2WUWbfqJ0GIQtK+pVkOKAMJYNVGJxzfT1lNxQbOL97RzEbxqTGy7NPhhJrYPmRKZ0O6ceSkc7Rwdpl9ApTu7HK9aXngatNpU3K8HfWcArQ+ruO2izwnoR7M+N5CMS+ncWETBewvy0D9YgMX+ym+Mw58d+q95/PinKDKxDSD3KXLKS5fWCIPlKo3FCmZ9PUgLYGz16GZHTbB+p/BaT2zQt17wc7qfDOshnQMkorL4kcsSje9p24e5UEYc4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,563 +114,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Matthew,
+On Sat, Aug 2, 2025 at 2:02=E2=80=AFAM SeongJae Park <sj@kernel.org> wrote:
+>
+> On Sat, 2 Aug 2025 00:34:30 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> =
+wrote:
+>
+> > Hi, SeongJae
+> >
+> > On Fri, Aug 1, 2025 at 2:58=E2=80=AFAM SeongJae Park <sj@kernel.org> wr=
+ote:
+> > >
+> > > Hello Sang-Heon,
+> > >
+> > > On Thu, 31 Jul 2025 22:22:30 +0900 Sang-Heon Jeon <ekffu200098@gmail.=
+com> wrote:
+> > >
+> > > > Nowadays, damos operation actions support more various operation se=
+t.
+> > > > But comments(also, generated documentation) doesn't updated.
+> > > > So, fix the comments with current support status.
+> > >
+> > > Thank you for catching this and fixing!
+> >
+> > :)
+> >
+> > > >
+> > > > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> > > > ---
+> > > > I also found below patch(https://lore.kernel.org/damon/202507302002=
+39.60984-1-sj@kernel.org/T/#t)
+> > > > So, Is it means that DAMOS_STAT is only supported by paddr now?
+> > >
+> > > No.  'vaddr' supports DAMOS_STAT.  The patch is not adding DAMOS_STAT=
+ support
+> > > on vaddr, but extending the support for DAMOS filters.
+> > >
+> > > Thank you for checking the thread and asking this question, though.  =
+I see this
+> > > as an important signal of another rooms to improve on the documentati=
+on.
+> >
+> > Thanks for your kind review. I really don't want to bother you
+> > anymore. But I would like to check my understanding.
+>
+> No worry, questions about DAMON never bother me.
+>
+> >
+> > So the basic operation of stat is covered by outside of
+> > `damon_pa_apply_scheme` and `damon_va_apply_scheme`.
+> > If it's not too much trouble, could you point me to where they are?
+>
+> It is covered by damos_update_stat() in core.c file.
 
-On Wed, 2023-03-15 at 05:14 +0000, Matthew Wilcox (Oracle) wrote:
-> Add set_ptes(), update_mmu_cache_range(), flush_dcache_folio() and
-> flush_icache_pages().  Convert the PG_dcache_dirty flag from being
-> per-page to per-folio.
->=20
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: sparclinux@vger.kernel.org
-> ---
->  arch/sparc/include/asm/cacheflush_64.h | 18 ++++--
->  arch/sparc/include/asm/pgtable_64.h    | 24 ++++++--
->  arch/sparc/kernel/smp_64.c             | 56 +++++++++++-------
->  arch/sparc/mm/init_64.c                | 78 +++++++++++++++-----------
->  arch/sparc/mm/tlb.c                    |  5 +-
->  5 files changed, 116 insertions(+), 65 deletions(-)
->=20
-> diff --git a/arch/sparc/include/asm/cacheflush_64.h b/arch/sparc/include/=
-asm/cacheflush_64.h
-> index b9341836597e..a9a719f04d06 100644
-> --- a/arch/sparc/include/asm/cacheflush_64.h
-> +++ b/arch/sparc/include/asm/cacheflush_64.h
-> @@ -35,20 +35,26 @@ void flush_icache_range(unsigned long start, unsigned=
- long end);
->  void __flush_icache_page(unsigned long);
-> =20
->  void __flush_dcache_page(void *addr, int flush_icache);
-> -void flush_dcache_page_impl(struct page *page);
-> +void flush_dcache_folio_impl(struct folio *folio);
->  #ifdef CONFIG_SMP
-> -void smp_flush_dcache_page_impl(struct page *page, int cpu);
-> -void flush_dcache_page_all(struct mm_struct *mm, struct page *page);
-> +void smp_flush_dcache_folio_impl(struct folio *folio, int cpu);
-> +void flush_dcache_folio_all(struct mm_struct *mm, struct folio *folio);
->  #else
-> -#define smp_flush_dcache_page_impl(page,cpu) flush_dcache_page_impl(page=
-)
-> -#define flush_dcache_page_all(mm,page) flush_dcache_page_impl(page)
-> +#define smp_flush_dcache_folio_impl(folio, cpu) flush_dcache_folio_impl(=
-folio)
-> +#define flush_dcache_folio_all(mm, folio) flush_dcache_folio_impl(folio)
->  #endif
-> =20
->  void __flush_dcache_range(unsigned long start, unsigned long end);
->  #define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 1
-> -void flush_dcache_page(struct page *page);
-> +void flush_dcache_folio(struct folio *folio);
-> +#define flush_dcache_folio flush_dcache_folio
-> +static inline void flush_dcache_page(struct page *page)
-> +{
-> +	flush_dcache_folio(page_folio(page));
-> +}
-> =20
->  #define flush_icache_page(vma, pg)	do { } while(0)
-> +#define flush_icache_pages(vma, pg, nr)	do { } while(0)
-> =20
->  void flush_ptrace_access(struct vm_area_struct *, struct page *,
->  			 unsigned long uaddr, void *kaddr,
-> diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm=
-/pgtable_64.h
-> index 2dc8d4641734..49c37000e1b1 100644
-> --- a/arch/sparc/include/asm/pgtable_64.h
-> +++ b/arch/sparc/include/asm/pgtable_64.h
-> @@ -911,8 +911,19 @@ static inline void __set_pte_at(struct mm_struct *mm=
-, unsigned long addr,
->  	maybe_tlb_batch_add(mm, addr, ptep, orig, fullmm, PAGE_SHIFT);
->  }
-> =20
-> -#define set_pte_at(mm,addr,ptep,pte)	\
-> -	__set_pte_at((mm), (addr), (ptep), (pte), 0)
-> +static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
-> +		pte_t *ptep, pte_t pte, unsigned int nr)
-> +{
-> +	for (;;) {
-> +		__set_pte_at(mm, addr, ptep, pte, 0);
-> +		if (--nr =3D=3D 0)
-> +			break;
-> +		ptep++;
-> +		pte_val(pte) +=3D PAGE_SIZE;
-> +		addr +=3D PAGE_SIZE;
-> +	}
-> +}
-> +#define set_ptes set_ptes
-> =20
->  #define pte_clear(mm,addr,ptep)		\
->  	set_pte_at((mm), (addr), (ptep), __pte(0UL))
-> @@ -931,8 +942,8 @@ static inline void __set_pte_at(struct mm_struct *mm,=
- unsigned long addr,
->  									\
->  		if (pfn_valid(this_pfn) &&				\
->  		    (((old_addr) ^ (new_addr)) & (1 << 13)))		\
-> -			flush_dcache_page_all(current->mm,		\
-> -					      pfn_to_page(this_pfn));	\
-> +			flush_dcache_folio_all(current->mm,		\
-> +				page_folio(pfn_to_page(this_pfn)));	\
->  	}								\
->  	newpte;								\
->  })
-> @@ -947,7 +958,10 @@ struct seq_file;
->  void mmu_info(struct seq_file *);
-> =20
->  struct vm_area_struct;
-> -void update_mmu_cache(struct vm_area_struct *, unsigned long, pte_t *);
-> +void update_mmu_cache_range(struct vm_area_struct *, unsigned long addr,
-> +		pte_t *ptep, unsigned int nr);
-> +#define update_mmu_cache(vma, addr, ptep) \
-> +	update_mmu_cache_range(vma, addr, ptep, 1)
->  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
->  void update_mmu_cache_pmd(struct vm_area_struct *vma, unsigned long addr=
-,
->  			  pmd_t *pmd);
-> diff --git a/arch/sparc/kernel/smp_64.c b/arch/sparc/kernel/smp_64.c
-> index a55295d1b924..90ef8677ac89 100644
-> --- a/arch/sparc/kernel/smp_64.c
-> +++ b/arch/sparc/kernel/smp_64.c
-> @@ -921,20 +921,26 @@ extern unsigned long xcall_flush_dcache_page_cheeta=
-h;
->  #endif
->  extern unsigned long xcall_flush_dcache_page_spitfire;
-> =20
-> -static inline void __local_flush_dcache_page(struct page *page)
-> +static inline void __local_flush_dcache_folio(struct folio *folio)
->  {
-> +	unsigned int i, nr =3D folio_nr_pages(folio);
-> +
->  #ifdef DCACHE_ALIASING_POSSIBLE
-> -	__flush_dcache_page(page_address(page),
-> +	for (i =3D 0; i < nr; i++)
-> +		__flush_dcache_page(folio_address(folio) + i * PAGE_SIZE,
->  			    ((tlb_type =3D=3D spitfire) &&
-> -			     page_mapping_file(page) !=3D NULL));
-> +			     folio_flush_mapping(folio) !=3D NULL));
->  #else
-> -	if (page_mapping_file(page) !=3D NULL &&
-> -	    tlb_type =3D=3D spitfire)
-> -		__flush_icache_page(__pa(page_address(page)));
-> +	if (folio_flush_mapping(folio) !=3D NULL &&
-> +	    tlb_type =3D=3D spitfire) {
-> +		unsigned long pfn =3D folio_pfn(folio)
-> +		for (i =3D 0; i < nr; i++)
-> +			__flush_icache_page((pfn + i) * PAGE_SIZE);
-> +	}
->  #endif
->  }
-> =20
-> -void smp_flush_dcache_page_impl(struct page *page, int cpu)
-> +void smp_flush_dcache_folio_impl(struct folio *folio, int cpu)
->  {
->  	int this_cpu;
-> =20
-> @@ -948,14 +954,14 @@ void smp_flush_dcache_page_impl(struct page *page, =
-int cpu)
->  	this_cpu =3D get_cpu();
-> =20
->  	if (cpu =3D=3D this_cpu) {
-> -		__local_flush_dcache_page(page);
-> +		__local_flush_dcache_folio(folio);
->  	} else if (cpu_online(cpu)) {
-> -		void *pg_addr =3D page_address(page);
-> +		void *pg_addr =3D folio_address(folio);
->  		u64 data0 =3D 0;
-> =20
->  		if (tlb_type =3D=3D spitfire) {
->  			data0 =3D ((u64)&xcall_flush_dcache_page_spitfire);
-> -			if (page_mapping_file(page) !=3D NULL)
-> +			if (folio_flush_mapping(folio) !=3D NULL)
->  				data0 |=3D ((u64)1 << 32);
->  		} else if (tlb_type =3D=3D cheetah || tlb_type =3D=3D cheetah_plus) {
->  #ifdef DCACHE_ALIASING_POSSIBLE
-> @@ -963,18 +969,23 @@ void smp_flush_dcache_page_impl(struct page *page, =
-int cpu)
->  #endif
->  		}
->  		if (data0) {
-> -			xcall_deliver(data0, __pa(pg_addr),
-> -				      (u64) pg_addr, cpumask_of(cpu));
-> +			unsigned int i, nr =3D folio_nr_pages(folio);
-> +
-> +			for (i =3D 0; i < nr; i++) {
-> +				xcall_deliver(data0, __pa(pg_addr),
-> +					      (u64) pg_addr, cpumask_of(cpu));
->  #ifdef CONFIG_DEBUG_DCFLUSH
-> -			atomic_inc(&dcpage_flushes_xcall);
-> +				atomic_inc(&dcpage_flushes_xcall);
->  #endif
-> +				pg_addr +=3D PAGE_SIZE;
-> +			}
->  		}
->  	}
-> =20
->  	put_cpu();
->  }
-> =20
-> -void flush_dcache_page_all(struct mm_struct *mm, struct page *page)
-> +void flush_dcache_folio_all(struct mm_struct *mm, struct folio *folio)
->  {
->  	void *pg_addr;
->  	u64 data0;
-> @@ -988,10 +999,10 @@ void flush_dcache_page_all(struct mm_struct *mm, st=
-ruct page *page)
->  	atomic_inc(&dcpage_flushes);
->  #endif
->  	data0 =3D 0;
-> -	pg_addr =3D page_address(page);
-> +	pg_addr =3D folio_address(folio);
->  	if (tlb_type =3D=3D spitfire) {
->  		data0 =3D ((u64)&xcall_flush_dcache_page_spitfire);
-> -		if (page_mapping_file(page) !=3D NULL)
-> +		if (folio_flush_mapping(folio) !=3D NULL)
->  			data0 |=3D ((u64)1 << 32);
->  	} else if (tlb_type =3D=3D cheetah || tlb_type =3D=3D cheetah_plus) {
->  #ifdef DCACHE_ALIASING_POSSIBLE
-> @@ -999,13 +1010,18 @@ void flush_dcache_page_all(struct mm_struct *mm, s=
-truct page *page)
->  #endif
->  	}
->  	if (data0) {
-> -		xcall_deliver(data0, __pa(pg_addr),
-> -			      (u64) pg_addr, cpu_online_mask);
-> +		unsigned int i, nr =3D folio_nr_pages(folio);
-> +
-> +		for (i =3D 0; i < nr; i++) {
-> +			xcall_deliver(data0, __pa(pg_addr),
-> +				      (u64) pg_addr, cpu_online_mask);
->  #ifdef CONFIG_DEBUG_DCFLUSH
-> -		atomic_inc(&dcpage_flushes_xcall);
-> +			atomic_inc(&dcpage_flushes_xcall);
->  #endif
-> +			pg_addr +=3D PAGE_SIZE;
-> +		}
->  	}
-> -	__local_flush_dcache_page(page);
-> +	__local_flush_dcache_folio(folio);
-> =20
->  	preempt_enable();
->  }
-> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-> index 04f9db0c3111..ab9aacbaf43c 100644
-> --- a/arch/sparc/mm/init_64.c
-> +++ b/arch/sparc/mm/init_64.c
-> @@ -195,21 +195,26 @@ atomic_t dcpage_flushes_xcall =3D ATOMIC_INIT(0);
->  #endif
->  #endif
-> =20
-> -inline void flush_dcache_page_impl(struct page *page)
-> +inline void flush_dcache_folio_impl(struct folio *folio)
->  {
-> +	unsigned int i, nr =3D folio_nr_pages(folio);
-> +
->  	BUG_ON(tlb_type =3D=3D hypervisor);
->  #ifdef CONFIG_DEBUG_DCFLUSH
->  	atomic_inc(&dcpage_flushes);
->  #endif
-> =20
->  #ifdef DCACHE_ALIASING_POSSIBLE
-> -	__flush_dcache_page(page_address(page),
-> -			    ((tlb_type =3D=3D spitfire) &&
-> -			     page_mapping_file(page) !=3D NULL));
-> +	for (i =3D 0; i < nr; i++)
-> +		__flush_dcache_page(folio_address(folio) + i * PAGE_SIZE,
-> +				    ((tlb_type =3D=3D spitfire) &&
-> +				     folio_flush_mapping(folio) !=3D NULL));
->  #else
-> -	if (page_mapping_file(page) !=3D NULL &&
-> -	    tlb_type =3D=3D spitfire)
-> -		__flush_icache_page(__pa(page_address(page)));
-> +	if (folio_flush_mapping(folio) !=3D NULL &&
-> +	    tlb_type =3D=3D spitfire) {
-> +		for (i =3D 0; i < nr; i++)
-> +			__flush_icache_page((pfn + i) * PAGE_SIZE);
-> +	}
->  #endif
->  }
-> =20
-> @@ -218,10 +223,10 @@ inline void flush_dcache_page_impl(struct page *pag=
-e)
->  #define PG_dcache_cpu_mask	\
->  	((1UL<<ilog2(roundup_pow_of_two(NR_CPUS)))-1UL)
-> =20
-> -#define dcache_dirty_cpu(page) \
-> -	(((page)->flags >> PG_dcache_cpu_shift) & PG_dcache_cpu_mask)
-> +#define dcache_dirty_cpu(folio) \
-> +	(((folio)->flags >> PG_dcache_cpu_shift) & PG_dcache_cpu_mask)
-> =20
-> -static inline void set_dcache_dirty(struct page *page, int this_cpu)
-> +static inline void set_dcache_dirty(struct folio *folio, int this_cpu)
->  {
->  	unsigned long mask =3D this_cpu;
->  	unsigned long non_cpu_bits;
-> @@ -238,11 +243,11 @@ static inline void set_dcache_dirty(struct page *pa=
-ge, int this_cpu)
->  			     "bne,pn	%%xcc, 1b\n\t"
->  			     " nop"
->  			     : /* no outputs */
-> -			     : "r" (mask), "r" (non_cpu_bits), "r" (&page->flags)
-> +			     : "r" (mask), "r" (non_cpu_bits), "r" (&folio->flags)
->  			     : "g1", "g7");
->  }
-> =20
-> -static inline void clear_dcache_dirty_cpu(struct page *page, unsigned lo=
-ng cpu)
-> +static inline void clear_dcache_dirty_cpu(struct folio *folio, unsigned =
-long cpu)
->  {
->  	unsigned long mask =3D (1UL << PG_dcache_dirty);
-> =20
-> @@ -260,7 +265,7 @@ static inline void clear_dcache_dirty_cpu(struct page=
- *page, unsigned long cpu)
->  			     " nop\n"
->  			     "2:"
->  			     : /* no outputs */
-> -			     : "r" (cpu), "r" (mask), "r" (&page->flags),
-> +			     : "r" (cpu), "r" (mask), "r" (&folio->flags),
->  			       "i" (PG_dcache_cpu_mask),
->  			       "i" (PG_dcache_cpu_shift)
->  			     : "g1", "g7");
-> @@ -284,9 +289,10 @@ static void flush_dcache(unsigned long pfn)
-> =20
->  	page =3D pfn_to_page(pfn);
->  	if (page) {
-> +		struct folio *folio =3D page_folio(page);
->  		unsigned long pg_flags;
-> =20
-> -		pg_flags =3D page->flags;
-> +		pg_flags =3D folio->flags;
->  		if (pg_flags & (1UL << PG_dcache_dirty)) {
->  			int cpu =3D ((pg_flags >> PG_dcache_cpu_shift) &
->  				   PG_dcache_cpu_mask);
-> @@ -296,11 +302,11 @@ static void flush_dcache(unsigned long pfn)
->  			 * in the SMP case.
->  			 */
->  			if (cpu =3D=3D this_cpu)
-> -				flush_dcache_page_impl(page);
-> +				flush_dcache_folio_impl(folio);
->  			else
-> -				smp_flush_dcache_page_impl(page, cpu);
-> +				smp_flush_dcache_folio_impl(folio, cpu);
-> =20
-> -			clear_dcache_dirty_cpu(page, cpu);
-> +			clear_dcache_dirty_cpu(folio, cpu);
-> =20
->  			put_cpu();
->  		}
-> @@ -388,12 +394,14 @@ bool __init arch_hugetlb_valid_size(unsigned long s=
-ize)
->  }
->  #endif	/* CONFIG_HUGETLB_PAGE */
-> =20
-> -void update_mmu_cache(struct vm_area_struct *vma, unsigned long address,=
- pte_t *ptep)
-> +void update_mmu_cache_range(struct vm_area_struct *vma, unsigned long ad=
-dress,
-> +		pte_t *ptep, unsigned int nr)
->  {
->  	struct mm_struct *mm;
->  	unsigned long flags;
->  	bool is_huge_tsb;
->  	pte_t pte =3D *ptep;
-> +	unsigned int i;
-> =20
->  	if (tlb_type !=3D hypervisor) {
->  		unsigned long pfn =3D pte_pfn(pte);
-> @@ -440,15 +448,21 @@ void update_mmu_cache(struct vm_area_struct *vma, u=
-nsigned long address, pte_t *
->  		}
->  	}
->  #endif
-> -	if (!is_huge_tsb)
-> -		__update_mmu_tsb_insert(mm, MM_TSB_BASE, PAGE_SHIFT,
-> -					address, pte_val(pte));
-> +	if (!is_huge_tsb) {
-> +		for (i =3D 0; i < nr; i++) {
-> +			__update_mmu_tsb_insert(mm, MM_TSB_BASE, PAGE_SHIFT,
-> +						address, pte_val(pte));
-> +			address +=3D PAGE_SIZE;
-> +			pte_val(pte) +=3D PAGE_SIZE;
-> +		}
-> +	}
-> =20
->  	spin_unlock_irqrestore(&mm->context.lock, flags);
->  }
-> =20
-> -void flush_dcache_page(struct page *page)
-> +void flush_dcache_folio(struct folio *folio)
->  {
-> +	unsigned long pfn =3D folio_pfn(folio);
->  	struct address_space *mapping;
->  	int this_cpu;
-> =20
-> @@ -459,35 +473,35 @@ void flush_dcache_page(struct page *page)
->  	 * is merely the zero page.  The 'bigcore' testcase in GDB
->  	 * causes this case to run millions of times.
->  	 */
-> -	if (page =3D=3D ZERO_PAGE(0))
-> +	if (is_zero_pfn(pfn))
->  		return;
-> =20
->  	this_cpu =3D get_cpu();
-> =20
-> -	mapping =3D page_mapping_file(page);
-> +	mapping =3D folio_flush_mapping(folio);
->  	if (mapping && !mapping_mapped(mapping)) {
-> -		int dirty =3D test_bit(PG_dcache_dirty, &page->flags);
-> +		bool dirty =3D test_bit(PG_dcache_dirty, &folio->flags);
->  		if (dirty) {
-> -			int dirty_cpu =3D dcache_dirty_cpu(page);
-> +			int dirty_cpu =3D dcache_dirty_cpu(folio);
-> =20
->  			if (dirty_cpu =3D=3D this_cpu)
->  				goto out;
-> -			smp_flush_dcache_page_impl(page, dirty_cpu);
-> +			smp_flush_dcache_folio_impl(folio, dirty_cpu);
->  		}
-> -		set_dcache_dirty(page, this_cpu);
-> +		set_dcache_dirty(folio, this_cpu);
->  	} else {
->  		/* We could delay the flush for the !page_mapping
->  		 * case too.  But that case is for exec env/arg
->  		 * pages and those are %99 certainly going to get
->  		 * faulted into the tlb (and thus flushed) anyways.
->  		 */
-> -		flush_dcache_page_impl(page);
-> +		flush_dcache_folio_impl(folio);
->  	}
-> =20
->  out:
->  	put_cpu();
->  }
-> -EXPORT_SYMBOL(flush_dcache_page);
-> +EXPORT_SYMBOL(flush_dcache_folio);
-> =20
->  void __kprobes flush_icache_range(unsigned long start, unsigned long end=
-)
->  {
-> @@ -2280,10 +2294,10 @@ void __init paging_init(void)
->  	setup_page_offset();
-> =20
->  	/* These build time checkes make sure that the dcache_dirty_cpu()
-> -	 * page->flags usage will work.
-> +	 * folio->flags usage will work.
->  	 *
->  	 * When a page gets marked as dcache-dirty, we store the
-> -	 * cpu number starting at bit 32 in the page->flags.  Also,
-> +	 * cpu number starting at bit 32 in the folio->flags.  Also,
->  	 * functions like clear_dcache_dirty_cpu use the cpu mask
->  	 * in 13-bit signed-immediate instruction fields.
->  	 */
-> diff --git a/arch/sparc/mm/tlb.c b/arch/sparc/mm/tlb.c
-> index 9a725547578e..3fa6a070912d 100644
-> --- a/arch/sparc/mm/tlb.c
-> +++ b/arch/sparc/mm/tlb.c
-> @@ -118,6 +118,7 @@ void tlb_batch_add(struct mm_struct *mm, unsigned lon=
-g vaddr,
->  		unsigned long paddr, pfn =3D pte_pfn(orig);
->  		struct address_space *mapping;
->  		struct page *page;
-> +		struct folio *folio;
-> =20
->  		if (!pfn_valid(pfn))
->  			goto no_cache_flush;
-> @@ -127,13 +128,13 @@ void tlb_batch_add(struct mm_struct *mm, unsigned l=
-ong vaddr,
->  			goto no_cache_flush;
-> =20
->  		/* A real file page? */
-> -		mapping =3D page_mapping_file(page);
-> +		mapping =3D folio_flush_mapping(folio);
->  		if (!mapping)
->  			goto no_cache_flush;
-> =20
->  		paddr =3D (unsigned long) page_address(page);
->  		if ((paddr ^ vaddr) & (1 << 13))
-> -			flush_dcache_page_all(mm, page);
-> +			flush_dcache_folio_all(mm, folio);
->  	}
-> =20
->  no_cache_flush:
+Oh, I see, Now I can understand the flow more deeply :)
 
-This change broke the kernel on sun4u SPARC systems. This has been observed=
- on a Sun Netra 240.
+> >
+> > And some extension stat (maybe it only renewed that filter exists) is
+> > covered inside of upper functions. Is it also right point?
+>
+> Depending on what you mean with "upper functions".
+>
+> damos_apply_scheme() in DAMON core layer calls
+> damon_operationss->apply_scheme() callback of the current operations set.=
+  The
+> callback may handle DAMOS filters or not.  The callback of paddr.c handle=
+s the
+> filters for DAMOS_STAT.  The callback of vaddr.c does not, and Pan is ext=
+ending
+> it to handle filters.
 
-During boot, the kernel crashes with:
+Oh, I see. Thanks to your help, Now i figure out the flow from
+sysfs(or directly set) to damon_select_ops().
 
-[   25.855163] Unable to handle kernel NULL pointer dereference
-[   25.929588] tsk->{mm,active_mm}->context =3D 0000000000000001
-[   26.002772] tsk->{mm,active_mm}->pgd =3D fff00000001bc000
-[   26.071405]               \|/ ____ \|/
-[   26.071405]               "@'/ .. \`@"
-[   26.071405]               /_| \__/ |_\
-[   26.071405]                  \__U_/
-[   26.264705] modprobe(33): Oops [#1]
-[   26.310445] CPU: 0 PID: 33 Comm: modprobe Not tainted 6.5.0-rc4+ #16
-[   26.393937] TSTATE: 0000004411001601 TPC: 0000000000452a28 TNPC: 0000000=
-000452a2c Y: 00000008    Not tainted
-[   26.523184] TPC: <tlb_batch_add+0x108/0x1a0>
-[   26.579221] g0: ace36c1f2cee4067 g1: 0000000000000028 g2: 00000000000a01=
-0c g3: 000c000000000000
-[   26.693607] g4: fff0000001947000 g5: 0000000000000000 g6: fff00000019480=
-00 g7: fff000023fe33f00
-[   26.807978] o0: fff000000738fff8 o1: 000007feffffe000 o2: fff000000194b7=
-88 o3: 0000000000e3c038
-[   26.922356] o4: ffffffffffffffff o5: 0000000000e3c038 sp: fff000000194ae=
-e1 ret_pc: 000000000065d194
-[   27.041302] RPC: <__pte_offset_map_lock+0x14/0x60>
-[   27.104203] l0: fff000000194b860 l1: 0000000000000001 l2: 00000000000000=
-00 l3: fff000000194b850
-[   27.218583] l4: 0000000000002000 l5: 00000000001010f8 l6: 00000000000000=
-02 l7: 0000000000000040
-[   27.332959] i0: fff000000194e400 i1: 000007feffffe000 i2: 000c0000048575=
-88 i3: 80000002026d3fb2
-[   27.447334] i4: 0000000000000000 i5: 000000000000000d i6: fff000000194af=
-91 i7: 0000000000659110
-[   27.561709] I7: <change_protection+0x910/0xe00>
-[   27.621178] Call Trace:
-[   27.653202] [<0000000000659110>] change_protection+0x910/0xe00
-[   27.729838] [<00000000006596f4>] mprotect_fixup+0xf4/0x2c0
-[   27.801892] [<00000000006c754c>] setup_arg_pages+0x12c/0x2c0
-[   27.876237] [<0000000000737d80>] load_elf_binary+0x360/0x1380
-[   27.951722] [<00000000006c8564>] bprm_execve+0x1e4/0x560
-[   28.021493] [<00000000006c8e8c>] kernel_execve+0x14c/0x200
-[   28.093548] [<000000000047f6e8>] call_usermodehelper_exec_async+0xa8/0x1=
-40
-[   28.183906] [<0000000000405fc8>] ret_from_fork+0x1c/0x2c
-[   28.253672] [<0000000000000000>] 0x0
-[   28.300568] Disabling lock debugging due to kernel taint
-[   28.370336] Caller[0000000000659110]: change_protection+0x910/0xe00
-[   28.452686] Caller[00000000006596f4]: mprotect_fixup+0xf4/0x2c0
-[   28.530461] Caller[00000000006c754c]: setup_arg_pages+0x12c/0x2c0
-[   28.610524] Caller[0000000000737d80]: load_elf_binary+0x360/0x1380
-[   28.691730] Caller[00000000006c8564]: bprm_execve+0x1e4/0x560
-[   28.767218] Caller[00000000006c8e8c]: kernel_execve+0x14c/0x200
-[   28.844993] Caller[000000000047f6e8]: call_usermodehelper_exec_async+0xa=
-8/0x140
-[   28.941071] Caller[0000000000405fc8]: ret_from_fork+0x1c/0x2c
-[   29.016554] Caller[0000000000000000]: 0x0
-[   29.069167] Instruction DUMP:
-[   29.069169]  80886001=20
-[   29.108052]  126fffc8=20
-[   29.138932]  01000000=20
-[   29.169815] <c2582000>
-[   29.200697]  83307013=20
-[   29.231578]  80886001=20
-[   29.262458]  02680007=20
-[   29.293338]  01000000=20
-[   29.324223]  c2582000=20
-[   29.355102]
+> [...]
+> > So, I think that I need to send v2 patch, If that's right, which way
+> > would you prefer?
+> > reply to this thread or make a new thread?
+>
+> I prefer making a new thread :)
+>
 
-This crash is not observed on sun4v systems.
+When the discussion of "reclaim" finishes, I'll make v2 patch as soon
+as possible.
 
-Any idea what could be the fix?
+> Thanks,
+> SJ
+>
+> [...]
 
-Adrian
+Thanks for your kindness.
 
---=20
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+Best Regards.
+Sang-Heon Jeon
 
