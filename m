@@ -2,82 +2,109 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C2ADC87FCB
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 18:28:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8EC16C87FCB
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 18:31:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B0EB6B00A7; Mon,  4 Aug 2025 14:28:50 -0400 (EDT)
+	id 304976B007B; Mon,  4 Aug 2025 14:31:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2883D6B00A8; Mon,  4 Aug 2025 14:28:50 -0400 (EDT)
+	id 2DCA06B00A7; Mon,  4 Aug 2025 14:31:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CA196B00A9; Mon,  4 Aug 2025 14:28:50 -0400 (EDT)
+	id 219206B00A8; Mon,  4 Aug 2025 14:31:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D29C6B00A7
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 14:28:50 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 96A7681697
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 18:28:49 +0000 (UTC)
-X-FDA: 83739911178.09.8587920
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D165B40004
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 18:28:47 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of cmarinas@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=cmarinas@kernel.org;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754332128; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 11E4E6B007B
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 14:31:27 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AEBB8115737
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 18:31:26 +0000 (UTC)
+X-FDA: 83739917772.24.A06391D
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 08A2F8000C
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 18:31:24 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=r65dpNld;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf02.hostedemail.com: domain of 3e_yQaAcKCAQn2iwgewksskpi.gsqpmry1-qqozego.svk@flex--jyescas.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3e_yQaAcKCAQn2iwgewksskpi.gsqpmry1-qqozego.svk@flex--jyescas.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754332285; a=rsa-sha256;
 	cv=none;
-	b=hHrpnpJG1z6XOKtn2m38vDeRERYdDo7R+xgdpmjkwD8jDJru5XGKLAy4A7wZ9s3cjZ987/
-	dPkTvgu0jajqd86yYXvQfp7u09Oq3e4k7+N08tI5GdTSYpYUlGzoqDl5/ye2s0JpWw/kX+
-	+FpfknWO3m0cY7iEDfK9p4xDiY/ARpQ=
+	b=vPSWtlpKGChtbeh/zwiqOBRyBc/KW0zeDE4hWTJ+Qdq6Mb7GuF05PqKIMRPIjtqoqD4Ttm
+	xk49S7IO85TOe+Vt3Tp1h7JrvgeAwEPLHU0JWdBoBWE0rxhPU4uMcJ8Ro3Yg5yAirOY8qR
+	pHNEhiagPfbEit+0g1evbtsTuo9rXYg=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of cmarinas@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=cmarinas@kernel.org;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none)
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=r65dpNld;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf02.hostedemail.com: domain of 3e_yQaAcKCAQn2iwgewksskpi.gsqpmry1-qqozego.svk@flex--jyescas.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3e_yQaAcKCAQn2iwgewksskpi.gsqpmry1-qqozego.svk@flex--jyescas.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754332128;
+	s=arc-20220608; t=1754332285;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dAN+Q6z4xYDkwzhyRANAgXGazj/lNfVPId+ttt9Jaos=;
-	b=K92bmUc71j9vQSxCZ/u/PseQbVOwJh7a3bTq0g8ulR0h0m7y3g9nlcz4/shvCQlvxHpjBy
-	INxi2zomsdiWXg19PdTuHZGVqHCzFnsHXqKWyfjPNptqGRepxsqnOhg/pZw7l7+m9l9mey
-	K5fFNsnuW4o+46JkI0jKo5GMsRnO83Y=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id BA7515C629D;
-	Mon,  4 Aug 2025 18:28:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8AE3C4CEE7;
-	Mon,  4 Aug 2025 18:28:44 +0000 (UTC)
-Date: Mon, 4 Aug 2025 19:28:42 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Waiman Long <llong@redhat.com>, Gu Bowen <gubowen5@huawei.com>,
-	stable@vger.kernel.org, linux-mm@kvack.org,
-	Lu Jialin <lujialin4@huawei.com>
-Subject: Re: [PATCH] mm: Fix possible deadlock in console_trylock_spinning
-Message-ID: <aJD72syGyJs203Mw@arm.com>
-References: <20250730094914.566582-1-gubowen5@huawei.com>
- <20250801153303.cee42dcfc94c63fb5026bba0@linux-foundation.org>
- <5ca375cd-4a20-4807-b897-68b289626550@redhat.com>
- <20250801205323.70c2fabe5f64d2fb7c64fd94@linux-foundation.org>
- <aJCir5Wh362XzLSx@arm.com>
- <o2gpvdtxqrdfrsbayorvzvjqcreb45puojpgfye7dimbuuvbdt@gxquukahrxo7>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <o2gpvdtxqrdfrsbayorvzvjqcreb45puojpgfye7dimbuuvbdt@gxquukahrxo7>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2ZVlhV6ndThCFd4+zGJNIWInZ4a60Ev1vYWmuIdzmJ4=;
+	b=syDXL5LZz30HF9FPHCm1n8ECtJlkkrwUtmU+3J3WjEU6QltLZG7b0ZaeRtfjAJor3U/REx
+	LNQxN8liFIBPviXSozgY+oG22PBziZRHDTkunlZ1Kff4A/snKCuxW4oVx2rW9LTVh2ULTu
+	TX0vmeb90D0SxdOYUIrefSesJ8YR/e0=
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2400cbd4241so65940645ad.3
+        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 11:31:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1754332284; x=1754937084; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2ZVlhV6ndThCFd4+zGJNIWInZ4a60Ev1vYWmuIdzmJ4=;
+        b=r65dpNlderDDqWPgfodt318sQ12apLkSxFdJ6xzZ+HTLMIALgF09cyVoNaflvccyRh
+         AW2NKNCTmYLjaQXZb/jgxIiz+az6ykVw/g79dMlbIeLshjAUDqRCXHY5EYJJ2/g9xW5T
+         bQ2bgDIH5IFB31mocaqkZGAVXAOSG3IibxF6wo+ZjmoCC8kxxZjSrbbJaN3Ncc+ReL0j
+         xjKbemGP5rDXEDkTYsXzdLAzd+1iumFqUeG4pKFPpiOqvAfq3rLrfm7GT0q/2Ogmbe6b
+         btSYn2LofQVTZEBKzH7hmQBnGR3ekGGaLAy243ZCFHuMvl/E52UsGypUH+AkIyaS/7dQ
+         DXyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754332284; x=1754937084;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2ZVlhV6ndThCFd4+zGJNIWInZ4a60Ev1vYWmuIdzmJ4=;
+        b=col8FasklCMAUItbWc4NtwdyYoJ8zcsOab81dHQwXZibaDGLV2m4v8bd9YkRsSRJq4
+         2GsIJ/b3CHS1PMlaLj2BG++lC7c9+Ga5n+UYSDhsha/UT/QVDwo5lqUzxbERKS69/Ch1
+         m3ffSd0QUvW7L3hk9by5YwmQfgQy+Q5otqFSjz6ToXcRXo0iKXb4/XIA9DT8ZiGCaRBM
+         EaWVkdqzJkQ62C0EW7U4IkYI5UJU/Mo8x5Wwxuf9o1AooGRze0TBa+nBx7ESSmXUajGQ
+         MPpkQhWDGjiqdG6ZTPKQH2NoW5YMew67kb9N9vFjv7Wz7hkrrHogfCTlahUancE7Z4Ni
+         XJ6A==
+X-Forwarded-Encrypted: i=1; AJvYcCU8DDH7aaVlOyMiNQ7onZZge1H3B3E2wFV5kMC/+V424iKb+LcRPf6DbnRUh87mLUzdKuehHTg3lQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw4EGqcWms23BjJ36pnW7IPkLxAvpHq8bUQc/wSDAOH7J0IvI3g
+	fBJyWGzRY5Gh+IjmnjMQ8iIKJ+CpsF/Qmbo56tnTtrhBcMWQWPTw9i5+235MYm48zsjuqIGAJhA
+	jg4GEQEfcEg==
+X-Google-Smtp-Source: AGHT+IHWBu3VQz8pzZ+1rcfbz3HxJNSMQP0rdBf6OTWgijBCozRjoOUWrc/UH4pOKHcnDrH55Kq6u4Oao4QE
+X-Received: from plgw17.prod.google.com ([2002:a17:902:e891:b0:23f:fded:852b])
+ (user=jyescas job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d506:b0:240:52c8:2556
+ with SMTP id d9443c01a7336-24247023afamr130598435ad.39.1754332283728; Mon, 04
+ Aug 2025 11:31:23 -0700 (PDT)
+Date: Mon,  4 Aug 2025 11:31:21 -0700
+In-Reply-To: <67a54f31-e568-427a-8fc8-9791fd34e11b@redhat.com>
+Mime-Version: 1.0
+References: <67a54f31-e568-427a-8fc8-9791fd34e11b@redhat.com>
+X-Mailer: git-send-email 2.50.1.565.gc32cd1483b-goog
+Message-ID: <20250804183121.2892827-1-jyescas@google.com>
+Subject: [RFC PATCH] mm/page_alloc: Add PCP list for THP CMA
+From: Juan Yescas <jyescas@google.com>
+To: david@redhat.com
+Cc: akash.tyagi@mediatek.com, akpm@linux-foundation.org, 
+	angelogioacchino.delregno@collabora.com, hannes@cmpxchg.org, 
+	jackmanb@google.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org, 
+	linux-mm@kvack.org, matthias.bgg@gmail.com, mhocko@suse.com, 
+	surenb@google.com, jyescas@google.com, kaleshsingh@google.com, 
+	tjmercier@google.com, isaacmanjarres@google.com, vbabka@suse.cz, 
+	wsd_upstream@mediatek.com, ziy@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 08A2F8000C
+X-Stat-Signature: f1b6b5m66o84oxdqbrqbe43j4x1nn8dd
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D165B40004
-X-Stat-Signature: d5qsr6auaxnb7m4mqisf5x1n7k3rfizj
-X-HE-Tag: 1754332127-488484
-X-HE-Meta: U2FsdGVkX18pfvlrbwzDeKNvS1AtaW0CUXxNAiMK3DouqXJ0oNDAbDgsBcvN72ztEXpGigOxcyZSgf/mYd4EwfC7f6mhXCCnAgsqn8w37YAv2oTz5+L/jTtEAgZCPjBqXOy2+tyJ9wsy6oyCtF6dK+SQNtlPbTjXJKIhh4+C8CJenG8VydYoDRadZ8AKxyp2N7GRJvl2cjTsIB0tIEH/Hdb/vZATJzdBBbN64ZAJxc/5gveNHDFfJal5n+FyDApWuMAP3ONNOYZDVXOICjO2yX8r3W40frqOh1omVrRFKT22ec6ggSjusw+cyY0VZ0HKz1VViGTfTQVCNfHDU16qO/PkRiBmmFnynOzska+Jmthl2m00A/NOLXiEewWyuKNh9wJutYUa/2IavHXZn9OzS81RZEfCJP1l4hBWTL6+VnUsrIYAIAhqdmqmLKpR14L5Up/AZZ0UJNFEf81bOdN5euBuJeOz8oKWZkONlzTp4H+ZvpZU7i3l+XlDVICusw7sSAHXcobJduCfp9Ir9GxAF6TgBtV0bYy4rUwuGI8WbwjWEKNLLrHVwKgOaLXEEKBZvGUZdzAjt0sziHc2fpdSNzMLuFG62TAoiEE2dMBF7XplUqaiAz/ORNZbATH67+CNHD6So3Pqb/NWtQMBFVZawVxUoXhjKlgH/FDEvmcn4c7XUrxw1ud64AJ8mquvtlGz21AQUsIT50Jh0V/3ZChLVukOv+UF0QCIp5VdGKiCG3kjqZxgsaxa604mVG0ot+ExzqQinAJPRaMq+nlzC9K/fB07/Zb+ZwxUKkvNvy7NSN0I0/0FRI1l91MRjXzQKuY3+wlX7lFwAzhF2yGDv8B70rrzuDlsHbOvU7n6t9qjGFpPhS6N4k5B3TgkVXOusKBOk2voAnxA7PgwmHPNjGNN0+25mM0WB3ip3k19GVxRAVgrOJrwumXD/ZxpaLkfAVGrZVw5k0M0evDDvtKfnGi
- WsWEsHuJ
- tqd3CiNiUpsStQhGAOFC3nCa80yRdhz44/iZ6teO1EYa/ywH5P335iYc14r6wMY0+M/Vc0eN++YAe4U1BbjXtSM/e/xoX0EM849PScEFQWHrMi0Y8pTB8xZPP03FzOwEwZHJmwPgVmRSZRRGpNsMdItBTR+rGa4Z9WwCjCcmKuMyCYtLxQyWWP/Sa4XkyxD+PbDthvQHkW2T77JVSkELev03IjoCJ3zdqzYnASfK3U3V794G8xWdgF2wpY1pioXmuxx7o5idTb3mOOJtl9RzqYKZiAWOZupzP6WG6EEck2M0FDQdQgkg4rGRoxtODxcyO1zfgsCrs61CnmZLl3xtFvpOnUT+jMjfa/VAJFg7wnUNzBfaPoYhl3DrW2dax9Vdwhs2cJd2pXs8iqfg=
+X-HE-Tag: 1754332284-833975
+X-HE-Meta: U2FsdGVkX1+W3iSS0ms6ptNxkPS9AJUfklxDQP2Pam/mekKmDiTieCgCU6T637fdL3DKEFU9ktpkqC0NteVza78XZCnvK5zWa2ZhjHyyLV2ha/kWWGTG6hIIce7yy0EoKdCkixkmp33qbRJzhAJb0GxYSAAcSL8vcs6ctk2Arz4u6XaS0Bj6OoXcTW4vP7DzqfbdiZIhcUaZ2Y1Nejhi05Fwhm5SCP+BOn2Eg8Ia8qDNAIMs9yTDfDaUeVJLqO22mFNZf4Om0TgKRoVR+zQHIEKI8dwRQEm6P2bnSewosExX3KS18LGXdXiqOkFarklHiaYFPfxdLb5di/0laH/1cYKTeP7D30m4fZ7y1DgJwDSDq+TTvEjkXJUn043ThGgt7lFR6r3urQj6KFmRW23iidHK29FH/VsetQEvmTggJrm38m0SjyaVWdS4OEJMf512q2LEGzCr1ex9BOzXGe45VTQ7PIGeUS2kdVKSmykUzxctVkp5gwBSqGk/HCJ4LwaW9BgSB2d2YqVyFqjj/hD0SOTHEYHCsXluYxRourKvpuUBJexx3qtjBBseGd8HHHveUdwAR8T6onp5YoW8uSji6OQ3BQBkLsAJ+AgHf4SwEe40ggjRizHKuYf0k3Thcteny5Y3ZI9ud5CNsemoC805MSzgkKT5cX3OQUDboSKNsCCnu9kWYcDCvuC+khQpAqlveFp9e3F/501GEjhdlNmkdekHfa3TiegWTtL1EJsjL5PLelr8WFyC6ujnOd5RgQuUje5pqccpw8xA+E4ZTBqpvPlgcHM7vcWmN6Ky53A46XZI/IJdgTgm0mJlPlSfr5kOjwMATI0bpLt6T+LfCNuG/jyoDhYiv18cWQ66WQN8V64iuLCHHwqSlrYaBPs/RN1++caRfhRU27tr5NaTluWt2q9lMfYLGSdPi683l8cFPEP/5pfjfmwm7qfUimYzmW/fGM9QKzwipAyNrl3JZY/
+ Of7T+elC
+ ulA9d0DpC5LJJSJm4Y7OCQtpAmabZERfrq2eV4zqUAbQAIIJrUDmXXT+F9VlIXlDi8y6zuWna13r/zoxYT2iiVaoM45RbelOy/VwYNoj+UqCuggtlAr1kQlBOP+VrlM3UgrdniWiTrfqH3Y+bYq3N1bGSnWOEGgg5pGrsJqZAErLPrXKtS9J3gQrowAxF49gc/ccWMzdec2cXXdUr8NiOmcKPLojH5RPs5CDZiA1hqCaI25NAGJqHi1gfE/L+FHuF1h3ud0leJs0mPyLiTQYUGYXjWwGXv9fGBzjwqijlsCeTeVLj0stHw24olnjm14Vwx8QPaWGkjVKBuICMcXk+RMUQ7mfplcALa/A646liodJqvlrFCUV4+KDg8IDPoOqB7ZOX
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -86,26 +113,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 04, 2025 at 05:34:10AM -0700, Breno Leitao wrote:
-> On Mon, Aug 04, 2025 at 01:08:15PM +0100, Catalin Marinas wrote:
-> 
-> > I'm surprised we haven't seen these until recently. Has printk always
-> > allocated memory?
-> 
-> I can talk about netconsole, and the answer is yes!
-> 
-> weird enought, lockdep never picked this issue, and I have a few set of
-> hosts running kmemleak and lockdep for a while.
-> 
-> This time was different because I have decided to invstiage the code,
-> and found the deadlock. Still, no lockdep complain at all.
+Hi David/Zi,
 
-I guess it's because kmemleak is quiet in general, unless problems are
-found, and lockdep never registered this combination - printk() called
-with the kmemleak_lock held.
+Is there any reason why the MIGRATE_CMA pages are not in the PCP lists?
 
-Thanks for investigating.
+There are many devices that need fast allocation of MIGRATE_CMA pages,
+and they have to get them from the buddy allocator, which is a bit
+slower in comparison to the PCP lists.
 
--- 
-Catalin
+We also have cases where the MIGRATE_CMA memory requirements are big.
+For example, GPUs need MIGRATE_CMA memory in the ranges of 30MiB to 500MiBs.
+These cases would benefit if we have THPs for CMAs.
+
+Could we add the support for MIGRATE_CMA pages on the PCP and THP lists?
+
+Thanks
+
+
+
 
