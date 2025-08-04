@@ -2,120 +2,116 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 90E0BC87FDA
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 09:11:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 77976C87FDA
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 09:15:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 303EB6B0088; Mon,  4 Aug 2025 05:11:47 -0400 (EDT)
+	id 1D39E6B0095; Mon,  4 Aug 2025 05:15:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DB976B0092; Mon,  4 Aug 2025 05:11:47 -0400 (EDT)
+	id 1ABD16B0096; Mon,  4 Aug 2025 05:15:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F15C6B0095; Mon,  4 Aug 2025 05:11:47 -0400 (EDT)
+	id 0E8F16B0098; Mon,  4 Aug 2025 05:15:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0EE616B0088
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 05:11:47 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9B1231411F8
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 09:11:46 +0000 (UTC)
-X-FDA: 83738507412.15.DB536EE
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 939AB8000D
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 09:11:44 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=awrsS0eu;
-	spf=pass (imf30.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754298704; a=rsa-sha256;
-	cv=none;
-	b=aO88TQOjmWO0xGXm3A7YPrJmlmjXI68zE3AwWOEdt7xkT6pMgcCQhMAY7ZqNEG7HeVy6uh
-	SzihDVuzZDR9jKN5uTsiv1zbHzHqD0SShxDDr90Jz3L/5C6/DFxgTagygetKLIfQOg8von
-	q8/rkfkaLfzjmDmCCu+0zJMnW357uv4=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=awrsS0eu;
-	spf=pass (imf30.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 027226B0095
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 05:15:23 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 82F71115E84
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 09:15:22 +0000 (UTC)
+X-FDA: 83738516484.04.A445531
+Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A788DC000D
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 09:15:20 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ASfGq2r0;
+	spf=pass (imf10.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.221.171 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754298704;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1754298920;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pugdPG7uA4O/On86pd0XfQDtWdJcBWVZDEqtuwJC78Q=;
-	b=UzeSrjdkGJrE54TAJDyM/T17KMIjyRHXIdH3NgSS1SY5tpeCKFFj2LBdG9paZPPoLUSXi1
-	NzK4nOnrB+ZcVmYK5LjZbzsLQP9CSuAcOyp0La0rswj/6/ZvoDbrRqoRxa55VS243sgnk6
-	e5Dldmzzvdn9KIulD2cUJrfLQ47zzvE=
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-61576e33ce9so7624719a12.1
-        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 02:11:44 -0700 (PDT)
+	bh=qFCaoHMm1VnEL10gVvLpdTFhZneV4lwru6bNk9ymWOs=;
+	b=pODrG3ovJrabVZj7fCFFovWz2DbUUDeEz6cs4BMCO5rnhzrXNqg2A2GgJ+O1dHswnCXwgm
+	YeoEpGD31HvAUJkfq6Y0hp7NvSllTl5OZzv5kKlT+aGUK36icS5mhRyH64wJiEk+EKUjnl
+	rffK8WRxz7dNqKlN16vd4OhnSP2qs2s=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ASfGq2r0;
+	spf=pass (imf10.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.221.171 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754298920; a=rsa-sha256;
+	cv=none;
+	b=8gUmrvDsNzl1OUapv9S8+vEE1IAOitHBEH7jAfvHC0GfpdtVuIN5gp/aXW1jPdubI3UhQd
+	NkZ9gFRs0mqpmjy6AYWV1+GPz9K/D6VKskq8kGTjXjXgXcJkAOgSOhskFcJYWDl1nxd5PV
+	f9MxqcJgO2w49t2MPzq4B8Cc0wKopp4=
+Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-5397c00ad9eso134183e0c.0
+        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 02:15:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754298703; x=1754903503; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1754298920; x=1754903720; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=pugdPG7uA4O/On86pd0XfQDtWdJcBWVZDEqtuwJC78Q=;
-        b=awrsS0euiJc77sN0P2hmoQagDpcxO+dYAPpVaG67puoSCRYZrRODat77li31hT1Avw
-         4kVML7jnbPG6ax2DxUs3aRzr8Is5CxYCt+mnEsXaxwzDEkoRJjGO07N6UfON5ztWiBHb
-         bSXw3YBF9BfYwWpDieLNIg1nxknbXzOL5JRu/M+ymnlHGiDZfcd/ft6hZTqtepAD9oT2
-         ycKj33K60q8DAX7reERLoEe9A31YM+Ip35fzt2pJAvGYJ2bU2lm/xukFIlJ4YTGOQqFg
-         7Q6EdcnqN+twOnIt3KulhD5KlByLNpeVDSSWdX5bHyjvHEBOKmYLLhibHfFp4iZCg3YP
-         sihg==
+        bh=qFCaoHMm1VnEL10gVvLpdTFhZneV4lwru6bNk9ymWOs=;
+        b=ASfGq2r06JOig3Oc2lXQH1FWjRRmJjlR8+co/x4vfKbB3vzc7sxMWIJ+DBNUqauM/W
+         wSUatZqYlei/qd2Z2A2Des/jh96GNGqOSy/Fv0qJFqnZcr/bKRoTIR7oGoLR/3uEdIea
+         YHuRNHWF679zcMGBmav1UMl+ty9Z+uizLXC5X5AuKjJg2J0E2kllVcKTGCLQCWSRn27/
+         qCnAOvkOGe7qMlJFONGDzmo4/lBJ8Hv11vmyvTcpkVb3NHQAqS9JQqlI19wQbS56Er8Q
+         wxm69BR4TMjX2Q6iEtOPesngvXWk6MPT/kRFV9B6E3sEdHMObSD2Xa7xHeW5cCICYNDL
+         mJIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754298703; x=1754903503;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=pugdPG7uA4O/On86pd0XfQDtWdJcBWVZDEqtuwJC78Q=;
-        b=OPEbqX5pGCr0JcCqvIZhiR+EuQabPe5l+0NGDg0k+FO2XQf4maIVuf4stv0aASWqXL
-         zt6U44ob31I0u1E+XvdXITMvyPVPcHJd5GoRkadVkXOepq40Q2dC0HWu10iQYv8lzVsR
-         3mDugdqrDMR+5kcAnJ1z0CQ9oBbaLtuPa5eioyZqz/6FfuBMzzJHauq5/Wn0Be60DLOe
-         Wx4g4gQtqrzhIri2wmFLuU5jqKMFHCyTLp3PrMXBTffTQIeCg0Y0h3V8DQBus+CDeLi9
-         P7pyriLMu/7H9v/Hd4wg6HIyHBN4dVyX3vbJ5G9DeVbp3TkEX1vimzd2wpevslBrJF0M
-         ccow==
-X-Forwarded-Encrypted: i=1; AJvYcCVugGg0mKons7Jw885j4s7cMNKgDC9We0AaQBQAxGPUgX7HDxl+arsxC6yr8FVMVqiOCSlRUSP7sw==@kvack.org
-X-Gm-Message-State: AOJu0YxdokaPOzN3ObcNX+GjHe1oTTkE+Jm09FRAwZw+pow3nW/j3o+d
-	AOjLE9tilqqf+rFkWyCUAvrGqqQ5AnyiMPzoWpX0vJtDZgV0UgCIq3nY
-X-Gm-Gg: ASbGncuaMfwBPK/pjneKnPlb1+aMxbAvV9JT19ZB9TIGzk4DQr2GEXQNsIgXkDzUyX4
-	1jcNTkIh+BojyEQsaZJ14wjLqOpWkbANlepk1D3ZC1IVy1T9o6bvX35ORJSpHO+onzzjoANu77C
-	X2/hVjPpUR2gS2S7SHY53W9MbPQgGm7ZjXrXOC5s5hPcWKehnjCPJWtNHgdsCudVNDIkSC/UBtr
-	bTRktNOge7d/IEVcPUJmiksFdP3HwJLpyXXhkz/gMHWUv4zVM42/JNsJvtEXxI37AsayOZePucy
-	RESSn49MQmc9czY7t9aqGR2vMkcwfA/EtB07+xgQsP6ks5Ohybl4inE9BlEQi2SYCLaaGx8DyP0
-	3MJvDExMl0SG8TMfaPV5Oj6OdOx8C9bAhaMNCmVhsq9Q=
-X-Google-Smtp-Source: AGHT+IHM3K4OZ+XP8yHHt8iGAEQo+9QHGcIwmPD9Lmbdp7R1ga5jUT96EJoH/t1FQUDctW0UjWXQkw==
-X-Received: by 2002:a05:6402:2355:b0:615:3667:f4eb with SMTP id 4fb4d7f45d1cf-615e5dd9a53mr7855785a12.6.1754298702785;
-        Mon, 04 Aug 2025 02:11:42 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-615a911567fsm6396175a12.61.2025.08.04.02.11.42
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 04 Aug 2025 02:11:42 -0700 (PDT)
-Date: Mon, 4 Aug 2025 09:11:41 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Cc: akpm@linux-foundation.org, Liam.Howlett@oracle.com,
-	lorenzo.stoakes@oracle.com, shuah@kernel.org, pfalcato@suse.de,
-	david@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	baohua@kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	donettom@linux.ibm.com, ritesh.list@gmail.com
-Subject: Re: [PATCH v3 3/7] selftest/mm: Fix ksm_funtional_test failures
-Message-ID: <20250804091141.ifwryfmgjepwrog4@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20250729053403.1071807-1-aboorvad@linux.ibm.com>
- <20250729053403.1071807-4-aboorvad@linux.ibm.com>
+        d=1e100.net; s=20230601; t=1754298920; x=1754903720;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qFCaoHMm1VnEL10gVvLpdTFhZneV4lwru6bNk9ymWOs=;
+        b=FQT7ZZ+2kfitAC5czrakJhSvUDnzRTE6TszxX+9koF+0Mry2ljaQemDkvhzfOy4PYT
+         UEIy5TuN8sQaO6SH3OQU2fPi+Ki64egE3c1bvp88MHdjDnaDUO6T2CX9yLuBcsCYA0RA
+         5JGWbvMOTRyhVa+aIgBsx8gZ+xD0/MUAeVVA66pHvH2RqaAhnFN2+gqbn9uETClWeoGQ
+         c9pSrZhwa5VakidYx9ImwBf384NRJ2EMcRdV0mQCjMOXhpehVT4JCjvqEFPVczao5SOR
+         hTNSERISZ0XuMoMSNTDovK2SaGiXB1dXbEOHsnEiHmX4CiXFUYEObxrF4323Zqp1Hsz7
+         Ukdw==
+X-Forwarded-Encrypted: i=1; AJvYcCWQAAcWXvQDnT0DFYLRhVf9Mivq9YxSlVE1V8OVjKdo5EAgNIWbjSISEslKc3mCWTn3H5K7zo+XNw==@kvack.org
+X-Gm-Message-State: AOJu0YzIxEMvMGr9KSLVwb5IzVhLXuGsAy6QxI8/NOO3vDEo5dy7T7KB
+	MGNtWYxpUrenzxatSsuLqVwx9yX7t6pQGLJUz3yIRwlboQ1EhdJKbF2578I1/OioEOUOP0olLuD
+	WSLdqb9WA/K3dB1+G4YpiI8x6XNsfi70=
+X-Gm-Gg: ASbGncvGre6Bwd1QWDm1pNlEs2rbfHxhf9SdeszIr2lt9lHaRzgyOsbQ5p3pfTS1Co/
+	DFwLwuo1/xA8bEx/r2DrYOQzGYS1rd9xTH4iz8cCMLBgtGntgmiofNtR4g0nUIjrO2dMZO8/vwf
+	R2OhO8X8psT5Ar4RYXI/oqk6XiW9n149mW3lPKS9kkwdSptPdnzhSl5isgQJAYTZurbIijqHUyS
+	DpfYzQ=
+X-Google-Smtp-Source: AGHT+IHydI6tDwWrpJjm9ELbGuWexGkYUn4GA18Pb/Ya3WOz9/wbanIAiL1QtWy60boNRaFhWPj5D1x1XXru/XojMOc=
+X-Received: by 2002:a05:6102:2908:b0:4f1:7946:ed52 with SMTP id
+ ada2fe7eead31-4fdc25487f8mr2740340137.12.1754298919609; Mon, 04 Aug 2025
+ 02:15:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250729053403.1071807-4-aboorvad@linux.ibm.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+References: <20250607220150.2980-1-21cnbao@gmail.com> <aJAFrYfyzGpbm+0m@ly-workstation>
+ <1d1d97f9-2a67-4920-850e-accf4c82440e@redhat.com> <4fa8f492-c7ef-451c-8dc7-38b031c8a092@bytedance.com>
+ <d9d0890e-2837-49dc-9ca8-1d6c28e95a21@redhat.com> <aJB0Kdc6cx1lGkdb@ly-workstation>
+In-Reply-To: <aJB0Kdc6cx1lGkdb@ly-workstation>
+From: Barry Song <21cnbao@gmail.com>
+Date: Mon, 4 Aug 2025 21:15:07 +1200
+X-Gm-Features: Ac12FXydsBD0TuZFpNyEUYcRbrcCg6kekPWWmL9gnPJlShdvwC4LshInjY3gdRQ
+Message-ID: <CAGsJ_4yw4Qn7OWmUJeJZYuOHLjJ7L8kov3Th3vFPa3h4y0ur_A@mail.gmail.com>
+Subject: Re: [PATCH v4] mm: use per_vma lock for MADV_DONTNEED
+To: "Lai, Yi" <yi1.lai@linux.intel.com>
+Cc: David Hildenbrand <david@redhat.com>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Barry Song <v-songbaohua@oppo.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Lokesh Gidra <lokeshgidra@google.com>, 
+	Tangquan Zheng <zhengtangquan@oppo.com>, yi1.lai@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 4pg4kuy98yf567yg9oihmc48g8pfqfhe
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A788DC000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 939AB8000D
-X-Stat-Signature: cistsfdgiqf14ichxj3sony6n8xjng6x
-X-HE-Tag: 1754298704-8986
-X-HE-Meta: U2FsdGVkX1+uHEyXT02VREPDo8JtG5oEGNa29r8psUbQXq3ualO8Vb4ewp6CSnNbBUfFiB+7W9LQbDhV4SZScambyAZFQrWneelQF8wR8e29ii4XLB4/NiU20mbXqjqrjljXe1opAfGisdG49LZFEvHg+YVkQGazOcKqVaWFQyx0Z/sbvNoBl68qXk1oz1ylfCYgCXttKZPZcZdW2dODKXmpIKVZJix1G30LZBl3rfoKmYWwZHsRlEKNqdiPx/Z4pYt3U+un4Inbs19JlVvVLtr2y3T7xVy6CT7zi5mo5NGj+x/Hz6xLdoZQ9H9WdhhkpILH1yXRgBLdqJWS80nuXLuYAMZ+/RH09xFdaYzG9iaLGhC5v2NHj2N0+6eAsZGOsb4D++VCRxo4uFPhv8xfngtlA3ZPl1ihMB958DmW/aweCrxYRns9bxb9G6oz3BTazTqfTiIVX9NXIVQQIp4cbqrQ+AbgFbudS9ku2o7vweGH28uDxrpJRClOQTXxKQGroZC9O2qWhGYSOZEg1uAdvMBSA3zviLOVDkA/LxQayLHtLHUHLL7dOPFq6vRtCEuRD7apPNRg2K+eNu865PbMwzTJrPrVZBxhQXST8FOojc3QWLoDO5YwlxNU5CCuWv5kfVeVjpYX5OTjbdwLwVgpPfCeZrnoZ5g7pgSRmYzfDkCv4DeLMPSJhLQXfmr9BTwbuJi0UXd+dbeMxsM2fuKAZdc3i6tvmiANGMdK9WLWNKaxrETo09cbCIIV86O7i9tH7bitEjC4o3bRb2RrmShHrV9gETeT+UII8siDV6cHya+p1+aTsfMO9wUEWS3TQ1q8GgfA23V57NXkY0ar66Niev0rIFw1bf5eQAzRzKxAgeen8oFP3cN4qCq4gVjZ807fBqOqsru0jfMF7PaHeswkAei2v+b+dnDqHM/GKEx2RoxX4B0Oh9BL9fp7tRQsIWFvXNlLPc8yleLEMnRY/i/
- BaMEPHV3
- duH2R8WFO2TnrtyEtQO9A2LW818qRnbn/JYK6z6sLE05+egQujN5JfO/15B0cO044vHaQ4A+klbSmraUxjvyJKYDevsUUUXdAfBzzGMmaqgvb/FKRKuQPcxXjni7dwPfMvEsUj3EsjZ7EFy1rZjvSuR7zGkHRf3uQJQuX7LHQuNLeUajWWyJqzsTNLScs89rmxOOKXh68trIl+CYylsdnICSM42EZvhPhHdZ8NTyUXRPbl7V3aLPgKXK0PGmMd1ay6uQWQlxWB8jGbHmBXj83KpHYMvj735Cu7lKShwTK92n33z8+gjTsI+4SZsrrJmYouWcdUhMaDaE3z5tfyvwPEFVoDMbl5raRz389aMlAeVYIiC1+SCxkW2QXVIzFZC/6OJ+xApaM9QlHw3/CrY+wuO/YKNpHtOPf8Nli8kjzS7ixaa9QedPGAWUNbPT5p0bCqSpCzskIWzTlASkuZONdqzr6m2xbX1VkWapqIKaK4mCevr681o085V1pi0LLaJb1xvq9JynVDhVdu/WXrDW5rCCpYwP6d3ffvBPRBT2Fg4enDlLqpzZJfCwImPumULffrg3C9eTNwFGkGySTSZ4JFMnUJy8XPAsrpEnvgxVFjBeQefgfs5/OMRpNYeJzK5Uad8G1X/h5k5xiz4D8+gljp1hVZC/PIeAKVGNrQhB9aCnBF6Cpc5bHdHJP3UkH1IGsOYAQzEaVFOhC4iCVjVfSY8T9b8Lz1pIpER4k8uudtkOKQRe6LmXqDkW5rgH03EPVXG8AjmoMbnwb7LRtnmciKP0qExszXOrHJFcbGMOZtaBvZqrJlDJxRvcMHg==
+X-HE-Tag: 1754298920-217581
+X-HE-Meta: U2FsdGVkX1+zaUvKpQzQo5eDj/Ro47MKO7fFmOfrsE6/KNKp5YvM+qvVfzF5Q9gnitj1Pqns4l/0/DHPeJ+QvKHax8+chSIpAw6bS3E0sNmFCD2sRS0fTN/YZaL3ZaOn8VYl406GfWIuAwFrz/scqzVxNRV8Iwx1GGqOAZ3Z2JN3FuxiuQi4GLfmOmnNHup9MwRcI4rfXBU2tekwxqZwcbEnY++VLlhonz5ynhbWa7Jj7BK7d8zZqg+kD8JVvYSVQbujAagURYz6aO6HOb5zXscSXZxLicH1X23ix85+gW0X05mpSZruvaOlN6z+CeWhIsNbPv/eR8iN6BW2fzk644I+e1VeCp5RnWLfpnlWgGczNmhwXF4/6jHUojhFbSTWdi7nc77hykAdfWmHZKzQNSkq0Uyz9NLCq0w4okvHeI34MwESUtjLixbFGMbUFDkBqpEnjnrHpGW0DkN9zuMbm/Ufslq9zrOIXDlSIXGx8iUiLSEv0BZsvHkFLxfWKasl/kEM7HyzFlLDHp+HIS/jzoqNfqzFso1kCJ7BmkYqZgPnGzRemVNCyV2pp0MidB4NCb+fxUosDsHFSNpSHSyfGFzgBLZof8iJutsydE/bM2NbHdM7wTGmznLFZZDzMleX5q2LNgTXAKVvMN5yEQ/ABvH5SrCCkWUcSKNz7zfj9Odm/lnV5jX1GXRc/ZGae/sy97+9CFHKyDo8FTxIS552d/xWLcMpVfGBePKhjLap9zb7oUE/CZqvpFtfqqdH/H2O4zpDk8rCQ+uUNEBmwuW8adVhB0WwY1tqBpYB7BJaYCFM3oKdEI9z2vNLTkaBeZlyKOV8Mz4PXuWGCaV0qbTv5qLPMvOU+zwzrCO9AaQPdnOTZefWz7vWVzHvWbpo+lJQDrIyq45BXvfqqbIa2mbIP+ZAN9rS3P5EW2dCyb2a11is+urokVzwOUoRb6TTSkNWktSXJia6PRwxMOm8jBS
+ Jo7an3/P
+ RxmaolXj70S/uS178gxKAo3vQA6KMFDtwBmUNZNVLTSsXnBKHEbKwmj+ks3vEAw6BjYDsjhbMdfNg5kiXtSsHq3JLpJyzcoaDthHFBQE9nsfsV2ssqXdeRrD7uGkcJnfQ432MRLFw/AsMxbLEb/Eoty3Hc1q1j107buXu53qvQqtwzXAXio9QFf6uDRra7HMAJL7l+9NlYV4tHq8tXVxbTd0aLW4/ISdzyhdLJRl0rBDxXLfhnOnE5GwLsVkCGwJaGIHQdv4iqr+ggwpae3wjpI0xe6mhBKvE/buzyqEh9mw1mfm+DmmYCHaWVHSmP0A6d3eyo3EUR+J5E2x4WrzYcbig1pxEZSGHkAN0fwpreoLAAAOZvDQKNpgfjmRs2nTidI+GjCTX6vUDn0TDoBZuf9w7VxxjJkSSlfsPY7dIXnZ2z90hUsJ/bMN/klFrBS4cQankwSd/7aE8LC9UFwsmjUH22us06uG0f/lariXD7pFhzPu+tlQojZZiSkmEcPA3yAEzvreYH22/jdPrX5Vo+NY9o5FOLV1E3iLn7TwCR9r6so0wpPwFqgseNqu5qjlJWL60hh7MEblndZLZPQ3y/vV/5KI2zxLgpNWZwpx2/a+CT8A=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,149 +120,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 29, 2025 at 11:03:59AM +0530, Aboorva Devarajan wrote:
->From: Donet Tom <donettom@linux.ibm.com>
+On Mon, Aug 4, 2025 at 8:49=E2=80=AFPM Lai, Yi <yi1.lai@linux.intel.com> wr=
+ote:
 >
->This patch fixed 2 issues.
+> On Mon, Aug 04, 2025 at 10:30:45AM +0200, David Hildenbrand wrote:
+> > On 04.08.25 10:26, Qi Zheng wrote:
+> > >
+> > >
+> > > On 8/4/25 3:57 PM, David Hildenbrand wrote:
+> > > > On 04.08.25 02:58, Lai, Yi wrote:
+> > > > > Hi Barry Song,
+> > > > >
+> > > > > Greetings!
+> > > > >
+> > > > > I used Syzkaller and found that there is general protection fault=
+ in
+> > > > > __pte_offset_map_lock in linux-next next-20250801.
+> > > > >
+> > > > > After bisection and the first bad commit is:
+> > > > > "
+> > > > > a6fde7add78d mm: use per_vma lock for MADV_DONTNEED
+> > > > > "
+> > > > >
+> > > > > All detailed into can be found at:
+> > > > > https://github.com/laifryiee/syzkaller_logs/tree/
+> > > > > main/250803_193026___pte_offset_map_lock
+> > > > > Syzkaller repro code:
+> > > > > https://github.com/laifryiee/syzkaller_logs/tree/
+> > > > > main/250803_193026___pte_offset_map_lock/repro.c
+> > > > > Syzkaller repro syscall steps:
+> > > > > https://github.com/laifryiee/syzkaller_logs/tree/
+> > > > > main/250803_193026___pte_offset_map_lock/repro.prog
+> > > > > Syzkaller report:
+> > > > > https://github.com/laifryiee/syzkaller_logs/tree/
+> > > > > main/250803_193026___pte_offset_map_lock/repro.report
+> > > > > Kconfig(make olddefconfig):
+> > > > > https://github.com/laifryiee/syzkaller_logs/tree/
+> > > > > main/250803_193026___pte_offset_map_lock/kconfig_origin
+> > > > > Bisect info:
+> > > > > https://github.com/laifryiee/syzkaller_logs/tree/
+> > > > > main/250803_193026___pte_offset_map_lock/bisect_info.log
+> > > > > bzImage:
+> > > > > https://github.com/laifryiee/syzkaller_logs/raw/refs/heads/
+> > > > > main/250803_193026___pte_offset_map_lock/bzImage_next-20250801
+> > > > > Issue dmesg:
+> > > > > https://github.com/laifryiee/syzkaller_logs/blob/
+> > > > > main/250803_193026___pte_offset_map_lock/next-20250801_dmesg.log
+> > > >
+> > > > Skimming over the reproducer, we seem to have racing MADV_DONTNEED =
+and
+> > > > MADV_COLLAPSE on the same anon area, but the problem only shows up =
+once
+> > > > we tear down that MM.
+> > > >
+> > > > If I would have to guess, I'd assume it's related to PT_RECLAIM
+> > > > reclaiming empty page tables during MADV_DONTNEED -- but the kconfi=
+g
+> > > > does not indicate that CONFIG_PT_RECLAIM was set.
+> > >
+> > > On the x86_64, if PT_RECLAIM is not manually disabled, PT_RECLAIM sho=
+uld
+> > > be enabled
+> >
+> > That's what I thought: but I was not able to spot it in the provided co=
+nfig
+> > [1].
+> >
+> > Or is that config *before* "make olfconfig"? confusing. I would want to=
+ see
+> > the actually used config.
+> >
+> >
+> >
+> My kernel compiling steps:
+> 1. copy kconfig_origin to kernel_source_folder/.config
+> 2. make olddefconfig
+> 3. make bzImage -jx
 >
->1) After fork() in test_prctl_fork, the child process uses the file
->descriptors from the parent process to read ksm_stat and
->ksm_merging_pages. This results in incorrect values being read (parent
->process ksm_stat and ksm_merging_pages will be read in child), causing
->the test to fail.
->
->This patch calls init_global_file_handles() in the child process to
->ensure that the current process's file descriptors are used to read
->ksm_stat and ksm_merging_pages.
->
->2) All tests currently call ksm_merge to trigger page merging.
->To ensure the system remains in a consistent state for subsequent
->tests, it is better to call ksm_unmerge during the test cleanup phase.
->
->In the test_prctl_fork test, after a fork(), reading ksm_merging_pages
->in the child process returns a non-zero value because a previous test
->performed a merge, and the child's memory state is inherited from the
->parent.
->
->Although the child process calls ksm_unmerge, the ksm_merging_pages
->counter in the parent is reset to zero, while the child's counter
->remains unchanged. This discrepancy causes the test to fail.
->
->To avoid this issue, each test should call ksm_unmerge during cleanup
->to ensure the counter is reset and the system is in a clean state for
->subsequent tests.
->
->execv argument is an array of pointers to null-terminated strings.
->In this patch we also added NULL in the execv argument.
->
->Fixes: 6c47de3be3a0 ("selftest/mm: ksm_functional_tests: extend test case for ksm fork/exec")
->Co-developed-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
->Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
->Signed-off-by: Donet Tom <donettom@linux.ibm.com>
->---
-> tools/testing/selftests/mm/ksm_functional_tests.c | 12 +++++++++++-
-> 1 file changed, 11 insertions(+), 1 deletion(-)
->
->diff --git a/tools/testing/selftests/mm/ksm_functional_tests.c b/tools/testing/selftests/mm/ksm_functional_tests.c
->index d8bd1911dfc0..996dc6645570 100644
->--- a/tools/testing/selftests/mm/ksm_functional_tests.c
->+++ b/tools/testing/selftests/mm/ksm_functional_tests.c
->@@ -46,6 +46,8 @@ static int ksm_use_zero_pages_fd;
-> static int pagemap_fd;
-> static size_t pagesize;
-> 
->+static void init_global_file_handles(void);
->+
-> static bool range_maps_duplicates(char *addr, unsigned long size)
-> {
-> 	unsigned long offs_a, offs_b, pfn_a, pfn_b;
->@@ -274,6 +276,7 @@ static void test_unmerge(void)
-> 	ksft_test_result(!range_maps_duplicates(map, size),
-> 			 "Pages were unmerged\n");
-> unmap:
->+	ksm_unmerge();
+> I have also uploaded the actual .config during compiling.
+> [2] https://github.com/laifryiee/syzkaller_logs/blob/main/250803_193026__=
+_pte_offset_map_lock/.config
+> CONFIG_ARCH_SUPPORTS_PT_RECLAIM=3Dy
+> CONFIG_PT_RECLAIM=3Dy
 
-In __mmap_and_merge_range(), we call ksm_unmerge(). Why this one not help?
+Thanks! I can reproduce the issue within one second.
+After disabling PT_RECLAIM in .config, the issue disappears.
+The reason it doesn't occur on arm64 is that x86 is the only platform
+that supports ARCH_SUPPORTS_PT_RECLAIM.
 
-Not very familiar with ksm stuff. Would you mind giving more on how this fix
-the failure you see?
-
-> 	munmap(map, size);
-> }
-> 
->@@ -338,6 +341,7 @@ static void test_unmerge_zero_pages(void)
-> 	ksft_test_result(!range_maps_duplicates(map, size),
-> 			"KSM zero pages were unmerged\n");
-> unmap:
->+	ksm_unmerge();
-> 	munmap(map, size);
-> }
-> 
->@@ -366,6 +370,7 @@ static void test_unmerge_discarded(void)
-> 	ksft_test_result(!range_maps_duplicates(map, size),
-> 			 "Pages were unmerged\n");
-> unmap:
->+	ksm_unmerge();
-> 	munmap(map, size);
-> }
-> 
->@@ -452,6 +457,7 @@ static void test_unmerge_uffd_wp(void)
-> close_uffd:
-> 	close(uffd);
-> unmap:
->+	ksm_unmerge();
-> 	munmap(map, size);
-> }
-> #endif
->@@ -515,6 +521,7 @@ static int test_child_ksm(void)
-> 	else if (map == MAP_MERGE_SKIP)
-> 		return -3;
-> 
->+	ksm_unmerge();
-> 	munmap(map, size);
-> 	return 0;
-> }
->@@ -548,6 +555,7 @@ static void test_prctl_fork(void)
-> 
-> 	child_pid = fork();
-> 	if (!child_pid) {
->+		init_global_file_handles();
-
-Would this leave fd in parent as orphan?
-
-> 		exit(test_child_ksm());
-> 	} else if (child_pid < 0) {
-> 		ksft_test_result_fail("fork() failed\n");
->@@ -595,7 +603,7 @@ static void test_prctl_fork_exec(void)
-> 		return;
-> 	} else if (child_pid == 0) {
-> 		char *prg_name = "./ksm_functional_tests";
->-		char *argv_for_program[] = { prg_name, FORK_EXEC_CHILD_PRG_NAME };
->+		char *argv_for_program[] = { prg_name, FORK_EXEC_CHILD_PRG_NAME, NULL };
-> 
-> 		execv(prg_name, argv_for_program);
-> 		return;
->@@ -644,6 +652,7 @@ static void test_prctl_unmerge(void)
-> 	ksft_test_result(!range_maps_duplicates(map, size),
-> 			 "Pages were unmerged\n");
-> unmap:
->+	ksm_unmerge();
-> 	munmap(map, size);
-> }
-> 
->@@ -677,6 +686,7 @@ static void test_prot_none(void)
-> 	ksft_test_result(!range_maps_duplicates(map, size),
-> 			 "Pages were unmerged\n");
-> unmap:
->+	ksm_unmerge();
-> 	munmap(map, size);
-> }
-> 
->-- 
->2.47.1
 >
+> > [1] https://github.com/laifryiee/syzkaller_logs/tree/main/250803_193026=
+___pte_offset_map_lock/kconfig_origin
+> >
+> > --
+> > Cheers,
+> >
+> > David / dhildenb
+> >
 
--- 
-Wei Yang
-Help you, Help me
+Thanks
+Barry
 
