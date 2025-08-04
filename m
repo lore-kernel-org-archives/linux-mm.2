@@ -2,196 +2,127 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6BEF8C87FDA
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 09:22:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 35709C87FDA
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 09:35:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0AAE86B0095; Mon,  4 Aug 2025 05:22:18 -0400 (EDT)
+	id 9F0D56B0092; Mon,  4 Aug 2025 05:35:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 05C0E6B0096; Mon,  4 Aug 2025 05:22:18 -0400 (EDT)
+	id 9A1A66B0093; Mon,  4 Aug 2025 05:35:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E654C6B009A; Mon,  4 Aug 2025 05:22:17 -0400 (EDT)
+	id 8BCBE6B0095; Mon,  4 Aug 2025 05:35:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D2B9C6B0095
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 05:22:17 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 880551367EB
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 09:22:17 +0000 (UTC)
-X-FDA: 83738533914.15.1B2557F
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2073.outbound.protection.outlook.com [40.107.212.73])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 9CBCDC0007
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 09:22:14 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=Np1idC6j;
-	spf=pass (imf28.hostedemail.com: domain of Christian.Koenig@amd.com designates 40.107.212.73 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754299334;
+	by kanga.kvack.org (Postfix) with ESMTP id 78F136B0092
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 05:35:43 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0A5291A1078
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 09:35:43 +0000 (UTC)
+X-FDA: 83738567766.04.F4679FF
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 2852F14000B
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 09:35:39 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b="jWNhuy/R";
+	spf=pass (imf23.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.219.42 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754300141;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YHdeoYBdXFgfCR1PCftPtzyyfd43widQX4L1cYvLxcg=;
-	b=YK7l3dS1PksDqxqsrnK76QNP94GuZAxby7HoOKNhJMGW2ViEPXdjJhear7v9ACI2F615U9
-	hETdgouOPEQ/g4VWHZNKqQkYDoATYG/wl8Lj88+WOPWE9m3KVgOZniF9IHRKVc88tZjP6X
-	8wrZILGDZlGq3jC3LWAyvgEvGl/XAnk=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754299334; a=rsa-sha256;
-	cv=pass;
-	b=5CeXu1hEDDVCRIJtkSukb/xQuGnSQ+P88Z0OupKPZErmKz+O0BTZ5nwnMRWqPglJ30uy+z
-	JhBTWkpP9UqRQXbqq3yajHUIgYU7ALh70xw1SaiZpN2bOOPq/jx0Yqna49D7ROW+xVrSse
-	2WqrxVuuxdF1Sn40QOLSu/N18b+0Mxw=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=Np1idC6j;
-	spf=pass (imf28.hostedemail.com: domain of Christian.Koenig@amd.com designates 40.107.212.73 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NOGptYdAXIeLPU64yRwmYJXMzUL4MT3zcs9hYuZesxXB33N4m/VBBea5rNlfDrPpwWw49GDGJ8Lo6Ldo68TI/VZsVj2sv/AJJ2fuVuQTAdp86BYtbWaXZ2dzqTmn0DNNroMcZgr37fBOuZh+a9aNN/ZB59pohr32jbp3XhfgCWi88zIfDG06noT+MKoB5eDie5HTJRSEEC1MuHMyILcmX+hRF/bXMOQVt7jeyqtp6oHC7/s3RYTiU/iwOJhtycw6O/BwycydtrEKjKdLolU4jXRCw0keZankV34rO3O18yxpflWDHhcWjpolyfic9M03YceGgcRklJbgdWVDJNeGoA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YHdeoYBdXFgfCR1PCftPtzyyfd43widQX4L1cYvLxcg=;
- b=eGWOSLCVF9p9ogG4zVnXT13mMPsRq9JJXgEvhCQhXKrpYQf452wR3bkXS6OHWuaZHXgOy3kdcbjxN3//t//76a99nhjBI/L8HNl0+YE09xzChj3nSxEDcqPIxQmLuhIODCVo+R1LnU+YHa8MZxhTR0bCg82Dv57mcGrX3Xqvebn7jRuGMBfKOokz4dfSnEMfKUBnLK7qSa/cjkQWCPwlF4taG2i/Bp7StS+vjNWBWmJNQnorQahM9ZF1XqW+jzkWJZlZ0m5By1pToINL0La8OluUbUodFL58EIMqXZuI+0yMwhaTG9YGKg1Kt2b0SgNiCcUc63i7OXkNyuMcS8roIw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YHdeoYBdXFgfCR1PCftPtzyyfd43widQX4L1cYvLxcg=;
- b=Np1idC6jYm5xls2akKV74P9vTaO7c9joajKtH+TM/yQQb97jc9idUSIQVnpS2+murXbv1IANj/3Ccup9cYue7gKDnt9stMjpgDzMsG2yI915pJaqjpYmnKdwRHxqCE0NJVsf/0ysvQxtxxAuvO+IEGkAK5L42uV8/e3Gc+Iddr8=
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by SJ5PPF5D591B24D.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::994) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.18; Mon, 4 Aug
- 2025 09:22:09 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5%5]) with mapi id 15.20.8989.018; Mon, 4 Aug 2025
- 09:22:09 +0000
-Message-ID: <903cbf42-2fde-4e38-89e4-2d7287b845bf@amd.com>
-Date: Mon, 4 Aug 2025 11:22:05 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 13/18] ttm/pool: enable memcg tracking and shrinker. (v2)
-To: David Airlie <airlied@redhat.com>
-Cc: Dave Airlie <airlied@gmail.com>, dri-devel@lists.freedesktop.org,
- linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
- Dave Chinner <david@fromorbit.com>, Kairui Song <kasong@tencent.com>
-References: <20250714052243.1149732-1-airlied@gmail.com>
- <20250714052243.1149732-14-airlied@gmail.com>
- <77949b3a-201d-4e7d-a51f-e77274e4a4be@amd.com>
- <CAMwc25qP-42wMX4UYhZWiYfvf_1dBVNL9TU9i_Wq7uZPqjQL5Q@mail.gmail.com>
- <CAMwc25pyqhcq-8ubGZT5UX5AYroewBYP6oFN-JmjzEkHgFLTrg@mail.gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <CAMwc25pyqhcq-8ubGZT5UX5AYroewBYP6oFN-JmjzEkHgFLTrg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FRYP281CA0007.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10::17)
- To PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
+	bh=RcjWij1zfH9zgejgmouHVbcKEsPohZbovhnBUfRRKYA=;
+	b=whp+uyMQLMshcLJzs4HNG9QofEScvdTgPZwucl9rlW5/XBG9SE4vyEKPagDSuSFANxyW1K
+	DDf/+cIK0t8+Ruhr4ckGbNw3exUEF5RbjY5AR2OEAYKI9uzNq12q8cuoH6iCfTaiYTWBsl
+	cJFiSlnn0HhCXc5ryPfFSXfIFSVo9gw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754300141; a=rsa-sha256;
+	cv=none;
+	b=YbwgTsPJvmF2EfzPL5PC4mikSwMnv9zR+b9n8w1yyAZtHXAW2iwwKO6pGyu2j5A2bXCeoL
+	2HTUdHgsQR0s6VuqnQaPr5BJOSlR1XE9JtG9J0tAZ9tWyiJUhgNh5dkRNTljq1qhrG4oO4
+	oqnJ7W6a+pFp76QiIsy08xS8Fx8CN68=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b="jWNhuy/R";
+	spf=pass (imf23.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.219.42 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-707453b0306so31422146d6.2
+        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 02:35:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1754300139; x=1754904939; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RcjWij1zfH9zgejgmouHVbcKEsPohZbovhnBUfRRKYA=;
+        b=jWNhuy/RPcXEsDgBL8twRHiNy/gixvacyYpNpsp4tw7DBKpItZDOuVCJ01vfgg8U//
+         DCviTWhysSwDl2v6HD09dpPQb+agyW3dnvClIhXJbwBa5ioaSv9x++PSBsxZ6g6zgCjM
+         kGpxDTNoTl+QpSFBrpP0JrIiwvBr3GMUkYQm1+ADWWqEW5yWRry+EDoCR1faRPlSJUJ6
+         WnhNBb3WifHQWkiFV8BZ3MdyM5cP5e0ryUX/TTmUDYb1Vj0C7dgYen8pKtlesYcONznG
+         +DfcCGxghsJJO0ROK5wGtmj5oBuveCwPbx13XpRUHmXJGVEb9xC3nllgI7AZr+AKX3oI
+         QFKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754300139; x=1754904939;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=RcjWij1zfH9zgejgmouHVbcKEsPohZbovhnBUfRRKYA=;
+        b=IACR677+oJ3FbMpBIXSSJaAGEd1DF3B5gwcZ9sP6WUgb5LEXBeaQYIzucngpeWhtPF
+         TV3bW6LLX5v4zqVIuho2dOnk5z/HoTmbWwpKtR2HSAdUwFuC5jGOnWtU9NlWB/bo7Qg2
+         jaSd7OGE8nCl1g/d2lcl5cx7p2RINKPXXd5t8ScydxifznNmZRp8ADzAt37SM+QZzMEM
+         Ax0dP8CLGk8aPZzaK5eu0XLYcKSlwozgqhkr5gFISjNVvAdemg8YDgR4i9uuFG1qxsP8
+         wWqjy24J9VYPGBnWd8qGG9BVTkVPVgRgwb3Cll3Qd6u5vmUMv54AJJr+jg9XPULVNEuJ
+         qOfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXF7WbV/OBSIlbF5/PrnaI3jnS+fyWfqqc2yWJiSCM9dcNM5FF4bQQ64CWiUQ0UiOU1hZRbwQJQqQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy0JTZeejiBwPBNNDvsbjj3BY7X54vdUboFaowgSTabNNxLiPO5
+	q/iWqBrtL7Iu9KxaAmQb3IsIJ+YgNhWGyfnd8I2vFfgK3NLrj/Kz6XvvUVEFmeQMSe0=
+X-Gm-Gg: ASbGncvSrhizOkR7Us8cHSEg0l4KPjNPp2g2OOcEA0ig80doJbVh+gpRQH8luqDMXBO
+	uxoI6ZGW0Ct8ZidJuluUcXZqbI7ME8U+Yl599PK2Z76THeva3beYJgXx1DD871CbxEENPkra7Mb
+	GzPLMxjBdyQPnvWINwKC6pO+lw4dJNa/E/o2JGmeKIxJ9uVQqditohN94pAToGy22hkbWhOhkQL
+	veCQJxkWc3rRyOOfQaH4Im4nauuW6MImcEeHuW2a40pg6BwTGKnfAO+JwgmleoaQN+kNWF0lYJL
+	pvM5CsPDDZtE7KALMpa7+c8/V5C1Z1DqqDQLqzVI+9mnoX+h4e1JDDPb5RVoLv9xHHC4Lyln3ty
+	G5RyF7++jsuT1TNkVVY8yQDlHMzKcoqWohvZ0ssqFwB+htRsjTQeA3fF0
+X-Google-Smtp-Source: AGHT+IGJYeDoMlkbxXOekoon1joz4ipz4FPO6Mj7+15rgXMlIFwmDrM6pyUnxD9IxFCApfdn/Qj1VA==
+X-Received: by 2002:a05:6214:2626:b0:707:159e:d1c9 with SMTP id 6a1803df08f44-7093637cd44mr112044766d6.51.1754300138944;
+        Mon, 04 Aug 2025 02:35:38 -0700 (PDT)
+Received: from [10.68.122.90] ([63.216.146.178])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-7077cde8d56sm56261826d6.73.2025.08.04.02.35.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 Aug 2025 02:35:38 -0700 (PDT)
+Message-ID: <7d92ec18-ff8e-4929-8b9a-f0bf5c6d249f@bytedance.com>
+Date: Mon, 4 Aug 2025 17:35:28 +0800
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|SJ5PPF5D591B24D:EE_
-X-MS-Office365-Filtering-Correlation-Id: a3464d66-e17a-4b69-6539-08ddd338633f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?anJjU3paYitvR3ZuL2JMbzJTbWM0ZmJPLyttVVRwcFVLc3VJNTdqRTNPdS9P?=
- =?utf-8?B?S3E4RHZ6N1hHa21VVitjdTc0NndnVWJCb3RuZjVtRm9vM1pnNm5MaDQvc01K?=
- =?utf-8?B?c01haGRuRndHakg0eVlKcEs4US93clRlNzNSc1VWc1A5MjUvbUE1Nk1GTkRZ?=
- =?utf-8?B?Z2FES2JJQSs4Q1ppVlRkTE94bjdBKzJKS0VLdi9NaExCSERyOU1NUEpvUkd2?=
- =?utf-8?B?eXBjdi8rWFUzR3R6K0VyQUlZZ0g2bUsrbTVhbWp4N0tNWmJTd0JmQXhrUC9F?=
- =?utf-8?B?WEdaVXpjeExEdVpGM004UzVyL0tWQk1Ra01hYk8vL2IyaEhmbmkxcGw3aXJx?=
- =?utf-8?B?QWxkQWNtK0t4U3BWQzRvUGNPdWUweU9zb1VXNUo1d0VheXFvK2NzUXV0d0g5?=
- =?utf-8?B?bVprU201VkpscllEa3N4bWJiTzJVbVhVRzdxdlI0R0JpYXFWRTlKR252RVov?=
- =?utf-8?B?dnlPa3BiNThYWXViU1NkVTV6K1UyL21WUUtORGNObjdjSk8wVWkvcytqZGE5?=
- =?utf-8?B?QXpweEdKOU9LQXJ0dEtBcFpjc3pFSUJRTWQwL203WTFSS2d3RVJoQ2JKKzk2?=
- =?utf-8?B?b3VaWFNYTU9PUzV0cmoza1hmYllOMjJSZXgzdWJTbDJPcWtGU2RuVUpOa3ZE?=
- =?utf-8?B?WGMxb29VQ2lSalRNR0VVOEs0TXZYOTRxYTBteUFuTk9pRUpZQmZWK1VJVlhw?=
- =?utf-8?B?Wk1yb2tYZlFJTkd6WVJnbkpKdm5NY1FwdEF6Sk5SMzNkVGVLbXIyY2FQSDZW?=
- =?utf-8?B?OVR4MEhGUUN5ZFlHMUNXc2dBZWpDYVpLSmxQcVpmcDRjRmltbzRTUXpWbmdF?=
- =?utf-8?B?M2ozVHB5Ym1kR2pTWE16SDA1WDMrWGlzc1R6N0hkN0hsSmhSTDhzMXZ6Mno2?=
- =?utf-8?B?dTh2ajVleTc1NnJRNzFnS2JUNk16bU14cVh4c09HTzMzRityczQzYnczdGk0?=
- =?utf-8?B?WG9KT1ZMbmYyUHNtY29Ya0dZZkUzMWVaRmNFcXNZVDFGOXVnQ3N0YTRweXVm?=
- =?utf-8?B?RnM0bXczUUdzd1ZNYWFYWExHNEN3dGcxZGlOZkwwZWpIWFltRGFrRU1KV056?=
- =?utf-8?B?dzhkMWlBd3BDYmtwci9KT1B4UGh4Z1JKSS9wUUo3RU1xekJ1cHNZUWovZlVT?=
- =?utf-8?B?QmsxQjlHdmZ0Qytwc1o4UTh5aFRiS2hNZE4xYjZpQjhMYVM3b0FaSFAwMlhR?=
- =?utf-8?B?a2xFS3U3d1FORTVYU1NXVTZKK2YvWEZvRSsyTzNrOERuZ1lsUGVDSUEra295?=
- =?utf-8?B?d0c0U0VXTk5ZcU1ab0VZRzhDSTlUVGwvU3hDOXRpSUxOVTFsdkszak1wQmZN?=
- =?utf-8?B?MnVteVRvaEd0QUdQbnFQRXpoaUZuUVE2QWxQY3Uzd1VmZVY1czk4eldhd0Vi?=
- =?utf-8?B?MHZNMlNsWVV3MEtYaERBbXdwWUhVREFjZW9qVFhNYmRPajEwYnJNOGFNbmsz?=
- =?utf-8?B?aGhaWFlHY1pzSHpaRVdYSUMyM3FQeC9xSmd3M1RBTlprUklpNEJKWkkwaGNs?=
- =?utf-8?B?TXJSS2h0eE9tR28rSmdQSmxKVTlHWER1Q2ErSWlmVUM1UldpbXdjclUzSTV5?=
- =?utf-8?B?aWxRbUVIeE8zSkxac1VWcS9lLy9uNFg4VUhkMFEzZGErY092UDNaOVpGYUFC?=
- =?utf-8?B?TFg1R0FiU1hSVG5qazFvd25BRytVRXYzOWRrSnZWdmpSQWdCbEk0NzEzcFVm?=
- =?utf-8?B?eEpRM29LdjN0RFUrWTZFbytTQ1g5cXpNZXVLaUswVkZORS83Vm1DNExpSFl4?=
- =?utf-8?B?ckUzUFRYNmZlUVVVQmFPdzQyS3J6WDE3NGI5YmZUSHpBSnpjMnhtQmlRSUxY?=
- =?utf-8?B?dkFjZjZCeldzS29qWllQU3dFbFlkemFOVG0xWkZaMGJNNEFkT2QvdWs3SVov?=
- =?utf-8?B?bDRuZUpNOFlxL2FtYTB5QUNscjNhMnVLSXh1THpVRDNCSVdwMVNKSVZoNmVM?=
- =?utf-8?Q?A3nfLcqE5NM=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dWhMdThqa2pIN1RqeTlhRmN4MGdDMUZ0SWcxQU5JUmtJbUxmMEtnRGFITit2?=
- =?utf-8?B?OUtOUjQ0cE43d1dtcWJySFFRZVhGdVJwSllmckNVbk90M2U3WHVXN2xNZStT?=
- =?utf-8?B?bDh5SkJXVWlJZDhmbXMvbzFsSXd0Z0NaWFdpMVljVW5hT3J4SWVSWUdxWVNa?=
- =?utf-8?B?UkRTam1ycEhwVnB4QS9OOElBWEsySW1DSCtYekhoWXoxbzV0K3hHUXVERkVO?=
- =?utf-8?B?UzZIN3hQWXBQd1orSXM4L1dxeWNMbkx5eHhmbTJyd3hGL3JqRUpzTnhLRmVJ?=
- =?utf-8?B?d0R1WFBVWFo1MGdpZ2hQUmJpeUVJbDcvcXJlMUk1NSszZmFVNzlubXFLM0l0?=
- =?utf-8?B?eFJ5a2taK3ZLb010WU9CeE52SVJ1eTdHcVdJTXRtZElvWVhrYmNMeG14bVRW?=
- =?utf-8?B?YTZadDNDYk5qNVdxekhDQnBVVERlM3hieEdPdnpqS2FETlkxTm80NDg0Ui9m?=
- =?utf-8?B?OWtZRk1lU0tmd0VaSHd6RzhQUkFPMU5GSE45UGg4bkVqY2RYbzQwZ0duZXRq?=
- =?utf-8?B?elY3YTVwaW9VSTdtaFcyeDhvU3BBWmVnNXBrd01TSlp5MWxmczBSejU2dDNK?=
- =?utf-8?B?Vks1dC9KdStBKzV6L3hLMnRXT2tRZHNmekJiQVZUS2w1WjBKVXNueXV3TCtS?=
- =?utf-8?B?WWpPcVRpeEZlZTEvdk5MWVR3Tmx2SW5jMUladHdzNk8vbmRGV3dmMGdYbnMx?=
- =?utf-8?B?QkU5QTlLaDBGU3pwdWcveGFKbTdwaXIvMU51MjM4Vmt0My91Mm9CQis4ZlFN?=
- =?utf-8?B?M0Z5cVBGQXhkWGVaWEx2bkoyRitNWVg2eHQ3Q055MEhibTVqQ08xcEdKYVds?=
- =?utf-8?B?UTlRelR0Z3V6Umo2MXA0NE1DRkRSZEtmMmFYMXFoNlNuK0xQQ2dIdUgwWmhI?=
- =?utf-8?B?aVFBcGVERHE3SENVcGZnK2VPWnNZQkpZaHYwTEkwTDZZdCtFQXIwYlhVY2Yy?=
- =?utf-8?B?dFhSWFpYRzlUMGR0QUVRNmNGNDJtUlI1bExOWUZ2MnpqdnpaNENKWUhwTWRi?=
- =?utf-8?B?cFM1amhuTmFoR2Q0WTM0VWV5NjRLRmg2S2pYVjhJd04yT1VaU09jTVRWV2hz?=
- =?utf-8?B?dXRnSHoxYVo1em5MTG9uWEh2UGplWFV1STg0YTBkdC9aUHdBOE55UjROa21I?=
- =?utf-8?B?NGpXdGQ5NlkzaVo3NkJBb3NyN1B6L1R2WTV4ZzJFSjV2QlpWMFhOdEMvUXV4?=
- =?utf-8?B?em5VNkJXU1Z3NG05MnN1aGlhOVVqaytSZGt6WVY5NlZhMC9iMVIrZTBIQSts?=
- =?utf-8?B?Z1kvRUZxQithOW14QUNmc0VOSFg3NzFla1VFaDhQeGhJa1FYRFVWR0hkVG1U?=
- =?utf-8?B?bWJzeVZ1L3didlRsTXF0dzZ1SlJtOUVJbDgxdmEreHNxWmJ1T0t0eHo2R2lm?=
- =?utf-8?B?NWpGOUxsSDN3elBkdEw3U3JERUlVRUl2MVR2SExZYlZDU1owZEVVcEtMM0pp?=
- =?utf-8?B?dkRmc3p1c0o1aTduVGg0b3ZvYVYxZklqK21TR2gyVnQ4OTRVQk5kQ2NmNGY1?=
- =?utf-8?B?VGJzZFl5eERTNmVnK1NsN1Rtbi9UTkNaNDBsMWFqT3Y2WStGSFBtaFIzeDJP?=
- =?utf-8?B?eEp5dFJyS3kxTW0rSDFUNUl5cWdLTzYvaVk1VkRQRkpZYlVMN25hYkNOK1E2?=
- =?utf-8?B?b2Zhd0dMUjZ0bmpkMEhlejdiQU01bEY3amxjYitveVFEQlRUT3g5dkg4WERv?=
- =?utf-8?B?WGNDR2pObVJicFpRbVJwYmhEZCtqYW5JbzgyUE55QW1Xc3BaMXZyR3d2Z0Ir?=
- =?utf-8?B?bHdnVjFoR2dZVituUFRZeDFsaGJFRC8rb3hiSFp5T0hsT0I0SFU5Wnh2bHlE?=
- =?utf-8?B?RitoVG8zVGRHVS9LeFZ1cThwOExNVUpUMlc2L0Vqbm9FcG9oMjhSNnYrOWE0?=
- =?utf-8?B?Wm9YVE9kUHAycS85YkZqT2RDY3ZkUVVQTGpzVDd5OGZRUUlIbzBjUUUrMTY0?=
- =?utf-8?B?M21hNDRxZ3p3ZUtIK1JTRmgxQXdiQXU3ZVYrajBsMzBNZ2lBeUc1b1BUSHNt?=
- =?utf-8?B?NWtJMkY3aHB2MTVuaG9YRDZXQThTTG4vVmVlaDUyMG8rMmVGSVppVlg4SGFC?=
- =?utf-8?B?MjZMbXRHRWpaYXFWT3VFcVExVU5uNXlOTjIxL1Z0enJOR1lkbEZxOWVNWGRW?=
- =?utf-8?Q?1w/A=3D?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a3464d66-e17a-4b69-6539-08ddd338633f
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2025 09:22:09.5754
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1vha23ms+yYNkom59kruvg3YlcFePAWZNYixEGl0Cbjc9gKhwpARQClDLW4HGak2
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF5D591B24D
-X-Rspamd-Queue-Id: 9CBCDC0007
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] mm: use per_vma lock for MADV_DONTNEED
+To: Barry Song <21cnbao@gmail.com>, "Lai, Yi" <yi1.lai@linux.intel.com>
+Cc: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Barry Song <v-songbaohua@oppo.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
+ Suren Baghdasaryan <surenb@google.com>, Lokesh Gidra
+ <lokeshgidra@google.com>, Tangquan Zheng <zhengtangquan@oppo.com>,
+ yi1.lai@intel.com
+References: <20250607220150.2980-1-21cnbao@gmail.com>
+ <aJAFrYfyzGpbm+0m@ly-workstation>
+ <1d1d97f9-2a67-4920-850e-accf4c82440e@redhat.com>
+ <4fa8f492-c7ef-451c-8dc7-38b031c8a092@bytedance.com>
+ <d9d0890e-2837-49dc-9ca8-1d6c28e95a21@redhat.com>
+ <aJB0Kdc6cx1lGkdb@ly-workstation>
+ <CAGsJ_4yw4Qn7OWmUJeJZYuOHLjJ7L8kov3Th3vFPa3h4y0ur_A@mail.gmail.com>
+From: Qi Zheng <zhengqi.arch@bytedance.com>
+In-Reply-To: <CAGsJ_4yw4Qn7OWmUJeJZYuOHLjJ7L8kov3Th3vFPa3h4y0ur_A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 2852F14000B
+X-Stat-Signature: xnppg9hybky95rhoq11n9n51zrp6x34m
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: soipb8nqc4hmnh3q8xqmn83fhugbz1yj
-X-HE-Tag: 1754299334-86571
-X-HE-Meta: U2FsdGVkX18AO2A9vcYuiiDzJeBY7mQzTMetQ9HqpcjZemKVOW4NTqyptw23Nv/gPcFhl34wAnqqTdzAo/x5YD46oUB6p5PVF8KHusiooiKmrXeX/7AJwFoKwFxyk/CcKn9maXUapCTlgEofW2wLTaQfupXYnm1xmXO3ajkNU3vlwk7WxyvC5cYhG40bDBo+bL4sYKPcQhAcCuPTj8o9VVxNqRaV2biSnTBxxaad0QyGuy5QVlKztzkn+4ZeL1RKA7NesO4s0N3Ersy4dif6+oXrNuzHrJyEplz8SSQPWd4BuVwDIbWobx0e9tyL4kCBIhhwX6AptN98xqPLV+fDd+X19qwPONsETC3ykv4Gm4vbBlDMslr8tkBmkPA7uzf2lYaS8bcTBW/lNAV8N7VGdC/D86Iw49ZT9ADd4A3on6+uwbWEULfLFzJ2W2xuQ9IjqmILwOzqSUZzIxptV/prjB24uV7LEgHhQPGC8J2iXrrAaykEURYVTAd1Kcat7wbh61vMaWs0kbA5bkRqxtVHCAIf1BNhKR/hGskRDkmuPW/lg+0nJskcTGLhuEjfk27GzgrQxRq/mRWG8y/zVD8htuQ/M6r+6SlXs+/CsLKOQz4OO4lrCVsiaPYc7fvqSZgJfdRBEA6NMhKwxMOkE2cgDc8ShSaSW8MzO7qGNGf/KsTejcHvlE94zF6N1sMPt/f9op+SwGTtCnTHB61xYJLigjIqOo5QIz05aKY6P+RLF5WIsUJeydMUsplSMLJ+fdxPLfAtBhONgquMaiELl2XF0Rtksa4EPOkScMu2swDQK+C0XaIUrIAyIE5Ki4ReqzLCFgkByKYOfpvrxzE4fBOhIpobuPaL3k9QSBUT9KlArLdD2I00DpfWuYB1IeDF/KDoBs7GT5OGl3eQVT8pSBoy7ixdaDaORyJfOwzY9CZJ20o1Hdd0+/5+9ldYseWrxiKGzcIeSWOmQJ9FqIJGllB
- S0KVdT4s
- 3F7miESOevG2l/eBd8Vh3T/AQ0MTwBoCNHd/9hbYs9n3NLcI7t3ctInMrx8yjEI4kwN1K1OtUOQseAYTkeAT37flq58/8E4AFzPj3LJwgkCPAgZEtevF8gFuf+HUPSKEMXetSZdXAMiYPot9DhxF6NEEHJLAN0NROlIYPyOdJrQY/vdSEcCxJ+kcxnZy4+79rOtB4xOmrQxBzjrKSx9j2C8PiEbLiRt1oEVJH9WUwLXg86NQH1RR1ldT8GsXS9IjcAi91DiUOjTbVOXLKE1Q2UDSWIbkVj6Pq/V5ACrjsWyhVVIEvpHzr5dZVGi6jkaX/Irr5RmhB6HTE+EZ+5wJfUz/66Mthrz/2dZBftx3ozrr/8C/pNmaM2+jg+CsNREC/3A3NSE+WiQhmId7k0KwXGzvuqUP9NXR/+2jAvS25H6V2Nid/K5hy2OePkqHBKKSQB2JUjCb5JpB5gGBKEETSvcy3Cy0Ek4vpK4kTYgzNzWB0rxLd2fz+nM8bCDCF7qZiEQyaANV1VX+MhIM=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1754300139-82263
+X-HE-Meta: U2FsdGVkX1+CGXd2jQh8TpSubZq1oU5+W3JAhAQT7k8LllKfZLzMNBrt1iyRul3ZwLbF2AGh318hTzcuE3en5V3vgY5TWjNM34J4Gy6iklkXV9hnDHndTNVzeXSwbyPNfflHjYF4Yjz3cKKNqE7votm/jP2BOjVbMP9eAk70O0qSy40QhTxJdxor8BSUtAe2jjDqZQIOPd844mjJfI8Hq+b7NbMtNAWCmmlrljMeX6blrTQrX4KnZuvVkflH/CncFk5+vDdVmxRsT3JjGy10f5rjEDVLrjsESX8l/YNiSxtZhF3bjzoc5m1m2u/iYIbUKpzd8RWULuLyDNJ+6m6XF9CtH4drvhfMbvKOKkdNiZY0gPArnOuwte+96IBaUHr7aE7ea3863NWlpuMH7nk/M4JTURlrH7Rrq3TrWxeM4l2q0FoWDb+8qMph5H07RTgYksRtW1xmWSxTRCRm1WLzs+A472w5KwlQQDji5h8ThEbtt6FNA2hpqddQehR9s/Zg3Bgpsy/qNuwDUY+gPMNbds2RNZzjAaYDlP7H91R0PagorN+5AztYpjAsCDoOHiSoUc1dceByYzN/zSiJsX/gOhgPhZ3XVECfoULgwTIhn3YcBHTNe8hhlIrcbiJvvxgdO1uzxHGOLLqJb8DESkYL6zf58UH7phE1uJIQOvSiHHHwh20Ix5Jn4erDCQKZmzROFmdpMV3IrSJJW9rZx0kTg45Tq3phgnViN04AU8SebE6gvIkPBwYsEfkkT6HX9AdSeGH/ownjwx811ji2m+7sirgaDIGygbRBuivnURRCljCiIkkDZ1Fwz6GuwOYj1r09hK9mnyCQ9z7cz/7SDDiN+XNwndwF197Xg5WaQgs1C1GxN59XaYS3lKB1cttt9UsbHMOa3GjPgQpE9hcgY5LXOlG28g8Nmi5ovXnW1OOQuTXDuWxnIw4QE7584Gb/Qv/+DHCHovHff8tAnr+3xHM
+ QqtVbruF
+ m2YbZakqmpEdqfAYmuLClBGcNiP/LUbqhFGSIZmdkM7d0y1RxGf3hke4nxMBm/GSRut8QZ7kq8EYs9j5Kv2KTaUnA1yyjVBrDwtXKBC3SRtOyj4OOuARMsJbIv5VUzAX2vi35eZ3eDWwPgcGNs/fEB8B9AQcnGm38oMWfLbu9pT6kQoAAcqwYwEtwlLxIxRm0Co9ePD35Zvf3MhUXCt0wmgvNQ8OGPhruTjgRRnBzN0XVkOF7UJivKVbvx21WFUP4qfzHao4XXiXYhgCNvGbfby2QwGHRtVZF6A63ELjVwTPl91ykGWGygq4HcrE1cwEi61TJkoT6I1Pkeldegtntx/IRn4S48BqDq+41DswKKbJKJZyUAFdFRebyRN9IybbTd+GQFmACqO2TsgJMwMn3AtdG7mkYLp0JzTBJxZewJVJUEHdRIiD1gtrONX4obxnPzRsTf5j+Dz4t5IGTClUdf3jyQBfpvXJd53rl1G285FPnZVSvhTr05IrdNb+8YZ7gj1qVywUGMXEmQNvS6c7GMKItBloNIsZv5yXmGnSXPSzFE/bCQgQd9GAqU8pAASEco3MGn0hlVOvpQ356JIhdV05DnG3CLrg2UTGbNqrjMHg8Z1QZkQ8hB69mOQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -200,76 +131,216 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sorry for the delayed response, just back from vacation.
 
-On 22.07.25 01:16, David Airlie wrote:
->>>> @@ -162,7 +164,10 @@ static struct page *ttm_pool_alloc_page(struct ttm_pool *pool, gfp_t gfp_flags,
->>>>               p = alloc_pages_node(pool->nid, gfp_flags, order);
->>>>               if (p) {
->>>>                       p->private = order;
->>>> -                     mod_node_page_state(NODE_DATA(page_to_nid(p)), NR_GPU_ACTIVE, (1 << order));
->>>> +                     if (!mem_cgroup_charge_gpu_page(objcg, p, order, gfp_flags, false)) {
+
+On 8/4/25 5:15 PM, Barry Song wrote:
+> On Mon, Aug 4, 2025 at 8:49 PM Lai, Yi <yi1.lai@linux.intel.com> wrote:
+>>
+>> On Mon, Aug 04, 2025 at 10:30:45AM +0200, David Hildenbrand wrote:
+>>> On 04.08.25 10:26, Qi Zheng wrote:
+>>>>
+>>>>
+>>>> On 8/4/25 3:57 PM, David Hildenbrand wrote:
+>>>>> On 04.08.25 02:58, Lai, Yi wrote:
+>>>>>> Hi Barry Song,
+>>>>>>
+>>>>>> Greetings!
+>>>>>>
+>>>>>> I used Syzkaller and found that there is general protection fault in
+>>>>>> __pte_offset_map_lock in linux-next next-20250801.
+>>>>>>
+>>>>>> After bisection and the first bad commit is:
+>>>>>> "
+>>>>>> a6fde7add78d mm: use per_vma lock for MADV_DONTNEED
+>>>>>> "
+>>>>>>
+>>>>>> All detailed into can be found at:
+>>>>>> https://github.com/laifryiee/syzkaller_logs/tree/
+>>>>>> main/250803_193026___pte_offset_map_lock
+>>>>>> Syzkaller repro code:
+>>>>>> https://github.com/laifryiee/syzkaller_logs/tree/
+>>>>>> main/250803_193026___pte_offset_map_lock/repro.c
+>>>>>> Syzkaller repro syscall steps:
+>>>>>> https://github.com/laifryiee/syzkaller_logs/tree/
+>>>>>> main/250803_193026___pte_offset_map_lock/repro.prog
+>>>>>> Syzkaller report:
+>>>>>> https://github.com/laifryiee/syzkaller_logs/tree/
+>>>>>> main/250803_193026___pte_offset_map_lock/repro.report
+>>>>>> Kconfig(make olddefconfig):
+>>>>>> https://github.com/laifryiee/syzkaller_logs/tree/
+>>>>>> main/250803_193026___pte_offset_map_lock/kconfig_origin
+>>>>>> Bisect info:
+>>>>>> https://github.com/laifryiee/syzkaller_logs/tree/
+>>>>>> main/250803_193026___pte_offset_map_lock/bisect_info.log
+>>>>>> bzImage:
+>>>>>> https://github.com/laifryiee/syzkaller_logs/raw/refs/heads/
+>>>>>> main/250803_193026___pte_offset_map_lock/bzImage_next-20250801
+>>>>>> Issue dmesg:
+>>>>>> https://github.com/laifryiee/syzkaller_logs/blob/
+>>>>>> main/250803_193026___pte_offset_map_lock/next-20250801_dmesg.log
+>>>>>
+>>>>> Skimming over the reproducer, we seem to have racing MADV_DONTNEED and
+>>>>> MADV_COLLAPSE on the same anon area, but the problem only shows up once
+>>>>> we tear down that MM.
+>>>>>
+>>>>> If I would have to guess, I'd assume it's related to PT_RECLAIM
+>>>>> reclaiming empty page tables during MADV_DONTNEED -- but the kconfig
+>>>>> does not indicate that CONFIG_PT_RECLAIM was set.
+>>>>
+>>>> On the x86_64, if PT_RECLAIM is not manually disabled, PT_RECLAIM should
+>>>> be enabled
 >>>
->>> Thinking more about it that is way to late. At this point we can't fail the allocation any more.
+>>> That's what I thought: but I was not able to spot it in the provided config
+>>> [1].
 >>>
->>
->> I've tested it at least works, but there is a bit of a problem with
->> it, because if we fail a 10 order allocation, it tries to fallback
->> down the order hierarchy, when there is no point since it can't
->> account the maximum size.
->>
->>> Otherwise we either completely break suspend or don't account system allocations to the correctly any more after resume.
->>
->> When you say suspend here, do you mean for VRAM allocations, normal
->> system RAM allocations which are accounted here shouldn't have any
->> effect on suspend/resume since they stay where they are. Currently it
->> also doesn't try account for evictions at all.
-
-Good point, I was not considering moves during suspend as evictions. But from the code flow that should indeed work for now.
-
-What I meant is that after resume BOs are usually not moved back into VRAM immediately. Filling VRAM is rate limited to allow quick response of desktop applications after resume.
-
-So at least temporary we hopelessly overcommit system memory after resume. But that problem potentially goes into the same bucked as general eviction.
-
-> I've just traced the global swapin/out paths as well and those seem
-> fine for memcg at this point, since they are called only after
-> populate/unpopulate. Now I haven't addressed the new xe swap paths,
-> because I don't have a test path, since amdgpu doesn't support those,
-> I was thinking I'd leave it on the list for when amdgpu goes to that
-> path, or I can spend some time on xe.
-
-I would really prefer that before we commit this that we have patches for both amdgpu and XE which at least demonstrate the functionality.
-
-We are essentially defining uAPI here and when that goes wrong we can't change it any more as soon as people start depending on it.
-
-> 
-> Dave.
-> 
+>>> Or is that config *before* "make olfconfig"? confusing. I would want to see
+>>> the actually used config.
 >>>
->>> What we need is to reserve the memory on BO allocation and commit it when the TT backend is populated.
+>>>
+>>>
+>> My kernel compiling steps:
+>> 1. copy kconfig_origin to kernel_source_folder/.config
+>> 2. make olddefconfig
+>> 3. make bzImage -jx
 >>
->> I'm not sure what reserve vs commit is here, mem cgroup is really just
->> reserve until you can reserve no more, it's just a single
->> charge/uncharge stage. If we try and charge and we are over the limit,
->> bad things will happen, either fail allocation or reclaim for the
->> cgroup.
-
-Yeah, exactly that is what I think is highly problematic.
-
-When the allocation of a buffer for an application fails in the display server you basically open up the possibility for a deny of service.
-
-E.g. imaging that an application allocates a 4GiB BO while it's cgroup says it can only allocate 2GiB, that will work because the backing store is only allocated delayed. Now send that BO to the display server and the command submission in the display server will fail with an -ENOMEM because we exceed the cgroup of the application.
-
-As far as I can see we also need to limit how much an application can overcommit by creating BOs without backing store.
-
-Alternatively disallow creating BOs without backing store, but that is an uAPI change and will break at least some use cases.
-
-Regards,
-Christian.
-
->>
->> Regards,
->> Dave.
+>> I have also uploaded the actual .config during compiling.
+>> [2] https://github.com/laifryiee/syzkaller_logs/blob/main/250803_193026___pte_offset_map_lock/.config
+>> CONFIG_ARCH_SUPPORTS_PT_RECLAIM=y
+>> CONFIG_PT_RECLAIM=y
 > 
+> Thanks! I can reproduce the issue within one second.
+
+I also reproduced it locally.
+
+BUG: Bad page map in process repro  pte:f000e987f000fea5 pmd:00000067
+[22099.667758][T22301] addr:0000000020004000 vm_flags:00100077 
+anon_vma:ffff8882c5b5fc98 mapping:0000000000000000 index:20004
+[22099.671248][T22301] file:(null) fault:0x0 mmap:0x0 mmap_prepare: 0x0 
+read_folio:0x0
+[22099.673833][T22301] CPU: 15 UID: 0 PID: 22301 Comm: repro Tainted: G 
+   B   W           6.16.0-rc4-next-20250704+ #200 PREEMPT(voluntary)
+[22099.673838][T22301] Tainted: [B]=BAD_PAGE, [W]=WARN
+[22099.673838][T22301] Hardware name: QEMU Standard PC (i440FX + PIIX, 
+1996), BIOS 1.12.0-1 04/01/2014
+[22099.673840][T22301] Call Trace:
+[22099.673841][T22301]  <TASK>
+[22099.673842][T22301]  dump_stack_lvl+0x53/0x70
+[22099.673845][T22301]  print_bad_pte+0x178/0x220
+[22099.673849][T22301]  vm_normal_page+0x8a/0xa0
+[22099.673852][T22301]  unmap_page_range+0x5cb/0x1d40
+[22099.673855][T22301]  ? flush_tlb_mm_range+0x21a/0x780
+[22099.673859][T22301]  ? tlb_flush_mmu+0x30/0x1c0
+[22099.673861][T22301]  unmap_vmas+0xab/0x160
+[22099.673863][T22301]  exit_mmap+0xda/0x3c0
+[22099.673868][T22301]  mmput+0x6e/0x130
+[22099.673869][T22301]  do_exit+0x242/0xb40
+[22099.673871][T22301]  do_group_exit+0x30/0x80
+[22099.673873][T22301]  get_signal+0x951/0x980
+[22099.673876][T22301]  ? futex_wake+0x84/0x170
+[22099.673880][T22301]  arch_do_signal_or_restart+0x2d/0x1f0
+[22099.673883][T22301]  ? do_futex+0x11a/0x1d0
+[22099.673885][T22301]  ? __x64_sys_futex+0x67/0x1c0
+[22099.673888][T22301]  exit_to_user_mode_loop+0x86/0x110
+[22099.673890][T22301]  do_syscall_64+0x184/0x2b0
+[22099.673892][T22301]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[22099.673895][T22301] RIP: 0033:0x7fafb0048af9
+[22099.673896][T22301] Code: Unable to access opcode bytes at 
+0x7fafb0048acf.
+[22099.673898][T22301] RSP: 002b:00007fafaff50ea8 EFLAGS: 00000246 
+ORIG_RAX: 00000000000000ca
+[22099.673900][T22301] RAX: fffffffffffffe00 RBX: 0000000000000000 RCX: 
+00007fafb0048af9
+[22099.673901][T22301] RDX: 0000000000000000 RSI: 0000000000000080 RDI: 
+0000559d33cab1a8
+[22099.673903][T22301] RBP: 00007fafaff50ec0 R08: 0000000000000000 R09: 
+0000000000000000
+[22099.673904][T22301] R10: 0000000000000000 R11: 0000000000000246 R12: 
+00007ffe78dbcd2e
+[22099.673905][T22301] R13: 00007ffe78dbcd2f R14: 00007fafaff51700 R15: 
+0000000000000000
+[22099.673907][T22301]  </TASK>
+[22099.673913][T22301] BUG: unable to handle page fault for address: 
+ffffea7be1ffe548
+[22099.674789][T22301] #PF: supervisor read access in kernel mode
+[22099.674789][T22301] #PF: error_code(0x0000) - not-present page
+[22099.674789][T22301] PGD 2bfff7067 P4D 2bfff7067 PUD 0
+[22099.674789][T22301] Oops: Oops: 0000 [#1] SMP PTI
+[22099.674789][T22301] CPU: 15 UID: 0 PID: 22301 Comm: repro Tainted: G 
+   B   W           6.16.0-rc4-next-20250704+ #200 PREEMPT(voluntary)
+[22099.674789][T22301] Tainted: [B]=BAD_PAGE, [W]=WARN
+[22099.674789][T22301] Hardware name: QEMU Standard PC (i440FX + PIIX, 
+1996), BIOS 1.12.0-1 04/01/2014
+[22099.674789][T22301] RIP: 0010:unmap_page_range+0x1101/0x1d40
+[22099.674789][T22301] Code: eb 03 cc cc cc f3 0f 1e fa f3 0f 1e fa e9 
+ea 01 00 00 48 b8 ff ff ff ff ff 00 00 00 49 21 c2 49 c1 e2 06 4c 03 15 
+ef a6 fd 00 <49> 8b 52 08 4c 89 d0 f6 c2 01 0f 8
+[22099.674789][T22301] RSP: 0018:ffffc9000557baa0 EFLAGS: 00010282
+[22099.674789][T22301] RAX: 00000003ffffffff RBX: 0000000020005000 RCX: 
+f000000000000420
+[22099.674789][T22301] RDX: 000000000000001e RSI: 0000000000000000 RDI: 
+7803ff95ef87ff95
+[22099.674789][T22301] RBP: f000d420f000d420 R08: ffff888000000028 R09: 
+c000000100000864
+[22099.674789][T22301] R10: ffffea7be1ffe540 R11: ffffc9000557b6b0 R12: 
+0000000000000000
+[22099.674789][T22301] R13: 00000000000001fb R14: ffffc9000557bcc0 R15: 
+ffff888000000028
+[22099.674789][T22301] FS:  00007fafaff51700(0000) 
+GS:ffff8885b2b29000(0000) knlGS:0000000000000000
+[22099.674789][T22301] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[22099.674789][T22301] CR2: ffffea7be1ffe548 CR3: 0000000103d8c000 CR4: 
+00000000000006f0
+[22099.674789][T22301] Call Trace:
+[22099.674789][T22301]  <TASK>
+[22099.674789][T22301]  ? flush_tlb_mm_range+0x21a/0x780
+[22099.674789][T22301]  ? tlb_flush_mmu+0x30/0x1c0
+[22099.674789][T22301]  unmap_vmas+0xab/0x160
+[22099.674789][T22301]  exit_mmap+0xda/0x3c0
+[22099.674789][T22301]  mmput+0x6e/0x130
+[22099.674789][T22301]  do_exit+0x242/0xb40
+[22099.674789][T22301]  do_group_exit+0x30/0x80
+[22099.674789][T22301]  get_signal+0x951/0x980
+[22099.674789][T22301]  ? futex_wake+0x84/0x170
+[22099.674789][T22301]  arch_do_signal_or_restart+0x2d/0x1f0
+[22099.674789][T22301]  ? do_futex+0x11a/0x1d0
+[22099.674789][T22301]  ? __x64_sys_futex+0x67/0x1c0
+[22099.674789][T22301]  exit_to_user_mode_loop+0x86/0x110
+[22099.674789][T22301]  do_syscall_64+0x184/0x2b0
+[22099.674789][T22301]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[22099.674789][T22301] RIP: 0033:0x7fafb0048af9
+[22099.674789][T22301] Code: Unable to access opcode bytes at 
+0x7fafb0048acf.
+[22099.674789][T22301] RSP: 002b:00007fafaff50ea8 EFLAGS: 00000246 
+ORIG_RAX: 00000000000000ca
+[22099.674789][T22301] RAX: fffffffffffffe00 RBX: 0000000000000000 RCX: 
+00007fafb0048af9
+[22099.674789][T22301] RDX: 0000000000000000 RSI: 0000000000000080 RDI: 
+0000559d33cab1a8
+[22099.674789][T22301] RBP: 00007fafaff50ec0 R08: 0000000000000000 R09: 
+0000000000000000
+[22099.674789][T22301] R10: 0000000000000000 R11: 0000000000000246 R12: 
+00007ffe78dbcd2e
+[22099.674789][T22301] R13: 00007ffe78dbcd2f R14: 00007fafaff51700 R15: 
+0000000000000000
+[22099.674789][T22301]  </TASK>
+
+> After disabling PT_RECLAIM in .config, the issue disappears.
+
+Thanks for the test, I'll take a closer look.
+
+> The reason it doesn't occur on arm64 is that x86 is the only platform
+> that supports ARCH_SUPPORTS_PT_RECLAIM.
+> 
+>>
+>>> [1] https://github.com/laifryiee/syzkaller_logs/tree/main/250803_193026___pte_offset_map_lock/kconfig_origin
+>>>
+>>> --
+>>> Cheers,
+>>>
+>>> David / dhildenb
+>>>
+> 
+> Thanks
+> Barry
 
 
