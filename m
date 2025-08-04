@@ -2,130 +2,115 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 51255C87FCB
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 23:01:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4324DC87FCF
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 23:10:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E6DD8E0002; Mon,  4 Aug 2025 19:01:20 -0400 (EDT)
+	id CF26C8E0002; Mon,  4 Aug 2025 19:10:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BE948E0001; Mon,  4 Aug 2025 19:01:20 -0400 (EDT)
+	id CA2BF8E0001; Mon,  4 Aug 2025 19:10:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D46E8E0002; Mon,  4 Aug 2025 19:01:20 -0400 (EDT)
+	id B920C8E0002; Mon,  4 Aug 2025 19:10:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D7048E0001
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 19:01:20 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E129B115A77
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 23:01:19 +0000 (UTC)
-X-FDA: 83740597878.22.B33FA04
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 0E8C02000A
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 23:01:17 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="I/4w3gXd";
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf13.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754348478; a=rsa-sha256;
-	cv=none;
-	b=LiAbT46pQ9UbTu9ByDdrrMifQOAeyMu6BP6iNYsLeXFuVoKkMQ3ubNQLdUn095jEA/YPGN
-	eGtmobks7fPMziUXCJO5tUSyWtkIkiHF2o5Anzw9wBBBvynf3WWQR+o5JWai6AHGs6UJxp
-	IlASeq5hg57UtRNnsQ8TfMXz175YEfg=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="I/4w3gXd";
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf13.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A4DB88E0001
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 19:10:12 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3FD031365A4
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 23:10:12 +0000 (UTC)
+X-FDA: 83740620264.04.D9BD906
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5FA1940009
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 23:10:10 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=emQpYAhD;
+	spf=pass (imf12.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754348478;
+	s=arc-20220608; t=1754349010;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gU7gICCtCiiOkKgytm+DZgh/C6t4tnk/oqWk65I1YqY=;
-	b=0I+41i40E2lrU12M6yCoxE+X2tFunZytYtNWoSc9B4La1jyaXz3jJBo2+sR41TMQ15JyMU
-	lqp20p7fw6mZ3+6iKUJSuiVpSOYTi8k2M+AirfLzV6BX8733JuyAC5QaCKums1sUbwp0Wb
-	3UKcKhE2e3HjchUaDc8g5Ti5Y+pAr7Q=
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4af027d966eso36946341cf.3
-        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 16:01:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1754348477; x=1754953277; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=gU7gICCtCiiOkKgytm+DZgh/C6t4tnk/oqWk65I1YqY=;
-        b=I/4w3gXd1TAYGl5y25tU3GDZL9qB2xOIb9J2LXFwnjV6o8SBd4m3tKbyOzvHwKs8JB
-         VFGlKiYljuwuK0J99SWjdxsMnDJeUShFfnQgg5mMQMtmY/FsGBnVcgmDSsYjaZ4I/VBg
-         Zb89VMniSBrTImPaHEK37wq97DdqCCMS5MuhwjXTf+ea5ylvaFne/SNJnqW9mKETwnWb
-         HFeRx+/FMS7mvImaaxns0Z8+qy3AH3A/9vretyDCGDySe9sDiVFigooGeYf0QbNM85nz
-         +Zmnff4/ze/wCVanzoNN4De45rXIVBoK2mbFidIvSKJK3sKS5isAunQEL3gEpLPivvEE
-         Wvgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754348477; x=1754953277;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gU7gICCtCiiOkKgytm+DZgh/C6t4tnk/oqWk65I1YqY=;
-        b=nocGeLnrVSvzPAqpHjmu6MOxTPuqoblpsMHoSFRIZi7KKai4ISl9eYEJVqxX/mvJGt
-         2Ed2xUJ9UGkLOONMTUtN/XPFNyXadMCjs+qdFJcN0Jx/7Ic7afFVmhD34Dtom4DXumIt
-         /DBZrrzgiK8Rtm1B8EZKSzLf+KhpsM+MzOVHj0wivFtfAnsCK5XD1Lz7iX7gZqlBwGQW
-         WwUX3PKHWVi5uNE3B4l5+/JIxtbOAxrz752NMqapp2P19FoJ1S82A/zY7k7XLsMtkehz
-         W4b2tU2t5zG0qx2tHwmRMT1CzOPG1YlMtlauaaBDne9R+jLG8iQFjSxFCTGmoZIV6/Lx
-         KzFA==
-X-Forwarded-Encrypted: i=1; AJvYcCV/dg7wGGVn1ql+ZqLCf0Cv9yYENhFUEmmV8gXDSdW2c7Gc+PLP6LkJnvggU196Aw+HDwvzWsI+Kg==@kvack.org
-X-Gm-Message-State: AOJu0YwCxRgld3H1HgDMXzTOOSup6BBOK9HzySxkY7S3al6exf0sk3vC
-	AvUKFmp+7VGyjueEcFBPXGJUZG1NfLdjT59ThDXnk95MYx5EfNVftyhOE98rVjzn/8oh/MPMeCZ
-	N19+8aIj/Z3+8hDMrSCgkdFFJa60bMrOQm1yvghSu3Q==
-X-Gm-Gg: ASbGnctdR6UuUz2bdGtv8jOiM3PfRom8XOKgQfpIYX0MyaQK5xTXfL/abwjKJiE83r+
-	Mxw5g36CVfarzEm8PEoht/1DRDiO91xf4+jVQdtMAxJyfwoHXlCcrsOBK4+gij/JFHV+OB6yMFr
-	+Q8ZCnzSQBW9T8eNxMuS99QEoGBeQWSMXUTh+btfgdzsMvJQlcD7BflEv2F7RPp6g+SVB4ehedu
-	GVG
-X-Google-Smtp-Source: AGHT+IHe63ELG7HHSW4Jr0p22ejEnswLaJpBTfGBY8KrlhhHwCd1xtHK5nLfdWJ/GzdTJH5a222X5rXcjnstQZeQWOo=
-X-Received: by 2002:ac8:57cf:0:b0:4af:c21:41b1 with SMTP id
- d75a77b69052e-4af10ad5bdbmr146282341cf.55.1754348476999; Mon, 04 Aug 2025
- 16:01:16 -0700 (PDT)
+	bh=OwTFCa47yjLyOw4GeTmYZtCVh1CzB3NwU8kncZE+7No=;
+	b=oIG+LqDEfLPcNOMbW/+jnroM61zW3qyh7ne9CQgXwgp7quBcu67j3KRyQIbmz7MasKrFKi
+	3l5ONSglPYWiF6ynI4/dvhV4ehMACnRdlVULJLAwbUI+G5A2hzJ//+KKz36QhYwiD4vqtY
+	lM5oFB1tT9+S4K4gsnLemE2d/79Rz/E=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=emQpYAhD;
+	spf=pass (imf12.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754349010; a=rsa-sha256;
+	cv=none;
+	b=swAMWWEyljIcD49Rj4EkIOYnqU/Y7lD7FBqq6+nD2T0mrZOjTPO4ELJl4WOwvdD4irKk1+
+	TzPw619KvaKpgUgnboB0ynpS16vcLgoNJEWCRpxUvmO/u1aQpiZDiBTbjHoOW7ScwW1aMK
+	Ae7rm2MC2r0oKZc8gp95dOo8W8YQzrQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id EFD6145EC0
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 23:10:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6319C4CEFE
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 23:10:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754349008;
+	bh=OqU7HKlaaB+/yr85e8O0qFFV2mhIIMzXHyes2/pyXiM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=emQpYAhD7UcEV34gva/+Tj2Gk9HQNqUdMMzPJsgGAVXqLM/GSpEW0RmrusIHZTWSQ
+	 mEV05f0QR6bajRjLIlWSa4IZkibAVyg4gSoG1hESJs7QfWJCgW+96Fhmr1oQfTfwpl
+	 nIHxlfFJvZrseS1hYf6Q3mjx8ENyoaIVdtOIGJqNpVL1n4lK0bFMm8V4jnzkU3vH/b
+	 tLPlNK/xDGtMOmbSsd4E8WBwGr4Ke0RfftUuh7rvJZlwnP4K1Ju/4GTwr2NXN4YQri
+	 iuNdj9ZHC2K+Angv3b50xnFEgKLlXyjSAR/TYKmgNbMrw2C3xzIYlYhcs3/lPMPl6x
+	 gBj8HPi9LxthA==
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-458bf57a4e7so20225e9.1
+        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 16:10:08 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV3Woaav/pc/+Zhpn61vVBehO0lwH17I+17g2kfU6TCPi+QlZ4FHYNSCYg/7W8we1ZRHXu/81KMJw==@kvack.org
+X-Gm-Message-State: AOJu0YydeoiGiJbc22NMHO09/t+3nrwEOAipQzdI6dgAkJMid6Z0cqYU
+	OhImTZhSIAvmqxG0WJa3oZbC//z5kw3K8JDtkV2X1YvccjITCRQ/G39XvTjh0GW3ywwVRzpI6gG
+	FKvoGcFYoYmm8aIfG4LtQ18ee2uOfc5vuAy1jfsmG
+X-Google-Smtp-Source: AGHT+IHKpk+HdsX+UkmoGsNTrjTyAvv+GZeP3pJG7v7GzWXQDB8HcuYU8JvYjjZGY3fLVdxWGYKFXeKl60hxqHiBoUI=
+X-Received: by 2002:a05:600c:3b8c:b0:43d:409c:6142 with SMTP id
+ 5b1f17b1804b1-459e13212bamr553835e9.0.1754349006808; Mon, 04 Aug 2025
+ 16:10:06 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250723144649.1696299-1-pasha.tatashin@soleen.com>
- <20250723144649.1696299-15-pasha.tatashin@soleen.com> <20250729173318.GQ36037@nvidia.com>
-In-Reply-To: <20250729173318.GQ36037@nvidia.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Mon, 4 Aug 2025 23:00:39 +0000
-X-Gm-Features: Ac12FXy6p3_gSOnGWR1VjKZIJjskzeugSY4VSrqKY12UE9gHpXQr70kL51Ej-YY
-Message-ID: <CA+CK2bBEX6C6v63DrK-Fx2sE7fvLTZM=HX0y_j4aVDYcfrCXOg@mail.gmail.com>
-Subject: Re: [PATCH v2 14/32] liveupdate: luo_files: add infrastructure for FDs
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
-	changyuanl@google.com, rppt@kernel.org, dmatlack@google.com, 
-	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org, 
-	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, ojeda@kernel.org, 
-	aliceryhl@google.com, masahiroy@kernel.org, akpm@linux-foundation.org, 
-	tj@kernel.org, yoann.congal@smile.fr, mmaurer@google.com, 
-	roman.gushchin@linux.dev, chenridong@huawei.com, axboe@kernel.dk, 
-	mark.rutland@arm.com, jannh@google.com, vincent.guittot@linaro.org, 
-	hannes@cmpxchg.org, dan.j.williams@intel.com, david@redhat.com, 
-	joel.granados@kernel.org, rostedt@goodmis.org, anna.schumaker@oracle.com, 
-	song@kernel.org, zhangguopeng@kylinos.cn, linux@weissschuh.net, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
-	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
-	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
-	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	saeedm@nvidia.com, ajayachandra@nvidia.com, parav@nvidia.com, 
-	leonro@nvidia.com, witu@nvidia.com
+References: <CALzav=d_Bjfy=6if+rPmxgGJfUV8ijnQ5hf40HoH6Yozg_H6Ew@mail.gmail.com>
+In-Reply-To: <CALzav=d_Bjfy=6if+rPmxgGJfUV8ijnQ5hf40HoH6Yozg_H6Ew@mail.gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Mon, 4 Aug 2025 16:09:54 -0700
+X-Gmail-Original-Message-ID: <CAF8kJuP09jvpB--fLy6Ju6rRuKFS5r8vyq1ne7ragbv0suWzLQ@mail.gmail.com>
+X-Gm-Features: Ac12FXy7avNazRoYmbC_NeBMrj_2tPBaCG8ggpo_BqxQQnqN6_SKMsJk-VIeXn4
+Message-ID: <CAF8kJuP09jvpB--fLy6Ju6rRuKFS5r8vyq1ne7ragbv0suWzLQ@mail.gmail.com>
+Subject: Re: Live Update MC (LPC): Call for Presentations
+To: David Matlack <dmatlack@google.com>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "iommu@lists.linux.dev" <iommu@lists.linux.dev>, kexec@lists.infradead.org, 
+	Linux MM Mailing List <linux-mm@kvack.org>, linux-pci@vger.kernel.org, X86 ML <x86@kernel.org>, 
+	"pasha.tatashin@soleen.com" <pasha.tatashin@soleen.com>, David Rientjes <rientjes@google.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Samiullah Khawaja <skhawaja@google.com>, 
+	Vipin Sharma <vipinsh@google.com>, Josh Hilke <jrhilke@google.com>, 
+	Changyuan Lyu <changyuanl@google.com>, "graf@amazon.com" <graf@amazon.com>, 
+	"dwmw2@infradead.org" <dwmw2@infradead.org>, "jgowans@amazon.com" <jgowans@amazon.com>, 
+	"ptyadav@amazon.de" <ptyadav@amazon.de>, "jgg@nvidia.com" <jgg@nvidia.com>, "rppt@kernel.org" <rppt@kernel.org>, 
+	"alex.williamson@redhat.com" <alex.williamson@redhat.com>, "tglx@linutronix.de" <tglx@linutronix.de>, 
+	"dan.j.williams@intel.com" <dan.j.williams@intel.com>, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, William Tu US <witu@nvidia.com>, 
+	"anthony.yznaga@oracle.com" <anthony.yznaga@oracle.com>, dave.hansen@intel.com, 
+	David Hildenbrand <david@redhat.com>, Frank van der Linden <fvdl@google.com>, jork.loeser@microsoft.com, 
+	Junaid Shahid <junaids@google.com>, pankaj.gupta.linux@gmail.com, 
+	Pratyush Yadav <pratyush@kernel.org>, kpraveen.lkml@gmail.com, 
+	Vishal Annapurve <vannapurve@google.com>, Steve Sistare <steven.sistare@oracle.com>, 
+	Zhu Yanjun <yanjun.zhu@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: g7dfdzzb35yq1ydoi14tzu9kq4ixwyao
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0E8C02000A
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1754348477-346358
-X-HE-Meta: U2FsdGVkX1+siaT0kOeDS0GbzMbnW90b2vKqVoUbKnXvJUUsQknzRBcG1qNbdddIzT8rwLUNorSOOSzRcMYdrkCRK6lFMU/8kcre6lnn2xFBKqsRFd42txIwU7hJQIlsulsclixeu1+fjbvrHmoNNjpaQ+ftGNbm7ZGe/mq30hoJfHXs3Y8Z0EV499w/zzuarUr7ofDTTA6o0qmor3JdQgeAGuOQsLAOpZvQ4yeZFeA0V6IawNAzku9oRuUmCBXGLAoGDFE7RXO1iFreri0wUbItOVv1nwXeHqAlcCRj6daqlGnoZX4s4vOH+YVL6ncz+4M/kMVTthyOUrQQt3v3lqJlc0ZhFwH4brR+mKmWyFhKQuKlD75OjNnhUaGOn7/Y1OxzE2FbYIvIDMwntae0jHjVxF7GRQitpwi/zF8XjOalh6pFISxmuoUl8U2Z9BnS6xfJGaJhI4TwzRXxluP91/CSfsqyefIhEx39ZARnoDbUoyDKkC30baGk+kuYBm5DKLoM3tEy38RHoTHO+exeRjytj8Wbuei+5p6UhQeqlSkMwqg7YFWiJrAOI4z7tOF41dROwHz/Nuz1+okDDoA/iV6CWDIszQVkSyihfM6k8RQKgl3HcdyQLmID0xzUMNXsf0xfnxnzn239YgnMcCWT+klMlRn9Nr/1HW3vxT6zvAz64hDSDIpZkACEoT49VooSxkb3qhrkp1Jo2JDu6N3XZ/+cRl1mxP065Y/PBpfUhClLOsckqgjirKZMO4+7GPYx1cD3fjvk+AzPcvdharmNoqYWT6TF75SltsccdLyjWCk89LIY82u3+ZTN6DJkDOSM3wc/9ha0CTj9qoRV9EE/nvgDhQdgj7w/o1dQ4d5wbPXCAxito/TgINKDCzkfdcxvPAwVNyAEN+ssLOy0qDxSwY7oD6EnTpZrq3WOat36HfXmvJuxd3qc+e6mzl2Q3MfY4cbA2xYwuVA+iojxxj6
- jgvUkM5N
- v1/kgvdVAPK+wrZRNF5PRkw3vDxSYAWDYTZ1QioXCCMknOMgTiTCfcnmekFmhlyxXI4Q5ZGVlozZznIzPEkc7uh6mDTk0cW34onTJYmrppdU6x/hmLzempSf0NsSsmxVEm7XKQ/r73EIp68LCIiKV9pMRtsuOp2TkFvGVYREO669i+YVMIaWq7A4ZMbYXcbCHcohVU9e7eWlLQB9Fu0iry2oSCMQWxUpUAPey9yq7Vu38Pxd2o+GOHYi1OxWj2tCAi5LroKLGnNx811aAfSY+BOriFmmSSLVY1KWCrKoE+gXRMDLq6Y+VkHGxMg==
+X-Rspamd-Queue-Id: 5FA1940009
+X-Rspamd-Server: rspam06
+X-Stat-Signature: i9d5icqm5w8peshc3d5nytoh6h9z5njd
+X-HE-Tag: 1754349010-183673
+X-HE-Meta: U2FsdGVkX1/59gaebf6ve6hhdGEf+ncrrwhsmkYGcxINi6/rSdwuzQyNetDMQpn+aYOqhJfrrnsh6x3BU2Hon4BbUs9yoa8MUOx0H+ulCL8g6V+tmgQIX+5bkXm56TXiHERlPCBlDJcynQdXOjy6ZlO2csbMlbomZpSdijeKaCOBKaJRmsfzsuqRIGMF1bD+qwkMAVAN7szw5EQahI6QyLpMXw+Jp5SWLjea0fG2IMYXkq/Vi7wyqP02tNBvWg2wmEKYdWqHosfIpgunFo5zPDWlG0VVnzVQgGwMTbD9Mufxaof5GwniiPCR9I8lZJp1CHSyxjfti/jA82w/a19Huxq6Z+Yo2xYsRbHXvzgW+TcIQMKkRg8NTqGsG72femmxB/GyKM9qINFyMItq9wP68TFS/G3aPCqVeu6WYJfsbcbD205kN4WZAeD0Fx6uQxpvIh3UyUE5T7pZIyI511Wb60s3hiv5Q0cqKxsRIYPEt4UOgieCcwfH7pCuiRyg6wVB0FeZQU2Yi1oE9DIkFytpEjeDS6/+QB1bs9WdAe95pF6dyUYn3itZqgnvDzsdc90ckCAz0yGDR2HodLIu9iXmqY7MiKNyYaEhyBmvdNsv0pfxgc4DT0Ft5R5KbvJTbfwvCQKxtuK+R3SIYkiRlTh752eaVUqveT9pILufIMfP3FhWVLTYT7r/d9J7wKVMXx2IR+9UY5Uf7ZAK9+UBjB1MbPL2HSDmzF8gqJDGv9lPnfVTQx8PrDj4PPHe6E5waGw6HJKaSqp9L+N5RwNbDuXNVtMa8jvVj0Khhzy+1jZf/xHvofgbKs4+OBxUzpMqmgCS9KveeQpGTitUNi2pKV3fBzEV7yVvOS0KFo3qzCjIeVnR33nLKKILOn8fpg9PlNiQTTDXIdEODec97eDDTXhcd7fkJ4FpuNe6jDbuDhZT6bDXjxWOXmnEnHBmj3mVhz6JRwB8w0ygRNOSj7q9NUY
+ dOTcLw/E
+ akUV+GeR4NnZ3v+Gwyku/Zm29mdFJc8+N6P23Tdo/RR0V3oVKEcvJRztbv+VqaYU7NSUPaqjp+/tNkN8TIAWkCOG+NdJeacjM/zik
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,77 +119,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > +struct liveupdate_file_ops {
-> > +     int (*prepare)(struct file *file, void *arg, u64 *data);
-> > +     int (*freeze)(struct file *file, void *arg, u64 *data);
-> > +     void (*cancel)(struct file *file, void *arg, u64 data);
-> > +     void (*finish)(struct file *file, void *arg, u64 data, bool reclaimed);
-> > +     int (*retrieve)(void *arg, u64 data, struct file **file);
-> > +     bool (*can_preserve)(struct file *file, void *arg);
-> > +};
->
-> ops structures often have an owner = THIS_MODULE
+Hi David,
 
-Added here, and to subsystems.
+Thanks for organizing this.
 
->
-> It wouldn't hurt to add it here too, and some appropriate module_get's
-> though I didn't try to figure what happens if userspace races a module
-> unload with other luo operations.
+On Fri, Aug 1, 2025 at 8:33=E2=80=AFAM David Matlack <dmatlack@google.com> =
+wrote:
+> Topics to be discussed at the microconference include:
+>   - Live Update Orchestrator (state machine, userspace API, implementatio=
+n)
+>   - Generic infrastructure for preserving file descriptors across Live Up=
+dates
+>   - Live Update support for specific files (memfd, iommufd, VFIO cdev, et=
+c.)
+>   - Integration of Live Update with the PCI subsystem and Linux device mo=
+del
 
-I added try_module_get()/module_put() to register/unregister functions.
+I will submit a topic proposal for the Live Update with PCI subsystems.
+The PCI RFC V1 discussion thread is here:
+https://lore.kernel.org/lkml/20250728-luo-pci-v1-0-955b078dd653@kernel.org
 
-> > +
-> > +/**
-> > + * struct liveupdate_file_handler - Represents a handler for a live-updatable
-> > + * file type.
-> > + * @ops:           Callback functions
-> > + * @compatible:    The compatibility string (e.g., "memfd-v1", "vfiofd-v1")
-> > + *                 that uniquely identifies the file type this handler supports.
-> > + *                 This is matched against the compatible string associated with
-> > + *                 individual &struct liveupdate_file instances.
-> > + * @arg:           An opaque pointer to implementation-specific context data
-> > + *                 associated with this file handler registration.
->
-> Why? This is not the normal way, if you want context data then
-> allocate a struct driver_liveupdate_file_handler and embed a normal
-> struct liveupdate_file_handler inside it, then use container_of.
+Thanks
 
-Good point. I removed arg, and added handler as an argument to the
-callback functions.
-
-> > +     fdt_for_each_subnode(file_node_offset, luo_file_fdt_in, 0) {
-> > +             bool handler_found = false;
-> > +             u64 token;
-> > +
-> > +             node_name = fdt_get_name(luo_file_fdt_in, file_node_offset,
-> > +                                      NULL);
-> > +             if (!node_name) {
-> > +                     panic("FDT subnode at offset %d: Cannot get name\n",
-> > +                           file_node_offset);
->
-> I think this approach will raise lots of questions..
->
-> I'd introduce a new function "luo_deserialize_failure" that does panic
-> internally.
->
-> Only called by places that are parsing the FDT & related but run into
-> trouble that cannot be savely recovered from.
-
-Agreed. I added a new macro in luo_internal.h:
-
- 11 /*
- 12  * Handles a deserialization failure: devices and memory is in
-unpredictable
- 13  * state.
- 14  *
- 15  * Continuing the boot process after a failure is dangerous
-because it could
- 16  * lead to leaks of private data.
- 17  */
- 18 #define luo_restore_fail(__fmt, ...) panic(__fmt, ##__VA_ARGS__)
-
-And use it in places where we panic during deserialization.
-
-Pasha
+Chris
 
