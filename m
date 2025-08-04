@@ -2,110 +2,105 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F620C87FDA
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 03:38:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 41115C87FD3
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 05:12:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD4266B007B; Sun,  3 Aug 2025 23:38:34 -0400 (EDT)
+	id 6681F6B007B; Mon,  4 Aug 2025 01:12:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BABE76B0088; Sun,  3 Aug 2025 23:38:34 -0400 (EDT)
+	id 619236B0088; Mon,  4 Aug 2025 01:12:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE87D6B0089; Sun,  3 Aug 2025 23:38:34 -0400 (EDT)
+	id 52EDB6B0089; Mon,  4 Aug 2025 01:12:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A24666B007B
-	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 23:38:34 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 553CA135F6D
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 03:38:34 +0000 (UTC)
-X-FDA: 83737667748.27.B4D2FA1
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B4D47140003
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 03:38:31 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 43CBE6B007B
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 01:12:43 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8CE531DC929
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 05:12:42 +0000 (UTC)
+X-FDA: 83737904964.10.B7F2E3C
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 42521140007
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 05:12:39 +0000 (UTC)
 Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=vIsLKdYF
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754278712; a=rsa-sha256;
+	dkim=pass header.d=fu-berlin.de header.s=fub01 header.b=oYmWBoah;
+	dmarc=pass (policy=none) header.from=fu-berlin.de;
+	spf=pass (imf09.hostedemail.com: domain of glaubitz@zedat.fu-berlin.de designates 130.133.4.66 as permitted sender) smtp.mailfrom=glaubitz@zedat.fu-berlin.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754284360; a=rsa-sha256;
 	cv=none;
-	b=uIW+mDW7wlCoQZkHsi9NbJ9Z3rvuhFD2OTQfUv19fQMGLoCPWSiQl8LjK3MGUvM0BlYgoc
-	omwPxYQS8dwefpCNbUyGjcKbP2+/NP6Yo8bQyeNhvbsi8yvWaKs23Hp5D62C/SD5s1JkrS
-	z4JoTVhQzRDoJcKOK5tQdwAx01/Is/8=
+	b=KmPlwwa0VfLL7xntSMgNkGFiJHTZKZANg0Cu1ydOo0NfdN1wrEYe+wXRhKg38wlyKRPa1O
+	x86tgZp5JBqPu6bgnqVtEkq38VSL9tzp88oCDMxqkNfxATZ50LINiAgkfm+r4i2wfgscdK
+	BfSvq0cu8CTxv5505lYPGx1HXF2QUx4=
 ARC-Authentication-Results: i=1;
 	imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=vIsLKdYF;
-	dmarc=none;
-	spf=none (imf09.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	dkim=pass header.d=fu-berlin.de header.s=fub01 header.b=oYmWBoah;
+	dmarc=pass (policy=none) header.from=fu-berlin.de;
+	spf=pass (imf09.hostedemail.com: domain of glaubitz@zedat.fu-berlin.de designates 130.133.4.66 as permitted sender) smtp.mailfrom=glaubitz@zedat.fu-berlin.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754278712;
+	s=arc-20220608; t=1754284360;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SmxoINSQKVJVK+Bn4i2QXaigutnESsGDJWcnHJouMq8=;
-	b=tUBOTA/PSyIW9CHQOt7oDUoHEMfwTPQeVf01puyxQmr4xtrKnY/7/y7acVqUqUTe3kj89S
-	fvw88OvlEKLmhjegZtpCYS4qZycB37Co3UjQOUSIvQ+3fPH/BMnfdvILXL9RlbZMldz6pR
-	+Ny4hM5fKQh4mjmZwgybdtEnrrf1K9c=
+	bh=EvPkdQkZuTk/oKdUqX7+df3m3jcmeHsaTzG3mAWFvRg=;
+	b=MkKnAsnzkEQna8Qrw8i5i0CprhlDGjeyNny3CAL3hORYG3BwaRGMe6IFBchvnYdpfmyE0z
+	8W1L6RPD28czlTry2KE22bHLjBDhKuACYP8h+MqMA4HX5i9NSZZKh7szJda6vwkvmRL5Cq
+	+itrCNbEsj5eVSJrif7QbuCBMJ0/KR0=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=SmxoINSQKVJVK+Bn4i2QXaigutnESsGDJWcnHJouMq8=; b=vIsLKdYFH8YXGskFCYuFxM0Kri
-	4LEo9ReJIfgKFC95xymdzIuZHgWmCy4G3xVF1JqLP/afdrq9I84T2Y/HuFvZL4VO6QmU21lsUX/J7
-	vabemJeVXNbK57caQoIcupupdF5BH7q6dfJPU0J/aad1iPWgFP1Pta6YnAxGVC/HxIlB76K9yRSGM
-	9j3b/WmA+tZKaDnoC39qDIVxVYX23JxNjVp20InQWi7XyuBDNDCOuusdG9eda9qGfK1Uki2htTbQ5
-	+Xwy3IqaT9W3uDTeg3KYHyV0grcCXOdru7B95ajExnsHQEygus1gpnlTvvukrNJXtwkIJZ4HcTmaN
-	wXIAK1ig==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uim1N-000000099Z0-0JOE;
-	Mon, 04 Aug 2025 03:37:57 +0000
-Date: Mon, 4 Aug 2025 04:37:56 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Christoph Hellwig <hch@lst.de>, Leon Romanovsky <leon@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, iommu@lists.linux.dev,
-	virtualization@lists.linux.dev, kasan-dev@googlegroups.com,
-	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 0/8] dma-mapping: migrate to physical address-based API
-Message-ID: <aJArFNkuP8DJIdMY@casper.infradead.org>
-References: <CGME20250625131920eucas1p271b196cde042bd39ac08fb12beff5baf@eucas1p2.samsung.com>
- <cover.1750854543.git.leon@kernel.org>
- <35df6f2a-0010-41fe-b490-f52693fe4778@samsung.com>
- <20250627170213.GL17401@unreal>
- <20250630133839.GA26981@lst.de>
- <69b177dc-c149-40d3-bbde-3f6bad0efd0e@samsung.com>
- <f912c446-1ae9-4390-9c11-00dce7bf0fd3@arm.com>
- <aIupx_8vOg8wQh6w@casper.infradead.org>
- <20250803155906.GM26511@ziepe.ca>
+	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=EvPkdQkZuTk/oKdUqX7+df3m3jcmeHsaTzG3mAWFvRg=; t=1754284360; x=1754889160; 
+	b=oYmWBoahMmMadHzVKtNrB4ZvFrqraBqBraCpLeAg+yRKilQfFw1GblLqhmb3fcrh29+kLzhHoSF
+	Ub86g/DIt/JC4Fc28Gvi6Aj4ncPHAmFdISCrrvSce7J2bEsWciaCv3sc/y3BEIM8s9cKi2fKfxj9m
+	Z3Uzn/SbDAwHtF4xHaSdndUdiu12e9g2nMGT6feFB3QIvNtuMXctKd28H+WZTFjNiZiVyL0fielnE
+	kLBIrpaLz0sU55kelY+80MSzMBEJ09PoXbIKVm5HbbGN3fsAiAhE7sYtcwQWdYPQJgdaMf/18iNfa
+	pMIr80DhpkJvMUDygLCBIqAZrfm/pdVnVTQA==;
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.98)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1uinUx-00000001ST0-03q2; Mon, 04 Aug 2025 07:12:35 +0200
+Received: from p57bd96d0.dip0.t-ipconnect.de ([87.189.150.208] helo=[192.168.178.61])
+          by inpost2.zedat.fu-berlin.de (Exim 4.98)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1uinUw-000000008us-3HKi; Mon, 04 Aug 2025 07:12:34 +0200
+Message-ID: <75cbab0cdab084795422335c0e0d69c6f57b468c.camel@physik.fu-berlin.de>
+Subject: Re: [PATCH v4 25/36] sparc64: Implement the new page table range API
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Anthony Yznaga <anthony.yznaga@oracle.com>, "Matthew Wilcox (Oracle)"
+	 <willy@infradead.org>, linux-arch@vger.kernel.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, "David S. Miller"	
+ <davem@davemloft.net>, sparclinux@vger.kernel.org, Andreas Larsson	
+ <andreas@gaisler.com>, Rod Schnell <rods@mw-radio.com>, Sam James
+ <sam@gentoo.org>
+Date: Mon, 04 Aug 2025 07:12:33 +0200
+In-Reply-To: <83931f05-a613-4972-be76-80bc695915e4@oracle.com>
+References: <20230315051444.3229621-1-willy@infradead.org>
+	 <20230315051444.3229621-26-willy@infradead.org>
+	 <ce6337237169f179c75fe4a1ba1ce98843577360.camel@physik.fu-berlin.de>
+	 <83931f05-a613-4972-be76-80bc695915e4@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250803155906.GM26511@ziepe.ca>
-X-Stat-Signature: nynjx4gn9pcuu7r6ycrc3yj9yggnuwd1
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.189.150.208
+X-ZEDAT-Hint: PO
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 42521140007
+X-Stat-Signature: zhtwdpbrzkygfrw88uuke6799uiguu6d
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B4D47140003
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1754278711-434094
-X-HE-Meta: U2FsdGVkX18JGwLiJY/0YObZ6Cgs2ZBJI/L5VLF7AhXaGL8TbqLxFtD/m+SkqQP7AAmCPwSg8gNQ6s//CUtS6ndWpkMHPQEnK/Qof4hg43ghXc+J1nw5SycGz8+EYH+U4UZeQYgpaKGue38SHMd5Jg++QGj1rwKND8ZLFwPGP2UtA7o1mK098EdCMVrq+/BMKTlUpihicBnwDHQoY9Cw0/wxK3Z+wmiHUpnrGfJkOg2pPf9FbAyXI5TFiOf2psC5OiKpF3QnFNKIUcq6h5euXi4frc5ZYl5BUQTdkbAPFdiunucPpUO9BsI61v0eidahd4+gbZG5P6Betkn5bIDwRDYIKKSDbVMHg4e57sdfXzz6keCr/sdD8ioz7bN3q6w6lzmSE0Y0DkVeM9M9FUemN6zkMyjVUekoMnewfOwrayA4FRd0+zCGGkh114/V5cPULdTtOyy8sJmapURL2mRBBUYhJc9wIRQi0anCmwU/et8RTXO7QoD7hJUMYIH0FobWQhUFxyElCooap4keGLu44xK4oxy/aFGs1VvNxVSVAR9R673gBQacLEbH6UgveR4mOWmy69G711lOZrQs1tPH1aR3p2iCsg3sMuDE5rWm2m0lsGrv0NrGels4RJQFXgVPVZ37E9c50PDHoXRWfRbsKMNIQESBJlE2SzuEtshPzIQaJEEhe9UVIrqrWvnV11CzKet2YBCftWUuaDXVvy5T8YncffANxXGe60P59FGsFSKC4CnZS05txiQ40XLPNaYbNM1N3zbQihoDcZ+OstKD5OgSi4Jj09BHQ0bCxQU1eAbhTcw1Y+1MmsvbQrd4Fd0nDQ2i/8WIEFZnCTp9MX5a8/dnH9SLMYDhB7PWm27kJdOaFjmhW8g6adrSkbc2Y4MsuEaYenx7MdvC6EN4FOIj9LNTztlPrQouEkNZGjrs0CFhVRAXB6wINRGvG9hGj7vu0ZLStd2Yygcz6dhwuQr
- V3E9eXv1
- bpqOv31h5F+1VFbbzUX8itW9ZlKVywI5vO0IZqhvl2qo8I/jxXvZ29hmVXdPbvtwCItrGhabYoAlGxZhk3cH1SE/Mpmx5hseqcilKk2N3hcxcXTVKJMhc45DgCS9g1tP0eJC0cLuTl7Dygqx/0qKSHYtvrN1hq0e5l2iRJIoQlvLx6TnLsI19THXUnQ==
+X-HE-Tag: 1754284359-687134
+X-HE-Meta: U2FsdGVkX1/udBStzLkOubFyRHLcd+UaMHt1+5UQNHkzdC3XsNgHAWe90JLww7dDOr7mN2H01LSxN4NjBINsB46pbSUpDf66I2/Ctb+iK9BrCg8GymL7qQNUPftNX8bbN748w13xFjmEhffeVe1RovylsID/NDQaEtEwuckKqJS+fQdmjHi/krAygLn9cRo1kjWCh4J4t7IhwGQk9Ej0BoFOn6U2mJUC+hRJ2YZx9RO/i4toOGkk2xCgJsgaNYO6vXV+FvtrRLKk/TUY2rtPLtQ6Y7zRY3u5Qzq5I1mxxXRq0n99vDSZe9MLm9NBe4iW4WJcknqDXEpId7vONq52RpQkN/gh1Jy6wvjoDEmkCCAoA4BeZ0uvfuVOulCmPm8mEqesJwQVYV/CgY3l/Fh0SX5pHWdMtjSmEAf0GFLjLNMkO7t+h4r8n6Icyej2R5xtoqZRkKH1CEAVuQZqpFZ9PVFrU3Q7J5PVN5QSen19NW/pbG9AUkYU0TCKzGtdR80Nq1cpt7g4gDQvUHKRqhaKKH6BrG5iU8dE15Sydqw62ID/AmO7luzN9nDkCgWmnObwiEZD+1uQZRVp1MmIrhsCYNh3wugFJ0z8rKp4LmxaUqQg2L9UuU2baK3qSPv2xICJ7hiM15WL69vpnHSGAi6nz3RurZWQktrCkec8seDGP8fY0ZUuL8iULYFqvXOwWrFQyf64odU0hMZM2BoPFjNVJLXNyrAbMhQoQiTQunh7BfXjWdyo1UxLGFXpAxhWNU/rkhAQ70smfto3VOvUBXtjR619+KdWuiDwy6+GyAo/igiVuhCyuoQ2n4tMDbHjdt8291i3HUBtaetxRBC9DZMyL17PAGq/43JPFAL1JMlxa8E85oHDdEtP3beHJh4QmZ9HKci7zt9FW/Pl+G5atYdSZhM52zdo6+V72JiY2lv0wpjIfC6Cx5OpLvpqrovRcWLqLSTIMAw9aFrMTPNRiYR
+ mPhNktLi
+ QZA9scv3hJjExnvoQd1NxFt6QMaaX1N3WndR0Q2U43DlF1CtOvoPpnOvU92G6QZElr9UdjxW9qJ4OEmX/ExM64GBGXuMpKgI3Am/VSObKcWRC1zB0TlFH/Khf/NpKMHodjKC7OD/pnE6tdOBeLu5Z4qbI03dPpVrF3eo3ic1RYBzOWR4oXZ5aUOPM6+xTnvwng0KCRrEXSMPvR1rr4JQI/ODaWJKefu4n70cuOyI8MPt3kAJBoewqBlYiVUQgUt8lnGqkbSxDaiJ9vNJ2A7hH8HC0F9Sz+1oxz41VrFlV9orVOkdKWl4Jku7V07bKd1UW31ZQOiOi/fs+6Ub1PNgTDMD7PX1Q5ylSDJ8MDt8sqksGqQQKc44bStxeadp/zRMJTM0OCbTPMaJPHy9MlfMViEmE2WGk6Iwh5Yq3QMNFTjHepPsteVO+qMW8TGEcyfRLSMfUZ9PnDcessyw7lckSud5ZTLfNFps1Mmo4+6RSLcyvESZx3keMQ6aVag==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,45 +109,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 03, 2025 at 12:59:06PM -0300, Jason Gunthorpe wrote:
-> Matthew, do you think it makes sense to introduce types to make this
-> clearer? We have two kinds of values that a phys_addr_t can store -
-> something compatible with kmap_XX_phys(), and something that isn't.
+Hi Anthony,
 
-I was with you up until this point.  And then you said "What if we have
-a raccoon that isn't a raccoon" and my brain derailed.
+On Sun, 2025-08-03 at 12:08 -0700, Anthony Yznaga wrote:
+> There was a follow-on fix that addressed a bug with this patch:
+>=20
+> f4b4f3ec1a31 sparc64: add missing initialization of folio in tlb_batch_ad=
+d()
 
-> This was recently a long discussion in ARM KVM as well which had a
-> similar confusion that a phys_addr_t was actually two very different
-> things inside its logic.
+Indeed I just tried v6.6 which has this patch and added your sun4u fix and =
+it
+seems to be stable. I was sure I saw problems even with v6.16 though.
 
-No.  A phys_addr_t is a phys_addr_t.  If something's abusing a
-phys_addr_t to store something entirely different then THAT is what
-should be using a different type.  We've defined what a phys_addr_t
-is.  That was in Documentation/core-api/bus-virt-phys-mapping.rst
-before Arnd removed it; to excerpt the relevant bit:
+Let me run more tests.
 
----
+Adrian
 
-- CPU untranslated.  This is the "physical" address.  Physical address
-  0 is what the CPU sees when it drives zeroes on the memory bus.
-
-[...]
-So why do we care about the physical address at all? We do need the physical
-address in some cases, it's just not very often in normal code.  The physical
-address is needed if you use memory mappings, for example, because the
-"remap_pfn_range()" mm function wants the physical address of the memory to
-be remapped as measured in units of pages, a.k.a. the pfn.
-
----
-
-So if somebody is stuffing something else into phys_addr_t, *THAT* is
-what needs to be fixed, not adding a new sub-type of phys_addr_t for
-things which are actually phys_addr_t.
-
-> We clearly have these two different ideas floating around in code,
-> page tables, etc.
-
-No.  No, we don't.  I've never heard of this asininity before.
-
+--=20
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
