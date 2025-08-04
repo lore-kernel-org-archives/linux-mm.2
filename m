@@ -2,110 +2,125 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1ECFEC87FD3
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 06:42:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D212EC87FDA
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 06:56:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C89F6B007B; Mon,  4 Aug 2025 02:42:02 -0400 (EDT)
+	id 3CE366B0089; Mon,  4 Aug 2025 02:56:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 079736B0088; Mon,  4 Aug 2025 02:42:02 -0400 (EDT)
+	id 37F1F6B008C; Mon,  4 Aug 2025 02:56:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED0D96B0089; Mon,  4 Aug 2025 02:42:01 -0400 (EDT)
+	id 26E1C6B0092; Mon,  4 Aug 2025 02:56:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DD9A46B007B
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 02:42:01 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2488E80E97
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 06:42:01 +0000 (UTC)
-X-FDA: 83738130042.08.48B5A0D
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 6183CC0002
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 06:41:59 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XkNbRBkN;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754289719;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=blILZd0jaVD7kgPmyUMPG0nKzRyK2MAoftkqaSrZHBs=;
-	b=dVEEpn/PLDOGQ/vszdIabCztCFc4LIKkShrDzhvmF82qDt1wOmEmQ/fh2UPxcYC5UFUA6u
-	txrqtSbmGe8wS2nHxKALN7hc9ES5EkgDqt5j+iiQC7hUQ0ngPBOcRz9uEkFzN3b02EBNgg
-	KBxn0J+0s2xvlpak2L6ZiYXEQtkIO60=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754289719; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 160296B0089
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 02:56:26 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6FEEA1A0D8E
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 06:56:25 +0000 (UTC)
+X-FDA: 83738166330.05.1A3AE3A
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 2E9991A0005
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 06:56:22 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2025072201 header.b=hFmN5bIr;
+	spf=pass (imf19.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+	dmarc=pass (policy=none) header.from=zytor.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754290583; a=rsa-sha256;
 	cv=none;
-	b=jKzBkIVRr/9THSexbXirADTBvuO44E8HJBqG1n00HWzcKDlzW7Udq5zdP2LtftJdKfBXG2
-	rRVEvvSGzR0XEN2CtmybeAbL3B2xSE8GLjyiVU3vdwdG8j+n11vDUz0NSJhvyHz/uPyEgl
-	gXIwxUrK/MvgQqVzos+fO/lf4GqKBo0=
+	b=eB3gAnI+Z1nu4UtnY0fc2HWZg1fjWx1VWlK+CsXUv+Hhcv6xNTElIXGiqcFnxHUKLISTS5
+	aOXvTXMZOV3FtozeTUBLIh8QPtWyqU3KALfvvv1tLq5FmNCXQuObXJt7eyf0cbzn2MFzgq
+	6m3yPAif3Y8qSClBGtn4DVyWWtUTjTw=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XkNbRBkN;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6154d14d6b7so3401296a12.2
-        for <linux-mm@kvack.org>; Sun, 03 Aug 2025 23:41:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754289717; x=1754894517; darn=kvack.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=blILZd0jaVD7kgPmyUMPG0nKzRyK2MAoftkqaSrZHBs=;
-        b=XkNbRBkNVTXxCzolG55XSW/dWQCYnpMU3U4rhM7lY83VEVQXdpvF5+QtuYJIaJUqUy
-         n8xCPGernXJlsTkleHHX9YG4iY/d62M0GrDZVilcAeU8N26GbCtJcDFloGHA9Y/D+55r
-         l4rmQDjEuLlxIMt0buX2xrKFHhTDQz3y0IBrZ60E/ayj3OsUSc+DC8XWdUWfNzRKuaIG
-         TWLgwnS/M5ISvHncBkAaUR7OC9OSLWa/fEH7/L6RXeo6SqL1+G5G223xn4Q0KjekraV/
-         t81IA2cd+7PlZqb4q6YlL/zSw4zozR8qqD6SU817BxBqsH8oupxATDnO0cy4KzHfM+Ia
-         fxhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754289717; x=1754894517;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=blILZd0jaVD7kgPmyUMPG0nKzRyK2MAoftkqaSrZHBs=;
-        b=XsJi19/KArjIeSkgS05XyqV3E4Uo/1KnAqcILxc/Q4wwkLnM34jHJRL9xw4+7unyX4
-         I2+cJuNhXgQCySDfZlR8mQ1pRYaJerDMPVmy/4hZci3Nx6EWeJ29U4K2Pk26ogL3tmeE
-         JIpSJHsGEMucDtPGmQT+q4eNJFFYP4eqog5YYq3ApqXhJob5xy9pSgnmLsvvqcrirfqR
-         XB/xOBpRNNtPxafX+rR2MWmxhQcIvfcfy3dFvF0RTfc/OrrvzjQIxgLWnigPT1QVC7QS
-         hO9xE8u/Gr/Y55W+vwRGBrLeiZLmvOfGSn9FikFm7khO9M9t/Zvmb6ZXV4gVexyxqkqH
-         g4SQ==
-X-Gm-Message-State: AOJu0Yy1cPqlhf2Tl/KoTV4GYvQCg2sURbKH3eSRuRMdhyNDmjI8rRFu
-	uT7a/yQi5xb3o7mE9SqpR0SzYw0W+eStvsB85hTRfokHWvQrIZMY04yC
-X-Gm-Gg: ASbGncsQ532Mk8jzObyl7U8uguQkzMJ043lH1ug1HJvb5QsfUItMGzevN8lvqWTvEkT
-	v8PGxfUd05xlO6kYpjxFMFwIhDqK43D+CD7QZtgtbVtsEhHiQhf2JJHX684zsvPCJCk5WYM+/Uc
-	8NVz3//u2F2XUioq0yKpOXplAMWp2kvLAmI6Wt9exdELJLpAd+25ARJHHihdtA+N9lvNngpo9uc
-	BhE/KxmH6yk9ROu3nIJXy8so0q93OjsKZ077niwpCC1jnes1AuzA+3Iwc4Yki0BdmVV3pLkuxux
-	eFYq4U11VFZ1zgnn5bWxODgz4nqCgAIfiV0uEWhKXoW7yec8/q3dmq1SwddVN9Toor4Y9Ppok0c
-	rmaLD/HJ/RDSEWvV2qCapQQ==
-X-Google-Smtp-Source: AGHT+IGSjxjdEFnPNbutzE2xY3GfFH2YFX1IILFt1fMhXSFZTs4PwnEIQi3BaMZ8HQZsizHF/UBF8g==
-X-Received: by 2002:a17:907:97c5:b0:ae3:63fd:c3af with SMTP id a640c23a62f3a-af94000dda6mr879994666b.16.1754289717349;
-        Sun, 03 Aug 2025 23:41:57 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a240645sm684180266b.125.2025.08.03.23.41.56
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sun, 03 Aug 2025 23:41:56 -0700 (PDT)
-From: Wei Yang <richard.weiyang@gmail.com>
-To: akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	Wei Yang <richard.weiyang@gmail.com>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Rik van Riel <riel@surriel.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Harry Yoo <harry.yoo@oracle.com>
-Subject: [PATCH] mm/rmap: do __folio_mod_stat() in __folio_add_rmap()
-Date: Mon,  4 Aug 2025 06:41:06 +0000
-Message-Id: <20250804064106.21269-1-richard.weiyang@gmail.com>
-X-Mailer: git-send-email 2.11.0
-X-Stat-Signature: f1i3s59pygd9phc9n8mpfptzbp4uhajk
-X-Rspamd-Queue-Id: 6183CC0002
-X-Rspamd-Server: rspam10
+	imf19.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2025072201 header.b=hFmN5bIr;
+	spf=pass (imf19.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+	dmarc=pass (policy=none) header.from=zytor.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754290583;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6Uxfo/n+FmHLvR+WWWhh+s7r7X3EBAjRA421qiR6QUs=;
+	b=ykBFIIt5DUcEx1oPaD7AAy4c9rw227GJbldtg2thE0uyi72R6cMDjKJije4A9Ehw7voHzm
+	5HigpHOzAw822iOwEl2R0jcfp7MRIkw/SIFJPEqNqcf6w5FP4u3rWXfJAkEyPL6gl/RicL
+	DtFCwXQALbt6f2SJ8lBjUY4p9ybAk0U=
+Received: from [127.0.0.1] (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5746tNXj718207
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Sun, 3 Aug 2025 23:55:23 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5746tNXj718207
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025072201; t=1754290530;
+	bh=6Uxfo/n+FmHLvR+WWWhh+s7r7X3EBAjRA421qiR6QUs=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=hFmN5bIrGhwAqRzowBAQP+K7JKfkTZmxrPVOSbJS31LX45O5bseelsScA7k2yDAPP
+	 mUWGJ9cRkp3wnCfLfOCOdLrCRaSejeDQvKQhqYD0KFFqPhWPi9VD5ehD5kwjJBQj2t
+	 EglMcvwE5YmBnva0NyndOecbfVvrxckhlbHsKMMsbeWG/mVa+QaqaWu1UUe5ZAxFnL
+	 1mZ5QW73IgNc+sHyKKBk2/Gt9h16K/EL0SMXj0hZdrOO0sLOUeqwekZA4MobIa0aa3
+	 oUKY2QoT7lwUsXmsn2UM5m5MzP1sYfQoYlcAvGmOUImszdjO9LWUNNL4GiLRQ7btCZ
+	 G/wBKmENMoORA==
+Date: Sun, 03 Aug 2025 23:55:21 -0700
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Kees Cook <kees@kernel.org>, Dave Hansen <dave.hansen@intel.com>
+CC: Sohil Mehta <sohil.mehta@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Jonathan Corbet <corbet@lwn.net>, Ingo Molnar <mingo@kernel.org>,
+        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+        Daniel Sneddon <daniel.sneddon@linux.intel.com>,
+        Kai Huang <kai.huang@intel.com>, Sandipan Das <sandipan.das@amd.com>,
+        Breno Leitao <leitao@debian.org>,
+        Rick Edgecombe <rick.p.edgecombe@intel.com>,
+        Alexei Starovoitov <ast@kernel.org>, Hou Tao <houtao1@huawei.com>,
+        Juergen Gross <jgross@suse.com>,
+        Vegard Nossum <vegard.nossum@oracle.com>,
+        Eric Biggers <ebiggers@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Luis Chamberlain <mcgrof@kernel.org>, Yuntao Wang <ytcoode@gmail.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Tejun Heo <tj@kernel.org>, Changbin Du <changbin.du@huawei.com>,
+        Huang Shijie <shijie@os.amperecomputing.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-mm@kvack.org, "Kirill A. Shutemov" <kas@kernel.org>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>, Peter Zijlstra <peterz@infradead.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Josh Poimboeuf <jpoimboe@kernel.org>,
+        Xiongwei Song <xiongwei.song@windriver.com>,
+        Xin Li <xin3.li@intel.com>, "Mike Rapoport (IBM)" <rppt@kernel.org>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Michael Roth <michael.roth@amd.com>, Tony Luck <tony.luck@intel.com>,
+        Alexey Kardashevskiy <aik@amd.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        X86-kernel <x86@kernel.org>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCHv9_04/16=5D_x86/cpu=3A_Defer_?=
+ =?US-ASCII?Q?CR_pinning_setup_until_core_initcall?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <202508021149.B4BFF8D1@keescook>
+References: <20250707080317.3791624-1-kirill.shutemov@linux.intel.com> <20250707080317.3791624-5-kirill.shutemov@linux.intel.com> <6075af69-299f-43d2-a3c8-353a2a3b7ee7@intel.com> <98a7a91b-3b46-4407-82a7-5f80443b7e00@intel.com> <6e768f25-3a1c-48b9-bc53-56877a556a83@intel.com> <202508021149.B4BFF8D1@keescook>
+Message-ID: <5BC99441-D69E-4B23-9485-6802F8ED8A42@zytor.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1754289719-205422
-X-HE-Meta: U2FsdGVkX189R6o4wTQexb+oxQk/32e9loYKPvQiR2+Pd3sXRBtfrYfQ45IaX9ZHwgGEYOiRUa/g0eWgwYGij8FLlrbtFS4OzlfBDks/SDgEuJPD8T0cAte55EVDIEougkJj7+TQ92x9VXSIlM+sp7ENIzI/8qN8oRfC/dbLW/pqLOfy1URqYlc2/oNq9BMyUgwyTYRodwmFvJEOXK68XBOPHJp+ys/WopHqvi3vcwFG+T/KWrlPt7RugJk4BZL13uMSHkSVUmPwPEllR7czR/ZCZB8oOa0RXgIC2SHdtIKouCqrKRm+pTuMYntCplLowSowpQTiRldBe0ZT+qT4QsW0b1DANC1XCYHSVtrjWZdtaIacnTKZUIaP9Lc3WfO+7pEsGHAhYRAeXPFJd8arqb0Fgi+nh+lhJNq2bkRQAnXsBZuEb11qkTpAaY9FtVgZw7tXkVp2dAAynzHVb6Dsy4YSio9O92q/49+c4y303xHXOdYIKG9p2dKFYFOuoBhj4yVFNdf60QuBS/0OIrSdLXmrcF4VhZzGH/hMgsP2cqkR9XFIG4lby7BzYt41iQMvjeTfZADOoNY1r0EzxvarSuquSS4iwtHgbeNfQ4iJmbSYWveyzJdaS4T3lM85c6h+//Zy/HL7LGFtmWdgNeY4XDmq7Nqk9uKNiXqDCqfGdmAidgp77HlWguVtgdZG6FqiXUAL0D4zijV9PhdqGGtp1QB0PsaUcZbi6kAddW7RW/51glaRfIbnVKrBC6Qs0kSWbp3DJWDjLCwhyDxJmVH27ekqVbCaFsydw2ChldcmFjqhgtBzcbqYFs3qwRFPI1tf0idf3N2+yMYhkblu1VMkYRTCxSI4xILr5RilIULgT/SKnIlkvesJnGZviuwoXn/VfmUnBpcwH3o0qg9yaIEfObzEix/z5IPuB/jTTfzoVY7LG38OD7TZ2QUrKqasbhRCSf+BJp4i7Rh+YWmNDRE
- qpgR/5IF
- U28NpTYrhV+ReplFOoy+oGCf25dIvVCQNIPOLo+314/PHsz5NGzt/Me5J9mLvc0mJx+wnxlM/1S024QbriyHvt4N2n0Re5Jm1P3/dTm7TFlxKjwyA/2Bgyutx4M5TUy3KicXXawPw2KIDqCXq3aaRZ26fJVxrgS8JgfpzahfAyf1CfaR7940xplY4Yn1jHu0JnLXBCp6fpzgVfVsTsFu2onqMgwL41dw9Wsjc8gb2PFh8ZSDUgs3viTq+767tMEGfqB3kpJpjU9y+HDCUNGKCkrzl+gVzk68KKiHp7HxWRsP48scaCA9Bt2GbiCChQAJ0W7aEQg/KrEK6/pagx6h/JZ0xUGw1NUGths2F7U/MQS69qPqpucH/jrjWi3MuLRp83MPbLPwP/srnt3q5O0KwcdkFtOMDsiiWJnJJheVs95BRpVBvY2yP2is/ZpOguzcAmFeATqCs9/pXXlPut5PP6ochRmfK79p1aAmkeZRcBct/DhIcylhXAJr53gXrk+wv06/33gpggaMalHxPk3kHvPfb0i6XFdwte3NV5os06HaU6vkr7JsNcZWoyy7R5kJkmhoyStQkb0jKoGlQu/pKcYwdgViAO//C6ZBR+VU+UTu8ZpFS6SAX8HM3j2UN47AFTL3ZhrK0+w9ZS0buCYwDpt+KY9u2SXphbSgbNozV9Osa4k8=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2E9991A0005
+X-Stat-Signature: 5fbifj5qzqeecfrzmtc6i8r5mbkaanh3
+X-HE-Tag: 1754290582-406615
+X-HE-Meta: U2FsdGVkX1/EfwHMQ6s5WeLMt9ZMrRAzolY89HEtdvV9Df5QeDBMZXImoB24uGnFN0IoanOmjsykmjQWETsOI6mNPVxK5tJvGPgUOwqDvb/tBdLRHTZetZHwdzE2Mc4cNrPOLWfPKR6tvL5fmoyUEnsbOFHcVTuUuitKuRdqSVhWhv1uPNhJuQgexCCiq11NkJjyj+bJIuUe1vbh9SCmOKqF7QmgNPBAxZtMAHrIQQPh5B5ujb6adO5/IapRqzRGbZvtzbabkJlsksBvg2Jyo08vILiarpXUSxT8Q85Etehdsjkcm1DIXxTc3hNreI2GwKX5IzCD2NbMO+PqIa3PnlXKx+Nte+OEiBiXqshbIpdPolJCubHb7TFgn39a085n/ZISbcqkemZLrc7XxLUd4DY8aeV5rKm8/kRd6xDz1bb9poj7SaQgzrfZ+NiIuOlA9UnaSrrsdb0RMJ/4anRG/9u9Ka3htl9Vp9Kbq968/fZLGPRWJwO0BZq13vXpumyvUl8kTqet277uQIrU8CEEcViJ/YtinGu2D0L+zRnd4GuxZZAUZH7+RRigtyRO0Moh+7mCKPKb63Nq/qV/9Ocnxvrv9GU7kONyyAS9XMlkMt4HXQqLojufumQUVwSDpk6e6dodkzDkhyblp2hhouwvP6E/BavaflZz+119o6N+RYg5JNqPBEPyfQhuRnYWV0i/6LDxpBKH7PbtEnwOm+PR7UffXbgG/t80hYLBkxkMdoVc57r0r0rDIfhyfCuKdmUjptNwAZJ/OuijWxGO7wbtL/xN8TRpf4gCH5tANSSbdab0YbBMAHbwLh64Bb4YHKhNFoSt4FZrMmx2SixqJd9IAdRU4R/hCbr9Je3xQLJ9KzjJ5aCeL6sE1hm8aH+iRy+mrRLFm8tdyptvNElzcalBNyw4UuDyl0aMk7SuD/GY8hhS0Ga5OfYUq7mi7hUnl5TJX+gB2u3hegg2aQvE2fr
+ HA93j4PG
+ DkagAKpu8503b0p2wc5S3e8tH4/XtZJKVbfpQWK1KiRjuxUIuoeWlzzVd+vM5wdO5/P4yrJLrQBgvIl1knzQs0ypCbuhjlQKUPDXj5dEWA/p4kABRJHl8DRG2ImkbkmYiVJKpSBJewh53qzf1LytittaXQ04a1SNTsNEVFteFb6tLrSZjWSb+xqKAScRTl/8CJaqi5YqJVviNE5e2nrjuA10SpNogiOC0LYpEWGRC6FK37TPoTC8Rp9VjZF4+ij87alTy4T61HdImTJNyok3m3gl5lvrwNyL15VjB0L3AIOIC6nce1Fjq16SidLSEWXDmFwVI+t+HCPD2C+aJjvqBlN4bP1ajUcFoU05XbarGp33fjR1YUhjcxD+GHDyuKeZAWjfm0LGkGgD/n9ibrTooSPI1Mt9NHPxFe2axSb1EEfR8INLQAV9FzppsHoqrpWy0vpkp
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,155 +129,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-It is required to modify folio statistic after rmap changes, so it looks
-reasonable to do it in __folio_add_rmap(), which is the current behavior
-of __folio_remove_rmap() and folio_add_new_anon_rmap().
+On August 2, 2025 11:51:28 AM PDT, Kees Cook <kees@kernel=2Eorg> wrote:
+>On Thu, Jul 31, 2025 at 05:01:37PM -0700, Dave Hansen wrote:
+>> On 7/31/25 16:45, Sohil Mehta wrote:
+>> > On 7/9/2025 10:00 AM, Dave Hansen wrote:
+>> >> On 7/7/25 01:03, Kirill A=2E Shutemov wrote:
+>> >>> Instead of moving setup_cr_pinning() below efi_enter_virtual_mode()=
+ in
+>> >>> arch_cpu_finalize_init(), defer it until core initcall=2E
+>> >> What are the side effects of this move? Are there other benefits? Wh=
+at
+>> >> are the risks?
+>> >>
+>> > Picking this up from Kirill=2E=2E Reevaluating this, core_initcall() =
+seems
+>> > too late for setup_cr_pinning()=2E
+>> >=20
+>> > We need to have CR pinning completed, and the associated static key
+>> > enabled before AP bring up=2E start_secondary()->cr4_init() depends o=
+n the
+>> > cr_pinning static key to initialize CR4 for APs=2E
+>>=20
+>> Sure, if you leave cr4_init() completely as-is=2E
+>>=20
+>> 'cr4_pinned_bits' should be set by the boot CPU=2E Secondary CPUs shoul=
+d
+>> also read 'cr4_pinned_bits' when setting up their own cr4's,
+>> unconditionally, independent of 'cr_pinning'=2E
+>>=20
+>> The thing I think we should change is the pinning _enforcement_=2E The
+>> easiest way to do that is to remove the static_branch_likely() in
+>> cr4_init() and then delay flipping the static branch until just before
+>> userspace starts=2E
+>
+>Yeah, this is fine from my perspective=2E The goal with the pinning was
+>about keeping things safe in the face of an attack from userspace that
+>managed to get at MSR values and keeping them from being trivially
+>changed=2E
+>
 
-Call __folio_mod_stat() in __folio_add_rmap(), so that rmap adjustment
-family shares the same pattern.
-
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Harry Yoo <harry.yoo@oracle.com>
----
- mm/rmap.c | 67 +++++++++++++++++++++++++------------------------------
- 1 file changed, 31 insertions(+), 36 deletions(-)
-
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 568198e9efc2..84a8d8b02ef7 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1241,13 +1241,35 @@ int pfn_mkclean_range(unsigned long pfn, unsigned long nr_pages, pgoff_t pgoff,
- 	return page_vma_mkclean_one(&pvmw);
- }
- 
--static __always_inline unsigned int __folio_add_rmap(struct folio *folio,
-+static void __folio_mod_stat(struct folio *folio, int nr, int nr_pmdmapped)
-+{
-+	int idx;
-+
-+	if (nr) {
-+		idx = folio_test_anon(folio) ? NR_ANON_MAPPED : NR_FILE_MAPPED;
-+		__lruvec_stat_mod_folio(folio, idx, nr);
-+	}
-+	if (nr_pmdmapped) {
-+		if (folio_test_anon(folio)) {
-+			idx = NR_ANON_THPS;
-+			__lruvec_stat_mod_folio(folio, idx, nr_pmdmapped);
-+		} else {
-+			/* NR_*_PMDMAPPED are not maintained per-memcg */
-+			idx = folio_test_swapbacked(folio) ?
-+				NR_SHMEM_PMDMAPPED : NR_FILE_PMDMAPPED;
-+			__mod_node_page_state(folio_pgdat(folio), idx,
-+					      nr_pmdmapped);
-+		}
-+	}
-+}
-+
-+static __always_inline void __folio_add_rmap(struct folio *folio,
- 		struct page *page, int nr_pages, struct vm_area_struct *vma,
--		enum rmap_level level, int *nr_pmdmapped)
-+		enum rmap_level level)
- {
- 	atomic_t *mapped = &folio->_nr_pages_mapped;
- 	const int orig_nr_pages = nr_pages;
--	int first = 0, nr = 0;
-+	int first = 0, nr = 0, nr_pmdmapped = 0;
- 
- 	__folio_rmap_sanity_checks(folio, page, nr_pages, level);
- 
-@@ -1283,7 +1305,7 @@ static __always_inline unsigned int __folio_add_rmap(struct folio *folio,
- 		first = atomic_inc_and_test(&folio->_entire_mapcount);
- 		if (IS_ENABLED(CONFIG_NO_PAGE_MAPCOUNT)) {
- 			if (level == RMAP_LEVEL_PMD && first)
--				*nr_pmdmapped = folio_large_nr_pages(folio);
-+				nr_pmdmapped = folio_large_nr_pages(folio);
- 			nr = folio_inc_return_large_mapcount(folio, vma);
- 			if (nr == 1)
- 				/* Was completely unmapped. */
-@@ -1302,7 +1324,7 @@ static __always_inline unsigned int __folio_add_rmap(struct folio *folio,
- 				 * folios separately.
- 				 */
- 				if (level == RMAP_LEVEL_PMD)
--					*nr_pmdmapped = nr_pages;
-+					nr_pmdmapped = nr_pages;
- 				nr = nr_pages - (nr & FOLIO_PAGES_MAPPED);
- 				/* Raced ahead of a remove and another add? */
- 				if (unlikely(nr < 0))
-@@ -1315,7 +1337,7 @@ static __always_inline unsigned int __folio_add_rmap(struct folio *folio,
- 		folio_inc_large_mapcount(folio, vma);
- 		break;
- 	}
--	return nr;
-+	__folio_mod_stat(folio, nr, nr_pmdmapped);
- }
- 
- /**
-@@ -1403,43 +1425,19 @@ static void __page_check_anon_rmap(const struct folio *folio,
- 		       page);
- }
- 
--static void __folio_mod_stat(struct folio *folio, int nr, int nr_pmdmapped)
--{
--	int idx;
--
--	if (nr) {
--		idx = folio_test_anon(folio) ? NR_ANON_MAPPED : NR_FILE_MAPPED;
--		__lruvec_stat_mod_folio(folio, idx, nr);
--	}
--	if (nr_pmdmapped) {
--		if (folio_test_anon(folio)) {
--			idx = NR_ANON_THPS;
--			__lruvec_stat_mod_folio(folio, idx, nr_pmdmapped);
--		} else {
--			/* NR_*_PMDMAPPED are not maintained per-memcg */
--			idx = folio_test_swapbacked(folio) ?
--				NR_SHMEM_PMDMAPPED : NR_FILE_PMDMAPPED;
--			__mod_node_page_state(folio_pgdat(folio), idx,
--					      nr_pmdmapped);
--		}
--	}
--}
--
- static __always_inline void __folio_add_anon_rmap(struct folio *folio,
- 		struct page *page, int nr_pages, struct vm_area_struct *vma,
- 		unsigned long address, rmap_t flags, enum rmap_level level)
- {
--	int i, nr, nr_pmdmapped = 0;
-+	int i;
- 
- 	VM_WARN_ON_FOLIO(!folio_test_anon(folio), folio);
- 
--	nr = __folio_add_rmap(folio, page, nr_pages, vma, level, &nr_pmdmapped);
-+	__folio_add_rmap(folio, page, nr_pages, vma, level);
- 
- 	if (likely(!folio_test_ksm(folio)))
- 		__page_check_anon_rmap(folio, page, vma, address);
- 
--	__folio_mod_stat(folio, nr, nr_pmdmapped);
--
- 	if (flags & RMAP_EXCLUSIVE) {
- 		switch (level) {
- 		case RMAP_LEVEL_PTE:
-@@ -1613,12 +1611,9 @@ static __always_inline void __folio_add_file_rmap(struct folio *folio,
- 		struct page *page, int nr_pages, struct vm_area_struct *vma,
- 		enum rmap_level level)
- {
--	int nr, nr_pmdmapped = 0;
--
- 	VM_WARN_ON_FOLIO(folio_test_anon(folio), folio);
- 
--	nr = __folio_add_rmap(folio, page, nr_pages, vma, level, &nr_pmdmapped);
--	__folio_mod_stat(folio, nr, nr_pmdmapped);
-+	__folio_add_rmap(folio, page, nr_pages, vma, level);
- 
- 	/* See comments in folio_add_anon_rmap_*() */
- 	if (!folio_test_large(folio))
--- 
-2.34.1
-
+I have mentioned this before: I would like to see CR4-pinning use a patcha=
+ble immediate to make it harder to manipulate=2E If the mask is final when =
+alternatives are run, that would be a good time to install it; the code can=
+ just contain a zero immediate (no pinning) or a very limited set of bits t=
+hat must never be changed at all up to that point=2E
 
