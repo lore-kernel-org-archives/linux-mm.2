@@ -2,65 +2,65 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FC4FC87FD1
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 12:43:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 15D18C87FCB
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 12:43:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E571F6B00A6; Mon,  4 Aug 2025 08:43:37 -0400 (EDT)
+	id A873E6B00A8; Mon,  4 Aug 2025 08:43:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E076F6B00A7; Mon,  4 Aug 2025 08:43:37 -0400 (EDT)
+	id A385A6B00A9; Mon,  4 Aug 2025 08:43:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1E676B00A8; Mon,  4 Aug 2025 08:43:37 -0400 (EDT)
+	id 926306B00AA; Mon,  4 Aug 2025 08:43:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BF7E96B00A6
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 08:43:37 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9E128113A1F
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:43:37 +0000 (UTC)
-X-FDA: 83739041274.25.45F35AD
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 06D1C4000F
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:43:35 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WRgsvRlF;
-	spf=pass (imf12.hostedemail.com: domain of leon@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754311416; a=rsa-sha256;
-	cv=none;
-	b=a7U1Or8KsLNx1LrKR4PXfXgIC3uZXUd3bmjGgc0KT2N+eb5yhFm7jLiSVahV//QOjxQv5+
-	ipvaEttFFYDV3dG+O5YgixpAaa1pgJYvxRQkjNjdMN6/81D3k8ROqZKBMVyMlS1fj20ZM6
-	gJh3ddpHkEsrots99yrJaSeUGhmcE0o=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WRgsvRlF;
-	spf=pass (imf12.hostedemail.com: domain of leon@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=leon@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E41F6B00A8
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 08:43:43 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1E3F1134F49
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:43:43 +0000 (UTC)
+X-FDA: 83739041526.08.4C463D9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 572C8140003
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:43:41 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="hwpc/2Lt";
+	spf=pass (imf09.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754311416;
+	s=arc-20220608; t=1754311421;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MLLzwi1yAXsHc08Aygf0gJ2rcKhVnpp9gk2ta6mt2yU=;
-	b=5rFYIPksqu7tr6lK9j3lGuKDqj6d0D8UoWZsy1IglGVine9EmlW+fKiiZR/v4MOJUcoAYF
-	Bg+aQmN2yHS1XdyVxKBsLERXD0ZLVb+npQJwApa92udQwFnA/IV0thw83fnVbHg1W6/n45
-	0EqAdNObMA9sK1dgcgvqKGjfyf/B3hQ=
+	bh=Yob5vGImG9Fz6Q3IIoENTL3tAbucLWfbEG7h2+LdGFM=;
+	b=c3gecAOIiVr9pOEzZq7l/hNlvW2cbFTWtVJc+cjEoqdawEvlqm95q0yg+NLouXKQbdIS+X
+	lIoTh9nH/cxmIL3E59Q23jfCF5TEsM1eJBnQQ8vTfYpUhQexIFfafAjonSfeScgYpZHriy
+	jSysksdpLms/guS23EMZxFogi8V5nEM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754311421; a=rsa-sha256;
+	cv=none;
+	b=xY0bRxfXvWt9svEbbeOI64L5nJue6Y5YLTyrT7LZKkK7pc8d9gbUgvZvJGuUtLsSECra8h
+	jclHIiGJzgeTIuXapxMq/hyvL9IcpVR1KtVLEi0r2XDn+XZxAI78RpD0MVgo3S4c5YxfXf
+	kavEhgFD1iJaXiHRiwEJg0Nu8Btzdd4=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="hwpc/2Lt";
+	spf=pass (imf09.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 46869A55826;
-	Mon,  4 Aug 2025 12:43:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7673FC4CEE7;
-	Mon,  4 Aug 2025 12:43:33 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5EDCF4423C;
+	Mon,  4 Aug 2025 12:43:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6868C4CEF0;
+	Mon,  4 Aug 2025 12:43:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754311414;
-	bh=gXQfTddyrmH8Ixen8MMOQFcSDtf75ytBbFmEnbpkIK0=;
+	s=k20201202; t=1754311420;
+	bh=KuB85oQ1zEvHewxjvaa7TgR+vPeGP91gwiah2Yizc2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WRgsvRlFW0e77jc7NIsyBW2keN26coVZrkVCiSkqs4aw+XPWcg7vc+V1XlKoIcE88
-	 IOIbPQelgEDLheM/qg7mVhJZzAqXm7CUjMAMKNzC+umg0g7DwYC9YBLyHXL0I66FCh
-	 IFbMO71xVEUgxdJl2+IupUgaBpdkpCp+VfiDgWnzz0MMd73xSf4ctXSScspzbf7J4C
-	 MQm70SnKxDBQEq6Qi5EQDhrkAfT+WwzTZQfsthVUSLn1pLEnK9pcRGmBAGcQOXI3DR
-	 pSMdvMXvMDulNitg5dtAwYyxJ7hDxcGMKpGt6kEpCAlccx1SJGPya+SDEHg8s11i4i
-	 u8QgrR2e/DTYQ==
+	b=hwpc/2Lt2D3anuuHX/CywReJ+JevkzY6FynhQNLZcPcidH3a8z4Y3cZmYKqJx40aB
+	 HuWBeZEysO6t3oSzFklaWg8fzR58b4rw4vPFNALiUc9A9irWH9TDeW0nOLlTcNMjg5
+	 8y75jvY8oofTniAsxP4pz8Mu3KaSfgmilMiaTliZ/mjlKSNBhY+c10mFYtQHZ4AR/7
+	 Xmk6xDyL82OWzMQWw/B3tiObakK+I7qRBS7g9Wgz6viepi3WB5CZHiWKKRcEEGPKzI
+	 Kj0BbJnhOLGzRPSZ09k5YVjeQRC0y6mBjsRtkaL/iwYbfSRrLhH2F4a0OA4eEyJn4C
+	 wZIRnvkij7dkA==
 From: Leon Romanovsky <leon@kernel.org>
 To: Marek Szyprowski <m.szyprowski@samsung.com>
 Cc: Leon Romanovsky <leonro@nvidia.com>,
@@ -99,22 +99,22 @@ Cc: Leon Romanovsky <leonro@nvidia.com>,
 	virtualization@lists.linux.dev,
 	Will Deacon <will@kernel.org>,
 	xen-devel@lists.xenproject.org
-Subject: [PATCH v1 04/16] dma-mapping: rename trace_dma_*map_page to trace_dma_*map_phys
-Date: Mon,  4 Aug 2025 15:42:38 +0300
-Message-ID: <7e10dcba2f3108efc6af13bfdbe8f09073835838.1754292567.git.leon@kernel.org>
+Subject: [PATCH v1 06/16] iommu/dma: extend iommu_dma_*map_phys API to handle MMIO memory
+Date: Mon,  4 Aug 2025 15:42:40 +0300
+Message-ID: <09c04e0428f422c1b13d2b054af16e719de318a3.1754292567.git.leon@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1754292567.git.leon@kernel.org>
 References: <cover.1754292567.git.leon@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 572C8140003
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 06D1C4000F
-X-Stat-Signature: pdok8swka5r93rsn7nmh4sbr3fbfqxtq
-X-HE-Tag: 1754311415-947729
-X-HE-Meta: U2FsdGVkX1+gm0BWlnKPV5rBNH8Bivh46KXn0X0m78dv3khJPZMrPgQ7yXfemWfW5gbkrzqGZQ/FtyfDHwQhZhzkiDQZmebQBxxGJJbFBGQ51FwzabT+zcef0u8ETuri6+v5HGxHf7AUamKYyDqilncriCXbcAmPmlN0/AakaNSzUE2ZU8AH7RK29XE/hrZaK8Ia65fLn+TshJKY8kMlkHP9qA/MbHwLR7PjTKtlyluV2VfRUImi7k8Pi+s5w/SKPrwL4huIxF0UUXc/YDdgRzSfq/Qd5GFebtt51dxTI41O71fvM8YGtuxy2qSrVmTkHLIDNxSPqDD7fseB4gBG8cQy6VWcstkFKPGeBa1zaTeX8/3JsWLIug9alKsJy3VwAKW/f+DGlzL7BSu26HPMQMvjUR/9SXIKPncowPoo2tL2thPThgDnFolDcYwzWdMxroi/gsFa1SAoy8heMmPuj/Nz8KCSITTRd0oW/aMKfZtrGpCHeUDz4ypda/XHuHl1cMrUFioMT//0OFhfgv1lIDLgZmF+38n7FwL7m0O0Va+zR3GYHcKxPDEbYjcGV40ML3gMLCd3E58115UulaNgfhat/DYr7aC43Z1onN5GrNu5hg6+6MvXtCKMJNqFde6H2Zjb1VxctNVbBOZkad+zCiW3xG2+327/mEAl1yTt8KxVxJcPsxhO6igmgPKjxQr5AbbVSYPUS70K8mhJpShNB+uJamnKxJ0lIR3DSP1WmoFjwQbVSy6aPbfAYV9FpahGM/2NM8wQG/1NBQw3dhHtqfAzizz45lD2YKzEcqKZ4d6V8sMd65ykP5jJYFdYXtrAMYBqft9/kcTTrDowN/ipJ7g1/PJtSCAuheUXw8fgJtqYNIuPw31pa4/hwQPI4+3lHQmHXl3q+NJdrbtUwRwYLijBP7RZRTqIIBLgAX+zHH/ySkPi4edo50dT8RDGU4NZJyfw9EHHWJilAOL4enw
- 7wbTmAlI
- THewe+8ETRvCYjrBEgw9e8VbT20hhOw2oAXiw58zuRx0fqbn39dUaOlTs+JT+s2MXDd/l27NBsw+hstGDiXWcZGTqA7xlhMfIU9h7voSsWHo7Xz0WJPSj5e1cvE76xmxENNp3IwR1U1MFqPm1xG+2uEJFPWHCZzGQTaTJT8mr/5LdPSoc+OD3CrE6EukpmY4AJr4Vn3EGF+V4apCt6JoRILFsvDWdwDe63jWJIxb9fWId94TdaRj/tgchuRd019ikFmPZfPVdFYw2nPKn6ELrMWPqDqN6GiGW52GUs+a0gBULzZT4a6RRS+qM5A==
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 9tc8xnfnbj9us467fopsh14jjpfken5e
+X-HE-Tag: 1754311421-693044
+X-HE-Meta: U2FsdGVkX1+/qifh3OjZNGhK5gcqxP2VeIDukC3rYnZYegKb7Yt3GCHvZ4t5RSxH19ldgbMFxRwkzx1FiKbLxpBJ0VnSMrJNzdrRyFk2RtREVb9NFC6Sep92amc1DXdxsiNSERAbB7n4QkE5BJ8egk2TuiJ2m0dGvDL5CuBbkMQiRR0rf4yJR/3yKhIheoQQOUhlBwei28cbqKCkJuYfIY5fajV8rS9JpkW8n54nMxfJbASERLt8wZj9CwtLZRyTMlCG0ExaZEbXbxNAQp7kZ2dxkuiRulYPYB9V1Lg1GsTBtgGvz9TVP/J5a8C8rboftNx/lnkO1HiXygCaLS0DixNNSv52thUYb1R1iJBnlUnZVSu0qMw9dHdqbAr/5AU+JRyuGCdy6fLZsFgVnFvSG+vQNOO/HZL4/irctc/Cm8jPigwCWKeGmZr7+59innpMskzgZ24IfHVY2zuDWyF3ogeltWKHv8Dop+UqX6kchknyzF/2p5xghVn61JDujm34FSdI0igO9kLFrU7xmTaoTCK6ubVKkqXRtUW1YSOtzhFAU12txSTmBCtio0wVboGmaxsLyxtOMD5CsIRU1i0Tg42i4J6OP39Fkg+iwSe01q95O+qsnuZzv5zFb3oduYAEyDN2C7cGTTqHPT8rbsTyVrKCeVrqNEl/Syk9tzAHGc/ms5cCU0rVb7owt71CBUQYTzWY2wCwbWGUhXriBgwygtby7KJA7WIir+71iB/UDv/BZ4SuroSJIRvC2obKR0MoPokmtHqyXUycXlrng0yI1lMqcZ2YEKaadjdL/gSuOvwdCdGqHXyU45N2mjx1+6YDq4jCqy9E/dymy3255l8ITrSjQTD43rTsyvvwUMjaDVzjCfDhNjiOQCJff/Pz1uNrN2hrpdewbB6SfZhz+MaGPw3ZyIvaU1zYNN54RfAPAaxL5qvb037CUZ+Ocviml177cXbefNrpJl8Q832Dngz
+ RvUrqzXj
+ awH7gRbpMg/b3gM69WTiATzy5m1UP5zKQoe13Yy9PnVGWg9NOd/NBpqw8aNqggJJ6+CdRHysb5ol8m1J3XCZA8TSR9z62iy2eBdiBvSjvZTqdQ/vy8KGQ2IXc9jSMRBqZaudi8xJPYjRAMVH7JPU5mmcU/0rNS+VuJ1c5/o4/A+gWauxOPejaTctCglq1KDoMC2/m/5XFQmAzpIpRjOSB/yFa5fzzCzgppgDLVT6z5BvzhsCbkvbA/WG61FoLz0lv5wYoOdKGRL+FSZ65+ZPaYNvQy6/HGzMgX+Nxu2f025g7CTAt4hfCwi3sxWoOCigh7/1xbOYps+8N7artk14VTu7aKWUXFMs0PlkZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,59 +125,65 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Leon Romanovsky <leonro@nvidia.com>
 
-As a preparation for following map_page -> map_phys API conversion,
-let's rename trace_dma_*map_page() to be trace_dma_*map_phys().
+Combine iommu_dma_*map_phys with iommu_dma_*map_resource interfaces in
+order to allow single phys_addr_t flow.
 
 Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 ---
- include/trace/events/dma.h | 4 ++--
- kernel/dma/mapping.c       | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/iommu/dma-iommu.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/include/trace/events/dma.h b/include/trace/events/dma.h
-index ee90d6f1dcf35..84416c7d6bfaa 100644
---- a/include/trace/events/dma.h
-+++ b/include/trace/events/dma.h
-@@ -72,7 +72,7 @@ DEFINE_EVENT(dma_map, name, \
- 		 size_t size, enum dma_data_direction dir, unsigned long attrs), \
- 	TP_ARGS(dev, phys_addr, dma_addr, size, dir, attrs))
+diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+index 11c5d5f8c0981..0a19ce50938b3 100644
+--- a/drivers/iommu/dma-iommu.c
++++ b/drivers/iommu/dma-iommu.c
+@@ -1193,12 +1193,17 @@ static inline size_t iova_unaligned(struct iova_domain *iovad, phys_addr_t phys,
+ dma_addr_t iommu_dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
+ 		enum dma_data_direction dir, unsigned long attrs)
+ {
+-	bool coherent = dev_is_dma_coherent(dev);
+-	int prot = dma_info_to_prot(dir, coherent, attrs);
+ 	struct iommu_domain *domain = iommu_get_dma_domain(dev);
+ 	struct iommu_dma_cookie *cookie = domain->iova_cookie;
+ 	struct iova_domain *iovad = &cookie->iovad;
+ 	dma_addr_t iova, dma_mask = dma_get_mask(dev);
++	bool coherent;
++	int prot;
++
++	if (attrs & DMA_ATTR_MMIO)
++		return __iommu_dma_map(dev, phys, size,
++				dma_info_to_prot(dir, false, attrs) | IOMMU_MMIO,
++				dma_get_mask(dev));
  
--DEFINE_MAP_EVENT(dma_map_page);
-+DEFINE_MAP_EVENT(dma_map_phys);
- DEFINE_MAP_EVENT(dma_map_resource);
+ 	/*
+ 	 * If both the physical buffer start address and size are page aligned,
+@@ -1211,6 +1216,9 @@ dma_addr_t iommu_dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
+ 			return DMA_MAPPING_ERROR;
+ 	}
  
- DECLARE_EVENT_CLASS(dma_unmap,
-@@ -110,7 +110,7 @@ DEFINE_EVENT(dma_unmap, name, \
- 		 enum dma_data_direction dir, unsigned long attrs), \
- 	TP_ARGS(dev, addr, size, dir, attrs))
++	coherent = dev_is_dma_coherent(dev);
++	prot = dma_info_to_prot(dir, coherent, attrs);
++
+ 	if (!coherent && !(attrs & DMA_ATTR_SKIP_CPU_SYNC))
+ 		arch_sync_dma_for_device(phys, size, dir);
  
--DEFINE_UNMAP_EVENT(dma_unmap_page);
-+DEFINE_UNMAP_EVENT(dma_unmap_phys);
- DEFINE_UNMAP_EVENT(dma_unmap_resource);
+@@ -1223,10 +1231,14 @@ dma_addr_t iommu_dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
+ void iommu_dma_unmap_phys(struct device *dev, dma_addr_t dma_handle,
+ 		size_t size, enum dma_data_direction dir, unsigned long attrs)
+ {
+-	struct iommu_domain *domain = iommu_get_dma_domain(dev);
+ 	phys_addr_t phys;
  
- DECLARE_EVENT_CLASS(dma_alloc_class,
-diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index 4c1dfbabb8ae5..fe1f0da6dc507 100644
---- a/kernel/dma/mapping.c
-+++ b/kernel/dma/mapping.c
-@@ -173,7 +173,7 @@ dma_addr_t dma_map_page_attrs(struct device *dev, struct page *page,
- 	else
- 		addr = ops->map_page(dev, page, offset, size, dir, attrs);
- 	kmsan_handle_dma(page, offset, size, dir);
--	trace_dma_map_page(dev, phys, addr, size, dir, attrs);
-+	trace_dma_map_phys(dev, phys, addr, size, dir, attrs);
- 	debug_dma_map_phys(dev, phys, size, dir, addr, attrs);
+-	phys = iommu_iova_to_phys(domain, dma_handle);
++	if (attrs & DMA_ATTR_MMIO) {
++		__iommu_dma_unmap(dev, dma_handle, size);
++		return;
++	}
++
++	phys = iommu_iova_to_phys(iommu_get_dma_domain(dev), dma_handle);
+ 	if (WARN_ON(!phys))
+ 		return;
  
- 	return addr;
-@@ -193,7 +193,7 @@ void dma_unmap_page_attrs(struct device *dev, dma_addr_t addr, size_t size,
- 		iommu_dma_unmap_page(dev, addr, size, dir, attrs);
- 	else
- 		ops->unmap_page(dev, addr, size, dir, attrs);
--	trace_dma_unmap_page(dev, addr, size, dir, attrs);
-+	trace_dma_unmap_phys(dev, addr, size, dir, attrs);
- 	debug_dma_unmap_phys(dev, addr, size, dir);
- }
- EXPORT_SYMBOL(dma_unmap_page_attrs);
 -- 
 2.50.1
 
