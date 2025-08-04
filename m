@@ -2,172 +2,111 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6BF9FC87FCB
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 12:51:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C738C87FCB
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 12:56:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D3066B00A2; Mon,  4 Aug 2025 08:51:09 -0400 (EDT)
+	id F0F626B009D; Mon,  4 Aug 2025 08:56:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 083CC6B00A5; Mon,  4 Aug 2025 08:51:09 -0400 (EDT)
+	id EC0A56B00BB; Mon,  4 Aug 2025 08:56:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E8DCF6B00A3; Mon,  4 Aug 2025 08:51:08 -0400 (EDT)
+	id DDBB76B009D; Mon,  4 Aug 2025 08:56:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D7EB96B009F
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 08:51:08 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8896A1DA81B
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:51:08 +0000 (UTC)
-X-FDA: 83739060216.06.C029E07
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 0EE26100003
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:51:05 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="S1l/1bIo";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754311866; a=rsa-sha256;
-	cv=none;
-	b=YyxYse0w8sfPnos7pJnxVGmV9+08ZtCaOdJfm9k91gssWfiLfclemZqSNwCRxiyGa4Ux+0
-	uUWc/0Upxg7VOttbLthnPgrPNuUNT9LLigNEcORglHAjicXAKovgUuIo/570kGUwctuTs+
-	ROuvCW+XDgqTWse9KNZ3oUBLYJKFjrc=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="S1l/1bIo";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D0F676B009D
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 08:56:15 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9F0BA114878
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:56:15 +0000 (UTC)
+X-FDA: 83739073110.15.E523BF9
+Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
+	by imf11.hostedemail.com (Postfix) with ESMTP id B738B40013
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:56:13 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=XUGM5qyh;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.160.48 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754311866;
+	s=arc-20220608; t=1754312173;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zBRal4xsaOEmUS6ItHYz2leZIyIcjbTf23K2YmGrEKk=;
-	b=h/oFIfUIFvAsgbZODXFpNkz7jWbTPtMbyQxXI2IW+lfi6/sf+r8W9c38IEWCwnbmmhJYbD
-	Jp2f2el/2rR44VQdh27vhWbpFc0cZGJkqa+f38gdOtOtKDZi92QF0AG2ny64/mE7yb5+Av
-	kreZbNSwLZCatIDH4yY15zg5/bMnTxk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754311865;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=zBRal4xsaOEmUS6ItHYz2leZIyIcjbTf23K2YmGrEKk=;
-	b=S1l/1bIoGPDAhrMiIWzVH3X8cG3Icp9I8fyktt2WbSMfBd6H7Ue/PWTiSqNMQYdCbC2N8w
-	71wWN838qBljTZsvS3MOyia8qiLVE6zMOEd2SYK6B7Gs5lkE5C1LBSivEQWn7TXOdqit+/
-	rfLebtB5VIxE9spZxnSZXVhDSbgwk+0=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-306-7uCoPH1NMs69GUw0H1o7Fg-1; Mon, 04 Aug 2025 08:51:04 -0400
-X-MC-Unique: 7uCoPH1NMs69GUw0H1o7Fg-1
-X-Mimecast-MFC-AGG-ID: 7uCoPH1NMs69GUw0H1o7Fg_1754311863
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4595cfed9f4so4990705e9.1
-        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 05:51:04 -0700 (PDT)
+	bh=wzefFzSR2vp1aHaFbeKCmFtRjiIwPiVdlyeV3EqbOx0=;
+	b=OUPnOzMsOE4fi7AX83ZNmzXWtUtdknmbU/kS+RXKvpsGCwn2RMbQOYQ0wAOlGTwqTOG0KF
+	I1Rx4dDqhxR/CqqGFK7RTB/cXdbbaj4DSdkZzlArnK0NFvP/MvIlwITKBtiiORiYlfvinF
+	J5lToDxkEVCVIoTXWrDhVZgYXmgSRjc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754312173; a=rsa-sha256;
+	cv=none;
+	b=sTVP+K20S26SasY0y3DEaZCo/wWvy1J4oE9L/9Hhfahtwq+TEcSZ+AmownwZwWAmoBr7xn
+	ryftFWrWm8taXiBHOaUFAkI+HBn8OARvbJ4UCybJZgfebPYRDU1mkhzu3HwND1qrdGXo96
+	ozKN2f+5SNe5k4U1S1s/ih6AsQNbOTQ=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=XUGM5qyh;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.160.48 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-2ffa8e58654so2835945fac.3
+        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 05:56:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754312173; x=1754916973; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wzefFzSR2vp1aHaFbeKCmFtRjiIwPiVdlyeV3EqbOx0=;
+        b=XUGM5qyh23P7nUl/Bax11EWJmZYIRrJd9UStedl6+1RSkQrqQG794vOugxhVSyMeBq
+         LAQiWSoctvwvm6w4TtAbyp5jH5q3hXxAt1uimE8kJbQ+hab4z0fK1iZyYlia6GvYCQR0
+         l0ZtB2K0intS8rnAFYHKAY0E9TKNRXodTZ7cdJy7fUFTE/T+aoML//35zquksZyVsJiN
+         kiCEeq66m2MKvgHSdF8fMkX2oaH/oF9vlBmKIVDAr1o6p7/U1EL5iejLp953AU0/ULK+
+         Z0qbJhgS8gynk2TyZLv0Tuh9UsGW3FSS144i823Yq3W7TNlW7MCo1QU4w1PS4LPOrjMc
+         qyrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754311863; x=1754916663;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=zBRal4xsaOEmUS6ItHYz2leZIyIcjbTf23K2YmGrEKk=;
-        b=a1/Q9NY2gdNMKKOUczVN4YxQno4NAPSRr/UOnpedHCXpZa4zWZxMUCBbWPi3XXgpzU
-         9o4k2IHyuYT8ElZPsWsC4GD1C/FiVMH/2xNj1SZKo2Z0x3q+tn750EkAhvFeU0qcHdwI
-         XyYiOBY+vLRj2kGFOEVHw1q8tlxa1TQ0T7M/MrO659W3iLm5x+zhOOjmyYgbcVzrzRSy
-         wH6Z6Jwt21X9w0rhJ14YqG2bpJNVhfPUYNc15AFyfn7cAvKfSkwi/JKyNMXu2bWLcWTY
-         NoH/flHlRODC91d6diPY1ZYTKmsAAxir6FfK7YeGkm2F7pGUmy325AVSglu8l8dDjG5J
-         QYjQ==
-X-Gm-Message-State: AOJu0Yy2clcYZjLkeHAWwexAFx5fxeXuYGXnSE/84oZgpNmA1UkQJ34s
-	UxRo8kCMXnIqNnYo+ebdDKM1RerXYErS2zhzXeBSBz8yjcgxiILdZc1+Vo52nFxvq+4tL4v2NgR
-	KB7O4ztRq78es8huTI3obnYpsw3zCi0bH1xJby2THwdp1Nyrus0NSElPrjxhYgv8=
-X-Gm-Gg: ASbGnct17efOX9OopZX7sZcRJt2+3njoZZd82Szyjfq9bRwmT0LicCsWRcDoD3FP/B9
-	lzw43hPU/ns0Oc8noh6wM8Ksj5EKBTvdaD3q7UWNFEsA0A542u2WSzRylY1k1z96izH/Si/lAL+
-	jxxCmOU2T9N4Lbhj6+sCjAHZJBl34v1hyBN2M873nPppP8yA6T5Y5HJ4zx+CTMsqEwpT02GwuWq
-	cTX2eBVvW8puU5HVV7Z/1+9g5a33YJ0DPr3BJuU/ztyrLOlwI91dafSoPOChzMF1AQtaRTWp1sa
-	Jjbny3uu0HUECAh9DLUcPNhb3sjM4G2zX4FZfSMbEwK+f9bHhGtNQuaS3NIYl0uCWTSkQr4wgOa
-	7Ev8Ph17T/Iq+RaROTk1gYbReIXZt0rfa+7USienOyENXRsKrWB9GrbL1XtE9a2T7Co8=
-X-Received: by 2002:a05:600c:4f09:b0:459:dbb5:399d with SMTP id 5b1f17b1804b1-459dbb53b86mr21230875e9.19.1754311862861;
-        Mon, 04 Aug 2025 05:51:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFDwnvqBfRM2yRafjOhR501WHdQ2r5zqZ1KQJbaHPA2Nh5YiknfB5iBnnN61Wrk91/G2qbSTg==
-X-Received: by 2002:a05:600c:4f09:b0:459:dbb5:399d with SMTP id 5b1f17b1804b1-459dbb53b86mr21230675e9.19.1754311862436;
-        Mon, 04 Aug 2025 05:51:02 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f0e:2c00:d6bb:8859:fbbc:b8a9? (p200300d82f0e2c00d6bb8859fbbcb8a9.dip0.t-ipconnect.de. [2003:d8:2f0e:2c00:d6bb:8859:fbbc:b8a9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458be70c5f7sm80911985e9.26.2025.08.04.05.51.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Aug 2025 05:51:01 -0700 (PDT)
-Message-ID: <c441e6ee-3118-4603-8c77-c5b2ef40982b@redhat.com>
-Date: Mon, 4 Aug 2025 14:51:00 +0200
+        d=1e100.net; s=20230601; t=1754312173; x=1754916973;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wzefFzSR2vp1aHaFbeKCmFtRjiIwPiVdlyeV3EqbOx0=;
+        b=ED5yQWr4U/xXWJaucotbGF1VrI5qWkbr8ktUW11nh9vwA/PH/XEiniEftpeltgDjkH
+         lAw3SaqbrPMyh2fjzQ9eGn39b1HUzATfXmzOpR1XlxVtAZbjuMIE1xO8WiqINhjvHhiM
+         ZG4nqGxVz0Mwz48DkUtQGv86+6Xg06oFTTs0RmkaQmO73jYhOlZXYWUXnn7c1odqyNsi
+         JTH67gsR6xbR0gZSBDRxnUUpWQbbCyNkkgD/ICb6R/hbuFxjbSxzmB3Y+ryYNv9XxQNR
+         VRU0pMQEWuP1RjmbEt8X5A/fxu7oKoXogSERyiRh2IGxDV9dwGh6+0s1ROVtXt4X+M2K
+         qXSg==
+X-Forwarded-Encrypted: i=1; AJvYcCXqwRrD4oAAD01GO7iQgmuvu/1LsNkxag6JBgHOXekHfzGEx/bnu9iDC1x6KaJAMq7p8FMbj20LXw==@kvack.org
+X-Gm-Message-State: AOJu0YwOKI4/ffYISRzx3hcQynFL60JNtif8phuO1KhL2L+sUB3TgVkJ
+	T+LIUc8uzuRQ/QTZxHRfgiom1PhhZpjop3Kc8Lo3SxzbPkUTjsxUbCFtbk8ht1L9etnnFszoZ5P
+	Wc0OPL0OS/d8Djjo9ARnXkBaSDHVmhWU=
+X-Gm-Gg: ASbGnct7OObnuszWa8LQhPGBNne7oUYhXh0a4oW34FzXR1kZPUyzp3yBnPXZjs9WRtz
+	P+PWUx9KEq7PWkH0joEsO9EuSAXUNweROAwon8LN+Yjz3lM7hLsTOHHwhIkovIUO0fAckgL++BY
+	GjaTa8J/MsyVVbzpfV4zvxONHwhanfeZ+t1AgWxNqwHZXH+CpgcDpGKJA6Gz/WAhAY2k9RZeFPz
+	PAhFrToxaMdxBM=
+X-Google-Smtp-Source: AGHT+IE4MAXVRhZWR5/ebeb8eIMaIzWPZ9dWzpVYsFUc7uLvARKpfKCbXZj4DM6hUdPgWY/tqsU0xiN3pfgH3/Y8hqg=
+X-Received: by 2002:a05:6871:4b15:b0:29e:559b:d694 with SMTP id
+ 586e51a60fabf-30b67a24c4amr5580485fac.32.1754312172618; Mon, 04 Aug 2025
+ 05:56:12 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: memory: Force-inline PTE/PMD zapping functions for
- performance
-To: Li Qiang <liqiang01@kylinos.cn>, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com
-References: <20250804123923.296230-1-liqiang01@kylinos.cn>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- g3eXuA==
-Organization: Red Hat
-In-Reply-To: <20250804123923.296230-1-liqiang01@kylinos.cn>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: nCzSuk5gmdOcjGUF6_2FsfX-45HTsnOgjWv_IcBdUEs_1754311863
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: bine8tmeybuun5yhropkfdmnf17ode38
+References: <CABFDxME81-oWdDzc6EzCEgHnXDTe_fQT0s8c2YuqMA1EDbDZZw@mail.gmail.com>
+ <20250803174235.55846-1-sj@kernel.org>
+In-Reply-To: <20250803174235.55846-1-sj@kernel.org>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Date: Mon, 4 Aug 2025 21:56:00 +0900
+X-Gm-Features: Ac12FXwJQkFS4AO-uIft_lx2f5NinOqaKDiIHA_oUIm8Ok9S52t7PU5_Hc2A1hw
+Message-ID: <CABFDxMH+pM1QD69FG+4873Q0WLN3sJB4_NDa6vqLjnjAu8n6+A@mail.gmail.com>
+Subject: Re: [PATCH] mm/damon: update expired description of damos_action
+To: SeongJae Park <sj@kernel.org>
+Cc: Honggyu Kim <honggyu.kim@sk.com>, kernel_team@skhynix.com, damon@lists.linux.dev, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: om7axin3u71znkofe859sbiazndokhx6
+X-Rspamd-Queue-Id: B738B40013
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0EE26100003
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1754311865-653851
-X-HE-Meta: U2FsdGVkX1/gwCt+KFILn6TX7N9M9Ck5v4jEkFnUuzOLi/qWNmpO/ruNctn/WHBEVpLgAVizwiBXEv1FF2x8C24epYhkQosLrCgKVlkeTVp5oM0fT1NXL1oTK2JmXzTkzVsnG5cFhOcKvpXGeUyjWE7j956zlIHyU6DqLVau5+c+du/BiVHOWErauvCX8tLK64+SRUX9Y/LOO4KgrfgkJT7D1+czsPiSnDdHILed1vP+KLrN5CpjkGfyqdPkFR4dVx83DJD+Dz0GxjiEedIiTdvklchEbef6QwI1UrghveE0lgNFlaPH5Kzcalo04U/S2aDc/Y0Xu5/oqJzQk8O1Dmpwl5z4dXDPpzl2Vuti+kKJO/6X7BmfuV238QnHBGien9ppRhNlTCH+YH+SZ2llg8eex+w5bU5aDKwZVCKzjyQ/DaZQBC5aIbn041+4QttF8vf3D1YwCYfMzECtRYHIwZ7zzl8Gf5n3thT8ABcWvJbAiDmfmQ/pJikYBvbBu1YlRY/Ot7/m1LYINLi5QSSB72MY/QPYS4QntfHnE1oPU0cwaqnExgAYbj7b1UgsVBBJvIUDwHJ/xpy9VFodXR6OYh9SRA5UbYYNoP74EL2txKzMCIMWo3JQUFvBw7BDl9OpOR893YWA718q3qCf5fOjl01jXMMiB9Nxsv739AAF3BHVBDXxPnnF4g0FmV3B5whrzbCXd7wcRJr4GCIFo1ClrBI/Dtji/n9efQF7XWEHkT6xVLchQ3l29fSBgAlJhukyAUWDUt5Rc3ztyPC+rM7JE7eJKsz7X/+j+OMmc2F8D+2I6Ekj5aYcESLEueFrq1lnW1nJLUvMwVbRxNynE+I0g/JjWVibGV4M6dmViBQJD1qV0Mjm9KP69qpDZYEnTQ0yQHn51v4VF5wh5bxcbWdQTSareod0+FB0UzTnwyN4DqBuZayX+2tKfdIV757BZCbwpNIHI1fU02Joy9MfKih
- QDS0r6l+
- v9CVMiq+FFQZ0YQNtMlCjSDrpmHkrz9Sw5CJAto9Fzo8MxVPKuycwYV5FDa+7W83qXhb4I4tpxoMk7uJJbMoSEwZtmBl/Hx8r/knv/I0S/kaOazlSToC1N0Nb31aADRvGp/flAdb1JOelmBWsTqWERer8Nq4FTEC17Tb+BCmyQ/EkKrUofxN2g49IgyClm2hj3/o7PVSaoWddSuPqStcK/m5xiJ0xurx+uPGCLSeosTR/7+9ywVtvFndOahWih3edLAB8AV5NGgCu5Ezuu3AGdypKMUoZmXR6+XaaiznNewu+WcFOTo5jJPOdOEOnd9cRldB99twEJ2nk66fUyZY3B3NlUExDQWaPv8bipJVUBVM6Kz06UEUfPtP3Tv1WwuQc7QlS44eTbZIqJMLQRQenQqqH5L6qT85xh7vdabcjLuyILuQpMnY3j3jGHKelQFNSJjs6PM5cMWUZZ4zmO2oLpuVS0w==
+X-HE-Tag: 1754312173-49195
+X-HE-Meta: U2FsdGVkX1+9eQ5Rj86QGHU+E0x10D8nY/rqmygbBjoD95W/UNIfcK2aZ1E9IYPbXzf0b8vN6LPJmvjN6uxzqm8G4yfJFv7j4+zk8T+Q8EL6qKc3wx9jpBWHNkmqg5anhCsua80nlxyGGGEHtOm4HxSZSBP7WkvGpeYluC3JuqT/Q8FCHWLzap4PVUAvaJNoSbU6akVtZnfYmaFroHQQNGb7cQ1F1l0m2r+E1NvekNZMSzdE2pHuCuwsIbazaHUPzAqPVRmT3zZArzljZJnQeAsDegapWzSL8KS0ke0IlcQID3XseBQaCihx8TlOb/WSpvOYGdza57pJ0e81PKdTY9BFUOOtkZDVpMHXwVR9vMmkOSdBC+7IipSFK64Tcy9TN67epq3vadOEDcZBIOiD2iEJ9UJS5LxaSeeOe7c5TNLP4peR/LPc14a9gLvOAwV6qiU9bOhcycfbsvzCZ8l+DZgS5IkfV4G8tscWejy6LAB8egY3fGW53gQhBd2woddFTTGyFHuYo0Vy3dpPWDTaevPxtdk3lwtTcjJHYyCZ5gfRdOHBWIvflqm7updiqHPahTqB5JSH7BatzIHl/UWRp9XULvPSdFKQGJFHfm5wTUTqKKlBbZYjqdVn8ePL4D69FKwpWrxD0JguysVDSpAQXuUP/r5t9Y26CoJRd6a8walPODcR4XNAgrYhfcZ4A4gDgLATI06k1DpFQs/YAhFEbv2MyKKPhutb81G7HIcgfxooG4gTb3Z+ObLBgjsvYinfHTQY/TDb34aQvS3lVMU3L+bKep3qJ/8t3M7EuUaiNoq2CNWAFtLI3KZAgo/y9cZr7HXlF0JDqid+dBDka/PI53GApDXH4jfUETla9VyoQ5DOsMocURb6T1fxmYrmOcJNJycSBJ5i+LfJoQDaxSl4IjKAG2HzZs0CGTDK/GN8KA+GtBBSjNK1K575NWdLYxORvDR8ERWGofwELIoc4am
+ 9xJAzS2W
+ xwSX+Lr435KcF8SCAQN3CrKB6uDVPfnBvukYbOQb8/YUWp1jgVBfysV05Kgu2WYEe+WfkQlaWfDEyP8DKCCkeBrS/5r7mK/OcBcFpULsixH31eJaY3jmJKXE9FnCc6ok0qPZA/5lEtZ3uUEoB4HvmmAyS0+ZSnza6xNHlB+7ucwY/oK+kW2Y2RFVxXNYaSrpP39xGud2mylRCmi3JhdexViF8JMLGLHbp6uPuCYPfGN9ci6fs7LGroPwKxv4Mf2HsCrsLmslhWIOXr+i3D1pP9ICAFe6CrcCW+Vj0KAxRPjISWcaovl9k95qQNTilCm7gYhcEGQXN2cpoVmmpUI7+eVM23mU4pGBSK92VytQR5xpDqd/LViJHUuCimMLRPCHcJ7smEIIacpRsGuHENZ1S6SD5wdh0MbQdKz9IMq6S+Gua15Q5AANPeUSMP2zXvxys0rHoX12ub6GBYF7SWSyQEKqxndcbPmkCRyVv5jqDQIORQjmXbzlitFy2eqXyUT2RuvQj5j3JfYo3JZ6N4vaAGM0OMg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -176,31 +115,253 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 04.08.25 14:39, Li Qiang wrote:
-> This change converts several critical page table zapping functions from
-> `inline` to `__always_inline`, resulting in measurable performance
-> improvements in process spawning workloads.
-> 
-> Performance Impact (Intel Xeon Gold 6430 2.1GHz):
-> - UnixBench 'context1' test shows ~6% improvement (single-core)
-> - UnixBench  shows ~0.6% improvement (single-core)
-> - mm/memory.o size reduced by 2.49% (70190 -> 68445 bytes)
-> - Net code reduction of 1745 bytes (add/remove: 211/166)
-> 
-> The modified functions form a hot path during process teardown:
-> 1. zap_present_ptes()
-> 2. do_zap_pte_range()
-> 3. zap_pte_range()
-> 4. zap_pmd_range()
-> 
-> Signed-off-by: Li Qiang <liqiang01@kylinos.cn>
-> ---
+On Mon, Aug 4, 2025 at 2:42=E2=80=AFAM SeongJae Park <sj@kernel.org> wrote:
+>
+> On Sun, 3 Aug 2025 22:22:05 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> =
+wrote:
+>
+> > Hi, SeongJae and Honggyu,
+> >
+> > On Sun, Aug 3, 2025 at 2:41=E2=80=AFPM Honggyu Kim <honggyu.kim@sk.com>=
+ wrote:
+> > >
+> > >
+> > >
+> > > On 8/3/2025 2:30 PM, SeongJae Park wrote:
+> > > > On Sun, 3 Aug 2025 13:43:03 +0900 Honggyu Kim <honggyu.kim@sk.com> =
+wrote:
+> > > >
+> > > >> Hi SeongJae,
+> > > >>
+> > > >> On 8/3/2025 1:22 PM, SeongJae Park wrote:
+> > > >>> On Sun, 3 Aug 2025 11:03:12 +0900 Honggyu Kim <honggyu.kim@sk.com=
+> wrote:
+> > > >>>
+> > > >>>> Hi SeongJae and Sang-Heon,
+> > > >>>>
+> > > >>>> On 8/2/2025 1:50 AM, SeongJae Park wrote:
+> > > >>>>> On Sat, 2 Aug 2025 01:11:09 +0900 Sang-Heon Jeon <ekffu200098@g=
+mail.com> wrote:
+> > > >>>>>
+> > > >>>>>> Hi, Honggyu
+> > > >>>>>>
+> > > >>>>>> On Fri, Aug 1, 2025 at 8:35=E2=80=AFPM Honggyu Kim <honggyu.ki=
+m@sk.com> wrote:
+> > > >>>>>>>
+> > > >>>>>>> Hi Sang-Heon and SeongJae,
+> > > >>>>>>>
+> > > >>>>>>> On 8/1/2025 2:58 AM, SeongJae Park wrote:
+> > > >>>>>>>> Hello Sang-Heon,
+> > > >>>>>>>>
+> > > >>>>>>>> On Thu, 31 Jul 2025 22:22:30 +0900 Sang-Heon Jeon <ekffu2000=
+98@gmail.com> wrote:
+> > > >>>>>>>>
+> > > >>>>>>>>> Nowadays, damos operation actions support more various oper=
+ation set.
+> > > >>>>>>>>> But comments(also, generated documentation) doesn't updated=
+.
+> > > >>>>>>>>> So, fix the comments with current support status.
+> > > >>>>> [...]
+> > > >>>>>>>>> diff --git a/include/linux/damon.h b/include/linux/damon.h
+> > > >>>>> [...]
+> > > >>>>>>>>>       * @DAMOS_WILLNEED:  Call ``madvise()`` for the region=
+ with MADV_WILLNEED.
+> > > >>>>>>>>>       * @DAMOS_COLD:              Call ``madvise()`` for th=
+e region with MADV_COLD.
+> > > >>>>>>>>> - * @DAMOS_PAGEOUT:   Call ``madvise()`` for the region wit=
+h MADV_PAGEOUT.
+> > > >>>>>>>>> + * @DAMOS_PAGEOUT:   Reclaim the region.
+> > > >>>>>>>>
+> > > >>>>>>>> Nice!
+> > > >>>>>>>
+> > > >>>>>>> But doesn't it make confusion about whether this pages out to=
+ disk or does
+> > > >>>>>>> demotion to the lower tier memory?  It's because PAGEOUT acti=
+on doesn't do
+> > > >>>>>>> demotion, but it looks "reclaim" includes pageout and demotio=
+n together in my
+> > > >>>>>>> understanding since /sys/kernel/mm/numa/demotion_enabled was =
+introduced.
+> > > >>>>>
+> > > >>>>> To my understanding, DAMOS_PAGEOUT can also do demotion when de=
+motion_enabled
+> > > >>>>> is set.  Am I missing something?
+> > > >>>>
+> > > >>>> Actually no, please see below.
+> > > >>>
+> > > >>> I'm unsure to what point you are saying "no".  Are you saying DAM=
+OS_PAGEOUT can
+> > > >>> also do demotion when demotion_enabled is set?  Or not?  Could yo=
+u please
+> > > >>> clarify, and add more explanations about why you think so?
+> > > >>
+> > > >> I checked it again and found I pointed out in the wrong place. Ple=
+ase see below.
+> > > >>
+> > > >>>
+> > > >>>>
+> > > >>>> do_demote_pass in shrink_folio_list()
+> > > >>>> https://github.com/torvalds/linux/blob/v6.16/mm/vmscan.c#L1122
+> > > >>>>
+> > > >>>> The do_demote_pass is used here.
+> > > >>>> https://github.com/torvalds/linux/blob/v6.16/mm/vmscan.c#L1293-L=
+1302
+> > > >>>>
+> > > >>>> can_demote() implementation returns false when demotion_enabled =
+is on.
+> > > >>>> https://github.com/torvalds/linux/blob/v6.16/mm/vmscan.c#L350-L3=
+51
+> > > >>>
+> > > >>> I'm again get confused.  Isn't it opposite?
+> > > >>
+> > > >> The thing is that DAMOS_PAGEOUT call sequence is as follows.
+> > > >>
+> > > >>     DAMOS_PAGEOUT
+> > > >>     -> damon_pa_pageout
+> > > >>     -> reclaim_pages
+> > > >>     -> reclaim_folio_list
+> > > >>
+> > > >> In reclaim_folio_list(), it sets "no_demotion =3D 1" in scan_contr=
+ol, then invokes
+> > > >> shrink_folio_list().
+> > > >
+> > > > Thank you, this clarifies.  DAMOS_PAGEOUT doesn't demote pages even=
+ if
+> > > > demotion_enabled is set.  Thank you for enlightening me.
+> > >
+> > > Thank you too. Glad to hear that.
+> > >
+> > > >
+> > > > So, "reclaim" means "reclaim".  shrink_folio_list() can do demotion=
+s when
+> > > > demotion_enabled is set.  I hence still don't think this patch is s=
+aying
+> > > > something very wrong, and how it could be improved.  Do you have mo=
+re specific
+> > > > change suggestions for this patch for an improvment?
+> > >
+> > > I would just like to make the term "reclaim" clearer and we may be ab=
+le to
+> > > define what "reclaim" is.  I think we can choose between the followin=
+g two
+> > > different definitions.
+> > >
+> > > Definition 1. "reclaim" includes "pageout" and "demotion".
+> > > In this case, we better clarify all the other documents that mentions=
+ about
+> > > those terms.
+> > >
+> > > Definition 2. "reclaim" only includes "pageout", but "demotion" is ou=
+t of scope.
+> > > In this case, shrink_folio_list just do pageout, but "demotion" is on=
+ly
+> > > exceptional case so we can say the "demotion" escapes from "reclaim" =
+logic.
+>
+> I was thinking in the first way, and apparently I was simply wrong.  Now =
+I
+> think the second one is more correct, at least for {DAMOS,MADV}_PAGEOUT.
+>
+> Yet another way to do the reclaim would be memory.reclaim cgroup file.  S=
+eems
+> in the case, demotion can happen since user_proactive_reclaim() doesn't s=
+et
+> scan_control->no_demotion.
+>
+> I didn't read the code, but apparently memory pressure-based reactive
+> traditional reclaim logic would also do demotion?
+>
+> So, apparently "reclaim" can mean at least the two definitions.
+>
+> > >
+> > > We might have to clarify the term "reclaim" for those cases whether i=
+t includes
+> > > "demotion" or not.  We might have to discuss with other mm developers=
+ together.
+>
+> I think that could be a nice discussion.  Looking forward to.  As I previ=
+ously
+> mentioned, I don't think we need to have only 1:1 mapping terminologies, =
+though
+> I have no strong opinion here.
+>
+> Regardless of terms, I agree there are many rooms to improve on our
+> documentation.  At least DAMOS_PAGEOUT documentation may better to clarif=
+y what
+> you pointed out.
+>
+> > > Thanks,
+> > > Honggyu
+> >
+> > Because of the above thread, I got to know the details more clearly.
+> > Thank you guys!
+> > When the discussion of "reclaim" finishes, I'll make v2 patch as soon
+> > as possible.
+>
+> I don't think we need to block v2 of this patch for the discussion.  What=
+ about
+> adding a note about the demotion behavior on the details comment second, =
+e.g.,
 
-What's the object file size change?
+I see. That sounds reasonable because we can revisit after the
+discussion finishes.
 
--- 
-Cheers,
+> --- a/include/linux/damon.h
+> +++ b/include/linux/damon.h
+> @@ -150,6 +150,8 @@ struct damon_access_report {
+>   * &enum DAMOS_LRU_PRIO and &enum DAMOS_LRU_DEPRIO.  &enum DAMON_OPS_PAD=
+DR
+>   * supports only &enum DAMOS_PAGEOUT, &enum DAMOS_LRU_PRIO, &enum
+>   * DAMOS_LRU_DEPRIO, and &DAMOS_STAT.
+> + *
+> + * Note that DAMOS_PAGEOUT doesn't trigger demotions.
+>   */
+>  enum damos_action {
+>         DAMOS_WILLNEED,
+>
+> >
+> > However, I want to talk about a slightly different topic. How about
+> > adding support demotion to DAMOS operation action?
+> > Maybe we can add another action type or change implementation of DAMOS_=
+PAGEOUT.
+>
+> We actually tried to implement DAMOS_DEMOTE, but eventually decided[1] to=
+ have
+> a more general action called DAMOS_MIGRATE_COLD.
+>
+> Do you think there are use cases where DAMOS_MIGRATE_COLD cannot cover?
 
-David / dhildenb
+Thanks for your comments. Above suggestion was based on my lack of
+knowledge of DAMON.
+I tracked linked RFC threads; now I understand that DAMOS_MIGRATE_COLD
+supports both demotion or lateral migration, depending on the
+environment.
 
+Maybe there could be a new use case, but I think now it's not at the moment=
+.
+It's just my bad :( let's just skip that suggestion.
+
+> >
+> > IMHO, I think we should first check whether it's possible to set
+> > no_demotion in the `madvise` -> `foilo` flow we're using.
+> > Since I'm still quite new to these things, I'd like to check whether
+> > my idea and direction are correct.
+> >
+> > I can't thank you all enough for your kindness :)
+>
+> The pleasure is mine :)
+>
+> >
+> > Best Regards.
+> > Sang-Heon Jeon
+> >
+>
+> [1] https://lore.kernel.org/all/20240614030010.751-1-honggyu.kim@sk.com/
+>
+>
+> Thanks,
+> SJ
+
+Best Regards.
+Sang-Heon Jeon
 
