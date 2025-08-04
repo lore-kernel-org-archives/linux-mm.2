@@ -2,106 +2,125 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 97BE1C87FCF
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 13:01:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 05AC5C87FCB
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 13:01:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99D616B00B4; Mon,  4 Aug 2025 09:01:46 -0400 (EDT)
+	id B99F26B00D7; Mon,  4 Aug 2025 09:01:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 927676B00D3; Mon,  4 Aug 2025 09:01:46 -0400 (EDT)
+	id B23916B00D8; Mon,  4 Aug 2025 09:01:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7EF706B00D4; Mon,  4 Aug 2025 09:01:46 -0400 (EDT)
+	id A11756B00D9; Mon,  4 Aug 2025 09:01:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6466C6B00B4
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 09:01:46 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 948E41DAFCE
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 13:01:44 +0000 (UTC)
-X-FDA: 83739086928.02.C8B6EFB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D6F7D2000D
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 13:01:42 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oV6re8fi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754312503; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8CCB86B00D7
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 09:01:54 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0FF0E135131
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 13:01:54 +0000 (UTC)
+X-FDA: 83739087348.12.D21A7BA
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1EBED40018
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 13:01:51 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=BdBBprPX;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of nadav.amit@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=nadav.amit@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754312512; a=rsa-sha256;
 	cv=none;
-	b=zqsYmrKwRFl7amiYGLu/5yCaD44loEkxUrsrFHSlag2zBE4Cql1qSfrUELaeXHgi4vou0V
-	q/FN45Q5aho5HXisVQGoeyfxWOG1FR4lFi9VIqnA/BiTuuTqhRp4U4dSeegz4u4hVXgNwr
-	Nj0tp+HH8cZ3JTDs7BSTzhO4E/n3SmU=
+	b=ljUot8nqRqRifsvXNlSJ9z5X1oOTFZJeEwtGpF0uSn3gSqktCfhEjkOqW5sm1667IWLeqj
+	44XDl7gPtvvydRLpzK8v5VTdtfuxo+EYV3wtyNzyZlVzkJnxt674x2vbx6DBbEQGBpdKqI
+	tSB5V83kqWgkHG3NJhvS6/xBjMBlt+o=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oV6re8fi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=BdBBprPX;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of nadav.amit@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=nadav.amit@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754312503;
+	s=arc-20220608; t=1754312512;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xhDCw3chECUJ1KEQqqun6NxBg/LPVeW/HpMyukRWBN8=;
-	b=7SFdAawitPEgKiPigPi+kAfsZL7xf2YWuNtgcf9z+V+YPLTsDbjD0H6LgGq31Zj1wySe2h
-	6m2ecGE6nmXfP/xQNRXOYnfRfGokqxtQd+apOtwAtRZsH5k94p4lvuQ1QdvGbdVbm8F3eg
-	PiroQ/izqiWMHTsf7C+u0oL1FTtczE4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B826B43F6C;
-	Mon,  4 Aug 2025 13:01:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 796FFC4CEF8;
-	Mon,  4 Aug 2025 13:01:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754312501;
-	bh=MSxBGzEUPE37zYCyYE4jEXpC4IceAGVrySCuVXBUCzI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oV6re8fiGNwYDZzCzdRzp9XpjScFB7jHhr0bUqrsSd/RU8VD1+cDyB4db1ivcuz67
-	 ZbqOoy4QDgWahTEBLZIkeuGoLDtCxufGY1mXb4uUNEIIogWWDZKxvNPNgmGAOQfthR
-	 M88oaFlWV16G0mYbetwlnMeQOqlSTPkZtmJgNfx1DBxt8qHsi8vzBGtgUSwzfG/EF/
-	 +feKrcxhDRe2w3XUDGmoRDhE/Z6LPttQLNSWEXlBJ9NMAhEVqOVOLoQfSfWwEFlJa9
-	 t+8VS5mhktJavv7v+cSijhYGtO53nybwj4RxWUn/B2l2HWenabrQ2aR3U+cNT0+v2t
-	 iMQ+fAg6U3ZtQ==
-From: Leon Romanovsky <leon@kernel.org>
-To: Alex Williamson <alex.williamson@redhat.com>
-Cc: Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Christoph Hellwig <hch@lst.de>,
-	dri-devel@lists.freedesktop.org,
-	iommu@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
-	Joerg Roedel <joro@8bytes.org>,
-	kvm@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH v1 08/10] vfio/pci: Enable peer-to-peer DMA transactions by default
-Date: Mon,  4 Aug 2025 16:00:43 +0300
-Message-ID: <edb2ec654fc27ba8f73695382ab0a029f18422b5.1754311439.git.leon@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <cover.1754311439.git.leon@kernel.org>
-References: <cover.1754311439.git.leon@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: z8acrmsskz6gagigytaqhdr1f1r7qeih
+	bh=KefGQki3y2vCgBk3//HIoldKMrauc2w652/PLEweYlQ=;
+	b=njk2kvBZe7drb5TkDYt+NiMFKp1K0ZozYdYGZZpm8Grwrjxs5kxSQKU64AlmoMazoICpfs
+	5EwzIGOaIHuSv6qFfU407/3jegaTO/Uz0Tu3Bfk5RtQ+vvepdvOSrHTUAk8v76auSLypUy
+	Z+xgjoBUkJL24sv1HaJy25xO03T2J94=
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-acb5ec407b1so620163866b.1
+        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 06:01:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754312510; x=1754917310; darn=kvack.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KefGQki3y2vCgBk3//HIoldKMrauc2w652/PLEweYlQ=;
+        b=BdBBprPXVxas3mzRbQSWrd6ptIzFnUIHIoGJ3/JciOxhveodKs9zgJGteDJkFhMU2o
+         YBN4BmcEjwZCOF+nSJ2pEhK+imY3gLH2paB3rT/NdvEkgSOHarySg9KHMNb1CDDdZmXG
+         UfOjtexAI7w4Oj8aw5AcvB6UMkwmiaqi3XIsPHepy8XYPz4Dbyvcx/lyiTmJjQRelC6S
+         b+VmM4VrRONJ1RKvvVLI4OxUDSI8MEwXIoAswhn65rFzhb/wJcMi1xsw+4BawB5uTksC
+         /JtrNz/U2U6AhYAEVqZClumXpfbGIbWd48yhZjyXHwefQGLDchTUdBWAvWuNjwTpgK5J
+         hibQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754312510; x=1754917310;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KefGQki3y2vCgBk3//HIoldKMrauc2w652/PLEweYlQ=;
+        b=Q+DQh/MyMK2DxBmSenJQAeJkza/9rEhgaStBe9Z82w44KHPNyAu45CcVg8ea62OIeM
+         DBHyGqzT0MoyAediclRa5D9+tcdqvkSrf+SBLWficjDTh4E4h0IffVa8+LD3HHApZXuq
+         SSgmyHLqyJIPrxT2V9O6kR4C0WLi20g45TY+TXiNOGP9lGP02iZC+WxWehwyoIfQxQ45
+         RH9ThnSqCZxUgxo8gCfx7vTJQ3xsTAmJgMvfQtRYJYTMFKNtj0qwMtAXvnWFXJGoHUKf
+         W1NIITpDrkwVtKIy+weI4cHwszrVeCXK/o2o8c+K5ZB28W0mjIeOMEJpf/oMlAw7p+KG
+         Cy0g==
+X-Forwarded-Encrypted: i=1; AJvYcCUto2A/lmoUQVICXk/9HmjwqT+3ZqdEeB9wqpCY2wujMDHS5lLST6rhTRw7b7qfKkduQ41OYlmdpQ==@kvack.org
+X-Gm-Message-State: AOJu0YxWs29rKML1T6jcx+M1C0T9UA5uOfu5AC1GxY9pxtiZJTjWDlLC
+	heQYYC66zWQ4b7xHkYCOKiLqmWW6hXP+St1qUSr+iNBK2IEUKuMfQdCKaRUwfPjySdo=
+X-Gm-Gg: ASbGnctRp1ffv1PcBj8Auv3qd+Qwi82JR5IKTA9wbuB3Pm+YiwH/w7YHidFBuheG3LZ
+	ifhz6Yc/Wn63kH3OD6M2oyK8AJKIkuEXm1JofKPJVlmnYg+CsurkzcLavHHk7ZxbkEh5famsGUT
+	VaJFWywffbxML2vwp0squN3ZnJlY9AxtcssRdaEXulsl9U9Fam/qNv2TkasPL6ZirVGkr4QbmVO
+	Cc4PhoqAsoBxhKabL9oaYcyTtPaL0k2dc/+iN3QoR9zXY2dqf7cOp0HCDqSnf7QRggpZtYmXvmC
+	HxZLagbdOKz9uYNYSTxYJgyPw2GXR5oakt0AyMbihD+4a9z0kEACi3+LIb2dpAeZiKXY1zCa7vm
+	LAExzOY+C6iFCnAOo44BSeL57lOfcFzmeV+2Bt7oRg90ixuda
+X-Google-Smtp-Source: AGHT+IHyaLHRw9WBl5ycUvUvKXhVXBKMJj40By+LLSFKNQMKMdFNjDt/FfyPBkA5DzimU7cf9mwASw==
+X-Received: by 2002:a17:907:97c5:b0:adb:45eb:7d0b with SMTP id a640c23a62f3a-af940015660mr1070658166b.15.1754312509941;
+        Mon, 04 Aug 2025 06:01:49 -0700 (PDT)
+Received: from smtpclient.apple ([132.68.46.54])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af928c84154sm636824066b.84.2025.08.04.06.01.48
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 04 Aug 2025 06:01:49 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH] mm: memory: Force-inline PTE/PMD zapping functions for
+ performance
+From: Nadav Amit <nadav.amit@gmail.com>
+In-Reply-To: <c441e6ee-3118-4603-8c77-c5b2ef40982b@redhat.com>
+Date: Mon, 4 Aug 2025 16:01:37 +0300
+Cc: Li Qiang <liqiang01@kylinos.cn>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ lorenzo.stoakes@oracle.com,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasarya <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <9D248293-2456-4642-9F18-8075F0596EC2@gmail.com>
+References: <20250804123923.296230-1-liqiang01@kylinos.cn>
+ <c441e6ee-3118-4603-8c77-c5b2ef40982b@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D6F7D2000D
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1754312502-564139
-X-HE-Meta: U2FsdGVkX1/MKcuVSf+ybu+d0N5CozIy9R2tSnh0NExY9CgPMYSxnaRhJSKmLlGi1ZA0atxiHTDs5un8XkiXqkau4t5xYPvUL0raoO6cuxsUoc0u19a9cbAWpjAWmw2/YVZ3hjVgRykK36Qz9LXx2S1D6Um4w4XgqJcoFpMJqMlO2abEtY/5OFZ3kXEt1OhCARpUCZaIX+2cD6/84c4f4njgmRdp78qaXchHC6W8xqYCW+sKu0Jg0CZ3cHy2iH/hWSKxTEcEc10frYy9ycZkMp9xapUFmO4tzN+T3x/WSlgTJIJ9Q0rjTqiBw5WwvqeT3wW5xDoJ6aKaDpAmR1hOC5WqxR6vVF3pf+pO1a27nDIEWW5vgF0BAe3LCr6AB1OJj0Ah69QKj1wFHAzPDfdBiemR+LnVrqOVqfrcd6RTsK+Rqfh/Fp/Uvg+BJeRvwBl5EovZtBmevv5/EumBuaXBHs5M/zI0itJgbjapHSjy6ri5u1BNnVRZoJPUA7GNnKJHnrgGfoPr+toUbMsV0WajKtpZR4n/ySIbkMUki+Q5qLlIGi69bO0Q1f7zCtQ0bHLC9Yd0SZHXJArADU1F7q+2nEHaoibSR5PUEFasjPOLS12w6Zc/TKi666hjjJCh/p9fVCFNYBTRn9HXvE+KVHoYwID8YU0cbI5DOj4tglcykv8YnEqsV85+gObRqPvV/CyEjgM9jLMu2/XpYgeImui1FS7o7vAkUqFPRV3UfgymzXXvuIWHhKSlDsEydCWXEHvjbqJ+t4AUOdPyPf6GKvhvMudoYfmlh+bHjkmpJQKSzsBkUxxYrXSFIXCr5blN6SKss+sXF9AtjnKqU9IPSpCsCYZwH8dflT+2pCpHQ5w/lE2pQqjiY3/WmXOQh4zyIS3PCj0szcSNR8WsnGyoSKt/qd7IXf+YbFQgPtvyiichI3RL8NNuz/7FwVPsVxCOByxjlJNE2vmg/4hrNW5H4UE
- 3PLluGSa
- 5GQR2TT9fwiOsWAbb5smy4Nm0GikYIziFHIegmYuFmzE+oIpE649O9aM0SkpdWwDaW6V2XK6peZN5yWDg5pFA5d2WI+fkstPcGPAbdhGy13dvr19DMjp5gVMUjK1qpSjS563qklLJHxVMmi/IKidX/2SgE+2v+7RW10Anej1DEZ3VkSN5s3Um8s34hiRhNuYXJOXSCI6JT4e5gtdZLBUoH8utvD9jubXWKMvWaKK/hBJQUrj+Swjm+BmUbbPXD3Uqm3HdIhLAeEHab9/LBg0O/NZ/IMgxTYFh6WYPZsdQICa/dVE=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1EBED40018
+X-Stat-Signature: u5u4nedzyd8wxemgnaohxi35dejhznc8
+X-HE-Tag: 1754312511-654165
+X-HE-Meta: U2FsdGVkX1/ZuL6ZSk+/OG2Uu06NR4XARHUkuGiDewaY2Jw+3YWxbhehh32Ays3UazexUoAhPgTOT4pRyJQuWygMoR07cxdjVmE+/2OsOTs0jU05k4C2c6azdkVzopgF9DjupxAQI/GTDVr4h/KFw57ySqV+b/lW6KwB6F3q8LzLCo04bNiCAPWrX6VFWz/zN+TwQRddaMdgEz5sC7N5WA1vw4CC4BZ9ZoqXU1Cp6BWf4J+8Xp1jFoKYPVXYJ90Z4n/L/VOgDoJ1MdWOZVS1NZV0/7JOXtA17uupow0lIGfcyf4V4NR+Db7hsyGdlGpOQI8aHKK4M8PoJEyBCFikmtuaRatNCUOd1gun5TmTNcAShsMFZ/bMhFW+E3OhcAKwrbNy66yJoaqrJezoq0ry3j+OCY4kLlzcVnCKaSzJjJkuVVPyb+nh1IhbFPRVFHgnhX61wm6zEtq0TLQ1Oo/5vZIrD+fBaTRF6O+atnyUvj5uwmnzJa/VM+QUDPfqwdO1InuBjsEtQzfQi/+19EqIrGpJ+oANo9zkw7dEAJ6cfZZRig8FIx3/ydvC9HpKJN1aOt25XEFyb8A/7xlXMx+aIA5grPIZZrFD9Jdf0Qy2rqFcvu8hzvMJL/btCDyB1dtzL4TKH1wfhDl3bZFJasyDd9ypcwEQ1i0CkIzyAJGLBQoFQmp+uDaXPtkMYh0clKNI3FmhJ8Lq3hemOG5ojRluP54r81/UYAXoQQEF8MWAiUSWKJNfi9MI/yjztIqMynDBARENUEgYi0tTut1ZhNnTcyl5/THSDuMnuPs4aCjy17jcBGxWQqxlaDyQo5tQ66/bbXS9KDmvTQx4YHuQqA4EQvfLPx/0bToq7JLlo0t8Qh1Ibmeg27bOQOPir/9OYuR77XMPcwL6qua+ovbuxey1zskOvivPe5TeIYPGp+LHrn8xohhMDqCsO35Do2u7qqXKKppOnLLSCl4UaMndJwh
+ I9+qmkK2
+ 3GeAv9/zfWXRqKs+S4LZSKMLAnTNUjGbOcMq3AKAPG9nw2R7Oust3YHjE97WuI1nn9FR7ed8gGPZ9Pf4gVvTx3dO3vTyviAfJYzkajBeY7zWdxPSl1PdSEku1kBfO2XDNTss2HpSRwih6R8GkX8EsGsl29HxZP/CT0yiI+ua/BZhE1zLlCdKZv5VeoWf44Whz+yFYycE+9xallCJZ1TcmxK/h9iXdOkJ4Yr1hekUUk6Gwy+u65oj6b7k3K6HEpQjJhAZCGMucq71XVf4+Q6brISMS8F6Vx+hmr0dUKigWXzCeQb7W+Ax3OgDIN4b8piigIjC/nr/xONQn6zfZuqCyc0jOoEIFcB9mi0hyIDSyvnBZxhs9GjX9bWwkdQSqHhbwx0GH9AESwHYasTyE6aFLD+RUfP+tMQHCJjOZLCNCTiyiEszxnHAL9tkmSkp0cmS3xaqhSs20Vm4R4Ju/v+yvTff/vnJg10YaGjUg
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,52 +129,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Leon Romanovsky <leonro@nvidia.com>
 
-Make sure that all VFIO PCI devices have peer-to-peer capabilities
-enables, so we would be able to export their MMIO memory through DMABUF,
 
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
----
- drivers/vfio/pci/vfio_pci_core.c | 4 ++++
- include/linux/vfio_pci_core.h    | 1 +
- 2 files changed, 5 insertions(+)
+> On 4 Aug 2025, at 15:51, David Hildenbrand <david@redhat.com> wrote:
+>=20
+> On 04.08.25 14:39, Li Qiang wrote:
+>> This change converts several critical page table zapping functions =
+from
+>> `inline` to `__always_inline`, resulting in measurable performance
+>> improvements in process spawning workloads.
+>> Performance Impact (Intel Xeon Gold 6430 2.1GHz):
+>> - UnixBench 'context1' test shows ~6% improvement (single-core)
+>> - UnixBench  shows ~0.6% improvement (single-core)
+>> - mm/memory.o size reduced by 2.49% (70190 -> 68445 bytes)
+>> - Net code reduction of 1745 bytes (add/remove: 211/166)
+>> The modified functions form a hot path during process teardown:
+>> 1. zap_present_ptes()
+>> 2. do_zap_pte_range()
+>> 3. zap_pte_range()
+>> 4. zap_pmd_range()
+>> Signed-off-by: Li Qiang <liqiang01@kylinos.cn>
+>> ---
+>=20
+> What's the object file size change?
 
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 31bdb9110cc0f..df9a32d3deac9 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -28,6 +28,7 @@
- #include <linux/nospec.h>
- #include <linux/sched/mm.h>
- #include <linux/iommufd.h>
-+#include <linux/pci-p2pdma.h>
- #if IS_ENABLED(CONFIG_EEH)
- #include <asm/eeh.h>
- #endif
-@@ -2088,6 +2089,9 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
- 	INIT_LIST_HEAD(&vdev->dummy_resources_list);
- 	INIT_LIST_HEAD(&vdev->ioeventfds_list);
- 	INIT_LIST_HEAD(&vdev->sriov_pfs_item);
-+	vdev->provider = pci_p2pdma_enable(vdev->pdev);
-+	if (IS_ERR(vdev->provider))
-+		return PTR_ERR(vdev->provider);
- 	init_rwsem(&vdev->memory_lock);
- 	xa_init(&vdev->ctx);
- 
-diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-index fbb472dd99b36..b017fae251811 100644
---- a/include/linux/vfio_pci_core.h
-+++ b/include/linux/vfio_pci_core.h
-@@ -94,6 +94,7 @@ struct vfio_pci_core_device {
- 	struct vfio_pci_core_device	*sriov_pf_core_dev;
- 	struct notifier_block	nb;
- 	struct rw_semaphore	memory_lock;
-+	struct p2pdma_provider  *provider;
- };
- 
- /* Will be exported for vfio pci drivers usage */
--- 
-2.50.1
+I think that Li wrote that the size is reduced by 2.49% .
 
+My 2 cents is that usually it may be better to understand why it is
+not inlined and address that (e.g., likely() hints or something else)
+instead of blindly putting __always_inline. The __always_inline might
+stay there for no reason after some code changes and therefore become
+a maintenance burden. Concretely, in this case, where there is a single
+caller, one can expect the compiler to really prefer to inline the
+callees.
+
+Perhaps it is beneficial to compile with flags such as
+"-fopt-info-inline-optimized-missed=3Dinline.txt=E2=80=9D to better =
+understand
+the reason.=20=
 
