@@ -2,99 +2,171 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E7F0AC87FCF
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 15:26:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1FC24C87FCF
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 15:33:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 894836B00CC; Mon,  4 Aug 2025 11:26:27 -0400 (EDT)
+	id B14886B00A7; Mon,  4 Aug 2025 11:33:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86C276B00CD; Mon,  4 Aug 2025 11:26:27 -0400 (EDT)
+	id AC4F26B00AD; Mon,  4 Aug 2025 11:33:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A8E36B00CE; Mon,  4 Aug 2025 11:26:27 -0400 (EDT)
+	id 98C686B00AE; Mon,  4 Aug 2025 11:33:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A2B16B00CC
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 11:26:27 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E70DFC0707
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 15:26:26 +0000 (UTC)
-X-FDA: 83739451572.29.77BDA95
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 59F78C0012
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 15:26:25 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G8aHgZEn;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754321185; a=rsa-sha256;
-	cv=none;
-	b=i4fn60+pAJgD+TmVahlsDc79PYZF/0kJo//sAm7MACA86uBH57tWNS5OpvFyywueSQhPT/
-	SlCCTfJrExoTXmKGNBrPE8J3uiSefri1MmtrzjpwXYCkQChzfuXOlaLnezKHGzWqaGfRIz
-	hdRbG9xWjySEewBLX4aVShK4iE3W7SU=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G8aHgZEn;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 8A55F6B00A7
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 11:33:38 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 49B4C1DCC8B
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 15:33:38 +0000 (UTC)
+X-FDA: 83739469716.07.1104435
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf06.hostedemail.com (Postfix) with ESMTP id B667118000F
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 15:33:35 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=wqpgoPxK;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="4/gAJ8Rh";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1CuIXsQU;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=c7OOTM4U;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754321185;
+	s=arc-20220608; t=1754321616;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tMI7qu2AITMl/8GQTNLvasEXT9Nk4AYei6S4SrnZRNg=;
-	b=qDTxYso1r7l6Fc6TY2umm16RVTCT8MisD9/nmgtbUGG93KpiGVeMXBB1Hn6UNOTHamPPFu
-	FZ+7wNUHhquqkj6dDG1KKTadBvHsvvVj8tVhZM4ZhJfbsep3EF0Pv/Piq08nwcIZgJoz5+
-	by93WnCNNA3hkB4yP//5S9R56ClbEqM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 148C1434BE;
-	Mon,  4 Aug 2025 15:26:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28538C4CEE7;
-	Mon,  4 Aug 2025 15:26:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754321183;
-	bh=A7QWfqthNAE1vRjDCcZdbOxk67HAqqSO9Vh3esAKykw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=G8aHgZEnu5iXvCP7Bs5tuWefE4ftgA8h8Cjl85Cwm5By9LieCOsjVqy3AdZGS2J2M
-	 gWpzl+6EFBw/RcBqC5KpnG1ipGUhJpU+Zji4nx/hTyt4NrdEsiC2Yz2U1Wkzd/Ib2a
-	 QqAw4VBqd0cclEUaixH0rs/7nLDQeEd4unvRQYUSQURTz7+jVwS/zV9otrzj3jp79N
-	 yUvnvgyE3xRQ4zHvh0Mw/ECgF8Le7V8q2qdcMJT+F/84f2NxFe4MykBa4PKbCdIa1S
-	 PCz7RUMVTUjwcVuJgGK+jMXUeWg1UaBDlwSS3wIOPEFwlaX7GvD5jEG30YanErScjg
-	 iRFzDP1lYO0Lg==
-Date: Mon, 4 Aug 2025 18:26:18 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Alex Williamson <alex.williamson@redhat.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Christoph Hellwig <hch@lst.de>, dri-devel@lists.freedesktop.org,
-	iommu@lists.linux.dev, Jens Axboe <axboe@kernel.dk>,
-	Joerg Roedel <joro@8bytes.org>, kvm@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v1 10/10] vfio/pci: Add dma-buf export support for MMIO
- regions
-Message-ID: <20250804152618.GU402218@unreal>
-References: <cover.1754311439.git.leon@kernel.org>
- <5e043d8b95627441db6156e7f15e6e1658e9d537.1754311439.git.leon@kernel.org>
+	bh=0cpecDgVmpKu0rGCxmXRXuJz/heKHFUxU0R7ay2Nsgw=;
+	b=J2kCrbcEOkOW52pbsdPxrlTxwutWKvmGd3aFA8bvl7wdrGTVEP+OkQ7t0qguUbIcGgRvuJ
+	NYHD6MbyLqLbEn9sBpRDpFZXpAAGe013ZAIya/6wO0pL7ncnvZy1IKQWumZH3L+qZXFhL+
+	bknGKypcHus4EJkIN+W2zg9krHx891g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754321616; a=rsa-sha256;
+	cv=none;
+	b=FPIj7vkQAeo8wWyBnhqxTyxSg5sUNX5+K2JSxSoj3kJjI6CRC6aHtmoS/csoIDEIkQnsFW
+	ob2l5IvmPoF/PQA31jsxhnTQ2MxDZPjlNZ86S6k6s9ajFaSRnkDiYwkfGlmVbamKoLhUCf
+	li5Aj4rR9+AgSedYkq5kBXuoRn7DwGc=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=wqpgoPxK;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="4/gAJ8Rh";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1CuIXsQU;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=c7OOTM4U;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E392F1F46E;
+	Mon,  4 Aug 2025 15:33:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1754321614; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=0cpecDgVmpKu0rGCxmXRXuJz/heKHFUxU0R7ay2Nsgw=;
+	b=wqpgoPxK7Kbb5dPmsQqcqVxwnYtu2jje5hwGJPn/qmh9/ixfeOn+xLTYSywDPWCQpcWhTf
+	92mW40ohaLZBa9nnuGXVCVss17iQyEV0+dVv05IhIBoNkTTe7+0VZrIRCMPTjHGIPVvJyK
+	HIvEtsJ74Fg+exWNciSzvQye1wiFqBI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1754321614;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=0cpecDgVmpKu0rGCxmXRXuJz/heKHFUxU0R7ay2Nsgw=;
+	b=4/gAJ8Rhip9oP4LIMCEPj6LveSTeJOpi8JHMU9Pz5jXwsMjMDudGqaorYgWSdcGPMhGX9M
+	6bQ9N5VIlkJtSODA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1754321613; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=0cpecDgVmpKu0rGCxmXRXuJz/heKHFUxU0R7ay2Nsgw=;
+	b=1CuIXsQU6LDqQ382s+MaKoOdFqZZG2R1UoxJ3cfdQxAq4Nu/3joUObC445zB8OFZ0rqwBP
+	7/BTV66vicca10EeZ9zcRkJgJNQDTahdVb0dPcT20taKwWET3eYOHS8l0GXiV2XRhZjEQD
+	R/x4zIMsuk17awl15EXeg/J/SL2mQbw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1754321613;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=0cpecDgVmpKu0rGCxmXRXuJz/heKHFUxU0R7ay2Nsgw=;
+	b=c7OOTM4UPpxA/B4rhizfvgzBtC4tQdAKJt1kJatyIdm+DdZssyDNsYrlDSKW21nyMThPU4
+	2kpQuhhiwAIyrMDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C31BD13695;
+	Mon,  4 Aug 2025 15:33:33 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id XY1IL83SkGjIdwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 04 Aug 2025 15:33:33 +0000
+Message-ID: <a12fc401-59bd-4005-b1f9-fcaa1f68f68b@suse.cz>
+Date: Mon, 4 Aug 2025 17:33:33 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5e043d8b95627441db6156e7f15e6e1658e9d537.1754311439.git.leon@kernel.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 59F78C0012
-X-Stat-Signature: mh7pi13kgh71i64w96othgocz4x8p3he
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/nommu: convert kobjsize() to folios
+Content-Language: en-US
+To: Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, willy@infradead.org,
+ jannh@google.com, pfalcato@suse.de, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, SeongJae Park <sj@kernel.org>
+References: <20250804145117.3857308-1-sidhartha.kumar@oracle.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20250804145117.3857308-1-sidhartha.kumar@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: icg43dtyqid4nweopcgkcyi987zjk4jx
+X-Rspamd-Queue-Id: B667118000F
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1754321185-896193
-X-HE-Meta: U2FsdGVkX18N8j6fE32BF522h/SD4cZkRQVpmXI2f6qg1V1Bm2IjlpbuN1qHnIHkO2t5WogfVRe64E54lC3wC4DTdxwT8PQzywdoj3JskUlWV31t9ZINf610ceTVE/3FBsFhrD5ngUVofB8QwPMRsx1BUYjNKsK09s9TYHKoRvwnrBiWnj3vUN3eLRlSgzPk9+WgeMk0SY6Af7VO7Q2/dj2SNdBVQz9ej5ex64FUypEKgLWmAXXUgL84USRh+tjofVBT4/t0vYLllWAX6Yv47pjhqm7i4rj8eO12KY1wkBkf+cwiBGCvwaHVUYEaNIB9E6S3rtdvHjIvQDSOBDipktL9KGf2zF5vBH21mZBu8Owei7Q8oLU0YyLOiH01e0cW7ivOStWn1N0dnPHwOWr8arbpdOy6i/m/6gGaBl5UOCNsWeCHWvSDun2p+QI7Uzm0q2JIX6t0ZhrJMhLBMhss/EmsZLMMOadyxzs5n/Oj7h1Ge3FdsfWXyCwnrkPP29a3pwmWSFWl0DVRG7Z8sJaVsWtdQZkRKoYpz+wZOqW8eqsQLhswKmzQXMcL4P52cq2+LDApVikdx/jiXtjdhcNqSe6FvC4yra5AatnmOyMtL8HUpRChVixBKYfrAkjK5IDE/2gWtJDutpSlvQcPjD/Yf6KfdegCUzj6lRX3EuaH1L6FQcpt2Ce9uco564gcnf85WYkgUB0w/TWNOmge+Z5QKp2EmEfbzFD8gnVgcrLCPH6ezlxWmniX5M36udRiW+CxV/tJeaPngsTYzvGpxhqfrkb8Q5r9TyUxQ/128MceMKOiRgJJ0GskibOfA35Sq1j7xm8lSv3lq20X7E/vCUKG/HXffVAThzxqNkQjl7hNIufN6qlc8Fjvo7gA6oWKuhzLxkAnoiGT3Q/Gek24+13V4RDEBia5h1hd2GsnlbRf+3NNZtK/jgL+5Q==
+X-HE-Tag: 1754321615-733086
+X-HE-Meta: U2FsdGVkX1/2vp2QBdJWSbxk0My0xSBcCX4aRz6uh4lRd78crdSbTasYeQ8YV+KWFVp4fxLas3EndonzL7yxCBWvuA/KTySOuGXpi4cgfzJSZf540UKD6BXgYa0wR/PwKOPW+ya1Wm3UOkR5Vog0cP+rGMuhX0ACPbU2EBBYVaXZL2Sfm3d5NATt1S7m3760cmCmkN37S1pCPpA1NPPJrbOdymvgEg+FwtJntsYDiVtbiEyv6V6eoPLusA4ytv65YoWUcYjDPfG0EE8hf4lcfjjES3BwabJ9poLj+8lx16QCyOsLG21uw20Y+f/fVzINro3plzHY9xbHKA7EJ4sTvI1KyuXNbUy8jKCR/BZaJmWQlkB+sxN6WMwNACqJQXSNYgwbCbWuh3H////rJne1pLpylRBQudNhZome7g7bUSHvYkE+rApeew1IsqNThQWfsYC/xGhDwvkAyOwsPT26hN7VEFcDFyRH2UU3cEruBVAwWxDIsVd+rDWkU08qGtWZ8jI0lqmz8fg48QXXNYswswEIxnzZiZQEeawUDzBdHvYUKUPsxciJngr6s66193Qfj+LOoGhaAWlnTUHvu9ha3/mzQGBYJiE4buf13fTGEUdlZ2ThW2265EvHnXvl6IOrlH0CY0DnsN2hxrOpiU6poDiEGg6jNqH6l9eY51JZAjCh4Ji8tBLj2XKAEydyVW0DX14qJP04JDs2Z5rXpfe6dHbm14dZTHTSK7KTtfc13icfQzZkbuMbtinMdPthJYisdVep/QYJoRz5GD77K21VOLgj8CNwvhMA2reyyIYS9hfweAe1zMD/RdIhr2Sv/ckBtzNlvjV18pjZGovYDkrkr7EcSr6RY6yo5DM5VJ3t2mqaUu/OVAFZllqBRl7oFbrFruZzJukO++Kz4OQIZP6rdt9rIySFMwjw23B0RNvrjRBPlmuLnknkOTqSRj0IQT6WFBR6Dm14A8bF8FcHOXM
+ jCdC9F9j
+ 2OmvvA9S0SPxkjgWY9eK9aFBa5Uic1ZkqZUoCD+NVtTtsu/fljKhJUcK8JAUa7s0GnF2xdDgiAjiQL50DsTXfUmLF61jS/OtFqgraeH70hY8a4j1q8H3ToodNwB7+LJ0uOCmXHfY4xIXYBBivsnlrOrZ3OgeMpT+WKwXb2uUFBdWagtaJY4y5Nc9XFIKhei9xk96hMZ/UUfzcmFl9GSilWCE6n1l0bvthdnU5+UmUSRhWIY7GmvzvO3xqBf+JwDD2cMQFIENhNY/9QsxiB7R4qv9usxzEjkMRJK7JZSWAg+1tRD4z3XBgTchaHEPD0SnK4F3QUVS8zsmcP9E=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,49 +175,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 04, 2025 at 04:00:45PM +0300, Leon Romanovsky wrote:
-> From: Leon Romanovsky <leonro@nvidia.com>
+On 8/4/25 16:51, Sidhartha Kumar wrote:
+> Simple folio conversion to remove a user of PageSlab() and
+> PageCompound().
 > 
-> Add support for exporting PCI device MMIO regions through dma-buf,
-> enabling safe sharing of non-struct page memory with controlled
-> lifetime management. This allows RDMA and other subsystems to import
-> dma-buf FDs and build them into memory regions for PCI P2P operations.
-> 
-> The implementation provides a revocable attachment mechanism using
-> dma-buf move operations. MMIO regions are normally pinned as BARs
-> don't change physical addresses, but access is revoked when the VFIO
-> device is closed or a PCI reset is issued. This ensures kernel
-> self-defense against potentially hostile userspace.
-> 
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-> Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> Reviewed-by: SeongJae Park <sj@kernel.org>
+> Signed-off-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+
+Ok a stupid question maybe... why does this code exists at all? AFAICS only
+that fs/proc/task_nommu.c can report how much bytes the kernel objects take
+for a task? That code seems to be from pre-git era. Does anyone care today?
+
 > ---
->  drivers/vfio/pci/Kconfig           |  20 ++
->  drivers/vfio/pci/Makefile          |   2 +
->  drivers/vfio/pci/vfio_pci_config.c |  22 +-
->  drivers/vfio/pci/vfio_pci_core.c   |  25 +-
->  drivers/vfio/pci/vfio_pci_dmabuf.c | 390 +++++++++++++++++++++++++++++
->  drivers/vfio/pci/vfio_pci_priv.h   |  23 ++
->  include/linux/dma-buf.h            |   1 +
->  include/linux/vfio_pci_core.h      |   3 +
->  include/uapi/linux/vfio.h          |  25 ++
->  9 files changed, 506 insertions(+), 5 deletions(-)
->  create mode 100644 drivers/vfio/pci/vfio_pci_dmabuf.c
+> v1 -> v2:
+> 	change "compound folio" to "large folio" in comment per SJ
+> 
+>  mm/nommu.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
+> 
+> diff --git a/mm/nommu.c b/mm/nommu.c
+> index 07504d666d6a..75548fae28f7 100644
+> --- a/mm/nommu.c
+> +++ b/mm/nommu.c
+> @@ -64,7 +64,7 @@ const struct vm_operations_struct generic_file_vm_ops = {
+>   */
+>  unsigned int kobjsize(const void *objp)
+>  {
+> -	struct page *page;
+> +	struct folio *folio;
+>  
+>  	/*
+>  	 * If the object we have should not have ksize performed on it,
+> @@ -73,22 +73,22 @@ unsigned int kobjsize(const void *objp)
+>  	if (!objp || !virt_addr_valid(objp))
+>  		return 0;
+>  
+> -	page = virt_to_head_page(objp);
+> +	folio = virt_to_folio(objp);
+>  
+>  	/*
+>  	 * If the allocator sets PageSlab, we know the pointer came from
+>  	 * kmalloc().
+>  	 */
+> -	if (PageSlab(page))
+> +	if (folio_test_slab(folio))
+>  		return ksize(objp);
+>  
+>  	/*
+> -	 * If it's not a compound page, see if we have a matching VMA
+> +	 * If it's not a large folio, see if we have a matching VMA
+>  	 * region. This test is intentionally done in reverse order,
+>  	 * so if there's no VMA, we still fall through and hand back
+> -	 * PAGE_SIZE for 0-order pages.
+> +	 * PAGE_SIZE for 0-order folios.
+>  	 */
+> -	if (!PageCompound(page)) {
+> +	if (!folio_test_large(folio)) {
+>  		struct vm_area_struct *vma;
+>  
+>  		vma = find_vma(current->mm, (unsigned long)objp);
+> @@ -100,7 +100,7 @@ unsigned int kobjsize(const void *objp)
+>  	 * The ksize() function is only guaranteed to work for pointers
+>  	 * returned by kmalloc(). So handle arbitrary pointers here.
+>  	 */
+> -	return page_size(page);
+> +	return folio_size(folio);
+>  }
+>  
+>  void vfree(const void *addr)
 
-<...>
-
-> diff --git a/include/linux/dma-buf.h b/include/linux/dma-buf.h
-> index d58e329ac0e71..f14b413aae48d 100644
-> --- a/include/linux/dma-buf.h
-> +++ b/include/linux/dma-buf.h
-> @@ -483,6 +483,7 @@ struct dma_buf_attach_ops {
->   * @dev: device attached to the buffer.
->   * @node: list of dma_buf_attachment, protected by dma_resv lock of the dmabuf.
->   * @peer2peer: true if the importer can handle peer resources without pages.
-> + * #state: DMA structure to provide support for physical addresses DMA interface
-
-This is rebase error, there is no need in this hunk.
-
-Thanks
 
