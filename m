@@ -2,29 +2,29 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DBDB8C87FCF
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 19:18:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9FFB3C87FCB
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 19:18:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5DF2F6B00A1; Mon,  4 Aug 2025 15:18:30 -0400 (EDT)
+	id 4CD4E8E0001; Mon,  4 Aug 2025 15:18:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B66E6B00A3; Mon,  4 Aug 2025 15:18:30 -0400 (EDT)
+	id 4A5316B00A4; Mon,  4 Aug 2025 15:18:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4CC586B00A4; Mon,  4 Aug 2025 15:18:30 -0400 (EDT)
+	id 394158E0001; Mon,  4 Aug 2025 15:18:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EE046B00A1
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 15:18:30 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0E73C115810
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 280636B00A3
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 15:18:31 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E5BCC1DC773
 	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 19:18:30 +0000 (UTC)
-X-FDA: 83740036380.22.29A2DD3
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 03FCF40002
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 19:18:27 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=bgsrxuny;
-	spf=pass (imf01.hostedemail.com: domain of jannh@google.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=jannh@google.com;
+X-FDA: 83740036380.08.7184123
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D5D641C0007
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 19:18:28 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=xH0vprVG;
+	spf=pass (imf21.hostedemail.com: domain of jannh@google.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=jannh@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1754335108;
@@ -33,70 +33,70 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UiTfAb9cnMOM27iD69XKZ3u4igfynQ6rP5nLGl75Z/s=;
-	b=XbNGB9HnCSfbcRh8Pn0CpoKoqWhV2ghznoMLED48X9aq+IxR2I327xM/ZR1JvjDYHcaqUB
-	jqIfGFD8IiutrP82zustbESq9WamZApaf4N40QCsl7S5qYUPI5wMICSqipp+K8mvOVlY/d
-	jFQHNLODQ26zPxYg/3DxlgZpgAeLNJ4=
+	bh=WLpMpvoA1z4oTuimkC9AbHvBIqL/ABDs45bxwTwR93E=;
+	b=V7yHO7kEPOkFBOcIr7+YdoZQCeOUzfwqzYpS1szugul4JzR1fBom1xmqjUS/H/fa4WI9KV
+	jzMG3sW1veO1ibT8w0b9TAdtPX9M7V6bz24bsP3BO5e3sOaObtMCfaAhy4sTXWQ/LZbu1Q
+	6fD189j4HLJ64RiQNkmb0v2a6h5uIRc=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754335108; a=rsa-sha256;
 	cv=none;
-	b=SV8TpY4MWHNzVhVSsYfNs4Z61C8BumWJP6BXRAYJyukqJjrDGa/q3QvOlAHkFuYiezW0eh
-	xnGvWbnzKhCJIChfoW+MlC6W50xPTpzNnIRFrh3V3iucOI5HjcD6d8Jvp/BLWC3LrqGpO7
-	SFAa9wKrlVkvN5glPfL/ALtcznUx/iE=
+	b=TPz80vN294KUQ+y9dUT9HZQeqDZQZR8v7PG6L2HyIaKE8wsjODOtFuKItEKpJJbQFDEglP
+	KTkahBUU09J+2K+sWzGNb1idlI7YLPhbgfrF5vucAES/XSrAbwyiWnuFSG9OQmvAauizSX
+	BXYIQuJ2pGLtSfPCCR1k3Ll5zaoTk78=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=bgsrxuny;
-	spf=pass (imf01.hostedemail.com: domain of jannh@google.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=jannh@google.com;
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=xH0vprVG;
+	spf=pass (imf21.hostedemail.com: domain of jannh@google.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=jannh@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-458bf57a4e7so165e9.1
-        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 12:18:27 -0700 (PDT)
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-459b3904fdeso165e9.1
+        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 12:18:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754335106; x=1754939906; darn=kvack.org;
+        d=google.com; s=20230601; t=1754335107; x=1754939907; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=UiTfAb9cnMOM27iD69XKZ3u4igfynQ6rP5nLGl75Z/s=;
-        b=bgsrxunyIxDYE2E8bZEI5sai9kt+xyMgCiZ0HDsy8rNdzfQ7cEaCBtpp3yE/TAljVZ
-         VqEdhoc2gepOlDomje3BjWsOXE2wb8gEaGIbaNTXUJtKUFbc4W2MkC2V7jjGh6zXhjTJ
-         ewKlxeqZE45lCkfv7lEJFXmNg/p3/mMSIqXVJtQkFkudRZnYXiNnToEN7xYMfVRXinu/
-         XKyoIuROX7DXpJoCB0a+DWKwLYD/590gwwd1Qkx/dbKBohLcQe4PZg91UtbCDqWDTflL
-         XoP5MS4o++Ta1K0dDVIev3/rAYJJib3Y0DeYpvOC3kBTjqlL8SgfS+THArX4wuIW1PwH
-         6S4Q==
+        bh=WLpMpvoA1z4oTuimkC9AbHvBIqL/ABDs45bxwTwR93E=;
+        b=xH0vprVGqS7AbzStnP8eQFPUiAM0rbDX8WT4gJyMzN6eVnVlpyD23ECLI/XR4mHLbj
+         XmDGi6gh8MsVs65A0CbiSnTMpl2WXQXuxAhYK38NNRc32hyXkJN9ufV74amZzDZCCs9R
+         lOqtUB2U/CheGIHFKIk+YpSX2w6RWPuWUlzugepqBtZ6RpOy0Vrht9/CKeHE3uDsm7OC
+         iTGMLftGTbLsrhK82T6S30CHe2xK4qkocVWt4CBT1sIouL8f+/Zx8J4Ov40OhR8zZyoA
+         Sg7wKvr/O/hg4ocaodEZyf3YUC7DxHgvg4OT2NHGjT6BzQQJ7lmsCmQA02EvX5Af9R3s
+         FBQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754335106; x=1754939906;
+        d=1e100.net; s=20230601; t=1754335107; x=1754939907;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UiTfAb9cnMOM27iD69XKZ3u4igfynQ6rP5nLGl75Z/s=;
-        b=Rhx1G61uJ5q6xMgOBri5trOcY738Fv1m2JXXX7ywbT6HIh3nHCD2IAl1c2l9RfD4wK
-         vEc6xvNxzfH8QOX9AnqlE+tBehdA6JOj2alBP9NQg8iqYKmOVk0/xeGgwKda4Tbg5h2G
-         q12VGNRfIPq5Czwosdno3LEO1jploVdgaVslHfBzuBuiRUFz83UC7e3und0dc6FVugjZ
-         taElH/aWYKZn0leMkz7EYfRXKpHN8SpCjZxLfPDriIq/o5U7MvYGt5T7qCkFyv57Z6Lk
-         DEFGipb8x4jiDkDXYx8swVAVVTfclflpnzhVpGEWdOIo4bvN+1A60qRdlcWf1YcHVEiq
-         0Nbg==
-X-Forwarded-Encrypted: i=1; AJvYcCUfaHJ/3f8Bfs3DECJP9UcB5jrO5f3JV0TDJ8JkMGCh+1tje9nR7ga/ZeHloZWfkz3paOrx5y0NKg==@kvack.org
-X-Gm-Message-State: AOJu0YwQ8uxuLluQv/o+gf2+0EVXd8M8Ekr3Mn4hmr8NLDLCj/9Dx/Ch
-	/lY+HrXtto/89tbNiaWfOs3igf3oopeWrfOvPsW7pfi3y9i/FnCBfrkFnQmX2AZrcA==
-X-Gm-Gg: ASbGncspr+cQWFNMGh9r0PbDg/rOfZ/yDiMhnuIrmx62VDvu7865rOEr5RScp7+C+Nq
-	fR+q+9gL6e4pFJyKS0izdmPN76i74a+498AzuVAmYGwiE1p/tc4JXz4lsUo1BerMeSPkVO86zZC
-	eFcdphdbF2D4n+WzNpSRTESvgozvjZpvhjOWtouxh76jJQx0QnSgjD7gmaOJfpkgdxwmsTGYoyw
-	qvesVYvgtT+exPUKWscvjcJyghQTIs7Ky9Cjw+djmcJzj7pQfrwSGpY0fyjxAOGp0tkb1HT9cOz
-	S1XScZXhuP0gCfInRKjf+oMuFURtlDCbTWHHk6wEkLD1NJNryW/mOcixhGCTMdDKo4pbhohfn5O
-	C8ew4J1NIQw==
-X-Google-Smtp-Source: AGHT+IGv48sGeD5VUgCauZAiE/92kma0rYRuzmY0NHuib68VVw0+Cdvc44IEf/hoe+8yq75/M+2y6A==
-X-Received: by 2002:a05:600c:444e:b0:442:feea:622d with SMTP id 5b1f17b1804b1-459e14ef635mr140015e9.1.1754335106255;
-        Mon, 04 Aug 2025 12:18:26 -0700 (PDT)
+        bh=WLpMpvoA1z4oTuimkC9AbHvBIqL/ABDs45bxwTwR93E=;
+        b=TySS4mpPwMUYNL6QhPSFzqbGWAjYt0xejGGHLDXoBwZfeC3QfgmVElH7TgS+C0vNec
+         U1W3u7qrbRSFHlFktihk0JXuABkqs2KQipTV3PcTf5FP4Fr0jSmfSbiCO1v+6SCFnVbn
+         SbneNs++ef/Ak6wOdXsAq5ExQn+nkTfXBxttuA1hEarL8UI6kTD1wq+onbP/q4luXo4u
+         Sucs9ObrWJWUMcGi+/oQotiRgVN6Wj4G4iurSxoxCzjwH1RhFx+xYD1KWMmSL9MVmllX
+         IL3wgKS/X+fYb0nozITczjfgSuzaF5wkMbSr/lYdjzGFxScRHufe17Gyq+axAM/l742I
+         rU6g==
+X-Forwarded-Encrypted: i=1; AJvYcCVSitI/iamp6Qr1OzFHywmo/q1kYgIrReycOKDrrFVFqVgnA90DZ8iWNAFvPJP7EvIKjwv9y+nEfw==@kvack.org
+X-Gm-Message-State: AOJu0YwZAyohN4CvS3vj8skelB87L0GVIpTBhdVjCDVKU0AX8kIvSbt5
+	Yy4cPxu0nJHebO9kBHC3jELgVdFWpkAoePwMPmNGekpqGWW1HwlLSOfj/B4SUeQB5g==
+X-Gm-Gg: ASbGncvq7eJAWi2AtJJGOOBKf0wDTGAs3fE1X6yC2edCxX8TRvxvfdW1NXbbO2MOxfL
+	bOhrjf81oAjPxl/KEXf3WK4f8czGHXw8ppjt7dsvtFx8ZfetedKWT1XAxZWMW8M9lc79+pFAI/P
+	IIR8mZDhMe1z08LWtPu/31tFflVoVbPyFM+B5DuU+ujs2+xYP+qKMFcR6VsBPUecXifrM2rmPmz
+	aCWPXc2nwHgMgYhcSupIl5cYGRlnhrbIIvjQDiV+CO9mIbGX8OPGj8aYLIzqDSs8iN1lK6TUA5i
+	yGCfJmEGQb9VTfnjiAeL0/dkH++qeEX46NReX4CV1biuu+WHsuoY3Ud2N3S1qVOvoyZRFStS+ie
+	nBCOd/kQibQ==
+X-Google-Smtp-Source: AGHT+IFk5pynUlS9FSBP/BDYtXEaR7BK3ItjDT3ayyMn7XCBf8iPKo4JkSB801Lzlyp1iGac3gCIhg==
+X-Received: by 2002:a05:600c:3b8d:b0:458:92d5:3070 with SMTP id 5b1f17b1804b1-459e13d16demr154465e9.6.1754335107203;
+        Mon, 04 Aug 2025 12:18:27 -0700 (PDT)
 Received: from localhost ([2a00:79e0:9d:4:2069:2f99:1a0c:3fdd])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b79c3b9386sm16502103f8f.18.2025.08.04.12.18.25
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b79c4a2187sm17020318f8f.70.2025.08.04.12.18.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Aug 2025 12:18:25 -0700 (PDT)
+        Mon, 04 Aug 2025 12:18:26 -0700 (PDT)
 From: Jann Horn <jannh@google.com>
-Date: Mon, 04 Aug 2025 21:17:05 +0200
-Subject: [PATCH early RFC 1/4] kbuild: kasan,kcsan: refactor out enablement
- check
+Date: Mon, 04 Aug 2025 21:17:06 +0200
+Subject: [PATCH early RFC 2/4] kbuild: kasan: refactor open coded cflags
+ for kasan test
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250804-kasan-via-kcsan-v1-1-823a6d5b5f84@google.com>
+Message-Id: <20250804-kasan-via-kcsan-v1-2-823a6d5b5f84@google.com>
 References: <20250804-kasan-via-kcsan-v1-0-823a6d5b5f84@google.com>
 In-Reply-To: <20250804-kasan-via-kcsan-v1-0-823a6d5b5f84@google.com>
 To: Masahiro Yamada <masahiroy@kernel.org>, 
@@ -114,21 +114,21 @@ Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
  kasan-dev@googlegroups.com, linux-mm@kvack.org, 
  Jann Horn <jannh@google.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1754335100; l=2094;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1754335100; l=1736;
  i=jannh@google.com; s=20240730; h=from:subject:message-id;
- bh=OF7LyNhIL1EOuOn5pfi758khliHdObXKjDRY6+iPVTk=;
- b=Nj7lWb06h7SXCifoXeKMs0DUlOqOdP4H8VnS8Otq1aKjtHh/Kl7wkBiRiTwimSc9Mb/vQL3wz
- G/GTNIUIiYQAgciu1KMGaY+kSTClICVFU5L25WqzmjcvA+7+WE4fbAH
+ bh=NjE72AJfCjjPyCkru/f2MOaH1lg7CZ5EkGcOF4OBDks=;
+ b=BDqvSo8zU4lISb3FEBItz3PSoNVV4TwDjBHeB1I690t0v00wbQL0cLH2axC58YYT1CIBDzJMN
+ B6MMKb0Zo8SD3vG6eifgKNbCFz0c5cSCDSxaGd5VhvQ+hGbZMmExTSZ
 X-Developer-Key: i=jannh@google.com; a=ed25519;
  pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
-X-Rspamd-Queue-Id: 03FCF40002
+X-Rspamd-Queue-Id: D5D641C0007
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Stat-Signature: a5ckzjrg5cy8m45u8n3fpnmeohkirmb7
-X-HE-Tag: 1754335107-691549
-X-HE-Meta: U2FsdGVkX19O3yvFLkGs2tdqxIuodZipGgct6jibBeZUlYEI9eVOmR3RS4hl8HZFG2kadLmYS7jQxJd4QP2lRV7z/FqjxAQzQ4dU0b+zIHsLmQ04y1bWET5nqAo51xOJqgRYarZwIgDGG4xIiq8p3Ug83Q6EZ8kv4N74CiiaYm/k8Z4Ag4luoKQuPVql7UW3SOv/1P/pFSPYHACycGcPWJNZpCAHZo1qq9pU2WSG9QnQ5MntLUHOvy1/3sR1lKzQ+/Y1crIEVqe8tyVn2iXVFULB4O0vRr5x+0JnJCl6iZmF2AR2MAuF/nj5Hfc5M9H6di9KiUQRJA1XVTcxLujgot4TtPbjAeMltfLEXIiaBHyISOjqW5RqSYXuEMBSin+eWrn3A/P7zg+8PQjtBLkE5HOVVYQQuzbcVZ1anKcFQDLPk0X1rl4wKia4q6Him1koT2anRHiCs3NKGfjOFhZvxzcg4dPU361QjYFSuwKyu6BepkYFuwc3IO1HYbIiyx1ISR0y+8OLU6W9NqUeQmS75046A3sCaOC69i3vqOZsWHdST/oAr5Di+BPz53QIz8XyZb9mL+cMcNn+rVR8OdXRyMxit/6FhUyVC+AotgBnr/8ESrxFXNmdrCal3vec7Cy+lqKrH+KTrLJQIFAkCUZQvbJirbupgsbGq78walyy1+hmp/zTm1/ypdfYYq2fd3vruBLzTv4Ss2rrwzoHnHqStlG5gPuhN6WSozzwbjkH7X+qJHK/7y3xOmC3GwQMOXRd6ocv/Hag1iI23hjM9CGVm0vRyr2sby1a/1v5AZileSmGQgtk3biGc7YmhBMNLTctKiGhaYoGQ2PAIemSwQmZqZ/PAyH2/SED7Ds7CpFhwc9riBsoBEDtu0E8HnSusINbbHRNY+HPOS/6Sn6jUQJJV5J6+CGvUN7LnV5csLzsY8RLz41uLzb35UmwmXz5bNTPKmCFqOMNzF1DPEaBJ7w
- bctJfF1r
- Wx7LMpfqDUNTRp+qib/MBFgY0xHSlNeLC6JMIoSnO8mr2ajaWXW/AVaxGckl1yB3DnVXKIze+BYLHxDjAv3MeC47Zj+iN5NbS0PZYb1iFKcKITI+lDrzOjn+gfiP4jeU5Ma7tdp7s0d+/DNr0aKJQWRfnQyiODwZUje3NVDcIMroWhpwEH9qPQ39YR8ua5sukygaEQKTVXbO6UiDeIgLx8QjNIZYx9PGi6wjXoXHLU6CLNspzRjXghxksWFVmP+Vave+uX+U47pFlUNveZhegioZ9bl3Umu4Doo0ruleTKBYA5b25Vx4A6OrswYdJ5nDHon6ktt6J42FH4WnsdGomoJYTRXYxqAa7gbSTRYjQf2h/tqf/I2FTdZXu+9QWmwPT5xEX7AuUW538dDaU0XDguSGFSw==
+X-Stat-Signature: 5dwoufosf7zxgwttpnjybtxwy8f17agw
+X-HE-Tag: 1754335108-662888
+X-HE-Meta: U2FsdGVkX19XEpD92jierRGCKCqoeWQ1QPHhjw+VoJX8X3Eki+57Y5LuVaj14tSy4UoEa/kz2D9ucXXhgbcWrioLMfBwGGXfq+hFcD26zyrilXwwsoPJqUPz4c32jWdZm0gYxNtNg7HiFxL5F6+RtI4B3d3WqUdDH6uy2YIPLAMezHupZE3H6z4oOIuLtwEq4RtlGQDIBYMyXPDPsEKGxbHlVRFdessCiL2G7QinT+dgCwf9HFdVjTlbXAwzIXGnICxKH6K2Vo/pAfnfHm/ye5T5ry6fEvLPUJBS29GqQKB0Zje27p40iyc5FopJ7z8hF4znmXctKDRykFMPM5JnjilB8lqI7KKT/mEObjln1Tabmv2Mmw7t3tjYZkmsOY8rAGLpeIPSSOUn96ityOH1ChS48TnY43NEaQERBgfeSBVxlBXzNdfhuAb2OwQ3UZELdRgYuPvySuD9f5+TQ1EpLio0th3k9K+we3TlAY6H/IaUUiW9W7XbypU1YbX3ILlGoTiP/uDxb/WhxFlFZIDzyLRmF6JwyR3b+gq4neEfd0MAQry51Iqc8/dsVzz2WcV3pI3FejQu1EJdR5fMM3UEqzaSFm4uUIeihZgtxA5Ni2fowv2FJK7Wnasvn5bP+pmPMcscVN1+PQchzTy8EsfkAxeenCTLTVzdNUvDtqpJnn28DGBXVgSITPYgpR5Lb9SKfIueojTHkf5i/efzr8XZ08V6w3rByPYXRefdH6UvyYV8m3JPgdeZIrh93s5Drro5rl26PT0SCYo+F3c1gfD0CZo8Y3mRcvhiNLWrCA9SeF++FO4cvxiHD80BQj1jzznX6yo7I+9Orbt7jN4H534lr0Awujmxd44WeEON6s0g8rdMb/mzOQYiGlGBhfd66eKX7Wo5VDidnC4Yv4aaU+7CrSMuEJOhdD99sGfNixMTURgg18JNMlwekeCFMzwjq77giY1SMJKFQGoS96BPA4D
+ eNyOEdHI
+ s2IV1GqU3u9XY5bFX2qZNxDSEQCA7xdsYP8UkG/I3z6cgaslYad77k1Wcw8KqAJ/fkcvlgRJw7LRo9V6dQD+yEQ2MNvoYRPeroknh8mHz3ayEiVL8o5NINF7wV2djDQUwYlEvqrtdas68Zlw2O4wGlPIfqasDfek8l0p2MpxGRbpZ0oIwld7y21z6Svr5Y9xAo0kEQdFJAiaa2KGVERI+Q+8QthiEYI5dhWma9VC+G7uiRPDP8OFqsd4cghHsKSQaWEl/qQU5qbWLlYU9jKvFpZDey/yytUxJnA3wMNMtybsjVB7/Dv6iiGDhRct6PA5SlXs959lFc+Y1o9uTy7w/iPm1xJUG5hdUVnahetOLiEmZUiyX6JnRT6kO1uQabj7XG0QHcna4CcqtzzUn0d3sjG440g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,52 +137,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In preparation for making the logic for enabling KASAN/KCSAN compiler
-instrumentation more complicated, refactor the existing logic to be more
-readable and (for KASAN) less repetitive.
+In the Makefile for mm/kasan/, KASAN is broadly disabled to prevent the
+KASAN runtime from recursing into itself; but the KASAN tests must be
+exempt from that.
+
+This is currently implemented by duplicating the same logic that is also
+in scripts/Makefile.lib. In preparation for changing that logic,
+refactor away the duplicate logic - we already have infrastructure for
+opting in specific files inside directories that are opted out.
 
 Signed-off-by: Jann Horn <jannh@google.com>
 ---
- scripts/Makefile.lib | 16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+ mm/kasan/Makefile | 12 ++----------
+ 1 file changed, 2 insertions(+), 10 deletions(-)
 
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index 1d581ba5df66..017c9801b6bb 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -52,14 +52,12 @@ endif
- # Enable address sanitizer flags for kernel except some files or directories
- # we don't want to check (depends on variables KASAN_SANITIZE_obj.o, KASAN_SANITIZE)
- #
-+is-kasan-compatible = $(patsubst n%,, \
-+	$(KASAN_SANITIZE_$(target-stem).o)$(KASAN_SANITIZE)$(is-kernel-object))
- ifeq ($(CONFIG_KASAN),y)
- ifneq ($(CONFIG_KASAN_HW_TAGS),y)
--_c_flags += $(if $(patsubst n%,, \
--		$(KASAN_SANITIZE_$(target-stem).o)$(KASAN_SANITIZE)$(is-kernel-object)), \
--		$(CFLAGS_KASAN), $(CFLAGS_KASAN_NOSANITIZE))
--_rust_flags += $(if $(patsubst n%,, \
--		$(KASAN_SANITIZE_$(target-stem).o)$(KASAN_SANITIZE)$(is-kernel-object)), \
--		$(RUSTFLAGS_KASAN))
-+_c_flags += $(if $(is-kasan-compatible), $(CFLAGS_KASAN), $(CFLAGS_KASAN_NOSANITIZE))
-+_rust_flags += $(if $(is-kasan-compatible), $(RUSTFLAGS_KASAN))
- endif
- endif
+diff --git a/mm/kasan/Makefile b/mm/kasan/Makefile
+index dd93ae8a6beb..922b2e6f6d14 100644
+--- a/mm/kasan/Makefile
++++ b/mm/kasan/Makefile
+@@ -35,18 +35,10 @@ CFLAGS_shadow.o := $(CC_FLAGS_KASAN_RUNTIME)
+ CFLAGS_hw_tags.o := $(CC_FLAGS_KASAN_RUNTIME)
+ CFLAGS_sw_tags.o := $(CC_FLAGS_KASAN_RUNTIME)
  
-@@ -94,10 +92,10 @@ endif
- # Enable KCSAN flags except some files or directories we don't want to check
- # (depends on variables KCSAN_SANITIZE_obj.o, KCSAN_SANITIZE)
- #
-+is-kcsan-compatible = $(patsubst n%,, \
-+	$(KCSAN_SANITIZE_$(target-stem).o)$(KCSAN_SANITIZE)$(is-kernel-object))
- ifeq ($(CONFIG_KCSAN),y)
--_c_flags += $(if $(patsubst n%,, \
--	$(KCSAN_SANITIZE_$(target-stem).o)$(KCSAN_SANITIZE)$(is-kernel-object)), \
--	$(CFLAGS_KCSAN))
-+_c_flags += $(if $(is-kcsan-compatible), $(CFLAGS_KCSAN))
- # Some uninstrumented files provide implied barriers required to avoid false
- # positives: set KCSAN_INSTRUMENT_BARRIERS for barrier instrumentation only.
- _c_flags += $(if $(patsubst n%,, \
+-CFLAGS_KASAN_TEST := $(CFLAGS_KASAN)
+-ifndef CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX
+-# If compiler instruments memintrinsics by prefixing them with __asan/__hwasan,
+-# we need to treat them normally (as builtins), otherwise the compiler won't
+-# recognize them as instrumentable. If it doesn't instrument them, we need to
+-# pass -fno-builtin, so the compiler doesn't inline them.
+-CFLAGS_KASAN_TEST += -fno-builtin
+-endif
++KASAN_SANITIZE_kasan_test_c.o := y
++KASAN_SANITIZE_kasan_test_rust.o := y
+ 
+ CFLAGS_REMOVE_kasan_test_c.o += $(call cc-option, -Wvla-larger-than=1)
+-CFLAGS_kasan_test_c.o := $(CFLAGS_KASAN_TEST)
+-RUSTFLAGS_kasan_test_rust.o := $(RUSTFLAGS_KASAN)
+ 
+ obj-y := common.o report.o
+ obj-$(CONFIG_KASAN_GENERIC) += init.o generic.o report_generic.o shadow.o quarantine.o
 
 -- 
 2.50.1.565.gc32cd1483b-goog
