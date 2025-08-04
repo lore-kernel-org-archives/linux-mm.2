@@ -2,108 +2,239 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 82DF2C87FDA
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 07:48:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E72D0C87FDA
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 07:56:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA1076B0093; Mon,  4 Aug 2025 03:48:56 -0400 (EDT)
+	id 5B06C6B0092; Mon,  4 Aug 2025 03:56:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E78836B0096; Mon,  4 Aug 2025 03:48:56 -0400 (EDT)
+	id 5878C6B0093; Mon,  4 Aug 2025 03:56:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D67186B0098; Mon,  4 Aug 2025 03:48:56 -0400 (EDT)
+	id 4283F6B0095; Mon,  4 Aug 2025 03:56:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C34E76B0093
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 03:48:56 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 773421DDD7F
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 07:48:56 +0000 (UTC)
-X-FDA: 83738298672.22.8686D45
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 4CF4C100004
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 07:48:54 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=fu-berlin.de header.s=fub01 header.b=fvIy47F9;
-	spf=pass (imf14.hostedemail.com: domain of glaubitz@zedat.fu-berlin.de designates 130.133.4.66 as permitted sender) smtp.mailfrom=glaubitz@zedat.fu-berlin.de;
-	dmarc=pass (policy=none) header.from=fu-berlin.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754293734;
+	by kanga.kvack.org (Postfix) with ESMTP id 2FFAA6B0092
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 03:56:32 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5A79D81C62
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 07:56:31 +0000 (UTC)
+X-FDA: 83738317782.04.F6E6382
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 6EB9D120004
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 07:56:27 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=NzXVcpcD;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=UZ0Kjd+a;
+	spf=pass (imf29.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754294188;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1TuNVDnyNHuWlEbTjXz2CCarXdU6W9BSLVaR+b76fg4=;
-	b=VFpDq32GxzuZT1CWyj7h264SDLZkC7SLekEnL3Evy9h3MjtqMq/a1YG6uk/O9twxqn2y3/
-	voisOGi8ymwwx9mYbNkPhAJYvulNBbSJPMthNT6Iyu6EvrcPV6b6nwtrYdf1AXaLnMmLGo
-	esLG0rZDcbQ9YKmwM1tt7EWWllkCSVs=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=fu-berlin.de header.s=fub01 header.b=fvIy47F9;
-	spf=pass (imf14.hostedemail.com: domain of glaubitz@zedat.fu-berlin.de designates 130.133.4.66 as permitted sender) smtp.mailfrom=glaubitz@zedat.fu-berlin.de;
-	dmarc=pass (policy=none) header.from=fu-berlin.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754293734; a=rsa-sha256;
-	cv=none;
-	b=LwZ2mTaCnRSRmGdZx+BnmapAeCvzbVgle7Ycc/qSZw1epcOlmDXFLvR+5RGFqxkKFSARlO
-	W/yYOJOrRMxP7+Fojwur7pqxsXRvnHQDNaq2d3yAcYPDOvk07yLDarQBxoH60S2CvXazUh
-	CQAqyCljW05VdxMusDY81NosHqxvXJ0=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=1TuNVDnyNHuWlEbTjXz2CCarXdU6W9BSLVaR+b76fg4=; t=1754293734; x=1754898534; 
-	b=fvIy47F99EsKAHZobWgHARpD+HFkxGYzRMAFOwYz88BgElrvBi3BTDUeOt9NWmic9K7eWQr/w4z
-	XwQPSLKJip9aotlgPbaUdOs6ivVLlHjwewFwSpxOIlyzg1LNvVkzBIzrdMTtNOwcKSfZ8NmAFCMA9
-	aTbRa/3MLlQc0orIDcvY0gqAMRk0GHp6LQMRvaEfmvR9Yh88lV0USTmJE30ROf6K7Fkqzy5ouM3cW
-	mnUV1J64gcE6fbHNpyAPgKBgXQpNZfylGjkzR8qW8Y1HdYadKJkXC3FXgUcya7id8TPpZjdY0mt6i
-	qBwNlER10LC2HQtYjb4o1VwYT8zoZRhZMZ8w==;
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.98)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1uipwB-000000028Cn-3NOP; Mon, 04 Aug 2025 09:48:51 +0200
-Received: from p57bd96d0.dip0.t-ipconnect.de ([87.189.150.208] helo=[192.168.178.61])
-          by inpost2.zedat.fu-berlin.de (Exim 4.98)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1uipwB-00000000XPY-2F6Z; Mon, 04 Aug 2025 09:48:51 +0200
-Message-ID: <2689df25d95e7c4fab781be2b3a4ac7ff9b50132.camel@physik.fu-berlin.de>
-Subject: Re: [PATCH v4 25/36] sparc64: Implement the new page table range API
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: Anthony Yznaga <anthony.yznaga@oracle.com>, "Matthew Wilcox (Oracle)"
-	 <willy@infradead.org>, linux-arch@vger.kernel.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, "David S. Miller"	
- <davem@davemloft.net>, sparclinux@vger.kernel.org, Andreas Larsson	
- <andreas@gaisler.com>, Rod Schnell <rods@mw-radio.com>, Sam James
- <sam@gentoo.org>
-Date: Mon, 04 Aug 2025 09:48:50 +0200
-In-Reply-To: <d424e109e6f1a00b8cf22ec1b40d6dedff38ce52.camel@physik.fu-berlin.de>
-References: <20230315051444.3229621-1-willy@infradead.org>
-				 <20230315051444.3229621-26-willy@infradead.org>
-				 <ce6337237169f179c75fe4a1ba1ce98843577360.camel@physik.fu-berlin.de>
-				 <83931f05-a613-4972-be76-80bc695915e4@oracle.com>
-			 <75cbab0cdab084795422335c0e0d69c6f57b468c.camel@physik.fu-berlin.de>
-		 <76c45021481cfe1aaa9fe2cfcd2287ac6c8d4504.camel@physik.fu-berlin.de>
-	 <d424e109e6f1a00b8cf22ec1b40d6dedff38ce52.camel@physik.fu-berlin.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 
+	bh=MAvoMMsW/cQkR8nAA9fec1QmFIVifCXNy3z7FCsLucs=;
+	b=ltLNWX258NlQ7UsvWP7bVgX0LlUjFR/VJOmXXZdShRSbQanuG8W/OMfEFienBoeIJpevJN
+	57Vm+e1mtiLn3lhIGTeQelj7H5zVPZDTk7fvhX7t54U5skm2OxwVnsYHt99t8FckiwqtaA
+	53aaXwJEe3wGgb9z+z3VV0R+zB9nMXY=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=NzXVcpcD;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=UZ0Kjd+a;
+	spf=pass (imf29.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754294188; a=rsa-sha256;
+	cv=pass;
+	b=lPfudnhgUPVmzBwAbfyn7aN8twINV5ic0bjxoroQSp6foUILElNDREtWx7HlsX1ZOrKvvu
+	tVSkmLu1ecbwS/ipV6x8B5s1t5C8JVkPBvwSwQtoR5K9y64HOkC9ae2cm8rTtCrGDzhBcr
+	RgylvLlR34BdCmX0f7gh8BRzaFxO5N4=
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5747gEbr018646;
+	Mon, 4 Aug 2025 07:56:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=MAvoMMsW/cQkR8nAA9
+	fec1QmFIVifCXNy3z7FCsLucs=; b=NzXVcpcDkHZ6nGNKW5t/EQQQA1LuSQQ2A3
+	USsc3wsdalLHdYbvL5xGThMS3rsLynQvKmH4Ij6hXpNuK9cBEAL+SvnFY9rMZkrc
+	UMV1OMxm4nADZcoNxn4sZ0kCbJ71Byq/yH0xKRg9i9SK1SkzR0TQ96tVtdPIcVNb
+	wJzujZUCD8lqkelnSuEqS74Z5x44mHRxRx7z5Dc2M6OWXAmUxD5iQn/OzFZ+W5Nj
+	/XDwIeJmHq61MQvhgZtB7Hcl3uN6oYfyeO29T/O06DEvuOHfe37r8cXzr1/NsC5e
+	8k2dxk3VA6KmK+xjCV/NvkurzZWLPX8UuI584Iqw07bt0MZt2zEA==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4899kfa5ee-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 04 Aug 2025 07:56:17 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5745vo6I031868;
+	Mon, 4 Aug 2025 07:56:00 GMT
+Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12on2050.outbound.protection.outlook.com [40.107.243.50])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48a7juaq0t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 04 Aug 2025 07:56:00 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sRKs0nI2FgZy4yXMGW+Jb9/oJOvdGlT9KxlcL4v0QLDMjF+paZv1iPwnG/AtPXySNJfgEqUmEcq1vDKlZH6mGs38dcIwgM7i8K+MjpFFagOtz8W6E6Qk4jzBX+nbwfveKeu7L1NiUH30+ZLryS+fCzGP1ZJ9oEWInqK01qlMFJIymEF0RMtS3hH/xm6FlclK6w/vcwFiURumQfr4ovBFVJzjnJ+GPpwjwCi368qCfLKmy8qXkhEtAzaZNxipFNRhyZD6uVIPmrE3L5pCvIX71WVYoxqEnk5RpnfbDdUkYNyPehjGxSRfCM/mWh6PoyFWjPPxMnv7Ojj/bdP2COXuew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MAvoMMsW/cQkR8nAA9fec1QmFIVifCXNy3z7FCsLucs=;
+ b=y7QJc8s3t2P/vrI5j4ksO5KglDRQOjdkGJCIiD+z2VeNRQYTF6nF7SwVb25XLjFFuyX9G7hna5Wm/59hslLXPGdt4GG5+TC4QFpRKbSB5+Dn2eI5bneGBSi8XgZqLO0ZLijXk45fOpERjQC/nbOPbg/YqX8G7RGAyEVtG6gZa1uD2FvcHell/XbUqK5uvrpwgG5In+jP9cxsUNpYKhijeCmKO2BxhPkqxEcnTv5zl2p1XXqRje1PwY7EyhtQIHuX0kmp8aF5y+I6N7Vu0TtOii0Z9nrRA9jlsaoTEHDDBms9i4LABPKB0IRxrToSMzpBsIbrVmxEiyAGvSjbqREKSw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MAvoMMsW/cQkR8nAA9fec1QmFIVifCXNy3z7FCsLucs=;
+ b=UZ0Kjd+a9aR28Sr0GGxaKyhIlszeVUMFdzgPdAO7RkiXE/euV4w6i3y5tLOpbHaRMVnVk6IhC0VSZ8XHM9qCOqKuWco5lURVot/WkqTI2dfRwsCC5JnHDJYmCdXZyq3wr4YDCGTineOasf96nkGAeNpMe7m4qYY23xbIhxPxrRo=
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
+ by CH3PR10MB7805.namprd10.prod.outlook.com (2603:10b6:610:1bc::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.20; Mon, 4 Aug
+ 2025 07:55:58 +0000
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::f238:6143:104c:da23]) by CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::f238:6143:104c:da23%7]) with mapi id 15.20.8989.018; Mon, 4 Aug 2025
+ 07:55:57 +0000
+Date: Mon, 4 Aug 2025 16:55:43 +0900
+From: Harry Yoo <harry.yoo@oracle.com>
+To: Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc: Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-mm <linux-mm@kvack.org>,
+        open list <linux-kernel@vger.kernel.org>, lkft-triage@lists.linaro.org,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Anders Roxell <anders.roxell@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Paul E. McKenney" <paulmck@kernel.org>, Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Ben Copeland <benjamin.copeland@linaro.org>
+Subject: Re: next-20250729: PREEMPT_RT: rock Pi 4b Internal error Oops
+ kmem_cache_alloc_bulk_noprof - kernel locking rtmutex.c at
+ __rt_mutex_slowlock_locked
+Message-ID: <aJBnf738fPEmVqGo@hyeyoo>
+References: <CA+G9fYumD2MGjECCv0wx2V_96_FKNtFQpT63qVNrrCmomoPYVQ@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+G9fYumD2MGjECCv0wx2V_96_FKNtFQpT63qVNrrCmomoPYVQ@mail.gmail.com>
+X-ClientProxiedBy: SL2PR03CA0015.apcprd03.prod.outlook.com
+ (2603:1096:100:55::27) To CH3PR10MB7329.namprd10.prod.outlook.com
+ (2603:10b6:610:12c::16)
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.189.150.208
-X-ZEDAT-Hint: PO
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|CH3PR10MB7805:EE_
+X-MS-Office365-Filtering-Correlation-Id: bb1b38d3-2e57-4920-ffb2-08ddd32c58aa
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?tnQ4nYCK5S2cuYObjJCTTKwTVSdE86nkAzx9TqXWCLUTsh4AHyo3fZuvE1bI?=
+ =?us-ascii?Q?yX9w33/2tNiqv/TDVDHb9CeNGk6YLzsqDheSAfKA6kitjjOMfIa6NL/i7Akb?=
+ =?us-ascii?Q?HW+cQL9b0av6XR+9H4BGhzFe2ulYw/R+wgXrmiUP+p2cEItOJUx2Xv3azX9i?=
+ =?us-ascii?Q?00WHz76h5UblTdML1Tnn0OVzCGjomcH8wZjmWdxZkWxIgTRjXtCImva802fI?=
+ =?us-ascii?Q?0tDUErni+bInXOfx+VLmmoeFdd/7PBfUNLLsuLpiy6/9YdxjpaavLO9C5X4o?=
+ =?us-ascii?Q?l8gAYBifnUXsFp4oVnTeYXnen3PnKbNtHrqj/UPQ57QNoWl/+NKPsWK8t4N/?=
+ =?us-ascii?Q?bbDxm3yVS/0a6Cc1CymufCc5WcoUxaatmfcOjoMNeWCDj6YZKixmRQfd7Mp/?=
+ =?us-ascii?Q?7TszFvg9omuto5skS1mbhTPH805VgW4RgY5+tD353ZvvOozF+JtuNois3PRw?=
+ =?us-ascii?Q?386TkLbxt2G4KjmJqG9ZVsp03P1HjvRqYSRfog0YFy+BzGCds8dlC/dmF/Im?=
+ =?us-ascii?Q?JpeJilIwqVSAXd/inRqTmzDO6AmGjGnhfMIJD9VYO8EZ/3TGdDbJ3+327KMa?=
+ =?us-ascii?Q?iAF9gsqfNWfyPB/lmq/VhY+FIvnjIxnk48DC8J096Frn17FDfKzx3WTYbops?=
+ =?us-ascii?Q?ToJgSpbZLMIWr9I9ilwEvqaUYD6qYEa5nImmeF6EnQOQKSdbbobTNZIpjmJw?=
+ =?us-ascii?Q?Sikd0NHxKUDxNfRt4OXcqogAwsXieX0xHHiIETVX7qSb6WBvtHL7a8xu1+Ll?=
+ =?us-ascii?Q?tB+0CXMsNYI+jgpiysMsuiDf7PM3xs+vw1FmLDSNltPSmplH0FXP7Lcm+B7T?=
+ =?us-ascii?Q?2fpyIK8NGf17hK2v6psvPJyx6ZY7BAeXGP1vvOtHTbnenedVRQJrGsgOVyrS?=
+ =?us-ascii?Q?WAxz6LDVmUsxI/3tcnCmjH0xCjahdJ9AQGqwtgGHdYpCZ3/62qDmYbuURqRj?=
+ =?us-ascii?Q?7wC7HbNyEJHAB3ZtRVoQWdI99Zml1kw9ItCZi29yQ6bQByFmVhmxhI3rtuBy?=
+ =?us-ascii?Q?wyHBB4QkbXxVQqKqKi6DNCq7+OTOlMGAH8Logdj4SK3jpzMo0FJNlZBOIecj?=
+ =?us-ascii?Q?QFGYt1YPFXedlcTzDi32kvcFYx+VrrOKN3+SeLYyV7zncXc9125I7IbWwxAQ?=
+ =?us-ascii?Q?4P9E/G9OPKypum1TC0/WXFTncVTc0Qqzrl05ISrl+Cwoce9LtjN21yaYUp77?=
+ =?us-ascii?Q?twXNCGnjSxYrUXaPw6j5ho86cE4W42559ihkg2ENfGHkE09cPV4Drtm5/I+x?=
+ =?us-ascii?Q?xdIBvGDXke99sG09fSMhv//pRwX6zF6SgcTKsh3xp6Y/P8Py8IsZqwmRUusx?=
+ =?us-ascii?Q?8adnHx+8gNyYK+OM3Y9aVsFpn5zoiJOwvy3VUVbgIWTc1/VuTKB9RgY7XMu3?=
+ =?us-ascii?Q?tsZ5OoQ=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?vHMoh5Zjzen84Lddp9We4YuPZf3LTHAJ7ZnMpNfG2OQNaIY3VEjgxQ0U87Or?=
+ =?us-ascii?Q?gzwqgYoyePzLMx728fv8xAXwOqzTO53aij8yF9Mo7kWm2H6iaj8zW9zmCK5E?=
+ =?us-ascii?Q?urclTxQ/okzKtqr7lXu18JWRYu6KBoJAv1xVF/FVv2ccIqAXxmvO/QNZ/G7Y?=
+ =?us-ascii?Q?WLOt0+C1+84eQdRyEfDcKV4nu/XvtdDdp3bXAUMp4E6pOBloiZDjSQojYeCu?=
+ =?us-ascii?Q?JynEumNI7J1hiZr+BvxdN5Fe3Idc8wdv9O0PozYJhiBSXWEfnruWYzb3wuVY?=
+ =?us-ascii?Q?kZQ8BVCmGwm0D8laTc0x1SfHF/5x+XzUVXglyevQtMnfH/wUsP68qu3YTd1C?=
+ =?us-ascii?Q?ncyoprcwDFCvJx+tezltkouytEXgSUnNUW4Qf9LTpiqqXJeZ+U+02zKZt3W9?=
+ =?us-ascii?Q?NCJx55YWL0gbrwmOF0VPI4bZumLu/ImE9KAJ2EL5bxhlazGEMasr1dJsgdeE?=
+ =?us-ascii?Q?AO5XeNS6PSHPDpRqC+oEm/dpU1C2SrcWy3MpcfzbQq3ydIgvAtEoiIgyFr+h?=
+ =?us-ascii?Q?+P+shtAzR+euGsSqQCnWy/PvM4hMJR4snNcVyhMEsp3cddYW991eyjOnzMIN?=
+ =?us-ascii?Q?SOij2hCTvVPJwaeJ2zXlzUXq7n4lI/VRi7cQL83S8Iri0I/OiGjwBLlzUl18?=
+ =?us-ascii?Q?Ja/3s34xKcKbDW/Bx+Dna9Vq3ktRFKKGz/+3cCae0HS1a/k+FMWxlzpgoSjC?=
+ =?us-ascii?Q?pVH3dvjc/7FaPaAndMHFDu20mFwyj32/I/UqYVpvMI0PYeM8Y5bv2IumunoE?=
+ =?us-ascii?Q?6WOsMvIbv6q27Z2q7iSXQphKzzCbGOj2N+oGbwoaYmNbzhXsNbeMX+/wn00t?=
+ =?us-ascii?Q?FQkwmuBh+sMn1jef+ln4QQXXQTqcE3uKx+Zdu7Lq5QIZik2kexMfwrVxcbhb?=
+ =?us-ascii?Q?xDl/VnfbP399oeqC7h4PYEH6XmSFNjdC5BiuoOQD3bGqvYKt4KFYwVHwXBii?=
+ =?us-ascii?Q?V035T9mZCEwjK70IVoSbplt37NfVG+UiiyZJY0Arh6lUrwghv/KH/HUz+wTT?=
+ =?us-ascii?Q?j1Ir6A0r3WHAt6SZphS9xEep+fEbjgIkO4RA+6bpyqu65hieqh9zseT7t62m?=
+ =?us-ascii?Q?clQtca1Lz8Hdeavg1Q39JF0v/X3sK/mDhGzfE+UclFchySpVvyY45FklbDzv?=
+ =?us-ascii?Q?WArlmUxpXrEJkBY15WVoO0PQud2FNeSOIEhIslNjThMPEw++QpEtXp2GsHz7?=
+ =?us-ascii?Q?jEqqMA58YE1UH4Aa/eQLH3Icl3H8o4oxmJjhC0bGnSLOhUxp2TDOBgAYhQkO?=
+ =?us-ascii?Q?zE9fwDusARCyecbFc0KP0WL0sW9fUXrCr0sIIqHetX49cL1xkkMOpgwD2SZs?=
+ =?us-ascii?Q?ejRpwj79k3ZxldMe2WmrbCloYNsOAaRt+ZS+cgorJVbjRelX4KM/GrIsU0Wm?=
+ =?us-ascii?Q?WgLkZPDWvAept5jEXm4bm2nT8RBkVoadZ6CeJ+7cXuaIOLtAOV1GwfoP9y+l?=
+ =?us-ascii?Q?Pik6TbmoZ1rjkKrIO0f9sd0qdHj6cudku345kP0bPbYtkQR//4ADtJAX30SS?=
+ =?us-ascii?Q?VCSswi3XnYi9nRTGihgrV5jnVvAQYN5iSvR7YiisT5elAY5A3rlThmqi1qTi?=
+ =?us-ascii?Q?Us1s4mSIJpTez2VHr9sWk3FYp2F73gTxY+GYeK4i?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	RzzLg7zB79ZC/IJSnROqszWChhtCPaAMbyaZ6apuq2MMzpxnmbVx3lq1NpsgQuFrOMhbpIY2V685M55+y4eNIfz+V4nv640Xagv+RFFGv5jJrjzjbQXCys1AZR4SH+N/Q1ORTKw4jed983SfGSs1unppK1sYqMyTK+PjCsISq8G3+v/T1BdE9+YLC8q6yetnJ9GLRvwh3jUrHNEB1iS1gulroaoOn+AxKSIiea85DOGUEE3mug8ZrYK0lqQac39eOh+zvfBYN7+B1mwakKS6EggkiFrvCXTQ3jyzIJLviBwHXOqQNHrEYSc0KUXwuzLGZJpGe7vD3ST1vSYtwpetyKhJFR/m/0+RaNF5P10BIYjleys5KePjQzKlFH50dd2eKcJEAesrqQUyxPVbwohKjgb0acmgKNjXN2jwZa6YGDksJ46GH+DTYVsH23LbURb44Li+s9i7ThRXeQsXtvT3PxflgHU4Y+32Svq/yr3PRBOewTCoVrJCO5mxPBcaK26UtSQL065c4sCl8sKMoj6Fa3W3ejoXtXHiOUCEMI8DQQGqXJiCO/jqcl/sflP9+xiav/4h8/E2UN9tgqHWdY20Wvs5PBFG0gs0Nge0GKXdfpY=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bb1b38d3-2e57-4920-ffb2-08ddd32c58aa
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2025 07:55:57.8363
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 64EdQC/JEH241ldMiXNuoF86ViAUPNNfBJUv9yblqIf5YnSdRIQFDbqGqEAKV3oAbA2y5zvvZV5T18Y7w+KxIA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR10MB7805
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-04_03,2025-08-04_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 suspectscore=0
+ malwarescore=0 mlxlogscore=999 phishscore=0 bulkscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
+ definitions=main-2508040041
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA0MDA0MiBTYWx0ZWRfXzmc2RSa907pp
+ yxHv5a67x1k4HVTCgEh0nDT20iizJ5mYIAh2oCrrl+PvGUVOJcr1vgemLRw2ftY7eQ6/paYj8xR
+ nMf3XNZ2mdgLcztsjKcIM38ed2pgcQCa6RC/yqF/gKqQDT/kmmTUGJ4ATI7hzpbuJUbW8SSmyAj
+ j3ePpi10UPFuDHoVpuqGQraYkdWqVwmEYwjAKcRcT9iQT3gaRZy423nTDdRgnOyirILqGxnfKzc
+ zv+v2rzseaSFzLvZVtDZiNVjcUT8Q0xq7WI9LrNcd3LS1kjTrYowmdmUBIvP0pNNAIMLGQHabzJ
+ ENR8Cn0JctsY2cY6N9czI12muScgnDDICXeIQIAMT5w5Eg+7FiZNu4bva1Bbp2aDxme9MOn705R
+ tq99IB5Ak0GSBk3tAPW2H4wQgGHnHtt9UuDsvyDf+tsRlsfyEvkpLn5zJkiRVX4+H7cxF9WE
+X-Proofpoint-GUID: EWSfRUAK4cX0OFgWK8CSuNOBU0x6cjOC
+X-Proofpoint-ORIG-GUID: EWSfRUAK4cX0OFgWK8CSuNOBU0x6cjOC
+X-Authority-Analysis: v=2.4 cv=VMvdn8PX c=1 sm=1 tr=0 ts=689067a1 b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=Oh2cFVv5AAAA:8 a=KKAkSRfTAAAA:8
+ a=21D8NHQQAAAA:8 a=X6i5wfACDdJPGZCuSDMA:9 a=CjuIK1q_8ugA:10
+ a=7KeoIwV6GZqOttXkcoxL:22 a=cvBusfyB2V15izCimMoJ:22 a=aE7_2WBlPvBBVsBbSUWX:22
+X-Stat-Signature: bkdit35ky38f9fa4awjckpcifpwj1c6i
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 6EB9D120004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4CF4C100004
-X-Rspamd-Server: rspam06
-X-Stat-Signature: grupu6buw8f9zrjijze57tc9jhrmnnpt
-X-HE-Tag: 1754293734-197030
-X-HE-Meta: U2FsdGVkX1/fGPcUbZuxuw1utK9PomUUZwj+lTjsIUd1S2TOPOMZy4/CE2ZMhBRiOteUfNc9HVoFIj1mqOYVnYN0gILS41GmNu6uGR37b9vyuiamjSCx1aIhKjrNDYUBd8Bc/PJxg3pBr6UIyttH1A9YVbQ1gLlGRBi+JPiEosVkpyILB2O/KaxIuBsShBUknscLBS5yqml4OYlTyKEZtnQiRJ8vyGmaLG8in2orfioGY8E1GSM3T0w1Qd0hmEkPHc36XvRM7lbgbOoOEt96mb4A975v42lX/RwdovNkxTsjFsbEeiSDEPbPuVo/K1UWxYoRHOvreNyA5ZZP9qYpSbyGMxZQIFX8P2oiDjI+wnPvxhpRd3gEXO5hLDJnletbFkLSUMAOBlmzaK6Ntwl6Qg5KTzzhwx2cfzXPcOP9vdtYxdNzyR94mmVUYeVjFzCMUrrBSlfv78KBAn0M/jDVcDPJIQEhFnDlez2dVZsuynVb5bHAnHYCmc86MYcDjcQlwuB6DJPJn7oVS702LsZFgBAP6Cf8nkN4YroYrf7bntL1/dydc5DsyIK2q7w666YCg/ljRfu2+pi3hOai8Xlvo9hQC/07YRAtygTbqBaN9JbUiNLexUN0H21AfaSBk6pvlHh32kkaq4RUT7R3YygTqeemUz1WQu+B9G0JrtL2nBxBpGJydODtUIgjIPusRPWbcGg1oPyqXhXxbSl9lMnpidNizF+ub5wX6+DY7TaZmAXSU0VbeBRlJFv1mEXUM8WutWNBURpapKs8pIkUHcFl+Sxj9x5oRa2/hIOYAW7XzsIC3c4IGJhVdTcsWlcXjAqnv8JnjRSr4lXIkdV/+Nsp+uvaOXI6BNrrB5hXvE2OKX+2xEs/joZXGw1jOtozhTdoPL7u6H9aC0Mtlt4uqYk6PlLZ5wo8UwRay7oNN+9EBRv4iCnRu9+jw55lkkEudwzqSMPTexSaIq7onO1ZD0k
- BrBc76GB
- FVt7OLBgiF3g1JVlu4fy8ke2XFRszfqFmxLJTApNVgMyF0JmWbM1OaZLtC3rFzB7Z49nN1pcc6umdAmgPN2Tm71nd6alXzQR1jca+al6ZQ2WeY07q4EwkCG3BA6TAJ23BCsbn5ECmkGFJeyobEWmBYw/DTWC2mjKITIQzx4AYugJzCMhP2XM9dZ6Mcl6uibfwFMDfqPO5CJ18Lm8rKG1AfZUd1ThUT5K/n5JmPUfRanEdjkmivVGXPWAXt4G9WJEeEH7X4JKNMk06wJl+BPaLviUNVsXA72xaTytmytUHUbhx+c2A0JDN3Xv0Ys3cgzWKuRatugCe+SkkOnLZyiNJEOHHZ0AQHrB8rHqgoGLaQJDvhRc9BsLm4LcGkMNxH0Oz/YSRvEyYbIkyu4XDd1tVI7Qnt2QmxQ5ATfNjlgjBIFjI6Nr8q0Bq5hoLNUEqmwKTW6wc6feT7ScWDtxD/ynovBaIn9ql3HMEcr7e+GMjiPg6onHMXW+FtYO8Xw==
+X-HE-Tag: 1754294187-338540
+X-HE-Meta: U2FsdGVkX19O5Q4/Y5feVqK184apS6dCTo6mO6UKPVfeAsJzgP3ZgTPgou8/y5yLUwCb60uVKD1/d0hq3CLmFN8YCmk4984ioU9ZiR3esoeyMkVZ4XNHY5LCRQuxGCYrO1tEKHz6MWzQFk1EtsY+fDoTlU5jKCHPBDZS7gn04xF0M/d1HHqJBq0MFOpbAuwJer76ar5c3bXIeVJpXcxZKoezHAgeiNk8eA91yCQn5gxmvF5ygodeDKrtjy/2lyirpVYV+koqIlU7rkTNvW5/8jyS85Velwpyd7So1bcA3ry8sQfqTSCTTKiOzPRX9stjn5kc6JB4KVlw9XZ8pcxEh6rf10T8I+wX/muarGHZAYYOuHvdDY1P47idu2QNFuWTe+uJ0HJdHymYxQ4Q+VWqtWxcisTnqRfJZGld1yaQiCuXp8IUb5iCGqnSSnFfYmK7BZpwT1O95AqLASKMO2Ad5p1GwLakBOUG33InA2dAF1I+joI5IxOzylIwzkcXmCXAHhicrTZxQ2lCjC6flCWaSBABOYIZfS2UXlAvO/R1w4sPMBH0yfFTwjnuUQE41eiQxGVH6YCXpYC8oTuRcI8gTBbkAtXm2Ox/xF/E/LGdY430hH3jd15tUrKMNRb8vRcR9U1ybp1QyHKBcKaECKIm8BMlzFgua/70ruRX5PXuHaNXx107QANipbhkpVH8gnet9ABjwIFdoNrqRrePDDd4bn8SgmMY74vC3YoegCcMVrU1HjbCiD7F9Q1cCizpWCq0eoWi3pjvQDv48z8/CpySHVnnSEJ4JOhzlIP2zW3VdsEqJ/cnFHPAtDWj7eSjJQY+QBuL93dMTNf9TIl57SN2ebKpelKMHwGUNIX7GrjrHr+aw733c2i8/+PctOkPxldgsQRGmH1koNcCnbMP7qliCgxXNDHR8e10EyllMlPBjNcUbClPu2a6QjX+dfrbgwF5hyR4GdO9T+DtbWkGVZC
+ XOW7VOd2
+ ZvZdcaTmF7MMKfmteGdyOLYm6pPVJaVLfu8aRYCZ4b/U9eWJLF92H5/gMjmANusGKe2z/+FP24ZhQMfV3VoRmFajhsA2t0onH0GRlFjby9Q7rSa/5c9B+uGpFv7z59Ta1A5bdxqGAoLZz372FHHO/AKvBG3djBtN7f1w6fdU6bjRSD7UxLKoNwmtWY0n0y0Ih3nQ5OvXWsxcUPPDXMljyqX1BFmrXDJB81Pr9cvcA3iRswYzI7RZPiCYS6d8Q1Wc8mmWIKaa22jlcuaG+hcxgp7VRGPqTOax0nxAXj/UVvhY/P0zGxZFW1iLJig/WVDTd8l0T+Os7AHGzOwTXQS4jAn5nHLdV/aOBe++lEJrJL6W49+P13VH5qHh/mKBjSwLK0mQZ7uZPt2/g5ETbgfP4FJSDu4GKqrbye3OQNKu+FgnQ/dEEEX6ihJglBURxNXG6TpcKQDsnqw+zUdxdWsEfvxpVUVFx5lTcLSa6lzMm/PwCuXhg/kUk7Liu6iD18HsDvbdhRB2dKujk1RRrhPLn3UuT3xAuIHjFNYwmQgRTE2GvBw+yY62PfPgTKWzHvEJbNcMLv6gw2BDAnqKoTVpx7GSuRNqLiPh6kvHFlkb2Qw6yWdB7sgTyjSkp4rv/g63kdI//csUr+jJtbuNFeqEd4M/9ZNAJVR8FahBeDmnclvCnNDO5/L3oOOY4qUvrjA8VmNRewUYB31NTLL/SFRR6u3sbpyHczRAzG/HBSTom9ZjRYubBoIWc6y8lrzOjEFqJ3eRNKAxSw2jqF8FYuilqPN0AHfwDy+o63Xck1odRolNHB+JukbX/cEEeZxFlR7v/V48d9k5aGe+SvWUtvZbnG6Sbs8j7MU1F7sw1vdOpDocIBRFiIviP6lbsepztynVU1EAI5d8eKcq9HytzTb1laVrFSY1uYXKBokxxElevtkZSYu7/+tXdeRpQ7YnwrGig2VWBvrPxmJoaUOxdj24jv+56tL4Q
+ rnenp2qo
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,324 +243,363 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Sat, Aug 02, 2025 at 03:45:51PM +0530, Naresh Kamboju wrote:
+> Regressions found while validating Linux next on the Radxa Rock Pi 4B
+> platform, we observed kernel crashes and deadlock warnings when running LTP
+> syscall and controller tests under specific PREEMPT_RT configurations.
+> These issues appear to be regressions introduced in next-20250729.
+> 
+> * CONFIG_EXPERT=y
+> * CONFIG_PREEMPT_RT=y
+> * CONFIG_LAZY_PREEMPT=y
+> 
+> Regression Analysis:
+> - New regression? Yes
+> - Reproducibility? Intermittent
+> 
+> First seen on the next-20250729
+> Good: next-20250728
+> Bad: next-20250729 and next-20250801
+> 
+> Test regression: next-20250729 rock Pi 4b Internal error Oops
+> kmem_cache_alloc_bulk_noprof
+> Test regression: next-20250729 rock Pi 4b WARNING kernel locking
+> rtmutex.c at __rt_mutex_slowlock_locked
+> Test regression: next-20250729 rock Pi 4b WARNING kernel rcu
+> tree_plugin.h at rcu_note_context_switch
+> 
+> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-On Mon, 2025-08-04 at 08:58 +0200, John Paul Adrian Glaubitz wrote:
-> On Mon, 2025-08-04 at 07:36 +0200, John Paul Adrian Glaubitz wrote:
-> > On Mon, 2025-08-04 at 07:12 +0200, John Paul Adrian Glaubitz wrote:
-> > > On Sun, 2025-08-03 at 12:08 -0700, Anthony Yznaga wrote:
-> > > > There was a follow-on fix that addressed a bug with this patch:
-> > > >=20
-> > > > f4b4f3ec1a31 sparc64: add missing initialization of folio in tlb_ba=
-tch_add()
-> > >=20
-> > > Indeed I just tried v6.6 which has this patch and added your sun4u fi=
-x and it
-> > > seems to be stable. I was sure I saw problems even with v6.16 though.
-> > >=20
-> > > Let me run more tests.
-> >=20
-> > I'm seeing another crash on v6.16 on sun4u even with your patch applied=
-:
-> >=20
-> > [  456.443492] kernel BUG at fs/ext4/inode.c:1174!
-> > [  456.503059]               \|/ ____ \|/
-> > [  456.503059]               "@'/ .. \`@"
-> > [  456.503059]               /_| \__/ |_\
-> > [  456.503059]                  \__U_/
-> > [  456.696513] apt-get(1217): Kernel bad sw trap 5 [#1]
-> > [  456.761698] CPU: 0 UID: 0 PID: 1217 Comm: apt-get Not tainted 6.16.0=
-+ #24 VOLUNTARY=20
-> > [  456.863502] TSTATE: 0000000011001601 TPC: 0000000010309250 TNPC: 000=
-0000010309254 Y: 00000000    Not tainted
-> > [  456.992850] TPC: <ext4_block_write_begin+0x450/0x540 [ext4]>
-> > [  457.067500] g0: 0000000000000000 g1: 0000000000000001 g2: 0000000000=
-000000 g3: 0000000000000000
-> > [  457.181869] g4: fff00000141d5c80 g5: 0000000000000008 g6: fff000000b=
-e24000 g7: 0000000000000001
-> > [  457.296245] o0: 00000000103944b0 o1: 0000000000000496 o2: ffffffffff=
-ffffbf o3: 0000000000101cca
-> > [  457.410618] o4: 0000000000000000 o5: 0000000000000000 sp: fff000000b=
-e26fd1 ret_pc: 0000000010309248
-> > [  457.529571] RPC: <ext4_block_write_begin+0x448/0x540 [ext4]>
-> > [  457.604020] l0: fff000003def26e0 l1: 0000000000113cca l2: fff000003d=
-ef2578 l3: 0000000000000002
-> > [  457.718394] l4: 0000000000000000 l5: 0000000000080000 l6: 0000000000=
-012000 l7: 0000000000000001
-> > [  457.832770] i0: 0000000000000000 i1: 000c00000026b500 i2: 0000000000=
-001000 i3: 0000000000082000
-> > [  457.947146] i4: 00000000103034a0 i5: 0000000000000000 i6: fff000000b=
-e270c1 i7: 000000001030c8dc
-> > [  458.061528] I7: <ext4_da_write_begin+0x1bc/0x340 [ext4]>
-> > [  458.131389] Call Trace:
-> > [  458.163408] [<000000001030c8dc>] ext4_da_write_begin+0x1bc/0x340 [ex=
-t4]
-> > [  458.250447] [<0000000000674230>] generic_perform_write+0x90/0x240
-> > [  458.330606] [<00000000102f50b4>] ext4_buffered_write_iter+0x54/0x120=
- [ext4]
-> > [  458.422214] [<00000000102f5624>] ext4_file_write_iter+0x3e4/0x780 [e=
-xt4]
-> > [  458.510388] [<0000000000749cc4>] vfs_write+0x2c4/0x3e0
-> > [  458.577867] [<0000000000749f4c>] ksys_write+0x4c/0xe0
-> > [  458.644203] [<0000000000749ff4>] sys_write+0x14/0x40
-> > [  458.709397] [<0000000000406174>] linux_sparc_syscall+0x34/0x44
-> > [  458.786048] Disabling lock debugging due to kernel taint
-> > [  458.855904] Caller[000000001030c8dc]: ext4_da_write_begin+0x1bc/0x34=
-0 [ext4]
-> > [  458.948653] Caller[0000000000674230]: generic_perform_write+0x90/0x2=
-40
-> > [  459.034430] Caller[00000000102f50b4]: ext4_buffered_write_iter+0x54/=
-0x120 [ext4]
-> > [  459.131761] Caller[00000000102f5624]: ext4_file_write_iter+0x3e4/0x7=
-80 [ext4]
-> > [  459.225648] Caller[0000000000749cc4]: vfs_write+0x2c4/0x3e0
-> > [  459.298846] Caller[0000000000749f4c]: ksys_write+0x4c/0xe0
-> > [  459.370900] Caller[0000000000749ff4]: sys_write+0x14/0x40
-> > [  459.441810] Caller[0000000000406174]: linux_sparc_syscall+0x34/0x44
-> > [  459.524168] Caller[0000000000000000]: 0x0
-> > [  459.576772] Instruction DUMP:
-> > [  459.576776]  11040e51=20
-> > [  459.615662]  7c04b816=20
-> > [  459.646541]  901220b0=20
-> > [  459.677418] <91d02005>
-> > [  459.708302]  9735a000=20
-> > [  459.739181]  95352000=20
-> > [  459.770076]  d25fa7cf=20
-> > [  459.800945]  7fffe818=20
-> > [  459.831825]  90100019=20
-> > [  459.862706]=20
-> > [  459.941500] systemd[1]: Failed to open /dev/pts device, ignoring: In=
-appropriate ioctl for device
-> > [  460.063831] systemd[1]: rsyslog.service: Main process exited, code=
-=3Dkilled, status=3D6/ABRT
-> > [  460.170962] systemd[1]: rsyslog.service: Failed with result 'signal'=
-.
-> > [  460.267153] systemd[1]: systemd-journald.service: Scheduled restart =
-job, restart counter is at 1.
-> > [  460.388605] systemd[1]: rsyslog.service: Scheduled restart job, rest=
-art counter is at 1.
-> > [  460.517346] systemd[1]: Starting rsyslog.service - System Logging Se=
-rvice...
-> > [  460.618299] systemd[1]: Starting systemd-journald.service - Journal =
-Service...
-> > [  460.895645] systemd-journald[1237]: Collecting audit messages is dis=
-abled.
-> > [  461.048068] systemd[1]: Failed to open /dev/pts device, ignoring: In=
-appropriate ioctl for device
-> > [  461.202783] systemd-journald[1237]: File /var/log/journal/9ac90e257b=
-3e423284cfc21a00cbeeb8/system.journal corrupted or uncleanly shut down, ren=
-aming and replacing.
-> > [  461.456867] systemd[1]: Started rsyslog.service - System Logging Ser=
-vice.
-> > [  461.616651] systemd-journald[1237]: Time jumped backwards, rotating.
-> > [  461.773305] systemd-journald[1237]: Failed to read journal file /var=
-/log/journal/9ac90e257b3e423284cfc21a00cbeeb8/user-1002.journal for rotatio=
-n, trying to move it out of the way: Device or
-> > resource busy
-> > [  462.065725] systemd[1]: Started systemd-journald.service - Journal S=
-ervice.
-> > [  462.159895] systemd-journald[1237]: Time jumped backwards, rotating.
-> > [  519.719624] kernel BUG at fs/ext4/inode.c:1174!
-> > [  519.779143]               \|/ ____ \|/
-> > [  519.779143]               "@'/ .. \`@"
-> > [  519.779143]               /_| \__/ |_\
-> > [  519.779143]                  \__U_/
-> > [  519.972586] apt(1249): Kernel bad sw trap 5 [#2]
-> > [  520.033239] CPU: 0 UID: 0 PID: 1249 Comm: apt Tainted: G      D     =
-        6.16.0+ #24 VOLUNTARY=20
-> > [  520.151048] Tainted: [D]=3DDIE
-> > [  520.188797] TSTATE: 0000000011001603 TPC: 0000000010309250 TNPC: 000=
-0000010309254 Y: 00000000    Tainted: G      D           =20
-> > [  520.338725] TPC: <ext4_block_write_begin+0x450/0x540 [ext4]>
-> > [  520.413282] g0: 0000000000000000 g1: 0000000000000001 g2: 0000000000=
-000000 g3: 0000000000000000
-> > [  520.527655] g4: fff00000141d40c0 g5: 000000000000000b g6: fff000000a=
-818000 g7: 0000000000000001
-> > [  520.642031] o0: 00000000103944b0 o1: 0000000000000496 o2: ffffffffff=
-fffcc0 o3: 0000000000101cca
-> > [  520.756408] o4: 0000000000000004 o5: 0000000000000000 sp: fff000000a=
-81afd1 ret_pc: 0000000010309248
-> > [  520.875350] RPC: <ext4_block_write_begin+0x448/0x540 [ext4]>
-> > [  520.949799] l0: fff000023439af00 l1: 0000000000113cca l2: fff0000234=
-39ad98 l3: 0000000000000002
-> > [  521.064174] l4: 0000000000000000 l5: 0000000000080000 l6: 0000000000=
-012000 l7: 0000000000000001
-> > [  521.178547] i0: 0000000000000000 i1: 000c000000164a00 i2: 0000000000=
-001fc0 i3: 0000000000680000
-> > [  521.292923] i4: 00000000103034a0 i5: 0000000000000000 i6: fff000000a=
-81b0c1 i7: 000000001030c8dc
-> > [  521.407297] I7: <ext4_da_write_begin+0x1bc/0x340 [ext4]>
-> > [  521.477195] Call Trace:
-> > [  521.509295] [<000000001030c8dc>] ext4_da_write_begin+0x1bc/0x340 [ex=
-t4]
-> > [  521.596330] [<0000000000674230>] generic_perform_write+0x90/0x240
-> > [  521.676495] [<00000000102f50b4>] ext4_buffered_write_iter+0x54/0x120=
- [ext4]
-> > [  521.768196] [<00000000102f5624>] ext4_file_write_iter+0x3e4/0x780 [e=
-xt4]
-> > [  521.856381] [<0000000000749cc4>] vfs_write+0x2c4/0x3e0
-> > [  521.923957] [<0000000000749f4c>] ksys_write+0x4c/0xe0
-> > [  521.990294] [<0000000000749ff4>] sys_write+0x14/0x40
-> > [  522.055486] [<0000000000406174>] linux_sparc_syscall+0x34/0x44
-> > [  522.132122] Caller[000000001030c8dc]: ext4_da_write_begin+0x1bc/0x34=
-0 [ext4]
-> > [  522.224873] Caller[0000000000674230]: generic_perform_write+0x90/0x2=
-40
-> > [  522.310649] Caller[00000000102f50b4]: ext4_buffered_write_iter+0x54/=
-0x120 [ext4]
-> > [  522.407974] Caller[00000000102f5624]: ext4_file_write_iter+0x3e4/0x7=
-80 [ext4]
-> > [  522.501864] Caller[0000000000749cc4]: vfs_write+0x2c4/0x3e0
-> > [  522.575062] Caller[0000000000749f4c]: ksys_write+0x4c/0xe0
-> > [  522.647118] Caller[0000000000749ff4]: sys_write+0x14/0x40
-> > [  522.718031] Caller[0000000000406174]: linux_sparc_syscall+0x34/0x44
-> > [  522.800380] Caller[0000000000000000]: 0x0
-> > [  522.852991] Instruction DUMP:
-> > [  522.852994]  11040e51=20
-> > [  522.891878]  7c04b816=20
-> > [  522.922760]  901220b0=20
-> > [  522.953638] <91d02005>
-> > [  522.984521]  9735a000=20
-> > [  523.015401]  95352000=20
-> > [  523.046284]  d25fa7cf=20
-> > [  523.077163]  7fffe818=20
-> > [  523.108109]  90100019=20
-> > [  523.139044]
-> >=20
-> > I'll try to bisect this one later this week.
->=20
-> OK, so v6.8 is fine while v6.9 crashes:
->=20
-> [   39.788224] Unable to handle kernel NULL pointer dereference
-> [   39.862657] tsk->{mm,active_mm}->context =3D 000000000000004b
-> [   39.935941] tsk->{mm,active_mm}->pgd =3D fff000000aa98000
-> [   40.004566]               \|/ ____ \|/
-> [   40.004566]               "@'/ .. \`@"
-> [   40.004566]               /_| \__/ |_\
-> [   40.004566]                  \__U_/
-> [   40.197871] (udev-worker)(88): Oops [#1]
-> [   40.249329] CPU: 0 PID: 88 Comm: (udev-worker) Tainted: P           O =
-      6.9.0+ #28
-> [   40.353415] TSTATE: 0000004411001605 TPC: 0000000000df092c TNPC: 00000=
-00000df0930 Y: 00000000    Tainted: P           O     =20
-> [   40.502105] TPC: <strlen+0x60/0xd4>
-> [   40.547844] g0: fff000000a3171a1 g1: 0000000000000000 g2: 000000000000=
-0000 g3: 0000000000000001
-> [   40.662224] g4: fff000000aa4dac0 g5: 0000000010000233 g6: fff000000a31=
-4000 g7: 0000000000000000
-> [   40.776599] o0: 0000000000000010 o1: 0000000000000010 o2: 000000000101=
-0101 o3: 0000000080808080
-> [   40.890974] o4: 0000000001010000 o5: 0000000000000000 sp: fff000000a31=
-7201 ret_pc: 00000000004d4b08
-> [   41.009924] RPC: <module_patient_check_exists.constprop.0+0x48/0x1e0>
-> [   41.094557] l0: fff0000100032f40 l1: 0000000000000000 l2: 000000000000=
-0000 l3: 0000000000000000
-> [   41.208936] l4: 0000000000000000 l5: 0000000000000000 l6: 000000000000=
-0000 l7: 0000000000000000
-> [   41.323311] i0: 00000001000256d8 i1: 0000000001143000 i2: 000000000114=
-3300 i3: 000000000000000b
-> [   41.437686] i4: 0000000000000010 i5: fffffffffffffff8 i6: fff000000a31=
-72e1 i7: 00000000004d63f0
-> [   41.552062] I7: <load_module+0x550/0x1f00>
-> [   41.605811] Call Trace:
-> [   41.637838] [<00000000004d63f0>] load_module+0x550/0x1f00
-> [   41.708752] [<00000000004d7fac>] init_module_from_file+0x6c/0xa0
-> [   41.787670] [<00000000004d81c8>] sys_finit_module+0x188/0x280
-> [   41.863158] [<0000000000406174>] linux_sparc_syscall+0x34/0x44
-> [   41.939790] Caller[00000000004d63f0]: load_module+0x550/0x1f00
-> [   42.016423] Caller[00000000004d7fac]: init_module_from_file+0x6c/0xa0
-> [   42.101059] Caller[00000000004d81c8]: sys_finit_module+0x188/0x280
-> [   42.182266] Caller[0000000000406174]: linux_sparc_syscall+0x34/0x44
-> [   42.264614] Caller[fff000010480e2fc]: 0xfff000010480e2fc
-> [   42.334384] Instruction DUMP:
-> [   42.334387]  96132080=20
-> [   42.373269]  19004040=20
-> [   42.404151]  94132101=20
-> [   42.435030] <da020000>
-> [   42.465914]  9823400a=20
-> [   42.496793]  808b000b=20
-> [   42.527674]  024ffffd=20
-> [   42.558556]  90022004=20
-> [   42.589437]  8f336018=20
-> [   42.620318]
->=20
-> So, the regression was introduced with v6.9. Will bisect this later this =
-week.
+Thanks for the report, Naresh!
 
-Hmm, I just ran into another crash on v6.8. The machine didn't crash though=
-:
+based on the stack trace, I think there might be a use-after-free or
+buffer overflow bug that could trigger this.
 
-[  489.263666] Unable to handle kernel paging request at virtual address 00=
-0c000002400000
-[  489.367912] tsk->{mm,active_mm}->context =3D 00000000000013b2
-[  489.441150] tsk->{mm,active_mm}->pgd =3D fff000000af04000
-[  489.509872]               \|/ ____ \|/
-                             "@'/ .. \`@"
-                             /_| \__/ |_\
-                                \__U_/
-[  489.703156] sshd-session(3671): Oops [#1]
-[  489.755758] CPU: 0 PID: 3671 Comm: sshd-session Not tainted 6.8.0+ #27
-[  489.841544] TSTATE: 0000000811001600 TPC: 000000000065d620 TNPC: 0000000=
-00065d624 Y: 00000000    Not tainted
-[  489.970796] TPC: <unmap_page_range+0x620/0xc60>
-[  490.030362] g0: fff000000a939360 g1: 0000000000008800 g2: ffffffffffffff=
-ff g3: ffffffffffffffff
-[  490.144748] g4: fff0000000d4a100 g5: 0000000002ad4a68 g6: fff000000a6dc0=
-00 g7: 0000010000000000
-[  490.259118] o0: 000c0000024005a0 o1: fff00001018a4000 o2: 00000001000282=
-90 o3: 0000000100028290
-[  490.373493] o4: fff0000001afe71c o5: 0000000001099c00 sp: fff000000a6dee=
-b1 ret_pc: 000000000065d53c
-[  490.492447] RPC: <unmap_page_range+0x53c/0xc60>
-[  490.551915] l0: fff00001018f4000 l1: 0000000100028290 l2: fff000000a6df9=
-68 l3: fff00001018a4000
-[  490.666292] l4: fff00000070a25a0 l5: fff000000a6dfaa8 l6: 00000000000000=
-01 l7: 00000000011605a8
-[  490.780668] i0: fff000000a9b0900 i1: fff00001018a6000 i2: fff0000000f990=
-18 i3: fff0000004308290
-[  490.895045] i4: fff00001018f4000 i5: 000c0000024005a0 i6: fff000000a6def=
-f1 i7: 000000000065dcd8
-[  491.009418] I7: <unmap_single_vma.constprop.0+0x78/0xe0>
-[  491.079183] Call Trace:
-[  491.111206] [<000000000065dcd8>] unmap_single_vma.constprop.0+0x78/0xe0
-[  491.198136] [<000000000065dd9c>] unmap_vmas+0x5c/0x1a0
-[  491.265615] [<000000000066a2a4>] exit_mmap+0xc4/0x440
-[  491.331950] [<0000000000463d44>] __mmput+0x44/0x140
-[  491.396003] [<0000000000463e74>] mmput+0x34/0x60
-[  491.456618] [<000000000046a444>] do_exit+0x284/0xaa0
-[  491.521816] [<000000000046ae24>] do_group_exit+0x24/0xa0
-[  491.591584] [<000000000046aebc>] sys_exit_group+0x1c/0x40
-[  491.662496] [<0000000000406174>] linux_sparc_syscall+0x34/0x44
-[  491.739127] Disabling lock debugging due to kernel taint
-[  491.808896] Caller[000000000065dcd8]: unmap_single_vma.constprop.0+0x78/=
-0xe0
-[  491.901543] Caller[000000000065dd9c]: unmap_vmas+0x5c/0x1a0
-[  491.974740] Caller[000000000066a2a4]: exit_mmap+0xc4/0x440
-[  492.046795] Caller[0000000000463d44]: __mmput+0x44/0x140
-[  492.116564] Caller[0000000000463e74]: mmput+0x34/0x60
-[  492.182901] Caller[000000000046a444]: do_exit+0x284/0xaa0
-[  492.253815] Caller[000000000046ae24]: do_group_exit+0x24/0xa0
-[  492.329301] Caller[000000000046aebc]: sys_exit_group+0x1c/0x40
-[  492.405935] Caller[0000000000406174]: linux_sparc_syscall+0x34/0x44
-[  492.488282] Caller[fff0000102ad4a74]: 0xfff0000102ad4a74
-[  492.558054] Instruction DUMP:
-[  492.558057]  c6756010=20
-[  492.596937]  02ff7fd9=20
-[  492.627825]  c2356018=20
-[  492.658702] <c25f6008>
-[  492.689581]  8610001d=20
-[  492.720460]  84086001=20
-[  492.751343]  82007fff=20
-[  492.782223]  87789401=20
-[  492.813105]  c258e018=20
+Could you please try to reproduce it with KASAN enabled to confirm that
+it is the case?
+ 
+> ## Test log
+> [  527.570253] Unable to handle kernel paging request at virtual
+> address 003f0020f94020a1
+> [  527.570274] Mem abort info:
+> [  527.570277]   ESR = 0x0000000096000004
+> [  527.570282]   EC = 0x25: DABT (current EL), IL = 32 bits
+> [  527.570288]   SET = 0, FnV = 0
+> [  527.570292]   EA = 0, S1PTW = 0
+> [  527.570297]   FSC = 0x04: level 0 translation fault
+> [  527.570302] Data abort info:
+> [  527.570305]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+> [  527.570310]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+> [  527.570316]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+> [  527.570322] [003f0020f94020a1] address between user and kernel address ranges
+> [  527.570330] Internal error: Oops: 0000000096000004 [#1]  SMP
+> [  527.570336] Modules linked in: brcmfmac rockchip_dfi brcmutil
+> cfg80211 snd_soc_hdmi_codec dw_hdmi_i2s_audio dw_hdmi_cec
+> snd_soc_simple_card snd_soc_audio_graph_card hci_uart
+> snd_soc_rockchip_i2s snd_soc_es8316 snd_soc_spdif_tx
+> snd_soc_simple_card_utils btqca rtc_rk808 rockchipdrm btbcm
+> snd_soc_core dw_hdmi_qp bluetooth snd_compress reset_gpio analogix_dp
+> snd_pcm_dmaengine panfrost hantro_vpu dw_mipi_dsi rfkill rockchip_rga
+> drm_shmem_helper drm_dp_aux_bus snd_pcm gpu_sched dw_hdmi pwrseq_core
+> videobuf2_dma_sg v4l2_vp9 snd_timer drm_display_helper v4l2_h264
+> v4l2_jpeg phy_rockchip_pcie snd v4l2_mem2mem cec videobuf2_dma_contig
+> soundcore videobuf2_memops drm_client_lib videobuf2_v4l2
+> drm_dma_helper videobuf2_common rockchip_saradc drm_kms_helper
+> industrialio_triggered_buffer kfifo_buf rockchip_thermal
+> pcie_rockchip_host coresight_cpu_debug fuse drm backlight
+> [  527.570493] CPU: 3 UID: 0 PID: 34254 Comm: mkdir Not tainted
+> 6.16.0-next-20250801 #1 PREEMPT_RT
+> [  527.570502] Hardware name: Radxa ROCK Pi 4B (DT)
+> [  527.570506] pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> [  527.570512] pc : kmem_cache_alloc_bulk_noprof (mm/slub.c:5343
+> (discriminator 1) mm/slub.c:5403 (discriminator 1))
+> [  527.570527] lr : kmem_cache_alloc_bulk_noprof
+> (include/linux/atomic/atomic-arch-fallback.h:457
+> include/linux/atomic/atomic-instrumented.h:33
+> include/linux/kfence.h:127 mm/slub.c:5307 mm/slub.c:5403)
+> [  527.570533] sp : ffff80008e24b8f0
+> [  527.570536] x29: ffff80008e24b930 x28: 00ff000000584610 x27: ffff800082b30538
+> [  527.570545] x26: ffff8000816b64dc x25: 0000000000000cc0 x24: 0000000000000000
+> [  527.570554] x23: 0000000000000004 x22: ffff0000f7579d20 x21: 0000000000000001
+> [  527.570563] x20: 0000000000000001 x19: ffff000000405b00 x18: ffff80008e24bcd0
+> [  527.570572] x17: 0000000000000000 x16: ffff800081e18420 x15: 0000ffffa2670fff
+> [  527.570582] x14: 0000000000000000 x13: 1fffe000017942e1 x12: 0000ffffa2470fff
+> [  527.570591] x11: ffff00000bca1708 x10: 0000000000000001 x9 : ffff8000816e41a4
+> [  527.570600] x8 : ffff80008e24b850 x7 : fefefefefefefefe x6 : ffff800082b30000
+> [  527.570608] x5 : d63f0020f9402021 x4 : ffff0000f7579d58 x3 : 0000000000000000
+> [  527.570617] x2 : 0000000000000000 x1 : 0000000000000100 x0 : 0000000000000080
+> [  527.570627] Call trace:
+> [  527.570631] kmem_cache_alloc_bulk_noprof (mm/slub.c:5343
 
-[  492.894311] Fixing recursive fault but reboot is needed!
+It crashes in get_freepointer() because a bad pointer is passed to it.
 
-Adrian
+I think it is reasonable to suspect that the freelist chain is corrupt
+due to a use-after-free or buffer overflow (either in maple tree code,
+or something else that shares the cache with maple tree nodes).
 
---=20
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+> (discriminator 1) mm/slub.c:5403 (discriminator 1)) (P)
+> [  527.570639] mas_alloc_nodes (lib/maple_tree.c:1278)
+> [  527.570651] mas_node_count_gfp (lib/maple_tree.c:1339)
+> [  527.570661] mas_preallocate (lib/maple_tree.c:5538 (discriminator 1))
+> [  527.570667] __split_vma (mm/vma.c:528 (discriminator 1))
+> [  527.570677] vma_modify (mm/vma.c:1633)
+> [  527.570685] vma_modify_flags (mm/vma.c:1650)
+> [  527.570694] mprotect_fixup (mm/mprotect.c:819)
+> [  527.570704] do_mprotect_pkey (mm/mprotect.c:993)
+> [  527.570713] __arm64_sys_mprotect (mm/mprotect.c:1011)
+> [  527.570722] invoke_syscall (arch/arm64/include/asm/current.h:19
+> arch/arm64/kernel/syscall.c:54)
+> [  527.570731] el0_svc_common.constprop.0
+> (include/linux/thread_info.h:135 (discriminator 2)
+> arch/arm64/kernel/syscall.c:140 (discriminator 2))
+> [  527.570737] do_el0_svc (arch/arm64/kernel/syscall.c:152)
+> [  527.570744] el0_svc (arch/arm64/include/asm/irqflags.h:82
+> (discriminator 1) arch/arm64/include/asm/irqflags.h:123 (discriminator
+> 1) arch/arm64/include/asm/irqflags.h:136 (discriminator 1)
+> arch/arm64/kernel/entry-common.c:169 (discriminator 1)
+> arch/arm64/kernel/entry-common.c:182 (discriminator 1)
+> arch/arm64/kernel/entry-common.c:880 (discriminator 1))
+> [  527.570752] el0t_64_sync_handler (arch/arm64/kernel/entry-common.c:899)
+> [  527.570760] el0t_64_sync (arch/arm64/kernel/entry.S:596)
+> [ 527.570772] Code: 1400000c f94002c5 b4000aa5 b9402a60 (f86068a0)
+> All code
+> ========
+>    0: 1400000c b 0x30
+>    4: f94002c5 ldr x5, [x22]
+>    8: b4000aa5 cbz x5, 0x15c
+>    c: b9402a60 ldr w0, [x19, #40]
+>   10:* f86068a0 ldr x0, [x5, x0] <-- trapping instruction
+> 
+> Code starting with the faulting instruction
+> ===========================================
+>    0: f86068a0 ldr x0, [x5, x0]
+> [  527.570778] ---[ end trace 0000000000000000 ]---
+> [  527.570800] ------------[ cut here ]------------
+> [  527.570803] rtmutex deadlock detected
+> [  527.570827] WARNING: kernel/locking/rtmutex.c:1674 at
+> __rt_mutex_slowlock_locked.constprop.0+0x800/0x8e0, CPU#3: mkdir/34254
+> [  527.570841] Modules linked in: brcmfmac rockchip_dfi brcmutil
+> cfg80211 snd_soc_hdmi_codec dw_hdmi_i2s_audio dw_hdmi_cec
+> snd_soc_simple_card snd_soc_audio_graph_card hci_uart
+> snd_soc_rockchip_i2s snd_soc_es8316 snd_soc_spdif_tx
+> snd_soc_simple_card_utils btqca rtc_rk808 rockchipdrm btbcm
+> snd_soc_core dw_hdmi_qp bluetooth snd_compress reset_gpio analogix_dp
+> snd_pcm_dmaengine panfrost hantro_vpu dw_mipi_dsi rfkill rockchip_rga
+> drm_shmem_helper drm_dp_aux_bus snd_pcm gpu_sched dw_hdmi pwrseq_core
+> videobuf2_dma_sg v4l2_vp9 snd_timer drm_display_helper v4l2_h264
+> v4l2_jpeg phy_rockchip_pcie snd v4l2_mem2mem cec videobuf2_dma_contig
+> soundcore videobuf2_memops drm_client_lib videobuf2_v4l2
+> drm_dma_helper videobuf2_common rockchip_saradc drm_kms_helper
+> industrialio_triggered_buffer kfifo_buf rockchip_thermal
+> pcie_rockchip_host coresight_cpu_debug fuse drm backlight
+> [  527.570965] CPU: 3 UID: 0 PID: 34254 Comm: mkdir Tainted: G      D
+>            6.16.0-next-20250801 #1 PREEMPT_RT
+> [  527.570973] Tainted: [D]=DIE
+> [  527.570976] Hardware name: Radxa ROCK Pi 4B (DT)
+> [  527.570979] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> [  527.570985] pc : __rt_mutex_slowlock_locked.constprop.0
+> (kernel/locking/rtmutex.c:1674 (discriminator 1)
+> kernel/locking/rtmutex.c:1734 (discriminator 1)
+> kernel/locking/rtmutex.c:1760 (discriminator 1))
+> [  527.570993] lr : __rt_mutex_slowlock_locked.constprop.0
+> (kernel/locking/rtmutex.c:1674 (discriminator 1)
+> kernel/locking/rtmutex.c:1734 (discriminator 1)
+> kernel/locking/rtmutex.c:1760 (discriminator 1))
+> [  527.571001] sp : ffff80008e24b2e0
+> [  527.571004] x29: ffff80008e24b370 x28: ffff000007c1a600 x27: ffff000007c1a601
+> [  527.571013] x26: ffff80008e24b318 x25: ffff000007c1a600 x24: 00000000ffffffdd
+> [  527.571023] x23: 00000000ffffffdd x22: 0000000000000001 x21: ffff000007c1a601
+> [  527.571032] x20: ffff80008e24b2f0 x19: ffff00001d756e30 x18: 0000000000000000
+> [  527.571041] x17: 65676e6172207373 x16: 6572646461206c65 x15: 0000000000000000
+> [  527.571050] x14: 0000000000000020 x13: 0a64657463657465 x12: 64206b636f6c6461
+> [  527.571059] x11: 656820747563205b x10: ffff800082adac08 x9 : ffff80008015020c
+> [  527.571068] x8 : ffff80008e24af08 x7 : 0000000000000001 x6 : ffff800082a5e000
+> [  527.571077] x5 : ffff000007c1a600 x4 : 0000000000000000 x3 : 0000000000000027
+> [  527.571086] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff000007c1a600
+> [  527.571094] Call trace:
+> [  527.571097] __rt_mutex_slowlock_locked.constprop.0
+> (kernel/locking/rtmutex.c:1674 (discriminator 1)
+> kernel/locking/rtmutex.c:1734 (discriminator 1)
+> kernel/locking/rtmutex.c:1760 (discriminator 1)) (P)
+> [  527.571107] __rwbase_read_lock (kernel/locking/rwbase_rt.c:114)
+> [  527.571117] down_read (kernel/locking/rwsem.c:1540)
+> [  527.571126] acct_collect (arch/arm64/include/asm/jump_label.h:36
+> include/linux/mmap_lock.h:41 include/linux/mmap_lock.h:454
+> kernel/acct.c:597)
+> [  527.571135] do_exit (kernel/exit.c:932)
+> [  527.571143] make_task_dead
+> (arch/arm64/include/asm/atomic_ll_sc.h:95 (discriminator 2)
+> arch/arm64/include/asm/atomic.h:52 (discriminator 2)
+> include/linux/atomic/atomic-arch-fallback.h:564 (discriminator 2)
+> include/linux/atomic/atomic-arch-fallback.h:1020 (discriminator 2)
+> include/linux/atomic/atomic-instrumented.h:454 (discriminator 2)
+> kernel/exit.c:1049 (discriminator 2))
+> [  527.571150] die (arch/arm64/kernel/traps.c:231)
+> [  527.571157] die_kernel_fault (arch/arm64/mm/fault.c:313)
+> [  527.571167] __do_kernel_fault (arch/arm64/mm/fault.c:375 (discriminator 5))
+> [  527.571177] do_bad_area (arch/arm64/mm/fault.c:482)
+> [  527.571186] do_translation_fault (arch/arm64/mm/fault.c:792)
+> [  527.571195] do_mem_abort (arch/arm64/mm/fault.c:929 (discriminator 1))
+> [  527.571204] el1_abort (arch/arm64/include/asm/daifflags.h:28
+> arch/arm64/kernel/entry-common.c:482)
+> [  527.571210] el1h_64_sync_handler (arch/arm64/kernel/entry-common.c:637)
+> [  527.571218] el1h_64_sync (arch/arm64/kernel/entry.S:591)
+
+The deadlock wouldn't have been triggered if it didn't crash in SLUB, so
+this looks rather irrelevant.
+
+-- 
+Cheers,
+Harry / Hyeonggon
+
+> [  527.571225] kmem_cache_alloc_bulk_noprof (mm/slub.c:5343
+> (discriminator 1) mm/slub.c:5403 (discriminator 1)) (P)
+> [  527.571232] mas_alloc_nodes (lib/maple_tree.c:1278)
+> [  527.571241] mas_node_count_gfp (lib/maple_tree.c:1339)
+> [  527.571251] mas_preallocate (lib/maple_tree.c:5538 (discriminator 1))
+> [  527.571257] __split_vma (mm/vma.c:528 (discriminator 1))
+> [  527.571265] vma_modify (mm/vma.c:1633)
+> [  527.571273] vma_modify_flags (mm/vma.c:1650)
+> [  527.571282] mprotect_fixup (mm/mprotect.c:819)
+> [  527.571290] do_mprotect_pkey (mm/mprotect.c:993)
+> [  527.571299] __arm64_sys_mprotect (mm/mprotect.c:1011)
+> [  527.571308] invoke_syscall (arch/arm64/include/asm/current.h:19
+> arch/arm64/kernel/syscall.c:54)
+> [  527.571314] el0_svc_common.constprop.0
+> (include/linux/thread_info.h:135 (discriminator 2)
+> arch/arm64/kernel/syscall.c:140 (discriminator 2))
+> [  527.571321] do_el0_svc (arch/arm64/kernel/syscall.c:152)
+> [  527.571327] el0_svc (arch/arm64/include/asm/irqflags.h:82
+> (discriminator 1) arch/arm64/include/asm/irqflags.h:123 (discriminator
+> 1) arch/arm64/include/asm/irqflags.h:136 (discriminator 1)
+> arch/arm64/kernel/entry-common.c:169 (discriminator 1)
+> arch/arm64/kernel/entry-common.c:182 (discriminator 1)
+> arch/arm64/kernel/entry-common.c:880 (discriminator 1))
+> [  527.571334] el0t_64_sync_handler (arch/arm64/kernel/entry-common.c:899)
+> [  527.571341] el0t_64_sync (arch/arm64/kernel/entry.S:596)
+> [  527.571349] ---[ end trace 0000000000000000 ]---
+> [  527.571354] ------------[ cut here ]------------
+> [  527.571356] Voluntary context switch within RCU read-side critical section!
+> [  527.571372] WARNING: kernel/rcu/tree_plugin.h:332 at
+> rcu_note_context_switch+0x4ec/0x538, CPU#3: mkdir/34254
+> [  527.571383] Modules linked in: brcmfmac rockchip_dfi brcmutil
+> cfg80211 snd_soc_hdmi_codec dw_hdmi_i2s_audio dw_hdmi_cec
+> snd_soc_simple_card snd_soc_audio_graph_card hci_uart
+> snd_soc_rockchip_i2s snd_soc_es8316 snd_soc_spdif_tx
+> snd_soc_simple_card_utils btqca rtc_rk808 rockchipdrm btbcm
+> snd_soc_core dw_hdmi_qp bluetooth snd_compress reset_gpio analogix_dp
+> snd_pcm_dmaengine panfrost hantro_vpu dw_mipi_dsi rfkill rockchip_rga
+> drm_shmem_helper drm_dp_aux_bus snd_pcm gpu_sched dw_hdmi pwrseq_core
+> videobuf2_dma_sg v4l2_vp9 snd_timer drm_display_helper v4l2_h264
+> v4l2_jpeg phy_rockchip_pcie snd v4l2_mem2mem cec videobuf2_dma_contig
+> soundcore videobuf2_memops drm_client_lib videobuf2_v4l2
+> drm_dma_helper videobuf2_common rockchip_saradc drm_kms_helper
+> industrialio_triggered_buffer kfifo_buf rockchip_thermal
+> pcie_rockchip_host coresight_cpu_debug fuse drm backlight
+> [  527.571503] CPU: 3 UID: 0 PID: 34254 Comm: mkdir Tainted: G      D
+> W           6.16.0-next-20250801 #1 PREEMPT_RT
+> [  527.571512] Tainted: [D]=DIE, [W]=WARN
+> [  527.571514] Hardware name: Radxa ROCK Pi 4B (DT)
+> [  527.571517] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> [  527.571523] pc : rcu_note_context_switch
+> (kernel/rcu/tree_plugin.h:332 (discriminator 1))
+> [  527.571529] lr : rcu_note_context_switch
+> (kernel/rcu/tree_plugin.h:332 (discriminator 1))
+> [  527.571535] sp : ffff80008e24b1e0
+> [  527.571538] x29: ffff80008e24b1e0 x28: ffff000007c1a600 x27: ffff000007c1a601
+> [  527.571548] x26: 0000000000000000 x25: ffff000007c1a600 x24: ffff800082a60368
+> [  527.571557] x23: 0000000000000000 x22: ffff000007c1a600 x21: ffff800083125260
+> [  527.571566] x20: 0000000000000000 x19: ffff0000f7576080 x18: 0000000000000000
+> [  527.571575] x17: 65676e6172207373 x16: 6572646461206c65 x15: 0000000000000000
+> [  527.571583] x14: 0000000000000020 x13: 216e6f6974636573 x12: 206c616369746972
+> [  527.571593] x11: 6320656469732d64 x10: 6165722055435220 x9 : ffff80008015020c
+> [  527.571602] x8 : 6863746977732074 x7 : 7865746e6f632079 x6 : 7261746e756c6f56
+> [  527.571611] x5 : ffff80008317146f x4 : 0000000000000000 x3 : 0000000000000027
+> [  527.571619] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff000007c1a600
+> [  527.571628] Call trace:
+> [  527.571630] rcu_note_context_switch (kernel/rcu/tree_plugin.h:332
+> (discriminator 1)) (P)
+> [  527.571638] __schedule (kernel/sched/core.c:634
+> kernel/sched/sched.h:1519 kernel/sched/sched.h:1841
+> kernel/sched/core.c:6865)
+> [  527.571647] rt_mutex_schedule (kernel/sched/core.c:7044
+> kernel/sched/core.c:7339)
+> [  527.571655] __rt_mutex_slowlock_locked.constprop.0
+> (kernel/locking/rtmutex.c:1676 kernel/locking/rtmutex.c:1734
+> kernel/locking/rtmutex.c:1760)
+> [  527.571665] __rwbase_read_lock (kernel/locking/rwbase_rt.c:114)
+> [  527.571674] down_read (kernel/locking/rwsem.c:1540)
+> [  527.571683] acct_collect (arch/arm64/include/asm/jump_label.h:36
+> include/linux/mmap_lock.h:41 include/linux/mmap_lock.h:454
+> kernel/acct.c:597)
+> [  527.571690] do_exit (kernel/exit.c:932)
+> [  527.571696] make_task_dead
+> (arch/arm64/include/asm/atomic_ll_sc.h:95 (discriminator 2)
+> arch/arm64/include/asm/atomic.h:52 (discriminator 2)
+> include/linux/atomic/atomic-arch-fallback.h:564 (discriminator 2)
+> include/linux/atomic/atomic-arch-fallback.h:1020 (discriminator 2)
+> include/linux/atomic/atomic-instrumented.h:454 (discriminator 2)
+> kernel/exit.c:1049 (discriminator 2))
+> [  527.571703] die (arch/arm64/kernel/traps.c:231)
+> [  527.571710] die_kernel_fault (arch/arm64/mm/fault.c:313)
+> [  527.571719] __do_kernel_fault (arch/arm64/mm/fault.c:375 (discriminator 5))
+> [  527.571729] do_bad_area (arch/arm64/mm/fault.c:482)
+> [  527.571738] do_translation_fault (arch/arm64/mm/fault.c:792)
+> [  527.571746] do_mem_abort (arch/arm64/mm/fault.c:929 (discriminator 1))
+> [  527.571755] el1_abort (arch/arm64/include/asm/daifflags.h:28
+> arch/arm64/kernel/entry-common.c:482)
+> [  527.571761] el1h_64_sync_handler (arch/arm64/kernel/entry-common.c:637)
+> [  527.571769] el1h_64_sync (arch/arm64/kernel/entry.S:591)
+> [  527.571775] kmem_cache_alloc_bulk_noprof (mm/slub.c:5343
+> (discriminator 1) mm/slub.c:5403 (discriminator 1)) (P)
+> [  527.571782] mas_alloc_nodes (lib/maple_tree.c:1278)
+> [  527.571792] mas_node_count_gfp (lib/maple_tree.c:1339)
+> [  527.571802] mas_preallocate (lib/maple_tree.c:5538 (discriminator 1))
+> [  527.571808] __split_vma (mm/vma.c:528 (discriminator 1))
+> [  527.571816] vma_modify (mm/vma.c:1633)
+> [  527.571824] vma_modify_flags (mm/vma.c:1650)
+> [  527.571833] mprotect_fixup (mm/mprotect.c:819)
+> [  527.571842] do_mprotect_pkey (mm/mprotect.c:993)
+> [  527.571850] __arm64_sys_mprotect (mm/mprotect.c:1011)
+> [  527.571859] invoke_syscall (arch/arm64/include/asm/current.h:19
+> arch/arm64/kernel/syscall.c:54)
+> [  527.571866] el0_svc_common.constprop.0
+> (include/linux/thread_info.h:135 (discriminator 2)
+> arch/arm64/kernel/syscall.c:140 (discriminator 2))
+> [  527.571872] do_el0_svc (arch/arm64/kernel/syscall.c:152)
+> [  527.571878] el0_svc (arch/arm64/include/asm/irqflags.h:82
+> (discriminator 1) arch/arm64/include/asm/irqflags.h:123 (discriminator
+> 1) arch/arm64/include/asm/irqflags.h:136 (discriminator 1)
+> arch/arm64/kernel/entry-common.c:169 (discriminator 1)
+> arch/arm64/kernel/entry-common.c:182 (discriminator 1)
+> arch/arm64/kernel/entry-common.c:880 (discriminator 1))
+> [  527.571885] el0t_64_sync_handler (arch/arm64/kernel/entry-common.c:899)
+> [  527.571893] el0t_64_sync (arch/arm64/kernel/entry.S:596)
+> [  527.571900] ---[ end trace 0000000000000000 ]---
+> [  540.645451] sched: DL replenish lagged too much
+> 
+> ## Source
+> * Git tree: https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next.git
+> * Git sha: 54efec8782214652b331c50646013f8526570e8d
+> * Git describe: next-20250729
+> * Project details:
+> https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20250729
+> * Architectures: arm64
+> * Toolchains: gcc-13
+> * Kconfigs: Preempt_rt
+> 
+> ## Test
+> * Test log 1: https://qa-reports.linaro.org/api/testruns/29282584/log_file/
+> * Test log 2:https://qa-reports.linaro.org/api/testruns/29337984/log_file/
+> * Test lava log: https://lkft.validation.linaro.org/scheduler/job/8373114#L19186
+> * Test details:
+> https://regressions.linaro.org/lkft/linux-next-master/next-20250729/log-parser-test/exception-rtmutex-deadlock-detected/
+> * Test plan: https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/tests/30XMjtCEi0VzsU1gYZ0a7kcTkLJ
+> * Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/30fq2ElntxgscJ13dnaD7iL5Z1G/
+> * Kernel config:
+> https://storage.tuxsuite.com/public/linaro/lkft/builds/30fq2ElntxgscJ13dnaD7iL5Z1G/config
+> 
+> --
+> Linaro LKFT
+> https://lkft.linaro.org
 
