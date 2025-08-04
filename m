@@ -2,111 +2,87 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0D4C9C87FCB
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 02:48:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 52C22C87FCA
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 03:03:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D9FB6B007B; Sun,  3 Aug 2025 22:48:06 -0400 (EDT)
+	id C20EA6B007B; Sun,  3 Aug 2025 23:03:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 98AE16B0088; Sun,  3 Aug 2025 22:48:06 -0400 (EDT)
+	id BD5216B0088; Sun,  3 Aug 2025 23:03:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A06F6B0089; Sun,  3 Aug 2025 22:48:06 -0400 (EDT)
+	id AE7356B0089; Sun,  3 Aug 2025 23:03:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AB6D6B007B
-	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 22:48:06 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 06693115742
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 02:48:06 +0000 (UTC)
-X-FDA: 83737540572.19.0E524E5
-Received: from fra-out-010.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-010.esa.eu-central-1.outbound.mail-perimeter.amazon.com [63.178.143.178])
-	by imf09.hostedemail.com (Postfix) with ESMTP id C2BB3140003
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 02:48:03 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=OJ1SV3F+;
-	spf=pass (imf09.hostedemail.com: domain of "prvs=304d5a7b7=apanyaki@amazon.com" designates 63.178.143.178 as permitted sender) smtp.mailfrom="prvs=304d5a7b7=apanyaki@amazon.com";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E4936B007B
+	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 23:03:53 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DCB615D9DE
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 03:03:52 +0000 (UTC)
+X-FDA: 83737580304.11.8E97DDE
+Received: from mta21.hihonor.com (mta21.hihonor.com [81.70.160.142])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 49B17180006
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 03:03:49 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=none;
+	spf=pass (imf16.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=zhongjinji@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754275684;
+	s=arc-20220608; t=1754276631;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RKicLz6qk2kkguAEni1vOqzECVIHBfHvbbyhd4kVsDM=;
-	b=J2ke40Y4Nt0UI48V344E0ACG7EpzLsGIGzI6VwQvEB30NQyup3siRwAZoFhdssbeY9r/9t
-	ft/DetkBffHOu5cchZJoOw0SDDL1WpzCTsk2RkOhVlcF+FfdmXCJGMkYKY18V3U/VdLVUk
-	+rzjSgRStlurDtjzHWAJEcqc8jT8YPk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754275684; a=rsa-sha256;
-	cv=none;
-	b=5peG7SVaMUQFY0kqwhWQT9ZvbEwjYlO8FAJt9VQLaiyGbvNlKhfrATnd+nANzDB4D5Rz5F
-	0cVHDiti+Vg2TiKozkAtNtDKBZ1pMbSmM2nAPXtWrTbr+O/La5AgyZ+3tKRDcbDFxjGceJ
-	0zM3ZLp7M7kUNnOxT5qGmBSNs+qFAzE=
+	 in-reply-to:in-reply-to:references:references;
+	bh=EVyIy9ubDHMjLTe8IwGPt0/4tHw3SaDlAbHdWmMDAEs=;
+	b=o62mewJS8K4mazJKCXu1q2qzhDAKb+TJbRjsupkpias1RMIE+0oeI+aib4V0FaUUb9PGdA
+	006iPH7pwjXeRghi77coJy6QY4C7SGtGr0GZjUKXh9v8IMkU/1KZRyUVgHkQDh9ZNu9eYd
+	VzckppXmKSPDJtPn0S7vCHJqjylX/sM=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=OJ1SV3F+;
-	spf=pass (imf09.hostedemail.com: domain of "prvs=304d5a7b7=apanyaki@amazon.com" designates 63.178.143.178 as permitted sender) smtp.mailfrom="prvs=304d5a7b7=apanyaki@amazon.com";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1754275683; x=1785811683;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=RKicLz6qk2kkguAEni1vOqzECVIHBfHvbbyhd4kVsDM=;
-  b=OJ1SV3F+dMH7aOHcep0SDiyRGzONOi4VuOc5TjCA6uBC4DCsvBTVZ9kK
-   zt863fiSDKdl7FaRcp7wGoMer9QrhIzaqOzGNheS+ug/o5lxuIeqXc1Yx
-   uQyZQ3guORQIWZsFn2F5g6w0wtTx/pmBXv+ble6kQH8Sg9OqlokfIuBNn
-   SA9QloCx2a3X/eg965mVoGbFnVqoTovldrKSHkquzJSTnvbBQT/ZOw/3K
-   g5zM8pF3BAcnDD8QL+Sk+B9Os9vUUJj7Bkrq9iKNiz3CBBLqGg3CMNaYv
-   wEfPv3fgnbP/ar4Z5u3N0MMBvoZrCEhCVgMPoivnSYgAaF5BSmAv64Qaa
-   A==;
-X-CSE-ConnectionGUID: cCd3RQGgQoqlNkLrBO2LSg==
-X-CSE-MsgGUID: VlhjKe74QCGXeEHunRLy/A==
-X-IronPort-AV: E=Sophos;i="6.17,258,1747699200"; 
-   d="scan'208";a="414218"
-Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-west-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
-  by internal-fra-out-010.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2025 02:47:53 +0000
-Received: from EX19MTAEUC002.ant.amazon.com [10.0.10.100:10198]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.27.198:2525] with esmtp (Farcaster)
- id df118047-9890-4fac-bbc9-48f9ecc15387; Mon, 4 Aug 2025 02:47:53 +0000 (UTC)
-X-Farcaster-Flow-ID: df118047-9890-4fac-bbc9-48f9ecc15387
-Received: from EX19D026EUB004.ant.amazon.com (10.252.61.64) by
- EX19MTAEUC002.ant.amazon.com (10.252.51.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Mon, 4 Aug 2025 02:47:52 +0000
-Received: from 3c06303d853a (10.187.171.18) by EX19D026EUB004.ant.amazon.com
- (10.252.61.64) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14; Mon, 4 Aug 2025
- 02:47:49 +0000
-Date: Sun, 3 Aug 2025 19:47:41 -0700
-From: Andrew Paniakin <apanyaki@amazon.com>
-To: SeongJae Park <sj@kernel.org>
-CC: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton
-	<akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, Jann Horn
-	<jannh@google.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Michal
- Hocko" <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, Pedro Falcato
-	<pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka
-	<vbabka@suse.cz>, <damon@lists.linux.dev>, <kernel-team@meta.com>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<amazon-linux-kernel@amazon.com>
-Subject: Re: [RFC v2 0/7] mm/damon: extend for page faults reporting based
- access monitoring
-Message-ID: <aJAfTUh-49pYuhbg@3c06303d853a>
-References: <20250727201813.53858-1-sj@kernel.org>
+	imf16.hostedemail.com;
+	dkim=none;
+	spf=pass (imf16.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=zhongjinji@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754276631; a=rsa-sha256;
+	cv=none;
+	b=S2P2F0a7d9S/57veV/Uf6dRk3tssG+UlwLwYgKFkuEUFiNijLq2nkMBKDhYaEj2ZeO+kyF
+	nOLiNDY84ZTd5M2sLkFqGmdoYuI2cSzQ+hVN3NDve/m8Bgvm735ft4joPuwoK8oenZ4kOM
+	ftJkPwF4fLBzwVR72MT79LVozMoW270=
+Received: from w001.hihonor.com (unknown [10.68.25.235])
+	by mta21.hihonor.com (SkyGuard) with ESMTPS id 4bwLsn1NV6zYkxhP;
+	Mon,  4 Aug 2025 11:01:01 +0800 (CST)
+Received: from a018.hihonor.com (10.68.17.250) by w001.hihonor.com
+ (10.68.25.235) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 4 Aug
+ 2025 11:03:46 +0800
+Received: from localhost.localdomain (10.144.20.219) by a018.hihonor.com
+ (10.68.17.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 4 Aug
+ 2025 11:03:45 +0800
+From: <zhongjinji@honor.com>
+To: <linux-mm@kvack.org>
+CC: <akpm@linux-foundation.org>, <mhocko@suse.com>, <rientjes@google.com>,
+	<shakeel.butt@linux.dev>, <npache@redhat.com>,
+	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
+	<peterz@infradead.org>, <dvhart@infradead.org>, <dave@stgolabs.net>,
+	<andrealmeid@igalia.com>, <liulu.liu@honor.com>, <feng.han@honor.com>
+Subject: [PATCH v3 2/2] mm/oom_kill: Only delay OOM reaper for processes using robust futex
+Date: Mon, 4 Aug 2025 11:03:41 +0800
+Message-ID: <20250804030341.18619-2-zhongjinji@honor.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20250804030341.18619-1-zhongjinji@honor.com>
+References: <20250804030341.18619-1-zhongjinji@honor.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20250727201813.53858-1-sj@kernel.org>
-X-Originating-IP: [10.187.171.18]
-X-ClientProxiedBy: EX19D039UWA003.ant.amazon.com (10.13.139.49) To
- EX19D026EUB004.ant.amazon.com (10.252.61.64)
-X-Rspamd-Queue-Id: C2BB3140003
+Content-Type: text/plain
+X-Originating-IP: [10.144.20.219]
+X-ClientProxiedBy: w010.hihonor.com (10.68.28.113) To a018.hihonor.com
+ (10.68.17.250)
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: wwexdfiyuj4738xr5asuqkh7d8c8d1nb
-X-HE-Tag: 1754275683-221862
-X-HE-Meta: U2FsdGVkX1/tLMgxq0kJeToGiaNh/CXnGf/1J5wM1wJbl/iWntTX8pAs8KZellC6V037OetdHrCa4MMubVCoAOYrj+geXneBe8SpQoKvqoU8PGejqskMF6I/s438GDd+K5i8zktqJn96LgyMGiao410Zz5RzWvRFiz5W8s5XpkWpYGNspS6/M6iD9emXC6vP6VkpgOe0TzPcINTw0jbIzxwN/434HF3Nbxd1LJ071bxFjI49nJv1076LGsJddTVPiQtiO8Nt7tBM3Ou0V42tjYhRCzF86cGnymMujpGFfDmWzX/uWFKueOiOqMl49xLKqA0aOYS5W46K2yJB5VSHhoOR4DUPOdw97qwVklSUPxu6fm4idw4j0N1nJRdiG21IajjYqaKn5Nbeh7QpgfS4h+Ofk7dM2Xt0DI2eYF9+rHejUriOUpwoTo19OhEPvO4bAWI0p6U1GHUM3un2ecdUF/PsI5ktdervfsNc8JDbJA+kh122KcQxK0nzsamUAo0c9E2BP1BbOWpYOM29HVgww9zwz5hwXr3X6NzoVuMotAFf/5zBYdfuN0VpJGbupHaEtLWpiGSYH/OOIyJKErKntLmFBPI4OKNsTJEGZxP6qhZE7kJyzosCq/CuxOCBPe0Up+kWzRQOKLddPuu0Toa3sTR/6IcGJyN1VRY1tGrC1S6g3lmVdV2V37XaV1oOgNDTtQchTdL8ETt056ec065Nm/EiTrOo+E9olHWGZHbZqDlEQdQMPF4snn6Mdm04g/egDezJ+/zV3fWQCoWKTfaihy7EWMMy/aRu7yLu01xAra5KWUm7W0FfOQtT6seatJaBkZYxRIon28JuTkWtMqnaFJ2K/DQxHC3ErBgvIPy8254pH7ZH7Wwo7zeEhU1k+JS2zl9WoxM3R0Qwo7RZw4RvW632jLpqDD8x5RdnEhHbD7D+XCzPX+oluQYe1EuVmrX+aAFWOU+Grnc3zCoPbDk
- CC5ILFqb
- l/Buxfx8Aor5+HNH2DYavw3VsJ0DgYBENkmu3cU8SnYt0eLueNOLe1FzAWIy94CsQ0/IoOdZHRr8MFXFcMXN+Qr/tVZpQ8nKPEtkXi2uniq6j0ZMIVqYaG1ElCBdHkxAO4nPhxbjEfIC4v851Qh2lsfSbUKWqPkMU7m6ilFoXt3PlRkZY6eIZtwq5zhjav49y9rBm1Po8w3A8zjBbIex4XcJpJdvnAEAqSFyk7rmVBLOyLUF+MoIyzBalhG1rYzqtvtcGETqot2HJWYJdqLU3Tp55kvug5EGmX96E6JQkc+kQICxw8kyaBwAlYte6QGxQjW+7R+gjbwYdnLXn4XHC+xt9ScWQ662jlXKBzoSVGLAEOEuXv7TQGpVM8Cdlwu3OpsbHjjs9S9H1LnRQN9ZOtP6FGq3oikqCuWdcpqe1xmsXHgKhFl8XBOp9kYA5yIwb27cEUxbPlHBZj3icef/jYn72HpWgvImNIOVrJ+/R+ProN6oyq2nqI6lgBVRj4NYSZUrsCSMuOOPQvpGN/SKMotTducBBJdkqxz5kACD3Ynz+2mGYhmgS5KD6izCC1HbwksWghI9kVwbQsXXY3BX0uD2oNX2PaG0Yl5yAC1y4EmH9k29cTlVkAAZ08WxMaxaFjcQnYWNw92p//9bt2DlAoVETF08G0FfTfYZrnexPSzHlB5v8NHz2JdIbPbli/1GGHZbsAmc1UHCUoqCz4PKNnYswJQ==
+X-Rspamd-Queue-Id: 49B17180006
+X-Rspamd-Server: rspam06
+X-Stat-Signature: tgjuw33rgu88skznfp76bb5oo3m116ky
+X-HE-Tag: 1754276629-518038
+X-HE-Meta: U2FsdGVkX1/fwq3WjfW5VvaryZ2L+TiEZ8cJRJCModaNTCz3sCRhP03s0jvRj05LyizQwTyXK1eykznrhe1IBW5H4h1NQ5a1FofcfL0kcJDIfDYADcWNO5O0VlyelOk4iVuw0pNJ6RIcBCPktzvaU9tdtLjCcDKHKBkGUg2wP5dTheCDqohCrbZ3hQbkVXsYTgIPlcxprVZkbn4jq26I49D/1pe6fDTYjuwVo8/0xpg7o1dPPtX7bkJdXb3SueVzj+k3Wh6dorVYjkZWzcS+bea4iDpVKKmWWKyYCxfYGK52T9BNcO27TNyF09hdiVW3uZ2DVaOn1P0p+xiD0vp3dpVNWiJlD0hZ/Kstk+GNKrozh7ohZsyqbTRgdMNgXy/W6dWrXVafUMlVlipuUNjRhXd6rD3Bea9D1eqytJqQfuDhvWNR3+wKKM6xbxzB6ISVkhxsRx43QFsABLcGw3lQChd+HxQXDd3IQBsScexL4kn6fAKTZ1P9kqYmINpq671JarAT0Sxa2ENnVhs2xjL+9h14h/3amMUlvOLyZ3IasMqEksbayIbS38Q7YfZBTGh7pZnPQJUa0FrLdTP8mJEsCR4Lzj28Mlj5IdIyajimAUlY1C4G9WjVWfvI7C+gxyOZyiYiAB9lPlAZejp/9h8TeWmAVFSwPWenUw/A+JfYMWzvWBBZ4eEScx1aFK2k5+LMk2xycc1WYMOWMyt+9ols6u51FexMKvWkMy3rgtz8ngmfdnz5FBJQv7TlZNf0jEAY1N5Zul9U+QDc260jj3NCoS20o152gISGT4WDeXkghdVKHxLrBx54lQQ/YDmbSECsPSDSV29skma6LSEMFT6GrM47lZ3nd1JbpkFohvRNrtcTC+IUV3vKWS7xr1M9kOc2OrN4XsoL9E1mornawkwdNJgt5sxd4Hhfi1g9CmlD4eKmP6ogqmpuRTeVyFh0fNmrguN4cvH5fFe2F8wNaj4
+ XAwRH8+w
+ tFI5BQw7m4RNEA/w8PaX468IjYthcZCQzkap+78gDW9mxZjCNxjsg5ILoqzY21vK7hGN8DfvI5WM9AwgDHfkybPz2q/fXmomvF6nKMcOnCZDHmSajNZ0Lb36BuT9ViRoBNs0+sKOMABzFyOoKRltKYdzz6U0f7dJwNH/af6p8v4itroFjMVpLHHNiHSwCBiG6J0mRbdG0INWdK5zHwQ8NJB+Bpw0gzcwN45h3GXmHanXCAdPa8N2B/uD2uoNvXpAxdDCFB7DMyiBGBo6PO+x28uVa1zRLQ0bQvKTDYNvMX7zyet4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,15 +91,191 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 27/07/2025, SeongJae Park wrote:
-> TL; DR: Extend DAMON interface between core and operation sets for
-> operation set driven report-based monitoring such as per-CPU and
-> write-only access monitoring.  Further introduce an example physical
-> address space monitoring operation set that uses page faults as the
-> source of the information.
+From: zhongjinji <zhongjinji@honor.com>
 
-Thank you very much for starting this update. RFC mentions write-only
-monitoring, this feature particularly would be really helpful in some of
-our use cases such as lightweight live migration target selection, so we
-are looking forward to collaborate in development and testing activity!
+After merging the patch
+https://lore.kernel.org/all/20220414144042.677008-1-npache@redhat.com/T/#u,
+the OOM reaper runs less frequently because many processes exit within 2 seconds.
+
+However, when a process is killed, timely handling by the OOM reaper allows
+its memory to be freed faster.
+
+Since relatively few processes use robust futex, delaying the OOM reaper for
+all processes is undesirable, as many killed processes cannot release memory
+more quickly.
+
+This patch modifies the behavior so that only processes using robust futex
+are delayed by the OOM reaper, allowing the OOM reaper to handle more
+processes in a timely manner.
+
+Signed-off-by: zhongjinji <zhongjinji@honor.com>
+---
+ mm/oom_kill.c | 41 +++++++++++++++++++++++++++++++----------
+ 1 file changed, 31 insertions(+), 10 deletions(-)
+
+diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+index 25923cfec9c6..c558ac93ae7d 100644
+--- a/mm/oom_kill.c
++++ b/mm/oom_kill.c
+@@ -30,6 +30,7 @@
+ #include <linux/syscalls.h>
+ #include <linux/timex.h>
+ #include <linux/jiffies.h>
++#include <linux/futex.h>
+ #include <linux/cpuset.h>
+ #include <linux/export.h>
+ #include <linux/notifier.h>
+@@ -692,7 +693,7 @@ static void wake_oom_reaper(struct timer_list *timer)
+  * before the exit path is able to wake the futex waiters.
+  */
+ #define OOM_REAPER_DELAY (2*HZ)
+-static void queue_oom_reaper(struct task_struct *tsk)
++static void queue_oom_reaper(struct task_struct *tsk, bool delay)
+ {
+ 	/* mm is already queued? */
+ 	if (test_and_set_bit(MMF_OOM_REAP_QUEUED, &tsk->signal->oom_mm->flags))
+@@ -700,7 +701,7 @@ static void queue_oom_reaper(struct task_struct *tsk)
+ 
+ 	get_task_struct(tsk);
+ 	timer_setup(&tsk->oom_reaper_timer, wake_oom_reaper, 0);
+-	tsk->oom_reaper_timer.expires = jiffies + OOM_REAPER_DELAY;
++	tsk->oom_reaper_timer.expires = jiffies + (delay ? OOM_REAPER_DELAY : 0);
+ 	add_timer(&tsk->oom_reaper_timer);
+ }
+ 
+@@ -742,7 +743,7 @@ static int __init oom_init(void)
+ }
+ subsys_initcall(oom_init)
+ #else
+-static inline void queue_oom_reaper(struct task_struct *tsk)
++static inline void queue_oom_reaper(struct task_struct *tsk, bool delay)
+ {
+ }
+ #endif /* CONFIG_MMU */
+@@ -871,11 +872,12 @@ static inline bool __task_will_free_mem(struct task_struct *task)
+  * Caller has to make sure that task->mm is stable (hold task_lock or
+  * it operates on the current).
+  */
+-static bool task_will_free_mem(struct task_struct *task)
++static bool task_will_free_mem(struct task_struct *task, bool *delay_reap)
+ {
+ 	struct mm_struct *mm = task->mm;
+ 	struct task_struct *p;
+ 	bool ret = true;
++	bool has_robust = !delay_reap;
+ 
+ 	/*
+ 	 * Skip tasks without mm because it might have passed its exit_mm and
+@@ -888,6 +890,15 @@ static bool task_will_free_mem(struct task_struct *task)
+ 	if (!__task_will_free_mem(task))
+ 		return false;
+ 
++	/*
++	 * Check if a process is using robust futexes. If so, delay its handling by the
++	 * OOM reaper. The reason is that if the owner of a robust futex lock is killed
++	 * while waiters are still alive, the OOM reaper might free the robust futex
++	 * resources before futex_cleanup runs, causing the waiters to wait indefinitely.
++	 */
++	if (!has_robust)
++		has_robust = check_robust_futex_rcu(task);
++
+ 	/*
+ 	 * This task has already been drained by the oom reaper so there are
+ 	 * only small chances it will free some more
+@@ -912,8 +923,12 @@ static bool task_will_free_mem(struct task_struct *task)
+ 		ret = __task_will_free_mem(p);
+ 		if (!ret)
+ 			break;
++		if (!has_robust)
++			has_robust = check_robust_futex(p);
+ 	}
+ 	rcu_read_unlock();
++	if (delay_reap)
++		*delay_reap = has_robust;
+ 
+ 	return ret;
+ }
+@@ -923,6 +938,7 @@ static void __oom_kill_process(struct task_struct *victim, const char *message)
+ 	struct task_struct *p;
+ 	struct mm_struct *mm;
+ 	bool can_oom_reap = true;
++	bool delay_reap;
+ 
+ 	p = find_lock_task_mm(victim);
+ 	if (!p) {
+@@ -950,6 +966,7 @@ static void __oom_kill_process(struct task_struct *victim, const char *message)
+ 	 * reserves from the user space under its control.
+ 	 */
+ 	do_send_sig_info(SIGKILL, SEND_SIG_PRIV, victim, PIDTYPE_TGID);
++	delay_reap = check_robust_futex_rcu(victim);
+ 	mark_oom_victim(victim);
+ 	pr_err("%s: Killed process %d (%s) total-vm:%lukB, anon-rss:%lukB, file-rss:%lukB, shmem-rss:%lukB, UID:%u pgtables:%lukB oom_score_adj:%hd\n",
+ 		message, task_pid_nr(victim), victim->comm, K(mm->total_vm),
+@@ -990,11 +1007,13 @@ static void __oom_kill_process(struct task_struct *victim, const char *message)
+ 		if (unlikely(p->flags & PF_KTHREAD))
+ 			continue;
+ 		do_send_sig_info(SIGKILL, SEND_SIG_PRIV, p, PIDTYPE_TGID);
++		if (!delay_reap)
++			delay_reap = check_robust_futex(p);
+ 	}
+ 	rcu_read_unlock();
+ 
+ 	if (can_oom_reap)
+-		queue_oom_reaper(victim);
++		queue_oom_reaper(victim, delay_reap);
+ 
+ 	mmdrop(mm);
+ 	put_task_struct(victim);
+@@ -1020,6 +1039,7 @@ static void oom_kill_process(struct oom_control *oc, const char *message)
+ 	struct mem_cgroup *oom_group;
+ 	static DEFINE_RATELIMIT_STATE(oom_rs, DEFAULT_RATELIMIT_INTERVAL,
+ 					      DEFAULT_RATELIMIT_BURST);
++	bool delay_reap = false;
+ 
+ 	/*
+ 	 * If the task is already exiting, don't alarm the sysadmin or kill
+@@ -1027,9 +1047,9 @@ static void oom_kill_process(struct oom_control *oc, const char *message)
+ 	 * so it can die quickly
+ 	 */
+ 	task_lock(victim);
+-	if (task_will_free_mem(victim)) {
++	if (task_will_free_mem(victim, &delay_reap)) {
+ 		mark_oom_victim(victim);
+-		queue_oom_reaper(victim);
++		queue_oom_reaper(victim, delay_reap);
+ 		task_unlock(victim);
+ 		put_task_struct(victim);
+ 		return;
+@@ -1112,6 +1132,7 @@ EXPORT_SYMBOL_GPL(unregister_oom_notifier);
+ bool out_of_memory(struct oom_control *oc)
+ {
+ 	unsigned long freed = 0;
++	bool delay_reap = false;
+ 
+ 	if (oom_killer_disabled)
+ 		return false;
+@@ -1128,9 +1149,9 @@ bool out_of_memory(struct oom_control *oc)
+ 	 * select it.  The goal is to allow it to allocate so that it may
+ 	 * quickly exit and free its memory.
+ 	 */
+-	if (task_will_free_mem(current)) {
++	if (task_will_free_mem(current, &delay_reap)) {
+ 		mark_oom_victim(current);
+-		queue_oom_reaper(current);
++		queue_oom_reaper(current, delay_reap);
+ 		return true;
+ 	}
+ 
+@@ -1231,7 +1252,7 @@ SYSCALL_DEFINE2(process_mrelease, int, pidfd, unsigned int, flags)
+ 	mm = p->mm;
+ 	mmgrab(mm);
+ 
+-	if (task_will_free_mem(p))
++	if (task_will_free_mem(p, NULL))
+ 		reap = true;
+ 	else {
+ 		/* Error only if the work has not been done already */
+-- 
+2.17.1
+
 
