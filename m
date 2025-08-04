@@ -2,103 +2,100 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D57BC87FCF
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 12:34:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 32622C87FCF
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 12:39:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B34468E0002; Mon,  4 Aug 2025 08:34:17 -0400 (EDT)
+	id C2BD98E0002; Mon,  4 Aug 2025 08:39:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABDCD8E0001; Mon,  4 Aug 2025 08:34:17 -0400 (EDT)
+	id C03228E0001; Mon,  4 Aug 2025 08:39:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95E858E0002; Mon,  4 Aug 2025 08:34:17 -0400 (EDT)
+	id B3FDC8E0002; Mon,  4 Aug 2025 08:39:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F5BD8E0001
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 08:34:17 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4D79280554
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:34:17 +0000 (UTC)
-X-FDA: 83739017754.15.CD74852
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 6543C1A0016
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:34:15 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	spf=pass (imf19.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=breno.debian@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 9FAFB8E0001
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 08:39:47 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4740080567
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:39:47 +0000 (UTC)
+X-FDA: 83739031614.01.D4D4D38
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 5F265C000B
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:39:43 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	spf=pass (imf10.hostedemail.com: domain of liqiang01@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=liqiang01@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754310855;
+	s=arc-20220608; t=1754311184;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fcJzP/9/e6F+zsAx2xJXJXbGjsmtrULT3/IuUM37nhI=;
-	b=UAlouFdA8eFAUACBgO+VX7fT9SKCf6XeHOoqS2lINxSFrXsAWnNLwxO8Qm+96oLP19pM2q
-	qLBU68pnA2FbK8mzvXM7t/RnmnZeouxxALvT9Onevw1wrj6VPt8M/EVGsTVcRAzA5+7ELX
-	l9qKbb74fLvy1fYdZYnrTV9/jhmidX4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754310855; a=rsa-sha256;
-	cv=none;
-	b=fllLykWLt62nCX3vKRKc5lssW8lj4AR6umqtWDb1rAfFcCyOWyGAm7ZuT8YoCtt4uQ7B2C
-	Vyn/LF3wwz7Lp7Px8dAgv/VBx/s14dcy7akFcd+BpQfPiONJpiiPH1SsC82pb3K5N4OzWX
-	CI14UYLyT8EH1f3YIR3SeF+munvzRYU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=LyKoAUEsBIIMJuLtEmOBnSTN4Ih72cAcSdJgrrV02GY=;
+	b=QMken57rP2j5+esA393fRmkE38HUHlbv+wX30v+jSd9s1MHwY7B8pwGsUIw0/GKsHWPzfY
+	8Ea1QJCvbpoTWzRqmK/0ms9Gm0sCGQiNNG4mHG88iBltoDnpo/Xqm9gtD00aq3gameb617
+	Pn8n99P/A5HGMXIYNZAPmqAHOZsnpbo=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
+	imf10.hostedemail.com;
 	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=breno.debian@gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of liqiang01@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=liqiang01@kylinos.cn;
 	dmarc=none
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-af94e75445dso300906466b.0
-        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 05:34:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754310854; x=1754915654;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fcJzP/9/e6F+zsAx2xJXJXbGjsmtrULT3/IuUM37nhI=;
-        b=iA7YGJM/4d/XQE4vCeMHfGMrtSJvZg640rzDdYTS95gKXJZahInjsJEe0GnBXZq6S6
-         Qz+yFmLZbrk8RrY+VJBbmR3J7VCMSbFmvkIZiZZtDbgbWohEfoccyjrh07AgHN3ReAWZ
-         AKDrX9uviAEcqrwFHPvV1YgXGn4B6nrMFIn/jJsmBMM7Ax5BCqtwO3qJrbdV2aqkrai0
-         13DCw44fuOY6afa7kAJJLGxWX14+pelIx6IXMoXqGxg1GXoHgtrJ2GJb7D9vvVREpN+3
-         Qu52sLI1l9aIEM3w/g9BPdk2nhAWo0yEm6Td6Mq4NkufwVDA1m9RpR94n+7hVGKdu/Uf
-         ZQEw==
-X-Forwarded-Encrypted: i=1; AJvYcCXSDqFzI7IWLvIvW0kHNnGVjmwLR8hZ2cIkknJMqYaI/F8kHmbR+VfF9PagWwUkR2QML1vqlL6pKA==@kvack.org
-X-Gm-Message-State: AOJu0YzP5Kxgjg34Q/D0zFrLuZhbll3Pbd2HxrEWdZuWELohkYecdwIi
-	BykiHPGCWtV8hzXFab3byjUZziUQIRP5PYhiHCbR80k8o6yRzqpOUXe1
-X-Gm-Gg: ASbGncs58Rk8C0OLBcNnmqxCCdP7sJGEuPZ2X+TFXS5G3nBGsjYJAMaWPdgH3giGlvf
-	whyPv98DhpHMHF8O9mjpaHY6rtJE5mLpXNBmXhpwcCHZnopZxHN0higHqOIT3Jfip1xwdZIXEJ4
-	Wd4U7PdIc3wbCkUlOqviN0KPrf/PO/CObiMQdW4xYaLrpggtYbbpqj+/7cIpSrDoGukz7Zv/j5N
-	U+tNplYIDZfaDpLAXkr9ZdsZ7F192bVj2gvvj8AGLmnnnu1Z0qsN8abDiyqDYEistw/VFRAPkoz
-	rp1fEUg0PLctTYW9iBgi1J6oULueks3ZSh+FlhsKnlETuRntNKmOeQvBgVse9Wf29JxvM4Vk3Af
-	HeHzL61wOJ3Xdmg==
-X-Google-Smtp-Source: AGHT+IECUNouT2U9h5TI6BInd7LsnZbMx7FCXQ9fV1tWe0f3xyBoO4sFI73N95UIyrcsouvL8Lh1TA==
-X-Received: by 2002:a17:907:2da5:b0:af9:38ed:5b37 with SMTP id a640c23a62f3a-af93ff9ffa0mr898859366b.6.1754310853621;
-        Mon, 04 Aug 2025 05:34:13 -0700 (PDT)
-Received: from gmail.com ([2a03:2880:30ff:73::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a1e833dsm717785566b.64.2025.08.04.05.34.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Aug 2025 05:34:13 -0700 (PDT)
-Date: Mon, 4 Aug 2025 05:34:10 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Waiman Long <llong@redhat.com>, Gu Bowen <gubowen5@huawei.com>, stable@vger.kernel.org, 
-	linux-mm@kvack.org, Lu Jialin <lujialin4@huawei.com>
-Subject: Re: [PATCH] mm: Fix possible deadlock in console_trylock_spinning
-Message-ID: <o2gpvdtxqrdfrsbayorvzvjqcreb45puojpgfye7dimbuuvbdt@gxquukahrxo7>
-References: <20250730094914.566582-1-gubowen5@huawei.com>
- <20250801153303.cee42dcfc94c63fb5026bba0@linux-foundation.org>
- <5ca375cd-4a20-4807-b897-68b289626550@redhat.com>
- <20250801205323.70c2fabe5f64d2fb7c64fd94@linux-foundation.org>
- <aJCir5Wh362XzLSx@arm.com>
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754311184; a=rsa-sha256;
+	cv=none;
+	b=PLKyDxyNQ4Dto1uvy6uUrZi8pgRjXtsD1SgkN7giYC4E4y+B0FckXfBXRitSgFxvUdRpRB
+	3/Hip2aYo2h3Co6okxpdBEgJHcf1lwybY1AcAGtIMk7aKqJAMhq8pcUf6OePeKJSeC20+8
+	QYjNn2X5K23K6Evl99c5gb5Ye1359Ic=
+X-UUID: 1313378c713011f0b29709d653e92f7d-20250804
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:cde1d874-73fe-4e09-b3f8-ce7c60d1ae2a,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:5
+X-CID-INFO: VERSION:1.1.45,REQID:cde1d874-73fe-4e09-b3f8-ce7c60d1ae2a,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:5
+X-CID-META: VersionHash:6493067,CLOUDID:468911c6df3b77ec9f02fa5e36d336c3,BulkI
+	D:250804194720VBS1UNX1,BulkQuantity:1,Recheck:0,SF:19|24|38|44|66|72|78|10
+	2,TC:nil,Content:0|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:40,QS:nil,BE
+	C:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI
+X-UUID: 1313378c713011f0b29709d653e92f7d-20250804
+Received: from mail.kylinos.cn [(39.156.73.10)] by mailgw.kylinos.cn
+	(envelope-from <liqiang01@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1288974341; Mon, 04 Aug 2025 20:39:34 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id A82B5E008FB3;
+	Mon,  4 Aug 2025 20:39:28 +0800 (CST)
+X-ns-mid: postfix-6890AA00-5248871
+Received: from localhost.localdomain (unknown [10.42.12.14])
+	by mail.kylinos.cn (NSMail) with ESMTPA id A6631E008FAC;
+	Mon,  4 Aug 2025 20:39:26 +0800 (CST)
+From: Li Qiang <liqiang01@kylinos.cn>
+To: akpm@linux-foundation.org,
+	david@redhat.com
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	Li Qiang <liqiang01@kylinos.cn>
+Subject: [PATCH] mm: memory: Force-inline PTE/PMD zapping functions for performance
+Date: Mon,  4 Aug 2025 20:39:23 +0800
+Message-Id: <20250804123923.296230-1-liqiang01@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aJCir5Wh362XzLSx@arm.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 6543C1A0016
-X-Stat-Signature: shao9qsy5znsuz4pqp7rqppegcnicmn5
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1754310855-933093
-X-HE-Meta: U2FsdGVkX1/GItMGe+JRCwS3zj4ckkEbVWYJFNjoKPk0FI6D83c80idWXsaEWmPFa2m9ByV+4BwN0sYIzwWdOh1HvM6zez/dS1N6/GHedU7opEsgh+AmXDgsiGJOhVLD9/dnMBzlIMJ8WK8U9rv4UB3B16QUm9OJ8Gc1WzWPk0tUf88qoJIGgoVb9ZSQnIBYmqhHpkorHT/hEyAbZI57HJaqKXV/hnddL7sx9+LAM4yCt7s4sAn/BYHcc6FHuu4rhyw/wjjLXwFa5dLAkUM01/O6TjXfQNE4XnJjjAp+0oxAnK6wbkbDjeZF7FXTnNyHt9KPfw8Dq4g5uBhl3VPxAY0y0gmGQcO7mYu5SGdSzK0RV4onQXHT1uqLbCdfSgCuKZsjp6BtUuKeegn4uhIChQK3QSxMu0+KOCH2Rs0pnkWv/x6eWXxgfVCVq1FtbaY524bub/xm7QPr8mEH1qkhR4YjHkC7YzWOuyvawzocA3EyiaLZ8u1pVovvwRu95cEerxRWbFI+j30cR4THmKKcI2ezcQmE1iA/kJiBG/A7mLQRTtZAiMf+VZqynbjSn2SsVkbOyTZyiEcpcnLcZ9ndVbGVKCg3OJHE1ShuoRxniPS6ejaGCbChZuR4nRIr7QPe/Hs5O+MDBO7/ZxGJ4diA0fCpzcGVubqXbnkh0BDv/hF1rELdn8HHRPX1T832QNUUGuk9nNNixVW+mkRjxVIPnkv6Im7DS/aFp8wxohA28CiGhNLIZ4voWTiHBrhgXN0fQ6M48fGEP9+elPMATwB0MwN7EyOGmxfkPeri0W/B2hYIIwIqPlVUddr7KbQujJTMHl58mdI/iQvhZASJziaDaQBeMt2QuNfZnltkwL5lF9ehMa/mZrQ3qSsvWedCDwfzDlABeW3imuQDO1c5YD3THA6/eyo3VV3/Y3hF6E7ml3e5I1yRhI1yEQsIgGlYpc0r+BdwrFGdDnGRK6AyA0r
- ikx5wBEg
- cLNu3GvXvniREqknb3hmGbHU5z9RU4I4TAW65uAIsd6CJt4kPGoOiY2um9aGdOluUFokQEd84+WTFgg4YLs8+hbBYIMGQWb5wwd6WBIvdwhFPB/eyNDwJTh8jh12jZPXYT6nfFYq9sYU2l/9gIPAOUpQw0AlXmIRYjN4hN894MXgkYyqMXeHRFnGDlhG2imhOz8X3TNY8wKEUmEWy1owIjQZrFRT4SBMMSFOsklQ3ABXEIx2L/f8Fjhc37Vpf1G9aO05kzfE2zmf8XybPMnrUZNB/+IFl6RIQhCAk9rSU7IBJyULwmiPx2i/VrgI7CNZ0qF15srU7ZGtK8/gPdAwzhfN45j7j43ZLWkgWtJ1sJveU7XmQSzkrvrw2IJa6koHooY3VMIwGelqtH+7br9HamJLZUhnnLm3eZQ6KSO3dhGyn9cklULK6PxM6c98QvzILV/0YtbrK6RCGLDg=
+X-Rspamd-Queue-Id: 5F265C000B
+X-Rspamd-Server: rspam06
+X-Stat-Signature: qefbgmxjjeiqrsma1nmma8oqb381moyd
+X-HE-Tag: 1754311183-946254
+X-HE-Meta: U2FsdGVkX1/RlpelR33YqaiijVXQMnVIpB676T1ni0Y4zbbFw3wm5c5VJ8SYruvKeiP+pJX63+KcNHr8GXw6MftoCHzwgG1D4kgQN4RithTLX0V5tQldQz1SVCeclZW33BWNqjn6fpcud3jEmqOzwmHMZb6AacC/JA95M6UJZeI0KkkI5J6kp029ylbk26q8twFTC4C5IGF+9Zx9sNEQSKsGkTosnkx8sFRSncltgJatebkU96WrbTjW3+vKrBSe8raXwyZzBmxGHRVmzafW/mIwJyU5o9x+7AcXKHNMugHt9viHLKwj/xb6TtGLMciAhCopZLXkdiOaBicNgzZ9ZU9AtCsdhxkFkttvnZOhkFFkI7IxxlxI7Zf6B7RtbuDePpLD7JajwC2QktPjqxXK39pYxfelTfS8If5PyvUUx53kVM90bDV+CVMCWd5TQ5vverOGs7d/SHf8ZXRT+MQXbolmz26IfDSMPMDLez3IhR4SDDi1vH0u2Aj4uwiR6od1fcDxB27hnA7Sow7D0+zblVm2sJtJms4hPfHDKX8YZXii/nMFXSdQKA7iot91nW46Q06h/rVMoRFmpUh+OdNi/ZzOtBFy4qj8EtPhLKaPbKGoCcokbGmSk2RPSL7Nmam0iYh91gdUDRYLJ+mLJbiKsa6ie6iqY3ejrVxwETrzmQVycY4fQMOOZZLMnq0gGqkXSdX+96/cl1TZ3BJlh1IuLCPnrdSeRJzrhmbs3US2RC5HgIpBw0JuBnT8yUkeAk6u7jRuhVYuKwM4n6Fkh1x/MR9TOXF6FjWRfKN5iAz1zb/bf6UtRRTrtpsFhvwdu5keKx7mHgzEtnTxPDJ7e80GL9y1bdB/jpqEMtsxaNXWSRBsS9QTGn6Z3KIsmRG/c5OR2gnTaB7ic/f9IrDiRXBJp/lB447NhUf9HjqrzxIjFR1PLhC0UmgTWnS9FvNyVCRLGLrkPW8Zqf1WFuyAsei
+ 8l/o5eTn
+ 5zC5gTE+v2npZH2wgOR2gen/M5LPKdDXhZaf27Gebvm26EEk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,16 +104,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 04, 2025 at 01:08:15PM +0100, Catalin Marinas wrote:
+This change converts several critical page table zapping functions from
+`inline` to `__always_inline`, resulting in measurable performance
+improvements in process spawning workloads.
 
-> I'm surprised we haven't seen these until recently. Has printk always
-> allocated memory?
+Performance Impact (Intel Xeon Gold 6430 2.1GHz):
+- UnixBench 'context1' test shows ~6% improvement (single-core)
+- UnixBench  shows ~0.6% improvement (single-core)
+- mm/memory.o size reduced by 2.49% (70190 -> 68445 bytes)
+- Net code reduction of 1745 bytes (add/remove: 211/166)
 
-I can talk about netconsole, and the answer is yes!
+The modified functions form a hot path during process teardown:
+1. zap_present_ptes()
+2. do_zap_pte_range()
+3. zap_pte_range()
+4. zap_pmd_range()
 
-weird enought, lockdep never picked this issue, and I have a few set of
-hosts running kmemleak and lockdep for a while.
+Signed-off-by: Li Qiang <liqiang01@kylinos.cn>
+---
+ mm/memory.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-This time was different because I have decided to invstiage the code,
-and found the deadlock. Still, no lockdep complain at all.
+diff --git a/mm/memory.c b/mm/memory.c
+index b0cda5aab398..281a353fae7b 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -1543,7 +1543,7 @@ static __always_inline void zap_present_folio_ptes(=
+struct mmu_gather *tlb,
+  *
+  * Returns the number of processed (skipped or zapped) PTEs (at least 1)=
+.
+  */
+-static inline int zap_present_ptes(struct mmu_gather *tlb,
++static __always_inline int zap_present_ptes(struct mmu_gather *tlb,
+ 		struct vm_area_struct *vma, pte_t *pte, pte_t ptent,
+ 		unsigned int max_nr, unsigned long addr,
+ 		struct zap_details *details, int *rss, bool *force_flush,
+@@ -1662,7 +1662,7 @@ static inline int zap_nonpresent_ptes(struct mmu_ga=
+ther *tlb,
+ 	return nr;
+ }
+=20
+-static inline int do_zap_pte_range(struct mmu_gather *tlb,
++static __always_inline int do_zap_pte_range(struct mmu_gather *tlb,
+ 				   struct vm_area_struct *vma, pte_t *pte,
+ 				   unsigned long addr, unsigned long end,
+ 				   struct zap_details *details, int *rss,
+@@ -1698,7 +1698,7 @@ static inline int do_zap_pte_range(struct mmu_gathe=
+r *tlb,
+ 	return nr;
+ }
+=20
+-static unsigned long zap_pte_range(struct mmu_gather *tlb,
++static __always_inline unsigned long zap_pte_range(struct mmu_gather *tl=
+b,
+ 				struct vm_area_struct *vma, pmd_t *pmd,
+ 				unsigned long addr, unsigned long end,
+ 				struct zap_details *details)
+@@ -1790,7 +1790,7 @@ static unsigned long zap_pte_range(struct mmu_gathe=
+r *tlb,
+ 	return addr;
+ }
+=20
+-static inline unsigned long zap_pmd_range(struct mmu_gather *tlb,
++static __always_inline unsigned long zap_pmd_range(struct mmu_gather *tl=
+b,
+ 				struct vm_area_struct *vma, pud_t *pud,
+ 				unsigned long addr, unsigned long end,
+ 				struct zap_details *details)
+@@ -1832,7 +1832,7 @@ static inline unsigned long zap_pmd_range(struct mm=
+u_gather *tlb,
+ 	return addr;
+ }
+=20
+-static inline unsigned long zap_pud_range(struct mmu_gather *tlb,
++static __always_inline unsigned long zap_pud_range(struct mmu_gather *tl=
+b,
+ 				struct vm_area_struct *vma, p4d_t *p4d,
+ 				unsigned long addr, unsigned long end,
+ 				struct zap_details *details)
+@@ -1861,7 +1861,7 @@ static inline unsigned long zap_pud_range(struct mm=
+u_gather *tlb,
+ 	return addr;
+ }
+=20
+-static inline unsigned long zap_p4d_range(struct mmu_gather *tlb,
++static __always_inline unsigned long zap_p4d_range(struct mmu_gather *tl=
+b,
+ 				struct vm_area_struct *vma, pgd_t *pgd,
+ 				unsigned long addr, unsigned long end,
+ 				struct zap_details *details)
+--=20
+2.25.1
+
 
