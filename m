@@ -2,115 +2,115 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 93D7DC87FCF
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 20:27:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 71567C87FCB
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 20:36:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0ACE6B009B; Mon,  4 Aug 2025 16:27:49 -0400 (EDT)
+	id F1A618E0002; Mon,  4 Aug 2025 16:36:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE2AF6B009D; Mon,  4 Aug 2025 16:27:49 -0400 (EDT)
+	id ECB5B8E0001; Mon,  4 Aug 2025 16:36:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF85E6B009E; Mon,  4 Aug 2025 16:27:49 -0400 (EDT)
+	id D92F18E0002; Mon,  4 Aug 2025 16:36:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B28B66B009B
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 16:27:49 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 60F18115952
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 20:27:49 +0000 (UTC)
-X-FDA: 83740211058.27.44C4150
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 7C5D420006
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 20:27:47 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VcaymQRi;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C842A8E0001
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 16:36:42 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6DE9EC0900
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 20:36:42 +0000 (UTC)
+X-FDA: 83740233444.19.7CF1852
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 898C91A0004
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 20:36:40 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mWkBTNJb;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
+	spf=pass (imf19.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754339800; a=rsa-sha256;
+	cv=none;
+	b=SirD/Lo5f1teIqG8IADlQ3HINAD+fAX2c6OrC32UkEKbGLW/WMgZPSvm/ly7zyaAYOH1Qy
+	yhBoUp+zZTZf7D1+9gWxwGUj/4wyJ77PzviYPlqUqBM0g1BgZqC+i1Ne9xqiGQTHqdneZA
+	ozYhQzMMQn9M/6n7EGtojB2HBH9JfzU=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mWkBTNJb;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754339267;
+	s=arc-20220608; t=1754339800;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ns6Sb1qyWQLzllKTByzLhCTEnna45qYiaoa055hFWgU=;
-	b=v1OHDlbL0ehy5w61SHDsszpNafWfcMVa34uAynn3sarV87e5H8r7DfoIl+DJESPxMZezG6
-	dWMz0wmVdhqkonk3jgQiZJDNoRiDwZ/9MyubRdBNl7LIkRoDLNlzxzD0m77+XXjQttRvV9
-	+G67tYIABWVTDqoHvxhJPyMzZ/OPjFI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754339267; a=rsa-sha256;
-	cv=none;
-	b=gpCFaDY2cM7beIY2Sj+3vF14pl+LLyEPcXiBxDkQpWsehpdPD62YBbmW9tPtFVnt7pr9cz
-	CXYjJAZQNA5l6MF9o9R/xYHbJ9XPvZ9w3Jwvboaod1emDCbF8U4+72C3CwS5f2u+Js/iy7
-	z7MH5pHf4VQ8dBVUCB6GDzhF6GHz02A=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VcaymQRi;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-236377f00a1so42188055ad.3
-        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 13:27:47 -0700 (PDT)
+	bh=eIGP/TYMfErkKMr+9f7De3GNEN2DucNTWzDSIz2HDXo=;
+	b=wwcEE7qYSN0ZCJm4qeNoR2Gq3c1U2DtjOR5Xu2kbl0q6TIoSMclF62/SuKmVwwgGbLxnYK
+	7TSJ1SG+UAerTZhfuqbe3uN31ofCrS+zH0AdRHVws95UhQK6/4+Tvw6z6Dcjfh0rFoKG+t
+	h0yMdMnP38N6wSENDo+qebPGTCQ1URA=
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-31f255eb191so4144094a91.0
+        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 13:36:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754339266; x=1754944066; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1754339799; x=1754944599; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ns6Sb1qyWQLzllKTByzLhCTEnna45qYiaoa055hFWgU=;
-        b=VcaymQRiS9QKMSFWZwzuyVy3uZKdN0gyjUZP2h7cJSXKngBG8zKIriKS/YEXAN3log
-         FpBO/AudeXSv+PwVgVrmMqHyn3TJhS7Ajc6Uqn+mmBMVIrB5RvuL4bi2P7bqNYTNZnv+
-         4D/LRBuKCN/8QKctFFSw1F+h5oOH7Pp/Ap1uJdGhfvbd6sTRQW68qh63ZGbMHvkc8jO3
-         g2j8r94Ar3v65rrDF5LfjXHoY8fcHkykc3KULDdk68vaskFTK2hQwSRu69trqerucj+F
-         /JkmoEeaXuVuSNPqKjgdRb0E2exyySPVKVUREdzxW72PhKwMWFBg6jECASxA0WhC1iRI
-         fJyA==
+        bh=eIGP/TYMfErkKMr+9f7De3GNEN2DucNTWzDSIz2HDXo=;
+        b=mWkBTNJbZmUIRVfCw7HwaKBhUHGg5mjoDa4ke99bH5YtVvl0iquADErASJsSR3jVac
+         nH3t1BaBCA7oiXTXi9HQGyL5wM8cyI0yLOHHNE7EHq5m22YmKzWNNuJOGJxvCtSiddrl
+         L2EQvvC3NxTLHkPenk2EaU/N9/Izoy/Ngjrztu4RVSl70NykIwQs9JowjPpzSyvyGher
+         FU6AEgx5Oou6q9737GFWQbeg3aSLBG/QcARF/i27EwCLZMgY6g5jX4Rwt++9VAgWkpiG
+         NI/vbvZgU/koKcAKC+doHhdcWXJxArmRUZmO0F1Grrh+MX89aUDVZca1J9r1l+SWWiS7
+         VNSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754339266; x=1754944066;
+        d=1e100.net; s=20230601; t=1754339799; x=1754944599;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Ns6Sb1qyWQLzllKTByzLhCTEnna45qYiaoa055hFWgU=;
-        b=msCm8DpvK+fSpPLzg2IFYx8XeS7fIFxmOz1pb97AMYzjYMhAjX/Vn2/yw7tKN/4IQe
-         sB8tlmWr8+8hEuCS/1moC6tLcB5NTE9IdJLnjHfvlEJSE/R9yR6KHT3BDcADhF2G0Fbb
-         tpxRAz4XIq6UdEJRF5AW4bu60kl5uAr8JCtYCEoomi+TN5fZe3uSsKEUSsXr/ye4Xwek
-         QsQEAw3H9tpgPR/22YbSFU8gnO+8ij3AiVyEx4QrFh47SS3S11p/WlxBXFDmAdCxVvNV
-         V5WnJ5Hv4fbcyHu/+Ku0OZt9KB+7qqkAIixNozqIEdiT2h05LImlVvDbzoU0wLtFahs0
-         PPBg==
-X-Forwarded-Encrypted: i=1; AJvYcCXktMkshUq0NYEvkg3J6Jx2izeQanUB26fcU7GKOBso9c8sB9YkuVHfyb5Ah3n06R44coQJuNx3Gw==@kvack.org
-X-Gm-Message-State: AOJu0YxKFRSFeFCRmo1K7Yxz2OvO5Ku9ImQMFsXlI/UMAYHs1rSRSvVr
-	ngMPIwGYMg1o4T7xo4MWq4KO7AogXKbrZpFN93UTjclFATkCrov7YVHQ
-X-Gm-Gg: ASbGncvV3AWMsCjZH+R7Xkl/S5LABUNGiHlWuiPewVOgFz05qAQkwChRFVCmcK+Q7LE
-	BXkjPUSWbkZxi64/U8AzeCppgWmB8dH1JhXBKIIYyx4e0gGGyQH4gAif2nIVtfXcWKaSH1xdaUr
-	q1+bbBh/1JCkZl6/yIcrkMnlc5y7kcPf0iVE2i4ORTBve/ErWqu2Mo7d2H/ZEkqJrjbRlQOtuYP
-	ObVKA0NSQSMz9sVMUdARTu6CpahNvdKWuAz9RrhgHFsz5JyNuGM5t6fbyI8YVtJKS5bpx1W5zyI
-	NRePgAgkGIFIHPpLxtNJyT3ph6WKYjTADuSaQuXvrGveQpdfc2nNZLD5LzVgWQ8tJugS84SvwNK
-	W22sbtF+jiXLpt6xPhk/YtbuSk34RzM/TjkmfJ7CCOW4QrBeh+dIIIA==
-X-Google-Smtp-Source: AGHT+IHyIQYOk/UK9tX/+gcOyD5O9dOpWMo2wwLykoYYEPLIj1UeBJ8CeCuZTjz02csQNtIP+D73cA==
-X-Received: by 2002:a17:903:2111:b0:240:a21c:89a6 with SMTP id d9443c01a7336-24246f58785mr112133915ad.12.1754339266211;
-        Mon, 04 Aug 2025 13:27:46 -0700 (PDT)
+        bh=eIGP/TYMfErkKMr+9f7De3GNEN2DucNTWzDSIz2HDXo=;
+        b=RX2ThxY/6SqcMLuERDYl4NpKa+ONTv2iEHSAAeGFOOQP6Ul6NJUGv6NfiFZW0GV+tL
+         zBcVpafix4NlaH8AZmLgibfrCXAQJK6nwxYLh9XJzteUqvKgnK1uuVLMDOyoLJfjLFRf
+         i3NO0K9jvZBoaQ5RpsL+Pznqk3mnFjLoSyQu5ZaHZiQoQd/sxBSvyAJqZa768hhgX7w/
+         AdSq3jzSoGLHFYTmaCUlsLWLdfzBoEpPnsYv6Lx37JDHYn7kAjKprCwPD+MHhKbd+jv2
+         dab9fFJ7ZADeUSX63NGyPU62geMDcXdYZDLoQFfM2ZVFWZWf1PSWWYGXEImamSHr4Uaf
+         zZLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWnJX8ePBYB08QNdwfeE2HyCZYMXkpZWfX8iTyyE/bVsCgJLkDlrdbZzDQzikxHTyTPAIHOz+gJXA==@kvack.org
+X-Gm-Message-State: AOJu0YxOa7TxnhIaQCVclAJBiZ49QgEG0flqBaL8bbkKhghb+3pLodlq
+	SEu2ZMg12BQNOUwdvoU7OV+5znBLDsRqcESydN5KBCVsJ9YPz/9AvSUC
+X-Gm-Gg: ASbGncsL3UJ2VaPH4MLfxmtGKZlUQ1vdI/my5KkSQu+lT6kycpJROPkKJF3k0aTyjz4
+	aHz8w7/bkKsw0lRA1MMfEJCigpBDtTAKZ8zD5rn9bEY6J+GnU86EKwtZpLxUVmZJ+u4XlY/fkGt
+	mFl9h8X3/7AKR1W8vD5l71wm08DZdsevBKMHNw/GrMY3H73nexHDzjGL6ulVSDw2SrTtzDbEHbE
+	ElIfDSXMauFLJl/tkzptBLX44TTSreYAM5UhVDmQ7X+XvMecQ/mNmu3vuS+uHZogwwVV+MZ46us
+	PA9zcVR5OHjlNwT4r2QkGNvMODPOrG1zPp+zEXb5EXZ2rh4g0qQ5yvBiSWhRlMMdQOk6R72Rgb0
+	0P61+kjcboji4XY3EP4PszRMtbYJ3CohkMKfB7jU2jdTe+5E35VnQKA==
+X-Google-Smtp-Source: AGHT+IElL3DMsVnqKtYSyKw9sORCZtWkeduMxbK/iEq84SfX2Av/ZpBB3x5O/++9mdJr6utiaduknw==
+X-Received: by 2002:a17:90b:3ec6:b0:311:d258:3473 with SMTP id 98e67ed59e1d1-32116202f9amr13301529a91.13.1754339799223;
+        Mon, 04 Aug 2025 13:36:39 -0700 (PDT)
 Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241d1f13a31sm115567315ad.64.2025.08.04.13.27.44
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31f63dc167dsm15265582a91.11.2025.08.04.13.36.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Aug 2025 13:27:45 -0700 (PDT)
-Date: Mon, 4 Aug 2025 13:27:42 -0700
+        Mon, 04 Aug 2025 13:36:38 -0700 (PDT)
+Date: Mon, 4 Aug 2025 13:36:35 -0700
 From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
 To: Kefeng Wang <wangkefeng.wang@huawei.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Muchun Song <muchun.song@linux.dev>,
 	Oscar Salvador <osalvador@suse.de>,
 	David Hildenbrand <david@redhat.com>, linux-mm@kvack.org
-Subject: Re: [PATCH 1/7] mm: hugetlb: convert to
- alloc_fresh_hugetlb_hvo_folio()
-Message-ID: <aJEXvnrvaoUPvD2l@fedora>
+Subject: Re: [PATCH 2/7] mm: hugetlb: convert to
+ prep_account_new_hugetlb_folio()
+Message-ID: <aJEZ08orJ3jrBTH1@fedora>
 References: <20250802073107.2787975-1-wangkefeng.wang@huawei.com>
- <20250802073107.2787975-2-wangkefeng.wang@huawei.com>
+ <20250802073107.2787975-3-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250802073107.2787975-2-wangkefeng.wang@huawei.com>
-X-Rspamd-Queue-Id: 7C5D420006
-X-Stat-Signature: p9zgyzgnsofx3tw1o9y3x97hq6wch1p6
+In-Reply-To: <20250802073107.2787975-3-wangkefeng.wang@huawei.com>
+X-Stat-Signature: nmtsoca4yj3ckmcm7wtnktii8j9y3s7b
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1754339267-417499
-X-HE-Meta: U2FsdGVkX1/LJWufXo1ECtzaF15w3baH1sVTXKrLRDXnBDIbhFCdVstllEdOwUVjIDaFrbY5USuIf+iGafMTqcfKHtaYl+QVxBLIeBgDiUiQ9gxW+CzdZlY6h2smzkGyOsSvolbGm7djPugHAzMyazR5i3S/hKQdTtOLd8AIyatPJci9tKzwtQVza9V1USmSa95ahJT4Cs5wThOoyz41R4ehk8ZDzVjs0rNC2VisEAlJrkpZu67ziVI/VJI2Q3Gx3UgHz7xZC9Kidr68Z6bzHSyAQv1jU5sfhYBQdkyVu9RxwgH/a4rocI7AToAQ7S2s4MoRU3xL7b33Dr+pKvitfKjZJ+jZpg8rkw2glzZ22jcjfEOU5JgQzFhajV291lVNywCZZLfCw7qJCax9FuNItk9MMN23MZhJRTpms4Ps3pzgXDv5rlH45VFeQzMLXYpO7AH7T1LhkaayztgJwtZYFC92Kf7Svsof5wlNS8146lNRNPnHOMB4M3jQFzniQbpQWK7IxOy/IrxZ7JDUZL2snCSKIlLpxdJA1TJycOh7gvdlADGCMVPzir3L/iX0zmOR14HaVRONlqwiPxlzznUyJT3lQ9QyjFekSJ/YbNsYox+E9ihSe9uS5BdbuMn/lYVs6G55AQ0KGnWuoNygn3kkrZD3b4OTx9x2EsTVkBWdu3WX0mVIM1hBR79a9MocLMrwadpevub7+ao1xyTuv7NXd+qnXwkEv1wMC5yjqHksmcAreUK6DZG50BnnADsSaZvQ5MM9YXna3VA7zrhHy+ckHubII3Gu5WJGQhsWuP5GdHrJzanCkAPvpn93MLdhl8lWUGSlMMtf33lPSOZBUosRWabjGvE+eN1KTLnXnOaf0PzMqc4ZqEYeZPHnAz8yY0oVYbFxLHSxgYNTS60zT5XsjySSnM5bAPA2tR7nrxBJlQfRiTo610FSQmcU4db+mQteOwpoLxH5mtyj/FGGc0g
- SVq6jAYg
- 5UljeaNQTLABbyehqCK2LayTX/KzDIHZ4ywIobFH1Hlh39NynYbPspRzLYfYV/iEqCa8ulNkT4dEmXaO2ceyh/NzAN1qaFaeSy9pmnKERwO6G3VEuL+2YcuvlshEFxUYDGWAS0tXTrqv59nbUH8GT4mIGwGl+EREtXiyuwiF7lMOGmjTpmynr7LefLRXsUdA/9PjpMl8Jj74/NVaY45ZTUoh8kt0MNLc/QYqD0LRerqMN7ZgssY2sqWGXxm/crY8TdRPjDjj2oT8HysKytlYgUrRwc2StgqS9TSgoAM+Ur1JQJvD1Cu2AiK+iBhGRPXTHRcltmt+KMp1zadPazZ0BR2BawvtOHSAhTES7PuysI+CP4+GjPYctSB0AuYHcoVOgCVYHk/1/GjV/hX7AQXixsr/oVpHguO/Ylod1l9prE+9SnD/HjlvK65gXS9YPDGVhwlO/YY0M4iPZl5A9fbsHT1FojFEbFB9aS87UYFSKuJAS9nf/1FwQBWc7Qjr90DHeIjtC
+X-Rspamd-Queue-Id: 898C91A0004
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1754339800-483337
+X-HE-Meta: U2FsdGVkX18uQhxaa5yZaaY/XYPsv0yrVQeZKcyyJOplhb0YmmajCTTY/GQD9fPH/lkHQcX+AqXiZRg9nN7oc2Oq8w+x7uRm3nDiZ4pgRty+VCDXjTn1EdlLT2TqVtJsx34jKxhGyDrNrnDr6HxWCzprf+zaLvdzSPdKHJgZsws7g1cS8Q1OnN5+w2VtcPaANX5TjZB1ES3Bm7CspI1m/Q9Cai34ob0+mWzKFJ2jZnaqIxPrc2dUTvOZ+OjFIdhchDqn4CCiScuVDM7f0ZgNzaoQRlUbuGzsfLdBEAHIoF4OSLoWpKx20h3OT2F9EMBH3mtu57DkgMguNk7jVMRs7QsRmCgiFXhvOAs0Ahuhkt56U382kTouT2ODIDOeGOl6Flu8rbJFGxRNbn3qbzJtBfbzymfA0Qbk8WkVxeiWo2Sxnkc1PnThOnN9xNF3M6e0lQxUJIfRrMrVRYBYqNOIeYiIIvAAJzTDXbi8QW6jh6ABcU9/3D2yyJCwR/Ql5qb8w3ejxyZ2zn7q1ySbHM2JWH4oxTmYn6CLme5nVWaxJ73tedRziSx+UmNRVGV6xyZ0iDhWs1AGkJTdmSVbbq1+93z0Q8zha8zmCrsuDpY5914zVK18a+RZzcDMOo12/vkUnj0p5ujAuGC0EWCciuXI2o7qSVS6mRLnW3A6gTMOIvWBDBef+ccISEilg+zaAe+x96Rb8UGiAzMl/Gd9nboJPR72GKX9UrpOcMzc55nzkW1Hu7iF4OxCroQq2M4s9yKeLVYKo96wAqWbHTN4y0cvSETHwOc/xcnZpZT0nbZHhnFUMBxZ+FQkcSSa4tAIey4b58OVKPOC2p32kNI2mORB10gubPTy6zuuXj2D50WBTeZhZOLN7m3Vcd9S97c3BK8mRqFaGB5Poyvka75p/E3DSzyf9mRmlXHaisep+EMEUFNsWUb3+DwiNmjlmhh5A/7ICycuJhUfyt5djL9Atss
+ mrDqKc5H
+ +uJAevHSEgR4Dw/Kk7v2+Urbx/bpzsHsFYNu7L/Ywoh+w4a76SVTp79ATPcvHOwOPusphY5S4P8hmtNbjOxKRlsxsh0LRNgAFWrZKaSi/2V0aMdoEIfPBdy7lNnDkKTBnCH6oV701c/37BEKCY+P7D4AfJlKX/7vTBk9RqTvibUjlA9/JEpNWtNJIRoPbfVF8Drn2HX5U2VVLJi/87/c4jPdx6QkNE5/IF3k5qzUOSKhlAb+0FbguVHt3QIyD//Cu14wAizBsaM2ykbK26eVUYtk5dI0IzmM4aZQtYLWoOLxBFPx1boYhyhnZL6my7yUhRG0BkOPDViAdQpQxljX6a+tUs3qUlGB40wmqmjOCG14iHDH+n40felBixmi+UJy0uRWGJCU/Id3+IEfcDIwklwfpA4xJf6kHKlNJidBCnB/VQVU1rURfJS7RxiyKCG6wlPyUfIKwq/GOXJLYlQgigUWNYQKI/n1cuI/MWsyuEVeVtSjOBXgtDLWmLUYUMbl3HLwt6NU2UMoXoXtYuY7uY+BCjMQUHH1/7dpSEDYybHZ0hWFuKCLM+Nfudw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,15 +119,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 02, 2025 at 03:31:01PM +0800, Kefeng Wang wrote:
-> Now alloc_fresh_hugetlb_folio() is only called by
-> alloc_migrate_hugetlb_folio(), cleanup it by converting to
-> alloc_fresh_hugetlb_hvo_folio(), also simplify the
-> alloc_and_dissolve_hugetlb_folio() and alloc_surplus_hugetlb_folio()
-> too which help us to remove prep_new_hugetlb_folio() and
-> __prep_new_hugetlb_folio().
+On Sat, Aug 02, 2025 at 03:31:02PM +0800, Kefeng Wang wrote:
+> In order to avoid the wrong nid passed into the account, it's better
+> to move folio_nid() into prep_account_new_hugetlb_folio().
 
-Have you considered renaming alloc_fresh_hugetlb_hvo_folio() to
-alloc_fresh_hvo_folio() instead? The word hugetlb is already a part of
-the hvo acronym.
+I like the patch, but I think we can rename prep_account_new_huge_page()
+something better. I don't think we need the "prep" part anymore, could
+we go with something like account_new_hugetlb_folio()? 
 
