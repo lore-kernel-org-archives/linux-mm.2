@@ -2,116 +2,126 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ED736C87FCB
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 14:49:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 58BF9C87FCF
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 14:51:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6BA566B0099; Mon,  4 Aug 2025 10:49:37 -0400 (EDT)
+	id F22268E0002; Mon,  4 Aug 2025 10:51:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 692036B009D; Mon,  4 Aug 2025 10:49:37 -0400 (EDT)
+	id EFA038E0001; Mon,  4 Aug 2025 10:51:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A7F16B009F; Mon,  4 Aug 2025 10:49:37 -0400 (EDT)
+	id E0FC98E0002; Mon,  4 Aug 2025 10:51:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4776A6B0099
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 10:49:37 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id F195D1DCA9A
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 14:49:36 +0000 (UTC)
-X-FDA: 83739358752.18.6FE211E
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	by imf09.hostedemail.com (Postfix) with ESMTP id F397E140003
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 14:49:34 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=milXuC2I;
-	spf=pass (imf09.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754318975; a=rsa-sha256;
-	cv=none;
-	b=llF66WVQOpiCWb4UWsZfpL/AKRbd+s00Sqz3IFeW32n9pjnm3s8Li2TElkb8q7zJXI8gby
-	xs0eWgLl/ugJ1Nn1N8gcO1OMl19S4Jkhp6Vm7S5BjQSsepdI3srv/rgFndQ2Yh824sTUqV
-	ad3hkDImgL2JKYbLs7HRg27uGxv8VjA=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=milXuC2I;
-	spf=pass (imf09.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id CB9658E0001
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 10:51:12 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 819181A046C
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 14:51:12 +0000 (UTC)
+X-FDA: 83739362784.23.D8B78A5
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 779E42000C
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 14:51:10 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CUZ99egS;
+	spf=pass (imf03.hostedemail.com: domain of nadav.amit@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=nadav.amit@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754318975;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1754319070;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=epoP8sq6ZzXGsjqp9Vf5bycC7krezH4J6H9syRshsAI=;
-	b=3YHkUJyl/2GKkvoGQppO7A4U512KdS3C6v1man30YJH0a0JY+G2PYtna94w4zJeFokD7rk
-	1menJhGyCLI5zBe3uj3LEYcaKOmMY2MzFxFT4gSnLYJwvpNgURMfHR9Q5/R9hrMC1Twodn
-	PNAbwbdzI/KuAZlhaAzJF3f1AFUDQLI=
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-61553a028dfso4288384a12.0
-        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 07:49:34 -0700 (PDT)
+	bh=0QNi2433aMOcT7VvcJO8yI0WQRWFprB/tnxl9b0uKg0=;
+	b=77f/GHtvXa3dUUsbKNUn2PHdMwk7qhtBRF46QGpFk6gIxQu/LkZxp6ceD1hUogeg0+LSLI
+	7FOFzEOZ3T5W9+lVe1h5A4pDMjuLEPFW2ZjmqSwy1eDW5RO11M26ErOubhCV23cy/qXTnr
+	3dBCBo4SyaIsYgggOXnKZx53GTW5L84=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CUZ99egS;
+	spf=pass (imf03.hostedemail.com: domain of nadav.amit@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=nadav.amit@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754319070; a=rsa-sha256;
+	cv=none;
+	b=lkEGm3aKrUp4goYSMm6WWhJ+TFKpob2E7DsOjLLjm3e5tAGQodzccOfL40wqiHugolIrBY
+	eEfsi2nQONchdJ2aOQ0OvfuWwKF95YX2fZPbvdaFgRFRG8FZKI4Y7deeZPP0ZWtrnivHzJ
+	Ph8IeIWcL8EGPtCI+59eiJm5pNhiZCs=
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-451d41e1ad1so31365285e9.1
+        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 07:51:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754318973; x=1754923773; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1754319069; x=1754923869; darn=kvack.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=epoP8sq6ZzXGsjqp9Vf5bycC7krezH4J6H9syRshsAI=;
-        b=milXuC2IiLGsoLaJ2mngmgHtT8TdGyWlOrXriW/ozZ/e6Gd/LZnas+73STYrRVNitl
-         KvcVuIzlFj4+tNkOHw09jNOy7CWUgWMaW02Jmf6sYUogDvnUtJgmJBtJzh9ZOqW4GiK4
-         Dr2CxTld1vmRTf/25lTDrllMCn3a4YCOgRcr3lazDXVy+7TFOg8wukN2YlI7eoESSO8s
-         bkCVs+SyYGnIJDhKAcJiWl5bhy8opp5boyhKBhTdNig1CMORtUHHAa1d1jShztISyX39
-         Y6vHdJx7/rok4F1myuNgD/fodr8TSUaNRGvRkBX3nDpZNx6UFuQ99o8bdKI1U1IMXDdA
-         2KtA==
+        bh=0QNi2433aMOcT7VvcJO8yI0WQRWFprB/tnxl9b0uKg0=;
+        b=CUZ99egSStmhUuzAEGa3tF3J7mrvSihYcILCtY+1lWWKk9lnFQQpnT0IOBbISpquQe
+         RIbEzyD1vws6ow8KL7wtsCt1GeaIlJsj5hIpg95+K3ftSwAv/NWyGI9Qr2vYQJjWyhww
+         3ylbQHRf6BaAe11Zg1o68C1rR/tTcLcLEr4s2J2xRFEOZhJ0JG9iJw3eluDaCT1pPa2J
+         y3tPVji52NwNq175Svgr4Z5NUz6BDMTCLYzzy2znegqL8v4rNs35fiZP6UyqLL+jQ971
+         hjbTCE5MUMwlm2DgMmj+05UHpZqBn2il+RvR/phxkg8qH2jDxC76sj1mfa4uVKcH2+zi
+         k17g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754318973; x=1754923773;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=epoP8sq6ZzXGsjqp9Vf5bycC7krezH4J6H9syRshsAI=;
-        b=Rk/aWDylO2XNUgUg0kunaP7ndJVI8cCVS+qu0tdhIQWc1OxCfordoDexw6yySCaEZb
-         j51nas4L69VTbTLiKkbW5gId7WaxjGYpCTMmDAnhP8+zueNwo/s/PoELBRnSpyEWDXsp
-         nkIX0SfAVBIU/DylmgayEy71/E3EtqO4P4/7dPZ650Ivi68vxumo3zsl730138fIfErN
-         B4lgZVd9X/silhJsfgysb15rlt6w6+EHqLMX1lGiP2C+pTJ/BJvOobW7Rm6totTXNKei
-         U+OJR8XYhMhpeKXoLc8+6vf7KUif8SYE49z3gPLgG/U5ibYo4xTZgwjQGEFjXn5z4quR
-         OvKA==
-X-Forwarded-Encrypted: i=1; AJvYcCU7lJPpIYWR3K1qj0yODBt7cZWILJsTNBoNmPhedMcnaiwUMmEt0Yx0AwV4zWfBi2NeD6q0iYy52A==@kvack.org
-X-Gm-Message-State: AOJu0YyHu9KfwXP4dcgsCyTtwYzmq0ZF/fzDDimU8OOvPUzwX6d5KYa8
-	5kX145UPyIuvN675YX5f9llNTzaIonK6LbLacySr1j7J4HvuNwG5MZgh1+HcbOxp
-X-Gm-Gg: ASbGnctyZtrqCYykQG2Md03yZ+ZHMt1Bdr1QbDC/+rNLVE56sNedWcmgCz6YF6smtqV
-	zbr6iyhMWTY4ijlwLVK8iH1sdmYmbV5oqjCVz4zEHXx8ktP3gTotxcIZYhljHKw8uCr9r2DjnHY
-	w+V8WQUd0ZznO051zweOBnJZXO6nIzmTcwx4IXlWR4DIeeNtPZOupO06Hf5nbhOpQcryq3NrXj/
-	5ZmoIsi0rKiYI/7fx7JkwbJsbbn1ZL62TksmznP8JkbFkfsz/fkrxRP0mu6fqj9Nzjm54Ofe46+
-	sPbSGac+yomlf0/5Y8GbdDx0kulHO5yYojxyj1WBWIbK7DJae91VQoaeWh+VP1GX6JwWXvA+n4N
-	v0mQOa3N2sWldOhKFgzzlMg==
-X-Google-Smtp-Source: AGHT+IE2ci4iWmrg+FMq6iRk1evDI6e7iUTGKuKN7nRWDwdgN7sB8puNaMWxbs4XMQyR0gfQKmvWoQ==
-X-Received: by 2002:aa7:c855:0:b0:615:4146:72c2 with SMTP id 4fb4d7f45d1cf-615e7178341mr6838033a12.31.1754318973213;
-        Mon, 04 Aug 2025 07:49:33 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-615a8ffb8d7sm7036966a12.47.2025.08.04.07.49.32
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 04 Aug 2025 07:49:32 -0700 (PDT)
-Date: Mon, 4 Aug 2025 14:49:32 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Qianfeng Rong <rongqianfeng@vivo.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	linux-kernel@vger.kernel.org, maple-tree@lists.infradead.org,
-	linux-mm@kvack.org, willy@infradead.org
-Subject: Re: [PATCH] maple_tree: Remove redundant __GFP_NOWARN
-Message-ID: <20250804144932.dv7zhlr75ia6il3r@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20250804125657.482109-1-rongqianfeng@vivo.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250804125657.482109-1-rongqianfeng@vivo.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+        d=1e100.net; s=20230601; t=1754319069; x=1754923869;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0QNi2433aMOcT7VvcJO8yI0WQRWFprB/tnxl9b0uKg0=;
+        b=Mdv3QWmGk8spTX/+JHexENjUvVVbwnKOnPw9VNvjRK8M7GMHkIgH9TwVUO5rbYgiB+
+         B2WJvKkEcqZUj0LN1JTrbc1aRV7X/PTU84yQq0Coeom7SPTaR/e3VE8CnN8lTUrtvZoh
+         ZU4g05e3HJPaIhxF7R5vYtdNWLW71USC8qTphdSng2Y7LPbcUEsAD5nqSNMvub4EE3Ro
+         8xjFmjQCPhORKJBzF2yOMVSQBTxGfBwSiTnQmzBKc0a9SaFtuEOrx+wMIPG1XRWo/BW8
+         IDLWyMaG8ZyDNxGqllXEnyasSM2TrROTUwzZKuwo0PQ3WFgzNNblhr45zilvvI1It6D8
+         JBMg==
+X-Forwarded-Encrypted: i=1; AJvYcCXvJjvKvzee6OEswdrUsk6hGMAUW9HsUQ0GtvSS2rTO6V6krv4EMXoRkW0AlJxRrXOK3RWn3rs/Vg==@kvack.org
+X-Gm-Message-State: AOJu0Yxe4ePukqxJNAGJ/HZkJahdxh6SKi60JN2veyGYLfWtQ8DcQCq1
+	cJY70msdzW5EgsLfWfLp7upmSaBRehBNhZHdf7GtfewpDusd7YjPYMEW
+X-Gm-Gg: ASbGnct8daRnko3xdh+gIsWQysw0lmRQvHQ2T8u4oUqxgmV46505KAhhsIMRUV5Kuah
+	8smD3oHKwH9IA5qv4nTv04v94PqcSarM0RviaaCu+h6gpoAA7VUT+LgxsgcnoWOuMCs6NNfPPf6
+	TFgviw4jrQg7Vfw3R1YedD44Q9FD8uu6WAqXvfot8w35yefqpt1CaEaxMGuIlVrAftU8XPIEvgM
+	Q8WcTvcW6WMR6RcRBF0CI1tA9+/ZBdpiW2O/3hT+/86ygRFzSETx13ngIKXKVP2joOsqdxCER2f
+	UxnKviLCbAsAnIlcBn3EQJYuCfbTIKnj9iBm9L+ztwj4MV3HZnt+kuQwqVgyXB/ie1Rn52GbXMn
+	ThPp3kWXZ4LpeV5/0JWg+UK02Ghcyj7ofCWWdsA==
+X-Google-Smtp-Source: AGHT+IEk/XsbxMajLX0zrOWwGT5yoALOK+d2YnoUE0SWEpt7Bdw+f5idlnSsn8XeUpvU2PaNJyVvng==
+X-Received: by 2002:a05:600c:3113:b0:43b:ca39:6c75 with SMTP id 5b1f17b1804b1-458b6b32b36mr78981895e9.16.1754319068717;
+        Mon, 04 Aug 2025 07:51:08 -0700 (PDT)
+Received: from smtpclient.apple ([132.68.46.54])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-459db13fc9fsm39629925e9.7.2025.08.04.07.51.07
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 04 Aug 2025 07:51:08 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH] mm: memory: Force-inline PTE/PMD zapping functions for
+ performance
+From: Nadav Amit <nadav.amit@gmail.com>
+In-Reply-To: <2a1b7ebc-f27c-444e-be89-df14ac1dc97d@lucifer.local>
+Date: Mon, 4 Aug 2025 17:50:56 +0300
+Cc: Li Qiang <liqiang01@kylinos.cn>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>,
+ "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasarya <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <0F715281-1754-4D81-A71D-4AC20BC13095@gmail.com>
+References: <20250804123923.296230-1-liqiang01@kylinos.cn>
+ <ab22e314-63d1-46cf-a54c-b2af8db4d97a@lucifer.local>
+ <2a1b7ebc-f27c-444e-be89-df14ac1dc97d@lucifer.local>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-Stat-Signature: krgcwkjohrk9pt4qqpai9otfx7nchxma
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 779E42000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: F397E140003
-X-Stat-Signature: xr11k1ri1a45a4ztzsdw5q3hpi8uena5
-X-HE-Tag: 1754318974-717040
-X-HE-Meta: U2FsdGVkX1+MJHh5BxCYOLP1dV75HY+1NsCrnOBT8spzoAuySMjjtxSpDzV6JBa1EnbyMMFOxbMCXJ6tKdzgIDGiRG8GshMWbcd+q/8gubGoW7U5+bvyaK2ZoCKWNCH/laPDy+N19NPKnAOjg4craivK4+TWrlVxntSTW1FCAgcyRbnbK8WFqqKu6e/SKPUauL38Nupg9KPnqQi+UADzSJU/tpeirlSGCZcr8eF5DZAa+FqpzD+Wxg4+pWsCRQVB9Hm3I+1Q/H30hKa5iTpygVXGyZN9gUpumvV2Y08qtlJQeBtdHoyzKN/bLgEYAShaTIuKudp3q5tI1TCpbdMgFG4HZkB80StBExQgGudp6S+6ooP2KLR/JLjNFkCVzvMerv7826WFGDZ3w6Pv0hKuJtvkG6lAXR2ElZCZSp9G6u8RKyn4/44FLnLaz6q34yM/stm5nX/JBw4JmgxUnOClhRYDDaJ54oUuTVS0W3fansNXkJ842Hin3gtIWtrgasNKvg4eI5BeRsPZeK58tgdSCOrIlbvtpD9CLKPArMd3F/PyF4wYVas2ji2u5a3DAnPkEP56bA0uqCN6zRCHtWsXBsrREmtVimuYaU3tdy70OuDP6Kx0//jM4zosxx9HLbM/ZjiBNFGoXo0Dmee2awoO8PwwI5VHQris/tJj9U2ZFNcUGQQbjx69TatdXwx3e9kj46KiQQ3ygI9dnyjofv0TS/aVo2gvZsW/+9G8kizWEufKAoPzTv+ujRp/1VbzihvGLnf9hI3gVTRN69Rf/0IwPPMyCKnXb2l92CvBjwQ0DfA0zewrUSs1tuDVkbwiOQ+Nm9++bQuRtJlFztNSFhhAgHm/JZ/V2eY5PDzK78nmHOUNXeUD0kae3774UofmRV334N2sSZReAEQ+eUv3GCGe7VDBeQgizHbtjmHjrkmVOeTJCUNiYb4vIqZnCIX1aUdSKkjfR36g+5rcKKVC6/G
- K55D3qjB
- Iiw+8Rlt5TUCbg0KvQvE+wGXnadrfFtwiwKeb1SYKuvrwVBszZhLmYOGrmtO1xbti+KaZty6USzXglKcZX4VB150SbnnpRwM9Fab9onWN89wbxbLltwC0xeBbqYSDs/xDTgOdwGa8Ft6a/U45zICJhgBQBOLwdRSzUYoB+bdE5pPKfgOovzgLmd06QdAvI2PK1M5j74qLUNgLROIP8bdh788UltfYl2oDdfDFgX4Y4bQdF7pQzB97yFi7iYGfh55zhkbHTT8JvFuNjm8EYPzmXNqgBB7xNX1V0FOyZpHY8UnBM7ANaZb1GeK5tgHAdjq4rv3DJT5DdYtHTHPXcrk8F8q3mH2j4bo350/rltxaAgHV9FdP8OwLfhEWR0V2NZJ0Nh2BXYbcdGibX7wh9rsoQDHC5HKCBXTz7AjbpwWCyV917SQjEwLuUga3QvGgtqYM1Wf0k5I9l6hDFJgSzzjbcputfUsX1xUcYC+qvv9t+MJItJVDpDI2mGp/y0UAteJSYRxV0U0+w38KaN0ct9Gv5FLtSIpmqtuK9yzSyPGf2SiO8NY3Tju7o46mG4TV0uPz2/TI9gXs7O2UpmHZ9QaSQAM3DMe0ZJuerJ2yVTI68crsjOhAVf8lR2ZyXd8P2gUdAxKiuKXk+JyeAmMFypeaSIUBsBxhr5WvRi0SGjjetp++kbhuzDbioEqKIiLREycLy43W997X0a0aGPVZtQd+gOffIPciuARHSS9o
+X-HE-Tag: 1754319070-317456
+X-HE-Meta: U2FsdGVkX19dXWL8Ewwyivy7SmOLO0kaLgJeXIVMON6HHSBtOLlEQnEylfEsR9/B1j37mtFc77pXL709xKBzRD9fGKBlHWw5/BIKW1XsiV+WWAbajzrTaV7D3dK1VCNAXsaoRtjksQf/C5nwobIbITD/wHa3RhmPmHmSn4/w8y67laVUSmakOU4keLMv9w4f+t2U3UXjjZjUXgRgphnpDwVNDTz14+mrqb4AofzCNVfJuhzlxtKKDbUgiY9mHSRoPiUWbvr9xKwE5J+EIQ8vMbOWeKTzKdk2O/i2/aUFVj+EoSnc1t/ePv3c8qP69P8Xr6vijOJ2SjOoScI/9qhrd/I/8gbt/7noYWSWjDKnWWpEq/w2+uJKXiigfy0ro0rn6/vo8ULHe6rSqyxt3mWv72mT647b1Gt9PmVfADJM/EidO5lx9FTnsoPYOsU/rPO/SrnmwKySMxQ9IhktvXAbE3f1ovoYRwZSyC60As+sGCsZAMX9MQkwpQy2AZrlXh6PallsjiiM5V/9eyxSdQHU7PdI1E5EuGNOOJx7W2xA+HY2w2E44K9dMPkbMjIbVroo3hhjVk/4Jr/5KSgbrPcXcdEVPX3eG4YPWG60WNYYzzrLVPsYi6h5RUUCF7IkVHLJf4Yzxl9vEkCqh0UR9SUFuBt9YqNFCw/7Q2cVCjW9wox15x85tpw63Vcr0S0k4CgGxGFnMcjHMmxJu5nT+1NvCOWkAgCitAGg048mHv/cYmAx/BSDX+K/UFsPjnnzbJ5qo6vv4jGoa6/nh4FXlb1GJH4idSFres3E+TZsCM8qkdGFyl5+eZeSbvnU7BZaC1oJEwYoxptX9dXPPQTHP2/hGsQnSr9DAn51mfowTQ10L9dW4vlu3D1Lq/11/uqSbWj8jldn8C3bRGTKepUSoq+SAP51wve3KnoszqJ1+Xd36tzFDpyBUWALVmFFaws4NKu8gOXlFuLxvfN8hYlCHxp
+ c+3VNsR8
+ yECqzV5B8N8cLt/LpBOAs1QlUvBiBa0jyM+L2iqTRnWq2eTOystgyWbYfekb+JZovztzk7cssQ1r+qoUaroQWw9XhTkYvQrIujf9w8UG3MDj7ZGIVBVhJV67W+nWokhpMRnamjk4wv5uhEyu+CkoaxK/SQ2lSQRSzUKnoKUYcVkIb04io/XXES0M7T9fBjn+L/RKLn0xyP6V1In3XhXIm9+HCrhbUjr3nlOSgI6NVMfLTz0UZdADfKDk1dw06WCOu6OAT4BTx+fNSnJ749neM5pv6aMenZ+MHhdoAnsbZMSoi3I+8S1n9HjQ8H5eIFIrEAnqSmTSAsO0fowEmtZOkXetJMFUDBGedB6DBtjESjvBgpx/PN4SU/xQ2Vrj+z12ULy7SKF9XoL8QcJQ4Rewj/x7n9lCBJbbyafpj5BBC3g93+sgzYp70JBicSS7xhcR7LYqY04reO5oPIPLrcaRTgrkS3sfdMQBFuzqQ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,23 +130,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 04, 2025 at 08:56:57PM +0800, Qianfeng Rong wrote:
->Commit 16f5dfbc851b ("gfp: include __GFP_NOWARN in GFP_NOWAIT")
->made GFP_NOWAIT implicitly include __GFP_NOWARN.
->
->Therefore, explicit __GFP_NOWARN combined with GFP_NOWAIT
->(e.g., `GFP_NOWAIT | __GFP_NOWARN`) is now redundant. Let's clean
->up these redundant flags across subsystems.
->
->No functional changes.
->
->Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
 
-LGTM.
 
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+> On 4 Aug 2025, at 16:59, Lorenzo Stoakes <lorenzo.stoakes@oracle.com> =
+wrote:
+>=20
+> OK,
+>=20
+> So I hacked -fopt-info-inline-all into the mm/ Makefile in a rather =
+quick and
+> dirty way and it seems some stuff gets inlined locally, but we're =
+mostly hitting
+> the '--param max-inline-insns-single limit reached' limit here.
 
--- 
-Wei Yang
-Help you, Help me
+Yes, it does require further investigation. My point is that sprinkling
+__always_inline is a slippery slope. You start with putting =
+__always_inline on
+zap_present_folio_ptes (as currently done), and then the caller becomes =
+expensive.
+
+Now you noticed that the caller to zap_present_folio_ptes is not getting =
+inlined,
+which is not surprising because it got the cost of the always-inlined =
+callee,
+so you put __always_inline there, and so on.
+
 
