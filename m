@@ -2,68 +2,68 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CD794C87FCF
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 12:14:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C8BADC87FCB
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 12:14:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 699E46B0095; Mon,  4 Aug 2025 08:14:27 -0400 (EDT)
+	id 625186B0098; Mon,  4 Aug 2025 08:14:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64A1D6B0096; Mon,  4 Aug 2025 08:14:27 -0400 (EDT)
+	id 5D53C6B0099; Mon,  4 Aug 2025 08:14:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 511D26B0098; Mon,  4 Aug 2025 08:14:27 -0400 (EDT)
+	id 4EBBE6B009A; Mon,  4 Aug 2025 08:14:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FFB16B0095
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 08:14:27 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F207C1345A8
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:14:26 +0000 (UTC)
-X-FDA: 83738967732.20.F528C81
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 3227BC001A
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:14:24 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=hqpyJBmN;
-	spf=pass (imf10.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.172 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
-	dmarc=pass (policy=quarantine) header.from=pankajraghav.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754309665; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3DE7F6B0098
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 08:14:34 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0A1D480431
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:14:34 +0000 (UTC)
+X-FDA: 83738968068.01.FD8A7EB
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 551931C0003
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:14:32 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=kng33P8J;
+	dmarc=pass (policy=quarantine) header.from=pankajraghav.com;
+	spf=pass (imf18.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.151 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754309672; a=rsa-sha256;
 	cv=none;
-	b=7tacoQK65OBR8hFw7UjYi9OnmrojvkL0Rxam0LAtNhKGV7xGi+sgJRR2HXIFBoIhtBaQo4
-	fnXbU2kJTHU3PcLrJWipQ3ewn4GhVebyfU3jFyzR2UnHNIMqR1Gl2O5Hyd7I1nM0VoyEuS
-	HAaFnwm9J1+jiriW7mtjDd1Wj6Q0EnY=
+	b=sSkq30d3604hBs9zZEG+qGS/FboYXb5ZJg5z9HrufZ83GaC8fBhQsetxOg99038REa0DMz
+	lWh8RHStR4h9+5jbRLgeAHDGuIczvF6njfZJecMIUDt7Z8y61qlcHsWaLKhyZumXBCVBTt
+	JboBoNBA89orWwSv615e1hECsqWlzHc=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=hqpyJBmN;
-	spf=pass (imf10.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.172 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
-	dmarc=pass (policy=quarantine) header.from=pankajraghav.com
+	imf18.hostedemail.com;
+	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=kng33P8J;
+	dmarc=pass (policy=quarantine) header.from=pankajraghav.com;
+	spf=pass (imf18.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.151 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754309665;
+	s=arc-20220608; t=1754309672;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X5VaNFZHQ+UIZ3WR6R9OAhvW0u/boKe4vv5xZzerPYI=;
-	b=mIZBMkpGuj6PvZp40B6GPvSqc+Gs0qI2bU4r92hTX/JWVOoZC2LI0A3qupTTapHW8toFlA
-	fFQihC5Eu0mZyomqKHOEuIzdNTqMATmraYkaZmCjJFbd+lNvHK6yngNoWxCLseuXukoqPG
-	4N1MZynW6se1XhYB+7iPx3M+4vMIJrA=
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	bh=9lJsTh+ri0GWL7AJeRsPrPgXU3IEK6w18AYWDMyJ55E=;
+	b=5XpHuoZpeDuQSe3uFfedMQRgrGVKtlrUkmxPdgKn3friw9UaWBsmI1/FcwDYVJgazOtQW2
+	p4IldtY1L4/rjIy+uVlummUkw7iKAfCAAlnB3v+gOJMRW722BOqI5NRx3njCWhhb1ooRjP
+	He2W0FBgSNTO6zlnbFZLBrq4BFkNbYM=
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4bwb8F6Hrsz9t1l;
-	Mon,  4 Aug 2025 14:14:21 +0200 (CEST)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4bwb8N5XPnz9t4V;
+	Mon,  4 Aug 2025 14:14:28 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pankajraghav.com;
-	s=MBO0001; t=1754309661;
+	s=MBO0001; t=1754309668;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=X5VaNFZHQ+UIZ3WR6R9OAhvW0u/boKe4vv5xZzerPYI=;
-	b=hqpyJBmN5S+9+tFYA5ZZm0p8MUaJIBmETy/KUwmZ87TCwxxfGTJEGKZwZnpigomTBopqAr
-	kGrWMPK7osRRCFCZE7FC1x+cmC2MGBpPHt2lT1Kpaiq24X1PRkvxKR+ya9aQVI6Pw1eGcA
-	MU2FYXdz1BJf1I8Er/H00byiePvy/1G996TwXZubjOcc85Iqo3U4mYQhMIOx8vPOYxz7F4
-	eRXVRNCWaB7V7yaxi0DGd5pH9tZsRcvNhlirWHp/8sGhRnAGPzrM2C7ca4p9ftpzFAevua
-	hPzZXE0zPMNNMDCCZ6RRKE7apaJOQJRVY9Q4igA87V3Z046Aau8NZK2WdVcNJg==
+	bh=9lJsTh+ri0GWL7AJeRsPrPgXU3IEK6w18AYWDMyJ55E=;
+	b=kng33P8JYjLm434SEri9Gmt25PK/1/+YsynuwJvQWoLTeFnmhKrwcZGBPx4fXxBLoSlgRm
+	m0MEq5k/IvpBw03o9qS6PkuettM1qUNoWyrhrs6SiZbVu/FN+hVTsIJRFyxDwMwFFuc51Z
+	UIBv0TvGYKXO6IfIp4/X3sMEMMyO2x0MNzzNVtLiKfkjUmDp3sfhvT/cIsWRvgffbgK1C1
+	i2/W3REQarIhCtlBCCbFF1NTMxAN8lPUz2Phjt8kxIG0aAe42nx0sTPiKLxr9CeKWryhyg
+	e3ZH6LfD2EuIs74dKyNHP9mbuMYJYUwh4G9Tu9B2KshUiIPAoaUOcIg7kuDsvg==
 From: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>
 To: Suren Baghdasaryan <surenb@google.com>,
 	Ryan Roberts <ryan.roberts@arm.com>,
@@ -97,21 +97,21 @@ Cc: linux-kernel@vger.kernel.org,
 	kernel@pankajraghav.com,
 	hch@lst.de,
 	Pankaj Raghav <p.raghav@samsung.com>
-Subject: [PATCH 2/5] mm: rename MMF_HUGE_ZERO_PAGE to MMF_HUGE_ZERO_FOLIO
-Date: Mon,  4 Aug 2025 14:13:53 +0200
-Message-ID: <20250804121356.572917-3-kernel@pankajraghav.com>
+Subject: [PATCH 3/5] mm: add static huge zero folio
+Date: Mon,  4 Aug 2025 14:13:54 +0200
+Message-ID: <20250804121356.572917-4-kernel@pankajraghav.com>
 In-Reply-To: <20250804121356.572917-1-kernel@pankajraghav.com>
 References: <20250804121356.572917-1-kernel@pankajraghav.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 551931C0003
+X-Stat-Signature: 16bd1cb1tbwj9ge81fzx1uhtaeuxpo8y
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 3227BC001A
-X-Stat-Signature: mne5t5th1g85xz9s59o8a1m7x46k58yx
-X-HE-Tag: 1754309664-324389
-X-HE-Meta: U2FsdGVkX18Kgb1+G9CJez6mAiGrG9ZSEzeiHN4KTAyllRGSzTc4rt4D6/o06XBeDQrAgaaGpmRI+gxFgzv04DKiekzkfesRBJF04EpHaAEeDNMA0W/769Ye8BLtgq15fZ0umLHO+Z//t8cSA2kGYlJxcBGsbheW2Q4C8prc/CIza2pZZfT3fS1KcnUOCFivonHc3tWK48wO6KPJt/NrVpslWk1RLRkAbpAoI8lOeyJfl4SNleTBvgYWSk81mEBxkD7MlKnJ6l5RV7WW7gZRk6dHyT9sgWPCTG+W1hbvttUJDhjHseespwbZ4jfbUWU70Uslyb/MnO84zKcIfj20qF/hwGJ+2ZictvDbLvYpree+MH9M6MtMlp6O6dsPoQivB8zObdO4bosUcZ6ZQ6p3CP18P+YM3iL3D/Zt8Ao3mqze9tJvEf6sIba+vg/4Zbw+VtqmJblUauXpnNqgEiaMBtItdFITl0/HLxXT7f+WsHoUNB4Rdz29W3wieuf0HF5+tjRzZD/sI3QzxTSWwVDsWdTG8FvGD3qhRjiEbfNRRTzS4l+vBeK329g/QHiE4mle0xFOpAqwa4C+gJN7RiT/Fu2Gerdu1TWouIfvDqUaPzJa50bGPTVD/IngDGJRKvuOtLCldWfrdr5SLsPpGYfmRizxr7nv816A13h/Vt6rLaZcNWJG5FMdx2uqsyI9x9GtNQSqYY/RiLwfTyFE41X0YO7H6Y3FDZJrWyk++aQ9Ve84nxDQEivR2/X9M8/sXbG2fcayN+zxStHdO7oTWT9TnRH3rDXCkcKM1UGLecYdUkk9oGk2LNkmjpy3wEyfm4Q9nJkvN2f+A6Ue0g2qFYc910J3JaAaqPCu46IwcL8bnpCKQhXvexa0xVtsRx+CdnWChbrijo4q5LYHcE7KAI9x9iIbzbGsRPaSZ1mPa7vW+ZmsF7svvG+jcszx4CkWMB0y/oBmzdQ0GqXQhZ0hOzR
- E9FOXXij
- Y+rQBPkakCji6QRN6sx89po6dMO+3vHp7lMEjffBkLF+fKdSC/OiIiovRWQHdtV04cMo2LkD1WbDdG6Rbowkf7kPUvIFOhgehkciCXBb6DHD1sG8P9WUbATOGWN7Ul+ZuYl6EAt+5Fujc1asWhxUwPKumA8+ncQ0xS4Fgr23vXwEf2y2B9uw22nfuQzU19+/wp15r5u9mn/G93ifsj1/6Ie23nnZcOdB1xqS8ruxz5gNMns4f5jiiU2Raa9iEjbMU2gOi6X+bwvnkHZgik1jIpdEnI0iCNAIRrI7gWqOXA1w7pHedOE7hkeWf89fSsmwtIKrOKV/WbPuCQ+gmpsnuYON9w0uBljr55et+uLfAWB6ppQThCAiLVQTvlS5MmH9+0fPdLKX/C8Xvz1BZ1gxyNBU5nlLBuK4Ojimow2zKJLuSX/AKIelpiP30oyJ3o5sN0KaE8TtPaekp5zWYs7ZJXr0fP+exgrSIV+tvhs38N48/1pI=
+X-HE-Tag: 1754309672-667128
+X-HE-Meta: U2FsdGVkX19kfwMc252WJymNsG+6xkKtsqbqxNvlFEwRzBI/YJFGR0QCh8yY72wh3wZ9TXUQh7LkhaGBXXSVxEQrgUenrNgoAF7wpfgyT0xmKbFOIVF9SSxJJEs7aYbPrkZmBaXnw9FFheM/OHJkJNkZvvw7sIKIbs85oj9aU1Q+pxgFou/cN/v1PwPrDDkcvZGdGYrTRakZ9WRkBj+EpJJtkrdF0yvjtVvJg7VNID2QhEAO6doS7YkXCUju9CS+jvXEtjV8R+VU/ZBudgPF0SfYCRYqt9ezzCwSc+2UZTfz6qPXTrs/XjSqSenJpJvQbU0hEPbm2A4JZ2gV/cyPQNMHaiXQAWTbrZFyuoGlv8TjIFgP6MB0cVTPB0p4na3RLjznoMFUU+NV58H4l/VSy/Bd9/f63EIORrB4yDVF9//I3k74JjoZ6juQ6FeKGLyCQGKchjWaYjuaq2bkEm5Qva19CR0xhSTH2xUTxAjRezfCGr7d7p0wz8zOOqewngMPCH6Saj2QXew75sjITcSTjoJeksnr30yUKpr29RcU2qGmk8p0VDSI0Wq5KPT10/6YmU6UzvSL2MZFSwAmRJtQQT/P2iEs9MICyCwnLtkNg1CJKNUt5P3lpCF9ta4x1TvuR19b6PuEKNJZKDpD1D/XHDZmN7rcy19IQUnbh3e9FLUtKImERn03y71VHZI9+hKts2olqY6aYmV6WzCe3Pb9eosJ9MnBmEtmxZGa0ArXDrSXcglrcAiCyE7XQC5J3eSD6dxz5XMHKh609mvb7szkt91G9Uw61PNwSAZZQHj+Af/9e8saK4tnN1OELoBPOcSm/5UVlChJqydzwriKKoq3t//AVHUFzfeNLBpK/nICipBo/zcN9ALTZlZTeTjBUsTaUDmGzaPxD9AhoP0BYIFChSTMr55sNkJGT5g+NzE1mffkNomxm4p7hR/pzFf+1yIWVa04fJAmR71NCabV8P/
+ f3D+AsJv
+ TORrOY9ICsR4XgktnspE7OwBMA9wLX1v+MK30Xq5DJnsd/WrbmMNaTMtoDcF0QIT7w0YhaHIWguhCHS0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,60 +122,214 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Pankaj Raghav <p.raghav@samsung.com>
 
-As all the helper functions has been renamed from *_page to *_folio,
-rename the MM flag from MMF_HUGE_ZERO_PAGE to MMF_HUGE_ZERO_FOLIO.
+There are many places in the kernel where we need to zeroout larger
+chunks but the maximum segment we can zeroout at a time by ZERO_PAGE
+is limited by PAGE_SIZE.
 
-No functional changes.
+This is especially annoying in block devices and filesystems where we
+attach multiple ZERO_PAGEs to the bio in different bvecs. With multipage
+bvec support in block layer, it is much more efficient to send out
+larger zero pages as a part of single bvec.
 
-Suggested-by: David Hildenbrand <david@redhat.com>
+This concern was raised during the review of adding LBS support to
+XFS[1][2].
+
+Usually huge_zero_folio is allocated on demand, and it will be
+deallocated by the shrinker if there are no users of it left. At moment,
+huge_zero_folio infrastructure refcount is tied to the process lifetime
+that created it. This might not work for bio layer as the completions
+can be async and the process that created the huge_zero_folio might no
+longer be alive. And, one of the main point that came during discussion
+is to have something bigger than zero page as a drop-in replacement.
+
+Add a config option STATIC_HUGE_ZERO_FOLIO that will result in allocating
+the huge zero folio on first request, if not already allocated, and turn
+it static such that it can never get freed. This makes using the
+huge_zero_folio without having to pass any mm struct and does not tie the
+lifetime of the zero folio to anything, making it a drop-in replacement
+for ZERO_PAGE.
+
+If STATIC_HUGE_ZERO_FOLIO config option is enabled, then
+mm_get_huge_zero_folio() will simply return this page instead of
+dynamically allocating a new PMD page.
+
+This option can waste memory in small systems or systems with 64k base
+page size. So make it an opt-in and also add an option from individual
+architecture so that we don't enable this feature for larger base page
+size systems. Only x86 is enabled as a part of this series. Other
+architectures shall be enabled as a follow-up to this series.
+
+[1] https://lore.kernel.org/linux-xfs/20231027051847.GA7885@lst.de/
+[2] https://lore.kernel.org/linux-xfs/ZitIK5OnR7ZNY0IG@infradead.org/
+
+Co-developed-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Pankaj Raghav <p.raghav@samsung.com>
 ---
- include/linux/mm_types.h | 2 +-
- mm/huge_memory.c         | 6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/Kconfig        |  1 +
+ include/linux/huge_mm.h | 18 ++++++++++++++++
+ mm/Kconfig              | 21 +++++++++++++++++++
+ mm/huge_memory.c        | 46 ++++++++++++++++++++++++++++++++++++++++-
+ 4 files changed, 85 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 1ec273b06691..2ad5eaddfcce 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -1753,7 +1753,7 @@ enum {
- #define MMF_RECALC_UPROBES	20	/* MMF_HAS_UPROBES can be wrong */
- #define MMF_OOM_SKIP		21	/* mm is of no interest for the OOM killer */
- #define MMF_UNSTABLE		22	/* mm is unstable for copy_from_user */
--#define MMF_HUGE_ZERO_PAGE	23      /* mm has ever used the global huge zero page */
-+#define MMF_HUGE_ZERO_FOLIO	23      /* mm has ever used the global huge zero folio */
- #define MMF_DISABLE_THP		24	/* disable THP for all VMAs */
- #define MMF_DISABLE_THP_MASK	(1 << MMF_DISABLE_THP)
- #define MMF_OOM_REAP_QUEUED	25	/* mm was queued for oom_reaper */
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 0ce86e14ab5e..8e2aa1887309 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -153,6 +153,7 @@ config X86
+ 	select ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP	if X86_64
+ 	select ARCH_WANT_HUGETLB_VMEMMAP_PREINIT if X86_64
+ 	select ARCH_WANTS_THP_SWAP		if X86_64
++	select ARCH_WANTS_STATIC_HUGE_ZERO_FOLIO if X86_64
+ 	select ARCH_HAS_PARANOID_L1D_FLUSH
+ 	select ARCH_WANT_IRQS_OFF_ACTIVATE_MM
+ 	select BUILDTIME_TABLE_SORT
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index 7748489fde1b..78ebceb61d0e 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -476,6 +476,7 @@ vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf);
+ 
+ extern struct folio *huge_zero_folio;
+ extern unsigned long huge_zero_pfn;
++extern atomic_t huge_zero_folio_is_static;
+ 
+ static inline bool is_huge_zero_folio(const struct folio *folio)
+ {
+@@ -494,6 +495,18 @@ static inline bool is_huge_zero_pmd(pmd_t pmd)
+ 
+ struct folio *mm_get_huge_zero_folio(struct mm_struct *mm);
+ void mm_put_huge_zero_folio(struct mm_struct *mm);
++struct folio *__get_static_huge_zero_folio(void);
++
++static inline struct folio *get_static_huge_zero_folio(void)
++{
++	if (!IS_ENABLED(CONFIG_STATIC_HUGE_ZERO_FOLIO))
++		return NULL;
++
++	if (likely(atomic_read(&huge_zero_folio_is_static)))
++		return huge_zero_folio;
++
++	return __get_static_huge_zero_folio();
++}
+ 
+ static inline bool thp_migration_supported(void)
+ {
+@@ -685,6 +698,11 @@ static inline int change_huge_pud(struct mmu_gather *tlb,
+ {
+ 	return 0;
+ }
++
++static inline struct folio *get_static_huge_zero_folio(void)
++{
++	return NULL;
++}
+ #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+ 
+ static inline int split_folio_to_list_to_order(struct folio *folio,
+diff --git a/mm/Kconfig b/mm/Kconfig
+index e443fe8cd6cf..366a6d2d771e 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -823,6 +823,27 @@ config ARCH_WANT_GENERAL_HUGETLB
+ config ARCH_WANTS_THP_SWAP
+ 	def_bool n
+ 
++config ARCH_WANTS_STATIC_HUGE_ZERO_FOLIO
++	def_bool n
++
++config STATIC_HUGE_ZERO_FOLIO
++	bool "Allocate a PMD sized folio for zeroing"
++	depends on ARCH_WANTS_STATIC_HUGE_ZERO_FOLIO && TRANSPARENT_HUGEPAGE
++	help
++	  Without this config enabled, the huge zero folio is allocated on
++	  demand and freed under memory pressure once no longer in use.
++	  To detect remaining users reliably, references to the huge zero folio
++	  must be tracked precisely, so it is commonly only available for mapping
++	  it into user page tables.
++
++	  With this config enabled, the huge zero folio can also be used
++	  for other purposes that do not implement precise reference counting:
++	  it is still allocated on demand, but never freed, allowing for more
++	  wide-spread use, for example, when performing I/O similar to the
++	  traditional shared zeropage.
++
++	  Not suitable for memory constrained systems.
++
+ config MM_ID
+ 	def_bool n
+ 
 diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 6625514f622b..ff06dee213eb 100644
+index ff06dee213eb..e117b280b38d 100644
 --- a/mm/huge_memory.c
 +++ b/mm/huge_memory.c
-@@ -248,13 +248,13 @@ static void put_huge_zero_folio(void)
+@@ -75,6 +75,7 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
+ static bool split_underused_thp = true;
  
- struct folio *mm_get_huge_zero_folio(struct mm_struct *mm)
- {
--	if (test_bit(MMF_HUGE_ZERO_PAGE, &mm->flags))
-+	if (test_bit(MMF_HUGE_ZERO_FOLIO, &mm->flags))
- 		return READ_ONCE(huge_zero_folio);
- 
- 	if (!get_huge_zero_folio())
- 		return NULL;
- 
--	if (test_and_set_bit(MMF_HUGE_ZERO_PAGE, &mm->flags))
-+	if (test_and_set_bit(MMF_HUGE_ZERO_FOLIO, &mm->flags))
- 		put_huge_zero_folio();
- 
- 	return READ_ONCE(huge_zero_folio);
-@@ -262,7 +262,7 @@ struct folio *mm_get_huge_zero_folio(struct mm_struct *mm)
- 
- void mm_put_huge_zero_folio(struct mm_struct *mm)
- {
--	if (test_bit(MMF_HUGE_ZERO_PAGE, &mm->flags))
-+	if (test_bit(MMF_HUGE_ZERO_FOLIO, &mm->flags))
+ static atomic_t huge_zero_refcount;
++atomic_t huge_zero_folio_is_static __read_mostly;
+ struct folio *huge_zero_folio __read_mostly;
+ unsigned long huge_zero_pfn __read_mostly = ~0UL;
+ unsigned long huge_anon_orders_always __read_mostly;
+@@ -266,6 +267,45 @@ void mm_put_huge_zero_folio(struct mm_struct *mm)
  		put_huge_zero_folio();
  }
  
++#ifdef CONFIG_STATIC_HUGE_ZERO_FOLIO
++
++struct folio *__get_static_huge_zero_folio(void)
++{
++	static unsigned long fail_count_clear_timer;
++	static atomic_t huge_zero_static_fail_count __read_mostly;
++
++	if (unlikely(!slab_is_available()))
++		return NULL;
++
++	/*
++	 * If we failed to allocate a huge zero folio, just refrain from
++	 * trying for one minute before retrying to get a reference again.
++	 */
++	if (atomic_read(&huge_zero_static_fail_count) > 1) {
++		if (time_before(jiffies, fail_count_clear_timer))
++			return NULL;
++		atomic_set(&huge_zero_static_fail_count, 0);
++	}
++	/*
++	 * Our raised reference will prevent the shrinker from ever having
++	 * success.
++	 */
++	if (!get_huge_zero_folio()) {
++		int count = atomic_inc_return(&huge_zero_static_fail_count);
++
++		if (count > 1)
++			fail_count_clear_timer = get_jiffies_64() + 60 * HZ;
++
++		return NULL;
++	}
++
++	if (atomic_cmpxchg(&huge_zero_folio_is_static, 0, 1) != 0)
++		put_huge_zero_folio();
++
++	return huge_zero_folio;
++}
++#endif /* CONFIG_STATIC_HUGE_ZERO_FOLIO */
++
+ static unsigned long shrink_huge_zero_folio_count(struct shrinker *shrink,
+ 						  struct shrink_control *sc)
+ {
+@@ -277,7 +317,11 @@ static unsigned long shrink_huge_zero_folio_scan(struct shrinker *shrink,
+ 						 struct shrink_control *sc)
+ {
+ 	if (atomic_cmpxchg(&huge_zero_refcount, 1, 0) == 1) {
+-		struct folio *zero_folio = xchg(&huge_zero_folio, NULL);
++		struct folio *zero_folio;
++
++		if (WARN_ON_ONCE(atomic_read(&huge_zero_folio_is_static)))
++			return 0;
++		zero_folio = xchg(&huge_zero_folio, NULL);
+ 		BUG_ON(zero_folio == NULL);
+ 		WRITE_ONCE(huge_zero_pfn, ~0UL);
+ 		folio_put(zero_folio);
 -- 
 2.49.0
 
