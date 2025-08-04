@@ -2,21 +2,68 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 14485C87FCF
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 14:10:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 17A30C87FCB
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 14:18:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5A9E6B009D; Mon,  4 Aug 2025 10:10:32 -0400 (EDT)
+	id 8E4588E0003; Mon,  4 Aug 2025 10:18:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A31956B00AB; Mon,  4 Aug 2025 10:10:32 -0400 (EDT)
+	id 86E748E0001; Mon,  4 Aug 2025 10:18:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 96E396B00A2; Mon,  4 Aug 2025 10:10:32 -0400 (EDT)
+	id 736158E0003; Mon,  4 Aug 2025 10:18:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8AB4F6B009F; Mon,  4 Aug 2025 10:10:32 -0400 (EDT)
-Date: Mon, 4 Aug 2025 10:10:32 -0400
-From: Benjamin LaHaise <bcrl@kvack.org>
-To: Leon Romanovsky <leon@kernel.org>
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D9838E0001
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 10:18:20 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B84D459B86
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 14:18:19 +0000 (UTC)
+X-FDA: 83739279918.23.7F21269
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	by imf05.hostedemail.com (Postfix) with ESMTP id A4DBB100010;
+	Mon,  4 Aug 2025 14:18:17 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rcZdA0LS;
+	spf=pass (imf05.hostedemail.com: domain of leon@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754317098; a=rsa-sha256;
+	cv=none;
+	b=4fqbnwA4mJ28oSpyDwZzQKardtoD7AtSVdnhYCgp5b06wT0W7yZvtk+nsLRnLo0ZtAmLqd
+	I6IETzaC8+Ove+kyYZ/CtEt7/NyWoWWbb9CfcFOavahx8KQLRedBhMoG8bPmAXjrIZaOnj
+	tUA4hh9A/ESFHfFKTCESQEP00y0JEjI=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rcZdA0LS;
+	spf=pass (imf05.hostedemail.com: domain of leon@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754317098;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=VBGemonBUIhP2P+1g6qjR2CC8Rhb2C6+b5JiBzSqy14=;
+	b=sQ5oTQqy6wMEof0DaPInOb4KRrBW5/xmgOLkjxMY5egbf5shKxcCur/MVGrOr1WT4/+B3t
+	pZlyLf7QIV2cGvR6ynEL/i3s8WmIcKqldlu0NaR/xZs0xqiI8TlA4lj86pyv7+Xrdh74OF
+	1k+IMq4qzKLhpuABCaEkNNIBM9otwZs=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id AF9BE5C611E;
+	Mon,  4 Aug 2025 14:18:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED16C4CEE7;
+	Mon,  4 Aug 2025 14:18:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754317096;
+	bh=Zr3kPkorN9J0wHoU77coJxVhd5vO47zAf6WxVna9oFs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rcZdA0LSgVnIJ/ja+rzujOZjYxEuQpnBSSJNlhmM+uIS36PMWIvxGnxJBKVGS0y/k
+	 vBjKAwytVDKvxwg3o4C9JLt2cc5Xf3Ulyggy/L7MyOHzWrqYM35ShQ8xJDtl2YOAB7
+	 3wGRmkXADNX6dFnB5tDVmYtUzfYrZkmqh/fAJX007BI21XLotatJs14FAYy7dz2Pqv
+	 Eb7LFQAA4+jV/XnEzEvrRUpolhq+I8mzh+IQZcnXLb5j7+5cmwoKzIv7/4Y2lgrdRR
+	 b8oxjcA0vaYNH78RQuyAh19r+u1Tc+UWreSga05cOcSy8fmAwfSkJk+8HgQjXZFhcc
+	 /nh+mNJsc6Ehw==
+Date: Mon, 4 Aug 2025 17:18:11 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Benjamin LaHaise <bcrl@kvack.org>
 Cc: Alex Williamson <alex.williamson@redhat.com>,
 	Jason Gunthorpe <jgg@nvidia.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
@@ -34,14 +81,23 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
 	Sumit Semwal <sumit.semwal@linaro.org>,
 	Vivek Kasireddy <vivek.kasireddy@intel.com>,
 	Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v1 00/10] vfio/pci: Allow MMIO regions to be exported through dma-buf
-Message-ID: <20250804141032.GA30056@kvack.org>
+Subject: Re: [PATCH v1 00/10] vfio/pci: Allow MMIO regions to be exported
+ through dma-buf
+Message-ID: <20250804141811.GT402218@unreal>
 References: <cover.1754311439.git.leon@kernel.org>
-Mime-Version: 1.0
+ <20250804141032.GA30056@kvack.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.1754311439.git.leon@kernel.org>
-User-Agent: Mutt/1.4.2.2i
+In-Reply-To: <20250804141032.GA30056@kvack.org>
+X-Rspam-User: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A4DBB100010
+X-Stat-Signature: re8icqydm783z1q1pkgt3abohrcwbm65
+X-HE-Tag: 1754317097-975283
+X-HE-Meta: U2FsdGVkX1/rfiHSbMSgRkX2BECkgq/3XFapkK18s9WI4GZSpgvRR3nNReJXf7eXScHhyWaAxUUaNsR22vWjNDNJetT7cVurVw3i8LxVDSqJ541JB61EuANEwU+xyENQdQLxHRMizt0BIGwswyGsFXOEUvtfHEMUsEc5JICOzfEctFTbGGd3amlY4x4hJvqFMP7fHmlSiKSX6g5TsYDWW4M9jJABliyn3aUkAFi2tqxBfeDcEYgWEY5BQq+Z6EWahtYpbwiVU2lI2c3OPEXn8w911IE3OoRqF4U49iOHK/iTqywMgPB1BKph2ODBFgpxdZ/8eYP3BACg72wJvvZNckV2wp9KUC+ycYIqChinOGssvJ2IhliepMDP8cKYApNQwEkn/BRlJHm3vv8U0V47/c8ZB4LZBEJT0kHUDFulhiWu1Gc+zS2Fm72eavwAWJgNzjCSbq9bXmc2nZ9Rma7m+gaD+6W0fWDAUlwvpXf6UejTHA+1C4HNXL3UOgBDCoQzozFh4T7r2dENlYMlY7PX2kajrgBn6kkYUo/2Yb6aX1BaA2cFkL4uLjwSeEViFuY/lrlJyop9fglgfbsYYENNONBBcvCPmWvH5T7RJEqffmXcUQ8HGiqwRc48clu/tjNDhc3ZaFkS339RCNDPuuwvfG2ZY17Uzwyf7dpD2cQJwWbPn244IjnaZzvcX70NkiRG0nLGIvbD13d2QnBJkpK8ad/3IiLfNdXSqGfBQX97nRrsqnui8eYTf8KSFitglyJ5EZh2H1iX83Xi5zVQ1CyVIDo4T47hmyd9FZ+i4XebrDcTBUkM24uqRW80/ZbZ4ZEbmIgbtfoy9K5P5EDNnUoI5ZHcivc62oQaucGqmn+YmkyhR8dFo222trxyGg5OEojNeiRXIGj8EP0ImYYG+g4MChspWdLfjAtqBxNf51lu0Z0NYmjnZ4s6HGThjnlYZZutXN0Rf4HR5WwF2cQvPQ6
+ Fm7ifnZZ
+ D1Q+1owi8H9W4yBy9HwJ7S6zAnNsYJBs9ma5jUGvJr5yVP8h92Ixpx78dmuMueMrC4UKft6+iZM2wJ1nbkedqWMv1vzMlRiOhQyRrqdY5Yz5rUmRCiQ8C/HJCPytJL8pHuFh+9rXBF8eBzIk0xT/Y1tC9NrbhYuBDz9XlXkY9DuHbO7etOXMgzAsBFMxdrjeia1A4CGhDLQ8hMp6uV9E+NRVuOBwVk30+HTrbZ6y8rRohCYcNwCViysJ9wotvVbmTZzozoVC3RNpmr1biuwatrQ9KtUliOjRYp3MTPyH/pTnf+/w=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -50,107 +106,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-FYI: this entire patch series was rejected as spam by large numbers of
-linux-mm subscribers using @gmail.com email addresses.
+On Mon, Aug 04, 2025 at 10:10:32AM -0400, Benjamin LaHaise wrote:
+> FYI: this entire patch series was rejected as spam by large numbers of
+> linux-mm subscribers using @gmail.com email addresses.
 
-		-ben (owner-linux-mm)
+Thanks for the heads-up. Are you aware of any issues from my side?
+I'm sending patches with git-send-email through mail.kernel.org SMTP.
 
-On Mon, Aug 04, 2025 at 04:00:35PM +0300, Leon Romanovsky wrote:
-> Changelog:
-> v1:
->  * Changed commit messages.
->  * Reused DMA_ATTR_MMIO attribute.
->  * Returned support for multiple DMA ranges per-dMABUF.
-> v0: https://lore.kernel.org/all/cover.1753274085.git.leonro@nvidia.com
-> 
-> ---------------------------------------------------------------------------
-> Based on "[PATCH v1 00/16] dma-mapping: migrate to physical address-based API"
-> https://lore.kernel.org/all/cover.1754292567.git.leon@kernel.org series.
-> ---------------------------------------------------------------------------
-> 
-> This series extends the VFIO PCI subsystem to support exporting MMIO regions
-> from PCI device BARs as dma-buf objects, enabling safe sharing of non-struct
-> page memory with controlled lifetime management. This allows RDMA and other
-> subsystems to import dma-buf FDs and build them into memory regions for PCI
-> P2P operations.
-> 
-> The series supports a use case for SPDK where a NVMe device will be owned
-> by SPDK through VFIO but interacting with a RDMA device. The RDMA device
-> may directly access the NVMe CMB or directly manipulate the NVMe device's
-> doorbell using PCI P2P.
-> 
-> However, as a general mechanism, it can support many other scenarios with
-> VFIO. This dmabuf approach can be usable by iommufd as well for generic
-> and safe P2P mappings.
-> 
-> In addition to the SPDK use-case mentioned above, the capability added
-> in this patch series can also be useful when a buffer (located in device
-> memory such as VRAM) needs to be shared between any two dGPU devices or
-> instances (assuming one of them is bound to VFIO PCI) as long as they
-> are P2P DMA compatible.
-> 
-> The implementation provides a revocable attachment mechanism using dma-buf
-> move operations. MMIO regions are normally pinned as BARs don't change
-> physical addresses, but access is revoked when the VFIO device is closed
-> or a PCI reset is issued. This ensures kernel self-defense against
-> potentially hostile userspace.
-> 
-> The series includes significant refactoring of the PCI P2PDMA subsystem
-> to separate core P2P functionality from memory allocation features,
-> making it more modular and suitable for VFIO use cases that don't need
-> struct page support.
-> 
-> -----------------------------------------------------------------------
-> The series is based originally on
-> https://lore.kernel.org/all/20250307052248.405803-1-vivek.kasireddy@intel.com/
-> but heavily rewritten to be based on DMA physical API.
-> -----------------------------------------------------------------------
-> The WIP branch can be found here:
-> https://git.kernel.org/pub/scm/linux/kernel/git/leon/linux-rdma.git/log/?h=dmabuf-vfio-v1
-> 
-> Thanks
-> 
-> Leon Romanovsky (8):
->   PCI/P2PDMA: Remove redundant bus_offset from map state
->   PCI/P2PDMA: Separate the mmap() support from the core logic
->   PCI/P2PDMA: Simplify bus address mapping API
->   PCI/P2PDMA: Refactor to separate core P2P functionality from memory
->     allocation
->   PCI/P2PDMA: Export pci_p2pdma_map_type() function
->   types: move phys_vec definition to common header
->   vfio/pci: Enable peer-to-peer DMA transactions by default
->   vfio/pci: Add dma-buf export support for MMIO regions
-> 
-> Vivek Kasireddy (2):
->   vfio: Export vfio device get and put registration helpers
->   vfio/pci: Share the core device pointer while invoking feature
->     functions
-> 
->  block/blk-mq-dma.c                 |   7 +-
->  drivers/iommu/dma-iommu.c          |   4 +-
->  drivers/pci/p2pdma.c               | 154 ++++++++----
->  drivers/vfio/pci/Kconfig           |  20 ++
->  drivers/vfio/pci/Makefile          |   2 +
->  drivers/vfio/pci/vfio_pci_config.c |  22 +-
->  drivers/vfio/pci/vfio_pci_core.c   |  59 +++--
->  drivers/vfio/pci/vfio_pci_dmabuf.c | 390 +++++++++++++++++++++++++++++
->  drivers/vfio/pci/vfio_pci_priv.h   |  23 ++
->  drivers/vfio/vfio_main.c           |   2 +
->  include/linux/dma-buf.h            |   1 +
->  include/linux/pci-p2pdma.h         | 114 +++++----
->  include/linux/types.h              |   5 +
->  include/linux/vfio.h               |   2 +
->  include/linux/vfio_pci_core.h      |   4 +
->  include/uapi/linux/vfio.h          |  25 ++
->  kernel/dma/direct.c                |   4 +-
->  mm/hmm.c                           |   2 +-
->  18 files changed, 715 insertions(+), 125 deletions(-)
->  create mode 100644 drivers/vfio/pci/vfio_pci_dmabuf.c
-> 
-> -- 
-> 2.50.1
-> 
+Thanks
 
--- 
-"Thought is the essence of where you are now."
+> 
+> 		-ben (owner-linux-mm)
 
