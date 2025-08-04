@@ -2,114 +2,131 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AC0DBC87FDA
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 08:19:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EB699C87FCB
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 08:22:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4FC366B0089; Mon,  4 Aug 2025 04:19:51 -0400 (EDT)
+	id 799506B007B; Mon,  4 Aug 2025 04:22:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D3D06B008C; Mon,  4 Aug 2025 04:19:51 -0400 (EDT)
+	id 771456B0088; Mon,  4 Aug 2025 04:22:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E9336B0092; Mon,  4 Aug 2025 04:19:51 -0400 (EDT)
+	id 686836B0092; Mon,  4 Aug 2025 04:22:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E4F86B0089
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 04:19:51 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D39EB140ECC
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 08:19:50 +0000 (UTC)
-X-FDA: 83738376540.06.AA4FFE2
-Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49])
-	by imf03.hostedemail.com (Postfix) with ESMTP id EEE1E2000C
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 08:19:48 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VWaV253k;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf03.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.217.49 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 590B66B007B
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 04:22:11 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 285921DDE3D
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 08:22:11 +0000 (UTC)
+X-FDA: 83738382462.10.CA7D0F9
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 5076F40011
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 08:22:09 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AGiY3W+1;
+	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754295589;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1754295729;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QakOYCzjeUgf946LIgVNMTZzQUr0zFeiIPDv/wMCjDg=;
-	b=tQqO0mMwKoKWkiSWwTQi6uj6b9B7lzjc0doJ0VrJFKartNSgcD3OsAQFmpPyJ++UHilGNn
-	C36s7QPXpB6fYximOFp0rL4wNj8Jf8zNB+XsZU1LoGCb/aVGMQv6xiKxaSOSYwvUhcZWu1
-	nF1/cNaAWaiQzxB7z5eXUACKoVKc9f8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754295589; a=rsa-sha256;
-	cv=none;
-	b=ilpKefloJpaTKFchYssvWb7snNvOQPOx2gIZCOCgkcVc5n1hbSkmc4a/tmdsCtpmXBmWF2
-	/oIwcdZO0XKmq44NK+qI0yIY0ICh4e8FTOa2Soe0xdZE/kjzu12B3C3BK4CIvD2BN9/tpP
-	QKe7Et+Ij8KBA5DkQOGhMQ1KAIBcsyY=
+	bh=rvd7myixX9Tdbc669Fpwy91E6A6uestbIHb9Av6+758=;
+	b=8CcwdFq0ysw/3w5LgEke18T+Y49HuwuDMHfg2QyQRolPFzh7x8xYpAjp1u6nrK2BpAO5ou
+	xymx4yu36pNgrE8ekuekRfD0hs1clwvfDIBb9wW3c6N+UqVxgt0KftXwWvHxpUl2n+tv3o
+	lZJ9EpHRMU6RCuxaXx7u9pWvIpAYg+I=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VWaV253k;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf03.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.217.49 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
-Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-4fe2e89d055so1617695137.0
-        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 01:19:48 -0700 (PDT)
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AGiY3W+1;
+	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754295729; a=rsa-sha256;
+	cv=none;
+	b=GztyZZqnU4omhu0BIjICET3dfT7wc+wq83gm0i+2OkNljl0zZm00WBt+VfcgbnIMWm1xNP
+	1W9XLJhrt9vjA2UU1++taqtiWpCyIHUL23rJuoCBIUnCnXoM3Ys/a9Q+upROqqWruElRQJ
+	Vs2LNnTWFB7RDsc72I4YvYKKPu6CN+Q=
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-af9618282a5so206185066b.2
+        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 01:22:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754295588; x=1754900388; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1754295728; x=1754900528; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QakOYCzjeUgf946LIgVNMTZzQUr0zFeiIPDv/wMCjDg=;
-        b=VWaV253ksGBtwYaPPKJaEyyJglxdfboVIj12swk8ixTw+CYPz8iI5dcmppWiawtxHK
-         SUs90EMn/ccjSyGU3RX5qFr7GOwaK9uSEhNzz/xaGwOWLD9CKBbqQtGPg6oh/GH33osn
-         sBk2n9kbjAOk9UTasgO0RwazIOnXOZGIZ+t0I9Cl1asKfkc4B9OnNOV2NSPvCCNN/lIT
-         k35FKRTJLE8TrfthZDUoSp5t6qKTwfLkqR6xf/9Nbws1fahIYBeCbBC05YcnslYmD9N4
-         luSzPKNbNi/rUUL3e767Q290+hV2scGqomkaVN7aS0FukQFvk48sRDH3hNaTpjCF/bSv
-         sLGQ==
+        bh=rvd7myixX9Tdbc669Fpwy91E6A6uestbIHb9Av6+758=;
+        b=AGiY3W+13iRjk3umYnzUIbNzFQ+ZJie5L7i8OFLTpZfKlrY5xEiCgyuQ+fB0YMEgdp
+         IEtnAEXLJB7YHQLvewzrxvl5Hf6AbCwUU5InBvysPKIMBZUZqb1iRkkaHEvHXWtq74vJ
+         m/6hnm0vhRbK2pcls+oJJWUJzr7HZJjsqqt15HkHS7oeulau1qW2bGMKVbwgWAZw4bqB
+         tuuupWby/b7mq1/oS21ommb8kzVzm3msTsSXg0A+8tJgnhlBAE6LTmfqdqEvNLyMb9fR
+         w3JHlxXDpRnHpr0TeFiRK4Q7ZjSfzqNoviI1tiWJftjM8NZhb8N/zse8EmfL0PxnwMWZ
+         n+EA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754295588; x=1754900388;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QakOYCzjeUgf946LIgVNMTZzQUr0zFeiIPDv/wMCjDg=;
-        b=pgkSY0/mXcf0tf7MWWA0rxi8yfmj90ugYp6ALSSJ2z6s5Mh25EdyKu0S9zE49Hup9C
-         lgVdebGkapgQ/agDx0SEuvUKinqMmAk/5qx3o6G0R8wAa1sBbpC5YEOkNg8TWyfgdzim
-         U6pkTZMpQUDW1kD6YoSWfTYY5R6+eOa0YrAtDVTXU6oeFLC3y2sWsTWQnYazZNi6zdHV
-         qc1XVNEsZDd0i8CXRNZiNNFZ64uFmJeAOzPO2a99KnnAdOKvyMYnM8wSV6V98UzSosDQ
-         NIGlvtOqicXJqtEz3cFGmgUhLAXOmjVO3dBhsI0KD9TlnBHU76bTXUC/77Amunl5quuD
-         906A==
-X-Forwarded-Encrypted: i=1; AJvYcCVJBr3vPu9/ngrAjcU36KB9x0PHp90b0HC7jH5it/9HNnNSNCzFumCpDLcLJOy/S+2FnGPwWIOWZA==@kvack.org
-X-Gm-Message-State: AOJu0YyuH6YJcKi/DkgQWhW4JtCxfY1BeGcK8S0fR0F4enlzgdrr9VcK
-	w+FQSePKAuU8FVy9x8d9kiItHXIYtWvpajPgDiGz247fIdkPcqtfcFS1d0YISfNLVazgIHtKcMv
-	USoTNji/328pODPie07rJt9mCvyZgI9E=
-X-Gm-Gg: ASbGnctsvbBa7I1e10Fdol45DPIWQS7zWHrWEZFoDcM++EpXFp08Cle/WO3ON04dcRu
-	wH2kIinIWY+RCVNjYAneVdkba55tqRXuosiLQ4IuakuSvYGrDA66pPTSXJbJhZ0plIS3kSlB7YF
-	rJxdtwVCGh3dBfEOvA7Ko5v/zxW8QKU04hih8cUiufhubYd84IgCxOBXMfYw1xlNoKjP34Ze0++
-	ITSElI=
-X-Google-Smtp-Source: AGHT+IFEShGMSYTemW41INtMwdf/oTeKCho1ekLh+r1ejDjZNmNvZ7x04++HhEfI2mR2LR/hSKCgAf2ysUV1MylhyPY=
-X-Received: by 2002:a05:6102:6488:10b0:4fa:3547:2d38 with SMTP id
- ada2fe7eead31-4fc100d5721mr4901505137.10.1754295587845; Mon, 04 Aug 2025
- 01:19:47 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1754295728; x=1754900528;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=rvd7myixX9Tdbc669Fpwy91E6A6uestbIHb9Av6+758=;
+        b=RHoN7bHI393IPj+F+kM1GKVShppO+w5b7Pab3zmhufteotxNihN2Qh409GrBui+eJh
+         Ry69fWcH6XVto4m1Um3ZsMD1BswxDp1jSCjl+/TPn7BKwLJYjTc0pgCZbiGnyZeWy+TS
+         hU1QP2+F5GZSQc43hmh8Fg9x28veliavqLLS9t8pXa1wMfzKw+fTsYygjYBVraAfvY8o
+         qUURLI03DYqpmwsMqL4JsM2wbmDFpSOLXdaxwMbf/F3Xl6Foo2KID3jGsoel7SPB2ZV7
+         SmIpUA3oVfUC3NEbU8O9ty6J/uRqw/YZVSr84wcgCR5ypAC/K3ZfnDVHRmi3FmYRDC31
+         qA+g==
+X-Forwarded-Encrypted: i=1; AJvYcCXcEJOlwK6JNYe6jN236dnl/tNWb32NshuvRDLV6oThfVKpwAGuCHlzJh+kB5q/h2/MbRmWYH2PyQ==@kvack.org
+X-Gm-Message-State: AOJu0YxoOxPjXAvxPXUxj7JIolSUMCxYyP6Lmgh0UfiRnWyiQ6DZAb+X
+	1qmmH78tnUZRSdGuudxP/4a58wj8cLDB2HsP48o6rCVsAQzAkziky1xg
+X-Gm-Gg: ASbGnctWdWe8SzT5Gu64U1NZkk6B1sj+UGXahxz8KQmazbIp4u53bj+NRP/Fnou/Ocf
+	pi2HCfwrCItq0CvG5ITucbndz52YLlPGJOGKOmi/MR5frtjU0L0hU4ScYGmQUpZPtvWLNTZULQC
+	IyXt7INlj7pYzhAzL4I8gd0JyVUCfixKa6iLW/bAouyMk/+VRyx0G3PfpmVp2/eWVnJSAwlEiyU
+	WIfWinvul7FdgLlDYczhQM0enSeeD/PBfpCgloOH9IR7FiiJqaeJsw399EcrW1GleJEEsQJslVZ
+	2OtkBsc7o8TxlwgXl0MZV5enpuvylhnReavOx8PogaDbUApcMuptC+LU1pNea73CUUJIoQ/UvNU
+	K6CJX9auziQzkrjES39oNWQ==
+X-Google-Smtp-Source: AGHT+IFcqDL91bJ8WI7tVnisTnu/P57zfWTIch9YEy24U+3LW57zanCt6Si3JczoGVKBqIAUY63WTA==
+X-Received: by 2002:a17:906:e093:b0:af9:414d:9c2 with SMTP id a640c23a62f3a-af9414d0cc1mr806271566b.3.1754295727344;
+        Mon, 04 Aug 2025 01:22:07 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a0765f0sm693935266b.28.2025.08.04.01.22.06
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 04 Aug 2025 01:22:06 -0700 (PDT)
+Date: Mon, 4 Aug 2025 08:22:06 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>,
+	Harry Yoo <harry.yoo@oracle.com>, Lance Yang <ioworker0@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>
+Subject: Re: [PATCH v2 4/4] mm: remove boolean output parameters from
+ folio_pte_batch_ext()
+Message-ID: <20250804082206.ri5roofvd32kyaya@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20250702104926.212243-1-david@redhat.com>
+ <20250702104926.212243-5-david@redhat.com>
 MIME-Version: 1.0
-References: <20250607220150.2980-1-21cnbao@gmail.com> <aJAFrYfyzGpbm+0m@ly-workstation>
-In-Reply-To: <aJAFrYfyzGpbm+0m@ly-workstation>
-From: Barry Song <21cnbao@gmail.com>
-Date: Mon, 4 Aug 2025 20:19:36 +1200
-X-Gm-Features: Ac12FXzEE9AUMv26jhr9UED1IgeO8i-lkO_9knp8t8Sgm8GYpJ8xqHeutSYDfEM
-Message-ID: <CAGsJ_4zsj2c8J7XxUeW-95pYb11uSjas3FbJv1F3-x7bbtPYnA@mail.gmail.com>
-Subject: Re: [PATCH v4] mm: use per_vma lock for MADV_DONTNEED
-To: "Lai, Yi" <yi1.lai@linux.intel.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Barry Song <v-songbaohua@oppo.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	David Hildenbrand <david@redhat.com>, Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Lokesh Gidra <lokeshgidra@google.com>, 
-	Tangquan Zheng <zhengtangquan@oppo.com>, Qi Zheng <zhengqi.arch@bytedance.com>, yi1.lai@intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: dhqkdqnyweqci6qwmsndhyjtyujkeouc
-X-Rspamd-Queue-Id: EEE1E2000C
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250702104926.212243-5-david@redhat.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-Rspam-User: 
-X-HE-Tag: 1754295588-220165
-X-HE-Meta: U2FsdGVkX1+7QJ9ZBK4gdwDVSfD1BTwN/ki9NoBPJipJMgS7u5mlQy7jn6S+E4Fw8x8QFlqr946zfswdwznPInIG8Bq50D7Q1YVPTl9LDpfwtgT5s0gM8Rd+8ZoYjqlR4/M0WgOF1KLj8drrxnih+zdDSUNG92606t9t+SBel6EA1iSlsVa2Ze0Hd1vw+VUPpx2NRwyJz+kWESBCqsR9qTTzhxS2/dON2KI9ie7fobZ+n1lcJ3XLlmLRR/EarbIVffotb01sQgCJvVYH9FW7E+GtT+XWu49Ssdj0bkMeD1Uh1ZiNF4BfB/pqdggWs9C/LT48hMXuyzfQpchd2sQ7BpHAYaibmoIIXTeQnLrsnkM/YoJ8asSv7RKef807dbJBHxuk757Cuesn79V0BCXiCYVqvz3iaVZ2ctdkYrpip4fucMNFGUkM8Ht+rTuFD1b0RSeei61SOvSqRO92ZMrTpq5kfPTYKMALvW29BeMpJgpDUGtWWQRy7B/Hu3iOvoHkh351zCO63ACWUgRpNe/Z8BolkMaN7noFIQXi7t2UWx6WcU+ETbBM/ncZNhT+ovdaioj4PgaFBXyFXupo2Ip4FURxsKtbXP3IrEtC1UN8n7M262yRnnuhMBxf1NCxvBp5apTWlarcaJBsg64uyUFNviDc0WPjvjD1SCk2T5pmn/k5I/phDFrZAaJglq/x6CAmQHH64zz6EYlV63+17l5ak6a5GUdhC47eKXAnSs9E0/Mt7cm90zHRN2wmkR7fkyyuf0dAdQV+uK0/scCwJvbN4Ws0w8p4CvxUjz7OSP6P5y7n7EdckZuPzxcCV872fz1lMkR1eez1WXFBIarAFy9QQpOKhI/WZ2hGE4OK2lK7YPAFejIFKBQVFGidH2vkVcTejRw2BDDS4Tx1hB2EnqnXk2SZMBibA1gYTYBE1Ozgsd3/NwStq5oT9FBTjDkq18GKRa9W45aYUmFH5VuoZyX
- WHcmKfNe
- 594AKT/ixXYPponVct3M0v9PD0ViPuxjcxV0xnoNGImBritLWywsB6+bCylcfCVrSwbn6sVW7p4+Lq1yOCGUlHhmBs9C5gZWP7EnoD/n83z99U36G3XExLrmDLU9mCMpzY2HUQ9dR0+2sCFyJF1aBfwjEija7c95RiYAsPGESsy1v8neDgZLtNbMnUxTHgpDY9yBw16wTNxLc3oykXNx7t1AFBbFf0QEeLjnoJ0Erptzvq0lYamGVxuATuz7B9wtvYJAI6zrYgKgmZ/Y7Y9S41RI3cP+tNQwq9yKEKFi74BPZJDf2U7BEMZnduGm8wn2X7IEZrdhHNcXFmf21Ec68D0QQGFc4eVOlG1TOckLk/kyiMA+6qWhXDpuILpnpYLzrq9K/iau2MKGSnE432zUpX372lC5EDO33amkunwb+BDl2OB4kCrsYV1hDuodZraTqxntcspC71BVCqT9m37F2ZluWJeNHRuWVV09uXKuo4qtH3Ng4uK7D2rwz+TT40RrUMgOLoyQ5pPYKYoXy1Hyjb6D80A==
+X-Rspamd-Queue-Id: 5076F40011
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 8xb4rugg8c5zm9btruofr5u5xh4jfjwk
+X-HE-Tag: 1754295729-727066
+X-HE-Meta: U2FsdGVkX1+8KzSgDHqXb2T/QPDN0idePdqIMZ6KhDKOQk77+TouFZlnLe1Rlw/QFQZxJZSj352tb+eF+3T6n4MVSZz7YlqMK8QF/yhM/3DuGf3Yx86itV07i+r6KX2nRcruzOB4UtO9MCfyGCNSl+3lih3cX9+2VcESiI10e4jrBupWaPjYAjWXqP9CY2i6GfwBV4bd07ZlDbZ27N25NSNRdIXAAWS9xhS18ItmGUO2oOpcF2cJUAvFN9Am9H9CbLa27dGWsQNFsiyuJ390W9g2SzMpW+sr/X/qzkl6oSRhBDE4ye5bHW2bMV6gF4l8iSKJfJ8SMK2jbrkQRDRnT0NUCRt74FwbBk3X4aIIOn7hrKuaoCm4Hsx1pshTKE7NiUYV/fiuDT2KZbFUMDkTlklkT5jFDGnrz7VYWb/tuIf7gFgvh7V4o4OOXc2yfG0fcg1KUJb+a2owGYJmrx0rTq+QVHfzCUXiPhyksF81G4OsRs8PEwKklPmJrFLomy1/MU/Ta+jj7GW26aolCH/TxNvCTlfr5D9e0Id7VAEgkJnCWa704P6LIG93NEIdXQnVJ2ltQ1pMFtuYv77qi+di5ao4Z4Oj1l34+uqzI6tzo9fag/7RgJKV93zlg6+EFG1CzbcvI/7sMKLJVD5Aw0g3LIz8QWKNkKS0JRATYmBWJJgQImG1OFiwFDVE2Fgy+ED9CR1bHvJ0WiVml67RwkTi9revU3g2n7y29k5M9zC5EDEU7AS+dhavxg7+p5KOYAM+TQrF9+e2BpI19S1/k5OJNqY+545nult0nP32MXPO76/NTY+TUC3D34idz9ihz4WGU4+lYulEJXF0GPPG00o85mvBcUax7qii3Nwmvt4nrGvJq7p7qScCImE/dY4c9z0xDHEEAWOMbk5c3QCQjIHKMu+v7ulaGiaheuwlMwUyU8NV5iteqfg/hE3dwe5ntoeRbb0JOR9ksMwgNpY/dvi
+ LVERE6T/
+ PoW//ayud2DLrjswX5oTxz1M3mhjzq69PvchEKTJadNBo305zcUuj4F7oISXb0mN/NdmKhmDTzlPsFBFnoHCsTX77xZ+3sUgOcNXm/VCaJw1mAIxBdTVwD5+zktOZgJlFA1OGPrF89+4pv41XDO67dcnG14jui46GJ4wexAObiF7st+DT//lFZd74m3+ZvGBOgxSNDMPmASD7tWa6wChDjq+LXtGqlgsk6lp6AUyai9ZdlWDzsfew7E8eWuvGASphQ+/u6zhzaVcN+twh0YZFuKnPV1Kobz+5acjeWGbUa9S8A95xuEnE+9Lvn6Qphw8w2vuF
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,111 +135,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 4, 2025 at 12:58=E2=80=AFPM Lai, Yi <yi1.lai@linux.intel.com> w=
-rote:
->
-> Hi Barry Song,
->
-> Greetings!
->
-> I used Syzkaller and found that there is general protection fault in __pt=
-e_offset_map_lock in linux-next next-20250801.
->
-> After bisection and the first bad commit is:
-> "
-> a6fde7add78d mm: use per_vma lock for MADV_DONTNEED
-> "
->
-> All detailed into can be found at:
-> https://github.com/laifryiee/syzkaller_logs/tree/main/250803_193026___pte=
-_offset_map_lock
-> Syzkaller repro code:
-> https://github.com/laifryiee/syzkaller_logs/tree/main/250803_193026___pte=
-_offset_map_lock/repro.c
-> Syzkaller repro syscall steps:
-> https://github.com/laifryiee/syzkaller_logs/tree/main/250803_193026___pte=
-_offset_map_lock/repro.prog
-> Syzkaller report:
-> https://github.com/laifryiee/syzkaller_logs/tree/main/250803_193026___pte=
-_offset_map_lock/repro.report
-> Kconfig(make olddefconfig):
-> https://github.com/laifryiee/syzkaller_logs/tree/main/250803_193026___pte=
-_offset_map_lock/kconfig_origin
-[...]
->
-> If you don't need the following environment to reproduce the problem or i=
-f you
-> already have one reproduced environment, please ignore the following info=
-rmation.
->
-> How to reproduce:
-> git clone https://gitlab.com/xupengfe/repro_vm_env.git
-> cd repro_vm_env
-> tar -xvf repro_vm_env.tar.gz
-> cd repro_vm_env; ./start3.sh  // it needs qemu-system-x86_64 and I used v=
-7.1.0
->   // start3.sh will load bzImage_2241ab53cbb5cdb08a6b2d4688feb13971058f65=
- v6.2-rc5 kernel
->   // You could change the bzImage_xxx as you want
->   // Maybe you need to remove line "-drive if=3Dpflash,format=3Draw,reado=
-nly=3Don,file=3D./OVMF_CODE.fd \" for different qemu version
-> You could use below command to log in, there is no password for root.
-> ssh -p 10023 root@localhost
->
-> After login vm(virtual machine) successfully, you could transfer reproduc=
-ed
-> binary to the vm by below way, and reproduce the problem in vm:
-> gcc -pthread -o repro repro.c
-> scp -P 10023 repro root@localhost:/root/
->
-> Get the bzImage for target kernel:
-> Please use target kconfig and copy it to kernel_src/.config
-> make olddefconfig
-> make -jx bzImage           //x should equal or less than cpu num your pc =
-has
->
-> Fill the bzImage file into above start3.sh to load the target kernel in v=
-m.
->
+Nit in subject.
 
-I can boot successfully with your bzImage for the 6.2 kernel.
-However, when I use your `kconfig_origin` to build a new kernel from
-the 0801 Linux-next source, the system fails to boot.
+We have renamed the function to folio_pte_batch_flags().
 
-Warning: unable to open an initial console.
-check access for rdinit=3D/init failed: -2, ignoring
-input: ImExPS/2 Generic Explorer Mouse as
-/devices/platform/i8042/serio1/input/input2
-List of all partitions:
-No filesystem could mount root, tried:
+Not sure it is too late.
 
-Kernel panic - not syncing: VFS: Unable to mount root fs on "/dev/sda"
-or unknown-block(0,0)
-CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted
-6.16.0-next-20250801-gb9ddaa95fd28 #1 PREEMPT(none)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
-rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-Call Trace:
- <TASK>
- vpanic+0x2a1/0x2b0
- panic+0x55/0x60
- mount_root_generic+0x2c6/0x2e0
- ? __pfx_kernel_init+0x10/0x10
- prepare_namespace+0x49/0x260
- ? __pfx_kernel_init+0x10/0x10
- kernel_init+0x15/0x1a0
- ret_from_fork+0x68/0xd0
- ? __pfx_kernel_init+0x10/0x10
- ret_from_fork_asm+0x19/0x30
- </TASK>
-Kernel Offset: 0x21600000 from 0xffffffff81000000 (relocation range:
-0xffffffff80000000-0xffffffffbfffffff)
----[ end Kernel panic - not syncing: VFS: Unable to mount root fs on
-"/dev/sda" or unknown-block(0,0) ]---
 
-Is there anything missing from the reproducer guide?
-initrd/ramdisk?
-
-Thanks
-Barry
+-- 
+Wei Yang
+Help you, Help me
 
