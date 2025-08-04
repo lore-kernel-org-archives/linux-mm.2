@@ -2,228 +2,117 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C01FC87FCF
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 13:20:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 30C5EC87FCB
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 13:22:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F8988E0003; Mon,  4 Aug 2025 09:20:22 -0400 (EDT)
+	id C60E98E0005; Mon,  4 Aug 2025 09:22:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D0608E0001; Mon,  4 Aug 2025 09:20:22 -0400 (EDT)
+	id BEB0C8E0001; Mon,  4 Aug 2025 09:22:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BEC78E0003; Mon,  4 Aug 2025 09:20:22 -0400 (EDT)
+	id AB28A8E0005; Mon,  4 Aug 2025 09:22:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A0158E0001
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 09:20:22 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E7752B924A
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 13:20:21 +0000 (UTC)
-X-FDA: 83739133842.26.8B42D45
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 885944000D
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 13:20:18 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=StlmAQv6;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=t1B8do0K;
-	spf=pass (imf17.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754313618;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 992148E0001
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 09:22:19 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 51B16B9670
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 13:22:19 +0000 (UTC)
+X-FDA: 83739138798.24.6A3291C
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 3006AC000D
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 13:22:16 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="M0/gEaD/";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of snovitoll@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=snovitoll@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754313737; a=rsa-sha256;
+	cv=none;
+	b=WlEIL98iVCQwPK2ch3/UPtDLrs0uRx1doSZz5MsA/DIqluEw0NOgNYyvBrtIkvokhBiKCS
+	4MdqiIrzkjZ4FdlRuLAkrfE/ZbxVkWQI875/5uNwXRfEnrxULLviEl/qNY5cgvnFcha1iy
+	srH0aFNxk8q90WsL7yAV/NO1zCuiuHE=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="M0/gEaD/";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of snovitoll@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=snovitoll@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754313737;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZHqcwS+fp9NaFdfyJNCeRHSmvAyKBhaekSYHNR6iWeQ=;
-	b=OrYZAn3KlyiU7ny7bIQGLCj9LJoPLiAdMUjWpzbMnGqUDeCVfhGwoJHygYG9hCfbz5tsdd
-	EwuTAG9DQyGd+68e4C8Mt/957ibBLdb9n/ceDj2ayEbOliNZCAJmbivdawFIcsK5az1HgY
-	fmL/jnvcww1xT2rKmeh27inHr1BC58I=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=StlmAQv6;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=t1B8do0K;
-	spf=pass (imf17.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754313618; a=rsa-sha256;
-	cv=pass;
-	b=8rGRTmxFjskkd8WYn5XQ0OgrIGy9zM3G6xNgIbHHaCcwrAhSCqQub36ZGvTKmCM2iHPBgr
-	FeIRzRZeT/uT87ZuSQ6qS0e+7ABKTEe7TnPWn1PY4j+UgFHlvyVFZee9WbIRZt2x6X6GRa
-	Y+TdLvdHZQbsXxfX420ce5UfcSimFBM=
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 574D6V00018163;
-	Mon, 4 Aug 2025 13:20:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=ZHqcwS+fp9NaFdfyJN
-	CeRHSmvAyKBhaekSYHNR6iWeQ=; b=StlmAQv6TWbpKpAZRVAdoCQlXz3iwVRWVT
-	bOxXHEqJCVB8SvCLKv38r1qDkD/twF8amD3DOPvt0PW7RpxhuFScTE/pAYTXzfX+
-	miR6l1OtnjsrZq+sN0r1SEhwzbKPQ2BPQutB1o8Zx+3MCMm4Ov/dGEaM2BmsxreF
-	dOHNTgmmEumYnNeYrukm4E9qRAVYf9xwdrnF9n0GKYMvrjPgaecKjVTw2+dAPr6p
-	A4cSlmOJCiPXBN51byLSYEPNmml+m0Az7OGgmkKMsweEoJWE3m9/C+NcYkkCqNlx
-	H4NQfC972FzIOcCUs5zDh7bMApCvblZBmq/0vv46atJnil+hhvIA==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 489aqfjjjj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 04 Aug 2025 13:20:16 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 574CpMUw029040;
-	Mon, 4 Aug 2025 13:20:15 GMT
-Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11on2040.outbound.protection.outlook.com [40.107.223.40])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48a7qcktjh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 04 Aug 2025 13:20:15 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EckqmPmsFhpHyY8b0S1byiBoNEi3DvEIQ6iXcjpxHMkhMhU0gBwJ9NY5/E++1X0FqAgX4vLJPI8E4pZ59CH8gkhj10PLpk2vbmTB9qGgKJ7r2PPCrBr/gewFXzEWRhxe4mNoj7ZPMId2KQMQV8/p15S/4u+9ihSjcn8uoR0KeQzRuLg1/k42Nnf4RQTLKw9Mjy1rNAtLgJ1PPnyuw1nhCFQ8kdSyn5e1KwLUpZTlvRMsKTUYtihOvHbNnXHBIfVmA3pZgmBrSzDX5Wfmu/26uEo72zVxq9O7aac8rnTDIbO2AQfYb+TgpBoLs7vQEOEnY5oV1MiK3m0TAeiGklHbfg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZHqcwS+fp9NaFdfyJNCeRHSmvAyKBhaekSYHNR6iWeQ=;
- b=U6MJFi8F6Cmes/5488zCRmVlnM8f0QOQVsyT9KuAOegfaLbzFtyY7vv/nwsbBfsExUzsN3a8bIc4HULxBoESdLHms7I88ahpyr8Xt5yOrnRyjmhXrfEL2eyOH1TJkdAmeUGY1Bpefbqn2gHaIpKjBCXxc/h+z6d7+zDG7AcxnrAsf8jHwh5Ad55Tczhjfkz0nFxvQcIokGgC7vSUUNv14I/PPPpu4/lOzRjgh+0xNlF0WBQ34HmAI4sSJXv+pjZhxQGYbpgoeXWM/tKd7QeqsN0+LSlK97mJac7rPlzMspXZZGmDuuYY1ZKEa/1lTvoRNJqlvf5yWICC5BTL8nffIA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	bh=j5iAv+w3B1DltX6n1vl8sRSBtmMo7RFnMn1vP/73Egs=;
+	b=q1M505H44s/8/8/iYEVm8dhDpE+gpE2Xd9Uxdf9rsfKTcfXF56Oapx8GTejsAXfnHcR/Uu
+	9eVwiSH4ZsSoHnt+cyXYzeaYEHNAVgkgV+PNIDIHvTPF3i/F9wGNKEYMgTTlPGJM2cxikx
+	I8qZGYsCgDsqKtIxSXJ64FWllxxj3Hc=
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-55502821bd2so4363748e87.2
+        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 06:22:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZHqcwS+fp9NaFdfyJNCeRHSmvAyKBhaekSYHNR6iWeQ=;
- b=t1B8do0K4oD0MVv9U3i66cdQkI52pUvYOj7B8oIbfsRrWaQ5vR/EMJdLcDI9Y6lhtGI6nSiW3YPN3b4S/A8SSVIm9KcGvsG+7MLuhuLMsl3xhKYnLZOmNyaSqbnsXWQtWVgkA3Ndc94RQvfFXrMW4FH5o8iiO7WGliUDdkQKGzw=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by DS0PR10MB8173.namprd10.prod.outlook.com (2603:10b6:8:1f9::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.17; Mon, 4 Aug
- 2025 13:20:13 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.8989.018; Mon, 4 Aug 2025
- 13:20:13 +0000
-Date: Mon, 4 Aug 2025 14:20:10 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
-        David Hildenbrand <david@redhat.com>, Rik van Riel <riel@surriel.com>,
-        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>
-Subject: Re: [PATCH] mm/rmap: do __folio_mod_stat() in __folio_add_rmap()
-Message-ID: <c9dc9322-c439-4f3f-9f7d-26529e94c882@lucifer.local>
-References: <20250804064106.21269-1-richard.weiyang@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250804064106.21269-1-richard.weiyang@gmail.com>
-X-ClientProxiedBy: MM0P280CA0001.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:190:a::10) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+        d=gmail.com; s=20230601; t=1754313735; x=1754918535; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=j5iAv+w3B1DltX6n1vl8sRSBtmMo7RFnMn1vP/73Egs=;
+        b=M0/gEaD/7he3G2nEw3de7MIkEVFvLOfczS2ANbJ6r0PYvalXL3HxRKsncGi6q6bfyT
+         IXSNWOe8SsffK0xZYJk/ePiQclPAIoWmM4hn3WKYXian18eSZ2IUIc+Fd3qH/6fwPxCV
+         IQOZSOjv6PD/ZVLMmVMpDRV9oV+dJNr8dT+xKFNtu+qbUsAJswjBVMLPZEBVZ3tKDfkR
+         qB128t9+iF2HqYtehntitu5czdCcMj4RNsz92wuhJ6mWG2RnitbTvQMv+mCW3CuumBHM
+         xQBXbfhoUSG27+XQc45K84JfCqZ7kP7ZfvvlCwseBMLytJ7hyquFDOhbYlbC/F5n6v7G
+         tPjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754313735; x=1754918535;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=j5iAv+w3B1DltX6n1vl8sRSBtmMo7RFnMn1vP/73Egs=;
+        b=URm+XJvJppcXEG2f8tLASe6ZeJdpLpAmymPiewOQyiOuwymPz6kE7wi1KE/KCfzj4O
+         TTNd9ArWQWLn3X8LOFPEuTq+orScy18TqEz4qieqZ7hS8tNVdpw+OAeqf7RAkgJUpcxh
+         +TotMec4rcx4zyCFvAuucKN7FymrSOixXSOh9OSxGP++LovqpHGlfztTU+hrppNri28f
+         +SfuFDat1HLzAbV03OC9su9u8M2Vp1oHOGsn3pbllHdlH9FYzEGZkEjIYAwVx9BaNBWL
+         w+UbazL8WtKYOgN5C169smhgp8N/ivs/WNKnBrM6dBejC5E4s3A4FIPaSgdZh8BqFMbv
+         Itaw==
+X-Forwarded-Encrypted: i=1; AJvYcCW2WIRH71RIvhwrCI4njfRCI3+HEKiONOjRlx2z+mf82FUCWmCEAzFt6h+QKfPt9uENtW/hFVkH3A==@kvack.org
+X-Gm-Message-State: AOJu0YygqgxU5hGoLHkI9NRX2f0GRBL4oi4dOv7tjTwSaoUXBrbXcLpo
+	oxO31/jcq6PK4/nuBa9PY37sEjJnDO2OU4NfSI3bXyO4gLwPEhPJkQU0IlnHqjYfXTCXZusz65Y
+	UzCUtG0mE3fQrL6NxCukPuS1Ioi7HB3k=
+X-Gm-Gg: ASbGncvxMMrZAh/WT9N4QDs+lra1bMUw4bFfs1Ewi/wzgVBC7dWkkKcWM1QPFVo395N
+	ePQxj5Ipk6fO6VQSyRxsmOES38lpuLTbJ8tSTe6xBIoEhGxKPnmIV5gkUu/HK1DkHhQQZEZUUeu
+	icPinXq29SaXW+yQrrcgtCBOjSqdIpuXyiYHw5geSpDZ70uHF0de7DGiAYMbbttyTToriZQqCST
+	BOa5vM=
+X-Google-Smtp-Source: AGHT+IFtut7MMsJONrO9zizeew5+lfa6rhoANCyUqylMlDye+ydbOo4UPqVOY5DfAD93jg2e7iUgiwWxdw59DwiJdr8=
+X-Received: by 2002:a05:6512:224a:b0:55b:5932:11a6 with SMTP id
+ 2adb3069b0e04-55b97b0a64emr2161026e87.20.1754313734779; Mon, 04 Aug 2025
+ 06:22:14 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|DS0PR10MB8173:EE_
-X-MS-Office365-Filtering-Correlation-Id: 02c6fa49-6948-4d64-3d6a-08ddd359a4f0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?m6g1GxaEmo2OhAygVUtoHsuy3sbTWmCIWJ6g+YDiU+V7CHvZYqgspwAAeL9V?=
- =?us-ascii?Q?wc1+WLlzk0o86ThohXS8mHzIZmYs05lyd5qrHyRfYTe4sdhET2WP8Fwsifi4?=
- =?us-ascii?Q?lt0Vu6RrgFdGK6MbEVVQtzN7HtYe8K72y1p1TMcJ1BDRUUKExh5YMqrsXoxD?=
- =?us-ascii?Q?VlaDe3IAD5+enfSpF+rP+UKYnsapSpCZ41ID6MBr3+ZnSDigw6YKCUDdHfrt?=
- =?us-ascii?Q?AtA7Na0uwbwiC18qaOupkDAWeQ0yUgGR1vyMb1FHJ/Cahu0V9whhQ1JY6S4m?=
- =?us-ascii?Q?nDy3015bY4mPnHjPohA4MQwgVFmGTEKQA3MO94H9OX4PtA8JG7ND/oFXd4y/?=
- =?us-ascii?Q?128D0DVO8oPoROhRs2H51r9mnugBMt28qW3AKfe6do2dBntV30mhRHPxA8/h?=
- =?us-ascii?Q?Q3soXNXKt4HDy2NLC++1fwjQGXDCFX/0aD+TmO2X8Sj/7SV6ze3CCOW4KD0b?=
- =?us-ascii?Q?pdaT8G7bmxppzIgSIBAd4BAmQY7h8bRPe6w7ZjPC6mA1NNP9VhwFbuhXq6OE?=
- =?us-ascii?Q?JbtWU21sYHF1jGcznfRQb7uYL7NSFr+Nzuq8pyyuwRI8sTxV8aFJSpz35/jG?=
- =?us-ascii?Q?TYANy0iXgi7w2oV3H9w6UAJHqlf2ItVJQv8fX0W304+SVtEBCOMbCfrXOgkY?=
- =?us-ascii?Q?cVxH9mFNfFvYGhGl7d5ba208cUX3Cpls4wDmI8ung+NNj7tavFylg0lGgOn/?=
- =?us-ascii?Q?wizx9FJpVbaXY9zuWLEkwhdMjT+FFcG8//iEu7JODw8AiOjCIqida3tYA8EP?=
- =?us-ascii?Q?bt5JpCXIAr+D5i2Qb1C92eD+wuQRj6RTFtpIW9kJ2980ENg1wisKXGP9+pNH?=
- =?us-ascii?Q?iht8Ze5HAGHCLHLGK5tc6VjKoEzb3YDXSpgpByW0tT5JD/L1XuKhnBsTnh01?=
- =?us-ascii?Q?5IX9djr5aDrF17fRy8GB/n+njQeDSAL1IG/u6dHRu0o9q1v+3xR/Np12vS9C?=
- =?us-ascii?Q?x7eLDWjH/X6hjrOBdMHBemus2851nC+eY2qtHXXVmtkWFL0GuQUrBTDoWHEi?=
- =?us-ascii?Q?fvcHoQ6z67OsrU+P5vAjrvtYjIV5T7LBHWzKTo2EMGVJMI9PySZIn0jUGnpb?=
- =?us-ascii?Q?JY9dRFnBQQNliSYw82ePPlp9FnaPuha1cta+wMaY4tbslfwrQhgK7fXajG3K?=
- =?us-ascii?Q?uVPIKULGVu7w/Q4ri1FR6bUwc6NSRAm3lSxC1f30hH+s2qnKjMQ+jSqLoCTd?=
- =?us-ascii?Q?x46p8lNh+/r8QJjKX16A6q9EA2LTwJG73OMP44kDMIST1TsaZultSvops2rr?=
- =?us-ascii?Q?fLe4eiOTyvssbariIYytL05mu8CJnOJ/bXAAJwGloFO0OD0XMDcShDs4SU1c?=
- =?us-ascii?Q?XlKeAMu2GgsKjOpgDC6q2IS5Zzjn07nTw+XWd91hT2HxC2ShlTpY5llQgpi5?=
- =?us-ascii?Q?KWFnFw3EvLsSKs7UBmpGisMiaDVZDYghsPWj8dW3FcClbwxuUlRTm1jfBKxy?=
- =?us-ascii?Q?QrEC88E8Myg=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?sY9L/J4XOmlEjvkIAyQuoAbZxsbUjomCd3Z0bBsxWXAnYKCUIUiWxP2da7PD?=
- =?us-ascii?Q?mQftgItD7S4ihPFyK3O9Gk7mUhFnZo6ALUOG/BQzDEGdgqRZ5CHiKggHflBY?=
- =?us-ascii?Q?cNmbpKhqs3kag7KolgQSHN5QytJxtWDaQkZghheYu6nQNQlRmJ53Dt8bA7+g?=
- =?us-ascii?Q?pcr1ELhCzKUARllxJg6jeFYQFJF6TWjCe/05kkmpHCM1NyvBMWx5NgXX1sOH?=
- =?us-ascii?Q?3EoV4y78QFQvbfvpB3+owBiPF/uOeFz8DG+yjmX9Y9CGjg6HZN0OsOHvsfWn?=
- =?us-ascii?Q?tAL+0sEKaeTl63I/Vy+OumHmd5mOyk0Hi1z3aQ54fvI/jonPOxxQs6W6ZpOj?=
- =?us-ascii?Q?LjgtCh/IW55G4F84Wh5lGO+rpHf0Ldc9QmHLvUfZTzsZYEceTvE/QGgY/qG1?=
- =?us-ascii?Q?iP0TNoF+kzhJJE9rrJ6a7izB8sP8kpeBounCJX+4Mh/8hm8qn2KybbJQuo5I?=
- =?us-ascii?Q?wK8XPIGF01CFwoJdDrCS37glc69AqDGTlpo3ZtREGYaSuPnyp5vANxQA8eSn?=
- =?us-ascii?Q?yGHDspynNz9slPC4u7p++G7dpzbo9Daxv/khQFyBne23utqsF6JS8Npm1gDi?=
- =?us-ascii?Q?Dr4VrmJG7jcLCbIGYXfBvBvcrCxspff6v7VOzQBp663+uhW2QTTxbZqkZ4vP?=
- =?us-ascii?Q?3j5B1tb2X/qLPxFSI8SvcIKCx0lIX176wBUnFfvE+PC06nfGY4xaVGVswkNC?=
- =?us-ascii?Q?h3HbfuMLNGfI0/TEvbKPIOUlTPfWy5J5x7SFSTQ6aZ85t+s+atQah8OTfofO?=
- =?us-ascii?Q?iyHHcOvtsTN4x48zRN+CDSz3WrlPfa+a9Ajp9Ayo0GVZOnKGtEEXNFSv1fG/?=
- =?us-ascii?Q?/TJvtZYUaKnPTIbwZnYzxYoQHJgNaiMgywf27Ag41IBratoLcpxzEJjqrWCw?=
- =?us-ascii?Q?LOxSyN86acx3CKUy6V7RA7FvAVBkEGV1RtkzrPR+8AV4tZ+4r27o59+bitBB?=
- =?us-ascii?Q?5ao91pmBOTrVnv9qsE+TkpncCIM01T3XET5MB1PT6KoBBDWg8hpIBt5BUlcX?=
- =?us-ascii?Q?FlP7A6BbYI/aManlEaY0uYJzzv2l9KEEHCq8U6m6MB+2LseEw254xNWPnlR5?=
- =?us-ascii?Q?teKSfa+EK+UIxrOb/7RBaaG1e4jLiAEcRjYui0W8/IgdOdTuuQpWaUzlz+00?=
- =?us-ascii?Q?emd2ImJLJs5YUKYjds9DBOkyuwmA3xGqHuJBIZfuTXg5KE+IjU37FFfmxSCk?=
- =?us-ascii?Q?+cGvkCFWbR2DD/vboQwLY6F+nz/utrYKDwb8BuBnzZWUTDVmVUr6zdv1ZSkp?=
- =?us-ascii?Q?uRn00zhRORxpSsGPijY6YjG/ErPTozbmnaHkhaMxCy9tALswsTM/GYn1jAhL?=
- =?us-ascii?Q?O7+B17m299BM9Fojkm+UX/z4bkdp+1rX3EZ/qoOfvFpU0GHn2XjbkKQExsyh?=
- =?us-ascii?Q?DoAGuPvul9FUYQCetDQopi0sA9ylxVGnoXKmfGHoiQawwx5VDiVHy0xjbpI4?=
- =?us-ascii?Q?ZKz0UsXARlE+tVeS/ZdJVCIaxGzRlIStbpBj5Lbw67FL7zK4bAKl2md8kYfP?=
- =?us-ascii?Q?31AhjRDezZ7izS3YDx5vkyfKg76mhBYv7DrCYDmJrgjmCitpV+AdZXesntEH?=
- =?us-ascii?Q?+zHa2J05o2/dysvHmowtk7Jg3VIPU6vDqESDs2rON4ygSB0S93X4gM8EG57C?=
- =?us-ascii?Q?gQ=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	3tCFIrs30xwzueyOhSOIbPZ8nsSju4k7bXbapm6X3YmpsMYWIGHHXuRlbIzhsX/Gk5dQT8hR6r3dVFrDNEhGGtGzIBYLJElRyVKAxyrF8p9Ov9CY4TwFqMNiYD/qWgaeRSauKc2ET6f6A00+qcktJbd3d1YL3eHUNuswhU1XTWCtzwgdDbL/A4sOhecDf1hv2196NFPZuok5PH4UOSdlT3MewvykMlln2Z5FVtZbkK63LIoMlg1tx4KP4VmQLRq6BOkKAuB8zF7WAxrVmo0yN9PfBIt2OPf2pEjeP7o4rurWtWzz9xcD2ALRzpuNNkKDxTnNKDwTQvbIWVSWJjnM4nGgad/CEx9yS/B+DKfOiHlKOodf5BUV37TFCmlDyNsRzcnUGFKp5KRwaH7gGlrMK30wm32y5EHE76jIm/ZAd9OZ7AqiaLMkG8J3J68R1JdPQJCD0ivr9N6an2EeVIJx9wuIeYxLjIY0XvEeozhga9dRvIRK7mzgbeYjNprVVyBNUm8R8nuttDKJHWRgad9uUAjlM9JxsuCnYJgVxKq3AIKwFK8oGV6f+wZvb0f4RuZkWz1sbAJaD1mY+EpFEFj5GjQG2qidpWj8yco47QDKdpA=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 02c6fa49-6948-4d64-3d6a-08ddd359a4f0
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2025 13:20:12.9929
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nimwRw0NQTgRORbwZ1WoWtBe6kCLKk0DpKL9colzbGfBRrrvlH7KeyazNE3y6xRmyXKqxHuBxnEDa3FSNJLk5SlDJfWaxDi5Vobn91s0MA0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR10MB8173
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-04_05,2025-08-04_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=0 spamscore=0
- mlxlogscore=999 malwarescore=0 adultscore=0 mlxscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2508040073
-X-Authority-Analysis: v=2.4 cv=TrvmhCXh c=1 sm=1 tr=0 ts=6890b390 cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=pGLkceISAAAA:8 a=yPCof4ZbAAAA:8
- a=20KFwNOVAAAA:8 a=fwyzoN0nAAAA:8 a=snJBH8SX05qNKFSHV88A:9 a=CjuIK1q_8ugA:10
- a=Sc3RvPAMVtkGz6dGeUiH:22
-X-Proofpoint-GUID: zH3u523467UdIkoEA_02Dj28Tex1CVtm
-X-Proofpoint-ORIG-GUID: zH3u523467UdIkoEA_02Dj28Tex1CVtm
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA0MDA3MyBTYWx0ZWRfX6yabUzCp7498
- wGIRV4S49L8YqSKdGNAJvQX7TK3BGzbHDwb/mYkZJizoCZwLM402PQnYT1zprNL+wMopJpYoFFP
- 2maBGyrdxsjPqp9lKlBwmqX1ORFSwDf1ztPksDoYeKgNgQ14fteYEphsnZ2gfrW6d6xZfk+sPWO
- knavlRtXYJAvCfTdE6hBx7FUsrdKggpAcFiv8ZFMGd1xG3JwTLSepybMP89yjVXosScYnogOW3U
- MPhrsxgMmVO0stLxKMtpLE9Tz0XRSKRXOQDtA8iM2I+2wxcTl0i7a5ZD/aYnK8zabm/sEWz9de9
- hNY5n/jCC86P7jBzyXGJUAfPcsGt53BebrpGNG1Dott9OlRXA4YSIF4goOC9RulTAMD0/FdZE5M
- 1J25XubBYFaO7BaYMNFJJW4wUZviz3UWoBkUrSWOBCqdXLMOC/cfzqvRVg8PwsXyOKSfwvd7
+References: <20250717142732.292822-1-snovitoll@gmail.com> <f10f3599-509d-4455-94a3-fcbeeffd8219@gmail.com>
+ <CACzwLxjD0oXGGm2dkDdXjX0sxoNC2asQbjigkDWGCn48bitxSw@mail.gmail.com>
+ <f7051d82-559f-420d-a766-6126ba2ed5ab@gmail.com> <CACzwLxjESCT_=1BG2rWiaxz1wCYbVWHAvf+v4=S5dzeHJ8c97g@mail.gmail.com>
+ <74b373bb-cf18-49b3-84ed-56d04e09c71e@csgroup.eu>
+In-Reply-To: <74b373bb-cf18-49b3-84ed-56d04e09c71e@csgroup.eu>
+From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+Date: Mon, 4 Aug 2025 18:21:57 +0500
+X-Gm-Features: Ac12FXwPENH5G9iIdhoCEne0XPX1yyuyfz0uhB9AHi_aZ_zaO6gOiMlh6PTSrX0
+Message-ID: <CACzwLxg5i=9qxREipizLtZqy1hU3EbVNYdGNge9c-D-c9O-ptg@mail.gmail.com>
+Subject: Re: [PATCH v3 00/12] kasan: unify kasan_arch_is_ready() and remove
+ arch-specific implementations
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	linuxppc-dev@lists.ozlabs.org, hca@linux.ibm.com, akpm@linux-foundation.org, 
+	kasan-dev <kasan-dev@googlegroups.com>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
+	Linux Memory Management List <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3006AC000D
+X-Stat-Signature: ss98cm688k4h9foduqpb7yhnpfcnew5p
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 885944000D
-X-Rspamd-Server: rspam06
-X-Stat-Signature: thxuwfsu8ntd6rn8zjxj5z5dmqxyfuzb
-X-HE-Tag: 1754313618-31520
-X-HE-Meta: U2FsdGVkX1/KZwT9piXC1rMvPIXa5vBv5AzroR2mVvmbFVgbgewkWQUSMd46fKac2hDjzsoa2SNVWFdPwZJZCNfudy9mf9pEEleFa7n9446HSi8KJCTP/DXoLPbjf4mrherY8mGQqXZkYCbuVO3K3gBBRgM2O8HVvtnbV21rw8Ejp9hj1GgA56e5KgpHWkN/WLUoIa473zX1EffFjNVw/CLJEjtB0uzZ2+CSWHVgcKoXHr6A0d09PDYamt9YbE0q0eY9YaIugpNaRHDEtZDM510p5zbrB1FCy3RtMUmKSHX1nGvZ/qtlzKotsE0gKqmhe43G4x5LpUlszkaq8GzGUQPOV221IM3eljq5tz4HjifGPnC16CABD4FCLNO236yRVm1hVwhfpz6ELyCcvcOwILKmOXaFWEVkE/cI20EooSj96SkaWM+GbkmtjyB7hDoH8jWhTyQ+YNymmvkFgO/9T0hVeRqeWsiGhbgjXerHRVXhErz3E4fstZRrq8Dma4jyCTg0z9ecmnLKSrzduCCwR1kAy1JKaKT/NdCvARRRfGwceEoJabgsLfJtzB3bfoGUb12h+RTNwuD6adlNyY3gP7A14qMeDNuBbv+Zss6AoaVSdDtB83tY3MCaSVxyvnDtipDu5uwztHlebXO7EVAq6/UtI8mS+QCguMorIPxhaXF0O4/mzWyGV+b4dSi23me/GleIM6I90xcmQCt+pa5FxWEwscu7HTCwPnI1iWI/LtTUmF0dRhVOKhuk60bW45hEwmLTS5kju8+vvFP6wbvYahQmwOHFbuy9Uf/qMhpSmld0ah+GYP7Ljw4CmcypAKPlvDtZvSAYbx0WOY5/yaGWAI9VzVQaxyQ3he0YLniEFfONC0SyJ5lKUc1YVHHghjsz/W19HIdPbfEZKxgiMWDS36KtW7j4AhVZPMlpfKQeq5EyAXZWHEEJP1IANvMnHNtRXoz6LB2dbHPrCTI9hpm
- z80CZFx2
- 0zT52isCNzatWFYMPblSIld5iwRVdKVpnH9KUWKGgjF6RFkd0SWwIpNcsBXT1vUxUldXHEkF6E3cNDCwV8q8GW999n2I8Lt0KFdbnncgpc1z1DNxzCZO0BugTagG3xcJv+vkpe6ykYaxogqul5vWQr8LNPouYukXWFf4T8E36/nIc0Qn4YiGM7RsGTn57wasBcPnD6abkUvhGtAG5ec9/jzwlNWeVWcZf8CTZ1VxB3PXabayjcSvwh7ieLLFEpywRPF1mETVjcN+uRA3nMUgAOeIvw3iQ/30R+ktjoyfJ9ZmduqnNRshQjRmQpm3oEVbiTPXMlV3npREd9UI+ux+6U5oEekJQ6EGysj9wU6dg7Hxu0lT8MOT7daUxxU35y8gqyXjodEHebBc2djp7ZQJz+bJZUe8mScZ/tW67UUW89OHnQCFswq2StCle0elhgmVma2J+U8w7vgXvAm+kLCrbTIC9SknolS9ZQ3iR0B+wrDzrTNwo+YtKM3ThMbfrqpe8garuil0njAnXcYjiX7dhzkg+2TFwcUGUAQPs7OTJvgi4lWf2jf639ZBqexPDaqBI3cS3yP6KGrn8p5UR6c0UTePqy95PaajADHqZeX2t/hdcZtfOrauVClydOLFL0oDEzB04hHa6NQvF1uLZygISfgDDZiOXEIrhVDHcSRaYJrCWj1wzWWQ9vDDJ9Yra/T+wqa0Z23iZSmaR6oP+cZ13qtivHH8zdQVdnNaOjLz1yFgB2fZpiJcyrZzQoY1ZA58nu/O0IO0ksRgwDC6cbFa9KwupDRSNrrRnam99UX3lRhxoOmzJXPZvPbRW5t+UnpSvtMGgxDoUXlMIGrw+hNV5lgtYuZ9m+LDd1yO5Q74UCfDLCBKermpYJqht5OW49LRftHFGSMDGOZK6zrO6sRgxovRIsO/wGFUxtS8TPNRGlWen4NY=
+X-HE-Tag: 1754313736-198450
+X-HE-Meta: U2FsdGVkX1+/6a05d4QIaCQcA1SVpN8AcrVtYTimBHpxnM+KnTE1EyFfKvosFpF1MJcxhtK92/YtPWkjKON+1LO1gPgBu+d6gKjdGTU+znn9vIV8KrhjQYi7NdlR/n5K8bJsuvLHZsfmg6R3Hiipuqi9LzA8TNaIHb50jVtMgy6IYb2x7Vekw8N6ZVAMhMbL704hAMwQTM3IoGS3pg8QQqIA2vOtbesKmL1HcSozgy27Os0e+YQfsgTiVfWzxMNEZjcHGaVXJB1OgtDBuS2lcG2fLera1+fpeH4zwmvBQq7BkPPcMKVazb5YT3Wk+0j/uCvk8g49lJg2FgHq4AcaICOg3eFRNYL9bD5yhi/FpZSlL8piog5z5fXiw8q5XikcXEMcEhk7+a/J9XkpiDMwVvruA/Ip20JMNYKkKDALaEDX34UQFm0SAh/N+XM0Tsc7xcU43fHSIm3tr5TpI13Xs4Ox7rQWwlnHZEWt18TyVJPIeig/B+3vvIxAiQJLjPRlvMjdEiLobVHOaGuNX64x9j56WPatj72yvYDuvGT762KF2eZXGFM7dN9Aznpf0H/1a1YB+huxch67xXHM81347u7I9Z+xtGn6EvxTAEjCFw2gLUhDaB61zfJ4vtRIPHrJxSVLoLncYsmIbPlU+7Cb5Eruw30vr1XMIojXfoT4SnvKyeZFmymKn2/iR7EJ7j0EbrkJg1dJZZFbxDglFwqbRuXdupXgMqnTwuJyxqeSooyIj2JRw/ZYEhaYPr+ovtwl/VxAIBmy/iIBb+0du4d+WdNtWlqWJwoNASO4aEbWwoAW31yAQoYIBNeENc60NhopKZh7Y1whV1yc0X+e2wIiAiPNqR50MeTEAsdt4/AgQMVGM4ihry73O27XVi4lXUewT6RdMxkdu5pZ2pGXnwp6cL1IAS+uSVphCpXk7X22RC7nLO+ExcKEz/sZgxU4MLU9xxzwAuQkNmgUWkTYAj7
+ XGC+9xTn
+ OMelLZESsCPzWa8WcCFtYW/5gVsRJqyBZe+gNNcejBjnHO0AW/Jlv5r8UkuPk7zqrAwz45D274Pdy7spSfc1fuMy1hfXCMlfyBIU8rVq22Zl7d/1kXfCGS8CE9rZm+wIB8eFszEsOyZacqWhGDeLpcy9vK88Iw3R/ZHOcsjP03538SBs3TL36WYZkGcBkiqQl1FxRIEV034RJLjMTK10NF7DZjSyA6F3ileaicAToRzsijp81g8AG3FxBDaOBOSdMamiELvTjZ+SzPvBB7Bf361oQAGAlPSb2X5zWN+0eLb1/4RwdyniVGC5g+6tb4tEq80NX73ggV8w+oobjf5lpwQUJcFPkpjqbezhCcKmPYIAxzz/LJRdUROrGYYMRoPsOd/DL0SC1oKsIU/24rue30M57D/x5KkvbNjYs2mablQuvP6ZM0M3gMsYhlctEwPacHtnlVeSDiBNGvZV88VOz/1uri3j3D7R1iyAdOGdwc9lUWiiFQCAf+inPACJpeYr+UM/cUc5BLP4MdxRahragxOP1jqW96GgleG2Dh2QioUK/KwEgFLVXua0AnrBJlfRE1WSf8nzQU8o773A=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -232,163 +121,437 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 04, 2025 at 06:41:06AM +0000, Wei Yang wrote:
-> It is required to modify folio statistic after rmap changes, so it looks
-> reasonable to do it in __folio_add_rmap(), which is the current behavior
-> of __folio_remove_rmap() and folio_add_new_anon_rmap().
+On Mon, Aug 4, 2025 at 5:04=E2=80=AFPM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
 >
-> Call __folio_mod_stat() in __folio_add_rmap(), so that rmap adjustment
-> family shares the same pattern.
+> Hi,
+>
+> Le 03/08/2025 =C3=A0 21:27, Sabyrzhan Tasbolatov a =C3=A9crit :
+> > On Wed, Jul 23, 2025 at 10:33=E2=80=AFPM Andrey Ryabinin <ryabinin.a.a@=
+gmail.com> wrote:
+> >>
+> >> ...
+> >>
+> >> I don't know if it's a real problem or not. I'm just pointing out that=
+ we might
+> >> have tricky use case here and maybe that's a problem, because nobody h=
+ad such use
+> >> case in mind. But maybe it's just fine.
+> >> I think we just need to boot test it, to see if this works.
+> >> ...
+> >> powerpc used static key same way before your patches, so powerpc shoul=
+d be fine.
+> >
+> > Hello,
+> >
+> > Just heads up that I am still working on v4.
+> > While I can verify the success on compile and booting with my changes
+> > on x86, arm with SW/HW_TAGS modes, I'm having issues with PowerPC, UML
+> > arch that selects ARCH_DEFER_KASAN.
+> >
+> > Adding Christophe Leroy in TO. Please advise on the powerpc panic issue=
+.
+>
+> I don't have the problem you report. Is it with your v3 series ?
+
+Hi,
+Yes, but I've changed it to address Andrey Ryabinin's comments.
+I've found out the issue was in my pending v4 kasan-enabled.h definitions,
+So powerpc changes are fine. Your comment about revisiting v3 helped me as
+I was going through a rabbit hole. Thanks for the testing!
 
 >
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-
-This is fine.
-
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Rik van Riel <riel@surriel.com>
-> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Harry Yoo <harry.yoo@oracle.com>
-> ---
->  mm/rmap.c | 67 +++++++++++++++++++++++++------------------------------
->  1 file changed, 31 insertions(+), 36 deletions(-)
+> I started from
+> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/log/?h=
+=3Dmerge
+> (commit de12314b471bf)
 >
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index 568198e9efc2..84a8d8b02ef7 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -1241,13 +1241,35 @@ int pfn_mkclean_range(unsigned long pfn, unsigned long nr_pages, pgoff_t pgoff,
->  	return page_vma_mkclean_one(&pvmw);
->  }
+> Took your series with
 >
-> -static __always_inline unsigned int __folio_add_rmap(struct folio *folio,
-> +static void __folio_mod_stat(struct folio *folio, int nr, int nr_pmdmapped)
-> +{
-> +	int idx;
-> +
-> +	if (nr) {
-> +		idx = folio_test_anon(folio) ? NR_ANON_MAPPED : NR_FILE_MAPPED;
-> +		__lruvec_stat_mod_folio(folio, idx, nr);
-> +	}
-> +	if (nr_pmdmapped) {
-> +		if (folio_test_anon(folio)) {
-> +			idx = NR_ANON_THPS;
-> +			__lruvec_stat_mod_folio(folio, idx, nr_pmdmapped);
-> +		} else {
-> +			/* NR_*_PMDMAPPED are not maintained per-memcg */
-> +			idx = folio_test_swapbacked(folio) ?
-> +				NR_SHMEM_PMDMAPPED : NR_FILE_PMDMAPPED;
-> +			__mod_node_page_state(folio_pgdat(folio), idx,
-> +					      nr_pmdmapped);
-> +		}
-> +	}
-> +}
-> +
-> +static __always_inline void __folio_add_rmap(struct folio *folio,
->  		struct page *page, int nr_pages, struct vm_area_struct *vma,
-> -		enum rmap_level level, int *nr_pmdmapped)
-> +		enum rmap_level level)
->  {
->  	atomic_t *mapped = &folio->_nr_pages_mapped;
->  	const int orig_nr_pages = nr_pages;
-> -	int first = 0, nr = 0;
-> +	int first = 0, nr = 0, nr_pmdmapped = 0;
+>    b4 shazam 20250717142732.292822-1-snovitoll@gmail.com
 >
->  	__folio_rmap_sanity_checks(folio, page, nr_pages, level);
+> built ppc64le_defconfig
 >
-> @@ -1283,7 +1305,7 @@ static __always_inline unsigned int __folio_add_rmap(struct folio *folio,
->  		first = atomic_inc_and_test(&folio->_entire_mapcount);
->  		if (IS_ENABLED(CONFIG_NO_PAGE_MAPCOUNT)) {
->  			if (level == RMAP_LEVEL_PMD && first)
-> -				*nr_pmdmapped = folio_large_nr_pages(folio);
-> +				nr_pmdmapped = folio_large_nr_pages(folio);
->  			nr = folio_inc_return_large_mapcount(folio, vma);
->  			if (nr == 1)
->  				/* Was completely unmapped. */
-> @@ -1302,7 +1324,7 @@ static __always_inline unsigned int __folio_add_rmap(struct folio *folio,
->  				 * folios separately.
->  				 */
->  				if (level == RMAP_LEVEL_PMD)
-> -					*nr_pmdmapped = nr_pages;
-> +					nr_pmdmapped = nr_pages;
->  				nr = nr_pages - (nr & FOLIO_PAGES_MAPPED);
->  				/* Raced ahead of a remove and another add? */
->  				if (unlikely(nr < 0))
-> @@ -1315,7 +1337,7 @@ static __always_inline unsigned int __folio_add_rmap(struct folio *folio,
->  		folio_inc_large_mapcount(folio, vma);
->  		break;
->  	}
-> -	return nr;
-> +	__folio_mod_stat(folio, nr, nr_pmdmapped);
->  }
+> And successfully boot it under QEMU:
 >
->  /**
-> @@ -1403,43 +1425,19 @@ static void __page_check_anon_rmap(const struct folio *folio,
->  		       page);
->  }
+> $ qemu-system-ppc64 -M pseries,x-vof=3Don -m 1G -nographic -vga none
+> -kernel vmlinux -initrd qemu/rootfs-el.cpio.gz -append noreboot
+> qemu-system-ppc64: warning: TCG doesn't support requested feature,
+> cap-cfpc=3Dworkaround
+> qemu-system-ppc64: warning: TCG doesn't support requested feature,
+> cap-sbbc=3Dworkaround
+> qemu-system-ppc64: warning: TCG doesn't support requested feature,
+> cap-ibs=3Dworkaround
+> qemu-system-ppc64: warning: TCG doesn't support requested feature,
+> cap-ccf-assist=3Don
+> [    0.000000][    T0] random: crng init done
+> [    0.000000][    T0] radix-mmu: Page sizes from device-tree:
+> [    0.000000][    T0] radix-mmu: Page size shift =3D 12 AP=3D0x0
+> [    0.000000][    T0] radix-mmu: Page size shift =3D 16 AP=3D0x5
+> [    0.000000][    T0] radix-mmu: Page size shift =3D 21 AP=3D0x1
+> [    0.000000][    T0] radix-mmu: Page size shift =3D 30 AP=3D0x2
+> [    0.000000][    T0] Activating Kernel Userspace Access Prevention
+> [    0.000000][    T0] Activating Kernel Userspace Execution Prevention
+> [    0.000000][    T0] radix-mmu: Mapped
+> 0x0000000000000000-0x0000000003e00000 with 2.00 MiB pages (exec)
+> [    0.000000][    T0] radix-mmu: Mapped
+> 0x0000000003e00000-0x0000000040000000 with 2.00 MiB pages
+> [    0.000000][    T0] lpar: Using radix MMU under hypervisor
+> [    0.000000][    T0] Linux version 6.16.0-02450-g1c11a8599f68
+> (chleroy@PO20335.IDSI0.si.c-s.fr) (powerpc64-linux-gcc (GCC) 8.5.0, GNU
+> ld (GNU Binutils) 2.36.1) #1459 SMP Mon Aug  4 12:49:11 CEST 2025
+> [    0.000000][    T0] KernelAddressSanitizer initialized (generic)
+> [    0.000000][    T0] OF: reserved mem: Reserved memory: No
+> reserved-memory node in the DT
+> [    0.000000][    T0] Found initrd at 0xc000000004cf0000:0xc00000000530d=
+15a
+> [    0.000000][    T0] Hardware name: IBM pSeries (emulated by qemu)
+> POWER9 (architected) 0x4e1202 0xf000005 pSeries
+> [    0.000000][    T0] printk: legacy bootconsole [udbg0] enabled
+> [    0.000000][    T0] Partition configured for 1 cpus.
+> [    0.000000][    T0] CPU maps initialized for 1 thread per core
+> [    0.000000][    T0] numa: Partition configured for 1 NUMA nodes.
+> [    0.000000][    T0] --------------------------------------------------=
+---
+> [    0.000000][    T0] phys_mem_size     =3D 0x40000000
+> [    0.000000][    T0] dcache_bsize      =3D 0x80
+> [    0.000000][    T0] icache_bsize      =3D 0x80
+> [    0.000000][    T0] cpu_features      =3D 0x0001c06b8f4f9187
+> [    0.000000][    T0]   possible        =3D 0x003ffbfbcf5fb187
+> [    0.000000][    T0]   always          =3D 0x0000000380008181
+> [    0.000000][    T0] cpu_user_features =3D 0xdc0065c2 0xaef00000
+> [    0.000000][    T0] mmu_features      =3D 0x3c007641
+> [    0.000000][    T0] firmware_features =3D 0x00000a85455a445f
+> [    0.000000][    T0] vmalloc start     =3D 0xc008000000000000
+> [    0.000000][    T0] IO start          =3D 0xc00a000000000000
+> [    0.000000][    T0] vmemmap start     =3D 0xc00c000000000000
+> [    0.000000][    T0] --------------------------------------------------=
+---
+> [    0.000000][    T0] NODE_DATA(0) allocated [mem 0x3fb30800-0x3fb37fff]
+> [    0.000000][    T0] rfi-flush: fallback displacement flush available
+> [    0.000000][    T0] rfi-flush: ori type flush available
+> [    0.000000][    T0] rfi-flush: mttrig type flush available
+> [    0.000000][    T0] count-cache-flush: hardware flush enabled.
+> [    0.000000][    T0] link-stack-flush: software flush enabled.
+> [    0.000000][    T0] stf-barrier: eieio barrier available
+> [    0.000000][    T0] PPC64 nvram contains 65536 bytes
+> [    0.000000][    T0] barrier-nospec: using ORI speculation barrier
+> [    0.000000][    T0] Zone ranges:
+> [    0.000000][    T0]   Normal   [mem
+> 0x0000000000000000-0x000000003fffffff]
+> [    0.000000][    T0]   Device   empty
+> [    0.000000][    T0] Movable zone start for each node
+> [    0.000000][    T0] Early memory node ranges
+> [    0.000000][    T0]   node   0: [mem
+> 0x0000000000000000-0x000000003fffffff]
+> [    0.000000][    T0] Initmem setup node 0 [mem
+> 0x0000000000000000-0x000000003fffffff]
+> [    0.000000][    T0] percpu: Embedded 3 pages/cpu s122904 r0 d73704
+> u196608
+> [    0.000000][    T0] Kernel command line: noreboot
+> [    0.000000][    T0] Unknown kernel command line parameters
+> "noreboot", will be passed to user space.
+> [    0.000000][    T0] printk: log buffer data + meta data: 262144 +
+> 917504 =3D 1179648 bytes
+> [    0.000000][    T0] Dentry cache hash table entries: 131072 (order:
+> 4, 1048576 bytes, linear)
+> [    0.000000][    T0] Inode-cache hash table entries: 65536 (order: 3,
+> 524288 bytes, linear)
+> [    0.000000][    T0] Fallback order for Node 0: 0
+> [    0.000000][    T0] Built 1 zonelists, mobility grouping on.  Total
+> pages: 16384
+> [    0.000000][    T0] Policy zone: Normal
+> [    0.000000][    T0] mem auto-init: stack:off, heap alloc:off, heap
+> free:off
+> [    0.000000][    T0] stackdepot: allocating hash table via
+> alloc_large_system_hash
+> [    0.000000][    T0] stackdepot hash table entries: 1048576 (order: 8,
+> 16777216 bytes, linear)
+> [    0.000000][    T0] SLUB: HWalign=3D128, Order=3D0-3, MinObjects=3D0,
+> CPUs=3D1, Nodes=3D1
+> [    0.000000][    T0] ftrace: allocating 47840 entries in 12 pages
+> [    0.000000][    T0] ftrace: allocated 12 pages with 2 groups
+> [    0.000000][    T0] rcu: Hierarchical RCU implementation.
+> [    0.000000][    T0] rcu:     RCU event tracing is enabled.
+> [    0.000000][    T0] rcu:     RCU restricting CPUs from NR_CPUS=3D2048 =
+to
+> nr_cpu_ids=3D1.
+> [    0.000000][    T0]  Rude variant of Tasks RCU enabled.
+> [    0.000000][    T0]  Tracing variant of Tasks RCU enabled.
+> [    0.000000][    T0] rcu: RCU calculated value of scheduler-enlistment
+> delay is 100 jiffies.
+> [    0.000000][    T0] rcu: Adjusting geometry for rcu_fanout_leaf=3D16,
+> nr_cpu_ids=3D1
+> [    0.000000][    T0] RCU Tasks Rude: Setting shift to 0 and lim to 1
+> rcu_task_cb_adjust=3D1 rcu_task_cpu_ids=3D1.
+> [    0.000000][    T0] RCU Tasks Trace: Setting shift to 0 and lim to 1
+> rcu_task_cb_adjust=3D1 rcu_task_cpu_ids=3D1.
+> [    0.000000][    T0] NR_IRQS: 512, nr_irqs: 512, preallocated irqs: 16
+> [    0.000000][    T0] xive: Using IRQ range [0-0]
+> [    0.000000][    T0] xive: Interrupt handling initialized with spapr
+> backend
+> [    0.000000][    T0] xive: Using priority 6 for all interrupts
+> [    0.000000][    T0] xive: Using 64kB queues
+> [    0.000000][    T0] rcu: srcu_init: Setting srcu_struct sizes based
+> on contention.
+> [    0.000290][    T0] time_init: 56 bit decrementer (max: 7fffffffffffff=
+)
+> [    0.001690][    T0] clocksource: timebase: mask: 0xffffffffffffffff
+> max_cycles: 0x761537d007, max_idle_ns: 440795202126 ns
+> [    0.003232][    T0] clocksource: timebase mult[1f40000] shift[24]
+> registered
+> [    0.040308][    T0] Console: colour dummy device 80x25
+> [    0.042553][    T0] printk: legacy console [hvc0] enabled
+> [    0.042553][    T0] printk: legacy console [hvc0] enabled
+> [    0.043883][    T0] printk: legacy bootconsole [udbg0] disabled
+> [    0.043883][    T0] printk: legacy bootconsole [udbg0] disabled
+> [    0.052810][    T0] pid_max: default: 32768 minimum: 301
+> [    0.062682][    T0] LSM: initializing
+> lsm=3Dlockdown,capability,landlock,yama,selinux,bpf,ima
+> [    0.075902][    T0] landlock: Up and running.
+> [    0.076246][    T0] Yama: becoming mindful.
+> [    0.077639][    T0] SELinux:  Initializing.
+> [    0.157184][    T0] LSM support for eBPF active
+> [    0.170713][    T0] Mount-cache hash table entries: 8192 (order: 0,
+> 65536 bytes, linear)
+> [    0.171081][    T0] Mountpoint-cache hash table entries: 8192 (order:
+> 0, 65536 bytes, linear)
+> [    0.319421][    T1] POWER9 performance monitor hardware support
+> registered
+> [    0.329508][    T1] rcu: Hierarchical SRCU implementation.
+> [    0.329940][    T1] rcu:     Max phase no-delay instances is 400.
+> [    0.382714][    T1] smp: Bringing up secondary CPUs ...
+> [    0.385679][    T1] smp: Brought up 1 node, 1 CPU
+> [    0.392599][    T1] numa: Node 0 CPUs: 0
+> [    0.445093][   T20] node 0 deferred pages initialised in 21ms
+> [    0.447420][    T1] Memory: 784000K/1048576K available (25600K kernel
+> code, 9216K rwdata, 23552K rodata, 13824K init, 2373K bss, 254528K
+> reserved, 0K cma-reserved)
+> [    0.469596][   T20] pgdatinit0 (20) used greatest stack depth: 29936
+> bytes left
+> [    0.504269][    T1] devtmpfs: initialized
+> [    0.605561][    T1] PCI host bridge /pci@800000020000000  ranges:
+> [    0.607269][    T1]   IO 0x0000200000000000..0x000020000000ffff ->
+> 0x0000000000000000
+> [    0.607837][    T1]  MEM 0x0000200080000000..0x00002000ffffffff ->
+> 0x0000000080000000
+> [    0.608141][    T1]  MEM 0x0000210000000000..0x000021ffffffffff ->
+> 0x0000210000000000
+> [    0.623659][    T1] clocksource: jiffies: mask: 0xffffffff
+> max_cycles: 0xffffffff, max_idle_ns: 1911260446275000 ns
+> [    0.625600][    T1] posixtimers hash table entries: 512 (order: -3,
+> 8192 bytes, linear)
+> [    0.627067][    T1] futex hash table entries: 256 (32768 bytes on 1
+> NUMA nodes, total 32 KiB, linear).
+> [    0.692128][    T1] NET: Registered PF_NETLINK/PF_ROUTE protocol famil=
+y
+> [    0.714282][    T1] audit: initializing netlink subsys (disabled)
+> [    0.722232][   T25] audit: type=3D2000 audit(1754308137.543:1):
+> state=3Dinitialized audit_enabled=3D0 res=3D1
+> [    0.743697][    T1] cpuidle: using governor menu
+> [    0.755015][    T1] WARNING: nvram corruption detected: 0-length
+> partition
+> [    0.755541][    T1] nvram: No room to create ibm,rtas-log partition,
+> deleting any obsolete OS partitions...
+> [    0.755794][    T1] nvram: Failed to find or create ibm,rtas-log
+> partition, err -28
+> [    0.756219][    T1] nvram: No room to create lnx,oops-log partition,
+> deleting any obsolete OS partitions...
+> [    0.756379][    T1] nvram: Failed to find or create lnx,oops-log
+> partition, err -28
+> Linux ppc64le
+> #1459 SMP Mon Au[    0.756539][    T1] nvram: Failed to initialize oops
+> partition!
+> [    0.762921][    T1] EEH: pSeries platform initialized
+> [    0.808097][    T1] kprobes: kprobe jump-optimization is enabled. All
+> kprobes are optimized if possible.
+> [    1.365147][    T1] HugeTLB: allocation took 0ms with
+> hugepage_allocation_threads=3D1
+> [    1.366269][    T1] HugeTLB: registered 2.00 MiB page size,
+> pre-allocated 0 pages
+> [    1.366456][    T1] HugeTLB: 0 KiB vmemmap can be freed for a 2.00
+> MiB page
+> [    1.366728][    T1] HugeTLB: registered 1.00 GiB page size,
+> pre-allocated 0 pages
+> [    1.366870][    T1] HugeTLB: 0 KiB vmemmap can be freed for a 1.00
+> GiB page
+> [    1.486251][    T1] iommu: Default domain type: Translated
+> [    1.486543][    T1] iommu: DMA domain TLB invalidation policy: strict
+> mode
+> [    1.525452][    T1] SCSI subsystem initialized
+> [    1.552424][    T1] usbcore: registered new interface driver usbfs
+> [    1.554049][    T1] usbcore: registered new interface driver hub
+> [    1.559907][    T1] usbcore: registered new device driver usb
+> [    1.562100][    T1] pps_core: LinuxPPS API ver. 1 registered
+> [    1.562266][    T1] pps_core: Software ver. 5.3.6 - Copyright
+> 2005-2007 Rodolfo Giometti <giometti@linux.it>
+> [    1.566642][    T1] PTP clock support registered
+> [    1.577168][    T1] EDAC MC: Ver: 3.0.0
+> [    1.672772][    T1] PCI: Probing PCI hardware
+> [    1.833395][    T1] PCI host bridge to bus 0000:00
+> [    1.834524][    T1] pci_bus 0000:00: root bus resource [io
+> 0x10000-0x1ffff] (bus address [0x0000-0xffff])
+> [    1.835316][    T1] pci_bus 0000:00: root bus resource [mem
+> 0x200080000000-0x2000ffffffff] (bus address [0x80000000-0xffffffff])
+> [    1.835750][    T1] pci_bus 0000:00: root bus resource [mem
+> 0x210000000000-0x21ffffffffff 64bit]
+> [    1.836268][    T1] pci_bus 0000:00: root bus resource [bus 00-ff]
+> [    1.852192][    T1] IOMMU table initialized, virtual merging enabled
+> [    1.864698][    T1] pci_bus 0000:00: resource 4 [io  0x10000-0x1ffff]
+> [    1.864967][    T1] pci_bus 0000:00: resource 5 [mem
+> 0x200080000000-0x2000ffffffff]
+> [    1.865136][    T1] pci_bus 0000:00: resource 6 [mem
+> 0x210000000000-0x21ffffffffff 64bit]
+> [    1.865619][    T1] EEH: No capable adapters found: recovery disabled.
+> [    1.895816][    T1] vgaarb: loaded
+> [    1.906597][    T1] clocksource: Switched to clocksource timebase
+> [    7.645823][    T1] NET: Registered PF_INET protocol family
+> [    7.650783][    T1] IP idents hash table entries: 16384 (order: 1,
+> 131072 bytes, linear)
+> [    7.684628][    T1] tcp_listen_portaddr_hash hash table entries: 4096
+> (order: 0, 65536 bytes, linear)
+> [    7.686311][    T1] Table-perturb hash table entries: 65536 (order:
+> 2, 262144 bytes, linear)
+> [    7.687827][    T1] TCP established hash table entries: 8192 (order:
+> 0, 65536 bytes, linear)
+> [    7.690430][    T1] TCP bind hash table entries: 8192 (order: 2,
+> 262144 bytes, linear)
+> [    7.694736][    T1] TCP: Hash tables configured (established 8192
+> bind 8192)
+> [    7.697887][    T1] UDP hash table entries: 1024 (order: 0, 65536
+> bytes, linear)
+> [    7.700717][    T1] UDP-Lite hash table entries: 1024 (order: 0,
+> 65536 bytes, linear)
+> [    7.709437][    T1] NET: Registered PF_UNIX/PF_LOCAL protocol family
+> [    7.728670][    T1] RPC: Registered named UNIX socket transport module=
+.
+> [    7.729411][    T1] RPC: Registered udp transport module.
+> [    7.729661][    T1] RPC: Registered tcp transport module.
+> [    7.729825][    T1] RPC: Registered tcp-with-tls transport module.
+> [    7.731574][    T1] RPC: Registered tcp NFSv4.1 backchannel transport
+> module.
+> [    7.732309][    T1] PCI: CLS 0 bytes, default 128
+> [    7.769612][   T12] Trying to unpack rootfs image as initramfs...
+> [    7.937617][    T1] Initialise system trusted keyrings
+> [    7.942505][    T1] Key type blacklist registered
+> [    7.964894][    T1] workingset: timestamp_bits=3D38 max_order=3D14
+> bucket_order=3D0
+> [    8.127738][    T1] NFS: Registering the id_resolver key type
+> [    8.129779][    T1] Key type id_resolver registered
+> [    8.130646][    T1] Key type id_legacy registered
+> [    8.150761][    T1] SGI XFS with ACLs, security attributes, no debug
+> enabled
+> [    8.343926][    T1] integrity: Platform Keyring initialized
+> [    8.348809][    T1] Key type asymmetric registered
+> [    8.354232][    T1] Asymmetric key parser 'x509' registered
+> [    8.372851][    T1] Block layer SCSI generic (bsg) driver version 0.4
+> loaded (major 247)
+> [    8.375844][    T1] io scheduler mq-deadline registered
+> [    8.377498][    T1] io scheduler kyber registered
+> [   11.082153][    T1] Serial: 8250/16550 driver, 4 ports, IRQ sharing
+> disabled
+> [   11.199822][    T1] Non-volatile memory driver v1.3
+> [   11.749528][    T1] brd: module loaded
+> [   12.062135][    T1] loop: module loaded
+> [   12.078153][    T1] ipr: IBM Power RAID SCSI Device Driver version:
+> 2.6.4 (March 14, 2017)
+> [   12.118444][    T1] ibmvscsi 71000003: SRP_VERSION: 16.a
+> [   12.134566][    T1] ibmvscsi 71000003: Maximum ID: 64 Maximum LUN: 32
+> Maximum Channel: 3
+> [   12.135207][    T1] scsi host0: IBM POWER Virtual SCSI Adapter 1.5.9
+> [   12.188126][    C0] ibmvscsi 71000003: partner initialization complete
+> [   12.191555][    C0] ibmvscsi 71000003: host srp version: 16.a, host
+> partition qemu (0), OS 2, max io 2097152
+> [   12.192709][    C0] ibmvscsi 71000003: sent SRP login
+> [   12.193698][    C0] ibmvscsi 71000003: SRP_LOGIN succeeded
+> [   12.381686][    T1] scsi 0:0:2:0: CD-ROM            QEMU     QEMU
+> CD-ROM      2.5+ PQ: 0 ANSI: 5
+> [   17.470934][   T12] Freeing initrd memory: 6208K
+> [   18.458146][    C0] sr 0:0:2:0: Power-on or device reset occurred
+> [   18.468304][    T1] sr 0:0:2:0: [sr0] scsi3-mmc drive: 16x/50x cd/rw
+> xa/form2 cdda tray
+> [   18.469176][    T1] cdrom: Uniform CD-ROM driver Revision: 3.20
+> [   18.507507][    T1] sr 0:0:2:0: Attached scsi generic sg0 type 5
+> [   18.535454][    T1] e100: Intel(R) PRO/100 Network Driver
+> [   18.535682][    T1] e100: Copyright(c) 1999-2006 Intel Corporation
+> [   18.536741][    T1] e1000: Intel(R) PRO/1000 Network Driver
+> [   18.536894][    T1] e1000: Copyright (c) 1999-2006 Intel Corporation.
+> [   18.538093][    T1] e1000e: Intel(R) PRO/1000 Network Driver
+> [   18.538241][    T1] e1000e: Copyright(c) 1999 - 2015 Intel Corporation=
+.
+> [   18.548528][    T1] i2c_dev: i2c /dev entries driver
+> [   18.551722][    T1] device-mapper: core: CONFIG_IMA_DISABLE_HTABLE is
+> disabled. Duplicate IMA measurements will not be recorded in the IMA log.
+> [   18.553452][    T1] device-mapper: uevent: version 1.0.3
+> [   18.564534][    T1] device-mapper: ioctl: 4.50.0-ioctl (2025-04-28)
+> initialised: dm-devel@lists.linux.dev
+> [   18.591869][    T1] usbcore: registered new interface driver usbhid
+> [   18.592226][    T1] usbhid: USB HID core driver
+> [   18.594958][    T1] ipip: IPv4 and MPLS over IPv4 tunneling driver
+> [   18.611797][    T1] NET: Registered PF_INET6 protocol family
+> [   18.651618][    T1] Segment Routing with IPv6
+> [   18.653186][    T1] In-situ OAM (IOAM) with IPv6
+> [   18.656776][    T1] sit: IPv6, IPv4 and MPLS over IPv4 tunneling drive=
+r
+> [   18.672737][    T1] NET: Registered PF_PACKET protocol family
+> [   18.676757][    T1] Key type dns_resolver registered
+> [   18.678951][    T1] secvar-sysfs: Failed to retrieve secvar operations
+> [   18.683474][    T1] Running code patching self-tests ...
+> [   19.045499][    T1] registered taskstats version 1
+> [   19.055453][    T1] Loading compiled-in X.509 certificates
+> [   19.106895][    T1] Loaded X.509 cert 'Build time autogenerated
+> kernel key: 9f01b0d991e9d73077cd296c67edb3efb56e2c47'
+> [   19.372917][    T1] Demotion targets for Node 0: null
+> [   19.373664][    T1] page_owner is disabled
+> [   19.385615][    T1] Secure boot mode disabled
+> [   19.387815][    T1] ima: No TPM chip found, activating TPM-bypass!
+> [   19.389833][    T1] Loading compiled-in module X.509 certificates
+> [   19.406497][    T1] Loaded X.509 cert 'Build time autogenerated
+> kernel key: 9f01b0d991e9d73077cd296c67edb3efb56e2c47'
+> [   19.407680][    T1] ima: Allocated hash algorithm: sha256
+> [   19.416714][    T1] Secure boot mode disabled
+> [   19.417345][    T1] Trusted boot mode disabled
+> [   19.417596][    T1] ima: No architecture policies found
+> [   19.426439][    T1] printk: legacy console [netcon0] enabled
+> [   19.426791][    T1] netconsole: network logging started
+> [   19.610553][    T1] Freeing unused kernel image (initmem) memory: 1382=
+4K
+> [   19.766345][    T1] Checked W+X mappings: passed, no W+X pages found
+> [   19.767739][    T1] rodata_test: all tests were successful
+> [   19.768936][    T1] Run /init as init process
+> [   20.432221][   T58] mount (58) used greatest stack depth: 26992 bytes
+> left
+> [   20.808923][   T60] mount (60) used greatest stack depth: 26416 bytes
+> left
+> mount: mounting devtmpfs on /dev failed: Device or resource busy
+> Starting syslogd: OK
+> Starting klogd: OK
+> Running sysctl: [   24.879851][   T83] find (83) used greatest stack
+> depth: 26368 bytes left
+> [   24.945794][   T84] xargs (84) used greatest stack depth: 26240 bytes
+> left
+> OK
+> Saving 256 bits of creditable seed for next boot
+> Starting network: [   26.530674][   T96] ip (96) used greatest stack
+> depth: 26048 bytes left
+> [   27.018425][   T97] ip (97) used greatest stack depth: 24256 bytes lef=
+t
+> Waiting for interface eth0 to appear..... timeout!
+> run-parts: /etc/network/if-pre-up.d/wait_iface: exit status 1
+> FAIL
+> [   33.902403][    C0] hrtimer: interrupt took 3450588 ns
+> Found console hvc0
 >
-> -static void __folio_mod_stat(struct folio *folio, int nr, int nr_pmdmapped)
-> -{
-> -	int idx;
-> -
-> -	if (nr) {
-> -		idx = folio_test_anon(folio) ? NR_ANON_MAPPED : NR_FILE_MAPPED;
-> -		__lruvec_stat_mod_folio(folio, idx, nr);
-> -	}
-> -	if (nr_pmdmapped) {
-> -		if (folio_test_anon(folio)) {
-> -			idx = NR_ANON_THPS;
-> -			__lruvec_stat_mod_folio(folio, idx, nr_pmdmapped);
-> -		} else {
-> -			/* NR_*_PMDMAPPED are not maintained per-memcg */
-> -			idx = folio_test_swapbacked(folio) ?
-> -				NR_SHMEM_PMDMAPPED : NR_FILE_PMDMAPPED;
-> -			__mod_node_page_state(folio_pgdat(folio), idx,
-> -					      nr_pmdmapped);
-> -		}
-> -	}
-> -}
-> -
->  static __always_inline void __folio_add_anon_rmap(struct folio *folio,
->  		struct page *page, int nr_pages, struct vm_area_struct *vma,
->  		unsigned long address, rmap_t flags, enum rmap_level level)
->  {
-> -	int i, nr, nr_pmdmapped = 0;
-> +	int i;
+> Linux version 6.16.0-02450-g1c11a8599f68
+> (chleroy@PO20335.IDSI0.si.c-s.fr) (powerpc64-linux-gcc (GCC) 8.5.0, GNU
+> ld (GNU Binutils) 2.36.1) #1459 SMP Mon Aug  4 12:49:11 CEST 2025
+> Network interface test failed
+> TPM selftest failed
+> File system test skipped
+> Boot successful.
+> ~ #
 >
->  	VM_WARN_ON_FOLIO(!folio_test_anon(folio), folio);
 >
-> -	nr = __folio_add_rmap(folio, page, nr_pages, vma, level, &nr_pmdmapped);
-> +	__folio_add_rmap(folio, page, nr_pages, vma, level);
->
->  	if (likely(!folio_test_ksm(folio)))
->  		__page_check_anon_rmap(folio, page, vma, address);
->
-> -	__folio_mod_stat(folio, nr, nr_pmdmapped);
-> -
->  	if (flags & RMAP_EXCLUSIVE) {
->  		switch (level) {
->  		case RMAP_LEVEL_PTE:
-> @@ -1613,12 +1611,9 @@ static __always_inline void __folio_add_file_rmap(struct folio *folio,
->  		struct page *page, int nr_pages, struct vm_area_struct *vma,
->  		enum rmap_level level)
->  {
-> -	int nr, nr_pmdmapped = 0;
-> -
->  	VM_WARN_ON_FOLIO(folio_test_anon(folio), folio);
->
-> -	nr = __folio_add_rmap(folio, page, nr_pages, vma, level, &nr_pmdmapped);
-> -	__folio_mod_stat(folio, nr, nr_pmdmapped);
-> +	__folio_add_rmap(folio, page, nr_pages, vma, level);
->
->  	/* See comments in folio_add_anon_rmap_*() */
->  	if (!folio_test_large(folio))
-> --
-> 2.34.1
->
+> Christophe
 >
 
