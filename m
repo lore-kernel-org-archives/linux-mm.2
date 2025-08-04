@@ -2,126 +2,103 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4478CC87FCB
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 12:29:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D57BC87FCF
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 12:34:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D9BB76B0096; Mon,  4 Aug 2025 08:29:24 -0400 (EDT)
+	id B34468E0002; Mon,  4 Aug 2025 08:34:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D4BD66B009F; Mon,  4 Aug 2025 08:29:24 -0400 (EDT)
+	id ABDCD8E0001; Mon,  4 Aug 2025 08:34:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C3A966B00A0; Mon,  4 Aug 2025 08:29:24 -0400 (EDT)
+	id 95E858E0002; Mon,  4 Aug 2025 08:34:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B22056B0096
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 08:29:24 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6BC5556348
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:29:24 +0000 (UTC)
-X-FDA: 83739005448.01.C46D213
-Received: from mail-ej1-f67.google.com (mail-ej1-f67.google.com [209.85.218.67])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 5C3EDC0011
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:29:22 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=wtKm2ijd;
-	dmarc=pass (policy=none) header.from=linaro.org;
-	spf=pass (imf10.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.218.67 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754310562; a=rsa-sha256;
-	cv=none;
-	b=yazIw0GVFewp1bsBBXVN4j1hBEpP9SJzM/q1D0VH2a9jiQ+O2K6tTT3DQ6JLiCWR6/VGsr
-	7/LuWFsrecjGd2t4Z8TVW00ELzngtV2sOp3YcdzAKl1ZSp+DeGHggSgjQDniJ5pmkcpU0w
-	beGMI4a/86INDDzTFr6iEIX18emz5hg=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=wtKm2ijd;
-	dmarc=pass (policy=none) header.from=linaro.org;
-	spf=pass (imf10.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.218.67 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org
+	by kanga.kvack.org (Postfix) with ESMTP id 7F5BD8E0001
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 08:34:17 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4D79280554
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:34:17 +0000 (UTC)
+X-FDA: 83739017754.15.CD74852
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 6543C1A0016
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:34:15 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	spf=pass (imf19.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=breno.debian@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754310562;
+	s=arc-20220608; t=1754310855;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Bh2VbEr4+GPS+zCP6PyGLcsH4RZmjBkc+JIVLTQNkVU=;
-	b=a3dZsXTyDfXSACKSzLLGLGx94Ca7h9qPw/j+6YB5hTsGq2yfM+5/Xjux5ldtTbSCn0aZTv
-	MIFEEDVmYoPdF0wvhmOa/MWqAPKnCoE/CHxrfMc3sEmOSeCqogh9MQmTV8OCDg08+5uQbb
-	ae9Y7U3kZwIpjQjiAy5XecC8+nTM9Zc=
-Received: by mail-ej1-f67.google.com with SMTP id a640c23a62f3a-af66d49daffso557540166b.1
-        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 05:29:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1754310561; x=1754915361; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Bh2VbEr4+GPS+zCP6PyGLcsH4RZmjBkc+JIVLTQNkVU=;
-        b=wtKm2ijdyiqyFkew7epXzX2dkY9RD7CcdAkM61G0usjYphvLshTl0ETjs3Higk12x6
-         yNT4SqfF6Jq/z42juyvls3vNX96HP0nInG61R1JxR+24gGPqDzyVy6zPFjL0eC8xFCxs
-         mbv8fGG0botxUGNTLyX3+jOrX381dIqsi3ncOHjzZurrN3nqSVWfS3fvG6dxoRukg90f
-         n7MiXaIYWBSWGH6AhZVFp7RLWGZjo4lrQxAwlIzZPsh9R6hbje33xsD/zYptLry+q+x9
-         OzBxPdGWG1O/FBsSk6Z0fa3QRNFfhej14BmcTaqhYpWp1pYtOH+ZBLZy6lqgZWwUxrGW
-         CxmQ==
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fcJzP/9/e6F+zsAx2xJXJXbGjsmtrULT3/IuUM37nhI=;
+	b=UAlouFdA8eFAUACBgO+VX7fT9SKCf6XeHOoqS2lINxSFrXsAWnNLwxO8Qm+96oLP19pM2q
+	qLBU68pnA2FbK8mzvXM7t/RnmnZeouxxALvT9Onevw1wrj6VPt8M/EVGsTVcRAzA5+7ELX
+	l9qKbb74fLvy1fYdZYnrTV9/jhmidX4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754310855; a=rsa-sha256;
+	cv=none;
+	b=fllLykWLt62nCX3vKRKc5lssW8lj4AR6umqtWDb1rAfFcCyOWyGAm7ZuT8YoCtt4uQ7B2C
+	Vyn/LF3wwz7Lp7Px8dAgv/VBx/s14dcy7akFcd+BpQfPiONJpiiPH1SsC82pb3K5N4OzWX
+	CI14UYLyT8EH1f3YIR3SeF+munvzRYU=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=none;
+	spf=pass (imf19.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=breno.debian@gmail.com;
+	dmarc=none
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-af94e75445dso300906466b.0
+        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 05:34:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754310561; x=1754915361;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Bh2VbEr4+GPS+zCP6PyGLcsH4RZmjBkc+JIVLTQNkVU=;
-        b=pJFNoj6UkyX3DOiM1o5M7tZ3fYt1henpj9knErKX/qJgbEzp5Aj8jsJQywT+Fe5dIv
-         cuVvra7SD+oePj8WiOycdUtp4bZV73o28Y58IyUU+TaxxFVnM2h7JwgOQxasAW/yYmoE
-         JVo70PPlUnder4/XvRCFoOqfVwV9rPi3QPX3JoYs/O1Gy60EFvMrfZ5Nw3fJGWV0hvig
-         eC6KW5qLtJaoyjywjnzns5hWt0BYYoEByi1z6sVE/5C+arC63pHS8KecHACrSoFRl55/
-         mBzNfa+lw7BZht2rKAr9EDQk+SvrQNwYyxn/kpFENXIE5fPROTUcUYq6jeq1/zX9ShHc
-         QSuA==
-X-Forwarded-Encrypted: i=1; AJvYcCWHDuz3Xbb4YkjXm9NufSXP1OxARt+vSQEIuj8f5BM90GDfAfWxKO0oUqpIUp/GS9yes/2XI6SsdQ==@kvack.org
-X-Gm-Message-State: AOJu0Yx9uul9dD5IZmS98UwEcGOtfmLOwP2MHZGk8GH6qndk7Lcr2myO
-	w6aPMCtsxzwQGPbnoMpGJBB1bdlnCS/HrkbzgkxEbUAW9ZS+LzdBtE5uXp/68j4suH0=
-X-Gm-Gg: ASbGnctMcZ1PfXRTUaTAglr7rm15p/8CNDjZFnJHCvQlQ1m6GuLnTe0CG5Ci/nLcAz6
-	KgvAXRUw08t/8aI+kiBEjCRShtYVg1uJwg10KqY9K4rjA0GwSXLzI8V47OYGZYMjLgYikaBgfSm
-	SWVCXhlKKEVtE0XjPPSCFZ/VGIW6cIPk5M/htkbthgmLsHmK4oAH8NjRRo5+uXRQPDl1k3IR6Gw
-	6lBZGKzbJkqb5Y3QYy+FQG62vkFczY5gONhMbVvuX0HIskZ9B9waZFTvAvUugx1jttBUUOJHMxd
-	jHFvMsq1vPRrgnNzrJ8MxMwKZGAsCCSV05CSTjqOwtJelcIO02mN6ocK4vUHNRBAVkPDN6Fn9bI
-	dO7SJutVQZP3uHTLom6Qg5Cy4r6P2SQ==
-X-Google-Smtp-Source: AGHT+IEosZgeKp1ejcWL+SBts1B/aCmksQ8kDwupILaEdVqhNGaIFVMrjj1IxUFnhsLruybLH3boPw==
-X-Received: by 2002:a17:906:298c:b0:af9:68d5:118d with SMTP id a640c23a62f3a-af968d534d9mr304131066b.58.1754310560610;
-        Mon, 04 Aug 2025 05:29:20 -0700 (PDT)
-Received: from [192.168.0.33] ([82.76.24.202])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a0a38aasm730599066b.37.2025.08.04.05.29.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Aug 2025 05:29:20 -0700 (PDT)
-Message-ID: <f43a61b4-d302-4009-96ff-88eea6651e16@linaro.org>
-Date: Mon, 4 Aug 2025 15:29:18 +0300
+        d=1e100.net; s=20230601; t=1754310854; x=1754915654;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fcJzP/9/e6F+zsAx2xJXJXbGjsmtrULT3/IuUM37nhI=;
+        b=iA7YGJM/4d/XQE4vCeMHfGMrtSJvZg640rzDdYTS95gKXJZahInjsJEe0GnBXZq6S6
+         Qz+yFmLZbrk8RrY+VJBbmR3J7VCMSbFmvkIZiZZtDbgbWohEfoccyjrh07AgHN3ReAWZ
+         AKDrX9uviAEcqrwFHPvV1YgXGn4B6nrMFIn/jJsmBMM7Ax5BCqtwO3qJrbdV2aqkrai0
+         13DCw44fuOY6afa7kAJJLGxWX14+pelIx6IXMoXqGxg1GXoHgtrJ2GJb7D9vvVREpN+3
+         Qu52sLI1l9aIEM3w/g9BPdk2nhAWo0yEm6Td6Mq4NkufwVDA1m9RpR94n+7hVGKdu/Uf
+         ZQEw==
+X-Forwarded-Encrypted: i=1; AJvYcCXSDqFzI7IWLvIvW0kHNnGVjmwLR8hZ2cIkknJMqYaI/F8kHmbR+VfF9PagWwUkR2QML1vqlL6pKA==@kvack.org
+X-Gm-Message-State: AOJu0YzP5Kxgjg34Q/D0zFrLuZhbll3Pbd2HxrEWdZuWELohkYecdwIi
+	BykiHPGCWtV8hzXFab3byjUZziUQIRP5PYhiHCbR80k8o6yRzqpOUXe1
+X-Gm-Gg: ASbGncs58Rk8C0OLBcNnmqxCCdP7sJGEuPZ2X+TFXS5G3nBGsjYJAMaWPdgH3giGlvf
+	whyPv98DhpHMHF8O9mjpaHY6rtJE5mLpXNBmXhpwcCHZnopZxHN0higHqOIT3Jfip1xwdZIXEJ4
+	Wd4U7PdIc3wbCkUlOqviN0KPrf/PO/CObiMQdW4xYaLrpggtYbbpqj+/7cIpSrDoGukz7Zv/j5N
+	U+tNplYIDZfaDpLAXkr9ZdsZ7F192bVj2gvvj8AGLmnnnu1Z0qsN8abDiyqDYEistw/VFRAPkoz
+	rp1fEUg0PLctTYW9iBgi1J6oULueks3ZSh+FlhsKnlETuRntNKmOeQvBgVse9Wf29JxvM4Vk3Af
+	HeHzL61wOJ3Xdmg==
+X-Google-Smtp-Source: AGHT+IECUNouT2U9h5TI6BInd7LsnZbMx7FCXQ9fV1tWe0f3xyBoO4sFI73N95UIyrcsouvL8Lh1TA==
+X-Received: by 2002:a17:907:2da5:b0:af9:38ed:5b37 with SMTP id a640c23a62f3a-af93ff9ffa0mr898859366b.6.1754310853621;
+        Mon, 04 Aug 2025 05:34:13 -0700 (PDT)
+Received: from gmail.com ([2a03:2880:30ff:73::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a1e833dsm717785566b.64.2025.08.04.05.34.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Aug 2025 05:34:13 -0700 (PDT)
+Date: Mon, 4 Aug 2025 05:34:10 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Waiman Long <llong@redhat.com>, Gu Bowen <gubowen5@huawei.com>, stable@vger.kernel.org, 
+	linux-mm@kvack.org, Lu Jialin <lujialin4@huawei.com>
+Subject: Re: [PATCH] mm: Fix possible deadlock in console_trylock_spinning
+Message-ID: <o2gpvdtxqrdfrsbayorvzvjqcreb45puojpgfye7dimbuuvbdt@gxquukahrxo7>
+References: <20250730094914.566582-1-gubowen5@huawei.com>
+ <20250801153303.cee42dcfc94c63fb5026bba0@linux-foundation.org>
+ <5ca375cd-4a20-4807-b897-68b289626550@redhat.com>
+ <20250801205323.70c2fabe5f64d2fb7c64fd94@linux-foundation.org>
+ <aJCir5Wh362XzLSx@arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC][PATCH v2 22/29] mm/numa: Register information into Kmemdump
-To: David Hildenbrand <david@redhat.com>, Michal Hocko <mhocko@suse.com>
-Cc: linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-mm@kvack.org, tglx@linutronix.de,
- andersson@kernel.org, pmladek@suse.com,
- linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org,
- corbet@lwn.net, mojha@qti.qualcomm.com, rostedt@goodmis.org,
- jonechou@google.com, tudor.ambarus@linaro.org
-References: <20250724135512.518487-1-eugen.hristev@linaro.org>
- <20250724135512.518487-23-eugen.hristev@linaro.org>
- <ffc43855-2263-408d-831c-33f518249f96@redhat.com>
- <e66f29c2-9f9f-4b04-b029-23383ed4aed4@linaro.org>
- <751514db-9e03-4cf3-bd3e-124b201bdb94@redhat.com>
- <aJCRgXYIjbJ01RsK@tiehlicka>
- <e2c031e8-43bd-41e5-9074-c8b1f89e04e6@linaro.org>
- <23e7ec80-622e-4d33-a766-312c1213e56b@redhat.com>
-From: Eugen Hristev <eugen.hristev@linaro.org>
-Content-Language: en-US
-In-Reply-To: <23e7ec80-622e-4d33-a766-312c1213e56b@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aJCir5Wh362XzLSx@arm.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 6543C1A0016
+X-Stat-Signature: shao9qsy5znsuz4pqp7rqppegcnicmn5
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 5C3EDC0011
-X-Stat-Signature: cj3p9nbri6ysghgsibiptq1q1jtprp6d
-X-HE-Tag: 1754310562-913956
-X-HE-Meta: U2FsdGVkX1+WpxgWiC7jKazEv7ds/e5mfOIhchGKpLYE/I02ABpwrRhdtgyoB+O01Xvl219NP/AUe+BW9D0h0DWrJ1Ta3ZuueyJp7TvDW+XAwkAq//WRa+ijLlECSbL9cZ+eX7exj6j8J3Al6aLUwhKUFGVMijA7/+WMxOMbydpfqL0RSBsmEYpJZgzNx9V8rJLR1jkLvGGCcQpPze4ZQR7WL+6EJT3db5Y3QlrYFYjk3Z21s35qnKAX5rwOT+4k+vzZOuXJlkdNHFv056RhvHreXDl/laWPrYxUaR+bbu/MiAiJ6A7ircxK9pu9jS7L5OSZlUaaMuOaYCwBzKUgSvREKxC/OnYOyikQ/+FHJnliZZi9XOfp7pQm35NtPanugxnlbGUZJDcOKdKNuj6isH7xAFS21Ek6sDQdybvSe9T2/u2VHfovPDOXRMXpQa7RI1/wSFBce2MCS0V46WtlWKXjAOcGbYb5r5nDnku6wJNDw2tP0eQWVgyKUCg4qCWAVRtxBxRy2SIZRHEaBTud6/Sm6lYRQvOoDOZUhj/njtWaoNmrWNu2b9CIppaLTx3DySDVqcg4oeHKqa+JwW97gww0ckAginGr1smP/KHcTSONKYJ4fj0fpbITrGLZKNKnNO+XdSV/VHcfWWTYhxamPNXI+Yqd+YXoZs/0MIWTerwWmJdal21v+pXsitz3xRsHGlgGAV9+UEoOCrF7uJAVAFGNRv+ubCeOSdyVZ7XkiuXoFVsFzZMsr3Os9keNy2HtuufHQyJMie/3Rs8o7FpfiomFFUulqtM59TiNMHpOsSxxkdI+Rn6cRMd4x0uxIK+Z93A5ZF7YZKfzrJK9lTIYcYlNdE09pO8z7Fa3Hfl3DBXKcB6c/cJWSeRZ2XyHm+aewJLAkkRXwSBNx30j1ZKAV28T65BbmxB3wzBMJm9wmfiYQS2ELN2zOK56Kpb1nvHVb5uLWK8D4icZdA5ghfZ
- sfP6j9Ln
- NQU4njkC4ohlbJDzpR82fGlytqia6VgpQ4jVlrbLWWyYQYHmfkYoz5UdbMFr0onWq8EAZ8VBYtLR3OTw2/Ru9LULoT9NJsHTEhXeR4m7y7Xqz7LkLx6M0GsUVNHtKsDo5OQ3O96AnG8hiFRGKMBFijR6Ur6CPs4/BOngHeOwcEy728eV/W3RYq+5pHv6gHJ1tNp849Of7UMBJxRxc96DCJt8A38QL+LAco8vIEzgN6Q+ZHXYapeRlIAJuKVkcuoAGzK/N8te1iS3Zd1CKH41KZbBV1jm3jCSTUJ9dncHZlrZqHzT07bDG29nfDxe2cgadoRPuTVkE/wCBDxTt+IjoYEjtT+zjDK90nvrI3VNM8Uq+lhAX6vxOWBXDt3V4EFfxymBK4rX/bpnDanqdIiyVWEaokqTcpAGDpPLuoEeQVRe/R1t9+obUWjy1bsjXGVoTG7jh
+X-HE-Tag: 1754310855-933093
+X-HE-Meta: U2FsdGVkX1/GItMGe+JRCwS3zj4ckkEbVWYJFNjoKPk0FI6D83c80idWXsaEWmPFa2m9ByV+4BwN0sYIzwWdOh1HvM6zez/dS1N6/GHedU7opEsgh+AmXDgsiGJOhVLD9/dnMBzlIMJ8WK8U9rv4UB3B16QUm9OJ8Gc1WzWPk0tUf88qoJIGgoVb9ZSQnIBYmqhHpkorHT/hEyAbZI57HJaqKXV/hnddL7sx9+LAM4yCt7s4sAn/BYHcc6FHuu4rhyw/wjjLXwFa5dLAkUM01/O6TjXfQNE4XnJjjAp+0oxAnK6wbkbDjeZF7FXTnNyHt9KPfw8Dq4g5uBhl3VPxAY0y0gmGQcO7mYu5SGdSzK0RV4onQXHT1uqLbCdfSgCuKZsjp6BtUuKeegn4uhIChQK3QSxMu0+KOCH2Rs0pnkWv/x6eWXxgfVCVq1FtbaY524bub/xm7QPr8mEH1qkhR4YjHkC7YzWOuyvawzocA3EyiaLZ8u1pVovvwRu95cEerxRWbFI+j30cR4THmKKcI2ezcQmE1iA/kJiBG/A7mLQRTtZAiMf+VZqynbjSn2SsVkbOyTZyiEcpcnLcZ9ndVbGVKCg3OJHE1ShuoRxniPS6ejaGCbChZuR4nRIr7QPe/Hs5O+MDBO7/ZxGJ4diA0fCpzcGVubqXbnkh0BDv/hF1rELdn8HHRPX1T832QNUUGuk9nNNixVW+mkRjxVIPnkv6Im7DS/aFp8wxohA28CiGhNLIZ4voWTiHBrhgXN0fQ6M48fGEP9+elPMATwB0MwN7EyOGmxfkPeri0W/B2hYIIwIqPlVUddr7KbQujJTMHl58mdI/iQvhZASJziaDaQBeMt2QuNfZnltkwL5lF9ehMa/mZrQ3qSsvWedCDwfzDlABeW3imuQDO1c5YD3THA6/eyo3VV3/Y3hF6E7ml3e5I1yRhI1yEQsIgGlYpc0r+BdwrFGdDnGRK6AyA0r
+ ikx5wBEg
+ cLNu3GvXvniREqknb3hmGbHU5z9RU4I4TAW65uAIsd6CJt4kPGoOiY2um9aGdOluUFokQEd84+WTFgg4YLs8+hbBYIMGQWb5wwd6WBIvdwhFPB/eyNDwJTh8jh12jZPXYT6nfFYq9sYU2l/9gIPAOUpQw0AlXmIRYjN4hN894MXgkYyqMXeHRFnGDlhG2imhOz8X3TNY8wKEUmEWy1owIjQZrFRT4SBMMSFOsklQ3ABXEIx2L/f8Fjhc37Vpf1G9aO05kzfE2zmf8XybPMnrUZNB/+IFl6RIQhCAk9rSU7IBJyULwmiPx2i/VrgI7CNZ0qF15srU7ZGtK8/gPdAwzhfN45j7j43ZLWkgWtJ1sJveU7XmQSzkrvrw2IJa6koHooY3VMIwGelqtH+7br9HamJLZUhnnLm3eZQ6KSO3dhGyn9cklULK6PxM6c98QvzILV/0YtbrK6RCGLDg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,63 +107,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Aug 04, 2025 at 01:08:15PM +0100, Catalin Marinas wrote:
 
+> I'm surprised we haven't seen these until recently. Has printk always
+> allocated memory?
 
-On 8/4/25 15:18, David Hildenbrand wrote:
-> On 04.08.25 13:06, Eugen Hristev wrote:
->>
->>
->> On 8/4/25 13:54, Michal Hocko wrote:
->>> On Wed 30-07-25 16:04:28, David Hildenbrand wrote:
->>>> On 30.07.25 15:57, Eugen Hristev wrote:
->>> [...]
->>>>> Yes, registering after is also an option. Initially this is how I
->>>>> designed the kmemdump API, I also had in mind to add a flag, but, after
->>>>> discussing with Thomas Gleixner, he came up with the macro wrapper idea
->>>>> here:
->>>>> https://lore.kernel.org/lkml/87ikkzpcup.ffs@tglx/
->>>>> Do you think we can continue that discussion , or maybe start it here ?
->>>>
->>>> Yeah, I don't like that, but I can see how we ended up here.
->>>>
->>>> I also don't quite like the idea that we must encode here what to include in
->>>> a dump and what not ...
->>>>
->>>> For the vmcore we construct it at runtime in crash_save_vmcoreinfo_init(),
->>>> where we e.g., have
->>>>
->>>> VMCOREINFO_STRUCT_SIZE(pglist_data);
->>>>
->>>> Could we similar have some place where we construct what to dump similarly,
->>>> just not using the current values, but the memory ranges?
->>>
->>> All those symbols are part of kallsyms, right? Can we just use kallsyms
->>> infrastructure and a list of symbols to get what we need from there?
->>>
->>> In other words the list of symbols to be completely external to the code
->>> that is defining them?
->>
->> Some static symbols are indeed part of kallsyms. But some symbols are
->> not exported, for example patch 20/29, where printk related symbols are
->> not to be exported. Another example is with static variables, like in
->> patch 17/29 , not exported as symbols, but required for the dump.
->> Dynamic memory regions are not have to also be considered, have a look
->> for example at patch 23/29 , where dynamically allocated memory needs to
->> be registered.
->>
->> Do you think that I should move all kallsyms related symbols annotation
->> into a separate place and keep it for the static/dynamic regions in place ?
-> 
-> If you want to use a symbol from kmemdump, then make that symbol 
-> available to kmemdump.
+I can talk about netconsole, and the answer is yes!
 
-That's what I am doing, registering symbols with kmemdump.
-Maybe I do not understand what you mean, do you have any suggestion for
-the static variables case (symbols not exported) ?
+weird enought, lockdep never picked this issue, and I have a few set of
+hosts running kmemleak and lockdep for a while.
 
-> 
-> IOW, if we were to rip out kmemdump tomorrow, we wouldn't have to touch 
-> any non-kmemdump-specific files.
-> 
-
+This time was different because I have decided to invstiage the code,
+and found the deadlock. Still, no lockdep complain at all.
 
