@@ -2,121 +2,128 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B3CBC87FDA
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 09:04:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D74CC87FDA
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 09:09:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CF176B0089; Mon,  4 Aug 2025 05:04:15 -0400 (EDT)
+	id B3BAB6B0093; Mon,  4 Aug 2025 05:09:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 958866B0092; Mon,  4 Aug 2025 05:04:15 -0400 (EDT)
+	id AEC4E6B0095; Mon,  4 Aug 2025 05:09:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8474B6B0093; Mon,  4 Aug 2025 05:04:15 -0400 (EDT)
+	id A01AA6B0096; Mon,  4 Aug 2025 05:09:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6EA7B6B0089
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 05:04:15 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F336C1411CD
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 09:04:14 +0000 (UTC)
-X-FDA: 83738488428.22.F3D50EB
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E949A40005
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 09:04:12 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WI4aZSGi;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754298253; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8DD0A6B0093
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 05:09:28 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 17028160985
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 09:09:28 +0000 (UTC)
+X-FDA: 83738501616.14.2D74ECB
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 1B1CE14000F
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 09:09:25 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=fWb3SHUg;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf09.hostedemail.com: domain of sumanthk@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sumanthk@linux.ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754298566; a=rsa-sha256;
 	cv=none;
-	b=ET+ENWSKInQpwc0P6/SVpc867PWR+fjNuChrA+0GoKeCyKXlSGdEeBoHHG/y0688l8T7/d
-	efg2jRe8HGu0wkTw1epPqHYOToaFAxxJFCDvHc3WZiwtHOxoYrxPZAtL8Lm7/xHzbAiFDy
-	rcvksoP9DtQ87yCDYVsP+3PBk4uNAY8=
+	b=qPbZ89tMXddkBwKUwssDZwGUWoOdZzawsjpyO6kChppVB28/rd0/6B8sPs0h8ahGAtEE8+
+	ZBpzC822VmomkhpNOV/y1pso1oMo3fijc7A6Kfi2kx9GeRqV27gKtOB/GwukxXKITL9jmo
+	nV9sdmyH4xplJMdZulJuLdZbM5nO77A=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WI4aZSGi;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+	imf09.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=fWb3SHUg;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf09.hostedemail.com: domain of sumanthk@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sumanthk@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754298253;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1754298566;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=acSH/YECNzPqrJpecMNECSlF0Ozf4k+b5plEpSVAioQ=;
-	b=kFWdYO89WuCxXCEZlJbDzYm9ejDz177sP+lMfU3FNBDe78VdDGW++EkqFjQMhr3haOmnr1
-	j2Tvn3M6NDJNxELnULjJ8c3QKkesBpbG+JpQOEg1SGfydsJClebnJDuH9kfoYxbzP2jlmb
-	tLafr3xE+qaSNBuCsJS2u2TBmgCOFoU=
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-ae401ebcbc4so714028866b.1
-        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 02:04:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754298251; x=1754903051; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=acSH/YECNzPqrJpecMNECSlF0Ozf4k+b5plEpSVAioQ=;
-        b=WI4aZSGioXy+N/+q3JVWgN1axZ/3yiMAHObUZjjnbkwznIiapQvgwB7R27x8tPp3kV
-         2RJ7qySCAlPUz4/ipT/IyYTMarNd6CR6S9oHET7xdM2o17zxJYAXEl1TCuA2zFZN2wWx
-         Rexpkb14ZA990nqLtWq06JGlsZ5bBiFSJmrSWlqNVRdij15/L5NjPnYyK0kIrIX/83Rs
-         k+Tlgt6e8LfFV4Gx2ZwdU76PcCXNwnvHOwYvCj1XheknRsAMtBfxLiARi0kSsW0Zq8PS
-         g6+DCsHX/JCCQjdOMyBnIbZ3umk7FRguYEiyfD+Nt15ANeji7flLsUpkgpP8mo8z99Ks
-         Toig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754298251; x=1754903051;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=acSH/YECNzPqrJpecMNECSlF0Ozf4k+b5plEpSVAioQ=;
-        b=GBsQlOWRnoZB4Y0JROT9T/X2dtLXrFkkxTGU42tAOVBqIJIYlGQj9lJtm9c/G80qaM
-         an0ydKrGx3f2D0TcfBpskbmtkRrhIBYNfCvphDZRmf586J41zQe8VEBe+m/jF/jnJ+zS
-         0tkumCSpE74++jfUIMOEbbd7pPaJKZgPkt5FPZNts/+y8DHYiYNr+GNGpJ7GFNmlYVY1
-         WUlrQLH47adYpvcA3mmv98GJBBjz9JFTKGfL0HfHd0cFRq4Js8rLSRfR5HmVTQRzXKoc
-         +c0QPnhDujK/lV+Qn27C/JK3xsFuLEB6KhD2dNiDR/qrX93AOQXOtXvJyG41qIG81eE7
-         /u/g==
-X-Forwarded-Encrypted: i=1; AJvYcCUAZ67SZMMCMwDEbvZUny0sihF6sZedDp6avgdh8gcEZsc56kivllZhsNzeXN1GPwiDqQ4zohlG3w==@kvack.org
-X-Gm-Message-State: AOJu0YyniY9LM2gJeEMm9kZgzhU/Rmx4Z/QHmt16qPmsBCpLFqv6pQFF
-	YhMo9ditBPKk1PaW7O1LwPy8RjqkaOYIMuhkrvEh5y9NYwmOCGCPCdNO
-X-Gm-Gg: ASbGncs/SHfA0fd+gBZLwLPgIFL7EUeEDZy2uhaDAb3kCOgNebfOURe3dDoGfeGsTiM
-	VquQFtUsSPllLDmmM0LJDTYN/F0TRof2MhTzVwilc1vzWsQtVIHRXnpW8S+LYYR94LPHEgp1J8g
-	mHFkLmtci07uMGdQwi6Gzg06poJWV/mhKJU9UFu1eu/iNfr3SqwnoMgQ2fVgF0J0ePzbRTawf2T
-	rdWCkK6VWGSJiOsLCToF77dFftzbeNZrjArRqeAvft4DYZZVI9P5XIq5yvz/duL1cWvJKSkj72t
-	BS6znj8Gm3vDqiaY91j75pErZlmVf1qLvecYanLPsDr2txvNOKB/0JfBO6XhQZBem16iNCgzCNA
-	en+FHBnZROQysY0kM3bYLWYbzyTl6MuWV
-X-Google-Smtp-Source: AGHT+IFo1FiK09kxSqh9OOz66lLLPAg3rVm2WiND0BXkRJXNrtebIpCavH4jstjbD8rfqeuDjfzk3Q==
-X-Received: by 2002:a17:907:3fa2:b0:adb:2e9f:5d11 with SMTP id a640c23a62f3a-af940174eafmr807904766b.37.1754298250902;
-        Mon, 04 Aug 2025 02:04:10 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a0a3b77sm702303266b.51.2025.08.04.02.04.10
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 04 Aug 2025 02:04:10 -0700 (PDT)
-Date: Mon, 4 Aug 2025 09:04:10 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Cc: akpm@linux-foundation.org, Liam.Howlett@oracle.com,
-	lorenzo.stoakes@oracle.com, shuah@kernel.org, pfalcato@suse.de,
-	david@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	baohua@kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	donettom@linux.ibm.com, ritesh.list@gmail.com
-Subject: Re: [PATCH v3 4/7] mm/selftests: Fix split_huge_page_test failure on
- systems with 64KB page size
-Message-ID: <20250804090410.of5xwrlker665bdp@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20250729053403.1071807-1-aboorvad@linux.ibm.com>
- <20250729053403.1071807-5-aboorvad@linux.ibm.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=DAQV0AwXeHE/PwMvOBgIQg+ASlsQc1X48WemPBpqAp8=;
+	b=cPzNV+4l9SzT8vwjKTniuNX1fsIZCtGcLh2CWEhysyFoQS7SkSxntHU0wkLN4ns67ifAw3
+	praZ55r6CYAqQPlcn12YIBlAkSUx7HcZ3/cZc4nQdNUkPpl53J+TgX25iNKJ1f1ZPa1KQQ
+	kQxIHLd8DBeLe9jpqhLdKpO4cm15ZqY=
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 573Kfcls029457;
+	Mon, 4 Aug 2025 09:09:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=DAQV0AwXeHE/PwMvOBgIQg+ASlsQc1X48WemPBpqA
+	p8=; b=fWb3SHUg47YjoUVNywFxRPTsnu/Wezkhd2rU3UvNgA/pAP9FTpxFEjxPP
+	Agd74NEokr2BHiA6vSZJMZgYBju4FucUXFjPRAzUZwyrx+KPfsM1gu4UhYThI71s
+	YV3FCGqacauCfc6SfG79AT+Wx9yUaRNMDtdng+I2y6tEw1MIJR2ArWXQ+5Adk8EO
+	7ebYvx4Ef+xuMq0qx/jl3D4jZysMZ5OASnA7UH3YbM5UPdrrDPM93GSr0Qyvfkth
+	6MNukVXhEZWT/NnbBeUZ2Oj3L7MJWls/vEFLGOcGUum9r5i3H2Ke9wBuH61bGe5l
+	fnJ5ObrkB2Be0iVkRbHr3YmM3FLsQ==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 489ab3fxj8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 04 Aug 2025 09:09:25 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5745fU3C002484;
+	Mon, 4 Aug 2025 09:09:24 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 489wcyw3qq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 04 Aug 2025 09:09:24 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57499Kxs47776186
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 4 Aug 2025 09:09:20 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1CC542033F;
+	Mon,  4 Aug 2025 09:09:20 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3C95B2034D;
+	Mon,  4 Aug 2025 09:09:14 +0000 (GMT)
+Received: from tuxmaker.lnxne.boe (unknown [9.152.85.9])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  4 Aug 2025 09:09:14 +0000 (GMT)
+From: Sumanth Korikkar <sumanthk@linux.ibm.com>
+To: Andrew Morton <akpm@linux-foundation.org>, linux-mm <linux-mm@kvack.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        David Hildenbrand <david@redhat.com>
+Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        linux-s390 <linux-s390@vger.kernel.org>, sumanthk@linux.ibm.com
+Subject: [PATCH] mm: fix accounting of memmap pages for early sections
+Date: Mon,  4 Aug 2025 11:08:59 +0200
+Message-ID: <20250804090859.727207-1-sumanthk@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250729053403.1071807-5-aboorvad@linux.ibm.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Stat-Signature: h4yiysdnwqiop7zhnbnsq43d6u934die
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=Z+jsHGRA c=1 sm=1 tr=0 ts=689078c5 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=KawUSfIWrfKEQJWuwW8A:9
+X-Proofpoint-ORIG-GUID: Mqcg8VsFLq_ouAd6ooDn7elCav4_qeSW
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA0MDA0NyBTYWx0ZWRfX69T6gTqLTtTk
+ gNMtzS5VDmmjbCVGiGeAdc3H4texRhpBLJQusvAaX1ZmQNPnsBfeEAR5VHx7tNOeOwFAWyiCbhn
+ QU48qNiDoEWQr+TkTLD2/mO4hRvUJBIGQ9dFDBjp4gwhhS0WSifIZpx2HigXqXM/xoDS4OkhfhL
+ tfNHl+IvS2r75+pLnwBMV0jGKqia+H7O2gzwgEk0LmlqxS1N9mqO++gpN5jYcxDTZPDCz8epJmW
+ puCNvnRlC46oejNbzP5yjH1OBJresuJWBv70SZQSZ6OCzxpCjkEDG0UsciM/93/CebN27iOtrIB
+ BZiQnu+gV6MA7dQgAVr9TAYCVhgUIHzZGK9xsswwHO8n7rFKSCWoP+BtZndpSOkU0OGqQ2zHRG0
+ ZEkd2KVmhWrOjPBx6Gk4VSb08FA274TH4Hw3huVDjJA9D7wyV1nrx4S7t4Hd5He5rZJlajS8
+X-Proofpoint-GUID: Mqcg8VsFLq_ouAd6ooDn7elCav4_qeSW
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-04_03,2025-08-04_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 spamscore=0 malwarescore=0 clxscore=1011 suspectscore=0
+ priorityscore=1501 mlxlogscore=434 adultscore=0 phishscore=0 mlxscore=0
+ bulkscore=0 impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2508040047
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E949A40005
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1754298252-409393
-X-HE-Meta: U2FsdGVkX1+YshN58wBzZgG/Q+ToCiT5e2ffE+8XycYUGN7ipZ4+GNYBm6oWARFThXRuaJPnikfkEWbsrRgKBkaA7pltUDXdBhot3QlgpPcpijBY4+JGK6kXLxRW1MLt3OQOxNewtYyFBxt7l7P67QyLLNbeyfVdAjLBdLdZEvqdmOwzVYIAAjgNvw3pQpQG6kaALnS53JHJGbMgb+4NeWl/lOrbo3sat+J10Y+XHPfgJNdKSP/jBXCGtJACZ1tnwBnEzGYdDn/dOp8mvjyIwBipacF3a+QU4KL8tN9IZQn5WtdjQPS+dQRX8B+b+byv0DtZBH5EIxnvuwXac+LgFA6ydkT+dgmzJ+1L527rxg4z+c1RY+W9FsI8KtD1Jhl9ziAfW/dV9EGh4w6N5UAIVFd3DY5jWGpsgvU4d0cFgmRPR6JrWUc9npAn1U9mcoD903//jBtr15PjBuBBKwDFEdpoziij+jWd4X46/jlPZtiq8EEFTLmQd9VVru5nTTfuYcVy9rS94auO8PbQhNcdgtCXc8L7/+9WQP9DDw9wrHdlpjEK7Ybpn7hMPJil/IMYBEVLoYhBIsQPOlfWIqKlQAo1oyp+mCA9rm2prDh020pswRxDsyK4VekdQXCIERU5g+GY+Ou4ED/Slk8WJvLkeGo7tpS2AMJuu2/f8qRlphnfu6Zco8OvtpxwSqmblF3g3T1rtSSiENRiT9pEfjKfSXQQHTcaEcfnpbmgyJEb4aQvlw63htfM1i/bIOyqpCj0CoHT+D2EnrMeINcaKeDKfO7CbwqrP5vRZciFeeoxk+hgqtYf4QQrhFcFNomm6pYjDSrp5pvZ6ZbIxMJKmXmF+rWom/AXmSXJoOWzqgTeKku/u12srXcuNjnQ73oOxaqTURD2DPO3TNY0udH5hajD/nFSmMWgMXfU8QmAcQ1S6eruMRer0uIFsd5foiBq5+1+gUX/4K7AOf45vfz1gpY
- qXhzO07+
- dzBwITjkkLS8QeUzxHK7BQBXYG9+q9+3bbLaB5w2rd+sLUPkGYqsPgch8IxJYPJI9EKnm7DW66uPfhEUdu8lJAoojNMi0Yqyse2wt9bKJIqQZSdc5SJxdm1fz2e+1v+N8AlzS1fns/JVK9YGZ3tzqWy15FjXiJSB5rubT51YuZKE7XZVxm+wG7NCz0G118E5/lTBz+wIQlMX8dWogZ9bKOQTedRmumzWSnUyjCum5MUrPN7WFyLFqZRB8T8HK1P4ajDsOzpovFsAG+4HBU8lDRehr/dQFZ9tgi3VkTE8/+eb7thYFSjc3Khtwwdr8xxRXZ33CtUknLEUYz/oGN+ffcsCq2QZ06GTiVUQVbC5KNCaJuTwCWEiEXvf5ES94W+60H7SsocOXSd9pLLLFzJKpGfm1NMhN8aJcYrAZoTeeFEzFZ0leg+R8QOV9gpG+TYxsQcXRSmqOVcd8r/8H9DjRf6o+7VMUiW6ICR1qxCT7fpppPSRIdWRWWi9PSfa4Ro0lAFnZW9SSYOCiPyv7W+lnlgGSZa0PxiTDRbIqDbdOLq2E9chUiULV7P13VgENu7hfri9gUI9DKFIAzu9tQ/NnBXMnZ5vAyjsoVMWXYbTDdCkS0+EIEU1WroyXf3s0P3d+uNTSpn/76ArzKoJZ2IXGhaT7HwbIpsUElhbTCx98hGGJ3wEIRNLEDGl9vKjFBzm6iCpeoX+Npp+2qgcbQMliSVy66m0VLFzEOfvLVad0ZHtTvV3wW9zuPjbqx5rafp8Sq4mFp4Pt+jmAt/II2aehcJGF11kMh6nms3IkvjIPIHynjnc8szQ2subi6TkIztd3YuKqegphNutvMReKet8t9VrW2bnSxvkL9pLU/MoT2Zpvb38=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1B1CE14000F
+X-Stat-Signature: 93i5cq1cossryid57ae7pkezjnmi6t54
+X-HE-Tag: 1754298565-541637
+X-HE-Meta: U2FsdGVkX1/kPKSLv918NyJJ0ceY/nuLREm3fFg/99UHKQ523nWss/a9jFxx+ffMKC4o+xEuscErGHP+n0yUSuMlB0tRgopz/kBCyTVYUl38lPmFnvUSt8VP+xQNSkJoqpJB2Zwiv02NjkFfOnwq0yNrzFcRPVWq1RRk/ps6Xg2gdywj9ursE9RUzhR7rRlRoQ6CYLPOLBKcQMT/puYV4QHRGkbZPbWk5gHR4IWDyMAyv41nPbP1me7AXfxeVLFfq6hc3eCE/JqetZRouU+imKV/hvlZ+rKhX9lngZF1fGblcbYnXEX7yWOAhRMixz8saNaekxk35Wrn+pGgr/agJpveUpR79TZ6Fk7dJhysvN9BdJyUAl3vgkYnZGG/G5fAFU1J/gCQYGh/DGKT0nZb/nFoIYd5PLYtWolLPYX7JzyuJzLjZpAA+KMx5yA1CyhDuNrDEq3J3Ux7BeOsl0d5g1Dae5R93BWSdgzCbNlnLSAmajRTRnPneWXSz/Nc44e0w6LsCXQwZxQkdgt++v5qplsDdY49p11K/N64PmHzjDYkjvmtEHu+koUwmxQYqrR00XszzikKvzzT3VBIgg38VQpvFJLGO83otVbFbjPTMpamEMs63C+wg+FU0zUnb8ogsSP2QQSkchB5lnicYHOMLwn9ddq1zgs+KhnIQorPUvFOm6eJEIP+OhqnFD+/WGHd2OlJDMrHMfSTOeSe6Ag//YEylGoLRhdii3HFuIvuIGNWHtJzS6rSFItawy6wquNfanVb4m+pw3PQ7fFqScEe6Ao4EHuDNkxyvZJI9evpeFurIP06yPZDlFayRK8p1DbyOo7BfCJSjUYF3TJjCbtTQumcaP8YN/XMs6wxtonZjBqDfmv4nDQ+5TeHHtwhTV91Fv5o9qNsqECnPWnJ2bPbrA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,76 +132,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 29, 2025 at 11:04:00AM +0530, Aboorva Devarajan wrote:
->From: Donet Tom <donettom@linux.ibm.com>
->
->The split_huge_page_test fails on systems with a 64KB base page size.
->This is because the order of a 2MB huge page is different:
->
->On 64KB systems, the order is 5.
->
->On 4KB systems, it's 9.
->
->The test currently assumes a maximum huge page order of 9, which is only
->valid for 4KB base page systems. On systems with 64KB pages, attempting
->to split huge pages beyond their actual order (5) causes the test to fail.
->
->In this patch, we calculate the huge page order based on the system's base
->page size. With this change, the tests now run successfully on both 64KB
->and 4KB page size systems.
->
->Fixes: fa6c02315f745 ("mm: huge_memory: a new debugfs interface for splitting THP tests")
->Reviewed-by: Dev Jain <dev.jain@arm.com>
->Reviewed-by: Zi Yan <ziy@nvidia.com>
->Co-developed-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
->Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
->Signed-off-by: Donet Tom <donettom@linux.ibm.com>
->---
-> .../selftests/mm/split_huge_page_test.c       | 23 ++++++++++++-------
-> 1 file changed, 15 insertions(+), 8 deletions(-)
->
->diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
->index 05de1fc0005b..718daceb5282 100644
->--- a/tools/testing/selftests/mm/split_huge_page_test.c
->+++ b/tools/testing/selftests/mm/split_huge_page_test.c
->@@ -36,6 +36,7 @@ uint64_t pmd_pagesize;
-> 
-> #define PFN_MASK     ((1UL<<55)-1)
-> #define KPF_THP      (1UL<<22)
->+#define GET_ORDER(nr_pages)    (31 - __builtin_clz(nr_pages))
-> 
-> int is_backed_by_thp(char *vaddr, int pagemap_file, int kpageflags_file)
-> {
->@@ -522,6 +523,9 @@ int main(int argc, char **argv)
-> 	const char *fs_loc;
-> 	bool created_tmp;
-> 	int offset;
->+	unsigned int max_order;
->+	unsigned int nr_pages;
->+	unsigned int tests;
-> 
-> 	ksft_print_header();
-> 
->@@ -533,35 +537,38 @@ int main(int argc, char **argv)
-> 	if (argc > 1)
-> 		optional_xfs_path = argv[1];
-> 
->-	ksft_set_plan(1+8+1+9+9+8*4+2);
->-
-> 	pagesize = getpagesize();
-> 	pageshift = ffs(pagesize) - 1;
-> 	pmd_pagesize = read_pmd_pagesize();
-> 	if (!pmd_pagesize)
-> 		ksft_exit_fail_msg("Reading PMD pagesize failed\n");
-> 
->+	nr_pages = pmd_pagesize / pagesize;
->+	max_order = GET_ORDER(nr_pages);
+memmap pages  can be allocated either from the memblock (boot) allocator
+during early boot or from the buddy allocator.
 
-There is a sz2ord() in cow.c and uffd-wp-mremap.c.
+When these memmap pages are removed via arch_remove_memory(), the
+deallocation path depends on their source:
 
-Maybe we can factor it into vm_util.h and use it here.
+* For pages from the buddy allocator, depopulate_section_memmap() is
+  called, which also decrements the count of nr_memmap_pages.
 
+* For pages from the boot allocator, free_map_bootmem() is called. But
+  it currently does not adjust the nr_memmap_boot_pages.
+
+To fix this inconsistency, update free_map_bootmem() to also decrement
+the nr_memmap_boot_pages count by invoking memmap_boot_pages_add(),
+mirroring how free_vmemmap_page() handles this for boot-allocated pages.
+
+This ensures correct tracking of memmap pages regardless of allocation
+source.
+
+Cc: stable@vger.kernel.org
+Fixes: 15995a352474 ("mm: report per-page metadata information")
+Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+---
+ mm/sparse.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/mm/sparse.c b/mm/sparse.c
+index 3c012cf83cc2..d7c128015397 100644
+--- a/mm/sparse.c
++++ b/mm/sparse.c
+@@ -688,6 +688,7 @@ static void free_map_bootmem(struct page *memmap)
+ 	unsigned long start = (unsigned long)memmap;
+ 	unsigned long end = (unsigned long)(memmap + PAGES_PER_SECTION);
+ 
++	memmap_boot_pages_add(-1L * (DIV_ROUND_UP(end - start, PAGE_SIZE)));
+ 	vmemmap_free(start, end, NULL);
+ }
+ 
 -- 
-Wei Yang
-Help you, Help me
+2.48.1
+
 
