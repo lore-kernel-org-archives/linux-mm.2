@@ -2,127 +2,108 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 35709C87FDA
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 09:35:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A4699C87FCB
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 09:38:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F0D56B0092; Mon,  4 Aug 2025 05:35:43 -0400 (EDT)
+	id 2CB7D6B0095; Mon,  4 Aug 2025 05:38:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A1A66B0093; Mon,  4 Aug 2025 05:35:43 -0400 (EDT)
+	id 27C606B0096; Mon,  4 Aug 2025 05:38:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8BCBE6B0095; Mon,  4 Aug 2025 05:35:43 -0400 (EDT)
+	id 143B86B0098; Mon,  4 Aug 2025 05:38:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 78F136B0092
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 05:35:43 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0A5291A1078
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 09:35:43 +0000 (UTC)
-X-FDA: 83738567766.04.F4679FF
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 2852F14000B
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 09:35:39 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b="jWNhuy/R";
-	spf=pass (imf23.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.219.42 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	by kanga.kvack.org (Postfix) with ESMTP id 051566B0095
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 05:38:41 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CDD60BE984
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 09:38:40 +0000 (UTC)
+X-FDA: 83738575200.19.FD415BA
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+	by imf03.hostedemail.com (Postfix) with ESMTP id E236E20006
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 09:38:38 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=fu-berlin.de header.s=fub01 header.b=ZjM+meP4;
+	dmarc=pass (policy=none) header.from=fu-berlin.de;
+	spf=pass (imf03.hostedemail.com: domain of glaubitz@zedat.fu-berlin.de designates 130.133.4.66 as permitted sender) smtp.mailfrom=glaubitz@zedat.fu-berlin.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754300319; a=rsa-sha256;
+	cv=none;
+	b=aqSnIK3ndfaOw20gc4MWfhEYENnNzAPTDZV4naY7c7A+XZOa1uXkRgmYoOU7MPIbAjiz+z
+	3XKMvjA2aK2EyhOs7vepn96EPxdmPuysc3Lnyi7WTiLcNyL5t7L0mUdTjFS+oZ3uKpsyOZ
+	sTzBQK9g7d63k90RCMaIrwNIWq3ObZ4=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=fu-berlin.de header.s=fub01 header.b=ZjM+meP4;
+	dmarc=pass (policy=none) header.from=fu-berlin.de;
+	spf=pass (imf03.hostedemail.com: domain of glaubitz@zedat.fu-berlin.de designates 130.133.4.66 as permitted sender) smtp.mailfrom=glaubitz@zedat.fu-berlin.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754300141;
+	s=arc-20220608; t=1754300319;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RcjWij1zfH9zgejgmouHVbcKEsPohZbovhnBUfRRKYA=;
-	b=whp+uyMQLMshcLJzs4HNG9QofEScvdTgPZwucl9rlW5/XBG9SE4vyEKPagDSuSFANxyW1K
-	DDf/+cIK0t8+Ruhr4ckGbNw3exUEF5RbjY5AR2OEAYKI9uzNq12q8cuoH6iCfTaiYTWBsl
-	cJFiSlnn0HhCXc5ryPfFSXfIFSVo9gw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754300141; a=rsa-sha256;
-	cv=none;
-	b=YbwgTsPJvmF2EfzPL5PC4mikSwMnv9zR+b9n8w1yyAZtHXAW2iwwKO6pGyu2j5A2bXCeoL
-	2HTUdHgsQR0s6VuqnQaPr5BJOSlR1XE9JtG9J0tAZ9tWyiJUhgNh5dkRNTljq1qhrG4oO4
-	oqnJ7W6a+pFp76QiIsy08xS8Fx8CN68=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b="jWNhuy/R";
-	spf=pass (imf23.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.219.42 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-707453b0306so31422146d6.2
-        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 02:35:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1754300139; x=1754904939; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RcjWij1zfH9zgejgmouHVbcKEsPohZbovhnBUfRRKYA=;
-        b=jWNhuy/RPcXEsDgBL8twRHiNy/gixvacyYpNpsp4tw7DBKpItZDOuVCJ01vfgg8U//
-         DCviTWhysSwDl2v6HD09dpPQb+agyW3dnvClIhXJbwBa5ioaSv9x++PSBsxZ6g6zgCjM
-         kGpxDTNoTl+QpSFBrpP0JrIiwvBr3GMUkYQm1+ADWWqEW5yWRry+EDoCR1faRPlSJUJ6
-         WnhNBb3WifHQWkiFV8BZ3MdyM5cP5e0ryUX/TTmUDYb1Vj0C7dgYen8pKtlesYcONznG
-         +DfcCGxghsJJO0ROK5wGtmj5oBuveCwPbx13XpRUHmXJGVEb9xC3nllgI7AZr+AKX3oI
-         QFKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754300139; x=1754904939;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=RcjWij1zfH9zgejgmouHVbcKEsPohZbovhnBUfRRKYA=;
-        b=IACR677+oJ3FbMpBIXSSJaAGEd1DF3B5gwcZ9sP6WUgb5LEXBeaQYIzucngpeWhtPF
-         TV3bW6LLX5v4zqVIuho2dOnk5z/HoTmbWwpKtR2HSAdUwFuC5jGOnWtU9NlWB/bo7Qg2
-         jaSd7OGE8nCl1g/d2lcl5cx7p2RINKPXXd5t8ScydxifznNmZRp8ADzAt37SM+QZzMEM
-         Ax0dP8CLGk8aPZzaK5eu0XLYcKSlwozgqhkr5gFISjNVvAdemg8YDgR4i9uuFG1qxsP8
-         wWqjy24J9VYPGBnWd8qGG9BVTkVPVgRgwb3Cll3Qd6u5vmUMv54AJJr+jg9XPULVNEuJ
-         qOfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXF7WbV/OBSIlbF5/PrnaI3jnS+fyWfqqc2yWJiSCM9dcNM5FF4bQQ64CWiUQ0UiOU1hZRbwQJQqQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy0JTZeejiBwPBNNDvsbjj3BY7X54vdUboFaowgSTabNNxLiPO5
-	q/iWqBrtL7Iu9KxaAmQb3IsIJ+YgNhWGyfnd8I2vFfgK3NLrj/Kz6XvvUVEFmeQMSe0=
-X-Gm-Gg: ASbGncvSrhizOkR7Us8cHSEg0l4KPjNPp2g2OOcEA0ig80doJbVh+gpRQH8luqDMXBO
-	uxoI6ZGW0Ct8ZidJuluUcXZqbI7ME8U+Yl599PK2Z76THeva3beYJgXx1DD871CbxEENPkra7Mb
-	GzPLMxjBdyQPnvWINwKC6pO+lw4dJNa/E/o2JGmeKIxJ9uVQqditohN94pAToGy22hkbWhOhkQL
-	veCQJxkWc3rRyOOfQaH4Im4nauuW6MImcEeHuW2a40pg6BwTGKnfAO+JwgmleoaQN+kNWF0lYJL
-	pvM5CsPDDZtE7KALMpa7+c8/V5C1Z1DqqDQLqzVI+9mnoX+h4e1JDDPb5RVoLv9xHHC4Lyln3ty
-	G5RyF7++jsuT1TNkVVY8yQDlHMzKcoqWohvZ0ssqFwB+htRsjTQeA3fF0
-X-Google-Smtp-Source: AGHT+IGJYeDoMlkbxXOekoon1joz4ipz4FPO6Mj7+15rgXMlIFwmDrM6pyUnxD9IxFCApfdn/Qj1VA==
-X-Received: by 2002:a05:6214:2626:b0:707:159e:d1c9 with SMTP id 6a1803df08f44-7093637cd44mr112044766d6.51.1754300138944;
-        Mon, 04 Aug 2025 02:35:38 -0700 (PDT)
-Received: from [10.68.122.90] ([63.216.146.178])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-7077cde8d56sm56261826d6.73.2025.08.04.02.35.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Aug 2025 02:35:38 -0700 (PDT)
-Message-ID: <7d92ec18-ff8e-4929-8b9a-f0bf5c6d249f@bytedance.com>
-Date: Mon, 4 Aug 2025 17:35:28 +0800
+	bh=3YTCl/zW/Wo/tkqi5mo+Efw9tJOY+FJ3ba2nykfa53A=;
+	b=1yg2nUe3XudLgUAb6hBXrsmLPsznH6FY0+wx4ol6LXsHbFe4P/emUdGQ145m1sKeeHx1WM
+	xssX9whOVpgewPwMAA9Mar3nFiUQk0S1ApxW/ephzSefe66eEiL5NS4G+SdZlYLW+THWnY
+	ACtxHEupkJQcd5/XJ1O/xhSqHPFrrxo=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=3YTCl/zW/Wo/tkqi5mo+Efw9tJOY+FJ3ba2nykfa53A=; t=1754300319; x=1754905119; 
+	b=ZjM+meP4MAtcpcZG9Lu529MJvQ7EnfpzDLskccToFvuM97mihIGa9pn5KdU6jzqbamYYSkQiW2J
+	M/bEG2MGL4j6VPM2wbRHl6CKIcUJ8GMImdbHdyaf1c3CBRQyntyY9GfZLUgjFpTals/dgrKS09Jap
+	eSCsxySU/zYk2jTOzV/N3kwM3wYQzJGHpqRvqTcM8AC8nkpGCbfgkOc1Gisghjj/WvjRGNRebXZXP
+	aWuatajzciTCNHBvFzpPWWxmPeBuaE5N+nCWSDWMKgYbGxIHREE83rYTVlV0CF7ALMbEoAolYBQZ0
+	FajOWTdHtVPPZ5SJra2JyKdU+BByEq9VQ4eQ==;
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.98)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1uireN-00000002kpa-1lOP; Mon, 04 Aug 2025 11:38:35 +0200
+Received: from p57bd96d0.dip0.t-ipconnect.de ([87.189.150.208] helo=[192.168.178.61])
+          by inpost2.zedat.fu-berlin.de (Exim 4.98)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1uireN-00000000oqi-0mSZ; Mon, 04 Aug 2025 11:38:35 +0200
+Message-ID: <ab2138b468994050a817426f8ce4fd784108c210.camel@physik.fu-berlin.de>
+Subject: Re: [PATCH v4 25/36] sparc64: Implement the new page table range API
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Anthony Yznaga <anthony.yznaga@oracle.com>, "Matthew Wilcox (Oracle)"
+	 <willy@infradead.org>, linux-arch@vger.kernel.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, "David S. Miller"	
+ <davem@davemloft.net>, sparclinux@vger.kernel.org, Andreas Larsson	
+ <andreas@gaisler.com>, Rod Schnell <rods@mw-radio.com>, Sam James
+ <sam@gentoo.org>
+Date: Mon, 04 Aug 2025 11:38:34 +0200
+In-Reply-To: <d424e109e6f1a00b8cf22ec1b40d6dedff38ce52.camel@physik.fu-berlin.de>
+References: <20230315051444.3229621-1-willy@infradead.org>
+				 <20230315051444.3229621-26-willy@infradead.org>
+				 <ce6337237169f179c75fe4a1ba1ce98843577360.camel@physik.fu-berlin.de>
+				 <83931f05-a613-4972-be76-80bc695915e4@oracle.com>
+			 <75cbab0cdab084795422335c0e0d69c6f57b468c.camel@physik.fu-berlin.de>
+		 <76c45021481cfe1aaa9fe2cfcd2287ac6c8d4504.camel@physik.fu-berlin.de>
+	 <d424e109e6f1a00b8cf22ec1b40d6dedff38ce52.camel@physik.fu-berlin.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mm: use per_vma lock for MADV_DONTNEED
-To: Barry Song <21cnbao@gmail.com>, "Lai, Yi" <yi1.lai@linux.intel.com>
-Cc: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Barry Song <v-songbaohua@oppo.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
- Suren Baghdasaryan <surenb@google.com>, Lokesh Gidra
- <lokeshgidra@google.com>, Tangquan Zheng <zhengtangquan@oppo.com>,
- yi1.lai@intel.com
-References: <20250607220150.2980-1-21cnbao@gmail.com>
- <aJAFrYfyzGpbm+0m@ly-workstation>
- <1d1d97f9-2a67-4920-850e-accf4c82440e@redhat.com>
- <4fa8f492-c7ef-451c-8dc7-38b031c8a092@bytedance.com>
- <d9d0890e-2837-49dc-9ca8-1d6c28e95a21@redhat.com>
- <aJB0Kdc6cx1lGkdb@ly-workstation>
- <CAGsJ_4yw4Qn7OWmUJeJZYuOHLjJ7L8kov3Th3vFPa3h4y0ur_A@mail.gmail.com>
-From: Qi Zheng <zhengqi.arch@bytedance.com>
-In-Reply-To: <CAGsJ_4yw4Qn7OWmUJeJZYuOHLjJ7L8kov3Th3vFPa3h4y0ur_A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2852F14000B
-X-Stat-Signature: xnppg9hybky95rhoq11n9n51zrp6x34m
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.189.150.208
+X-ZEDAT-Hint: PO
+X-Rspamd-Queue-Id: E236E20006
+X-Stat-Signature: kzkh33ad9cuytcfzm594e1o1mgce5sqm
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1754300139-82263
-X-HE-Meta: U2FsdGVkX1+CGXd2jQh8TpSubZq1oU5+W3JAhAQT7k8LllKfZLzMNBrt1iyRul3ZwLbF2AGh318hTzcuE3en5V3vgY5TWjNM34J4Gy6iklkXV9hnDHndTNVzeXSwbyPNfflHjYF4Yjz3cKKNqE7votm/jP2BOjVbMP9eAk70O0qSy40QhTxJdxor8BSUtAe2jjDqZQIOPd844mjJfI8Hq+b7NbMtNAWCmmlrljMeX6blrTQrX4KnZuvVkflH/CncFk5+vDdVmxRsT3JjGy10f5rjEDVLrjsESX8l/YNiSxtZhF3bjzoc5m1m2u/iYIbUKpzd8RWULuLyDNJ+6m6XF9CtH4drvhfMbvKOKkdNiZY0gPArnOuwte+96IBaUHr7aE7ea3863NWlpuMH7nk/M4JTURlrH7Rrq3TrWxeM4l2q0FoWDb+8qMph5H07RTgYksRtW1xmWSxTRCRm1WLzs+A472w5KwlQQDji5h8ThEbtt6FNA2hpqddQehR9s/Zg3Bgpsy/qNuwDUY+gPMNbds2RNZzjAaYDlP7H91R0PagorN+5AztYpjAsCDoOHiSoUc1dceByYzN/zSiJsX/gOhgPhZ3XVECfoULgwTIhn3YcBHTNe8hhlIrcbiJvvxgdO1uzxHGOLLqJb8DESkYL6zf58UH7phE1uJIQOvSiHHHwh20Ix5Jn4erDCQKZmzROFmdpMV3IrSJJW9rZx0kTg45Tq3phgnViN04AU8SebE6gvIkPBwYsEfkkT6HX9AdSeGH/ownjwx811ji2m+7sirgaDIGygbRBuivnURRCljCiIkkDZ1Fwz6GuwOYj1r09hK9mnyCQ9z7cz/7SDDiN+XNwndwF197Xg5WaQgs1C1GxN59XaYS3lKB1cttt9UsbHMOa3GjPgQpE9hcgY5LXOlG28g8Nmi5ovXnW1OOQuTXDuWxnIw4QE7584Gb/Qv/+DHCHovHff8tAnr+3xHM
- QqtVbruF
- m2YbZakqmpEdqfAYmuLClBGcNiP/LUbqhFGSIZmdkM7d0y1RxGf3hke4nxMBm/GSRut8QZ7kq8EYs9j5Kv2KTaUnA1yyjVBrDwtXKBC3SRtOyj4OOuARMsJbIv5VUzAX2vi35eZ3eDWwPgcGNs/fEB8B9AQcnGm38oMWfLbu9pT6kQoAAcqwYwEtwlLxIxRm0Co9ePD35Zvf3MhUXCt0wmgvNQ8OGPhruTjgRRnBzN0XVkOF7UJivKVbvx21WFUP4qfzHao4XXiXYhgCNvGbfby2QwGHRtVZF6A63ELjVwTPl91ykGWGygq4HcrE1cwEi61TJkoT6I1Pkeldegtntx/IRn4S48BqDq+41DswKKbJKJZyUAFdFRebyRN9IybbTd+GQFmACqO2TsgJMwMn3AtdG7mkYLp0JzTBJxZewJVJUEHdRIiD1gtrONX4obxnPzRsTf5j+Dz4t5IGTClUdf3jyQBfpvXJd53rl1G285FPnZVSvhTr05IrdNb+8YZ7gj1qVywUGMXEmQNvS6c7GMKItBloNIsZv5yXmGnSXPSzFE/bCQgQd9GAqU8pAASEco3MGn0hlVOvpQ356JIhdV05DnG3CLrg2UTGbNqrjMHg8Z1QZkQ8hB69mOQ==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1754300318-558150
+X-HE-Meta: U2FsdGVkX1/0pvXYhENMpfRhb43eTizwVO6Ds1ZkLbrWDy3AO9B6oaG3Rte6chpz4FipVdmaf6p7EAdgwuDEc0iBZueXOk3X/EiWeF0kSDYrSYDgpplelWSlnQplGd5kbIlIYkD6NjOSFytkI7/5UzvWTQlImzfVep+ubevD4zzRO7WMo0SAyZ/NKvwm5Ob/f/Y3VSH1tTU9jJ/JuxIcToqboKvTFE0qw2pbrjUDxg2MlSV3q17yGrPqLDEZWw31YIWWyot0Nivv8de63NUHIaYHfIEknFdHT5drBz2RwIgg5rnde7hW6n9AA7zEu//Fr53Ling6cg2Ui8wk9LJACSMDS8BzVROv990lVD+gmB0qXHMa20J2u73CEmOs/zO/c01SHed1MCUkJJlcisOwBk2RMfy1NXWbxlIVM2uRjGdqvqYjDnvJRR5Tyr+83Hqv50k2//LSNtHCcHsHCRwnQpDWdoS4kjV5W889kFL4qp15Sgj506FQbUCUbdrGRD+6V0vKEPgmZ/95uQyQLD31dr+CNZCjGcrimiSaDeoE4zeadK8eNFZDEC4LSdEIGSuUZb4g12jtqXDPAHIBnaHTxUstOeJSpPqMW/eDe84PQmrvLMbZoMGFAhJ27rEsWUMmcbTMf6XzrhwDT+F7pXwiqRONbG/nnHXEyPKRudwGwnhpLtadhcY82mjxuAeTn0xcvQFoUn9BSLJ71bbWQdB1DhEXf9Q+QQ11BWBkQYNfpai88Ch7StH2VrwrQkIFV+OKWdo2Y0jIy7OiYsKGiY0256XzSrf3NZamKNr3i0cpKIBHs6biDay0V0pBUh1q4hhDAUrTex5Pa/SORQy2ZziHOyNJgkH4LpShpEwl2NUeA+nGHQLP1/vtmtkO+hpc+uY8rlWSL7wxjROpLK9h4lK06QWy00JzncaXFwdFSUg3wLrNDUvm/h319G6kPB2NLQJnE8oMGAlj02nh/Z+JDcl
+ zm10s99Z
+ AF/d2L//X1+lUuOiJ1nCi5AoCU/A7O0imBTb7k1PO2IFrdt5Ebr3K5nqV28R1Z+9s7z0Mkw6ZBn3kp03bqm0j3Pr0FajFg2llfooCT2rExvSVlqI/qs2P5MOmhyzSClHS232UOsWrIQuf4g21O1JFzyhtUobVSuGMqUhCDLBfljm0Muc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,216 +112,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi,
 
 
-On 8/4/25 5:15 PM, Barry Song wrote:
-> On Mon, Aug 4, 2025 at 8:49 PM Lai, Yi <yi1.lai@linux.intel.com> wrote:
->>
->> On Mon, Aug 04, 2025 at 10:30:45AM +0200, David Hildenbrand wrote:
->>> On 04.08.25 10:26, Qi Zheng wrote:
->>>>
->>>>
->>>> On 8/4/25 3:57 PM, David Hildenbrand wrote:
->>>>> On 04.08.25 02:58, Lai, Yi wrote:
->>>>>> Hi Barry Song,
->>>>>>
->>>>>> Greetings!
->>>>>>
->>>>>> I used Syzkaller and found that there is general protection fault in
->>>>>> __pte_offset_map_lock in linux-next next-20250801.
->>>>>>
->>>>>> After bisection and the first bad commit is:
->>>>>> "
->>>>>> a6fde7add78d mm: use per_vma lock for MADV_DONTNEED
->>>>>> "
->>>>>>
->>>>>> All detailed into can be found at:
->>>>>> https://github.com/laifryiee/syzkaller_logs/tree/
->>>>>> main/250803_193026___pte_offset_map_lock
->>>>>> Syzkaller repro code:
->>>>>> https://github.com/laifryiee/syzkaller_logs/tree/
->>>>>> main/250803_193026___pte_offset_map_lock/repro.c
->>>>>> Syzkaller repro syscall steps:
->>>>>> https://github.com/laifryiee/syzkaller_logs/tree/
->>>>>> main/250803_193026___pte_offset_map_lock/repro.prog
->>>>>> Syzkaller report:
->>>>>> https://github.com/laifryiee/syzkaller_logs/tree/
->>>>>> main/250803_193026___pte_offset_map_lock/repro.report
->>>>>> Kconfig(make olddefconfig):
->>>>>> https://github.com/laifryiee/syzkaller_logs/tree/
->>>>>> main/250803_193026___pte_offset_map_lock/kconfig_origin
->>>>>> Bisect info:
->>>>>> https://github.com/laifryiee/syzkaller_logs/tree/
->>>>>> main/250803_193026___pte_offset_map_lock/bisect_info.log
->>>>>> bzImage:
->>>>>> https://github.com/laifryiee/syzkaller_logs/raw/refs/heads/
->>>>>> main/250803_193026___pte_offset_map_lock/bzImage_next-20250801
->>>>>> Issue dmesg:
->>>>>> https://github.com/laifryiee/syzkaller_logs/blob/
->>>>>> main/250803_193026___pte_offset_map_lock/next-20250801_dmesg.log
->>>>>
->>>>> Skimming over the reproducer, we seem to have racing MADV_DONTNEED and
->>>>> MADV_COLLAPSE on the same anon area, but the problem only shows up once
->>>>> we tear down that MM.
->>>>>
->>>>> If I would have to guess, I'd assume it's related to PT_RECLAIM
->>>>> reclaiming empty page tables during MADV_DONTNEED -- but the kconfig
->>>>> does not indicate that CONFIG_PT_RECLAIM was set.
->>>>
->>>> On the x86_64, if PT_RECLAIM is not manually disabled, PT_RECLAIM should
->>>> be enabled
->>>
->>> That's what I thought: but I was not able to spot it in the provided config
->>> [1].
->>>
->>> Or is that config *before* "make olfconfig"? confusing. I would want to see
->>> the actually used config.
->>>
->>>
->>>
->> My kernel compiling steps:
->> 1. copy kconfig_origin to kernel_source_folder/.config
->> 2. make olddefconfig
->> 3. make bzImage -jx
->>
->> I have also uploaded the actual .config during compiling.
->> [2] https://github.com/laifryiee/syzkaller_logs/blob/main/250803_193026___pte_offset_map_lock/.config
->> CONFIG_ARCH_SUPPORTS_PT_RECLAIM=y
->> CONFIG_PT_RECLAIM=y
-> 
-> Thanks! I can reproduce the issue within one second.
+On Mon, 2025-08-04 at 08:58 +0200, John Paul Adrian Glaubitz wrote:
+> OK, so v6.8 is fine while v6.9 crashes:
+>=20
+> [   39.788224] Unable to handle kernel NULL pointer dereference
+> [   39.862657] tsk->{mm,active_mm}->context =3D 000000000000004b
+> [   39.935941] tsk->{mm,active_mm}->pgd =3D fff000000aa98000
+> [   40.004566]               \|/ ____ \|/
+> [   40.004566]               "@'/ .. \`@"
+> [   40.004566]               /_| \__/ |_\
+> [   40.004566]                  \__U_/
+> [   40.197871] (udev-worker)(88): Oops [#1]
+> [   40.249329] CPU: 0 PID: 88 Comm: (udev-worker) Tainted: P           O =
+      6.9.0+ #28
+> [   40.353415] TSTATE: 0000004411001605 TPC: 0000000000df092c TNPC: 00000=
+00000df0930 Y: 00000000    Tainted: P           O     =20
+> [   40.502105] TPC: <strlen+0x60/0xd4>
+> [   40.547844] g0: fff000000a3171a1 g1: 0000000000000000 g2: 000000000000=
+0000 g3: 0000000000000001
+> [   40.662224] g4: fff000000aa4dac0 g5: 0000000010000233 g6: fff000000a31=
+4000 g7: 0000000000000000
+> [   40.776599] o0: 0000000000000010 o1: 0000000000000010 o2: 000000000101=
+0101 o3: 0000000080808080
+> [   40.890974] o4: 0000000001010000 o5: 0000000000000000 sp: fff000000a31=
+7201 ret_pc: 00000000004d4b08
+> [   41.009924] RPC: <module_patient_check_exists.constprop.0+0x48/0x1e0>
+> [   41.094557] l0: fff0000100032f40 l1: 0000000000000000 l2: 000000000000=
+0000 l3: 0000000000000000
+> [   41.208936] l4: 0000000000000000 l5: 0000000000000000 l6: 000000000000=
+0000 l7: 0000000000000000
+> [   41.323311] i0: 00000001000256d8 i1: 0000000001143000 i2: 000000000114=
+3300 i3: 000000000000000b
+> [   41.437686] i4: 0000000000000010 i5: fffffffffffffff8 i6: fff000000a31=
+72e1 i7: 00000000004d63f0
+> [   41.552062] I7: <load_module+0x550/0x1f00>
+> [   41.605811] Call Trace:
+> [   41.637838] [<00000000004d63f0>] load_module+0x550/0x1f00
+> [   41.708752] [<00000000004d7fac>] init_module_from_file+0x6c/0xa0
+> [   41.787670] [<00000000004d81c8>] sys_finit_module+0x188/0x280
+> [   41.863158] [<0000000000406174>] linux_sparc_syscall+0x34/0x44
+> [   41.939790] Caller[00000000004d63f0]: load_module+0x550/0x1f00
+> [   42.016423] Caller[00000000004d7fac]: init_module_from_file+0x6c/0xa0
+> [   42.101059] Caller[00000000004d81c8]: sys_finit_module+0x188/0x280
+> [   42.182266] Caller[0000000000406174]: linux_sparc_syscall+0x34/0x44
+> [   42.264614] Caller[fff000010480e2fc]: 0xfff000010480e2fc
+> [   42.334384] Instruction DUMP:
+> [   42.334387]  96132080=20
+> [   42.373269]  19004040=20
+> [   42.404151]  94132101=20
+> [   42.435030] <da020000>
+> [   42.465914]  9823400a=20
+> [   42.496793]  808b000b=20
+> [   42.527674]  024ffffd=20
+> [   42.558556]  90022004=20
+> [   42.589437]  8f336018=20
+> [   42.620318]
+>=20
+> So, the regression was introduced with v6.9. Will bisect this later this =
+week.
 
-I also reproduced it locally.
+Looking closer it seems that the original issue seems to be filesystem corr=
+uption and the
+consecutive crashes with older kernels might be a result of some corrupted =
+binaries.
 
-BUG: Bad page map in process repro  pte:f000e987f000fea5 pmd:00000067
-[22099.667758][T22301] addr:0000000020004000 vm_flags:00100077 
-anon_vma:ffff8882c5b5fc98 mapping:0000000000000000 index:20004
-[22099.671248][T22301] file:(null) fault:0x0 mmap:0x0 mmap_prepare: 0x0 
-read_folio:0x0
-[22099.673833][T22301] CPU: 15 UID: 0 PID: 22301 Comm: repro Tainted: G 
-   B   W           6.16.0-rc4-next-20250704+ #200 PREEMPT(voluntary)
-[22099.673838][T22301] Tainted: [B]=BAD_PAGE, [W]=WARN
-[22099.673838][T22301] Hardware name: QEMU Standard PC (i440FX + PIIX, 
-1996), BIOS 1.12.0-1 04/01/2014
-[22099.673840][T22301] Call Trace:
-[22099.673841][T22301]  <TASK>
-[22099.673842][T22301]  dump_stack_lvl+0x53/0x70
-[22099.673845][T22301]  print_bad_pte+0x178/0x220
-[22099.673849][T22301]  vm_normal_page+0x8a/0xa0
-[22099.673852][T22301]  unmap_page_range+0x5cb/0x1d40
-[22099.673855][T22301]  ? flush_tlb_mm_range+0x21a/0x780
-[22099.673859][T22301]  ? tlb_flush_mmu+0x30/0x1c0
-[22099.673861][T22301]  unmap_vmas+0xab/0x160
-[22099.673863][T22301]  exit_mmap+0xda/0x3c0
-[22099.673868][T22301]  mmput+0x6e/0x130
-[22099.673869][T22301]  do_exit+0x242/0xb40
-[22099.673871][T22301]  do_group_exit+0x30/0x80
-[22099.673873][T22301]  get_signal+0x951/0x980
-[22099.673876][T22301]  ? futex_wake+0x84/0x170
-[22099.673880][T22301]  arch_do_signal_or_restart+0x2d/0x1f0
-[22099.673883][T22301]  ? do_futex+0x11a/0x1d0
-[22099.673885][T22301]  ? __x64_sys_futex+0x67/0x1c0
-[22099.673888][T22301]  exit_to_user_mode_loop+0x86/0x110
-[22099.673890][T22301]  do_syscall_64+0x184/0x2b0
-[22099.673892][T22301]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[22099.673895][T22301] RIP: 0033:0x7fafb0048af9
-[22099.673896][T22301] Code: Unable to access opcode bytes at 
-0x7fafb0048acf.
-[22099.673898][T22301] RSP: 002b:00007fafaff50ea8 EFLAGS: 00000246 
-ORIG_RAX: 00000000000000ca
-[22099.673900][T22301] RAX: fffffffffffffe00 RBX: 0000000000000000 RCX: 
-00007fafb0048af9
-[22099.673901][T22301] RDX: 0000000000000000 RSI: 0000000000000080 RDI: 
-0000559d33cab1a8
-[22099.673903][T22301] RBP: 00007fafaff50ec0 R08: 0000000000000000 R09: 
-0000000000000000
-[22099.673904][T22301] R10: 0000000000000000 R11: 0000000000000246 R12: 
-00007ffe78dbcd2e
-[22099.673905][T22301] R13: 00007ffe78dbcd2f R14: 00007fafaff51700 R15: 
-0000000000000000
-[22099.673907][T22301]  </TASK>
-[22099.673913][T22301] BUG: unable to handle page fault for address: 
-ffffea7be1ffe548
-[22099.674789][T22301] #PF: supervisor read access in kernel mode
-[22099.674789][T22301] #PF: error_code(0x0000) - not-present page
-[22099.674789][T22301] PGD 2bfff7067 P4D 2bfff7067 PUD 0
-[22099.674789][T22301] Oops: Oops: 0000 [#1] SMP PTI
-[22099.674789][T22301] CPU: 15 UID: 0 PID: 22301 Comm: repro Tainted: G 
-   B   W           6.16.0-rc4-next-20250704+ #200 PREEMPT(voluntary)
-[22099.674789][T22301] Tainted: [B]=BAD_PAGE, [W]=WARN
-[22099.674789][T22301] Hardware name: QEMU Standard PC (i440FX + PIIX, 
-1996), BIOS 1.12.0-1 04/01/2014
-[22099.674789][T22301] RIP: 0010:unmap_page_range+0x1101/0x1d40
-[22099.674789][T22301] Code: eb 03 cc cc cc f3 0f 1e fa f3 0f 1e fa e9 
-ea 01 00 00 48 b8 ff ff ff ff ff 00 00 00 49 21 c2 49 c1 e2 06 4c 03 15 
-ef a6 fd 00 <49> 8b 52 08 4c 89 d0 f6 c2 01 0f 8
-[22099.674789][T22301] RSP: 0018:ffffc9000557baa0 EFLAGS: 00010282
-[22099.674789][T22301] RAX: 00000003ffffffff RBX: 0000000020005000 RCX: 
-f000000000000420
-[22099.674789][T22301] RDX: 000000000000001e RSI: 0000000000000000 RDI: 
-7803ff95ef87ff95
-[22099.674789][T22301] RBP: f000d420f000d420 R08: ffff888000000028 R09: 
-c000000100000864
-[22099.674789][T22301] R10: ffffea7be1ffe540 R11: ffffc9000557b6b0 R12: 
-0000000000000000
-[22099.674789][T22301] R13: 00000000000001fb R14: ffffc9000557bcc0 R15: 
-ffff888000000028
-[22099.674789][T22301] FS:  00007fafaff51700(0000) 
-GS:ffff8885b2b29000(0000) knlGS:0000000000000000
-[22099.674789][T22301] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[22099.674789][T22301] CR2: ffffea7be1ffe548 CR3: 0000000103d8c000 CR4: 
-00000000000006f0
-[22099.674789][T22301] Call Trace:
-[22099.674789][T22301]  <TASK>
-[22099.674789][T22301]  ? flush_tlb_mm_range+0x21a/0x780
-[22099.674789][T22301]  ? tlb_flush_mmu+0x30/0x1c0
-[22099.674789][T22301]  unmap_vmas+0xab/0x160
-[22099.674789][T22301]  exit_mmap+0xda/0x3c0
-[22099.674789][T22301]  mmput+0x6e/0x130
-[22099.674789][T22301]  do_exit+0x242/0xb40
-[22099.674789][T22301]  do_group_exit+0x30/0x80
-[22099.674789][T22301]  get_signal+0x951/0x980
-[22099.674789][T22301]  ? futex_wake+0x84/0x170
-[22099.674789][T22301]  arch_do_signal_or_restart+0x2d/0x1f0
-[22099.674789][T22301]  ? do_futex+0x11a/0x1d0
-[22099.674789][T22301]  ? __x64_sys_futex+0x67/0x1c0
-[22099.674789][T22301]  exit_to_user_mode_loop+0x86/0x110
-[22099.674789][T22301]  do_syscall_64+0x184/0x2b0
-[22099.674789][T22301]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[22099.674789][T22301] RIP: 0033:0x7fafb0048af9
-[22099.674789][T22301] Code: Unable to access opcode bytes at 
-0x7fafb0048acf.
-[22099.674789][T22301] RSP: 002b:00007fafaff50ea8 EFLAGS: 00000246 
-ORIG_RAX: 00000000000000ca
-[22099.674789][T22301] RAX: fffffffffffffe00 RBX: 0000000000000000 RCX: 
-00007fafb0048af9
-[22099.674789][T22301] RDX: 0000000000000000 RSI: 0000000000000080 RDI: 
-0000559d33cab1a8
-[22099.674789][T22301] RBP: 00007fafaff50ec0 R08: 0000000000000000 R09: 
-0000000000000000
-[22099.674789][T22301] R10: 0000000000000000 R11: 0000000000000246 R12: 
-00007ffe78dbcd2e
-[22099.674789][T22301] R13: 00007ffe78dbcd2f R14: 00007fafaff51700 R15: 
-0000000000000000
-[22099.674789][T22301]  </TASK>
+Will first try to figure out what commit exactly introduced the ext4 issues=
+ on sun4u.
 
-> After disabling PT_RECLAIM in .config, the issue disappears.
+Adrian
 
-Thanks for the test, I'll take a closer look.
-
-> The reason it doesn't occur on arm64 is that x86 is the only platform
-> that supports ARCH_SUPPORTS_PT_RECLAIM.
-> 
->>
->>> [1] https://github.com/laifryiee/syzkaller_logs/tree/main/250803_193026___pte_offset_map_lock/kconfig_origin
->>>
->>> --
->>> Cheers,
->>>
->>> David / dhildenb
->>>
-> 
-> Thanks
-> Barry
-
+--=20
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
