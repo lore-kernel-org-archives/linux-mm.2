@@ -2,84 +2,110 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9267EC87FCB
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 03:03:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F620C87FDA
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 03:38:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B36B96B0088; Sun,  3 Aug 2025 23:03:54 -0400 (EDT)
+	id BD4266B007B; Sun,  3 Aug 2025 23:38:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B0EB16B0089; Sun,  3 Aug 2025 23:03:54 -0400 (EDT)
+	id BABE76B0088; Sun,  3 Aug 2025 23:38:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8EBB86B008C; Sun,  3 Aug 2025 23:03:54 -0400 (EDT)
+	id AE87D6B0089; Sun,  3 Aug 2025 23:38:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 80C6D6B0088
-	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 23:03:54 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A24666B007B
+	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 23:38:34 -0400 (EDT)
 Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 30C80135F25
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 03:03:54 +0000 (UTC)
-X-FDA: 83737580388.27.A98D06C
-Received: from mta20.hihonor.com (mta20.honor.com [81.70.206.69])
-	by imf09.hostedemail.com (Postfix) with ESMTP id D1A6E14000E
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 03:03:51 +0000 (UTC)
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 553CA135F6D
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 03:38:34 +0000 (UTC)
+X-FDA: 83737667748.27.B4D2FA1
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B4D47140003
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 03:38:31 +0000 (UTC)
 Authentication-Results: imf09.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=honor.com;
-	spf=pass (imf09.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=zhongjinji@honor.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754276632;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=HcUZ/bMY9afRoor5xU8oke+MSZoMqvniop1N0wQ9vdw=;
-	b=2UuLZNAlNi0uYXKxXpkO5bHwvYICAsH/eg4xovLzkUu7SiYgehylUsm2n0WPMq5Fz/wRBd
-	aIVcsYPjWLlG5thydXoAh4nu4oTTUTOrT/bpY5k4ZJ18H4DXNvzelS7kzetfbdeR18S+l7
-	H0Lg+okkyrHxgtB+MLDSd/x/fs3HD6Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754276632; a=rsa-sha256;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=vIsLKdYF
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754278712; a=rsa-sha256;
 	cv=none;
-	b=UUKcx6nKMz/SsZxRHeOQ0WarqH4FUB0OXpqLW2R+ut0llHnbtwzTLibOwwLjmFzGr99ZTs
-	tIDRTEJ3OmKFmlJ3BombhAkNesLK/BkBU1fKuo4ljz7Pnw393zGrySd0wi92kuOV25w1j5
-	WRRa+t/cvWs6fQJKONELdEj+QZ9A2LA=
+	b=uIW+mDW7wlCoQZkHsi9NbJ9Z3rvuhFD2OTQfUv19fQMGLoCPWSiQl8LjK3MGUvM0BlYgoc
+	omwPxYQS8dwefpCNbUyGjcKbP2+/NP6Yo8bQyeNhvbsi8yvWaKs23Hp5D62C/SD5s1JkrS
+	z4JoTVhQzRDoJcKOK5tQdwAx01/Is/8=
 ARC-Authentication-Results: i=1;
 	imf09.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=honor.com;
-	spf=pass (imf09.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=zhongjinji@honor.com
-Received: from w002.hihonor.com (unknown [10.68.28.120])
-	by mta20.hihonor.com (SkyGuard) with ESMTPS id 4bwLsV1wfzzYl7vf;
-	Mon,  4 Aug 2025 11:00:46 +0800 (CST)
-Received: from a018.hihonor.com (10.68.17.250) by w002.hihonor.com
- (10.68.28.120) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 4 Aug
- 2025 11:03:46 +0800
-Received: from localhost.localdomain (10.144.20.219) by a018.hihonor.com
- (10.68.17.250) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 4 Aug
- 2025 11:03:45 +0800
-From: <zhongjinji@honor.com>
-To: <linux-mm@kvack.org>
-CC: <akpm@linux-foundation.org>, <mhocko@suse.com>, <rientjes@google.com>,
-	<shakeel.butt@linux.dev>, <npache@redhat.com>,
-	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
-	<peterz@infradead.org>, <dvhart@infradead.org>, <dave@stgolabs.net>,
-	<andrealmeid@igalia.com>, <liulu.liu@honor.com>, <feng.han@honor.com>
-Subject: [PATCH v3 1/2] futex: Add check_robust_futex to verify process usage of robust_futex
-Date: Mon, 4 Aug 2025 11:03:40 +0800
-Message-ID: <20250804030341.18619-1-zhongjinji@honor.com>
-X-Mailer: git-send-email 2.17.1
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=vIsLKdYF;
+	dmarc=none;
+	spf=none (imf09.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754278712;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=SmxoINSQKVJVK+Bn4i2QXaigutnESsGDJWcnHJouMq8=;
+	b=tUBOTA/PSyIW9CHQOt7oDUoHEMfwTPQeVf01puyxQmr4xtrKnY/7/y7acVqUqUTe3kj89S
+	fvw88OvlEKLmhjegZtpCYS4qZycB37Co3UjQOUSIvQ+3fPH/BMnfdvILXL9RlbZMldz6pR
+	+Ny4hM5fKQh4mjmZwgybdtEnrrf1K9c=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=SmxoINSQKVJVK+Bn4i2QXaigutnESsGDJWcnHJouMq8=; b=vIsLKdYFH8YXGskFCYuFxM0Kri
+	4LEo9ReJIfgKFC95xymdzIuZHgWmCy4G3xVF1JqLP/afdrq9I84T2Y/HuFvZL4VO6QmU21lsUX/J7
+	vabemJeVXNbK57caQoIcupupdF5BH7q6dfJPU0J/aad1iPWgFP1Pta6YnAxGVC/HxIlB76K9yRSGM
+	9j3b/WmA+tZKaDnoC39qDIVxVYX23JxNjVp20InQWi7XyuBDNDCOuusdG9eda9qGfK1Uki2htTbQ5
+	+Xwy3IqaT9W3uDTeg3KYHyV0grcCXOdru7B95ajExnsHQEygus1gpnlTvvukrNJXtwkIJZ4HcTmaN
+	wXIAK1ig==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uim1N-000000099Z0-0JOE;
+	Mon, 04 Aug 2025 03:37:57 +0000
+Date: Mon, 4 Aug 2025 04:37:56 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Christoph Hellwig <hch@lst.de>, Leon Romanovsky <leon@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, iommu@lists.linux.dev,
+	virtualization@lists.linux.dev, kasan-dev@googlegroups.com,
+	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 0/8] dma-mapping: migrate to physical address-based API
+Message-ID: <aJArFNkuP8DJIdMY@casper.infradead.org>
+References: <CGME20250625131920eucas1p271b196cde042bd39ac08fb12beff5baf@eucas1p2.samsung.com>
+ <cover.1750854543.git.leon@kernel.org>
+ <35df6f2a-0010-41fe-b490-f52693fe4778@samsung.com>
+ <20250627170213.GL17401@unreal>
+ <20250630133839.GA26981@lst.de>
+ <69b177dc-c149-40d3-bbde-3f6bad0efd0e@samsung.com>
+ <f912c446-1ae9-4390-9c11-00dce7bf0fd3@arm.com>
+ <aIupx_8vOg8wQh6w@casper.infradead.org>
+ <20250803155906.GM26511@ziepe.ca>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.144.20.219]
-X-ClientProxiedBy: w010.hihonor.com (10.68.28.113) To a018.hihonor.com
- (10.68.17.250)
-X-Rspamd-Queue-Id: D1A6E14000E
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250803155906.GM26511@ziepe.ca>
+X-Stat-Signature: nynjx4gn9pcuu7r6ycrc3yj9yggnuwd1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: kpo6aze6cbdifm1d4y133x3ot7tbwsub
-X-HE-Tag: 1754276631-474782
-X-HE-Meta: U2FsdGVkX1+n53PMmiEO4nffdVRaI/pTOz3OjJqZ9qWIwHzkh6bEGxa533rgXfH5xIOLL0IEALyX6XWzCbb6p/WStkyP2I4bWbZ3o7nnAwvF2QIJRht5H8eY8n825GfT9C3Tzi0WQWSwFHjSEdH9qnXxv+oXpkbkjCQLVcQdKvZIjr5yoG8KJQssni+LGwzqGLokFtmSq+hwMNapIWeVLiwrzkSYAWKUjT9ORYtohNc+bSvkrnC4msoSeSlup/rL0FO8gaj0e6ZSjRnih335AJQAuMI1lJx8Qo/whXsaJm6Zg4+V2wUyStEm7LiXHX17RmgcBMG/3BWg5y2weHckwtdbyNHRsaqqgIxOdr9nz8nz+poO+6xTdRgy1W2S6VRXWWwGvc6nL52Ze5EfhM7JCQos8IK7uAteWU68PqtT00EP/c/cKjEDjLph3hmlY8mcBB2zH3ECmN4bt/179e4Vbb7T3nPGy7px1XATx8VkAcylVBVRh6WFep+dpMYHKojteKEBKygFGswFkwDYHytGR+4iEC4bFVXA4YKs391bVEXFVlZZryS7+rDuq6jlUkyd81waXHqMjczL05QDvYuCX5Tbp8BiI8Df4ro1srPCDnSo8YafTvrNg0DhMe5CDXEHofkfD/TGBvq5aWt0Lzs2rcbS/sZ2+Mai8CoBhxGzqeGcxDbMQ9R6wXyKCiSPPWyiY7yWnuPCj2MShQZ2zXIUG9/POnOBOnqIiSQyexOfooWrqv50/IBYEz15ENb1lj9F9/3YHyW15Dht6B/hNr/2HEAr0wBKjoCvP/IYC6SvLcLzJG49p4zJnctHJbFg0hOlpWWiHA/mmXYTCjlu6tJuugKiECaToryZqVRRGfl3bcz5mj3JBTA7O6dr1koThsAhVIedWW5YMZ+1upu5EMWa6kwvlcKfZkH62Js9zV5dv2glhRRS3NXLDoFgshymTGO8X0dmsPZm9IYvHwlcCtW
- 0qSmpP2t
- Ye76oUyUPebCzroFzO3GnPBavsqffoDkd7IOPmK9SUf+tGaHK+FyoCSFsqsdrDTPeP7V8rYR0i+V0btPQfjnuwVM9tfMNpt4KskCiL85F16YQv+LZji+LtCXg9AgZ3jGSmup07Tglb/n/w84OAfBik1sj3aWOj1ruSmuXS9KyG35FaBnwu3wW+1OLQ21xlu5kExeA7F99wYGN9gcPGW6t475vpeHt7Z/Hqy6k8wxwimwzHBgGppgbpmGTrfQHLS2fCUxw8F4hQkjjiEKXz2UVx8JoOdiF7rPFXEiHIaiymXb8bqs=
+X-Rspamd-Queue-Id: B4D47140003
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1754278711-434094
+X-HE-Meta: U2FsdGVkX18JGwLiJY/0YObZ6Cgs2ZBJI/L5VLF7AhXaGL8TbqLxFtD/m+SkqQP7AAmCPwSg8gNQ6s//CUtS6ndWpkMHPQEnK/Qof4hg43ghXc+J1nw5SycGz8+EYH+U4UZeQYgpaKGue38SHMd5Jg++QGj1rwKND8ZLFwPGP2UtA7o1mK098EdCMVrq+/BMKTlUpihicBnwDHQoY9Cw0/wxK3Z+wmiHUpnrGfJkOg2pPf9FbAyXI5TFiOf2psC5OiKpF3QnFNKIUcq6h5euXi4frc5ZYl5BUQTdkbAPFdiunucPpUO9BsI61v0eidahd4+gbZG5P6Betkn5bIDwRDYIKKSDbVMHg4e57sdfXzz6keCr/sdD8ioz7bN3q6w6lzmSE0Y0DkVeM9M9FUemN6zkMyjVUekoMnewfOwrayA4FRd0+zCGGkh114/V5cPULdTtOyy8sJmapURL2mRBBUYhJc9wIRQi0anCmwU/et8RTXO7QoD7hJUMYIH0FobWQhUFxyElCooap4keGLu44xK4oxy/aFGs1VvNxVSVAR9R673gBQacLEbH6UgveR4mOWmy69G711lOZrQs1tPH1aR3p2iCsg3sMuDE5rWm2m0lsGrv0NrGels4RJQFXgVPVZ37E9c50PDHoXRWfRbsKMNIQESBJlE2SzuEtshPzIQaJEEhe9UVIrqrWvnV11CzKet2YBCftWUuaDXVvy5T8YncffANxXGe60P59FGsFSKC4CnZS05txiQ40XLPNaYbNM1N3zbQihoDcZ+OstKD5OgSi4Jj09BHQ0bCxQU1eAbhTcw1Y+1MmsvbQrd4Fd0nDQ2i/8WIEFZnCTp9MX5a8/dnH9SLMYDhB7PWm27kJdOaFjmhW8g6adrSkbc2Y4MsuEaYenx7MdvC6EN4FOIj9LNTztlPrQouEkNZGjrs0CFhVRAXB6wINRGvG9hGj7vu0ZLStd2Yygcz6dhwuQr
+ V3E9eXv1
+ bpqOv31h5F+1VFbbzUX8itW9ZlKVywI5vO0IZqhvl2qo8I/jxXvZ29hmVXdPbvtwCItrGhabYoAlGxZhk3cH1SE/Mpmx5hseqcilKk2N3hcxcXTVKJMhc45DgCS9g1tP0eJC0cLuTl7Dygqx/0qKSHYtvrN1hq0e5l2iRJIoQlvLx6TnLsI19THXUnQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,92 +114,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: zhongjinji <zhongjinji@honor.com>
+On Sun, Aug 03, 2025 at 12:59:06PM -0300, Jason Gunthorpe wrote:
+> Matthew, do you think it makes sense to introduce types to make this
+> clearer? We have two kinds of values that a phys_addr_t can store -
+> something compatible with kmap_XX_phys(), and something that isn't.
 
-The check_robust_futex function is added to detect whether a process uses
-robust_futex.
+I was with you up until this point.  And then you said "What if we have
+a raccoon that isn't a raccoon" and my brain derailed.
 
-According to the patch discussion
-(https://lore.kernel.org/all/20220414144042.677008-1-npache@redhat.com/T/#u),
-executing the OOM reaper too early on processes using robust_futex may cause
-the lock holder to wait indefinitely.
+> This was recently a long discussion in ARM KVM as well which had a
+> similar confusion that a phys_addr_t was actually two very different
+> things inside its logic.
 
-Therefore, this patch introduces check_robust_futex to identify such
-processes during OOM reaper execution, and delays the OOM reaper specifically
-for processes using robust_futex.
+No.  A phys_addr_t is a phys_addr_t.  If something's abusing a
+phys_addr_t to store something entirely different then THAT is what
+should be using a different type.  We've defined what a phys_addr_t
+is.  That was in Documentation/core-api/bus-virt-phys-mapping.rst
+before Arnd removed it; to excerpt the relevant bit:
 
-Signed-off-by: zhongjinji <zhongjinji@honor.com>
 ---
- include/linux/futex.h | 11 ++++++++++-
- kernel/futex/core.c   | 25 +++++++++++++++++++++++++
- 2 files changed, 35 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/futex.h b/include/linux/futex.h
-index 9e9750f04980..c879300d4ff8 100644
---- a/include/linux/futex.h
-+++ b/include/linux/futex.h
-@@ -81,7 +81,8 @@ void futex_exec_release(struct task_struct *tsk);
- long do_futex(u32 __user *uaddr, int op, u32 val, ktime_t *timeout,
- 	      u32 __user *uaddr2, u32 val2, u32 val3);
- int futex_hash_prctl(unsigned long arg2, unsigned long arg3, unsigned long arg4);
--
-+bool check_robust_futex(struct task_struct *p);
-+bool check_robust_futex_rcu(struct task_struct *p);
- #ifdef CONFIG_FUTEX_PRIVATE_HASH
- int futex_hash_allocate_default(void);
- void futex_hash_free(struct mm_struct *mm);
-@@ -108,6 +109,14 @@ static inline int futex_hash_prctl(unsigned long arg2, unsigned long arg3, unsig
- {
- 	return -EINVAL;
- }
-+static inline bool check_robust_futex(struct task_struct *p)
-+{
-+	return false;
-+}
-+static inline bool check_robust_futex_rcu(struct task_struct *p)
-+{
-+	return false;
-+}
- static inline int futex_hash_allocate_default(void)
- {
- 	return 0;
-diff --git a/kernel/futex/core.c b/kernel/futex/core.c
-index d9bb5567af0c..c9d8a1947bf1 100644
---- a/kernel/futex/core.c
-+++ b/kernel/futex/core.c
-@@ -1513,6 +1513,31 @@ void futex_exit_release(struct task_struct *tsk)
- 	futex_cleanup_end(tsk, FUTEX_STATE_DEAD);
- }
- 
-+bool check_robust_futex(struct task_struct *p)
-+{
-+	struct task_struct *t;
-+
-+	for_each_thread(p, t) {
-+		if (unlikely(t->robust_list))
-+			return true;
-+#ifdef CONFIG_COMPAT
-+		if (unlikely(t->compat_robust_list))
-+			return true;
-+#endif
-+	}
-+	return false;
-+}
-+
-+bool check_robust_futex_rcu(struct task_struct *p)
-+{
-+	bool has_robust;
-+
-+	rcu_read_lock();
-+	has_robust = check_robust_futex(p);
-+	rcu_read_unlock();
-+	return has_robust;
-+}
-+
- static void futex_hash_bucket_init(struct futex_hash_bucket *fhb,
- 				   struct futex_private_hash *fph)
- {
--- 
-2.17.1
+- CPU untranslated.  This is the "physical" address.  Physical address
+  0 is what the CPU sees when it drives zeroes on the memory bus.
+
+[...]
+So why do we care about the physical address at all? We do need the physical
+address in some cases, it's just not very often in normal code.  The physical
+address is needed if you use memory mappings, for example, because the
+"remap_pfn_range()" mm function wants the physical address of the memory to
+be remapped as measured in units of pages, a.k.a. the pfn.
+
+---
+
+So if somebody is stuffing something else into phys_addr_t, *THAT* is
+what needs to be fixed, not adding a new sub-type of phys_addr_t for
+things which are actually phys_addr_t.
+
+> We clearly have these two different ideas floating around in code,
+> page tables, etc.
+
+No.  No, we don't.  I've never heard of this asininity before.
 
 
