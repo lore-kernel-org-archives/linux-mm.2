@@ -2,65 +2,65 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 37E0BC87FCF
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 12:44:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CCFFBC87FCF
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 12:44:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF8E36B00B6; Mon,  4 Aug 2025 08:44:17 -0400 (EDT)
+	id 6B80F6B00B8; Mon,  4 Aug 2025 08:44:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA9676B00B7; Mon,  4 Aug 2025 08:44:17 -0400 (EDT)
+	id 668256B00B9; Mon,  4 Aug 2025 08:44:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B718D6B00B8; Mon,  4 Aug 2025 08:44:17 -0400 (EDT)
+	id 5300E6B00BA; Mon,  4 Aug 2025 08:44:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A39956B00B6
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 08:44:17 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2E0461342FD
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:44:17 +0000 (UTC)
-X-FDA: 83739042954.21.09DDC59
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 9D635C000C
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:44:15 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OtgAnXB9;
-	spf=pass (imf28.hostedemail.com: domain of leon@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=leon@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B9E76B00B8
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 08:44:22 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0813C57A86
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:44:22 +0000 (UTC)
+X-FDA: 83739043164.13.49F3EAF
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 5A98540008
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:44:20 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=twziXknB;
+	spf=pass (imf27.hostedemail.com: domain of leon@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=leon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754311455;
+	s=arc-20220608; t=1754311460;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=njJVaIqIe6sqKLpFp72s28bWMOkerJgS7/NyUH+svec=;
-	b=Hx12yh9cMknjMwt4zcXj3XcNHeaDyvFkjJLh1C8+vUHeTZ0I2wK8jkGJJGD+4wl8XQf8EL
-	ykfLTfwdQ8ekxYssvRpoKEyWyev0VAmMh0Jxc27RSrpd8psNX+W+pbnTzNCFmdDrPYEg45
-	OeN1ogfTT1f/4KcIZ46pw8Cq+bMmTmA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754311455; a=rsa-sha256;
-	cv=none;
-	b=Ih6P92ozqJXBuMHp2YO7l6pdeRpzirleFsrM4BX64OsNTkq97kQ54+ompdLgkGJLsDuFfG
-	EA5VtXd5C/aMacX9EWqgF6wTUfdlIk091f2shs4vLbjENpKisxqgdFIs7IDdpZnjjlDeOV
-	Z1lv4ajipm+kyn98IKerfKC4sB+eBTk=
+	bh=+vAkscLUbC2ztTvQppga8PLzPNKX2Zo6YASdCGH79rc=;
+	b=sqS9IekEisPV+juT3hG7D4KW5wc46t3u1WDP4minnjpXTy8xo3tQjYBBSxsVzk/qrMfqCj
+	NOh1PESIuU302C29C0Wu1pvUOcLp3lriSG5u54gkcdTeq2H7aTgmq+uuWuLE8Sp+uAL6sT
+	6M+zW/EdZjNmMQZK0n9e4PeetL5cHlw=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OtgAnXB9;
-	spf=pass (imf28.hostedemail.com: domain of leon@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=twziXknB;
+	spf=pass (imf27.hostedemail.com: domain of leon@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=leon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754311460; a=rsa-sha256;
+	cv=none;
+	b=PKTCJ+xc2/3fUS4aoaGDw7kT2Lq6HLMyOXVTf0Es6fER783yCJoygNWD69sYVtCzAK37m7
+	RO47J5T8pnUAIJI8Oa+9bLrFha9FAVeZoJH0d+tC99X17caq0+QmnhWCn0qTFme4gYTR9Z
+	77/i/SWy/6LE2ftBaqcZx8WM8U0dN48=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 0920DA55826;
-	Mon,  4 Aug 2025 12:44:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58081C4CEF0;
-	Mon,  4 Aug 2025 12:44:13 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 1404A5C5F2E;
+	Mon,  4 Aug 2025 12:44:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4569C4CEE7;
+	Mon,  4 Aug 2025 12:44:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754311454;
-	bh=qnVGWPERMw1BTa2/gk85Rr9nCLsamOSAPU4HKvyJS1c=;
+	s=k20201202; t=1754311458;
+	bh=dqwhbGWVl/oipogVPAPlJyJScmypxjmriuJlNMDqMFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OtgAnXB9G/hO4kHiG6lUbx1lGdhplK8QSnQvERbDkZeJ2rBPi5BohP2fOcU1EY1H0
-	 LWK7JmM6eYjvDV85Iv2oqAeUvxpoecgv6pnhGevxoOAJjwoIKIBVlnyhDtWl6iMFdx
-	 RkkwEUkNj1PK4RIEa7lvhblH+3HASR9LDXUdd9ooPuLmkTQNLafsqp7vExm+lHX79L
-	 xgsW9Dlqtb1H+ROfUItFyQuMNgUa0HHgvJ+5cBoMm5E0OKANto/+eCMPooaSWD2S6k
-	 W4Hqu5Itep2BtJPMCEt1CECg7NNUHsl45+R6007i0eogZT7o+A+uJhsGr5xPHo73g0
-	 Vn+VRBXex4Xsg==
+	b=twziXknBPqQkaMb4B7FpNHJ9HEUx7/M836/B/HOkWAaI0xU18AOGgranE1UPO3Z2A
+	 qByqLoklhRYu6bnu+x5ETVJIc+P+0Ju1mUTlWesgsxm9Uw2nnAUHgWFFcvipLZWsPr
+	 /X/Xgc0MrjwXWJE2eE8R2nPmVwtK2NoWOETrJzuVA7cF2pqqQw7TPbh3FX3McEN3on
+	 SLv84u5z+pYu1j0JRSH5twhBbzvn9nXehFR206rnivCVd5lTNcN4IpS/pX3K4gEYJR
+	 R30yvtOo8vlSCBPCeQNV8Tbj18sYkV187LjgCJFMSIphAwqv5UYBAvrh/Sqr87dLeL
+	 XA2ufQWKM0AXg==
 From: Leon Romanovsky <leon@kernel.org>
 To: Marek Szyprowski <m.szyprowski@samsung.com>
 Cc: Leon Romanovsky <leonro@nvidia.com>,
@@ -99,22 +99,22 @@ Cc: Leon Romanovsky <leonro@nvidia.com>,
 	virtualization@lists.linux.dev,
 	Will Deacon <will@kernel.org>,
 	xen-devel@lists.xenproject.org
-Subject: [PATCH v1 10/16] xen: swiotlb: Open code map_resource callback
-Date: Mon,  4 Aug 2025 15:42:44 +0300
-Message-ID: <e69e9510d9024d664133dc788f5186aac414318e.1754292567.git.leon@kernel.org>
+Subject: [PATCH v1 13/16] mm/hmm: properly take MMIO path
+Date: Mon,  4 Aug 2025 15:42:47 +0300
+Message-ID: <79cf36301cc05d6dd1c88e9c3812ac5c3f57e32b.1754292567.git.leon@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1754292567.git.leon@kernel.org>
 References: <cover.1754292567.git.leon@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9D635C000C
-X-Stat-Signature: nukzyzarroh483n5bm3wjo35s7k8u3x6
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1754311455-54979
-X-HE-Meta: U2FsdGVkX18IbkDg0oKOfQxAsOEZZsYr55ARZPQHps9VAY5jOKdlmOm+iKiBIJOGdwcAMOwclnVWnCGEXoGPKIjcxDpSoQPTIFrZJWsuMu5v0FotSUbyVxu1F2IYB9GoIit9kx3l1r7BGsry5UR6AePc0xNtkmdann66GfBD7J/gpf56GSOfHdQjOk6ItjjkxKK3/4F7gGSQG2X1pU/P+RZ/UcB9xryOkoCzsK7inOWTNEvd95r8z1kcdRgUCW7LzHxYE+jp1rpOOeuoNjvLLno7x4GwnQq6tOCryHsjhEpkGb2+4NfUsAh2ntJW3pWbuFHFGsOFgsR8sv/vBPtBj9ZmdAFzMPQcPY119yUOt2bY9WqLvKzuxX0F9THuPXlUGO6Hj9iLIH5v9tEYn0Eaei1PXeLjQhWutiLIG7mKMIBn7Xv8G7+EhQ1KjxFymX+foCJ8+ixVACrS8t3zgUkNaHMtfwrpR4O/qQsQLwcqQeVseMDuwlV2Lz6D4mqNnkPIKl+7YPckm18+bo4/kBo6Nb0wcQcE6ey8R8fjeOrbRbq0/bjkUqpfp7RzTL+2OvqoxkbiR1anV0I9UJHR3hLpzYbq0bvOzXBlNMmsxaOdfD92FB752G1EYmVEHx+d4sghF3Ito8PHMhK7S1ioZaQE30HdfpFZjmW5lsUjHzKvqHwyH2iUkDZ5LlcggqfQZs6MzxrtRLY0tpnkiCXdNUJA5pvx7oYV/1+JumuTcaSuTf3Gf9+dcDe5QyDMUrE5fAcoQpff8XCgWfVx/bYRSVSDikyp8rAPsT23s69xJtSP0w0ibBMZnturmK1g3vB/aLOV/tddu1uex0g91GLAdY4fSgnvxVt1uV6jSr/ns1L8yvl8YU8c6QmE3IZCrrJ8Kahit6WTsliQKc/HANR1JWwyl6CcXBalijJM44j+Jy/GTiDWu4yo7RHuK4XQotOBeb7rY1hUlmsEApyDHUllBEx
- 3Z4v03p1
- E+UZH8WlVl/cABU6bFPLBaES/isHd7i9K4GhgSXjDgJcyMqEvd2hVXTgdUYwZnRZtgAoFBJIg/ukjhIBGQHTmLC56yNPJlbtVL2xkyCUbLiPEuoTIvKXMdMyHW/r7DZukAzvLBvFkZ/A9i4oFZGaqWhRw4Jg6O0T1YS6+x1nvW00p/ER9tWuMzZNh4lRHUD/IJ9AKA+Xwv71f6Eisq4jh9q5y7976M+edZdED1Vxj6S803IVcIEBdlqEFmWkdFZY4pPpv0+JApfi869VgEsFiR6gEm0HXG/nFanToc7PI6Un4Y4ssTZGyN2POZhaUqwe5wEIAfxriCFp4WTSW8YWt7+IYuucGHiSXsuMD
+X-Rspamd-Queue-Id: 5A98540008
+X-Rspamd-Server: rspam06
+X-Stat-Signature: wp7ish1a4kxwm5ekzckzk9is3pfqgikk
+X-HE-Tag: 1754311460-481601
+X-HE-Meta: U2FsdGVkX1+nzgxU1A497iA5sWyVUSZR/WIX0IR6Qb4jrPtmRkYQO8VVOinr4BIoKvGV5ixG3PUqBxaGSbbBcBorgf7C70tc4ZrbinjkIgHl9ZZHGs61knqjOXmg3yXvmVivcAoy2ZNRGOOHfzDoqWvrdz4Dzub1xWpdyBDxdtMn/v2QPzn0PVMK7SLwcxiIlicQ1vK8k/ZE4AET17Mw76OM4V8IB5On44R4wQOSYAacE45WQZQFYxp5M0C0uZ96VG9OcHX7Th0Ju3aAVDPyRFd5GzINR3NKjsXKXKNjM/8SWnPYZEgeTemXcsDJLUmZ7zslv6q1QOkb9HDU9XOeA7TgqAgl01fkSUZRuospEwulSbzH3aa3eYnWShJXfoQDxUVjguxBihjV1pyVqdduxU60p9JWsYnpetdBBGrV+3Xup6rb6uDbDLHJ2Qfvz99YlnbUKCURqEGLy8KGEWECP3UN/jTONX4IDbxUCxcA3BwZ7Wz6CnW3Bzx78UzCfEpwd58k79Z2X/+1h4XBrxAEyGL2tACPCzAz8i+iz2/k2NvGv4DGo4XRsq9LPK6weZOrBKS5K98Vv9lGdX3PbqzGF8XAdNPCYmM6LCjsrjesqzkisTvS2px2NfzQXxU3dGWBcrKITEVS6TNDcV/Lqmn0zTiApe5kmyPcHtU3BetHoBcnjl8+hWrOjVxGmwmXW2t2ExfK1xwvypTu+mzdCui755PyVgg31dPmAXNW7Z+rJINxEkCBMJHpCmBQm54dJCRGIbn/nj1Nh8Sd4myqATw8lxymI02BUkkdPKOjvwiasXSeOVZskIfdp9/5n1qeMQ6dgkxycL0BavDFkYAQlw7wEWaSclGv49+Z9/s7Ov7e5mzA1SLz98qf9qdmN3F6t2IhpARQrgXeu9tx+3llLbeKlA0n+/4kupGRKvxWDiJukkuWiV2f1K8ZlxgIIvVd59iEBQcm70VZdopWXUqGzkM
+ qWHRiKm2
+ KDfx0JKkEa/A05+Cia2b4M4kmLQtW6SSlq3S7+uSLXgRQD2/tayJBkh/TLS5o9HojNepsi2ia74HgLrL9u6Qr5JRdUg+4Ko/yQ84hKr3Htgl5fpSDR256a/SIlPaNG8BLd62aIQHQr2G93Im7oC3tIF0k+oZ7r7+x9DN+8lZ0LWQRRpSeg5t1nCfLHVTzU7YU0il8AinfgXVUUZfsmWS2nlJsV+p92DMJ7i3MjUHuj6N+6FKum40lU6G8EHld/1MZz0lB6Sq5O9hkeuVNyjuWyHT2p+19qJy+3/ZZhpH2h2FMxA9wWkJ3AlU0Vg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,51 +125,66 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Leon Romanovsky <leonro@nvidia.com>
 
-General dma_direct_map_resource() is going to be removed
-in next patch, so simply open-code it in xen driver.
+In case peer-to-peer transaction traverses through host bridge,
+the IOMMU needs to have IOMMU_MMIO flag, together with skip of
+CPU sync.
+
+The latter was handled by provided DMA_ATTR_SKIP_CPU_SYNC flag,
+but IOMMU flag was missed, due to assumption that such memory
+can be treated as regular one.
+
+Reuse newly introduced DMA attribute to properly take MMIO path.
 
 Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 ---
- drivers/xen/swiotlb-xen.c | 21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+ mm/hmm.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
-index da1a7d3d377cf..dd7747a2de879 100644
---- a/drivers/xen/swiotlb-xen.c
-+++ b/drivers/xen/swiotlb-xen.c
-@@ -392,6 +392,25 @@ xen_swiotlb_sync_sg_for_device(struct device *dev, struct scatterlist *sgl,
- 	}
- }
+diff --git a/mm/hmm.c b/mm/hmm.c
+index 015ab243f0813..6556c0e074ba8 100644
+--- a/mm/hmm.c
++++ b/mm/hmm.c
+@@ -746,7 +746,7 @@ dma_addr_t hmm_dma_map_pfn(struct device *dev, struct hmm_dma_map *map,
+ 	case PCI_P2PDMA_MAP_NONE:
+ 		break;
+ 	case PCI_P2PDMA_MAP_THRU_HOST_BRIDGE:
+-		attrs |= DMA_ATTR_SKIP_CPU_SYNC;
++		attrs |= DMA_ATTR_MMIO;
+ 		pfns[idx] |= HMM_PFN_P2PDMA;
+ 		break;
+ 	case PCI_P2PDMA_MAP_BUS_ADDR:
+@@ -776,7 +776,7 @@ dma_addr_t hmm_dma_map_pfn(struct device *dev, struct hmm_dma_map *map,
+ 			goto error;
  
-+static dma_addr_t xen_swiotlb_direct_map_resource(struct device *dev,
-+						  phys_addr_t paddr,
-+						  size_t size,
-+						  enum dma_data_direction dir,
-+						  unsigned long attrs)
-+{
-+	dma_addr_t dma_addr = paddr;
+ 		dma_addr = dma_map_phys(dev, paddr, map->dma_entry_size,
+-					DMA_BIDIRECTIONAL, 0);
++					DMA_BIDIRECTIONAL, attrs);
+ 		if (dma_mapping_error(dev, dma_addr))
+ 			goto error;
+ 
+@@ -811,16 +811,17 @@ bool hmm_dma_unmap_pfn(struct device *dev, struct hmm_dma_map *map, size_t idx)
+ 	if ((pfns[idx] & valid_dma) != valid_dma)
+ 		return false;
+ 
++	if (pfns[idx] & HMM_PFN_P2PDMA)
++		attrs |= DMA_ATTR_MMIO;
 +
-+	if (unlikely(!dma_capable(dev, dma_addr, size, false))) {
-+		dev_err_once(dev,
-+			     "DMA addr %pad+%zu overflow (mask %llx, bus limit %llx).\n",
-+			     &dma_addr, size, *dev->dma_mask, dev->bus_dma_limit);
-+		WARN_ON_ONCE(1);
-+		return DMA_MAPPING_ERROR;
-+	}
-+
-+	return dma_addr;
-+}
-+
- /*
-  * Return whether the given device DMA address mask can be supported
-  * properly.  For example, if your device can only drive the low 24-bits
-@@ -426,5 +445,5 @@ const struct dma_map_ops xen_swiotlb_dma_ops = {
- 	.alloc_pages_op = dma_common_alloc_pages,
- 	.free_pages = dma_common_free_pages,
- 	.max_mapping_size = swiotlb_max_mapping_size,
--	.map_resource = dma_direct_map_resource,
-+	.map_resource = xen_swiotlb_direct_map_resource,
- };
+ 	if (pfns[idx] & HMM_PFN_P2PDMA_BUS)
+ 		; /* no need to unmap bus address P2P mappings */
+-	else if (dma_use_iova(state)) {
+-		if (pfns[idx] & HMM_PFN_P2PDMA)
+-			attrs |= DMA_ATTR_SKIP_CPU_SYNC;
++	else if (dma_use_iova(state))
+ 		dma_iova_unlink(dev, state, idx * map->dma_entry_size,
+ 				map->dma_entry_size, DMA_BIDIRECTIONAL, attrs);
+-	} else if (dma_need_unmap(dev))
++	else if (dma_need_unmap(dev))
+ 		dma_unmap_phys(dev, dma_addrs[idx], map->dma_entry_size,
+-			       DMA_BIDIRECTIONAL, 0);
++			       DMA_BIDIRECTIONAL, attrs);
+ 
+ 	pfns[idx] &=
+ 		~(HMM_PFN_DMA_MAPPED | HMM_PFN_P2PDMA | HMM_PFN_P2PDMA_BUS);
 -- 
 2.50.1
 
