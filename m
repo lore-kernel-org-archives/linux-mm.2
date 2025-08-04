@@ -2,118 +2,102 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B930AC87FCB
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 12:01:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9DF3DC87FCB
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 12:04:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 433816B0089; Mon,  4 Aug 2025 08:01:45 -0400 (EDT)
+	id 3C5666B0092; Mon,  4 Aug 2025 08:04:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40AF26B008C; Mon,  4 Aug 2025 08:01:45 -0400 (EDT)
+	id 39C996B0093; Mon,  4 Aug 2025 08:04:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 320DF6B0092; Mon,  4 Aug 2025 08:01:45 -0400 (EDT)
+	id 2B2916B0095; Mon,  4 Aug 2025 08:04:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 226EE6B0089
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 08:01:45 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 94EF180254
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:01:44 +0000 (UTC)
-X-FDA: 83738935728.02.53C961C
-Received: from mail-wr1-f65.google.com (mail-wr1-f65.google.com [209.85.221.65])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 86ED540014
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:01:42 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=dHy7IMrP;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf04.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.65 as permitted sender) smtp.mailfrom=mhocko@suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754308902; a=rsa-sha256;
-	cv=none;
-	b=Hm2BsIc43wZjJwe85GAikmVszr9El3yDKSS1bTTtVu0EjYbVa3YGvVJXWofv3stKIkkzkv
-	0nAAnaXkJQBkVo+KYXL1KlmHgMnXj3kqyoPZcf9LVs/9AYTJN2Y/KgUhUSsxgB1s6xbzCf
-	Ktat1PQ3GhaUSDSCiF/gbvlq5qvS9js=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=dHy7IMrP;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf04.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.65 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 150316B0092
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 08:04:58 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 714D21A0200
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:04:57 +0000 (UTC)
+X-FDA: 83738943834.24.C304C91
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 1B9964001B
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:04:54 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=none;
+	spf=pass (imf17.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.236.30 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754308902;
+	s=arc-20220608; t=1754309095;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=di0riGk55zczJ8EKh7rIQmPGFzsVtoO3pRBdq0GJStM=;
-	b=G75vk9Sw5RSbRKDY+D84QrohXBhio46cTijwXytAjsD4FsE6ukaTsju9aPSxuJs/CBmrXX
-	AFJVzsyeTGbpX7vbjDw4v6oANBhIWao4gP2nfzRHclOQ/XXJNB9boTiS2Ed+w8k9zd9MbK
-	+4t7p4m/Jc76EDe6d+f24TOuK02rTDs=
-Received: by mail-wr1-f65.google.com with SMTP id ffacd0b85a97d-3b79bddd604so2774848f8f.0
-        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 05:01:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1754308901; x=1754913701; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=di0riGk55zczJ8EKh7rIQmPGFzsVtoO3pRBdq0GJStM=;
-        b=dHy7IMrPn5jNFPSeYtvzWkd+CJiRdjCzcFj3H0TBm844evcEwjlXuwEWwxeb118Uax
-         6YD3phnfqyEUSHeIUMYGXY13yMw9f3jBZD6j/rouXcZ9bRf/zH9umM6QOO+DjsZcZH9c
-         g1GjICZTPuk8tE0tdeN1dLvWTSrMnMHaDeQmKsnOdGB6DoLGQL2Q+8+OL1FvdMsAErNP
-         vKm8tByRRfuNTCKmnGnSaCR0dQL6TSmz4v3XKYMYcsjRNdQUFXTF1q6VURJB34juPiF+
-         x73q+HVDV/BXlT7isuku0Tt0mSfQZKavxoYhpsVcRudSWyPrNO5nIJ9ieVxGh0IvRBvR
-         pCBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754308901; x=1754913701;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=di0riGk55zczJ8EKh7rIQmPGFzsVtoO3pRBdq0GJStM=;
-        b=eEQpUDgT/j3cckYI4DkIin2qMBNK+6arfi2PBOAhW4qqFDoRlaviZOR5FBUP3u4GZt
-         DNVZ2+Dy1yTCFUWydkgrxDDkiL5VxhR7NwEVvjLnem9BfPiXNeuJgd3U2B03aY0iGE7S
-         bYI0+jj4FvGWOL8X8s05iSqaNPkIS2gkGTSHQTCNXorzVeFuqS13qPNA04w/kwONLSMS
-         ckXr+4AmEOxsjio2CeScx5mVtwcv/qJS/Ntrw5u6wFhrFmnfkpio0mXAbB0iRSAwFoqq
-         iRXOcCbkyWKdnYw55n7PHZUbZMAMIsdq2OFnBoIX0HM/oZG+vhirtvqDEdpslKq+tQJv
-         da5w==
-X-Forwarded-Encrypted: i=1; AJvYcCVeSnrlAYPjGHuLHVd7E29vshYkRKhfFHekZoG8zD9zVjcJaqCPFARppdjlq+7HMhwHK7Q9JC0qZw==@kvack.org
-X-Gm-Message-State: AOJu0Yy5kiJLZcZzrKrL/rCbFFsCGag5fKzfTmafgiS2aRdHapWZRBZf
-	clmI10kuPfwWyO0h/8UQ3f+dADQhGtag0D0uv3CgdaEuGhern4cqyu5uSQbrf+m0lw0=
-X-Gm-Gg: ASbGnctt3+GXaR1C9asEFrpskkVS09Mctr6VzIZ6GeIYg1wS+lHlAbDBKnrK1iPvc05
-	4F6AV0yEqkej/ghPVwUJtqc2i+iV5ekiMpIWblGZ1cCrowZKfcqS8Y7gd/F/Ao+phAySP2Pc1Zf
-	IeiTIm1k003HYp344AGFX24hbEjrGxUYNp4+ozSbd5Xe21U9L0md6nQO8eutvuoLHyWzrPl1xkE
-	pWYIvOPX4AQpypX+ZHxyAHVg1N0dS73tPIIOf9RfuTjUk+dod6st22nWnvpuaTYR8EGTR5LGtCP
-	oUiii1hY8QtKerooyh4jPFcz9OiY5pcvmhw+kTuVj4+HiAsFkh9sTGRXpFcbH56XqFCpPDWxxvw
-	p4eyxAauCx+6YLIXrvnJ2zO73vMcp9gvBfVaa7HHSPTUsXq0d9JnOAH/HPemkfj1k5AGYaB+nes
-	JUz0lZDS2KzA==
-X-Google-Smtp-Source: AGHT+IHfc6goQ2eQE1kJNjz643XdqtkTBVPtH0xaI41xMBeazuSFtl5v9S2g96GLz7oEgyca65kjdQ==
-X-Received: by 2002:a5d:5c84:0:b0:3b5:dc07:50a4 with SMTP id ffacd0b85a97d-3b8d94680admr7291293f8f.2.1754308900480;
-        Mon, 04 Aug 2025 05:01:40 -0700 (PDT)
-Received: from localhost (dynamic-2a00-1028-8394-58e6-9e1a-64e5-71bf-cbcb.ipv6.o2.cz. [2a00:1028:8394:58e6:9e1a:64e5:71bf:cbcb])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b8e054036bsm5498660f8f.31.2025.08.04.05.01.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Aug 2025 05:01:40 -0700 (PDT)
-Date: Mon, 4 Aug 2025 14:01:39 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: zhongjinji <zhongjinji@honor.com>
-Cc: akpm@linux-foundation.org, andrealmeid@igalia.com, dave@stgolabs.net,
-	dvhart@infradead.org, feng.han@honor.com,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	liulu.liu@honor.com, mingo@redhat.com, npache@redhat.com,
-	peterz@infradead.org, rientjes@google.com, shakeel.butt@linux.dev,
-	tglx@linutronix.de
-Subject: Re: [[PATCH v2] 2/2] futex: Only delay OOM reaper for processes
- using robust futex
-Message-ID: <aJChI-LMwmuWEwpH@tiehlicka>
-References: <aJBKijr1nR1CleBL@tiehlicka>
- <20250804115037.19690-1-zhongjinji@honor.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EEXPPFH4l8VuLr/3UDtR2Lyz5HeTqsVq+1KVy/ssu0I=;
+	b=Wxsxmbg2DNe6CNLubsrZfkUYBxAxQxWg96y6Gh7cVRKf70KAMBlV21ah2S4u9djL+CLauF
+	AZv3FV6yX949S+/8TKI5cvPZ6dJymO8BXlvYSIvQ+qbuaTaM6oAngSfxBDrrbGGElI2qkH
+	CH1PqnQZxEVGbeFn2AGBvqWolOfq02Q=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=none;
+	spf=pass (imf17.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.236.30 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754309095; a=rsa-sha256;
+	cv=none;
+	b=jOaeok3HV4MKhcQJ16xQwfE2Zu1CjF0OezwMgO/WzHlM7P4czFoOji0Vwjqyx7K2EGlghX
+	Y+c92ZyApSE7mpDfgJ90bvW4X21LAh9Ql9IZq/Fg456BzzMslCFpHFL72l2+Bx5ve1uFjb
+	UmyxOkVyasljXHNk3YUumnjhk2GlfNQ=
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+	by localhost (Postfix) with ESMTP id 4bwZxK1dGRz9t2s;
+	Mon,  4 Aug 2025 14:04:53 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id dlBu_8hLK5co; Mon,  4 Aug 2025 14:04:53 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4bwZws04Yhz9sr6;
+	Mon,  4 Aug 2025 14:04:29 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id E7AA88B764;
+	Mon,  4 Aug 2025 14:04:28 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id CvwZaHj2jN54; Mon,  4 Aug 2025 14:04:28 +0200 (CEST)
+Received: from [10.25.207.160] (unknown [10.25.207.160])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id BA7898B763;
+	Mon,  4 Aug 2025 14:04:28 +0200 (CEST)
+Message-ID: <74b373bb-cf18-49b3-84ed-56d04e09c71e@csgroup.eu>
+Date: Mon, 4 Aug 2025 14:04:28 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250804115037.19690-1-zhongjinji@honor.com>
-X-Stat-Signature: my9bis8gr38sy3x97i7ygynmzifkdgut
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 00/12] kasan: unify kasan_arch_is_ready() and remove
+ arch-specific implementations
+To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>,
+ Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: hca@linux.ibm.com, akpm@linux-foundation.org,
+ kasan-dev <kasan-dev@googlegroups.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux Memory Management List <linux-mm@kvack.org>
+References: <20250717142732.292822-1-snovitoll@gmail.com>
+ <f10f3599-509d-4455-94a3-fcbeeffd8219@gmail.com>
+ <CACzwLxjD0oXGGm2dkDdXjX0sxoNC2asQbjigkDWGCn48bitxSw@mail.gmail.com>
+ <f7051d82-559f-420d-a766-6126ba2ed5ab@gmail.com>
+ <CACzwLxjESCT_=1BG2rWiaxz1wCYbVWHAvf+v4=S5dzeHJ8c97g@mail.gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <CACzwLxjESCT_=1BG2rWiaxz1wCYbVWHAvf+v4=S5dzeHJ8c97g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: j3bbiiaoxdjdbaih4x586psp8wzcgwxs
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1B9964001B
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 86ED540014
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1754308902-30583
-X-HE-Meta: U2FsdGVkX18i+VWoYgNmBTUMu1w5sCb4ZCCXAx0zjXUrKb8EYrXPuHhaQGMYZrJ9UQ3bUnb7jnVURJleeIP8r2BwZ04oSGP6PFJ4VUV47p+zEjA6Kijs99sCL2A0BSVr7SnjjO9L2RTrgPK57537c2/Sl4dIOtnWSpkfM/xHERvJi1Zd9WraPUgEtZaeKKarrkcpAoeOycUy+7QPJZaYfLvP9wGGE/3JliqzDvWKx6iMqLyjXYrJLMhfaRx7XzdkWFyCGk4ryhv24IAuMxc+GpmJdWTQSnCDnFCRmtdzPG9aTdDc9CIhAMbKQwvmp0mLgiS94k9pxA/I8fBbOfrWoQ3+BilnF2TgnjooaoQLijAriDWDEWuvYP1eJZUDm9HjVI2SKO8vnig/IH5toIs+OOqmI7CQq6uEdSW7pvEKNvUG6tQRBa/41QUzoZqASEXHCCjXXlmnrQ9rBgRV/1kVknt6UWsiLwzLvWK3dSdgld/WnDTuv3gl9PuiUpWPF3/ogncPt42s9TdVIxbBbGHj2YTxcNesurXLE3TjoDD5zhvgETzADvPnNqcmP4BrwUB8JE2lH4JnTKLw8CvOQxsfKFhmECYjU/3sk/Bdp7DqECn0htkeAwPhKdenaba+g/Ht6Eg94g3cq4WA1tlNViabSbF9eEUhvwCeP/r11/GbPNZLIXnd3vCra68tnEMqPRwGcJpvuMsWrANnQhB+cJMFxgCmFm/0hjHx2m0DerbVpO2XcqJvf9N3e3UyBNuLMrIIP/XSCVkfUMZErU2Mozu564YQyxvWvdAr8++qq/rpfrYth7FmSaTAd/QDVxEH9klCFAyGRXWnXNK5ZacjXIyi+T+MQSk2nyyxdbpHUff2pLmhWmx5Kmg1S7lJbSdnQp2nOF+pK2tYCetfwEKXDyj+Ap8/Weo5DSgxBbTFgBZgrrq6bGTzt7Lo2nD1CI8z679/0JiygPy39X+TkNmzY/U
- FaDNBduK
- xsa/SQvb49eS08M+K4bGgnrCdn6D5ytJEQ+MctFbsvwSWd1UpfmjY2rIr2cdHlZdmTHzg1d2LBRMmfjllQE7053MH7UW/b1tSJk9du1FACh1VEXjqKOrNzmQagGxdT+Yk+Sx2NDdgYLRliTd08f3kAy9wihk2pzfxqjxrt/c9nmpBMDPOG6m41fuMPWEa+05USDK/OndOH6DE1ViK9A+Y2Cy4I3VkMPM2qPk8tssbYfIxtQef6IoGG7bQnXo4Awkyp04m+I+LZQLWDfW4Of/fTklBxiLm4yBMVukoR6f7gHKeAUWeoNK0bESnVuNimvhQkFSj0gt/XvuUbqOpVeRjYu5rFnnM/I45qpDf1zvXVhPuqHF2popN8jM58TExL+2yPKquXfMzaInOoOiLTovbOg7+Z64qOLSRMmIw8yrVXTcTt3E9M7jkUEfmSCzPNbshd9HQP2hXt5Adtfqt/k5KO8D2sZl9bIObnXeB5VuO/dp/AvUi9JJZDHbUFAf1KJPLC0uk3ZaYdf7PiGzxfhpicp7wJjVIf27MyVaUaxXqUXqhsnM=
+X-HE-Tag: 1754309094-375425
+X-HE-Meta: U2FsdGVkX1/8FpMUcSi+p6GIlXEIENjEydV3f+XzC3njdA8/U4jvhXDkMfEsYW5lEUkxI9ku9Vx3GAaCTKyX4IBhpmaDxAuVMi9krKHdc1aCUixAAE0AvBa22IswqR9v9HrzXJBpL5GwYgzaudIHI9aJKDSozHsBTbH2Xjy5t2/7nbz49M1AJ693TrxXn1PaGd4DoiXmErF5UfeUVbgQqDa+gyOdb8DcA2TM1o+aHCoALl0erDrkRC1d0yd3vnhmyQO8GJiAWoBPwh6bkXe4ayqoT/WxrOtQwrgxUWeRBEMKgBHenk8AQdVOws8w7Qx9lGASyyvidwMWlvBbm0cdnIQ2SelfPK5Hw/wl4yq8Tzp8raXl9+QeTgpvSoCo1MYrusPMoKaITj/Vvi3AewrFLYgnhhgYHltzXojBxr0rM/s+YU1dOKw3FqzEesuONkLLPNxjm7sZTpX5y3KOvXR11HEgJxPuwcSWzCd2WoeayBL5WC/RbjB/xE1LVNN9fn6HyojyEiqnP66ofU908WvLWpL+PnZQTs06S+Xsk36gx0kBKt6aJQm6aDy42OfCITUCi8+DMeh/YXaPIQ9G3lEM/Dg+d8iaRq8yEubqeo8kF3W3b7W28HR/br/+PgZJJDxD8s7QD7iPmOgQl9WKZoYsd3WxFim/ADGOYWDh5bakfG63zXHj8yKt02LZoFfvA2qqaSMPkDksVNMmTnaXMmAcJUMlGzbgm8TI0j/gxWX/46xMOESUoqwG9dcCl7b47MDqdjcJKEIBx41/uLQLJuCH8mVhmVRA99qG38SLs2QoCxXGGY7FP3Lft1VxfgpdvgVVm7eCkbf/yk72FHPt7s+uLwKkTapJTM35cmsFX4A89cuSlRbe3kbBVoQVZrTE4J2MfULgcIi46h/BYyzSMSasXk7Pz4AkjE7rUnKBJ/6axkkfaR0kmWmHqv1SaslIYGzSedsaVMAP3f2OelIzIju
+ BNatgiAx
+ cxFkFS1y3F3RpDSosRsUaronhCBjUvrveVW7gW529LFR+/h+sZGcrI5hltlNap05fvglrnG+B21PLqjc6W0v7Xwfvj9VnEC6qerD80+41dO7A8S5LYIMm+g82MKRMFUoIt/HdxCqn5KN/WZi4n7Q7/Y/oGBoiaHsKEfCG1ebF+foza6fCSP6eypV8IgrQeZcuKdGCAJWEHv6rI/3x5+NbfRK5Q8Tau6+q+r+l7vjfdk0WA2xYaJdKSWal3PeuEBGfgpak/sLM8Sc4DPacL1G7pEu7T60DUKsoLBP7hIkPpoCPZDksr5IYNzRBKG/YrW5edV+SfuOJRqRuHbxWv4/l7GY+oAgPe9WVOpFr
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,39 +106,410 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 04-08-25 19:50:37, zhongjinji wrote:
-> >On Fri 01-08-25 23:36:49, zhongjinji@honor.com wrote:
-> >> From: zhongjinji <zhongjinji@honor.com>
-> >> 
-> >> After merging the patch
-> >> https://lore.kernel.org/all/20220414144042.677008-1-npache@redhat.com/T/#u,
-> >> the OOM reaper runs less frequently because many processes exit within 2 seconds.
-> >> 
-> >> However, when a process is killed, timely handling by the OOM reaper allows
-> >> its memory to be freed faster.
-> >> 
-> >> Since relatively few processes use robust futex, delaying the OOM reaper for
-> >> all processes is undesirable, as many killed processes cannot release memory
-> >> more quickly.
-> >
-> >Could you elaborate more about why this is really needed? OOM should be
-> >a very slow path. Why do you care about this potential improvement in
-> >that situation? In other words what is the usecase?
+Hi,
+
+Le 03/08/2025 à 21:27, Sabyrzhan Tasbolatov a écrit :
+> On Wed, Jul 23, 2025 at 10:33 PM Andrey Ryabinin <ryabinin.a.a@gmail.com> wrote:
+>>
+>> ...
+>>
+>> I don't know if it's a real problem or not. I'm just pointing out that we might
+>> have tricky use case here and maybe that's a problem, because nobody had such use
+>> case in mind. But maybe it's just fine.
+>> I think we just need to boot test it, to see if this works.
+>> ...
+>> powerpc used static key same way before your patches, so powerpc should be fine.
 > 
-> Well, We are using the cgroup v1 freezer. When a frozen process is
-> killed, it cannot exit immediately and is blocked in __refrigerator until
-> it is thawed. When the process cannot be thawed in time, it will result in 
-> increased system memory pressure.
+> Hello,
+> 
+> Just heads up that I am still working on v4.
+> While I can verify the success on compile and booting with my changes
+> on x86, arm with SW/HW_TAGS modes, I'm having issues with PowerPC, UML
+> arch that selects ARCH_DEFER_KASAN.
+> 
+> Adding Christophe Leroy in TO. Please advise on the powerpc panic issue.
 
-This is an important information to be part of the changelog! It is also
-important to note why don't you care about processes that have robust
-mutexes. Is this purely a probabilistic improvement because those are
-less common?
+I don't have the problem you report. Is it with your v3 series ?
 
-TBH I find this to be really hackish and justification based on cgroup
-v1 (which is considered legacy) doesn't make it particularly appealing.
+I started from 
+https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/log/?h=merge 
+(commit de12314b471bf)
 
--- 
-Michal Hocko
-SUSE Labs
+Took your series with
+
+   b4 shazam 20250717142732.292822-1-snovitoll@gmail.com
+
+built ppc64le_defconfig
+
+And successfully boot it under QEMU:
+
+$ qemu-system-ppc64 -M pseries,x-vof=on -m 1G -nographic -vga none 
+-kernel vmlinux -initrd qemu/rootfs-el.cpio.gz -append noreboot
+qemu-system-ppc64: warning: TCG doesn't support requested feature, 
+cap-cfpc=workaround
+qemu-system-ppc64: warning: TCG doesn't support requested feature, 
+cap-sbbc=workaround
+qemu-system-ppc64: warning: TCG doesn't support requested feature, 
+cap-ibs=workaround
+qemu-system-ppc64: warning: TCG doesn't support requested feature, 
+cap-ccf-assist=on
+[    0.000000][    T0] random: crng init done
+[    0.000000][    T0] radix-mmu: Page sizes from device-tree:
+[    0.000000][    T0] radix-mmu: Page size shift = 12 AP=0x0
+[    0.000000][    T0] radix-mmu: Page size shift = 16 AP=0x5
+[    0.000000][    T0] radix-mmu: Page size shift = 21 AP=0x1
+[    0.000000][    T0] radix-mmu: Page size shift = 30 AP=0x2
+[    0.000000][    T0] Activating Kernel Userspace Access Prevention
+[    0.000000][    T0] Activating Kernel Userspace Execution Prevention
+[    0.000000][    T0] radix-mmu: Mapped 
+0x0000000000000000-0x0000000003e00000 with 2.00 MiB pages (exec)
+[    0.000000][    T0] radix-mmu: Mapped 
+0x0000000003e00000-0x0000000040000000 with 2.00 MiB pages
+[    0.000000][    T0] lpar: Using radix MMU under hypervisor
+[    0.000000][    T0] Linux version 6.16.0-02450-g1c11a8599f68 
+(chleroy@PO20335.IDSI0.si.c-s.fr) (powerpc64-linux-gcc (GCC) 8.5.0, GNU 
+ld (GNU Binutils) 2.36.1) #1459 SMP Mon Aug  4 12:49:11 CEST 2025
+[    0.000000][    T0] KernelAddressSanitizer initialized (generic)
+[    0.000000][    T0] OF: reserved mem: Reserved memory: No 
+reserved-memory node in the DT
+[    0.000000][    T0] Found initrd at 0xc000000004cf0000:0xc00000000530d15a
+[    0.000000][    T0] Hardware name: IBM pSeries (emulated by qemu) 
+POWER9 (architected) 0x4e1202 0xf000005 pSeries
+[    0.000000][    T0] printk: legacy bootconsole [udbg0] enabled
+[    0.000000][    T0] Partition configured for 1 cpus.
+[    0.000000][    T0] CPU maps initialized for 1 thread per core
+[    0.000000][    T0] numa: Partition configured for 1 NUMA nodes.
+[    0.000000][    T0] -----------------------------------------------------
+[    0.000000][    T0] phys_mem_size     = 0x40000000
+[    0.000000][    T0] dcache_bsize      = 0x80
+[    0.000000][    T0] icache_bsize      = 0x80
+[    0.000000][    T0] cpu_features      = 0x0001c06b8f4f9187
+[    0.000000][    T0]   possible        = 0x003ffbfbcf5fb187
+[    0.000000][    T0]   always          = 0x0000000380008181
+[    0.000000][    T0] cpu_user_features = 0xdc0065c2 0xaef00000
+[    0.000000][    T0] mmu_features      = 0x3c007641
+[    0.000000][    T0] firmware_features = 0x00000a85455a445f
+[    0.000000][    T0] vmalloc start     = 0xc008000000000000
+[    0.000000][    T0] IO start          = 0xc00a000000000000
+[    0.000000][    T0] vmemmap start     = 0xc00c000000000000
+[    0.000000][    T0] -----------------------------------------------------
+[    0.000000][    T0] NODE_DATA(0) allocated [mem 0x3fb30800-0x3fb37fff]
+[    0.000000][    T0] rfi-flush: fallback displacement flush available
+[    0.000000][    T0] rfi-flush: ori type flush available
+[    0.000000][    T0] rfi-flush: mttrig type flush available
+[    0.000000][    T0] count-cache-flush: hardware flush enabled.
+[    0.000000][    T0] link-stack-flush: software flush enabled.
+[    0.000000][    T0] stf-barrier: eieio barrier available
+[    0.000000][    T0] PPC64 nvram contains 65536 bytes
+[    0.000000][    T0] barrier-nospec: using ORI speculation barrier
+[    0.000000][    T0] Zone ranges:
+[    0.000000][    T0]   Normal   [mem 
+0x0000000000000000-0x000000003fffffff]
+[    0.000000][    T0]   Device   empty
+[    0.000000][    T0] Movable zone start for each node
+[    0.000000][    T0] Early memory node ranges
+[    0.000000][    T0]   node   0: [mem 
+0x0000000000000000-0x000000003fffffff]
+[    0.000000][    T0] Initmem setup node 0 [mem 
+0x0000000000000000-0x000000003fffffff]
+[    0.000000][    T0] percpu: Embedded 3 pages/cpu s122904 r0 d73704 
+u196608
+[    0.000000][    T0] Kernel command line: noreboot
+[    0.000000][    T0] Unknown kernel command line parameters 
+"noreboot", will be passed to user space.
+[    0.000000][    T0] printk: log buffer data + meta data: 262144 + 
+917504 = 1179648 bytes
+[    0.000000][    T0] Dentry cache hash table entries: 131072 (order: 
+4, 1048576 bytes, linear)
+[    0.000000][    T0] Inode-cache hash table entries: 65536 (order: 3, 
+524288 bytes, linear)
+[    0.000000][    T0] Fallback order for Node 0: 0
+[    0.000000][    T0] Built 1 zonelists, mobility grouping on.  Total 
+pages: 16384
+[    0.000000][    T0] Policy zone: Normal
+[    0.000000][    T0] mem auto-init: stack:off, heap alloc:off, heap 
+free:off
+[    0.000000][    T0] stackdepot: allocating hash table via 
+alloc_large_system_hash
+[    0.000000][    T0] stackdepot hash table entries: 1048576 (order: 8, 
+16777216 bytes, linear)
+[    0.000000][    T0] SLUB: HWalign=128, Order=0-3, MinObjects=0, 
+CPUs=1, Nodes=1
+[    0.000000][    T0] ftrace: allocating 47840 entries in 12 pages
+[    0.000000][    T0] ftrace: allocated 12 pages with 2 groups
+[    0.000000][    T0] rcu: Hierarchical RCU implementation.
+[    0.000000][    T0] rcu: 	RCU event tracing is enabled.
+[    0.000000][    T0] rcu: 	RCU restricting CPUs from NR_CPUS=2048 to 
+nr_cpu_ids=1.
+[    0.000000][    T0] 	Rude variant of Tasks RCU enabled.
+[    0.000000][    T0] 	Tracing variant of Tasks RCU enabled.
+[    0.000000][    T0] rcu: RCU calculated value of scheduler-enlistment 
+delay is 100 jiffies.
+[    0.000000][    T0] rcu: Adjusting geometry for rcu_fanout_leaf=16, 
+nr_cpu_ids=1
+[    0.000000][    T0] RCU Tasks Rude: Setting shift to 0 and lim to 1 
+rcu_task_cb_adjust=1 rcu_task_cpu_ids=1.
+[    0.000000][    T0] RCU Tasks Trace: Setting shift to 0 and lim to 1 
+rcu_task_cb_adjust=1 rcu_task_cpu_ids=1.
+[    0.000000][    T0] NR_IRQS: 512, nr_irqs: 512, preallocated irqs: 16
+[    0.000000][    T0] xive: Using IRQ range [0-0]
+[    0.000000][    T0] xive: Interrupt handling initialized with spapr 
+backend
+[    0.000000][    T0] xive: Using priority 6 for all interrupts
+[    0.000000][    T0] xive: Using 64kB queues
+[    0.000000][    T0] rcu: srcu_init: Setting srcu_struct sizes based 
+on contention.
+[    0.000290][    T0] time_init: 56 bit decrementer (max: 7fffffffffffff)
+[    0.001690][    T0] clocksource: timebase: mask: 0xffffffffffffffff 
+max_cycles: 0x761537d007, max_idle_ns: 440795202126 ns
+[    0.003232][    T0] clocksource: timebase mult[1f40000] shift[24] 
+registered
+[    0.040308][    T0] Console: colour dummy device 80x25
+[    0.042553][    T0] printk: legacy console [hvc0] enabled
+[    0.042553][    T0] printk: legacy console [hvc0] enabled
+[    0.043883][    T0] printk: legacy bootconsole [udbg0] disabled
+[    0.043883][    T0] printk: legacy bootconsole [udbg0] disabled
+[    0.052810][    T0] pid_max: default: 32768 minimum: 301
+[    0.062682][    T0] LSM: initializing 
+lsm=lockdown,capability,landlock,yama,selinux,bpf,ima
+[    0.075902][    T0] landlock: Up and running.
+[    0.076246][    T0] Yama: becoming mindful.
+[    0.077639][    T0] SELinux:  Initializing.
+[    0.157184][    T0] LSM support for eBPF active
+[    0.170713][    T0] Mount-cache hash table entries: 8192 (order: 0, 
+65536 bytes, linear)
+[    0.171081][    T0] Mountpoint-cache hash table entries: 8192 (order: 
+0, 65536 bytes, linear)
+[    0.319421][    T1] POWER9 performance monitor hardware support 
+registered
+[    0.329508][    T1] rcu: Hierarchical SRCU implementation.
+[    0.329940][    T1] rcu: 	Max phase no-delay instances is 400.
+[    0.382714][    T1] smp: Bringing up secondary CPUs ...
+[    0.385679][    T1] smp: Brought up 1 node, 1 CPU
+[    0.392599][    T1] numa: Node 0 CPUs: 0
+[    0.445093][   T20] node 0 deferred pages initialised in 21ms
+[    0.447420][    T1] Memory: 784000K/1048576K available (25600K kernel 
+code, 9216K rwdata, 23552K rodata, 13824K init, 2373K bss, 254528K 
+reserved, 0K cma-reserved)
+[    0.469596][   T20] pgdatinit0 (20) used greatest stack depth: 29936 
+bytes left
+[    0.504269][    T1] devtmpfs: initialized
+[    0.605561][    T1] PCI host bridge /pci@800000020000000  ranges:
+[    0.607269][    T1]   IO 0x0000200000000000..0x000020000000ffff -> 
+0x0000000000000000
+[    0.607837][    T1]  MEM 0x0000200080000000..0x00002000ffffffff -> 
+0x0000000080000000
+[    0.608141][    T1]  MEM 0x0000210000000000..0x000021ffffffffff -> 
+0x0000210000000000
+[    0.623659][    T1] clocksource: jiffies: mask: 0xffffffff 
+max_cycles: 0xffffffff, max_idle_ns: 1911260446275000 ns
+[    0.625600][    T1] posixtimers hash table entries: 512 (order: -3, 
+8192 bytes, linear)
+[    0.627067][    T1] futex hash table entries: 256 (32768 bytes on 1 
+NUMA nodes, total 32 KiB, linear).
+[    0.692128][    T1] NET: Registered PF_NETLINK/PF_ROUTE protocol family
+[    0.714282][    T1] audit: initializing netlink subsys (disabled)
+[    0.722232][   T25] audit: type=2000 audit(1754308137.543:1): 
+state=initialized audit_enabled=0 res=1
+[    0.743697][    T1] cpuidle: using governor menu
+[    0.755015][    T1] WARNING: nvram corruption detected: 0-length 
+partition
+[    0.755541][    T1] nvram: No room to create ibm,rtas-log partition, 
+deleting any obsolete OS partitions...
+[    0.755794][    T1] nvram: Failed to find or create ibm,rtas-log 
+partition, err -28
+[    0.756219][    T1] nvram: No room to create lnx,oops-log partition, 
+deleting any obsolete OS partitions...
+[    0.756379][    T1] nvram: Failed to find or create lnx,oops-log 
+partition, err -28
+Linux ppc64le
+#1459 SMP Mon Au[    0.756539][    T1] nvram: Failed to initialize oops 
+partition!
+[    0.762921][    T1] EEH: pSeries platform initialized
+[    0.808097][    T1] kprobes: kprobe jump-optimization is enabled. All 
+kprobes are optimized if possible.
+[    1.365147][    T1] HugeTLB: allocation took 0ms with 
+hugepage_allocation_threads=1
+[    1.366269][    T1] HugeTLB: registered 2.00 MiB page size, 
+pre-allocated 0 pages
+[    1.366456][    T1] HugeTLB: 0 KiB vmemmap can be freed for a 2.00 
+MiB page
+[    1.366728][    T1] HugeTLB: registered 1.00 GiB page size, 
+pre-allocated 0 pages
+[    1.366870][    T1] HugeTLB: 0 KiB vmemmap can be freed for a 1.00 
+GiB page
+[    1.486251][    T1] iommu: Default domain type: Translated
+[    1.486543][    T1] iommu: DMA domain TLB invalidation policy: strict 
+mode
+[    1.525452][    T1] SCSI subsystem initialized
+[    1.552424][    T1] usbcore: registered new interface driver usbfs
+[    1.554049][    T1] usbcore: registered new interface driver hub
+[    1.559907][    T1] usbcore: registered new device driver usb
+[    1.562100][    T1] pps_core: LinuxPPS API ver. 1 registered
+[    1.562266][    T1] pps_core: Software ver. 5.3.6 - Copyright 
+2005-2007 Rodolfo Giometti <giometti@linux.it>
+[    1.566642][    T1] PTP clock support registered
+[    1.577168][    T1] EDAC MC: Ver: 3.0.0
+[    1.672772][    T1] PCI: Probing PCI hardware
+[    1.833395][    T1] PCI host bridge to bus 0000:00
+[    1.834524][    T1] pci_bus 0000:00: root bus resource [io 
+0x10000-0x1ffff] (bus address [0x0000-0xffff])
+[    1.835316][    T1] pci_bus 0000:00: root bus resource [mem 
+0x200080000000-0x2000ffffffff] (bus address [0x80000000-0xffffffff])
+[    1.835750][    T1] pci_bus 0000:00: root bus resource [mem 
+0x210000000000-0x21ffffffffff 64bit]
+[    1.836268][    T1] pci_bus 0000:00: root bus resource [bus 00-ff]
+[    1.852192][    T1] IOMMU table initialized, virtual merging enabled
+[    1.864698][    T1] pci_bus 0000:00: resource 4 [io  0x10000-0x1ffff]
+[    1.864967][    T1] pci_bus 0000:00: resource 5 [mem 
+0x200080000000-0x2000ffffffff]
+[    1.865136][    T1] pci_bus 0000:00: resource 6 [mem 
+0x210000000000-0x21ffffffffff 64bit]
+[    1.865619][    T1] EEH: No capable adapters found: recovery disabled.
+[    1.895816][    T1] vgaarb: loaded
+[    1.906597][    T1] clocksource: Switched to clocksource timebase
+[    7.645823][    T1] NET: Registered PF_INET protocol family
+[    7.650783][    T1] IP idents hash table entries: 16384 (order: 1, 
+131072 bytes, linear)
+[    7.684628][    T1] tcp_listen_portaddr_hash hash table entries: 4096 
+(order: 0, 65536 bytes, linear)
+[    7.686311][    T1] Table-perturb hash table entries: 65536 (order: 
+2, 262144 bytes, linear)
+[    7.687827][    T1] TCP established hash table entries: 8192 (order: 
+0, 65536 bytes, linear)
+[    7.690430][    T1] TCP bind hash table entries: 8192 (order: 2, 
+262144 bytes, linear)
+[    7.694736][    T1] TCP: Hash tables configured (established 8192 
+bind 8192)
+[    7.697887][    T1] UDP hash table entries: 1024 (order: 0, 65536 
+bytes, linear)
+[    7.700717][    T1] UDP-Lite hash table entries: 1024 (order: 0, 
+65536 bytes, linear)
+[    7.709437][    T1] NET: Registered PF_UNIX/PF_LOCAL protocol family
+[    7.728670][    T1] RPC: Registered named UNIX socket transport module.
+[    7.729411][    T1] RPC: Registered udp transport module.
+[    7.729661][    T1] RPC: Registered tcp transport module.
+[    7.729825][    T1] RPC: Registered tcp-with-tls transport module.
+[    7.731574][    T1] RPC: Registered tcp NFSv4.1 backchannel transport 
+module.
+[    7.732309][    T1] PCI: CLS 0 bytes, default 128
+[    7.769612][   T12] Trying to unpack rootfs image as initramfs...
+[    7.937617][    T1] Initialise system trusted keyrings
+[    7.942505][    T1] Key type blacklist registered
+[    7.964894][    T1] workingset: timestamp_bits=38 max_order=14 
+bucket_order=0
+[    8.127738][    T1] NFS: Registering the id_resolver key type
+[    8.129779][    T1] Key type id_resolver registered
+[    8.130646][    T1] Key type id_legacy registered
+[    8.150761][    T1] SGI XFS with ACLs, security attributes, no debug 
+enabled
+[    8.343926][    T1] integrity: Platform Keyring initialized
+[    8.348809][    T1] Key type asymmetric registered
+[    8.354232][    T1] Asymmetric key parser 'x509' registered
+[    8.372851][    T1] Block layer SCSI generic (bsg) driver version 0.4 
+loaded (major 247)
+[    8.375844][    T1] io scheduler mq-deadline registered
+[    8.377498][    T1] io scheduler kyber registered
+[   11.082153][    T1] Serial: 8250/16550 driver, 4 ports, IRQ sharing 
+disabled
+[   11.199822][    T1] Non-volatile memory driver v1.3
+[   11.749528][    T1] brd: module loaded
+[   12.062135][    T1] loop: module loaded
+[   12.078153][    T1] ipr: IBM Power RAID SCSI Device Driver version: 
+2.6.4 (March 14, 2017)
+[   12.118444][    T1] ibmvscsi 71000003: SRP_VERSION: 16.a
+[   12.134566][    T1] ibmvscsi 71000003: Maximum ID: 64 Maximum LUN: 32 
+Maximum Channel: 3
+[   12.135207][    T1] scsi host0: IBM POWER Virtual SCSI Adapter 1.5.9
+[   12.188126][    C0] ibmvscsi 71000003: partner initialization complete
+[   12.191555][    C0] ibmvscsi 71000003: host srp version: 16.a, host 
+partition qemu (0), OS 2, max io 2097152
+[   12.192709][    C0] ibmvscsi 71000003: sent SRP login
+[   12.193698][    C0] ibmvscsi 71000003: SRP_LOGIN succeeded
+[   12.381686][    T1] scsi 0:0:2:0: CD-ROM            QEMU     QEMU 
+CD-ROM      2.5+ PQ: 0 ANSI: 5
+[   17.470934][   T12] Freeing initrd memory: 6208K
+[   18.458146][    C0] sr 0:0:2:0: Power-on or device reset occurred
+[   18.468304][    T1] sr 0:0:2:0: [sr0] scsi3-mmc drive: 16x/50x cd/rw 
+xa/form2 cdda tray
+[   18.469176][    T1] cdrom: Uniform CD-ROM driver Revision: 3.20
+[   18.507507][    T1] sr 0:0:2:0: Attached scsi generic sg0 type 5
+[   18.535454][    T1] e100: Intel(R) PRO/100 Network Driver
+[   18.535682][    T1] e100: Copyright(c) 1999-2006 Intel Corporation
+[   18.536741][    T1] e1000: Intel(R) PRO/1000 Network Driver
+[   18.536894][    T1] e1000: Copyright (c) 1999-2006 Intel Corporation.
+[   18.538093][    T1] e1000e: Intel(R) PRO/1000 Network Driver
+[   18.538241][    T1] e1000e: Copyright(c) 1999 - 2015 Intel Corporation.
+[   18.548528][    T1] i2c_dev: i2c /dev entries driver
+[   18.551722][    T1] device-mapper: core: CONFIG_IMA_DISABLE_HTABLE is 
+disabled. Duplicate IMA measurements will not be recorded in the IMA log.
+[   18.553452][    T1] device-mapper: uevent: version 1.0.3
+[   18.564534][    T1] device-mapper: ioctl: 4.50.0-ioctl (2025-04-28) 
+initialised: dm-devel@lists.linux.dev
+[   18.591869][    T1] usbcore: registered new interface driver usbhid
+[   18.592226][    T1] usbhid: USB HID core driver
+[   18.594958][    T1] ipip: IPv4 and MPLS over IPv4 tunneling driver
+[   18.611797][    T1] NET: Registered PF_INET6 protocol family
+[   18.651618][    T1] Segment Routing with IPv6
+[   18.653186][    T1] In-situ OAM (IOAM) with IPv6
+[   18.656776][    T1] sit: IPv6, IPv4 and MPLS over IPv4 tunneling driver
+[   18.672737][    T1] NET: Registered PF_PACKET protocol family
+[   18.676757][    T1] Key type dns_resolver registered
+[   18.678951][    T1] secvar-sysfs: Failed to retrieve secvar operations
+[   18.683474][    T1] Running code patching self-tests ...
+[   19.045499][    T1] registered taskstats version 1
+[   19.055453][    T1] Loading compiled-in X.509 certificates
+[   19.106895][    T1] Loaded X.509 cert 'Build time autogenerated 
+kernel key: 9f01b0d991e9d73077cd296c67edb3efb56e2c47'
+[   19.372917][    T1] Demotion targets for Node 0: null
+[   19.373664][    T1] page_owner is disabled
+[   19.385615][    T1] Secure boot mode disabled
+[   19.387815][    T1] ima: No TPM chip found, activating TPM-bypass!
+[   19.389833][    T1] Loading compiled-in module X.509 certificates
+[   19.406497][    T1] Loaded X.509 cert 'Build time autogenerated 
+kernel key: 9f01b0d991e9d73077cd296c67edb3efb56e2c47'
+[   19.407680][    T1] ima: Allocated hash algorithm: sha256
+[   19.416714][    T1] Secure boot mode disabled
+[   19.417345][    T1] Trusted boot mode disabled
+[   19.417596][    T1] ima: No architecture policies found
+[   19.426439][    T1] printk: legacy console [netcon0] enabled
+[   19.426791][    T1] netconsole: network logging started
+[   19.610553][    T1] Freeing unused kernel image (initmem) memory: 13824K
+[   19.766345][    T1] Checked W+X mappings: passed, no W+X pages found
+[   19.767739][    T1] rodata_test: all tests were successful
+[   19.768936][    T1] Run /init as init process
+[   20.432221][   T58] mount (58) used greatest stack depth: 26992 bytes 
+left
+[   20.808923][   T60] mount (60) used greatest stack depth: 26416 bytes 
+left
+mount: mounting devtmpfs on /dev failed: Device or resource busy
+Starting syslogd: OK
+Starting klogd: OK
+Running sysctl: [   24.879851][   T83] find (83) used greatest stack 
+depth: 26368 bytes left
+[   24.945794][   T84] xargs (84) used greatest stack depth: 26240 bytes 
+left
+OK
+Saving 256 bits of creditable seed for next boot
+Starting network: [   26.530674][   T96] ip (96) used greatest stack 
+depth: 26048 bytes left
+[   27.018425][   T97] ip (97) used greatest stack depth: 24256 bytes left
+Waiting for interface eth0 to appear..... timeout!
+run-parts: /etc/network/if-pre-up.d/wait_iface: exit status 1
+FAIL
+[   33.902403][    C0] hrtimer: interrupt took 3450588 ns
+Found console hvc0
+
+Linux version 6.16.0-02450-g1c11a8599f68 
+(chleroy@PO20335.IDSI0.si.c-s.fr) (powerpc64-linux-gcc (GCC) 8.5.0, GNU 
+ld (GNU Binutils) 2.36.1) #1459 SMP Mon Aug  4 12:49:11 CEST 2025
+Network interface test failed
+TPM selftest failed
+File system test skipped
+Boot successful.
+~ #
+
+
+Christophe
+
 
