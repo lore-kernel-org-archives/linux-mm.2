@@ -2,190 +2,83 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CC1CFC87FCB
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 01:51:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A3E2FC87FCB
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 02:13:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44F196B008A; Sun,  3 Aug 2025 21:51:53 -0400 (EDT)
+	id 0AF226B007B; Sun,  3 Aug 2025 22:13:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FFF76B008C; Sun,  3 Aug 2025 21:51:53 -0400 (EDT)
+	id 0873D6B0088; Sun,  3 Aug 2025 22:13:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C7446B0092; Sun,  3 Aug 2025 21:51:53 -0400 (EDT)
+	id F06036B0089; Sun,  3 Aug 2025 22:13:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E7D56B008A
-	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 21:51:53 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A6C401A0B29
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 01:51:52 +0000 (UTC)
-X-FDA: 83737398864.24.B42B324
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2087.outbound.protection.outlook.com [40.107.237.87])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D8F2420004
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 01:51:49 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=GBmFQazK;
-	spf=pass (imf03.hostedemail.com: domain of apopple@nvidia.com designates 40.107.237.87 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754272310; a=rsa-sha256;
-	cv=pass;
-	b=KOS+I+W6Ou6RKSn39dL1nvfut2Rkp7q4JU5V/NbqOUch0FxKIo+Kl8izdzZw+eQkZ4tSK5
-	fCvFnKfvWzFYugsOXcLPREzaYffa21CUXPcqKGvvaSUKRbDVNNFbHZS+Ymfk13PvLs2f09
-	H6+KPcu0VaFI+nzyqrh3xVIkewpKMWI=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=GBmFQazK;
-	spf=pass (imf03.hostedemail.com: domain of apopple@nvidia.com designates 40.107.237.87 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754272310;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E16EF6B007B
+	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 22:13:10 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 749031A0B6E
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 02:13:10 +0000 (UTC)
+X-FDA: 83737452540.11.CEA9200
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 6FEEE40003
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 02:13:07 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=oyL7WSds;
+	spf=pass (imf04.hostedemail.com: domain of fengwei_yin@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=fengwei_yin@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754273588;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3KYhpMlLb0h/2YuWAF6FA0/YgHm1E4ARtFeZRoVI9D4=;
-	b=LbSohE9WrIagS2FIScxA4xgHINxUPXKotNtYDkj+B5oogZsQGiXuvXYNlA54MvHuiyHyf+
-	Q+JidsG7OWcvQs8fznl8kBTh/SAH8UCpk5+AIaO3LjYETfBFysn9GW7WrH8AuFGA9qBc3+
-	AGcAJYubpLNjZTK7/0jGRE+zSa3f8YU=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Gi5D36e9bc/sSemWsgtaMm8llIwp9LxsNcVP/i5uYJryiS4sbodjiYOMou4yB1g1/pTPDZ8lN3HLrgl52H8pv5IEdSiH/FpRpVdaPnayXLycyv0nO3WFGKSMMjvcGwvTTHBmzy/Jq3QNSdMoJ26Vv99xY6wHI5aAfLNi4ClCyPtjgror0x/ThapEF65MK8H1r4PDwrIsRyz9Bcv1UPxqIXx1Jnx88UT9N8IWiRLp4V/9pNdR+F1bi3OuCt7+pfde7JAwRfBgkVbxF6CyVpBt02vgQjn5ms5i7jKF6mJg9sa9y9TLwNiWwBdPabX75PlT7a89SWrfYtgwZAdj6uxCxQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3KYhpMlLb0h/2YuWAF6FA0/YgHm1E4ARtFeZRoVI9D4=;
- b=QqhOM1waxUq45FoHLAF6wcDswVPt2+3dkDrcmtCVJ29XdYHk6wXd9Py8vPrIUBQaVlyBTK1a92Gx7ijYtjwavcNgW/W0P5w9OhN+k2xPoilLgWCY3LT5SqylFDag0JAcxzOYVGor0GUqiF3DDkouP4TxvbxjA8UjK/vD04FaqKHGAFU3vVt68976w0LCep8/1bhnytyChvBFGalwP9b2URPXGGEQDwgGVq8pQazgdZwE3OzrwpV1v2z8gUawcJ4UGphFc2jBtM40OYY3tCzhqMYv57gCOTN/OIE9BesZXss/l/wQn8aVTVdyjvkDVDAgoCUf4ZaehaYyPu76qQqFvg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3KYhpMlLb0h/2YuWAF6FA0/YgHm1E4ARtFeZRoVI9D4=;
- b=GBmFQazKLkavYQ8SHpyY+ZA5KxFgtH+IEjUBr5t+1XL3Q0QGbnGhhAkLCXgrkLUyNrZNSPFgq1ZNP9MAXhmIwuewgMi8Gd8+PZwrbJ6b+UoEY1Ov9VNWIMKh1KxtgCzNB09BgD8aw68Fb4Xr/nR1yBBd6kCAaK7fVtC++OyTSmA+vrfTMCTbWFXqGg9GpSgupZbRCYyfvnEn6LRbl6kdCNLhluN+s6QWmwwk/JZADDVFI3PECYT23NGiHV4DVHFxdhQjOSvjhqqKXUlxeLKTY0wnOeXoJOxsI+p11M4jHJo/K6YQBo3y54AAVeg++tnhiwXaauWULu8T7kqxx58iaw==
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
- CH3PR12MB8234.namprd12.prod.outlook.com (2603:10b6:610:125::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.19; Mon, 4 Aug
- 2025 01:51:44 +0000
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe%5]) with mapi id 15.20.8989.017; Mon, 4 Aug 2025
- 01:51:43 +0000
-Date: Mon, 4 Aug 2025 11:51:38 +1000
-From: Alistair Popple <apopple@nvidia.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: David Hildenbrand <david@redhat.com>, 
-	Matthew Wilcox <willy@infradead.org>, Yonatan Maman <ymaman@nvidia.com>, 
-	=?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Leon Romanovsky <leon@kernel.org>, Lyude Paul <lyude@redhat.com>, 
-	Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Ben Skeggs <bskeggs@nvidia.com>, 
-	Michael Guralnik <michaelgur@nvidia.com>, Or Har-Toov <ohartoov@nvidia.com>, 
-	Daisuke Matsuda <dskmtsd@gmail.com>, Shay Drory <shayd@nvidia.com>, linux-mm@kvack.org, 
-	linux-rdma@vger.kernel.org, dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, Gal Shalom <GalShalom@nvidia.com>
-Subject: Re: [PATCH v2 1/5] mm/hmm: HMM API to enable P2P DMA for device
- private pages
-Message-ID: <vscps6igy42u5limiigiok6y35mjx6acawi3qmvzbrpvltp4qp@mkydml7lz6fu>
-References: <20250718144442.GG2206214@ziepe.ca>
- <aH4_QaNtIJMrPqOw@casper.infradead.org>
- <7lvduvov3rvfsgixbkyyinnzz3plpp3szxam46ccgjmh6v5d7q@zoz4k723vs3d>
- <aIBcTpC9Te7YIe4J@ziepe.ca>
- <cn7hcxskr5prkc3jnd4vzzeau5weevzumcspzfayeiwdexkkfe@ovvgraqo7svh>
- <a3f1af02-ef3f-40f8-be79-4c3929a59bb7@redhat.com>
- <i5ya3n7bhhufpczprtp2ndg7bxtykoyjtsfae6dfdqk2rfz6ix@nzwnhqfwh6rq>
- <20250801164058.GD26511@ziepe.ca>
- <b8009500-8b0b-4bb9-ae5e-6d2135adbfdd@redhat.com>
- <20250801165749.GF26511@ziepe.ca>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250801165749.GF26511@ziepe.ca>
-X-ClientProxiedBy: SYBPR01CA0005.ausprd01.prod.outlook.com (2603:10c6:10::17)
- To DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6)
+	bh=fOhE5iGHrZ4xjSv36/UXuUcfl5os1bpqTbIaxe2NUiE=;
+	b=DYHMhgdRQUHH7KOwyyf7jEsaVz5DQICNZ16kbZkZ/lpMsdnYhH3PQWiXhXa59yX69MVTMH
+	ho/iugAotK4ySazWFAxWmL+npJrGaw2GQFIZez6e/VNoYC4KqX+dxWR6uxUtQVjqc428E5
+	QQLUiJYfV8ONx6s2+2AkHgzSZMd6oqA=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=oyL7WSds;
+	spf=pass (imf04.hostedemail.com: domain of fengwei_yin@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=fengwei_yin@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754273588; a=rsa-sha256;
+	cv=none;
+	b=zycMT8AIHrGu4BJBYsb8jhq4PfDaLxXgwIAaNQX0QgmNwvOVjrmMdFIMZzREjPnrRBhYVB
+	xMyv5Vf/B9K/oZMfyLrWhsmDIEnVotpw45Cqzqx481b7ES4BlrkmrHk+nk07uF7UUgsS0y
+	rVM/r0iK8DFswXUsjq60mEZ11t8vO5I=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1754273584; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=fOhE5iGHrZ4xjSv36/UXuUcfl5os1bpqTbIaxe2NUiE=;
+	b=oyL7WSdsoFW8AcvsoBs20GmwdhpKnTokq85VhGMQENTGhvMaxlwOW8YFNzkL8uyVcDJCAZxjHUk+9fLfglDczI7xbFNRURtOCpzXqvKWWCFb6GfFRuEBqO8D1AKdLGbBHWLsqGp2+WEOfaneKYESQzDOQ0qyOWKdIIVMHXiVpw0=
+Received: from 30.21.176.60(mailfrom:fengwei_yin@linux.alibaba.com fp:SMTPD_---0WktbLhr_1754273572 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 04 Aug 2025 10:13:03 +0800
+Message-ID: <6653242a-5b08-48ff-a126-9e9367633420@linux.alibaba.com>
+Date: Mon, 4 Aug 2025 10:12:52 +0800
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|CH3PR12MB8234:EE_
-X-MS-Office365-Filtering-Correlation-Id: 097eb281-f606-4868-cceb-08ddd2f9767f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?73ZbGI627yz6x1t9nPnXSWNanmH4Y4CYGreJ34PrOY7ySn5vgBy76H5qFg9e?=
- =?us-ascii?Q?w5zaVUzQx0KAAi84nnIwWNpErwzVk+8m2I5mCDbaZrKZ5hO3xW+/HmMzWj/J?=
- =?us-ascii?Q?gbfaqpVOSYIMGR/hS1WHWaDnbDDvfcpHD6H3yyWYtkfCu/sGtKAMecekWomY?=
- =?us-ascii?Q?Z1zrks1yWEAUSW2PhuM3hQAqrPmWY06mIv9mIqHsOCnWcjdKhWUnYGkEaLf8?=
- =?us-ascii?Q?LSRjvdEJt8uiXiCnyCKn7j1AYP2ycmTftUbvv8+dHUrpgzR8OF//lTry98EH?=
- =?us-ascii?Q?8Whp1FowszXxGatQVsFZ4QyS656zcBtXe/9k6Ubo8KoM0Yh6jAQZyX/q3GnU?=
- =?us-ascii?Q?rouC8LbOKDMWDYMt2Cn8EPKLSDy+cITnasy70mT2gckJkpGMU14pXqWIlcJ3?=
- =?us-ascii?Q?MejljYCC1eLdpTA9GBJpSMUMxYSDGyRwgb/Jnx1mCEu2OfhFDgPXk4wdydrw?=
- =?us-ascii?Q?Mu0ciTULcCkPvuf6pt+5h638ZSM4ZteTUuGc9/xv9B0bumsLT2N1YqHUgPGC?=
- =?us-ascii?Q?28xC0kv0ovaIiM/nDWrcmlqA0+SgcLjhxE/Nx1ZIICcUsSG5lVQCvdF8drEn?=
- =?us-ascii?Q?0PMNKfpmReSOxW0LhkHXZ7iBWN7GRz+hyupUAT5x405xD2KBgIMryNDAq6oq?=
- =?us-ascii?Q?744aDxuT0EUlLBMwJcuaq8Wr7r/VMSb7ou7bCZO91Nmc9Z8tmqd+KnLBS3bL?=
- =?us-ascii?Q?l8x0PnoGOtD8akDdPIHSiRqheuA2HSanbF1fJNtMR/hvQ5zVm1pRK+EvBpo8?=
- =?us-ascii?Q?K4coNhLX6A0kkc5+hkxn/U9GcjPNY82oyNx4/iHp5tdvC0TrkB5LoUiNL/NK?=
- =?us-ascii?Q?MxRlFzSSeo196piVqSTfpTR6XU6HTgfxE6jI+YEN3ugGNHsrh7C6vGCzDb0Q?=
- =?us-ascii?Q?Ry2khrLW9JDnRLFeEyijvcYfeuipwFk5qmaEjbRAtLAzwFZkFYFHd6oaRV8R?=
- =?us-ascii?Q?oFR+wS1og/LARlV7AyH/25a9dGSZ/zEFuSqq/AqXSXizwJHA90rVFtsCYln+?=
- =?us-ascii?Q?ebMmQRyALrpXxiHsx57OVvHTbCpd/T/0dOHIkag6kMBi0pUl/ryfb+rHSRAX?=
- =?us-ascii?Q?IJro9Fj1sytNBWWS8xNlBvgiFYoKeRnv62QHN3NRMiynHwRX+YqYrmCXtJ1V?=
- =?us-ascii?Q?fj5SS7IhqrGyqPxQO0Kww5EV0h1PrEnOnqpyyOSbHUl4iM4pFWj9YZ/qi7Sf?=
- =?us-ascii?Q?CUlVZkORfdTrXZ15SKoec/+P3nlmXS7DREo+vgyf9kTq5FD0jzImFL7XE/dk?=
- =?us-ascii?Q?UY65gEsDVpWnirPPdHyDJ8kQNqzrEA6e7tof9zyy9kn34CUz4ef9/kqnuKRa?=
- =?us-ascii?Q?oJouYNOhtyyOXszkzDepp3s4x/RSfnwJgmeTVY/c18ainPE3s0zkVO/A/nFF?=
- =?us-ascii?Q?1wkmgw10T+PLHvyA2o1KPZLhV5OYmZsJUitTxHxZM6G/xLhm2a00TvLf+LAA?=
- =?us-ascii?Q?yivbYUO42e8=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?CdxFTtVdzZBlDoaEvbLlxzpibTFMmmSCG6u0JHcuzt9BJ0/vp1uvENmswMmR?=
- =?us-ascii?Q?vC0Qmw8k8RPlMicrHvjAzmSGNLI3eWHRjjWzDK9/2ByDio0UqPbn/MFO/SkF?=
- =?us-ascii?Q?7KJj4APPuMBxBSuu7aucQleLOHBpGMEJ+Hqg7cRSKoPCNiMcLxwqgQhIP8BZ?=
- =?us-ascii?Q?37m3Fql4sbE75dgZCj3HiTxPnsEjbBIZ2cnUzR7aBSpF5LOPXbaGsVjgPJhb?=
- =?us-ascii?Q?4mwjxxaVCFBvQtZ3X8EoDrZmnyLT9JFxnorwNo43wTd5XjdVQSKI1y0+LhxP?=
- =?us-ascii?Q?imgneLsNyo9ReaAgVOxltesnUBVQqN45cznigs9RjNaB++EhaTZ40AVWx10/?=
- =?us-ascii?Q?SGh8ZTFRplNRqlZGdHWkYylZJ6XSS7aMyCj9WV4kNnNv9HDQxmmoQ0BB53Fb?=
- =?us-ascii?Q?rmXMyg634vk+wXywltzv7jiZojm3rTyoRyJ6BlL8zTlS9Xqhn8aT6+6f5sYz?=
- =?us-ascii?Q?MGzIo3joA2qTvZK3Hfx5RT/hIVCd7XDTyTyrFSc8uldW3chmA8XyggpwYVHW?=
- =?us-ascii?Q?2o7jGuX0I36RcB4RqsuN6LaV6Bm/aN+UgwGLMjK4mkqreho0A0goGZwHxHlE?=
- =?us-ascii?Q?BJPIyx4Da3SeVW1Sx9lzkcG1jFATMV8KYFSLbv27iFnfsZyFs4o5tXdr/4cV?=
- =?us-ascii?Q?311LMt8NKpWtuhqK1ob6U1TuarDbcGS7omTOI1eifDtWrIvnor6bUO2SWZvk?=
- =?us-ascii?Q?xBS6e0lI2DQdHQJiFY6bL69wkHK64wVoWdzMSzxch3gJ/QXMHx4t7cirmsgO?=
- =?us-ascii?Q?458saRoXS0m0xll+kr8thpoiXQqQKiNH8H/3QDerRw++tN0YznCuAK0+nB5p?=
- =?us-ascii?Q?sqtkkQ4ugvRiGLaYUnIckpP+5rbO/b5KjUAVLK1aNgLXj8ndCluTL7N1h5v3?=
- =?us-ascii?Q?Ar2ura0CH7Ex6ym84BpbZgYz/Fstw4wVfluAB+MYgQPuJA3rfy1oSSc4cyXx?=
- =?us-ascii?Q?gL78MT8bUI8tjQD7D9BWeAi8EqObMihHthlnl9SKW/a3CNgWYqwuEKhGyW/a?=
- =?us-ascii?Q?RpkdocR1ysFJkNDzQkZLlzMMGKU5//qsoetUB685CPPQXAICohf57c7U1Sye?=
- =?us-ascii?Q?DkKTSOHneiUW9etbanpsJRh78ZSkvjdrCtaPB5g1Vt0Xv/snFgjdKxpTFN2X?=
- =?us-ascii?Q?rH7BNSkZKgd6poiT6Abr8gXZ9n9bhT+/h+mTs0+A4Gu0v2NZSlmyl+ckBKlP?=
- =?us-ascii?Q?TkSWgENJf5AX5xP+aETLK7RL+4WHLWWQkLbp41V0TbIzHOFNAc1BN0f9rAas?=
- =?us-ascii?Q?GrhY3rdVLtl55T16es4WGzhOtmmkmOSz6be60Wp2clbgd0KSrtYyI1RXZEWf?=
- =?us-ascii?Q?vablGbbcoPjU9x7uxGgT/lxcnc3inPcxUyfRstdcxBHu+cI6E7ciaIi8puEO?=
- =?us-ascii?Q?GC5fmfT2Hjfh8DjTc/i7cs9CNNBa8tOBtfP5ZYdtLgvx5Lg+i9aapXyz//aE?=
- =?us-ascii?Q?//LqSD5k1BiXiYagNRRA6S97UaWZBHFrtiHiZpRRFH+5lWuuG9IMTMeBD+mw?=
- =?us-ascii?Q?zjwUtbGFA2RDTYhfX9knNkEuTq9NcUw4t/SLM1xRGs/Ym35KEAp14mnVyC5P?=
- =?us-ascii?Q?8YyRYcqaqCbx+qFwcDAR4yEuP2dfeJKcWX4LDX+x?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 097eb281-f606-4868-cceb-08ddd2f9767f
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2025 01:51:43.6858
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oPDlRvcomtvf/c+nZ6tH4gv6DpwOdeayGpauqzsFfeH1oQfMy0b4uDFgnyjSh1XneAavjj1d+dA+Dol5H4Lqww==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8234
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] binfmt_elf: remove the 4k limitation of program header
+ size
+To: Ismael Luceno <ismael@iodev.co.uk>, Kees Cook <kees@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ zhourundong.zrd@linux.alibaba.com, fengwei_yin@linux.alibaba.com
+References: <xd6zp5ytq6iakxkqoqqtseomgu5oohau4ynj3xbo7ejohpv7dv@skp2v7awzab4>
+ <aI2KQaWpPLSAqdXg@pirotess> <202508021029.7CC8B334@keescook>
+ <aI7zDXb2VpuaHHYi@pirotess>
+From: Yin Fengwei <fengwei_yin@linux.alibaba.com>
+In-Reply-To: <aI7zDXb2VpuaHHYi@pirotess>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D8F2420004
-X-Stat-Signature: fk9ysb36geq8rsma13og71h98ns44hho
-X-HE-Tag: 1754272309-907208
-X-HE-Meta: U2FsdGVkX1/grM4LsoQ9krz0JUQbeWvwXpis/PRKu+x6PqIjQngSpwkFDDR0E3+genOW8N8EaB1ZBfO/SEvxqQP6rvYc7y4iRNM1vEBLrDJG6DnP+UAa+xAFq2+BC6cTJMtV2ZiaD3YH31djX0uW1347Ig62RjugH21/lROOhNnHPUfjVSBdt4S9/usyOEplf7EhpGb0pCQcXXi6+Y0dcrwGK7jImiJzn0i3Jy2H9HUR4rm/2Tp6Ct6XzRNK2KESP5/VG1R6HmdvbEKkdNW1rvmd7SZCNIPHuntn7f8JpmX2ufCj8Y9uoOaj6Bz/ikK0pEVFHQ2PdX5ke5Bu5bMNFFOm23z7+rpf6AWuSLyX7GAEz43gDTfjhyKtE0UDbJQvWjfc4/n6MI4PP3wg324TmLlDDpAHKDTIW+bzV8k6CLm6KXYMThLIeNelGn1mOLhrevY0DWC1huFT0YU4sdypfC02O7oqBAgUMT6+gYb6AyNbbS4zq1OhkhcCQbSqRNUN1Hf8JanxcL41b9aTppEizsO3RZ8rBjkaKQnBehRRdDJEKOCbq2eP82ouAzRto2ER+eGeL5DHAM/vMqZHGhMvhzPVHYurxp8gQcjixpJcFVXtajAE5HO+lfmZ5o4TmG0aw4WQbaQhk8WN+csV5QCZyalThS/61ZI6wVp8/tBFx4UAyO+i/h78Xr99dA4gEvzhhJtm+OZUYKolJPJj341cmvnqI1HH4LG3AQWJdXDeQ8MEnSQcLnOziYpZadMID0Ki7TRtwnBxvxdXunaaFoSlrETHx7EldUVknef+etL7opSYSOcpXSJ2u0/vtzQWbLWc2p2CL1vUYIt1z49DjksSuggYCefSn0b+BTnIJ0InmOeWi56ELUVAnQTOZggABIDonh/7xAGsxVnGYCV+Yav93qvjLPckO3Xq5Jda94inZkFARCVBGyn8oaZLiA0hGy2bn8d5/aqTVm/lchD5h9b
- P7txSgGG
- 4OkmC5E/0lj17iQVY/VLnXvSwhelfT7lGEYqxE97EVwZ8zA2h253cDNuHhQWt3CfajvQVPKALwoPiqP4kzk/z9cIdYH0Ty4W8IUvPDM42Skfi14Nlnr1WuxTxLa5B6Q5AP9r7am5Lyf/qGQNzdlf675szJSV2md5eHJWYFFONPAR/EU+033mL51RpW7WrA/3LaDgx15YFChcZv7Dyko4P/wMK151Ah1DVofvck0ZagWEBKlGkmBEvHaDDXHKT8T3+lbS0xzDWvhK90+w0hK4CC1K4qkOMzkalQ6u2VYe2YdhdHTtrH330ToyEq4lYjA8oE/wS/B+NprPVbwyhgxHRWI/46TEb3ZMAIsXoaJ+qzKJYcpN+0SMDErNt9H3q/duz8DNVLI1Yvft2dWqtu7d3DYSRQ1ttKWa+6DMLwOluJuGYJVjvh+lWaH4WsrRKmeV1p2+cjMUnz5Qp/3AjDCgrvB6K4ccaK3Nywbmo1YrNyevVV5M2STjkjymrSg==
+X-Rspamd-Queue-Id: 6FEEE40003
+X-Rspamd-Server: rspam06
+X-Stat-Signature: wcokg1gs5sxdbo7r7zfo4w7oepi1k8hm
+X-HE-Tag: 1754273587-883901
+X-HE-Meta: U2FsdGVkX1+oG/kbG0NIocEjIVW4vzflGD852mh+wKTQ0Vpf0P74kB5s5P5rS2u+5BDuVuRsbtGh5vdlUaAnn5f4bUQtVxskaJGwpkVZHI7cY1eElCyNRl0qhcwAUk0y9TEQDBkH/PY+e1FBQZbZggXeOEGiEKEG6EV/38MzqEL7Qj49ekI0G9J00Xq+Nvxyl75amRDtDS0Bo4rN7wJ6/JIR/l50AP9Dg7f6P1T0+7KubCGZUIPYodHbMPWc1QTs+LgOrjEy7J7N/UiP/08Hvq0RIZS0box0kP7D+Md8HB3ks2CxqCoEw0Ox4kRCnH1rjy/ocbOQJlm236/4hBry+tFEUkml+jQoO/XICmjSWBYWPZ5ijYX0EjCqPtmPmxbJqMljbd0Ht6C6hp7rNpx2x9mTO6lmy5M0BCkkN1HNdyovZc8oQ5CGJS674EMaKuiwUs8klcG20xy3P1T1xHEWBp8+Suz6yM0DzAix6gOan+74+ICE9x4VCxt1zunrsVGVAPB2LwtHsAgtLzvuW8vy05r12ImK0IrF5Av6ATUTZNkATiaxTrJBeEciIwRJlB9phz9y+A5ezo4yQy1DAXEv5tC4BVIIn47G/Wwg9s03o20FCU8oG4keBEhzHyPPzZuaeuuZRFmmaSgMA2aC0thBJLWeadZR3X4VMG1Hz3pqrfS3nQ/TbdC3wlet5sbshWOIOwX9/kJF/31iVf8rzcHh6AJa7A7YV7GZiTdTGjznQa9qfOOejMKqU6tak122d9QFq3yTI0VnCvGrOeJOp8D32hfJ+Z511G9Z4MjeVZyGX/SmvwLbo8lIislijSvQWYRUWaRPNX/OZe3PPXLD8rJ7myzAS2MvC+nVd4hz0pFJJzJYYuzGTlw2BWINAIXpK/BGzX/wpYVrZT6i3cMVaK7ux21wGldqJmpQmP92CkqGPpDwZAffDFO4yrnnsspnXMEZnwH14Hq6LG3Of+ARq5t
+ lVFG8/4V
+ LC13xC4ZZ3EwfXs6qtmcR6/d80zstZL2dykJsIXrBVSjkUnhRtlyyP/o5lUJmgG3A0QjgXB1iYiam0J41NJOAnn/4xBRQ14lQFRFHCWd8tFanKTFwVnF7eogJwuOlliAS9MaeOrmRVwuS4G+fDmf1Ta3LtbPJBhUL3NfGCI+z/7u3tBqTclp5zuSI5g75hAxTDp6Dylg3h7mwE+ZffYCP7y1wvhWte1z3UoYbqMdaH83JC/uPXzoKcoe5Mul52zonaiQfqPsAAxZKMjicg7Y0bShz0AGQiojhUtdqpnPAVqDLu0+N6jL9anRpIZu+mv0t4h2BgQ1scjXOa7t2lK70KwN9hkSXtS0t6Qex5HDDyeQo+ewG6GoJNrUvgOyed3U32677MM1TjnPJuBw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -194,62 +87,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 01, 2025 at 01:57:49PM -0300, Jason Gunthorpe wrote:
-> On Fri, Aug 01, 2025 at 06:50:18PM +0200, David Hildenbrand wrote:
-> > On 01.08.25 18:40, Jason Gunthorpe wrote:
-> > > On Fri, Jul 25, 2025 at 10:31:25AM +1000, Alistair Popple wrote:
-> > > 
-> > > > The only issue would be if there were generic code paths that somehow have a
-> > > > raw pfn obtained from neither a page-table walk or struct page. My assumption
-> > > > (yet to be proven/tested) is that these paths don't exist.
-> > > 
-> > > hmm does it, it encodes the device private into a pfn and expects the
-> > > caller to do pfn to page.
 
-What callers need to do pfn to page when finding a device private pfn via
-hmm_range_fault()? GPU drivers don't, they tend just to use the pfn as an offset
-from the start of the pgmap to find whatever data structure they are using to
-track device memory allocations.
 
-The migrate_vma_*() calls do, but they could easily be changed to whatever
-index scheme we use so long as we can encode that this is a device entry in the
-MIGRATE_PFN flags.
-
-So other than adding a HMM_PFN flag to say this is really a device index I don't
-see too many issues here.
-
-> > > This isn't set in stone and could be changed..
-> > > 
-> > > But broadly, you'd want to entirely eliminate the ability to go from
-> > > pfn to device private or from device private to pfn.
-> > > 
-> > > Instead you'd want to work on some (space #, space index) tuple, maybe
-> > > encoded in a pfn_t, but absolutely and typesafely distinct. Each
-> > > driver gets its own 0 based space for device private information, the
-> > > space is effectively the pgmap.
-> > > 
-> > > And if you do this, maybe we don't need struct page (I mean the type!)
-> > > backing device memory at all.... Which would be a very worthwhile
-> > > project.
-
-Exactly! Although we still need enough of a struct page or something else to
-still be able to map them in normal anonymous VMAs. Short term the motivation
-for this project is that the current scheme of "stealing" pfns for the device
-doesn't actually work in a lot of cases.
-
-> > > Do we ever even use anything in the device private struct page? Do we
-> > > refcount it?
-> > 
-> > ref-counted and map-counted ...
+在 2025/8/3 13:28, Ismael Luceno 写道:
+> On 02/Aug/2025 10:29, Kees Cook wrote:
+>> On Sat, Aug 02, 2025 at 05:47:13AM +0200, Ismael Luceno wrote:
+>>> On Sat, Jul 19, 2025 at 17:17:09 +0800, YinFengwei wrote:
+>>>> On Thu, Jul 17, 2025 at 04:31:50PM +0800, Kees Cook wrote:
+>>>>> On Thu, 17 Jul 2025 19:01:08 +0800, fengwei_yin@linux.alibaba.com wrote:
+>>>>>> We have assembly code generated by a script. GCC successfully compiles
+>>>>>> it. However, the kernel cannot load it on an ARM64 platform with a 4K
+>>>>>> page size. In contrast, the same ELF file loads correctly on the same
+>>>>>> platform with a 64K page size.
+>>>>>>
+>>>>>> The root cause is the Linux kernel's ELF_MIN_ALIGN limitation on the
+>>>>>> program headers of ELF files. The ELF file contains 78 program headers
+>>>>>> (the script inserts many holes when generating the assembly code). On
+>>>>>> ARM64 with a 4K page size, the ELF_MIN_ALLIGN enforces a maximum of 74
+>>>>>> program headers, causing the ELF file to fail. However, with a 64K page
+>>>>>> size, the ELF_MIN_ALIGN is relaxed to over 1,184 program headers, allowing
+>>>>>> the file to run correctly.
+>>>>>>
+>>>>>> [...]
+>>>>>
+>>>>> Applied to for-next/execve, thanks!
+>>>> Cook, thanks a lot.
+>>>>
+>>>> Regards
+>>>> Yin, Fengwei
+>>>>
+>>>>>
+>>>>> [1/1] binfmt_elf: remove the 4k limitation of program header size
+>>>>>        https://git.kernel.org/kees/c/8030790477e8
+>>>>>
+>>>>> Take care,
+>>>
+>>> Hi,
+>>>
+>>> I noticed this removal and wonder whether it could be a problem on
+>>> smaller platforms.
+>>>
+>>> IIRC that code has been there since ELF support was added in one
+>>> form or another; and the idea behind it was to simplify the code
+>>> by ensuring no cross-page reads could happen, as these could cause
+>>> undefined behaviours or read abort exceptions.
+>>
+>> I didn't see a place where that would happen -- the reads aren't done on
+>> a single page. If you see something that I missed, please let me know!
 > 
-> Hm, so it would turn into another struct page split up where we get
-> ourselves a struct device_private and change all the places touching
-> its refcount and mapcount to use the new type.
-> 
-> If we could use some index scheme we could then divorce from struct
-> page and strink the struct size sooner.
+> The offset to the phdrs can point anywhere and the entries are
+> arbitrarily sized, thus it can be unaligned, so we can be potentially
+> reading at an entry right between two pages.
 
-Right, that is roughly along the lines of what I was thinking.
+The read buffer are managed in kernel. Why cross-page read can cause
+undefined behaviors or read abort?
 
-> Jason
+Does smaller platforms have special behavior in this situation? Like
+can't do cross-page read against the buffer allocated by kmalloc?
+
+
+Regards
+Yin, Fengwei
+
 
