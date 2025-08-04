@@ -2,118 +2,130 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 78214C87FCA
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 01:03:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 559E9C87FCB
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 01:12:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0AEC36B008A; Sun,  3 Aug 2025 21:03:19 -0400 (EDT)
+	id D93596B008A; Sun,  3 Aug 2025 21:12:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 087146B008C; Sun,  3 Aug 2025 21:03:19 -0400 (EDT)
+	id D440C6B008C; Sun,  3 Aug 2025 21:12:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F05C06B0092; Sun,  3 Aug 2025 21:03:18 -0400 (EDT)
+	id C33136B0092; Sun,  3 Aug 2025 21:12:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E2F256B008A
-	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 21:03:18 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 61DBA1DD717
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 01:03:18 +0000 (UTC)
-X-FDA: 83737276476.12.DBD8F4E
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E8D5140002
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 01:03:15 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	spf=pass (imf07.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id AFD746B008A
+	for <linux-mm@kvack.org>; Sun,  3 Aug 2025 21:12:00 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 626F4BA155
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 01:12:00 +0000 (UTC)
+X-FDA: 83737298400.11.54EDB3F
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 7F91B1C0003
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 01:11:58 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=b4QHmVjP;
+	spf=pass (imf21.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754269396;
+	s=arc-20220608; t=1754269918;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jZ2rXDC0q6QH3EqDAvK7RJuxPYFspfSrMaXVLFCYfag=;
-	b=EMW4AoNCwuZMmPoElnAzuLYFd0riTYdZeVgNs2Ln6IhMhC3AhKkwP+ekGSVxYbVPNnqy6v
-	bV42Dy2DTY2gZlItfcm/3AMI2wbps0QM3omH+bNzC8Y8tMErpfLPrk88DamhTjOcEJj2gm
-	A2z684Q0SbGE8eH8r0ZRVaXRF/p9z1I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754269396; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5EHC7Bo4Tna4lRMiPBPdxLTjpzf5j4XSXmXAx1SxHbs=;
+	b=gMoj4tMeRBFkWARrhI7bHumXT8jCj2S03mYK1P0w50M+ZLtYThWzrZj98LNKkKxaPnAr1M
+	veub5WSHjyxieUO/8juPWVaXLoBRm/qjAafIumj74zRbwxK5z7pS05OuuxYxyGVIXfvExg
+	ruh46e6kx/pTBDVDn0ZIWbsgdlQL46Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754269918; a=rsa-sha256;
 	cv=none;
-	b=AUDlP67YTn7kCBIsHDLzZ1C6TDpR9IzGkP2MSzW+CCPrijVIuXDU/xL0wG+2KNqya+r6CE
-	1LWx2Cn8XNPuj5UJzCQO0tnblN5yIRTDvQpIedXj0NM6jRyoKfVp63PkAQ+ZCAUsPlqon6
-	/FYAW4cyRxkiQjTDhf9mW/pJ0beqS9o=
+	b=ev5O2i6I8z1ITkCcRvecmhAZ5gDf23Jm0YlxLZ9gM1bOUzXJoC0R/Yyf2YycRDaOJXHum4
+	1zNUwck8EecoETIRgTEUn7K6HXKGbxp9ICqme4qyHnvs1CyN0pbvgpRlrZnTDqJ0Z28/Zy
+	tjrjHamNskXjmcSSLPB9OhsPIDNN0hg=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
-	dmarc=none
-X-AuditID: a67dfc5b-669ff7000002311f-5b-689006d004ea
-Date: Mon, 4 Aug 2025 10:03:07 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: linux-mm@kvack.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
-	harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
-	davem@davemloft.net, hawk@kernel.org, john.fastabend@gmail.com,
-	sdf@fomichev.me, saeedm@nvidia.com, leon@kernel.org,
-	tariqt@nvidia.com, mbloch@nvidia.com, andrew+netdev@lunn.ch,
-	edumazet@google.com, pabeni@redhat.com, akpm@linux-foundation.org,
-	david@redhat.com, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, horms@kernel.org,
-	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
-	ilias.apalodimas@linaro.org, willy@infradead.org,
-	brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
-	usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
-	almasrymina@google.com, toke@redhat.com, asml.silence@gmail.com,
-	bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
-	sfr@canb.auug.org.au
-Subject: Re: [PATCH linux-next v3] mm, page_pool: introduce a new page type
- for page pool in page type
-Message-ID: <20250804010307.GA39461@system.software.com>
-References: <20250729110210.48313-1-byungchul@sk.com>
- <20250801160805.28fa1e05@kernel.org>
+	imf21.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=b4QHmVjP;
+	spf=pass (imf21.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4b0739c6557so2483741cf.3
+        for <linux-mm@kvack.org>; Sun, 03 Aug 2025 18:11:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1754269917; x=1754874717; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=5EHC7Bo4Tna4lRMiPBPdxLTjpzf5j4XSXmXAx1SxHbs=;
+        b=b4QHmVjP0ad/iaBXyPNNH17e77HiHvKVP1IYMvxQFlKATsDyOfzmCF5lyasME9rQvq
+         vOuFyR7FysAxPK15hIe//HqK1BE3wwzpLtXMDyWzcJmVkEk1IUzATnjSFpGEJfD0utz+
+         Ytd8gwkaue/85mkbh7RcVVN/gB1V4UYCOaN1m681j86dqg9grHur7jrB9hzyzOiDUTj1
+         ijnUvt41b90QleKyg5juOwGEg+yh9BafW1KYAmDOSb48FZ/uxet0rljjaf47rAFDbA2Q
+         zAgtGdLP4OW7oiB2DLGZ3D737ZOgoWM1/cfnBVGV1zAW7Zi5e6RT+/Gu0O4H12RsOLBc
+         rB3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754269917; x=1754874717;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5EHC7Bo4Tna4lRMiPBPdxLTjpzf5j4XSXmXAx1SxHbs=;
+        b=LOXDK/snzyQW7J690w1nVXArq8kcJKPECsQYTGMzfQ1nJfPE76HPf7SZx04Y49TrUH
+         BrIlcL6Kpa92wtcqgkTsa6+ax6G6I7wm2zAm6og486UlEyZdkdqdO97q7w2IhL/GNCfv
+         9g3/R5h3WZOjOj1o2ZAX1VcoDxNH/nmDNT/EeTb5RuRLJZZgU4OkY9zYrP7dt8MWcde8
+         HFlt5yjmCnI2SZ+6vh8C9FuGYDmcEk4X6kREIsQzKi+xP4qHcd2lXjfDq/4Gu4edaa41
+         HoKwLVg+Zz0h6G9WXYyi2kX3cYo1y77MliqAA3VP48ICWJVxVwbUKBF2WkNCAjtfikIF
+         Pbrw==
+X-Forwarded-Encrypted: i=1; AJvYcCUoTahso/cVgYha35lqnW29vBUg7tdyC6MtacWugqRh36ouyrfT1QaOY4Fw766UjOcuqShqRbEQSQ==@kvack.org
+X-Gm-Message-State: AOJu0YzEUasqo2WAzRvs5b/4XFNKLN/aipQYi090NISS2Y9Dl8SskxCA
+	D4A76EXt7QHKPW+/ZRkvR6SE8NClwx2y1LaUd677oUByaA8WZWOP881ZgPDRVs8UstnWuMAmxkR
+	BaJzybMuNyxMRxXWxOu1bkMjrdScoLtBGYOw0FKhhGA==
+X-Gm-Gg: ASbGncu8GZMRGlXJKdNgGGhPdaQoYEdYHp/a7UapknRBIoEytTd9slvLOx07nklnBui
+	X08Fqi+4Pqzkq8GtTopia/c86BONn7NHq/h0HP/xFxjIvGMbF01o/9HlEBw0QlvjENGasB73Upj
+	uHtGdkPZ/2jlnYhd+8rgF2W/cmvYh3TyOTKFPX2K25gY25CaUJ1yRu8R7eBHFwFeo8dEmiV3hwD
+	5cx0uMi10wFV74=
+X-Google-Smtp-Source: AGHT+IElK+avqeyYUn54//o2iNNGJM5V66RJUxPCF/JnBBNYlvcJkU9/zn67Ob/Mjz52DPZ282PLlisDVXGG6S/YoQU=
+X-Received: by 2002:ac8:5a12:0:b0:4ab:7d96:bbca with SMTP id
+ d75a77b69052e-4af1098b133mr128405741cf.24.1754269917325; Sun, 03 Aug 2025
+ 18:11:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250801160805.28fa1e05@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUhTYRTHe+5zd+91tLgty6dFX1YQGVmG0Qns5VM9QVFUUJhRo93aUKdt
-	ZtoLzTLMkUt6gVyrJpHZMlYzXyZq6cyZQdlKWS9qaa9kVqbiWmXOiPr243/O+Z3z4QhYWS1T
-	CXpDumQ0aJLVnJyVfxpfNPcRV6Cb35KrBLurlINrw5lw5WWVDOzOCgQDwec8jNQ2IfjW6OPg
-	o7cfwaWiIQz2hzksDLq+Y3jT1M3DNfca6Cp+y0JNbiWG7hPNHOTnhDDUBvt4OFxVwoC9zMxD
-	a4VVBqe/X8ZQaX7Jw+NqOwedpSMyeNuQz8I921UWvpxpxNBlXQ5NjikwdL8XQaOrkoGh4+c5
-	aCusZqC8to2HU34HBz05XQj83m4Wzvw4xsG5bCuC0PCosq9gQAbn7nbyy+fQ7ECAo97ez5je
-	uvqUoYG6FoZ6bB08dbj30LKSaGoJ+DF1O/M46u4/ydMX7TUcbT4bYqnn1WLqqfrG0PwjfRz9
-	+uYZuy4yQR6vlZL1GZJx3tLtcp2vtEOW9iAqM6/+IjYj/0QLEgQixpHG+rUWFDGGvoInXJhZ
-	cSapaz+Kw8yJs0ggEBzjyNE8p6yQtSC5gMVynoR8jrGBSaKOlF3oYcKsEIGUvzOjMCvFRBK8
-	UcH+ySeSe4WvxxiL0STw6wMTvgGL08iVX0IYI8RY0u48EO6YLM4gdyp8THgVEV8IpK6wnP1z
-	51RSXxJgC5Bo+89q+89q+2d1IOxESr0hI0WjT46L0WUZ9JkxO1JT3Gj0o4oP/thShfpbNzQg
-	UUDq8YrN2hM6pUyTYcpKaUBEwOpIReKh0Uih1WTtk4yp24x7kiVTA5omsOooxYKhvVqluEuT
-	LiVJUppk/FtlhAiVGVnbjg8vWztuhXZD0Wrv5JizaTUDnqRFrSN4o6H5du9tVdKyBJXS6lq9
-	JdbjjXev6kqgriWqS+9Tdy9ecLj+NARvPhpemN2Ze9ISNyFhJxm8Hgq93/o8z2LeNGXVz/1R
-	pzIzZifFutJ93mJT2rgJ67XTW7qtwqLElXGeziNOp9/Wq2ZNOk1sNDaaNL8BbhHtyE0DAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA03Sa0hTYRgHcN7znvOe4+rA8ZaHgoglFFKaYfREUdIXT0GXD0EXghp5cMO5
-	ZEvTKJplmJLObpBzq0WktQRj6pymkpc27WLmrZW30kykMCuTdHbZjKhvP/7P838+PRwOsTKL
-	OY3umKzXqbRKoqAVOzeeXd1BCtVrun1xYCkvI3DvewaUvnExYLE7EUzN9LHwq96N4GuLh8CH
-	5i8Ibt2cxmB5nk3Dt/JZDKPuYRbuOXbAUMl7GupyqjEMm1oJ5Gf7MNTPTLBwxnWHAkuFkYVm
-	axsDHc4CBq7M3sZQbXzDQlethcBg2S8G3jfl09BmvkvD5NUWDEMF8eC2LYLpJx8RtJRXUzB9
-	wUqgp6iWgqr6HhYud9oIjGQPIehsHqbh6tx5AsVZBQh83/0nJwqnGCh+NMjGr5KyvF4iNX/8
-	hKXKu68oydvwmJJqzAOsZHOkSRV3oqQ8byeWHPZcIjm+XGKl/t46IrVe89FSzdsNUo3rKyXl
-	n50g0ufR1/Tu8AOKTYmyVpMu62M2H1aoPWUDTGp7REZu4w1sRJ3BeSiIE4U40VPYTQKmhUix
-	ofccDpgIK0Svd2beYf48u6KIzkMKDgtVrOjz2OYLoYJarLg+QgXMCyBWjRlRwCHCQXHmvpP+
-	kweLbUXv5o2FKNH7c9y/z/m9RCz9yQUYJMSKvfaTgY1wYbn40OmhChFv/q9s/q9s/le2IWxH
-	YRpdeopKo10XbUhWZ+o0GdFHjqY4kP9pSk7NXXShqa6EJiRwSLmQ35doUocwqnRDZkoTEjms
-	DOMPnvZHfKIq84SsP3pIn6aVDU1oCUcrI/jte+XDIUKS6picLMupsv7vlOKCFhsRo7u5jVrw
-	I2elyamdjY/sn+zuS362ZtfYLj6U7l97kr0V+6K9vuQTNllydPsaeLTlaVxp6vj6udaW/S9c
-	mnFeCN2TZuesPY1ddZH9C5YOTBSfIzh4f+6y0upVSR3Ht/a5SxJWPnI/03m6Te7K80MPXuaq
-	9pKyM9aYhNiUSVudkjaoVbFRWG9Q/QZCp756MAMAAA==
-X-CFilter-Loop: Reflected
+References: <20250723144649.1696299-1-pasha.tatashin@soleen.com>
+ <20250723144649.1696299-11-pasha.tatashin@soleen.com> <20250729172812.GP36037@nvidia.com>
+In-Reply-To: <20250729172812.GP36037@nvidia.com>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Sun, 3 Aug 2025 21:11:20 -0400
+X-Gm-Features: Ac12FXyfTkQo6Oo5aMdGv4BzhEny3uN9Ow76q668n06TlX48YEn8zjMHGbMDq6Q
+Message-ID: <CA+CK2bCrfVef_sFWCQpdwe9N_go8F_pU4O-w+XBJZ6yEuXRj9g@mail.gmail.com>
+Subject: Re: [PATCH v2 10/32] liveupdate: luo_core: Live Update Orchestrator
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
+	changyuanl@google.com, rppt@kernel.org, dmatlack@google.com, 
+	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org, 
+	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, ojeda@kernel.org, 
+	aliceryhl@google.com, masahiroy@kernel.org, akpm@linux-foundation.org, 
+	tj@kernel.org, yoann.congal@smile.fr, mmaurer@google.com, 
+	roman.gushchin@linux.dev, chenridong@huawei.com, axboe@kernel.dk, 
+	mark.rutland@arm.com, jannh@google.com, vincent.guittot@linaro.org, 
+	hannes@cmpxchg.org, dan.j.williams@intel.com, david@redhat.com, 
+	joel.granados@kernel.org, rostedt@goodmis.org, anna.schumaker@oracle.com, 
+	song@kernel.org, zhangguopeng@kylinos.cn, linux@weissschuh.net, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
+	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
+	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
+	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
+	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	saeedm@nvidia.com, ajayachandra@nvidia.com, parav@nvidia.com, 
+	leonro@nvidia.com, witu@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E8D5140002
-X-Stat-Signature: uay9hw13qy1jxayj98o8opaqt37x9kiw
+X-Rspamd-Queue-Id: 7F91B1C0003
+X-Stat-Signature: srun4zddn5gpiy9ks5nma8dppwg4jaub
 X-Rspam-User: 
-X-HE-Tag: 1754269395-114955
-X-HE-Meta: U2FsdGVkX19owx0GQg+1u/tEj5FFpwPwgGtN4ISNAEBYKjEqvv9J7CbSBlBa1mA1nlKa8LCNpvgrC2H/HGRdsLPsnDUyOg7hyjdqKZHts8BZhDOO2scQA5U/mTX8h4r8ak4oHhw/t1MSIHiyEOVv160b1FLfM71FFRgt97IJlwI8aG+x9iTvO8QYTOFG41t425TAWphukuVPDd0QWPRxSV9I6K+YXTylMvZ+dG/R8DYtRjVBd57y3MH4mfxCbtNljFEk5Pl/0pL/lUb4U0yoH2IaD6vKV7DE/NAiX8RjRYnk3xkAbcanQ/NgKMdJv4gnDm6nP5mzwMdCMtv/3z7g9F1iUcnoBr8khMrGJdO1z4rmfBTdea1bD4QRWr3jO7LwAwLwgZQKZQ8eY+neNa27LMaCvayGE+dhGfDS+0KCdHGa+XkbQiFP2QgDST4UDS4JWHlfsEvT0MB4eLGI10E4NcvG1qsSci+mySlrxvUfri2sJLavVAPZJCHAtcB2oTpFmIt4bToxQtsOdTUm859TT9o5OOWieKRP7wtO3sJIH8n7UQwFbIQsVNokO4SuvbULE3Z6QY8lEMOydjcUNW2cVtkf1KARqDRtE+gxLu25raAvdgwd/LEUYn0LbGMLWGrJ1o2bGeI4t+wn5fkH9c5DuBdNHj4QHt8Tj3XHsvyHpoC7wFppg3P9elFbGiTSsatNQWBPHWNSi25LfQ5xeOi5oLvAdjIgaFpIRzK7x2VWVZjopjK0/y23yeSERyXMLjvVHXFwa1a4DYEqh28RiwS7q/tFslCH7Z4wQ8+irS5Yd5i7ghnkyqfuVN9021cp2vfJ5QIp4HkQKVnKfH/hunT4fswE++IX4iMTo7j8KVsrC06Ukv4yTeSHQfYi9u3tM9S8WS/sOfXeTtfVuZ6oENSTyRpKHpQA8gMGbnkazeBAu3rCPV8V/rMbFrjqaC5D35vzkfegZFEdXW1mckunxMt
- OAkTmD+8
- OtrNRXlYkTD3oAuBgPaINKHaKB8ahZenAakPqAGXOf4gHGpzKX7jS5wXl9GIw6gMLCWWrWcqsehY2d7A=
+X-HE-Tag: 1754269918-789798
+X-HE-Meta: U2FsdGVkX1/D/Ern72U4gKvu3+IJ0MB14oCD/0ScQLyWhZHDgKUxRNLEzNUKzZU2LscxNoD6GVGe/FbvlLk0i7dSSOqu1yeupVh8qMn74fviQdnKnpEDi6a81WFkSNHm7682B//neZZ2Z6DL+amjkLdsSOYDa7YuDJ6kBfS+crJPHiliNVtGjCQr1HLJat8ZaHqUSoWHAX15RqWKZFQgLZ+0VLC3FdqKp7fHl2/6mjZDkNy1zfr5Lc4DNKe+YIDlSvgU4pX/y3MvY/4/9qEJSz4GOzn73bNAY7fJAw6mIrIoo2STMj0sqZuHB2xndLzeyg4KNS3bN4n7Y5gaYmRmK1K3m56/GuduqoyZVsaXi5zzR+dpnoQpEDbkrPkqOlX65xiZB3dCATjHWErD5oqsKU5DBpgJvA1HjA2kSCpomijobemiOWi0956TATIUbtJbaCGt1j/bC6xH0c+P+Gc/Ie+gKwI9JlpWeSfyLKHabl8H2ixjL3EZHj9c39/dHBPhaHoiDfrsXWZmsjYNehN1W0X55gsefLeCTY4cGbGetcoBOa3VTGsNjH2ZcPjVR0yG+1tOA3rloGXJ06xF6U7NHZRoqtGhqNO9tYneVriy/32ZD1GG2MSsKE5XBi4jeJikGzWviK2rkRAjhVz6ChUn+o1t6AJEjsx6VNXVZPgl06XEWDoFL2+avpq/Lzet3wjCtJINaTlak0I/L8mWZfoxXpRqWfa2bGdS6rcY/zfH+anOaVto0wXm9fau3P/1vqWQbPtjGWXPLBK6l9gg7jBAm6dh0/zFwHvl4BYq88Cv7kkgxFxPziC6E0wVyhcrOY+5IRHQNNyFhEwxARn4Rp3iVF7ESNd/wVMbkuNjiJHRObluzniM4veOpiy2dVMyJWmh74ssMrOYwNbQ9wheRUtn8rinibDSZGYkcoghKgm6O8fFWV/kr9ReBYDl/L2cn82r4qDUVDc9jFXb36wxkyv
+ mLHbxyUv
+ qqN6qGmOmaiww38miFXonH+ki1UmU/zoWmu0rnViQnRrP0r51LeP6jDh5P5M8YLnSmXhQcvLB9atIkfo1PlCXi1Di+3a7YVhiw1y9yDlgbwQ5wIOqiJspa8m7BJ3OLKveaHU41VA1Gx/dhMNZ9niwuRcZgB/sz+/3aTJX8fehWC5E+V4lhVHRUB5NNjceVuHT74POnPsXWp8zvb9IcsV+MUb06anUIX36jJ6ClvhDXpm12vl+994hmSaBersR9a8sRgWBZN8euSLyv+Dg036HiuSPdSSrBb0r5mad5UcUXGQSjX+JuNnenM7A/g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,88 +134,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 01, 2025 at 04:08:05PM -0700, Jakub Kicinski wrote:
-> On Tue, 29 Jul 2025 20:02:10 +0900 Byungchul Park wrote:
-> > [PATCH linux-next v3] mm, page_pool: introduce a new page type for page pool in page type
-> 
-> linux-next does not accept patches. This has to go either via networking or MM.
+> > +enum liveupdate_event {
+> > +     LIVEUPDATE_PREPARE,
+> > +     LIVEUPDATE_FREEZE,
+> > +     LIVEUPDATE_FINISH,
+> > +     LIVEUPDATE_CANCEL,
+> > +};
+>
+> I saw a later patch moves these hunks, that is poor patch planning.
 
-Yeah.  That's what I found.  Thanks for the confirmation.
+Yes, you're right. I have since moved this to uapi/linux/liveupdate.h
+in the introductory patch to improve the structure of the patch
+series.
 
-> > -     if (unlikely(page_has_type(page)))
-> > +     if (unlikely(page_has_type(page))) {
-> 
-> Maybe add :
-> 
->                 /* networking expects to clear its page type before releasing */
+> Ideally an ioctl subsystem should start out with the first patch
+> introducing the basic cdev, file open, ioctl dispatch, ioctl uapi
+> header and related simple infrastructure.
 
-I will.
+I have modified the patch series as follows: The rudimentary parts of
+the cdev, including the uapi/liveupdate.h header, are now in this
+introductory patch. The rest of the ioctl interface is added in the
+old patch that introduced luo_ioctl.c.
 
-> > +             WARN_ON_ONCE(PageNetpp(page));
-> >               /* Reset the page_type (which overlays _mapcount) */
-> >               page->page_type = UINT_MAX;
-> > +     }
-> 
-> >  static inline bool netmem_is_pp(netmem_ref netmem)
-> >  {
-> > -     return (netmem_get_pp_magic(netmem) & PP_MAGIC_MASK) == PP_SIGNATURE;
-> > +     /* Use ->pp for net_iov to identify if it's pp,
-> 
-> Please try to use precise language, this code is confusing as is.
-> net_iov may _belong_ to a page pool.
-> 
->         * which requires that non-pp net_iov should have ->pp NULL'd.
+> Then you'd go basically ioctl by ioctl adding the new ioctls and
+> explaining what they do in the patch commit messages.
+>
+> > +/**
+> > + * liveupdate_state_updated - Check if the system is in the live update
+> > + * 'updated' state.
+> > + *
+> > + * This function checks if the live update orchestrator is in the
+> > + * ``LIVEUPDATE_STATE_UPDATED`` state. This state indicates that the system has
+> > + * successfully rebooted into a new kernel as part of a live update, and the
+> > + * preserved devices are expected to be in the process of being reclaimed.
+> > + *
+> > + * This is typically used by subsystems during early boot of the new kernel
+> > + * to determine if they need to attempt to restore state from a previous
+> > + * live update.
+> > + *
+> > + * @return true if the system is in the ``LIVEUPDATE_STATE_UPDATED`` state,
+> > + * false otherwise.
+> > + */
+> > +bool liveupdate_state_updated(void)
+> > +{
+> > +     return is_current_luo_state(LIVEUPDATE_STATE_UPDATED);
+> > +}
+> > +EXPORT_SYMBOL_GPL(liveupdate_state_updated);
+>
+> Unless there are existing in tree users there should not be exports.
 
-Thank you.  I will.
+Thank you, I have removed the exports from this patch and all others
+in the series.
 
-> I don't think this adds any information.
-> 
-> > +      */
-> > +     if (netmem_is_net_iov(netmem))
-> > +             return !!__netmem_clear_lsb(netmem)->pp;
-> > +
-> > +     /* For system memory, page type bit in struct page can be used
-> 
-> "page type bit" -> "page type", it's not a bit.
-> 
-> > +      * to identify if it's pp.
-> 
-> ... to identify pages which belong to a page pool.
+> I'm also not really sure why there is global state, I would expect the
+> fd and session objects to record what kind of things they are, not
+> having weird globals.
 
-I will.
+Having a global state is necessary for performance optimizations. This
+is similar to why we export the state to userspace via sysfs: it
+allows other subsystems to behave differently during a
+performance-optimized live update versus a normal boot.
 
-> > +      */
-> > +     return PageNetpp(__netmem_to_page(netmem));
-> >  }
-> >
-> >  static inline void netmem_set_pp(netmem_ref netmem, struct page_pool *pool)
-> > diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-> > index 05e2e22a8f7c..37eeab76c41c 100644
-> > --- a/net/core/page_pool.c
-> > +++ b/net/core/page_pool.c
-> > @@ -654,7 +654,6 @@ s32 page_pool_inflight(const struct page_pool *pool, bool strict)
-> >  void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
-> >  {
-> >       netmem_set_pp(netmem, pool);
-> > -     netmem_or_pp_magic(netmem, PP_SIGNATURE);
-> >
-> >       /* Ensuring all pages have been split into one fragment initially:
-> >        * page_pool_set_pp_info() is only called once for every page when it
-> > @@ -665,12 +664,19 @@ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
-> >       page_pool_fragment_netmem(netmem, 1);
-> >       if (pool->has_init_callback)
-> >               pool->slow.init_callback(netmem, pool->slow.init_arg);
-> > +
-> > +     /* If it's page-backed */
-> 
-> Please don't add obvious comments.
+For example, in our code base we have a driver that doesn't
+participate in the live update itself (it has no state to preserve).
+However, during boot, it checks this global state. If it's a live
+update boot, the driver skips certain steps, like loading firmware, to
+accelerate the overall boot time.
 
-I added the comment since it's _not_ obvious.  !net_iov means it's not
-net_iov, not it's page-backed.  However, since you, as the maintainer,
-are okay, I will remove it.  Thanks.
+In other words, even before userspace starts, this global awareness
+enables optimizations that aren't necessary during a cold boot or a
+regular kexec.
 
-	Byungchul
+> Like liveupdate_register_subsystem() stuff, it already has a lock,
+> &luo_subsystem_list_mutex, if you want to block mutation of the list
+> then, IMHO, it makes more sense to stick a specific variable
+> 'luo_subsystems_list_immutable' under that lock and make it very
+> obvious.
+>
+> Stuff like luo_files_startup() feels clunky to me:
+>
+> +       ret = liveupdate_register_subsystem(&luo_file_subsys);
+> +       if (ret) {
+> +               pr_warn("Failed to register luo_file subsystem [%d]\n", ret);
+> +               return ret;
+> +       }
+> +
+> +       if (liveupdate_state_updated()) {
+>
+> Thats going to be a standard pattern - I would expect that
+> liveupdate_register_subsystem() would do the check for updated and
+> then arrange to call back something like
+> liveupdate_subsystem.ops.post_update()
+>
+> And then post_update() would get the info that is currently under
+> liveupdate_get_subsystem_data() as arguments instead of having to make
+> more functions calls.
+>
+> Maybe even the fdt_node_check_compatible() can be hoisted.
+>
+> That would remove a bunch more liveupdate_state_updated() calls.
 
-> > +     if (!netmem_is_net_iov(netmem))
-> > +             __SetPageNetpp(__netmem_to_page(netmem));
+That's a good suggestion for a potential refactor. For now, the
+state-check call is inexpensive and is not in a performance-critical
+path. We can certainly implement this optimization later if it becomes
+necessary.
+
+Thank you,
+Pasha
 
