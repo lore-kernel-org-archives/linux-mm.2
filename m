@@ -2,116 +2,142 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 77976C87FDA
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 09:15:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 11794C87FDA
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 09:15:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D39E6B0095; Mon,  4 Aug 2025 05:15:23 -0400 (EDT)
+	id 99D946B0098; Mon,  4 Aug 2025 05:15:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1ABD16B0096; Mon,  4 Aug 2025 05:15:23 -0400 (EDT)
+	id 975116B0099; Mon,  4 Aug 2025 05:15:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E8F16B0098; Mon,  4 Aug 2025 05:15:23 -0400 (EDT)
+	id 88B316B009A; Mon,  4 Aug 2025 05:15:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 027226B0095
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 05:15:23 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 82F71115E84
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 09:15:22 +0000 (UTC)
-X-FDA: 83738516484.04.A445531
-Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A788DC000D
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 09:15:20 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ASfGq2r0;
-	spf=pass (imf10.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.221.171 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 789AB6B0098
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 05:15:49 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2633C1611C1
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 09:15:49 +0000 (UTC)
+X-FDA: 83738517618.08.A162FC0
+Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 95BAF40005
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 09:15:46 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b="Qo9K6/RH";
+	dmarc=pass (policy=none) header.from=columbia.edu;
+	spf=pass (imf17.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754298946; a=rsa-sha256;
+	cv=none;
+	b=VmtSms4hKmf3iulJUALVD89nbK30jN2goHM10G9Yj3VPBVSVf77nrZ9nabsP5AN28Fwwac
+	7SrNBHyXXHRR8uGiGfFQFmjNKiqiOwp4LFZnrZ4dcTLAv4hGHCluPXGH2bM2wiamK4Big9
+	vlYc8w/20X4iPxA8RdYvKFJJfdAJqyg=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b="Qo9K6/RH";
+	dmarc=pass (policy=none) header.from=columbia.edu;
+	spf=pass (imf17.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754298920;
+	s=arc-20220608; t=1754298946;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qFCaoHMm1VnEL10gVvLpdTFhZneV4lwru6bNk9ymWOs=;
-	b=pODrG3ovJrabVZj7fCFFovWz2DbUUDeEz6cs4BMCO5rnhzrXNqg2A2GgJ+O1dHswnCXwgm
-	YeoEpGD31HvAUJkfq6Y0hp7NvSllTl5OZzv5kKlT+aGUK36icS5mhRyH64wJiEk+EKUjnl
-	rffK8WRxz7dNqKlN16vd4OhnSP2qs2s=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ASfGq2r0;
-	spf=pass (imf10.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.221.171 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754298920; a=rsa-sha256;
-	cv=none;
-	b=8gUmrvDsNzl1OUapv9S8+vEE1IAOitHBEH7jAfvHC0GfpdtVuIN5gp/aXW1jPdubI3UhQd
-	NkZ9gFRs0mqpmjy6AYWV1+GPz9K/D6VKskq8kGTjXjXgXcJkAOgSOhskFcJYWDl1nxd5PV
-	f9MxqcJgO2w49t2MPzq4B8Cc0wKopp4=
-Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-5397c00ad9eso134183e0c.0
-        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 02:15:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754298920; x=1754903720; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qFCaoHMm1VnEL10gVvLpdTFhZneV4lwru6bNk9ymWOs=;
-        b=ASfGq2r06JOig3Oc2lXQH1FWjRRmJjlR8+co/x4vfKbB3vzc7sxMWIJ+DBNUqauM/W
-         wSUatZqYlei/qd2Z2A2Des/jh96GNGqOSy/Fv0qJFqnZcr/bKRoTIR7oGoLR/3uEdIea
-         YHuRNHWF679zcMGBmav1UMl+ty9Z+uizLXC5X5AuKjJg2J0E2kllVcKTGCLQCWSRn27/
-         qCnAOvkOGe7qMlJFONGDzmo4/lBJ8Hv11vmyvTcpkVb3NHQAqS9JQqlI19wQbS56Er8Q
-         wxm69BR4TMjX2Q6iEtOPesngvXWk6MPT/kRFV9B6E3sEdHMObSD2Xa7xHeW5cCICYNDL
-         mJIg==
+	bh=JjbB3Jm5B9RQihNCMKSK+B8I5hhLMbxQKcU07xlJc6o=;
+	b=xiN3+wM6LomwpU3NT9uOQWJF0q+DBwuM3/05IfSKzv6DuebnAln9X7hmEwmrAPNMhKlNaF
+	cl0XDDrCbhAmMys3MRlDmIyUnxje+hKmU1am2pbCHLTMOii4d2hivhHursJtXetCuNvZ3O
+	UB5hJ6uVpTqFfk3O//lB8pMxre2LKJc=
+Received: from pps.filterd (m0167071.ppops.net [127.0.0.1])
+	by mx0a-00364e01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5745Sdhn022488
+	for <linux-mm@kvack.org>; Mon, 4 Aug 2025 05:15:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pps01; bh=JjbB
+	3Jm5B9RQihNCMKSK+B8I5hhLMbxQKcU07xlJc6o=; b=Qo9K6/RHGpbdoHXEsTCC
+	4lgHR38vJx6A/fYq+9r70zqU8KQ5BWR4s8qkP5owJN1Rzx2AGT81eNV7YmuXKB2Z
+	NFkCuuDF/AuBdAnf6/d2LyWRtzjsvZVVUp1ukSItfRwYe2wWSqzJDUsUL3toXqj+
+	xaS2jVayqJ2lMP1lZKJ+8bwaLcbKjwOXoYkQR1Wax3Zd7RTcAxMZrk1D0Ule9e8B
+	6qf072uYGmDZ9kWtdbJ7vB7d0WV4iFeSuDhEKcm8wSdtCdSfUfwDaSxIDEkF9Mlp
+	YNnsEgk5XoFKttCFX8i9vob5+gMVKBB4z24F3leGupjciyntk6mbnWqpJBsFDPA3
+	LQ==
+Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com [209.85.128.199])
+	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 489fmnh6kf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Mon, 04 Aug 2025 05:15:45 -0400 (EDT)
+Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-71838151744so54185247b3.3
+        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 02:15:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754298920; x=1754903720;
+        d=1e100.net; s=20230601; t=1754298944; x=1754903744;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qFCaoHMm1VnEL10gVvLpdTFhZneV4lwru6bNk9ymWOs=;
-        b=FQT7ZZ+2kfitAC5czrakJhSvUDnzRTE6TszxX+9koF+0Mry2ljaQemDkvhzfOy4PYT
-         UEIy5TuN8sQaO6SH3OQU2fPi+Ki64egE3c1bvp88MHdjDnaDUO6T2CX9yLuBcsCYA0RA
-         5JGWbvMOTRyhVa+aIgBsx8gZ+xD0/MUAeVVA66pHvH2RqaAhnFN2+gqbn9uETClWeoGQ
-         c9pSrZhwa5VakidYx9ImwBf384NRJ2EMcRdV0mQCjMOXhpehVT4JCjvqEFPVczao5SOR
-         hTNSERISZ0XuMoMSNTDovK2SaGiXB1dXbEOHsnEiHmX4CiXFUYEObxrF4323Zqp1Hsz7
-         Ukdw==
-X-Forwarded-Encrypted: i=1; AJvYcCWQAAcWXvQDnT0DFYLRhVf9Mivq9YxSlVE1V8OVjKdo5EAgNIWbjSISEslKc3mCWTn3H5K7zo+XNw==@kvack.org
-X-Gm-Message-State: AOJu0YzIxEMvMGr9KSLVwb5IzVhLXuGsAy6QxI8/NOO3vDEo5dy7T7KB
-	MGNtWYxpUrenzxatSsuLqVwx9yX7t6pQGLJUz3yIRwlboQ1EhdJKbF2578I1/OioEOUOP0olLuD
-	WSLdqb9WA/K3dB1+G4YpiI8x6XNsfi70=
-X-Gm-Gg: ASbGncvGre6Bwd1QWDm1pNlEs2rbfHxhf9SdeszIr2lt9lHaRzgyOsbQ5p3pfTS1Co/
-	DFwLwuo1/xA8bEx/r2DrYOQzGYS1rd9xTH4iz8cCMLBgtGntgmiofNtR4g0nUIjrO2dMZO8/vwf
-	R2OhO8X8psT5Ar4RYXI/oqk6XiW9n149mW3lPKS9kkwdSptPdnzhSl5isgQJAYTZurbIijqHUyS
-	DpfYzQ=
-X-Google-Smtp-Source: AGHT+IHydI6tDwWrpJjm9ELbGuWexGkYUn4GA18Pb/Ya3WOz9/wbanIAiL1QtWy60boNRaFhWPj5D1x1XXru/XojMOc=
-X-Received: by 2002:a05:6102:2908:b0:4f1:7946:ed52 with SMTP id
- ada2fe7eead31-4fdc25487f8mr2740340137.12.1754298919609; Mon, 04 Aug 2025
- 02:15:19 -0700 (PDT)
+        bh=JjbB3Jm5B9RQihNCMKSK+B8I5hhLMbxQKcU07xlJc6o=;
+        b=wQ/bltld+mHotpZRb5S7RS5a5A640RItg/fX68IuL/YS+Dteh5PnQwBJ0oB+5Iv0eR
+         RIWAuFBPHLlNUy9d8DqBXlJTAmFN+ynYwJ8ilj6RJZSEX8UBmbi8+nZTGGLAj9OqXO6H
+         zsf5IW8QIfrknUuFqv1x2V+HawlMHEF/987zwg8a7MDu1ZYpDX18c6xNTGp3RcLTjkTU
+         EnAybAt4TDXnXwp/4PU576Sm32eaTGaIpk42TUHeYZr8lXRP85FVytAM3niXytHK28d9
+         MKvSu3g35OPR02GsonIyftADe/t+OHSFDS9WK3DPQWqClJd1hb6xkjjj0mgTH6phrmwu
+         8Wqg==
+X-Forwarded-Encrypted: i=1; AJvYcCXBf3rxR3/+ufQsE2akDpJnPBXsDjKt/b/N3hOzwQSs76ZkTLWIJ5Ydq9qU10/4AiiACgHA0EVeQQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz83TpuH1OZNIf6KxWKrGW7dqD00TWaIEmemzvfcV5a126IZv6A
+	Y0g58HbULh1o4/R/2R4Apf71/yClfDifaDp1t4/lGCN6nGvveLUiapuKb+PWwmeddk31CEDvZV/
+	Jkt0HRKERaBS1WC96AKP0sT62/D+U77QnDp7B6NHutPG8p48b7HG9QZKD2q3Ci1xN3fNRT++Acs
+	yg72YzmLxHGBI8U4FuO7/5NDM=
+X-Gm-Gg: ASbGncuIAFMMs06jl8FYhDand/ExSUVyu5C4lTbm1D3OZA3WStQ34yrCOrrT+aMkWen
+	BCcho0PTU/YZmExZOBfeZz1reKLsSC2tSWkDCyxSn/2PG9Uns2PdvKRIy6bjZ4GXZx13Hk+ASwt
+	iB0rtc6IMYQ9Nl6bKV4x9e
+X-Received: by 2002:a05:690c:4609:b0:719:53fd:79aa with SMTP id 00721157ae682-71b7f84a212mr77213137b3.22.1754298943861;
+        Mon, 04 Aug 2025 02:15:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF+UZiZI74WScdHweh6AGanV37GHLhD9Nzf23TmEE2bGp8nqgrqm6GaV8J3VbW+KzNd4CNom3Wtj+ghqdeWtRM=
+X-Received: by 2002:a05:690c:4609:b0:719:53fd:79aa with SMTP id
+ 00721157ae682-71b7f84a212mr77212667b3.22.1754298943210; Mon, 04 Aug 2025
+ 02:15:43 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250607220150.2980-1-21cnbao@gmail.com> <aJAFrYfyzGpbm+0m@ly-workstation>
- <1d1d97f9-2a67-4920-850e-accf4c82440e@redhat.com> <4fa8f492-c7ef-451c-8dc7-38b031c8a092@bytedance.com>
- <d9d0890e-2837-49dc-9ca8-1d6c28e95a21@redhat.com> <aJB0Kdc6cx1lGkdb@ly-workstation>
-In-Reply-To: <aJB0Kdc6cx1lGkdb@ly-workstation>
-From: Barry Song <21cnbao@gmail.com>
-Date: Mon, 4 Aug 2025 21:15:07 +1200
-X-Gm-Features: Ac12FXydsBD0TuZFpNyEUYcRbrcCg6kekPWWmL9gnPJlShdvwC4LshInjY3gdRQ
-Message-ID: <CAGsJ_4yw4Qn7OWmUJeJZYuOHLjJ7L8kov3Th3vFPa3h4y0ur_A@mail.gmail.com>
-Subject: Re: [PATCH v4] mm: use per_vma lock for MADV_DONTNEED
-To: "Lai, Yi" <yi1.lai@linux.intel.com>
-Cc: David Hildenbrand <david@redhat.com>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Barry Song <v-songbaohua@oppo.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Lokesh Gidra <lokeshgidra@google.com>, 
-	Tangquan Zheng <zhengtangquan@oppo.com>, yi1.lai@intel.com
+References: <20250528-tlb-trace-fix-v1-0-2e94c58f450d@columbia.edu> <CAKha_srZTXfQkizBzvrdpWs6Txw2PSgRAqT6QC8gom=PaitYNg@mail.gmail.com>
+In-Reply-To: <CAKha_srZTXfQkizBzvrdpWs6Txw2PSgRAqT6QC8gom=PaitYNg@mail.gmail.com>
+From: Tal Zussman <tz2294@columbia.edu>
+Date: Mon, 4 Aug 2025 12:15:32 +0300
+X-Gm-Features: Ac12FXwhQmrmOOkID7nOJYCapFm0MAKFQQ0J4rVnNl_CTjL5U175u7m4uf07P64
+Message-ID: <CAKha_soQ7VUvHk7cz0SmX8_GYdWS3nrPm-e2NyU=AH1qXiKqgQ@mail.gmail.com>
+Subject: Re: [PATCH 0/2] x86, mm: minor tlb_flush tracepoint adjustments
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        linux-mm@kvack.org, Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Ingo Molnar <mingo@kernel.org>, Rik van Riel <riel@surriel.com>,
+        David Hildenbrand <david@redhat.com>, x86@kernel.org,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        "Liam R. Howlett" <liam.howlett@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 4pg4kuy98yf567yg9oihmc48g8pfqfhe
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A788DC000D
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA0MDA0OSBTYWx0ZWRfX99X35Hs65guI
+ n+8s1Eevieq/Ks2KnwgcL3h95PCB2He4AwGQfw+FqlSKXxUP1CI8/9t+8OXRvboJmVYeeo+F+9O
+ H7BVqaSG39QDA3X5a8ambFet7BfM5UXsf4MvTja8n2yXTokNy8NSAHkjjCsLn98Yl8QPw0NiSi0
+ fv7eaL34AYW8OVG7IqAgor+nckEWNMoLV1iN7CRrKvvgrpd6DLXEwk0p4nsg4LAyJ7FOu6FM2J9
+ V8r8gN/M5VGVdhKoFxvhTGlMPUN+Om7Zfp3g/mg/um9OILt89pr6YwBHE0srCekk7YZ3a/QKfFc
+ 0UeF3WbDVhfklZ5RBFBY1LW2wECaH2RGGS8b+uUBJ3FDfLSnRF28iX7VyiA7QwnBj5IjkByanOW
+ YabgjGYh
+X-Proofpoint-ORIG-GUID: oU0sH0Oa8Duq2jGoW3-DRY9jD1t0RrOD
+X-Proofpoint-GUID: oU0sH0Oa8Duq2jGoW3-DRY9jD1t0RrOD
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-04_04,2025-08-04_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 impostorscore=0 adultscore=0 mlxscore=0 bulkscore=10
+ mlxlogscore=758 spamscore=0 lowpriorityscore=10 priorityscore=1501
+ malwarescore=0 phishscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2505280000 definitions=main-2508040049
+X-Stat-Signature: yn1dm4pxqj6idyqacaei8zq7b6cmka5y
 X-Rspam-User: 
-X-HE-Tag: 1754298920-217581
-X-HE-Meta: U2FsdGVkX1+zaUvKpQzQo5eDj/Ro47MKO7fFmOfrsE6/KNKp5YvM+qvVfzF5Q9gnitj1Pqns4l/0/DHPeJ+QvKHax8+chSIpAw6bS3E0sNmFCD2sRS0fTN/YZaL3ZaOn8VYl406GfWIuAwFrz/scqzVxNRV8Iwx1GGqOAZ3Z2JN3FuxiuQi4GLfmOmnNHup9MwRcI4rfXBU2tekwxqZwcbEnY++VLlhonz5ynhbWa7Jj7BK7d8zZqg+kD8JVvYSVQbujAagURYz6aO6HOb5zXscSXZxLicH1X23ix85+gW0X05mpSZruvaOlN6z+CeWhIsNbPv/eR8iN6BW2fzk644I+e1VeCp5RnWLfpnlWgGczNmhwXF4/6jHUojhFbSTWdi7nc77hykAdfWmHZKzQNSkq0Uyz9NLCq0w4okvHeI34MwESUtjLixbFGMbUFDkBqpEnjnrHpGW0DkN9zuMbm/Ufslq9zrOIXDlSIXGx8iUiLSEv0BZsvHkFLxfWKasl/kEM7HyzFlLDHp+HIS/jzoqNfqzFso1kCJ7BmkYqZgPnGzRemVNCyV2pp0MidB4NCb+fxUosDsHFSNpSHSyfGFzgBLZof8iJutsydE/bM2NbHdM7wTGmznLFZZDzMleX5q2LNgTXAKVvMN5yEQ/ABvH5SrCCkWUcSKNz7zfj9Odm/lnV5jX1GXRc/ZGae/sy97+9CFHKyDo8FTxIS552d/xWLcMpVfGBePKhjLap9zb7oUE/CZqvpFtfqqdH/H2O4zpDk8rCQ+uUNEBmwuW8adVhB0WwY1tqBpYB7BJaYCFM3oKdEI9z2vNLTkaBeZlyKOV8Mz4PXuWGCaV0qbTv5qLPMvOU+zwzrCO9AaQPdnOTZefWz7vWVzHvWbpo+lJQDrIyq45BXvfqqbIa2mbIP+ZAN9rS3P5EW2dCyb2a11is+urokVzwOUoRb6TTSkNWktSXJia6PRwxMOm8jBS
- Jo7an3/P
- RxmaolXj70S/uS178gxKAo3vQA6KMFDtwBmUNZNVLTSsXnBKHEbKwmj+ks3vEAw6BjYDsjhbMdfNg5kiXtSsHq3JLpJyzcoaDthHFBQE9nsfsV2ssqXdeRrD7uGkcJnfQ432MRLFw/AsMxbLEb/Eoty3Hc1q1j107buXu53qvQqtwzXAXio9QFf6uDRra7HMAJL7l+9NlYV4tHq8tXVxbTd0aLW4/ISdzyhdLJRl0rBDxXLfhnOnE5GwLsVkCGwJaGIHQdv4iqr+ggwpae3wjpI0xe6mhBKvE/buzyqEh9mw1mfm+DmmYCHaWVHSmP0A6d3eyo3EUR+J5E2x4WrzYcbig1pxEZSGHkAN0fwpreoLAAAOZvDQKNpgfjmRs2nTidI+GjCTX6vUDn0TDoBZuf9w7VxxjJkSSlfsPY7dIXnZ2z90hUsJ/bMN/klFrBS4cQankwSd/7aE8LC9UFwsmjUH22us06uG0f/lariXD7pFhzPu+tlQojZZiSkmEcPA3yAEzvreYH22/jdPrX5Vo+NY9o5FOLV1E3iLn7TwCR9r6so0wpPwFqgseNqu5qjlJWL60hh7MEblndZLZPQ3y/vV/5KI2zxLgpNWZwpx2/a+CT8A=
+X-Rspamd-Queue-Id: 95BAF40005
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1754298946-396445
+X-HE-Meta: U2FsdGVkX192myLTrm+VVam6mC48H/eKzQnFGUEpHlFGjPJLD2VLlIrPLGBqSGLV+WUUBlRs5AWs47loWfzpozrhHFSA7rrF74e4G1yhUdkqeox9Jg8VErrh0u6r3ZwoUlRjc1AtWqV8DIWpziJw66j0kCQY9tIJjKCbpBCYkAtSyWvA2GU4OwqoXF5Zn/7A32NFOge7xtZoyAxsxPTgNNzwC8SNFH21vsmvOo4dC+/NUWq4V6uVvCAtkTh0HO3WYnDBwI0hxaBZvdUW3L3tEMael0PpLhxUfrhqRXeHStcExwJfenDWueeXTCS0huz1/ISlrurlSbhRSU+/AQzEeCdCfbtf4DAquxkGKeykobQrh29njJGWIj4gnfDY242h3hddGaK+ccRwvOPwK5yIUwq3bvW7RYDDKfaseKm5gvs3kmLPX3CqaslYqDYZGqI1QBKoYGUUZqHeoqIWQO7SIhXb8jYAmg3vr44tzyaX8sTIqQIMV1xWvuKcGEtYRRJhSB+tnq2jsgxmydNwCNCh5C2ovQVxNOzIBej4Tr8tifKYCbzaX+sPS1M5U+6GyogVdnyFYiQyCg/ML0IwLYNE2y7VnS1sXiw9NWyAoNdHcGt34dWiYw3+yL125IANQ22z7ZeLPx5ow1Ce9DtzWE0P8TDZMFjAMiCt4iJ0B00yUtrng5a56cLv9sxLAckTCHRKGVEpTdT8c+dfLF5tftc8ecbNXkmJVGh+2NCQHGEnaaPmHVlmIs/bb0eDRxD4EUr5a0fwPUfVVvcaX1VeIdpWW8yq4Nz2LC9QgkH8Ml6UcXwTrXvHiM30g5FSJvlQ6dII2v6sTzo1FMQUy9Q4L+epfiM7ico+ec6T+tdX2qMyqWQSIdTYPY0We38A978v+md5QePMXljmiOPwWtYnzjk+kpA3uaAfSQQKuU+szT+P7J5oMYvM1fSP7q7acOZVpo7jwoJWxijmNg6+2NgSQWE
+ PE5+HqY8
+ 4KFjJ1tJafzduhh2WkV/1OgWWSZ6n17kSyIGS7XbtX+jCkhN0kNj5AmctWgozJki6iwg1Mrt0X1zp9WcqCUfcrLn+E7T/9XdW4b6Ae29qkygZovFoCLuB1PZIB1umNNezF638cFpKiZltlqiAdq4bu1KWfIuW3/mAldP3tptINlyaFvElW3cWvrX7CGJttNaQ7NuSEbCVPam25QvzfXwS12bC/qOBm7uXyNTOwU21XkZIklsoIZuxJsoL7uj6dpuULYBfUz9pE5XLvH4Sl4MKYt8gG8ZF0jg5DtXc5wR1VhboE/jJ95lI5VK6IhN7qo9ELyrBZHAH9OaXOgjBWwxrawg3Fw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,104 +146,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 4, 2025 at 8:49=E2=80=AFPM Lai, Yi <yi1.lai@linux.intel.com> wr=
-ote:
->
-> On Mon, Aug 04, 2025 at 10:30:45AM +0200, David Hildenbrand wrote:
-> > On 04.08.25 10:26, Qi Zheng wrote:
-> > >
-> > >
-> > > On 8/4/25 3:57 PM, David Hildenbrand wrote:
-> > > > On 04.08.25 02:58, Lai, Yi wrote:
-> > > > > Hi Barry Song,
-> > > > >
-> > > > > Greetings!
-> > > > >
-> > > > > I used Syzkaller and found that there is general protection fault=
- in
-> > > > > __pte_offset_map_lock in linux-next next-20250801.
-> > > > >
-> > > > > After bisection and the first bad commit is:
-> > > > > "
-> > > > > a6fde7add78d mm: use per_vma lock for MADV_DONTNEED
-> > > > > "
-> > > > >
-> > > > > All detailed into can be found at:
-> > > > > https://github.com/laifryiee/syzkaller_logs/tree/
-> > > > > main/250803_193026___pte_offset_map_lock
-> > > > > Syzkaller repro code:
-> > > > > https://github.com/laifryiee/syzkaller_logs/tree/
-> > > > > main/250803_193026___pte_offset_map_lock/repro.c
-> > > > > Syzkaller repro syscall steps:
-> > > > > https://github.com/laifryiee/syzkaller_logs/tree/
-> > > > > main/250803_193026___pte_offset_map_lock/repro.prog
-> > > > > Syzkaller report:
-> > > > > https://github.com/laifryiee/syzkaller_logs/tree/
-> > > > > main/250803_193026___pte_offset_map_lock/repro.report
-> > > > > Kconfig(make olddefconfig):
-> > > > > https://github.com/laifryiee/syzkaller_logs/tree/
-> > > > > main/250803_193026___pte_offset_map_lock/kconfig_origin
-> > > > > Bisect info:
-> > > > > https://github.com/laifryiee/syzkaller_logs/tree/
-> > > > > main/250803_193026___pte_offset_map_lock/bisect_info.log
-> > > > > bzImage:
-> > > > > https://github.com/laifryiee/syzkaller_logs/raw/refs/heads/
-> > > > > main/250803_193026___pte_offset_map_lock/bzImage_next-20250801
-> > > > > Issue dmesg:
-> > > > > https://github.com/laifryiee/syzkaller_logs/blob/
-> > > > > main/250803_193026___pte_offset_map_lock/next-20250801_dmesg.log
-> > > >
-> > > > Skimming over the reproducer, we seem to have racing MADV_DONTNEED =
-and
-> > > > MADV_COLLAPSE on the same anon area, but the problem only shows up =
-once
-> > > > we tear down that MM.
-> > > >
-> > > > If I would have to guess, I'd assume it's related to PT_RECLAIM
-> > > > reclaiming empty page tables during MADV_DONTNEED -- but the kconfi=
-g
-> > > > does not indicate that CONFIG_PT_RECLAIM was set.
-> > >
-> > > On the x86_64, if PT_RECLAIM is not manually disabled, PT_RECLAIM sho=
-uld
-> > > be enabled
-> >
-> > That's what I thought: but I was not able to spot it in the provided co=
-nfig
-> > [1].
-> >
-> > Or is that config *before* "make olfconfig"? confusing. I would want to=
- see
-> > the actually used config.
-> >
-> >
-> >
-> My kernel compiling steps:
-> 1. copy kconfig_origin to kernel_source_folder/.config
-> 2. make olddefconfig
-> 3. make bzImage -jx
->
-> I have also uploaded the actual .config during compiling.
-> [2] https://github.com/laifryiee/syzkaller_logs/blob/main/250803_193026__=
-_pte_offset_map_lock/.config
-> CONFIG_ARCH_SUPPORTS_PT_RECLAIM=3Dy
-> CONFIG_PT_RECLAIM=3Dy
+Hi Andrew,
 
-Thanks! I can reproduce the issue within one second.
-After disabling PT_RECLAIM in .config, the issue disappears.
-The reason it doesn't occur on arm64 is that x86 is the only platform
-that supports ARCH_SUPPORTS_PT_RECLAIM.
-
+On Tue, Jun 17, 2025 at 11:43=E2=80=AFPM Tal Zussman <tz2294@columbia.edu> =
+wrote:
 >
-> > [1] https://github.com/laifryiee/syzkaller_logs/tree/main/250803_193026=
-___pte_offset_map_lock/kconfig_origin
+> On Wed, May 28, 2025 at 1:35=E2=80=AFAM Tal Zussman <tz2294@columbia.edu>=
+ wrote:
 > >
-> > --
-> > Cheers,
+> > One minor fix and one minor cleanup related to the tlb_flush tracepoint=
+.
 > >
-> > David / dhildenb
+> > As an aside, include/trace/events/tlb.h isn't covered by MAINTAINERS,
+> > along with other mm related files under include/trace/events/. Flagging
+> > this since I see there's a recent effort to overhaul the mm MAINTAINERS
+> > entries.
 > >
+> > It's been a while since I've submitted patches to the mailing list --
+> > please let me know if anything looks off. Thanks!
+>
+> I don't see this series in any of the mm trees -- anything else that need=
+s to be
+> done to get this in?
 
-Thanks
-Barry
+Just wanted to follow up on this, as it seems like this series missed the
+-mm branches for 6.17.
+
+Thanks,
+Tal
 
