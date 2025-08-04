@@ -2,65 +2,65 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EB3D0C87FCF
-	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 12:43:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FC4FC87FD1
+	for <linux-mm@archiver.kernel.org>; Mon,  4 Aug 2025 12:43:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7EEA66B00A4; Mon,  4 Aug 2025 08:43:32 -0400 (EDT)
+	id E571F6B00A6; Mon,  4 Aug 2025 08:43:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79F046B00A5; Mon,  4 Aug 2025 08:43:32 -0400 (EDT)
+	id E076F6B00A7; Mon,  4 Aug 2025 08:43:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B5196B00A6; Mon,  4 Aug 2025 08:43:32 -0400 (EDT)
+	id D1E676B00A8; Mon,  4 Aug 2025 08:43:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B3CE6B00A4
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 08:43:32 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9E3E614024B
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:43:31 +0000 (UTC)
-X-FDA: 83739041022.24.CB4E7E7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 1193314000B
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:43:29 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mACwCJwn;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BF7E96B00A6
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 08:43:37 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9E128113A1F
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:43:37 +0000 (UTC)
+X-FDA: 83739041274.25.45F35AD
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 06D1C4000F
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 12:43:35 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WRgsvRlF;
+	spf=pass (imf12.hostedemail.com: domain of leon@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754311416; a=rsa-sha256;
+	cv=none;
+	b=a7U1Or8KsLNx1LrKR4PXfXgIC3uZXUd3bmjGgc0KT2N+eb5yhFm7jLiSVahV//QOjxQv5+
+	ipvaEttFFYDV3dG+O5YgixpAaa1pgJYvxRQkjNjdMN6/81D3k8ROqZKBMVyMlS1fj20ZM6
+	gJh3ddpHkEsrots99yrJaSeUGhmcE0o=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WRgsvRlF;
+	spf=pass (imf12.hostedemail.com: domain of leon@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754311410;
+	s=arc-20220608; t=1754311416;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f/3vSq9381IaXbqW9OZrKrqA9rxmKdWI6yV8YceURS0=;
-	b=AcQx7sQVw6fl2D8MHLW1BYLWa0uCTckWYyxHUN7pdY+CM9/NUN7cdagvp1fRgpWW29/3bp
-	qpIHZlFRTbxdLXfDI812Zo6PkgPJYsDYDbTilwXtdO2iF/fuuEXfsdCU7Zsdpnfouxv6NN
-	WNSQPVnEm6Dnu11QuSdO0BJa1LyNi2A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754311410; a=rsa-sha256;
-	cv=none;
-	b=hEydTMJzY+zVBGY0/8gv/T0F78HfJw9mTaFjBPsTiqWFwZGOlDE4155Y4M80GIa4kD0Gqd
-	wkISW4wLASKjvjJnGgT1IScN9RxNavk8nInnq0r6iIBGK7Wo8XN00x2fEnknTuO3rsxTqQ
-	csFHUH6VyEf7X4g+KPyjdHvphppTA58=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mACwCJwn;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
+	bh=MLLzwi1yAXsHc08Aygf0gJ2rcKhVnpp9gk2ta6mt2yU=;
+	b=5rFYIPksqu7tr6lK9j3lGuKDqj6d0D8UoWZsy1IglGVine9EmlW+fKiiZR/v4MOJUcoAYF
+	Bg+aQmN2yHS1XdyVxKBsLERXD0ZLVb+npQJwApa92udQwFnA/IV0thw83fnVbHg1W6/n45
+	0EqAdNObMA9sK1dgcgvqKGjfyf/B3hQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 28A9644938;
-	Mon,  4 Aug 2025 12:43:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96668C4CEF8;
-	Mon,  4 Aug 2025 12:43:27 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 46869A55826;
+	Mon,  4 Aug 2025 12:43:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7673FC4CEE7;
+	Mon,  4 Aug 2025 12:43:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754311409;
-	bh=B6ggJVOQfTYMCOE/nJsgZM614saTj7Qtn55LwfqKBMA=;
+	s=k20201202; t=1754311414;
+	bh=gXQfTddyrmH8Ixen8MMOQFcSDtf75ytBbFmEnbpkIK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mACwCJwnciJCEbZnCrkOPhfxhxsK8nNGbFRTcuF/UprHjNhigkEBz4Qjo6q3nOYnE
-	 NNEuUiRwpxiJJ+5+lJPFbBh1pz1NHdaolrAAyyFd/BDEth7WPdBMjVzrlmdIaxA3Qb
-	 2RsWBm5LtpycB6Eoe6pJbVmXbTVoQjyF0BJrKzZPE5F7UARnqwUUZNfC3023xQAdCk
-	 GMv+SVJ7lY8MSINtMTSQNgemwlQgadSRLsUt+7E2s6eroO/rhcn1uAVTTMaXvcyAt7
-	 AFjFAFTQV2Ju8uDUJFNXpQWgxbDaQrFpkFb9ltCXITe4mMxj1t62jvARy38KRhJWAk
-	 x4Lll22SY+E5Q==
+	b=WRgsvRlFW0e77jc7NIsyBW2keN26coVZrkVCiSkqs4aw+XPWcg7vc+V1XlKoIcE88
+	 IOIbPQelgEDLheM/qg7mVhJZzAqXm7CUjMAMKNzC+umg0g7DwYC9YBLyHXL0I66FCh
+	 IFbMO71xVEUgxdJl2+IupUgaBpdkpCp+VfiDgWnzz0MMd73xSf4ctXSScspzbf7J4C
+	 MQm70SnKxDBQEq6Qi5EQDhrkAfT+WwzTZQfsthVUSLn1pLEnK9pcRGmBAGcQOXI3DR
+	 pSMdvMXvMDulNitg5dtAwYyxJ7hDxcGMKpGt6kEpCAlccx1SJGPya+SDEHg8s11i4i
+	 u8QgrR2e/DTYQ==
 From: Leon Romanovsky <leon@kernel.org>
 To: Marek Szyprowski <m.szyprowski@samsung.com>
 Cc: Leon Romanovsky <leonro@nvidia.com>,
@@ -99,22 +99,22 @@ Cc: Leon Romanovsky <leonro@nvidia.com>,
 	virtualization@lists.linux.dev,
 	Will Deacon <will@kernel.org>,
 	xen-devel@lists.xenproject.org
-Subject: [PATCH v1 01/16] dma-mapping: introduce new DMA attribute to indicate MMIO memory
-Date: Mon,  4 Aug 2025 15:42:35 +0300
-Message-ID: <f749c597980592ecc7aeb5ecca974c8dfb76f834.1754292567.git.leon@kernel.org>
+Subject: [PATCH v1 04/16] dma-mapping: rename trace_dma_*map_page to trace_dma_*map_phys
+Date: Mon,  4 Aug 2025 15:42:38 +0300
+Message-ID: <7e10dcba2f3108efc6af13bfdbe8f09073835838.1754292567.git.leon@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1754292567.git.leon@kernel.org>
 References: <cover.1754292567.git.leon@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 5s43bgzqr6a3zk9ceqkeun8qf3rtd37y
-X-Rspamd-Queue-Id: 1193314000B
-X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1754311409-992716
-X-HE-Meta: U2FsdGVkX1/HzSzhnnR5/yVm0AecfSkImqRQddPMibZx0VR4JafWtUzEFlE+Y3AlsFyUgWV8NfnkKTi71C9Tn/nY2b9HbE0Pbu0K6ajv8BxWOA00RW3vWwLEgDIRUWXDbDgn94YGur6kJLQRasOwePwc1hNUdpuqXb2l3g9Pibgxvff9Y7wZ2eOLSgEsN/nmK2XQhKnwOry5y3ZlIFgjBpbfkuXmpN+2u3SFWT9ECbvIhhi9QNTZ3uv/33Dy6u0eJmyHRcnnR1aWIhKq+T9rtV+P7ceYlGTExPGgvpu9ysNTS96OWHm1Qz+lZuAMd3fvMDfDE0vEt4IS8XlkmdkdM7OU3QZLmwYsNSN3MF/VhfxOzfmOtd4KDcvwc8tK+nSCKtqAPOVyMqVAU9NW6NTD0qpQgEtnpo+R7/Uhsc04HFBMmY7pUzYCfPjhg9vc2UjK7g6qJzMlM4Ae6nXAH+QYU/xQrPZWSMxyd6+kjc0aTBcKkgN59MhBWqAeQ4x9FGKiXh08AU8HTALDJvBJb+fL/OnoW47VA8fXGlixo+V0WmcNcsmkuz9sN+rI0KMPNShuB9sak1OYzRGvt7sHBcpmHGCJdjERrLyATPGUiQiZH8OhYJDUrZA3cMEVKbvKZndopTC/Ir3hVW5sDeTGzSFDfvadId0Uzlygfem15o4cSE5ksr0p6uLZPLkOwrmyaVtsh6QIDM4T0b1jAQa4zbxlaIFa3qzemwnuj+ygVXzgfN3DcJj4gQwucr/2WQdAWZO3Aiyf8O/zQXQONwB6wvefbDAX4CpgfDAh4fq8HW8jaCxoqTx2bVHZjfSDKMAZCrKRUPIAfXWI5Nir9mKuvLP7VC4xHrh5u9+4chSykWIzvAGYJCosQqsOlqGgjsAIF+05HiwMc6Kw5X7Mq6QYDquMELlNKVz9d62HzVwgyXZi9Va0E5jzZr3o72Kh+lj/mMbBgW/zY9afBqmAFDWTfbx
- zfT3OYVF
- YQoOGWvWqxhz8jd4rNlsngAD9kyt6TB42uAP5
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 06D1C4000F
+X-Stat-Signature: pdok8swka5r93rsn7nmh4sbr3fbfqxtq
+X-HE-Tag: 1754311415-947729
+X-HE-Meta: U2FsdGVkX1+gm0BWlnKPV5rBNH8Bivh46KXn0X0m78dv3khJPZMrPgQ7yXfemWfW5gbkrzqGZQ/FtyfDHwQhZhzkiDQZmebQBxxGJJbFBGQ51FwzabT+zcef0u8ETuri6+v5HGxHf7AUamKYyDqilncriCXbcAmPmlN0/AakaNSzUE2ZU8AH7RK29XE/hrZaK8Ia65fLn+TshJKY8kMlkHP9qA/MbHwLR7PjTKtlyluV2VfRUImi7k8Pi+s5w/SKPrwL4huIxF0UUXc/YDdgRzSfq/Qd5GFebtt51dxTI41O71fvM8YGtuxy2qSrVmTkHLIDNxSPqDD7fseB4gBG8cQy6VWcstkFKPGeBa1zaTeX8/3JsWLIug9alKsJy3VwAKW/f+DGlzL7BSu26HPMQMvjUR/9SXIKPncowPoo2tL2thPThgDnFolDcYwzWdMxroi/gsFa1SAoy8heMmPuj/Nz8KCSITTRd0oW/aMKfZtrGpCHeUDz4ypda/XHuHl1cMrUFioMT//0OFhfgv1lIDLgZmF+38n7FwL7m0O0Va+zR3GYHcKxPDEbYjcGV40ML3gMLCd3E58115UulaNgfhat/DYr7aC43Z1onN5GrNu5hg6+6MvXtCKMJNqFde6H2Zjb1VxctNVbBOZkad+zCiW3xG2+327/mEAl1yTt8KxVxJcPsxhO6igmgPKjxQr5AbbVSYPUS70K8mhJpShNB+uJamnKxJ0lIR3DSP1WmoFjwQbVSy6aPbfAYV9FpahGM/2NM8wQG/1NBQw3dhHtqfAzizz45lD2YKzEcqKZ4d6V8sMd65ykP5jJYFdYXtrAMYBqft9/kcTTrDowN/ipJ7g1/PJtSCAuheUXw8fgJtqYNIuPw31pa4/hwQPI4+3lHQmHXl3q+NJdrbtUwRwYLijBP7RZRTqIIBLgAX+zHH/ySkPi4edo50dT8RDGU4NZJyfw9EHHWJilAOL4enw
+ 7wbTmAlI
+ THewe+8ETRvCYjrBEgw9e8VbT20hhOw2oAXiw58zuRx0fqbn39dUaOlTs+JT+s2MXDd/l27NBsw+hstGDiXWcZGTqA7xlhMfIU9h7voSsWHo7Xz0WJPSj5e1cvE76xmxENNp3IwR1U1MFqPm1xG+2uEJFPWHCZzGQTaTJT8mr/5LdPSoc+OD3CrE6EukpmY4AJr4Vn3EGF+V4apCt6JoRILFsvDWdwDe63jWJIxb9fWId94TdaRj/tgchuRd019ikFmPZfPVdFYw2nPKn6ELrMWPqDqN6GiGW52GUs+a0gBULzZT4a6RRS+qM5A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,91 +125,59 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Leon Romanovsky <leonro@nvidia.com>
 
-This patch introduces the DMA_ATTR_MMIO attribute to mark DMA buffers
-that reside in memory-mapped I/O (MMIO) regions, such as device BARs
-exposed through the host bridge, which are accessible for peer-to-peer
-(P2P) DMA.
-
-This attribute is especially useful for exporting device memory to other
-devices for DMA without CPU involvement, and avoids unnecessary or
-potentially detrimental CPU cache maintenance calls.
+As a preparation for following map_page -> map_phys API conversion,
+let's rename trace_dma_*map_page() to be trace_dma_*map_phys().
 
 Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 ---
- Documentation/core-api/dma-attributes.rst |  7 +++++++
- include/linux/dma-mapping.h               | 14 ++++++++++++++
- include/trace/events/dma.h                |  3 ++-
- rust/kernel/dma.rs                        |  3 +++
- 4 files changed, 26 insertions(+), 1 deletion(-)
+ include/trace/events/dma.h | 4 ++--
+ kernel/dma/mapping.c       | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/core-api/dma-attributes.rst b/Documentation/core-api/dma-attributes.rst
-index 1887d92e8e926..91acd2684e506 100644
---- a/Documentation/core-api/dma-attributes.rst
-+++ b/Documentation/core-api/dma-attributes.rst
-@@ -130,3 +130,10 @@ accesses to DMA buffers in both privileged "supervisor" and unprivileged
- subsystem that the buffer is fully accessible at the elevated privilege
- level (and ideally inaccessible or at least read-only at the
- lesser-privileged levels).
-+
-+DMA_ATTR_MMIO
-+-------------
-+
-+This attribute is especially useful for exporting device memory to other
-+devices for DMA without CPU involvement, and avoids unnecessary or
-+potentially detrimental CPU cache maintenance calls.
-diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-index 55c03e5fe8cb3..afc89835c7457 100644
---- a/include/linux/dma-mapping.h
-+++ b/include/linux/dma-mapping.h
-@@ -58,6 +58,20 @@
-  */
- #define DMA_ATTR_PRIVILEGED		(1UL << 9)
- 
-+/*
-+ * DMA_ATTR_MMIO - Indicates memory-mapped I/O (MMIO) region for DMA mapping
-+ *
-+ * This attribute is used for MMIO memory regions that are exposed through
-+ * the host bridge and are accessible for peer-to-peer (P2P) DMA. Memory
-+ * marked with this attribute is not system RAM and may represent device
-+ * BAR windows or peer-exposed memory.
-+ *
-+ * Typical usage is for mapping hardware memory BARs or exporting device
-+ * memory to other devices for DMA without involving main system RAM.
-+ * The attribute guarantees no CPU cache maintenance calls will be made.
-+ */
-+#define DMA_ATTR_MMIO		(1UL << 10)
-+
- /*
-  * A dma_addr_t can hold any valid DMA or bus address for the platform.  It can
-  * be given to a device to use as a DMA source or target.  It is specific to a
 diff --git a/include/trace/events/dma.h b/include/trace/events/dma.h
-index d8ddc27b6a7c8..ee90d6f1dcf35 100644
+index ee90d6f1dcf35..84416c7d6bfaa 100644
 --- a/include/trace/events/dma.h
 +++ b/include/trace/events/dma.h
-@@ -31,7 +31,8 @@ TRACE_DEFINE_ENUM(DMA_NONE);
- 		{ DMA_ATTR_FORCE_CONTIGUOUS, "FORCE_CONTIGUOUS" }, \
- 		{ DMA_ATTR_ALLOC_SINGLE_PAGES, "ALLOC_SINGLE_PAGES" }, \
- 		{ DMA_ATTR_NO_WARN, "NO_WARN" }, \
--		{ DMA_ATTR_PRIVILEGED, "PRIVILEGED" })
-+		{ DMA_ATTR_PRIVILEGED, "PRIVILEGED" }, \
-+		{ DMA_ATTR_MMIO, "MMIO" })
+@@ -72,7 +72,7 @@ DEFINE_EVENT(dma_map, name, \
+ 		 size_t size, enum dma_data_direction dir, unsigned long attrs), \
+ 	TP_ARGS(dev, phys_addr, dma_addr, size, dir, attrs))
  
- DECLARE_EVENT_CLASS(dma_map,
- 	TP_PROTO(struct device *dev, phys_addr_t phys_addr, dma_addr_t dma_addr,
-diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
-index 2bc8ab51ec280..61d9eed7a786e 100644
---- a/rust/kernel/dma.rs
-+++ b/rust/kernel/dma.rs
-@@ -242,6 +242,9 @@ pub mod attrs {
-     /// Indicates that the buffer is fully accessible at an elevated privilege level (and
-     /// ideally inaccessible or at least read-only at lesser-privileged levels).
-     pub const DMA_ATTR_PRIVILEGED: Attrs = Attrs(bindings::DMA_ATTR_PRIVILEGED);
-+
-+    /// Indicates that the buffer is MMIO memory.
-+    pub const DMA_ATTR_MMIO: Attrs = Attrs(bindings::DMA_ATTR_MMIO);
+-DEFINE_MAP_EVENT(dma_map_page);
++DEFINE_MAP_EVENT(dma_map_phys);
+ DEFINE_MAP_EVENT(dma_map_resource);
+ 
+ DECLARE_EVENT_CLASS(dma_unmap,
+@@ -110,7 +110,7 @@ DEFINE_EVENT(dma_unmap, name, \
+ 		 enum dma_data_direction dir, unsigned long attrs), \
+ 	TP_ARGS(dev, addr, size, dir, attrs))
+ 
+-DEFINE_UNMAP_EVENT(dma_unmap_page);
++DEFINE_UNMAP_EVENT(dma_unmap_phys);
+ DEFINE_UNMAP_EVENT(dma_unmap_resource);
+ 
+ DECLARE_EVENT_CLASS(dma_alloc_class,
+diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
+index 4c1dfbabb8ae5..fe1f0da6dc507 100644
+--- a/kernel/dma/mapping.c
++++ b/kernel/dma/mapping.c
+@@ -173,7 +173,7 @@ dma_addr_t dma_map_page_attrs(struct device *dev, struct page *page,
+ 	else
+ 		addr = ops->map_page(dev, page, offset, size, dir, attrs);
+ 	kmsan_handle_dma(page, offset, size, dir);
+-	trace_dma_map_page(dev, phys, addr, size, dir, attrs);
++	trace_dma_map_phys(dev, phys, addr, size, dir, attrs);
+ 	debug_dma_map_phys(dev, phys, size, dir, addr, attrs);
+ 
+ 	return addr;
+@@ -193,7 +193,7 @@ void dma_unmap_page_attrs(struct device *dev, dma_addr_t addr, size_t size,
+ 		iommu_dma_unmap_page(dev, addr, size, dir, attrs);
+ 	else
+ 		ops->unmap_page(dev, addr, size, dir, attrs);
+-	trace_dma_unmap_page(dev, addr, size, dir, attrs);
++	trace_dma_unmap_phys(dev, addr, size, dir, attrs);
+ 	debug_dma_unmap_phys(dev, addr, size, dir);
  }
- 
- /// An abstraction of the `dma_alloc_coherent` API.
+ EXPORT_SYMBOL(dma_unmap_page_attrs);
 -- 
 2.50.1
 
