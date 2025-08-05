@@ -2,61 +2,95 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AE152C87FD1
-	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 06:41:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ED036C87FCB
+	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 06:43:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A5466B0098; Tue,  5 Aug 2025 02:41:36 -0400 (EDT)
+	id 900486B0093; Tue,  5 Aug 2025 02:43:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37D1D6B0099; Tue,  5 Aug 2025 02:41:36 -0400 (EDT)
+	id 8D8886B009B; Tue,  5 Aug 2025 02:43:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BA496B009B; Tue,  5 Aug 2025 02:41:36 -0400 (EDT)
+	id 7EE6F6B009F; Tue,  5 Aug 2025 02:43:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A3D66B0098
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 02:41:36 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A6C061A0DB7
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 06:41:35 +0000 (UTC)
-X-FDA: 83741757750.14.4810E2F
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-	by imf28.hostedemail.com (Postfix) with ESMTP id A8A96C0005
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 06:41:30 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=sIE1xJZ9;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A5516B0093
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 02:43:12 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DB1F9140F31
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 06:43:11 +0000 (UTC)
+X-FDA: 83741761782.01.679DE4A
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 5AB0340008
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 06:43:09 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=IZ4ZQL1g;
+	spf=pass (imf11.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754376093;
+	s=arc-20220608; t=1754376190;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iKwb3jyiyyLlRq/hzHJCa8IJJVZNalYmdaLHaPwmwrU=;
-	b=DwwmOl88/I3FDHWzNuZhIOIjcAxk9R03StUHpP/wuxryH2d/YaEGUKmwz+hdEiayyCIfl3
-	DLXxNTDvnnaR8Ni5/q3HIUoTbCIZLrCfgB5mrG3/46Xa3S0VvANAnxaKkzKRJIwkodzqAd
-	Uc9FENp+HFV5Um45Ty0UMyta2tqbKX8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754376093; a=rsa-sha256;
-	cv=none;
-	b=dUVpR1o5p7wmC9XfVF8CpGYCKUnVQFANYWXdHxSzjUjVYx1iqpWREsMF0s4sm7o7dJLo9J
-	hDEvpcwyfpsW1FvhHBEQB0TaMPQeS/X9fYq5bJBpNDNWOlQiFYxSYWyxOAyu0wTvC9hoXy
-	88k04EXox0UUtGIIUMjIoF5CHBjboF8=
+	bh=c9nhYHdVYijXwXhKsqe5CscEEMmPinucJwaX/wDudLk=;
+	b=KByIST3taG47ITmUyafGy5jeG5HjR1Ncz69wBuiG2rGw5GFy6ktFitCoFVGMNbcgzSfbLg
+	LtUFd46Bsi1IC2OXJ2g3hM3tAFnCJpAoRuNIoxLbgf6ZQ0pbgaJv1fjgB58MTxmOtt2DRo
+	Akf9rNHa17G8jzM8MX5TIuX7hnCFw3U=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=sIE1xJZ9;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1754376085; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=iKwb3jyiyyLlRq/hzHJCa8IJJVZNalYmdaLHaPwmwrU=;
-	b=sIE1xJZ9CIWW6fXKGycIeABlUbx7mE540ro2p3S8r9ZNkXEbOJ7vaE9vGrxwqYayyNYOW7tYlUt6T9l6Ud9msqBEJLjW55pBc/S925BTqSP3cDTUqiTRrRrv6vflZdz0NI7Y5TUa/CM2ULcoLQ1U60rc9sBaOPqWkEY3mjA8q/k=
-Received: from 30.74.144.114(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wl440vN_1754376082 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 05 Aug 2025 14:41:23 +0800
-Message-ID: <721c093c-a54a-4ccc-b784-e3634a8c2278@linux.alibaba.com>
-Date: Tue, 5 Aug 2025 14:41:22 +0800
+	imf11.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=IZ4ZQL1g;
+	spf=pass (imf11.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754376190; a=rsa-sha256;
+	cv=none;
+	b=z8SroYi0iO0ixScDMTZKqphQ5FQy3ClYIdy6kx+KgxOZvE6oJQ8EPAPYQglh/9KwzNfHoD
+	Szw07BlAEfvlIaKBLrIS1gehr863Jol5fVgVh0OuhpefHsPMXgua8n9h17qKo9fLSzj39d
+	iMESI9KBEdgFJlSrX98tdso3iGn0ZxU=
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b3f80661991so4415705a12.0
+        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 23:43:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1754376188; x=1754980988; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=c9nhYHdVYijXwXhKsqe5CscEEMmPinucJwaX/wDudLk=;
+        b=IZ4ZQL1gYvOL9i991PRWrDREG3N3CiLXAVDWxjQW6NbdxEZvRRhl8fqCi2CvQ+pqML
+         pTxLmn8SKLSB86ySsbXplF3agY4AfdLmw94VR3InG0y2QkotZHvB+slczHRgfVUPIPeT
+         PluFrhl/J7R6kJLG0d7jip9GyQnJzp7NV0mTXx5DzU7F3Dgl6AqqNtuYNk3EYN/p7fFZ
+         laH4aIvow3Z/B8sv/Eu7kwkKXrpeFxeCSm6IBDHMJueCi/LB20kJGM6MlG8vurNvRjcZ
+         VOVSRxgQdI/sXJ+RCXj4nW0gc7qeIOkynBPzkvLIbXh7u4SPxBHEXA9t7n78AbxB32DY
+         yyAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754376188; x=1754980988;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=c9nhYHdVYijXwXhKsqe5CscEEMmPinucJwaX/wDudLk=;
+        b=e44EI6PMxa5DmC451FJ25wLUoOKMEK0Cltg+GZRyZCo2CN5ElROnjkQdDeVs1fQyzG
+         tEVY5zhx4zYmqSNPzHt9xnzcuw9DFOiqjrg5IHkAaAZHPn1namDxXaJ3W179UdIlbytp
+         ATv7DGgYTRL7IwrS1kY7+TBcqsxa5zzkf/rbyuD6L7mOo1j/KDZLlazNO5HSlrtV4wZ0
+         Q1ftfgrZGjJ6Fmqhtd7APjMNPupFGosBJ8/7jsWpoAClnh2+A8WoY5ML5ET1CPLgq3k9
+         NQCVw2MYSV1STB0Bbkg948R3baE6jO6uO+rKzMcIJtLB62MBKVMNsU3McEJfvliAmi1N
+         WKmA==
+X-Forwarded-Encrypted: i=1; AJvYcCUddKMItn+rRWdoGIWUVZc/Gn0qE6wvP5HodFUgy/vDxX17l2zVrPG91PZoui7ggbaHKO+ODAw/Ng==@kvack.org
+X-Gm-Message-State: AOJu0YzDG+HPYONQKe40ZQbNjEA5M1Sc/C/uHKaVNyOcoXdI6wQ7TEPP
+	fnUJxf9qXuhU14cQUvR733URO4vEpLZBLgXuTMfMBjTfKbRhBkvYldZz7qqlXoCn+AU=
+X-Gm-Gg: ASbGncvf3OqoEd1osvN4iXArK7vWJaKP4MCjA6EDDw+mzjwRhgj2zFQzGdU8C5LNCEB
+	WAe61yx6r7y77ejfkQk/GUaLWD8ue4AeOBoCkMKVZVDWV2t/wYozajKC8OUnhEb6jhqh6sLrSxe
+	CIdlMQXbqUNObh5HWAtj39Bxn9sC7v502HXLJxJSbgoMm2r46ubnZj6eiwblH2v5lbtKgenQC86
+	tAiJxpd/SyXCDCmfzn5MRsekoh4aAWYJvbLcR3jK35dOPzmM7OWxS7bigYNybl9n5U1KRYSaBDp
+	X9TgKwFMY38aJEtx7IzYB5JHuZ2W+2fDKIPn7Q4EWnLS6rkluRplhJT/nWD276vOaClLYrBtVGY
+	JccKtLOCRNyMR73BB2aGdjhdmPELmzps6mimrGAsIBZHH4m8OzbJ7FfmvTjxV
+X-Google-Smtp-Source: AGHT+IH6NKePpdklUEnERKhxy8cHNhExcNHW5IOQAP4eRTVMhTlFfu5DUYuvB7IhXb/s4ZjlKfsy4Q==
+X-Received: by 2002:a17:90b:33c4:b0:31f:35f:96a1 with SMTP id 98e67ed59e1d1-3214feb327dmr3290114a91.15.1754376187896;
+        Mon, 04 Aug 2025 23:43:07 -0700 (PDT)
+Received: from [10.4.54.91] ([139.177.225.242])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3207ebc0e79sm13561149a91.10.2025.08.04.23.43.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 Aug 2025 23:43:07 -0700 (PDT)
+Message-ID: <35417160-86bf-4580-8ae9-5cadd4f6401d@bytedance.com>
+Date: Tue, 5 Aug 2025 14:42:58 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm: Fix the race between collapse and PT_RECLAIM under
@@ -66,26 +100,27 @@ To: Barry Song <21cnbao@gmail.com>, akpm@linux-foundation.org,
 Cc: linux-kernel@vger.kernel.org, Barry Song <v-songbaohua@oppo.com>,
  "Lai, Yi" <yi1.lai@linux.intel.com>, David Hildenbrand <david@redhat.com>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Qi Zheng <zhengqi.arch@bytedance.com>, Vlastimil Babka <vbabka@suse.cz>,
- Jann Horn <jannh@google.com>, Suren Baghdasaryan <surenb@google.com>,
- Lokesh Gidra <lokeshgidra@google.com>,
- Tangquan Zheng <zhengtangquan@oppo.com>, Lance Yang <ioworker0@gmail.com>,
- Zi Yan <ziy@nvidia.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
+ Suren Baghdasaryan <surenb@google.com>, Lokesh Gidra
+ <lokeshgidra@google.com>, Tangquan Zheng <zhengtangquan@oppo.com>,
+ Lance Yang <ioworker0@gmail.com>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
+ <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
  Dev Jain <dev.jain@arm.com>
 References: <20250805035447.7958-1-21cnbao@gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
+From: Qi Zheng <zhengqi.arch@bytedance.com>
 In-Reply-To: <20250805035447.7958-1-21cnbao@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: A8A96C0005
-X-Stat-Signature: qkfy6nk8hh5ibd81p86jb58ruoxsw1xn
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1754376090-688191
-X-HE-Meta: U2FsdGVkX18oHlf8LzTvNpPiCYvt1ObcnCeqH2D37BRnz9i1o4PHTSsZho4I/xwJDtyfYhNP518N6aVew7cffxBDsDYRKxFGFzh6FVJcI964lbzpYh2F9/0UQnKdjY763LiudhK1gurtt18Zv6JEDWj0ncMWrJ4j+NU/i8Vc+GZRTtuWaXC2/6D3Oy9c9qzOueC85/qqwQpePqomzOZ8QmK9vUYYb3D8XHoRB4fcLkphXCO0tfOeKPmeP66E6Qd4jlkMzfKfX54S2vlVja4S9GHrH8JalgjhF3q3v2BKtCxyK5VrFhXOyPTke88EjE9thpTa2mhzJoFLRCwFU8/qzLyCFc5rKT1787fHeUUccyzxaoMwbRkieXolIi+FDVH5LdmsyhKGjWcYZ/w7t7flnYLnbTBruOQ7vB6sNX+vpXH5FIqLGRGuClZvc7zAJYruQrbF1M2u53lJ2FECnlIYyHPidIw33kLKfR7/kvti5KPCUSoy6yzzhu7cEnrHv7p2hTaMjUc32V1LSs8Kf3gtbcwoA8Wn+WMK6q2XNbpe1Ble10ajAo4qegagQwe4fwCchEzV8g2gHkU8K2xOTU2d7Jlp33wzt87uDiWfKyAMBF+VkxynHSUE73zKOr9h/gSrniGR/AMpYN3c0JSLt6w/Rb0/FThI83R2mGeAzYyFR3EZ8VESvov7GVTCf6mUzGhdyh6HfjpICGS0LVQQPbosMtxyn+wGTnA5+VcFwqERjhgsKyW7ZCz1y9Xj2GWQ644UM5MezHuFRsZV4Vo4qZIgfUBGgKU81wYiJJgu6Mi3ObWC2kdakwsKD6eK3nvk0PYiUAWL95jwDDhbIolcDf4MYn0ZT8Dmt5I++/iqqHFzw/ky2+jBNvVya3XTsKfKKEJqFghoclFsU0kY4bZz0MDbMHRm/0PebFOXYkOHdlumeOG9EFxadHr33kF+V/ZyOd6SARcbOJhMVfFlT8oxbod
- 1dI9x2Rw
- v/RjmZVesS+k7o/Kk7EkggjcHHFTn1gPpVDN/Aw+7dAi6Jab24gkgG/EAIL7Lso7poxqqu7lY8x0Le/298wixrOWsf3N+twM0niMoAX/tvrkeYojaApBW291jr5mxsPz69tW31RU9WYgTsYTNsHmOsx3JAuIdoU74FL/lOBupMVRBkKpHZgNyYiWmpkPodnjII7TenaBMxKlefw1fwWew0AU5SASNzC1d6/E5773zQw7jS8gBiG12K19/HjqDR8jA95CMgbRbK72MtBlTEpFlDkSRV606w48TfwdOBCP0cqaStzAQdjo/dh49xofCMQINyIPqSn7QLR+X5e2B3NywYCh325u8D7kg01ZEhZVatBHixN/DBkmYzLg2FxLkHMLbBPYa7WM5qWHGUhe0gih67KcdXvsd91HJjpYTe1fx0HdDVZRjRF4lPNtpjLVvlmSYgXk0HwoLBV3XPOYG8ulRH66FiMpQku+mJhU53IMFIklxLcy1znfAf+aJtMTsCI+/ImjQ2I8iig+khdhEY2Q8XHMvxHDdz4aoKLotCEdJm22Ky1W4Pe19qxL07/ozTXIC2oXOxmdetfm21BwICQt7PPgAKPk9TjP6KtT+x2jVsOFujuM=
+X-Rspamd-Queue-Id: 5AB0340008
+X-Rspamd-Server: rspam06
+X-Stat-Signature: pkr3gdw8tzykrqafn6fdkk68fthk6xmj
+X-HE-Tag: 1754376189-329846
+X-HE-Meta: U2FsdGVkX1/gB2yZYLFwJ3mrbqtunrbb0SGkEd4QgV/oyh9ckRvPs2zo1AtXjrAjv4I6F1HDyXESx5gSPJKks1IDll5tu7kvzAk7Td4MDIJkVYFlXW4ox1zqtPsXtjGDaTHXBWmMOOJeAqA5F2NvlcIcZ/i4pBmAS3bLOJTOZOyTkCYYflaTWk2y/cB4GVDvbsV7a6owOqxed9CkPQdB1dHYiDzCWefsX1bZeQUzy9upXkbQV2Ur7zHuCdQ8Z7qscYxxJQaj+5DC2aEWOxC+iXpDBNfmNdPIDUkESJRLbciabEOexzA46Qs50SNQhxnqHqDSLpjgiXZwthzau2PhHdDCGzFqgeM2PtitqnItTfqg8XxgbIR46VSr/8BbExHGmr2gLcuZJfxzino8J+8qw2bIJ9HHYT0hGEezGGksY+uIlbdEyOklbZfp62eUjCr3tCBlby4o5EVnnyeCg7FJWEo5Q0HuaTuqRJhFwzmojcrQE1XtAbEgIVlRPnaHvoHRzrtcpgYZfldvY5NM2cWUytHmSBO2wDVDh1+i09Jv2wPPGJbvsSHVf/i+UjV5cXlCSHEQAaV2fuhD8bnnk+WxxsPk7g4RnpCWGkOw5+GaTmfsTp8gitDtgEKq+HcZ3QAfh5xW4zW+VDXyOGNTuKU2z5fzqIQ3BXCMHgRrSypeQvgEMQH4yJh0dXP7zhZDYPNa6fDzsNGRqaBoHb2okbox8SrgeJR8rjr7L2f/xqe1chCMZBYtSPH0n8PGAmPfPvVaPcxThxWXMkF6WnXaiGUJ4Y4+T6h4AHcEPsfuHNkmTPtSwZriIMmzCF/KrJKnQnQWM4Ut7d4VgbQ8ErdE1um5GGPEjuCAyqqYMR0FrssGI0BMOQVYZyJBS1/GnGHqKIbAJI8wiv3ks2wIjqEa81jPcmLCmWTGAwZomjuMw/QomG9S8NUPFvHaK9uLQHD3nUDCu29Z7gHUINMDm8iXNek
+ weKEdNDs
+ OysR6ZDN0L8KPTLX6bPjh4W8M4PXLjYmVbNNxmTes2U9LUN5YDT0Bc2Mrt19R86xuFvupOCkD9K9xzMHJIhwIlI0e5URgL3867qYhsO/gBVwAqkfZu4MCKG1+LDZwk2iLj3r2oUhOu2SlT6OqPRSqWp5ISWpT002PxtkjpKQ9IvQjw273IASFALatCzYPWJ6bZ21oPlqM5sZZezWRhWVAnTYtHuF4a5R0CfBzbljy38Pi42A8cSg3ZaJS9jTHj+6FnkBPNWRx2EOz2b6IGx/OD8o/nhvGK11NWLpTIYDnQdSeWHB+QxW7p4l9euNtVzUrKMh5RiJgaYvavinyq4TTsLUYGE/Vk1OqTrS8yijdLgJgH5TGFtPB+7zCqu0vh5SRpmAlEeQ4y09hYPQeOZV7g7t+TniPG1jfS0DgppbQKjz65iklEGcm+ocAv2qrCseWRVZDgJRh1LjX2yPi8l0SfLPaP2rPM51pK9RI9QQf7Oymb/A6QmJhHQqSqG1m3AAUf9deJsWRllnlAZuNBr6cQUink3XhyZuBIbvUZMczX96wvdUTbk1ukePNixF1FGOgsWyQatkcz55D28XJ5gF7+7nFQrQQLtUdlJrIJaXfx+dMHOrgMDbcrAe3WB0z0jQlVSjO1WxZI3Fxp2XELQe3b9PGThv7u7FjDpItMM2jOaHmSQDE1ciTI27O1d1mpBSXdEQhjk31D0iVq2o=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,9 +129,9 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Barry,
 
-
-On 2025/8/5 11:54, Barry Song wrote:
+On 8/5/25 11:54 AM, Barry Song wrote:
 > From: Barry Song <v-songbaohua@oppo.com>
 > 
 > The check_pmd_still_valid() call during collapse is currently only
@@ -105,6 +140,32 @@ On 2025/8/5 11:54, Barry Song wrote:
 > madvise_dontneed can now execute under a per-VMA lock, this assumption
 > is no longer valid. As a result, a race condition can occur between
 > collapse and PT_RECLAIM, potentially leading to a kernel panic.
+
+There is indeed a race condition here. And after applying this patch, I
+can no longer reproduce the problem locally (I was able to reproduce it
+stably locally last night).
+
+But I still can't figure out how this race condtion causes the
+following panic:
+
+exit_mmap
+--> mmap_read_lock()
+     unmap_vmas()
+     --> pte_offset_map_lock
+         --> rcu_read_lock()
+             check if the pmd entry is a PTE page
+             ptl = pte_lockptr(mm, &pmdval)  <-- ptl is NULL
+             spin_lock(ptl)                  <-- PANIC!!
+
+If this PTE page is freed by pt_reclaim (via RCU), then the ptl can not 
+be NULL.
+
+The collapse holds mmap write lock, so it is impossible to be concurrent
+with exit_mmap().
+
+Confusing. :(
+
+
 > 
 >   [   38.151897] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000003: 0000 [#1] SMP KASI
 >   [   38.153519] KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
@@ -186,7 +247,25 @@ On 2025/8/5 11:54, Barry Song wrote:
 > Cc: Dev Jain <dev.jain@arm.com>
 > Signed-off-by: Barry Song <v-songbaohua@oppo.com>
 > ---
+>   mm/khugepaged.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 374a6a5193a7..6b40bdfd224c 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -1172,11 +1172,11 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
+>   	if (result != SCAN_SUCCEED)
+>   		goto out_up_write;
+>   	/* check if the pmd is still valid */
+> +	vma_start_write(vma);
+>   	result = check_pmd_still_valid(mm, address, pmd);
+>   	if (result != SCAN_SUCCEED)
+>   		goto out_up_write;
+>   
+> -	vma_start_write(vma);
+>   	anon_vma_lock_write(vma->anon_vma);
+>   
+>   	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, address,
 
-LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
