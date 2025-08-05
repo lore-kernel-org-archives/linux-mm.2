@@ -2,94 +2,85 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F8CFC87FCB
-	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 16:02:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0DC94C87FCB
+	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 16:06:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D28D58E0009; Tue,  5 Aug 2025 12:02:07 -0400 (EDT)
+	id 803138E0005; Tue,  5 Aug 2025 12:06:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD96E8E0001; Tue,  5 Aug 2025 12:02:07 -0400 (EDT)
+	id 7DACE8E0001; Tue,  5 Aug 2025 12:06:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C16588E0009; Tue,  5 Aug 2025 12:02:07 -0400 (EDT)
+	id 717C58E0005; Tue,  5 Aug 2025 12:06:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B277F8E0001
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:02:07 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3F3AEB6575
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:02:07 +0000 (UTC)
-X-FDA: 83743170294.06.929096C
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 52853140013
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:02:05 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=rGISkHgu;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=7wVexZJM;
-	dmarc=pass (policy=none) header.from=linutronix.de;
-	spf=pass (imf23.hostedemail.com: domain of tglx@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=tglx@linutronix.de
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 619EB8E0001
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:06:49 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DD5B21A016C
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:06:48 +0000 (UTC)
+X-FDA: 83743182096.02.4337ECA
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+	by imf09.hostedemail.com (Postfix) with ESMTP id EC061140012
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:06:46 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	spf=pass (imf09.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.201 as permitted sender) smtp.mailfrom=alex@ghiti.fr
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754409725;
+	s=arc-20220608; t=1754410007;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OjUpl3D+nV7PnfJSMgtaqQwj/p3x9pkClHwfr8sk4TI=;
-	b=rdZTf/bHlmSY5/Ho1LS45rHX5C+35W6/PYds+uNLj6/n0h1hlDs/zkECkEmXfM04nWYRZ6
-	O+bOqqYmSEb7Ob0jbIhUvZwhXOrroHAbc3chcaJjSjZBl1w0hdqGGA3rzgDiMxK0uQLBLC
-	yurX4ckU7FQUMe8vS5XBnXojl2egQqk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754409725; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YKKJDDtdxUXV0lV5aN6SeraxUcBFKLa1fTZ3jSmMfEc=;
+	b=mspgBHIFA0sptZWPsqeTDyK0Aa7eVW4/YnzSSeKBYlPy0iBAgQw2KLGss8L/vVkvA4YOGl
+	U0HqRJpDRrBWuXL3pX7nZdZGgsRRLP+F1O4Id0zJeF6znrwyyU5UwUs4dwwKLW4ZKZAk3l
+	DL2Q5gms6eXBloCLNXPEPfnHN+Ri5ow=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754410007; a=rsa-sha256;
 	cv=none;
-	b=xK9YPJnlz+8WPEWOOFi6Tt1/iByPKSU+csh/kfEu9QwnWq5dmZGj/CMRJw/OB73C4sOrYD
-	MTi0U9//+b7Iaut//bUJ1blxjoy7xR6OX1UCcivuhkf0D2KiCbslde+DZEj/Zh6twrNU60
-	TWMm/OsLvRyYmxqEs+sZfr6067qq30Q=
+	b=N2rVIqEadDBwlX4evDKAFFvFQCS/D3/6XgdSiRm7HSTktlstdqBUy46ZNnBPoQcNztYkRM
+	3MNmmCnmOhENqpvB6g5+F9oYedobJP0AeO+BXxJu+ij9em5NVCufJtaIbg4/H813nPce5f
+	ivD5GS1EgK884iDDRz0Dv1gU2/qvFiM=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=rGISkHgu;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=7wVexZJM;
-	dmarc=pass (policy=none) header.from=linutronix.de;
-	spf=pass (imf23.hostedemail.com: domain of tglx@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=tglx@linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1754409722;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OjUpl3D+nV7PnfJSMgtaqQwj/p3x9pkClHwfr8sk4TI=;
-	b=rGISkHgu9s++NgzmXFuwoVK9/yzAMoWkubWqGh4I/o80rTL5gp7OFUG18QYJAB2dBo1X7L
-	qUYm8Obuocud+J3g+6NOGyxo3dmoXOD2ww/A6MumR795OZrdc9eM6vO5HO1xjAY+aS2LGR
-	mhxy3JR8VhHGbCAV0hHEPc2rcrJxSotNduQitYqEn9d/Oh9lN8iHm8ht/HUaTBi2jL8cPX
-	44ygeDLVgXpC7jCIjKrghPAJv/ysRyveG1AG5W95kIDleZgS0pYAz+7ARpRR7ITnejELao
-	EPRuWoBk0RXFYvy0jNoIKcSJTxh+TOtihB9+7zjEpRzREDWKxsP1sTNPgCQZeQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1754409722;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OjUpl3D+nV7PnfJSMgtaqQwj/p3x9pkClHwfr8sk4TI=;
-	b=7wVexZJMBGwPmQNmpAnViqc/PI7DbPGle0gCKHBGNJ3zSqF5izB880PMhpVz5PUqZ7WCoJ
-	Xpra8Wc9+yBGw8Bg==
-To: zhongjinji@honor.com, linux-mm@kvack.org
-Cc: akpm@linux-foundation.org, mhocko@suse.com, rientjes@google.com,
- shakeel.butt@linux.dev, npache@redhat.com, linux-kernel@vger.kernel.org,
- mingo@redhat.com, peterz@infradead.org, dvhart@infradead.org,
- dave@stgolabs.net, andrealmeid@igalia.com, liulu.liu@honor.com,
- feng.han@honor.com
-Subject: Re: [[PATCH v2] 1/2] futex: Add check_robust_futex to verify
- process usage of robust_futex
-In-Reply-To: <20250801153649.23244-1-zhongjinji@honor.com>
-References: <20250801153649.23244-1-zhongjinji@honor.com>
-Date: Tue, 05 Aug 2025 18:02:01 +0200
-Message-ID: <87cy99g3k6.ffs@tglx>
+	imf09.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf09.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.201 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 417DE44427;
+	Tue,  5 Aug 2025 16:06:42 +0000 (UTC)
+Message-ID: <20c1e656-512e-4424-9d4e-176af18bb7d6@ghiti.fr>
+Date: Tue, 5 Aug 2025 18:06:41 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: 52853140013
-X-Stat-Signature: gih8ycz4h1x9ggy1h1ww6gbccoknc9xc
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 9/9] kasan/riscv: call kasan_init_generic in kasan_init
+To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>, ryabinin.a.a@gmail.com,
+ hca@linux.ibm.com, christophe.leroy@csgroup.eu, andreyknvl@gmail.com,
+ agordeev@linux.ibm.com, akpm@linux-foundation.org, zhangqing@loongson.cn,
+ chenhuacai@loongson.cn, trishalfonso@google.com, davidgow@google.com
+Cc: glider@google.com, dvyukov@google.com, kasan-dev@googlegroups.com,
+ linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-um@lists.infradead.org, linux-mm@kvack.org
+References: <20250805142622.560992-1-snovitoll@gmail.com>
+ <20250805142622.560992-10-snovitoll@gmail.com>
+Content-Language: en-US
+From: Alexandre Ghiti <alex@ghiti.fr>
+In-Reply-To: <20250805142622.560992-10-snovitoll@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-GND-State: clean
+X-GND-Score: 0
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduudehiedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecunecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpeetlhgvgigrnhgurhgvucfihhhithhiuceorghlvgigsehghhhithhirdhfrheqnecuggftrfgrthhtvghrnhephffhuddtveegleeggeefledtudfhudelvdetudfhgeffffeigffgkeethfejudejnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepudelfedrfeefrdehjedrudelleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleefrdeffedrheejrdduleelpdhhvghloheplgduledvrdduieekrddvvddruddtudgnpdhmrghilhhfrhhomheprghlvgigsehghhhithhirdhfrhdpnhgspghrtghpthhtohepvddupdhrtghpthhtohepshhnohhvihhtohhllhesghhmrghilhdrtghomhdprhgtphhtthhopehrhigrsghinhhinhdrrgdrrgesghhmrghilhdrtghomhdprhgtphhtthhopehhtggrsehlihhnuhigrdhisghmrdgtohhmpdhrtghpthhtoheptghhrhhishhtohhphhgvrdhlvghrohihsegtshhgrhhouhhprdgvuhdprhgtphhtthhopegrnhgurhgvhihknhhvlhesghhmrghilhdrtghomhdprhgtphhtthhopegrghhorhguvggvv
+ heslhhin
+ hhugidrihgsmhdrtghomhdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepiihhrghnghhqihhngheslhhoohhnghhsohhnrdgtnh
+X-GND-Sasl: alex@ghiti.fr
+X-Rspamd-Queue-Id: EC061140012
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1754409725-186624
-X-HE-Meta: U2FsdGVkX18IUuYAXcx2AVvfHZvshDg/Xir6KSsGdct0pdPWZcUpq2rW6i5LGuLou79d0Z+RKBf93Dg80lyfxEjxgjs+ZMLXz7DDvaS1uzxyqFrP6taaItumlvKGXgtTuIhSVznQL2s2RwIRzipmUfhRKqWzEDyC0RzNNNPpbV1BgSOIO0JucuUjdrnqPD4hxX/oJ3jJlqyd1t/wAAeWBWEubERWhPktKMT+vyY+Lapz4PqfDwESZxZV42tBP+3GvLHDrYWIbCMj8kyGogrZcNmdyDJfo249zAtdaqigbUt1X9XN7sFYlfbtN1LZCHccC9B3jpEzcxfEbvTjpGGayWzHLLOLK/VOfjPBr/BiSO0g1v4Xzn+4rIWB0Z9lHFe8pJ/KrEX71SIWu2GukJxpdj7xfy/PEdTwhjypwPxiOlvB5/Q6fUu6eRZi0M3vCI6gt5crNnty6HJYVwRRqzgsKuUFE6aFGHFTJogHrBZMqerRF+YtNQV9cM8KIz32mwzrXZuIS9VPaBSu+Ul95H8SF04wtvwGaCX2SOlElhtdY6z2kKTiF/jojuYdFELw5syIcX08zhTYlDjxbOtbsNX4SF1r1r4ZZ6KklCiJJgFaeR4jy/6XxplrKS/yqIOTELDAv5RyojPXLxctwobV9qgX1xf/3Msq1I9GZdn6iZSY5V3RYLRxmpm0cIqLECMFTUSQgyTCEa9DjlFcrUxccNONwfevn/XZzj0gpSeOm3LQglE0YsBsvEGLz8pNMuM7tNsXIl7icVz8XrfTcdjNEz176v7roNMFxz4B/6E4m6w36reg7p/t/4oTNRPyAPdRkgAZx1CHPYEJu74eJjJZLTOiQJ+pnnBsBwKoWCuUc82kV1X/l1tmx4VrG1Sw6sMoTes6GQLJHOul8fe5g7lT97LcNaozlIjFxY2ofQGXRfAJGTK4m6xSK0brbevrKwNrlMKGsOHEXWBHYWRRXBK9VML
- nDd/5Q2u
- m5wMVS9UfEi0jl9AW3g8C/UfoOz/rrXUKy5XUGmpG2fudcNXDM2M5byPl0hUKrIKAuFwHP4CoyNG+6ODxphWbElXrVml1aqPxQKcYa5+R3uNxqy7NijFME0bF9KhNiGVFnX+3XO0WxnHUvDT9+pi9iMnZERSKR22oSdJrrHRoDPhYk4ES6qbelAUkoE3sZ4i3mvfUoBuPHGqS9PREXrLqeWVAMtNSg8L1J2xyVA7p3GS4FyvbF4/8cSbVzjjNgTg3Nabyv/FWz8/GxMn4sMa15hAgONHaqPgwQM8zGBMXn2JLeGNPf1tT1sxSCnkmwKn8XSrsiPxK+Bb2bSQeGpUOhgQ+8yDj/FpaXbIvxw7Gg4oRzwmgdDtZbG8tqCELiz0JuuWisbDkc5MU8d8=
+X-Rspamd-Server: rspam09
+X-Stat-Signature: t5hfs945f9q7norkowt785m8m84br8t6
+X-HE-Tag: 1754410006-211221
+X-HE-Meta: U2FsdGVkX1+YibiNBhu2VxpWm+kKtVPsG+xvBA2WzE7wUjTC3aibNwcm+dswQE8TvjN7ML8ECpTY3X8TnfZf5kk6gogIunDY9Eisq/RHvkNRljjgY2pLUPKmcLoZZR/NwvIesCVyv0bYrmAuRtu8AOmNj+2QTzAw9eHz5ZZF89gyWy8+m5K1RhHTQWEgI8spxwM1K0RRDao9VAjctBZjkhgL4x0tAINrmsh8hBoq9BDWVcVnm4I3rP/OWKWuwuIZJhcfR6ZyajkZ6Bct0qMX/qo9uDMk3qFMWoaT6fOxuJGo83wHGztmOHJdJOH/dARj/fYnVyOMZe79iXIG7Zfw29WwDkxfwdGHaqqJ79ExRZsUKt51PDdAMy+qR00LuzmrHq9duV3xPbpmySMaFzeLtrwyt6dBnfmewWWBdKRa9X5tF/y/RVy21P1UXh3uxiIPQSL6xY+AXJMXftj6aLnmyCcsAcWL6BHxF7VZNpFWg5n1SDIL4VGyP5YJxyVDUxrm/vL9eEmiPl9oQtwovO8HAKv5b71xws5J2KIUxYNcDY0givYYJ2ESBdXJHA4Rcu9Jt5iitiecISWhiYXqWePt2YGrGzZ67jlC9rEdjhZc/yxI4RS03oPW+K6fp1rLJG5tr8h39Fn4j6lTjrggAbWRJ8nwWHlKkoSqat+2dYWueLw8LwLgBflZz1MpD5eRXN6Jkrxf9VPXeiaD/FdvvxbUu9nCZXn2yUzZwrUSwe3xejDQ49qcsjkxWn34qGZymUCTGAwa2j30ZfKvxDZU5PYim4Hcd9UGfUaBc13gXSPySW4N+f4SzM1s+f4vIu5+oJJUoIrAgMCw7/2bX+9de2xII2CL6DAMhbjbvy+H28Bmqf4eDE6Ay8e/CXIVArxUR8ZufcwkOeR4zTpeiLGHsx2LvA0PNfGs2vV43vSMJD51O50eAQ7ndT3LalrylI3YTeay6CAArZGDMpkkXbP67NW
+ qWG4jYkz
+ OBmOjiArFvsPS2JMv/fnxvv+G9CSajWsE6kCPWygVFfUA15A4uKKJejlOAPx9aT0hc+m6bBw/4Z9yltX3QLdF/VsEgYa6sZr2EYvPdTBaUAxTrt6TkfilLpRN2zby2xQa1gqLNHwycaVjwhj5GBu60t5OtXCFJJnNxUHnB8zrxeSc+kn0DiaOhgK5vaQjj46wrYXG4qncu4S0UBtNumM3dsHpc3ahbK9XB3kb+yN9fX7yomlayqFTjsxnoZ667awmd5pyz/Icakc0W/uDmGciD4M1AA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,79 +89,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 01 2025 at 23:36, zhongjinji@honor.com wrote:
+Hi Sabyrzhan,
 
-Please use foo() notation for functions in subject and change log.
-
-> The check_robust_futex function is added to detect whether a process uses
-> robust_futex.
-
-Explain the problem first and do not start with what the patch is doing.
-
-> According to the patch discussion
-> (https://lore.kernel.org/all/20220414144042.677008-1-npache@redhat.com/T/#u),
-
-Can you properly describe what you are trying to solve as part of the
-change log? A link can be provided for further information, but not
-instead of a proper explanation.
-
-> executing the OOM reaper too early on processes using robust_futex may cause
-> the lock holder to wait indefinitely.
+On 8/5/25 16:26, Sabyrzhan Tasbolatov wrote:
+> Call kasan_init_generic() which handles Generic KASAN initialization
+> and prints the banner. Since riscv doesn't select ARCH_DEFER_KASAN,
+> kasan_enable() will be a no-op, and kasan_enabled() will return
+> IS_ENABLED(CONFIG_KASAN) for optimal compile-time behavior.
 >
-> Therefore, this patch introduces check_robust_futex to identify such
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217049
+> Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+> ---
+>   arch/riscv/mm/kasan_init.c | 1 +
+>   1 file changed, 1 insertion(+)
+>
+> diff --git a/arch/riscv/mm/kasan_init.c b/arch/riscv/mm/kasan_init.c
+> index 41c635d6aca..ba2709b1eec 100644
+> --- a/arch/riscv/mm/kasan_init.c
+> +++ b/arch/riscv/mm/kasan_init.c
+> @@ -530,6 +530,7 @@ void __init kasan_init(void)
+>   
+>   	memset(kasan_early_shadow_page, KASAN_SHADOW_INIT, PAGE_SIZE);
+>   	init_task.kasan_depth = 0;
+> +	kasan_init_generic();
 
-# git grep 'This patch' Documentation/process/
 
-See also:
+This is right before actually setting the new mapping to the mmu (which 
+is done below by setting a register called SATP). It does not seem to be 
+a problem though, just wanted to let you know.
 
-https://www.kernel.org/doc/html/latest/process/maintainer-tip.html
+It boots fine with defconfig + kasan inline so:
 
-> +bool __check_robust_futex(struct task_struct *p)
-> +{
-> +	struct task_struct *t;
-> +
-> +	for_each_thread(p, t) {
-> +		if (unlikely(t->robust_list))
-
-This is a racy access as the thread might concurrently write to it. So
-it has to be annotated with data_race().
-
-> +			return true;
-> +#ifdef CONFIG_COMPAT
-> +		if (unlikely(t->compat_robust_list))
-> +			return true;
-> +#endif
-> +	}
-> +	return false;
-> +}
-> +
-> +bool check_robust_futex(struct task_struct *p)
-
-The name sucks. Public futex functions are prefixed with
-futex.
-
-But this is about checking a process, no? So something like
-process_has_robust_futex() makes it clear what this is about.
-
-> +{
-> +	bool has_robust;
-> +
-> +	rcu_read_lock();
-> +	has_robust = __check_robust_futex(p);
-> +	rcu_read_unlock();
-> +	return has_robust;
-> +}
-
-Why do you need two functions here?
-
-If the OOM killer is invoked, then saving a rcu_read_lock()/unlock() is
-just a pointless optimization with zero value. rcu_read_lock() nests
-nicely.
-
-But I'm not convinced yet, that this is actually a sane approach.
+Tested-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 
 Thanks,
 
-        tglx
+Alex
 
+
+>   
+>   	csr_write(CSR_SATP, PFN_DOWN(__pa(swapper_pg_dir)) | satp_mode);
+>   	local_flush_tlb_all();
 
