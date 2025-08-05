@@ -2,190 +2,127 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7EAD3C87FD1
-	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 12:10:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EA16EC87FCB
+	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 12:13:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1FB086B0098; Tue,  5 Aug 2025 08:10:48 -0400 (EDT)
+	id 8B8108E0002; Tue,  5 Aug 2025 08:13:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D2B66B0099; Tue,  5 Aug 2025 08:10:48 -0400 (EDT)
+	id 88FE48E0001; Tue,  5 Aug 2025 08:13:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C1996B009A; Tue,  5 Aug 2025 08:10:48 -0400 (EDT)
+	id 7A5EB8E0002; Tue,  5 Aug 2025 08:13:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id F0D8E6B0098
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 08:10:47 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AC3E281018
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:10:47 +0000 (UTC)
-X-FDA: 83742587334.13.CDA6F1A
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 0E5BD2000E
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:10:44 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bP0AIIQV;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754395845; a=rsa-sha256;
-	cv=none;
-	b=GfsuXtSliDldQx5CbV81KVK4vAJp+UD2WG0iWSDadzth28fuLx0gc4QcSLZgvEG6qDtbP1
-	rUu6s45zP4W5VdkgsoVDA7cR8DTvpBRojImu1gACagO6pzLmBV8U5Am9c7bbT1HLAeFEYI
-	sgFc0B9O5iUDkOAon5LYYzpCLB57V4k=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bP0AIIQV;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6BC888E0001
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 08:13:59 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EEDF5B82DE
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:13:58 +0000 (UTC)
+X-FDA: 83742595356.26.B83F2D6
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	by imf01.hostedemail.com (Postfix) with ESMTP id E5A4940010
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:13:56 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ep4eSDMa;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754395845;
+	s=arc-20220608; t=1754396037;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mxPZ9mV2VGEDs+TcyLyleA5F2IOZRlRZriZVa56GH68=;
-	b=6UzHOcdzdW0pvr71/IRSEMph4EybVQ1PZ47eVJpZ/U4ED9PZrUKBr0KQlhn4F94ooyKRw6
-	8JyPmp/NqO29TYtzVwKju88RbFJuII30TdBpZJsb9ao+lahMjY71Ev8u/XYd/xJEUc/uyh
-	/1lf28DKSh2dG/grS6D1iKjEfM4tKKI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754395844;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=mxPZ9mV2VGEDs+TcyLyleA5F2IOZRlRZriZVa56GH68=;
-	b=bP0AIIQV1Je0WcEnkmGqaJGd0nAyN5xTZwMLhbKrsxlL9kqpVkk8w0zG5ICW/kIBB1EqWu
-	C6W9O5LsFnO3pdzgGRvQPG7GhD+eFKC8URRR1qLHdDRSceLhhm4/fVyCtHc6gj3C3i2992
-	4T2/LY9iB6dguH/Rb+0/OxdNHksXr/U=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-596-IdkwyQlXPLGkcQkG2pAA6w-1; Tue, 05 Aug 2025 08:10:43 -0400
-X-MC-Unique: IdkwyQlXPLGkcQkG2pAA6w-1
-X-Mimecast-MFC-AGG-ID: IdkwyQlXPLGkcQkG2pAA6w_1754395842
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4538f375e86so43079415e9.3
-        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 05:10:43 -0700 (PDT)
+	bh=GQRMFhKZNRLRVXrqn1NUSMh/FhCDWMwTV0xGjqW0gQ0=;
+	b=aX/9Usn6yFFiFTGWDvHKqB1UtOSUzEDfu5/gNjpeI6pRFnli2dosBPxPWkUi19miInU1U0
+	wGm9MreyKNqHJQ8ZrEMtW5yLQP3gwLI4GceS3uy0XDeLfp6vMGfCMW1oc1bGfGow3qe2j7
+	WvhcFIqjBjRVBelWaJtkboTfwbLCXzc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754396037; a=rsa-sha256;
+	cv=none;
+	b=Yy9WXkYvcBENhe+BXrXvei114lREzETXV+ab5wC6rCbTWVV4T8Dprg3JtSKBL7lCh86YWb
+	SMUKEOHdf86VNX4Y1wt8iBtCOrlonAqMkIgQA7a7AtSQe+doUn+IId1Syvm12xF2ZDN6P4
+	qPFDqIlD0LQb1ZG1Jjbp0hxJK41gP8c=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ep4eSDMa;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3b783ea502eso4128477f8f.1
+        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 05:13:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754396035; x=1755000835; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GQRMFhKZNRLRVXrqn1NUSMh/FhCDWMwTV0xGjqW0gQ0=;
+        b=ep4eSDMaDqlI6T5e8tTpnVSgiOvSKXI487qSxE7C7YkXFYSwqGaA1iAQbl7z2jnfXw
+         qQcn2aqQzrHIi7QgNDSKLw4Ajq3FcNXQSAqrU6ljuFlodLUKzFIgu5T6ZJ5HBh5aA9Y9
+         SUbi6SDp2oNO0U+uLqGZYKMbtKOtKEArNyols+ohURtKKONndoOL6DCs7wbJMuKXEPvN
+         dzMp7s/dvOz9q7JQI37p+IFVgiJUw2O/X9fU4RuCWxLO9+8ExJKXIctBVxGw11EeWxdm
+         m95uQ5TL8NE4grnqnD9xkas04tqIs1i2Y9wCdcu5HXITfNYfH+O4xMtYla7QZYFsuf9e
+         x0qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754395842; x=1755000642;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=mxPZ9mV2VGEDs+TcyLyleA5F2IOZRlRZriZVa56GH68=;
-        b=NRX2YiUgQXx6PHxQVJf4fr6zIx79icin9vwGTog7DoJle7Fk3BrFtRbpIH2kh0GCat
-         +LJHvB174Irhs9DXcXcQZLy/DxMtdLCW8EF3KwE1aIgB3R1Juy+25lVLpIRbg4pZV8jJ
-         yzo3nCFErIbvMJ+igw2WBAKYjU3saQ5A+GBfc5/chThnQJltGy494jvzXaC//tSO+0Vn
-         xAguiHe8zPPCCycyVrTOrtLGJpyugBZX+FrIT8yBLySa1F5YciwnWHy7Oi76PVelCm0l
-         +IRqdpDXPJ482H/ahtTtw6DbJsfYECkOrJdPeL3WbZcS7dquVf5h82aqUnARGoiIGiQb
-         qkcA==
-X-Forwarded-Encrypted: i=1; AJvYcCWc2S+Tq+C4q2axMcG88HhdhLy98KGE7W2CBR42zJQ3R0J8XSlUgZDnz5Y0ldChk9HFLCKs13hJTQ==@kvack.org
-X-Gm-Message-State: AOJu0YwOh43k9LjDC6YW8lf/T6deyx5ELa+/5hyUPhfRnj5LCY0a7rny
-	y0eU0Hep23u0SkSYtzu1p5RF8W91hjNL3S0CeRRhwRq7NkJankLrNpsh+/cdBzXNt3skbINZ1gN
-	1SXKtt+MzsXOkm3CA4BEjfBWcZXwOJztmiNoh42xFwt7bB6IkI0vb
-X-Gm-Gg: ASbGncvSYt4V1W9Qu6CWdUTudC0TcfaiiAeqE5YryKDbC7ureq0lYKkLfzE9yWlWMj6
-	zM2ao1cHY3uBfHcCUeP2xy1wc5BBWhRrkGIRks7IHoAq84vUFLgEbpk8gsrbEs1w9lFZQn/so3Z
-	LhgtmUf1MatxpDaHZKGr2rcNL7c+AU0BpfqhEWCciSBbe73yAbdWZxYB4WV+58c/SJyOiOWcZcQ
-	CKqwbvi+sovwLmE1N0hg06vG5HtcQTIemiXU+ivwulnaPiPNr/hVZrBxV0LEh8n3efn77u5EBLU
-	atWnJuPc/ySwmCcIo2sl0jkh+tMYf4duEvVn6f8ezB9KFIrll5JqFGhUg2pChYmkYIWBFOmk+ne
-	1v41vQj8NwmcrFNpBDaRRCyLkN+qiJrQm6lQu6JVNowq/Sp/dhZShwQSMiIc+h1dfMPc=
-X-Received: by 2002:a05:600c:1391:b0:43c:fc04:6d35 with SMTP id 5b1f17b1804b1-458b69ca295mr96547345e9.4.1754395841885;
-        Tue, 05 Aug 2025 05:10:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFRVCbz9qSTE0QSs8VJxnp/4QbJ3PPlhM2p3GCusUFNug/XIQgjZ+Xc7sBO+ds4FESyakyM7A==
-X-Received: by 2002:a05:600c:1391:b0:43c:fc04:6d35 with SMTP id 5b1f17b1804b1-458b69ca295mr96546975e9.4.1754395841451;
-        Tue, 05 Aug 2025 05:10:41 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f2b:b200:607d:d3d2:3271:1be0? (p200300d82f2bb200607dd3d232711be0.dip0.t-ipconnect.de. [2003:d8:2f2b:b200:607d:d3d2:3271:1be0])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-459c58ed07fsm98317775e9.22.2025.08.05.05.10.39
+        d=1e100.net; s=20230601; t=1754396035; x=1755000835;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GQRMFhKZNRLRVXrqn1NUSMh/FhCDWMwTV0xGjqW0gQ0=;
+        b=vCpelliJ52zi4LZSySSVFXTq/5+tDHI9TR1ExjqX4r/VdWVD1nUeQmzyHKXIUP/JE3
+         CZC7kLRqFpMsYnr6fNE6pRF++BGCKfa+RUHP2wSqOSnz0girYo8notPy1GXnM5cL8U3h
+         AeL+1VQDOHypY8RYjMUC3DwfopSIv8/Ll1a3vDhR/Jn2HNhOGC+GJQPKAjLHXtKmq7q8
+         WDC05c8SwzcPVYzq7JEExd6zd1odFQHWa5MjR4v/ftShzoNXqaFzMd0lbgoOCvB6Pxfp
+         AO69EHaoJbRNTVYVVt4Jv0oNPgKZt1uRUSwnQ7jV86M+sDnb/dO23dI+6clIpeY/sxTT
+         lvVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXsflCKfXWd9+uV/fRf1AdjQArjCkLJlMHSnqKM3fBqNm1DS0Zcmbum87YmO3qHamn6emnEXrrR0g==@kvack.org
+X-Gm-Message-State: AOJu0YwkQDESHz8JS84wDVXUArgweyY7sBqxGIg5fUHlmvvCwoM+4Hr9
+	49Dim1gPdkkh9gGEAR2bol8js66Ip4GP4MJ0ropuxSRmTkl3tVKewvBl
+X-Gm-Gg: ASbGncsYZz8yp1jbHl9w3H0l3/iT4waHKDMoGlQVYxyxyJ/ddd6B8j5X8sNvVM8fsLE
+	03bOTXMXb36b7tEftOjMXQB7TliZ9oPJlnEFrV06j6i/IjgxFdGsOXGf7MRxBYhc50KtoSiKLJ/
+	JOrYgChfMF3XPrvz8fM1Z2CS39xKzFLC/3Tin2KBp1v20F/HeLzjsXKuV9JQpHZjuVnXFTgKWzq
+	6WqTjSYh5ICAG3fbaoYcd628olVybFhKy0LMxcX0jfqxhEdCHJInkIhkD6iXlnbCtkREmtnrne3
+	6Qer/1uspxgCA7vjfzxD80dl4ewekYtZvebGXEdQM7pdMywIp5bwt6UpE47m/aVqDhdKIk4R7Vc
+	Qon0Ol2Wxn3limRfcJgTA8lL+WbEMPU3YuTKKXZZMu9GEyrDI1sB0gACOAirPDE7ARB3VqNy+u4
+	4VJn/Y3Q==
+X-Google-Smtp-Source: AGHT+IGwRKtI0tVNRZIj++4L7ABQYvhpdiJwXLcYY2IEL2oHCw8906db2fHyLCpfcG5BZzaLfo/kpQ==
+X-Received: by 2002:a5d:5f90:0:b0:3b7:90c7:325d with SMTP id ffacd0b85a97d-3b8ebc9e883mr2324975f8f.6.1754396034932;
+        Tue, 05 Aug 2025 05:13:54 -0700 (PDT)
+Received: from ?IPV6:2a03:83e0:1126:4:14f1:c189:9748:5e5a? ([2620:10d:c092:500::6:98ea])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c3ac036sm18872226f8f.15.2025.08.05.05.13.52
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Aug 2025 05:10:40 -0700 (PDT)
-Message-ID: <ca35da97-13d1-49f1-95b0-b8b9c8a7f540@redhat.com>
-Date: Tue, 5 Aug 2025 14:10:39 +0200
+        Tue, 05 Aug 2025 05:13:54 -0700 (PDT)
+Message-ID: <2c795230-5885-4a1a-a0f9-c8352b9e7738@gmail.com>
+Date: Tue, 5 Aug 2025 13:13:49 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/5] mm: add static huge zero folio
-To: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Suren Baghdasaryan <surenb@google.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Borislav Petkov <bp@alien8.de>,
- Ingo Molnar <mingo@redhat.com>, "H . Peter Anvin" <hpa@zytor.com>,
- Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>,
- Mike Rapoport <rppt@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
- Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>,
- Thomas Gleixner <tglx@linutronix.de>, Nico Pache <npache@redhat.com>,
- Dev Jain <dev.jain@arm.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Jens Axboe <axboe@kernel.dk>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, willy@infradead.org, x86@kernel.org,
- linux-block@vger.kernel.org, Ritesh Harjani <ritesh.list@gmail.com>,
- linux-fsdevel@vger.kernel.org, "Darrick J . Wong" <djwong@kernel.org>,
- mcgrof@kernel.org, gost.dev@samsung.com, hch@lst.de,
- Pankaj Raghav <p.raghav@samsung.com>
-References: <20250804121356.572917-1-kernel@pankajraghav.com>
- <20250804121356.572917-4-kernel@pankajraghav.com>
- <4463bc75-486d-4034-a19e-d531bec667e8@lucifer.local>
- <70049abc-bf79-4d04-a0a8-dd3787195986@redhat.com>
- <6ff6fc46-49f1-49b0-b7e4-4cb37ec10a57@lucifer.local>
- <bc6cdb11-41fc-486b-9c39-17254f00d751@redhat.com>
- <dwkcsytrcauf24634bsx6dm2wxofaxxaa4jwsu5xszmtje3gin@7dzzzn6opjor>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- g3eXuA==
-Organization: Red Hat
-In-Reply-To: <dwkcsytrcauf24634bsx6dm2wxofaxxaa4jwsu5xszmtje3gin@7dzzzn6opjor>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 3hyV6F7XUj6wM2Dgu7Ks2F3sMJ6teuVKbW6rUECVBNg_1754395842
-X-Mimecast-Originator: redhat.com
+Subject: Re: [PATCH v3 5/6] selftests: prctl: introduce tests for disabling
+ THPs completely
+To: David Hildenbrand <david@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Cc: linux-fsdevel@vger.kernel.org, corbet@lwn.net, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org, baohua@kernel.org,
+ shakeel.butt@linux.dev, riel@surriel.com, ziy@nvidia.com,
+ laoar.shao@gmail.com, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
+ npache@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ ryan.roberts@arm.com, vbabka@suse.cz, jannh@google.com,
+ Arnd Bergmann <arnd@arndb.de>, sj@kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, kernel-team@meta.com,
+ Donet Tom <donettom@linux.ibm.com>
+References: <20250804154317.1648084-1-usamaarif642@gmail.com>
+ <20250804154317.1648084-6-usamaarif642@gmail.com>
+ <eec7e868-a61f-41ed-a8ef-7ff80548089f@redhat.com>
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: cc918z8in9fyeecqiswm5qwd6ggrnis7
+From: Usama Arif <usamaarif642@gmail.com>
+In-Reply-To: <eec7e868-a61f-41ed-a8ef-7ff80548089f@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: qg18yo3hwmkds5ynjmuyacnt93wgbo6i
+X-Rspamd-Queue-Id: E5A4940010
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0E5BD2000E
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1754395844-698596
-X-HE-Meta: U2FsdGVkX18cyb1hhn3UjBe/+8jAf1ecu4IyzB+1Na7YBqUx0cqJBJrTLXoPfbcv87GAoJrV75LAymM+EEZAla4G0l098A5r/fVXWJlkEsb7xU14tYwmehSPdCzJag3+P5o0+SPCoy9qlDxP+GvKW+p7WeVMk9prQSiqSDWXsSDpz1Ks+XhEb+PjTreu/CfgDciJKEDkHZLePeyEsslGMS2Dyaw8StPhahrzXr54Pql0KKv2wC0cG2a3P/vY/+WW7eMClYWsvq0VjCkIn5FdZriJHbPI6RyiOWppJwDjRvXNazKkGBWaq53OJ3Mx+ZWBfKjIdiZe+PKSFvflkU1q07IFjSdFWep7WDFbppWvXrO+TdBPSIgW+NbNJrhbPUsHtijae7FFk9xz7C1PWg/9P7W8TOhT0j7ZVyZCFDuLjL+hkMqnXPQfr7ZoOqkjA53p3K3tGm+qCKRjcoq+N9t+NFuGhw0MOoLi60BlmuflrLisqjxeEYX9k4s0iCZ6AqWH6WVZooTwDWUKbJp6563qD1EacQwaZnz9wTW7wS5aL/kXV2M7Z9SMPSqMdbSb2JwyzzZ0p+mD2uBbrrbIxoud7HE8+q2+FY74TuQI0mbnvMQWr4RsnY7YxB2ewUxL8VAWIeFMiT8ZB3snqcVx6fqFqpUc6dSeQxnSUVKW2DgY7Ae2rbI5j4GhsxDqHCmNQxGEi7RCZYfP5wbLXIvo/mnZyWzWoHF520EfvfNGgFXH8EXG1mUdIXk3QfED18JiAYR0Qvc4Yyd71qh8WMfQ52KtNarrEB95mWP6VEsGbwiMGl2sx6GFIEzMUzIqw/AxelGxi0WBBTHFOZqzQi6ewgOgczHWokbW5Sy9zis+0Et0od8+1buiSiKmp1xdLNb+kts9eRtOWuZRiis2GWkns4TyOXYFLV1bakzH5gBM6nLrCeNGOnjSLL8RivOUaJ0RchKRi9/P+hgvOyjsGZxld7w
- HxDRuyya
- pIHq2mHMaTWgYhDggUSYX2ZVZW37rcePN3LNYb0u/Zp2NF6dh2nWhW7D4j+OKcyI4XVKsdwJSBCI0Ye5C7NIdRjDrkeCEvlI0O82OFrO2XUx6ENHWE6rA5QGlpCjyQJQyym0ZdskcE2WUyPKxnnTmNmvVGhiU7LzXD+dQj5YrcFOX2N3XXxUjfOsDvsHDnw7lzG6SgmrDbL4dD1uhrvjCLV/X1sTRdFmA4Iuxjm4RwJkWzBIPCU9CP3JqS5tbl/goxteCYuSdZw3qWt+tuTzfYmr15qeSO7kZhwk+/jlCiTUq1TFvjb6tl48U4tleLoZ1pXxf/1ZzN8/trCs6z/IrSHpa/l4IH5iPUDFdHAmLgDf1auMULFc35TD1iOrUaowWJlZNg/rlW5IdxyGW7ogCboRIRtSiWrn/+jobZxiIYamiOc6X+sTepywopCAz5vcE8dhdO5U4L9AthpaeXB1sk2+0O8n9lHnT2N7pXnjTx+5EI0B1nZRnNGlUuzcGwyjrFZYL3VPJrIYp8I06WR518BhBnd2Ddwj3F9aR
+X-HE-Tag: 1754396036-623212
+X-HE-Meta: U2FsdGVkX1+Ww/opg9Ux3LymR2k5KWBIDvgU1kXfenaq3h6FREDPKOyNlArj4tJpA9eZQWRErJgOaFMhnbkitMIcVn/h6c70SAnbmOlZn2iYvr2OzHRv8wj5yf1SYGWt+SgZYN6MD7vOJ5NCEYu5PyvWttRkoPIDq8oiXqLOHX2LteF9qlX/XSojksupOVg0mpIqsiv2WCIecTcvH8WPyRAfl2ODE1SiuACS7hXa8haR+a2n3YBccHQlS2D6ck7nX0uh/un7d23Vy0EWIYIBuC9Ou6pk6xw8nTN0W7ym36EEzwBoGz06SojUFiwhtDaprEL4n4bRq9ZgLxebV6ThK0VOyoKK5qJeFOspiiy6S1OK0Y0KKwzVUFXDBc90e/Pm0FIrIPWpdVNtlwGLWQpvUtGXJXo/U7i7EpweD29KFBO4wfeVJkANbFF2MxrCbJvmAG72CJprgjB7k9BeaCepGskPw0h5N5WN0ZFX9WogT23hNSWb+Wr4vdMfjRzMJgvp6xbq8CVj9y1f98BeXbPoy2gC1L+kii0Ra3wAtP/FHFq/hudZkOBI/FRK8ozbUYz6Wxiq6LxqgZsQt+gmT1hEGjTA5qC1uAeF04hjtXpP6e3Rybh9WXIqZJ4jP8wI10eTgGeiZUn3+NkETTykVqwENgZkiFk/1dX6fhX3veIsII/tNAlh/dPzKyFSDqc/2Vr8mkPMbvCzd404mN0zt3jYXVgwtv1+3qep0grlnf3QhfLTa2f0SySQsmOac59v4+XHD3PQZ3SYwRfbTvDhVMuWyGzvsl/KF/MzFUprpS2guPSlBgyC9Fgj2aPHTUrowtCSURLB+Tu4QMBv2+RkYqEc0YPY3KS7smj4QnVEZUtjC3XiOK59cWVIbqKRveFxZHui0Uue2zEAxxn3y+2fTAlhSsdBmRgeu7+NsqZgS81HSuXDgDe8xYkMJd+paLOyxQiti9hKVNnVMfFXyhBho9Y
+ nK2/z29W
+ G8isce50xZ9PUBDS9NomVycb8nr5OWMAbT/9Ai6WwDcASLvQWowgAlLEFaMiy0Wm+3KQo+NpmDet8L+2HJauaeV/u8wyvGNDeOWvZHa+NFCU9aMGHPtvtZQJGwjW3K9GEhIr9ZYoXJqvNgMyn/WBsZnKQH3VpUtonb3qTcDvLu9yeUPAuLSrSKZD9LN1W8hS0sUIYAr+ELJHs0OIjFKqvUEjDt02WatfxWPtdQVWtdFyj/pTLRBrZ33R7dPxdsYEdgowrkYDy44pUx+oD23+ZKm8PNpUOCf6LyVsAy7VXWtS7wnf3BdIu4iKbNUve/uod0fuGMIFNjA+eJxLYsBfOK3v5hS6W4Kk/CQWoLBm4MgT2FnVgyFZrrN1F444+xr7v8fkKPN1E3g2cGJvqoEZp/IN2bgFNAIOVFnOSE/8vXLChV4QmdCO4K2W//KASRM9ouYp9RMe5lLYxbnrDWdbMtXQF9+CW9Bsm/H3VAMVpsGBRkGrlF2B4oDicNCj3bRoQh/Vh7G6F3eIjh58CNZZr0s8TqN6uBXiVYouN+we5GC7xiWW1KycmNdZfCqEV5ehJXCZ6RLB5vFgXtrQG/eg53YOL70oeleHQXWHZYi6yA60TEyGaCuwL4wke58a8uOm+shyp
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -194,53 +131,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05.08.25 13:40, Pankaj Raghav (Samsung) wrote:
-> Thanks a lot Lorenzo and David for the feedback and quick iteration on
-> the patchset. I really like the number of lines of code has been
-> steadily reducing since the first version :)
+
+
+On 05/08/2025 11:30, David Hildenbrand wrote:
+> On 04.08.25 17:40, Usama Arif wrote:
+>> The test will set the global system THP setting to never, madvise
+>> or always depending on the fixture variant and the 2M setting to
+>> inherit before it starts (and reset to original at teardown).
+>>
+>> This tests if the process can:
+>> - successfully set and get the policy to disable THPs completely.
+>> - never get a hugepage when the THPs are completely disabled
+>>    with the prctl, including with MADV_HUGE and MADV_COLLAPSE.
+>> - successfully reset the policy of the process.
+>> - after reset, only get hugepages with:
+>>    - MADV_COLLAPSE when policy is set to never.
+>>    - MADV_HUGE and MADV_COLLAPSE when policy is set to madvise.
+>>    - always when policy is set to "always".
+>> - repeat the above tests in a forked process to make sure
+>>    the policy is carried across forks.
+>>
+>> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+>> ---
+>>   tools/testing/selftests/mm/.gitignore         |   1 +
+>>   tools/testing/selftests/mm/Makefile           |   1 +
+>>   .../testing/selftests/mm/prctl_thp_disable.c  | 173 ++++++++++++++++++
+>>   tools/testing/selftests/mm/thp_settings.c     |   9 +-
+>>   tools/testing/selftests/mm/thp_settings.h     |   1 +
+>>   5 files changed, 184 insertions(+), 1 deletion(-)
+>>   create mode 100644 tools/testing/selftests/mm/prctl_thp_disable.c
+>>
+>> diff --git a/tools/testing/selftests/mm/.gitignore b/tools/testing/selftests/mm/.gitignore
+>> index e7b23a8a05fe..eb023ea857b3 100644
+>> --- a/tools/testing/selftests/mm/.gitignore
+>> +++ b/tools/testing/selftests/mm/.gitignore
+>> @@ -58,3 +58,4 @@ pkey_sighandler_tests_32
+>>   pkey_sighandler_tests_64
+>>   guard-regions
+>>   merge
+>> +prctl_thp_disable
+>> diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+>> index d13b3cef2a2b..2bb8d3ebc17c 100644
+>> --- a/tools/testing/selftests/mm/Makefile
+>> +++ b/tools/testing/selftests/mm/Makefile
+>> @@ -86,6 +86,7 @@ TEST_GEN_FILES += on-fault-limit
+>>   TEST_GEN_FILES += pagemap_ioctl
+>>   TEST_GEN_FILES += pfnmap
+>>   TEST_GEN_FILES += process_madv
+>> +TEST_GEN_FILES += prctl_thp_disable
+>>   TEST_GEN_FILES += thuge-gen
+>>   TEST_GEN_FILES += transhuge-stress
+>>   TEST_GEN_FILES += uffd-stress
+>> diff --git a/tools/testing/selftests/mm/prctl_thp_disable.c b/tools/testing/selftests/mm/prctl_thp_disable.c
+>> new file mode 100644
+>> index 000000000000..ef150180daf4
+>> --- /dev/null
+>> +++ b/tools/testing/selftests/mm/prctl_thp_disable.c
+>> @@ -0,0 +1,173 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/*
+>> + * Basic tests for PR_GET/SET_THP_DISABLE prctl calls
+>> + *
+>> + * Author(s): Usama Arif <usamaarif642@gmail.com>
+>> + */
+>> +#include <stdio.h>
+>> +#include <stdlib.h>
+>> +#include <string.h>
+>> +#include <unistd.h>
+>> +#include <sys/mman.h>
+>> +#include <sys/prctl.h>
+>> +#include <sys/wait.h>
+>> +
+>> +#include "../kselftest_harness.h"
+>> +#include "thp_settings.h"
+>> +#include "vm_util.h"
+>> +
+>> +static int sz2ord(size_t size, size_t pagesize)
+>> +{
+>> +    return __builtin_ctzll(size / pagesize);
+>> +}
 > 
-> I will fold the changes in the next series.
+> Note: We have this helper duplicated elsewhere (e.g., cow.c).
 > 
-> <snip>
->>>> @@ -866,9 +866,14 @@ static int __init thp_shrinker_init(void)
->>>>    	huge_zero_folio_shrinker->scan_objects = shrink_huge_zero_folio_scan;
->>>>    	shrinker_register(huge_zero_folio_shrinker);
->>>> -	deferred_split_shrinker->count_objects = deferred_split_count;
->>>> -	deferred_split_shrinker->scan_objects = deferred_split_scan;
->>>> -	shrinker_register(deferred_split_shrinker);
->>>> +	if (IS_ENABLED(CONFIG_STATIC_HUGE_ZERO_FOLIO)) {
->>>> +		if (!get_huge_zero_folio())
->>>> +			pr_warn("Allocating static huge zero folio failed\n");
->>>> +	} else {
->>>> +		deferred_split_shrinker->count_objects = deferred_split_count;
->>>> +		deferred_split_shrinker->scan_objects = deferred_split_scan;
->>>> +		shrinker_register(deferred_split_shrinker);
->>>> +	}
->>>>    	return 0;
->>>>    }
->>>> --
->>>> 2.50.1
->>>>
->>>>
->>>> Now, one thing I do not like is that we have "ARCH_WANTS_STATIC_HUGE_ZERO_FOLIO" but
->>>> then have a user-selectable option.
->>>>
->>>> Should we just get rid of ARCH_WANTS_STATIC_HUGE_ZERO_FOLIO?
->>>
+> See [1] how we're going to clean it up.
 > 
-> One of the early feedbacks from Lorenzo was that there might be some
-> architectures that has PMD size > 2M might enable this by mistake. So
-> the ARCH_WANTS_STATIC_HUGE_ZERO_FOLIO was introduced as an extra
-> precaution apart from user selectable CONFIG_STATIC_HUGE_ZERO_FOLIO.
+> Not sure how to resolve this. Probably, which series lands first in mm-unstable should clean it up.
+> 
+> I would assume that Donet's series would go in first, such that you can just reuse the helper from vm_utils.h
+> 
+> [1] https://lkml.kernel.org/r/20250804090410.of5xwrlker665bdp@master
+> 
+> 
+> Nothing else jumped at me
+> 
+> Acked-by: David Hildenbrand <david@redhat.com>
+> 
 
-People will find creative ways to mis-configure their system no matter 
-what you try :)
+Thanks!
 
-So I think best we can do is document it carefully.
-
--- 
-Cheers,
-
-David / dhildenb
+I will wait a few days and see if it has made it into mm-new and rebase and send the next revision.
 
 
