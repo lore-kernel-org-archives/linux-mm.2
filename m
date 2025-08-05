@@ -2,107 +2,100 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 57912C87FD1
-	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 11:14:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D535C87FCB
+	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 11:25:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8CE66B009A; Tue,  5 Aug 2025 07:14:24 -0400 (EDT)
+	id 1BE266B0095; Tue,  5 Aug 2025 07:25:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3E526B009B; Tue,  5 Aug 2025 07:14:24 -0400 (EDT)
+	id 195FD6B0096; Tue,  5 Aug 2025 07:25:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C53D96B009C; Tue,  5 Aug 2025 07:14:24 -0400 (EDT)
+	id 0D2E06B0098; Tue,  5 Aug 2025 07:25:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B1A4C6B009A
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 07:14:24 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 65164140111
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 11:14:24 +0000 (UTC)
-X-FDA: 83742445248.01.EB89D23
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 3B38220010
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 11:14:21 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=KAG0nDb2;
-	spf=pass (imf03.hostedemail.com: domain of bhsharma@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=bhsharma@igalia.com;
-	dmarc=pass (policy=none) header.from=igalia.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 00E5E6B0095
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 07:25:14 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A05B0B77AB
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 11:25:14 +0000 (UTC)
+X-FDA: 83742472548.02.826BEBD
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A06C9C0002
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 11:25:12 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=PtgDFKnz;
+	spf=pass (imf10.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.161 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
+	dmarc=pass (policy=quarantine) header.from=pankajraghav.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754393113; a=rsa-sha256;
+	cv=none;
+	b=P14+ZQVQR2TnKUrOOYcl9jeqN9Hruepsq6dhqfBj5BVUd3Y0UYDLN2dORtqERHd3Z4Cj5U
+	CWaRYBtcPnJoJZ5/ym7uvhHKLJZIQXEiW6URMk/fcy/QnbEPDmZKIJcyw1uczkTpzY3FM1
+	/YPwxEhjzyJABvHDByFrqZU6nqUwKPw=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=PtgDFKnz;
+	spf=pass (imf10.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.161 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
+	dmarc=pass (policy=quarantine) header.from=pankajraghav.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754392462;
+	s=arc-20220608; t=1754393113;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bgVI/REEX1RcSxnDg5Q8C5uv8j4eEiN9+bNJh7WkDrE=;
-	b=AVS7wYl0AlDye6Zk6/OsEzgChYXtDuURs21XksT/hgbdzISq24vs9QbxlblRpG5FNd10kR
-	gx5ZhvJvnuNH6sNRQ0O7edmZTEVPm5QK+2QlwxVS8ZdZWyzg/yI4KhYkGGWFPkAMA5Qc4R
-	e3UN2uQ5qTn1Sw4sMdaa8Poh0iWwUJM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754392462; a=rsa-sha256;
-	cv=none;
-	b=wlnft5zWtzY6oCkOuMxTsmSWOTPMjdUgylDytSnTX5u7xv2ExDqLfKx3WKSyryd+Woi/XW
-	FwGgue/Lq8KEg6dry/OS3f54Rv2Jaz8vBqLUd6F8Bv6OlKFXyBARIRql5osU0KGjfWkCfB
-	XItSUZ4wvAMpHpo+sq3Ec2A52IorgI4=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=KAG0nDb2;
-	spf=pass (imf03.hostedemail.com: domain of bhsharma@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=bhsharma@igalia.com;
-	dmarc=pass (policy=none) header.from=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=bgVI/REEX1RcSxnDg5Q8C5uv8j4eEiN9+bNJh7WkDrE=; b=KAG0nDb2y1oP1WiWoj0oaxb99a
-	OQadSf83hX7TeXKy+bACaAQJjKdOpPXnB0oICAPokwy7Nrm0AIuA2cjpyI0SWTHd81y0FNe7z16e9
-	LU2R+YSHOyVvYwFWmh147QSFpaCHcyxW0KlDYmmeYp3fRIll47oo5vowhHj4KVWioO4qYm/FyifQT
-	cQtrV0dEUJcf/63kTcEzJzrHXj/ql6JFBmiUFDVemTTvSmyHTyDFFljKXzERQlGP4rvZIY+nkFi7u
-	1KvCLSvSn991ikuYFq0KavSzT9Akddcniwec8tFG992e0qsdnGC4Io3X6ctd97FRFLdbCZfp9FzCr
-	IwjGnzlQ==;
-Received: from [223.233.65.189] (helo=[192.168.1.12])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1ujFcO-009f93-3s; Tue, 05 Aug 2025 13:14:08 +0200
-Message-ID: <dfdc2c2c-1486-a84d-9ca2-3b48b68773ce@igalia.com>
-Date: Tue, 5 Aug 2025 16:43:58 +0530
+	bh=pUqghyW3Gb16EpTzfk2IyTRYy66SrKEo+Ar4DAbeucY=;
+	b=45Ut2F0cLb1myAMmV6isAj9zhlfG/2s2HHD2VJns7uRfeo9SdumsB3CPRycapSItC65MmS
+	/AmMiBb0LI7U1ZjRFSa/N9ugTAHEefvfgZ+jO+21cZz4lza4aVDKHQ+/heYjb3f93+CWmM
+	MzAL9vYXeuXGRcZgbJIpRIWK7p6+kZU=
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4bxB0z6nbYz9t6m;
+	Tue,  5 Aug 2025 13:25:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pankajraghav.com;
+	s=MBO0001; t=1754393108;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pUqghyW3Gb16EpTzfk2IyTRYy66SrKEo+Ar4DAbeucY=;
+	b=PtgDFKnz1FTIzGDYS+qF37UY4zwnjW+1Of3QbKKYeiHOuVqz60tfycdjsMLn31ptCKJCXI
+	MCcdzweG19TGdEGmh02rzNll96Wn/rPTEFMJ4e9j2fH+d9sEXXRDmVXl8jhFaROD+xgNlm
+	elM0yU3OPkf2Fmnh/F20D9s/Kx4mccUq7pdQlDyq6IZQgPqigw/BVxgfa/amyYplMiuazy
+	X/u4zPJPGjs2xtg9i+zZhh+7yK/gIOAshYZz5svDFiZWOy87yPvhLOgiBD7h6dN+BJNQUz
+	CYl37Hp4D5yMNssgTN9aAEeGePrhQq87dgwCedPTncwHfoeTLNkafkzPqlJrfQ==
+Date: Tue, 5 Aug 2025 13:24:53 +0200
+From: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Suren Baghdasaryan <surenb@google.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@redhat.com>, 
+	"H . Peter Anvin" <hpa@zytor.com>, Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>, 
+	Mike Rapoport <rppt@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Michal Hocko <mhocko@suse.com>, David Hildenbrand <david@redhat.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Nico Pache <npache@redhat.com>, Dev Jain <dev.jain@arm.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Jens Axboe <axboe@kernel.dk>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, willy@infradead.org, x86@kernel.org, linux-block@vger.kernel.org, 
+	Ritesh Harjani <ritesh.list@gmail.com>, linux-fsdevel@vger.kernel.org, 
+	"Darrick J . Wong" <djwong@kernel.org>, mcgrof@kernel.org, gost.dev@samsung.com, hch@lst.de, 
+	Pankaj Raghav <p.raghav@samsung.com>
+Subject: Re: [PATCH 4/5]  mm: add largest_zero_folio() routine
+Message-ID: <tg6papaakluarhu4cz6tmu2ukgjlyzonvxjdgylbjefl6fmjy3@l6jre7k7sois>
+References: <20250804121356.572917-1-kernel@pankajraghav.com>
+ <20250804121356.572917-5-kernel@pankajraghav.com>
+ <bcb9940a-18ae-48e6-b000-53fca461fff8@lucifer.local>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH v6 2/3] treewide: Switch memcpy() users of 'task->comm' to
- a more safer implementation
-To: Linus Torvalds <torvalds@linux-foundation.org>,
- Kees Cook <kees@kernel.org>
-Cc: Bhupesh <bhupesh@igalia.com>, akpm@linux-foundation.org,
- kernel-dev@igalia.com, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, oliver.sang@intel.com, lkp@intel.com,
- laoar.shao@gmail.com, pmladek@suse.com, rostedt@goodmis.org,
- mathieu.desnoyers@efficios.com, arnaldo.melo@gmail.com,
- alexei.starovoitov@gmail.com, andrii.nakryiko@gmail.com,
- mirq-linux@rere.qmqm.pl, peterz@infradead.org, willy@infradead.org,
- david@redhat.com, viro@zeniv.linux.org.uk, ebiederm@xmission.com,
- brauner@kernel.org, jack@suse.cz, mingo@redhat.com, juri.lelli@redhat.com,
- bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
- linux-trace-kernel@vger.kernel.org
-References: <20250724123612.206110-1-bhupesh@igalia.com>
- <20250724123612.206110-3-bhupesh@igalia.com>
- <202507241640.572BF86C70@keescook>
- <CAHk-=wi5c=_-FBGo_88CowJd_F-Gi6Ud9d=TALm65ReN7YjrMw@mail.gmail.com>
- <B9C50D0B-DCD9-41A2-895D-4899728AF605@kernel.org>
- <CAHk-=wixR7ZR+aebFsWX4qWZ84tMTmyNWLUPmTy3YvaNJGqd-Q@mail.gmail.com>
-Content-Language: en-US
-From: Bhupesh Sharma <bhsharma@igalia.com>
-In-Reply-To: <CAHk-=wixR7ZR+aebFsWX4qWZ84tMTmyNWLUPmTy3YvaNJGqd-Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 3B38220010
-X-Stat-Signature: 617p7ymdz65zfi4wqggfu8drum8zarp5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bcb9940a-18ae-48e6-b000-53fca461fff8@lucifer.local>
 X-Rspam-User: 
-X-HE-Tag: 1754392461-336869
-X-HE-Meta: U2FsdGVkX1/Ys3Hnc+nOkaubMw9gJ4TlxnsC8lDiMfkkD/V7rsW/lxjJ/P8NmMd76rxPt3dhRevCkDpbrGeO+vaQRap754Y+bmz3FnP53fmKLQy1Fx/V1gm/ft6zwxOTILst+ab04hGNd4YHLU6KgQzonkJqHYv6ECF8zSKltfO9eCihh8G430xzkwa5xFpejK5iNr2sWSXvHPBKjLqUvQOZYmVDby/xq83VvoIZzphtc8PznA6txe19NwyYLZsVVlG53XkD2DeRKMGU2zjE1OLRnmO9wxI72CCDgV0x5+En653i+G6KVQH7nb6oh4S+LdqyJ6Q1wzPKeLh1io4manzfw3uHdzPa0zGOKysBWUfkZXIaOEgXA+vCY6RAx13e2nnRWpKz/4G5HGDpkulpfQJlgdabJdT7D6FUVn8L5sYTAJTyTG/YPXxmWob7CGrIP4TWkWSFT6tE44CcWfITnwT7SQRwH2Dj0JcUKGaGt2U5cWW/WnDnvl64eRnkPj6K5I6NWq/yDAd5o68xbHSuXsS4dzpguEZTYOHcW0sH+1am4XKBn/246vwQlPvYEXmBfJyX8ql1xMUh7kCoR7NqBu0XA5Ag7gtkrN7NdOjcS9S55yLsKAQcM+jCvmYuVCa5t0tvedi1NBxGnZS30pnHX9pv37cu6jSBKNcYucvkCNHyhRv+ev/Z8VyHdbbnVQACWOOTyk9bwd6mHcJWMObvPLAvZV6wXquKvEYck94v3revk3t4P15AU3sKtWrE2PtojCrBJdznPwqRBLFrnn8soC9Af1Hal0TjssV8LINdjwdmSOwCGsg67ui6MDbwBxFGK0Z1DglxG1jEpWG+PDUB4rTHd+gkkWbUUnpnBIeKzKCD2SdbIcaxxNWE3zd+pV8rihZ9XTy4t1ywacQtzeOJMAk6OGKEhhbP+Exy4UOMduWZbg4sPHlPjgdmQuDBJU09SVS2WQ/DcGrsg3CGhpG
- IfKZMNQE
- pMrnNYZ5616gKJkDOT1uyA/nNcRHPSFN/GYiLIOfeaYs5D3L7i0jcDLFmx8pl6623KWrU5ER3HCwp0tODA/eroGifaQrZM5H4QaA3uUdtqrl+D5utqxRLbVszgab63yTvac8uNwzl+rQfLJi/TCM/uLYOPiHPy/HJs2wXj/H56lrPmWSdsxOEbe9hZWFD3DPrHx+iaufb8OHb9qR3ae5jfCd2821QTWfalrvdow1er6i6t7Pb8/pJHoMzMqmH1ElZqGH7hQtt0TVLJ670M27Ny03/U+xfQSjVYyqmrFCUOTu3QPtcvr7q/zKZMM1KKCABZqAL
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A06C9C0002
+X-Stat-Signature: o8kujmze99dfm6w6abcgkz4josj43q8c
+X-HE-Tag: 1754393112-130345
+X-HE-Meta: U2FsdGVkX18WX7qAyxPyn8sbq0PTTof7yxOYG05trKDLav8wZdfuL+4133HsLZcShpb/GT7MZYeHFzwIJKd1FiFTfRX3cscCHq92zpzIDvqVoeaK1HCzM3m5JO4IU2XecOQKZmd1oc13ayqby6VRl1sNV9BIMWnl4YCCrLJWUbFJJPom0tqA7QBSCsJ2scEcz2/TayvpUNo3JEoRlePIFp48N+Ag74n2Z2cQbiwFZaRBYSFDhJDlW7gU3JdmAbA0gcc9ooENfabIblYOHxQ7ApNDZthc6x0QtmkPFFNpY/ZPKygSRdHpw4EmR0xelhj4GmOkhfR5kJkKVNLt1VCZPUZ04/5MlOX7vBlkRuiUEe2ByeJJemdoyqElgZNOn115npieRg9mU39ctyNRJNgyHDJdNjYB9kWxrCRgblWvoHu2cZKRyVWUIKVc2h59aQqQ77IWJTsl5xY3DqPFeeeMwcXCamcQlpxL7Yf1DRxBLl04e+L2VXN8R1+IzvURFbGCcJWwJlktL1u/ZTxtl7AgcQ/8EfrsNv+hIeNCL7wGeAJNyD+/FpuWL+Ls8ziCWFIyRWnsTeKCJuEHhfFfCFwFA5aJIk6Xt0+LidVtlPvvjlK2Os05mHPATW3WvNEJpme5qXllnGK+MgCHT7IR6ADEqOyk5GJ/HxJ9e4mdUNBDl4rV+jaI2rKhledeylyUe0rt6VJDBKCCYuAmUZki80t7pizHHUh3i+rJ5eMqxlA7h194mjDKFmPAdWAXyBwv9hCrGCKICVh40HqBgvqyYooa6b2dNhoUsNOm1kYuSIltSJzABpETu4FZXFPCjpe2U7sF52vD8gRLXDIcG5MicAYDW/YxqFvywOdaBccvoYfHvqXJtkDnDSVsz8ovyzlhyZ0fPjwFmI6ZUaAll+BXChf0A0jTazm2F+WkvWuguiWy9WyMBvQ5ShNVZa2wRKO5rahwG+ST8Yo0uUM8bDOd6SV
+ KQ8W1+aW
+ Loal1giVPIzaVDD7i1Iy0V9z9a1MSzp8NviHK+X/66dNMFjnXc0EVMoCQ6MaiQbC0MT9a6wNtRrMW5VF4siBl2CIQLerLQt8AvbW/nqh81xz5g9pvQORnftC4JYMyYpFUe7uBdAJkWKGgM8rumgNLKUCpP188AreBMaAs2Iu46iwr7RWFbOLaqolqI4DcARNTIb3fwWcLYd2EMNvcHn1tdvYVXvRtTMarn3Pv8oxWVOYmxWrmTxTBEPZVahC2L4PQ9CyloFEQA5XH1NIeKmavw7iXaYJFyH5MI1a5SGzqTQlYMrpSgGWiIUt4m9/AGz2e5REubpQ6sqNxESERxOVcBFVUG9LpJifW7dI4YSn9BKfYdh3IjVRLwlHLD9D/snZFp4Euk5DGgw1uI8Jo/ZRi0ITli10E54OBSLYYSWIWVMXJtY+THW49xUQfVNF8XQgWbOhwqX7DYctXbUjfK1sr912pUDHtzQiOkarkHErQDeG9kAZfN7DVBFXUT/kidevMaHGjm59ZjktfqdM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,72 +104,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On 7/27/25 5:07 AM, Linus Torvalds wrote:
-> On Sat, 26 Jul 2025 at 16:19, Kees Cook <kees@kernel.org> wrote:
->> That works for me! I just get twitchy around seeing memcpy used for strings. :) if we're gonna NUL after the memcpy, just use strscpy_pad().
-> I do worry a tiny bit about performance.
->
-> Because 'memcpy+set last byte to NUL' really is just a couple of
-> instructions when we're talking small constant-sized arrays.
->
-> strscpy_pad() isn't horrible, but it's still at another level. And
-> most of the cost is that "return the length" which people often don't
-> care about.
->
-> Dang, I wish we had some compiler trick to say "if the value isn't
-> used, do X, if it _is_ used do Y".
->
-> It's such a trivial thing in the compiler itself, and the information
-> is there, but I don't think it is exposed in any useful way.
->
-> In fact, it *is* exposed in one way I can think of:
->
->     __attribute__((__warn_unused_result__))
->
-> but not in a useful form for actually generating different code.
->
-> Some kind of "__builtin_if_used(x,y)" where it picks 'x' if the value
-> is used, and 'y' if it isn't would be lovely for this.
->
-> Then you could do things like
->
->      #define my_helper(x) \
->          __builtin_if_used( \
->                  full_semantics(x), \
->                  simpler_version(x))
->
-> when having a return value means extra work and most people don't care.
->
-> Maybe it exists in some form that I haven't thought of?
->
-> Any compiler people around?
->
-
-Sorry for the delay in reply, but I was checking with some *compiler* 
-folks and unfortunately couldn't find an equivalent of the above 
-*helper* support.
-I am not a compiler expert though and relied mostly on my digging of the 
-'gcc' code and advise from folks working in compiler world.
-
-In case there are no new suggestions, I think we can go ahead with 
-"strscpy_pad()" or "get_task_array()" in place of "get_task_comm()" 
-which is implement in the following manner:
-
-    static __always_inline void
-        __cstr_array_copy(char *dst,
-             const char *src, __kernel_size_t size)
-    {
-         memcpy(dst, src, size);
-         dst[size] = 0;
-    }
-
-    #define get_task_array(a,b) \
-       __cstr_array_copy(dst, src, __must_be_array(dst))
-
-Please let me know.
-
-Thanks,
-Bhupesh
-
+On Mon, Aug 04, 2025 at 05:50:46PM +0100, Lorenzo Stoakes wrote:
+> On Mon, Aug 04, 2025 at 02:13:55PM +0200, Pankaj Raghav (Samsung) wrote:
+> > From: Pankaj Raghav <p.raghav@samsung.com>
+> >
+> > Add largest_zero_folio() routine so that huge_zero_folio can be
+> > used directly when CONFIG_STATIC_HUGE_ZERO_FOLIO is enabled. This will
+> > return ZERO_PAGE folio if CONFIG_STATIC_HUGE_ZERO_FOLIO is disabled or
+> > if we failed to allocate a huge_zero_folio.
+> >
+> > Co-developed-by: David Hildenbrand <david@redhat.com>
+> > Signed-off-by: David Hildenbrand <david@redhat.com>
+> > Signed-off-by: Pankaj Raghav <p.raghav@samsung.com>
+> 
+> This looks good to me minus nit + comment below, so:
+> 
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> 
+Thanks.
+> > ---
+> >  include/linux/huge_mm.h | 17 +++++++++++++++++
+> >  1 file changed, 17 insertions(+)
+> >
+> > diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+> > index 78ebceb61d0e..c44a6736704b 100644
+> > --- a/include/linux/huge_mm.h
+> > +++ b/include/linux/huge_mm.h
+> > @@ -716,4 +716,21 @@ static inline int split_folio_to_order(struct folio *folio, int new_order)
+> >  	return split_folio_to_list_to_order(folio, NULL, new_order);
+> >  }
+> >
+> > +/*
+> 
+> Maybe let's make this a kernel doc comment?
+Yes, I will change it in the next version :)
+> 
+> > + * largest_zero_folio - Get the largest zero size folio available
+> > + *
+> > + * This function will return huge_zero_folio if CONFIG_STATIC_HUGE_ZERO_FOLIO
+> > + * is enabled. Otherwise, a ZERO_PAGE folio is returned.
+> > + *
+> > + * Deduce the size of the folio with folio_size instead of assuming the
+> > + * folio size.
+> > + */
+> > +static inline struct folio *largest_zero_folio(void)
+> > +{
+> > +	struct folio *folio = get_static_huge_zero_folio();
+> > +
+> > +	if (folio)
+> > +		return folio;
+> > +	return page_folio(ZERO_PAGE(0));
+> 
+> Feels like we should have this in a wrapper function somewhere. Then again it
+> seems people generally always open-code 'ZERO_PAGE(0)' anyway so maybe this is
+> sort of the 'way things are done'? :P
+> 
+> > +}
+> >  #endif /* _LINUX_HUGE_MM_H */
+> > --
+> > 2.49.0
+> >
 
