@@ -2,118 +2,157 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A369C87FCB
-	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 15:54:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 96D56C87FCB
+	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 16:00:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 06D328E0005; Tue,  5 Aug 2025 11:54:25 -0400 (EDT)
+	id D9B6E8E0007; Tue,  5 Aug 2025 12:00:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F39AC8E0001; Tue,  5 Aug 2025 11:54:24 -0400 (EDT)
+	id D72C28E0001; Tue,  5 Aug 2025 12:00:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E27A98E0005; Tue,  5 Aug 2025 11:54:24 -0400 (EDT)
+	id C88AD8E0007; Tue,  5 Aug 2025 12:00:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CFA4E8E0001
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 11:54:24 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8006880112
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 15:54:24 +0000 (UTC)
-X-FDA: 83743150848.21.408D22E
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 9AEC78000E
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 15:54:22 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=VhCUjTLF;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf02.hostedemail.com: domain of kuniyu@google.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=kuniyu@google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B81368E0001
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:00:47 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 060325678B
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:00:47 +0000 (UTC)
+X-FDA: 83743166934.18.7A21D18
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E6B5CA001C
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:00:43 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="e/xTQe0/";
+	spf=pass (imf15.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754409644; a=rsa-sha256;
+	cv=none;
+	b=gQmVF1ZUrtajdYCNWsU4a44HnEgWALjMM4mMXzIPX5bslKzjQUQU2ZQuI3fv52Nn1/WXRa
+	IuJ2YcJKzSpsmDlfiZQfzgJ40a68W3Fvsm6H3nvL/i5tEyIvx75zJxW6ZJaYQ6U7ieEO/g
+	AurR5xUhA3e3LP4yJpaMECOuLJBpTNU=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="e/xTQe0/";
+	spf=pass (imf15.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754409262;
+	s=arc-20220608; t=1754409644;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DXmcYBuTBSIC3cXLyf6AFT7dpi3YTNsScaWP3ZbN8Fs=;
-	b=JjwXlla3ZeCsYJg43xBT55c9k69v8LLSPKstqL+KXH+ZORWtNG0Ao/5m/Yg+NsSQ9lp/n6
-	rlWjva+0GIVF2b9yP77nftv0ccF8pr9C2+Ctdr91VnvvmFp+Cv/ZTfU9dpITP4KxwhTn1C
-	7VKS/GwxOpwTg7C0WQ32XYJ1PnMaGsU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754409262; a=rsa-sha256;
-	cv=none;
-	b=c5egimmx130t48NGynQzGHek9/ah4DEkv+A/Ve5MINRii/glBVgZNhZcRdYm2o5uoa9olj
-	ia+KRCPXGAmHz67LMnIzM09QViFUJNwcugM+nSURIc6powtrhLU69Q1HjlW+/4sh8cI2gr
-	KDhIdtupNz8/C/wa/cW+P6TYvnr0DQk=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=VhCUjTLF;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf02.hostedemail.com: domain of kuniyu@google.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=kuniyu@google.com
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b170c99aa49so3762794a12.1
-        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 08:54:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754409261; x=1755014061; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DXmcYBuTBSIC3cXLyf6AFT7dpi3YTNsScaWP3ZbN8Fs=;
-        b=VhCUjTLFK4Y8PiFlH1yF77BbG/qkbqzUuYt3OHXh/ZfctVvCz3i20MwT1yGcO6cPLO
-         FWNhZ+0JEJMHN4LOnxkyTVptew2PvAtVPPkEe9QOmTh7hh8Nr0UbUGneR0k5GXrX1lea
-         l7ispILF/lpvYcArvCOwgLA67+Y7D/NxxQOr1xho/xfyi5C3Q5Sa74Qqf3235GLdM030
-         IJZ9NKOT42/XcM+SIXJK2ZQBgak6ZCqzuMNuJF3TsII+x+lhXmxaRqvU2aTndB0pG9ms
-         ipqZ5czUaK3AaEadWa2KE2uYmbnyoy080bgMa4nJAkyvn1gq7/AoQTqqNCVPqL0hb587
-         f54w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754409261; x=1755014061;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DXmcYBuTBSIC3cXLyf6AFT7dpi3YTNsScaWP3ZbN8Fs=;
-        b=QnMwnkjYrirTMAREHjpOvfV3B/xGBBFs5kPcm+1roaJuD3EiNUIfFGJt2d9nFqSivD
-         o1DghVogq7i5ki75NMS9IWSwIMvA50Fhdg5BHPLA6DHkfr13G4SXh3TwkVnXxQFCHB2V
-         lkKx8e/MxN2g3pr33nlw4hzf/LH5yatRXLGiR02QMBc9WT5+UF4iHaqkqyeo56+wa44P
-         f9hND5dTcPwA+ML2h7YqnSxXI6lcwfD+pEyest8y6UwKAa/X3nNIY+RTgGc3FpAqZa8z
-         XiWRA8NxbiYW1pOKhHwzLTLYlriRfXFCNwPPY/L6WCJUAFP3O0WTZNSZbNoU2B1p1u7E
-         jjCw==
-X-Forwarded-Encrypted: i=1; AJvYcCVhaxsFrTcAxAcAA5rafkUgfsbQrQUN2NpMF6sRI/1n8eZEDYagTe85QyoWudjsAHtpxVJ3faSWEg==@kvack.org
-X-Gm-Message-State: AOJu0YyyAOMn6RZOuoLD0cTkHa8b1WjB8e/WQy2JFMHDPtUDbkXqW1gX
-	FnhYziseHPxSvivgkqQ6wzLwfDRjcZRhlwiHleIrVvAp7OXw7N31yeWbJnErFSi84XZnjRIKfKB
-	YUwpXLm7Iu+12NQVQtmOp+b0iVVWd8uwYkxvVWpq+
-X-Gm-Gg: ASbGncuHVah6W1Fed1JvhRG11xH79DjLXxccg+FqLUdMm9heVpyebGPff0cnmJ/KT/+
-	B9FIAmJf8p6MB4ZA5Sv6Jvu1uXqKH4ljSNZjmgwFUYLJaOj8O862rWHq8nB8QNNTHAQsWWEJsCm
-	fkXOIRj57PPpLookFatDgUOYjg6e7PT9G5CjjYNLuT6aR5gBJDg2QKTyX6o9sti310uaSviZnsT
-	8x8GdQ=
-X-Google-Smtp-Source: AGHT+IGDJF1zGd354VGsk1JYD0WGO/qVAFK/iq6mSfdssGAQaDT7Q3MQvezrFrpqbdBymBKwtXs9Ld7000cDegyNrxQ=
-X-Received: by 2002:a17:90b:224e:b0:31f:1739:b541 with SMTP id
- 98e67ed59e1d1-321162cbc80mr19242734a91.29.1754409261039; Tue, 05 Aug 2025
- 08:54:21 -0700 (PDT)
+	bh=M2YtucqNGx2YsjI76mHZf+3Hm3gOJxCDQ+hE8UN2Hkg=;
+	b=RO/fs9iMFgLUB0v07uCSlm1luCk3LtvHvLeDHMDY0Cs1D3aEuHsc0LxOA/JEve1kOnM/KS
+	xQE4dY4i/bHEpiFazdPrP12d63aiHHXW2gXk5gnwlcZeACRI4UNwDg7NeNd73W6lkesLbM
+	tP+prs9hWZ8i6pHcMXqL3abYRn+ifH0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754409644; x=1785945644;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=M2YtucqNGx2YsjI76mHZf+3Hm3gOJxCDQ+hE8UN2Hkg=;
+  b=e/xTQe0/nnNykL/VJJOhzaP6SOGC4Lb6ay5/2mT7PHYZUCRaxbma5qi0
+   SLajP4gF3NXXxPJFGcW1xFuatDNrW8flYwdHj6Tn9lH7J8Y0zto1u+3Wn
+   /l8OL6+fiKywjXQKtGtPlPPMzZ/puP6J5dKIcpxPu88jct7811Ra2V/wg
+   e/RLYXul/z8uBn145NTUFDP1+VUl3dEqNZV6sT1yHp/Pv67WC/39LdtqK
+   vqtBH0k0Fd0imLxm2/p/CBcvaXtFFWfHdtZDdg/w6boat/Gc8G17UuV1r
+   IvTo54h3dVXEX9MtQEjPMN7vRqIYr4AEmLyGjamUy6gXcX9Q3pY0J77KA
+   A==;
+X-CSE-ConnectionGUID: 8kw5LkASQwWgmxU0+jA+Cg==
+X-CSE-MsgGUID: 8cXkeyGhQIKzR97T88Ip4w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11513"; a="60524269"
+X-IronPort-AV: E=Sophos;i="6.17,268,1747724400"; 
+   d="scan'208";a="60524269"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2025 09:00:42 -0700
+X-CSE-ConnectionGUID: +Up2vnUySYqq/0HXS90B2g==
+X-CSE-MsgGUID: 6LXLbsqVTACJt64tAxMK4A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,268,1747724400"; 
+   d="scan'208";a="164852041"
+Received: from inaky-mobl1.amr.corp.intel.com (HELO [10.125.110.106]) ([10.125.110.106])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2025 09:00:41 -0700
+Message-ID: <c3b0adc9-e8e9-45ce-b839-cb09dcce3b50@intel.com>
+Date: Tue, 5 Aug 2025 09:00:40 -0700
 MIME-Version: 1.0
-References: <20250805064429.77876-1-daniel.sedlak@cdn77.com>
-In-Reply-To: <20250805064429.77876-1-daniel.sedlak@cdn77.com>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Tue, 5 Aug 2025 08:54:08 -0700
-X-Gm-Features: Ac12FXwC7xFTjCLjGN458qKNnLIHpU-rBIAK63QMImo5RiuLdxc4hroNKGTATNY
-Message-ID: <CAAVpQUCyM2x5a=w5MG9c5GDsHWX=Vse9qDP0URu6q9mSP0PD3Q@mail.gmail.com>
-Subject: Re: [PATCH v4] memcg: expose socket memory pressure in a cgroup
-To: Daniel Sedlak <daniel.sedlak@cdn77.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Neal Cardwell <ncardwell@google.com>, David Ahern <dsahern@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org, netdev@vger.kernel.org, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	cgroups@vger.kernel.org, Tejun Heo <tj@kernel.org>, 
-	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Matyas Hurtik <matyas.hurtik@cdn77.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 9AEC78000E
-X-Stat-Signature: 51atom55jn63x3ajjpocu77g3tz465w7
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/5] add static huge zero folio support
+To: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,
+ Suren Baghdasaryan <surenb@google.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Borislav Petkov <bp@alien8.de>,
+ Ingo Molnar <mingo@redhat.com>, "H . Peter Anvin" <hpa@zytor.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>,
+ Mike Rapoport <rppt@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Michal Hocko <mhocko@suse.com>, David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Nico Pache <npache@redhat.com>,
+ Dev Jain <dev.jain@arm.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Jens Axboe <axboe@kernel.dk>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, willy@infradead.org,
+ x86@kernel.org, linux-block@vger.kernel.org,
+ Ritesh Harjani <ritesh.list@gmail.com>, linux-fsdevel@vger.kernel.org,
+ "Darrick J . Wong" <djwong@kernel.org>, mcgrof@kernel.org,
+ gost.dev@samsung.com, hch@lst.de, Pankaj Raghav <p.raghav@samsung.com>
+References: <20250804121356.572917-1-kernel@pankajraghav.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20250804121356.572917-1-kernel@pankajraghav.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1754409262-247709
-X-HE-Meta: U2FsdGVkX19SbRCXbUwK4YfvtWFcb6SCw0lB8pp2FmQaAenGsdor4uyIiAiIy2LIIpKEKD/C3OnBSxLpg4xrXWEGWiF6+MlSh0/Hzt7HyO+8umJRcPOsNTpxuH0hKc5GJdg8M4p2ALRU23bEjeg3jLjIYZ0NbTQOE47KfCTx0zQ7ky5BAU+5PhUapoU5PEgw3BvmEQ459ry8LcUH+J/eTOA4xL0gomcd91orS4sNeNJUbfJCqlxTeZuBrrlMeTJqzQyAGvlH0ypPvyZ6gjqrZ2v41qq938hxEkFCkVX7RHBb54Ffjrv9Nitm/nUuRAaH0/kllAe7UcYJAevdt5Mo5BDiv/BBM+iP0JUHbdRg+WFhYIp8yKOZbmZikSSdxwli5wsAGDJOlMccVmOOhiHv7L/vdmMtgOqBDrcfOo62/mpKXFIsymIN7Hr3l9MiMxrk8Bbg+lo/mUaVOeoOdYrivskfFgwBL6aDH67tkv/oSre75grrRqaPVDo7yLjZn0W6vlZC2s4QQqLw7XpabchXwN5x/7Z2UR+dX6rH06kuFctFnu8ddW96dBZaV0MYDUoEkx58kcxk870WQRzTdQD63qwkP6RzEBJ+lTpS0aHOGKz4xL9W0dDA2eq4ruuNxbMrVja8G6Uq7DmjXjLGn08++PMyH4DmWRkAihZcd0e+pNlOJusapiJzbzySz51R1bAEQMsWpgG9ovqIvdXuWmICm8o9/z66tM8xSeemXt2sQdVk7Dx8HfZ55DhoH/mER8BYa0g1gIQR+5rX9AzLVpJ7qmYImWOaIS/rwxbgEpwZnJ4WO9KPmGZ2NMZgcyFEJN0H0QcIrE1WnX8uEPNmGg1J8zkcvIeUVdK8KVFbioKRRL5Skveyt5FHFcL52835bbJXVqSVT4jZJDGaEWg4INdgIVab0MWCiTQrgygXZ35gvSKsVUs9+2ckxj7QQxTnz4l+bzskcN+Uu9xA6sJFG7z
- ow+IuWVw
- 9JIScie7mlIaPodl9kuJjiLsdBagRVdWoCrI08vXhWgru6CrF7DLW4oZ9VD8xOBr1XQmrgTmzk/2PYKyeGaPhTimjd67ofMoU9OEy0I6Sz864iJsjteCJdsWnA8+WGo0sGcbcStxuSUzwwa2EslB9Mu+DbcuAOXs6fgWERhTDI6kax067ok0xnDzR+l+pkMx7vGAZBrwLUuCQ0R2awbNvEt4eAETrWkhuSYEA1Bley9eHXmoxg3LKdjvwi2wsI7tgKbiIg0707IUCyXwH519dOccz9huxGML5CUFM9QkRYeUic7Diyc1+VtdLkI0hiw41kQuka2NCeRLdKSOr0U9/YXdPevjImjYPyAYHaYsgE0QI1HAtBva4CHbXbuCcG149O19IXcTp9n1ThN5GBWBov0Xh561hX3MLEpYON3hV11wyuU09Unfx+C8e3Q==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E6B5CA001C
+X-Stat-Signature: j9bz5f3ejh5dow9fhu395o9auizsu5ht
+X-HE-Tag: 1754409643-971153
+X-HE-Meta: U2FsdGVkX1+vgT5nQpY1voEAjpm2ziDNcPsjULuCwZr7xlZSY6LT9f52DanazTKqSWEi5xMvNZfr7QFDmaOEbudXsw3FO18536Fa34CAB+qGqCAD6/7cMDm2WsQwRw9lkNT2893eqAZ2d8nqXig58n7o2xJA6smixKumcSGdwBap5c1+iUA8P//W6cPGNGoooyoSMK+OcOb7jMWIHfW7AcvaXT7ouCogQg88VgcAMPOiNvCgxv0qchrJ/QFlWXwAsRVLgVYDCtm1U19aG3NJFRm69EcogQyg3dKthDnfF9Jlg+gO6c7UGSGeFR9/Eme+bS5ajQhFqHpZQTnG5Q+5loU2PGh6CgDME0iFZvmSlFqhOpcJsxtMAPqUoyMn3upt1zJuUjbXm8OHQVttgfYzCSqIenTkT3p1ek/mo2OJCmn4rToXPx1oWgy+on2KhbZM5ELHcOPkHcTjxaXmJ/DxdjaI2Aq84QdFN0SrjYlon7yLOm+y6MSfSpW/0qWFkT9OtROQSGGyeSzo/IEzoalP4USil1s0M4T8JuDhoJX6QJ8h7OasIyb6NbMWaAFBTvqH1H6gBupevvVzH+YwpQiqesWPUEI1X7ZQSXsXmQtlbS4buqB9pe+Oc6+5HHnHRRlWQ8tBFHppn735N/rXwq4BHWckFKM32fSqyJxSkSlNOmYc/GVcaCkS1ZxWaAfX81YwCOHg7AER2kQnNDFCdQoT7xhjEej2ePldiUmvkfxS9BeQgmDyEKPZe6vXG59raEfa7JPh0K47lhVflu1Rg6FV/bPjGU2fP+N8HO6ieY+nSKouH9WIbWZfyFuP5PxyxAGpGp+/wQzZKGjOHfVRLlfNBmu8xOyC+X7q9IJnH6sQJqnajEXXUITHEdV9DHb87DdPC4OdBtMitY6fhTW146p6+5BP4jO+j4DGZn0TP25MiM0gM1bX9cM4Ah4R/pfiMndikGJi1lYeOOEN2uO5AsC
+ BGWrhCZ3
+ FIGxnEtel85Dhpic5g2FmIM1aXC+M2ljcbZKVDfg2okcSrYsNrSSZ6oRsIXb2+/zISB+33LDV+toEF/RtEJ7h1L0yAWtEZeqwVfja8PqK6ttMlhoWZzjQxIjI9qnbyFB9527ObA5Mxh3tIfu/vjFINKVEAfU3olcR3nStnu7Mr09fvs89vhou6FvUxtngNy0K3xY7oZOaMtcm9ijAtNI8MBm0MovH46KV+Z60d4Vt1tPRymN2yQAxsx3alCOh7nipVqPnl3ExD2vEhW69MV+wxeAKXA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,181 +161,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 4, 2025 at 11:50=E2=80=AFPM Daniel Sedlak <daniel.sedlak@cdn77.=
-com> wrote:
->
-> This patch is a result of our long-standing debug sessions, where it all
-> started as "networking is slow", and TCP network throughput suddenly
-> dropped from tens of Gbps to few Mbps, and we could not see anything in
-> the kernel log or netstat counters.
->
-> Currently, we have two memory pressure counters for TCP sockets [1],
-> which we manipulate only when the memory pressure is signalled through
-> the proto struct [2]. However, the memory pressure can also be signaled
-> through the cgroup memory subsystem, which we do not reflect in the
-> netstat counters. In the end, when the cgroup memory subsystem signals
-> that it is under pressure, we silently reduce the advertised TCP window
-> with tcp_adjust_rcv_ssthresh() to 4*advmss, which causes a significant
-> throughput reduction.
->
-> Keep in mind that when the cgroup memory subsystem signals the socket
-> memory pressure, it affects all sockets used in that cgroup.
->
-> This patch exposes a new file for each cgroup in sysfs which signals
-> the cgroup socket memory pressure. The file is accessible in
-> the following path.
->
->   /sys/fs/cgroup/**/<cgroup name>/memory.net.socket_pressure
->
-> The output value is a cumulative sum of microseconds spent
-> under pressure for that particular cgroup.
->
-> Link: https://elixir.bootlin.com/linux/v6.15.4/source/include/uapi/linux/=
-snmp.h#L231-L232 [1]
-> Link: https://elixir.bootlin.com/linux/v6.15.4/source/include/net/sock.h#=
-L1300-L1301 [2]
-> Co-developed-by: Matyas Hurtik <matyas.hurtik@cdn77.com>
-> Signed-off-by: Matyas Hurtik <matyas.hurtik@cdn77.com>
-> Signed-off-by: Daniel Sedlak <daniel.sedlak@cdn77.com>
-> ---
-> Changes:
-> v3 -> v4:
-> - Add documentation
-> - Expose pressure as cummulative counter in microseconds
-> - Link to v3: https://lore.kernel.org/netdev/20250722071146.48616-1-danie=
-l.sedlak@cdn77.com/
->
-> v2 -> v3:
-> - Expose the socket memory pressure on the cgroups instead of netstat
-> - Split patch
-> - Link to v2: https://lore.kernel.org/netdev/20250714143613.42184-1-danie=
-l.sedlak@cdn77.com/
->
-> v1 -> v2:
-> - Add tracepoint
-> - Link to v1: https://lore.kernel.org/netdev/20250707105205.222558-1-dani=
-el.sedlak@cdn77.com/
->
->  Documentation/admin-guide/cgroup-v2.rst |  7 +++++++
->  include/linux/memcontrol.h              |  2 ++
->  mm/memcontrol.c                         | 15 +++++++++++++++
->  mm/vmpressure.c                         |  9 ++++++++-
->  4 files changed, 32 insertions(+), 1 deletion(-)
->
-> diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admi=
-n-guide/cgroup-v2.rst
-> index 0cc35a14afbe..c810b449fb3d 100644
-> --- a/Documentation/admin-guide/cgroup-v2.rst
-> +++ b/Documentation/admin-guide/cgroup-v2.rst
-> @@ -1884,6 +1884,13 @@ The following nested keys are defined.
->         Shows pressure stall information for memory. See
->         :ref:`Documentation/accounting/psi.rst <psi>` for details.
->
-> +  memory.net.socket_pressure
-> +       A read-only single value file showing how many microseconds
-> +       all sockets within that cgroup spent under pressure.
-> +
-> +       Note that when the sockets are under pressure, the networking
-> +       throughput can be significantly degraded.
-> +
->
->  Usage Guidelines
->  ~~~~~~~~~~~~~~~~
-> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> index 87b6688f124a..6a1cb9a99b88 100644
-> --- a/include/linux/memcontrol.h
-> +++ b/include/linux/memcontrol.h
-> @@ -252,6 +252,8 @@ struct mem_cgroup {
->          * where socket memory is accounted/charged separately.
->          */
->         unsigned long           socket_pressure;
-> +       /* exported statistic for memory.net.socket_pressure */
-> +       unsigned long           socket_pressure_duration;
->
->         int kmemcg_id;
->         /*
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 902da8a9c643..8e299d94c073 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -3758,6 +3758,7 @@ static struct mem_cgroup *mem_cgroup_alloc(struct m=
-em_cgroup *parent)
->         INIT_LIST_HEAD(&memcg->swap_peaks);
->         spin_lock_init(&memcg->peaks_lock);
->         memcg->socket_pressure =3D jiffies;
-> +       memcg->socket_pressure_duration =3D 0;
->         memcg1_memcg_init(memcg);
->         memcg->kmemcg_id =3D -1;
->         INIT_LIST_HEAD(&memcg->objcg_list);
-> @@ -4647,6 +4648,15 @@ static ssize_t memory_reclaim(struct kernfs_open_f=
-ile *of, char *buf,
->         return nbytes;
->  }
->
-> +static int memory_socket_pressure_show(struct seq_file *m, void *v)
-> +{
-> +       struct mem_cgroup *memcg =3D mem_cgroup_from_seq(m);
-> +
-> +       seq_printf(m, "%lu\n", READ_ONCE(memcg->socket_pressure_duration)=
-);
-> +
-> +       return 0;
-> +}
-> +
->  static struct cftype memory_files[] =3D {
->         {
->                 .name =3D "current",
-> @@ -4718,6 +4728,11 @@ static struct cftype memory_files[] =3D {
->                 .flags =3D CFTYPE_NS_DELEGATABLE,
->                 .write =3D memory_reclaim,
->         },
-> +       {
-> +               .name =3D "net.socket_pressure",
-> +               .flags =3D CFTYPE_NOT_ON_ROOT,
-> +               .seq_show =3D memory_socket_pressure_show,
-> +       },
->         { }     /* terminate */
->  };
->
-> diff --git a/mm/vmpressure.c b/mm/vmpressure.c
-> index bd5183dfd879..1e767cd8aa08 100644
-> --- a/mm/vmpressure.c
-> +++ b/mm/vmpressure.c
-> @@ -308,6 +308,8 @@ void vmpressure(gfp_t gfp, struct mem_cgroup *memcg, =
-bool tree,
->                 level =3D vmpressure_calc_level(scanned, reclaimed);
->
->                 if (level > VMPRESSURE_LOW) {
-> +                       unsigned long socket_pressure;
-> +                       unsigned long jiffies_diff;
->                         /*
->                          * Let the socket buffer allocator know that
->                          * we are having trouble reclaiming LRU pages.
-> @@ -316,7 +318,12 @@ void vmpressure(gfp_t gfp, struct mem_cgroup *memcg,=
- bool tree,
->                          * asserted for a second in which subsequent
->                          * pressure events can occur.
->                          */
-> -                       WRITE_ONCE(memcg->socket_pressure, jiffies + HZ);
-> +                       socket_pressure =3D jiffies + HZ;
-> +
-> +                       jiffies_diff =3D min(socket_pressure - READ_ONCE(=
-memcg->socket_pressure), HZ);
-> +                       memcg->socket_pressure_duration +=3D jiffies_to_u=
-secs(jiffies_diff);
+On 8/4/25 05:13, Pankaj Raghav (Samsung) wrote:
+> Add a config option STATIC_HUGE_ZERO_FOLIO that will always allocate
+> the huge_zero_folio, and it will never drop the reference.
 
-WRITE_ONCE() is needed here.
-
-
-> +
-> +                       WRITE_ONCE(memcg->socket_pressure, socket_pressur=
-e);
->                 }
->         }
->  }
->
-> base-commit: e96ee511c906c59b7c4e6efd9d9b33917730e000
-> --
-> 2.39.5
->
+"static" is a really odd naming choice for a dynamically allocated
+structure. It's one that's never freed, sure, but it's still dynamically
+allocated in the first place.
 
