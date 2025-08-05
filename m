@@ -2,233 +2,183 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 088A9C87FD1
-	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 19:00:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E854BC87FD1
+	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 19:10:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D51C6B008C; Tue,  5 Aug 2025 15:00:53 -0400 (EDT)
+	id 8B01C8E0002; Tue,  5 Aug 2025 15:10:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 984CC6B0092; Tue,  5 Aug 2025 15:00:53 -0400 (EDT)
+	id 888518E0001; Tue,  5 Aug 2025 15:10:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FECD6B0096; Tue,  5 Aug 2025 15:00:53 -0400 (EDT)
+	id 74FDD8E0002; Tue,  5 Aug 2025 15:10:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BD106B008C
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 15:00:53 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1686EB6D9F
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 19:00:53 +0000 (UTC)
-X-FDA: 83743620786.28.74285FE
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 74B9E100006
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 19:00:49 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=TjeoqNhm;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=stuE7HY2;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf05.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 629738E0001
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 15:10:06 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E96081DA51E
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 19:10:05 +0000 (UTC)
+X-FDA: 83743643970.07.DD4D48C
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2070.outbound.protection.outlook.com [40.107.244.70])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 18078C0013
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 19:10:02 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=EbXvQxsH;
+	spf=pass (imf10.hostedemail.com: domain of ziy@nvidia.com designates 40.107.244.70 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754420449;
+	s=arc-20220608; t=1754421003;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+P5I7aMz1ueIWZsJvBuL2FDujybMNTWxeaL0Red80K4=;
-	b=5WX/LrQKXHy/dbUejRfvNTkLtsVHtj76YwNT/h+DFP61MVRMl+bxbpDWeZFRL1I8Euc1xu
-	Dnj7MRTmKtjHe0fM5ho8Qnt5j4VwxghHa5ATCnlFTh8mvAVYLhwbGZxlWVW3MvrQJcScSm
-	+9LbSkGfADb9ZSn/Gz0U7iVRImQICCA=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754420449; a=rsa-sha256;
-	cv=pass;
-	b=ZuX9C9pQKHcc+dU0+FLF8shYtF3KLMokvHl0elErgPdrwsfnjOMD9n1v5kmHZ2d1RdRBpK
-	T8HckDzMe7IKmTz2/0F+cW8ivM742yHapjr+oKSujw/LoQdz72pdged3CQ2GuR0CRp1/DJ
-	eUFz7IxQde+tyrVov8glV0qplZkAdxQ=
+	bh=2OhtLH0NtxqoYih4hloMTIuu8XiUqoWbx3aYCsDsLuA=;
+	b=LfNdlaJU9LpfOVy1pHggVH297KAL+Ra9zGT7Ba3LLsTIGN9wOvOKB/zZM7uc3Kpc9Zcq7v
+	qy4YWOUlzKfoIRLyP9RTiJZUlV0R3iYE0lOIZ3EPldmGUnorJfxK2xu4tjTImuk1vYLT0F
+	yLX/Ks7Hhyh9LZKojQmTD0ChP8OEXCY=
 ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=TjeoqNhm;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=stuE7HY2;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf05.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=EbXvQxsH;
+	spf=pass (imf10.hostedemail.com: domain of ziy@nvidia.com designates 40.107.244.70 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 575IuBFD014244;
-	Tue, 5 Aug 2025 19:00:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=+P5I7aMz1ueIWZsJvB
-	uL2FDujybMNTWxeaL0Red80K4=; b=TjeoqNhmZzN4JC6gx80XJulvrJgnXm2J+o
-	YpRH9w5sAobURJR46ND8nl7Fxj8VkP1mvphV+eh9zZhio6HVRDJtY9ljBjvYT6jj
-	wo1fbI1KQkeYKOPFT3DtzXuPRZe0c/IsZWuT2fQdo95pu6PZtYWBMPUZ6FPfZbzx
-	+aF34KN6SLnSL1afFZOumPtQaK/sGWcefHdnDg6eIpUNnXosOZKW08DUoRaz0OL5
-	47GxE3/foHqXTxpX2AtlkRuhViG+u7WxAXQWjIwmai1vQhYt7wqFysGiT8Hiao12
-	/mXxolbs1jj0ArGqA8QesjngGjogzYX1EtaZA+clf7/b7I15/z0A==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48bpvf037h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 05 Aug 2025 19:00:15 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 575I42xa008402;
-	Tue, 5 Aug 2025 19:00:13 GMT
-Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10on2089.outbound.protection.outlook.com [40.107.93.89])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48bpwm2020-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 05 Aug 2025 19:00:13 +0000
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754421003; a=rsa-sha256;
+	cv=pass;
+	b=UDWx81kj8VrKjqtERhmawjHpT5shPWEJQacpTbqET75tfgkg6sSw+qN3D2NgbAY2K8kh03
+	tO4T7caSmEDYvfARDDfq2qE8tLwO7EQir+SEVWpfSuPYuDa2kglNuhatMI/9+PMZlprBSq
+	W6CJvWJnNPX9ysI17njgYKronq1TPvA=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PZ5Nbvisw9pDaCOcH7GhfvgIwElrcwH0Jv/keQNL4/oRhzhNpnpWT+5L9ARnXE95hmxjQ0VJH9AwFWUbTjtV93sPnLPEwhM6JKVBS6nuPpRVx7EA6RKUANdpNAxSwKPIc5WA8PEDRC5uqxJAukeEjhA+tzriyrBqY6oRcHb+nme/KmEPo3RSf8hoh/lT+5f3Ug74VwIRPvLTT0vb9/v7TnZZvOyJ2iFP4KLdSfiS50PBlT8TBsyog5HEkFA65bMDlkDmvVYnIMkOMLnyJT0UfKXO+DBSzv7PXvbIkcBy1ZcFxIg1eXepnTLTyt2HY3fSkIJ7NlnLzc25BVo2qKUW7w==
+ b=KFT5nqWWHvH8i0EQVvUmS7C1N0o1P7DKycoXSXwi5HCbKLz78ltFXJFlNZyxs7JfOj+0hpdrwmlaHcw86oEL8MtvAYO0/YIHFeDq/64BFpWer2we2VvXzpF00MEOZsBg6pbCdyWN3qcHLwHmrKRu9wz6QlHTw9iD4cG39d9JzZ1j7PcqoHYb5ZLXkEovU3cIzE3fu+QSPJfg3QWe1G0eEJokaxXLGVWsef1SP/cewgNDs65+HoBJ7lquxo7sSo7H0cSA844IkLaTkw4Mgzxcbz/vPuvwjZJKvBC9gYP7zRk+tdYU7vcHCKeNuUk3Zt+cSK31gYNJMuwAtX65Zk3mXg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+P5I7aMz1ueIWZsJvBuL2FDujybMNTWxeaL0Red80K4=;
- b=tcoPKwSaCMumj/j2x1fRrmcgRdtTwuSS0GYQoqTKwu/EvJ6h5E/zhEOm6yNFTaRk7nKIrz3F660KpS7DF6uEktLg52P2BAqF3hB5CDRxTo4p6GIRs5J0jHq0lhM8CwkKNSSyQNh1TgZ4m2qTICPRd0qVvu8zYYuHf5KiwDtK3rRiAwqqOGi1jigDpv34QoBqylCEqpOtu+8KnrCSTpD5AFe+nASVnSc3bVkAfGvUeg0nnqrVEa7cOWROxcnJaO5qt3jk2Ai/Ev/EVHB5VES5rKM6XgySTsgotfR90AMMcHdtFck59kpbWYxWtsIPn8BibIwVH6/i2b40jbAVkjd8CA==
+ bh=2OhtLH0NtxqoYih4hloMTIuu8XiUqoWbx3aYCsDsLuA=;
+ b=MJ7YDhHbFhKrar3/zEATIKB0tHPOUrMemHqMMAmEI8fJCctV/eJOHpy9zm52JPO5AYaNusSJvhwLxYFH9eTpHfnewV+KmOKgDZpLs+09ptzlfVlV8xDs+D4vOhRvmd7qOqqtGyLw2S6aUeq8435bj9lxE1s5hRfoo1zJ7FqZdqYRWU9FxW2q6FiWIyBCse+pkJSWtl5GyHJ856ZSD/CK/Gat5Bb855zUctqGUR94KKVc03QM9H6JevZKEWEtOmtOMrglrGB5/hGkNXkzAjAsP1y3NGTw4XfTNVcQY4vonOKSse8bt12iCHeWRN8dQyUkvkm5XExNLV8xVio4RVw4MA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+P5I7aMz1ueIWZsJvBuL2FDujybMNTWxeaL0Red80K4=;
- b=stuE7HY27wSb1qkVcYCU6MxqSgNjbYIrVB+0r8EFeA0ngmQHlW0o77+adhy//j75srVUGU0Qn7Te9BGTNNCp7tu94EVOyEuU56wqRPThS4e13d23aMefXX7KItUhcK8ZGu7HcDBoAEq0Sz90wTErEJI8l+E2JhNUOqYRtidbgQU=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by PH0PR10MB4645.namprd10.prod.outlook.com (2603:10b6:510:31::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.21; Tue, 5 Aug
- 2025 19:00:10 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.9009.013; Tue, 5 Aug 2025
- 19:00:10 +0000
-Date: Tue, 5 Aug 2025 20:00:07 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Zi Yan <ziy@nvidia.com>
-Cc: wang lian <lianux.mm@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
-        linux-mm@kvack.org, David Hildenbrand <david@redhat.com>,
-        Wei Yang <richard.weiyang@gmail.com>,
-        Christian Brauner <brauner@kernel.org>, Jann Horn <jannh@google.com>,
-        Kairui Song <ryncsn@gmail.com>, Liam Howlett <liam.howlett@oracle.com>,
-        Mark Brown <broonie@kernel.org>, SeongJae Park <sj@kernel.org>,
-        Shuah Khan <shuah@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+ bh=2OhtLH0NtxqoYih4hloMTIuu8XiUqoWbx3aYCsDsLuA=;
+ b=EbXvQxsHSh1NsuX4BmMxhqEk2Wp1NgLmodwfRO5a/RmW54SI5YPOYhF0NZd8914G/yOJuosrTKiPGINJyr/wmBeDBUjjq7mDllBfCCdg4p98gyeU6jPd/fVHgVXyJCLF7xAYeN7TtRm8NHs+7fx1AWTsSRUXwLjyc3tYLb7JTnxWcGM8+mBtzuu4E3s5TX85T8C7Gwt50xZcfjXv+R8Kf4oYdaoKyE9lhxfxyEcUfiyCffklK7TiwvxLWBrzEFsDuKdCsqLpEGofc54xDp2aszY7F5cbzaKSCa/FIx/qMm1L5ymNVF8ZRf6hMX3Nk9V9KgbUhgU1fNnKVtHVZJZd9Q==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ DS0PR12MB6536.namprd12.prod.outlook.com (2603:10b6:8:d3::17) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8989.16; Tue, 5 Aug 2025 19:09:57 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a%6]) with mapi id 15.20.9009.013; Tue, 5 Aug 2025
+ 19:09:57 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: wang lian <lianux.mm@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ David Hildenbrand <david@redhat.com>, Wei Yang <richard.weiyang@gmail.com>,
+ Christian Brauner <brauner@kernel.org>, Jann Horn <jannh@google.com>,
+ Kairui Song <ryncsn@gmail.com>, Liam Howlett <liam.howlett@oracle.com>,
+ Mark Brown <broonie@kernel.org>, SeongJae Park <sj@kernel.org>,
+ Shuah Khan <shuah@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
 Subject: Re: [PATCH] selftests/mm: fix FORCE_READ to read input value
  correctly.
-Message-ID: <7eaa1660-06d3-49b9-ba5e-28df1c35dcd1@lucifer.local>
+Date: Tue, 05 Aug 2025 15:09:54 -0400
+X-Mailer: MailMate (2.0r6272)
+Message-ID: <6E5CCF4D-CB63-4E4C-BEDA-6FE533E0DFCD@nvidia.com>
+In-Reply-To: <7eaa1660-06d3-49b9-ba5e-28df1c35dcd1@lucifer.local>
 References: <20250805175140.241656-1-ziy@nvidia.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250805175140.241656-1-ziy@nvidia.com>
-X-ClientProxiedBy: AS4PR10CA0006.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:20b:5dc::6) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+ <7eaa1660-06d3-49b9-ba5e-28df1c35dcd1@lucifer.local>
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: BN9PR03CA0325.namprd03.prod.outlook.com
+ (2603:10b6:408:112::30) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|PH0PR10MB4645:EE_
-X-MS-Office365-Filtering-Correlation-Id: cb41e24b-d4eb-4321-033d-08ddd4524d2a
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DS0PR12MB6536:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2143beac-b479-408a-a140-08ddd453aae3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007;
+	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?v6lDRhogpyl9Kw85VlbE/nlJfZ/+sYcSECx/RdBkKx1HpWYNP15HpgfS9W1s?=
- =?us-ascii?Q?wBRr9b39UzYetJQ2S6H3idPnEsPlKBthRxjDg1awGJebWqExdiBroWgA61hP?=
- =?us-ascii?Q?L0PHZcW7QArFDgSnTJKwQEuWiZCSJe3LAHiIjQoC9UYXfRILPjlOZ33CBr+R?=
- =?us-ascii?Q?5Odaa26ctngdrRWO/xartP3nlxMSbfgE/y0SXGJY8pD2X2FwOmzHRuDqrdlG?=
- =?us-ascii?Q?y1iYf6Ft8IHyoi3+L3cMW14wqw4qLZmVk/xU2wUDm27LX+yTeqDLCKcZ1ewq?=
- =?us-ascii?Q?+Ep15NbrZa0EUW7xeQ2/IW2yw1lXQxzOtdl6curfvVwRtNe204faT5un1LLA?=
- =?us-ascii?Q?U0n9x2fOuzc8/UbXtnJz4dkwka8qIfS3t21VJDgSDDtUPJaSX81/+bhW0IxF?=
- =?us-ascii?Q?DDFaelTDnj9uUHGWRDe1pzohHuE9YMtr72CAjx/hf9PTf6RpbDVovQTZRT+4?=
- =?us-ascii?Q?P7GLnXuab8/0Pkrm1b9AMIIjjkUzvZFFMKCOg2I1v/t+CK36HP06diqVAOmw?=
- =?us-ascii?Q?5mq+i5K1UxPGryU48agWkKqPkYwdtStY5Pndm7paI3O4Ws5Vv4tm64TtkXjF?=
- =?us-ascii?Q?v/4AlyFS5cX9lY72vZsf0G4kbo4uIVvMQvLOjuTPJHIWe5WkVMHFEgKktR7r?=
- =?us-ascii?Q?qTQbgPeiKvEQmrlJGvuKNRDM1g3MFhAZvRI08X5/L/h/KNkHNPUQaABPSOa9?=
- =?us-ascii?Q?8OgMfa/AlA6wgWrFD0kz1jWeayyMLCdk8mnvLToaV5qus7cn6n0p5ivERhEK?=
- =?us-ascii?Q?hqAdpWn4rlPeO2QvWELSbk4WPOaGOd0XI9/xePJOMJ48lMNv3N4c91Zd9b7x?=
- =?us-ascii?Q?kRDjvf7zYRTxV8mJiJciOdf/JXqMUANE2RraiZX63Eh128Jni+M8I1tkArtq?=
- =?us-ascii?Q?uySd1mDSpklVTdKebSYQ4FJRj3NjVjBND6aH9XCvbAqUtzNb9N3OV0Z43EQj?=
- =?us-ascii?Q?v/Oifwx+55Zlw+acMytGXEcrdLlSgkZaovXXh/3RhApO3zRbapXT8F7heEOS?=
- =?us-ascii?Q?93e47hP9x0Z4eOOtlHOLKPVCju9LCc4+MhruFI6sT0CQ8bCgXwQpWx8+1DoR?=
- =?us-ascii?Q?shwUhf27ArI/W3dMDaJvdlo/Jyv/AgcKiqGaUNeLW+ALAziDO9ReGXtCINYK?=
- =?us-ascii?Q?5ydyrmxVuQ+pv2sHYfJwxk0rlBzBnAeIyz4+DJsZymmgASAgkpPgIkLcm8DX?=
- =?us-ascii?Q?SH6gezXjjJXqCywC5K7R1kWvjyq9gQo0derexQ+qRo1033wXJZPGxtjfBrm0?=
- =?us-ascii?Q?zDgWbwgA127TtFeNPwtm+fEZa/ENbwuMrghVsQ7jBmIIzOwK/JeV5CCGBdUn?=
- =?us-ascii?Q?gR9SVm0bZXq5YZnJXyRM86jSFfp0eF1xrlezyKuya2u1N0mqxjy1gKIEEixd?=
- =?us-ascii?Q?LMiBZlV4RHNSvyEoPOb2d4eL4WWOQ30WRNeme7Vh76CwLgYT/2dSXTX1P9Uj?=
- =?us-ascii?Q?C552T7DDMnM=3D?=
+	=?us-ascii?Q?WElfZbK8zj/BUK1K54r6qOCSPS/yg+HZsNenZR+7WVec4vE6cx9+iCN3zO0d?=
+ =?us-ascii?Q?6CCgv0hfuiwzXz/3B1J9eWTM0NCKYbfEgJl6km5vFUtAUooLzOomaRR54UVz?=
+ =?us-ascii?Q?CzwgFzN5OEoh+afmuG3H95IKax3RiTtTLrePJkVrPGsyA26nWkgsnUQtZCJ1?=
+ =?us-ascii?Q?BHagkF0cDvg8n6DH+0MQV9W7ktpDapPymgOtO56powsOYZLmhI3Lpw+AziS9?=
+ =?us-ascii?Q?yXpysjjQwVRkF3l1ZQbVocVT3ksoVMPYNmTo4PCPJbrOwtdlUorTnxb5V1NS?=
+ =?us-ascii?Q?xkz1ZgHrgO9Q8svls1SnAMemCg0llEEWPU98tDNih7uJv0TGqKter52YoHvR?=
+ =?us-ascii?Q?HWIWw9q47rPbRy3H01u9ysKYh4t9+iHiQTLrto9CAofRyJ5a+AsZbc9GqdAF?=
+ =?us-ascii?Q?jYYhmkBH0bE74DMaaH3dJ2ltfz2XXl0/C+P+OnUsWCo9xejEH64cdLIH/tQU?=
+ =?us-ascii?Q?IUdBr1/7j7omWiMrf0wxy3TtSJVo8MfYL37hrZWJdWpj11GyE0bWNcxwnSCR?=
+ =?us-ascii?Q?9jZEOxPOBo2oM3PfMP6zoyczrB/7/x0F2oE7YdQnTUbs1BWncmY7DoEBBn8z?=
+ =?us-ascii?Q?a0Mkhs+n2KgfIEpT51krB8ZMyYG8LHiE20xs5bysqfTJlOKsRBl+FkB4PzL5?=
+ =?us-ascii?Q?M1FCM1pSDtmz9v3hJfmQ7g7iwDeBw+1Q86Xb54lQqlPhCwGVdKSCFPCCqJ1x?=
+ =?us-ascii?Q?VqDN3SHPA3Cd9fKdlqDBHOF56U2693Y4qkb8SyDRhy0kJOrJ5v7dwzFaEaAO?=
+ =?us-ascii?Q?QHKCfNNFuF8mzbbWp1BwRqYnLcB+9I3l7b/VaKBdvf3agO7vEmwwmSdlg9D7?=
+ =?us-ascii?Q?y4HLUDsIOMhNQikRsxWqTrq9wG3lhwYB44sPr6Zj8Y0gU2YKmQ8NFK0eGnpZ?=
+ =?us-ascii?Q?coM2BRRYSnXxymj0xe6XLXmCVC+n65zpej/EMmXZtQcs8eNjtV69EC2k/BPx?=
+ =?us-ascii?Q?i+Wwa/2THVUdJSjmty78MRZRYJPXS8i48cozK0C7tmTM9cBoqAjv2xZERrrB?=
+ =?us-ascii?Q?i8XqSOm384voewRdZY3COZoqwuzxJ2/OrGxD7HIJCSrno6inXoKPzc3Dbshk?=
+ =?us-ascii?Q?1pWUGMDIBNwaszJZ/MKWqsgq3P+p7hRwx250jCgmc60g9ZvPvKki9xS4U2M+?=
+ =?us-ascii?Q?iGsioKviL4LubV61CECCYWhezSrLmicvMKErinpTP6CahEt6/RJcu+mcEU1g?=
+ =?us-ascii?Q?V/fcNvrezu4uZBQPLHaxSKiCHGuZTMG/XNgsPJ9Ypms0CGvYm1oO9IsI5kHC?=
+ =?us-ascii?Q?GYOpj5LVQbKPyPLqwfIqxSGwW+9ZBIiZqLpm2M3lpSXd0e1ZIvsNn7PBoHJ7?=
+ =?us-ascii?Q?Axb4gynCgjH5KjBy52zV3AsOP+aI/JBh2rkVvOthAW7TeiPgWvm93Jp8M6BD?=
+ =?us-ascii?Q?cMRBaJZk6Gm5voCL/5pvn6hQFElIZjHEv23DX8MMgWoM3kFoUB9PIaw7PgxP?=
+ =?us-ascii?Q?hJGMfoYEtLY=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?9qBikORuH571qh1dXx1gYQZCIuPotOZxrl1tmYs0BxVE38iI66mfBChG4Ych?=
- =?us-ascii?Q?FUb8FSQupv5WJga06tlmjCXSV2QJDIAJNvliAEJN94k5TI9Uybrpyyr7yDLx?=
- =?us-ascii?Q?nfF3SdNPecuIFdhChkBrPJY8YQuPsk9CNMVZmArwuHrel98SqNGQ8BpxTiDZ?=
- =?us-ascii?Q?qJlMq6vjd8gK1PmGy9neU+1oGERwdX8RYvUF2OD8pDRvbaHiVruF+gon6Vjw?=
- =?us-ascii?Q?TPVP2/KaNGcaGL/fsSt6gYnUgzk8970FTGuF6XdReTYt73JQY6BBPO6Bd5Uj?=
- =?us-ascii?Q?Gxg9aVyD/ycB5c9D7SyHxW4+l1IgDkeil/ixOod/sNB7lhJ6jc3/0XAaN1q0?=
- =?us-ascii?Q?unKc5FC2aEh3+tZJvwLMAgVtvNbzRxYuqYVQVMPvQtNCk4x8qbouaE/LvY+b?=
- =?us-ascii?Q?pA+ZUuMaJ3b+Uw61I6vuRgEZ2nVmOnAeRnwIrSEn1L1rCu4tzo0TmNdvpLoN?=
- =?us-ascii?Q?x9q9czH9jAtuFqLrt0uXt05jKeoopt3xLRJOQw1sKbbVwZzDaTAIColUyYTW?=
- =?us-ascii?Q?7zGvJyFcqbn18y5KCNnsgI61YGLbhtJ2E25YoV4fHs90vC31BJfdp2aY5gLv?=
- =?us-ascii?Q?782ARyoKvJ2PC6sXrNpVvd2M0z5R9W9dxcm/w76KlfjXopoQsTSQ6pi3Bh6c?=
- =?us-ascii?Q?ywtPBKISOssHf7g0Y560DsXlo5FbDNqvpnTZq1EEf7X5U8rC3XekiB5roZBQ?=
- =?us-ascii?Q?eceqDzz0R9K3EScIoy+qDVed8HbHsK3oVIk8RIjUP3N9GAd03qTGfjQgYfyg?=
- =?us-ascii?Q?G3SXRrnl4Ip4PhLNRTGFp9L1Y6PJ3QgUeaEVCjJe2U2UsaLZMRJ52Q6oM3oj?=
- =?us-ascii?Q?hg4uHHgzECkM9CzutA7WEPp7+SByRSPsScDN4SorPb+yGkvxQ2LY2IjsGVPw?=
- =?us-ascii?Q?Qq0GjkjX/Vsra1wWgkocPEZ9v2xFSfejSiJJurfEskD/mx3vaufJoYIfpPWE?=
- =?us-ascii?Q?bnbyyj62yt/5bE2wgysmskRpceqVLmvIYoGiGcYqRnIUNzznoxFg9UHx/+TX?=
- =?us-ascii?Q?d+2rF4s/hu6S6YpWgRU1yiAZBE+Ggc3eOC2dU2b+KCSd6st8PZmpfbJIMgeo?=
- =?us-ascii?Q?in06Tru2Ueuibxs5e02GPOfeMoT7nnE8jENBs8v21oM48/cch9L846j48oST?=
- =?us-ascii?Q?WzOtjgPxAmFYzA++eJDZVTQj04WJKro34a5HbrHVUn8tcvbgH3IguZeugxOV?=
- =?us-ascii?Q?8hv2x4++wLDVWlhvcDa+2ZQAhBMhhjJV8HIBo01p9+aAAL4+58LwKwGSAd5q?=
- =?us-ascii?Q?c7HP/jLAyvMduead4iILXnSGzl8oESe1eANEtAsfmxJj3ys+QPkwqFkOQNE+?=
- =?us-ascii?Q?rAB2h/0JaxHDq3DMUhMps6D3FIPMxZFX4QbMLApk/jVSWWjpE9sJF0yhQH7e?=
- =?us-ascii?Q?FrmqgGXn2bEI+4sa1XbbAciwKv/BVwjOjAQ2tCeGrwcuB9H5pTMOHR74jEwL?=
- =?us-ascii?Q?YJJS0r3y6pnU1ELKACMBuEJb7+n5KbdnLPtMFwxembO5vynevvj0LYrnJaMX?=
- =?us-ascii?Q?La17gyHxXJ4I0YmJ3i8kqIUMDX7XHhMFdwRO81Ev2PyvUEOl0ZYCBCTykHxz?=
- =?us-ascii?Q?AYRC9zw4tI4Db8I9wIDD6dDOOKsMx1kO1vN5ArB5bq9sARsdo9kxj94zpbXc?=
- =?us-ascii?Q?ug=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	dBJGEOdnFwiSdggUqF75eQiAYSo3J8nd0VelxvRj70NyeCx8/PzUSG5EvAjszkwk8qMMLYxwE7sN7z7v5oC8bfXsekweunEaAouScLpSAwMo2Om7PQQA9XVsbtKlfADKAzLm3LIKv5ua0oTwWeOAXdx86xeeJ+iOubida4OJUPwSRIxLAUSs9LE08FmGkMeLwl0F6XZUFjy/1/AZN6LZ3HSUoY8SkOldqLdPVMVs3ptAbEDUx6xHh4pbV+86rIjcGV9twiCEkOnafsq2GcacIheUZ1PlZYUeEmgQ+hOV6OvkmRChJb4du/N5xAUVfgzWBNqb0DG4ns4Y7p11XJXwGyfCdDw45oS6Jdj7L5F0kKxkQLRSZfEALLLFgbrQ1Ol2kpbuW0D1WFmFEQaAR27IYrRyfxTLgY0UiXP0db0qzrIk7wv1IErR/peoaCj8r33rdAGjDnFEWseppOAOXpwonNJXTXCRPNJlhwDFL6H4ZSMncz+7WXrVm6gISzXAzBlxlJlsLTlOVedOPqkVjJxZnPgxbCcrUm4SNcMkwPB0/mrPymc9c5hi2gxie3nZ82hrSqUbssBmOSGdcfV7Vkhsjr9acMEJW0COtvZCcoER1m0=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cb41e24b-d4eb-4321-033d-08ddd4524d2a
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+	=?us-ascii?Q?+plDeuRe4uI5RZN2SqyLjv3sEgpvMX6YilnP9OLPWfvC2AoA8ub5pE4t7CqW?=
+ =?us-ascii?Q?ElvYkCubvP/xwwffMFccANqKvlUH9TsJjZI584nenhO4UQJ70IFPRl7h4HjO?=
+ =?us-ascii?Q?yxX4IM/gsiDLcDhu4x9Qzq4RO3EdMPUlGMua7ODmA93qxKeGxO7ZPpbV70Ed?=
+ =?us-ascii?Q?QaJ/h4/4RN3faLo1DQKSPf76iKBQZkBNAyg5r11JvjPMfw4jbs58yzGn4TNq?=
+ =?us-ascii?Q?wCbkvMx/k8GzwSvZ1I2gsRyz7674IIm9e/9pRRg7I0/8m1tGLTA3Lcr3KuZI?=
+ =?us-ascii?Q?dlM5YLBst/UGV+XlLGzjCCSgiczAyplkfDDMa3QdfraWQhH50/Mb+oVFKqdn?=
+ =?us-ascii?Q?Vsj74bvRsCy9OhHa0T5WLHxY6Q4m8f8c6herLI3iYLmZvgUmYmdH3GlkGNaL?=
+ =?us-ascii?Q?gh0feJvyoIW2yYMz/DtclLAjV1fmw1ghcrZ6llrQE8aldu2TpGOhfSG/KAVZ?=
+ =?us-ascii?Q?06gnvLPVbjb7Ib3AoLic6COBVoOItmCVI50FEOdCX/TsD+P/EmidBhYx6KrF?=
+ =?us-ascii?Q?MFtVrA0BNKPQfApyAZzkeW4f9EVeufTxDn3QHtFwGdmAsQ8eFR7FYKP1KSWS?=
+ =?us-ascii?Q?oZ2eQBdmU5t6RSLnhciReIv1+u7bRGCD/c2V3QuKld+jisBSHNRZ/7lYeVPJ?=
+ =?us-ascii?Q?hE/hczkPGk976rY7T7IRfRj14b3eCPq4EFBOEemuS8RU8JxIoWmEkdedSkbv?=
+ =?us-ascii?Q?NfkSp0k/scYjfc/DShRSexNyXYBdJKS50pAClVQoYVFyWuQgzhwEQRsWGIhL?=
+ =?us-ascii?Q?4xGMbIw/uWiDEHRiHgnckgNY9DF6vA9aEyY+qzkcwE9/cgUhQvS3iD7obSnd?=
+ =?us-ascii?Q?vSaxJProfmA8u1vfH1rX80xYlc8omm6IWX9uADRdUmajpFVSourQe/hKbSIr?=
+ =?us-ascii?Q?TywP6PR6YWDVwtMElpwZQ6Km0U0cridB4AUUhxcMzh1v/e82VnhZGroFn8HQ?=
+ =?us-ascii?Q?bOsOcagqWRj7HP3LN2V0dQu7uhHXUHBzUvjGaAhj3s3fbBtGXFepWMTWJlsh?=
+ =?us-ascii?Q?Jt11a6FpTC+ITByEc3Y6PG4NpWMVvWyuPA/Jnw0+QL4SQqFW+Ai0VROellf9?=
+ =?us-ascii?Q?rSzgQCSyUN6o337Gm8xQrigVa90RKI/6xPc1pJDVZ0VmbrVQHYSCD+2aUDJ0?=
+ =?us-ascii?Q?NcTxXVGn+XPwxEbuQ39/SlNIYohU6XIUa6W2xYjxFDKnCD5oYHpDe9vUN8Ld?=
+ =?us-ascii?Q?j/OfkbKfGlheU7TlCIE3al6JxQuJtJGnsa1sKfMltYYSKDR1kJqPIOoGGWxD?=
+ =?us-ascii?Q?YDlJdZcft0j7bGIrEU40m7vZQ82aWVrc5dCDFkX62Fr+wo4XQNNz+u2cVjdF?=
+ =?us-ascii?Q?m7XtC0E+2TGGU9PHJfeO35u0T3hzvxOJveBbnFO6sKUSS/jd1OyVpDCahU/t?=
+ =?us-ascii?Q?ijay0TreIyUyjU4QnIF8jzryfkQSYKSI4Sy3MPjG0mo/tiyU7QhlGZSoAzUU?=
+ =?us-ascii?Q?DZVsiNeJeTqp7Mq0AGLWhNe7j6YW2VRtkueB/Z8PW9jJ+1UrqXnVDwvyJnqA?=
+ =?us-ascii?Q?pR4YFXcLQ718KiiJ3MOs1mdKMTie4GK+Za0fX3QUn+BhEQ7QTqCDrAhNTwCy?=
+ =?us-ascii?Q?MHMp1lqQ9S9rXysQ+Pv/NyW/WPgj/R1nO8roBB+L?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2143beac-b479-408a-a140-08ddd453aae3
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2025 19:00:10.5158
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2025 19:09:57.2755
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Km84Ci1uvQsbbLhZExvzHaFtSIeWkllHSwRlqxhs+/TC2+s86zz7IZqXOpYAFDsC1HZm4xsVtadDenhxixeYw6Ld2PMzvA/qho2SLDdenkQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB4645
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-05_04,2025-08-04_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 adultscore=0
- malwarescore=0 mlxlogscore=999 phishscore=0 bulkscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2507300000
- definitions=main-2508050134
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA1MDEzMyBTYWx0ZWRfX3MtraaUNaAre
- hVPKOnIZOBtjAQo+qkgyRDEa4mGplfwM14eal3XkIHKp1TBLO/WRPjpR01W1reqmZiNI6FfqH8a
- AOCQrYgK2jc5FWVmLJnen0Jj/esgoYm/4pCRzouH15DE/kwII3jspeAIE120hbgTifJUWHiWgmb
- DtKCED/3/oik9EdnTyEYpH4O+eu//3ZFYn4SKAzAO5OErbnAbt3rSSLBm3v/j8vOMejVI09G08D
- mH9dSai8Sl6/cdsjhiJZwONgLy1/NnsBy4snO02Fb35rS0bZ81q+TwR8Xg0mGKBzH+7AUxlY97a
- R7h/D2JIfqxbXh6TULGKLxxA/5JJlXfMlQn4JGfnCC3TEdlFJ77dwf8T18eU8fU/yT+1GEw8RB2
- ZURg94rYbCAlxLOrUZD/3fK5O1F/M0P6xfejZ8QNuvkbZsIITufa7nZrhxRRxuYJ6qaYxq8a
-X-Authority-Analysis: v=2.4 cv=RtTFLDmK c=1 sm=1 tr=0 ts=689254bf cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=Ikd4Dj_1AAAA:8 a=yPCof4ZbAAAA:8
- a=wJvJRYaxsKidUacMsqMA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: c1Nrj9XNN9yUSRN9_oCVkdde5g_Qb4jv
-X-Proofpoint-GUID: c1Nrj9XNN9yUSRN9_oCVkdde5g_Qb4jv
-X-Stat-Signature: qut3oqjdow6ei3rujzietw96rojsrx7o
-X-Rspamd-Queue-Id: 74B9E100006
-X-Rspamd-Server: rspam10
+X-MS-Exchange-CrossTenant-UserPrincipalName: pksdAdOLDHQ7F23miFn0OiI7f4pSYjHUedqtQUkzjh9n6wMrXttvUQoW81i4cBHE
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6536
 X-Rspam-User: 
-X-HE-Tag: 1754420449-471318
-X-HE-Meta: U2FsdGVkX1+VFsnGCf9H3hpzYHiF1UIY6PRFbtBogJHPH7e1eoAa0csekiOHIRlDcvSwarVQSCGkmBCDEy+qoPrC19HpjKhx8gFP+R0jccl6euhs2djs71P8DcWOFwyvvrSlkvHGL9C5dVIhIeQqYIq2uaAbst8BbbCPTOMsGN1tFY4UOPUYAFfIOeF0PcivzUl7EVkY0HvOPEYXb8IOFwpx2xK4Ze3EVTQCpWqiyHQ3cNnqsorig/nI6L9UUjYoUH6F8PGur0LtkAhz0Q7vC16QRkc7utPWbwMdJmgvyV8EcMPRtIwWtf9KrAg70poiQE5wUBGfzCWUubS5gm0gQWB3LKIATN9J4rUZgTCSpgBK625JedtCEFiPlHnFn6RpqKMzSF8XRMoKvr50ouqE9dIvTpGefoCp4fE+rarVIbF1A9NpDoF6kaoMTRSLAdHh4HpJbREEFPiRMrgTnjBMqpcAapUMn8fhhfNarDfPZSZ+Davlz0navVQ00z/AFlvFtCdXbwWQZebMKrVulEMQKZBk8rdpqzweIQDfmslUJSl0bOXF//ZOZl8eBhoP6plzdznoH6N/eEUxnplZ4+Pxy4zK9Mg/0YvqplFSakZIyeNtid7SWFETqhDi0ds01erff/ktWRr8UkJF2Oo8prO8C/QcfvTsNi6V6j0iRzXq/VpBybKoFCud/OgVlnBgJnuiQbnzPRsgCpDW5cjOUoTMNd8ae8YPz3Ss+gCmBohu/8usyjrNbMt9RmOmE/fDq2DX5FfKufbTOVdgV60Gnc2px9Fy/R+FxepSPV6YkN8kOSg+07wzfy2h+jx987wS6vMbc9NcqbxKEqE0Xqu8gDvz4Fs4G99i3JYeBM+UtJjZmofNFiyESRShpA4TELSBhAdH99jofu//yY7f8bNOWK7+rm3arS6EKPcHr/SxXbX8mZ8SBWBaWKP2DfUGg+/CMNZJOOfb51wYCRItX+NIaB7
- 42rsXrtF
- vjZv5qvYPdMcbtrJHIBNH6iQDk+rE4Ds/f8QplFLQ9idY4a3fQCy/nPkwu6ARqB2hZ/cwxz6emcPM76nWScLZvCTZMca+iYk1ZueSyhuQgYESXPJ6eiqv/fz+gJuo2PUh6wqtMcd4WNKdIXXVYhjUnSxXZaQ+sOiNX0YzOHrRPQMkhm3H7Z+bN7bsyRy4ukutoY3e98CpsjpBllCf69PSGzDYoniTxdgbWEf8vEHn/hK3vA7GcBI9BChCEI9ovuTOzc7RXYbEhWjn9dv4Y7cLWE0sK/ZYI0M8R3u/LtNQZgyFgKC6rn+maSucxiibQABcUUuz5NDr1QWoWq0kdV7CpCcAEP6LfWmsF8Dn1zbknA8gC9BE3Jl+N/Gv2Pi/0MwIufL1IPLWtWWd51mp/SpxnD/ZG0tD33xxh5WgZp8smvl/AACSz2CcpCIFngXAEy1FWBpFWvUDzC86hzozJiUCAgkXOwrsUNL4ko6RJWD2NBaJu4gmLkN9uHC9ZS5ha8k3bbKcFObWY2+R7bApj4GjBHFPJmUF/KiLPhUSNNK7T5LC2EEGEcfIy9Mx3gz5RSiZnK2hGjwmCLG0vaAg5N4M0/y1vYx+cbQLK/HbcMjDz3ABxXoAiiqhd9eLYKSD/C4dO8yuquHZ6vJHGSfblq6u+timZUhqF1brMlSQkWYqk56nKw95L/JsZWgCBzAAmVHfbTLrxPvx0TWReXFc8mXB0YVf+9Z3pLwXo3xZNUF/qihL+3ISblpCSfz80Vj06mK/XMeTzAnLRS0PS23ZR6M8/35ifsyo7BUM94nE3YSEv6VfLmaRRoWHgoLdc1eqLWRm2hdeCCS6yewuw5XiPdgBXiMyPw==
+X-Rspamd-Queue-Id: 18078C0013
+X-Rspamd-Server: rspam06
+X-Stat-Signature: r88ca6kf3px5rerueo1e3keqg5c4f7ei
+X-HE-Tag: 1754421002-307938
+X-HE-Meta: U2FsdGVkX1+nZrmEX1yM3013mhu4Hz8pEoXePMfecCd7MpTh7B8TpdIcZyVj6EoRLA9rTHBsrjxTHBpW+xqscjqDrgnJxlKYfFqVsouCg+/9Qt2inFlTJTe98D+PE/gNqCr4OdpI5AX11zEsglsOATwqwCnImFqNVmQBmp5sQWg7MvnzhLkuB75t1NlaDqgR3cr9UYB1v1ZNxe1kVJmMlbGhhqSZn5av4D0FyGU86oRJrWlYqCLDLGUP6COsI07KmEraDB5kAt5Bv3IlydFawkqUqTGgzM+jbofm/FfcC/rPpmnssudd9ys9Ormx4NzW6jDnl1l2i3Jz8QG8/b7gpime2q2i5d8Z8RVwB4rS7hHVQ+Hb4bJw1vgBJk2vZyDn64RcSsjWvngT7VxYDbGbayaJKgfHwVO2zz7zQwg1lU9ui6qJAY44JN4KyKOxnzwhQInbu460fMsAFz1fBcz0w1NM2VynUrE2s51YwVbu0Laku3fIM42IUzABT/yqKmKf+QEl6UGmg18F+YNcp6OmCKBJYN8nSgXli+qBOnwG+DTCsdFmrorqSzBpnUEuTEodXuBL1IQIdKEKOQ7871XmbXTN42pCKwesoWd5KRsuvhlTn8tzacoud8HMvfIdN2LbTj2+onr9umJBDQVurllw/6N6XciTUJww/Sr8eoEOFRkD3rqhZPkx6DtS4th0OaewvuLxX1h4auFJUgtWoQC6gIG/HbLUJXvYBodwK4RsiCZ20YA96wENntX3mUg8FJ9hwg4DOvsyiWBNxsv63K1iAeN4+DO44ZCMeCmmAFNvlBmEJWsFCNP1jVw0/1G9i1nIAv1dh6comYAOGfwHHzS8n1rkasgYqTcV4YYnQ4ZhqAegVVfPfMbIKXYNCvbuxRfNGNhNmfLGqjDEVCyeBZYlSQpUwJPJMiwlbB0mZ5qk0PqnGus+7R6ut0HUZouZIGm+law+Zd86rM/tGKUmJYa
+ rDIyt8ny
+ My4503TI7qh06cm69ePdsSWGHx3NbyrT2n27AR9cGl1LgqfP6qv0r/yGOamY+S1wYlR6ohPGVzi3skID7BeXjuxwoEhTdedFwStCQlm7cpgwmPptWqDK0g+JJzWN63RLvFIA5zmxXWQCPabqJU97jauivNVOGmByDc77IhY/OSs/sneW/C89+DpMfL7iWdhPUXcVjP711ZIw5AwheGPMs4JjH+xvop9JUEUidt79ltYuVB2HuYFkqQk0ZZXRw6kyarJ3EF/V9w5dmlRMJwvu4AUrd4GxfuUCkXDqDN7Rh8q3/zNI3R4/uNYVQgjtgIMKr8Pn0XZEzdKoxKnT6FhjuofAlCFc9zBbELIeSjFtbL0Q4u1wWVGgHgNywU+GvUb5HyC+fUY8KXcz4r/jL23UidvFoPhj6On88kFrJuBBnhUeUDMJpm3+Dw52YA9CFgx00RCyFMnzRlZrk0zapWy2m2jwSeUtFjmG4FAJ8339gJ8zOSWhhan+IrWQSKV6VEzvElpIprNXxaGUgLXQrO8xj0pvbOjPSOYJ0kHum12R0nhNWka96JwyXTFRAeMu7ItMEcJyy01+jc7w0J5yfikUNZG5OyvCpEoKwbi4JBXL62J5VfnfyxAOUoFqX/A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -237,166 +187,201 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 05, 2025 at 01:51:40PM -0400, Zi Yan wrote:
-> FORCE_READ() converts input value x to its pointer type then reads from
-> address x. This is wrong. If x is a non-pointer, it would be caught it
-> easily. But all FORCE_READ() callers are trying to read from a pointer and
-> FORCE_READ() basically reads a pointer to a pointer instead of the original
-> typed pointer. Almost no access violation was found, except the one from
-> split_huge_page_test.
+On 5 Aug 2025, at 15:00, Lorenzo Stoakes wrote:
 
-Oops, sorry about that! I had incorrectly assumed typeof() decayed the type
-when I wrote the guard-regions test code, and hadn't considered that we
-were casting to (t **) and dereffing that.
+> On Tue, Aug 05, 2025 at 01:51:40PM -0400, Zi Yan wrote:
+>> FORCE_READ() converts input value x to its pointer type then reads fro=
+m
+>> address x. This is wrong. If x is a non-pointer, it would be caught it=
 
-And as discussed off-list, if you deref a char array like that, and are at
-the end of an array, that's err... not brilliant :)
+>> easily. But all FORCE_READ() callers are trying to read from a pointer=
+ and
+>> FORCE_READ() basically reads a pointer to a pointer instead of the ori=
+ginal
+>> typed pointer. Almost no access violation was found, except the one fr=
+om
+>> split_huge_page_test.
+>
+> Oops, sorry about that! I had incorrectly assumed typeof() decayed the =
+type
+> when I wrote the guard-regions test code, and hadn't considered that we=
+
+> were casting to (t **) and dereffing that.
+>
+> And as discussed off-list, if you deref a char array like that, and are=
+ at
+> the end of an array, that's err... not brilliant :)
+>
+>>
+>> Fix it by implementing a simplified READ_ONCE() instead.
+>
+> I sort of intended to make this easier for pointers, but the semantics =
+of
+> this are actually potentially a bit nicer - it's more like READ_ONCE() =
+and
+> you're passing in the value you're actually reading so this is probably=
+
+> better.
+>
+>>
+>> Fixes: 3f6bfd4789a0 ("selftests/mm: reuse FORCE_READ to replace "asm v=
+olatile("" : "+r" (XXX));"")
+>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>
+> LGTM, so:
+>
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>
+> But see nits below.
+>
+>> ---
+>> FORCE_READ() comes from commit 876320d71f51 ("selftests/mm: add self t=
+ests for
+>> guard page feature"). I will a separate patch to stable tree.
+>>
+>>
+>>  tools/testing/selftests/mm/cow.c                  | 4 ++--
+>>  tools/testing/selftests/mm/guard-regions.c        | 2 +-
+>>  tools/testing/selftests/mm/hugetlb-madvise.c      | 4 +++-
+>>  tools/testing/selftests/mm/migration.c            | 2 +-
+>>  tools/testing/selftests/mm/pagemap_ioctl.c        | 2 +-
+>>  tools/testing/selftests/mm/split_huge_page_test.c | 7 +++++--
+>>  tools/testing/selftests/mm/vm_util.h              | 2 +-
+>>  7 files changed, 14 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/tools/testing/selftests/mm/cow.c b/tools/testing/selftest=
+s/mm/cow.c
+>> index d30625c18259..c744c603d688 100644
+>> --- a/tools/testing/selftests/mm/cow.c
+>> +++ b/tools/testing/selftests/mm/cow.c
+>> @@ -1554,8 +1554,8 @@ static void run_with_zeropage(non_anon_test_fn f=
+n, const char *desc)
+>>  	}
+>>
+>>  	/* Read from the page to populate the shared zeropage. */
+>> -	FORCE_READ(mem);
+>> -	FORCE_READ(smem);
+>> +	FORCE_READ(*mem);
+>> +	FORCE_READ(*smem);
+>>
+>>  	fn(mem, smem, pagesize);
+>>  munmap:
+>> diff --git a/tools/testing/selftests/mm/guard-regions.c b/tools/testin=
+g/selftests/mm/guard-regions.c
+>> index b0d42eb04e3a..8dd81c0a4a5a 100644
+>> --- a/tools/testing/selftests/mm/guard-regions.c
+>> +++ b/tools/testing/selftests/mm/guard-regions.c
+>> @@ -145,7 +145,7 @@ static bool try_access_buf(char *ptr, bool write)
+>>  		if (write)
+>>  			*ptr =3D 'x';
+>>  		else
+>> -			FORCE_READ(ptr);
+>> +			FORCE_READ(*ptr);
+>>  	}
+>>
+>>  	signal_jump_set =3D false;
+>> diff --git a/tools/testing/selftests/mm/hugetlb-madvise.c b/tools/test=
+ing/selftests/mm/hugetlb-madvise.c
+>> index 1afe14b9dc0c..c5940c0595be 100644
+>> --- a/tools/testing/selftests/mm/hugetlb-madvise.c
+>> +++ b/tools/testing/selftests/mm/hugetlb-madvise.c
+>> @@ -50,8 +50,10 @@ void read_fault_pages(void *addr, unsigned long nr_=
+pages)
+>>  	unsigned long i;
+>>
+>>  	for (i =3D 0; i < nr_pages; i++) {
+>> +		unsigned long *addr2 =3D
+>> +			((unsigned long *)(addr + (i * huge_page_size)));
+>>  		/* Prevent the compiler from optimizing out the entire loop: */
+>> -		FORCE_READ(((unsigned long *)(addr + (i * huge_page_size))));
+>> +		FORCE_READ(*addr2);
+>>  	}
+>>  }
+>>
+>> diff --git a/tools/testing/selftests/mm/migration.c b/tools/testing/se=
+lftests/mm/migration.c
+>> index c5a73617796a..ea945eebec2f 100644
+>> --- a/tools/testing/selftests/mm/migration.c
+>> +++ b/tools/testing/selftests/mm/migration.c
+>> @@ -110,7 +110,7 @@ void *access_mem(void *ptr)
+>>  		 * the memory access actually happens and prevents the compiler
+>>  		 * from optimizing away this entire loop.
+>>  		 */
+>> -		FORCE_READ((uint64_t *)ptr);
+>> +		FORCE_READ(*(uint64_t *)ptr);
+>>  	}
+>>
+>>  	return NULL;
+>> diff --git a/tools/testing/selftests/mm/pagemap_ioctl.c b/tools/testin=
+g/selftests/mm/pagemap_ioctl.c
+>> index 0d4209eef0c3..e6face7c0166 100644
+>> --- a/tools/testing/selftests/mm/pagemap_ioctl.c
+>> +++ b/tools/testing/selftests/mm/pagemap_ioctl.c
+>> @@ -1525,7 +1525,7 @@ void zeropfn_tests(void)
+>>
+>>  	ret =3D madvise(mem, hpage_size, MADV_HUGEPAGE);
+>>  	if (!ret) {
+>> -		FORCE_READ(mem);
+>> +		FORCE_READ(*mem);
+>>
+>>  		ret =3D pagemap_ioctl(mem, hpage_size, &vec, 1, 0,
+>>  				    0, PAGE_IS_PFNZERO, 0, 0, PAGE_IS_PFNZERO);
+>> diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools=
+/testing/selftests/mm/split_huge_page_test.c
+>> index 718daceb5282..3c761228e451 100644
+>> --- a/tools/testing/selftests/mm/split_huge_page_test.c
+>> +++ b/tools/testing/selftests/mm/split_huge_page_test.c
+>> @@ -440,8 +440,11 @@ int create_pagecache_thp_and_fd(const char *testf=
+ile, size_t fd_size, int *fd,
+>>  	}
+>>  	madvise(*addr, fd_size, MADV_HUGEPAGE);
+>>
+>> -	for (size_t i =3D 0; i < fd_size; i++)
+>> -		FORCE_READ((*addr + i));
+>> +	for (size_t i =3D 0; i < fd_size; i++) {
+>> +		char *addr2 =3D *addr + i;
+>> +
+>> +		FORCE_READ(*addr2);
+>> +	}
+>>
+>>  	if (!check_huge_file(*addr, fd_size / pmd_pagesize, pmd_pagesize)) {=
+
+>>  		ksft_print_msg("No large pagecache folio generated, please provide =
+a filesystem supporting large folio\n");
+>> diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/self=
+tests/mm/vm_util.h
+>> index c20298ae98ea..b55d1809debc 100644
+>> --- a/tools/testing/selftests/mm/vm_util.h
+>> +++ b/tools/testing/selftests/mm/vm_util.h
+>> @@ -23,7 +23,7 @@
+>>   * anything with it in order to trigger a read page fault. We therefo=
+re must use
+>>   * volatile to stop the compiler from optimising this away.
+>>   */
+>> -#define FORCE_READ(x) (*(volatile typeof(x) *)x)
+>> +#define FORCE_READ(x) (*(const volatile typeof(x) *)&(x))
+>
+> NIT: but wonder if const is necessary, and also (as discussed off-list
+
+I just used READ_ONCE() code, but it is not necessary.
+
+> again :) will this work with a (void) prefixed, just to a. make it clea=
+r
+> we're reading but discarding and b. to avoid any possible compiler warn=
+ing
+> on this?
+
+Adding (void) makes no difference, at least from godbolt.
 
 >
-> Fix it by implementing a simplified READ_ONCE() instead.
+> I know for some reason this form doesn't generate one currently (not su=
+re
+> why), but we may hit that in future.
 
-I sort of intended to make this easier for pointers, but the semantics of
-this are actually potentially a bit nicer - it's more like READ_ONCE() and
-you're passing in the value you're actually reading so this is probably
-better.
+Neither gcc nor clang complains without (void). My guess is that volatile=
 
->
-> Fixes: 3f6bfd4789a0 ("selftests/mm: reuse FORCE_READ to replace "asm volatile("" : "+r" (XXX));"")
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
+is doing something there.
 
-LGTM, so:
-
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-
-But see nits below.
-
-> ---
-> FORCE_READ() comes from commit 876320d71f51 ("selftests/mm: add self tests for
-> guard page feature"). I will a separate patch to stable tree.
->
->
->  tools/testing/selftests/mm/cow.c                  | 4 ++--
->  tools/testing/selftests/mm/guard-regions.c        | 2 +-
->  tools/testing/selftests/mm/hugetlb-madvise.c      | 4 +++-
->  tools/testing/selftests/mm/migration.c            | 2 +-
->  tools/testing/selftests/mm/pagemap_ioctl.c        | 2 +-
->  tools/testing/selftests/mm/split_huge_page_test.c | 7 +++++--
->  tools/testing/selftests/mm/vm_util.h              | 2 +-
->  7 files changed, 14 insertions(+), 9 deletions(-)
->
-> diff --git a/tools/testing/selftests/mm/cow.c b/tools/testing/selftests/mm/cow.c
-> index d30625c18259..c744c603d688 100644
-> --- a/tools/testing/selftests/mm/cow.c
-> +++ b/tools/testing/selftests/mm/cow.c
-> @@ -1554,8 +1554,8 @@ static void run_with_zeropage(non_anon_test_fn fn, const char *desc)
->  	}
->
->  	/* Read from the page to populate the shared zeropage. */
-> -	FORCE_READ(mem);
-> -	FORCE_READ(smem);
-> +	FORCE_READ(*mem);
-> +	FORCE_READ(*smem);
->
->  	fn(mem, smem, pagesize);
->  munmap:
-> diff --git a/tools/testing/selftests/mm/guard-regions.c b/tools/testing/selftests/mm/guard-regions.c
-> index b0d42eb04e3a..8dd81c0a4a5a 100644
-> --- a/tools/testing/selftests/mm/guard-regions.c
-> +++ b/tools/testing/selftests/mm/guard-regions.c
-> @@ -145,7 +145,7 @@ static bool try_access_buf(char *ptr, bool write)
->  		if (write)
->  			*ptr = 'x';
->  		else
-> -			FORCE_READ(ptr);
-> +			FORCE_READ(*ptr);
->  	}
->
->  	signal_jump_set = false;
-> diff --git a/tools/testing/selftests/mm/hugetlb-madvise.c b/tools/testing/selftests/mm/hugetlb-madvise.c
-> index 1afe14b9dc0c..c5940c0595be 100644
-> --- a/tools/testing/selftests/mm/hugetlb-madvise.c
-> +++ b/tools/testing/selftests/mm/hugetlb-madvise.c
-> @@ -50,8 +50,10 @@ void read_fault_pages(void *addr, unsigned long nr_pages)
->  	unsigned long i;
->
->  	for (i = 0; i < nr_pages; i++) {
-> +		unsigned long *addr2 =
-> +			((unsigned long *)(addr + (i * huge_page_size)));
->  		/* Prevent the compiler from optimizing out the entire loop: */
-> -		FORCE_READ(((unsigned long *)(addr + (i * huge_page_size))));
-> +		FORCE_READ(*addr2);
->  	}
->  }
->
-> diff --git a/tools/testing/selftests/mm/migration.c b/tools/testing/selftests/mm/migration.c
-> index c5a73617796a..ea945eebec2f 100644
-> --- a/tools/testing/selftests/mm/migration.c
-> +++ b/tools/testing/selftests/mm/migration.c
-> @@ -110,7 +110,7 @@ void *access_mem(void *ptr)
->  		 * the memory access actually happens and prevents the compiler
->  		 * from optimizing away this entire loop.
->  		 */
-> -		FORCE_READ((uint64_t *)ptr);
-> +		FORCE_READ(*(uint64_t *)ptr);
->  	}
->
->  	return NULL;
-> diff --git a/tools/testing/selftests/mm/pagemap_ioctl.c b/tools/testing/selftests/mm/pagemap_ioctl.c
-> index 0d4209eef0c3..e6face7c0166 100644
-> --- a/tools/testing/selftests/mm/pagemap_ioctl.c
-> +++ b/tools/testing/selftests/mm/pagemap_ioctl.c
-> @@ -1525,7 +1525,7 @@ void zeropfn_tests(void)
->
->  	ret = madvise(mem, hpage_size, MADV_HUGEPAGE);
->  	if (!ret) {
-> -		FORCE_READ(mem);
-> +		FORCE_READ(*mem);
->
->  		ret = pagemap_ioctl(mem, hpage_size, &vec, 1, 0,
->  				    0, PAGE_IS_PFNZERO, 0, 0, PAGE_IS_PFNZERO);
-> diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
-> index 718daceb5282..3c761228e451 100644
-> --- a/tools/testing/selftests/mm/split_huge_page_test.c
-> +++ b/tools/testing/selftests/mm/split_huge_page_test.c
-> @@ -440,8 +440,11 @@ int create_pagecache_thp_and_fd(const char *testfile, size_t fd_size, int *fd,
->  	}
->  	madvise(*addr, fd_size, MADV_HUGEPAGE);
->
-> -	for (size_t i = 0; i < fd_size; i++)
-> -		FORCE_READ((*addr + i));
-> +	for (size_t i = 0; i < fd_size; i++) {
-> +		char *addr2 = *addr + i;
-> +
-> +		FORCE_READ(*addr2);
-> +	}
->
->  	if (!check_huge_file(*addr, fd_size / pmd_pagesize, pmd_pagesize)) {
->  		ksft_print_msg("No large pagecache folio generated, please provide a filesystem supporting large folio\n");
-> diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
-> index c20298ae98ea..b55d1809debc 100644
-> --- a/tools/testing/selftests/mm/vm_util.h
-> +++ b/tools/testing/selftests/mm/vm_util.h
-> @@ -23,7 +23,7 @@
->   * anything with it in order to trigger a read page fault. We therefore must use
->   * volatile to stop the compiler from optimising this away.
->   */
-> -#define FORCE_READ(x) (*(volatile typeof(x) *)x)
-> +#define FORCE_READ(x) (*(const volatile typeof(x) *)&(x))
-
-NIT: but wonder if const is necessary, and also (as discussed off-list
-again :) will this work with a (void) prefixed, just to a. make it clear
-we're reading but discarding and b. to avoid any possible compiler warning
-on this?
-
-I know for some reason this form doesn't generate one currently (not sure
-why), but we may hit that in future.
-
->
->  extern unsigned int __page_size;
->  extern unsigned int __page_shift;
-> --
-> 2.47.2
->
-
-Cheers, Lorenzo
+Best Regards,
+Yan, Zi
 
