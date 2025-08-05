@@ -2,127 +2,104 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EA16EC87FCB
-	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 12:13:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0707AC87FCB
+	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 12:14:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B8108E0002; Tue,  5 Aug 2025 08:13:59 -0400 (EDT)
+	id 9A3C98E0003; Tue,  5 Aug 2025 08:14:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88FE48E0001; Tue,  5 Aug 2025 08:13:59 -0400 (EDT)
+	id 9544E8E0001; Tue,  5 Aug 2025 08:14:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A5EB8E0002; Tue,  5 Aug 2025 08:13:59 -0400 (EDT)
+	id 8429D8E0003; Tue,  5 Aug 2025 08:14:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BC888E0001
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 08:13:59 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EEDF5B82DE
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:13:58 +0000 (UTC)
-X-FDA: 83742595356.26.B83F2D6
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	by imf01.hostedemail.com (Postfix) with ESMTP id E5A4940010
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:13:56 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 7365C8E0001
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 08:14:18 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F14E91A019D
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:14:17 +0000 (UTC)
+X-FDA: 83742596154.02.95548C7
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 3EDB040007
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:14:16 +0000 (UTC)
 Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ep4eSDMa;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com
+	dkim=pass header.d=google.com header.s=20230601 header.b="VXUE/3xE";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf01.hostedemail.com: domain of 3lvWRaAsKCBU695zD213yCv19916z.x97638FI-775Gvx5.9C1@flex--lokeshgidra.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3lvWRaAsKCBU695zD213yCv19916z.x97638FI-775Gvx5.9C1@flex--lokeshgidra.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754396037;
+	s=arc-20220608; t=1754396056;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GQRMFhKZNRLRVXrqn1NUSMh/FhCDWMwTV0xGjqW0gQ0=;
-	b=aX/9Usn6yFFiFTGWDvHKqB1UtOSUzEDfu5/gNjpeI6pRFnli2dosBPxPWkUi19miInU1U0
-	wGm9MreyKNqHJQ8ZrEMtW5yLQP3gwLI4GceS3uy0XDeLfp6vMGfCMW1oc1bGfGow3qe2j7
-	WvhcFIqjBjRVBelWaJtkboTfwbLCXzc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754396037; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ZzF7DGeEUFEW73nufhH2gRERAerFhddc4J1uzX/Ul1Q=;
+	b=s0NB8t9gnunlqwAbiEkY5uy5K1k9I+5DW4sk7uIxjvB7FWArPkEySVtP9BnKqN5b2I3ouA
+	pEk/NlFTPPBoFAfHphxgJmQiBwgH/arPC7HdXJSY9WklicIQxi61O8uZ9JfWkwrmoLBFrt
+	KOXkVe7FjPJd7v/+dHuM0rpGFbtniXw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754396056; a=rsa-sha256;
 	cv=none;
-	b=Yy9WXkYvcBENhe+BXrXvei114lREzETXV+ab5wC6rCbTWVV4T8Dprg3JtSKBL7lCh86YWb
-	SMUKEOHdf86VNX4Y1wt8iBtCOrlonAqMkIgQA7a7AtSQe+doUn+IId1Syvm12xF2ZDN6P4
-	qPFDqIlD0LQb1ZG1Jjbp0hxJK41gP8c=
+	b=ec2b9ajlQULdM2XH86GmcMM194JTX97JZ2liaK2b9Wq9GUSSK8MlV6jzdjAbfkj+YpkAOL
+	dfCxJtaXDQlFZTFEKE/vdoE+BYr8BW4rAWjveGieKZnwlsSww3g5y8HhKZ92ch2PGdzuxv
+	cbm5PbW+aheh16Mf8m81bQyWoGt4Ioo=
 ARC-Authentication-Results: i=1;
 	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ep4eSDMa;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3b783ea502eso4128477f8f.1
-        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 05:13:56 -0700 (PDT)
+	dkim=pass header.d=google.com header.s=20230601 header.b="VXUE/3xE";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf01.hostedemail.com: domain of 3lvWRaAsKCBU695zD213yCv19916z.x97638FI-775Gvx5.9C1@flex--lokeshgidra.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3lvWRaAsKCBU695zD213yCv19916z.x97638FI-775Gvx5.9C1@flex--lokeshgidra.bounces.google.com
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-23824a9bc29so77203305ad.3
+        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 05:14:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754396035; x=1755000835; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=GQRMFhKZNRLRVXrqn1NUSMh/FhCDWMwTV0xGjqW0gQ0=;
-        b=ep4eSDMaDqlI6T5e8tTpnVSgiOvSKXI487qSxE7C7YkXFYSwqGaA1iAQbl7z2jnfXw
-         qQcn2aqQzrHIi7QgNDSKLw4Ajq3FcNXQSAqrU6ljuFlodLUKzFIgu5T6ZJ5HBh5aA9Y9
-         SUbi6SDp2oNO0U+uLqGZYKMbtKOtKEArNyols+ohURtKKONndoOL6DCs7wbJMuKXEPvN
-         dzMp7s/dvOz9q7JQI37p+IFVgiJUw2O/X9fU4RuCWxLO9+8ExJKXIctBVxGw11EeWxdm
-         m95uQ5TL8NE4grnqnD9xkas04tqIs1i2Y9wCdcu5HXITfNYfH+O4xMtYla7QZYFsuf9e
-         x0qg==
+        d=google.com; s=20230601; t=1754396055; x=1755000855; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ZzF7DGeEUFEW73nufhH2gRERAerFhddc4J1uzX/Ul1Q=;
+        b=VXUE/3xEcRpgiP32rXGP/OypuQ7g14cxXIITYtGKw10GgTmId1vW8JuOp7b44j2gPz
+         r6wAl2fJ++yyjyBOomYKJDJOmBzjPPjTSbz/9iFLphnkx6YSIkHhaizvF4a3r2bWoEIq
+         PLnDZplKF0Nr50FkcS1q9N+ytKbb8aswTxs/UC45H+J2wkwKBwAL4P4Id3p8VSPvxnci
+         8FvQPQnk3+jiM83Zj9KMzxTAdoEiRal/ptEjTJ47HKI4Qy5dwuu4h1fRUvI2HgNQ4pfH
+         dcSls/btLvCaUD0rMSnvkqq4MgDx3Bb5XlHXh6InaAcwG8m5a4dF0Pc6zUlxBLi+CYg3
+         EX0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754396035; x=1755000835;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GQRMFhKZNRLRVXrqn1NUSMh/FhCDWMwTV0xGjqW0gQ0=;
-        b=vCpelliJ52zi4LZSySSVFXTq/5+tDHI9TR1ExjqX4r/VdWVD1nUeQmzyHKXIUP/JE3
-         CZC7kLRqFpMsYnr6fNE6pRF++BGCKfa+RUHP2wSqOSnz0girYo8notPy1GXnM5cL8U3h
-         AeL+1VQDOHypY8RYjMUC3DwfopSIv8/Ll1a3vDhR/Jn2HNhOGC+GJQPKAjLHXtKmq7q8
-         WDC05c8SwzcPVYzq7JEExd6zd1odFQHWa5MjR4v/ftShzoNXqaFzMd0lbgoOCvB6Pxfp
-         AO69EHaoJbRNTVYVVt4Jv0oNPgKZt1uRUSwnQ7jV86M+sDnb/dO23dI+6clIpeY/sxTT
-         lvVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXsflCKfXWd9+uV/fRf1AdjQArjCkLJlMHSnqKM3fBqNm1DS0Zcmbum87YmO3qHamn6emnEXrrR0g==@kvack.org
-X-Gm-Message-State: AOJu0YwkQDESHz8JS84wDVXUArgweyY7sBqxGIg5fUHlmvvCwoM+4Hr9
-	49Dim1gPdkkh9gGEAR2bol8js66Ip4GP4MJ0ropuxSRmTkl3tVKewvBl
-X-Gm-Gg: ASbGncsYZz8yp1jbHl9w3H0l3/iT4waHKDMoGlQVYxyxyJ/ddd6B8j5X8sNvVM8fsLE
-	03bOTXMXb36b7tEftOjMXQB7TliZ9oPJlnEFrV06j6i/IjgxFdGsOXGf7MRxBYhc50KtoSiKLJ/
-	JOrYgChfMF3XPrvz8fM1Z2CS39xKzFLC/3Tin2KBp1v20F/HeLzjsXKuV9JQpHZjuVnXFTgKWzq
-	6WqTjSYh5ICAG3fbaoYcd628olVybFhKy0LMxcX0jfqxhEdCHJInkIhkD6iXlnbCtkREmtnrne3
-	6Qer/1uspxgCA7vjfzxD80dl4ewekYtZvebGXEdQM7pdMywIp5bwt6UpE47m/aVqDhdKIk4R7Vc
-	Qon0Ol2Wxn3limRfcJgTA8lL+WbEMPU3YuTKKXZZMu9GEyrDI1sB0gACOAirPDE7ARB3VqNy+u4
-	4VJn/Y3Q==
-X-Google-Smtp-Source: AGHT+IGwRKtI0tVNRZIj++4L7ABQYvhpdiJwXLcYY2IEL2oHCw8906db2fHyLCpfcG5BZzaLfo/kpQ==
-X-Received: by 2002:a5d:5f90:0:b0:3b7:90c7:325d with SMTP id ffacd0b85a97d-3b8ebc9e883mr2324975f8f.6.1754396034932;
-        Tue, 05 Aug 2025 05:13:54 -0700 (PDT)
-Received: from ?IPV6:2a03:83e0:1126:4:14f1:c189:9748:5e5a? ([2620:10d:c092:500::6:98ea])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c3ac036sm18872226f8f.15.2025.08.05.05.13.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Aug 2025 05:13:54 -0700 (PDT)
-Message-ID: <2c795230-5885-4a1a-a0f9-c8352b9e7738@gmail.com>
-Date: Tue, 5 Aug 2025 13:13:49 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/6] selftests: prctl: introduce tests for disabling
- THPs completely
-To: David Hildenbrand <david@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-Cc: linux-fsdevel@vger.kernel.org, corbet@lwn.net, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org, baohua@kernel.org,
- shakeel.butt@linux.dev, riel@surriel.com, ziy@nvidia.com,
- laoar.shao@gmail.com, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
- npache@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- ryan.roberts@arm.com, vbabka@suse.cz, jannh@google.com,
- Arnd Bergmann <arnd@arndb.de>, sj@kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, kernel-team@meta.com,
- Donet Tom <donettom@linux.ibm.com>
-References: <20250804154317.1648084-1-usamaarif642@gmail.com>
- <20250804154317.1648084-6-usamaarif642@gmail.com>
- <eec7e868-a61f-41ed-a8ef-7ff80548089f@redhat.com>
-Content-Language: en-US
-From: Usama Arif <usamaarif642@gmail.com>
-In-Reply-To: <eec7e868-a61f-41ed-a8ef-7ff80548089f@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: qg18yo3hwmkds5ynjmuyacnt93wgbo6i
-X-Rspamd-Queue-Id: E5A4940010
-X-Rspamd-Server: rspam10
+        d=1e100.net; s=20230601; t=1754396055; x=1755000855;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZzF7DGeEUFEW73nufhH2gRERAerFhddc4J1uzX/Ul1Q=;
+        b=OlkT28Gw1luHgL3GkWJH1gR0rLYh0rXcG2QBYQQ9w2w8i8dqcjURDwIWKHf2uO19sq
+         uiYd756VxVPvgR+umYmX9a3uO3XAs49MVmeiOAsbc3YruVO83XHoTEpmF1GcZvvlP5l1
+         ABHgizY2X9RUEYTjsYpl6aS8QoHeHQDFdJPdGdI5m0451PZr5jo5KwjvUxnaiDpDLoEy
+         DF1haVfzHWq557YOcQfhqsE/HbME1hRKRfbgxofvTotg5+bW8Mu+/Vu9do5MM/R5OENW
+         jOmdtVzjFr0IDjiTFC23zj+akmZashpm0I4BwhYy1KP+uU5sEkHDGrPZ4gGw9/cV8cYR
+         O/Aw==
+X-Forwarded-Encrypted: i=1; AJvYcCUeJOGbaqqhsGgrFObKvVce+4ZldC77yMQd16ddkmNxJ/1dFmNQytpwmdc2TzSBAtz86RGEHIAZog==@kvack.org
+X-Gm-Message-State: AOJu0YzQjTTszT9i65HcgLtkAs6/ywHlKCagDH5kuTcIoaTGGwTcUHVM
+	hGSvZ17UglUcscbeEoXl7xhVWvS75sQ9W7zY8/hzEQqezlnkbucZR5BokCOmHhp7RUNO3xfoL/a
+	1D1ECTYtV53K+RkNJcLpO59zmgg==
+X-Google-Smtp-Source: AGHT+IF8Oi619hEHx5HgrY25vqiCr2U0ETURa4UydnVdkhJVp1qynSccgxjHXkhCHze+LNmVGPqSRpBTb8yD1JmeGQ==
+X-Received: from ploc12.prod.google.com ([2002:a17:902:848c:b0:240:770f:72d2])
+ (user=lokeshgidra job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:902:e547:b0:240:3bb7:fdc3 with SMTP id d9443c01a7336-24246feb25dmr173782505ad.28.1754396054997;
+ Tue, 05 Aug 2025 05:14:14 -0700 (PDT)
+Date: Tue,  5 Aug 2025 05:14:10 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.50.1.565.gc32cd1483b-goog
+Message-ID: <20250805121410.1658418-1-lokeshgidra@google.com>
+Subject: [PATCH v2] userfaultfd: opportunistic TLB-flush batching for present
+ pages in MOVE
+From: Lokesh Gidra <lokeshgidra@google.com>
+To: akpm@linux-foundation.org
+Cc: aarcange@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	21cnbao@gmail.com, ngeoffray@google.com, 
+	Lokesh Gidra <lokeshgidra@google.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Kalesh Singh <kaleshsingh@google.com>, Barry Song <v-songbaohua@oppo.com>, 
+	David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 3EDB040007
+X-Stat-Signature: sn6agmmuzsft6i38f1sx16be434mi3pm
 X-Rspam-User: 
-X-HE-Tag: 1754396036-623212
-X-HE-Meta: U2FsdGVkX1+Ww/opg9Ux3LymR2k5KWBIDvgU1kXfenaq3h6FREDPKOyNlArj4tJpA9eZQWRErJgOaFMhnbkitMIcVn/h6c70SAnbmOlZn2iYvr2OzHRv8wj5yf1SYGWt+SgZYN6MD7vOJ5NCEYu5PyvWttRkoPIDq8oiXqLOHX2LteF9qlX/XSojksupOVg0mpIqsiv2WCIecTcvH8WPyRAfl2ODE1SiuACS7hXa8haR+a2n3YBccHQlS2D6ck7nX0uh/un7d23Vy0EWIYIBuC9Ou6pk6xw8nTN0W7ym36EEzwBoGz06SojUFiwhtDaprEL4n4bRq9ZgLxebV6ThK0VOyoKK5qJeFOspiiy6S1OK0Y0KKwzVUFXDBc90e/Pm0FIrIPWpdVNtlwGLWQpvUtGXJXo/U7i7EpweD29KFBO4wfeVJkANbFF2MxrCbJvmAG72CJprgjB7k9BeaCepGskPw0h5N5WN0ZFX9WogT23hNSWb+Wr4vdMfjRzMJgvp6xbq8CVj9y1f98BeXbPoy2gC1L+kii0Ra3wAtP/FHFq/hudZkOBI/FRK8ozbUYz6Wxiq6LxqgZsQt+gmT1hEGjTA5qC1uAeF04hjtXpP6e3Rybh9WXIqZJ4jP8wI10eTgGeiZUn3+NkETTykVqwENgZkiFk/1dX6fhX3veIsII/tNAlh/dPzKyFSDqc/2Vr8mkPMbvCzd404mN0zt3jYXVgwtv1+3qep0grlnf3QhfLTa2f0SySQsmOac59v4+XHD3PQZ3SYwRfbTvDhVMuWyGzvsl/KF/MzFUprpS2guPSlBgyC9Fgj2aPHTUrowtCSURLB+Tu4QMBv2+RkYqEc0YPY3KS7smj4QnVEZUtjC3XiOK59cWVIbqKRveFxZHui0Uue2zEAxxn3y+2fTAlhSsdBmRgeu7+NsqZgS81HSuXDgDe8xYkMJd+paLOyxQiti9hKVNnVMfFXyhBho9Y
- nK2/z29W
- G8isce50xZ9PUBDS9NomVycb8nr5OWMAbT/9Ai6WwDcASLvQWowgAlLEFaMiy0Wm+3KQo+NpmDet8L+2HJauaeV/u8wyvGNDeOWvZHa+NFCU9aMGHPtvtZQJGwjW3K9GEhIr9ZYoXJqvNgMyn/WBsZnKQH3VpUtonb3qTcDvLu9yeUPAuLSrSKZD9LN1W8hS0sUIYAr+ELJHs0OIjFKqvUEjDt02WatfxWPtdQVWtdFyj/pTLRBrZ33R7dPxdsYEdgowrkYDy44pUx+oD23+ZKm8PNpUOCf6LyVsAy7VXWtS7wnf3BdIu4iKbNUve/uod0fuGMIFNjA+eJxLYsBfOK3v5hS6W4Kk/CQWoLBm4MgT2FnVgyFZrrN1F444+xr7v8fkKPN1E3g2cGJvqoEZp/IN2bgFNAIOVFnOSE/8vXLChV4QmdCO4K2W//KASRM9ouYp9RMe5lLYxbnrDWdbMtXQF9+CW9Bsm/H3VAMVpsGBRkGrlF2B4oDicNCj3bRoQh/Vh7G6F3eIjh58CNZZr0s8TqN6uBXiVYouN+we5GC7xiWW1KycmNdZfCqEV5ehJXCZ6RLB5vFgXtrQG/eg53YOL70oeleHQXWHZYi6yA60TEyGaCuwL4wke58a8uOm+shyp
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1754396056-494860
+X-HE-Meta: U2FsdGVkX1/qcCEZIHstgcixbtipRGOzqZA1PX++dOfbVe1hrTKhzdFcRHi2/UnOj3KvYaWsZ6zYjQXTds9KZSLJ/6ttzBhyuYUYqSieXTUg88ArwRbBiXWcOWxSi/JSNLtXWS0AYR8kQxRza4iSQRMuC/15q8OwNP76sffyB2EwnqZkKB/G5+YO6E/QDr+CZss/t8UQdOzrQzUJh1YeVkfKqsnWvzbJdUEvEPuGsNc3FRFNU5jcDBc1sN2wIpwz9++VCmkbMdkBTdg+eLm1vNSR0voDh9CWmTwrnNd/CXQWZSd37E5gfE6Zsoy1rV1ND56AR3OzvhFkOmphWzCbAxVbY9sSYyXlSc/wYC8pJg+JRM4E5N9D6yRQU7LOhPOxFpw9lTN+loSba4RDS1iYVHxxEbh3kfjrMnxBDMBt9G6TW6fFCirELF/Vvsoz7tClVV1AgJAXYKyIV71kNjF8KCRxBNy8hnkukkfuTu7BXjHIW7hGovtwUHZaAHiV2uL48VTrhptBUceP5Tz+jcxUKh8fOqLOsiCPme3oW+2KGHwUjiOZh6cvLmoyuREr0mo+INFNUh/xE6zyYiPs+Rv3aX/vk3fX7FGtXD8UYPfM34p9dMsWR2M195biTfQOubxl3x5MRa5KNxMd0szJN+9DAHLoqRGMQdl63BIFo3aJf0Boi0D19XSr5kwitkzzb61JaYrQe/MjopI/O5OaN0uh5n7G3yyMFDs4IcRoj1Ix5NvfyiQSjSLHqA5RotpXSevrGPRQQubhe8QFEfJwOHCF0z23uIBldmlAqrni7oz6hav79BkWCl2jAv6QUEnXgeU7lAFDzADvtlm5NQu3NqnvdjPhQ1r/LfQ9qSx1UXaHBBqXTYR4+hYBcTOjL42iT4Z57mBeYX3FSy3etM0E3BK8N6IyxLYAIJKzoZY1UbYTToEsd02hvkicYLXvrTblGRmRHLq6dJ5hU5jNZ6c9ESi
+ e47HfYbc
+ wwqRoWA2oS+UtwKbwqADO19UNFWCV+mOyRGwlcdBlVJqm+djZhRdXZQl5csTAhlG0nUymT9TYzNlLhqZCWGZQgzaEAyZJOzFGabyd3vi7aTETNog/lL032sYGk+SwAnOGMWahdDdrzBF+aJGHUK6ZWmkaJCVXju94Mq9iUOkyXfbzD/YogPK6B+sGtRi/99lzGjkzEn6GFiMlar3nbr3HxYJC3efZS8gmZmcHm5uakMPR6MTxt/yN8S7holQKg1ei1OwVFkzhAnF89MpPEY+f9FYs3jxXXtPontK9Ynng1LitoIl4duFSFvu2RNzm0RLeW/yiKNBLUmnlaDasojQi/Yo69txXRzicBDtxMcBoL/EOAlQdiC5D1se1zeBpsQuC4RSMxXbulIhZWf6VLRqeJmYllDlrLAIsQF3TBj2hqldMYctoSYGIz6p0jhZTqWIGo2mAhcFQZmYEF5ttvkje93TnM3XEZz1Q5Sd9jSZbq8/6IHHUNPyVLhBm/zmlI6eVjKqDxv2pM88HWjQ09ZkUSh/uA8VgpK1Eo1V9oB/rkPfc1iy2+Qf3EHp5t+sYYZckt+ctpTH/lvFLm2t/qrDOHJQIownzqQ6qI5v1KcW3SMbOkOiQiAPv4lDhQonmXn6n+Kw42gstjJJ1lYZO6Yvr9N+50r+T3g/LqDadv7JwQXHgqjdRi19LFXzJbQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,104 +108,314 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+MOVE ioctl's runtime is dominated by TLB-flush cost, which is required
+for moving present pages. Mitigate this cost by opportunistically
+batching present contiguous pages for TLB flushing.
 
+Without batching, in our testing on an arm64 Android device with UFFD GC,
+which uses MOVE ioctl for compaction, we observed that out of the total
+time spent in move_pages_pte(), over 40% is in ptep_clear_flush(), and
+~20% in vm_normal_folio().
 
-On 05/08/2025 11:30, David Hildenbrand wrote:
-> On 04.08.25 17:40, Usama Arif wrote:
->> The test will set the global system THP setting to never, madvise
->> or always depending on the fixture variant and the 2M setting to
->> inherit before it starts (and reset to original at teardown).
->>
->> This tests if the process can:
->> - successfully set and get the policy to disable THPs completely.
->> - never get a hugepage when the THPs are completely disabled
->>    with the prctl, including with MADV_HUGE and MADV_COLLAPSE.
->> - successfully reset the policy of the process.
->> - after reset, only get hugepages with:
->>    - MADV_COLLAPSE when policy is set to never.
->>    - MADV_HUGE and MADV_COLLAPSE when policy is set to madvise.
->>    - always when policy is set to "always".
->> - repeat the above tests in a forked process to make sure
->>    the policy is carried across forks.
->>
->> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
->> ---
->>   tools/testing/selftests/mm/.gitignore         |   1 +
->>   tools/testing/selftests/mm/Makefile           |   1 +
->>   .../testing/selftests/mm/prctl_thp_disable.c  | 173 ++++++++++++++++++
->>   tools/testing/selftests/mm/thp_settings.c     |   9 +-
->>   tools/testing/selftests/mm/thp_settings.h     |   1 +
->>   5 files changed, 184 insertions(+), 1 deletion(-)
->>   create mode 100644 tools/testing/selftests/mm/prctl_thp_disable.c
->>
->> diff --git a/tools/testing/selftests/mm/.gitignore b/tools/testing/selftests/mm/.gitignore
->> index e7b23a8a05fe..eb023ea857b3 100644
->> --- a/tools/testing/selftests/mm/.gitignore
->> +++ b/tools/testing/selftests/mm/.gitignore
->> @@ -58,3 +58,4 @@ pkey_sighandler_tests_32
->>   pkey_sighandler_tests_64
->>   guard-regions
->>   merge
->> +prctl_thp_disable
->> diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
->> index d13b3cef2a2b..2bb8d3ebc17c 100644
->> --- a/tools/testing/selftests/mm/Makefile
->> +++ b/tools/testing/selftests/mm/Makefile
->> @@ -86,6 +86,7 @@ TEST_GEN_FILES += on-fault-limit
->>   TEST_GEN_FILES += pagemap_ioctl
->>   TEST_GEN_FILES += pfnmap
->>   TEST_GEN_FILES += process_madv
->> +TEST_GEN_FILES += prctl_thp_disable
->>   TEST_GEN_FILES += thuge-gen
->>   TEST_GEN_FILES += transhuge-stress
->>   TEST_GEN_FILES += uffd-stress
->> diff --git a/tools/testing/selftests/mm/prctl_thp_disable.c b/tools/testing/selftests/mm/prctl_thp_disable.c
->> new file mode 100644
->> index 000000000000..ef150180daf4
->> --- /dev/null
->> +++ b/tools/testing/selftests/mm/prctl_thp_disable.c
->> @@ -0,0 +1,173 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +/*
->> + * Basic tests for PR_GET/SET_THP_DISABLE prctl calls
->> + *
->> + * Author(s): Usama Arif <usamaarif642@gmail.com>
->> + */
->> +#include <stdio.h>
->> +#include <stdlib.h>
->> +#include <string.h>
->> +#include <unistd.h>
->> +#include <sys/mman.h>
->> +#include <sys/prctl.h>
->> +#include <sys/wait.h>
->> +
->> +#include "../kselftest_harness.h"
->> +#include "thp_settings.h"
->> +#include "vm_util.h"
->> +
->> +static int sz2ord(size_t size, size_t pagesize)
->> +{
->> +    return __builtin_ctzll(size / pagesize);
->> +}
-> 
-> Note: We have this helper duplicated elsewhere (e.g., cow.c).
-> 
-> See [1] how we're going to clean it up.
-> 
-> Not sure how to resolve this. Probably, which series lands first in mm-unstable should clean it up.
-> 
-> I would assume that Donet's series would go in first, such that you can just reuse the helper from vm_utils.h
-> 
-> [1] https://lkml.kernel.org/r/20250804090410.of5xwrlker665bdp@master
-> 
-> 
-> Nothing else jumped at me
-> 
-> Acked-by: David Hildenbrand <david@redhat.com>
-> 
+With batching, the proportion of vm_normal_folio() increases to over
+70% of move_pages_pte() without any changes to vm_normal_folio().
+Furthermore, time spent within move_pages_pte() is only ~20%, which
+includes TLB-flush overhead.
 
-Thanks!
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Kalesh Singh <kaleshsingh@google.com>
+Cc: Barry Song <v-songbaohua@oppo.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>
+Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
+---
+Changes since v1 [1]
+- Removed flush_tlb_batched_pending(), per Barry Song
+- Unified single and multi page case, per Barry Song
 
-I will wait a few days and see if it has made it into mm-new and rebase and send the next revision.
+[1] https://lore.kernel.org/all/20250731104726.103071-1-lokeshgidra@google.com/
+
+ mm/userfaultfd.c | 171 +++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 119 insertions(+), 52 deletions(-)
+
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index cbed91b09640..0ab51bcf264c 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -1026,18 +1026,61 @@ static inline bool is_pte_pages_stable(pte_t *dst_pte, pte_t *src_pte,
+ 	       pmd_same(dst_pmdval, pmdp_get_lockless(dst_pmd));
+ }
+ 
+-static int move_present_pte(struct mm_struct *mm,
+-			    struct vm_area_struct *dst_vma,
+-			    struct vm_area_struct *src_vma,
+-			    unsigned long dst_addr, unsigned long src_addr,
+-			    pte_t *dst_pte, pte_t *src_pte,
+-			    pte_t orig_dst_pte, pte_t orig_src_pte,
+-			    pmd_t *dst_pmd, pmd_t dst_pmdval,
+-			    spinlock_t *dst_ptl, spinlock_t *src_ptl,
+-			    struct folio *src_folio)
++/*
++ * Checks if the two ptes and the corresponding folio are eligible for batched
++ * move. If so, then returns pointer to the folio, after locking it. Otherwise,
++ * returns NULL.
++ */
++static struct folio *check_ptes_for_batched_move(struct vm_area_struct *src_vma,
++						 unsigned long src_addr,
++						 pte_t *src_pte, pte_t *dst_pte)
++{
++	pte_t orig_dst_pte, orig_src_pte;
++	struct folio *folio;
++
++	orig_dst_pte = ptep_get(dst_pte);
++	if (!pte_none(orig_dst_pte))
++		return NULL;
++
++	orig_src_pte = ptep_get(src_pte);
++	if (pte_none(orig_src_pte) || !pte_present(orig_src_pte) ||
++	    is_zero_pfn(pte_pfn(orig_src_pte)))
++		return NULL;
++
++	folio = vm_normal_folio(src_vma, src_addr, orig_src_pte);
++	if (!folio || !folio_trylock(folio))
++		return NULL;
++	if (!PageAnonExclusive(&folio->page) || folio_test_large(folio)) {
++		folio_unlock(folio);
++		return NULL;
++	}
++	return folio;
++}
++
++static long move_present_ptes(struct mm_struct *mm,
++			      struct vm_area_struct *dst_vma,
++			      struct vm_area_struct *src_vma,
++			      unsigned long dst_addr, unsigned long src_addr,
++			      pte_t *dst_pte, pte_t *src_pte,
++			      pte_t orig_dst_pte, pte_t orig_src_pte,
++			      pmd_t *dst_pmd, pmd_t dst_pmdval,
++			      spinlock_t *dst_ptl, spinlock_t *src_ptl,
++			      struct folio *src_folio, unsigned long len)
+ {
+ 	int err = 0;
++	unsigned long src_start = src_addr;
++	unsigned long addr_end;
+ 
++	if (len > PAGE_SIZE) {
++		addr_end = (dst_addr + PMD_SIZE) & PMD_MASK;
++		if (dst_addr + len > addr_end)
++			len = addr_end - dst_addr;
++
++		addr_end = (src_addr + PMD_SIZE) & PMD_MASK;
++		if (src_addr + len > addr_end)
++			len = addr_end - src_addr;
++	}
++	flush_cache_range(src_vma, src_addr, src_addr + len);
+ 	double_pt_lock(dst_ptl, src_ptl);
+ 
+ 	if (!is_pte_pages_stable(dst_pte, src_pte, orig_dst_pte, orig_src_pte,
+@@ -1051,31 +1094,53 @@ static int move_present_pte(struct mm_struct *mm,
+ 		err = -EBUSY;
+ 		goto out;
+ 	}
++	arch_enter_lazy_mmu_mode();
++
++	addr_end = src_start + len;
++	while (true) {
++		orig_src_pte = ptep_get_and_clear(mm, src_addr, src_pte);
++		/* Folio got pinned from under us. Put it back and fail the move. */
++		if (folio_maybe_dma_pinned(src_folio)) {
++			set_pte_at(mm, src_addr, src_pte, orig_src_pte);
++			err = -EBUSY;
++			break;
++		}
+ 
+-	orig_src_pte = ptep_clear_flush(src_vma, src_addr, src_pte);
+-	/* Folio got pinned from under us. Put it back and fail the move. */
+-	if (folio_maybe_dma_pinned(src_folio)) {
+-		set_pte_at(mm, src_addr, src_pte, orig_src_pte);
+-		err = -EBUSY;
+-		goto out;
+-	}
+-
+-	folio_move_anon_rmap(src_folio, dst_vma);
+-	src_folio->index = linear_page_index(dst_vma, dst_addr);
++		folio_move_anon_rmap(src_folio, dst_vma);
++		src_folio->index = linear_page_index(dst_vma, dst_addr);
+ 
+-	orig_dst_pte = folio_mk_pte(src_folio, dst_vma->vm_page_prot);
+-	/* Set soft dirty bit so userspace can notice the pte was moved */
++		orig_dst_pte = folio_mk_pte(src_folio, dst_vma->vm_page_prot);
++		/* Set soft dirty bit so userspace can notice the pte was moved */
+ #ifdef CONFIG_MEM_SOFT_DIRTY
+-	orig_dst_pte = pte_mksoft_dirty(orig_dst_pte);
++		orig_dst_pte = pte_mksoft_dirty(orig_dst_pte);
+ #endif
+-	if (pte_dirty(orig_src_pte))
+-		orig_dst_pte = pte_mkdirty(orig_dst_pte);
+-	orig_dst_pte = pte_mkwrite(orig_dst_pte, dst_vma);
++		if (pte_dirty(orig_src_pte))
++			orig_dst_pte = pte_mkdirty(orig_dst_pte);
++		orig_dst_pte = pte_mkwrite(orig_dst_pte, dst_vma);
++		set_pte_at(mm, dst_addr, dst_pte, orig_dst_pte);
++
++		src_addr += PAGE_SIZE;
++		if (src_addr == addr_end)
++			break;
++		src_pte++;
++		dst_pte++;
++
++		folio_unlock(src_folio);
++		src_folio = check_ptes_for_batched_move(src_vma, src_addr, src_pte, dst_pte);
++		if (!src_folio)
++			break;
++		dst_addr += PAGE_SIZE;
++	}
++
++	arch_leave_lazy_mmu_mode();
++	if (src_addr > src_start)
++		flush_tlb_range(src_vma, src_start, src_addr);
+ 
+-	set_pte_at(mm, dst_addr, dst_pte, orig_dst_pte);
+ out:
+ 	double_pt_unlock(dst_ptl, src_ptl);
+-	return err;
++	if (src_folio)
++		folio_unlock(src_folio);
++	return src_addr > src_start ? src_addr - src_start : err;
+ }
+ 
+ static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *dst_vma,
+@@ -1140,7 +1205,7 @@ static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *dst_vma,
+ 	set_pte_at(mm, dst_addr, dst_pte, orig_src_pte);
+ 	double_pt_unlock(dst_ptl, src_ptl);
+ 
+-	return 0;
++	return PAGE_SIZE;
+ }
+ 
+ static int move_zeropage_pte(struct mm_struct *mm,
+@@ -1154,6 +1219,7 @@ static int move_zeropage_pte(struct mm_struct *mm,
+ {
+ 	pte_t zero_pte;
+ 
++	flush_cache_range(src_vma, src_addr, src_addr + PAGE_SIZE);
+ 	double_pt_lock(dst_ptl, src_ptl);
+ 	if (!is_pte_pages_stable(dst_pte, src_pte, orig_dst_pte, orig_src_pte,
+ 				 dst_pmd, dst_pmdval)) {
+@@ -1167,20 +1233,19 @@ static int move_zeropage_pte(struct mm_struct *mm,
+ 	set_pte_at(mm, dst_addr, dst_pte, zero_pte);
+ 	double_pt_unlock(dst_ptl, src_ptl);
+ 
+-	return 0;
++	return PAGE_SIZE;
+ }
+ 
+ 
+ /*
+- * The mmap_lock for reading is held by the caller. Just move the page
+- * from src_pmd to dst_pmd if possible, and return true if succeeded
+- * in moving the page.
++ * The mmap_lock for reading is held by the caller. Just move the page(s)
++ * from src_pmd to dst_pmd if possible, and return number of bytes moved.
+  */
+-static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+-			  struct vm_area_struct *dst_vma,
+-			  struct vm_area_struct *src_vma,
+-			  unsigned long dst_addr, unsigned long src_addr,
+-			  __u64 mode)
++static long move_pages_ptes(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
++			    struct vm_area_struct *dst_vma,
++			    struct vm_area_struct *src_vma,
++			    unsigned long dst_addr, unsigned long src_addr,
++			    unsigned long len, __u64 mode)
+ {
+ 	swp_entry_t entry;
+ 	struct swap_info_struct *si = NULL;
+@@ -1196,9 +1261,8 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+ 	struct mmu_notifier_range range;
+ 	int err = 0;
+ 
+-	flush_cache_range(src_vma, src_addr, src_addr + PAGE_SIZE);
+ 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm,
+-				src_addr, src_addr + PAGE_SIZE);
++				src_addr, src_addr + len);
+ 	mmu_notifier_invalidate_range_start(&range);
+ retry:
+ 	/*
+@@ -1257,7 +1321,7 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+ 		if (!(mode & UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES))
+ 			err = -ENOENT;
+ 		else /* nothing to do to move a hole */
+-			err = 0;
++			err = PAGE_SIZE;
+ 		goto out;
+ 	}
+ 
+@@ -1375,10 +1439,13 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+ 			}
+ 		}
+ 
+-		err = move_present_pte(mm,  dst_vma, src_vma,
+-				       dst_addr, src_addr, dst_pte, src_pte,
+-				       orig_dst_pte, orig_src_pte, dst_pmd,
+-				       dst_pmdval, dst_ptl, src_ptl, src_folio);
++		err = move_present_ptes(mm, dst_vma, src_vma,
++					dst_addr, src_addr, dst_pte, src_pte,
++					orig_dst_pte, orig_src_pte, dst_pmd,
++					dst_pmdval, dst_ptl, src_ptl, src_folio, len);
++		/* folio is already unlocked by move_present_ptes() */
++		folio_put(src_folio);
++		src_folio = NULL;
+ 	} else {
+ 		struct folio *folio = NULL;
+ 
+@@ -1732,7 +1799,7 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+ {
+ 	struct mm_struct *mm = ctx->mm;
+ 	struct vm_area_struct *src_vma, *dst_vma;
+-	unsigned long src_addr, dst_addr;
++	unsigned long src_addr, dst_addr, src_end;
+ 	pmd_t *src_pmd, *dst_pmd;
+ 	long err = -EINVAL;
+ 	ssize_t moved = 0;
+@@ -1775,8 +1842,8 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+ 	if (err)
+ 		goto out_unlock;
+ 
+-	for (src_addr = src_start, dst_addr = dst_start;
+-	     src_addr < src_start + len;) {
++	for (src_addr = src_start, dst_addr = dst_start, src_end = src_start + len;
++	     src_addr < src_end;) {
+ 		spinlock_t *ptl;
+ 		pmd_t dst_pmdval;
+ 		unsigned long step_size;
+@@ -1857,10 +1924,10 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+ 				break;
+ 			}
+ 
+-			err = move_pages_pte(mm, dst_pmd, src_pmd,
+-					     dst_vma, src_vma,
+-					     dst_addr, src_addr, mode);
+-			step_size = PAGE_SIZE;
++			err = move_pages_ptes(mm, dst_pmd, src_pmd,
++					      dst_vma, src_vma, dst_addr,
++					      src_addr, src_end - src_addr, mode);
++			step_size = err;
+ 		}
+ 
+ 		cond_resched();
+@@ -1872,7 +1939,7 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+ 			break;
+ 		}
+ 
+-		if (err) {
++		if (err < 0) {
+ 			if (err == -EAGAIN)
+ 				continue;
+ 			break;
+
+base-commit: 7e161a991ea71e6ec526abc8f40c6852ebe3d946
+-- 
+2.50.1.565.gc32cd1483b-goog
 
 
