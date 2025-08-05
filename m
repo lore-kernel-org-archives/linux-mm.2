@@ -2,93 +2,137 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A32DAC87FCB
-	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 08:56:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 23FABC87FCB
+	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 09:20:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1EED76B009B; Tue,  5 Aug 2025 04:56:33 -0400 (EDT)
+	id 7088C6B0099; Tue,  5 Aug 2025 05:20:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19F9E6B009F; Tue,  5 Aug 2025 04:56:33 -0400 (EDT)
+	id 6B89D6B009A; Tue,  5 Aug 2025 05:20:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B5866B00A0; Tue,  5 Aug 2025 04:56:33 -0400 (EDT)
+	id 5A71A6B009B; Tue,  5 Aug 2025 05:20:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id EF5626B009B
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 04:56:32 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AAEFB14011B
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 08:56:32 +0000 (UTC)
-X-FDA: 83742097824.25.5022B7C
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 7560E40008
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 08:56:29 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=AdHKDmDH;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 480616B0099
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 05:20:45 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D43A31A01CC
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 09:20:44 +0000 (UTC)
+X-FDA: 83742158808.05.334E667
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf29.hostedemail.com (Postfix) with ESMTP id A8F91120004
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 09:20:41 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JKYLIDdF;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=W9D36PnH;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sNtts3JH;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=iBbEuD6h;
+	spf=pass (imf29.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754384191;
+	s=arc-20220608; t=1754385642;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2NBVVAA2DuTVhMuc2zncIDms1+52a6Ct/b9XmMxwvBQ=;
-	b=eoO6BsHRLgaVp1Z1H5b99OKkOklOqKDtvhL6Hmj1PbUNmR9f+6FmaYht4dAyXnt38l6YyI
-	rTRVDW4WbT9p1C8XrGK8sjOmLxCWtYUvXLGAWJvlmKaT5Zdolqt3FNcxjznSyNg2sQnXZE
-	yRg7PdsqY3aEBzg9BfUiHD2x0iTepK8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754384191; a=rsa-sha256;
+	bh=PHMRVK7QVsCp1KUp4tnCghouR6JYlszhPaJzdNosRRE=;
+	b=2a32Fv2/zyBuTPPQ7sN3B2rWoqtuCbwR1dv03p8101xdzpvPOwhKnP0HYPvqdGrF6ukh8B
+	6RRVop4oMtdhvW6CiPnl4rp7fCqORMOPiV3TECxx5kxlBQFUUQv+mgS/I0w4f5l8jLPBs1
+	bzCnHU7CIeenawawfdmY1wYdQA1nWXI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754385642; a=rsa-sha256;
 	cv=none;
-	b=acyYGNKJ5u8ABmNN2KDOGIalR7i9sXJBxVBVh/QfefleSbJ0UUQ8u5+ycWKdFiSEY5WSgE
-	Y/Hu9SoHX+7jV+iN7qjurJwzt23/6+t0JaWFE3O+ULHuHZclwCg8xAafCnRGN3qWjBWF9R
-	lARI8Fyi7bNfAB4f4CSXVPo2kwuul7s=
+	b=tAHAor2X/yjHqN6+pI0zbL8GcjMQE5wFvJVYV3Ri/kW6mOzmk65tid8gxnEUGMKj6WssBf
+	960vnvin/gloNzWrJ1BivNJdePm6H72YarY4cL7y5sbtcjLxTLcVY/FPe/XawB9G9NqYku
+	5kl8bMH/nfbLVXDbkHbm5a0t5OtRbeA=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=AdHKDmDH;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1754384185; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=2NBVVAA2DuTVhMuc2zncIDms1+52a6Ct/b9XmMxwvBQ=;
-	b=AdHKDmDH9gYhSk9PV47/+9PYkuvl2CEtk+PKCp4rNqhQJQG8gE6Mj3mY7kiICsvE5HJflYP8MyZ49BMVclmn7PiVu7p0JnAXgFEE1bs0DBCJuc0U66gCfphOQXYF1ymMTEoACmysS0ifpH/AuV27ODr/kOTO9pvagyi+594zPDg=
-Received: from 30.74.144.114(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wl4cIP7_1754384182 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 05 Aug 2025 16:56:23 +0800
-Message-ID: <c6f9dacf-d520-4cc3-88ac-c5937916aa2c@linux.alibaba.com>
-Date: Tue, 5 Aug 2025 16:56:22 +0800
+	imf29.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JKYLIDdF;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=W9D36PnH;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sNtts3JH;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=iBbEuD6h;
+	spf=pass (imf29.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id EE60221235;
+	Tue,  5 Aug 2025 09:20:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1754385640; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PHMRVK7QVsCp1KUp4tnCghouR6JYlszhPaJzdNosRRE=;
+	b=JKYLIDdFNs3aYZsa6GvIKNRX/cwlIWnX7FxSvXIq3suGXbfTqxwOJMyuwHtpwCAM9xjFNi
+	xLCrwNc9kYYtFh4lhdCeYRWby/Zs7JEcU2EAcKoOD4kxXoZZZLqyA/97mi86LXue45vuSF
+	f8AOwB4+02DIcC3uO5T2zVh3YUJ5sqo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1754385640;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PHMRVK7QVsCp1KUp4tnCghouR6JYlszhPaJzdNosRRE=;
+	b=W9D36PnHk3baL7DuUyr+HqePGIz/D9842my0AB3oYO9sgmWmuNxfoifsnby6agNFoX9kEn
+	rCuEpPCAhjZi8iBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1754385639; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PHMRVK7QVsCp1KUp4tnCghouR6JYlszhPaJzdNosRRE=;
+	b=sNtts3JHY8JNB1Izae96sbqpsMi7G2NcXCderJkWaCw+EUDX9DXMBzWA78rKB8saNuU7HJ
+	68GHr92raH00HKny/JUEV+4bMmN8Xx54HX9t4rdwS+1KjZmZDw3PPJegpimf/ppJ2gr4M5
+	5eDHPg3bfwy33oT6H2v1v8uBgXXheb8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1754385639;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PHMRVK7QVsCp1KUp4tnCghouR6JYlszhPaJzdNosRRE=;
+	b=iBbEuD6hS5eB0gMuFdHIdxCKTewxxhF+o81zBLSFRjEkFPDzRkMqNoekqYE2IdfwIPXge6
+	smG0P5aUgGKq2VDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D3BA913A55;
+	Tue,  5 Aug 2025 09:20:39 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ci90M+fMkWhuSgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 05 Aug 2025 09:20:39 +0000
+Message-ID: <3c6100a1-78a3-4211-a62d-eea07db91b62@suse.cz>
+Date: Tue, 5 Aug 2025 11:20:48 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: Fix the race between collapse and PT_RECLAIM under
- per-vma lock
-To: Qi Zheng <zhengqi.arch@bytedance.com>, Barry Song <21cnbao@gmail.com>,
- akpm@linux-foundation.org, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Barry Song <v-songbaohua@oppo.com>,
- "Lai, Yi" <yi1.lai@linux.intel.com>, David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
- Suren Baghdasaryan <surenb@google.com>, Lokesh Gidra
- <lokeshgidra@google.com>, Tangquan Zheng <zhengtangquan@oppo.com>,
- Lance Yang <ioworker0@gmail.com>, Zi Yan <ziy@nvidia.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
- <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>
-References: <20250805035447.7958-1-21cnbao@gmail.com>
- <35417160-86bf-4580-8ae9-5cadd4f6401d@bytedance.com>
- <d73213ba-5ca0-451c-b82b-f590d10da6d7@linux.alibaba.com>
- <b594a315-8458-439c-b535-fc7f052a3fae@bytedance.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <b594a315-8458-439c-b535-fc7f052a3fae@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: r8ifdgsykw9bmngp3tptso7xohqzazt5
-X-Rspamd-Queue-Id: 7560E40008
-X-Rspamd-Server: rspam10
+Subject: Re: [PATCH 1/1] mm: Correct misleading comment on mmap_lock field in
+ mm_struct
+To: Adrian Huang <adrianhuang0701@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Liam.Howlett@oracle.com,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Feng Tang <feng.79.tang@gmail.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Adrian Huang <ahuang12@lenovo.com>
+References: <20250805084726.2054-1-ahuang12@lenovo.com>
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <20250805084726.2054-1-ahuang12@lenovo.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: A8F91120004
+X-Stat-Signature: p9jjh8dbe7zgz4wwbt95oqpe7fc5jcna
 X-Rspam-User: 
-X-HE-Tag: 1754384189-609005
-X-HE-Meta: U2FsdGVkX18ajD6bwF4UGulRh0r6qJnBgKax4BS7Vg6MdgfkQJ4lgj44jDP9rKlO2zB8CQRvXtHZcxvn5hPzeLfvjUzQRlNE46SeW62uERliZhb3KOCMcB9wwDlSw8mh8/DsuKWx7Qzs7zNew34W41cIHyehrXPe5ulaeKaa9eXj8LGX07UWcvTFip3SHUgCx7gM/BoTSKkvvDxtP0p7aFfw7iM/Ou1HdgV+4HiI8LFEQ06Jb7cCePbi1+ftW0HMrAaPZ6GwmWp6yNSTZmsR3Bmc1138rWfBlM/a6/SKlsCJ/YH1E54/MFkP6KHMobfUBB3sGnl+ewBdG41AE6b2LTUL/3JLmh+sBY4GYJeb0hMtt0EKDsd7v7nNk7zixvFCmASJ0s+yenzbStYNopWoC8iFe3sMg3R4/7IRvT/Epd3xq2quHxpbcx7YkGnuuQnGznt4Uh7F/KOPPuzJlA29TooeDTkOBwUWNcwu45NnSC0YkVPf9lgeRJ7t2Dgsi5ssWgp1n3Zu5Wwc+7M5cmEHsujDfECeK0aazDgSyWrF6f1f7ZFIKQS63HwTCBUFO+pyiEe6vLEr5knYShcvHcipHjLmgYHlRVcZH0RHl328jBPvu56HaNpgIHUEodW4xWG5qs8mX9eXYtRLGXcVSbdYSSbEbBa5/Y+Wv9l6PUQ7YsRqxD21oOLqUHPMeTs8OMwVQrYoDW/S6QB2wkbm8a+nN/Yl1TLcUH41Kv989vsoJTh7ebxF57GZXz+Vx5KNBxpDHZ5CXLbCOwv4Pp8rURDfPJVMPejflse9ufX81XPln0svT7WtsPkRTOhtcvti+/vEcsnXmpdq4gtCxi/ZkokXtf3aYIYh39mF+GSzPlcAOKYXRs5FYdDIL3VayTPfWhb5XOohKSNbJUbYvfQnZaRKgu1aeW+41001US7FLX1TnLz1Ya4k7coRfS0v79TZqwyw8RKqyKanNfKPhvPM+xc
- 9YNFt/yk
- f6bvXlNxyOgIBSqhN1lTo6YsKGOKyoST0iLbEhRx6ry4hei/xufE7dBXHFWvTtUX6W1W5DsZ2rqivv3VndAiAs+phtEbmdJWFNWon6oaLI62VuJcgnytIOrgTrjA+ceVbS0M6yUqQq82IK/0XmLjufvz7sQrZm3Qn2I6NnzDr6Eevy2rStdKPKUQXaGC2GVpZohhQJCNI+lgExpxIg2cvjpH31alcTfqt6Uj1OAsJ/FCvlRWSR49Ux7inCcinc/Sqczhv9Fb5AR6kGwGFhy9kMFJFYjK7sjiKykhoK6OPki4kFxo6/KPjRcGhh0uV57Hj3+Ca7aJW8wfP20JitBkqIfnCYM6NO3vFnUxGmlGMTgczTmKdypG2UP9NItg6wE/KtEdMh9AdLvyL6JQeSHDEtmQtbFrj7EhknlqASp0VIijnGvFX5zdO++UkQrH5NfCEKaA3
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1754385641-628906
+X-HE-Meta: U2FsdGVkX18vgs+asMP2hVml+cyqRx4QaBk0017yukblMyNddfkM/FCohMK4lKLSQFKYpB/a9j99TAynFIK7Xt8Ybi/l3wCCZ2w8znsH4k0SMbJ/CXKQpPkrmNqapWcS66WSwgpcWnR1drp/3JnjblibBIguyJncokXl3b8LZMA0Fodpb3cZkXYjrbC0MYszs6UgvAmzYl210dw+eXxM5XaaAIjyWXXTaM+t3+BBHWzo+QPWgugJfWUj2udPXCjkdXP5d8vw6pwKJGOMiYUu1N29pLSfGvRuDkqy4BRBx/nr28dT+M7hPN/4K9DDNqsoUGKjFw3c2Bf/Id9tydyZbhg8ommA7fT/j2xt6vz4u4r+c2n9my+NEmmZ7tcptQkLHwP4YCN7OZ4w0orqRWrZ7bbG+f5tNg2UFqLVSMNrQqrcyRPcgrACcOrgDA9TQC8mhQ710l1q17ezGpo8AJ9F0BboO/Bd8dWI/g8brdRsOB5VebXfCoTNOr1L/3TcjznKb+9PAbDlVD2/caPQrIVFsojZOusD9NF7lpvvJvnQeuK0gJ5F4pyWRG7K3jnr3WSRNvhpGrW2Z23Bf+dyYlNG6IRTo4/vyDq0fZ6UTKmCjRWfTM6cFWg9RV4QzFVimY7HrlnuQvEyhmm4+4imRuz2WnCTTN3J8SKO7fMpaF/KMNqTdZuQHNqZzSxfvO2iz5EtGirHR7rRFp+9M/hkTeHGcvCGbJ/bj5bFm6lQYzUKTQgXbs1TpzVSv/E35HKLETRI43BREYpLJ/jzUiS43VikL/lME22drGSbLiUuF93CHe0j9pAgHqR5xvH/LWwjtpo45f/HP0a06ZzHNc6sHNmnmAhr1trgOit5MI2ZS8lqX14RNDSm9c7brJrKenJBSf+zuaq5nFqWPmfa+U+SxuD0sQD6gCBm/kESamQ48dlg52eJoWSS/D4XtarK/S+tVG3RT1tkarDbMOP1C7UG52q
+ NrbNU/dx
+ MiymxU6WdmKPIlrsnXqFRsczIJi8HlYAJZrexUJAQDSBRtEqq93F2UXRdCMUeR+B+Cc4BY9RpYErTb88sGbeACn9jGoVt1D2IxAsar/G3ummUjpsmLwd3/nCVoyvrJm3166yiHR+zFKPe7DGPXPu6Zj7Gj6kXdagWYBVIVjN9IwisV3UWmit+1J1GCLmllRzHKJbnmEbpKIKHIdXJf5aO9n0UKaBCw/2mBaDS60YCmZ9MlR6c3kD6NhX6aNX0rfEojXZuD3u7T8pY9vUBddgNgg4s8PIbUayPNyz1gpoe2Rwhn8iObqeovLGJEw24JOtJMDlqs36qHcPvtxCKU1GmeIChndu15kaM4IU2rAL1nG86sSEVzH9wRLCf3N4ojnqcmodBj3QP5j2K6FmiiybrxE8ZB/PyeV0nn6DbpNr9qo30RVZ7uQl9GM/8WfVAskbBzkkKgmQWg+E+BTsbH8xqMXp6hw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,99 +141,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 8/5/25 10:47 AM, Adrian Huang wrote:
+> From: Adrian Huang <ahuang12@lenovo.com>
+> 
+> The comment previously described the offset of mmap_lock as 0x120 (hex),
+> which is misleading. The correct value is 120 (decimal), and using '0x120'
+> could confuse readers trying to understand why the count and owner fields
+> reside in separate cachelines.
+> 
+> This change also removes an unnecessary space for improved formatting.
+> 
+> Fixes: 2e3025434a6b ("mm: relocate 'write_protect_seq' in struct mm_struct")
+> Signed-off-by: Adrian Huang <ahuang12@lenovo.com>
 
+That seems all true so
 
-On 2025/8/5 16:17, Qi Zheng wrote:
-> Hi Baolin,
-> 
-> On 8/5/25 3:53 PM, Baolin Wang wrote:
->>
->>
->> On 2025/8/5 14:42, Qi Zheng wrote:
->>> Hi Barry,
->>>
->>> On 8/5/25 11:54 AM, Barry Song wrote:
->>>> From: Barry Song <v-songbaohua@oppo.com>
->>>>
->>>> The check_pmd_still_valid() call during collapse is currently only
->>>> protected by the mmap_lock in write mode, which was sufficient when
->>>> pt_reclaim always ran under mmap_lock in read mode. However, since
->>>> madvise_dontneed can now execute under a per-VMA lock, this assumption
->>>> is no longer valid. As a result, a race condition can occur between
->>>> collapse and PT_RECLAIM, potentially leading to a kernel panic.
->>>
->>> There is indeed a race condition here. And after applying this patch, I
->>> can no longer reproduce the problem locally (I was able to reproduce it
->>> stably locally last night).
->>>
->>> But I still can't figure out how this race condtion causes the
->>> following panic:
->>>
->>> exit_mmap
->>> --> mmap_read_lock()
->>>      unmap_vmas()
->>>      --> pte_offset_map_lock
->>>          --> rcu_read_lock()
->>>              check if the pmd entry is a PTE page
->>>              ptl = pte_lockptr(mm, &pmdval)  <-- ptl is NULL
->>>              spin_lock(ptl)                  <-- PANIC!!
->>>
->>> If this PTE page is freed by pt_reclaim (via RCU), then the ptl can 
->>> not be NULL.
->>>
->>> The collapse holds mmap write lock, so it is impossible to be concurrent
->>> with exit_mmap().
->>>
->>> Confusing. :(
->>
->> IIUC, the issue is not caused by the concurrency between exit_mmap and 
->> collapse, but rather by the concurrency between pt_reclaim and collapse.
->>
->> Before this patch, khugepaged might incorrectly restore a PTE 
->> pagetable that had already been freed.
->>
->> pt_reclaim has cleared the pmd entry and freed the PTE page table. 
->> However, due to the race condition, check_pmd_still_valid() still 
->> passes and continues to attempt the collapse:
->>
->> _pmd = pmdp_collapse_flush(vma, address, pmd); ---> returns a none pmd 
->> entry (the original pmd entry has been cleared)
->>
->> pte = pte_offset_map_lock(mm, &_pmd, address, &pte_ptl); ---> returns 
->> pte == NULL
->>
->> Then khugepaged will restore the old PTE pagetable with an invalid pmd 
->> entry:
->>
->> pmd_populate(mm, pmd, pmd_pgtable(_pmd));
->>
->> So when the process exits and trys to free the mapping of the process, 
->> traversing the invalid pmd table will lead to a crash.
-> 
-> CPU0                         CPU1
-> ====                         ====
-> 
-> collapse
-> --> pmd_populate(mm, pmd, pmd_pgtable(_pmd));
->      mmap_write_unlock
->                               exit_mmap
->                               --> hold mmap lock
->                                   __pte_offset_map_lock
->                                   --> pte = __pte_offset_map(pmd, addr, 
-> &pmdval);
->                                       if (unlikely(!pte))
->                                           return pte;   <-- will return
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
-__pte_offset_map() might not return NULL? Because the 'pmd_populate(mm, 
-pmd, pmd_pgtable(_pmd))' could populate a valid page (although the 
-'_pmd' entry is NONE), but it is not the original pagetable page.
+But I wonder why we just hope this remains true "with some kernel
+config" and don't employ some explicit alignment to make sure it's true
+(except perhaps with some debug options like lockdep bloating the
+structures, but we don't care about perfmance in such configs).
 
-> IIUC, in this case, if we get an invalid pmd entry, we will retrun
-> directly instead of causing a crash?
+> ---
+>  include/linux/mm_types.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
->>
->> Barry, please correct me if I have misunderstood something.
->>
-> 
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index 1ec273b06691..ec90bbf22e2b 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -1027,9 +1027,9 @@ struct mm_struct {
+>  					     */
+>  		/*
+>  		 * With some kernel config, the current mmap_lock's offset
+> -		 * inside 'mm_struct' is at 0x120, which is very optimal, as
+> +		 * inside 'mm_struct' is at 120, which is very optimal, as
+>  		 * its two hot fields 'count' and 'owner' sit in 2 different
+> -		 * cachelines,  and when mmap_lock is highly contended, both
+> +		 * cachelines, and when mmap_lock is highly contended, both
+>  		 * of the 2 fields will be accessed frequently, current layout
+>  		 * will help to reduce cache bouncing.
+>  		 *
 
 
