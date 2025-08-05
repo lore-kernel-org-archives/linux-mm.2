@@ -2,94 +2,96 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0CA8AC87FCB
-	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 16:50:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C9DDC87FD1
+	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 16:52:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E9D46B0099; Tue,  5 Aug 2025 12:50:19 -0400 (EDT)
+	id 01CA08E0014; Tue,  5 Aug 2025 12:52:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C1C16B009A; Tue,  5 Aug 2025 12:50:19 -0400 (EDT)
+	id F1CC98E0001; Tue,  5 Aug 2025 12:52:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D77E6B009C; Tue,  5 Aug 2025 12:50:19 -0400 (EDT)
+	id E0B358E0014; Tue,  5 Aug 2025 12:52:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 797EE6B0099
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:50:19 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3402F14019E
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:50:19 +0000 (UTC)
-X-FDA: 83743291758.04.99DD9BF
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8167440008
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:50:17 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=cPU7jwOC;
-	spf=pass (imf27.hostedemail.com: domain of sudarsanm@google.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=sudarsanm@google.com;
+	by kanga.kvack.org (Postfix) with ESMTP id CDECA8E0001
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:52:00 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 93D3856D4E
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:52:00 +0000 (UTC)
+X-FDA: 83743296000.28.B2242C4
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	by imf23.hostedemail.com (Postfix) with ESMTP id A6534140002
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:51:58 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=bM5r1Ql6;
+	spf=pass (imf23.hostedemail.com: domain of sudarsanm@google.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=sudarsanm@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754412617;
+	s=arc-20220608; t=1754412718;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cJcoJrBrh2R5VK304PCoaS4YQ5dFpvDYdFen6NXvqWE=;
-	b=DV3v/PUq5LfrlzajWOs5v3gaQMOQrbEuAxP8zfjTPs3a6LO6CAErzl43hDd5xN1ODa5uyk
-	jv3vvogfL3zB/R2hRs6X7wb+E5f2HNG82RFLUSYazrkbRK/42ZRcekJR2KQNrOAMFK40xx
-	djo8Jh1xNnBVJZOo99xftDFFLADKRvA=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=cPU7jwOC;
-	spf=pass (imf27.hostedemail.com: domain of sudarsanm@google.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=sudarsanm@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754412617; a=rsa-sha256;
+	bh=mdp2THZ+E1qrWvs/TZoDbRRKtgHUJqw+d2seDNABwpY=;
+	b=zJydvPh5KWQ1dTa9k4G/pmLAvUM7ChT4Ee1EoeDgHhdVNfx4YjYiq1RolJ8hNtCI0D3YoG
+	DCJoEAWdDyc3scs2t8JVxlHEsAVY4Gt9sV6X4wvSpMjibuOPcU4exLsHCvf3GBfrMbzbwh
+	I0OBP05jMbI2JGLiySVvaCUy+GalI+A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754412718; a=rsa-sha256;
 	cv=none;
-	b=H33gZ6gxEB/UXjGpVjitc0zvsxtCWkP1CKDTDapn/e+R1704KeV26VeiSR0BNVK/G3/C+N
-	WlAk+wpfvnWgwBDgPWldqDVaM+f3c3DYX5qaWaeC1sp/HMk2FJ+r7LPlOT48TrGj9IDHzx
-	pT4kwz8knCGjmychC+RtQxgE7Pk0hVs=
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-458bece40fcso17851225e9.3
-        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 09:50:17 -0700 (PDT)
+	b=xxptQx0l4Y1jlxMk+sYKZYu7GMHIjFCAKQ83FZsX7w4vTmhOwd6cbPrTgZ0/ddzEXxE9Ft
+	1VasdQiQZoBClkIMkcb38/ecaYBqIYq2kM09MAf/ufBR9UQRxaL0OzTYabyXcvzNeKRSn8
+	DtFWqSI+d97s6HieJjOAopl1wpCRz6Q=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=bM5r1Ql6;
+	spf=pass (imf23.hostedemail.com: domain of sudarsanm@google.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=sudarsanm@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3b785a69454so2880032f8f.2
+        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 09:51:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754412616; x=1755017416; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=cJcoJrBrh2R5VK304PCoaS4YQ5dFpvDYdFen6NXvqWE=;
-        b=cPU7jwOCvGm45Arx/WDK5VwKcFJ+uDK3bNXidra8UvFrwvEUF+o4ttta/JJTsj2UvQ
-         d0v0elgxIry9IyRAmrArgMeBRbRbZiZNQz1qSuYroJ6az5KsSu6x5IrHWmprXnyM6F62
-         yAw9/LlUUNkEmM2XAKUUaEQXgREme8oCE3Za3c5HHZdVXyRFdJ1xa6S8C9CNnpt2EBeT
-         1VevzBdo1J32N1wcsjBcnQWi+3YDxMiXvyX5Q+E4+IG+XxR9KjwciG6rvDHL191VGfVX
-         jg/OV21Lp+lqAbdDlUSTAtds3Bv+NfVUtbok9U5bPmVjAgLleDsO4QrUiUXo9GTbi9r5
-         P9wA==
+        d=google.com; s=20230601; t=1754412717; x=1755017517; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mdp2THZ+E1qrWvs/TZoDbRRKtgHUJqw+d2seDNABwpY=;
+        b=bM5r1Ql6dL5202cxvEcFXTUUK5LX83dEnWTkwMM9avwPNVyibeAs0xoYBAyihEH28G
+         DpOtkrWoPFo/VnPiJ7TyczPn/xYH3VbIFu/+qbRae84W52jv3kFu1KR9wzYYgPlDRGpu
+         AqPnOgeutb5Fu3r95/BuGAIiIop72wNRPuULnf6NtlHX4XWdcxyijqnXjQoMT5JhC/Jl
+         7VEAiFspqkHI/9By2uzbXbq7AV9LeIGEX24SJohVepLL196J9mGz2DWY04BBLq7tpkDG
+         2Q9XW7PXhWLUa5Lh03H7FixrfxME0cbNibpvzchhhIPeg63NkEvaDFMeVzGrvacMuH7s
+         b3sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754412616; x=1755017416;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cJcoJrBrh2R5VK304PCoaS4YQ5dFpvDYdFen6NXvqWE=;
-        b=CLa4R0PtHrrG+ncHBDLQAhi9dx0zZ8n9UV2mfR+XaT6ipDGheXofTfLnXisva9uAg0
-         rDnJLAvd1ZeC2mg/iAGs8CBmXeZlwVlAS7xtK62rPNw0svQbDxyddcW+hpD4AOHPGjv8
-         LwNP9+IoqNgvttdXXQZ7v9iUcyrMY+eKUBjCs9MMjIm8mb1kOZgy4ox+WqJB7DCQCMHh
-         eEe58L4pEzaBeEEwskFHMgszje1YFKbRSzZw1c7qSvdrc1XhUfGcnQIG46A6G08G/CG5
-         DOXFubtHJxuVIwEEN+HZBxhAQAhhhYJQ+/yceoPlNGk91HeaiYNg4AK/j1oGdqWTgvvI
-         OORg==
-X-Forwarded-Encrypted: i=1; AJvYcCUSbEQgYNQPs3To9I4ur2Abccbn1IkrqTtF6S3LOiwuIXpOresGoU/Y4aP4nBCwFNXdD1KHB7zgNA==@kvack.org
-X-Gm-Message-State: AOJu0YzH+ABloIPAKwvp2580kKNGsrgnozGKUb1Aljx4DMMD2N9g5Vla
-	1xQqARGLcVUhyCRiktkXHK6IzqMYOE8TkH+sO0icnusaxtnnY46lVUttIzd7/g56snZXRAOszt6
-	Z5DgoQivt0y4d8fS++oak8IHuiDc9yEFCC5JZV1iF
-X-Gm-Gg: ASbGnctchLI2Vg6kcIpldNvOzAUZXmvyvKd8s2UNzF+RdcVm51yygIev/TdgtiXVheN
-	pQ0iWS5wFaTWCg168e4YLoRKYcFmx5NZLb6lktd1b7bOr51Q/jfTnHiQxTaHAny8K8MaeejN0UI
-	1srcQHNyV36xwJA8/mpWZTmfpZ7Y3qA9ciBPlMx+0HP4v5Fiea7n+nSSkbK87b5OiHmUiKz4mfF
-	3rCGhu0
-X-Google-Smtp-Source: AGHT+IGnzkRfnLMRZMJFxDrRi3bNwVHI+Sbxw075Tz0UjQkJk3DxlLhAxGEyzLIAQODvZJCnncEeJklUOavPO5pACbY=
-X-Received: by 2002:a05:600c:1394:b0:456:1824:4808 with SMTP id
- 5b1f17b1804b1-458b6b58542mr103451975e9.32.1754412615588; Tue, 05 Aug 2025
- 09:50:15 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1754412717; x=1755017517;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mdp2THZ+E1qrWvs/TZoDbRRKtgHUJqw+d2seDNABwpY=;
+        b=ff8OfYojltbq+l4caZSQzoIRyFBk8E5FT3QfR6qnoS+FtcDOl7Z6rpfXlSxssC06n6
+         F5d7h2g8q86tMBdfrrNJ3WDV07l02Pgw/rnIyElF1nRz08ErAjvL7JbfRDy/7BgMdyI0
+         5MoKUpebw9Hw0L72NQNwwkmiwaTaGLP37XmS2X6CEn+GjrmIDZVrYVeddVzOmsTCLofc
+         FviGNeWbslPOvMCRo9UYeGqot330oucWHxKfB49OyJMD/9Hpm/WUbb243cNh5fu4+omB
+         aVhhakxpZ/95iBelFhJ8MxsP4prFjCaAi8PkU7AINm9Rn8z+/2R8Olz3B0umRzFZLL9p
+         ZkRg==
+X-Forwarded-Encrypted: i=1; AJvYcCXbmGeOPNAzfC6+vs0UxXneU3aYXBA19esa2okYqm0kP9eyseb8NuCPLhgxCyPAczZHzOuw3axCZQ==@kvack.org
+X-Gm-Message-State: AOJu0YzEMG8zI2tC+tH4ZknSUB+uDFV/UkyQGIWrbuZ6BAT/5yRKJp7j
+	scz0baS0Elwi8evcMd33dxHtjAYEbBntWuD9rw13YEUUmnI6toQ+DFmMLGDDNzZC/eW4HCeSbFT
+	lvHIxJPieGl/g56KZLpCJSTzZapE1bAKMLpUHchYf
+X-Gm-Gg: ASbGnctUTa01a7qY+4VxBWQyV07jTYitzAXFcI/VXICEumVWdlI2OPhsd06QXxs9L2u
+	Ap/7cczy2PHkgiNN7cCWGdouV0s3FjzUqwufkMYXTGi6JHZFR5KCM8etdxJfXyKK53j/v6ExAA2
+	O6bkj6ww6att7Cfyz89NttK3hTvVK7/QDQvjHkZQNbwwIP4U5LGLcUN106REJp7NLuNxd6hIJGP
+	oX04bZ6
+X-Google-Smtp-Source: AGHT+IGCJi6AAfzPaIlWNF5t//K43GKbKBI8wrg/kqvHP0TtvUzS781NSDVS2jaYJIrQrznLTHRuQGhHzTOhedemSVQ=
+X-Received: by 2002:a05:6000:18a6:b0:3b8:f356:a2a9 with SMTP id
+ ffacd0b85a97d-3b8f356a2demr395048f8f.46.1754412716960; Tue, 05 Aug 2025
+ 09:51:56 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250805013629.47629-1-sudarsanm@google.com> <24bbd9df-efa7-4090-a696-1eb40904ad85@redhat.com>
 In-Reply-To: <24bbd9df-efa7-4090-a696-1eb40904ad85@redhat.com>
 From: Sudarsan Mahendran <sudarsanm@google.com>
-Date: Tue, 5 Aug 2025 09:49:39 -0700
-X-Gm-Features: Ac12FXxESoQHOrJPpktg-TGCOr3ip2q_10eJzmyDxEEsqXYQWFyt6x5Dq_KqP98
-Message-ID: <CAA9mObAqO04H9Hui6jcgv5rPBYVmnLeVQFuPeZBRF3DEvCxxsw@mail.gmail.com>
+Date: Tue, 5 Aug 2025 09:51:19 -0700
+X-Gm-Features: Ac12FXxbwVDLUIinZ5AcPHR32UCRbFB-2WNiOt5M-pCIiVirC4bpkJyI48QVUN0
+Message-ID: <CAA9mObD9zr8Y8Z4F7OZGi_NiPfSZxUu3gKNWPQYRAeBFQBO=SQ@mail.gmail.com>
 Subject: Re: [PATCH v3] selftests/mm: pass filename as input param to
  VM_PFNMAP tests
 To: David Hildenbrand <david@redhat.com>
@@ -97,15 +99,16 @@ Cc: linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
 	Axel Rasmussen <axelrasmussen@google.com>, linux-mm@kvack.org, 
 	Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org, 
 	trivial@kernel.org
-Content-Type: multipart/alternative; boundary="000000000000be79bd063ba1046c"
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: A6534140002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8167440008
-X-Rspamd-Server: rspam06
-X-Stat-Signature: sqi49st5ynu3tgohsyciwt3tcgny961r
-X-HE-Tag: 1754412617-927898
-X-HE-Meta: U2FsdGVkX1/AGRUYqPhOO4SPR+A6W5XblG/x/ad2M0kEdufgU+I6TpxZkss1zoLqtqUz1uC4oHYavNnyXr3R6zhLZb9e3BSJQ9iAR42pZBcpSX6t7TsE7Eglril6bDWjTHHrZ5uRQUpVhF9A/R/mYcGrBb35ByuBtGFPhcn82JoMBhFI2lkIWILfHiTTv6gCl5X4JmpPauxALDwv979UZLtP6+jCSONBqguxGHkR4PabgTk7V5fU4N2aT5s3uBLuvBWe89dMJUUCHtLAZWFO3IInCZlBzkvzRIwoJ8rNfDOl4LYyn6Ytm6dqbh4t493h/0EflTt9nW8Mfla2jUAIMUQMeULitSr/1RCCrTM2QK5i+NIC1e+3KG66eovXKJSO1b+XO+PvSOuvPOlq/6eFbqlGB7yjVux1OqF5z8W12LxNRQIh8i1q9mRJoFW9HOBbqG4BIkdjHYNvKWXZo+qDfP8uoN2Zvqb9mVyPRIvq3lYOwsPhG1eX/qeeTAsTI/XbNVmQ9pWeejhxifEeUX3IKfeXAjW/ijCr/SAN2YhxrqhZpe54Pm4sUvhcDWRqCRVXdq5i7Qx5wadHX55ijwJwvQyUk89nrA40YLfBcoq3luntZ0uVM3NJoHVbftotL6V2SV2toxzMoAma1SZDgcXlUq+T0IV6aHu/HlgX2me0oBn0TjTgdv0VZ0YZUR0xpymGKo28XOtd8wjzZGiRDhAGOP/4P7OUfSm772hyoqYj5f0OijfGW6qEableXHCeHysxO0FGVOoI8g6I+TJ3xgWfZ3XAZllUc30E9Do62W1VKCultGJWA7OCb/DEoVFiQpZzfSL2tYRo+Ke9op51WUP9Xb7T4Xo2p5VX6SbGX+LeATYW0CKMSElrTE5q3I8xhX/E9A4SGTPwBJSvwXZQA7E8foKy+VRuBbc6Pdxt5DJ8Z+VxD9FzWBhcxbeEiZp/58mD6S6ubKChZan8gZ4CwoZ
- XtOh1Jf5
- 4qI6iFbQr4eo7dO6V9SvN6pkeuw==
+X-Rspamd-Server: rspam09
+X-Stat-Signature: ucd7816hq7yorab9ngue9sunf4qz7kff
+X-HE-Tag: 1754412718-727996
+X-HE-Meta: U2FsdGVkX1/ZgDriKqmiixlupP+IX1Y6jAinno/G2k34sfTPJK2p3Jfp5svOtRWTX9rxiPHTgXYAayNUl0jAdzROA57Y4QB9kisD+Mv3YHC3Cr3OEXmpS8QWfhlLwUeyPaLY3QIMdBH+/2l8gj/7Nu3zp2mhAC3K2GhiD9fIogruktUt1hNm86aZkA5DgUGzvKzvOJuO2zmU5/qKNANp09ktqKNXoSQIOU52xFcQayh2MPhIfffSNgte7zyrC3tL0BKwx91t1XqgQGLgxgmXz5/nUhmovNoZNbhWh5QqUapRjszy8VVLagKRTOp3qJqplf6HqEghdSuuNY7cd4JRz5ycWDV0/BRm9XfGwlmtBhKksAOG8vkScUXdsDJykTn3jgBdcQi4upf35hWVTR7GV2CYqOxE56uJITxd1HZwQBV7UegnQc8oRh+xnQ2eYFHxDuZPGduigiSsGQyrZX30op5OloFcgLe5PZNy2ZnEajxgY87l8E+oJZQ3Tz56P+jy29NrKL5XhD0ovxmlQRJMHo1c9ZJplw0TJUDCNE0pMmpDVo8/UHc4p230A3mq4Rx98SHkEPXxB5vDbTPt6DZjpnhdWMH5G965Ir2z9pcUNvhbtxuSmOjNAYTUMfFvdEebz99qBkkki40YRSeT75EO+DrIqKCNiIIDY52wIkmhWuXrTMYKX1AEr6TTwy50WzMbFZZODLt+XdH5tLtp1H+dSarX4xlBA0D0ciMZClYiCNzyNU8w9Q664ONtw45+FKYuwqVHfjEVp9mypyGfRo+hwNkY01J8bhscR805azrEazCDCJ22btRoSwarOFMSo92EZajuXgY1dQAZFnnwlZ5b2pkl7ZcjFGV1rz0iQIOBYXcgat1YeKPLmlIPXRYrHBTWhUKCzyoA5HzrAXF5tf810GbhDEMkTAN2yImYrCWjD4BUXMqbKuAvHsFOI0sQV4ghJFfGyhawdha5oeh3xm6
+ Bl3DAtZY
+ YfTAGpLkHxXWDIZ5zfb3z1SK5UECXMHfkia8GYHbMiX/92fXFk2MmscJWaGL2nDQj30LTizCBxWm1YMegIoXDIpv+EkNnoklfda5L2ZqjlPMQJLtlND4xa9g7hZgyljre6PdgWdBifPUL+ADMO24eQfIt2pGWuXhlZgX1+Bpm7UkNfbQFTzmmuCeEpDG+CNuQ1NZZX4xQ/OuPz/ThRTisgOw0G1sOsPgAoartmm9BC8Zgrwi0Eo7SXY4S4KGatDUoGih5kqew9oRwQWjDwiU+YscT3glKIEbEY4/q
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,15 +117,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---000000000000be79bd063ba1046c
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
 Thanks David for your insightful review comments.
+
 
 On Tue, Aug 5, 2025 at 1:47=E2=80=AFAM David Hildenbrand <david@redhat.com>=
  wrote:
-
+>
 > On 05.08.25 03:36, Sudarsan Mahendran wrote:
 > > Enable these tests to be run on other pfnmap'ed memory like
 > > NVIDIA's EGM.
@@ -178,85 +178,4 @@ On Tue, Aug 5, 2025 at 1:47=E2=80=AFAM David Hildenbrand <david@redhat.com>=
 >
 > David / dhildenb
 >
->
-
---000000000000be79bd063ba1046c
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Thanks=C2=A0David for your insightful review comments.</di=
-v><br><div class=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" cla=
-ss=3D"gmail_attr">On Tue, Aug 5, 2025 at 1:47=E2=80=AFAM David Hildenbrand =
-&lt;<a href=3D"mailto:david@redhat.com">david@redhat.com</a>&gt; wrote:<br>=
-</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;b=
-order-left:1px solid rgb(204,204,204);padding-left:1ex">On 05.08.25 03:36, =
-Sudarsan Mahendran wrote:<br>
-&gt; Enable these tests to be run on other pfnmap&#39;ed memory like<br>
-&gt; NVIDIA&#39;s EGM.<br>
-&gt; <br>
-&gt; Add &#39;--&#39; as a separator to pass in file path. This allows<br>
-&gt; passing of cmd line arguments to kselftest_harness.<br>
-&gt; Use &#39;/dev/mem&#39; as default filename.<br>
-&gt; <br>
-&gt; Existing test passes:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0pfnmap<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0TAP version 13<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A01..6<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0# Starting 6 tests from 1 test cases.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0# PASSED: 6 / 6 tests passed.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0# Totals: pass:6 fail:0 xfail:0 xpass:0 skip=
-:0 error:0<br>
-&gt; <br>
-&gt; Pass params to kselftest_harness:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0pfnmap -r pfnmap:mremap_fixed<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0TAP version 13<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A01..1<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0# Starting 1 tests from 1 test cases.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0#=C2=A0 RUN=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0pfnmap.mremap_fixed ...<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 O=
-K=C2=A0 pfnmap.mremap_fixed<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0ok 1 pfnmap.mremap_fixed<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0# PASSED: 1 / 1 tests passed.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0# Totals: pass:1 fail:0 xfail:0 xpass:0 skip=
-:0 error:0<br>
-&gt; <br>
-&gt; Pass non-existent file name as input:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0pfnmap -- /dev/blah<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0TAP version 13<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A01..6<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0# Starting 6 tests from 1 test cases.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0#=C2=A0 RUN=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0pfnmap.madvise_disallowed ...<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0#=C2=A0 =C2=A0 =C2=A0 SKIP=C2=A0 =C2=A0 =C2=
-=A0 Cannot open &#39;/dev/blah&#39;<br>
-&gt; <br>
-&gt; Pass non pfnmap&#39;ed file as input:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0pfnmap -r pfnmap.madvise_disallowed -- randf=
-ile.txt<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0TAP version 13<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A01..1<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0# Starting 1 tests from 1 test cases.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0#=C2=A0 RUN=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0pfnmap.madvise_disallowed ...<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0#=C2=A0 =C2=A0 =C2=A0 SKIP=C2=A0 =C2=A0 =C2=
-=A0 Invalid file: &#39;randfile.txt&#39;. Not pfnmap&#39;ed<br>
-&gt; <br>
-&gt; Signed-off-by: Sudarsan Mahendran &lt;<a href=3D"mailto:sudarsanm@goog=
-le.com" target=3D"_blank">sudarsanm@google.com</a>&gt;<br>
-&gt; ---<br>
-<br>
-Thanks!<br>
-<br>
-Acked-by: David Hildenbrand &lt;<a href=3D"mailto:david@redhat.com" target=
-=3D"_blank">david@redhat.com</a>&gt;<br>
-<br>
--- <br>
-Cheers,<br>
-<br>
-David / dhildenb<br>
-<br>
-</blockquote></div>
-
---000000000000be79bd063ba1046c--
 
