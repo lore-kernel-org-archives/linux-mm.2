@@ -2,117 +2,81 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A2825C87FCB
-	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 17:56:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2794CC87FD1
+	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 18:00:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2DC868E0017; Tue,  5 Aug 2025 13:56:35 -0400 (EDT)
+	id C33366B009C; Tue,  5 Aug 2025 14:00:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B4008E0001; Tue,  5 Aug 2025 13:56:35 -0400 (EDT)
+	id C0AF26B009D; Tue,  5 Aug 2025 14:00:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CA6F8E0017; Tue,  5 Aug 2025 13:56:35 -0400 (EDT)
+	id B6EB76B009F; Tue,  5 Aug 2025 14:00:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B2E88E0001
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 13:56:35 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B3B0A1146E0
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 17:56:34 +0000 (UTC)
-X-FDA: 83743458708.14.A74634D
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C9811140005
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 17:56:32 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Tjr71N9A;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754416592; a=rsa-sha256;
-	cv=none;
-	b=ew9UCmlouJAvQVedDqBhbBUekP0ereMzdKw3t1TCHtlHS1LSmWPAJsU+xk2hAm1qjt7Q6P
-	PzSDUw/7zt7a7AX7Yc+QAQ9fW5Iz7OxWke7yt0L+IJgw/e3v/t7dSpQSlQHqBjadmt2WAN
-	wNfSmLY/zFzdbHqLaXUPOXtcIavbx5c=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Tjr71N9A;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AACAA6B009C
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 14:00:31 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 604B5134324
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 18:00:31 +0000 (UTC)
+X-FDA: 83743468662.03.72D7FE3
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 41FB280011
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 18:00:29 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=XKXPlRRV
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754416592;
+	s=arc-20220608; t=1754416829;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yz7TfqAprCAWQSQEMRJk+kCrZ8pKB7cwdUn+vbZdwuo=;
-	b=eIxgHASJxEI8R9ws67CrWB5FQRD9PUJliAtHn4RkdraYcDyVjpDtn/8a00/UsxOlHLVdKu
-	wvgJuhXFObVtP/TF8HN/BLv5IZeKnPu8V3FJ88yij7bjKe7C2vNC/m7nuG5ZmnAF7hDZqa
-	/TLXTzYtafvRlbGZuc+/6S1Iz6FxM/w=
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-b26f7d2c1f1so5528757a12.0
-        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 10:56:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754416591; x=1755021391; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yz7TfqAprCAWQSQEMRJk+kCrZ8pKB7cwdUn+vbZdwuo=;
-        b=Tjr71N9AcNuqiA9Tph3iQx1uyyXoVd5rhqIjapZwo6WogIAUVtC/7xpO5Zg8MrSRiy
-         wQpuQI6vGUfCflKyPcZ/4/Qid0WpWfxUcxnOC/E9NaGShxUzlIKDk51NOa3yfHqtEiUG
-         4xhg9HUtuIlzFIPY2GHXQTpbLJa0o2jNpnK7r4N91YawK8iOcqJ/vOmZIr06XGD6xro5
-         EOc2Ng7PC0sB/TiMbMce642p6r7Bna1bifs0vJK+raDkwHVW0vQuuJE05A2D1YC1rODK
-         hdRLmUcYTrlTCrVXuGufJdltD7RGL7VL6zcPMw9Te7QN81oYHD56SXrLg7eowsB0vLHP
-         5Rew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754416591; x=1755021391;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yz7TfqAprCAWQSQEMRJk+kCrZ8pKB7cwdUn+vbZdwuo=;
-        b=OtGugBN5dEPiOb8+9aMKeuIL3NgRwENreusEN+cJP9bn8FFTsVqZQNs4N6IL/giOOE
-         TQuXGMZVUCxO+jRJMQP0xuOaDrG/fQKRZdQ7a0AT+h/hDZkf0sRZBNHtMXltB1gX14A2
-         8esPJVlkteqU4gqgMy9UoZHU9N3LVqwGsCcX+BMC1XM5mmy2nHkhI88VZQIjJSLZj4qw
-         TLrs6VxXLC5Vzov2K/VzD+2KUdoB3M3pNhUnp4SPx1qHoWrFCZMZGWali6tcC2KgkL8T
-         USPnYtxUPSIf7SqpCi+/5edBpBfM0WERqKHticdCIuLJhO3IL+ODWvLOO0U0Gwj8hoRE
-         T7ZA==
-X-Forwarded-Encrypted: i=1; AJvYcCX1lKPPIoqkB7B+TMjz1jILDqFeNl8ISJM1+qEogkaxyomGS1/JEDU5pvu5svW3BX5y4XLxQaPXIQ==@kvack.org
-X-Gm-Message-State: AOJu0YwCe+RHOHkVPBLvJWu90JqdCoEttmtjkksjN1OrXx2xEOUc4d/l
-	8XwK4i3gL+VZdPNrbWACt9l8J5EMRHtoQk+pTJNgKUNslpa2kQjgFv6R
-X-Gm-Gg: ASbGnctn+9xZtrW+geeX0ugF2yI7OknqscsgQytpGPHn59o1Xzfn0vkNDMmaCQ5ziKo
-	wz3P4n2Uni83/m4uvzNp+4VP3S/c2qCVruOdLR0YopLpm2ZDjixDX1TWwxmdX+MGNhcrx04+aHa
-	md7r7TFoP81yNrC6g3w9RxcbqmyZf5i8MWhd9LOgpSuFvoQDLr/h4Ma/lMMQRsqkfLgAVBx/vig
-	d9NAa81dagLXnqrhCBpAQzX0CpWlMuIdr1saH5Wn62y3H7fOY1QMSQezfY0oK4vu00azyvpAz5M
-	XTUjca+n+EER+v8wBRPLD1Gj5yBdGJsrODCCpHM5iaxDLcaqe2SmMHj5YsLUl1vec9gWrzy6Xif
-	FAnWHZDnQPtXwVrdN8tFfH7RDespY597rBkoHDknR1dpF0HR8BBRArQ==
-X-Google-Smtp-Source: AGHT+IGnn8RA3YePPYa6DBuUuglyhjaj1nYIVikzs0KaLx3wQ0H5bzkIc8kPNPXIVB/VrMverijzog==
-X-Received: by 2002:a17:902:f652:b0:240:8cec:4823 with SMTP id d9443c01a7336-2424703a024mr206277885ad.41.1754416591465;
-        Tue, 05 Aug 2025 10:56:31 -0700 (PDT)
-Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241d1ef6832sm138211425ad.25.2025.08.05.10.56.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Aug 2025 10:56:30 -0700 (PDT)
-Date: Tue, 5 Aug 2025 10:56:28 -0700
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@redhat.com>, linux-mm@kvack.org
-Subject: Re: [PATCH 1/7] mm: hugetlb: convert to
- alloc_fresh_hugetlb_hvo_folio()
-Message-ID: <aJJFzKj45bQMjhIb@fedora>
-References: <20250802073107.2787975-1-wangkefeng.wang@huawei.com>
- <20250802073107.2787975-2-wangkefeng.wang@huawei.com>
- <aJEXvnrvaoUPvD2l@fedora>
- <d59a21d4-8a7b-4194-9616-53c6ffe0cf8b@huawei.com>
+	bh=jW5LZER+hp3OWb6Qm0dYISrY7Z43oLDV4N/MV1Pnvb0=;
+	b=IKiQhrhKEggoRfuQmcnF98RHRl58nJXEpoJb0Z84wshBUga+xYM57ZijYIRBE73rNzwRND
+	uzWm7+kHLR+E73wlX3JTd6/ZCiMiv4q95ZpA7gMET+nVxST/kUiUnNERA61COJ7UTL2E1K
+	Z5uJj8f8A2ZLM5RoXz2Du1sbkdjtCJU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754416829; a=rsa-sha256;
+	cv=none;
+	b=b/uOiv8MggE00DlKDhBylmgBQ92Sms1Ub5RFhl1KkSbe2j4IRN8opJVIi0SOFXRVew4/wC
+	Dv4NjS1rJnrf0jc0PQW+bGheeaQAdNkcQ428i0n/9x6rsOe+bJZ2og3O6/G0OUat7owPiy
+	A9hnDrlvN4ZFF2eN8NX+SauNoBgUCxY=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=XKXPlRRV;
+	spf=none (imf02.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=none
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=jW5LZER+hp3OWb6Qm0dYISrY7Z43oLDV4N/MV1Pnvb0=; b=XKXPlRRVFTsoiWSchoR/pu7aGR
+	l1r7zKR7hR04Hx2PffgF0E+S9g4OGkX/aGP5n3EA+AWvVTmF3fNBLaoHXKvilR53MTsOK9C6GYjB+
+	m/PYXaF1nGKSBiRJfyJfs97aaYFVT1Tv7EbI+JnEeaahW/KN29On2kII1Kk9nHs0sTgQfVyy3nhb1
+	PdNab13qcvzW58KBde/goTIFvgeq9j5L1CCHMnoA3Co0sXUak+uxmnchiLVpyMpalfvXY8777Uepm
+	qKYkJk/CLGGwTLQXNlFwtg9lQwUHl/LOkhvXD/sM8Y+R6+VlN8yQW/2FVO2P6/QHU6lfQ2/hnILuj
+	HGTs/OEg==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1ujLNW-00000005T6R-3E7y;
+	Tue, 05 Aug 2025 17:23:10 +0000
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	linux-mm@kvack.org
+Subject: [PATCH 10/11] mm: Reimplement folio_is_fsdax()
+Date: Tue,  5 Aug 2025 18:23:00 +0100
+Message-ID: <20250805172307.1302730-11-willy@infradead.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250805172307.1302730-1-willy@infradead.org>
+References: <20250805172307.1302730-1-willy@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d59a21d4-8a7b-4194-9616-53c6ffe0cf8b@huawei.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C9811140005
-X-Stat-Signature: hhpfo5s8xbd48qxp1ns9znd19su8yfxt
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 41FB280011
+X-Stat-Signature: mez7t5gh33zdidougtjxzmtz6toxgwye
 X-Rspam-User: 
-X-HE-Tag: 1754416592-452575
-X-HE-Meta: U2FsdGVkX19lx1O5yxyLlHFmwZyQI1anZK7/xs6dxhFk/S2XuLeAwcfCho3ZUxGVbdTM0qcK+U1sJmvISPlYE9TiuwLbSVl5wfPxAXPISAOzLQOZ2E1Bwc+E3TaHqYhDRuUPgplAuju46Y6SvltsZiTQHPrrN/z8zVaKtrSBc+ghLAbCAYdX43bVRzlrSdQeXmZGTye+iJGWaC6goBMGo4+oogLszbnR5AhXZ7WEi7KjA4D7oiTScDisqiNHPF4BTQuIIOkMRCnZWJ4WuuHnDZWHfzQdrBcMXEWznxjHCLGsUAB2/F/Z+avJhME20tfxHR7E6DVuzy0ITKJcmhiVCHNUB1FPFAgJsFKGbp6WUr0ixp44TvO0gdQC4Ro0TtEPSad3ZgqFUXR5LELkacjhY/8zFVLhcg3YPqcyErtzNAJc+/cDy3AIHltxflIePF5ok4V+yEm3VdPJo0JemPAhObQuR4FWIdHtoR1JeCKNJrtP01JhYL5ME52Z1wUx+Uok0lnsOaEQcFhibaGYzavBFWezwqK5nq0qIcojD4rTiz6rCNi3uuq/RbOwX114n8R4zmRLLcxrh+Xiy4zxV+rEf8fUtD+7rBlWZyZ/hIvhpuhhKIOjeS90VAjIeGToNrCFRZ5+ZU0Ro8l3iiemgd82q+nsEYCvWpN5dUIiFTCi1h18RvCIR0G7uGQqGshdg0Lq/2Onm6G/aKHfrUl6GQCDzK41CQUUWKWSEFwahCNjoYz0N60L/pMl+9mksX0R2kWMdKFsq/DuYOFsvTEVbyavgkhd+4YwgjqStRIqd7oHDW+6U0G9CcQ22Bb+PbxveOMoADP9QfS9lVLufbh0+ZLq+ySOv4fx/3cPooqRs+0qk04Q/Ormm/jqczkLJ8z5mGXjZGARTO5xt3pjs4GDfGFCVR52FF/wGzDuZ/U8/x00xx/CmiMfbZJQhfnL7Eg85i3do+MsC55V5IuiDdzmu4C
- Y3xDt1lU
- j+xDIlYN7FfYaaNYH7vLrZxcwlBrwsi+u9uolBdjCnwNv7up0anpo1umQbX/qsIqFglKiKESP2nIvhxnBCy0qrb+OF1ZxAqFmZ0bAhpj1n+UeP1N4ySyogqxg0B28LVd4I+tVsbj5IT/e7NcektJyT5pTqLQpYX5ORVFCcevoT+blGidvJ8AfZfnuMgeu7ok5YBJ0cFU0aT2Mq0GbXvsayBEjOGtv9SIp2RcJVOQYtA1bj4EOWWYcVDx88EgQCpJZwYG+G+lbpuwIsdNHqyruRAY3Y2xNQ55KXHYDodQskSVZLOeWY0AgRdE6nGVjhfGCoahYMLM3NAEVsVXR6XUtotdlpxyKzb/MRQqZ+KgyXoVnB1oWUNY6abVYjQ4I8vjqirmleKQmZULZn9DO8yEkl0EwRpChjEfVxNQrdLyUtpUd0RX1WJbxL9YIlJJnkDJE3p3eVQlisB1MnifNwfZj7Gsajxeob27jgM/igaGq+nN95TgiV2h1SnlDjVpRDIGaPzyR
+X-HE-Tag: 1754416829-294817
+X-HE-Meta: U2FsdGVkX18tQJMfCSkfDt1MAAZIdynhghohww97/FSpgJ0mclohSrqiAmVHjodXQdy8o/fY9CH/NlU8QzaeJlbPbq3wBY2ZCyRhnW+Z0G/7MgYRKrKYlWIqFBSyppjZ5VAboqMeHjf7ABsPeGwYtjsXQk6vv9MLKDI24AFixsYBlQIMWokCa4DBHr3CryA0mCVUl6WSuj0NUjGNLXhuR5+ypEOY1oTbFO7tP6qGiVkNKK/dH1ID6qCe6itpxAAX1H3vbxxZtHFzRWWM7NROqMHz6zUmLDMM6tLfdaSiy/XtVL1cBaW5C/KHefmfqOuGXzXsrDvE1J8bmhrMfnSk5BWO3ZvgeFJsp7/t2IY9CH43nMAI9+KFgoj6nLuMwQQ9bCberotg8o7uRDvmUXp80ALaK7ez3wSBDfDEpfaTUFxXSlRzoednNzelWoAQ+HR43apt5No98KuEUNpTRDWkRH3VFHwaoVRlHUAjrm7Guu0k/xkLdzu0Pzaicrbkdqj2AYcVuKI29PY0H0XF1mr0GV0kVMANR1xFm4pi4M6+zZJyWgKdySdCD3w5AmlAnQLFIh+xMu7gPtXrW7m1bfZgTs7XgEqFvV3uv84/wVKAm7gWjHKu7NORFRKYuTZ5kecpPkk9wxAY8EghQApa2ApLBx+NasgeeKdE7cgTs/iZBUUIiqgxiiIopXJVccjQ+opi6seiwAZw/b4vM26ey1fZ4kNMutDYjS7IZU5zJ9NpDEuvUpZSvES6TrHVz/NCWq4YchwRoqruR1d9GAMBmVEFpvD2j0iuSNMK0j1E4Lut62yDMjcUmsPnt+AKzRUyFy+SkR5r5hLwIjmtjZqA/dKDS4yveoCFS75x8APb6mXSzmcUjvlUoQ76oHjvCOP0f6ZGBLklF0gn3Y+cdPFJ/ABn+O7+pc1B9Al6voqenrxpcHIzq99cEFaj4pviq3r66/JGKNtgqoOBo2H/UxEMnhL
+ 35B/8Lkk
+ 2nKOF+NL+I/HQh59JDBLmK/PzIILAT3tHOnOcjwLdBcPmQh3FzUiP8q51RUDKTfnLdHEbprhmlfQBHSY5SiEHozA7yQ3kAhqvtlprygq8wV68o9Run6YoA8JIAb7FPsj1k55w8UJ25lSPy8t57IT8oQTUtKp+4cMRu9KGgwu0LjeeLXwMEFDet5kIh9RKvDiP+c1nXawy6P3XzVlzzUD/5IdLXMwVBYHxc/0yGFo9c9NoGMae7i7q8fAQV3+H0pR/SYko6lcO3pAvIes=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,25 +85,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 05, 2025 at 10:21:17PM +0800, Kefeng Wang wrote:
-> 
-> 
-> On 2025/8/5 4:27, Vishal Moola (Oracle) wrote:
-> > On Sat, Aug 02, 2025 at 03:31:01PM +0800, Kefeng Wang wrote:
-> > > Now alloc_fresh_hugetlb_folio() is only called by
-> > > alloc_migrate_hugetlb_folio(), cleanup it by converting to
-> > > alloc_fresh_hugetlb_hvo_folio(), also simplify the
-> > > alloc_and_dissolve_hugetlb_folio() and alloc_surplus_hugetlb_folio()
-> > > too which help us to remove prep_new_hugetlb_folio() and
-> > > __prep_new_hugetlb_folio().
-> > 
-> > Have you considered renaming alloc_fresh_hugetlb_hvo_folio() to
-> > alloc_fresh_hvo_folio() instead? The word hugetlb is already a part of
-> > the hvo acronym.
-> 
-> Maybe THP will support HVO in the future, so I think we could keep hugetlb
-> word?
+For callers of folio_is_fsdax(), we save a folio->page->folio conversion.
+Callers of is_fsdax_page() simply move the conversion of page->folio
+from the implementation of page_pgmap() to is_fsdax_page().
 
-Hmmm, its alright either way, I just feel like hugetlb + hvo is redundant.
-There's just so many words in the name now :(
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+---
+ include/linux/memremap.h | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/include/linux/memremap.h b/include/linux/memremap.h
+index 06d29794abe6..450d4bb6835c 100644
+--- a/include/linux/memremap.h
++++ b/include/linux/memremap.h
+@@ -188,15 +188,15 @@ static inline bool is_device_coherent_page(const struct page *page)
+ 	return folio_is_device_coherent(page_folio(page));
+ }
+ 
+-static inline bool is_fsdax_page(const struct page *page)
++static inline bool folio_is_fsdax(const struct folio *folio)
+ {
+-	return is_zone_device_page(page) &&
+-		page_pgmap(page)->type == MEMORY_DEVICE_FS_DAX;
++	return folio_is_zone_device(folio) &&
++		folio->pgmap->type == MEMORY_DEVICE_FS_DAX;
+ }
+ 
+-static inline bool folio_is_fsdax(const struct folio *folio)
++static inline bool is_fsdax_page(const struct page *page)
+ {
+-	return is_fsdax_page(&folio->page);
++	return folio_is_fsdax(page_folio(page));
+ }
+ 
+ #ifdef CONFIG_ZONE_DEVICE
+-- 
+2.47.2
+
 
