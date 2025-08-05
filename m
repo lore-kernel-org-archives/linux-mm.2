@@ -2,85 +2,89 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BCD32C87FD1
-	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 14:44:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B14B2C87FCB
+	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 14:55:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6120F8E0006; Tue,  5 Aug 2025 10:44:04 -0400 (EDT)
+	id 42F3E6B00AF; Tue,  5 Aug 2025 10:55:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C2E58E0001; Tue,  5 Aug 2025 10:44:04 -0400 (EDT)
+	id 407426B00B0; Tue,  5 Aug 2025 10:55:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D8C88E0006; Tue,  5 Aug 2025 10:44:04 -0400 (EDT)
+	id 31D0B6B00B1; Tue,  5 Aug 2025 10:55:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 39E1A8E0001
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 10:44:04 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DCF088025D
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 14:44:03 +0000 (UTC)
-X-FDA: 83742973566.02.25D01C0
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1D626180004
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 14:44:01 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=mit.edu header.s=outgoing header.b="gpbfF/nK";
-	dmarc=pass (policy=none) header.from=mit.edu;
-	spf=pass (imf24.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754405042; a=rsa-sha256;
-	cv=none;
-	b=nRyDz5V/dOGFpr9KCTiE6l9yxFBh6vQRTvjUYd0Xb9L5KSzUOAImSCyd+vRJt2fjGB0QDW
-	R3Wa8YhFAbOz3TSNhvv61TsRgfsgzj8i/MolBJ8r5t5mqOqXy1bJJU59lrCSSfyuCVgcxs
-	lNhh7+wf1/RUUdkAYqgZABabXOnoKc8=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=mit.edu header.s=outgoing header.b="gpbfF/nK";
-	dmarc=pass (policy=none) header.from=mit.edu;
-	spf=pass (imf24.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 26FB66B00AF
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 10:55:13 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6EE0B140116
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 14:55:12 +0000 (UTC)
+X-FDA: 83743001664.27.211EF67
+Received: from mta20.hihonor.com (mta20.honor.com [81.70.206.69])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 9E17E12000C
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 14:55:09 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=none;
+	spf=pass (imf29.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=zhongjinji@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754405042;
+	s=arc-20220608; t=1754405710;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=TB3k5YKrolHS/wGUjD2XWMujqEOA7pI1XujVrZoQ09I=;
-	b=EH3eO8SSdFH7CC/ZUgohMXBy3YljOrPOGkKOtFrPBHyGa04bvXnMTiM8puyxWOG84P7kSO
-	Rcp25YXm0zI9YR39c9L/nwTmdO0RHKKsPN0cSHxXR3DgMKwwavcSwEHJTsZQYtKW4qJm42
-	/BYQ9/HtyNo0Nd/uxxHh/P6yMUZhXx4=
-Received: from trampoline.thunk.org (pool-173-48-114-137.bstnma.fios.verizon.net [173.48.114.137])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 575EhwY6023281
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 5 Aug 2025 10:43:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1754405040; bh=TB3k5YKrolHS/wGUjD2XWMujqEOA7pI1XujVrZoQ09I=;
-	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-	b=gpbfF/nK3AA4Y1mnGA0hs/TfMSdbkijSUdIs273Q6zm9/psDK+utT8OHPH+gl46KP
-	 436vfh7zQOAzczzy5UfO8xFYFWy12q7HCXbWf5ZBOx8k+bDBlJXmb+yBV1k39yiWCS
-	 x7exXNqYDYucIGA3Ks6QpKCBjrqerdRty2vSCJ31kMpML94GdTisBXAxsvG5FkoWAP
-	 RIwfJ4syMf5yurVaLy8MKiNQQPQpF61rB/roGZvQYChjci/tSHFcqGTeCcIqvxP/mL
-	 2ibjIT2kfSg/BMwgBCzZepQB9YA88kj0iIQhbXEvpZuOh/leO+dGsa5vxt9rQWo/7w
-	 J74RKGlyqQoNg==
-Received: by trampoline.thunk.org (Postfix, from userid 15806)
-	id DEFF72E00D6; Tue, 05 Aug 2025 10:43:57 -0400 (EDT)
-Date: Tue, 5 Aug 2025 10:43:57 -0400
-From: "Theodore Ts'o" <tytso@mit.edu>
-To: Linux Kernel Developers List <linux-kernel@vger.kernel.org>,
-        linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-mm@kvack.org, netdev@vger.kernel.org, ksummit@lists.linux.dev
-Subject: Maintainers Summit 2025 Call for Topics
-Message-ID: <20250805144357.GA762104@mit.edu>
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cgGcAvpEC4s6ikx6dYr46pVh7U4bC+vm4ncZ+popWZE=;
+	b=nhbqPZfOzz94KonqGLxxxJzHMCUl91m1DHSXkoVipE0FSEXNkcoqeLiuEDx34zObbJ83Yl
+	0HECAsNPSGXHV/s9uYkl+R7NuujPu+97frKj0cg/JLIGkJGiZwcFawlF1VIqK7GMkF5hiu
+	5uJMXer4h4f8vTzUQzk3Jw5xBm10qHA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754405710; a=rsa-sha256;
+	cv=none;
+	b=IgibROMWj6Abh6H3ZgBVFpNwVtzsCPTmX2g8ZysiO5Gh3LMW0UBpLAk9q+w7c1ZRkE0tQZ
+	Rvjp5CTqdoKPnhqZAEGnwOGN77REqDCVl3bhGuAhuRlFMeiLIpQa3IP2/wggnVM/Mt6diu
+	/g+j9upZm1tuvc4dBPkv9p/WNys254o=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=none;
+	spf=pass (imf29.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=zhongjinji@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
+Received: from w011.hihonor.com (unknown [10.68.20.122])
+	by mta20.hihonor.com (SkyGuard) with ESMTPS id 4bxGbl51hszYlngv;
+	Tue,  5 Aug 2025 22:52:03 +0800 (CST)
+Received: from a018.hihonor.com (10.68.17.250) by w011.hihonor.com
+ (10.68.20.122) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 5 Aug
+ 2025 22:55:04 +0800
+Received: from localhost.localdomain (10.144.20.219) by a018.hihonor.com
+ (10.68.17.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 5 Aug
+ 2025 22:55:04 +0800
+From: zhongjinji <zhongjinji@honor.com>
+To: <mhocko@suse.com>
+CC: <akpm@linux-foundation.org>, <andrealmeid@igalia.com>,
+	<dave@stgolabs.net>, <dvhart@infradead.org>, <feng.han@honor.com>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <liulu.liu@honor.com>,
+	<mingo@redhat.com>, <npache@redhat.com>, <peterz@infradead.org>,
+	<rientjes@google.com>, <shakeel.butt@linux.dev>, <tglx@linutronix.de>,
+	<zhongjinji@honor.com>
+Subject: Re: [[PATCH v2] 2/2] futex: Only delay OOM reaper for processes using robust futex
+Date: Tue, 5 Aug 2025 22:55:00 +0800
+Message-ID: <20250805145500.29079-1-zhongjinji@honor.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <aJGiHyTXS_BqxoK2@tiehlicka>
+References: <aJGiHyTXS_BqxoK2@tiehlicka>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Queue-Id: 1D626180004
-X-Stat-Signature: 8nigtwbwqxo9oz5ztenzmwwkx6uf1d1f
+Content-Type: text/plain
+X-Originating-IP: [10.144.20.219]
+X-ClientProxiedBy: w002.hihonor.com (10.68.28.120) To a018.hihonor.com
+ (10.68.17.250)
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 9E17E12000C
+X-Stat-Signature: c87ommjzwmwjfe5wtacw5zfspuby85ge
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1754405041-46367
-X-HE-Meta: U2FsdGVkX1/bCvi5s5+vC6USiml5c+gyZgSTwdeOBVcSYQQ0AdlYWVXNKADboWJ75qkPWpdSG4XLiPQExHbQsPuIm9k4X2TatKEPYKcQLDOEMz4buj+CUZ9ipZGjwO6Apzm5Ecx/+UMyea+l7C7WVpo0mfp7ceTvpkRyRPhzQJQUfcOI21PsTc2usWlxrLGTEtmBWj6BU70EeYkqZbrTS0/KKJ10VTSmmt8qPKsJhFNGVEf5glmxPznpUDqLr8Tt8eqJXifsYCdQ59Ol7RIR9i+9L0HWokydDw69QuZ7ehChKm3+wHXNM3TzIRXwpvWQSx2d6uZKXCdDUDAodv7jIcB3POEb2/cRSbT6OpIiD3BOex+G/srE0NN7VrwJn05QHC5Q1EWYpbVItZI0D8deNz36jPp6zDoy/bo1Ad7fT8HmFIBBSgcAAxVgYmNGP2UmY7Czk0+k+ND3Q8iHN9oN/ZvFHKYJM18CQIDxRA7AiWfQ6Dp8r3uLsSdcjjtSu/pD70O4e7wH6CelvmzwmAFq3wDZx+jrsgJMpoGGz9E45OWo9XUjxdy6XiczQjrBXqEoJY0bOsXgfnaKJN6MNIWi51f6B3JJW0/mG8tvAAS5JBIDXpFrUoY40AGmfy7JwyK/IV8FCnLg+MTaF8lM8YfLbX3/kKMeVOzYyYUoLjC5SDTQgx/0gzzAMNO/9Q+kSUzJRu+XR5COqjN8tvo5M7y0ZBTexuyHrqHQjIh7kq7iaPsqYo+qcIHxjnyCzIQndVhbbFXUU6laSzKm1wzZCtF0foO4VVhCEaNZz8HXbcBslYM9BDwjzFskox8RaaJjDDMjnj01ESsXutm+X9vdgJJTZmSx32bdT2oVtT2jhBXs+MXUGiOu+QS3xUpSbqz2cM/bEgyWWdg+wiCmROzp4RC+yPjct92f69n5G+P9MbPtkKpo48phfj0C0pv22ZlrYq8SsmICXIHi6Mz2Ju1uLKU
- xe1gDKZi
- 7cej2352zj44bVjclHWbzbK64Xx8/Otyqzavg5ZDOWl/gEAMIPIW+GyU3wVDpUwTARfX6VGXh3td4/XYg3pfmiQYcSKeAukzC8ht/bIvoRCiqLTTkpJIzFRm/nQp8lA8C7Ev3s9h8Rd4RyYwXosDNry47rvVe+VeBGcFN/I0O2ZE/3bHa0seIR1aHKvUKFL6kKDAVXe0UezhmNeB4VafFS2uCskWXVcGC8ZrSbBdMTc/BuQv4806dFtWAbg+4g8Xd7WsjqVZDi50KJmgVnmzIH9H+BAR5C3Q1gPxkWxC1fw6/oK1c+r1D8xgiiQ8A/PGrrX/H
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000028, version=1.2.4
+X-HE-Tag: 1754405709-497920
+X-HE-Meta: U2FsdGVkX1957W4gAG1hl2WkTjafYGbdpSQt8dFDmIXBVZod8im6bv+zypemz7CRetB8juMUFIA1mYRF6jc8CuGUZ3MIvLgVuseOkm7JpDO1kWmeawh/b3JyXcwAfFj3QlEun9ZuKruRPKk+FnWtbykplRZlta2nR0KxjPR93yCYkNrDtoEX3e+LUrEqmOVJzsTsa0QplKFUgJhRdERGqUZixCmDyoKlXb2BFWiLyJMJFio7ZLs2weyLJLtNsm8YXqwYGCzaKldNbtlYk2cFMAR05OzhMz3JYXgVFEiYg8gUpy4skUZ2SVLhTJtFFt/PidGvlUQ0S9hgk3nNBFc+So5XaDHlthHwC3hAVtpQpVd3RY+PL5jAdtYNmRDkXoFaLGQN+bqldV4OTLz3g+/x3+q92YGUvP2Kyt3JGQbGAWFaLP515McgWW2jv9fqgK5t0JJJAFq608TyZ36kxd9wx2IQRJtSvQGctowGZ35LamkNGEtmt2gz8zWh5opWhDVMmv5jFGipJTwuEVZCnUQDp5QHOHHONTKP21pKEDuhE2jMCAQ/bdnYWFQdI3xL841B5I7Jnwhesgf7NM2b3dqKIbykYjMhXG7kdfjKedJ6M2Hjt6+gvAf1U8AH1sy6ZdT8jtI3RC5S/mOzjPir4Pke/KtHdemVYvs3oMBD7byTWdqosjzvyVt8C7oB0BZxHFJzu1goCi+eGQtBIQqqI5uQw34zbceeSZTsINn34Q1KKZ/N7drc6vC20H8YGCCuDjekQMs6xO+IuPb3VK26c6PeQY4W+i5lmBmN9imBsCuuv6iqR1JFUWC2/MvGZENMCx0UY9fbwai1e3njsYBggxqJTr0xHUCFMysJ2ZQLLSDOjoPDcMxCQTHOU2XGEpunR1Gc/a6L/CfzW3HgrjyX8KoVHLczr41nYh48prKaLxxUIRRVOChmN1FEHcHrfJAbWd0tQAAXdITQ2UiIgYW4KK/
+ EQteNL84
+ hn+QHFSFE0gPHu5LE/V7h+7mehg5V1VWU6GGXjmxKU1/cTTbvjZGJS2ZEIB3Lu0utZPeaWETD8g8eCRWdKxugc2yPpi71t4/JuMkFilnY6Mi8sUpTL4iRjKsV/5J0ZilSS6BhWz/48KjYRYfA38tKqJ23JtoJPjd4OiDVRqqHZFa2e1BbPZD6VmQgeQW+GoK25VwCDk37N1ztd3KTtVnoCgDWBw==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000004, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,64 +92,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This year, the Maintainers Summit will be held in Tokyo, Japan on
-Wednesday, December 10th, 2025, just before the Linux Plumber's Conference
-(December 11 -- 13th).
-
-As in previous years, the Maintainers Summit is invite-only, where the
-primary focus will be process issues around Linux Kernel Development.
-It will be limited to 30 invitees and a handful of sponsored
-attendees.
-
-Linus has generated a list of people for the program committee to
-consider.  People who suggest topics that should be discussed at the
-Maintainers Summit will also be added to the list for consideration.
-To make topic suggestions for the Maintainers Summit, please send
-e-mail to ksummit@lists.linux.dev with a subject prefix of
-[MAINTAINERS SUMMIT].  Late submissions will be considered, but people
-submit submissions before September 10th will be considered for
-receiving an invite.  Invitations may be issued after that date, but
-only on a space-availale basis.
-
-For an examples of past Maintainers Summit topics, please see the
-these LWN articles:
-
- * 2025 https://lwn.net/Articles/990740/
- * 2024 https://lwn.net/Articles/951847/
- * 2022 https://lwn.net/Articles/908320/
-
-
-Related to the Maintainer's Summit, the Kernel Summit is organized as
-a track which is run in parallel with the other tracks at the Linux
-Plumbers Conference (LPC), and is open to all registered attendees of
-LPC.  The goal of the Kernel Summit track will be to provide a forum
-to discuss specific technical issues that would be easier to resolve
-in person than over e-mail.  The program committee will also consider
-"information sharing" topics if they are clearly of interest to the
-wider development community (i.e., advanced training in topics that
-would be useful to kernel developers).
-
-To suggest a topic for the Kernel Summit, please do two things. by
-September 10th, 2025. First, please send e-mail with a subject prefix of
-[TECH TOPIC] to ksummit@lists.linux.dev.  As before, please use a separate
-e-mail for each topic.
-
-Secondly, please create a topic at the Linux Plumbers Conference
-proposal submission site and target it to the Kernel Summit track:
-
-        https://lpc.events/event/19/abstracts
-
-Please do both steps.  I'll try to notice if someone forgets one or
-the other, but your chances of making sure your proposal gets the
-necessary attention and consideration are maximized by submitting both
-to the mailing list and the web site.
-
-The program committee this year is composed of the following people:
-
-Christian Brauner
-Jon Corbet
-Greg KH
-Ted Ts'o
-Rafael J. Wysocki
-
+> On Mon 04-08-25 14:01:40, Michal Hocko wrote:
+> > On Mon 04-08-25 19:50:37, zhongjinji wrote:
+> > > >On Fri 01-08-25 23:36:49, zhongjinji@honor.com wrote:
+> > > >> From: zhongjinji <zhongjinji@honor.com>
+> > > >> 
+> > > >> After merging the patch
+> > > >> https://lore.kernel.org/all/20220414144042.677008-1-npache@redhat.com/T/#u,
+> > > >> the OOM reaper runs less frequently because many processes exit within 2 seconds.
+> > > >> 
+> > > >> However, when a process is killed, timely handling by the OOM reaper allows
+> > > >> its memory to be freed faster.
+> > > >> 
+> > > >> Since relatively few processes use robust futex, delaying the OOM reaper for
+> > > >> all processes is undesirable, as many killed processes cannot release memory
+> > > >> more quickly.
+> > > >
+> > > >Could you elaborate more about why this is really needed? OOM should be
+> > > >a very slow path. Why do you care about this potential improvement in
+> > > >that situation? In other words what is the usecase?
+> > > 
+> > > Well, We are using the cgroup v1 freezer. When a frozen process is
+> > > killed, it cannot exit immediately and is blocked in __refrigerator until
+> > > it is thawed. When the process cannot be thawed in time, it will result in 
+> > > increased system memory pressure.
+> > 
+> > This is an important information to be part of the changelog! It is also
+> > important to note why don't you care about processes that have robust
+> > mutexes. Is this purely a probabilistic improvement because those are
+> > less common?
+> > 
+> > TBH I find this to be really hackish and justification based on cgroup
+> > v1 (which is considered legacy) doesn't make it particularly appealing.
+> 
+> Btw. have you considered to simply not impose any delay for _all_ frozen
+> tasks?
+ 
+Thank you, it seems like a good idea. I will try it.
 
