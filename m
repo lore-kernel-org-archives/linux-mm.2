@@ -2,202 +2,115 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BECD0C87FD1
-	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 12:31:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1EB92C87FCB
+	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 12:31:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F9E86B009A; Tue,  5 Aug 2025 08:31:11 -0400 (EDT)
+	id B9F166B009C; Tue,  5 Aug 2025 08:31:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5AA126B009C; Tue,  5 Aug 2025 08:31:11 -0400 (EDT)
+	id B4FCB6B009D; Tue,  5 Aug 2025 08:31:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44AB76B009D; Tue,  5 Aug 2025 08:31:11 -0400 (EDT)
+	id A65A16B009E; Tue,  5 Aug 2025 08:31:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 328766B009A
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 08:31:11 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 127F1AFDAD
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:31:11 +0000 (UTC)
-X-FDA: 83742638742.17.1734943
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2047.outbound.protection.outlook.com [40.107.94.47])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 445D7C000A
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:31:08 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=AZpW3DA9;
-	spf=pass (imf28.hostedemail.com: domain of jgg@nvidia.com designates 40.107.94.47 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754397068;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 96AEF6B009C
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 08:31:17 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4F8E61353EA
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:31:17 +0000 (UTC)
+X-FDA: 83742638994.16.31EECFB
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6E88D10000B
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:31:15 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=nVqpAIPR;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf05.hostedemail.com: domain of elver@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=elver@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754397075; a=rsa-sha256;
+	cv=none;
+	b=X0McbWNSmw16qIkdI1ECSNnOeLxsBoYK76Z8l81atp0XV6cGYou+ArExXZqLlbIdhvpUUx
+	3+lfR803QC1tDeAOOBb2DY+OCtoOrYtgF+r1YXxkJVEbgstTOTiXfvEUtAmJJeSTHKs0gG
+	BykBIhua5ph5IxN9UjJ4FNpHc/YdLTM=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=nVqpAIPR;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf05.hostedemail.com: domain of elver@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=elver@google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754397075;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jvP4bIBVAuUNv2mgt5gOl3Oh9nTcUgDTtkNL8NMoh+A=;
-	b=uYgDXX1zaCiUoOisEoHMCexTEy+ZObLw+j30ZUpjh5cijkoA8vGlkLYs+T+PW/ZBD1h37E
-	Wzny6F3cn00amWjSHcfrZoEnl9DlSPeOOPwP2cxruRS/L8fHvpRqjmGfyJyyNnLvTBZtCM
-	KOikVyFto50jkEXH6sTlyTiZFckNjTQ=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754397068; a=rsa-sha256;
-	cv=pass;
-	b=A1JF6yTI7B+Hsn34XE01rqcyaA3PBLt8dVgfBK1Ef8I9vk3eqSIW/3PCf+DMxI5NZfMWm1
-	J1Gx2mYQdiHDda9EeDh2aDYVTvhYohcYhINFBCuxZSjW/kE7lpe6jo6bve5sPFYq9ajQiw
-	NLu8U33YeEKJC5yHbYGrFAziL8Rl9nI=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=AZpW3DA9;
-	spf=pass (imf28.hostedemail.com: domain of jgg@nvidia.com designates 40.107.94.47 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=o/YUy1IfgoNlj6J5H8Izaps/oWRqsDL9DWdOBIvFibxeRvzFpad6+BQTRo8B7m0/JMKGu8uyGyIKlyZfOxDAfLytESCEPM4wG7KiZmlA+X/35txksR9O8xOdIcxNSeo+YUS8O2vKlONH/P69UrkyMFCEaIWXDDEKkMJX4Odr1Avy57SjKrNnhacA8KQfuvb5BhY2nOXPR+psSOjA5ZM7Zt2RRwCqu/EX7mcS7UMNv0CBnuIpyZr/cxYE41NNmVBXQNhqJwRKk+Sta7BYQbFZ0MM7gguSkOkSIJWuLdAg4Mp1RmTN4iPxZs9DQbAcZB5hKl1v3Yz40yg2YdhBJ+d2mA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jvP4bIBVAuUNv2mgt5gOl3Oh9nTcUgDTtkNL8NMoh+A=;
- b=MdApe8MO8GxUiBJ/+bsjj1wM4g7Fm8FMR20eGjRSrQS71xCbHHK/fcRRNnHxF2fUJIiB99N4IUcHIJ5ZWbDhRrSEmM3fuU7PYSDlWLBvkweIkpP3HGKse6HO6zTzcXKAEVWrUb0OUpXb1uNeixeryGnvkdKIrFNz4KzAGhh4no0oD1QWQYl9Z6DkZ8sQcUkPhTax/SI9X2vp+DgP8eHC1IZViSNSPaN8VEKj6VHXLw1WN2PP5N+TQ0sLKTWIOsRmR+a/3ff2vyMAOIBNK4VYUQHJzzQvAcwW8BCh47BGh//mk7PxkV0HZFJ4Kv4QU7SkPVcg/6yCRpYz4mKtSetiHw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jvP4bIBVAuUNv2mgt5gOl3Oh9nTcUgDTtkNL8NMoh+A=;
- b=AZpW3DA99tMl92XIyTMEMvsT5VMDB7Tfm/OC7uRgwHXt+0EUueIlpUCIuU6TBJf0ITFUYIwgrC1kZx2m84cBhWGtucKNGur7KTNDNJEfeo+sNVzXutzchmwljMWE5qD1UnVb9ZtaWfE7XV6UhMoCO7MwiLWjX5UkjKPSu7j0tNJhPdBh4NwBOv2HuvpPfoOFlA8mj0PoFqrFJU4uLp6PWyLx/J1aVVqQxw59BE8M67Qx4aasjAHL2+Xp4uTTmMhO9eNv68mG/+3ZDQ9Ft2lrj3sXWg+PMyf2/q63CSCbtXebz+Oa3w6AnFYIIv+U7WtJOyi66dhySamcFwW7NeVAww==
-Received: from MW6PR12MB8663.namprd12.prod.outlook.com (2603:10b6:303:240::9)
- by DS0PR12MB9276.namprd12.prod.outlook.com (2603:10b6:8:1a0::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.20; Tue, 5 Aug
- 2025 12:31:04 +0000
-Received: from MW6PR12MB8663.namprd12.prod.outlook.com
- ([fe80::594:5be3:34d:77f]) by MW6PR12MB8663.namprd12.prod.outlook.com
- ([fe80::594:5be3:34d:77f%7]) with mapi id 15.20.8989.018; Tue, 5 Aug 2025
- 12:31:04 +0000
-Date: Tue, 5 Aug 2025 09:31:03 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
-	changyuanl@google.com, rppt@kernel.org, dmatlack@google.com,
-	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org,
-	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com,
-	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org,
-	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr,
-	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com,
-	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com,
-	vincent.guittot@linaro.org, hannes@cmpxchg.org,
-	dan.j.williams@intel.com, david@redhat.com,
-	joel.granados@kernel.org, rostedt@goodmis.org,
-	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn,
-	linux@weissschuh.net, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-mm@kvack.org,
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com,
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
-	aleksander.lobakin@intel.com, ira.weiny@intel.com,
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
-	brauner@kernel.org, linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
-	ajayachandra@nvidia.com, parav@nvidia.com, leonro@nvidia.com,
-	witu@nvidia.com
-Subject: Re: [PATCH v2 10/32] liveupdate: luo_core: Live Update Orchestrator
-Message-ID: <20250805123103.GH184255@nvidia.com>
-References: <20250723144649.1696299-1-pasha.tatashin@soleen.com>
- <20250723144649.1696299-11-pasha.tatashin@soleen.com>
- <20250729172812.GP36037@nvidia.com>
- <CA+CK2bCrfVef_sFWCQpdwe9N_go8F_pU4O-w+XBJZ6yEuXRj9g@mail.gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+CK2bCrfVef_sFWCQpdwe9N_go8F_pU4O-w+XBJZ6yEuXRj9g@mail.gmail.com>
-X-ClientProxiedBy: YT4P288CA0067.CANP288.PROD.OUTLOOK.COM
- (2603:10b6:b01:d2::27) To MW6PR12MB8663.namprd12.prod.outlook.com
- (2603:10b6:303:240::9)
+	bh=Yc4gvWW52t1NDKhzxwrmBqGipvg9SoHEPfFiqWrZ+tE=;
+	b=xj8iT9JEkmZm4t6c8rg/iU0MFpJeN+IGQnNjVrTMxs0g/wIc9lBF2cKNFM+GOEJgQ4LVpO
+	m8/rE8lyA/vGdSXAMoaPrNXeFVB80liuTppjtaM0uxDrRSS9hfZPXYjp8B0QGywaNnMaFi
+	7xS/HBqKBWNsnvFMS0lUD8O8tQK4WIA=
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2402bbb4bf3so52660085ad.2
+        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 05:31:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1754397074; x=1755001874; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Yc4gvWW52t1NDKhzxwrmBqGipvg9SoHEPfFiqWrZ+tE=;
+        b=nVqpAIPR7ynB9HjShwsPpFeoEzqcDS0JuxyjT3ZMQOUymWkSnbx7YVCu1Yemut4Mn6
+         qoWzQ0EORJcBNwB1J04lCt/zGjyV6GKYbJNL12z+as9gSVcKMWqedksForbRXZI4+eRR
+         gjT3xl5jDiH0IVynj2Jl9uGQRbEcpgA1wc0XzjvvSGtXzEE48P9Z/nz4K2+c5Oqa6d2Q
+         EVRnHe/a9qFdr73YF0MIvkJf8aswcX+PAz5l/EMRcTiZqaGax15z9FyMVElJ4QFXsziP
+         FbBZGFDmwJXXU/u3yOm2o6Gy7/6A82GaU/oyDUd42gSD7aml1QASHyVq8QgSx6geEtor
+         Olag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754397074; x=1755001874;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Yc4gvWW52t1NDKhzxwrmBqGipvg9SoHEPfFiqWrZ+tE=;
+        b=DkY5LC/hkZxvkUB/qMJGPva0glU9uRS3jG83U77XcrYuqcKpiEge1zeZ/m38xBzsbt
+         2DWHqbc1NsspRTuHgn/DbNmqUGTHBxQZgVzsFvTYg3Qv5pZzaZ4Fi7jh/C6mTz5gGjm2
+         GoFWzS0CF8pYE8JIKpUjR8YJy3f3rjuJjeEwzMJoMbdXbukCcvGJ/jjXbH2sPd/S2zTj
+         knGglQqBjIigpQYhHghD3j0UpJGiNzM/Yv2hDXeUBOpRtJvUgqRYibGqsTtV2g5hItrw
+         P6H6B7tIESVH6utJCf7h1du2abfTODmVj9kT7CDcNYqU40rLrfLNRWdTsocI7sCzVUIL
+         QDlA==
+X-Forwarded-Encrypted: i=1; AJvYcCVgOvL59jzlwppTSz7jr45N7YqXpUUVQK3lCnvLdEd4XqbrSyAE/GNXhUQRahVWL7PS6uIpI+W/Yw==@kvack.org
+X-Gm-Message-State: AOJu0YyXPimuQ7yTk7cuuHOea3TaUzmCHUisW5ZE0cF0xfB6vagBYstX
+	GBR9VnW8fO31SIxwJBB3zfh0Hm/EiKWegBjL78Ghh4zrNWDpQXJqjKIlsMzg5ZdZ12/OCSHff2A
+	Op1ubhfw67yC+vZ5uZ92YOqwDBUk9CzThQxhTXRAF
+X-Gm-Gg: ASbGncsjstB+KNlpT1LIkvmweEO+2GETrzVZtXjoFODxoWQBs/+/eV1jKRqFs+c5yon
+	68kaw7cCW0EQndTyyd7DHY8AoSauDsEQMvPfZQJEg/JmpbSFgqsvnRFA5NsL5uo+0kMcviVUOHt
+	DLZKJzz+zNJyK56Q5KfKi5mW/WzcnJhqLpumLTnWmOFI2iLcH8Sh+FCubQyPicY+l02zxUjfaof
+	1sGra7lCs+TiTH/Me+jGsMZES/WN/riPHLwhA==
+X-Google-Smtp-Source: AGHT+IGPjiYBPWhiiCGGe0rpFKkbh1Rg3FSdLNOsksOA3V1eWAJUxiBJ13PoRIjsobG4RiQygfgDMFJjCSuuK+shj7s=
+X-Received: by 2002:a17:903:245:b0:224:23be:c569 with SMTP id
+ d9443c01a7336-24246f6b79bmr191772715ad.22.1754397074101; Tue, 05 Aug 2025
+ 05:31:14 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW6PR12MB8663:EE_|DS0PR12MB9276:EE_
-X-MS-Office365-Filtering-Correlation-Id: ae2541a4-eeca-41dc-9a35-08ddd41bf1f1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?nHZDFPaV0GGGWEgTO5dZqu5/sRb5Js2BqsVOwmumKjZ1a+hmrARLGLb/Bp5w?=
- =?us-ascii?Q?BdZwURqlZyIrHV3Yyhv195reUovItQlYg0fFPDI/12pzioLoqSyes5UDLNqJ?=
- =?us-ascii?Q?Sz7P94INJSWzoRsg6fNuJW3VY/RnRkhtzOn1DoQBSwZ7oUDhT/rOwiTYDKg2?=
- =?us-ascii?Q?n5yMadwdRKM7VYPdNZvU0p975HcOSC9z2WkoG9aTnKEgeveG/E907jDfkHoa?=
- =?us-ascii?Q?HTrP22NrMKnh+a7jwbmDwDQLZ8sFZLmSAb7e1DJAroLGWlSp6f6NeUPNihm+?=
- =?us-ascii?Q?TA3c1xVYsYgPJwcXxFYz+6c9LHuMz/GyvWH9ceUVGI5pnFf9xpDSahMppyk2?=
- =?us-ascii?Q?0spD0DuM5b707IC0u4APwnYaa9mpUtnXK9liArg5lSg6Sl+sF0fAk+Ue2vM9?=
- =?us-ascii?Q?f8BfPDU2zTx3GRN5AaOhEX4d2ni3FpjnbQ0bK3mQ9szvGFPlmHAFmI9zuoAs?=
- =?us-ascii?Q?EE6OoFPOuRFSLpq2Ur8DMSRpXwsdOI9Karc/MSFAo+HZ83iXxMLxEMvafReI?=
- =?us-ascii?Q?xB1D63WQoNO3T9Yx/JpS0xV1kdfWc+p45ogM5cor43lb0xVYOdbSLK7kBLCW?=
- =?us-ascii?Q?ISZzs3/2wUdWYkjt3zDAnT5ZGDE30Wouc5DH3gQjuj5e1ZlqCq6vLUb5Iucx?=
- =?us-ascii?Q?A+xDzgoQM+WR+TubLwQjHStiWwZ6W89vDm8P7WxzSCOStmop1XmgtAp998xG?=
- =?us-ascii?Q?468knpUSUnx48uRub+CU3RVZU3+H/B71/QSmoUFkx8JosaAjfYK1nFbv8cpz?=
- =?us-ascii?Q?SAE3q2UaRiBYpQNEAQtO+1GPq4D0HtlEVsxCY/Lj+9VM7dUqDRS9PZ5H9u4M?=
- =?us-ascii?Q?OY5SDyFLGAf8ke7PAocoaZlBbVHM4n7s3Gnj6LFNjUWG+F8JgVWGB9yT+I9P?=
- =?us-ascii?Q?Gs0/F8J2wi+fSIbxXpf+cb9FLHYKaYdRJyWrUAjWkvztY6cLZYRj3P7Ql5+K?=
- =?us-ascii?Q?2ePD7MGzD2JEFs/YQDbMhOna8VsQ7zfL8W+QeMeB66DB8lx5k/PkoCDsx32o?=
- =?us-ascii?Q?9LviapwCl9HF3RchqGctj4cUGtnBy1bUZ0JSjEt2X2856YFGw2+nbXsOv69D?=
- =?us-ascii?Q?boQIbsfeZXM+pjbcDLNEPODADfdAbQglhpozK6GTo3pZ+iysxXprt378mq28?=
- =?us-ascii?Q?Pk2o2oV9gwxKe0s06bHXH3BqVfzRmEFKBy/AoptEAdmTTKYB+8DRc6U3AWYX?=
- =?us-ascii?Q?WENxEy2b2rxSLlFXUqqEYJJG1TAh3va41TFGnzMq9fcwLmbLGCdo9/CI5NSz?=
- =?us-ascii?Q?xFB/yXfJeWnbSamti7H8do1KJHEO/qAYua2Z0YfFWbsA+DRIOtlmW7lX19YN?=
- =?us-ascii?Q?jM/W4cyJYp6Mq6hvAPeZNF+G80v2nL3wSdu7REY/vn8HkPpAcUlsT7R5wB4W?=
- =?us-ascii?Q?vBBifzuRZvFskPh9+ogSWECzt8zxh/+uqctmwa+JYLcs+pyPnMWstRaCjnZD?=
- =?us-ascii?Q?KqvwqVQEwPg=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW6PR12MB8663.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?HE9Qfw8uopNHKJGMfAqTAvSHR9hO0eiAl9IfI+2ElGY64y32a59T8/V2pJW0?=
- =?us-ascii?Q?w7+Fyde1DvM1i5onHWt4cJPr2vSX1mBbvmRbqHVgWUyLj5J//KUh7z2gqkY7?=
- =?us-ascii?Q?OaLANX1HmPqwAQxFDQnOzi01Ne6QFN8B+JeleQxAWsDEcolP2g9utlraCxun?=
- =?us-ascii?Q?yjlYMSZ+Z3MHxvtzegxeVNa9Cv7xA3DUpe0uTpGcP8g1+lSXDaTH8caE5wjg?=
- =?us-ascii?Q?RbzHyREJeaxA03NZ/jmBBTp7KhE0mhmPBSwbHMO7fpH1wAnpLqzU7S6NV7KY?=
- =?us-ascii?Q?pQKak6rMvAa4KeNLT0/fI+cX1vv+BCKaUQguk1fwS8w8ihVYBzJ3FCvNfE/d?=
- =?us-ascii?Q?d3i3lni9829mUlUzAFPd6z+cYGnjCM5laG8PUQprsqAbg/T10sji6QK0CvpO?=
- =?us-ascii?Q?2VgTYmlNZI2pcQEzNhAhVwJmLyZjEO2XXdmn7QfZ0xv2OsQlRM/MUUjxaZPk?=
- =?us-ascii?Q?4G8Q9nENxLC2MVCP8h6C2lAOuvDoebzls3tVVcDTcQK+pMIllXf8sCODQcw3?=
- =?us-ascii?Q?xEyeZpmVZsCwTfsjFphpZxcdrrBzdQvZBM5DEHpecv7kCmqcKqUEpvWy9Bfw?=
- =?us-ascii?Q?4i77GOubvyLBrKi6v4sBgFrrJaufvUvlvUaEO3VF8UYQr1MLxgPVIDIkJMQ/?=
- =?us-ascii?Q?4UlaoqgpLJ7Ewfhiej7i14TdIjlcu8rXSgRiCjXza+3BWyMF0Z4tYjS0FP33?=
- =?us-ascii?Q?n83nSPuDkooU6lUtfBjiG3+fniTezR2kqJu78ClBQZWu9lXTV+jOxP42ef4I?=
- =?us-ascii?Q?0WEBmggMTDdnU+pQ50SsVO0og04zyuiOmrVGdXRAykHWX77MRHXR0GoH3RZ8?=
- =?us-ascii?Q?WyFz/JqqFVUKBlTUhPAEE+mzmyllX8oMn2E9GrTVKMAS/bPCQ8yW3jGP6btj?=
- =?us-ascii?Q?1ugv/zEaCQ6+8uGrbQXiV9bWr6Gwd/AJKDjxwkMdNBjFMkRGQ9DmuwCt+1P5?=
- =?us-ascii?Q?Sba1a9n0jYMvv+uzWfRfWSF3V48/7IPcsjWy7/w3MlsJ5nt+QjIaloWNTSh1?=
- =?us-ascii?Q?2hxXAfKYjfDpPkKc5dmL/cb0pzXTFwTtr2rh3I7ILhjSRvQafy+12pSJ1aJR?=
- =?us-ascii?Q?T0f8XxNrm0cxBxmmDHMNGI/RWCRP4ILu5oYd29Fb8QxXO8dq9oRrqjVympUN?=
- =?us-ascii?Q?DyQgyIajvdHw1l37PZ+taXpTHIBm8MxzUV3TfebePRgXLmHaVPdg0jxqgnfX?=
- =?us-ascii?Q?R4BzBc8H3iAHHoE2JR3QdQsPqtFVvqzP5lqYIBd/2a+Qvpr+B/cR0ECxmQKa?=
- =?us-ascii?Q?oYoOYRNbDao9/1fdKrYnogUFukIYrW0Xb+AupzD6hp+V8s1e9+9EXX5/BHL6?=
- =?us-ascii?Q?KiRHZnq0YdTKOLTwrmiOjpsPxJio/PzlQTaXeFCNrEzOu/BehF4s/kS9/P1Q?=
- =?us-ascii?Q?v4LKgUR+TfvOqowBeNFNa3Bpqu0SUuwdY/r4QGhpuDX7QhQUyElKyhcKjVpA?=
- =?us-ascii?Q?blaFDRVA3LM6LgngNLhQvbu0s5bf8qo8q03J38g31uIbW0MNXPE+d9+Oi1Xf?=
- =?us-ascii?Q?6WfjrWoFZW96D06O2/eKghH3NcBxxVj1x/yj1zXNDdyybGVrC2EdqoJ+kwpk?=
- =?us-ascii?Q?HTH8zNxauvm2uwHPJcU=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ae2541a4-eeca-41dc-9a35-08ddd41bf1f1
-X-MS-Exchange-CrossTenant-AuthSource: MW6PR12MB8663.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2025 12:31:04.6649
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nKdq7ZMqiaB4q9V4vqPlfywLuwP3c7MVaGdSnGvcIknr9oUiAZiPtSA2RzBemedC
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB9276
-X-Rspamd-Queue-Id: 445D7C000A
+References: <20250804-kasan-via-kcsan-v1-0-823a6d5b5f84@google.com> <20250804-kasan-via-kcsan-v1-2-823a6d5b5f84@google.com>
+In-Reply-To: <20250804-kasan-via-kcsan-v1-2-823a6d5b5f84@google.com>
+From: Marco Elver <elver@google.com>
+Date: Tue, 5 Aug 2025 14:30:37 +0200
+X-Gm-Features: Ac12FXyvqYle1O7urbvJeMSiw9QK6-PDkDpNKV6wtqm4byhvYfbkU7M963dNpMQ
+Message-ID: <CANpmjNOJxJ+kM4J7O5J8meSD_V=4uAa6SwFCiG83Vv_8kn56sw@mail.gmail.com>
+Subject: Re: [PATCH early RFC 2/4] kbuild: kasan: refactor open coded cflags
+ for kasan test
+To: Jann Horn <jannh@google.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas.schier@linux.dev>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
+	Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kasan-dev@googlegroups.com, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: kcp1s1zcmixs8qfdjai6e4fupztjnakc
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: hy5gefsy5d1q8kufnu56ao3adwo8nw7e
-X-HE-Tag: 1754397068-500231
-X-HE-Meta: U2FsdGVkX1849gBhPNmD+gYr1BnubhIcYnsrPbldzooh7izc9ZDK4FqdAHojyGzEqnritrxvlOm00LJxYEVLxakYGbFr4miSAvM8GyVmixdZoT4qOgJZKYEimrtcS+xE0kUxKc8IQfwmis1trFd1xPOkiTqUG4lnBBYZ6402EO0LiHzKw3VGIc7Wa5UZVhAH/iPU9lfrpx/mcbgkR8usSf8uict/4b6dTOPhxQxC8msj2o9lCDxLpN2FZkxGX3gdgpFknMDVG0q0SNm+ptg0d6BXzxenb6uZm1hZNsdeeC1VrU2skh9a9pVgqTHGzPsCrmFSK00uOMkpvxKdmDKYoESuAr1Gkwi+3+rLYmmVTkU6Vowyc2t4RhBa7dzY+RWXk7+QJmKhCSrg7boq2ISuECGIMmGrZbxPTGw2QpKct7MjMQH2n55P+N2h4Bv0Hq2WPgxRsBn7vYR3TjHWDE1xdUaEn67FOF5OQXY+s+ZWB1AGd3RpbNbglyuxL6Avy6U7phLe/PpLqKk4zGFIeaeaxCOQMi3lyDzdgVrSVxje0QDCaTUMnbgaBbcCRXlOlXlqK8Z6YV5luuyR8DKNCbWWP8pqJK+FLhskz67nAcyyk+wGNn0h0BG0A6Vcdng50VSD/eu0YPtoFk8Aa49pvxvB91MPHrVJYdgKMCWK8PLcUmV3R8D+rEdQEQou/1ATcJibclCCj/yindvUc1fv/6oZo71ZQG+0+xjl4Qe1f8XJ30MdQ4+sf2tg22tCp7NJ7vcKiZdlfb6MHrjLJwWSZghkD+Y5Uc/EhnDw3rcmz1mvhKHx9y2EqRWiPVdGloHwS/2iO4hq+Hi3/MzuErF33CTWqslArmBhKIT1eRK62TDRC+WulR3G41lVt80zm1dZWa/pgbR0eh/uAHxMP/oVHt60RKrCmXr8mb4aJQCLHhi1Rx7GRh/zqWJjR6nDYzDUemZsFgFagQ0GpGJg0vKjbV1
- a1FisiW2
- eXmV0xlGS7Gy1Vc/KaYtRugp9+qZQyaIH01RmJ5+93x0ppFXBWGdzT1i4J4Teh7ErP7hieZKnxB4QVKhzmAvPpAqggiDtIcioDGjIAof+9JbaTkavUdsmiX/Et52JIPbxZ6fZciv52BTrutko8Ryy7my1tfUHH3RicwZPQoCOqhbPLjSdd2INiG/A7cka9TzX/+hI08wKz/BF1vPVtj5yZ3bDgFMb9JmBhlMJ5bxaXTxLMLKgsH1HZf8WKacBlzBsDs7NhDblOpf/AkdeSZ9nZjYW5mO1OR/1DKjW/TeYeoLXJxkYTj6KUS1SzFFv/by8WCdsC2ox/fb1ZEYloBYviwKVQ1KLHIrzrbNve2mLYLz+UseYfCbWYULa6hVEYzqvo3/i4zpTBI7QFT5WzO7OlO/Yf6Pjcjt2WNAvQG8g3rvNIynn6pQSJN9ZoJWdfX35uw69qlEmcg8m9GLGVrEqJL/1ue27oxlzT4dYM6wQ/CH/icxwkXfgvkj6Rp3LgvN1bo0Mkhfqj12IdwdSOnBVYI4LGl3wHTcWBzMdDN5ZG2QhT9O8NlaiE5nLysSo1ckmd9vVYQcl7y/tJ/Q3A4cryDIv4sJmCnXatUPKyVALuPZptxA=
+X-Rspamd-Queue-Id: 6E88D10000B
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1754397075-329340
+X-HE-Meta: U2FsdGVkX1/7J77cx5iTnnw/oPcdKWWZ1MPEMVM2xc+uP79Wk39AXv9J5JS7Joo+nl9Lri8wsQ4H3LbZtz8YqjjwrGsFsxuAQUTbq13d0cZTe1ao15TrC/SP4nWWk/X3zGJMZoqzlOGEcmNOn7mdlYqNI518BXq9XRzVLDQNBdWPqED3biB11nYGd3QL5phDjMeoqq1xT/U7FQDm5ff634Misx1Bi5kQaK8gV/SsSvHKm8MfwTEj/Ns7Ss4jTNcrlXi30/GpDDieNT+Hdj2B59FbZjgXzKIOJ22MTLFVh/OhWfi/AHdcxeGlu1JfsLpF5L8E0IQ7OzP7MO0H+RJkAdQ2JdLnkdpHr1uhZV9wSQULeIRdWRUqRv3Nd9Rf+FBVsESvLbK/31LHKvBbfpkzX2G0uyl2/N5cLw8cdUgvrm++x7i+2I7lCLKgrwB0kKiI/kWRvAGCdR68zFHhlZSlGGYw34DChjQjQI/4Gmg4CuTBxYnLvL6kUxDiNNODj3fsQ8k/Wp/c43hVbg5KvlS1CoTbH9fEnbERWnOgJnsxGjzYOpVP24hltnjcGzq1OtlwzbJsofzMgWxVu1oB9quJV/lF6MxLgkBOZiawVqp/QsGdlOiDSZUubCIe8CvqRga0rAIbQhFAN0keqLGASUo9xybjiAmDGTnnOR7KSkYnjLkNHiOAjuRg3/2lgrZcznip6CzJ1omSeo53+9rJ9/oD/rqLPOjpWwtFcW5jb92n0OPEDxZXfHIcZis8Vm9qvmjZD6kz1ZNCTEl4U7D2l8qde17LD9FrRdmIScAVbIlzfQwAq7FLqZj2oO4B4yh9RsY2K7kRz2TOrDUTLn1ycybLbJR+k/uoQ4vwhKW8vFc9uMS6erLXl0BZLuCRgTq0FRvLpkkTcyABlu9MFQbKSjjjQVSBiWQxJG77oJ/3YGv2OrheDP9kYNHEzvCmh3gFT76mCnn7qyyEghmOyuoKEg8
+ r/EFv8IJ
+ Tkff9gktjLfplSArQJO3fw+IVW2V8BCZwvYw19ki+JAfDLZAGwn8UveKUwgheRjNF5xwlWuFKpDonYCoJbLGtKm8j1ej0bNcXMaqwwPHCd9u4bO8yeKHCiVQqmmjKDfrzAEFCSjTnm20qWWvF5VmCFE05JQYuL9wFpQ1yqByn8CNKhPPBA2vqCUKD17xVAcSN6NDALaY/REgCKajqX2OOhq0jGXfxEM0XfgsOiwGaMYZoZ5tlNsB3HI4bSB0T1RnnTb6yplVvNuZBxN9xf3K6h5FxmBO1D2wyShT/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -206,76 +119,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 03, 2025 at 09:11:20PM -0400, Pasha Tatashin wrote:
+On Mon, 4 Aug 2025 at 21:18, Jann Horn <jannh@google.com> wrote:
+>
+> In the Makefile for mm/kasan/, KASAN is broadly disabled to prevent the
+> KASAN runtime from recursing into itself; but the KASAN tests must be
+> exempt from that.
+>
+> This is currently implemented by duplicating the same logic that is also
+> in scripts/Makefile.lib. In preparation for changing that logic,
+> refactor away the duplicate logic - we already have infrastructure for
+> opting in specific files inside directories that are opted out.
+>
+> Signed-off-by: Jann Horn <jannh@google.com>
+> ---
+>  mm/kasan/Makefile | 12 ++----------
+>  1 file changed, 2 insertions(+), 10 deletions(-)
+>
+> diff --git a/mm/kasan/Makefile b/mm/kasan/Makefile
+> index dd93ae8a6beb..922b2e6f6d14 100644
+> --- a/mm/kasan/Makefile
+> +++ b/mm/kasan/Makefile
+> @@ -35,18 +35,10 @@ CFLAGS_shadow.o := $(CC_FLAGS_KASAN_RUNTIME)
+>  CFLAGS_hw_tags.o := $(CC_FLAGS_KASAN_RUNTIME)
+>  CFLAGS_sw_tags.o := $(CC_FLAGS_KASAN_RUNTIME)
+>
+> -CFLAGS_KASAN_TEST := $(CFLAGS_KASAN)
+> -ifndef CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX
+> -# If compiler instruments memintrinsics by prefixing them with __asan/__hwasan,
+> -# we need to treat them normally (as builtins), otherwise the compiler won't
+> -# recognize them as instrumentable. If it doesn't instrument them, we need to
+> -# pass -fno-builtin, so the compiler doesn't inline them.
+> -CFLAGS_KASAN_TEST += -fno-builtin
 
-> Having a global state is necessary for performance optimizations. This
-> is similar to why we export the state to userspace via sysfs: it
-> allows other subsystems to behave differently during a
-> performance-optimized live update versus a normal boot.
- 
-> For example, in our code base we have a driver that doesn't
-> participate in the live update itself (it has no state to preserve).
-> However, during boot, it checks this global state. If it's a live
-> update boot, the driver skips certain steps, like loading firmware, to
-> accelerate the overall boot time.
+Has the -fno-builtin passed to test if
+!CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX become redundant?
 
-TBH, I'm against this. Give the driver a 0 byte state if it wants to
-behave differently during live update. We should not be making
-implicit things like this.
 
-Plus the usual complaining about building core kernel infrastructure
-around weird out of tree drivers.
-
-If userspace wants a device to participate in live update, even just
-"optimizations", then it has to opt in.
-
-Frankly, this driver has no idea what the prior kernel did, and by
-"optimizing" I think you are actually assuming that the prior kernel
-had it bound to a normal kernel driver that left it in some
-predictable configuration.
-
-Vs say bound to VFIO and completely messed up.
-
-So this should be represented by a LUO serialization that says "the
-prior kernel left this device in well defined state X" even if it
-takes 0 bytes to describe that state.
-
-So no globals, there should be a way for a driver to tell if it is
-participating in LUO, but not some global 'is luo' boot fla.g
-
-> > +       ret = liveupdate_register_subsystem(&luo_file_subsys);
-> > +       if (ret) {
-> > +               pr_warn("Failed to register luo_file subsystem [%d]\n", ret);
-> > +               return ret;
-> > +       }
-> > +
-> > +       if (liveupdate_state_updated()) {
-> >
-> > Thats going to be a standard pattern - I would expect that
-> > liveupdate_register_subsystem() would do the check for updated and
-> > then arrange to call back something like
-> > liveupdate_subsystem.ops.post_update()
-> >
-> > And then post_update() would get the info that is currently under
-> > liveupdate_get_subsystem_data() as arguments instead of having to make
-> > more functions calls.
-> >
-> > Maybe even the fdt_node_check_compatible() can be hoisted.
-> >
-> > That would remove a bunch more liveupdate_state_updated() calls.
-> 
-> That's a good suggestion for a potential refactor. For now, the
-> state-check call is inexpensive and is not in a performance-critical
-> path. We can certainly implement this optimization later if it becomes
-> necessary.
-
-It is not an optimization, it is having a proper logical code
-structure that doesn't rely on globals. I'm strongly against
-sprinkling globals everywhere in the code when there are simple
-logical APIs that entirely avoid it.
-
-When I looked at where there were globals I didn't find any good
-justifications, just thinks like this that are poor API design.
-
-Jason
+> -endif
+> +KASAN_SANITIZE_kasan_test_c.o := y
+> +KASAN_SANITIZE_kasan_test_rust.o := y
+>
+>  CFLAGS_REMOVE_kasan_test_c.o += $(call cc-option, -Wvla-larger-than=1)
+> -CFLAGS_kasan_test_c.o := $(CFLAGS_KASAN_TEST)
+> -RUSTFLAGS_kasan_test_rust.o := $(RUSTFLAGS_KASAN)
+>
+>  obj-y := common.o report.o
+>  obj-$(CONFIG_KASAN_GENERIC) += init.o generic.o report_generic.o shadow.o quarantine.o
+>
+> --
+> 2.50.1.565.gc32cd1483b-goog
+>
 
