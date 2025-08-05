@@ -2,92 +2,120 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8BE5AC87FCB
-	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 08:47:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D833C87FCB
+	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 08:51:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 165EC6B0099; Tue,  5 Aug 2025 04:47:41 -0400 (EDT)
+	id 4071B6B008A; Tue,  5 Aug 2025 04:51:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EFAC6B009A; Tue,  5 Aug 2025 04:47:41 -0400 (EDT)
+	id 3B7CF6B0096; Tue,  5 Aug 2025 04:51:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 005606B009B; Tue,  5 Aug 2025 04:47:40 -0400 (EDT)
+	id 2A6456B009F; Tue,  5 Aug 2025 04:51:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E629A6B0099
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 04:47:40 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1817E6B008A
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 04:51:32 -0400 (EDT)
 Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 63DD8C010B
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 08:47:40 +0000 (UTC)
-X-FDA: 83742075480.29.68D0A43
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 4D4A412000E
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 08:47:36 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=none;
-	spf=pass (imf29.hostedemail.com: domain of mawupeng1@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=mawupeng1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8D111B5BA3
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 08:51:31 +0000 (UTC)
+X-FDA: 83742085182.29.E264CD1
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	by imf26.hostedemail.com (Postfix) with ESMTP id B7719140009
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 08:51:29 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=HVJuKScu;
+	spf=pass (imf26.hostedemail.com: domain of adrianhuang0701@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=adrianhuang0701@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754383658;
+	s=arc-20220608; t=1754383889;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vK0xdlXQ5Cdw/4Zae1jVmeLIJx8HH77nwAsCPzAHkOM=;
-	b=Gop0wLS2szvZdEwNgDgcSCUImSZ2EZyKPSquO1zdXYn4xspbI4bF77lIi3rxn9Pre3tiaw
-	qwPOwyDz+b73oLTVtOt0KlHsMw6No6C/wEprEpWpbr9q9gku9mB4xP8aNHRuOicX1iy44b
-	hdJ1GlUw7zNU0fyOsRYY5GtTQaU1iDs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754383658; a=rsa-sha256;
-	cv=none;
-	b=oXOYDN/4bfQL+6uaXB1U9dL+FhgQkhHnS0McTfQ4pj0mo1rficXrAr62RHQfJi1/gf1onY
-	xDjVXkFbhilZAP++903LPzXHSSHlIv5kMNLC87MdbLQ5k0TMV7uIZCl+yt6pb0eXlVcVDM
-	Qa09qFtFe9fjr0rAJ22UBkJnFiQEfSY=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=nTyUNY7DkPk6giF7bQ8oyIphr5083kUpV0hMxYtsqp0=;
+	b=T1L66DIl9FyAe1Nto0JjthvqEam58C+OdTVH2egGT8tfrT+ovgcwvO0I/BM2LLZUsRLtJ9
+	zW7qs89qoR9z9bxbSML9q2Ebo0foNRD/dmroV46Vmvq/UblM4OaXJKC0xTsGtuYIvwcHhL
+	NrbQJW5UXn7SzoqD8GbKl9Oi+SkhU5A=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	spf=pass (imf29.hostedemail.com: domain of mawupeng1@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=mawupeng1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4bx6QD1Xj8z2Cg3h;
-	Tue,  5 Aug 2025 16:43:16 +0800 (CST)
-Received: from kwepemg100017.china.huawei.com (unknown [7.202.181.58])
-	by mail.maildlp.com (Postfix) with ESMTPS id 33DC5140143;
-	Tue,  5 Aug 2025 16:47:32 +0800 (CST)
-Received: from [10.174.178.114] (10.174.178.114) by
- kwepemg100017.china.huawei.com (7.202.181.58) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 5 Aug 2025 16:47:31 +0800
-Message-ID: <113b914f-1597-41ca-b714-7ea048c3c6df@huawei.com>
-Date: Tue, 5 Aug 2025 16:47:31 +0800
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=HVJuKScu;
+	spf=pass (imf26.hostedemail.com: domain of adrianhuang0701@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=adrianhuang0701@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754383889; a=rsa-sha256;
+	cv=none;
+	b=OEvUvLdD048gVqbX2BvZueflZbzqwL8I/F5RzNgx5w/IHiZvX2Cd50lJmbrXihsuq69/zZ
+	G9rVZFIved1ZWpcEYdjq/kvpIAcpA+FavjyvotGNlZHWxFEYBVjQo6gmxIf0dNvt/PuAWU
+	6RY3f5ylJqN0NGdgMDnIcq9lo6Q1RlU=
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-76bc5e68d96so4320445b3a.3
+        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 01:51:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754383888; x=1754988688; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=nTyUNY7DkPk6giF7bQ8oyIphr5083kUpV0hMxYtsqp0=;
+        b=HVJuKScuyWe/MGkaf3xIacdA1vrV/YviKgX9E35E2sO+/ouarVoNoZBgvDSb5zLvx/
+         2zi4xDUw6BUVsDp2ipo7Jv2ZRZ/Qfx5SNQPlWWiasPQC16OyJVwwYzf4DsB4mLnWIr3m
+         QeeMXORbb4KvzXVBxiSSklyg5A1T3SdA4Dga87sgbT6O+wIW1lB0qSjrdx0t+3qqK8cH
+         D+sA/5ffnFY5WrZHCv0YlbmJIe/PgojPH8NDSMnAgqr6VlBIKo41TEYjGyK22l6Op+3Z
+         ZedT6OgOsOomjYm2pPwNxxo0CDQLbtv8XOfZ5GreKj3QuVWmVlJZ9vAczipd6pauS1DS
+         ICxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754383888; x=1754988688;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nTyUNY7DkPk6giF7bQ8oyIphr5083kUpV0hMxYtsqp0=;
+        b=oo5Vp30q6kA4HpxxznAwORt3BJ+mh5eoAZGDrCehqJSlwyDtDSAWa9k7IL2X98B3Gb
+         qGIkviF9thws+zPkReeO4cKN710o5vCImT++fl4KkGXvY35D1JUK4oUlhl48Y4E+e/BR
+         Fd/j2oSi4VvYHwDQh83pDGRq6Lmsw7ir3ag3uHGdPDamp/MLzGIdRF4bwUHpfOibSQje
+         SFTDHtiBVzGzBX9XIVSDqL5tdrlpqRl2YEXZoMLf7X4Behjy5iykTb0LDrDJAwbyY5td
+         l+abh3Cuuiu6EFF8G/iWlphbVc2DFZO7vWL9Mbs1KEEIXEP+nbwtdXMN11jdhA5D/cZ1
+         X5dQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWJL26SX7feNiqDB4mTcpjgcblB7jL+e7w+NHrAi7DKk2HODUQrbUwvGkvfmpVwWPnwO4/oPQLlOQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw7othqjuwSdzrvxzNAjdlBz7/JFE0CUDJIspXZKT9uwExsudbB
+	UEJzyLmWrGhReuqwn+OIlCNfRXYxPM72xV3NB1frqb60qjfFsAu3SN1j
+X-Gm-Gg: ASbGnct7uloPzIZJVC+SaHrc0sB00dGmjc9cA8AXzuBYZLod0670jTja4wna09n66AV
+	ajB5A/ShRZe1v/fONOtAgm7u/j7ha45axR1MwSbn1aQVWKO9Hc3UAHuObl5Kg+UOkNT5rO30cW3
+	a/eNlZW89A5ZbK+3d9x1THHzxXpgEC+0E0VBR19RQUPqjcLXLAXbQewks9w/XNUuA/A8RI8pMih
+	EimUasDMH01mJ1UOFWGQ7rZCr1fzYLc5w3Diy5O7W9gnLj25IYeOCn5ZXsWQvcEkXBYdiVmir3v
+	VMMg6fEncM77AyBptVmHc2Xy8ClGVkSzAMJ2gyO4kYQOTtKypD57WmNof8MBKN+5sW+FkOAx6Ci
+	LMehRNuS5Fw39X6aaWZMHNehVmhmruCiYZvg4LrojQ8VhdHkUHv38D0YXGGEl8+wzBOy0yoI8D3
+	xwENrtXkQ=
+X-Google-Smtp-Source: AGHT+IFX0CBsQxCnjnp9iFnMUtyP6VCztAqH/RJ/WSaTnNKx6VuGiUz2vo/HXm+TGSqcjJwYZHScUQ==
+X-Received: by 2002:a05:6a20:938c:b0:240:1a3a:d7bc with SMTP id adf61e73a8af0-2401a3ada52mr6210239637.3.1754383888430;
+        Tue, 05 Aug 2025 01:51:28 -0700 (PDT)
+Received: from AHUANG12-3ZHH9X.lenovo.com (220-143-195-113.dynamic-ip.hinet.net. [220.143.195.113])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241d1ef5970sm126691715ad.20.2025.08.05.01.51.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Aug 2025 01:51:28 -0700 (PDT)
+From: Adrian Huang <adrianhuang0701@gmail.com>
+X-Google-Original-From: Adrian Huang <ahuang12@lenovo.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Liam.Howlett@oracle.com,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Feng Tang <feng.79.tang@gmail.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Adrian Huang <ahuang12@lenovo.com>
+Subject: [PATCH 1/1] mm: Correct misleading comment on mmap_lock field in mm_struct
+Date: Tue,  5 Aug 2025 16:47:26 +0800
+Message-Id: <20250805084726.2054-1-ahuang12@lenovo.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-CC: <mawupeng1@huawei.com>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] mm: ignore nomap memory during mirror init
-To: <rppt@kernel.org>, <ardb@kernel.org>
-References: <20250717085723.1875462-1-mawupeng1@huawei.com>
- <aHjQp9zPVPuPyP3B@kernel.org>
- <9688e968-e9af-4143-b550-16c02a0b4ceb@huawei.com>
- <aHj8mfecDhJJZW1Y@kernel.org>
- <8d604308-36d3-4b55-8ddb-b33f8b586c1a@huawei.com>
- <aHzjOxg_oPp06blC@kernel.org>
- <CAMj1kXGKGXeKGKWT3VzkBtACtjFyz8ntiyoTU26DA4aR6mi88g@mail.gmail.com>
- <aH9JMT93itrztZ+m@kernel.org>
-From: mawupeng <mawupeng1@huawei.com>
-In-Reply-To: <aH9JMT93itrztZ+m@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.178.114]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemg100017.china.huawei.com (7.202.181.58)
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4D4A412000E
-X-Stat-Signature: 4jy6ze8k98b6zh5fsptgnqjkafeiiwad
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: jmmancbgf9s4hbmwpp3jcwe5m718mkyg
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: B7719140009
 X-Rspam-User: 
-X-HE-Tag: 1754383656-593507
-X-HE-Meta: U2FsdGVkX1/2oLqiRTTnMW+3HC762tNnVaRlXkXnbyU/w5vyBJS+6lTpxr17Z36fMqJblpdAwVJzc9eEaRDoEdzvcM0amAheMrOfuuQ/mkFB2RKhrTqkAlUlLPUvK+QlOe88NVNMTsecBVzIpIU2r5eGRU9j8aaCLbwl2NFaF8N+EIWD0eMZxqmzvfAiDoDTn/icyf3PXjGJ6+jGS76p+HbVNcURVWEbRWEdLGHqa7uTuPU2IHAC2XlLdBPicePvAe5gBsFgyb9mANOTWdlUBetGeKxXLhW7lh4Q8Ipy3OVcVqF6f9J9mjDR6pOYxCBPx6FE5iy8ePvDIJtxFu/KoRC/xc2KIuyp5mLrAAD9I4Npwqjr2Z45x4O5X1wGNU/LMHfZLKnhlntJ3WsDIHjcM+JK+AP//bxTk3b16veioNxZlA9WEegTpsr/AtQbLAdfNk2tItCo8V1uUGFEXHneRc7rrnrQE/yVuwBe43MEI/4Vu+5GodaOgETq9pf2c0VW08zBlc7EakowppIMknb15TJEVBa8hm9wB3Lid3wN5mZ83qBbB8Yq4ljHoRdPz/5CYNRSnI52B2hLne5aoXumtvYTl/gJUNQY3INSyVot9FOwZq0cR4Ac1B2FTkQ0US074uzGBuyO8wIQbmOkdraYTuqWxJaL1o4gTgjWJBc2Swc6uACPcvnGtsKvTq/fujVTXnQP3n7k9QHl0g4RuhmyYxktGN9+2wgCn2ObCrEG2op9hzYou35NY70MPyki3MF8GI49XhxlykPQaOLWoIfLupceTPej5TlmhC/YzXmrU2Q2Jdd4fZo2Y5wYNXIhKbg1PiPxL+clBpEYaVoJ2YfNQd+cLndcAtuMTvEVbvMEjxHOt/ZZTmAH23wknwpY6j8jRVBUmqktDR/gynpcFs1UuMMLWWtlpJOwHgAio7cKSrsVVteccWGeEQGy8o3JZECuAhK3wO8V9PHuaY16RfC
- xwUyc/kZ
- YAiFjfVibt8L3+tc55Tv5oQRGrBSfg47FBfec1mr0Z59VACAOmCTXsnudKl5Y6DRGQWNZZOg8Q/HWn1mHpiEwvsDyogJstN6AZfR5C/9nhw5FNovdHixjoUaNCHjqIbz7SbS9N8GGSzZ8/40nj9cSb7rwxmylGi5uJtNby37hEQC+TqEiM8bsOG5o4hEZLQEdKw+QU8Y9Xxw5hKZMfKeFZL4DARK7bCyeFP1bPjBs43gHtz0=
+X-HE-Tag: 1754383889-398294
+X-HE-Meta: U2FsdGVkX19LxLxycQpP1WNGwgwx6m+nSza9jIMljWQqkYrGsAQTtto3CUsj/qddt7tnXqSUYFjnO/sv45Ev6q4NxGpzUmSluRh18JeN3QEBYhfHX1ZPDD8kWsv7bZq31Zau64EDxl0UIC5m0P6yrmY5li5V9M8A/YrYwwljhucr63Xtt096o2x+vyCkwE850CLrFjqipNVaClQ5+fOW4cU3/uESJQ94saj5uXPWvpJA3EVhtEoqEtwGcvHn5thShoySjrBQz0eV6tZw7jAcVsj2B55D7+5TNsHRkTErqHfDq8Tjtp3QJaOwA/03vEOb+VYmpq5ieqsd6aCQBXYMcf/TMmzi3J1TjwR29l7vxYASvP8M6AsW7JxZsGgjUAllCPzL+YIKPXjpgUDg9sOXT6rtE6bk5klxxi4fOOERNCkn+qc+ibVicweEEyvV6h4y27r+O9WyhLb5iSdqubHZ9VzydmYncIvqULmEh5iAM0I06gHBuxOjiH1lbb63lZsofkrLYMBgk876J8tGGvnjPhwqCBn/VBfzUOr+FT8QjQjQwBzi/jLqZGngWDqfmlJD4Yckmk5NP8WWt0W2+cbJdv12kiIRMAP27V6Wn2X/vyFaWkkoBDpwoAzOkqaCEMWPG0CLOhEVlGeoKaWVzm35SY9vnqh6pSLGj1EjEDP/aUHE8VJU6rq9QZh7CGBzpWjW7q+AwPLZzFbvgRiq+AJW3icmqlh88WcIGTeOxovinmGJGqhls9V6z1G5B9VkkDKEgQTAutIPLp04HfN5XnjqGS8+Hj3p2z8M2I9B7+GdWPGezvuOeucw7HYl2PH8jhOquWLdyURu9GvTWKw25uvAcxZAMLxe6pUETW7txZkworLq2bKwVyN3eERuDWAivzulGSHbIj21bTqzdaSOAabB92CfuTTbYmV5jGBAyIXZdKUU5+xaWOQnKPtlSatlXPEAqcuvrb2x49ZNLuqvKq7
+ gZTYGs8b
+ 4pAUH1ujNyZHgHCbeHd+IGxwltKO0bhm0J8FrVrNXWynIZZmxTQU1nMlh7QB7O/O0EYyE2AtsRE/KoteO8h/R6Eh8EV5WhByAdUwiorY20tBweOZuuYQGqtWq6RmcplGuTn5OFFw4N8eSBv/be1jv7ZLUpZoTSczyzs2f+XaKkWYwrBfskksn8I2XIyYcnKxOpFn/nbu27fA8CJHpZffttjTwtJFgFhW2XpN4MOA1xR1t1ofl3j6+DMSgF/UvXUJAK+ByDFNFh8l5meLaMDJm9uDa/V0WxpPr0H+QfTOY88H9ofed9UJBwjsEA+D8fyBti5Faae26ih36lk61j2qtkUV0QlyALRNUFxIi7v+MzRyTnEOeRAZ+jwQBGuoLLTPA4baDjO6fy5PGDJdR8AbficswhFcytF9n+cqGnGvnAIpLcEtF9718Wxn1YwC/40+iaMUUYo0urL96Dm/OB5RWHsfpVQWjPTlQ138mX/oUZeRofQVxitrHEyUAMnDVZpAT/X/812aKBRQinCcrFtknrJ4F5g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,81 +124,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Adrian Huang <ahuang12@lenovo.com>
 
+The comment previously described the offset of mmap_lock as 0x120 (hex),
+which is misleading. The correct value is 120 (decimal), and using '0x120'
+could confuse readers trying to understand why the count and owner fields
+reside in separate cachelines.
 
-On 2025/7/22 16:17, Mike Rapoport wrote:
-> Hi Ard,
-> 
-> On Mon, Jul 21, 2025 at 03:08:48PM +1000, Ard Biesheuvel wrote:
->> On Sun, 20 Jul 2025 at 22:38, Mike Rapoport <rppt@kernel.org> wrote:
->>>
->> ...
->>>
->>>> w/o this patch
->>>> [root@localhost ~]# lsmem --output-all
->>>> RANGE                                  SIZE  STATE REMOVABLE         BLOCK NODE   ZONES
->>>> 0x0000084000000000-0x00000847ffffffff   32G online       yes   67584-67839    0 Movable
->>>> 0x0000085000000000-0x0000085fffffffff   64G online       yes   68096-68607    0 Movable
->>>>
->>>> w/ this patch
->>>> [root@localhost ~]# lsmem --output-all
->>>> RANGE                                  SIZE  STATE REMOVABLE         BLOCK NODE   ZONES
->>>> 0x0000084000000000-0x00000847ffffffff   32G online       yes   8448-8479    0  Normal
->>>> 0x0000085000000000-0x0000085fffffffff   64G online       yes   8512-8575    0 Movable
->>>
->>> As I see the problem, you have a problematic firmware that fails to report
->>> memory as mirrored because it reserved for firmware own use. This causes
->>> for non-mirrored memory to appear before mirrored memory. And this breaks
->>> an assumption in find_zone_movable_pfns_for_nodes() that mirrored memory
->>> always has lower addresses than non-mirrored memory and you end up wiht
->>> having all the memory in movable zone.
->>>
->>
->> That assumption seems highly problematic to me on non-x86
->> architectures: why should mirrored (or 'more reliable' in EFI speak)
->> memory always appear before ordinary memory in the physical memory
->> map?
-> 
-> It's not really x86, although historically it probably comes from there.
-> ZONE_NORMAL is always before ZONE_MOVABLE, so in order to have ZONE_NORMAL
-> with mirrored (more reliable) memory, the mirrored memory should be before
-> non-mirrored.
->  
->>> So to workaround this firmware issue you propose a hack that would skip
->>> NOMAP regions while calculating zone_movable_pfn because your particular
->>> firmware reports the reserved mirrored memory as NOMAP.
->>>
->>
->> NOMAP is a Linux construct - the particular firmware reports a
->> 'reserved' memory region, but other more widely used memory types such
->> as EfiRuntimeServicesCode or *Data would result in an omitted region
->> as well, and can appear anywhere in the physical memory map. There is
->> no requirement for the firmware to do anything here wrt the
->> MORE_RELIABLE attribute even though such regions may be carved out of
->> a block of memory that is reported as such to the OS.
->>
->> So I agree with Wupeng Ma that there is an issue here: reporting it as
->> mirrored even though it is reserved should not be needed to prevent
->> the kernel from mishandling it.
-> 
-> But a check for NOMAP won't actually fix it in the general case, especially
-> if it can appear anywhere in the physical memory map. E.g. if there's an MR
-> region followed by two reserved regions and one of these regions is not
-> NOMAP and then MR region again, ZONE_NORMAL will only include the first MR
-> region.
+This change also removes an unnecessary space for improved formatting.
 
-What kind of memory is reserved and is not nomap.
+Fixes: 2e3025434a6b ("mm: relocate 'write_protect_seq' in struct mm_struct")
+Signed-off-by: Adrian Huang <ahuang12@lenovo.com>
+---
+ include/linux/mm_types.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> 
-> We may want to consider scanning the entire memblock.memory to find all
-> mirrored regions in a and than make a decision where to cut ZONE_NORMAL
-> based on that.
-
-AFICT, mirrored memory should always locate at the top of numa memory
-region due the linux's zone management. there maybe no good decision
-based on memblock.memory rather that use the the first non-mirror
-usable memory pfn to cut.
-
-> 
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 1ec273b06691..ec90bbf22e2b 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -1027,9 +1027,9 @@ struct mm_struct {
+ 					     */
+ 		/*
+ 		 * With some kernel config, the current mmap_lock's offset
+-		 * inside 'mm_struct' is at 0x120, which is very optimal, as
++		 * inside 'mm_struct' is at 120, which is very optimal, as
+ 		 * its two hot fields 'count' and 'owner' sit in 2 different
+-		 * cachelines,  and when mmap_lock is highly contended, both
++		 * cachelines, and when mmap_lock is highly contended, both
+ 		 * of the 2 fields will be accessed frequently, current layout
+ 		 * will help to reduce cache bouncing.
+ 		 *
+-- 
+2.34.1
 
 
