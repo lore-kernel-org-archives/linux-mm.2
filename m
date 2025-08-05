@@ -2,115 +2,101 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 85EA6C87FD1
-	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 18:39:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F1A02C87FD1
+	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 18:43:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 02F406B00A2; Tue,  5 Aug 2025 14:39:40 -0400 (EDT)
+	id 73C478E000A; Tue,  5 Aug 2025 14:43:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F21CF6B00B7; Tue,  5 Aug 2025 14:39:39 -0400 (EDT)
+	id 6ED208E0001; Tue,  5 Aug 2025 14:43:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE99A6B00B9; Tue,  5 Aug 2025 14:39:39 -0400 (EDT)
+	id 603078E000A; Tue,  5 Aug 2025 14:43:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CDDE36B00A2
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 14:39:39 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8F62FB7014
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 18:39:39 +0000 (UTC)
-X-FDA: 83743567278.20.7F1FE0F
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A2C33C000D
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 18:39:37 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=1QrFY5em;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf10.hostedemail.com: domain of jannh@google.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=jannh@google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E3FE8E0001
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 14:43:17 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C28C157021
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 18:43:16 +0000 (UTC)
+X-FDA: 83743576392.23.BF303A5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id E6E39140006
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 18:43:14 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M76ruS2O;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754419177;
+	s=arc-20220608; t=1754419395;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8xUxg+pq2PUvE8Vk3KBIOKz0oljMTyiqWMDUeHpQ214=;
-	b=ceJMsmVYUX+5VuGCCly83Kbr1Zl4rXSPf23fTMlqmzExI+7sSMM5jh7Gy6obtWeoeg2TQX
-	305kpxrsWU7Mh6mEO0+gfvpGFLp15EiLd1jOhhYR1MnplZWnySDKXPRZwAGNn1lqIwonMw
-	U4sqhprxldGavBFa/02rlJOR9k7T0HY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754419177; a=rsa-sha256;
+	bh=CI1xf02zu37CPcjKbIQQdKhjP+sGaMbMBjxQCE40THA=;
+	b=zqy+Fcic9V4FuwgojAbpUb3jUX663R0uIVMFpRFtAwi6RL1lgJOfG6A64XUw2204xdfJRr
+	mk7elERwZHwvfC1Kg2IBaUS9wE18Zm0nlEqsIfoKMrWfPE4vggD1+n8f6+x1RnaThpuCiN
+	Hrcnpi+mhT6mj7BRi8CrzohSQoRjo9w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754419395; a=rsa-sha256;
 	cv=none;
-	b=aJKbEIH4vAvqwYB5kwXPh64Iip2QBpwp/vtUYa59OTOVAXtz+NFfKdPdlmaY6X9mLgh/Uy
-	Hf77z/NhlN1Ox2oQSZZrcnx3u7cs2+WGRqJ/cQQ5/Ij1SCtwFpSyt8Za4QzhaUVywaNT3i
-	4MIs411ONHSn0c4VW+ii4g6JOze2ZE0=
+	b=xYPW9+xDKaEOfZlPJQ7yzBrKEZ/6sG/9f/hFH9l3kxkL5vydfD2nWQfwDeCRS0yUsPkkwh
+	taRH1COYvkXx0apXQNQ7RCxsx9zL5F5+Q3lTTfW8zh0ts5RMleC9nm8bVrmK8Y85s2DUTI
+	BA9LkOPOeGQ8kRxTmPdpSjMWXsFa4B0=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=1QrFY5em;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf10.hostedemail.com: domain of jannh@google.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=jannh@google.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5f438523d6fso2177a12.1
-        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 11:39:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754419176; x=1755023976; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8xUxg+pq2PUvE8Vk3KBIOKz0oljMTyiqWMDUeHpQ214=;
-        b=1QrFY5emdsvrJWSCRHLpoI7jgKiXHyJKE19qpIf/9eNSuH4sT4H5GcNtLRaTPOEkqW
-         Il4P7N/q18StOJ4DGIDs8ZCcWNjIAwMkhkTkbb70LE6+ZhqfL5mlC+c0XyU5cyB+mwPW
-         8PQvwZtHjcD7/389M7pOLziCCEpzT9jq2e9jJf0XBuWC9apxtHQ6WruHv4s4Bt2fHIFJ
-         4ctyiiRTIQWlN2BA0nw8pkG7WaJWWJr47UbEucM3B9o63AZyZC9aeCpXYfAemNLf4k/g
-         KUPeRw86ossDAo/g84N50K5RvzOZDTtQgZBsTHlMY9c5eEKJ465FLqbhTubEvz8/aFeI
-         JQ0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754419176; x=1755023976;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8xUxg+pq2PUvE8Vk3KBIOKz0oljMTyiqWMDUeHpQ214=;
-        b=YvJ9RfF4xsPYAdo43uT8VXfg9GRNCLmapx9E9JwBFHX4nDLD13wcou80wypKBLhizc
-         5WeTOXz9+YHa0UNbo28uCeknwQi8jfbSq3Pyi4W1gU/aTik2VY53DgWJoYWaX6xCKJFX
-         Hqq5TcYizrxNNyXruxXkh5Ul1WHyyqTr/mWYM2sCsFV8gFhHAC5YRKEzAHtwXE+BbYoE
-         /UYbAm52DNw+x2bcA9RF9G1AJzv6Ict4ISeU0asxSb6NBCskl9hZen0chXW4Q6Eh4Uqg
-         zLlX5QFFiiw53phX2EXbBCUHpH5OVF5b172SwgUIPLiS/fpy89sqVIqzs+b9BNheoLib
-         vnrg==
-X-Forwarded-Encrypted: i=1; AJvYcCUYRcyD1XOKDLTBa9BB9meY2SUfKfB+fm0bVvlWnLvy6Bt+qOiV5pobyqyvuds4j0KZQYQTsTRLoA==@kvack.org
-X-Gm-Message-State: AOJu0Yw/S31ze/HzHMWXnIvjqbb3fAigsCC+mxOW3f1BBFUP2lD5qbie
-	g4VRmRnEJf2pwuO0/+tw1BwLjgGplJyrC6olzGkk1orfOCGn4dYYe048RSqVw7kUKqmhO7LNnU2
-	7ypEjqZS1g9e7jDIjIiBpakKti0AP+APnIhrK52sQ
-X-Gm-Gg: ASbGncsbQMZRTenxOHG13dz2bk038aNsmr5ca1lBbSErk5Own8pGkYPfxEe9ttsz0Uv
-	FUujDpTghYLcDGLqLybLykZMiD86ExESpgltJ/+6NiJkQm4ZSqZ107yQk3cNja8ysM81yUvbsrP
-	T/UvUcO/15w7z/suVkNWYWy6tuo5kPq+6et3j3OCJds918VwEdXJzhIsjD5bVpU7sk+Zy0G/tOM
-	SV0O4OmiypZW1MRPMv0XJs2C1hjLz6VYM6dI9DpgGpXzw==
-X-Google-Smtp-Source: AGHT+IFy4uCtvmoKREB9xPubyGfQITaTP/Y3zHYx2x5Mjq6NIu7iwEqR3CIj5VJ9+pdXbxXR/6XQYM75C8EoDMNJUO4=
-X-Received: by 2002:a05:6402:c02:b0:615:60d2:c013 with SMTP id
- 4fb4d7f45d1cf-61795f56174mr2645a12.3.1754419175703; Tue, 05 Aug 2025 11:39:35
- -0700 (PDT)
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M76ruS2O;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9655C45983;
+	Tue,  5 Aug 2025 18:43:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51286C4CEF0;
+	Tue,  5 Aug 2025 18:43:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754419393;
+	bh=H1l3heHwC3FXt6so5O1wZBz9sD1wO//8EEGy+nE6jPg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=M76ruS2Oj3LMc4bbOQkTKXvcMRXIr4wEKI1Ifm0OkbrwecmOPiiVEt/6Fpvq1+/St
+	 J4jaggh9guKOMyoHXW2qnpe7EBrV0zZdU8Fm7SrZEnAH+CH1JAU7dTzum7OsPlO7Y4
+	 UJHXqWANO5lSfjARnlCC3yFS9qcvbUUo5QpHpyCoyfcqWzO4Cir77L868aC978rGdg
+	 zCuxHe1rvAxjNFzMAOUNtOA37mVQ3lUM/A4vCnegwNfMe9l0ggX2RX3hfQDEkeWuQi
+	 hVWw52P7lfLWKJgVjvqEVz0PBMTghMW+aNP5w9LqOZ822t0PaWkW+StjQ3ZF6XdPhN
+	 h8jSguoFsyY7w==
+From: SeongJae Park <sj@kernel.org>
+To: David Hildenbrand <david@redhat.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	kernel-team@meta.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Takero Funaki <flintglass@gmail.com>
+Subject: Re: [RFC PATCH v2] mm/zswap: store <PAGE_SIZE compression failed page as-is
+Date: Tue,  5 Aug 2025 11:43:11 -0700
+Message-Id: <20250805184311.8563-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <761a2899-6fd9-4bfe-aeaf-23bce0baa0f1@redhat.com>
+References: 
 MIME-Version: 1.0
-References: <20250805175140.241656-1-ziy@nvidia.com>
-In-Reply-To: <20250805175140.241656-1-ziy@nvidia.com>
-From: Jann Horn <jannh@google.com>
-Date: Tue, 5 Aug 2025 20:38:59 +0200
-X-Gm-Features: Ac12FXyOYi_qLL7ZLj8tprF4j2V_jxE8BegFfXRvFrXyIiZBLUKoXwoL4IXp0EA
-Message-ID: <CAG48ez1wKqyCKZX7J2eJekTuzRshVE2btPEWQEm2hW9Ri46Uuw@mail.gmail.com>
-Subject: Re: [PATCH] selftests/mm: fix FORCE_READ to read input value correctly.
-To: Zi Yan <ziy@nvidia.com>
-Cc: wang lian <lianux.mm@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, David Hildenbrand <david@redhat.com>, 
-	Wei Yang <richard.weiyang@gmail.com>, Christian Brauner <brauner@kernel.org>, 
-	Kairui Song <ryncsn@gmail.com>, Liam Howlett <liam.howlett@oracle.com>, 
-	Mark Brown <broonie@kernel.org>, SeongJae Park <sj@kernel.org>, Shuah Khan <shuah@kernel.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: A2C33C000D
-X-Stat-Signature: epmwfycjzhxoutsw6db3n1wqb5d7x4jp
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E6E39140006
+X-Stat-Signature: gtmcjngisr653fc69m3ui1krtwenyaph
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1754419177-839767
-X-HE-Meta: U2FsdGVkX1+FdDRFawTUD+jBpSxLQq9yG41hXdBwBUQz4JZFgOLzfDNVTCz9deAznxUHdDequ9E0YZeXutxUfZh0xnZJtPVBeGFUV0zxQ/Mn+kHn3dx5vN6d/AKEN7h/AhiYBhuXJhLeZd05AZ+8GE84cnWDJ1Jy5wLIwbWRmO9k07v1BhD6wLyciuYi12UvVucW5oMq4Y2o1CDvrfozAENIzpFSJ01tbqPYqhd1l5Fuokh6jJcahZB51yYCZ3VRSHn0nk7/dezG1lNRz6yvtwkIeY8pjKDEUcOG4ZIMC4v6oyuaojNOdHP/G8GGs4QB19DKwSlJ1z2f4WgU80HAx2zxAUzrZhpMVdYjqT5IYbVPEBG8oZsQBzuU+5IFIneHoMk3YaAFgkDpg8CwjPkcWKoSUuX++CCO6Uw7j0e2gxnKTGlalqpPhv73dE2HiG70TrY8aKYuqNC+57fOxLZKAtAYQw5V9DA9T+V0aq+DZHzKXcRGTMSIoqxvBNk5fFJnxbWWIuC6LL504LIRrhLj36Mc53wcCZZ0whgGy7h/qPkFdT11E0fUr754FkTkJkfAqtDBLAeT8gIdz6IWlYtU7wGOX5cOLUTjoEPBeguK4bygB4zodE0FYuR23ne3R/7UUZaqV4r4C81/T91wwJNlYq7YYLjlpS+Iuub6s9iYaN/DfCcWHsPdhK1gysgQFUHTt0loNSEeWJFJ2ilb60MHey9b904ZTS70zsABDEa2GEADGA2U1cRHJYoBt0GZsZKrBg+JT8JuQ5BXQEU79u7c8sMwZQoCerQAJ24QmcMg4nGtp9F6sY4ewA3Qw5506r1tNvKq+5TjYBVvnF139W/FSPXacDEytMLNo6b8O2XmB1q+jyBVDHraS4TfuhHXB0c/QuHJ525KQFmHThm53aCiWejn1vaTN2zxzWJPr+8ScNavEHRYydtbbfiFjAc00zrz1CF/iui+kBW/RnjR6sP
- 7CvTWnpz
- PLO2Pciu/7x8g/oSlVEkKfjtJ4KpBa3iG3VSzCW5gP51cSfPgDOL8y0PF5fBdUH6fQ/JOhZkMg57ziLu8XG63Al1dEI4qzMMI2+F5X2ImOJ24C6/bg3w7ExPtDKSdZtnHlMtxbwSKjXosoNCZSYV+cvZ9FNfcre3EvT9MFVJBvUQiD9WO7RALaFvEmnqNDGtz4EJwcR+h/JHU1Kz0IAvRfCGJHebPz2w8Kgj6Vzj6aOpCqQYD/k6jATk71DqqYvOpnZL7196SZbgvUoZxJvL/+Ks2mFXIx3RMRP6FQMzQTD7TpvI/40mIP0Xd9I86NMZ2qCQOIk2Lp5GnaIDImPzXOJf+aQ==
+X-HE-Tag: 1754419394-200723
+X-HE-Meta: U2FsdGVkX1822++7f0W0vsczuza0xewGUhREVeqXr1t24WEYKPoaKqBcECbW91e31aOjNQjKdxchLiVuBwrP6z0awJMNut07rDqiV22vy09Qd1fpRG/hUcxgE4Gr/y8e2GVwJIFq+Z39raK1PRYt/FBQxn/Rrikk/YoD8t8VX/BhrI6jBdkxW0gIX1a0aAo5CpMueqA4JFg5By0DajR1AyYv+HZ40wAl7U1ZZXnNbPlLE+ozoFgg2ZEZIirY6n4rMhiSAj+UYCkBr6XHLZyiEutXGAaDU1sPBrllxgdfVc/I/5Y+5ZyGUTtxyvJehUks+vELvWck6mOjN3JXIzTvyX/o3D/FelZ39eXaw0xwYuALXAOKHGOjIyUC9zQPC/LYOcf4AgaSbWZ25A0C9jpq7vkBMR03WiqkDO3vvV9TQnAFFyAPuiFRMTjze8GOA1vjx2MS4KoQFI5oD4N+DB1avnZJ0bAFvtjjx1eK9S+zSR4LtjkfxDksDfgamAtY/lU0hD0Rn/zYlBtr4y5UHHdKdOPfhCeMDoeR4RrW58eXUErLX0M7FnvaVhKVtfX1BRd+drBJJT/vlMagG3MrjCUXdsXhXM8dgfjzW/PBSnSvN/FYgyexfhysBWXmPRx/R0w8vdXf2/qe3Otd3Z8E7APILjyLDFo8ghaWG7X9SGqDS0kFT3VG5kx4g2G7IEA1xqcKh41as1u3PvMK/rRBBQPIXSR8bC/Fr54ho0eb5UGSEKgFpwbJFfky79Ec49Gfmtx0SlrpQ5zhJqcSymGScntficA/9SZJNL/tsEshrxBaIvv/seW4PiLTOMYALYoTY4HSmtUnsB2iqTZxvDmqDDgvDViPxJX/jFHWUXJLHN8exyJGXNVvDD4urUMxt4qCMuUdDtvWcSkpEvv46CjZf13iv1wrVRm88tVOp7OZfkH2Agwj9+KTEKog6Fd5S1Tx4RttouzCKu8zKJ5zbZsfoaH
+ poEPeNvy
+ pye5Omwt7RmzBFypwyQ854s9pFy9Ue3xkmj7xWba7CIOte0pheMPiDiaWPTZ0tvtv/iYLcyU92kzqZdDSivBTr3m6ty1/klOo1EzqGMGPm+TeikEVvrmNeJ18cI554QK6UpFxN+evf/cP3WrDL136Uvy0uMnHStuZoflGVVULymvCX4dfg8GaC3qQ3P32bsbaQnpq2UOblLPsPTsdHq6ubCCZ49IuTQwqmxudJZeXX8N5u4Bhtk3wqc4Pf24QZNIcvPRCzBwGG4W3G1U5VJUlvQPSlHEOY8JCt3ug6UEZz8WzfCrhZf/qyk0J7w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,33 +105,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 5, 2025 at 7:51=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
-> FORCE_READ() converts input value x to its pointer type then reads from
-> address x. This is wrong. If x is a non-pointer, it would be caught it
-> easily. But all FORCE_READ() callers are trying to read from a pointer an=
-d
-> FORCE_READ() basically reads a pointer to a pointer instead of the origin=
-al
-> typed pointer. Almost no access violation was found, except the one from
-> split_huge_page_test.
+On Tue, 5 Aug 2025 12:47:36 +0200 David Hildenbrand <david@redhat.com> wrote:
+
+> On 05.08.25 02:29, SeongJae Park wrote:
+> > When zswap writeback is enabled and it fails compressing a given page,
+> > the page is swapped out to the backing swap device.  This behavior
+> > breaks the zswap's writeback LRU order, and hence users can experience
+> > unexpected latency spikes.  If the page is compressed without failure,
+> > but results in a size of PAGE_SIZE, the LRU order is kept, but the
+> > decompression overhead for loading the page back on the later access is
+> > unnecessary.
+> > 
+> > Keep the LRU order and optimize unnecessary decompression overheads in
+> > the cases, by storing the original content in zpool as-is.
+> 
+> Does this have any effect on the movability of the given page? IOW, does 
+> page migration etc. still work when we store an ordinary page of an 
+> shmem/anon folio here?
+
+Thank you for good question.  As Nhat also replied, there is no effect on the
+movability.
+
+In more detail, the handling of the given (incompressible) page is nearly same
+to compressible pages.  Zswap asks zpool to allocate memory, copy the content
+of the page into new newly allocated memory, and let the page be marked as
+zswapped out and hence be freed.  Only difference of incompressible pages
+handling is that the content is copied into the zpool memory without
+compression.  All other properties including movability are same to the case of
+compressible pages, so this patch doesn't introduce movability difference.
+
+In the previous version of this patch, I was manually allocating memory without
+zpool's help, and hence other people including Nhat kindly enlightened me that
+it can introduce migratability difference.  Hence this version uses zpool.
+
+[1] https://lore.kernel.org/761a2899-6fd9-4bfe-aeaf-23bce0baa0f1@redhat.com
+
+
+Thanks,
+SJ
+
 [...]
-> diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftes=
-ts/mm/vm_util.h
-> index c20298ae98ea..b55d1809debc 100644
-> --- a/tools/testing/selftests/mm/vm_util.h
-> +++ b/tools/testing/selftests/mm/vm_util.h
-> @@ -23,7 +23,7 @@
->   * anything with it in order to trigger a read page fault. We therefore =
-must use
->   * volatile to stop the compiler from optimising this away.
->   */
-> -#define FORCE_READ(x) (*(volatile typeof(x) *)x)
-> +#define FORCE_READ(x) (*(const volatile typeof(x) *)&(x))
-
-So is the problem with the old code basically that it should have been
-something like
-
-#define FORCE_READ(x) (*(volatile typeof(*(x)) *)(x))
-
-to actually cast the normal pointer to a volatile pointer?
 
