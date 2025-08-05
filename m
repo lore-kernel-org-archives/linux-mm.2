@@ -2,120 +2,126 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9746EC87FD1
-	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 12:55:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AAE1AC87FD1
+	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 12:58:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3250E6B00A5; Tue,  5 Aug 2025 08:55:37 -0400 (EDT)
+	id 37A948E0005; Tue,  5 Aug 2025 08:58:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D5616B00A6; Tue,  5 Aug 2025 08:55:37 -0400 (EDT)
+	id 352FD8E0001; Tue,  5 Aug 2025 08:58:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 19DB96B00A7; Tue,  5 Aug 2025 08:55:37 -0400 (EDT)
+	id 241BD8E0005; Tue,  5 Aug 2025 08:58:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 072496B00A5
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 08:55:37 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 73C14C044E
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:55:36 +0000 (UTC)
-X-FDA: 83742700272.28.DD94AF6
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 13C778E0001
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 08:58:51 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A49FF811FD
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:58:50 +0000 (UTC)
+X-FDA: 83742708420.01.DDC3165
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf21.hostedemail.com (Postfix) with ESMTP id BDD651C0009
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:55:33 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=L8lBbh7T;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754398534; a=rsa-sha256;
-	cv=none;
-	b=JiWQbgm+H8lWV+p6H3dSXg8QRJb3L3nZulu2CrFvXougIx9IgmnXyl7JVTRRnOhXnZwj0E
-	2C6oBFtivykk39RXkIggNSPRlFsdye/mYWzui2KMRL7VMVdP8F1fLdOPa8vFCNhQJJJtaL
-	lwq6ZS5RGAgwD+tMwgwDwwBqeX/eRX8=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=L8lBbh7T;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	by imf06.hostedemail.com (Postfix) with ESMTP id 22913180002
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:58:47 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="S/v7iCa+";
+	spf=pass (imf06.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754398534;
+	s=arc-20220608; t=1754398728;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mXQVWi/b7AMP+vy5HeVixIeMAJNnKqw2TByOJlo+1Us=;
-	b=o3CIA/FfrgEAifV4LWpaiLekNY8mY5hdrV3e/48J7SDGEcQLtFm9wl/q1uFy5o6J3YzU5A
-	wliGM8f5tEFtZlXEQ5az1pN9fHsEOw6YvGx9kU+zww4JVC0G5WEZHTipn1s6epy7/f+Bng
-	M6Aq0rr6H3upF+m8GvVHtPggeKwAHPQ=
+	bh=lTZfMQLhSPfCJQmmLYuzfiipP2GKwI927nDiRlIvHCA=;
+	b=00f0+anqyaLHtwJ6dHZE0cFjhhma/W1D4xiy+go4NcQANCKdbeXUvt4vev7ARIoviIaOuZ
+	KXN6kydcZHGznKjwAlDHt7k+DGn9CXHVAngf+sXDmErv6BUUQmEC6M99NkDs4vX0M1UKHC
+	+d0wTOO1/5AjCi1WDdz09QB03dA9Fio=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754398728; a=rsa-sha256;
+	cv=none;
+	b=gfmzVLpsJDREJP94mp5S5rm5uSfmt4Itozk1LdaaiyYnM9SvDC63AIADCX03TTNv8zorix
+	iawh180rtfKVtodCg6wkkhd+wlJokcFPPlGqLGzVG2fVmCDrUTsGHw29Q1aPrWGvDO7cev
+	k1/jBnUffaNPUy34SzS0eZ6FSe2MMdw=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="S/v7iCa+";
+	spf=pass (imf06.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754398533;
+	s=mimecast20190719; t=1754398727;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=mXQVWi/b7AMP+vy5HeVixIeMAJNnKqw2TByOJlo+1Us=;
-	b=L8lBbh7T27aXSSGPz7RK28s88I9pw58pBXvBkNx5nEMz2PN++Mp376H7oRA9lT9SyYPE/q
-	ZuFpFB4HCY76wXukr2KvjByftKDSC1B4KRe5LMb/ixz6T1/eg0pVFf/4VbO8UVpz5E13G7
-	Qv3hNJj0RcsnfxlwGotQjex5rQp+6rg=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=lTZfMQLhSPfCJQmmLYuzfiipP2GKwI927nDiRlIvHCA=;
+	b=S/v7iCa+oW7p4BZOnp1yMOaZgVMkhTR0droITjj/mjy/e7DI5DMCFsmEWk1wgJbuHf53zT
+	NdjSIyEnXVAlvEYLWQiU1bygBKyY9f1Zdddb47f2VHumks+hlk5YLKvRHAHGWbYLrcU+ft
+	QUNR+TUK/4nG8uS0mYTZ88iLluj+6M0=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-259-JbUGfn3uN3Wy0ZfnhygYHw-1; Tue, 05 Aug 2025 08:55:31 -0400
-X-MC-Unique: JbUGfn3uN3Wy0ZfnhygYHw-1
-X-Mimecast-MFC-AGG-ID: JbUGfn3uN3Wy0ZfnhygYHw_1754398530
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-458c0845b34so15393805e9.2
-        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 05:55:31 -0700 (PDT)
+ us-mta-323-eZY8jXBHP8afzPNzC-FEuw-1; Tue, 05 Aug 2025 08:58:46 -0400
+X-MC-Unique: eZY8jXBHP8afzPNzC-FEuw-1
+X-Mimecast-MFC-AGG-ID: eZY8jXBHP8afzPNzC-FEuw_1754398725
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3b20f50da27so2716336f8f.0
+        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 05:58:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754398530; x=1755003330;
+        d=1e100.net; s=20230601; t=1754398725; x=1755003525;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=mXQVWi/b7AMP+vy5HeVixIeMAJNnKqw2TByOJlo+1Us=;
-        b=Mug02eaZPViatEotS8v4Hzaq8EN0fXUulEohevtO3aUTZbuP862MGxFth9zMYcU46d
-         OfGc7pnOJ2XbGBVUDlF70vrq4Tt+pGnRebid31tuou19wZu/lYLMNZ28fmyqH791LaMD
-         mud0LPBVKnLnMadD2FM0i3hvzc00JztDH5tUFrqfLK/teCAs5u6wfd1l10c98RNVclFc
-         zESuGzyieoTiy37Up1RIOHqbG9ZpUaFQh+Gw67ZY59X9Cviom2UWW8Nuy0jhxyAqX9eM
-         l0YwD10+EXsIjKFJXJAU7mrZo7H+M4VRJv5tW3ao0oEIGkXTjwFVgOrHQ0kDWGcFCtJB
-         7k3A==
-X-Forwarded-Encrypted: i=1; AJvYcCWm7WqAXhLPqRVtjJKvGaH5hUJlAepeGgsh32wZvIZa0Ug5GVvLPtOaxijGth0tDWc8NQ+zyQzYfQ==@kvack.org
-X-Gm-Message-State: AOJu0YyxAa3Bo8ZCg2LSfs0Vm+Zm6aTlVQ5PwCDvQd/NibuBy99bKdyk
-	0RLBh0vI3Kd5DhtmjdaqSzFVVUPxwTZnH5whkR9bI7O+Z5bU4DqRBq37fb4xqPLcXQGGKjEyaXG
-	xfpnFuVoTYw2y2ZdVEgmMu4JhdvMQIUFFkBYIHRaBHwLqGxsWQbtb
-X-Gm-Gg: ASbGncu0HfDTytI/3AG7zaPOhKiwc2YPRYGLZ/pQnmsrgitAyInzgzTOxcIotjF93oz
-	Awtnhdj/JxtGkQCH+yPV4/OuM7LLDcQn4tR+E4pnzjwdWHwWEswvIMSsDbLe1lCuhjuCp5gNyDh
-	hclHQPhDR7DskQ5P3T3WvHMqy+SRZAXDuN2Ch97JnEvEJIX5vAnHxp5i9EiD+75kYDQauMuA38h
-	Vs/KFfdM9irHrBo+XIE71u0YqXei6IFjRFtNqMm6tUPEpDY7zSIbiZOyo/xISWZ0H8b1irLg0yE
-	tsQfrUhHid1BTOcvorsn0SlByLlgAcbn8SXc5AmP18NprFcWPw3Zmwr+5VTa00oG9sFBurk=
-X-Received: by 2002:a05:6000:2287:b0:3b8:d2d1:5c11 with SMTP id ffacd0b85a97d-3b8d94d3549mr10242832f8f.51.1754398530403;
-        Tue, 05 Aug 2025 05:55:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHoW0VEHeHdM6KbOLWiBmAjo9TG0Lqe1CZviyoNOwGriAOTp++1O5KXtJScToSn/9LRd7ABaA==
-X-Received: by 2002:a05:6000:2287:b0:3b8:d2d1:5c11 with SMTP id ffacd0b85a97d-3b8d94d3549mr10242807f8f.51.1754398529950;
-        Tue, 05 Aug 2025 05:55:29 -0700 (PDT)
+        bh=lTZfMQLhSPfCJQmmLYuzfiipP2GKwI927nDiRlIvHCA=;
+        b=eGJF1ljmrpJQxY84MrbXMjmFdfBvJSJOCVOGjqB6p1yqWd/bP5OFdLntIzMcHck2JQ
+         9lUXrEDozUNWxItXTbKmugnGyKoLg8pDpyXl9Jtk91zsIWTAPYmcwfJqakdfj5nIPUfs
+         KPyEVNMm8W/jp2pyOqvgAm0qES/3FXnLTwlox4V7SKj1V++NfXOvqFZbHHrDpG24t69Q
+         Jydi+/cfrsG9NmMKbKHe1QqDd75cEp/RMJCB6oluQsC5nnO/1zwqilI8+zjoOGcSt2k4
+         E2SnHF24VNgHtUva72VjgEryYSa6ngPLo3rJ7Vwx6hF9SxO5t9My1uqKc6/V6kyoE9YE
+         RRjg==
+X-Forwarded-Encrypted: i=1; AJvYcCVOLeSn4jVOJlJ9sev9YTmcp9kR4uVgoMMhcM/2toldlEL7are9Bwlqyrcaw1hPdwv1mb+U71L8QA==@kvack.org
+X-Gm-Message-State: AOJu0Yz0c9xfoSf+KIAAyjPfbg7Fswtl5oQHF6SQcbsVvHN5GDEBGTFf
+	3/UQonCmDBA9BMS+ilEdcwY0rk5qk2zNZrHtvypdL4Uv+qVTwhRtjpiTZ5byCzZ9LgxqHysQs8p
+	ABnYiCUH0o2bY807VmyQKdaNWr4uJPiyvLkCRayP18SXAa/3YuaFd
+X-Gm-Gg: ASbGnct3ffohTL+sQs1ACDvMmzSaWeBeKB9LSfhuMrYQ8axQ6E0yuPl6jNztp2IVIXU
+	yMjd8MKXA9qgMC3h6Bu++ti0sCxEAuqkYnJNn4u6plO1/lwncAtnhnIPJiBzAVr4jedmi+Dzszy
+	KoLD45WEdFHzf8PlkueHe41h4XTJfkZjrhz2Scnyjxlh2k6kU/TETSGCLWEFmzy8jbIktGTSaFa
+	vqxJxOeQkbjkVN8IwvwJoqt4Q/oRec0SKLcTVb/9MTnPuuTeuPbuM2V0eOHPGf3s28mhT7tWZGw
+	PVp673g0vP+ktd5n7RRM6DDWngsqfnamAylsbBsn2q6naTUi9KHdhGoJaHBR7iQ8gpS+NL4=
+X-Received: by 2002:a5d:5f4a:0:b0:3b8:d25e:f480 with SMTP id ffacd0b85a97d-3b8ebed2fdbmr2863430f8f.29.1754398725174;
+        Tue, 05 Aug 2025 05:58:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG1e51JlGAL/9wdzpcbyPC9c3UCgkCY7wkeuF90OqGQFtbP0YkZLeOQM7IrojmjymtuR99b9g==
+X-Received: by 2002:a5d:5f4a:0:b0:3b8:d25e:f480 with SMTP id ffacd0b85a97d-3b8ebed2fdbmr2863402f8f.29.1754398724748;
+        Tue, 05 Aug 2025 05:58:44 -0700 (PDT)
 Received: from [192.168.3.141] (p57a1a26f.dip0.t-ipconnect.de. [87.161.162.111])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c4534b3sm19065920f8f.47.2025.08.05.05.55.28
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c469319sm18864766f8f.54.2025.08.05.05.58.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Aug 2025 05:55:29 -0700 (PDT)
-Message-ID: <e608f766-8750-4781-bd23-8fa95b6d683a@redhat.com>
-Date: Tue, 5 Aug 2025 14:55:27 +0200
+        Tue, 05 Aug 2025 05:58:44 -0700 (PDT)
+Message-ID: <da283a44-e668-4e88-985c-3e2805b556bc@redhat.com>
+Date: Tue, 5 Aug 2025 14:58:42 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/6] selftests: prctl: introduce tests for disabling
- THPs completely
-To: Usama Arif <usamaarif642@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-Cc: linux-fsdevel@vger.kernel.org, corbet@lwn.net, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org, baohua@kernel.org,
- shakeel.butt@linux.dev, riel@surriel.com, ziy@nvidia.com,
- laoar.shao@gmail.com, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
- npache@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- ryan.roberts@arm.com, vbabka@suse.cz, jannh@google.com,
- Arnd Bergmann <arnd@arndb.de>, sj@kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, kernel-team@meta.com
-References: <20250804154317.1648084-1-usamaarif642@gmail.com>
- <20250804154317.1648084-6-usamaarif642@gmail.com>
- <66c2b413-fa60-476a-b88f-542bbda9c89c@redhat.com>
- <a22beba8-17ae-4c40-88f0-d4027d17fdbc@gmail.com>
+Subject: Re: [v2 01/11] mm/zone_device: support large zone device private
+ folios
+To: Balbir Singh <balbirs@nvidia.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Karol Herbst <kherbst@redhat.com>,
+ Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+ Shuah Khan <shuah@kernel.org>, Barry Song <baohua@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Matthew Wilcox <willy@infradead.org>,
+ Peter Xu <peterx@redhat.com>, Zi Yan <ziy@nvidia.com>,
+ Kefeng Wang <wangkefeng.wang@huawei.com>, Jane Chu <jane.chu@oracle.com>,
+ Alistair Popple <apopple@nvidia.com>, Donet Tom <donettom@linux.ibm.com>,
+ Ralph Campbell <rcampbell@nvidia.com>, =?UTF-8?Q?Mika_Penttil=C3=A4?=
+ <mpenttil@redhat.com>, Matthew Brost <matthew.brost@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>
+References: <20250730092139.3890844-1-balbirs@nvidia.com>
+ <20250730092139.3890844-2-balbirs@nvidia.com>
+ <dbebbba0-3c59-4ee1-b32c-4b9f6ed90d92@redhat.com>
+ <1e307223-897c-4db0-9564-95d76bc3d260@nvidia.com>
+ <98a30c7f-8be1-4b08-955c-724667971288@redhat.com>
+ <9c0ad782-e1c3-4c7d-bb20-730d2f915dd5@nvidia.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -162,21 +168,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  WBe5lqcozu9LpNDH/brVSzHCSb7vjNGvvSVESDuoiHK8gNlf0v+epy5WYd7CGAgODPvDShGN
  g3eXuA==
 Organization: Red Hat
-In-Reply-To: <a22beba8-17ae-4c40-88f0-d4027d17fdbc@gmail.com>
+In-Reply-To: <9c0ad782-e1c3-4c7d-bb20-730d2f915dd5@nvidia.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 9BKC90CFhTYvDzSE0uGoCzYWU87e0hFvDHiUfY3NUHg_1754398530
+X-Mimecast-MFC-PROC-ID: a9szD9zAaA_oX7Lw4M_J6Mte4PQd4Et93dbzOpEbhXc_1754398725
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: shxe3jkqt1wuti83qer55xs91ka45wzp
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 22913180002
+X-Stat-Signature: 1rwoosgwofub891o93e1ni97o3wert19
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BDD651C0009
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1754398533-774946
-X-HE-Meta: U2FsdGVkX192IyPHz8vsgOETmi5JSU+Y0oVjxUo5WRn3ZJr5ByW/Wn4eKVi4q/bITK5fkxPmJiCEhDE6iBOp1OTz0pJt6ScT49S53TzNZg/JCb8Ti+ZYt30seVOyrCZnSUhORdGjDd6XYK2YXE84NEyAwdlMbFz2bMIkAYinfO38C1lsBU5woRKBbSVoixDIBYc4mUozUjslMvELOOLmkTsbaAdbNyI+1IT63CW5D7X2ayF8PekajUsQvt+ZmFIGtoSvOpUIwVd2PEXg9kanu2aV5NWkHemQa/xxhqNofVG8ZB53r5vIo6IrtB+xYgfh/xksoRONlU9UGH38icdn4oEkA1eHFLZ+uNtyqrPJkBZsrK5nKgQCTxlYkKT63VFdz/FOFbjjMdZy19oLyN/rsB3XKrD8jgVJN7Zks9ynsAp/LzHJFbXWkoCLykj5i1omdp0lNyIFQUDd0kkHoErHh77NZVCnwyVoqq6n+KubM7Xdg8xHdWhmgZZ+5mII3IKr48+1k+timLCMXk19aUWfRBykoFpiBfMV6xcbzJXvn3MsJMSdD6Zb0wmLuE7tv9U1Nu6curoRQvi3nT6ComcfYn5ACAWGHFgFfbnhqIIwquRjnCNtS118jovAko9EacESalagPqSXw+ozB9jZG3Naej9XitDMpo/98NcDQ5JnhrXQzk+ymJxto92BaApzOp6OOW7VXXmGSGZ6EXwmdD5C8RmNS4VLvCy/7gDoc2rIBvsxnL4w/fEjOmN+a2QqsN+xzQCim5H3MmQJQ0syjSDTzVp4exfHhAK/R7TbFnwZk5qnz9K4a7xzG7w04b9WgyC0F8QHOVfx/so8h2+nTXUfehTsTQyLctHvQYKVYwAVwVwWEX0PP/b61EEMA6UZXqoL3ZNXMCtJSYeAMZs0Uum4JlYPIbLT0Nwh0ag863ZRaVC470sbrg0ocgeEUalrVTsaoSiQmcQkzw1frK7AlzZ
- br+MX1+i
- hkWTR3a3GaPRUw6pKSJxePy9lHtDN88jSMTlH/0H2SK6lvlpiu95zIWexMO1MCyKkmGUDIlDllGpqF7RUWGGb0LJiZy/9Zs0Kz/JF0y/CphJx0qEnyvd35a+nymwUD+9CfTj2Q9L44qerOVqbE4oA8UUB8YzKNRUdGF8m+9gwoeEVQGJBetbUNfX6d4qL/EmtlXPZz8+V11zFA0K5d/rRdxJmm3Kior2HmEa0F6COT3/WwO440x0r0Pf+S0iN5Z4rzYrKgs9kW2c7xjGfGsRtuCZfsZsTVrogNO/v5hnjWA2N5T5U5vi2zManKVP40o+LPgJAU4Tiqn0kYBedHdAMRyS6m3o/XmMjDSpwmN/0RuGz+IE/lVC2vEBl3ZBqCBSEL2GEhoXvrqanAmV8KYJR7aHIasTu5cJrgXXy0sw43qxZZBaK4h51nvjHbvMcf0khUkgWSMBM8kYLm1j9EuOTXEDWdWNz0LPwtOMQc3Ys043Sk/G/BAeyrQqdX78b7gkvDv8WCtCI1xiJpPw=
+X-HE-Tag: 1754398727-283727
+X-HE-Meta: U2FsdGVkX1+MlbNNoLVXj6XM5F2Qo8N3+nsZGY5vdAjOdFWEBFcujwX14tHbwFia50yW6iKQWBgho2gI1ZKVJpWr0dXd2nYfU62KM9oSprZMuV1u03qRLMg6pC70yo3hNZ1xm1MTECIrD7zvKlyAUXAZYKDeN6R0EiQFSlc1f6MRRvV3yfHglmUZZIr1Xhoqykj1sKNNK3KXTK2BtDexTvyjp7wKQ8ry1YfAeaJWPxr34bqWNO+dCFlDGzBdlDLm26BmQx1XpnfU6DG+CuKS+OQXrz2R5b0lviV9V6kahI5BlaYrd26Q9+Ei1XXaxLD6RDvj3NoAQormrE+bYbcED+co0Vl5AGdwX3xGQIcRalpPoBMG7BhitfIVC3chISGFR5BAZzRSAnaolzmxJI0jVweAql9ggPVobASz6Mc8hP32bQM2mmtqk4OBvAYaHjZh5+J8NSHmRLtnX62E+EE0L1LZiTD9mnBY2emNJK5YKr790Qwzqq2kHVNvieOK9+xZeOSUwLJU0KbsZij5OnJWb67KFFFWfhJfhc8tnqG0+R3yb9p5Ldo3KulYGObaGBAGkrrtcqjOndWFyDDSNnAgPWIHar2ea27onIPsEKo2GXfQSqZHrUccUCns8wErErGR40/67zF5TkGZIj67XkRI+r36xTvpdLg4H5nhFPbf6qAJH3dj7dqxpXIsCt2GBaImHSXVLh5nPAIRy4vLujrZtmd8WsI8MtEx27XzgHyWIMQDyfXXvD/m8Rf4fMuAnWcGTmfzW67js8VHkgQQBp3aPENdtQOUGKKtRuiak12riR7nQ7L2cu6+IndspkiUT2v3PUmOb0dunddNkuGOP/a5igShjUoBKWhGu6SI3LakyjqbD6PJlWVANnjE9nd51hPONkTEAWilKvaVCO2QKsQSDVCkz3OfZwoDxp3RBuQ5gmpG4AEY+5LZO0gqBIzUlVUo+/1G6DbzFpdXnMd3NDA
+ Mx3GO7x1
+ YwQh7ew6xZOvtiySjsw2Il8efeOcSBBMiFNHM1igLtvzTxG1U7sybTXNk2zc+UiXTD55bPSAgoqRKVifAf9cLKY3IxoyRBDDYvplWnvr6LZBHCPZTsK08hx9GjIbOGnAPcR1b0ClWGRoWA11V5WNdayrDxfhC1XnKK6bGrXbRkNDC1q7ye+zbwzCMEQ93bVVdSPWcE9i9N97/HPhWNzGbjlS6j/l+tG0BOqz4vpeKKKm8aAGTLTXYhvViiQECWcrfc7utCA4y9L4qcNs+oj/hZrPTTqI3hp1EL8dtYsrx+5J1ALzn9GF36afLMS9hGafeSs6f9RKd9+VaqYd+YIJXfvnZSvEUR5LdLomi5copbwUnaz3hsE1leKWYLaIRMsSi1nwfZYPAqfeAftF0GpXnk6HSoyFwVJUg4OXC0lYfbqGAAErT43bSL/VCzcuXMm4V94BFKD9TVixonVADyg5SGCT/rw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -185,32 +191,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05.08.25 14:46, Usama Arif wrote:
-> 
-> 
-> On 05/08/2025 13:39, David Hildenbrand wrote:
->>> +FIXTURE_SETUP(prctl_thp_disable_completely)
->>> +{
->>> +    if (!thp_available())
->>> +        SKIP(return, "Transparent Hugepages not available\n");
->>> +
->>> +    self->pmdsize = read_pmd_pagesize();
->>> +    if (!self->pmdsize)
->>> +        SKIP(return, "Unable to read PMD size\n");
->>> +
->>> +    thp_save_settings();
->>> +    thp_read_settings(&self->settings);
->>> +    self->settings.thp_enabled = variant->thp_policy;
->>> +    self->settings.hugepages[sz2ord(self->pmdsize, getpagesize())].enabled = THP_INHERIT;
+On 05.08.25 13:01, Balbir Singh wrote:
+> On 8/5/25 20:57, David Hildenbrand wrote:
+>> On 05.08.25 06:22, Balbir Singh wrote:
+>>> On 7/30/25 19:50, David Hildenbrand wrote:
+>>>
+>>>> I think I asked that already but maybe missed the reply: Should these folios ever be added to the deferred split queue and is there any value in splitting them under memory pressure in the shrinker?
+>>>>
+>>>> My gut feeling is "No", because the buddy cannot make use of these folios, but maybe there is an interesting case where we want that behavior?
+>>>>
+>>>
+>>> I realized I did not answer this
+>>>
+>>> deferred_split() is the default action when partial unmaps take place. Anything that does
+>>> folio_rmap_remove_ptes can cause the folio to be deferred split if it gets partially
+>>> unmapped.
 >>
->> Oh, one more thing: should we set all other sizes also to THP_INHERIT or (for simplicity) THP_NEVER?
+>> Right, but it's easy to exclude zone-device folios here. So the real question is: do you want to deal with deferred splits or not?
+>>
+>> If not, then just disable it right from the start.
 >>
 > 
-> hmm do we need to? I am hoping that we should always get the PMD size THP no matter what the policy
-> for others is in the scenario we have?
+> I agree, I was trying to avoid special casing device private folios unless needed to the extent possible
 
-Assuming 64K is set to "always", couldn't it mislead us in the 
-"madvise"/"never" test cases in some scenarios?
+By introducing a completely separate split logic :P
+
+Jokes aside, we have plenty of zone_device special-casing already, no 
+harm in adding one more folio_is_zone_device() there.
+
+Deferred splitting is all weird already that you can call yourself 
+fortunate if you don't have to mess with that for zone-device folios.
+
+Again, unless there is a benefit in having it.
 
 -- 
 Cheers,
