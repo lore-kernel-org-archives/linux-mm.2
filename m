@@ -2,146 +2,99 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8EE2CC87FD1
-	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 12:02:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B4923C87FCB
+	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 12:04:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14C836B009C; Tue,  5 Aug 2025 08:02:40 -0400 (EDT)
+	id 4861F6B0096; Tue,  5 Aug 2025 08:04:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0FD7E6B009D; Tue,  5 Aug 2025 08:02:40 -0400 (EDT)
+	id 45D7B6B0098; Tue,  5 Aug 2025 08:04:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F2E2A6B009E; Tue,  5 Aug 2025 08:02:39 -0400 (EDT)
+	id 39A516B0099; Tue,  5 Aug 2025 08:04:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E2D706B009C
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 08:02:39 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A3216114E34
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:02:39 +0000 (UTC)
-X-FDA: 83742566838.29.CA3FA8E
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 40E5640018
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:02:37 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 29D5B6B0096
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 08:04:56 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 83B48114E63
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:04:55 +0000 (UTC)
+X-FDA: 83742572550.01.A72FA4C
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 7372A40012
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:04:51 +0000 (UTC)
 Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=V4JO1yix;
-	spf=pass (imf07.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754395357; a=rsa-sha256;
+	spf=pass (imf07.hostedemail.com: domain of liqiang01@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=liqiang01@kylinos.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754395493; a=rsa-sha256;
 	cv=none;
-	b=PvvQlWgMHXpguP3OFJfjKh7InQO81yRpSZ5DeX4wK8hJXViBgcaLQlSZtoBCfY0OObhRNH
-	pHwxSEj0fOs0j8XLyv5YCRH6TE/9vRtibPe0OsajTQU/x1gcjk0l0KbIoBzQKQljQoiSTt
-	X8J2pbyO0mS4UrCFpg8MVxU0fShMLsM=
+	b=hICsVPQxnHbfkrpYfADaLsbPutC5adMGiAwJesA5TYXGnwgDc1qtjXqVrKpdLwg+U6SaTS
+	Lgq830X/Y1k9rRLMqJWHhBQuBBEualpcc91WGz6iI2LfRSF4Yt4xpksZ7B9kUwvmseAMNQ
+	LAl76hsysqXX3ARPweL5rprP0bqMdbo=
 ARC-Authentication-Results: i=1;
 	imf07.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=V4JO1yix;
-	spf=pass (imf07.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	dkim=none;
+	spf=pass (imf07.hostedemail.com: domain of liqiang01@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=liqiang01@kylinos.cn;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754395357;
+	s=arc-20220608; t=1754395493;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4Gq1hragezVRPpyFaG97IjZ+pamyoAqvxruf8TzYNDw=;
-	b=MSWx5sLOZIcgzvOzmtILwEIqVMnQJca9ZFGRA7JWC7v8N/1QRN3X/gaisLpMvGnZMxAUFK
-	RSbONLkmcg4DnN0otUot+3OmAyedPdCDtL35Hj29xFJEDeitkMyznBA+R13pLtg6geCgnn
-	hxvPAfEm2FRuS+tul4WLTq2yXC7hYyc=
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5754ugMO001974;
-	Tue, 5 Aug 2025 12:02:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=4Gq1hragezVRPpyFaG97IjZ+pamyoA
-	qvxruf8TzYNDw=; b=V4JO1yixO1ntQxKmzarPKt0NrIhbVckf2vo2mpgig3+73x
-	X5/caCi7HMUjhM0kkBShepLXJc1PevjbYupDy1o0YqMTgcpbQZ+dZ1DWfKmCPS54
-	JWYguNDpXtDqOFHOw0TA0ENUVfH6cs1xrrRR+veESreXCvmheYGw1Y67FM2P3lS2
-	OtswnWxrpi9oB+/3ps1vs+9EXCqpY7u2sxRfW1VYRZmJ7AbmBbEZ4Mh36mlQkxBX
-	Jl+k+elMNd45ZEhKV1Nkhh65iR92XcGxSRUZgaoUy+lh7fVa600ru8KbKaFauWTE
-	htTdRDRPzSlinujjue3aDsn11ZmivoNnPN0w0Ajw==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bbbq1rac-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 Aug 2025 12:02:35 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 575BpMtX014043;
-	Tue, 5 Aug 2025 12:02:35 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bbbq1ra8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 Aug 2025 12:02:35 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5757vA7a001893;
-	Tue, 5 Aug 2025 12:02:34 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 489wd02cde-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 Aug 2025 12:02:34 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 575C2UMF52429262
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 5 Aug 2025 12:02:30 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7FA452004B;
-	Tue,  5 Aug 2025 12:02:30 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3D23420040;
-	Tue,  5 Aug 2025 12:02:30 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.155.204.135])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue,  5 Aug 2025 12:02:30 +0000 (GMT)
-Date: Tue, 5 Aug 2025 14:02:28 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Marc Hartmayer <mhartmay@linux.ibm.com>, Zi Yan <ziy@nvidia.com>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        linux-mm <linux-mm@kvack.org>, linux-s390@vger.kernel.org,
-        Heiko Carstens <hca@linux.ibm.com>
-Subject: Re: page type is 0, migratetype passed is 2 (nr=256)
-Message-ID: <0f120fc0-860f-46ac-b9be-762f8bd42284-agordeev@linux.ibm.com>
-References: <87wmalyktd.fsf@linux.ibm.com>
- <1fc8eb08-7e34-4b16-a08f-c81a531ec3fb@lucifer.local>
- <A82049B8-B1B5-4234-BCFA-55779F76EDBB@nvidia.com>
- <20250512171429.GB615800@cmpxchg.org>
- <87zff7r369.fsf@linux.ibm.com>
- <078e6415-d779-4658-aa6b-1fba5fadc0b4@agordeev.local>
- <CA+mpNMkvSBs6juBUOFEGLL-9SWbhsUBGAFAY2anrHaQ4OEfYmg@mail.gmail.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=M2Cl/33UxBOoMvNk47wMeR8+SlfG3nWtUCvGaWh/Jkc=;
+	b=2K9E+RhU41TBRGubNWnvfOiuGpPBSJ5seTF69kKBw0VI4ZaiyBxoui3spbJSVnMPRQ1d2m
+	O8gB+scYPZitoHEy172Bae566Nja4AcZPn2HP7lzJzJsu3tHBHtN3+x9djW5Mqvptg1v7F
+	qzmhBvBk7NsnwYT80ow/gRJr4JmtxtM=
+X-UUID: 5c889e4271f411f0b29709d653e92f7d-20250805
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:e08b59db-1227-415f-9524-48b789a41595,IP:0,U
+	RL:0,TC:0,Content:11,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:11
+X-CID-META: VersionHash:6493067,CLOUDID:bde39b8ec4116adce4cae47d27490bca,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|102,TC:nil,Content:4|50,EDM:-3,
+	IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:
+	0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 5c889e4271f411f0b29709d653e92f7d-20250805
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <liqiang01@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 55385721; Tue, 05 Aug 2025 20:04:38 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id 71C0FE008FA2;
+	Tue,  5 Aug 2025 20:04:38 +0800 (CST)
+X-ns-mid: postfix-6891F356-36186845
+Received: from localhost.localdomain (unknown [10.42.12.14])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 53D29E008FA2;
+	Tue,  5 Aug 2025 20:04:36 +0800 (CST)
+From: Li Qiang <liqiang01@kylinos.cn>
+To: akpm@linux-foundation.org,
+	david@redhat.com
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com
+Subject: [PATCH] mm: memory: Force-inline PTE/PMD zapping functions for performance
+Date: Tue,  5 Aug 2025 20:04:35 +0800
+Message-Id: <20250805120435.1142283-1-liqiang01@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <74580442-2a9a-4055-b92d-23f5e5664878@redhat.com>
+References: <74580442-2a9a-4055-b92d-23f5e5664878@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+mpNMkvSBs6juBUOFEGLL-9SWbhsUBGAFAY2anrHaQ4OEfYmg@mail.gmail.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: El4sce7GAzX0H0ryWJfMu14Yw56xOaBw
-X-Authority-Analysis: v=2.4 cv=M65NKzws c=1 sm=1 tr=0 ts=6891f2db cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=kj9zAlcOel0A:10 a=2OwXVqhp2XgA:10 a=itihl33mmSw6o8Duwr4A:9
- a=CjuIK1q_8ugA:10 a=Qzt0FRFQUfIA:10
-X-Proofpoint-ORIG-GUID: lPT6r1O5ZmnZ5-t7rOfSZRPYkZD4KfN8
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA1MDA4NiBTYWx0ZWRfXzdf+BfaILxT8
- VqWHWPhMnSxFkMBCjzxwtbIletltxUTwyhExEjg53hxL02+ntt6xhpGCsCeh6GVDfKhJahalkhp
- vAL8FZG4Y24gogmY2i9+v9sm9GEh0cBqI3Er9wb4hoLZRx2E63AclhEK/A9jGHsHHtB6ub4BU3u
- nVdp9WN6Y1ny1HebGnEybcO4MkwHFQt4yFMJNAgAMPWN6Gnbw0+K2ukeeQlya84L3P2v8X7kJVT
- 75DeHfR5uWk6A/bgrOhreq86cuVWvBL4pDL8A1GSCzxTHlYFL+sjwiIAnpYvhfxYLDSefcavuWU
- UtSuhZwRbBnzm2Zh5y2yR1NrrTV/uohbp5PmhziZwbB9cdVDR3DwEzWGHFu65asZ+HseLn+8dwC
- bTpngMj+HlGfOYxjHf34DQ/Z8ICq0oGsC+h0sNt81eKgMh8zOqdzvxFURGOY+RmltaERVyUU
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-05_03,2025-08-04_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 malwarescore=0 spamscore=0 bulkscore=0 lowpriorityscore=0
- suspectscore=0 clxscore=1015 mlxscore=0 phishscore=0 priorityscore=1501
- mlxlogscore=497 adultscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2508050086
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 40E5640018
-X-Stat-Signature: tqnrpwpbdbdxz3tkyhar5wz73hf1tfwt
-X-HE-Tag: 1754395357-243088
-X-HE-Meta: U2FsdGVkX1/07sOzo+XRDzawNxiMFOXftrag0ke16f7bJvxej/pnDNBBcXGlmNVEotxzextyr+dwwx0ln/80HqhdF6RafdUs5odYLLGhahAIyfWw1fvgPL2+7GMqXPkKGmUVW7FaoV8UBg+OD/1hADwMPTIKCt0qll3J76kmzMWQlkJe02xFY4WvS55IC3KFo++s6MKdFQPev+T6Gao+qka0VUsDCI98q2LKavH1PLV83/IYITs/cNhZZ5C/+25/Ry3rAQAvmc03/RhS2iq0MYG+cVZX/vB2mgu1c3XzqbeaoRcVhbk/x6xWXEtQfvRRU7+Ej1H6dyQ2S89o0KqzijJ1LudKRIFLxP22Vigw7SC+itwgUyqtdxFfqgUrxf+S0UWhUedee59wO+2P9x7fFJGSds9VxX7Cn67w5qPEIDBMExVhi4qMipHS70K80nFvA3ZI2yGVfxf9FUn8QsGoYjrSkBdCrvH57hGcuSQmbFaDiIs5CEj427QEvz9sQibVSSESiav9LuRkWJKWrUKXffNFypoduS6CVXP85JPgp0ZbSbvLELyiq8TaCbUVGJ8PbCqukh7towsJOBhxNHa0r2jOXugKW10enDZnbme4I9JyRJ7pmgMT5jT3s03KJy/20wlYzBf7p/t3xMa3Dvi7PaaW7cwgv23Nt2JCmRj2meVVH8usFh8I72UyEn53BxiemYFznrMoLgIYBd+9nC/5n32CkM17AbsxeL4K0VTmwXhx/9kgObf1r2mOHfCL7S1lorAiA9Ziji1W5dEVLgSEmurpVOvrUGr6E9tU1CB30oQWBNcPJbfy4u+szrg9Aiq+s+rVToKNoPutfbPLD8ewQcXuNZ3Cmyk5gbKigXqWWoPil3m6lKn2DVhwmCaxVEhloqsuLZqyHLYAvb1WE6MMkxMM8A4VlPfZSWKTXsjWTLbrTPBlwyR84t3xSH7ouNGOCF5ybtUUmPc6Z5eeEXO
- o08oIt2O
- ViquwTxrEdusF8VI4JFIoWfMIZ1/kK2MPHoEsSP1hGyDCXQxf+eNv5A5nFO6ehhAcF2EBzdHWllrHMj1M/jLmljtO1v98EfQ2AdZ+oS8LixBeBel7Lc4DoS88PvdfEv/6yxe0NYU8QIEUzV+lPmD2f2nryws+4ZaW635KHjKXqARbT3YSRO0x0cmmG7aWUjnKoKWV+15pErWSUnEfHCtJp1wvmibwQXwX0qXYW7ECudMfwKv6VaMdVVi9Zw==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7372A40012
+X-Stat-Signature: b1qjexm8ukynkffr4qzb8oaq558s1ue9
+X-HE-Tag: 1754395491-358399
+X-HE-Meta: U2FsdGVkX19gUVyC8/DEK2Dhk62kgYnMk0cFO2QyfqgYgoRtbfQcSwBnWlxU6EJbPpfIOJ6KwdNhCuSuKXX3qRKMMSTClH9IJ+Tu8qC6P2eACz2WoBr7Pq7lBe4pFCr0A+FNjlRnJy+xubWns5eIFuluWdEKNo9m8p1Ujfts1NPqlGz9CbpHEJMOMsnftvCiyQTW7UPqKsYeDTBsdZHdSzSlI8Rzb9HFyK8wKQYg980lhJzlzI+NnHND0AgIw6jNQSkXkgTyjdEyoaupJ+MmDlHLppyZ0kqGHZDBM9yJggfk1xN7e4CsTL349KLJ7t58kNJtL/sQlcPgT19qbfbgHMkK/4E2QEBEo4wr+FtYWcrpMx0d+BaLaalHOO51gjxN2S7OT/SlNBWKTe8ZYtDDJt1uo+dI2dwKpJWpyszJwt90oa6SfaZLsUf4tobKyRww/ffw5DRvTYUTVsFC9VIpWNheaPpQNqNdA9Z1YE/2tMe3PW7vYNP33mWsY86RnS6X1jEDVhpDkzNiQdyECSGGGQpFg1AW4VMtzRZG63nejcoxb2Zf5yee2yyldjTfwMYAI9p8ekSUD7UUd7VI3sHi+FU7yEOLygMTxbJpsUZ8Mp3YGxKZa3vNFjHWrh9LAMs7OMplIGBzmCxjG/E9WNMffjGW6ylerm+PIX8/hd6Yx2KzDvn/B0YKwp94uuGj6NynW6bgP8IlwI/wakhfBCCEGj+WcCi7WjyActfK1bMrPVPps8zsD7UJU4c7xF8Lwn1LIRluc4eDJKIZt+FoFo8bqc0Y3uMjlm8+UWTlAUWkZn97abKutSFG/qT4ehJGt1nEdQMV7p9fifl+qciX1ejizHneQXHIpx6NMDrFTHVLxoIgsX9thJ0vER3F1hTI1ZetX/rgVWNB8aaXPtSH9HPSC3VLkhduFlBP0BlhpGS/a3RSPvmVc0CxPFVyi9dVznKZo8+BqZlrSi+93XFed+K
+ Lq1+RTGQ
+ 53JUQb+/NuTXFNjc8ewFX6zYoITtrrU5avudylmzfk6VUFV8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -150,20 +103,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jun 14, 2025 at 10:24:32AM +0200, Johannes Weiner wrote:
+Ah, missed it after the performance numbers. As Vlastimil mentioned, I=20
+would have expected a bloat-o-meter output.
 
-Hi Johannes,
+>=20
+> My 2 cents is that usually it may be better to understand why it is
+> not inlined and address that (e.g., likely() hints or something else)
+> instead of blindly putting __always_inline. The __always_inline might
+> stay there for no reason after some code changes and therefore become
+> a maintenance burden. Concretely, in this case, where there is a single
+> caller, one can expect the compiler to really prefer to inline the
+> callees.
 
-> Hello Alexander,
-> 
-> Apologies for the lack of updates. I am out myself until the 23rd. I'll dig
-> into it when I get back if nobody beats me to it.
+>
+> Agreed, although the compiler is sometimes hard to convince to do the=20
+> right thing when dealing with rather large+complicated code in my=20
+> experience.
 
-Is there any update here?
+Question 1: Will this patch increase the vmlinux size?
+Reply:
+	Actually, the overall vmlinux size becomes smaller on x86_64:
+	[root@localhost linux_old1]# ./scripts/bloat-o-meter before.vmlinux afte=
+r.vmlinux =20
+	add/remove: 6/0 grow/shrink: 0/1 up/down: 4569/-4747 (-178) =20
+	Function                                     old     new   delta =20
+	zap_present_ptes.constprop                     -    2696   +2696 =20
+	zap_pte_range                                  -    1236   +1236 =20
+	zap_pmd_range.isra                             -     589    +589 =20
+	__pfx_zap_pte_range                            -      16     +16 =20
+	__pfx_zap_present_ptes.constprop               -      16     +16 =20
+	__pfx_zap_pmd_range.isra                       -      16     +16 =20
+	unmap_page_range                            5765    1018   -4747 =20
+	Total: Before=3D35379786, After=3D35379608, chg -0.00% =20
 
-> Thanks,
-> Johannes
 
-Thanks!
+Question 2: Why doesn't GCC inline these functions by default? Are there =
+any side effects of forced inlining?
+Reply:
+	1) GCC's default parameter max-inline-insns-single imposes restrictions.=
+ However, since these are leaf functions, inlining them not only improves=
+ performance but also reduces code size. May we consider relaxing the max=
+-inline-insns-single restriction in this case?
 
+	2) The functions being inlined in this patch follow a single call path a=
+nd are ultimately inlined into unmap_page_range. This only increases the =
+size of the unmap_page_range assembly function, but since unmap_page_rang=
+e itself won't be further inlined, the impact is well-contained.
+
+
+
+Question 3: Does this inlining modification affect code maintainability?
+Reply: The modified inline functions are exclusively called by unmap_page=
+_range, forming a single call path. This doesn't introduce additional mai=
+ntenance complexity.
+
+
+Question 4: Have you performed performance testing on other platforms? Ha=
+ve you tested other scenarios?
+Reply:
+	1) I tested the same GCC version on arm64 architecture. Even without thi=
+s patch, these functions get inlined into unmap_page_range automatically.=
+ This appears to be due to architecture-specific differences in GCC's max=
+-inline-insns-single default values.
+
+	2) I believe UnixBench serves as a reasonably representative server benc=
+hmark. Theoretically, this patch should improve performance by reducing m=
+ulti-layer function call overhead. However, I would sincerely appreciate =
+your guidance on what additional tests might better demonstrate the perfo=
+rmance improvements. Could you kindly suggest some specific benchmarks or=
+ test scenarios I should consider?
+
+--
+Cheers,
+
+Li Qiang
 
