@@ -2,84 +2,101 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 79E2BC87FCF
-	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 01:27:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C0BDC87FCF
+	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 01:37:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A7636B0096; Mon,  4 Aug 2025 21:27:52 -0400 (EDT)
+	id 4CAAA6B009E; Mon,  4 Aug 2025 21:36:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17FD06B00A3; Mon,  4 Aug 2025 21:27:52 -0400 (EDT)
+	id 4A20B6B009F; Mon,  4 Aug 2025 21:36:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0BC7C6B00A4; Mon,  4 Aug 2025 21:27:52 -0400 (EDT)
+	id 3B7F76B00A1; Mon,  4 Aug 2025 21:36:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F10C46B0096
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 21:27:51 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6D39DBC9FA
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 01:27:51 +0000 (UTC)
-X-FDA: 83740967142.09.6F6DD16
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 66CBC40007
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 01:27:48 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=fwKIOlub;
-	spf=pass (imf07.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754357269; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 2D2586B009E
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 21:36:59 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C09B5140ABA
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 01:36:58 +0000 (UTC)
+X-FDA: 83740990116.22.FDF8E71
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 111DA140002
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 01:36:56 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=QQ8Q5dnW;
+	spf=pass (imf23.hostedemail.com: domain of 3N2CRaAkKCIg46pm34mzys00sxq.o0yxuz69-yyw7mow.03s@flex--sudarsanm.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3N2CRaAkKCIg46pm34mzys00sxq.o0yxuz69-yyw7mow.03s@flex--sudarsanm.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754357817; a=rsa-sha256;
 	cv=none;
-	b=fJQnGJIM/MC8ZZ4zeHLdobt7cmnjFpH/c5syoK9janOc2e6y1fbbL+F3VZtt8GjYeKUkFv
-	OhzoXd/lik2kUy/wX8WZ6EVJAOYoXj7AaKq3Ti4lCjb3vmimwDf0Q1HMn8HCHdNk7qj/mp
-	ULNomJ+3FYpUoSV3P7NcjmwU9MoSqz8=
+	b=4U97hyBASqlR7APdjCkLB/RYHv08UqSn6YmmkjTl89W2RFDwdqeBt+olMEb/FGRhH8Nqye
+	0jPpGyBNh2BGW/+TYxmQjilvmRjpstzLL/AU2f3uM8msCdwUJ2YUC/+kgdkfrgdob0sokf
+	RRf+9BwNSPnUjXROU9ORsTSLwc6X1LY=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=fwKIOlub;
-	spf=pass (imf07.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=QQ8Q5dnW;
+	spf=pass (imf23.hostedemail.com: domain of 3N2CRaAkKCIg46pm34mzys00sxq.o0yxuz69-yyw7mow.03s@flex--sudarsanm.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3N2CRaAkKCIg46pm34mzys00sxq.o0yxuz69-yyw7mow.03s@flex--sudarsanm.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754357269;
+	s=arc-20220608; t=1754357817;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cZXKId3PeNNKVOXuI9328ERbsEKYr4cnkti2rofiC30=;
-	b=CSLmWYd6hnWNOsqkoyk8nZX3QgRwoWzuoqWYRl4GNmdwoKln9EAYgXVkgNN1Vzcezh5bU+
-	+jPtTmf7Fyv0u7RasAlzOjLPnH8WkWD3ngEdizmU24LG3ihNvKP3FLZlbkLAva7uyOh3IA
-	CquSWj0sYKvqgpe7nMn5j1Y6WHRjmFY=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1754357264; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=cZXKId3PeNNKVOXuI9328ERbsEKYr4cnkti2rofiC30=;
-	b=fwKIOlubHlVY0IM0L5d0jWgAW+W2vDZexJ4mXa+mlMeiZncTdZq4aBCHiI6nBGdcMCZIngnqQaaL7iQn89osxYyuWO9/yDrJE6a0ZW0oy/6O0RzixYTNlcNEfEeR9qBgyjjDOXbQaBUpe8NPjlgXAvjylTGX9WAlYjbXgY8anWs=
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0Wl3-62P_1754357262 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 05 Aug 2025 09:27:43 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,  SeongJae Park
- <sj@kernel.org>,  David Hildenbrand <david@redhat.com>,  Zi Yan
- <ziy@nvidia.com>,  Johannes Weiner <hannes@cmpxchg.org>,  Matthew Brost
- <matthew.brost@intel.com>,  Rakie Kim <rakie.kim@sk.com>,  Byungchul Park
- <byungchul@sk.com>,  Gregory Price <gourry@gourry.net>,  Alistair Popple
- <apopple@nvidia.com>,  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
-  kernel-team@meta.com, Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [PATCH v2] mempolicy: Clarify what zone reclaim means
-In-Reply-To: <20250804144200.1047918-1-joshua.hahnjy@gmail.com> (Joshua Hahn's
-	message of "Mon, 4 Aug 2025 07:41:59 -0700")
-References: <20250804144200.1047918-1-joshua.hahnjy@gmail.com>
-Date: Tue, 05 Aug 2025 09:27:30 +0800
-Message-ID: <871ppqy2v1.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=EWDIRG94rF/jhpzQYk9pekkna8f6TwTEVOGNiOzScoU=;
+	b=bUhlZ3w5J9F4DhxBPI86DnT/JKK/i3/tB8SPzeKRdJ944A9FAqgi0pC2QqJ9SMKEGF3/ux
+	aZTHeWdVzQIQiX5tJWfE0avhWLWaGyjIy6BHttXVplTjMa/e7ZTfSogZdr7gnQ8/rZr6HM
+	A6QcaNBEUopDDnB/FMRxDXXdocIXY5s=
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-76bd757bbccso3421690b3a.1
+        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 18:36:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1754357816; x=1754962616; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=EWDIRG94rF/jhpzQYk9pekkna8f6TwTEVOGNiOzScoU=;
+        b=QQ8Q5dnW++O85dZO2X50Bnl+ZckM2VfjQV7Op9op1Zqn5QlAk5vwmWCjwokvfWhZBG
+         qXRwOVYyOD6jP1qkJIet5uf8TnMsU8Ska7F90GaeiXDN2odeWlQ5jwzQThTqz4rDCe0F
+         qt/09l8btg99NFWk7tTzhi9/g1t/Y+sBDiPJSy4qGPS8q+QoXSr/NgIeOykm1WL5n7k+
+         jKmbp1sCPwt7PKxCIK0V8ELCI+ZWHz0oWyYUC9RxXaxoIMwrhg1NvnUdeWIEhk4tzj28
+         DHU4NZSk/EvJtV5UfxQd5LSOu8OjvPDyzCE5JCrZSMkndr5M004UO8nq4qY+rYTL+riW
+         xQZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754357816; x=1754962616;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EWDIRG94rF/jhpzQYk9pekkna8f6TwTEVOGNiOzScoU=;
+        b=hYXIFHB0lFEWvJKT5bzLGkOklKWAMOtS7SWo8KQ9/8DDM2HZh5hpuDXmtIjC1vbamj
+         YLYKBm8oi56FG1ggPLHs/+CZzF5plDwLeuVjm1JI7DNTBJkgN7wQBYcrIg1UzkcL7ls6
+         PlE4L5SpNHEl7ljGfdlX49vPFNa8zd0r2NdMWSQ1jAEA3eZRKUWZXVHVicW4EHWKtmf5
+         52easAHyeHAKdHzf+EDLDF+07TxqdRiyw+oiADFYzrnmr6NUKUQY6ZJ3Lq6GUH0hsWUS
+         JL4U2J3L94BTa0Ia3Di+8ciMLh8uC7MyhN4boGAscvyiBHA7Wxl77fGV2ER/obDshJs2
+         qMYA==
+X-Forwarded-Encrypted: i=1; AJvYcCXvQzhq81AalKhW6HmWsvqs5zmSOmMFu3UyYTS61pqGYELGP9rbW9uNq1YU+1gYcmnAFrsp5jD+Hg==@kvack.org
+X-Gm-Message-State: AOJu0YzES89TeFK5Re2t0eAdEOhA9KbxrzZ0JBJEERd9/C6gRAEB/J0S
+	draA6/VVVgyOTPAq0KkMetlzaFe+ZBEt4nLmgTlImNDNl6TO0AMSzRKxZxb/9zYEVIV4nDLOwyu
+	P6febdq8a50/pPEKR6Q==
+X-Google-Smtp-Source: AGHT+IEP4Ogt0yYMTIBcyMkZVXGHn1+5yaxjZGFBUoanUVK2ZcSy/N7vLmJir+3zYOINgjYWp9TiiN0hN/ltZ0Y=
+X-Received: from pgdq17.prod.google.com ([2002:a63:9811:0:b0:b2b:f469:cf78])
+ (user=sudarsanm job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a20:7287:b0:240:27c:fcc6 with SMTP id adf61e73a8af0-240027d0352mr9585169637.42.1754357815911;
+ Mon, 04 Aug 2025 18:36:55 -0700 (PDT)
+Date: Mon,  4 Aug 2025 18:36:29 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.50.1.565.gc32cd1483b-goog
+Message-ID: <20250805013629.47629-1-sudarsanm@google.com>
+Subject: [PATCH v3] selftests/mm: pass filename as input param to VM_PFNMAP tests
+From: Sudarsan Mahendran <sudarsanm@google.com>
+To: linux-kselftest@vger.kernel.org, David Hildenbrand <david@redhat.com>
+Cc: Shuah Khan <shuah@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org, 
+	trivial@kernel.org, Sudarsan Mahendran <sudarsanm@google.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 66CBC40007
-X-Stat-Signature: c4bkpmm653ky4xwo6cfbnsximjj4gwt3
-X-HE-Tag: 1754357268-512201
-X-HE-Meta: U2FsdGVkX18yVaAsYt4QH4j5y1DZEdS7+ENwAh7RrNzYQAUNWcSXAlYJqn9vLspx1KKx6LWvpuSiz25shzEwNcAKzQvqmt+Zn5XtbGQPqjGHufFcg/F2VtDsKnVWPYzfCulS498ILhgUiU++4kaiMv6utxDYtZnL0TaYnQpIeWVHVKRgfxchYmFMTXM0NHyQ6PKEpKjvR/vVHpbS/yYIhxzgNixVFePYoO1AsL9Z1V/gpFvaykjsSVKfsOTqPCqVA9LJpOcL1xscJPhrOcAInWTjYhgECBjy2pRFVBuSB2lmIWnNXJXhtFXFqNOIYmdslKbLaRHCKmssEppREFGSHYMYRilQNOpKqXsp6WRXgVOWKUUXl1SvY5RAQ7REoSmvYkv8STKvyMDDESKSx1kgKV+HAzFGRVRHIeUMVhTGzhcBnW91qni8/4glHyr4Hcxn+0VT871N4CkIxkCXBd7/Nywr3Xv+6mljkRKax574ZH+kEa9oVa1E711As0pPGaJpNPQcEq2H/Yr8FZqVvcgCCXR1bxOtuBVV6YKvb02HrxIm3NfOTg4O95/4tu4WXZo6jwAkBmZcziuCX4jRZvEl3ul8regDPZeKl2WjWk8xuhkqg5XSoXgQ6Bnoa7cy8858kTx/xY9jff5YqnSby2Icc6ZnARWS5MvuG/rqTNYRYsX32NuqBosy48erRrjjaFJhd5dl3qi13hIVtMrkv+VLLuJNmkc8SluLS+jJUs93sODWAXQAbsUhrqB+PY8H5GagebmMS5w7ZERZewg0tWrc3yK3sPEgYfAQoOB8pAq50tlxsN53t6TfS+ODnwmNJpEfY0PTWj52oNsg+zlDEhIMvz4Mj17PlNFkWblR02LyDiuMW3RY+AI47Ac5lTbgDJqI2EDWfapk8EHQgiM5+YVWlJnbdBoPgk5OO0ci8jLVIF9L7vEp7i9ieJktLtxS2HAQt7VhdlMGiiiRRNqQ/Rt
- 8ZHPnuqu
- utOxYs0jgbZPEWVcJLxnL1kK8bLWBCL00v2Jgdpi0tUVScsRXPTAHVG6DPCOh+vbDXSYrmJC8S8r4m/7dE7xlG6jlE5M9kwkTup03Y6qcJAoRK8ujkf7rAiAwP+GxheH7WJbvMCTIHad5LCmIdhFqSRA0OLS4ScfZVdcLuHaTi5ZYG+OFLOZ6pkkwr6hsXy3yRYCFvh9rPUZXXZFkidjrHKkL+37HpjzTjp51MzxRYud8Q2yRm7vS8lTnTTlh4XABt7J3JZu+JvGAF72V9FcUI8VqBGnnwfpEOgFDDJymLGhxIwX+8Xaovx2uBURWdi1vP3qG6AuL2Gp8PtLCE/+lvmhOeQK8MIdInM1ZizcraOaIKp+74FBwZIuC307Vywx275Xg8IGr/Qp+URolytP1N/PGlg==
+X-Rspamd-Queue-Id: 111DA140002
+X-Stat-Signature: x9wn1qk41j3t4u97joqq6scjuag9yzku
+X-HE-Tag: 1754357816-654919
+X-HE-Meta: U2FsdGVkX1/5Ho2iUiLmHLgdRPF4ln0O4o+vEKLoOGzqQMJbqG24xSlyv2efuypTuEMb/Ny0KHQka4+CK90uxuCNMQJS+yo3tHxIsVNeb1KgDefoUvN0q/Rm71hmLfOqkE+KqlX0+m2N7K0fxjtdCO6z7u2FOQhxi/v0DWe2sBjSdt560AESkVQID1DC+S2+k0Bg4ciAJjY2UOsIXryF6gSc268gfuslhHgTFWANK93ApOQ6qVEi507ZJrhOAhoornNNoVzvcUdbhTfDCCqrt4YtFsTUEQoxXZ/VANfF8yZy1NxTrL3NB8/E5n54iT4/iAft2W4fq3Zv2HDN7v3Hv0HLkJICxHNmRxFjlCPmyIPCw1/I+XvgPDPPaPPB3EsRoxIMPKb4Sy75MgPj4jKW6wSOkgy1qa4D0xp0Eceq3jEwqRw/51L+XkR8W9uv2+Ni9HZ8XHz2W+RzGdXgOdjQ89M6nEfzX7qE9yI+0W51lZN6U6yDZpt8cWwGvvnMkkVD82U3BdeZyLeOZpsotahp9ROCVcLw+gZhlOrFnDJyrud5eFieyF7O1O6s3oNLNX/ojpCvvpVLts1osaJJ1gynOPAMeLnFxApZciC+VxDRHc3+2h4zbR7OQ9PredDscvUE9XS6rC8UJIouUfsH7DPFW+akaEtQSl+/paXxpspf3oUC0Qr2zmURecUxLnLWa2ahqmQP/iYQukA51KBK3awnX0dIlvYtW3COCR2QrVpdU2mbikRyLz9AXuB5nUdycQuMn2MEBx/nqoRoyXNmbRAe8LaIR0sN9+mhbWNOHccbdQhh4ru9t3UHzcgjeRMS3xGlEqg9dCtTpQbmXoFgpwwuGIqJbJAt7yI7eDLuYHGG1qbsLdTp1k12p/O6kuqe4xQs7Lu4dyWHu0kgnIzzuq94u43/OdWdKz6XjNVVSxIS5G5gekITzBGsKsvUyuzicT290S8DYVsozmztt3UWewR
+ iJfgjKeF
+ /vQ+M9Jo9ezriNlRdX7MMKwrPTi+fwzQmxBT8n5vHiJObRJV0M4EmjqvJVj8e2RtbhCRIovSRB3V2uaGz4GDQzzliQ6dtGVlzmCweTeNJEBMr+v6IFQxByMTTdO1iaCyyNMwf3xibsZ3c5XcYxLN53zFPKu0XN2ZM+XQUwQN3lDP9g2N2kO9g4i6O77VwasqivrK2u99OKCnuKjl40GE4xnz96X6PFnbCe2TZ/aMM5tP2kkyJs16l6kPZy0HWn/D8tSne0XHGYcZnxS7Q1JjENHEckd47quopyoLhrxPmHnXo9Nb70ZiGSx/aH2dWcHeC0dDa9ez9RLqqeq93mM2nheU4W+Y99aB7qui3Ib0nSheA9qBjqJTXAXcMfsG8MEpkeACReZ1DH5IbUHq5hpRrozBIqrE1qKPA5uTFrwKB/bmMgtzw7YC8reiqFRojY2+q3sVLAkL5nO83+aX94ffN1CyQUDMdjtXJnIR2i6Q6ufuWjaub/zUcq7+jAIBBiXvYTMTz5SXKA/GuRkjsC81gHtQKQ78ml3Af0bdVMdEoj1+ZtTP2FIuRYyj+jBkCfzTkMbn1srwCpiwHZ+9r2XD147tvwBloUuYRUNvtnZxCiMg1Qio=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,112 +105,231 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Joshua Hahn <joshua.hahnjy@gmail.com> writes:
+Enable these tests to be run on other pfnmap'ed memory like
+NVIDIA's EGM.
 
-> On Mon, 04 Aug 2025 09:24:31 +0800 "Huang, Ying" <ying.huang@linux.alibaba.com> wrote:
->
->> Joshua Hahn <joshua.hahnjy@gmail.com> writes:
->> 
->> > On Fri, 01 Aug 2025 08:59:20 +0800 "Huang, Ying" <ying.huang@linux.alibaba.com> wrote:
->> >
->> >> Joshua Hahn <joshua.hahnjy@gmail.com> writes:
->> >> 
->> >> > The zone_reclaim_mode API controls the reclaim behavior when a node runs out of
->> >> > memory. Contrary to its user-facing name, it is internally referred to as
->> >> > "node_reclaim_mode".
->> >> >
->> >> > This can be confusing. But because we cannot change the name of the API since
->> >> > it has been in place since at least 2.6, let's try to be more explicit about
->> >> > what the behavior of this API is. 
->> >> >
->> >> > Change the description to clarify what zone reclaim entails, and be explicit
->> >> > about the RECLAIM_ZONE bit, whose purpose has led to some confusion in the
->> >> > past already [1] [2].
->> >> >
->> >> > [1] https://lore.kernel.org/linux-mm/1579005573-58923-1-git-send-email-alex.shi@linux.alibaba.com/
->> >> > [2] https://lore.kernel.org/linux-mm/20200626003459.D8E015CA@viggo.jf.intel.com/
->> >> >
->> >> > Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
->> >> > ---
->> >> >  include/uapi/linux/mempolicy.h | 8 +++++++-
->> >> >  1 file changed, 7 insertions(+), 1 deletion(-)
->> >> >
->> >> > diff --git a/include/uapi/linux/mempolicy.h b/include/uapi/linux/mempolicy.h
->> >> > index 1f9bb10d1a47..6c9c9385ff89 100644
->> >> > --- a/include/uapi/linux/mempolicy.h
->> >> > +++ b/include/uapi/linux/mempolicy.h
->> >> > @@ -66,10 +66,16 @@ enum {
->> >> >  #define MPOL_F_MORON	(1 << 4) /* Migrate On protnone Reference On Node */
->> >> >  
->> >> >  /*
->> >> > + * Enabling zone reclaim means the page allocator will attempt to fulfill
->> >> > + * the allocation request on the current node by triggering reclaim and
->> >> > + * trying to shrink the current node.
->> >> > + * Fallback allocations on the next candidates in the zonelist are considered
->> >> > + * zone when reclaim fails to free up enough memory in the current node/zone.
->> >> > + *
->> >> >   * These bit locations are exposed in the vm.zone_reclaim_mode sysctl
->> >> >   * ABI.  New bits are OK, but existing bits can never change.
->> >> 
->> >> As far as I know, sysctl isn't considered kernel ABI now.  So, cghane
->> >> this line too?
->> >
->> > Hi Ying, 
->> >
->> > Thank you for reviewing this patch!
->> >
->> > I didn't know that sysctl isn't considered a kernel ABI. If I understand your
->> > suggestion correctly, I can rephrase the comment block above to something like this?
->> >
->> > - * These bit locations are exposed in the vm.zone_reclaim_mode sysctl
->> > - * ABI. New bits are OK, but existing bits can never change.
->> > + * These bit locations are exposed in the vm.zone_reclaim_mode sysctl and
->> > + * in /proc/sys/vm/zone_reclaim_mode. New bits are OK, but existing bits
->> > + * can never change.
->
-> Hi Ying,
->
->> Because it's not an ABI, I think that we could avoid to say "never".
->
-> My personal opinion is that we should keep this warning, since there has
-> already been an example before where a developer tried to remove this bit [1],
-> and this broke some behavior for userspace configurations. However, if I
-> understand your comment correctly, you are suggesting that we should change
-> the wording to not include "never", since sysctls are no longer an ABI (and
-> therefore we should be OK to change what the values mean?)
->
-> If that is the case, then I can send in another patch since I think the goals
-> are a bit different for the two patches. With that said, I think we should
-> keep the warning just to avoid any breakages in userspace, even if sysctl
-> might not be considered an ABI anymore (also I must have missed this, I didn't
-> know this at all!)
+Add '--' as a separator to pass in file path. This allows
+passing of cmd line arguments to kselftest_harness.
+Use '/dev/mem' as default filename.
 
-Sorry for confusing.  I agree that we shouldn't change the sysctl
-interface in most cases.  I just thought that we could soften the
-wording a little?  For example,
+Existing test passes:
+	pfnmap
+	TAP version 13
+	1..6
+	# Starting 6 tests from 1 test cases.
+	# PASSED: 6 / 6 tests passed.
+	# Totals: pass:6 fail:0 xfail:0 xpass:0 skip:0 error:0
 
-New bits are OK, but existing bits shouldn't be changed.
+Pass params to kselftest_harness:
+	pfnmap -r pfnmap:mremap_fixed
+	TAP version 13
+	1..1
+	# Starting 1 tests from 1 test cases.
+	#  RUN           pfnmap.mremap_fixed ...
+	#            OK  pfnmap.mremap_fixed
+	ok 1 pfnmap.mremap_fixed
+	# PASSED: 1 / 1 tests passed.
+	# Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
 
-I think that it's still clear that we don't want to change the existing
-bits.
+Pass non-existent file name as input:
+	pfnmap -- /dev/blah
+	TAP version 13
+	1..6
+	# Starting 6 tests from 1 test cases.
+	#  RUN           pfnmap.madvise_disallowed ...
+	#      SKIP      Cannot open '/dev/blah'
 
-However, my English is poor.  So, my suggestion may not make sense.
+Pass non pfnmap'ed file as input:
+	pfnmap -r pfnmap.madvise_disallowed -- randfile.txt
+	TAP version 13
+	1..1
+	# Starting 1 tests from 1 test cases.
+	#  RUN           pfnmap.madvise_disallowed ...
+	#      SKIP      Invalid file: 'randfile.txt'. Not pfnmap'ed
 
->> > Thanks again for your review Ying, I hope you have a good day : -)
->> 
->> Welcome!  You too!
->> 
->> With some trivial tweak, please feel free to add my
->> 
->> Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
->> 
->> in the future version.
->
-> Thank you for your review Ying! Since there is a question remaining about what
-> to do with the "never" statement, I will wait to send out a v3 with your
-> review : -) 
+Signed-off-by: Sudarsan Mahendran <sudarsanm@google.com>
+---
+
+v2 -> v3:
+* Add check_vmflag_pfnmap func
+* Re-use existing check_vmflag_io func
+* Verify pfnmap using mmap addr
+* Rename phys_addr to offset
+
+v1 -> v2:
+* Add verify_pfnmap func to sanity check the input param
+* mmap with zero offset if filename != '/dev/mem'
 
 ---
-Best Regards,
-Huang, Ying
+ tools/testing/selftests/mm/pfnmap.c  | 48 ++++++++++++++++++++--------
+ tools/testing/selftests/mm/vm_util.c | 14 ++++++--
+ tools/testing/selftests/mm/vm_util.h |  1 +
+ 3 files changed, 47 insertions(+), 16 deletions(-)
+
+diff --git a/tools/testing/selftests/mm/pfnmap.c b/tools/testing/selftests/mm/pfnmap.c
+index 866ac023baf5..88659f0a90ea 100644
+--- a/tools/testing/selftests/mm/pfnmap.c
++++ b/tools/testing/selftests/mm/pfnmap.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /*
+- * Basic VM_PFNMAP tests relying on mmap() of '/dev/mem'
++ * Basic VM_PFNMAP tests relying on mmap() of input file provided.
++ * Use '/dev/mem' as default.
+  *
+  * Copyright 2025, Red Hat, Inc.
+  *
+@@ -25,6 +26,7 @@
+ #include "vm_util.h"
+ 
+ static sigjmp_buf sigjmp_buf_env;
++static char *file = "/dev/mem";
+ 
+ static void signal_handler(int sig)
+ {
+@@ -51,7 +53,7 @@ static int test_read_access(char *addr, size_t size, size_t pagesize)
+ 	return ret;
+ }
+ 
+-static int find_ram_target(off_t *phys_addr,
++static int find_ram_target(off_t *offset,
+ 		unsigned long long pagesize)
+ {
+ 	unsigned long long start, end;
+@@ -91,7 +93,7 @@ static int find_ram_target(off_t *phys_addr,
+ 		/* We need two pages. */
+ 		if (end > start + 2 * pagesize) {
+ 			fclose(file);
+-			*phys_addr = start;
++			*offset = start;
+ 			return 0;
+ 		}
+ 	}
+@@ -100,7 +102,7 @@ static int find_ram_target(off_t *phys_addr,
+ 
+ FIXTURE(pfnmap)
+ {
+-	off_t phys_addr;
++	off_t offset;
+ 	size_t pagesize;
+ 	int dev_mem_fd;
+ 	char *addr1;
+@@ -113,23 +115,31 @@ FIXTURE_SETUP(pfnmap)
+ {
+ 	self->pagesize = getpagesize();
+ 
+-	/* We'll require two physical pages throughout our tests ... */
+-	if (find_ram_target(&self->phys_addr, self->pagesize))
+-		SKIP(return, "Cannot find ram target in '/proc/iomem'\n");
++	if (strncmp(file, "/dev/mem", strlen("/dev/mem")) == 0) {
++		/* We'll require two physical pages throughout our tests ... */
++		if (find_ram_target(&self->offset, self->pagesize))
++			SKIP(return,
++				   "Cannot find ram target in '/proc/iomem'\n");
++	} else {
++		self->offset = 0;
++	}
+ 
+-	self->dev_mem_fd = open("/dev/mem", O_RDONLY);
++	self->dev_mem_fd = open(file, O_RDONLY);
+ 	if (self->dev_mem_fd < 0)
+-		SKIP(return, "Cannot open '/dev/mem'\n");
++		SKIP(return, "Cannot open '%s'\n", file);
+ 
+ 	self->size1 = self->pagesize * 2;
+ 	self->addr1 = mmap(NULL, self->size1, PROT_READ, MAP_SHARED,
+-			   self->dev_mem_fd, self->phys_addr);
++			   self->dev_mem_fd, self->offset);
+ 	if (self->addr1 == MAP_FAILED)
+-		SKIP(return, "Cannot mmap '/dev/mem'\n");
++		SKIP(return, "Cannot mmap '%s'\n", file);
++
++	if (!check_vmflag_pfnmap(self->addr1))
++		SKIP(return, "Invalid file: '%s'. Not pfnmap'ed\n", file);
+ 
+ 	/* ... and want to be able to read from them. */
+ 	if (test_read_access(self->addr1, self->size1, self->pagesize))
+-		SKIP(return, "Cannot read-access mmap'ed '/dev/mem'\n");
++		SKIP(return, "Cannot read-access mmap'ed '%s'\n", file);
+ 
+ 	self->size2 = 0;
+ 	self->addr2 = MAP_FAILED;
+@@ -182,7 +192,7 @@ TEST_F(pfnmap, munmap_split)
+ 	 */
+ 	self->size2 = self->pagesize;
+ 	self->addr2 = mmap(NULL, self->pagesize, PROT_READ, MAP_SHARED,
+-			   self->dev_mem_fd, self->phys_addr);
++			   self->dev_mem_fd, self->offset);
+ 	ASSERT_NE(self->addr2, MAP_FAILED);
+ }
+ 
+@@ -246,4 +256,14 @@ TEST_F(pfnmap, fork)
+ 	ASSERT_EQ(ret, 0);
+ }
+ 
+-TEST_HARNESS_MAIN
++int main(int argc, char **argv)
++{
++	for (int i = 1; i < argc; i++) {
++		if (strcmp(argv[i], "--") == 0) {
++			if (i + 1 < argc && strlen(argv[i + 1]) > 0)
++				file = argv[i + 1];
++			return test_harness_run(i, argv);
++		}
++	}
++	return test_harness_run(argc, argv);
++}
+diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
+index 5492e3f784df..2cebe4212db8 100644
+--- a/tools/testing/selftests/mm/vm_util.c
++++ b/tools/testing/selftests/mm/vm_util.c
+@@ -402,7 +402,7 @@ unsigned long get_free_hugepages(void)
+ 	return fhp;
+ }
+ 
+-bool check_vmflag_io(void *addr)
++static bool check_vmflag(void *addr, const char *flag)
+ {
+ 	char buffer[MAX_LINE_LENGTH];
+ 	const char *flags;
+@@ -419,13 +419,23 @@ bool check_vmflag_io(void *addr)
+ 		if (!flaglen)
+ 			return false;
+ 
+-		if (flaglen == strlen("io") && !memcmp(flags, "io", flaglen))
++		if (flaglen == strlen(flag) && !memcmp(flags, flag, flaglen))
+ 			return true;
+ 
+ 		flags += flaglen;
+ 	}
+ }
+ 
++bool check_vmflag_io(void *addr)
++{
++	return check_vmflag(addr, "io");
++}
++
++bool check_vmflag_pfnmap(void *addr)
++{
++	return check_vmflag(addr, "pf");
++}
++
+ /*
+  * Open an fd at /proc/$pid/maps and configure procmap_out ready for
+  * PROCMAP_QUERY query. Returns 0 on success, or an error code otherwise.
+diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
+index b8136d12a0f8..ec1f61f30fe7 100644
+--- a/tools/testing/selftests/mm/vm_util.h
++++ b/tools/testing/selftests/mm/vm_util.h
+@@ -84,6 +84,7 @@ int uffd_register_with_ioctls(int uffd, void *addr, uint64_t len,
+ 			      bool miss, bool wp, bool minor, uint64_t *ioctls);
+ unsigned long get_free_hugepages(void);
+ bool check_vmflag_io(void *addr);
++bool check_vmflag_pfnmap(void *addr);
+ int open_procmap(pid_t pid, struct procmap_fd *procmap_out);
+ int query_procmap(struct procmap_fd *procmap);
+ bool find_vma_procmap(struct procmap_fd *procmap, void *address);
+-- 
+2.50.1.565.gc32cd1483b-goog
+
 
