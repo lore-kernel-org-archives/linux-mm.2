@@ -2,116 +2,118 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 83C78C87FD1
-	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 16:56:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 84A4EC87FD1
+	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 16:57:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 27EC46B00AA; Tue,  5 Aug 2025 12:56:45 -0400 (EDT)
+	id 147D46B00AE; Tue,  5 Aug 2025 12:57:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 22F3B6B00AB; Tue,  5 Aug 2025 12:56:45 -0400 (EDT)
+	id 0F93B6B00B5; Tue,  5 Aug 2025 12:57:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11F096B00AC; Tue,  5 Aug 2025 12:56:45 -0400 (EDT)
+	id 00EFA6B00B6; Tue,  5 Aug 2025 12:57:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F1BFB6B00AA
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:56:44 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A9643B6575
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:56:44 +0000 (UTC)
-X-FDA: 83743307928.22.3708222
-Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
-	by imf20.hostedemail.com (Postfix) with ESMTP id D8DE01C0005
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:56:42 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WfTKXS9U;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.180 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E87206B00AE
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:57:55 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A2B5C11481A
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:57:55 +0000 (UTC)
+X-FDA: 83743310910.09.22D2664
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf01.hostedemail.com (Postfix) with ESMTP id E911B4000A
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:57:53 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=FqoJAqU7;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf01.hostedemail.com: domain of jyescas@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=jyescas@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754413002;
+	s=arc-20220608; t=1754413074;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JURikxFj1JPMIG8k9K4ujHkActIooq9Dw9bPvRdWPoY=;
-	b=Rt+IN1Y7UuorF6ygMKa1FLXRASHR+l5rEdyK/7JW6uyYv5v0hI3GsAvJFwWoitLlC6ahFd
-	X0W1cEpFqTLQHXOT4YCaW683hYcTdALuXhTDTP7sB8ik9ZpAsaxl0T/n7EHmHEhkq7Y9Zu
-	nOs73kgCme9Dcqt/Wir6JNka6TVuXTw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754413002; a=rsa-sha256;
+	bh=GEnVU5KAskdWYUBQ/kSGgyrV9wf/VcctSOFlUiJlPrU=;
+	b=LG5JnQhFmZrtlX4u+fxrwSssnKoVBSDxNw2Pc6eE5kTTqzkxuV4MPwCtWQKm4eQfoIq69Q
+	4VGc8nnZhWIE5dJECaHjN4KJpDwM2G2lmuWvqoQZRsjkmUww4cF7BWH5/YXwmpkhXr3djs
+	6zrydiFVcexAPzVP92leJxsKnQA6EYw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754413074; a=rsa-sha256;
 	cv=none;
-	b=qo8g1tOUBO4h9Si9aHEPjFIdwm1McxPvfKuHPng0dLGzriTBYqfi+eouILiosdQRC30QJR
-	B1F1fRT46BMqMSKr8K5H+FQv8KtRyBXJqcwXl7ASGIdq8hWn4MM/JBuwl2DcdprclsRCxT
-	yNAYl8otPX+suXJq/quglKZDoBKUC0I=
+	b=8IO7MvoolFejXcpjKTqTGdsjXYmn9r56wyW4zJOgOKGfxTuJ4WLQ3fjTU8IOc1uzI6sHud
+	J/uyGRiElEGnVRPyczWRmJt9fjUUA/vmONXpVU2z+JrgHkHAy5wiDECoGnJzb4HKsLXnQp
+	idl0xymCJcKmOGrIB6Fo2CLwJ0mEL6s=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WfTKXS9U;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.180 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
-Received: by mail-il1-f180.google.com with SMTP id e9e14a558f8ab-3e3d0cba6a7so21237035ab.0
-        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 09:56:42 -0700 (PDT)
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=FqoJAqU7;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf01.hostedemail.com: domain of jyescas@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=jyescas@google.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-240718d5920so6815ad.1
+        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 09:57:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754413002; x=1755017802; darn=kvack.org;
+        d=google.com; s=20230601; t=1754413073; x=1755017873; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JURikxFj1JPMIG8k9K4ujHkActIooq9Dw9bPvRdWPoY=;
-        b=WfTKXS9UPOgXEiEHonvEle9s/P03iDUlPrJgMDWuGo6WKmge2pfPARuw3aK0XIc4ZE
-         ZRENYHL0/XTZLVgk5XTp3XaucA6dl/85uZweF4q/p65RhA2tV7IJAgJD3oXCYUUB4bh7
-         mLhCubEuKCxYsdirBml6+PXq4X+MFqDt3wYERmkiU4ZQrABjU2j20b3UAhCYEt1NMPaG
-         ai1k9LJdhfTXCuLw18njahOSVxpNEhGyMA6raGuiawPvHGTQImamkxBBZoYufLdzH8DT
-         e5LFvapZOBCf0E5yD07a+Skr/u8z2uQIOMQQUY5HDQay5uvgQt7WEXJIk77K8Kw+yrrs
-         9b9Q==
+        bh=GEnVU5KAskdWYUBQ/kSGgyrV9wf/VcctSOFlUiJlPrU=;
+        b=FqoJAqU74XIb6my4tObbVAvNn0vVaXAMOGt8GzARKXxGELsG3KXPpPfDI1arG6v6cR
+         NeS/9tHKrYpxzhUfRH/2PwwlQglHuhWtnM20n4/DKb5wjzZvc+EyKYcD8cYswm3LAnn0
+         12sB7F4bY99HmCSM4CG4faQoftsSh2hXpTRJ3zcy0dMQOYbHWetn/FMoHMKYDE5ufB5b
+         f/GpvyG6SMnq306CxQ6kJa7y05z+K55nkhtiHXismBNeAWadYCU/jTyYt2GSVGE7Ecox
+         4mVvE+XwvzB41ZOEwRArb+QHfWmVzKdcmNveuZHCOWJAYNi1YKdntLCoaNBri1shZMDb
+         QIwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754413002; x=1755017802;
+        d=1e100.net; s=20230601; t=1754413073; x=1755017873;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=JURikxFj1JPMIG8k9K4ujHkActIooq9Dw9bPvRdWPoY=;
-        b=XCMjMuY60w/6n7QQdzTgTX8LcOkloCyN2O/P0Ei13zW8VFvMwvUH0Tg99+CocYxGMV
-         bRGIJn0Ld6k5cHUp6Wtc2NdecWm1grOx5612VPR+YXCQ8spnJWi8g3xasB824/BN+GJo
-         FgnK8WGyAu0byyoQTjtsm1nsZTIM6zUKylKiiSMPNEotEowvPGH/7szPRndmmds9A4aD
-         +Q4TkipsClCP2O8vDu2/eGYsSVlxBEpt0Eu+PEd+fB8twMkQmwytfh36pKEhMSJ+5ESS
-         sC0YIv6OJznrxoYQ2csUK/qE72GlToKdsnoIDs29knHISoXd+g5qQsibZy+NbbEI/lOM
-         xCzw==
-X-Forwarded-Encrypted: i=1; AJvYcCWILvWeFJ4tWEaVRKXgZMXfV1wWqct8BO+YR67NgxaVdv69f7PruIstvd0/9lFxjRYuILBwjzWCiQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw/gy2ONYHRDGjFzjFsn2Nza8WyX2sQzGleuBZXK8QGlkA7LTXQ
-	mxYXMynJqIC4WY60x+Nf2vOVTIYrk+aUG+ewOhEsz5MscD0NkCYnbI3H/1kI2P6BEdewzN1UkE7
-	lIbgKjrZsrSIk8ELAqcPprhKNfuJ/gG4=
-X-Gm-Gg: ASbGncsoCWldL3+T2++heUKvK8U/cfzXVFDpRaBxXzr46vnWGFCgrfM15a7qH2UM46Q
-	fbwdKFsym5jLso5MWi0VRU/Iu3VctWcDcR7JX3TVTBP0aBSD9d1XY/C3t49LVWVWXMYZOIaCDAy
-	Qkar0CEXYohkSiWztyDFiILVKEG3uWwIM92WzNYWQtgnLA0VzhYGIEoMhfKfo8s7ZtpTyRkMQ0P
-	u1mSXA=
-X-Google-Smtp-Source: AGHT+IFKWuYJwFL/TSEMQ2ahjFJ9+k6YIyKX3uyxdbHn8KcO8+Zy6yyb03qRPbsqbjWe3FwKP26ZJ/nzd0auZK37yTY=
-X-Received: by 2002:a05:6e02:3f0d:b0:3e3:fdd9:8972 with SMTP id
- e9e14a558f8ab-3e41615d9c0mr242900825ab.11.1754413001753; Tue, 05 Aug 2025
- 09:56:41 -0700 (PDT)
+        bh=GEnVU5KAskdWYUBQ/kSGgyrV9wf/VcctSOFlUiJlPrU=;
+        b=E0nnc220wUOpkfHeMu7HBVCyqxEfr8jHVvgCm5G7dpSeXEiaTAjwLXu650uQvCQyVm
+         Pre8Jg3uthEEP4DWG4j1BHcQFBHNCf8/rU6l1R52AXdi2IlUagoxdftSEpOP2pEbUwpO
+         FBJO6Z636P5i5c2D3wU+dkKHugHI6DToponqYn0nNwSU4c9Nvzkbn00utP+AFCVvrQP6
+         cqk1VSdy5b9ZWZE3zTRyH+dtXTo364pK6DiahHhYe0VdcijfrS2ZQ41vFnv4kTPm8gAJ
+         EJt0O08Qix9h26TOU+mfeEar++oKiXHBUKbauXyz/inkTsOm7oYQ0GLvWHNvb0RazkNA
+         lVpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVTPXzqf3bxCPditykPqbz+Afpa57WHldsFztYyuUsrjU4W1+v0LntFnUuhMsE+h68pzDm29w5WEA==@kvack.org
+X-Gm-Message-State: AOJu0YwBJGXPRS3CeEZdpQ70ycFa/LQ9qB25yGPPiSO6CrbsSpniFOx2
+	lvyCFezvBohmhC1YqUr/Zp6ywmxoCNNzd8lchFYRUl8ZbODgr2johb7533o2/C8ZC7TkB6+QF07
+	nUtmWaB0OQaRzhF324vu5YN93AoRClyLPbhmHJsyz
+X-Gm-Gg: ASbGncuZI+FVXix68vHgCq8A6k0y/psbS1yOF/Napq1gI4YFRSCt2snNAGEJTuB0wGi
+	ULiuLz8PVhFwDakOo0o2gEf/NPhpyKaYSvq7H9ubaJ0hpQLqKCifFWHdT2RrkpYdjpgE6Ia5tcq
+	6vvKUpqh+JeXY+naH+71+56BsKRAVWHuvzmIsl+HMZ8eNwYB8XKB6mxYpVW6Bd33iEoH4mXUWbS
+	WgIdpJqP3CtKeJ4vd5WOg3CImI8t2qS2OqWPoqO
+X-Google-Smtp-Source: AGHT+IFHALxRLkmhDed/lnhoMX9pMKBECdTY93R6Sdw6v3eSIKnTQjB+1XTGHNMoRl1Mtb+hpgpseJBwvLL9afKRuuU=
+X-Received: by 2002:a17:903:41c9:b0:240:a4b5:fe0d with SMTP id
+ d9443c01a7336-2428e9d9866mr3490245ad.6.1754413072472; Tue, 05 Aug 2025
+ 09:57:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250805002954.1496-1-sj@kernel.org> <761a2899-6fd9-4bfe-aeaf-23bce0baa0f1@redhat.com>
-In-Reply-To: <761a2899-6fd9-4bfe-aeaf-23bce0baa0f1@redhat.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Tue, 5 Aug 2025 09:56:29 -0700
-X-Gm-Features: Ac12FXwKyCyXaDbbCA1d5wEx5xyJYQALLRbD4ssEiJbWg--hw6b-8mhARiZxjN4
-Message-ID: <CAKEwX=MVBJ+Okfsob4Z30_5Y4P8c2DWoS1dYN4dF5dgp4+CexA@mail.gmail.com>
-Subject: Re: [RFC PATCH v2] mm/zswap: store <PAGE_SIZE compression failed page as-is
+References: <CAJDx_rgzkZognxWzOXJ-ZxdTtUaM3FT6bmpkwxMz03XiX3fKAQ@mail.gmail.com>
+ <d395b14a-9a84-4f25-b4f0-45e8500fc5fe@redhat.com> <CAJDx_rgrp1TpOt-iDcsSGRTL=qZZsK_dpKL1bSkyunPGcGXt5g@mail.gmail.com>
+ <486c5773-c7fa-4e19-b429-90823ed2f7d5@redhat.com>
+In-Reply-To: <486c5773-c7fa-4e19-b429-90823ed2f7d5@redhat.com>
+From: Juan Yescas <jyescas@google.com>
+Date: Tue, 5 Aug 2025 09:57:39 -0700
+X-Gm-Features: Ac12FXwewq6mHJ3iXKimK9YdL07pdhlid5gd2fFisX11Nn-jXdYL26T35WBbNug
+Message-ID: <CAJDx_ri==3SxFcuKXHpNjrtxbp0hLyhM+zXeJ-LQX38rfbUChw@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm/page_alloc: Add PCP list for THP CMA
 To: David Hildenbrand <david@redhat.com>
-Cc: SeongJae Park <sj@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko <mhocko@suse.com>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, kernel-team@meta.com, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Takero Funaki <flintglass@gmail.com>
+Cc: akash.tyagi@mediatek.com, Andrew Morton <akpm@linux-foundation.org>, 
+	angelogioacchino.delregno@collabora.com, hannes@cmpxchg.org, 
+	Brendan Jackman <jackmanb@google.com>, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org, 
+	Linux Memory Management List <linux-mm@kvack.org>, matthias.bgg@gmail.com, Michal Hocko <mhocko@suse.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, wsd_upstream@mediatek.com, 
+	Zi Yan <ziy@nvidia.com>, Kalesh Singh <kaleshsingh@google.com>, 
+	"T.J. Mercier" <tjmercier@google.com>, Isaac Manjarres <isaacmanjarres@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: D8DE01C0005
-X-Stat-Signature: tmxac6gnr7cafc1c9egz6aziczadaemy
+X-Stat-Signature: 4ddxm5nofantrg4qqm3p6y88atsyyah1
+X-Rspamd-Queue-Id: E911B4000A
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1754413002-823236
-X-HE-Meta: U2FsdGVkX18+ThGuMrL0K/Ln9JNFRpIUxGwWfQyNkqdX9z3w8L5NwjjoC6WmnyXU/vYDnQnfB2F0iQLjEnOc49h7e+KKh75NnbyxtpeiZiI/THAijCsFYqc2rkKjJCnOStc8cxSNCx3qSa11g2AkOfbP66uRZ4Gyf0Fhx3z2424fN9xGoFnCb+A0RRvThhFub9dwkyEpI3MkkbtPEpTCK9IxM6yzpWLAmvanMXibiddV1o9NCi+AxEUlq9HfyzRVz08yi7rHRAOF+6DXbSPRepHR1OfRvtLjLAnjkJgCbzL+fcj05SG3TNOPvgJyioXqeaY6O8IBHsUGT6y74B30pxzsjYH1kUEKg3yoXRZ1QC3myl3nrtTbjtlIHIrFd0mSR23zfX97A7bUv6lJx7/BuFjeNUUNlwUFmhx20sg30Qz8MPtsDCrKruPQBKp4+H5Ojs85coC1Qnf0NiQMpOCiHSiFcqmFLxplmLWvLwK8J8Gx/N9swO40rTVAWqHbXiF+o0E23kJbhWTiPVk8mGoWuPi7jnar3vW90pZRd33YFgO62ayf2ufMJLxKmmD38sqmwsQBAkfFaMQenT815rbYr/PNpMJs9/UD008mseTaQUbgkgk4DYAWPJ5MsZgG8dpMf+mHhyaOfEXRe75hgXndS2pOMVzFIfn3ptCHJd0MyNo6Pb/7+P+wjtz1gXxsomFVHeoyFBl90yMLLexWZcqYzor963D798kRzp838YRHpJ0pv7MaaB7McIdyiir9rWiRpRsnhGZ4CBhxsqw2yIrdCq4OH+BQ3ggwkvMOWftakJI5d4BH6D2a/1Xi1f77GhHMPvOha8IvYWNgFKeYplKJE5WoGmsaw7QA/O6uDrtFEr5bM+z21P9dPkXOwdc5LJ+w3Xwmd5TWr7z34U4NPhSql+qdYs+MVaZ5fFYb1A30kZatlK3UZPcH3KgQ0NAqJA2bcJY3MxdlEs7GLQ0kgCb
- iEFXTprE
- bPGgTbt96uYQ+AtZ5Qp9gfISGKq7LICJpsqtAyORka/Z/C81L1/nxJkNV5I4O0V2fwjNvzBcc5nevZc4bGz6U/XOH9w5/s1TH2tpyGfccOJDR07sj2UjPqB3WI1P3UXTSKdzdb7PGPV80zvGUsEXSe2G3eLSz7SdxC1T/EoP1gSfP/WZ88dVwP5N31BsZrUvalszp/C2pyq6qZpcUx7J8E++WnupcsW1Rg1TEORhZ3Q3jcg+cZQwlEoe/OXPb0ttdCGb1zttOmGrEC0QsX27PtySF4iHjCBQJmkBKl2emsKBsc3vuSjpyNQFuLNYpBYlOE7iXMV+RgPCgOCChVSrjo5ZfUmXpMpRrJS7UoiuCEw5QqDuGqOcff0qlgiFWFt2jvbHs09KpZWNZK3KYTMuhr9mxxEQJ7qftjKs6VHS3JI7aGyQcI4oLw8QheNh9A0qtTapSZ8dYfRQuD91njvRXYjzW1f3EGY9beEG3
+X-HE-Tag: 1754413073-342226
+X-HE-Meta: U2FsdGVkX19Wvl8nwabC5F58X4wHcD1IcPNb16E3w0qeOo8eBqN2cTf61j/ZPuTH/zQQzU2X6qPuiAQQB2ITqIMcQsLZJ/0vnbQd9MxMfVJuc5jQY/oFH8kEaFVp9nqOICsdWLxscxbZtlUHwv9wQOMJggQwry+eH/9S9PEmb/fcpanFbAltpCmOtmTQmh3GM8IWfT5eIuuA1zw6H+V3xYyIM81bBjITCqnDx7jiqiLpb8MZyScLQbDFenpPHpaZZdgRV33HSrmerhAqmDb7kOK/z7eQ/yvb+b7awpuWP4K1+1OedrvkDGXVkXM2Y+zQKxm/glTbGTK5EUgzD0f/plEAK0qeYoUbVsuUahaS/9qgMaZdMu94VFtzQ/wpFD9zX9d0f3zIXoVfRRidJMwpgmX+/4OTXaEgzljTz6hZ/KSWaRWS+vur133aObgPi5Lf833jGBAFayfFMUbGxOR0s2o5K0Edm7zzEZdHfwrpgbnGP+a28HBAPtTyg1C3e5Cr+dcTi+rMlKLq5t7/f6cqdGJNpW9KraIKFc2bTKXtROPF6+2g61+0Z02hKOprnqe/SijutvwbJMMdUVxeVkj2v7q4KitVJAr+nQELWXC/1ZiPdPLmcydrrjtDUeIv1EKsK9xMuT3q+lMZcnOcBac82hiMy8hwF3bbn3rJE1ebyQtXJ2kfvsbPaA+YU98ZPU5pRfLdp6d+VQnmydbLgfvJPsM5nCZY0HeYcDlsoK2PPysm4iJgyWtYVgMDaeXiJJA1NCaWksj1e9PUxu5iScUhuRUL6qtTs3xpFBnvx9t+cWuWnLQu3KvUcHmZFe+zjE4L6JsobFXSA+2zAwD3XSZubuR567Frq9fCAbbItM1aItaAU+iXo8UHw5Nn+efrVY+lQ50UBWnNzZxczOSBR0SOkF6qKOVWjgjXkgXtV7xBDsbNHVn5Tv7PMVfmp747T2hMg3Wamc+bn4nIyhdDJ2s
+ tvi7PdX+
+ Z1bWZmWUd92yzHbOuEGKiUU8KHd+Mi/G1UnztU5DVa3svl5QWkLpkBgroAg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,34 +122,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 5, 2025 at 3:47=E2=80=AFAM David Hildenbrand <david@redhat.com>=
+On Tue, Aug 5, 2025 at 2:58=E2=80=AFAM David Hildenbrand <david@redhat.com>=
  wrote:
 >
-> On 05.08.25 02:29, SeongJae Park wrote:
-> > When zswap writeback is enabled and it fails compressing a given page,
-> > the page is swapped out to the backing swap device.  This behavior
-> > breaks the zswap's writeback LRU order, and hence users can experience
-> > unexpected latency spikes.  If the page is compressed without failure,
-> > but results in a size of PAGE_SIZE, the LRU order is kept, but the
-> > decompression overhead for loading the page back on the later access is
-> > unnecessary.
+> On 05.08.25 03:22, Juan Yescas wrote:
+> > On Mon, Aug 4, 2025 at 11:50=E2=80=AFAM David Hildenbrand <david@redhat=
+.com> wrote:
+> >>
+> >> On 04.08.25 20:20, Juan Yescas wrote:
+> >>> Hi David/Zi,
+> >>>
+> >>> Is there any reason why the MIGRATE_CMA pages are not in the PCP list=
+s?
+> >>>
+> >>> There are many devices that need fast allocation of MIGRATE_CMA pages=
+,
+> >>> and they have to get them from the buddy allocator, which is a bit
+> >>> slower in comparison to the PCP lists.
+> >>>
+> >>> We also have cases where the MIGRATE_CMA memory requirements are big.
+> >>> For example, GPUs need MIGRATE_CMA memory in the ranges of 30MiB to 5=
+00MiBs.
+> >>> These cases would benefit if we have THPs for CMAs.
+> >>>
+> >>> Could we add the support for MIGRATE_CMA pages on the PCP and THP lis=
+ts?
+> >>
+> >> Remember how CMA memory is used:
+> >>
+> >> The owner allocates it through cma_alloc() and friends, where the CMA
+> >> allocator will try allocating *specific physical memory regions* using
+> >> alloc_contig_range(). It doesn't just go ahead and pick a random CMA
+> >> page from the buddy (or PCP) lists. Doesn't work (just imagine having
+> >> different CMA areas etc).
+> >>
+> >> Anybody else is free to use CMA pages for MOVABLE allocations. So we
+> >> treat them as being MOVABLE on the PCP.
+> >>
+> >> Having a separate CMA PCP list doesn't solve or speedup anything, real=
+ly.
+> >>
 > >
-> > Keep the LRU order and optimize unnecessary decompression overheads in
-> > the cases, by storing the original content in zpool as-is.
+> > Thanks David for the quick overview.
+> >
+> >> I still have no clue what this patch here tried to solve: it doesn't
+> >> make any sense.
+> >>
+> >
+> > The story started with this out of tree patch that is part of Android.
+> >
+> > https://lore.kernel.org/lkml/cover.1604282969.git.cgoldswo@codeaurora.o=
+rg/T/#u
+> >
+> > This patch introduced the __GFP_CMA flag that allocates pages from
+> > MIGRATE_MOVABLE
+> > or MIGRATE_CMA. What it happens then, it is that the MIGRATE_MOVABLE
+> > pages in the
+> > PCP lists were consumed pretty fast. To solve this issue, the PCP
+> > MIGRATE_CMA list was added.
+> > This list is initialized by rmqueue_bulk() when it is empty. That's
+> > how we end up with the PCP MIGRATE_CMA list
+> > in Android. In addition to this, the THP list for MIGRATE_MOVABLE was
+> > allowed to contain
+> > MIGRATE_CMA pages. This is causing THP MIGRATE_CMA pages to be used
+> > for THP MIGRATE_MOVABLE
+> > making later allocations from THP MIGRATE_CMA to fail.
 >
-> Does this have any effect on the movability of the given page? IOW, does
-> page migration etc. still work when we store an ordinary page of an
-> shmem/anon folio here?
+> Okay, so this patch here really is not suitable for the upstream kernel
+> as is. It's purely targeted at the OOT Android patch.
+>
+Right, it is a temporary solution for the pinned MIGRATE_CMA pages.
 
-Good question. This depends on the backend allocator of zswap, but the
-only backend allocator remaining (zsmalloc) does implement page
-migration.
+> >
+> > These workarounds are mainly because we need to solve this issue upstre=
+am:
+> >
+> > - When devices reserve big blocks of MIGRATE_CMA pages, the
+> > underutilized MIGRATE_CMA
+> > can fall back to MIGRATE_MOVABLE and these pages can be pinned, so if
+> > we require MIGRATE_CMA
+> > pages, the allocations might fail.
+> >
+> > I remember that you presented the problem in LPC. Were you able to
+> > make some progress on that?
+>
+> There is the problem of CMA pages getting allocated by someone for a
+> MOVABLE allocation, to then short-term pin it for DMA. Long-term
+> pinnings are disallowed (we just recently fixed a bug where we
+> accidentally allowed it).
+>
+Nice, it is great the issue got caught and fixed upstream :)
 
-It's why we insisted on using zpool/zsmalloc to handle the
-incompressibility case as well:
+> One concern is that a steady stream of short-term pinnings can turn such
+> pages unmovable. We discussed ideas on how to handle that, but there is
+> no solution upstream yet.
 
-https://lore.kernel.org/all/CAKEwX=3DNC65XCkmX1YzivEJtPc+sEJ3pLHUsYhF60QJnk=
-_OtpVw@mail.gmail.com/
+Are there any plans to continue the discussion? Is it in the priority
+list? Maybe
+a topic we can discuss in LPC Japan?
+
+Thanks
+Juan
 
 >
 > --
