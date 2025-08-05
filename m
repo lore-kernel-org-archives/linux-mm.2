@@ -2,79 +2,113 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2EA57C87FCB
-	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 01:58:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 097AEC87FCB
+	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 02:00:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B6228E0002; Mon,  4 Aug 2025 21:58:56 -0400 (EDT)
+	id A07D06B0088; Mon,  4 Aug 2025 22:00:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 967448E0001; Mon,  4 Aug 2025 21:58:56 -0400 (EDT)
+	id 9DF986B008C; Mon,  4 Aug 2025 22:00:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87CFC8E0002; Mon,  4 Aug 2025 21:58:56 -0400 (EDT)
+	id 91CE06B0093; Mon,  4 Aug 2025 22:00:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 76D7C8E0001
-	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 21:58:56 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 167C61DDA8F
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 01:58:56 +0000 (UTC)
-X-FDA: 83741045472.06.BD868A8
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 7EA2580004
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 01:58:54 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DhNJFuoR;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754359134; a=rsa-sha256;
-	cv=none;
-	b=n+yN3WHHyT4VbizS8VacXWm3q9oMOQk/QYN+95vb1FJihNLRJNw69ABPY2cN1zMfq5Hoi7
-	xN6X2C+X84M4XSzMA2D4O0EdINN8/3XJ0YiS0SWygENKtsab8wtz9QiQ7MiHyL822JiEiE
-	E1J1LA0Q2byVskBfMgHIGOKIVe0N3kI=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DhNJFuoR;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 822686B0088
+	for <linux-mm@kvack.org>; Mon,  4 Aug 2025 22:00:21 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 042E0136B7D
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 02:00:20 +0000 (UTC)
+X-FDA: 83741049042.26.9B1E36A
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf18.hostedemail.com (Postfix) with ESMTP id E6B3C1C000B
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 02:00:18 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=E5BPJFQD;
+	spf=pass (imf18.hostedemail.com: domain of sudarsanm@google.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=sudarsanm@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754359134;
+	s=arc-20220608; t=1754359219;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=c0fmMYUWW5aq/ZixeErEC6SbN3BrGz5bkgLU9+Wftc4=;
-	b=rM9TItGHuduyv+4JKcFoeYwjlEy9N2Fx+az3w1dl1naZVAPkTf2qIva1uNXnKbmWQZqnrn
-	QAzEnVZ8N62Aezn4Wfyvknw1YTXbVMRqNUCV4Kegf/m0np0jtBkrtOAXOtb0eWTI/pPz/6
-	4Ew4iT1aMoF/Y7Srhgtim7U3z08LIGQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 5E8205C5412;
-	Tue,  5 Aug 2025 01:58:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E494AC4CEE7;
-	Tue,  5 Aug 2025 01:58:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1754359133;
-	bh=zxcA38zhJxLeuNnCt3MgCVsaJMa24DpyresNs6gIDdE=;
-	h=Date:From:To:Cc:Subject:From;
-	b=DhNJFuoRiXsCswzz9Yv+4+0rdQEGQ/xTs8Jz7RGXMC84vNwKXe7FJVJhO5swRPb1t
-	 r1uueT6B5BPKX/kKiooz8YrF/LM8p8A7hfKiUPvXzadxjKW8c8h5RLU64JJ/12Tqj+
-	 CMGRsf0VrL9gyQlgYi5nfaPLjfLK4EuHQLEsWr+Q=
-Date: Mon, 4 Aug 2025 18:58:52 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-mm@kvack.org, mm-commits@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: [GIT PULL] Additional MM updates for 6.17-rc1
-Message-Id: <20250804185852.038ce90aa6f9a177c492b675@linux-foundation.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7EA2580004
-X-Stat-Signature: mu6tmrq3eqkeugzhtf3fa6dnbi6csj8g
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kSG7opwXv5FWsH2EhXuTn8+OP17SmN7esmHU9ZRgkXc=;
+	b=ajEZJWj4Cj1P1PX5fmfR+wzpIYPpWsNpDZHnFJt6aNvhZonGjNwNKPIfhZLJfdLZuEu5Mx
+	D+0Quuwq9oAIhPqhvIwwlztkoIzOSvNV9FQnjLy8px9bRSOQvYm9oBZveMvLTAGUniDPWV
+	Ps4ADKveavpGgM56dbI2Gnb5iEbzDa4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754359219; a=rsa-sha256;
+	cv=none;
+	b=ao2apEElsAVr6yo8iJ2eTGWNY2xZ3CCPu/71M+w9arLgAARRvCzWAIhd+2g+R1m/XF92wn
+	4fYNbQ2eaF2EtXemsE6N1H/uzkzHUMEs8479qgnStl2e8X7VyBtuNFZwZqKy03TARim9Uz
+	T7heObzU4rnhcS9ePkGitarU5f3bphk=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=E5BPJFQD;
+	spf=pass (imf18.hostedemail.com: domain of sudarsanm@google.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=sudarsanm@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-459ddb41539so6250895e9.2
+        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 19:00:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1754359217; x=1754964017; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kSG7opwXv5FWsH2EhXuTn8+OP17SmN7esmHU9ZRgkXc=;
+        b=E5BPJFQD85WrMjuDlGBfBQN5f8rA7oGKU9P7Y7yk3tIK8Oqf+T9lrv3aMEAJlrDiGm
+         dXxyusX+G/p2j6+QsgA1jVlpXTQ4szslznpfYiD4/9akdpFHck1wkp3/PT1sSpFzZ3Or
+         e9XxecrlvqvFZQDZ8O2g7Y814kUfTTrdbrVlp9r6tuFTEiIehX8CBNaDbEQVkCg95Nd6
+         FPglPJ3SJFCkMwcdSr6ctFTIrMKlog47JjDVXhjxqCZ73h9gvdXK2R9btqDK5JOAwKZC
+         xCWWc1pAIMjQYgImkHjU4SbZQecbgUWPraXJuqv0D6C3SYZXSXbfKqhRiCDHSM7w49cz
+         59bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754359217; x=1754964017;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kSG7opwXv5FWsH2EhXuTn8+OP17SmN7esmHU9ZRgkXc=;
+        b=aVjl8CKip8jJUbT/bn+I96HkBvaGGW3y1T0gOtZoN76S1t7aOlKtrnnTcpdiXW8gls
+         uge0uGh9lZ7+x2PP+gGP1amNNrIvpbNdar6aUFxsYU9XyDoBoyu2P18MqtiW8n4a7Gwa
+         oeuicKF3hbWaMpIdHllypfuNtaZQBGo7gfc8t/UTWb32rvT12vtnBVd55oFLuiQrpfQi
+         0ZMnpB3mZZI2Tv0FIjYQiayJUVV03gteZDWjsOLX86GD++XsRWspqGZsyRkCkITrOPHU
+         Iup9CaKq44+rM/OmifTeOQm/ULcJRaVDUvuiepdgi+Z2KtI4ix7qrLz1xiax5hsLzVyN
+         imNg==
+X-Forwarded-Encrypted: i=1; AJvYcCV8+BsWqa5Z7kM+oaIrXuB9yThgAlnmIGLRBIb/UhXKTihlU3yO5awZ+Z/zrL0GLR/QRV8BB4n7Dw==@kvack.org
+X-Gm-Message-State: AOJu0YxxsX0Obtr9g8xeV00Eb+FlIINfw96cB2zytas1DD/Y7mh4Xgbu
+	tLDT9CVRNLWD3AUsUUDGbUDyoYbRbfRugGMR9r6is5TBhxHKIY398ER4zbJsYbw5BVqYtnb3ga0
+	Q0EvCZJP5MI9Fkp5s/OFFhEUfqiNlIRndM43XZ45t
+X-Gm-Gg: ASbGnctJx11EOxfPylxmPwI2Nlb1C7bnn8LwBU0AzCmvEPHetLp0bThKPtCmowj8lSk
+	Y5i82fduSJmKExagwDe0OTfKZIteQHx2wSk9GzBYfjNrt9MRYciENy9+hyAfHM693krlagJSAtX
+	Yuk738EKyIy+VbjMsS8cf6oJ3NzE5tFmBB9DTjVVG4vj2GO8RVWwxb7b84rljnO8jQQSC2EfwHJ
+	kQU1bQo
+X-Google-Smtp-Source: AGHT+IHU8mICIqYoxrBVexKLpAl1lfHIFd4RBPzxvH9x1QdKoshXo7HiGb8ekOlyGWshojjeuYWAqUhNU+zNS+nDRmI=
+X-Received: by 2002:a05:600c:1548:b0:43e:bdf7:7975 with SMTP id
+ 5b1f17b1804b1-458b6b5ef11mr91572245e9.32.1754359217211; Mon, 04 Aug 2025
+ 19:00:17 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250801234559.1178521-1-sudarsanm@google.com> <8c609741-c2b8-426c-8f83-8a79022b67d7@redhat.com>
+In-Reply-To: <8c609741-c2b8-426c-8f83-8a79022b67d7@redhat.com>
+From: Sudarsan Mahendran <sudarsanm@google.com>
+Date: Mon, 4 Aug 2025 18:59:40 -0700
+X-Gm-Features: Ac12FXz0fbRx1mvWhuQG3tGn2Pn1eTjXZ_7L8a0gEEdaxYWLXKdLSI_NNmxxtvM
+Message-ID: <CAA9mObDx=oDeRAGJSdY3crMAYY=qn0-v2ZH9vsxkv3NcgUCL-Q@mail.gmail.com>
+Subject: Re: [PATCH v2] selftests/mm: pass filename as input param to
+ VM_PFNMAP tests
+To: David Hildenbrand <david@redhat.com>
+Cc: linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org, 
+	trivial@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E6B3C1C000B
+X-Stat-Signature: n6xytt39z3qh8p9p74n55c65k8cy37ef
 X-Rspam-User: 
-X-HE-Tag: 1754359134-188366
-X-HE-Meta: U2FsdGVkX18QS1CZb94GblLDRF9fXmEuadXR2SZtzEXgAL/7ZPIezyNVUHfKUa9tKiu7GJFLlgY8qbZZ6TD7udJ385Mq2HBS6zpBfuoEhA3pgF5nKt9eETerFKHJ10G7tSp7MejTRbgVYcbu2Nsf0sq6iMfgjKBmxKoYqwWq7Tjm8O7EJ1Y0siqwVbWK4VTgBppyxMNAv1MTtseUemXE512wQEtEI5/yKJjdrQIXr5Q0Ldbd3hqWVbEwT5g9WxJtN8wDNThU54vXn6TQO/8+oq9wJTuIjudmLpea0Ph+17juAHn49XxhdmM7RUTp/jRL+x6LCZHp2Z4INY4X7Y7YnDaCjuxj7zL9baX4CPTUDWM54la7jyvY/hroAbqNY3+8m51YqiD225NsKzE9yTKSONZlCTJeU3dXS9yOhwd1aIP7OMXostqG2Nogli8SHgHKSq3DVsV1oqv4dOd+IeqaOcRmnXd0qE69Kf28UNo5Dwx9tnDomyT7bek0snerMg8HsqhVILwhqvT07EW0mV5dQQjFaYfJOLxvM/DNVLEBYINs5RrATge7biHYnLkc5+QTXuSCdEdlRClOaQdsbCN3yv6yoIY8aWYUi9VGK42LasL9009M2YsNbWenWgOSX/j7MrGZZQ7ffu+GySMgk4RYDkg201u1yq0r+RsXOf8T/42v5eq96e0QdxFqssN2fdvLT3rBzq9aqm7gTnTPv/eqdnhu1KS4Ug4oukuFIaigzVNT61QPY21Tio0zGUGcsv2Yf0K9mG52wgfvi1bPWUqACut3tKw2irfMIkXeF6B0o1DCIWochnAkVU8CsoIkzO8iWpPMN0/XURzKoi/0UO2GMF1EhQFWT6+pnGd4WaxnzgHRo9F/99xlhNnHL3CwY6EwIra25xNlRTxTAnZ0RK7bJJ1oB5BbwSa42ZqOkJJSbwY=
+X-HE-Tag: 1754359218-73938
+X-HE-Meta: U2FsdGVkX18b7CdaksY65uo+SjxRPxPIhqOmXZrbDMIKZUaeG5I/i8ogvKUeIdk17suSdjQubldmD8+LfVlrbf1yTlhP7+Nkt0nIOHmpgBJsebtybP2PzQUtHNl62c5acvIc2zemkBoJp2j6xO+TWhgdqEDavh1K13iK3XSy59Lre9pWKIOV9TIAMdmIEw72tFW3F0z1XtSyF1jNO16VHo2Qav2iJ2ow/UfenBatKDiVAetjvz3EqOvOZvtC69l69j0ozK2TxPi6/U+3alMHLKzFpetjiKq+7sMWncMavuDV7goLoiUF6Ot0EHoDycwigXg9XWpsRE3mcYoEydUMMBb7UrqKR66MwPb42IlgZMQVe6yFDVxmhejgrZzF4zNSBP4KD2ME3mHc/BnO8sojO2JHR4Hqin3mXbAfZTexuOLqdEA4iNsKxpBlVgVk4Tm7EhbhKcfi4GZKy3T6NIfony0ZK7LQvdmPQoV5U+mcLVm0RyVNW/h2wdXWf/C6BNpvWQXwmFKg0Hqx8pa/m+rsFOrH31fmJia8pSa+pZ9JvZf0O0AwtRpF692ybyoLjUb8Brpno31tjm9fJurYHv/LiJvwSuWi3jA0m/CIN1URTXQQ9gO2XEDBP9RrOBwdT24T8WFjKEavIjm3sSh06NQ3XWtu0bEh7EUKGWcesCJ+z3EQ1UX0gH3nyNgr7OFWnhys09vxxA+PUfcksucf+SBwlL3OmqrFBOLxfLt8lICjPUU3QM4mgK3Wxe6dleqLdAUB6ryzwVPdrx614Pun0/13TEZ6WdxnVKk89zFVM46JZfc1suIHRok8281vhDEVPOdi6J5FiS5lSyi+qiKo2sUATwjiBdpwuWaJIgCFVSKweh3VoAofteGOEurCbarYpkI0VsIryh0m3ooS6M69X9hmjnxWE1BJUYOhCJ+dVTGli7gGW8Rk0CQCzjUbwA08un/MjmzcpwCpQ5XLs6gUxu/
+ Au0qGePP
+ qxlxb3ZHTdboLlIP9W5oEuSquXJfNeP9vHhL+yXR4vBN+6L6AEyJbyoWjeM4yDcviLt+FA/Mx42y0cjpDBdIqNdNxDG3F4xD3tmRTlcGBi/fSGdyqOUZpdsGZ6HpQ8DtiLwERTmgURO0EYXwgLYC8UjelO3VwFhwSZUVDi1q2uLWtCOsyCsdBMAPKi4Nji7TjIpuEgMP2ZqTghRLTaWxS6iLpJ+ox0WRZl7Q2sY9Sm1t9mo7AntR8dgF41R6FFCQlQuYtl80ZZTpPkID9Vb+lSQghNnVQ5aaXkLaK
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -83,159 +117,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-Linus, please pull this second and final batch of MM updates for the
-upcoming -rc1 cycle, thanks.
-
-I'm presently seeing no merge issues with this small batch of changes.
-
-Thanks.
-
-
-The following changes since commit af915c3c13b64d196d1c305016092f5da20942c4:
-
-  MAINTAINERS: add missing headers to mempory policy & migration section (2025-07-26 15:08:24 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-stable-2025-08-03-12-35
-
-for you to fetch changes up to a2152fef29020e740ba0276930f3a24440012505:
-
-  mm: mempool: fix crash in mempool_free() for zero-minimum pools (2025-08-02 12:06:13 -0700)
-
-----------------------------------------------------------------
-Significant patch series in this pull request:
-
-- The 4 patch series "mseal cleanups" from Lorenzo Stoakes erforms some
-  mseal cleaning with no intended functional change.
-
-- The 3 patch series "Optimizations for khugepaged" from David
-  Hildenbrand improves khugepaged throughput by batching PTE operations
-  for large folios.  This gain is mainly for arm64.
-
-- The 8 patch series "x86: enable EXECMEM_ROX_CACHE for ftrace and
-  kprobes" from Mike Rapoport provides a bugfix, additional debug code and
-  cleanups to the execmem code.
-
-- The 7 patch series "mm/shmem, swap: bugfix and improvement of mTHP
-  swap in" from Kairui Song provides bugfixes, cleanups and performance
-  improvememnts to the mTHP swapin code.
-
-----------------------------------------------------------------
-Baolin Wang (1):
-      mm: shmem: fix the shmem large folio allocation for the i915 driver
-
-Bijan Tabatabai (1):
-      mm/damon/vaddr: skip isolating folios already in destination nid
-
-David Hildenbrand (1):
-      mm: add get_and_clear_ptes() and clear_ptes()
-
-Dev Jain (2):
-      khugepaged: optimize __collapse_huge_page_copy_succeeded() by PTE batching
-      khugepaged: optimize collapse_pte_mapped_thp() by PTE batching
-
-Jann Horn (2):
-      kasan: skip quarantine if object is still accessible under RCU
-      mm/rmap: add anon_vma lifetime debug check
-
-Jinjiang Tu (2):
-      mm/memory-failure: hold PTL in hwpoison_hugetlb_range
-      mm/mincore: hold PTL in mincore_hugetlb
-
-Joanne Koong (1):
-      mm/page-flags: remove folio_start_writeback_keepwrite()
-
-Kairui Song (8):
-      mm/shmem, swap: improve cached mTHP handling and fix potential hang
-      mm/shmem, swap: avoid redundant Xarray lookup during swapin
-      mm/shmem, swap: tidy up THP swapin checks
-      mm/shmem, swap: tidy up swap entry splitting
-      mm/shmem, swap: never use swap cache and readahead for SWP_SYNCHRONOUS_IO
-      mm/shmem, swap: simplify swapin path and result handling
-      mm/shmem, swap: rework swap entry and index calculation for large swapin
-      mm/shmem, swap: fix major fault counting
-
-Lorenzo Stoakes (7):
-      mm/mseal: always define VM_SEALED
-      mm/mseal: update madvise() logic
-      mm/mseal: small cleanups
-      mm/mseal: simplify and rename VMA gap check
-      mm/mseal: rework mseal apply logic
-      mm: remove mm/io-mapping.c
-      mm: correct type for vmalloc vm_flags fields
-
-Mike Rapoport (Microsoft) (8):
-      execmem: drop unused execmem_update_copy()
-      execmem: introduce execmem_alloc_rw()
-      execmem: rework execmem_cache_free()
-      execmem: move execmem_force_rw() and execmem_restore_rox() before use
-      execmem: add fallback for failures in vmalloc(VM_ALLOW_HUGE_VMAP)
-      execmem: drop writable parameter from execmem_fill_trapping_insns()
-      x86/kprobes: enable EXECMEM_ROX_CACHE for kprobes allocations
-      x86/ftrace: enable EXECMEM_ROX_CACHE for ftrace allocations
-
-Suren Baghdasaryan (1):
-      mm: fix a UAF when vma->mm is freed after vma->vm_refcnt got dropped
-
-Suresh K C (1):
-      selftests: cachestat: add tests for mmap, refactor and enhance mmap test for cachestat validation
-
-Xuanye Liu (1):
-      mm: add process info to bad rss-counter warning
-
-Yadan Fan (1):
-      mm: mempool: fix crash in mempool_free() for zero-minimum pools
-
-wang lian (1):
-      selftests/mm: add process_madvise() tests
-
- Documentation/core-api/mm-api.rst                  |   1 -
- arch/arm64/mm/mmu.c                                |   4 +-
- arch/x86/kernel/alternative.c                      |   3 +-
- arch/x86/kernel/ftrace.c                           |   2 +-
- arch/x86/kernel/kprobes/core.c                     |  18 --
- arch/x86/mm/init.c                                 |  24 +-
- include/linux/execmem.h                            |  54 ++--
- include/linux/io-mapping.h                         |   3 -
- include/linux/mm.h                                 |   6 +-
- include/linux/mmap_lock.h                          |  30 ++
- include/linux/page-flags.h                         |   2 -
- include/linux/pgtable.h                            |  45 +++
- include/linux/rmap.h                               |  22 ++
- kernel/fork.c                                      |   9 +-
- kernel/module/main.c                               |  13 +-
- mm/Kconfig                                         |   4 -
- mm/Makefile                                        |   1 -
- mm/damon/vaddr.c                                   |   4 +
- mm/execmem.c                                       | 206 ++++++++----
- mm/internal.h                                      |   2 +-
- mm/io-mapping.c                                    |  30 --
- mm/kasan/common.c                                  |  25 +-
- mm/khugepaged.c                                    |  58 ++--
- mm/madvise.c                                       |  71 ++++-
- mm/memory-failure.c                                |  12 +-
- mm/mempool.c                                       |  24 +-
- mm/mincore.c                                       |   3 +
- mm/mmap_lock.c                                     |  10 +-
- mm/mprotect.c                                      |   2 +-
- mm/mremap.c                                        |   4 +-
- mm/mseal.c                                         | 166 +++-------
- mm/nommu.c                                         |   2 +-
- mm/rmap.c                                          |   2 +-
- mm/shmem.c                                         | 279 +++++++++--------
- mm/vma.c                                           |   4 +-
- mm/vma.h                                           |  27 +-
- tools/testing/selftests/cachestat/test_cachestat.c |  62 +++-
- tools/testing/selftests/mm/.gitignore              |   1 +
- tools/testing/selftests/mm/Makefile                |   1 +
- tools/testing/selftests/mm/process_madv.c          | 344 +++++++++++++++++++++
- tools/testing/selftests/mm/run_vmtests.sh          |   5 +
- tools/testing/vma/vma_internal.h                   |   6 +-
- 42 files changed, 1080 insertions(+), 511 deletions(-)
- delete mode 100644 mm/io-mapping.c
- create mode 100644 tools/testing/selftests/mm/process_madv.c
-
-
+On Mon, Aug 4, 2025 at 1:25=E2=80=AFAM David Hildenbrand <david@redhat.com>=
+ wrote:
+>
+> On 02.08.25 01:45, Sudarsan Mahendran wrote:
+> > Enable these tests to be run on other pfnmap'ed memory like
+> > NVIDIA's EGM.
+> >
+> > Add '--' as a separator to pass in file path. This allows
+> > passing of cmd line arguments to kselftest_harness.
+> > Use '/dev/mem' as default filename.
+> >
+> > Existing test passes:
+> >       pfnmap
+> >       TAP version 13
+> >       1..6
+> >       # Starting 6 tests from 1 test cases.
+> >       # PASSED: 6 / 6 tests passed.
+> >       # Totals: pass:6 fail:0 xfail:0 xpass:0 skip:0 error:0
+> >
+> > Pass params to kselftest_harness:
+> >       pfnmap -r pfnmap:mremap_fixed
+> >       TAP version 13
+> >       1..1
+> >       # Starting 1 tests from 1 test cases.
+> >       #  RUN           pfnmap.mremap_fixed ...
+> >       #            OK  pfnmap.mremap_fixed
+> >       ok 1 pfnmap.mremap_fixed
+> >       # PASSED: 1 / 1 tests passed.
+> >       # Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
+> >
+> > Pass non-existent file name as input:
+> >       pfnmap -- /dev/blah
+> >       TAP version 13
+> >       1..6
+> >       # Starting 6 tests from 1 test cases.
+> >       #  RUN           pfnmap.madvise_disallowed ...
+> >       #      SKIP      Cannot open '/dev/blah'
+> >
+> > Pass non pfnmap'ed file as input:
+> >       pfnmap -r pfnmap.madvise_disallowed -- randfile
+> >       TAP version 13
+> >       1..1
+> >       # Starting 1 tests from 1 test cases.
+> >       #  RUN           pfnmap.madvise_disallowed ...
+> >       #      SKIP      Invalid file: 'randfile'. Not pfnmap'ed
+> >
+> > Signed-off-by: Sudarsan Mahendran <sudarsanm@google.com>
+> > ---
+> >
+> > v1 -> v2:
+> > * Add verify_pfnmap func to sanity check the input param
+> > * mmap with zero offset if filename !=3D '/dev/mem'
+> >
+> > ---
+> >   tools/testing/selftests/mm/pfnmap.c | 62 ++++++++++++++++++++++++----=
+-
+> >   1 file changed, 53 insertions(+), 9 deletions(-)
+> >
+> > diff --git a/tools/testing/selftests/mm/pfnmap.c b/tools/testing/selfte=
+sts/mm/pfnmap.c
+> > index 866ac023baf5..e078b961c333 100644
+> > --- a/tools/testing/selftests/mm/pfnmap.c
+> > +++ b/tools/testing/selftests/mm/pfnmap.c
+> > @@ -1,6 +1,7 @@
+> >   // SPDX-License-Identifier: GPL-2.0-only
+> >   /*
+> > - * Basic VM_PFNMAP tests relying on mmap() of '/dev/mem'
+> > + * Basic VM_PFNMAP tests relying on mmap() of input file provided.
+> > + * Use '/dev/mem' as default.
+> >    *
+> >    * Copyright 2025, Red Hat, Inc.
+> >    *
+> > @@ -25,6 +26,7 @@
+> >   #include "vm_util.h"
+> >
+> >   static sigjmp_buf sigjmp_buf_env;
+> > +static char *file =3D "/dev/mem";
+> >
+> >   static void signal_handler(int sig)
+> >   {
+> > @@ -98,6 +100,30 @@ static int find_ram_target(off_t *phys_addr,
+> >       return -ENOENT;
+> >   }
+> >
+> > +static int verify_pfnmap(void)
+>
+> You really want to pass in the address, and verify that that very
+> mapping is a PFNMAP. (not something unrelated, like the vdso or
+> something odd like that)
+>
+> We have a helper in vm_util.c that might be useful: __get_smap_entry()
+>
+> We also have a check_vmflag_io() in there. So likely you want to add a
+> helper check_vmflag_pfnmap().
+>
+Done. Sent v3 patch for review.
+>
+> Nothing else jumped at me, except that phys_addr might be better called
+> something like "offset" now.
+>
+> --
+> Cheers,
+>
+> David / dhildenb
+>
 
