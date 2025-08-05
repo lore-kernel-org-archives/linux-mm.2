@@ -2,158 +2,119 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BC6D1C87FD1
-	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 16:42:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E0536C87FD1
+	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 16:46:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 607AA6B00A0; Tue,  5 Aug 2025 12:42:22 -0400 (EDT)
+	id 7244A6B00AD; Tue,  5 Aug 2025 12:46:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DFAC6B00A7; Tue,  5 Aug 2025 12:42:22 -0400 (EDT)
+	id 6D3366B00AE; Tue,  5 Aug 2025 12:46:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F5E16B00A8; Tue,  5 Aug 2025 12:42:22 -0400 (EDT)
+	id 59BA96B00AF; Tue,  5 Aug 2025 12:46:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 403026B00A0
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:42:22 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D98A1C01B6
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:42:21 +0000 (UTC)
-X-FDA: 83743271682.26.822AD53
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 7B8EA1C0006
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:42:18 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=JU5PD4dR;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf20.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754412139; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 454566B00AD
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:46:46 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E79B056977
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:46:45 +0000 (UTC)
+X-FDA: 83743282770.02.51FD1D0
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 1486480009
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:46:43 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=r7UKUOEe;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf02.hostedemail.com: domain of jyescas@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=jyescas@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754412404; a=rsa-sha256;
 	cv=none;
-	b=2cRIjzj5CizYh1l+8n09VJXpBXI4Rk2DCXd5yXki88qJ5S0rpgqSUDEr2VYyWNpWhAPX68
-	epkVU0U3hDkgzmp9/l0RxSE7eekl+I2ONv8kkN6oeEcpY9AODXCo1j0H7LGfPn1Z2PlBUK
-	L0EYkFyBH7ZtfG+3YSupflYE54Pdi/Q=
+	b=UNSs1R7hki+Vy1gBW4fRBWr8NgMHqIKtdUlNuuv/bS8JTxWbX7dudVMcsNbEsHH4ltWjyP
+	cmwc/SfUShqAG/kPf+yTmhxujY/fSUKdbFnD4u1ZFDtNwTl4+aDyeEomusM5cWh1pCU+mW
+	zuwTlH+Zu29sLnJw6u92jQxxJjeyLfs=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=JU5PD4dR;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf20.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=r7UKUOEe;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf02.hostedemail.com: domain of jyescas@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=jyescas@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754412139;
+	s=arc-20220608; t=1754412404;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+EcZ/fTlyps62ZbrmNumN80pfeJzHmkLMM1FXyVKWXg=;
-	b=V7xCYyrvPDUr2CW1Szo1WUJ++IuwB6LAlXokEj4ZENf3TIqSsRY0UkBcGezVqiaTEp9XGk
-	CEBjkT/tYvTlgt85pAlw+gF5oSGRHd9ePsoRLS2CRtfpI2M+4Lmng7P/PURNubBI0wrnO3
-	8FurVbuIOskbewux6Trd5N+vVUvQnLU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754412138; x=1785948138;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=NI0Pa52pJjxiroyoTscQkPI/Lrl+7gR5IHOHQEg0uqA=;
-  b=JU5PD4dR5nZ5HCFtwK16SszmsybiDIKmJQJNU88yckvBYvsOcX7bIMSh
-   7VYKDKY6pWzq6X+3exUghdCLPYXkF7SdKFxUsYr+jde7/+C/eaFnb5zEW
-   Z3j4xxRXjRIQ+KpgZEvUt6g3ZJ5yOcsGUho0CZt4+ZZhVjaCiVLb5s2Aj
-   8nuWR+O6zAcNbAi6VsWuecsN62MryExfu2hR/lZrdMinN/1opfgy4U+2q
-   dfCHtwAHHup1ZJJRdHLc9HTXgsrlX5pUlhFUpJB0xNBts6ibsxlDQ854D
-   x2vJNLuXCyMUeWF3DpN8yIPY64VmKinVoJaVpEmHHHrxiF+uYOc2EV5ts
-   Q==;
-X-CSE-ConnectionGUID: neiX91voT4WhDQxBXaPWtw==
-X-CSE-MsgGUID: VnFeJo3/Ts6vVzPH24D5hA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11513"; a="44309764"
-X-IronPort-AV: E=Sophos;i="6.17,268,1747724400"; 
-   d="scan'208";a="44309764"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2025 09:42:16 -0700
-X-CSE-ConnectionGUID: 2zo8793CR+SS/fNQvNF4lA==
-X-CSE-MsgGUID: Waiv5Ff0Q8u+GwM8Ts8yjw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,268,1747724400"; 
-   d="scan'208";a="164905002"
-Received: from inaky-mobl1.amr.corp.intel.com (HELO [10.125.110.106]) ([10.125.110.106])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2025 09:42:15 -0700
-Message-ID: <b810103c-ee95-4cc9-8b59-4dc6b1847d1e@intel.com>
-Date: Tue, 5 Aug 2025 09:42:14 -0700
+	bh=l0RxCTsXFF8391IAhRwoPNmaelsxs5V8yAF1l14fxkk=;
+	b=KWi/Zo0lAKU3nKuaWD3UolVeHofpBLdnLpkcE/t1fJhRqMGlP43TNHsHigJdVk3/VePQyx
+	Pqv7DLOikVxy44Ano5k4rzoMPVii/cMGB//bC7SRbQ6KC5SF5oricbBUZuc3mYY5I7sOdr
+	Iqns/0J2oUN+pupI+ElKjSHE500+RCI=
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-240708ba498so2565ad.1
+        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 09:46:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1754412403; x=1755017203; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=l0RxCTsXFF8391IAhRwoPNmaelsxs5V8yAF1l14fxkk=;
+        b=r7UKUOEeJXA5rDRugBIx8ymrrwaggjrnKT/Q6rK8nfDicidu/xzTjDnF17qWEOnDcC
+         KHa2F6+yqvmABqar3Dn9kXdqR/62qH2o1PoPsU+DtYn7VYfYTTf+RdDW9DW1ibU8bfbf
+         MGH92DmEP0MZ2ICPBwX4tqNdEhgv53EL4OXSZPZwSoXLSWXiFUX55klUMy+1IdIWA4kA
+         tfJ3E0YIVU7Au05rHtoPFTChaxJJOlOXlTYS20JL+qdaT/iV8AYrA5EWeBL+snYL0Nux
+         SoL5Oq1wKnl9bUOJLXxCN+TK1KY6vf4/AogtU9/YhSFW9e8ZnSBoiwrGph7V72eEywZX
+         aNVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754412403; x=1755017203;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=l0RxCTsXFF8391IAhRwoPNmaelsxs5V8yAF1l14fxkk=;
+        b=MrLmjbUmULHmhmbYIka/KfeiVGJsMlqyT2cUJIQnI9oyWKMuxpkUG9xo8eOMBq4yV2
+         N2xOX3xbSwZTG6c9ZLRKzWSbqb4yVJzvWQqANbgzP7Vo8PTogWpxne+r07J/8ewwa+ZC
+         B9f1QNk3FgktqcgfRNcFealRnJMOGUhZg3+UI47/F3AufJwNObma5+NRieaRxhYM6+O/
+         RtO8MDZDuxPITCndvKzybhtitQ+ggQAiClX75/SjpvKEhWByT+Djii3d2ht+pB2QYKL3
+         fOHnU+jA7eqVqlsf3NHzOEwUdbAa4aJsIVIbv59kHzW17uyW9krlCXgxEIr19iXichNS
+         jDZA==
+X-Forwarded-Encrypted: i=1; AJvYcCWLqrotA8xMQlrN5QHUUpF/I6QRx11KZX02CxRcgwLGQmhQLSDniQAoVM++MgV41ZaRyDAlh71mZg==@kvack.org
+X-Gm-Message-State: AOJu0YyWFoFZyD+vKRU2K0VPehVs7/6efcS9JPr0sxlB+FBS2h1Q8GlC
+	c0sDCNPlLm/ELJbypvlsg5ZbYSjBOf0wnDo+781oIxlqmjvDZKB0chrksK0sCgHUbND6ZGuxh3N
+	qDE1dvwQDUIi7D6a7XuHQ8jhN1QEtN4fTYdnnCWlF
+X-Gm-Gg: ASbGnct0QsXQ3R0ZNwy0PS6WVhXgR+VPXAC++UjqYKBxcaFLybowF6iQfEHO5xEcvWW
+	EApE+aoTSPChV1SrXipk+F+5jEKMrbjJW9xvFd8VPnUZZxssPfilwKVo212ChUAtFfprVvj3ggm
+	aLiOk9oZ4GCmfPOQXzi/loYHcje84a6QX5CqrqhENlyYxuoQZO3MLGk2SDm9Z8gGGVHb/skZE1X
+	Gqsw+S/Pyh6wcFTZdAo16b88GKLM/GPrOj55yAm
+X-Google-Smtp-Source: AGHT+IFbtH6J0AjO4QU4T/tefsfeSE0rL1OzSJr1N/DUHjvBaYU77HeoyM1+WKB2X0d+93TslMU104SV+ZAQGFLorx8=
+X-Received: by 2002:a17:902:ea02:b0:234:afcf:d9e8 with SMTP id
+ d9443c01a7336-2428e9ca60bmr3484235ad.7.1754412402595; Tue, 05 Aug 2025
+ 09:46:42 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] mm: add largest_zero_folio() routine
-To: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,
- Suren Baghdasaryan <surenb@google.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Borislav Petkov <bp@alien8.de>,
- Ingo Molnar <mingo@redhat.com>, "H . Peter Anvin" <hpa@zytor.com>,
- Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>,
- Mike Rapoport <rppt@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
- Michal Hocko <mhocko@suse.com>, David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Thomas Gleixner <tglx@linutronix.de>, Nico Pache <npache@redhat.com>,
- Dev Jain <dev.jain@arm.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Jens Axboe <axboe@kernel.dk>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, willy@infradead.org,
- x86@kernel.org, linux-block@vger.kernel.org,
- Ritesh Harjani <ritesh.list@gmail.com>, linux-fsdevel@vger.kernel.org,
- "Darrick J . Wong" <djwong@kernel.org>, mcgrof@kernel.org,
- gost.dev@samsung.com, hch@lst.de, Pankaj Raghav <p.raghav@samsung.com>
-References: <20250804121356.572917-1-kernel@pankajraghav.com>
- <20250804121356.572917-5-kernel@pankajraghav.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20250804121356.572917-5-kernel@pankajraghav.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7B8EA1C0006
-X-Stat-Signature: rp7oijg71zmhxds86sua1iogpgs7p5jm
+References: <CAJDx_rgzkZognxWzOXJ-ZxdTtUaM3FT6bmpkwxMz03XiX3fKAQ@mail.gmail.com>
+ <d395b14a-9a84-4f25-b4f0-45e8500fc5fe@redhat.com> <CAJDx_rgrp1TpOt-iDcsSGRTL=qZZsK_dpKL1bSkyunPGcGXt5g@mail.gmail.com>
+ <4566222d-6b91-4789-bdd6-61e3769f5dbf@suse.cz>
+In-Reply-To: <4566222d-6b91-4789-bdd6-61e3769f5dbf@suse.cz>
+From: Juan Yescas <jyescas@google.com>
+Date: Tue, 5 Aug 2025 09:46:30 -0700
+X-Gm-Features: Ac12FXy4BT6ZbkseE6fl0wteJa2HqcPFNTVMsUS4ZZOo4qkH5jwtMaLF9Pp-ohE
+Message-ID: <CAJDx_rjxGff38aS_MBwgh6LpDqp6G4zjUvg6tr73KU0HYfGvXA@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm/page_alloc: Add PCP list for THP CMA
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: David Hildenbrand <david@redhat.com>, akash.tyagi@mediatek.com, 
+	Andrew Morton <akpm@linux-foundation.org>, angelogioacchino.delregno@collabora.com, 
+	hannes@cmpxchg.org, Brendan Jackman <jackmanb@google.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org, 
+	Linux Memory Management List <linux-mm@kvack.org>, matthias.bgg@gmail.com, Michal Hocko <mhocko@suse.com>, 
+	Suren Baghdasaryan <surenb@google.com>, wsd_upstream@mediatek.com, Zi Yan <ziy@nvidia.com>, 
+	Kalesh Singh <kaleshsingh@google.com>, "T.J. Mercier" <tjmercier@google.com>, 
+	Isaac Manjarres <isaacmanjarres@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 15i8nubx4dmracngq9x1q37wmmit9idr
 X-Rspam-User: 
-X-HE-Tag: 1754412138-939853
-X-HE-Meta: U2FsdGVkX1+z527msIweih5y1veu0e4NxVxI2geBuH4jYWzZO9qUZhmRslLUBRlWhSjl/62c546C8mCQfw1kmohjf892JcSLzLIWfkZqO2MmMzzkD/gw9rlrFlocp69yiazaQWaXD+BQeo2aOFhgPFM4rFgtzUPD03jxpgngMb/T8cw3QZrXtb61HltafAyHn1xipCssKTetFYieeS5CyGfXY41nD5eM7X5yJo8jxZjrCSQIASAkCXegAVFNhCBuQpPRJqkEkAIWSBgd2HBMbQRzRMy1VrWl59qwjv+cFuQmKr4snZ0PaDMIbEc2KQlNGY1WAffczGPeL7Zwxq9WxHk6/yAU3neVOM8VdlUegc274ZLyQ8TzwEomsYMi1lb8yqwogrTmAFfdcKtDEiMlTUKT6Y9V/IVepoIhvj6TzyoBeAiPxnPg/TFBwGVXPSFa0OTEllP7N95gXjZRZIBY1uHrYCJ04bXEsCGhXxro2T+i8GDvrY4Q/u2/c7xlsBRfCbTQZ0oRnx00g1GA5wS1xS7hc/LjezvOajIBahL43m9ykbcPZqwFzL3AclFT8E0+JhS+Gzf88TFD+XgssRKr3orvR3A8N4GEBusug1rGZvbYsxWxTKqSOvhFIRbvDebOngbHOAQt0WuNyNuNU0it1Rgf0xXiJ/XatuCGmF/2JSHF0sfpsVfKxRbwvth3Rbyewk2j8k8/gDBJxu++SPfGwvxjTKImshS7QL0CaHsQZf80wnfD5v3+nwyULvMu9iIRsFU1friXyNG5lkquAh7I/RU9sfjhvw1PLSutXXQVFNj4MjIEGAD3FJT27ZhmSD2P1LKFXnnmja+LgEkhWfZXBYa+pcYo81Gel5dHLePx2gfSCgw/CYcC+lGyToo5qkvvQ4rpKpJlhZDjCXYzc+P+Zci6G6auC7v5akVtcgqWUJtwu+EHt0dUW0Zl++v8g7WxHEsNRwuO7rft4bvVFEn
- lHnCL20r
- Rz5kaycGs+hIaBDkk2+T3nceKsnkO51JDFGVBJQAW+OQFztZnEK7G2ukYC1mSnv14kmz+rKO+2qjYEWI7mlyX2y/nqJF1FROuJtJaj+nQfqSK+RBYYe8Ilz7q6Iu2KAG+5b8ImpS8jaFd5SNcK78jhv7Opr3fw1LPuuqXpEGuyklp9dK8Lu6dhVyBvngwzZ5mdzWpJRwciVG1y4rV62AVy9yYsX9dXxSrl+QXX8ZDRYMFNLxqzxjzKZMxYR4RLNSf2fvbgafez27/SUDz2/YvIJWbmJ8kvaPPkiyucO+wyaeYYsv9Q2qsZbrJ9HH+50UizonOIDyQ+AlQd8G0V1esNpD2SmCuHx2Q6wNdZwiU5O+j6rriNepk4MTBZSWN9kfTpIjx
+X-Rspamd-Queue-Id: 1486480009
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1754412403-659365
+X-HE-Meta: U2FsdGVkX1+HbUGiK9i+nH025vHsX2H7zik0n1LyOX2BPu/T9OX9wVvg6RIGLw0kAtDn9DTHL6CTc7DIhgDWZlq4jo3hcn6kTHhPxntsSsfNX18goHuWHXoM7YtkRKUGqRln+lcp15JjQrGmJq3u8Zl01OYZq5N/Yvyc9M+/X+WcaJUNWXrTc748SrA7/8Za6YRebk+/t28ylVoycILToq4uziQBkj5vxwH/Zn+fiIQ42SLTlNbJrvW1QeOCQ0BV1cmqIFPHUG/O7mGJDYKqos/SYr96e5IHB2d6CSNj6FPgep91dUN0K4aGzokWMMnz4o3Hv9jTRG8K4ils1OR6yL84XobpHKQGooeeyTfRnszFswosAoNDJxtrGnTsiRC9T/1haZr93Gz0dyHW2nQoGN0ojG6AscCAFdEgpAaSbFgfoSZSjeHFfJNYpuLm98eh649zM7xYUb6PxF6lE/Z6nIVS9OISlRdIcVzqZOipbnmmtEFbhC9hTnoixCIgGLi9DHfHI6cgotqLBTTQFd+WJS9J5dUOPkXsB6joOH/HUmx1b1TS57SFA0QDPpau/tIhBSbFbLrCtmRdXveTOO9tLM84uqjnz5DA2NerewKuvy+CYtGw/+ZKJDYp9QxOGzJelXOfAwP5lSCxLkkAqsxABQSnD08YJa7SaYLxuS/dZoWxyxnpeEZh9uXiF2P59Z8RYVKdT/+OwPctIiLWB1FUCSkyMxATs/AluiChElfYVuN/6OUiu4mQIwZF1J7/9n83DW6nddo6ojZOPsLW8XrIXZFNWGCiXS2w9iGditbDtbtbRHZscr50m1Ns+hieORRQg6aIfpoQtA9EIMKaETDv2C31G/wpZF+5V6KEakg0sySTxeydmNr061I5LkyPyNYA8Jyd7eqLWj6ZHYlX10CFhXCTh2mNEgUi88ipWjARZUWnpBGIthCn0kDoKVxxOwKi2rnulAP79v8QKEbx/hd
+ IyrKIcgN
+ +0KmlPfi5QSESD3h7da7nj0CEVfutrYQpFH0Kimar+fmAUQa0fxjrcB8R3DcYsoY0e/PyfxIRx5xrTeYqaztSl5VbnKZNZQY/47LOdEq0iG1CmuxP3gG9DWlkjrbUZ6LxCCdl0VR4aREmBY8jzsuDBWdY96d+dqx6/X+sfBtFq9zstMdsgqlwuL5oa69I5qj+sWDxZ0+f8+p/vRmGl2XVDw5ORFF6uE9FByAgyexayqlGhao7FEutSGActeuIE5hvGEOAvy1DWaA4bCD3mwHnDJwiCtKxXiN0/GdIe4B7nVD83fxMl+nCSX3Ilf5voz6OCkYQP3QU+CqsazyTJm3A7wb+N85k6NKLPx9P/zdVR3lYfGIxy3y1lf0swyNAN3Ek54ebO45QZLWQdBpyb8r/NHqTaMzhjuPB2iBY
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -162,62 +123,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/4/25 05:13, Pankaj Raghav (Samsung) wrote:
-> From: Pankaj Raghav <p.raghav@samsung.com>
-> 
-> Add largest_zero_folio() routine so that huge_zero_folio can be
-> used directly when CONFIG_STATIC_HUGE_ZERO_FOLIO is enabled. This will
-> return ZERO_PAGE folio if CONFIG_STATIC_HUGE_ZERO_FOLIO is disabled or
-> if we failed to allocate a huge_zero_folio.
+On Tue, Aug 5, 2025 at 2:52=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wro=
+te:
+>
+> On 8/5/25 3:22 AM, Juan Yescas wrote:
+> > On Mon, Aug 4, 2025 at 11:50=E2=80=AFAM David Hildenbrand <david@redhat=
+.com> wrote:
+> >>
+> >> On 04.08.25 20:20, Juan Yescas wrote:
+> >>> Hi David/Zi,
+> >>>
+> >>> Is there any reason why the MIGRATE_CMA pages are not in the PCP list=
+s?
+> >>>
+> >>> There are many devices that need fast allocation of MIGRATE_CMA pages=
+,
+> >>> and they have to get them from the buddy allocator, which is a bit
+> >>> slower in comparison to the PCP lists.
+> >>>
+> >>> We also have cases where the MIGRATE_CMA memory requirements are big.
+> >>> For example, GPUs need MIGRATE_CMA memory in the ranges of 30MiB to 5=
+00MiBs.
+> >>> These cases would benefit if we have THPs for CMAs.
+> >>>
+> >>> Could we add the support for MIGRATE_CMA pages on the PCP and THP lis=
+ts?
+> >>
+> >> Remember how CMA memory is used:
+> >>
+> >> The owner allocates it through cma_alloc() and friends, where the CMA
+> >> allocator will try allocating *specific physical memory regions* using
+> >> alloc_contig_range(). It doesn't just go ahead and pick a random CMA
+> >> page from the buddy (or PCP) lists. Doesn't work (just imagine having
+> >> different CMA areas etc).
+> >>
+> >> Anybody else is free to use CMA pages for MOVABLE allocations. So we
+> >> treat them as being MOVABLE on the PCP.
+> >>
+> >> Having a separate CMA PCP list doesn't solve or speedup anything, real=
+ly.
+> >>
+> >
+> > Thanks David for the quick overview.
+> >
+> >> I still have no clue what this patch here tried to solve: it doesn't
+> >> make any sense.
+> >>
+> >
+> > The story started with this out of tree patch that is part of Android.
+> >
+> > https://lore.kernel.org/lkml/cover.1604282969.git.cgoldswo@codeaurora.o=
+rg/T/#u
+> >
+> > This patch introduced the __GFP_CMA flag that allocates pages from
+> > MIGRATE_MOVABLE
+> > or MIGRATE_CMA.
+>
+> What kinds of allocations would then use __GFP_CMA? (let me try guess
+> one - zswap backend?)
+>
+> > What it happens then, it is that the MIGRATE_MOVABLE
+> > pages in the
+> > PCP lists were consumed pretty fast. To solve this issue, the PCP
+> > MIGRATE_CMA list was added.
+> > This list is initialized by rmqueue_bulk() when it is empty. That's
+> > how we end up with the PCP MIGRATE_CMA list
+> > in Android. In addition to this, the THP list for MIGRATE_MOVABLE was
+> > allowed to contain
+> > MIGRATE_CMA pages. This is causing THP MIGRATE_CMA pages to be used
+> > for THP MIGRATE_MOVABLE
+> > making later allocations from THP MIGRATE_CMA to fail.
+>
+> If you don't want THP's to use the large (THP-sized) MIGRATE_CMA pages,
+> what kind of such large allocations would be ok to use MIGRATE_CMA then?
 
-This changelog is telling a lot of the "what" but none of the "why".
+The large THP MIGRATE_CMA allocs are used by GPUs or devices that require
+large chunks of memory (have many cameras for example).
 
-The existing huge zero folio API is for users that have an mm. This is
-*only* for folks that want a huge zero folio but don't have an mm.
-That's _why_ this function is needed. It's in this series because there
-was no way to get a huge zero folio before the permanent one was
-introduced in this series.
 
-Can we please get some of that into the function comment and changelog?
-It's critical.
-
-> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> index 78ebceb61d0e..c44a6736704b 100644
-> --- a/include/linux/huge_mm.h
-> +++ b/include/linux/huge_mm.h
-> @@ -716,4 +716,21 @@ static inline int split_folio_to_order(struct folio *folio, int new_order)
->  	return split_folio_to_list_to_order(folio, NULL, new_order);
->  }
->  
-> +/*
-> + * largest_zero_folio - Get the largest zero size folio available
-> + *
-> + * This function will return huge_zero_folio if CONFIG_STATIC_HUGE_ZERO_FOLIO
-> + * is enabled. Otherwise, a ZERO_PAGE folio is returned.
-> + *
-> + * Deduce the size of the folio with folio_size instead of assuming the
-> + * folio size.
-> + */
-
-This comment needs to get fleshed out. It at _least_ needs to say
-something along the lines of:
-
-	Use this when a huge zero folio is needed but there is no mm
-	lifetime to tie it to. Basically, use this when you can't use
-	mm_get_huge_zero_folio().
-
-> +static inline struct folio *largest_zero_folio(void)
-> +{
-> +	struct folio *folio = get_static_huge_zero_folio();
-> +
-> +	if (folio)
-> +		return folio;
-
-There needs to be a newline in here.
-
-> +	return page_folio(ZERO_PAGE(0));
-> +}
->  #endif /* _LINUX_HUGE_MM_H */
-
-The code is fine, but the changelog and comments need quite a bit of work.
+> > These workarounds are mainly because we need to solve this issue upstre=
+am:
+> >
+> > - When devices reserve big blocks of MIGRATE_CMA pages, the
+> > underutilized MIGRATE_CMA
+> > can fall back to MIGRATE_MOVABLE and these pages can be pinned, so if
+> > we require MIGRATE_CMA
+> > pages, the allocations might fail.
+> >
+> > I remember that you presented the problem in LPC. Were you able to
+> > make some progress on that?
+> >
+> > Thanks
+> > Juan
+> >
+> >
+> >
+> >
+> >
+> >> --
+> >> Cheers,
+> >>
+> >> David / dhildenb
+> >>
+>
 
