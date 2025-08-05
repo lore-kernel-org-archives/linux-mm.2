@@ -2,92 +2,92 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C99AC87FCB
-	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 16:21:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 459C5C87FD2
+	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 16:21:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A6DB18E0009; Tue,  5 Aug 2025 12:21:03 -0400 (EDT)
+	id D53956B0089; Tue,  5 Aug 2025 12:21:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F6AC8E0001; Tue,  5 Aug 2025 12:21:03 -0400 (EDT)
+	id D039F6B0093; Tue,  5 Aug 2025 12:21:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E5BE8E0009; Tue,  5 Aug 2025 12:21:03 -0400 (EDT)
+	id BA4AC6B008A; Tue,  5 Aug 2025 12:21:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7BE4F8E0001
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:21:03 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 076AAB54B6
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:21:03 +0000 (UTC)
-X-FDA: 83743218006.16.03BDA14
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 1676580009
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:21:00 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DmVIw1op;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of bijan311@gmail.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=bijan311@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A36826B0089
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:21:06 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 50F30808DA
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:21:06 +0000 (UTC)
+X-FDA: 83743218132.12.499E0AC
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6BB42100003
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:21:04 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=B2ez0PVU;
+	spf=pass (imf05.hostedemail.com: domain of bijan311@gmail.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=bijan311@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754410861;
+	s=arc-20220608; t=1754410864;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FTHZI7K9+4GxRlV7Vt7J0J39jlZPj/iqR6Wo5lhHevk=;
-	b=xIgE4rfF7Zdxgp3B07pegYpgciHEVDwwpSFKroz4utw6uvMECxjH7cr4qVxGicgll/sTPY
-	NDXEjm8Yo3nBLcfYJqSd3BX6uLx9deU8m+bwKaGLsKXSnJdWP5tP743Dmi1bLxkth2uUhP
-	IT55xU4zHLqkNv8+HbZSbTPYrbuopBQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754410861; a=rsa-sha256;
+	bh=BjNpkvSXW+v2m5Yu69UUOTo/LokqTIxoGaybS6E7Cys=;
+	b=rYr/KwyrKoldNIHxDMCOxabAiYaP2tEEFV6EPnaiYElI72uWQmKYbO6qm4+bR33BsuaRCz
+	Qiqb9BXAaLABzZyWmS6c+ms0+baFHgC0VVZWf+UAdOfiVY4xtNduc8/X+V0JTQx30aaRhv
+	nPAJSZZePR+FAdLve6clomX96BeDWVA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754410864; a=rsa-sha256;
 	cv=none;
-	b=u/zLdztXgh0cIiK8xMxEXhGD8KX88ugjdiPqFRx2d7HJuiHui1jepy2FY1bRkKfeWIKYaG
-	NnfNSs1tjlqA5a4ubQomckFDig1KN0XqAMzzGGPlzvfIl2Pm/TV2J+BsrHhd0qtEr7Il1G
-	R9d4kUpYaEGZhq8E8HOtK+24WEeoLks=
+	b=6KNFiTcM366yJN5kJh1uGT/zAa4MHAm7+lzvwNLYy5f6wRnBTUMbiXbRKSDupq2nW3jfaX
+	/KA1TWMO7xvtvvksMvIvmsvKMwqwaMvMLIvwyZk1jJpVKFGa3oL7J7fWpmS3CcVj1oOQJf
+	2TbbtraWxmoJMzO7dn1MhbDkjKjj0lA=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DmVIw1op;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of bijan311@gmail.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=bijan311@gmail.com
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-718409593b9so57959677b3.3
-        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 09:21:00 -0700 (PDT)
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=B2ez0PVU;
+	spf=pass (imf05.hostedemail.com: domain of bijan311@gmail.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=bijan311@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-71a38e35674so27802317b3.3
+        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 09:21:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754410860; x=1755015660; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1754410863; x=1755015663; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FTHZI7K9+4GxRlV7Vt7J0J39jlZPj/iqR6Wo5lhHevk=;
-        b=DmVIw1opES1fhxnSOKYaaJOkyW3eI91+5yMOVDUY6hj77xr5L67t1Sy569wjC6ZdX3
-         17WP2CJAvxlRlCu1UwR4ymZaI/MSnfH6cptXkQQPPiPlUHxafaorWotcl45gBvLKB76T
-         8uDpFM6R6eMZPhF8KUXGA7W7zNmQKdiDtroPbz0kHR+Yk522mxR+CXU3mVJ8ItnprzZi
-         +M97JF9FwX7ilfnPyZ8QDmF01umG9e7vV1JvOIB4+2vfZYHnVLlK/48wAcHdDrKo7uNT
-         jdNJy2fCZcT4KWgkx9QLx0hAHZViFY509/zopJeVvdmsM7tHJIcnWckA2cRtI4JYGMmN
-         mUzg==
+        bh=BjNpkvSXW+v2m5Yu69UUOTo/LokqTIxoGaybS6E7Cys=;
+        b=B2ez0PVUXc4jRg9z5bfwsHwBWJ0Ly6fSwNukt5/aTvI4rt6EjSVjYyQAdYKo8goQZ7
+         Si/K7fFbqrr20a/gPlyE5WJt2D3SwS1oR072naacdolbQfGjwBIov3N7iKE3TcFzLrl+
+         0ufT3w/Bb7tLLZMjt1d3d1pJSad1VTsfPhUwbP5TNeiyQ2LBkGr/1/t+pIc6QNcr/ELo
+         vPqe20hKzDatzTRPbnj5AvnI02IJESrrLYiOehOhnUJcVDUJfNvjcf4HIRK9xBeq7+DH
+         tGj/ffUE88bjVIQbx6r9IIFyOomXuVzhrsYLSijbytxgFmzweTc/4BWW+k/cvwRKyqES
+         o1NQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754410860; x=1755015660;
+        d=1e100.net; s=20230601; t=1754410863; x=1755015663;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FTHZI7K9+4GxRlV7Vt7J0J39jlZPj/iqR6Wo5lhHevk=;
-        b=EkGlxPTbjpYXJ7ep71lu9lsY1gfPtIpul2aUZKQbgCkvw8cOEhmHQJxYT9O/2BDoSq
-         InEJ9G8BWz30TlXqDuGupBDTPnsDUPhm4Gx4ErSwOsDT2geuXB6bv82P1lCyyVprzSUa
-         MpfV+vRBDj+zkGl5keh0oe6MZTuVKJmMrY6mrsfiQe9z0MCHJYkYW+D1VRWd+l9Q+1uN
-         oa5WZH6sARpCZwvOhiE8Jy61TYv6sQ3zcDdZpIcnwa4dkeXzxXU5T0RCQkZmAcsprfbI
-         TTdcst6Hma0rcHqRNgjDNcyRsTspm3jEJVKMNV+rJWZ+5WAD/18px5XfG7r+tYUHxszF
-         edaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWKz83rjpEjfy0bAEdsx1X9+wNoCGRbHey72B6PifVl2gZDV8IOkDMsG3BYiUN/BUQMKqmpU1WWNA==@kvack.org
-X-Gm-Message-State: AOJu0Ywl7sUyFpJ675bpzx+VmmOpCmJ7m9UfAqXUgRP7H1L/nrw/5vnG
-	OXLRLjbV0hqZ8UZ58f3shjOaBgOjAMYq/9DJRS6CPcGO55zVS82gwV1A
-X-Gm-Gg: ASbGncta26CSX76AOS4pvPbgzOzNdFFn0sFRYO8US0ybKFB+t4JDvob3mb/kh0Vmn8W
-	m6bbx1Xd92BSuV4mh2rc0NZqNYVhrriSzTucWIGjLESmk6KHWkczl1A1XTZC7Dh4T81HU2lyABf
-	DCtbSDFWkENouC/radnEiEyhYNVbk3V8rTFbLswD/M+3nmsoQ97CxHVcrt2FwfnAXFjvO3qsjwZ
-	mz9SnT9vK77NtIO5SG0SBkjH+TweGs0s333OE69SPzccsSULaYQPjoU069OqhVXuxauPH9qvkvq
-	0DB9WWd78dVpFzcGKKkPhwUjFBYkr3dW9z+CLMCofUC1OoDQLYOQWRjoftlSK8Pr4iHZ+MC3IW8
-	X4nyzKnYq4acpFwlMc58qznGx+isBajAWofKn6jsAAnQ=
-X-Google-Smtp-Source: AGHT+IEvW39T/sWp90HWrVkoCtc3N9MROV6TVWwJCqhkh0uDVhaEZjbOJNyDmjL1eVTf6OAsvjkH2A==
-X-Received: by 2002:a05:690c:6085:b0:712:d54e:2209 with SMTP id 00721157ae682-71b7f5f743fmr175406147b3.14.1754410859891;
-        Tue, 05 Aug 2025 09:20:59 -0700 (PDT)
+        bh=BjNpkvSXW+v2m5Yu69UUOTo/LokqTIxoGaybS6E7Cys=;
+        b=qaClVqoNuE0WwjGFGlXnzZuZmubeCjesz6n4R9e6rCVVv9SMyr2q6+tz1TgGdNt+me
+         lwQVpVbyw+Pqexwo75PlQTqeZFNfeEdUHNv/DVMUpkoiC8kqanLu9xsmuYJrXLlI3bGP
+         UkKpEy86H5c2iWJ0OZw2wrAwGUhvS+KNuqUfKqC1McspgZTCgpRBBcAEYu+6dTzfw/O7
+         KeNJez8GwUYh6BLd0s4kCjvSeEsgKb9PLiS3XFnn6RnqapKDgS02SYcd1LmWOQ5VSZ0r
+         s1Z06K8EH4rxrzuuJ7M5X6Ovp2VYRXpewSWHutDRjJxPB2El8dhx8HpFqjg181CIDZo6
+         /u0A==
+X-Forwarded-Encrypted: i=1; AJvYcCUTboUjle49KjRSj5VT+NfNG2lWmmOoj+mJ+L07rAh3H/yfONcNu+ER8Um4IHG8ROZ16kU28vE3WQ==@kvack.org
+X-Gm-Message-State: AOJu0YwazCOqJH31JhOvFxFBo4w+8sTpVmNuZ8kAdc6k8MWQVltpXJz0
+	dWmK7p5cvbJe/EXXWD0rxlVAdFJubSeqm1cDpNzsZ1yjxTOL5fTdI6An
+X-Gm-Gg: ASbGnctbzoaRFA++hrKofiwjvxOyuomPA4XLhjhZji3a+310LZrK38fWA9eCLagYKVG
+	Fq1YKTFrU7sDYtQRyJ2wWdOUKF7eXbQkXecCwWNgD/RfRyjMD3ut8DKCV87cZW6jxSFsUSnBJbg
+	3e6RQrbh3mMCr0gBGudvygyoStSxOYxGfiuUnpTD/uhlwdvYE9OWHDYdVh7tRNWT25OpaFoBz8G
+	i5geGEOEXe00UHRe4EQel5dZAnwZ5st8zkUhVi+ivegDg6ndCS+05r3CekQxS0NXJoX81eY93OE
+	FoW0+SMipi/HEOlIduxe/gL1ipJ6tJvEgW3sgjZfEMgyVUjEdY5tfPnR94H0I6Gwu7iK1mAG+ME
+	SP8JhOGdj9/D3inymRU428gaKWvMVM4afErYLYXNuOXQ=
+X-Google-Smtp-Source: AGHT+IEQM0QlTGhxyMPibEvEMDpbAzpmE9uEnXqB1fB3pRbIadxeRKgx9pmHX+QFoHCpre2n2PEesg==
+X-Received: by 2002:a05:690c:8694:10b0:71a:34c6:706 with SMTP id 00721157ae682-71b7ed8b056mr123189357b3.17.1754410863480;
+        Tue, 05 Aug 2025 09:21:03 -0700 (PDT)
 Received: from bijan-laptop.attlocal.net ([2600:1700:680e:c000:2c65:e45a:e7d5:5f0e])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-71b5a5cdfc5sm33098757b3.77.2025.08.05.09.20.57
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-71b5a5cdfc5sm33098757b3.77.2025.08.05.09.21.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Aug 2025 09:20:59 -0700 (PDT)
+        Tue, 05 Aug 2025 09:21:02 -0700 (PDT)
 From: Bijan Tabatabai <bijan311@gmail.com>
 To: damon@lists.linux.dev,
 	linux-mm@kvack.org,
@@ -97,22 +97,22 @@ Cc: sj@kernel.org,
 	Andrew Morton <akpm@linux-foundation.org>,
 	corbet@lwn.net,
 	Bijan Tabatabai <bijantabatab@micron.com>
-Subject: [PATCH 3/5] mm/damon/sysfs: Implement a command to wait until schemes are applied
-Date: Tue,  5 Aug 2025 11:20:20 -0500
-Message-ID: <20250805162022.4920-4-bijan311@gmail.com>
+Subject: [PATCH 4/5] Docs/ABI/damon: Document new DAMON commands
+Date: Tue,  5 Aug 2025 11:20:21 -0500
+Message-ID: <20250805162022.4920-5-bijan311@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250805162022.4920-1-bijan311@gmail.com>
 References: <20250805162022.4920-1-bijan311@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1676580009
-X-Stat-Signature: xwufgxihu984bp7krhze6n6n418rrmdh
+X-Rspamd-Queue-Id: 6BB42100003
+X-Stat-Signature: 5pr1y4qjmrsbzirqypnqdnykhx76xs36
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1754410860-879866
-X-HE-Meta: U2FsdGVkX1+wWisqqe21EiWcu1f5dfjBOz6X9df5kAj1ir2Wk1rFEow00Lndr2S3949m4XURzhCkCwrDyfluZiWQxiTfAZQpDcjknOuygLiimHoaHzJyVk5+IuyQgOmyuSzBplmJJSlLYiaDfpTW+XSPnTp9mZG0KGI14QG5DNe96/MqF05Tv4keQ5rnIcSVkpjGL1VYL6vIKhLzV4E36xHtBHA6RGr2W44Hh07SIbic8OtXYO4jDXRtizLg380OnArcMUXIEOBz/ekuo6rWvEVeX4MxllBfJ36Ox6tewjf7xfKtDeZwctw9QArfPwioUbetR16d9PGWG2iUHL9VDiAH8WSQygVrpsJn8I0FrEOuQ18npuxD9hc56m5th0CXAVvvx9t2J19DIJrRbv4+R0fblMKhw6SNV1aQsqexw3db7Nzgu9CmHh69u4kFb8YKeYMRwaxoj6ExqCIA2lJuCgi+Ec73VYP3iom6q1DVoHwVZVDPuUe+r8nc+7sq43ddCVy7ZX2YAx7W3eVLKhpM/CefLQtSttFW6szPerx1E9+FReLaAhZCEa7vSeNLbgLdz/rMO3KFbZeZ+ECGBin9vYU2a/YVnQan3Xpjcwrkv3CdWzb4j8jKwUbtgYI7sHom2D0wTD1BdYa0xI9xvBu0QbHBW13U3qrVjofJBs0bH0HDqRmUjJIOzLI/cBNHp1UMpn2b8eAfjKTCrS90cO+1OlmCjWuHIdpoiiDnCKcaHuTUVNWXkF+7qWeTALFadlll/DTwOj4h5JwoqEsaJuopM7YcJ1G+qFTBZVcuSTC8l2Bf7MlLyxfw/vKc4uU2vz6NAOBOvVrYMoZcvRvmeM7k0z8oQ+hKOzTGZiHOCpvOIPFBCNkDrpS5O+PB/R02MNI9qRG3I86Zde9wgKCwYFTG/0f6LSNyiBF4zqrOnS4CflmsOlSCBKfo7CnQHtQgk+Snpl0txjhb5PRByVFkLu4
- 67moxHcD
- K5MfPkPGoR38Om0lgPR7BhqzxB3K06JP1arcciME4g1nvPxZyAMxVDsO2mw==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1754410864-115976
+X-HE-Meta: U2FsdGVkX181QeH8iFDF/kMYsdpfT525vink8Lvu6I0J1TZYoLa4QBnTd09kiznjiOzvvDSgE1po2mYYAznkck6rnE2qS5qav5sb2T65pXQUQ7i7MM8gvaYjlTvLf2rs7eqMWkSsl634Mvh6lGcI6VQNGuo4iKEPks69Gfv9A44puA/zA0dwiGUne8lNGpc/EXoQXPnQAXGDcnvVIN3QWuJrTGzV769JjhZ7/hWWpeFAbhhseSEFscnHnQp3rnOEwU3nBWGSh3uAK5njb8O/iu+0Y1ahd32PzJGr5w2xps+6de9D7Ac9dXoIjSoiDnxQsbScfQRJN93eNOg4p7OCgbguwlxoS/VaKnNCF+97PlfCAkkXY56DzCdbwPSNIcVFPcAuo2ASkpsMtWkgm8DUHnV2eapObGJdC61tE2luxyT28dkurjWiI/6lI0YDF5KPmaIveKfdBepOfgVMht+ooidfWQyc+Ivm2m1qgB7SmHuFkQwJDds+nbaC8EE8TuYn+GZut/prif/Mo07zSnhSsylCNfPGe/Op030oCdqzfTOZfSwcRqA1THkQtI0/LcFVhDVvuFt62eqt78GLCHOaA5smT8fVHDhlVd1GiMxPBOHmvEs2VdCUQgmJ0tiMrjmfRMJZO287RHtHguseb48fO9v+bHUTGl5+hqrjQV2xzHwW+42IieG+A4lWBlHCbqxUL5vbrRI8TQZJQmKb2w7A5Nj40AR5nfPfRjA/qfQci5hFIWV80o/AH5kamJgjFNKef9Y6aMGpfvgM35A9DqZv6XvLFSjAcjgYkwhHkouJ+edbtYBKUg+k9h5yqhX0sISDUUGXm5XEb9bwxmqFjoouweCM5XoVYPVK9HAxfVZ0xR/qtbzhV6A/Z6ZiphbCX4hFrCG5b8ScACH+FVC1/O8Cj0xv10S6xrl27kDYK7mEe94a+D4oGMdR7dO7jSgSDJLegDIWOpiINep3SLDm20B
+ ZMkXIiqu
+ bUmTqyjYz+ezOgy8IaMOjGWpv72iNNVIqCraBXjfuGw/XMoSnpNz1yqJBc7Bc0ZI6Z9GCGPTufQp3Vee+jLTw0+5oK4NQOrA3N3syI5yoUAFLoj9vgn3tFxkX85KYFtbIeEoOwIBdYt05jc8GlG4k4v6BKXs445HRhFo5qckAGGa0wtvUO3N2mDLl6UgOrPo4u9tr0+CfWktNgtbnBbwvbugRUNv59cuGgl5ilpkViwJDltdjbdXyVSvD6FGZ4rNJkNbKJTKBC3mQQ8qE4DNCcxqeV9Cnw4/6//p7fq+waoIO+AaMVsK23y5WDmmorZGA3ykClhX8PYGp7muGViZVNChXfTVtYKH9ejrAlHuEez61k3FWwCsDxCzLSNU85VLix6db5A9zE4AqdN+JwEBwv7EOYLmY7Lku2B7PPIztl5feGRhnSoqaFzvOiOJJh9aCpk2SkTaPtnVESUA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,100 +123,47 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Bijan Tabatabai <bijantabatab@micron.com>
 
-Any DAMON command that uses damos_walk() internally, such as
-update_schemes_tried_bytes and update_schemes_tried_regions, waits until
-each scheme in the DAMON context have finished. This can be useful, for
-example, if a user wants to know when new scheme parameters they've
-committed have been applied. Another use case could be if a user wants
-to record the system state every time a scheme is applied for debug
-purposes.
-
-This patch adds a new command, wait_for_schemes_apply, which calls
-damos_walk() without a walk function so that all it does is wait until
-all schemes have been applied. The same functionality can be achieved
-by using update_schemes_tried_bytes, for example, but having a separate
-command for this avoid unnecessary work. It also makes user intent
-clearer when used in scripts.
+Document the new commit_schemes_dests and wait_for_schemes_apply DAMON
+commands.
 
 Signed-off-by: Bijan Tabatabai <bijantabatab@micron.com>
 ---
- mm/damon/core.c  |  3 ++-
- mm/damon/sysfs.c | 27 +++++++++++++++++++++++++++
- 2 files changed, 29 insertions(+), 1 deletion(-)
+ .../ABI/testing/sysfs-kernel-mm-damon         | 21 +++++++++++--------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 07b4fc5a9790..56a13d16e4d1 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1731,7 +1731,8 @@ static void damos_walk_call_walk(struct damon_ctx *ctx, struct damon_target *t,
- 	if (!control)
- 		return;
+diff --git a/Documentation/ABI/testing/sysfs-kernel-mm-damon b/Documentation/ABI/testing/sysfs-kernel-mm-damon
+index e98974dfac7a..429947de9aba 100644
+--- a/Documentation/ABI/testing/sysfs-kernel-mm-damon
++++ b/Documentation/ABI/testing/sysfs-kernel-mm-damon
+@@ -27,16 +27,19 @@ Description:	Writing 'on' or 'off' to this file makes the kdamond starts or
+ 		makes the kdamond reads the user inputs in the sysfs files
+ 		except 'state' again.  Writing 'commit_schemes_quota_goals' to
+ 		this file makes the kdamond reads the quota goal files again.
+-		Writing 'update_schemes_stats' to the file updates contents of
+-		schemes stats files of the kdamond.  Writing
+-		'update_schemes_tried_regions' to the file updates contents of
+-		'tried_regions' directory of every scheme directory of this
+-		kdamond.  Writing 'update_schemes_tried_bytes' to the file
+-		updates only '.../tried_regions/total_bytes' files of this
+-		kdamond.  Writing 'clear_schemes_tried_regions' to the file
+-		removes contents of the 'tried_regions' directory.  Writing
++		Writing 'commit_schemes_dests' to this file makes the kdamond
++		read the dests files again. Writing 'update_schemes_stats' to
++		the file updates contents of schemes stats files of the
++		kdamond.  Writing 'update_schemes_tried_regions' to the file
++		updates contents of 'tried_regions' directory of every scheme
++		directory of this kdamond.  Writing 'update_schemes_tried_bytes'
++		to the file updates only '.../tried_regions/total_bytes' files
++		of this kdamond.  Writing 'clear_schemes_tried_regions' to the
++		file removes contents of the 'tried_regions' directory.  Writing
+ 		'update_schemes_effective_quotas' to the file updates
+-		'.../quotas/effective_bytes' files of this kdamond.
++		'.../quotas/effective_bytes' files of this kdamond. Writing
++		'wait_for_schemes_apply' to the file does nothing but wait until
++		the next time every scheme is applied.
  
--	control->walk_fn(control->data, ctx, t, r, s, sz_filter_passed);
-+	if (control->walk_fn)
-+		control->walk_fn(control->data, ctx, t, r, s, sz_filter_passed);
- }
- 
- /*
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index c2b036abb25b..ded3f60e4e22 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -1223,6 +1223,11 @@ enum damon_sysfs_cmd {
- 	 * intevals.
- 	 */
- 	DAMON_SYSFS_CMD_UPDATE_TUNED_INTERVALS,
-+	/*
-+	 * @DAMON_SYSFS_CMD_WAIT_FOR_SCHEMES_APPLY: Wait for all schemes to be
-+	 * applied.
-+	 */
-+	DAMON_SYSFS_CMD_WAIT_FOR_SCHEMES_APPLY,
- 	/*
- 	 * @NR_DAMON_SYSFS_CMDS: Total number of DAMON sysfs commands.
- 	 */
-@@ -1242,6 +1247,7 @@ static const char * const damon_sysfs_cmd_strs[] = {
- 	"clear_schemes_tried_regions",
- 	"update_schemes_effective_quotas",
- 	"update_tuned_intervals",
-+	"wait_for_schemes_apply",
- };
- 
- static ssize_t state_show(struct kobject *kobj, struct kobj_attribute *attr,
-@@ -1643,6 +1649,25 @@ static int damon_sysfs_update_schemes_tried_regions(
- 	return damos_walk(ctx, &control);
- }
- 
-+static int damon_sysfs_wait_for_schemes_apply(
-+		struct damon_sysfs_kdamond *sysfs_kdamond)
-+{
-+	/*
-+	 * damos_walk returns after the next time all of the schemes have been
-+	 * applied. We don't need to do any actual work, so walk_fn is NULL.
-+	 */
-+	struct damos_walk_control control = {
-+		.walk_fn = NULL,
-+		.data = NULL,
-+	};
-+	struct damon_ctx *ctx = sysfs_kdamond->damon_ctx;
-+
-+	if (!ctx)
-+		return -EINVAL;
-+
-+	return damos_walk(ctx, &control);
-+}
-+
- /*
-  * damon_sysfs_handle_cmd() - Handle a command for a specific kdamond.
-  * @cmd:	The command to handle.
-@@ -1688,6 +1713,8 @@ static int damon_sysfs_handle_cmd(enum damon_sysfs_cmd cmd,
- 	case DAMON_SYSFS_CMD_UPDATE_TUNED_INTERVALS:
- 		return damon_sysfs_damon_call(
- 				damon_sysfs_upd_tuned_intervals, kdamond);
-+	case DAMON_SYSFS_CMD_WAIT_FOR_SCHEMES_APPLY:
-+		return damon_sysfs_wait_for_schemes_apply(kdamond);
- 	default:
- 		return -EINVAL;
- 	}
+ What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/pid
+ Date:		Mar 2022
 -- 
 2.43.5
 
