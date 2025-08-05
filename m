@@ -2,81 +2,87 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 419B5C87FD1
-	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 17:23:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1CFE7C87FD1
+	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 17:32:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 465F36B007B; Tue,  5 Aug 2025 13:23:18 -0400 (EDT)
+	id B7E906B00A2; Tue,  5 Aug 2025 13:32:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4166B6B00BB; Tue,  5 Aug 2025 13:23:18 -0400 (EDT)
+	id B2F096B00A5; Tue,  5 Aug 2025 13:32:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CD3A6B00BC; Tue,  5 Aug 2025 13:23:18 -0400 (EDT)
+	id A44E96B00A7; Tue,  5 Aug 2025 13:32:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 002846B007B
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 13:23:17 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 969256B00A2
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 13:32:10 -0400 (EDT)
 Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4F6161601B8
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 17:23:15 +0000 (UTC)
-X-FDA: 83743374750.01.29E9A4F
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 7363410000E
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 17:23:11 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=RPqrm+1O
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5C7D41D9F22
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 17:32:10 +0000 (UTC)
+X-FDA: 83743397220.01.19CECBC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id BCA7340010
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 17:32:08 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T9Zw80FB;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754414592;
+	s=arc-20220608; t=1754415128;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=loNmP5Yp7b1LW1PihsJKm/LxgToSLOcZ3oBfkhcpBh0=;
-	b=GRGsIyuYFL4HU49vVg1Txe/1Aenb43IyrVokDoCuX88ZXliF+qqgnflM3QSjH4pNmxZ6U3
-	D4A6CjsXu3TP4+sEM3/KUmw7oj5fQZ618QrXyxrP8o5FajeX0CxXU1tmJP45Xt1BLzo+Dp
-	QdLks+n8SFokHoRDvg3FleHSXGPhJjQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754414592; a=rsa-sha256;
+	bh=0kKT3xIHrPaSBRUSzlfErq4bYssBTtJhswv6fr5Dbqo=;
+	b=uCUgmJNPTDO9G1iJtDdXuPUd6z8ZLWPbg9sV0gBxoNGDh05mBclZ1VqhssXc0Vn+f6GBAE
+	+TJSh+lMjiEee2JL2L8VnJ578ZqzWSDH/+d2RR4twNSXZ13b8M8gJ4MOEieGYOHjgjvHFx
+	6F+e1oNVZedoxqj5Smvn52a3x3B6Ss8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754415128; a=rsa-sha256;
 	cv=none;
-	b=YGqeuWjGoQySSyk7zXYmaVOLfLGKaS8Uq3sM+72FX5BD5sQsO3pCpehP/jUDgr0/AkNFzu
-	oGjGROmvBBlSzprmuUqV/2McAjZN/n6AOZMPeuVQwrGeeNi/OHk9FiwccnHrEviLwmDRBV
-	9Hb+CmxHAmTyEAZ7fiXOSEQlANeQIOI=
+	b=ZBnoVhqIwZ3hdLoEhTiT5uhlzKNOsdQVlqD1lVg6HVCKvkqwowuKFL+CBA/p0X2opPyPo7
+	n2GL8sY3AQY7/RESN+2vviEbRulOKOI+sDpHL8ANs07Zn97i/D2pgApmSTkddJrtfo43QN
+	b/l/h7zjQhe1NM4KR5rVHUv+C5Wk4Cw=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=RPqrm+1O;
-	spf=none (imf05.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=loNmP5Yp7b1LW1PihsJKm/LxgToSLOcZ3oBfkhcpBh0=; b=RPqrm+1O0l081m8BRX/PGPkpl1
-	kL7nK+arr2ceGpFH3c6xh0baDzmOZP5hKKYUvG2KGOlatiCIXUcwyygZP+SebxZXDXpjmqLpitQv2
-	lx9g2PHE4O4s9jerBrPvv1bBdpCSVsxmAUne1ZcC4Sq/kqO3mLkyoUR40winyWc917wcZTMkcFZgJ
-	uWSqUvpjjwk0Bm37DSWkz6c8JuIlpCaBIXu4Yhhlo5FbTOrbIy5AlxTlEUsi/jhVAUF9bjzseuh8C
-	DOAa1fNWOZjcjB41DZfQRXYG74av1bCHKv3BmHot2snFmJ7muLJamdn70b3TlEIXinafI21sRgxHj
-	WdaQ1dAQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ujLNV-00000005T4z-3sIZ;
-	Tue, 05 Aug 2025 17:23:09 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T9Zw80FB;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1C1A1601D1;
+	Tue,  5 Aug 2025 17:32:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A44D7C4CEF0;
+	Tue,  5 Aug 2025 17:32:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754415127;
+	bh=9M6H/aifoCUKwuC0rptHtdBZsDlS72B3swWOIoljHlE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=T9Zw80FBGLYJezDB/tqLgH/kZAcne22SkYTVFvvJb0f2xJCMjkebA0KPlQbMFXdiO
+	 OyknCgPN1gdOnmb9sChaTg5YbhlXk3RESZfsiFqXRtjr4bJO5Q2ASML8uZFptkBuQg
+	 HFdX9Ifh3HuI/UHh84mheGK+KQw/gEcYZLT6IZZtK4s0FcvFZmjLt7YKLNj/o75m+s
+	 UFGckUHDEX9q5lpXUbMAUw7BM2fch7p60E71GJFATJ6xaTDkwiZa1FSXt3/hDeaeNu
+	 HQYx0zsssHJpx0hIi89yAdAR+hCKFHoXe1K4ZQxeCAZt17IpbTKjGTQ/flb1G1Cglf
+	 Y9GCTryhbD/gA==
+From: SeongJae Park <sj@kernel.org>
+To: Sang-Heon Jeon <ekffu200098@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	honggyu.kim@sk.com,
+	damon@lists.linux.dev,
 	linux-mm@kvack.org
-Subject: [PATCH 04/11] mm: Introduce memdesc_zonenum()
-Date: Tue,  5 Aug 2025 18:22:54 +0100
-Message-ID: <20250805172307.1302730-5-willy@infradead.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250805172307.1302730-1-willy@infradead.org>
-References: <20250805172307.1302730-1-willy@infradead.org>
+Subject: Re: [PATCH v3] mm/damon: update expired description of damos_action
+Date: Tue,  5 Aug 2025 10:32:05 -0700
+Message-Id: <20250805173205.7385-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250805123940.13691-1-ekffu200098@gmail.com>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7363410000E
-X-Stat-Signature: 4nf931aaot59qim7y53q6aq8rf75kpao
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: BCA7340010
+X-Stat-Signature: n81kruezg1tiyctd3toeg18edasy5oyq
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1754414591-314529
-X-HE-Meta: U2FsdGVkX19JHEQVFOsx8WJm9DQdr2ITSZSTiiosBNKfJbV4bytsSY8EjFhGKezi01vvDcru0/C1XFJfOwZ86EAHBgOx1hTo9M25Ut/asxpjWhg5ScGmAobFQs47BLU8DkRFs92Xs5ZBE3erWmvV9MKwhOmrFoROz3B4P+pYe2ZekDXpbkr/9zj5sM/o+aITR/0g3sEf2XuB3w9lPEe13ckG8xspYsBrdwUlymcYkNdR/93QnLVokobTy8PMGn8qDxZg0qudGB6JQtl53acqf+I1cRf+qi5+MJVswhkaZBBi7eb0ShMXIXyApDwk6hlHEv3lHdldFy1skOwJ1s+wwqplapDWZm+L+O/Gig0KQqvbiDO77WIZu5rsCM4YlKN2L7NCPlyNgexxPvQpSNPL8S5g4s2l0SeN4ldX2pAGsfRObfKpTdWUe4eyJiVqF7L7eHtr00iP1kIEpHAt6YnpG3XH5d5deTsdlMqjLlYkCgCgpvlnyAJnzYigGK7gKtv9uNFwZShy/ZYaq5WW15eHuMi7+BE9hwtjXXZNMyDBuaQ5CQqYJP0mUyvzzRe5fLs9ZOIgkOT6/pfGEGElpVK6wTElIrb4bC31glMCymPVmsTfycZ5yAWgwcoPOqtkvjbv2QoBUm+59TG3NnK9B7odNcr9FS3dQpp09aVphkM0xFn6bjM32StHl34KxChEktdEWih6VoWVGuvfZXWChStPDjl1rBK6g2y0gvalBG9kGmMO66tB0q+sdPYpcrFJzyst4B/yhljJqHfk5dUmJhJbZJDlst/LNgRfkR3elMkZB3JAUQ8uaWzEJ9vZnnRqvbrNpqZlR11OoGrygw/U2+jjQyjPTYUM1pwyXp24M04+chNCley/wUFbFnqlQsD1swSqlcQpOkUIWNlAg4CgDfSXHelc6KnlPzMqFKMdqcggdnc49QfLh7zEb7KmSIS2lokh2Qbr3ozDPwVTWO+PmpI
- GRa/P0dN
- fe9lD9UQCztm1GlY3uARDD+Ti5olgL4bwHyhC1M3XNdhFWzt+OAoE4ELEqGZQHLl/C+LHPw5gsMxCR7QFh+eQXNBFBbmo5H1QmxxwvbG+vJQAA0sFFxkFQO+NGovtto3/Vcn2RRSAmRzheYQcVI4Fg4Yeee78fP9GTcJhewhBWmceo+r6/1vwXkeOmbkWrPdOnmtO
+X-HE-Tag: 1754415128-136961
+X-HE-Meta: U2FsdGVkX1/taALYuRgUndHU7TCpVBuj6sRs3CWeBv5empwt7T6pLEAECYe/1dhrm7pnsXnqrpR9eTOd149rN7wYiUbMh9iUjd41e14XvoNTIxSdvB3uOMCAuzO089DYpdmhnjqulNu+hzj+PrlFv71x/TjCTGIoDQaSS8h1JAefF3/8oIbTFQefiUqgATmVSicAKpaLkd41URxlH0uY5WSnYqN9r0AgeGx+D5JR15yLj0gYqCv65MODHt7L22ytHcWymJJ9fiuWM5yQxHrfDOJRVFVi2dLhH8JtEkYrRE1lB1DpBqyTogTjYNAUdxA6cd5f9BRl4tIjwoh011xk6bgYVM4B+EAojBzFG/rUUsNYgQzUFL0fbFwVD83KPBvIbdxGaB73vcaxAnt8lescdZzqc4w+a5iZEhocazBrWOj474sTvGOVAOOH78WfuJXEBPfjHNoxrAGCzlYHmPkRQj2Cn/zynmvq+jW1jv6fNrqpz/RrTk1zOytbWeBaklfAXEkPQLT08E8upK5G0QaiOMNEWKQW1mR6GGyfVlcoMcaALxbhCJHZCUcrvtRKy0/IEM+im2/EJoaQr7PFN0qS8rSkMO2NiASbHHtKoRRfbhUfeYBecu6K7jrsbr6743h4BhT9Mtfl386go5wEnng4EsxfXrwa1GL947Y5ts+ZgQXgSVgdCi+rsMEzu/av7EecyMBkJuyRmibsbJIhWTEItyNh50UW7ry0dpXMHwD1l4ADDU2W3wHjMysdCtAYuyu44s2bpOjE72JXn2seMSKyp5MXQ5AZMxK6rgfHwyjhfDd4IonY93SSP+wXDWqtdM059FHhWmmyq2UsqGweNVwkTEIV7RCcvW1nFiSDmCm20lONzglahOSnZBNxYx9ahCgTlne9Dl2Lm5LgaqewlthrElx+HSC1oIIu+MvEynKCldrbf5nXuF+Mky3i2UhNduddXnTl8pOgqjWF4/ab+9u
+ kwiNf8wk
+ OjJ2r3HkVZIvW8Vh9L0DAM8ehDgs7wxKGUM5sRiubwzdAil6+EQea2bvKleVrZB+ECADDwZ7b5WZJasfiTWZqZAdgxM56PrNGkSD826k3nJuDwtis6PAudxp5M6c0JCQQOcO0j4GbpuGVeCKeGENbVKJCu3gok19nf6NyUjDWVj+CyrjkeM1brCYwzpaeUfg6g/+tdW52MKQJKh/S83eNDCQU2w2fUc6f60ZV4L80REv1pRNGC+yiiC6xtWqxIjyUBvRF708+ugGJxcwEWA+xSBLkmqy/0y9cbMAYDePhiIkVPlo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -85,43 +91,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Remove a conversion from folio to page by passing the folio->flags
-(which are a copy of the page->flags) to the new memdesc_zonenum() function.
+On Tue,  5 Aug 2025 21:39:40 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
----
- include/linux/mmzone.h | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+> Nowadays, damos operation actions support more various operation set.
+> But comments(also, generated documentation) doesn't updated.
+> So, fix the comments with current support status.
+> 
+> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index b4852269da0e..001a696756df 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -1169,15 +1169,20 @@ static inline bool zone_is_empty(struct zone *zone)
- #define KASAN_TAG_MASK		((1UL << KASAN_TAG_WIDTH) - 1)
- #define ZONEID_MASK		((1UL << ZONEID_SHIFT) - 1)
- 
-+static inline enum zone_type memdesc_zonenum(memdesc_flags_t flags)
-+{
-+	ASSERT_EXCLUSIVE_BITS(flags.f, ZONES_MASK << ZONES_PGSHIFT);
-+	return (flags.f >> ZONES_PGSHIFT) & ZONES_MASK;
-+}
-+
- static inline enum zone_type page_zonenum(const struct page *page)
- {
--	ASSERT_EXCLUSIVE_BITS(page->flags, ZONES_MASK << ZONES_PGSHIFT);
--	return (page->flags.f >> ZONES_PGSHIFT) & ZONES_MASK;
-+	return memdesc_zonenum(page->flags);
- }
- 
- static inline enum zone_type folio_zonenum(const struct folio *folio)
- {
--	return page_zonenum(&folio->page);
-+	return memdesc_zonenum(folio->flags);
- }
- 
- #ifdef CONFIG_ZONE_DEVICE
--- 
-2.47.2
+Reviewed-by: SeongJae Park <sj@kernel.org>
 
+
+Thanks,
+SJ
+
+[...]
 
