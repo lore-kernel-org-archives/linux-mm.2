@@ -2,113 +2,90 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 14844C87FD1
-	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 06:30:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AE152C87FD1
+	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 06:41:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9599E8E0002; Tue,  5 Aug 2025 02:30:51 -0400 (EDT)
+	id 3A5466B0098; Tue,  5 Aug 2025 02:41:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90AD38E0001; Tue,  5 Aug 2025 02:30:51 -0400 (EDT)
+	id 37D1D6B0099; Tue,  5 Aug 2025 02:41:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 820888E0002; Tue,  5 Aug 2025 02:30:51 -0400 (EDT)
+	id 2BA496B009B; Tue,  5 Aug 2025 02:41:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7232B8E0001
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 02:30:51 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A3D66B0098
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 02:41:36 -0400 (EDT)
 Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2433D140F2B
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 06:30:51 +0000 (UTC)
-X-FDA: 83741730702.14.84BA86C
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 2D972160003
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 06:30:48 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="Vi/drBEI";
-	spf=pass (imf08.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=lokeshgidra@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754375449; a=rsa-sha256;
-	cv=none;
-	b=uRUVpOWkR8OSe83VPr0TTr05AKqmVbpwjg2g+xzmDLH/W/nN6AhpKNJqin3Ji65nx3U+O8
-	F+xUJrkQ+7EYUMxLGUZcolcDn91xcvM8TpALAFQyTV1+mUSSarvIOEIpHLOgJKkzJVeqO4
-	B90brXTAtUoA1aRGeKeebcwPy/nVMDw=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="Vi/drBEI";
-	spf=pass (imf08.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=lokeshgidra@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A6C061A0DB7
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 06:41:35 +0000 (UTC)
+X-FDA: 83741757750.14.4810E2F
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+	by imf28.hostedemail.com (Postfix) with ESMTP id A8A96C0005
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 06:41:30 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=sIE1xJZ9;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754375449;
+	s=arc-20220608; t=1754376093;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6jKCzNiBFP4betutlAHF95RVjFqwZC+QyEzLLbZpDpU=;
-	b=zj+E/v1WsM88ba78fvG+vM33ZdCnOB/CiBpV1XkLi2CLeWex4D26ha2RPQJltHkZt4TRnC
-	5Lm93rpSSU+Nt7avhCVIHLytMpz2ah3dANq2hmfTo0PKA8WBA9QcwTDxWremX3p7oZH9M8
-	YQ5PTNcB8Da8GNrtOjx6XE7Si2iEnto=
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-61543b05b7cso9629a12.0
-        for <linux-mm@kvack.org>; Mon, 04 Aug 2025 23:30:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754375447; x=1754980247; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6jKCzNiBFP4betutlAHF95RVjFqwZC+QyEzLLbZpDpU=;
-        b=Vi/drBEIz66Fgy2tHS8mallQHrHE0nBTp/lslEsGZh+wh94t6bxP2lfgCjyNK80IRu
-         XSIQ9swGRCs+3mMJ+xUu2rh47GJXJCIZ3DXDcLIweHZ2uknl6hOdzxghmFYyZ+EFVSGZ
-         NSHmyczALRA2MHTyEqKL2ylfnp+VC4HrTkXIRM4ZI8mLOlVwUKFvZNg+TnySvlVlRJzv
-         UVYPsxRwjOrxZzaa+15Ag6YQkh2EE9RLx6psAatmqttm33e53cQuVNrVK7wF5huNObuK
-         lRvAxdOlUr7/23sbPk8RZk493q12zz0o1ENX47mMWnAVhk6hNIqM6sJa3fL4BZD2rWpf
-         A6fA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754375447; x=1754980247;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6jKCzNiBFP4betutlAHF95RVjFqwZC+QyEzLLbZpDpU=;
-        b=bQHwj5EBl7quGnFHmDoM8XcBQW50E0ZikCtGDvkNA/6CEqYl9VEuAY0T7mAt+iW7uz
-         9vi3pxs+pGmFLADfDchzlgeXx4FjWelpfpea6dne6uhgGs/6aqy+TlJXqdlXeE3a9EN+
-         gvkhp3qrVuZBo99Fb4XIRXG1FXB9gDEWnmN+6FTaIdSqIB3dMX6cZzlGu2hOsMEnpXGP
-         DZoNOYdKPKCTAcWV46sHjxiotgGfLvkB5BJaJDXExKeSD78aGa+THu9WBKQmADC6vv2F
-         jMIyQwqnvrUoHETFwXxsNR7MWnCGi7ZWHspKHrNpeprn5ob3Y2Ayt2RFZEPLMKs9cl4f
-         tMsg==
-X-Forwarded-Encrypted: i=1; AJvYcCWNRGxpemUPZ0NwKP9XYR9gflVQE/DwVtRdhPtbZXSBd3jRoGwUu86un3Fj1x4DJrAlMr0nP3ZzHw==@kvack.org
-X-Gm-Message-State: AOJu0YzXNe1XJ+ic2Kvh2x93NZkXgwf1cLZ4PmRdd08CIBudODiOSiBc
-	G6DHCPhCBfX7ckjXaf7kdb3pc1Xwliw4jqqN3nimmHSnd2Hr9AL9CZ0t74REIz6qn4d1ihoSXUq
-	ib66Xr3wOhQ5I6zqhxaEeHbg24I+oWBjQbdGsUlro
-X-Gm-Gg: ASbGncsRKf6scftjE/BP/bH9YlGxCpnkGGMrHS52kPRdvejBh8BOJlIk8Hd4LQ5Lt+a
-	V3BFVb4EjiEgqpUx4IXi1yyH01+DM6PEJZ0KS14ooaYtOrT+0MDHD7LXwhrnzu7tLQo4TtT1B3q
-	+vngctzAJ7l9kOnFnYEMdzMKrDB6ksggTsbTptT59r0RUzDE/ZEe3R8ooo7IV0RJR2/3Yz0dxRA
-	VoJdY9ieQ==
-X-Google-Smtp-Source: AGHT+IF9dyc8YKAvaICZJqlHqULJ/wR5cCC0kOw7URmA5UotgvJ3JQZgE4a/yTHHwWj7ulJFSDFnaIqvUefbB3nwqTw=
-X-Received: by 2002:a50:8ac7:0:b0:615:6167:4835 with SMTP id
- 4fb4d7f45d1cf-61784827174mr16808a12.7.1754375447152; Mon, 04 Aug 2025
- 23:30:47 -0700 (PDT)
+	bh=iKwb3jyiyyLlRq/hzHJCa8IJJVZNalYmdaLHaPwmwrU=;
+	b=DwwmOl88/I3FDHWzNuZhIOIjcAxk9R03StUHpP/wuxryH2d/YaEGUKmwz+hdEiayyCIfl3
+	DLXxNTDvnnaR8Ni5/q3HIUoTbCIZLrCfgB5mrG3/46Xa3S0VvANAnxaKkzKRJIwkodzqAd
+	Uc9FENp+HFV5Um45Ty0UMyta2tqbKX8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754376093; a=rsa-sha256;
+	cv=none;
+	b=dUVpR1o5p7wmC9XfVF8CpGYCKUnVQFANYWXdHxSzjUjVYx1iqpWREsMF0s4sm7o7dJLo9J
+	hDEvpcwyfpsW1FvhHBEQB0TaMPQeS/X9fYq5bJBpNDNWOlQiFYxSYWyxOAyu0wTvC9hoXy
+	88k04EXox0UUtGIIUMjIoF5CHBjboF8=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=sIE1xJZ9;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1754376085; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=iKwb3jyiyyLlRq/hzHJCa8IJJVZNalYmdaLHaPwmwrU=;
+	b=sIE1xJZ9CIWW6fXKGycIeABlUbx7mE540ro2p3S8r9ZNkXEbOJ7vaE9vGrxwqYayyNYOW7tYlUt6T9l6Ud9msqBEJLjW55pBc/S925BTqSP3cDTUqiTRrRrv6vflZdz0NI7Y5TUa/CM2ULcoLQ1U60rc9sBaOPqWkEY3mjA8q/k=
+Received: from 30.74.144.114(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wl440vN_1754376082 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 05 Aug 2025 14:41:23 +0800
+Message-ID: <721c093c-a54a-4ccc-b784-e3634a8c2278@linux.alibaba.com>
+Date: Tue, 5 Aug 2025 14:41:22 +0800
 MIME-Version: 1.0
-References: <20250731104726.103071-1-lokeshgidra@google.com> <CAGsJ_4yJ5mtk_mp3r=PsMZOnHdtEk2Q_UTDjwy=4cmV8mcz+mg@mail.gmail.com>
-In-Reply-To: <CAGsJ_4yJ5mtk_mp3r=PsMZOnHdtEk2Q_UTDjwy=4cmV8mcz+mg@mail.gmail.com>
-From: Lokesh Gidra <lokeshgidra@google.com>
-Date: Mon, 4 Aug 2025 23:30:35 -0700
-X-Gm-Features: Ac12FXwPLT837tjNVzFz6ic90cBYQizv07IErS2ipoubEYgqHnUpZl2nCWBF-FE
-Message-ID: <CA+EESO4d_iriWeLit6RbODxxMPLnns64cuo+gkQhbYebZdHDdA@mail.gmail.com>
-Subject: Re: [PATCH] userfaultfd: opportunistic TLB-flush batching for present
- pages in MOVE
-To: Barry Song <21cnbao@gmail.com>
-Cc: akpm@linux-foundation.org, aarcange@redhat.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, ngeoffray@google.com, 
-	Suren Baghdasaryan <surenb@google.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	Barry Song <v-songbaohua@oppo.com>, David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: Fix the race between collapse and PT_RECLAIM under
+ per-vma lock
+To: Barry Song <21cnbao@gmail.com>, akpm@linux-foundation.org,
+ linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Barry Song <v-songbaohua@oppo.com>,
+ "Lai, Yi" <yi1.lai@linux.intel.com>, David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Qi Zheng <zhengqi.arch@bytedance.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Jann Horn <jannh@google.com>, Suren Baghdasaryan <surenb@google.com>,
+ Lokesh Gidra <lokeshgidra@google.com>,
+ Tangquan Zheng <zhengtangquan@oppo.com>, Lance Yang <ioworker0@gmail.com>,
+ Zi Yan <ziy@nvidia.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>
+References: <20250805035447.7958-1-21cnbao@gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20250805035447.7958-1-21cnbao@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: A8A96C0005
+X-Stat-Signature: qkfy6nk8hh5ibd81p86jb58ruoxsw1xn
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 2D972160003
-X-Stat-Signature: 86jo48bbpfjypihf7daeyi876z1mec3q
-X-HE-Tag: 1754375448-731603
-X-HE-Meta: U2FsdGVkX1+YkVnH573nJI4BsyUndoIJDEwlws7QzeYdHs1+fYMXPdeQVg4NIJb3kdkyJjHmIUBQAqzQcpGMmuJ3G/qPKIl4LFEmrsBlp93XEuT1a12AcpY1f1sgyxppecJqI2kxDWmt0FcOH+CeiFlOGqfHteCAkMhBxdz+kvm/2drooOG03gxPszMB2cFtRgKdfyXKSZEgsEbBY1FhgSS0aVVmqDu7dUPxov4A77zDEApr0twlQ8x+9zosRZIPcsjrnWNCFSefxlb95iwv2ep7HJA762mk1Jsiq91atPvly4gSg0a+07XQAof0VY3er4IH4K/gZL+9gXsta4+eWL7mY5U6IfeqvtysmynRc3lKX+VVoLkEsmxiUeHPaOuosTgPBl/MDgNhzC0VUswe8zD3JuA/XVXMlqzuUwYJe51KVLi6IzS3t5S2rXYzeWZmCyc4b74tfGWml+04PNLvmOqatWCQVLTqhLtfJgwGeJPNQ6jQGDSAOk+7+R/WsXC7IuWPCIgpf/lWwrXZHIMNECLrXvq58mr9k6OiQ/Ojt0b8M0IImU/q6v2A4I+8D9yAv+OGObhhQQDzQ7IW7uNJM1QGyE2ouJjI9mzJg8UeK61139FawcczCXJDrBXd7jr1XFsSXQCH9jy9031jXsWJJKBpQ2nd+PWv52SSK1Ow3KApZjBT6smezrdjkODKardnKUtg6v9tQmHcUveKld084n2RGQHSmooDlvn3XppSNHyfeofqdIdvYcu7vrVZelTiyQ5kuOfe9wtvA3bt5aP1X0dFdWQUJgTmgF4nMz1ARI12vnJP5aZLFnSUhGUsnVvSgfoq9fiXu/VKGs1l5P97GPyjc23veMaDBbEPUg+d9iWqBMH6omRIBHLT7dzrKR8DZAAMWckIlegJe4+mK1BHIuBRKHkD6MDvkIlJeG9oF+EGYisrZoeneOzIFiOJgZKw2kQcua4qhcznxgrhE9m
- cOkkqJKF
- 6t3FGWc1l7tTYuWDPHa/IPAAx05U5gwbZbq2VS+3kA3tf63DuER9ZEG9G/Lw8bX8V2l3z2HvhQTov9k5+heHpvA/8Kid7hPF6vJDsdpmzvjuJUKdR8+WmdCUjapyhpQ8uXIYSuVXy5phL3gf+U7rdKrDtMcJpbQDmdP9TWupDdcovirsFDwEhq3QUz3EWtFANgReiR4q1G1+LClqna6eRfmlqWG2rnd+LUka/SXzJawmp/Le78cg8T9wsplPgEx9+LJyFHMAKZtqadk2kLeD2oL8z9X/c9O+Pg1uNf5e+kFybB91HH97RNmgWQw==
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1754376090-688191
+X-HE-Meta: U2FsdGVkX18oHlf8LzTvNpPiCYvt1ObcnCeqH2D37BRnz9i1o4PHTSsZho4I/xwJDtyfYhNP518N6aVew7cffxBDsDYRKxFGFzh6FVJcI964lbzpYh2F9/0UQnKdjY763LiudhK1gurtt18Zv6JEDWj0ncMWrJ4j+NU/i8Vc+GZRTtuWaXC2/6D3Oy9c9qzOueC85/qqwQpePqomzOZ8QmK9vUYYb3D8XHoRB4fcLkphXCO0tfOeKPmeP66E6Qd4jlkMzfKfX54S2vlVja4S9GHrH8JalgjhF3q3v2BKtCxyK5VrFhXOyPTke88EjE9thpTa2mhzJoFLRCwFU8/qzLyCFc5rKT1787fHeUUccyzxaoMwbRkieXolIi+FDVH5LdmsyhKGjWcYZ/w7t7flnYLnbTBruOQ7vB6sNX+vpXH5FIqLGRGuClZvc7zAJYruQrbF1M2u53lJ2FECnlIYyHPidIw33kLKfR7/kvti5KPCUSoy6yzzhu7cEnrHv7p2hTaMjUc32V1LSs8Kf3gtbcwoA8Wn+WMK6q2XNbpe1Ble10ajAo4qegagQwe4fwCchEzV8g2gHkU8K2xOTU2d7Jlp33wzt87uDiWfKyAMBF+VkxynHSUE73zKOr9h/gSrniGR/AMpYN3c0JSLt6w/Rb0/FThI83R2mGeAzYyFR3EZ8VESvov7GVTCf6mUzGhdyh6HfjpICGS0LVQQPbosMtxyn+wGTnA5+VcFwqERjhgsKyW7ZCz1y9Xj2GWQ644UM5MezHuFRsZV4Vo4qZIgfUBGgKU81wYiJJgu6Mi3ObWC2kdakwsKD6eK3nvk0PYiUAWL95jwDDhbIolcDf4MYn0ZT8Dmt5I++/iqqHFzw/ky2+jBNvVya3XTsKfKKEJqFghoclFsU0kY4bZz0MDbMHRm/0PebFOXYkOHdlumeOG9EFxadHr33kF+V/ZyOd6SARcbOJhMVfFlT8oxbod
+ 1dI9x2Rw
+ v/RjmZVesS+k7o/Kk7EkggjcHHFTn1gPpVDN/Aw+7dAi6Jab24gkgG/EAIL7Lso7poxqqu7lY8x0Le/298wixrOWsf3N+twM0niMoAX/tvrkeYojaApBW291jr5mxsPz69tW31RU9WYgTsYTNsHmOsx3JAuIdoU74FL/lOBupMVRBkKpHZgNyYiWmpkPodnjII7TenaBMxKlefw1fwWew0AU5SASNzC1d6/E5773zQw7jS8gBiG12K19/HjqDR8jA95CMgbRbK72MtBlTEpFlDkSRV606w48TfwdOBCP0cqaStzAQdjo/dh49xofCMQINyIPqSn7QLR+X5e2B3NywYCh325u8D7kg01ZEhZVatBHixN/DBkmYzLg2FxLkHMLbBPYa7WM5qWHGUhe0gih67KcdXvsd91HJjpYTe1fx0HdDVZRjRF4lPNtpjLVvlmSYgXk0HwoLBV3XPOYG8ulRH66FiMpQku+mJhU53IMFIklxLcy1znfAf+aJtMTsCI+/ImjQ2I8iig+khdhEY2Q8XHMvxHDdz4aoKLotCEdJm22Ky1W4Pe19qxL07/ozTXIC2oXOxmdetfm21BwICQt7PPgAKPk9TjP6KtT+x2jVsOFujuM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,247 +94,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 4, 2025 at 9:35=E2=80=AFPM Barry Song <21cnbao@gmail.com> wrote=
-:
->
-> On Thu, Jul 31, 2025 at 6:47=E2=80=AFPM Lokesh Gidra <lokeshgidra@google.=
-com> wrote:
-> >
-> > MOVE ioctl's runtime is dominated by TLB-flush cost, which is required
-> > for moving present pages. Mitigate this cost by opportunistically
-> > batching present contiguous pages for TLB flushing.
-> >
-> > Without batching, in our testing on an arm64 Android device with UFFD G=
-C,
-> > which uses MOVE ioctl for compaction, we observed that out of the total
-> > time spent in move_pages_pte(), over 40% is in ptep_clear_flush(), and
-> > ~20% in vm_normal_folio().
-> >
-> > With batching, the proportion of vm_normal_folio() increases to over
-> > 70% of move_pages_pte() without any changes to vm_normal_folio().
-> > Furthermore, time spent within move_pages_pte() is only ~20%, which
-> > includes TLB-flush overhead.
-> >
-> > Cc: Suren Baghdasaryan <surenb@google.com>
-> > Cc: Kalesh Singh <kaleshsingh@google.com>
-> > Cc: Barry Song <v-songbaohua@oppo.com>
-> > Cc: David Hildenbrand <david@redhat.com>
-> > Cc: Peter Xu <peterx@redhat.com>
-> > Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
-> > ---
-> >  mm/userfaultfd.c | 179 +++++++++++++++++++++++++++++++++--------------
-> >  1 file changed, 127 insertions(+), 52 deletions(-)
-> >
-> > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> > index 8253978ee0fb..2465fb234671 100644
-> > --- a/mm/userfaultfd.c
-> > +++ b/mm/userfaultfd.c
-> > @@ -1026,18 +1026,62 @@ static inline bool is_pte_pages_stable(pte_t *d=
-st_pte, pte_t *src_pte,
-> >                pmd_same(dst_pmdval, pmdp_get_lockless(dst_pmd));
-> >  }
-> >
-> > -static int move_present_pte(struct mm_struct *mm,
-> > -                           struct vm_area_struct *dst_vma,
-> > -                           struct vm_area_struct *src_vma,
-> > -                           unsigned long dst_addr, unsigned long src_a=
-ddr,
-> > -                           pte_t *dst_pte, pte_t *src_pte,
-> > -                           pte_t orig_dst_pte, pte_t orig_src_pte,
-> > -                           pmd_t *dst_pmd, pmd_t dst_pmdval,
-> > -                           spinlock_t *dst_ptl, spinlock_t *src_ptl,
-> > -                           struct folio *src_folio)
-> > +/*
-> > + * Checks if the two ptes and the corresponding folio are eligible for=
- batched
-> > + * move. If so, then returns pointer to the folio, after locking it. O=
-therwise,
-> > + * returns NULL.
-> > + */
-> > +static struct folio *check_ptes_for_batched_move(struct vm_area_struct=
- *src_vma,
-> > +                                                unsigned long src_addr=
-,
-> > +                                                pte_t *src_pte, pte_t =
-*dst_pte)
-> > +{
-> > +       pte_t orig_dst_pte, orig_src_pte;
-> > +       struct folio *folio;
-> > +
-> > +       orig_dst_pte =3D ptep_get(dst_pte);
-> > +       if (!pte_none(orig_dst_pte))
-> > +               return NULL;
-> > +
-> > +       orig_src_pte =3D ptep_get(src_pte);
-> > +       if (pte_none(orig_src_pte))
-> > +               return NULL;
-> > +       if (!pte_present(orig_src_pte) || is_zero_pfn(pte_pfn(orig_src_=
-pte)))
-> > +               return NULL;
-> > +
-> > +       folio =3D vm_normal_folio(src_vma, src_addr, orig_src_pte);
-> > +       if (!folio || !folio_trylock(folio))
-> > +               return NULL;
-> > +       if (!PageAnonExclusive(&folio->page) || folio_test_large(folio)=
-) {
-> > +               folio_unlock(folio);
-> > +               return NULL;
-> > +       }
-> > +       return folio;
-> > +}
-> > +
-> > +static long move_present_ptes(struct mm_struct *mm,
-> > +                             struct vm_area_struct *dst_vma,
-> > +                             struct vm_area_struct *src_vma,
-> > +                             unsigned long dst_addr, unsigned long src=
-_addr,
-> > +                             pte_t *dst_pte, pte_t *src_pte,
-> > +                             pte_t orig_dst_pte, pte_t orig_src_pte,
-> > +                             pmd_t *dst_pmd, pmd_t dst_pmdval,
-> > +                             spinlock_t *dst_ptl, spinlock_t *src_ptl,
-> > +                             struct folio *src_folio, unsigned long le=
-n)
-> >  {
-> >         int err =3D 0;
-> > +       unsigned long src_start =3D src_addr;
-> > +       unsigned long addr_end;
-> > +
-> > +       if (len > PAGE_SIZE) {
-> > +               addr_end =3D (dst_addr + PMD_SIZE) & PMD_MASK;
-> > +               if (dst_addr + len > addr_end)
-> > +                       len =3D addr_end - dst_addr;
-> >
-> > +               addr_end =3D (src_addr + PMD_SIZE) & PMD_MASK;
-> > +               if (src_addr + len > addr_end)
-> > +                       len =3D addr_end - src_addr;
-> > +       }
-> > +       flush_cache_range(src_vma, src_addr, src_addr + len);
-> >         double_pt_lock(dst_ptl, src_ptl);
-> >
-> >         if (!is_pte_pages_stable(dst_pte, src_pte, orig_dst_pte, orig_s=
-rc_pte,
-> > @@ -1051,31 +1095,60 @@ static int move_present_pte(struct mm_struct *m=
-m,
-> >                 err =3D -EBUSY;
-> >                 goto out;
-> >         }
-> > +       /* Avoid batching overhead for single page case */
-> > +       if (len > PAGE_SIZE) {
-> > +               flush_tlb_batched_pending(mm);
->
-> What=E2=80=99s confusing to me is that they track the unmapping of multip=
-le
-> consecutive PTEs and defer TLB invalidation until later.
-> In contrast, you=E2=80=99re not tracking anything and instead call
-> flush_tlb_range() directly, which triggers the flush immediately.
->
-> It seems you might be combining two different batching approaches.
 
-These changes I made are in line with how mremap() does batching. See
-move_ptes() in mm/mremap.c
 
-From the comment in flush_tlb_batched_pending() [1] it seems necessary
-in this case too. Please correct me if I'm wrong. I'll be happy to
-remove it if it's not required.
+On 2025/8/5 11:54, Barry Song wrote:
+> From: Barry Song <v-songbaohua@oppo.com>
+> 
+> The check_pmd_still_valid() call during collapse is currently only
+> protected by the mmap_lock in write mode, which was sufficient when
+> pt_reclaim always ran under mmap_lock in read mode. However, since
+> madvise_dontneed can now execute under a per-VMA lock, this assumption
+> is no longer valid. As a result, a race condition can occur between
+> collapse and PT_RECLAIM, potentially leading to a kernel panic.
+> 
+>   [   38.151897] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000003: 0000 [#1] SMP KASI
+>   [   38.153519] KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
+>   [   38.154605] CPU: 0 UID: 0 PID: 721 Comm: repro Not tainted 6.16.0-next-20250801-next-2025080 #1 PREEMPT(voluntary)
+>   [   38.155929] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org4
+>   [   38.157418] RIP: 0010:kasan_byte_accessible+0x15/0x30
+>   [   38.158125] Code: 03 0f 1f 40 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 0f 1f 00 48 b8 00 00 00 00 00 fc0
+>   [   38.160461] RSP: 0018:ffff88800feef678 EFLAGS: 00010286
+>   [   38.161220] RAX: dffffc0000000000 RBX: 0000000000000001 RCX: 1ffffffff0dde60c
+>   [   38.162232] RDX: 0000000000000000 RSI: ffffffff85da1e18 RDI: dffffc0000000003
+>   [   38.163176] RBP: ffff88800feef698 R08: 0000000000000001 R09: 0000000000000000
+>   [   38.164195] R10: 0000000000000000 R11: ffff888016a8ba58 R12: 0000000000000018
+>   [   38.165189] R13: 0000000000000018 R14: ffffffff85da1e18 R15: 0000000000000000
+>   [   38.166100] FS:  0000000000000000(0000) GS:ffff8880e3b40000(0000) knlGS:0000000000000000
+>   [   38.167137] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>   [   38.167891] CR2: 00007f97fadfe504 CR3: 0000000007088005 CR4: 0000000000770ef0
+>   [   38.168812] PKRU: 55555554
+>   [   38.169275] Call Trace:
+>   [   38.169647]  <TASK>
+>   [   38.169975]  ? __kasan_check_byte+0x19/0x50
+>   [   38.170581]  lock_acquire+0xea/0x310
+>   [   38.171083]  ? rcu_is_watching+0x19/0xc0
+>   [   38.171615]  ? __sanitizer_cov_trace_const_cmp4+0x1a/0x20
+>   [   38.172343]  ? __sanitizer_cov_trace_const_cmp8+0x1c/0x30
+>   [   38.173130]  _raw_spin_lock+0x38/0x50
+>   [   38.173707]  ? __pte_offset_map_lock+0x1a2/0x3c0
+>   [   38.174390]  __pte_offset_map_lock+0x1a2/0x3c0
+>   [   38.174987]  ? __pfx___pte_offset_map_lock+0x10/0x10
+>   [   38.175724]  ? __pfx_pud_val+0x10/0x10
+>   [   38.176308]  ? __sanitizer_cov_trace_const_cmp1+0x1e/0x30
+>   [   38.177183]  unmap_page_range+0xb60/0x43e0
+>   [   38.177824]  ? __pfx_unmap_page_range+0x10/0x10
+>   [   38.178485]  ? mas_next_slot+0x133a/0x1a50
+>   [   38.179079]  unmap_single_vma.constprop.0+0x15b/0x250
+>   [   38.179830]  unmap_vmas+0x1fa/0x460
+>   [   38.180373]  ? __pfx_unmap_vmas+0x10/0x10
+>   [   38.180994]  ? __sanitizer_cov_trace_const_cmp4+0x1a/0x20
+>   [   38.181877]  exit_mmap+0x1a2/0xb40
+>   [   38.182396]  ? lock_release+0x14f/0x2c0
+>   [   38.182929]  ? __pfx_exit_mmap+0x10/0x10
+>   [   38.183474]  ? __pfx___mutex_unlock_slowpath+0x10/0x10
+>   [   38.184188]  ? mutex_unlock+0x16/0x20
+>   [   38.184704]  mmput+0x132/0x370
+>   [   38.185208]  do_exit+0x7e7/0x28c0
+>   [   38.185682]  ? __this_cpu_preempt_check+0x21/0x30
+>   [   38.186328]  ? do_group_exit+0x1d8/0x2c0
+>   [   38.186873]  ? __pfx_do_exit+0x10/0x10
+>   [   38.187401]  ? __this_cpu_preempt_check+0x21/0x30
+>   [   38.188036]  ? _raw_spin_unlock_irq+0x2c/0x60
+>   [   38.188634]  ? lockdep_hardirqs_on+0x89/0x110
+>   [   38.189313]  do_group_exit+0xe4/0x2c0
+>   [   38.189831]  __x64_sys_exit_group+0x4d/0x60
+>   [   38.190413]  x64_sys_call+0x2174/0x2180
+>   [   38.190935]  do_syscall_64+0x6d/0x2e0
+>   [   38.191449]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> 
+> This patch moves the vma_start_write() call to precede
+> check_pmd_still_valid(), ensuring that the check is also properly
+> protected by the per-VMA lock.
+> 
+> Fixes: a6fde7add78d ("mm: use per_vma lock for MADV_DONTNEED")
+> Tested-by: "Lai, Yi" <yi1.lai@linux.intel.com>
+> Reported-by: "Lai, Yi" <yi1.lai@linux.intel.com>
+> Closes: https://lore.kernel.org/all/aJAFrYfyzGpbm+0m@ly-workstation/
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Jann Horn <jannh@google.com>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Lokesh Gidra <lokeshgidra@google.com>
+> Cc: Tangquan Zheng <zhengtangquan@oppo.com>
+> Cc: Lance Yang <ioworker0@gmail.com>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+> Cc: Nico Pache <npache@redhat.com>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Dev Jain <dev.jain@arm.com>
+> Signed-off-by: Barry Song <v-songbaohua@oppo.com>
+> ---
 
-[1] https://elixir.bootlin.com/linux/v6.16/source/mm/rmap.c#L728
-
-> From what I can tell, you're essentially using flush_range
-> as a replacement for flushing each entry individually.
-
-That's correct. The idea is to reduce the number of IPIs required for
-flushing the TLB entries. Since it is quite common that the ioctl is
-invoked with several pages in one go, this greatly benefits.
-
->
-> > +               arch_enter_lazy_mmu_mode();
-> > +               orig_src_pte =3D ptep_get_and_clear(mm, src_addr, src_p=
-te);
-> > +       } else
-> > +               orig_src_pte =3D ptep_clear_flush(src_vma, src_addr, sr=
-c_pte);
-> > +
-> > +       addr_end =3D src_start + len;
-> > +       do {
-> > +               /* Folio got pinned from under us. Put it back and fail=
- the move. */
-> > +               if (folio_maybe_dma_pinned(src_folio)) {
-> > +                       set_pte_at(mm, src_addr, src_pte, orig_src_pte)=
-;
-> > +                       err =3D -EBUSY;
-> > +                       break;
-> > +               }
-> >
-> > -       orig_src_pte =3D ptep_clear_flush(src_vma, src_addr, src_pte);
-> > -       /* Folio got pinned from under us. Put it back and fail the mov=
-e. */
-> > -       if (folio_maybe_dma_pinned(src_folio)) {
-> > -               set_pte_at(mm, src_addr, src_pte, orig_src_pte);
-> > -               err =3D -EBUSY;
-> > -               goto out;
-> > -       }
-> > -
-> > -       folio_move_anon_rmap(src_folio, dst_vma);
-> > -       src_folio->index =3D linear_page_index(dst_vma, dst_addr);
-> > +               folio_move_anon_rmap(src_folio, dst_vma);
-> > +               src_folio->index =3D linear_page_index(dst_vma, dst_add=
-r);
-> >
-> > -       orig_dst_pte =3D folio_mk_pte(src_folio, dst_vma->vm_page_prot)=
-;
-> > -       /* Set soft dirty bit so userspace can notice the pte was moved=
- */
-> > +               orig_dst_pte =3D folio_mk_pte(src_folio, dst_vma->vm_pa=
-ge_prot);
-> > +               /* Set soft dirty bit so userspace can notice the pte w=
-as moved */
-> >  #ifdef CONFIG_MEM_SOFT_DIRTY
-> > -       orig_dst_pte =3D pte_mksoft_dirty(orig_dst_pte);
-> > +               orig_dst_pte =3D pte_mksoft_dirty(orig_dst_pte);
-> >  #endif
-> > -       if (pte_dirty(orig_src_pte))
-> > -               orig_dst_pte =3D pte_mkdirty(orig_dst_pte);
-> > -       orig_dst_pte =3D pte_mkwrite(orig_dst_pte, dst_vma);
-> > +               if (pte_dirty(orig_src_pte))
-> > +                       orig_dst_pte =3D pte_mkdirty(orig_dst_pte);
-> > +               orig_dst_pte =3D pte_mkwrite(orig_dst_pte, dst_vma);
-> > +               set_pte_at(mm, dst_addr, dst_pte, orig_dst_pte);
-> > +
-> > +               src_addr +=3D PAGE_SIZE;
-> > +               if (src_addr =3D=3D addr_end)
-> > +                       break;
-> > +               src_pte++;
-> > +               dst_pte++;
-> >
-> > -       set_pte_at(mm, dst_addr, dst_pte, orig_dst_pte);
-> > +               folio_unlock(src_folio);
-> > +               src_folio =3D check_ptes_for_batched_move(src_vma, src_=
-addr, src_pte, dst_pte);
-> > +               if (!src_folio)
-> > +                       break;
-> > +               orig_src_pte =3D ptep_get_and_clear(mm, src_addr, src_p=
-te);
-> > +               dst_addr +=3D PAGE_SIZE;
-> > +       } while (true);
-> > +
-> > +       if (len > PAGE_SIZE) {
-> > +               arch_leave_lazy_mmu_mode();
-> > +               if (src_addr > src_start)
-> > +                       flush_tlb_range(src_vma, src_start, src_addr);
-> > +       }
->
-> Can't we just remove the `if (len > PAGE_SIZE)` check and unify the
-> handling for both single-page and multi-page cases?
-
-We certainly can. Initially it seemed to me that lazy/batched
-invalidation has its own overhead and I wanted to avoid that in the
-single-page case because the ioctl does get called for single pages
-quite a bit. That too in time sensitive code paths. However, on a
-deeper relook now, I noticed it's not really that different.
-
-I'll unify in the next patch. Thanks for the suggestion.
->
->
-> Thanks
-> Barry
+LGTM.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
