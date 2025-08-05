@@ -2,186 +2,102 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 74B33C87FCB
-	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 10:58:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4015AC87FD1
+	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 10:58:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E537B6B009C; Tue,  5 Aug 2025 06:58:05 -0400 (EDT)
+	id D90406B00A0; Tue,  5 Aug 2025 06:58:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2ACE6B009D; Tue,  5 Aug 2025 06:58:05 -0400 (EDT)
+	id D67D66B00A1; Tue,  5 Aug 2025 06:58:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D40816B009F; Tue,  5 Aug 2025 06:58:05 -0400 (EDT)
+	id CA4D96B00A2; Tue,  5 Aug 2025 06:58:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C677F6B009C
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 06:58:05 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7469C114C4B
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 10:58:05 +0000 (UTC)
-X-FDA: 83742404130.30.3C9B418
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf13.hostedemail.com (Postfix) with ESMTP id DF31920009
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 10:58:02 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ESBZ8kcm;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf13.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754391483; a=rsa-sha256;
-	cv=none;
-	b=Pp/tV/aSKV22jz9oEX99xTsoAPou9pMxaPyPPXsLWQ76TH0ln689XjbyuJInioxf7DnL44
-	UGfXkjIV9XV5iL8Pd5WgrtEySVlXIfj869YGZOks/LQ/ZcE0x3gLk+LYm6ytq7sBQITTYl
-	cY/dfCSxTDI0CHvAlVnMaVssRDVezOs=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ESBZ8kcm;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf13.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BC2686B00A0
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 06:58:17 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7C6B8B6BD5
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 10:58:17 +0000 (UTC)
+X-FDA: 83742404634.07.DCB1ABB
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 9DDB720005
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 10:58:14 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=OKKRy6jG;
+	spf=none (imf03.hostedemail.com: domain of maarten.lankhorst@linux.intel.com has no SPF policy when checking 198.175.65.15) smtp.mailfrom=maarten.lankhorst@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754391483;
+	s=arc-20220608; t=1754391495;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n5BMU5lGJ8RNX9gIIEKL9KgpFrlX8cIqx5sp7WULqO4=;
-	b=5bV1vjBfL9gbxsrOWrQK2spFM70/85/HXAWst/69WDPgfFGr6Gdb+uhQDB7q+5CqG7EZBf
-	L5Axmo2d8FUOy/TPprFAveRXblD+l9A/XCsIiooCdh3kKoZRPRfI+mY9VFBj+wSs7s7+CM
-	xPpAXpRYOEIpBMC4tDiHdHecgSDq5yU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754391482;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=n5BMU5lGJ8RNX9gIIEKL9KgpFrlX8cIqx5sp7WULqO4=;
-	b=ESBZ8kcmuvMv9V0TyCbtmTtsojJKVtJdv/VIS+wnsXbLc2njaFSlxcp5rXZzLg7aKDTLam
-	v3XNylM0tauqiJOiaZfcxOJF8J0U+7bCQBGPkC4syTNTASohdO1ixcWI6NBJgukHZ6V2Cu
-	H093Q55E3QQ1IJ0LTZS2J1bGKPgqhAI=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-329-CrTCOyd8OQacYnOPri_5aQ-1; Tue, 05 Aug 2025 06:58:01 -0400
-X-MC-Unique: CrTCOyd8OQacYnOPri_5aQ-1
-X-Mimecast-MFC-AGG-ID: CrTCOyd8OQacYnOPri_5aQ_1754391480
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-459d7da3647so13452915e9.0
-        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 03:58:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754391480; x=1754996280;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=n5BMU5lGJ8RNX9gIIEKL9KgpFrlX8cIqx5sp7WULqO4=;
-        b=Et2zXySNRhEPhz1F3LoVr6NcmL+iqqV6Qwlc6i5t1jcUa0hbEpsMhLC86hTDAr0VvF
-         ETzJpnI3KjQJWPcFYyO9zcDctISw1pZTdjcKaO983k2/EWB/Ivun6iCPDzICr/0kLeBT
-         9uwuYVVEOXiYvbgZIFcbFIWQkvPY2JitaFG0UPot/iw482rhgFq/QXeR+7pzUjBrmSTT
-         +5C0OJeB9g7lAhtT/w3xXhQZX2iWpxLv+nDUSwoeQiqcYkNvd+1ZdBcRl3CA8jddccBX
-         lyi58oiYsvF8xBTN7Pp4kRQQb4Fp0EjIGDCJy5eDm1Mlbkc1ZedeZOfcIzEe4FWlwdTx
-         Za5w==
-X-Forwarded-Encrypted: i=1; AJvYcCVEGuLDuuke1yknu46CQY7TY1zTNOBWzqvNz/NEjc4egoqfZEmryQ3lxzJvD431ATlvVS4DFFVPIw==@kvack.org
-X-Gm-Message-State: AOJu0YyKHV0tfKg0fQusnw3eRIn9uuOmr/icklgz+dSGd4ledaAjeFy7
-	kA4BoiTw+GMHdCWB6NUpJHiGgelVJMTds03XM7S1+4lWhggAG3g6M99Qpbcw5KdEQduuU30YJwh
-	6CaWMVc+vlLdAGID1aY84+sZiEs/mCcLP3Ws6SikOPd181yFonbuH
-X-Gm-Gg: ASbGncvDBScRP7xp4EOpPXFkE+NW5xdRUWZTHq/dioboP6fL5bIQCS5pw3KrToO6Mjp
-	/zCEWaKIQ7LRBgFrJ4aK1VYkZmPHaKSC/1BKk4h+vORPL3wrjkT6i8O3Igvvih2Oy63Y63uPrym
-	JNQWlhJUYDTvtjNbJr8OKlT9fkF3Z+tCT1s8v4iYsNSdf0fK9vOGl4scobta//4CjPT0RpPZb9F
-	ec2YKfY0R1/k+bXsLC8IGeyI87uq4NWiK4dVsMhdnsLPRu61dAamHqmawZhIx2XbjG+vpDb3Lw5
-	UkaP38nxkG7z2tEW3YHOkDz14U7MaQIo1xv5x21Bg98NFlkNeKXE6+7Vc9X1QH1HzCEgG8+NHoo
-	ym5zXsCOhTlpPOUCx4ozP7vCGFJfsIgI1/765MNboZVFAdGJIoL0dut7Ud+pyetzyHyU=
-X-Received: by 2002:a05:600c:181d:b0:458:bbed:a827 with SMTP id 5b1f17b1804b1-458bbedaab7mr62785165e9.1.1754391479874;
-        Tue, 05 Aug 2025 03:57:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEZS0DPqvyL4hZcBu/zSvjFODPXrIdMTkSTToGBYD4/CSW2xPIeZ33vTtYp0ch0Ef/n0Jv5CQ==
-X-Received: by 2002:a05:600c:181d:b0:458:bbed:a827 with SMTP id 5b1f17b1804b1-458bbedaab7mr62785045e9.1.1754391479451;
-        Tue, 05 Aug 2025 03:57:59 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f2b:b200:607d:d3d2:3271:1be0? (p200300d82f2bb200607dd3d232711be0.dip0.t-ipconnect.de. [2003:d8:2f2b:b200:607d:d3d2:3271:1be0])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c469582sm18505270f8f.52.2025.08.05.03.57.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Aug 2025 03:57:58 -0700 (PDT)
-Message-ID: <98a30c7f-8be1-4b08-955c-724667971288@redhat.com>
-Date: Tue, 5 Aug 2025 12:57:57 +0200
+	bh=3//sNl7QRpDdWZ1BStQliSMQe5eplmCG5IazvDgXRlQ=;
+	b=MPKspLQbQX3aSouZk1A7lPUn0DHh8PQPOZNcJBqlI8XhqHlsY66rTPdPaR8r6cstwuTSos
+	g7JIo1fOUCdRDXzs6908GtrEIg8BjpV+I0zalmxFDpiJpl58ItWjcN7hOMJl9dceAprNuM
+	0IyCk+4uSDguCd1XsgHOUpd4vsEju8c=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=OKKRy6jG;
+	spf=none (imf03.hostedemail.com: domain of maarten.lankhorst@linux.intel.com has no SPF policy when checking 198.175.65.15) smtp.mailfrom=maarten.lankhorst@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754391495; a=rsa-sha256;
+	cv=none;
+	b=za/zEOEbgRhzk3azg/kemx/EO4o4+6TGITOtegTwZhk9WplOBDP3x9tqrvvTXWw68Q6XkU
+	0qbdBoZl/zGFxWcXe60L6QD/WdrXXQ6CFnNEXe1DAMRNwbWG64Nq9sCrFHWjn4JM2N1Rg7
+	dS0ujLj+Bt1ne05xVCP01ZZeiG4+FfI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754391495; x=1785927495;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=LsstS12qwuNbRPypXl7/pCr1CD29AYX3YGKnOtBB/tc=;
+  b=OKKRy6jG5/bfxjOhYg1YeeNQVQyttZJWx4q8Ehnp2Br7zrSZ2t3mFlw3
+   XKs2OmIzjLDGZYQ8bi9UJOir5XCFUxUbWEOqK+VawIHMxl++g83NV2vHB
+   zuGWu57rQMq7xVguhtCb0YOZDrnbpWD/E63fE+i0bhxWTaKKbJ//NoshL
+   0Cc3eHZz9gmq/zEWii5cQqmceJI3MXe3nsVCLx0DsuFY00p0JxB5GGpv1
+   s9MIXR7T0YGzgl7eXhwne95ioIK8XjPpiP9OXYGhfN0XC0Sr+ZaVryAij
+   s5ywEsgnVROL7QtNaqRyTdSlRZetlfd/1y50BKy/r/GMbwVVipB9hOF50
+   Q==;
+X-CSE-ConnectionGUID: 7H/up/wjTp+BBAnANgt9HA==
+X-CSE-MsgGUID: rCVnWyjNSC6K9zOEEJfKHQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11512"; a="60321019"
+X-IronPort-AV: E=Sophos;i="6.17,265,1747724400"; 
+   d="scan'208";a="60321019"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2025 03:58:13 -0700
+X-CSE-ConnectionGUID: qE3EXGKwR32WYUZypuksaA==
+X-CSE-MsgGUID: BgzNqP2cSTe43tHbTPbSdA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,265,1747724400"; 
+   d="scan'208";a="195426466"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO [10.245.245.254]) ([10.245.245.254])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2025 03:58:11 -0700
+Message-ID: <4a45548a-ad37-4778-b6de-1cda7ce258dc@linux.intel.com>
+Date: Tue, 5 Aug 2025 12:58:08 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [v2 01/11] mm/zone_device: support large zone device private
- folios
-To: Balbir Singh <balbirs@nvidia.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Karol Herbst <kherbst@redhat.com>,
- Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Shuah Khan <shuah@kernel.org>, Barry Song <baohua@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Matthew Wilcox <willy@infradead.org>,
- Peter Xu <peterx@redhat.com>, Zi Yan <ziy@nvidia.com>,
- Kefeng Wang <wangkefeng.wang@huawei.com>, Jane Chu <jane.chu@oracle.com>,
- Alistair Popple <apopple@nvidia.com>, Donet Tom <donettom@linux.ibm.com>,
- Ralph Campbell <rcampbell@nvidia.com>, =?UTF-8?Q?Mika_Penttil=C3=A4?=
- <mpenttil@redhat.com>, Matthew Brost <matthew.brost@intel.com>,
- Francois Dugast <francois.dugast@intel.com>
-References: <20250730092139.3890844-1-balbirs@nvidia.com>
- <20250730092139.3890844-2-balbirs@nvidia.com>
- <dbebbba0-3c59-4ee1-b32c-4b9f6ed90d92@redhat.com>
- <1e307223-897c-4db0-9564-95d76bc3d260@nvidia.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- g3eXuA==
-Organization: Red Hat
-In-Reply-To: <1e307223-897c-4db0-9564-95d76bc3d260@nvidia.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: S65AalHwmu_FMXQuaK06PW85VYWocE3nZDINGhgkJEA_1754391480
-X-Mimecast-Originator: redhat.com
+Subject: Re: drm/ttm/memcg/lru: enable memcg tracking for ttm and amdgpu
+ driver (complete series v2)
+To: Dave Airlie <airlied@gmail.com>, dri-devel@lists.freedesktop.org,
+ linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
+ Christian Koenig <christian.koenig@amd.com>
+Cc: Dave Chinner <david@fromorbit.com>, Kairui Song <kasong@tencent.com>
+References: <20250714052243.1149732-1-airlied@gmail.com>
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+In-Reply-To: <20250714052243.1149732-1-airlied@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: DF31920009
-X-Stat-Signature: ts66ce519aopss5h9nbp69h83px4xaiq
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1754391482-368494
-X-HE-Meta: U2FsdGVkX18SB86E31xrYIbZNGXyWqicJACpvKaeL3VkozB2PrShys5R092rUDnOzaMZKKK3SbnQNS9o5Msx/FjSUszLbzuVciH74XMtQBgMze09ul1QX3ruQLWCNMTsjUvBYtXpRrizpFKYxNiZEjSFX2vwwFyg8a61QywVKSLIFuqZgk73trCqlGp/lYnP3q/QBlodyBHVk5Ot097mSzRrK9JYTNV1F8cGoLK+rZR/DXoLLv1cP/BoHVZpMNfQldc3ULQKt5AnspKCGCoijX98MYXm2+RZiAw40M0rzWi3Ig1SRflJXHYITtoQ1In3A0p5s/P/UEG7zJ3jQ+87fRVaIz1H327b7oNtZLsK1MrFJj4dOMejQZHKPbBKDt7g+/URJie3D5D2kYX2CDw39G9G+GDy9erMkVDQPkWc6ZGO/XNa4ZmGMRuK9DvjQVnPNpfulRxHYncj/aPS7/SwxA/OgI3W8bVXBb8KwqsHZItM83i1pAWaHUphGn26Wommx8dff8uqqV5GHoBxHUdN7amK49MhI2S1IaZ3RWr4hb0/y+1gMur7XEto/5tep17ISOY61jNpexmIDYtCsc7wes00uGIXYWQvky2zoXFdZ3Q723I6Idf3V2wlvn5iyBb5De05JHVSwBWJ//lZao5ch+pVGpJY4ry1WdDX1oqyrW8f/nlRozBSXesUoFnr35r2+lbi02vS0IOh9TpoGpU2bEK9Zb7D20plMM7WpbvnYXjc4NgSzcUmvKSzQIEOVrU0nLaCMelrVl20fdk3EPay1eim0DXq2bycA4cBc+ZO+cnJghmYMAameOP/qgSU0IxTailTY1XgYfIgKfTmg7KRB6hYqy01sglz4uMz63VqgvBluh9ZApU+mZ0fKVnD6Qd/wQcFkpHPhquit+HLjpWA9rO0OUgbcj6uCEJpVs5/Z1tWNuXT1zWTkmnwza9JcxY4XZaP3LIdFZM5TVRlBJi
- Sqav0OLi
- tDdVN6MDB6wWd3/ttCyH3ZiYekz5agSXdXo73p60z0iiETTFWCHQn+PAAIpO+DT+y+GItfd+ZJTfDH1ga/8oMHGWtuaBMx1DL3GP+YCzoFAAn8t+GgR3EVwYvg8hf6GL8L+aQg3Xmkvuqj1mQqMrbzQaYvRuBtg/g86CPl9AVIO76jTVjLquvarkP2kzWxX27K8LMBQ583kdsNqj9Z6JJhOaPwh96LtgOUhPVj5yi4Zw1sfZSevQft4rKhb+zn+RhJ8fQJPUxHMWx/jttydJVFozit1kDUhKSq/pADoPqB4BvewgVgqb5NBxruRxgrKsFsnxnc/lxVo0bvh6THA8jVHOn571VAyrrmUh6Y/k07P53ynqT/Al3RLRNr6AYQjdiYx/U57E28oCummMLiolsNq1W0qWIdOUX2HRZ9uJYFohm1BBFxLfweZlvhFjLMDnZDko3H2bNC7MTz9pPfnKRT37DPZvV8u5DESR6S+/9O7l97laesX14iUpK0TgPMc4WNuWvXfsFx8fhJ4k=
+X-Rspamd-Queue-Id: 9DDB720005
+X-Rspamd-Server: rspam06
+X-Stat-Signature: hif3m3awh6p9pw8a8eqrrqsearhunp68
+X-HE-Tag: 1754391494-615591
+X-HE-Meta: U2FsdGVkX19Gery4gXk+1sKVHMOL0sMAO7eQGHdZleBdAWe0XQipgTNqAUQAa2PyCxKBWECcscD5fddZwr2LLE/v4iWYCIlqqJfwAFOkUXi2i4obPG8uUXq382GToKWJ9ej3BVtPgjfdSlVbh+u/FQ17jKmsW+4vB8Tod7mJmWu9AkQgpykE71HwZSaOkMxBxbqAPG2ZVU8QI2p+licuhylnog8GbsDckj24E+85eN/TmaVh2HS6E6evfn8uQgBcuZrrUQIhA51xz//ZtsUa5fGzfBpqTJmm52PLBSxKo5oxGV+yTGpM/vuUsA5q9CazT4w6/bs8FnALoHhx5DSMYUNNd6uz5u1zfQWOJAsH/0NEIKEUsDLoMxvKNjnex2vYjaXDmS9ZZGhTUDipp5RqSOV8JQHNF8j5Rg9O1DdLbtU0t0QS2t+fNbtbZdKgQc9Or3p1ASZl+5X5bddwXcBDwxKkU8pBlStu2DZocBs3YjWnDJlXtp9qwY5/fWOz2lg+iiYt0MQUe1OJZfN/niTAAdozwprtY4Dp3FsruJyDFfTWtF7yj0lr5WpIP42FA8H9xCek4D/hZxM+qOLYigLbYwoFgjN+yg+jLScUGU2+JtyHMnZlFXHDo+S8t0HFZtKza1oAVeaSMBu5IBViVW46ybZU4SQuyh6RfgpjD68eNXgtiM5UuBuph1Z+rc0ZI8eGuxXyhWN2ddnold8zYm2Z50uopmljY07Ut5YZG2f4zPlSWmTJC8UvXX81l0TJBzLMrHjrIkfFgO/wGvGZSbmA5Z9SNHmlq+eJ4gKgNTUGOF3P3MwMQNx32iSYIuqlZwgn2tHK3c2dzYdn6BRe0OhuSLO04Veh3u/hRbd/8y5E0pS+WB1LblE2lNJ0g7xCicL30tdp704sildX2xcps8btkc/UnKzpHeZmupc5zoP8nPdVjs2i8ao3ad8Mm6RsTXY8aniSJqkUJocf/hGx4yw
+ tGJyDIb2
+ GWI/rDfiZ4Y4iLL9Y9aQE9ZbIes2fPeY7BMGPPfbeFLwGnySIlR3BVx6QSm1wTAgRFhuBfoG2D6anc3hQ9r0tVeZey9FoMkjgeaK9BoHUk3nIPokXE/t0XeAaGYv/XFoDaRKKlmMUrlifSzOkrxLqEFrPkQ6uDiIV8v3NhBMfRK2qMz3ZZLxb2HKWbDYdxUQYAz0TXrp31Eyl/VipTQhR0P+8U/Hgo+bpNaK/c2xR0+Td1sqzIxN7h/LU8Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -190,28 +106,184 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05.08.25 06:22, Balbir Singh wrote:
-> On 7/30/25 19:50, David Hildenbrand wrote:
+Hey,
+
+Den 2025-07-14 kl. 07:18, skrev Dave Airlie:
+> Hi all,
 > 
->> I think I asked that already but maybe missed the reply: Should these folios ever be added to the deferred split queue and is there any value in splitting them under memory pressure in the shrinker?
->>
->> My gut feeling is "No", because the buddy cannot make use of these folios, but maybe there is an interesting case where we want that behavior?
->>
+> This is a repost with some fixes and cleanups.
 > 
-> I realized I did not answer this
+> Differences since last posting:
+> 1. Added patch 18: add a module option to allow pooled pages to not be stored in the lru per-memcg
+>    (Requested by Christian Konig)
+> 2. Converged the naming and stats between vmstat and memcg (Suggested by Shakeel Butt)
+> 3. Cleaned up the charge/uncharge code and some other bits.
 > 
-> deferred_split() is the default action when partial unmaps take place. Anything that does
-> folio_rmap_remove_ptes can cause the folio to be deferred split if it gets partially
-> unmapped.
+> Dave.
+> 
+> Original cover letter:
+> tl;dr: start using list_lru/numa/memcg in GPU driver core and amdgpu driver for now.
+> 
+> This is a complete series of patches, some of which have been sent before and reviewed,
+> but I want to get the complete picture for others, and try to figure out how best to land this.
+> 
+> There are 3 pieces to this:
+> 01->02: add support for global gpu stat counters (previously posted, patch 2 is newer)
+> 03->07: port ttm pools to list_lru for numa awareness
+> 08->14: add memcg stats + gpu apis, then port ttm pools to memcg aware list_lru and shrinker
+> 15->17: enable amdgpu to use new functionality.
+> 
+> The biggest difference in the memcg code from previously is I discovered what
+> obj cgroups were designed for and I'm reusing the page/objcg intergration that 
+> already exists, to avoid reinventing that wheel right now.
+> 
+> There are some igt-gpu-tools tests I've written at:
+> https://gitlab.freedesktop.org/airlied/igt-gpu-tools/-/tree/amdgpu-cgroups?ref_type=heads
+> 
+> One problem is there are a lot of delayed action, that probably means the testing
+> needs a bit more robustness, but the tests validate all the basic paths.
+> 
+> Regards,
+> Dave.
+> 
+Patch below to enable on xe as well, I ran into some issues though when testing.
+After shutting down gdm3/sddm, I ran into a null dereference in mem_cgroup_uncharge_gpu_page()
+from ttm_pool_free_page(), presumably because of the objects that were created without a
+cgroup set. I tried to fix it in mem_cgroup_uncharge_gpu_page() by conditionally calling
+refill_stock(), but that ran into an underflow instead.
 
-Right, but it's easy to exclude zone-device folios here. So the real 
-question is: do you want to deal with deferred splits or not?
+Anyway, patch for xe below:
+----->8-----------
+drm/xe: Enable memcg accounting for TT/system
 
-If not, then just disable it right from the start.
+Create a flag to enable memcg accounting for XE as well.
 
--- 
-Cheers,
+Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
 
-David / dhildenb
+diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
+index 867087c2d1534..fd93374967c9e 100644
+--- a/drivers/gpu/drm/xe/xe_bo.c
++++ b/drivers/gpu/drm/xe/xe_bo.c
+@@ -54,6 +54,7 @@ static const struct ttm_place sys_placement_flags = {
+ 	.flags = 0,
+ };
+ 
++/* TTM_PL_FLAG_MEMCG is not set, those placements are used for eviction */
+ static struct ttm_placement sys_placement = {
+ 	.num_placement = 1,
+ 	.placement = &sys_placement_flags,
+@@ -188,6 +189,7 @@ static void try_add_system(struct xe_device *xe, struct xe_bo *bo,
+ 
+ 		bo->placements[*c] = (struct ttm_place) {
+ 			.mem_type = XE_PL_TT,
++			.flags = TTM_PL_FLAG_MEMCG,
+ 		};
+ 		*c += 1;
+ 	}
+@@ -1696,6 +1698,8 @@ static void xe_ttm_bo_destroy(struct ttm_buffer_object *ttm_bo)
+ 
+ static void xe_gem_object_free(struct drm_gem_object *obj)
+ {
++	struct xe_bo *bo = gem_to_xe_bo(obj);
++
+ 	/* Our BO reference counting scheme works as follows:
+ 	 *
+ 	 * The gem object kref is typically used throughout the driver,
+@@ -1709,8 +1713,9 @@ static void xe_gem_object_free(struct drm_gem_object *obj)
+ 	 * driver ttm callbacks is allowed to use the ttm_buffer_object
+ 	 * refcount directly if needed.
+ 	 */
+-	__xe_bo_vunmap(gem_to_xe_bo(obj));
+-	ttm_bo_put(container_of(obj, struct ttm_buffer_object, base));
++	__xe_bo_vunmap(bo);
++	obj_cgroup_put(bo->ttm.objcg);
++	ttm_bo_put(&bo->ttm);
+ }
+ 
+ static void xe_gem_object_close(struct drm_gem_object *obj,
+@@ -1951,6 +1956,9 @@ struct xe_bo *___xe_bo_create_locked(struct xe_device *xe, struct xe_bo *bo,
+ 	placement = (type == ttm_bo_type_sg ||
+ 		     bo->flags & XE_BO_FLAG_DEFER_BACKING) ? &sys_placement :
+ 		&bo->placement;
++
++	if (bo->flags & XE_BO_FLAG_ACCOUNTED)
++		bo->ttm.objcg = get_obj_cgroup_from_current();
+ 	err = ttm_bo_init_reserved(&xe->ttm, &bo->ttm, type,
+ 				   placement, alignment,
+ 				   &ctx, NULL, resv, xe_ttm_bo_destroy);
+@@ -2726,7 +2734,7 @@ int xe_gem_create_ioctl(struct drm_device *dev, void *data,
+ 	if (XE_IOCTL_DBG(xe, args->size & ~PAGE_MASK))
+ 		return -EINVAL;
+ 
+-	bo_flags = 0;
++	bo_flags = XE_BO_FLAG_ACCOUNTED;
+ 	if (args->flags & DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING)
+ 		bo_flags |= XE_BO_FLAG_DEFER_BACKING;
+ 
+diff --git a/drivers/gpu/drm/xe/xe_bo.h b/drivers/gpu/drm/xe/xe_bo.h
+index 6134d82e80554..e44fc58d9a00f 100644
+--- a/drivers/gpu/drm/xe/xe_bo.h
++++ b/drivers/gpu/drm/xe/xe_bo.h
+@@ -48,6 +48,7 @@
+ #define XE_BO_FLAG_GGTT2		BIT(22)
+ #define XE_BO_FLAG_GGTT3		BIT(23)
+ #define XE_BO_FLAG_CPU_ADDR_MIRROR	BIT(24)
++#define XE_BO_FLAG_ACCOUNTED		BIT(25)
+ 
+ /* this one is trigger internally only */
+ #define XE_BO_FLAG_INTERNAL_TEST	BIT(30)
+diff --git a/drivers/gpu/drm/xe/xe_lrc.c b/drivers/gpu/drm/xe/xe_lrc.c
+index 540f044bf4255..4db3227d65c04 100644
+--- a/drivers/gpu/drm/xe/xe_lrc.c
++++ b/drivers/gpu/drm/xe/xe_lrc.c
+@@ -1266,7 +1266,8 @@ static int xe_lrc_init(struct xe_lrc *lrc, struct xe_hw_engine *hwe,
+ 	bo_flags = XE_BO_FLAG_VRAM_IF_DGFX(tile) | XE_BO_FLAG_GGTT |
+ 		   XE_BO_FLAG_GGTT_INVALIDATE;
+ 	if (vm && vm->xef) /* userspace */
+-		bo_flags |= XE_BO_FLAG_PINNED_LATE_RESTORE;
++		bo_flags |= XE_BO_FLAG_PINNED_LATE_RESTORE |
++			    XE_BO_FLAG_ACCOUNTED;
+ 
+ 	lrc->bo = xe_bo_create_pin_map(xe, tile, NULL, bo_size,
+ 				       ttm_bo_type_kernel,
+diff --git a/drivers/gpu/drm/xe/xe_oa.c b/drivers/gpu/drm/xe/xe_oa.c
+index 5729e7d3e3356..569035630ffdf 100644
+--- a/drivers/gpu/drm/xe/xe_oa.c
++++ b/drivers/gpu/drm/xe/xe_oa.c
+@@ -885,7 +885,7 @@ static int xe_oa_alloc_oa_buffer(struct xe_oa_stream *stream, size_t size)
+ 
+ 	bo = xe_bo_create_pin_map(stream->oa->xe, stream->gt->tile, NULL,
+ 				  size, ttm_bo_type_kernel,
+-				  XE_BO_FLAG_SYSTEM | XE_BO_FLAG_GGTT);
++				  XE_BO_FLAG_SYSTEM | XE_BO_FLAG_GGTT | XE_BO_FLAG_ACCOUNTED);
+ 	if (IS_ERR(bo))
+ 		return PTR_ERR(bo);
+ 
+diff --git a/drivers/gpu/drm/xe/xe_pt.c b/drivers/gpu/drm/xe/xe_pt.c
+index 330cc0f54a3f4..efcd54ab75e92 100644
+--- a/drivers/gpu/drm/xe/xe_pt.c
++++ b/drivers/gpu/drm/xe/xe_pt.c
+@@ -120,7 +120,8 @@ struct xe_pt *xe_pt_create(struct xe_vm *vm, struct xe_tile *tile,
+ 		   XE_BO_FLAG_IGNORE_MIN_PAGE_SIZE |
+ 		   XE_BO_FLAG_NO_RESV_EVICT | XE_BO_FLAG_PAGETABLE;
+ 	if (vm->xef) /* userspace */
+-		bo_flags |= XE_BO_FLAG_PINNED_LATE_RESTORE;
++		bo_flags |= XE_BO_FLAG_PINNED_LATE_RESTORE |
++			    XE_BO_FLAG_ACCOUNTED;
+ 
+ 	pt->level = level;
+ 	bo = xe_bo_create_pin_map(vm->xe, tile, vm, SZ_4K,
+diff --git a/drivers/gpu/drm/xe/xe_svm.c b/drivers/gpu/drm/xe/xe_svm.c
+index 10c8a1bcb86e8..fdf845bb717e0 100644
+--- a/drivers/gpu/drm/xe/xe_svm.c
++++ b/drivers/gpu/drm/xe/xe_svm.c
+@@ -700,6 +700,7 @@ static int xe_drm_pagemap_populate_mm(struct drm_pagemap *dpagemap,
+ 	bo = xe_bo_create_locked(vr->xe, NULL, NULL, end - start,
+ 				 ttm_bo_type_device,
+ 				 (IS_DGFX(xe) ? XE_BO_FLAG_VRAM(vr) : XE_BO_FLAG_SYSTEM) |
++				 XE_BO_FLAG_ACCOUNTED |
+ 				 XE_BO_FLAG_CPU_ADDR_MIRROR);
+ 	if (IS_ERR(bo)) {
+ 		err = PTR_ERR(bo);
 
 
