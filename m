@@ -2,85 +2,168 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0DC94C87FCB
-	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 16:06:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B07BDC87FCB
+	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 16:14:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 803138E0005; Tue,  5 Aug 2025 12:06:49 -0400 (EDT)
+	id 554666B00A6; Tue,  5 Aug 2025 12:14:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DACE8E0001; Tue,  5 Aug 2025 12:06:49 -0400 (EDT)
+	id 52C0A6B00A7; Tue,  5 Aug 2025 12:14:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 717C58E0005; Tue,  5 Aug 2025 12:06:49 -0400 (EDT)
+	id 441EA6B00A8; Tue,  5 Aug 2025 12:14:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 619EB8E0001
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:06:49 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DD5B21A016C
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:06:48 +0000 (UTC)
-X-FDA: 83743182096.02.4337ECA
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
-	by imf09.hostedemail.com (Postfix) with ESMTP id EC061140012
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:06:46 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	spf=pass (imf09.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.201 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3483E6B00A6
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:14:06 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CCDFB1D3B03
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:14:05 +0000 (UTC)
+X-FDA: 83743200450.19.43B6E75
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+	by imf24.hostedemail.com (Postfix) with ESMTP id BB73A18000C
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:14:03 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=NIew5jZf;
+	spf=pass (imf24.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.175 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754410007;
+	s=arc-20220608; t=1754410443;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YKKJDDtdxUXV0lV5aN6SeraxUcBFKLa1fTZ3jSmMfEc=;
-	b=mspgBHIFA0sptZWPsqeTDyK0Aa7eVW4/YnzSSeKBYlPy0iBAgQw2KLGss8L/vVkvA4YOGl
-	U0HqRJpDRrBWuXL3pX7nZdZGgsRRLP+F1O4Id0zJeF6znrwyyU5UwUs4dwwKLW4ZKZAk3l
-	DL2Q5gms6eXBloCLNXPEPfnHN+Ri5ow=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754410007; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ut5lsjSSswYnbLzk6rrdmu5+CeAKFhijQRi1rB1wfMg=;
+	b=2o72vhbJwKbkLbs2SNobswU1gHOwOEKwmRUDVeHo+3dUMJ/KIWhe5cSQDhlPmA2fUmbFFV
+	6sf8cDd+z+3lTinLK008nZDkm30AyVcUPHS5+U/nyJAmMkc7VdQ9KVOF5BZus8YRbKctIw
+	kgUTrfJwbSWvnv/2tThK/tCl2X0Lsbc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754410443; a=rsa-sha256;
 	cv=none;
-	b=N2rVIqEadDBwlX4evDKAFFvFQCS/D3/6XgdSiRm7HSTktlstdqBUy46ZNnBPoQcNztYkRM
-	3MNmmCnmOhENqpvB6g5+F9oYedobJP0AeO+BXxJu+ij9em5NVCufJtaIbg4/H813nPce5f
-	ivD5GS1EgK884iDDRz0Dv1gU2/qvFiM=
+	b=ZBbpasblqEAPSUdBDoYw5szPNZ6cr+oASchj5KrmqLpUdqPoJl3xhR2p5Kkqm6Pao9XGMI
+	rvGfAHXr6KGbo3d0QbpysjR0z4qRlI4aR6yAp1WLOYbov8R1itHp64bMjOFZOUjxFynzgH
+	NVFGFKBBnEnmOTEidPxgF1ziP412QL0=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.201 as permitted sender) smtp.mailfrom=alex@ghiti.fr
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 417DE44427;
-	Tue,  5 Aug 2025 16:06:42 +0000 (UTC)
-Message-ID: <20c1e656-512e-4424-9d4e-176af18bb7d6@ghiti.fr>
-Date: Tue, 5 Aug 2025 18:06:41 +0200
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=NIew5jZf;
+	spf=pass (imf24.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.175 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-332631e47afso714461fa.0
+        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 09:14:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754410442; x=1755015242; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ut5lsjSSswYnbLzk6rrdmu5+CeAKFhijQRi1rB1wfMg=;
+        b=NIew5jZfYZ/PHfRtkSNZj1cRNycxGyXqHIo1DkzU3RmXoX+sRuHSpKA1D1cEljNqi2
+         5n/DB7ngMNazOo4/XaOVZ7k2fg/bWYMkK0JPen/AjSdqV5omG5Fk360qe8LWpRn58lME
+         58xczwtjzrn4OJbARlpSG6srl26mbVP7DsIwbaNnbgtyLXxrorNVjR3B74cMqhr9lUyN
+         Pi6K7m4vrCoElzmUcdWXY4V/H6E509gZO4zSlRE1LwY7jR3I7wSWolwHoefX4vUiiu/q
+         ir3JF/MYrP5HLgC3R8qLVBMVTL1ZIEIv5/E6hfeZuSmyKTUmn5cMfom6R7rFW/2GwDuN
+         GwRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754410442; x=1755015242;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ut5lsjSSswYnbLzk6rrdmu5+CeAKFhijQRi1rB1wfMg=;
+        b=eCVWyHo6uuIPIokhjUEkX/9NWANO2NWmMX9lGfat+aKcdRG+P9B6XUxFMexviIDMbA
+         wEP9YtoZ/RPxvAad7HxIDcdQS6pR/SDpdTbOMfPw43bMFLCLkRrrC2jlFPXDcqVaR35l
+         +1MsHH30OqSwQI0k588b1cPqGy9nCUvt+GKPipAfkNmhoTvtjmD286cBXQFxSawopvwK
+         lj089FO8t1K0+zD6DHirX9erQddb6dGbyBYrCwzTrUNypDZ0j1EbDaeKnzzzSjIc47s+
+         KsCU1DmG3E08uHJ3CZHXMrqDFkjIduOs83xC6J6DaksjiUQX2/+gTTqICAdVEuTC7OQd
+         WKeA==
+X-Forwarded-Encrypted: i=1; AJvYcCVRxFRSqvk5CggnOuWAN+bf1acpXqd5Jd4vcASCa4MuKrHq0d7jUD7G9ETs6yo/rWQrVWQq+XiLXA==@kvack.org
+X-Gm-Message-State: AOJu0YzXM6dWkYlYSzlMRGgpwEZ7C4imwcmfZ0enFrtSXBU8A0D8lKo8
+	hJ0eW8xVT+dlcrVhsjomZ6avytEiymJBysF5GIPZaCLw/+MyMMwS1+dc
+X-Gm-Gg: ASbGncuROJjpH6j0cuSkcwnXaTUrEJxiUuiNJjRGqsvvQLhl/uQljreNjEWLUdAtsDJ
+	jtXgFV6S3R+Eb8Vr/9AJv6r/VtF98ubpiZZqdC3J2Blzd5gs3qRkHoujtcJleAijNA28GlLsMsF
+	4ntSoUTM8oHu0zb9PQMCBQYnBYJO17hWa1nH4XNUw7xFHYaBmFhzTopikquDrZGKHAymFk4FVXh
+	f8O508hMBlLQX0caUSbpv1ILDgJJEylfSW3O6DdaTBWz3RXHCB5Oud6Uwzk3Z530u4gquuIPqtX
+	t/bHxDQtCpXVTi5Px2ma7F9JkArEhhW8RSDL5DyntH9Gu3lN6OhH3/e8UhJ6JHgtCKk6lBCeN4v
+	rwOMvvYi5t1UgUhSJIzuseAq5vsiGy5LFp+BQ/z3Qkk9xwRescQ==
+X-Google-Smtp-Source: AGHT+IH0xPAx9h/e+86wx2UChAIDs8RS46jNjVMEpxxiiDlgZAALsSVVnEbgPp+pN/RR7dfa5MNCmA==
+X-Received: by 2002:a05:651c:b0f:b0:332:341d:9531 with SMTP id 38308e7fff4ca-3327b9157d5mr10915411fa.12.1754410441379;
+        Tue, 05 Aug 2025 09:14:01 -0700 (PDT)
+Received: from pc636 (host-95-203-18-142.mobileonline.telia.com. [95.203.18.142])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-33238272ff7sm20616811fa.7.2025.08.05.09.13.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Aug 2025 09:14:00 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Tue, 5 Aug 2025 18:13:56 +0200
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Uladzislau Rezki <urezki@gmail.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"David S . Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Kees Cook <kees@kernel.org>, Peter Xu <peterx@redhat.com>,
+	David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Hugh Dickins <hughd@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-sgx@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	nvdimm@lists.linux.dev, linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] mm: update core kernel code to use vm_flags_t
+ consistently
+Message-ID: <aJItxJNfn8B2JBbn@pc636>
+References: <cover.1750274467.git.lorenzo.stoakes@oracle.com>
+ <d1588e7bb96d1ea3fe7b9df2c699d5b4592d901d.1750274467.git.lorenzo.stoakes@oracle.com>
+ <aIgSpAnU8EaIcqd9@hyeyoo>
+ <73764aaa-2186-4c8e-8523-55705018d842@lucifer.local>
+ <aIkVRTouPqhcxOes@pc636>
+ <69860c97-8a76-4ce5-b1d6-9d7c8370d9cd@lucifer.local>
+ <aJCRXVP-ZFEPtl1Y@pc636>
+ <aJHQ9XCLtibFjt93@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 9/9] kasan/riscv: call kasan_init_generic in kasan_init
-To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>, ryabinin.a.a@gmail.com,
- hca@linux.ibm.com, christophe.leroy@csgroup.eu, andreyknvl@gmail.com,
- agordeev@linux.ibm.com, akpm@linux-foundation.org, zhangqing@loongson.cn,
- chenhuacai@loongson.cn, trishalfonso@google.com, davidgow@google.com
-Cc: glider@google.com, dvyukov@google.com, kasan-dev@googlegroups.com,
- linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-um@lists.infradead.org, linux-mm@kvack.org
-References: <20250805142622.560992-1-snovitoll@gmail.com>
- <20250805142622.560992-10-snovitoll@gmail.com>
-Content-Language: en-US
-From: Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <20250805142622.560992-10-snovitoll@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-GND-State: clean
-X-GND-Score: 0
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduudehiedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecunecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpeetlhgvgigrnhgurhgvucfihhhithhiuceorghlvgigsehghhhithhirdhfrheqnecuggftrfgrthhtvghrnhephffhuddtveegleeggeefledtudfhudelvdetudfhgeffffeigffgkeethfejudejnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepudelfedrfeefrdehjedrudelleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleefrdeffedrheejrdduleelpdhhvghloheplgduledvrdduieekrddvvddruddtudgnpdhmrghilhhfrhhomheprghlvgigsehghhhithhirdhfrhdpnhgspghrtghpthhtohepvddupdhrtghpthhtohepshhnohhvihhtohhllhesghhmrghilhdrtghomhdprhgtphhtthhopehrhigrsghinhhinhdrrgdrrgesghhmrghilhdrtghomhdprhgtphhtthhopehhtggrsehlihhnuhigrdhisghmrdgtohhmpdhrtghpthhtoheptghhrhhishhtohhphhgvrdhlvghrohihsegtshhgrhhouhhprdgvuhdprhgtphhtthhopegrnhgurhgvhihknhhvlhesghhmrghilhdrtghomhdprhgtphhtthhopegrghhorhguvggvv
- heslhhin
- hhugidrihgsmhdrtghomhdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepiihhrghnghhqihhngheslhhoohhnghhsohhnrdgtnh
-X-GND-Sasl: alex@ghiti.fr
-X-Rspamd-Queue-Id: EC061140012
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aJHQ9XCLtibFjt93@kernel.org>
+X-Rspamd-Queue-Id: BB73A18000C
+X-Stat-Signature: dwoznanzed6psrh9nbmn3yp4dw5xk8gq
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: t5hfs945f9q7norkowt785m8m84br8t6
-X-HE-Tag: 1754410006-211221
-X-HE-Meta: U2FsdGVkX1+YibiNBhu2VxpWm+kKtVPsG+xvBA2WzE7wUjTC3aibNwcm+dswQE8TvjN7ML8ECpTY3X8TnfZf5kk6gogIunDY9Eisq/RHvkNRljjgY2pLUPKmcLoZZR/NwvIesCVyv0bYrmAuRtu8AOmNj+2QTzAw9eHz5ZZF89gyWy8+m5K1RhHTQWEgI8spxwM1K0RRDao9VAjctBZjkhgL4x0tAINrmsh8hBoq9BDWVcVnm4I3rP/OWKWuwuIZJhcfR6ZyajkZ6Bct0qMX/qo9uDMk3qFMWoaT6fOxuJGo83wHGztmOHJdJOH/dARj/fYnVyOMZe79iXIG7Zfw29WwDkxfwdGHaqqJ79ExRZsUKt51PDdAMy+qR00LuzmrHq9duV3xPbpmySMaFzeLtrwyt6dBnfmewWWBdKRa9X5tF/y/RVy21P1UXh3uxiIPQSL6xY+AXJMXftj6aLnmyCcsAcWL6BHxF7VZNpFWg5n1SDIL4VGyP5YJxyVDUxrm/vL9eEmiPl9oQtwovO8HAKv5b71xws5J2KIUxYNcDY0givYYJ2ESBdXJHA4Rcu9Jt5iitiecISWhiYXqWePt2YGrGzZ67jlC9rEdjhZc/yxI4RS03oPW+K6fp1rLJG5tr8h39Fn4j6lTjrggAbWRJ8nwWHlKkoSqat+2dYWueLw8LwLgBflZz1MpD5eRXN6Jkrxf9VPXeiaD/FdvvxbUu9nCZXn2yUzZwrUSwe3xejDQ49qcsjkxWn34qGZymUCTGAwa2j30ZfKvxDZU5PYim4Hcd9UGfUaBc13gXSPySW4N+f4SzM1s+f4vIu5+oJJUoIrAgMCw7/2bX+9de2xII2CL6DAMhbjbvy+H28Bmqf4eDE6Ay8e/CXIVArxUR8ZufcwkOeR4zTpeiLGHsx2LvA0PNfGs2vV43vSMJD51O50eAQ7ndT3LalrylI3YTeay6CAArZGDMpkkXbP67NW
- qWG4jYkz
- OBmOjiArFvsPS2JMv/fnxvv+G9CSajWsE6kCPWygVFfUA15A4uKKJejlOAPx9aT0hc+m6bBw/4Z9yltX3QLdF/VsEgYa6sZr2EYvPdTBaUAxTrt6TkfilLpRN2zby2xQa1gqLNHwycaVjwhj5GBu60t5OtXCFJJnNxUHnB8zrxeSc+kn0DiaOhgK5vaQjj46wrYXG4qncu4S0UBtNumM3dsHpc3ahbK9XB3kb+yN9fX7yomlayqFTjsxnoZ667awmd5pyz/Icakc0W/uDmGciD4M1AA==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1754410443-112043
+X-HE-Meta: U2FsdGVkX18eoiaDoVLlAqExR2CEvQmAn4+E748RGnx1WZ6NiJV6Nt4RK84rbysyVqSFytICEvN7nzEKcuL41jHVuZ3uWp8xdyVXifqHw5TLmIfv9ftdOAGV/esxNSrWJWVQFHdGVa9sFrKJpbDqx3djzNlh+GN2lPm/AmMgDwyFaVst0muAJnF7ZJsGMW86qYg56+yotmWhkU42acewTwloeve1ecLeG6V3N0Fl2czziBffQ7rn8gaD+6Y1vlOhFv+uID8OCr3aRlkFZmy1O1QqVyA6T38xUC1orSusxrAg+I4WN2DuXvsxlufUNxwcYQUZeU8Wo8wAXP3iw7VrP1HXS95EMPVIPV0imrmFrN5tEGrJtIpAKTLix0mfUPJ+YJothyy6CPUUQ1b61SVHPNKxDg0H6SU49uC1o7GZlaVxJRFNfX6ZNTf/SG9m7/UuksWNvQabSabcRbiubJoMcUKf7XbBRAaV01gCqSYyvV6+eJ1V0wwpzRPlpu+HBux56AONAnhW4/nOvOQfLLPLLuk3psVaL8jYztAmBektpZqQlwLhxN5hJCbVSF+GCilmTqYdtYAfeNNckiZIlNjz1M+Y+IfAUAAFVRZyKrr1NFwPsTIVBoE0n1hfhx9fJo1sQ7yQSrONAbfhMtCTVUiQm7M1lLfLHZ9kXvefLlI3ROz0ylAAjFmlpjLbxlO/Q/8MX8z49c5BlCloYPPsDI+yuG9b4I6bvwmE5Fe2j+tfhMq3Bi7gTKPgcoIU4ZMwwcb9OaBnAGLCIerGVfXK/ARU47etCMUzaOcpuXsfJJhRuOs0nZwl4K9Uk3aXHanC2YmhT0Y0D5USJ0So7E0V5j+fCYZET5h2IOE9Rkk43J49/X9kPWwMyVQ2dEAyfw0YZssu5UH7jh1yX3W6ia5A6IoKWDA26Czi/3MGtFHchHyLmaNJyP3zoN08J2DrIgFmJeQEQduHVHq2uw6aSm7spM9
+ paRatcnh
+ n6/AP4MLYnaHWj1Swb/wjtG1StN5slpwTOJjvByNoEdx/MPrXmHwL+m72Y6/A3nPfZeR7v6lpIadpsBMuZHwmg+zG+CMKhvb8kJ4H2V7Ydpmi4Nh2Q9U6TzwmBFFoB3I0jae011iLLl1J678xT9ELsLjw+SUfdl8aQLxDGehJPJtj6lCt5CTSGa3oQPMZgkgT69HrkTSTGgdz+fhAEiN2dsIh10itMLRJr8d3bC9Sa4ewNv8ZdfImY92dLMuYMy6hnWBhCE7n9UwV+sLFkl1dsvCCxqE4T9oyV9ZkosXZMJl/DZWOGp1WTB8bZ9QeimLGeovx9zGjBtwpXx9tj4GJ2jskCxDJNRFp27STF0suSKBNYtrLnPGM8x+K5oFqlMWO65ESHF2u9PDQTwpa9W0ShtZfuOcrNRq8Uk9PPcCiKgaQ9fIOnB9jUvux94vlw1RezJYGnYN9FRlUbdoD4l1MofI4h1cBuDlfKQ9c
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,45 +172,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Sabyrzhan,
+On Tue, Aug 05, 2025 at 12:37:57PM +0300, Mike Rapoport wrote:
+> On Mon, Aug 04, 2025 at 12:54:21PM +0200, Uladzislau Rezki wrote:
+> > Hello, Lorenzo!
+> > 
+> > > So sorry Ulad, I meant to get back to you on this sooner!
+> > > 
+> > > On Tue, Jul 29, 2025 at 08:39:01PM +0200, Uladzislau Rezki wrote:
+> > > > On Tue, Jul 29, 2025 at 06:25:39AM +0100, Lorenzo Stoakes wrote:
+> > > > > Andrew - FYI there's nothing to worry about here, the type remains
+> > > > > precisely the same, and I'll send a patch to fix this trivial issue so when
+> > > > > later this type changes vmalloc will be uaffected.
+> > > > >
+> > > > > On Tue, Jul 29, 2025 at 09:15:51AM +0900, Harry Yoo wrote:
+> > > > > > [Adding Uladzislau to Cc]
+> > > > >
+> > > > > Ulad - could we PLEASE get rid of 'vm_flags' in vmalloc? It's the precise
+> > > > > same name and (currently) type as vma->vm_flags and is already the source
+> > > > > of confusion.
+> > > > >
+> > > > You mean all "vm_flags" variable names? "vm_struct" has flags as a
+> > > > member. So you want:
+> > > >
+> > > > urezki@pc638:~/data/backup/coding/linux-not-broken.git$ grep -rn vm_flags mm/execmem.c
+> > > > 29:                          pgprot_t pgprot, unsigned long vm_flags)
+> > > > 39:             vm_flags |= VM_DEFER_KMEMLEAK;
+> > > > 41:     if (vm_flags & VM_ALLOW_HUGE_VMAP)
+> > > > 45:                              pgprot, vm_flags, NUMA_NO_NODE,
+> > > > 51:                                      pgprot, vm_flags, NUMA_NO_NODE,
+> > > > 85:                          pgprot_t pgprot, unsigned long vm_flags)
+> > > > 259:    unsigned long vm_flags = VM_ALLOW_HUGE_VMAP;
+> > > > 266:    p = execmem_vmalloc(range, alloc_size, PAGE_KERNEL, vm_flags);
+> > > > 376:    unsigned long vm_flags = VM_FLUSH_RESET_PERMS;
+> > > > 385:            p = execmem_vmalloc(range, size, pgprot, vm_flags);
+> > > > urezki@pc638:~/data/backup/coding/linux-not-broken.git$ grep -rn vm_flags mm/vmalloc.c
+> > > > 3853: * @vm_flags:                additional vm area flags (e.g. %VM_NO_GUARD)
+> > > > 3875:                   pgprot_t prot, unsigned long vm_flags, int node,
+> > > > 3894:   if (vmap_allow_huge && (vm_flags & VM_ALLOW_HUGE_VMAP)) {
+> > > > 3912:                             VM_UNINITIALIZED | vm_flags, start, end, node,
+> > > > 3977:   if (!(vm_flags & VM_DEFER_KMEMLEAK))
+> > > > 4621:   vm_flags_set(vma, VM_DONTEXPAND | VM_DONTDUMP);
+> > > > urezki@pc638:~/data/backup/coding/linux-not-broken.git$ grep -rn vm_flags mm/execmem.c
+> > > > 29:                          pgprot_t pgprot, unsigned long vm_flags)
+> > > > 39:             vm_flags |= VM_DEFER_KMEMLEAK;
+> > > > 41:     if (vm_flags & VM_ALLOW_HUGE_VMAP)
+> > > > 45:                              pgprot, vm_flags, NUMA_NO_NODE,
+> > > > 51:                                      pgprot, vm_flags, NUMA_NO_NODE,
+> > > > 85:                          pgprot_t pgprot, unsigned long vm_flags)
+> > > > 259:    unsigned long vm_flags = VM_ALLOW_HUGE_VMAP;
+> > > > 266:    p = execmem_vmalloc(range, alloc_size, PAGE_KERNEL, vm_flags);
+> > > > 376:    unsigned long vm_flags = VM_FLUSH_RESET_PERMS;
+> > > > 385:            p = execmem_vmalloc(range, size, pgprot, vm_flags);
+> > > > urezki@pc638:~/data/backup/coding/linux-not-broken.git$ grep -rn vm_flags ./include/linux/vmalloc.h
+> > > > 172:                    pgprot_t prot, unsigned long vm_flags, int node,
+> > > > urezki@pc638:~/data/backup/coding/linux-not-broken.git$
+> > > >
+> > > > to rename all those "vm_flags" to something, for example, like "flags"?
+> > > 
+> > > Yeah, sorry I know it's a churny pain, but I think it's such a silly source
+> > > of confusion _in general_, not only this series where I made a mistake (of
+> > > course entirely my fault but certainly more understandable given the
+> > > naming), but in the past I've certainly sat there thinking 'hmmm wait' :)
+> > > 
+> > > Really I think we should rename 'vm_struct' too, but if that causes _too
+> > > much_ churn fair enough.
+> 
+> Well, it's not that terrible :)
+> 
+> ~/git/linux$ git grep -w vm_struct | wc -l
+> 173
+> 
+Indeed :)
 
-On 8/5/25 16:26, Sabyrzhan Tasbolatov wrote:
-> Call kasan_init_generic() which handles Generic KASAN initialization
-> and prints the banner. Since riscv doesn't select ARCH_DEFER_KASAN,
-> kasan_enable() will be a no-op, and kasan_enabled() will return
-> IS_ENABLED(CONFIG_KASAN) for optimal compile-time behavior.
+
+> > > I think even though it's long-winded, 'vmalloc_flags' would be good, both
+> > > in fields and local params as it makes things very very clear.
+> > > 
+> > > Equally 'vm_struct' -> 'vmalloc_struct' would be a good change.
+> 
+> Do we really need the _struct suffix?
+> How about vmalloc_area?
+> 
+I think, we should not use vmalloc_ prefix here, because vmalloc
+operates within its own range: VMALLOC_START:VMALLOC_END, therefore
+it might be confusing also.
+
+others can use another regions. vmap_mapping?
+
 >
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217049
-> Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-> ---
->   arch/riscv/mm/kasan_init.c | 1 +
->   1 file changed, 1 insertion(+)
->
-> diff --git a/arch/riscv/mm/kasan_init.c b/arch/riscv/mm/kasan_init.c
-> index 41c635d6aca..ba2709b1eec 100644
-> --- a/arch/riscv/mm/kasan_init.c
-> +++ b/arch/riscv/mm/kasan_init.c
-> @@ -530,6 +530,7 @@ void __init kasan_init(void)
->   
->   	memset(kasan_early_shadow_page, KASAN_SHADOW_INIT, PAGE_SIZE);
->   	init_task.kasan_depth = 0;
-> +	kasan_init_generic();
+> It also seems that struct vmap_area can be made private to mm/.
+> 
+I agree. Also it can be even moved under vmalloc.c. There is only one
+user which needs it globally, it is usercopy.c. It uses find_vmap_area()
+which is wrong. See:
 
+<snip>
+	if (is_vmalloc_addr(ptr) && !pagefault_disabled()) {
+		struct vmap_area *area = find_vmap_area(addr);
 
-This is right before actually setting the new mapping to the mmu (which 
-is done below by setting a register called SATP). It does not seem to be 
-a problem though, just wanted to let you know.
+		if (!area)
+			usercopy_abort("vmalloc", "no area", to_user, 0, n);
 
-It boots fine with defconfig + kasan inline so:
+		if (n > area->va_end - addr) {
+			offset = addr - area->va_start;
+			usercopy_abort("vmalloc", NULL, to_user, offset, n);
+		}
+		return;
+	}
+<snip>
 
-Tested-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+we can add a function which just assign va_start, va_end as input
+parameters and use them in the usercopy.c. 
 
-Thanks,
+Thanks!
 
-Alex
-
-
->   
->   	csr_write(CSR_SATP, PFN_DOWN(__pa(swapper_pg_dir)) | satp_mode);
->   	local_flush_tlb_all();
+--
+Uladzislau Rezki
 
