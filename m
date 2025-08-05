@@ -2,127 +2,125 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9A49BC87FCB
-	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 10:55:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 74B33C87FCB
+	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 10:58:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 06AD86B0099; Tue,  5 Aug 2025 06:55:30 -0400 (EDT)
+	id E537B6B009C; Tue,  5 Aug 2025 06:58:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 042CA6B009A; Tue,  5 Aug 2025 06:55:30 -0400 (EDT)
+	id E2ACE6B009D; Tue,  5 Aug 2025 06:58:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E72FF6B009B; Tue,  5 Aug 2025 06:55:29 -0400 (EDT)
+	id D40816B009F; Tue,  5 Aug 2025 06:58:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D87CA6B0099
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 06:55:29 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 61CEA16017E
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 10:55:29 +0000 (UTC)
-X-FDA: 83742397578.25.90BEC61
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf17.hostedemail.com (Postfix) with ESMTP id EA0C340004
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 10:55:26 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CFMdW2Wx;
-	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C677F6B009C
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 06:58:05 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7469C114C4B
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 10:58:05 +0000 (UTC)
+X-FDA: 83742404130.30.3C9B418
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf13.hostedemail.com (Postfix) with ESMTP id DF31920009
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 10:58:02 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ESBZ8kcm;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf13.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754391483; a=rsa-sha256;
+	cv=none;
+	b=Pp/tV/aSKV22jz9oEX99xTsoAPou9pMxaPyPPXsLWQ76TH0ln689XjbyuJInioxf7DnL44
+	UGfXkjIV9XV5iL8Pd5WgrtEySVlXIfj869YGZOks/LQ/ZcE0x3gLk+LYm6ytq7sBQITTYl
+	cY/dfCSxTDI0CHvAlVnMaVssRDVezOs=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ESBZ8kcm;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf13.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754391327;
+	s=arc-20220608; t=1754391483;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XQZDklFzgIg/VRMnloECBcZkyVf0Gj6nmHNcIi06hAc=;
-	b=I+nxctQbP5GrqRg00MmCsPUcQduXKe22aX/ecKOhcPK30Kr9Ne1KG8cbjC9U63t/KMz9wm
-	c3tY8/8VfqQpmyGodqDpugKQNXQUQ4nUQqwNfXL02RgIcYO8oUwr0TkQPz7jk0pMDzYAlO
-	4E5inysnz1EdPVF9kPX+8aiQE0/Vjy8=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CFMdW2Wx;
-	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754391327; a=rsa-sha256;
-	cv=none;
-	b=Iq/vQW5bk+ieLt2ksHreLCxW8xaOfq3zxPoiFQu3GFcpcPv3WaQQhqGLneAyckqRSQahbG
-	+e17gpmAiczR9vUP4vUhWJxn3oa9N3Wdh+BznOjPi/b++jxQ74rBrcL9D3gg9INebpT4Xs
-	o9GCJ51SrCumnO5x0U9ct5MeNBFQ4Kw=
+	bh=n5BMU5lGJ8RNX9gIIEKL9KgpFrlX8cIqx5sp7WULqO4=;
+	b=5bV1vjBfL9gbxsrOWrQK2spFM70/85/HXAWst/69WDPgfFGr6Gdb+uhQDB7q+5CqG7EZBf
+	L5Axmo2d8FUOy/TPprFAveRXblD+l9A/XCsIiooCdh3kKoZRPRfI+mY9VFBj+wSs7s7+CM
+	xPpAXpRYOEIpBMC4tDiHdHecgSDq5yU=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754391326;
+	s=mimecast20190719; t=1754391482;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=XQZDklFzgIg/VRMnloECBcZkyVf0Gj6nmHNcIi06hAc=;
-	b=CFMdW2WxjnLZ4HNKMpP5RsMsx9AtFzS1tTg/ikyKpXxwvFHNKutg6fOAd77xNa+toPm4HP
-	QB/CW3sQvyqrm9wJpeYGYlqqLBgUgwkPn7NtjxAc4FX35vCY8n7YWDaFW5dsfcLrbfl+6A
-	74cOonUAHjoKpWx3i/HC9NS6Pv95ZQ0=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=n5BMU5lGJ8RNX9gIIEKL9KgpFrlX8cIqx5sp7WULqO4=;
+	b=ESBZ8kcmuvMv9V0TyCbtmTtsojJKVtJdv/VIS+wnsXbLc2njaFSlxcp5rXZzLg7aKDTLam
+	v3XNylM0tauqiJOiaZfcxOJF8J0U+7bCQBGPkC4syTNTASohdO1ixcWI6NBJgukHZ6V2Cu
+	H093Q55E3QQ1IJ0LTZS2J1bGKPgqhAI=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-636-80RFSpVkNNyFvAhI09kjdQ-1; Tue, 05 Aug 2025 06:55:25 -0400
-X-MC-Unique: 80RFSpVkNNyFvAhI09kjdQ-1
-X-Mimecast-MFC-AGG-ID: 80RFSpVkNNyFvAhI09kjdQ_1754391324
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4538f375e86so42455845e9.3
-        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 03:55:25 -0700 (PDT)
+ us-mta-329-CrTCOyd8OQacYnOPri_5aQ-1; Tue, 05 Aug 2025 06:58:01 -0400
+X-MC-Unique: CrTCOyd8OQacYnOPri_5aQ-1
+X-Mimecast-MFC-AGG-ID: CrTCOyd8OQacYnOPri_5aQ_1754391480
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-459d7da3647so13452915e9.0
+        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 03:58:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754391324; x=1754996124;
+        d=1e100.net; s=20230601; t=1754391480; x=1754996280;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=XQZDklFzgIg/VRMnloECBcZkyVf0Gj6nmHNcIi06hAc=;
-        b=qWsRRJVTUgG0qFsqDzaeZwOWZx/KpJsvX/aEK/poenFzYzx8PCC+kNIqtdQAUu+tgp
-         lFs7mSi4qtBIzrWePrPepi1bZUtRLudbqEPwBW1f2x+RzJb81dJe3lJ8vQvDp0FYjfYB
-         sFCyJHqe/IGfJZUlgEuOaLlCRwvMb9W7JnXb/iKqQTNDXLwvOwRh0qUcNUKDe5EhqSPQ
-         PqTAHNpixVTiVoSxDsQHYE/nXLo9SoefTGJapQQ9VaEF8FcBF0P4HAhmfAeMzYUPP9uV
-         +2kwYuSlQEdEM57/cIkl8kOf6CBwaEeGS1vrN03SBKSI1owvlw/iO3jY50q+ft7PEzJA
-         6xZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVdjWDzjK6XTAqr2CPaYPi+qoLUWQkkzmspfBaWIIkDR6Vu8eo6nELxyCS/KQwqBkrW99bOA/Qd2g==@kvack.org
-X-Gm-Message-State: AOJu0YwJl8GdLAkNEvcolRC/ewuwo9MTpCbgw6U8b1Szm+q1GgjY0MDz
-	OjCrymGkFOMK6onTB52tZJrN72IseGWC+H7I+a4UMg0MdGbh45Psrh97vNNTaerFvYcGts0u1FT
-	74lJrVRRWl0ZZhRT1zGYVfmQ0f0y/g0U3TfKlaMSwiSl5Sn/cd5Me
-X-Gm-Gg: ASbGncs6NBYqCCtU/wtu2ojqS3a/wjGRIMijY7SojQG/S89Czk2DFd1dkuDRTehelV4
-	6YGLHxgcxvkS1ax3MdSoW9YjINxflbbwcpvf/Ab68SxlaCJKXYBBpnCWaaYhhacnu/qakUlOah4
-	G0mamIDIRo3DiFudmO+FgwKsos2HmO7VMfmI1N0nqtML1BDZM36qM6GfBkzaDvV406fEWj2S/VX
-	5K8KssOLch9H5NNQnYFLkq6JP3RNnzH3UnMLLkzS3FbbJqfbyyk+/l9X4DJPcnZ+RrIeV9Jy7wl
-	82GT0iWrL3TyKISWD0acINlM9lkOM8FzB114fzg2twwV6kcKMoXgXTPTlJgF0lkmhPZ2jagRTU0
-	vAPz5Ored/k8WouCmYP7v3sBzlxshXr45gZnuzAUzH1eWBQtGP1gq/ZllWINpN4xVz1Q=
-X-Received: by 2002:a05:6000:2409:b0:3b6:17c0:f094 with SMTP id ffacd0b85a97d-3b8d9471798mr11284855f8f.14.1754391323800;
-        Tue, 05 Aug 2025 03:55:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFXZZ49K+DE6A9wsCyzXFzTDhqAI2hR0tkMmhgQXu6JP+pyCF9/xS8ilZrR1y0iOzvUgnMF0g==
-X-Received: by 2002:a05:6000:2409:b0:3b6:17c0:f094 with SMTP id ffacd0b85a97d-3b8d9471798mr11284803f8f.14.1754391323277;
-        Tue, 05 Aug 2025 03:55:23 -0700 (PDT)
+        bh=n5BMU5lGJ8RNX9gIIEKL9KgpFrlX8cIqx5sp7WULqO4=;
+        b=Et2zXySNRhEPhz1F3LoVr6NcmL+iqqV6Qwlc6i5t1jcUa0hbEpsMhLC86hTDAr0VvF
+         ETzJpnI3KjQJWPcFYyO9zcDctISw1pZTdjcKaO983k2/EWB/Ivun6iCPDzICr/0kLeBT
+         9uwuYVVEOXiYvbgZIFcbFIWQkvPY2JitaFG0UPot/iw482rhgFq/QXeR+7pzUjBrmSTT
+         +5C0OJeB9g7lAhtT/w3xXhQZX2iWpxLv+nDUSwoeQiqcYkNvd+1ZdBcRl3CA8jddccBX
+         lyi58oiYsvF8xBTN7Pp4kRQQb4Fp0EjIGDCJy5eDm1Mlbkc1ZedeZOfcIzEe4FWlwdTx
+         Za5w==
+X-Forwarded-Encrypted: i=1; AJvYcCVEGuLDuuke1yknu46CQY7TY1zTNOBWzqvNz/NEjc4egoqfZEmryQ3lxzJvD431ATlvVS4DFFVPIw==@kvack.org
+X-Gm-Message-State: AOJu0YyKHV0tfKg0fQusnw3eRIn9uuOmr/icklgz+dSGd4ledaAjeFy7
+	kA4BoiTw+GMHdCWB6NUpJHiGgelVJMTds03XM7S1+4lWhggAG3g6M99Qpbcw5KdEQduuU30YJwh
+	6CaWMVc+vlLdAGID1aY84+sZiEs/mCcLP3Ws6SikOPd181yFonbuH
+X-Gm-Gg: ASbGncvDBScRP7xp4EOpPXFkE+NW5xdRUWZTHq/dioboP6fL5bIQCS5pw3KrToO6Mjp
+	/zCEWaKIQ7LRBgFrJ4aK1VYkZmPHaKSC/1BKk4h+vORPL3wrjkT6i8O3Igvvih2Oy63Y63uPrym
+	JNQWlhJUYDTvtjNbJr8OKlT9fkF3Z+tCT1s8v4iYsNSdf0fK9vOGl4scobta//4CjPT0RpPZb9F
+	ec2YKfY0R1/k+bXsLC8IGeyI87uq4NWiK4dVsMhdnsLPRu61dAamHqmawZhIx2XbjG+vpDb3Lw5
+	UkaP38nxkG7z2tEW3YHOkDz14U7MaQIo1xv5x21Bg98NFlkNeKXE6+7Vc9X1QH1HzCEgG8+NHoo
+	ym5zXsCOhTlpPOUCx4ozP7vCGFJfsIgI1/765MNboZVFAdGJIoL0dut7Ud+pyetzyHyU=
+X-Received: by 2002:a05:600c:181d:b0:458:bbed:a827 with SMTP id 5b1f17b1804b1-458bbedaab7mr62785165e9.1.1754391479874;
+        Tue, 05 Aug 2025 03:57:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEZS0DPqvyL4hZcBu/zSvjFODPXrIdMTkSTToGBYD4/CSW2xPIeZ33vTtYp0ch0Ef/n0Jv5CQ==
+X-Received: by 2002:a05:600c:181d:b0:458:bbed:a827 with SMTP id 5b1f17b1804b1-458bbedaab7mr62785045e9.1.1754391479451;
+        Tue, 05 Aug 2025 03:57:59 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f2b:b200:607d:d3d2:3271:1be0? (p200300d82f2bb200607dd3d232711be0.dip0.t-ipconnect.de. [2003:d8:2f2b:b200:607d:d3d2:3271:1be0])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-459dc900606sm62407115e9.15.2025.08.05.03.55.21
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c469582sm18505270f8f.52.2025.08.05.03.57.57
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Aug 2025 03:55:22 -0700 (PDT)
-Message-ID: <bc6cdb11-41fc-486b-9c39-17254f00d751@redhat.com>
-Date: Tue, 5 Aug 2025 12:55:20 +0200
+        Tue, 05 Aug 2025 03:57:58 -0700 (PDT)
+Message-ID: <98a30c7f-8be1-4b08-955c-724667971288@redhat.com>
+Date: Tue, 5 Aug 2025 12:57:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/5] mm: add static huge zero folio
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,
- Suren Baghdasaryan <surenb@google.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Borislav Petkov <bp@alien8.de>,
- Ingo Molnar <mingo@redhat.com>, "H . Peter Anvin" <hpa@zytor.com>,
- Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>,
- Mike Rapoport <rppt@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
- Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>,
- Thomas Gleixner <tglx@linutronix.de>, Nico Pache <npache@redhat.com>,
- Dev Jain <dev.jain@arm.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Jens Axboe <axboe@kernel.dk>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, willy@infradead.org, x86@kernel.org,
- linux-block@vger.kernel.org, Ritesh Harjani <ritesh.list@gmail.com>,
- linux-fsdevel@vger.kernel.org, "Darrick J . Wong" <djwong@kernel.org>,
- mcgrof@kernel.org, gost.dev@samsung.com, hch@lst.de,
- Pankaj Raghav <p.raghav@samsung.com>
-References: <20250804121356.572917-1-kernel@pankajraghav.com>
- <20250804121356.572917-4-kernel@pankajraghav.com>
- <4463bc75-486d-4034-a19e-d531bec667e8@lucifer.local>
- <70049abc-bf79-4d04-a0a8-dd3787195986@redhat.com>
- <6ff6fc46-49f1-49b0-b7e4-4cb37ec10a57@lucifer.local>
+Subject: Re: [v2 01/11] mm/zone_device: support large zone device private
+ folios
+To: Balbir Singh <balbirs@nvidia.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Karol Herbst <kherbst@redhat.com>,
+ Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+ Shuah Khan <shuah@kernel.org>, Barry Song <baohua@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Matthew Wilcox <willy@infradead.org>,
+ Peter Xu <peterx@redhat.com>, Zi Yan <ziy@nvidia.com>,
+ Kefeng Wang <wangkefeng.wang@huawei.com>, Jane Chu <jane.chu@oracle.com>,
+ Alistair Popple <apopple@nvidia.com>, Donet Tom <donettom@linux.ibm.com>,
+ Ralph Campbell <rcampbell@nvidia.com>, =?UTF-8?Q?Mika_Penttil=C3=A4?=
+ <mpenttil@redhat.com>, Matthew Brost <matthew.brost@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>
+References: <20250730092139.3890844-1-balbirs@nvidia.com>
+ <20250730092139.3890844-2-balbirs@nvidia.com>
+ <dbebbba0-3c59-4ee1-b32c-4b9f6ed90d92@redhat.com>
+ <1e307223-897c-4db0-9564-95d76bc3d260@nvidia.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -169,21 +167,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  WBe5lqcozu9LpNDH/brVSzHCSb7vjNGvvSVESDuoiHK8gNlf0v+epy5WYd7CGAgODPvDShGN
  g3eXuA==
 Organization: Red Hat
-In-Reply-To: <6ff6fc46-49f1-49b0-b7e4-4cb37ec10a57@lucifer.local>
+In-Reply-To: <1e307223-897c-4db0-9564-95d76bc3d260@nvidia.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: VYpZXJw1ny3JBlle2AUOS2Ba-YBciatVboWllOYFy9c_1754391324
+X-Mimecast-MFC-PROC-ID: S65AalHwmu_FMXQuaK06PW85VYWocE3nZDINGhgkJEA_1754391480
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: i4myg5pjp84e8znkjptkgrwx6ub7bcrs
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: EA0C340004
+X-Rspamd-Queue-Id: DF31920009
+X-Stat-Signature: ts66ce519aopss5h9nbp69h83px4xaiq
 X-Rspam-User: 
-X-HE-Tag: 1754391326-818215
-X-HE-Meta: U2FsdGVkX1+p9tSUn/lY+9CivXikvUCcq8fH82Z6vG/hJuCdhp1mDEi2KBYLPL6/+2SSPS1iC/UpIgvrh5zhtz+ohI+oEXVFYjDpicD6CfW+DBCOGwMEVOGnLgao/I6f18xFQhufOgOGfpWzDE7nNl5YZcejmTktgNyuJTYbEgR4CAfgdHWbbR25K59nhznkJrzgPZGi9W4dOsmcTDCOUpjVqWGEM1VM1FXEmONZ4vufCWI9bs9vo/iepQWLnx1FEvJQ3B5Zy69vD0Gl+KkeTZy1UmyZXxT7jayOMrxrRWe4M5JNOHiX/0bC8jXwXmHLauA3ttAXTos0po7f+Dm3Mway99gBFMCS7wBsSo75tG3uD+E5rdFyAoNJ9mIW+t9gITyc3japl1Naobef3JB5lRb54KWq5fxS7X8rfrj13nRrj3t18Cr8dU3v0za85/1BUgcwCmrJNjSlHMTBlpdNd2RMR6QhjxLyLuhwDeSMF5LKJub6HMi41wMVBw07FBRj3dlIlZqSRSGBXYvh0R0ewZgFhRpNK7PBVvbmSRxfRqRJhWHRF5YZrhSAD+MeupieMCGizSyrlrP7NDBQlsnwGYlnWDDNtKC9evbucF6JFTwji4KBHK4MsMvdvYAgnh1CnrHy5v3nHY1rp6DBLGqP6ANJPQFY+6BotbKyyjhObGDrzQOywh3UL/GK/PSgqV4mRYttajaPEv6io2rTbZ+MdedeybnDbmz+E/phsxw+MA1aGsBGLepfrs+CZ5M2HOPQViUGLO8SX4bsO2DFK+9vOHpjpCEfH7bAAMQLAgxKJeBHX/6PQ/2/LZp8B4FWYbixbjRPA+0HrFFHzB/3GqAMUlq2uuElb13p/HtSCO6l/L9OiM713yHVNSvSkUK2dwgZ7W24eyDCtenVmbLsewUWpxXIU7vxwsEvtvEauUCg89WnooaPa1LSH6lgZTCJWzPzczTpzHAmEaZsf5YZ+cS
- wt2inSnb
- OLl7aOtwigwmF+KpoBCMcOrOpyjVlVX7RiHjRKulMsWbQeY1KjaQrGGyblZIWV7GCJFtYDug4PP2eU3WZf82RfOoQCtQFTgygWqOg38VIcSuXXKdXXA00h2h4VA9Gfvk0CYyTHj8p8xA7pi8P8YDuG8kJBXmu6Ho+4680Ab67FjMyssVvts2wtN1MGqvVb9qHTWsXd+yPCPSDfdrrliTo8eK4aEALYp5XD7GpRDgRqkGtjf4upBAy6THVYKzxRazlnmN1S3HHUyg6D/FdmKJN5uTMpqNpUaZjsjdbpcHdwdoedEmdbFKFSwjQXuLRgPRCOoQ0T3XukIrtwSUggEv79p6l65ZlZoxS8fFlaF//SIWB7lX3Z/037eqbpsI0HYz83FrEoyAx7phHaxY08RkSEDmoxlLqp8b69qLe+lbsLucb7SU6NqTQ3ehWmr+IiNmD75Z/zWvUkzZ86qv/Ztqh1B3CseMlfHlGWBPW3kElNQ8llJ6+Bsh7tPzruOHKlfyVCVE/X3OsUrOAl+sgrUS8Boowy/b+OgWPbSGSqrv8smK07cqkC4QW5k4XvCAyC0ZUjAks
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1754391482-368494
+X-HE-Meta: U2FsdGVkX18SB86E31xrYIbZNGXyWqicJACpvKaeL3VkozB2PrShys5R092rUDnOzaMZKKK3SbnQNS9o5Msx/FjSUszLbzuVciH74XMtQBgMze09ul1QX3ruQLWCNMTsjUvBYtXpRrizpFKYxNiZEjSFX2vwwFyg8a61QywVKSLIFuqZgk73trCqlGp/lYnP3q/QBlodyBHVk5Ot097mSzRrK9JYTNV1F8cGoLK+rZR/DXoLLv1cP/BoHVZpMNfQldc3ULQKt5AnspKCGCoijX98MYXm2+RZiAw40M0rzWi3Ig1SRflJXHYITtoQ1In3A0p5s/P/UEG7zJ3jQ+87fRVaIz1H327b7oNtZLsK1MrFJj4dOMejQZHKPbBKDt7g+/URJie3D5D2kYX2CDw39G9G+GDy9erMkVDQPkWc6ZGO/XNa4ZmGMRuK9DvjQVnPNpfulRxHYncj/aPS7/SwxA/OgI3W8bVXBb8KwqsHZItM83i1pAWaHUphGn26Wommx8dff8uqqV5GHoBxHUdN7amK49MhI2S1IaZ3RWr4hb0/y+1gMur7XEto/5tep17ISOY61jNpexmIDYtCsc7wes00uGIXYWQvky2zoXFdZ3Q723I6Idf3V2wlvn5iyBb5De05JHVSwBWJ//lZao5ch+pVGpJY4ry1WdDX1oqyrW8f/nlRozBSXesUoFnr35r2+lbi02vS0IOh9TpoGpU2bEK9Zb7D20plMM7WpbvnYXjc4NgSzcUmvKSzQIEOVrU0nLaCMelrVl20fdk3EPay1eim0DXq2bycA4cBc+ZO+cnJghmYMAameOP/qgSU0IxTailTY1XgYfIgKfTmg7KRB6hYqy01sglz4uMz63VqgvBluh9ZApU+mZ0fKVnD6Qd/wQcFkpHPhquit+HLjpWA9rO0OUgbcj6uCEJpVs5/Z1tWNuXT1zWTkmnwza9JcxY4XZaP3LIdFZM5TVRlBJi
+ Sqav0OLi
+ tDdVN6MDB6wWd3/ttCyH3ZiYekz5agSXdXo73p60z0iiETTFWCHQn+PAAIpO+DT+y+GItfd+ZJTfDH1ga/8oMHGWtuaBMx1DL3GP+YCzoFAAn8t+GgR3EVwYvg8hf6GL8L+aQg3Xmkvuqj1mQqMrbzQaYvRuBtg/g86CPl9AVIO76jTVjLquvarkP2kzWxX27K8LMBQ583kdsNqj9Z6JJhOaPwh96LtgOUhPVj5yi4Zw1sfZSevQft4rKhb+zn+RhJ8fQJPUxHMWx/jttydJVFozit1kDUhKSq/pADoPqB4BvewgVgqb5NBxruRxgrKsFsnxnc/lxVo0bvh6THA8jVHOn571VAyrrmUh6Y/k07P53ynqT/Al3RLRNr6AYQjdiYx/U57E28oCummMLiolsNq1W0qWIdOUX2HRZ9uJYFohm1BBFxLfweZlvhFjLMDnZDko3H2bNC7MTz9pPfnKRT37DPZvV8u5DESR6S+/9O7l97laesX14iUpK0TgPMc4WNuWvXfsFx8fhJ4k=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -192,149 +190,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
->>
->>
->> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
->> index 0ce86e14ab5e1..8e2aa18873098 100644
->> --- a/arch/x86/Kconfig
->> +++ b/arch/x86/Kconfig
->> @@ -153,6 +153,7 @@ config X86
->>   	select ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP	if X86_64
->>   	select ARCH_WANT_HUGETLB_VMEMMAP_PREINIT if X86_64
->>   	select ARCH_WANTS_THP_SWAP		if X86_64
->> +	select ARCH_WANTS_STATIC_HUGE_ZERO_FOLIO if X86_64
->>   	select ARCH_HAS_PARANOID_L1D_FLUSH
->>   	select ARCH_WANT_IRQS_OFF_ACTIVATE_MM
->>   	select BUILDTIME_TABLE_SORT
->> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
->> index 7748489fde1b7..ccfa5c95f14b1 100644
->> --- a/include/linux/huge_mm.h
->> +++ b/include/linux/huge_mm.h
->> @@ -495,6 +495,17 @@ static inline bool is_huge_zero_pmd(pmd_t pmd)
->>   struct folio *mm_get_huge_zero_folio(struct mm_struct *mm);
->>   void mm_put_huge_zero_folio(struct mm_struct *mm);
->> +static inline struct folio *get_static_huge_zero_folio(void)
->> +{
->> +	if (!IS_ENABLED(CONFIG_STATIC_HUGE_ZERO_FOLIO))
->> +		return NULL;
->> +
->> +	if (unlikely(!huge_zero_folio))
->> +		return NULL;
->> +
->> +	return huge_zero_folio;
->> +}
->> +
->>   static inline bool thp_migration_supported(void)
->>   {
->>   	return IS_ENABLED(CONFIG_ARCH_ENABLE_THP_MIGRATION);
->> @@ -685,6 +696,11 @@ static inline int change_huge_pud(struct mmu_gather *tlb,
->>   {
->>   	return 0;
->>   }
->> +
->> +static inline struct folio *get_static_huge_zero_folio(void)
->> +{
->> +	return NULL;
->> +}
->>   #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
->>   static inline int split_folio_to_list_to_order(struct folio *folio,
->> diff --git a/mm/Kconfig b/mm/Kconfig
->> index e443fe8cd6cf2..366a6d2d771e3 100644
->> --- a/mm/Kconfig
->> +++ b/mm/Kconfig
->> @@ -823,6 +823,27 @@ config ARCH_WANT_GENERAL_HUGETLB
->>   config ARCH_WANTS_THP_SWAP
->>   	def_bool n
->> +config ARCH_WANTS_STATIC_HUGE_ZERO_FOLIO
->> +	def_bool n
->> +
->> +config STATIC_HUGE_ZERO_FOLIO
->> +	bool "Allocate a PMD sized folio for zeroing"
->> +	depends on ARCH_WANTS_STATIC_HUGE_ZERO_FOLIO && TRANSPARENT_HUGEPAGE
->> +	help
->> +	  Without this config enabled, the huge zero folio is allocated on
->> +	  demand and freed under memory pressure once no longer in use.
->> +	  To detect remaining users reliably, references to the huge zero folio
->> +	  must be tracked precisely, so it is commonly only available for mapping
->> +	  it into user page tables.
->> +
->> +	  With this config enabled, the huge zero folio can also be used
->> +	  for other purposes that do not implement precise reference counting:
->> +	  it is allocated statically and never freed, allowing for more
->> +	  wide-spread use, for example, when performing I/O similar to the
->> +	  traditional shared zeropage.
->> +
->> +	  Not suitable for memory constrained systems.
->> +
->>   config MM_ID
->>   	def_bool n
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index ff06dee213eb2..f65ba3e6f0824 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -866,9 +866,14 @@ static int __init thp_shrinker_init(void)
->>   	huge_zero_folio_shrinker->scan_objects = shrink_huge_zero_folio_scan;
->>   	shrinker_register(huge_zero_folio_shrinker);
->> -	deferred_split_shrinker->count_objects = deferred_split_count;
->> -	deferred_split_shrinker->scan_objects = deferred_split_scan;
->> -	shrinker_register(deferred_split_shrinker);
->> +	if (IS_ENABLED(CONFIG_STATIC_HUGE_ZERO_FOLIO)) {
->> +		if (!get_huge_zero_folio())
->> +			pr_warn("Allocating static huge zero folio failed\n");
->> +	} else {
->> +		deferred_split_shrinker->count_objects = deferred_split_count;
->> +		deferred_split_shrinker->scan_objects = deferred_split_scan;
->> +		shrinker_register(deferred_split_shrinker);
->> +	}
->>   	return 0;
->>   }
->> --
->> 2.50.1
->>
->>
->> Now, one thing I do not like is that we have "ARCH_WANTS_STATIC_HUGE_ZERO_FOLIO" but
->> then have a user-selectable option.
->>
->> Should we just get rid of ARCH_WANTS_STATIC_HUGE_ZERO_FOLIO?
+On 05.08.25 06:22, Balbir Singh wrote:
+> On 7/30/25 19:50, David Hildenbrand wrote:
 > 
-> Yeah, though I guess we probably need to make it need CONFIG_MMU if so?
-> Probably don't want to provide it if it might somehow break things?
+>> I think I asked that already but maybe missed the reply: Should these folios ever be added to the deferred split queue and is there any value in splitting them under memory pressure in the shrinker?
+>>
+>> My gut feeling is "No", because the buddy cannot make use of these folios, but maybe there is an interesting case where we want that behavior?
+>>
+> 
+> I realized I did not answer this
+> 
+> deferred_split() is the default action when partial unmaps take place. Anything that does
+> folio_rmap_remove_ptes can cause the folio to be deferred split if it gets partially
+> unmapped.
 
-It would still depend on THP, and THP is !MMU. So that should just work.
+Right, but it's easy to exclude zone-device folios here. So the real 
+question is: do you want to deal with deferred splits or not?
 
-We could go one step further and special case in 
-mm_get_huge_zero_folio() + mm_put_huge_zero_folio() on 
-CONFIG_STATIC_HUGE_ZERO_FOLIO.
-
-Something like
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 9c38a95e9f091..9b87884e5f299 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -248,6 +248,9 @@ static void put_huge_zero_page(void)
-
-  struct folio *mm_get_huge_zero_folio(struct mm_struct *mm)
-  {
-+       if (IS_ENABLED(CONFIG_STATIC_HUGE_ZERO_FOLIO))
-+               return huge_zero_folio;
-+
-         if (test_bit(MMF_HUGE_ZERO_PAGE, &mm->flags))
-                 return READ_ONCE(huge_zero_folio);
-
-@@ -262,6 +265,9 @@ struct folio *mm_get_huge_zero_folio(struct 
-mm_struct *mm)
-
-  void mm_put_huge_zero_folio(struct mm_struct *mm)
-  {
-+       if (IS_ENABLED(CONFIG_STATIC_HUGE_ZERO_FOLIO))
-+               return huge_zero_folio;
-+
-         if (test_bit(MMF_HUGE_ZERO_PAGE, &mm->flags))
-                 put_huge_zero_page();
-  }
-
+If not, then just disable it right from the start.
 
 -- 
 Cheers,
