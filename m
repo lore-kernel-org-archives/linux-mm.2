@@ -2,99 +2,125 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B4923C87FCB
-	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 12:04:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CA075C87FD1
+	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 12:09:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4861F6B0096; Tue,  5 Aug 2025 08:04:56 -0400 (EDT)
+	id 5A1D66B008C; Tue,  5 Aug 2025 08:09:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45D7B6B0098; Tue,  5 Aug 2025 08:04:56 -0400 (EDT)
+	id 5798E6B0096; Tue,  5 Aug 2025 08:09:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39A516B0099; Tue,  5 Aug 2025 08:04:56 -0400 (EDT)
+	id 48F176B0098; Tue,  5 Aug 2025 08:09:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 29D5B6B0096
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 08:04:56 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 83B48114E63
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:04:55 +0000 (UTC)
-X-FDA: 83742572550.01.A72FA4C
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 7372A40012
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:04:51 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	spf=pass (imf07.hostedemail.com: domain of liqiang01@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=liqiang01@kylinos.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754395493; a=rsa-sha256;
-	cv=none;
-	b=hICsVPQxnHbfkrpYfADaLsbPutC5adMGiAwJesA5TYXGnwgDc1qtjXqVrKpdLwg+U6SaTS
-	Lgq830X/Y1k9rRLMqJWHhBQuBBEualpcc91WGz6iI2LfRSF4Yt4xpksZ7B9kUwvmseAMNQ
-	LAl76hsysqXX3ARPweL5rprP0bqMdbo=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of liqiang01@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=liqiang01@kylinos.cn;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 3873B6B008C
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 08:09:41 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B64581A0360
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:09:40 +0000 (UTC)
+X-FDA: 83742584520.14.EBF5A71
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	by imf25.hostedemail.com (Postfix) with ESMTP id B6EC9A000C
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:09:38 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=KrblC4N9;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754395493;
+	s=arc-20220608; t=1754395778;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=M2Cl/33UxBOoMvNk47wMeR8+SlfG3nWtUCvGaWh/Jkc=;
-	b=2K9E+RhU41TBRGubNWnvfOiuGpPBSJ5seTF69kKBw0VI4ZaiyBxoui3spbJSVnMPRQ1d2m
-	O8gB+scYPZitoHEy172Bae566Nja4AcZPn2HP7lzJzJsu3tHBHtN3+x9djW5Mqvptg1v7F
-	qzmhBvBk7NsnwYT80ow/gRJr4JmtxtM=
-X-UUID: 5c889e4271f411f0b29709d653e92f7d-20250805
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:e08b59db-1227-415f-9524-48b789a41595,IP:0,U
-	RL:0,TC:0,Content:11,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:11
-X-CID-META: VersionHash:6493067,CLOUDID:bde39b8ec4116adce4cae47d27490bca,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|102,TC:nil,Content:4|50,EDM:-3,
-	IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:
-	0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 5c889e4271f411f0b29709d653e92f7d-20250805
-Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
-	(envelope-from <liqiang01@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 55385721; Tue, 05 Aug 2025 20:04:38 +0800
-Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id 71C0FE008FA2;
-	Tue,  5 Aug 2025 20:04:38 +0800 (CST)
-X-ns-mid: postfix-6891F356-36186845
-Received: from localhost.localdomain (unknown [10.42.12.14])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 53D29E008FA2;
-	Tue,  5 Aug 2025 20:04:36 +0800 (CST)
-From: Li Qiang <liqiang01@kylinos.cn>
-To: akpm@linux-foundation.org,
-	david@redhat.com
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com
-Subject: [PATCH] mm: memory: Force-inline PTE/PMD zapping functions for performance
-Date: Tue,  5 Aug 2025 20:04:35 +0800
-Message-Id: <20250805120435.1142283-1-liqiang01@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <74580442-2a9a-4055-b92d-23f5e5664878@redhat.com>
-References: <74580442-2a9a-4055-b92d-23f5e5664878@redhat.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=QnDvv+RYZWrQhG27roIN5rQzgCLkdpLVj3Hura9BY24=;
+	b=CvQG1c8oknIwiOu1wKbmZIWoXrnDvMFvnvdpCLWD2F8weoWjpZrQPfR828sSnZjkmgfFgg
+	3G0JfUZMFNpETXkzJTgB7x/l9f0uKz4S1Hi7m2tJuSMk48XJpIdoD/La3xg9E4WEDW2Kng
+	w4r2NwDudaxhmRwrjqen9pD0UDDgBAc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754395778; a=rsa-sha256;
+	cv=none;
+	b=0cyOemYY+ey7WArSgR5PsUG0+tGA1rgfeu5QgPDNmMPH6O42NqPFUaPYv51AlpEMY02dQY
+	Szi0iU/1Makn1uFSmoKXulYKjeQavWEGnv7M8jP7yXNsBU/QR6jcO9gWlF/CJ+pVQA2C4j
+	twSBIlk4jDrwbFCaMhwcmM+I+sv45SM=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=KrblC4N9;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4589b3e3820so54525565e9.3
+        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 05:09:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754395777; x=1755000577; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QnDvv+RYZWrQhG27roIN5rQzgCLkdpLVj3Hura9BY24=;
+        b=KrblC4N906J23Z6b/3LWV2A1E6ioSR6l6aPIdfWTnpy8/1J4XxnS3fXDwN8Z8nYpI6
+         LlpizJ2oMpAVwuMfWfjPe7JUDAVuFmrXtc32j0cY1QjOQ/Ooikc4wv6REyYGcnv04qGe
+         vKf59oP+HpAA3XV3AGM63fEDg6NJB+stOYX7Y7MvDp+Vt9mwawbIF0JjdGgFQ+f+WowQ
+         q9LKfRQY/vJDo6pNI+7xiHyNPDo8pj+SilI9RQ51RU/0QiyjNxJ3ucnHHNpCsTCCZxPe
+         PRGXSRdQIKJSXKB9twM9KMzIfKqks5LWyFawra+tVkjS6c1zpqNNRpw2bRMUiu4CaL7F
+         uKsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754395777; x=1755000577;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QnDvv+RYZWrQhG27roIN5rQzgCLkdpLVj3Hura9BY24=;
+        b=oVeLfyG/ZJrxKK8YJoWVnZPPpI/1XGIoHBqYAhbxj4WcNamT7x56j9Tl+k7w6sqyMR
+         4304/4J6msYxfShfb5lWNwu6T/ayMlBUjaf8vMin+Uohx3vzoZoDWQL3Z6IkiywfXEx2
+         6zfgEB8loayejZYs8bqDrgXpo4nXYK1AI3qO9wp7Fa86H6se/4+lXIljzqFmZjVLZ083
+         DGRYupSPJSIjj6k754BGbYbClNvUsx82JSx7L4N9wd5J4KbRPE3pz6oo+gVNPMTYrs7k
+         g1z5DnaebmJTXUvnYS3JtrYJPTb3OiSH7JOR7E6Tus8xM3NAC1pAq1kAiT3F3Zs7WLet
+         54Og==
+X-Forwarded-Encrypted: i=1; AJvYcCUxuH5g/xVftUMe6GksC7ZeMGPlLI/hXJPg+oFhICgn/pCkSEyNIyoyoEs998m498xtTZiAaZXndw==@kvack.org
+X-Gm-Message-State: AOJu0YzHnHTbq1dsPhN9lBx6anTySR1Tt+wqKj5bSX/QIcNL1AtSloe0
+	BHrIhg7aSApAmIHFouIAnLj5eLnoxCHtN8d6fCf1A1mglWYYvaEogfOR
+X-Gm-Gg: ASbGncsUfCisxOcS1gvLoczWoEM5QKjjBlmN8yP73zsEXkRzx79Jm7kHCjMJtbXseq7
+	V8zu4e+JEbKx96F7RSFPWoh/26IWjNQxiobYuVpKucVa9muEwHBb0ErSLazBj6JK5/eoCwu2xdx
+	DzvhyJ6JU3tqZCHRCqpYzHEKY+V4b6uirJHhMkxSF4hhryqTb3tFLqpfkTUU1253Ezjn4CM2HKH
+	uuYkoC3GO4SzioIh08ojdx3EAi5DSHkkHzVEITW5zpuOecavJDRoFBC6Tski9xzby9OXSwQ8PHo
+	nf/BbuoTbXSI0UVCYUR5w2QW/4d1AtCB8GDPouQWJkZ02wH2HdY4EQIC6kJgQCs+kPVzHMF0cnX
+	dztOW5NgxBF4JbwuwjlJzjzsjSIJ1p9pMXeY2AgEmyr8O2qFqbT1Yl7k7EoGQuBF6OyBsiTE=
+X-Google-Smtp-Source: AGHT+IHaZvpfuNdcteCmnFuvch+C+rl8ZmnFCmfkcK/icZCUVfFy77dZQumTyON7VuwTLmN17F0Guw==
+X-Received: by 2002:a05:600c:4709:b0:459:d46a:ee3d with SMTP id 5b1f17b1804b1-459d46af0c7mr77845295e9.2.1754395776562;
+        Tue, 05 Aug 2025 05:09:36 -0700 (PDT)
+Received: from ?IPV6:2a03:83e0:1126:4:14f1:c189:9748:5e5a? ([2620:10d:c092:500::6:98ea])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-459e58400f5sm1048305e9.2.2025.08.05.05.09.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 Aug 2025 05:09:35 -0700 (PDT)
+Message-ID: <4cb3dbf4-87bb-4946-8e43-36dcb5d9fefe@gmail.com>
+Date: Tue, 5 Aug 2025 13:09:31 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/6] docs: transhuge: document process level THP
+ controls
+To: David Hildenbrand <david@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Cc: linux-fsdevel@vger.kernel.org, corbet@lwn.net, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org, baohua@kernel.org,
+ shakeel.butt@linux.dev, riel@surriel.com, ziy@nvidia.com,
+ laoar.shao@gmail.com, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
+ npache@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ ryan.roberts@arm.com, vbabka@suse.cz, jannh@google.com,
+ Arnd Bergmann <arnd@arndb.de>, sj@kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, kernel-team@meta.com
+References: <20250804154317.1648084-1-usamaarif642@gmail.com>
+ <20250804154317.1648084-5-usamaarif642@gmail.com>
+ <7828753c-98fc-4f96-bf7c-0d94f3b99e4b@redhat.com>
+Content-Language: en-US
+From: Usama Arif <usamaarif642@gmail.com>
+In-Reply-To: <7828753c-98fc-4f96-bf7c-0d94f3b99e4b@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: B6EC9A000C
+X-Stat-Signature: psoba7r3fyqmqk8hc5m1ouuftd9fbhtr
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7372A40012
-X-Stat-Signature: b1qjexm8ukynkffr4qzb8oaq558s1ue9
-X-HE-Tag: 1754395491-358399
-X-HE-Meta: U2FsdGVkX19gUVyC8/DEK2Dhk62kgYnMk0cFO2QyfqgYgoRtbfQcSwBnWlxU6EJbPpfIOJ6KwdNhCuSuKXX3qRKMMSTClH9IJ+Tu8qC6P2eACz2WoBr7Pq7lBe4pFCr0A+FNjlRnJy+xubWns5eIFuluWdEKNo9m8p1Ujfts1NPqlGz9CbpHEJMOMsnftvCiyQTW7UPqKsYeDTBsdZHdSzSlI8Rzb9HFyK8wKQYg980lhJzlzI+NnHND0AgIw6jNQSkXkgTyjdEyoaupJ+MmDlHLppyZ0kqGHZDBM9yJggfk1xN7e4CsTL349KLJ7t58kNJtL/sQlcPgT19qbfbgHMkK/4E2QEBEo4wr+FtYWcrpMx0d+BaLaalHOO51gjxN2S7OT/SlNBWKTe8ZYtDDJt1uo+dI2dwKpJWpyszJwt90oa6SfaZLsUf4tobKyRww/ffw5DRvTYUTVsFC9VIpWNheaPpQNqNdA9Z1YE/2tMe3PW7vYNP33mWsY86RnS6X1jEDVhpDkzNiQdyECSGGGQpFg1AW4VMtzRZG63nejcoxb2Zf5yee2yyldjTfwMYAI9p8ekSUD7UUd7VI3sHi+FU7yEOLygMTxbJpsUZ8Mp3YGxKZa3vNFjHWrh9LAMs7OMplIGBzmCxjG/E9WNMffjGW6ylerm+PIX8/hd6Yx2KzDvn/B0YKwp94uuGj6NynW6bgP8IlwI/wakhfBCCEGj+WcCi7WjyActfK1bMrPVPps8zsD7UJU4c7xF8Lwn1LIRluc4eDJKIZt+FoFo8bqc0Y3uMjlm8+UWTlAUWkZn97abKutSFG/qT4ehJGt1nEdQMV7p9fifl+qciX1ejizHneQXHIpx6NMDrFTHVLxoIgsX9thJ0vER3F1hTI1ZetX/rgVWNB8aaXPtSH9HPSC3VLkhduFlBP0BlhpGS/a3RSPvmVc0CxPFVyi9dVznKZo8+BqZlrSi+93XFed+K
- Lq1+RTGQ
- 53JUQb+/NuTXFNjc8ewFX6zYoITtrrU5avudylmzfk6VUFV8=
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1754395778-399692
+X-HE-Meta: U2FsdGVkX1/pKxyLF4//ZfGfVpa/10EQi/AgqodzvGWAiIvIbw30P61hjqWgdyLein3LWAsz6GiY2MivF8r/3KPTas8XcrQDWCT25KgEcRhV23tneo4WV2EnXJPdJA6U8mpOWOrXxQQEf9BLpV9ooJfHsw1M69GArniP8TjR2bFZVG3QpMl9ygmW2kiw+yb3mD7rK5Sw/Gkq+NMaEaf8vAkpe/zAgEAmOi+HyWJ0sLVEnxmd1Jvbfpf5ixo7tn+sJFhJuvYDST/Lfe//uIjEnCmXzI4gHbag97kvDZ2+dRKecZ2l0om68uCogI1SADebAbLePoOnzB5jFOzbpxLZQT9KBXTJwuaalqTrtNJEcV9b8XkGbaPNHt7n67dctj4sJOrH2aeeUeAyNxiBvL0rIU1QfGd5f368G75+tK4knjYb3HvlKGdkUA4noosY3o8E/adyjjElVlHV62w0StFJ6QPHRZ9uOVu9HJnBVSZR54Wxbaqye7TIFVoaWo00q7DGWb8fisObVhv5gnMDTOsqUjRZbazERk1ZHWkN+qMVbEYNqWjd5LL9T0Xqy5QZtKeUTURfukgRpfggG9iIZo7V2Qf20DiNo+wG9mn/x8IynweDpF7qUrivVi65uxXR5+N3KQ5gFVgjJGPodYJnrQFFngJmWgHOZwY1fnP8n2ggLPiPt5Lk6IHktjEmfUXQ2NTZmRVwVUFDRlsuTfnitwHhjL0aYzugQHGMiOB7H8F5cLi8ndwMX00ewdwgUsW68q7qABtEZOH1YqoRzu/9oyauiQX+gNQrhMu9rr72Hn1CDhWdfVU57fRU+qc7vewZ1IDesJMDdMsnS5Q5P50mHyRlqnHl1rBeaCrWvNKrRgZ+T0iBESko8xyMRQvXhubNPvM8k+uNrIzhTlEvvKa0CzVlWIh710L23Kh2Ym5eqQDSxQeYuzkcpcOmiAAHZ2v9H0iKVTDlV4QDrMKrlKJq7GU
+ 1hfhzAo6
+ /Cbti7N+GtNSLWesR9RrZKMyVj4XLsQho6SI/Lt1FHelcC0iCZnFvXX6cikyQ93f4L2BaKzDZ/JzafwW15yNJ+T/tzVIFksT8/URpuaUOtQwbA6ywsgawis1gK2Mrh2vTWf+biLRcc/JvyrkqLRSdpP6v40ud47fDAOp1aE8THG0BeT2CQpQWb0S8YHjDSxUdsZj1ZrPEkIt15Rny+GLapKWohOgUV2kOAZqkJnjdOTHLPBRpZYfBkms3VEcOXvb4oI4gdgcM/qCziuHVrKyyaYIf3/JJ/eB+7tSsE4C1YVZUfDryjhEhM8NOuCNxWKbMYildwlvOFM8vO45vTUKSAlj4moJGD18eY0NkY/U9D3c7vTy2+HTV528rySFzl5Bj9Kx6Q4lz36hiUfVDKDFmr2cMYWXIWhBZAIBnDuV6iK2sElkoxiOHzKcRApj4UlicSTy1uBx4RCvxHbb7vcwJj0J440XNvE3IcvlmLKPUVqXZEtnCVVchkvxu5eRC4stRpi9RDPQeecVPJVzZEfVrswaD9scP6zKrNiMOnWbONslheb8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,78 +129,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Ah, missed it after the performance numbers. As Vlastimil mentioned, I=20
-would have expected a bloat-o-meter output.
-
->=20
-> My 2 cents is that usually it may be better to understand why it is
-> not inlined and address that (e.g., likely() hints or something else)
-> instead of blindly putting __always_inline. The __always_inline might
-> stay there for no reason after some code changes and therefore become
-> a maintenance burden. Concretely, in this case, where there is a single
-> caller, one can expect the compiler to really prefer to inline the
-> callees.
-
->
-> Agreed, although the compiler is sometimes hard to convince to do the=20
-> right thing when dealing with rather large+complicated code in my=20
-> experience.
-
-Question 1: Will this patch increase the vmlinux size?
-Reply:
-	Actually, the overall vmlinux size becomes smaller on x86_64:
-	[root@localhost linux_old1]# ./scripts/bloat-o-meter before.vmlinux afte=
-r.vmlinux =20
-	add/remove: 6/0 grow/shrink: 0/1 up/down: 4569/-4747 (-178) =20
-	Function                                     old     new   delta =20
-	zap_present_ptes.constprop                     -    2696   +2696 =20
-	zap_pte_range                                  -    1236   +1236 =20
-	zap_pmd_range.isra                             -     589    +589 =20
-	__pfx_zap_pte_range                            -      16     +16 =20
-	__pfx_zap_present_ptes.constprop               -      16     +16 =20
-	__pfx_zap_pmd_range.isra                       -      16     +16 =20
-	unmap_page_range                            5765    1018   -4747 =20
-	Total: Before=3D35379786, After=3D35379608, chg -0.00% =20
 
 
-Question 2: Why doesn't GCC inline these functions by default? Are there =
-any side effects of forced inlining?
-Reply:
-	1) GCC's default parameter max-inline-insns-single imposes restrictions.=
- However, since these are leaf functions, inlining them not only improves=
- performance but also reduces code size. May we consider relaxing the max=
--inline-insns-single restriction in this case?
+On 05/08/2025 11:24, David Hildenbrand wrote:
+> On 04.08.25 17:40, Usama Arif wrote:
+>> This includes the PR_SET_THP_DISABLE/PR_GET_THP_DISABLE pair of
+>> prctl calls as well the newly introduced PR_THP_DISABLE_EXCEPT_ADVISED
+>> flag for the PR_SET_THP_DISABLE prctl call.
+>>
+>> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+>> ---
+>>   Documentation/admin-guide/mm/transhuge.rst | 38 ++++++++++++++++++++++
+>>   1 file changed, 38 insertions(+)
+>>
+>> diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
+>> index 370fba113460..a36a04394ff5 100644
+>> --- a/Documentation/admin-guide/mm/transhuge.rst
+>> +++ b/Documentation/admin-guide/mm/transhuge.rst
+>> @@ -225,6 +225,44 @@ to "always" or "madvise"), and it'll be automatically shutdown when
+>>   PMD-sized THP is disabled (when both the per-size anon control and the
+>>   top-level control are "never")
+>>   +process THP controls
+>> +--------------------
+>> +
+>> +A process can control its own THP behaviour using the ``PR_SET_THP_DISABLE``
+>> +and ``PR_GET_THP_DISABLE`` pair of prctl(2) calls. These calls support the
+>> +following arguments::
+>> +
+> 
+> Not sure if we really want to talk about MMF_ internals.
+> 
 
-	2) The functions being inlined in this patch follow a single call path a=
-nd are ultimately inlined into unmap_page_range. This only increases the =
-size of the unmap_page_range assembly function, but since unmap_page_rang=
-e itself won't be further inlined, the impact is well-contained.
-
-
-
-Question 3: Does this inlining modification affect code maintainability?
-Reply: The modified inline functions are exclusively called by unmap_page=
-_range, forming a single call path. This doesn't introduce additional mai=
-ntenance complexity.
-
-
-Question 4: Have you performed performance testing on other platforms? Ha=
-ve you tested other scenarios?
-Reply:
-	1) I tested the same GCC version on arm64 architecture. Even without thi=
-s patch, these functions get inlined into unmap_page_range automatically.=
- This appears to be due to architecture-specific differences in GCC's max=
--inline-insns-single default values.
-
-	2) I believe UnixBench serves as a reasonably representative server benc=
-hmark. Theoretically, this patch should improve performance by reducing m=
-ulti-layer function call overhead. However, I would sincerely appreciate =
-your guidance on what additional tests might better demonstrate the perfo=
-rmance improvements. Could you kindly suggest some specific benchmarks or=
- test scenarios I should consider?
-
---
-Cheers,
-
-Li Qiang
+Thanks! have changed it for the next revision according to your suggestions.
 
