@@ -2,92 +2,92 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 459C5C87FD2
-	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 16:21:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A848C87FD1
+	for <linux-mm@archiver.kernel.org>; Tue,  5 Aug 2025 16:21:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D53956B0089; Tue,  5 Aug 2025 12:21:06 -0400 (EDT)
+	id B57516B0093; Tue,  5 Aug 2025 12:21:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D039F6B0093; Tue,  5 Aug 2025 12:21:06 -0400 (EDT)
+	id AE16B6B0096; Tue,  5 Aug 2025 12:21:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA4AC6B008A; Tue,  5 Aug 2025 12:21:06 -0400 (EDT)
+	id 9A9C56B00A0; Tue,  5 Aug 2025 12:21:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A36826B0089
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:21:06 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 50F30808DA
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:21:06 +0000 (UTC)
-X-FDA: 83743218132.12.499E0AC
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 6BB42100003
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:21:04 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=B2ez0PVU;
-	spf=pass (imf05.hostedemail.com: domain of bijan311@gmail.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=bijan311@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8292A6B0093
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 12:21:10 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5EA4D13508A
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:21:10 +0000 (UTC)
+X-FDA: 83743218300.07.EA458E0
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 897D6140012
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 16:21:08 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LtrK5zk7;
+	spf=pass (imf26.hostedemail.com: domain of bijan311@gmail.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=bijan311@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754410864;
+	s=arc-20220608; t=1754410868;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BjNpkvSXW+v2m5Yu69UUOTo/LokqTIxoGaybS6E7Cys=;
-	b=rYr/KwyrKoldNIHxDMCOxabAiYaP2tEEFV6EPnaiYElI72uWQmKYbO6qm4+bR33BsuaRCz
-	Qiqb9BXAaLABzZyWmS6c+ms0+baFHgC0VVZWf+UAdOfiVY4xtNduc8/X+V0JTQx30aaRhv
-	nPAJSZZePR+FAdLve6clomX96BeDWVA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754410864; a=rsa-sha256;
-	cv=none;
-	b=6KNFiTcM366yJN5kJh1uGT/zAa4MHAm7+lzvwNLYy5f6wRnBTUMbiXbRKSDupq2nW3jfaX
-	/KA1TWMO7xvtvvksMvIvmsvKMwqwaMvMLIvwyZk1jJpVKFGa3oL7J7fWpmS3CcVj1oOQJf
-	2TbbtraWxmoJMzO7dn1MhbDkjKjj0lA=
+	bh=o2I8Y6YCxsX4TWyWrlqz+OvW3M3f6/2nWl2bm4+fH+c=;
+	b=Y26ZVLvM9p3tuBMjVQRNgcWc6BBRyWn41Z1vNZ7a34djXwaIsRzrNnKIsqGuhR/FLFvWeP
+	AAIvclBK6S8xsLIHwT8qaCWcsOb1j+lXlqxIC9J2xYs55BjKmXcEC87j3SnZd3IYAkR6Xb
+	WL66ZYbvieJujM7A2TXcdRcbm6siXg8=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=B2ez0PVU;
-	spf=pass (imf05.hostedemail.com: domain of bijan311@gmail.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=bijan311@gmail.com;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LtrK5zk7;
+	spf=pass (imf26.hostedemail.com: domain of bijan311@gmail.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=bijan311@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-71a38e35674so27802317b3.3
-        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 09:21:04 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754410868; a=rsa-sha256;
+	cv=none;
+	b=d9MCwV/ZbBXqobmEKYO/2ImerlXCcz8+i4FCiR1Ckg0ezAg6b6o63+MJIWV2WJVzEFip/O
+	WJs6YMQQsVQAU/CIDQFPEBG6Re8kErRzOo/y2KZBwpRmXu/0iVAOJTQUd/zp9n7VOivBXB
+	cN7MGMn8a3tQwK3vRDWIggawkjhT17Q=
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-71a3f7f0addso54026017b3.2
+        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 09:21:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754410863; x=1755015663; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1754410868; x=1755015668; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BjNpkvSXW+v2m5Yu69UUOTo/LokqTIxoGaybS6E7Cys=;
-        b=B2ez0PVUXc4jRg9z5bfwsHwBWJ0Ly6fSwNukt5/aTvI4rt6EjSVjYyQAdYKo8goQZ7
-         Si/K7fFbqrr20a/gPlyE5WJt2D3SwS1oR072naacdolbQfGjwBIov3N7iKE3TcFzLrl+
-         0ufT3w/Bb7tLLZMjt1d3d1pJSad1VTsfPhUwbP5TNeiyQ2LBkGr/1/t+pIc6QNcr/ELo
-         vPqe20hKzDatzTRPbnj5AvnI02IJESrrLYiOehOhnUJcVDUJfNvjcf4HIRK9xBeq7+DH
-         tGj/ffUE88bjVIQbx6r9IIFyOomXuVzhrsYLSijbytxgFmzweTc/4BWW+k/cvwRKyqES
-         o1NQ==
+        bh=o2I8Y6YCxsX4TWyWrlqz+OvW3M3f6/2nWl2bm4+fH+c=;
+        b=LtrK5zk7M4oYOhao+gdy7CaznmqXPkqxf68zbI/NyX39AvevK/ovPnWKmcrKHaUfeW
+         Y7qeVKRKIVsifRf1/aZMvxwEJIeqmwZnTnPkykPJT0QNMctIF/8TeOpwTNzvY7NR0nde
+         O1mSXdwY94CUbQ0zcQWgm6rL3ZK3RXpAdkenbokCrIQkm/HgxwGmdvsq4IA2KNP9L34H
+         YGIhL5Yt3mQti21maTq6YoxQzY+XTO4kTiNk8hhi1dynDEu27xGLq3cjM1dG9YCJFvgP
+         BX9Pd5qAXcNKVnBCLcTnfOqAgnSXIRLB6QZ7xlH+ntHr9ZfKMBEhKQHBIIZV0WRWCw4p
+         DqTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754410863; x=1755015663;
+        d=1e100.net; s=20230601; t=1754410868; x=1755015668;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BjNpkvSXW+v2m5Yu69UUOTo/LokqTIxoGaybS6E7Cys=;
-        b=qaClVqoNuE0WwjGFGlXnzZuZmubeCjesz6n4R9e6rCVVv9SMyr2q6+tz1TgGdNt+me
-         lwQVpVbyw+Pqexwo75PlQTqeZFNfeEdUHNv/DVMUpkoiC8kqanLu9xsmuYJrXLlI3bGP
-         UkKpEy86H5c2iWJ0OZw2wrAwGUhvS+KNuqUfKqC1McspgZTCgpRBBcAEYu+6dTzfw/O7
-         KeNJez8GwUYh6BLd0s4kCjvSeEsgKb9PLiS3XFnn6RnqapKDgS02SYcd1LmWOQ5VSZ0r
-         s1Z06K8EH4rxrzuuJ7M5X6Ovp2VYRXpewSWHutDRjJxPB2El8dhx8HpFqjg181CIDZo6
-         /u0A==
-X-Forwarded-Encrypted: i=1; AJvYcCUTboUjle49KjRSj5VT+NfNG2lWmmOoj+mJ+L07rAh3H/yfONcNu+ER8Um4IHG8ROZ16kU28vE3WQ==@kvack.org
-X-Gm-Message-State: AOJu0YwazCOqJH31JhOvFxFBo4w+8sTpVmNuZ8kAdc6k8MWQVltpXJz0
-	dWmK7p5cvbJe/EXXWD0rxlVAdFJubSeqm1cDpNzsZ1yjxTOL5fTdI6An
-X-Gm-Gg: ASbGnctbzoaRFA++hrKofiwjvxOyuomPA4XLhjhZji3a+310LZrK38fWA9eCLagYKVG
-	Fq1YKTFrU7sDYtQRyJ2wWdOUKF7eXbQkXecCwWNgD/RfRyjMD3ut8DKCV87cZW6jxSFsUSnBJbg
-	3e6RQrbh3mMCr0gBGudvygyoStSxOYxGfiuUnpTD/uhlwdvYE9OWHDYdVh7tRNWT25OpaFoBz8G
-	i5geGEOEXe00UHRe4EQel5dZAnwZ5st8zkUhVi+ivegDg6ndCS+05r3CekQxS0NXJoX81eY93OE
-	FoW0+SMipi/HEOlIduxe/gL1ipJ6tJvEgW3sgjZfEMgyVUjEdY5tfPnR94H0I6Gwu7iK1mAG+ME
-	SP8JhOGdj9/D3inymRU428gaKWvMVM4afErYLYXNuOXQ=
-X-Google-Smtp-Source: AGHT+IEQM0QlTGhxyMPibEvEMDpbAzpmE9uEnXqB1fB3pRbIadxeRKgx9pmHX+QFoHCpre2n2PEesg==
-X-Received: by 2002:a05:690c:8694:10b0:71a:34c6:706 with SMTP id 00721157ae682-71b7ed8b056mr123189357b3.17.1754410863480;
-        Tue, 05 Aug 2025 09:21:03 -0700 (PDT)
+        bh=o2I8Y6YCxsX4TWyWrlqz+OvW3M3f6/2nWl2bm4+fH+c=;
+        b=eHETUdlDMfZ6VCgC3Hv+4X3L55gFQkN7IJVld3AK3w6EoEwYi7L6IKaEcN8Xf2EdT1
+         oxb7PfL/scGKZE2Lb0tjx/Bnb5NPAPA5zoQwnVjB4Pq96lie6nJ8pB/vpibp7EZMo3AT
+         XbEkJQCRfMhoxZv2q4m8CrRAx/Zzry3j3ZeNMw3g/cFPNBSjWAXLsalV99l6cZVqG+4r
+         vT3vTs6QdmiFKfwDb9mcNr1rEQThLeG5B+qkKMk9KLxP5AuhW8cLFm3cKxKojjPcW4o9
+         nF1QuJHL10haZ0R5wx1EFMN5YeucK9X+SrWNmz5Vp4Da3/3kq3lrxIqahGjggnnn/GIL
+         iCOw==
+X-Forwarded-Encrypted: i=1; AJvYcCUmjaOv+Rg79YDOnSz8l2i5WHnPaFh15Fj2PrYZS8Wh/SQ8qEJwmYUBLgSWlEFPZtNHPQyqzLTvrw==@kvack.org
+X-Gm-Message-State: AOJu0Yx9yntYkuhwWgy4eMyw8Rge0TwEDKvwXbMUtkdwLBlb/coFI2WB
+	nNegYQo8/uCe89Uwp2+cuZFZIV1iFnsOsdIXNAdYm4SFWY4NUfvq+9K7
+X-Gm-Gg: ASbGnctSpb/H0L8UQyUESx6mauODRp+XKNYqTmw2/Ug11/883DZ+r/rX1SStjTmngzg
+	nXUTpFX9JY5TxyfXwypXxnCXAwhIR5SHJ/e7wHMou8i85LsccKOZ6uOMfKMe2Drl2NZfMPXSD87
+	/8jAfRLZsCpJOD6XFb2Z8i1sq7d3XwBdVPfmkyhB6rM4xXyr3LfC9Y3TRpPIHGDZILvA7/tYpvg
+	VDD6JGzs+8XF2+5rI2jXomG3Fw+d1nUJgBO+OBJxlMvSgxUth1X+yuS41a/4cO4aUvtEel+bcE9
+	iewUf29ZX4RFzvsVna8MNQmKTRJF9pF3y+ZQIY8UnBDY5S8M1XJJB0V5Xu7gRuUfs/V5QBdOZeT
+	YSYK9+KTZ3DHkyfpvBpL542LMjRDKBk6TGN/IdhHKs8w=
+X-Google-Smtp-Source: AGHT+IGS4lh1JrnZOMCC7QWGY68gCUxCM5gOUlyEM6e/iXESyuVJbUue1PFdHnmYU2Ldv5Xe1WJeww==
+X-Received: by 2002:a05:690c:7107:b0:719:a34b:5e50 with SMTP id 00721157ae682-71b7f5950d2mr163236987b3.21.1754410867586;
+        Tue, 05 Aug 2025 09:21:07 -0700 (PDT)
 Received: from bijan-laptop.attlocal.net ([2600:1700:680e:c000:2c65:e45a:e7d5:5f0e])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-71b5a5cdfc5sm33098757b3.77.2025.08.05.09.21.01
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-71b5a5cdfc5sm33098757b3.77.2025.08.05.09.21.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Aug 2025 09:21:02 -0700 (PDT)
+        Tue, 05 Aug 2025 09:21:07 -0700 (PDT)
 From: Bijan Tabatabai <bijan311@gmail.com>
 To: damon@lists.linux.dev,
 	linux-mm@kvack.org,
@@ -97,23 +97,23 @@ Cc: sj@kernel.org,
 	Andrew Morton <akpm@linux-foundation.org>,
 	corbet@lwn.net,
 	Bijan Tabatabai <bijantabatab@micron.com>
-Subject: [PATCH 4/5] Docs/ABI/damon: Document new DAMON commands
-Date: Tue,  5 Aug 2025 11:20:21 -0500
-Message-ID: <20250805162022.4920-5-bijan311@gmail.com>
+Subject: [PATCH 5/5] Docs/admin-guide/mm/damon/usage: Document new DAMON commands
+Date: Tue,  5 Aug 2025 11:20:22 -0500
+Message-ID: <20250805162022.4920-6-bijan311@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250805162022.4920-1-bijan311@gmail.com>
 References: <20250805162022.4920-1-bijan311@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6BB42100003
-X-Stat-Signature: 5pr1y4qjmrsbzirqypnqdnykhx76xs36
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1754410864-115976
-X-HE-Meta: U2FsdGVkX181QeH8iFDF/kMYsdpfT525vink8Lvu6I0J1TZYoLa4QBnTd09kiznjiOzvvDSgE1po2mYYAznkck6rnE2qS5qav5sb2T65pXQUQ7i7MM8gvaYjlTvLf2rs7eqMWkSsl634Mvh6lGcI6VQNGuo4iKEPks69Gfv9A44puA/zA0dwiGUne8lNGpc/EXoQXPnQAXGDcnvVIN3QWuJrTGzV769JjhZ7/hWWpeFAbhhseSEFscnHnQp3rnOEwU3nBWGSh3uAK5njb8O/iu+0Y1ahd32PzJGr5w2xps+6de9D7Ac9dXoIjSoiDnxQsbScfQRJN93eNOg4p7OCgbguwlxoS/VaKnNCF+97PlfCAkkXY56DzCdbwPSNIcVFPcAuo2ASkpsMtWkgm8DUHnV2eapObGJdC61tE2luxyT28dkurjWiI/6lI0YDF5KPmaIveKfdBepOfgVMht+ooidfWQyc+Ivm2m1qgB7SmHuFkQwJDds+nbaC8EE8TuYn+GZut/prif/Mo07zSnhSsylCNfPGe/Op030oCdqzfTOZfSwcRqA1THkQtI0/LcFVhDVvuFt62eqt78GLCHOaA5smT8fVHDhlVd1GiMxPBOHmvEs2VdCUQgmJ0tiMrjmfRMJZO287RHtHguseb48fO9v+bHUTGl5+hqrjQV2xzHwW+42IieG+A4lWBlHCbqxUL5vbrRI8TQZJQmKb2w7A5Nj40AR5nfPfRjA/qfQci5hFIWV80o/AH5kamJgjFNKef9Y6aMGpfvgM35A9DqZv6XvLFSjAcjgYkwhHkouJ+edbtYBKUg+k9h5yqhX0sISDUUGXm5XEb9bwxmqFjoouweCM5XoVYPVK9HAxfVZ0xR/qtbzhV6A/Z6ZiphbCX4hFrCG5b8ScACH+FVC1/O8Cj0xv10S6xrl27kDYK7mEe94a+D4oGMdR7dO7jSgSDJLegDIWOpiINep3SLDm20B
- ZMkXIiqu
- bUmTqyjYz+ezOgy8IaMOjGWpv72iNNVIqCraBXjfuGw/XMoSnpNz1yqJBc7Bc0ZI6Z9GCGPTufQp3Vee+jLTw0+5oK4NQOrA3N3syI5yoUAFLoj9vgn3tFxkX85KYFtbIeEoOwIBdYt05jc8GlG4k4v6BKXs445HRhFo5qckAGGa0wtvUO3N2mDLl6UgOrPo4u9tr0+CfWktNgtbnBbwvbugRUNv59cuGgl5ilpkViwJDltdjbdXyVSvD6FGZ4rNJkNbKJTKBC3mQQ8qE4DNCcxqeV9Cnw4/6//p7fq+waoIO+AaMVsK23y5WDmmorZGA3ykClhX8PYGp7muGViZVNChXfTVtYKH9ejrAlHuEez61k3FWwCsDxCzLSNU85VLix6db5A9zE4AqdN+JwEBwv7EOYLmY7Lku2B7PPIztl5feGRhnSoqaFzvOiOJJh9aCpk2SkTaPtnVESUA=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Queue-Id: 897D6140012
+X-Rspamd-Server: rspam06
+X-Stat-Signature: goxx1nnqtmni5mw818ndsq567b5yswms
+X-HE-Tag: 1754410868-81541
+X-HE-Meta: U2FsdGVkX18mHfgQ3RkwfE6RVywRKRKkggcCmfdTYhlvo95tqATnNnFu9rPJIvbY0j5m6Ghm0PYIGQ4R8X8MlBWiTHlcIDlP4hjf74meT4fGO04Kj1Tbrz7pzPSkvzvo/4wOiYn+S0KVg3fNJpiD/pAycIPCdqBMa7VDcpNWjXp3pmMvIaEKekjJmQoEblH1DKnYZszHNrUiva0D/z/XUxs4FhCKyU8aNsrxYFyrFERrpCvcN+SRDMdXJhysf5iSgXUYpsqqU0Lh6PSyobrUQ8pFAi+uVdGWaSTec94ibiD5BlNRNu2/t8WxoCcmC3U39N0PR+pPUv9YUm9CyeAgDpoKpdRy4Bgjn22K/wlQ46d2F4+oxGE7DpGSO7e2TscrSjyp1+iPrLKRRp1nuy733Nzh5GslFkzlVTMZpaOER8pEgjjSpy2ZMKcuedR2SuCfbSEEfyQaVHH3EwDkMWgPgOB9SfBIBBVFnlhvia0+OW/2ZbMWUuIUP/blIxPyN87Q14vaTv1iV9vndxHxpgL2Xiwq/0Tkymt5f927jA0pSAp5Vp+BmvYp2lywWkwmtyK9w+q1nqyLCAqTlhPBGBgEhUWzIqduSvv4zKwWhcSfX4vU+QnYmAm0Vr5/qvNZ1ncxAie8ojORlrOHjcvBIuTwOoEIlk3eGNfeHGhxXD1RYuUYkakX5HaeA+qP3j+mnEMp9RosI465xv5OZpt98RuohmxH5YHs+UYpEdc9c3nIRtLqEg1erlhTlx4koDt18Y8UP/O8sNszMO69hB0WhhWT6c5j89kUNaY9m/gmwmRPnATx25KhtDeKxrQeF0x+8WtXH5aM5kj79m5xV4zcIycIq/NB56S0pC3M1DiC3smUR2UFsL+P6Dsd/tvKJyTqDF6r9/N9o+MnNO8G0k6sMFlMyy3VLAS35+mD2+QfUyZAplf3+zZdCbgz2xT/c6Mxh9Tfy+6HT4Il2rWrBdgZfkT
+ jZLfSHNi
+ Ba58ZN4RZ9rVg1x6RJck7gyujwsXZDNmTxTg90/RRN557MUVactA8UOmmiRPCW5ruKrHyt345i7Yku+2lqeAjLV4ClA+50JdqJg6rIwmhwb8Bc4A0FFTAkEEcrpw342KoU70yfrBkSmATQniEvk+CbgZ5oWldJMKa3gzd1uJpq/BETw36kO8Ik0q7ZsvOR0dIKfA6g9OElhv7H7dG7gD6qkNIenDIEEGMsgxe1WcAU2YTpYnmYFGehbE62awgCc6oRRwh185xysRv4m4gYkHxBRvHSDzDJ6X6I6czNhm59A4WB5tfoPVklY44Nis4Wjb6ZCY36hbsx31HUNDqKIYRhMVr3HtM/k8WU3i3uKEyadsW/T0BjEm7+Eb3kKpLixvLPMujoqHin3eUiyz/l/nXNmcwRXuZEI1XT6dLppvWYZepxED3nPyLp4iWcd7mrg6KagapGwogM6RgpiPgDl/fo2chZGQNKS51c8Eol4UZTL8e/z3ibWPlZfVDjn/duphr/95bixbBpdUvgfxTEUGcDJS/NQ==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000002, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,42 +128,31 @@ commands.
 
 Signed-off-by: Bijan Tabatabai <bijantabatab@micron.com>
 ---
- .../ABI/testing/sysfs-kernel-mm-damon         | 21 +++++++++++--------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ Documentation/admin-guide/mm/damon/usage.rst | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/Documentation/ABI/testing/sysfs-kernel-mm-damon b/Documentation/ABI/testing/sysfs-kernel-mm-damon
-index e98974dfac7a..429947de9aba 100644
---- a/Documentation/ABI/testing/sysfs-kernel-mm-damon
-+++ b/Documentation/ABI/testing/sysfs-kernel-mm-damon
-@@ -27,16 +27,19 @@ Description:	Writing 'on' or 'off' to this file makes the kdamond starts or
- 		makes the kdamond reads the user inputs in the sysfs files
- 		except 'state' again.  Writing 'commit_schemes_quota_goals' to
- 		this file makes the kdamond reads the quota goal files again.
--		Writing 'update_schemes_stats' to the file updates contents of
--		schemes stats files of the kdamond.  Writing
--		'update_schemes_tried_regions' to the file updates contents of
--		'tried_regions' directory of every scheme directory of this
--		kdamond.  Writing 'update_schemes_tried_bytes' to the file
--		updates only '.../tried_regions/total_bytes' files of this
--		kdamond.  Writing 'clear_schemes_tried_regions' to the file
--		removes contents of the 'tried_regions' directory.  Writing
-+		Writing 'commit_schemes_dests' to this file makes the kdamond
-+		read the dests files again. Writing 'update_schemes_stats' to
-+		the file updates contents of schemes stats files of the
-+		kdamond.  Writing 'update_schemes_tried_regions' to the file
-+		updates contents of 'tried_regions' directory of every scheme
-+		directory of this kdamond.  Writing 'update_schemes_tried_bytes'
-+		to the file updates only '.../tried_regions/total_bytes' files
-+		of this kdamond.  Writing 'clear_schemes_tried_regions' to the
-+		file removes contents of the 'tried_regions' directory.  Writing
- 		'update_schemes_effective_quotas' to the file updates
--		'.../quotas/effective_bytes' files of this kdamond.
-+		'.../quotas/effective_bytes' files of this kdamond. Writing
-+		'wait_for_schemes_apply' to the file does nothing but wait until
-+		the next time every scheme is applied.
+diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
+index fc5c962353ed..46b6260855d9 100644
+--- a/Documentation/admin-guide/mm/damon/usage.rst
++++ b/Documentation/admin-guide/mm/damon/usage.rst
+@@ -142,6 +142,8 @@ Users can write below commands for the kdamond to the ``state`` file.
+   for more details.
+ - ``commit_schemes_quota_goals``: Read the DAMON-based operation schemes'
+   :ref:`quota goals <sysfs_schemes_quota_goals>`.
++- ``commit_schemes_dests``: Read the DAMON-based operation schemes'
++  :ref:`migration dests <damon_sysfs_dests>`.
+ - ``update_schemes_stats``: Update the contents of stats files for each
+   DAMON-based operation scheme of the kdamond.  For details of the stats,
+   please refer to :ref:`stats section <sysfs_schemes_stats>`.
+@@ -158,6 +160,8 @@ Users can write below commands for the kdamond to the ``state`` file.
+ - ``update_schemes_effective_quotas``: Update the contents of
+   ``effective_bytes`` files for each DAMON-based operation scheme of the
+   kdamond.  For more details, refer to :ref:`quotas directory <sysfs_quotas>`.
++- ``wait_for_schemes_apply``: Wait until the next time every scheme has been
++  applied.
  
- What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/pid
- Date:		Mar 2022
+ If the state is ``on``, reading ``pid`` shows the pid of the kdamond thread.
+ 
 -- 
 2.43.5
 
