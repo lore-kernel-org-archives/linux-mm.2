@@ -2,93 +2,116 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A187C87FD1
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 04:15:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5547DC87FCA
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 04:36:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C74878E0008; Wed,  6 Aug 2025 00:15:30 -0400 (EDT)
+	id C070A6B0093; Wed,  6 Aug 2025 00:35:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C25A98E0001; Wed,  6 Aug 2025 00:15:30 -0400 (EDT)
+	id BDF226B0096; Wed,  6 Aug 2025 00:35:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B14A78E0008; Wed,  6 Aug 2025 00:15:30 -0400 (EDT)
+	id B1BEC6B0098; Wed,  6 Aug 2025 00:35:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9ED688E0001
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 00:15:30 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DC4641DBC48
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 04:15:29 +0000 (UTC)
-X-FDA: 83745018378.06.B20DCAB
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 246F040007
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 04:15:27 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V9tKBhyt;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id A250C6B0093
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 00:35:59 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4DAD71DB78A
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 04:35:59 +0000 (UTC)
+X-FDA: 83745070038.05.D2E3187
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 5CE77140002
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 04:35:57 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OYUjOOwa;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of snovitoll@gmail.com designates 209.85.208.169 as permitted sender) smtp.mailfrom=snovitoll@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754453728;
+	s=arc-20220608; t=1754454957;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F7wWxyyQjlsBojcruZX5votDAaB9l9yG8cW4n7qMu6Q=;
-	b=Zr/Mw0NpJPhcLmdPu2Q1qqZK+W8p65KaVsO1i5agAUC0b45+m+R8ZGAyCmRjTKv+Hyos3+
-	SAAgaeTXU7nc5TMjbBHYvfXgSKuLynqdaUYcLk51c+TdjGcpT7NhOsujejPoid+RxTgDw/
-	J5FlTCqJMPDO+QGTFXOGo5Sxb9GKim4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754453728; a=rsa-sha256;
+	bh=dyl+4iOlTi/aeKebUp39F24cwHyqM1kxjjt1F2AMIE8=;
+	b=7rXRi7IC7o0UJ544lR9o9xOMwd/ajoFBlldtrNb+M0yonBhdCcRqLZFlZcKvQLyowWShrt
+	0Mwm4ci+85jgeqGEjF+2gQnevM1Mb6FucxxJRLJiMZSY2AFZSBZu5nBJ8RIkExhWADpK1a
+	pVKnrO2eh4lVOgaCMuzsOMkIPkq3aN0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754454957; a=rsa-sha256;
 	cv=none;
-	b=FPbMQcQsWoISzhU4gPBKEPdzHeWQjB8J+h3B+zz34JbhabLtQr4F/CFnV7qIOw8gZuBILQ
-	NdZt4XG+K3A/njPNziBc1HBqm/umQHOxl6RFh7s7Wqn92AeW6ZcRNPxtxs7WriJq0SWt8e
-	m+R3RiAiN/UC3mERIag2E0YMI1M1WNQ=
+	b=kxlkQuP6ljSX0prkBkGPR0NEeUMSDiKS374EaCoTNbAQ6HHXptz+NqSvvt1BN6wf4fFHVX
+	0nokNfuYjg8ONupwuNBNna58HEK4m/MzomWOBghVsJ9/gBekKiGonqx3eRp1f6UHDY7/V4
+	pLmKtO77ed2iY5DV+wWmGCdJF1A+NlA=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V9tKBhyt;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 02BCB5C1D0D;
-	Wed,  6 Aug 2025 04:15:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7945BC4CEE7;
-	Wed,  6 Aug 2025 04:15:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754453726;
-	bh=lixsbVjRKbA2M2sbx8UeuLMLOOp/6eUO40vsAH+a5LY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V9tKBhytuodqEZxedPiCOH4+GHEEDTBFk1rnP38/kSvFuoPbRem5F5lhTwjA+7fsr
-	 ig6tgd4pRttkI/nmaO33Dzr5D0zL1efo7QPMHVVuimFZciajkMy5af+A0kqvBCB/rA
-	 kdJjTUt/M0yLDPOESiXLj3m+t1/jh/mv61xJI7EqLvD9EZQLFm0tmW5QuT9mKObx+z
-	 WfMHgAFJ7ErAOkBNG6j5pPFfDPhJL56cXwMOeCmt5Q2c9h/bxpd4rnz4mnL/Iv4azC
-	 2KiQctviETGhdXewkqyeJLodwmZUnnvVxbGEMtD9b1JvLWrz+CxEkxWemw3AxxJ8LK
-	 w7LvnVKD9lpqQ==
-From: SeongJae Park <sj@kernel.org>
-To: Bijan Tabatabai <bijan311@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	corbet@lwn.net,
-	Bijan Tabatabai <bijantabatab@micron.com>
-Subject: Re: [PATCH 0/5] mm/damon/sysfs: Add commands useful for using migration dests
-Date: Tue,  5 Aug 2025 21:15:23 -0700
-Message-Id: <20250806041523.54394-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <CAMvvPS6hfCRh1fQh5zU5_quswPFVp0zWyS9N-Zikc0K-nSZd_g@mail.gmail.com>
-References: 
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OYUjOOwa;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of snovitoll@gmail.com designates 209.85.208.169 as permitted sender) smtp.mailfrom=snovitoll@gmail.com
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-3322e4ac12cso43156381fa.2
+        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 21:35:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754454955; x=1755059755; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dyl+4iOlTi/aeKebUp39F24cwHyqM1kxjjt1F2AMIE8=;
+        b=OYUjOOwaM6VsUput4wRA+ytGdkXG52XssJ3mO0iZEdZ1EQ6B7tTjIHCBm8uOQGhlZf
+         M9op6rxl91sHbCTm4IBoRSQlbizLUM9OvBA5yiyRz+OqJwNw4bWEHrFnLTF3yZD0Dr10
+         D6149Rf20jymlN/jzOhGo8guIuy0uSPlDi6VRMivrx6Wr8TVny1IrmsaD3cFZksuQzvK
+         w1PJah976a8a4XpBetkeKALN5rPKkSJvYrRtM8088KAukVy8JZvX3dzl/ekg0Y5tlsDr
+         MZKnhCoWM5zMZy8KS5KN8+Fn7bln8zxzJfLmotFxFoPtnIlixGefHrttJxqOkOv05j0Q
+         E/Kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754454955; x=1755059755;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dyl+4iOlTi/aeKebUp39F24cwHyqM1kxjjt1F2AMIE8=;
+        b=FwTKxUi1PRwtuGUx4ZoSCvpp0lsfeP8x0f9WkFhiDXYSaGkmouCE1tk2Z1Km4w8jHC
+         7sevGSiDsQnndgcX4MYggYeIggEjWmN+X3yoUL3S+Jwo8mYa2BId/ZzfcdkWJqMSB3P9
+         AnfRPzZelw4tbXqJO7DC7ca6bMisI5voPIt5/gXx3V5/SlyAcKFMhWbK6P/Es/FREOoK
+         ULw40TACaXLpuZjr+y4T+j9+tzwRINJsUvh+Mx7c3N8YPGiO/HlntHLEOg+o5ETPERGy
+         GscEpoPJxJp1iUOrk7fqYTlIx5V1gxFt7FOZFO410HKi9QM9dZ48KcMrGL194JmCA8OP
+         9lyw==
+X-Forwarded-Encrypted: i=1; AJvYcCWFBs/w3OzaIa3mwSUoiZnSy+2iQleIPUBpTlGO3Wq/50jnNdWijCDjpOqaa8molbHO7GJZL9FqHw==@kvack.org
+X-Gm-Message-State: AOJu0YyBIC+kqulThxMUpKVSbeqZYRpQZiJboe1+S0KCRDDZBxDbGDDy
+	z25FUqYrLGBg5W6wo8xApghKfechj4YLa6+MLUwfotM06idZoY8aby+3IjnBp9UojMwxWEtVqJy
+	xZkHrRJCFnWF2vXJ/lnegAPxyWElyoJc=
+X-Gm-Gg: ASbGncvRapRG8k/+3LzcWl6qP+XmaoGgUsbdLb361Px9c1ubEt6asyt1r1m0Wx2ExAp
+	Just4eCE36XgqdZ4fAdvql8k0CbbMc/AujqRXO7Pc+wfTF0ZxuVvoyHU8LedXcECPJDM31UA8Gr
+	81U0376wgXtpYXHX1xU69qERKHRNQsDgURJ4m9XMylI+rHdTiuauQKbGpo+6uW2NU9d7H0sUcpo
+	1kWUOQ=
+X-Google-Smtp-Source: AGHT+IELREFbM69cWDMgkv0oAyeZWfUsogtR626ngafWyGyn4A7prZJUgwVT4kX8m1x5U9hUnIU0ztH0bEfAmGCquxc=
+X-Received: by 2002:a05:651c:f0e:b0:32c:e253:20cc with SMTP id
+ 38308e7fff4ca-3338128c651mr2551171fa.11.1754454955157; Tue, 05 Aug 2025
+ 21:35:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 246F040007
-X-Stat-Signature: fauwe6bqhiuib7qsnohat3s5q1sm4psf
+References: <20250805142622.560992-1-snovitoll@gmail.com> <20250805142622.560992-7-snovitoll@gmail.com>
+ <60895f3d-abe2-4fc3-afc3-176a188f06d4@gmail.com>
+In-Reply-To: <60895f3d-abe2-4fc3-afc3-176a188f06d4@gmail.com>
+From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+Date: Wed, 6 Aug 2025 09:35:38 +0500
+X-Gm-Features: Ac12FXwBfBQD8yoFidSr60fw7LigvE8ZBweRU29uoAzLmmdybvheO1FdbNA_5DM
+Message-ID: <CACzwLxhs+Rt9-q6tKi3Kvu7HpZ2VgZAc4XEXZ4MEB60UbFjDKg@mail.gmail.com>
+Subject: Re: [PATCH v4 6/9] kasan/um: select ARCH_DEFER_KASAN and call kasan_init_generic
+To: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: hca@linux.ibm.com, christophe.leroy@csgroup.eu, andreyknvl@gmail.com, 
+	agordeev@linux.ibm.com, akpm@linux-foundation.org, zhangqing@loongson.cn, 
+	chenhuacai@loongson.cn, trishalfonso@google.com, davidgow@google.com, 
+	glider@google.com, dvyukov@google.com, kasan-dev@googlegroups.com, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, linux-um@lists.infradead.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 5CE77140002
+X-Stat-Signature: mw3pxrzphhhg8j78w6y7uz8w5semm65h
 X-Rspam-User: 
-X-HE-Tag: 1754453727-961386
-X-HE-Meta: U2FsdGVkX1/bw9G/H65zm2kbhXrtsulnPomI5h5MM36dcO+l/iyPLCKQuEWG6WLOw7lDhLdCqck8F9Via0OVNiDsRr3LfFT+bhyqe/O+27YDaKj3dZ/n4ouLRK2ikFlPcRZ/bNv3HibKA6aH9v+dwRAxNWdnUFFrwsizKP7EKUvLaaAVVE9nKPesYn/L2yykvx5kQ53mkzoRL7z2/83torcEpY6ZQlcgdRMqBxaTdbNGnsNICsCI4ulQcclG3rsJ4eM1X1q/UDM0IDLk6ng+HeLERB+odFGBMXGMsqfxi1ypG/AfOt7DjDDquzUW7Aq/y10bihJ9LJyGu6stSNLbKZPbOI9OaMvPnq/kQEUSGBQg+VLyyVzJ+U7/+961YGeBdjLbPH75N9Iqy2sx1wBKVYaqqqOquQ07yLkSkauNKix8sggphnyqAdDX13/QmEM05CPh9bhXL1OluXg+VwuwnDmnFYAQevc/2IQrPmE3ZJMFSxHpuChpeff4jwRERYqrHV4IGbOmrRqUgoqOExFo1Ak8qwYR3evLHsjJZfuFZCPmSlw2wTvyBFQqN/3bo9f60CETtSn1IcoYoxn44VmBSVRyxG6AIAtfJYte2tzvSi1jnOOzVNC6f3Ri66sml4dclGd280bpBF8olWgrF1oxnsNMClm7RzUu+MJn3NIFiTjBcmDGoz9Wu1pbPahMpj+CjuyJZLwXDfYPs3V7kwacwBiqsAidK6+Su/ZvkxsA+bMVSKlmu6TRZnI/KOYft1mhSuBUCuUJ0Xj3eO4qjvd0Tqp/4a2yHBL4nInEG3BUZMJ6W7LFI7HaVNKA5kF2Jgh1cK7WyMCFIJ3grBncZ3ethZ6i8Mzo6RJ3hauhm9JpRFyrGznQMZ7sqXhPjOnFA6rgNKueceOapUxFHeguNUtMSA1gzlV/xR5/TZK13NxQQ6ghmpS0UX7xnePrxd+86dUlZ7v0CF/O73zrLB2FSnr
- NVchy1nb
- EXihmiB7tj7sSo2M5sYiOW31RtlAN6L9AKwsbPyCLKr4Y5hcRsTXBSKF/ehTrOjtZh1ArQ69Y+tZCp0Xh7eQJPaMrqiQ4WkZW5R7+iVQ+KSEjAZHYTRbxqOqZfInwP2xwNGrMQWQIYM2t75JpksZYHBix3mGynrscNqflS4s8XvFFOfAeVSfCGbgv7V/7tzqN+gCU/gB73Pb01Xmhs2G1zMaxajQxzZvp65KTGeY8Ud8d/hhDL7KZEeRKyimZeOmLir/Mp18vVOcaUCLJMu2DnNLFpaVqqBR1dn9/
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1754454957-852057
+X-HE-Meta: U2FsdGVkX19G+Ch/z3qB6uXviJXzX1RWRnSCePbD/tT6g3j2PQtmU8HgxPop7Ge7/6RaQ3ZVBdkmGB+C8OnY4a1Eaq9Kb41W6EfjQIUiHhdEIQ5FTZhUQKFi0ENoB925CoYiKzwQy4kXRESvGtXn/dsqqeKeY95CSza2RT8DuQFTdxJGuOh8/Gbtkr81ap19B15rgEPpbbxtwQTvHbjPNlik1+cUUaSHz/G8LAyQJOYxjeq7DU7rA6k5HV0F9h1yaJ9uqN3dG+AlZMi3DZGsqSut3mmgFdCpvPSvKIn3hjtIEs4Yt1aQZlXf16PS2Mxssj0HvZrYrODPO73JYw3HOkRRjs33uC9+nr7sMqRFdQvv7LmcslYQvxsIzIZjwGxTy4Tg7jdNGRSxre6d9eciA2GVhQA5itKR1x0FVpyRZPY51DLgg5Ejr2eJeOitfVOGmbujdUhIVakKbiqbkTTSseQtH5UeCqh3S9JcyyVukudNeQjeRplUSYOZsW6v+9+tA8vFtVyaEINd7AyRcpPylCKkCWtoxBJDTU9S93+8ky5fHWGKpHtPwpFtWb8UJ2Znce2bQ8atNj/zX6sO+zOJ1nmtyOi0Na2EWYWSx8hjJrR0fc2hPUyAhMMyneDO6cGLv0mfFuw1zGH/IAcNVpHZB/UhFEy6Kaj3JwRUPee0kWSQoFrBfZ7VLOoSIf23Z80DWlynqmyce2vczPFtOPBeaUAnnqwwoocjpGnAqV6URKJQYwIeEI+soid+ufw4BbGcQ+UnN8LVLl5HPT0U4+tScwEhZRYXqxVxU40CUq1+o4uFEP6sc3IoyMlTrLLKt1wWR1IWKpsapEcXPnB7M+UvESLburpci9zv0Z/BuRfaC5nwPhGhjeYhtWoyFQYfYIqrh8Ihw8CxKbyM7MdAj/JDA/RbpnrwOPTe6yn+ShU5G6VqpNUawnhxEENB5wgbIQTLtAwUni5d656ePlrtqOq
+ v2DHPqg9
+ bgE47RL6ZMhOVqCBsoR9ZWMMfIhlN/pxEotQS+3qQ0YRtMhRADLvDhx46KOHnQvs3UFAFG4dgVFXHOfnO2f/dIRK7p9FnUp531OSMaIOo+lr4RsJ8RTCgMK+nzM/QWgxVu5JVUhk+bLuSWPsUpccNi4XgAdPbyPRwnQ/4Ua+A0MXZOJ+BOJNXnS7u16spFYFniYOug+4GYhQgvI2DCemEVMbby7yglgqpNImTrhsy7vt7OFpO0mx8t/srgWwn03thgK2cxtgvSyJ1qbV447yaTbEtIB9Bt8Ee3+chiqRqInSs3OjjmqrdmjaFo3fcPR0ttjErcxcJeZ5PCGmYRrtQf/GtOOnEbXQgQ/jGtvWjOazcaokHEtPr+gBD/SnRsNLLZToeLEJBpdviDyohHyEy0iOJrtWCOjRZXek/9qdASZ5xlV3rGDfVqUc2DrY5YtSVN2I1vaw6EY+fqVxZKIZ3AnjwHiSKMURtsNhAowo84QhCaGY0T7nj0UVuWw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,150 +120,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 5 Aug 2025 20:27:52 -0500 Bijan Tabatabai <bijan311@gmail.com> wrote:
-
-> Hi SJ,
-> 
-> 
-> On Tue, Aug 5, 2025 at 7:40 PM SeongJae Park <sj@kernel.org> wrote:
+On Tue, Aug 5, 2025 at 10:19=E2=80=AFPM Andrey Ryabinin <ryabinin.a.a@gmail=
+.com> wrote:
+>
+>
+>
+> On 8/5/25 4:26 PM, Sabyrzhan Tasbolatov wrote:
 > >
-> > Hi Bijan,
+> > diff --git a/arch/um/Kconfig b/arch/um/Kconfig
+> > index 9083bfdb773..8d14c8fc2cd 100644
+> > --- a/arch/um/Kconfig
+> > +++ b/arch/um/Kconfig
+> > @@ -5,6 +5,7 @@ menu "UML-specific options"
+> >  config UML
+> >       bool
+> >       default y
+> > +     select ARCH_DEFER_KASAN
+>
+> select ARCH_DEFER_KASAN if STATIC_LINK
+
+As pointed out in commit 5b301409e8bc("UML: add support for KASAN
+under x86_64"),
+
+: Also note that, while UML supports both KASAN in inline mode
+(CONFIG_KASAN_INLINE)
+: and static linking (CONFIG_STATIC_LINK), it does not support both at
+the same time.
+
+I've tested that for UML,
+ARCH_DEFER_KASAN works if STATIC_LINK && KASAN_OUTLINE
+ARCH_DEFER_KASAN works if KASAN_INLINE && !STATIC_LINK
+
+ARCH_DEFER_KASAN if STATIC_LINK, and KASAN_INLINE=3Dy by default from defco=
+nfig
+crashes with SEGFAULT here (I didn't understand what it is, I think
+the main() constructors
+is not prepared in UML):
+
+ =E2=96=BA 0       0x609d6f87 strlen+43
+   1       0x60a20db0 _dl_new_object+48
+   2       0x60a24627 _dl_non_dynamic_init+103
+   3       0x60a25f9a __libc_init_first+42
+   4       0x609eb6b2 __libc_start_main_impl+2434
+   5       0x6004a025 _start+37
+
+Since this is the case only for UML, AFAIU, I don't think we want to change
+conditions in lib/Kconfig.kasan. Shall I leave UML Kconfig as it is? e.g.
+
+select ARCH_DEFER_KASAN
+
+>
+> >       select ARCH_WANTS_DYNAMIC_TASK_STRUCT
+> >       select ARCH_HAS_CACHE_LINE_SIZE
+> >       select ARCH_HAS_CPU_FINALIZE_INIT
+> > diff --git a/arch/um/include/asm/kasan.h b/arch/um/include/asm/kasan.h
+> > index f97bb1f7b85..81bcdc0f962 100644
+> > --- a/arch/um/include/asm/kasan.h
+> > +++ b/arch/um/include/asm/kasan.h
+> > @@ -24,11 +24,6 @@
 > >
-> > Subjects of patches usually be converted into lowercase when be merged into mm
-> > tree.  I'd suggest using lowercase even in patches stage, if those aim to be
-> > merged into mm tree.
-> 
-> Noted, thanks.
-> 
-> [...]
-> > > The commit_schemes_dests command, similar to the existing
-> > > commit_schemes_quota_goals, is used to commit only the dests fields of
-> > > schemes. This has a couple of benefits:
-> > > 1) It is more efficient than recommitting all the DAMON data.
-> > > 2) Doing a full commit resets the aggregation and ops_update intervals. If
-> > > a user sends the full commit command frequently (relatively to those
-> > > intervals) the aggregation and ops_update events will be prevented from
-> > > triggering. Having a separate commit command side steps this problem.
-> >
-> > I agree the commit command of DAMON sysfs interface is inefficient, and could
-> > make the infinite intervals delay problem.  But, I didn't expect there could be
-> > use cases that use commit feature frequently enough to make the inefficiency
-> > and the intervals delay be real problems.  Could you please let me know more
-> > details about your use case and how severe problem DAMON is causing?
-> 
-> In my use case, I am trying to optimize the interleave ratio of
-> applications to maximize their performance without prior knowledge of
-> their behavior. To do this, we take the steps of updating the ratio,
-> observing how the system reacts to the change in ratio, and update the
-> ratio again accordingly. Because we want to approach the ideal
-> interleave ratio quickly, we update the weights frequently, motivating
-> the commit_schemes_dests. Similarly, we want to observe how the system
-> reacts to the change only after the change has been applied,
-> motivating wait_for_schemes_apply.
-
-Thank you for sharing these details!
-
-It sounds like you are using DAMOS without any quota, and the target workload
-has static memory mapping.  Hence all migrations for the new weights can be
-completed after one DAMOS schemes apply interval, and no more migration will
-happen until new weights are given.  And that's why you want
-wait_for_schemes_apply, since when the command is finished is when all new
-weights based interleaving is done.  Am I understanding correctly?
-
-> 
-> The consequences are not very severe. The problem can be worked around
-> by either updating less frequently, at the cost of converging slower,
-> or decreasing the maximum aggregation period, which from what I
-> understand may affect the access monitoring behavior.
-
-Sounds suboptimal work arounds for you...
-
-> 
-> > Depending on the real problem, I'm wondering if optimizing commit command can
-> > be a solution.  For example, skipping the update of next_aggregation_sis and
-> > next_ops_update_sis when the intervals are not changed might be able to solve
-> > the intervals delay problem.
-> 
-> This would work for my use case.
-
-Great to hear this, and I agree.  The commit operation internally uses
-damon_call(), which takes up to one sampling interval.  Also the migration
-operation that you will wait for would also take no small time, depending on
-the amount of pages to migrate.  Compared to those, I think the commit speed
-increase due to committing unnecessary paramters may relatively short.
-deal.
-
-Meanwhile, I was concerning the continuous next_{aggregation,ops_update_}sis
-delay could be a real problem.  And this option should solve the real problem.
-
-> Another option might be to have a
-> more general commit_schemes command, which may be useful to other use
-> cases. I'll defer to your judgement on which would be better.
-
-If my above theory is not wrong, I'd suggest making the commit operation
-optimization.  If it turns out to be not enough for your or others' use cases,
-we can further consider commit_schemes.
-
-> 
-> > >
-> > > The wait_for_schemes_apply command causes the calling thread to wait until
-> > > all schemes have been applied. It does this by calling damos_walk() with a
-> > > NULL walk_fn. This can be useful, for example, if a user wants to know when
-> > > new scheme parameters they've committed have been applied. Another use case
-> > > could be if a user wants to record the system state every time a scheme is
-> > > applied for debuging purposes.
-> > >
-> > > The functionality of wait_for_schemes_apply can be achieved with the
-> > > existing update_schemes_tried_bytes and update_schemes_tried_regions
-> > > commands. However, having a separate command avoids extra work and makes
-> > > user intent clearer when used in scripts.
-> >
-> > I agree extra works are always better to be avoided.  But is the overhead large
-> > enough to be a real problem for your use case?  I also agree it could make the
-> > user script cleaner, but adding a kernel feature only for user scripts
-> > readabilities sounds like too much, since the user script could have its own
-> > abstract layers for its readability.
-> 
-> Totally fair. I will drop wait_for_apply_schemes in any future versions.
-> 
-> > Also, even if the new command is implemented, since the DAMOS schemes continue
-> > running, the system status will keep changing.  If you cannot do the recording
-> > of the system state in a restricted time, the recorded information might not be
-> > that reliable.  So I'm not sure if you really need this strict waiting in this
-> > way.
-> 
-> Fair. That was not something I was personally using the command for,
-> just another possible use case I thought of. Regardless of the
-> usefulness of that, the existing commands using damos_walk would work
-> well enough.
-
-I'm glad to hear we found a way to go.  As you may know,
-update_schemes_tried_bytes would be more efficient, so I would suggest that
-more than update_schemes_tried_regions.
-
-If the wait is not strictly need to be accurate, maybe monitoring the DAMOS
-scheme stats in auto-update mode[1] until any change is made could also be a
-way.  The stat update for a scheme will be done only after the scheme is
-applied to all applicable regions for a round.
-
-> 
-> > Could you please share more details about what you want to do with the new
-> > command, and how much problem you are seeing?  I'm particularly curious what
-> > system state you want to record, and why you need to wait the exact time
-> > interval.
-> 
-> I mentioned this above, but I am using this to wait for new migration
-> weights to be applied before monitoring how the change affects
-> applications, but again, this can be done with existing commands.
-
-Thank you again for kindly sharing your use case and participate in this
-constructive discussion :)
-
-[1] https://lore.kernel.org/20250717055448.56976-1-sj@kernel.org
-
-
-Thanks,
-SJ
-
-[...]
+> >  #ifdef CONFIG_KASAN
+> >  void kasan_init(void);
+> > -extern int kasan_um_is_ready;
+> > -
+> > -#ifdef CONFIG_STATIC_LINK
+> > -#define kasan_arch_is_ready() (kasan_um_is_ready)
+> > -#endif
+> >  #else
+> >  static inline void kasan_init(void) { }
+> >  #endif /* CONFIG_KASAN */
 
