@@ -2,112 +2,93 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 75096C87FD1
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 03:39:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A187C87FD1
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 04:15:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 03A2C8E000A; Tue,  5 Aug 2025 23:39:06 -0400 (EDT)
+	id C74878E0008; Wed,  6 Aug 2025 00:15:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 011D28E0001; Tue,  5 Aug 2025 23:39:05 -0400 (EDT)
+	id C25A98E0001; Wed,  6 Aug 2025 00:15:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E912B8E000A; Tue,  5 Aug 2025 23:39:05 -0400 (EDT)
+	id B14A78E0008; Wed,  6 Aug 2025 00:15:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DA5F78E0001
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 23:39:05 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 66AEB114F7B
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 03:39:05 +0000 (UTC)
-X-FDA: 83744926650.17.B0CE207
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 72DE8C0007
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 03:39:03 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZC1gHqqn;
-	spf=pass (imf22.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.182 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9ED688E0001
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 00:15:30 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DC4641DBC48
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 04:15:29 +0000 (UTC)
+X-FDA: 83745018378.06.B20DCAB
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 246F040007
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 04:15:27 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V9tKBhyt;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754451543;
+	s=arc-20220608; t=1754453728;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pT8gPUg++PGfeMd5QsLj4CoRRQLdIXbXj3kUkk+1RlU=;
-	b=CJCqqEikEiaDxHkyssaTX4VYBdYOC7MuWs6W/HrzWiwF1pGBwbmXUeXLthpNAhFYiDPbF6
-	kz9vIedcHVywh6k+axVaKqKEyLAuhuJAp+xTlYp/m6lA5536Sc4SpHIGeDl7WIAGaap25Z
-	AxAK4Ep4guf7FfjkdYce/KJoXFfrEyw=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZC1gHqqn;
-	spf=pass (imf22.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.182 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754451543; a=rsa-sha256;
+	bh=F7wWxyyQjlsBojcruZX5votDAaB9l9yG8cW4n7qMu6Q=;
+	b=Zr/Mw0NpJPhcLmdPu2Q1qqZK+W8p65KaVsO1i5agAUC0b45+m+R8ZGAyCmRjTKv+Hyos3+
+	SAAgaeTXU7nc5TMjbBHYvfXgSKuLynqdaUYcLk51c+TdjGcpT7NhOsujejPoid+RxTgDw/
+	J5FlTCqJMPDO+QGTFXOGo5Sxb9GKim4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754453728; a=rsa-sha256;
 	cv=none;
-	b=M7SKtri3JYET+4Snlo2ca4nljSv5BPqkOKDrxVKLOH2MLoFpx6hbG74BrRGpNoNInktD/c
-	bhntmjC0mNEyrYJS4txH6pI7FBN5JksV3KxvCloMtIZKyLeUC8GEhNZDqHi0wCyRq9ErQN
-	j/ADLRW4v6Odb3xxkJahzeu3JMMQA/Q=
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-3322e4ac12cso42966631fa.2
-        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 20:39:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754451542; x=1755056342; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pT8gPUg++PGfeMd5QsLj4CoRRQLdIXbXj3kUkk+1RlU=;
-        b=ZC1gHqqnmTFYixlQwY2nrwwDgNC2LmKeGKVBwKraslMqaUHkZiahwyfJB2+Uw7HVG1
-         2/pDnI1fMycpTHgikJ26hTzKzQ56disK5Ol0F1UmyHI4CET58QOXYJzqKALXHqJ/do0F
-         iVSgmszs2JV1X7jfWEFK4y0QDopafSYq2Q15yP284Cx+R83sSuANf2JvAIUkeUcqDVyE
-         i3lMJWmJ6EUlSLyfZU+YNdGFhQ47fXuTZv65RXsYiQMlqNGm61xL/eWjhrBE28svZv1E
-         ykT7spjqD8ZbsmuvT4TuERfYAgcLhwqJg0tisGtLhX6RtKRbCtZk1jGHng2+ytqcwaJI
-         /drQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754451542; x=1755056342;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pT8gPUg++PGfeMd5QsLj4CoRRQLdIXbXj3kUkk+1RlU=;
-        b=aR1abqqeF/xCGUEKk9bEfbkNKjvSzQZbfwTRcL3tgnUjrQVyyC6rxa5udROSdkaYW8
-         93rGJ2mdbIIztkcv451258c08sMyX2n2z3nkXgK6Cs+tu3t7hYsvOCw8OYIMc1SnlbK1
-         19sZHbx2+KhzzA3Ap9hgxCZneF6xqF45hmHCn5Bs01DRlZCS6CpsHnfzcfVbvJb4/djV
-         k+IJVzM0CszvmwRZ0s4zC9zMe+pUdYi+cI/FIsTPbq6OoBJkNTLFd4o7yESWw9L7d6uh
-         P7z1XWswcZ5Zw9M5K3QKyIMBvzo75dUOU+Vstza841Ikop8WWpm5NzdMB0v968ID3vIB
-         UN5w==
-X-Gm-Message-State: AOJu0YxGKZ51SM8AndyD1kZcriv/4hM3KFEn9Ie/2RCEM0pwk86xvcnb
-	/OJnkWVFLA7P72/CRND9kFyGAn6IsFkc3P7g2UO8THsN+i0peUA6kB9s0E5k8KroIPs7AQaFFDt
-	YFQ341c1f4ZxgW/SYkEqY032lcxHoJwE=
-X-Gm-Gg: ASbGncso9LB9zkETUAPcD+68t48Jo2gj+ZB8Jwbycx6CV0Z9Wg+435e/MRGyRGSoFtI
-	9I0Pm58cvOvKdGNzufS77hNNN5RDUzLOJPDe7oZa3MRtUNY8iuyGxtzSPX69q0fHilVb6okU6Op
-	H5aWqK/FhARXmdofModm7/+WqZbarEvIRPHh/Mk9EoFKIs6dt1Im+lQRwi+gMHA3PlW+GVnowhP
-	I5doYU=
-X-Google-Smtp-Source: AGHT+IHBglAwtqm4z8yQjqRQOQCSCAmCv05JxtHTKVaBxejjFoGIwClaEp5JLlQx8mxDV/3A3dGBJkVF8V5tSxeBUcc=
-X-Received: by 2002:a05:651c:e0b:b0:332:8187:f837 with SMTP id
- 38308e7fff4ca-333814040f2mr2549651fa.27.1754451541451; Tue, 05 Aug 2025
- 20:39:01 -0700 (PDT)
+	b=FPbMQcQsWoISzhU4gPBKEPdzHeWQjB8J+h3B+zz34JbhabLtQr4F/CFnV7qIOw8gZuBILQ
+	NdZt4XG+K3A/njPNziBc1HBqm/umQHOxl6RFh7s7Wqn92AeW6ZcRNPxtxs7WriJq0SWt8e
+	m+R3RiAiN/UC3mERIag2E0YMI1M1WNQ=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V9tKBhyt;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 02BCB5C1D0D;
+	Wed,  6 Aug 2025 04:15:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7945BC4CEE7;
+	Wed,  6 Aug 2025 04:15:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754453726;
+	bh=lixsbVjRKbA2M2sbx8UeuLMLOOp/6eUO40vsAH+a5LY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=V9tKBhytuodqEZxedPiCOH4+GHEEDTBFk1rnP38/kSvFuoPbRem5F5lhTwjA+7fsr
+	 ig6tgd4pRttkI/nmaO33Dzr5D0zL1efo7QPMHVVuimFZciajkMy5af+A0kqvBCB/rA
+	 kdJjTUt/M0yLDPOESiXLj3m+t1/jh/mv61xJI7EqLvD9EZQLFm0tmW5QuT9mKObx+z
+	 WfMHgAFJ7ErAOkBNG6j5pPFfDPhJL56cXwMOeCmt5Q2c9h/bxpd4rnz4mnL/Iv4azC
+	 2KiQctviETGhdXewkqyeJLodwmZUnnvVxbGEMtD9b1JvLWrz+CxEkxWemw3AxxJ8LK
+	 w7LvnVKD9lpqQ==
+From: SeongJae Park <sj@kernel.org>
+To: Bijan Tabatabai <bijan311@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	corbet@lwn.net,
+	Bijan Tabatabai <bijantabatab@micron.com>
+Subject: Re: [PATCH 0/5] mm/damon/sysfs: Add commands useful for using migration dests
+Date: Tue,  5 Aug 2025 21:15:23 -0700
+Message-Id: <20250806041523.54394-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <CAMvvPS6hfCRh1fQh5zU5_quswPFVp0zWyS9N-Zikc0K-nSZd_g@mail.gmail.com>
+References: 
 MIME-Version: 1.0
-References: <20250804172439.2331-1-ryncsn@gmail.com> <20250804172439.2331-3-ryncsn@gmail.com>
- <CAKEwX=PkJdz3Um9j4m2bPahN9NbQpn7QnOvEAxDdWUHTqSvchg@mail.gmail.com>
-In-Reply-To: <CAKEwX=PkJdz3Um9j4m2bPahN9NbQpn7QnOvEAxDdWUHTqSvchg@mail.gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Wed, 6 Aug 2025 11:38:25 +0800
-X-Gm-Features: Ac12FXzGr6EunkglBI1a6aoXX9TZJeqjSvqs_Z6HQHT5Ue_7xnXoMTR827GcYFQ
-Message-ID: <CAMgjq7CSRrjLYF=7ckieNsAhDX_Fqp0OkHxrGHB0gQG7=_RdOA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] mm, swap: prefer nonfull over free clusters
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Chris Li <chrisl@kernel.org>, 
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	"Huang, Ying" <ying.huang@linux.alibaba.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: daujufmczk49eu8b3hrw7bd9tfaj4u3w
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 72DE8C0007
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 246F040007
+X-Stat-Signature: fauwe6bqhiuib7qsnohat3s5q1sm4psf
 X-Rspam-User: 
-X-HE-Tag: 1754451543-866934
-X-HE-Meta: U2FsdGVkX1/ERiQRch/XzNtkl5EdWDCTeTp98dOHgYikNSXVyV6Ti6bL2G6MQgOO9Q+iOcPN4lfHksw92Zk/v9CNypwwbe15oPqIQZGsGSKfmj8NM0a+W07jkY2sPbeye3yIPBkRYXKhsSwMqUK7kbLowazuTSKMRB1+PIo5tTyhiF7zrkxJO/6f2jGBcZCOfpHUc8tapS6h9FmxhAgXNbMvQuQYq1iUqkQkpWqaVV22xtvHv/PG1tIMiFWWrPKRBFMonAV5wuEUYneW4socQ7epvHg43xLELX/1t3q+VBotNbKX72gVShkFHvJsMTzU5iwfjxUz6WOI34uAbVYxTQGi6A3J+2pkyYnVoy9hEBike/vUGJ/ORNoyq39vma+O1lmU576AlBU88sv37wpEBRaT4cHYusPT+zCm8rnPlw1T8Ga9wEmqjuXH7CMgEced5jGAQvPAqteVYUH0vbZy2lf4oyYG3/FRDvsD8BVSnzSFd/v8oS2GaOsCGLKNnq1A4JPCnZpiGJTJ6a/jDu2mqhRIlXEvSLH63F4k5934fymQibUmrhur0NoJyN2Mm143x+i+e1tj6n54WtKNz/lFW/+OCk43A6rr66vi/kCHiuGk7C2xWgKJNw5s8nSh+bVwgIz1iMUpXxdqVo25uXoTT/y96WllxRhBu5jyy+XWpo6cFr+BEocPWV6s7TMTNbQ1Bd6j1aacD8y8EUeZ6vGxNTD0ktjUVnnunREG7qj0MVRDX8rQufgema8jaR6zwThghLUtC0IDLl3JNw7DQwqn+0fUaeNxZrxnPPNvTQr8P3JMp2cdGghogPeopb9I+vktUwZVRirBVwSmRWZSGXu1UR7Q3Yea6bzvIpPlQcUeNTbyOxDhwPhjT787DUQkNT8DB8e3bElW6eGnyj8RNtovExTUeJ1F44IhEcU9aRIhF+Lk42VBS0a59PwMM0HykTqOTBPkckVAvF53ZR/m3Pc
- cWlJ2Vfh
- CVNNci0FDU/zUY1UzQ1O7FcBWfVAo3UwW9LMnw4AIg3HjYPSNSraFa55FBRxuaoTFssxMVOr+r6DBgchwRb+z0QtBSc6lgvogAcdCFgvJrixzUDz2hp1+nA5xNOLUKR1xPaTw7hzVKyIiVwKw34Cb7PUIxUxCPwuT8vOrJ/ptcOguts0Xj/u5kBf5qTE32tkVn37t6Xv0W6Jd5CsoqPbOG2h62JtT/kB/on1O0z7XPJ8K2aQipVKxY1zb9Ja9Co+XdZNHjMPWVGliFW784ywSDdtRcOfrh4Tv5x4ppugpP9Gt4ibhzv3BpYG8qTtS+Vy4q6DFABb/H/wENbTchJMAoIASp60IwXS8kCbUpLdD/oSSbMJ8MqggnVyn9wkFVHrvzLCQGUOYpRYoPOwuh4O19lB6o6Qcw4/eabD/2p0kxuZaqOcXf6xzo+g//lypUKVa4p5Y
+X-HE-Tag: 1754453727-961386
+X-HE-Meta: U2FsdGVkX1/bw9G/H65zm2kbhXrtsulnPomI5h5MM36dcO+l/iyPLCKQuEWG6WLOw7lDhLdCqck8F9Via0OVNiDsRr3LfFT+bhyqe/O+27YDaKj3dZ/n4ouLRK2ikFlPcRZ/bNv3HibKA6aH9v+dwRAxNWdnUFFrwsizKP7EKUvLaaAVVE9nKPesYn/L2yykvx5kQ53mkzoRL7z2/83torcEpY6ZQlcgdRMqBxaTdbNGnsNICsCI4ulQcclG3rsJ4eM1X1q/UDM0IDLk6ng+HeLERB+odFGBMXGMsqfxi1ypG/AfOt7DjDDquzUW7Aq/y10bihJ9LJyGu6stSNLbKZPbOI9OaMvPnq/kQEUSGBQg+VLyyVzJ+U7/+961YGeBdjLbPH75N9Iqy2sx1wBKVYaqqqOquQ07yLkSkauNKix8sggphnyqAdDX13/QmEM05CPh9bhXL1OluXg+VwuwnDmnFYAQevc/2IQrPmE3ZJMFSxHpuChpeff4jwRERYqrHV4IGbOmrRqUgoqOExFo1Ak8qwYR3evLHsjJZfuFZCPmSlw2wTvyBFQqN/3bo9f60CETtSn1IcoYoxn44VmBSVRyxG6AIAtfJYte2tzvSi1jnOOzVNC6f3Ri66sml4dclGd280bpBF8olWgrF1oxnsNMClm7RzUu+MJn3NIFiTjBcmDGoz9Wu1pbPahMpj+CjuyJZLwXDfYPs3V7kwacwBiqsAidK6+Su/ZvkxsA+bMVSKlmu6TRZnI/KOYft1mhSuBUCuUJ0Xj3eO4qjvd0Tqp/4a2yHBL4nInEG3BUZMJ6W7LFI7HaVNKA5kF2Jgh1cK7WyMCFIJ3grBncZ3ethZ6i8Mzo6RJ3hauhm9JpRFyrGznQMZ7sqXhPjOnFA6rgNKueceOapUxFHeguNUtMSA1gzlV/xR5/TZK13NxQQ6ghmpS0UX7xnePrxd+86dUlZ7v0CF/O73zrLB2FSnr
+ NVchy1nb
+ EXihmiB7tj7sSo2M5sYiOW31RtlAN6L9AKwsbPyCLKr4Y5hcRsTXBSKF/ehTrOjtZh1ArQ69Y+tZCp0Xh7eQJPaMrqiQ4WkZW5R7+iVQ+KSEjAZHYTRbxqOqZfInwP2xwNGrMQWQIYM2t75JpksZYHBix3mGynrscNqflS4s8XvFFOfAeVSfCGbgv7V/7tzqN+gCU/gB73Pb01Xmhs2G1zMaxajQxzZvp65KTGeY8Ud8d/hhDL7KZEeRKyimZeOmLir/Mp18vVOcaUCLJMu2DnNLFpaVqqBR1dn9/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,139 +97,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 6, 2025 at 8:06=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote:
->
-> On Mon, Aug 4, 2025 at 10:24=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wr=
-ote:
-> >
-> > From: Kairui Song <kasong@tencent.com>
-> >
-> > We prefer a free cluster over a nonfull cluster whenever a CPU local
-> > cluster is drained to respect the SSD discard behavior [1]. It's not
-> > a best practice for non-discarding devices. And this is causing a
-> > chigher fragmentation rate.
-> >
-> > So for a non-discarding device, prefer nonfull over free clusters. This
-> > reduces the fragmentation issue by a lot.
-> >
-> > Testing with make -j96, defconfig, using 64k mTHP, 8G ZRAM:
-> >
-> > Before: sys time: 6121.0s  64kB/swpout: 1638155  64kB/swpout_fallback: =
-189562
-> > After:  sys time: 6145.3s  64kB/swpout: 1761110  64kB/swpout_fallback: =
-66071
-> >
-> > Testing with make -j96, defconfig, using 64k mTHP, 10G ZRAM:
-> >
-> > Before: sys time 5527.9s  64kB/swpout: 1789358  64kB/swpout_fallback: 1=
-7813
-> > After:  sys time 5538.3s  64kB/swpout: 1813133  64kB/swpout_fallback: 0
-> >
-> > Performance is basically unchanged, and the large allocation failure ra=
-te
-> > is lower. Enabling all mTHP sizes showed a more significant result:
-> >
-> > Using the same test setup with 10G ZRAM and enabling all mTHP sizes:
-> >
-> > 128kB swap failure rate:
-> > Before: swpout:449548 swpout_fallback:55894
-> > After:  swpout:497519 swpout_fallback:3204
-> >
-> > 256kB swap failure rate:
-> > Before: swpout:63938  swpout_fallback:2154
-> > After:  swpout:65698  swpout_fallback:324
-> >
-> > 512kB swap failure rate:
-> > Before: swpout:11971  swpout_fallback:2218
-> > After:  swpout:14606  swpout_fallback:4
-> >
-> > 2M swap failure rate:
-> > Before: swpout:12     swpout_fallback:1578
-> > After:  swpout:1253   swpout_fallback:15
-> >
-> > The success rate of large allocations is much higher.
-> >
-> > Link: https://lore.kernel.org/linux-mm/87v8242vng.fsf@yhuang6-desk2.ccr=
-.corp.intel.com/ [1]
-> > Signed-off-by: Kairui Song <kasong@tencent.com>
->
-> Nice! I agree with Chris' analysis too. It's less of a problem for
-> vswap (because there's no physical/SSD implication over there), but
-> this patch makes sense in the context of swapfile allocator.
->
-> FWIW:
-> Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+On Tue, 5 Aug 2025 20:27:52 -0500 Bijan Tabatabai <bijan311@gmail.com> wrote:
 
-Thanks!
+> Hi SJ,
+> 
+> 
+> On Tue, Aug 5, 2025 at 7:40 PM SeongJae Park <sj@kernel.org> wrote:
+> >
+> > Hi Bijan,
+> >
+> > Subjects of patches usually be converted into lowercase when be merged into mm
+> > tree.  I'd suggest using lowercase even in patches stage, if those aim to be
+> > merged into mm tree.
+> 
+> Noted, thanks.
+> 
+> [...]
+> > > The commit_schemes_dests command, similar to the existing
+> > > commit_schemes_quota_goals, is used to commit only the dests fields of
+> > > schemes. This has a couple of benefits:
+> > > 1) It is more efficient than recommitting all the DAMON data.
+> > > 2) Doing a full commit resets the aggregation and ops_update intervals. If
+> > > a user sends the full commit command frequently (relatively to those
+> > > intervals) the aggregation and ops_update events will be prevented from
+> > > triggering. Having a separate commit command side steps this problem.
+> >
+> > I agree the commit command of DAMON sysfs interface is inefficient, and could
+> > make the infinite intervals delay problem.  But, I didn't expect there could be
+> > use cases that use commit feature frequently enough to make the inefficiency
+> > and the intervals delay be real problems.  Could you please let me know more
+> > details about your use case and how severe problem DAMON is causing?
+> 
+> In my use case, I am trying to optimize the interleave ratio of
+> applications to maximize their performance without prior knowledge of
+> their behavior. To do this, we take the steps of updating the ratio,
+> observing how the system reacts to the change in ratio, and update the
+> ratio again accordingly. Because we want to approach the ideal
+> interleave ratio quickly, we update the weights frequently, motivating
+> the commit_schemes_dests. Similarly, we want to observe how the system
+> reacts to the change only after the change has been applied,
+> motivating wait_for_schemes_apply.
 
->
-> > ---
-> >  mm/swapfile.c | 38 ++++++++++++++++++++++++++++----------
-> >  1 file changed, 28 insertions(+), 10 deletions(-)
-> >
-> > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> > index 5fdb3cb2b8b7..4a0cf4fb348d 100644
-> > --- a/mm/swapfile.c
-> > +++ b/mm/swapfile.c
-> > @@ -908,18 +908,20 @@ static unsigned long cluster_alloc_swap_entry(str=
-uct swap_info_struct *si, int o
-> >         }
-> >
-> >  new_cluster:
-> > -       ci =3D isolate_lock_cluster(si, &si->free_clusters);
-> > -       if (ci) {
-> > -               found =3D alloc_swap_scan_cluster(si, ci, cluster_offse=
-t(si, ci),
-> > -                                               order, usage);
-> > -               if (found)
-> > -                       goto done;
-> > +       /*
-> > +        * If the device need discard, prefer new cluster over nonfull
-> > +        * to spread out the writes.
-> > +        */
-> > +       if (si->flags & SWP_PAGE_DISCARD) {
-> > +               ci =3D isolate_lock_cluster(si, &si->free_clusters);
-> > +               if (ci) {
-> > +                       found =3D alloc_swap_scan_cluster(si, ci, clust=
-er_offset(si, ci),
-> > +                                                       order, usage);
-> > +                       if (found)
-> > +                               goto done;
-> > +               }
-> >         }
-> >
-> > -       /* Try reclaim from full clusters if free clusters list is drai=
-ned */
-> > -       if (vm_swap_full())
-> > -               swap_reclaim_full_clusters(si, false);
-> > -
-> >         if (order < PMD_ORDER) {
-> >                 while ((ci =3D isolate_lock_cluster(si, &si->nonfull_cl=
-usters[order]))) {
-> >                         found =3D alloc_swap_scan_cluster(si, ci, clust=
-er_offset(si, ci),
-> > @@ -927,7 +929,23 @@ static unsigned long cluster_alloc_swap_entry(stru=
-ct swap_info_struct *si, int o
-> >                         if (found)
-> >                                 goto done;
-> >                 }
-> > +       }
-> >
-> > +       if (!(si->flags & SWP_PAGE_DISCARD)) {
-> > +               ci =3D isolate_lock_cluster(si, &si->free_clusters);
-> > +               if (ci) {
-> > +                       found =3D alloc_swap_scan_cluster(si, ci, clust=
-er_offset(si, ci),
-> > +                                                       order, usage);
-> > +                       if (found)
-> > +                               goto done;
-> > +               }
-> > +       }
->
-> Seems like this pattern is repeated a couple of places -
-> isolate_lock_cluster from one of the lists, and if successful, then
-> try to allocate (alloc_swap_scan_cluster) from it.
+Thank you for sharing these details!
 
-Indeed, I've been thinking about it but there are some other issues
-that need to be cleaned up before this one.
+It sounds like you are using DAMOS without any quota, and the target workload
+has static memory mapping.  Hence all migrations for the new weights can be
+completed after one DAMOS schemes apply interval, and no more migration will
+happen until new weights are given.  And that's why you want
+wait_for_schemes_apply, since when the command is finished is when all new
+weights based interleaving is done.  Am I understanding correctly?
+
+> 
+> The consequences are not very severe. The problem can be worked around
+> by either updating less frequently, at the cost of converging slower,
+> or decreasing the maximum aggregation period, which from what I
+> understand may affect the access monitoring behavior.
+
+Sounds suboptimal work arounds for you...
+
+> 
+> > Depending on the real problem, I'm wondering if optimizing commit command can
+> > be a solution.  For example, skipping the update of next_aggregation_sis and
+> > next_ops_update_sis when the intervals are not changed might be able to solve
+> > the intervals delay problem.
+> 
+> This would work for my use case.
+
+Great to hear this, and I agree.  The commit operation internally uses
+damon_call(), which takes up to one sampling interval.  Also the migration
+operation that you will wait for would also take no small time, depending on
+the amount of pages to migrate.  Compared to those, I think the commit speed
+increase due to committing unnecessary paramters may relatively short.
+deal.
+
+Meanwhile, I was concerning the continuous next_{aggregation,ops_update_}sis
+delay could be a real problem.  And this option should solve the real problem.
+
+> Another option might be to have a
+> more general commit_schemes command, which may be useful to other use
+> cases. I'll defer to your judgement on which would be better.
+
+If my above theory is not wrong, I'd suggest making the commit operation
+optimization.  If it turns out to be not enough for your or others' use cases,
+we can further consider commit_schemes.
+
+> 
+> > >
+> > > The wait_for_schemes_apply command causes the calling thread to wait until
+> > > all schemes have been applied. It does this by calling damos_walk() with a
+> > > NULL walk_fn. This can be useful, for example, if a user wants to know when
+> > > new scheme parameters they've committed have been applied. Another use case
+> > > could be if a user wants to record the system state every time a scheme is
+> > > applied for debuging purposes.
+> > >
+> > > The functionality of wait_for_schemes_apply can be achieved with the
+> > > existing update_schemes_tried_bytes and update_schemes_tried_regions
+> > > commands. However, having a separate command avoids extra work and makes
+> > > user intent clearer when used in scripts.
+> >
+> > I agree extra works are always better to be avoided.  But is the overhead large
+> > enough to be a real problem for your use case?  I also agree it could make the
+> > user script cleaner, but adding a kernel feature only for user scripts
+> > readabilities sounds like too much, since the user script could have its own
+> > abstract layers for its readability.
+> 
+> Totally fair. I will drop wait_for_apply_schemes in any future versions.
+> 
+> > Also, even if the new command is implemented, since the DAMOS schemes continue
+> > running, the system status will keep changing.  If you cannot do the recording
+> > of the system state in a restricted time, the recorded information might not be
+> > that reliable.  So I'm not sure if you really need this strict waiting in this
+> > way.
+> 
+> Fair. That was not something I was personally using the command for,
+> just another possible use case I thought of. Regardless of the
+> usefulness of that, the existing commands using damos_walk would work
+> well enough.
+
+I'm glad to hear we found a way to go.  As you may know,
+update_schemes_tried_bytes would be more efficient, so I would suggest that
+more than update_schemes_tried_regions.
+
+If the wait is not strictly need to be accurate, maybe monitoring the DAMOS
+scheme stats in auto-update mode[1] until any change is made could also be a
+way.  The stat update for a scheme will be done only after the scheme is
+applied to all applicable regions for a round.
+
+> 
+> > Could you please share more details about what you want to do with the new
+> > command, and how much problem you are seeing?  I'm particularly curious what
+> > system state you want to record, and why you need to wait the exact time
+> > interval.
+> 
+> I mentioned this above, but I am using this to wait for new migration
+> weights to be applied before monitoring how the change affects
+> applications, but again, this can be done with existing commands.
+
+Thank you again for kindly sharing your use case and participate in this
+constructive discussion :)
+
+[1] https://lore.kernel.org/20250717055448.56976-1-sj@kernel.org
+
+
+Thanks,
+SJ
+
+[...]
 
