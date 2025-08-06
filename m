@@ -2,120 +2,110 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C2CA5C87FCB
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 15:00:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 78292C87FCB
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 15:03:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54BFC8E0005; Wed,  6 Aug 2025 11:00:10 -0400 (EDT)
+	id E05E56B0093; Wed,  6 Aug 2025 11:03:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 523D48E0003; Wed,  6 Aug 2025 11:00:10 -0400 (EDT)
+	id DB6706B0095; Wed,  6 Aug 2025 11:03:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 412358E0005; Wed,  6 Aug 2025 11:00:10 -0400 (EDT)
+	id CA5596B0096; Wed,  6 Aug 2025 11:03:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 305E08E0003
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 11:00:10 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 863ED16061D
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 15:00:09 +0000 (UTC)
-X-FDA: 83746642938.09.2159C72
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B00C3C000F
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 15:00:07 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=N38gjGC3;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of adrianhuang0701@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=adrianhuang0701@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754492407; a=rsa-sha256;
-	cv=none;
-	b=tVWYVXjO15tD6OaDKsFe3lrr4Y74o1emNhntlz9Wke+Zv2JR2RTUpY/Iy7V4t/8X5kXmpT
-	7C/B0i8OK9togxVzkQsOAHZf4bNVrn9nioSXgqQkGFIeUyErCEo37F74vAX46jvLq1n+Sk
-	qkmGWeRyoMGMOJyE1vHwG/F9LiD4EZU=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=N38gjGC3;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of adrianhuang0701@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=adrianhuang0701@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B7F9E6B0093
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 11:03:23 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7758514064F
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 15:03:23 +0000 (UTC)
+X-FDA: 83746651086.06.23FEAC3
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6E67510000B
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 15:03:21 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=WogelTFH;
+	spf=pass (imf05.hostedemail.com: domain of ujwal.kundur@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=ujwal.kundur@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754492407;
+	s=arc-20220608; t=1754492601;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ZB7P+LR6z9Zxc9rEDL62l6M20YPI12NkjExjZ6NWpno=;
-	b=nl9N3G+1ZRxb8UKaK/qeMb2iTJa8B07KG2+de7uHHI2/8ckMQe2x8uJ8z/omYpUF3NGoiM
-	9WoO1NEhg0CTTDtTimA+a8k7vj6ysZj06FCbN8iuxGHu+m/HwwSj0ZitZ4T73B0f6ZyWZe
-	SwG7Okvvd1VvOYyP0a4A92RjPklOP+M=
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-b4272ea5dbbso815436a12.1
-        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 08:00:07 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=iFu0pWsfcILZb8LZ/l3Tb7SolyPesNFvt5mBj5bdVrg=;
+	b=06YZ0wDQU+gxoMEhNcT3SAvlHf6JLY1fYgavEkkYPKUIU+d/1fiAvfDMO792/Jtgg2SWU8
+	hiL9tJzuXDfN2ATJI/OagfxAF6qEXg/dKMP3PdDZCjib8CIyrKhPOzvY2STu/SFQFE6g3K
+	/U9w+Hc7/kQ7tsi3/Ue7BzCFg9857rg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754492601; a=rsa-sha256;
+	cv=none;
+	b=7eq0e6/TwK8uknbQsV6qiSnJXwstkbWfgTzYYoTQsv8OnNdPYqDW4QD7801OoQuKzlHQSd
+	NO8snf+u/AU5A0jjAaEM6WXs/NQRfDLUVdr3N1zQUQowSIIPpGyCio8rQHGODdt4c7gWxZ
+	ionE8cKLBVugRK9nmV9ab3B7juIwJk8=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=WogelTFH;
+	spf=pass (imf05.hostedemail.com: domain of ujwal.kundur@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=ujwal.kundur@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-615460d9897so8075045a12.0
+        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 08:03:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754492406; x=1755097206; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZB7P+LR6z9Zxc9rEDL62l6M20YPI12NkjExjZ6NWpno=;
-        b=N38gjGC3xBhIEoZ6+LcRYInCR0JKnaFIOpqO7qGpxp3is17iYzTLfRBF11LIw7IPlF
-         Ga/KcTYDOh2Gcg8J2bvz+CAkn+IaOZ3C/BTHGDAMfnV3zI2OTBuG8b9G09TQjUMFZdpj
-         fcExeJwSKfE0LWhS8/V+1AbllO5no7tc845GV3oBXjAXd7rvqHinx0J5w0kABqVjKeDk
-         Pbz7/HUjxIKBvlyC8oSOKu+F7Kp+aWKtoMIQD0Lxs5ERX0tHMIupE6oV9wjMjrf6SPEK
-         z4qAk8drCVIJuOmuVkGJ+tfSeyCm6fWUpaKdJxakTEkLV0V+aNVMl8OU8H6Ld/dz8izG
-         T3Aw==
+        d=gmail.com; s=20230601; t=1754492600; x=1755097400; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=iFu0pWsfcILZb8LZ/l3Tb7SolyPesNFvt5mBj5bdVrg=;
+        b=WogelTFHdItQqQJlY32wZ38ZY2/wlOkMkRUCaX06AKJL5t8LAMu0cn8mxZDzNRe/8V
+         Bx9GAeI7WPYHOTSJh6uLHLI8MqRa+zSV9MRR48WnPDg8lFAPEahJ5EXZpAy1dzBYGe3a
+         tw/j4qqXNMuzpYM/7PyTU8ElBlWs64gK6s1q3HyMMtjwq2zQSGeYjeRZJMBW53Uz51Oi
+         Wqa1F2+OpaLTrJwKNljQqZnIM13jif1Nmnx4pLVEeJ2fD5R7LH+tNeqscsL11poC8Ybi
+         GZSuULlq8ozJrtMVk+Ww6y8xfdFTyzS1cTtdqSdXKxpO3fTkp4HgWs5vNMJzZZBtrO8P
+         xPeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754492406; x=1755097206;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1754492600; x=1755097400;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ZB7P+LR6z9Zxc9rEDL62l6M20YPI12NkjExjZ6NWpno=;
-        b=oh4dXMn928/Ds5fqyXjfbMwEe7qXVvDMFhR1a8ZAIKz/Ff957X1iglF/w6ShYEV3oi
-         CESWOs+FQFPHAAUPk7AC/XFr9bENet+aC8P/OpEDrfrFwt2Y0VOISXXg4yz/UtwTblHP
-         FPEjR5Q0rJVcfle8vdwJwGHWpmPpgQS5VzOK/+miexx4MIrD2V+nApo7gc5BuR9yAw8I
-         8TQxfBz77q1LVvy1GFktD2YaF7nionEvdMkBhZq8eBBY+jnTVBLaNUu3uhEj2708ZdCN
-         U5i6Ur/zoyfGPLIzwrFJMDZqiFWqyUy4tbVvLKoj/mlD9m4CcIaKXMhaxKcANplW5G1i
-         euMg==
-X-Forwarded-Encrypted: i=1; AJvYcCU8L6KdjJ0YcYJqoELguQSIT3g9N5Ib/bTlaeQfdyh6sfjYJQyd+wZMkzffDQ1gkuNfXMqXaj/cTA==@kvack.org
-X-Gm-Message-State: AOJu0YyHpkjXe4IoO4uBqeiENRA7kfaU96SJS/htqAImSNFPgcxV1M73
-	MJTxDPeCFxRi/0MkKpX1SYKu5UECI5sLJhIIVL3ehpYe8X+UzDxIGfK0
-X-Gm-Gg: ASbGncsui/qRYvTp/pjA20gVrmY9//BhGZscdXXvWSoXUvWXfl11kTGz1Q9SWB4TxT+
-	0Ctdxc+AaWBfhWZg0lyjn4zE+00TdEUwzttkQ5dupuP4YoybpkkpBT9AwV3jvSEshhAYvEspVoB
-	j/PaX8wbcvn+LfjFnEquleDs0N577MCrLJwKXHpm1/I478O7G/wY4qEgGgXm4u8+m9M9ScbZTlr
-	8Zc/QTawGguQYkvS/LrHLChqWmzI7+eOGgN98/B/q9NgUsfplwrLAYBB8SotF8P8tcjoezP8pnr
-	EL0wPHwHE2rLb+QpB3vywF4jjqz5S978EN0R6KIUM/NuEl3d4eaYGD8MwR6wNXUhlTpxQgnpOO8
-	QJbMuU2+smlnKbVCVhxx+E+8EtYoWorxVLRmw8wuC+7imzet8M6INXjHWMykMMSD3QugCMCjjF5
-	yVjrZ8nxb4KbGozxzbvsr+8ZZTMNv3r0p8GcAv
-X-Google-Smtp-Source: AGHT+IF/zb4p8uMDpctBooDw3w4OO1dxizR+VfBzQU5WXXX3PuwBSvSo4mc81Nt/Sb/Ar2TwYOPqMQ==
-X-Received: by 2002:a17:903:1b30:b0:23f:b00a:d4c with SMTP id d9443c01a7336-2429f8af5d2mr38722975ad.2.1754492406205;
-        Wed, 06 Aug 2025 08:00:06 -0700 (PDT)
-Received: from AHUANG12-3ZHH9X.lenovo.com (220-143-195-113.dynamic-ip.hinet.net. [220.143.195.113])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2429b7dfc23sm29204985ad.105.2025.08.06.08.00.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Aug 2025 08:00:05 -0700 (PDT)
-From: "Adrian Huang (Lenovo)" <adrianhuang0701@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Liam.Howlett@oracle.com,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Feng Tang <feng.79.tang@gmail.com>,
-	ahuang12@lenovo.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Adrian Huang <adrianhuang0701@gmail.com>
-Subject: [PATCH v2 1/1] mm: Correct misleading comment on mmap_lock field in mm_struct
-Date: Wed,  6 Aug 2025 22:59:06 +0800
-Message-Id: <20250806145906.24647-1-adrianhuang0701@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        bh=iFu0pWsfcILZb8LZ/l3Tb7SolyPesNFvt5mBj5bdVrg=;
+        b=iQDt0t02McoZsfPYBFjGrzryoO+C817h/mh7uq4i63W2YH9GZzmgWuNXrSKdR0fkhN
+         1d+oznEhzPg/qN3MCBtWX3WaEzEG49bgDylHUEbc2XWq8OrQP3edsV2vcSMuVDreEbjh
+         iq8WzLCqPb04BUz2boszH2isqbeee0DXQNTw9HOM8+V2kNhcI9P0W+LSWabFkON+V3x+
+         FwvOWE0elAXwE8HgaTaYjc1T+zzCo72a18Jbwa4C6KMxSo15YvCxDReCqSKGh1GBTjm7
+         HtvTaA4DfvYGE4I6JoccA0Mzds6deFGM46//3Q1uFTt8iGk9Sm+oosxPuyuOJ9gvkSEa
+         k9Sw==
+X-Forwarded-Encrypted: i=1; AJvYcCX3cziK+zaHB4O7q3UVEkT9h+gTpJefz+u/S3MZAZaGYVPcpCaFrnEdrXcnnqZxcSLEBgdHgRZSkA==@kvack.org
+X-Gm-Message-State: AOJu0YwWKWGl4pJ0APbogg06NDbfbKOQ9w0Zpcnh8C0bdGrZ+fcv13SB
+	yDjjM6o9erXVJ2HXNOCRpjGSoFz7sURWji2+6hWBDBZUuXrsrL4OLx+g6HUvlYxpUwkSpC+rmnK
+	wHd4z4ijml49oYiJtbmY9H6CIhphCbQ==
+X-Gm-Gg: ASbGncuvMne6ikipN8829kACQHaiDxTW61OnOSb4MfEPCHtsZgzjnLmgGi5zhWYdyO8
+	T3EtMVuosMXFa0c6QSwRyOamvrnLEQkt21hMG4aTqxz1TcsItuzWAXly3UvYpl3St5DA3jlhtc9
+	uYRCoLEO0RITg7+rNGYonmATcjnvE5sM+Olkld/dyAq2QAAuhIFi7fQyD8Khi6iHjdRnbSMLcVW
+	fFT+tO3
+X-Google-Smtp-Source: AGHT+IEZYVBGGdm7ifa/677lkbqiMDvUOGxIoRGGZKM7VIEDoaDXaXHDOKNKwB3i6BTpzO0ipF/19F6/rdK3/B66Aac=
+X-Received: by 2002:a17:907:1c0c:b0:af9:61b1:e180 with SMTP id
+ a640c23a62f3a-af99042fb75mr332188266b.41.1754492599426; Wed, 06 Aug 2025
+ 08:03:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250501163827.2598-1-ujwal.kundur@gmail.com> <20250702152057.4067-1-ujwal.kundur@gmail.com>
+ <aGf_W_ZgIf63dmAz@x1.local> <CALkFLLJua-LeS+S5GpiXORA-3wNSR0DTzbh2bvU=Vg-Uzd2VFA@mail.gmail.com>
+In-Reply-To: <CALkFLLJua-LeS+S5GpiXORA-3wNSR0DTzbh2bvU=Vg-Uzd2VFA@mail.gmail.com>
+From: Ujwal Kundur <ujwal.kundur@gmail.com>
+Date: Wed, 6 Aug 2025 20:33:06 +0530
+X-Gm-Features: Ac12FXyBN9EIPVNc1w1eJK7DrGiyYTVGlwIjmM8qS18Y2yez0bBv1aehsTuPYTs
+Message-ID: <CALkFLLLoXfTNtigbcyD4RdJfY+b5Rh5-5Zta1QM9dBQxZd19cQ@mail.gmail.com>
+Subject: Re: [PATCH v6 1/1] selftests/mm/uffd: Refactor non-composite global
+ vars into struct
+To: Peter Xu <peterx@redhat.com>
+Cc: akpm@linux-foundation.org, shuah@kernel.org, jackmanb@google.com, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 6E67510000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B00C3C000F
-X-Stat-Signature: iyjkuh4mc3bst6fx9m67yy97kmehr4zm
-X-HE-Tag: 1754492407-598263
-X-HE-Meta: U2FsdGVkX1+/WA552wh7KfH9KzB+fIsVOuBkEiZf/nrGtVhhC8kcB7B3dn+uemJviVX2Dyna+9hvZgHnMkLf2i3IhDgMSoajj9DEXVow/rGiF8u8J16b27UUKcK0fCWi+rwAiAt1UUuRbFIW7973kJr1ljaSGPKwENWqYHrzEx5m9nNESkBhRXabDFh0lglC6lnXrIjSYHOpH28EMOvuXzJdFTqrFvOoWIlkL5YJfH3ZOfih9NXoMAmRXQ2PWEZp5BDD76HQlOTvlkgNy8MQV/LJBVlINOB/w8Yj34ODR9i8vlXqhkaV+YRI42B/U5/+O5IFm4Zb1h8SJv6WCBFQYEC/bcj7PDCm7zbirWvOeqxINi9BHEbQMStnxynSgzp2yi0AmYu8Qtfxue1hle2FlJlCs+XrRYlZNkvbzMVXiHVxwAaCsCLrfhxITHsAV6el3LFjYMVXuRk3hvB9H5RrTwiT9UMP1OxpX+P0MTMot6MbouBxQCspjCuGsEmQRuhUmXa+Oz4c3f2omuYYRMgv5tHfYv+z6ztqRDiWwdeljQAPaBSSX2Xw6v8T0W8s+2oTaAdr80i2rQGpoS5bCBsou2LCACMXtzhE+Ybz1+RqOh7Hg1thQq88PQvglupnykQWsZJOB5soGb1+i6jN8F97W17pWbXKSZjxYZMV/in78aZ6AfzTINixmE0QHC79zkcAa+sgs8xOytbqSb7Uh5mR4K3YlL9yg9I81/Z+m0lZFbHki8CFjbNq3KjgHxZTmbY2nWu+qdYQE4V+06SI7usT20cKHLTtm79tCMAmYw2tDDqFiiXTF9o2eD+fjwKjrBPU2lfkX/srIWHKpnpC75IaP7av+SWyuO41/kWjglORARkkvzOdP+O2/AjvIPTNcHEBiWkuWhwTNutk7KfGMKzqXw39gAOmI4P69kMEjakoGMNZOMY7UMVCnGhXcKwG1rxwFdG5SyLuahCZcdkKL/G
- P8ijjtIl
- wgYF1tgg0NuLQRWpwCsAwSnwV6D/nDWUYV8lGqyUmn2J0ZDwdcRgNX0y5uWJgAjqemoXQSlb6XqFJsgQ2SHcnicLf+pDLKzQKVJAPUKWfo0bAxOWHJdKFJvO6K4kwY04ln2jk3PRgyxF1qsQhbwgJalhson1FGJHzHN6Nbfw5pLpI7iCNfRsHG4zwf7aJWWAaf8cA3Y2VGLgFjt3x2knHDAFXfGV4hmHPPof1sbqAgxnFc6xDhRdp53yE8RFbW/WS8YLsmJYYj8U76fXxqs2hMSPiia7QTyS6uYkp/KtSE/gvAyPU6t4Mk7AIzf+09RNFTXsBnwZtRzYNaHLyPTll9p27FHd0M/mGknTVun6PKDfag7FlQfq3W3ID0hy7E5Bjg8raZsKe/yXzhai8lcN9EONl5Ur/21pBKwoLSfLK4LqkGPLuitpFiOYx4OmDiyvJ+NbkRkhbWX7zwDgSZ0yxWq1jALIyhWolW4gQ2cNh43lmfSWCySm+qXbdNJC2wxw+8lx5MSn3Zwe9dLDE6kys4ZiJe7NBoMZjO7l8hyflrohE6U0AJdC1ZTIGJg==
+X-Rspamd-Server: rspam09
+X-Stat-Signature: bmw5ijtujm8c7nqr7w3i9omznw89wu7g
+X-HE-Tag: 1754492601-676271
+X-HE-Meta: U2FsdGVkX1+BgfZbWqWwv1xM9oYKZVEbTBHI6SbKl500iW7bAJ/gI40GcgeO0ZwUJn+5Kd96VhxstQK/x+L0nW+qNaRVxqUP1KbuaXSoB5AQaBt8GfjRkLOCdvKtIJJtvoGcQF8PuxtBRuDPO7vMKjuJNydUPg38UsmwVoKS2XpmoaNcmEJ/8MvNd1BxB+vk/RyWgvLdwNfIUXVCqSLe/cweVOmXEuLSWff+nC+KWIWqMgkIvfUxV6kgvL3HTKjIBucE7e9OnV7eLuY+biK2Iyx+SCJj45D1hXu/dNsMMIT9s/DRRoLkCcZWkSHToawJdw/4Tn0+EShagzsxY/BR+clGfRUA5wbgrbbgID+3RQXRNafqkoQmOa2x97di8Pva0APYtP6Y6CsetkYFTbBs7zl9OkB5iftX6vMULWPSQhTbVbR04/phD8Q3XZ8B4YbKyXulsX3jbN9GYaN/BmR63+7MfxFSJlBBBreQb/tB4WsRvBUsGnYRdjJdesOB/lCjs2mQhxu5nVR1MZzYyjAYJbrpgJ48JZB8RtvJ2oXw192+wWnTW5lAHYoRRD6uB8TkNadxfF8KhXIeCtFmGa8k46/OX01ROfamlOoAE7qF8IS7gZZO7YQf8kVxrhSUtS4drl1fYxN6QFuBJQ33nMyYr+89TR/4HXROMCaS7ZUUggRp9DEzDVW7fgwAQWIyN5AYrGluVGRuxjtapZYiYSt5y65LGaKmf8j4x2M0pb7KCu8EshMAbiwPCi6wMqmn0K+MpRLstcMLtr19nr5XRw7YbNjcEBiWclV8fIscucOmbonfTCZ1YOR4xV9mS6W1vBr/5RO1bAEwrVzrH3rG83z7JZK/S+SPyruHN0rlXGfjWx34WRSSxwYORr9dLeaa1BuI7pOMFVbmuL3yH/j8VekWuP8gFXjTq3HQOlZwi49PqAXXFSBnCXAOQvRsyh5PGCtGqT2U+Q4Y2l2oQ18P1PS
+ VCa2B9ee
+ JAu0MO5GRTBDr/1JEWJ7I5siTiXHDzh5riJ2jyMbCMjV4EUOtF3E+bby2C2G9CfgP5CEBLJCpUd3mL5Kg7O7latJWFsdHXOECMiSnwf5GNkfmcTtwzyL3pHZSdbd1Tg9OoYi6T6tlt6hE2K5leRxRNe0UgJ3QREa8NSRYhDyjc3W03AXzdeI8Qo/QFILXnlem08B9zRJ6ImNGgMBkiKohEXVd4/LvEPcrChbjs2ch8wKHQZMbab683toe4sv6+geBgEFSbT/FBq3HGOTqbOHn9vQBORIToC2gq6HOp6KuB9yCW5eArGVwdExAmnaunBAY6HDcHSK0DoYIP8IRzemm+SQZgSjhfbQm8OKpf4JQCkaZper8UUfCDUV1LwGX4YJU3Wrx
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,39 +114,9 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The comment previously described the offset of mmap_lock as 0x120 (hex),
-which is misleading. The correct offset is 56 bytes (decimal) from the
-last cache line boundary. Using '0x120' could confuse readers trying to
-understand why the count and owner fields reside in separate cachelines.
+Ping -- please let me know if there's anything else I must address.
+I've ensured v6 still applies on mm-new.
 
-This change also removes an unnecessary space for improved formatting.
-
-Signed-off-by: Adrian Huang (Lenovo) <adrianhuang0701@gmail.com>
----
-Changes in v2: Per Lorenzo's suggestion, use "56 bytes" instead of 120.
-
- include/linux/mm_types.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 1ec273b06691..c9c3d0307f8c 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -1026,10 +1026,10 @@ struct mm_struct {
- 					     * counters
- 					     */
- 		/*
--		 * With some kernel config, the current mmap_lock's offset
--		 * inside 'mm_struct' is at 0x120, which is very optimal, as
-+		 * Typically the current mmap_lock's offset is 56 bytes from
-+		 * the last cacheline boundary, which is very optimal, as
- 		 * its two hot fields 'count' and 'owner' sit in 2 different
--		 * cachelines,  and when mmap_lock is highly contended, both
-+		 * cachelines, and when mmap_lock is highly contended, both
- 		 * of the 2 fields will be accessed frequently, current layout
- 		 * will help to reduce cache bouncing.
- 		 *
--- 
-2.34.1
-
+Thanks,
+Ujwal
 
