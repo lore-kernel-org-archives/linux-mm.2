@@ -2,149 +2,199 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D6029C87FCB
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 13:00:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CEC39C87FDA
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 13:04:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C20B6B00A0; Wed,  6 Aug 2025 09:00:58 -0400 (EDT)
+	id 559756B00A5; Wed,  6 Aug 2025 09:04:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 772D48E0002; Wed,  6 Aug 2025 09:00:58 -0400 (EDT)
+	id 4E3246B00A7; Wed,  6 Aug 2025 09:04:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 661846B00A2; Wed,  6 Aug 2025 09:00:58 -0400 (EDT)
+	id 383F26B00A8; Wed,  6 Aug 2025 09:04:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A5DB6B00A0
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 09:00:58 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 12A70818A7
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 13:00:58 +0000 (UTC)
-X-FDA: 83746342596.07.A1567A5
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 5BEC3C0013
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 13:00:55 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=IzumBXAB;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf22.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754485255; a=rsa-sha256;
-	cv=none;
-	b=v+jfTNf3WZ1IDoAlbaPs10LO9YjyT9fUGrifgz28Bxl/cc8SW1NQQMkVVE9u5DNorlOt4B
-	7FE91Bwyce6X+ATZpVJcYMD+wL8oM4Rcav79jxm4F+Pw+Qly7L8QoQyzvRGbmby9Ta4i1d
-	Vvfs+tgiigeKFBXSPUm7U3gOsxnWEgQ=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=IzumBXAB;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf22.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754485255;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 22D626B00A5
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 09:04:36 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E6F45818C6
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 13:04:35 +0000 (UTC)
+X-FDA: 83746351710.17.78D9B9A
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2044.outbound.protection.outlook.com [40.107.220.44])
+	by imf30.hostedemail.com (Postfix) with ESMTP id AE4C48001C
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 13:04:32 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b="e0/q12Yl";
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf30.hostedemail.com: domain of Christian.Koenig@amd.com designates 40.107.220.44 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754485473;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ljFgOMiBRVtDLpOpWjFAyrQWXwloHyc0+prHUNBM090=;
-	b=1RjRBLEeqyinlq/4lJNFi8M+9PyuuzyRa3j/UXDiHqofdmtxjMv3JnlHFsdE7ibczKb8sd
-	6ErlEVwXrk5QuvBxFNwhwoVVelFQUtDnFxpsT9Sq8aruXy9uO1LwgsK1JCa7AcBEQoRGlw
-	Sd01nxZ7rbqHQY7lbNswlESTCeMGsws=
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5765S2kI031191;
-	Wed, 6 Aug 2025 13:00:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ljFgOM
-	iBRVtDLpOpWjFAyrQWXwloHyc0+prHUNBM090=; b=IzumBXABAXx9aECP6SUKzU
-	jE7T0QPVlw4j4Uku8BBojVzEk1h59sNumrV48BJbJ+s5g5nkR5VT+SmJNYRl/Zyf
-	BVnCVZ+/iKkB2HBtToLHCsHsuHUixpRcsBp3QK8AYeg41EmrI6DwI78dzHmYM95H
-	J4t5zgVa+XGio93grbTV6YccfM5lcPWQj/nxO6v8M27p3/wlrs2CdU77qbPV7i8a
-	1XI3yuon/QNdu0IOdL7XbjXtNUBLfqKvoHbRPCYdXrpIRDZ7nmQHtBSBD4K0AHxm
-	0c7M3AUF7hM6+RXw15gN5ZTHJM4nIKQEhllWkSQhWAs4cYpjFhs5h+XPK26NBTcA
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bq61v6ug-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 06 Aug 2025 13:00:48 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 576D0lrP028162;
-	Wed, 6 Aug 2025 13:00:47 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bq61v6u0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 06 Aug 2025 13:00:47 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 576CLlCd022661;
-	Wed, 6 Aug 2025 13:00:45 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48bpwqbnnw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 06 Aug 2025 13:00:45 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 576D0iYI26215072
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 6 Aug 2025 13:00:45 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C8E2758057;
-	Wed,  6 Aug 2025 13:00:44 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3CEF558059;
-	Wed,  6 Aug 2025 13:00:39 +0000 (GMT)
-Received: from [9.109.245.113] (unknown [9.109.245.113])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  6 Aug 2025 13:00:38 +0000 (GMT)
-Message-ID: <e9079694-1e30-46b6-97e7-b79be01c65a6@linux.ibm.com>
-Date: Wed, 6 Aug 2025 18:30:37 +0530
-MIME-Version: 1.0
+	bh=mp/btkBldjGt+zbJX0yHPr9fHGslS87W3nVoeM9xaPY=;
+	b=uBKHERplSijYdPdGMBRgfc2ZIYHsXMy7tbFzRZh4b69VQLUUinxLnc3jotyHVfA/A5aBA6
+	yklfL0PRUm7mvS4lrxZANTv61+i6box94GYVVjAemmBZnnP5G//S0Nf3XEPKg4nwAc7TB9
+	YgwliEwZWMdkoMoeGoZIUEfGpxg7mGQ=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754485473; a=rsa-sha256;
+	cv=pass;
+	b=FYQV1ARCjdqe1wHIclM9SYJqas2OL1EllbRIFIjsQC5WVFXQ0LZJZLgpW9l3NISoYeTO//
+	2UptnVh9u9HF5IiBffwAqQSIKdwt0JUEnAQUOinl6LEP/tLrRvvAVFnE/7HE/x1pYkvXyq
+	XQyY6jSCK2GNRcLV1O04CXNKrYgdg8s=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b="e0/q12Yl";
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf30.hostedemail.com: domain of Christian.Koenig@amd.com designates 40.107.220.44 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WZpt44FMXAcM2ZYouiyATQQ95wB0pU5LLV/OaGbg9kE7Fd/0h70zbB8HONKL0QWlyf9r7skMV7bitYGsGcuSOsYcRQNmYHxdSSPnHdcfvY+42womk2Xnd5BtviVitZyip5NEDU8rVAf93+n++D2L8s5HBJOk27BoQx8VzT+VCoWfYnenqy635WhcUDcIk4PmiR9QPTfsX0/ecK9l00Wa6B6qN+e/5GKfx3R/7CI5dDJNn2UWAbd10SA4gn80xCiHjSiHwJof2uuKO/xH12i6BHD84+J4XDJQ+8aD4YkoM/KoowIKVCOXzZC3VvLxxx8GTsGxt8ocqtPy85qrvZZtyQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mp/btkBldjGt+zbJX0yHPr9fHGslS87W3nVoeM9xaPY=;
+ b=y3Of1T13nfhk9JnTgQbotePKNm1YCS935BT7eU8RrJNnNlkXJzLOqQOdHFHgHQIudq8Ijg3Mi3nr5xr0HYqwuARJ7ZazIBzYuw9sMU83Jr6J10jIm4QGFswjKM5fCk9j2naKZ0LaOp1IS+1zHlteg2l8eRqUsghhPmaj/woQJCmKRl6Ty/SLLsdZRRTwmEDkFOuCxGpr6e1L9lZevl5UWk2QOCFFeai0mqR/EEyKnnycx/UZTiZX08dh87PO6YmAbewPjUwyjIDsyF0rgw1fxb3AhW5w1Sf2jn9zugH753owAl8sTuEEa5Z73BEz0FuctPmEPf+e2Q/Ho3NtmFE82w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mp/btkBldjGt+zbJX0yHPr9fHGslS87W3nVoeM9xaPY=;
+ b=e0/q12YlZL7s11e3fXdcMub1FrKPJ/y3vQ1Dqebrt6PS8qoxRWK5DKiPRDGUwZeP/Nuuz3kGHiypgYfQQ2MWH0daNcgK18fmHsmIRmj4sid+RY2kKy8gyomG5OBTIAt0q77MONNvpNUqds537eYyKRsLCjSNuHV7xRaOt9wTK60=
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
+ by SA1PR12MB6920.namprd12.prod.outlook.com (2603:10b6:806:258::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.15; Wed, 6 Aug
+ 2025 13:04:29 +0000
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::46fb:96f2:7667:7ca5%5]) with mapi id 15.20.8989.018; Wed, 6 Aug 2025
+ 13:04:28 +0000
+Message-ID: <abd47844-c813-465c-af7a-0f44898186a5@amd.com>
+Date: Wed, 6 Aug 2025 15:04:22 +0200
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/7] selftest/mm: Fix ksm_funtional_test failures
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>, akpm@linux-foundation.org,
-        Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com, shuah@kernel.org,
-        pfalcato@suse.de, david@redhat.com, ziy@nvidia.com,
-        baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com,
-        dev.jain@arm.com, baohua@kernel.org, linux-mm@kvack.org,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ritesh.list@gmail.com
-References: <20250729053403.1071807-1-aboorvad@linux.ibm.com>
- <20250729053403.1071807-4-aboorvad@linux.ibm.com>
- <20250804091141.ifwryfmgjepwrog4@master>
- <20fb853c-7d79-4d26-9c8a-f6ce9367d424@linux.ibm.com>
- <20250805170353.6vlbyg6qn5hv4yzz@master>
+Subject: Re: [PATCH 13/18] ttm/pool: enable memcg tracking and shrinker. (v2)
+To: Dave Airlie <airlied@gmail.com>
+Cc: David Airlie <airlied@redhat.com>, dri-devel@lists.freedesktop.org,
+ linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
+ Dave Chinner <david@fromorbit.com>, Kairui Song <kasong@tencent.com>
+References: <20250714052243.1149732-1-airlied@gmail.com>
+ <20250714052243.1149732-14-airlied@gmail.com>
+ <77949b3a-201d-4e7d-a51f-e77274e4a4be@amd.com>
+ <CAMwc25qP-42wMX4UYhZWiYfvf_1dBVNL9TU9i_Wq7uZPqjQL5Q@mail.gmail.com>
+ <CAMwc25pyqhcq-8ubGZT5UX5AYroewBYP6oFN-JmjzEkHgFLTrg@mail.gmail.com>
+ <903cbf42-2fde-4e38-89e4-2d7287b845bf@amd.com>
+ <CAPM=9twR1S+O9G6gQMJkssTh22KRQ-rb4WsJPnXiXz+y_9oi6w@mail.gmail.com>
 Content-Language: en-US
-From: Donet Tom <donettom@linux.ibm.com>
-In-Reply-To: <20250805170353.6vlbyg6qn5hv4yzz@master>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA2MDA4MiBTYWx0ZWRfX6uhDhzTX0D6p
- zzENgYWe4Cw4S+bLugiRnD2j1vGgk53ulaVl3JNfY7BLso8v/cf4QMd444xqr8of0S6mIUk+iyT
- 0C01igUqmT7iZG8Nh8pigcVbQUSHH2dskD4EUYPERHRluunAJtlQnlXZk0xnBlIn4kqadgCUrv7
- sMZnHe+HSjbCtNWOlvY+86nSRbI/GNZreo98fBEpipGlp9b29QDRVdqM+vUZ1LyBrwSFnM877sy
- Z/v41s6iIDKYYacfxwbyBGgS47w8Ho2KqlZ/UENBJ120UH0Ex/GTc77ztVNAqqum6/BRqKWw2h3
- Mp6Vd0qm6e4WSE4JwrrLUg5144BuDIFimppmUjplFd7Qyo4cYw/xAWdWRgH8OnJCqQICXrNAJlF
- 27UJ98BsGofaigFTpj5s5fswxWplQijY8uCPVOk+82q97WkMa0gDxHQqjHm/33OWpIPAr+V0
-X-Proofpoint-GUID: 2SoYs2zepIRjTMqSQfHJPiZSDc4oaCAF
-X-Authority-Analysis: v=2.4 cv=BIuzrEQG c=1 sm=1 tr=0 ts=68935200 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=zGy9US7bIuLH9GykFbwA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: -g48qCyw9tYgyzPSZx840atRw_MtDf5i
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-06_03,2025-08-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 impostorscore=0 priorityscore=1501 lowpriorityscore=0
- suspectscore=0 spamscore=0 mlxlogscore=999 adultscore=0 clxscore=1015
- malwarescore=0 phishscore=0 bulkscore=0 classifier=spam authscore=0
- authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508060082
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 5BEC3C0013
-X-Stat-Signature: cy6pyon45hi1ykkmqpukt3u7enw4e1tk
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <CAPM=9twR1S+O9G6gQMJkssTh22KRQ-rb4WsJPnXiXz+y_9oi6w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0026.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:c9::11) To PH7PR12MB5685.namprd12.prod.outlook.com
+ (2603:10b6:510:13c::22)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|SA1PR12MB6920:EE_
+X-MS-Office365-Filtering-Correlation-Id: e61d7183-9090-4464-e732-08ddd4e9c6e1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?bDMwQTd4SlU4M3RCbkh2UVh6Q3dDR2x0cEhWQWJIZEovRWFpYnAvSDR4UXlq?=
+ =?utf-8?B?OXhPaldUYytERXU1YlhPVHBCdUgzYjZlbjJudHFLWHBERGk1cEx2N1FyMkdr?=
+ =?utf-8?B?VnJUSG84eVpUOVpaQXQxODB3eGlJd09zNWVkdnh2a1JDOTl1aUczL0RaYnJr?=
+ =?utf-8?B?bVg5R1B4Wm5aR1pQUHdWcU9MTUcxWnVzU1hsR2JULy9aT3Jzd29OVStVVndX?=
+ =?utf-8?B?RlFtNFFlSWx3NE5Sc1I4THR3QjVOcjZ1L2ltazJBd0tqVEY4MFBhYVZOQkg5?=
+ =?utf-8?B?ZzhuNkRKTkF0TWp6TTFMTkhueHV0ZlJ0Q05JSE9MdHFSUW5tMVI2S1VoU0tR?=
+ =?utf-8?B?ZnI5QmN6QnhHT3BTOXB0TlUzcXJUdVQ0Q2J0eU42d3FubC91aXNPQ2YxRjRB?=
+ =?utf-8?B?OGdBamptSzlNN013RSs4QWljdThIQXpRVWtWT1NxMzBVZDZRWm5QWENyR0c4?=
+ =?utf-8?B?ekg2Zlh6dDczeTNCOVFDdHdFSGFlY2R2ZERXcG9vVENQMlVPL1ZKclJaeWsx?=
+ =?utf-8?B?MTBOMzVFd0JDUE9vZXdPRWdYWXphWS9LWitPWXoreDhwVUMvUkJ2M3BveE5G?=
+ =?utf-8?B?ejRrNU1ET3NEdDBFVmc1S08yTWNzSGlFSkpaL3RmZXY5NDI2Q2VFQldONVk2?=
+ =?utf-8?B?MXhhM3lWTHlzNXphWVVRZjZwYm5ub05qQUhQbGZUak82OEdhUGRPSDlLaFZQ?=
+ =?utf-8?B?WUxtUVFUc1R3QW1SbEltRVFxN3BRL3AvZncvZk1GTWJhK3N4MEZtV0ZBd1NJ?=
+ =?utf-8?B?aytsVTZrUExJOUthdUlWZXpxbG9YTzc0bFM4NzZGTDgxVERGeHVrb1BRQVRk?=
+ =?utf-8?B?dUxtSWJ1VzU4bFh0RnljdmdTVEFlK052RGUyNTVjS21aYWR3bm50U3FCeWJO?=
+ =?utf-8?B?Mm84RUM5NVFkcTJsTnJ2N2lYSWlHdE5DbjA0TmhwUHlUN0UrWU5wR1Znd093?=
+ =?utf-8?B?REhQNDNMNjBsd2pyckNXbHlBb0xUMngwM09CNkZYT3RjQW43NTBsYno0SVV4?=
+ =?utf-8?B?NWFtaHM3cHFJMVhuWThMRmJEa2hmejJkc040QTJiL3hVUDFtTzJMclRrcFRq?=
+ =?utf-8?B?MjVsdUJuY2lDTDk1K3VjNVNUajk5NXltMlhEMmhtdW95ano5cUZybHRIR280?=
+ =?utf-8?B?M2taRUxLV1E0MnAweEI2VkVGT0MzR005aEI0RkFLS3dSWjY1N2IrWnJBWWVX?=
+ =?utf-8?B?MkpOVXB1KzVRNG85K0VSbUU4VndyYWFhck9ydS9HYlFiT3JvRjFyRy9iQWFT?=
+ =?utf-8?B?ek93R2tSdlRCYWlWdEJLZG16cWVlcG9ZM0FQd2ovM09OVHVzRzROZXo4SDV3?=
+ =?utf-8?B?bkVWV0VDeGtwN2FGZ0p5VTU4SnhSZFFyeFdrVG94Tm9nRmhENndya0Viell6?=
+ =?utf-8?B?Ums0L0ozR3F2TVBsMXd6UWNzWk9xcUVZR2JJaFRLSG1zd1ZpaGE2eTF4WWNN?=
+ =?utf-8?B?SktNMnNYV1ZXb1hlSnZ0S2NJY3NoeDlyMEpKelFTemdFTjd2N05SbGZERUdV?=
+ =?utf-8?B?UUNuZUNldlJCemZrbzg4cGlaK1RHSS90c083aTNFMXRMalRsbjUwQXVmWnpK?=
+ =?utf-8?B?K2x2UldnZ2dBODZPRDNGVTVia3FmdUNyczB2djJ1M3ZXeERJTDVpb0NaT0x1?=
+ =?utf-8?B?ZTZYMHFXbWJKRGIyejc3czhXRlZtR0l0RlJRZHJTRWRjeGFqeHNDc05OQ2cx?=
+ =?utf-8?B?Sll3ZlIxdTVMaDRxODF3WmtxNEhjeXdjVjNwZkh2R2J4Y0RUSzZzWUU2TEN6?=
+ =?utf-8?B?UGRoQk85RjNjeGdLb2JaTENmSk5ock9BTEhIZkVZblpIbHM3WXVPQUduaDVw?=
+ =?utf-8?B?WWtkTDhJdU5lN24yWHBveWptMk1tOS9hKy9UQUxrM3V4V29uQ2thQ3ZCcFNa?=
+ =?utf-8?B?bVhuejlwdnN2amJnU2tFY0ZUb2N2ek82MHZNTkI4WWlCZXJLQUhHZVEra0RN?=
+ =?utf-8?Q?NlepJdEbXuM=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Wmt2S1dtdkJoU1VsMzRVd3dXODlKejlCMDk0Y0I5VmdDc1YxUmlFVUdXYStm?=
+ =?utf-8?B?SjlTWGtYcXl3aW9Ta01UWUNhQ1owcWU2V0dNZDhaWTBUendaWjZpdG5IdlRN?=
+ =?utf-8?B?QWc2YlZVeTg0cjJ2TWc4dVlNd0R1MFQxQWFvd0RGYkxZMkNZWk41enlwMFNJ?=
+ =?utf-8?B?V2k0T0gzaitueEEvZW9CWnY2b2tEYkxzOG9McGxwWVJvMVBDSnlXNm80cjA1?=
+ =?utf-8?B?c1F4SDlHZ1RBRDZENGJKOVllZC9CbUJYQUNwRkozMHJ6QVFic2kzbmR6SlBX?=
+ =?utf-8?B?YlRWeVYzZ1d3UlBxNkpYN05rMVdOMVp6bHUvS0xxMjcwUStGWjVVWllUdHB0?=
+ =?utf-8?B?WlhGWG9qZ2VpMWZybUd3OVBNdXNzem54ZHRjbWRpWTNDeUh5Q00vSnhtT016?=
+ =?utf-8?B?VTRGK09HTU5GMTJpS21oTVRZWXlNcGpHdk1NWDBRM2VLV0J1S0F3MU1xU1NS?=
+ =?utf-8?B?UG5vVmlkS2lZL2FTdW5NajN1Z0tZUXplVGtBd2F0VlNyQlpRelF0cWtOT1lr?=
+ =?utf-8?B?Y3lvM2ZZZWdtcHRPbjk5SlJ2SUlNdFF4ZGsrenN6RmRPUXpHZ29VaFd3QUJt?=
+ =?utf-8?B?ZlhVMjZsMlpvektvRnNoT3BkV0Q1dzBNUW0wc3BnL01JVGVkWGFVU3c0YjBL?=
+ =?utf-8?B?VUd3L2htdXVveU1CbDVlcWRYM2lDZEEyWkswYkRVUStZZ3JGS21BbG16NE1h?=
+ =?utf-8?B?OW15R3lDeXVpT21IQlNwS3huN21YYklKd0RhNHZScHgxRUZwQWRtWERDV1ZC?=
+ =?utf-8?B?VS9LVElmVDNjR1NvckNXaHF1RGFRVlJKU2R0bzluU3hJWjJYRk0zSWhRWjE2?=
+ =?utf-8?B?ektIWW1FZVRDZXBrV0hvZmRZeUFjb09GYzBEL25TYThhYktvZHRXYkRvWnVQ?=
+ =?utf-8?B?Z1JWcGIrQyt2dFNhZ3ZDUXBZUktpK0tQQmljK0xaMFp3UGtTTkplQUczMU93?=
+ =?utf-8?B?Ti9XVjRBQUQ0YUtGemREanUySlEyZXgzYm9pS1M1NmxFYytZRkd1UDFKVTY3?=
+ =?utf-8?B?K2grT1phUVVwL2tIcFRPMFhYVExqTEVzWUNnRUwvYWNIamZXNC9vWTlabkN3?=
+ =?utf-8?B?L1Bxend4eXNnSHpDck5BZEd6WEM1TTAxNGhGdkpLbWVPSkNsMHNncFpqY3gw?=
+ =?utf-8?B?aHVnR2dkUm0vMTFPVjBGYW1pYzh2UEF3cE9JMmhtY3I1c250Y1NUS25IdnZh?=
+ =?utf-8?B?VHJ3WGJPbWx6c2hxdHV6QjVlY3JGZmx5OWVvaU00ZVZCZ2xNcHczWmVpZS9O?=
+ =?utf-8?B?WjBkdzQ0Si9ENFVYLy96Z3l2VUlHMmFUb0RGMjdoVjRHK3djcWxBanNqV0Fl?=
+ =?utf-8?B?NDY3b2hxblgzYlZPVDQzSXFUd0lHUjNmOU1QenpzVktERXBBMFl3N2dHYlZH?=
+ =?utf-8?B?Y1lwNk1mcTZqRGNKOVJSZWEzZWFVdUlFampxc29pT2xJS2JnczJSeWpUamsz?=
+ =?utf-8?B?K2tjYlBVMXovWldDU0dKa3l0c2FuSmZCQWg2NjFxMVJacGV2QWo5cndHZExS?=
+ =?utf-8?B?QW9BYXpwSnRpa2F3cWlnUmFHb0daV0VNd3hhQjBMOGxUZ3NSTGRhZ25OekJz?=
+ =?utf-8?B?T1d0Q0ZULzZBMWJVQUhzWll4eldudTE2Tm1GS2xpRkNuODlKL3Z6ZTR1NE5I?=
+ =?utf-8?B?aWE4NVVPejF2QmNTU3ljWThmWVRtRFBjYW5PcHRVMzcxMlVMREp5TWxuVlFK?=
+ =?utf-8?B?NmhRSXN3c093ZkdEaS9NeFB6OE4wOFBWV3NadHdTTUUraVVaUUhSOThmQVRH?=
+ =?utf-8?B?Q0hLa3E3NTFuTHlFSjRHWkhSWm5xWmlXcGJyVS93WUpaYnRGOGF5V25uSmhL?=
+ =?utf-8?B?dU5Zc3BpT0tmWjJyWkZrbTlpM0FObWRZdlRqZXFsUDlwTVh1MEt1bWp6MTV4?=
+ =?utf-8?B?TnY1Zm5PRE9meGphN1A4dFVmOTVieE9BamNwRzd1K09GcXFVdWJkU2p3Um9n?=
+ =?utf-8?B?TXhqTTNNRGRJVWQzbTVNN1dpMFh3TzZyQjhZc2pyeGh2WDZ4WHkyWExKQjJR?=
+ =?utf-8?B?VzZkS1VqcnZxamRicWpXU0haQzZBem9CTEZiMjYvRThOZ3FZTXZLczBDNVRz?=
+ =?utf-8?B?UERtUUpoL0grb3NzWDBlUE5iYzhWeEkwOUQzZHpkMXlGNWVDaWh5UFRDTUZ5?=
+ =?utf-8?Q?r7zrAephK77AYKS5GIBHIwGHd?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e61d7183-9090-4464-e732-08ddd4e9c6e1
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2025 13:04:28.7662
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: m8QIGtjsesdUpBlgliHLgWW09B+2DAQGSYgi88MTWUDuybEyUKwJiWFUQ9BUByrc
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6920
+X-Rspamd-Queue-Id: AE4C48001C
+X-Stat-Signature: iza6epj4snrhog3b8tjwazq3zoh8bged
 X-Rspam-User: 
-X-HE-Tag: 1754485255-900484
-X-HE-Meta: U2FsdGVkX1+FN8MxqigI/WgV4+Ww5JaCJY7jr/tIrFVw9+zRwVEanSoYYRw4gHjukTlFevGReP05mIKHwlhO3vXJWIjRJP2y/MHAnzo1dR+C3TbuKDjUgAD+z/bQx0+GABjULUfGK9+OygMNg7vzGXlTcEEx8bOAMVF5/BmqPBE4axWOjsI3Jg/WvMlB2UzAc2Ke8+Z4p6L7ToxwXQkvdozctUmO9PJmyKjSOf/mLDM1TpbBKRm6hMPnL/WmenWiA4NXH6FI7HSq6DWJXCbAyRk/p02YppXOzTXTez+e7MMWkgyvqxPZYUyMpGKE6gE6CYEFywQGHwTnb/el7C5gNbsPChNme+z59EYrLq5Sh9n2GP9MO+OujgQ9MajhI2xsVCNJ5ZXdgJpLkp8HAvhlqkLsjb9XByKNGdU4Xed/R8llwnaDst/V3AKOZ7BQPsC0TS0Lv8mu64OEGo6zdW81h0UEipPXczUMFwO3KrNiVGdjH0rtxvnbmFdxi0quUgVsekLmKMe6sui8bgaFgNx+OSfCchnI4ZH95FQ7IPzdOgOtNXI/gAaIgKsen4Z+F0ZJKpiQ4YpxnfcnDjPqwyTkORx88bWds4rxZ1mUFJjiMWcvFupVcwzUwIVa13qwr0qbCl9Sezj3mQoEjrDvBJunwEHXupSvZa4pHjal3A9mSmirl7ZnJlHWIYWR01V+typRouKpyPhXWqvv/Tk2Tq36JIp2LTe87S0Aqo++gaHo4Qy0TdLmSoRovhsO3VBftLkTdhsoYyVe751ZTRg0Cj6VjTqdS2XQ282cs9aseVoZGkq8A68yV9f8hoVfpJx2nL36RD2MomMG7FTLcI5oDRegACEfN43QYjZX+Hy0FZRgCUCne8feeV+9f4zLzO9hSCpLM5RhcWDYULFtNWBrSVnzP7bGd2JxAVCBXw3EuOpInbywxttusdCkVeeM5rvzb0KbkEELRWYiEYf4TrWkW2l
- EvuD1+LC
- uRO5RCbEK1w54p52gl3jn21a1AZQQR8xqxvuk+4Tux3IiVEm3xJjmrGNSQ5PczouOVCKYKp06UKHFW34TFYtkQn2Htrqe4YvR4MZ76ozYmxAnAKGJ0PKMc9Tkdb6Jn8tVC7DxKPwgheoczqZytc5xhTFagX/i5k7NetJotc2euV9MLFjyQiEB2JGyvIbUfzW+q1D51Noa3CTLN2O6Egimh4mJTMjUjrtYG75pu2EWmMUXfI9CMmQoBVYaHEkVU6IyVzO7lRQJxpxyMhxcRiWNCyscF1GizYQuSBXhC1YMWMuGS6tvr7gPKBA96uAHj+e3CriR2a8hHH6YL6JMR8jIiCwyMKLQwD7wi5ji9Oa9SVGn7ERBf4wetRNZVhsbjuXVqg4ClPXmBzaZgR4=
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1754485472-675203
+X-HE-Meta: U2FsdGVkX1/mMv9ezEdLv/wH3duG1u48S/EhsPCvlzKYD9axe3mrm5wYsO+F450J6fD8Ut7+kzzq6+BMsI1U9uqH9KKy248bt+Y3d3l4rVmH6AhU1IvlQSSPbO2T1goq0pOPEojGkpDBUkeQYoP1SOgGCjaIvl5wi5nfWgd4eifs02g9vTmZS7kO4mUPoCGmI0vskrpQHqOZE34HOFgumGzkbnSXa8jhnhrkKVillO4nC8HlTAZLYOF4mvNGXn4Xvm+ESs4+do6pjb/WOSkTGhSGWXAvBI4Foc8iHnK9d+3zkeczdHaa5+t/awQK4KEbY665V1tyq9a5+/FhlFYgkyGqHt6NGGTXcgTGa+5diW374xYTFvvumiHlQvg6ix0tR71ZjEx6rSO37TIcY+7U+lIMeWiGlDHh7JG0YZpEscXUISxEgZgq/frEayki1u3FeFuFydZI+aeyyOgY3/x3ZkdiXxeEWtUj139ytuMNDxf52vIMvwG4VpU6aQPLkFbStl8eudMKL2oJjdwfXJG6rqEpnQTdz5tlIJ4NEa+yX7XkQLNxTBdUxL+OFMJBq5IoMSdfRp9TWkPeLEDVFu4r+wutF6Zu87TmKRQuzJ+8Mu3BeWy7noixA/m+tFYF/VBeDVRZScard7Jc5Qo75oxgNAlWV7ESrGuzrkWic+ZPdjtHO/nbJYJhKxU+5x3d36OZBHoaDBhshEi4Noyjz+BmCB4u3cVyelcHd4p/DWyPQ9IElwvkAg0ICB8RNa9svO1uPCe6LmnOJ5UL8aWTTGnA6wm0ufLuncSEM4JoXLkpT5dx8espISxYn2c0KayPdNtbxrCYEsGUQCRVgsfQR/TbDPYzvELCSXjMxFyizS2ETShc8SDSNVxt/Ij+Tvjg3Z0HQ2tYPgcM0TunhXsOmx1rECy2Z3Te70rOhijXKVfDfh7dcVyY+egky9hA2DwVhNIjK1LXT8pMdRBIGpA2RGp
+ xxsHFIUF
+ vquDGkKnDw50c9MU1WsksL2ERtgsAJ3uDV5DWfeGv6m3ReSlRLmV7dqyjeW1rTC/46TUxRMVtkEg/ESRetBv/sO0U7x4hfVzp18ZHa1u0te2wzkyMgDIkpLhDev6gWrJ15BM7qKVznbXJdIABTedPaNAGY2cIDeEzGDRRChEAPQGuqyp6wQDEReW86HeGcfXUVM2S4vl5H5iWrfUZMAuVTaGfVcHzflTUxB61h2XxALfI0SM4MEAXZorFzDUc5hIn9wGve0o/uljm6T4GOKADhvpLPWAQg/phcc8ko3oXS74qvRzTQz36rBwa3wKFoYdvKV8PWnuSKWdWZNji2vYtcHFcaloyjfRU3qJTSLfJ/xZ1e6smpQjFwRFuWrCNYHdZxmKLO04XOtCBH+gGpN1ADz37Lxz9Us21HHicjmQ1bdDBWlEhN9ajLYBWQ3HsBwRu3+h40xIP4m5ekUD3lT2qlTZOrNgQShC4WbA+gQi8iKj7VkWqnRrQ/6LqkKUP9Y756JKwjB/7f8B2tnY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -153,132 +203,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On 8/5/25 10:33 PM, Wei Yang wrote:
-> On Tue, Aug 05, 2025 at 11:39:15AM +0530, Donet Tom wrote:
->> On 8/4/25 2:41 PM, Wei Yang wrote:
->>> On Tue, Jul 29, 2025 at 11:03:59AM +0530, Aboorva Devarajan wrote:
->>>> From: Donet Tom <donettom@linux.ibm.com>
+On 06.08.25 04:43, Dave Airlie wrote:
+>>>>>
+>>>>> What we need is to reserve the memory on BO allocation and commit it when the TT backend is populated.
 >>>>
-> [...]
->>>> diff --git a/tools/testing/selftests/mm/ksm_functional_tests.c b/tools/testing/selftests/mm/ksm_functional_tests.c
->>>> index d8bd1911dfc0..996dc6645570 100644
->>>> --- a/tools/testing/selftests/mm/ksm_functional_tests.c
->>>> +++ b/tools/testing/selftests/mm/ksm_functional_tests.c
->>>> @@ -46,6 +46,8 @@ static int ksm_use_zero_pages_fd;
->>>> static int pagemap_fd;
->>>> static size_t pagesize;
->>>>
->>>> +static void init_global_file_handles(void);
->>>> +
->>>> static bool range_maps_duplicates(char *addr, unsigned long size)
->>>> {
->>>> 	unsigned long offs_a, offs_b, pfn_a, pfn_b;
->>>> @@ -274,6 +276,7 @@ static void test_unmerge(void)
->>>> 	ksft_test_result(!range_maps_duplicates(map, size),
->>>> 			 "Pages were unmerged\n");
->>>> unmap:
->>>> +	ksm_unmerge();
->>> In __mmap_and_merge_range(), we call ksm_unmerge(). Why this one not help?
->>>
->>> Not very familiar with ksm stuff. Would you mind giving more on how this fix
->>> the failure you see?
+>>>> I'm not sure what reserve vs commit is here, mem cgroup is really just
+>>>> reserve until you can reserve no more, it's just a single
+>>>> charge/uncharge stage. If we try and charge and we are over the limit,
+>>>> bad things will happen, either fail allocation or reclaim for the
+>>>> cgroup.
 >>
->> The issue I was facing here was test_prctl_fork was failing.
+>> Yeah, exactly that is what I think is highly problematic.
 >>
->> # [RUN] test_prctl_fork
->> # Still pages merged
->> #
+>> When the allocation of a buffer for an application fails in the display server you basically open up the possibility for a deny of service.
 >>
->> This issue occurred because the previous test performed a merge, causing
->> the value of /proc/self/ksm_merging_pages to reflect the number of
->> deduplicated pages. After that, a fork() was called. Post-fork, the child
->> process
->> inherited the parent's ksm_merging_pages value.
+>> E.g. imaging that an application allocates a 4GiB BO while it's cgroup says it can only allocate 2GiB, that will work because the backing store is only allocated delayed. Now send that BO to the display server and the command submission in the display server will fail with an -ENOMEM because we exceed the cgroup of the application.
 >>
-> Yes, this one is fixed by calling init_global_file_handles() in child.
->
->> Then, the child process invoked __mmap_and_merge_range(), which resulted
->> in unmerging the pages and resetting the value. However, since the parent
->> process
->> had performed the merge, its ksm_merging_pages value also got reset to 0.
->> Meanwhile, the child process had not performed any merge itself, so the
->> inherited
-> I assume the behavior described here is after the change to call
-> init_global_file_handles() in child.
-
-Yes
-
-
->
-> Child process inherit the ksm_merging_pages from parent, which is reasonable
-> to me. But I am confused why ksm_unmerge() would just reset ksm_merging_pages
-> for parent and leave ksm_merging_pages in child process unchanged.
->
-> ksm_unmerge() writes to /sys/kernel/mm/ksm/run, which is a system wide sysfs
-> interface. I expect it applies to both parent and child.
-
-I am not very familiar with the KSM code, but from what I understand:
-
-The ksm_merging_pages counter is maintained per mm_struct. When
-we write to /sys/kernel/mm/ksm/run, unmerging is triggered, and the
-counters are updated for all mm_structs present in the ksm_mm_slot list.
-
-A mm_struct gets added to this list  when MADV_MERGEABLE is called.
-In the case of the child process, since MADV_MERGEABLE has not been
-invoked yet, its mm_struct is not part of the list. As a result,
-its ksm_merging_pages counter is not reset.
-
-
->> value remained unchanged. That’s why get_my_merging_page() in the child was
->> returning a non-zero value.
+>> As far as I can see we also need to limit how much an application can overcommit by creating BOs without backing store.
 >>
-> I guess you mean the get_my_merging_page() in __mmap_and_merge_range() return
-> a non-zero value. But there is ksm_unmerge() before it. Why this ksm_unmerge()
-> couldn't reset the value, but a ksm_unmerge() in parent could.
->
->> Initially, I fixed the issue by calling ksm_unmerge() before the fork(), and
->> that
->> resolved the problem. Later, I decided it would be cleaner to move the
->> ksm_unmerge() call to the test cleanup phase.
->>
-> Also all the tests before test_prctl_fork(), except test_prctl(), calls
->
->    ksft_test_result(!range_maps_duplicates());
->
-> If the previous tests succeed, it means there is no duplicate pages. This
-> means ksm_merging_pages should be 0 before test_prctl_fork() if other tests
-> pass. And the child process would inherit a 0 ksm_merging_pages. (A quick test
-> proves it.)
+>> Alternatively disallow creating BOs without backing store, but that is an uAPI change and will break at least some use cases.
+> 
+> This is interesting, because I think the same DOS could exist now if
+> the system is low on memory, I could allocate a giant unbacked BO and
+> pass it to the display server now, and when it goes to fill in the
+> pages it could fail to allocate pages and get ENOMEM?
 
+Yeah that's perfectly possible. IIRC I have already pointed out those problems when I first started to work on radeon years ago.
 
-If I understand correctly, all the tests are calling MADV_UNMERGEABLE,
-which internally calls break_ksm() in the kernel. This function replaces the
-KSM page with an exclusive anonymous page. However, the
-ksm_merging_pages counters are not updated at this point.
+See the patches for improving the OOM killer I came up ~10 years ago. They don't address exactly that problem, but go into the general direction.
 
-The function range_maps_duplicates(map, size) checks whether the pages
-have been unmerged. Since break_ksm() does perform the unmerge, this
-function returns false, and the test passes.
+The problem is cgroups makes those issues much worse because you suddenly have not only the general global limit of physically installed memory, but also artificial limits set by the system administrator.
 
-The ksm_merging_pages update happens later via the ksm_scan_thread().
-That’s why we observe that ksm_merging_pages values are not reset
-immediately after the test finishes.
+> Should we be considering buffer sharing should cause population?
 
-If we add a sleep(1) after the MADV_UNMERGEABLE call, we can see that
-the ksm_merging_pages values are reset after the sleep.
+Good question, haven't though about that approach.
 
-Once the test completes successfully, we can call ksm_unmerge(), which
-will immediately reset the ksm_merging_pages value. This way, in the fork
-test, the child process will also see the correct value.
->
-> So which part of the story I missed?
->
+But we don't have a way to figure that out, don't we? Except maybe when exporting the BO as DMA-buf. Mhm, let me take a look at the code.
 
-So, during the cleanup phase after a successful test, we can call
-ksm_unmerge() to reset the counter. Do you see any issue with
-this approach?
+Christian.
 
+> 
+> Dave.
 
->
 
