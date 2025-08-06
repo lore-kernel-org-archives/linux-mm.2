@@ -2,118 +2,173 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B8B38C87FD3
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 19:20:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A4C24C87FCB
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 19:22:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 432A48E0003; Wed,  6 Aug 2025 15:20:40 -0400 (EDT)
+	id 2B0AA6B00A2; Wed,  6 Aug 2025 15:22:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40A768E0002; Wed,  6 Aug 2025 15:20:40 -0400 (EDT)
+	id 260CF6B00A4; Wed,  6 Aug 2025 15:22:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 320318E0003; Wed,  6 Aug 2025 15:20:40 -0400 (EDT)
+	id 102416B00A2; Wed,  6 Aug 2025 15:22:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2249E8E0002
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 15:20:40 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C678958B9A
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 19:20:39 +0000 (UTC)
-X-FDA: 83747299398.10.C6CE7F0
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	by imf05.hostedemail.com (Postfix) with ESMTP id DD42510000B
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 19:20:37 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=MoDf3wGB;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf05.hostedemail.com: domain of kuniyu@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=kuniyu@google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754508038;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id ED9E16B00A3
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 15:22:30 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A9FC05AC14
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 19:22:30 +0000 (UTC)
+X-FDA: 83747304060.04.5C21884
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2088.outbound.protection.outlook.com [40.107.93.88])
+	by imf29.hostedemail.com (Postfix) with ESMTP id F1F81120005
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 19:22:27 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=aTMNFQA2;
+	spf=pass (imf29.hostedemail.com: domain of ziy@nvidia.com designates 40.107.93.88 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754508148; a=rsa-sha256;
+	cv=pass;
+	b=DSD2VLNflE4i54YmxTj7expgWBtmkptfJh51YW2Focb73TmXlbNhovuK1LorwbwLMmkct4
+	lxurZ9KfyVxw2abKjLr25mouX7sRlSW5UsZIX2itTIv8e4lyeDCHKLiu72H2RPlYFNXca5
+	YlxieuAgFxgHhLzLCOWNfthfJhsqt+Y=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=aTMNFQA2;
+	spf=pass (imf29.hostedemail.com: domain of ziy@nvidia.com designates 40.107.93.88 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754508148;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vlwSPPk3zh2CiPmdVqXCK+PGcDLcMMqnjeuzNG7VVSA=;
-	b=qDnsZL7gQrKnycnMQm2eDSRuYUDHGzop+nHCdBO10+OcjbytnkF+FUgfTGfDoewt04GGmJ
-	Dham94y+aMOcxPsRRCj5evQIMyQ+1Cwu495mRpMxmcbhW2nc6OYIxTXjG9qFmqLS4/mMps
-	5twDnBvw6wfeN7rgJbQ/GTFaKrG0pnM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754508038; a=rsa-sha256;
-	cv=none;
-	b=GzWZY8fnHloxhg/NO4b2R10nfzCi857xefpn/skhbFuB2Ts0YAgHSJIHQG0NwoyRCv2PYP
-	vr9gNjRFTf/Trbm9QKGarI3zQBE87k3AKa1989Ei40P3LnbYpSRZ7w0fPFAK1hchxIg3a0
-	KXNa0xIclWTb3jMzqkLOOkgHNuZDGIU=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=MoDf3wGB;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf05.hostedemail.com: domain of kuniyu@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=kuniyu@google.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2403c13cac3so10335735ad.0
-        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 12:20:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754508037; x=1755112837; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vlwSPPk3zh2CiPmdVqXCK+PGcDLcMMqnjeuzNG7VVSA=;
-        b=MoDf3wGBWvJVdJx/HSgKVD15dTw01QaR8rL0rBWO9P8QbFuKQYX65edxxNWw7Pzm2j
-         e04G7ySI11hs2IXKPy4w/Q4ah1z43iEaJJxsyo4yuoR/zpj+L3Q6QHGapX2HwNCluChV
-         lB0VRfo3UjHRuxYri4YYSR+zuoGRn+A2bPJizyzb6mg0LfaDZDR37WwE6ssNFaWGzIFt
-         3l8z6AJaCPQ0fEQPM2ZF+ZY14l1W4h4omwU8mdW3U19NwBTmtk0JnvYDqcbC1YNXQKfX
-         deF6q1OIXHnZhodvvSRPDuQDHfmh3feNCq+XYOxoPtWpzl1/NaUwqAvNRMlpMY2FEIvn
-         g9zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754508037; x=1755112837;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vlwSPPk3zh2CiPmdVqXCK+PGcDLcMMqnjeuzNG7VVSA=;
-        b=bp1NADVGyWyZvxafGhZp+tWLyCfomwdW27RfyDnx1M8hU/xl568+TY3QnG/Ave0OXE
-         CT6wXsOhwQdc9n04HZycIr+n6Yo++rID+nXyRy11pIVOeKirAWXc1UK2aZN/LZjUuTEf
-         T9p7/Ilh4i6pRkW8R8eRgeQm9VxlR3IcsCUOhMrnVltmBwy+oOQcY/HFduc8Ru84UnOV
-         YHLDrWPBWOYp8nAyXJKtI7lL2gLMdPuP9QYADHJmlMyLWzF0YbSgZ9Z/oTm5gTAlDHZ+
-         iXcAa/bql2kyoqRaSk+6cyabYPF3YDu91j22rF1hqiSE30FSY30InAXenF9wwaKM6w1E
-         f2OA==
-X-Forwarded-Encrypted: i=1; AJvYcCVGzjHy8fK6e65pIyAiJSpLn6ZGZEm0uURIiSiaGSBE7RYSYC5s8UHrJqzPuArFM8JjM253knQUHw==@kvack.org
-X-Gm-Message-State: AOJu0YyNWFRn/UlP45XgSm/8FZJsuUjq7C4Dg2Ba7rN6WHx3/h9+ucvC
-	JSbyNhGxJVwRzVHMDdG5dNS1kbwpt5MGfLjKIReY6Tv8G6qsbyXTKg/J2DGwnoGoApx6+czvTp3
-	LTSrp442TKHfXIk5qYqBiV2y5BxLaIn888Yg38WtpQraNPDr1HlLh07FZ
-X-Gm-Gg: ASbGncv8BiyBHsHJJZVZYGhWvLJvWNo87xvrZ3WY2PqTyadsFaKuBBjSXYwjaTu45gW
-	zt4pcgk6CJU3SCgI31Lj5pCyorCp4eFv6gbJZjz9657zTEXiFpE/krLZcZQjdS6tRuuGqZ0QkR0
-	fu/IXkxTCE+xvmOMycr9mHt6BuRV4QxnJG3blB9BJkMgMX2pups8qDyXV5PWBa51oTpvn474wT0
-	iS5681vLD0f2cGuBfQvaI3pdS9m+nwSx42JjQ==
-X-Google-Smtp-Source: AGHT+IFxu1qOt0d8Ya0ox+N19/1UV6+3t1Ff6v4R83F4G2adOyfF/EwYs87dnaZxJVxmA9LvZiQKWITP/CjagDvnBGQ=
-X-Received: by 2002:a17:902:e751:b0:240:417d:8166 with SMTP id
- d9443c01a7336-242b06e7164mr9555095ad.19.1754508036289; Wed, 06 Aug 2025
- 12:20:36 -0700 (PDT)
+	bh=mxINivbthbAJriWFfgkKCieAdI1XZjhlX98+DBtTnFI=;
+	b=DTup5lTVsEhEKeTU1H56CHCgrqAJGxr/KSLju/ageSKviIgwgaIqFlw9dtW8smUxrsx2c/
+	35oWRteUha3apZM12KttjSqacgkKx1eibA/kJkNFQkqLaLCoXnVDjBEz8psDysWCxBiX3R
+	yIxklvxALq5nMuv6L4GIncd65uszIg4=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LSCvAuoMUbJyP3jY1ca1botSTUTWTryjN4dHUxCqsXlKpEKWpiONqzeV8MxnsJAWnpUVdgEHry6Yxr+6mmA40n23FpteRhfnAeX4vNHfppmWvGpORf8pkETamTlc5ZH8nl/5y2ZGwSvsgOOtYTWjrNlgDrs+qL+g+Y0L23Hb/rTAy3hSpzZpCaDQToquqGVRwwV7xAcpGGwVX8PwfiAHpbwEGoe/iu/U0Nwk4zsDjjGy57jDaV/tS92xRr5ccmNA8ZsG+u7Or7jhHd7dVkbGnGrFHADvpG5Z1hCtVv+RjwD5bUNV4vf79l8dROKEcl+llQXADPt9Vy3krn4D9GZgrQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mxINivbthbAJriWFfgkKCieAdI1XZjhlX98+DBtTnFI=;
+ b=Rjf1nDD3C5p0qkD+2P7Kpw4XeJ/TVvKu0YigEqewq0xPqFnbBQmcZptExnDsMeQVi7xbExfVxG29MnfiFjjUwPIl4trde7j1mJb00YWF4NNqAiWT3SQpSUMHNTIcKMpDIb4VO3zYyEhIxncQDSUM6JXKyhXWGVof2bm+LDL+e7BaT/G0t/J9jbsBkuehcofJNh084YLFqRaZx/a5i4QBfGKdnIcf8dY7EtOEVaAe8HUR6MuE7B1dHLntt+v51KPsRvfqYBhSY7EQkHL4B8TigbMlP01B19SgWoqhqNY0XLm/FBAcjw0+KlVgEONzRBmmAyErpABgEcxl4ab1XrxVAw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mxINivbthbAJriWFfgkKCieAdI1XZjhlX98+DBtTnFI=;
+ b=aTMNFQA2NTs/ID/gJ7wNJ+FpOmiSKJTrrC6yCFB3jxEKKAP9aDnIlC9lRhXnPZhFBex5d1uw4hec00E7WwExEyyGK1XcOhhSa3BDxAhFsB+VzPXWg0SE93w+m/ZAQpdzE+iKxjzoiUrvAjCdslcbJkCIrywBkaVh77O79gxCNXxzy+R6tTlZNQxLy6L24jvId7I+6oNezL88eX22fsE3o38EJU4ZJo7pEHcqh7BYSxcVSa69KZrL5l2i3478M3diIu2hkXm49651wYorbp4FTjfXPLEUUTtBgK4025E8oYAaVW9Jdf/1PhAuPYIrt3Bn4X5F324+qpBFTr+twfFbLQ==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ PH7PR12MB7356.namprd12.prod.outlook.com (2603:10b6:510:20f::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.23; Wed, 6 Aug
+ 2025 19:22:23 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a%6]) with mapi id 15.20.9009.013; Wed, 6 Aug 2025
+ 19:22:23 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Subject: Re: [PATCH 07/11] mm: Introduce memdesc_is_zone_device()
+Date: Wed, 06 Aug 2025 15:22:21 -0400
+X-Mailer: MailMate (2.0r6272)
+Message-ID: <6FF612C9-748B-49FC-8451-100B549C9A94@nvidia.com>
+In-Reply-To: <20250805172307.1302730-8-willy@infradead.org>
+References: <20250805172307.1302730-1-willy@infradead.org>
+ <20250805172307.1302730-8-willy@infradead.org>
+Content-Type: text/plain
+X-ClientProxiedBy: BL0PR02CA0062.namprd02.prod.outlook.com
+ (2603:10b6:207:3d::39) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-References: <20250805064429.77876-1-daniel.sedlak@cdn77.com> <fcnlbvljynxu5qlzmnjeagll7nf5mje7rwkimbqok6doso37gl@lwepk3ztjga7>
-In-Reply-To: <fcnlbvljynxu5qlzmnjeagll7nf5mje7rwkimbqok6doso37gl@lwepk3ztjga7>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Wed, 6 Aug 2025 12:20:25 -0700
-X-Gm-Features: Ac12FXzJnBZFvHp4SW91p6FAcWqq_WSkdxhE_YNRj03saLxF9wSquf_4XkIv_5U
-Message-ID: <CAAVpQUBrNTFw34Kkh=b2bpa8aKd4XSnZUa6a18zkMjVrBqNHWw@mail.gmail.com>
-Subject: Re: [PATCH v4] memcg: expose socket memory pressure in a cgroup
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Daniel Sedlak <daniel.sedlak@cdn77.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Neal Cardwell <ncardwell@google.com>, 
-	David Ahern <dsahern@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org, netdev@vger.kernel.org, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	cgroups@vger.kernel.org, Tejun Heo <tj@kernel.org>, 
-	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Matyas Hurtik <matyas.hurtik@cdn77.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: DD42510000B
-X-Stat-Signature: caer9sfdsgfthod7ji1e8ya6rn37rfnt
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|PH7PR12MB7356:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3fdf259f-e5b0-4238-bf22-08ddd51e91ee
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?8Mv/fxyyMFetUdTO0kXinWizXz7RMJk++dbudCs/7KcJEDwyCr8Q/fvzMinf?=
+ =?us-ascii?Q?lJJ/hJ56uoghRp8DyNRgZIK+KgaerdHkhUsEVe1+6oaoaJo62iwffre4d44w?=
+ =?us-ascii?Q?+357FdYLAN9GIBwqWGUh+kxorMxRODb+xksWKLfnWShnGjtHBWlIzXQTV1hb?=
+ =?us-ascii?Q?jkHOGLZkV/wyJTY3Y3Ozx9tL0Wui15hXLB4MdPSUKUNWIly0wufO1XNanWcX?=
+ =?us-ascii?Q?9DhD86dsWG3OH0RFqpxf8Y3fWluUKuiU/RZvpYX3KLYrQ0HfH6p2cj5nUobu?=
+ =?us-ascii?Q?Wf9JeCjayQfUYpp+7gYv9CS4bMDqazQVdXtMsH4lpm1Xl7vF2RSMLbAcTuWJ?=
+ =?us-ascii?Q?kUrJPd9OC8VGNAeTkMSEP30mvF2y3gLW0wYdWJuvTsjOdI+iTCw1neJYWCeo?=
+ =?us-ascii?Q?x2YBdLe34hk4iEOVByjvaWCX0fbvK2FXegTl9hyhMc0/e1pZMQ/KhJKRu8R+?=
+ =?us-ascii?Q?3ZI8UFfrXTOpHlxYgHG9qcbLx/fByYcn+y4MqoalWeJEQ+HaPtKbGWLCyEPn?=
+ =?us-ascii?Q?OiixViLg7A2F8jdApRorHF2MwgXIPCMn8equ7aXX17CL4haJO6//4LogUWKO?=
+ =?us-ascii?Q?rTADY7JT0RM6rYPp4x35NcFK1Wm5sr7hdxjweeYYn4N8E4pCjCsHnsHdoDSw?=
+ =?us-ascii?Q?ObInRGFTEjfChxTyN1h2ntsPmIx0D2YQ8nR4GaGklIo+ZoLGU+38PYh8bV1t?=
+ =?us-ascii?Q?RGlPAXsKGvVHpMESm5l3Azrg83UTVc+ZuRv8Q1n3oniecnWvVvXbcEeggKOk?=
+ =?us-ascii?Q?27UX5WfkwGTDETGqdwwZfeDH8KW7xY9H+HEhIuEWgM0XgKpmft0jRIG/YrWq?=
+ =?us-ascii?Q?TVJDStmoBKodUQStXO1KObErxejDAKClqeDqXmZ/vKUPpFPq4Xh44I+SVDVM?=
+ =?us-ascii?Q?kLFqDrdSNfGJdlU7aiM96OjWlrfoAVhRGwqKqZ+nZ1zPErwnsqF/3YHbYJmA?=
+ =?us-ascii?Q?KOvt/3pKqdJz6dz61pq8tcXcrXk2WJ7YLLtt6jt6ArWc2aYVOMbOCZ9lmrdL?=
+ =?us-ascii?Q?StC35/ouFvZIXETDcjucfiRwblh3qrBJGUZ8d2AbijBmRwhOEhmHMZho/gjz?=
+ =?us-ascii?Q?T8bJkARwm9/xDOXZEejJytNcq2PtVpnXyKS0JyH6dfC+86Bcu8y6Rmc0r8gR?=
+ =?us-ascii?Q?QWrXH6e5dntvBnT/VOxyppBLU8tDnbD4IIzD7x5oTS6M4vqYKUsnO5la8sDH?=
+ =?us-ascii?Q?J0e12x/dfS/jH9fJgmOnm/uxOofjcK8TB8PKMVrxXNoJZx5Wqtgf844kKs0V?=
+ =?us-ascii?Q?03Nu9NRvUsHwtiQWNIRPYDbASR0gSsM5UvaG1jOXhaFEjbNlosKwecL63Fqc?=
+ =?us-ascii?Q?Vd073W+fUcntzMlYX65mxJ0+WlPhwr84fzMwnG1RDdgzVIlXVBA1koDMk95r?=
+ =?us-ascii?Q?5Z0WaF/dKgjmCrU+9EbnIP2uSDgJvBC7IG11jZ1ohbSHDutOKOGwssy9ply/?=
+ =?us-ascii?Q?bj0ZLk/I3WE=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?KBiTXYRwjiOhNwJeEtM0+Wq1yn1YMaDZ09MQah/Sb2c0PPRqeqVXK26GWM7P?=
+ =?us-ascii?Q?xJbbZFB5r3CTx9k2bxlns1PxNDrhg3dvfUdwaZvuyXRg4m9vNvniBAd+qgLG?=
+ =?us-ascii?Q?sjZfpXc5qHM/tsd8W0xBCHAuS4KE7mv3gd57ZXShfPrr51A1V4O1EB6p9L3y?=
+ =?us-ascii?Q?E0pnofS50YqdhqBijizdSUpD1iW6T9siswB2BRjVfQIufAgVEd7RZL10Choh?=
+ =?us-ascii?Q?fdF57E8L8Gc7AbGD4HW0wPo/Pw8CoOscILzn0b4stVZtYv+sHrAIBeSbPjh1?=
+ =?us-ascii?Q?TeeA8L5hYXC7m+3aeUKjxV08QpBXyYLPrUc+E/pzGNfsmrDDF3a7XMg38uGK?=
+ =?us-ascii?Q?KQbd3YmbbFSV8O7MGIvoOZyOrs99D2Xf3fLtryNttlkceVosbsWYc9V7H92/?=
+ =?us-ascii?Q?51J1GxbZs+lAJQisLaxv39HpbNzOhacQZJZGLRVzsREzCvx864u7u9IvMjyq?=
+ =?us-ascii?Q?azL5HvwKRSK10zhHnpG8JYFjw45ck8b4mS80xZYLx9s9MrauvDSA0vXtYvL/?=
+ =?us-ascii?Q?om9aGSKMmB5X4UqDdoQEENUhydET8yZUqRY8cIZVdy4rK3uI8+VqizAM/lOo?=
+ =?us-ascii?Q?tK8pkTEp6H3BtF/ISUo5RZhlchkCCm28nGjb9MHuPxNgb+GhIAsy1J1X15B9?=
+ =?us-ascii?Q?AHdNlCbodz95vnhokgGOnJtEkfY67mzQc8wiOvuOZvZg9uEpyBlE92fTcSSG?=
+ =?us-ascii?Q?C5C9TFdWHgYn8mlEyfhN3KJ49rWy1k54CDy/fJqqPGv3GMh/0fveo/uoonBw?=
+ =?us-ascii?Q?DtFF8gNffFJ5G5u71G2i84IoOf+BqAxTZq+2MnNxdlkv+5pPQhV261qBmZcz?=
+ =?us-ascii?Q?MLkOEZPEFbGtVycPsUtk2ki7HHocpR4YywQv7qsVf+Cifha0s41/E0OLF5tV?=
+ =?us-ascii?Q?NnK2/jAAH5ResfR6ZuYhLwezFUsHcEjLqXa7B5dod2XPd5qb9sBSuizvJe6A?=
+ =?us-ascii?Q?BAoRzjCzDveEcprQnis/sdtZbHwQRocEdM3itYDQ8XB02ehWAcpRv+iBth0t?=
+ =?us-ascii?Q?FnI7zsk0ZVmLDVXjRH8iGNNoVVsEhrx8lXYFQU2Uru+WL02baf4/RpcXyGVe?=
+ =?us-ascii?Q?NM+ly6TVuTtEtHxaBMk0MikjB8grfpVR7b76ViJxTuuy4VvufYdxZLtSIV0j?=
+ =?us-ascii?Q?7QCsfKAt1cQn5L3vd6J7950R27EE7WGVA50xhcQrfAOHrKAGerf5cSd9nZwF?=
+ =?us-ascii?Q?vvN9Sa/ytzqPpfPj8O/kGFidYk2VeQwju0CgWZ05cyhlwweKeOwmmpWRGCne?=
+ =?us-ascii?Q?ELDd2RNu0jRijlXBMoAHz/gido+TcaGuPKHk4ruYghg0nKOxA7ZDAFdmbtaQ?=
+ =?us-ascii?Q?wvXNjbLeaxMH1YFb7HerfC4SCNRJVKvW1G3km1UKTifuO+fxZvlibnyr825M?=
+ =?us-ascii?Q?0rhYQjZ8SRv6peUwolr0V7AJwhPj20wzovLty+VKi0gRGl9lU06TnjML+I9B?=
+ =?us-ascii?Q?+O+U9QSTFz78UIn235eyps66zA52TWR/EsnJ/51FwwyKzbde3xj1IjvNE6vw?=
+ =?us-ascii?Q?aqmjEjI8dzkiAlur1r6rmspskYQcibySsMzaCbtUW4SKmNzaSi1n1R6Og2Et?=
+ =?us-ascii?Q?7xJR6vstWurk7Ig2/keiIMGM/IeOrpgg+gI4Sj2p?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3fdf259f-e5b0-4238-bf22-08ddd51e91ee
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2025 19:22:23.1689
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BWp0UwvFbYF//Bgg31bLh6EnkUljAWAi8sc3CEAKj7QJY+1vAwoTmt0OyMQCT+Oa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7356
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1754508037-882630
-X-HE-Meta: U2FsdGVkX1/PCMYE9ix8TuFFJWwXNXH87+DAGFYMU9Ta+JCW0CCpaPhpIiKFOBihl3CBxSkqBgeTWl115bxJ5qQRfl2Zon9sBOToxMJoiUZx2oVZc3Cso3JJZjWQH4bxYsIdLnMWISWz/a655HA8MaVUARNlD8J3aQhBiU0hRhscskSMraQWa/S5UJvubjLCMJu10gC77mV6YYmJTQvUIf89dPRUm+eKxpwB7B5HEERrDohhgDkAyRygNWXu0eYbT+WA0gNHLJN22zlOM429AHrfSuNJvZZGf1FC4JEHkfFKfaIYxCg7gWimuHjISFbj8W2noIeVZwbFRBLnk2Tymkal5YWfacUgooy077QPGTapjqdMVtNGZVSoxQmSTFIw51cFy5uHs2busRQIMswW+nPZkNmLHJ2rmpIIOzS1yP0pNaOeLLe+hYYf1lqlaWYBjA/Fe45aM1KXUOm4OURopf4lYMFVdF0aV101p3A1KWW0bohmHd3Be7gcUpCa2e77AUVBTnNhs4dQYVsEI4214JRCZ2m/337kKuST7a/ogTWjE0tzDLKvaC6CthYM8MbOTC97TVvotLE9YY/iKpHmpmU7D14LJAqosG2VrZaniyb7PXNrRPy+SSy3ZINZQGupu692Aj7plY7niBCKZ5L/gBGQcYoUZSqfaHyiUiYeeUrJ8EkYNFOFDBFu3J0WV7HRFdTMiRri5k6ny8h2SCGIW/oG1chzsRzGcBrFByKd71dUBHVOmwDNSzN0bXarTPKKBoVKphwkhnBdxEQSGiro5ns7JuAC5DlOkN6OLI5AlsSvX10D6y6YA/prboSjOKMcmbs6n5qB6CByuZD260GmL01rzx/qK7r6eVAIovk9eEV2bRAQM9JNfH/ut3AD/+5+q7PPrxj1TETapmKe4mPTxu7uZuXhz2P8LIKWkNscLY9LkhorbS/MF7Dwk4knRQ7o1E6byOGs7m/kogdHj8y
- WxNw8ega
- U0fxg3xbu1MLyOoQFDEhbqEAJo7ajxJ3/rjyOpI7BUsf0WH2chi3BpJS248pqoQbyma71Oac7KArUjLw3du9sa/6WIVahedK93b4qt9JQq1EhWRYn83hJw8PRQKIpDXzQcFe2zw2gxZUa2G5fMkXFJJpef9t0cAqoe1P/sLAy1nx0b42cTHoy4olmZ9DAIW09noqkHf19PbmOvWeA+4MLfe1HTR6qvjUhn5mLM+tW7gIK0x5dJ4/FbhBxAD9boY2FVNRiDKErdtr5dLQfVXwa8cIHbbuhY/GqimamxzpczIZBIjJWMJe/1fgU5hpUsvojiq3+amqSBB4xtWIfnVMxwT4OEdliIIE0sMkzF5q14lCOAL3j64hXL8IL3BPyQ1tUsquf9U9ZqmOMCs7Pw7g2VeEirLOrln9DusTJTuntX78FLOaVv5cUK0SKEg==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: F1F81120005
+X-Stat-Signature: qmwydms18ca1gc5qm53zdzos7h7mmn1q
+X-HE-Tag: 1754508147-981520
+X-HE-Meta: U2FsdGVkX194b6M+cGa4ky3LzBkT5b/pKEOqyZ3ByePESdBgkpikX8joUuVn+no2zpndGMN4WvxjoFAYM5llcB2SfUMQTz+ftg6TfSri4zNppnwsNlj9Gx+6lII9M5l894rZUCrquKpw2KJ9UwcHafkVp8wvlYaqBFIKXifspRUGKBy91Qk3HJaAk2NBQfR/Lb8wtEMxax/LriV+X6f9QfAmKUTnBcA+XSiv2THcUrNsSmRbPSUzxzzHL9oUoC9H7yvvAHeJsQm0KSo6BYTXEYX7QLb87KkZnvHmYuL42XuCqtGBRcigiqyfKgqZ+bwkzRWkIS6uPSRUvVY2vbAHsBwcMeQlr1UjjrZBPF/JmiWEsO0QGPSFqhC7nE3Bj3CbaPZtKIGu7hi2SOvayvkR49O89Jhky3T2gA7mx64xnvFmyCx6LdZz/TqsLs3CbRUwJ4rjLOa4n7+HjUAh1aSuHzwk5vJQjeh5PAQzSoK78BS4WmtUNSLL3OJoyEj5DJpoJfnKDgc4hUpcJC7MHe+IxCR65Y+e+S/UtaigW6fNE06u93Ud0ATCZ5aUBszBShuR8zHBGlvXNF9ZS7wvzsqdiAYmgL+UXBMz1fgSBooULQ4C1fqeGKM2MgIUq//tbLiq+uJVfK5EN1TfXTWQfsjDX9/F+Ogu68lTUTHVu6BvLVsni0TamuWcHbK94Sa0OsXZFaRSnHj9XUMCNBwNgm0Id3zJ0HHdood+5jWPUbTldlptke+6AO80vYdB6HP9vyNII/K1T2g5i9Z2xM6GX3n5DPfOaAEgscn5Kg6S9GTbqzVq3QxUS1Krp0CMGrd85/m2wNKJJPIYIgY0lRwnY+u0MO7qwMcFQ1LE2tdeQMC1faBkMdnZ0tCYHG6IZ7WQyE6AhLtk9daKoUVf5Atd5HnGfDcCOkcbtIwHTYSf1aPi+4VwJWDr9js/NH7V8mSoDSq+GnxAIWiZIAWFLKVMJgP
+ 6kWPEziX
+ jxFIYMVwvJJycF02RmmgYXqgQPh2v2F940S8j77ZXC6R4rOdqQ/0Qcfg4M2s1M0r7F7gET4BQKl3u3ofiRxUfvRlmhl6vmfrrI0UgRBtz4SHei1jk/eFXX8uF4hIzFfXt4QNuF0U3spILw3WbGmfu/bZ+tlaVu4xhTDdanVRtP+En89j4h6vAtOiGYpjXDOD9KE2IdU2R4nKPXI+Pn4Kij/+XsXB2rNm9sAGR0GHjWlpUbRQL6L014LpdGmR5qQzRT8Hzm9Twljtp0ZN1x2PVmK5sONXjNPHfz3lctntRdpNfmC7ObK+C1j9NXRVOH8WWo9JEp2GHIgeSjrjrvAXZ0lN/BXMZkxstGokIYXJpdzhDhccgO5p2IWP6EMitxsU/PUK7XkUclGAEh4RlZ5ZhMXTGMA6uD5e4RMfygkePBoWWuowNbfMev01wxALV8l3k8EkR0NrbPI0do2GVA+Mx2IInfHpiYLP1qf8naTUs7qwXCYJUSqV5vpSG/mxGs0eqE9xY
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,197 +177,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 5, 2025 at 4:02=E2=80=AFPM Shakeel Butt <shakeel.butt@linux.dev=
-> wrote:
->
-> On Tue, Aug 05, 2025 at 08:44:29AM +0200, Daniel Sedlak wrote:
-> > This patch is a result of our long-standing debug sessions, where it al=
-l
-> > started as "networking is slow", and TCP network throughput suddenly
-> > dropped from tens of Gbps to few Mbps, and we could not see anything in
-> > the kernel log or netstat counters.
-> >
-> > Currently, we have two memory pressure counters for TCP sockets [1],
-> > which we manipulate only when the memory pressure is signalled through
-> > the proto struct [2]. However, the memory pressure can also be signaled
-> > through the cgroup memory subsystem, which we do not reflect in the
-> > netstat counters. In the end, when the cgroup memory subsystem signals
-> > that it is under pressure, we silently reduce the advertised TCP window
-> > with tcp_adjust_rcv_ssthresh() to 4*advmss, which causes a significant
-> > throughput reduction.
-> >
-> > Keep in mind that when the cgroup memory subsystem signals the socket
-> > memory pressure, it affects all sockets used in that cgroup.
-> >
-> > This patch exposes a new file for each cgroup in sysfs which signals
-> > the cgroup socket memory pressure. The file is accessible in
-> > the following path.
-> >
-> >   /sys/fs/cgroup/**/<cgroup name>/memory.net.socket_pressure
->
-> let's keep the name concise. Maybe memory.net.pressure?
->
-> >
-> > The output value is a cumulative sum of microseconds spent
-> > under pressure for that particular cgroup.
-> >
-> > Link: https://elixir.bootlin.com/linux/v6.15.4/source/include/uapi/linu=
-x/snmp.h#L231-L232 [1]
-> > Link: https://elixir.bootlin.com/linux/v6.15.4/source/include/net/sock.=
-h#L1300-L1301 [2]
-> > Co-developed-by: Matyas Hurtik <matyas.hurtik@cdn77.com>
-> > Signed-off-by: Matyas Hurtik <matyas.hurtik@cdn77.com>
-> > Signed-off-by: Daniel Sedlak <daniel.sedlak@cdn77.com>
-> > ---
-> > Changes:
-> > v3 -> v4:
-> > - Add documentation
-> > - Expose pressure as cummulative counter in microseconds
-> > - Link to v3: https://lore.kernel.org/netdev/20250722071146.48616-1-dan=
-iel.sedlak@cdn77.com/
-> >
-> > v2 -> v3:
-> > - Expose the socket memory pressure on the cgroups instead of netstat
-> > - Split patch
-> > - Link to v2: https://lore.kernel.org/netdev/20250714143613.42184-1-dan=
-iel.sedlak@cdn77.com/
-> >
-> > v1 -> v2:
-> > - Add tracepoint
-> > - Link to v1: https://lore.kernel.org/netdev/20250707105205.222558-1-da=
-niel.sedlak@cdn77.com/
-> >
-> >  Documentation/admin-guide/cgroup-v2.rst |  7 +++++++
-> >  include/linux/memcontrol.h              |  2 ++
-> >  mm/memcontrol.c                         | 15 +++++++++++++++
-> >  mm/vmpressure.c                         |  9 ++++++++-
-> >  4 files changed, 32 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/ad=
-min-guide/cgroup-v2.rst
-> > index 0cc35a14afbe..c810b449fb3d 100644
-> > --- a/Documentation/admin-guide/cgroup-v2.rst
-> > +++ b/Documentation/admin-guide/cgroup-v2.rst
-> > @@ -1884,6 +1884,13 @@ The following nested keys are defined.
-> >       Shows pressure stall information for memory. See
-> >       :ref:`Documentation/accounting/psi.rst <psi>` for details.
-> >
-> > +  memory.net.socket_pressure
-> > +     A read-only single value file showing how many microseconds
-> > +     all sockets within that cgroup spent under pressure.
-> > +
-> > +     Note that when the sockets are under pressure, the networking
-> > +     throughput can be significantly degraded.
-> > +
-> >
-> >  Usage Guidelines
-> >  ~~~~~~~~~~~~~~~~
-> > diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> > index 87b6688f124a..6a1cb9a99b88 100644
-> > --- a/include/linux/memcontrol.h
-> > +++ b/include/linux/memcontrol.h
-> > @@ -252,6 +252,8 @@ struct mem_cgroup {
-> >        * where socket memory is accounted/charged separately.
-> >        */
-> >       unsigned long           socket_pressure;
-> > +     /* exported statistic for memory.net.socket_pressure */
-> > +     unsigned long           socket_pressure_duration;
->
-> I think atomic_long_t would be better.
->
-> >
-> >       int kmemcg_id;
-> >       /*
-> > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> > index 902da8a9c643..8e299d94c073 100644
-> > --- a/mm/memcontrol.c
-> > +++ b/mm/memcontrol.c
-> > @@ -3758,6 +3758,7 @@ static struct mem_cgroup *mem_cgroup_alloc(struct=
- mem_cgroup *parent)
-> >       INIT_LIST_HEAD(&memcg->swap_peaks);
-> >       spin_lock_init(&memcg->peaks_lock);
-> >       memcg->socket_pressure =3D jiffies;
-> > +     memcg->socket_pressure_duration =3D 0;
-> >       memcg1_memcg_init(memcg);
-> >       memcg->kmemcg_id =3D -1;
-> >       INIT_LIST_HEAD(&memcg->objcg_list);
-> > @@ -4647,6 +4648,15 @@ static ssize_t memory_reclaim(struct kernfs_open=
-_file *of, char *buf,
-> >       return nbytes;
-> >  }
-> >
-> > +static int memory_socket_pressure_show(struct seq_file *m, void *v)
-> > +{
-> > +     struct mem_cgroup *memcg =3D mem_cgroup_from_seq(m);
-> > +
-> > +     seq_printf(m, "%lu\n", READ_ONCE(memcg->socket_pressure_duration)=
-);
-> > +
-> > +     return 0;
-> > +}
-> > +
-> >  static struct cftype memory_files[] =3D {
-> >       {
-> >               .name =3D "current",
-> > @@ -4718,6 +4728,11 @@ static struct cftype memory_files[] =3D {
-> >               .flags =3D CFTYPE_NS_DELEGATABLE,
-> >               .write =3D memory_reclaim,
-> >       },
-> > +     {
-> > +             .name =3D "net.socket_pressure",
-> > +             .flags =3D CFTYPE_NOT_ON_ROOT,
-> > +             .seq_show =3D memory_socket_pressure_show,
-> > +     },
-> >       { }     /* terminate */
-> >  };
-> >
-> > diff --git a/mm/vmpressure.c b/mm/vmpressure.c
-> > index bd5183dfd879..1e767cd8aa08 100644
-> > --- a/mm/vmpressure.c
-> > +++ b/mm/vmpressure.c
-> > @@ -308,6 +308,8 @@ void vmpressure(gfp_t gfp, struct mem_cgroup *memcg=
-, bool tree,
-> >               level =3D vmpressure_calc_level(scanned, reclaimed);
-> >
-> >               if (level > VMPRESSURE_LOW) {
-> > +                     unsigned long socket_pressure;
-> > +                     unsigned long jiffies_diff;
-> >                       /*
-> >                        * Let the socket buffer allocator know that
-> >                        * we are having trouble reclaiming LRU pages.
-> > @@ -316,7 +318,12 @@ void vmpressure(gfp_t gfp, struct mem_cgroup *memc=
-g, bool tree,
-> >                        * asserted for a second in which subsequent
-> >                        * pressure events can occur.
-> >                        */
-> > -                     WRITE_ONCE(memcg->socket_pressure, jiffies + HZ);
-> > +                     socket_pressure =3D jiffies + HZ;
-> > +
-> > +                     jiffies_diff =3D min(socket_pressure - READ_ONCE(=
-memcg->socket_pressure), HZ);
-> > +                     memcg->socket_pressure_duration +=3D jiffies_to_u=
-secs(jiffies_diff);
->
-> KCSAN will complain about this. I think we can use atomic_long_add() and
-> don't need the one with strict ordering.
+On 5 Aug 2025, at 13:22, Matthew Wilcox (Oracle) wrote:
 
-Assuming from atomic_ that vmpressure() could be called concurrently
-for the same memcg, should we protect socket_pressure and duration
-within the same lock instead of mixing WRITE/READ_ONCE() and
-atomic?  Otherwise jiffies_diff could be incorrect (the error is smaller
-than HZ though).
-
-
+> Remove the conversion from folio to page in folio_is_zone_device()
+> by introducing memdesc_is_zone_device() which takes a memdesc_flags_t
+> from either a page or a folio.
 >
-> > +
-> > +                     WRITE_ONCE(memcg->socket_pressure, socket_pressur=
-e);
-> >               }
-> >       }
-> >  }
-> >
-> > base-commit: e96ee511c906c59b7c4e6efd9d9b33917730e000
-> > --
-> > 2.39.5
-> >
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> ---
+>  include/linux/mmzone.h | 19 ++++++++++++-------
+>  1 file changed, 12 insertions(+), 7 deletions(-)
+>
+
+LGTM. Reviewed-by: Zi Yan <ziy@nvidia.com>
+
+--
+Best Regards,
+Yan, Zi
 
