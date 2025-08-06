@@ -2,86 +2,86 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E9992C87FCB
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 00:11:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8C520C87FCB
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 00:11:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 368746B00A5; Tue,  5 Aug 2025 20:11:00 -0400 (EDT)
+	id D2C756B00A7; Tue,  5 Aug 2025 20:11:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 318A16B00A7; Tue,  5 Aug 2025 20:11:00 -0400 (EDT)
+	id D03B16B00A8; Tue,  5 Aug 2025 20:11:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E1E06B00A8; Tue,  5 Aug 2025 20:11:00 -0400 (EDT)
+	id BF41D6B00A9; Tue,  5 Aug 2025 20:11:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 062D86B00A5
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 20:11:00 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C54195802F
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 00:10:59 +0000 (UTC)
-X-FDA: 83744402238.06.16873B6
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AA8B96B00A7
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 20:11:02 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1F86A140299
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 00:11:02 +0000 (UTC)
+X-FDA: 83744402364.29.4FECE89
 Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D551540004
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 00:10:57 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=bur.io header.s=fm1 header.b="T Hl0uyU";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=Xc2PVzhP;
-	spf=pass (imf01.hostedemail.com: domain of boris@bur.io designates 202.12.124.146 as permitted sender) smtp.mailfrom=boris@bur.io;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 1330CA0010
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 00:10:59 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=bur.io header.s=fm1 header.b="G GrF1uO";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=oCbDjzsH;
+	spf=pass (imf25.hostedemail.com: domain of boris@bur.io designates 202.12.124.146 as permitted sender) smtp.mailfrom=boris@bur.io;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754439057;
+	s=arc-20220608; t=1754439060;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NZ7TZBffuEffDJUzZyM4ZUtL9XNWT9f5kOkVlSi+KCM=;
-	b=os9iHdMWsMKzNSXIIXzwiiH8WSKHqMhSkAtERihbrelVTFsrZv2oGpr/Mrkraqw3UydxuR
-	TSV+uoImSBcfHhpkIBePbfkcAxlb4+eNDLRN4LQXcJCYcXxR6dvcRmCXRzgIZ9NaHKcSRn
-	5T9hhMVnhKTrMAIdP60v1xUL9hkSW8I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754439058; a=rsa-sha256;
+	bh=NMkug1PZF2QAfivblMu+w2TJxSj/x/jO/BIhiNhgEAg=;
+	b=Rn84D06xFNZEuR1sZzgc5YWYEuEeynjK4QBNES0nhMYs1O/bgiiFRTG40o9p3xdp9aFTxg
+	JF0A4MFk5zU+ANIh52DhL6PVIq3//rX+aYbUzS8d/MaRqTUHzml7c8C+mMCpsTtd3QYgbo
+	T5rzKqLyWns+1mmGMnKMDXhzQoHnG0Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754439060; a=rsa-sha256;
 	cv=none;
-	b=4Srbxrkap0TbcyMrU7QUONvurEVZdQmOv4OexyU/1318XMITz4fU/JPiipVQv2Bgy0gHuY
-	dhoaZanIffc6nOlFOOnI3AXQI5Z1etG8viFXwun2Z4qRFxlbJJuJllQJr+eSiZhand43w3
-	7MOMc3xM29YYdpWhE1PZW5QVjL7q4o8=
+	b=HbdqY+9faJIL3OEvWYHHUm+CrAtSxpsBUOquFJVO5UxG4SNvV9BwdY7F7p+srfnX75QAob
+	GTn7/B2afBtUFp/2kPwluGHHEXm1Aonqh8W/NuzoXxDp7i6bBpO+6VkueVWsQIw1xn9jpy
+	uQgYdSvr1CRDhyUSLcmZ5QWJt7Y0rg8=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=bur.io header.s=fm1 header.b="T Hl0uyU";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=Xc2PVzhP;
-	spf=pass (imf01.hostedemail.com: domain of boris@bur.io designates 202.12.124.146 as permitted sender) smtp.mailfrom=boris@bur.io;
+	imf25.hostedemail.com;
+	dkim=pass header.d=bur.io header.s=fm1 header.b="G GrF1uO";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=oCbDjzsH;
+	spf=pass (imf25.hostedemail.com: domain of boris@bur.io designates 202.12.124.146 as permitted sender) smtp.mailfrom=boris@bur.io;
 	dmarc=none
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfout.stl.internal (Postfix) with ESMTP id DB23E1D001BF;
-	Tue,  5 Aug 2025 20:10:56 -0400 (EDT)
+Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
+	by mailfout.stl.internal (Postfix) with ESMTP id 203B01D0024E;
+	Tue,  5 Aug 2025 20:10:59 -0400 (EDT)
 Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Tue, 05 Aug 2025 20:10:57 -0400
+  by phl-compute-04.internal (MEProxy); Tue, 05 Aug 2025 20:10:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bur.io; h=cc:cc
 	:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1754439056; x=
-	1754525456; bh=NZ7TZBffuEffDJUzZyM4ZUtL9XNWT9f5kOkVlSi+KCM=; b=T
-	Hl0uyUDCDWHd33pWZ1uMbQXhsdRRcJJRrAH+g7B4PkT9ObG76RBgGWKHwNCsHFk1
-	mkY58O/hpwpjdnzQnAp1ISDsIamu04TPsI9iQ/s2mGs7PnapMq2qvJDouu01Wcft
-	33RIVS0+vPZGM3hcsxM6gFtt/vo3hc1c6swjB/sXE/lBUB8xdBAAlGbuq4aJDCqi
-	OuFgJkTrCKywpNePty+6N0qUWfQFkVE9uuFJdjaqLbDP83rukrndHvWBuBBeQ+e8
-	af16q4YCxT1W0B23byonYVTvJDuXqrPoUwjjSSKFANlID2/t0DPyb646KFA+k+qy
-	75eUdIGBE7A6V1gUQdWVA==
+	:reply-to:subject:subject:to:to; s=fm1; t=1754439058; x=
+	1754525458; bh=NMkug1PZF2QAfivblMu+w2TJxSj/x/jO/BIhiNhgEAg=; b=G
+	GrF1uOWR5MDmu7iedNKmcnSawwxfou0p9UqxNUMBsMWsuN9wRlwLxjnTo8m3zc5M
+	nObp6f1faws8totu9es1+Nq52vloBczQevQhH8ZxlC9A4GzaqL1LYym8dihZt4AG
+	vfSvVtgEhXyUjtyfvCrHUr4YouyNOCyzeXEGNhuK6KA/2RUWHYa9U6ydKI5F2E3H
+	dgmpo/jSYMLYlpLjiRf7N6QRxHR8QqbZMhdMR4agv+zpVt5dEu3Tyy1Xl1klypjh
+	O8wureZFYxLFksMtxWLt1afrCJqhNlKX+1hD4Cxy6mGhIxYVUGutKxD0jI0S9Aq+
+	Hmr5Z8cxRf/tJUQ7C1tBg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1754439056; x=1754525456; bh=N
-	Z7TZBffuEffDJUzZyM4ZUtL9XNWT9f5kOkVlSi+KCM=; b=Xc2PVzhPIXXkfThYe
-	SbPQ9DRZprBnldpzeRw+pnm2rA4LOa+OQyPbEO9M59wf5c51TTJAmWFqQB413zEW
-	fvMsdfGZljbcLkLOu24PWcNZ60uZyUfSMTpVeKLl40RaV1BP1E9ZKTvTqBtxXd01
-	Fc2j3/luXH0KFE88eAOF20zEntBSeU4cK5btBhR1xYYvbmWYSOH1lTIeIuyUrP0/
-	ICIpwXgZhEhHRl3Brevhp8dpuqhCzsUt9N7oNsORTYD5o+TPf7jY+WsXUoW9CFij
-	yORn+tMPcbfRwkdVqddCtjwXlp7OiSKgXCnK5hwrPU1AathgdYmOvttQzY0E59P4
-	8IEwQ==
-X-ME-Sender: <xms:kJ2SaJA_7H5wLX-S1XGsDNrBtZYsGidLKn4anpyHGWySGEU1lTa62Q>
-    <xme:kJ2SaLVEJwxtfaHZJP8ZxUURyOkdqDeFjAZumzSf9J6KdAPuihYsT8LC6fAD-ihe_
-    CFax02rxCxQIQvK0UA>
-X-ME-Received: <xmr:kJ2SaNo-nBOM5ZXi4JixsW7h3bVcEKlzh-ILppwnKti_lDSaAvDw_zDFzURFeOV26KoUi2vHbB2fdPc7mHJZ6Ap7RWM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduudeiheejucetufdoteggodetrf
+	:x-me-sender:x-sasl-enc; s=fm3; t=1754439058; x=1754525458; bh=N
+	Mkug1PZF2QAfivblMu+w2TJxSj/x/jO/BIhiNhgEAg=; b=oCbDjzsHAuG03l79C
+	ajpGywvRrJXz6UmB5jHjrxwxBZCo18XD996ekP1Ax2tOZ6M40HSzyE1hDng/R783
+	komopR2kWdj6E+g897Tm5EbAEs+E5aNTgidojpdextoZChI7YTEIcz1EdeJcCqvs
+	bLDBGbHi881Ew/0XSubf9uO/Om+vOcz/Hz/nax4pUQPbF/m17RaBXVPIQSZiB1Xk
+	A87vYvZGD5VGwX8zxAp5WFuKJc7gr2YEWEdj7EMiRr7qoeYS+zQzvb0tpy9HL1cd
+	Tpdn+hsxUQYS6NAoBUstLu00fQ1ncM1Z+y+H/0CP0ykippQyZlXA6mgqkXl/33KS
+	qJ5Pg==
+X-ME-Sender: <xms:kp2SaC3BqECAlvdzvihEOwcVdywbPvMCZbJr65QywvgXlDCrYYvAJQ>
+    <xme:kp2SaI6CmYjwXaxPVmfIEeyfgIhWTW_9FhJFkpl7rNY0c1LAxupaAW41nY2a3D_ZB
+    ydFKVWytRBbyQTmxh8>
+X-ME-Received: <xmr:kp2SaD-K3eXlK0-EjR7TgNI9O5VKDh_FjhZf3170KuvvF7fq3CYi5YJFvBUKW1sXSJRxRZwQ3Cop9r_wmWopb44hkwA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduudeiheekucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucgoufhorhhtvggutfgvtghiphdvucdlgedtmdenucfjug
     hrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeeuohhrihhsuceu
@@ -95,14 +95,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduudeiheejucetufdote
     dqthgvrghmsehfsgdrtghomhdprhgtphhtthhopehshhgrkhgvvghlrdgsuhhttheslhhi
     nhhugidruggvvhdprhgtphhtthhopehhtghhsehinhhfrhgruggvrggurdhorhhgpdhrtg
     hpthhtohepfihquhesshhushgvrdgtohhm
-X-ME-Proxy: <xmx:kJ2SaHT60CohRpcWORKyL9Dtxv3cnBo_InPO_khRHvlCf61oQh05SQ>
-    <xmx:kJ2SaH3WVwUkzRf2KHBb-F9W76aG6iU281gy_g5xmdT-8KYemzxaGg>
-    <xmx:kJ2SaDBf4-WuHmUXbw2JQsxxkOOtSGkNt0x9kYQQn1HFA8Iba6Uc1A>
-    <xmx:kJ2SaDjFff54Aa4ybzJxDv0RQhEnRw7cABsAU0RCdmAmGrz7aa-i3Q>
-    <xmx:kJ2SaKT4L7eQKJhUd-ZuA2qMn1M36aScMBI3hIDGttEaYvzCh_CptYIm>
+X-ME-Proxy: <xmx:kp2SaHXSdnG8j0oyDfF47wPag9u3kOVwos43rOmYwk5XHOVB09rogQ>
+    <xmx:kp2SaOq08RiY7n4O0xhXWeZEeDUWPTNU9nZq3HPhD2W0Z6bpMZxlrg>
+    <xmx:kp2SaJkBuQ4R7P3Pqtpl2E7qLOE9BfiaaxtdcAYPnEeCdO0pQ1Dcrg>
+    <xmx:kp2SaO1BKhjA8M96K5tUgLGc9nojcxjeIwFDG54kkIR9mMFMoouE8w>
+    <xmx:kp2SaN0JikDm19k-l6Qrs5Hr9cu60wHcs0cLP3wEbCb6rG-sS0NsJUWT>
 Feedback-ID: i083147f8:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 5 Aug 2025 20:10:55 -0400 (EDT)
+ 5 Aug 2025 20:10:58 -0400 (EDT)
 From: Boris Burkov <boris@bur.io>
 To: linux-btrfs@vger.kernel.org,
 	linux-mm@kvack.org,
@@ -111,22 +111,22 @@ To: linux-btrfs@vger.kernel.org,
 Cc: shakeel.butt@linux.dev,
 	hch@infradead.org,
 	wqu@suse.com
-Subject: [PATCH 2/3] btrfs: use filemap_add_folio_nocharge() for extent_buffers
-Date: Tue,  5 Aug 2025 17:11:48 -0700
-Message-ID: <176a4973304b6c04c9a85f5f08a03d1e90e30d82.1754438418.git.boris@bur.io>
+Subject: [PATCH 3/3] mm: add vmstat for cgroup uncharged pages
+Date: Tue,  5 Aug 2025 17:11:49 -0700
+Message-ID: <eae30d630ba07de8966d09a3e1700f53715980c2.1754438418.git.boris@bur.io>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1754438418.git.boris@bur.io>
 References: <cover.1754438418.git.boris@bur.io>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D551540004
-X-Stat-Signature: c77o7gpasidd1h4zoh15c8g46pq1xpbp
+X-Rspamd-Queue-Id: 1330CA0010
+X-Stat-Signature: buni7iw4n6646ybasy86eyfeyh7opb4q
 X-Rspam-User: 
-X-HE-Tag: 1754439057-186058
-X-HE-Meta: U2FsdGVkX19j5S08xGcaMQo5vWu3L7Qjk75pGpch4txi0C1ZvRxD4xTyWqb/k6WG7raGMCuqRP4vn8W4Ho3iwBt+TN8FieY6GMVEtXLUtt8ed86meaNMs13mMDfWk3Npc2ybYEIYARCvilHOIBpptYtLYZxYXOpg+sIQ5YS4XKgb+ALEunZ/IEyK3ncAFY/NQiiXww15NacXAYe0xLSNbdfAWNdopnr3DjSxQndB/HsD5fr9vce6X7TLAiDoLd7g3IiX5oZBc4TnrC8iTQxvI+1PEZmNrOHkomGjQc4wQdYoxJVnVMH7FP4cELohqPAF7g/xaL3nDTuhyxQJ1GqIgJ+ZuGBDPtQ50e/Gbko+yb+XiWNAXXqDp7LPIxQFWXyPb/JFdrv2yib732OIPYYJHMr4ewAHXEhl0/nQQiQ02OZn91Z5GmHx6HLy6+y02kYTgw8NjrN0MBzKKFRK2wrqG1RUDK8xTMVMyO/DHInB26pb3LVFciK9bu2ZbxRYcIoCz5PeEW7pVF++DPL76oUNwAwT32wfJ3kqjE8MXKPwRnPVymU+vdbtCbyWlUFx4846N5unlmHuXra+6FkdmofqIcD43von7t2nkuzKgY+tVb2QMPL2v0MdS4roK5MLe18tQpjZYnwW01JkjII4F6uvYFbN4mYf3M5jkCFINRnnPTZ6GJMGR7DilWfoVtCzriNQP2O+qm2nfsaDsnwX+zXLJLHxnTbJ67WiS0zI87SB81Dsl5kJamIoLoL6X9puqZ0wKU1ElX5LyAl77qwgqcRDbVThnQImDZQ9TYnij2gvPWcIYg9wHUqSF6PerQKDTCFGvi9ir107fAsi1iKQaKUp0THTR7/a+PqJ/dYvC7G6FcRswDd5yRnzddU/FRr6zn0u/4oUhaoidAiiwidr7EJbL+tN4Tj33j+JCaRK+0u2izBeRAITQcGr2AA2yZZ06uybOfe/taG1Fz50IL+9wv+
- fNTq7hwP
- cYfKelKzq1LTAqwFw/blYwb99zleyD0j6+CrziJVGMjnRxgJ1p0MmiQk5X2S4v8/FCHSOgq5RADjxlyeAlcr+xLga2gwxjra0cSlmx5w9pyTb9DjZ9Z5hx56kLFyNsA0CftbYC0Xtxn5Cjzx/v1f/ae2mbUk1lJtUvvYhyglfuTxmTCv7945wvbzwqK+2MdHJ72yT+r/04cGo+uCx5yhtG6E2kREAbjaCff4gX/8z13LwUt+UcCnLAO+nhruJyAwRvTHS90pZiFGzKb18BdyF6HzTWX0t6j3izIQMCZJ52iKY7/p4fM1PnwK36QWDGuWup21Ez5XDIw620F/3EQgI+fV/AO+3VNxL3EXDPTTXa6O7hIY=
+X-HE-Tag: 1754439059-678535
+X-HE-Meta: U2FsdGVkX1+PYcTBrzW6EbUw8+/8+dkXdtJATD8VrpiLSwyLaq4iwd+NeJBhIkfjtqloUjd33OyIELs8lwuaXrb+F2bjMOJQZVKcrv0BojhmVGxb5u7966IZE5i3gn1TCjRS5meguNrEE8cr4QcxSk5MrBB42MNglRuD8IYKrv7VRcFg3TBlMUkKRHPAy0pXueINaksGfPTvEVuTQi4cZd07tA0tuQEJDAQwIYo2MiAQqoETt72N3LPySDHBDXplEE4VKfF6uNSasTi4hO9qHAsjESHnwTqZu0W8okzVMb8lQKG/ik8LNnSL4MQnRsI6WWjirOWZ93TkwqdI5Lu4vyVQyTf5/r8c8M/SaGu6QaGYTeXSieOUGpKgKQ7Xnxfaa8r0dSCigDJ3Ihu2DO+usLRwotGFcEtscFm7gNZVOKpXUlNTzMFEEEeONcJbl1uEntNGeMv6CaRM5hOXZzlRvMv67KdSAIDh6CAD1xw0zU++4eq09ykGtwPlpp5+5AwkuYvUSzheIEi9SrkFFVe+4OGm/fwgF9NA115pqoj7/LOuxhx0b6zLBpX+5N+qyPlDMHcuNh/CwqXw4CbVL58Ly13c2xg7hHmIlOg4EQQ2ScAp09A28Ad8B9lKLfoCjolS/Nf5vkzFr9dU5MOhJwauSfO2aSkNLcckKYKhomAV78MOpFwB/foM/mfzYl7fNdmodcbbRSkEf3Nu5hxg9vicUYOXuximgNuGRyhZOY0eS4dKjQwR4eEd2leC0hMV0KxyhfUroGE6dCjvNORsxcD3MbLtGrGtbIcYhwgq46BGeGI3mG1RO+trwAV8EY0/237c4Pq+q/3XEKLw1d752O+0dCCMbIv8PyLcXVv2C1fpixgNBtzH85u+saCwCjl8zZAEKz6tWURRTGOBeMMLbU6wmUhkIjbG2or8hCou5M3Zw5sl7gSA3bShdJ86g6s+4uMcaAPwF53t9HTwDD7JiiW
+ JivHEils
+ qVN9xQPTWQhRsztzOJxQ/n5nTL8yVKGVn1v/QfnvmKdfpWUqHjgrcSEKrWVHkFYV3FLzKLvDWxvQ+WOo6VOqxDKbZTtphohR3VSkiu5bxZ258K80G4qJJB1UOTGogiWMwB1rQySaBXrmMgElquR6whWJOaKgN4Lh0G9O45QCOy269rbtZ9jzRgG9uGldhuESe9IODNSvvE6XOQ9Porgd499/l4VqYwmZfghg4/6ta2OLRC17+ke7jvTgQdpbmKSr8xMVtmYhrD8gPpVMVa0AF+2t8sPhshnjUgFjQsqBiFjKFQs5pmBkw9SYgkQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,29 +135,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Don't block on cgroup reclaim or subject shared extent_buffers to cgroup
-reclaim.
+If cgroups are configured into the kernel, then uncharged pages can only
+come from filemap_add_folio_nocharge. Track such uncharged folios in
+vmstat so that they are accounted for.
 
+Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
 Signed-off-by: Boris Burkov <boris@bur.io>
 ---
- fs/btrfs/extent_io.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/mmzone.h |  3 +++
+ mm/filemap.c           | 18 ++++++++++++++++++
+ mm/vmstat.c            |  3 +++
+ 3 files changed, 24 insertions(+)
 
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index f9ccbe5a203a..1f25447f1e39 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -3258,8 +3258,8 @@ static int attach_eb_folio_to_filemap(struct extent_buffer *eb, int i,
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 283913d42d7b..a945dec65371 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -241,6 +241,9 @@ enum node_stat_item {
+ 	NR_HUGETLB,
+ #endif
+ 	NR_BALLOON_PAGES,
++#ifdef CONFIG_MEMCG
++	NR_UNCHARGED_FILE_PAGES,
++#endif
+ 	NR_VM_NODE_STAT_ITEMS
+ };
  
- retry:
- 	existing_folio = NULL;
--	ret = filemap_add_folio(mapping, eb->folios[i], index + i,
--				GFP_NOFS | __GFP_NOFAIL);
-+	ret = filemap_add_folio_nocharge(mapping, eb->folios[i], index + i,
-+					 GFP_NOFS | __GFP_NOFAIL);
- 	if (!ret)
- 		goto finish;
+diff --git a/mm/filemap.c b/mm/filemap.c
+index ccc9cfb4d418..0a258b4a9246 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -146,6 +146,22 @@ static void page_cache_delete(struct address_space *mapping,
+ 	mapping->nrpages -= nr;
+ }
  
++#ifdef CONFIG_MEMCG
++static void filemap_mod_uncharged_vmstat(struct folio *folio, int sign)
++{
++	long nr = folio_nr_pages(folio) * sign;
++
++	if (!folio_memcg(folio))
++		__lruvec_stat_mod_folio(folio, NR_UNCHARGED_FILE_PAGES, nr);
++}
++#else
++static void filemap_mod_uncharged_cgroup_vmstat(struct folio *folio, int sign)
++{
++	return;
++}
++#endif
++
++
+ static void filemap_unaccount_folio(struct address_space *mapping,
+ 		struct folio *folio)
+ {
+@@ -190,6 +206,7 @@ static void filemap_unaccount_folio(struct address_space *mapping,
+ 		__lruvec_stat_mod_folio(folio, NR_FILE_THPS, -nr);
+ 		filemap_nr_thps_dec(mapping);
+ 	}
++	filemap_mod_uncharged_vmstat(folio, -1);
+ 
+ 	/*
+ 	 * At this point folio must be either written or cleaned by
+@@ -978,6 +995,7 @@ int filemap_add_folio_nocharge(struct address_space *mapping, struct folio *foli
+ 		if (!(gfp & __GFP_WRITE) && shadow)
+ 			workingset_refault(folio, shadow);
+ 		folio_add_lru(folio);
++		filemap_mod_uncharged_vmstat(folio, 1);
+ 	}
+ 	return ret;
+ }
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index a78d70ddeacd..63318742ae5a 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -1281,6 +1281,9 @@ const char * const vmstat_text[] = {
+ 	"nr_hugetlb",
+ #endif
+ 	"nr_balloon_pages",
++#ifdef CONFIG_MEMCG
++	"nr_uncharged_file_pages",
++#endif
+ 	/* system-wide enum vm_stat_item counters */
+ 	"nr_dirty_threshold",
+ 	"nr_dirty_background_threshold",
 -- 
 2.50.1
 
