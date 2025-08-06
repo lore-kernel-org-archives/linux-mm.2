@@ -2,111 +2,118 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AB1ADC87FD3
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 15:46:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 03E31C87FD3
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 15:47:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F1CE6B009C; Wed,  6 Aug 2025 11:46:07 -0400 (EDT)
+	id 9AA7B6B007B; Wed,  6 Aug 2025 11:47:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C97E6B00A3; Wed,  6 Aug 2025 11:46:07 -0400 (EDT)
+	id 981F36B00A5; Wed,  6 Aug 2025 11:47:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B80C6B00A7; Wed,  6 Aug 2025 11:46:07 -0400 (EDT)
+	id 897CA6B00A8; Wed,  6 Aug 2025 11:47:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 055A96B009C
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 11:46:07 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B0D0F1606BD
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 15:46:06 +0000 (UTC)
-X-FDA: 83746758732.10.513EDB4
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E8CDE40005
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 15:46:04 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VBGnYCpZ;
-	spf=pass (imf17.hostedemail.com: domain of pranav.tyagi03@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=pranav.tyagi03@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7848C6B007B
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 11:47:06 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 06C1016069A
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 15:47:06 +0000 (UTC)
+X-FDA: 83746761252.28.D39C1B0
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 29B1A14000F
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 15:47:03 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=lItcBdro;
+	spf=pass (imf09.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754495165;
+	s=arc-20220608; t=1754495224;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5zmrMmlSKNc8Wry1y8dWX27pKFPjQrw0O9VLnGzkRYw=;
-	b=0HDWf1kPIgJotDuYeKJCufYZBJNGJdTclSzXi+/bbxD8OkdCnOOh15wUxkkG1eQNu40Pii
-	QHryfK7/U4Iwrr5YNE3qDlFrFQj+qwST7AsYcptiRpEGYR/Cpo8zM4weeFKcBivKfxmXkJ
-	uc8ZdwX67gDAF1XnszQ7tJDwvUA8L+o=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VBGnYCpZ;
-	spf=pass (imf17.hostedemail.com: domain of pranav.tyagi03@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=pranav.tyagi03@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754495165; a=rsa-sha256;
+	bh=jzR5hZORzLK1MdSlqmP/wfvTXuXPRKmGcAHBnX2kHxc=;
+	b=ulMBqQf0RTapax5QrEjFLhxX+uZBZYC/MyTT/aAjNqBHkX8NSSr6wpayZOeZPF+7n1/fbH
+	JYzzMgJeYdMoRB2AwoCQW53CNXchmX787uO1ITT3ApwQQ0cP/ZRaoKVp5bZUrtT/OWy2D+
+	TJSKErecrnAJGQDWBftXh2sgrWISdSE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754495224; a=rsa-sha256;
 	cv=none;
-	b=MV4f88jO4xQTxZmi1Hd+mvpRELiQmthnRWTy7Rhq+ybyu7+3O6WA1aEUj8Kxn206JvTehQ
-	ztHYhXttImT0lZwscYEDQtZIadeX1ip61RCKbDuj7JLmyBzdV2gQSlKT0O85e9f3iyVdeS
-	Ad+Ftb+jG6XaOVTm9cODiHElX0OZ/nQ=
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-55b87e13a85so1616e87.3
-        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 08:46:04 -0700 (PDT)
+	b=Skhbgdg3dKOyL4JXhMbJvxhCL12BMu2Dih2/v7mdCyBke9gl50YXtkteMgmiBs2kYKTJ3p
+	C3SjbLQFhqn1oZH1DDLaI/TOdxLD/sorXRTfR8OeyqI6raBvWRzneadSCL11HN6TNpq/iY
+	clyBHQW12kQ+fl9mp4qvnMm1fh6h1I8=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=lItcBdro;
+	spf=pass (imf09.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4b099118fedso235181cf.1
+        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 08:47:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754495163; x=1755099963; darn=kvack.org;
+        d=google.com; s=20230601; t=1754495223; x=1755100023; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5zmrMmlSKNc8Wry1y8dWX27pKFPjQrw0O9VLnGzkRYw=;
-        b=VBGnYCpZBsCdug4fEe9i5b4JCOUGamX4go9XNFrmW+QlFS9wdLkoNvNePW/azX8Rbj
-         QzXpQrJPa9iJ1/H+tFlDHXg1i8rcoUboseXq3UUvmX624uNW83s3CSDCbvzV/jTd7Ckb
-         FR71R+WpX1sh5wbXA/V0vslxr30N7ylpOYChk4eQBAh9JCmKbTiAOXbuMYdy0mavh5+B
-         +bTFspSmt16bkvbaaljnTj2tKN17SzptFh5qXe+woMC2/plvX/gKjOoAOQayt1IOZM5+
-         wzEZSt7ys4mt2XWIRQEYMAb1VaY5P1S+yzhQm+b31Lyv6s5yGQDehB+sN7sIDHn7bhDV
-         BeGQ==
+        bh=jzR5hZORzLK1MdSlqmP/wfvTXuXPRKmGcAHBnX2kHxc=;
+        b=lItcBdrobJdcvCvcfubJ8N8TdRZdWNQOERbnN+JmQHXctxSAwFpLhXV0pGAi3b4yBU
+         /uGh+pRz4rGFkoAejoFuaxM4X/t7RDGxsXrUNe5tHATRKe+d8nqEvu/Rv37VeWVO0eE/
+         76k2QWmL9aKwZIaIwXRqcq0Ej0XzMBFJu1lxKpMVaICjTSwYBdyMUAoOeaXNUpZrGU6i
+         QeOwE/tcoPjJu9h7GdFP7GmqXkwKyTu6hRyldKvmvkBpG2+Ff5U8qpK9hygYOgrbsktY
+         XEx8MM/rOdkJ45WLimLjfwgOyd8ENylKrJXTSJdTztEeD7IOhzUziGTxL4+tPwwJyfEL
+         G1Dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754495163; x=1755099963;
+        d=1e100.net; s=20230601; t=1754495223; x=1755100023;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=5zmrMmlSKNc8Wry1y8dWX27pKFPjQrw0O9VLnGzkRYw=;
-        b=VDhX4st2LvUx1NCzBSMUwvZQsM54X8mAWX+GFEYqUXzpRT3r9uXREwTxAAMu5d80Rn
-         wVZ5VKyAGrXMg+/V7A9dtwOv+L4Th4xVHMAzrEGBHxt3MbQ8D1G5Gx9rCnSvz4krKdax
-         qPcdY0joTy7Z+VUqZBT3OIGAev7Nduw7OIvwvcxBPVXJzLRBpXRm8+z7Jnocb2/6nTSO
-         lOQoJao3u4P5QZPVslaCrOp7DiAeJ8mmGfwThfqg6R/EEcGORyFvLvO5bXtz/nqMPmUQ
-         lOzHfjWiG/pS2EfpgKgWGI9qAx87zmmWAIRT4tVAzSdkxnN2kY0fjW4CnEuqWA6ccZDr
-         JQ6w==
-X-Forwarded-Encrypted: i=1; AJvYcCXy7Pdz2O8Yrco6ZN3Fi7SWWhMKdWSoasZKqnh5Nd+ush13GPTJTGlESNfc4RWQPbWeBeRRm2IQbw==@kvack.org
-X-Gm-Message-State: AOJu0Yxu6QY5VK5UKktGPFpeIzmeGs/dAtqM2SxaLKIU+nAqgsr0La3K
-	bJZsh/BlLt/QcAdwq+cg16bWgK4vdN6SfCsx0N0bRDrsp28craSUrEvUj5s/G4+bFR060TaopOh
-	izJzzUWIXaRPZCbKle53dggHuWNxlUzk=
-X-Gm-Gg: ASbGncu94O8hxHwa0wIjXWmy0oFWoRrhCuQtCeEpuCPjGgkcj4WndQ4Jtxuld9Hdjt2
-	8FWMhiksNSrPPtscN/8FOyVobvEBfs3TGmv+deCQOm/V56YjMR5HUFG4jdVBmaAj6oVfEyAPTa/
-	JMK9fLu/nTvO6tApvs7SQhc5yTtGMHOPTAh6JMxZgzg8JVYKtTyESwHdF8xsvhQ7OzLqm8Dsg/t
-	O+QK+yce2zxVC+p0oirKD3UcZ8uExnW9BSmYzhrDA==
-X-Google-Smtp-Source: AGHT+IGXosmjvzExQ3C4RK78Mcex7Mn1Uk/h0JUj5QUxdn/C6gvDfKT6OI5wS9vLx2H97RSvkUJIJkgfNFNXTPXKb0g=
-X-Received: by 2002:a05:6512:118a:b0:55b:82b8:c2f3 with SMTP id
- 2adb3069b0e04-55caf5f82b4mr1212425e87.43.1754495162686; Wed, 06 Aug 2025
- 08:46:02 -0700 (PDT)
+        bh=jzR5hZORzLK1MdSlqmP/wfvTXuXPRKmGcAHBnX2kHxc=;
+        b=f+C/vwaWcWmR0kFFMTkOTBEpwje5IpxUaW8xISPDhVEo+d1rOqcOvIbpUg0kjf/x+i
+         gXRNKGN0BvtgVlX9pL+mXzmrrrc7ey3ZJqTIRQfcZD0tHytpg0zvGDRLa9madeONOAq2
+         ZmE5mS66Ehm+2fG5cMECIbsJpLeugKfP/y+Jz/kHxfY7uu4o4rYyAm56TSynpqBX1aFt
+         zlRIhhLvCcU/YPBu2aLWLjiYktnrGiu5U12pPWPly+bS93EBzUFcMMHCyfjuH2J3FI5M
+         7PE31g1v/B9m7/5AKlGf7bfWr68DNCJUV5uAdhvfM2XPdpGl4OZy00PrjscBPpu7Cw6X
+         JHbA==
+X-Forwarded-Encrypted: i=1; AJvYcCWYLGkC6PH4WlNizwPBxsMyBeVb+aOseYXJsVUlg0Oplcl68abQWFamivnslh7EWPO66Kokza7E1w==@kvack.org
+X-Gm-Message-State: AOJu0Yw7scadCmcvqkcmYYl5hoVuuz7S/U460YovtkxLonbva4RkuVqO
+	n1yenVei5NlrHbuP6Hs2EZvB47gfDS358MvmNDPAAmXFGPL6S4IZofycU8KgtiJmrnVvbrM9/aW
+	zXGUwjLdcU2fk8JIANi7A0eroaG6J5N9D4M7gE4wy
+X-Gm-Gg: ASbGnctAVGvO0Bk31AQaFgjnQcIUWT4HtWl9yXlyuNrl7jvQlXVC1XYk4L8XJOISi3T
+	JFzKOg6VQZA4uGPm1auCqP7LjmLVViRwuT+cCrSirn/fW25BG8uhhpWM6iVcCgE85f+c2MofPQJ
+	6zPe38HZlAgrHOM9wtYoJKru82e2I4bCwWJf91haUNgVT43x5SYKavpytg7Q91FW3YgxMkJvHtE
+	ho/O0nXiZtbm2e413iWTSx1UU5yg+HtoygY5A==
+X-Google-Smtp-Source: AGHT+IEYh053v3QF4PQwxhsLJXp/FIJIxdvbBIzUpxM1WEijiLmhfG9OEz0K75yz2Pw4+euNot61Qt8yZuFDMeSfSC8=
+X-Received: by 2002:ac8:5894:0:b0:4a5:a83d:f50d with SMTP id
+ d75a77b69052e-4b09276bd9fmr4745741cf.11.1754495222647; Wed, 06 Aug 2025
+ 08:47:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250730142301.6754-1-pranav.tyagi03@gmail.com>
-In-Reply-To: <20250730142301.6754-1-pranav.tyagi03@gmail.com>
-From: Pranav Tyagi <pranav.tyagi03@gmail.com>
-Date: Wed, 6 Aug 2025 21:15:50 +0530
-X-Gm-Features: Ac12FXyNkNIXJt8LjQHrVLUgBnSRkW0iOHvQddA77ExTJZswxw6Wx4O4SJ98_zE
-Message-ID: <CAH4c4jJ8VywRUfn2z8HnA73vNxviZ53DZttcR3JaPULF3JFkQA@mail.gmail.com>
-Subject: Re: [PATCH] selftests/mm: use __auto_type in swap() macro
-To: akpm@linux-foundation.org, peterx@redhat.com, shuah@kernel.org, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Cc: linux-kernel-mentees@lists.linux.dev
+References: <aIz1xrzBc2Spa2OH@x1.local> <CAJuCfpFJGaDaFyNLa3JsVh19NWLGNGo1ebC_ijGTgPGNyfUFig@mail.gmail.com>
+ <aI0Ffc9WXeU2X71O@x1.local> <CAJuCfpFSY3fDH36dabS=nGzasZJ6FtQ_jv79eFWVZrEWRMMTiQ@mail.gmail.com>
+ <aI1ckD3KhNvoMtlv@x1.local> <CAJuCfpHcScutgGi3imYTJVXBqs=jcqZ5CkKKe=sfVHjUg0Y6RQ@mail.gmail.com>
+ <aJIXlN-ZD_soWdP0@x1.local> <CAJuCfpFzP_W8i8pwL+-Uv-n+2LixgFrzqn2HsY_h-1kbP=g3JQ@mail.gmail.com>
+ <CAJuCfpFEf92gTR+Jw+1wcCcT0fEt-SP193NHzpyxVXJA=VAwng@mail.gmail.com>
+ <CAJuCfpFeSVq+hq4JRJStLgFfQgmS6SQ7zoFsj4=SeQT89r3TTw@mail.gmail.com>
+ <aJKkjEYmeq93w35-@x1.local> <CAJuCfpGpEOaKdqpqTpfbw1cdHEEWhiu6KRFQFWaM-AKODiDFcg@mail.gmail.com>
+In-Reply-To: <CAJuCfpGpEOaKdqpqTpfbw1cdHEEWhiu6KRFQFWaM-AKODiDFcg@mail.gmail.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 6 Aug 2025 08:46:49 -0700
+X-Gm-Features: Ac12FXyLuMHK7bomXAcy0jhshEgEmzN6kvzy2ZCVRN5POfKeFAP3qWtXtAqAj14
+Message-ID: <CAJuCfpE1y_bN9_8c-5mBsSQrFjAz69R8L3+w4GPYPPa0M_2z6Q@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] userfaultfd: fix a crash when UFFDIO_MOVE handles
+ a THP hole
+To: Peter Xu <peterx@redhat.com>
+Cc: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org, aarcange@redhat.com, 
+	lokeshgidra@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 29B1A14000F
+X-Stat-Signature: z4173j7yms18kqgz6g8ztgy6jnztdx9g
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E8CDE40005
-X-Rspamd-Server: rspam06
-X-Stat-Signature: dynj45jmckuntd3suiwtm69weywkrkr1
-X-HE-Tag: 1754495164-37125
-X-HE-Meta: U2FsdGVkX183sVGoyg4wRvkDvE7KOseq8Fwww4klCNhevHDmwo5NZW1O5Ayrt9VtdkBDi1Qt2OtTTcjppRcYcB91GhOCT5eyPEFWss9rMTDJMrYKHsWnXvRBkvrs9yGWUZkIbCwWp8XVOZPA3e0YE8VY0p2gi65oQMJw8KGMfyFGpeKnnDlUiyb3qP1A9hUYoCbbHQV1SZfCCos7yd6HEEIOrn84+2TNvEkRz4GqB0M/7LxbVEN07VdaRzYzwwL91nC+vrbx5UHVKcD3bt+Hb1uD2Q5oSKE5AYDVPNLVuxXDaGSy9BhQN7lM9E2RWNW3rEc5DHMv/Nwgmf63Bcfvbsy0bJhUfgMZ9ZwyEXqS4LAtuiEyYWmfTVsU/9k3wVOhDIOmC3VDZJrWQuuJ1Ydc1snjBKaZIU4RpHB7CKcVdNpX3S1onuiMRB/ED2fVSldsyANrNIBp56Pwuo9T5SQLFh6hdVzQyGmrnqpcl1fzIUA7ApgIuXjOhIXASDmS0sywPOGvEe2L2TdQFugqX2/EWsuG3X5wzwgt5l1EWGgAhazOy+SalLJSv2vPJx2xq9d8kANaKkxrThjIDxcx7xlCLzm+dz+zTXqEjDnDzURYgE9nwdhs7gYT1HSPYaMB3FQGAHxKQFd9EJ83ZiaMzOi6CK1iB4ldCk/GyYr4FeiXZUeLSUWAbD7A4sc6OoFjklFOGcXdTIqEhb67fMhWpB2yABDrCD/76l7ejvGnQOnYEMU0IcUBLWtsSARP74Tvd9LZlCUOlONUMl4QUuqHhTAU9l4amy+Hh2ThdMvNDto0RgDtqiu3aojYjyG00Y2qo9OlWMfwtOkOPiG7NsLxCft9c5FfA5D/WQ22/mbNn61kB8pj0cpIS0wwIhzznp9okvVIlyTWlvfHwiVOyhV7KHfmMVyLkdL/xVXBC9QiB3Tx8w81YO47h//YBah+BV5ZihQkE9bAzxKdCQv1TGwViP8
- NCeynOF4
- WKbutRbbE+6c/G6+2Rzt++/7Vg+xdL6Eddx707GNsJg1WXTIh3kkw3LdGksabsVkI6/6bMm0+slGsY070anISVBqwosoSGedL2lvj
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1754495223-759536
+X-HE-Meta: U2FsdGVkX18kP2IyG+Hz5zKevBaonH9d+zuqzOqKR7fZxPKS+PwoQfNMY26BaUKLArPIgVsW9XaL1Xee8s5bF27K4grWwTR3ezXtaG2wWH3sT2TypR2UPT0UKsKTD2fxnrEdVu20CUS9woJMdgrkcCAf0mixgIPlWfBVycodIFL2ByWLgKFxYBkU7qk+AIOdOYNuhr3YbgFS5q/T8fwKmDdfP444rR+k78Q9jFqB1s3XdJR6F5gPdTbJL2qz0hxbu6TSX8ehP0KPmdI1DrGpATiBkY47zpnzpHxeG1CTU3St6Va0NebtDJhamb+pOm+H5MgB+7k7lznxnin/RsvmtN1BVYPcp6YOcuHkstWD5i7XwdzOgq3ots+j2tRyMMlbmX9MdiWUPMrrlQtu6l2vP3ll6vikdMBxTvu/+5JwPxdjn9OTQY1eusoooPQfKzgo759zpKqnTIg73oGHFDrtY6BXgOOjypWFLq8PJ/vaXN0yYziLhFstemm08ExHIH/JPzQU3uJmXqXQXYRGEKNIwLM3SWguiMBLp7XLCuzkU3xocAHKxj+BYoxbDnt0QWMFKE3RSahd5SZUkvh1ZgzXflbB+5oDJcQtFE+vkqY2MNWZGwlYPhsIhWWBLpvpCQhelmzuLHQz4Yp6cRW6qhCbMhZSgVROncwH6moNA6naS1Zk7gF2qvoxsKLFFv+SmHacK1Z3xvFay9ibKv5zOZ+QhmMIG+GFCagvG0GHWps7FEHr3a0hTFfY6kYJVKCkdBl2og3wcUKLT3O2oGI/PreXqjPjE0+IzoDUCscLaI2ssQuIwHq/qq5WmZI6VwoZ5V0FECn0ejf5guKtQgh7/bjm3+RvKazOPyR8/FJfUZGVQ3WIdGbm+mgp0/bBLfvTjaxdGKzCIW9D5nAD1bSMYZuuZH2JLhXMhf3oM2IxSbtmEIOP4FwAa0vQETw15fJUb5kSZcMskRacOBkMm9/SiBQ
+ +4WypFQp
+ n11mCD7jGAphHNKibJvqFrznAleFjLRc81TnFdsPtkuQkyPEqTiCKcrAFFTLOuAI0DeVInsoF2EFKQuzYg5QccR0MiL4SLsxEbRvUt0KH8aFZChjB4VD6IAtlJkW9wt/tSM191Zq/zP21/QUZseCJgI4b6vVYhCa6AQv/5gxxDVtYlHz1/IHVvH6CtTVouCsIKX9kcoaX70b5sils6Y94KGAc0zLl6R7h+kO6tSvxJIKyiBmMrBPL3ixY6e1PsUUFscj/3jkzUWSgp2VRFVq8jXWxkGVqKY8tJx8oOQAKwT3n1ZVhHGIDony46kbLgZaP5nQ8UpEUDpTTSEzSrY0HS5ROyfip2eynTX6sKMA3RlCY4zKK5oSTfCl14//9mXikus+z3tNTcUxSrb4/7uTGN3Awww==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,48 +122,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 30, 2025 at 7:53=E2=80=AFPM Pranav Tyagi <pranav.tyagi03@gmail.=
-com> wrote:
+On Wed, Aug 6, 2025 at 8:06=E2=80=AFAM Suren Baghdasaryan <surenb@google.co=
+m> wrote:
 >
-> Replace typeof() with __auto_type in the swap() macro in uffd-stress.c.
-> __auto_type was introduced in GCC 4.9 and reduces the compile time for
-> all compilers. No functional changes intended.
+> On Tue, Aug 5, 2025 at 5:41=E2=80=AFPM Peter Xu <peterx@redhat.com> wrote=
+:
+> >
+> > On Tue, Aug 05, 2025 at 04:41:18PM -0700, Suren Baghdasaryan wrote:
+> > > Ok, I let the reproducer run for half a day and it did not hit this
+> > > case, so I must have done something wrong during my initial
+> > > investigation. Sorry for the confusion. I could have sworn that I saw
+> > > this case but now it just does not happen.
+> >
+> > I'm wildly guessing you might have hit the numa balancing bug I mention=
+ed,
+> > that might explain what you mentioned previously on the testing results=
+.
+> > It might just be tricky to reproduce:
+> >
+> >   - We'll need a valid THP (pmd) first in the MOVE source region
+> >
+> >   - THP needs to be selected by numa balancing for a check (marking
+> >     prot_none)
+> >
+> >   - (before any further access..) UFFDIO_MOVE needs to happen on top tr=
+ying
+> >     to move the whole THP being marked as prot_none.
+> >
+> > AFAICT, task_numa_work() is the only place that can mark the THP, and w=
+hen
+> > it happens, should see change_huge_pmd(cp_flags=3DMM_CP_PROT_NUMA) and =
+then
+> > returns with HPAGE_PMD_NR.
+> >
+> > [sorry I am still pretty occupied with other things.  I can try to repr=
+oduce
+> >  together with you after I get more time back]
+> >
+> > > With migration entry being the only case that leads to that
+> > > pmd_folio(), the only check we need to add is the "if
+> > > (pmd_present(*src_pmd))" before pmd_folio(). Would you like me to
+> > > check anything else or should I go ahead and post that fix?
+> >
+> > We could fix the migration entry first, then if any of us can reproduce=
+ the
+> > above numa balancing issue then it can be a 2nd patch on top.
+> >
+> > After all, so far we didn't yet prove it, either some unreproduceable t=
+est,
+> > or pure code analysis.  Meanwhile it might also be cleaner if we have o=
+ne
+> > patch fix one issue, rather than having one patch fix two bugs.
+> >
+> > What do you think?
 >
-> Signed-off-by: Pranav Tyagi <pranav.tyagi03@gmail.com>
-> ---
->  tools/testing/selftests/mm/uffd-stress.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/tools/testing/selftests/mm/uffd-stress.c b/tools/testing/sel=
-ftests/mm/uffd-stress.c
-> index 40af7f67c407..c0f64df5085c 100644
-> --- a/tools/testing/selftests/mm/uffd-stress.c
-> +++ b/tools/testing/selftests/mm/uffd-stress.c
-> @@ -51,7 +51,7 @@ static char *zeropage;
->  pthread_attr_t attr;
->
->  #define swap(a, b) \
-> -       do { typeof(a) __tmp =3D (a); (a) =3D (b); (b) =3D __tmp; } while=
- (0)
-> +       do { __auto_type __tmp =3D (a); (a) =3D (b); (b) =3D __tmp; } whi=
-le (0)
->
->  const char *examples =3D
->         "# Run anonymous memory test on 100MiB region with 99999 bounces:=
-\n"
-> --
-> 2.49.0
->
+> Agree, that seems reasonable. I'll post the new fix today.
 
-Hi,
+v3 is posted at
+https://lore.kernel.org/all/20250806154015.769024-1-surenb@google.com/
 
-Just a gentle follow-up on this cleanup patch. From what I could find,
-this is the only use of
-typeof() left in the mm selftests, so this should be the only instance
-needing this change.
-
-Thanks for considering!
-
-Regards
-Pranav Tyagi
+> Thanks,
+> Suren.
+>
+> >
+> > Thanks,
+> >
+> > --
+> > Peter Xu
+> >
 
