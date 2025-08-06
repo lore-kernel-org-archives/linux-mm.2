@@ -2,111 +2,127 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AD960C87FD1
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 00:03:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C2E1C87FCB
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 00:10:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 330AF6B00A6; Tue,  5 Aug 2025 20:03:47 -0400 (EDT)
+	id B7EFB6B009F; Tue,  5 Aug 2025 20:10:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E10F6B00A7; Tue,  5 Aug 2025 20:03:47 -0400 (EDT)
+	id B2F136B00A0; Tue,  5 Aug 2025 20:10:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D0516B00A8; Tue,  5 Aug 2025 20:03:47 -0400 (EDT)
+	id A44776B00A1; Tue,  5 Aug 2025 20:10:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C84C6B00A6
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 20:03:47 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D26851DB1D1
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 00:03:46 +0000 (UTC)
-X-FDA: 83744384052.18.7DD047C
-Received: from mail-il1-f177.google.com (mail-il1-f177.google.com [209.85.166.177])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 38C2EA000A
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 00:03:45 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=IpG2udaw;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.177 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754438625; a=rsa-sha256;
-	cv=none;
-	b=LGlVqZ0fxtw6jEDaQ7WJb4ILMEwYoqIlXujiS9k5waza5pjfxwZIM7rYlumjZ6UkwYosw3
-	OCIHvvlgzR4fqROEBVqSwLRfn4dRfT44UeAoIUwFyKAnYQnxzX5ccu1TAtUEU3DHsSDmcD
-	ekuBhRBM1GjMmpXleEZtbiS+ypYBkzE=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=IpG2udaw;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.177 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 956246B009F
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 20:10:55 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4F9F7B7B4A
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 00:10:55 +0000 (UTC)
+X-FDA: 83744402070.27.59786A9
+Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 5335040005
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 00:10:53 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=bur.io header.s=fm1 header.b="b2VGQyJ/";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=AbuodmXH;
+	spf=pass (imf04.hostedemail.com: domain of boris@bur.io designates 202.12.124.158 as permitted sender) smtp.mailfrom=boris@bur.io;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754438625;
+	s=arc-20220608; t=1754439053;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z9Az5nMK8fbyPLQPVq6entSkBs9bBtBVFWXE9onhr3A=;
-	b=uauLxtzMlDhwSc/149oRc113T8q2JUMItvf+qOK9oJumtxS2Vnyhnu1XqhF7V+/QdK1wfb
-	p8meCfnzoZidzOX6oCDDrFBLcp+cER/o0kgjZe2ZqMzGi8qShka5FHeWsMp+A/2bKtyOO4
-	BjASPoa81c4zoLMvSuZflzNpc6LBJnc=
-Received: by mail-il1-f177.google.com with SMTP id e9e14a558f8ab-3e3f378ea68so42589095ab.1
-        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 17:03:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754438624; x=1755043424; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=z9Az5nMK8fbyPLQPVq6entSkBs9bBtBVFWXE9onhr3A=;
-        b=IpG2udawrYUH4Q8zC/kF32tEQMWTcpmIOlqHfSVf7BczxbQ70rzdlTgDNdxFTzzLsr
-         F8V/OpgaPirKWHBZaxDC1kgyghFkR4tbam0fh7Xq8tU+Uhsp9OVehCFmXqUqpVNehiHK
-         dtpgFCkjKsxSW4Rh0MtZfAXvtI/IkTEj8fwdFUFbwWKI8G5WoUxLu0BSFWwNbGKGHMKj
-         w9+a7B4iaqEcQgST9KmSfQrOd9yUANHLouUJwm3G4JEuDUE76VBNJp0S6k6qrDQM16cM
-         o6uNMxzITbLdM150jeAqVHtE/42N9sTSJO+SNXrwQ2o2nvEPUpYOKJxw7uEqJrXBhxzf
-         NVsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754438624; x=1755043424;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=z9Az5nMK8fbyPLQPVq6entSkBs9bBtBVFWXE9onhr3A=;
-        b=V2kVQ5K5YRrJqcPpfoxQaQT0G1DayopZxeyh+deQNu/ka/4a5UL7yOtcRt336NAnZk
-         8FDBDAo9tgPZ31eJcLYJq+xmpzRsF1NBpNNhAQRujVwTNK3303IG2TrxqCfEe/LAhlGF
-         7ETvrMHogNjvIAjJ1qQ0uTF3HK22vDaZ06m8tOcxuh8IQbl4sELrVkNjY9is7boWxLks
-         5A44Mb+F2VRDc0zPlEj6H/st/TBjHdD6n8Zw1WYeTSVycqtr97Yt4ywIE7lRPC+Qlfre
-         CWBhJ+S1tmXWCWOnrCYhJREmSG1Y0uLNQC1PWuqr11CXjstUXVToDiTCUCZh+ivBAqPE
-         TrEQ==
-X-Gm-Message-State: AOJu0YzsE4WujJajiEaofbO5NJVx63epiPPly0YE0YG8cTPRGtQbUAV/
-	4jxbVXc8/oFZmYoDk0IkVstTdnXJcCv1Qr/rEeCh1KhRC96ld0ZT4UHhuSEjVLm8IWvM165XV42
-	oG2NZl+4i41XF/yUgC1VaFIX92kZaHMk=
-X-Gm-Gg: ASbGncvG03tCkwNwMnvo7CcX7heNHSHMTxOANygDAm1yasACLtEjplSRBY0vaPYRqOD
-	y+8wCKRkztHzS+MIu0PjRH6jyGIwIAtzT4/d/DutgS2vNDqdTdXUzoJNTK73S6Fbp3Nfzvyo1+5
-	m2InJo8knwYf9KVjs0AV605o+TVZxg0ObDAvCJl77kXHRb03ilXguf34uIq+x3Rr2umYU+XucyE
-	UQqOH8siZLVkXj13IguhYY=
-X-Google-Smtp-Source: AGHT+IH4/jj76l3ofQECGaPWCFATYwMGPMeaqkfQQVMXyZcr9rWEy+uXsODNIG0ouW7aTNjLVw3SAVzKrkpnpXdH5rY=
-X-Received: by 2002:a05:6e02:3193:b0:3e2:c5de:5fb with SMTP id
- e9e14a558f8ab-3e51b91907fmr11548015ab.18.1754438624092; Tue, 05 Aug 2025
- 17:03:44 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=qNeHkb7L1un5p2eTx7uIdxYIPGuHDlQVkoD4AYWoiJ0=;
+	b=liZVLOtnDfy/gRIqFa6oggHzSsxePatLDnuD/MhP2o8n10lnGmXLCmTz+zuOW7KKEWavGV
+	jPNrX7n3ZyLU+kovIhqt8CWoe+1VtOB5a/Fxq53diiII4rs6bhr5WeKCZaiVUr46jRDws2
+	Xq/skhX2pLRJRpaKKacCtDobcxAC8C4=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=bur.io header.s=fm1 header.b="b2VGQyJ/";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=AbuodmXH;
+	spf=pass (imf04.hostedemail.com: domain of boris@bur.io designates 202.12.124.158 as permitted sender) smtp.mailfrom=boris@bur.io;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754439053; a=rsa-sha256;
+	cv=none;
+	b=0438ZZwrfGRh6MbaAcH3TzUPMg3SFSv5jNiERWBEgwwlZeYLQRllSNBA/HdRsTFHKrdipN
+	TB8roN4Kbbx9M6S/LiVqq256MMPFVQPhLhDdkTIA87+LnvP7102sU5IibiR1ic/zIBMO8M
+	oGaeZCJPLoZeBXC+H8pEu9TJXSb70rM=
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 1C31E7A025F;
+	Tue,  5 Aug 2025 20:10:52 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Tue, 05 Aug 2025 20:10:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bur.io; h=cc:cc
+	:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm1; t=1754439051; x=1754525451; bh=qNeHkb7L1un5p2eTx7uId
+	xYIPGuHDlQVkoD4AYWoiJ0=; b=b2VGQyJ/0bf0SX9w19YPsGuxCZ+3+W0+Q/mWw
+	1sFWJJuLiPBbPaG0GXRnwrwky0IoK9AGiyxOyuQMCCk4oqPSik5sk9HiNUkNjuJh
+	ZlTW+dLHsxQbngeKWQMneLvE0uYlTEnv5idU1dKne7UW2girqgoaM/LPKaJyQ7rf
+	8wlgpw6dsdEBVGvBJs3bvZRB1+hq9iITsp7uWE6HsNEGtMf3igWxxL87kREtPWNz
+	4OTXgmYdB7JnLquK6MQ+dFDcqQ+wyNomrE2swadGqeozhS3OADvH0RYedORIiyir
+	eZgX510VaLcnwtFYDpVeDIf58NH+J+oPNW3ByYpHvl1eV4gvQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1754439051; x=1754525451; bh=qNeHkb7L1un5p2eTx7uIdxYIPGuHDlQVkoD
+	4AYWoiJ0=; b=AbuodmXHTESCuBGgcAe0jaivKpessMpvmMA7tr42LjmiCkQXA3K
+	Pc0/r/MmWi6KolnmBDYf1P/XnULiUPUzPuCcyEqxS/4Vzp2JgVEYXMD8jWFU2a/0
+	mPAJVEKM5oa802fINCPJ7qUSF+VeqEysYsgCNQZF3NmXUI5AmLXXowRLHK9X0Qc3
+	BX/KPIu4nRk5e2LptfEerZ7SY07dPj0PxQbaaTzWF9zlJ4Num5qeHw5ngueD4xNb
+	2paju4g8cGHWjTlDfW4kTj9hW6h4elNT/rTpyszZtm4hVecHt3OrtKxIY8Pfp6VP
+	m674UmkXfCAgsogZYafTOTIUM/1Zn1F67hA==
+X-ME-Sender: <xms:i52SaA0sqWuvQbAftwx1_hVGKq6EVkgelkil3Q1qFLdSlhO9GBj_kw>
+    <xme:i52SaO5DTP5V7o8vBxBgJPX559FjReufAUwSd6KeU-UkXbOJn1vDoZXu-D9fBbHQv
+    c4k1KNKBVhUV4ysHik>
+X-ME-Received: <xmr:i52SaB8gNiEq997kXBLKklCeBgYleu5UtWJ7X3bfkKx0kF-oQaFofKd4OEUnJRpjpst51TyyGYFOH4GBBt5ao2ll7aQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduudeiheekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucgoufhorhhtvggutfgvtghiphdvucdlgedtmdenucfjug
+    hrpefhvfevufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeeuohhrihhsuceuuhhr
+    khhovhcuoegsohhrihhssegsuhhrrdhioheqnecuggftrfgrthhtvghrnhepieegleehje
+    elfeeifeeiuefhfefgvefgkedtjefhiedvveetgfduleejheeifffgnecuffhomhgrihhn
+    pehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
+    grihhlfhhrohhmpegsohhrihhssegsuhhrrdhiohdpnhgspghrtghpthhtohepjedpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhinhhugidqsghtrhhfshesvhhgvghrrd
+    hkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhmmheskhhvrggtkhdrohhr
+    ghdprhgtphhtthhopehlihhnuhigqdhfshguvghvvghlsehvghgvrhdrkhgvrhhnvghlrd
+    horhhgpdhrtghpthhtohepkhgvrhhnvghlqdhtvggrmhesfhgsrdgtohhmpdhrtghpthht
+    ohepshhhrghkvggvlhdrsghuthhtsehlihhnuhigrdguvghvpdhrtghpthhtohephhgthh
+    esihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopeifqhhusehsuhhsvgdrtghomh
+X-ME-Proxy: <xmx:i52SaNXiVbelmAyZhA-GZZHs6bXZyZSpJ3mJe4aW5Yfd2xvT24t2RQ>
+    <xmx:i52SaMrtIZompcUTUHirU7Eoil2nJRLOOlMmg-KEMlt5Cgig9aRbqA>
+    <xmx:i52SaPl42hGL_7meT9BV5_AMx0Ji04Nfd7DSCGEuKZb-mJOffRkyPA>
+    <xmx:i52SaM1VKstmP-cGUUXd0Fwfv7tdEd4dJ_HC927XHO_DEietJcgs5A>
+    <xmx:i52SaD0PosXDOWilIQRb0GWoPs73cwVx3BSfuVgrTPwVAAbl9wNOh7jw>
+Feedback-ID: i083147f8:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 5 Aug 2025 20:10:50 -0400 (EDT)
+From: Boris Burkov <boris@bur.io>
+To: linux-btrfs@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	kernel-team@fb.com
+Cc: shakeel.butt@linux.dev,
+	hch@infradead.org,
+	wqu@suse.com
+Subject: [PATCH 0/3] filemap_add_folio_nocharge()
+Date: Tue,  5 Aug 2025 17:11:46 -0700
+Message-ID: <cover.1754438418.git.boris@bur.io>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-References: <20250804172439.2331-1-ryncsn@gmail.com> <20250804172439.2331-3-ryncsn@gmail.com>
-In-Reply-To: <20250804172439.2331-3-ryncsn@gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Tue, 5 Aug 2025 17:03:33 -0700
-X-Gm-Features: Ac12FXy864CCrnwXvvUn6b07bRzjYU7wFBiXElgxTmW8DadL4kPHfdqHucJZ40o
-Message-ID: <CAKEwX=PkJdz3Um9j4m2bPahN9NbQpn7QnOvEAxDdWUHTqSvchg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] mm, swap: prefer nonfull over free clusters
-To: Kairui Song <kasong@tencent.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Chris Li <chrisl@kernel.org>, 
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	"Huang, Ying" <ying.huang@linux.alibaba.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 38C2EA000A
-X-Stat-Signature: pafyp7w96z4nupjg4k7pzcpushqhnngb
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1754438625-367949
-X-HE-Meta: U2FsdGVkX18qHMjkc8xE4lXJgOSrlN0ik1Ad6p//El92Y5Zt++VPCUc76pcsyZ2lMuqAqsysnZVBWn3/ejfYjbBBbXn1ANBMESctZWTe1f5Wmll/Dgme0AlASyb6KkqspXrBD4hw5seR0w14S6VJZFL/4oCiNPfiZIkBcuVlnXGa6wDyssgRORGBH5tKeXZhhQnhI/HZ50ZpHwxvs714SxZkhbdXnA9fGvwsQoumTTWosfidt2a484SgsTPosaCBHsXmGbTOwO7PCKZD2mn4TJzxsC2WnY13+bYOWSuQj5gn0ZM1Er/x3Sogq4rAZa8WvzwzeHBNJDSqnX56Sm1M9K7vlsVUhvs6SysNtFZddduLWK850dT8aWC7ldLpBcdXVOIIb7OZF7H6uGhtPp3BjtiLJJr9Ol0mTAnWYsEd4pWcrs6d36dH8a3P+zUm02wmxVZ84DVIDX1wG9Qe+Whwx/eEYyIsGxYiBZB9VSky4zP4ikZmLViYfIR8sv5JKpv5pSSAcVfsoT6lnQTYIn+sLB15MJNtjHci5yWm5VgCf0LXQOGtOymlVdoFQPwjEn/14vbMaXpGjlUJooVtmbk7hCQAiErqpL4z3UJcD33rAabZDhiNIMoomWGPiz0R0P+/hpKRcvPbQsaRaRcPe2O+SF0S9E0islOMEsV2jM7dPjfqqYD/fZxaM/cc1vBdjLic2f+tyHS6PsAFHZM9o2z5FDwab1Bkw/QM0u7pL986UxmkDU/e3Wx5Wge9S84UecexTaoijt1ymKsgslGJol1e+lryIuR7SvjX+Z02kRcBicBPiSorDFsi4ruQrOMfaLEPKFqw12c/gtGpbXTMNt7tBAsydvv9m/kp/EgZhvagcQn2TglgYLq0SFjuK3R8hOFgxVt+Tp2HwBvCE1v7uMor0i9UYkgjIX6oZNqEe3WiiFS5QpUC3nIikJZsJLnSC9ZIY7UUWHsfV7abEaUs6dj
- sa7OZqA5
- /JJL0sviZPsxsuRc=
+X-Rspamd-Queue-Id: 5335040005
+X-Rspamd-Server: rspam06
+X-Stat-Signature: jn6385ujtowmfbnwx1h6z6p5d67urw1k
+X-HE-Tag: 1754439053-194499
+X-HE-Meta: U2FsdGVkX19Cfgd1EVRYtPg08KpOSCtxh8oYpbglio6TKwfl6zBkfGcOZ5DJrjY4bOEUz+J/LKnEj6+Lc2KAVTJnKnkyy7M6oALyIfc6AJ1ljMb/4Qxp8NrDZn61SjCx+nGCBihGHI1hn3m8eS6igFy0qfXbPwVyB8jc/+S2zezJO9L6hc6gUpRUPx2Ipwf4Amalq5vfhvqIyX43tZFhkoUq3iwMUMIzX1c9jZeZX6U+LkzsQAZJat8E+UGoaYmHyqoad4ZUR2vtf/tDp9cY9k5gnV6TazNSt/zWMigEKoe1C4OTi8xyBvgeRDS05fCz2dfWXemT63SBN40jV6WJtqvp01hSPUyad7TPXgYCpwHCw7ynu9Vm9kzbe/VEOuyM4buyf7qKA4X/Vaa40y0n0KIhz9MNd9VW/9oZj1F5VYxJdQ17xNJxUxZP9xzvoGchX5hXNMzMBAQvDeFXF/6iWKqMoV6NJmJCJfD3WsU3Nseoi6QnqCVCmuxryUvwvuh73uFohOeITfDlG5DJaKjUGrQkOvNr7dXKhRdnRf/AxxWCtuhBCrc6dlJvjz7P5VAIkHoqbgR4WbhObeJeqn8MEW97VPFAUnpOCFyYQr9G8RB/CIZJQgr6j5uw+qhg/QI2wcG3zykUVBHNdxfL612WDTD6Pl19dfgk5RMqbbvIgTotVvm5VoJm48yuPJSHy9QegOTRmVDvOxt4R/NO95B59RSnDzMWRnuIMm267VaBljUgfa7EvDUpZiG3ciYqPlVMwohjI1Y0rMPzDKhkfb/ZUrBKxMFiYHXsOT/XtF7B9v0cyiT3w27qlmWo02os2vBVKZ+xFZxJ6o80GOfgSwrYVcSAJ0VXPtMtJJEC8f+cCH4TwD65thugWdra4d90La8z5OyI/hLFat+0vBUA9R8zTAjzLuykWEmg0QJ8KdqCGaFv1fs7141EAIo4EcLsw2e/7M5Is+OfG+xdL3T/9cG
+ L6a0Mysx
+ rlPGwI2wkmt7jkrbfZhYGQiPCu7dfggURFquCBvMBSKFdaihwpuZCZyLnhAIp2Gio457Hb7ip/HuCeDjUWRdkuuys/MRGvEoZQcKeJ+EnIrxpexRByi3FapB0Nhl/+Ez0TqnO3URcVPLPuVOEU0MXoSC2nO7kpqNTEjLSyJxUiPyWpmMVAHF7iuz2ZbZG9BZkVK8bFGah7G1hCNMXAk/aq7yp5aJzqh8Ws/9cMtIhkFnVw8kWvnIIF6rdhB/oQcdVJWqUv6geR3W9gWahhtLgJjodAa44pj98wiqoZdYuEddgbNuZxFn0ZGlg9AWQGa1Yr6ANpp6wFctjKSLF8ysQ5jbrdwM9Gwhszn5qQJ/eOfY0pPIHpQhRbWP2wSfD2GguCfHbaHhNvH1WQZen3c3E8w8dGw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,132 +131,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 4, 2025 at 10:24=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
-e:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> We prefer a free cluster over a nonfull cluster whenever a CPU local
-> cluster is drained to respect the SSD discard behavior [1]. It's not
-> a best practice for non-discarding devices. And this is causing a
-> chigher fragmentation rate.
->
-> So for a non-discarding device, prefer nonfull over free clusters. This
-> reduces the fragmentation issue by a lot.
->
-> Testing with make -j96, defconfig, using 64k mTHP, 8G ZRAM:
->
-> Before: sys time: 6121.0s  64kB/swpout: 1638155  64kB/swpout_fallback: 18=
-9562
-> After:  sys time: 6145.3s  64kB/swpout: 1761110  64kB/swpout_fallback: 66=
-071
->
-> Testing with make -j96, defconfig, using 64k mTHP, 10G ZRAM:
->
-> Before: sys time 5527.9s  64kB/swpout: 1789358  64kB/swpout_fallback: 178=
-13
-> After:  sys time 5538.3s  64kB/swpout: 1813133  64kB/swpout_fallback: 0
->
-> Performance is basically unchanged, and the large allocation failure rate
-> is lower. Enabling all mTHP sizes showed a more significant result:
->
-> Using the same test setup with 10G ZRAM and enabling all mTHP sizes:
->
-> 128kB swap failure rate:
-> Before: swpout:449548 swpout_fallback:55894
-> After:  swpout:497519 swpout_fallback:3204
->
-> 256kB swap failure rate:
-> Before: swpout:63938  swpout_fallback:2154
-> After:  swpout:65698  swpout_fallback:324
->
-> 512kB swap failure rate:
-> Before: swpout:11971  swpout_fallback:2218
-> After:  swpout:14606  swpout_fallback:4
->
-> 2M swap failure rate:
-> Before: swpout:12     swpout_fallback:1578
-> After:  swpout:1253   swpout_fallback:15
->
-> The success rate of large allocations is much higher.
->
-> Link: https://lore.kernel.org/linux-mm/87v8242vng.fsf@yhuang6-desk2.ccr.c=
-orp.intel.com/ [1]
-> Signed-off-by: Kairui Song <kasong@tencent.com>
+I would like to revisit Qu's proposal to not charge btrfs extent_buffer
+allocations to the user's cgroup.
 
-Nice! I agree with Chris' analysis too. It's less of a problem for
-vswap (because there's no physical/SSD implication over there), but
-this patch makes sense in the context of swapfile allocator.
+https://lore.kernel.org/linux-mm/b5fef5372ae454a7b6da4f2f75c427aeab6a07d6.1727498749.git.wqu@suse.com/
 
-FWIW:
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+I believe it is detrimental to randomly account these global pages to
+the cgroup using them, basically at random. A bit more justification
+and explanation in the patches themselves.
 
-> ---
->  mm/swapfile.c | 38 ++++++++++++++++++++++++++++----------
->  1 file changed, 28 insertions(+), 10 deletions(-)
->
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 5fdb3cb2b8b7..4a0cf4fb348d 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -908,18 +908,20 @@ static unsigned long cluster_alloc_swap_entry(struc=
-t swap_info_struct *si, int o
->         }
->
->  new_cluster:
-> -       ci =3D isolate_lock_cluster(si, &si->free_clusters);
-> -       if (ci) {
-> -               found =3D alloc_swap_scan_cluster(si, ci, cluster_offset(=
-si, ci),
-> -                                               order, usage);
-> -               if (found)
-> -                       goto done;
-> +       /*
-> +        * If the device need discard, prefer new cluster over nonfull
-> +        * to spread out the writes.
-> +        */
-> +       if (si->flags & SWP_PAGE_DISCARD) {
-> +               ci =3D isolate_lock_cluster(si, &si->free_clusters);
-> +               if (ci) {
-> +                       found =3D alloc_swap_scan_cluster(si, ci, cluster=
-_offset(si, ci),
-> +                                                       order, usage);
-> +                       if (found)
-> +                               goto done;
-> +               }
->         }
->
-> -       /* Try reclaim from full clusters if free clusters list is draine=
-d */
-> -       if (vm_swap_full())
-> -               swap_reclaim_full_clusters(si, false);
-> -
->         if (order < PMD_ORDER) {
->                 while ((ci =3D isolate_lock_cluster(si, &si->nonfull_clus=
-ters[order]))) {
->                         found =3D alloc_swap_scan_cluster(si, ci, cluster=
-_offset(si, ci),
-> @@ -927,7 +929,23 @@ static unsigned long cluster_alloc_swap_entry(struct=
- swap_info_struct *si, int o
->                         if (found)
->                                 goto done;
->                 }
-> +       }
->
-> +       if (!(si->flags & SWP_PAGE_DISCARD)) {
-> +               ci =3D isolate_lock_cluster(si, &si->free_clusters);
-> +               if (ci) {
-> +                       found =3D alloc_swap_scan_cluster(si, ci, cluster=
-_offset(si, ci),
-> +                                                       order, usage);
-> +                       if (found)
-> +                               goto done;
-> +               }
-> +       }
+Three meta-considerations/questions:
+1. Which tree should this go through, assuming it is acceptable?
+   For now, I have based it off btrfs/for-next as that is what I am
+   used to doing, but I am happy to re-send it based off the appropriate mm
+   branch.
+2. Christoph wrote the first patch as-is in his suggestion to Qu. I am happy
+   to replace it with his authorship/s-o-b, I just didn't want to do that
+   without asking. For now, I put his "Suggested-by".
+3. The previous suggestion also requested "proper" documentation. I don't
+   know what that entails in this case, and was unable to find corresponding
+   documentation for filemap_add_folio() in the code or in Documentation/.
+   Please let me know what I should be doing there, as well.
 
-Seems like this pattern is repeated a couple of places -
-isolate_lock_cluster from one of the lists, and if successful, then
-try to allocate (alloc_swap_scan_cluster) from it.
+Boris Burkov (3):
+  mm/filemap: add filemap_add_folio_nocharge()
+  btrfs: use filemap_add_folio_nocharge() for extent_buffers
+  mm: add vmstat for cgroup uncharged pages
 
-Might be refactorable in a future clean up patch.
+ fs/btrfs/extent_io.c    |  4 ++--
+ include/linux/mmzone.h  |  3 +++
+ include/linux/pagemap.h |  2 ++
+ mm/filemap.c            | 41 +++++++++++++++++++++++++++++++++++------
+ mm/vmstat.c             |  3 +++
+ 5 files changed, 45 insertions(+), 8 deletions(-)
+
+-- 
+2.50.1
+
 
