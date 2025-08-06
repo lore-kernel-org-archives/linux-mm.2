@@ -2,173 +2,90 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B7FB5C87FCB
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 18:47:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8EFD3C87FD3
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 18:57:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5BCC88E000F; Wed,  6 Aug 2025 14:47:27 -0400 (EDT)
+	id 2784D8E000E; Wed,  6 Aug 2025 14:57:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56D758E0002; Wed,  6 Aug 2025 14:47:27 -0400 (EDT)
+	id 229A58E0002; Wed,  6 Aug 2025 14:57:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4355E8E000F; Wed,  6 Aug 2025 14:47:27 -0400 (EDT)
+	id 118658E000E; Wed,  6 Aug 2025 14:57:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E5118E0002
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 14:47:27 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C607E136528
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 18:47:26 +0000 (UTC)
-X-FDA: 83747215692.28.4486105
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2042.outbound.protection.outlook.com [40.107.93.42])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 1EFE112000A
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 18:47:23 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=dfhq0KDm;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf29.hostedemail.com: domain of ziy@nvidia.com designates 40.107.93.42 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754506044; a=rsa-sha256;
-	cv=pass;
-	b=gzSK/G4bQd2olvMt1LSCbFHZvtbuJclIwJPk1YLDpbTXvKT0wFUEW1ESYt/P2NwuVv6vYa
-	rCz1AOp94WXyBdfj2tYJxLdw28TkHoZOy+URmWglbuQa44pKCemd9E3yQ1Ca9AQ2tFrs3l
-	nI4SnvCY5RGBfdiFpQMJAnO2+my2MKQ=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=dfhq0KDm;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf29.hostedemail.com: domain of ziy@nvidia.com designates 40.107.93.42 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754506044;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id F373E8E0002
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 14:57:36 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 896411365B2
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 18:57:36 +0000 (UTC)
+X-FDA: 83747241312.05.5CC9897
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id C201040013
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 18:57:34 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u5DgpZMb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754506655; a=rsa-sha256;
+	cv=none;
+	b=2JsARqC8vdXt484W5uABqPERkMrjXamFxEdHBThd48Ryr+xWrPl+tvm5ugbNfGAM56v0rm
+	ph+MoXXWRuhpnx5nbsZhpOq+McyzznHpn49t3nJU5ZGGm2kZ+IelGReEWrd4XCTQa9heJI
+	p4DVOsTcdGASNjLpKr5Wv0TIccs9QEY=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u5DgpZMb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754506655;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XaplO7n4QpZeVX3LF9H+/Y/a22QslLPGzwYcwq2JjIE=;
-	b=V49MOnsGsUM+8MShSWy8xhlsjLLfZksjLS+3Wn3Yw/ZxzThnyCFA/zoolFSxm6zliRybf7
-	Yv2EnVZA8t6zVuc893SgqM1vSMlEA3xTSBu33ITMqOFrl6III0nkX4SP4eJrRBF8TAb0AZ
-	/MnHP1LfeF/F53oeIeIK1/8RaML+a6I=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=b9CWudGS7yemOffT/79eCJgLD5V0SUX3DqtEsl1YmaBZayAe/O+yxB/dNJBE1EcaQKG4ZVJXJka/hEaJ0CGboJjwiKMF5fobK7bvafSSnVJDMyvJxQzP26of9EYB0YOiWwSRuDhBDm/pND8QpV/UW28jXbWP4i1+dSLeZrLGZQdt2d558qjTlAmWSV3+6DEm5glKyeb8OdzWOF7sZEFlEzdELbD4VRWILltMcvhwc6dEPK4ekfOVu6iaROrdnjDgOhBUrVti0LEh9lRRsqNYt4q02SWKGdeMWhrD5rQMRxchE3zKJ0p7kV6olzCA62WDWA51skwnzMXkXnqf+6BtXQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XaplO7n4QpZeVX3LF9H+/Y/a22QslLPGzwYcwq2JjIE=;
- b=m6foz4vUBygeEaq02kZCY0SlmvRj0RNcbEID55x0nRIoQzxYWpWEG0DSfojzggwAGmWoLwAV/+ZnvZtsxJwj4TolvKwkqCY0Q6+Koj57RKl1qFO6Tv95Ot5hhspXqJUXnv3uz+fpEglNtwil1XYo8EjbSNaXb976X6ai9/Q/vl80tmeiDFEg33slkQuv2Aqe5dN9bPF4fLUIoXqBB2Rv6pEO8/uDNGV9rndwuXOTjAmKeW7QJslTTB8kFUowhPmpY8NeGNGmf+FOAUCFNGeGBIAdWrVqsXo/Sdd9JkivIs2eLwjkT4jIqbHEn8ra+r81mrD3TYpP1N6LLbSHLAYgig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XaplO7n4QpZeVX3LF9H+/Y/a22QslLPGzwYcwq2JjIE=;
- b=dfhq0KDme6weZc4hXE+TzhqwuqVy8n4SGGri8jVvfgSo+nXv19suqEhLWSXhMbvhvRDsdIhLCZLFKtqVTxII/CjTf6vPveomEb2Vl/Wuq0oObNonZEOpA25WUAW+NeRD5grY1Rneb9B0i2kF16TkIiOhI9ekUp4xdRUCX6uL9G4OcsOiiGSWP1Pv9JLVwcefn2hjcBBjIRZNBxFV9aWZ4y2EPd92dp+KMUA14OLfcrdOFGaGYsysXY+2pdxdG64955g4vSGPkdPOKLX/ASOy9TCy7whritkpJ7IX52Y1s5NsOLNcJNFOJRIK7HM42EejxYAAPlKFP3lqRF0cIKxviA==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- MN0PR12MB6151.namprd12.prod.outlook.com (2603:10b6:208:3c5::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.15; Wed, 6 Aug
- 2025 18:47:21 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%6]) with mapi id 15.20.9009.013; Wed, 6 Aug 2025
- 18:47:21 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-Subject: Re: [PATCH 03/11] mm: Introduce memdesc_nid()
-Date: Wed, 06 Aug 2025 14:47:19 -0400
-X-Mailer: MailMate (2.0r6272)
-Message-ID: <0EE8EB3C-EF13-4F6D-A1D1-9F840D8C10EC@nvidia.com>
-In-Reply-To: <20250805172307.1302730-4-willy@infradead.org>
-References: <20250805172307.1302730-1-willy@infradead.org>
- <20250805172307.1302730-4-willy@infradead.org>
-Content-Type: text/plain
-X-ClientProxiedBy: BN8PR07CA0005.namprd07.prod.outlook.com
- (2603:10b6:408:ac::18) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	bh=adSdq3TwyTGHTDYm+HrW/qgmY2je4v4jMKvY5+Usnv8=;
+	b=8o5HfuwxuIk+2l5eK+VIJvmVZtncQBL1F7IAG2eF4AFIJZcMVk0e7UllKjh6jW+cp2qoEA
+	xk8Ps7H647HlRExIRaddqmYATAeH91Vh3aEUobdl8heOCx7y2lJzll4tM9KgeHXm81naP8
+	/RBrvyB9gehNcNJTmKpDvs5982EP7q0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7D8FB43ABC;
+	Wed,  6 Aug 2025 18:57:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC07C4CEE7;
+	Wed,  6 Aug 2025 18:57:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754506653;
+	bh=S1tpOXHvVmGvkkUcDTVIht6ckWqyaRnBwEeo7jDPZu4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=u5DgpZMbBrMlEHCD0U2XV9oAFeSNwqE2saBD4NroNIwSwfQOb6fR/e+Hj+9dkXYza
+	 GSdnwVTypo0RrO1uPIi9p5Gqgw4zsLp9qhaHYpo0fGtuA457QbxgTpNfPio863LrTQ
+	 eE/2/ZbnCVJ75QckPgb1x3qVBiirfktGC62Y/rdLagTJEQ1cwOQrfn77EHN7tACR6k
+	 bOOrjC0euY0CI30rXkLWpEgVVxW8u1x8ZX5SED+CC6sycNRZn8b0Rl7vZF3GvgW088
+	 63MpRrSxhEIoxOV5Y40cqoToFFG/aWeNYTEWMcnI74UVv+t4xrHm5jhdGDglSVCJ2Q
+	 mlvn4La0hLeiw==
+Date: Wed, 6 Aug 2025 11:57:32 -0700
+From: Kees Cook <kees@kernel.org>
+To: Svetlana Parfenova <svetlana.parfenova@syntacore.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, viro@zeniv.linux.org.uk,
+	brauner@kernel.org, jack@suse.cz, akpm@linux-foundation.org,
+	david@redhat.com, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com
+Subject: Re: [RFC RESEND] binfmt_elf: preserve original ELF e_flags in core
+ dumps
+Message-ID: <202508061152.6B26BDC6FB@keescook>
+References: <20250806161814.607668-1-svetlana.parfenova@syntacore.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|MN0PR12MB6151:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9d1c8de8-0734-403c-9273-08ddd519ad29
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?8KRk8b4UVO3yNIS87VhzQUU/5DY+6qmQOBxTZRU7g6MN/bQ0Hk/N2Z8Um+1s?=
- =?us-ascii?Q?D9Et3DnJKNXa6THxUTZm2va1Cx9XrZUNUyOrVqSYpvIsIH6/EqqKGD1WLhCF?=
- =?us-ascii?Q?V7dQ0eW/PiitAVE1sKrssUPciQtBFunr6D2zVLnOuyTFyTC7oJuk/jtRBH48?=
- =?us-ascii?Q?LEMv8YmBkD68ONznrxFCVqf/e5htRBdO+k/p2WFlsDQxR5DJZEmZqHMxEXHI?=
- =?us-ascii?Q?C2pMIV7jt848lGqUdh2a2SPZMGNrVdtIfFXx8WL2YJb06DkpyHl3wJlSyczR?=
- =?us-ascii?Q?lNMgiefwApQ/3pDa1kia9lvpix7w8pPFiBxgnYciLqobLCXnDR3V3jzbEUh0?=
- =?us-ascii?Q?XguW/CghCZFutJ9yAZ2v9yTKs8M7C3LKqd77t460DUUG5bQNZPM9y508FD+m?=
- =?us-ascii?Q?t+RD+uMe9WeFaommMIP22MA+jc1MZP9TQszhqgF80Xu1uFnMIz2rHlpjuarh?=
- =?us-ascii?Q?jA7ssdUrckL1/tBYwdAZZmgG4azaionpGmap8VMxbXN8jIsjOqy+qOtmkX23?=
- =?us-ascii?Q?1ZRp4DbVt2Jo+FiMFbJbj9IzWvD2PEc760TOS+EMjfmT8luVgmOLh5NyLJjR?=
- =?us-ascii?Q?hQM59uDab6T5UxzW22anN7LX8YU491Th5R6gxTHzPGkZyBnH8LPrjR6li9Bh?=
- =?us-ascii?Q?9Fa7WpMP0zczC23YD3VCWDwz6ip+8ISVYa2r5LtAyq0kgtPVEXXl4uWkFXE7?=
- =?us-ascii?Q?JXFdQWMzSawHiOJrkUd9BGaht8r7oDaH2t4oUWbZYb+6XZ4zFFMkFC2NkIXu?=
- =?us-ascii?Q?rm7aGkO2dP1SnOYi6Gmqsl5IsWOLKsgSQyvb9GNpw+ik8xmE24KCaj0Lbaym?=
- =?us-ascii?Q?1xDarAno0GmWFADau7AL+hRFidOTAxsQLeRgAlNmb5aFaKeL8XSCwvFD/EOu?=
- =?us-ascii?Q?okLQO+khqweYdLWENPLeLoLEOGK+7ZRqarEXZ3ifTD8LfXmw8dXUaDmC1MU9?=
- =?us-ascii?Q?yZnFA4HzsG2Z2IewTdLQHEejqh7FDKs4MqyAd2FUUm2cCTDs0pkCxzCBaZsx?=
- =?us-ascii?Q?oWULWux45cxhm/VeFt9XoqROI8CJyDtN/gC2vMF8jiOFFghRkBMnQsYH45Dg?=
- =?us-ascii?Q?2kd9qR2kTNPZe7mAdayi/vrt/ceGNW93UN02ykuVdr3lqqz2FBX0y7DLGQ2s?=
- =?us-ascii?Q?ma+mv1bBZjH+UCP4K+zuxZHGVqAD0PFovGIMQ/VE3z21NlkPG4hkDZJZM7Vn?=
- =?us-ascii?Q?88Tc5nHN1ZYqxBomUe1ctt7dRrVXhc4NRjuEtwnzvuwt8bCcDp06FlGcOwK4?=
- =?us-ascii?Q?LfWkBImJkIJ6UDvU4BIN7YA8rqYt0SSl+IRps7G+HIg+LPQbXASYB4CDBohl?=
- =?us-ascii?Q?5WgJUeNAUjWrvMLtj4izc9lBf315F3IZ4QKTx5NVS0fynA4dB6Ye73X0jDAO?=
- =?us-ascii?Q?2zzdefYWfqQwS5qQv1yf7/99wyQUtpNxLnR8GKzNQOgScQ8L5GfGrCClXPdY?=
- =?us-ascii?Q?rGmNzYrNjnI=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?CzlR9Ffe0YrcNF/3tP/fYf5nFx99FbC4L4g1O3QLAgcsvuOs+CKpyf83CzG2?=
- =?us-ascii?Q?hdno454vf1JtlFhz3DPQP0rwVEpF1zb73s538LeZeC41Ou0IfqmqNfNzBxnP?=
- =?us-ascii?Q?ciUG1kogKgvpd3SLBzYC3Nax2narkBvC+O+95l4iVuafhQEH3PV8ptdtKKT3?=
- =?us-ascii?Q?y3f2Uob5IXOfpPH6HABvJE4XJB1jBi8xyUq2WI7MkXQfT2NgSxMH/2wsFsno?=
- =?us-ascii?Q?hX7PYP61LcyGyUGgBJ9CDx4j28vPH+JPzy0lOVRNag108gq2SbD2y6hSK8ul?=
- =?us-ascii?Q?KjxipKx6qIa3guewpw4DB6RDtCgbBTwCqkMR4mnI+jHtrt4Vleshgy9Ezg1K?=
- =?us-ascii?Q?YFHUypKcbtCOzUHlPMmookaO1Qtzfd6zJkHcRGaUCx78T9LolALCMMTch9VD?=
- =?us-ascii?Q?uy6DzINDfy4YZ2XZyRJkVNrqAOGQCBDNVR3a52sd/nP3gNAjhkSDpGUK3dNl?=
- =?us-ascii?Q?lR7QQTin8uoBsPbU1V90kemfNOLz3+FirMvQZjHINojoqiJdQJs55Nnm1WVI?=
- =?us-ascii?Q?an7EDmxs2Ql8qba4VckHXE3KYxnPJz02GnNZwOR4LNRR6dumBlJuQUYmwV6N?=
- =?us-ascii?Q?O2xBVgmHB9qou7HTDjq+LOfaUClcge/ZutyL7G0Lobt58/tfUnYfKepNBPUH?=
- =?us-ascii?Q?VBJfj4dV4424gw3/8tJghxInziojqQeJMihkYhwzJrFehRiHweOqEZJKLIFX?=
- =?us-ascii?Q?5pKsLFddqGystUwSqA3xdo9s4rJ/Aolc/O9KhkG6vdks39qegw3av2OuTUiv?=
- =?us-ascii?Q?QEOcsQw4HyQIWCjCcdTNqKC5hCLJ+YDL6GF4kzZdNHFDwg6tpqG1ofj3X4rC?=
- =?us-ascii?Q?mCL2p0JB/xnTIIlUSeqQyTzke/TjugOErGG5SdTf6VMDLdDm1Q3XyeTu8UZJ?=
- =?us-ascii?Q?gfZHQhkUzQvfBIth0iyhGR6p5hhCr1moLN+lKTTOrbc83bKc4TLrjN9ApdHw?=
- =?us-ascii?Q?i73KA11GM22YIfVB8EUUY2aW1j4l2itO6NxzwucwH7VdhB26ru1d1azw8JJn?=
- =?us-ascii?Q?VyBcZke7ZOQiufQ19l9QJ4Vjl3T9T+PH60Y5kirA2+5QKco/3Ezq6RWuGSIU?=
- =?us-ascii?Q?BpN4zE+01hqRyNV6QC5xwD1tgjiKaYrYR1wZ4SxbeH7ISkJeG/quy1qZDTut?=
- =?us-ascii?Q?vaIoCHF90KpIVMe2+/oSDJkfyneaVIG+Vm0iW/6Rr7PZnhk19eB+qG4Tq58Q?=
- =?us-ascii?Q?cnqr1dXhHHfRBWWaIh/kJhHg0G4H/FIlUDpioid5zqqhPSLj+jtL19zCZK0f?=
- =?us-ascii?Q?8ieuvFOWnpR1uUE+yitJD7L3q8Qo6sI3JY4etigQQXFHz+pVMm34jjgluyif?=
- =?us-ascii?Q?E7va0Lg+iWgvlsRxHLz2xoA8VY1Lpu+n3QVfGtPwwD4l90RRyV5oAufThV4j?=
- =?us-ascii?Q?c9JgHl2si/5XZhgoNMv3cgojzprKAkBx/MuJP9ZxBb7P0MdZtDi/HTuBttg5?=
- =?us-ascii?Q?gm6hJFqVFiSNtrNNv2ZfMDT2MpjvK3MUdbtuTttaNoIBQZuCs7gwnGX1D2c5?=
- =?us-ascii?Q?ClPpK/4MmjZUbJoCv9Ocd1GeHFzy+p+2j2xh78ppODIKVGUObp932wbJKJbW?=
- =?us-ascii?Q?KN0PTdUFUgVIs1m8f6EoxHMznxa5LWeHYUV4kkM6?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9d1c8de8-0734-403c-9273-08ddd519ad29
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2025 18:47:21.3619
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rTPS5eD893/xOYMzHm9lJSqD0P9VWKuCeqk9v/BKcw8A56KYD9K2gI4/qGSCJuOA
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6151
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250806161814.607668-1-svetlana.parfenova@syntacore.com>
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1EFE112000A
-X-Stat-Signature: wgquyyt4s9yinf94anw4ncpqmaw3h5ze
-X-HE-Tag: 1754506043-252645
-X-HE-Meta: U2FsdGVkX18KQAevklpdEc7MB+EoR0zPnNSs9npOXizdMru1FYl7xzrK+qO0bhG9+Xdwrha/6L+lsrgktwfbGIWXkhXsmkz9fSOl/yZuZAIPKD0nHq6qdNTjPDeUK7PmwcfKQHRu3RHYenhTxF1C3xoatpcDCf4Uf+4zZWSJikZTSm90U44yG7SsosxI5cWNaCs0Jyuksjcyg3anNhUed59r6M57XZWgdYOJkQI1wYmdDM6JxrVt3ecF62ZhIwoGrBr7kSmOfygUTfXMtb+rVuuLFVN79MgIBoEVe7ZngdNu9/IEKLJefwcvAU5uYvOtfVRxi+3CWzMNrGZv6GIc8d2mw+hdQpwByaYPb2SbAh/p46QrQvglYPmicu9Wd4UlXWACGJjUXicCtFI2dVtOUpSFihYaMiLGI9QXJ+0meB5hDClYXnKNV9IYZjAZW3zzDf2QBRHx6ulTIwzXdGS0r13/i6S+lDjNc8enWAuA8O29YtLX/HNfYvw5ll+/J5wcktMoBZdXceJGiDAlp0GGlwUJWcQW4b1pqGuuOlR6gf9xCiM+7qApFUvmti03ElLeZwLQMXdTQWnCwKvA+BR/hhHN4lvNXdIKm+OJa0j36nH9A5Mvg+6N6DLw+QYlvOWaRIQEhyRAuXmMETpW/GSsDmtUWSpbexeSy5XNHmFld0ylwGB74SCNvK9KpYOseXhX1Kta0+DVycRVQA8ngBW3yd5qdlc8lsA6lSOyhNI1DhOmqqFY2wkXRGfIeJ7Wpd6EhGj89Qsu2FK14O6d0Uw8KlXhPHoJsj8MAMjzVndx3OMCLsYZlOE71WTgUv9ZRMeDjr0R8j6F9C+ZTSUrwtOFWMyiEIPkFF/mTxt6NZ5PMQi5TM2hc0Hxs6wcjNE1AEMObCEmB8ehGlUz/Tct0aHfvnDD7xTGonAkz6vHwGR9vaQUt0XZb9SE9g7poCxaBZebdKXHGR39NSRkIcBGZv1
- qWcg7QEf
- laa002gmTJhmFy0eGpDeMJQcjHEV+tsy7pbOQBVMQ1OhnJ2sYUX8DIYw55ULVA6yJ+kXCVX6ITFtJNPmMl0gnSpwVWIQxgrtAPH+zZnGlWHAbnYHngSIKzEqOLJCO3AqOdgFwKf4lKdmi4aavDs10Pp6zyqR6a21mJ1PQIMsIC2ReAsRysHmAm+DwEvEeO0BQGcZNMupO+Xd1vGafTzCg6461wfdNXtxHM9YsHYO70kcYQULr8gQwHEzUb1YWRhxMTqgdoz6az/+PWMzlNx7BaL9bitrffXS11/v1m/L4iZSZqOFK5YYyTHs2sQNRkYI3hsQE1FUNSR1IlV2kTpGKEpzMRGC8D54zrkuDYf7hZLtQStPevAfnp08sliDUMA9wsTDP5QJMCalrtgRnJoZaY7Pfp8NnETOkS6+3O20Bh0Wy65L0EjIPXK2y7pcCCN5bghS06YGUqC1iioyToMW05nAla34pEyX+ZJ35627VpABOUJpvtZFIh32+jfCFiln+ZO43I0sd/bKuQCJWuwooqyKDM8x/tbb8gHZfvC2fK5GUzYXUpTO71g4tNokTgSO5r5j/2tZeEhSEwfU=
+X-Rspamd-Queue-Id: C201040013
+X-Stat-Signature: 8c4swax5akki1hquykd7gwwkym1nopep
+X-HE-Tag: 1754506654-972078
+X-HE-Meta: U2FsdGVkX1+dkGMeU8JQXrIuphxi2Um98y6dNE/VEG1d6kz6s7Jj/sBD2d+HnFb2lrgYgMmYbjwW9b1eqimMcZZ6pCxlSduHpavhuYjARHmEfAwJU5w88jEhJ+xWL+AwyswKEBsV4lIbjCWR2O3cl+VEQz/yDWqnMYoGE3yC8VZ4z2FT0Lguud6VMYYFLBVdB6CxS0Iq4ohz1qz/pnWVmOAvekIDNAq9/Z4NCzFux8QN1VkNZK/66XDIXCSShkOlBqQjqkEO+sJzVWrHaZ4HCujGkUBOqy0e+A381Nr2GVrO6ALYIcdO3Z4GIS4cGSYRiKq3J2bYNMym/r8nWKZE6AwU80QOMXNs/XyMnh5ZJbbYWVtzZ8yIUlYrCSlxP4cdESUBxqHD7+s6k4hKqGlMa5uMLSsXdLn68E3kdGkY/f6KKhy/v0cR0rT6qake/dh7XFe1sU/hENASmn+l7d+nVB8K88jL9/nSceuxNyTUA5c3gfwf+yMv5VvAyW6r0g2kggzUPSDP6H1oHzVGhLCe6q6jPa5wN//697Ob3OfeaTZmuEgWTw/JjjtotpmAZh6REwZn4+APn34YmibeRup8jt2LjgpSkesGsT96UU1dPS66UdrN/LIaHFJ7yiRmi4Xy8Rgjshxs0g/cXJcxxlR3jhzaWLnmBAn/cim7K6j6RYNoeLP+/vMiw0KTIx/+eWq4INDjCkuxXnYI7WmIuz050cRjOu1hYeS6VqNPqT9bbvPoSxh0g/Xyk7IhnJWO6CXvu8O8LfjebOZWNUDdEiCMMtSpU6QnRjg/VNsiU7c+k7cSk3sXPgmlhtlNyHhY2fSHsws/GFcGAwmUHbKHZ0iiFlBDAETUhaWBwQYaEW0x+ebup5Ql8LUV7OyOZa0z3GirtcJuKy6oAIJe6TM6aEicgJ6qrJ4LifxyuTAVuHLYMBo635z0LTNuBEiwNT7AB1EOedYTfWixNR23KedPj6+
+ hg5RBEBx
+ qTc5Q9gwh+r4NdfbSEIKdK7QJ7kbtr8g03FTrpeGBTAUPUumww/8I6ysh1gVlhhhiBDj+9HiEFm/Q3hHI2R3vc+dT8kz5O0ES98J55R7wK8NbiadF5lD22vqzn6569nnnfouccWho3qdxDBriZr27K5zQ6QXZVFAvGI/9ggl77YGu23aG/j5nNMawbKwQIBvu9L/t1e34pC8hOg79mphdmS54iyekGhJgW0KZ2HlgRxlTw8SFd+si9NHwUDEHX+7mwjYTm2aUDtHgBBY7Muwugz+oxNSovsL2jzp6CMbf1PTi/sd+b8iRYczGhjZnrrxwkRGXxQugHdk/0sjRKX6X73Cp0AcsIpFRxN5IwCyC9rzYRIj03ybGTqll7DH387Sk4dBG3Mqeapwu7uJGGYyZ0HVSADa3JSfOw3UhDKUNsSzBZzQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -177,28 +94,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5 Aug 2025, at 13:22, Matthew Wilcox (Oracle) wrote:
+On Wed, Aug 06, 2025 at 10:18:14PM +0600, Svetlana Parfenova wrote:
+> Preserve the original ELF e_flags from the executable in the core dump
+> header instead of relying on compile-time defaults (ELF_CORE_EFLAGS or
+> value from the regset view). This ensures that ABI-specific flags in
+> the dump file match the actual binary being executed.
+> 
+> Save the e_flags field during ELF binary loading (in load_elf_binary())
+> into the mm_struct, and later retrieve it during core dump generation
+> (in fill_note_info()). Use this saved value to populate the e_flags in
+> the core dump ELF header.
+> 
+> Add a new Kconfig option, CONFIG_CORE_DUMP_USE_PROCESS_EFLAGS, to guard
+> this behavior. Although motivated by a RISC-V use case, the mechanism is
+> generic and can be applied to all architectures.
 
-> Remove a conversion from folio to page by passing the folio->flags
-> (which are a copy of the page->flags) to the new memdesc_nid() function.
->
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+In the general case, is e_flags mismatched? i.e. why hide this behind a
+Kconfig? Put another way, if I enabled this Kconfig and dumped core from
+some regular x86_64 process, will e_flags be different?
+
+> This change is needed to resolve a debugging issue encountered when
+> analyzing core dumps with GDB for RISC-V systems. GDB inspects the
+> e_flags field to determine whether optional register sets such as the
+> floating-point unit are supported. Without correct flags, GDB may warn
+> and ignore valid register data:
+> 
+>     warning: Unexpected size of section '.reg2/213' in core file.
+> 
+> As a result, floating-point registers are not accessible in the debugger,
+> even though they were dumped. Preserving the original e_flags enables
+> GDB and other tools to properly interpret the dump contents.
+> 
+> Signed-off-by: Svetlana Parfenova <svetlana.parfenova@syntacore.com>
 > ---
->  include/linux/mm.h | 21 +++++++++++++--------
->  mm/sparse.c        |  6 +++---
->  2 files changed, 16 insertions(+), 11 deletions(-)
->
->  }
-> -EXPORT_SYMBOL(page_to_nid);
-> +EXPORT_SYMBOL(memdesc_nid);
+>  fs/Kconfig.binfmt        |  9 +++++++++
+>  fs/binfmt_elf.c          | 26 ++++++++++++++++++++------
+>  include/linux/mm_types.h |  5 +++++
+>  3 files changed, 34 insertions(+), 6 deletions(-)
+> 
+> diff --git a/fs/Kconfig.binfmt b/fs/Kconfig.binfmt
+> index bd2f530e5740..45bed2041542 100644
+> --- a/fs/Kconfig.binfmt
+> +++ b/fs/Kconfig.binfmt
+> @@ -184,4 +184,13 @@ config EXEC_KUNIT_TEST
+>  	  This builds the exec KUnit tests, which tests boundary conditions
+>  	  of various aspects of the exec internals.
+>  
+> +config CORE_DUMP_USE_PROCESS_EFLAGS
+> +	bool "Preserve ELF e_flags from executable in core dumps"
+> +	depends on BINFMT_ELF && ELF_CORE && RISCV
+> +	default n
+> +	help
+> +	  Save the ELF e_flags from the process executable at load time
+> +	  and use it in the core dump header. This ensures the dump reflects
+> +	  the original binary ABI.
+> +
+>  endmenu
+> diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+> index caeddccaa1fe..e5e06e11f9fc 100644
+> --- a/fs/binfmt_elf.c
+> +++ b/fs/binfmt_elf.c
+> @@ -1290,6 +1290,11 @@ static int load_elf_binary(struct linux_binprm *bprm)
+>  	mm->end_data = end_data;
+>  	mm->start_stack = bprm->p;
+>  
+> +#ifdef CONFIG_CORE_DUMP_USE_PROCESS_EFLAGS
+> +	/* stash e_flags for use in core dumps */
+> +	mm->saved_e_flags = elf_ex->e_flags;
+> +#endif
 
-page_to_nid() no longer needs to be exported, since it is a wrapper of
-memdesc_nid() and in mm.h.
+Is this structure actually lost during ELF load? I thought we preserved
+some more of the ELF headers during load...
 
-LGTM. Reviewed-by: Zi Yan <ziy@nvidia.com>
+> +
+>  	/**
+>  	 * DOC: "brk" handling
+>  	 *
+> @@ -1804,6 +1809,8 @@ static int fill_note_info(struct elfhdr *elf, int phdrs,
+>  	struct elf_thread_core_info *t;
+>  	struct elf_prpsinfo *psinfo;
+>  	struct core_thread *ct;
+> +	u16 machine;
+> +	u32 flags;
+>  
+>  	psinfo = kmalloc(sizeof(*psinfo), GFP_KERNEL);
+>  	if (!psinfo)
+> @@ -1831,17 +1838,24 @@ static int fill_note_info(struct elfhdr *elf, int phdrs,
+>  		return 0;
+>  	}
+>  
+> -	/*
+> -	 * Initialize the ELF file header.
+> -	 */
+> -	fill_elf_header(elf, phdrs,
+> -			view->e_machine, view->e_flags);
+> +	machine = view->e_machine;
+> +	flags = view->e_flags;
+>  #else
+>  	view = NULL;
+>  	info->thread_notes = 2;
+> -	fill_elf_header(elf, phdrs, ELF_ARCH, ELF_CORE_EFLAGS);
+> +	machine = ELF_ARCH;
+> +	flags = ELF_CORE_EFLAGS;
+>  #endif
+>  
+> +#ifdef CONFIG_CORE_DUMP_USE_PROCESS_EFLAGS
+> +	flags = dump_task->mm->saved_e_flags;
+> +#endif
 
+This appears to clobber the value from view->e_flags. Is that right? It
+feels like this change should only be needed in the default
+ELF_CORE_EFLAGS case. How is view->e_flags normally set?
 
---
-Best Regards,
-Yan, Zi
+> +
+> +	/*
+> +	 * Initialize the ELF file header.
+> +	 */
+> +	fill_elf_header(elf, phdrs, machine, flags);
+> +
+>  	/*
+>  	 * Allocate a structure for each thread.
+>  	 */
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index d6b91e8a66d6..39921b32e4f5 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -1098,6 +1098,11 @@ struct mm_struct {
+>  
+>  		unsigned long saved_auxv[AT_VECTOR_SIZE]; /* for /proc/PID/auxv */
+>  
+> +#ifdef CONFIG_CORE_DUMP_USE_PROCESS_EFLAGS
+> +		/* the ABI-related flags from the ELF header. Used for core dump */
+> +		unsigned long saved_e_flags;
+> +#endif
+> +
+>  		struct percpu_counter rss_stat[NR_MM_COUNTERS];
+>  
+>  		struct linux_binfmt *binfmt;
+> -- 
+> 2.50.1
+> 
+
+-Kees
+
+-- 
+Kees Cook
 
