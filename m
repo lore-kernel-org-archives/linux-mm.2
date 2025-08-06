@@ -2,91 +2,98 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 86D2AC87FD3
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 23:48:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A1360C87FCB
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 23:52:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2967E8E0003; Wed,  6 Aug 2025 19:48:19 -0400 (EDT)
+	id 166876B0095; Wed,  6 Aug 2025 19:52:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26EC78E0002; Wed,  6 Aug 2025 19:48:19 -0400 (EDT)
+	id 13E636B0098; Wed,  6 Aug 2025 19:52:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1ABA88E0003; Wed,  6 Aug 2025 19:48:19 -0400 (EDT)
+	id 07BAC6B0099; Wed,  6 Aug 2025 19:52:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 09B0D8E0002
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 19:48:19 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AB0A5C02B6
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 23:48:18 +0000 (UTC)
-X-FDA: 83747973876.09.C5B0D24
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf25.hostedemail.com (Postfix) with ESMTP id CA42AA0003
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 23:48:16 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vVgwlcQB;
-	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754524097; a=rsa-sha256;
-	cv=none;
-	b=sKus9+mGP7+IO0tW+H/YVEjyVdF+JostEwcSgDRmp2Fn8lnh+DpfysbX6rGvWXNs8yd04F
-	MVIP98xL7Cur3189g6qcOXDr3jlUXArIKxqDRPHtqcRnT/7uAR+3lcRDI1arD2MKSLfgZr
-	DWxvHQQe3Gap92H21/Dqw0En/qtwaFk=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vVgwlcQB;
-	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EB8F46B0095
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 19:52:02 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 950721DCFBC
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 23:52:02 +0000 (UTC)
+X-FDA: 83747983284.04.543B333
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	by imf19.hostedemail.com (Postfix) with ESMTP id B7CDD1A0008
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 23:52:00 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MxuonsxG;
+	spf=pass (imf19.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754524097;
+	s=arc-20220608; t=1754524320;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LrggOZQVWbsWMeGrQROI1WKi3B0AmMr1G31LZIrH2yg=;
-	b=ktZmdgnu8lyiOtpu1en5+FD9EVTnZBm3yHJV5Ywc44zYt2WUmqDDqxZBC12nIqu1MecDqw
-	pCF9S495lmPsJ7SECs2MNVELztyJs9X0Nn2pmqh0jhI40drHtqnTzB2pJc5C/WzjMFLQI2
-	HExLA2gUR+oVXDCF+I22Ny5ASPEgvRg=
-Date: Wed, 6 Aug 2025 16:48:00 -0700
+	bh=2wP0O1tbMn8HVhzrrMtN0N9Bu4W03vBBOSwFroD8yV8=;
+	b=WJ8oHDSlKLIUfUUUia9THbEWsaHdSj1DCEOSlXIAkaDp+KBhkM8NFfh9P2r91CdcYjsFMx
+	nXbccvNcob0ycFmz4kjgjk03uyMZbR7YqSKHT7+nVeY/kImpJzRu9BRizAG+9WZR2VXY/c
+	R+CDn91JaBJUXsYo78E9ygvG3jGajxE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754524320; a=rsa-sha256;
+	cv=none;
+	b=DZTlJt1ygwieFTaJ8DNbJsK8n2KH83+As+QxmrbnbUQGm6zE7Ud+jNisKL7ojamcB+0fnV
+	A4utFE6aQHohJK7lmbsGeH83hmHOzEJ2uRgOuAIxhnk7eBYkKsBDjABIpriP3+WM9siPKx
+	zLhMsayw+EHjaxnRKl6vg5loqLu8y80=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MxuonsxG;
+	spf=pass (imf19.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Wed, 6 Aug 2025 16:51:33 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1754524094;
+	t=1754524318;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LrggOZQVWbsWMeGrQROI1WKi3B0AmMr1G31LZIrH2yg=;
-	b=vVgwlcQBxuJauzPDtrnkF9B4Kv7hNR31S1SVfnBtlMTyLL55uWI7HT/XmOlpWjQHtzlDRj
-	X7OzTpytW0xYlZzm9gyBAvpURhUZHVpBCOqZ0cG8azZLlkX5VKMXu+mvU3D7mh5MQHQqUL
-	7+iJJaJtkwTrRYhrfADnodnRgViOzUI=
+	bh=2wP0O1tbMn8HVhzrrMtN0N9Bu4W03vBBOSwFroD8yV8=;
+	b=MxuonsxGj9mLWiEibLGLoux3An6eyPmDLEpSO+AXBrUnZHWjMFnsjvIjs3km8kAYy1b3O8
+	/O/7fHFx5NNDWISuRCDlhqVKSwoXL9wIzA7hIHNo4c0o2srnxCM/JTiQ5Bl3GpYykH5kcr
+	FD6toaiINNAAWTaQoYKXpz0KNf4ber0=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Shakeel Butt <shakeel.butt@linux.dev>
-To: David Hildenbrand <david@redhat.com>
-Cc: Nhat Pham <nphamcs@gmail.com>, SeongJae Park <sj@kernel.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, kernel-team@meta.com, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, Takero Funaki <flintglass@gmail.com>
-Subject: Re: [RFC PATCH v2] mm/zswap: store <PAGE_SIZE compression failed
- page as-is
-Message-ID: <jn2fzoodgcxmyld5c7k6jifigkmbhmq2gftvxx7k4ei2kz6r72@vlrndnijfgrf>
-References: <20250805002954.1496-1-sj@kernel.org>
- <761a2899-6fd9-4bfe-aeaf-23bce0baa0f1@redhat.com>
- <CAKEwX=MVBJ+Okfsob4Z30_5Y4P8c2DWoS1dYN4dF5dgp4+CexA@mail.gmail.com>
- <055a8a69-731d-43b8-887e-54d8718877cb@redhat.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Daniel Sedlak <daniel.sedlak@cdn77.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Neal Cardwell <ncardwell@google.com>, 
+	David Ahern <dsahern@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org, netdev@vger.kernel.org, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org, 
+	Tejun Heo <tj@kernel.org>, Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Matyas Hurtik <matyas.hurtik@cdn77.com>
+Subject: Re: [PATCH v4] memcg: expose socket memory pressure in a cgroup
+Message-ID: <ai34al6aocctgjxob7pshhm4lyqfnzlytjefhlum6dxwjcx26o@fj2ca5jdqxa7>
+References: <20250805064429.77876-1-daniel.sedlak@cdn77.com>
+ <fcnlbvljynxu5qlzmnjeagll7nf5mje7rwkimbqok6doso37gl@lwepk3ztjga7>
+ <CAAVpQUBrNTFw34Kkh=b2bpa8aKd4XSnZUa6a18zkMjVrBqNHWw@mail.gmail.com>
+ <nju55eqv56g6gkmxuavc2z2pcr26qhpmgrt76jt5dte5g4trxs@tjxld2iwdc5c>
+ <CAAVpQUCCg-7kvzMeSSsKp3+Fu8pvvE5U-H5wkt=xMryNmnF5CA@mail.gmail.com>
+ <chb7znbpkbsf7pftnzdzkum63gt7cajft2lqiqqfx7zol3ftre@7cdg4czr5k4j>
+ <CAAVpQUB_aEcbOJR==z=KbfC1FtWi2NM_wNm_p+9vL1xqfw7cEQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <055a8a69-731d-43b8-887e-54d8718877cb@redhat.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAVpQUB_aEcbOJR==z=KbfC1FtWi2NM_wNm_p+9vL1xqfw7cEQ@mail.gmail.com>
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B7CDD1A0008
+X-Stat-Signature: zeqs5j7k3unr1gosaqnhghwjfcja556p
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CA42AA0003
-X-Stat-Signature: cfisqn4pyme3n7t4ezp53usy4xe1tbxn
-X-HE-Tag: 1754524096-197690
-X-HE-Meta: U2FsdGVkX1+h3IxD3RJpm5rPuhVtE9smbnSjsOBAxQ1joZMKFvSjRRhnlBLUjenKNbRXhgbH+aq575PZ9Kez3X0HWR1/KHvEUCw7+O44l1DuoMRzk931Lt4KsMTV6P+KxBpaOuyO9c7iHLdomRNyS7bpBXVPYvd+UJjSzd/yLl1tO2adGA8suPS233yyQ5rXKdlNNyazKwqhld6uR+n+5kUMWIVlYL46/+hOLF1LlqqHWlUAEr6wOBelGVOak0qeB0azCu2K0b9VVDFc2mxCEB59J8CeCxcItNu0Lnd9D8PfDo5xCl5U6MKXFF4EByRjjnRNJFgfKfUrfuvBMa81QccVn15tML1WvmwpY6PuXaMrvCrK8jS41uxGknsPliJFRmADg8R8xDuPyU5vxKQSJENx58KqVmH8RaOaMzQNQFTulENsbesBu7TBnfs4KP+m5FCtF9cqegf6d9Cd1xz0objGUNIXDyJJm+Ngt08s5qrtT9L//QV6tLuvgn1TjgnDSrdUwPnrYfn1zbOPJjrTM5BPpuu63sKOkqoG7EHRVH0MRY1PkOz1eoOsAWk0F0knyLiGrjN9CNDEuYBgRliy9b744/33Wdb7bLtR29lUm2M/6o3BguwUzIqVSmKbBxJDXyPh4Vv/id+rxx2f8u/m/GjBtUQSeG974XLEWhzxiC2y6ZbRWkKUODWMjRnAB/Iu/mx1/xJ1GK6eii1ExXOVd9GHB2GuxSS87Qgk3+5NH4UmUMF1IX5ZilCB8pspfurw6sV87S36HtOO77aDjHYQ/+xEJHZhQL32eJdaRiN8T6n2ZEg/WM5L+QfBnVgh3xDuFLuvOKMDXPnZfEE4+2cAHRfYsZYYcrNEbjIH+5aHpjrcfwQ3EmdcIAck6ZO6qBqfnYZBszEtacyLCs52HYvvVHz5C2HGOFZns4LpLe0ADLV7p8QJnna/AGFTlyZKsRnA1Ykul9KQ4iUDkyhiKdA
- DUH0ClHW
- XWmlEgjh7N2qVPLU6XpFxM/Rt9oMjmVFsQ2DWyBDFNQP3NnU2dEQw1EqJHer0qe/sBAXuhTakCdKND/kt5Gd27W4ZEe3+dKhoUdxh8jp5AIn7ygUj2fK6WVr6ShSnzvHIQEkP/5XO5aaPxlIrU9ewAa3AcWk9QyBQCFz1O36UijyvOvsWGbxEHhUokYroLBYNa4S0aspN2lcGTxDkUHlgFTiT2c8IDhpQlpHa8S/MRCO+U/TKhInHifZ4KimOzUrkmJsI
+X-HE-Tag: 1754524320-998099
+X-HE-Meta: U2FsdGVkX19kGBqcpGy3kUve/K3xVoWIjarDGWzYHgaVzTMco9PCQJ4Mptn9P9ywm5n2r7PRkWohckCTh7PmToESa8rYfFfMOYF7bEfI7DfpvsqNU9H6v39p4xV4YmGS9OtotNDY0oWMrgwBjj/l6SJAFMhrG0aSJn/ZLhLuRKRXIWES5Ae3DEeloYQGV9TmUCAyV89FP0/5OyepR67Ie805atuJz+wgL0udZQPt/E/hH/xleLsPK3UK2rru8hhaEUBo2BsdAdaGjZYK2tUrDEYh6e9g49+lrYN/oHVLnQ16kCoZo80hL4QMv/pBsfCAVZzQpdegAUZHcIw5ZmTi1YHrx+cdkZrFg/nYFFO7jhmFHgJzEsy3uCPpb8qVEB0ZDUcbh+6CFP9EspsypanqCAu93gSZ2nKUAiVD3c1r7EIzPJwlYI6kh19s7sYHTweAA3jNYQYifZitU/3miZzOXkqr0soPranVr67n1s+ckei471JmgzbHk9gG4ekjxfh7LIDdd4euYhygLuw8Fd0ytD+qw/zKJLygMpctDuUivJIP0JIvXugJqjcWKTO9yxoWYdYx91tAsERpdfNDe4U4EXaiop/c0Xlnzh6fGg8pwopzyBNiincAdPS5bdXoQbpw/BzIImiCUiiuoYMYuJbapf3VwET3ckpiqKnFI0UrS/K5rp6CSjX0vNTEeUziA95Q1v7Nim5+ZyVB5zWabZA4indCGX8DwtAdj/JFCH1Ugjkz8SyADqHDk0mSBXO5S5Bjv0E9UV1gKX7hgdQFcy/VB0r1Ob6sy4J3B3K6wE6K7GjXlDYUZazhP7Wq8gQ0hCI2NKDhOtPm9VD7tpX0t/xTZ+1GnPMK9UJMVXWg3Vb6w1zGBla/X7YNB6LpvreNHoC2IsvtuG3gpEVgj8Tue7kAH0osU6Z+7w6Ai+h27Dqs5TVDYHuCkLq71gHlzqwmHFHh+YKI7eZJ3psUXE8f8yn
+ 3iFREXGd
+ BG67VoOFRWMlKKugxAUbnW/aHSGvmv6uLU8g8ZbV/PbwPMwQCc5QUWuK1VoypD7M8rZbUZ0+zh4G0idsUZihWCtHGykZj84egRCmZZPkcqIOm2w6GeSpvJB8lugHaRt6dw+HjiMRVm3HFp+t4qgD4EBXfh9ODRaOe3RFpPYpVlFbGXFu2iUQiyyNbOp7lKNqnOCyaZNHIgfTeej2pz9xx9ZiElJ+lTsVFHBuIK8kXQBf+tFM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,17 +102,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 06, 2025 at 10:14:39PM +0200, David Hildenbrand wrote:
+On Wed, Aug 06, 2025 at 04:40:45PM -0700, Kuniyuki Iwashima wrote:
+> On Wed, Aug 6, 2025 at 4:34 PM Shakeel Butt <shakeel.butt@linux.dev> wrote:
+> >
+> > On Wed, Aug 06, 2025 at 03:01:44PM -0700, Kuniyuki Iwashima wrote:
+> > > On Wed, Aug 6, 2025 at 2:54 PM Shakeel Butt <shakeel.butt@linux.dev> wrote:
+> > > >
+> > > > On Wed, Aug 06, 2025 at 12:20:25PM -0700, Kuniyuki Iwashima wrote:
+> > > > > > > -                     WRITE_ONCE(memcg->socket_pressure, jiffies + HZ);
+> > > > > > > +                     socket_pressure = jiffies + HZ;
+> > > > > > > +
+> > > > > > > +                     jiffies_diff = min(socket_pressure - READ_ONCE(memcg->socket_pressure), HZ);
+> > > > > > > +                     memcg->socket_pressure_duration += jiffies_to_usecs(jiffies_diff);
+> > > > > >
+> > > > > > KCSAN will complain about this. I think we can use atomic_long_add() and
+> > > > > > don't need the one with strict ordering.
+> > > > >
+> > > > > Assuming from atomic_ that vmpressure() could be called concurrently
+> > > > > for the same memcg, should we protect socket_pressure and duration
+> > > > > within the same lock instead of mixing WRITE/READ_ONCE() and
+> > > > > atomic?  Otherwise jiffies_diff could be incorrect (the error is smaller
+> > > > > than HZ though).
+> > > > >
+> > > >
+> > > > Yeah good point. Also this field needs to be hierarchical. So, with lock
+> > > > something like following is needed:
+> > > >
+> > > >         if (!spin_trylock(memcg->net_pressure_lock))
+> > > >                 return;
+> > > >
+> > > >         socket_pressure = jiffies + HZ;
+> > > >         diff = min(socket_pressure - READ_ONCE(memcg->socket_pressure), HZ);
+> > >
+> > > READ_ONCE() should be unnecessary here.
+> > >
+> > > >
+> > > >         if (diff) {
+> > > >                 WRITE_ONCE(memcg->socket_pressure, socket_pressure);
+> > > >                 // mod_memcg_state(memcg, MEMCG_NET_PRESSURE, diff);
+> > > >                 // OR
+> > > >                 // while (memcg) {
+> > > >                 //      memcg->sk_pressure_duration += diff;
+> > > >                 //      memcg = parent_mem_cgroup(memcg);
+> > >
+> > > The parents' sk_pressure_duration is not protected by the lock
+> > > taken by trylock.  Maybe we need another global mutex if we want
+> > > the hierarchy ?
+> >
+> > We don't really need lock protection for sk_pressure_duration. The lock
+> > is only giving us consistent value of diff. Once we have computed the
+> > diff, we can add it to sk_pressure_duration of a memcg and all of its
+> > ancestor without lock.
 > 
-> But yeah, whether these "as is" pages are movable or not is a good question
-> as well -- in particular when zsmalloc supports page migration and the "as
-> is" pages would not.
+> Maybe I'm wrong but I was assuming two vmpressure() called
+> concurrently for cgroup-C and cgroup-D, and one updates
+> cgroup-C's duration and another updates C&D duration.
+> 
+> cgroup-A -> cgroup-B -> cgroup-C -> cgroup-D
+> 
+> Could that happen ?  Even if it's yes, we could use atomic ops.
 
-By "as is" page, do you mean the page which the reclaim code is trying
-to reclaim or the page within zsmalloc on which the content of original
-pages are copied as is? Most probably you meant the page which the reclaim
-code is trying to reclaim. This page is on its way to get freed after
-[z]swapout is completed and this patch is not changing any behavior for
-that path.
-
+I am not getting the hierarchy you are using but yes concurrent updates
+to sk_pressure_duration can happen and simple atomic_add is good enough
+without any locking.
 
