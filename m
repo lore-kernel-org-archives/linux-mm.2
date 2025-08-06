@@ -2,115 +2,113 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0A516C87FCB
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 02:40:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CA11DC87FD2
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 02:44:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A50C6B008A; Tue,  5 Aug 2025 22:40:47 -0400 (EDT)
+	id 69AEB8E0007; Tue,  5 Aug 2025 22:44:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7550B6B008C; Tue,  5 Aug 2025 22:40:47 -0400 (EDT)
+	id 64BB88E0001; Tue,  5 Aug 2025 22:44:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61D7A6B0092; Tue,  5 Aug 2025 22:40:47 -0400 (EDT)
+	id 53A808E0007; Tue,  5 Aug 2025 22:44:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B73C6B008A
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 22:40:47 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E7F8C81158
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 02:40:46 +0000 (UTC)
-X-FDA: 83744779692.20.5545FB4
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 21F37120005
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 02:40:44 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 41F688E0001
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 22:44:11 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E8E9680D49
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 02:44:10 +0000 (UTC)
+X-FDA: 83744788260.12.86AE216
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 36403120004
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 02:44:08 +0000 (UTC)
 Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Z09nXRmh;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754448045; a=rsa-sha256;
-	cv=none;
-	b=OsPxykECK+9L/bEVkEYHHAU24L3NDfqtURSc0Mp1DV6NWnUFEw9IXfBRC6Dekqre506Wbq
-	vVjdiMN9QEG01Ha4L1XmiuK1Vqrr5yiV/pAAjkBfqeAeGM7vOhYcY0yAWwzhAtBBdT6yUW
-	xMpkTfspC/KToKfMg1pOXZ6x/vrQq8o=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Z09nXRmh;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MhTbufB7;
+	spf=pass (imf29.hostedemail.com: domain of airlied@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=airlied@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754448045;
+	s=arc-20220608; t=1754448249;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wLlEipj5qbn5m1EPWZYCpWoD/dE/UtKNcnHCLbeeDf4=;
-	b=qC5U9Ayubsi2/1BKCgNJkZvupFBN+pYzk2N1LRa2BM8mm9+Mozeu2NU9OGPGiBEQaBzzgB
-	y9f8d8xtFd/MmXb5JqHdFf2x7Kysh5FFHPWnU0AgS6sPp+wrGG1tsNNqhafaKPVuBB2cmn
-	1A2jaiErNXNMJ2Vbl8Z5vKK03l7Kl0A=
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3b8de193b60so1845063f8f.0
-        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 19:40:44 -0700 (PDT)
+	bh=Yl+QGO/FoekIvls1YM3Wb/aWR3GhVD7gGl3r1b1iECk=;
+	b=jxp9AuWLPPQ/HGSGC0qQ736ZYeAZN+oMuccPX02O1PlYFXsSBTG/VscefomPInuIIothSx
+	3fTYLvwEB0ratoMVtpPZCC+QMEPlQNweJyAo/H4PWuX3QQ5KMmGOxzxSsrYS+dGBMDSQ5s
+	ezu6xiwxVaMLbvK6hE1VDTnPqw852do=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MhTbufB7;
+	spf=pass (imf29.hostedemail.com: domain of airlied@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=airlied@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754448249; a=rsa-sha256;
+	cv=none;
+	b=M5zNLO5FEOJJy0IP5asD++ZPC/QFLbeSepgfkr67+gsDnhdrVx+dU9uqeU4jGdkn871C5J
+	/THTjkODS4ZN9IgJ8ltF3c2CazBht08nVx73CEA2WXhu+mJw2xt0leSodcDevNDcL2mP4G
+	iHLKsc44JC1smSKsC0RanWnyk4Ka1VA=
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-60c9d8a169bso9082818a12.1
+        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 19:44:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754448044; x=1755052844; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1754448248; x=1755053048; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wLlEipj5qbn5m1EPWZYCpWoD/dE/UtKNcnHCLbeeDf4=;
-        b=Z09nXRmh9JPbydMI3NHaQZSGyAg2PnRcNayzmRf18wI1ZI43OJhgq8Ys8wJQy5uURw
-         EgM7cr9YczN5LO4BLczqwWzd2lTR25wRX7K9dNt8Iq64Rd88RhW/RAtuu+1i+UgyMX6C
-         punmHahxLLvBFR01qjT/1+UP840rOmsheQXbIdVMYTykF7n/xxKLjmL2WGeXzOsC64L4
-         EXfSpA8SArDUbgmh+R6zf0d8Z4AVM1ZuB4GMPGhX+jdoeQGoWDEpw1yfKSSYPUjWTmXm
-         uKBP+hUSurIok50b2HogEWo99xIt4hh8PXe/RvC0dEddSO87l9/geJVpTURxyjqRGIW9
-         v8tg==
+        bh=Yl+QGO/FoekIvls1YM3Wb/aWR3GhVD7gGl3r1b1iECk=;
+        b=MhTbufB7GssJMCQP7+nw7+SetaY1cAaKfyVRwSYMIg4W5K5BVsxmQXtibj15nJ/J7p
+         d2cT/2e+huPxPf/XfbEBuSWJSyhkaVZcD6C3xlXTxjxlSRTqsE8ugJblF+pkM3mg3N0h
+         yhzVNxmzS4kqfBA52QFNO9ROuKewochZcvLucEPAAJncjuv7mJ6hu77icAAgZB/SIkCs
+         r+P4cr8ikF6phe7eNye2FXwYOQnXbxAPS4L1X6waC9fddC4nCJNRoUbrLJP/AyqNO4DT
+         8M5rbfOIGJMCzKYLNlexscVOfJtbHWB43EV1szw4oVbLKDFh3keAj7cAch5W7roH1cGU
+         51KQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754448044; x=1755052844;
+        d=1e100.net; s=20230601; t=1754448248; x=1755053048;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=wLlEipj5qbn5m1EPWZYCpWoD/dE/UtKNcnHCLbeeDf4=;
-        b=U7MhMOvZ2sACqGv+ds5jdm01KjfeZ/vuDFMh+2cjFKfViYHZFuIOLILTDxuZcGrZfy
-         voJsSMFjNRCB1D7LRtuxenOjoMlOkHp8heNsSNZ1/M9ITtpZ9SlGAblHFePKMPywbZAk
-         NTQTWstApFcxkbw/X17/1A1Ay6AeExpvyUiuivTfsh6I5i40EoC4QMQzmTEkyKirERD2
-         e0mf1AFBcxRB8+FkAxoi48fUpxm1LnEyydAkV/bDEE41U3DxlFRg2ToyIJe8ppdZKHqY
-         UI2So1uDeqQ/dnwczF7roZ+iC2wIVE7hyv7rLWhXrTV7nEQJc4VdRTPgAVbhe2Himb9i
-         ShDw==
-X-Forwarded-Encrypted: i=1; AJvYcCV+LoNhqY3Yb2QF6Kl7js2xC3FnyiDQ7agZGeb+xSBw19PWmZ2fWEhYbA71palw1Qg7wXTFIUzJGA==@kvack.org
-X-Gm-Message-State: AOJu0YzfodbrN9nQ8EmgKK3TJZZ4No9wuhmFrMnnSvv+q2EemDhF88dN
-	Z66YO7+cG8CS7Fi1By9QGa/lv97VIDvTH4j2tjNLcZ1tqJtcoxNl7p9f4QYVy/xg87AzMhL1UwM
-	t6z7iM1HM59hR4gKL0UbwIT+hbLocmZ4=
-X-Gm-Gg: ASbGncvaf5X9jZ1NITluBF/x2xQX0lTict7HQIadg2b3hgj2jH6BbQcI+CN5rdethRp
-	UZSeqA/6eXLxoTqOmKGGmS7CHqMCNwqWXoqovfEvyb5g5xqgKqGi0/A8hLC3lviSKzHe41CZYLp
-	7EC9IMOLMdHdDtl8XKTzJvZ1e2bp3oOrKR/rVJzHZm5iHha4Cko+ao5yqwqglPdpEqXoRW12nij
-	EdfqgLnrwk2ituybNUrUjji5sWGJOOPR2JCo60NYh4QOds=
-X-Google-Smtp-Source: AGHT+IEqQf+zIHee4jCOpPWCrFBxTHlSSwudoM9zCDhMPNBMCCOBFKlF9RfFmW1hP1ToEnN6mEMTigKm06t258o+Yt4=
-X-Received: by 2002:a05:6000:22c7:b0:3b7:8984:5134 with SMTP id
- ffacd0b85a97d-3b8f41b2be7mr728075f8f.16.1754448043269; Tue, 05 Aug 2025
- 19:40:43 -0700 (PDT)
+        bh=Yl+QGO/FoekIvls1YM3Wb/aWR3GhVD7gGl3r1b1iECk=;
+        b=vVHTSusVR0Id0N22U4FVfKctKLEudQ0/dY8YfaDb94T5asQhypzDTny0y8bBekas4R
+         tWV41rU1Wt8ZeuaAAnNvhlpMUd15GNQWz1LaCn2a0fY7XLKt4P1VB/fCBiUYYPAFAAry
+         SX6tI/Mw1EvDGqiMlr/VMPr0LUb7AZqm3bHjyT/3fLjfYDFs6ldZORMF/7hfdBouircV
+         X6p2ZS5wFzPwDUX/GEfFSdLI8vDlCVVtxcPIMa/fOz0IM9ASkuJjYvhfiNQ6oNmQMpFD
+         eHXenVqSVaK015K1na4cYLuLmgTJ3kizBvdYLqX0IBk231UCxLrZ1Ry5nK88vCErRos4
+         7+mA==
+X-Forwarded-Encrypted: i=1; AJvYcCV/sYIc6RxIyceexBS6/A96HMVy9PLfA+qIIkGTkixPSeJf1WitTDFdRlVvd/D99+28Ph4BfheDlw==@kvack.org
+X-Gm-Message-State: AOJu0YwTfQguvHmdYXp9HyZmweKYJvEMFfjaGGwL6WT/6X9bVJWOjGxy
+	FVL8IO+CwkC4K5y0U6dnFVf/+sxBjNHAw7kvQ4nejTduFIboxW4qzhBAtQ71ZZbtghhdCcqM+z7
+	s7Uwa57vbNnXNAutPwzJ18qfq9jjhLQY=
+X-Gm-Gg: ASbGncvijL2GCqzGhk0C/gEyV4mH0id1rR0LgVyyJMo0GR9/N5dTvvxLK+3suu7RkBd
+	CHTyMi+pBDzvPkOd+6R5BflOvCin2T/PDnoEUEEEyc3yhkwMVt4XSV/f4dZYNzrbN8LsD5Q6uyZ
+	8TXJ+wf4yiO048/RMhKy8eG6K3lffnvAq798Y2D1AzSxYORUMqCUCVZHrn3sQ81Vn0jyCpSr8U3
+	c/Nnw==
+X-Google-Smtp-Source: AGHT+IF6gdunMuxxeD8XNnNrX3S700rIKtscM3tEiLfMAUDVgc9a/tKH7mRQBLP0x++zaPZbw+qA2m9BHuLZYyUg2SQ=
+X-Received: by 2002:a17:907:972a:b0:ae6:d94f:4326 with SMTP id
+ a640c23a62f3a-af992c8337amr68053666b.57.1754448246990; Tue, 05 Aug 2025
+ 19:44:06 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250718021646.73353-1-alexei.starovoitov@gmail.com>
- <20250718021646.73353-7-alexei.starovoitov@gmail.com> <aH-ztTONTcgjU7xl@hyeyoo>
-In-Reply-To: <aH-ztTONTcgjU7xl@hyeyoo>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Tue, 5 Aug 2025 19:40:31 -0700
-X-Gm-Features: Ac12FXzhE05PN0vHH-9uNGVO_3cAT3d4-7vs-buakhtDhbKITGrojhmx1nagYoM
-Message-ID: <CAADnVQLrTJ7hu0Au-XzBu9=GUKHeobnvULsjZtYO3JHHd75MTA@mail.gmail.com>
-Subject: Re: [PATCH v4 6/6] slab: Introduce kmalloc_nolock() and kfree_nolock().
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: bpf <bpf@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@suse.com>, 
-	Sebastian Sewior <bigeasy@linutronix.de>, Andrii Nakryiko <andrii@kernel.org>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>
+References: <20250714052243.1149732-1-airlied@gmail.com> <20250714052243.1149732-14-airlied@gmail.com>
+ <77949b3a-201d-4e7d-a51f-e77274e4a4be@amd.com> <CAMwc25qP-42wMX4UYhZWiYfvf_1dBVNL9TU9i_Wq7uZPqjQL5Q@mail.gmail.com>
+ <CAMwc25pyqhcq-8ubGZT5UX5AYroewBYP6oFN-JmjzEkHgFLTrg@mail.gmail.com> <903cbf42-2fde-4e38-89e4-2d7287b845bf@amd.com>
+In-Reply-To: <903cbf42-2fde-4e38-89e4-2d7287b845bf@amd.com>
+From: Dave Airlie <airlied@gmail.com>
+Date: Wed, 6 Aug 2025 12:43:55 +1000
+X-Gm-Features: Ac12FXyxt1T3fE4KRr9aHM4t1lx2fuu-xcZzTkB4ybZNfSc56ewnbwyqjXQ1XGo
+Message-ID: <CAPM=9twR1S+O9G6gQMJkssTh22KRQ-rb4WsJPnXiXz+y_9oi6w@mail.gmail.com>
+Subject: Re: [PATCH 13/18] ttm/pool: enable memcg tracking and shrinker. (v2)
+To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+Cc: David Airlie <airlied@redhat.com>, dri-devel@lists.freedesktop.org, linux-mm@kvack.org, 
+	Johannes Weiner <hannes@cmpxchg.org>, Dave Chinner <david@fromorbit.com>, 
+	Kairui Song <kasong@tencent.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 21F37120005
-X-Stat-Signature: gb4tt3jgfbb44gjkuwm43ystn7ssycyy
 X-Rspam-User: 
-X-HE-Tag: 1754448044-400267
-X-HE-Meta: U2FsdGVkX19tyFgdJXHOgfC74FXENR4AGZK8eWyOCMpgAwb0N0TYyJ6u7KLPbN6VIh34Kgcwbp4bOOznvYXMP6idcIkwTPNLvvYDkZWEmwOEkM/pPDrfwM9UNX8UEgIaT7NjA7BiYiULTfOc1asRrh4DIKkVgGKLmGMlwxBRnnDqNa+xhJnYod/i1hIDVhlo9Zhtp0yBrM3uw8DZ9zZgZFU6/93ZrqrCzO+ITMLQ8JdyicqRCSWexhDUzeLOnq9gb2cAmPJz49gBalfElROeJ1crXHdyEQx2HddAWE11ZBlQd+TnnUNY+jTdneDa4RuxwpjW73n1RDMQjp2TXuIkXrV2zKOiCBVy2u0oZe/QohcLwsBcW4LN+UcPJ9zma+3jmzzXogHxZLPwoCtJ6mprJHBVwm1G7/Qo/Rt4p9qodqF6jFowRBQ91ElKckzK/RVSgZ25wl3Sb8he41Ln1iYg9Z5agkxd4K8cpsemPnq3sWM/VyWpNRzxFV0yBl1wJBfl+6t/w7GwvRQ2JHLZLujh9TZw/CkEKFgr5vlo/MkqOI1qISNeuVM9M9sXtqQl9ZmkRnlZUe8XuCq8dJJ0n9dl//Kr8fwLb/Tciz0Az0fGCWuTaJmMDFxxCIYPh+T8eBfUDzctumNUZUIIs6oNqizaAdPvW6M/ujha5ldmwmjfSvf26BaJyXRSVQHuGjhKrqJ4ZLFxIi7n0fNWRdLfvibo4XGztjHiO3iETLt/8URuwPa0hDrbTXxxYD+dXhMId9WJWCaBvkfN+aRGytjsGGhU32Fk/+GIMxxFbDnGJLXSa5IoU3wm5tdwpSc7Q+sWChelIoJODvCzWzvfoHA5jSx5MHlYZnhocgCei2yFdcF+kC44pX1PrU1QbxLeHy7nPLSZXeeRJcC0ABTekUtoM3aWMVIfGbJIjx9hiNietD7wFGoDzIiZVwNiqUE9PEPzgsXHN5aJC+YnVJVA4+Fj3lw
- bEgxapXF
- JQx8YWB1vvYtDj7kgsC4hRnsAqLQkwMBAmfhZNyZsv39QlEogGf0i9RheBrtuetcd9uW/5Krew6em+cxYTfcYVqJOwWVPV+vRcPMF
+X-Rspamd-Queue-Id: 36403120004
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 9ugxurrh7xyjy78hnmqsrhqj7fh6mrpz
+X-HE-Tag: 1754448248-982790
+X-HE-Meta: U2FsdGVkX18ztYi/OnjWbQrpT/FwKn2VVCw7grjx9ebplbOGr772LNiEeA+uyjC+pAvpLwfsfuKv2dSflWbdLZ7TtO0PLoFHdblPPHxmbW5ZnRf5V0Ctcq4vCcXUSidmsJaBQNAwzccxZ9Jc5L3fIftEfrGqhFTFNEokY2UlxTVEEk6BBIQwyUinFCoD0xQFaA03lGMSowWQsyN7vFMISU3hySNxG81aIAG1+s4JjDwDOTHAoUFs0UHg+vkHiXu4fPV1B241YQybJH6C5DBmJ7sImJdyPoMJWX51Ub79JOWIAUrmiqqZX2uNxjv5dB2P7jMWjHVFbNSXM0QEDNlLRVBaR0gXPVqtVS1WQaLph1V7zhX1LEyRD5H3/NVxu9xVelLuzc4qf7pjaOPnnJuHlMLdlr+LKDrlLntqxlKTmNWyoUAjSGU8tg3s15kvikZ45VztoMUt/rFaSrRrRtsbaW46MFZgNI8+RyHnHFC2cS5eb7+1XO1bx371W+/hE75JtfZRDr2fmTT8gF12xVEihvF/j4DR1AeewTf2XC/n+1rfBApBEoTKS7pifNbOsD65WiKeomMPvgPEu0dKUXXiMZY7LArFzOqw1Pg93dXAzUCMoB86ZCZj4A0O2bPs/5vq97Ydn3z8CGbGddC9BsfkXJrVRWmEy6GRQwsuGWPNqgVvakjJUXbQq0lrFJUlS9OJptGx4mtXgXq3Du2nzGQgbwgOyZkBLrilRhwUVimsSOvAef6l/aN9FrxlmtaO4eahwS7BSgLGaO9x7HGnNh5IGA4C+q6X+hJSZd11I3vuZm/hz8W37id3ydWlTtfQNETjTryy9ukUMIgdNPqSCZTOBhM/XVLvcYUO4Z66zN9rg8Gap++n+SYe6yxtR8YjwxZftupFutQFr48CGXBsGbSL18WWvWbEXnhV8D3T3JjcidDgsDqi+PDrmf5PsLYYSLfZUCcjSRwW0mV+8oQajnJ
+ N/MDlPJJ
+ ry0bj4gxnazjy+yY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,588 +117,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 22, 2025 at 8:52=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com> wr=
-ote:
+On Mon, 4 Aug 2025 at 19:22, Christian K=C3=B6nig <christian.koenig@amd.com=
+> wrote:
 >
+> Sorry for the delayed response, just back from vacation.
+>
+> On 22.07.25 01:16, David Airlie wrote:
+> >>>> @@ -162,7 +164,10 @@ static struct page *ttm_pool_alloc_page(struct =
+ttm_pool *pool, gfp_t gfp_flags,
+> >>>>               p =3D alloc_pages_node(pool->nid, gfp_flags, order);
+> >>>>               if (p) {
+> >>>>                       p->private =3D order;
+> >>>> -                     mod_node_page_state(NODE_DATA(page_to_nid(p)),=
+ NR_GPU_ACTIVE, (1 << order));
+> >>>> +                     if (!mem_cgroup_charge_gpu_page(objcg, p, orde=
+r, gfp_flags, false)) {
+> >>>
+> >>> Thinking more about it that is way to late. At this point we can't fa=
+il the allocation any more.
+> >>>
+> >>
+> >> I've tested it at least works, but there is a bit of a problem with
+> >> it, because if we fail a 10 order allocation, it tries to fallback
+> >> down the order hierarchy, when there is no point since it can't
+> >> account the maximum size.
+> >>
+> >>> Otherwise we either completely break suspend or don't account system =
+allocations to the correctly any more after resume.
+> >>
+> >> When you say suspend here, do you mean for VRAM allocations, normal
+> >> system RAM allocations which are accounted here shouldn't have any
+> >> effect on suspend/resume since they stay where they are. Currently it
+> >> also doesn't try account for evictions at all.
+>
+> Good point, I was not considering moves during suspend as evictions. But =
+from the code flow that should indeed work for now.
+>
+> What I meant is that after resume BOs are usually not moved back into VRA=
+M immediately. Filling VRAM is rate limited to allow quick response of desk=
+top applications after resume.
+>
+> So at least temporary we hopelessly overcommit system memory after resume=
+. But that problem potentially goes into the same bucked as general evictio=
+n.
+>
+> > I've just traced the global swapin/out paths as well and those seem
+> > fine for memcg at this point, since they are called only after
+> > populate/unpopulate. Now I haven't addressed the new xe swap paths,
+> > because I don't have a test path, since amdgpu doesn't support those,
+> > I was thinking I'd leave it on the list for when amdgpu goes to that
+> > path, or I can spend some time on xe.
+>
+> I would really prefer that before we commit this that we have patches for=
+ both amdgpu and XE which at least demonstrate the functionality.
+>
+> We are essentially defining uAPI here and when that goes wrong we can't c=
+hange it any more as soon as people start depending on it.
 
-Sorry for the delay. PTO plus merge window.
+ Maarten has supplied xe enablement patches, I'll go spend some time
+looking into this on there as well.
 
-> On Thu, Jul 17, 2025 at 07:16:46PM -0700, Alexei Starovoitov wrote:
-> > From: Alexei Starovoitov <ast@kernel.org>
+>
 > >
-> > kmalloc_nolock() relies on ability of local_trylock_t to detect
-> > the situation when per-cpu kmem_cache is locked.
->
-> I think kmalloc_nolock() should be kmalloc_node_nolock() because
-> it has `node` parameter?
->
-> # Don't specify NUMA node       # Specify NUMA node
-> kmalloc(size, gfp)              kmalloc_nolock(size, gfp)
-> kmalloc_node(size, gfp, node)   kmalloc_node_nolock(size, gfp, node)
->
-> ...just like kmalloc() and kmalloc_node()?
-
-I think this is a wrong pattern to follow.
-All this "_node" suffix/rename was done long ago to avoid massive
-search-and-replace when NUMA was introduced. Now NUMA is mandatory.
-The user of API should think what numa_id to use and if none
-they should explicitly say NUMA_NO_NODE.
-Hiding behind macros is not a good api.
-I hate the "_node_align" suffixes too. It's a silly convention.
-Nothing in the kernel follows such an outdated naming scheme.
-mm folks should follow what the rest of the kernel does
-instead of following a pattern from 20 years ago.
-
-> > In !PREEMPT_RT local_(try)lock_irqsave(&s->cpu_slab->lock, flags)
-> > disables IRQs and marks s->cpu_slab->lock as acquired.
-> > local_lock_is_locked(&s->cpu_slab->lock) returns true when
-> > slab is in the middle of manipulating per-cpu cache
-> > of that specific kmem_cache.
+> > Dave.
 > >
-> > kmalloc_nolock() can be called from any context and can re-enter
-> > into ___slab_alloc():
-> >   kmalloc() -> ___slab_alloc(cache_A) -> irqsave -> NMI -> bpf ->
-> >     kmalloc_nolock() -> ___slab_alloc(cache_B)
-> > or
-> >   kmalloc() -> ___slab_alloc(cache_A) -> irqsave -> tracepoint/kprobe -=
-> bpf ->
-> >     kmalloc_nolock() -> ___slab_alloc(cache_B)
+> >>>
+> >>> What we need is to reserve the memory on BO allocation and commit it =
+when the TT backend is populated.
+> >>
+> >> I'm not sure what reserve vs commit is here, mem cgroup is really just
+> >> reserve until you can reserve no more, it's just a single
+> >> charge/uncharge stage. If we try and charge and we are over the limit,
+> >> bad things will happen, either fail allocation or reclaim for the
+> >> cgroup.
 >
-> > Hence the caller of ___slab_alloc() checks if &s->cpu_slab->lock
-> > can be acquired without a deadlock before invoking the function.
-> > If that specific per-cpu kmem_cache is busy the kmalloc_nolock()
-> > retries in a different kmalloc bucket. The second attempt will
-> > likely succeed, since this cpu locked different kmem_cache.
-> >
-> > Similarly, in PREEMPT_RT local_lock_is_locked() returns true when
-> > per-cpu rt_spin_lock is locked by current _task_. In this case
-> > re-entrance into the same kmalloc bucket is unsafe, and
-> > kmalloc_nolock() tries a different bucket that is most likely is
-> > not locked by the current task. Though it may be locked by a
-> > different task it's safe to rt_spin_lock() and sleep on it.
-> >
-> > Similar to alloc_pages_nolock() the kmalloc_nolock() returns NULL
-> > immediately if called from hard irq or NMI in PREEMPT_RT.
+> Yeah, exactly that is what I think is highly problematic.
 >
-> A question; I was confused for a while thinking "If it can't be called
-> from NMI and hard irq on PREEMPT_RT, why it can't just spin?"
-
-It's not safe due to PI issues in RT.
-Steven and Sebastian explained it earlier:
-https://lore.kernel.org/bpf/20241213124411.105d0f33@gandalf.local.home/
-
-I don't think I can copy paste the multi page explanation in
-commit log or into comments.
-So "not safe in NMI or hard irq on RT" is the summary.
-Happy to add a few words, but don't know what exactly to say.
-If Steven/Sebastian can provide a paragraph I can add it.
-
-> And I guess it's because even in process context, when kmalloc_nolock()
-> is called by bpf, it can be called by the task that is holding the local =
-lock
-> and thus spinning is not allowed. Is that correct?
+> When the allocation of a buffer for an application fails in the display s=
+erver you basically open up the possibility for a deny of service.
 >
-> > kfree_nolock() defers freeing to irq_work when local_lock_is_locked()
-> > and (in_nmi() or in PREEMPT_RT).
-> >
-> > SLUB_TINY config doesn't use local_lock_is_locked() and relies on
-> > spin_trylock_irqsave(&n->list_lock) to allocate,
-> > while kfree_nolock() always defers to irq_work.
-> >
-> > Note, kfree_nolock() must be called _only_ for objects allocated
-> > with kmalloc_nolock(). Debug checks (like kmemleak and kfence)
-> > were skipped on allocation, hence obj =3D kmalloc(); kfree_nolock(obj);
-> > will miss kmemleak/kfence book keeping and will cause false positives.
-> > large_kmalloc is not supported by either kmalloc_nolock()
-> > or kfree_nolock().
-> >
-> > Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-> > ---
-> >  include/linux/kasan.h |  13 +-
-> >  include/linux/slab.h  |   4 +
-> >  mm/Kconfig            |   1 +
-> >  mm/kasan/common.c     |   5 +-
-> >  mm/slab.h             |   6 +
-> >  mm/slab_common.c      |   3 +
-> >  mm/slub.c             | 466 +++++++++++++++++++++++++++++++++++++-----
-> >  7 files changed, 445 insertions(+), 53 deletions(-)
-> >
-> > diff --git a/mm/slub.c b/mm/slub.c
-> > index 54444bce218e..7de6da4ee46d 100644
-> > --- a/mm/slub.c
-> > +++ b/mm/slub.c
-> > @@ -1982,6 +1983,7 @@ static inline void init_slab_obj_exts(struct slab=
- *slab)
-> >  int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
-> >                       gfp_t gfp, bool new_slab)
-> >  {
-> > +     bool allow_spin =3D gfpflags_allow_spinning(gfp);
-> >       unsigned int objects =3D objs_per_slab(s, slab);
-> >       unsigned long new_exts;
-> >       unsigned long old_exts;
-> > @@ -1990,8 +1992,14 @@ int alloc_slab_obj_exts(struct slab *slab, struc=
-t kmem_cache *s,
-> >       gfp &=3D ~OBJCGS_CLEAR_MASK;
-> >       /* Prevent recursive extension vector allocation */
-> >       gfp |=3D __GFP_NO_OBJ_EXT;
-> > -     vec =3D kcalloc_node(objects, sizeof(struct slabobj_ext), gfp,
-> > -                        slab_nid(slab));
-> > +     if (unlikely(!allow_spin)) {
-> > +             size_t sz =3D objects * sizeof(struct slabobj_ext);
-> > +
-> > +             vec =3D kmalloc_nolock(sz, __GFP_ZERO, slab_nid(slab));
+> E.g. imaging that an application allocates a 4GiB BO while it's cgroup sa=
+ys it can only allocate 2GiB, that will work because the backing store is o=
+nly allocated delayed. Now send that BO to the display server and the comma=
+nd submission in the display server will fail with an -ENOMEM because we ex=
+ceed the cgroup of the application.
 >
-> In free_slab_obj_exts(), how do you know slabobj_ext is allocated via
-> kmalloc_nolock() or kcalloc_node()?
-
-Technically kmalloc_nolock()->kfree() isn't as bad as
-kmalloc()->kfree_nolock(), since kmemleak/kfence can ignore
-debug free-ing action without matching alloc side,
-but you're right it's better to avoid it.
-
-> I was going to say "add a new flag to enum objext_flags",
-> but all lower 3 bits of slab->obj_exts pointer are already in use? oh...
+> As far as I can see we also need to limit how much an application can ove=
+rcommit by creating BOs without backing store.
 >
-> Maybe need a magic trick to add one more flag,
-> like always align the size with 16?
->
-> In practice that should not lead to increase in memory consumption
-> anyway because most of the kmalloc-* sizes are already at least
-> 16 bytes aligned.
+> Alternatively disallow creating BOs without backing store, but that is an=
+ uAPI change and will break at least some use cases.
 
-Yes. That's an option, but I think we can do better.
-OBJEXTS_ALLOC_FAIL doesn't need to consume the bit.
-Here are two patches that fix this issue:
+This is interesting, because I think the same DOS could exist now if
+the system is low on memory, I could allocate a giant unbacked BO and
+pass it to the display server now, and when it goes to fill in the
+pages it could fail to allocate pages and get ENOMEM?
 
-Subject: [PATCH 1/2] slab: Reuse first bit for OBJEXTS_ALLOC_FAIL
+Should we be considering buffer sharing should cause population?
 
-Since the combination of valid upper bits in slab->obj_exts with
-OBJEXTS_ALLOC_FAIL bit can never happen,
-use OBJEXTS_ALLOC_FAIL =3D=3D (1ull << 0) as a magic sentinel
-instead of (1ull << 2) to free up bit 2.
-
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
----
- include/linux/memcontrol.h | 4 +++-
- mm/slub.c                  | 2 +-
- 2 files changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 785173aa0739..daa78665f850 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -341,17 +341,19 @@ enum page_memcg_data_flags {
-        __NR_MEMCG_DATA_FLAGS  =3D (1UL << 2),
- };
-
-+#define __OBJEXTS_ALLOC_FAIL   MEMCG_DATA_OBJEXTS
- #define __FIRST_OBJEXT_FLAG    __NR_MEMCG_DATA_FLAGS
-
- #else /* CONFIG_MEMCG */
-
-+#define __OBJEXTS_ALLOC_FAIL   (1UL << 0)
- #define __FIRST_OBJEXT_FLAG    (1UL << 0)
-
- #endif /* CONFIG_MEMCG */
-
- enum objext_flags {
-        /* slabobj_ext vector failed to allocate */
--       OBJEXTS_ALLOC_FAIL =3D __FIRST_OBJEXT_FLAG,
-+       OBJEXTS_ALLOC_FAIL =3D __OBJEXTS_ALLOC_FAIL,
-        /* the next bit after the last actual flag */
-        __NR_OBJEXTS_FLAGS  =3D (__FIRST_OBJEXT_FLAG << 1),
- };
-diff --git a/mm/slub.c b/mm/slub.c
-index bd4bf2613e7a..16e53bfb310e 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -1950,7 +1950,7 @@ static inline void
-handle_failed_objexts_alloc(unsigned long obj_exts,
-         * objects with no tag reference. Mark all references in this
-         * vector as empty to avoid warnings later on.
-         */
--       if (obj_exts & OBJEXTS_ALLOC_FAIL) {
-+       if (obj_exts =3D=3D OBJEXTS_ALLOC_FAIL) {
-                unsigned int i;
-
-                for (i =3D 0; i < objects; i++)
---
-2.47.3
-
-Subject: [PATCH 2/2] slab: Use kfree_nolock() to free obj_exts
-
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
----
- include/linux/memcontrol.h | 1 +
- mm/slub.c                  | 7 ++++++-
- 2 files changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index daa78665f850..2e6c33fdd9c5 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -354,6 +354,7 @@ enum page_memcg_data_flags {
- enum objext_flags {
-     /* slabobj_ext vector failed to allocate */
-     OBJEXTS_ALLOC_FAIL =3D __OBJEXTS_ALLOC_FAIL,
-+    OBJEXTS_NOSPIN_ALLOC =3D __FIRST_OBJEXT_FLAG,
-     /* the next bit after the last actual flag */
-     __NR_OBJEXTS_FLAGS  =3D (__FIRST_OBJEXT_FLAG << 1),
- };
-diff --git a/mm/slub.c b/mm/slub.c
-index 16e53bfb310e..417d647f1f02 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -2009,6 +2009,8 @@ int alloc_slab_obj_exts(struct slab *slab,
-struct kmem_cache *s,
-     }
-
-     new_exts =3D (unsigned long)vec;
-+    if (unlikely(!allow_spin))
-+        new_exts |=3D OBJEXTS_NOSPIN_ALLOC;
- #ifdef CONFIG_MEMCG
-     new_exts |=3D MEMCG_DATA_OBJEXTS;
- #endif
-@@ -2056,7 +2058,10 @@ static inline void free_slab_obj_exts(struct slab *s=
-lab)
-      * the extension for obj_exts is expected to be NULL.
-      */
-     mark_objexts_empty(obj_exts);
--    kfree(obj_exts);
-+    if (unlikely(READ_ONCE(slab->obj_exts) & OBJEXTS_NOSPIN_ALLOC))
-+        kfree_nolock(obj_exts);
-+    else
-+        kfree(obj_exts);
-     slab->obj_exts =3D 0;
- }
-
---
-2.47.3
-
-
-> > +     } else {
-> > +             vec =3D kcalloc_node(objects, sizeof(struct slabobj_ext),=
- gfp,
-> > +                                slab_nid(slab));
-> > +     }
-> >       if (!vec) {
-> >               /* Mark vectors which failed to allocate */
-> >               if (new_slab)
-> > +static void defer_deactivate_slab(struct slab *slab, void *flush_freel=
-ist);
-> > +
-> >  /*
-> >   * Called only for kmem_cache_debug() caches to allocate from a freshl=
-y
-> >   * allocated slab. Allocate a single object instead of whole freelist
-> >   * and put the slab to the partial (or full) list.
-> >   */
-> > -static void *alloc_single_from_new_slab(struct kmem_cache *s,
-> > -                                     struct slab *slab, int orig_size)
-> > +static void *alloc_single_from_new_slab(struct kmem_cache *s, struct s=
-lab *slab,
-> > +                                     int orig_size, gfp_t gfpflags)
-> >  {
-> > +     bool allow_spin =3D gfpflags_allow_spinning(gfpflags);
-> >       int nid =3D slab_nid(slab);
-> >       struct kmem_cache_node *n =3D get_node(s, nid);
-> >       unsigned long flags;
-> >       void *object;
-> >
-> > +     if (!allow_spin && !spin_trylock_irqsave(&n->list_lock, flags)) {
->
-> I think alloc_debug_processing() doesn't have to be called under
-> n->list_lock here because it is a new slab?
->
-> That means the code can be something like:
->
-> /* allocate one object from slab */
-> object =3D slab->freelist;
-> slab->freelist =3D get_freepointer(s, object);
-> slab->inuse =3D 1;
->
-> /* Leak slab if debug checks fails */
-> if (!alloc_debug_processing())
->         return NULL;
->
-> /* add slab to per-node partial list */
-> if (allow_spin) {
->         spin_lock_irqsave();
-> } else if (!spin_trylock_irqsave()) {
->         slab->frozen =3D 1;
->         defer_deactivate_slab();
-> }
-
-No. That doesn't work. I implemented it this way
-before reverting back to spin_trylock_irqsave() in the beginning.
-The problem is alloc_debug_processing() will likely succeed
-and undoing it is pretty complex.
-So it's better to "!allow_spin && !spin_trylock_irqsave()"
-before doing expensive and hard to undo alloc_debug_processing().
-
->
-> > +             /* Unlucky, discard newly allocated slab */
-> > +             slab->frozen =3D 1;
-> > +             defer_deactivate_slab(slab, NULL);
-> > +             return NULL;
-> > +     }
-> >
-> >       object =3D slab->freelist;
-> >       slab->freelist =3D get_freepointer(s, object);
-> >       slab->inuse =3D 1;
-> >
-> > -     if (!alloc_debug_processing(s, slab, object, orig_size))
-> > +     if (!alloc_debug_processing(s, slab, object, orig_size)) {
-> >               /*
-> >                * It's not really expected that this would fail on a
-> >                * freshly allocated slab, but a concurrent memory
-> >                * corruption in theory could cause that.
-> > +              * Leak memory of allocated slab.
-> >                */
-> > +             if (!allow_spin)
-> > +                     spin_unlock_irqrestore(&n->list_lock, flags);
-> >               return NULL;
-> > +     }
-> >
-> > -     spin_lock_irqsave(&n->list_lock, flags);
-> > +     if (allow_spin)
-> > +             spin_lock_irqsave(&n->list_lock, flags);
-> >
-> >       if (slab->inuse =3D=3D slab->objects)
-> >               add_full(s, n, slab);
-> > @@ -3164,6 +3201,44 @@ static void deactivate_slab(struct kmem_cache *s=
-, struct slab *slab,
-> >       }
-> >  }
-> >
-> > +/*
-> > + * ___slab_alloc()'s caller is supposed to check if kmem_cache::kmem_c=
-ache_cpu::lock
-> > + * can be acquired without a deadlock before invoking the function.
-> > + *
-> > + * Without LOCKDEP we trust the code to be correct. kmalloc_nolock() i=
-s
-> > + * using local_lock_is_locked() properly before calling local_lock_cpu=
-_slab(),
-> > + * and kmalloc() is not used in an unsupported context.
-> > + *
-> > + * With LOCKDEP, on PREEMPT_RT lockdep does its checking in local_lock=
-_irqsave().
-> > + * On !PREEMPT_RT we use trylock to avoid false positives in NMI, but
-> > + * lockdep_assert() will catch a bug in case:
-> > + * #1
-> > + * kmalloc() -> ___slab_alloc() -> irqsave -> NMI -> bpf -> kmalloc_no=
-lock()
-> > + * or
-> > + * #2
-> > + * kmalloc() -> ___slab_alloc() -> irqsave -> tracepoint/kprobe -> bpf=
- -> kmalloc_nolock()
-> > + *
-> > + * On PREEMPT_RT an invocation is not possible from IRQ-off or preempt
-> > + * disabled context. The lock will always be acquired and if needed it
-> > + * block and sleep until the lock is available.
-> > + * #1 is possible in !PREEMP_RT only.
->
-> s/PREEMP_RT/PREEMPT_RT/
-
-ok.
-
-> > + * #2 is possible in both with a twist that irqsave is replaced with r=
-t_spinlock:
-> > + * kmalloc() -> ___slab_alloc() -> rt_spin_lock(kmem_cache_A) ->
-> > + *    tracepoint/kprobe -> bpf -> kmalloc_nolock() -> rt_spin_lock(kme=
-m_cache_B)
-> > + *
-> > + * local_lock_is_locked() prevents the case kmem_cache_A =3D=3D kmem_c=
-ache_B
-> > + */
-> > +#if defined(CONFIG_PREEMPT_RT) || !defined(CONFIG_LOCKDEP)
-> > +#define local_lock_cpu_slab(s, flags)        \
-> > +     local_lock_irqsave(&(s)->cpu_slab->lock, flags)
-> > +#else
-> > +#define local_lock_cpu_slab(s, flags)        \
-> > +     lockdep_assert(local_trylock_irqsave(&(s)->cpu_slab->lock, flags)=
-)
-> > +#endif
-> > +
-> > +#define local_unlock_cpu_slab(s, flags)      \
-> > +     local_unlock_irqrestore(&(s)->cpu_slab->lock, flags)
-> > +
-> >  #ifdef CONFIG_SLUB_CPU_PARTIAL
-> >  static void __put_partials(struct kmem_cache *s, struct slab *partial_=
-slab)
-> >  {
-> > @@ -3732,9 +3808,13 @@ static void *___slab_alloc(struct kmem_cache *s,=
- gfp_t gfpflags, int node,
-> >       if (unlikely(!node_match(slab, node))) {
-> >               /*
-> >                * same as above but node_match() being false already
-> > -              * implies node !=3D NUMA_NO_NODE
-> > +              * implies node !=3D NUMA_NO_NODE.
-> > +              * Reentrant slub cannot take locks necessary to
-> > +              * deactivate_slab, hence ignore node preference.
->
-> Now that we have defer_deactivate_slab(), we need to either update the
-> code or comment?
->
-> 1. Deactivate slabs when node / pfmemalloc mismatches
-> or 2. Update comments to explain why it's still undesirable
-
-Well, defer_deactivate_slab() is a heavy hammer.
-In !SLUB_TINY it pretty much never happens.
-
-This bit:
-
-retry_load_slab:
-
-        local_lock_cpu_slab(s, flags);
-        if (unlikely(c->slab)) {
-
-is very rare. I couldn't trigger it at all in my stress test.
-
-But in this hunk the node mismatch is not rare, so ignoring node preference
-for kmalloc_nolock() is a much better trade off.
-I'll add a comment that defer_deactivate_slab() is undesired here.
-
-> > +              * kmalloc_nolock() doesn't allow __GFP_THISNODE.
-> >                */
-> > -             if (!node_isset(node, slab_nodes)) {
-> > +             if (!node_isset(node, slab_nodes) ||
-> > +                 !allow_spin) {
-> >                       node =3D NUMA_NO_NODE;
-> >               } else {
-> >                       stat(s, ALLOC_NODE_MISMATCH);
->
-> > @@ -4572,6 +4769,98 @@ static void __slab_free(struct kmem_cache *s, st=
-ruct slab *slab,
-> >       discard_slab(s, slab);
-> >  }
-> >
-> > +/*
-> > + * In PREEMPT_RT irq_work runs in per-cpu kthread, so it's safe
-> > + * to take sleeping spin_locks from __slab_free() and deactivate_slab(=
-).
-> > + * In !PREEMPT_RT irq_work will run after local_unlock_irqrestore().
-> > + */
-> > +static void free_deferred_objects(struct irq_work *work)
-> > +{
-> > +     struct defer_free *df =3D container_of(work, struct defer_free, w=
-ork);
-> > +     struct llist_head *objs =3D &df->objects;
-> > +     struct llist_head *slabs =3D &df->slabs;
-> > +     struct llist_node *llnode, *pos, *t;
-> > +
-> > +     if (llist_empty(objs) && llist_empty(slabs))
-> > +             return;
-> > +
-> > +     llnode =3D llist_del_all(objs);
-> > +     llist_for_each_safe(pos, t, llnode) {
-> > +             struct kmem_cache *s;
-> > +             struct slab *slab;
-> > +             void *x =3D pos;
-> > +
-> > +             slab =3D virt_to_slab(x);
-> > +             s =3D slab->slab_cache;
-> > +
-> > +             /*
-> > +              * We used freepointer in 'x' to link 'x' into df->object=
-s.
-> > +              * Clear it to NULL to avoid false positive detection
-> > +              * of "Freepointer corruption".
-> > +              */
-> > +             *(void **)x =3D NULL;
-> > +
-> > +             /* Point 'x' back to the beginning of allocated object */
-> > +             x -=3D s->offset;
-> > +             /*
-> > +              * memcg, kasan_slab_pre are already done for 'x'.
-> > +              * The only thing left is kasan_poison.
-> > +              */
-> > +             kasan_slab_free(s, x, false, false, true);
-> > +             __slab_free(s, slab, x, x, 1, _THIS_IP_);
-> > +     }
-> > +
-> > +     llnode =3D llist_del_all(slabs);
-> > +     llist_for_each_safe(pos, t, llnode) {
-> > +             struct slab *slab =3D container_of(pos, struct slab, llno=
-de);
-> > +
-> > +#ifdef CONFIG_SLUB_TINY
-> > +             discard_slab(slab->slab_cache, slab);
->
-> ...and with my comment on alloc_single_from_new_slab(),
-> The slab may not be empty anymore?
-
-Exactly.
-That's another problem with your suggestion in alloc_single_from_new_slab()=
-.
-That's why I did it as:
-if (!allow_spin && !spin_trylock_irqsave(...)
-
-and I still believe it's the right call.
-The slab is empty here, so discard_slab() is appropriate.
-
->
-> > +#else
-> > +             deactivate_slab(slab->slab_cache, slab, slab->flush_freel=
-ist);
-> > +#endif
-> > +     }
-> > +}
-> > @@ -4610,10 +4901,30 @@ static __always_inline void do_slab_free(struct=
- kmem_cache *s,
-> >       barrier();
-> >
-> >       if (unlikely(slab !=3D c->slab)) {
-> > -             __slab_free(s, slab, head, tail, cnt, addr);
-> > +             if (unlikely(!allow_spin)) {
-> > +                     /*
-> > +                      * __slab_free() can locklessly cmpxchg16 into a =
-slab,
-> > +                      * but then it might need to take spin_lock or lo=
-cal_lock
-> > +                      * in put_cpu_partial() for further processing.
-> > +                      * Avoid the complexity and simply add to a defer=
-red list.
-> > +                      */
-> > +                     defer_free(s, head);
-> > +             } else {
-> > +                     __slab_free(s, slab, head, tail, cnt, addr);
-> > +             }
-> >               return;
-> >       }
-> >
-> > +     if (unlikely(!allow_spin)) {
-> > +             if ((in_nmi() || !USE_LOCKLESS_FAST_PATH()) &&
-> > +                 local_lock_is_locked(&s->cpu_slab->lock)) {
-> > +                     defer_free(s, head);
-> > +                     return;
-> > +             }
-> > +             cnt =3D 1; /* restore cnt. kfree_nolock() frees one objec=
-t at a time */
-> > +             kasan_slab_free(s, head, false, false, /* skip quarantine=
- */true);
-> > +     }
->
-> I'm not sure what prevents below from happening
->
-> 1. slab =3D=3D c->slab && !allow_spin -> call kasan_slab_free()
-> 2. preempted by something and resume
-> 3. after acquiring local_lock, slab !=3D c->slab, release local_lock, got=
-o redo
-> 4. !allow_spin, so defer_free() will call kasan_slab_free() again later
-
-yes. it's possible and it's ok.
-kasan_slab_free(, no_quarantine =3D=3D true)
-is poison_slab_object() only and one can do it many times.
-
-> Perhaps kasan_slab_free() should be called before do_slab_free()
-> just like normal free path and do not call kasan_slab_free() in deferred
-> freeing (then you may need to disable KASAN while accessing the deferred
-> list)?
-
-I tried that too and didn't like it.
-After kasan_slab_free() the object cannot be put on the llist easily.
-One needs to do a kasan_reset_tag() dance which uglifies the code a lot.
-Double kasan poison in a rare case is fine. There is no harm.
+Dave.
 
