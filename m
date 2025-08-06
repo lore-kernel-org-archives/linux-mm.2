@@ -2,89 +2,133 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B30AFC87FCB
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 00:40:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 38873C87FCB
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 00:41:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AA798E0006; Tue,  5 Aug 2025 20:40:11 -0400 (EDT)
+	id AFF518E000A; Tue,  5 Aug 2025 20:41:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35ADF8E0001; Tue,  5 Aug 2025 20:40:11 -0400 (EDT)
+	id AD6EE8E0001; Tue,  5 Aug 2025 20:41:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24A1E8E0006; Tue,  5 Aug 2025 20:40:11 -0400 (EDT)
+	id A147E8E000A; Tue,  5 Aug 2025 20:41:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 155D88E0001
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 20:40:11 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9448C81135
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 00:40:10 +0000 (UTC)
-X-FDA: 83744475780.07.98B86C7
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 2E5ED100006
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 00:40:09 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L2U9Zsxo;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 91AA58E0001
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 20:41:05 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3C276135822
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 00:41:05 +0000 (UTC)
+X-FDA: 83744478090.29.B6DC02B
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf03.hostedemail.com (Postfix) with ESMTP id A9E8D20003
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 00:41:02 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dtrJ36BC;
+	spf=pass (imf03.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754440863; a=rsa-sha256;
+	cv=none;
+	b=FaS5GHSnLCSs2w/la2sbJ/YsT1/JxFloRBm5cPfe9Sig+W3jIHvpiDUNIHAATokEaOY28p
+	hqY/5n1D1GKnCd93ilthc8+DS8GKwh5Sg1oNdVBJX/A/zxgmL7HrmreGXErTD4zF0+tBtV
+	iERgBOMRY7964j+rYhj8cawD7nljq6s=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dtrJ36BC;
+	spf=pass (imf03.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754440809;
+	s=arc-20220608; t=1754440863;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h/HalD+VWJTaJwsr3U7caliHaIGY9hM+wzU24Osvra8=;
-	b=h6Xb2nJir9E80apwXicebhuSSfxf3VTlfAiqxw+8w6gf56lkjTDe1Ima3mywboDuj3Srva
-	o5eXY7fUIsbly9hLJi1bvdVVkc+JW6gxzVHp+BbGfXeibK+cRvbVCREkZRGY3gCNJkBurA
-	iQSj1VvZTy0jruQGp/L8AaBp2c6t9k0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754440809; a=rsa-sha256;
-	cv=none;
-	b=N3cX8mwLLc2NnbF8j0N+TK3wZxdLkaJRr52oDyh6TPpLPVd8YRopYuMZapbikv99WdMbsh
-	7QDGkjviZc6ZIq6J0Vy8LHJQ6hgaMPRT74Jp2d7k3Zi/7YfojvbFdJXtGFEiEL7KXDt5vc
-	Y4jV0Xb4jGH+a6daAPqiniV6JFCAU6E=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L2U9Zsxo;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 70333A5675E;
-	Wed,  6 Aug 2025 00:40:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8D55C4CEF0;
-	Wed,  6 Aug 2025 00:40:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754440808;
-	bh=fPjD5D3HDLu3NtemT8rWbSgbD6qYNtA8uvatr0PW7QA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L2U9Zsxong5pC1ZCBOpeRRRkjZSlaDbpCpf36zSl0CRMtDzkH3JiV1H7RrMQP+W0y
-	 dzXlMKgr71kVEzpOb0H+dYBsRzNT9MCliE8CVG3YLQbV9E5xbQteffDqRG5aW4Su+O
-	 FXvwY/28e0XnP4znopWCug89r5I+cmj7Jfulh+ecw7AMp6eTSy/sKE5/Km96j6crT0
-	 qAYpHUTeAK5cHjX5K3hd2hNEZsr/tp/3Uh1qKMOlJem5xYbFs7IMfDjc4Hi1hdkEPa
-	 /HgzoMuKAbRn0Z78STDLuptxuBQGfZsGhaQZqHXZXyKM9Z0Se/n3lkMiQQN/Q61tea
-	 X68lGEcLgl2hw==
-From: SeongJae Park <sj@kernel.org>
-To: Bijan Tabatabai <bijan311@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
+	bh=kFOUKfyF9eht2Uz3lQBAC39G9bdYnu6PboLaGAsorNE=;
+	b=YHwbqPJvxkqGzStlv14vq6qE5iyygu2LWDO1GUzGaUqXT491QtEH3mN+MbDEA/X7XQRbqw
+	u+yRP85DFm0BAvEAUkmZevXM4wJltjM3AjNT70gw79u2Jg91KpMekTXfApfzmJGerLXekI
+	nvl4xLitqmhlJwDqQKS6Imd0JWzEKco=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1754440862;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kFOUKfyF9eht2Uz3lQBAC39G9bdYnu6PboLaGAsorNE=;
+	b=dtrJ36BC+QvAwu9ziiRQ8Nv+NuFuAIIQwjdcnHBdake7x9A0cWCMXfu6VXWTip+Uqr+QV+
+	0q0X//L62XHrwUTwD2uBiaiEEVaFC/asQv/P1ZoWqNH6msaxdTRXqjsGDTsVSh0sLDHjJh
+	04Naa4P+xSSPDi71IXbh9rYVRj/YK9o=
+Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
+ [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-665-MrFJnA9kMfiA0l6Wg5ngPw-1; Tue, 05 Aug 2025 20:40:58 -0400
+X-MC-Unique: MrFJnA9kMfiA0l6Wg5ngPw-1
+X-Mimecast-MFC-AGG-ID: MrFJnA9kMfiA0l6Wg5ngPw_1754440858
+Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-70e5e6ab756so71872917b3.2
+        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 17:40:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754440858; x=1755045658;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kFOUKfyF9eht2Uz3lQBAC39G9bdYnu6PboLaGAsorNE=;
+        b=QtYPxi1xMFnpwkWm+TP2VCkC6t31tRLiOvZITDQwmGp218ILHa3+SYZKvKoITyJZWc
+         lPSLuc9aPkRbnLbDFubwGHrqqx0OvkLbVBHSF9K6jacTSHpp/gczqNhzInePZczg67XW
+         cGN71PD6yn/RB17iBoFBP3TGMGBqxrKVShCdylyB3AXqTdrA8+oqzGn7fr5jgg0gL5i8
+         DQlslIfWF4L/RgB47zI2hOc26w4K2o+nnfu/DjWHN3L1fM2HggGNj77Z+IHaWGts3w6a
+         13bOP5KFIThTwG/nn+DMaC8MOMMAhFZmG074mTRt7R6n3tOkVXIZ3qDyqdkGXVBp7w1w
+         DWAA==
+X-Forwarded-Encrypted: i=1; AJvYcCV+uYhVMpbjGMSZBCBqFe7kBOVnkJ3Y+/fS7mtK93TgnOkt0MQCyGR41dbyE37J57uEVXfmKwcYmA==@kvack.org
+X-Gm-Message-State: AOJu0YxdwI1S09swg/jxn9jjg4AEAed59aedmQxGEfo/lD9WPOlg4BVt
+	ztmSjcJ0Yj/hpuo98NgrLGfOXuZI/9XNZxshc3hTY4m1w+Hxb5QRpgeDG1WtzZkdmTFGeGBrnO8
+	MCTYs+xUG857e0S7dNKC65TeCJ4g5c8iYguGRmXrRyL/tWkHKktrJ
+X-Gm-Gg: ASbGnctU/QgY6ujEylZsSiYfL3w4xY8aqwcE1eGOxkXvzf6kyqmt5NnBas2D/d6bdYI
+	dibbgjouXwvMSjst1v1/zLQjGJpEXjDAsDMoeeWud/I/TXwNAphLYvwHxQNsQtttODagbNffrdM
+	7hhP6o8tHJ/iYtvTMk7N4Q4WM85eOOGR67ywpKloOelGfVbM7A+tGvkW3xxC1jzbCEM6X5Jujxt
+	pjhiHddcg6K7BddHelG+7RE338wEDezWCdrp62dOFhnBFAShGlkEkHaj3DTOqJAsXxuigNrNyVE
+	wi8zeTxHS2KiLIz+jUDcPCCSl6Y8aM7+
+X-Received: by 2002:a05:690c:6186:b0:71b:4739:9d67 with SMTP id 00721157ae682-71bc96f338amr15082517b3.4.1754440857863;
+        Tue, 05 Aug 2025 17:40:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGHku4dtclIuv1XK8QUtmPlV8XuTKcYcnt2F/++IvmdFem+YdSw119Wr+7uOLta+er71F1OKg==
+X-Received: by 2002:a05:690c:6186:b0:71b:4739:9d67 with SMTP id 00721157ae682-71bc96f338amr15082337b3.4.1754440857503;
+        Tue, 05 Aug 2025 17:40:57 -0700 (PDT)
+Received: from x1.local ([174.89.135.171])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-71b5a5cc2fesm35969157b3.72.2025.08.05.17.40.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Aug 2025 17:40:56 -0700 (PDT)
+Date: Tue, 5 Aug 2025 20:40:44 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org,
+	aarcange@redhat.com, lokeshgidra@google.com, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	corbet@lwn.net,
-	Bijan Tabatabai <bijantabatab@micron.com>
-Subject: Re: [PATCH 0/5] mm/damon/sysfs: Add commands useful for using migration dests
-Date: Tue,  5 Aug 2025 17:40:03 -0700
-Message-Id: <20250806004003.52864-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250805162022.4920-1-bijan311@gmail.com>
-References: 
+	syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] userfaultfd: fix a crash when UFFDIO_MOVE handles
+ a THP hole
+Message-ID: <aJKkjEYmeq93w35-@x1.local>
+References: <aIz1xrzBc2Spa2OH@x1.local>
+ <CAJuCfpFJGaDaFyNLa3JsVh19NWLGNGo1ebC_ijGTgPGNyfUFig@mail.gmail.com>
+ <aI0Ffc9WXeU2X71O@x1.local>
+ <CAJuCfpFSY3fDH36dabS=nGzasZJ6FtQ_jv79eFWVZrEWRMMTiQ@mail.gmail.com>
+ <aI1ckD3KhNvoMtlv@x1.local>
+ <CAJuCfpHcScutgGi3imYTJVXBqs=jcqZ5CkKKe=sfVHjUg0Y6RQ@mail.gmail.com>
+ <aJIXlN-ZD_soWdP0@x1.local>
+ <CAJuCfpFzP_W8i8pwL+-Uv-n+2LixgFrzqn2HsY_h-1kbP=g3JQ@mail.gmail.com>
+ <CAJuCfpFEf92gTR+Jw+1wcCcT0fEt-SP193NHzpyxVXJA=VAwng@mail.gmail.com>
+ <CAJuCfpFeSVq+hq4JRJStLgFfQgmS6SQ7zoFsj4=SeQT89r3TTw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: u5ihhcx1bteyw3jcm5z6gewfq8888e5g
-X-Rspamd-Queue-Id: 2E5ED100006
-X-Rspamd-Server: rspam10
+In-Reply-To: <CAJuCfpFeSVq+hq4JRJStLgFfQgmS6SQ7zoFsj4=SeQT89r3TTw@mail.gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: YFxQ9s0lO0nkj-miSlEoiVBDRLTuNOf4iSdY1fryPkk_1754440858
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 X-Rspam-User: 
-X-HE-Tag: 1754440809-994988
-X-HE-Meta: U2FsdGVkX19cGiKF3j2URHTM7FTK2Y3ADuNsgquxgoJI6FzVtmABO518pPL4BDNskjWyD1TTP8Zuj3a6LFMTCFMzkd6rZ35eTfCOJpltDoTDpP3XU5As91048GEQ+A4/7BPfAw/4IEq8niTtXIwxnHJW9Ly1Ii/K84THqyZNQzBw5/0nmSmxjzgr91vnC4y0M6PCOtm1z2zliNdFQN0m2eHIoNruThcOFl9NnldHzCiUZF1y4wes3SVpia105BMDNX/WPsnEXMKHfJqtxrGDveSk3ZzgIrAwppUUAZ0RM7wh0tnmsf9UsQYsxiiZQ6h8XaL6wTcADmCAqEtf2jdNiY4pJOkiLuEZrR/wtdUuqgpbS7JCqHwgEaRHnVYCd3Ag6IB7YN/0yc8HOOte8qiRIEg2yDDp4zxHlWh+7j6JQlb4w3hsJfxwOgyLULI6HD3HMqTbJV36HLlTHDNIN1pyvk7HFYNjE0WT8Tyz/DWHAZLqfwtGqIhdKOlDcTupjOJi4BGHA51241L/x+PMgeWdSYs0VNb9R3MHL4JTuPuStxoxffs8Dso6m6pAlbK5XWXe4tBZO6kzNrta3vUcRI5CSzpu9gmDvtNqmcTXWnaSafpDkPRScRWGOX7vDCwHuH5u/nK9Ft2T2UE2JXHmqeSB2+95HP4Lt0COk22VRlfsF5qgU4UuaWrTMHlRJScbQGTzJVvth6VY/MRKUXGJt4M97PXOu7HTxu1HPGu2FE8iD4xFBIX2VICTBbozudHJHi3OkFWg6Vm6X4A0iPZcusYQ1LOyq0KgyZB9MOv+ljxA32wi1skajBXF6VXUFSGfEKKvIojiaJlEVpYwKnZRtzRJJ0/asoDiAuxg3w+3rgLu3M7dGt3syLr5ZM0Bq4TetgxI60YpnADWxmtpBFf9dN4Z+dWtb93RveXFWZnOuzVjU03EXi1nqaKJzg==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A9E8D20003
+X-Stat-Signature: ikca4zn1nrrb5ri7rcfrfb4jxojg6cjg
+X-HE-Tag: 1754440862-156204
+X-HE-Meta: U2FsdGVkX1+iC+ne/tVCawSIt4DqWI2FSjehV29f0YaEglZVXDSlyZONHLdQKs8fcIcBWGBXy2TY+aKVD4GyGK4UnjCzFVUQMpPNah4GNreO4o1fFBpgMqzbX1S45IjnYHbTS0esk9XVJ8nPPnhMwxe0J0AEuamEfwBaQZ3xpDqObEW6+fynKlRtdU9Lw9qiauiy9ElsQ2X4gwN29JHcWEBmvr8NWfnmLRNXYpDAQCe7HqM5ekcTkCSU0D01uZG3LOZGTCgGYf0FTd2bruQrFoUEBkEBdWVEHjLME61VwVyTRUJp43ahIibCjSCygCxfMRk01wcHafMpJYPoGjLK5A4CTA0EwzVzLAnCFVZXNUIIJUVA+V3fgNc1SxDxW5HDUqjqcaSZFNZgGIMz/N1I35g8PSUr+LTYZ0K7RG8ly00GXjZs2DnGdPE6rdRizpq3/cLsmFFzKc4HO1tVQa8R2cwk7RCWaKUbckVxYbj1YUkZYhX4bwWlOql9UUxWUnsnG3NXTJBXUybsnK7aYPZD4PKuAHy5XAvlfK0SiA3KyfZSlWt4ALp6vdRQKhwOIVKn3H6t33YaEZezj0tVMeBmLeoiBrMBE9EcR/6m5WxYFcdjzjTdHag4G0oEzlPREChdW7kcO1SfBL8Q5Q7ZOiB7vC1sP67WMwmh/CqTCHDDjn9pWgqyO8diHmYM2/8cE6wZg6SWnAcnyCuB6rSPWxv2SOVmky1oNRq0obfiXVUqmSzPMBnPE+F9rNzfraVyBbfi+77rgHbLfGdszbau5a6lKyuIC209oQxiFwnG1bBzSxogf50lzDaMLbaVVumB51kePPgLrIsKHa27dnpX9EzjB2H54M+RCqBnDYbkGwFUajeoNKV2RGwQwAlJqeX9AAwxJ4J7ebfSoq8kr7Zvi5wFBstQV1saRATeUnzVxuHaLbnsdWCOR/LIanefw57C28aMEvPGsNK3sDtbU6V5rLe
+ +zW3HidY
+ XzUboDMfJ4DclHIRIIGQpOIqALm356Y/7EYrWSybr8DdEE6uuQbnaZEEleYcqg4Rf9t74o4u3T2bouW1DuMr+7JkZ2D7rRJ88eVjJmm1uHMhjYd+M3DoiSqJwdULkmpi2+uZICokCo22Bsg0a9iGtYJ0Zok8D15VVoLcNvx3gBOiSO87cuY9wpi7Z3ELInDqXP02i0SLhEkgiBf/mfv6uSVQAYT8dQpa5neWHJDzlMXcR53NAgivzI8UPdPBzqRrZDVVJVx60fJxjW8kw+xgsTrha5O2QWdmgcGcdKd00/3z7NdHDnRlmQp731yUktGHDAU8QZHnhpcpmlXtl3cfhzNyp6dMR7Lh1sNqNYklinfUaQC7by8LPxKPB+6pQVi+MfItWIZpEia79CdNvG9pxP5zUQYW7nvzJ+CdQ0TSNCcqeXswvhtK0/LGFe0KXXSwyIzd7NCtV3pwdR40oaHXkl8c9nDwW5/ZB27Ye+uQxdB9WpQW8amGhTHair3c3MhQGrxqGJDhB/KbvrdBd58wipyIdOnf8AS/a90YsKG7KWXzrr2H0FxJ0pHXtxsgiZfeSqKjzx8Uov/KpWhev1oA1mwu6b1VJqONn0W73
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,84 +137,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Bijan,
+On Tue, Aug 05, 2025 at 04:41:18PM -0700, Suren Baghdasaryan wrote:
+> Ok, I let the reproducer run for half a day and it did not hit this
+> case, so I must have done something wrong during my initial
+> investigation. Sorry for the confusion. I could have sworn that I saw
+> this case but now it just does not happen.
 
-Subjects of patches usually be converted into lowercase when be merged into mm
-tree.  I'd suggest using lowercase even in patches stage, if those aim to be
-merged into mm tree.
+I'm wildly guessing you might have hit the numa balancing bug I mentioned,
+that might explain what you mentioned previously on the testing results.
+It might just be tricky to reproduce:
 
-On Tue,  5 Aug 2025 11:20:17 -0500 Bijan Tabatabai <bijan311@gmail.com> wrote:
+  - We'll need a valid THP (pmd) first in the MOVE source region
 
-> From: Bijan Tabatabai <bijantabatab@micron.com>
-> 
-> This patchset adds two DAMON commands, commit_schemes_dests and
-> wait_for_schemes_apply, that I have found useful for using a migrate_hot
-> scheme with migration dests.
+  - THP needs to be selected by numa balancing for a check (marking
+    prot_none)
 
-Thank you for this patchset!  I believe we shouldn't be afraid at adding
-features, but should also be carefult at making good solutions for real
-problems.  So, my main response to this patchset is, hopefully unsurprisingly,
-I'd like to better understand the requirements and the problem you are
-encountering.
+  - (before any further access..) UFFDIO_MOVE needs to happen on top trying
+    to move the whole THP being marked as prot_none.
 
-> 
-> The commit_schemes_dests command, similar to the existing
-> commit_schemes_quota_goals, is used to commit only the dests fields of
-> schemes. This has a couple of benefits:
-> 1) It is more efficient than recommitting all the DAMON data.
-> 2) Doing a full commit resets the aggregation and ops_update intervals. If
-> a user sends the full commit command frequently (relatively to those
-> intervals) the aggregation and ops_update events will be prevented from
-> triggering. Having a separate commit command side steps this problem.
+AFAICT, task_numa_work() is the only place that can mark the THP, and when
+it happens, should see change_huge_pmd(cp_flags=MM_CP_PROT_NUMA) and then
+returns with HPAGE_PMD_NR.
 
-I agree the commit command of DAMON sysfs interface is inefficient, and could
-make the infinite intervals delay problem.  But, I didn't expect there could be
-use cases that use commit feature frequently enough to make the inefficiency
-and the intervals delay be real problems.  Could you please let me know more
-details about your use case and how severe problem DAMON is causing?
+[sorry I am still pretty occupied with other things.  I can try to reproduce
+ together with you after I get more time back]
 
-Depending on the real problem, I'm wondering if optimizing commit command can
-be a solution.  For example, skipping the update of next_aggregation_sis and
-next_ops_update_sis when the intervals are not changed might be able to solve
-the intervals delay problem.
+> With migration entry being the only case that leads to that
+> pmd_folio(), the only check we need to add is the "if
+> (pmd_present(*src_pmd))" before pmd_folio(). Would you like me to
+> check anything else or should I go ahead and post that fix?
 
-> 
-> The wait_for_schemes_apply command causes the calling thread to wait until
-> all schemes have been applied. It does this by calling damos_walk() with a
-> NULL walk_fn. This can be useful, for example, if a user wants to know when
-> new scheme parameters they've committed have been applied. Another use case
-> could be if a user wants to record the system state every time a scheme is
-> applied for debuging purposes.
-> 
-> The functionality of wait_for_schemes_apply can be achieved with the
-> existing update_schemes_tried_bytes and update_schemes_tried_regions
-> commands. However, having a separate command avoids extra work and makes
-> user intent clearer when used in scripts.
+We could fix the migration entry first, then if any of us can reproduce the
+above numa balancing issue then it can be a 2nd patch on top.
 
-I agree extra works are always better to be avoided.  But is the overhead large
-enough to be a real problem for your use case?  I also agree it could make the
-user script cleaner, but adding a kernel feature only for user scripts
-readabilities sounds like too much, since the user script could have its own
-abstract layers for its readability.
+After all, so far we didn't yet prove it, either some unreproduceable test,
+or pure code analysis.  Meanwhile it might also be cleaner if we have one
+patch fix one issue, rather than having one patch fix two bugs.
 
-Also, even if the new command is implemented, since the DAMOS schemes continue
-running, the system status will keep changing.  If you cannot do the recording
-of the system state in a restricted time, the recorded information might not be
-that reliable.  So I'm not sure if you really need this strict waiting in this
-way.
-
-Could you please share more details about what you want to do with the new
-command, and how much problem you are seeing?  I'm particularly curious what
-system state you want to record, and why you need to wait the exact time
-interval.
-
-Depending on the real use case and the problem, I think we might be able to
-reuse the DAMOS scheme stats, or implement more strict and reliable time
-control features, say, making kdamond or schemes pause and resume as users ask?
-
+What do you think?
 
 Thanks,
-SJ
 
-[...]
+-- 
+Peter Xu
+
 
