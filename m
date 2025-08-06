@@ -2,117 +2,111 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C7A96C87FCB
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 15:06:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EBF9FC87FCB
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 15:12:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 533146B00A5; Wed,  6 Aug 2025 11:06:20 -0400 (EDT)
+	id 7D8118E0006; Wed,  6 Aug 2025 11:12:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50AB46B00A7; Wed,  6 Aug 2025 11:06:20 -0400 (EDT)
+	id 788B98E0003; Wed,  6 Aug 2025 11:12:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4205E6B00A8; Wed,  6 Aug 2025 11:06:20 -0400 (EDT)
+	id 677688E0006; Wed,  6 Aug 2025 11:12:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 32A596B00A5
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 11:06:20 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0BFEE1A062B
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 15:06:20 +0000 (UTC)
-X-FDA: 83746658520.21.96C8CDB
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 26A24C0011
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 15:06:17 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=4gO5mahQ;
-	spf=pass (imf28.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 54C038E0003
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 11:12:22 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D1DE5140305
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 15:12:21 +0000 (UTC)
+X-FDA: 83746673682.14.FE1D56B
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 14085180004
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 15:12:18 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=BnuY2MuY;
+	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754492778;
+	s=arc-20220608; t=1754493139;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cMkdALPxV5bI1ddOoCXO/TX3xqYimqA7Ocq/kfBYHfw=;
-	b=rWrd/zMX5EMRsMfEVbvchF3SlnwC2N41p/HsWSN3+96STD9HmN3xbfkAGBG5bOZm9DBqwf
-	wLjEeGg2xeHLJAFnne/cPrFTI9kHrB2AeidZWEzFQGyB/oe6TCnJTO/owpOfDGxmOd69Ux
-	BHdFojGcbdZKu3TvWXNuUCsnuw6bkOg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754492778; a=rsa-sha256;
+	bh=x4Pf4AavquJKc+JGHEHc79V4RatrEBLDzS47637f6Zo=;
+	b=2UZP6ANC+wVErIlyDtgMKEgjaIbc4zBxhcSUWbOIGQye9sdc7ooxVbjAfHHt1my6TVs2Ik
+	mB2ux2nhiCz/3UZYPRr206aClen/4K52Biukl0p1MG4nGdMt7FLz0IGvWUcq+212Q6KBi1
+	nVS8fjgvyef+fgcCFB/6HyVm3k9cXx0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754493139; a=rsa-sha256;
 	cv=none;
-	b=w106WurPj2HEBNsIVt//DxoqGsKbEjIqLgguK9+RLv+kItkL/DxuOu/c5JyYmLvp1KgUuu
-	vSQFxdVowvFDlXLukqMmAbW3s4Ovj5jy5y4V/VWa484NhxBn4BAcKsO1MUEevPbi57BWYl
-	OrZuIgrcbIt6EbS9KL4liAvaZ9JwnlE=
+	b=Sr+JzKqrgKkJ0UUI0cfskq+FhXzaV1LTz69ItGkJZXG3v+1GSronVVHyJ0zJPUjKl8uN6S
+	Zv94lSP/jKuisiwPvjGhEHYwhtJcNb6/0ddGYhHSO94ZTaGRc/dLsrhC1e/jLiWKhl4s51
+	diT7BX44aPPjQe3osR/dEyZZmUORORg=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=4gO5mahQ;
-	spf=pass (imf28.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4b07a5e9f9fso474721cf.0
-        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 08:06:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754492777; x=1755097577; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cMkdALPxV5bI1ddOoCXO/TX3xqYimqA7Ocq/kfBYHfw=;
-        b=4gO5mahQNpBwrhW6bKxbtW2dafU5wD3H7TVrpRebE8bJXc6hRh46KnzP+f8JmWb2ZM
-         uujeMW42jDdukAJxH3UnC48XMeDR2etHrcQPxTU0bQa2lYb+CYw+c7a2mlfQ5RxETDEy
-         bUW7fVTzIxwAavvaJKEjZAi/KqXMyo07vCaQvmTWl/iY2APDDkxo9MZZUzg0R9VbPmm4
-         Lk0Y5buqoOwEG7RUlZwUo7QbKa/hosFr562Bb1px9gYJPgLrE1gmbqJQ1XaCcEJ7gdV5
-         87w0ODPOiDSlm+/heIz9M2CsGO3QvGIfxCstZWtX/veUWHbdkFlK30j0g2kpBNichhYp
-         KX+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754492777; x=1755097577;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cMkdALPxV5bI1ddOoCXO/TX3xqYimqA7Ocq/kfBYHfw=;
-        b=BMKwmKALtGi9MB2nsi7blkPR+2XvSj1Hbcj7wzHZ1VTsby9IIXTimR7qXH9weOZtFl
-         /BqnDKgUaLikV1it4vZlNBr9BaNeSAezmnqWg9U4JHql99NxIyVvgQ/mONSou9P2kNw1
-         J8Rhe9oSjm0wPCti/xxTJvR6Aoy1FtkjtNlgITxm4Jsun/97k9uGg8faxCiq37mPPFf5
-         lb8dlrqAWjPkGBG3q/TLusd6VLQaVclif9KoSCBSfgayZU9REFZ0MEg7KEvR/M8i/Epc
-         S41fyxN87BZP6OKcSOURRHEOPcvhwOsgKbAenlpT4dUk+OF1T21jHtmTFdwHTA2rwB/5
-         Zezw==
-X-Forwarded-Encrypted: i=1; AJvYcCUEB/3Lsy7CmCTZ9OXQmUJToYs4f5XXWa4SN83N9+UbcbPJk5szcdZUnJDrLnQmJI/PW60AwjZ5hw==@kvack.org
-X-Gm-Message-State: AOJu0YzVD9/wDpLsXIr5qd0RpU6hzqT5h+iE+Xc6K1CIwB3s0g6l69kv
-	cW0XDXWl4oH/q16vwh1LhjthAGA3nngiikY6VvMF4xDi+QaOzN99X0CBouz0CvMrOg5bp+fTiwZ
-	n6UjXNjIoxXDagqaYyQTluCW0qRLprRBP/lPUEeIq
-X-Gm-Gg: ASbGncuNdXkfTU/BrhRotyUzDVirWspv5t1+qaffBkbfxfMSI2GQWvtwvt4fMbDiWTb
-	gGuZqOcdaZhYTG/mMDQAQThF0R8MWgB0L1tB3aI4KKzDVoHaUI/D5HyOsiprLcTwbcbCE+V9/LA
-	9TXBiE6dToA23hg3Ly2MCA3xaRyRN08ewUbjhdzkCejAM7vPT0LvWxwKEPna6Hesh+XegVAaTf3
-	EYMX11qfyzf1JtFVgwXXJf02ygegdTiDWrvVQ==
-X-Google-Smtp-Source: AGHT+IFxjgJYfLtCzxTqC2qd/VGsYO0V9QbHxfH3kUKXYt+WP9H5eIIUksOBWWr2ADiUXznJbKHJFYhIUDbkwryBSWk=
-X-Received: by 2002:a05:622a:38b:b0:4b0:8318:a95 with SMTP id
- d75a77b69052e-4b0904dbb54mr5571461cf.8.1754492776656; Wed, 06 Aug 2025
- 08:06:16 -0700 (PDT)
+	imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=BnuY2MuY;
+	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754493139; x=1786029139;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=z0GZ2itZ2i6se6vN/uwlmzSn0GLQ1L0gKV7qLJ9Ot0A=;
+  b=BnuY2MuY88bwr2i0UY+c5NsLQrskuA7ps1VggbcOEEgwPDR1Oo43y8zm
+   ajI5q1QqN6uUeYbuJjfMrouONVMT7GCk1AmdRWI5EgiwEcqS1Uyz6DUUI
+   CWCUP2AKGlm1dgiFahuxh1YahaUYVwtL+uWSl+yez4VcWq28BtGqQqJ3C
+   bUK00myQhbwNrLmfx5okbyU8liNoRrRp2rd/iYTRMM+qamrAUDBFPbuoA
+   VtZDBXgWp6n13wBfjmiFyL2QOZXXuQJVGELZCKMkNPPC5rjYN5q+ux4dT
+   A4qArn6nWfubZKvn6amxsKb+mDroQZTSeJPXO5zX5aUWLPJy22JX23f2L
+   Q==;
+X-CSE-ConnectionGUID: F4MX3JqdR5KKbWXrG3V2bQ==
+X-CSE-MsgGUID: nTO54TNKRCeun4G3yIugDA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11514"; a="67510063"
+X-IronPort-AV: E=Sophos;i="6.17,268,1747724400"; 
+   d="scan'208";a="67510063"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2025 08:12:17 -0700
+X-CSE-ConnectionGUID: BAtTOpw7R7mkNp+FPRptAA==
+X-CSE-MsgGUID: ZjHK3kmaSZej6Qvc1WOpVA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,268,1747724400"; 
+   d="scan'208";a="201964384"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by orviesa001.jf.intel.com with ESMTP; 06 Aug 2025 08:12:13 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ujfoI-0001oO-2p;
+	Wed, 06 Aug 2025 15:12:10 +0000
+Date: Wed, 6 Aug 2025 23:12:02 +0800
+From: kernel test robot <lkp@intel.com>
+To: Steven Rostedt <rostedt@goodmis.org>, linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Takaya Saeki <takayas@google.com>, Tom Zanussi <zanussi@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ian Rogers <irogers@google.com>, aahringo@redhat.com,
+	Douglas Raillard <douglas.raillard@arm.com>
+Subject: Re: [PATCH 5/7] tracing: Display some syscall arrays as strings
+Message-ID: <202508062215.aRvDXrBA-lkp@intel.com>
+References: <20250805193235.416382557@kernel.org>
 MIME-Version: 1.0
-References: <aIz1xrzBc2Spa2OH@x1.local> <CAJuCfpFJGaDaFyNLa3JsVh19NWLGNGo1ebC_ijGTgPGNyfUFig@mail.gmail.com>
- <aI0Ffc9WXeU2X71O@x1.local> <CAJuCfpFSY3fDH36dabS=nGzasZJ6FtQ_jv79eFWVZrEWRMMTiQ@mail.gmail.com>
- <aI1ckD3KhNvoMtlv@x1.local> <CAJuCfpHcScutgGi3imYTJVXBqs=jcqZ5CkKKe=sfVHjUg0Y6RQ@mail.gmail.com>
- <aJIXlN-ZD_soWdP0@x1.local> <CAJuCfpFzP_W8i8pwL+-Uv-n+2LixgFrzqn2HsY_h-1kbP=g3JQ@mail.gmail.com>
- <CAJuCfpFEf92gTR+Jw+1wcCcT0fEt-SP193NHzpyxVXJA=VAwng@mail.gmail.com>
- <CAJuCfpFeSVq+hq4JRJStLgFfQgmS6SQ7zoFsj4=SeQT89r3TTw@mail.gmail.com> <aJKkjEYmeq93w35-@x1.local>
-In-Reply-To: <aJKkjEYmeq93w35-@x1.local>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 6 Aug 2025 08:06:04 -0700
-X-Gm-Features: Ac12FXyjlXEiW5mf5x6iYKFmYX_DWMhNB6rnZ5RUsIFipgSWRnXVMmPjiayC93I
-Message-ID: <CAJuCfpGpEOaKdqpqTpfbw1cdHEEWhiu6KRFQFWaM-AKODiDFcg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] userfaultfd: fix a crash when UFFDIO_MOVE handles
- a THP hole
-To: Peter Xu <peterx@redhat.com>
-Cc: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org, aarcange@redhat.com, 
-	lokeshgidra@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 26A24C0011
-X-Stat-Signature: 4xfrnmr3azm546nrb1h7fr7iddjfmf8r
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250805193235.416382557@kernel.org>
+X-Rspamd-Queue-Id: 14085180004
+X-Stat-Signature: nkjh7mrbib4pkdsh5hx96y3m4znre33k
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1754492777-83112
-X-HE-Meta: U2FsdGVkX189F3HUSufM5GNQjxUoeAaLkNjRRB6Rz2r5llEMq9ZkXFang7rqcXnVZhYnQtbXGCu9ewn14rNW+Fm92dHGAhNtVLs4GyGGCtB2pAVcxXw/NdtPk9zIlqzLLVPSjH836UHPNaSPYnnhmKzmQuVmytZ+qmJoaYMQ/+mp81vnV4X5qWX7fZ1A7SXMzfYOoeyfnogO2h6/qDyjqI6OFsdXj66tdZ5J/xZuAiZm9eH49TL8m6QXn3Q14pwvQR6fkpMWjSiMGTlNxuicp50qjzip4zCrrIpUDrWUstQFKOD+mUidtj78ps7eriMJB2SQdKSPmABycyK4AMgGX/MfzdfHzyk961RAyaPQdGa1QBI+xPV7Cf08op0VnNSb5ibhSIy2apFDKS1BJT8N5jo2hdWUw9vO4vdEubagy7wW41stYsS2o2PMrNmEzIIZXBeiX328toy2LCwJ5HeY+6Ufyu32Ar29mI46i42fq8RRNSCeQ5MNq8qJ9SPwhlXU/kKSSSTJjl5McAJzwbb6ypOUZn+IlLtbCXzp7QrEGKK8t4X/JYFtKJ/S+cu0rcu9EP9ROf6mJWCeFb2bZsdX6oHIDYisLL3ojUpWbPnkmK8sAqnd1iuv2Q0aopxI0qKO8vqWGMsAyaLG1CKCWRaWDxJmoVsMJt53hSUtfIdM8HXhQsKtJBmUEu87M2U1rfVzDHu6Ks3yIqCxdx7NC3w4vNL152kcbDQgC28zvBadleeMz7wH7tKiDm0+AkNdKtKXDHZirDSxYnpt3U1q/YqCiXXACzCEEnPddRabPJ6HVVrQLJs3bdUDbMIXhvBUiJvaHpVYcCQrHQUVw8h1r+TQRy5WWc9bMyktZSgHYa2/2PS9qVZN5VSx0YdKGEi6NQ6Pepnd6Lwt86UbWJJliOQpQ8NVj79EjqxSIED/56pezzWLI+eKZOfLxdktB4SFbR7ezO3qTkPON4XW17F9Juk
- HgTC5Z77
- eaDCT90YxU/PKmrADcrcLTWkwmzx/EZNNJmdDUnIxNzEIqrNQCja+V4sTt10Pr8FQ9boNW9KF0UeEYbwJGYAf19YSfwLC7+hmIoz3qoxhzmKUqmXhTw8oANVRGaBVcGBE3IDdF2Ib/l6G7VvtnN3iPi+j9my+h2fqDajMscbVijBcsKxQYucuaIbW/lEMhQodzZerbCmCtekfqoA/ZgvXpSPgHelLmKCHfa0iDdryN0zeythJc9MnI2QmHO9RpXQ6Br9SBBt/7oRwVXC2hz3pXoe3KuOD43ewZhpT/DgJ3bmxvJV9ecbOT5ujD/oZLv94E0ArSTwfOhydEadjM4IV74RYAbCjNvB42r53Og1WZXFNKJQ=
+X-HE-Tag: 1754493138-19090
+X-HE-Meta: U2FsdGVkX19Mtr5KJ9le9u1PDKDuNeFr4j9ZXWMjhrWOxwgQ2pc3o5jMigyN0XBwDBeLyCaZcGjwfQZMEgqfxmbraEmmN9VzmmQNPkq2mcDqZMzzIr4L+l4UZZes08cKTJF2aCgqDWxDmGT5JDh/bjC4eg44l8h8OxdAdEqq0it5+bK8j3BItm6y2ytWiWG3T0X2w8HoYjSrvtU09+eSErOOuvWlRfXtpX6LMe/SSLeqjrJDkvzymRvUZJNxuIcx5KkIMcU5y5TB5kWGH7HVWGP43SHqUzaFSi+EImLe5phO1Ez3cfRLN4Eg0J6SeGN4d1xUnq4keyBFqamL1the+LW3z/yIPM+17cu+n/0DFNSCpumltQHxCYFnpZF7+YI8Zcih3yF/tXf4jlXhgFut88IK5BERU99HnvrTxjlWiDtaWKrSJ8pmggxUhTj/0dMLzcC4gk8VHtwNbFFRYo7RzAeACnw2sUrC9hsdJVApYQwaoatl8vYWaZUwLwBpuMBnmio81PpXNoh7Sac3/aPr6Pl2T7p3Zsi0g9J1a1j6zFubJG/2Uzo9r04XYFxP7SGJkVKaGr+89FjtBK9HMObP2nKr95GfMhFpkk3M8Exv/YpklyJ0BLpudHmXrj6OPBYkLW2be2oK7LMCKM3rLOgNBIJOoKEzDxznC1TP81b4QRETEWDhg+HY3sEJ0ArmKafB9APe0H2Ux5rZ7czRAlEGQ+o5suyLdPq4k7SYjxN6Z7/MoHnFuyus79aqCPdAtczYCrSpCj+uRQHuxXP8T4FXfGRyLihfEMkcx3Itbof/V6eX8xdQ+Q0rWJvvw8KaLflM50jxcQKIRqIKQq0r3pYfKvh0uQlfw4sRmGSWNFwMWHWHI80/iHaY+AqFy7EF4zfQB5hJ656dPwDsecq0WuSZRy6G/R9jubpCaqE02ND6V2LL1hM+WCjx1sIYTq/6L7627sNEhDZ4DA9hX/QkKYq
+ 906V0QsD
+ g8GqeY+/XAGyiEdzMShqm18CsZce5kT7Ij3hjUuSm+nntX9Z3vIjghXkKOoMlnYn7jlWtPk/+Su5qNYIIYNT3tlTOTUJZszJTesp5nfui3T2zy/Ac7CPdDKgYxIptQKVEDWRz27yEbKDf8ui0M/89VvWtYtzX3mDL5bzfh/Zhq6vakooyNRKaiEcTtatUoJaourMaEX0Jv4u3ksiW2v+s8q0fEXZgIK0t81ua8VHFsyfwXGISj4O2+rRfCu1kXE0Zpd6Mg4RksaG1CFgIzjZLZH9mBPXB1JRiSIqVqPAbE1/LVKWiIUKhkRMFW8TKNzY4GAwupKuDEG3Pw+R2AI6rKqtgRKR7ZhVejpxg
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,62 +115,183 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 5, 2025 at 5:41=E2=80=AFPM Peter Xu <peterx@redhat.com> wrote:
->
-> On Tue, Aug 05, 2025 at 04:41:18PM -0700, Suren Baghdasaryan wrote:
-> > Ok, I let the reproducer run for half a day and it did not hit this
-> > case, so I must have done something wrong during my initial
-> > investigation. Sorry for the confusion. I could have sworn that I saw
-> > this case but now it just does not happen.
->
-> I'm wildly guessing you might have hit the numa balancing bug I mentioned=
-,
-> that might explain what you mentioned previously on the testing results.
-> It might just be tricky to reproduce:
->
->   - We'll need a valid THP (pmd) first in the MOVE source region
->
->   - THP needs to be selected by numa balancing for a check (marking
->     prot_none)
->
->   - (before any further access..) UFFDIO_MOVE needs to happen on top tryi=
-ng
->     to move the whole THP being marked as prot_none.
->
-> AFAICT, task_numa_work() is the only place that can mark the THP, and whe=
-n
-> it happens, should see change_huge_pmd(cp_flags=3DMM_CP_PROT_NUMA) and th=
-en
-> returns with HPAGE_PMD_NR.
->
-> [sorry I am still pretty occupied with other things.  I can try to reprod=
-uce
->  together with you after I get more time back]
->
-> > With migration entry being the only case that leads to that
-> > pmd_folio(), the only check we need to add is the "if
-> > (pmd_present(*src_pmd))" before pmd_folio(). Would you like me to
-> > check anything else or should I go ahead and post that fix?
->
-> We could fix the migration entry first, then if any of us can reproduce t=
-he
-> above numa balancing issue then it can be a 2nd patch on top.
->
-> After all, so far we didn't yet prove it, either some unreproduceable tes=
-t,
-> or pure code analysis.  Meanwhile it might also be cleaner if we have one
-> patch fix one issue, rather than having one patch fix two bugs.
->
-> What do you think?
+Hi Steven,
 
-Agree, that seems reasonable. I'll post the new fix today.
-Thanks,
-Suren.
+kernel test robot noticed the following build errors:
 
->
-> Thanks,
->
-> --
-> Peter Xu
->
+[auto build test ERROR on trace/for-next]
+[also build test ERROR on linus/master v6.16 next-20250806]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Steven-Rostedt/tracing-Replace-syscall-RCU-pointer-assignment-with-READ-WRITE_ONCE/20250806-122312
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace for-next
+patch link:    https://lore.kernel.org/r/20250805193235.416382557%40kernel.org
+patch subject: [PATCH 5/7] tracing: Display some syscall arrays as strings
+config: i386-randconfig-141-20250806 (https://download.01.org/0day-ci/archive/20250806/202508062215.aRvDXrBA-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14+deb12u1) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250806/202508062215.aRvDXrBA-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508062215.aRvDXrBA-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   kernel/trace/trace_syscalls.c: In function 'check_faultable_syscall':
+>> kernel/trace/trace_syscalls.c:883:14: error: '__NR_kexec_file_load' undeclared (first use in this function)
+     883 |         case __NR_kexec_file_load:
+         |              ^~~~~~~~~~~~~~~~~~~~
+   kernel/trace/trace_syscalls.c:883:14: note: each undeclared identifier is reported only once for each function it appears in
+   kernel/trace/trace_syscalls.c:957:14: error: '__NR_newfstatat' undeclared (first use in this function)
+     957 |         case __NR_newfstatat:
+         |              ^~~~~~~~~~~~~~~
+
+
+vim +/__NR_kexec_file_load +883 kernel/trace/trace_syscalls.c
+
+   851	
+   852	/*
+   853	 * For system calls that reference user space memory that can
+   854	 * be recorded into the event, set the system call meta data's user_mask
+   855	 * to the "args" index that points to the user space memory to retrieve.
+   856	 */
+   857	static void check_faultable_syscall(struct trace_event_call *call, int nr)
+   858	{
+   859		struct syscall_metadata *sys_data = call->data;
+   860	
+   861		/* Only work on entry */
+   862		if (sys_data->enter_event != call)
+   863			return;
+   864	
+   865		sys_data->user_arg_size = -1;
+   866	
+   867		switch (nr) {
+   868		/* user arg 1 with size arg at 2 */
+   869		case __NR_write:
+   870		case __NR_mq_timedsend:
+   871		case __NR_pwrite64:
+   872			sys_data->user_mask = BIT(1);
+   873			sys_data->user_arg_size = 2;
+   874			break;
+   875		/* user arg 0 with size arg at 1 as string */
+   876		case __NR_setdomainname:
+   877		case __NR_sethostname:
+   878			sys_data->user_mask = BIT(0);
+   879			sys_data->user_arg_size = 1;
+   880			sys_data->user_arg_is_str = 1;
+   881			break;
+   882		/* user arg 4 with size arg at 3 as string */
+ > 883		case __NR_kexec_file_load:
+   884			sys_data->user_mask = BIT(4);
+   885			sys_data->user_arg_size = 3;
+   886			sys_data->user_arg_is_str = 1;
+   887			break;
+   888		/* user arg at position 0 */
+   889		case __NR_access:
+   890		case __NR_acct:
+   891		case __NR_add_key: /* Just _type. TODO add _description */
+   892		case __NR_chdir:
+   893		case __NR_chown:
+   894		case __NR_chmod:
+   895		case __NR_chroot:
+   896		case __NR_creat:
+   897		case __NR_delete_module:
+   898		case __NR_execve:
+   899		case __NR_fsopen:
+   900		case __NR_getxattr: /* Just pathname, TODO add name */
+   901		case __NR_lchown:
+   902		case __NR_lgetxattr: /* Just pathname, TODO add name */
+   903		case __NR_lremovexattr: /* Just pathname, TODO add name */
+   904		case __NR_link: /* Just oldname. TODO add newname */
+   905		case __NR_listxattr: /* Just pathname, TODO add list */
+   906		case __NR_llistxattr: /* Just pathname, TODO add list */
+   907		case __NR_lsetxattr: /* Just pathname, TODO add list */
+   908		case __NR_open:
+   909		case __NR_memfd_create:
+   910		case __NR_mount: /* Just dev_name, TODO add dir_name and type */
+   911		case __NR_mkdir:
+   912		case __NR_mknod:
+   913		case __NR_mq_open:
+   914		case __NR_mq_unlink:
+   915		case __NR_pivot_root: /* Just new_root, TODO add old_root */
+   916		case __NR_readlink:
+   917		case __NR_removexattr: /* Just pathname, TODO add name */
+   918		case __NR_rename: /* Just oldname. TODO add newname */
+   919		case __NR_request_key: /* Just _type. TODO add _description */
+   920		case __NR_rmdir:
+   921		case __NR_setxattr: /* Just pathname, TODO add list */
+   922		case __NR_shmdt:
+   923		case __NR_statfs:
+   924		case __NR_swapon:
+   925		case __NR_swapoff:
+   926		case __NR_symlink: /* Just oldname. TODO add newname */
+   927		case __NR_truncate:
+   928		case __NR_unlink:
+   929		case __NR_umount2:
+   930		case __NR_utime:
+   931		case __NR_utimes:
+   932			sys_data->user_mask = BIT(0);
+   933			break;
+   934		/* user arg at position 1 */
+   935		case __NR_execveat:
+   936		case __NR_faccessat:
+   937		case __NR_faccessat2:
+   938		case __NR_finit_module:
+   939		case __NR_fchmodat:
+   940		case __NR_fchmodat2:
+   941		case __NR_fchownat:
+   942		case __NR_fgetxattr:
+   943		case __NR_flistxattr:
+   944		case __NR_fsetxattr:
+   945		case __NR_fspick:
+   946		case __NR_fremovexattr:
+   947		case __NR_futimesat:
+   948		case __NR_getxattrat: /* Just pathname, TODO add name */
+   949		case __NR_inotify_add_watch:
+   950		case __NR_linkat: /* Just oldname. TODO add newname */
+   951		case __NR_listxattrat: /* Just pathname, TODO add list */
+   952		case __NR_mkdirat:
+   953		case __NR_mknodat:
+   954		case __NR_mount_setattr:
+   955		case __NR_move_mount: /* Just from_pathname, TODO add to_pathname */
+   956		case __NR_name_to_handle_at:
+   957		case __NR_newfstatat:
+   958		case __NR_openat:
+   959		case __NR_openat2:
+   960		case __NR_open_tree:
+   961		case __NR_open_tree_attr:
+   962		case __NR_readlinkat:
+   963		case __NR_renameat: /* Just oldname. TODO add newname */
+   964		case __NR_renameat2: /* Just oldname. TODO add newname */
+   965		case __NR_removexattrat: /* Just pathname, TODO add name */
+   966		case __NR_quotactl:
+   967		case __NR_setxattrat: /* Just pathname, TODO add list */
+   968		case __NR_syslog:
+   969		case __NR_symlinkat: /* Just oldname. TODO add newname */
+   970		case __NR_statx:
+   971		case __NR_unlinkat:
+   972		case __NR_utimensat:
+   973			sys_data->user_mask = BIT(1);
+   974			break;
+   975		/* user arg at position 2 */
+   976		case __NR_init_module:
+   977		case __NR_fsconfig:
+   978			sys_data->user_mask = BIT(2);
+   979			break;
+   980		/* user arg at position 4 */
+   981		case __NR_fanotify_mark:
+   982			sys_data->user_mask = BIT(4);
+   983			break;
+   984		default:
+   985			sys_data->user_mask = 0;
+   986		}
+   987	}
+   988	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
