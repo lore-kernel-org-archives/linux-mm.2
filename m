@@ -2,113 +2,199 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F0958C87FD3
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 17:31:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A6C6C87FD3
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 17:31:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 75C9B6B009E; Wed,  6 Aug 2025 13:31:04 -0400 (EDT)
+	id 1B8416B00AB; Wed,  6 Aug 2025 13:31:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70CCD6B009F; Wed,  6 Aug 2025 13:31:04 -0400 (EDT)
+	id 169046B00AC; Wed,  6 Aug 2025 13:31:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5ADCC6B00A1; Wed,  6 Aug 2025 13:31:04 -0400 (EDT)
+	id 009CB6B00AD; Wed,  6 Aug 2025 13:31:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A2766B009E
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 13:31:04 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F3D391A066F
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 17:31:03 +0000 (UTC)
-X-FDA: 83747023206.23.3EAA5CA
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 01772140005
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 17:31:01 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=XvL8Nsxr;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf23.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=lokeshgidra@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754501462; a=rsa-sha256;
-	cv=none;
-	b=LFmSXS6Vo5OFyzGmoUb0FFAqnMXyJjxJlZkgva0MeitBgi1AsevAauzE06xL/AmuKDB/my
-	IKHbFEcItbZYjo0BWn0e7NLzsX7HtSbvoQWBEsHh/ZIvwtOZV+24eVy4+Du8W8ouj27IKH
-	BmxDB9ygg0vbw1MZ7Rm1wrsiE0Jm4jM=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=XvL8Nsxr;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf23.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=lokeshgidra@google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754501462;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E447C6B00AB
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 13:31:39 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5C2981606AE
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 17:31:39 +0000 (UTC)
+X-FDA: 83747024718.09.0C6F8D8
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2052.outbound.protection.outlook.com [40.107.212.52])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 8F4D3100010
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 17:31:36 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=hKJ5KbXB;
+	spf=pass (imf14.hostedemail.com: domain of jgg@nvidia.com designates 40.107.212.52 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754501496;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2O1zwfL/UYqQtx8ceSMM8iZ39OAphqSN6A4Iks0YaB0=;
-	b=NV0HMUrDxPoue9RS+h/+0c+pa8tnwgt7dJkqbnqCZhtiA4oAQncoy99xfwaT7h+emEpC7Q
-	wN4MgFqnPD5X1kPccmiBlbmHg7YRUQoYARajKCAYw4TDGWUBnJvjlpgfaA98f9aq+bAQza
-	hGhl6PhCxSMPneGYDV4fNBpYH3u62bg=
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5f438523d6fso816a12.1
-        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 10:31:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754501460; x=1755106260; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2O1zwfL/UYqQtx8ceSMM8iZ39OAphqSN6A4Iks0YaB0=;
-        b=XvL8NsxrcKwjS8jLRo/jsIhuhrK/oznpSTpDl7mnvXaLizoZkYvZ6QnT5GfVzYnLlu
-         zdetmcfIuw+xgYmycMjhlo/AlV/jctjdUfZelQ7yENrwMiAGkGAz0BbgMFQnWAbG+bvh
-         NvcK2rwMzcnhnKm+FzfJ9vPJnBQxlTVHjj1a7Sk/8miSZX60rHQ8vRW1yuYmUc3tyGUn
-         Buv72piFWBiAyRfWk1hFDTdyxfmWRL0eupAQczugI7NvH7dRkUkJgX+c6WlCo1sSkIyr
-         4IEXVVajkbUAR6Tjquzt8+nNW69rOqBUz4CHlnNUd28QQhZbfP1L5PINITYLnAGDsgh4
-         ATzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754501460; x=1755106260;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2O1zwfL/UYqQtx8ceSMM8iZ39OAphqSN6A4Iks0YaB0=;
-        b=t6oI2J1/Cwz2WQ7ft4uIqYCzIl4NMvRm/dEvLfVidXAsSgfxFPTCgueOC5jsTJFvy6
-         GbblQhTudTKQy9l+gfrKqWG2BMafBWC+FYSTUE2cAvZSXekPW/9aGs4BSDz5vXS29PtR
-         HinnnwdON755iHATJ8mcnFHfczjsU6uDHlXeKt3/zKGWZryKbbI4uFH0beZ24BU5EBOv
-         hdq7ER3rs/6sTiULVSTJH4iD9TczFUGYMTbwNChjE7X3ELGqy2toX5EJDUIlhe56u2+S
-         3hnACDOtuo+de2D7L+P5kivedJ8VGdjATWTI2YkRl2YuewRi2EKVkx0pXTBEK/R0of2a
-         EGbw==
-X-Forwarded-Encrypted: i=1; AJvYcCUepzoS0s0yHkx3wrOP8e5C61PukTgWkDeXKcZfiULX/kbFMDQqx5zJ2v3Q0s8IbVrnvtbhx8jiQg==@kvack.org
-X-Gm-Message-State: AOJu0YzHO25sjwYWTBor2tLFuyK2kOg5ejFw92/wJ3R5m84pXIZJmHAC
-	ASxqrZ+er2v7jF0FiwCYAnqZ96fp+Z5GPM/np8m/IU8KcrsvY4LeXbJbT38NQQQni+bnFrzzTCh
-	wlB+emsJDveZTIZ9lL/PTdGHo2dn4zJ6vDY4NUL/9
-X-Gm-Gg: ASbGncu6JrOPMzyLmuTwHXAEy5ijLpLvDLPnW7bKVfLXp5JlWnXT5UxNu4RO7nKmfNv
-	z34JSrqSkC/Q2fsEmcwJX/l7fIJKn+uk9xpoLKkbJdxNvJlj5q68IHo6j4S87cySE8egmnqfGjz
-	vJhISDA5G0vrdjzqfMwT7g51ufn8qRKjBROUnh8BQx753EmahS19w0AUMSDq4TpW/TAO2xlYgQo
-	ctFJC4r6NEL13cnFOoiwkHBTRkVx3H+x5fqeDQESg==
-X-Google-Smtp-Source: AGHT+IGZYHqMO6nOext8IXEfZFnlVxuTzvfAsD1ASp7WlH8v9FRFw+U7OqG6LSsKKeEwE87Emf/LUxOiCHp7W6/3mQY=
-X-Received: by 2002:a05:6402:3082:b0:615:60d2:c013 with SMTP id
- 4fb4d7f45d1cf-61797e7bc1amr91621a12.3.1754501459967; Wed, 06 Aug 2025
- 10:30:59 -0700 (PDT)
+	bh=iyBBtGtiRatUjTAS6JqftkIY0Yr20GlVu4ehze8ZHrE=;
+	b=FTFZXFIBkd0A2JjUx2pJB3SQPTDc6epzpBhJybCAWN/DI5C8IHCzsPpStOVi/0xkRQoVhk
+	2Oz8Na5YH+/e5dZSEA0fPRMWfy1MTyv45txpNAHG+SUuO9pAnNO6dXfWPNUwpotuAh9ely
+	5+ovHQf5drEZcb2XlANRJDUGxjyFk2E=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754501496; a=rsa-sha256;
+	cv=pass;
+	b=CM55BuMtm+UqAYeKlSS6bkyMfl4X12xk333KDsFMa1lk/Qdj4A6p2afy+qB0TWsU01xGJr
+	n8gHfOyxyhQvZK1b2/Pxj77h2Cut18a6VCmIvyFomxoY0AHSv85oBrc+kG/rLx0+usf0J0
+	eItFfLS4bJu9B5GCmykrh3Xch3wNcnc=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=hKJ5KbXB;
+	spf=pass (imf14.hostedemail.com: domain of jgg@nvidia.com designates 40.107.212.52 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pEcD/7UswNX8ydTSitOoL5xD5wfTPUt6w5nbCvLZLizVbrDofFEImCT/DPqSWLnH0A7hX0CfKqaUfnfGsRLYgcVT97KHHnjAFhaoSyLh/PHfNq8zs6jUXO+UsJf856K9EWmxC3XTnQTvVsO3IPxnQarf/7xtSMHroFmk9U17LEPcssPtoXh7fTJzuGPDm3Fh6+EkHY9o6IJ5je+ZEBtpxZ2/djzM+sy329snCwH+U5yCoZmMZr3HlUUePcAfPtENaYVHX9yVEpcSNKtJPiQtmnoqzeN5D3L6en6UuRslDOG+R51ARbkKrz5EpCoARP7njow0SQMr1YyIF0wjzi6HUQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iyBBtGtiRatUjTAS6JqftkIY0Yr20GlVu4ehze8ZHrE=;
+ b=h2mjP5taYqiZXxIdCNIHs6ise3BGw/D0zku5eHum1BuSzOE25o08l18BIyH99khQnB0tDTid7UtDirscdJkSLNAZrB3xmQWyIFCJB1wIUssXO5iiIi7WQrES7i6s8ybjxs6uel8+ZVBzKZHYkvQgNObe23E5yrf8OO1UpDhwaa5XvnFJJC/ar+rrcqQf/fPM3bvyusSKDDKhmV8XBGu/v37s84w6OhsmIc7rnFsStRAyoXjlYp5CNhTzaIr0GflIzeTIwiz0FXRZsCbN2J4oCnfL0OSRGQ7p7A9dM5eOmna335SWQrHmhKXBpyBLZq9by3uYKiGdpb8w/9hjG0OMiw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iyBBtGtiRatUjTAS6JqftkIY0Yr20GlVu4ehze8ZHrE=;
+ b=hKJ5KbXBT/VxNcbJGVjEuubofK8WW5IcX9+LqVjH9PnS1bYfr2bVYahRRKi5pkNT6fEjFUlfNPGpuUtkO1pYO0hxdfLv7l4iulZDGkWlSeXLWS4fk6BhRgKk7afXw11JQ3rq611oz/FjXJk0omQqgmCKtFa3ukE1RkM6OnRUMtbEmSF11/NbylnTwRJX6Z8Yt2Ylr6fjUhuHmmGEW8DXV7jQ1ymiYwahSjpeYJnDZpMbQ+vnE5hJKdPnbQTn5fFh7zd4OeEBDQ/9IcskqAOhRweqaVVWuvTwVRyxWKw8mtVoXRg65mvdldA1tiHVKUPsV1DhtEYhCz8C9BFc0mHThA==
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by BL1PR12MB5898.namprd12.prod.outlook.com (2603:10b6:208:396::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.20; Wed, 6 Aug
+ 2025 17:31:33 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.9009.013; Wed, 6 Aug 2025
+ 17:31:33 +0000
+Date: Wed, 6 Aug 2025 14:31:32 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
+	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
+	kasan-dev@googlegroups.com, Keith Busch <kbusch@kernel.org>,
+	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-trace-kernel@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
+	xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v1 01/16] dma-mapping: introduce new DMA attribute to
+ indicate MMIO memory
+Message-ID: <20250806173132.GA184255@nvidia.com>
+References: <cover.1754292567.git.leon@kernel.org>
+ <f749c597980592ecc7aeb5ecca974c8dfb76f834.1754292567.git.leon@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f749c597980592ecc7aeb5ecca974c8dfb76f834.1754292567.git.leon@kernel.org>
+X-ClientProxiedBy: YT4PR01CA0214.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:ad::21) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 MIME-Version: 1.0
-References: <20250805121410.1658418-1-lokeshgidra@google.com> <a00a8cca-e435-434f-855c-a3b56f2aece4@lucifer.local>
-In-Reply-To: <a00a8cca-e435-434f-855c-a3b56f2aece4@lucifer.local>
-From: Lokesh Gidra <lokeshgidra@google.com>
-Date: Wed, 6 Aug 2025 10:30:47 -0700
-X-Gm-Features: Ac12FXwSYt0WGCr2k_VsdRbGveIp_87zZmB7V02_hsc1VeZ3C2syDDfiVLignxw
-Message-ID: <CA+EESO6F4=jQujGU35EPp_EVtHRHEG7b7_izLv1-NJW_VFvGRw@mail.gmail.com>
-Subject: Re: [PATCH v2] userfaultfd: opportunistic TLB-flush batching for
- present pages in MOVE
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: akpm@linux-foundation.org, aarcange@redhat.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, 21cnbao@gmail.com, ngeoffray@google.com, 
-	Suren Baghdasaryan <surenb@google.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	Barry Song <v-songbaohua@oppo.com>, David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 6mz5yfrrtrfznzh6p4b5rrb68j4y5we1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|BL1PR12MB5898:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1a97b1ac-fbf8-4645-964a-08ddd50f1627
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?yaJthfZ6S1NFLAIf+giyUFeFb5HmHR4/JaN7jHXzGsOaznN1NxyhWOd9L7lt?=
+ =?us-ascii?Q?H9Vs8zU4xb5p15mZ+CWJn/+7dnF61xL/sW3AGiLTq3kgMHTWk2G2VX3r3UF+?=
+ =?us-ascii?Q?Q3h3nMz7FqX7X/d3YZ0NxOTPVV0pHfMOTTaflPytq9k1LF0h5RqGkz1OLqVZ?=
+ =?us-ascii?Q?EemC3bPnW4VDo14bQaBjics3HW9FprJ/eLtO0D+t1GB/9qei2YiL1xavzgnb?=
+ =?us-ascii?Q?nnkyW47WyqJlgImvhfaezt2Buu3LrOJRNUgS7egN1TzbWEOMpWC5+gxhoJpz?=
+ =?us-ascii?Q?lW1phaq7PI/6pl/OvOt2WBqz9bbOfSLYlhWWL5YdAruSAtSKuM5AGfiWBKcd?=
+ =?us-ascii?Q?T44SfhFtzD7sdCgejc8APg4OTwQBsd9vJA9XbKzMmfUBvnbstU0DWim+7HJK?=
+ =?us-ascii?Q?efSAIfCAyYJZZF+379y+MRSSImbSvZm6beHfofM155XGzn6Qh4zirCoJylnn?=
+ =?us-ascii?Q?uYEhc5p2BUPzUFkXsYoeufDTIy62n0L4xaqujdP2fm9Rj8EE2jatkFwEMJod?=
+ =?us-ascii?Q?cE4xKPjR0XZzDeOPKtkL+DXX+01qFbma0kp6KvYBaFKShf3tL4wSdj0rxD0R?=
+ =?us-ascii?Q?ARNk8i9K48OKmJy1XsjX4YzI50PrB08PeQjL+2zyJKkYRifoG8THB9a5oe1e?=
+ =?us-ascii?Q?omxP5C8m8zfONa716RcASgZKS0CpVePWSB/ehmT7CvfcxWU9OmN0giAYEkBh?=
+ =?us-ascii?Q?4OQpGrTblaY9gb5RMCNoD7+ueq6nKrH/wop1aio07NwHyrTlz/V52fkD+o6O?=
+ =?us-ascii?Q?mEMNLj30dsATsEX+FZjypCM6hxbZhvjh2k/1oKNW4YR1UdKmOGIepMX+TG5V?=
+ =?us-ascii?Q?U8IpM7DifIBa6JhwA2zTuOcdxxTQ+DnLiqpc9OD7gg+zGrkcHpLsV6Y/ER+d?=
+ =?us-ascii?Q?3mPE3nXz8GMmRhyqPThiOGXAqLZA+RtZjb9WG/XvSgBpkGWeduNrmai0a/t9?=
+ =?us-ascii?Q?dn0q/eYJ7cpltoJOwwAyOtucxfTqu0/Hqc3K/Am1QJSCqecFm2bEcjqUV6+8?=
+ =?us-ascii?Q?q7XEdaom3j4CiikrGlsv2Tzh3X6QNxcyG5UIzsJSRSvnPjkwWiCnc77Ov6sN?=
+ =?us-ascii?Q?q6NBtoagpMLjt3QJF/r1of/Jn2BuoOewljNauQSsO3KoxXdPko3gLU+59YH+?=
+ =?us-ascii?Q?Y1nJYhOUkMZjeCfxDGr9wByWXiV1mXiQxlD/r5t3HvjJpLb366fmd9SLGgbM?=
+ =?us-ascii?Q?DgzdRPXiFg89YcR27s8Nh2/Ftqs11/CLGdq6wlZC4ldBOBPHXOLRQqkk/37M?=
+ =?us-ascii?Q?g0bA52S0l9tS3IwSvn/OAeEIlws8/3XoLqI7Di8gtHcmvCwOto7hS9Nqd6d7?=
+ =?us-ascii?Q?ZiHxarnrtq+R5eGLP8NbLdB1+X7VlP2lGRRamhU+n5nL9zh7cpoWWc22VwO7?=
+ =?us-ascii?Q?SiIUNIS8qJPOizGnA+hsoYD19+EC3TtSfxa6663hM2PgRUBj8fAgZQWs6Yc0?=
+ =?us-ascii?Q?Wk2Dj6XcM/g=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Fr/6CZwZ3kEMrGMBC1lhp0GWYqcvajTxzIaycEtiDW7Fajfod/FOnW7lw8Jy?=
+ =?us-ascii?Q?N3dxzqfJfP4dYyq8QGLZEXZSXAswRCVM0FEAhzUmrhF0GqictvMu8LNC8V8I?=
+ =?us-ascii?Q?9wne+n6y7p9uslMkaj5VB80csBRjMb3NlatXuZfydZrs8hZp5UC1h4PK5NZn?=
+ =?us-ascii?Q?qeNMKBdm1xkZ8tCFwBAwqeE7bbJ9EEGEt2/Y7UBH2ZbKvw1QV3YTUwicKV2Z?=
+ =?us-ascii?Q?3UkoquP1UFDeMxh5zXsa6uxrhAc6TaE9Vkv899rJbXFcADwsAliOIFkUO0pp?=
+ =?us-ascii?Q?rcKHikt6sLx1Ej54cFZ/tBh+HotVw+7IVnUzJ8lGthaa0s8pN6gkTb3LW9Ri?=
+ =?us-ascii?Q?CBcDmY+hhYovu+e51IfKZ/sQHQzaZgOKoELs8cCsaRtw928hUOHFJdzx5NOf?=
+ =?us-ascii?Q?nbAZPCTTk8vdizcOrLQr13i7pN/+5Ra7yuwq2UwqBnYhlz1vL6EJXJoRY862?=
+ =?us-ascii?Q?Ir0xruuDxqsMfHOk/fea9muX3WbNOW0PyFvuKlUmhV8jlxE9CbCMuEJha2W1?=
+ =?us-ascii?Q?aqGY8XO5Nxi8vp5lR88FXlLK6bfGkM5Zj0UIRwlklItBuSKFkc54tQzBQnxb?=
+ =?us-ascii?Q?THl4+O5qoq9Zsi5AGkaCF9+56x7S1OO22/L+YagOtW1AGFkk6NIr8LmpXTLL?=
+ =?us-ascii?Q?wY2N3oC5Imf7hGi/7dIyGrDOI0hFgDwyILSxWFwMQmyH0uxsjDaYh/W10OZd?=
+ =?us-ascii?Q?vAiFRRm/81FGKiiUeKmMfRwrY8WA3ERRBran5a/j5fbqnzIo1sjUp2Xq4yAM?=
+ =?us-ascii?Q?gOakIFaYg9Q6bQMcqhtp7O7NnEKbYXZD9JkEEOCUDqjZ+mFQLHqogXmbwUp1?=
+ =?us-ascii?Q?SecpZy33gDty+jNSCmgOxLxOyYTXZSj71kHhHXfKMH9g2I0VXmCxLa8mAA/4?=
+ =?us-ascii?Q?y8ukTVZH3K4p7wTSRS6kRoOAmKPQOnbffGt9HUUD5Faf9XBloR8aveDEOMAP?=
+ =?us-ascii?Q?yzjBMQlw+BniFN7rLzW1trAB9pykzYTVxPElPukSiEkjRsvfqgT8Xft/q0Z9?=
+ =?us-ascii?Q?DpgptqDhG/24Tb3+MZe7PS4rh9US1CyXI8WiqmSdrZk14wopmqg/b3DqWtkZ?=
+ =?us-ascii?Q?5uKk+1axBMhTCDc/jTXGQyDVB7Roimd8aQH5CSpqUC7fn0STLjNqSNiVdHdg?=
+ =?us-ascii?Q?ASvVSeIi+tbJJZF6QkZH8qH2XpXdFQlbBgu2hhMlctm0k7UMJPjTmpgmO+Lx?=
+ =?us-ascii?Q?VtT3ve9pJFZ5HVjWkHtKlfYZuiEzTFLVJq3MwLxNft67QSGH1bmM6gZFiqoD?=
+ =?us-ascii?Q?cpxQP4R0xP4+GHLksnuEotgp0a2gu4d4LwiD9Cz3WVHKbAM6/d5HvJIAMzN3?=
+ =?us-ascii?Q?DtsFVWu1JMvo7oi6VstNgi3x8owAY+emgvzYirbf3+Y0g55mv6+/RiB+Gp4d?=
+ =?us-ascii?Q?2tEaCZ9nANHvV7JDcB6kiZ2RdQVsxGe0iLUY7susz1QyqaNfGVPlEtrIWTKm?=
+ =?us-ascii?Q?G7xqQ2V/JEO6S6UFkG6bqYNdMvZvyFn1x7vjxerjlGRBaqKB2cl74rFxK4hT?=
+ =?us-ascii?Q?uVVB15nB1uRdSHbejfc7xvy2NYPbQ6ueMyXzTO61gC89CjWEBK7uq9uQzeQ7?=
+ =?us-ascii?Q?ubr9roeGWrQpckaiErI=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1a97b1ac-fbf8-4645-964a-08ddd50f1627
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2025 17:31:33.1882
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UIDPQM7vQxkJhwVkF52UEyIoAZthU14Jt3NMldnpBtNcPLTqx0R1ij/KXDTxkOBv
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5898
+X-Rspamd-Queue-Id: 8F4D3100010
+X-Stat-Signature: t8bzcfmd5cof8nprk3swzsx37eypi93n
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 01772140005
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1754501461-276274
-X-HE-Meta: U2FsdGVkX19wlIwNz/zE5RNFpWi1FdveariOj2H7AhUM881y1Lhava1XM2LKpVM2igav0k17XIOS4c8l6BOi2n8E/zVEJaTpv1WMnrM2XDN+GEUm0fP25V5Kuq6ewIsx+mNyIirZu0GlLaYikCf/WSaBnL3HSDFESHT1YGpdF+eAnuHzQRl8XNHzZRAIqw2rqysOtOwB/2b6Bqjc+qUhX7IwDHO24jvVs7U2fLXWsPbxGqGVrsjgACqgY0ZS3VAEQLGQDGVAcY/1a8nTGemRYkSkQLaJlrNArnCQBYCzBYtisFnYBqAxm1GB1+XyPID6C1N4NuujXgyG/Nqq3CDmlvVcoIR044I3y6dNlDfLKtpGIeOjB2qJfpAo7rPr8Z1ig99iwxDv/RHyX0NS8eHs4ZH4MyGDC0qqQyNzwCRVkR8UBwJpvCviqv5EAkXUQo+ZZWnsOIEK20aMudFYHF8LCwNA/ow/naY+vdd5glL1C8+XKR9yws1fYpJc+zMJ8FnKEktBPq5PuGHL76W9CSmGL4VMRlKeWajEht2d7J3dFvSxK/gihL2BEaw6PZwwucFbcGt7o1NpgA+2uKs2fLJ89u0JhDNY3xNjMX6mTHRq4O8vBzpT/eQhmpGru1aFkmAF/BnSFdNEB7XRJZQcOJodB43SrEDh5PauSr5lSbQjyh6CoYFzGJBziItVd78SaF9jpVh4BSvPnxEDlYcxOqSel4/gAzBRrd+LL1Am/2tR1OHu7StvRB24YhoXe+Vyt/NpUWVRFcnOUL04JN+Ks7iEPtaoM1ZAXKFM4HLTZl4/gMCMH8G8Y3LX8RiJtgoECNTnD5L9bXXSBXeMUELS/XQYTkrn6wvLdIWlec37naZozPemTeSlho1e4Cp1dOoipcfGaiSFk0k/3q7QHRoWp1iCPR/QMnRN4BUa+NHfvzuq+tJsoj6yyqmu2JsnQLeyUdHa1JO/poPmqlISrZrUay6
- p7c5O2CR
- W+sTJFXUEyepnFFo1gd9KcvnQI+FVOvETZCv4Tx+PUusiWYKMdditt6hegnU9t7BHTHA85ZhvlbsDKxqahokSj480nJ7gQwmSRGO1LtfxMHgQQ2gPCclJWs1QRaAD95FRSA8jf1tjnPAEFbExPs+TYFrVn9eRf/JtzTOYBp12oI984SK5N/p+IO6ElNLK607xzakfTcXwjiIBM2BLNW+ENYmLtWS1RD6o7/zkH1YfnQ5Vq86xLUtC+HnafYuB9UkD8j8BHzOSXOT12ocvKe911GCDODH82c5pxP00
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1754501496-850103
+X-HE-Meta: U2FsdGVkX18QzWrGB0I7bwTVqV6shnjArV+7F88R5ILbRVXXoKdBeINlBecqqKNXKwzWZHWnIQswi+hsq3cyut/rH8a/kaZ7q3EKOKq3DQLmMtIadzqHfNZ1r8d42giTDDaqX7dvzNWb0kDq16oZGJ1SyA1Y2ElsbamS+kklbL7+z7sHKphNT7zdOYe4qtmI3AdIxiu3Xyyq8f1+Opi/CPBYR6t89LbFsfZyD5BYDhVQbeyLx1WcXmVKFIOeo9Qto8t8gZfX1XP22x8AZ47T5s5/3nfhHm7QUlSf66psLbNTFy6L1bRUewX3IoropqznA77C6TL//nZKZ5R6LbGNY1x9P315B9xL0yJDj4siXcl4X79Ld9qakx6Md1mAnph3+xQXDhVtc1ULx0ejfvCLWloK27NBY++GBkDFSB7tipVjJ6IIF+AMTdKW7urPxnQ5D7JBqolD5pDd2Dbytv1H9wxRaMmug5dWg1grHD9uK5Jhec6PIUSs2sPFXLq+KjxaiR+ih9I2nEp0babYa85Alvwz+xoZBPIHNnN7uU2DYhJoBb2+YuXIHnOatcA2usETMF54dBB2ihJvQan3iSWGGdzPbmXUjZxC53/tcU4Na07lX+rSV4mKQhZ3ybDzkUUFSYmjLlqGbAppgs9KTTMTtOhmIw4WM8VXOQiO8xKojCS4mVTmIkEJTBVws5kwlsEVDHMSbOEUaMItnIgQ38byp4F6YBPiJIm+CaYSCE53s2iMZ6WVKrXzxmoCCQlmmzXGyNYdFIK1cQapydB7H85YYCteZ571udxXeQHyXTnYuaCfXumyLtNPMZutoKxIxPgG0uE8QFWEpN01iyreyfvmSyfar4iYU77gSnwW7je8rA4z81VVEupJz2GYdaxTNzA42DGeBpoeLdYX+pdffTKb4E6U4Q3P0ffiSfLFgV+J28SXsuGyS+ucH1Bq441IWLlbEALkCXwFiFIn1j5WdpV
+ ViC213+H
+ /uunCGHCJQzI/9z3zeeCx2m2A8U5U0BUI13fqyW6lmhcxm4LqQmeeynKQWVqtaglGdyQMoVB0a34I4qt5EevGk+cIQ7Uj9gZ+3aSedezzrE21NeYsSWzxngBFLps8t9yvRooCcK9Q/IrANNI78GtoG/LJATMrHNeE80qqL9yXqB/VWj/Zgd1dADmVN1qeCYPf8GzSygIUNg1DTPNae6UN41xVXKfFEIQTOy/zsrKwJG8acJda+HjrAW1u6UiRuEEaWINCv356ON/Uo7oCuOK5Iq023Q3MI0MORRqG107S58g3vxnqAcCJdGSkUTvJY0heOWxxoq3wizuhgmkSs/JNm+BVzgSLit4AvVThSQ2M6DyAwdMTbEzfmibSMtSDJC3JERbc3sYjVCDjuRllhUJMiMGhig6nnpvlm7SKErFY+cHR8MKX2CXxhTEEFNu0aUBiadkE0+LInHGgFbOYVLZNgwQnw4DSf2jGw0TKRCkr5tsJ4uXvLupXVg/MWI/DM4JbAqdfNpOWoBdRESvIpu8rgZsz4YYB+Gk0sF4OSnDuxS/tPslNH++PFAy00YcL4c1LQO/iPNO34ljD/PuVi0LqRgXYtNDyM90ZS4YP
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,211 +203,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 6, 2025 at 10:18=E2=80=AFAM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
->
-> Andrew - Could we drop this for now, please, it's splatting and has broke=
-n
-> mm-new.
->
-> Lokesh - could you make sure to run the mm self tests with CONFIG_DBUG_VM
-> set before you submit please? As this is splat is occurring immediately o=
-n
-> uffd-unit-tests.
+On Mon, Aug 04, 2025 at 03:42:35PM +0300, Leon Romanovsky wrote:
+> From: Leon Romanovsky <leonro@nvidia.com>
+> 
+> This patch introduces the DMA_ATTR_MMIO attribute to mark DMA buffers
+> that reside in memory-mapped I/O (MMIO) regions, such as device BARs
+> exposed through the host bridge, which are accessible for peer-to-peer
+> (P2P) DMA.
+> 
+> This attribute is especially useful for exporting device memory to other
+> devices for DMA without CPU involvement, and avoids unnecessary or
+> potentially detrimental CPU cache maintenance calls.
 
-Sincere apologies. Will be extra careful from now on.
->
-> On Tue, Aug 05, 2025 at 05:14:10AM -0700, Lokesh Gidra wrote:
-> > MOVE ioctl's runtime is dominated by TLB-flush cost, which is required
-> > for moving present pages. Mitigate this cost by opportunistically
-> > batching present contiguous pages for TLB flushing.
-> >
-> > Without batching, in our testing on an arm64 Android device with UFFD G=
-C,
-> > which uses MOVE ioctl for compaction, we observed that out of the total
-> > time spent in move_pages_pte(), over 40% is in ptep_clear_flush(), and
-> > ~20% in vm_normal_folio().
-> >
-> > With batching, the proportion of vm_normal_folio() increases to over
-> > 70% of move_pages_pte() without any changes to vm_normal_folio().
-> > Furthermore, time spent within move_pages_pte() is only ~20%, which
-> > includes TLB-flush overhead.
-> >
-> > Cc: Suren Baghdasaryan <surenb@google.com>
-> > Cc: Kalesh Singh <kaleshsingh@google.com>
-> > Cc: Barry Song <v-songbaohua@oppo.com>
-> > Cc: David Hildenbrand <david@redhat.com>
-> > Cc: Peter Xu <peterx@redhat.com>
-> > Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
-> > ---
-> > Changes since v1 [1]
-> > - Removed flush_tlb_batched_pending(), per Barry Song
-> > - Unified single and multi page case, per Barry Song
->
-> Splat, decoded via scripts/decode_stacktrace.sh:
->
-> $ sudo ./uffd-unit-tests
-> Testing UFFDIO_API (with syscall)... done
-> Testing UFFDIO_API (with /dev/userfaultfd)... done
-> Testing register-ioctls on anon... done
-> Testing register-ioctls on shmem... done
-> Testing register-ioctls on shmem-private... done
-> Testing register-ioctls on hugetlb... skipped [reason: memory allocation =
-failed]
-> Testing register-ioctls on hugetlb-private... skipped [reason: memory all=
-ocation failed]
-> Testing zeropage on anon... done
-> Testing zeropage on shmem... done
-> Testing zeropage on shmem-private... done
-> Testing zeropage on hugetlb... skipped [reason: memory allocation failed]
-> Testing zeropage on hugetlb-private... skipped [reason: memory allocation=
- failed]
-> Testing move on anon... [   12.230740] Kernel panic - not syncing: kernel=
-: panic_on_warn set ...
-> [   12.231322] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIO=
-S Arch Linux 1.17.0-1-1 04/01/2014
-> [   12.231655] Call Trace:
-> [   12.231748]  <TASK>
-> [   12.231830] dump_stack_lvl (lib/dump_stack.c:122)
-> [   12.231963] vpanic (kernel/panic.c:448)
-> [   12.232088] panic (kernel/panic.c:312 kernel/panic.c:303)
-> [   12.232199] ? move_pages (mm/userfaultfd.c:1964 (discriminator 2))
->
-> Appears to be:
->
->         VM_WARN_ON_ONCE(err > 0);
->
-> [   12.232341] check_panic_on_warn.cold (kernel/panic.c:327)
-> [   12.232502] __warn.cold (kernel/panic.c:839)
-> [   12.232628] ? move_pages (mm/userfaultfd.c:1964 (discriminator 2))
-> [   12.232764] report_bug (lib/bug.c:176 lib/bug.c:215)
-> [   12.232891] handle_bug (arch/x86/kernel/traps.c:338 (discriminator 1))
-> [   12.233034] ? move_pages (mm/userfaultfd.c:1964 (discriminator 2))
-> [   12.233174] exc_invalid_op (arch/x86/kernel/traps.c:392 (discriminator=
- 3))
-> [   12.233312] asm_exc_invalid_op (./arch/x86/include/asm/idtentry.h:621)
-> [   12.233460] RIP: 0010:move_pages (mm/userfaultfd.c:1964 (discriminator=
- 2))
-> [ 12.233615] Code: 5e 41 5f c3 cc cc cc cc 49 89 c5 e9 e1 fe ff ff eb c4 =
-e9 6d ff ff ff 90 0f 0b 90 45 31 ff eb cf 90 0f 0b 90 48 85 d2 7e c6 90 <0f=
-> 0b 90 eb b9 90 0f 0b 90 f7 c1 ff 0f 00 00 0f 84 4e fe ff ff 90
-> All code
-> =3D=3D=3D=3D=3D=3D=3D=3D
->    0:   5e                      pop    %rsi
->    1:   41 5f                   pop    %r15
->    3:   c3                      ret
->    4:   cc                      int3
->    5:   cc                      int3
->    6:   cc                      int3
->    7:   cc                      int3
->    8:   49 89 c5                mov    %rax,%r13
->    b:   e9 e1 fe ff ff          jmp    0xfffffffffffffef1
->   10:   eb c4                   jmp    0xffffffffffffffd6
->   12:   e9 6d ff ff ff          jmp    0xffffffffffffff84
->   17:   90                      nop
->   18:   0f 0b                   ud2
->   1a:   90                      nop
->   1b:   45 31 ff                xor    %r15d,%r15d
->   1e:   eb cf                   jmp    0xffffffffffffffef
->   20:   90                      nop
->   21:   0f 0b                   ud2
->   23:   90                      nop
->   24:   48 85 d2                test   %rdx,%rdx
->   27:   7e c6                   jle    0xffffffffffffffef
->   29:   90                      nop
->   2a:*  0f 0b                   ud2             <-- trapping instruction
->   2c:   90                      nop
->   2d:   eb b9                   jmp    0xffffffffffffffe8
->   2f:   90                      nop
->   30:   0f 0b                   ud2
->   32:   90                      nop
->   33:   f7 c1 ff 0f 00 00       test   $0xfff,%ecx
->   39:   0f 84 4e fe ff ff       je     0xfffffffffffffe8d
->   3f:   90                      nop
->
-> Code starting with the faulting instruction
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->    0:   0f 0b                   ud2
->    2:   90                      nop
->    3:   eb b9                   jmp    0xffffffffffffffbe
->    5:   90                      nop
->    6:   0f 0b                   ud2
->    8:   90                      nop
->    9:   f7 c1 ff 0f 00 00       test   $0xfff,%ecx
->    f:   0f 84 4e fe ff ff       je     0xfffffffffffffe63
->   15:   90                      nop
-> [   12.234294] RSP: 0018:ffffafeb00483d70 EFLAGS: 00010206
-> [   12.234484] RAX: 0000000000000000 RBX: 0000000000000001 RCX: 000000000=
-0000002
-> [   12.234738] RDX: 0000000000001000 RSI: ffff90afbb433078 RDI: ffff90afb=
-c7f0080
-> [   12.234997] RBP: ffff90afbc7f0000 R08: ffff90b037cae540 R09: 000000000=
-0000001
-> [   12.235255] R10: ffffffffffffffff R11: 0000000000000003 R12: ffff90af0=
-1acb980
-> [   12.235508] R13: ffff90afbc7f0240 R14: ffffefc386e80b00 R15: 000000000=
-0001000
-> [   12.235764] userfaultfd_ioctl (fs/userfaultfd.c:1925 fs/userfaultfd.c:=
-2046)
-> [   12.235917] __x64_sys_ioctl (fs/ioctl.c:51 fs/ioctl.c:598 fs/ioctl.c:5=
-84 fs/ioctl.c:584)
-> [   12.236065] ? ksys_read (./include/linux/file.h:63 ./include/linux/fil=
-e.h:80 ./include/linux/file.h:85 fs/read_write.c:706)
-> [   12.236202] do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminat=
-or 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
-> [   12.236345] entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:=
-130)
-> [   12.236524] RIP: 0033:0x7f457600fecd
-> [ 12.236658] Code: 04 25 28 00 00 00 48 89 45 c8 31 c0 48 8d 45 10 c7 45 =
-b0 10 00 00 00 48 89 45 b8 48 8d 45 d0 48 89 45 c0 b8 10 00 00 00 0f 05 <89=
-> c2 3d 00 f0 ff ff 77 1a 48 8b 45 c8 64 48 2b 04 25 28 00 00 00
-> All code
-> =3D=3D=3D=3D=3D=3D=3D=3D
->    0:   04 25                   add    $0x25,%al
->    2:   28 00                   sub    %al,(%rax)
->    4:   00 00                   add    %al,(%rax)
->    6:   48 89 45 c8             mov    %rax,-0x38(%rbp)
->    a:   31 c0                   xor    %eax,%eax
->    c:   48 8d 45 10             lea    0x10(%rbp),%rax
->   10:   c7 45 b0 10 00 00 00    movl   $0x10,-0x50(%rbp)
->   17:   48 89 45 b8             mov    %rax,-0x48(%rbp)
->   1b:   48 8d 45 d0             lea    -0x30(%rbp),%rax
->   1f:   48 89 45 c0             mov    %rax,-0x40(%rbp)
->   23:   b8 10 00 00 00          mov    $0x10,%eax
->   28:   0f 05                   syscall
->   2a:*  89 c2                   mov    %eax,%edx                <-- trapp=
-ing instruction
->   2c:   3d 00 f0 ff ff          cmp    $0xfffff000,%eax
->   31:   77 1a                   ja     0x4d
->   33:   48 8b 45 c8             mov    -0x38(%rbp),%rax
->   37:   64 48 2b 04 25 28 00    sub    %fs:0x28,%rax
->   3e:   00 00
->
-> Code starting with the faulting instruction
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->    0:   89 c2                   mov    %eax,%edx
->    2:   3d 00 f0 ff ff          cmp    $0xfffff000,%eax
->    7:   77 1a                   ja     0x23
->    9:   48 8b 45 c8             mov    -0x38(%rbp),%rax
->    d:   64 48 2b 04 25 28 00    sub    %fs:0x28,%rax
->   14:   00 00
-> [   12.237333] RSP: 002b:00007f4569dfed20 EFLAGS: 00000246 ORIG_RAX: 0000=
-000000000010
-> [   12.237599] RAX: ffffffffffffffda RBX: 0000000000001000 RCX: 00007f457=
-600fecd
-> [   12.237854] RDX: 00007f4569dfeda0 RSI: 00000000c028aa05 RDI: 000000000=
-0000009
-> [   12.238129] RBP: 00007f4569dfed70 R08: 0000000000000000 R09: 000000000=
-0000000
-> [   12.238384] R10: 0000000000000000 R11: 0000000000000246 R12: 00007fffb=
-974ba60
-> [   12.238636] R13: 00007fffb974b830 R14: 00007f4569dffcdc R15: 00007fffb=
-974b937
-> [   12.238890]  </TASK>
-> [   12.239094] Kernel Offset: 0x33000000 from 0xffffffff81000000 (relocat=
-ion range: 0xffffffff80000000-0xffffffffbfffffff)
-> [   12.239480] ---[ end Kernel panic - not syncing: kernel: panic_on_warn=
- set ... ]---
+It is worth mentioning here that dma_map_resource() and DMA_ATTR_MMIO
+are intended to be the same thing.
+
+> --- a/Documentation/core-api/dma-attributes.rst
+> +++ b/Documentation/core-api/dma-attributes.rst
+> @@ -130,3 +130,10 @@ accesses to DMA buffers in both privileged "supervisor" and unprivileged
+>  subsystem that the buffer is fully accessible at the elevated privilege
+>  level (and ideally inaccessible or at least read-only at the
+>  lesser-privileged levels).
+> +
+> +DMA_ATTR_MMIO
+> +-------------
+> +
+> +This attribute is especially useful for exporting device memory to other
+> +devices for DMA without CPU involvement, and avoids unnecessary or
+> +potentially detrimental CPU cache maintenance calls.
+
+How about
+
+This attribute indicates the physical address is not normal system
+memory. It may not be used with kmap*()/phys_to_virt()/phys_to_page()
+functions, it may not be cachable, and access using CPU load/store
+instructions may not be allowed.
+
+Usually this will be used to describe MMIO addresses, or other non
+cachable register addresses. When DMA mapping this sort of address we
+call the operation Peer to Peer as a one device is DMA'ing to another
+device. For PCI devices the p2pdma APIs must be used to determine if
+DMA_ATTR_MMIO is appropriate.
+
+For architectures that require cache flushing for DMA coherence
+DMA_ATTR_MMIO will not perform any cache flushing. The address
+provided must never be mapped cachable into the CPU.
+
+> +/*
+> + * DMA_ATTR_MMIO - Indicates memory-mapped I/O (MMIO) region for DMA mapping
+> + *
+> + * This attribute is used for MMIO memory regions that are exposed through
+> + * the host bridge and are accessible for peer-to-peer (P2P) DMA. Memory
+> + * marked with this attribute is not system RAM and may represent device
+> + * BAR windows or peer-exposed memory.
+> + *
+> + * Typical usage is for mapping hardware memory BARs or exporting device
+> + * memory to other devices for DMA without involving main system RAM.
+> + * The attribute guarantees no CPU cache maintenance calls will be made.
+> + */
+
+I'd copy the Documentation/ text
+
+Jason
 
