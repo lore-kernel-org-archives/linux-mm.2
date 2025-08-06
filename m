@@ -2,180 +2,106 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CE5D2C87FCB
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 12:42:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 92BFBC87FD3
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 12:43:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 74E316B009F; Wed,  6 Aug 2025 08:42:26 -0400 (EDT)
+	id 2E4B68E0007; Wed,  6 Aug 2025 08:43:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7252F6B00A0; Wed,  6 Aug 2025 08:42:26 -0400 (EDT)
+	id 2943A8E0002; Wed,  6 Aug 2025 08:43:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 614A76B00A1; Wed,  6 Aug 2025 08:42:26 -0400 (EDT)
+	id 183788E0007; Wed,  6 Aug 2025 08:43:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 50DB56B009F
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 08:42:26 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2FD6BB9C17
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 12:42:26 +0000 (UTC)
-X-FDA: 83746295892.02.BBC6956
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C8222100004
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 12:42:23 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Gcnlv58d;
-	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 069558E0002
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 08:43:50 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B25B31361EC
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 12:43:49 +0000 (UTC)
+X-FDA: 83746299378.09.8AB880F
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 6DD4280004
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 12:43:47 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=QMucSp9y;
+	spf=pass (imf30.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.151 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
+	dmarc=pass (policy=quarantine) header.from=pankajraghav.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754484143;
+	s=arc-20220608; t=1754484228;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6fC+wuZRrS98vNZxfDF8dB7BkGXm5HyL/fUXW2U/KHQ=;
-	b=hsn9/tAQJefqbXS01r4NKR+RNsb3vf4CnC4rtxhg+9J6kMEkyPS5JmOG/FFt5+mHnafZpl
-	YdcdSzQRVfw29MzgfyybaDtTAeO5IHXoeeQxiNmRa06dDXOHBQfDyopwkj6IAGvNTZqNH6
-	hc51MUIz5mSW7+lvYdit/nHE3JJD6yA=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Gcnlv58d;
-	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754484143; a=rsa-sha256;
+	bh=ZophTKdo4O3A36vGcC5G0lV5mUY9trAmIEPn+lZrbVg=;
+	b=OifW4ryT/Kd4ZtUq0VViezl4EBqhwq8wRDGD1rKfx6cHXqHIIJ54NF8Gq58i+fDwcmy5n/
+	chcMyogcnTIgnMmDPgtM3urOrT5I6m25eDrfNeI07nZBuckrI8IH6GeGOh39dcEgadW6tE
+	kNl1DxlHISCFKRxp8WOVxSTja9Ufw1c=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754484228; a=rsa-sha256;
 	cv=none;
-	b=0IrDaFf8YJrxbsGpae6YWM3F+yvVgcwBmp6Z13MdwPphE8dSrTjjncYUZkCGLaSiSG+a3U
-	7xHU0a2PtJB1TkBPJBjVgOP8faf3k9B2OhYsXtCXeAzlcwnOy9t6TDTYrl1+AtTcUi/VW3
-	/Iy3QMbkun+lO/8p5Cjkx1bqQeBcawo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754484143;
+	b=U84sUzG/Bvg13o8SW0y8Av/vSuUuOGOkV8LkXNc5SkqGpjjNYXR3gI2qrEzdXUh1bcuX7V
+	9EFEtC7a3bJe4VVweUIUFscOxDThgMhbEBxTYDCxP3O3u5Txf4ddl2keEsYacjwBXG2hLs
+	1W5HwjEuJwbFw6GKiwsywk+EJM4rG60=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=QMucSp9y;
+	spf=pass (imf30.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.151 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
+	dmarc=pass (policy=quarantine) header.from=pankajraghav.com
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4bxqjC35nkz9tGN;
+	Wed,  6 Aug 2025 14:43:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pankajraghav.com;
+	s=MBO0001; t=1754484223;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=6fC+wuZRrS98vNZxfDF8dB7BkGXm5HyL/fUXW2U/KHQ=;
-	b=Gcnlv58dhcJzOh5i/SSG6XO4rJynuAKhiPhv+aRiv2RgOAa2xULiNR9sqzRFCb1zRqxVAq
-	soGZfp/h+VwMhynHrU1YBuQWj6Fkm1epo6XOGKeUkbqVt4QTU2P1aJ2Qf5eMHERhJN6ARE
-	DQx+wpPgmtELoh7bksdLB7hXjtZL0UM=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-616-pqff5GxmPliNe4BpRtlIYQ-1; Wed, 06 Aug 2025 08:42:21 -0400
-X-MC-Unique: pqff5GxmPliNe4BpRtlIYQ-1
-X-Mimecast-MFC-AGG-ID: pqff5GxmPliNe4BpRtlIYQ_1754484141
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3b7812e887aso2035210f8f.2
-        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 05:42:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754484140; x=1755088940;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=6fC+wuZRrS98vNZxfDF8dB7BkGXm5HyL/fUXW2U/KHQ=;
-        b=EC5aIykHkGvb+4HBKl5CrWU1oeQ3QvIdyrpHiZE8ayLygiwVnX/k9ls2sFUqDpGI2F
-         GCrUo9jeEFXZukMCNyZnsEAbjdvm9fc4KCyDrEKq6CGwP6lTz61iXiId3qI83dSt24hF
-         7OviHmEyhnL1SMM2Se72kjwXDJ0eyph9dVSsJEhx2AUe0UHrjpdrIjH9zEBnXjbrFIuU
-         f3rD2FpLY8009GqV2emC6QrgJLf69BElxHd68E8n4EIXbd/DuyL01xigRL3pAgGgJoWl
-         3Jn+Mooh1+8V0Fa9xlHnNwZBoMxGNKUeYXybNIuJ7yuDZtRpqul7I8AgNfvDNvi9oxm+
-         qa4w==
-X-Forwarded-Encrypted: i=1; AJvYcCVn2EtTMhs79qXqcrq9//NJ+yf1QY9on4F3M+qxstmLmAx9oE5Q/Qshgi90+6VO1jBDJlNri+N7xg==@kvack.org
-X-Gm-Message-State: AOJu0YyqH3m8/fDG88fDNaTOMIP/bQTbSXTqnwBVuj6zKiRDDKd2fa1t
-	eLuv5XvBotJtOiPiuWBjy3VuiISrhNL5GFugfWDdi07e6kU0n4XkO68+Td3aL0hI+dv9JcDsgfV
-	t/RRZvKs6UKmaiJEbn1VCqKkUBWvJgZ3TwNDEBhqgUGepZhcWNpus
-X-Gm-Gg: ASbGncv0wuvk3FzOzo9ZHPYq+YgKuluNN5m2wRStq2v+Y2Fl+GSS5enT/Dw+mJsQ6pb
-	gs513GFjsThOleqXqii7NNE7j9HUjiu634t+09Kjd7/eJ1fBaVBVPz89gLnbQ3dkEFjNIz0+UH0
-	/jwQ+Qe16MbbK8SwiS0zI9kT53NOsBSWry0NA5Wz6bzFzjiv5YpwEV/ejr0IAsoFp7bOWLXeGRj
-	QS2P2rKVq4URC4hE0rPVIAnU8qZhpZOG+b64bOdRXxe0DRPI3Edx9fw2xhA7TkL6XRPKgvtqOwS
-	LQF09rWrj+b57k4JxI0X6+FhcE4Pyg3gP2TEg9zgc/X5DTl3/ZXeJE6dFm+us2UvLvvqqqV4Mt7
-	d7YiVxeyyiQ87oiqQ4hSXaGWEY2eUHIUBqvVzLmJS/iuQ0WmazgxtZQcxhiuQrZQFKWM=
-X-Received: by 2002:a5d:5846:0:b0:3b7:930a:bb0d with SMTP id ffacd0b85a97d-3b8f48e929bmr1886364f8f.20.1754484140581;
-        Wed, 06 Aug 2025 05:42:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEgk4+ikHQX6105e2puO+JLj1QNXAy0kwvoA7WxfsLLJbZOR8ZghoT2xETRXpsUtY54KVrOYA==
-X-Received: by 2002:a5d:5846:0:b0:3b7:930a:bb0d with SMTP id ffacd0b85a97d-3b8f48e929bmr1886329f8f.20.1754484140086;
-        Wed, 06 Aug 2025 05:42:20 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f35:8a00:42f7:2657:34cc:a51f? (p200300d82f358a0042f7265734cca51f.dip0.t-ipconnect.de. [2003:d8:2f35:8a00:42f7:2657:34cc:a51f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c453d6esm22995355f8f.37.2025.08.06.05.42.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Aug 2025 05:42:19 -0700 (PDT)
-Message-ID: <6a39f79a-d709-43ba-ab28-2b86f2e4c547@redhat.com>
-Date: Wed, 6 Aug 2025 14:42:17 +0200
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZophTKdo4O3A36vGcC5G0lV5mUY9trAmIEPn+lZrbVg=;
+	b=QMucSp9yjzTRGS3JNNwUENMKvP5/sRhXP+HKsADS77xEB0DQ47TT+6Nm3BywgS+3ZTWgE8
+	FDVYRrg6d651lQ3fvj/bKEUJaL+NNjcReQYrtHwEKkrCZMgTLevtAxm92vk66VagiGM2Bv
+	VchgcKSTtEYhg17rYrQuY5vEjVZoc7cqxesoLvL2LqtvH1bdkXk3BUqp+NBFJE0OPAhGjo
+	+UP/o6D799+eZyGQQQkRu8KFKW8ZjZ+4Tx7tj2cJC1n/bjv+OJdRL1eQqLVGrgSmUE8L1N
+	0GaHRhouyJPzw12uHKykUG9ZpLjcTfNs+FEk/sIuuTKW3qClFdaVOLgvhZt+1A==
+Date: Wed, 6 Aug 2025 14:43:32 +0200
+From: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@redhat.com>, 
+	"H . Peter Anvin" <hpa@zytor.com>, Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>, 
+	Mike Rapoport <rppt@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Nico Pache <npache@redhat.com>, Dev Jain <dev.jain@arm.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Jens Axboe <axboe@kernel.dk>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, willy@infradead.org, x86@kernel.org, linux-block@vger.kernel.org, 
+	Ritesh Harjani <ritesh.list@gmail.com>, linux-fsdevel@vger.kernel.org, 
+	"Darrick J . Wong" <djwong@kernel.org>, mcgrof@kernel.org, gost.dev@samsung.com, hch@lst.de, 
+	Pankaj Raghav <p.raghav@samsung.com>
+Subject: Re: [PATCH 3/5] mm: add static huge zero folio
+Message-ID: <lyfgmdjehtfjb2gmj5ciao6l5lmkvlfe54wtlnlhjjf7ge65sa@2dyo3tb6ka4i>
+References: <20250804121356.572917-1-kernel@pankajraghav.com>
+ <20250804121356.572917-4-kernel@pankajraghav.com>
+ <4463bc75-486d-4034-a19e-d531bec667e8@lucifer.local>
+ <70049abc-bf79-4d04-a0a8-dd3787195986@redhat.com>
+ <6ff6fc46-49f1-49b0-b7e4-4cb37ec10a57@lucifer.local>
+ <bc6cdb11-41fc-486b-9c39-17254f00d751@redhat.com>
+ <bmngjssdvffqvnfcoledenlxefdqesvfv7l6os5lfpurmczfw5@mn7jouglo72s>
+ <e67479f5-e8ed-43a7-8793-c6bff04ff1f4@redhat.com>
+ <iputzuntgitahlu3qu2sg5zbzido43ncykcefqawjpkbnvodtn@22gzzl5t77ct>
+ <9a657c84-99fe-41ba-88ca-097acab4b96b@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] mm/huge_memory: add new_order and offset to
- split_huge_pages*() pr_debug.
-To: Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20250806022045.342824-1-ziy@nvidia.com>
- <20250806022045.342824-2-ziy@nvidia.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- g3eXuA==
-Organization: Red Hat
-In-Reply-To: <20250806022045.342824-2-ziy@nvidia.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 0TTkIHT6Mu72fOS1YyfF5-Hy98qwly_MYi9Ei7TiNz8_1754484141
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9a657c84-99fe-41ba-88ca-097acab4b96b@redhat.com>
+X-Rspamd-Queue-Id: 6DD4280004
+X-Stat-Signature: cxj58krbjcax7iq1ph5ptfbfg3qncjid
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C8222100004
-X-Rspamd-Server: rspam06
-X-Stat-Signature: w7k3qaccpiwjutdb9gsnkiyentzjqai4
-X-HE-Tag: 1754484143-82904
-X-HE-Meta: U2FsdGVkX1+Of+incGqivfDXq6y+PVoRmCwcll9BJ9Kv3hhQaT/LngF0mMTCjMP4l1BKCKl0D4ufBFONWSkZHT0K6DVW3Z33isQSoAGQBv0hn9nFTz2t1GoEOHoa9atDz0HEWQIH4DC4zHl70MnkrocrD/b241xKpDbUlO3MkWeM91ScU/I77kbWlk+5SApwfKr76zMl1bL+az32bl5iCERrLJK/K1FMGo82ha/14RHxacArNYyKbEKBDsBRIXTjaK+P8zk0hKhaNGwNn4IRHSxpFCl8w81pOpMfWzksqK21/f04n72zIH903+3AMnl18kIUAu7YmZX/ZrF6ELWfJAq8UJPOHggH9/pBCFYrHbf7bw4033ZDyro7Y+0Ewclf2U93zfMav7rks9dEmiu+E7Cm4eLLEXIx0CVps9bb6vfvnPA+q8DN3C7WZTauMDEo7z8+4Q9jGLfgEpnv7xu9XTgv36XKXTfH4KXR7v/ud79zoiF8T/rNdCU1StewTH6nv8uDap4eObXtblFFBASYvtDz2S6wfWSHg+BRAY+54O1KjLk1PVJq7jmN21+1gD8qi4rfA1qLmy1qKsPe+Fw7/kol0F3jcKmQdMVKfKL1cx9HJhLoURpzCRhtplwmuGKK0kEU9pz+u63KDJICJaz2zL8s90LGiykHfJbyDvxlXS9EOv2ENPHjniiqOyuQAjYuz868OYXTmZ2Ki7afYudZgxrffssiKX9lJY+m8GOxnAg0Ka0XGXv+ARP2FjlGhAz+D8tV4cMA485ufwsgMvD3GWO9crA9qHSPJmGLSGQ094ku94TTPv2CLX8l4hfEWKeXtIKHM20BT5iUFk7P5tFHZIC++B13KdpAzd5fCfPTar1s3lslA9895nv1xuJYDBiLVG59/eXzwqHvBVda3RbQV1yHyVPKWqKd6nyb41a1XT9GKVHPFvJ6ru2L/HWw27czCGDTJ0uDogMg1XfYJBu
- MxbzSMV/
- 1X1PMMRy73/eK0C2TjjEPry/gAfGEHWkxbA1/Y89rhyMdSaZVx24aPlyf24W6rZ8pHfkOQeRgxp0aKq0UD8+Ztmmg2DmT4sn5pPWGAx6+4GGyW48s2O/NsQrAFa8D91Ays6upE0TwwuwI9UO+0Qd7pAf86aRFvynN1sPfVgxXBb8a6HdYCqA52qLN7syqjVF8eRaO1wKPys7lFgKWob6NNeZ6ZOL+A22p7bq4bqKOarZ7hQAv16fI2y5ZG+MpPkwcBQekER/ug43VhSzVTmmJ3Yh72+04k59TIp29qjrnJPzKEWHXestLlPxHJAyx0zSmdezQ189aiPxFUq3vUqwelnKS6i6vzM7UUSkAiMUJ/CA8jK27MaVxmXDQgQFVzMIWKz1DWqbTIX+rQoDUGMFUuZ1W6sOUa88l+BY0VJj9veebOnJwZW6r564evQhHuMbSSjPoog3SBbTcFjsQWCckmJMKi+Fn/qAhiMwpySAuNLQj9Sg6Gal1ez8DH5tdbAOKtgnsrULykNlguw/uFWLNIzo/EGXPP1u3OxiJLksdjfVVWRM=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1754484227-300448
+X-HE-Meta: U2FsdGVkX1+3LOLrr8vqQJ4J2gycjneQPU5msoolQtKIPEmjlp7eI5Bme6g4FVjK3/V0/5QWfxOnKkNoVsAzVghNdKt1NDFnVaPpqC0eDXWo9Ikr8AGlZA9pyj6XvBGJ8tTk/QdIPGCs9PugZK41Kto7uq5o9AZRQ8u4ZlK6pAn+Dptc9CNQ817/5uQE+ohWElIa8zXlXW0tXasrlcx9Qza1lKGwTkmVCajOaXzzwQIfRx7OJghnDGfAAaDGQByh6nEoIp15fum2OHk3KtDGHWizjQQrqsNCUj82igHbxfUfYPu0jxLza3kPspGu9hhMQcwBoQdWA0LmiDwW5gOJZVeDIAnQS9Z1Uh90d9pjYAL1vsHztH6V5Ruim2961NlhwQZYV+20z2134vJ6X3p9cp9Bu8muNoJdaYzDSq3Ogqa0cby2CGBzaaCVhV7F++IposbwacwjctlQP4rHjODs8I6J+1JZKstM4xWh3o+X+lzbPTRVUBboQZ1LRWtLm01fg6eGSMahKS3anQun+zQD98aI8Sugl6ySl4YfZSEOl0j79hDiMcFIUiVTa6QxgCIj4YlD4LyZRsvjhWLeKgKOxqze42y3odfo4KcpC2v59gZ6DlBnqSee0Y7PZICCHvXbc3XnP6sTSbtHkt7CaQrkOOywF6GnOd5aU1LegB2Jx+3ZekUNmPXfDn0zVQ3IRQlBmJY1dHRCC2XedueciZzQ5v2MDRNIFZoE13acXhINZcETccAPjDJShoHTNAWabyKVWqXnFfA9RlNadShrUlOjLb5v0UfsMQ8Q/luZC63Mj+A16WFRDMI+L/zbqbrsUf8d+h7+FyIPGxzvJEt3XFWkkevvt24C6QG0dFCrqyegDUYU0FBUwomC8MayhNJfVQVo5kvSiWWKztKGcQU539AGVrcaeiqK+vMidfmK6BNVLpTtVzmnUHO6kcnsyE9xDCQ5PouG8Hac3mimGOex1Ud
+ nBec3k8D
+ 7X2kvg8hPhl1Y//Pna/XIaZ6Kts5wuDi5hF1og4ckPij+UjS3YYOaZXrqoVDlQbe4gTO0NuYz1YNZoRyUymgomhisP/2VMNls2tUZ994sGUHjTNP5yI5s7kwfUag1GUXwcW7Ua6v4ePbHeKnUaYJWObsydbdqVfi60aNwFZl6FykJBFISo4jUWGcrg59tdB4EvSRU+dbGfFNqYE2uXRpHHx7h/XE8VVrVjwCEFweY/xbYH8n7TDjE+rCWI2HjiS/X62EOqW4a7dDhA2fRyVKX5HkdIoNJ6jN2yGC1edddobOyJY7zMJidwgDqm2g8u3JVCJun230+Z09ZIlESeILD0zTJ/Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -184,17 +110,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 06.08.25 04:20, Zi Yan wrote:
-> They are useful information for debugging split huge page tests.
+On Wed, Aug 06, 2025 at 02:36:51PM +0200, David Hildenbrand wrote:
+> On 06.08.25 14:28, Pankaj Raghav (Samsung) wrote:
+> > On Wed, Aug 06, 2025 at 02:24:28PM +0200, David Hildenbrand wrote:
+> > > On 06.08.25 14:18, Pankaj Raghav (Samsung) wrote:
+> > > > > We could go one step further and special case in mm_get_huge_zero_folio() +
+> > > > > mm_put_huge_zero_folio() on CONFIG_STATIC_HUGE_ZERO_FOLIO.
+> > > > > 
+> > > > 
+> > > > Hmm, but we could have also failed to allocate even though the option
+> > > > was enabled.
+> > > 
+> > > Then we return huge_zero_folio, which is NULL?
+> > > 
+> > > Or what are you concerned about?
+> > 
+> > But don't we want to keep the "dynamic" allocation part be present even
+> > though we failed to allocate it statically in the shrinker_init?
+> > 
+> > Mainly so that the existing users of mm_get_huge_zero_folio() are not affected by
+> > these changes.
 > 
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> ---
+> I would just keep it simple and say that if we fail the early allocation
+> (which will be extremely unlikely that early during boot!), just don't ever
+> try to reallocate, even not when we could through mm_get_huge_zero_folio().
+> 
+> That sounds as simple as it gets. Again, failing to allocate that early and
+> then succeeding to allocate later is a fairly unlikely scenario.
 
-Acked-by: David Hildenbrand <david@redhat.com>
+Ok. I will also document this as a comment just so that people are aware of
+this behaviour.
+
+Thanks a lot David for the comments and feedback!
 
 -- 
-Cheers,
-
-David / dhildenb
-
+Pankaj Raghav
 
