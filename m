@@ -2,129 +2,97 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 31610C87FD3
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 14:54:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B162AC87FCB
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 14:56:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A6FB66B0098; Wed,  6 Aug 2025 10:54:37 -0400 (EDT)
+	id 544936B00A2; Wed,  6 Aug 2025 10:56:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A208D6B0099; Wed,  6 Aug 2025 10:54:37 -0400 (EDT)
+	id 51C3C6B00A3; Wed,  6 Aug 2025 10:56:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 936026B009A; Wed,  6 Aug 2025 10:54:37 -0400 (EDT)
+	id 459216B00A4; Wed,  6 Aug 2025 10:56:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 80E726B0098
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 10:54:37 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2D2761A06A8
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 14:54:37 +0000 (UTC)
-X-FDA: 83746628994.28.E3EB473
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 18BB18000C
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 14:54:34 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=TeniVRwZ;
-	spf=pass (imf02.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754492075; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 33FDE6B00A2
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 10:56:48 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 01CC81A0529
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 14:56:47 +0000 (UTC)
+X-FDA: 83746634496.15.D487389
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 01FBEA000B
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 14:56:45 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf15.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754492206; a=rsa-sha256;
 	cv=none;
-	b=tW4WWL3JDeo9g9qAhUOMQBIi1cQhqxP4A/bSIM1SGEXpKraB7wsfU6FpYRUgVChFalRKH7
-	U4zP4C+R0GVCK7We3VRw9/+U/V1KjwQ9DwxRiFG221KLQvIwiRpsCbAvGMFDz20lKRlqVz
-	RZiQJ9SNeziGZjmqfLYZmoLcvSCqJpU=
+	b=QuIIjLqIvn0CdG483TLFddFGmF8cv4xFFbHWQ+ugiteNoHJAMLJR9MPVMI8djQoZy05QgT
+	BR9IuwwfMskcYzM0UzDS/wIvEMfamv1SpXSEywCw+8DnQsyJ/MgOg8dHMH6RFP7OCFwuhl
+	0RmUL1i74ou46Pq5S3RiDIOPULDCyQQ=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=TeniVRwZ;
-	spf=pass (imf02.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf15.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf15.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754492075;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1754492206;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l/rb74Rn4CUT7usZvguA3GJ62ZV1pluEnH5A6t2WngA=;
-	b=rIbJXK7GEcB84vvSJEEBOQLLGQ1KGe3XQoKNkMXrZHTf2Bw6gJxV7RUTHDrXLX1Q9LdTYG
-	DALAO8J/s4caWfUZ2sZTC5Xpylxpqbhmss1SyACewKFpCMRDHn0C7WYhQ3DW1d0claQTdT
-	il5t8MneINZTtf4lVCEom7ewgXzaSq8=
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-af98841b4abso285316766b.0
-        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 07:54:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754492073; x=1755096873; darn=kvack.org;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:reply-to:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=l/rb74Rn4CUT7usZvguA3GJ62ZV1pluEnH5A6t2WngA=;
-        b=TeniVRwZQ803Thg8dl+xzN/3XslgUeRu7jPd+44YB7WRqlXnd894RBOqfNqG4RdIHR
-         tIrBG2mRQwc+WNmjLcj/KL0H2ZGa8macnSRZ33mFyOm+6xqXKhrInNteqzL3J8qwEo6c
-         rKKjJ7pYOQ46TeFoiSsaFhKQknZCNWhVShFo3m+hQXFGBjkSrAjXmmeh7XRnp4wII1SW
-         wR6orD8iXi/414DHAzY3ORX2yXZcgPqxEUzSYT6/6fyGWTuhMC4rWSJ5MAaeUGwsmtgj
-         yFF0rPZ69rkyrP3wP45cxj9QK4Xx65XWOuyYhloYe72WEaLOvE15eHVDxmAApeZGbQah
-         /LRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754492073; x=1755096873;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:reply-to:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l/rb74Rn4CUT7usZvguA3GJ62ZV1pluEnH5A6t2WngA=;
-        b=k0I0gfPg54YDOrMtAceCPZpQvxyzrYbuTuw1nj+aLer1tsH0KOMYTenzbwNcKoc3tc
-         0VJfHxRneMBXO0WjjqBvA2EQNOTjcVmJCpEXW4hgq1CG1RvVLqo+Vx633oyWr01qiYmL
-         OPqg8a6sJ9Tx+6yafl5UkVLk/s34FB0IT1GcvNL9jG+3S7zES20vMcvvScptJGss+f6d
-         1GSEj3U/PoqwLU2TbctY6WEZRtm+peZTz3Gaot47WRKvjv4fOlnofgibSyaMwweYyg2M
-         zIyaGhm1BVpb/LBSgtOopgtfR0PLuLyJY966iaEvAs8e0SQTY9CGibbRarbUXxcY372I
-         sh3g==
-X-Forwarded-Encrypted: i=1; AJvYcCUytGyslBezWWTnZmzC4jtu4Xw1Ch/rVqiKdDk6rOTmtTuipCNV60OkZX1zjrMVwZABc54a1eMPyA==@kvack.org
-X-Gm-Message-State: AOJu0YyVYCWKqEzGeVNrjfC4s4ajotHJUln4QbAvZuDUaMpKY2KglV/N
-	BdUnJiRuRnrf0GskLyeApnz1uR2hXuBjjmsPFIzGm7GXs9JpBF78fJTy
-X-Gm-Gg: ASbGncuh9k4Yeupj2L1WGK/mP7twh1cWCM3cnogA3duSHeJgpXTreHsIbPn4j8lrZiq
-	b7IvIMUy1rbxpO2Lamn74qFwGcgsVoCh4S3a898VPIfK+Ev9QAiawj0dwKfvbis4w6ZVPogTmC5
-	ZPZpR23utFfEZE+PTQWkK0yqn2ojRdxKTt1MSHkl0id72B8/i+VnIORpxkAdGnvh1ynw5MJOzS2
-	MoYdAMqxsNF6MKN8O7uXt69ajcKcexzeCVum34FhjOUBJfTuenqoePHRmTYlM/kedW4u70PhQsz
-	FVCumDMmPsOh2ihKNiCiCD5Xq8W/rCdU50oUzOogEdbS3kpeEHsh2VQdhQZz+nsiAmlMoHEMAWK
-	jU44vLl0KlVlcqD7S4DvvfA==
-X-Google-Smtp-Source: AGHT+IFS6g0g1OqUDi72LqUCVo/ND5e7JBrkMGvo/NtwvaBttPCiw1Ma69w75ETAugGec2ZHXmvHzA==
-X-Received: by 2002:a17:907:3f8c:b0:ad5:2e5b:d16b with SMTP id a640c23a62f3a-af990350c69mr348859766b.27.1754492073165;
-        Wed, 06 Aug 2025 07:54:33 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a0766f9sm1139997566b.24.2025.08.06.07.54.32
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 06 Aug 2025 07:54:32 -0700 (PDT)
-Date: Wed, 6 Aug 2025 14:54:32 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Donet Tom <donettom@linux.ibm.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>,
-	akpm@linux-foundation.org, Liam.Howlett@oracle.com,
-	lorenzo.stoakes@oracle.com, shuah@kernel.org, pfalcato@suse.de,
-	david@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	baohua@kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	ritesh.list@gmail.com
-Subject: Re: [PATCH v3 3/7] selftest/mm: Fix ksm_funtional_test failures
-Message-ID: <20250806145432.nygrslkiyvzulujn@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20250729053403.1071807-1-aboorvad@linux.ibm.com>
- <20250729053403.1071807-4-aboorvad@linux.ibm.com>
- <20250804091141.ifwryfmgjepwrog4@master>
- <20fb853c-7d79-4d26-9c8a-f6ce9367d424@linux.ibm.com>
- <20250805170353.6vlbyg6qn5hv4yzz@master>
- <e9079694-1e30-46b6-97e7-b79be01c65a6@linux.ibm.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=8S7VbRDRKJO4kP2n5QemvpxnIXDGJbZUoyPIRuHALsk=;
+	b=d844+pC0tEC2GotMviI1yXEwgQzDZGLWvuZ50P2cVSc8Z3Eg6QIiPDwM07Kn/KCKN21Wvz
+	R4VCNC821cNbaNz7zefjzfV+DekFzaUXDtriHZHkoTCtPLzRdPdoAJfTyizCWcwUOWEmBQ
+	r8HClkJ3bRtCCEuhPZuNYos/F/bUykA=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BBC72176C;
+	Wed,  6 Aug 2025 07:56:36 -0700 (PDT)
+Received: from localhost.localdomain (unknown [10.163.64.125])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 532773F5A1;
+	Wed,  6 Aug 2025 07:56:34 -0700 (PDT)
+From: Dev Jain <dev.jain@arm.com>
+To: akpm@linux-foundation.org
+Cc: ryan.roberts@arm.com,
+	david@redhat.com,
+	willy@infradead.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	Liam.Howlett@oracle.com,
+	lorenzo.stoakes@oracle.com,
+	vbabka@suse.cz,
+	jannh@google.com,
+	anshuman.khandual@arm.com,
+	peterx@redhat.com,
+	joey.gouly@arm.com,
+	ioworker0@gmail.com,
+	baohua@kernel.org,
+	kevin.brodsky@arm.com,
+	quic_zhenhuah@quicinc.com,
+	christophe.leroy@csgroup.eu,
+	yangyicong@hisilicon.com,
+	linux-arm-kernel@lists.infradead.org,
+	hughd@google.com,
+	yang@os.amperecomputing.com,
+	ziy@nvidia.com,
+	Dev Jain <dev.jain@arm.com>,
+	syzbot+57bcc752f0df8bb1365c@syzkaller.appspotmail.com
+Subject: [PATCH mm-hotfixes-unstable] mm: Pass page directly instead of using folio_page
+Date: Wed,  6 Aug 2025 20:26:11 +0530
+Message-Id: <20250806145611.3962-1-dev.jain@arm.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <e9079694-1e30-46b6-97e7-b79be01c65a6@linux.ibm.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Queue-Id: 01FBEA000B
+X-Stat-Signature: 5pmewdwzjr1zg8rewai8y8fpsjun365z
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 18BB18000C
-X-Stat-Signature: bmm7jy89o9hrxnmzd916oz56cy539b4a
-X-HE-Tag: 1754492074-25929
-X-HE-Meta: U2FsdGVkX19ItfD738rYRWAqOyhn+yRfiuiczAituCWhmZA9VDRNb4+v/Pbg0CvmpVLLyD18o+vk7aDZT+/YXgffPqtnOJaw3yKSi86iCGHZIkfuPJVHPT/kQDmrKEMW+NGL+7GHSQLI0//Wa/QL7JwiN8fZcKTcYBk+xNV/qWifIdBCr170ZLyU0bprnUz+tmHZ9IdGySfM3VD/jx9CENqAgl8+kKvI5aMociQF8oxaaMwr7emPFjLjONvzotn8jqHAC4yVXvIofIxLj3CmCEUDhJ8Eaz4Y8nxWMeUed65DXbpFTizwJStPGSYxLdS2VAfnMPLOL82cF8fYPYMu83rcLZZhQhtjeqctEm6s3ah5TM44/4L0TyoTlVA8dHJcNrwn5xurQ0tMGZsKpDxOpyDRZiMNZa8tcM4MbTt6lUEZrIqV4pz1YB7Gan9qJBcOHgN576CbQW635bwG9bgLY732L8dcpfpfcRLPBuVjzze0HzKzP59TAiViRa6WXm1bf7iPSuppAcQVkbZX0PihaZNr9Bk0Z7cYQqqEn95G50Tnrfc/LIRjETBY+8NOiM+UBorBTMIERol2YoLpg5oCKoeTiGKNsbpFK5tE4qwmbJBlEGQfr5xsonLZGe7wHZ416rdWTObGdwK2rhBXWiOFYCZzb+u06dxGns5O/Xu/QBv4fZtsZegjhDaTTeUp59913oWADPYqDEXI4S0M2cqGlvxG8MixjrOwWxKUZX5qwMn46eQUYNol8XCE7x5OBygIkXL3EyQuHFVbUqvdZ0BcxQEsB9olKVLItk3J2ousboChATNm6infXZYQQ4RIuzEm1vfgWtxEL+4tWpw4Xkok74FNl2uR/B0AXIwNW8YujN6M/Nv4ZUoc8OuEWk01f/3BtDsRnO96qOGkdAU7v3VC6JeK6APLIXrUU+vsSh5Z4OAHXcbXBnw2i6xCrY82lP8kbo9Thc+fAllNcYXnqlL
- FsEoePdP
- 9rNfK3uU0gOfqi+YNgiPKVLtiUaizhuVaZeKpejY456vzLrHibMTpIfitXCt1G+l0fnw9UHaQBzu5PsIxDamAvWTHDu+1bgisG6nnGZe7QuudjY0TIzCY5ZQVt0BR+EgC+20prCpmh+nHHcYnmsY+AfROyFSM6JSSj+5oAIVZOSlxc9Pztxwh++VS7BykvCeUmJjdxcvCLnIAIcRI0PRnQFc2u6cEAA/EgEcXR6JmwWtVMWH+8SBtqsIRuGue4j7OmulcYXDFAeZ1D4ivw1aHGTs95HfGDoIdO4xhpen5C18onIwPTOn+T47lLuDvOBAHwLJonpSoqByHy2C8cwjI1v6yHNzAbpxZucjA//DSkY5WNBO4zs3ZAjfsDbWARpt9AiOqPtf4AGAQMu7o/O1Ol8RODdRf5sp7X0yLqC0nrShnmiQOJxQdIMKWg9sCmNcbjmJdbYBVKmEqh3gq5/x20LL9U/RANZsT+miAfjxcu+SLesqWo8EZIvVfZmaMsaOMCP28n222jFmbO3Wu1ClVUQHWGaDKRx4Cf/YJGuXedij9g7t7I50+Hur0HF9xB7GhnEDCM8N/DxuMvPLHQWRKKP0WBeLV22xsmKmPNPVaVEAp/H3UOAjO+scJ9UjpxeyjwR35h8kJgnFgA/+A6HbM/sjzVIpVeQ/VxrqPebQEEDwJuYEsdoSKTSZcaehwFjzULheo49E+XFEEBseKFEvb7gTtNJuxA+Y7aCrks30G/5m4/GeCT4qJWoK1CUZDotaMbp0NPKE4gbJbCBdw4ndFkVBKRg==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1754492205-781310
+X-HE-Meta: U2FsdGVkX18Mb5AY8vtywA3SqfKrnfG1HVemihizqrZv+d9VJt7sV6UzubSMnQsb1OKMIPgWMK+u7JrUj3+F9AvRx0Af0mbYcDQCwQnYo9S0sDY9OO7iGDIiFwUaB03CFHHn8Lp9TtBuz53NnCIMt8/5haod+I+QjfXrr91UrxdytGoZNaNhAz5pYF4M5F4o1MB1Q6NuQ85FtUEB6rMd7GvBUwFB9AvydxzA7wr1Y+oJTsMTtWM8+zmHsfS7MkFDHrLz8rpk+v/YTVt5Qwy6zusBXSpnvtP6/hN5iuis9zE61jKmMC0ZER1tFb8j7UOix/ipQGK69b16PwvWA7y3to4It8LoGsHzL+kLba/7lORnJN90vdID7A1cpaCtkKe+y4LMMIUnmBRQYf4mu/j7qfPw2md4QKJB8FvnwYU0SVHT+izUJtD/icd0cGWkH9yRTZ5XaCLYmRxSLKxUbDGpjITWky8YTNIMzKEPYmmyURTsW0YWMUUtv4t4fBNP/p5Qb/2XHrnSJjJovlO7hVYHn43u0l9m5fubE0sjskmW/ipJNNBrF+/SzW6el7XvHQy73B59aTqoJwpt1sMwyoykrcwdiZzBbRG5za5vEp2VS0LGh7iNaofjFCZOJFvV+9U1AwvEzHHpT3NFzvbYMhdVTtujjjPR7Gme2gWh4HSizuNkx1RsInODM6oQLyx5MzWst/GQoJqfME65pPPb6n/rVaGMjvFX44wlDbS3d+uG/+/+Jn9JX8W/mtAQkp7l5mPHl6BkWVVedV+kBkU16KQlrG09FYWgm8IimwfzQ3K1kmm/7IXbpYu96ZeQ5RNJo+WL/VGwYzPds5IGTg8XZmGu0ZMRtAu2SjWZHiSsDe4V1Ih0oTgyF2eaxnAIteTH6L+WFGPGlVyGSOeZJeirTs9Kg+tjeax3r+Gww25mLBG9zmRWrkn7PcDHZ4+SmlGoevUsdbFcdOfyckYRGq+PwDu
+ nj1NNHDR
+ EnO3HvCC5ie5+Y1vMlH8zSI3MjOZV+UtlwZnVzS8PZoDOaFxtHQ5bpI97TYbwUv++YGtqQAQ+aaQzrk6mkSsjlbWPf0ZJ9kz65ruy4S+UI2eeg9arKQj+5TKnbWExneHRwVms8+viP0rIQWVGNtJZDBmnqArpiTWbnMRv0M2FglZVdjbeak1oQ3QufV6DR2WBk+xhvaMjVtv5lmqF8D+/n0RD/YxhlSOHWpexcSUwoRqOYOw/I+zp3eIT67XNsRaSwz6MWmi8esjE1Pr0YFJjEjlVKi3cwsFhNvbx8OhQ7CahT/O+He9P5NZPr9ENg4XqfQkLSKG7Q2mWcCv+onMTADBOjqTFYr/sMxTFHUVUxxe7F4c=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,107 +101,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 06, 2025 at 06:30:37PM +0530, Donet Tom wrote:
-[...]
->> Child process inherit the ksm_merging_pages from parent, which is reasonable
->> to me. But I am confused why ksm_unmerge() would just reset ksm_merging_pages
->> for parent and leave ksm_merging_pages in child process unchanged.
->> 
->> ksm_unmerge() writes to /sys/kernel/mm/ksm/run, which is a system wide sysfs
->> interface. I expect it applies to both parent and child.
->
->I am not very familiar with the KSM code, but from what I understand:
->
->The ksm_merging_pages counter is maintained per mm_struct. When
->we write to /sys/kernel/mm/ksm/run, unmerging is triggered, and the
->counters are updated for all mm_structs present in the ksm_mm_slot list.
->
->A mm_struct gets added to this list  when MADV_MERGEABLE is called.
->In the case of the child process, since MADV_MERGEABLE has not been
->invoked yet, its mm_struct is not part of the list. As a result,
->its ksm_merging_pages counter is not reset.
->
+In commit_anon_folio_batch(), we iterate over all pages pointed to by the
+PTE batch. Therefore we need to know the first page of the batch;
+currently we derive that via folio_page(folio, 0), but, that takes us
+to the first (head) page of the folio instead - our PTE batch may lie
+in the middle of the folio, leading to incorrectness.
 
-Would this flag be inherited during fork? VM_MERGEABLE is saved in related vma
-I don't see it would be dropped during fork. Maybe missed.
+Bite the bullet and throw away the micro-optimization of reusing the
+folio in favour of code simplicity. Derive the page and the folio in
+change_pte_range, and pass the page too to commit_anon_folio_batch to
+fix the aforementioned issue.
 
->
->> > value remained unchanged. That’s why get_my_merging_page() in the child was
->> > returning a non-zero value.
->> > 
->> I guess you mean the get_my_merging_page() in __mmap_and_merge_range() return
->> a non-zero value. But there is ksm_unmerge() before it. Why this ksm_unmerge()
->> couldn't reset the value, but a ksm_unmerge() in parent could.
->> 
->> > Initially, I fixed the issue by calling ksm_unmerge() before the fork(), and
->> > that
->> > resolved the problem. Later, I decided it would be cleaner to move the
->> > ksm_unmerge() call to the test cleanup phase.
->> > 
->> Also all the tests before test_prctl_fork(), except test_prctl(), calls
->> 
->>    ksft_test_result(!range_maps_duplicates());
->> 
->> If the previous tests succeed, it means there is no duplicate pages. This
->> means ksm_merging_pages should be 0 before test_prctl_fork() if other tests
->> pass. And the child process would inherit a 0 ksm_merging_pages. (A quick test
->> proves it.)
->
->
->If I understand correctly, all the tests are calling MADV_UNMERGEABLE,
->which internally calls break_ksm() in the kernel. This function replaces the
->KSM page with an exclusive anonymous page. However, the
->ksm_merging_pages counters are not updated at this point.
->
->The function range_maps_duplicates(map, size) checks whether the pages
->have been unmerged. Since break_ksm() does perform the unmerge, this
->function returns false, and the test passes.
->
->The ksm_merging_pages update happens later via the ksm_scan_thread().
->That’s why we observe that ksm_merging_pages values are not reset
->immediately after the test finishes.
->
+Reported-by: syzbot+57bcc752f0df8bb1365c@syzkaller.appspotmail.com
+Fixes: cac1db8c3aad ("mm: optimize mprotect() by PTE batching")
+Signed-off-by: Dev Jain <dev.jain@arm.com>
+---
+ mm/mprotect.c | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
 
-Not familiar with ksm internal. But the ksm_merging_pages counter still has
-non-zero value when all merged pages are unmerged makes me feel odd.
-
->If we add a sleep(1) after the MADV_UNMERGEABLE call, we can see that
->the ksm_merging_pages values are reset after the sleep.
->
->Once the test completes successfully, we can call ksm_unmerge(), which
->will immediately reset the ksm_merging_pages value. This way, in the fork
->test, the child process will also see the correct value.
->> 
->> So which part of the story I missed?
->> 
->
->So, during the cleanup phase after a successful test, we can call
->ksm_unmerge() to reset the counter. Do you see any issue with
->this approach?
->
-
-It looks there is no issue with an extra ksm_unmerge().
-
-But one more question. Why an extra ksm_unmerge() could help.
-
-Here is what we have during test:
-
-
-  test_prot_none()
-      !range_maps_duplicates()
-      ksm_unmerge()                  1) <--- newly add
-  test_prctl_fork()
-      >--- in child
-      __mmap_and_merge_range()
-          ksm_unmerge()              2) <--- already have
-
-As you mentioned above ksm_unmerge() would immediately reset
-ksm_merging_pages, why ksm_unmerge() at 2) still leave ksm_merging_pages
-non-zero? And the one at 1) could help.
-
-Or there is still some timing issue like sleep(1) you did?
-
+diff --git a/mm/mprotect.c b/mm/mprotect.c
+index 78bded7acf79..113b48985834 100644
+--- a/mm/mprotect.c
++++ b/mm/mprotect.c
+@@ -120,9 +120,8 @@ static int mprotect_folio_pte_batch(struct folio *folio, pte_t *ptep,
+ 
+ static bool prot_numa_skip(struct vm_area_struct *vma, unsigned long addr,
+ 			   pte_t oldpte, pte_t *pte, int target_node,
+-			   struct folio **foliop)
++			   struct folio *folio)
+ {
+-	struct folio *folio = NULL;
+ 	bool ret = true;
+ 	bool toptier;
+ 	int nid;
+@@ -131,7 +130,6 @@ static bool prot_numa_skip(struct vm_area_struct *vma, unsigned long addr,
+ 	if (pte_protnone(oldpte))
+ 		goto skip;
+ 
+-	folio = vm_normal_folio(vma, addr, oldpte);
+ 	if (!folio)
+ 		goto skip;
+ 
+@@ -173,7 +171,6 @@ static bool prot_numa_skip(struct vm_area_struct *vma, unsigned long addr,
+ 		folio_xchg_access_time(folio, jiffies_to_msecs(jiffies));
+ 
+ skip:
+-	*foliop = folio;
+ 	return ret;
+ }
+ 
+@@ -231,10 +228,9 @@ static int page_anon_exclusive_sub_batch(int start_idx, int max_len,
+  * retrieve sub-batches.
+  */
+ static void commit_anon_folio_batch(struct vm_area_struct *vma,
+-		struct folio *folio, unsigned long addr, pte_t *ptep,
++		struct folio *folio, struct page *first_page, unsigned long addr, pte_t *ptep,
+ 		pte_t oldpte, pte_t ptent, int nr_ptes, struct mmu_gather *tlb)
+ {
+-	struct page *first_page = folio_page(folio, 0);
+ 	bool expected_anon_exclusive;
+ 	int sub_batch_idx = 0;
+ 	int len;
+@@ -251,7 +247,7 @@ static void commit_anon_folio_batch(struct vm_area_struct *vma,
+ }
+ 
+ static void set_write_prot_commit_flush_ptes(struct vm_area_struct *vma,
+-		struct folio *folio, unsigned long addr, pte_t *ptep,
++		struct folio *folio, struct page *page, unsigned long addr, pte_t *ptep,
+ 		pte_t oldpte, pte_t ptent, int nr_ptes, struct mmu_gather *tlb)
+ {
+ 	bool set_write;
+@@ -270,7 +266,7 @@ static void set_write_prot_commit_flush_ptes(struct vm_area_struct *vma,
+ 				       /* idx = */ 0, set_write, tlb);
+ 		return;
+ 	}
+-	commit_anon_folio_batch(vma, folio, addr, ptep, oldpte, ptent, nr_ptes, tlb);
++	commit_anon_folio_batch(vma, folio, page, addr, ptep, oldpte, ptent, nr_ptes, tlb);
+ }
+ 
+ static long change_pte_range(struct mmu_gather *tlb,
+@@ -305,15 +301,19 @@ static long change_pte_range(struct mmu_gather *tlb,
+ 			const fpb_t flags = FPB_RESPECT_SOFT_DIRTY | FPB_RESPECT_WRITE;
+ 			int max_nr_ptes = (end - addr) >> PAGE_SHIFT;
+ 			struct folio *folio = NULL;
++			struct page *page;
+ 			pte_t ptent;
+ 
++			page = vm_normal_page(vma, addr, oldpte);
++			if (page)
++				folio = page_folio(page);
+ 			/*
+ 			 * Avoid trapping faults against the zero or KSM
+ 			 * pages. See similar comment in change_huge_pmd.
+ 			 */
+ 			if (prot_numa) {
+ 				int ret = prot_numa_skip(vma, addr, oldpte, pte,
+-							 target_node, &folio);
++							 target_node, folio);
+ 				if (ret) {
+ 
+ 					/* determine batch to skip */
+@@ -323,9 +323,6 @@ static long change_pte_range(struct mmu_gather *tlb,
+ 				}
+ 			}
+ 
+-			if (!folio)
+-				folio = vm_normal_folio(vma, addr, oldpte);
+-
+ 			nr_ptes = mprotect_folio_pte_batch(folio, pte, oldpte, max_nr_ptes, flags);
+ 
+ 			oldpte = modify_prot_start_ptes(vma, addr, pte, nr_ptes);
+@@ -351,7 +348,7 @@ static long change_pte_range(struct mmu_gather *tlb,
+ 			 */
+ 			if ((cp_flags & MM_CP_TRY_CHANGE_WRITABLE) &&
+ 			     !pte_write(ptent))
+-				set_write_prot_commit_flush_ptes(vma, folio,
++				set_write_prot_commit_flush_ptes(vma, folio, page,
+ 				addr, pte, oldpte, ptent, nr_ptes, tlb);
+ 			else
+ 				prot_commit_flush_ptes(vma, addr, pte, oldpte, ptent,
 -- 
-Wei Yang
-Help you, Help me
+2.30.2
+
 
