@@ -2,134 +2,88 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 163AAC87FCB
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 22:28:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D8383C87FD3
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 22:31:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9AB056B0093; Wed,  6 Aug 2025 18:28:40 -0400 (EDT)
+	id 592FC6B0092; Wed,  6 Aug 2025 18:31:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95C136B0095; Wed,  6 Aug 2025 18:28:40 -0400 (EDT)
+	id 543DF6B0093; Wed,  6 Aug 2025 18:31:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84AC76B0096; Wed,  6 Aug 2025 18:28:40 -0400 (EDT)
+	id 459836B0095; Wed,  6 Aug 2025 18:31:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 760966B0093
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 18:28:40 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2CB011DCEE3
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 22:28:40 +0000 (UTC)
-X-FDA: 83747773200.09.955DB40
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 59DC2180006
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 22:28:38 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=fhkaVf1P;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754519318; a=rsa-sha256;
-	cv=none;
-	b=t0w2Otkr29Na9DexApKLq4BESoJ+847d4N4NFSs4Vs8Ku0fgnJd2A7bB3eH4VwHlCsLyzV
-	VxdQ0qB2vUvqxHzSpGoZxYo5I52iG6Te6zins4EzpY+DeXJqyoFk3/GoGFhdImpY0YDuGT
-	3HV1AksRwD28PuyGhlB+Y+UMbek+Sz4=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=fhkaVf1P;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 364766B0092
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 18:31:50 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D412211546E
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 22:31:49 +0000 (UTC)
+X-FDA: 83747781138.24.A7D677F
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 20740180009
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 22:31:47 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=0vWdZQZb;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754519318;
+	s=arc-20220608; t=1754519508;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xhQ142AcHuDpEckqO7rgr+eVAp4QNMkO6ZcybFE1pag=;
-	b=ctTE0QXufM39HuaI6ZvG+q9qFCV2NVogtj0hOW20r9UAiN+XEfmBNrt/gwhz+0lsucdiLR
-	5sMhsyNgmGO0r1iPuQpyONWKYHhM+WN++Kb5IXmCvdkX2n5t2dso6V84+W8C18hV/9n+9z
-	e1go7B1E/hVROuwPcUuVSm65++4kfZk=
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4b0619a353dso3425561cf.3
-        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 15:28:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1754519317; x=1755124117; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xhQ142AcHuDpEckqO7rgr+eVAp4QNMkO6ZcybFE1pag=;
-        b=fhkaVf1P8e3kfcfTNFA709/4SEB66f8JjeYmxN1vU/JwYI/SuLio9Xg09FTPaeLnCJ
-         7/9f9n6LZgGQLLRElskXpAp8SIZLjcFNj/+SGmTHmadTrsM+sPpwKbHQ1SlXILYmYBLo
-         xGZju/3lhRcCqpqfruutYOMMv3HXBqsxNc6fHTzi6dvfplsk+AOnE4cJs//EODZ36mox
-         Buqdoo6Q4/iG4X2ypPPZz2Bd8UEiE28O0CTX1QxBCD5j1FwOSxG2QwOD+zKsUHtaft7d
-         /VJ3/BhmnaDYYZehCxLtWdcxLMb1HK1IIZikyAVhMEZXJ4sQSFGmv34syTPyZtmkq3bo
-         nw9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754519317; x=1755124117;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xhQ142AcHuDpEckqO7rgr+eVAp4QNMkO6ZcybFE1pag=;
-        b=DdX31JeMoQSeihksFdJUhCzl4VVNKxi3+KUpVKtbn2uWoqNd2ZjqF0RJPz7yAWSo/a
-         xu7myKOQYAnAAwX6sgoyrRtLr9vMaciofMkSvaGhgXQEBMPtY8cznDnG7Z0bG4fbR1y3
-         EdkHnnYo7wZB9SVt4Ebi1aVnnoRl3oXOcR3TaUqOQp1ELnVygV2PHWepp+GuDkp5uFhk
-         juMIUQbITZqbzqmt4kpGk/QFA/nVOEEEFfg0IhTFY17DUtFfExkBuTZIawjAH0yb/61H
-         lD5HjyJmuYFeTLb4G6KmdOcNqdTGhc9ictGrtP35/O5qqfq0q2vieMy5kzhZKirk5BEj
-         jT6w==
-X-Forwarded-Encrypted: i=1; AJvYcCVMfWxeLn2d+i+KAUPgBXo6WInDLF9lVkpPa6MVcjLDbwYbXO4FLZm7/PQnfMXShGZpLvK3gf7BIg==@kvack.org
-X-Gm-Message-State: AOJu0YyawyyqWpF0EioZ8dv7WFfAyaAgzTara8rgynhGeWHuMrFdbs/S
-	Dm9t2+V9n0Nahd4wXaFp3r0jyC3GvXdbVed787PJ/6YfMu5YO/35Z+56vXRVrWA8rlG9aAyvrI4
-	zVUxepzdhivj0zQmNveIjNw0kKW4KHts+5Iqh66Pj0g==
-X-Gm-Gg: ASbGnctgvnppmXdUp+9h+kQ1fNc3JeBjvPyMg50tjRJPu8OACHzCVhqxx8XkmwgdmpA
-	+1+hTWUSXyMJZo5L8z4Xt3Kiig7IyZgQOJjs2A28T3n2HRFlQJnT58oDH26iNkoHLJkMUtkNcnY
-	CRUaUpsK7HB3sXC08WvDI5hM3rcrZVgo9VNQ1SdnTCd1APaQYXa0n1PxkwgAOz0HHuFaayGdKZo
-	TV5
-X-Google-Smtp-Source: AGHT+IGj0vOgYMp9T/0JmW5XllWs9eR8q77wvB4/2/eB5UfznGaAzPWexivE55P3uc74jC/GyDuncjth4cnA3wVQmDo=
-X-Received: by 2002:ac8:5889:0:b0:4b0:695d:9ad0 with SMTP id
- d75a77b69052e-4b0924e0f3emr47887021cf.3.1754519317270; Wed, 06 Aug 2025
- 15:28:37 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250723144649.1696299-1-pasha.tatashin@soleen.com>
- <20250723144649.1696299-11-pasha.tatashin@soleen.com> <20250729172812.GP36037@nvidia.com>
- <CA+CK2bCrfVef_sFWCQpdwe9N_go8F_pU4O-w+XBJZ6yEuXRj9g@mail.gmail.com> <20250805123103.GH184255@nvidia.com>
-In-Reply-To: <20250805123103.GH184255@nvidia.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Wed, 6 Aug 2025 22:28:00 +0000
-X-Gm-Features: Ac12FXzz6aElzLLHqZjWxK5H3LOARobpBSmk1rsUp_q_uPWZt7Z5vxl_KzsDWdA
-Message-ID: <CA+CK2bCeaH_Lesyr1G-Ur0eDb9HgKqOYgTu=vk=wrpZExMrWuA@mail.gmail.com>
-Subject: Re: [PATCH v2 10/32] liveupdate: luo_core: Live Update Orchestrator
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
-	changyuanl@google.com, rppt@kernel.org, dmatlack@google.com, 
-	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org, 
-	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, ojeda@kernel.org, 
-	aliceryhl@google.com, masahiroy@kernel.org, akpm@linux-foundation.org, 
-	tj@kernel.org, yoann.congal@smile.fr, mmaurer@google.com, 
-	roman.gushchin@linux.dev, chenridong@huawei.com, axboe@kernel.dk, 
-	mark.rutland@arm.com, jannh@google.com, vincent.guittot@linaro.org, 
-	hannes@cmpxchg.org, dan.j.williams@intel.com, david@redhat.com, 
-	joel.granados@kernel.org, rostedt@goodmis.org, anna.schumaker@oracle.com, 
-	song@kernel.org, zhangguopeng@kylinos.cn, linux@weissschuh.net, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
-	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
-	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
-	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	saeedm@nvidia.com, ajayachandra@nvidia.com, parav@nvidia.com, 
-	leonro@nvidia.com, witu@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: w4setmd8wqbt1tu71ssk1ooj351cgwic
+	bh=H6ZYfeHGiuZymsYsr00fo099XI4ohwrRn4FFd54cL1s=;
+	b=mYNyYSi0MHnaYDWi60MFxu9flMpTrc4SfJAiaBPRpHeKjH3rgNH7iRNETmBMl7iwZ7rdln
+	lxTc0GO6/1sGI2lvmCfnz7Nxuy4gF4Wybdrm/2eEd68g3LFJnZAQPCiSKubzwe+8eEqUX4
+	WgBrHArKlNX+f9ILuZ51z2Tirgv9SD0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754519508; a=rsa-sha256;
+	cv=none;
+	b=AKUAk0B4toIyN8TJyJFkTvOPECe+XrfysdC0aMFxoSuvy4zbgsi5UVIUgzwlGL1EQqhET/
+	rOQgxqRcVbYo2NdleTAcXGC/QUs+CeEoXQetm7pCyyPRzx7NgAGl+IosUf1liBX9K5+ILI
+	i3s/ielAnmqWXFPUBoOz+rjnGNIzWhk=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=0vWdZQZb;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 31B6C5C5432;
+	Wed,  6 Aug 2025 22:31:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 960D5C4CEE7;
+	Wed,  6 Aug 2025 22:31:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1754519506;
+	bh=T6+uShLeoY6F/m9tC6dyztroVw6fvcKgFR56j+bfdJM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=0vWdZQZbYxNhpejmITKVe/DBQt4Jetkt6LpIKRdMA7af/7GIYi3igR6VNlHLc4RLx
+	 QNSAZ9Cb4VXzQonlKiMkFGr63gY2ITaCvdCnn71Qd2g6HeF3VgGTsVJHKfuv1RDuJE
+	 YgnTESkgX8U/sOoKL/NmcBu7KCA0dWsIsMdz4LFw=
+Date: Wed, 6 Aug 2025 15:31:46 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Chris Li <chrisl@kernel.org>
+Cc: Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song
+ <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
+ <bhe@redhat.com>, Barry Song <baohua@kernel.org>, "Huang, Ying"
+ <ying.huang@linux.alibaba.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/swapfile.c: introduce function
+ alloc_swap_scan_list()
+Message-Id: <20250806153146.ee1ee22dc8f6381ff5a6d882@linux-foundation.org>
+In-Reply-To: <20250806-swap-scan-list-v1-1-a5fe2d9340a2@kernel.org>
+References: <20250806-swap-scan-list-v1-1-a5fe2d9340a2@kernel.org>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 20740180009
+X-Stat-Signature: o51kwd54qjezr54zid5ugpf8ds8ic1xd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 59DC2180006
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1754519318-405676
-X-HE-Meta: U2FsdGVkX1/6N7Rj05vJOrPYcgtS6KYYOmQMznUhpuEyt66mGoW6aIGd1oXnIH3SMsuFBwG3zGbE6GEPNlF/HylAn3r+RJh5g9HGKnfK7M5rVjoPHrUAIFMuE98dEx3V2TRPZQn+5eGU4V6LguccQcsEHsO7X0yGROcASLoffOTmxdllkqMy3EkkFPigYT45SPgdNkkRH+vvninyHYoZAb12wo+GcXp5uFSgLPa2m29ue7ZGmr2vjyMdHUQN8nL5GH0gbdQYCWCtFX+7SA0qT7K04sIas8Hd3h2oFBNKyrgmkx/520cyuKYaUkEIGkym2SnQVhlrDctjHg69lhOE2n5Q8uf9JDPGhOdsujh1fyGkmdSP9NhTCRke7rY3aU0grJJmobYCfjPdGV14QwMvWn9YAA1pWnJd8bz7GF4HDAzX6snVheQb0Go91xey5sxlRiatB5FkjUtZGaRWVVljxanRfcOUfe2iZlA0RRWK4jBeiHrj+2/YtIvzY5Eh7sbVatxsYrXxtBVvB0fUDyK9s92HzXFx+BNyw1gzdqnR6dobLY/K3G0gVj7JmiA+GU/kFF8WVhbo1w3puYLqRtoW4rWTGQhqbt3rvi2CG54y6TRLYyjhMBKH+1zM8WyhrzEwFFjzKf9vytkIA8H7QkiO2F9uDVZth9MKDK6bJmdX1wkTsTREvRpm5hjKw2Wa1yI9IDDXA6i3S2uuMapcLIki09jO7Z5RDSRcCPURKqJNrq3yn2Qw99DhT/+AnkQVO0O606P8txYRFOR2nSC1dh5dn5UJHe2IsbE9Zl2ggQZx+CCRqWi9gqS+0F1quyWRommUhc/T2LlmQ0rzjJCnVLFheV8jJEivh82cTeBiquO3pVc0wT5RcgI05o36IefiSKBu9IeyXBWqgLPFa5zo1ie6TQwAO+QNbye3KVxXwtKAyheoqHs/x6C2Flj1vC7lJ9GirC8rRZTPPuY1Z8WypXi
- nNyv+YAj
- Aq7yoGsFFUetKifxD/TnQaSA8dyeij06yOwyqFB5ON9R/KVq0lQj2KS/bJY/8/RzEBFBWqsIgDIeZiXMuyhku102CvRUtmfyn/E+TyBDO8Hw73jGctXz+WuF/kpzss1ShVq6MsjgvVn4fvcHvwQAP5HyRbsTpp9K/o9FE/72F4JFp/JoKYuyctX3j1qeXCzfYLRmoufDtV7Vcu8GRzvxxBSyzGWYAgLRcDPdy7xLzml8FmOiSIWMuK+MklMWZxl6Ox1CnhwZW3/GsGl6mvn67dvRLlIRmMgAR7T06k9DeRkWs9FRPwIsG4TGMD6rDTJLlYXlSynJbjETWAfU=
+X-HE-Tag: 1754519507-191936
+X-HE-Meta: U2FsdGVkX18kXKDldH7tmRlH7uFuiF3secomSBNLc3AU5Ldiez0xF3Mo6oZUwRdkvdhHnlYlcmepVIdadMDrJKp7Y1h1JUHJ/WV28uA3O1oWzZpjruX4oRXPr1RqXk5nmIDshynn5mfoCuvdWpkaeY6jbcHwJ4oVWXA4Wpe1WsLqtxOcHMZRa2ew9LVoB10hlhViV59SdC7ixHyuOSdHCFhihu15TwpTodzeq3w3lIs82fgF12YvaqekgplJtfueS+B0bl3MxhLn+OrYBKIU8CljKqV2YbDsCrMAXrllt7Ce++uduPq2ec2R1xqR7rlI9Locr9xbObmKQTS8Mgg294dhj5OD4VDbL/OjBeD5sEOw1j3jbdZMg9pq1LkpQPROaCgrqLtdcgBiJxMURePm/un5eCtC8TCLKoYxG6Qcdqc325ZyOiNs5EccGsfb6uRRhs/AFvn2K4L5HIfvCZIY94IcVAoiqLggvhVBAQKxNtpu1zXwf/MHLXBF2BwcwztYqsCZIqHM6Rj4vnK/L9w5z/nlT9qoBGK9MgKptcPyl/66GGuwwyILiAwdzddlk1TP1WpApI7yRG5tn3J8kuAerakI1o+FzKDOcz8xpAuP+fHd/skikZrThBrRtHQ1kSwCNBudyq0RxbMnojtQg/cVbTAxBMqKynpygxMTYK3xpDl96ybbPd/tE9wK3d42I/0mzpSVOMm1yGaRgm9w6A/LhTdXP6W9blFsJ54jlkCfEbhBevH5GpND4wWO1BJwY1VUZx2pbJVXz+WA0bBAPItp+oEHRl9eLfSgRdJ3h7vUZX8FJnk19tLyv3DpiooiddY1s6KilpyrnV3NnXQOOmPMS82v+ZDapi+Gx0C4sVofMQhCw6xAgNEqwOGanYpnps6oaNjeB5MJWnSwblAVorsNMI+wvrCSREhqGuvWwFxAodDpIbDlMdMBMKhKFVWpgXR62epi8Ea6dzKohaR9mV5
+ 5UJR8vVN
+ iYAf+Z7JQY571AApKw4VnSY9wtBMDqEf4DVXAO3hiCTEMwbGhnJLxHvQRj6A8+Ml/w5cXlMyvcdwAlGljY+x4ZzVFWonVP59u6V+adirt75Pnd/z5YOaUuu2FIG6eWPHTldYXTG65jV/MpC/Es58VvWusO8sIPIsvVe/VZr2ZLFm2XqGOCaNJ/xqek+2wXcJPME7WlEyCAxg/sh94nyMw13qmuoTatZn9LynMMEJPTVLAAwbvpFJXXzm3rODwbvJX37CQ2ho/mdR/KrrkIO/10CPCf2CI/tQfxMGhNcrkvWi4SP+Qx9YFw8Np7NynU73MmfKa
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,68 +92,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 5, 2025 at 12:31=E2=80=AFPM Jason Gunthorpe <jgg@nvidia.com> wr=
-ote:
->
-> On Sun, Aug 03, 2025 at 09:11:20PM -0400, Pasha Tatashin wrote:
->
-> > Having a global state is necessary for performance optimizations. This
-> > is similar to why we export the state to userspace via sysfs: it
-> > allows other subsystems to behave differently during a
-> > performance-optimized live update versus a normal boot.
->
-> > For example, in our code base we have a driver that doesn't
-> > participate in the live update itself (it has no state to preserve).
-> > However, during boot, it checks this global state. If it's a live
-> > update boot, the driver skips certain steps, like loading firmware, to
-> > accelerate the overall boot time.
->
-> TBH, I'm against this. Give the driver a 0 byte state if it wants to
-> behave differently during live update. We should not be making
-> implicit things like this.
->
-> Plus the usual complaining about building core kernel infrastructure
-> around weird out of tree drivers.
->
-> If userspace wants a device to participate in live update, even just
-> "optimizations", then it has to opt in.
->
-> Frankly, this driver has no idea what the prior kernel did, and by
-> "optimizing" I think you are actually assuming that the prior kernel
-> had it bound to a normal kernel driver that left it in some
-> predictable configuration.
+On Wed, 06 Aug 2025 10:34:45 -0700 Chris Li <chrisl@kernel.org> wrote:
 
-Fair enough, that subsystem / driver should simply participate in the
-live update process normally.
-
-> Vs say bound to VFIO and completely messed up.
+> This the alloc_swap_scan_list() will scan the whole list or the first
+> cluster.
+> 
+> This reduces the repeat patterns of isolating a cluster then scanning
+> that cluster. As a result, cluster_alloc_swap_entry() is shorter and shallower.
+> 
+> No functional change.
+> ...
 >
-> So this should be represented by a LUO serialization that says "the
-> prior kernel left this device in well defined state X" even if it
-> takes 0 bytes to describe that state.
->
-> So no globals, there should be a way for a driver to tell if it is
-> participating in LUO, but not some global 'is luo' boot fla.g
->
-> > > +       ret =3D liveupdate_register_subsystem(&luo_file_subsys);
-> > > +       if (ret) {
-> > > +               pr_warn("Failed to register luo_file subsystem [%d]\n=
-", ret);
-> > > +               return ret;
-> > > +       }
-> > > +
-> > > +       if (liveupdate_state_updated()) {
-> > >
-> > > Thats going to be a standard pattern - I would expect that
-> > > liveupdate_register_subsystem() would do the check for updated and
-> > > then arrange to call back something like
-> > > liveupdate_subsystem.ops.post_update()
+> ---
+>  mm/swapfile.c | 86 ++++++++++++++++++++++++++++++++---------------------------
+>  1 file changed, 47 insertions(+), 39 deletions(-)
 
-I added another callback liveupdate_subsystem.ops.post_update(), which
-gets called on live update, just when a subsystem registers with LUO,
-because that is when we know that it is ready. I will send the new
-patch version soon.
+A nice little patch.
 
-Thank you,
-Pasha
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 4a0cf4fb348d..fcb1e57d8108 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -820,6 +820,29 @@ static unsigned int alloc_swap_scan_cluster(struct swap_info_struct *si,
+>  	return found;
+>  }
+>  
+> +static unsigned int alloc_swap_scan_list(struct swap_info_struct *si,
+> +					 struct list_head *list,
+> +					 unsigned int order,
+> +					 unsigned char usage,
+> +					 bool scan_all)
+> +{
+> +	int found = SWAP_ENTRY_INVALID;
+
+but this function returns an unsigned int
+
+> +
+> +	do {
+> +		struct swap_cluster_info *ci = isolate_lock_cluster(si, list);
+> +		unsigned long offset;
+> +
+> +		if (!ci)
+> +			break;
+> +		offset = cluster_offset(si, ci);
+> +		found = alloc_swap_scan_cluster(si, ci, offset, order, usage);
+
+so does that one
+
+> +		if (found)
+> +			return found;
+
+`break' here.  To avoid multiple return points and for consistency.
+
+> +	} while (scan_all);
+> +
+> +	return found;
+> +}
+> +
+>  static void swap_reclaim_full_clusters(struct swap_info_struct *si, bool force)
+>  {
+>  	long to_scan = 1;
+
 
