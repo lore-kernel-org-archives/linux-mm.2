@@ -2,235 +2,130 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8614BC87FD3
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 18:05:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 81B32C87FCB
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 18:09:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D003F6B0092; Wed,  6 Aug 2025 14:05:12 -0400 (EDT)
+	id 0AE046B009E; Wed,  6 Aug 2025 14:09:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB0576B0093; Wed,  6 Aug 2025 14:05:12 -0400 (EDT)
+	id 085DC6B009F; Wed,  6 Aug 2025 14:09:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2A016B0095; Wed,  6 Aug 2025 14:05:12 -0400 (EDT)
+	id EB6C96B00A0; Wed,  6 Aug 2025 14:09:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D3386B0092
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 14:05:12 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4D2711405BB
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 18:05:12 +0000 (UTC)
-X-FDA: 83747109264.29.8034682
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf08.hostedemail.com (Postfix) with ESMTP id EDCF3160010
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 18:05:08 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=avRSJsrv;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=okSHGX7u;
-	spf=pass (imf08.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754503509;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DC98A6B009E
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 14:09:41 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 705FF1606D5
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 18:09:41 +0000 (UTC)
+X-FDA: 83747120562.01.FBEF8D7
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 2E754C000D
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 18:09:39 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NhQjEvVt;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf28.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754503779;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zmzO5Vp65jneRa1zz6ww3lY3S8xzvUaLXFm3V/NEOT8=;
-	b=TFBIN1rEVCugdIoqqiFcRm9t+eaBZYoKbSVqJ1PQpdb9BupFGZT01sDWxMlYIDdja/JtXO
-	0HB2Fg37UgdEoFhuZeBtiNMOoHtrSzTsjB3NzRMY294V3J75RieM8jK9n4aULXn9bf8ica
-	C2Vq5NT48th0TwXUzozb9fFya0DJP+U=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754503509; a=rsa-sha256;
-	cv=pass;
-	b=mBcrnt0GKikr81SEwTKjCq0h9dbTJg2VsBOJmAhqBvgRsYH9sZOS9UMEcif95TRZCDGB3j
-	6c8NuQ4x4PRL8X5KPRA4PsOD2ogafNr9jiP4kPNis2I5FJZJznBDxl1R6bVAnhSGLuIZ0L
-	obvIaLS1xTHY+E1coMtk597/2wGvRBc=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=avRSJsrv;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=okSHGX7u;
-	spf=pass (imf08.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 576GS4ok020939;
-	Wed, 6 Aug 2025 18:04:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=zmzO5Vp65jneRa1zz6
-	ww3lY3S8xzvUaLXFm3V/NEOT8=; b=avRSJsrv+dkyHH6UdcbVz9UEHuaZXedubB
-	MoP3YykKGEdBXxt5+rxyeR98HVKUP4W7fhBoabs5YdbRAviXaX3d0FB13kAt6e0x
-	m+ysf9R1IxVdYiIWpcsU5HjEMvfOW1/jM25UIhpVzZDuwH0iwmiU/4pCwtGdkq3A
-	FpWaojp07Bxvn1QcvI3Ii7U52khFlTCi0+iUI4GZAv3cclmlfCFJ5Egu+FU753mY
-	z+Rdee60lvQJfaCoxEljTyD7Ca/dl8xvu2pxyRQxHdA3qbcfFNIXNuJEAraWtjYx
-	DUepRRVqPQQhwWyM65xd/Ax9Vofo8ItISKevL6rJ52roUv4tLBCw==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48bpvf2ab7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 06 Aug 2025 18:04:44 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 576GjRn6028233;
-	Wed, 6 Aug 2025 18:04:43 GMT
-Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10on2054.outbound.protection.outlook.com [40.107.93.54])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48bpwmksue-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 06 Aug 2025 18:04:43 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Y/GuePQJK2syeCjCK4iz8bTUYK7iB+6cs4oOZEyFG1tSBQdlTCiVSkbzc9L3uDuKMTGe8RVqcIOvJxYAdkm9gBpL5cFzuvOH/lKj7PJ9RewJmzNKIRyZp+BMRTsuP+FUIqE6OMTCZe1C5EAfUYjCxEKqBh+jQzvULbKxt/qaTybmmR2IMdk1dTgiEKyqi1fFTqHV9Gvk/ORs+p1jx2PghiNn2r14JSJeD0+xjYpwBehWF33jN2aI+bxMaZedZZxGui7C15EFgMsShld8jRluCpXqtegCtA/Ub235V1pi3twpPdl3ggUtxmzDNAe9p6bvVTyNBk+UTyQxPwGNh0TL4A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zmzO5Vp65jneRa1zz6ww3lY3S8xzvUaLXFm3V/NEOT8=;
- b=XScWxR0yhwDboqd3bVIwuVtjNgzZY9pgEojEieS9WUIEuKrAUKRoILwcxLdZEYPKrd5AM5NvVt0/jC6Bd2JxVv1LLaXaC3g7ALnQ6xN4F34/VseSlfYIrXVxbDUQiZVupRnG+CipDFn89umLVCm3LGoTXvZpxLSdREYUyScxUOLPwmfFO5dIugzZFZleakuyvGRE7H+DpVLye573Uuw2L2/3+7ll91h9IyxT/CzJvmGj0r5j2wKrcLNyP5mro48mzkaBlpZLEHuQQ/AXDvuIQorfkU9BOIIz8TVCxUVndvZWaPXju5C3V72pR7KKKUv3ARNVMbx/5m38gdYBYUjrRA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zmzO5Vp65jneRa1zz6ww3lY3S8xzvUaLXFm3V/NEOT8=;
- b=okSHGX7ujES9YaC5ayg5f9dHQXdU4gTtJYqAiBK3jluvvJR9B9zWLFMsBXaAaky8m/7omjYeaiVj4p6GP2RIvKy7BrIs3uU5DQ6cUotZ8O0xYF0xOUyraCEPiD/HYnvCaoe88wm7vBj2L5GjsR5vPz1BtVpsS1oF1nvaC2CP8/Y=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by IA4PR10MB8729.namprd10.prod.outlook.com (2603:10b6:208:56b::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.20; Wed, 6 Aug
- 2025 18:04:38 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.9009.013; Wed, 6 Aug 2025
- 18:04:37 +0000
-Date: Wed, 6 Aug 2025 19:04:34 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+	bh=lp/xzAZFz2QzCUmaidxOhS/oOucGpdCu8iObUTLz2sI=;
+	b=rCkbc3s3PLjrf66VtAsoka/EluoXLwDXvU7q9ykdLXWD1vaBafPZf0v3qq3R0O23MhKgj5
+	YSaIO0U4DRGzTJYYMGAo5pn+IkT8qJdtp1F9CEnTHxLNb2Sz1C9NlK4dVt8iQbM6iCjY6H
+	tBK4kIk77IT2uAHIk8FaT8daYI8B+uc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754503779; a=rsa-sha256;
+	cv=none;
+	b=ingq1o8+jRxzxe6ZD/E3OVw4uigRVvxyZn3c4U1jlxC9yBZw4LGO5o6koCDa7EsYAgsJQX
+	mwwobsFJGlmX/s6TFWGI4Ryhhx64ml872KmSbqYXxKfDGBJV3VMwKBP+/39tVE3DVurpxX
+	eslMwJowLwd6caOOHkKaW2KfnkadYW0=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NhQjEvVt;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf28.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1754503778;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lp/xzAZFz2QzCUmaidxOhS/oOucGpdCu8iObUTLz2sI=;
+	b=NhQjEvVtUDelv1HZkaP5yzM2xlBgW8hgsI+9tJW8jzEuMyy5gIEA8W4B9gw2jNKq6CsOjz
+	6ejNkYPGkUudJC5VDDZTeo3DcqvxrlZ0oHvBpAf2q7//W22bXCAkoFmKyWMtPOWS3oid0R
+	wX5nin7lh5/quWWjLpBsDP9v1h3gDPY=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-80-6gF2PdQjMlW3y3MnM8azIQ-1; Wed, 06 Aug 2025 14:09:37 -0400
+X-MC-Unique: 6gF2PdQjMlW3y3MnM8azIQ-1
+X-Mimecast-MFC-AGG-ID: 6gF2PdQjMlW3y3MnM8azIQ_1754503776
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-7e348600cadso33607185a.3
+        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 11:09:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754503776; x=1755108576;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lp/xzAZFz2QzCUmaidxOhS/oOucGpdCu8iObUTLz2sI=;
+        b=sgFBxlCrFmYz8nafWG0ukyy5VCv9bRaJPO1sbao1UUmQ64klzucY+3wHB06V1k3t44
+         WosA07yTGGQdwnqwdVuILrWMgAU1sfsY8FiY0NBp6zCaQUBOC4wf5pRp/g3EJnVqyY5H
+         GaWIlf7EZ0gq2qFKOVQhVoyo0ZySd1s+0q3ozATEb7uU8D7r1SPHIY2EyQwhdXseJZSH
+         00oilesg5ngdNnoXMW2UKgcDNLE6KZEuZA0JeHjCd7J/+HjT88JU9R5FXFO+iw0jH+rw
+         115OaUuyNwbYS4nGlhL6QdBOsDST2lFUkHddNQ2mbY53oyQ/NVgB2Xa/0vzcIoHEpBLH
+         MRDw==
+X-Forwarded-Encrypted: i=1; AJvYcCW0RkEC1LuoZ2ELnCotKufXV79H9KTpt8AFTSjBQlLvoto45z5ihelryf4P//FKr1S48TbdVcFdYQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz4vmO8Cs+ukg7dVkTUB96yZO/5VGxqtzBWTtlFbINqcyMgRvOW
+	gZ0mCq1l2eJtg920mhoNpNr/LuwyUNGomoRV2egrr3XVnOcTQvldVTGWLrMo1HeQvBCpjQEDA13
+	l77iwWN7CmdqgpuoCqAEFyj+xsokeXZjDjy31BBokS7pYshOkuV4m
+X-Gm-Gg: ASbGncv/3B6bBcS3WZsHjxOg+GSS0FqmgeShuXpiG5S+PItqmYeYQDlIIR0GAMaMaqB
+	V621IxUx6MnGj4mrBVVkslShU6gijqqQAa3tgvzBIp97HEbBx3We8TejA7Eq7PjIW6GS+2zoInE
+	ZnfWG7ieXlIbcSygM7KfeIVqwJCuJp09gFB4PP70AO/h1JahMjlFwrt3McshLqILO4vErOmjUxB
+	vflCPaXLYvoUWHaDi8EBySWSuNhVWri48Xx0mUQoEEUm4VdCvy/bgQ6HATM7BPZdaXc3Ni8N+r+
+	0PKmqY9Fme3CKB9CqtQuXR620H6bsQige+1ohZxXgo7AYPmW2LQXIdcc8Yvpy6Tx4dBame2qqa/
+	WLwFIHfP6Su2YcJkQ77JxbQ==
+X-Received: by 2002:a37:f506:0:b0:7e6:4fc9:6457 with SMTP id af79cd13be357-7e820b11efdmr25045885a.54.1754503776284;
+        Wed, 06 Aug 2025 11:09:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEZUienyzEiTH73cCxQzcvtLeEUdg0Wbv5ywibHSA1otSIptcZDf2H9J5vbyp5qib/Hnxqflw==
+X-Received: by 2002:a37:f506:0:b0:7e6:4fc9:6457 with SMTP id af79cd13be357-7e820b11efdmr25042985a.54.1754503775800;
+        Wed, 06 Aug 2025 11:09:35 -0700 (PDT)
+Received: from x1.local (bras-base-aurron9134w-grc-11-174-89-135-171.dsl.bell.ca. [174.89.135.171])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e81542b0d3sm145980085a.21.2025.08.06.11.09.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Aug 2025 11:09:35 -0700 (PDT)
+Date: Wed, 6 Aug 2025 14:09:32 -0400
+From: Peter Xu <peterx@redhat.com>
 To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, Liam.Howlett@oracle.com, david@redhat.com,
-        vbabka@suse.cz, peterx@redhat.com, jannh@google.com,
-        hannes@cmpxchg.org, mhocko@kernel.org, paulmck@kernel.org,
-        shuah@kernel.org, adobriyan@gmail.com, brauner@kernel.org,
-        josef@toxicpanda.com, yebin10@huawei.com, linux@weissschuh.net,
-        willy@infradead.org, osalvador@suse.de, andrii@kernel.org,
-        ryan.roberts@arm.com, christophe.leroy@csgroup.eu,
-        tjmercier@google.com, kaleshsingh@google.com, aha310510@gmail.com,
-        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] fs/proc/task_mmu: factor out proc_maps_private
- fields used by PROCMAP_QUERY
-Message-ID: <01bedec6-53f8-4c1c-9c47-c943ca0f7b4b@lucifer.local>
-References: <20250806155905.824388-1-surenb@google.com>
- <20250806155905.824388-3-surenb@google.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250806155905.824388-3-surenb@google.com>
-X-ClientProxiedBy: GV3P280CA0066.SWEP280.PROD.OUTLOOK.COM (2603:10a6:150:a::9)
- To DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+Cc: akpm@linux-foundation.org, david@redhat.com, aarcange@redhat.com,
+	lokeshgidra@google.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/1] userfaultfd: fix a crash in UFFDIO_MOVE with some
+ non-present PMDs
+Message-ID: <aJOaXPhFry_LTlfI@x1.local>
+References: <20250806154015.769024-1-surenb@google.com>
+ <aJOJI-YZ0TTxEzV9@x1.local>
+ <CAJuCfpGGGJfnvzzdhOEwsXRWPm1nJoPcm2FcrYnkcJtc9W96gA@mail.gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|IA4PR10MB8729:EE_
-X-MS-Office365-Filtering-Correlation-Id: 30dc2060-2a13-4700-7332-08ddd513b527
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?RmLcL6UYIAiHxCdfs1jQFVQJ0tSeM9PwxqJGv2FgsDEAXKBg1TfAM3t13oUA?=
- =?us-ascii?Q?wsGzQj0E+pFyi4pQS2LEW83MjRieRBpHJmsR3AVy5Jxd/okFStqRFM/Oyzl+?=
- =?us-ascii?Q?upy1Nv2pYYYF0G+C3kBSpJnuwXngP4/EEJhoLJkVbcnTdZrlJagnGAcY/3CJ?=
- =?us-ascii?Q?fJjQNReJzbpSHs+DrpdJxHueVVdNea4gJAWagW9gGVf8GLyp07EMupW/KeXh?=
- =?us-ascii?Q?pwUEZad2oh1ESTcDBFdVXJBeTKLsdQ32EnC7lqPz7oYGu5QmOo+8dVnzEOWd?=
- =?us-ascii?Q?frZPevyzdGDWOcDXvQCFnmup45XKi4ZJEUmccZPkyTWEfRN3S11oEy+Gj+U1?=
- =?us-ascii?Q?rXGHbiPXPkg/TqMuW3Jl3V/KhUhrZSUavV9b8URmMo8EFFTQYqXZl7z9KAbW?=
- =?us-ascii?Q?dRBN0aLfuHhomNRBrGU+ypu5ZexfAPAb//fZWTwOl4J+nTL8FIlvquzJ/N41?=
- =?us-ascii?Q?mJdRBess3NMIX6WA/1yrcHX4aMsOQTWk7ryq0xvR5JEontWQwB7nxKboT+ua?=
- =?us-ascii?Q?vHgyijksczJUTHoa6HWfLfd23fSjjAKO8SwkeZGEwJYpzIISgO/5o97l0Lwa?=
- =?us-ascii?Q?e5CHy4HVIjL/BeyfAjVeQsCOI8tvOBR8RsdiZEPbtbHU/UPQYYvTZ3/SPZDu?=
- =?us-ascii?Q?D9iyUaAl58Em765ndfgrIW8EmVL+sDSHMI5l5R8aaYm7M1DqDJujBGYbDfMu?=
- =?us-ascii?Q?oT/ROBHBHbhiL/CKfJ602zjP926dA7PTpdffKAhxZTaXCIIIgrWlilKRs1Lj?=
- =?us-ascii?Q?bm7nkgEw8S9viT4PaNvBbpHimiIO/2X4BTdbnSB6Yuj4jqBH3rsZFeIeI56+?=
- =?us-ascii?Q?udsLrbi9163n7rV5Dqm5snWcnXP7muK5XsHnW2nfNBVulHeAdt9XQ7EsbV0M?=
- =?us-ascii?Q?bHzxHG6IAjjbBK0/ndHMCT/nxkDxT50RVdjMjZAnRPI4V2K/iUbLXf7sOZHT?=
- =?us-ascii?Q?cSh9fALMLJibJCZNXcNtgH6wBS5fATd0rzRCG6bq4NxzFEZm1C1G2IwBmzbZ?=
- =?us-ascii?Q?H8iU6AN+jdYx6LNsz7oSAaDk6zDCeKFuIAQnHT8hj2cDmN7AbTVe4Py26L8w?=
- =?us-ascii?Q?Uq2TkWSUseM51ZYmBqbrnrNG5Pt7+6imFdPPKAmY/Uh0JD6qT0IYgDpiBKfq?=
- =?us-ascii?Q?ECOdISJYvxHNM5G2IGKrjlo7haC/XPvAssJ7XlHYc4zMnVGGmP9U2LJxF8l2?=
- =?us-ascii?Q?BotieErOEQm4F+7NSq+Itt7TNj567JONrNyeo7V4xgMzieyyYp5GA18GR95D?=
- =?us-ascii?Q?ZQetSUhoZ1WTMoqiQ89hN2MIEgb5UcQ9EmCKtM4feBauZFBKzGgq3LrZnxM7?=
- =?us-ascii?Q?6QnGWxwTzpzYiUZiKZCLjgNtWcY6uNjzqxp3x/XQlRH62P+5m0T5secdwgiH?=
- =?us-ascii?Q?1COmW2sn98dt48rYm9u8UCejQJnVggbg4GDxNKuJZEfAA0cKiSq5CSe7/4ch?=
- =?us-ascii?Q?AtKBeQMBM1I=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?wB/2AjG/hhXLLEu4qDU0Mbf/mDG17fmiJEKlxPBRzMMTkVbHtd71R1xVcqgB?=
- =?us-ascii?Q?g+4o5fdNkPoEsLyqn9bUWbzpVKZ7IHwkO7qaia9BMdGekoxvrNGqqGRryAm/?=
- =?us-ascii?Q?yRqOTLmZSm9c0DaFHO6AWPTepkSvt3H6xENTD57h78SC52jVljaS3tVMpAj9?=
- =?us-ascii?Q?qun1Y5RN2t0Dqiuobi9MSmir2EToO/Gbo1lYPFmMIGhYuLVggOugLOKllqvl?=
- =?us-ascii?Q?XQD9KPFxESKM7KqiFkLGwG9su+tcfxWVe87xq9BWGqJXa3jHrn8FQ4Q2jKKr?=
- =?us-ascii?Q?w9aX/JZfxUfpjqkhYYywpVIDh0Zrwmfct6B7AnZ+uglrBVSm4Xm5yVA7W1Nz?=
- =?us-ascii?Q?Tz/DuX0tiBCzqx7SwtRhb++3xk9O5VBJfRZnAZWiBKxiww5LkoSVXi/nkwAN?=
- =?us-ascii?Q?+N759BBnYJBS3UfeI5Nf95jgVUrD0x+RJw0oPrgRW705BcOtqY38UCb9knan?=
- =?us-ascii?Q?Qpa+D0rG5UF4vc0zI/zFHDCFhVN0DVszt+cy3GKbEi4PRq6vI1IqFofaW29G?=
- =?us-ascii?Q?lc+ONO1gjq59pASlQ5EQbDKJJMNPFn7SwYsYJb5/OUlYJ12FLNW00VAqhhuv?=
- =?us-ascii?Q?7D3kE6AlO8s7qgOAP3ma8gxI8P51TNa23uWCqVdeBByR7Wpjg5ap+XwCSYqw?=
- =?us-ascii?Q?gdzm4SqRdSKz+lXWXT/xrKbyYN2PZANXH7jMNxBrDzZwYaubcckfef+gLsBp?=
- =?us-ascii?Q?KKQ1T9gerYIKH1yxqeRdSQYDPpc9vviEa3omqAqjKMJWkNB6ybKpCeKr3Sxn?=
- =?us-ascii?Q?WJovzrMtaSriC5ueS3lqrN1x52t9vDHP1ohIkbjkH67234n8r6DTvO3+C+T/?=
- =?us-ascii?Q?YOF8YXigkrwx9XrJCK48ZHeGm/AjFj0iMplSQ7LOkhhCZNbY/Iralv5+P3dN?=
- =?us-ascii?Q?uQ3akn28vZJOnKSZwN6lDqeVgSZitvKjfow8Wx/d0txS5hgZkGgfLtmt/qf8?=
- =?us-ascii?Q?OXho9pYVrUtgjml1sDJ88BktLAByCIxIvH53opg+bel7I2LPcicPEXkmJR+E?=
- =?us-ascii?Q?6t/zS2ZBBX7RCNW78PNuICJfE3HZXcir4kv8WZGGL1+Upx1a8J/55iqJOzMf?=
- =?us-ascii?Q?E5dv2Z88vkc4Qd+JyhkL/xaGjVCF9mh1hiFAxCLnOGf6/6ckRPJgkg13UXV4?=
- =?us-ascii?Q?JgOpgaecR0D3jYaSR1xAUq56s2zy6QrCkczwBNke1IMbBFrwaDCQO/5MTIOX?=
- =?us-ascii?Q?CnADiZ5cN0YKt1gQS2eJqZzrNNYK4AqwuRKbc4959QRt5lPzULt/NscIz1rM?=
- =?us-ascii?Q?fOxfhx/3PQAKE02KPk8p5R6qhQoUr1bM4yeEsBCSs5XhXWo2nqsqJ6ZVsOrn?=
- =?us-ascii?Q?DMMT53QcMN3YO4M3XyRIs5YdAbIkbdVf1rDFQk1A1ciRCYd/dEG8+yFUeG0Z?=
- =?us-ascii?Q?fuiGq8D5Im2FxKsRSgUDrhOBGGkTfE3dtE1jp4HrGnKN8Mzhi3Drt0OwP5kC?=
- =?us-ascii?Q?f037wa/vEuuY6go6Vdcg+4xwcLBIcdKjzBAQ5ABTDtma/ub5uLaXIwc8nxkO?=
- =?us-ascii?Q?4UiCLEl84c/5sFvaGIb4vEK+KNC0GcaSOn/ZMGyqpVqMjFA+IwhaCkoIQezT?=
- =?us-ascii?Q?qQjhrl2LdOPVOvMprXxxpT6w32lXcyW4JKjvU83HWq9zd4pq/APoCO0LgMK+?=
- =?us-ascii?Q?kA=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	PpwdQVaqmYVKJJ9vaXUc0+VV6u1iUh8CxHjM4IB4+AOoyoggP7MBrzryNxSNrhZxv6IWlrlP70Tsrc7fxB4ZkzTfWdGoaXxD8Nq0gJriflMQpC4q4JTUkdE404YhI7zDYbeT8YYfAOjYFDmvyd8bFE+TziSky0dkJlFl+2TaHngiXRv3jgYu4hFvMTZ5mCO6uxcAzCYVg9BKpebcIWZ8nwPSLWyYKuMC9uLkNkMSaSj5aXfudxyrIN9wYVCaUQYTudqd17K2DfvkolS7RZCY+Jt7R4mCuPI0gP2/pT5EFPDDlOLLY1MfbToDHlse5U8nHAafrZiIaBaxzj9KnMP6e9aMES/l8Mhv6pOOUo9Xgc/1yLDNmM63fHuuSG4Rt2Iq9h8bc6EG4uuyStQ5XQNqQoWkcvr5dcuxeT6zb2BBinN59NoX72I9zcb3/RdazPoMqc+84nqjd2m6MYOF6P76kJcetFE53NjUQsSH8m+XyXJU7qrFTYM2BrDOhjUjuvFnLiP6e/uN7qfZ9BjHe2W+enRGEuBXw68oo+57R1eM3Tg8XHM8jo8m4/U3Bip/w3dA94bTuuXntMZLipmaVmXXa+2XIxf5cqxPk+d2UsEg0qk=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 30dc2060-2a13-4700-7332-08ddd513b527
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2025 18:04:37.8689
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WNLf4+9ljbdzk8f/Td1NLIxiTOpgUzUBjsQgweX7S/r7a+xj0KnyVUUur3OyvMTCSet6ERNGIkqNffF2FGOdfzvh88fjrIz3jd2GDKGX8+Q=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR10MB8729
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-06_04,2025-08-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=988
- malwarescore=0 spamscore=0 bulkscore=0 suspectscore=0 adultscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2507300000 definitions=main-2508060118
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA2MDExOCBTYWx0ZWRfXxOm5Rl7shMLt
- BEsDhIWlejRY5pLbu/X8rvdhk2+0zpF+d3FTckNZ1rLXsDSjFhWlQul5C0cKYouSd5q7MdxpcF6
- AMSMXiRlONPdaAUCQBvTSqByPqQkL70J82w4kp/tfYi4IzPFFqhHRKUHaUMb5ROLAaTaavmI7yr
- kiF0upJDYd76ehqGL46gQ5vCgmFou6w2RIJKznh8/gfHVPivWWsX6sOgt97vjx9U64RBLRWWF79
- +XQ3vGc0IG9YogKcO5u7NmO8A1lNs2j5nYdM3DEawGJMR7EPQOocv3gDlFvHIlV+NCGjVLo4Okx
- XdYXJKJrYjK0GMlnQczWj+AwayhCoQ3l8nQi0WntsWx1a1HGXrlgMn2O9qCLPmxvnQeZ6ttSQ02
- /cJOOx00y597kok2vgMSXaL3Z3qlGrOf1XEv/leiC5UMeYRjPIvvFP7wD9EbN8fm15TtBvAX
-X-Authority-Analysis: v=2.4 cv=RtTFLDmK c=1 sm=1 tr=0 ts=6893993c b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=1XWaLZrsAAAA:8 a=j1kfFZs84iDPi44yYjwA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: QP29m6POTUSaLdEbS207jw2BxpFW0GrE
-X-Proofpoint-GUID: QP29m6POTUSaLdEbS207jw2BxpFW0GrE
-X-Rspamd-Queue-Id: EDCF3160010
-X-Stat-Signature: yxyypaj84pokfpq8ne6mi9zxupu8y84a
+In-Reply-To: <CAJuCfpGGGJfnvzzdhOEwsXRWPm1nJoPcm2FcrYnkcJtc9W96gA@mail.gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Y1JgZ5g0WaF_m_zPIToF3pPUwvnApUKXWJFp61hsZ5o_1754503776
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 2E754C000D
+X-Stat-Signature: ypba47qraehgeqmfbq9kb6m8hpdqpgns
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1754503508-250140
-X-HE-Meta: U2FsdGVkX19OpV37ITVzaphTZPgy9Aqn6zwxGkon3cXmDYgexzkmK5B3fP9kMNeHfobXMdPf3QYFWKBvcGwX5lJ3NC7ILJWRuN+8/oXAs2ozAO1AW019GZ9ELj13FRhMi80e14mZZPAyNK3qIup3ixoH8Isl7iHVcT9P9OzasMtTziWHjiNriQ8WIL94FALEF4VOB2ODtk1eY4c1YRUqABTINf9JzFHMWJ7kiGE0D+5OaVXjrhtM+vIw8sE9yfut4wX71afsVHlofHlU7CuDu5q80d1VBBdJSyv/ytscvOyGIEYPLSnzLFrTLb1gxVkCr7KBkaYBajleD0OL3H8nn6N7XJQFceZ+ze+RZOmDPYE2KuUj3aD5CrUPdA1ccSVb/7AC5yXiTfHvPC3JLTDAZQzGMX2GgHPWO1ML/QBjNwgZ+IknwR5AFEbKOhBdhNIR9UhOggLt+OSSXvLDjSzRh4aX6dQADJSWWeo1KzuBTBKzmKm2gtDegWWubqgqJRu/h0OriU3AlWiMiovoF2mrG+881gcOo9CiB5mZN8D3dU2sYF47BUkFEqJRyPoYzyxxtX+gF4RNKHSTDmfd76UvcgB5UmAQ5hdlKA9rXDcr4qrnwwEKF4PssNquKTdxt1y93bBxtPMSQ5f27aiVZSI8qd25RVv10Vd84lbPK6rnCfUEPgPtFH0K3Oa76+I9xmB5XlMBWeMygqdLMzy3Kja0bvqw8GqY/i/HvurPg7IL5pj6S6Fgm+tV0qCYP1gEqPbPmJIIhmIhfgTXktnssUwn4BUmSgIZIc+rRG/VlYQrztSIpd2cAf8AUqHncMSUEIhywwV3+VcNMvplQ8cxhv1T7/PMTgLMjnO/kCk7BaKIdiTBU6A5r5pQtAkUJXzSBwsYuz9HRpS91AZIsvSQ8gPLgJklqc9B0Vq1rRWj8ps5YZgxr+YFaVA52Ui2cz5pZzp/vPb/gIQ3b/TSrEJ5dws
- mq6sQgj0
- WW9Z9JAxpWQ4zk1WvigeSYWdHMMU3alykOt9dsuP+0kDjpLgRUa5SwGxDMrQIKh+2UVpTF5KRtnuZ+yqMK7TXC8iJ/UflzWbYOGW/RK5XgPcmn4rnexEssVhLnNDpXdWK0fTMzZnT5Pzt0aC+KVCII+nSuYe3hcOcn4jGPSf9sHxH8shmC4M5LigvVildquqjFvXU8doYv5LN4z671waIgydpo7GTnaRQQ2wPl6fe+RtgiXGQHyObUwlo/o4nr7GJZ6ZdlLtU5aNwp+Si5oWVNS1E/CJrRNfcRNWM2KI1vrSclt6cl5jDG/jK8F3cugGM/L4MP9laCj/wKZeDmVZel+wvHxDUOT6deVBgGQUgrew/24REjH8PoAgKMN7ezeZUjt6WzADJAkdA1Ii/g7guF4FuCDyfdabuTEtDfjWzBnBF/9oOQSFypUSkkUT3xx187Ec1oo08OPudo1eIUpwqPx02+vxvggW3l72JjtKd7mh1zU+FitFTB8YeNTJKAleWNd/qsCL38C9oIqy90Hf5Fo5dde/m6UYv6h4i3Cpw1waKkVz6G+aujxSqsBNJCBPFv2QIZZ3P+hEQnVR5qEU7WyiVVF5aClsOIqBVjenP0YyBsBnigxDSzYcJRPOQYKdiRwuE+x8CW/UyLS/IHv+snvFOWuMwwUKTlP9wunIVkyqTtEyf5qqjx6ER3KWLezuO+qo3QOJOv6URidHgqhaMMZri75EDeyRb91QLeEOFr4ZOa8iiP0Tjr4+pgSkJNK0BLMEiQhWufQmYaSe29zP0DR7q6Q5pI2kKxtxQjVj3vTdbShU1ORhnw0wqJXyWFR6VY6oX
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1754503779-572817
+X-HE-Meta: U2FsdGVkX18iH1qADfJgehhcAidLPiBqT3OgiFUYo3+3IXBgnBpryrL2QMdJTp470h0mJdpA946j9DY3f99DFhQTMg/4xx3gBRcByTRqTsObAWez1EeJXNNG3pbow9NvknN8dCd6y70KXJ4qN/YPxB+82pAoFu++VjtpO62U/iGQagm8CLlTFvNe56NyYNJZR1H3ZjWDDJ0+cGQgPCBGA3bGj5RNdA4FjE3LeLiXGD4HcFAC4sD5BGwPyfWdU5KBeXrZb7MUwvlLe34vIGszZVflpcUX2hi4CAz3nOFmglQjXeLkSBw6MLtwEg8KSmEUoAvI2okWRQ7T2wLi8JgoV/4kA3lEl9+D59YbHcp6FLLXN+51GjIBb609nYG/QW5PTaHJprzlkomYeQ+rbTEo+K+hSn2IuO9eqP/G9SjoGyyCIRW45TA3DAKkUDlYPwTQsrx6NCRIV6fASa42ZH6IUoRwvpXCQeBAVVNr+/301k8+ke/d+Xu+5NaUEbPyX6viFGKkGyopRY1rmhmD++E98RqWN2ujD9K2cgCLfvmSS2TZQgdTx23TizaU+5QeAiXNeV28nFU7NUStCITRNV73r1kEXwqjBAAqwO5wvuYw1ltbO2KaVLtgt005Ar/Qpoit8fnd30EXi6m88WlBEEcFVktjoinxfHja22t7PoMO7QwbKVxAWgRy49rp8ERcVD7GWFrlaJnBoddN/WmVWIxyUFejLdZGP/9qIe9P8nITeM1+mGrLFY8nY64bnAvPjG/yfaK1FE0/F2LP+xQvn2IfSev/DhCbDBgfwrSrVyGgvVY26QZmrClaJt00a2hV2i2Pa1DsrB2aDG6/DggruR09SSi5LXO2Czmj0qjTR5SFQtIrdbcD0+OnxzboVyTRDm0b3RzfdQrCtGOvB+sBuOk5RGkxxvwLhb4SN7pp9z9KUfA5oYCPtxqEMkMG5cIg4S1tE3U7LTg/G0uayiwrqbM
+ brZRU48z
+ n/b7P/WADBDrLAA+galfMM4hhJWQmF7BEOYyCISPSuqGQliWcEfdhp4r6swLIF7BMo509SYl5y1Zs5D/blA5DYtwVhMDWW5ejF+LH607UdhOIzmymWusO19Cm9akCvHiZEgKrF91WrWrgenR1MDpUCvyNTyTyB/MDb3qhKxqFfepJkUgfaHZfjySFdk0N5mhKFm3QzstvlLGk7M+8Lo4R4SGBwpDVIICoY98tMzghUw0z9Ndk/slO0eA/9bQHCJuJM2WPjsaq+P0Yu03uoXr+6YMyaSmp4oBVS+ndZ1RW+x53hF6x2jEgwStBGNmQGnD39MLqSmh7t3d3DispGpZx9EsojqvQADclUhh1sSXB9apKvyQemk2IvFKXT2lXSYkuMY3VrL+Eg2MhVlUNmK8g7hLbRw/WNWWUrpBtYfUE15BtG4G0Eo1wrbjR1z3hhd3JBc05SurWNoxRDpYjwGR7JDNNdMCUMMFMU7c9UgX9ID3jxoubjte9aAAktY5UsTNd69OFKRuKfhBPavKjC/vsrCWdwgSUNM4jOGSsV/KKgVNCwh1fvlw1OyXH2TDx14mg0BXUYQiBzi7gA6eDJvXof4xcaED5UUl2kZahJENPLgGp9O/T1LAUu6q+v4pBQ957y/eggwahyudlnSJPcMybWHMjuneCt3ElEdnt6tbmm2qSJgk8p0+L70T6mA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -239,341 +134,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 06, 2025 at 08:59:03AM -0700, Suren Baghdasaryan wrote:
-> Refactor struct proc_maps_private so that the fields used by PROCMAP_QUERY
-> ioctl are moved into a separate structure. In the next patch this allows
-> ioctl to reuse some of the functions used for reading /proc/pid/maps
-> without using file->private_data. This prevents concurrent modification
-> of file->private_data members by ioctl and /proc/pid/maps readers.
->
-> The change is pure code refactoring and has no functional changes.
->
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-> ---
->  fs/proc/internal.h   | 15 ++++++----
->  fs/proc/task_mmu.c   | 70 ++++++++++++++++++++++----------------------
->  fs/proc/task_nommu.c | 14 ++++-----
->  3 files changed, 52 insertions(+), 47 deletions(-)
->
-> diff --git a/fs/proc/internal.h b/fs/proc/internal.h
-> index e737401d7383..d1598576506c 100644
-> --- a/fs/proc/internal.h
-> +++ b/fs/proc/internal.h
-> @@ -378,16 +378,21 @@ extern void proc_self_init(void);
->   * task_[no]mmu.c
->   */
->  struct mem_size_stats;
-> -struct proc_maps_private {
-> -	struct inode *inode;
-> -	struct task_struct *task;
-> +
-> +struct proc_maps_locking_ctx {
+On Wed, Aug 06, 2025 at 10:09:30AM -0700, Suren Baghdasaryan wrote:
+> On Wed, Aug 6, 2025 at 9:56 AM Peter Xu <peterx@redhat.com> wrote:
+> >
+> > On Wed, Aug 06, 2025 at 08:40:15AM -0700, Suren Baghdasaryan wrote:
+> > > When UFFDIO_MOVE is used with UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES and it
+> >
+> > The migration entry can appear with/without ALLOW_SRC_HOLES, right?  Maybe
+> > drop this line?
+> 
+> Yes, you are right. I'll update.
+> 
+> >
+> > If we need another repost, the subject can further be tailored to mention
+> > migration entry too rather than non-present.  IMHO that's clearer on
+> > explaining the issue this patch is fixing (e.g. a valid transhuge THP can
+> > also have present bit cleared).
+> >
+> > > encounters a non-present PMD (migration entry), it proceeds with folio
+> > > access even though the folio is not present. Add the missing check and
+> >
+> > IMHO "... even though folio is not present" is pretty vague.  Maybe
+> > "... even though it's a swap entry"?  Fundamentally it's because of the
+> > different layouts of normal THP v.s. a swap entry, hence pmd_folio() should
+> > not be used on top of swap entries.
+> 
+> Well, technically a migration entry is a non_swap_entry(), so calling
+> migration entries "swap entries" is confusing to me. Any better
+> wording we can use or do you think that's ok?
 
-Decent name :)
+The more general definition of "swap entry" should follow what swp_entry_t
+is defined, where, for example, is_migration_entry() itself takes
+swp_entry_t as input.  So it should be fine, but I agree it's indeed
+confusing.
 
->  	struct mm_struct *mm;
-> -	struct vma_iterator iter;
-> -	loff_t last_pos;
->  #ifdef CONFIG_PER_VMA_LOCK
->  	bool mmap_locked;
->  	struct vm_area_struct *locked_vma;
->  #endif
-> +};
-> +
-> +struct proc_maps_private {
-> +	struct inode *inode;
-> +	struct task_struct *task;
-> +	struct vma_iterator iter;
-> +	loff_t last_pos;
-> +	struct proc_maps_locking_ctx lock_ctx;
->  #ifdef CONFIG_NUMA
->  	struct mempolicy *task_mempolicy;
->  #endif
+If we want to make it clearer, IMHO we could rename non_swap_entry()
+instead to is_swapfile_entry() / is_real_swap_entry() / ... but that can be
+discussed separately.  Here, if we want to make it super accurate, we could
+also use "swp_entry_t" instead of "swap entry", that'll be 100% accurate.
 
-I was going to ask why we have these in internal.h, but then noticed we have to
-have a nommu version of the task_mmu stuff for museum pieces and
-why-do-they-exist arches, sigh.
+Thanks,
 
-> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-> index ee1e4ccd33bd..45134335e086 100644
-> --- a/fs/proc/task_mmu.c
-> +++ b/fs/proc/task_mmu.c
-> @@ -132,11 +132,11 @@ static void release_task_mempolicy(struct proc_maps_private *priv)
->
->  #ifdef CONFIG_PER_VMA_LOCK
->
-> -static void unlock_vma(struct proc_maps_private *priv)
-> +static void unlock_vma(struct proc_maps_locking_ctx *lock_ctx)
->  {
-> -	if (priv->locked_vma) {
-> -		vma_end_read(priv->locked_vma);
-> -		priv->locked_vma = NULL;
-> +	if (lock_ctx->locked_vma) {
-> +		vma_end_read(lock_ctx->locked_vma);
-> +		lock_ctx->locked_vma = NULL;
->  	}
->  }
->
-> @@ -151,14 +151,14 @@ static inline bool lock_vma_range(struct seq_file *m,
->  	 * walking the vma tree under rcu read protection.
->  	 */
->  	if (m->op != &proc_pid_maps_op) {
-> -		if (mmap_read_lock_killable(priv->mm))
-> +		if (mmap_read_lock_killable(priv->lock_ctx.mm))
->  			return false;
->
-> -		priv->mmap_locked = true;
-> +		priv->lock_ctx.mmap_locked = true;
->  	} else {
->  		rcu_read_lock();
-> -		priv->locked_vma = NULL;
-> -		priv->mmap_locked = false;
-> +		priv->lock_ctx.locked_vma = NULL;
-> +		priv->lock_ctx.mmap_locked = false;
->  	}
->
->  	return true;
-> @@ -166,10 +166,10 @@ static inline bool lock_vma_range(struct seq_file *m,
->
->  static inline void unlock_vma_range(struct proc_maps_private *priv)
->  {
+-- 
+Peter Xu
 
-Not sure why we have unlock_vma() parameterised by proc_maps_locking_ctx but
-this is parameerised by proc_maps_private?
-
-Seems more consistent to have both parameterised by proc_maps_locking_ctx.
-
-Maybe we'd want lock() forms this way too for consistency?
-
-> -	if (priv->mmap_locked) {
-> -		mmap_read_unlock(priv->mm);
-> +	if (priv->lock_ctx.mmap_locked) {
-> +		mmap_read_unlock(priv->lock_ctx.mm);
->  	} else {
-> -		unlock_vma(priv);
-> +		unlock_vma(&priv->lock_ctx);
->  		rcu_read_unlock();
->  	}
->  }
-> @@ -179,13 +179,13 @@ static struct vm_area_struct *get_next_vma(struct proc_maps_private *priv,
->  {
->  	struct vm_area_struct *vma;
->
-
-We reference priv->lock_ctx 3 times here, either extract as helper var or pass
-in direct perhaps?
-
-> -	if (priv->mmap_locked)
-> +	if (priv->lock_ctx.mmap_locked)
->  		return vma_next(&priv->iter);
->
-> -	unlock_vma(priv);
-> -	vma = lock_next_vma(priv->mm, &priv->iter, last_pos);
-> +	unlock_vma(&priv->lock_ctx);
-> +	vma = lock_next_vma(priv->lock_ctx.mm, &priv->iter, last_pos);
->  	if (!IS_ERR_OR_NULL(vma))
-> -		priv->locked_vma = vma;
-> +		priv->lock_ctx.locked_vma = vma;
->
->  	return vma;
->  }
-> @@ -193,14 +193,14 @@ static struct vm_area_struct *get_next_vma(struct proc_maps_private *priv,
->  static inline bool fallback_to_mmap_lock(struct proc_maps_private *priv,
->  					 loff_t pos)
->  {
-
-(Also)
-
-We reference priv->lock_ctx 3 times here, either extract as helper var or pass
-in direct perhaps?
-
-> -	if (priv->mmap_locked)
-> +	if (priv->lock_ctx.mmap_locked)
->  		return false;
->
->  	rcu_read_unlock();
-> -	mmap_read_lock(priv->mm);
-> +	mmap_read_lock(priv->lock_ctx.mm);
->  	/* Reinitialize the iterator after taking mmap_lock */
->  	vma_iter_set(&priv->iter, pos);
-> -	priv->mmap_locked = true;
-> +	priv->lock_ctx.mmap_locked = true;
->
->  	return true;
->  }
-> @@ -210,12 +210,12 @@ static inline bool fallback_to_mmap_lock(struct proc_maps_private *priv,
->  static inline bool lock_vma_range(struct seq_file *m,
->  				  struct proc_maps_private *priv)
->  {
-> -	return mmap_read_lock_killable(priv->mm) == 0;
-> +	return mmap_read_lock_killable(priv->lock_ctx.mm) == 0;
->  }
->
->  static inline void unlock_vma_range(struct proc_maps_private *priv)
->  {
-> -	mmap_read_unlock(priv->mm);
-> +	mmap_read_unlock(priv->lock_ctx.mm);
->  }
->
->  static struct vm_area_struct *get_next_vma(struct proc_maps_private *priv,
-> @@ -258,7 +258,7 @@ static struct vm_area_struct *proc_get_vma(struct seq_file *m, loff_t *ppos)
->  		*ppos = vma->vm_end;
->  	} else {
->  		*ppos = SENTINEL_VMA_GATE;
-> -		vma = get_gate_vma(priv->mm);
-> +		vma = get_gate_vma(priv->lock_ctx.mm);
->  	}
->
->  	return vma;
-> @@ -278,7 +278,7 @@ static void *m_start(struct seq_file *m, loff_t *ppos)
->  	if (!priv->task)
->  		return ERR_PTR(-ESRCH);
->
-> -	mm = priv->mm;
-> +	mm = priv->lock_ctx.mm;
->  	if (!mm || !mmget_not_zero(mm)) {
->  		put_task_struct(priv->task);
->  		priv->task = NULL;
-> @@ -318,7 +318,7 @@ static void *m_next(struct seq_file *m, void *v, loff_t *ppos)
->  static void m_stop(struct seq_file *m, void *v)
->  {
->  	struct proc_maps_private *priv = m->private;
-> -	struct mm_struct *mm = priv->mm;
-> +	struct mm_struct *mm = priv->lock_ctx.mm;
->
->  	if (!priv->task)
->  		return;
-> @@ -339,9 +339,9 @@ static int proc_maps_open(struct inode *inode, struct file *file,
->  		return -ENOMEM;
->
->  	priv->inode = inode;
-> -	priv->mm = proc_mem_open(inode, PTRACE_MODE_READ);
-> -	if (IS_ERR_OR_NULL(priv->mm)) {
-> -		int err = priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
-> +	priv->lock_ctx.mm = proc_mem_open(inode, PTRACE_MODE_READ);
-> +	if (IS_ERR_OR_NULL(priv->lock_ctx.mm)) {
-> +		int err = priv->lock_ctx.mm ? PTR_ERR(priv->lock_ctx.mm) : -ESRCH;
->
->  		seq_release_private(inode, file);
->  		return err;
-> @@ -355,8 +355,8 @@ static int proc_map_release(struct inode *inode, struct file *file)
->  	struct seq_file *seq = file->private_data;
->  	struct proc_maps_private *priv = seq->private;
->
-> -	if (priv->mm)
-> -		mmdrop(priv->mm);
-> +	if (priv->lock_ctx.mm)
-> +		mmdrop(priv->lock_ctx.mm);
->
->  	return seq_release_private(inode, file);
->  }
-> @@ -610,7 +610,7 @@ static int do_procmap_query(struct proc_maps_private *priv, void __user *uarg)
->  	if (!!karg.build_id_size != !!karg.build_id_addr)
->  		return -EINVAL;
->
-> -	mm = priv->mm;
-> +	mm = priv->lock_ctx.mm;
->  	if (!mm || !mmget_not_zero(mm))
->  		return -ESRCH;
->
-> @@ -1311,7 +1311,7 @@ static int show_smaps_rollup(struct seq_file *m, void *v)
->  {
->  	struct proc_maps_private *priv = m->private;
->  	struct mem_size_stats mss = {};
-> -	struct mm_struct *mm = priv->mm;
-> +	struct mm_struct *mm = priv->lock_ctx.mm;
-
-Nit, but maybe add a
-
-	struct proc_maps_locking_ctx *lock_ctx = priv->lock_ctx;
-
-Here to reduce 'priv->lock_ctx' stuff?
-
->  	struct vm_area_struct *vma;
->  	unsigned long vma_start = 0, last_vma_end = 0;
->  	int ret = 0;
-> @@ -1456,9 +1456,9 @@ static int smaps_rollup_open(struct inode *inode, struct file *file)
->  		goto out_free;
->
->  	priv->inode = inode;
-> -	priv->mm = proc_mem_open(inode, PTRACE_MODE_READ);
-> -	if (IS_ERR_OR_NULL(priv->mm)) {
-> -		ret = priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
-> +	priv->lock_ctx.mm = proc_mem_open(inode, PTRACE_MODE_READ);
-> +	if (IS_ERR_OR_NULL(priv->lock_ctx.mm)) {
-> +		ret = priv->lock_ctx.mm ? PTR_ERR(priv->lock_ctx.mm) : -ESRCH;
->
->  		single_release(inode, file);
->  		goto out_free;
-> @@ -1476,8 +1476,8 @@ static int smaps_rollup_release(struct inode *inode, struct file *file)
->  	struct seq_file *seq = file->private_data;
->  	struct proc_maps_private *priv = seq->private;
->
-> -	if (priv->mm)
-> -		mmdrop(priv->mm);
-> +	if (priv->lock_ctx.mm)
-> +		mmdrop(priv->lock_ctx.mm);
->
->  	kfree(priv);
->  	return single_release(inode, file);
-> diff --git a/fs/proc/task_nommu.c b/fs/proc/task_nommu.c
-> index 59bfd61d653a..d362919f4f68 100644
-> --- a/fs/proc/task_nommu.c
-> +++ b/fs/proc/task_nommu.c
-> @@ -204,7 +204,7 @@ static void *m_start(struct seq_file *m, loff_t *ppos)
->  	if (!priv->task)
->  		return ERR_PTR(-ESRCH);
->
-> -	mm = priv->mm;
-> +	mm = priv->lock_ctx.mm;
->  	if (!mm || !mmget_not_zero(mm)) {
->  		put_task_struct(priv->task);
->  		priv->task = NULL;
-> @@ -226,7 +226,7 @@ static void *m_start(struct seq_file *m, loff_t *ppos)
->  static void m_stop(struct seq_file *m, void *v)
->  {
->  	struct proc_maps_private *priv = m->private;
-> -	struct mm_struct *mm = priv->mm;
-
-(same as above, I reviewed this upsidedown :P)
-
-NIT, but seems sensible to have a
-
-	struct proc_maps_locking_ctx *lock_ctx = priv->lock_ctx;
-
-Here so we can avoid the ugly 'priv->lock_ctx' stuff below.
-
-> +	struct mm_struct *mm = priv->lock_ctx.mm;
->
->  	if (!priv->task)
->  		return;
-> @@ -259,9 +259,9 @@ static int maps_open(struct inode *inode, struct file *file,
->  		return -ENOMEM;
->
->  	priv->inode = inode;
-> -	priv->mm = proc_mem_open(inode, PTRACE_MODE_READ);
-> -	if (IS_ERR_OR_NULL(priv->mm)) {
-> -		int err = priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
-> +	priv->lock_ctx.mm = proc_mem_open(inode, PTRACE_MODE_READ);
-> +	if (IS_ERR_OR_NULL(priv->lock_ctx.mm)) {
-> +		int err = priv->lock_ctx.mm ? PTR_ERR(priv->lock_ctx.mm) : -ESRCH;
-
->
->  		seq_release_private(inode, file);
->  		return err;
-> @@ -276,8 +276,8 @@ static int map_release(struct inode *inode, struct file *file)
->  	struct seq_file *seq = file->private_data;
->  	struct proc_maps_private *priv = seq->private;
->
-> -	if (priv->mm)
-> -		mmdrop(priv->mm);
-> +	if (priv->lock_ctx.mm)
-> +		mmdrop(priv->lock_ctx.mm);
->
->  	return seq_release_private(inode, file);
->  }
-> --
-> 2.50.1.565.gc32cd1483b-goog
->
 
