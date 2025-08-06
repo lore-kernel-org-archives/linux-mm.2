@@ -2,87 +2,112 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 86C49C87FD2
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 03:24:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 75096C87FD1
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 03:39:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 103FD6B00A5; Tue,  5 Aug 2025 23:24:57 -0400 (EDT)
+	id 03A2C8E000A; Tue,  5 Aug 2025 23:39:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DC5D6B00A7; Tue,  5 Aug 2025 23:24:57 -0400 (EDT)
+	id 011D28E0001; Tue,  5 Aug 2025 23:39:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F33B96B00A8; Tue,  5 Aug 2025 23:24:56 -0400 (EDT)
+	id E912B8E000A; Tue,  5 Aug 2025 23:39:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DE1036B00A5
-	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 23:24:56 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 67D911602B0
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 03:24:56 +0000 (UTC)
-X-FDA: 83744890992.06.CBBDA12
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 694981C0005
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 03:24:52 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf21.hostedemail.com: domain of tujinjiang@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DA5F78E0001
+	for <linux-mm@kvack.org>; Tue,  5 Aug 2025 23:39:05 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 66AEB114F7B
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 03:39:05 +0000 (UTC)
+X-FDA: 83744926650.17.B0CE207
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 72DE8C0007
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 03:39:03 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZC1gHqqn;
+	spf=pass (imf22.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.182 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754450694;
+	s=arc-20220608; t=1754451543;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=byl3r5TLhPUqMNZqcLKEyocLYvWnmEeMUh9wlTtDSYY=;
-	b=0P6bA1F4a0izHpRNBB09dGB9Ws0cIOwDEa3/IL2cwacyqxhUbSlbT5omwcfH3783dH3OO/
-	VwHjeGzFKtFNVWy0KfZtuHCAMsj0gvqAhA0YEkf4Ot+W1yk1FSfdzJsVzi8NQHfSJTP5Md
-	M7xT6ucwtn+QXlabybl/jAgdNQP5Zuc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754450694; a=rsa-sha256;
-	cv=none;
-	b=xIzvMQQm9pNAaD75Nx5yr4ziV3VtFG2acSbsm5RQJhq1wETTDWMT0G2XznXM0I0gnlQnYR
-	XsxRYYuMZ58rEzxLSUmriHRc1CCrRmbHIJTr2SLE4kYpBKCZycHOByz4gT80JbkfA/eLCB
-	cz8HRPkL69zZ7AO8fe8JVfXEvsiL2wk=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=pT8gPUg++PGfeMd5QsLj4CoRRQLdIXbXj3kUkk+1RlU=;
+	b=CJCqqEikEiaDxHkyssaTX4VYBdYOC7MuWs6W/HrzWiwF1pGBwbmXUeXLthpNAhFYiDPbF6
+	kz9vIedcHVywh6k+axVaKqKEyLAuhuJAp+xTlYp/m6lA5536Sc4SpHIGeDl7WIAGaap25Z
+	AxAK4Ep4guf7FfjkdYce/KJoXFfrEyw=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf21.hostedemail.com: domain of tujinjiang@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4bxbBb5zxtz14MFl;
-	Wed,  6 Aug 2025 11:19:51 +0800 (CST)
-Received: from kwepemo200002.china.huawei.com (unknown [7.202.195.209])
-	by mail.maildlp.com (Postfix) with ESMTPS id EE0111402CC;
-	Wed,  6 Aug 2025 11:24:47 +0800 (CST)
-Received: from [10.174.178.49] (10.174.178.49) by
- kwepemo200002.china.huawei.com (7.202.195.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 6 Aug 2025 11:24:47 +0800
-Content-Type: multipart/alternative;
-	boundary="------------I0yCxJ492KpW7SSbSelyvlEH"
-Message-ID: <35e24029-d58c-47e8-b5fe-e182f143ebff@huawei.com>
-Date: Wed, 6 Aug 2025 11:24:46 +0800
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZC1gHqqn;
+	spf=pass (imf22.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.182 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754451543; a=rsa-sha256;
+	cv=none;
+	b=M7SKtri3JYET+4Snlo2ca4nljSv5BPqkOKDrxVKLOH2MLoFpx6hbG74BrRGpNoNInktD/c
+	bhntmjC0mNEyrYJS4txH6pI7FBN5JksV3KxvCloMtIZKyLeUC8GEhNZDqHi0wCyRq9ErQN
+	j/ADLRW4v6Odb3xxkJahzeu3JMMQA/Q=
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-3322e4ac12cso42966631fa.2
+        for <linux-mm@kvack.org>; Tue, 05 Aug 2025 20:39:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754451542; x=1755056342; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pT8gPUg++PGfeMd5QsLj4CoRRQLdIXbXj3kUkk+1RlU=;
+        b=ZC1gHqqnmTFYixlQwY2nrwwDgNC2LmKeGKVBwKraslMqaUHkZiahwyfJB2+Uw7HVG1
+         2/pDnI1fMycpTHgikJ26hTzKzQ56disK5Ol0F1UmyHI4CET58QOXYJzqKALXHqJ/do0F
+         iVSgmszs2JV1X7jfWEFK4y0QDopafSYq2Q15yP284Cx+R83sSuANf2JvAIUkeUcqDVyE
+         i3lMJWmJ6EUlSLyfZU+YNdGFhQ47fXuTZv65RXsYiQMlqNGm61xL/eWjhrBE28svZv1E
+         ykT7spjqD8ZbsmuvT4TuERfYAgcLhwqJg0tisGtLhX6RtKRbCtZk1jGHng2+ytqcwaJI
+         /drQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754451542; x=1755056342;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pT8gPUg++PGfeMd5QsLj4CoRRQLdIXbXj3kUkk+1RlU=;
+        b=aR1abqqeF/xCGUEKk9bEfbkNKjvSzQZbfwTRcL3tgnUjrQVyyC6rxa5udROSdkaYW8
+         93rGJ2mdbIIztkcv451258c08sMyX2n2z3nkXgK6Cs+tu3t7hYsvOCw8OYIMc1SnlbK1
+         19sZHbx2+KhzzA3Ap9hgxCZneF6xqF45hmHCn5Bs01DRlZCS6CpsHnfzcfVbvJb4/djV
+         k+IJVzM0CszvmwRZ0s4zC9zMe+pUdYi+cI/FIsTPbq6OoBJkNTLFd4o7yESWw9L7d6uh
+         P7z1XWswcZ5Zw9M5K3QKyIMBvzo75dUOU+Vstza841Ikop8WWpm5NzdMB0v968ID3vIB
+         UN5w==
+X-Gm-Message-State: AOJu0YxGKZ51SM8AndyD1kZcriv/4hM3KFEn9Ie/2RCEM0pwk86xvcnb
+	/OJnkWVFLA7P72/CRND9kFyGAn6IsFkc3P7g2UO8THsN+i0peUA6kB9s0E5k8KroIPs7AQaFFDt
+	YFQ341c1f4ZxgW/SYkEqY032lcxHoJwE=
+X-Gm-Gg: ASbGncso9LB9zkETUAPcD+68t48Jo2gj+ZB8Jwbycx6CV0Z9Wg+435e/MRGyRGSoFtI
+	9I0Pm58cvOvKdGNzufS77hNNN5RDUzLOJPDe7oZa3MRtUNY8iuyGxtzSPX69q0fHilVb6okU6Op
+	H5aWqK/FhARXmdofModm7/+WqZbarEvIRPHh/Mk9EoFKIs6dt1Im+lQRwi+gMHA3PlW+GVnowhP
+	I5doYU=
+X-Google-Smtp-Source: AGHT+IHBglAwtqm4z8yQjqRQOQCSCAmCv05JxtHTKVaBxejjFoGIwClaEp5JLlQx8mxDV/3A3dGBJkVF8V5tSxeBUcc=
+X-Received: by 2002:a05:651c:e0b:b0:332:8187:f837 with SMTP id
+ 38308e7fff4ca-333814040f2mr2549651fa.27.1754451541451; Tue, 05 Aug 2025
+ 20:39:01 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/memory-failure: fix infinite UCE for VM_PFNMAP pfn
-To: Miaohe Lin <linmiaohe@huawei.com>
-CC: <wangkefeng.wang@huawei.com>, <nao.horiguchi@gmail.com>,
-	<akpm@linux-foundation.org>, <xueshuai@linux.alibaba.com>,
-	<david@redhat.com>, <ziy@nvidia.com>, <osalvador@suse.de>,
-	<linux-mm@kvack.org>
-References: <20250806020520.631203-1-tujinjiang@huawei.com>
- <1e63c37f-8eb2-865d-d3f4-9ef928f1a959@huawei.com>
-From: Jinjiang Tu <tujinjiang@huawei.com>
-In-Reply-To: <1e63c37f-8eb2-865d-d3f4-9ef928f1a959@huawei.com>
-X-Originating-IP: [10.174.178.49]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemo200002.china.huawei.com (7.202.195.209)
-X-Rspamd-Queue-Id: 694981C0005
-X-Stat-Signature: xims3a7r5ihwp1m3ca9cn15wuk66gmxt
+References: <20250804172439.2331-1-ryncsn@gmail.com> <20250804172439.2331-3-ryncsn@gmail.com>
+ <CAKEwX=PkJdz3Um9j4m2bPahN9NbQpn7QnOvEAxDdWUHTqSvchg@mail.gmail.com>
+In-Reply-To: <CAKEwX=PkJdz3Um9j4m2bPahN9NbQpn7QnOvEAxDdWUHTqSvchg@mail.gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Wed, 6 Aug 2025 11:38:25 +0800
+X-Gm-Features: Ac12FXzGr6EunkglBI1a6aoXX9TZJeqjSvqs_Z6HQHT5Ue_7xnXoMTR827GcYFQ
+Message-ID: <CAMgjq7CSRrjLYF=7ckieNsAhDX_Fqp0OkHxrGHB0gQG7=_RdOA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] mm, swap: prefer nonfull over free clusters
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Chris Li <chrisl@kernel.org>, 
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	"Huang, Ying" <ying.huang@linux.alibaba.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: daujufmczk49eu8b3hrw7bd9tfaj4u3w
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 72DE8C0007
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1754450692-83451
-X-HE-Meta: U2FsdGVkX18/LD/t6f7gnCFB/p1FM+oyuG36QGuHY2hATDaJhWn0kdjqBi9BX/xUPVtututMz6wAXtO/RuuddCVUOViq8gbYU8V+aH9bNp1WVGgcGqnd479x0HFq1VDbk9VpbP3fiEHoXD1rSst2b9bya66ZZAfl1ZXmrgfq6JlDFp07NBDb/VFco/w8O++GVukIB7L7B6Vuinn5MGZAPwzFRbDjLcGYeTjE5FLXZkzwf0mq4u1nWHTGVy/sffOF07qdXVDuBjNfwkC9MF46vo/hN2DRuEQre0q95wKDsYJ/wM0O1Pw2izvRp9oe+9lYNBSFbJ+H5Qt1zCwTaCoEw4ZkGI1u+ZGZDo+r5S1z8mAV8k4weFG9s4g5cTxylpswJOZdfHpWDVphi35g+Gr3CymtigOkNa7lAVDoRrlazCBm5OvW7S44i2iWOH6UCTiGV6N8IOyHPdPFAbgDwRfMINO5Vj02kPINuIKXQmYePZMdzgcrgrD37YNkNWugGm84UB/6BebkqGPic9TLfCqznqD9pBYZv5i7/Eiix6cXtzUVLK3EmSfTjh57r78lLhd8SUjICMo1oPhAO88mvHqIoZmnVzqcf6xjWT1naimONUhzJoMOj9WAHCjWnc+7enwJwcpsAXwyGYCgkW+gjlPiDASQT1HxUw5XCjZ60K4jfG0WLvhbY5dSGDMpr2XdFWNj2YzrruYJN0moX0NAPFmMZHfc2p1MlI+EdwX4K9MrKsim6RLyI+i1IIsvW0DPAkij9qu4KNCf6xlJd51mSv+0lWCbSAIR8jvhvBVjtAXiRiTq4K/BpouJoMJ7tM1s0dcpooPShIkYdx4ULiQxLDJLmYkqi7wR1C9Y8ekoeMB9BD1/RJiXRewrzjvWX9Yw5a4K3NP09uUNUCdIkcBOBoQzpIEZWmuCsMskOvf71v/9AjQukbRQ3nPMohdGhQ88gOLSjxrwsZNA9g1G7VyCuGl
- z2I0rXyi
- GzmGPxcQjUh8QPwFBpkFQYVbTh3xc5/P9nIWO18Wh54Ig6Aj1JqOp0eUBPZcYi3Y2OOWecc6CzGF/JYjH9DkQiFZnLB0jyd30oNTxYlHsyStslR46tFOxx8V1VoI/3J92iwMRwoPA7CHMWzguUb5lqlQ+wbfBgnZkv/dfSGHzoUNHW9H7Zisq53arbF9CoFUDrpZeLtaCUGaAJwh2ed03JgoHF77MCgx7dnpjRd3aWGmVPvJCWiorThck97taTcQ2L9wjgLebsX6K8izmEIN6xpZBMKnvsje2aSYiUbYgUD3/AMEExRmBVh+5v89EApEml9CwaAG4CQB1Cf/70hc9Q9QIg152P1d4sGvlr0Q9I1I2ZqYfH7LLmO7iZRbAgOOsSPm+ul5e44e8bRdNNSTK+A0NBYmbi2uK4NMkNGPJtYz2NPEWiq0t41jESK6giVNnjTOUotqzFWRBeX48CUZjraITiluLWmzUa4Rhazu9CIs0SGU=
+X-HE-Tag: 1754451543-866934
+X-HE-Meta: U2FsdGVkX1/ERiQRch/XzNtkl5EdWDCTeTp98dOHgYikNSXVyV6Ti6bL2G6MQgOO9Q+iOcPN4lfHksw92Zk/v9CNypwwbe15oPqIQZGsGSKfmj8NM0a+W07jkY2sPbeye3yIPBkRYXKhsSwMqUK7kbLowazuTSKMRB1+PIo5tTyhiF7zrkxJO/6f2jGBcZCOfpHUc8tapS6h9FmxhAgXNbMvQuQYq1iUqkQkpWqaVV22xtvHv/PG1tIMiFWWrPKRBFMonAV5wuEUYneW4socQ7epvHg43xLELX/1t3q+VBotNbKX72gVShkFHvJsMTzU5iwfjxUz6WOI34uAbVYxTQGi6A3J+2pkyYnVoy9hEBike/vUGJ/ORNoyq39vma+O1lmU576AlBU88sv37wpEBRaT4cHYusPT+zCm8rnPlw1T8Ga9wEmqjuXH7CMgEced5jGAQvPAqteVYUH0vbZy2lf4oyYG3/FRDvsD8BVSnzSFd/v8oS2GaOsCGLKNnq1A4JPCnZpiGJTJ6a/jDu2mqhRIlXEvSLH63F4k5934fymQibUmrhur0NoJyN2Mm143x+i+e1tj6n54WtKNz/lFW/+OCk43A6rr66vi/kCHiuGk7C2xWgKJNw5s8nSh+bVwgIz1iMUpXxdqVo25uXoTT/y96WllxRhBu5jyy+XWpo6cFr+BEocPWV6s7TMTNbQ1Bd6j1aacD8y8EUeZ6vGxNTD0ktjUVnnunREG7qj0MVRDX8rQufgema8jaR6zwThghLUtC0IDLl3JNw7DQwqn+0fUaeNxZrxnPPNvTQr8P3JMp2cdGghogPeopb9I+vktUwZVRirBVwSmRWZSGXu1UR7Q3Yea6bzvIpPlQcUeNTbyOxDhwPhjT787DUQkNT8DB8e3bElW6eGnyj8RNtovExTUeJ1F44IhEcU9aRIhF+Lk42VBS0a59PwMM0HykTqOTBPkckVAvF53ZR/m3Pc
+ cWlJ2Vfh
+ CVNNci0FDU/zUY1UzQ1O7FcBWfVAo3UwW9LMnw4AIg3HjYPSNSraFa55FBRxuaoTFssxMVOr+r6DBgchwRb+z0QtBSc6lgvogAcdCFgvJrixzUDz2hp1+nA5xNOLUKR1xPaTw7hzVKyIiVwKw34Cb7PUIxUxCPwuT8vOrJ/ptcOguts0Xj/u5kBf5qTE32tkVn37t6Xv0W6Jd5CsoqPbOG2h62JtT/kB/on1O0z7XPJ8K2aQipVKxY1zb9Ja9Co+XdZNHjMPWVGliFW784ywSDdtRcOfrh4Tv5x4ppugpP9Gt4ibhzv3BpYG8qTtS+Vy4q6DFABb/H/wENbTchJMAoIASp60IwXS8kCbUpLdD/oSSbMJ8MqggnVyn9wkFVHrvzLCQGUOYpRYoPOwuh4O19lB6o6Qcw4/eabD/2p0kxuZaqOcXf6xzo+g//lypUKVa4p5Y
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,137 +116,139 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---------------I0yCxJ492KpW7SSbSelyvlEH
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-
-
-在 2025/8/6 11:05, Miaohe Lin 写道:
-> On 2025/8/6 10:05, Jinjiang Tu wrote:
->> When memory_failure() is called for a already hwpoisoned pfn,
->> kill_accessing_process() will be called to kill current task. However, if
-> Thanks for your patch.
+On Wed, Aug 6, 2025 at 8:06=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote:
 >
->> the vma of the accessing vaddr is VM_PFNMAP, walk_page_range() will skip
->> the vma in walk_page_test() and return 0.
->>
->> Before commit aaf99ac2ceb7 ("mm/hwpoison: do not send SIGBUS to processes
->> with recovered clean pages"), kill_accessing_process() will return EFAULT.
-> I'm not sure but pfn_to_online_page should return NULL for VM_PFNMAP pages?
-> So memory_failure_dev_pagemap should handle these pages?
+> On Mon, Aug 4, 2025 at 10:24=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wr=
+ote:
+> >
+> > From: Kairui Song <kasong@tencent.com>
+> >
+> > We prefer a free cluster over a nonfull cluster whenever a CPU local
+> > cluster is drained to respect the SSD discard behavior [1]. It's not
+> > a best practice for non-discarding devices. And this is causing a
+> > chigher fragmentation rate.
+> >
+> > So for a non-discarding device, prefer nonfull over free clusters. This
+> > reduces the fragmentation issue by a lot.
+> >
+> > Testing with make -j96, defconfig, using 64k mTHP, 8G ZRAM:
+> >
+> > Before: sys time: 6121.0s  64kB/swpout: 1638155  64kB/swpout_fallback: =
+189562
+> > After:  sys time: 6145.3s  64kB/swpout: 1761110  64kB/swpout_fallback: =
+66071
+> >
+> > Testing with make -j96, defconfig, using 64k mTHP, 10G ZRAM:
+> >
+> > Before: sys time 5527.9s  64kB/swpout: 1789358  64kB/swpout_fallback: 1=
+7813
+> > After:  sys time 5538.3s  64kB/swpout: 1813133  64kB/swpout_fallback: 0
+> >
+> > Performance is basically unchanged, and the large allocation failure ra=
+te
+> > is lower. Enabling all mTHP sizes showed a more significant result:
+> >
+> > Using the same test setup with 10G ZRAM and enabling all mTHP sizes:
+> >
+> > 128kB swap failure rate:
+> > Before: swpout:449548 swpout_fallback:55894
+> > After:  swpout:497519 swpout_fallback:3204
+> >
+> > 256kB swap failure rate:
+> > Before: swpout:63938  swpout_fallback:2154
+> > After:  swpout:65698  swpout_fallback:324
+> >
+> > 512kB swap failure rate:
+> > Before: swpout:11971  swpout_fallback:2218
+> > After:  swpout:14606  swpout_fallback:4
+> >
+> > 2M swap failure rate:
+> > Before: swpout:12     swpout_fallback:1578
+> > After:  swpout:1253   swpout_fallback:15
+> >
+> > The success rate of large allocations is much higher.
+> >
+> > Link: https://lore.kernel.org/linux-mm/87v8242vng.fsf@yhuang6-desk2.ccr=
+.corp.intel.com/ [1]
+> > Signed-off-by: Kairui Song <kasong@tencent.com>
+>
+> Nice! I agree with Chris' analysis too. It's less of a problem for
+> vswap (because there's no physical/SSD implication over there), but
+> this patch makes sense in the context of swapfile allocator.
+>
+> FWIW:
+> Reviewed-by: Nhat Pham <nphamcs@gmail.com>
 
-We could call remap_pfn_range() for those pfns with struct page. IIUC, VM_PFNMAP
-means we should assume the pfn doesn't have struct page, but it can have.
+Thanks!
 
 >
->> For x86, the current task will be killed in kill_me_maybe().
->>
->> However, after this commit, kill_accessing_process() simplies return 0,
->> that means UCE is handled properly, but it doesn't actually. In such case,
->> the user task will trigger UCE infinitely.
-> Did you ever trigger this loop?
-
-Yes. Our test is as follow steps:
-1) create a user task allocates a clean anonymous page, wihout accessing it.
-2) use einj to inject UCE for the page
-3) create task devmem to use /dev/mem to map the pfn and keep accessing it.
-
-/dev/mem uses remap_pfn_range() to map the pfn.
-
-When task devmem first accesses the pfn, UCE is triggered, memory_failure()
-succeeds to isolate it due to it's clean user page. But the task devmem isn't killed.
-
-When task devmem accesses the pfn again, since the pfn is already hwpoisoned, kill_accessing_process() is called.
-But it fails to kill the accessing task.
-
-
-Theoretically, if we have several tasks that share the pfn range mapped by remap_pfn_range(), the above issue exists too.
-
+> > ---
+> >  mm/swapfile.c | 38 ++++++++++++++++++++++++++++----------
+> >  1 file changed, 28 insertions(+), 10 deletions(-)
+> >
+> > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > index 5fdb3cb2b8b7..4a0cf4fb348d 100644
+> > --- a/mm/swapfile.c
+> > +++ b/mm/swapfile.c
+> > @@ -908,18 +908,20 @@ static unsigned long cluster_alloc_swap_entry(str=
+uct swap_info_struct *si, int o
+> >         }
+> >
+> >  new_cluster:
+> > -       ci =3D isolate_lock_cluster(si, &si->free_clusters);
+> > -       if (ci) {
+> > -               found =3D alloc_swap_scan_cluster(si, ci, cluster_offse=
+t(si, ci),
+> > -                                               order, usage);
+> > -               if (found)
+> > -                       goto done;
+> > +       /*
+> > +        * If the device need discard, prefer new cluster over nonfull
+> > +        * to spread out the writes.
+> > +        */
+> > +       if (si->flags & SWP_PAGE_DISCARD) {
+> > +               ci =3D isolate_lock_cluster(si, &si->free_clusters);
+> > +               if (ci) {
+> > +                       found =3D alloc_swap_scan_cluster(si, ci, clust=
+er_offset(si, ci),
+> > +                                                       order, usage);
+> > +                       if (found)
+> > +                               goto done;
+> > +               }
+> >         }
+> >
+> > -       /* Try reclaim from full clusters if free clusters list is drai=
+ned */
+> > -       if (vm_swap_full())
+> > -               swap_reclaim_full_clusters(si, false);
+> > -
+> >         if (order < PMD_ORDER) {
+> >                 while ((ci =3D isolate_lock_cluster(si, &si->nonfull_cl=
+usters[order]))) {
+> >                         found =3D alloc_swap_scan_cluster(si, ci, clust=
+er_offset(si, ci),
+> > @@ -927,7 +929,23 @@ static unsigned long cluster_alloc_swap_entry(stru=
+ct swap_info_struct *si, int o
+> >                         if (found)
+> >                                 goto done;
+> >                 }
+> > +       }
+> >
+> > +       if (!(si->flags & SWP_PAGE_DISCARD)) {
+> > +               ci =3D isolate_lock_cluster(si, &si->free_clusters);
+> > +               if (ci) {
+> > +                       found =3D alloc_swap_scan_cluster(si, ci, clust=
+er_offset(si, ci),
+> > +                                                       order, usage);
+> > +                       if (found)
+> > +                               goto done;
+> > +               }
+> > +       }
 >
-> Thanks.
-> .
---------------I0yCxJ492KpW7SSbSelyvlEH
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+> Seems like this pattern is repeated a couple of places -
+> isolate_lock_cluster from one of the lists, and if successful, then
+> try to allocate (alloc_swap_scan_cluster) from it.
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">在 2025/8/6 11:05, Miaohe Lin 写道:<br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:1e63c37f-8eb2-865d-d3f4-9ef928f1a959@huawei.com">
-      <pre wrap="" class="moz-quote-pre">On 2025/8/6 10:05, Jinjiang Tu wrote:
-</pre>
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre">When memory_failure() is called for a already hwpoisoned pfn,
-kill_accessing_process() will be called to kill current task. However, if
-</pre>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-Thanks for your patch.
-
-</pre>
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre">the vma of the accessing vaddr is VM_PFNMAP, walk_page_range() will skip
-the vma in walk_page_test() and return 0.
-
-Before commit aaf99ac2ceb7 ("mm/hwpoison: do not send SIGBUS to processes
-with recovered clean pages"), kill_accessing_process() will return EFAULT.
-</pre>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-I'm not sure but pfn_to_online_page should return NULL for VM_PFNMAP pages?
-So memory_failure_dev_pagemap should handle these pages?</pre>
-    </blockquote>
-    <pre>We could call remap_pfn_range() for those pfns with struct page. IIUC, VM_PFNMAP 
-means we should assume the pfn doesn't have struct page, but it can have.</pre>
-    <blockquote type="cite"
-      cite="mid:1e63c37f-8eb2-865d-d3f4-9ef928f1a959@huawei.com">
-      <pre wrap="" class="moz-quote-pre">
-
-</pre>
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre">For x86, the current task will be killed in kill_me_maybe().
-
-However, after this commit, kill_accessing_process() simplies return 0,
-that means UCE is handled properly, but it doesn't actually. In such case,
-the user task will trigger UCE infinitely.
-</pre>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-Did you ever trigger this loop?</pre>
-    </blockquote>
-    <pre>Yes. Our test is as follow steps:
-1) create a user task allocates a clean anonymous page, wihout accessing it.
-2) use einj to inject UCE for the page
-3) create task devmem to use /dev/mem to map the pfn and keep accessing it.
-
-/dev/mem uses remap_pfn_range() to map the pfn.
-
-When task devmem first accesses the pfn, UCE is triggered, memory_failure()
-succeeds to isolate it due to it's clean user page. But the task devmem isn't killed.
-
-When task devmem accesses the pfn again, since the pfn is already hwpoisoned, kill_accessing_process() is called.
-But it fails to kill the accessing task.
-
-
-Theoretically, if we have several tasks that share the pfn range mapped by remap_pfn_range(), the above issue exists too.</pre>
-    <blockquote type="cite"
-      cite="mid:1e63c37f-8eb2-865d-d3f4-9ef928f1a959@huawei.com">
-      <pre wrap="" class="moz-quote-pre">
-
-Thanks.
-.
-</pre>
-    </blockquote>
-  </body>
-</html>
-
---------------I0yCxJ492KpW7SSbSelyvlEH--
+Indeed, I've been thinking about it but there are some other issues
+that need to be cleaned up before this one.
 
