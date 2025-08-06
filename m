@@ -2,122 +2,113 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 49612C87FCB
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 23:41:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A8ABC87FD3
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 23:43:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF86D6B0089; Wed,  6 Aug 2025 19:41:00 -0400 (EDT)
+	id 2B31B6B0096; Wed,  6 Aug 2025 19:43:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA8D16B008A; Wed,  6 Aug 2025 19:41:00 -0400 (EDT)
+	id 263866B0098; Wed,  6 Aug 2025 19:43:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C97BB6B0093; Wed,  6 Aug 2025 19:41:00 -0400 (EDT)
+	id 152256B0099; Wed,  6 Aug 2025 19:43:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B368A6B0089
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 19:41:00 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3EC2F81C55
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 23:41:00 +0000 (UTC)
-X-FDA: 83747955480.16.DBCC1C4
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 5F78E140002
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 23:40:58 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=fIADS8Gx;
-	spf=pass (imf09.hostedemail.com: domain of kuniyu@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=kuniyu@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754523658; a=rsa-sha256;
-	cv=none;
-	b=xV3Sjla9M/KriZ5tqB9tpjZ9FMMmNm4JytnACQ9mWNV6/9HeNYaOaSmUXlxIxO5AEy1GER
-	kFjoxD/QeLrU6vDfWGbvEas5Ta54EWTC79QF8G4HmnQ9E/6RtC5MGgRNkALc49ZGbl5HMq
-	HYSexjrg/aWY0FLZ6/jY5P+WeabZ6I4=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=fIADS8Gx;
-	spf=pass (imf09.hostedemail.com: domain of kuniyu@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=kuniyu@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 02E326B0096
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 19:43:16 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C753D81510
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 23:43:15 +0000 (UTC)
+X-FDA: 83747961150.27.FCC9BB8
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 0A20120006
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 23:43:13 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DKIcqLm+;
+	spf=pass (imf03.hostedemail.com: domain of bijan311@gmail.com designates 209.85.219.169 as permitted sender) smtp.mailfrom=bijan311@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754523658;
+	s=arc-20220608; t=1754523794;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5+V5MD6/KwNXDMRDn89IDlWGyGIpIEfb7ohjgwGr06Y=;
-	b=2HrO3q72slELJUFJfvJfDu8gUaubiOxc1+Z6z4LFiiP5PLlMderYGRFge7+v1dTGzRqrgm
-	bd20IDDi69No9GPTLcvWqvArvd/UqXSi5oydUutiX/ajNIhOpUzsF0CE5Uga9csQM8F4Rs
-	sQtjJr/Gs5BeSj6dcxI1t9MQ4wiINAs=
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-24022261323so15519445ad.1
-        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 16:40:58 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=cfT15tOepazFTL2Lg8MMF8cCYjiRwORhTnogRj+tN3g=;
+	b=f0ylVYR7nNuAqcawTdF6ceb8Bf68B8Ebgc6gISQVibH+fDLZruHhQLyzNrY0xPOO10v2a0
+	GCq0iHhoKHDkX6/sSEq3wR0uVUbfz+fGZiqAgRwY/xjCA2eOJW4A7eYdY4ksaQOKndDlbL
+	ZK1C1jF1il0C5BvMByKijUFE8mThK60=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DKIcqLm+;
+	spf=pass (imf03.hostedemail.com: domain of bijan311@gmail.com designates 209.85.219.169 as permitted sender) smtp.mailfrom=bijan311@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754523794; a=rsa-sha256;
+	cv=none;
+	b=l3lAz2/SZdE+o/a/QeVp+R+3PwcNOIX1EoH6ZuuMSeXxUhRvQZ6/EvQDqPXpdl2BEpwpY7
+	22QuXPNZi9SoXFuQjuNAANM45SrEexvUudN8TNNHMDTDlma2SWW+8CTmPfVbAHsXTglgfq
+	lDK0pXYyIyegS7dlEaJCrFYHrslM0+I=
+Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-e7311e66a8eso389519276.2
+        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 16:43:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754523657; x=1755128457; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5+V5MD6/KwNXDMRDn89IDlWGyGIpIEfb7ohjgwGr06Y=;
-        b=fIADS8GxiBKtPPQKImEdqCMmHEGoyiwkbkefVkZr1Uxtp9JcyQ2TaMOCAnpc/HgVRI
-         DOqG/w60ZySG+LBHi3zjqUI6BbLW0dWc17eaSK4jK3Yca7F8wvi/VfBHCuecKXkg9D2P
-         A7DQuEci17BSZPWQcPif2XL2sp9aIQJFxXvSo9CB0D6fqp76X2tyOnvYJueKywBWel7U
-         zNdpoSAaybKs2ujLx514bLWHzSb6gX8ESU5u0P+VShNH6XYRHE8lUol7UxxJRKLGHl9R
-         +AqeplRZv5LRghXM/AIFH0ghzcvLkO5MPe+8Ghi6UEpd7LXJOx7k7AulJ/EB8VCl3S6B
-         Ie0w==
+        d=gmail.com; s=20230601; t=1754523793; x=1755128593; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=cfT15tOepazFTL2Lg8MMF8cCYjiRwORhTnogRj+tN3g=;
+        b=DKIcqLm+ARwUTgwnEHIF8CiFWFzRJaqD+FJi1AD5oGD6x8NbQk32xhVXgqmAptK9vR
+         HorbzILhj5+5L0qiVTMyAzCBNQaZDXN9QMuL55RduWk8irSOXRKiFGkPT6Elz4HF9ETv
+         LIQQBKpyTfUCRmzz1TO04Bqe60Hw0lptvPCfcN/yXOKyOK9ZmgIWJB/gt6M6xN1FtrOQ
+         psONIfLZe+S2Df0omNFWw85h+MjWZ2oVpPOVYQUYayvBolj7X1V4XTGER4/EEyPN9jX7
+         XpoD8pMoTFmy7wUUnykhvPIZe4bSZ8hoiy02MbFsiX3vunGREU6xGUuy9mQOy/zI4eaT
+         k09w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754523657; x=1755128457;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5+V5MD6/KwNXDMRDn89IDlWGyGIpIEfb7ohjgwGr06Y=;
-        b=V9p0ugw7q5Y1M4lSmuTjc1nm5gvqv0bFESXkWwSEIIRvpTxf5IbfUQg0bHzLnAuU4r
-         QuMMGm13rpRDYPZGKmQ1KFRKEFVAT5g5qzLb3E+ou3dXB3lQYyfDuEzd02gCn2Gxo6UM
-         C0fCcl0s/qC377jN8aBmWvD/vOlB0p129z48Pf2KHS9gsVueq8NlybYMra9zb8aezoqL
-         gxP+OLVdjy//BkZpR0Z5yIumwT7j5bQulMR0H+psjgtqnbxoOkl1v7m/y2XQ8rCm5Pb2
-         QQ1xUJ9hixMlX1w7SDgP/9oX/qobeyJevfPEfUIgfuJk0VDQkKHM2/3VTrmP8apBk1Es
-         Kf4w==
-X-Forwarded-Encrypted: i=1; AJvYcCVOjL8pE/4XRzl4lkZz0kPeLeskBhQc3Yd3/Mo1lNkAp/5saySI38D0C+5tBHPreiCOkSUwFM0FmQ==@kvack.org
-X-Gm-Message-State: AOJu0YyCq0+xstITwvbA7aUnVSolDfoQNXlZd5Bn3mdIQ2mwKqm0paYf
-	d/f20w5tKMhMl1jmUarBuRNeXFA//LkDcHalAGcBwiq+gP4K3K0ZxkqbNIDR0rU/d66KnQoVwSY
-	0hiKnqzMar0+wqcsgUwVkCBVCWWHHuFPgvW1Wywd6
-X-Gm-Gg: ASbGnctU6/BeQxrFv78aixq1JJ8m3P4K4cg2S6Y0nBI57IWoNPjtlrEqVojb90ccZdx
-	Ez1214OBSQzWDwHwB3mDZ6O0aTTkz43AAHS/h1reIzjkWrsubP7h3UCDxwPe83JUt5Wr1R4Xzd/
-	hve8HpjPTWRm8Xvldmdr76ONjAK2fhrgL2tjQx0KAhJGzLkR4ahkU0nCAh+fHK4j3aYSV727eY3
-	n7a+JoX6Kp1PXI8W/5s9UOO4KsFt5wJc3KL8g==
-X-Google-Smtp-Source: AGHT+IE9xx0BslmXdh3PX3583hJLYwZKiRHlhcVZuar+6J/aRROEdJOAGMwU1KyNvxPLk9ne8tw/T2xezEOaTvSGSQY=
-X-Received: by 2002:a17:903:28f:b0:234:325:500b with SMTP id
- d9443c01a7336-242b075c43amr21436795ad.22.1754523657123; Wed, 06 Aug 2025
- 16:40:57 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1754523793; x=1755128593;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cfT15tOepazFTL2Lg8MMF8cCYjiRwORhTnogRj+tN3g=;
+        b=L9MxlOHe8/GbOJ35kGAIo7KQXAcLgapdNBv8WS4EZ6h9u0OmaZTZoEBG4b3le00fAT
+         Dp31yVr8orryYNajNICxaCVQlOZXgsiZ+u5WgxzSrrGGxEI36ccHewQXY2oY1X+kdWpq
+         i4ICMYNSyihFv+tm7seouTs3xw0D13DCE8yYcKcWo4OfEURTdSfKGfFFpMkgjisys4s1
+         zeDPS3uWhlixQgIecrSyDvJUjtB/CxCQnuNdeLD8SIemRsHXiVaUdI2SnuSM2DkUEd/5
+         8wWtrrznlCXeMwml1+mq8B7sbdUwEmYmoPSBGX3Sb4/fcoJnBwDbIdqXcF9Rms6E9vSx
+         TBpA==
+X-Forwarded-Encrypted: i=1; AJvYcCWlPA9xRF7eWXiGFZ1NkihDmcxwfVWn5bx/Xn1mJZ3lBC+Fhkut6mnrnCrj1dhaAHnqceoTRngihg==@kvack.org
+X-Gm-Message-State: AOJu0YygMP0vioPMhL55+vbLICXkQM/sBq/nNBa9r7+xe6kftRwVjPN6
+	lBCs7wXA69P87CkJtBufjsojWEcNf7V8xJBx6m2iEJXj8PGc++Dt7IVH
+X-Gm-Gg: ASbGnctLJhoU12u0aJGlkeLtfRMyVPWV9cSM0syl1h7fsu8E8TD1n0qZ6TmXIaHCCT8
+	uId0cgZHiTnC+vLxUiWcAA5OWz868HQ43izbZWFyCkLLVhsKBaj4p+S2SOCMBdtRwTgjk+m8ECp
+	xfLEr+SclUIT7HrShJxh6BRCVKnROXFYZyje+blm/42Qv3e199an55a7+kdD73NGuTUbb+p67CL
+	saBjXY1eNZfQAYDoqrgI2VQbQ7RKXrnjhCwaAOd2CdRqDvfHhRRetU6+G+a6YiMbHpquAtk00AN
+	kvwxXiNyXhLXpXGWQIZ5hh5/2q3ntcvtIOO0L8JNpDKQY9sT/kkDieo415EUruTVs9O5h+XvnmJ
+	GlZO53i19Rk/suSmXVLXjjMWHeUzK69liABi5bAveUUfgVDeu1GFG
+X-Google-Smtp-Source: AGHT+IErqUmAYFMk9ex7yBFNFktwhE0CW7kYKo02zKyww8eNDXZVT5/FhMr+He7/ul7nzCXLh9hJVw==
+X-Received: by 2002:a05:6902:4389:b0:e90:235f:6c1 with SMTP id 3f1490d57ef6-e902ac7df0amr4638106276.25.1754523792936;
+        Wed, 06 Aug 2025 16:43:12 -0700 (PDT)
+Received: from bijan-laptop.attlocal.net ([2600:1700:680e:c000:9e66:4583:8a9c:a62])
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e900da4155csm2593946276.39.2025.08.06.16.43.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Aug 2025 16:43:12 -0700 (PDT)
+From: Bijan Tabatabai <bijan311@gmail.com>
+To: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: sj@kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bijan Tabatabai <bijantabatab@micron.com>,
+	Bijan Tabatabai <bijan311@gmail.com>
+Subject: [PATCH v2] mm/damon/core: skip needless update of damon_attrs in damon_commit_ctx()
+Date: Wed,  6 Aug 2025 18:42:54 -0500
+Message-ID: <20250806234254.10572-1-bijan311@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20250805064429.77876-1-daniel.sedlak@cdn77.com>
- <fcnlbvljynxu5qlzmnjeagll7nf5mje7rwkimbqok6doso37gl@lwepk3ztjga7>
- <CAAVpQUBrNTFw34Kkh=b2bpa8aKd4XSnZUa6a18zkMjVrBqNHWw@mail.gmail.com>
- <nju55eqv56g6gkmxuavc2z2pcr26qhpmgrt76jt5dte5g4trxs@tjxld2iwdc5c>
- <CAAVpQUCCg-7kvzMeSSsKp3+Fu8pvvE5U-H5wkt=xMryNmnF5CA@mail.gmail.com> <chb7znbpkbsf7pftnzdzkum63gt7cajft2lqiqqfx7zol3ftre@7cdg4czr5k4j>
-In-Reply-To: <chb7znbpkbsf7pftnzdzkum63gt7cajft2lqiqqfx7zol3ftre@7cdg4czr5k4j>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Wed, 6 Aug 2025 16:40:45 -0700
-X-Gm-Features: Ac12FXyPFTWmf4LzgmzsB_A4EJ6yxnsuvE00MbfxXyp9hRdFCTtZYOCeXLJDM_E
-Message-ID: <CAAVpQUB_aEcbOJR==z=KbfC1FtWi2NM_wNm_p+9vL1xqfw7cEQ@mail.gmail.com>
-Subject: Re: [PATCH v4] memcg: expose socket memory pressure in a cgroup
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Daniel Sedlak <daniel.sedlak@cdn77.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Neal Cardwell <ncardwell@google.com>, 
-	David Ahern <dsahern@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org, netdev@vger.kernel.org, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	cgroups@vger.kernel.org, Tejun Heo <tj@kernel.org>, 
-	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Matyas Hurtik <matyas.hurtik@cdn77.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: te7a8uw5ypxpuqdxdz3zo6wa9mxhxkj1
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 0A20120006
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5F78E140002
-X-Stat-Signature: naqh6etdfgm3shubeo7ykjs1s67u1s8g
-X-HE-Tag: 1754523658-481742
-X-HE-Meta: U2FsdGVkX1/lTmpsa7lTkKQZJ1zLhWBCyxui1vgyT0S7HKyoGDIqatHXk99TwJVH3uApd33UFTlvGlbejHjaC+5RI2UuL6mO8jbVysF8+v2XH43H1H6Sc2fi7lt1/DnxIXScYMQOznGi/SrGNF1ahqMwONnjuR+8y9s90xc7KM+Oo3eqg8u0oM9551ZzpUzfDn+8/pkgT7fu21wjRQNh/ZYIilXULf3n8gCi9ZywzKkTgGpEwUFi/hgsqw4sfUkLpknPVcIFPdhVUoKC5pC15mC62BnT1YHEEpwAufLRrcdn2TanAfqeK7rW6ga3Rl/Gcyka4YQ3bN3JY+2XCs45TUjoeKC1eGCy4nLmoozpxhzcDFR+WoaZIatDZCWwZRHgIm1/pS1LAcbGPcw+sXytQgM0WMUsenVDHJ7l/X2dyrzg+fUB3F1wzm7CsZVG4sYalc2eNgY9R0OcBTIyDzcdpxDC1+PIxz9go3tdNd/3t2I6nzedwjCLjseTEb3+IbeQMURMufihu0bMHsHKaz3hp+feHLkH+hHTbt0VGgRwFWXD3J6ok37MTvy3AVTohTfNf7tgaHejm1tDd1TGv+AvByO4s36I4msloeKDI4imd/zTGFT5YSad9KIQ7E22CmF5PEwi8hHsyPtauWXXPtEl15KEwd2x0HViCPylqceFnwX6A5PIX7VR9GGy0I7yd6XeI5f5H1HeZuh1GaUnuyrr/HgZybjBFBCL1aKRQfquCp6f+0KO5CeymizMOgNYjCBpNMMsrQl25JCwkTPsfg1eQTD1n/PBxXj08kb3KtscZb5dxu4q+yCQlFyMcYxPsbd41lhfgNPmFGPNt8puaAJr3UQS95JCruPqr3rVDcjShctjohEhtLWM/7nDqezBp3pY08DCHj16cf5gT+zPipIq/BKeSwMob6ANbZ+PWOIPAoOblUTVjH36J1wAg5CmFZ1kSUeMEimRamUQ8kyUSqg
- 8YBgCLvY
- QqvIPwTdmI0u2N2tB/ZWCoeVNmE6U/QE6uA/GPsp5RSWJXilWfcqkUdnLBq9A1uy1I4rimKUkQvPoJeZ8XPieh04jT02S58FrYUcTvDUD7cK+AS4x71MiUsy5g614f3pEWJ7ka0LhVafPZ+aQTCutHO3OgSKYntGJfKLDXZMHq/GiV+jPHNAfF9x+0HHo1x58YM5Q
+X-HE-Tag: 1754523793-260818
+X-HE-Meta: U2FsdGVkX1+ZEt2ba9lTQXytJV3sBHoD2XNEvxeIGDTuDIRg0Au5OiGRgTlNqLNHZwuh8A+sBXJNLqD8GwjxdiH03ptUqIStSkYfpA6mlw9sTKF8fmenq2OgYGdq3UuJ/b3Dp6gTQiEwS9hXOBpWZqXams7cz/kQ/MwrqG4mCHdY/kSGPk/lwHOXov75BQ6Lk3qL9EVSfTluDdnNv/khfO2nv/s6kwqvKnszwZUhav36dIuD4qCmW+O/jD3QKvJGEpZntMqOD/I79rA1ytLYkA59VjM4s9Tp8WKviqXSHC8npB6bSIbdOsComkjFLp6HiKNkvEuu+m5eM6bmxOU8rOocXxkMOluSxU34NLk2NIESMMr5u+zYS0du4F9zi1medgDTaR1UHLTrYpFzG9HTPCpZ8O+tPyErWSCreffLFDN3UqdKZMZ2KP4tBiAfIKqcr3YC6JQvRC47npIq3soXxuTuyZ1Q+F2Eeq++ysr09AX944PgsRQU0aiD2NuOEIZ96Vr11++Un6/LNEWrIXOQg5FYWyusAw+iOj/nxXYUrSZROBC4EF2NmY0vIeFUxKT31xUQPBr9bf5SfI/jg9a+UZV35K5/Y60BZ2AnwENXcib/rCF9otWtNkyalKa4nc3BieaCLtDfCV9YS1bndSXhGO8L5HEcLKdRt2h3Mn5tgRyVQeoK20SACVP8iAe1GIsmN92x9iJDENNLWdeb/3sMQ+NMo/uS9Kizx0wawcKonAoPAAHEmTs/7++fsaH2FNbNv2KXx3XdJQPRZso/Uz2BQKtDHUR/eVXYbrX3R0+hkEKGik4gzbNaA0IBFXigLt7qQ/pLH+c1YRi8+NBXiC6tlPzXHSlzMcTHE2cHLsmSbQHEMnnWj2oRT2wAs9ajbVdSki46/hu93E6LTEWP5+KjJitJgYeJpTWMG9ZVfvWG/APXOZwH7HNG47KE+HaSAd28tTOmdxC7skgHyCCOe2/
+ xPy4WoT0
+ rMSRCgUAy1TqVYP4/JANDd6e0AZS+5kq8v1O19xzHREm2iijDaRerSHoWqynhyYGVlxaBXHKYzQzeclw3M/65mo1rwaX1YMsgADvq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,72 +117,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 6, 2025 at 4:34=E2=80=AFPM Shakeel Butt <shakeel.butt@linux.dev=
-> wrote:
->
-> On Wed, Aug 06, 2025 at 03:01:44PM -0700, Kuniyuki Iwashima wrote:
-> > On Wed, Aug 6, 2025 at 2:54=E2=80=AFPM Shakeel Butt <shakeel.butt@linux=
-.dev> wrote:
-> > >
-> > > On Wed, Aug 06, 2025 at 12:20:25PM -0700, Kuniyuki Iwashima wrote:
-> > > > > > -                     WRITE_ONCE(memcg->socket_pressure, jiffie=
-s + HZ);
-> > > > > > +                     socket_pressure =3D jiffies + HZ;
-> > > > > > +
-> > > > > > +                     jiffies_diff =3D min(socket_pressure - RE=
-AD_ONCE(memcg->socket_pressure), HZ);
-> > > > > > +                     memcg->socket_pressure_duration +=3D jiff=
-ies_to_usecs(jiffies_diff);
-> > > > >
-> > > > > KCSAN will complain about this. I think we can use atomic_long_ad=
-d() and
-> > > > > don't need the one with strict ordering.
-> > > >
-> > > > Assuming from atomic_ that vmpressure() could be called concurrentl=
-y
-> > > > for the same memcg, should we protect socket_pressure and duration
-> > > > within the same lock instead of mixing WRITE/READ_ONCE() and
-> > > > atomic?  Otherwise jiffies_diff could be incorrect (the error is sm=
-aller
-> > > > than HZ though).
-> > > >
-> > >
-> > > Yeah good point. Also this field needs to be hierarchical. So, with l=
-ock
-> > > something like following is needed:
-> > >
-> > >         if (!spin_trylock(memcg->net_pressure_lock))
-> > >                 return;
-> > >
-> > >         socket_pressure =3D jiffies + HZ;
-> > >         diff =3D min(socket_pressure - READ_ONCE(memcg->socket_pressu=
-re), HZ);
-> >
-> > READ_ONCE() should be unnecessary here.
-> >
-> > >
-> > >         if (diff) {
-> > >                 WRITE_ONCE(memcg->socket_pressure, socket_pressure);
-> > >                 // mod_memcg_state(memcg, MEMCG_NET_PRESSURE, diff);
-> > >                 // OR
-> > >                 // while (memcg) {
-> > >                 //      memcg->sk_pressure_duration +=3D diff;
-> > >                 //      memcg =3D parent_mem_cgroup(memcg);
-> >
-> > The parents' sk_pressure_duration is not protected by the lock
-> > taken by trylock.  Maybe we need another global mutex if we want
-> > the hierarchy ?
->
-> We don't really need lock protection for sk_pressure_duration. The lock
-> is only giving us consistent value of diff. Once we have computed the
-> diff, we can add it to sk_pressure_duration of a memcg and all of its
-> ancestor without lock.
+From: Bijan Tabatabai <bijantabatab@micron.com>
 
-Maybe I'm wrong but I was assuming two vmpressure() called
-concurrently for cgroup-C and cgroup-D, and one updates
-cgroup-C's duration and another updates C&D duration.
+Currently, damon_commit_ctx() always calls damon_set_attrs() even if the
+attributes have not been changed. This can be problematic when the DAMON
+state is committed relatively frequently because damon_set_attrs() resets
+ctx->next_{aggregation,ops_update}_sis, causing aggregation and ops
+update operations to be needlessly delayed.
 
-cgroup-A -> cgroup-B -> cgroup-C -> cgroup-D
+This patch avoids this by only calling damon_set_attrs() in
+damon_commit_ctx when the attributes have been changed.
 
-Could that happen ?  Even if it's yes, we could use atomic ops.
+Cc: Bijan Tabatabai <bijan311@gmail.com>
+Signed-off-by: Bijan Tabatabai <bijantabatab@micron.com>
+---
+Changes from v1[1]:
+  - Compare entirety of struct damon_attrs
+  - Apply logic in damon_commit_ctx() instead of damon_set_attrs()
+
+[1] https://lore.kernel.org/all/20250806164316.5728-1-bijan311@gmail.com/
+---
+ mm/damon/core.c | 26 +++++++++++++++++++++++---
+ 1 file changed, 23 insertions(+), 3 deletions(-)
+
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 6a2fe1f2c952..80aaeb876bf2 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -570,6 +570,24 @@ void damon_destroy_ctx(struct damon_ctx *ctx)
+ 	kfree(ctx);
+ }
+ 
++static bool damon_attrs_equals(const struct damon_attrs *attrs1,
++		const struct damon_attrs *attrs2)
++{
++	const struct damon_intervals_goal *ig1 = &attrs1->intervals_goal;
++	const struct damon_intervals_goal *ig2 = &attrs2->intervals_goal;
++
++	return attrs1->sample_interval == attrs2->sample_interval &&
++		attrs1->aggr_interval == attrs2->aggr_interval &&
++		attrs1->ops_update_interval == attrs2->ops_update_interval &&
++		attrs1->min_nr_regions == attrs2->min_nr_regions &&
++		attrs1->max_nr_regions == attrs2->max_nr_regions &&
++		ig1->access_bp == ig2->access_bp &&
++		ig1->aggrs == ig2->aggrs &&
++		ig1->min_sample_us == ig2->min_sample_us &&
++		ig1->max_sample_us == ig2->max_sample_us;
++
++}
++
+ static unsigned int damon_age_for_new_attrs(unsigned int age,
+ 		struct damon_attrs *old_attrs, struct damon_attrs *new_attrs)
+ {
+@@ -1198,9 +1216,11 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
+ 	 * 2. ops update should be done after pid handling is done (target
+ 	 *    committing require putting pids).
+ 	 */
+-	err = damon_set_attrs(dst, &src->attrs);
+-	if (err)
+-		return err;
++	if (!damon_attrs_equals(&dst->attrs, &src->attrs)) {
++		err = damon_set_attrs(dst, &src->attrs);
++		if (err)
++			return err;
++	}
+ 	dst->ops = src->ops;
+ 
+ 	return 0;
+-- 
+2.43.0
+
 
