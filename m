@@ -2,86 +2,87 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DB7FDC87FCB
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 14:40:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D6905C87FD3
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 14:51:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A5AB6B009F; Wed,  6 Aug 2025 10:40:09 -0400 (EDT)
+	id 621F78E0005; Wed,  6 Aug 2025 10:51:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 656586B00A1; Wed,  6 Aug 2025 10:40:09 -0400 (EDT)
+	id 5ABBA8E0003; Wed,  6 Aug 2025 10:51:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56BE16B00A2; Wed,  6 Aug 2025 10:40:09 -0400 (EDT)
+	id 4737C8E0005; Wed,  6 Aug 2025 10:51:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 46E666B009F
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 10:40:09 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C2B961DCF33
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 14:40:08 +0000 (UTC)
-X-FDA: 83746592496.08.57F29F6
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 18374140010
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 14:40:05 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=g4s93K1c;
-	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754491206; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 357648E0003
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 10:51:09 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A8F11819D5
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 14:51:08 +0000 (UTC)
+X-FDA: 83746620216.25.9DD12A6
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5DC8740005
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 14:51:06 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=GyQbGQSh;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754491866; a=rsa-sha256;
 	cv=none;
-	b=3fU6TbVFJqOsOsrZRXZzWorrImllDJYibnUbmpVFU9YIMV9zwgovrzshkDrBO0vjI2HaKM
-	Un0fVW3+ixtYy0fc8ZHJWUPFAOuftSuF/8f/or8JriI6Aw2pkIfXASfuMg2juC7EbmOmk3
-	2ZsssKjii9UIrPsdYGq8lLXi4SDUxQk=
+	b=JPW08/hycr+8g4iyKljLOCxDbPRsHDEV/xDZ8H+MJiMdgJfZAsSsqdf3pYkVtTgUOXMbkE
+	6lGqfaKrSNvW4VMW+V029FiKQK7dZ6AX/XrzNmKXUX2YQwowcno0iqjEs3kbDr+GDiZLvl
+	uIzpSki6L+0aDk+Rb5Qtb56ZDBbZZWw=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=g4s93K1c;
-	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=GyQbGQSh;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754491206;
+	s=arc-20220608; t=1754491866;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1vyqAXSnHSxa1Yw2TKy41CyM8w43R1YIFxt8Q/JWysc=;
-	b=h6kn7XMoiTws2K50J+L04CwDtq0U5g/avY2drIgkVSf4+rw/rKO4kxqSVOmZoaMJURj9J5
-	9PZYp1Sn1KQUcxEz5e66psHjzObpsEiP1gN+aOYzxS9d5bm5uoBiD2R40npQzyOLc6K2Kj
-	RzU5hBzy6pMG18mzdiUw/3y/uWFfiRc=
+	bh=fCgDgJvA/YpJxdcLudWADFk4ALMp3oDElwmaAYQQxas=;
+	b=nX8P38sSKAtij1DWIY3RN3LUAdYT0RmC9quYlyZzjjLn3vlu8o51ENhrWyKKXv6DffIMD7
+	4ruN/DvZaPh2R9ePG2yqynZ/xXNqv5QIh1aWc17DZ+V5UKbLzhoQjDArH3wlKbiHIpLh2s
+	qilknBmyxg/cTAEINDfe1iD0zM6YfgQ=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754491206; x=1786027206;
+  t=1754491867; x=1786027867;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=aLheObBNOVd5wWcfX/UlmeZiWYAW9l+I+b/18Y/UWsk=;
-  b=g4s93K1cP4m/P4Kq3Da2f8I0GyKPPcWaukZj2iB+uLQqAtpg279Gm8qf
-   spDmxvpC0zZ3s9xm/6IEgxrPEhunYMNSfnyMC14jaiAXxH2stHzjxX58c
-   pmWoyfw2j6biPDJQH9gI7HDYoxwnAP7dkUap5s5oNys0HwlBAVbSHvuGT
-   0Lfhuu1myaFQ1QTy3T5vCx2GSc7cRLH/3XextAll0ju1yi/KW25Ln0wIO
-   t4Zr1tk3UxnKv2gjA27BSX4lIR3sWKXPkF3Wo3njN6WY81yHE+WDPGInC
-   EtpAbITwUC/vkw5Lj1c3NrbxJLPvIr+GXcR1GBAdfl666UoiwT3+TRIgJ
-   g==;
-X-CSE-ConnectionGUID: LsBrV658SqqJRNiros1YIg==
-X-CSE-MsgGUID: +gXfu/PyQ5KLVsIfYEpoZw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11514"; a="56889864"
+  bh=jYOf2US5bWDo7NlujX8N73KHv16qVgm8SXDzuRBuNuI=;
+  b=GyQbGQShfKIoaE1ejIjG34pASJ48cgh0j5RIxCksZgawWbVDiK7X2IBD
+   sKLO+NxxqQv8zD15nO1MpPZrkT/IhhHMOxeYiDGNc8dR7/3AbIifprE8P
+   qPb7nZVmS1+PIDd34GeVROQuI5AvxJPJ06I6S3isXVsaic/QXSwEZ+ZOj
+   wi9EVZBHreYI6T1aZI272Ap/z11bvILIgxh7sLDJQzmXohwAS/ErnB1BZ
+   RgWs6i8acHRfQ//hqW3FucPnWiYh0frrlkvc7rQU7RfzsxWe+T2ytmff9
+   a8yiAnEarJ5UEt+G10/jXq8GolLeTrkkjpaOszOCmTMoX70B0CCLS0hZS
+   w==;
+X-CSE-ConnectionGUID: AwKpJ+mqSxq3pxCNI6ewrA==
+X-CSE-MsgGUID: kRcH8usUSXGX1Q01DW48LQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11514"; a="67078665"
 X-IronPort-AV: E=Sophos;i="6.17,268,1747724400"; 
-   d="scan'208";a="56889864"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2025 07:40:04 -0700
-X-CSE-ConnectionGUID: 5NGPTsi5QaGcZR7dOLyoKw==
-X-CSE-MsgGUID: shcTRVviTBSO32SyPM8lpQ==
+   d="scan'208";a="67078665"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2025 07:51:05 -0700
+X-CSE-ConnectionGUID: XH6+x08qTfGWxhF0zUB9XA==
+X-CSE-MsgGUID: acmb15dRTzSsSmXqlb9RyQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.17,268,1747724400"; 
-   d="scan'208";a="188461741"
+   d="scan'208";a="165567416"
 Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by fmviesa002.fm.intel.com with ESMTP; 06 Aug 2025 07:40:01 -0700
+  by fmviesa010.fm.intel.com with ESMTP; 06 Aug 2025 07:51:01 -0700
 Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1ujfJ3-0001m2-0O;
-	Wed, 06 Aug 2025 14:39:54 +0000
-Date: Wed, 6 Aug 2025 22:39:48 +0800
+	id 1ujfTn-0001n8-00;
+	Wed, 06 Aug 2025 14:50:59 +0000
+Date: Wed, 6 Aug 2025 22:50:14 +0800
 From: kernel test robot <lkp@intel.com>
 To: Steven Rostedt <rostedt@goodmis.org>, linux-kernel@vger.kernel.org,
 	linux-trace-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Masami Hiramatsu <mhiramat@kernel.org>,
 	Mark Rutland <mark.rutland@arm.com>,
 	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
@@ -92,22 +93,22 @@ Cc: oe-kbuild-all@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Ian Rogers <irogers@google.com>, aahringo@redhat.com,
 	Douglas Raillard <douglas.raillard@arm.com>
-Subject: Re: [PATCH 3/7] tracing: Have syscall trace events read user space
- string
-Message-ID: <202508062230.puMRaDdE-lkp@intel.com>
-References: <20250805193235.080757106@kernel.org>
+Subject: Re: [PATCH 7/7] tracing: Add syscall_user_buf_size to limit amount
+ written
+Message-ID: <202508062211.cwYqtLu0-lkp@intel.com>
+References: <20250805193235.747004484@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250805193235.080757106@kernel.org>
+In-Reply-To: <20250805193235.747004484@kernel.org>
+X-Rspamd-Queue-Id: 5DC8740005
+X-Stat-Signature: hzdgex4iqeydh3jchpixcto8fradd1u6
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 18374140010
-X-Stat-Signature: m8qazegnri19cmwyrf678q78b6a6jk6b
-X-HE-Tag: 1754491205-809461
-X-HE-Meta: U2FsdGVkX1/vv0FP6XzvPQgPkv9XfwMKQ7UrjlGoW6oqcAo7Pf/u9QaN0aFiy8mpCP49MwIZGsokhSEbrpv7PiGZ0uIb4N6RiZuhMMDjTs/EWZqmtQ/7O0xf5UndQNMyizVAOf9agnVNua7kcqBiH3m/l3UBxNhE3578zYQuEKCdpEf2rmMbyoOk6FkASMBWwo6S3sL+/W2x1xRLBaGlEilDHzcXtIrlXUSBFpxXz5d7IcbHAtzkxPxMjkjkbJsJdEAkUayY5J2M4vdxAQ1amrlFAWR8/BwiuEINP9q0Tvcq2Legw0sMeLnHN4et1FacF793z+BN6MT/+w6qGtDXpPQoLX8tU57ldLsGaUqfQConE6RFm60+/lbdck+YA1zB36bmiB+qx0YOJlTSMhPZmPaUiEcpnxtcCB1TO2PSyXcOEkhFyBIHe5ZwP8qDqAJqdyjBoLQVFMYNzdLLqPpz86bBGA+3Q28NQlZmmTNSCKxjG5LxOeOdSy0kj0dOsPtcjldnoEoMAGofHs86TfClO7TczP5KngmM8CN4kMF5MjvWnxDxuvY7YMveuKRlegyKiaXZMpNjEhy/1R/WglJHxFuet2pYmiUCRBLopBgja5uWsF0CgT2u7giLh75D4RIt1qK8sdTbYDIlM/lVaBEdZycB6JsI/dUgQoiMbKc2Q/lca3BivtWvRYWfrv+oY2lmPhe5n8ghisplJyEls2twvx9X+53DZH8FdcfiiOXWGRpiRevj8XmxMZDhaf1x6c9hXGCWtQuyavZiOVSGZi0Ph4wlKACWdGPrY1261ThXjPhu+IOMjE7TLBr9vTCzPv+i0l2IVtsNpjY6/MQxZhvtQVHH3Or7niJlcVBTeP8y3tMc1LD1b/iOa3UOFJ7SZyAanGErsEOoaERZlW2lOlo4aJRqKUgk7GxApOn+gQWyfr7hi58zrbyVp+YuDtQOyHnZyajnOKWbuOGeaOrl7/d
- nudh4ojq
- qMqfM457R2xeR1Xyxmp0fLPTFbyGS2VOdD9SgCtjFH2aTdXrqPeGVQLLWT8elElWK0b433dnLLEQL3Ru+l3f6r1QhizvxuhdW7oCeVQp0bf2djKVGZfA/og2sdprftfSNDOzoJgJmDDfGkRclWbgouwnINuP63mYLXMap5ImXBtASaUGwmrz2U5NUh/oCV6yc//8fVdQRngrbchifKdHDtrsW8sTNg6riHnbfmt3lkbcRiwN1V3muKrHI67RnA0z3PBCZZI/e6l0z33IMddBnXYpiGS+1aKomQhkce1UPvWDngtPD3mRRCayy2yp4zFuCdCnPlEkHBjvjhqYoNyCascUM4qdYqYYSaJJ7
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1754491866-148163
+X-HE-Meta: U2FsdGVkX1/V2tZ2PNfaWeksj2tcMfd1Mh1RBbW3oPiVZYvoKf9yboA/ES331OwQtLbILcytEgrbuorsu3aR7f8K5iFixGMNoe6ARjpY69qrVVJszeHht+HMspigOQDVbeaCmt5N3rgo49vL0iZDHdPRaNQRP0IgW7iCdqU0DsXbLFf3Gv2iWv1dgVQns18dRH02t9XckZ9nty2d1qfEdNckd3BOHdlp4VTY3Ysx8d+1wOouxE0nt0HoboBMG6dQE3stgm312T/TdZklspMSgiF7jNFMyUE+9AQExgQeJzbi0lprN6od1NB8cNLBAa1FdAVq6HjtPAdo04p3dLvrpek/XV9UbJKtOrAr8wZrXKCfCFqnXV8ivzHS9yCJEDnZEGQRI3JaUyiYO/unKT2S5eu4C3LEbvhWlRgXmicw/wOarxnIQxXvY9OzoFio00gGYo2l6T/BPMSVZEFzku8cQ//xqPbsV4hvAnOJV9rBe+jaPKmg2ZJWuJy+HvlWPL5zWqe9jsULVt518ZH2MsvTT+WjCXNNgzG4hF/o6/cG+JWCT6xxjwQQrlDDFlLXJ5u1P50lplySmrWgaFprxSer+Dg0Osyux3vRee315yIVqjcFIxiTA+mx2oEs2qbnTIYu8Y7dNEf6CjhgnliR0/k9suZtIDULyVBga1BfvqxFkNTsHYX9cocF12iSeerov2ycazzvaXhlu86sTtSPCpx2VM346hk1VFDoWekXYAeqzrDvSeOG4ubKIXQnCT8kMcq0cGX9JRVzAKd/f4RUW/tRVmDCGmMqgPKj6yc3G3/2imaiwHVePZCN80rirKR5375NqS+FJh3YwNjO1llqZRp5ZAjOqbsAwo/z5Xno0BHePjJ5MueCi17f7U14egdV/UmGg/M73OU4gk31kpTOaiAJxgoCkLGnujLQ/76TnpIdRNrKps5F28i2N6zMUB8zOqBTRggzEp4Yd4eNSn3FhHG
+ WGFST6qo
+ v0bnSQXmbOXvhD/FTOfNhihlKtJ//+KiJNQbL9HP8XzhZJMWCicWffxAcC1y4VRkCr2ktCwWe5nvFaJtsOysxkYKA5npGKgxSezLirlgp5oDkVkgggC/GQiymHd4jSR3sax4U7FIKf4cJ7HOROMGvePEGArw0CuogBg9f6u3/kcATIFhkpx3Gjjt7oU1Co9tYEqnxNi8PoR7+NHX3IU0RqINJlLwJd8Exc19eYe8EHQt/JKrAudrvU6xA1LZ99waF2XE0bGOPJx8h7K354gDYOIu71roR5Xu7Nm6F82z2uOpA9/bLQjvj448Nk0H934S5n5ihxneexm4bQ/BffqogwR0lRNd1hpMLN7RTfUROPdDn9PayR8eKhKZCP42sMa9H3p6onwo8UdH42FA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,145 +129,75 @@ https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
 url:    https://github.com/intel-lab-lkp/linux/commits/Steven-Rostedt/tracing-Replace-syscall-RCU-pointer-assignment-with-READ-WRITE_ONCE/20250806-122312
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace for-next
-patch link:    https://lore.kernel.org/r/20250805193235.080757106%40kernel.org
-patch subject: [PATCH 3/7] tracing: Have syscall trace events read user space string
-config: parisc-randconfig-r071-20250806 (https://download.01.org/0day-ci/archive/20250806/202508062230.puMRaDdE-lkp@intel.com/config)
-compiler: hppa-linux-gcc (GCC) 11.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250806/202508062230.puMRaDdE-lkp@intel.com/reproduce)
+patch link:    https://lore.kernel.org/r/20250805193235.747004484%40kernel.org
+patch subject: [PATCH 7/7] tracing: Add syscall_user_buf_size to limit amount written
+config: hexagon-randconfig-002-20250806 (https://download.01.org/0day-ci/archive/20250806/202508062211.cwYqtLu0-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 7b8dea265e72c3037b6b1e54d5ab51b7e14f328b)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250806/202508062211.cwYqtLu0-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508062230.puMRaDdE-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508062211.cwYqtLu0-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
-   kernel/trace/trace_syscalls.c: In function 'check_faultable_syscall':
->> kernel/trace/trace_syscalls.c:886:14: error: '__NR_newfstatat' undeclared (first use in this function); did you mean 'sys_newfstatat'?
-     886 |         case __NR_newfstatat:
-         |              ^~~~~~~~~~~~~~~
-         |              sys_newfstatat
-   kernel/trace/trace_syscalls.c:886:14: note: each undeclared identifier is reported only once for each function it appears in
+>> kernel/trace/trace.c:11128:32: error: use of undeclared identifier 'CONFIG_TRACE_SYSCALL_BUF_SIZE_DEFAULT'
+    11128 |         global_trace.syscall_buf_sz = CONFIG_TRACE_SYSCALL_BUF_SIZE_DEFAULT;
+          |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   1 error generated.
 
 
-vim +886 kernel/trace/trace_syscalls.c
+vim +/CONFIG_TRACE_SYSCALL_BUF_SIZE_DEFAULT +11128 kernel/trace/trace.c
 
-   802	
-   803	/*
-   804	 * For system calls that reference user space memory that can
-   805	 * be recorded into the event, set the system call meta data's user_mask
-   806	 * to the "args" index that points to the user space memory to retrieve.
-   807	 */
-   808	static void check_faultable_syscall(struct trace_event_call *call, int nr)
-   809	{
-   810		struct syscall_metadata *sys_data = call->data;
-   811	
-   812		/* Only work on entry */
-   813		if (sys_data->enter_event != call)
-   814			return;
-   815	
-   816		switch (nr) {
-   817		/* user arg at position 0 */
-   818		case __NR_access:
-   819		case __NR_acct:
-   820		case __NR_add_key: /* Just _type. TODO add _description */
-   821		case __NR_chdir:
-   822		case __NR_chown:
-   823		case __NR_chmod:
-   824		case __NR_chroot:
-   825		case __NR_creat:
-   826		case __NR_delete_module:
-   827		case __NR_execve:
-   828		case __NR_fsopen:
-   829		case __NR_getxattr: /* Just pathname, TODO add name */
-   830		case __NR_lchown:
-   831		case __NR_lgetxattr: /* Just pathname, TODO add name */
-   832		case __NR_lremovexattr: /* Just pathname, TODO add name */
-   833		case __NR_link: /* Just oldname. TODO add newname */
-   834		case __NR_listxattr: /* Just pathname, TODO add list */
-   835		case __NR_llistxattr: /* Just pathname, TODO add list */
-   836		case __NR_lsetxattr: /* Just pathname, TODO add list */
-   837		case __NR_open:
-   838		case __NR_memfd_create:
-   839		case __NR_mount: /* Just dev_name, TODO add dir_name and type */
-   840		case __NR_mkdir:
-   841		case __NR_mknod:
-   842		case __NR_mq_open:
-   843		case __NR_mq_unlink:
-   844		case __NR_pivot_root: /* Just new_root, TODO add old_root */
-   845		case __NR_readlink:
-   846		case __NR_removexattr: /* Just pathname, TODO add name */
-   847		case __NR_rename: /* Just oldname. TODO add newname */
-   848		case __NR_request_key: /* Just _type. TODO add _description */
-   849		case __NR_rmdir:
-   850		case __NR_setxattr: /* Just pathname, TODO add list */
-   851		case __NR_shmdt:
-   852		case __NR_statfs:
-   853		case __NR_swapon:
-   854		case __NR_swapoff:
-   855		case __NR_symlink: /* Just oldname. TODO add newname */
-   856		case __NR_truncate:
-   857		case __NR_unlink:
-   858		case __NR_umount2:
-   859		case __NR_utime:
-   860		case __NR_utimes:
-   861			sys_data->user_mask = BIT(0);
-   862			break;
-   863		/* user arg at position 1 */
-   864		case __NR_execveat:
-   865		case __NR_faccessat:
-   866		case __NR_faccessat2:
-   867		case __NR_finit_module:
-   868		case __NR_fchmodat:
-   869		case __NR_fchmodat2:
-   870		case __NR_fchownat:
-   871		case __NR_fgetxattr:
-   872		case __NR_flistxattr:
-   873		case __NR_fsetxattr:
-   874		case __NR_fspick:
-   875		case __NR_fremovexattr:
-   876		case __NR_futimesat:
-   877		case __NR_getxattrat: /* Just pathname, TODO add name */
-   878		case __NR_inotify_add_watch:
-   879		case __NR_linkat: /* Just oldname. TODO add newname */
-   880		case __NR_listxattrat: /* Just pathname, TODO add list */
-   881		case __NR_mkdirat:
-   882		case __NR_mknodat:
-   883		case __NR_mount_setattr:
-   884		case __NR_move_mount: /* Just from_pathname, TODO add to_pathname */
-   885		case __NR_name_to_handle_at:
- > 886		case __NR_newfstatat:
-   887		case __NR_openat:
-   888		case __NR_openat2:
-   889		case __NR_open_tree:
-   890		case __NR_open_tree_attr:
-   891		case __NR_readlinkat:
-   892		case __NR_renameat: /* Just oldname. TODO add newname */
-   893		case __NR_renameat2: /* Just oldname. TODO add newname */
-   894		case __NR_removexattrat: /* Just pathname, TODO add name */
-   895		case __NR_quotactl:
-   896		case __NR_setxattrat: /* Just pathname, TODO add list */
-   897		case __NR_syslog:
-   898		case __NR_symlinkat: /* Just oldname. TODO add newname */
-   899		case __NR_statx:
-   900		case __NR_unlinkat:
-   901		case __NR_utimensat:
-   902			sys_data->user_mask = BIT(1);
-   903			break;
-   904		/* user arg at position 2 */
-   905		case __NR_init_module:
-   906		case __NR_fsconfig:
-   907			sys_data->user_mask = BIT(2);
-   908			break;
-   909		/* user arg at position 4 */
-   910		case __NR_fanotify_mark:
-   911			sys_data->user_mask = BIT(4);
-   912			break;
-   913		default:
-   914			sys_data->user_mask = 0;
-   915		}
-   916	}
-   917	
+ 11110	
+ 11111		init_trace_flags_index(&global_trace);
+ 11112	
+ 11113		register_tracer(&nop_trace);
+ 11114	
+ 11115		/* Function tracing may start here (via kernel command line) */
+ 11116		init_function_trace();
+ 11117	
+ 11118		/* All seems OK, enable tracing */
+ 11119		tracing_disabled = 0;
+ 11120	
+ 11121		atomic_notifier_chain_register(&panic_notifier_list,
+ 11122					       &trace_panic_notifier);
+ 11123	
+ 11124		register_die_notifier(&trace_die_notifier);
+ 11125	
+ 11126		global_trace.flags = TRACE_ARRAY_FL_GLOBAL;
+ 11127	
+ 11128		global_trace.syscall_buf_sz = CONFIG_TRACE_SYSCALL_BUF_SIZE_DEFAULT;
+ 11129	
+ 11130		INIT_LIST_HEAD(&global_trace.systems);
+ 11131		INIT_LIST_HEAD(&global_trace.events);
+ 11132		INIT_LIST_HEAD(&global_trace.hist_vars);
+ 11133		INIT_LIST_HEAD(&global_trace.err_log);
+ 11134		list_add(&global_trace.marker_list, &marker_copies);
+ 11135		list_add(&global_trace.list, &ftrace_trace_arrays);
+ 11136	
+ 11137		apply_trace_boot_options();
+ 11138	
+ 11139		register_snapshot_cmd();
+ 11140	
+ 11141		return 0;
+ 11142	
+ 11143	out_free_pipe_cpumask:
+ 11144		free_cpumask_var(global_trace.pipe_cpumask);
+ 11145	out_free_savedcmd:
+ 11146		trace_free_saved_cmdlines_buffer();
+ 11147	out_free_temp_buffer:
+ 11148		ring_buffer_free(temp_buffer);
+ 11149	out_rm_hp_state:
+ 11150		cpuhp_remove_multi_state(CPUHP_TRACE_RB_PREPARE);
+ 11151	out_free_cpumask:
+ 11152		free_cpumask_var(global_trace.tracing_cpumask);
+ 11153	out_free_buffer_mask:
+ 11154		free_cpumask_var(tracing_buffer_mask);
+ 11155		return ret;
+ 11156	}
+ 11157	
 
 -- 
 0-DAY CI Kernel Test Service
