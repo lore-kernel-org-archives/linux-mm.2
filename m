@@ -2,119 +2,106 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FC6EC87FCB
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 16:18:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 54050C87FD3
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 16:19:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E0F2A8E000A; Wed,  6 Aug 2025 12:18:48 -0400 (EDT)
+	id ED39D6B0099; Wed,  6 Aug 2025 12:19:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC01B8E0003; Wed,  6 Aug 2025 12:18:48 -0400 (EDT)
+	id E84FC6B009A; Wed,  6 Aug 2025 12:19:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CAEBA8E000A; Wed,  6 Aug 2025 12:18:48 -0400 (EDT)
+	id D73676B009E; Wed,  6 Aug 2025 12:19:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B63428E0003
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 12:18:48 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 65C11140653
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 16:18:48 +0000 (UTC)
-X-FDA: 83746841136.06.3D690B2
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 8EC1D140010
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 16:18:46 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="E8x/ScCE";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.222.176 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754497126;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7xTP21K+jB6LayI4lbO9257BksRaVlqE7Ti1iQOs5KI=;
-	b=zhPH2xBO4QcryHlTPMuitH5vCsmSj2XE+fISWMVn/vrqSCjqO2xjqdrGfhV8MnFWo0ekN/
-	mbgQpliJfCinBj7ikIZFmP77Bs5/IC/xrodNUmVtRyJ1/ipjYvyOzArlmYtaoq2ad0JYx4
-	k4GdJqbU6pUq9AM6FVHfgR5v+Nszt8A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754497126; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C12A56B0099
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 12:19:19 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 647B381BB9
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 16:19:19 +0000 (UTC)
+X-FDA: 83746842438.21.954F8D3
+Received: from m.syntacore.com (m.syntacore.com [178.249.69.228])
+	by imf02.hostedemail.com (Postfix) with ESMTP id EDFED8000D
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 16:19:16 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=syntacore.com header.s=m header.b="Ef/RJIoN";
+	spf=pass (imf02.hostedemail.com: domain of svetlana.parfenova@syntacore.com designates 178.249.69.228 as permitted sender) smtp.mailfrom=svetlana.parfenova@syntacore.com;
+	dmarc=pass (policy=none) header.from=syntacore.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754497157; a=rsa-sha256;
 	cv=none;
-	b=hVXjR1d554bMx0vuysb2GNH2/YS9cywoUX7OReLehbtLb0VVjSGcLq66J8ug8jPQGxpbg4
-	3/4fCP21LYyAdlxbGGwQUaLAOA9opOZY4jD18pdsU++MbsPqzunzX6socXnRhROf7JgrRg
-	mJa0Rzh0FCAgh+QGyGBfUhwpt1TrrTY=
+	b=QWKEBi9Q3v/no7slLwazlWPgOW3lsd9onEMHJZ2Ttb3PgmixLrOdn/IsmNeNj5WF7gW8rb
+	+scE5hfz8gEYBxhqU53xI79wCIeqiDJRD14TMU6mHMX3rO52IgZM/kCpHl0k4HjJNPtAZr
+	b8IA9AS6BF8JhRL4muUkzJY0WOOSOlQ=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="E8x/ScCE";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.222.176 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-7e34493ecb4so6125485a.1
-        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 09:18:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754497125; x=1755101925; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:reply-to:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=7xTP21K+jB6LayI4lbO9257BksRaVlqE7Ti1iQOs5KI=;
-        b=E8x/ScCEvnJClo4kB2tLWIv1/cEF/DhSksOftzKRXN+FsyTqqcILkuyPnic/q7HLMN
-         SIiTgsfnXSVho9SbyKi6tKTxoPxH9q66QLoKB5/zH6TpFFB9CoZ2B2j/DLAYk0N9x+L7
-         mvc7BCZNkz9VpzeBvOmoK1Vcw1zVb/3zsT5gxdMTyYwGfXReHF6X2xMX2x7r4bTevkma
-         TyldnCIlP9w1wvmlXVqSRv5Se9Sc3fuoGjb6aKFUl01eVrgBZ58B7FKPXzrribBQCsnc
-         YiY9rt8RqCicFzVSkE8bIviIhLpTAmtD1jNhR00aKEFdJVAOIsU+4bF+bfGMmACefGMr
-         x+Og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754497125; x=1755101925;
-        h=content-transfer-encoding:mime-version:reply-to:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7xTP21K+jB6LayI4lbO9257BksRaVlqE7Ti1iQOs5KI=;
-        b=jkfD4w9V4vKp6LBxpjqCa5jRvKK23jkC87DjYUQocaCLgace58OZM2ngfCXSLKb7ik
-         8x3e1K0DluBHzzZDkP7R3S+66zNZw7/8jsOaOKWQd73cf1Sw4JpIht//cI1uWNVoP2xS
-         8qPg0PG72rSEdB3rJF9VbktanTxefTaXzbKTufm4GbCJB3ZIIHh+4Rm6AjYoVvYn+26P
-         7BS8TjV4NdyoKZ3v2GHD8bP4hZ/gCWYpj8DMG1MYizJEYbWo/pnJ8ErNV08PX/cDckKi
-         DscMWCEKQJFwUI+wFXnd4IIhZd5f0h6OLVoynRJO8SCKY8IT0m+Yyu8pTLwPGQpP8v8r
-         uqNw==
-X-Gm-Message-State: AOJu0YwbWF7/S1BKbbVnQYGEUf3oiwOPqPF+PGyxySbO92uIGcQX3pkk
-	UWQLbxv8pMPNWvxbz7MBEKHPgbnZm60Z2rHCc0LBu4xrqFfj/RmqOB9oo7+T6cGMgnM=
-X-Gm-Gg: ASbGnctLUynvzOGlfLrr1PvYDCL6VE4WH6dsNfKRnTnImj1jsiLhUwyctOgHjyTrja1
-	6kolwE43JV46C9XEyeqdyvWN/2HoFZVgsCkw3BRAjEug2DJ7zA+js2CEOy4R1clKsmDAiuXV0Rx
-	tsXaGKdxBS0ytTYgZDHzU13Lq8uFfsy5dMzanrrrsqyOOLlp9xOHZO6wJwvY1H0aayZyHE5uf0A
-	8IU0igvQZRK3X/b4OElx5dlWtQFmE5OzuphaAUcg0SLQ4XmID8O0Z394wBgnkdUF6YPLePnAZR1
-	QAUCOviCe+IkPMMLq0pF1zM2kRJGdxpCzFBIHyNKmbwL9Mcaxxd2iksRbLGp9Q9bEja6YcEq6vQ
-	WntGcKBwO8qpX+b8mGni5tr4S4BQ=
-X-Google-Smtp-Source: AGHT+IEiDj+VysZpnFBYXYgnr7uq4D1H/+DepEQer1BDI3uxqce/V9Sjo60cv+6UqW8BMCTnSCbvyg==
-X-Received: by 2002:a05:620a:4513:b0:7e8:848:64c1 with SMTP id af79cd13be357-7e8165f603dmr442638985a.12.1754497125020;
-        Wed, 06 Aug 2025 09:18:45 -0700 (PDT)
-Received: from KASONG-MC4 ([101.32.222.185])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e7fa35144esm464081885a.48.2025.08.06.09.18.41
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 06 Aug 2025 09:18:44 -0700 (PDT)
-From: Kairui Song <ryncsn@gmail.com>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Chris Li <chrisl@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	"Huang, Ying" <ying.huang@linux.alibaba.com>,
-	linux-kernel@vger.kernel.org,
-	Kairui Song <kasong@tencent.com>
-Subject: [PATCH v2 3/3] mm, swap: prefer nonfull over free clusters
-Date: Thu,  7 Aug 2025 00:17:48 +0800
-Message-ID: <20250806161748.76651-4-ryncsn@gmail.com>
+	imf02.hostedemail.com;
+	dkim=pass header.d=syntacore.com header.s=m header.b="Ef/RJIoN";
+	spf=pass (imf02.hostedemail.com: domain of svetlana.parfenova@syntacore.com designates 178.249.69.228 as permitted sender) smtp.mailfrom=svetlana.parfenova@syntacore.com;
+	dmarc=pass (policy=none) header.from=syntacore.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754497157;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=U6FTpKiOoyRjzi4zEir5vSNswrtfpJfF7RjfrB5z0zs=;
+	b=OpXkPEL8K9mNI2apzF0PK3qAZ6zIUod9smVzwMZEALRY94kGofBdPytQRMuxQI5MvjyqVi
+	fokMw0vnhYue90XQLSdJ9bcfHskPuNGkij8HxYL6mdlbf4kiyNiXy9z0q4s57wG3m6kgnG
+	/MagxVk+PxUGfdnghLKPsKGfyZTxSEM=
+Received: from MRN-SC-KSMG-01.corp.syntacore.com (localhost [127.0.0.1])
+	by m.syntacore.com (Postfix) with ESMTP id 5664B1A0004;
+	Wed,  6 Aug 2025 16:19:15 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 m.syntacore.com 5664B1A0004
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com; s=m;
+	t=1754497155; bh=U6FTpKiOoyRjzi4zEir5vSNswrtfpJfF7RjfrB5z0zs=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+	b=Ef/RJIoNJbs8EZgWhpfBfkBP9vpaJvH9f08yilVqXmt6XAnNeo3IlyE9Ifj3KZYO1
+	 fk4AgYgfGCtS02Qdnhy2rktbsvSoZlY9ZH2UD1u6Q88xHcUiW6BgAUGLliWm4QaGwn
+	 tvppdrKUJw+ztzH8SKrAiAdV7o/2FvFJDSXt7E8alQJxu2f+UmGoXSm6q7gDlPUVj0
+	 AYs7O9nafqTs0mrGWxxBm3TedeYsCBzjZXKLk466X+OewqkeBBmnwU/C6NGjxn2u4+
+	 GAxxMfsUOxfgjE5dTT0sWYwreGmlwQdyplt62HDfY6p9fkGshVnvd84SeVegfIHwrL
+	 5QRRHp+koFaeA==
+Received: from S-SC-EXCH-01.corp.syntacore.com (exchange.syntacore.com [10.76.202.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by m.syntacore.com (Postfix) with ESMTPS;
+	Wed,  6 Aug 2025 16:19:13 +0000 (UTC)
+Received: from localhost (10.178.118.36) by S-SC-EXCH-01.corp.syntacore.com
+ (10.76.202.20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 6 Aug
+ 2025 19:18:47 +0300
+From: Svetlana Parfenova <svetlana.parfenova@syntacore.com>
+To: <linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+CC: <viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <jack@suse.cz>,
+	<kees@kernel.org>, <akpm@linux-foundation.org>, <david@redhat.com>,
+	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
+	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
+	<svetlana.parfenova@syntacore.com>
+Subject: [RFC RESEND] binfmt_elf: preserve original ELF e_flags in core dumps
+Date: Wed, 6 Aug 2025 22:18:14 +0600
+Message-ID: <20250806161814.607668-1-svetlana.parfenova@syntacore.com>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250806161748.76651-1-ryncsn@gmail.com>
-References: <20250806161748.76651-1-ryncsn@gmail.com>
-Reply-To: Kairui Song <kasong@tencent.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8EC1D140010
-X-Stat-Signature: whxef14xjwzdam1coxmpf55swi4s1k1z
+Content-Type: text/plain
+X-Originating-IP: [10.178.118.36]
+X-ClientProxiedBy: S-SC-EXCH-01.corp.syntacore.com (10.76.202.20) To
+ S-SC-EXCH-01.corp.syntacore.com (10.76.202.20)
+X-KSMG-AntiPhishing: not scanned, disabled by settings
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/08/06 13:33:00 #27636797
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 5
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1754497126-129450
-X-HE-Meta: U2FsdGVkX1/kXW5CHkaIhZ9I5SXvS2x9gwaQh+4+LVn1b1NyqNNff9HlsMSci+u76hRBaACi47p+FIIdB6gM9fbPZuQheQS4FYufi+QXae+GZ+blY9Ub6PU9LtZ/Q8yA+vGHaypvljwX8ZPMNO0Tgeomo7vVOs5K2WDFI6YjgmKubcajpNFJS4cPOBuXQUzl7DYSwF2pL0RdiJ81PJBIqdFoiiyWhyfjp3W+d5HXew7NtnOfjFBpaCmtY+iRRcaORTS7apMiIEcW1mS2plv6vEU/QbGCkdRvRXi/awAphehxam1b7TjO7UvFzLJumUuNn7ZoRSi2ha1fXcd8K6EVC+rnJwS38aGfcLjKFcx7nm8t1wesBcSCarJJo9oMFeOuPfJQYR0Jq6EwCKckgZLSJjZsqnjH3gtXmOifcY9sBDtBLuwb3paCPrEONFuf/1bcT4pFowcjLofrR+AMF4ReOFwQkSUa+ySF+sYdBvDfzSIdkogHh1vnBCC/MKwF6/angk0L1SOLdvye7zV7H1laNgzw+xV58WZd6G2F0zOkKAY42N6bdYjJlGDc8gV7Meo7KQS4vbOYKaxCDJImEH8hOO66Bp/wBcbDcizMgvu4fqtfPmi40lVh0Zqzo//Dmzvw4N+zi7VZZFWsc3aDgR7dBOQrBZq00Do6pFkJR0FPW84+e6YwJf/ODlaYRCzwLCO73kSrcLjuWdYnJgxAmnm+Ft8vBI58EA+UmdPF4Xtb0mOarzGlCFm3eEJniUhfTu/b3XL30WolXMclT6WGbFPwu1Zqek1FH4ltlghouL9xZfi9cFo60eQUxN7R749qMixrhJfMYsc9aXba9UFeMFl8ulOPl6RFOWNH2TevnymIZ/PWJ2qR4y1cEJoYEncxw1O73xX6TZn9EbYMDLJ4nXIJRVJ56mp8NFWgyODRkTjJxbJY+8nNpJv3aN2VKnDaJKJQdd0U/iygMoNMYB1N8Nn
- B4Za2VCe
- lVWGxUfwqbcVqrBrkWHSZ9F6IvqAbhFKhyMlZeuHY3aMDUeObTBr+od+OQEhN2OhSHFlKNZE8PgZTc0SJNbrWCno4YmAMySVypNqIl1bD0PsCXjwtQnrJPFl+t1kPxll3oa8E5v1QVoh71Vnl9w0+yuLkTprj+LDtW+98Rnp0kjDqQ1AAqJ2lGj2C5h2p3dRD3X4XtAD8Qf8Okbw6LoO4QmUF1KU7bF5zicb9ERvw22JynmlskxE5aVdQLFX3ge3UaqcpHlMUwJXOatJmagr6FxT+lXLcFbV/OOguic5rFZmX7VUNt3bvybxm2yvrYr/Ce8kDeaEDZcFDho2A+KNiL1drFvxMOfyyK8pz4z03VJP6VP9qXGZRXc2vncJ3xvvP6MqQ6FsXf/+Ir8ofWTetYQ8OC2yJXgwqIm92cxa3bXPnjDRp3X2XI3hTDeoIfzfgnbmP/hwAadi/pOmEGZQ0kSPAOPm+c/u/f9tXZso1AQS2gdK2m/0raJMf38k9JLy/iaPQonpCjesnJ4pGqLeZXqv3vW+ZjZw59AXmgZV8J66vhAdq96dbrByEhZjVOSVj5OMPywIC95SM+fBTS78JPXwTlQXV99k0wBVaEWNXjqlyBhwv5tdu/jQnGveAD47jvLLEWzh//17snZ3sIhz7A/5Q59hY0W/ikqEAA7iA79ZVVbU=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: EDFED8000D
+X-Stat-Signature: qohtap1ua9t3m5i4d3mgri8fxz6eqeck
+X-HE-Tag: 1754497156-738848
+X-HE-Meta: U2FsdGVkX1+mbOETAGXsqmGJq74RqtW70PpbZ/Jv8mfhBAWRqGjfIX4gcKl1RqHpU2Zkz+RgeKoe3sJJa5WhAEkyng7A3iK/ZwtPD2KnVy0Cp9zpxUzBBxcdGfxkhteEGXN1sICeFjOSp4EIdrdMB/LOLYMwnMuDBcU6NcQCwljjas17lgJBBc6Ua6gxwGxCrOzTq1AVSZWzSPh3TMpkXDfx2kVOZfgNKRTHNL4iSCo6pTM1xFBEQxbpGNbn1Za93iJSVUYLv6X0b4IKBnGzptlYL5jec2+xlHm/+xXjzUuFNo5oKuS1wlpZl6hPYVIpkfOEFNm2P7WjZXXZtYgoyYEJ9n7u5HnlAEDGCkBv9KIVF1DsrTQ5FtgU5ehjfrpAZXsrBrMiyOVyOm2oO13l4b/+F57tSgFWQIJ9lE00bQvHGC91OvNeEhM7r73ntmaiWR/Sy2neIlqiCNjbz9Rmg4GyHkTClHYUSPNFN/Zzb4tcSPAi6ZAvDIOfF5k0RnglajfFFD8VztaJO1Jbi1RI7QBx9PYHMrEIf7wUuZpdORhwjXfuiSzjZzqnskFooyxjBhvqhLaadwIhICL7DLeCoyRjHK7s0NrmnRFYVsD5Nu6bae/PMoNcb0dQ9H5XJbGWO1vT/151Er4Chu4i6xh+EVlYqkYUgHakdS70huo6R9F17ZYy73yBXWaBstmfrPaPMnVQnw5EjYpndVGpdhDphAm1oTA8zsxCiJNmB0qsQkuQCYqvoncdf0NJuhNzSwACQM2QDxWwH9GuHtCf80UnkFDB75mr4XzSrTvTs4r+DuY8TRrx1KT2koobBh9u469dciEYgxN7Sl1Sr/mnfUBkXQhppnD43yMyVxCxlrHsv96ZF6DrnMQFLsy9PgX/G1kJb8rm8R5Y4vEsAypd+P3l2EHE8t2pfHDhIjkgaDDFvTPVexjpH93Nb08/Pu9t/nyTK3jnZJYNsDIwXbL3plJ
+ W2kuSagk
+ cyZ4gwE0seJvqIzFQdsDyuwefMon09HlT/JVTJ/gn9ygQ0DzkfMzViwecm7fSthhH10Ce78L2FyOuhTzotMy+nBK1BdgFj7eaEq6DGckdZS9WaZhojtVSK1Yqqm3VU+zsHHxa7n3YCGQdBOuZZh73t2gKD7w9elT3FDcJATOWNGoqbVCYEDcv/Ckj/mXAkK2k07MEVwonHgstAm6z3N4bNSeFTwSeZX8wH4LiuCoaoT5NmEbtfNYlqkHPzpRFy5TktBRBP9DLdy6Pw4qLj1d18KvyPOKUlWTKhw7HqZpOfTh+ebAl+IB2Ls1Mi+BixzzzOHYaibRD9jt2H5JnrdiLAERANSKeMTvhj2oWhutU9lSrI9To2ahLbVQKRjfJhhvspp3fADFLij03E73QkJKKV8jynNsufY/Y/kynpr+0Xniml6+szMzeAOlXnjzNn/vWecmNhb3Sq6oxxRxb7Kfn4b70by+rUgfHK6YfSeugQoYbovYp/SFs57zGgcHl6GQ9ZJco4vBx9QWMYhk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,116 +110,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kairui Song <kasong@tencent.com>
+Preserve the original ELF e_flags from the executable in the core dump
+header instead of relying on compile-time defaults (ELF_CORE_EFLAGS or
+value from the regset view). This ensures that ABI-specific flags in
+the dump file match the actual binary being executed.
 
-We prefer a free cluster over a nonfull cluster whenever a CPU local
-cluster is drained to respect the SSD discard behavior [1]. It's not
-a best practice for non-discarding devices. And this is causing a
-higher fragmentation rate.
+Save the e_flags field during ELF binary loading (in load_elf_binary())
+into the mm_struct, and later retrieve it during core dump generation
+(in fill_note_info()). Use this saved value to populate the e_flags in
+the core dump ELF header.
 
-So for a non-discarding device, prefer nonfull over free clusters. This
-reduces the fragmentation issue by a lot.
+Add a new Kconfig option, CONFIG_CORE_DUMP_USE_PROCESS_EFLAGS, to guard
+this behavior. Although motivated by a RISC-V use case, the mechanism is
+generic and can be applied to all architectures.
 
-Testing with make -j96, defconfig, using 64k mTHP, 8G ZRAM:
+This change is needed to resolve a debugging issue encountered when
+analyzing core dumps with GDB for RISC-V systems. GDB inspects the
+e_flags field to determine whether optional register sets such as the
+floating-point unit are supported. Without correct flags, GDB may warn
+and ignore valid register data:
 
-Before: sys time: 6176.34s  64kB/swpout: 1659757  64kB/swpout_fallback: 139503
-After:  sys time: 6194.11s  64kB/swpout: 1689470  64kB/swpout_fallback: 56147
+    warning: Unexpected size of section '.reg2/213' in core file.
 
-Testing with make -j96, defconfig, using 64k mTHP, 10G ZRAM:
+As a result, floating-point registers are not accessible in the debugger,
+even though they were dumped. Preserving the original e_flags enables
+GDB and other tools to properly interpret the dump contents.
 
-After:  sys time: 5531.49s  64kB/swpout: 1791142  64kB/swpout_fallback: 17676
-After:  sys time: 5587.53s  64kB/swpout: 1811598  64kB/swpout_fallback: 0
-
-Performance is basically unchanged, and the large allocation failure rate
-is lower. Enabling all mTHP sizes showed a more significant result.
-
-Using the same test setup with 10G ZRAM and enabling all mTHP sizes:
-
-128kB swap failure rate:
-Before: swpout:451599 swpout_fallback:54525
-After:  swpout:502710 swpout_fallback:870
-
-256kB swap failure rate:
-Before: swpout:63652  swpout_fallback:2708
-After:  swpout:65913  swpout_fallback:20
-
-512kB swap failure rate:
-Before: swpout:11663  swpout_fallback:1767
-After:  swpout:14480  swpout_fallback:6
-
-2M swap failure rate:
-Before: swpout:24     swpout_fallback:1442
-After:  swpout:1329   swpout_fallback:7
-
-The success rate of large allocations is much higher.
-
-Link: https://lore.kernel.org/linux-mm/87v8242vng.fsf@yhuang6-desk2.ccr.corp.intel.com/ [1]
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Acked-by: Chris Li <chrisl@kernel.org>
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+Signed-off-by: Svetlana Parfenova <svetlana.parfenova@syntacore.com>
 ---
- mm/swapfile.c | 38 ++++++++++++++++++++++++++++----------
- 1 file changed, 28 insertions(+), 10 deletions(-)
+ fs/Kconfig.binfmt        |  9 +++++++++
+ fs/binfmt_elf.c          | 26 ++++++++++++++++++++------
+ include/linux/mm_types.h |  5 +++++
+ 3 files changed, 34 insertions(+), 6 deletions(-)
 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 5fdb3cb2b8b7..4a0cf4fb348d 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -908,18 +908,20 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si, int o
+diff --git a/fs/Kconfig.binfmt b/fs/Kconfig.binfmt
+index bd2f530e5740..45bed2041542 100644
+--- a/fs/Kconfig.binfmt
++++ b/fs/Kconfig.binfmt
+@@ -184,4 +184,13 @@ config EXEC_KUNIT_TEST
+ 	  This builds the exec KUnit tests, which tests boundary conditions
+ 	  of various aspects of the exec internals.
+ 
++config CORE_DUMP_USE_PROCESS_EFLAGS
++	bool "Preserve ELF e_flags from executable in core dumps"
++	depends on BINFMT_ELF && ELF_CORE && RISCV
++	default n
++	help
++	  Save the ELF e_flags from the process executable at load time
++	  and use it in the core dump header. This ensures the dump reflects
++	  the original binary ABI.
++
+ endmenu
+diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+index caeddccaa1fe..e5e06e11f9fc 100644
+--- a/fs/binfmt_elf.c
++++ b/fs/binfmt_elf.c
+@@ -1290,6 +1290,11 @@ static int load_elf_binary(struct linux_binprm *bprm)
+ 	mm->end_data = end_data;
+ 	mm->start_stack = bprm->p;
+ 
++#ifdef CONFIG_CORE_DUMP_USE_PROCESS_EFLAGS
++	/* stash e_flags for use in core dumps */
++	mm->saved_e_flags = elf_ex->e_flags;
++#endif
++
+ 	/**
+ 	 * DOC: "brk" handling
+ 	 *
+@@ -1804,6 +1809,8 @@ static int fill_note_info(struct elfhdr *elf, int phdrs,
+ 	struct elf_thread_core_info *t;
+ 	struct elf_prpsinfo *psinfo;
+ 	struct core_thread *ct;
++	u16 machine;
++	u32 flags;
+ 
+ 	psinfo = kmalloc(sizeof(*psinfo), GFP_KERNEL);
+ 	if (!psinfo)
+@@ -1831,17 +1838,24 @@ static int fill_note_info(struct elfhdr *elf, int phdrs,
+ 		return 0;
  	}
  
- new_cluster:
--	ci = isolate_lock_cluster(si, &si->free_clusters);
--	if (ci) {
--		found = alloc_swap_scan_cluster(si, ci, cluster_offset(si, ci),
--						order, usage);
--		if (found)
--			goto done;
+-	/*
+-	 * Initialize the ELF file header.
+-	 */
+-	fill_elf_header(elf, phdrs,
+-			view->e_machine, view->e_flags);
++	machine = view->e_machine;
++	flags = view->e_flags;
+ #else
+ 	view = NULL;
+ 	info->thread_notes = 2;
+-	fill_elf_header(elf, phdrs, ELF_ARCH, ELF_CORE_EFLAGS);
++	machine = ELF_ARCH;
++	flags = ELF_CORE_EFLAGS;
+ #endif
+ 
++#ifdef CONFIG_CORE_DUMP_USE_PROCESS_EFLAGS
++	flags = dump_task->mm->saved_e_flags;
++#endif
++
 +	/*
-+	 * If the device need discard, prefer new cluster over nonfull
-+	 * to spread out the writes.
++	 * Initialize the ELF file header.
 +	 */
-+	if (si->flags & SWP_PAGE_DISCARD) {
-+		ci = isolate_lock_cluster(si, &si->free_clusters);
-+		if (ci) {
-+			found = alloc_swap_scan_cluster(si, ci, cluster_offset(si, ci),
-+							order, usage);
-+			if (found)
-+				goto done;
-+		}
- 	}
- 
--	/* Try reclaim from full clusters if free clusters list is drained */
--	if (vm_swap_full())
--		swap_reclaim_full_clusters(si, false);
--
- 	if (order < PMD_ORDER) {
- 		while ((ci = isolate_lock_cluster(si, &si->nonfull_clusters[order]))) {
- 			found = alloc_swap_scan_cluster(si, ci, cluster_offset(si, ci),
-@@ -927,7 +929,23 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si, int o
- 			if (found)
- 				goto done;
- 		}
-+	}
- 
-+	if (!(si->flags & SWP_PAGE_DISCARD)) {
-+		ci = isolate_lock_cluster(si, &si->free_clusters);
-+		if (ci) {
-+			found = alloc_swap_scan_cluster(si, ci, cluster_offset(si, ci),
-+							order, usage);
-+			if (found)
-+				goto done;
-+		}
-+	}
++	fill_elf_header(elf, phdrs, machine, flags);
 +
-+	/* Try reclaim full clusters if free and nonfull lists are drained */
-+	if (vm_swap_full())
-+		swap_reclaim_full_clusters(si, false);
+ 	/*
+ 	 * Allocate a structure for each thread.
+ 	 */
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index d6b91e8a66d6..39921b32e4f5 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -1098,6 +1098,11 @@ struct mm_struct {
+ 
+ 		unsigned long saved_auxv[AT_VECTOR_SIZE]; /* for /proc/PID/auxv */
+ 
++#ifdef CONFIG_CORE_DUMP_USE_PROCESS_EFLAGS
++		/* the ABI-related flags from the ELF header. Used for core dump */
++		unsigned long saved_e_flags;
++#endif
 +
-+	if (order < PMD_ORDER) {
- 		/*
- 		 * Scan only one fragment cluster is good enough. Order 0
- 		 * allocation will surely success, and large allocation
+ 		struct percpu_counter rss_stat[NR_MM_COUNTERS];
+ 
+ 		struct linux_binfmt *binfmt;
 -- 
 2.50.1
 
