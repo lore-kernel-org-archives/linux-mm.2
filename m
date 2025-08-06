@@ -2,113 +2,129 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D6905C87FD3
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 14:51:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 31610C87FD3
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 14:54:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 621F78E0005; Wed,  6 Aug 2025 10:51:09 -0400 (EDT)
+	id A6FB66B0098; Wed,  6 Aug 2025 10:54:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5ABBA8E0003; Wed,  6 Aug 2025 10:51:09 -0400 (EDT)
+	id A208D6B0099; Wed,  6 Aug 2025 10:54:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4737C8E0005; Wed,  6 Aug 2025 10:51:09 -0400 (EDT)
+	id 936026B009A; Wed,  6 Aug 2025 10:54:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 357648E0003
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 10:51:09 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A8F11819D5
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 14:51:08 +0000 (UTC)
-X-FDA: 83746620216.25.9DD12A6
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5DC8740005
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 14:51:06 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=GyQbGQSh;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754491866; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 80E726B0098
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 10:54:37 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2D2761A06A8
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 14:54:37 +0000 (UTC)
+X-FDA: 83746628994.28.E3EB473
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 18BB18000C
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 14:54:34 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TeniVRwZ;
+	spf=pass (imf02.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754492075; a=rsa-sha256;
 	cv=none;
-	b=JPW08/hycr+8g4iyKljLOCxDbPRsHDEV/xDZ8H+MJiMdgJfZAsSsqdf3pYkVtTgUOXMbkE
-	6lGqfaKrSNvW4VMW+V029FiKQK7dZ6AX/XrzNmKXUX2YQwowcno0iqjEs3kbDr+GDiZLvl
-	uIzpSki6L+0aDk+Rb5Qtb56ZDBbZZWw=
+	b=tW4WWL3JDeo9g9qAhUOMQBIi1cQhqxP4A/bSIM1SGEXpKraB7wsfU6FpYRUgVChFalRKH7
+	U4zP4C+R0GVCK7We3VRw9/+U/V1KjwQ9DwxRiFG221KLQvIwiRpsCbAvGMFDz20lKRlqVz
+	RZiQJ9SNeziGZjmqfLYZmoLcvSCqJpU=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=GyQbGQSh;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TeniVRwZ;
+	spf=pass (imf02.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754491866;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1754492075;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fCgDgJvA/YpJxdcLudWADFk4ALMp3oDElwmaAYQQxas=;
-	b=nX8P38sSKAtij1DWIY3RN3LUAdYT0RmC9quYlyZzjjLn3vlu8o51ENhrWyKKXv6DffIMD7
-	4ruN/DvZaPh2R9ePG2yqynZ/xXNqv5QIh1aWc17DZ+V5UKbLzhoQjDArH3wlKbiHIpLh2s
-	qilknBmyxg/cTAEINDfe1iD0zM6YfgQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754491867; x=1786027867;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jYOf2US5bWDo7NlujX8N73KHv16qVgm8SXDzuRBuNuI=;
-  b=GyQbGQShfKIoaE1ejIjG34pASJ48cgh0j5RIxCksZgawWbVDiK7X2IBD
-   sKLO+NxxqQv8zD15nO1MpPZrkT/IhhHMOxeYiDGNc8dR7/3AbIifprE8P
-   qPb7nZVmS1+PIDd34GeVROQuI5AvxJPJ06I6S3isXVsaic/QXSwEZ+ZOj
-   wi9EVZBHreYI6T1aZI272Ap/z11bvILIgxh7sLDJQzmXohwAS/ErnB1BZ
-   RgWs6i8acHRfQ//hqW3FucPnWiYh0frrlkvc7rQU7RfzsxWe+T2ytmff9
-   a8yiAnEarJ5UEt+G10/jXq8GolLeTrkkjpaOszOCmTMoX70B0CCLS0hZS
-   w==;
-X-CSE-ConnectionGUID: AwKpJ+mqSxq3pxCNI6ewrA==
-X-CSE-MsgGUID: kRcH8usUSXGX1Q01DW48LQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11514"; a="67078665"
-X-IronPort-AV: E=Sophos;i="6.17,268,1747724400"; 
-   d="scan'208";a="67078665"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2025 07:51:05 -0700
-X-CSE-ConnectionGUID: XH6+x08qTfGWxhF0zUB9XA==
-X-CSE-MsgGUID: acmb15dRTzSsSmXqlb9RyQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,268,1747724400"; 
-   d="scan'208";a="165567416"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by fmviesa010.fm.intel.com with ESMTP; 06 Aug 2025 07:51:01 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1ujfTn-0001n8-00;
-	Wed, 06 Aug 2025 14:50:59 +0000
-Date: Wed, 6 Aug 2025 22:50:14 +0800
-From: kernel test robot <lkp@intel.com>
-To: Steven Rostedt <rostedt@goodmis.org>, linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Takaya Saeki <takayas@google.com>, Tom Zanussi <zanussi@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ian Rogers <irogers@google.com>, aahringo@redhat.com,
-	Douglas Raillard <douglas.raillard@arm.com>
-Subject: Re: [PATCH 7/7] tracing: Add syscall_user_buf_size to limit amount
- written
-Message-ID: <202508062211.cwYqtLu0-lkp@intel.com>
-References: <20250805193235.747004484@kernel.org>
+	bh=l/rb74Rn4CUT7usZvguA3GJ62ZV1pluEnH5A6t2WngA=;
+	b=rIbJXK7GEcB84vvSJEEBOQLLGQ1KGe3XQoKNkMXrZHTf2Bw6gJxV7RUTHDrXLX1Q9LdTYG
+	DALAO8J/s4caWfUZ2sZTC5Xpylxpqbhmss1SyACewKFpCMRDHn0C7WYhQ3DW1d0claQTdT
+	il5t8MneINZTtf4lVCEom7ewgXzaSq8=
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-af98841b4abso285316766b.0
+        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 07:54:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754492073; x=1755096873; darn=kvack.org;
+        h=user-agent:in-reply-to:content-transfer-encoding
+         :content-disposition:mime-version:references:reply-to:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=l/rb74Rn4CUT7usZvguA3GJ62ZV1pluEnH5A6t2WngA=;
+        b=TeniVRwZQ803Thg8dl+xzN/3XslgUeRu7jPd+44YB7WRqlXnd894RBOqfNqG4RdIHR
+         tIrBG2mRQwc+WNmjLcj/KL0H2ZGa8macnSRZ33mFyOm+6xqXKhrInNteqzL3J8qwEo6c
+         rKKjJ7pYOQ46TeFoiSsaFhKQknZCNWhVShFo3m+hQXFGBjkSrAjXmmeh7XRnp4wII1SW
+         wR6orD8iXi/414DHAzY3ORX2yXZcgPqxEUzSYT6/6fyGWTuhMC4rWSJ5MAaeUGwsmtgj
+         yFF0rPZ69rkyrP3wP45cxj9QK4Xx65XWOuyYhloYe72WEaLOvE15eHVDxmAApeZGbQah
+         /LRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754492073; x=1755096873;
+        h=user-agent:in-reply-to:content-transfer-encoding
+         :content-disposition:mime-version:references:reply-to:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=l/rb74Rn4CUT7usZvguA3GJ62ZV1pluEnH5A6t2WngA=;
+        b=k0I0gfPg54YDOrMtAceCPZpQvxyzrYbuTuw1nj+aLer1tsH0KOMYTenzbwNcKoc3tc
+         0VJfHxRneMBXO0WjjqBvA2EQNOTjcVmJCpEXW4hgq1CG1RvVLqo+Vx633oyWr01qiYmL
+         OPqg8a6sJ9Tx+6yafl5UkVLk/s34FB0IT1GcvNL9jG+3S7zES20vMcvvScptJGss+f6d
+         1GSEj3U/PoqwLU2TbctY6WEZRtm+peZTz3Gaot47WRKvjv4fOlnofgibSyaMwweYyg2M
+         zIyaGhm1BVpb/LBSgtOopgtfR0PLuLyJY966iaEvAs8e0SQTY9CGibbRarbUXxcY372I
+         sh3g==
+X-Forwarded-Encrypted: i=1; AJvYcCUytGyslBezWWTnZmzC4jtu4Xw1Ch/rVqiKdDk6rOTmtTuipCNV60OkZX1zjrMVwZABc54a1eMPyA==@kvack.org
+X-Gm-Message-State: AOJu0YyVYCWKqEzGeVNrjfC4s4ajotHJUln4QbAvZuDUaMpKY2KglV/N
+	BdUnJiRuRnrf0GskLyeApnz1uR2hXuBjjmsPFIzGm7GXs9JpBF78fJTy
+X-Gm-Gg: ASbGncuh9k4Yeupj2L1WGK/mP7twh1cWCM3cnogA3duSHeJgpXTreHsIbPn4j8lrZiq
+	b7IvIMUy1rbxpO2Lamn74qFwGcgsVoCh4S3a898VPIfK+Ev9QAiawj0dwKfvbis4w6ZVPogTmC5
+	ZPZpR23utFfEZE+PTQWkK0yqn2ojRdxKTt1MSHkl0id72B8/i+VnIORpxkAdGnvh1ynw5MJOzS2
+	MoYdAMqxsNF6MKN8O7uXt69ajcKcexzeCVum34FhjOUBJfTuenqoePHRmTYlM/kedW4u70PhQsz
+	FVCumDMmPsOh2ihKNiCiCD5Xq8W/rCdU50oUzOogEdbS3kpeEHsh2VQdhQZz+nsiAmlMoHEMAWK
+	jU44vLl0KlVlcqD7S4DvvfA==
+X-Google-Smtp-Source: AGHT+IFS6g0g1OqUDi72LqUCVo/ND5e7JBrkMGvo/NtwvaBttPCiw1Ma69w75ETAugGec2ZHXmvHzA==
+X-Received: by 2002:a17:907:3f8c:b0:ad5:2e5b:d16b with SMTP id a640c23a62f3a-af990350c69mr348859766b.27.1754492073165;
+        Wed, 06 Aug 2025 07:54:33 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a0766f9sm1139997566b.24.2025.08.06.07.54.32
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 06 Aug 2025 07:54:32 -0700 (PDT)
+Date: Wed, 6 Aug 2025 14:54:32 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Donet Tom <donettom@linux.ibm.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
+	akpm@linux-foundation.org, Liam.Howlett@oracle.com,
+	lorenzo.stoakes@oracle.com, shuah@kernel.org, pfalcato@suse.de,
+	david@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+	baohua@kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	ritesh.list@gmail.com
+Subject: Re: [PATCH v3 3/7] selftest/mm: Fix ksm_funtional_test failures
+Message-ID: <20250806145432.nygrslkiyvzulujn@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20250729053403.1071807-1-aboorvad@linux.ibm.com>
+ <20250729053403.1071807-4-aboorvad@linux.ibm.com>
+ <20250804091141.ifwryfmgjepwrog4@master>
+ <20fb853c-7d79-4d26-9c8a-f6ce9367d424@linux.ibm.com>
+ <20250805170353.6vlbyg6qn5hv4yzz@master>
+ <e9079694-1e30-46b6-97e7-b79be01c65a6@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250805193235.747004484@kernel.org>
-X-Rspamd-Queue-Id: 5DC8740005
-X-Stat-Signature: hzdgex4iqeydh3jchpixcto8fradd1u6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e9079694-1e30-46b6-97e7-b79be01c65a6@linux.ibm.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1754491866-148163
-X-HE-Meta: U2FsdGVkX1/V2tZ2PNfaWeksj2tcMfd1Mh1RBbW3oPiVZYvoKf9yboA/ES331OwQtLbILcytEgrbuorsu3aR7f8K5iFixGMNoe6ARjpY69qrVVJszeHht+HMspigOQDVbeaCmt5N3rgo49vL0iZDHdPRaNQRP0IgW7iCdqU0DsXbLFf3Gv2iWv1dgVQns18dRH02t9XckZ9nty2d1qfEdNckd3BOHdlp4VTY3Ysx8d+1wOouxE0nt0HoboBMG6dQE3stgm312T/TdZklspMSgiF7jNFMyUE+9AQExgQeJzbi0lprN6od1NB8cNLBAa1FdAVq6HjtPAdo04p3dLvrpek/XV9UbJKtOrAr8wZrXKCfCFqnXV8ivzHS9yCJEDnZEGQRI3JaUyiYO/unKT2S5eu4C3LEbvhWlRgXmicw/wOarxnIQxXvY9OzoFio00gGYo2l6T/BPMSVZEFzku8cQ//xqPbsV4hvAnOJV9rBe+jaPKmg2ZJWuJy+HvlWPL5zWqe9jsULVt518ZH2MsvTT+WjCXNNgzG4hF/o6/cG+JWCT6xxjwQQrlDDFlLXJ5u1P50lplySmrWgaFprxSer+Dg0Osyux3vRee315yIVqjcFIxiTA+mx2oEs2qbnTIYu8Y7dNEf6CjhgnliR0/k9suZtIDULyVBga1BfvqxFkNTsHYX9cocF12iSeerov2ycazzvaXhlu86sTtSPCpx2VM346hk1VFDoWekXYAeqzrDvSeOG4ubKIXQnCT8kMcq0cGX9JRVzAKd/f4RUW/tRVmDCGmMqgPKj6yc3G3/2imaiwHVePZCN80rirKR5375NqS+FJh3YwNjO1llqZRp5ZAjOqbsAwo/z5Xno0BHePjJ5MueCi17f7U14egdV/UmGg/M73OU4gk31kpTOaiAJxgoCkLGnujLQ/76TnpIdRNrKps5F28i2N6zMUB8zOqBTRggzEp4Yd4eNSn3FhHG
- WGFST6qo
- v0bnSQXmbOXvhD/FTOfNhihlKtJ//+KiJNQbL9HP8XzhZJMWCicWffxAcC1y4VRkCr2ktCwWe5nvFaJtsOysxkYKA5npGKgxSezLirlgp5oDkVkgggC/GQiymHd4jSR3sax4U7FIKf4cJ7HOROMGvePEGArw0CuogBg9f6u3/kcATIFhkpx3Gjjt7oU1Co9tYEqnxNi8PoR7+NHX3IU0RqINJlLwJd8Exc19eYe8EHQt/JKrAudrvU6xA1LZ99waF2XE0bGOPJx8h7K354gDYOIu71roR5Xu7Nm6F82z2uOpA9/bLQjvj448Nk0H934S5n5ihxneexm4bQ/BffqogwR0lRNd1hpMLN7RTfUROPdDn9PayR8eKhKZCP42sMa9H3p6onwo8UdH42FA=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 18BB18000C
+X-Stat-Signature: bmm7jy89o9hrxnmzd916oz56cy539b4a
+X-HE-Tag: 1754492074-25929
+X-HE-Meta: U2FsdGVkX19ItfD738rYRWAqOyhn+yRfiuiczAituCWhmZA9VDRNb4+v/Pbg0CvmpVLLyD18o+vk7aDZT+/YXgffPqtnOJaw3yKSi86iCGHZIkfuPJVHPT/kQDmrKEMW+NGL+7GHSQLI0//Wa/QL7JwiN8fZcKTcYBk+xNV/qWifIdBCr170ZLyU0bprnUz+tmHZ9IdGySfM3VD/jx9CENqAgl8+kKvI5aMociQF8oxaaMwr7emPFjLjONvzotn8jqHAC4yVXvIofIxLj3CmCEUDhJ8Eaz4Y8nxWMeUed65DXbpFTizwJStPGSYxLdS2VAfnMPLOL82cF8fYPYMu83rcLZZhQhtjeqctEm6s3ah5TM44/4L0TyoTlVA8dHJcNrwn5xurQ0tMGZsKpDxOpyDRZiMNZa8tcM4MbTt6lUEZrIqV4pz1YB7Gan9qJBcOHgN576CbQW635bwG9bgLY732L8dcpfpfcRLPBuVjzze0HzKzP59TAiViRa6WXm1bf7iPSuppAcQVkbZX0PihaZNr9Bk0Z7cYQqqEn95G50Tnrfc/LIRjETBY+8NOiM+UBorBTMIERol2YoLpg5oCKoeTiGKNsbpFK5tE4qwmbJBlEGQfr5xsonLZGe7wHZ416rdWTObGdwK2rhBXWiOFYCZzb+u06dxGns5O/Xu/QBv4fZtsZegjhDaTTeUp59913oWADPYqDEXI4S0M2cqGlvxG8MixjrOwWxKUZX5qwMn46eQUYNol8XCE7x5OBygIkXL3EyQuHFVbUqvdZ0BcxQEsB9olKVLItk3J2ousboChATNm6infXZYQQ4RIuzEm1vfgWtxEL+4tWpw4Xkok74FNl2uR/B0AXIwNW8YujN6M/Nv4ZUoc8OuEWk01f/3BtDsRnO96qOGkdAU7v3VC6JeK6APLIXrUU+vsSh5Z4OAHXcbXBnw2i6xCrY82lP8kbo9Thc+fAllNcYXnqlL
+ FsEoePdP
+ 9rNfK3uU0gOfqi+YNgiPKVLtiUaizhuVaZeKpejY456vzLrHibMTpIfitXCt1G+l0fnw9UHaQBzu5PsIxDamAvWTHDu+1bgisG6nnGZe7QuudjY0TIzCY5ZQVt0BR+EgC+20prCpmh+nHHcYnmsY+AfROyFSM6JSSj+5oAIVZOSlxc9Pztxwh++VS7BykvCeUmJjdxcvCLnIAIcRI0PRnQFc2u6cEAA/EgEcXR6JmwWtVMWH+8SBtqsIRuGue4j7OmulcYXDFAeZ1D4ivw1aHGTs95HfGDoIdO4xhpen5C18onIwPTOn+T47lLuDvOBAHwLJonpSoqByHy2C8cwjI1v6yHNzAbpxZucjA//DSkY5WNBO4zs3ZAjfsDbWARpt9AiOqPtf4AGAQMu7o/O1Ol8RODdRf5sp7X0yLqC0nrShnmiQOJxQdIMKWg9sCmNcbjmJdbYBVKmEqh3gq5/x20LL9U/RANZsT+miAfjxcu+SLesqWo8EZIvVfZmaMsaOMCP28n222jFmbO3Wu1ClVUQHWGaDKRx4Cf/YJGuXedij9g7t7I50+Hur0HF9xB7GhnEDCM8N/DxuMvPLHQWRKKP0WBeLV22xsmKmPNPVaVEAp/H3UOAjO+scJ9UjpxeyjwR35h8kJgnFgA/+A6HbM/sjzVIpVeQ/VxrqPebQEEDwJuYEsdoSKTSZcaehwFjzULheo49E+XFEEBseKFEvb7gTtNJuxA+Y7aCrks30G/5m4/GeCT4qJWoK1CUZDotaMbp0NPKE4gbJbCBdw4ndFkVBKRg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,89 +133,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Steven,
+On Wed, Aug 06, 2025 at 06:30:37PM +0530, Donet Tom wrote:
+[...]
+>> Child process inherit the ksm_merging_pages from parent, which is reasonable
+>> to me. But I am confused why ksm_unmerge() would just reset ksm_merging_pages
+>> for parent and leave ksm_merging_pages in child process unchanged.
+>> 
+>> ksm_unmerge() writes to /sys/kernel/mm/ksm/run, which is a system wide sysfs
+>> interface. I expect it applies to both parent and child.
+>
+>I am not very familiar with the KSM code, but from what I understand:
+>
+>The ksm_merging_pages counter is maintained per mm_struct. When
+>we write to /sys/kernel/mm/ksm/run, unmerging is triggered, and the
+>counters are updated for all mm_structs present in the ksm_mm_slot list.
+>
+>A mm_struct gets added to this list  when MADV_MERGEABLE is called.
+>In the case of the child process, since MADV_MERGEABLE has not been
+>invoked yet, its mm_struct is not part of the list. As a result,
+>its ksm_merging_pages counter is not reset.
+>
 
-kernel test robot noticed the following build errors:
+Would this flag be inherited during fork? VM_MERGEABLE is saved in related vma
+I don't see it would be dropped during fork. Maybe missed.
 
-[auto build test ERROR on trace/for-next]
-[also build test ERROR on linus/master v6.16 next-20250806]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+>
+>> > value remained unchanged. That’s why get_my_merging_page() in the child was
+>> > returning a non-zero value.
+>> > 
+>> I guess you mean the get_my_merging_page() in __mmap_and_merge_range() return
+>> a non-zero value. But there is ksm_unmerge() before it. Why this ksm_unmerge()
+>> couldn't reset the value, but a ksm_unmerge() in parent could.
+>> 
+>> > Initially, I fixed the issue by calling ksm_unmerge() before the fork(), and
+>> > that
+>> > resolved the problem. Later, I decided it would be cleaner to move the
+>> > ksm_unmerge() call to the test cleanup phase.
+>> > 
+>> Also all the tests before test_prctl_fork(), except test_prctl(), calls
+>> 
+>>    ksft_test_result(!range_maps_duplicates());
+>> 
+>> If the previous tests succeed, it means there is no duplicate pages. This
+>> means ksm_merging_pages should be 0 before test_prctl_fork() if other tests
+>> pass. And the child process would inherit a 0 ksm_merging_pages. (A quick test
+>> proves it.)
+>
+>
+>If I understand correctly, all the tests are calling MADV_UNMERGEABLE,
+>which internally calls break_ksm() in the kernel. This function replaces the
+>KSM page with an exclusive anonymous page. However, the
+>ksm_merging_pages counters are not updated at this point.
+>
+>The function range_maps_duplicates(map, size) checks whether the pages
+>have been unmerged. Since break_ksm() does perform the unmerge, this
+>function returns false, and the test passes.
+>
+>The ksm_merging_pages update happens later via the ksm_scan_thread().
+>That’s why we observe that ksm_merging_pages values are not reset
+>immediately after the test finishes.
+>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Steven-Rostedt/tracing-Replace-syscall-RCU-pointer-assignment-with-READ-WRITE_ONCE/20250806-122312
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace for-next
-patch link:    https://lore.kernel.org/r/20250805193235.747004484%40kernel.org
-patch subject: [PATCH 7/7] tracing: Add syscall_user_buf_size to limit amount written
-config: hexagon-randconfig-002-20250806 (https://download.01.org/0day-ci/archive/20250806/202508062211.cwYqtLu0-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 7b8dea265e72c3037b6b1e54d5ab51b7e14f328b)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250806/202508062211.cwYqtLu0-lkp@intel.com/reproduce)
+Not familiar with ksm internal. But the ksm_merging_pages counter still has
+non-zero value when all merged pages are unmerged makes me feel odd.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508062211.cwYqtLu0-lkp@intel.com/
+>If we add a sleep(1) after the MADV_UNMERGEABLE call, we can see that
+>the ksm_merging_pages values are reset after the sleep.
+>
+>Once the test completes successfully, we can call ksm_unmerge(), which
+>will immediately reset the ksm_merging_pages value. This way, in the fork
+>test, the child process will also see the correct value.
+>> 
+>> So which part of the story I missed?
+>> 
+>
+>So, during the cleanup phase after a successful test, we can call
+>ksm_unmerge() to reset the counter. Do you see any issue with
+>this approach?
+>
 
-All errors (new ones prefixed by >>):
+It looks there is no issue with an extra ksm_unmerge().
 
->> kernel/trace/trace.c:11128:32: error: use of undeclared identifier 'CONFIG_TRACE_SYSCALL_BUF_SIZE_DEFAULT'
-    11128 |         global_trace.syscall_buf_sz = CONFIG_TRACE_SYSCALL_BUF_SIZE_DEFAULT;
-          |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   1 error generated.
+But one more question. Why an extra ksm_unmerge() could help.
+
+Here is what we have during test:
 
 
-vim +/CONFIG_TRACE_SYSCALL_BUF_SIZE_DEFAULT +11128 kernel/trace/trace.c
+  test_prot_none()
+      !range_maps_duplicates()
+      ksm_unmerge()                  1) <--- newly add
+  test_prctl_fork()
+      >--- in child
+      __mmap_and_merge_range()
+          ksm_unmerge()              2) <--- already have
 
- 11110	
- 11111		init_trace_flags_index(&global_trace);
- 11112	
- 11113		register_tracer(&nop_trace);
- 11114	
- 11115		/* Function tracing may start here (via kernel command line) */
- 11116		init_function_trace();
- 11117	
- 11118		/* All seems OK, enable tracing */
- 11119		tracing_disabled = 0;
- 11120	
- 11121		atomic_notifier_chain_register(&panic_notifier_list,
- 11122					       &trace_panic_notifier);
- 11123	
- 11124		register_die_notifier(&trace_die_notifier);
- 11125	
- 11126		global_trace.flags = TRACE_ARRAY_FL_GLOBAL;
- 11127	
- 11128		global_trace.syscall_buf_sz = CONFIG_TRACE_SYSCALL_BUF_SIZE_DEFAULT;
- 11129	
- 11130		INIT_LIST_HEAD(&global_trace.systems);
- 11131		INIT_LIST_HEAD(&global_trace.events);
- 11132		INIT_LIST_HEAD(&global_trace.hist_vars);
- 11133		INIT_LIST_HEAD(&global_trace.err_log);
- 11134		list_add(&global_trace.marker_list, &marker_copies);
- 11135		list_add(&global_trace.list, &ftrace_trace_arrays);
- 11136	
- 11137		apply_trace_boot_options();
- 11138	
- 11139		register_snapshot_cmd();
- 11140	
- 11141		return 0;
- 11142	
- 11143	out_free_pipe_cpumask:
- 11144		free_cpumask_var(global_trace.pipe_cpumask);
- 11145	out_free_savedcmd:
- 11146		trace_free_saved_cmdlines_buffer();
- 11147	out_free_temp_buffer:
- 11148		ring_buffer_free(temp_buffer);
- 11149	out_rm_hp_state:
- 11150		cpuhp_remove_multi_state(CPUHP_TRACE_RB_PREPARE);
- 11151	out_free_cpumask:
- 11152		free_cpumask_var(global_trace.tracing_cpumask);
- 11153	out_free_buffer_mask:
- 11154		free_cpumask_var(tracing_buffer_mask);
- 11155		return ret;
- 11156	}
- 11157	
+As you mentioned above ksm_unmerge() would immediately reset
+ksm_merging_pages, why ksm_unmerge() at 2) still leave ksm_merging_pages
+non-zero? And the one at 1) could help.
+
+Or there is still some timing issue like sleep(1) you did?
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Wei Yang
+Help you, Help me
 
