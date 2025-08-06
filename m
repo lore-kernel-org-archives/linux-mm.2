@@ -2,108 +2,99 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F59CC87FCB
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 07:17:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5A59BC87FD3
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 07:18:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 35CD96B00AE; Wed,  6 Aug 2025 03:17:15 -0400 (EDT)
+	id E36828E0007; Wed,  6 Aug 2025 03:18:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 334A76B00B1; Wed,  6 Aug 2025 03:17:15 -0400 (EDT)
+	id DBF618E0001; Wed,  6 Aug 2025 03:18:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2716E6B00B2; Wed,  6 Aug 2025 03:17:15 -0400 (EDT)
+	id C887E8E0007; Wed,  6 Aug 2025 03:18:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 18C396B00AE
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 03:17:15 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 981D11A02DE
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 07:17:14 +0000 (UTC)
-X-FDA: 83745476388.29.2D96C46
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	by imf12.hostedemail.com (Postfix) with ESMTP id CA45240005
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 07:17:12 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=iir2aUhK;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf12.hostedemail.com: domain of elver@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=elver@google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B37E28E0001
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 03:18:44 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 481BAC0433
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 07:18:44 +0000 (UTC)
+X-FDA: 83745480168.03.7EBC9D3
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	by imf18.hostedemail.com (Postfix) with ESMTP id DBE471C000C
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 07:18:41 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Uh88DQL+;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754464722; a=rsa-sha256;
+	cv=none;
+	b=lhrUoyeUa+8hGNllSbXwaQXsnO9yyh8kQWs+azlPZEHi2yKv5sRtEIz/U58x37aqaUJbPq
+	7WvtrjQtv3vxoWolxBJOXMqVZpfDllk5DsihffhTmJjHWWCHkwT7BcgjjlFL+MvokpHlMp
+	fp2N5EyOFzeRjHfoRD7RxWtO+NGq7JE=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Uh88DQL+;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754464632;
+	s=arc-20220608; t=1754464722;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wXLDPCGDjNvdOeR7jZ736CzN/nAMcYgqmwaHMi4ddf4=;
-	b=KbC5oQZRZ7LoS8cVhoQH/QKvAnJl2pg8243CLOkYikqGAUrHNRN9iPz7HVSgMlk2Loxfht
-	GJhNx/HO0fmvXXIrqIyVwhEmbXeQuCFRb+Vs7Xq3xeAtknytT59kGUUY+tk9IAmHi9m4HU
-	Ct+fz/08rzAcAcP1XJj8MmlQxLu6L7s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754464632; a=rsa-sha256;
-	cv=none;
-	b=NjQyvj9NxF4RWJ3wCSd+67URA6BD16Nv2z9Ey4DdlYLHpeGP374O7kz/S+ZYStJ35ynC5Z
-	waXj2Pdsy/gPBm+hbDems0rXjrkG/84WBEOBEJ+9tZISbuZpJq2TlDFC0p+sOoCJOpkUQ5
-	op/AW0Vp1fbKTH5V0XGQonXET/3nYtk=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=iir2aUhK;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf12.hostedemail.com: domain of elver@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=elver@google.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-24022261323so6763045ad.1
-        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 00:17:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754464632; x=1755069432; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=wXLDPCGDjNvdOeR7jZ736CzN/nAMcYgqmwaHMi4ddf4=;
-        b=iir2aUhKrHVnP9y2ONhZRKpzSeOodLUGFpgUR0UT+jIaCpFj1Iun/NF4sjFo3LLm+7
-         PWYQzaZV+rIIXneZbmcZx7fk9JZBaEejYIkwu7rptNNk/ymE8daGc/gOmzQHn27HIHUc
-         m38ZzwbWD9sv5NIBJLNCwVpXvXUC7QGyvMqLfw3+ubYHEm/kxODdHruSaO3GmyLPvAIL
-         d8BLWA/NlfTPvw/SHmQ69hVy47wbA60Q4Fliom2NDNALnj74g0TiZocr3dPdlZvsrJpm
-         86mu/bnV29v1d0/x/rHpIr+BxjyGHsvSvE3S1pq4od7Ex8eWrKjvgzAAJdkmR5G5Unyv
-         32pQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754464632; x=1755069432;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wXLDPCGDjNvdOeR7jZ736CzN/nAMcYgqmwaHMi4ddf4=;
-        b=kvB4buaLIsyZ2410aPk6FCl//p2x31kFVdqVc1P1Lk1nFgQK2vGcLEmbbH1gq86ZMI
-         jFzeDJiNVPZ4Oqm/lWdDwaxSvVzIB4yuvKOZNPPLVHCWfU0HL/ZxYYNgX6uqh/bNWdIN
-         5iMEzcW5lJrueL8qRV3m1sEEx9gQANqldOLIdjTVpuho8inYyUKIvSPb01gIZlHhpjTE
-         0nCN/Ycze2btsfl7YxTmdT6dEo4bPN3U/jKctTZkWa7cxMBYIXEldFq0eGNQZ9E9CGTF
-         C/Y31kIGLRT1qg4fl3+QaRV/cfIH+YggY6MorxrXSeaE3lOMN99MnKscHs36SzKH14yx
-         stHA==
-X-Gm-Message-State: AOJu0YwxtkXnATEkCpqExz9a+uSk7Vl1rjzF/mF17lcU9Z8G7kOCJdT1
-	QP8AvKvvg8d57d4iQ+FivV0zfxUiANV+0e4QklbVYLPZ+T57RXbbFIUfLp4HOzxNLbSCzz7MK0p
-	RX3NZ6BEqaielB/aNMcUonU8r+TNnL1CmhiwghEwT
-X-Gm-Gg: ASbGncuTrruOK29STfm7Jv1dJ7ml3I4sFLjsyqm8LXN/PU1BLwOKFTBNUWh3dvXZoP9
-	pGvUWF8OhEdmz5To+8ujOjVGzX9arW2/t31PuklLKP0DFA9f12uDiduq2si9JhoaOBStTRFLxc5
-	8UHvyMWNpQaLB1xhfJ+ZfiFAzdYbs+BYMcmlN/9PZOf9OwLE1jwxjxvBEeAM+rkYSNUppOrVYF7
-	g9FAygzdqsSsC2/L9cl/X/suARlyU48DvYHGec=
-X-Google-Smtp-Source: AGHT+IGfHgl2Mg+qBoCrK1ngL7bmW44UgruqWF91vJSpnlAVaiAXHK2sy4pm6D5yit5Nm36Buca8JPYmaeowROChcNw=
-X-Received: by 2002:a17:902:f691:b0:23f:75d1:3691 with SMTP id
- d9443c01a7336-2429f959eacmr24836285ad.15.1754464631438; Wed, 06 Aug 2025
- 00:17:11 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=S29V4tEpkdbBRFo+xyHEuO0KqNCyWvyPDjvECPk2KdM=;
+	b=Txnm6SjGD3OLhYbXA0FfDXERsHXhw2RgFGv/WA2/B3uTpQ8igHnqANjnuKc0v3Hhg+Pbj4
+	culPvIsYYEF5V2hdCop5PXNH0aSSRsp870uzddzvuUrUyQCcohnHRqwco7Hp7k9XUWMYAM
+	utz0ESSQCirNhzcN7CWIZp1Eae4Oras=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754464722; x=1786000722;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=nNxhoKULW/u7Nvh1p4ZhOqCELveHSO6eUylzpEfTeqE=;
+  b=Uh88DQL+b1jBCpc8VmN7AffcryBteb0nU1dPwVMIGk9MikCqZJlT9uYp
+   UggS+NybswtPxzSFrx/oF+hFpNJJQ6jEjASIFve+su1Cl057vhy+pKQbO
+   OgMEkZvKznJmUGZPP/JnhamiyAwUMVPcSwtfkN6vGbiLufQjKs47hbMZc
+   nL6hXMK2Pz22AlVobwnRhNqoHKwbxK/gCM1sijbHSa/Bn/MO6o0QTnEPJ
+   svw2bhHdk+OZ2RQz7I36+3/aUBvKF4Tl7MNaVVMx1FlJ/MGyksewB1z1U
+   8/LMs/0UQ+I7nrz8TbsYJEILlaahiGyh+45Pi5O9x1ptVtJzjc6Lm5uIK
+   w==;
+X-CSE-ConnectionGUID: WcolTXMiR8iJtgKJvseHkg==
+X-CSE-MsgGUID: 5KRpjrkhRfqiiT+K/zONsw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11513"; a="68147897"
+X-IronPort-AV: E=Sophos;i="6.17,268,1747724400"; 
+   d="scan'208";a="68147897"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2025 00:18:40 -0700
+X-CSE-ConnectionGUID: CqvA096ZSvWDZuOfLE9yzg==
+X-CSE-MsgGUID: 8AqaE68FQEWjiOwfSZkBHg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,268,1747724400"; 
+   d="scan'208";a="201879694"
+Received: from igk-lkp-server01.igk.intel.com (HELO b3b7d4258b7c) ([10.91.175.65])
+  by orviesa001.jf.intel.com with ESMTP; 06 Aug 2025 00:18:38 -0700
+Received: from kbuild by b3b7d4258b7c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ujYPz-00029j-2C;
+	Wed, 06 Aug 2025 07:18:35 +0000
+Date: Wed, 6 Aug 2025 09:18:07 +0200
+From: kernel test robot <lkp@intel.com>
+To: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>
+Subject: lib/maple_tree.c:4206:20: warning: stack frame size (1064) exceeds
+ limit (1024) in 'mas_wr_store_entry'
+Message-ID: <202508060948.H36grbYA-lkp@intel.com>
 MIME-Version: 1.0
-References: <20250805062333.121553-1-bhe@redhat.com>
-In-Reply-To: <20250805062333.121553-1-bhe@redhat.com>
-From: Marco Elver <elver@google.com>
-Date: Wed, 6 Aug 2025 09:16:34 +0200
-X-Gm-Features: Ac12FXwlK-cs-vH-SavIGCKnyqqqvtGaUUbmDgA0yfosyX6KUMYZkchuphMeuWE
-Message-ID: <CANpmjNP-29cuk+MY0w9rvLNizO02yY_ZxP+T0cmCZBi+b5tDTQ@mail.gmail.com>
-Subject: Re: [PATCH 0/4] mm/kasan: make kasan=on|off work for all three modes
-To: Baoquan He <bhe@redhat.com>
-Cc: linux-mm@kvack.org, ryabinin.a.a@gmail.com, glider@google.com, 
-	andreyknvl@gmail.com, dvyukov@google.com, vincenzo.frascino@arm.com, 
-	akpm@linux-foundation.org, kasan-dev@googlegroups.com, 
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: CA45240005
-X-Stat-Signature: mb4ka5qhrh4pjzf4yyztarij1ag5g6f8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Queue-Id: DBE471C000C
+X-Stat-Signature: rg4rzn5cgpc3skx7s9ubybjmm8wqh5pa
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1754464632-283940
-X-HE-Meta: U2FsdGVkX1+yWJHvZmQrM5QNDhB21wez8wpQzFnZxK98CZV3AypUl5/CzpQm+wXskD/7vebrQNpTrO/wsAPOc73flO5/as0cMVLPaIwSqeNCUaT7D7syxVY56uScnkfxL/4Ki1fGxErqM0TIYJoqAwfGq8ZFVmDD+6iIO1TkZfF/a1b78tT2CMKRCvPrUTDT2louuliuet4uWS5NL4PVupf3qqNqeUKThAdb7DfJSevtny9Cyof8tR472V7OXCfJuucUv1F8fyWzmPIpuHaRVpAPTfaiiMuDT3p99vvo+NefjTYAqYAYwSwXOom07FTfepDMKn7hOOyQRcVH5Tx0QsGDOCVLMxmQIiW9aOXW9Zk6bR3yA5c2fNMNZUf2hDln6KsUIe2s3EsP36hNXV2emaq9HZnW45+smh7+NDtVSGSw6Kop9sFaw3Yixqa3mrvwJBO3JZ5fQxz79IhCsVtWGGE3EaCUOij6NMdlT4X4VYdBW48BVl5MsBw1hxir2Pn6PrNa8uM6i/h0pso53cMgt/1rXV57kz+KZI8493FiHWNnmzBfSm0fsOHIbA+ZKwwbNG5+Xtb0K/bciv2bhJ2XMh/y1093sNZHX0kwsBtgAj+HuKx796NQQnWvJFdZcqgB2UgORQPpL3l8g0JGDxk7+D3Vvyfs1AWigekS7tDyU+OHWqagJYgDS9QVRB7kqg1vChJvJ6A7N55Y+KcVa6bAGilcUB5idgJd3TO+FD9FEwMDF/IOvkjVhn7Z5Orr8kQlm0OI46GBaWxu4DEcc8K+5XH8JNy5H8TI+sA9wMrV7M5a4LRDWYTX/5lG1iRJxSYG1BHEQ0rUVxVWo9eJ3kBC5PbJIaTsJ98BB8klT4Fbz34D+GXMdj4TZ0L5PTqgVN+yPq6xZDahtsupmxm9DuugNOq7RrrrsMcDjO5+DJUlKkRpK9AnRd5GawzVJyr1C9KZHXZxZ5B3cyxTMh2z2bZ
- KT8g7SHl
- abT7vV6cFz8QMvC0lTK2ZElLmPC8wMd8zZ65ARUlkui9eJvMR9KteGNbQwi3fKfinrC4aYUk8Te1QUrwXDhOPtjkdYb0WriGJ8JWZllXjdeJcn+qYtWR+nLxqokE6dFSGyqDeyRp0psX3fJh5OrT5zMawWJ8W0S37GjS854cbmlAN5Q+m3O/6bUj8dSfOEJO6jv0GRtUUUXVyb2RzOvHar3RquFtS+dF79m8bYRMg/vvE5OezwhDyz6N64pXsJg4qlxH0ZgcOzNOEfZ2xSzunSVu6D+Uhr7P0br+h0vh5C/1AohbLzbDBP8YEnbMVJRhE+paqKQVFvUqMiJD0cwvb8oBnVlulRjV7q/No9vjKCVEVcsm+49FnSVEn9Q==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1754464721-894465
+X-HE-Meta: U2FsdGVkX19xa+OthNURAOKha9+3qlve6ih5wWcIyjOlxbGw2uzaRhVMFT7EfHZHcDpIWy3EuCddH9a3pqsbCxutLIVEC+jC2OKBNnXhW6it+SefgDVIFP07ESuCOLIZFT7yAS0tI4YnK81d1K+8lx6qp564Vyl+Rai9eiAcz4y2TTnhVa2j467JzYLfIX0kfE8Xl6veUvhjZt6Q/xn+wudh2FUj2OmrbjcAL1ulGtwi2dB7F7EzSLI70inj0vIRNXDfqzEkChgg0YiOgqLH5QCCj3tO38TSPoX+EukSp0n1yuUPlYLq6dXpHzV8eyYh+PZj+OI19U4OYOxd+NwdvXQV+OOvp5A3KEs42A5aiwKWYKe7eVIPQLZFCdj1mV+Hz/pNKgpxp/c6LWwKV67tcumoJakjTo2shNxJ6eqkZefW+T6Gh+OFr5Bkl93ugIJDGwIHrX5fgNauiN9Ippct2pm+kxXFJ/XBvN8zsTX8++l53MQMIyTZm/aLCC4zwBcLXhaJB6Wi7u4PpnoLAAo9peqh9dWNGlqXTY6SJSKWTvmY1hQDMHo1l6ZjpEBxxlVoizbBnUScJ4sk+bEAv47fjD074sroKBW5ilHoGpSHC64q8YVb47iYDl6ZUnxc1PrMTX64aRCT8VF3rEIaFmrqi+RjOmhNlMpIXSgf/1W44Rl7Aix/Abc/H+VByKqaWsgyFLyEXddLBInQrmcJMSkgiq6NVWWeoGKenbRmRZUJjAlFzu8ewPTgFRDKR64ZxxamVI6ydHqYX1XchJ62uf8nAYe/XVN/Q7i+4r6oj1G0yA19wO64kx+ZZwWqK2U5U7VX/Q47DNQQdluJ8FZpq4Asp1BZp0GAwzm5c9TQoOZMAnpO8+L39zOLrb+SnDODeW6OvOp7hYIPAjukSkw4muPehfor0wKeatp0G07Ozu0Y6xYnMMGUXF15ydJ5r2WQYmPpWaTCKYcaZK4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,76 +103,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 5 Aug 2025 at 08:23, 'Baoquan He' via kasan-dev
-<kasan-dev@googlegroups.com> wrote:
->
-> Currently only hw_tags mode of kasan can be enabled or disabled with
-> kernel parameter kasan=on|off for built kernel. For kasan generic and
-> sw_tags mode, there's no way to disable them once kernel is built.
-> This is not convenient sometime, e.g in system kdump is configured.
-> When the 1st kernel has KASAN enabled and crash triggered to switch to
-> kdump kernel, the generic or sw_tags mode will cost much extra memory
-> for kasan shadow while in fact it's meaningless to have kasan in kdump
-> kernel.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+head:   479058002c32b77acac43e883b92174e22c4be2d
+commit: 1fd7c4f3228e9775c97b25a6e5e2420df8cf0e76 maple_tree: convert mas_insert() to preallocate nodes
+date:   11 months ago
+config: um-alldefconfig (https://download.01.org/0day-ci/archive/20250806/202508060948.H36grbYA-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project faa4c4c2dc804c31845d8f036345fac00e016f2d)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250806/202508060948.H36grbYA-lkp@intel.com/reproduce)
 
-Are you using KASAN generic or SW-tags is production?
-If in a test environment, is the overhead of the kdump kernel really
-unacceptable?
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508060948.H36grbYA-lkp@intel.com/
 
-> So this patchset moves the kasan=on|off out of hw_tags scope and into
-> common code to make it visible in generic and sw_tags mode too. Then we
-> can add kasan=off in kdump kernel to reduce the unneeded meomry cost for
-> kasan.
->
-> Test:
-> =====
-> I only took test on x86_64 for generic mode, and on arm64 for
-> generic, sw_tags and hw_tags mode. All of them works well.
+All warnings (new ones prefixed by >>):
 
-Does it also work for CONFIG_KASAN_INLINE?
+   lib/maple_tree.c:351:21: warning: unused function 'mte_set_full' [-Wunused-function]
+     351 | static inline void *mte_set_full(const struct maple_enode *node)
+         |                     ^~~~~~~~~~~~
+   lib/maple_tree.c:356:21: warning: unused function 'mte_clear_full' [-Wunused-function]
+     356 | static inline void *mte_clear_full(const struct maple_enode *node)
+         |                     ^~~~~~~~~~~~~~
+   lib/maple_tree.c:361:20: warning: unused function 'mte_has_null' [-Wunused-function]
+     361 | static inline bool mte_has_null(const struct maple_enode *node)
+         |                    ^~~~~~~~~~~~
+   lib/maple_tree.c:4161:20: warning: unused function 'mas_wr_modify' [-Wunused-function]
+    4161 | static inline void mas_wr_modify(struct ma_wr_state *wr_mas)
+         |                    ^~~~~~~~~~~~~
+>> lib/maple_tree.c:4206:20: warning: stack frame size (1064) exceeds limit (1024) in 'mas_wr_store_entry' [-Wframe-larger-than]
+    4206 | static inline void mas_wr_store_entry(struct ma_wr_state *wr_mas)
+         |                    ^
+   lib/maple_tree.c:3783:21: warning: stack frame size (1032) exceeds limit (1024) in 'mas_wr_spanning_store' [-Wframe-larger-than]
+    3783 | static noinline int mas_wr_spanning_store(struct ma_wr_state *wr_mas)
+         |                     ^
+   6 warnings generated.
 
-> However when I tested sw_tags on a HPE apollo arm64 machine, it always
-> breaks kernel with a KASAN bug. Even w/o this patchset applied, the bug
-> can always be seen too.
->
-> "BUG: KASAN: invalid-access in pcpu_alloc_noprof+0x42c/0x9a8"
->
-> I haven't got root cause of the bug, will report the bug later in
-> another thread.
-> ====
->
-> Baoquan He (4):
->   mm/kasan: add conditional checks in functions to return directly if
->     kasan is disabled
->   mm/kasan: move kasan= code to common place
->   mm/kasan: don't initialize kasan if it's disabled
->   mm/kasan: make kasan=on|off take effect for all three modes
->
->  arch/arm/mm/kasan_init.c               |  6 +++++
->  arch/arm64/mm/kasan_init.c             |  7 ++++++
->  arch/loongarch/mm/kasan_init.c         |  5 ++++
->  arch/powerpc/mm/kasan/init_32.c        |  8 +++++-
->  arch/powerpc/mm/kasan/init_book3e_64.c |  6 +++++
->  arch/powerpc/mm/kasan/init_book3s_64.c |  6 +++++
->  arch/riscv/mm/kasan_init.c             |  6 +++++
->  arch/um/kernel/mem.c                   |  6 +++++
->  arch/x86/mm/kasan_init_64.c            |  6 +++++
->  arch/xtensa/mm/kasan_init.c            |  6 +++++
->  include/linux/kasan-enabled.h          | 11 ++------
->  mm/kasan/common.c                      | 27 ++++++++++++++++++++
->  mm/kasan/generic.c                     | 20 +++++++++++++--
->  mm/kasan/hw_tags.c                     | 35 ++------------------------
->  mm/kasan/init.c                        |  6 +++++
->  mm/kasan/quarantine.c                  |  3 +++
->  mm/kasan/shadow.c                      | 23 ++++++++++++++++-
->  mm/kasan/sw_tags.c                     |  9 +++++++
->  18 files changed, 150 insertions(+), 46 deletions(-)
->
-> --
-> 2.41.0
->
-> --
-> You received this message because you are subscribed to the Google Groups "kasan-dev" group.
-> To unsubscribe from this group and stop receiving emails from it, send an email to kasan-dev+unsubscribe@googlegroups.com.
-> To view this discussion visit https://groups.google.com/d/msgid/kasan-dev/20250805062333.121553-1-bhe%40redhat.com.
+
+vim +/mas_wr_store_entry +4206 lib/maple_tree.c
+
+54a611b605901c Liam R. Howlett 2022-09-06  4198  
+54a611b605901c Liam R. Howlett 2022-09-06  4199  /*
+54a611b605901c Liam R. Howlett 2022-09-06  4200   * mas_wr_store_entry() - Internal call to store a value
+54a611b605901c Liam R. Howlett 2022-09-06  4201   * @mas: The maple state
+54a611b605901c Liam R. Howlett 2022-09-06  4202   * @entry: The entry to store.
+54a611b605901c Liam R. Howlett 2022-09-06  4203   *
+54a611b605901c Liam R. Howlett 2022-09-06  4204   * Return: The contents that was stored at the index.
+54a611b605901c Liam R. Howlett 2022-09-06  4205   */
+739820a6178b03 JaeJoon Jung    2024-06-14 @4206  static inline void mas_wr_store_entry(struct ma_wr_state *wr_mas)
+54a611b605901c Liam R. Howlett 2022-09-06  4207  {
+54a611b605901c Liam R. Howlett 2022-09-06  4208  	struct ma_state *mas = wr_mas->mas;
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4209  	unsigned char new_end = mas_wr_new_end(wr_mas);
+54a611b605901c Liam R. Howlett 2022-09-06  4210  
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4211  	switch (mas->store_type) {
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4212  	case wr_invalid:
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4213  		MT_BUG_ON(mas->tree, 1);
+739820a6178b03 JaeJoon Jung    2024-06-14  4214  		return;
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4215  	case wr_new_root:
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4216  		mas_new_root(mas, wr_mas->entry);
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4217  		break;
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4218  	case wr_store_root:
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4219  		mas_store_root(mas, wr_mas->entry);
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4220  		break;
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4221  	case wr_exact_fit:
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4222  		rcu_assign_pointer(wr_mas->slots[mas->offset], wr_mas->entry);
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4223  		if (!!wr_mas->entry ^ !!wr_mas->content)
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4224  			mas_update_gap(mas);
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4225  		break;
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4226  	case wr_append:
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4227  		mas_wr_append(wr_mas, new_end);
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4228  		break;
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4229  	case wr_slot_store:
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4230  		mas_wr_slot_store(wr_mas);
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4231  		break;
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4232  	case wr_node_store:
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4233  		mas_wr_node_store(wr_mas, new_end);
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4234  		break;
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4235  	case wr_spanning_store:
+54a611b605901c Liam R. Howlett 2022-09-06  4236  		mas_wr_spanning_store(wr_mas);
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4237  		break;
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4238  	case wr_split_store:
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4239  	case wr_rebalance:
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4240  		mas_wr_bnode(wr_mas);
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4241  		break;
+54a611b605901c Liam R. Howlett 2022-09-06  4242  	}
+54a611b605901c Liam R. Howlett 2022-09-06  4243  
+580fcbd67ce2cd Sidhartha Kumar 2024-08-14  4244  	return;
+54a611b605901c Liam R. Howlett 2022-09-06  4245  }
+54a611b605901c Liam R. Howlett 2022-09-06  4246  
+
+:::::: The code at line 4206 was first introduced by commit
+:::::: 739820a6178b03b1b6b99a467c85e9e7146d51c1 maple_tree: modified return type of mas_wr_store_entry()
+
+:::::: TO: JaeJoon Jung <rgbi3307@gmail.com>
+:::::: CC: Andrew Morton <akpm@linux-foundation.org>
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
