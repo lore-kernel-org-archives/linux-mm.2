@@ -2,116 +2,119 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 308FECA0EC0
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 21:44:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C64B3C87FD3
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 21:46:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C7D308E0003; Wed,  6 Aug 2025 17:44:56 -0400 (EDT)
+	id 665858E0005; Wed,  6 Aug 2025 17:46:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C546E8E0002; Wed,  6 Aug 2025 17:44:56 -0400 (EDT)
+	id 63D7E8E0002; Wed,  6 Aug 2025 17:46:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6A558E0003; Wed,  6 Aug 2025 17:44:56 -0400 (EDT)
+	id 52C498E0005; Wed,  6 Aug 2025 17:46:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A4B288E0002
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 17:44:56 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2E54113611C
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 21:44:56 +0000 (UTC)
-X-FDA: 83747662992.03.0957554
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 76BC212000D
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 21:44:54 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=mXyKxzv0;
-	spf=pass (imf29.hostedemail.com: domain of jyescas@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=jyescas@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 432A08E0002
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 17:46:16 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BB86614030E
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 21:46:15 +0000 (UTC)
+X-FDA: 83747666310.05.63EF921
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D7B411C0005
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 21:46:13 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=iER3yTsd;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf20.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754516773; a=rsa-sha256;
+	cv=none;
+	b=NF07n2PJMpBjbLYPI6uvmGIGhNR2uOhlOQk6bU1Sq0yTeTJCsOORuq+SSQ7ynZqc1qQ4z/
+	qTUM5sKlsaCWiYPceu9zM0aJKdnNZerG/SoDt/zH2n2Gi4eG3CvlGRpDPExY800K9tQZXL
+	17CSfx8votSbmGGIR0N0yzOeauP5jII=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=iER3yTsd;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf20.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754516694;
+	s=arc-20220608; t=1754516773;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ExirjJSM/csYCG9EmPc30PfgAnDwOd41cOSuXn8PQ6U=;
-	b=bq7IJTzyPRk1+ExJyAV0fMxQwmtEtVzSx9xlshfUY1BPag9jFh7UySZlH6DlV+M5qxHWJf
-	R41SChrZ2/JK7eIqbhdyd90zeJKGQyQW2FyvuAEfjkiZucM0ef2LZhS28clDs2bgq3bSfC
-	vw9qdCcAxw93/bgWxkiUGF3JT8EAb6I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754516694; a=rsa-sha256;
-	cv=none;
-	b=KfFDVMfougAAgZTTFUr7410Yck4xEIMrdmE+aGQXCIXQe3y5CpPnPYSo8+EVD77f6qY3AL
-	zlYui3+Vq5Nk6iX/GeOC6odiKCmEz85HnqHzzjTtHjo/JcFaj0/dukBebHrAHMhhDaTkJt
-	m5mCIucy8umPlm48tRD8GfH2Vk2/cPw=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=mXyKxzv0;
-	spf=pass (imf29.hostedemail.com: domain of jyescas@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=jyescas@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-24070dd87e4so49735ad.0
-        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 14:44:54 -0700 (PDT)
+	bh=yxW5GAL3bM/I2otEhPeRhXnNiAmw94QPD8j2NzcS20s=;
+	b=uplNouh+ZHzkMxPqUj7wQ0S0XTK0V7H01QoFx9Nx95iObBxwUVipLefcYJmUhsXFSfsKax
+	XrYx1djxIvpDomM6XbQkiT9ttadb6GxgAcvf+lfmQFNbQE7/kEm+zrT8OewR8ptPSuYfs7
+	hw8tIitSEzc5XQks9swohaXrYQJkQM0=
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4b099118fedso50971cf.1
+        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 14:46:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754516693; x=1755121493; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ExirjJSM/csYCG9EmPc30PfgAnDwOd41cOSuXn8PQ6U=;
-        b=mXyKxzv0FlfSEbDClevPQH1ZfvZ07RulhxPIgHsq+5g7aZd64f4zDkApQ6zRiOLU1R
-         AsfNg5xT2fxeyplWHR0uV++dC36nEwtrrWl3bOIJ6usqBeGpLWH5MHAgYaMZjsWrHLa9
-         tgkFQBLzE0XK+4nGeEyBxwGsd6Iia1OzENLpk7bnPLMrJzgQ7z39ry4M1yhhFna4LCFV
-         dXg+YXDYfAwZJF/glyTvt7tK30znTbKPuj6OFrIQ4ESnbw96lHWLzq3baE3WG/kZiH6F
-         TO7ybMxHLWsrnNY5/2U8tJlmS6lb4HPbTVN9MCIhffYZIWEhJlHcBjgDON7leWDvegIs
-         /dZg==
+        d=google.com; s=20230601; t=1754516773; x=1755121573; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yxW5GAL3bM/I2otEhPeRhXnNiAmw94QPD8j2NzcS20s=;
+        b=iER3yTsdX2DVAeQkf0lgkS1OrJeJqTNeBddmSbye26L5ICKewY/SqFrWn6hpEFx7X9
+         ZdTwDwyp0eEu3E95RbM9FsvIcuMhoquyz5csaTO3bppOuZIG4gbJbVuQqFfmlCQbSwzg
+         Z2O9VHTMw4tHPOHzPycEUGPDqvZDErABLod3bQ5/EDt6zPNmqcNm3BhWGByv5bpEJ4CM
+         oyMg/JW3abRZTfajWeNKX5LXhiqliGGLOc/s3fTLdgHp1UDfdagN/24kjGw1sl93Or7m
+         tBhDmbKnTa34nNyVxAbFjSPBG2q0cw+hL0JX00RFI10k2JndSfsvQbiJiQN1qXB3oiMu
+         pPqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754516693; x=1755121493;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ExirjJSM/csYCG9EmPc30PfgAnDwOd41cOSuXn8PQ6U=;
-        b=dVh+n5XimYw99C7sGqSB0QQfQR1eYinetFIuwRMN4by0/TXHem8oP31SwpNh4XCXrx
-         6Eg8YK7qFHDVdUzgIZtT9PKd70O7gw8eSo46AdL0jdt0wId+RtxKMSQ/MOjTtn5VPT6J
-         RjE6wwiT8I0d4hRn57d/+JqlhizswgdXg/86oMZyW+hAzPxoSZJo8DT5/bKI6R6GI/cQ
-         KdD6KeOqe3pESMGpOK9V1xPPPf7iLjOxki9Uv0Gn5oU9af0WldgRqZ71cT1y1sPl3KT4
-         sPYiSIv5afYil+VcOHulOG/i/Zwr6p4ZQSAvvBY8NmL/pAD5zx9M4klvIzZplb87htGS
-         HFaA==
-X-Forwarded-Encrypted: i=1; AJvYcCX4VEAwNLJ87+99xJbhNx/CO0gJ/AsjEjx4s2FRZK9UjoluoWji/GwOzLYV07rA3oDxcQY5qlzG5g==@kvack.org
-X-Gm-Message-State: AOJu0Yy7lYMUTZdSTj2l8wH4WJ+Mg3eRXmh+QFxELdyMh+DIpPSDNcWU
-	1efGAc2F5bc2oKss6oAoItjmMN8fByMS2VPyOFIBaa7jCTMbeFOn5iD/7my8lt1vhvH2yKJhtg0
-	0bTyhxX8zw4nsw+41giWqUsYfHbJe+BDTIEb9bzkH
-X-Gm-Gg: ASbGncu3YgWLV39jkBndbim2Z5iVn6qKeQmOgzgLS1TQqyT6KRv0+FjQqNOktxT5TSL
-	VX86gx7lWT2dLY4ja0+CfetfOTfykpVZsFu8cqAOzsJGdbk7mwtGldBtaoQs8SErxiwKoHufh4x
-	wpVaSJj2zKiZ/ozNo0pQMB2nLqELh0exCH7nFIJSgfTXM140BjXTyZ6ZmrI1hfacZkRFJ2XpXV6
-	ih7Q441qB8DNPLQRHWOunNJD/H+pVCFV014dg==
-X-Google-Smtp-Source: AGHT+IGN6jPVx/xKriPYLrcCMwGgdq1S4mGL9tfjx+eQtFfuUZjh5qmVYhD4H/cg3UBYdQmSwMbOsNdJyZ6JkLtTXaE=
-X-Received: by 2002:a17:903:234e:b0:240:4464:d48b with SMTP id
- d9443c01a7336-242b1b11c2amr1198725ad.16.1754516692844; Wed, 06 Aug 2025
- 14:44:52 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1754516773; x=1755121573;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yxW5GAL3bM/I2otEhPeRhXnNiAmw94QPD8j2NzcS20s=;
+        b=PtslfLNAGFJMtgwKvFQ9oo6qQPyqZ2XNJZHU1XBgnzyfeu7ShgDKnIhGtJ8VUZQcsU
+         8Du52cKU1dFsBL7a7TPSISSLLPT3YqrgK+W9keK7zGB1/K31rIQu1jRkLTKfQ2bAQVAb
+         A0q8OS4Fo6g9DKKT66j4zUHtVvRLkP8Lpn71sdTSatUZrCq48T7mUMgAMQOT2X3uG8M/
+         vXpPCLvMqBXSwzaeEnnZWkmqfALhqklJBcneAaZaGc4gbv3TIFPZNmNs2nFvbZyPahWF
+         dm1a6hp1gNgiwVOae/f4EvXbtnbIC8A9hmDvTTQvl8kC0c7x9ZSg56bUbw0twI75pc9C
+         uedQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWyssU0LBY74323fZRhse3ntO8h+l2uD5uHPfxLMwZAYJ/MOeZaGUVHm/NW6YZyg5kntaCf3X/meQ==@kvack.org
+X-Gm-Message-State: AOJu0YxmN7M42HfMOly6TDYzH2yKGcrPAKeDH2+hBkbvU/lMKLsHahTX
+	bi+mMuCNy4OohSw4ZMHabqiDKnqtd/FkqDLXWb9mjeBDQcGfMTguCbwoDYFHxsVL2CAQADDwC4l
+	m8sWgC0f9EGdi6v7guULAOss5jiMfSlaDNq4hUFOE
+X-Gm-Gg: ASbGncvMamdlKtHMn/x0kfxUBoZoejoLlrhYNb9epOryCvOiI90k877uV92bm7h/TZf
+	lEVnzsv9eg/Cm6NgBagkOKVDSqjv74ZIzMD5FdD9PIj23tZq1Ye4OaBU5Qmv8V89HSYPY1Az1CV
+	/p6ol9m6J5EN0Id9kKv1omNc4EAT/HE8fvMdZ2NqsG7RKZLZIA/OIMaDnPIuyOYQPIduE/b8vYp
+	GxvFqdqqE0C6uAZAYamKjkznCiUMb/EpYA4L5otUM9zZpJ/
+X-Google-Smtp-Source: AGHT+IFdmXPQZItR2ayc1YdqBDwRQHE7GzP2qwoWOBR+mlDDDgs6jqf+g5f4jCHjpUZgoidmSeVTdUaYH200K1a+z3I=
+X-Received: by 2002:a05:622a:607:b0:4b0:85d7:b884 with SMTP id
+ d75a77b69052e-4b0a37dc7aemr454981cf.21.1754516772179; Wed, 06 Aug 2025
+ 14:46:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAJDx_rgzkZognxWzOXJ-ZxdTtUaM3FT6bmpkwxMz03XiX3fKAQ@mail.gmail.com>
- <d395b14a-9a84-4f25-b4f0-45e8500fc5fe@redhat.com> <CAJDx_rgrp1TpOt-iDcsSGRTL=qZZsK_dpKL1bSkyunPGcGXt5g@mail.gmail.com>
- <486c5773-c7fa-4e19-b429-90823ed2f7d5@redhat.com> <CAJDx_ri==3SxFcuKXHpNjrtxbp0hLyhM+zXeJ-LQX38rfbUChw@mail.gmail.com>
- <6dee6cd9-c67f-480f-b728-21c3a7b72004@redhat.com>
-In-Reply-To: <6dee6cd9-c67f-480f-b728-21c3a7b72004@redhat.com>
-From: Juan Yescas <jyescas@google.com>
-Date: Wed, 6 Aug 2025 14:44:39 -0700
-X-Gm-Features: Ac12FXz0ztgwDhHSWf7ryVCMmjiHYTsStUeyw4tReXo_moA4XvrPjonq58HDs_M
-Message-ID: <CAJDx_ripauyGX_KUvApWWZNPuYsyyr8ux6v=nyccAX4zp0w9MQ@mail.gmail.com>
-Subject: Re: [RFC PATCH] mm/page_alloc: Add PCP list for THP CMA
-To: David Hildenbrand <david@redhat.com>
-Cc: akash.tyagi@mediatek.com, Andrew Morton <akpm@linux-foundation.org>, 
-	angelogioacchino.delregno@collabora.com, hannes@cmpxchg.org, 
-	Brendan Jackman <jackmanb@google.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	Linux Memory Management List <linux-mm@kvack.org>, matthias.bgg@gmail.com, Michal Hocko <mhocko@suse.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, wsd_upstream@mediatek.com, 
-	Zi Yan <ziy@nvidia.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	"T.J. Mercier" <tjmercier@google.com>, Isaac Manjarres <isaacmanjarres@google.com>
-Content-Type: multipart/alternative; boundary="0000000000003b5dc5063bb94000"
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 76BC212000D
-X-Stat-Signature: fz3akodn536er86ecmj6rq9rpromb83y
+References: <20250806155905.824388-1-surenb@google.com> <20250806155905.824388-4-surenb@google.com>
+ <8ddff47d-3059-42ea-b022-6151da513049@lucifer.local>
+In-Reply-To: <8ddff47d-3059-42ea-b022-6151da513049@lucifer.local>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 6 Aug 2025 14:46:00 -0700
+X-Gm-Features: Ac12FXz2HywmlnpQot2FVtRqWi3gIynzyBudbKw5U311U7inXb6k23cYiYmJ7i0
+Message-ID: <CAJuCfpEntig+s6GNSERvMJBY=LNWNd_9CraxG7-zkwK1KF882Q@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] fs/proc/task_mmu: execute PROCMAP_QUERY ioctl
+ under per-vma locks
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: akpm@linux-foundation.org, Liam.Howlett@oracle.com, david@redhat.com, 
+	vbabka@suse.cz, peterx@redhat.com, jannh@google.com, hannes@cmpxchg.org, 
+	mhocko@kernel.org, paulmck@kernel.org, shuah@kernel.org, adobriyan@gmail.com, 
+	brauner@kernel.org, josef@toxicpanda.com, yebin10@huawei.com, 
+	linux@weissschuh.net, willy@infradead.org, osalvador@suse.de, 
+	andrii@kernel.org, ryan.roberts@arm.com, christophe.leroy@csgroup.eu, 
+	tjmercier@google.com, kaleshsingh@google.com, aha310510@gmail.com, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D7B411C0005
+X-Stat-Signature: uq4squrf5px3k3dazsi1q6o34xkeem6c
 X-Rspam-User: 
-X-HE-Tag: 1754516694-305850
-X-HE-Meta: U2FsdGVkX1/MZpz6VeMFpmVKWIm1JirCH0H+D+InLOfDWA0zyrdplUcE7+Cbbd7e89zvIgXjH7CNoZmHAG2lV2qlWeX/K5wqD3Vmc9JSR7ei3yU/hX9ZXEuRiFIFRI756O0BhbDOv337+TaleU97KGJeBmD9F/xLat95xIg5+rvpKCwafr0YysYBudun7Ptjivj4VJKtYJcLpgPAUOM5nC7X+wfnXke+MsQFpJtOKQOn8WGFEyT11hOTPvXok5Lh/oJjdktt9USoE8iqRpWoqq1N2hGbDQd/0s/W14r3vpySNrmwwGwMh3xZRhtaDpNPXy8udtQyVvBYyyLOCfXGsm8+5ofka/S59/t3n3wHb2ivwbiuE9ybB9RXSfOsYzcDcw0fVWvIUk3tUVK5ATgQWeQUAlwPPoe0MuCXUDYccYwVsil7E/JP7Ie7jGEiOdBe3S5KqXCvfeunSgFABONqNKcn4h0E87juKf7FMSkdRMlX+beOUDizhaERl3B/Ni3gwoYhdxLf6LhuKyfBQP+c0eBVQzkH7trFt6sfsUFvCAzXRbpwQGo1fR2InrSJTqVHRQ0uao520NxFzJURq/7f5E4rqWF2RqRDyPPoMXxnuSOSlP9hFLCeI0Dnrc6+fHUvEW5evkKH3Hj9bwBCmWzks6FbhQKN95wJo1W3mD1WWOzEbtAS6WpDstpfEDugAnFW4utssTfzOyShA6oeYWXqMMet2Q43pEd9rvXawvjdEBebgpGXI+2TMEzK2kIWJAw2k9yEd0pZXs/u2WSvyd0eeHc1udjtiMFDAIbhtf5CVCZu+5F6H9Gv7ckmAibNJwwfmycYMX8MtdrM8uYPs3g8CnDMwNwZam7jNt83PHOWQ+JL/CIYbVwmWrBOLOfhUqJnmU126xW+uPTMCODoHXaFXdLmeCS4KGXJRxuFNdibcEncLg3rfr7POPtWBujGA8gLXdHSopACVlIEZEClBCp
- WI8iYbdL
- FgrgwnPAh7q8gpLSz+CZJZfEXKNwe/fYLvX/wuSyR4Cyd2QpZKnWdaPbWBfxSJ+9s5SixVus8WmAcEiZ5U63YLLTCjtVfV0+X1k0R
+X-HE-Tag: 1754516773-687634
+X-HE-Meta: U2FsdGVkX1+M4DEXnwg8JPbGKjQ81F5LDRGCq4krgcsOha+modn4klc/blKzlKb8R0FRYE6o/QfO5qkLaxmkkShpTcOzkfBAG/nBumfsKMf5oTudROs8zdpzc4tvB9Esrd6fQ5ZvSsUqQuammQ1PmBpFFCp6Pjs3Pgu77gte5dfaGkoilvqpGY6qOzxsIcZZFsHUufmAqbPLoZV4lD2opo8in74Z2zjyq9MF15bjBLWC90EHhvKKmZroMD/nWFXhk5aRqQPcSiGREuDtUx8Md6qy0BZ6nmrbBLZBgwo8ZENf2W1jfS8UP3rYDL8doMtR1EYrnjg6QCROVv1FWzYpgYLU5kOFImWqov6oHV70D0xftKghqVxxHdzi9I1YdFOp9AyELsFz08AgfG+zB8oYL3b1DpW2T9xczbF74sa8oQyUSRWSpLKx69V49mkABnY/jKacOC25aIuRd5zXrSa4kqWv0QaaMOtwIRw43iLerMFBAd7p1yiu6j8hh0efR5nLgv4l1wtKSdC3Hn3HlIfCJjHHB7Pb2AJlfGP+3OG7qFhdbhQCBFQGadu96dphayLsEC6XhJ66hgQGi3wg4RnFqvscCc/huQ+R+LDSGJ/5CI6tP12tyPsZ4RWB9B0LecZCCnqDDKThIcels7yeFqgqa6U3x0gPgfegiq4+5Yq7A+JBVNaspkgA7BQpXEMhWBC1xphRVBLEvMfnQSY6D9Jlkt3eSevOn0CusuZBB6KzsKjhrZko9tLuSFmJLKo4uqkSJNuoyK+AP1aM0qwX/7ugQg0P5pVCMml3SfnWx9KA1G1e6i0gy/CiapJFGwM0CA8POjOF9yri5X2Rici9sZKD3F5ONqwWYH8MIMaTIyDjpaVbLMw2jpiM3lciS0bxKfHNPzKFJfuC5j+RDIB+c9TR01PKx7OOt61oE3F+meCcI/QH+C+btZZf8xitq/jn6VOxmDmGUFPFSiswd3F+aM2
+ bNFeRgDn
+ wsE7OVpEUJCt9hsxkrnYQxNgGUEfispQEW21WrQ65wUiyZv1VNp0t/uYMZkU1AmHYUHRI5d4qkNnEumUdhMWoXQijYRcWhFP+Ylm0HtZHsdrcNOVNCiu0CkHBqvIanoKEql8I6uEP8mGjL80OkrXeXOxwllVI0ETLXoF5ZfYkuRgyytDeWiu0eYf9+90DC3YXX2P6z4zrpVvO1gqJIvuYMh3Jc2WqiwqdlXLaFsHZoDGudwqUmsNiKRfnvxU0X894WYaeXn5vBpV1UpfTp2ESN37OAm6yc01QMpid0aI7mTHvZiL9JToIZqQ/0vyTdcplDcBc
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,323 +123,317 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---0000000000003b5dc5063bb94000
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Aug 5, 2025 at 2:08=E2=80=AFPM David Hildenbrand <david@redhat.com>=
- wrote:
-
-> On 05.08.25 18:57, Juan Yescas wrote:
-> > On Tue, Aug 5, 2025 at 2:58=E2=80=AFAM David Hildenbrand <david@redhat.=
-com>
-> wrote:
-> >>
-> >> On 05.08.25 03:22, Juan Yescas wrote:
-> >>> On Mon, Aug 4, 2025 at 11:50=E2=80=AFAM David Hildenbrand <david@redh=
-at.com>
-> wrote:
-> >>>>
-> >>>> On 04.08.25 20:20, Juan Yescas wrote:
-> >>>>> Hi David/Zi,
-> >>>>>
-> >>>>> Is there any reason why the MIGRATE_CMA pages are not in the PCP
-> lists?
-> >>>>>
-> >>>>> There are many devices that need fast allocation of MIGRATE_CMA
-> pages,
-> >>>>> and they have to get them from the buddy allocator, which is a bit
-> >>>>> slower in comparison to the PCP lists.
-> >>>>>
-> >>>>> We also have cases where the MIGRATE_CMA memory requirements are bi=
-g.
-> >>>>> For example, GPUs need MIGRATE_CMA memory in the ranges of 30MiB to
-> 500MiBs.
-> >>>>> These cases would benefit if we have THPs for CMAs.
-> >>>>>
-> >>>>> Could we add the support for MIGRATE_CMA pages on the PCP and THP
-> lists?
-> >>>>
-> >>>> Remember how CMA memory is used:
-> >>>>
-> >>>> The owner allocates it through cma_alloc() and friends, where the CM=
-A
-> >>>> allocator will try allocating *specific physical memory regions* usi=
-ng
-> >>>> alloc_contig_range(). It doesn't just go ahead and pick a random CMA
-> >>>> page from the buddy (or PCP) lists. Doesn't work (just imagine havin=
-g
-> >>>> different CMA areas etc).
-> >>>>
-> >>>> Anybody else is free to use CMA pages for MOVABLE allocations. So we
-> >>>> treat them as being MOVABLE on the PCP.
-> >>>>
-> >>>> Having a separate CMA PCP list doesn't solve or speedup anything,
-> really.
-> >>>>
-> >>>
-> >>> Thanks David for the quick overview.
-> >>>
-> >>>> I still have no clue what this patch here tried to solve: it doesn't
-> >>>> make any sense.
-> >>>>
-> >>>
-> >>> The story started with this out of tree patch that is part of Android=
-.
-> >>>
-> >>>
-> https://lore.kernel.org/lkml/cover.1604282969.git.cgoldswo@codeaurora.org=
-/T/#u
-> >>>
-> >>> This patch introduced the __GFP_CMA flag that allocates pages from
-> >>> MIGRATE_MOVABLE
-> >>> or MIGRATE_CMA. What it happens then, it is that the MIGRATE_MOVABLE
-> >>> pages in the
-> >>> PCP lists were consumed pretty fast. To solve this issue, the PCP
-> >>> MIGRATE_CMA list was added.
-> >>> This list is initialized by rmqueue_bulk() when it is empty. That's
-> >>> how we end up with the PCP MIGRATE_CMA list
-> >>> in Android. In addition to this, the THP list for MIGRATE_MOVABLE was
-> >>> allowed to contain
-> >>> MIGRATE_CMA pages. This is causing THP MIGRATE_CMA pages to be used
-> >>> for THP MIGRATE_MOVABLE
-> >>> making later allocations from THP MIGRATE_CMA to fail.
-> >>
-> >> Okay, so this patch here really is not suitable for the upstream kerne=
-l
-> >> as is. It's purely targeted at the OOT Android patch.
-> >>
-> > Right, it is a temporary solution for the pinned MIGRATE_CMA pages.
+On Wed, Aug 6, 2025 at 12:03=E2=80=AFPM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+>
+> On Wed, Aug 06, 2025 at 08:59:04AM -0700, Suren Baghdasaryan wrote:
+> > Utilize per-vma locks to stabilize vma after lookup without taking
+> > mmap_lock during PROCMAP_QUERY ioctl execution. If vma lock is
+> > contended, we fall back to mmap_lock but take it only momentarily
+> > to lock the vma and release the mmap_lock. In a very unlikely case
+> > of vm_refcnt overflow, this fall back path will fail and ioctl is
+> > done under mmap_lock protection.
 > >
-> >>>
-> >>> These workarounds are mainly because we need to solve this issue
-> upstream:
-> >>>
-> >>> - When devices reserve big blocks of MIGRATE_CMA pages, the
-> >>> underutilized MIGRATE_CMA
-> >>> can fall back to MIGRATE_MOVABLE and these pages can be pinned, so if
-> >>> we require MIGRATE_CMA
-> >>> pages, the allocations might fail.
-> >>>
-> >>> I remember that you presented the problem in LPC. Were you able to
-> >>> make some progress on that?
-> >>
-> >> There is the problem of CMA pages getting allocated by someone for a
-> >> MOVABLE allocation, to then short-term pin it for DMA. Long-term
-> >> pinnings are disallowed (we just recently fixed a bug where we
-> >> accidentally allowed it).
-> >>
-> > Nice, it is great the issue got caught and fixed upstream :)
+> > This change is designed to reduce mmap_lock contention and prevent
+> > PROCMAP_QUERY ioctl calls from blocking address space updates.
 > >
-> >> One concern is that a steady stream of short-term pinnings can turn su=
-ch
-> >> pages unmovable. We discussed ideas on how to handle that, but there i=
-s
-> >> no solution upstream yet.
+> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+>
+> A lot of nits but nothing's really standing out as broken, AFAICT...
+>
+> > ---
+> >  fs/proc/task_mmu.c | 84 +++++++++++++++++++++++++++++++++++++---------
+> >  1 file changed, 68 insertions(+), 16 deletions(-)
 > >
-> > Are there any plans to continue the discussion? Is it in the priority
-> > list?
+> > diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> > index 45134335e086..0396315dfaee 100644
+> > --- a/fs/proc/task_mmu.c
+> > +++ b/fs/proc/task_mmu.c
+> > @@ -517,28 +517,81 @@ static int pid_maps_open(struct inode *inode, str=
+uct file *file)
+> >               PROCMAP_QUERY_VMA_FLAGS                         \
+> >  )
+> >
+> > -static int query_vma_setup(struct mm_struct *mm)
+> > +#ifdef CONFIG_PER_VMA_LOCK
+> > +
+> > +static int query_vma_setup(struct proc_maps_locking_ctx *lock_ctx)
+> >  {
+> > -     return mmap_read_lock_killable(mm);
+> > +     lock_ctx->locked_vma =3D NULL;
+> > +     lock_ctx->mmap_locked =3D false;
 >
-> Ohh, it's somewheeeeeere on the todo list :)
+> We also do this in lock_vma_range(), seems sensible to factor out? E.g.:
 >
-> Do you (or one of your colleagues) have capacity to work on that?
+> static void ctx_clear_vma(struct proc_maps_locking_ctx *lock_ctx)
 
+That name really confused me :) Maybe lock_vma_ctx_init() or something
+along these lines. If we can't think of a good name I would prefer to
+keep it as is, given it's only two lines and used only in two places.
 
-We are interested in fixing it. My team can begin work on the solution in
-early November.
+> {
+>         lock_ctx->locked_vma =3D NULL;
+>         lock_ctx->mmap_locked =3D false;
+> }
+>
+> > +
+> > +     return 0;
+> >  }
+> >
+> > -static void query_vma_teardown(struct mm_struct *mm, struct vm_area_st=
+ruct *vma)
+> > +static void query_vma_teardown(struct proc_maps_locking_ctx *lock_ctx)
+> >  {
+> > -     mmap_read_unlock(mm);
+> > +     if (lock_ctx->mmap_locked)
+> > +             mmap_read_unlock(lock_ctx->mm);
+>
+> Maybe worth a comment as to why we leave lock_ctx->mmap_locked set here?
 
-One
-> idea was to flag folios as "pending on migration" and disallow any
-> further short-term pins until migration is done. IIRC, there were other
-> ideas (e.g., isolated pageblock).
->
+Sure. The reason is that this is a teardown stage and lock_ctx won't
+be used anymore. I guess I could reset it just to leave lock_ctx
+consistent instead of adding a comment. Will do that.
 
-Thanks for the pointers, I'll take a look at that.
+>
+> > +     else
+> > +             unlock_vma(lock_ctx);
+>
+> Should have said on 2/3, but I wonder if we should prefix with ctx_, as
+> 'unlock_vma()' and 'lock_vma()' seem like core functions... esp. since we
+> have vma_start_read/write() rather than functions that reference locking.
+>
+> So - ctx_unlock_vma() and ctx_lock_vma() or unlock_ctx_vma() /
+> lock_ctx_vma()?
 
+unlock_ctx_vma() / lock_ctx_vma() sounds good to me.
 
-> > Maybe
-> > a topic we can discuss in LPC Japan?
 >
-> Sounds good, feel free to propose this as a topic. I wills end out the
-> announcement of the MM MC probably next week.
+> > +}
+> > +
+> > +static struct vm_area_struct *query_vma_find_by_addr(struct proc_maps_=
+locking_ctx *lock_ctx,
+> > +                                                  unsigned long addr)
+> > +{
+> > +     struct vm_area_struct *vma;
+> > +     struct vma_iterator vmi;
+> > +
+> > +     if (lock_ctx->mmap_locked)
+> > +             return find_vma(lock_ctx->mm, addr);
+> > +
+> > +     unlock_vma(lock_ctx);
+> > +     rcu_read_lock();
+> > +     vma_iter_init(&vmi, lock_ctx->mm, addr);
+> > +     vma =3D lock_next_vma(lock_ctx->mm, &vmi, addr);
+> > +     rcu_read_unlock();
 >
-> Thanks David, we'll do.
+> I think a comment at the top of this block would be useful, something lik=
+e
+> 'We unlock any previously locked VMA and find the next under RCU'.
 
-> --
-> Cheers,
->
-> David / dhildenb
->
->
+Ack.
 
---0000000000003b5dc5063bb94000
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+>
+> > +
+> > +     if (!IS_ERR_OR_NULL(vma)) {
+>
+> Is the NULL bit here really necessary? presumably lock_ctx->locked_vma is
+> expected to be NULL already, so we're not overwriting anything here.
+>
+> In fact we could get rid of the horrid if/else here with a guard clause l=
+ike:
+>
+>         if (!IS_ERR(vma) || PTR_ERR(vma) !=3D -EAGAIN)
+>                 return vma;
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote g=
-mail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Aug 5, =
-2025 at 2:08=E2=80=AFPM David Hildenbrand &lt;<a href=3D"mailto:david@redha=
-t.com">david@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_=
-quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,=
-204);padding-left:1ex">On 05.08.25 18:57, Juan Yescas wrote:<br>
-&gt; On Tue, Aug 5, 2025 at 2:58=E2=80=AFAM David Hildenbrand &lt;<a href=
-=3D"mailto:david@redhat.com" target=3D"_blank">david@redhat.com</a>&gt; wro=
-te:<br>
-&gt;&gt;<br>
-&gt;&gt; On 05.08.25 03:22, Juan Yescas wrote:<br>
-&gt;&gt;&gt; On Mon, Aug 4, 2025 at 11:50=E2=80=AFAM David Hildenbrand &lt;=
-<a href=3D"mailto:david@redhat.com" target=3D"_blank">david@redhat.com</a>&=
-gt; wrote:<br>
-&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;&gt; On 04.08.25 20:20, Juan Yescas wrote:<br>
-&gt;&gt;&gt;&gt;&gt; Hi David/Zi,<br>
-&gt;&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;&gt;&gt; Is there any reason why the MIGRATE_CMA pages are not =
-in the PCP lists?<br>
-&gt;&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;&gt;&gt; There are many devices that need fast allocation of MI=
-GRATE_CMA pages,<br>
-&gt;&gt;&gt;&gt;&gt; and they have to get them from the buddy allocator, wh=
-ich is a bit<br>
-&gt;&gt;&gt;&gt;&gt; slower in comparison to the PCP lists.<br>
-&gt;&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;&gt;&gt; We also have cases where the MIGRATE_CMA memory requir=
-ements are big.<br>
-&gt;&gt;&gt;&gt;&gt; For example, GPUs need MIGRATE_CMA memory in the range=
-s of 30MiB to 500MiBs.<br>
-&gt;&gt;&gt;&gt;&gt; These cases would benefit if we have THPs for CMAs.<br=
->
-&gt;&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;&gt;&gt; Could we add the support for MIGRATE_CMA pages on the =
-PCP and THP lists?<br>
-&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;&gt; Remember how CMA memory is used:<br>
-&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;&gt; The owner allocates it through cma_alloc() and friends, wh=
-ere the CMA<br>
-&gt;&gt;&gt;&gt; allocator will try allocating *specific physical memory re=
-gions* using<br>
-&gt;&gt;&gt;&gt; alloc_contig_range(). It doesn&#39;t just go ahead and pic=
-k a random CMA<br>
-&gt;&gt;&gt;&gt; page from the buddy (or PCP) lists. Doesn&#39;t work (just=
- imagine having<br>
-&gt;&gt;&gt;&gt; different CMA areas etc).<br>
-&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;&gt; Anybody else is free to use CMA pages for MOVABLE allocati=
-ons. So we<br>
-&gt;&gt;&gt;&gt; treat them as being MOVABLE on the PCP.<br>
-&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;&gt; Having a separate CMA PCP list doesn&#39;t solve or speedu=
-p anything, really.<br>
-&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt; Thanks David for the quick overview.<br>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt;&gt; I still have no clue what this patch here tried to solve: =
-it doesn&#39;t<br>
-&gt;&gt;&gt;&gt; make any sense.<br>
-&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt; The story started with this out of tree patch that is part of =
-Android.<br>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt; <a href=3D"https://lore.kernel.org/lkml/cover.1604282969.git.c=
-goldswo@codeaurora.org/T/#u" rel=3D"noreferrer" target=3D"_blank">https://l=
-ore.kernel.org/lkml/cover.1604282969.git.cgoldswo@codeaurora.org/T/#u</a><b=
-r>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt; This patch introduced the __GFP_CMA flag that allocates pages =
-from<br>
-&gt;&gt;&gt; MIGRATE_MOVABLE<br>
-&gt;&gt;&gt; or MIGRATE_CMA. What it happens then, it is that the MIGRATE_M=
-OVABLE<br>
-&gt;&gt;&gt; pages in the<br>
-&gt;&gt;&gt; PCP lists were consumed pretty fast. To solve this issue, the =
-PCP<br>
-&gt;&gt;&gt; MIGRATE_CMA list was added.<br>
-&gt;&gt;&gt; This list is initialized by rmqueue_bulk() when it is empty. T=
-hat&#39;s<br>
-&gt;&gt;&gt; how we end up with the PCP MIGRATE_CMA list<br>
-&gt;&gt;&gt; in Android. In addition to this, the THP list for MIGRATE_MOVA=
-BLE was<br>
-&gt;&gt;&gt; allowed to contain<br>
-&gt;&gt;&gt; MIGRATE_CMA pages. This is causing THP MIGRATE_CMA pages to be=
- used<br>
-&gt;&gt;&gt; for THP MIGRATE_MOVABLE<br>
-&gt;&gt;&gt; making later allocations from THP MIGRATE_CMA to fail.<br>
-&gt;&gt;<br>
-&gt;&gt; Okay, so this patch here really is not suitable for the upstream k=
-ernel<br>
-&gt;&gt; as is. It&#39;s purely targeted at the OOT Android patch.<br>
-&gt;&gt;<br>
-&gt; Right, it is a temporary solution for the pinned MIGRATE_CMA pages.<br=
->
-&gt; <br>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt; These workarounds are mainly because we need to solve this iss=
-ue upstream:<br>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt; - When devices reserve big blocks of MIGRATE_CMA pages, the<br=
->
-&gt;&gt;&gt; underutilized MIGRATE_CMA<br>
-&gt;&gt;&gt; can fall back to MIGRATE_MOVABLE and these pages can be pinned=
-, so if<br>
-&gt;&gt;&gt; we require MIGRATE_CMA<br>
-&gt;&gt;&gt; pages, the allocations might fail.<br>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt; I remember that you presented the problem in LPC. Were you abl=
-e to<br>
-&gt;&gt;&gt; make some progress on that?<br>
-&gt;&gt;<br>
-&gt;&gt; There is the problem of CMA pages getting allocated by someone for=
- a<br>
-&gt;&gt; MOVABLE allocation, to then short-term pin it for DMA. Long-term<b=
-r>
-&gt;&gt; pinnings are disallowed (we just recently fixed a bug where we<br>
-&gt;&gt; accidentally allowed it).<br>
-&gt;&gt;<br>
-&gt; Nice, it is great the issue got caught and fixed upstream :)<br>
-&gt; <br>
-&gt;&gt; One concern is that a steady stream of short-term pinnings can tur=
-n such<br>
-&gt;&gt; pages unmovable. We discussed ideas on how to handle that, but the=
-re is<br>
-&gt;&gt; no solution upstream yet.<br>
-&gt; <br>
-&gt; Are there any plans to continue the discussion? Is it in the priority<=
-br>
-&gt; list?<br>
-<br>
-Ohh, it&#39;s somewheeeeeere on the todo list :)<br>
-<br>
-Do you (or one of your colleagues) have capacity to work on that?</blockquo=
-te><div><br></div><div><div>We are interested in fixing=C2=A0it. My team ca=
-n begin work on the solution in early November.</div></div><div><br></div><=
-blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-l=
-eft:1px solid rgb(204,204,204);padding-left:1ex">One <br>
-idea was to flag folios as &quot;pending on migration&quot; and disallow an=
-y <br>
-further short-term pins until migration is done. IIRC, there were other <br=
->
-ideas (e.g., isolated pageblock).<br></blockquote><div><br></div><div>Thank=
-s for the pointers, I&#39;ll take a look at that.</div><div><br></div><bloc=
-kquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:=
-1px solid rgb(204,204,204);padding-left:1ex">
-<br>
-&gt; Maybe<br>
-&gt; a topic we can discuss in LPC Japan?<br>
-<br>
-Sounds good, feel free to propose this as a topic. I wills end out the <br>
-announcement of the MM MC probably next week.<br>
-<br></blockquote><div>Thanks David, we&#39;ll do.=C2=A0</div><blockquote cl=
-ass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid=
- rgb(204,204,204);padding-left:1ex">
--- <br>
-Cheers,<br>
-<br>
-David / dhildenb<br>
-<br>
-</blockquote></div></div>
+We still need to assign lock_ctx->locked_vma when !IS_ERR(vma) before
+we return the vma, so the lines about would not be correct. I can
+change it to:
 
---0000000000003b5dc5063bb94000--
+if (!vma)
+    return NULL;
+
+if (!IS_ERR(vma)) {
+    lock_ctx->locked_vma =3D vma;
+    return vma;
+}
+
+if (PTR_ERR(vma) =3D=3D -EAGAIN) {
+    /* Fallback to mmap_lock on vma->vm_refcnt overflow */
+    ...
+}
+return vma;
+
+I think that would be the equivalent of what I currently have. Would
+you prefer that?
+
+>
+> (the !IS_ERR() bit is probably a bit redundant but makes things clearer
+> vs. just the PTR_ERR() thing)
+>
+> Then do the rest below.
+>
+>
+> > +             lock_ctx->locked_vma =3D vma;
+> > +     } else if (PTR_ERR(vma) =3D=3D -EAGAIN) {
+> > +             /* Fallback to mmap_lock on vma->vm_refcnt overflow */
+> > +             mmap_read_lock(lock_ctx->mm);
+> > +             vma =3D find_vma(lock_ctx->mm, addr);
+> > +             lock_ctx->mmap_locked =3D true;
+>
+> Kinda sucks we have two separate ways of doing fallback now, this
+> open-coded thing and fallback_to_mmap_lock().
+>
+> Sort of hard to combine since we have subtly diffrent semantics - the RCU
+> read lock is being held in the /proc/$pid/maps case, but here we've
+> released it already.
+
+Yeah, plus that one uses iterators and this one doesn't... I don't
+think it's worth trying to shoehorn them together given that the code
+is quite short.
+
+>
+> > +     }
+> > +
+> > +     return vma;
+> > +}
+> > +
+> > +#else /* CONFIG_PER_VMA_LOCK */
+> > +
+> > +static int query_vma_setup(struct proc_maps_locking_ctx *lock_ctx)
+> > +{
+> > +     return mmap_read_lock_killable(lock_ctx->mm);
+> >  }
+> >
+> > -static struct vm_area_struct *query_vma_find_by_addr(struct mm_struct =
+*mm, unsigned long addr)
+> > +static void query_vma_teardown(struct proc_maps_locking_ctx *lock_ctx)
+> >  {
+> > -     return find_vma(mm, addr);
+> > +     mmap_read_unlock(lock_ctx->mm);
+> >  }
+> >
+> > -static struct vm_area_struct *query_matching_vma(struct mm_struct *mm,
+> > +static struct vm_area_struct *query_vma_find_by_addr(struct proc_maps_=
+locking_ctx *lock_ctx,
+> > +                                                  unsigned long addr)
+> > +{
+> > +     return find_vma(lock_ctx->mm, addr);
+> > +}
+> > +
+> > +#endif  /* CONFIG_PER_VMA_LOCK */
+> > +
+> > +static struct vm_area_struct *query_matching_vma(struct proc_maps_lock=
+ing_ctx *lock_ctx,
+> >                                                unsigned long addr, u32 =
+flags)
+> >  {
+> >       struct vm_area_struct *vma;
+> >
+> >  next_vma:
+> > -     vma =3D query_vma_find_by_addr(mm, addr);
+> > +     vma =3D query_vma_find_by_addr(lock_ctx, addr);
+> > +     if (IS_ERR(vma))
+> > +             return vma;
+> > +
+> >       if (!vma)
+> >               goto no_vma;
+> >
+> > @@ -579,11 +632,11 @@ static struct vm_area_struct *query_matching_vma(=
+struct mm_struct *mm,
+> >       return ERR_PTR(-ENOENT);
+> >  }
+> >
+> > -static int do_procmap_query(struct proc_maps_private *priv, void __use=
+r *uarg)
+> > +static int do_procmap_query(struct mm_struct *mm, void __user *uarg)
+> >  {
+> > +     struct proc_maps_locking_ctx lock_ctx =3D { .mm =3D mm };
+>
+> >       struct procmap_query karg;
+> >       struct vm_area_struct *vma;
+> > -     struct mm_struct *mm;
+> >       const char *name =3D NULL;
+> >       char build_id_buf[BUILD_ID_SIZE_MAX], *name_buf =3D NULL;
+> >       __u64 usize;
+> > @@ -610,17 +663,16 @@ static int do_procmap_query(struct proc_maps_priv=
+ate *priv, void __user *uarg)
+> >       if (!!karg.build_id_size !=3D !!karg.build_id_addr)
+> >               return -EINVAL;
+> >
+> > -     mm =3D priv->lock_ctx.mm;
+> >       if (!mm || !mmget_not_zero(mm))
+> >               return -ESRCH;
+> >
+> > -     err =3D query_vma_setup(mm);
+> > +     err =3D query_vma_setup(&lock_ctx);
+> >       if (err) {
+> >               mmput(mm);
+> >               return err;
+> >       }
+> >
+> > -     vma =3D query_matching_vma(mm, karg.query_addr, karg.query_flags)=
+;
+> > +     vma =3D query_matching_vma(&lock_ctx, karg.query_addr, karg.query=
+_flags);
+> >       if (IS_ERR(vma)) {
+> >               err =3D PTR_ERR(vma);
+> >               vma =3D NULL;
+> > @@ -705,7 +757,7 @@ static int do_procmap_query(struct proc_maps_privat=
+e *priv, void __user *uarg)
+> >       }
+> >
+> >       /* unlock vma or mmap_lock, and put mm_struct before copying data=
+ to user */
+> > -     query_vma_teardown(mm, vma);
+> > +     query_vma_teardown(&lock_ctx);
+> >       mmput(mm);
+> >
+> >       if (karg.vma_name_size && copy_to_user(u64_to_user_ptr(karg.vma_n=
+ame_addr),
+> > @@ -725,7 +777,7 @@ static int do_procmap_query(struct proc_maps_privat=
+e *priv, void __user *uarg)
+> >       return 0;
+> >
+> >  out:
+> > -     query_vma_teardown(mm, vma);
+> > +     query_vma_teardown(&lock_ctx);
+> >       mmput(mm);
+> >       kfree(name_buf);
+> >       return err;
+> > @@ -738,7 +790,7 @@ static long procfs_procmap_ioctl(struct file *file,=
+ unsigned int cmd, unsigned l
+> >
+> >       switch (cmd) {
+> >       case PROCMAP_QUERY:
+> > -             return do_procmap_query(priv, (void __user *)arg);
+> > +             return do_procmap_query(priv->lock_ctx.mm, (void __user *=
+)arg);
+>
+> OK this confused me until I worked it through.
+>
+> We set priv->lock_ctx.mm in:
+>
+> pid_maps_open() -> do_maps_open() -> proc_maps_open()
+>
+> Which it gets from proc_mem_open() which figures out the mm.
+>
+> Maybe one for 2/3, but it'd be nice to have a comment saying something
+> about how this is set, since it being part of lock_ctx makes it seem like
+> it's something that would be set elsewhere.
+>
+> Since we have fallback stuff and want to thread through this new lokc
+> context type I guess it makes sense to put it here but given that's the
+> case, let's maybe just add a comment here to clarify.
+
+Ok, something like "lock_ctx.mm is set during file open operation" ?
+
+>
+> >       default:
+> >               return -ENOIOCTLCMD;
+> >       }
+> > --
+> > 2.50.1.565.gc32cd1483b-goog
+> >
+>
+> Cheers, Lorenzo
 
