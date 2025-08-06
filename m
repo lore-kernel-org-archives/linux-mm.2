@@ -2,106 +2,142 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 92BFBC87FD3
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 12:43:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7FE9AC87FCB
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 12:46:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E4B68E0007; Wed,  6 Aug 2025 08:43:50 -0400 (EDT)
+	id 0A1BE6B007B; Wed,  6 Aug 2025 08:46:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2943A8E0002; Wed,  6 Aug 2025 08:43:50 -0400 (EDT)
+	id 078F56B009F; Wed,  6 Aug 2025 08:46:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 183788E0007; Wed,  6 Aug 2025 08:43:50 -0400 (EDT)
+	id EA95F6B00A2; Wed,  6 Aug 2025 08:46:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 069558E0002
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 08:43:50 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B25B31361EC
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 12:43:49 +0000 (UTC)
-X-FDA: 83746299378.09.8AB880F
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 6DD4280004
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 12:43:47 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=QMucSp9y;
-	spf=pass (imf30.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.151 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
-	dmarc=pass (policy=quarantine) header.from=pankajraghav.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D99D86B007B
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 08:46:55 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7E03B815A9
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 12:46:55 +0000 (UTC)
+X-FDA: 83746307190.04.943E9C1
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 05DAD1C000D
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 12:46:52 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="f/RvTxEa";
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf21.hostedemail.com: domain of sumanthk@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sumanthk@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754484228;
+	s=arc-20220608; t=1754484413;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZophTKdo4O3A36vGcC5G0lV5mUY9trAmIEPn+lZrbVg=;
-	b=OifW4ryT/Kd4ZtUq0VViezl4EBqhwq8wRDGD1rKfx6cHXqHIIJ54NF8Gq58i+fDwcmy5n/
-	chcMyogcnTIgnMmDPgtM3urOrT5I6m25eDrfNeI07nZBuckrI8IH6GeGOh39dcEgadW6tE
-	kNl1DxlHISCFKRxp8WOVxSTja9Ufw1c=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754484228; a=rsa-sha256;
+	bh=T1dSRtgDFd3rpqxp+UUfdWimEpYJ/LqTvkYYD4B7O4k=;
+	b=I7BYad/869CIPcMxm3ju7dtdEqMdOj36QK1T/A261lqYlrRjPeadmTg6ZbqnQZVehf5LJK
+	FXTac+ZhHgMdQa6H4vTBhLRV9b9gHM0Q5r8fedss5uHKNdti0IAXB+Id7D8gr5GCcU2CHq
+	mFz1b/p+PNdfioCZoZTJ0owh0NOb9G4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754484413; a=rsa-sha256;
 	cv=none;
-	b=U84sUzG/Bvg13o8SW0y8Av/vSuUuOGOkV8LkXNc5SkqGpjjNYXR3gI2qrEzdXUh1bcuX7V
-	9EFEtC7a3bJe4VVweUIUFscOxDThgMhbEBxTYDCxP3O3u5Txf4ddl2keEsYacjwBXG2hLs
-	1W5HwjEuJwbFw6GKiwsywk+EJM4rG60=
+	b=ugNPmKuYzwucSSnnUZZjn4u++HSXnu+p3iN0dX159N0ZMvHlQHtrRyqsJHrhGenjzB8Fp2
+	jPzzIGmY2ZVP44Dia7abFLAsHM5ckX/EygnOTripOqkrehPRfuHJ//odNyx/2AlQW8XSLz
+	amndxaxqzCg5VK7iUFzjKi3OuZyG1vw=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=QMucSp9y;
-	spf=pass (imf30.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.151 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
-	dmarc=pass (policy=quarantine) header.from=pankajraghav.com
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4bxqjC35nkz9tGN;
-	Wed,  6 Aug 2025 14:43:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pankajraghav.com;
-	s=MBO0001; t=1754484223;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZophTKdo4O3A36vGcC5G0lV5mUY9trAmIEPn+lZrbVg=;
-	b=QMucSp9yjzTRGS3JNNwUENMKvP5/sRhXP+HKsADS77xEB0DQ47TT+6Nm3BywgS+3ZTWgE8
-	FDVYRrg6d651lQ3fvj/bKEUJaL+NNjcReQYrtHwEKkrCZMgTLevtAxm92vk66VagiGM2Bv
-	VchgcKSTtEYhg17rYrQuY5vEjVZoc7cqxesoLvL2LqtvH1bdkXk3BUqp+NBFJE0OPAhGjo
-	+UP/o6D799+eZyGQQQkRu8KFKW8ZjZ+4Tx7tj2cJC1n/bjv+OJdRL1eQqLVGrgSmUE8L1N
-	0GaHRhouyJPzw12uHKykUG9ZpLjcTfNs+FEk/sIuuTKW3qClFdaVOLgvhZt+1A==
-Date: Wed, 6 Aug 2025 14:43:32 +0200
-From: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@redhat.com>, 
-	"H . Peter Anvin" <hpa@zytor.com>, Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>, 
-	Mike Rapoport <rppt@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Nico Pache <npache@redhat.com>, Dev Jain <dev.jain@arm.com>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Jens Axboe <axboe@kernel.dk>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, willy@infradead.org, x86@kernel.org, linux-block@vger.kernel.org, 
-	Ritesh Harjani <ritesh.list@gmail.com>, linux-fsdevel@vger.kernel.org, 
-	"Darrick J . Wong" <djwong@kernel.org>, mcgrof@kernel.org, gost.dev@samsung.com, hch@lst.de, 
-	Pankaj Raghav <p.raghav@samsung.com>
-Subject: Re: [PATCH 3/5] mm: add static huge zero folio
-Message-ID: <lyfgmdjehtfjb2gmj5ciao6l5lmkvlfe54wtlnlhjjf7ge65sa@2dyo3tb6ka4i>
-References: <20250804121356.572917-1-kernel@pankajraghav.com>
- <20250804121356.572917-4-kernel@pankajraghav.com>
- <4463bc75-486d-4034-a19e-d531bec667e8@lucifer.local>
- <70049abc-bf79-4d04-a0a8-dd3787195986@redhat.com>
- <6ff6fc46-49f1-49b0-b7e4-4cb37ec10a57@lucifer.local>
- <bc6cdb11-41fc-486b-9c39-17254f00d751@redhat.com>
- <bmngjssdvffqvnfcoledenlxefdqesvfv7l6os5lfpurmczfw5@mn7jouglo72s>
- <e67479f5-e8ed-43a7-8793-c6bff04ff1f4@redhat.com>
- <iputzuntgitahlu3qu2sg5zbzido43ncykcefqawjpkbnvodtn@22gzzl5t77ct>
- <9a657c84-99fe-41ba-88ca-097acab4b96b@redhat.com>
+	imf21.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="f/RvTxEa";
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf21.hostedemail.com: domain of sumanthk@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sumanthk@linux.ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5766tGP1019487;
+	Wed, 6 Aug 2025 12:46:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=T1dSRtgDFd3rpqxp+UUfdWimEpYJ/L
+	qTvkYYD4B7O4k=; b=f/RvTxEau8SN2fssUaIC9F7Sh/HqM6Kiu6JNkM8obi8oLa
+	UuChkgmYk1dj2Q5eSVXVjOr0H4SNoYDL+7/etP9yePdhfGy8w0qJWS1F8+45ZurL
+	NYYawB4BX2dr593ELb/jIa0f8vcjufBuIXpDtj5II0rR4K51MFEnzPX3slqbcrK/
+	fljI5dhROdhUW7Q200nTzNdrvyFwEEIThDEEHw0H00MyMU6ZpJqZSyMK8x1A0aXO
+	2XrHbjTLQsQY+3IE6IzkfngQAUHDyvDTnFmwpwZFUNttx5PG3zxFrVdL5FqIZ+y6
+	rT9uoFTsDfM88k66GKC65l3TJ+yXf9HwtC95clHQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48c26tsfj2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 06 Aug 2025 12:46:51 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 576Ch8nb006741;
+	Wed, 6 Aug 2025 12:46:51 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48c26tsfht-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 06 Aug 2025 12:46:50 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 576C7PeT020616;
+	Wed, 6 Aug 2025 12:46:49 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48bpwmuktn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 06 Aug 2025 12:46:49 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 576CkjLx50397510
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 6 Aug 2025 12:46:45 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A6EC820043;
+	Wed,  6 Aug 2025 12:46:45 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2664620040;
+	Wed,  6 Aug 2025 12:46:45 +0000 (GMT)
+Received: from li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com (unknown [9.111.70.156])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed,  6 Aug 2025 12:46:45 +0000 (GMT)
+Date: Wed, 6 Aug 2025 14:46:43 +0200
+From: Sumanth Korikkar <sumanthk@linux.ibm.com>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm <linux-mm@kvack.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        David Hildenbrand <david@redhat.com>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        linux-s390 <linux-s390@vger.kernel.org>
+Subject: Re: [PATCH v2] mm: fix accounting of memmap pages for early sections
+Message-ID: <aJNOs0IB1d33GSSW@li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com>
+References: <20250804151328.2326642-1-sumanthk@linux.ibm.com>
+ <20250806090320.wdt4zsfiambtgkvy@master>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9a657c84-99fe-41ba-88ca-097acab4b96b@redhat.com>
-X-Rspamd-Queue-Id: 6DD4280004
-X-Stat-Signature: cxj58krbjcax7iq1ph5ptfbfg3qncjid
+In-Reply-To: <20250806090320.wdt4zsfiambtgkvy@master>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: QEnwZJtDuhjBjmp6iHB0OJwXK6H_odhu
+X-Authority-Analysis: v=2.4 cv=F/xXdrhN c=1 sm=1 tr=0 ts=68934ebb cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=kj9zAlcOel0A:10 a=2OwXVqhp2XgA:10 a=vht8kvy_zf64N8Etz0IA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: e9cBLpYsr6FVqWELpOywZJCGpor7R9pg
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA2MDA3OCBTYWx0ZWRfX39J9IwK7GjJa
+ fuy4krFDha5iWSbaOR4YZiIyUFBi97WqF8mXqW8p7iZdfag2Xt7bHlq3mnsSorxzK18v+dazKS2
+ xPLN6NB074jvqvq6g5pllnuiXDHBm7s6Rv1B248EKM0kunrasU5zqaQ4bU4wXJbN0gMNQdATSbv
+ L0n6ECj64I5cvnFeQDLVXAIqyicyRtfZ+zfTLgrmDtFhsAyNH9rhA/A0PibOHC6rCKyZk7lWMJy
+ bUEdw4N4CTaiwv2ufxaFkMKk2sXJGKSA70pYnE4wcNbuXTeucP3jxiQULtbIiUynZUbntAB9Ww6
+ LjbQuisamnyMASmSgUJfE21Blm6vQmCnPOEHw/97SA8W4K7VSOjXDL3hg1NQ39Rn1psgZwl8wpO
+ EvKnc2Mh++6IGa1SadLdybcEXMDW0fvNnJTnJt2I8/VdG7lYUAEGXlMPu8weRF3Z/prLNY2g
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-06_03,2025-08-06_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 lowpriorityscore=0 priorityscore=1501 impostorscore=0
+ clxscore=1015 spamscore=0 bulkscore=0 adultscore=0 mlxlogscore=713
+ malwarescore=0 phishscore=0 suspectscore=0 classifier=spam authscore=0
+ authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508060078
+X-Stat-Signature: kqnjeb668578ddekotp7a3wiocmb1kc1
+X-Rspamd-Queue-Id: 05DAD1C000D
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1754484227-300448
-X-HE-Meta: U2FsdGVkX1+3LOLrr8vqQJ4J2gycjneQPU5msoolQtKIPEmjlp7eI5Bme6g4FVjK3/V0/5QWfxOnKkNoVsAzVghNdKt1NDFnVaPpqC0eDXWo9Ikr8AGlZA9pyj6XvBGJ8tTk/QdIPGCs9PugZK41Kto7uq5o9AZRQ8u4ZlK6pAn+Dptc9CNQ817/5uQE+ohWElIa8zXlXW0tXasrlcx9Qza1lKGwTkmVCajOaXzzwQIfRx7OJghnDGfAAaDGQByh6nEoIp15fum2OHk3KtDGHWizjQQrqsNCUj82igHbxfUfYPu0jxLza3kPspGu9hhMQcwBoQdWA0LmiDwW5gOJZVeDIAnQS9Z1Uh90d9pjYAL1vsHztH6V5Ruim2961NlhwQZYV+20z2134vJ6X3p9cp9Bu8muNoJdaYzDSq3Ogqa0cby2CGBzaaCVhV7F++IposbwacwjctlQP4rHjODs8I6J+1JZKstM4xWh3o+X+lzbPTRVUBboQZ1LRWtLm01fg6eGSMahKS3anQun+zQD98aI8Sugl6ySl4YfZSEOl0j79hDiMcFIUiVTa6QxgCIj4YlD4LyZRsvjhWLeKgKOxqze42y3odfo4KcpC2v59gZ6DlBnqSee0Y7PZICCHvXbc3XnP6sTSbtHkt7CaQrkOOywF6GnOd5aU1LegB2Jx+3ZekUNmPXfDn0zVQ3IRQlBmJY1dHRCC2XedueciZzQ5v2MDRNIFZoE13acXhINZcETccAPjDJShoHTNAWabyKVWqXnFfA9RlNadShrUlOjLb5v0UfsMQ8Q/luZC63Mj+A16WFRDMI+L/zbqbrsUf8d+h7+FyIPGxzvJEt3XFWkkevvt24C6QG0dFCrqyegDUYU0FBUwomC8MayhNJfVQVo5kvSiWWKztKGcQU539AGVrcaeiqK+vMidfmK6BNVLpTtVzmnUHO6kcnsyE9xDCQ5PouG8Hac3mimGOex1Ud
- nBec3k8D
- 7X2kvg8hPhl1Y//Pna/XIaZ6Kts5wuDi5hF1og4ckPij+UjS3YYOaZXrqoVDlQbe4gTO0NuYz1YNZoRyUymgomhisP/2VMNls2tUZ994sGUHjTNP5yI5s7kwfUag1GUXwcW7Ua6v4ePbHeKnUaYJWObsydbdqVfi60aNwFZl6FykJBFISo4jUWGcrg59tdB4EvSRU+dbGfFNqYE2uXRpHHx7h/XE8VVrVjwCEFweY/xbYH8n7TDjE+rCWI2HjiS/X62EOqW4a7dDhA2fRyVKX5HkdIoNJ6jN2yGC1edddobOyJY7zMJidwgDqm2g8u3JVCJun230+Z09ZIlESeILD0zTJ/Q==
+X-HE-Tag: 1754484412-103310
+X-HE-Meta: U2FsdGVkX18pRuPN5LPbMkC/slIwpQJT6PXqvybceuMrXmNjd1AlhYaeCP1UBfl9VQ23WpWmCxmtLLBDepYGfR/C0Mcl0tG3GjQ1i6o1qRrLQlU95EVmvI8bza9bG4ku6MJCHXymBVMjK5ClhtbeAaQkJTXNlP4wmadY6XHPotoZb8Ne6CSY2NyXMR8PjlblrfvQJ0VkEyTdVFRykZOm7O1/ZQp3tZwxrcak6VgtZBuinyYTUmUe0flL12qXlSASnIX2cZHL0JRGqRzbi3YwqQoOUEdW6WLt0fT+d505GZcfWJh7EUeFFwNkzPIswtxBlNN9gtVWpODjMUoOukJKU2vvJKHgyBlGqCtgXIzRiUKi830BQedvilrsj3lvMaJTdzMfS8oAYv3YUYuwmcvyaggxDyA6P+nFKugXKFausvgqzVHXmwheX3yJkNkzDHU6CC06QXMOD9KW4LoPIqEQhHDxw01cMA6YJBGRarel087G8eVkQMPb3K/OTFPmYjYfakdxaTbi8z1YihwOxHYe0R1bvmjfcv64kpPS+wlWnPD2N/Gem6liHr4J7qkcQjyTnI7bTBl/LK2sHyQEJ/tI1R2NImDZCYhIKTHxeRdhPVlu5SJxRvgty/6mC7uRwkXnGzWceXWO2bmd+01NuzEjaqMxKjMZFX6ETyeLfjZFEXOL+3nk0zAoJKPzN7z5mrT25z1j2rTqQAsK9cXllw5sX2jFC/rXTrMN3c26kp+HFBY4GDyvcCiXiu7NPUcBMzCyJ77Ksa5fEdEKmp9zTA6dFpc3WwxU9rbZzFkaH4cx9yEjsb0jicn3Kw/C0Z+6lpW98o3X8BdXvLQxy6I4dY/fsF8YZFCNsYZKelhTObHi6cEdVrBJ2t+6A920ZwEg5xlxpfn5iEL07PxWCPvVkp6Lw/dgU5O/d1wpfAjwBgtFC9/FRlb/PDj2mtOvRatRFiHjHz3SyHqK+eBEl1qYu5g
+ 86f9E6J8
+ +/X4ex1oVNT/lGKIsKsNe5SiOS6z1KBV40G9aK4PXxvqPaB2/G0xbyrkLg/GR7T5JVostUOCaO74vMWnTo4USFqizAvSGUYfzHBt4S/m6ty34JteYwwChv98VgGRogBdb8wcvxqRvSLbJljaLtAYAmn65mC3OJl5bkJcY9KaDboqaPz1PYf1SqlHSvndmq9x6elLSwo6iS/SnYkv/pfBpOmT0gYIUa74YUE16MhpEnqo83xRePGTj0DJi6Hq9nv+tN74kgudGpkBPOBbgt35pwKsst3tnnviOf4jRKiSdX7gjwxg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,39 +146,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 06, 2025 at 02:36:51PM +0200, David Hildenbrand wrote:
-> On 06.08.25 14:28, Pankaj Raghav (Samsung) wrote:
-> > On Wed, Aug 06, 2025 at 02:24:28PM +0200, David Hildenbrand wrote:
-> > > On 06.08.25 14:18, Pankaj Raghav (Samsung) wrote:
-> > > > > We could go one step further and special case in mm_get_huge_zero_folio() +
-> > > > > mm_put_huge_zero_folio() on CONFIG_STATIC_HUGE_ZERO_FOLIO.
-> > > > > 
-> > > > 
-> > > > Hmm, but we could have also failed to allocate even though the option
-> > > > was enabled.
-> > > 
-> > > Then we return huge_zero_folio, which is NULL?
-> > > 
-> > > Or what are you concerned about?
-> > 
-> > But don't we want to keep the "dynamic" allocation part be present even
-> > though we failed to allocate it statically in the shrinker_init?
-> > 
-> > Mainly so that the existing users of mm_get_huge_zero_folio() are not affected by
-> > these changes.
+> The change here is reasonable. While maybe we still miss the counting at some
+> other points.
 > 
-> I would just keep it simple and say that if we fail the early allocation
-> (which will be extremely unlikely that early during boot!), just don't ever
-> try to reallocate, even not when we could through mm_get_huge_zero_folio().
+> For example:
 > 
-> That sounds as simple as it gets. Again, failing to allocate that early and
-> then succeeding to allocate later is a fairly unlikely scenario.
+> a. 
+> 
+>   sparse_init_nid()
+>     __populate_section_memmap()
+> 
+> If !CONFIG_SPARSEMEM_VMEMMAP, and sparse_buffer_alloc() return NULL, it
+> allocate extra memory from bootmem, which looks not counted.
 
-Ok. I will also document this as a comment just so that people are aware of
-this behaviour.
+Currently, the accounting is done upfront in sparse_buffer_init(), where
+memmap_boot_pages_add() is called for !CONFIG_SPARSEMEM_VMEMMAP.
 
-Thanks a lot David for the comments and feedback!
+The function sparse_buffer_alloc() can return NULL in two scenarios:
 
--- 
-Pankaj Raghav
+* During sparse_buffer_init(), if memmap_alloc() fails, sparsemap_buf will be NULL.
+* Inside sparse_buffer_alloc(), if ptr + size exceeds sparsemap_buf_end,
+  then ptr is set to NULL.
+
+Considering this, perhaps memmap_boot_pages_add() could be moved into
+__populate_section_memmap(), with the accounting done only if the
+operation is successful. What do you think?
+
+>   section_activate()
+>     populate_section_memmap()
+> 
+> If !CONFIG_SPARSEMEM_VMEMMAP, it just call kvmalloc_node(), which looks not
+> counted.
+
+Sounds right. This means nr_memmap_pages adjustment is needed for
+!CONFIG_SPARSEMEM_VMEMMAP here. I will recheck this.
+
+Thank you
 
