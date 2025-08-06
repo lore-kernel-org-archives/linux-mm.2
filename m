@@ -2,94 +2,99 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 164D0C87FD1
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 05:22:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B59FC87FD1
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 05:41:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9FCDB6B00AD; Wed,  6 Aug 2025 01:22:38 -0400 (EDT)
+	id 2F3936B00A2; Wed,  6 Aug 2025 01:41:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D4DC6B00AE; Wed,  6 Aug 2025 01:22:38 -0400 (EDT)
+	id 2CAE66B00A3; Wed,  6 Aug 2025 01:41:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 911B56B00B0; Wed,  6 Aug 2025 01:22:38 -0400 (EDT)
+	id 207816B00A4; Wed,  6 Aug 2025 01:41:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 80B136B00AD
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 01:22:38 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F1FE6B00A2
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 01:41:10 -0400 (EDT)
 Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E5DABC03B2
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 05:22:37 +0000 (UTC)
-X-FDA: 83745187554.30.91DED48
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 5E112100004
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 05:22:36 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=re4ea+rO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754457756; a=rsa-sha256;
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7C69B58B58
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 05:41:09 +0000 (UTC)
+X-FDA: 83745234258.30.68C71D5
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf13.hostedemail.com (Postfix) with ESMTP id D970920006
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 05:41:05 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	spf=pass (imf13.hostedemail.com: domain of liqiang01@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=liqiang01@kylinos.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754458867; a=rsa-sha256;
 	cv=none;
-	b=4xctMxyxq5nLYyNug/UKsCYcjKrOfaRDDPqM8gjY5HtnolYSrnf8DxnaSU5fquLWyiaqXQ
-	qzsrdKiEuD0GfQup0xCp2QZjX69NRUSPPmdXOhbqfZja7fDteNJs05hYh9qBO39AWnNKJ8
-	yl2tMDn2AKSiEIfK7LagUO7WybCcUuc=
+	b=0FdAAfqIly4Fh7JVt0pJDCWoPBmRYJrc5KuJl/AtF3XGKAokOpuJxQ6Kjp0Jo333Wsxu8k
+	MYwMNfMZUMu88Upj4JQqUQHC/7UwMGAtR4eAxj7/8Tvml4MNcl//dkNy9yhbf+JjPMhaxA
+	2cGqDzth2cJUaXCp6P/BYd04Tt9Kb8M=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=re4ea+rO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf13.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of liqiang01@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=liqiang01@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754457756;
+	s=arc-20220608; t=1754458867;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XjJbearcpYLygH3I9UtbiSxWfVYe30GcdnmkpjPEww4=;
-	b=cftzgyqPJRwxnKxfRCQX7boOt7Q/owNm/LBldE1rcy9RSX7SXivRpAl7/ZP4gFexvaVj2f
-	xLCdo6mK/99MkARTqpgG73mmTca+HnJ82yKWrc5UkH6qgg3zUgBFYpM/yUfC5rMr1Ij7q3
-	aQ35lv+UDuXOPjv9sJFU6wBcz5TK+zQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 8733AA568C6;
-	Wed,  6 Aug 2025 05:22:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8FD0C4CEF6;
-	Wed,  6 Aug 2025 05:22:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754457754;
-	bh=tqCPY7yIlC+Yf68lmUytU3qJt7wsROvcPOLHDh907yU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=re4ea+rOiDkRPbP1dSQIxPVNijlcfv44fS+v+vp9kuFffgaFQy1vooR7imTHnG+pH
-	 OO69XmtKGK/0gH6ElDfarANP5veEeoc29NGQTMo8FmHe8CAr/TA1QGx+HNHk+I5IEY
-	 cc4VDQsD5E1ykLpCmNo+m9AHzxQ+5PS+kq71vF+9hhjxYE7KwlsImRLIWJLcXRxSD4
-	 9axI2l1nIbj182vNhjHas1HHAdUZOSxukBjYdJHmDH6O2waO4Q1s+BZ6b4d0EyM68+
-	 YKl2DGc/JYw+xMU4bZBY8YYzz8kmmUDhOqpWDI0W58SY+m0OwsDQD9wsYdkwLnyAVq
-	 pvIWOtA25O0RQ==
-From: SeongJae Park <sj@kernel.org>
-To: Baoquan He <bhe@redhat.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	linux-mm@kvack.org,
-	ryabinin.a.a@gmail.com,
-	glider@google.com,
-	andreyknvl@gmail.com,
-	dvyukov@google.com,
-	vincenzo.frascino@arm.com,
-	akpm@linux-foundation.org,
-	kasan-dev@googlegroups.com,
+	 in-reply-to:in-reply-to:references:references;
+	bh=RNrXQ4SK+A2T5fGIxwzVTbRE6c6F5YhjuBbfja9nRIQ=;
+	b=Udy4JnXdVDpRkc99OMIVYhMKQtGjpi8qcKcjW16c7CyRPUo6ckTXIWUWkatYRPX/u2Kqdb
+	Lhr58Rfemmtl6MW/uvGO14ndv42rk7oMUZcyHuVpODRp59j6XqnXP7+SRIvWDnZdTB/gLm
+	aeVgmmH9ym7iend6zKXAZt3dUiKyrcU=
+X-UUID: ec780c02728711f0b29709d653e92f7d-20250806
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:fe23d0c5-1d92-4def-99d8-9d1f4cb7171a,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:690d50016041c7436034199a39a039aa,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|50,EDM:
+	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
+	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: ec780c02728711f0b29709d653e92f7d-20250806
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <liqiang01@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1259630706; Wed, 06 Aug 2025 13:40:56 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id D6217E008FA3;
+	Wed,  6 Aug 2025 13:40:55 +0800 (CST)
+X-ns-mid: postfix-6892EAE7-70206937
+Received: from localhost.localdomain (unknown [10.42.12.14])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 90841E008FA2;
+	Wed,  6 Aug 2025 13:40:54 +0800 (CST)
+From: Li Qiang <liqiang01@kylinos.cn>
+To: akpm@linux-foundation.org,
+	david@redhat.com
+Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org
-Subject: Re: [PATCH 4/4] mm/kasan: make kasan=on|off take effect for all three modes
-Date: Tue,  5 Aug 2025 22:22:31 -0700
-Message-Id: <20250806052231.619715-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250805062333.121553-5-bhe@redhat.com>
-References: 
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com
+Subject: Re: [PATCH] mm: memory: Force-inline PTE/PMD zapping functions
+Date: Wed,  6 Aug 2025 13:40:53 +0800
+Message-Id: <20250806054053.1507456-1-liqiang01@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <a4491b54-4e08-4bcc-bcd3-3bae20a490b2@suse.cz>
+References: <a4491b54-4e08-4bcc-bcd3-3bae20a490b2@suse.cz>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5E112100004
-X-Stat-Signature: h75pdar9ep4xqujmkn5ghzbcg5i56kka
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: ujwoan3paqq1hjfj1kjenzpiirhgdu4x
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1754457756-232223
-X-HE-Meta: U2FsdGVkX1/SIgKg29aHLTofGGAf3BPM0WJ+OSYKZxHOwQoJX331gXvdyI0wx9vaB6ZdilPDmq8dLmA2qRe3gfns9f1tPLSEV3eB63TmG166+1/bBWprQrWBGqupk1BxE7nMAB554grF7WB80o5WpZGmp0Nvw5Qc3E1MGDm83wODPBPv0hK+46aWQOun0UmU6EbanK+OcU0OfzOJ+C2HgX4pJG9H5CospGZ1z/LAtKIivOPd5agTrWUryOU2x4/Q+QaCDouaFIOYRLdf5x71g/cTm6Tod6ZVpTdFsDQH46gLUTZHH5aFjpwiHOkPS4siQdygI8E5n1XO0+r513b5fOtysQA4B2hgbpX+K8ZPqRx9m+ZLzKff/pLyWNAmn1HK6CmNm5ONDYouDOW03SwB9PWpJ60OhmwKnWLSFCwVyCJWFyt25FLOOqXmie3paZEYi99/K3rdkZ/Fb/g+/AhH+50wFoZDDTZrj+vuG8H9KYTbV4nepLhIhpkeLBpv+wXenIoVMaVKDO2AJQSB1mkUPe2DNq0Tc6fOljLhFppmRPGXtZz3ylItLbDRGo5WG3aD+4nw4Tm0+UiAunBlgezGBFTw7aD5MBr5HMZo3V0mvrkQnyYZAcgw0fHqSLyTI77DA7czXp3xr9O9VwdycgcaX/7UqGq7gmAzVd7TSWeaGrlzQF/Weho64OgLHLnCgqLHlquUh0YUkr+643wkCgU0hvt/yZ6hVPCCfFtcVYSMMGEtgUtUX/ltmCJNE2ErO9JKO2PSvMOoPLhJTZjMLIFvTzb7S0Eq9cMNs8/N7fs+RpeFJQW+axhyaMykJSmSZZESshOaWe+kmsmPCCMtWYcyr+nSWZmLMp0eRqsCsSHgjC2QhWb/vt9e9NrCLjmKLrB1ekG0csbZtv8neOYrQLIzZmSe11Mx7YHsm9vgfExsBcglck7mgOHEO4nx06MCRLHSsn+SoW8K+l+yyy5v2Tw
- JZdpB5yK
- yFjjcsqFccGqhasTXpNeshfW50TbP9ShJ8uQlzGSK3kWYmacZa+2OiBH8DnIv1VIVsUCYTkcD10BzzHGyYIPiQGhU5RUN8AYWuHkSAWFnZlXbP/oTZVqyx8Fssi1gsqLZJHljUosNtw86hKbHjCarGRPwnCCwwR5srDJlukfcgMqk5H16I3zFkM/TYbblIVY3tR0QxXJYLVCOBADTCXJVVIOe48+i7570Ir0IuESvfDzM43d5vAh3lOvFVLwp8CnbVsdaP+8ZZIXG/Xb3XgdMB1sAEkekhOU0Ka9TEl2WGY0J8Ht+gVGHecaxoo5qVJ8lWZdo8xIAVDbXDEjs07VdKe367A==
+X-Rspamd-Queue-Id: D970920006
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1754458865-711587
+X-HE-Meta: U2FsdGVkX1+9WSEXrMNOrXlR2mdEHiFfYCGKf5x8NrvWUb95U52r9amRouqhMZf3qvBqnscpLFKEKIKMhgYW1Lvu2ftA08zpCM3Wkwn/M1Eqk3+oWhdP3msJo9v1rt9qvjCob/97mq79HnJrE8eGWVu7IzwHWvkp87Y/dgeNuIXBj2Yw0mG1Q6wna/mzuVzGShO2u55kMA9af8RZ7aen0Cg9EPqkokO3DJbnG2Ll05sSxzoM31QMyh1zXLcTte8MsFxefprIsrcGK4+hHKbh+vfPNksqcC6qlFve3fY07z/UtcQfEw6+UQTMZ+iR04XFC0hf1fC9QEu6bZSXSWaAASOovj5UO/civyRrp6H8wa2lQme2FVDIVr3WJo4sFSgc0b9TAKBRiYpDYr9cSyHbeTJI+OabsughMKP1z+p5Mrg5xkP1mogy7VTHBYujN+moRpRQf7TlSlmG4v+Uv21IpbStYMrZuT43GDLNm2yhDmTHXkifTKogc6+CkoW3lYT7POUnqm6nefMXkGBZpb0d2BaSdNWtYZeTt2zuJJiSQRKhMu3Rg8aigPTV4DnI1ggrjXbtK8GmklkD0iBNIug82w5PNzEvzZkJ6TQ4HghWe7GDT3+Y4cLtMG7SLDj+Sh+8gq5jnWmNseAnFmTrOONMGZZUDSGDNTLSGEpXSpgZIR0fhfmZ9zl08spioAZo44ZvwzH2Mn4gvcD/EHxWhNrAi2pYpMlnxnCSwvk4kRWC7KoKkwjjzyknoCU1gT9Ox22N9B8ALrWeWDvJaSTSwxn28sTkO5RfCtS01uaalsugwAJ6GuV06ytpc3inhxBycBraOSQSY3ioLXxLA5/RWnv5Caoegld39vUAJymC3yHoXa+6c+4gmVVe1NQW1zoxk+rlZktQT/2BPa75sdkxdpvDCkulC53mURgBUkDSi9vLvvclNkfpUhdyVL4THbQdNXtNaHsXYTGteBp2woKGoCX
+ gfYRxOef
+ 8eDm11CjHhBadBwX6QCwI12hf+cCHrDNHal9wssUgwpDrLfg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,74 +103,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Baoqua,
+On 8/5/25 13:15 PM, Vlastimil Babka wrote:
+> Is the before/after swapped here? This output suggests some functions
+> became NOT inlined.
+>=20
+> If I'm right the output binary becomes slightly larger. But it doesn't
+> matter.
 
-On Tue,  5 Aug 2025 14:23:33 +0800 Baoquan He <bhe@redhat.com> wrote:
+Thank you for your careful review. You're absolutely right - the=20
+before/after columns in my previous data table were accidentally=20
+reversed. I've corrected this in the updated measurements below:
 
-> Now everything is ready, set kasan=off can disable kasan for all
-> three modes.
-> 
-> Signed-off-by: Baoquan He <bhe@redhat.com>
-> ---
->  include/linux/kasan-enabled.h | 11 +----------
->  1 file changed, 1 insertion(+), 10 deletions(-)
-> 
-> diff --git a/include/linux/kasan-enabled.h b/include/linux/kasan-enabled.h
-> index 32f2d19f599f..b5857e15ef14 100644
-> --- a/include/linux/kasan-enabled.h
-> +++ b/include/linux/kasan-enabled.h
-> @@ -8,30 +8,21 @@ extern bool kasan_arg_disabled;
->  
->  DECLARE_STATIC_KEY_FALSE(kasan_flag_enabled);
->  
-> -#ifdef CONFIG_KASAN_HW_TAGS
-> -
->  static __always_inline bool kasan_enabled(void)
->  {
->  	return static_branch_likely(&kasan_flag_enabled);
->  }
+[root@localhost linux_old1]# ./scripts/bloat-o-meter  befor.vmlinux after=
+.vmlinux=20
+add/remove: 0/6 grow/shrink: 1/0 up/down: 4747/-4569 (178)
+Function                                     old     new   delta
+unmap_page_range                            1018    5765   +4747
+__pfx_zap_pte_range                           16       -     -16
+__pfx_zap_present_ptes.constprop              16       -     -16
+__pfx_zap_pmd_range.isra                      16       -     -16
+zap_pmd_range.isra                           589       -    -589
+zap_pte_range                               1236       -   -1236
+zap_present_ptes.constprop                  2696       -   -2696
+Total: Before=3D35379608, After=3D35379786, chg +0.00%
+[root@localhost linux_old1]#=20
 
-I found mm-new build fails when CONFIG_KASAN is unset as below, and 'git
-bisect' points this patch.
-
-      LD      .tmp_vmlinux1
-    ld: lib/stackdepot.o:(__jump_table+0x8): undefined reference to `kasan_flag_enabled'
-
-Since kasna_flag_enabled is defined in mm/kasan/common.c, I confirmed diff like
-below fixes this.  I think it may not be a correct fix though, since I didn't
-read this patchset thoroughly.
-
-diff --git a/include/linux/kasan-enabled.h b/include/linux/kasan-enabled.h
-index b5857e15ef14..a53d112b1020 100644
---- a/include/linux/kasan-enabled.h
-+++ b/include/linux/kasan-enabled.h
-@@ -8,11 +8,22 @@ extern bool kasan_arg_disabled;
- 
- DECLARE_STATIC_KEY_FALSE(kasan_flag_enabled);
- 
-+#ifdef CONFIG_KASAN
-+
- static __always_inline bool kasan_enabled(void)
- {
- 	return static_branch_likely(&kasan_flag_enabled);
- }
- 
-+#else /* CONFIG_KASAN */
-+
-+static inline bool kasan_enabled(void)
-+{
-+	return false;
-+}
-+
-+#endif
-+
- #ifdef CONFIG_KASAN_HW_TAGS
- static inline bool kasan_hw_tags_enabled(void)
- {
-
-
-[...]
-
-Thanks,
-SJ
 
