@@ -2,113 +2,91 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A8ABC87FD3
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 23:43:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 86D2AC87FD3
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 23:48:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B31B6B0096; Wed,  6 Aug 2025 19:43:16 -0400 (EDT)
+	id 2967E8E0003; Wed,  6 Aug 2025 19:48:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 263866B0098; Wed,  6 Aug 2025 19:43:16 -0400 (EDT)
+	id 26EC78E0002; Wed,  6 Aug 2025 19:48:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 152256B0099; Wed,  6 Aug 2025 19:43:16 -0400 (EDT)
+	id 1ABA88E0003; Wed,  6 Aug 2025 19:48:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 02E326B0096
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 19:43:16 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C753D81510
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 23:43:15 +0000 (UTC)
-X-FDA: 83747961150.27.FCC9BB8
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 0A20120006
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 23:43:13 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DKIcqLm+;
-	spf=pass (imf03.hostedemail.com: domain of bijan311@gmail.com designates 209.85.219.169 as permitted sender) smtp.mailfrom=bijan311@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 09B0D8E0002
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 19:48:19 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AB0A5C02B6
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 23:48:18 +0000 (UTC)
+X-FDA: 83747973876.09.C5B0D24
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf25.hostedemail.com (Postfix) with ESMTP id CA42AA0003
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 23:48:16 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vVgwlcQB;
+	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754524097; a=rsa-sha256;
+	cv=none;
+	b=sKus9+mGP7+IO0tW+H/YVEjyVdF+JostEwcSgDRmp2Fn8lnh+DpfysbX6rGvWXNs8yd04F
+	MVIP98xL7Cur3189g6qcOXDr3jlUXArIKxqDRPHtqcRnT/7uAR+3lcRDI1arD2MKSLfgZr
+	DWxvHQQe3Gap92H21/Dqw0En/qtwaFk=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vVgwlcQB;
+	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754523794;
+	s=arc-20220608; t=1754524097;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=cfT15tOepazFTL2Lg8MMF8cCYjiRwORhTnogRj+tN3g=;
-	b=f0ylVYR7nNuAqcawTdF6ceb8Bf68B8Ebgc6gISQVibH+fDLZruHhQLyzNrY0xPOO10v2a0
-	GCq0iHhoKHDkX6/sSEq3wR0uVUbfz+fGZiqAgRwY/xjCA2eOJW4A7eYdY4ksaQOKndDlbL
-	ZK1C1jF1il0C5BvMByKijUFE8mThK60=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DKIcqLm+;
-	spf=pass (imf03.hostedemail.com: domain of bijan311@gmail.com designates 209.85.219.169 as permitted sender) smtp.mailfrom=bijan311@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754523794; a=rsa-sha256;
-	cv=none;
-	b=l3lAz2/SZdE+o/a/QeVp+R+3PwcNOIX1EoH6ZuuMSeXxUhRvQZ6/EvQDqPXpdl2BEpwpY7
-	22QuXPNZi9SoXFuQjuNAANM45SrEexvUudN8TNNHMDTDlma2SWW+8CTmPfVbAHsXTglgfq
-	lDK0pXYyIyegS7dlEaJCrFYHrslM0+I=
-Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-e7311e66a8eso389519276.2
-        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 16:43:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754523793; x=1755128593; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=cfT15tOepazFTL2Lg8MMF8cCYjiRwORhTnogRj+tN3g=;
-        b=DKIcqLm+ARwUTgwnEHIF8CiFWFzRJaqD+FJi1AD5oGD6x8NbQk32xhVXgqmAptK9vR
-         HorbzILhj5+5L0qiVTMyAzCBNQaZDXN9QMuL55RduWk8irSOXRKiFGkPT6Elz4HF9ETv
-         LIQQBKpyTfUCRmzz1TO04Bqe60Hw0lptvPCfcN/yXOKyOK9ZmgIWJB/gt6M6xN1FtrOQ
-         psONIfLZe+S2Df0omNFWw85h+MjWZ2oVpPOVYQUYayvBolj7X1V4XTGER4/EEyPN9jX7
-         XpoD8pMoTFmy7wUUnykhvPIZe4bSZ8hoiy02MbFsiX3vunGREU6xGUuy9mQOy/zI4eaT
-         k09w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754523793; x=1755128593;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cfT15tOepazFTL2Lg8MMF8cCYjiRwORhTnogRj+tN3g=;
-        b=L9MxlOHe8/GbOJ35kGAIo7KQXAcLgapdNBv8WS4EZ6h9u0OmaZTZoEBG4b3le00fAT
-         Dp31yVr8orryYNajNICxaCVQlOZXgsiZ+u5WgxzSrrGGxEI36ccHewQXY2oY1X+kdWpq
-         i4ICMYNSyihFv+tm7seouTs3xw0D13DCE8yYcKcWo4OfEURTdSfKGfFFpMkgjisys4s1
-         zeDPS3uWhlixQgIecrSyDvJUjtB/CxCQnuNdeLD8SIemRsHXiVaUdI2SnuSM2DkUEd/5
-         8wWtrrznlCXeMwml1+mq8B7sbdUwEmYmoPSBGX3Sb4/fcoJnBwDbIdqXcF9Rms6E9vSx
-         TBpA==
-X-Forwarded-Encrypted: i=1; AJvYcCWlPA9xRF7eWXiGFZ1NkihDmcxwfVWn5bx/Xn1mJZ3lBC+Fhkut6mnrnCrj1dhaAHnqceoTRngihg==@kvack.org
-X-Gm-Message-State: AOJu0YygMP0vioPMhL55+vbLICXkQM/sBq/nNBa9r7+xe6kftRwVjPN6
-	lBCs7wXA69P87CkJtBufjsojWEcNf7V8xJBx6m2iEJXj8PGc++Dt7IVH
-X-Gm-Gg: ASbGnctLJhoU12u0aJGlkeLtfRMyVPWV9cSM0syl1h7fsu8E8TD1n0qZ6TmXIaHCCT8
-	uId0cgZHiTnC+vLxUiWcAA5OWz868HQ43izbZWFyCkLLVhsKBaj4p+S2SOCMBdtRwTgjk+m8ECp
-	xfLEr+SclUIT7HrShJxh6BRCVKnROXFYZyje+blm/42Qv3e199an55a7+kdD73NGuTUbb+p67CL
-	saBjXY1eNZfQAYDoqrgI2VQbQ7RKXrnjhCwaAOd2CdRqDvfHhRRetU6+G+a6YiMbHpquAtk00AN
-	kvwxXiNyXhLXpXGWQIZ5hh5/2q3ntcvtIOO0L8JNpDKQY9sT/kkDieo415EUruTVs9O5h+XvnmJ
-	GlZO53i19Rk/suSmXVLXjjMWHeUzK69liABi5bAveUUfgVDeu1GFG
-X-Google-Smtp-Source: AGHT+IErqUmAYFMk9ex7yBFNFktwhE0CW7kYKo02zKyww8eNDXZVT5/FhMr+He7/ul7nzCXLh9hJVw==
-X-Received: by 2002:a05:6902:4389:b0:e90:235f:6c1 with SMTP id 3f1490d57ef6-e902ac7df0amr4638106276.25.1754523792936;
-        Wed, 06 Aug 2025 16:43:12 -0700 (PDT)
-Received: from bijan-laptop.attlocal.net ([2600:1700:680e:c000:9e66:4583:8a9c:a62])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e900da4155csm2593946276.39.2025.08.06.16.43.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Aug 2025 16:43:12 -0700 (PDT)
-From: Bijan Tabatabai <bijan311@gmail.com>
-To: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: sj@kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bijan Tabatabai <bijantabatab@micron.com>,
-	Bijan Tabatabai <bijan311@gmail.com>
-Subject: [PATCH v2] mm/damon/core: skip needless update of damon_attrs in damon_commit_ctx()
-Date: Wed,  6 Aug 2025 18:42:54 -0500
-Message-ID: <20250806234254.10572-1-bijan311@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=LrggOZQVWbsWMeGrQROI1WKi3B0AmMr1G31LZIrH2yg=;
+	b=ktZmdgnu8lyiOtpu1en5+FD9EVTnZBm3yHJV5Ywc44zYt2WUmqDDqxZBC12nIqu1MecDqw
+	pCF9S495lmPsJ7SECs2MNVELztyJs9X0Nn2pmqh0jhI40drHtqnTzB2pJc5C/WzjMFLQI2
+	HExLA2gUR+oVXDCF+I22Ny5ASPEgvRg=
+Date: Wed, 6 Aug 2025 16:48:00 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1754524094;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LrggOZQVWbsWMeGrQROI1WKi3B0AmMr1G31LZIrH2yg=;
+	b=vVgwlcQBxuJauzPDtrnkF9B4Kv7hNR31S1SVfnBtlMTyLL55uWI7HT/XmOlpWjQHtzlDRj
+	X7OzTpytW0xYlZzm9gyBAvpURhUZHVpBCOqZ0cG8azZLlkX5VKMXu+mvU3D7mh5MQHQqUL
+	7+iJJaJtkwTrRYhrfADnodnRgViOzUI=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: David Hildenbrand <david@redhat.com>
+Cc: Nhat Pham <nphamcs@gmail.com>, SeongJae Park <sj@kernel.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, kernel-team@meta.com, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, Takero Funaki <flintglass@gmail.com>
+Subject: Re: [RFC PATCH v2] mm/zswap: store <PAGE_SIZE compression failed
+ page as-is
+Message-ID: <jn2fzoodgcxmyld5c7k6jifigkmbhmq2gftvxx7k4ei2kz6r72@vlrndnijfgrf>
+References: <20250805002954.1496-1-sj@kernel.org>
+ <761a2899-6fd9-4bfe-aeaf-23bce0baa0f1@redhat.com>
+ <CAKEwX=MVBJ+Okfsob4Z30_5Y4P8c2DWoS1dYN4dF5dgp4+CexA@mail.gmail.com>
+ <055a8a69-731d-43b8-887e-54d8718877cb@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: te7a8uw5ypxpuqdxdz3zo6wa9mxhxkj1
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 0A20120006
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <055a8a69-731d-43b8-887e-54d8718877cb@redhat.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1754523793-260818
-X-HE-Meta: U2FsdGVkX1+ZEt2ba9lTQXytJV3sBHoD2XNEvxeIGDTuDIRg0Au5OiGRgTlNqLNHZwuh8A+sBXJNLqD8GwjxdiH03ptUqIStSkYfpA6mlw9sTKF8fmenq2OgYGdq3UuJ/b3Dp6gTQiEwS9hXOBpWZqXams7cz/kQ/MwrqG4mCHdY/kSGPk/lwHOXov75BQ6Lk3qL9EVSfTluDdnNv/khfO2nv/s6kwqvKnszwZUhav36dIuD4qCmW+O/jD3QKvJGEpZntMqOD/I79rA1ytLYkA59VjM4s9Tp8WKviqXSHC8npB6bSIbdOsComkjFLp6HiKNkvEuu+m5eM6bmxOU8rOocXxkMOluSxU34NLk2NIESMMr5u+zYS0du4F9zi1medgDTaR1UHLTrYpFzG9HTPCpZ8O+tPyErWSCreffLFDN3UqdKZMZ2KP4tBiAfIKqcr3YC6JQvRC47npIq3soXxuTuyZ1Q+F2Eeq++ysr09AX944PgsRQU0aiD2NuOEIZ96Vr11++Un6/LNEWrIXOQg5FYWyusAw+iOj/nxXYUrSZROBC4EF2NmY0vIeFUxKT31xUQPBr9bf5SfI/jg9a+UZV35K5/Y60BZ2AnwENXcib/rCF9otWtNkyalKa4nc3BieaCLtDfCV9YS1bndSXhGO8L5HEcLKdRt2h3Mn5tgRyVQeoK20SACVP8iAe1GIsmN92x9iJDENNLWdeb/3sMQ+NMo/uS9Kizx0wawcKonAoPAAHEmTs/7++fsaH2FNbNv2KXx3XdJQPRZso/Uz2BQKtDHUR/eVXYbrX3R0+hkEKGik4gzbNaA0IBFXigLt7qQ/pLH+c1YRi8+NBXiC6tlPzXHSlzMcTHE2cHLsmSbQHEMnnWj2oRT2wAs9ajbVdSki46/hu93E6LTEWP5+KjJitJgYeJpTWMG9ZVfvWG/APXOZwH7HNG47KE+HaSAd28tTOmdxC7skgHyCCOe2/
- xPy4WoT0
- rMSRCgUAy1TqVYP4/JANDd6e0AZS+5kq8v1O19xzHREm2iijDaRerSHoWqynhyYGVlxaBXHKYzQzeclw3M/65mo1rwaX1YMsgADvq
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: CA42AA0003
+X-Stat-Signature: cfisqn4pyme3n7t4ezp53usy4xe1tbxn
+X-HE-Tag: 1754524096-197690
+X-HE-Meta: U2FsdGVkX1+h3IxD3RJpm5rPuhVtE9smbnSjsOBAxQ1joZMKFvSjRRhnlBLUjenKNbRXhgbH+aq575PZ9Kez3X0HWR1/KHvEUCw7+O44l1DuoMRzk931Lt4KsMTV6P+KxBpaOuyO9c7iHLdomRNyS7bpBXVPYvd+UJjSzd/yLl1tO2adGA8suPS233yyQ5rXKdlNNyazKwqhld6uR+n+5kUMWIVlYL46/+hOLF1LlqqHWlUAEr6wOBelGVOak0qeB0azCu2K0b9VVDFc2mxCEB59J8CeCxcItNu0Lnd9D8PfDo5xCl5U6MKXFF4EByRjjnRNJFgfKfUrfuvBMa81QccVn15tML1WvmwpY6PuXaMrvCrK8jS41uxGknsPliJFRmADg8R8xDuPyU5vxKQSJENx58KqVmH8RaOaMzQNQFTulENsbesBu7TBnfs4KP+m5FCtF9cqegf6d9Cd1xz0objGUNIXDyJJm+Ngt08s5qrtT9L//QV6tLuvgn1TjgnDSrdUwPnrYfn1zbOPJjrTM5BPpuu63sKOkqoG7EHRVH0MRY1PkOz1eoOsAWk0F0knyLiGrjN9CNDEuYBgRliy9b744/33Wdb7bLtR29lUm2M/6o3BguwUzIqVSmKbBxJDXyPh4Vv/id+rxx2f8u/m/GjBtUQSeG974XLEWhzxiC2y6ZbRWkKUODWMjRnAB/Iu/mx1/xJ1GK6eii1ExXOVd9GHB2GuxSS87Qgk3+5NH4UmUMF1IX5ZilCB8pspfurw6sV87S36HtOO77aDjHYQ/+xEJHZhQL32eJdaRiN8T6n2ZEg/WM5L+QfBnVgh3xDuFLuvOKMDXPnZfEE4+2cAHRfYsZYYcrNEbjIH+5aHpjrcfwQ3EmdcIAck6ZO6qBqfnYZBszEtacyLCs52HYvvVHz5C2HGOFZns4LpLe0ADLV7p8QJnna/AGFTlyZKsRnA1Ykul9KQ4iUDkyhiKdA
+ DUH0ClHW
+ XWmlEgjh7N2qVPLU6XpFxM/Rt9oMjmVFsQ2DWyBDFNQP3NnU2dEQw1EqJHer0qe/sBAXuhTakCdKND/kt5Gd27W4ZEe3+dKhoUdxh8jp5AIn7ygUj2fK6WVr6ShSnzvHIQEkP/5XO5aaPxlIrU9ewAa3AcWk9QyBQCFz1O36UijyvOvsWGbxEHhUokYroLBYNa4S0aspN2lcGTxDkUHlgFTiT2c8IDhpQlpHa8S/MRCO+U/TKhInHifZ4KimOzUrkmJsI
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,74 +95,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Bijan Tabatabai <bijantabatab@micron.com>
+On Wed, Aug 06, 2025 at 10:14:39PM +0200, David Hildenbrand wrote:
+> 
+> But yeah, whether these "as is" pages are movable or not is a good question
+> as well -- in particular when zsmalloc supports page migration and the "as
+> is" pages would not.
 
-Currently, damon_commit_ctx() always calls damon_set_attrs() even if the
-attributes have not been changed. This can be problematic when the DAMON
-state is committed relatively frequently because damon_set_attrs() resets
-ctx->next_{aggregation,ops_update}_sis, causing aggregation and ops
-update operations to be needlessly delayed.
-
-This patch avoids this by only calling damon_set_attrs() in
-damon_commit_ctx when the attributes have been changed.
-
-Cc: Bijan Tabatabai <bijan311@gmail.com>
-Signed-off-by: Bijan Tabatabai <bijantabatab@micron.com>
----
-Changes from v1[1]:
-  - Compare entirety of struct damon_attrs
-  - Apply logic in damon_commit_ctx() instead of damon_set_attrs()
-
-[1] https://lore.kernel.org/all/20250806164316.5728-1-bijan311@gmail.com/
----
- mm/damon/core.c | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
-
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 6a2fe1f2c952..80aaeb876bf2 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -570,6 +570,24 @@ void damon_destroy_ctx(struct damon_ctx *ctx)
- 	kfree(ctx);
- }
- 
-+static bool damon_attrs_equals(const struct damon_attrs *attrs1,
-+		const struct damon_attrs *attrs2)
-+{
-+	const struct damon_intervals_goal *ig1 = &attrs1->intervals_goal;
-+	const struct damon_intervals_goal *ig2 = &attrs2->intervals_goal;
-+
-+	return attrs1->sample_interval == attrs2->sample_interval &&
-+		attrs1->aggr_interval == attrs2->aggr_interval &&
-+		attrs1->ops_update_interval == attrs2->ops_update_interval &&
-+		attrs1->min_nr_regions == attrs2->min_nr_regions &&
-+		attrs1->max_nr_regions == attrs2->max_nr_regions &&
-+		ig1->access_bp == ig2->access_bp &&
-+		ig1->aggrs == ig2->aggrs &&
-+		ig1->min_sample_us == ig2->min_sample_us &&
-+		ig1->max_sample_us == ig2->max_sample_us;
-+
-+}
-+
- static unsigned int damon_age_for_new_attrs(unsigned int age,
- 		struct damon_attrs *old_attrs, struct damon_attrs *new_attrs)
- {
-@@ -1198,9 +1216,11 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
- 	 * 2. ops update should be done after pid handling is done (target
- 	 *    committing require putting pids).
- 	 */
--	err = damon_set_attrs(dst, &src->attrs);
--	if (err)
--		return err;
-+	if (!damon_attrs_equals(&dst->attrs, &src->attrs)) {
-+		err = damon_set_attrs(dst, &src->attrs);
-+		if (err)
-+			return err;
-+	}
- 	dst->ops = src->ops;
- 
- 	return 0;
--- 
-2.43.0
+By "as is" page, do you mean the page which the reclaim code is trying
+to reclaim or the page within zsmalloc on which the content of original
+pages are copied as is? Most probably you meant the page which the reclaim
+code is trying to reclaim. This page is on its way to get freed after
+[z]swapout is completed and this patch is not changing any behavior for
+that path.
 
 
