@@ -2,103 +2,120 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6287FC87FCB
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 22:00:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4F311C87FD3
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 22:02:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D14F36B0093; Wed,  6 Aug 2025 18:00:28 -0400 (EDT)
+	id D8D486B0095; Wed,  6 Aug 2025 18:01:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC6326B0095; Wed,  6 Aug 2025 18:00:28 -0400 (EDT)
+	id D3E536B0096; Wed,  6 Aug 2025 18:01:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BDBD06B0096; Wed,  6 Aug 2025 18:00:28 -0400 (EDT)
+	id C54206B0098; Wed,  6 Aug 2025 18:01:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id ACB056B0093
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 18:00:28 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5633781C28
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 22:00:28 +0000 (UTC)
-X-FDA: 83747702136.06.C14B56C
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 92606120011
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 22:00:26 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="GkHtuX/H";
-	spf=pass (imf29.hostedemail.com: domain of 3edCTaAYKCLQmolYhVaiiafY.Wigfchor-ggepUWe.ila@flex--surenb.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3edCTaAYKCLQmolYhVaiiafY.Wigfchor-ggepUWe.ila@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id B50316B0095
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 18:01:59 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7E809C073B
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 22:01:59 +0000 (UTC)
+X-FDA: 83747705958.20.02F3D4D
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 7D2C1140004
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 22:01:57 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=h1bXuVmD;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf26.hostedemail.com: domain of kuniyu@google.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=kuniyu@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754517717; a=rsa-sha256;
+	cv=none;
+	b=tVrwJYKZk805zpgVa19kU6h40k15FzyPz93+hrHBakesykdtbc3NtQhSZq5C7mI4YVk9wf
+	zZLIFFHGnAAM30fHaWviShyP16g0TKvCkWtY13i+9dSdBBqF4L0HWAjFXXcuPfDccdV4I3
+	LwkG8sK/LPSoQ8lRmF7tVaQ/br024+E=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=h1bXuVmD;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf26.hostedemail.com: domain of kuniyu@google.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=kuniyu@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754517626;
+	s=arc-20220608; t=1754517717;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=0DGq3Zp4fJ6DZNHeIX2b5x/XDF+UYujZX+55RuFP5IM=;
-	b=Q1qZoXVovetBx2JxlWAqLeTgEMmc0Le+fwCVsXhcOYV5KyQBdwGady45Di9FRYB7myj5L4
-	83nxOQ6+riHO9ow6XvQDnQlfs/VS6Kb/33qmTY8/F0522y/DUEM9dxlyrDlG8ZScMCaNlO
-	kIEqptkLU6hrnzbi1je5Hd4pWnRSb28=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754517626; a=rsa-sha256;
-	cv=none;
-	b=D649xY25UtzrLX2seB6TkDFUl9DJtXey4oanVcHJYofBtNZm3cmt4cFzV0PWRjFwpCOEQG
-	sIIvw/KuA6KPzPxDigpXtmoLY+BeSNVOACNMSq7Brz0xJVOvJyq6itCURHVeOcxnFiA3V+
-	vgusH2VL2WnMYWklXhMfvBVhp8j9Zm0=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="GkHtuX/H";
-	spf=pass (imf29.hostedemail.com: domain of 3edCTaAYKCLQmolYhVaiiafY.Wigfchor-ggepUWe.ila@flex--surenb.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3edCTaAYKCLQmolYhVaiiafY.Wigfchor-ggepUWe.ila@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b2c37558eccso231361a12.1
-        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 15:00:26 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tS5sWoIyqI1LV97Jb4CN01ckOCIdChBVFk4TORl7K0c=;
+	b=K8lyT7roxqmE19OWYkzGrXYEJjjTBp7VZX616OaGfguyrFDF3SAeq0s1Y6slIBjuuA32g0
+	Aj/wQntJc/pZNgYPTaWgUBnx/+LgVKrRQgvG4Cv8Rr+Newvc0Zy8S5RoG8ffFm46LuY+m1
+	TMBEFLe40RtRX4qtb2sN4OVt4BEnjnw=
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b3be5c0eb99so257637a12.1
+        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 15:01:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754517625; x=1755122425; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=0DGq3Zp4fJ6DZNHeIX2b5x/XDF+UYujZX+55RuFP5IM=;
-        b=GkHtuX/HPXi3CZ7ttXpo7/Tgmlap+bx0MMp3iyCXcNuVeF9O/7wb/m7Ae5XUGM8iYS
-         mqHoFZTeDqGyZIRtwEDkZtPZTchl5lvi9cm7qkPMkRhZ1Lu7l5sHT8tr8X9o8MYDDVBE
-         lCYzYai41SoUlyPsH0vdFTBG73EmS62ye2eDYhWN4Qu4qOrftQhW9uNdmbB6y7DLBio4
-         78UmdtffLXgPBE+ma2FhJ4fXEWUDBxwnexWw9e1PeOS3y0Y3MpqSQHnWkrrOQgaxOtOt
-         AMGE8LNXKJa8V1ZK/5Bq88BiSJL4GYIRE4XfstCApdi8N/BP8hrNExukrmUDxRtk16CQ
-         RSRg==
+        d=google.com; s=20230601; t=1754517716; x=1755122516; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tS5sWoIyqI1LV97Jb4CN01ckOCIdChBVFk4TORl7K0c=;
+        b=h1bXuVmD9qlJsRzLgqvVghwtGYYDo83s7l0ip4IOBVVbUb6wPLuwcHazYTTpe/PNG9
+         RcHED7qljwe9zNMQKdOI7xfG5kgTI0SXaRDcLmlJBk+boAOyw24YVJfZi7aeeBcl2QVN
+         omecBtJu4td1Lw3aqNjvSaG1/g6gZfalLmgNew/qaPyuBjIjuHGvViB/tArgbtV4iGny
+         IwQoUFurK8tJ1NuYFOwxL+4eIopYxwluXULIxc/gu3hMQr0/CFl/fmIPDQgUihpMmSmc
+         v1hC491gBhz/zWw2vAnon6aHEuTzG/InunSt4HAD+x5CabIsRq0JH5YxvXH2lJkEA7Cz
+         RnYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754517625; x=1755122425;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0DGq3Zp4fJ6DZNHeIX2b5x/XDF+UYujZX+55RuFP5IM=;
-        b=Y1rDl6DoTy1G6Ug0iAQie4zVU8Ii5ZLmbg35evqnimSE49CQEqmD0p4eyVMPMKpwrv
-         dbaj0guPCtOAiI8+4Ecfh+hDClfQHL52dtvEscNIh28791GTUr3LhBCAoKqwH/G3l0mA
-         xpZu3bbdW45yWScp4W+QL0RqEvOxquA4ZWMdc2VGJkqPngfiWXh7joHJtwWCyiNLoolj
-         GKbu6DLqS3I+NOjOpSq6E4GieRG3+rRSTRljxa3I5yB1XKdH85vwP3MO+kOFqZZVxpyf
-         hDnpeMuYFaNPWRor2IDYYYoL7OfKF/5cGiSG20zYX0k30RAOZ2PqKBrrZs2LX84xKFke
-         Lw1g==
-X-Forwarded-Encrypted: i=1; AJvYcCU85cDCYUcs3SSIxElHEcrRkaRufi6Ta/vRdWjSVDlLePPOGvYt9mzaUx1UVFuKP0Kw90C9Sktx3Q==@kvack.org
-X-Gm-Message-State: AOJu0YwhrWVWFlXrTOzZQSRVdWf85VXOAay9CDo9TffWueGc79nvOZGS
-	ESw+TR0Ny0wHsSvkVVa9Y8CUF9ZVgyN8XkUJycADHXw2oHcdiLwbeJ7PtYMYkqXEHB19FCDUWem
-	bLrKEnA==
-X-Google-Smtp-Source: AGHT+IEgXVgvOPOZLzpUU0uxEIMp34b7pNlfgpNcH4fA0yFqf6+H+2ZoRWuQLabxen09rQvlDcn4hw3n9b0=
-X-Received: from pjob20.prod.google.com ([2002:a17:90a:8c94:b0:31f:a0:fad4])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f54b:b0:240:8f4:b36e
- with SMTP id d9443c01a7336-2429f30a072mr61870205ad.34.1754517625374; Wed, 06
- Aug 2025 15:00:25 -0700 (PDT)
-Date: Wed,  6 Aug 2025 15:00:22 -0700
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.50.1.565.gc32cd1483b-goog
-Message-ID: <20250806220022.926763-1-surenb@google.com>
-Subject: [PATCH v4 1/1] userfaultfd: fix a crash in UFFDIO_MOVE when PMD is a
- migration entry
-From: Suren Baghdasaryan <surenb@google.com>
-To: akpm@linux-foundation.org
-Cc: peterx@redhat.com, david@redhat.com, aarcange@redhat.com, 
-	lokeshgidra@google.com, surenb@google.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, 
-	syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com, stable@vger.kernel.org
+        d=1e100.net; s=20230601; t=1754517716; x=1755122516;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tS5sWoIyqI1LV97Jb4CN01ckOCIdChBVFk4TORl7K0c=;
+        b=L4GGQ9tIbEEfNb4QvgFrarOZTp+lQE/yi2GVqzfiTDLczKTvqAIeqMcMGtyyRVX/G0
+         NmQNojvpTRIrYVM6dPuuTc8WUeIR5W9Vq/WZH+EZ9pQJofsaaz07IbvosUUG/ZgGkfT7
+         eJIpVa3fzvRmomLpXZEVt3KL3CEkGVjTDGLRcanCxBIeyIlcnIhCfJ4LetvSyss+TrO/
+         JGepYJZj2vjnZj2dmORt8uDRJxlssfesS6RrwTdZSclLmJd/GeYTHmIGqfyV/+6uvoi2
+         XNxaP00TppaecIHYk5kaOF8rQqQAFguyHoACLQjc8VlKUHyVxNp3kPfc7AkoMvBRKMP2
+         Lygw==
+X-Forwarded-Encrypted: i=1; AJvYcCWzEmusQ/LAFy/ew10ZjyfwvD0OExmou6ghi47VjRC4+bWDnfJAJiZGqkJCL7qVzkyKpmIctZkS5Q==@kvack.org
+X-Gm-Message-State: AOJu0Yy4Yu7lvS2B7APdRm2aqXepRJCcau150mnCTRqa5g7VOufl1ahf
+	RdLRBx+nz5YA8em6rwUVlSFDEU/83qYAuSBKSLBCACI9bv26K7ez8FD+i1IwZudkeirvi5EQOpW
+	B1K3N1mUeeDSISt0YlAw4sWSIYo/jslR9D0Qv69SDOlOjzZk9IKBhGZUblEU=
+X-Gm-Gg: ASbGncuEE5neyljsUYWGTNp0ELPP30wn7F8hnZVkV3D1/i/RP1C+r6w316GrfKlfNeV
+	OmDmwxS9OqAGFha/R4o8LHWmN/TOQcJWk4q+NQibTeVzSgWATSXHCmfxuVrklz0BI0elVKRnMhj
+	vio14ulIq8XDC81FfKfWJ9zrtqJI7HeehnLgKN/o6C2bcUjvCWwVoIuquHmyylXHjXg89/mYHJe
+	bFUKU0/j2MjVBsAjcfR3t2XeL9Tk2zwJjYBmA==
+X-Google-Smtp-Source: AGHT+IHSk7dzFSFXcu4X48id9sXvSiAxg4OZ+/L9B0Yq3eL15/6jfV7hChGejTL37W1MR4sOHnmzKtJZuAb4DsrqR74=
+X-Received: by 2002:a17:903:2f89:b0:23f:d861:bd4b with SMTP id
+ d9443c01a7336-2429f2d99a8mr55381415ad.5.1754517715836; Wed, 06 Aug 2025
+ 15:01:55 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250805064429.77876-1-daniel.sedlak@cdn77.com>
+ <fcnlbvljynxu5qlzmnjeagll7nf5mje7rwkimbqok6doso37gl@lwepk3ztjga7>
+ <CAAVpQUBrNTFw34Kkh=b2bpa8aKd4XSnZUa6a18zkMjVrBqNHWw@mail.gmail.com> <nju55eqv56g6gkmxuavc2z2pcr26qhpmgrt76jt5dte5g4trxs@tjxld2iwdc5c>
+In-Reply-To: <nju55eqv56g6gkmxuavc2z2pcr26qhpmgrt76jt5dte5g4trxs@tjxld2iwdc5c>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Wed, 6 Aug 2025 15:01:44 -0700
+X-Gm-Features: Ac12FXyFJKmVEi3oHI4ogHBbfqPpbXF9V_pMaOAaUcyE_TX_Or4bugRENLRs7x8
+Message-ID: <CAAVpQUCCg-7kvzMeSSsKp3+Fu8pvvE5U-H5wkt=xMryNmnF5CA@mail.gmail.com>
+Subject: Re: [PATCH v4] memcg: expose socket memory pressure in a cgroup
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Daniel Sedlak <daniel.sedlak@cdn77.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Neal Cardwell <ncardwell@google.com>, 
+	David Ahern <dsahern@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org, netdev@vger.kernel.org, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	cgroups@vger.kernel.org, Tejun Heo <tj@kernel.org>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Matyas Hurtik <matyas.hurtik@cdn77.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 92606120011
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 7D2C1140004
+X-Stat-Signature: bd1ms765e5qy8bec5yffg7pschwmxeo5
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: kufgoe4aietxx7hf9mg4n3k3a67t46zd
-X-HE-Tag: 1754517626-177422
-X-HE-Meta: U2FsdGVkX1+lVHEQidbOM9B2E5Gcmn1ATFuaNr37hm/mDV2w8rP0JzKUOxYMEdTfkcoiw3Tx7608x3c2H8857p6SaPTtHk3cspim7hqWwqq0doE9/JV2qkc2Jqk4BDK9eDaj8wF++Q28CzXiIRWVNkoNA5fn/sTeedM6gchDE9lReO2RN5UFJr/XQGZDEh/mOv+85b+m63fdmiaa+OcPJwa0BALD2pdJYBKPLRdZQF5e3jk1OkMFTvsmO41FrLKaD05euK+IYH0QYpv4t2+GNoxxaKOBaG8BGFo+cojofqmRtVgOQTVeMpvJ7d8Qg/KApaACLJTiIFppjxVz7LDTarW5DSi8i4HW0ACzm83IR8/MJyw7uaApbixeDpeipFUHcLzcArsmT3Uqh5THRtz54gIeXZ6ayA80pKBHxH+gnXuap9XDy+FikbqO6SnW6vgk5GMtI5KipsUI9FSi3n3nFKoT2FDSAjfN4aUw6VRiMDX9CZcocjp3mI2qrZqTd1bLzLFWUyurv7VRBs8W/r7nvj6umqXpT6cV01gmg5zOdn647xa7IBvaPgooAI1KdzhgwRccoK2/1sYu1MymP7y/uVYjv50nqjsrV9h88GAbfFkilz2HnoRAB/yqJxPX81ZGLiOAYIkxwZKQ/NYRfzTdewhgw/Yzk2LJzfKNNolVfuIeupU4yz0tdlUlaG7desEUHw6EQMTg1urIDbYV3w5c2HNYYn1ulSnonCrJIuDxULLMP8l3CsiSQaPnPwQzEQY2gSD1elYbCDqfTmZq/+vM2LBX78jgUO3TrmV+glrfJwlsYtpw5gxaj50ifoKxMGMY81i4i3GPxNJQwPsFqjhuhFXvY9Ko4tOOFJpoVRvBicrQR4j6hPHs5851oGhcSXE0Fz64ZpOhv9Nw9l3J5XDyu63W2il6pfPcQoQT63CldpH+be3J3UUb8ofHiW+qWfH21ilvZMJmdEeiU7bW0/y
- pD1ZAgEI
- p8s2LwUV1dRDpexUKVKunjAqrhKkdqGaBSPUsWggYepv17tZJLXO9jqAwSwDqexBk8dCi52Yy1AJ++I2sOSlAGBG097EWbwcd8qVnNgZs+u3fokUZpqAWx7H1U04Pos3oSpYNS3DzPltSX6wmlKSDZn4R0FNWbqRFUUFP2eiceVBMumvfo25iOvSUH3IRRsD44O8CpySkotydBqFn+SM2YUM/jnXIcBwC+vBUtNjX562ENaA+LFsfBKZNneu5isXuTiHFPS0nNuCpCCHnjzZMpsjW3MIihN0NRAoXpuNPLkg5o5U4C/8erQf1H8Uia8JFDwQuAd8QjbpxVmN5jBfV8f6493GfPQ1PT3vxZAPsnnBf4r3W6HOqF7TgnDfBYeVL7CFe8DpG7Hv+aN/kYh22k0c+7OnbdeHGiD7G6SSX+Rp5kaxLJCnarwZTmJJlI1Nhy2mxFMIz5GcSdptPDOm+CmclszV+xgwxKOMZXKsyEP9U03IfoI/IYPS1vW5+WlcDJ5SYZXoKXOwDSIQBOn3h1VuD1Ks8tq0VfBCe5bdiqo+1//Z4OBFEozKFuUWXlbkrhXZ4hIeHuKRwNicRC6bcek+4ZStNIpbFlchagw/02Cr5DJsELRYLVIRQcxyTDT570YPp478DCVAuj8T0OR44xkbO8A2CWsC/c8eG4Rl1HZO8Ll79Nsg5irXxo+WwNRzzCAc/HxDusVhsxrAOecFJgMT4+2qwTAV7w13Mdj47lPF6ZGwsT43IcQivkWRz3NP2M7YPkEmk0VXhEl8uO+Q6y662MZhaTbSFSk1tBPwojnCTctQ9YJrBFivrsKL4a39wXEmrp17Tv700BaJIRN8QWW3Nm1c9HOslloxU
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1754517717-645824
+X-HE-Meta: U2FsdGVkX18Y8Ox9ln8oyB52bsyvZasiklR7lMcoBY/ZoLjAZKMK3YKbqy0cuj560iibmarNgAA+IKZVhDLYPXh3XS7UAflScJzg+M1p/mTfiUuQLLd+GPJ5zMx/ur9N81KRAX+43ab109pw84PDW/vSrS1GcNA9Foi1Sim+pcRUu8cfm+k6vY9AieYd2kMOqKva/WNdgoyOSDjOP3wg2altGoqBjF8xLne5oda34NeOzGs+ygWiFqU77bZD2jd/ummgstJcuZPmPuzGq+qy/UlXHO0BMCtcOEgkwQuXHYG6oe8ecAdyJ+NC0st9raDuyB8GwyudKbj+xA4ZLHH7kCF++zGZa6LI5y1Wx45XnQyYx9G6X/X7KIB7JJsKgX2IUKL1nQBa7P/Bdvb9HBaRYXEETFuweFkgkYy/XpzkI7knmm4oRvB2uSyYpo37/icYXYibtxGoqaUhAcoAwHmAZB6voixTGx13yl/NS4gd9XlFd0dF7FZp8v1As1piWVgoM4veYydu8cKTTl5cQBKwLLSJ9V+BfFhUUb81bAEUVYl5HwHs/oiT9PAvPQMkl/v/N1dgDVHWVqGFypq5XDF+vTJu+0K8I8h8uWFGUYdz+Mg6t5ehhMAxZ4+t46qZ6J9hpD1CZvl83gIs6jJi7zv6v04zeuDNov+eyp/hB+lwIvAVOGMJbUCOsXhzHkdbHCMXp+yZY6EC2N8qRs/clDzZ9sQgRrix1oxejG8JLQPkvMuJJAkNSf4U8FsdKU+6hFDDpqG2GPSFr1WkQj9cDlcYWqIXT8EiueWU75HcEJBM5Q9UNOh7gQU670cptocJqImMZjekO9ujvmYMH5p5N3h1jWpQd3UHWGD8S53lo2uZmwE4urN8S4Hue0uUUCaY5TEfrjpyWSjvuZKSq1PjxMrZB9OJwUM/coGQ7h2hSkoz6tiK9AiP7yMThHyWQulsR2aAGi0GbWGPjU65D12MtHZ
+ 8PBog59W
+ 9lKAQArctxftMuCnnRr3tYwEjnEcsMtFVqV9mFEMQBnhhRyp7zP8zX2vBZiDX80fP2TC3DTS0qTpNpnHJQOJIN9b+8wMOYGVxXbZzN05zUjYefPyyT6Pm/unwMQ8QWo4Um6MU5f6FL1FnV5zMhaHP1VUZcZyytIHn9qhDW/58/4CXS6PMqSfNg/DnUrPcc1w1iZib
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,57 +124,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When UFFDIO_MOVE encounters a migration PMD entry, it proceeds with
-obtaining a folio and accessing it even though the entry is swp_entry_t.
-Add the missing check and let split_huge_pmd() handle migration entries.
+On Wed, Aug 6, 2025 at 2:54=E2=80=AFPM Shakeel Butt <shakeel.butt@linux.dev=
+> wrote:
+>
+> On Wed, Aug 06, 2025 at 12:20:25PM -0700, Kuniyuki Iwashima wrote:
+> > > > -                     WRITE_ONCE(memcg->socket_pressure, jiffies + =
+HZ);
+> > > > +                     socket_pressure =3D jiffies + HZ;
+> > > > +
+> > > > +                     jiffies_diff =3D min(socket_pressure - READ_O=
+NCE(memcg->socket_pressure), HZ);
+> > > > +                     memcg->socket_pressure_duration +=3D jiffies_=
+to_usecs(jiffies_diff);
+> > >
+> > > KCSAN will complain about this. I think we can use atomic_long_add() =
+and
+> > > don't need the one with strict ordering.
+> >
+> > Assuming from atomic_ that vmpressure() could be called concurrently
+> > for the same memcg, should we protect socket_pressure and duration
+> > within the same lock instead of mixing WRITE/READ_ONCE() and
+> > atomic?  Otherwise jiffies_diff could be incorrect (the error is smalle=
+r
+> > than HZ though).
+> >
+>
+> Yeah good point. Also this field needs to be hierarchical. So, with lock
+> something like following is needed:
+>
+>         if (!spin_trylock(memcg->net_pressure_lock))
+>                 return;
+>
+>         socket_pressure =3D jiffies + HZ;
+>         diff =3D min(socket_pressure - READ_ONCE(memcg->socket_pressure),=
+ HZ);
 
-Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-Reported-by: syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68794b5c.a70a0220.693ce.0050.GAE@google.com/
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Cc: stable@vger.kernel.org
----
-Changes since v3 [1]
-- Updated the title and changelog, per Peter Xu
-- Added Reviewed-by: per Peter Xu
+READ_ONCE() should be unnecessary here.
 
-[1] https://lore.kernel.org/all/20250806154015.769024-1-surenb@google.com/
+>
+>         if (diff) {
+>                 WRITE_ONCE(memcg->socket_pressure, socket_pressure);
+>                 // mod_memcg_state(memcg, MEMCG_NET_PRESSURE, diff);
+>                 // OR
+>                 // while (memcg) {
+>                 //      memcg->sk_pressure_duration +=3D diff;
+>                 //      memcg =3D parent_mem_cgroup(memcg);
 
- mm/userfaultfd.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+The parents' sk_pressure_duration is not protected by the lock
+taken by trylock.  Maybe we need another global mutex if we want
+the hierarchy ?
 
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 5431c9dd7fd7..116481606be8 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -1826,13 +1826,16 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
- 			/* Check if we can move the pmd without splitting it. */
- 			if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
- 			    !pmd_none(dst_pmdval)) {
--				struct folio *folio = pmd_folio(*src_pmd);
--
--				if (!folio || (!is_huge_zero_folio(folio) &&
--					       !PageAnonExclusive(&folio->page))) {
--					spin_unlock(ptl);
--					err = -EBUSY;
--					break;
-+				/* Can be a migration entry */
-+				if (pmd_present(*src_pmd)) {
-+					struct folio *folio = pmd_folio(*src_pmd);
-+
-+					if (!folio || (!is_huge_zero_folio(folio) &&
-+						       !PageAnonExclusive(&folio->page))) {
-+						spin_unlock(ptl);
-+						err = -EBUSY;
-+						break;
-+					}
- 				}
- 
- 				spin_unlock(ptl);
 
-base-commit: 8e7e0c6d09502e44aa7a8fce0821e042a6ec03d1
--- 
-2.50.1.565.gc32cd1483b-goog
-
+>                 // }
+>         }
+>
+>         spin_unlock(memcg->net_pressure_lock);
+>
+> Regarding the hierarchical, we can avoid rstat infra as this code path
+> is not really performance critical.
 
