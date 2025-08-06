@@ -2,135 +2,101 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ED015C87FD3
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 20:58:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C0B7C87FD3
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 21:29:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 780D78E0005; Wed,  6 Aug 2025 16:58:34 -0400 (EDT)
+	id 860E56B0089; Wed,  6 Aug 2025 17:29:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 731218E0002; Wed,  6 Aug 2025 16:58:34 -0400 (EDT)
+	id 812466B0096; Wed,  6 Aug 2025 17:29:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 620188E0005; Wed,  6 Aug 2025 16:58:34 -0400 (EDT)
+	id 700A56B0098; Wed,  6 Aug 2025 17:29:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AE988E0002
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 16:58:34 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CF9151A071E
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 20:58:33 +0000 (UTC)
-X-FDA: 83747546106.30.E2AF9F0
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 9E93C140004
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 20:58:31 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RqDyPvtk;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf09.hostedemail.com: domain of alex.williamson@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=alex.williamson@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754513911; a=rsa-sha256;
-	cv=none;
-	b=WDlQ0dk+DW6MsgQ6rAbpZh5OnUzVp4KkSFS7+J2NBwHk9lAvji/DaNX9om+WXFxJOQIcFw
-	tu2/eu2h3K4xuDhKc9LNwUr3+R9RavZDo5CCmF+uN1siVuJT3YuZHmSvGhYcPFgAJS5B3w
-	NIAhV9smYLHniqyjTkz3p3RCBlWb1pM=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RqDyPvtk;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf09.hostedemail.com: domain of alex.williamson@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=alex.williamson@redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 612DA6B0089
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 17:29:06 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B67B71DD07C
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 21:29:05 +0000 (UTC)
+X-FDA: 83747623050.03.CC16C36
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 1F39C100005
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 21:29:03 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ArNiiRcR;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754513911;
+	s=arc-20220608; t=1754515744;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fFNdR9gJvxUJ76WkzFWy6OZiky5m3qPp0Fyvysc9k2k=;
-	b=QNsYQBarsZ9RKbqebptWQmRzzXu7OLtK+zgKeg1YK+rJl27YnhMmxXSwn6RS/65o8qq21e
-	jfwlaeD7wIGvLC/4E3s4tlXSRXZKhSgBZWIEX+AmKhfaJ+R47Hfp19sUvFVB9U484uaYaF
-	y1ZHqQ+5bBlI7L03nYudi8QJTrC29DE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754513911;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fFNdR9gJvxUJ76WkzFWy6OZiky5m3qPp0Fyvysc9k2k=;
-	b=RqDyPvtk7mRYQFeZYbX4XVaO1ZfuPpuIZncu7aPnyVXPTNibSw8sv5iB4qKSq00dEkj9EW
-	YyobAOLwSO+OQFYZJwEt+Ky30a5+whsvrJd1J5ImUInQJ9TlEZYfEBFORXvGspCdwKOqkP
-	Fr8iJpnvGVNdWc8IJfdUrU1I99Czl3Q=
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com
- [209.85.166.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-468-jLm8pdOeN9u7YYmjhUX0wQ-1; Wed, 06 Aug 2025 16:58:29 -0400
-X-MC-Unique: jLm8pdOeN9u7YYmjhUX0wQ-1
-X-Mimecast-MFC-AGG-ID: jLm8pdOeN9u7YYmjhUX0wQ_1754513909
-Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-3e3fff9eb72so831055ab.0
-        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 13:58:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754513909; x=1755118709;
-        h=content-transfer-encoding:mime-version:organization:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XL3JtSDnypcZCdbt3A90Mr99TpavO/k4/VrpLyiBez8=;
-        b=XRGPnoXwtwH3+9Z8kCdCctJDSezjBFdikp3YHvmg4q/NkSTCnGohOMq4Kq+I+jtCYl
-         tgag2jvkDudT9FwCJJ5vYZpBEOdtZckE12Joo35VPO8BzgmKTHO7F7+qdR9BoGkeJdkh
-         G8LYgVW/6ETgn3TqXY11SVgO2BgJMfnw06BdOtmPcLgK2zomiVP3oTfad5X+D+rbdC3X
-         zPIyk2AzGDQNRANvyNP5AwjMlA8UAPSs1gZxSwsi65Br1lIepracW/15Iu8uv5LOBco3
-         uDdJI/SkopyVUh+ZSb9HpptsITLNJ24gWPMAbhvwp2Mq3RZ9xRyi6HbEZ2hVvexBZp44
-         Q52w==
-X-Forwarded-Encrypted: i=1; AJvYcCWYgvCl/n9uDTcLu3M7Utc/9AcFwceg6jwjiXXpMnVUTg/gQHLORgzwja5/z7QSrIWwghA1+A1Bmw==@kvack.org
-X-Gm-Message-State: AOJu0Yx/qpZKqZY0cIMQ/qlVebQ6ks6w8ZkVnV4a57UZjQ6ktpseRFVX
-	qen7Kzd/wxcgHahI1yn94SsE2PLLV1bVQjippMNlLcSHxJXysU2GAH0kMBaysivcCpIrrXTOmql
-	sQwqVe7dM14wTvQbzJoVYOlwKunHcQ/7tpxiVkHTO3PnwBZ9ejp0x
-X-Gm-Gg: ASbGncs2I5S3b0F1EVaVz04yEf421UQTnBWuzeFw1khDa6yT9YvzXvgZE/a04mRDo2W
-	ynmgYuJjhgu0dgkd43uU4LO0USCGMQEUX7zsUwuENdFqZeOevJK6oOVzFlBRy9BgUAD/KVCWU+1
-	e8bCi7up2yeuqOazAOhfvXgEhevNJ0KjpGJXrIu3SzSbTbb2TYUK73crTVIpd2ZComlIMOEcRbi
-	wqpk+ybYnM9W5dxbCpUihxgA2hAX0RTOL9FUtv20AtJ2GckYSVj1I2LOVn6JoKu01L0av5d8taZ
-	tc4IWmQGMeS1KQHtBx2usMoLvoGaZ7o7TG9zGj2jqoE=
-X-Received: by 2002:a05:6e02:152e:b0:3e3:d2eb:52db with SMTP id e9e14a558f8ab-3e51b79eae2mr20687085ab.0.1754513909037;
-        Wed, 06 Aug 2025 13:58:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEvMHObcGautLtJ7984K/wyyriLvMdPXmyUUT5V0nwJ7vFbNm7fOcxZIXtiLyBYuGHd6raZZQ==
-X-Received: by 2002:a05:6e02:152e:b0:3e3:d2eb:52db with SMTP id e9e14a558f8ab-3e51b79eae2mr20686945ab.0.1754513908609;
-        Wed, 06 Aug 2025 13:58:28 -0700 (PDT)
-Received: from redhat.com ([38.15.36.11])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-50ab01e84desm2049992173.51.2025.08.06.13.58.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Aug 2025 13:58:27 -0700 (PDT)
-Date: Wed, 6 Aug 2025 14:58:25 -0600
-From: Alex Williamson <alex.williamson@redhat.com>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Leon Romanovsky <leonro@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
- Andrew Morton <akpm@linux-foundation.org>, Bjorn Helgaas
- <bhelgaas@google.com>, Christian =?UTF-8?B?S8O2bmln?=
- <christian.koenig@amd.com>, Christoph Hellwig <hch@lst.de>,
- dri-devel@lists.freedesktop.org, iommu@lists.linux.dev, Jens Axboe
- <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>, kvm@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org, linux-block@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- linux-mm@kvack.org, linux-pci@vger.kernel.org, Logan Gunthorpe
- <logang@deltatee.com>, Marek Szyprowski <m.szyprowski@samsung.com>, Robin
- Murphy <robin.murphy@arm.com>, Sumit Semwal <sumit.semwal@linaro.org>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>, Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v1 01/10] PCI/P2PDMA: Remove redundant bus_offset from
- map state
-Message-ID: <20250806145825.2654ee59.alex.williamson@redhat.com>
-In-Reply-To: <c9b6237964b9606418af400bb6bec5178fcffff2.1754311439.git.leon@kernel.org>
-References: <cover.1754311439.git.leon@kernel.org>
-	<c9b6237964b9606418af400bb6bec5178fcffff2.1754311439.git.leon@kernel.org>
-Organization: Red Hat
+	bh=WyxKAaXntoAb2HXjfYxKCDYsCySitgFRzHva0xyANqs=;
+	b=VtQaYWFz3JQIA7GToalWFwuQFhFIutbNkXHfuU/9e3GA84jOmP/nECJbjOAbmsTn5WIyuc
+	3ec5rvl0ClkptptqSa4fL2PYJtAtm+4ISHHbJEz6+HVELE3bpAJQIG9SeUuGOL4/Nkdn4R
+	hZKi6gJWFCb8KHEiefmtT8v3evnSKfI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754515744; a=rsa-sha256;
+	cv=none;
+	b=t+VJJlmDMYSjjt6ZOSWjJT5jrMlb5XmBIBw5JMTwwfyJkEGt8IrcvuzXUVfmibmKuSxciZ
+	VDQQqw9CWAQukglCVXHDqDkXU94zgdoh9VuBi79QJ3LZ1RAWLY3P3uspl+vQya/DnXlh+g
+	s0AsCds3I6oi2PfcQMXeLQZoSdngD/c=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ArNiiRcR;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B7F2643F4B;
+	Wed,  6 Aug 2025 21:29:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C7E9C4CEE7;
+	Wed,  6 Aug 2025 21:29:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754515742;
+	bh=Fq/MOI2IKGG/4kPRJlehFii6lGQAeZnINeDyXd2WKs8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ArNiiRcRKorpVO7z+DunHSF3hxUwxK1EDgvBb0KT5vuGoa2JxHw4Hiaw1jIzkcn/o
+	 l6F0dgqDxDXC2uQcXCFC5MnqwdeR0xzuzO3rfzI7SkQ8sGhRG2wfo5Z+wHuMMbeM1J
+	 zimEjSX1KoMR5gu8jqbdNa2KZ9HmhDXHDusk5BiYoRJR728drUcex1rGiViuqjqo4J
+	 E5it6p4zZSmW86oUo7idBi9RYF8w3U1h1o0tZHAWPRS2VNCTPiZ3Ay1iAnJ1X/VTj3
+	 sJ8XQMWzQqOQ3JNlpQlSI5Ef7XrlYwRmV9P53J6AtenIBJlpMCv3a0a4IeM9rbT2B+
+	 0DV5Mmst4abnw==
+From: SeongJae Park <sj@kernel.org>
+To: David Hildenbrand <david@redhat.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	kernel-team@meta.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Takero Funaki <flintglass@gmail.com>
+Subject: Re: [RFC PATCH v2] mm/zswap: store <PAGE_SIZE compression failed page as-is
+Date: Wed,  6 Aug 2025 14:28:59 -0700
+Message-Id: <20250806212859.51259-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <055a8a69-731d-43b8-887e-54d8718877cb@redhat.com>
+References: 
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: DEUveq4xnkOGZqJyQYk3DiKtUfN62zTME4b7KsxRIsE_1754513909
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9E93C140004
-X-Stat-Signature: kzdgw77sntgyqcw8a16uqt3en4fgzsem
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 1F39C100005
 X-Rspam-User: 
-X-HE-Tag: 1754513911-200088
-X-HE-Meta: U2FsdGVkX18hM2ypGfV77j3p9IVcoZ3nepI+cG+n9OngfIu/fFcNqbRx0XR57N1pedIpxeSe82/aCl2CILaiu8UPEXxbiQ5svV27XEqqw2VA7/txY20QSVpU0pxKZyHLEPbXxIDtVbpHPNibwfatJEyOtFTzdyjfhoXxcHK7tgaF8UiXuvyqTQAAqotqI4Ctgq8iP3iNxVZAwJU/EgB6ADl6MRbbCDwxy5nQxY7zXBRUDtE8HZpRMpCvkG6PcXuuENuZulrQQnXj0hxd2Ap7WwQ51wF8hr0xkImDyf0fWTl9T5kTqe74NmywMiC5Jr0j9+sFYILScJTzG5JtOBzbEBemF9wB8T/tUpntEicSAe3A4IhZ9veqN1yWjtw4aI46SiDD5vXqYXgD9mXrHnIUNBx0GOeaOIj/D8dXHzruT4bEfRMViHbtIOgfEymZUINrrlTkkg2swjZcIQoP8Tzvg5PtHgnrl0YWMS2hDc/4S6HPdNvpD2Aj5XegCPy+ZuEzvifdp5Lh3hkEvPXAStCz+jMIqetbhL/j9kaPfcWgsjkcR40yThxNX+o8Fa7f0aBBUrKmYGjerhrrVZ4KPpyciwl4ZD3tAcOhOmR1I3VSvS5Cui/D9rr7EdbXOzm6xD/3Mvhi3VOtskyj7VqFsuHRvogr07IhJpNZWpDBrFXtgTf2UP74UKLB/lg8eTflT1DnZOlohPmu3mJeJ6NSyZDDUwSWVhNaZGfU525XL8JOgAsX5jHd2Jqx0Q1+cWWLmfzQMI05Y2iB5IkyemnRyyCt4NKDHFdMt8nFnd0K54vbWh/eF642zGvBvEvKGQl4S8kzIuRgmt0kKfK+w2Dw6uoeAc7UlsFdIPCkvhwO+JE9HgYoWjepZa6LlT1REWb1qQKR4iJCZa82qzDXW2tKvTPlVpdeE8lsCMZ3wY4f/2Gp5SfgTpMDsHTfHJij5Qgt40VjlcLwDZRVKyLei+JiZvs
- PhPdklox
- X9Egx1B/UXNUzrYzN/s9gqwlzXWbMxbL6DhTrgJVhySCQTTVJyYA4LYcplWgIqIAIOJMiivt8zAjz9JyzLS966/WkSee+vyuhH4R7M9T7OfRLo+mrShjzWDuWRWKyvBSN5H5R/1gbll/Gw1bQUusQiXzN1KT0lldgP53EJ0oFYsXwgeafs1BEl/4Q8SDYr2A/VfLWIVaRERw7flHJDjOw6soluO6hOD8V+JXpOicsJASD5n1siuOQXH+STBE4XNBj3u5YBE6/RmBZRn10eEkN4oYqvQX/jrnWFSLG3pVv5600iVz5DsJpBhFcMXuPYpO8F5/jmVVRcwZ70ARKp3eoqDyfcIdZd2BKz314N4Cmyaqni4aTqf08N9/dQVV3FYFoK6RqO30GmipvWPCTrXlN0VhsIHCgftmumSEjDi8OipXthRE0XUomjcCTNOJK24qpb8t6KndpPESRl1Z53Y2mEveig4alexLCNnsxmwA/wx4X5VNa8u/FAxaTew7kJz6D/QFUC1l4aZpAwKedoOgp+F/qUDVJ1s3IigMMrjzdxuDxqXE41+z2yOwyWzcTkBld+Iq3Q8up4VVtiiWxyMb+iDgmiGlAhfuIxMRRQaZbmuS1Gr5KgUqtM6n+J+gvOugwuJ9B
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 34iuctxroxa5n7j8dg5iuwxs57zgyw1h
+X-HE-Tag: 1754515743-766082
+X-HE-Meta: U2FsdGVkX1/G0DPlTEAfb/fMNA1xkx1dVlxmp8BGm1LbIhHpjzOB1CwDbj1tHJQYNGtwKewjqcH0zlB/4z3ltvutbyzGYvPGHbMLbdz78HTTJYo7CtrN+pffoY1W9omJKv5pXlqlFgHeTCLghH1edfuNvHwKXiIJ56vhElhE5TpvCwU3kYBNTgK4flbr8kYtA6rzmYEZAUvAG6Jx+sfHyWHr9SfE2iE7E3d8eZHPvtrKEK/UtcNvUPnKu6D6E175lGX/LqhYoaRbcjYZldHBEsIS1KQwob0+3M4pNJBD28SQAlUSZDyv55THgJNtj7evvJZYkGznh3U3ywq2nEUGp/7Vu14WPrho76zyXSaNGj53hS1EWfbHZRrNnCIU9w9o1WKLJQUp9J+IS63h174HbNsHS4cYYDOdjH5RWZdW+ltIV4V2FfR9phtnhJLA5uRs5S2OzwDfevZo7gf7iRYFrE3rld8YDXxyuhxtlxUQ7dxGvCP+TAdEBbYJdRwh1DN78pnQMp70w7E3SvIfDihK3tggU++0VMsHgXGKVZzSkb8o0kFcLXGiaHIqsKgu03oe7k9owR2DvbTQh2C/AujaaVH8ITOW/K7OoJeA8F5EzwpTmPt0eOflYG0k7mAzAECO0OmzjjZaCUD563Xz70LwVfhlcsDH0JHyf+HJEzvwMTfR6qeJdN98O7I8z6HOxA0tE/9kjTNzo0tlksX4WkD41dqNb1H6aRfTgO93t5ASQSPw6HCvMXvoJAXzBgUW0E7CyyULw14gYKGuoHpsxciFoCqRnRSLWeXiSZcI1nOT4GazQhPT5xcZ+6s2S6C6qfnC+A5ACbd/iEsoYVMuhbQDsl+uVQ4vqITZbdpbm+eOlYbapV6fovtRAyj8z4tfXm2FLXXphGRgqRZtlTYrQjF1lw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,82 +105,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon,  4 Aug 2025 16:00:36 +0300
-Leon Romanovsky <leon@kernel.org> wrote:
+On Wed, 6 Aug 2025 22:14:39 +0200 David Hildenbrand <david@redhat.com> wrote:
 
-> From: Leon Romanovsky <leonro@nvidia.com>
->=20
-> Remove the bus_off field from pci_p2pdma_map_state since it duplicates
-> information already available in the pgmap structure. The bus_offset
-> is only used in one location (pci_p2pdma_bus_addr_map) and is always
-> identical to pgmap->bus_offset.
->=20
-> Reviewed-by: Christoph Hellwig <hch@lst.de>
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-> ---
->  drivers/pci/p2pdma.c       | 1 -
->  include/linux/pci-p2pdma.h | 3 +--
->  2 files changed, 1 insertion(+), 3 deletions(-)
->=20
-> diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
-> index da5657a020074..274bb7bcc0bc5 100644
-> --- a/drivers/pci/p2pdma.c
-> +++ b/drivers/pci/p2pdma.c
-> @@ -1009,7 +1009,6 @@ void __pci_p2pdma_update_state(struct pci_p2pdma_ma=
-p_state *state,
->  {
->  =09state->pgmap =3D page_pgmap(page);
->  =09state->map =3D pci_p2pdma_map_type(state->pgmap, dev);
-> -=09state->bus_off =3D to_p2p_pgmap(state->pgmap)->bus_offset;
->  }
-> =20
->  /**
-> diff --git a/include/linux/pci-p2pdma.h b/include/linux/pci-p2pdma.h
-> index 075c20b161d98..b502fc8b49bf9 100644
-> --- a/include/linux/pci-p2pdma.h
-> +++ b/include/linux/pci-p2pdma.h
-> @@ -146,7 +146,6 @@ enum pci_p2pdma_map_type {
->  struct pci_p2pdma_map_state {
->  =09struct dev_pagemap *pgmap;
->  =09enum pci_p2pdma_map_type map;
-> -=09u64 bus_off;
->  };
-> =20
->  /* helper for pci_p2pdma_state(), do not use directly */
-> @@ -186,7 +185,7 @@ static inline dma_addr_t
->  pci_p2pdma_bus_addr_map(struct pci_p2pdma_map_state *state, phys_addr_t =
-paddr)
->  {
->  =09WARN_ON_ONCE(state->map !=3D PCI_P2PDMA_MAP_BUS_ADDR);
-> -=09return paddr + state->bus_off;
-> +=09return paddr + to_p2p_pgmap(state->pgmap)->bus_offsetf;
->  }
-> =20
->  #endif /* _LINUX_PCI_P2P_H */
+> On 05.08.25 18:56, Nhat Pham wrote:
+> > On Tue, Aug 5, 2025 at 3:47 AM David Hildenbrand <david@redhat.com> wrote:
+> >>
+> >> On 05.08.25 02:29, SeongJae Park wrote:
+> >>> When zswap writeback is enabled and it fails compressing a given page,
+> >>> the page is swapped out to the backing swap device.  This behavior
+> >>> breaks the zswap's writeback LRU order, and hence users can experience
+> >>> unexpected latency spikes.  If the page is compressed without failure,
+> >>> but results in a size of PAGE_SIZE, the LRU order is kept, but the
+> >>> decompression overhead for loading the page back on the later access is
+> >>> unnecessary.
+> >>>
+> >>> Keep the LRU order and optimize unnecessary decompression overheads in
+> >>> the cases, by storing the original content in zpool as-is.
+> >>
+> >> Does this have any effect on the movability of the given page? IOW, does
+> >> page migration etc. still work when we store an ordinary page of an
+> >> shmem/anon folio here?
+> > 
+> > Good question. This depends on the backend allocator of zswap, but the
+> > only backend allocator remaining (zsmalloc) does implement page
+> > migration.
+> 
+> Right, but migration of these pages works completely different than 
+> folio migration.
+> 
+> But I think the part I was missing: we are still performing a copy to 
+> another page, it's just that we don't perform any compression.
+> 
+> So I guess *breaking* movability of folios is not a concern.
+> 
+> But yeah, whether these "as is" pages are movable or not is a good 
+> question as well -- in particular when zsmalloc supports page migration 
+> and the "as is" pages would not.
 
-Looks like you're relying on this bogus code getting resolved in the
-next patch...
+Maybe I'm missing some of your points.  But there is no difference for "as is"
+pages.
 
-In file included from kernel/dma/direct.c:16:
-./include/linux/pci-p2pdma.h: In function =E2=80=98pci_p2pdma_bus_addr_map=
-=E2=80=99:
-./include/linux/pci-p2pdma.h:188:24: error: implicit declaration of functio=
-n =E2=80=98to_p2p_pgmap=E2=80=99 [-Wimplicit-function-declaration]
-  188 |         return paddr + to_p2p_pgmap(state->pgmap)->bus_offsetf;
-      |                        ^~~~~~~~~~~~
-./include/linux/pci-p2pdma.h:188:50: error: invalid type argument of =E2=80=
-=98->=E2=80=99 (have =E2=80=98int=E2=80=99)
-  188 |         return paddr + to_p2p_pgmap(state->pgmap)->bus_offsetf;
-      |                                                  ^~
-./include/linux/pci-p2pdma.h:189:1: error: control reaches end of non-void =
-function [-Werror=3Dreturn-type]
-  189 | }
-      | ^
+Before this patch, zswap asks zpool (backed by zsmalloc) to allocate memoy and
+store the content of the page in the "compressed" form, if the content was able
+to be compressed.  After that, the original page becomes same to any pages
+that swapped out.
 
-to_p2p_pgmap() is a static function and struct pci_p2pdma_pagemap
-doesn't have a bus_offsetf member.  Thanks,
+After this patch, if the content was unable to be compressed, the content is
+saved "as is" _in_ the zpool, in a way same to those "compressible" case,
+except the content is not changed.  After the saving is done, the original page
+becomes same to any pages that swapped out.
 
-Alex
+Zsmalloc will support migration of pages that backing the internal contents,
+regardless of whether those are compressed or saved "as is".  From perspectives
+other than that of zsmalloc, hence, I think no difference is introduced by this
+patch.
 
+Again, I'm not sure if I'm really understanding your points.  If so, please let
+me know.
+
+
+Thanks,
+SJ
+
+[...]
 
