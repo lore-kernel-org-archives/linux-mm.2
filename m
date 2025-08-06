@@ -2,84 +2,100 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 26FF9C87FCB
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 23:19:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6469DC87FD3
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 23:25:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D5976B0093; Wed,  6 Aug 2025 19:19:51 -0400 (EDT)
+	id E23DC6B0096; Wed,  6 Aug 2025 19:25:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7862B6B0095; Wed,  6 Aug 2025 19:19:51 -0400 (EDT)
+	id DFB0B6B0098; Wed,  6 Aug 2025 19:25:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C2EF6B0096; Wed,  6 Aug 2025 19:19:51 -0400 (EDT)
+	id D37F86B0099; Wed,  6 Aug 2025 19:25:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CA6C6B0093
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 19:19:51 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AFB101A073B
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 23:19:50 +0000 (UTC)
-X-FDA: 83747902140.29.F05C479
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf14.hostedemail.com (Postfix) with ESMTP id AD8FC100004
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 23:19:48 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="URXqgwx/";
-	spf=pass (imf14.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C35056B0096
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 19:25:20 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 543B61DCC63
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 23:25:20 +0000 (UTC)
+X-FDA: 83747916000.24.E1ECB59
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 7BB2FA0004
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 23:25:18 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=krrUPuu1;
+	spf=pass (imf25.hostedemail.com: domain of chrisl@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754522389;
+	s=arc-20220608; t=1754522718;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U6QOt2ArdADNBAJU4PEVq2qG6ReKiOxj9ZcPXxOARXY=;
-	b=w3Qx1R+vbSe6F+DdN6jlE+YfJgFbFE3bUIR7aREoQkjgbAeK8zcfXWXAe8iE+9gDILp3T4
-	4ts7qoUUhpG9r+ZGaV0na17jJcdM2snFC55gvqtsEt8cIpVrrj4Z55V1N42Uuy2xzvqSla
-	d6BwCmLAV+Z+KJj+DAfULpu8wHOedZE=
+	bh=qQoYrjjiOBNV8WkJzEHnMtMq/aX9CEzrVd+b2tWLo00=;
+	b=JXVVOxYD4gUcfIHvElNJzDnjc2Y//WC4KbNfNqF/oi6mnD0Nd5FHb5nejKxacWJg0fF48U
+	zxfXG9auqMtZzDxrZAW/ZV7yoGCL1OZoQhyk6B59ig3iZd1S5ScryMfLae02d9IsLXIta9
+	ht9ak7KekEc84EVqYdSwYQZNz/pP8Ns=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="URXqgwx/";
-	spf=pass (imf14.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754522389; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=krrUPuu1;
+	spf=pass (imf25.hostedemail.com: domain of chrisl@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754522718; a=rsa-sha256;
 	cv=none;
-	b=TUjZNikpUo5dmQfkzlOlOuYTE1wd72I3ICpnM14nizwj1KACGfnRFbbfDuEKzMgNPtXZbU
-	nqKWyJIe8jR7B1ifV/qxa/ZlUTOTpsGrGKMAgqejXvC9loWcV/rlgTNNsr1CpIT8rzLPuL
-	zG6IIVzSIGKSGQ45S13uj8kewXJR6r0=
-Date: Wed, 6 Aug 2025 16:19:40 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1754522386;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=U6QOt2ArdADNBAJU4PEVq2qG6ReKiOxj9ZcPXxOARXY=;
-	b=URXqgwx/5/5PY0dFhng1uG+sZJJQasTsnvBd7kueJ4x1mVsoLJBPTHoiHL3CE3QP+2EDNy
-	rz6hus8qYRjVDYdE2aK2zOLisVWd5HnP/a2cjtbnBFCtH4g0gWLnA6y8/f3TCJ+Dig1EK8
-	zg1s7W+0Yn+gE5paA/pOoP3+jqwrbww=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Boris Burkov <boris@bur.io>, linux-btrfs@vger.kernel.org, 
-	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, kernel-team@fb.com, 
-	hch@infradead.org, wqu@suse.com, hannes@cmpxchg.org, mhocko@kernel.org, 
-	roman.gushchin@linux.dev, muchun.song@linux.dev, cgroups@vger.kernel.org
-Subject: Re: [PATCH 0/3] filemap_add_folio_nocharge()
-Message-ID: <mph4trybfnzki4aiq67suf2cki7cf6qpvqlojxs45hywgh2gfb@7qnhfp3y65mh>
-References: <cover.1754438418.git.boris@bur.io>
- <aJNgC7f9RVr_rh47@casper.infradead.org>
+	b=hJHGNQmqNI/jOd38utqW5Pi/4Ei5z0muet/mC8RaDeCSPKbaOv3VNVHO3ideSY38K6fU+7
+	TWdpPId86o+1V1POa3YSb+cKAZBJohVHW45ivvVYcLeR18QnfK83PWN02F0tF7S9jktEA8
+	uw9NOVXd9usuE2T0eqHkH4MFsWX0oCQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 7263B5C69FD
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 23:25:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38B2C4CEF8
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 23:25:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754522716;
+	bh=i7moJgUx/xSFj18d+Ij+O8XgpQh8iIyJg6xk2zbatgY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=krrUPuu1lBEhbNbv83U5eYBYHX+f4tM/rV/nhjMNi/Cki+nrqdMd3UUw89RV5hHtd
+	 h31zUKdRjpSyvAJmsFrfa3+HF6oQb9eumCW+rWNA119EK5yyhWhUMQCyX+WLW9/PmU
+	 ddHO4iiWpfvB1WZzgASwksMbh6MIScgvgnHgHHY/Q7ZSx5HcAChtWY++lzPILf++DM
+	 tYapc+fSrh7t5GzEt/0yLHk/iU9nc24PNCGGcv3sWeLRzlfLgyrDYTbPuGCdLM9c1f
+	 lpynCQeVNwbV7MloH/XSpftNKnp/F69yk1evNSA1IkKiPRi9y/0fo1l77T16fcgpMF
+	 kgsvfDmMyL4fA==
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-32f1df5b089so4020241fa.3
+        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 16:25:16 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCW+mTJnNKnBxS/XHiZrFrPqUQJRf+6aeiMq2z8onNhhGPSG3c1UDL705+DAZFMdvlgI94UH5jnUzA==@kvack.org
+X-Gm-Message-State: AOJu0YylEPuPUq/G78pC1Nd0+4gr9Yj1jWkI0bHWEP2Cp4PfAKbb9r6Q
+	oUzl7nDhTNxjsHr6yu+zjAHv6OBF1HMPOIqVRVQvhyGe4LUfoA8Wj9nJM6xcv+AZO+uStekRbq2
+	e4uZEUSJBXLKY+IOZH7n4UUogPxBTUw==
+X-Google-Smtp-Source: AGHT+IF6DYjTcp7hSvwBmqZfeirBCTH7sRLIv3f7sYHG2bcJmsjYkoek7c82LIHpLC5W4rMppUU5oJaohTRxwdSQpGM=
+X-Received: by 2002:a05:6512:39c3:b0:55b:8827:b7c4 with SMTP id
+ 2adb3069b0e04-55caf357830mr1400649e87.40.1754522715597; Wed, 06 Aug 2025
+ 16:25:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aJNgC7f9RVr_rh47@casper.infradead.org>
-X-Migadu-Flow: FLOW_OUT
+References: <20250806-swap-scan-list-v1-1-a5fe2d9340a2@kernel.org> <20250806153146.ee1ee22dc8f6381ff5a6d882@linux-foundation.org>
+In-Reply-To: <20250806153146.ee1ee22dc8f6381ff5a6d882@linux-foundation.org>
+From: Chris Li <chrisl@kernel.org>
+Date: Wed, 6 Aug 2025 16:25:03 -0700
+X-Gmail-Original-Message-ID: <CANeU7QkxNfe5Ut8AnyJYV4eQOS4=aL6ni3EAcdfdgTTZ2vG41g@mail.gmail.com>
+X-Gm-Features: Ac12FXxyUj4a1L_iBpo35V6Q_WzlHGvo7MstX2SyvqaYMO9ZWWJh3nSN8R54-Ss
+Message-ID: <CANeU7QkxNfe5Ut8AnyJYV4eQOS4=aL6ni3EAcdfdgTTZ2vG41g@mail.gmail.com>
+Subject: Re: [PATCH] mm/swapfile.c: introduce function alloc_swap_scan_list()
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	"Huang, Ying" <ying.huang@linux.alibaba.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: siqixj4zu7ddxab17hm1a7919mzchqix
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 7BB2FA0004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AD8FC100004
-X-Rspamd-Server: rspam06
-X-Stat-Signature: c6c91dry4w1ax3rk7xcicx6tjbro91gu
-X-HE-Tag: 1754522388-402216
-X-HE-Meta: U2FsdGVkX1+dHcO+YQ58C7XfIdEbbrlZdmNVCOTavezAmBxsCRXOaWbOd/4aXgDN2Mz+Fr3nJO5ghqj+g+jdEXkfWThv+C6Nq0sdgosY+Mav3uCWWMV3RFEMLkIuall3RLOYZAlq6XyYqxQTU8opn6wzjO2Rf3cRmPkEAcJG1GOVDNj3DVZhuwvpubpW98aP3pBKgCBVp+8hF0lcE2acpUHwvUCB6cyUM3zWSq33sbk96vhfxMaLzoTMp2xCLAT9VDiqNIN0rZ5BI2dGwavUDZRnQsJKnBlTO5AD//cOCSsPjKbOwBCK0lJisNsR5UAvRpB66zuIN4o5nI0kZg1cdQRsEviEKLd08w+Ey7PkbYhnSe+Wfkcg3cTHgv2t99QNkDop7ia49G8LWGKBZH62K3dHzGB8r/dZ/Kw3HcpZgVnmCJT1BztShRPtLpkWI7nvffgAE9b7kFGtrJ6UvgHuJXFOQD1fidRCihh//mjHcrxtxjZtlc/A7AGkOqVGhgzxMh2GysvMeaAbSdZhK4qHa7DqUgJL9mfo2qrrR7rol0z/8uvNenhmLX03CgHRVWykkWYrssKbsWNhWV3Kr5t6M9lluNx6PJfWf0vtwJ8D9bA0V3fimQSdMzyf2Xag8zSh5EyJHlCAZdopVphm0PraKxdXx9SfgZ4cAkmTSI2l3GTKca1gA/4P5w2y/gDE/MCoE42mmOAb8HRz1S9wBczPWumDnJmhFSQlzDKiWGelqf+K6J7VX63hUVBvKrWcgH9hOOJ3IlSB/e8jxYzpjl4ZkR3WUilU4us9JeVdZ2n2kfNtRH8cFpPH5/xeKGt1wP2dwe9MrTpG98XhO9ULz0xtmTr0iP7dBtf/inbCpC4tjPIV2aA/tJdfSr1phIyvfN84bkAGREzIuQekPZyvLvbI5rIKHXjKfD4kc8CBQg6UFtAj2NBMGLNj9NZMR/11+dWIUxdG92slZfb0bkUOMI3
- HSzMhH8b
- S9UCjLrgLhZOzjwjGlQZz7yXMaSRTD5oHAmdZv2j2TydQFLrOugaVol6gmYGLINsS9VNexm8fv7/CR/ivzq2OXjSEDOXlNFpn9krVtuqNC67IMmmBzq7MndKsQIsQM+SlpseMu08URoZBdQKeyqoRiRq1zYxKqkLu7FgFXIViDzn/F/+zFEdhJPRYB+sHE1N/zPY5VVRr84uJcRdQ4ZSBzVWAJhUJfUzRiYd3ny3cfMYHyvNTbU/7HMgTbwQhj5JTjgoftOjOr2lj6PtH8Z6+/7C+QyNQ5UGAmXnNcW9LmKv2ZuP8Ux0Jva2Ql6SSwGY9Jg46eXDGrhqtQis+f/+D26QT+A==
+X-HE-Tag: 1754522718-364788
+X-HE-Meta: U2FsdGVkX1/auh/qTaqvP06gcwwrXg/rLD1MIqxk1PDKZKmwyBimduq0koiqo0Sx+/BymZtDJBvPrNrV0rdKSDi70szd5e6IAUlNy96iaiF6nx4DzTd2iYQ9Wu1PJkEGucZiIGSqA85A6uJ1XI55hZ6B+223DVS7ERnUWf3+6C2U8lIeHMbYYSYCd8AWPOsPUEqtI/V7o7UxqXKxeke4nPfPkh3KrxcOpDHsLJXehot341j7X2WW50Qe1DF/yqTqtu4uNDG0U08BXPD9pUAHOd0t9Bd3P7gSShAUg4WgE4gBfVx/fZQ8WtriWLNUKWfvTyg6Lyk7BKQyuCb4g9PCmKueracD/IL8mBbpa8FGGpZ2x7+QtjgYaukBh7CZNtRqb9xYxEIJIgo0/dRvUDsQLvjqJI2hxqrzYNE+eELllRNS6qHvnFHi0h2CLAXPP02fbW+s9TjZKQYQW5a9FLnD0e6YSMtxatG4QkzMAKcl6GU8Lv5MPA1D8vDafTB49oUu22P8LXhempeBTQvlJO1QZ1/fhQIzip/XUf/Rm3ooLzI7qJvx0LSGsI43AbJ2wPNZDf99pJFygbg4IwnSmKIuKikB0queU1Fn4zY+m0CgZu8nrhbHu+xC6eWMs1eYfai26L9Gbxj8JGRByfiVeV0spNmZP8K4g45Xs81Vf6pcce+Os/paCidx3l3ZLF0JF2qsqDqZ2ppWpbVuPdzbg1vVRPmVHtCXDOhfr7m9toPNwZTi4Dtn/qlANER7b/Ppc7qMSkJCmlL9upC9zUG032xL1uoDsgaf7mMdv3WNLkALYzrA/g2gkm0/ySkw53GlH2VRApz03MC4CW9NeMJ23dqy9REstFNJtwsZPiXbc3uUsVOPNUeY+J53AR1jpiaILm+sBrBVjpFtHskn6XehONL+Jaf/sNOJPr/Qkve4VDA/FbN/8gB9NW6swI+7l2ix6AR8iPLncx0ZkKPYizcr9aN
+ a9WYdhxb
+ OQJTRo0D5Q4dip8c0vW5CLTOBaL8kCPQrSlNT
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,24 +104,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-CCing memcg maintainers.
+Hi Andrew,
 
-On Wed, Aug 06, 2025 at 03:00:43PM +0100, Matthew Wilcox wrote:
-> On Tue, Aug 05, 2025 at 05:11:46PM -0700, Boris Burkov wrote:
-> > I would like to revisit Qu's proposal to not charge btrfs extent_buffer
-> > allocations to the user's cgroup.
-> > 
-> > https://lore.kernel.org/linux-mm/b5fef5372ae454a7b6da4f2f75c427aeab6a07d6.1727498749.git.wqu@suse.com/
-> 
-> I prefer Qu's suggestion to add a flag to the address_space.  This really
-> is a property of the address_space, not a property of the call-site.
-> 
+Thanks for the feedback.
 
-I think Michal wanted call-site (explicit interface) for easy
-searchability. I don't have a strong opinion either way. However I
-wonder if having this information in address_space might be more useful.
-At the moment, this series is using !folio_memcg(folio) to detect if the
-folio has skipped memcg charging on the free path to decrement the stat.
-Having information in address_space would be another way to extract that
-information. I need to think more on this.
+On Wed, Aug 6, 2025 at 3:31=E2=80=AFPM Andrew Morton <akpm@linux-foundation=
+.org> wrote:
+>
+> On Wed, 06 Aug 2025 10:34:45 -0700 Chris Li <chrisl@kernel.org> wrote:
+>
+> > This the alloc_swap_scan_list() will scan the whole list or the first
+> > cluster.
+> >
+> > This reduces the repeat patterns of isolating a cluster then scanning
+> > that cluster. As a result, cluster_alloc_swap_entry() is shorter and sh=
+allower.
+> >
+> > No functional change.
+> > ...
+> >
+> > ---
+> >  mm/swapfile.c | 86 ++++++++++++++++++++++++++++++++-------------------=
+--------
+> >  1 file changed, 47 insertions(+), 39 deletions(-)
+>
+> A nice little patch.
+>
+> > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > index 4a0cf4fb348d..fcb1e57d8108 100644
+> > --- a/mm/swapfile.c
+> > +++ b/mm/swapfile.c
+> > @@ -820,6 +820,29 @@ static unsigned int alloc_swap_scan_cluster(struct=
+ swap_info_struct *si,
+> >       return found;
+> >  }
+> >
+> > +static unsigned int alloc_swap_scan_list(struct swap_info_struct *si,
+> > +                                      struct list_head *list,
+> > +                                      unsigned int order,
+> > +                                      unsigned char usage,
+> > +                                      bool scan_all)
+> > +{
+> > +     int found =3D SWAP_ENTRY_INVALID;
+>
+> but this function returns an unsigned int
+
+Will fix it in the next version.
+
+>
+> > +
+> > +     do {
+> > +             struct swap_cluster_info *ci =3D isolate_lock_cluster(si,=
+ list);
+> > +             unsigned long offset;
+> > +
+> > +             if (!ci)
+> > +                     break;
+> > +             offset =3D cluster_offset(si, ci);
+> > +             found =3D alloc_swap_scan_cluster(si, ci, offset, order, =
+usage);
+>
+> so does that one
+>
+> > +             if (found)
+> > +                     return found;
+>
+> `break' here.  To avoid multiple return points and for consistency.
+
+Will do.
+
+Chris
 
