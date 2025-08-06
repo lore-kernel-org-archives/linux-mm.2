@@ -2,107 +2,107 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A323C87FCB
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 10:11:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BFD36C87FD1
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 10:12:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B22908E0012; Wed,  6 Aug 2025 06:11:42 -0400 (EDT)
+	id 61C596B00B9; Wed,  6 Aug 2025 06:12:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFA1F8E0001; Wed,  6 Aug 2025 06:11:42 -0400 (EDT)
+	id 5F3AC6B00BC; Wed,  6 Aug 2025 06:12:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E88A8E0012; Wed,  6 Aug 2025 06:11:42 -0400 (EDT)
+	id 4E3256B00BD; Wed,  6 Aug 2025 06:12:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F2168E0001
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 06:11:42 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 474C6B9DAD
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 10:11:42 +0000 (UTC)
-X-FDA: 83745916044.05.B650A38
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C9EDF20009
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 10:11:39 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ctjYqBdl;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754475099; a=rsa-sha256;
-	cv=none;
-	b=VmjlNOgRzALj1LkasEb41ge2fbPi9t6LRfjrMGx3b3Iw5imT5ENfUpJP8c9gFvGSEuHTuO
-	eVQCtjols4W24b9M0OhyD0BVLyIGhyaAPeanj30WzX73x5MUS/sq5Tf3vzu3eOZvhlPrCS
-	6m7VlOnp+iwvT468tMcBM9mFvQ2QLnU=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ctjYqBdl;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 3EC6C6B00B9
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 06:12:55 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 08D13160533
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 10:12:55 +0000 (UTC)
+X-FDA: 83745919110.10.261778F
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 9AB86C0008
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 10:12:52 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VMYMmkJU;
+	spf=pass (imf28.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754475099;
+	s=arc-20220608; t=1754475172;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qh2edeS0ZaNzvwBPknu4B1s/vixn92FnvJSgkjVQa5Q=;
-	b=HdxWFAp0iHMh1DBGiVWHyVjrlZiyBX010tfr2UbVgA2MPeXYMFCzcDxeiSIbcIyRTwD3RT
-	RREHZndHFSaGw6084+NdKmojcvfNHfweWnr44tTRcL/VXQqnB7dia5kgiINArR1oIocG5U
-	Y8TGVmp9FNE0KFTEOhtHsyB+oVQdEVI=
+	bh=nKNoeRnJQHE9xlWRNjmXu0K+b82kSOJOZJ1O9/cC1ug=;
+	b=uTqx/ywavDVulvxc3bcSvlnRw/BcSRfyzcYc3oFbP/349cgSx1LipsSaSXNRfV2QyoPHEw
+	/a3bsQbhWg4z6EfVAhHvtOED2ZclReDDmIrpF9dLQWjb0h+yJlmIjhQyaovW8IPs794zu4
+	y9gVN8ocn1cqZEXvOwDzyyAqIftvmHY=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VMYMmkJU;
+	spf=pass (imf28.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754475172; a=rsa-sha256;
+	cv=none;
+	b=HCrc3uv3E6Ek/v6xQmk1u0Ca93059RUxaKqhhCKGenta2XsJ7I1qw37Q+nf7R1IipvmXCx
+	gZ5Ix8GLuoant6qAn+7sxcZhyIGarkblMvfr+IPxnBx2Sb5yaoJojnAJxhpWZqUujcVvVv
+	oWjHmxqkb6XE/DBstkLXw3EQnyvJJPU=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754475099;
+	s=mimecast20190719; t=1754475172;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qh2edeS0ZaNzvwBPknu4B1s/vixn92FnvJSgkjVQa5Q=;
-	b=ctjYqBdlsY4Suv9th8QI8wRibkVHahxyio8I8cICxD9ThXqBBossLkStKS5P4+e7bCyojR
-	lRp670cba5gXfTBhpFkIo58YWKOJOQKtNFkDKJXjBqyhgBsH4F2SZAv0V5ZC710brfs77G
-	7FTjZu8ZYo5Wv3spWN6XVCq+Rw8YVcA=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=nKNoeRnJQHE9xlWRNjmXu0K+b82kSOJOZJ1O9/cC1ug=;
+	b=VMYMmkJUrC1HSImjaZ66IfzClOi4pljLpxOQE7UMWE5PAFDffLZysxK2HTVW2Zw2WGMdaS
+	R29U++PVGWoGAiyOOCpJFEXvD4NooQgbZjGGPQqOjzWZ9dCjDRSW7B+IDbPvG8LkPpBuhc
+	IC7KfBIrAN3mYKzGN4i6A2mLIaumiWM=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-44-Y_D4JsLRP4S4heFF_aFYTw-1; Wed, 06 Aug 2025 06:11:38 -0400
-X-MC-Unique: Y_D4JsLRP4S4heFF_aFYTw-1
-X-Mimecast-MFC-AGG-ID: Y_D4JsLRP4S4heFF_aFYTw_1754475097
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45526e19f43so17293425e9.3
-        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 03:11:37 -0700 (PDT)
+ us-mta-315-NqzzP-OXP9Ox5lZ2vLP9sw-1; Wed, 06 Aug 2025 06:12:50 -0400
+X-MC-Unique: NqzzP-OXP9Ox5lZ2vLP9sw-1
+X-Mimecast-MFC-AGG-ID: NqzzP-OXP9Ox5lZ2vLP9sw_1754475169
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3b782c29be3so3812615f8f.0
+        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 03:12:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754475097; x=1755079897;
+        d=1e100.net; s=20230601; t=1754475169; x=1755079969;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=qh2edeS0ZaNzvwBPknu4B1s/vixn92FnvJSgkjVQa5Q=;
-        b=TOWVjH/K3KrJQ8ybN0uHw2uwyq3zZFutfTJOE5/GB1C87uWfUHZ+8Wd2s4oOvRoe3J
-         8OR8SIFSttfzs8yrwjADQMq6xDGq7bA+KsfHfIAQl9rOq4lEeGowNAmLfRbU7pVYmubK
-         lXXS/BFNN9DjspkEMvlosXeciAamA35eMmeBqwsgh03YaaMn11SBEYlLB4zbhyBSCPRe
-         juYmHTk5/376dMaaLJ+8ciaZ5w2uBZ+0yCRsVhqpLOq07g5AiV3TDXQXA+EO16PQKpBR
-         zS7wPMEF6zYWJcgE43uIqlbn8DdkefH+b3NEd3IHEMNozIyY+EKJkaiCNE7dDDrEwmBr
-         sC8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV+0c6BMLUUkGXbsDI9OmfwC22pwgdpFdrignCpVkmSOePRkLWqk0vULdB1ZD1nDw5FRAU9LICtJA==@kvack.org
-X-Gm-Message-State: AOJu0YyXD0vccJIoAlyrKoZ+EygYXHlANPmOSGpGzTa7CUUfECzwrp+G
-	Spp8j8154eWdQRd6LcNymKaXNzau9iLms5zi8F88Ctc1cDIicryHIpYkrnmYJFD8LQNNO0L/ol/
-	TIBPy1HDoOC63r6516kJhZzOlckiZvzKtta/sgDqLumHmysyMsy6E
-X-Gm-Gg: ASbGnctPsZhrHfD4Pt9K8nKSyHeoJHiO4fb607siLZmW6ao6BQxk0dz52EagtNm1SXr
-	+ZiNKUHXLruAThEBhYvzt6Vy1liLnSgh9VAlA8cAJrBMn6KDOfgf1LpjFdIKVFsc+G1nBhlN+Na
-	v9gHbUX3Z5CbxeO9t8oPfwHsM0Ug+SyA/wyqE6LuqmhcwHl+enWrYmaRjBKT1IuKea1YwOr+xVf
-	Q9M1WETZ8W368i8NogLwjK3sxBSrHx1B50lIH14AO/WQhOtqGEMUKSP3h/a80Y74WdE5zOQegRk
-	hWrNApq+NH3yt2L98U4fsL3tz/2ciY/rJjqsroT3E4lEZr1Oz94gsWnw9sgrMJGGqUb9KxYwPPy
-	NoCNke/t+j4dJ/JMfWc6k/WA8qrD7eAarazOmk1NFQUXm+HAJ2kX6JOeoWolDK4q9bMs=
-X-Received: by 2002:a05:600c:4ecd:b0:458:a850:f857 with SMTP id 5b1f17b1804b1-459e711e5f5mr22019305e9.31.1754475096617;
-        Wed, 06 Aug 2025 03:11:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IECB8a+B/TWDtQecrYAbY89V39jfBkap9mCeJXvk++JnuEAN8c3eY64Hf3618Dec9c0Z5BLKw==
-X-Received: by 2002:a05:600c:4ecd:b0:458:a850:f857 with SMTP id 5b1f17b1804b1-459e711e5f5mr22018795e9.31.1754475096051;
-        Wed, 06 Aug 2025 03:11:36 -0700 (PDT)
+        bh=nKNoeRnJQHE9xlWRNjmXu0K+b82kSOJOZJ1O9/cC1ug=;
+        b=io5op9r6w4d7SgpACEekmoTRWwZbfrD/VPoAb7YSswYK+utSH2q6Ho/Vjaaq/rJ2Or
+         CZUe7wFXV0kAVyH0U5VNZDi1X+MGn6XxORoBW7aySqNbTmw1FVypsUTRm9C8vLbuHBqi
+         fW8Sqpn/Nb5kvGRTK7CClmMUgewej3FdOOt9zpQNJ3T5NIwRCXwE1JTzPqlygBF3Ao5+
+         SslOeU8wk3tmf09xCY1rPylTVYkn1xSOri3MC8SoE1mMshlb+hq//ZVJHXG8zKqFutsD
+         +jCMOTPlljveObEMrUg4mwsi5OsLKoARCM3Z3PlXcRtIvFtqqGkujuWEkQA0TQNuaQiq
+         kDKg==
+X-Forwarded-Encrypted: i=1; AJvYcCWJmPaU9BnR+AvwC5N7mw1nU7+kfVBGrvgiHbm1vfABykF15ayk5qjOCWzeexGQ1OxvVYcbH5Q6yA==@kvack.org
+X-Gm-Message-State: AOJu0YzGyrtGmPCMyBF+BZKER55sK7L0ZR7wOnzHDIgBkuq/+rfld2jE
+	HB9HXZSfLqdFGUVYCrMV0H8bDFCme6tcIZaCYQ2tnebtl3ZwPK8EgDJ4c/mMmRGQL3lDm8TpLL4
+	SHekG2uIfpnSLhVg54MMFeSfsyCqUyso7V8hdfTZWhEiFxsPhz+Q0
+X-Gm-Gg: ASbGncvS+7o7CHW+HPoc8Yo14TkLaY4LunzDntH+FvVK2Vp3q8SIMP1/aW8aFzi1F3T
+	G1CueKfkfBT+meuA2k0I0BEtejGJjr65OJsYZCkuWSehDEDubj+D1mJXFMl/xm6RC8zf45Tt91B
+	3RlW+/WyHM22534Bcgx2g7jMdXZLuEAmFZ6wqfVoC+ttIl/CfYhu2f/M6O7X102lnL4Dn+x8693
+	Y+/08/juP2e5vNhFNcUJx7UiG2fVLcrcHN7Li7jaG5MZRWiAm54NYbxndl4I9nxNsfvq4E5uTU5
+	2cOQP+6bcZCDNxzbH5lWkY7PSPYsp2zuuWlUPLw83Oo9MJ+OWVHcK0xwmGeL+ptvjXQxQKs78XD
+	u6NeOe7gK9BSK/9ZYVS/wmvXE/IetnG66mdI2JRR23CNts1wQbdjz0P41DjiKPlqHw74=
+X-Received: by 2002:a5d:5d0c:0:b0:3b5:e2ca:1c2 with SMTP id ffacd0b85a97d-3b8f41595c0mr1938053f8f.2.1754475169348;
+        Wed, 06 Aug 2025 03:12:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGMTciqXottdcIXxB+Q4n4Az73fuhye2kzUIBiQJuGVEgLhsIdk2Fj8My1CS4lJuGy9WxthHg==
+X-Received: by 2002:a5d:5d0c:0:b0:3b5:e2ca:1c2 with SMTP id ffacd0b85a97d-3b8f41595c0mr1938017f8f.2.1754475168846;
+        Wed, 06 Aug 2025 03:12:48 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f35:8a00:42f7:2657:34cc:a51f? (p200300d82f358a0042f7265734cca51f.dip0.t-ipconnect.de. [2003:d8:2f35:8a00:42f7:2657:34cc:a51f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c4a2187sm23345507f8f.70.2025.08.06.03.11.34
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-459e5d0b1afsm38474915e9.26.2025.08.06.03.12.46
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Aug 2025 03:11:35 -0700 (PDT)
-Message-ID: <e3d13396-8408-49c0-9ec9-1b02790959aa@redhat.com>
-Date: Wed, 6 Aug 2025 12:11:33 +0200
+        Wed, 06 Aug 2025 03:12:48 -0700 (PDT)
+Message-ID: <e7a52474-784f-4c7b-b4b5-d8dba30ddd75@redhat.com>
+Date: Wed, 6 Aug 2025 12:12:46 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v5 6/7] mm: Optimize mprotect() by PTE batching
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Dev Jain <dev.jain@arm.com>
+To: Dev Jain <dev.jain@arm.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Cc: akpm@linux-foundation.org, ryan.roberts@arm.com, willy@infradead.org,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, catalin.marinas@arm.com,
  will@kernel.org, Liam.Howlett@oracle.com, vbabka@suse.cz, jannh@google.com,
@@ -118,6 +118,7 @@ References: <20250718090244.21092-1-dev.jain@arm.com>
  <54ee1971-d91a-4fe6-90b8-16212c8568d1@redhat.com>
  <0d52d680-f3d3-454f-8c12-602f650469ab@arm.com>
  <9cbe9c6a-0013-4239-9347-bf5d43021fe3@lucifer.local>
+ <1b3d4799-2a57-4f16-973b-82fc7b438862@arm.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -164,21 +165,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  WBe5lqcozu9LpNDH/brVSzHCSb7vjNGvvSVESDuoiHK8gNlf0v+epy5WYd7CGAgODPvDShGN
  g3eXuA==
 Organization: Red Hat
-In-Reply-To: <9cbe9c6a-0013-4239-9347-bf5d43021fe3@lucifer.local>
+In-Reply-To: <1b3d4799-2a57-4f16-973b-82fc7b438862@arm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: GlParkKH4h2ZtvFWnJEZQNT8wr07et9dSBRfm7gMPMo_1754475097
+X-Mimecast-MFC-PROC-ID: vS3qV8yED839NFRqt3sZmcS9zEyMqZN-SNNIbgzaPCg_1754475169
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C9EDF20009
-X-Stat-Signature: 3r95wg1m6tbysd5xqroxi16r7xkzyan6
+X-Stat-Signature: kpyp8p6wspemr9sz518hj83ns9mhr7su
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9AB86C0008
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1754475099-66540
-X-HE-Meta: U2FsdGVkX19W3NC3zhE5I2OO7jT7QbzirUYPPI24KHhep2Tje6keZ0WyyroOZTg1ilm6b+tLSjzDxYLD7XbctmofdkHYYRrs1YVM2DlW2HK4WDrKTa+6JaTgctga08LIQEkNuiHbOqHpEuzDoi9GMf67CO3pBSbu9fFyn8kp/NzvawbjNs6FBUswA6pED47Y4lHOflzjTrXC5rcI8GlQ23PNpPGo1cRixNZnB7gvHPC72dqJagxHdbeAlUFeO2MaKjMrM5koiBYg+e9oQrHShnRfm6WcFarpRNGfTYhk7Js4IH4OKBM1U/gTlAKRNHXJM9uh7mzbSf37G/6QoI+FWOzUqUTa7V29+A/uLbEqbyWrp7urz8zQNNOCY2weE5CJbpXfkNxZygF0ppula8qMmRuHmvLK9JRo72Pg0GIeSFY9520nFfglt7zSaOTPZPHUcFGr3ak2wdbvhEbmxOvlkmd5wvhfwHXmFQ+lsES7DjOLB21h2DO39Qvdgq2F1na2vl2CFH1ItX6AVQE1JpdQ6wTfxNs6UNUzVKfAjlHom0RKV6ERRC5+p3cbxSKyQ8RRHtUDIM7oPqhgkBXmYjpdhVWU7iOMDaW4AnZxnoO7O7OFqne11XM34QMAItD3MlSnr0vxnSL4BC75XZFuvlBiBt0wzzjzGNFclrz1c+VZ+tHrzXJ47BkuajQIQt2k55TznWFZfkvbq7MrabBH4yv5MU51ttdOj0pJWVwD2jcztbmrqF2JI+xSj6J1X7f4HHwgsKwERJMFwDp5e7AbaNOROZzzxJVeQX1Fk5s2jhmAAW1McOEipuTQnHh5FR7iMii+9qxOdBgyd8pjmSDQkVThOMqxSfzcgO/2APd2MH9A/ufrI9gLMMHOnfXfMvxT79hp/HvXcTXmcISmetHn4z/Tvo9Pf6UvY+XwLfpIxZ/07QhqqIY4xQo5noQELk8Co1NZeZViipUlHiIFQ9sqXI1
- D/PO8HUy
- dI6/fSu7/jLZr2FsB4TH9UIZyV6MsJGBRvp6FMmobLvHQIowk2l0JV7Gs+eHPzt6AHlOe2SJ+S1SROwFDdsbZ0huZxNolfxFpNt8F9alV0MAkdmk9UC2xhj71CHeQeXHpxtMvtWk8qt68NjinNWEpme70juI70Fr1n5LSpkRHCPvjOrUH6jlURjCTHa5JbpP5O5TrrqYelvwOYoxhlNm+t8DS0qv8er49cfU9dGfxmmE/hZfY4HlNDgG1IBccdtZYf5Moe3h6fwDP7+Z3JAPWh8EpUT1MxKY3pK1Mj7MHa6S0uYe5kYhH2lr7P6Dwbw4dNnmMq9fAUYjIIv3GZDZQib6lRL0Y0CKqVqoFTiVj5mCPkYLmbN/N0PRZ6yxDbPvFMIUdfxLUBGx/0JKd+Fwd6oTTX3WA3BIrxg3XCErY7MtW9Anp+TP0acEvoNprk2Bmkx+2wzTQq2svAyOpfflwv1ixGCpKL7//Lm//bJLtJik6TAc=
+X-HE-Tag: 1754475172-920863
+X-HE-Meta: U2FsdGVkX19MPLzo45u0lWVmty3UnX3+2Cek/NJvSlqtMjCEfYXNDiU5yV/kxhpl0PdKhFDEpDxZH+tkiKj7GhMC2D6z1azzZG5CoPtazUFcgdkh21oe3Eu9ZcbKTSfJYIXckHCqw940Xvqp2yLEoPeXpjBR96QEHxadIVF/CWPYWajN1nmzx+65RuaWo3b25DX/JDYYb56xCkjzYjartGo4b5L+zwOA3Cf7UxX6Vf261Kwe28f/ahTHS9vFD+XopRRpb5mqkHseN8b5y3cHQ7yztbkNFRNeiOzHw/lMQkgC/Pnsh9N6SH1Vihd0TR8oKniakZdeC4PEI0rllck1Bt1/AMlZAyABglXKB35mM9zxrlbl29AAvmnFYHVO1izm2un+3EIyoY4hTzBfe832s4dA7oeB+hEmRKTjvTZisW6c7lYEVOTtRUL9xDjMihxpId0BrXpwkpRETg/kuWzQbZg7YLKwnG9zFQ3pMF5CgPI4WI8EQRwixBz01N8aADbm1CezRNQTY1cSzJN4SLcgkVWm0HGINatN0mV2Raq01g07bDTtpL1DEFVsE3e7SK4wvBWGeQoRfokzSOBf3vyAJ3zaoFZXdSYk9hoUufBOvRkrrt2CRU/yiMFQ1yJm3QYfGLo+XK4/xL3K7gt0T32PfXtoGkjWCbgS0KVWNjgWnGRbPJHny0ry7XE85c/BORJvdz9Q75gAOo5VgEF43rC7UAQ4mTvTFYJmJwBImu8xSWwujlYU+C0ZKAQTtPe8HurjIcfjFkmfBZby/cKfYBqFuQ+q51lHYww1ae0YiggE/9sBqdTgCcfNJGJVWMHbDbiQvzOrwL1G2xHVGQOa4X20zspEZgQIzB0HYE5o8ZoFed1zwgEivZKmqWWmJJdSuQfKO8oQjfOnOOPkQdqctybF3La3slcNYI152wFlm/b5zMZP/ITgcwTR7q5oTPkSReQMSHPV3eVKnNkjlTvJGME
+ 0aJuNfuR
+ /TT6Ym6xCaWQYUvxcHShwzvNZakpHnsADJd+etSC4CVcf4+vb1S9rAvueyM7nxWhztnsbgkzXs2J/1hYbYePIQMU9lk/wHeQdCjw/c5i8PocSpWhBdjBbaEr6LUaC646EzlJfpr4Pry/RIYkgZ8jfoYp/D2JZBBb+awFbmBPG1CIErsgfxWyWk0y11CPPA11mOZqK2CKUIWFKg7Yw2dlxB3Lz0GYYErOY6Hd4YEf/PmfFAgllEv3QgQDiGcH1A9AyeOmJm16ilek+WSTxPsu1ZvSkrxPvMFZo+BzK/p4llEhC8rLLa2fuIYjJQantG+y+K0VuT6NJDcGsqMrPJ2ASYeLiulLgtvIL69aelKXjyD9GwWNsFE6gCh/t8LYKnkXTftAuITao28j1MwV8b32LeV+imA04OnU3mJ0WstmK6bxxrCZdVWvuzw5Fj7C/DViIsfcE2hJcoavFWBc+lBMrUg66dxKlPo6wZaPp3RA9ZucjyiE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -187,157 +188,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 06.08.25 11:50, Lorenzo Stoakes wrote:
-> On Wed, Aug 06, 2025 at 03:07:49PM +0530, Dev Jain wrote:
->>>>
->>>> You mean in _this_ PTE of the batch right? As we're invoking these
->>>> on each part
->>>> of the PTE table.
->>>>
->>>> I mean I guess we can simply do:
->>>>
->>>>      struct page *first_page = pte_page(ptent);
->>>>
->>>> Right?
+On 06.08.25 12:04, Dev Jain wrote:
+> 
+> On 06/08/25 3:20 pm, Lorenzo Stoakes wrote:
+>> On Wed, Aug 06, 2025 at 03:07:49PM +0530, Dev Jain wrote:
+>>>>> You mean in _this_ PTE of the batch right? As we're invoking these
+>>>>> on each part
+>>>>> of the PTE table.
+>>>>>
+>>>>> I mean I guess we can simply do:
+>>>>>
+>>>>>      struct page *first_page = pte_page(ptent);
+>>>>>
+>>>>> Right?
+>>>> Yes, but we should forward the result from vm_normal_page(), which does
+>>>> exactly that for you, and increment the page accordingly as required,
+>>>> just like with the pte we are processing.
+>>> Makes sense, so I guess I will have to change the signature of
+>>> prot_numa_skip()
 >>>
->>> Yes, but we should forward the result from vm_normal_page(), which does
->>> exactly that for you, and increment the page accordingly as required,
->>> just like with the pte we are processing.
+>>> to pass a double ptr to a page instead of folio and derive the folio in the
+>>> caller,
+>>>
+>>> and pass down both the folio and the page to
+>>> set_write_prot_commit_flush_ptes.
+>> I already don't love how we psas the folio back from there for very dubious
+>> benefit. I really hate the idea of having a struct **page parameter...
 >>
->> Makes sense, so I guess I will have to change the signature of
->> prot_numa_skip()
+>> I wonder if we should just have a quick fixup for hotfix, and refine this more
+>> later?
 >>
->> to pass a double ptr to a page instead of folio and derive the folio in the
->> caller,
->>
->> and pass down both the folio and the page to
->> set_write_prot_commit_flush_ptes.
+>> I foresee some debate otherwise...
 > 
-> I already don't love how we psas the folio back from there for very dubious
-> benefit. I really hate the idea of having a struct **page parameter...
+> Yup I would personally prefer that. Although if you would like to see the churn, here
+> it is (based on mm-hotfixes-unstable, untested):
 > 
-> I wonder if we should just have a quick fixup for hotfix, and refine this more
-> later?
+> ---
+> mm/mprotect.c | 27 ++++++++++++++++-----------
+> 1 file changed, 16 insertions(+), 11 deletions(-)
+> diff --git a/mm/mprotect.c b/mm/mprotect.c
+> index 78bded7acf79..0735870e89ab 100644
+> --- a/mm/mprotect.c
+> +++ b/mm/mprotect.c
+> @@ -120,9 +120,10 @@ static int mprotect_folio_pte_batch(struct folio 
+> *folio, pte_t *ptep,
+> static bool prot_numa_skip(struct vm_area_struct *vma, unsigned long addr,
+> pte_t oldpte, pte_t *pte, int target_node,
+> - struct folio **foliop)
+> + struct page **pagep)
+> {
+> struct folio *folio = NULL;
+> + struct page *page = NULL;
+> bool ret = true;
+> bool toptier;
+> int nid;
+> @@ -131,7 +132,9 @@ static bool prot_numa_skip(struct vm_area_struct 
+> *vma, unsigned long addr,
+> if (pte_protnone(oldpte))
+> goto skip;
+> - folio = vm_normal_folio(vma, addr, oldpte);
+> + page = vm_normal_page(vma, addr, oldpte);
+> + if (page)
+> + folio = page_folio(page);
 
-This is not an issue in any released kernel, so we can do this properly.
-
-We should just remove that nested vm_normal_folio().
-
-Untested, but should give an idea what we can do.
-
-
-diff --git a/mm/mprotect.c b/mm/mprotect.c
-index 78bded7acf795..4e0a22f7db495 100644
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -120,7 +120,7 @@ static int mprotect_folio_pte_batch(struct folio *folio, pte_t *ptep,
-  
-  static bool prot_numa_skip(struct vm_area_struct *vma, unsigned long addr,
-  			   pte_t oldpte, pte_t *pte, int target_node,
--			   struct folio **foliop)
-+			   struct folio *folio)
-  {
-  	struct folio *folio = NULL;
-  	bool ret = true;
-@@ -131,7 +131,6 @@ static bool prot_numa_skip(struct vm_area_struct *vma, unsigned long addr,
-  	if (pte_protnone(oldpte))
-  		goto skip;
-  
--	folio = vm_normal_folio(vma, addr, oldpte);
-  	if (!folio)
-  		goto skip;
-  
-@@ -172,8 +171,6 @@ static bool prot_numa_skip(struct vm_area_struct *vma, unsigned long addr,
-  	if (folio_use_access_time(folio))
-  		folio_xchg_access_time(folio, jiffies_to_msecs(jiffies));
-  
--skip:
--	*foliop = folio;
-  	return ret;
-  }
-  
-@@ -231,10 +228,9 @@ static int page_anon_exclusive_sub_batch(int start_idx, int max_len,
-   * retrieve sub-batches.
-   */
-  static void commit_anon_folio_batch(struct vm_area_struct *vma,
--		struct folio *folio, unsigned long addr, pte_t *ptep,
-+		struct folio *folio, struct page *first_page, unsigned long addr, pte_t *ptep,
-  		pte_t oldpte, pte_t ptent, int nr_ptes, struct mmu_gather *tlb)
-  {
--	struct page *first_page = folio_page(folio, 0);
-  	bool expected_anon_exclusive;
-  	int sub_batch_idx = 0;
-  	int len;
-@@ -243,7 +239,7 @@ static void commit_anon_folio_batch(struct vm_area_struct *vma,
-  		expected_anon_exclusive = PageAnonExclusive(first_page + sub_batch_idx);
-  		len = page_anon_exclusive_sub_batch(sub_batch_idx, nr_ptes,
-  					first_page, expected_anon_exclusive);
--		prot_commit_flush_ptes(vma, addr, ptep, oldpte, ptent, len,
-+		prot_commit_flush_ptes(vma, addr, ptep, page, oldpte, ptent, len,
-  				       sub_batch_idx, expected_anon_exclusive, tlb);
-  		sub_batch_idx += len;
-  		nr_ptes -= len;
-@@ -251,7 +247,7 @@ static void commit_anon_folio_batch(struct vm_area_struct *vma,
-  }
-  
-  static void set_write_prot_commit_flush_ptes(struct vm_area_struct *vma,
--		struct folio *folio, unsigned long addr, pte_t *ptep,
-+		struct folio *folio, struct page *page, unsigned long addr, pte_t *ptep,
-  		pte_t oldpte, pte_t ptent, int nr_ptes, struct mmu_gather *tlb)
-  {
-  	bool set_write;
-@@ -270,7 +266,7 @@ static void set_write_prot_commit_flush_ptes(struct vm_area_struct *vma,
-  				       /* idx = */ 0, set_write, tlb);
-  		return;
-  	}
--	commit_anon_folio_batch(vma, folio, addr, ptep, oldpte, ptent, nr_ptes, tlb);
-+	commit_anon_folio_batch(vma, folio, page, addr, ptep, oldpte, ptent, nr_ptes, tlb);
-  }
-  
-  static long change_pte_range(struct mmu_gather *tlb,
-@@ -305,15 +301,20 @@ static long change_pte_range(struct mmu_gather *tlb,
-  			const fpb_t flags = FPB_RESPECT_SOFT_DIRTY | FPB_RESPECT_WRITE;
-  			int max_nr_ptes = (end - addr) >> PAGE_SHIFT;
-  			struct folio *folio = NULL;
-+			struct page *page;
-  			pte_t ptent;
-  
-+			page = vm_normal_folio(vma, addr, oldpte);
-+			if (page)
-+				folio = page_folio(page);
-+
-  			/*
-  			 * Avoid trapping faults against the zero or KSM
-  			 * pages. See similar comment in change_huge_pmd.
-  			 */
-  			if (prot_numa) {
-  				int ret = prot_numa_skip(vma, addr, oldpte, pte,
--							 target_node, &folio);
-+							 target_node, folio);
-  				if (ret) {
-  
-  					/* determine batch to skip */
-@@ -323,9 +324,6 @@ static long change_pte_range(struct mmu_gather *tlb,
-  				}
-  			}
-  
--			if (!folio)
--				folio = vm_normal_folio(vma, addr, oldpte);
--
-  			nr_ptes = mprotect_folio_pte_batch(folio, pte, oldpte, max_nr_ptes, flags);
-  
-  			oldpte = modify_prot_start_ptes(vma, addr, pte, nr_ptes);
-@@ -351,7 +349,7 @@ static long change_pte_range(struct mmu_gather *tlb,
-  			 */
-  			if ((cp_flags & MM_CP_TRY_CHANGE_WRITABLE) &&
-  			     !pte_write(ptent))
--				set_write_prot_commit_flush_ptes(vma, folio,
-+				set_write_prot_commit_flush_ptes(vma, folio, page,
-  				addr, pte, oldpte, ptent, nr_ptes, tlb);
-  			else
-  				prot_commit_flush_ptes(vma, addr, pte, oldpte, ptent,
--- 
-2.50.1
+See the draft I just send, where we move that vm_normal_page() into the 
+caller.
 
 
 -- 
