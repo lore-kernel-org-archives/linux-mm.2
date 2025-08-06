@@ -2,111 +2,199 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C0096C87FCB
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 18:24:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D9AD1C87FD3
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 18:26:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 64E008E0008; Wed,  6 Aug 2025 14:24:50 -0400 (EDT)
+	id 7D8A78E000B; Wed,  6 Aug 2025 14:26:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 625EC8E0002; Wed,  6 Aug 2025 14:24:50 -0400 (EDT)
+	id 7B00A8E0002; Wed,  6 Aug 2025 14:26:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 515128E0008; Wed,  6 Aug 2025 14:24:50 -0400 (EDT)
+	id 677F08E000B; Wed,  6 Aug 2025 14:26:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 41ED48E0002
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 14:24:50 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F2B98136294
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 18:24:49 +0000 (UTC)
-X-FDA: 83747158698.05.F906342
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 17AE2160010
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 18:24:47 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OfZaAz96;
-	spf=pass (imf08.hostedemail.com: domain of snovitoll@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=snovitoll@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754504688; a=rsa-sha256;
-	cv=none;
-	b=lAfM+DpUm5qZ1uLdiZoecpTsvG0mZu5J7dS9/0VTDv+yM46yVR02uA0mtpeUJdv9ISnh95
-	81DXbEg74sT/WF+JYBXEBFyTpVhW8wH5vUe90Dpsjks4RtiroJ6LMhP3gJFTOee3eQ7m9S
-	4Oh2mOFv8zskYpITRn205sJOsGcjsNk=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OfZaAz96;
-	spf=pass (imf08.hostedemail.com: domain of snovitoll@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=snovitoll@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754504688;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 530E88E0002
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 14:26:39 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0BA49140637
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 18:26:39 +0000 (UTC)
+X-FDA: 83747163318.22.E8DE9DD
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2061.outbound.protection.outlook.com [40.107.244.61])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 4A67C180006
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 18:26:36 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=l3tRof7+;
+	spf=pass (imf24.hostedemail.com: domain of jgg@nvidia.com designates 40.107.244.61 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754504796;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jzfnt4fl4r2JAvr3EQAhX7jF93WfuTFzsNkMkN0wipE=;
-	b=DKS+526rX7mp/olGAhXy9ObAbvxHkaXKJWay6hWoCe3waqHa0ju9yKwcE38kt6H67Gq7TV
-	DGgn/MAn7P347Y2ZgLP6Wya5t5QEpQpu/CgCaFJtHr+gpA4ngdC1KehHyNg+/W5yz2orbq
-	ZGLLr/hv4Lnk/hHRC/kTqjNBpJYAzCU=
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-55b975b459aso168857e87.3
-        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 11:24:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754504686; x=1755109486; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Jzfnt4fl4r2JAvr3EQAhX7jF93WfuTFzsNkMkN0wipE=;
-        b=OfZaAz96+aGhAuNAwAWgu+P/DEPUm32/yH5iNOtysyNfE7gO4WVVlBfbWTMcSg2JJy
-         XiDhNc6e8GPUYyLS/PcNdFwMpNl11wRwhUVoOsJrAroxdY+UOZc02zw/ZxrgokBF8dkp
-         tGRb+XN+SZADnrFBVJDK4XbaE9g1H3e6fNER9tDT7Wk6ijhVc6ww3+JoNJYKP+7TlBaG
-         wg3LT9p3bKoQN4ZWx6UIwywhVCzD/QMeUsIfWkYgibHdfon6VHfbz8h/AnT9rNbLcV/v
-         txIJZ54AqQlkLqrYMtxoHPE3mGyerYn15TyH9epblfXX1WYip1htoa6eh65MqU0s58uy
-         XEpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754504686; x=1755109486;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Jzfnt4fl4r2JAvr3EQAhX7jF93WfuTFzsNkMkN0wipE=;
-        b=RdCXZIyQTj5+U3Y6gYB2wQwDuarFuuCx9rzslvmwGygSZNCGnPPgkJfanxNYkaf7hs
-         yYDX1ukuWV1Zy5Rx7gJpAVtFGLflCEc3nupcvghfIXgNXMoU7tp87+inKZQItPIfG4M8
-         vucwQVSPOsfxMFhw6Yy5ON9mZCBIvgMrvWXLteuQRIuLjSwC2woaqDZTJktXJHEhsSPs
-         NGKVpDukBvlncZSDfjoPkx9jQU+lFTjn8H1EkQB50WKX4FnJwZ1b6/yw2qyem1eBVtnM
-         0QdZw3TLLjxQBwaVV77Cegr7fmO+tnzghF9Bal3f7MOOP0ilQU7O+dsx0fIZaO1jIOPm
-         bqeA==
-X-Gm-Message-State: AOJu0YzxJ2rw6IL+PZ5YcG6aaOTGLs2kTac2Rl62/1vOH/qyPObnQIpi
-	PyV/SlcHUDZJHet9JDyLJR8uwggywcJ1FxUQZNz+BDSOseDwnIkVjgBrg53ZExZubhwTCXy5cFw
-	y49Hxcxs6zmdN2Y/ke+PV+25+4lr44/4=
-X-Gm-Gg: ASbGncuZHAbIxUDVxEP2nhB+kr+ICNqwK4qqlKbPxsJPhRHs0SxV9QvhWe+l60w5eWT
-	35F0uKTuUTN3A6liZFGERKUUOOZtHNK81sqEtt7s3jtwifrL7PySWjZZlS24i8bYIE1jFqKuXTn
-	WgBQd+TWNGmZdIh3nVmQvtpViSyqi4kjnxV+0fQe4CP4ooYGsmwMt2LOmLvVGDepzN33U6UsDp3
-	90sGS8=
-X-Google-Smtp-Source: AGHT+IF0PXQZi9vqVnGtQAW+0IZx7w81vI5Y5ZNTHdf+iKVApDbJ4sFRSLR1PHAs1LlJtYMmoHssgB5z97iQcbR/02I=
-X-Received: by 2002:a05:6512:224d:b0:55b:7cb7:f57c with SMTP id
- 2adb3069b0e04-55cb69c0452mr37793e87.57.1754504685766; Wed, 06 Aug 2025
- 11:24:45 -0700 (PDT)
+	bh=pKJXQxXxfUIo4tLv3CJl6XJN+6GoOozWS8CT0poTaRA=;
+	b=mwPh8jifySLUopZzKEM9TZk8cQlRIve/BbE/N6G1VbdF0OilJpmOZropzu2rUgHSBP6ob0
+	qdRxCNRXBtJAwJR7ZMnP7Zw+7Hw/jTCKYskf/w4Vqwf5HTxC6YazeKI4hIcoVJkCrQ2CJn
+	+RlEXsqmfefcJU3O3XVya2JrksQyO2o=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754504796; a=rsa-sha256;
+	cv=pass;
+	b=x9X2t/Dv0H/Zd23wDACAQAtfQg6JD9PyoeL6/8K/vWG42G0SYVOfp8MoTKXMkhQjrhXh9f
+	tg3oDPVGBAA0V/GLEYzqgNb9852l2liWSeQyHgB9Wuvf4dT+jRlRaTIGMb0a8G5onrXej0
+	Sw53PrPbQYJN4h+a5Lyx3E7kYr+5Pzg=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=l3tRof7+;
+	spf=pass (imf24.hostedemail.com: domain of jgg@nvidia.com designates 40.107.244.61 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=T3oX4xKZrDwVMMnEgEiD8rNlrQo70s1Wnjel/mq8ahJBGHInkP2D2zAj401xXMBM9gTx3zrm4+MFSPALjx4xydi6NDqsElJJZ4hsfq4HJAGExDixeglhtFSmdPv6ppokj2Yj7/4NHvG+0QYs0pBx8jYs+otNzi0RaLmHXSh6ckgMN03hZSldHILwWL2ScGsbejCU20CB2pRelYWerEJfnx+aX3He0qBThOVi/OhmIrgRWfQt1Wh7OqXPCLVuajCd8kBOqYx9pH9/dGtnPeWU2p7+QS4VV30o0td4n4tmNpQn24RzQadcg18HdchJtkjrg+XLUscWfyHwfkckhc0tWA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pKJXQxXxfUIo4tLv3CJl6XJN+6GoOozWS8CT0poTaRA=;
+ b=kiakdUudtbZi8emOq//VMD+aVo2GbqN7rv7GNnYKhQuloGMtgJNifUOyImW+84NupjZ1s1ZExbhmttSOZIz3prHNixdOYoTVNi/qN8rHYMdyRPFRg5LIpFnlZ/RXVcjW37F0xpg7qC3hhAZ4aFjOteU/dY31t19Pq/qVkgHlqimNC6aOvAaTldshJFrU/olOebipxFGAg0TWD8UYJw4Rh+Z82k922ZEyQJj4bSMTIZmn81Poek2xicFKuoqcRZ8efXfbxm+SGXyw3DXqrvWsusgqOcpEfySmpK2uUwvxmJhamDYAwBMyrntHiWB8CPdwvMLB+3n03jeGtcQ74R4nvw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pKJXQxXxfUIo4tLv3CJl6XJN+6GoOozWS8CT0poTaRA=;
+ b=l3tRof7+xxY2WZnQbqMnrPTyFo6bB2KhEebXASoWrJBaexBnyWn3Jid447R3/Sf4912m+R3EkjJq+hclLwVQ7buSDqOCwer2ijaLyWuTgpT1XtrrY+vcKJFv5xCdkEnVL2HLnznXPAL5zAt9eajBamj8Xv4jwkmLtjYCHqA+ddZJqa/lE/LBGs82Ob3kSVbYPTRNuafpsYA1cJBASQbNQwtWsN9z7PtVxCfRAyfBZfc/O7+OrRoUvdrXSzSSQRC++csKm9CCNmYRvegGyF7kMIyiWxLw8R4FLrFy2B6vbqPx4jRkTvYF71TGpGrGe3ZsFhA44GVs8WkPVOBjhkvcLA==
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by SJ0PR12MB6782.namprd12.prod.outlook.com (2603:10b6:a03:44d::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.21; Wed, 6 Aug
+ 2025 18:26:32 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.9009.013; Wed, 6 Aug 2025
+ 18:26:32 +0000
+Date: Wed, 6 Aug 2025 15:26:30 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
+	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
+	kasan-dev@googlegroups.com, Keith Busch <kbusch@kernel.org>,
+	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-trace-kernel@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
+	xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v1 03/16] dma-debug: refactor to use physical addresses
+ for page mapping
+Message-ID: <20250806182630.GC184255@nvidia.com>
+References: <cover.1754292567.git.leon@kernel.org>
+ <9ba84c387ce67389cd80f374408eebb58326c448.1754292567.git.leon@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9ba84c387ce67389cd80f374408eebb58326c448.1754292567.git.leon@kernel.org>
+X-ClientProxiedBy: YT4PR01CA0394.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:108::23) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 MIME-Version: 1.0
-References: <20250805062333.121553-1-bhe@redhat.com> <20250805062333.121553-5-bhe@redhat.com>
-In-Reply-To: <20250805062333.121553-5-bhe@redhat.com>
-From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Date: Wed, 6 Aug 2025 23:24:28 +0500
-X-Gm-Features: Ac12FXwvECclFxV4j0m2efvjg_nqG0wG27nQYV0fVI0B5ZHzOZg6GczwOHM9vRs
-Message-ID: <CACzwLxivXFYXuF1OkqcP9THar7UGQ3VVAQgQm=PU9Tohb8hnRQ@mail.gmail.com>
-Subject: Re: [PATCH 4/4] mm/kasan: make kasan=on|off take effect for all three modes
-To: Baoquan He <bhe@redhat.com>
-Cc: linux-mm@kvack.org, ryabinin.a.a@gmail.com, glider@google.com, 
-	andreyknvl@gmail.com, dvyukov@google.com, vincenzo.frascino@arm.com, 
-	akpm@linux-foundation.org, kasan-dev@googlegroups.com, 
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|SJ0PR12MB6782:EE_
+X-MS-Office365-Filtering-Correlation-Id: 632cafff-faa6-4b97-1b4a-08ddd516c47c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?owwpIJ/gX3NA4KCET+gimZq+FN0PuqQRzxipxevMPQb7n0i1WlzUqdFghi1S?=
+ =?us-ascii?Q?19j+fumHYhWIjYAt58XbP5kKw0Ag6bpTz7rqSWX14k0J+w1uxD5SQzffX0oA?=
+ =?us-ascii?Q?88/klCZU/brpMZz4Vo3dKsm+3sV6mHWTq+J1Fj2mmktQqG5y4NIJlQF1PMxj?=
+ =?us-ascii?Q?Q4zAjL53yS0gcNHI/5KV7YERbSqdUPJUN/NaBsj+xfNDtKio8GXergY8uEEi?=
+ =?us-ascii?Q?LEblKeO4/6Bwwml9K5BYoHIYHgdTGMgp10h0zhbZROA03uktm/FXzLapriuO?=
+ =?us-ascii?Q?h8/KRarclJLPK0LnzRQQdchLSIeRhTGdMClq1ot8GQ30HUoFALDK/gYL2fzD?=
+ =?us-ascii?Q?A0GeqOL5tEr+h21tfGfbu1Im0B7hjYPFTtd9AbRbeGdP43+JGj6dSxRdzNgD?=
+ =?us-ascii?Q?Rs5abEENCmVlIWe+2wIU4DSMbJ9cocIyDrIui+iaETu2mR2uAKyu5xQxVHaZ?=
+ =?us-ascii?Q?b34HTnzaGR5E6t0czMbcLiiUn3SxBp1RBFMvdYhYf96mY5m6juW54xR+jw3d?=
+ =?us-ascii?Q?J1vTY0No7me8p4MCd3boUH+H55j1DJr1ynbKGjq0y5YGroUKcxdx/3vd3XPl?=
+ =?us-ascii?Q?oSO+GWhSn+pBsg3tWgxlrEPC/GL7RAmuBQqxMBBrSNIixJUMb078qi6oZT8/?=
+ =?us-ascii?Q?jv6iUD/p9tINXqWW3VePWXw+ilS7kVXlltY9ErXIUNUD3bMTxDW7ytPsmzZN?=
+ =?us-ascii?Q?qR3DmMXglGcVshD2/QHfNrkWxaYWH1r2Hth+ZscjJjixAGNnqvVbr9OTeV1n?=
+ =?us-ascii?Q?tjxQBFAr6QU3Z2wFMd17o7JNmc9H8Vu9Jt3JuKW+wyyBaTegwtsNs8jU6uIP?=
+ =?us-ascii?Q?GpQRfIz0vj6rSmsBXPq091G3jMrNIVKu3tAqGi0otfXtNiR7uyQqQAm2J0M2?=
+ =?us-ascii?Q?tX507FnQ2r1nHy6GhZT0+hy3WwS+8WDJXI2V/Xd3pyAs3wasL7pS7fUFPEJ+?=
+ =?us-ascii?Q?A1cBy3LKeusKiCZVG1GHgP0k2MVqsrnRhdJ3yzjW4lbLFEZ3Iml6FKZi9AiL?=
+ =?us-ascii?Q?ShausgFGQY6fuIJbjRxbcdb7V9Jiu5QdEfZVzvka/u0kXzIsche5PpSMHtMZ?=
+ =?us-ascii?Q?ovKUcupTVZiqr5NX+oe1k546tROh8/2lY9PKafLR2YlLzCNLbPeLCWbmu63r?=
+ =?us-ascii?Q?ebFwAfhAZfCoj0FHsvpowjD9e4aAPVMt42Mjui0CqRb8E+nI3bH1Ra063tef?=
+ =?us-ascii?Q?fYqHKEc5+swy6EanZNW8yQfkS/+U8Jsn77sSaAWvQb83NqQnvbGWk3V202X4?=
+ =?us-ascii?Q?Z/RVwduZChHGBt4zAOLato0o0xULnyiNcwej62TIruVz6j+7iZvAttLuWO88?=
+ =?us-ascii?Q?ZvDokQKXbpNKsSBfd1tuMiEQEuQLkFH0JGV7YTRYVKG8bv2iH1Kubv+ype39?=
+ =?us-ascii?Q?djF3iDL4dv4Yc8vRxDpa9OjtODHldc/4rM0OzlAbAMrP0kXfW9ypYmSStf15?=
+ =?us-ascii?Q?9nk4T6yL2AI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?t39ZrHsSyipF2FxxWvOCrpOiCdTa9RlbbmJcEiSd7/usPKmN1w32/HQ1aYbo?=
+ =?us-ascii?Q?j/5Y5e0l+3NLEdR7e93EiSxB0oqskwO2H7It/NFd3PGm2rCH+ioMm7swn09o?=
+ =?us-ascii?Q?lLJYuIAo+jk/LNlbBhif7rAbXEKXl3rXU3a1TF7ITt6zAA3u/5D7+6w8whkT?=
+ =?us-ascii?Q?CVZbVRXFIFZ7iAkoBRqBNNMVTNGcvq//axasMan5txxNMZctNZKYRTonj5Zn?=
+ =?us-ascii?Q?Kxor43X2FR83/bVhHWzhDVYgC5h4894y7CuYyfzKJ1wh7s//ZDgL2e4j4PhM?=
+ =?us-ascii?Q?cMGJdRCaUXgsocsf9JS1+aL8Zo7DfzJ6J0pqt9Bgt0lb4xEcbAIB4tAkPLpq?=
+ =?us-ascii?Q?zF2mvzStnV4S7ILBLVDNaMmfLFlYkOsTKUmHOmbjnl9lgS+8y72yI25f+zm7?=
+ =?us-ascii?Q?VB6avAtH6rXq2f6IlN8CFOd2ShdIVMae+GcZ9IGH0/XrtRR+4TbFoPo7zri3?=
+ =?us-ascii?Q?Lc9pzRkDJ833W62CQv6mOhQiko4WpHS2ExgKfqMI2gHQdfNKm0n/JKG6irkH?=
+ =?us-ascii?Q?cDwamegxjR+CmPKIr9BNCNyW+6ostD0jXjRQ5haDMaAXG0y1hSHLuI09Okmy?=
+ =?us-ascii?Q?srUa0Bel5tIt9YHwdqIMpqtx4gC2y+GgnFT6DbwvXxlmhcvNNu10QceqbXpb?=
+ =?us-ascii?Q?md2BsLbubZbJYOvTHvqqpfjzYCQV1+O2cC7Zrg3URLW43Db/oWeiQpg0hbB2?=
+ =?us-ascii?Q?zrw1a0qQ4aNYuX24Nb1U0TgBtOvz0txjIxMjpgKc4k4X60ZN2Ekeuy2Dl+/T?=
+ =?us-ascii?Q?XTbc0+goCnOo9b/HxrK03gG5mt+WI4ErGszYXmNhQ1w+baEihkbqc1VZZPsX?=
+ =?us-ascii?Q?yMZIVy350zZir+594B8HugXTTsLyvokgnUaVYhU+jrQRLEIbjVQCnsHLFKkP?=
+ =?us-ascii?Q?F2hBYjGg50K3TpUniBP/5U3j6Au5BRtp6FsqHNvUVqOvUvQQXg/8h1cU2N8D?=
+ =?us-ascii?Q?jCqAIyWJOirRho6xjjYF5ivS1MnJuEBYW/LshV423PWK1/kqIgiW3Vr64amF?=
+ =?us-ascii?Q?+ntWBU8+VodOuYF/C8+uc3mSRjg+yYv9qnvDYyjspvEhb7PqErKztqzAn5xP?=
+ =?us-ascii?Q?f0ay60/QIlHT6KKdynA/akQFVMESmJisswXCL0IVhWKwTKzocWh3Va5yq+ew?=
+ =?us-ascii?Q?7AqeJVg3xG7+L/hCVPqXLh2M/Z+jpqFrqW+NkrzJZTr6lXXrOuCihasacQ3H?=
+ =?us-ascii?Q?Yisd38CjiZTcD5D9yKaSEgaPNHIk9Z12+MPqa6pLiIJMMJuVQ2mR8iK/D2IV?=
+ =?us-ascii?Q?F8ao5THBiVMbReo83xNy7mqfO4OoofdDQ7258uW/2/scAV8mHZu75y8uAY6Y?=
+ =?us-ascii?Q?W/dzqqF9TZ3svBcvHCLDUann8lFvwTu8tb9r+8xE54jp9BppaKQkO4gawrUe?=
+ =?us-ascii?Q?Mf1QCEmFJNxs8vTx2+il3bYtwyrAaCFkICKFjjCIYj22ca1P7/gBXhIb35gs?=
+ =?us-ascii?Q?EH6jU23VieGh3yAXEHv8OJ2rXwfzatF23k+gR+qTlzXeUwHb0eXFNe/2Rpjr?=
+ =?us-ascii?Q?m4zoOR8wSjHBOIwyIfs4ATrvfFrZgGQYOTAONPHxiKLdbDQ3pDQHf2E/hr1m?=
+ =?us-ascii?Q?6Zn0o1VaFz0u1AIxWW8=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 632cafff-faa6-4b97-1b4a-08ddd516c47c
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2025 18:26:32.4888
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GQMRHuo2jl8akCW9nlaZJvuQAC3fHS2K5cV5C0IU02DKbHti6Tp+SLWOuo4/pZrj
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6782
+X-Rspamd-Queue-Id: 4A67C180006
+X-Stat-Signature: qtky1roi7cn6ew88pwfn4yc6t8zupeea
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 17AE2160010
-X-Stat-Signature: w5hraa5adnii37768n5s3ja8d6gezaoq
-X-HE-Tag: 1754504687-948827
-X-HE-Meta: U2FsdGVkX18sSaUO5ZfRzGtMjwL+TxQ/FID42+YNCVGkYOIlyxRB5t4gYzxfednXorytFefKrSer4TFwmFwuXqACBglNUfC+sXPuSK5eKv4FPz+PNHrrkcUStsccxjMYGNv7JBTjzpMH+5ILWgAdrSW7xy6bO7cX3KFXRyvsV81O4ZuzHVXgT4LWM6Yj0ome7VE2Fx7f8oDZx9Ov3qvaRmg0FpCKv39Ea3Ct/fKLQxOOaK8hzUchXLEC1WkkAQxUzsrHRKeek34MEBSKfGRjvijCSzq+7vyPNH9y9KiHl06x0XoVStEdM7sPQZf/1a3zsRlzxA6XU/beQfUDi58j2h9qDJNSCGWzgNL8FlKCEsXxAmxTgg0NWU4HU3MKerWxvkPIoh5uwpkln30mN7zU2OtuJk1qVBomNKhF1TMQ8CCTgAzNge9OSxNxaZIk2SZp0Df5GyEmVvFJnuye6Y9XxQq4t6RA8w9BaVjBALcIKO0O74O/xAXGz8m4QKyPquz8HBfG7tg2wSTwusNqawUeuzcu1TzYqw8fAeJ+3bFvrUEZZLiRtEohxNCahyDXOliTkPjXomDZkRNpnat9VNBPMWGVj3BX3goVDAn1VLRAYSYyDw7CD1+YnYQCDtahNieMlfNigYuJthsSlTBRwrfwxGia2GRs/UdlihjyPCISQhJw+pu/hmNbtB+74awyQob8/9H7OeuS8qmJ2+1kMDZXtpzfxLj1LLOgBlTd6VIiwB+KqTgrAhKdI4DU0YsKNMlQvz/uNNrGNQVR95rp87BUjGZiXYgxtUFfKzczMHCPgYEE22ThbaFyj5gE7U3SiDWeSTU/tFvVXzwUdtYY/+qpDpHfXnBmyZBab49pDps8Du9MY/ircRsgaUL9znCnPEYt0tLCUFIkUpDHWpZm8PnhtU68NnFkaFsa4343bJkh7pKik5/jXNO05fJLqKTc9hEyhyWAztsYY5k1vlXptX4
- /BMwqDOS
- pAtcehMrwzn0HnsUuVNATvx2YETM2QyCHjPJ9RJ7pp6SUWhwSmzMXJJWl6kzDTrMUW17AkpKj3lZghpzdMVE3Is/W1ZO3BtCIPOBVI86PfMfdpUzcFWDPeZHmM3DI3J5IUbyBa0M1kzH60ROzfoiV/q5a1p+XwFMnbEGrb8ARNaHqBGQpFrFD4LJGWwu8KUxcrmbm+fM0mAErYTN6xer92obwqxX8AK8VBP1rR49/kMfAzeWOBpRTt9E1NGUL39Xg7Oy04tcVPHGdeOFNDO3gz04tbW6BkkVtKpXxXy6VJNLoAwNtzNZjKDnEL4bdbPttS/nXdiVi6FsFPTHObdxl1iGirC9Sy5Ijwb8Nn3AhWWCvSF2wx5nkEh1tnNzrnce0vra/cylHzENuxOH4zP1H9x74Xo9HNvUSdL/x3+Iink/o6of5uLQd5QBnuBkHzPWKLgFC7KoceICCAYuF5w53r5M0yY+0GcHEirAHGByKtjg7Fg+/YYbuxcTAWA82PnrFEjqas9s2N9NVuDzgXlSlM0rK1Q==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1754504796-105973
+X-HE-Meta: U2FsdGVkX1/m0pvO57ilrZDxhsUeseUDfqOcYjvavMkYRJkLQDxzilCxVncP6MbG3RN2boArJifxtMDmoyWLroi5kYfubwSEYINJqn+5ATn1+TrE27xmdynia2VjIWCCwALkZKhUbgwqUK1BrKGOaAJwG1dxh8UHy/qG1rCQKTfTupGt3s7HABYVKCk2HzhrM+iMGf7Hk4ix7Tm7L1HE1iqHGq4XzB7q9sUz44ns/2DPihwoL4RDpI060F1ehfxbm52Dk/M8Vok6yTvrz+4vY0U9vxmYcIzdyH/sCWodDsSQXduRyOSE/L/9pYcyHccfMSNEbp62xk2z6ICnaTlcN5onplEKNmNa7XgwOF5mGcGUSQi02kWo2HGEV9BJC+EF9q/E4qehM0EQRIAhO7atmki3SyqE1qHliWRqbruCcQv0pzUfZcdyo8GbwsW5hSnCkujHh0Dlo4ZSxfSaI4q2MnUUX9bFdkASGwyPMXzUOnwr8TIvfiMr9EmpMwH7QFmGZusog98pADsxX1ZGzQIVyDhshiy5vz1FcUClbw+ynwjEOyQPbS0DW5yWefDipquRa+tjkW/2csbU2rh6MmRppA04iA6IOkcsBIewxQvFLLePRmU0+b+6cTTaooVVohQsArxBjhki4n2Oyz9mznG5lbCyMHV48WFkxrYDeYRjFaXFcLNX4v82oWJQNhyl8Dum7Nro+DrA6EbhXelLo7qIQHdAUMdpBwyhQYFpoJKaWQeuh8BcOjy2rf0LWMGPYgIpWXOGB5Ot4uKgy7FhUUfl7LPp/o5tFaI0IZ7cbu3C2VB/sUtsXayqjzzReF9+T2K2YTLRVeMYP+kMizybejrJclNF4/vHUqPq+DuRPaCrSXRwrkUbBRQxdHxRwrHpRn+pUjsHcRrUg/oX6gnenspaxQIaAmySQNoyk1uF66V/Jd1dgvvp4MNV2bTEjysNRHmtQ007KaQlrjMr64OB7HA
+ XUKAfqFb
+ mA9tP8GjnrE6l5JfN5bAANULrk+wC3LbkuyI4eqI2ZV3RLTMJfbzpnAv4ut+mf4l8aLPkGsEk3vE+pB10tf7vc9F1F5ydSDPVOe0bdwyaw6SBO2WGlbJA65c8TySyu4DHdweVffygY50nmLMqgUlVbedKhEtyVESIyG9QlTlBJ3FacND19HALtx4rm/mjqwsjbrrMhpP+l+MTP60mhUPzDRkIV4k9pkr4FNREhtFODd+el08fHRoNTJOmvRl+Mi8y3a6/OxEs9i9BDomMCfSNGYLcw08++32GSw81gdVnaE8aIKvM5cwMwoeEQaxSS+6+T24L39z6D01qKsBnK8NllT4RWD+b7Eo86hqHzm0sRs0q8Fq3XbUF8Up9zDiMjCXokkkjIKzS9b9UYn1ibq8LstagW7EiRz68woA7c2+cW8x84NSMzHVQwUwHmnrTAt5rGfRvvbodfKAetwu4jKkhW/WyRn4C4xEnbUvw4HvefrMizkS2YIgCw/8VSEhpZduTzuwzBZZyKAm8ThVKYEUA3oWLT1vOSXnqZeoS7Fs8gH0mvF+U31KBgCopRUsNskFb1etg7GFUfq3uu09nL9Ozvif3RDp3N+t7QBhb
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,74 +203,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 5, 2025 at 11:34=E2=80=AFAM Baoquan He <bhe@redhat.com> wrote:
->
-> Now everything is ready, set kasan=3Doff can disable kasan for all
-> three modes.
->
-
-Hello,
-
-I've been working on this already and a different approach
-with the Kconfig ARCH_DEFER_KASAN has been proposed.
-
-Please see v4 thread.
-https://lore.kernel.org/all/20250805142622.560992-1-snovitoll@gmail.com/
-
-It also covers the printing in a single KASAN codebase, instead of
-printing "KASAN intiilaized" in arch/* code.
-Also covers the enabling KASAN via kasan_enable() for all 3 modes.
-
-It's up to KASAN maintainers to choose either version.
-I just need the confirmation now if I should proceed with v5,
-or your version if it covers all arch and cases should be picked up.
-
-Thanks
-
-> Signed-off-by: Baoquan He <bhe@redhat.com>
-> ---
->  include/linux/kasan-enabled.h | 11 +----------
->  1 file changed, 1 insertion(+), 10 deletions(-)
->
-> diff --git a/include/linux/kasan-enabled.h b/include/linux/kasan-enabled.=
-h
-> index 32f2d19f599f..b5857e15ef14 100644
-> --- a/include/linux/kasan-enabled.h
-> +++ b/include/linux/kasan-enabled.h
-> @@ -8,30 +8,21 @@ extern bool kasan_arg_disabled;
->
->  DECLARE_STATIC_KEY_FALSE(kasan_flag_enabled);
->
-> -#ifdef CONFIG_KASAN_HW_TAGS
-> -
->  static __always_inline bool kasan_enabled(void)
+On Mon, Aug 04, 2025 at 03:42:37PM +0300, Leon Romanovsky wrote:
+> +void debug_dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
+> +		int direction, dma_addr_t dma_addr, unsigned long attrs)
 >  {
->         return static_branch_likely(&kasan_flag_enabled);
->  }
->
-> +#ifdef CONFIG_KASAN_HW_TAGS
->  static inline bool kasan_hw_tags_enabled(void)
->  {
->         return kasan_enabled();
->  }
-> -
->  #else /* CONFIG_KASAN_HW_TAGS */
-> -
-> -static inline bool kasan_enabled(void)
-> -{
-> -       return IS_ENABLED(CONFIG_KASAN);
-> -}
-> -
->  static inline bool kasan_hw_tags_enabled(void)
->  {
->         return false;
->  }
-> -
->  #endif /* CONFIG_KASAN_HW_TAGS */
->
->  #endif /* LINUX_KASAN_ENABLED_H */
-> --
-> 2.41.0
->
->
+>  	struct dma_debug_entry *entry;
+
+Should this patch should also absorb debug_dma_map_resource() into
+here as well and we can have the caller of dma_dma_map_resource() call
+debug_dma_map_page with ATTR_MMIO?
+
+If not, this looks OK
+
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+
+Jason
 
