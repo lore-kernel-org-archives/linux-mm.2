@@ -2,100 +2,96 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6469DC87FD3
-	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 23:25:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A312AC87FCB
+	for <linux-mm@archiver.kernel.org>; Wed,  6 Aug 2025 23:34:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E23DC6B0096; Wed,  6 Aug 2025 19:25:20 -0400 (EDT)
+	id 33CA46B0093; Wed,  6 Aug 2025 19:34:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFB0B6B0098; Wed,  6 Aug 2025 19:25:20 -0400 (EDT)
+	id 2ECCC6B0095; Wed,  6 Aug 2025 19:34:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D37F86B0099; Wed,  6 Aug 2025 19:25:20 -0400 (EDT)
+	id 201D46B0096; Wed,  6 Aug 2025 19:34:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C35056B0096
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 19:25:20 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 543B61DCC63
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 23:25:20 +0000 (UTC)
-X-FDA: 83747916000.24.E1ECB59
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 7BB2FA0004
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 23:25:18 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=krrUPuu1;
-	spf=pass (imf25.hostedemail.com: domain of chrisl@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 13A2A6B0093
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 19:34:44 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 936471606F7
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 23:34:43 +0000 (UTC)
+X-FDA: 83747939646.05.0788F21
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf18.hostedemail.com (Postfix) with ESMTP id AA5A31C0003
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 23:34:41 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="j/hWS0wr";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754523282; a=rsa-sha256;
+	cv=none;
+	b=CRaz/DssY9VbtY+uS5y3irgBW/poVVNiLE3WvqCetzWDFrTgVXBR6mmQ1+TmWsC4sZa6C+
+	df//mVHSUGrDrmkLq1x5lTjq1jIg465vaIqIid7/CcB08lvkC9PGBtKBtVPx6fGlOSMiti
+	cLMuo7juBIeqwXqv6+JX4vXfd52ceGI=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="j/hWS0wr";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754522718;
+	s=arc-20220608; t=1754523281;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qQoYrjjiOBNV8WkJzEHnMtMq/aX9CEzrVd+b2tWLo00=;
-	b=JXVVOxYD4gUcfIHvElNJzDnjc2Y//WC4KbNfNqF/oi6mnD0Nd5FHb5nejKxacWJg0fF48U
-	zxfXG9auqMtZzDxrZAW/ZV7yoGCL1OZoQhyk6B59ig3iZd1S5ScryMfLae02d9IsLXIta9
-	ht9ak7KekEc84EVqYdSwYQZNz/pP8Ns=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=krrUPuu1;
-	spf=pass (imf25.hostedemail.com: domain of chrisl@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754522718; a=rsa-sha256;
-	cv=none;
-	b=hJHGNQmqNI/jOd38utqW5Pi/4Ei5z0muet/mC8RaDeCSPKbaOv3VNVHO3ideSY38K6fU+7
-	TWdpPId86o+1V1POa3YSb+cKAZBJohVHW45ivvVYcLeR18QnfK83PWN02F0tF7S9jktEA8
-	uw9NOVXd9usuE2T0eqHkH4MFsWX0oCQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 7263B5C69FD
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 23:25:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38B2C4CEF8
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 23:25:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754522716;
-	bh=i7moJgUx/xSFj18d+Ij+O8XgpQh8iIyJg6xk2zbatgY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=krrUPuu1lBEhbNbv83U5eYBYHX+f4tM/rV/nhjMNi/Cki+nrqdMd3UUw89RV5hHtd
-	 h31zUKdRjpSyvAJmsFrfa3+HF6oQb9eumCW+rWNA119EK5yyhWhUMQCyX+WLW9/PmU
-	 ddHO4iiWpfvB1WZzgASwksMbh6MIScgvgnHgHHY/Q7ZSx5HcAChtWY++lzPILf++DM
-	 tYapc+fSrh7t5GzEt/0yLHk/iU9nc24PNCGGcv3sWeLRzlfLgyrDYTbPuGCdLM9c1f
-	 lpynCQeVNwbV7MloH/XSpftNKnp/F69yk1evNSA1IkKiPRi9y/0fo1l77T16fcgpMF
-	 kgsvfDmMyL4fA==
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-32f1df5b089so4020241fa.3
-        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 16:25:16 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCW+mTJnNKnBxS/XHiZrFrPqUQJRf+6aeiMq2z8onNhhGPSG3c1UDL705+DAZFMdvlgI94UH5jnUzA==@kvack.org
-X-Gm-Message-State: AOJu0YylEPuPUq/G78pC1Nd0+4gr9Yj1jWkI0bHWEP2Cp4PfAKbb9r6Q
-	oUzl7nDhTNxjsHr6yu+zjAHv6OBF1HMPOIqVRVQvhyGe4LUfoA8Wj9nJM6xcv+AZO+uStekRbq2
-	e4uZEUSJBXLKY+IOZH7n4UUogPxBTUw==
-X-Google-Smtp-Source: AGHT+IF6DYjTcp7hSvwBmqZfeirBCTH7sRLIv3f7sYHG2bcJmsjYkoek7c82LIHpLC5W4rMppUU5oJaohTRxwdSQpGM=
-X-Received: by 2002:a05:6512:39c3:b0:55b:8827:b7c4 with SMTP id
- 2adb3069b0e04-55caf357830mr1400649e87.40.1754522715597; Wed, 06 Aug 2025
- 16:25:15 -0700 (PDT)
+	bh=qvRGbUoxHQXYC8T8tbdVGdWHSxSOXMjp8BJoimfjlLU=;
+	b=eUMMNuLPIjP3iseYqrIEAzwgdbdVTxi7v/yXSRVGWMjsyCPlj1tI8N/fAOf/atjI2Idjb6
+	DE6unOtvW9i9OEQfqHr+6VThmiQUNTYGBhfHvU5ugKgA7nsNefjOSsJ5PMkY4Ek1Xs7E81
+	y2DQQsyUjD3lknkRHWNIHR9aGvPxB+c=
+Date: Wed, 6 Aug 2025 16:34:18 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1754523270;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qvRGbUoxHQXYC8T8tbdVGdWHSxSOXMjp8BJoimfjlLU=;
+	b=j/hWS0wrDoTsiYRXQLmUw2nBIRG9ovVttyd4dmFzAA401tGH2U/YCnIHLc25FLDAxcDloT
+	bkyLMiL/xuyI3prrBVHRVdoSs1GQj1pqURUmBqusj4pNpZ5dfWcb39NvA5dGlrFIecP9pd
+	tBbUPmoREKxIaMnSE8Z2niGmZ6jXeSY=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Daniel Sedlak <daniel.sedlak@cdn77.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Neal Cardwell <ncardwell@google.com>, 
+	David Ahern <dsahern@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org, netdev@vger.kernel.org, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org, 
+	Tejun Heo <tj@kernel.org>, Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Matyas Hurtik <matyas.hurtik@cdn77.com>
+Subject: Re: [PATCH v4] memcg: expose socket memory pressure in a cgroup
+Message-ID: <chb7znbpkbsf7pftnzdzkum63gt7cajft2lqiqqfx7zol3ftre@7cdg4czr5k4j>
+References: <20250805064429.77876-1-daniel.sedlak@cdn77.com>
+ <fcnlbvljynxu5qlzmnjeagll7nf5mje7rwkimbqok6doso37gl@lwepk3ztjga7>
+ <CAAVpQUBrNTFw34Kkh=b2bpa8aKd4XSnZUa6a18zkMjVrBqNHWw@mail.gmail.com>
+ <nju55eqv56g6gkmxuavc2z2pcr26qhpmgrt76jt5dte5g4trxs@tjxld2iwdc5c>
+ <CAAVpQUCCg-7kvzMeSSsKp3+Fu8pvvE5U-H5wkt=xMryNmnF5CA@mail.gmail.com>
 MIME-Version: 1.0
-References: <20250806-swap-scan-list-v1-1-a5fe2d9340a2@kernel.org> <20250806153146.ee1ee22dc8f6381ff5a6d882@linux-foundation.org>
-In-Reply-To: <20250806153146.ee1ee22dc8f6381ff5a6d882@linux-foundation.org>
-From: Chris Li <chrisl@kernel.org>
-Date: Wed, 6 Aug 2025 16:25:03 -0700
-X-Gmail-Original-Message-ID: <CANeU7QkxNfe5Ut8AnyJYV4eQOS4=aL6ni3EAcdfdgTTZ2vG41g@mail.gmail.com>
-X-Gm-Features: Ac12FXxyUj4a1L_iBpo35V6Q_WzlHGvo7MstX2SyvqaYMO9ZWWJh3nSN8R54-Ss
-Message-ID: <CANeU7QkxNfe5Ut8AnyJYV4eQOS4=aL6ni3EAcdfdgTTZ2vG41g@mail.gmail.com>
-Subject: Re: [PATCH] mm/swapfile.c: introduce function alloc_swap_scan_list()
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	"Huang, Ying" <ying.huang@linux.alibaba.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: siqixj4zu7ddxab17hm1a7919mzchqix
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 7BB2FA0004
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAVpQUCCg-7kvzMeSSsKp3+Fu8pvvE5U-H5wkt=xMryNmnF5CA@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: AA5A31C0003
+X-Stat-Signature: 8yumqi9oskngu65tetted6d7pnhfj8h3
 X-Rspam-User: 
-X-HE-Tag: 1754522718-364788
-X-HE-Meta: U2FsdGVkX1/auh/qTaqvP06gcwwrXg/rLD1MIqxk1PDKZKmwyBimduq0koiqo0Sx+/BymZtDJBvPrNrV0rdKSDi70szd5e6IAUlNy96iaiF6nx4DzTd2iYQ9Wu1PJkEGucZiIGSqA85A6uJ1XI55hZ6B+223DVS7ERnUWf3+6C2U8lIeHMbYYSYCd8AWPOsPUEqtI/V7o7UxqXKxeke4nPfPkh3KrxcOpDHsLJXehot341j7X2WW50Qe1DF/yqTqtu4uNDG0U08BXPD9pUAHOd0t9Bd3P7gSShAUg4WgE4gBfVx/fZQ8WtriWLNUKWfvTyg6Lyk7BKQyuCb4g9PCmKueracD/IL8mBbpa8FGGpZ2x7+QtjgYaukBh7CZNtRqb9xYxEIJIgo0/dRvUDsQLvjqJI2hxqrzYNE+eELllRNS6qHvnFHi0h2CLAXPP02fbW+s9TjZKQYQW5a9FLnD0e6YSMtxatG4QkzMAKcl6GU8Lv5MPA1D8vDafTB49oUu22P8LXhempeBTQvlJO1QZ1/fhQIzip/XUf/Rm3ooLzI7qJvx0LSGsI43AbJ2wPNZDf99pJFygbg4IwnSmKIuKikB0queU1Fn4zY+m0CgZu8nrhbHu+xC6eWMs1eYfai26L9Gbxj8JGRByfiVeV0spNmZP8K4g45Xs81Vf6pcce+Os/paCidx3l3ZLF0JF2qsqDqZ2ppWpbVuPdzbg1vVRPmVHtCXDOhfr7m9toPNwZTi4Dtn/qlANER7b/Ppc7qMSkJCmlL9upC9zUG032xL1uoDsgaf7mMdv3WNLkALYzrA/g2gkm0/ySkw53GlH2VRApz03MC4CW9NeMJ23dqy9REstFNJtwsZPiXbc3uUsVOPNUeY+J53AR1jpiaILm+sBrBVjpFtHskn6XehONL+Jaf/sNOJPr/Qkve4VDA/FbN/8gB9NW6swI+7l2ix6AR8iPLncx0ZkKPYizcr9aN
- a9WYdhxb
- OQJTRo0D5Q4dip8c0vW5CLTOBaL8kCPQrSlNT
+X-HE-Tag: 1754523281-507001
+X-HE-Meta: U2FsdGVkX18Cvri3kKBpIaRr/pRwu2M3854KTkxVVkmzRiaAcKCHhNulQIkf+HBahGIrhduxFDt2WaEQPir0BMk3TW/4x1oR9TgIFqJT2y3xA6dqxdo9X0ASKgW9GQgytSUwQJjuWemoxpDLhpxCTOZ4NF63ZjDlmef1iLvgabNr2tdeLwGnLeLanJPNI6uPhvrqup3Uoq2vCQNpLYwPTYOgnOYTYWA9apBerbYuVXVHwU4FWLbsiW4ryQzgJM0RcVEfXAWM9pfvJVC90gdISDQ88hSBcwoulbQ+7NHuTAposR2lrgjvXdVHjvX0b/5EJy8VfScteakbZKL+JKCIRKgpIrmI7RKIHnIULBS2YFZeRYsI6yvgMpfG77QjhzMWnJpZ0gDTlEIW2dP9oJvO+PC+oCLPfKGGH6phS9U158mkONm3ip3pWopPbgJ23cDtFmfbDtXVygkYdCQ8fsCgEjRUrpL8sovh9NBfoIKjxcZlKySbvvh90yEMdZch59AZU6QZa/ayUYfYrTNv0obag1cvPGS/XUr2Q3Ec13+AvdZW4KPo+UvkOFmwuW1WNrzezkBypvHkkqKns6C6lGXWVNxO/wmeIlikEsnKRTvfvUQJdTcByAfFNSFcsmK0/Rn/pejhDsKh25RoT+5zJ/6oxoPQJIWPtIYNX+iXHvNo+HWuhjlVQ83y+MSJkKhUKR+5Ao5O26NFQRXKBnVwQxoR7caELAB9FXeOvXX0xsA4USz0QrcQRzF2BdR0Yb04BYndMctULqhsmmmINSW560d+mSN0Kk7aQJeZV3sRuqsRhSaPZJXzk36xxEuVy1dpQTUEKUn70U6o8oGov8Nlkvolfa486wzmijPWAAOdhETNCmrazUvgLoQKaVbzgf23cjzOxCeYL0zsn+X9CO9DXLHHZqSF8ebzEcoLSfRetWaQ6j3pfAMSGENDir0O7ATGF7ZX82wfjNWhs+VNhXyPs8G
+ +kT+AiAR
+ FHR3zDBdo9QWkBau7tBonCfoAIJ0PT5GifIpn6nff7pTn9Ea96XhofcFCy/FwQFC63hTCcj2hpolhhYx41aoNUflBaqTW9w7lSoA4DOrf+2LcxnwOcy9rhyB8LKgLzpGc9UxKe8mT3+HguTrpHOLP5gFMiOKbynPKjykmeAGIUDFBHySVv+gTso74sXGPI3kX2Phz3MgLv1oGkMZ0y6hcs544T11+nUBgfy7VFdZCVTobivM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,74 +100,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrew,
-
-Thanks for the feedback.
-
-On Wed, Aug 6, 2025 at 3:31=E2=80=AFPM Andrew Morton <akpm@linux-foundation=
-.org> wrote:
->
-> On Wed, 06 Aug 2025 10:34:45 -0700 Chris Li <chrisl@kernel.org> wrote:
->
-> > This the alloc_swap_scan_list() will scan the whole list or the first
-> > cluster.
+On Wed, Aug 06, 2025 at 03:01:44PM -0700, Kuniyuki Iwashima wrote:
+> On Wed, Aug 6, 2025 at 2:54 PM Shakeel Butt <shakeel.butt@linux.dev> wrote:
 > >
-> > This reduces the repeat patterns of isolating a cluster then scanning
-> > that cluster. As a result, cluster_alloc_swap_entry() is shorter and sh=
-allower.
+> > On Wed, Aug 06, 2025 at 12:20:25PM -0700, Kuniyuki Iwashima wrote:
+> > > > > -                     WRITE_ONCE(memcg->socket_pressure, jiffies + HZ);
+> > > > > +                     socket_pressure = jiffies + HZ;
+> > > > > +
+> > > > > +                     jiffies_diff = min(socket_pressure - READ_ONCE(memcg->socket_pressure), HZ);
+> > > > > +                     memcg->socket_pressure_duration += jiffies_to_usecs(jiffies_diff);
+> > > >
+> > > > KCSAN will complain about this. I think we can use atomic_long_add() and
+> > > > don't need the one with strict ordering.
+> > >
+> > > Assuming from atomic_ that vmpressure() could be called concurrently
+> > > for the same memcg, should we protect socket_pressure and duration
+> > > within the same lock instead of mixing WRITE/READ_ONCE() and
+> > > atomic?  Otherwise jiffies_diff could be incorrect (the error is smaller
+> > > than HZ though).
+> > >
 > >
-> > No functional change.
-> > ...
+> > Yeah good point. Also this field needs to be hierarchical. So, with lock
+> > something like following is needed:
 > >
-> > ---
-> >  mm/swapfile.c | 86 ++++++++++++++++++++++++++++++++-------------------=
---------
-> >  1 file changed, 47 insertions(+), 39 deletions(-)
->
-> A nice little patch.
->
-> > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> > index 4a0cf4fb348d..fcb1e57d8108 100644
-> > --- a/mm/swapfile.c
-> > +++ b/mm/swapfile.c
-> > @@ -820,6 +820,29 @@ static unsigned int alloc_swap_scan_cluster(struct=
- swap_info_struct *si,
-> >       return found;
-> >  }
+> >         if (!spin_trylock(memcg->net_pressure_lock))
+> >                 return;
 > >
-> > +static unsigned int alloc_swap_scan_list(struct swap_info_struct *si,
-> > +                                      struct list_head *list,
-> > +                                      unsigned int order,
-> > +                                      unsigned char usage,
-> > +                                      bool scan_all)
-> > +{
-> > +     int found =3D SWAP_ENTRY_INVALID;
->
-> but this function returns an unsigned int
+> >         socket_pressure = jiffies + HZ;
+> >         diff = min(socket_pressure - READ_ONCE(memcg->socket_pressure), HZ);
+> 
+> READ_ONCE() should be unnecessary here.
+> 
+> >
+> >         if (diff) {
+> >                 WRITE_ONCE(memcg->socket_pressure, socket_pressure);
+> >                 // mod_memcg_state(memcg, MEMCG_NET_PRESSURE, diff);
+> >                 // OR
+> >                 // while (memcg) {
+> >                 //      memcg->sk_pressure_duration += diff;
+> >                 //      memcg = parent_mem_cgroup(memcg);
+> 
+> The parents' sk_pressure_duration is not protected by the lock
+> taken by trylock.  Maybe we need another global mutex if we want
+> the hierarchy ?
 
-Will fix it in the next version.
+We don't really need lock protection for sk_pressure_duration. The lock
+is only giving us consistent value of diff. Once we have computed the
+diff, we can add it to sk_pressure_duration of a memcg and all of its
+ancestor without lock.
 
->
-> > +
-> > +     do {
-> > +             struct swap_cluster_info *ci =3D isolate_lock_cluster(si,=
- list);
-> > +             unsigned long offset;
-> > +
-> > +             if (!ci)
-> > +                     break;
-> > +             offset =3D cluster_offset(si, ci);
-> > +             found =3D alloc_swap_scan_cluster(si, ci, offset, order, =
-usage);
->
-> so does that one
->
-> > +             if (found)
-> > +                     return found;
->
-> `break' here.  To avoid multiple return points and for consistency.
-
-Will do.
-
-Chris
 
