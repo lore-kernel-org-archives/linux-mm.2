@@ -2,103 +2,103 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 75309C87FCF
-	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 17:59:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 536BCC87FD2
+	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 18:02:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 184E28E0002; Thu,  7 Aug 2025 13:59:52 -0400 (EDT)
+	id B20176B00B7; Thu,  7 Aug 2025 14:02:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12F308E0001; Thu,  7 Aug 2025 13:59:52 -0400 (EDT)
+	id AF7CA6B00BB; Thu,  7 Aug 2025 14:02:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F38CC8E0002; Thu,  7 Aug 2025 13:59:51 -0400 (EDT)
+	id 9E6366B00BC; Thu,  7 Aug 2025 14:02:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E4B518E0001
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 13:59:51 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3D5151A0B29
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 17:59:50 +0000 (UTC)
-X-FDA: 83750724540.03.184FA7E
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8DAAC6B00B7
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 14:02:01 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3C9A5137744
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 18:02:01 +0000 (UTC)
+X-FDA: 83750730042.30.D45584C
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id A34E6A0006
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 17:59:47 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hQqaTAx0;
-	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf09.hostedemail.com (Postfix) with ESMTP id B554C140002
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 18:01:58 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VF2yECpk;
+	spf=pass (imf09.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754589587;
+	s=arc-20220608; t=1754589718;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Wk6a/pPPJhrMqThE6QoVfYpodt1UgZPfr4F28Ot7H28=;
-	b=0w9xXYCDbiyrlAhAHkNbw1yDMUYIi9DQ+nHPPiOs0KUKJE+yn4eSGtuElMKcrg/Xn1iMfu
-	TTwmQi5FS8ZfOzx5igPzKNzDtv2oN2owTibS+YdcxiJ6OEwkRn84oSBWfWx0eHf1UE91/k
-	PpjvWy0/Gsy4ma2EtPGkTOESfurtQZQ=
+	bh=mhUS2sM+ExcCQ6yCHHvb67H8y6ZDFz4/8Rje0oa/xWU=;
+	b=IOKvnaUZx7RAnKIoSCLfrcrwEIwsmBhnSW2fS/nDYdM68io97Qc7DMOCfo5AEDrRKWK+a4
+	jVbZv9PaJ3kk3iZlsEjt1TOwNLnRi6SyMh5fAKZGHJ3dASUYTnCZgMzTpn5urCvpEcefLb
+	OijK1hW07CAld2MJNvAIG4Kd8jtwBEU=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hQqaTAx0;
-	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VF2yECpk;
+	spf=pass (imf09.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754589587; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754589718; a=rsa-sha256;
 	cv=none;
-	b=fsLcLjJEdsP0dU8go35pCxXZiUJxPu1kBkff/xjX/SI4lnAolf8aiEhkbyJRFYG/arAumy
-	bbU01MXS7Yh6IGnIbwSwr/X93sKk9opL7ajASuLe0RcIDmZkWO/XnGIxPGmBuYRqkiT2Dc
-	H68gpobBL4fMpZ3fYFKBftjCb624kgA=
+	b=6K2zJ9xhw49rNVlj/WJqb3qtjulxOA2ay3EML7vBYcu4sslcA1g42c9QixMy8OSdpKdGYp
+	IGJwJepuIh1HTncEgpZ6J2/zpbaDIr0NTm9/FNE9IFCO0EHyxKkI8rTS3RV5/7mSS2+1A7
+	EOu414Myta35wqtpKxEhI0mRr0HmfgM=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754589587;
+	s=mimecast20190719; t=1754589718;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Wk6a/pPPJhrMqThE6QoVfYpodt1UgZPfr4F28Ot7H28=;
-	b=hQqaTAx0NhWH0BjXDNaPeuvefE9lgMb5F0wo5YiRnJd6PrFZocivuYhD0NbU7yrtqM8eht
-	bmyrBrC7MhJytti3djrFgDrV5SI/COdg6wZ8CB6+cIyvdtr/cRRsQShztF6Y1VaMvJ3t4g
-	EjfTYCFA5yVlYF+7I36Z2ChGygtqPYo=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=mhUS2sM+ExcCQ6yCHHvb67H8y6ZDFz4/8Rje0oa/xWU=;
+	b=VF2yECpkuGVWLsUU2Bc67zfqIfJKakWnJqXdpQZMCSRD7+sc9dstxzladTRxDjoLTE5Jmz
+	1S4XJjcbZqMEw7DHNBSL4SOmD9aZBENKC9NrjzBxmLSp2xNRvte7IKbQ0CYD8y50DORaKq
+	AC3LCR1GfryxLssm+ghKTGDdtF6DFPI=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-646-o0DiFVwrN8GwntQ8AJwx-g-1; Thu, 07 Aug 2025 13:59:43 -0400
-X-MC-Unique: o0DiFVwrN8GwntQ8AJwx-g-1
-X-Mimecast-MFC-AGG-ID: o0DiFVwrN8GwntQ8AJwx-g_1754589582
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-459e0f54c88so6884485e9.1
-        for <linux-mm@kvack.org>; Thu, 07 Aug 2025 10:59:43 -0700 (PDT)
+ us-mta-28-vGkuJ2u7NTSTvt_9pw7-QQ-1; Thu, 07 Aug 2025 14:01:55 -0400
+X-MC-Unique: vGkuJ2u7NTSTvt_9pw7-QQ-1
+X-Mimecast-MFC-AGG-ID: vGkuJ2u7NTSTvt_9pw7-QQ_1754589715
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-459e30eeea3so7727735e9.0
+        for <linux-mm@kvack.org>; Thu, 07 Aug 2025 11:01:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754589582; x=1755194382;
+        d=1e100.net; s=20230601; t=1754589714; x=1755194514;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=Wk6a/pPPJhrMqThE6QoVfYpodt1UgZPfr4F28Ot7H28=;
-        b=FuJP/2feBlKPbXngYZ3DXZWx/O2wiVQkAl+EM1de/AZhY9TPGYm+iDmxDeoDZAc0nl
-         g7dWqHLXS/IkOuhTijUq21+sXj5zzWuV++KyM3t++bhJxNsUPe4r2b5SengQdBSOSduc
-         2e4RdoY71hve0hmJUBmGEGbkl/+MkPNKIK2hVGZpaNyIgDZ3ZSGrgLPqOp65u1YW3JLk
-         5sQZiNXzjxPNGcT7LeHJMVs7eBKYIlPRIezezSYB9lju7KJ+BOjatxpMO+klvV5C8j1s
-         ElWoBND6cVJASxHGHNOhQyh0wwoDdQdhGsInx17vLKfL/cOaGaCS78A1qWZWbi2f9bWU
-         MPAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVnIlhOkEQ/hhSGPrVuhgAoAZdkkFVZ9MLHsXi5hyuG2Uvcb20KiKGpBWb0CW2Ewgu8DokYycXVyQ==@kvack.org
-X-Gm-Message-State: AOJu0YwZKL9aOg4SdSuDjPJCYTXdxH24dnbUhYTTmTdK4k0p75cDnvxM
-	dONXiMKTwOxRWGv58ZhAulgFUSIk01+2a13A4ZnLt2AokwxizVstPb5P6WWHbw3Xh6oEm3jthnd
-	VcTpPTC6I1qsfm/TAu21hDEDyaRIP3MaKI5E4E/P+6ggWJxvhlDWq
-X-Gm-Gg: ASbGncuNUacr5UnJwidZNsnkTs2wmio/4Bs9CYGFwSuN8tvkZ91KkaueaLEBF4LYhvC
-	/qSjRT8+mAWhfbESYxXyjpOswK8/4EjIep9lScRxk/Lncwgc6XYkTEP3Z4dXuawvT+BH2nB9s6l
-	zk0dw4tYYHf3AZz2SougtNhVnSEo337XBoR93GJWqRwiO9KeQRy3ytA/ASa3K0xrREAB78ZmneJ
-	RfwK7h+kjV9tYCIS4Z6BAnH18a1F4UTXnvgH0TloCk3n2MZWGeSPFruEEmfNYmUI+u+u2dqTZhw
-	rBhR/k+ouNr4tj7/k1jG/jRMSxpqfhViOaVDEV4IZlfmcP2mLISBKmQVkngnBzZLSRkyRZMyxLH
-	rVBzvBoEFmYVLLCGKRgGiueAuOGHfq4zs/UIqI/ZReAhe12F+8zD+RznfhGV38b7LzMs=
-X-Received: by 2002:a05:600c:64c3:b0:459:e39e:e5a5 with SMTP id 5b1f17b1804b1-459ede945a6mr45490615e9.5.1754589582465;
-        Thu, 07 Aug 2025 10:59:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFn0NJBCGt4/Rk/NEdnJWnNlQiQuizOhALHDnhgSLWYNhieS2DmpQ+fxa0tiLbFyO8ObvlS7w==
-X-Received: by 2002:a05:600c:64c3:b0:459:e39e:e5a5 with SMTP id 5b1f17b1804b1-459ede945a6mr45490405e9.5.1754589582034;
-        Thu, 07 Aug 2025 10:59:42 -0700 (PDT)
+        bh=mhUS2sM+ExcCQ6yCHHvb67H8y6ZDFz4/8Rje0oa/xWU=;
+        b=dNTrCTdACdxcpglxxXud9Z+NosZHW/FlQE5OFOF7wogqDzVsLJmxMFNsSVcS40ZtgC
+         q140uLCGB4ski8rOpFCTW2tvG66hfzz7Z6Vi0bfGn7szXJVBqs9zH/MIGZPs2kTzPVQo
+         duLAqctDwqQhJvb3+PnjJ5j0dmqh2o1SEQzpg1+5+KN/E2OfoVfAgBLcrO+w3F6LalJQ
+         /hrhD4QvY8jNxK1PDiSQaqFYUCcn/P0fzoFW7ZstPUlAlDCEJ6TVUBqa+BhV7w13lqa8
+         VENd6jDev7x/MvibUfLamGJOK43ezAZGgQPpUKfPqyKH2JwUgOzHWtvwB2rEuIpYY1eo
+         7Eqw==
+X-Forwarded-Encrypted: i=1; AJvYcCXMzFIcCg+Vb49wcm1/IiOnLckXzhKBMZriyaCHH+NFHeLP+FVKPIuiPR8yAj14CvIchgMIjuSj1g==@kvack.org
+X-Gm-Message-State: AOJu0Yy0sVs3Ybd3m1DL7oM+AwcF7rmpRkt4IdscCutw1XVR1bz9zQ9p
+	a6aDFXrZSQepfenBHdhqufI50X7/+4B9Jr2ZxsMxF7VgF+N3pWus1v7c0RnR3H+D8MdfvosIN3V
+	iHSbUu/IumEFZVEQTL58g0WQlHRxuyZN3zcqmmpNxLedqoTHHnVD4
+X-Gm-Gg: ASbGncuG3y6p44EGm4DPySGBgtDsSueCs8PpfPFjBOlzN3zZBCZlypCj2/KyUXfQHvw
+	eT82UKjskl+K+T8BYUJm6BZR1SioGAnMbrJfgYWteO0w9UesIjpoM/Fw1M/4k/zHVV6Aw/hYw3A
+	V6DIHwtAzrjHq7s0vBTdaONSd/vlcy8x13ZMhGQZQ9oN6MXg+djqhhIHW0dI/L1IHuYILE5DVFf
+	qcsveCQ0EDjnkXyFmsJSX804g5CAx3fmmcFreYWacx/iG72b1BD/nUqgMgps70PpiIfXEK4nK62
+	RhK+0h70lRKAKg95IZhSdacRWtBVpc9zdGcs3r5Z3oD4UUDWJFtFOAHloLRBbhOyPAbvY89RIxN
+	X+cAlRxlswjSNzFB/ekQjW9w6xPi9POqyu56CfvkL+F6ZCLDBmoE1WD9lpUvH1/kegT8=
+X-Received: by 2002:a05:600c:46c8:b0:459:ddad:a3a3 with SMTP id 5b1f17b1804b1-459e74a4ad6mr64013475e9.25.1754589714414;
+        Thu, 07 Aug 2025 11:01:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGxcVatWP7rFIfVWx9CqdmH8FLM3Nm306vOiRTmVXgWVKdqiIY4890kJtBR5KGb3c604MXHrw==
+X-Received: by 2002:a05:600c:46c8:b0:459:ddad:a3a3 with SMTP id 5b1f17b1804b1-459e74a4ad6mr64012855e9.25.1754589713826;
+        Thu, 07 Aug 2025 11:01:53 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f49:bc00:12fa:1681:c754:1630? (p200300d82f49bc0012fa1681c7541630.dip0.t-ipconnect.de. [2003:d8:2f49:bc00:12fa:1681:c754:1630])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b8e0b2d2fasm17231775f8f.50.2025.08.07.10.59.39
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c3c33fesm27989570f8f.29.2025.08.07.11.01.52
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 Aug 2025 10:59:40 -0700 (PDT)
-Message-ID: <8416922c-4198-45cf-b5c2-dc39587bbf68@redhat.com>
-Date: Thu, 7 Aug 2025 19:59:39 +0200
+        Thu, 07 Aug 2025 11:01:53 -0700 (PDT)
+Message-ID: <cbc2e23d-69ab-4820-9942-c7abf2066ff7@redhat.com>
+Date: Thu, 7 Aug 2025 20:01:51 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [linus:master] [mm] f822a9a81a:
@@ -121,6 +121,8 @@ References: <202508071609.4e743d7c-lkp@intel.com>
  <9e3a59b2-11c0-43ca-aff3-414091f04aa4@lucifer.local>
  <CAG48ez3=8f3eShjAe9hrvivP+Dvyisw=X_Tr_phc-OX_4MzeDw@mail.gmail.com>
  <be074809-e1fd-43a2-9396-8f7264532c4d@lucifer.local>
+ <CAG48ez3=kLL4wBxAVSa2Ugrws+-RFQMdNY9jx5FAdbhpNt8fGg@mail.gmail.com>
+ <e4f5faea-ccec-4cc7-83de-1a3c7013b81b@lucifer.local>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -167,21 +169,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  WBe5lqcozu9LpNDH/brVSzHCSb7vjNGvvSVESDuoiHK8gNlf0v+epy5WYd7CGAgODPvDShGN
  g3eXuA==
 Organization: Red Hat
-In-Reply-To: <be074809-e1fd-43a2-9396-8f7264532c4d@lucifer.local>
+In-Reply-To: <e4f5faea-ccec-4cc7-83de-1a3c7013b81b@lucifer.local>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 35vMfbeC4KTwTbhmOnNRtloVA92PafwMmxRAQZydD8c_1754589582
+X-Mimecast-MFC-PROC-ID: WCLtpr9Zy-7kI1g4QVTM29jCdcqCzNvLfY140xkMUNE_1754589715
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 9ycok39y8ri9dzwq1uohyg9stygyj9cw
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A34E6A0006
 X-Rspam-User: 
-X-HE-Tag: 1754589587-450571
-X-HE-Meta: U2FsdGVkX18EXcWzpnXxw4LT7C58ab/SN4+6IhTOOVZalhDrIywH8pE58eSwi75bvR/kxcWhn9251SFVV6sAWbU2U5hV2bg7jgAADJAhpfTTTz6POodGZ4EsC0Zg1tbkcUedWG+1L76UZ0bi4i5qbF6S1rIgIMboaiBGot1ATmJ7TwpqgUsP8EFXG9C+wbIMI8LXKLVLnKAPlqKCdXOplq4TNAuozZAjG9/sngUKJ+XFdJaeWdwwDDB+BAv8E+J0/aSE85dwOuKHyS3Kbi02BIq7pnmhbPPasvntyULY05iZKkGy9gDKR9GTlS+h25gQ2wWvFfA80IeNBgxe0jFRWDWzlbTX8Lt2yNyBZdM6GMxaMEHemg7ggFh9/sAR5HdKHI6iDWDwR1HjzMo4t3j5uxs1vzMsaqufd868bIlU2TygBXHV0Sd1fgNwfR5NEoipso1XH/21wG0XYlGz1Wd+8jBeOYvTCkIPgcVjAEsWkQ7tFqV2V/oNaCsIrv4gWufpcA2zS4bTUlptqTiLavW33pHSY6LKpAOlWICHUBhUdPnOK1J/ialoJzFyuAxYBbtMi+jo9RKycZvw3XM5cPJxA8IWnLLRbvnZxrZcB1DoYtonERwN3dOVbVkJABcwVh5LUaAvZfu3pqUQCpKE865f9Ip5U8ZtFjJlp41UL5W8+ib7vC/EuqdXqKyXj4s9j62O5nAo2SNtgOC6+bm1/8Dd681TyHRrbImNAFsQM8yd5mK68b3Qb+yO9yuTGUaZD6GeqTSNV8OhJVZR621GJUdQtUPLFDcbfyQSsfbtud2MucbJJbUsxEVK9owyezR9+bsZGbfS6KhdygZl9rjmHvoWi1SIYl7PdeHl2nt/4IJ8PuzhtGx4pD04WYQOwPgoEyuI6POf8U7whgPCuTVZe0YqJcYP8vJB1wyTDTcoY8GUXiupNcYH/P7CBkGfBwfwPxXPIqv9EUWnRgswEffxNSG
- 8F286NWf
- RqmpzEzeWkxrsxwA2up4tgH9AF4cKZoyi1URSX16oKlL+5GeGBJsfHB+gt2OPFoi5xoFHzwHqJ0ShwXx8tGMIAmeh4ZAtkWtlEdlSlRC0Lxl0BYOgnCSS3b6cSTbk4yjFWpgejfKUwyFaag8/XtwXjLS3qmGfq7sb5qULxH+YX0gZw3duDVxX+9wkEaTXaaAqphJpqTWpl7E3CWOw6DCobUrrNmH2WcPSxmlen+iRTaZnbm3OFRN1FUc3bIuqM790icWPTjQ+Fx/R0Ut/Fv2BI0vpYkPw7XpVT3qC6KluKB7SfN4A5bq8whQuToSs3JR+M+gnNBHSpy/JEGxX5SrX3jTFsuCljDcAEZQyEs+wM/vajgxmJAarEV5c/eajeBtrdXr+j2shSp29zQp46zDnm4Icj8fqGdf+BwTQirYeHz/XGPz540bar7cYylwYEpworJhiHZ3E0prGTPxIvmuvWVfM+kPklASn6Guq3munPjcrmb1FNiYe0CHJHmEEsPSVNLcZObiy/c1QxqfTkWLkbVQ7svgEbgqPzyHAOQBkCakhodv+GuO46LTAY7lm9xSxtm/a4shRnZk6OPQ+MgPHq24nosjhkXziW7UvznpVoHVgwRw=
+X-Rspamd-Queue-Id: B554C140002
+X-Rspamd-Server: rspam06
+X-Stat-Signature: ftjapexboxq4y4yrba8tczwf96mpossf
+X-HE-Tag: 1754589718-583056
+X-HE-Meta: U2FsdGVkX1/K7EllckHZjLjGlFQx53PgndaXa6E/iQ3rnUexaUEYMrejalt8rLKhYh1ed9bzK+pS85ghb9EEeDT4N7LrYNol3yurTBbCYD5hEzaqZeVRqW8cQEGnmER7o14CgcTENu6TZG0fM2JzPu3rEYP2XibrnAlB9IUF+8H7uCxO0DfgTRsSoQnFxIkJRMXDriQlsjYKUfOozz6gXFKsiOyFqceGR/AZ5U4Mb+jmaiStla0AwCXw8kO5a5QPCMeVDIo4kC/UuJBT9wXPBubNpfGwBqvblccUxXrrnVmKVbqarIYMy5V+r9hI4LZsCsAQijYalerssAUiT6WwTHg81GAj1WuaPAHQ20sNYugIjl5w5hQflYIQOJDMcMIvl3PQvWiqkn38UhQGTOVKqdmrJjWOaUOH5kWJWn7Ikj1Wb/FRokzkbR8QVvkxL2fXe8DKZ2llUt9E6/yuSvYdBZnocW0t3toKqkXlr8I7me3H1byxrh/aQKvdvrdfPF8mJdU0ntc9an72dm79xxs6DyUDfvT1sFrZjMG8/gsyrQYkz7+WiHzaKH8uv9OLyBPqcyKinOhvkKdat+NNCnmc/X5ucS4mAAr5i8SE6w7JtS9qQQM2UkXkaQme73Hrn3rbEBcHKRarlx2+ZR/i9QyogxnKAbhj+6XSBJHooTblE+KM37mujMwcE5A90J9FHbZSW9hleSWAw6VWYwCe251O9aMH0O82OYcQsT1cdh9zTUFYKbd1OdHl/UXF+boiV9zBPrv+0eoh5YhlsE56PsaY72VvgKVj/OVRCe50gpDUF+6xu+vPZnFTbecw2dCC2AnOLbYqBfwarUEdB/9fKyZj1xXi/Hvbnk+Jhokkzh5aNkpQHvrG4/wPqRLfL7hxNIgUbSWZxaxOOCs+qWdjrtnn3FvkdwYidRQAUriafyRhLVdHTJb1sbNSM1YbCn6asfe9A8oNKC8TVoukPXdLlNj
+ z78jF9v9
+ F1sFSWTXzeUOEuLWeJJkfFK1J+x+HuCnxP/xbTJUuzaoq17UOADVU1zCcA1rK1SsHIrJiuEc1wRhd9x1KEgAXdNovjpEi2ufpYWs2t+FSoAeL9aSVh65yhATKnfOlDSQ7n+NNY8yT+5ke8rjuhKfmglRw1RXCg5qOroj7cfAzCltaxsc3rGAvjuXwburyVeUAA13a3AR/4SrImrjrHPCeWStGVAWexeQeU3lsPg0Vzd4kMeckL6bMuwEqt6vGqxrWGmJBAbsMPWqOfgIGiCc3Zy4o1GA/EbmmNVurqbpY/2Av/3uQCpoc7LVCAw+P8eEbWgLMhb4tlTJt7vajSFEzDQelQJjuiIoVo0UFvuuiAlO01hozuIzKyRNr/cKTajMKX2l2A+Gq84MHRfzf5UI03M4HQTTe0uhy/58h36aSg9MsbOMJtkcH9jAtfOXLmbRgmT3p5hHKLhATwoa/mLrwAf1BRftmUAgJfcw1t5bc/2RkEH24HcrpcFZKdV7qs9hDGrd95J9Wwmb4E1w3lKAs/IkhsNiuk7zPBBUTOYVc+UomjKunQE59pKN27MM7FQyDJtYAg1PfqeYYt4WWyE0NtiVyqMeeaGnMYe0xi5RtKHdyaQk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -190,63 +192,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 07.08.25 19:41, Lorenzo Stoakes wrote:
-> On Thu, Aug 07, 2025 at 07:37:38PM +0200, Jann Horn wrote:
->> On Thu, Aug 7, 2025 at 10:28 AM Lorenzo Stoakes
+On 07.08.25 19:51, Lorenzo Stoakes wrote:
+> On Thu, Aug 07, 2025 at 07:46:39PM +0200, Jann Horn wrote:
+>> On Thu, Aug 7, 2025 at 7:41 PM Lorenzo Stoakes
 >> <lorenzo.stoakes@oracle.com> wrote:
->>> On Thu, Aug 07, 2025 at 04:17:09PM +0800, kernel test robot wrote:
->>>> 94dab12d86cf77ff f822a9a81a31311d67f260aea96
->>>> ---------------- ---------------------------
->>>>           %stddev     %change         %stddev
->>>>               \          |                \
->>>>       13777 ą 37%     +45.0%      19979 ą 27%  numa-vmstat.node1.nr_slab_reclaimable
->>>>      367205            +2.3%     375703        vmstat.system.in
->>>>       55106 ą 37%     +45.1%      79971 ą 27%  numa-meminfo.node1.KReclaimable
->>>>       55106 ą 37%     +45.1%      79971 ą 27%  numa-meminfo.node1.SReclaimable
->>>>      559381           -37.3%     350757        stress-ng.bigheap.realloc_calls_per_sec
->>>>       11468            +1.2%      11603        stress-ng.time.system_time
->>>>      296.25            +4.5%     309.70        stress-ng.time.user_time
->>>>        0.81 ą187%    -100.0%       0.00        perf-sched.sch_delay.avg.ms.__cond_resched.zap_pte_range.zap_pmd_range.isra.0
->>>>        9.36 ą165%    -100.0%       0.00        perf-sched.sch_delay.max.ms.__cond_resched.zap_pte_range.zap_pmd_range.isra.0
->>>>        0.81 ą187%    -100.0%       0.00        perf-sched.wait_time.avg.ms.__cond_resched.zap_pte_range.zap_pmd_range.isra.0
->>>>        9.36 ą165%    -100.0%       0.00        perf-sched.wait_time.max.ms.__cond_resched.zap_pte_range.zap_pmd_range.isra.0
->>>>        5.50 ą 17%    +390.9%      27.00 ą 56%  perf-c2c.DRAM.local
->>>>      388.50 ą 10%    +114.7%     834.17 ą 33%  perf-c2c.DRAM.remote
->>>>        1214 ą 13%    +107.3%       2517 ą 31%  perf-c2c.HITM.local
->>>>      135.00 ą 19%    +130.9%     311.67 ą 32%  perf-c2c.HITM.remote
->>>>        1349 ą 13%    +109.6%       2829 ą 31%  perf-c2c.HITM.total
+>>> On Thu, Aug 07, 2025 at 07:37:38PM +0200, Jann Horn wrote:
+>>>> On Thu, Aug 7, 2025 at 10:28 AM Lorenzo Stoakes
+>>>> <lorenzo.stoakes@oracle.com> wrote:
+>>>>> On Thu, Aug 07, 2025 at 04:17:09PM +0800, kernel test robot wrote:
+>>>>>> 94dab12d86cf77ff f822a9a81a31311d67f260aea96
+>>>>>> ---------------- ---------------------------
+>>>>>>           %stddev     %change         %stddev
+>>>>>>               \          |                \
+>>>>>>       13777 ą 37%     +45.0%      19979 ą 27%  numa-vmstat.node1.nr_slab_reclaimable
+>>>>>>      367205            +2.3%     375703        vmstat.system.in
+>>>>>>       55106 ą 37%     +45.1%      79971 ą 27%  numa-meminfo.node1.KReclaimable
+>>>>>>       55106 ą 37%     +45.1%      79971 ą 27%  numa-meminfo.node1.SReclaimable
+>>>>>>      559381           -37.3%     350757        stress-ng.bigheap.realloc_calls_per_sec
+>>>>>>       11468            +1.2%      11603        stress-ng.time.system_time
+>>>>>>      296.25            +4.5%     309.70        stress-ng.time.user_time
+>>>>>>        0.81 ą187%    -100.0%       0.00        perf-sched.sch_delay.avg.ms.__cond_resched.zap_pte_range.zap_pmd_range.isra.0
+>>>>>>        9.36 ą165%    -100.0%       0.00        perf-sched.sch_delay.max.ms.__cond_resched.zap_pte_range.zap_pmd_range.isra.0
+>>>>>>        0.81 ą187%    -100.0%       0.00        perf-sched.wait_time.avg.ms.__cond_resched.zap_pte_range.zap_pmd_range.isra.0
+>>>>>>        9.36 ą165%    -100.0%       0.00        perf-sched.wait_time.max.ms.__cond_resched.zap_pte_range.zap_pmd_range.isra.0
+>>>>>>        5.50 ą 17%    +390.9%      27.00 ą 56%  perf-c2c.DRAM.local
+>>>>>>      388.50 ą 10%    +114.7%     834.17 ą 33%  perf-c2c.DRAM.remote
+>>>>>>        1214 ą 13%    +107.3%       2517 ą 31%  perf-c2c.HITM.local
+>>>>>>      135.00 ą 19%    +130.9%     311.67 ą 32%  perf-c2c.HITM.remote
+>>>>>>        1349 ą 13%    +109.6%       2829 ą 31%  perf-c2c.HITM.total
+>>>>>
+>>>>> Yeah this also looks pretty consistent too...
+>>>>
+>>>> FWIW, HITM hat different meanings depending on exactly which
+>>>> microarchitecture that test happened on; the message says it is from
+>>>> Sapphire Rapids, which is a successor of Ice Lake, so HITM is less
+>>>> meaningful than if it came from a pre-IceLake system (see
+>>>> https://lore.kernel.org/all/CAG48ez3RmV6SsVw9oyTXxQXHp3rqtKDk2qwJWo9TGvXCq7Xr-w@mail.gmail.com/).
+>>>>
+>>>> To me those numbers mainly look like you're accessing a lot more
+>>>> cache-cold data. (On pre-IceLake they would indicate cacheline
+>>>> bouncing, but I guess here they probably don't.) And that makes sense,
+>>>> since before the patch, this path was just moving PTEs around without
+>>>> looking at the associated pages/folios; basically more or less like a
+>>>> memcpy() on x86-64. But after the patch, for every 8 bytes that you
+>>>> copy, you have to load a cacheline from the vmemmap to get the page.
 >>>
->>> Yeah this also looks pretty consistent too...
+>>> Yup this is representative of what my investigation is showing.
+>>>
+>>> I've narrowed it down but want to wait to report until I'm sure...
+>>>
+>>> But yeah we're doing a _lot_ more work.
+>>>
+>>> I'm leaning towards disabling except for arm64 atm tbh, seems mremap is
+>>> especially sensitive to this (I found issues with this with my abortive mremap
+>>> anon merging stuff too, but really expected it there...)
 >>
->> FWIW, HITM hat different meanings depending on exactly which
->> microarchitecture that test happened on; the message says it is from
->> Sapphire Rapids, which is a successor of Ice Lake, so HITM is less
->> meaningful than if it came from a pre-IceLake system (see
->> https://lore.kernel.org/all/CAG48ez3RmV6SsVw9oyTXxQXHp3rqtKDk2qwJWo9TGvXCq7Xr-w@mail.gmail.com/).
->>
->> To me those numbers mainly look like you're accessing a lot more
->> cache-cold data. (On pre-IceLake they would indicate cacheline
->> bouncing, but I guess here they probably don't.) And that makes sense,
->> since before the patch, this path was just moving PTEs around without
->> looking at the associated pages/folios; basically more or less like a
->> memcpy() on x86-64. But after the patch, for every 8 bytes that you
->> copy, you have to load a cacheline from the vmemmap to get the page.
+>> Another approach would be to always read and write PTEs in
+>> contpte-sized chunks here, without caring whether they're actually
+>> contiguous or whatever, or something along those lines.
 > 
-> Yup this is representative of what my investigation is showing.
+> Not sure I love that, you'd have to figure out offset without cont pte batch and
+> can it vary? And we're doing this on non-arm64 arches for what reason?
 > 
-> I've narrowed it down but want to wait to report until I'm sure...
+> And would it solve anything really? We'd still be looking at folio, yes less
+> than now, but uselessly for arches that don't benefit?
 > 
-> But yeah we're doing a _lot_ more work.
-> 
-> I'm leaning towards disabling except for arm64 atm tbh, seems mremap is
-> especially sensitive to this (I found issues with this with my abortive mremap
-> anon merging stuff too, but really expected it there...)
-> 
-> On assumption arm64 is _definitely_ faster. I wonder if older arm64 arches might
-> suffer?
+> The basis of this series was (and I did explicitly ask) that it wouldn't harm
+> other arches.
 
-Are we sure it's not also slower on arm64 with small folios? I would be 
-surprised if it isn't.
+We'd need some hint to detect "this is either small" or "this is 
+unbatchable".
+
+Sure, we could use pte_batch_hint(), but I'm curious if x86 would also 
+benefit with larger folios (e.g., 64K, 128K) with this patch.
 
 -- 
 Cheers,
