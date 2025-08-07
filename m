@@ -2,199 +2,111 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2317AC87FCA
-	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 13:08:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CA1E6C87FCA
+	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 13:13:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 77F4D8E0005; Thu,  7 Aug 2025 09:08:23 -0400 (EDT)
+	id 51EE56B009A; Thu,  7 Aug 2025 09:13:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 757568E0001; Thu,  7 Aug 2025 09:08:23 -0400 (EDT)
+	id 4CAEB6B009D; Thu,  7 Aug 2025 09:13:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 645618E0005; Thu,  7 Aug 2025 09:08:23 -0400 (EDT)
+	id 3BA4F6B00A0; Thu,  7 Aug 2025 09:13:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5657C8E0001
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 09:08:23 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0AACD1A0B9D
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 13:08:23 +0000 (UTC)
-X-FDA: 83749990086.27.2688D62
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2064.outbound.protection.outlook.com [40.107.244.64])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 1B19C10000F
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 13:08:19 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="M/m2K/JO";
-	spf=pass (imf05.hostedemail.com: domain of jgg@nvidia.com designates 40.107.244.64 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754572100;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B2D86B009A
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 09:13:59 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8F464116942
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 13:13:58 +0000 (UTC)
+X-FDA: 83750004156.06.9EA755F
+Received: from m.syntacore.com (m.syntacore.com [178.249.69.228])
+	by imf03.hostedemail.com (Postfix) with ESMTP id F14632000C
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 13:13:55 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=syntacore.com header.s=m header.b=lwlxXC8O;
+	spf=pass (imf03.hostedemail.com: domain of svetlana.parfenova@syntacore.com designates 178.249.69.228 as permitted sender) smtp.mailfrom=svetlana.parfenova@syntacore.com;
+	dmarc=pass (policy=none) header.from=syntacore.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754572436;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HcNahN9GoGL0AP88sLUVxLsV+OiezgDlSya5Beqdmb4=;
-	b=qhrqfo6v8+HODDmDERonqTC/T63pphR5NrMgc0HC4iyw70H+dhJImiLXA7/fBJpkaXqbIW
-	jEmrNlBJVfifEsejr4dcjJ5uqDUh9AVNfI6+CD2LFcCpsr5bHamhfkCHbnsIMehOEImwBt
-	dVVhy7Rl7dtNDm7IGIWYL5RfLEqpHd8=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754572100; a=rsa-sha256;
-	cv=pass;
-	b=NnPJg0j6o7DKmQ1O41njpipuuvaCQxwai+6odTG6An+5s/vwD3gIuY9swz16rz9JzCU+Cy
-	zE72A9EIP4gdRx9SUFpHs3iBCJjarUYhNIR51quNf+gz00sRhV3KsOnLAf8zj5BF+ZaqL/
-	CS+ICFWQ8hs17mpv7gylrSNqyCiGgaU=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="M/m2K/JO";
-	spf=pass (imf05.hostedemail.com: domain of jgg@nvidia.com designates 40.107.244.64 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tQ1+zt8SxkWpi6XQvKb/4txJLmNhj/lKE1tbbt1yHm5Mc5mfMh1id0s7n9GI5o++auSo5fgwsbyFF8RGHy/AhtAQmxzQ50KAfwY+Lk+ne7i9/mPM6kIjAisy9OVGCuJDn89lx40GkRUvA92ncv0c2r7XBOY1KlrUvG81hcJl/JCd1EKx5Qz3kZ488T0o9nNYANzl74kNcFUIhK1EKWagmcQFDl7gCFYfa/YppIhvPXVVWPvY0tosrnQ06eTFBoFUEu1y4rfvyEjIg0ev32yYzL/OxMyWvHTDYb6Vc3xTRZh/5pybM9kmC5wf/gCuvZ7fNOa3OtGQIP1Q8Pvuvl0srQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HcNahN9GoGL0AP88sLUVxLsV+OiezgDlSya5Beqdmb4=;
- b=kzDGV6ClUN6JhAsCb/Tg2C17AqRbsb3oWrHgWl17B9xc8vaSbqHGdsTIoTLBp8xnm7fuotA5anPz87YJfP9LyCJ4aXVEJHepCizOuK5BZjEA6OSQ/wJlCsuslw8jZAGYQ+OVW7nHymzqFALhtmHmdtBC1jSarxIPH4iwu6ViqOWNDcXBuuGW3KqEEcm67zRTLCtxpgU50wz0Xa3B+SNZIKomGv06gR3y1AtY4jwGFe7EDNtR2A0Cu1gQr0YYJQf9F4b331gjSHFe+aMKXkuj3/CMchqVpsMKgeSg3af87PgeGXihKo06Xheu+myXJZautZ77luPaUmCww9ZssjNJug==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HcNahN9GoGL0AP88sLUVxLsV+OiezgDlSya5Beqdmb4=;
- b=M/m2K/JOv5Yv/ToHUCusN/WyEgwTM6QbQuHVoqqc47QW+gR1ysR4Pg6h76Sl+YdllzPOb0n72NW81+RCaZjQxsxyywcvEPM5ArW+4Qa8V8qy3uXMm42Sv/2JIXJ+qMYfEs/p+4xbYG9JB5SeI+QyzFxQiWcm0FsDBoVoEYNVFORQvqGgDWZOFyUu2tVHRM4HOJ+Yo6Y9/CL2luVzoALO4GJ9ScwWm6W8ZSmHB/Je55r4hNG+nARGUVDGA8uaF9aoxwLgdp+QJRTSyuL08tlXFnGCKylCGENcMF7jfRoUjmRDnnZ16+AGtOItUsGDZUWM4k3EY7kQJ0WZQ3tWW/2NKQ==
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by DM4PR12MB8558.namprd12.prod.outlook.com (2603:10b6:8:187::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.16; Thu, 7 Aug
- 2025 13:08:13 +0000
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.9009.017; Thu, 7 Aug 2025
- 13:08:13 +0000
-Date: Thu, 7 Aug 2025 10:08:11 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
-	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
-	kasan-dev@googlegroups.com, Keith Busch <kbusch@kernel.org>,
-	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v1 09/16] dma-mapping: handle MMIO flow in
- dma_map|unmap_page
-Message-ID: <20250807130811.GI184255@nvidia.com>
-References: <cover.1754292567.git.leon@kernel.org>
- <152745932ce4200e4baaedcc59ef45c230e47896.1754292567.git.leon@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <152745932ce4200e4baaedcc59ef45c230e47896.1754292567.git.leon@kernel.org>
-X-ClientProxiedBy: YT3PR01CA0108.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:85::25) To CH3PR12MB8659.namprd12.prod.outlook.com
- (2603:10b6:610:17c::13)
+	bh=PRldComWRoiWOPNshpB2MJ/sQDU9cbT00ez0s1BzS8w=;
+	b=7LbRBnO9g2ejKSkOgNDL6elILa/aruvYhZzwkgCNaru0JbGzfgr106ONAHO6/1CLK5Egbc
+	uaDJ1DhTM/6rJ8KFN18rxb1zTRacYTZ8SsNWHAgXhPVvyVxbQjEYGLSZv01WURpFqgSEh+
+	z4RvnRMNbmpm8hebAC/tTXCjFScGiR8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754572436; a=rsa-sha256;
+	cv=none;
+	b=UYSPiGXDYULQWtOCIYDIZH9KMl5nGlNaZMi1jj3SxjkT8CfSwT89qzPBgLujhjlV3D2xgR
+	6jenlyXde7WHwbx0C4jE/3l38gUTuqWJIkM577Y+HwGs2X0drOmRCsSt+23Sr0DIIgH49x
+	mX/xiB8SBlJGzr+yUn5sny7wXsk5ZEo=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=syntacore.com header.s=m header.b=lwlxXC8O;
+	spf=pass (imf03.hostedemail.com: domain of svetlana.parfenova@syntacore.com designates 178.249.69.228 as permitted sender) smtp.mailfrom=svetlana.parfenova@syntacore.com;
+	dmarc=pass (policy=none) header.from=syntacore.com
+Received: from MRN-SC-KSMG-01.corp.syntacore.com (localhost [127.0.0.1])
+	by m.syntacore.com (Postfix) with ESMTP id 428081A0004;
+	Thu,  7 Aug 2025 13:13:54 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 m.syntacore.com 428081A0004
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com; s=m;
+	t=1754572434; bh=PRldComWRoiWOPNshpB2MJ/sQDU9cbT00ez0s1BzS8w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:From;
+	b=lwlxXC8O4PxNXasjBDd5En6yslrBNKR2DOdsWuXC5VnWBHN451A0zyGjW/fCetcRS
+	 Xisbxr/ILirZiNrhm/rf5gYXrjwuvkahiy9xdStOPmj/7HasYhx+k9cCz1O19IJhbh
+	 G2F+OlT4Mp7aeotBQb1MhLhaFLBiDEBgCOSfHkWpSfm07paHg0V5EEF0z8DpNN0DuW
+	 IIKVn4HZmwry5/iH9X4hXaytkvZChritrSB9WS4+AhwdwdF9gvyAZfOa42FX1dvDL0
+	 1LmPyKNrVMvaL5FaSqTw1vR9xUafDPflnrzYeTA9jdtaKzekfP67saSzk/AY/7aKAM
+	 SSBmCcIkPU5fQ==
+Received: from S-SC-EXCH-01.corp.syntacore.com (mail.syntacore.com [10.76.202.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by m.syntacore.com (Postfix) with ESMTPS;
+	Thu,  7 Aug 2025 13:13:52 +0000 (UTC)
+Received: from [10.199.23.86] (10.199.23.86) by
+ S-SC-EXCH-01.corp.syntacore.com (10.76.202.20) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 7 Aug 2025 16:13:20 +0300
+Message-ID: <e9990237-bc83-4cbb-bab8-013b939a61fb@syntacore.com>
+Date: Thu, 7 Aug 2025 19:13:50 +0600
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|DM4PR12MB8558:EE_
-X-MS-Office365-Filtering-Correlation-Id: 08950cc1-2de1-4780-484f-08ddd5b376d7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Nq/4a2aPxe/mtkoI+QV41hdJKUg3cdlvSoOR/muTmjH0jenhZt1pRK5w3IzH?=
- =?us-ascii?Q?p/QFHExc/MgAgAc9aZQDcNnoHwi28teNBmt1OWbiyYcoTOc5Cb2wtWDPulgK?=
- =?us-ascii?Q?lRbbS7eEZagenmxQTEc+UUnF8s1mRoMLRy32fpksYmbw5v8mYjrbqJAKM1u7?=
- =?us-ascii?Q?KOTKhGVh777MbtRutO4zJRcrF1kRDXeKNnthTkAOSt/dKpif4LMWsvTKEha4?=
- =?us-ascii?Q?Q1VF2VW8cL2wutuXlsjVj8hGa8LVjTreJD7E3Z1xkfakk9+ka0SyNAseQpcG?=
- =?us-ascii?Q?gsLbMjQCzBddVDXCW1kuNJvSGpoI7lnQiSfA7pZ8ADRalwfE+Wd03wgQR3C2?=
- =?us-ascii?Q?kLpHy3kjaXHOmiEXvOv++7pxX5zMW7IRAtLjqcjoQHoev6H3/qXbKik5wHXc?=
- =?us-ascii?Q?RRyt/ae8W9ZVP6FekBsEETq2wOTaO9MlqpMCLFsWmX8vKQVuI+iYUOTaTd04?=
- =?us-ascii?Q?HUBwHFwWjIpnrD3cFb3qcNkg4yi+bm8/GC/Et6ucLgPJXJbUKe2YkwKSZqSs?=
- =?us-ascii?Q?CDXXbkHaVZwJbeU0WnrPRZbrfPcUDbVI5eA10870B0FyKaIHyMRI0x7/zCCP?=
- =?us-ascii?Q?AQ3jJ9Op0mto7K0skfRbtGmvyreJY3Nh4Leuq440dmD3GbRTxpMmUJeTrSFB?=
- =?us-ascii?Q?sFdvVDqzXfYUTFxKXAmkp+H3L5XiaIg5fTDbsHh3T31qSBy+4Ggfd0FDv0wB?=
- =?us-ascii?Q?QGRI2WkOXf2Kln/xZiyDkCqR6+CtYgA9c23F0/9VpyPCk5ZIYjUdKhKWc/l6?=
- =?us-ascii?Q?TM16Zonii3uyIvOX+gBnQbtIVf8om4ZEYnCLTSajZ5xI3/rcs+rp549OwAaH?=
- =?us-ascii?Q?v4pwvGo9mvAy3l8n82aOYSmGg7xY25BQIvsalU3qzA9AWBQgz7SMLMNJpPSD?=
- =?us-ascii?Q?g8W0JjY7HjdwX5em71q4xpApzR95Q6pUwlfnbKpMtaz1BMNHNYXpfaiQmK4T?=
- =?us-ascii?Q?U30RbT4w7xqdhd7GCtAugnvLNCa0ZYjBubYnmojSsQNfh8blXE5jjBIyEvyl?=
- =?us-ascii?Q?N1ML8UBAaT/6M4w8S9RWSQ1HXCw3gyVhmA5qVYz6kRnwYAuH4jttPqqU21ts?=
- =?us-ascii?Q?mc6+jLwdCTRLxaqX0cAjTWTnOURE0pG7WC78sDc2oRS+nazzJoxhLoQR3j8R?=
- =?us-ascii?Q?ovpm0N+kaQoi6TiloWW4BZ8JiuhTZ9orE5xiKzRfsva9gFbF67IV1C1iLGHE?=
- =?us-ascii?Q?3Izs9IQYnVOP0aFr/uYb9NX1NcfuEY5HPyY1iQw5B6mk5As1LaYlHuIYnodk?=
- =?us-ascii?Q?mF32bjbDXsSDkQIxF/0LhDcdp9IuwTqAbTgUeSi9SOrVI3x8sat/XVh1s/GM?=
- =?us-ascii?Q?bmQc+MvkzYeqQSqXEvWk/4BPL43BorkZoPfZfxAAlzy9x+MlHnog1mzE/DD5?=
- =?us-ascii?Q?bl0OWTpu948qX9qOmmcDYGR17MxIM/C5TBPx+yLLOQF062Nxw7t4KN9UiIOI?=
- =?us-ascii?Q?P1tH+x/69d0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Rj4qcstFxUNxsRt471nCdJj82wmdEq5/Kx7zvkQBLfZLQRl+ga88yJlYaCsf?=
- =?us-ascii?Q?CbdR5MQ2vuVy3EpcYdVVFFFuGDV6c/18dGgVy+aIQX4Xz3Taj0QWItN6MfAp?=
- =?us-ascii?Q?fdK3eG9vIwBOxPgwq3r8hbXL8FUymx7Ury4B1K21cfVGfAHu0/T8/7mSvooq?=
- =?us-ascii?Q?jJIMjROfGb2SglfRzuidjznIqdf3HNmIvDb9Vf0G8LS1A52miIu11TW9wBUe?=
- =?us-ascii?Q?1BGs6bBOxq8N9mz/FIwxof2vawn/poPbtXLbRIpUYk8UgzUBrBv1v4c1JtYn?=
- =?us-ascii?Q?otlxohDx2mxKpVCgHnOqkg5xVBuF0zgfBgBf0AlwsLRpwd4Q8G3xdiwPTnR4?=
- =?us-ascii?Q?Sspl65u0J6IPBVkwiQgyZatvFlT3rrhAQ+tuJO2UQ0mG239MR9IeOUJg9kSE?=
- =?us-ascii?Q?gW82aHqUFkerfU8AD3AFAWXH+Jfs6lzIna8/opyIEIDZIE73ZPXwj4CB5c8P?=
- =?us-ascii?Q?ioeE2zfcTc3PdvivMeeXMulub5u5IHBdiy2g5fVp/PRSrplWN1lgGq5TaOoW?=
- =?us-ascii?Q?EmfRJ957EM/oJ/1LU6bjRlXSt5CGu7B55SDYzKgMVCUNqIxc1mmDGOAArrwe?=
- =?us-ascii?Q?UihpLdOIVq2JzAecSr1X2GDfb3wYgiwSAORwRdpg4e4LyyimuAnso83lo+b1?=
- =?us-ascii?Q?ta0eoJPuf3AAa0xtEh+F1Rk89sYQF5ye5EZ9yOBx3VC1VC1NiMA5E2rIr7P4?=
- =?us-ascii?Q?uoSqNodY+GPN5iARUia8nXINxqfJBJNu3xlleOAE/SRO0smabmoLTY1a1FO1?=
- =?us-ascii?Q?piaXqyKi7ywfW73iD0HP7uZx2/0i/hfqglw01epL/KqZYbC60xX7iT5hW49Z?=
- =?us-ascii?Q?9cfUqCcxOAmwSFJR0PO/GKRiqarvC+1sD6fP7GS4kcFZ8jPtpItFsF9aWYX7?=
- =?us-ascii?Q?0FQVBSuV5d7s2mCE5WH8vNkQagG4ongmjy9XtQwwxlu/RH+LpeVH0NxyluGu?=
- =?us-ascii?Q?CULKE00Q+0mZc984ezCco3ZtV14RqVSsiCyR+XWoGXeCFv8hg9rD0s5tQGGd?=
- =?us-ascii?Q?YbKb24R9elV2YHlqk4oYH0kER3H2kQqdSdVXkIN7LeuWGVVN2E0boCQAWVrW?=
- =?us-ascii?Q?V3Vn6ZdR+qj3JARf/nEiTsP17PDBHDFKU6+Mfs0psjZXvdgFKHAl0TQqnLDZ?=
- =?us-ascii?Q?hWedoX7mADffbzxiSX2BhY2PCTciTJbseJX7GwyG6+FcZP+B3w3iakMH/pPZ?=
- =?us-ascii?Q?KcCtjslOcZ5QaDx6+zFxoEVghkCAbFOVxC7jA715eh+7ppgYr6nlG50Qimnc?=
- =?us-ascii?Q?Ge89r+xdDkrN+ZcjOqiXojuASnecl3FGDce7S6+ovPgNRbvtjNei5tn2J6Zt?=
- =?us-ascii?Q?CUVkOheZnHigLiuTQ/sJQ0//HdwQ9VAAgv+dMPZjKsNgbkF7N1cC5CZXI0uc?=
- =?us-ascii?Q?K9ct3Peu/gXnCYvZMLdFnl5mP/9x3jzXxseDC2Xq0GURAfeZAaZxCTjReqh5?=
- =?us-ascii?Q?CZ4WSzmbS5FGb4DPjk7IkC2gHvwHSDkiFBy0bOmm4ars19OIebfBS8MDl3C9?=
- =?us-ascii?Q?aoQdrCQAc1YMTs90T867gbeVLXS3snMjDLJlzsIbMvkkksphpbdW5Jz4pryX?=
- =?us-ascii?Q?Ma1w0FcmuWectGjgXy4=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 08950cc1-2de1-4780-484f-08ddd5b376d7
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2025 13:08:12.8802
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vOq4jHUsSKGMaJyXZYTLbMWHzFOPikNkJkIkpgwbuFDcTt8ZteeQkm001BjRjw4P
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB8558
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1B19C10000F
-X-Stat-Signature: rr87jpgztnbeq9immmwq1npdwbdw4tm5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC RESEND] binfmt_elf: preserve original ELF e_flags in core
+ dumps
+To: Kees Cook <kees@kernel.org>
+CC: <linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <viro@zeniv.linux.org.uk>,
+	<brauner@kernel.org>, <jack@suse.cz>, <akpm@linux-foundation.org>,
+	<david@redhat.com>, <lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>,
+	<vbabka@suse.cz>, <rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>
+References: <20250806161814.607668-1-svetlana.parfenova@syntacore.com>
+ <202508061152.6B26BDC6FB@keescook>
+Content-Language: en-US
+From: Svetlana Parfenova <svetlana.parfenova@syntacore.com>
+In-Reply-To: <202508061152.6B26BDC6FB@keescook>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.199.23.86]
+X-ClientProxiedBy: S-SC-EXCH-01.corp.syntacore.com (10.76.202.20) To
+ S-SC-EXCH-01.corp.syntacore.com (10.76.202.20)
+X-KSMG-AntiPhishing: not scanned, disabled by settings
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/08/07 12:24:00 #27641897
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 5
+X-Rspamd-Queue-Id: F14632000C
 X-Rspam-User: 
-X-HE-Tag: 1754572099-213838
-X-HE-Meta: U2FsdGVkX1+i9f6SLlwGk9xTG0IhMp7BLt9ikPI3zdcjBxR/g2TWXzlmbbsw1ya8lXg+I3FswsZTINp37F6ipu3yoK6pr8BDfXLBMeBE2jMXeYhoc5B09xV1qCgYTsLi6baty6QYsLwHFeukuCKMEGfMFt+I8eNN5Fcwc8Hli+O0ANKJhiMLLev3zSuyzs9ZUxFfdBh+0hdnR2mFiknEA/d55X1dA7KK06kcwPPSf2lG8hjkrs4o3PtCCgsJOSfXVVzJP0mkN9XK8aBPvHck/1N/2jQ83nIQLPDDSsnknKFoXPJRFhXrplrNJD2OxuG7rrGoaZkUYBpW+gDecgMhlOIv8kjAMAgw01lDNLqJOA4A4idIjrwenRniALwl1yLNa350w/bSSGSKd2sfRwQRNiu87l0b0E18UAAkgoH0wW3Bgvrugo0pi4dHgX34QvW5GttHIS5f8zkaHhET4xoqwWCkIrzbh09aU02Ab2KuGq1c3f5JGZ2rxKoY1yrblS6YWilQhd86sjoE/6ZvMiCw4f/Gist1vKjIstBU2j2otMZBZTfudh0fnQrA1EleIXo7ekpbj5XfI+KwprlRT1cxhgL6MBKdzvgDlr1ZOKTcdw/Mb4WSDxc2ZvHikjta6B7s6nsBtvX8AwvMtAvJdj3Q3cDop6LQ7BRdqMF76mUzXVacsQJGk3hGmTZN68Lahq71Boj56+aeCNiEnIKRdsle03UzEOVwj6z80q1HgDeQyXuvxIQzCvYEsTI0BQnVfQQi77hbhX65z2FkhbdkdIenCmor8fiDI3dXNskNF+IBe8Aeovu6R58E+eMfwf5Jr5mPgeXWtGOzKFbgwaYijFep5ovo7AUqAMKNerxmTXvqEj8uqmubW9F++R+Ph3CzcKzwGSy1SJb8QyvhGgeokLPhcWA8CwU9R1nNiYOOqtBSeoX5zPCcbtpcuNmR+l1euX0Ontw8T71Jwnh1PqQbn5B
- qJdjBjEI
- 1+6z869LDdq2GC6QcIuCiKMR6MMyi1RMIAxsnBl7W3u0Rn50QixztGp/DZw2wUQoTpclb+pMOsqPuxcrjmdaRbOpCI5i2OfG7DLuhGF/yUKMP3CA7US24u7OZSieyfpFz5ZLQKTbvUWKizG3oPCenqfueJ8u/xYEINLdp/iDA/Q5exjalidpOe4eckT9yLriluww0lB1BOE2PzIkNZZpsarHbAU62+rEkPOLqjocAD8qLMLiRYkhZ8y+Qe6j+j+UIkqfdcHAVRwzTkOhXPPHl2got6AQV6j1YWjn/tm0fnyweo93RRi51QShDJ5a1x+dL73WOiqEC6ulzI0xgVglak21w8GpLuHGLzoYQ6FdrIBs2KPvkgmC+uoXPhasTPbffyuNyDMqglHw7jyUUc24F3xxR8M5AWipVoIw5oxaoj9Aqpy+yxOKjX3LP1tzCmcp/T6oSfSi6gTAbqX6nHjEX6KyVXRF+PtEB+eI2f6JS+PCX7Gsx1aTZ2Ozb10Nd3hrTkmpRiil+SIRLmCUNryHLzYURkNb/wnJFLYUpsS0hxqIbzgyL7D9pQ65XjlTE1f0981IMEsNnIML5VMflLXeq/46zWRCOL0kjXJS5ddGaa99O1Sl3kHVqmZYn1jPNaDbbFhLqX0n2opEciRo=
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 1yh3nbpdmom9tqnqogswm4pdi67mscks
+X-HE-Tag: 1754572435-572351
+X-HE-Meta: U2FsdGVkX1+8sSlkLf6mH2ReP/nJQUC0VgBWq8L+Gxg0UeSWXGkh9bYzxsrZ/lEPXxchclX+q54146P1dZhii/TvpgglbLPPuw9oQbH3w9g66wTOBn2kftfB9TT5+OqrR/MzLK7S0/9hi4cO57JBIi+9LnnAjgxy0M2tWEBhKh+HUWaXZDUnjcbqru2y0N29sloVzqUdOOFgC4Hmk8mpO1mzTZyeDCyCGfrcuj0PwCTlrqmdheYNMT6Gksr+EXrYA8KjYsyFxVbCf2mfCgxz85e4TNYKVKv+hULSKeAKCUejJGBAPMxqHmMhmUv8Rebj/d/3SJ4Eav0hhfcxp7L5VbA/uiwRx+OqJERb06ZiPUbx0J2Q1LyWtnM2xl2HtgUV4GS82TW0C4rjUDGBq7tzJ/Ol5vdpG5eHWf7IyZ01SMGR3o34QUZTYUN8PdlyfThlOzoinOyY8XSDlHGUU6ryFzTCqKuBxzUwy/jQMRsBN1whebWDcc2fgXXbqOUgN9JxrZsPi81umtYgCKqwxnBf6ndv+o4w8a/MnDBVHyMXxMmazjE8sWmurbjqhaYL9CFE128+3Uu43pd6ueZ4T41LOLWTDCW29jVEL2NdvPu1gOnQLKsSXk6McfvBXEreIeuYF3+a0TRGMEYuQ0rhBqrtJDgXt/csuZRxOmEy12mo+1r57oXdbgS63dq8/ssL0aRarhuCu/nHu7Whl07FwMmbSt5KBH6Nzd1jqH5VBe+Bar5eLUc2+NGU/sF+P1PNfl7JDyzPLlh9RDvo72kd4mGM6Ms3dqTLigey6UIxuwI11QJPmO2Kux8K8uPZhmfyFKnSP2dA4XmkCdWfMWKMFIx2moJ2XJpS2WsSOA/F5RJHno8rCRjsWYHd3JCI8YN1fOftG3YOGXfGI15bc5golU1Gcr0GpS661Zkwct6ezkIe4mjdM2OQWLmt15ubbVJ0CfuyrXqhjfwqwcjD0AJdCll
+ 0UpY+OXH
+ JD0ehBfhil8+l3u3oF/bOySP73SI2sH641SS9qaLdK1tMDWCkDnVoDnLZWv6nD7BWAvblsw8O6hcIxLGQYX1iQNlU7zaKDy1AH4qsiLMaDnuO43QMXKfQK6uQV5j8PjtsrusNYEz9pzX8zKA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -203,62 +115,176 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 04, 2025 at 03:42:43PM +0300, Leon Romanovsky wrote:
-> From: Leon Romanovsky <leonro@nvidia.com>
+On 07/08/2025 00.57, Kees Cook wrote:
+> On Wed, Aug 06, 2025 at 10:18:14PM +0600, Svetlana Parfenova wrote:
+>> Preserve the original ELF e_flags from the executable in the core dump
+>> header instead of relying on compile-time defaults (ELF_CORE_EFLAGS or
+>> value from the regset view). This ensures that ABI-specific flags in
+>> the dump file match the actual binary being executed.
+>>
+>> Save the e_flags field during ELF binary loading (in load_elf_binary())
+>> into the mm_struct, and later retrieve it during core dump generation
+>> (in fill_note_info()). Use this saved value to populate the e_flags in
+>> the core dump ELF header.
+>>
+>> Add a new Kconfig option, CONFIG_CORE_DUMP_USE_PROCESS_EFLAGS, to guard
+>> this behavior. Although motivated by a RISC-V use case, the mechanism is
+>> generic and can be applied to all architectures.
 > 
-> Extend base DMA page API to handle MMIO flow.
+> In the general case, is e_flags mismatched? i.e. why hide this behind a
+> Kconfig? Put another way, if I enabled this Kconfig and dumped core from
+> some regular x86_64 process, will e_flags be different?
+> 
 
-I would mention here this follows the long ago agreement that we don't
-need to enable P2P in the legacy dma_ops area. Simply failing when
-getting an ATTR_MMIO is OK.
+The Kconfig option is currently restricted to the RISC-V architecture 
+because it's not clear to me whether other architectures need actual 
+e_flags value from ELF header. If this option is disabled, the core dump 
+will always use a compile time value for e_flags, regardless of which 
+method is selected: ELF_CORE_EFLAGS or CORE_DUMP_USE_REGSET. And this 
+constant does not necessarily reflect the actual e_flags of the running 
+process (at least on RISC-V), which can vary depending on how the binary 
+was compiled. Thus, I made a third method to obtain e_flags that 
+reflects the real value. And it is gated behind a Kconfig option, as not 
+all users may need it.
 
-> --- a/kernel/dma/mapping.c
-> +++ b/kernel/dma/mapping.c
-> @@ -158,6 +158,7 @@ dma_addr_t dma_map_page_attrs(struct device *dev, struct page *page,
->  {
->  	const struct dma_map_ops *ops = get_dma_ops(dev);
->  	phys_addr_t phys = page_to_phys(page) + offset;
-> +	bool is_mmio = attrs & DMA_ATTR_MMIO;
->  	dma_addr_t addr;
->  
->  	BUG_ON(!valid_dma_direction(dir));
-> @@ -166,12 +167,23 @@ dma_addr_t dma_map_page_attrs(struct device *dev, struct page *page,
->  		return DMA_MAPPING_ERROR;
->  
->  	if (dma_map_direct(dev, ops) ||
-> -	    arch_dma_map_phys_direct(dev, phys + size))
-> +	    (!is_mmio && arch_dma_map_phys_direct(dev, phys + size)))
->  		addr = dma_direct_map_phys(dev, phys, size, dir, attrs);
+>> This change is needed to resolve a debugging issue encountered when
+>> analyzing core dumps with GDB for RISC-V systems. GDB inspects the
+>> e_flags field to determine whether optional register sets such as the
+>> floating-point unit are supported. Without correct flags, GDB may warn
+>> and ignore valid register data:
+>>
+>>      warning: Unexpected size of section '.reg2/213' in core file.
+>>
+>> As a result, floating-point registers are not accessible in the debugger,
+>> even though they were dumped. Preserving the original e_flags enables
+>> GDB and other tools to properly interpret the dump contents.
+>>
+>> Signed-off-by: Svetlana Parfenova <svetlana.parfenova@syntacore.com>
+>> ---
+>>   fs/Kconfig.binfmt        |  9 +++++++++
+>>   fs/binfmt_elf.c          | 26 ++++++++++++++++++++------
+>>   include/linux/mm_types.h |  5 +++++
+>>   3 files changed, 34 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/fs/Kconfig.binfmt b/fs/Kconfig.binfmt
+>> index bd2f530e5740..45bed2041542 100644
+>> --- a/fs/Kconfig.binfmt
+>> +++ b/fs/Kconfig.binfmt
+>> @@ -184,4 +184,13 @@ config EXEC_KUNIT_TEST
+>>   	  This builds the exec KUnit tests, which tests boundary conditions
+>>   	  of various aspects of the exec internals.
+>>   
+>> +config CORE_DUMP_USE_PROCESS_EFLAGS
+>> +	bool "Preserve ELF e_flags from executable in core dumps"
+>> +	depends on BINFMT_ELF && ELF_CORE && RISCV
+>> +	default n
+>> +	help
+>> +	  Save the ELF e_flags from the process executable at load time
+>> +	  and use it in the core dump header. This ensures the dump reflects
+>> +	  the original binary ABI.
+>> +
+>>   endmenu
+>> diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+>> index caeddccaa1fe..e5e06e11f9fc 100644
+>> --- a/fs/binfmt_elf.c
+>> +++ b/fs/binfmt_elf.c
+>> @@ -1290,6 +1290,11 @@ static int load_elf_binary(struct linux_binprm *bprm)
+>>   	mm->end_data = end_data;
+>>   	mm->start_stack = bprm->p;
+>>   
+>> +#ifdef CONFIG_CORE_DUMP_USE_PROCESS_EFLAGS
+>> +	/* stash e_flags for use in core dumps */
+>> +	mm->saved_e_flags = elf_ex->e_flags;
+>> +#endif
+> 
+> Is this structure actually lost during ELF load? I thought we preserved
+> some more of the ELF headers during load...
+> 
 
-I don't know this area, maybe explain a bit in the commit message how
-you see ATTR_MMIO interacts with arch_dma_map_phys_direct ?
+As far as I can tell, the ELF header itself is not preserved beyond 
+loading. If there's a mechanism I'm missing that saves it, please let me 
+know.
 
->  	else if (use_dma_iommu(dev))
->  		addr = iommu_dma_map_phys(dev, phys, size, dir, attrs);
-> -	else
-> +	else if (is_mmio) {
-> +		if (!ops->map_resource)
-> +			return DMA_MAPPING_ERROR;
-> +
-> +		addr = ops->map_resource(dev, phys, size, dir, attrs);
-> +	} else {
-> +		/*
-> +		 * All platforms which implement .map_page() don't support
-> +		 * non-struct page backed addresses.
-> +		 */
->  		addr = ops->map_page(dev, page, offset, size, dir, attrs);
+>> +
+>>   	/**
+>>   	 * DOC: "brk" handling
+>>   	 *
+>> @@ -1804,6 +1809,8 @@ static int fill_note_info(struct elfhdr *elf, int phdrs,
+>>   	struct elf_thread_core_info *t;
+>>   	struct elf_prpsinfo *psinfo;
+>>   	struct core_thread *ct;
+>> +	u16 machine;
+>> +	u32 flags;
+>>   
+>>   	psinfo = kmalloc(sizeof(*psinfo), GFP_KERNEL);
+>>   	if (!psinfo)
+>> @@ -1831,17 +1838,24 @@ static int fill_note_info(struct elfhdr *elf, int phdrs,
+>>   		return 0;
+>>   	}
+>>   
+>> -	/*
+>> -	 * Initialize the ELF file header.
+>> -	 */
+>> -	fill_elf_header(elf, phdrs,
+>> -			view->e_machine, view->e_flags);
+>> +	machine = view->e_machine;
+>> +	flags = view->e_flags;
+>>   #else
+>>   	view = NULL;
+>>   	info->thread_notes = 2;
+>> -	fill_elf_header(elf, phdrs, ELF_ARCH, ELF_CORE_EFLAGS);
+>> +	machine = ELF_ARCH;
+>> +	flags = ELF_CORE_EFLAGS;
+>>   #endif
+>>   
+>> +#ifdef CONFIG_CORE_DUMP_USE_PROCESS_EFLAGS
+>> +	flags = dump_task->mm->saved_e_flags;
+>> +#endif
+> 
+> This appears to clobber the value from view->e_flags. Is that right? It
+> feels like this change should only be needed in the default
+> ELF_CORE_EFLAGS case. How is view->e_flags normally set?
+> 
 
-Comment could be clearer maybe just:
+view->e_flags is set at compile time, and view is pointing to const 
+struct. The override of e_flags is intentional in both cases 
+(ELF_CORE_EFLAGS and CORE_DUMP_USE_REGSET) to allow access to the 
+process actual e_flags, regardless of the selected method.
 
- The dma_ops API contract for ops->map_page() requires kmappable memory, while
- ops->map_resource() does not.
+>> +
+>> +	/*
+>> +	 * Initialize the ELF file header.
+>> +	 */
+>> +	fill_elf_header(elf, phdrs, machine, flags);
+>> +
+>>   	/*
+>>   	 * Allocate a structure for each thread.
+>>   	 */
+>> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+>> index d6b91e8a66d6..39921b32e4f5 100644
+>> --- a/include/linux/mm_types.h
+>> +++ b/include/linux/mm_types.h
+>> @@ -1098,6 +1098,11 @@ struct mm_struct {
+>>   
+>>   		unsigned long saved_auxv[AT_VECTOR_SIZE]; /* for /proc/PID/auxv */
+>>   
+>> +#ifdef CONFIG_CORE_DUMP_USE_PROCESS_EFLAGS
+>> +		/* the ABI-related flags from the ELF header. Used for core dump */
+>> +		unsigned long saved_e_flags;
+>> +#endif
+>> +
+>>   		struct percpu_counter rss_stat[NR_MM_COUNTERS];
+>>   
+>>   		struct linux_binfmt *binfmt;
+>> -- 
+>> 2.50.1
+>>
+> 
+> -Kees
+> 
 
-But this approach looks good to me, it prevents non-kmappable phys
-from going down to the legacy dma_ops map_page where it cannot work.
 
-From here you could do what Marek and Christoph asked to flush the
-struct page out of the ops->map_page() and replace it with
-kmap_local_phys().
-
-Jason
+-- 
+Best regards,
+Svetlana Parfenova
 
