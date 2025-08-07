@@ -2,181 +2,114 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B767CC87FCA
-	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 10:48:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 74282C87FCF
+	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 11:01:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CABF8E0002; Thu,  7 Aug 2025 06:48:48 -0400 (EDT)
+	id E73528E0002; Thu,  7 Aug 2025 07:01:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 379BC8E0001; Thu,  7 Aug 2025 06:48:48 -0400 (EDT)
+	id E24BC8E0001; Thu,  7 Aug 2025 07:01:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 241C58E0002; Thu,  7 Aug 2025 06:48:48 -0400 (EDT)
+	id CEBA98E0002; Thu,  7 Aug 2025 07:01:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1198C8E0001
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 06:48:48 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B64F6B6994
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 10:48:47 +0000 (UTC)
-X-FDA: 83749638294.27.ED35CFC
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 500E7180006
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 10:48:45 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zUpKvsAd;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OCqAfUS8;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zUpKvsAd;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OCqAfUS8;
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754563725; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id BD0F68E0001
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 07:01:10 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 66F15140A2E
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 11:01:10 +0000 (UTC)
+X-FDA: 83749669500.20.93C148E
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	by imf06.hostedemail.com (Postfix) with ESMTP id A1103180008
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 11:01:08 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="l5N/v3x8";
+	spf=pass (imf06.hostedemail.com: domain of elver@google.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754564468; a=rsa-sha256;
 	cv=none;
-	b=DuX2vIMb4aVympDykblAXDeqm7rw1xzo/KiHm4fBk1OGZvSrMlpzbWK+eCltjE/XIzXAUE
-	PtM3JH/vlf9L+tdjOlIF18Lm/DMNk0zpUnpGMKNV+C3L2lEi2n9ThJqTRbikE8y1mDmw/V
-	JFkMQRymkroo2/TpRt4Jsjv2BLoPfmw=
+	b=qI7Cu4PpirZRJuURO6F3E5kviwdlZm6U2eSjZhlednxQrd64SABdfHm5JLECoiz2wOqpcK
+	OeOqqBMlxGPZK/r3YxjUgPuFe/HHbd1zWv2b+77/0BkhSuDZI2TzAqbKVtMDIGggeq5oGa
+	V7uUNacFbEj26Mli7pYT6MVhE4IZGpg=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zUpKvsAd;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OCqAfUS8;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zUpKvsAd;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OCqAfUS8;
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+	imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="l5N/v3x8";
+	spf=pass (imf06.hostedemail.com: domain of elver@google.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754563725;
+	s=arc-20220608; t=1754564468;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YlKy82/Fd/DACmJueXeq1pHVlADct9qz8hQPevvcNX4=;
-	b=eAyki7kgMmUGJgUNgSHk9BpNgLoMt44R6SRtYysa9v+H9cUOxBfR4Ad3UAwB/lbAL1vY41
-	tjaV9+MI/w1vJhz7h11fpTL+RvdIGg6JQtClznCvtUz26UISICJeS+0nEXhcSRAKwJJtd2
-	1BhTRIL3c3BoUJOPvRw3+t2/yuJ2X7I=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C780A33D0B;
-	Thu,  7 Aug 2025 10:48:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1754563723; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=YlKy82/Fd/DACmJueXeq1pHVlADct9qz8hQPevvcNX4=;
-	b=zUpKvsAdpFFAm5GaSxEKG04pLxEmqsRn1b77wwSPcW69YIdLKGh/OtseNS8kNFNDImPw4I
-	wktv9ue4xusNVfygaIWOaMPUbsqBzvPa7Xu8jMiNeLHATGducwwJlMkVjfBojvnSSkUvaw
-	0MAUC9jN2+j2qQkGwAXBc1+X0vkAcpI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1754563723;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=YlKy82/Fd/DACmJueXeq1pHVlADct9qz8hQPevvcNX4=;
-	b=OCqAfUS8UqaVcqzXcwGFBvJ6e+IlFF04xgTmriR6yd7Z4WfUcEpbiBKIGBogPOb7nVKVZx
-	3/IrHYYl9xkAarDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1754563723; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=YlKy82/Fd/DACmJueXeq1pHVlADct9qz8hQPevvcNX4=;
-	b=zUpKvsAdpFFAm5GaSxEKG04pLxEmqsRn1b77wwSPcW69YIdLKGh/OtseNS8kNFNDImPw4I
-	wktv9ue4xusNVfygaIWOaMPUbsqBzvPa7Xu8jMiNeLHATGducwwJlMkVjfBojvnSSkUvaw
-	0MAUC9jN2+j2qQkGwAXBc1+X0vkAcpI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1754563723;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=YlKy82/Fd/DACmJueXeq1pHVlADct9qz8hQPevvcNX4=;
-	b=OCqAfUS8UqaVcqzXcwGFBvJ6e+IlFF04xgTmriR6yd7Z4WfUcEpbiBKIGBogPOb7nVKVZx
-	3/IrHYYl9xkAarDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AB70B136DC;
-	Thu,  7 Aug 2025 10:48:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id QS0CKIuElGh3VAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 07 Aug 2025 10:48:43 +0000
-Message-ID: <33275585-f2db-4779-89f0-3ae24b455a67@suse.cz>
-Date: Thu, 7 Aug 2025 12:48:43 +0200
+	bh=z1LA4zLatdYQ3Y3OjAbWN8XrQew8n5n36uGhalyKn/8=;
+	b=UxXFyeU0PYWiWqczxWBCL7jkTYQjoOBa3zxh8j4KVytEuBEOIAyB62ymoUtVbf7ZSAi+el
+	DCyRKBUmzhjQ8GSPfdVzc83pHVdRmzFErazIukYxkOR2Lwe4p0VPmhHEjTKsAtyj1niWzl
+	1RoYy/MZ27OeAztKzFed7fWSQ4JbyAc=
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3b78bca0890so392882f8f.3
+        for <linux-mm@kvack.org>; Thu, 07 Aug 2025 04:01:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1754564467; x=1755169267; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=z1LA4zLatdYQ3Y3OjAbWN8XrQew8n5n36uGhalyKn/8=;
+        b=l5N/v3x8qdtYrUIQxlGMym5c78XlAT3fEiDmtevBVVlUr3JwOZqiuT6ZB0gMERNgFi
+         Ern2hDHOGCW8ISlFap+EdyAGzlPyuDgpMNfesgSGLWo1L8YdaJppyOqVROmGpkdPPMj2
+         Yj4oPZaRi8Sunau1ifC5AmVhTCr/2cMPYYYI8nRX63l2UEUj1vKWp/k68jySVTROcaL3
+         8getTKJfcyduYTL/OtISf1LN5SAfo0jxBYa0MJ+CNSq1Lqbk48992vwp+9ZjgbOL8/GI
+         7lma9p6k0wqnRfWTDIiLTLXZdWLrBtX7T2eykIvCAob5X6PRXXpX7habOWrL0Lb0zLP7
+         oIyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754564467; x=1755169267;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=z1LA4zLatdYQ3Y3OjAbWN8XrQew8n5n36uGhalyKn/8=;
+        b=RnULoBnJ2kod0+6/EHEzxEryrXmxGUIveP3MKGgiyZTf9PXW9andl0MzAVKmBg9W5F
+         ZpARhLY7vpxhpRU4hb3/ojVXtr12gKJlYntYKSWU14sJDXjhPhmqZakGJP/qiff+wPhv
+         ITSGl6/uA6RcqttP8Jl+jXZbQe9PefOsTshImUQvgBShkfYECjc+tvJzfm0drHa8bS0X
+         DNTbpoGU3IO+GDWIZuRcCdzlzgvwKQf46BBl9n235l77KoKz13JYJmu7PAYAUlHiabyE
+         LoCHK8j7+8jjBjEmCNFg68DnfEgxS8ZcJreifoRwblLDbBUWFRX+f1bYVHsJiAA3ogDA
+         zdNA==
+X-Gm-Message-State: AOJu0YxP24yYfi3B1KLWXE9pipdgxTFnvB7S4Jly/mONM/OuAQWIMb72
+	XiGpWRlorowSWYD4DiOM5MvgL0T2+4CCC1w/KmvfnMNRQbF6/KDPe8SFk9UhX+W0fA==
+X-Gm-Gg: ASbGnctvA83jEj2miH+aX3o4kphwejvanr90Em7tutopEcRwjn7E8OOJHLHhNtSW/U1
+	BBNIkG7gc5G6vKswCbs2yzUqQ7VM7nnvQs4ZJGE/kpLhuuULbzr62HwWmBc7GbsJ7KS58LqJAcb
+	GApPeJ26DuZjEOgC55qLGWJ8Gk3Iclr2lNrPHOAjHYOKJ5W0FQSZGHkKJvKGaJ80QL0wHXL4Z/T
+	0u34T5GL/1EQU5L5rCp+xlGqNS+jyrFJdsnEppfLK8z12/1y6AGxnDKOEBScMmVjKAOuJdI4g1r
+	mnCmf8Yxv1Ti+u0INEOoyU/wAapQhi2mit//EQlP178WxfGf4LoUTdbW9s1nJK/bmUAgVb7AnvJ
+	tMLRvmPgUp0Ry0h+QpEJaFsCxUBGo2rsFBARa/U4p/cnf0/u8plSyKGKfPSQ=
+X-Google-Smtp-Source: AGHT+IEwZ2Oq+pTGZgJFxX26wp+82jD3we8xi3/GH3Welww/bjc1k6gfMisY/v82jM9c/h7V+Z4+SA==
+X-Received: by 2002:a05:6000:2489:b0:3a4:d6ed:8df8 with SMTP id ffacd0b85a97d-3b8f41b4ed8mr5599905f8f.39.1754564466804;
+        Thu, 07 Aug 2025 04:01:06 -0700 (PDT)
+Received: from elver.google.com ([2a00:79e0:2834:9:ad48:3e8a:43af:495d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c453aeasm27312698f8f.40.2025.08.07.04.01.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Aug 2025 04:01:05 -0700 (PDT)
+Date: Thu, 7 Aug 2025 13:01:00 +0200
+From: Marco Elver <elver@google.com>
+To: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@kernel.org>,
+	Baoquan He <bhe@redhat.com>, LKML <linux-kernel@vger.kernel.org>,
+	Alexander Potapenko <glider@google.com>, kasan-dev@googlegroups.com
+Subject: Re: [PATCH 0/8] __vmalloc() and no-block support
+Message-ID: <aJSHbFviIiB2oN5G@elver.google.com>
+References: <20250807075810.358714-1-urezki@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Realtime threads delayed due to kcompactd0
-Content-Language: en-US
-To: Alexander Krabler <Alexander.Krabler@kuka.com>,
- Frank van der Linden <fvdl@google.com>, Mike Galbraith <efault@gmx.de>,
- Hugh Dickins <hughd@google.com>
-Cc: "linux-rt-users@vger.kernel.org" <linux-rt-users@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- Dennis Schimmel <Dennis.Schimmel@kuka.com>,
- Daniel Braunwarth <Daniel.Braunwarth@kuka.com>
-References: <DU0PR01MB10385345F7153F334100981888259A@DU0PR01MB10385.eurprd01.prod.exchangelabs.com>
- <CAPTztWYf82p6hq=Q2mVq6_9WTjRaQiH81z4idZL6MZ1PXufPwQ@mail.gmail.com>
- <71df781c-3ef3-4b26-9ba8-93fc7d4f9eec@suse.cz>
- <026de9fcd4f0ed17c2df95c4f7c56b878a844012.camel@gmx.de>
- <25ba0d77-eb61-4efc-b2fc-73878cbd85c1@suse.cz>
- <DU0PR01MB103857873A56FD121984568148226A@DU0PR01MB10385.eurprd01.prod.exchangelabs.com>
- <c48f2877-4d37-4310-995e-fc5c2ae9a366@suse.cz>
- <DU0PR01MB10385C08C119276D99A234D978226A@DU0PR01MB10385.eurprd01.prod.exchangelabs.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <DU0PR01MB10385C08C119276D99A234D978226A@DU0PR01MB10385.eurprd01.prod.exchangelabs.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 500E7180006
-X-Stat-Signature: nta83nek77xny8xt9j3zz6sqhbidr9ui
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250807075810.358714-1-urezki@gmail.com>
+User-Agent: Mutt/2.2.13 (2024-03-09)
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1754563725-741099
-X-HE-Meta: U2FsdGVkX18BnvPIBPHAWvEa7VZsbq1x54jxFZjjl0T7mp5sc3hveYAp6InjKU7zjCTHtIokMuDZRu0JylJXqTxFrneSgyiZ4+FdZxLzbdRxgFyhSnrI/FcdiCfMIih4/nR+WFcc9izgnTFvTQyYLC4lgB6jvDqaTxMBoa40VQ2fjtjHNdapDZlUuOxbBwZ240pMgXPFnD3lS6TLzNT8xioqiUp+qV1b95w4cmIA4qDW/LkD9rcEb6/g/tZbbgF3kjXJJqhu7APhFsBinLfKv7fUkVW3y0ooccYc8kViZPtcNH5BVWW/XOEgWIqi8PURQOvR3eRTSYXhafGdXgUUf0gblDNXf0s3mmODRvfvtOWZpfXBqvi7tXiW5mhNNjeEFMVU5jtS6p2z2ZlwMs335Dn0EaP1k36n9OF16+uWZXEkk1iWKs0GIBdd/vBcWeYrfffPuLZbGA+rpY0351Mcl/NEn8sIrEkv9QqoieMN+0tpvF4hNrECr6E6622ImtMup3iMIOSdQULnMjx8fzz/dKVpce/GBk40O336uJ7iyek73ToNKNt0XALMpDeGEGxs/TOS6aOiF/IK6GcV5JgKMs9PHwCi9GANWxbVVuu0KSvVp1YxJX4QW7eIMVqojQkzpXy6YvaJmAKrkDf10cQa4EuQF+dRt5Vm2xcbhlzCE8PiLUb4O6wVQ/5cHIYU4ZG8t4ZMvqAQiYs7c6+F9agqXsjqIxqZjlOGAi/PPix0aITBVBVIV+7d+w5dJRze0iT7H0l5nYI1MRd7h7WsJYFUJkxQ8cvfNoP/5P/h1N//2ML+dHOJu9nNfzT43MmyCpaFcS6pR0CrAI5IcFRsekkulamXy1y4bEeO3lEJkjfzA0PY4oTbIRdJHk71wLMt62M6wnd98PsUIWTiswpq9k8wL7HYV+VqZRwcTaj6YC0nrkF+mmbx6zTBGvDcbJ2PZ5Thghc974QQgw37w0DKrMu
- 7i7LKG6r
- 9dAXishu61s5LA6Z2F+0IUJ3qsoCuL+fqZgn52GhMHiOE4dT8IsaET61wo/KjT1QWgXwT4NbkS0Q09Uu8K8YGAsorraS569H//WzD4YFdvhsqqaulIt+wr73pAuX+Br4MMaQH1az2jlI/NiNA9r8lHc5WRYflgToiD6dXPmKoZ9a64deOrkWR+D95RGYY2TJgLh+oZmy5tLTpd0iYfnf/BHtHCIDmSdKXfTgR7Ls6v1G0oR5DELFfRB2uAHQieIRdNxhXCRdsb60dBhA3lAakyCVV7XQz0/u/amL6qdAXYpt/c8ClykwtJcnbfSYR9eLjIovp4ERqCa0Hpczby6dxujF3V9TrRsjzo4Dwi11qjzLSaFwNF/mX7tbv8UTXDdH6TxUs0nTgaWpO2pnNpi0GWQrEX0hpo9EKVf5n6Grke60dSrTcrOVnQOPviQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A1103180008
+X-Stat-Signature: gj6qfghcgo9wpju7osh5bwhkma9ym6se
+X-HE-Tag: 1754564468-292906
+X-HE-Meta: U2FsdGVkX1+tkhvWZL1Ayje9+7Xvdm0SlA0VqopSW0zym79eCJ75pCoEzujFEaLPIfPjw63DNRZO+2mVR3w/Od9nVNT5M7NEZHlE8K51scyuFRR2691raoVCkdNB9+nmui00tbikLbAZ4fmSZhA1/FRwE3cWgV/X16tAw51DH7RIfx9DGU9mhLmAt4MzdbdIK525UnJKkcq/+4mvfhptt/DbUpBYoz+0RVzP3bElYGI5oPC9dN0Lwb0N4pSA5qkRUaspe/q72MItRz8zmj33/FzWan9+6uDjOU45nrxDW/b0oyFxj7W0NgSHXeXhLeK+LM7kny3I6I7bnlZjbwccMBIJsdRFDkmMqfw7WRVfYELYc/DWrfZJQPD9OeDtr1KyMZ7oYQbjgPQ+phl5NShesecsK2FF6H2H5ZE6ng+XrWzVJBtLk68DYu6R10omC+tA3/cMkDcn1irkJpNKcmMcPTiVsQEMzL8Uj3B9m00YX4+xTneLUerLh3IIbqpItfyZNuZxZODYWCO93NZm+CdSByndpXsA5LnzpZdo3PaWdkr8FJVb8DtM7Et1pw5QDpcqWCfPITX2db3XkoLHYCvzZNOtz4a5fdD+gbiE5gf0mphhGEavAmQPcqm0k637bQQ0eiMBfpsDsTKKNgBo0C1o7NXIMqooqaRI/KiHEUmlR5a1611kOZoOpP+7AIWuU5Q0zzjW3jHgZElcxa8WayLGp2A39D0v2TbetmutVt0qyKpH7V6uE2Fa0N+DmbwYTvJiDLjXmfuxjMO5gzVgGez6rn6qInWMJvksjXU3+/1gp2WiAOc/8zJ7hfZP/66cMmsSeq/B7tl8710P7VJdIj8KHCVa001eo9GY3Q5S8fLYfu9hFmhM+oSDCJcniU0wxMfjx50/n/hlr9IOHSjM3J7CeTpF1mSqKZC9ZWSwmq/xEamYyxoD49/FcPC73SLcchy50X21phEyriIL4VGy+ko
+ pVD5nNlF
+ 4YBJC6SlCFORsz0meqtTeTHPIgK6Z5kq3fLm5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -185,28 +118,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/1/25 15:40, Alexander Krabler wrote:
-> On 8/1/25 14:57, Vlastimil Babka wrote:
->> Hm that means something isn't working as intended. Do the pages have also
->> the unevictable flag?
->
-> I have checked /proc/<pid>/smaps.
-> Neither the manpage
-(https://www.man7.org/linux/man-pages/man5/proc_pid_smaps.5.html)
-> nor kernel source code (fs/proc/task_mmu.c show_smap_vma_flags) tells me
-about unevictable flag.
-Ah ok, you checked /proc/pid/smaps. Since you said "pages" I thought you
-meant individual pages which would be from /proc/kpageflags
+On Thu, Aug 07, 2025 at 09:58AM +0200, Uladzislau Rezki (Sony) wrote:
+> Hello.
+> 
+> This is a second series of making __vmalloc() to support GFP_ATOMIC and
+> GFP_NOWAIT flags. It tends to improve the non-blocking behaviour.
+> 
+> The first one can be found here:
+> 
+> https://lore.kernel.org/all/20250704152537.55724-1-urezki@gmail.com/
+> 
+> that was an RFC. Using this series for testing i have not found more
+> places which can trigger: scheduling during atomic. Though there is
+> one which requires attention. I will explain in [1].
+> 
+> Please note, non-blocking gets improved in the __vmalloc() call only,
+> i.e. vmalloc_huge() still contains in its paths many cond_resched()
+> points and can not be used as non-blocking as of now.
+> 
+> [1] The vmap_pages_range_noflush() contains the kmsan_vmap_pages_range_noflush()
+> external implementation for KCSAN specifically which is hard coded to GFP_KERNEL.
+> The kernel should be built with CONFIG_KCSAN option. To me it looks like not
+> straight forward to run such kernel on my box, therefore i need more time to
+> investigate what is wrong with CONFIG_KCSAN and my env.
 
-But IIRC getting a page in a state where it has an mlock flag but (not yet)
-the unevictable flag should be rare so I would be surprised if that was the
-problem here.
+KMSAN or KCSAN?
 
-Hm or maybe it's actually that the error can happen only in the other
-direction - page is unevictable (on unevictable list) while not mlocked, at
-least the counters such as UNEVICTABLE_PGRESCUED suggest that.
-
-Hugh knows this code the best. Do you think we should e.g. test the mlocked
-flag instead/in addition to unevictable flag in compaction to avoid
-violating vm.compact_unevictable_allowed = 0?
+[+Cc KMSAN maintainers]
 
