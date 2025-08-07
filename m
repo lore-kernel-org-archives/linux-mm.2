@@ -2,92 +2,115 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 35A66C87FCF
-	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 18:16:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7EE51C87FCA
+	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 18:24:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B42646B009A; Thu,  7 Aug 2025 14:16:23 -0400 (EDT)
+	id 0A5276B0093; Thu,  7 Aug 2025 14:24:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF2026B009D; Thu,  7 Aug 2025 14:16:23 -0400 (EDT)
+	id 07BEC6B00A3; Thu,  7 Aug 2025 14:24:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E0896B00D0; Thu,  7 Aug 2025 14:16:23 -0400 (EDT)
+	id EAE0A6B00A6; Thu,  7 Aug 2025 14:24:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CC816B009A
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 14:16:23 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 66B67BD182
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 18:16:23 +0000 (UTC)
-X-FDA: 83750766246.04.AF87E0D
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf01.hostedemail.com (Postfix) with ESMTP id C4B084001A
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 18:16:21 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DAE9C6B0093
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 14:24:25 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 86ADA140A4A
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 18:24:25 +0000 (UTC)
+X-FDA: 83750786490.11.9CE5E3B
+Received: from mail-io1-f51.google.com (mail-io1-f51.google.com [209.85.166.51])
+	by imf01.hostedemail.com (Postfix) with ESMTP id B494E4000A
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 18:24:23 +0000 (UTC)
 Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZzMn77k2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754590581; a=rsa-sha256;
-	cv=none;
-	b=cCmJfLov0FBcNhUYhZkwj1wBwAbiGBOTi3xtaK32qANQqH2OXgxvmyQ05YsYmdhoGNpNdc
-	x20J/l7aMS4lzUXqVCXzOndFdESKD1WAvntoTGpG+7pu4O/ZQ+STd913I36baoXsrb2W77
-	TxV8L9T0Qb6uJVJNdSxv10fnIwMpW2Y=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZzMn77k2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lSacQuRH;
+	spf=pass (imf01.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.166.51 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754590581;
+	s=arc-20220608; t=1754591063;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=fuqRlDbTna01MqlNvWVW93g+JqstLemjZjkgu63QJ4g=;
-	b=YgUTpP6JSAw/SbZyVakHUoay34ke5Vtd8+dj3kUCi5YrKHzGovCX9SL2C6xFmnjRA4k+R6
-	IGbViRr4l2aenvH+kX8w0IDuacpjGnyoXD/0F+topDdEy5dbAbmCPDt+LvSdGziMah3CI2
-	3LRVe6X8PXQ+rXKL0mKIRGPsNHCZIDo=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 10C3CA566AC;
-	Thu,  7 Aug 2025 18:16:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87B93C4CEEB;
-	Thu,  7 Aug 2025 18:16:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754590580;
-	bh=JoQgC6zNM11H86q8TF9fAO+e/aCVUyMLSqBJpfu95H8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ZzMn77k2ksIyI9xlWR9kEvK2b2tFCP8Q8Qm6WSHyBjRVPBTvl6TWkvl/9usnCXYtc
-	 acHPXKErc8Ka+AN+P1sk7Vd83JAGhfPeFjpJ1WyyNiWUpnry/meTX+u0T6RmaJEZqJ
-	 uw50R2P3OZ8q3Zyk4gXi/P9wdVQXjoWk+dO5zgC5C3pgvJaeUrkCvrARoUUZcIBsZk
-	 mdfgweslTJhSkU69YvSQ7BVMlg0zvTnI49RbDhl5IUMD0/A8jOlKz8IFRsYnyIzIYw
-	 sys4H/Do/fhgbgQUrOotwoP3KgY0Gdrt0lwSMF9wFpunwCb10tHTav24TzhesUeROV
-	 bM1bydVaxB/Gw==
-From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	David Hildenbrand <david@redhat.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	kernel-team@meta.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Takero Funaki <flintglass@gmail.com>
-Subject: [PATCH] mm/zswap: store <PAGE_SIZE compression failed page as-is
-Date: Thu,  7 Aug 2025 11:16:16 -0700
-Message-Id: <20250807181616.1895-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=zNuzWmTNPffaFCHaXEeQ0GR/T7nQZcXvwlguy7B/4dM=;
+	b=oT016xCvV9RYnvdTsNzmLuwDmv/Hi3b3nOmo0CgP/c9cwXcyyn19e6JbOH9ElGLaF+G/pK
+	KOR7PnxljJrreCxv5K8RE8iO93G/JjgNlLQx22WsiPO2jn/tKddvs3ToE3/8KZqarR3y+O
+	XnsoVBD2CkMtfx4OchWZxPBZpcDOE+8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754591063; a=rsa-sha256;
+	cv=none;
+	b=69mYBDYgTtnNoEUgrRrqZELI74JdZb+fbzF0yKg+06SvfeRqfhTqV97RD5knU26EMg0XAr
+	3hAaEDWmybEkGozrlkkCsYkFYW+BDhnYG3YUAhWrEZC5+BJDxtzOZ4aRZGuDdVmRPcm1bI
+	AlLKZ4PJN9zqselajhTZ+wFIiIKOdxE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lSacQuRH;
+	spf=pass (imf01.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.166.51 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-io1-f51.google.com with SMTP id ca18e2360f4ac-875acfc133dso41280439f.1
+        for <linux-mm@kvack.org>; Thu, 07 Aug 2025 11:24:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754591063; x=1755195863; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zNuzWmTNPffaFCHaXEeQ0GR/T7nQZcXvwlguy7B/4dM=;
+        b=lSacQuRHl2AtL3bIOOLtSv8w4P8OJ6+cOQC8HmKFm9WnrTI1yQ/UfUVUty4kzBFx2e
+         OcZmWxD5FiNZ1eOquybVAkiBK2MSa6sIlQXhdxNePAZT+swy1YOTvIUyS50tieP8L62U
+         PXkgiC/9DNQ+fSHJnytQ42QO5qt4wQTiMnmrwp7su3suarjiq5uoo0oprEBiUZvidmpM
+         WMBoPqqkYiMH1B+KS/51hGNWH+o50fh/vSTKeF2Zica3Lhx1q0K0aQXuE05AJOmcOB9r
+         uv+wvOepv3YsL0AOjUNMrGjYSn1kP28g9RoSxeEPRxTjvS6xfLggle/yuIMlWRBGYJ/i
+         dFgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754591063; x=1755195863;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zNuzWmTNPffaFCHaXEeQ0GR/T7nQZcXvwlguy7B/4dM=;
+        b=bErozYqYBoxhMuymJMZbFq3PqW6RsudgU0UIG+tvxma4/lU5PzIDcqJjviYzwF6yzJ
+         oqqmIMSeILTlhyqLsfCq79C8f5yFyXl+jwBWUnCJ0rtD/wNOlg4q2York5uMvD7c83Qf
+         3vPT1XgYi8rOllmTVzIpyVIHZpqELpkJNutXf3gikxpT/Yt45YE/Xnb6zdeU3yRCNWfP
+         YdgpnwxQnERAWrTkZ4E4v7d0HABs1hbkiCnoLNLR+Sx8Q5qXArnu5KuzpUUY/tBzcGoL
+         gdL1ThJvC1ZsWhEwZqZnLxelFTNr4iEt5BzU4C9hZlXwqRhuPt7vY6xLx1p2jc6UB5al
+         uUIA==
+X-Gm-Message-State: AOJu0YyXSRxrFvraLrGGnbl+82/SsPpH0RnvC/OKffwDQAM5TvhoNIcA
+	utCEE11XGlDolFjDPIGVbjKLGNlsXX9iP0hggkQicJDFHU+/pjmSsP6L8AxEaDyhi7LsKn5WPvM
+	7OhBskV8G3/ghhsx0ZGTjaY7MyseiSpg=
+X-Gm-Gg: ASbGncs6gewe5/SBqMpH2u4hWepKWmB/hU/JEwiqJStY8nwawQAQ1wCh2q6GGxs1ww5
+	CPOmVXWsAgNPw5J2U/cfcDA3SPIaBcwXVSouu9xzcP2JjnmX8cEvmcMN9Vao9sORREYZnerSLPj
+	4JVa6vDBY/SnYe1uGcBleEErrJr7cL/gWcBzZr8MtwbO+hJ2vTZVXMyjUsSzR0MY0uMmsWdiDj6
+	2hV5tnbTq2085mNLA==
+X-Google-Smtp-Source: AGHT+IHDtBVpeNVW47eT+EtH0KXWBMHn8A3N/MioH4ziUa6CKaP1TmvVbhFwJqCtq97d1u9GWnhfVRaRyjGhmkj4DYA=
+X-Received: by 2002:a05:6e02:178f:b0:3e3:fe52:e576 with SMTP id
+ e9e14a558f8ab-3e5330d9169mr2324415ab.9.1754591062511; Thu, 07 Aug 2025
+ 11:24:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C4B084001A
-X-Stat-Signature: b9yxyck57u7h85c4eo7m7jr637qoy1db
+References: <20250807152720.62032-1-ryncsn@gmail.com> <20250807152720.62032-2-ryncsn@gmail.com>
+ <CAKEwX=P8Qh4mOdv68UfXv-YBSnuZJkhEeuRJezZucbX7sysWvg@mail.gmail.com>
+In-Reply-To: <CAKEwX=P8Qh4mOdv68UfXv-YBSnuZJkhEeuRJezZucbX7sysWvg@mail.gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Fri, 8 Aug 2025 02:23:43 +0800
+X-Gm-Features: Ac12FXwPvhPQJSzfZunKBjvVg2gy2SZePr5hJx--Wv6DiFAlNkDn_0ZycFRYpjs
+Message-ID: <CAMgjq7CRdX3vpphUboHruO3wxRhph6SsPmBXnjtHuc4nzRczsQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/3] mm/mincore, swap: consolidate swap cache checking
+ for mincore
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, 
+	David Hildenbrand <david@redhat.com>, Chris Li <chrisl@kernel.org>, Barry Song <baohua@kernel.org>, 
+	Baoquan He <bhe@redhat.com>, Kemeng Shi <shikemeng@huaweicloud.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: B494E4000A
+X-Stat-Signature: 6oh9twbbgtriysnggp65i4pm1mtukhc3
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1754590581-802042
-X-HE-Meta: U2FsdGVkX1+NGBkssLfUlkONGMXOPjJ9ImDOt4EuXCJSH86iF+L1JVJeWbddocd0K1Dw6QSz7Fjn9uuNWViwwWdDtkrAfYm27GRXm4Df0t0Q3Slb49f8MD5htzUDSDgueIhuXZNQpRpMflBGQre6QzxcUsVxmd43YWmHu7hiN5yMKlhDqmLWh3KpopqP+knnd4xH4E44Qoe7Yiyo52nnb8fEk/Rm+q7vJhG+PI+BlQq+DmJyzdCeJisKm9QHqUZedfofrGYgUphwHc4keOv6OpU9s/1uHA0bXPdOKBXsWSfL24sIY8zk1drHjtbpElLOfZn2yRpROV+xJYTHmZvBZcpQiRzqF+G6QOuQ8W3W9/Yaa4dKHUGr2t0/yPxup+gNw6V1LZYw3WpxiOn/heeYYnX/VqT4G8aRiS7FoZKoUJPn+Jj8lzY5CJXpJBnAWfRXwoiVPqH+Tgu5WTlU4LO2emmUmHXteUPbzQfvGjU4vTKf3/tJ/pQG/jjxiQUQFOQFR0dJVTfBNkbbiR4O7V/in22K1i1O1NMP9rNkOtpaSf83WYOMBKgneK1dzeQQMGjOOfs1RHfUlr/0aqZ0BUn1jTuUzaxAFQHlAUfV1NznpFkk3Y3LexCT19pEEOCosm50rWvYaZ/GK3rqOPzBcCEl09YUNdPhJ/+HkE+0ssox5PvDqmfksPM3t/Te1YBUAaDMr817JKigKCgari6yqlrouC4p4GpkHjkHosjqXWdhlGvGcbG2ejHBfa2fkj0EpdAZ2setgAOz72BpGIRGlwCnN+eA1A26RTJx8SULYW52ftgtGfeHneHfFPTj3SN6UWk7YEzDWA0JUISb33I3h9/OCVg/NZip6AaHnmihiZ6LhHbE7Buj96QsZrI2ZGSWdY6zmBcIZyWGs3FbAXzlKqyW5z1O0XYusPjxOONYJniIhH70VnPkpDIUwBeQkqZAu7+0knwHJN6LzD9wreOIiL5
- vtLChguq
- FZL64IkHb+0wzJ9iB31OnaUwQHiFbULUmfU216WW3gISuLsPospoFNiA7e0w7bsz7y8XblS92xHZeV5IJxAVCloVRzYXuvhyWiEiEQuBDdQrZ3iRgsFBqkCW/ahXbq0hfiKoAYG+fZQZWvdl8I50D+WZtEXhVzX5ti0RktW1ON/a7ct7ncCSmV31Pneo0qboqwohbgl9V671XCgKF/+NCt/U+Jp7/mSXj37X/XMdN2whoGKw6gqE9kUzS35cw1irTB19ykpJa4SnCWBHuPOISsHdsCuVvvlPR/A70hsH1FUBIaAMUW1740EQ75uLCizqrl540
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1754591063-449335
+X-HE-Meta: U2FsdGVkX1+x0BnPDn2tN2xwlOFu82DPFYdjT3+xBv3hPdWCS0shxW3m6ZxuWY9Sb/oFFvE7iWOL1PZ21E96rmpizdQGOTZjytGap9C2U4TPOeCmyN2cfObIkNbrAdiklQZ5VthNngH81ewSTpF2hIGNLtBkFW2E9jQVP+fXJuYippjRV3SZysIsFD/vtCRgHGVLUsrzIrifKZnZ/3tcKS9qhWoaJimtM3CdAFIvyBG2mGbjy3nqHdNJWewNyEl503k7oIFhaQMIPFvmym5v8mfDetUjl1/9O4Kr8uCvLY6y6sE5S7Wh+/Nrv/uTUp6S54JCpWR9FyWJFBfOZgDMOdQ/38UmYFgRpSRJjvp/H93mNymYv+DvYPVfl7pvPoLy7kjdUIi6eveAVEi/jjcIVPBqflIar3uUmvVqL3nwq4CXSrcp3oewihODRzY7UeKMa2UJkrMG9OynW7vANHWjj2sQ16ElTceXngTQqO32RCYa1YYZcb3ZhOZCpshNn8ZxwLifa9aMZoBWmwy2Jk07fbWXNj+oiC3CVz3XPzTSZ6YZRu7dBQNJgxANhTlQH1Es92YSS1s2eCTnUz4cWckZDHdQBbD1yS01A657TkRCBYcFIoDOP8NJ9qycSHIT9vIP60YdRJTmQ4agFZJ+ll266mGMJ734IprsNNIY5AOT0o4CYEbOY27Y8E/zVw4S+A9GHIfh6V8jHFwXUa50JiTlDxQ3q5YkmeFzCJshsIqzUV3A2zspDbfu261QVfbLbBMVvoue7oxA5djGp8VDxIs1Zmi7D/GXF+pPr7r3LgIeCunPWYeeqRlm+kgGo94cjrB2m0/fFJdk1DVfb8yFx4kbJtWf/harXnI7iQ/O58Q2Cyf3gB20n0qN9ijOskb2hpczNVIbkCXed47rtyYYJ9lPQYU/z0O/V0U9cwGpR+p8UiBgYG2/Cj6lK0AQ747YtCiqfsFyOG6qO0t/9ZRGLYj
+ I5r4REQH
+ A5GGwGNmCpzJxvCD9kNffgMn1p3GK5tFWOg28NPW1gt5U2tF3qEhdXZF6JgsK4uW7kqamU9/QIeBqKRJOsujKDNxqnHnghwbvEfmkFbv4pJ2uy4yXRFQ8T6KHoVD42+pp2X71LrcACy6I6sMBfWdR5IMkRmSMjUe52NhQUbrMpfgNNrkAJNMzidCuhBHgnWwRS1+kcVDe8ykTfaClh28jsm+dzr3YdEZz+KmjDLi/+6Kq9/C36EY/ftXbM628NiZVvLxeO/SYGdApDiCHxZjzExTLFrlcpNvAHR1tuonWZ4UKrRgQi7ot/cA4wRpK9yJyd2PqKaHJ+VVXPU1aPBTyqsxa/brdB5vgc0y+76aiiQS55eYaXF3v5a4rt8Z4lxD64u6b7ut80y7zPWSGI0Nx0czVGQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,213 +119,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When zswap writeback is enabled and it fails compressing a given page,
-the page is swapped out to the backing swap device.  This behavior
-breaks the zswap's writeback LRU order, and hence users can experience
-unexpected latency spikes.  If the page is compressed without failure,
-but results in a size of PAGE_SIZE, the LRU order is kept, but the
-decompression overhead for loading the page back on the later access is
-unnecessary.
+On Fri, Aug 8, 2025 at 2:07=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote:
+>
+> On Thu, Aug 7, 2025 at 8:27=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wro=
+te:
+> >
+> > From: Kairui Song <kasong@tencent.com>
+> >
+> > The filemap_get_incore_folio (previously find_get_incore_page) helper
+> > was introduced by commit 61ef18655704 ("mm: factor find_get_incore_page
+> > out of mincore_page") to be used by later commit f5df8635c5a3 ("mm: use
+> > find_get_incore_page in memcontrol"), so memory cgroup charge move code
+> > can be simplified.
+> >
+> > But commit 6b611388b626 ("memcg-v1: remove charge move code") removed
+> > that user completely, it's only used by mincore now.
+> >
+> > So this commit basically reverts commit 61ef18655704 ("mm: factor
+> > find_get_incore_page out of mincore_page"). Move it back to mincore sid=
+e
+> > to simplify the code.
+> >
+> > Signed-off-by: Kairui Song <kasong@tencent.com>
+>
+> Seems reasonable to me for the most part - just a couple of questions bel=
+ow.
+>
+> > ---
+> >  mm/mincore.c    | 29 +++++++++++++++++++++++++++--
+> >  mm/swap.h       | 10 ----------
+> >  mm/swap_state.c | 38 --------------------------------------
+> >  3 files changed, 27 insertions(+), 50 deletions(-)
+> >
+> > diff --git a/mm/mincore.c b/mm/mincore.c
+> > index 10dabefc3acc..f0d3c9419e58 100644
+> > --- a/mm/mincore.c
+> > +++ b/mm/mincore.c
+> > @@ -64,8 +64,33 @@ static unsigned char mincore_page(struct address_spa=
+ce *mapping, pgoff_t index)
+> >          * any other file mapping (ie. marked !present and faulted in w=
+ith
+> >          * tmpfs's .fault). So swapped out tmpfs mappings are tested he=
+re.
+> >          */
+> > -       folio =3D filemap_get_incore_folio(mapping, index);
+> > -       if (!IS_ERR(folio)) {
+> > +       if (IS_ENABLED(CONFIG_SWAP) && shmem_mapping(mapping)) {
+>
+> Do we need CONFIG_SWAP check here? I suppose if !CONFIG_SWAP we'll
+> never end up with an ordinary swap entry stored here right?
 
-Keep the LRU order and optimize unnecessary decompression overheads in
-those cases, by storing the original content as-is in zpool.  The length
-field of zswap_entry will be set appropriately, as PAGE_SIZE,  Hence
-whether it is saved as-is or not (whether decompression is unnecessary)
-is identified by 'zswap_entry->length == PAGE_SIZE'.
+Yes, and in the next patch I'd like to introduce a WARN_ON if we see
+swap entries with !CONFIG_SWAP. That means the memory is corrupted.
 
-Because the uncompressed data is saved in zpool, same to the compressed
-ones, this introduces no change in terms of memory management including
-movability and migratability of involved pages.
+>
+> Saves a couple of cycles, I suppose. No strong opinions.
 
-This change is also not increasing per zswap entry metadata overhead.
-But as the number of incompressible pages increases, total zswap
-metadata overhead is proportionally increased.  The overhead should not
-be problematic in usual cases, since the zswap metadata for single zswap
-entry is much smaller than PAGE_SIZE, and in common zswap use cases
-there should be a sufficient amount of compressible pages.  Also it can
-be mitigated by the zswap writeback.
+Before 61ef18655704 it used a `#ifdef CONFIG_SWAP`, I used
+IS_ENABLED(CONFIG_SWAP) here, same thing, the compiler will optimize
+out the unused branch. Just with fewer lines of code and I personally
+think this looks prettier.
 
-When the writeback is disabled, the additional overhead could be
-problematic.  For the case, keep the current behavior that just returns
-the failure and let swap_writeout() put the page back to the active LRU
-list in the case.  It is known to be suboptimal when the incompressible
-pages are cold, since the incompressible pages will continuously be
-tried to be zswapped out, and burn CPU cycles for compression attempts
-that will anyway fails.  One imaginable solution for the problem is
-reusing the swapped-out page and its struct page to store in the zswap
-pool.  But that's out of the scope of this patch.
+>
+> > +               folio =3D filemap_get_entry(mapping, index);
+> > +               /*
+> > +                * shmem/tmpfs may return swap: account for swapcache
+> > +                * page too.
+> > +                */
+> > +               if (xa_is_value(folio)) {
+> > +                       struct swap_info_struct *si;
+> > +                       swp_entry_t swp =3D radix_to_swp_entry(folio);
+> > +                       /* There might be swapin error entries in shmem=
+ mapping. */
+> > +                       if (non_swap_entry(swp))
+> > +                               return 0;
+> > +                       /* Prevent swap device to being swapoff under u=
+s */
+> > +                       si =3D get_swap_device(swp);
+> > +                       if (si) {
+> > +                               folio =3D filemap_get_folio(swap_addres=
+s_space(swp),
+> > +                                                         swap_cache_in=
+dex(swp));
+> > +                               put_swap_device(si);
+> > +                       } else {
+> > +                               return 0;
+> > +                       }
+> > +               }
+> > +       } else {
+> > +               folio =3D filemap_get_folio(mapping, index);
+> > +       }
+> > +
+> > +       if (folio) {
+>
+> Should this check be "if (!IS_ERR(folio))"? Seems like that's how we
+> inspect the output of filemap_get_folio() in other locations (for e.g,
+> in filemap_fault()).
 
-Tests
------
+Yeah you are right, actuall should be IS_ERR_OR_NULL here as it uses
+both filemap_get_entry and filemap_get_folio.
+I wanted to change to always use filemap_get_entry in the next patch
+for better performance, but somehow forgot it...
+Will fix it.
 
-I tested this patch using a simple self-written microbenchmark that is
-available at GitHub[1].  You can reproduce the test I did by executing
-run_tests.sh of the repo on your system.  Note that the repo's
-documentation is not good as of this writing, so you may need to read
-and use the code.
-
-The basic test scenario is simple.  Run a test program making artificial
-accesses to memory having artificial content under memory.high-set
-memory limit and measure how many accesses were made in given time.
-
-The test program repeatedly and randomly access three anonymous memory
-regions.  The regions are all 500 MiB size, and accessed in the same
-probability.  Two of those are filled up with a simple content that can
-easily be compressed, while the remaining one is filled up with a
-content that read from /dev/urandom, which is easy to fail at
-compressing to <PAGE_SIZE size.  The program runs for two minutes and
-prints out the number of accesses made every five seconds.
-
-The test script runs the program under below seven configurations.
-
-- 0: memory.high is set to 2 GiB, zswap is disabled.
-- 1-1: memory.high is set to 1350 MiB, zswap is disabled.
-- 1-2: On 1-1, zswap is enabled without this patch.
-- 1-3: On 1-2, this patch is applied.
-
-For all zswap enabled case, zswap shrinker is enabled.
-
-Configuration '0' is for showing the original memory performance.
-Configurations 1-1, 1-2 and 1-3 are for showing the performance of swap,
-zswap, and this patch under a level of memory pressure (~10% of working
-set).
-
-Because the per-5 seconds performance is not very reliable, I measured
-the average of that for the last one minute period of the test program
-run.  I also measured a few vmstat counters including zswpin, zswpout,
-zswpwb, pswpin and pswpout during the test runs.
-
-The measurement results are as below.  To save space, I show performance
-numbers that are normalized to that of the configuration '0' (no memory
-pressure), only.  The averaged accesses per 5 seconds of configuration
-'0' was 36493417.75.
-
-    config            0       1-1     1-2      1-3
-    perf_normalized   1.0000  0.0057  0.0235   0.0367
-    perf_stdev_ratio  0.0582  0.0652  0.0167   0.0346
-    zswpin            0       0       3548424  1999335
-    zswpout           0       0       3588817  2361689
-    zswpwb            0       0       10214    340270
-    pswpin            0       485806  772038   340967
-    pswpout           0       649543  144773   340270
-
-'perf_normalized' is the performance metric, normalized to that of
-configuration '0' (no pressure).  'perf_stdev_ratio' is the standard
-deviation of the averaged data points, as a ratio to the averaged metric
-value.  For example, configuration '0' performance was showing 5.8%
-stdev.  Configurations 1-1 and 1-3 were having about 6.5% and 6.1%
-stdev.  Also the results were highly variable between multiple runs.  So
-this result is not very stable but just showing ball park figures.
-Please keep this in your mind when reading these results.
-
-Under about 10% of working set memory pressure, the performance was
-dropped to about 0.57% of no-pressure one, when the normal swap is used
-(1-1).  Note that ~10% working set pressure is already extreme, at least
-on this test setup.  No one would desire system setups that can degrade
-performance to 0.57% of the best case.
-
-By turning zswap on (1-2), the performance was improved about 4x,
-resulting in about 2.35% of no-pressure one.  Because of the
-incompressible pages in the third memory region, a significant amount of
-(non-zswap) swap I/O operations were made, though.
-
-By applying this patch (1-3), about 56% performance improvement was
-made, resulting in about 3.67% of no-pressure one.  Reduced pswpin of
-1-3 compared to 1-2 let us see where this improvement came from.
-
-Related Works
--------------
-
-This is not an entirely new attempt.  Nhat Pham and Takero Funaki tried
-very similar approaches in October 2023[2] and April 2024[3],
-respectively.  The two approaches didn't get merged mainly due to the
-metadata overhead concern.  I described why I think that shouldn't be a
-problem for this change, which is automatically disabled when writeback
-is disabled, at the beginning of this changelog.
-
-This patch is not particularly different from those, and actually built
-upon those.  I wrote this from scratch again, though.  Hence adding
-Suggested-by tags for them.  Actually Nhat first suggested this to me
-offlist.
-
-[1] https://github.com/sjp38/eval_zswap/blob/master/run.sh
-[2] https://lore.kernel.org/20231017003519.1426574-3-nphamcs@gmail.com
-[3] https://lore.kernel.org/20240706022523.1104080-6-flintglass@gmail.com
-
-Suggested-by: Nhat Pham <nphamcs@gmail.com>
-Suggested-by: Takero Funaki <flintglass@gmail.com>
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
-Changes from RFC v2
-(https://lore.kernel.org/20250805002954.1496-1-sj@kernel.org)
-- Fix race conditions at decompressed pages identification.
-- Remove the parameter and make saving as-is the default behavior.
-- Open-code main changes.
-- Clarify there is no memory management changes on the cover letter.
-- Remove 20% pressure case from test results, since it is arguably too
-  extreme and only adds confusion.
-- Drop RFC tag.
-
-Changes from RFC v1
-(https://lore.kernel.org/20250730234059.4603-1-sj@kernel.org)
-- Consider PAGE_SIZE compression successes as failures.
-- Use zpool for storing incompressible pages.
-- Test with zswap shrinker enabled.
-- Wordsmith changelog and comments.
-- Add documentation of save_incompressible_pages parameter.
-
- mm/zswap.c | 29 +++++++++++++++++++++++++++--
- 1 file changed, 27 insertions(+), 2 deletions(-)
-
-diff --git a/mm/zswap.c b/mm/zswap.c
-index 3c0fd8a13718..2db2da130ec4 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -976,8 +976,25 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 	 */
- 	comp_ret = crypto_wait_req(crypto_acomp_compress(acomp_ctx->req), &acomp_ctx->wait);
- 	dlen = acomp_ctx->req->dlen;
--	if (comp_ret)
--		goto unlock;
-+
-+	/*
-+	 * If a page cannot be compressed into a size smaller than PAGE_SIZE,
-+	 * save the content as is without a compression, to keep the LRU order
-+	 * of writebacks.  If writeback is disabled, reject the page since it
-+	 * only adds metadata overhead.  swap_writeout() will put the page back
-+	 * to the active LRU list in the case.
-+	 */
-+	if (comp_ret || dlen >= PAGE_SIZE) {
-+		if (mem_cgroup_zswap_writeback_enabled(
-+					folio_memcg(page_folio(page)))) {
-+			comp_ret = 0;
-+			dlen = PAGE_SIZE;
-+			memcpy_from_page(dst, page, 0, dlen);
-+		} else {
-+			comp_ret = comp_ret ? : -EINVAL;
-+			goto unlock;
-+		}
-+	}
- 
- 	zpool = pool->zpool;
- 	gfp = GFP_NOWAIT | __GFP_NORETRY | __GFP_HIGHMEM | __GFP_MOVABLE;
-@@ -1012,6 +1029,14 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- 	acomp_ctx = acomp_ctx_get_cpu_lock(entry->pool);
- 	obj = zpool_obj_read_begin(zpool, entry->handle, acomp_ctx->buffer);
- 
-+	/* zswap entries of PAGE_SIZE are not compressed. */
-+	if (entry->length == PAGE_SIZE) {
-+		memcpy_to_folio(folio, 0, obj, entry->length);
-+		zpool_obj_read_end(zpool, entry->handle, obj);
-+		acomp_ctx_put_unlock(acomp_ctx);
-+		return true;
-+	}
-+
- 	/*
- 	 * zpool_obj_read_begin() might return a kmap address of highmem when
- 	 * acomp_ctx->buffer is not used.  However, sg_init_one() does not
-
-base-commit: 2ec534125ae474292175ae198483c545eac2161d
--- 
-2.39.5
+>
+> >                 present =3D folio_test_uptodate(folio);
+> >                 folio_put(folio);
+> >         }
+>
 
