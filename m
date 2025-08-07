@@ -2,91 +2,113 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C81FC87FCF
-	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 15:58:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 41236C87FCF
+	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 16:03:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CAE798E0008; Thu,  7 Aug 2025 11:58:12 -0400 (EDT)
+	id D28B16B00BB; Thu,  7 Aug 2025 12:02:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C58F28E0001; Thu,  7 Aug 2025 11:58:12 -0400 (EDT)
+	id CB2466B00BC; Thu,  7 Aug 2025 12:02:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B210A8E0008; Thu,  7 Aug 2025 11:58:12 -0400 (EDT)
+	id BA02A6B00BD; Thu,  7 Aug 2025 12:02:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BAAA8E0001
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 11:58:12 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EE0AB116D21
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 15:58:11 +0000 (UTC)
-X-FDA: 83750417982.09.0EDD302
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 590CF180011
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 15:58:10 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uTpXlaOV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F02E6B00BB
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 12:02:59 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2FCC458A8B
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 16:02:59 +0000 (UTC)
+X-FDA: 83750430078.10.689D7BA
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 57E5E40012
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 16:02:56 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=wmQN++gP;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf04.hostedemail.com: domain of jannh@google.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=jannh@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754582290;
+	s=arc-20220608; t=1754582576;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FG1TiY9/QLbU6IkXqXsNwmBGloYWvJkNch0YcgKgz60=;
-	b=irwc8tslSyUV+7/VIcRiqY7eoXEuQVk4GWrg2HHDON5fIuN8Avsqw+iC9RanETPw0qo3G+
-	jhVzYHH+y6We458HMwPQ9H2kNfRvAuB7xxYu/vUkM2nK/85HdCatrh8tZbmR4j3L6JCsuJ
-	vg8aiuJiauh8MRg5yb8oVOri+kbwfDA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754582290; a=rsa-sha256;
+	bh=Z//UwayiWOvWJqkaPBg7axs/e+SZ904ur7krzuuGowc=;
+	b=AemDoMdgqH7OTQLcrr6By+luejy/9cKNrcsv8zPXuJAiP/JF483hsSdYwJzscJRz/mdOY4
+	USsE2iIYIXyezeK2bZTQA8CNxIpVdKLaGv+tIl9EvK64HaPQtRikopE09JcaTF0MPHiyYK
+	PZ3ibUrGK8auF6jHEY15JzhngUDqAhQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754582576; a=rsa-sha256;
 	cv=none;
-	b=ckQp2/x0K4KLamUDxdMCn2VHViik3QJCpc5SwP81VgWZjux7N2+OwhHz5xYmhLKULkDgY7
-	6eEjNYdMvxKtm+6UD5PGEW+Denpt763YoKR7xZMCfeyOPkFGIgL3BCYGYaT3iq+K/k/JAj
-	3G3E3QKlFELWB94zAI2vwIgkDjIexCM=
+	b=LSMidMQIDmkPvBelOxjgRdOrqJ121RCMGDGFlf2rAy8sbBIzPTdMbsv8N02CqSFTnO00Li
+	1AUFz0cBhLbAOwuG1jEbWpjZTnL7B7wlFtu6uG4f/975GaFizRfz8h2NXmjwTM35L/Yg4B
+	BDsaNIE5hfBKy+atgrxXDQJZnkhTncg=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uTpXlaOV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 4D02C5C2707;
-	Thu,  7 Aug 2025 15:58:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6029C4CEEB;
-	Thu,  7 Aug 2025 15:58:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754582289;
-	bh=FD/LxcPGni3IIHeLKZstBs+UbIbv3l8UHKH1/4wo2Zo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uTpXlaOVHb6nXsUTsQ3DV9tbu0j1ZSNqGCkpgK3mbC11IiT98agKW6XBspsYvK1Rg
-	 FJQohNGfyCiNXvxpp4cLg+97A/4NNWKlglQmiUBhJXJsX2sqcsu91fIZMkz0mW28OK
-	 aKFrCIVfv9SBXt25y3siLhF/LG8sT16C+mdzFt4PA4hUjmdeiSI27cb7uRk+S243cj
-	 HKOHshz5+BGJ4Y+FfqSVQt8B4dCiDjFMxb43+XRQfDt2r4r/SI0cZmhU6ao1mjWDnj
-	 GgNzUwmbNq4J88T3cS9l0a37WJr8+2PtDhKRtckvNINyNPuTJLltxP7SSpd5s9r5As
-	 0NW/EpPbC/Bjw==
-From: SeongJae Park <sj@kernel.org>
-To: Philip Li <philip.li@intel.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	kernel test robot <lkp@intel.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	oe-kbuild-all@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Vlastimil Babka <vbabka@suse.cz>
-Subject: Re: [sj:mm-new 42/45] ERROR: modpost: __ex_table+0x1584 references non-executable section '.rodata.spk_ttyio_synth_probe.str1.4'
-Date: Thu,  7 Aug 2025 08:58:05 -0700
-Message-Id: <20250807155805.25652-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <aJRS3iAcvITYGKxq@rli9-mobl>
-References: 
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=wmQN++gP;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf04.hostedemail.com: domain of jannh@google.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=jannh@google.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5f438523d6fso10826a12.1
+        for <linux-mm@kvack.org>; Thu, 07 Aug 2025 09:02:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1754582575; x=1755187375; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Z//UwayiWOvWJqkaPBg7axs/e+SZ904ur7krzuuGowc=;
+        b=wmQN++gPhGP6FNlfevKIFtRgEQBegcRzizZdIz4LxbpI4DwpRIkE21JOAoN6+M/L3w
+         dlsTuZ0aCeAi7vsmnh564ArUKtswJuwhiRQ0V+5/nNTWY0kuJu6gHbTJj39d3dFyyd6f
+         wJ/EzUWf+rTlyKEBHaG7hhCTNQjF2K22gRjVgV2HY5BAGNzdr4voCresWiS5jlv94tJN
+         WVSSyxqDG89Oyam+4c8hVGGcV+Qgt5Rn9uz3VCoIQx+8nqsJNBSNUceMeGbuARBulUJ/
+         yLBcw3/QrVAice/LjV9UaO+9mya0yYm6HqK4C6YPTH4i0z+qkNF5rxkzQqYEs37yEiN/
+         IWhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754582575; x=1755187375;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Z//UwayiWOvWJqkaPBg7axs/e+SZ904ur7krzuuGowc=;
+        b=ImHGUR2PWJ6wd1d5/8H1x9uPYABqG76WD6RsbVNF821AHeQX9qPn56UjtGX0Fo6Scn
+         ziUqzdY5K6Ue63OFTgl9/PgXYsfE6zBC9/Z594BlgQXpHdQINQ0swgxIBVIQ/EeX9iz/
+         qkDpsEetEWvBga/hHO2VJrA9tNNzxOCrAIVoXwGd93qgimaOUyjSLoUOlVnXLLkjdWkt
+         cgNANOA2pGgRnBKs9GnY+zYuiqdU+y7at5Nenpz5xncHY8Vj3wTKRK9bUXFvlY3uRaCb
+         ThdYMPBo7XRNk6TniLizjb/S8Zkhma5cZumkQozUhO7f3cyEbE7tDtwUfGmLTDfmNF4O
+         Zfpg==
+X-Gm-Message-State: AOJu0YydUTQ7mOvBqa/ahAMgVA1zc/Qxhqw/ELOf2UdarQFQ8DxoM4fO
+	Zf+TUy4/cCL3OiZ3+y4BzSNFKNLOjSRvDVJrVTLqgbiyT30UWanm4VjiVPZvlYUBiEyAP40Cxbw
+	CQmSXnFVq8Hoy3tLLL+bPezLmDheT6FBcCGEhRypZ
+X-Gm-Gg: ASbGnct2AVvD5AQbFxn09vKw5cC0Jvf1OwUhUxH3zZ3rEFUC2V9YZKY1YTsJREtbQP5
+	iJmBILTLbYdCZphw1cf2Gp0WToWy3J+U8H9cwjRyBXxF/jppwTr3/frE04llGqERW8ezz/0Xy28
+	RRkm6q8xgc9VXPl8iFxpLz5CvGCdYz32rWCq3fvCtocukpTsx8rAg4grqIcaJ0mNNSx1k7CvVE5
+	zy6VeA8Wpqiy1vZbAtbye5WUOtWbAQYkI4=
+X-Google-Smtp-Source: AGHT+IFASsYOqS+cSKa8zVP9xve2ND/LPdSpr3uJx8kIFFr/IcyZmEblAexSI0+MnJwWTh7EYp5HiNO85CLzvvRh9pI=
+X-Received: by 2002:a05:6402:3059:b0:612:ce4f:3c5 with SMTP id
+ 4fb4d7f45d1cf-617c38addddmr77974a12.0.1754582574434; Thu, 07 Aug 2025
+ 09:02:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 590CF180011
-X-Stat-Signature: x6u14bepbh165ca5wiy67jgx54pdbr5w
+References: <20250807152720.62032-1-ryncsn@gmail.com> <20250807152720.62032-4-ryncsn@gmail.com>
+In-Reply-To: <20250807152720.62032-4-ryncsn@gmail.com>
+From: Jann Horn <jannh@google.com>
+Date: Thu, 7 Aug 2025 18:02:17 +0200
+X-Gm-Features: Ac12FXw-L14MzSZIbdhDuuuaGoNtnHc6MgG8djKeHfkzC15_DWV0euBIlOkenb4
+Message-ID: <CAG48ez114_bmuca2UL-g0ZY76-VqhL-4rQtJM_k0N2NJXE4vdg@mail.gmail.com>
+Subject: Re: [RFC PATCH 3/3] mm/mincore: avoid touching the PTL
+To: Kairui Song <kasong@tencent.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Pedro Falcato <pfalcato@suse.de>, Matthew Wilcox <willy@infradead.org>, 
+	Hugh Dickins <hughd@google.com>, David Hildenbrand <david@redhat.com>, Chris Li <chrisl@kernel.org>, 
+	Barry Song <baohua@kernel.org>, Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: wobj8egz3m7mgckwzok6eubkmpyxswap
+X-Rspamd-Queue-Id: 57E5E40012
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1754582290-886826
-X-HE-Meta: U2FsdGVkX18rz2ZPul8j2qlAMIh0ZanNby+sVoa0EYosZA19MeJ0zHfYLNbevHuoT8Kn6sVT3ndKz14GfI75ABNN0rIh/oe+vpyqwN4GEjeOGsbSvmidKb7XkorUqUdN4nIZxcOAp7RCKMdUmWqrm/+ZdLJ4fYpRk7Obv51sA7WfHXUYWQPV0ZHySEa5QYBEpvGVwwuqRN8IP1cT4tnwNwfjXnKp+w9BnkqCONviW5QCej/aTYYR0qfXJSmLw92p5PB959h6PptCH+lfTomvAwznkg6wSYBNTGNtbo4Wij7J30YLcDB2Zzmqd9GvzbVVYWz/R0ig/00kwiXmcKKt/FHGvt6cR9ntfPKN1QiwSQZG4dgt8xxdzw2FxvVaVR4euB2VV9LlFrzrTn1YV4L/DfElwJKymwT4ye+5NFFxzXTBxiHIzQHfA63q8bhor1e1Ki/w32FGp068DPEI7CuhKU5c7UOSD4E2ZmEtmDky7ONjvCSHYkD+s8hMPpCcA68rq7UpCrRSxNZKxl4N4LUx2skMUoOpzkMMZbvehCDKlH9TrPF9EMTHvrIczv6o4BUTqAEq6OtO+22Akmxx5YdDpHmS2PUKFWcUWUH20B1OmLslkb5nidW/NZYHIatVWr43/WQiwGXZBZPJKrmAN8W/ZhzVrAZaDBeVwCxIm52hAHFonGPlZ6v43xbfVmVjsM3kPaqKIb/QwDoNeEWO5TinDo2nPMFTY5c/xkQVFpe1/5plWTsv7Iiru6f5bkDyZPQv+aEVkZDoEQn9H/X7ivGyT+VcXzefuw6SLdZtOXS34nIP25nC8hlVkpCznQuhKHKO4PvaHCRCSCD5wQkjSI73Z4UU9Q4gnMlZUJfsqDzqeQXmzGwcrflLasX5MSvbfQmb9Qari+keyjjs0otCdIBpXrdFu2xM7hxEQiiNA990BCQhCHm2KxccZ5VsMGO7zJHQsDm/odO4CzMlUtvz4sQ
- TI/cxHPo
- 7pFW57Ku+vPA4uOZVI88ZRH9YoZeoqedoF2QwdS5kQJjd7lldyutgqFmoYmpX014Me/awIv6ZqYwEDYkCkYf27l0GKXX8rGAdsh1tJn/2zkfQx6XQKYy32RMg2d8BAI4VGnP9Z5JROYcGO2bA9/BA2tHOHUCJPg3uvKjHuWfD5KiVlkqrovjjkWEobwt7jpE6a9nWsTRkxeWw/2MxXrSYv3/cnIKy1fW6TFadyM/2J4YCo4vLWfVhqio+n8m06qjHYVSLCK0o93T9t7r/Ty6nSbHVzE5Sw5eYnyIEqeLytmHG7pC7KZC4QuAEgFPeqaVpoL2x
+X-HE-Tag: 1754582576-650766
+X-HE-Meta: U2FsdGVkX19vGz/nHIrPRGpYXDK2RU2TQSeOjDSDodu65Qkghq3mtkCCEnHG85x0N5DuAtUN2JoUl/DHZy+067Aek3luRSYPhz+P0eSPNVDYBisN05+5g87upsUZ5bHUSxKeYN/5d1cgB78UPow1TZ3EkvWiyFfKvSzIaoz81eAsyEVsHgOZKdy80Up3BPJLlb2Hp8bdr3MSc4iCy9XnA5EhidST2WYJbV9Mp7Q8cLf7fD3MoSEbE8wbHaYdpY5jZnc+6eK16742DRO/+lOQh6jlD1nB9NFArajb8M6x2rlnihooYTxrBuNvou1FIY/IjJKFdGMhhcEzWrnFYcEFtBOZMylqcsuiTJfedN3oVb6It9YOspTMoTOTFd39grKqaIujgIQtXwDthYoCiGa5oDl1SpcJ9LcaTyAHRUcb8vxYEhnVEa6SXQ4pQih/toqkecoCQdoeY2tBF0UO0GnWOTo95EOSLzSztTFhhzKgkE7JRFfiA8Q3EfwTJAhQAsO1bjNARsP7q/xKg1PvbzmFL75kR17gzkJfWBrg5q1YHL5f7tTPoSDQunFsw7qTS4j644fWiL6zoffmFjOMAPu9wCR1c9mZrXo/ZjUfvI12Xc36pheyicryPMmr2gGCY98tN6ap5LKG3eYluW6XHWn6qtYEpmODfCXS4bwvZWfYJNV0TYOaS8/D6JVmKheackeIf90nFXnW++omdhJVNdzda/CImPmD+E5/Yl3RZlRZ1Dnq3WM1QWCm+K3gPwhkLYpw4JXpmMeiTjQhNffYCHOEpXOp7nkNWjERT3RLBgxddzU2/N4174oknFepu4lR5vtj5BCJoWpw3k1YAIsPLdhEMKouH6nWoZASAy07kEjo7gB5mGTaDZOh1ZiC8YQkyDaIAnfb0d5EGsA3AXVjCny7+LO1ITLru5Nad3kejGPU26k1rjz9f8x9a/h1n8OK00BfZL0/7Se4nhZa2gPndev
+ FV0Bv66X
+ FsV10Rj/2yz+y1w3xCkAY8zS3KZaIy6D5LvwFk7+BPP0vJaYjfyrYtWmSI0yhytNWhppAgd0ebxvp4qJx9W56OeQaA59eol7+Qfs3Fq5tnCTZOBal91a8rNERljYftWZsASqlFx36JlNvj2VqNuFHKv3jBOdI9auK10SmcAcKg3pOrKFR6vkhRPi8VmJNAk0urL4NK+Y9NbK2urLi+gXvUmtvMVi9bX1Hfowv
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,60 +117,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 7 Aug 2025 15:16:46 +0800 Philip Li <philip.li@intel.com> wrote:
+On Thu, Aug 7, 2025 at 5:27=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrote=
+:
+> mincore only interested in the existence of a page, which is a
+> changing state by nature, locking and making it stable is not needed.
+> And now neither mincore_page or mincore_swap requires PTL, this PTL
+> locking can be dropped.
 
-> On Wed, Aug 06, 2025 at 10:51:38PM -0700, SeongJae Park wrote:
-> > On Wed,  6 Aug 2025 22:43:49 -0700 SeongJae Park <sj@kernel.org> wrote:
-> > 
-> > > On Thu, 7 Aug 2025 06:31:25 +0100 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
-> > > 
-> > > > +cc SJ, as his tree :)
-> > > 
-> > > Thank you, Lorenzo!
-> > > 
-> > > > 
-> > > > On Thu, Aug 07, 2025 at 12:03:03PM +0800, kernel test robot wrote:
-> > > > > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/sj/linux.git mm-new
-> > > > 
-> > > > Not sure why SJ isn't cc'd when it's his tree?
-> > > > 
-> > > > Not sure how easy it would be for the scripts to figure this out.
-> > > 
-> > > As people might already realized, it is Andrew's mm-new branch.  I started
-> > > pushing Andrew's mm-{new,unstable,stable} branches to my tree for backup
-> > > purpose, since DAMON development branch (damon/next) is using mm-new as its
-> > > baseline.  Seems it caused confusion to kernel test robot and other people.
-> > > Sorry about that.
-> > > 
-> > > kernel test robot, is there a way to mark mm-{new,unstable,stable} branches on
-> > > my tree be ignored from your tests?  If there is no good way, I can remove the
-> > > branches from my tree.
-> > 
-> > To stop more confusion first rather than waiting for the answer, I just deleted
-> > the mm-{new,unstable,stable} branches from my tree.  I don't really depend on
-> > those branches on my tree since I can keep fetching Andrew's tree or using my
-> > trees outside of kernel.org.  So this is no problem for me.
-> > 
-> > kernel test robot, please let me know if there is a way to mark specific
-> > branches on my tree be ignored from your tests, though, if you get a time and
-> > have an idea.
-> 
-> Yes, the test bot supports this to ignore branches by pattern, for example,
-> 
-> 	branch_denylist: .*-wip|.*-v[0-9]*|.*-[0-9]*
-> 	branch_denylist: mirror/.*
-
-Cool.
-
-> 
-> Do you want to just ignore mm-{new,unstable,stable} branches, I can configure the
-> repo to handle this?
-
-Great, could you please do so?
-
-
-Thanks,
-SJ
-
-[...]
+This means you can race such that you end up looking at an unrelated
+page of another process, right? And your patch intentionally allows
+that to happen in order to make mincore() faster?
 
