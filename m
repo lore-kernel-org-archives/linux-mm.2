@@ -2,178 +2,131 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F77BC87FCA
-	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 19:33:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 43FBAC87FDA
+	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 19:40:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5FDD06B0098; Thu,  7 Aug 2025 15:33:39 -0400 (EDT)
+	id D87116B00BD; Thu,  7 Aug 2025 15:40:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5ACC16B00A3; Thu,  7 Aug 2025 15:33:39 -0400 (EDT)
+	id D5CB66B00BE; Thu,  7 Aug 2025 15:40:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4746C6B00A6; Thu,  7 Aug 2025 15:33:39 -0400 (EDT)
+	id C24666B00BF; Thu,  7 Aug 2025 15:40:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F6336B0098
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 15:33:39 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A13ADBD486
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 19:33:38 +0000 (UTC)
-X-FDA: 83750960916.07.69127E7
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 3B2D714000F
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 19:33:36 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Xi9eMMs0;
-	spf=pass (imf09.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754595216; a=rsa-sha256;
-	cv=none;
-	b=7tP6uu7udM3zcZqDC0iz4VewPziutg1SoQ975sRnNYtdIOqPbR3jjwflA54q+ZkSJWGQvY
-	XVfHGX9k3HcjazAAaS9c7du0W8kFSPjeT7n0vJogAmzzQ9UXXKHAxriNsNbEgr5kigo1fu
-	1dU/Owl+Q2g11TC3TBe8uw2KFM1bhC0=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Xi9eMMs0;
-	spf=pass (imf09.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id B24246B00BD
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 15:40:23 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7361182AAC
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 19:40:23 +0000 (UTC)
+X-FDA: 83750977926.13.A808366
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 8DF901C0007
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 19:40:21 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FVga8Qig;
+	spf=pass (imf20.hostedemail.com: domain of snovitoll@gmail.com designates 209.85.208.181 as permitted sender) smtp.mailfrom=snovitoll@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754595216;
+	s=arc-20220608; t=1754595621;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L3sfW+BuUN8qg0raSUf+jpJ80763tcAVtLgdzo6FODg=;
-	b=e3sS3S3QjUm3Gin8maQ6SsZ67Md2CxcR0PxB4hp40Z+4ol1A8IKIuIb/+nI7NKaZy+riSx
-	FRDW1/tDvm3Oaou2k6EycY+/X0PSKQkyg4TiQpPI7R0MKaOQZM1hmFk4Y9ykxLLx3dDl7G
-	ImNIUAXTJJsp5eiq6tZBKm3ndvskWzk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754595215;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=L3sfW+BuUN8qg0raSUf+jpJ80763tcAVtLgdzo6FODg=;
-	b=Xi9eMMs0QN3dnKyuDFhVRN/u+u6ey/77miMTF3kJIeTniJdBWOdkXUlPvHpJfnAP9gEV7O
-	/kqgIwy/+OPnuJmtIlFJro7T8S4FMdhade1RGVbFboo6f4iQunyWmi5cAO1d4nNh9xdego
-	/BPk+sYk2MnqB9IZeqi21mnVXAAnS9I=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-611-5gLmemtmNrOTVDQgj7kABQ-1; Thu, 07 Aug 2025 15:33:34 -0400
-X-MC-Unique: 5gLmemtmNrOTVDQgj7kABQ-1
-X-Mimecast-MFC-AGG-ID: 5gLmemtmNrOTVDQgj7kABQ_1754595213
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-459db6e35c3so10833595e9.2
-        for <linux-mm@kvack.org>; Thu, 07 Aug 2025 12:33:34 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ZxujgbgbPZueP+pnQ5s6H3MUryeO1an975QxEYXuWHk=;
+	b=XKCqzNiTcs7Tcq1qs8NnQ+quPJVd+JNUMaPDkskEN6Hh+lTlPlTVrhDxLD9FK6p29CnxYC
+	uYzc4VV7oXTRQM+gn6UXqgkFnmgkcQvvh27Tye0t0OJVylEeZlHoVefTczefBt4tPbaBNJ
+	6+Tfrs1c+QzYDnhaeqkmelRxaZBzdYQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754595621; a=rsa-sha256;
+	cv=none;
+	b=4Wf/33hqO0lr+Xc+ct1uZ9isztXTU9rMSga1H7tYJ3kwfmrVZLd8I+VmHP3ACSSKC9hgNp
+	uuo4iewIhwJvpgaQiZ3NRYZUYvzN5B3CcHKLJJed+InqG2CB2Lxqm6ar48A3iTHQJ/dxKO
+	GGVNJnm2YyVlDVOHVQVrMeSrnQBoSIw=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FVga8Qig;
+	spf=pass (imf20.hostedemail.com: domain of snovitoll@gmail.com designates 209.85.208.181 as permitted sender) smtp.mailfrom=snovitoll@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-333a17be4e0so875411fa.1
+        for <linux-mm@kvack.org>; Thu, 07 Aug 2025 12:40:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754595619; x=1755200419; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZxujgbgbPZueP+pnQ5s6H3MUryeO1an975QxEYXuWHk=;
+        b=FVga8Qig76G2CcgSnga+lsWqWBn5FgDTI69uWyu228ReNmp8o48LcOjlQ+HPd8mZJ1
+         Vg48Q0ngxKNv+KpoUN+48X/2dqzMjczL1381LkSHkE7rHHOlPzz+atf6Jh6KwS7ewTGc
+         X72fCXXH9qYvC4DrjouFNNWkaT9BYN5JajMuCxh1dgFUAonV8zhtqvBJ3sELqURmSDQB
+         6GKKQHCyPsqxFsu8zT32aa8NPSsw0kgeGSKH9y9mzgpgtfsjkYJX70L9AssSYGIa9xgp
+         Zn4iMmUSX92MdmSCYxCKhweDBmRT4Wd32zPlZFp1WCJMGj4uHGjEsqTbbnbhGxTNEzcE
+         EuCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754595213; x=1755200013;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=L3sfW+BuUN8qg0raSUf+jpJ80763tcAVtLgdzo6FODg=;
-        b=D+XKwV1eoSuafngmdxdVeWiNvOKxZdeyYtTxkdr3ZbA4v8CtezownDQfHBARRZ9kqd
-         J6RcV8mcem8m2wSEMpZcLrCYnzpwzDnELViUBsDQqqvXKQS8fnRjc23w80UK2mymxB8l
-         pUB3FbGJ3Fwf7j/mMp+bKiXMu5DnZQcwYgqPj6CPUhWg+e+oeLp0bc0bJCwUw3XU4I44
-         BdfFNFYLoydjnBDOxSuRdmbuuncm05iiz6FSTH2JrGLT6QpmVrjL00ap+rbO/wkCV6rR
-         VWVw9MWBmfulMiGTemP6eSjq6TIvZVq2mbfUxBsUtbCWebnDiXz9wTnL2jEgBvqGTGa/
-         7bxw==
-X-Forwarded-Encrypted: i=1; AJvYcCX3K22uBaVm6HjyA8Cn/repm3W0xLrPbPiEqpZEjyt32KeN6HWpRzY4+G/wJ4mVFyiXKWudX90v9g==@kvack.org
-X-Gm-Message-State: AOJu0Yz6aMtH2DglIUeFrc8cHbVx7A2y+CA1AWg0rlSe1FxVnCZF7onT
-	Qe09fMbC3MMbrasl3eJecdCzCcvrxpDjJcy2UL7KHNxdL0yugjUdoRlgjnxMA9KIUgHDGEI3eoS
-	DuyOiuxWtTdh0NdjjQ5ZBvb2X+gOfjQ4QS+/hOVQMCAcZIs2IDPQR
-X-Gm-Gg: ASbGncv95SPZt9eojHps+CYhxtgL4EWz9507HBW5rM04vZHYcA5HMv6+vM6Qa/FdIvZ
-	eMIjIIczg7cpCN2v0BdmHgNQKmN06+WYIwL6trMd0CvUulUw//T/MlPGi2eu5zCS1FbtziSGJTi
-	j3w24YvWZFtzYu+sO00RIm8ZY7LC2BLD7eJ95gAdCDXwBxyzsSer+1CGisPhcvw2wjUpqCGwuVV
-	jm6cj4SEYV5a/QFfpbgthgifDH/jnh1PNbWGbZvizSL2sGI+hS8+47ymlp1SveC7bRktQuQR4Ki
-	BxfH/Dmn5rP2r7xKzZ0Xp40QJsTIZ36oi6YsG7vVQWVmeCya0mWsqHsCXXRgK1gzOWIkoC4xfKy
-	vvHuW2JxcPV6iYN+s8pxvO7gfn+uO90VYrmvwg5usdtazdWhx9NleQMNL4M9Ggh8DEpo=
-X-Received: by 2002:a05:600c:474a:b0:455:fc16:9eb3 with SMTP id 5b1f17b1804b1-459f4f3e33bmr1378055e9.33.1754595212778;
-        Thu, 07 Aug 2025 12:33:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFKzAaiLE4wWUDzv/kHmD0X6RwWzUT4LbWdsvRdTyvoc2LKZ8O7shwZOIhexGhHBHA6I/MKBg==
-X-Received: by 2002:a05:600c:474a:b0:455:fc16:9eb3 with SMTP id 5b1f17b1804b1-459f4f3e33bmr1377855e9.33.1754595212308;
-        Thu, 07 Aug 2025 12:33:32 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f49:bc00:12fa:1681:c754:1630? (p200300d82f49bc0012fa1681c7541630.dip0.t-ipconnect.de. [2003:d8:2f49:bc00:12fa:1681:c754:1630])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-459e587d378sm103146285e9.23.2025.08.07.12.33.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 Aug 2025 12:33:31 -0700 (PDT)
-Message-ID: <cb010f6c-4fd1-4d5d-87f5-4223ddb70f5a@redhat.com>
-Date: Thu, 7 Aug 2025 21:33:30 +0200
+        d=1e100.net; s=20230601; t=1754595619; x=1755200419;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZxujgbgbPZueP+pnQ5s6H3MUryeO1an975QxEYXuWHk=;
+        b=qvWsGvFfgDozzQh/2MLlDKGxwQvac5NU60IySedStpFhACN9KQDbpbI7K70kaazVM/
+         uxc9bEUqB9nKMmMcLuVN5+ccZP7dzm5m+1AIIPwiR/k+IvG583MFdxt+Z6z1kjqNS9B/
+         V233wspBmeBkYDgp4kQPLJQv99cN6P+bZWl3zRU+zlaOtYOJGrvTowLRwx5MuGZ2XJSh
+         IBSTkVYCI8xskHVXqY3dLYYw0PC6oWh2k3WFcvpj/55wlvFNngD3wZoqhR8yOQBQ2Aza
+         x5WbCf3FEaDhey7W0kSopTv3dk0wXmvTMa6XBocX7QmjHpPd83Dw45qhlTNFVOlqnyLh
+         AtNw==
+X-Forwarded-Encrypted: i=1; AJvYcCUjWVE78j26N5J/eJNzFDZT6TGwY81bQ0gBHj4oQap8zetxeWd6eOSXfHScMgLDQiZgcVtw0/hRcQ==@kvack.org
+X-Gm-Message-State: AOJu0YxVF4ZlMiGOE7EgDybJIe6gT/9f4znXudesoWcMZ2DYV9QW1ziw
+	TgwQp0QUPwS5IwLjx3qycMaZjTLM+AP7gasB6DA+D6hSI3Ay4YBFK6yd
+X-Gm-Gg: ASbGnctqJ5XgQGVSezzJZjadANHh6qllwWfJMNrDu/hzfgm5W1MqFXydwzSmE+vV6/b
+	OC7nIyfvph7DwZB15dv+EODRkD8tq819A0ZXe2GmyQ7Je1OOHNgAHtCv4fZMUZphnFgQsgkv+6W
+	I73wlYwwVhSoqes+yDcqsa3NzFs+RO55vENi0bUCzjJPnlgIH5ur7u6tgHx/OxK31Nk2jxGP16H
+	9/WkxAuUwSTUP7OdBBmXCZQGFTY1yEEeA6RNJ3j4gaUH4Op48RnWNOrqTX455vX8zr6TjrvMmy0
+	7DGQeArJ7K2vT0+qZRtEx6VQK5uAiiB1hRdGlwmXA3+Px/Q/Il6rUrS04DFWuUfMeeVT42R+XkK
+	KmL7NCJwESngZFskuDy2mb1+SZOFTlv7RcsxtUN1WT0E18EkcIXtKsgR4TrJb6uEg/u3d5g==
+X-Google-Smtp-Source: AGHT+IE3k4ZwCdWcT+X+hcq7vhHbrmZfaduJaslrnOP/WdlfOXcdLd8Kfq+JS+ZAkrsMnQsJjZ39NA==
+X-Received: by 2002:a05:6512:3d09:b0:55b:57e8:16c4 with SMTP id 2adb3069b0e04-55cc012c003mr7357e87.30.1754595619107;
+        Thu, 07 Aug 2025 12:40:19 -0700 (PDT)
+Received: from localhost.localdomain (178.90.89.143.dynamic.telecom.kz. [178.90.89.143])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55b88c98c2asm2793570e87.77.2025.08.07.12.40.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Aug 2025 12:40:18 -0700 (PDT)
+From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+To: ryabinin.a.a@gmail.com,
+	bhe@redhat.com,
+	hca@linux.ibm.com,
+	christophe.leroy@csgroup.eu,
+	andreyknvl@gmail.com,
+	akpm@linux-foundation.org,
+	zhangqing@loongson.cn,
+	chenhuacai@loongson.cn,
+	davidgow@google.co,
+	glider@google.com,
+	dvyukov@google.com
+Cc: alex@ghiti.fr,
+	agordeev@linux.ibm.com,
+	vincenzo.frascino@arm.com,
+	elver@google.com,
+	kasan-dev@googlegroups.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	linux-mm@kvack.org,
+	snovitoll@gmail.com
+Subject: [PATCH v5 0/2] kasan: unify kasan_enabled() and remove arch-specific implementations
+Date: Fri,  8 Aug 2025 00:40:10 +0500
+Message-Id: <20250807194012.631367-1-snovitoll@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH HOTFIX 6.17] mm/mremap: avoid expensive folio lookup on
- mremap folio pte batch
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Pedro Falcato <pfalcato@suse.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
- Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20250807185819.199865-1-lorenzo.stoakes@oracle.com>
- <ujfeyn2awquoc4pc7qxcnavgqcu57kvmdb66x2hyaeoiasq3w4@u5qlyyklfrld>
- <c556f29b-fffb-48d2-beda-a9e2b70aa4a4@lucifer.local>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- g3eXuA==
-Organization: Red Hat
-In-Reply-To: <c556f29b-fffb-48d2-beda-a9e2b70aa4a4@lucifer.local>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Now-T1XJhbR63svK4HJNozKluSCI_ODgsZpJTk3iEIQ_1754595213
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 8DF901C0007
+X-Stat-Signature: ockffgohdrhfdggjb63639fekm7i4b3f
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 3B2D714000F
-X-Stat-Signature: 8hj4xbpi4jaqybhni19ch1xtpafisai7
-X-HE-Tag: 1754595216-784958
-X-HE-Meta: U2FsdGVkX1+5uYnRlqlQPrCI+tzqvdIaynwUIRxZcoxIXLUUzM69nvP+dnvXuNeZsn3xDubgVC2nkOXmRxHt4B60im0pFJ3RAMRURjbXgjEWdA65ILmH/hvCJAN9d40xsfKI35qXoCpGXKqFR+lVxispIB+1HrVqCyL7ZF0o8laxEMfJV/mY+PxsI/2S91SHyTX92FwrIvwtPqVSpfvLdJtEDorS3O/yuC93kxnhw7qGeRfunUHU3dU7yRelGLK9u4YSk3MQ5MmCCcyS7TeyNab2Jg5NoolXvMkjNt7uf/04bJGuXLNRw5SHjGtvvVefxOnknWRFODWXuaQmULGYproUbP2HKjziSQ/s49sHJVH2eZaaMgGwSnHpRhB2RRPsdq/RXeOf4nEwJ8neG53Q0sS2ZfJhv93QuZCSAcWtRaad8j16X6oo5XE3p0I+q/P15HYa+CGZAONQezYFUpFqkCoAELsBZq3qnKhMM0rmJevbuGWJ/BmVDf525/hDxg6JX1AAxZgoAOIBHqKH4GS4MIMHR3StGsfKeyDXPl6OjDM9ZhobS+/NQ/Lt54X7wKPNsWTeWbA/wx5vaLonuaWPbhhA9XpU1NiendnX5XfvC8WZ5Fb0sYySraO+Y/5rjYjRfiNcQQvEq7SghXfl1BwU6CaqES+3nqwAvwUijt9pz/CA7ubkKiZJNh8YGOo3SpQimzBQIafnAtTkDNmnsuCvDT3rw1uoRnNiJHKXJ74Zd1J8GLHydoBa7WRHdjyl0rWwiaDHw+lLL+M1/uo/zOCSeLwU1sLLJ/gzb5umz4/aIR4NSAqnti+rUBaX+SwqRc18lwao/yeapsqYztdmOd+XLvWcwV1agBxm9lSUym6MPplF4X5U2lrnJVENr+GuapX5DyZ576SBv3NBDvfiRz/tMuW7PJWYb3M5bMKq7KRP1TMBrVthcnZPWFT/nC+mbexifGbWPuSFKZRqCOiuK3m
- m61A6NVU
- BpsPAvmdx3VPvn008iyF7/1WsWZl8EMGjyED6nt4f5baZOfdht7Z+DX1/UsMou9iNw5+FUtDKYYOs22FkXny3wFw9nHMc1nVGvr01SP6PM1skCE8OvHg21cFlQ44iQ1Rx8pc1/cEwHw/Tzrt9GcBb7DBX9hJy+j2ASUog7Rc8tjMVnPTrZo92TIwmkh8oQ2OrNIA6cwoCtmEzllA7OvVb/cJ4tpLg3W7fz0Oxu8k10EOLCVIBXgQonYO2oaeL8F2813xQnkfyV7Je9BsCtGrLLPblLPIRfQf30+SVnW7ckkWM+hIhvsMtxLO+rRAA8H9R8Vg70a86f0zcpB1OTn9DY9dYwEXWdyNPKRRZkKonhAGgBrCKkBumuFxF36EXpygHwpVcZNeHVPYdnwn2wPFRy7vJUKBQHbboGA4WqqHBYfRHYq6UThSNYnMtVBg0AcFVihu9LNAj+XzwWjqgv3ieVheWZg==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1754595621-23255
+X-HE-Meta: U2FsdGVkX19+9Nfaf46q6ahEMQz/lGhRDFdJSLiOUa3MMFzPEUskax9IT03Qcfy85hqjXlv7w3Bi3xHgdkwOdClikke+ySNz0Fn7uzhuhSLRVLOEQXkMCnGL2iXCEv/7o0NtpdXWELxGl20MWmbP+LkVaOL5LV/+bGB54eHFjsTKm7d1jfuRpyj4iICn/HqNJLkuLJ8UFyJx44HFSCGFx+viDtcoNSoAOWTpnw02x5CePYzjLJTaU+tMQxlRy4e5FOCIH9eNDxGs8RF7Gzdi4y+6CSre8O3ju+ALW+hJMjD7CGa/hm1bGKqmUUIaxkJO8x+H/2uaNhzzMvwaRixZXM0eJNsZ+MobQobf1V4kKa4yObSwyrtTipZjdLMLrRdIOlExioydQfIGKkuRdnOxjE9NuGzmTF21912orsLpyQwLAeICV2/94mk3fDBhjZMGJMxBRLpgcwpWC7wY1+6rkcZCPFAN+9YzLaPfIc+7ZmDK9x2EVTHkNFD12VhKIrr+09NTzRODnHVM9FWceE9uXQDLAHplpFYoDfyq0YhYUI6S8irA6n7rqLX3n6/WKUPw1Ak43GI7LHvCAFUiWWiEHqpwCfo1blnTxG9shWc4GEQ5a6Of49wm3uOeDp72fVmpXxTi0HHLVBGIu7+XMviKoDDdabYR02oxYKYNQaYyXAOknrPpzfFj2WXaZLKsGOJ17fQnIXKTQTqwliPGn4tISdADjcLtAxDom7kVIWnBg6nFmaaki7z9V8YTXf2XfLHTah0fQqV9rXXPAWxLlTbgxyhLKy4w0YgzYMeUQDVHQFCvSg9iMVAgRsH+veETyn0dH++3nhryclZGVqEuUUiBsLO5/qR5JaN6J5CiETqumJEpzKHSGjlcJRGRzZjSiFUVWmfv6XOsdu26Mz6Id+R+g5FrDNONBc0/LiUfbA9VFT4sqv/tc0/WfUFGV+mbI7a7hOSj7jSqpzIRnBzH1Q1
+ 52AJQo8Q
+ skUx2JnJsESpWLRHWk7teoh5LJ6ExW2p/+Tr80+8xTdmVgzGy/kik6gRvyPNSrjCbNm8j71qRd2GpHlXTXJfq8H0J93EIxFgR9k2SpcMIgL6kWPC65R0oEARPWMaMWON05+eVQPgrX+tiq4mmeJeONfvFY4qGjQFQGcGy58TJvrt5XZFpbB9bWxBfXxoAE4dPWzQQpMtFztUrsOUm6WFO+SflErGFKA56O1OY+9tDQjon8mArI29xeIGZ2EAOJ+OsdANlr1wwLAZ4I0OXFsqdHb79MsmPCsj5njg/N18XGe2cieaxq2Km/sMxJEOsQiST8bQEnamwki6Vo6pj3s0b4VYb1k5oCP4Xcv7P+2yREZNYID4G9h+m9o99cFSc4+7o0LoIHJEGrjwIZ4XOjd/QlEj6brNbDJvJz8y59j9jlno0F4evnE9yHC9NDtt9zglsZtjigXDgQC1b/c0Qj4L167R2naTZHGo5pq3n7xk39VNEDqSYmbHy2Dwp4012nFaBFKld3wmINIETJ2PmEWYbKAPh2XH3hKd65np5hPeYiF7zh89dMEUkYRY6nw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,63 +135,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 07.08.25 21:22, Lorenzo Stoakes wrote:
-> On Thu, Aug 07, 2025 at 08:14:09PM +0100, Pedro Falcato wrote:
->> On Thu, Aug 07, 2025 at 07:58:19PM +0100, Lorenzo Stoakes wrote:
->>> It was discovered in the attached report that commit f822a9a81a31 ("mm:
->>> optimize mremap() by PTE batching") introduced a significant performance
->>> regression on a number of metrics on x86-64, most notably
->>> stress-ng.bigheap.realloc_calls_per_sec - indicating a 37.3% regression in
->>> number of mremap() calls per second.
->>>
->>> I was able to reproduce this locally on an intel x86-64 raptor lake system,
->>> noting an average of 143,857 realloc calls/sec (with a stddev of 4,531 or
->>> 3.1%) prior to this patch being applied, and 81,503 afterwards (stddev of
->>> 2,131 or 2.6%) - a 43.3% regression.
->>>
->>> During testing I was able to determine that there was no meaningful
->>> difference in efforts to optimise the folio_pte_batch() operation, nor
->>> checking folio_test_large().
->>>
->>> This is within expectation, as a regression this large is likely to
->>> indicate we are accessing memory that is not yet in a cache line (and
->>> perhaps may even cause a main memory fetch).
->>>
->>> The expectation by those discussing this from the start was that
->>> vm_normal_folio() (invoked by mremap_folio_pte_batch()) would likely be the
->>> culprit due to having to retrieve memory from the vmemmap (which mremap()
->>> page table moves does not otherwise do, meaning this is inevitably cold
->>> memory).
->>>
->>> I was able to definitively determine that this theory is indeed correct and
->>> the cause of the issue.
->>>
->>> The solution is to restore part of an approach previously discarded on
->>> review, that is to invoke pte_batch_hint() which explicitly determines,
->>> through reference to the PTE alone (thus no vmemmap lookup), what the PTE
->>> batch size may be.
->>>
->>> On platforms other than arm64 this is currently hardcoded to return 1, so
->>> this naturally resolves the issue for x86-64, and for arm64 introduces
->>> little to no overhead as the pte cache line will be hot.
->>>
->>> With this patch applied, we move from 81,503 realloc calls/sec to
->>> 138,701 (stddev of 496.1 or 0.4%), which is a -3.6% regression, however
->>> accounting for the variance in the original result, this is broadly
->>> restoring performance to its prior state.
->>>
->>
->> So, do we still have a regression then? If so, do we have any idea why?
-> 
-> It's within 1 stddev of the original results, so I'd say it's possibly
-> noise.
+This patch series addresses the fragmentation in KASAN initialization
+across architectures by introducing a unified approach that eliminates
+duplicate static keys and arch-specific kasan_arch_is_ready()
+implementations.
 
-It's very likely noise. And even if it's not, even a simple code layout 
-change by the compiler can provoke something like that.
+The core issue is that different architectures have inconsistent approaches
+to KASAN readiness tracking:
+- PowerPC, LoongArch, and UML arch, each implement own kasan_arch_is_ready()
+- Only HW_TAGS mode had a unified static key (kasan_flag_enabled)
+- Generic and SW_TAGS modes relied on arch-specific solutions
+  or always-on behavior
+
+Changes in v5:
+- Unified patches where arch (powerpc, UML, loongarch) selects
+  ARCH_DEFER_KASAN in the first patch not to break
+  bisectability. So in v5 we have 2 patches now in the series instead of 9.
+- Removed kasan_arch_is_ready completely as there is no user
+- Removed __wrappers in v4, left only those where it's necessary
+  due to different implementations
+
+Tested on:
+- powerpc - selects ARCH_DEFER_KASAN
+Built ppc64_defconfig (PPC_BOOK3S_64) - OK
+Booted via qemu-system-ppc64 - OK
+
+I have not tested in v4 powerpc without KASAN enabled.
+
+In v4 arch/powerpc/Kconfig it was:
+	select ARCH_DEFER_KASAN			if PPC_RADIX_MMU
+
+and compiling with ppc64_defconfig caused:
+  lib/stackdepot.o:(__jump_table+0x8): undefined reference to `kasan_flag_enabled'
+
+I have fixed it in v5 via adding KASAN condition:
+	select ARCH_DEFER_KASAN			if KASAN && PPC_RADIX_MMU
+
+- um - selects ARCH_DEFER_KASAN
+
+KASAN_GENERIC && KASAN_INLINE && STATIC_LINK
+	Before:
+		In file included from mm/kasan/common.c:32:
+		mm/kasan/kasan.h:550:2: error: #error kasan_arch_is_ready only works in KASAN generic outline mode!
+		550 | #error kasan_arch_is_ready only works in KASAN generic outline mode
+
+	After (with auto-selected ARCH_DEFER_KASAN):
+		./arch/um/include/asm/kasan.h:29:2: error: #error UML does not work in KASAN_INLINE mode with STATIC_LINK enabled!
+		29 | #error UML does not work in KASAN_INLINE mode with STATIC_LINK enabled!
+
+KASAN_GENERIC && KASAN_OUTLINE && STATIC_LINK && 
+	Before:
+		./linux boots.
+
+	After (with auto-selected ARCH_DEFER_KASAN):
+		./linux boots.
+
+KASAN_GENERIC && KASAN_OUTLINE && !STATIC_LINK
+	Before:
+		./linux boots
+
+	After (with auto-disabled !ARCH_DEFER_KASAN):
+		./linux boots
+
+- loongarch - selects ARCH_DEFER_KASAN
+Built defconfig with KASAN_GENERIC - OK
+Haven't tested the boot. Asking Loongarch developers to verify - N/A
+But should be good, since Loongarch does not have specific "kasan_init()"
+call like UML does. It selects ARCH_DEFER_KASAN and calls kasan_init()
+in the end of setup_arch() after jump_label_init().
+
+Previous v4 thread: https://lore.kernel.org/all/20250805142622.560992-1-snovitoll@gmail.com/
+Previous v3 thread: https://lore.kernel.org/all/20250717142732.292822-1-snovitoll@gmail.com/
+Previous v2 thread: https://lore.kernel.org/all/20250626153147.145312-1-snovitoll@gmail.com/
+
+Sabyrzhan Tasbolatov (2):
+  kasan: introduce ARCH_DEFER_KASAN and unify static key across modes
+  kasan: call kasan_init_generic in kasan_init
+
+ arch/arm/mm/kasan_init.c               |  2 +-
+ arch/arm64/mm/kasan_init.c             |  4 +---
+ arch/loongarch/Kconfig                 |  1 +
+ arch/loongarch/include/asm/kasan.h     |  7 ------
+ arch/loongarch/mm/kasan_init.c         |  8 +++----
+ arch/powerpc/Kconfig                   |  1 +
+ arch/powerpc/include/asm/kasan.h       | 12 ----------
+ arch/powerpc/mm/kasan/init_32.c        |  2 +-
+ arch/powerpc/mm/kasan/init_book3e_64.c |  2 +-
+ arch/powerpc/mm/kasan/init_book3s_64.c |  6 +----
+ arch/riscv/mm/kasan_init.c             |  1 +
+ arch/s390/kernel/early.c               |  3 ++-
+ arch/um/Kconfig                        |  1 +
+ arch/um/include/asm/kasan.h            |  5 ++--
+ arch/um/kernel/mem.c                   | 10 ++++++--
+ arch/x86/mm/kasan_init_64.c            |  2 +-
+ arch/xtensa/mm/kasan_init.c            |  2 +-
+ include/linux/kasan-enabled.h          | 32 ++++++++++++++++++--------
+ include/linux/kasan.h                  |  6 +++++
+ lib/Kconfig.kasan                      |  8 +++++++
+ mm/kasan/common.c                      | 17 ++++++++++----
+ mm/kasan/generic.c                     | 19 +++++++++++----
+ mm/kasan/hw_tags.c                     |  9 +-------
+ mm/kasan/kasan.h                       |  8 ++++++-
+ mm/kasan/shadow.c                      | 12 +++++-----
+ mm/kasan/sw_tags.c                     |  1 +
+ mm/kasan/tags.c                        |  2 +-
+ 27 files changed, 107 insertions(+), 76 deletions(-)
 
 -- 
-Cheers,
-
-David / dhildenb
+2.34.1
 
 
