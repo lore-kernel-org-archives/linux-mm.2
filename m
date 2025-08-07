@@ -2,84 +2,84 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C04FC87FD2
-	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 05:32:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A4CEC87FD2
+	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 05:34:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1364E8E0005; Thu,  7 Aug 2025 01:32:55 -0400 (EDT)
+	id AFD6E8E0006; Thu,  7 Aug 2025 01:34:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E62D8E0001; Thu,  7 Aug 2025 01:32:55 -0400 (EDT)
+	id AAD118E0001; Thu,  7 Aug 2025 01:34:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF67F8E0005; Thu,  7 Aug 2025 01:32:54 -0400 (EDT)
+	id 99C328E0006; Thu,  7 Aug 2025 01:34:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DA9A78E0001
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 01:32:54 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 63A3C1607E8
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 05:32:54 +0000 (UTC)
-X-FDA: 83748842268.01.D8D956B
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 88E688E0001
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 01:34:34 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 37AB9BB895
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 05:34:34 +0000 (UTC)
+X-FDA: 83748846468.12.54A6C61
 Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 83F4140007
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 05:32:52 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lj1Wrf5l;
-	spf=pass (imf04.hostedemail.com: domain of chrisl@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id 57C3EC000A
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 05:34:32 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CtgUymzN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of chrisl@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754544772;
+	s=arc-20220608; t=1754544872;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DpAI00LiEUXb+wTxCkHmar9RLUcAHFBYMy1g2PSSR0w=;
-	b=oYK9b9KWxo2wFQYMRy/I2pp3TOvgArB5sJk+PAsj56wR8yqbbbzmGWmW3WZmTt8KkSvUAF
-	k1Qokc4+6+Pnlm/f83+fYOut6TqMArukGTd78Mg14B4EdQVCNzp8fELACOfp3pUmSit0Xw
-	0XI7bXlvnVsgSnFimPya5phjaJCV4qI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754544772; a=rsa-sha256;
+	bh=0q8hUrFupG27i8HWsQxxW/0Vdf5AjjEm/LYkQBdQCMY=;
+	b=0P3FF4WL1whh61j/cGf6aN+4bBc+HctqPSZVYFBFwTovPkTCWqPrpLe2wngNiV6g7JRFRS
+	xkpiPntxzKsOVhHp5Vnk4PN7wAOtkU1shjbXlZ5kdtSJO9LuIoa/ArsxhIGEVslcf7lSQ/
+	YbkUoNJD1F+fAtyW8RnMhnPuy9tfENM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754544872; a=rsa-sha256;
 	cv=none;
-	b=38arADPpKAAjUMPglx4JVrMqadjZmLMPpHTlKZxqYZtKwoduns2kwok7FQep0WW6dCYdrI
-	pNqxWXSzGshBSmg/M1JDsZwJ+0XaMhkO6uSwgoE/PD0om7AfQV5Sp0ItbEajUC41YU3dAJ
-	4KFNiax2axfd/ajd37ZQW4RGC9fshPA=
+	b=tWTTllvsXhg2NQtC9TL4Z+lGq37Y+7tQlx/iR7AaYc6bvEdDxVguzTMukSRBTQ1bMFjzbP
+	pDcnjDY4KaI6hbSf+pvWZbMzNKytoDz50NKyikHu/zyIA6LjNuyiqHD1zZmoSVyuMrp32Q
+	2tWnUeOK8cYRDyfntWIFmz10so3sbTo=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lj1Wrf5l;
-	spf=pass (imf04.hostedemail.com: domain of chrisl@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CtgUymzN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of chrisl@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id CC13AA5579E
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 05:32:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB20C4CEF7
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 05:32:51 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id B77D2A55367
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 05:34:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67844C4AF0D
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 05:34:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754544771;
-	bh=rAB/UBmBSFxnXd0nKV8bRIRC+NXmYJqrmY/gqpJtuMo=;
+	s=k20201202; t=1754544871;
+	bh=RiUS7KSgyHes9dhNZkvcCRdWhBjwo7hlSmrC0k9Zo6A=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=lj1Wrf5l+enWTJt92Q1f37ftQ6dRrRa/7pz9cNsSfOpR54nNChwjJSgnINjviPBQK
-	 cxfld5TJinjB/Tm9qvyqfqEsPcQ4N/3QGYgZ0T4RtEYtKtq+yndJPnApo2uiUrPVza
-	 kzZ+1f1c/k/slOvXg/YsoEtEqftXUCeH7rIl5Y7fxZ/j6GNA3LqAO+plYqOvLlgO2p
-	 t739YkcQDv+WWMV9ItEuD26oJu2rjg/m02FbN0apS5WFYLQT4chCJMyBQtN6Jnv3VZ
-	 QU6LLIG7kjmsjf250GeDS3LxclJ7YNvZvMzskGIKOA8n4l59GHG/73thCogbgHfuoy
-	 rSUED+Qb852tA==
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-459e497776cso43895e9.0
-        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 22:32:51 -0700 (PDT)
-X-Gm-Message-State: AOJu0YxlIqsCroE2Ei1zZdIlmBA3Bp+sHpS+2pzeyRlpeguloN7GzXNA
-	2guizFjBZssgZnAUte7mKd9ULfcKXNesXut0QBJhjrK/53tH3CMGdT4AtYS/AElsIEEdNqjk7KK
-	LiAlyvMba4vddHa7PR8S2oek/EuHH0dP0k6E+JAEL
-X-Google-Smtp-Source: AGHT+IHRY2M2xDkw4ZJWViT3kxgvACrWtMMqxvgefNDPmHZPVLE+Ow533nj6Df/LWU4LDwUk6uK+U/WK5zAooMEDvyA=
+	b=CtgUymzNh53kTukKYdQFncA2wzaaMlLvuoVQAf2wIuGou/soT396FVrzmfhXXfvu5
+	 orf4Qea/PZy9rPI9+lXK2rp9QMUCYvtcewMbyfsA5zVjKM8x8ipRIIDj7TJzY4Gg3b
+	 3aq7JIqUEuD348XKwscYCJc8CThXe0bTSSIfDT8BIMzpxjcumrK6qLzpWzux7h6Lxe
+	 NHEXItQYbcio3/JqynER49PHFu3tqodFDQMZMO2kvXgstq7G3ztIv8UvqfqXsVrawK
+	 iP1y6YZJTypg1+KR8NQ8YPSsyqzzrmWNuk8XvpPYqMtddGpEXej/3OOajy08fwvuHK
+	 PvGCFeQ5QF82w==
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-458bf57a4e7so29635e9.1
+        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 22:34:31 -0700 (PDT)
+X-Gm-Message-State: AOJu0YyyQIY+YpYi+Ow8WRXKNsP7BsNlqyUaQ7q2yzFB6eEnzZ2sbEco
+	M1paD1Gga0eCOPq1e4juVq8kCyerQxZgCGciXd/FYnt+qSPftbYVNWOMqt16e2con9fI1n/oiiV
+	ugRV3osCOr+ahwmHn/M9D5Q6+48oSk5/e9UtOgyut
+X-Google-Smtp-Source: AGHT+IFIrjsa3bqiUdILHj0K82UG+gs0VXdeHKXr68Tr9yha8S6Xfrc88nTWNYBeV/BoCilZCd/fft4sfMojVba1RW0=
 X-Received: by 2002:a05:600c:3148:b0:456:4607:b193 with SMTP id
- 5b1f17b1804b1-459f0357255mr301155e9.7.1754544770158; Wed, 06 Aug 2025
- 22:32:50 -0700 (PDT)
+ 5b1f17b1804b1-459f0357255mr303415e9.7.1754544870120; Wed, 06 Aug 2025
+ 22:34:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250806161748.76651-1-ryncsn@gmail.com> <20250806161748.76651-2-ryncsn@gmail.com>
-In-Reply-To: <20250806161748.76651-2-ryncsn@gmail.com>
+References: <20250806161748.76651-1-ryncsn@gmail.com> <20250806161748.76651-3-ryncsn@gmail.com>
+In-Reply-To: <20250806161748.76651-3-ryncsn@gmail.com>
 From: Chris Li <chrisl@kernel.org>
-Date: Wed, 6 Aug 2025 22:32:38 -0700
-X-Gmail-Original-Message-ID: <CAF8kJuNSvQTxEOiWZRwwB4117713Ks51AvD0gbMhuA7KUhtARA@mail.gmail.com>
-X-Gm-Features: Ac12FXyXdS9CEOgVD9cnX_UtpBJ_eBgMrn2QY5iTZyySscX0lUCFjLmmrl_fVCE
-Message-ID: <CAF8kJuNSvQTxEOiWZRwwB4117713Ks51AvD0gbMhuA7KUhtARA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] mm, swap: only scan one cluster in fragment list
+Date: Wed, 6 Aug 2025 22:34:19 -0700
+X-Gmail-Original-Message-ID: <CAF8kJuMxnMP67GT9poH2eopOSJaXcnior47rEQGipmDCPuc5eQ@mail.gmail.com>
+X-Gm-Features: Ac12FXwJ1IgtZ56cqLlvklOoOtpKEXAtVQDzpJTF-FJ8utQN16JVaoRrM7ujyB0
+Message-ID: <CAF8kJuMxnMP67GT9poH2eopOSJaXcnior47rEQGipmDCPuc5eQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] mm, swap: remove fragment clusters counter
 To: Kairui Song <kasong@tencent.com>
 Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
 	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
@@ -87,14 +87,14 @@ Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
 	"Huang, Ying" <ying.huang@linux.alibaba.com>, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 83F4140007
-X-Stat-Signature: zan379mtpmopibzfjorpgbt1phreo1gp
+X-Stat-Signature: eagoqe5msopb8ssju86d6hpsdk53zxfn
+X-Rspamd-Queue-Id: 57C3EC000A
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1754544772-624521
-X-HE-Meta: U2FsdGVkX1+53rtK+nWLXFip3HQ3+BnkloN1TcB8aD7G8Grn5OTeFLbr8JGt6x05KREqJqPnu/+vzdq7zU7Vb1WijnFl1IZk2yDVllV2En0EbtQ1VtWFYytKJwSN2xQBejdJi51/F44vAXocsljtCiwu8BPlIAA0ucS1gqjkrsifyzl8P2oGKuZsBIz5vfmc29kElHZjvtbBwB/EMWp8q90Ext+lz0InRwQWLU07m8rvVnR36rtWYdeKjW2yXhQRX8KbURBDLUUN7oa4X2q0Bu/n9K8z6fQB20+w3b6CMlGOXlvjcv5as4gf8uq5aRdX9fhMXvAzkmP7Y9NyL2dhZGrOKgWGoNNAEpgTpOEgp6fAfuW8ToKuBPHwt8RhRm9Ijj0ckLNb/gmOV31Lgu4WeK+//O9XT8NN2TUDLJjL2iALtJTha3SnKevted1JVXQW7GDQeH3+1uadIbqsG/dkWkXmqoC4eqT87ZSUec/JfduuZ9CSg9+Tb8FLtT1HAeR92JQm11B1pbyDr0fn6YLurMfqewgWz8zibKITGTp9LxGMyC5pOg7zglHnrpPAQPS3QjSnjV8VBiqNuetxaeyxtbF8jL7l7qnjgwg2zLigFl2DBJSFjyL98FjI+HbvBgoZ2MMu8pmGVuam+KUvyNH/mCxEgZ5YtroTYdoUM3FICzqsQ7mQF14/9eWeSKm7rzApPcyESUstI/AeQPAXuDkcwr7Ro3uvNsQPPWcVEi8aW3ZED+wVOjMuvXBiwbRtuLxV/tlDMQwm5uXEc7LHAXMKzjzv3k1mj5pX4eaSEMXvhToboFJw8j8WQsjBJgA6iS2zZ3JH+qTj4s1Q9Q6vv48w9zPefzSsECQC1b+bI7fBa5I0fjy1qWoxUGSBCr+D+40t/Tz4eqeq5ljufH85tperqfvL4bXnEtaD5SFEUT75I6UgT6/zICYBMO9sL1oP3R78iUdFoZeuoeII1BcSF2X
- 1AJI39nu
- K+B8eFzscUcFxa2EVcrZkdRu25YgZ9Pkl8e+WGR/3OH9DCEqjuTLD3oocUYr9F5OMwOJwioylneJYRDrljXmfNZe+teZvRvybh5U53EhU0OIWoiuLS40HH+IfPpqK4B3jG38MGECp0BDnkSJ5lNEP7aCSMUHkmB014jqk5rWF3zc+sXzkW7RaniLtoYvQh78iPC4rQDPuBCWnLIVLSGKcl13Dt8wmtApgkklvauv21KPSygNgDR1Xs2ksKAyc+b8SNWvN+uFCKodRbOnhdPRQnqJgv6LsnlUsOcNm0jIqz57jJDYut5tUGOxrLIcyF/ROWsyRuvZPjCLfuEskTdyzaO8VFizMxpwhnSE/
+X-HE-Tag: 1754544872-552567
+X-HE-Meta: U2FsdGVkX1/a8CVQdt72N3abPeNOkh64enFrty6vhAXRgiiFUieXjrNtsFfxdQ1ceUcYNKP6cwgPtD0c0PGJaefqKaUTbZGd3dOcPcyuF8Gvm7FILreyo/d6FgUQX0seN+wxniGAcy1EVd5QQsoXb4XHCC2zfzJoKUzBwFzR1hlYHFQkCPl5CJlEGMWUej1fi4O/N+NMT2sTm9GvbsyZyVTTickxEWGCq1j2XyJFdmfUy9W90dk4SzaGR1VWC1RcN29RgqPuhHVb4WbmC1e1UpHvdtVEYfypOFnOk4e7sun+jrrLcDK+M4RyJh6WBDU2DP/5VS5bboAxKNMHS4WBqJX1kvity1KRuuVWMvtTgKqP3FOpKglCMGk+9A8wx7Y2mT+BKNdCV23jA7ytoJL3k8aws3FCSFfR8r+3mcTcWYeCzp669UtVXGbrntOZrauKYn6pwoVbbAv/by4kuQOp7MoDaGi0AgTM3hBG0TA5atMsjn3Mi75s16SY+kNfYTKkcfdlH8eEUuTxpprL0m2/dW59K3E1Dg7KK/617lbVgBKKn2nVOJ1qHWBVMFE+IIUsAMnTv3dUWUvqn554p9Rt53axiL0b/zVaZtuK1Htbz0YjGw3sqaxdO+W2dbiiXjSlBOoggOARdudeYGJoN4KBFCExWH/wf/5s97YpwH8tWgtPllZVFkwH9TBWnpvoJcw2sZz+A9MSTnAOs0Ue75hrZu2mwze5kAh0jvcPLhcvI74PYh4CZY3rQ35fehfPzGTt2VKgXE4x3mndz5Wbp2Jv2GnNHbbfu4K5aicFAQunb8R0uUhK3cfhNJWWS5suZs9sxcLVqYSo5bKSkZ9R/GgCsJfFLAPVW5sssxPBOuRNRSQ+u6MQ9TWEw3UZg7kx+2LCWFARHCtwOMVjNIwr+0isRrpEqg+U5Rpco/QhYShQU8ueQYl0yeU4XWaewGL3EThmTfZq4leeZetXWWXdNEH
+ HmtGS16V
+ SZYkcMI9zYXpMnSWuhAzd8GSQHRIouLD8kjH4yJNjf8cYqseGWdsbn0PXwAtdBofFpPp6l7BolahzkfS9dK490Kzz9hK8kLquxVz5PqTPD0OTeRhEdUJVxbq/xw8Ahehos3RK2JWsJfUcK6J1PWh+GpdqWHzatGROQ09MEwzvqcfA0qxgn+2+sULec1i5aGk1qTM7UHxCiWHflgp9iEIOOr4aPlNEZA39Iojfzdrv+K3StBWAcSyw2Kl/4fpyGCD9dWFIcgXxY6xbTyiYX+6OcCN/qto2uqKgta2dZde02D2fKPnmoQ/uOLezL2rOLgAok7lrEJDrHFBlbD2535gRu2j6utlMxsK10zWGg537SvUfvoYUob54iQ33/4f3MY/b0TFY
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,170 +112,84 @@ On Wed, Aug 6, 2025 at 9:18=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrote=
 >
 > From: Kairui Song <kasong@tencent.com>
 >
-> Fragment clusters were mostly failing high order allocation already.
-> The reason we scan it through now is that a swap slot may get freed
-> without releasing the swap cache, so a swap map entry will end up in
-> HAS_CACHE only status, and the cluster won't be moved back to non-full
-> or free cluster list. This may cause a higher allocation failure rate.
+> It was used for calculating the iteration number when the swap allocator
+> wants to scan the whole fragment list. Now the allocator only scans one
+> fragment cluster at a time, so no one uses this counter anymore.
 >
-> Usually only !SWP_SYNCHRONOUS_IO devices may have a large number of
-> slots stuck in HAS_CACHE only status. Because when a !SWP_SYNCHRONOUS_IO
-> device's usage is low (!vm_swap_full()), it will try to lazy free
-> the swap cache.
+> Remove it as a cleanup; the performance change is marginal:
 >
-> But this fragment list scan out is a bit overkill. Fragmentation
-> is only an issue for the allocator when the device is getting full,
-> and by that time, swap will be releasing the swap cache aggressively
-> already. Only scan one fragment cluster at a time is good enough to
-
-Only *scanning* one fragment cluster...
-
-> reclaim already pinned slots, and move the cluster back to nonfull.
+> Build linux kernel using 10G ZRAM, make -j96, defconfig with 2G cgroup
+> memory limit, on top of tmpfs, 64kB mTHP enabled:
 >
-> And besides, only high order allocation requires iterating over the
-> list, order 0 allocation will succeed on the first attempt. And
-> high order allocation failure isn't a serious problem.
->
-> So the iteration of fragment clusters is trivial, but it will slow down
-> large allocation by a lot when the fragment cluster list is long.
-> So it's better to drop this fragment cluster iteration design.
-
-One side note is that we make some trade off here. We trade lower
-success rates >4K swap entry allocation on fragment lists with overall
-faster swap entry time, because we stop searching the fragment list
-early.
-
-I notice this patch will suffer from fragment list trap behavior. The
-clusters go from free -> non full -> fragment -> free again (ignore
-the full list for now). Only when the cluster is completely free
-again, it will reset the cluster back to the free list. Otherwise
-given random swap entry access pattern, and long life cycle of some
-swap entry.  Free clusters are very hard to come by. Once it is in the
-fragment list, it is not easy to move back to a non full list. The
-cluster will eventually gravitate towards the fragment list and trap
-there. This kind of problem is not easy to expose by the kernel
-compile work load, which is a batch job in nature, with very few long
-running processes. If most of the clusters in the swapfile are in the
-fragment list. This will cause us to give up too early and force the
-more expensive swap cache reclaim path more often.
-
-To counter that fragmentation list trap effect,  one idea is that not
-all clusters in the fragment list are equal. If we make the fragment
-list into a few buckets by how empty it is. e.g. >50% vs <50%. I
-expect the <50% free cluster has a very low success rate for order >0
-allocation. Given an order "o", we can have a math formula P(o, count)
-of the success rate if slots are even randomly distributed with count
-slots used. The >50% free cluster will likely have a much higher
-success rate.  We should set a different search termination threshold
-for different bucket classes. That way we can give the cluster a
-chance to move up or down the bucket class. We should try the high
-free bucket before the low free bucket.
-
-That can combat the fragmentation list trap behavior.
-
-BTW, we can have some simple bucket statistics to see what is the
-distribution of fragmented clusters. The bucket class threshold can
-dynamically adjust using the overall fullness of the swapfile.
-
-Chris
-
->
-> Test on a 48c96t system, build linux kernel using 10G ZRAM, make -j48,
-> defconfig with 768M cgroup memory limit, on top of tmpfs, 4K folio
-> only:
->
-> Before: sys time: 4432.56s
-> After:  sys time: 4430.18s
->
-> Change to make -j96, 2G memory limit, 64kB mTHP enabled, and 10G ZRAM:
->
-> Before: sys time: 11609.69s  64kB/swpout: 1787051  64kB/swpout_fallback: =
-20917
-> After:  sys time: 5572.85s   64kB/swpout: 1797612  64kB/swpout_fallback: =
-19254
+> Before:  sys time: 6278.45s
+> After:   sys time: 6176.34s
 >
 > Change to 8G ZRAM:
 >
-> Before: sys time: 21524.35s  64kB/swpout: 1687142  64kB/swpout_fallback: =
-128496
-> After:  sys time: 6278.45s   64kB/swpout: 1679127  64kB/swpout_fallback: =
-130942
->
-> Change to use 10G brd device with SWP_SYNCHRONOUS_IO flag removed:
->
-> Before: sys time: 7393.50s  64kB/swpout:1788246  swpout_fallback: 0
-> After:  sys time: 7399.88s  64kB/swpout:1784257  swpout_fallback: 0
->
-> Change to use 8G brd device with SWP_SYNCHRONOUS_IO flag removed:
->
-> Before: sys time: 26292.26s 64kB/swpout:1645236  swpout_fallback: 138945
-> After:  sys time: 9463.16s  64kB/swpout:1581376  swpout_fallback: 259979
->
-> The performance is a lot better for large folios, and the large order
-> allocation failure rate is only very slightly higher or unchanged even
-> for !SWP_SYNCHRONOUS_IO devices high pressure.
+> Before:  sys time: 5572.85s
+> After:   sys time: 5531.49s
 >
 > Signed-off-by: Kairui Song <kasong@tencent.com>
-> Acked-by: Nhat Pham <nphamcs@gmail.com>
 > ---
->  mm/swapfile.c | 23 ++++++++---------------
->  1 file changed, 8 insertions(+), 15 deletions(-)
+>  include/linux/swap.h | 1 -
+>  mm/swapfile.c        | 7 -------
+>  2 files changed, 8 deletions(-)
 >
+> diff --git a/include/linux/swap.h b/include/linux/swap.h
+> index 2fe6ed2cc3fd..a060d102e0d1 100644
+> --- a/include/linux/swap.h
+> +++ b/include/linux/swap.h
+> @@ -310,7 +310,6 @@ struct swap_info_struct {
+>                                         /* list of cluster that contains =
+at least one free slot */
+>         struct list_head frag_clusters[SWAP_NR_ORDERS];
+>                                         /* list of cluster that are fragm=
+ented or contented */
+> -       atomic_long_t frag_cluster_nr[SWAP_NR_ORDERS];
+>         unsigned int pages;             /* total of usable pages of swap =
+*/
+>         atomic_long_t inuse_pages;      /* number of those currently in u=
+se */
+>         struct swap_sequential_cluster *global_cluster; /* Use one global=
+ cluster for rotating device */
 > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index b4f3cc712580..1f1110e37f68 100644
+> index 1f1110e37f68..5fdb3cb2b8b7 100644
 > --- a/mm/swapfile.c
 > +++ b/mm/swapfile.c
-> @@ -926,32 +926,25 @@ static unsigned long cluster_alloc_swap_entry(struc=
-t swap_info_struct *si, int o
->                 swap_reclaim_full_clusters(si, false);
->
->         if (order < PMD_ORDER) {
-> -               unsigned int frags =3D 0, frags_existing;
+> @@ -470,11 +470,6 @@ static void move_cluster(struct swap_info_struct *si=
+,
+>         else
+>                 list_move_tail(&ci->list, list);
+>         spin_unlock(&si->lock);
 > -
->                 while ((ci =3D isolate_lock_cluster(si, &si->nonfull_clus=
-ters[order]))) {
->                         found =3D alloc_swap_scan_cluster(si, ci, cluster=
-_offset(si, ci),
->                                                         order, usage);
->                         if (found)
->                                 goto done;
-> -                       /* Clusters failed to allocate are moved to frag_=
-clusters */
-> -                       frags++;
->                 }
+> -       if (ci->flags =3D=3D CLUSTER_FLAG_FRAG)
+> -               atomic_long_dec(&si->frag_cluster_nr[ci->order]);
+> -       else if (new_flags =3D=3D CLUSTER_FLAG_FRAG)
+> -               atomic_long_inc(&si->frag_cluster_nr[ci->order]);
+>         ci->flags =3D new_flags;
+>  }
 >
-> -               frags_existing =3D atomic_long_read(&si->frag_cluster_nr[=
-order]);
-> -               while (frags < frags_existing &&
-> -                      (ci =3D isolate_lock_cluster(si, &si->frag_cluster=
-s[order]))) {
-> -                       atomic_long_dec(&si->frag_cluster_nr[order]);
-> -                       /*
-> -                        * Rotate the frag list to iterate, they were all
-> -                        * failing high order allocation or moved here du=
-e to
-> -                        * per-CPU usage, but they could contain newly re=
-leased
-> -                        * reclaimable (eg. lazy-freed swap cache) slots.
-> -                        */
-> +               /*
-> +                * Scan only one fragment cluster is good enough. Order 0
-> +                * allocation will surely success, and large allocation
-> +                * failure is not critical. Scanning one cluster still
-> +                * keeps the list rotated and reclaimed (for HAS_CACHE).
-> +                */
-> +               ci =3D isolate_lock_cluster(si, &si->frag_clusters[order]=
-);
-> +               if (ci) {
+> @@ -965,7 +960,6 @@ static unsigned long cluster_alloc_swap_entry(struct =
+swap_info_struct *si, int o
+>                  * allocation, but reclaim may drop si->lock and race wit=
+h another user.
+>                  */
+>                 while ((ci =3D isolate_lock_cluster(si, &si->frag_cluster=
+s[o]))) {
+> -                       atomic_long_dec(&si->frag_cluster_nr[o]);
 >                         found =3D alloc_swap_scan_cluster(si, ci, cluster=
 _offset(si, ci),
->                                                         order, usage);
+>                                                         0, usage);
 >                         if (found)
->                                 goto done;
-> -                       frags++;
->                 }
+> @@ -3217,7 +3211,6 @@ static struct swap_cluster_info *setup_clusters(str=
+uct swap_info_struct *si,
+>         for (i =3D 0; i < SWAP_NR_ORDERS; i++) {
+>                 INIT_LIST_HEAD(&si->nonfull_clusters[i]);
+>                 INIT_LIST_HEAD(&si->frag_clusters[i]);
+> -               atomic_long_set(&si->frag_cluster_nr[i], 0);
 >         }
 >
+>         /*
 > --
 > 2.50.1
 >
