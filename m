@@ -2,141 +2,199 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 59195C87FCA
-	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 13:25:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 83273C87FCA
+	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 13:38:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE7DE6B00BF; Thu,  7 Aug 2025 09:25:39 -0400 (EDT)
+	id B21B18E0006; Thu,  7 Aug 2025 09:38:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBF6F6B00C0; Thu,  7 Aug 2025 09:25:39 -0400 (EDT)
+	id AD1968E0002; Thu,  7 Aug 2025 09:38:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD5AA6B00C1; Thu,  7 Aug 2025 09:25:39 -0400 (EDT)
+	id 9723D8E0006; Thu,  7 Aug 2025 09:38:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B82906B00BF
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 09:25:39 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 533E482728
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 13:25:39 +0000 (UTC)
-X-FDA: 83750033598.17.EB0C187
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 40C684000B
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 13:25:37 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=AtQmu1Np;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf11.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=mhocko@suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754573137; a=rsa-sha256;
-	cv=none;
-	b=l2DZ3DqyZ0d/zy4Dvd3zcp2O2j/CEDW671L+Seyf+E3JbKSayqYMNI9H14VrGL85q0fLH+
-	W/Vc3KsEDfNJT4sFPne3IaW07RowSLDO0/+z0IrAlm6CKVamzusHEVS26tMP2m8xXfLZAk
-	lWKoKwFtgXlpA54PMZXwFktyQsV/6+8=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=AtQmu1Np;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf11.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=mhocko@suse.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754573137;
+	by kanga.kvack.org (Postfix) with ESMTP id 863CE8E0002
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 09:38:56 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3BD13140DB5
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 13:38:56 +0000 (UTC)
+X-FDA: 83750067072.19.82AFB78
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2060.outbound.protection.outlook.com [40.107.244.60])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 677B21C000C
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 13:38:53 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Bf0mhOSD;
+	spf=pass (imf18.hostedemail.com: domain of jgg@nvidia.com designates 40.107.244.60 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754573933;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QkK/h5wyW78slTbM7rfscexueduuSs96e2Qc2RW5gY8=;
-	b=cuvHjdxwxPuutY+FxDGgrqx8NaxttpdkO4C97ldJU7cIBGTdCCvlIEmfWyRR0U1duxj4q8
-	UUEj91uhrz9UhxAvnGSxaFrvTjkFKIAI8ec/fLq4FPgkl3b1XbNe/xTjyI304t6ua+I0VA
-	22ZkmlZTYA+DY8fTR7OLxKdhZbm6Lac=
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3b7910123a0so845797f8f.1
-        for <linux-mm@kvack.org>; Thu, 07 Aug 2025 06:25:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1754573135; x=1755177935; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=QkK/h5wyW78slTbM7rfscexueduuSs96e2Qc2RW5gY8=;
-        b=AtQmu1NpzlGcylks5PJBAubyL0T2dAyIsws3TsXI9i1mwpbG2n46GcVhqYtMsjtJZV
-         AYY9AGBC6WF8YXRGeaLlPrn30TBRFpdxUKamRoSMQ4TJ9zWg+dwUX45ri0Fgb+AEaemd
-         Wy7WRplBfTyb52uhvgkzzRZKYx+7H9Cqx7ok4v0/ksQ90X2ryyctBnAWhx0/9GzuTbHm
-         /q01UnebvMvXLz+zjkykVTJ53ZPsNGXiCzw9Cvm4N/zY/VGSD2VVtQG2lEHlX5oa7lmG
-         sHjkGR2eZvQJtabDQQwErG8u+CqlBBqvl16LFucBIuvA0B6qLfNLLvHO2h5yDrhI/ocY
-         yAbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754573135; x=1755177935;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QkK/h5wyW78slTbM7rfscexueduuSs96e2Qc2RW5gY8=;
-        b=do8rW0S1IRJbS1xUi3XTJLoAamdC1MQsRR4TPOKHOiaJezzK+AZdd36b/8FmVWayJO
-         3XTlW4v2yI5nWfHX9t8ngCn8mibRnt2HzN1Ngva3odVPT2AJm5fbDfguBC4/pdibMBU5
-         VLRxCzSWZQqw1T7ptd8KDVCimiwQEXd9jUTXzEpWFMDl22Amd9IXDbmX5fH8f7A3zi8E
-         9B2Cq4L0cjRgzrnKkkJn2/9aRFk2GeNR5eOCwrbfEY+DDQiFckVA+Pec3ReLIdLA6g6n
-         HAwvySjn/V1nuzDNkxFxCkMKnkbBb5RaviTX2jD77+hhPArNW7Pqd6hsF1PsxlZe7I21
-         bFfw==
-X-Forwarded-Encrypted: i=1; AJvYcCXOsMS4/BX9TYCmfvQLhLUfPoTPTHIvSNSdzUrqxaW4HFWzeF48qATlmgEeo1IRgi8o7owwDels3A==@kvack.org
-X-Gm-Message-State: AOJu0Yz2LWqKfzzb8nCMYYAEc77Gwx1r0gug0pC5NSco/aAe+znsmrIg
-	oel35iyHWZ9ZwfMS6hAVxv7hYJnomGmGoMd3MXqx+suWiock3Qeal8nYutf+fSzLdUY=
-X-Gm-Gg: ASbGnctw5Y9RRDe2qVHyUTxwMO5D0RtOGoHu/8CtCXe+NC/jJbn1sb2c8rEFNjzeqAB
-	2VTwLXo5rPd2iDFypyHBWjY++/CS4NzA0t5cZyXt/DHZ+zc2NUAZXrXlvV0WEDgRvW8TLarn71O
-	6P3KUTJj+lzm0+nkNKZR+kZraTKY3NieBszVdKoVufh/Q3pPrMehlXssacESVW72N+sJFgsO1I0
-	nqmh6G6O1SRpQAT30POH+T6J4VVxlQ5iMC2/f+gZ+WDMkAvqQiH4FCtWPYk7zR0R0Tt7wGRjZyO
-	rB/z2ggmYBkV8RpsU27unyKdjcPSUj4Mtc1vDPDd8n9pRvDjguDNocpjQW6F6r0Sy62zRaj+4yi
-	O+ki0v1I/YTH511/CZA6zMkfJzpx7lgjfppmomeaiSaW7tw==
-X-Google-Smtp-Source: AGHT+IHQ9dMmpvwSG0LG+OsU60Voye7P7DJOnU5DCYn4cofMlrbc+GKVT9M1/0FDZpZM67dPsg7qAw==
-X-Received: by 2002:a05:6000:1a85:b0:3b7:78c8:9392 with SMTP id ffacd0b85a97d-3b8f4166f4emr5537116f8f.19.1754573135392;
-        Thu, 07 Aug 2025 06:25:35 -0700 (PDT)
-Received: from localhost (109-81-80-221.rct.o2.cz. [109.81.80.221])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b79c453ab0sm27171452f8f.44.2025.08.07.06.25.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Aug 2025 06:25:35 -0700 (PDT)
-Date: Thu, 7 Aug 2025 15:25:34 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	David Hildenbrand <david@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, Ingo Molnar <mingo@redhat.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	len brown <len.brown@intel.com>, pavel machek <pavel@kernel.org>,
-	Kees Cook <kees@kernel.org>,
+	bh=54Px3zvYf4CuEyxVRynpi6iF48N3mew5kEum4tnD5v0=;
+	b=hL2SDGFlgrj5RpAmZ9U4bPl8T+PN/5rVBk86jUrjCuLgJGQRsT9yNn4HLRmpT1/IwiFCYV
+	VFSlYOsorsz3e7tvKA4lHYHXK38lDhATKvVdCbvF6oh/WGjastTjgKSPRqeUoZ09kh2I8A
+	M5V99u9c49kLQLdBZhqhS8YGamXpvwI=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754573933; a=rsa-sha256;
+	cv=pass;
+	b=NR79ntdLN70K9sQKaIFK1vSSY1rkT6xf3UAnd2G10sn+gR33l76Ydlt1+g6HUVbCHZMhBh
+	u4WwJD2O/gH50gFKIsKx+swzM+iwCwgiBPysG5WZ1eTI+smfCe97naMrGMMGIpPZPkZmV/
+	aQcBLLSZHB3qkEVafEaGfg7NUaxWWT4=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Bf0mhOSD;
+	spf=pass (imf18.hostedemail.com: domain of jgg@nvidia.com designates 40.107.244.60 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=odOtssjFOkCHYaLHQ+/p9kfwL3oWQqyiWiKZLpw7XJiF0foKdV34qpOhsa1iNCspSxVdxU4gA0WIItvoFQ9sRtdvvhlbhXyTBk5Ca0RXJ3RlP78IzX7daEYxP+3DERHoiEVZUq6MhT6APGT5uklKHYQGIFquSh71x2Puus3T4i8nJPnglcxkCDj+8H6wruHDXuIIsoc9Tm1p4FS/4NhFdVpTORh7rLv1w8bBVZVxzJvWspW37QJRE8JbsVFRKO7JzmyP7iBHI65AgMr19mjmpCkS4hgxSVfHwg581jbnkd35C/EEQ7HPbqjeAMv/llJMdnXVlbhEQw0Qywxz9wytHA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=54Px3zvYf4CuEyxVRynpi6iF48N3mew5kEum4tnD5v0=;
+ b=WHGqL+evN1vHpZ7qbQ6RVVDVkvnpn9fYJEwlKcNw2tuS3UHw/cekUJCZobaYpQw5oT7ZwdVyQKnVpTVWm91I3/g6uByftqmmGJajARVQMwsOO9dqOj08ynUXbkUqDt6SJ5/gtWuR9mLD8+eLzSM5/PNlgbOjQw+WTLl9Q+Wilktn4nmyWf4bk60zuNCZL/pFTfeMO+nffuX/AI27zQBaZMKSFQQb2GELkui8GmIZSdjYczrggAtJANFiIiV2RKlxQg+TV+OCwfC3kU1vxB88biOmpAblynNudTd1fLMHTUoWJN7e0avj0G1kzWej0DCDpJG7TOjvkxlpUnW+JZo5Vg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=54Px3zvYf4CuEyxVRynpi6iF48N3mew5kEum4tnD5v0=;
+ b=Bf0mhOSD+JdgReLtcb1INqB0/uyZWs8MTJetWOhSwa3/PLkVmbmv/hM6Jl3dg3NDMwPrsdDM/AlzyEUrUBURHkACZ6cjHLXiooKnG2YMGnzXwkRRzEcBCBNXbcVCGh58e12vxDNvxaaYSD3/bhb5e9s0aMvTNDZ9mGcWTWp5Z0O13GK0Lzmffv4MQJjFCGVLtyoFeRFT2sBeSM6zy6Jvlf/218RHAdsr+LCFfAT+PZAJJKhqdojdp/MgjqxqGvZgP7XN2ZxopR4zMA620B+mgkDwCkQXS11WIz7ZuvEqkQWL/b9jGOLORKloIcURxJ7DSXvoNKuXdOWI1COqBddbww==
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by DS0PR12MB8768.namprd12.prod.outlook.com (2603:10b6:8:14f::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.13; Thu, 7 Aug
+ 2025 13:38:49 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.9009.017; Thu, 7 Aug 2025
+ 13:38:49 +0000
+Date: Thu, 7 Aug 2025 10:38:48 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Nico Pache <npache@redhat.com>, xu xin <xu.xin16@zte.com.cn>,
-	wangfushuai <wangfushuai@baidu.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Jeff Layton <jlayton@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
-	Adrian Ratiu <adrian.ratiu@collabora.com>, linux-pm@vger.kernel.org,
-	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v1 0/9] freezer: Introduce freeze priority model to
- address process dependency issues
-Message-ID: <aJSpTpB9_jijiO6m@tiehlicka>
-References: <20250807121418.139765-1-zhangzihuan@kylinos.cn>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
+	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
+	kasan-dev@googlegroups.com, Keith Busch <kbusch@kernel.org>,
+	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-trace-kernel@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
+	xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v1 11/16] dma-mapping: export new dma_*map_phys()
+ interface
+Message-ID: <20250807133848.GL184255@nvidia.com>
+References: <cover.1754292567.git.leon@kernel.org>
+ <b96c639433d3b614288be4b305ecba3a9fb2c00f.1754292567.git.leon@kernel.org>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250807121418.139765-1-zhangzihuan@kylinos.cn>
-X-Rspamd-Queue-Id: 40C684000B
-X-Stat-Signature: sq7zn8o9gj36ju169ku1ocrajhb8pxj7
+In-Reply-To: <b96c639433d3b614288be4b305ecba3a9fb2c00f.1754292567.git.leon@kernel.org>
+X-ClientProxiedBy: YT4PR01CA0497.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:10c::15) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|DS0PR12MB8768:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5c6203ba-7b89-4eee-7a5d-08ddd5b7bd5f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?AMKVoTshkoWihCrrnOUvbEbK3Gi7aXCYIDForZBGpYKryA4uJRbN0UDpbFTN?=
+ =?us-ascii?Q?H/nr1xjNK0yCSTAH2/3voqKzqcPQ8JjFMyfvCCv2aMnvNbHTA33B63muGzmW?=
+ =?us-ascii?Q?5DuQYeQkxu9Uw2xN2G18A8DecvYxjTEqqa7EJ52Dz0bjjAPXvhQ6AbLFGWBo?=
+ =?us-ascii?Q?59GavV3fO9HNdDxXcrP+paneiJa1nxYzUrzHDIscVuUyHiCjrFZNgOHhDikR?=
+ =?us-ascii?Q?7wcVcGvgI+hCp9HjXxKQW7tGN8V0FZgKJ/bqXmnsX/x5N/3zlk0pVa9FtJCH?=
+ =?us-ascii?Q?CLPxOt79JdMBCRMDwcNL4hI95vmDbD6/mce+8brYWOpRzcZnRWyO0Z5vCBGI?=
+ =?us-ascii?Q?JDKz/8pIG7Vb3fuJmFMrtI+6ePyGKdAZgWpMJplKOpaDdL8hONs1XFxGY7VF?=
+ =?us-ascii?Q?svLNjoB5HWfHueL7yuniD8+OFfjxkYeo06UE1BdxGED3DIddzKnkvCsYbmy2?=
+ =?us-ascii?Q?VVwT75RYTyr6y5rIgz8ZLeboijTMVYkuysX3l8Ek+VqpZpozDcvGgOwi5WrW?=
+ =?us-ascii?Q?TLv867KYTn5yifskzFshdlklW2WRDN6LKSXpACxyJQaInAZ5DaBuhGWJmIoI?=
+ =?us-ascii?Q?DaBEtwnyLGOS/S1BvFNEUiuqy0i++7tiaJLQxVzGHrqb1qEGEukHyzAMHjZi?=
+ =?us-ascii?Q?TDdil9vH++NAqfwB+u16QWc/W04KAsYHH0kgRD1OlGGP4AQ/OWmGu2I69nP3?=
+ =?us-ascii?Q?IeWJNgKGb2zPeCIR5L77759PtmgLjN9ZhwxCfwgEgrCcd6CywpMAD2pVM8hu?=
+ =?us-ascii?Q?3mZVa0GoXXJgLkCn2cznn+Rk7DSN3JZxQZRyFAC7E5crCHy/caMXV0IW6cKu?=
+ =?us-ascii?Q?u34KX7iKGK8KAze/O4LNUcsx+v3h1RnDfd/N/Rou0rM+Z5viJS4XumBIE1Jz?=
+ =?us-ascii?Q?SzYPcu8cpkdfVKdtTBdSm0oGs3ugExQh0AgyzrygW3AI/wEbU+hmjREG4iGS?=
+ =?us-ascii?Q?qtmNR6urQDwKamP16/n/ls1+o0YkvBPAuhiwtpUP9HOlaORcZB3FN29xVU1v?=
+ =?us-ascii?Q?TqXUAq7QjNtdswDx9oAvbvt/vTce4GRKf/wneoIZAVvOjUckgyP6SfE/Y193?=
+ =?us-ascii?Q?jwhYRGUwASumZDJM62eTSJoZUQEb7/X0M+i1nPjqPkJP33D4vu3NtK94/gKB?=
+ =?us-ascii?Q?wGakF67m/iwQtk5r07m1A/AtX6+j5UjwVztZ34j7mNl+c1EeLAnYfnmrB7aw?=
+ =?us-ascii?Q?sJwNviOQtRPsQfeJqQ/GG5CFr4zbQt7E0hoxpBm9rXEMb8O7/x3Nu0rM+YS6?=
+ =?us-ascii?Q?rxP5rXjWZsJa9uzk+4HAdEq4C3vazwpTl7fBeNJsDiScIPUUvpC5+7OteGZ3?=
+ =?us-ascii?Q?pM8bimM2DTTDvatW94F9tddt+JSq7lKAKgOsbF3YH0ARnXa7VuNBAwsbNsbU?=
+ =?us-ascii?Q?Kt8K+jvchAm+kmGcMUFNcXaGLGeT2VGjqdTOqFq/nWWV8fszgKi6LZ8x6BWB?=
+ =?us-ascii?Q?oJRmbUVR0z0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?MBPINjYfPGiE5jDtZnc+kL6Tem1DGVvWnnr4IAqOJ3QqDGwGQYyBqSEdaTWv?=
+ =?us-ascii?Q?rCrkX2y/Sk4d6j61UbByvUXt3nKTkD+MeO8cPgtXL/XPX2sGtHrb8gNrSr/u?=
+ =?us-ascii?Q?OEKNTVQZ7CHsvHCdnd9X5FXuoX0i/hrhFXJMhY5OxAO2m5eI/uVKfnRhtNME?=
+ =?us-ascii?Q?WfPPxcc0BXNl1H77XG1bbVfLl4VNWDgxX70H0hEofaU4W5E3P1swLrZW9mdQ?=
+ =?us-ascii?Q?Feukc/5DifHe2SePpUv2EKDGC4VLP8K0ep5Ci+eTGyK2EaR19DpqUB7DqHVw?=
+ =?us-ascii?Q?ocoo7Xx2dFbyGGwWrbx8IanAzYUqZ6w3V2/BwdDcAbpOYtPMk++ubsPaWkJS?=
+ =?us-ascii?Q?86KBb6LCEKOCBbnz91YiL8E+jtdRHZk0nVLho1rNXZKq6wB0lX7GySKFPJYi?=
+ =?us-ascii?Q?4omNcGV34wSS0K+GJyD46PR/zDcAmDow1riE3YHKDXpojGGSfyFt7iU3pvfH?=
+ =?us-ascii?Q?wc8uUrVB+XPvmrMfTcW6f6GhHRWWtb4Dv4kTaBpvPOa+uihaAGvn0nj+7oA0?=
+ =?us-ascii?Q?lH1msGlh5aLcnLykZ0KM2VqWGkDwK1aa8TxDl0T7g19lHp/PkCYYEyI4Oydg?=
+ =?us-ascii?Q?x36u5MNNY4csSkfMtShIOKMjAXTOfgsV3noFPXKv7GWBj4G63jQRQy7KIztY?=
+ =?us-ascii?Q?iPkXT0BhYBwhfcaZNLxAMZv/8/Vpu40Cz3B5loET0MoCiijmOSqhjQdf7GwW?=
+ =?us-ascii?Q?D35UMZoK5FjnyeDHRoCkY78/CsRcdqBbRu0V6nzyYh7xTVf8SEmvcU4/IM9+?=
+ =?us-ascii?Q?3LW+QVoPsOUarqzKeGJeU5AoFMb/rluC1yy28WSJumduJKF/GZW2yw51wFAB?=
+ =?us-ascii?Q?AX9Y4SJw5BaOn58fwEy4isBeUtWN43pvqqdfGWTuVGltm4QnzrrRrmFYQxzo?=
+ =?us-ascii?Q?YCfQhh0zaLBvD0u0iYz56hPKffO19tDiR+lPXZxIpIVEszLomukhAvwhOJUW?=
+ =?us-ascii?Q?Mw+9j/MEH0hp09oZ3t8tmTi9yYBa4OvVYhtPBCu7s0rvRmL1yCnVTkTlJvQ5?=
+ =?us-ascii?Q?l3+N6jLtVsMz+54ZIPO8T0dp0FSwyKmeiM2I57nUM+9+kei6xaLYl/nsyMcS?=
+ =?us-ascii?Q?lFDpa4criGr7VWHlF9ecZdlmf8lRoqzbwaY2QJALFxY+Yy8lXP2jKXIhGrlI?=
+ =?us-ascii?Q?nsR1LN7f5+rqLOuMwqDQX4KgxOZc2rBg31tXp98jmNTtVA0VPrwb7rTxuXnP?=
+ =?us-ascii?Q?K7xw5frFaQTc7Tm/sId0dEa4GdyvSh4TxEDupjoJUpbOPfqqUDwiCgIA8VCG?=
+ =?us-ascii?Q?qGb3DHiGYlIQyyN5h8MRnLL5ilAlfSWqxXHhjp5U3+BnT323tDZHc4o4W3Hr?=
+ =?us-ascii?Q?xKkMQNzUFeKjJZjncuQgF/AamcRWrEHt26fXixwlZVz+XJNC3GEHrBc+Ri4r?=
+ =?us-ascii?Q?0+lMkCA/HXc2Shv8z27rCCJ46nrnGEQEFheADapJYipY4Mc0WWth2NBJ4r/t?=
+ =?us-ascii?Q?SM90I4M3q/2GCRG7KRKfbnaRI5P/PHGCBgNBYW/YrXQ62mQggCHMTmkRy/6E?=
+ =?us-ascii?Q?aahjgO1NFxrLDGTYgcHOkgZKuqC/j4pfzuZPIHHd7UDLyQf/J9B+7fmCNSfu?=
+ =?us-ascii?Q?sxifWglQ0mC+PDduUgw=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5c6203ba-7b89-4eee-7a5d-08ddd5b7bd5f
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2025 13:38:49.1750
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ONwX7mHa1EuCmMcNdBKJGTu1Z2nQrZWEhwSNbSygKKjIuQb9Rcj66qSQFOkzaU9W
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8768
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 677B21C000C
+X-Stat-Signature: g47ecbhnhd7uk3attdxtg3b9k4ymhddx
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1754573137-726811
-X-HE-Meta: U2FsdGVkX18A3gap2p/jHynaTCNrBMmMaI6iLYROloZ/Qd24HOsQwiyC8h481KvrAibDLa3mMRSnOYQ+E2mHnv7ZXczeRZVsKUtOTHHx2ravzUDSewjLZwgFnwZaH94bXPEX1YZHfqTeiPX7cttFwHabzRq0M6enCfThiVp9/CWet+Rcm14ABzS12NdgJawEwwTRMEktQ2IjXSsFQuT9UHRaNWWxvHvJk1UzFGcEMa2vIajVLurlAYyYxOwYMfDkZxncEdNtQCjbDK4plyzs1wgjUrknPjpDjwl5Da5t6oX23Kas5kPybvd01Eywdk6ihf05bu4MErwam3RDpa3pr3Jd20vqcC33kBF5YcMO4y2Gt7+esWC9Yw6nX6zS12r7uNvGIyzFA2WaCxQfWlClnTrXEDTNw51chIvAQ02he1Tt01j6eqtYtsZcX3SmCpH2An+fIHLU1jN0VB62NGU8ZPnID9Pm0Zg/9FxmVabDmxdDAEbJWp9+Olk84AvrZ9e73OvJ9dJyjBEYfSwwYZFsf/OrHIVZ3ls6yoEmh0tzW9qVvtiDyyO48d4OnfSVzMalEBUlvWOKEVqtHrI1zwRlk+wHPp79SuwflMJA+BfKEG8V0Xke2SS4/QaDw1K/nvZXJRVPZC5Yt2mui3HuUIcjletV6SoYCOOP841wjLlK+e/9a0m70ko/84P2/BmbKcDX2UM+cydXiYWh6VIqxXmQVyFCPhhc9cHqtTnnDkzCNmc4D0E87CrW/B9rs2x+BUOo9ZMPDzZuvXEOjW3ow+QCEbAnLV62YX3ArH8bQ+MpeX1eTlLMqtcZNdQfuXY3sTQ+7nQeVgDBL0+xJbAUbvgTR9l0lTc9MImxOWMs1idWmWmBT3MCygLopV0xX30phZ11duKqc9SDqBeWxp6unhmxgLjc5JdwwZXCi3JlYBlMKaiQayyRzgXlnOkIDRUBJKks2Wio7/BSeFuYIrCdYSs
- 8TD9C3r+
- Oc8tGO8E+VeHWkqrEr+uLWGUtzNQ0KsHonk7S/oTBKYQVE7AAQAccPfGqbu0JdpoySSXiaKIpOs8dIi88NFYELpVYZ+RhJbgigYoPyiR+bSc+5OfJZBWJI1Rx/ezgyfZsFOzucZvZeoUgMNA7Uw6OsyZvj4Co879j/zMw7mPVmEL9ruJqrCi2MWdiexfV9QKyhGrhIfaug/GL2DVfUbOg79nsfNb+x56saieb8HxxrzM0Y4pEizzYFuK2MyrhbWcptPWSgskjChOhTTU93NmBSxotgtS+iDhLGeyerqusvv/zpzIYIWtXKIDYfpr68CqXRpzudeVFvs4uObw2weXySOgJrg==
+X-HE-Tag: 1754573933-692779
+X-HE-Meta: U2FsdGVkX192K5h0DmeFQB92/ydql0wOWBORlGVeS4Qz7DjuHk0/L9J1en8axu292aJdmRS4zTr5oGy1KnPmSYb2toc2RwCmsXGqX4Z7Ak8Or26Sc8al2bLm0G1UvypMboRZcrFi12ZhC0RwzrOeU/giPIYIC1Dyi9rfriiaZC49LKkmBL5ySTX29ph/FUNMjVWyPW2cXFFYey54TJhJDSd/GHtTPRSwATej+oTgevCqFMeDULyQjMFa7Cb6MHpFfula/F0WXjim1NNvyQqWHczfozQ1KmC6KLEMVxBdDPZZ7MoOImcP1PmZMNhEnvtphnjbzTMNRJ6xmt1FSN4YoXRG/UWaDBoXdLQpTL4cBLAw9u6N5z1BNO4fRwC5JKnWUXJIBElcnWjSY6w7JhTKcWpjKSQn0HXS68gWtI0sQ2KmI1gb2ioDjvM65q/NWyL9GRx2MGZE959r0HFJroE0/yai0vIE6u12Zi5cKAcGHMdy8EveOpBsolOkYVSj/f6VYtJRckPaAiLA5uEcJkG4Nyvv/zpOJOUTnzOzL5DUngI4PNY26t7HIYbr0wAjbBWoGCbDA0vfdL/HcU/9316jbyIoAJILq0L6OdNY1ymRHACNcdm4sOfEYf2GvKrt5ue4/RBaWpP2EfQpzBoBbkjWVnU5klHUjBSCdTHJ0PYZarPLtq1k5OsnYTGV4Vg9f+WS/xwKBtVDhPFh+pHMx+bYh+onICDqI5/wl9kqREsQSwrSxK38uRjQHVb49v7SAkK/UbHpDEJOyopD3b/k9btXDdIG32hd9TZjsZI9SNxyIWHAB8B3U9AcBAjMzsUc6ho1baoz7gL+lgt+haunfynwri/Q9hVANm+1QJdHKEFFx+EGjJ31JTyJTTZMyjHCw9DhxB35h0llAGjzqgUG0gFGIrT2AsBkxcALgRol0rBu48fBSUfJ08uPrXYvGrMcMYf18A5dgJx7FC2PbcL6NUV
+ soV5oryC
+ jl8rngbz4xRZ7RhMbOfNedXMbkSmC3tQJUmiLtez0JFOoH2FLfrGNNlOVp8cQ+FVOLjlTzLo5f4i2vC7dMkeBAh3pYj22lh3nAp+I8Q4FFg7YikgQeRcSD/eiDUkIT8QXoXpCaPxDFDKjMNXB5dbZezAn9pix4I14DiPu5426bt9LGXqJcTJI5BJ0TFLalG6MppxUu6Wic3fNCLAi0rcG/qED4dOaXC4rMk9xtpw9snkAAMErIuxo6/82YRX98D9zKV5c+4mJXpZ8mEh/KFBwCpg0s6PtMB1SOo0+8bG2UwfD76nw0yg4W9K4WrtT3e7If5UHaOMGCeNSOE4xEdihJ1SGjFEDUldVGZ0+aLTp48H+K0YNrPhhsU7tM4vqN6wVnNJ3EKlyMqv0w057TYAL5fjo3LEgZxnNQ+WhgV4CT/tii0tWegVgLKSNJyOmXoaRNa5bFmJYYTfVM7EA74eSR/XlCHdQgKa7g/ylFM8CfMAbGbc1draS1xyRg7AepHs3fMAnWIkhhRLn48vsideWAwkVe24XfuFguAbyUZ2EiEzzPDyvC3DbkkC/GeihV0+eVrGZDOy1i1zJB9E1gi+R3QbgL5LVAB2hhAnHVuHgo3ucdQ4ITDAhfABWce/xjr1HTy4osABtQ/PlN3k=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,75 +203,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu 07-08-25 20:14:09, Zihuan Zhang wrote:
-> The Linux task freezer was designed in a much earlier era, when userspace was relatively simple and flat.
-> Over the years, as modern desktop and mobile systems have become increasingly complex—with intricate IPC,
-> asynchronous I/O, and deep event loops—the original freezer model has shown its age.
+On Mon, Aug 04, 2025 at 03:42:45PM +0300, Leon Romanovsky wrote:
+> From: Leon Romanovsky <leonro@nvidia.com>
+> 
+> Introduce new DMA mapping functions dma_map_phys() and dma_unmap_phys()
+> that operate directly on physical addresses instead of page+offset
+> parameters. This provides a more efficient interface for drivers that
+> already have physical addresses available.
+> 
+> The new functions are implemented as the primary mapping layer, with
+> the existing dma_map_page_attrs() and dma_unmap_page_attrs() functions
+> converted to simple wrappers around the phys-based implementations.
 
-A modern userspace might be more complex or convoluted but I do not
-think the above statement is accurate or even correct.
+Briefly explain how the existing functions are remapped into wrappers
+calling the phys functions.
 
-> ## Background
-> 
-> Currently, the freezer traverses the task list linearly and attempts to freeze all tasks equally.
-> It sends a signal and waits for `freezing()` to become true. While this model works well in many cases, it has several inherent limitations:
-> 
-> - Signal-based logic cannot freeze uninterruptible (D-state) tasks
-> - Dependencies between processes can cause freeze retries 
-> - Retry-based recovery introduces unpredictable suspend latency
-> 
-> ## Real-world problem illustration
-> 
-> Consider the following scenario during suspend:
-> 
-> Freeze Window Begins
-> 
->     [process A] - epoll_wait()
->         │
->         ▼
->     [process B] - event source (already frozen)
-> 
-> → A enters D-state because of waiting for B
+> +dma_addr_t dma_map_page_attrs(struct device *dev, struct page *page,
+> +		size_t offset, size_t size, enum dma_data_direction dir,
+> +		unsigned long attrs)
+> +{
+> +	phys_addr_t phys = page_to_phys(page) + offset;
+> +
+> +	if (unlikely(attrs & DMA_ATTR_MMIO))
+> +		return DMA_MAPPING_ERROR;
+> +
+> +	if (IS_ENABLED(CONFIG_DMA_API_DEBUG))
+> +		WARN_ON_ONCE(!pfn_valid(PHYS_PFN(phys)));
 
-I thought opoll_wait was waiting in interruptible sleep.
+This is not useful, if we have a struct page and did page_to_phys then
+pfn_valid is always true.
 
-> → Cannot respond to freezing signal
-> → Freezer retries in a loop
-> → Suspend latency spikes
-> 
-> In such cases, we observed that a normal 1–2ms freezer cycle could balloon to **tens of milliseconds**. 
-> Worse, the kernel has no insight into the root cause and simply retries blindly.
-> 
-> ## Proposed solution: Freeze priority model
-> 
-> To address this, we propose a **layered freeze model** based on per-task freeze priorities.
-> 
-> ### Design
-> 
-> We introduce 4 levels of freeze priority:
-> 
-> 
-> | Priority | Level             | Description                       |
-> |----------|-------------------|-----------------------------------|
-> | 0        | HIGH              | D-state TASKs                     |
-> | 1        | NORMAL            | regular  use space TASKS          |
-> | 2        | LOW               | not yet used                      |
-> | 4        | NEVER_FREEZE      | zombie TASKs , PF_SUSPNED_TASK    |
-> 
-> 
-> The kernel will freeze processes **in priority order**, ensuring that higher-priority tasks are frozen first.
-> This avoids dependency inversion scenarios and provides a deterministic path forward for tricky cases.
-> By freezing control or event-source threads first, we prevent dependent tasks from entering D-state prematurely — effectively avoiding dependency inversion.
+Instead this should check for any ZONE_DEVICE page and reject that.
+And handle the error:
 
-I really fail to see how that is supposed to work to be honest. If a
-process is running in the userspace then the priority shouldn't really
-matter much. Tasks will get a signal, freeze themselves and you are
-done. If they are running in the userspace and e.g. sleeping while not
-TASK_FREEZABLE then priority simply makes no difference. And if they are
-TASK_FREEZABLE then the priority doens't matter either.
+  if (WARN_ON_ONCE()) return DMA_MAPPING_ERROR;
 
-What am I missing?
--- 
-Michal Hocko
-SUSE Labs
+I'd add another debug check inside dma_map_phys that if !ATTR_MMIO
+then pfn_valid, and not zone_device
+
+> @@ -337,41 +364,18 @@ EXPORT_SYMBOL(dma_unmap_sg_attrs);
+>  dma_addr_t dma_map_resource(struct device *dev, phys_addr_t phys_addr,
+>  		size_t size, enum dma_data_direction dir, unsigned long attrs)
+>  {
+
+> -	const struct dma_map_ops *ops = get_dma_ops(dev);
+> -	dma_addr_t addr = DMA_MAPPING_ERROR;
+> -
+> -	BUG_ON(!valid_dma_direction(dir));
+> -
+> -	if (WARN_ON_ONCE(!dev->dma_mask))
+> +	if (IS_ENABLED(CONFIG_DMA_API_DEBUG) &&
+> +	    WARN_ON_ONCE(pfn_valid(PHYS_PFN(phys_addr))))
+>  		return DMA_MAPPING_ERROR;
+>  
+> -	if (dma_map_direct(dev, ops))
+> -		addr = dma_direct_map_resource(dev, phys_addr, size, dir, attrs);
+> -	else if (use_dma_iommu(dev))
+> -		addr = iommu_dma_map_resource(dev, phys_addr, size, dir, attrs);
+> -	else if (ops->map_resource)
+> -		addr = ops->map_resource(dev, phys_addr, size, dir, attrs);
+> -
+> -	trace_dma_map_resource(dev, phys_addr, addr, size, dir, attrs);
+> -	debug_dma_map_resource(dev, phys_addr, size, dir, addr, attrs);
+> -	return addr;
+> +	return dma_map_phys(dev, phys_addr, size, dir, attrs | DMA_ATTR_MMIO);
+>  }
+>  EXPORT_SYMBOL(dma_map_resource);
+
+I think this makes alot of sense at least.
+
+Jason
 
