@@ -2,82 +2,114 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 15EBDC87FCF
-	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 17:23:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D14D8C87FCF
+	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 17:28:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B9E76B00C2; Thu,  7 Aug 2025 13:23:40 -0400 (EDT)
+	id 26FB98E0002; Thu,  7 Aug 2025 13:28:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 969266B00C3; Thu,  7 Aug 2025 13:23:40 -0400 (EDT)
+	id 2201C8E0001; Thu,  7 Aug 2025 13:28:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 886346B00C4; Thu,  7 Aug 2025 13:23:40 -0400 (EDT)
+	id 15D018E0002; Thu,  7 Aug 2025 13:28:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 74D6E6B00C2
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 13:23:40 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EA6A91DD965
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 17:23:39 +0000 (UTC)
-X-FDA: 83750633358.12.D54CECF
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	by imf02.hostedemail.com (Postfix) with ESMTP id CB9BA8000C
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 17:23:37 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZbzgDWhD;
-	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754587418; a=rsa-sha256;
-	cv=none;
-	b=8EI4LKSG+tdQk2KrnuvgvkushGzWe2EKnWcY8CHmaEG9hd8l2A/S8TlRfG34mVaGbrUDck
-	nDy6UBb7iOxeixlcnhmpull4+WytYD03/5PYXSnldJBsGVS67v3TLWliuPqlQDPkUkqrBF
-	WBDslcr4mnuqyqbqfn5esCue1pqm/KI=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZbzgDWhD;
-	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0504C8E0001
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 13:28:04 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 52A62140A32
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 17:28:03 +0000 (UTC)
+X-FDA: 83750644446.21.C9A3DB2
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5CF2C140002
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 17:28:01 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Y4ks0sqF;
+	spf=pass (imf23.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.170 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754587418;
+	s=arc-20220608; t=1754587681;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7+PEcY5X38+TutgVZ5B3E+Djvpy61amQcaiukWSfVUw=;
-	b=eL9HJ6cGDUQE8+F2CXMDwNBleoHgBJh9tYfT5YrVyVL39X9r2D74E2FGjoC7m8ZX45vpqk
-	pOrTr6qAozmV6SNxR8OYEdDPK3yFIfEobaxf9zCI74sP+A5De6JLiGulBcPgYfiQIylTQ8
-	ipiTqO5nmoHOyE6Lz4pZR8Mkq6di0A4=
-Date: Thu, 7 Aug 2025 10:23:30 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1754587415;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7+PEcY5X38+TutgVZ5B3E+Djvpy61amQcaiukWSfVUw=;
-	b=ZbzgDWhDhZpua1Eh3FH4y0TFiu+V6ZI60Ke3j9V/xYLECXyms2lUrRHDP3+4PbvDgbWGO8
-	0wxWxcOtmDUUJn/y8uVR2nOEutAvSMcs8sd39chu4PPbLREkQ/0BgfvYPSjYH2sYXMDkLk
-	cGbHSChsn9yzopP/a8Ft8CpsrHITjCI=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Boris Burkov <boris@bur.io>
-Cc: linux-btrfs@vger.kernel.org, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org, kernel-team@fb.com, hch@infradead.org, wqu@suse.com
-Subject: Re: [PATCH 3/3] mm: add vmstat for cgroup uncharged pages
-Message-ID: <ytwxjnw4ioieognqrxlyuppbsndge4q4huyjdkdfo5rj2s36ny@oumr35d336vf>
-References: <cover.1754438418.git.boris@bur.io>
- <eae30d630ba07de8966d09a3e1700f53715980c2.1754438418.git.boris@bur.io>
+	bh=LvjzDrIKgQsl2erKo7Ihb16VcGyaazDWcGJoJP+5K/o=;
+	b=jgdDO7/F6kO/mqVh70gWxILFLsCyzyd5+2IG5vkQ2bQB7TbR5WtIMb4xGPIyyRZWLF9Osf
+	BltoRxMorLlmczeIm7yKJkIFcG0N/M1wcK/DmXbPE8a0TxFmgUngVnLknrCuHK2fXeDOAC
+	tdqLvpyUdz46zTU+Zk6TRwuBn6JL8cI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754587681; a=rsa-sha256;
+	cv=none;
+	b=QbvcVP4up2JMdcmJID8ofqt8VVqgspMcrCNROxmmihlsuDiL9jXdo3AGLt7SHnAX2l2upb
+	/uphFHum0CcTRmwAoKiutZYXr59s+XQuI9a86bKI1P0gH1AIibQXH0ZtfJDvXj9XED8Fjq
+	j8jNaVLuhHe0wCS7eGC/uRDAKhNadMo=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Y4ks0sqF;
+	spf=pass (imf23.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.170 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-32cd0dfbdb8so11284171fa.0
+        for <linux-mm@kvack.org>; Thu, 07 Aug 2025 10:28:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754587680; x=1755192480; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LvjzDrIKgQsl2erKo7Ihb16VcGyaazDWcGJoJP+5K/o=;
+        b=Y4ks0sqFKk5zk3jEoYEHLuWEdVsLzbyHmFSb4Qi8i22tn74VsSguKb4qH/ZasZUp+w
+         I+4Vu2sTofnBlacByz4azQ8k0YwT6A8f32Y/I9h1glI+jh8dBuIKUVhj0s1XT7qQNhk7
+         PrCwJFnnXiFxytZqYjEcodgPFen/dJu1Fec0ovXncYob5++LG72ZylTMbfUcaTwGBiiC
+         HWBq/3rsBcvAuuwvOZIcwIgug0xfHPKxvyDApp3rafgSpoeFU5u6Qjh6MwUF7wdQzjRB
+         tAcEY2cC8td9Q0VY7kMmUydkR2NCeL3OrjEI7AI+wE9D+vWdehmHtpjGO4a/9l35dPdH
+         pNGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754587680; x=1755192480;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LvjzDrIKgQsl2erKo7Ihb16VcGyaazDWcGJoJP+5K/o=;
+        b=RipjPr/z0OYk23XDYHAAdX6fvvMfrWcF/GS6Y1XmDdAHZuIsBZUOkO+Wirw5dhzfGh
+         7qoecXjAdE0YC3RFYvqytd2ld2v7zT1sBQzwgoSVMfhjEI1iQ9nIpcjxIg4L2GbTL6Jm
+         Ml0ffR6+nalOUMHNhB/myIKBx0/OzoKSa89JYm12maShFJuuvAz5+6FmEO9vOJxRSVIE
+         rFxo+W8AEBRKu7HYzI6yV2/QordbsapcU4GGWUgVnyxSb4fW2uXXuQM+CEMYYGf/HTUV
+         foChFoDAaahbum6SefSSSL8r9W831BJRN5grTvKIyqzoyKMNN7CnN10UNoIoaXvoUsoL
+         6MpQ==
+X-Gm-Message-State: AOJu0YysOMeOCDLrSfSMIqHU99jmABdre8J0pP5knzpppqhmOEAwIHOA
+	/6W0jX3PArGiwYFccjZE8tNoU9ek7xDysBIQMmdATmzYCAYC9V3wwigUdBDr1yEE18tCW3Ojuga
+	cU21IgiNCTZGEy2V7gzQTCoAbS3sFQrg=
+X-Gm-Gg: ASbGncvut9puNae7HSR5h6ZMp8IwX2dBcdyEHZEERoEdvY6uEJRRYo1L2NWDJoSZbC/
+	R0xfBNIC4EttIocSBOl5VKGPABQQkl7GbnLeh5uOhsevGUc+FMjoKGcwPShS3lnptdZ8LMfY0Vt
+	KWv+jLfQy78m1mPz2bu/kbLCkezVUPyLFpFHsxG+q4vZuArfs535scytnAxqnp0BkDmLgQBEFFw
+	DhfbNsK+vn+DRKkpw==
+X-Google-Smtp-Source: AGHT+IEsofgEMhOWhxj+6CrqZxW8VohN4VKvhX5Y/sB1Q6lk09l9sgHuPrSa5zu+rayoeA04o5iPmoqGWRidyTDUFt0=
+X-Received: by 2002:a05:651c:220f:b0:332:5ffa:762f with SMTP id
+ 38308e7fff4ca-333813c31e7mr20434821fa.20.1754587679313; Thu, 07 Aug 2025
+ 10:27:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <eae30d630ba07de8966d09a3e1700f53715980c2.1754438418.git.boris@bur.io>
-X-Migadu-Flow: FLOW_OUT
+References: <20250807152720.62032-1-ryncsn@gmail.com> <20250807152720.62032-4-ryncsn@gmail.com>
+ <CAG48ez114_bmuca2UL-g0ZY76-VqhL-4rQtJM_k0N2NJXE4vdg@mail.gmail.com>
+In-Reply-To: <CAG48ez114_bmuca2UL-g0ZY76-VqhL-4rQtJM_k0N2NJXE4vdg@mail.gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Fri, 8 Aug 2025 01:27:22 +0800
+X-Gm-Features: Ac12FXz2l6lNInPFGDit_HyoORi-NE2WSIgBtNtHvx6HzsR_ww-M4jCga4R7IBQ
+Message-ID: <CAMgjq7BhfGC7jVHQ62wAJBfTKCDG2+VdgpjiZ7hjxXeC5fHg-w@mail.gmail.com>
+Subject: Re: [RFC PATCH 3/3] mm/mincore: avoid touching the PTL
+To: Jann Horn <jannh@google.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Pedro Falcato <pfalcato@suse.de>, Matthew Wilcox <willy@infradead.org>, 
+	Hugh Dickins <hughd@google.com>, David Hildenbrand <david@redhat.com>, Chris Li <chrisl@kernel.org>, 
+	Barry Song <baohua@kernel.org>, Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 5CF2C140002
+X-Stat-Signature: 6ebueqx6u4nze45y8e1hng46jrsdcknz
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CB9BA8000C
-X-Stat-Signature: amgfx8kp8k8fjjnow9d9b1ewucq33s9d
-X-HE-Tag: 1754587417-730710
-X-HE-Meta: U2FsdGVkX19NHbi8EAh+Gqghi4xX3Gt1IbumuE9UV8+icQ+cOqmi2aFfFwpwK5S/IJ9LEC1TWk4DahiHN5RxKBvf89maVItv0/SZAbZBC56DmuaPod0emFsza0tl9x67+sDOj6yow8kPXcEvJjZPAfwyGKAqltY6f29K2wt+8K/kzapJ0MRf4k7LXqw+6Pmex1BP6pDeVYTdfdN43WqnBEBpaqn/VXJ4GCjgjubATq1xp2nBN4wD0qavriGTbGwTWAMncy5owH6s1yBbmvHhgxDZFnEs2kwSjkuc1kiGTxOvM5UUVJyoYBOJyx+jFuoJxBS75JuH9a9fcAQPLHL2R5Sa+3SZcF5AaTyucq9cxMG4rd8MXutRieKLb9pF6PmHQd9DboZwJvly5QpeNu6lRVvpOicMWOh6tCPXr/EmYBLVQCLT4iT7c2Y1oHF92VG/WHGcml1Dzv485C7UQVY5z0Q/eZHYWjnOyYZblncNYf7PU/+nf6CPRkuEJuNlGnen9IlrbQGMdrPtNnQSn53jknWzpq/dLisfVlLgX/xJKHt2l0HM7NHHq4b+onabH5a28ldXvc5k6QWxryC5Pbh0LnP3DpCO0QMOpWegyduCwzOrsj/b0ab9TL02c2L8CPuh6gswSoMVJHT2fzZ2XIYunO8xm0JMDJz1OS6CnqyXP78ZsxgzmWTOAd6uEk74pjxzHGXK/JW+uLqeRTD10cRsWHCL8+5w9HYcbA7/Pq61+0m/E9aKAw9dnLOOTZAdFtRHLDAF/cPHQlyFNAcTT9dxRLdPrEK19ixuXp9V5pB2ys9uwyLNQl90gRAVpEr17auEEp4QaNLQ4BUMIdeZlAdNjkTQzSbDXL8L1GlGmfSh6nCMEnsjqAEAFKlJohNMz+rHQZiiauckXYj7pPthEDxXU1rwbOqN6W1FspiySR9brpUU+8FROOQQRU/X2X6aLp3wMNy6fyaSm7xsojzVjLm
- 6LDlqIg9
- 1VJE9yFqmxT+V6Cv208jO2r3I3BGHy+s+rrq9X2I7f2mJ+tBvlqsGSMpCfrWHULTWyWkC3Cv3vQyE3S6LEWGydtq8gEWWeVxOVqLyopnQbRTSUw3hlm4P/rJSyI+9vy4hZ/g1fEyZgKc3YYn6IFXF0h0kNhWcD/sNU7/Hk0/UqZpty67O7Jmn8imfG13c/fdnyHDtG13iG4L6/jcbkdmuq6ygRYKUV/f2LXO3b8TADw0PQj0=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1754587681-135505
+X-HE-Meta: U2FsdGVkX19tlLqiIbp0OUJEA7wEuC1cxrLXAjZ6sCYQKHHrPyafooicuVAQ875tNIQLxQ6yoECkFYSrB069ygjgUdu6TgUm8qVogumQXFhos3+YNP4SIjy2e8dHMNZLLlg6DQMGwCzchPD5D+MCejzO/2Pk6M6J1Ro08oHbX97GjNlJGex3prZlA+Mcy6ytwyCaBKrMf0rYuw+qyB0sS8Pwt0GNrw5lBMEeN2vVLgvCKyL6Sgkc5ZaRVPzJXEEoEtL8J8nOKkazZzIj4WxeutPs4kW9ZMP6K4G+I54mVs5ZPhLOPWU1999p3pktgdHER0T3sOZ0Nxc+SwM8xtGfrO6DaJP0oG/r/0Z/j4tNuPnRpDfNTvUFYIgqzex7SFJKejNAIe4hZA8VaL0tSYcdwuiNCyJplxSUoyunWCmVL+JE8eE1PQqprzZQ5zRDDvO4625Z2vbdd2v4ZHjLuLmKykjqfg4uzSbejjjuWjt9Exwu+v8kKOCiytAvc0oUsbI2RDohYi8OqXO8R0Pwr9MixVmq4pIQ0VpsW+eXCdfAdTLk3KpgHPfn74rDarE2ErVfaoh7HVbTHLs/Fv3oY31w1+8B09BvWwQf73zp0Qw9yg9ULHLqP9UZvuJ1x5wKLxMo3sTws5TuXQx53oy3gBYS9frysPBRQDIAUcTjT3PRaWV7DmlSYNsL/alS+vdqzRngzYxjiozOy4DNCqNYzddoGjczmxmNNJ3guEwfPtBAtV2dgolg/1WRKUp9L9bEyf9dsf56/9JlNviBDQo4jghwjKrHbsfrTQyDkikmNd5PzDKGHTtv+sIv+I/NTdiIR88LuRFte+DTgxdKPgt05zJEDW/p3U/5/FgXfomWz1m33xutLaanlV1FDcY3NigSydg3IhvmhNhqe9Po6Xh3yr9ud/zOQB06RJyONoIZSbGClfQ6sni+8WpI9+o8fM4z2UQVb49LYNETPnRH/MOMBnt
+ rPxxsgW6
+ yayZOT5eIIq2st8D5x0j79CKzLrbfjq1GChGHE0JB7mgwixlEGCwpxaIJBULvmOvBs4hDfIDEMS+3HUD0w9rvUMVh/H9diD631Ue1V968P/OeFVwBKIhdslBJpNrwAHC4QoL7hKcKbebZZmxkyZBxX/I2e3ml+/t+q97NZjOf0FdtjTZ12T54JhKVH4fxUzt95RSOebF2qhAzg9jzk7t8n8nZS7SHCW0WCyu2uZ4xQ1yC5JUot1x/pP4+VjsgkkkfRmr/2RVpGu/Lu69gMPkW9YwI2/qRjyknyRkQSBTAn0kuvcuwhlPkBjoSAXmt/goY5t7Nv0kyfIjHZ1AEsxSaGprGd3dSENiOgakxUZGiD4UArWrwDuom+dvi0TMA86saBlgZkZ8hyzr3ZaFoDQhDRGhX0Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -86,55 +118,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 05, 2025 at 05:11:49PM -0700, Boris Burkov wrote:
-> If cgroups are configured into the kernel, then uncharged pages can only
-> come from filemap_add_folio_nocharge. Track such uncharged folios in
-> vmstat so that they are accounted for.
-> 
-> Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Signed-off-by: Boris Burkov <boris@bur.io>
-> ---
->  include/linux/mmzone.h |  3 +++
->  mm/filemap.c           | 18 ++++++++++++++++++
->  mm/vmstat.c            |  3 +++
->  3 files changed, 24 insertions(+)
-> 
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index 283913d42d7b..a945dec65371 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -241,6 +241,9 @@ enum node_stat_item {
->  	NR_HUGETLB,
->  #endif
->  	NR_BALLOON_PAGES,
-> +#ifdef CONFIG_MEMCG
-> +	NR_UNCHARGED_FILE_PAGES,
+On Fri, Aug 8, 2025 at 12:06=E2=80=AFAM Jann Horn <jannh@google.com> wrote:
+>
+> On Thu, Aug 7, 2025 at 5:27=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wro=
+te:
+> > mincore only interested in the existence of a page, which is a
+> > changing state by nature, locking and making it stable is not needed.
+> > And now neither mincore_page or mincore_swap requires PTL, this PTL
+> > locking can be dropped.
+>
+> This means you can race such that you end up looking at an unrelated
+> page of another process, right?
 
-> +#endif
->  	NR_VM_NODE_STAT_ITEMS
->  };
->  
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index ccc9cfb4d418..0a258b4a9246 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -146,6 +146,22 @@ static void page_cache_delete(struct address_space *mapping,
->  	mapping->nrpages -= nr;
->  }
->  
-> +#ifdef CONFIG_MEMCG
-> +static void filemap_mod_uncharged_vmstat(struct folio *folio, int sign)
-> +{
-> +	long nr = folio_nr_pages(folio) * sign;
-> +
-> +	if (!folio_memcg(folio))
-> +		__lruvec_stat_mod_folio(folio, NR_UNCHARGED_FILE_PAGES, nr);
+I was thinking If the PTE is gone, it will make mincore go check the
+page cache, but even if we hold the PTL here, the next mincore call
+(if called soon enough) could check the page cache using the same
+address. And it never checks any actual page if the PTE is not none.
 
-From filemap_add_folio_nocharge(), this function is called without
-preemption disabled, so you will get lockdep warning from following
-chain:
+Perhaps you mean that it's now doing the page / swap cache lookup
+without holding PTL so if the PTE changed, then the lookup could be
+using an invalidated index, and may find an unrelated page.
 
-__lruvec_stat_mod_folio -> __mod_node_page_state ->
-preempt_disable_nested -> lockdep_assert_preemption_disabled().
+A changing PTE also means the mincore return value is changing, and if
+called earlier or later by a little bit, the result of that address
+could be opposite, and mincore only checks if the page existed,
+it's hard to say the returned value is a false positive / negative?
 
+Or could this introduce a new security issue?
+
+> And your patch intentionally allows that to happen in order to make minco=
+re() faster?
+
+When doing a clean up (patch 1) I noticed and didn't understand why we
+need a PTL here. It will no longer block others and go faster as we
+remove one lock, I can drop this one if we are not comfortable with
+it.
 
