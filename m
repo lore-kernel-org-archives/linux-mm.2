@@ -2,190 +2,92 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A917FC87FD2
-	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 18:13:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 35A66C87FCF
+	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 18:16:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D1E38E0002; Thu,  7 Aug 2025 14:13:27 -0400 (EDT)
+	id B42646B009A; Thu,  7 Aug 2025 14:16:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A9738E0001; Thu,  7 Aug 2025 14:13:27 -0400 (EDT)
+	id AF2026B009D; Thu,  7 Aug 2025 14:16:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 371D38E0002; Thu,  7 Aug 2025 14:13:27 -0400 (EDT)
+	id 9E0896B00D0; Thu,  7 Aug 2025 14:16:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 246078E0001
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 14:13:27 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A8493137747
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 18:13:26 +0000 (UTC)
-X-FDA: 83750758812.19.86F7CBD
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 30F491C0013
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 18:13:24 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DjYYPYcJ;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754590404; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 8CC816B009A
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 14:16:23 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 66B67BD182
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 18:16:23 +0000 (UTC)
+X-FDA: 83750766246.04.AF87E0D
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	by imf01.hostedemail.com (Postfix) with ESMTP id C4B084001A
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 18:16:21 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZzMn77k2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754590581; a=rsa-sha256;
 	cv=none;
-	b=cfbh5RfC1fNYLQr3ujqvrqfP5ayv9jY92SdPXUPT9d3EbVS/lIj/K/T3Xzwfuf7Z3x78sK
-	zrXw19dmGOQ8vEzq8mrTKsZ7U9tCzhHhfwx56c2+GicSi7GeYCkXRB1CuubpQF/fNk08z9
-	kjKvJgafYuN9f8DdukGJMcSpG59PH8I=
+	b=cCmJfLov0FBcNhUYhZkwj1wBwAbiGBOTi3xtaK32qANQqH2OXgxvmyQ05YsYmdhoGNpNdc
+	x20J/l7aMS4lzUXqVCXzOndFdESKD1WAvntoTGpG+7pu4O/ZQ+STd913I36baoXsrb2W77
+	TxV8L9T0Qb6uJVJNdSxv10fnIwMpW2Y=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DjYYPYcJ;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZzMn77k2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754590404;
+	s=arc-20220608; t=1754590581;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vZ4qf63/4d76saBrOUo5cTb52Cq5w2s1M6dqccUekpo=;
-	b=e2yZyvEYvxU7hW1WQUXNV6ZIIPM2kdUUOPrNeMeRRGg8ZRCBhmPsAz09LDTU6oS9+QAdu+
-	ORGkZLpqq+WqvnxCwA//+bANx2Bs6Zmi/bjDiQOg3GQSc0SZBg60EHmCSI/GBwWuBCsTv7
-	6fUlbxDoMU4fQaqyb4+MPYE3Vx/xaxI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754590403;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=vZ4qf63/4d76saBrOUo5cTb52Cq5w2s1M6dqccUekpo=;
-	b=DjYYPYcJZ5kcfXmRbNkSeS5hcBXo0rulIVEMjOYGobqnFMjGDSqoxKh95E2nSpKI7O0yz6
-	ij+L9e2iRO8GnbwHp3G7ct2xihOChdtpSmOHIo06ARbGFFwG8Hfw8y5JUjbWV6vHslWG+u
-	+ouVSCpePXODrGlnlrkTTLnN4lzzUxA=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-404-9yV1jPzNOWOBD-7stsvVpQ-1; Thu, 07 Aug 2025 14:13:22 -0400
-X-MC-Unique: 9yV1jPzNOWOBD-7stsvVpQ-1
-X-Mimecast-MFC-AGG-ID: 9yV1jPzNOWOBD-7stsvVpQ_1754590401
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-459d7ed90baso9430025e9.2
-        for <linux-mm@kvack.org>; Thu, 07 Aug 2025 11:13:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754590401; x=1755195201;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=vZ4qf63/4d76saBrOUo5cTb52Cq5w2s1M6dqccUekpo=;
-        b=bKUJFIP+elw6JhIqRyRVSC0uhEq4IX7oc3Adgkp9Jj7xFdaY56nK7MMIAGH5iaZr3G
-         Un+7A/sakS9+LjeOUoXj0h2MuFfFtJWMfzLXa03kk5AeauES/vXV8rkJG48gnYnfsOJu
-         idRxfrGu+b5fZi7bjQN7cUugCL1Dd6iibq5TB8LX0CMZmGMrzBkd1buoY5X8clLKtGV8
-         mGQbwBpKpu5/9aPlyZbkRWasOWtmjdJm97jEUVjGCY2duz6nC7CbY25DtDiHjIzp5Dvr
-         RP68agOQodMyCcbUavcWbH7YCX/dA8napPn4HbeC3twUgarnis3yz0uC3tAFOdf2lC+d
-         yeCA==
-X-Forwarded-Encrypted: i=1; AJvYcCW14UoFwx9T839YgtT4LzNrYTuXIqK644OabGuFgSoncsyzwzE4nz22dCfUZAx4WDaTLO4sJc8ZTg==@kvack.org
-X-Gm-Message-State: AOJu0YxVIdgWzjhqCa+EeobwUTKKNyihX01s4wej624Bj58nfacgfeK9
-	BhIcmf5hvfOJqhwy4uxl+XmOh0bHLxYRbMUbvYC0woGk6LX9fYMbNYO126HmcXRy8lJhYPJ20N9
-	e10jbT40qM7fqfY+3d+DMUEz8ZSPLaJkCMwtCMVB/bfN9PrKq1qoR
-X-Gm-Gg: ASbGncsXaQTSkGJMbBntuGES3kz+1BgtBUgxnaD9CYsL1IV8cQAJEYFfVho9vlMlQCi
-	6Iu2OB9lY5t762dtIbRG7+qugQMBoST1MN+rXzrUV1R0cIbstts9flOUMY3l5gGk5LP47k4fcPV
-	xnA4Bhot26wqub/fo9c6Z2vVhcidToMPLw6Dmo5xz9Tsr3sLdGDk01RoljgBbXCiD9gtSynI7wx
-	o1apWMiXEdq7Zx08hSFGXj3hgh0tImMysYqpWht8KlSRuMVnXtajlYHmcKFpYJbE/v3c2mzwIra
-	zid5aNOPJZbmC2kZZi27HGf812fYOhxa0RJ4jcY7DOPUh+6EBEajSPOorvIwjWbKn4ij65Nr/Xj
-	ZGCBOckkCNpIl28YIakKF7Ad8eVnP0GwBs2OIxcskqk6UP4LwCrD5kQn4UvKPVomQis0=
-X-Received: by 2002:a05:600c:4707:b0:459:e094:92c2 with SMTP id 5b1f17b1804b1-459e74a861fmr66147885e9.27.1754590400558;
-        Thu, 07 Aug 2025 11:13:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE3yhDF4k6z9/RJJDjl6ABCdlp8A+KepCRdH1HEc4EW/M3PvJTf74RIoantFL5NB5UUVs3YmQ==
-X-Received: by 2002:a05:600c:4707:b0:459:e094:92c2 with SMTP id 5b1f17b1804b1-459e74a861fmr66147545e9.27.1754590400015;
-        Thu, 07 Aug 2025 11:13:20 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f49:bc00:12fa:1681:c754:1630? (p200300d82f49bc0012fa1681c7541630.dip0.t-ipconnect.de. [2003:d8:2f49:bc00:12fa:1681:c754:1630])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-459e58554f2sm100987285e9.12.2025.08.07.11.13.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 Aug 2025 11:13:19 -0700 (PDT)
-Message-ID: <41bdce39-f731-4a93-a91c-34035f2d2814@redhat.com>
-Date: Thu, 7 Aug 2025 20:13:16 +0200
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=fuqRlDbTna01MqlNvWVW93g+JqstLemjZjkgu63QJ4g=;
+	b=YgUTpP6JSAw/SbZyVakHUoay34ke5Vtd8+dj3kUCi5YrKHzGovCX9SL2C6xFmnjRA4k+R6
+	IGbViRr4l2aenvH+kX8w0IDuacpjGnyoXD/0F+topDdEy5dbAbmCPDt+LvSdGziMah3CI2
+	3LRVe6X8PXQ+rXKL0mKIRGPsNHCZIDo=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 10C3CA566AC;
+	Thu,  7 Aug 2025 18:16:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87B93C4CEEB;
+	Thu,  7 Aug 2025 18:16:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754590580;
+	bh=JoQgC6zNM11H86q8TF9fAO+e/aCVUyMLSqBJpfu95H8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ZzMn77k2ksIyI9xlWR9kEvK2b2tFCP8Q8Qm6WSHyBjRVPBTvl6TWkvl/9usnCXYtc
+	 acHPXKErc8Ka+AN+P1sk7Vd83JAGhfPeFjpJ1WyyNiWUpnry/meTX+u0T6RmaJEZqJ
+	 uw50R2P3OZ8q3Zyk4gXi/P9wdVQXjoWk+dO5zgC5C3pgvJaeUrkCvrARoUUZcIBsZk
+	 mdfgweslTJhSkU69YvSQ7BVMlg0zvTnI49RbDhl5IUMD0/A8jOlKz8IFRsYnyIzIYw
+	 sys4H/Do/fhgbgQUrOotwoP3KgY0Gdrt0lwSMF9wFpunwCb10tHTav24TzhesUeROV
+	 bM1bydVaxB/Gw==
+From: SeongJae Park <sj@kernel.org>
+To: 
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	David Hildenbrand <david@redhat.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	kernel-team@meta.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Takero Funaki <flintglass@gmail.com>
+Subject: [PATCH] mm/zswap: store <PAGE_SIZE compression failed page as-is
+Date: Thu,  7 Aug 2025 11:16:16 -0700
+Message-Id: <20250807181616.1895-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [linus:master] [mm] f822a9a81a:
- stress-ng.bigheap.realloc_calls_per_sec 37.3% regression
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Jann Horn <jannh@google.com>, kernel test robot <oliver.sang@intel.com>,
- Dev Jain <dev.jain@arm.com>, oe-lkp@lists.linux.dev, lkp@intel.com,
- linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Barry Song <baohua@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Bang Li <libang.li@antgroup.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, bibo mao <maobibo@loongson.cn>,
- Hugh Dickins <hughd@google.com>, Ingo Molnar <mingo@kernel.org>,
- Lance Yang <ioworker0@gmail.com>, Liam Howlett <liam.howlett@oracle.com>,
- Matthew Wilcox <willy@infradead.org>, Peter Xu <peterx@redhat.com>,
- Qi Zheng <zhengqi.arch@bytedance.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Vlastimil Babka <vbabka@suse.cz>, Yang Shi <yang@os.amperecomputing.com>,
- Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org
-References: <202508071609.4e743d7c-lkp@intel.com>
- <9e3a59b2-11c0-43ca-aff3-414091f04aa4@lucifer.local>
- <CAG48ez3=8f3eShjAe9hrvivP+Dvyisw=X_Tr_phc-OX_4MzeDw@mail.gmail.com>
- <be074809-e1fd-43a2-9396-8f7264532c4d@lucifer.local>
- <CAG48ez3=kLL4wBxAVSa2Ugrws+-RFQMdNY9jx5FAdbhpNt8fGg@mail.gmail.com>
- <e4f5faea-ccec-4cc7-83de-1a3c7013b81b@lucifer.local>
- <cbc2e23d-69ab-4820-9942-c7abf2066ff7@redhat.com>
- <2f0fef16-14ba-4195-b2ec-aabc69f445b1@lucifer.local>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- g3eXuA==
-Organization: Red Hat
-In-Reply-To: <2f0fef16-14ba-4195-b2ec-aabc69f445b1@lucifer.local>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Vt9YYxiHicwaEqqL_V93xks5VdEiYViDgLSS6Pnt2i0_1754590401
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: C4B084001A
+X-Stat-Signature: b9yxyck57u7h85c4eo7m7jr637qoy1db
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 30F491C0013
-X-Stat-Signature: jsjmcbcj43ewiut7jx3itigjbumwj7xj
-X-HE-Tag: 1754590404-270334
-X-HE-Meta: U2FsdGVkX1/Fow6DXxsYWT257bu4bSVsq7ZlK1C9+xOV9ctRn7Mh7w5npd8cukIRkswgModTF1kY09WwsOb+0/UxGbLqmcNvIhVbeq4e3uL6+2Cnq8Fvhf+/xUx/oriL3QO7eBbqy9KsPw+7jRvWfXLMbJMg1YMruWyoipZ+YgorFDu3xeomyfWgXYHZ3vObZyT4kR4lu/wtlmvlQBkIcbHtTaAP9SNalnrTTnyNsGtFDTL2E0M92mjswULC31XCFPa0Ablb9TWIF6cSCOR7YK4MONONwnlKgc0GHI2nQ6tT0aSBBMaO9mcmwiuF6dMamdyDVqSwVyxb3XaTNVQhoCx+RmGKoiIumWB7sdqddx7ysJ5sHv6jXr/i1fiPt/LdqpHtTFvu6hp7ta/8YucqokI3lL3jOub+5/khz0mjzrS/iom+wC/j9gvt/4CCWFUKmNLPJu70TcaNauLEMWrM4NBUL9QNmA9kv5D2xnoa5oWrmsfM3paW7Iolm7XyrOokCzENMHXPONM71W7u/CjkqU7cniLFawKV9tm7nmOw3//H3ZADSHOlPx28ek22Y0KFf3z5KbTqfR/hWWZ9qCWjKQF3/jgQKEnuPG+qAceG/BfrIsOnNT0VkAuZv7gSUE+kK8amV3T3ckbNrZzI0isC5lerzugPAplNYZVsgBKEVeNKK6++5csiqSXm+86usbqSgU5rN03Ybdr+J+vqb1IMWkOgpnHfs8Ku7YP5n7NMtkCVQNz0Er2qIkGiy53iFec7rC6BHRzk+nRqRFVk0fhXDI6aEPaC335D186jCDEsYjPPZXTSZNKOR+j5hAaHHR+VYREDXZyYOHNDTuV5gT0YL/VxqfTkVwtShasaWdEJapjMJI0nthXvAxlmfDQwdGdsKmVfsbY9BTmcAQYmBeqEovr5OPExMMbSQsj70o+GjywDXlAr+2/O7XoGAamBBChlSWi5gkFATU7oypdoHHI
- E6m7HBub
- 9G/Bt77J/39tLe1kqfvlqzRX/jFHymHW0SDvs4osLv+UK671HwIOUJrogcN0nH1cgA08HCTyFjQUbOX5g/3Zl1QlhEEZ6XNKrojAnBGEVvPlekDnbl9FOtUZyx4ev6m4jMc7CqgwK/m7k57N6v4BxfUOI0f1HDTEJrod8pqgVfaGMLPi3f1H/d77OOWnit3+UvwdAgL1sp7zAEHY5GUGETfEtBecCxAQ8bb0QpLm9kcX33Bbh1zQzjOhS3WGROAiNmT/tLCmSv8ExC+UD4PdlnMZV8AnmS1exbLXI5ObEVO/mDdvtz0z0BGYFK+K1X9J/afniusNcvTDqQv36fp2KpQqb0FPzcmqoouUk912iSmVt2m2h/vNoyT4bSGPiJwx+wKEFNqmI/dkUigkK4lyK0YEh6ZhrWDDIJpgkn2rLVk2EXAJeZX2Id+E7p7xgxoxzrMGv7piKhDwFA+qhHkF6wEYutlsJ0ewGFC/CHouoRDrc0jc3FVSMOwruUULByH7DYisFk7N06ZjiXQbSJmF3LVsEXk3FMBrY2KkS3mcuupfcYTL7LwbiJ/gCwb1YW1R2zCN3n0C2K67OP/4J9p3kk4rmwibYrYZutCTTXm5z/YPiXis=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1754590581-802042
+X-HE-Meta: U2FsdGVkX1+NGBkssLfUlkONGMXOPjJ9ImDOt4EuXCJSH86iF+L1JVJeWbddocd0K1Dw6QSz7Fjn9uuNWViwwWdDtkrAfYm27GRXm4Df0t0Q3Slb49f8MD5htzUDSDgueIhuXZNQpRpMflBGQre6QzxcUsVxmd43YWmHu7hiN5yMKlhDqmLWh3KpopqP+knnd4xH4E44Qoe7Yiyo52nnb8fEk/Rm+q7vJhG+PI+BlQq+DmJyzdCeJisKm9QHqUZedfofrGYgUphwHc4keOv6OpU9s/1uHA0bXPdOKBXsWSfL24sIY8zk1drHjtbpElLOfZn2yRpROV+xJYTHmZvBZcpQiRzqF+G6QOuQ8W3W9/Yaa4dKHUGr2t0/yPxup+gNw6V1LZYw3WpxiOn/heeYYnX/VqT4G8aRiS7FoZKoUJPn+Jj8lzY5CJXpJBnAWfRXwoiVPqH+Tgu5WTlU4LO2emmUmHXteUPbzQfvGjU4vTKf3/tJ/pQG/jjxiQUQFOQFR0dJVTfBNkbbiR4O7V/in22K1i1O1NMP9rNkOtpaSf83WYOMBKgneK1dzeQQMGjOOfs1RHfUlr/0aqZ0BUn1jTuUzaxAFQHlAUfV1NznpFkk3Y3LexCT19pEEOCosm50rWvYaZ/GK3rqOPzBcCEl09YUNdPhJ/+HkE+0ssox5PvDqmfksPM3t/Te1YBUAaDMr817JKigKCgari6yqlrouC4p4GpkHjkHosjqXWdhlGvGcbG2ejHBfa2fkj0EpdAZ2setgAOz72BpGIRGlwCnN+eA1A26RTJx8SULYW52ftgtGfeHneHfFPTj3SN6UWk7YEzDWA0JUISb33I3h9/OCVg/NZip6AaHnmihiZ6LhHbE7Buj96QsZrI2ZGSWdY6zmBcIZyWGs3FbAXzlKqyW5z1O0XYusPjxOONYJniIhH70VnPkpDIUwBeQkqZAu7+0knwHJN6LzD9wreOIiL5
+ vtLChguq
+ FZL64IkHb+0wzJ9iB31OnaUwQHiFbULUmfU216WW3gISuLsPospoFNiA7e0w7bsz7y8XblS92xHZeV5IJxAVCloVRzYXuvhyWiEiEQuBDdQrZ3iRgsFBqkCW/ahXbq0hfiKoAYG+fZQZWvdl8I50D+WZtEXhVzX5ti0RktW1ON/a7ct7ncCSmV31Pneo0qboqwohbgl9V671XCgKF/+NCt/U+Jp7/mSXj37X/XMdN2whoGKw6gqE9kUzS35cw1irTB19ykpJa4SnCWBHuPOISsHdsCuVvvlPR/A70hsH1FUBIaAMUW1740EQ75uLCizqrl540
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -194,98 +96,213 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 07.08.25 20:04, Lorenzo Stoakes wrote:
-> On Thu, Aug 07, 2025 at 08:01:51PM +0200, David Hildenbrand wrote:
->> On 07.08.25 19:51, Lorenzo Stoakes wrote:
->>> On Thu, Aug 07, 2025 at 07:46:39PM +0200, Jann Horn wrote:
->>>> On Thu, Aug 7, 2025 at 7:41 PM Lorenzo Stoakes
->>>> <lorenzo.stoakes@oracle.com> wrote:
->>>>> On Thu, Aug 07, 2025 at 07:37:38PM +0200, Jann Horn wrote:
->>>>>> On Thu, Aug 7, 2025 at 10:28 AM Lorenzo Stoakes
->>>>>> <lorenzo.stoakes@oracle.com> wrote:
->>>>>>> On Thu, Aug 07, 2025 at 04:17:09PM +0800, kernel test robot wrote:
->>>>>>>> 94dab12d86cf77ff f822a9a81a31311d67f260aea96
->>>>>>>> ---------------- ---------------------------
->>>>>>>>            %stddev     %change         %stddev
->>>>>>>>                \          |                \
->>>>>>>>        13777 ą 37%     +45.0%      19979 ą 27%  numa-vmstat.node1.nr_slab_reclaimable
->>>>>>>>       367205            +2.3%     375703        vmstat.system.in
->>>>>>>>        55106 ą 37%     +45.1%      79971 ą 27%  numa-meminfo.node1.KReclaimable
->>>>>>>>        55106 ą 37%     +45.1%      79971 ą 27%  numa-meminfo.node1.SReclaimable
->>>>>>>>       559381           -37.3%     350757        stress-ng.bigheap.realloc_calls_per_sec
->>>>>>>>        11468            +1.2%      11603        stress-ng.time.system_time
->>>>>>>>       296.25            +4.5%     309.70        stress-ng.time.user_time
->>>>>>>>         0.81 ą187%    -100.0%       0.00        perf-sched.sch_delay.avg.ms.__cond_resched.zap_pte_range.zap_pmd_range.isra.0
->>>>>>>>         9.36 ą165%    -100.0%       0.00        perf-sched.sch_delay.max.ms.__cond_resched.zap_pte_range.zap_pmd_range.isra.0
->>>>>>>>         0.81 ą187%    -100.0%       0.00        perf-sched.wait_time.avg.ms.__cond_resched.zap_pte_range.zap_pmd_range.isra.0
->>>>>>>>         9.36 ą165%    -100.0%       0.00        perf-sched.wait_time.max.ms.__cond_resched.zap_pte_range.zap_pmd_range.isra.0
->>>>>>>>         5.50 ą 17%    +390.9%      27.00 ą 56%  perf-c2c.DRAM.local
->>>>>>>>       388.50 ą 10%    +114.7%     834.17 ą 33%  perf-c2c.DRAM.remote
->>>>>>>>         1214 ą 13%    +107.3%       2517 ą 31%  perf-c2c.HITM.local
->>>>>>>>       135.00 ą 19%    +130.9%     311.67 ą 32%  perf-c2c.HITM.remote
->>>>>>>>         1349 ą 13%    +109.6%       2829 ą 31%  perf-c2c.HITM.total
->>>>>>>
->>>>>>> Yeah this also looks pretty consistent too...
->>>>>>
->>>>>> FWIW, HITM hat different meanings depending on exactly which
->>>>>> microarchitecture that test happened on; the message says it is from
->>>>>> Sapphire Rapids, which is a successor of Ice Lake, so HITM is less
->>>>>> meaningful than if it came from a pre-IceLake system (see
->>>>>> https://lore.kernel.org/all/CAG48ez3RmV6SsVw9oyTXxQXHp3rqtKDk2qwJWo9TGvXCq7Xr-w@mail.gmail.com/).
->>>>>>
->>>>>> To me those numbers mainly look like you're accessing a lot more
->>>>>> cache-cold data. (On pre-IceLake they would indicate cacheline
->>>>>> bouncing, but I guess here they probably don't.) And that makes sense,
->>>>>> since before the patch, this path was just moving PTEs around without
->>>>>> looking at the associated pages/folios; basically more or less like a
->>>>>> memcpy() on x86-64. But after the patch, for every 8 bytes that you
->>>>>> copy, you have to load a cacheline from the vmemmap to get the page.
->>>>>
->>>>> Yup this is representative of what my investigation is showing.
->>>>>
->>>>> I've narrowed it down but want to wait to report until I'm sure...
->>>>>
->>>>> But yeah we're doing a _lot_ more work.
->>>>>
->>>>> I'm leaning towards disabling except for arm64 atm tbh, seems mremap is
->>>>> especially sensitive to this (I found issues with this with my abortive mremap
->>>>> anon merging stuff too, but really expected it there...)
->>>>
->>>> Another approach would be to always read and write PTEs in
->>>> contpte-sized chunks here, without caring whether they're actually
->>>> contiguous or whatever, or something along those lines.
->>>
->>> Not sure I love that, you'd have to figure out offset without cont pte batch and
->>> can it vary? And we're doing this on non-arm64 arches for what reason?
->>>
->>> And would it solve anything really? We'd still be looking at folio, yes less
->>> than now, but uselessly for arches that don't benefit?
->>>
->>> The basis of this series was (and I did explicitly ask) that it wouldn't harm
->>> other arches.
->>
->> We'd need some hint to detect "this is either small" or "this is
->> unbatchable".
->>
->> Sure, we could use pte_batch_hint(), but I'm curious if x86 would also
->> benefit with larger folios (e.g., 64K, 128K) with this patch.
-> 
-> For the record I did think of using this prior to being mentioned, product of
-> actually trying to get the data to back this up instead of talking...
-> 
-> Anyway, isn't that chicken and egg? We'd have to go get the folio to find out if
-> large folio and incur the cost before we knew?
-> 
-> So how could we make that workable?
+When zswap writeback is enabled and it fails compressing a given page,
+the page is swapped out to the backing swap device.  This behavior
+breaks the zswap's writeback LRU order, and hence users can experience
+unexpected latency spikes.  If the page is compressed without failure,
+but results in a size of PAGE_SIZE, the LRU order is kept, but the
+decompression overhead for loading the page back on the later access is
+unnecessary.
 
-E.g., a best-effort check if the next pte likely points at the next PFN.
+Keep the LRU order and optimize unnecessary decompression overheads in
+those cases, by storing the original content as-is in zpool.  The length
+field of zswap_entry will be set appropriately, as PAGE_SIZE,  Hence
+whether it is saved as-is or not (whether decompression is unnecessary)
+is identified by 'zswap_entry->length == PAGE_SIZE'.
 
-But as Jann mentioned, there might actually be no benefit on other 
-architectures (benchmarking would probably tell us the real story).
+Because the uncompressed data is saved in zpool, same to the compressed
+ones, this introduces no change in terms of memory management including
+movability and migratability of involved pages.
 
+This change is also not increasing per zswap entry metadata overhead.
+But as the number of incompressible pages increases, total zswap
+metadata overhead is proportionally increased.  The overhead should not
+be problematic in usual cases, since the zswap metadata for single zswap
+entry is much smaller than PAGE_SIZE, and in common zswap use cases
+there should be a sufficient amount of compressible pages.  Also it can
+be mitigated by the zswap writeback.
+
+When the writeback is disabled, the additional overhead could be
+problematic.  For the case, keep the current behavior that just returns
+the failure and let swap_writeout() put the page back to the active LRU
+list in the case.  It is known to be suboptimal when the incompressible
+pages are cold, since the incompressible pages will continuously be
+tried to be zswapped out, and burn CPU cycles for compression attempts
+that will anyway fails.  One imaginable solution for the problem is
+reusing the swapped-out page and its struct page to store in the zswap
+pool.  But that's out of the scope of this patch.
+
+Tests
+-----
+
+I tested this patch using a simple self-written microbenchmark that is
+available at GitHub[1].  You can reproduce the test I did by executing
+run_tests.sh of the repo on your system.  Note that the repo's
+documentation is not good as of this writing, so you may need to read
+and use the code.
+
+The basic test scenario is simple.  Run a test program making artificial
+accesses to memory having artificial content under memory.high-set
+memory limit and measure how many accesses were made in given time.
+
+The test program repeatedly and randomly access three anonymous memory
+regions.  The regions are all 500 MiB size, and accessed in the same
+probability.  Two of those are filled up with a simple content that can
+easily be compressed, while the remaining one is filled up with a
+content that read from /dev/urandom, which is easy to fail at
+compressing to <PAGE_SIZE size.  The program runs for two minutes and
+prints out the number of accesses made every five seconds.
+
+The test script runs the program under below seven configurations.
+
+- 0: memory.high is set to 2 GiB, zswap is disabled.
+- 1-1: memory.high is set to 1350 MiB, zswap is disabled.
+- 1-2: On 1-1, zswap is enabled without this patch.
+- 1-3: On 1-2, this patch is applied.
+
+For all zswap enabled case, zswap shrinker is enabled.
+
+Configuration '0' is for showing the original memory performance.
+Configurations 1-1, 1-2 and 1-3 are for showing the performance of swap,
+zswap, and this patch under a level of memory pressure (~10% of working
+set).
+
+Because the per-5 seconds performance is not very reliable, I measured
+the average of that for the last one minute period of the test program
+run.  I also measured a few vmstat counters including zswpin, zswpout,
+zswpwb, pswpin and pswpout during the test runs.
+
+The measurement results are as below.  To save space, I show performance
+numbers that are normalized to that of the configuration '0' (no memory
+pressure), only.  The averaged accesses per 5 seconds of configuration
+'0' was 36493417.75.
+
+    config            0       1-1     1-2      1-3
+    perf_normalized   1.0000  0.0057  0.0235   0.0367
+    perf_stdev_ratio  0.0582  0.0652  0.0167   0.0346
+    zswpin            0       0       3548424  1999335
+    zswpout           0       0       3588817  2361689
+    zswpwb            0       0       10214    340270
+    pswpin            0       485806  772038   340967
+    pswpout           0       649543  144773   340270
+
+'perf_normalized' is the performance metric, normalized to that of
+configuration '0' (no pressure).  'perf_stdev_ratio' is the standard
+deviation of the averaged data points, as a ratio to the averaged metric
+value.  For example, configuration '0' performance was showing 5.8%
+stdev.  Configurations 1-1 and 1-3 were having about 6.5% and 6.1%
+stdev.  Also the results were highly variable between multiple runs.  So
+this result is not very stable but just showing ball park figures.
+Please keep this in your mind when reading these results.
+
+Under about 10% of working set memory pressure, the performance was
+dropped to about 0.57% of no-pressure one, when the normal swap is used
+(1-1).  Note that ~10% working set pressure is already extreme, at least
+on this test setup.  No one would desire system setups that can degrade
+performance to 0.57% of the best case.
+
+By turning zswap on (1-2), the performance was improved about 4x,
+resulting in about 2.35% of no-pressure one.  Because of the
+incompressible pages in the third memory region, a significant amount of
+(non-zswap) swap I/O operations were made, though.
+
+By applying this patch (1-3), about 56% performance improvement was
+made, resulting in about 3.67% of no-pressure one.  Reduced pswpin of
+1-3 compared to 1-2 let us see where this improvement came from.
+
+Related Works
+-------------
+
+This is not an entirely new attempt.  Nhat Pham and Takero Funaki tried
+very similar approaches in October 2023[2] and April 2024[3],
+respectively.  The two approaches didn't get merged mainly due to the
+metadata overhead concern.  I described why I think that shouldn't be a
+problem for this change, which is automatically disabled when writeback
+is disabled, at the beginning of this changelog.
+
+This patch is not particularly different from those, and actually built
+upon those.  I wrote this from scratch again, though.  Hence adding
+Suggested-by tags for them.  Actually Nhat first suggested this to me
+offlist.
+
+[1] https://github.com/sjp38/eval_zswap/blob/master/run.sh
+[2] https://lore.kernel.org/20231017003519.1426574-3-nphamcs@gmail.com
+[3] https://lore.kernel.org/20240706022523.1104080-6-flintglass@gmail.com
+
+Suggested-by: Nhat Pham <nphamcs@gmail.com>
+Suggested-by: Takero Funaki <flintglass@gmail.com>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+Changes from RFC v2
+(https://lore.kernel.org/20250805002954.1496-1-sj@kernel.org)
+- Fix race conditions at decompressed pages identification.
+- Remove the parameter and make saving as-is the default behavior.
+- Open-code main changes.
+- Clarify there is no memory management changes on the cover letter.
+- Remove 20% pressure case from test results, since it is arguably too
+  extreme and only adds confusion.
+- Drop RFC tag.
+
+Changes from RFC v1
+(https://lore.kernel.org/20250730234059.4603-1-sj@kernel.org)
+- Consider PAGE_SIZE compression successes as failures.
+- Use zpool for storing incompressible pages.
+- Test with zswap shrinker enabled.
+- Wordsmith changelog and comments.
+- Add documentation of save_incompressible_pages parameter.
+
+ mm/zswap.c | 29 +++++++++++++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
+
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 3c0fd8a13718..2db2da130ec4 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -976,8 +976,25 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+ 	 */
+ 	comp_ret = crypto_wait_req(crypto_acomp_compress(acomp_ctx->req), &acomp_ctx->wait);
+ 	dlen = acomp_ctx->req->dlen;
+-	if (comp_ret)
+-		goto unlock;
++
++	/*
++	 * If a page cannot be compressed into a size smaller than PAGE_SIZE,
++	 * save the content as is without a compression, to keep the LRU order
++	 * of writebacks.  If writeback is disabled, reject the page since it
++	 * only adds metadata overhead.  swap_writeout() will put the page back
++	 * to the active LRU list in the case.
++	 */
++	if (comp_ret || dlen >= PAGE_SIZE) {
++		if (mem_cgroup_zswap_writeback_enabled(
++					folio_memcg(page_folio(page)))) {
++			comp_ret = 0;
++			dlen = PAGE_SIZE;
++			memcpy_from_page(dst, page, 0, dlen);
++		} else {
++			comp_ret = comp_ret ? : -EINVAL;
++			goto unlock;
++		}
++	}
+ 
+ 	zpool = pool->zpool;
+ 	gfp = GFP_NOWAIT | __GFP_NORETRY | __GFP_HIGHMEM | __GFP_MOVABLE;
+@@ -1012,6 +1029,14 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+ 	acomp_ctx = acomp_ctx_get_cpu_lock(entry->pool);
+ 	obj = zpool_obj_read_begin(zpool, entry->handle, acomp_ctx->buffer);
+ 
++	/* zswap entries of PAGE_SIZE are not compressed. */
++	if (entry->length == PAGE_SIZE) {
++		memcpy_to_folio(folio, 0, obj, entry->length);
++		zpool_obj_read_end(zpool, entry->handle, obj);
++		acomp_ctx_put_unlock(acomp_ctx);
++		return true;
++	}
++
+ 	/*
+ 	 * zpool_obj_read_begin() might return a kmap address of highmem when
+ 	 * acomp_ctx->buffer is not used.  However, sg_init_one() does not
+
+base-commit: 2ec534125ae474292175ae198483c545eac2161d
 -- 
-Cheers,
-
-David / dhildenb
-
+2.39.5
 
