@@ -2,122 +2,199 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B0BADC87FCF
-	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 12:16:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D8D1C87FCF
+	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 12:21:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 510E86B009D; Thu,  7 Aug 2025 08:16:31 -0400 (EDT)
+	id 0126C8E0002; Thu,  7 Aug 2025 08:21:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C1746B00A0; Thu,  7 Aug 2025 08:16:31 -0400 (EDT)
+	id F2C0A8E0001; Thu,  7 Aug 2025 08:21:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B09F6B00A3; Thu,  7 Aug 2025 08:16:31 -0400 (EDT)
+	id DF4648E0002; Thu,  7 Aug 2025 08:21:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2ADF56B009D
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 08:16:31 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F2A995CBD6
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 12:16:30 +0000 (UTC)
-X-FDA: 83749859340.06.E110DD6
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf17.hostedemail.com (Postfix) with ESMTP id EAD0B40012
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 12:16:28 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=EV19x45X;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754568989; a=rsa-sha256;
-	cv=none;
-	b=nLkmn3V3tqmjz36/ia+mQ1QYCljCydb73ZSL58qa5qf43/G4XZU3WNrClqakOKdx6H4MMB
-	lL7prqM/9HBBfpg8Tr2tMQIRZ8aQi22SNYbmujr4OjfoEsxO6H1RPBrKWfwBrMHhHK7FSZ
-	s/MF9IqCXk0HPW6g74lYXqEhc1G7ntI=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=EV19x45X;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754568989;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id CDF768E0001
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 08:21:22 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 776CF5CD2C
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 12:21:22 +0000 (UTC)
+X-FDA: 83749871604.29.A4758D3
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2079.outbound.protection.outlook.com [40.107.93.79])
+	by imf25.hostedemail.com (Postfix) with ESMTP id B4E25A0006
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 12:21:19 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=DQup7Rl0;
+	spf=pass (imf25.hostedemail.com: domain of jgg@nvidia.com designates 40.107.93.79 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754569279; a=rsa-sha256;
+	cv=pass;
+	b=NEfaT4bselJ5snwhOyeQ00bQ3I9pfDnGRd38ydgAIKRd+twJVD/ZB9ZC9cPS+8Jv5ioLTc
+	wFoKhi7jxMLrqsGpcJyPe81eSDVSTXmS0ScruF9guT9s09dys+BW2VSB4cKuxXHau4ty0U
+	9vdbNYFKJeoKAy2wGHnM7SCk2xp9DjI=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=DQup7Rl0;
+	spf=pass (imf25.hostedemail.com: domain of jgg@nvidia.com designates 40.107.93.79 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754569279;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GHVxavGBrjI2mC/mT+iovNRLtR2msFcHcq0N4dnm4w4=;
-	b=Pt8aA9JtBTNY3dY6ZEFe3z4o7qJ65wVrDoCArPa433NhzkF13sZWPbHuLieFEMXwL4CAQn
-	5bcZgzziyvKRjGOmTuGYUfan+Ia7AiaNo+8L/sRufRDoCbc1iZAc8ln+7i1HhJYsup3lkp
-	BThbeUgaS6uwcq8LvnWVWjq7dWJ9Gv4=
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-458b2d9dba5so5994705e9.1
-        for <linux-mm@kvack.org>; Thu, 07 Aug 2025 05:16:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754568987; x=1755173787; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GHVxavGBrjI2mC/mT+iovNRLtR2msFcHcq0N4dnm4w4=;
-        b=EV19x45Xxi3K0Ths0Jl/H7x/SexlygkBobhUOG8tS5M9+/JdntT7mfe4mSbsGymMvD
-         7aMJBA8nda8S8hrsk9Vyr6BGgFjAbKEsxWK+jSBwj2hzfNWBaXy5lUOa8tba3a5b93lv
-         KhOKc86qOb5bFehBh4IxW7DEiDZT7FUvMotFRRMpK7MM+M29Qqt4vAh02nf++hCPEO7B
-         T4cUUcUJpqfSObu56yt/+pCxbE5x1pBzjPwB3kkiFV75EDvfyWaFiHLCz3sxiea/CbiN
-         EFpWl23AfZV40ItILvFCtUm6Wp452s7PomHn4bZmw1OYYyLjAgSNe0Le5YdTQiwHMztq
-         iAVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754568987; x=1755173787;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GHVxavGBrjI2mC/mT+iovNRLtR2msFcHcq0N4dnm4w4=;
-        b=JTT0aDW2fPvLjM3mLLx8a/4uz/cqgbziss36REy9uG32hYwRneGREZdU0EA7YU0Pwi
-         PgPbXwSHrL4dwqwxkNf8wAUKkaF31uOoGOm8DvGlLkKrMgNkSoYIRQSwSYxAE6GmRY76
-         iihZf2qHjVR1P3V/Q0I5j6F3eyf2nrF4UnDbYYj3C+sboFilhU0D/Y2XSQsWl97+1+em
-         nJeiLHpdTV+39vTbYohrtmInreLIXdNMQULBtpHYT8vYzXt4d9toqtfyNeA0p3Zy1WXx
-         KtoOISgJX1JAHf8+azknhH9tiJjWyvWZZmHVdEaGYCbPOXRwKZjl4YH8EpKnu5Cl9NGc
-         8dfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVgqjRSAw/TrhwTWUNawqjs+FCLW7TDVkv2f1r3KrshGiC5/4IRj76Su7BP4Xl3KIv1RpYUQv8Yxg==@kvack.org
-X-Gm-Message-State: AOJu0YziCG6+6OhLYO3DyVAgwHWEUna+szD53yH8pfBCwSqHKCELq7yk
-	a841kNXk7vfXnQ/8XhrhPa3a6D/z4hOWnWOkllL3hQwwlHkG67CuxOGU
-X-Gm-Gg: ASbGncuzgcExtQ4sdfoMupFasENvqjZwszPUQSyhedtKq6eWuxxEe/edHWm/P9CUl5g
-	nPPEiJkd8U8SXiwO22myYWQ7BN7ATXHFGPVdBnaxktZ0287IjsnREV8124f2o1Q1oDtD8On4chD
-	MOycjoFLYKjOfK5qVP8PpCA/hNGoHbxR+ATQWLm7bXB1kq2pli3tiC1nqBujyhzktTy7qjesqDf
-	a9UYTXUSukSJwcRL5+drPmIrJoobsr3kW9ZHZFmHXjVn5l/qNo4EZ9LZQuDQkIJiQsxdjWZ27We
-	b1wIRiUHPfRazi0RkVEU6wQPTvHfH7N4JqVDhbmijMNnLf09KpYSDs/1U4xWMOac8w03x9Z8P2e
-	YRLnh1ePzLIqTNfmnQ7mFqbQgXs0bMx7+0sCcruqG+ALOctyREi+Tqu6DnUFs
-X-Google-Smtp-Source: AGHT+IEOgiOG7X+/+74Nfd3tZumZZr82xYQBn2+nD/Q2k2sFIFigqmAXZC4pBSX/xsQ8vrDeLg+6aQ==
-X-Received: by 2002:a05:600c:5486:b0:456:43c:dcdc with SMTP id 5b1f17b1804b1-459e7136bfbmr57298345e9.33.1754568987042;
-        Thu, 07 Aug 2025 05:16:27 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-459e0e70218sm120028755e9.20.2025.08.07.05.16.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Aug 2025 05:16:26 -0700 (PDT)
-Date: Thu, 7 Aug 2025 13:16:11 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Zi Yan <ziy@nvidia.com>
-Cc: wang lian <lianux.mm@gmail.com>, akpm@linux-foundation.org,
- broonie@kernel.org, david@redhat.com, lorenzo.stoakes@oracle.com,
- sj@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- brauner@kernel.org, gkwang@linx-info.com, jannh@google.com,
- Liam.Howlett@oracle.com, ludovico.zy.wu@gmail.com, p1ucky0923@gmail.com,
- richard.weiyang@gmail.com, ryncsn@gmail.com, shuah@kernel.org,
- vbabka@suse.cz, zijing.zhang@proton.me
-Subject: Re: [PATCH 1/2] selftests/mm: reuse FORCE_READ to replace "asm
- volatile("" : "+r" (XXX));"
-Message-ID: <20250807131611.430a097a@pumpkin>
-In-Reply-To: <22169C82-5701-4ABB-811F-075D22CE6FCD@nvidia.com>
-References: <20250717131857.59909-1-lianux.mm@gmail.com>
-	<20250717131857.59909-2-lianux.mm@gmail.com>
-	<22169C82-5701-4ABB-811F-075D22CE6FCD@nvidia.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	bh=iIwrg5hZVD9n+qTLo0PvHeRDi9M5OxJeYXC5xQMGF9Q=;
+	b=qW53AEAEwSjkaClEeKpwu3M1E1yqnRQg2jPWv8kTTCnKdY2g5+1F+yubNhn0EEiwBR/n/H
+	T6LyQFqzS0W0zoutv2HqbPpt85sheSsapDVGf5K8JmrorcGFTuNv7Wh/etLPEH+8Nrbp6Z
+	4kaNYEUaKiJPUSb19C2eAaB2w6lib84=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IEnBLU6Fn+bvJuFhXrDOfeHZfZZJoQUlnjFqSU03DmEaY9Yg1dFXTziUDvd/KWouXotCCxOmhxm0KA4hRUofvg7E0TGwICjC2YD/taZ0W5TziXaOIHDbqvjbm1a5AypxMBpknPjxcTrgi9oQS1+Xq4UO5BXlILBEwR/dumMdLmVtAvleshemuIAw8HiOMw1TB3PpbXYyA1ASxPQNUsx6utSMluw8LtvxV2hbzLXjDahxr8QqIDzKBKDOYifIDni01kVBzAgH7uuZ8iDzAoOkc290QmgVBrGpn0yE1Z/bJtlag4IDf2e0d7//imy72cj+VSnuCmoBQRkVlngN9wsWyg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iIwrg5hZVD9n+qTLo0PvHeRDi9M5OxJeYXC5xQMGF9Q=;
+ b=iwE/xLTfCyrC8ee1vw4uEG+h34Wn34VeltBaXYu0i2R1gGo9E+A164UBEkCPjYt50rregiXdeh0ja+goDDZ6BiAaUqe/mDjdNl0UQR/M81wN9t899qhRS6KFPNRDVxHnxOYLWMp+InYZ0b8bAopRHOKt7PywTQ63lCxXQBCKkofpy8ooKCYQ9MH8FH8B6G3srzOKf4JVyw9xMQslbXDy+YL/9F1L5UTjI0R0cVkhiHYQzggro9YNqOyXwuFdN9vjsfF+9F3t3uF6tDwgXC51K2O5hcaGOQzDKrAF/8BkQaEV7Y1s6+u9s5ku2+vpT6hS1xAlxSWne/hWbBxGI7xDYQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iIwrg5hZVD9n+qTLo0PvHeRDi9M5OxJeYXC5xQMGF9Q=;
+ b=DQup7Rl0SVcoF8re1dFsAIxpcqxYBz+VV52Wxy9CvxRu+neaYypZvKmLsdkFX+t6NJsZ6gSkfMpflsPcNTeB/VurId3edfAI/TRLW+ByvbbBEXjsau9BTNu2OFQWk9hopBCuvRQAyvG6Q259wTim1I/hoXxjEz3RhUOlK8Nvx3/cFUTvTPKG06ayE5i4MiBtL7AFOWCLkITJ3jx/fcM476LRWg1CuJxFQbwp9vNrIGoSRnNnJVI28EHxtqoJ20rofhOKxnpteT3ctRred52UfNO+hOH59kCsvavXhWy6iSZzr2g7TrgWvsivXHV+GVqHgMX30mI6YSP9rEqB5UwR+w==
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by PH7PR12MB7017.namprd12.prod.outlook.com (2603:10b6:510:1b7::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.21; Thu, 7 Aug
+ 2025 12:21:16 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.9009.017; Thu, 7 Aug 2025
+ 12:21:16 +0000
+Date: Thu, 7 Aug 2025 09:21:15 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
+	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
+	kasan-dev@googlegroups.com, Keith Busch <kbusch@kernel.org>,
+	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-trace-kernel@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
+	xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v1 08/16] kmsan: convert kmsan_handle_dma to use physical
+ addresses
+Message-ID: <20250807122115.GH184255@nvidia.com>
+References: <cover.1754292567.git.leon@kernel.org>
+ <5b40377b621e49ff4107fa10646c828ccc94e53e.1754292567.git.leon@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5b40377b621e49ff4107fa10646c828ccc94e53e.1754292567.git.leon@kernel.org>
+X-ClientProxiedBy: YT4PR01CA0406.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:108::22) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: EAD0B40012
-X-Stat-Signature: izpenkwajoycaboj8roheqw6ft171kj1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|PH7PR12MB7017:EE_
+X-MS-Office365-Filtering-Correlation-Id: 59e07372-234c-40d3-7ecb-08ddd5ace814
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?QcmCtkqecLuYtDCnDoRlhvSKgTT5O7jY9fB7njAfEKgRuCXn50LnrysE5XVh?=
+ =?us-ascii?Q?HHHAN7z4/J5xvUWNAd3tJhECZcp7Ql+pgNOvcReDfVhuleC4cKTABMpRRtoh?=
+ =?us-ascii?Q?aY3QpyTNWixXI0gB/Y4bf1i1lT8HgfkH22q3+mhuQjKup1cVCn6hVl1BZwTM?=
+ =?us-ascii?Q?mQpTYRAobaFMQ+OieoSqdQ+Lxj/3WOZ5z1/Gf2LnPEJ2GRKDAbWCU3iM0ud8?=
+ =?us-ascii?Q?YC8EqhMwZSSB/3PBhrlTUGKhsNGF8BD/w4jfVA9l6wu/Uk86IG6ge7vWCFyo?=
+ =?us-ascii?Q?kys6scYUZbPmGVPGrvywN0OU0G9R7C8fFpcYWMS0mwqVs7RJUMf2j43gIgjb?=
+ =?us-ascii?Q?1fkWj8FpnK4bqhJ6pM20nVi0Dt7MNeF0YXVC6YN3C7G4+tfDc+/0gbvqF0Hf?=
+ =?us-ascii?Q?usdP28UmpouMZ+UBUtbvL5o+J9Jj6e7EqtPy7C3deVPbXbtBcEveSdekYWWp?=
+ =?us-ascii?Q?eaBvTB72MXmZ0735k5aAjIQ8fovIiJhhQejPXveYmqemQduWz25ThPoM1eqZ?=
+ =?us-ascii?Q?hvUfKNSh3d21kWNdIOJMdt4WJ0MVo8r+zlHv62h2e2nTLgea8irXlEXv99+t?=
+ =?us-ascii?Q?9abB1hQHhLLE9Tfh2wR7W3Hv4Y5lDpziV0LihEpXZevtAXNlboY+/0zE57IU?=
+ =?us-ascii?Q?eXAFXMryprJkz0Obz9A0FVlXqO7sNxgYzuodXDJwyagnQSPjhduZXH6990zv?=
+ =?us-ascii?Q?A+EYPTlyDjqoZ7HLgtD5T5J9C8MG72WhF0RuUZ7lA0rRbCDq0JZIeEWucW5V?=
+ =?us-ascii?Q?Nui9RZGHtiFjRBW4RPuPXgXYypDKxdIwo5LThSu18WEPH6ps/qKfmDYuhW4L?=
+ =?us-ascii?Q?6ZMnKQFL3GSt7CUeR26oVB9QFDDPOl/8kKyQivG6jF1zRVwRx995/P4nDTpF?=
+ =?us-ascii?Q?bc6sVQoQedRLp3XQ+lU4t3UMcQUXd/b+fvekmRIAzNfKiyGTRfyAp62p89e2?=
+ =?us-ascii?Q?7GK5Fu/VExPANjI47G36RPW0wJib+9pK+2+trRdzfYAVg30PXQEVXXXJtfhR?=
+ =?us-ascii?Q?TngMZsI9z808iwIf65gqVo6z+OnVmGE+VyNH29KQrQxEylaWxnnfsPvCa+dY?=
+ =?us-ascii?Q?xr65GLLJ6QJPeptcsV2b1pN3feRXI/KS4MRmpbV7S+7SeriXKufdylnQ0np5?=
+ =?us-ascii?Q?wT4DGlcCFyqgN67yx2P0pHr31Rr6xVoHlhz512Q7+gLbRoRtEQXwCa8vWE0G?=
+ =?us-ascii?Q?RJjmlFkvOlyEIUtxEsuQ5PpEzFd+k421rblnu+aj8YpKBCxVDbDzZxTrqvZ/?=
+ =?us-ascii?Q?UK2nUKn6Wr2rC3kP2pJZ0D4D2wM0vgGYWhXl16x6dEh/DWhyd/7bOhqKnbKa?=
+ =?us-ascii?Q?VNx7NF7SvFys0FhkSckJWJ4fbB6HvKOfE9kd8h4YHoZ2g1ofRjy+wSp3vrL6?=
+ =?us-ascii?Q?RxlnheXz0ZYQJjEeRGoG3MIG8njgEYIwj4HY9Pap/obbXlLpfoBKGKw5lLH0?=
+ =?us-ascii?Q?pWbcsn5FYYQ=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Pc3vrtdK7uQ3bBQh4HJXdZhAoMLJBbNO+o6b6SQK7JlS0PAL+ZySFf4fmVdb?=
+ =?us-ascii?Q?mIfceakcMfVDPHrfP45m4OdncIOaahvpJDFi6KaQUZtVPWJHpIS/+AdiZ2wh?=
+ =?us-ascii?Q?9Q2/0qvT3Hmnvhwy2IhfV6Kpk5iVzD6zVFL/9u9FOb2bzU77MAoKSsLFWTH9?=
+ =?us-ascii?Q?ZqKyce9MRdpe+RIaTD5blMdKNW/wIIlrtUNrkctASWqipNngYLPc0h8xIct6?=
+ =?us-ascii?Q?fV1b8QUAI7TEqblWMxtKN52Vw4lshjLvTsnYS1/fupCu9PQzHyzdmc7BMag/?=
+ =?us-ascii?Q?9USsKZAU+mpsX9xyjtf1piM1pDFFYZBGzPppZl9HrgnKeQNcSf/tQpG5OVK3?=
+ =?us-ascii?Q?p4kAkYoFaMt/n+ktLk7aKmt47wM9YYjxIhNp5pEd4xHC3EfLwljN3wRqvJ50?=
+ =?us-ascii?Q?EXJjKlCI/PJ6iL6IM8I3PoxGPy1I4I/aWl+oz7JH5Pc/o73gOlCL/NelVW4J?=
+ =?us-ascii?Q?vR5M9oaGlp1c4HGfhB4uPSMXRASguqiRAhlCMFxGHSpaF8eFzv/K93QZ+W2h?=
+ =?us-ascii?Q?mPLhw8Nae/i12HukegIW/6hQDtyd3Xa76UsmmJWTF1hL+NMt0s3ehRtfnulL?=
+ =?us-ascii?Q?/mWRDfidY3adfRrJ907pVXv7U9bY7Stcz6kr4LwpeiYUZ2In36hPj22VsY+V?=
+ =?us-ascii?Q?+GfoOWGYYmaE5XwMZYD1qLBrK6CIe2bNHmA727jh+sjvPWLG7f+ZZ3GN559Z?=
+ =?us-ascii?Q?jYdEBUb1etxVXR46PCFUJ4fHOSV1glLwUmqpkJ0Py15dbLxyYAZh93o2Iz1K?=
+ =?us-ascii?Q?xpPllA29goRc3asGj8wfcdb0rQ7YLFCFo3rBMIoBJCsSaQYphu2eqFETyMjA?=
+ =?us-ascii?Q?+QkoLVY8A33MyqAB1Iw0tsxu8b+xtrwmr1hxZHMzJyWooM7TdUaSDRkY7lZD?=
+ =?us-ascii?Q?FAgXFW9f8wKN51QniBbbgDXkKECwNCXwMu3zH/FFqpQq0C9MiGhECUySmL0o?=
+ =?us-ascii?Q?UhMPaQSlMgKqJm+aqgTyGXBDX8mTGT115vrv49BVv5pm6F0atvp4UpzP+nIu?=
+ =?us-ascii?Q?q9YHaZYPAXY5q3fln1otyE6eZ9w+u+pdrCDj1yqm1fvNC9jMRfs/vD3IvjdD?=
+ =?us-ascii?Q?AkxPl0GL2pZjdEQihDiiY25or1gYy1d+an+dG+QLiHqa4UQ/XBaIvocRDJ3g?=
+ =?us-ascii?Q?YdUQgpoSERS7ydpHFp2ccuOJ6JEBUU0/jK7BN1HNQFapRgSsQn38Cuh8nZqQ?=
+ =?us-ascii?Q?6p+AreHWoxfwdlexNCoF3YxozoqVWr0am8wJbLzVAZ49RdRgrZygj1JY5v0V?=
+ =?us-ascii?Q?B4xCyWa9sLxVoivN8PL2coCjhGr/mi49MWlHpa2W5fejSdZFUhWsWXgfOqJC?=
+ =?us-ascii?Q?S4iIvnAXHxWF3bWS2PCpJz7OXmmnsg9IgaSwXrgG0M+eZDZc16V8JpcCO2mq?=
+ =?us-ascii?Q?UFnD6SqIs6zN9IqGVGwtUp9tdG//QjZQGA/RH+6hKwFCsumcaMWK6lT3Wo5D?=
+ =?us-ascii?Q?9hjlxhWz6r0yvZ8JevHtLQ/0kVB0fUqbPpmV2aIQq9VgY1o1Fc8/x6h4KltS?=
+ =?us-ascii?Q?2r8lBtj8ktp7EwM5dokDtJNHLfRfLiefxas8cMFz3Q2Uxigb/bfiMpCa3Zui?=
+ =?us-ascii?Q?mY6Q9aoX7ek+jFqDOXk=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 59e07372-234c-40d3-7ecb-08ddd5ace814
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2025 12:21:16.3528
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1JO8XjpfI+n/ktzlAxi3pKObP/UQ+HQjrheHHMFaNuRrOBpujcfgJK85cLbLXwHW
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7017
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1754568988-123534
-X-HE-Meta: U2FsdGVkX19AktGUn0ggUAJn7SVFF2yVcHH1oWXGfTp6tVvAG2yWfsYiUjTxH0PQk3DzBwpNxleHSoUF4BV0s7jBdD6K3Una7u8o3KnOw15F2qQXDb8dIbk6ck3pEYm8JMSDzYn3hehp5sCVH0SpWo/Vpk3VDmPmcYmt3T++/OVz0fA1FR//4/TV0zwq6Q0Lb7Y5uyXk8Btvf0k1pmyrs9JyAWbtIFpHUR8cjODfYjL5rzSqjI1mSg3njrVdHEpG4YmqffrlUvxEVmQREIB20HJiD/nhBL6Jq2J7CyV8gsO3rTtC21bTuY7D8dDjEs0HTTADf9Rz09d99nTdqI9tbmXDZVjjzQQqtjjMvnD5SYCQMKiRlcdWuM+DceLoW8+o39KOyjgDbwvrcH0B/JxHzCVBZP61mcOifBhW4c1cOW6wbvA/i79WoTVy6Ke27Quj5pmZX8xGr1H8kr1HWnzam6WNvSNftjWdMYme+uWhZ0OjfZsup6hHCHF/tAjgC7Of67jaz9sWAA0u0yaaCR8w/LhfhwtmvWJodCsaIcoDNbm8z/KD9SjwIWCi33oIf4i+QZJ72h6bA0qgGmu/kEYGt3KPOZ64COazfLtG0/s1qDFdnn738cbx7jl7DlBeUveot+o6a2TjFup4yeyNeqifRB0tN/e1p0m/2PezhCMg9jNyizCo0/ZBjLOmgQMVBI1Z57aKN/NXjc2FeJMPK0odYJY+2EnYwr26Obx4CX2i/NJEyPJDAVjjivKOHMpuymDiN1Bg9p9AU8owc192T4fbM/KC13kxszSm77c/DmKkg+N6fm/2vqXRVLzvz9liWbL5UMuK+Wig39/EKYyCkffw/MuhmLzRqBTX3Ec7t9SyYwIcmOi+iIFjXRnsLhgCdJVMEYKLXovIMKVRdRZ2N/+BqzNfhlbqBciZFThPZoIhwtYZr1sl0j968zdJUqnwoV/AYG8ohKvn3dl8a/Ji6Zs
- k/mvdoUZ
- ONzG5qry3pZ8YbWDv7CxZg9mjt0jjKYRbyqQQMSv9Y/TiXOC+WPZiWnT9FX2bQ+pDQ7nHCDIZ11LVehbGr2leg8TwW9ZaBs+7EtzlOPFCBVQx3h42ZyJpR7DSjn1G0akamtyNG4EZ4JF+QfN6fJZMgzwlJe1GtcHBdPNkbLPKGytPQK+gG3VXb/3zpvpoVmYcqVVmeVqzTtR1NLYLh1HpXMxNmSnP1/j3ubWGBvJjkz/KVOaZytA0rFVupxp1mXEyTfRYBIIcqbF2rBg641BWlb4tVULc6oxv3Jnzp2B62PhkPhGFKsposhOk5ts8f2RU17daANTKz5PI7/bI6zN5gDpZCk68UbrcRk+Ot4yqaNhH8GUkkmen/0dsNWWWqe7smfmcnJe1O2OEAYJtByZfsSBNH4jBSD53/qhTgBNxcoNLWJHLHYqzVF0g/6wFWxy740yYdUuGa/yCz2iQEHhHBxNiPmLXfHPEiDk4jIc58SuDPRFk5EEHt5hbl9t8FD8+UtDcc4u36mshV86NCLIyGRb8Pc844Oe+5DnpSgWloaqv0s9tsTr6gkM1g/NVc+lzLF3oMLBJfzFYQzw+XF6mIdISalOs1UocGZIjem1q9zGYj3LbtZfpWTmOPsBE2FT+SVyVSyOSwN+6TMw7jjjSF9r5w6REInMB0KXG
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B4E25A0006
+X-Stat-Signature: 4e617hdm7xz4zj93rp6gh4jcsogygg9h
+X-HE-Tag: 1754569279-820621
+X-HE-Meta: U2FsdGVkX1/NT8w37Zdc+roTZKcp3rGTnIsiQXL12nDFd8FE+otx97jRVT6dS6VfRIhf7F7DTRu8t+dWaFRbSMSP+7+nWygMGWqstuLyd4zHsbEUXmGl31AVgSqOsToQJ0ZZJrpt52Lc/U1NTZ7cBk8Mgxk8wG0vVSsKBmnp1rLZnDMuBDPO8dztKXABOmk1eFYmsqoS/KKbnYxFSSvVPGoV5k4tcbuyOA8/waU9wDxP04KzV+AlJx67TscQpZaov8T0W02n5/RxghbGBsdnAupJ4Tk9j3FvcL9akhoZ55popTzNFzqDMhceApHZWSeqa+Jo8KYjsFbIu1vioSnda4MNUxltRemVBwWJkCP0PUp7QqZ+C9bLdXphbvMH/A2jX8rvRY4oBytOuSCDivS5JkgBjmHJ09jsJN9h/kESnrhfBvLqLFWau68t1dUSEfcEighULn6wIut9P9MnM12bxL7cvLjsIMtIh6Ijy6OXAFWWRYvFw1UcxrRPxQi/kdfsPLUz5f+REzeUgNOjIyZ211hH7fB6of6uL6H3TtAsO69iw6abGq7CKbfkA4cla8gJo1QVkQT68jX9TkTAD4qp6FKi8sApUuaYsJ6lZbO/+upAJKvBXZh7ZsgFHmmfeRdpdIAav/FSZYLvcW3x0sv+aYylVRhPTMG+IxjBN6rBkwT6P6kIXaa/Az/j+wCOKeav7/4HWBfV2hpSzitJePKqbskB5sif0Z2AQjLqZuOZ9a4S9d1yXzWKvK2GNG11TlKnv0NcvfNOAxraYGiKVnm0VaOo+f3/2oUGfiVSB5tdhny35Dn1Y7fnk7g7wabCdgNczKFI9HBU+F2KUEe5V42gq+CQIVgcOBG0k3HYh45VVSvhka5Wa+Y4HaiUMn+EJQT9Ws0X0IhKhmpRKEZdguV37O0gkRtDCdAlXIQcL3JQTWROYXkCALb9B5XZtt4mIoleerRL0kkPuquIqa6pCUb
+ QsfaPNa9
+ w5O72BFi1omCH/aaPwu6M+laUp0Rdo4g1PJNEAtVD822ybldajak82P6DLDPxX2J4Inn0N9i28wt1g3iBg6y9dcsn2DQP/e69idTvSBg2LlPYiwx9zzWncJQozZgQHwc5+xDZxBv20k28LiHXNmnM8Z5xA4+njeCuv6gkaqSijQ4FG4fkvU+M6aCn67Ym1fHRQqjIBI+oQbIgEKrXlXIltd2SygAPEoxSzowugfRWpAA6z3Gqjx39U/CW0RlxFCU0qAD/1JMWAsQMxFFIOBg08IcUAHK40QlKNIP2+Sjdd4iKYYY3zTn7RxpXGavEzbEmjwah5m0cYZdxyP7pMZ2dHvk/iamRKJlDrJE1KP0+IZYtohnS7+OxzZXfz7G0IwUNq9F6HA/MuGSjpRP/9f+1MOr9c1c+Qi9pFirOtbxrRAEdSAO2AYhhSHvtGgDeTJWWy9KdXshcMg9f4OBYae7d9GjwKFa+mUjqPiJIRjwESc7dM7Q7flnag/wwBvCM8A0OKKbWk4NjpmEXN7ICylXvIZGJnr18OexEtGR9z7nzaWhBRqyTJvadYXBG1moKb5A8Jyc7kaOFC6TcPc4m/d5Eo1ZB1Z57WDpCCHZNd8gsd1fMReDxshfhSDL2a0ghn10czB1EYCtPS7q1lL8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,102 +203,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 05 Aug 2025 10:26:17 -0400
-Zi Yan <ziy@nvidia.com> wrote:
+On Mon, Aug 04, 2025 at 03:42:42PM +0300, Leon Romanovsky wrote:
+> From: Leon Romanovsky <leonro@nvidia.com>
+> 
+> Convert the KMSAN DMA handling function from page-based to physical
+> address-based interface.
+> 
+> The refactoring renames kmsan_handle_dma() parameters from accepting
+> (struct page *page, size_t offset, size_t size) to (phys_addr_t phys,
+> size_t size). A PFN_VALID check is added to prevent KMSAN operations
+> on non-page memory, preventing from non struct page backed address,
+> 
+> As part of this change, support for highmem addresses is implemented
+> using kmap_local_page() to handle both lowmem and highmem regions
+> properly. All callers throughout the codebase are updated to use the
+> new phys_addr_t based interface.
 
-> On 17 Jul 2025, at 9:18, wang lian wrote:
-> 
-> > Several mm selftests use the `asm volatile("" : "+r" (variable));`
-> > construct to force a read of a variable, preventing the compiler from
-> > optimizing away the memory access. This idiom is cryptic and duplicated
-> > across multiple test files.
-> >
-> > Following a suggestion from David[1], this patch refactors this
-> > common pattern into a FORCE_READ() macro
-> >
-> > [1] https://lore.kernel.org/lkml/4a3e0759-caa1-4cfa-bc3f-402593f1eee3@redhat.com/
-> >
-> > Signed-off-by: wang lian <lianux.mm@gmail.com>
-> > Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > ---
-> >  tools/testing/selftests/mm/cow.c              | 30 +++++++++----------
-> >  tools/testing/selftests/mm/guard-regions.c    |  7 -----
-> >  tools/testing/selftests/mm/hugetlb-madvise.c  |  5 +---
-> >  tools/testing/selftests/mm/migration.c        | 13 ++++----
-> >  tools/testing/selftests/mm/pagemap_ioctl.c    |  4 +--
-> >  .../selftests/mm/split_huge_page_test.c       |  4 +--
-> >  tools/testing/selftests/mm/vm_util.h          |  7 +++++
-> >  7 files changed, 31 insertions(+), 39 deletions(-)
-> >  
-> 
-> <snip>
-> 
-> > diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
-> > index f0d9c035641d..05de1fc0005b 100644
-> > --- a/tools/testing/selftests/mm/split_huge_page_test.c
-> > +++ b/tools/testing/selftests/mm/split_huge_page_test.c
-> > @@ -399,7 +399,6 @@ int create_pagecache_thp_and_fd(const char *testfile, size_t fd_size, int *fd,
-> >  		char **addr)
-> >  {
-> >  	size_t i;
-> > -	int dummy = 0;
-> >  	unsigned char buf[1024];
-> >
-> >  	srand(time(NULL));
-> > @@ -441,8 +440,7 @@ int create_pagecache_thp_and_fd(const char *testfile, size_t fd_size, int *fd,
-> >  	madvise(*addr, fd_size, MADV_HUGEPAGE);
-> >
-> >  	for (size_t i = 0; i < fd_size; i++)
-> > -		dummy += *(*addr + i);
-> > -	asm volatile("" : "+r" (dummy));
-> > +		FORCE_READ((*addr + i));  
-> 
-> I encountered a segfault when running the test on x86_64.
-> i is 4194297 and fd_size is 4194304.
-> It seems that FORCE_READ() is reading (*addr + i) in 8 byte size
-> and i is only 7 bytes away from the end of the memory address.
-> This led to segfault.
-> 
-> (*(volatile char*)(*addr + i)); works fine.
-> 
-> Both gcc-12 and gcc-14 have the issue.
+Use the function Matthew pointed at kmap_local_pfn()
 
-The definition of FORCE_READ in 6.16 is:
-#define FORCE_READ(x) (*(volatile typeof(x) *)x)
-this is clearly bogus.
-'x' is a pointer - follow it through.
-Possibly:
-#define FORCE_READ(x) (*(volatile typeof(*(x)) *)(x))
-is better,
-But why not use READ_ONCE(*addr[i]) ?
+Maybe introduce the kmap_local_phys() he suggested too.
 
-	David
+>  /* Helper function to handle DMA data transfers. */
+> -void kmsan_handle_dma(struct page *page, size_t offset, size_t size,
+> +void kmsan_handle_dma(phys_addr_t phys, size_t size,
+>  		      enum dma_data_direction dir)
+>  {
+>  	u64 page_offset, to_go, addr;
+> +	struct page *page;
+> +	void *kaddr;
+>  
+> -	if (PageHighMem(page))
+> +	if (!pfn_valid(PHYS_PFN(phys)))
+>  		return;
 
-> 
-> >
-> >  	if (!check_huge_file(*addr, fd_size / pmd_pagesize, pmd_pagesize)) {
-> >  		ksft_print_msg("No large pagecache folio generated, please provide a filesystem supporting large folio\n");
-> > diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
-> > index 2b154c287591..c20298ae98ea  100644
-> > --- a/tools/testing/selftests/mm/vm_util.h
-> > +++ b/tools/testing/selftests/mm/vm_util.h
-> > @@ -18,6 +18,13 @@
-> >  #define PM_SWAP                       BIT_ULL(62)
-> >  #define PM_PRESENT                    BIT_ULL(63)
-> >
-> > +/*
-> > + * Ignore the checkpatch warning, we must read from x but don't want to do
-> > + * anything with it in order to trigger a read page fault. We therefore must use
-> > + * volatile to stop the compiler from optimising this away.
-> > + */
-> > +#define FORCE_READ(x) (*(volatile typeof(x) *)x)
-> > +  
-> 
-> Also, look at FORCE_READ again, it converts x to a pointer to x and
-> deferences x as a point. It does not seem right to me.
-> 
-> Best Regards,
-> Yan, Zi
-> 
+Not needed, the caller must pass in a phys that is kmap
+compatible. Maybe just leave a comment. FWIW today this is also not
+checking for P2P or DEVICE non-kmap struct pages either, so it should
+be fine without checks.
 
+> -	addr = (u64)page_address(page) + offset;
+> +
+> +	page = phys_to_page(phys);
+> +	page_offset = offset_in_page(phys);
+> +
+>  	/*
+>  	 * The kernel may occasionally give us adjacent DMA pages not belonging
+>  	 * to the same allocation. Process them separately to avoid triggering
+>  	 * internal KMSAN checks.
+>  	 */
+>  	while (size > 0) {
+> -		page_offset = offset_in_page(addr);
+>  		to_go = min(PAGE_SIZE - page_offset, (u64)size);
+> +
+> +		if (PageHighMem(page))
+> +			/* Handle highmem pages using kmap */
+> +			kaddr = kmap_local_page(page);
+
+No need for the PageHighMem() - just always call kmap_local_pfn().
+
+I'd also propose that any debug/sanitizer checks that the passed phys
+is valid for kmap (eg pfn valid, not zone_device, etc) should be
+inside the kmap code.
+
+Jason
 
