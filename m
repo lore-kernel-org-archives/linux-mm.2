@@ -2,190 +2,89 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 15A0EC87FCB
-	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 00:02:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C6E8C87FD3
+	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 00:19:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 993786B0095; Wed,  6 Aug 2025 20:02:16 -0400 (EDT)
+	id 1A4826B0095; Wed,  6 Aug 2025 20:19:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96BBC6B0098; Wed,  6 Aug 2025 20:02:16 -0400 (EDT)
+	id 155E36B0098; Wed,  6 Aug 2025 20:19:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8813C6B0099; Wed,  6 Aug 2025 20:02:16 -0400 (EDT)
+	id 06AB86B0099; Wed,  6 Aug 2025 20:19:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C1C36B0095
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 20:02:16 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E2B191A071B
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 00:02:15 +0000 (UTC)
-X-FDA: 83748009030.01.CD185C1
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2070.outbound.protection.outlook.com [40.107.223.70])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 217AF40013
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 00:02:12 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=LCS9QAOa;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf17.hostedemail.com: domain of jgg@nvidia.com designates 40.107.223.70 as permitted sender) smtp.mailfrom=jgg@nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754524933; a=rsa-sha256;
-	cv=pass;
-	b=OlSxOzDRQ5k5fQBaPjj6w387KRZ7YrQh9TKboZvezHzY/UcRET0gyBemzgljTUeXt/PF4L
-	vMhvBFpVcTmRQRgeaAO7KZDqPYouavmVvnwy91hIawgEnD9R4HrS6fCAfxdl0TcMFYAgEj
-	R8x1iCIMUXTTvrQq7kbjyOW98XQUm7k=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=LCS9QAOa;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf17.hostedemail.com: domain of jgg@nvidia.com designates 40.107.223.70 as permitted sender) smtp.mailfrom=jgg@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754524933;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EBB226B0095
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 20:19:30 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 89AAC160753
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 00:19:30 +0000 (UTC)
+X-FDA: 83748052500.26.2C2B84E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id EDB8640006
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 00:19:28 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BWMHD7WA;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754525969;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x9BpYJU1q1VVVp9RyKtd/Sa713iezlK0JgA40wwO0EY=;
-	b=TCF1iIL9FOYspuGaCxK1Q836wvbFxxkI0zRxLrEp3O4ILVDMcUBLYOuNaF4glPwL3XG3Mc
-	jG1p4tdofYADdtKN0aJNcXHNshDKLopuaAq+FoitW6g2V2QA8kTUdJX98S29mJjXAnwkXy
-	UVBxYWN+nT1cdEe+fbqAfEnFgiOR2H0=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bzJRsSkuSdwpBC20tXnUgAgWhhCanWNP72ggyGsKCGwjehvFHzKcsNA//8dX8gI+U+Rl1zNzDGVmKwCudCC8cD0HMJ2oxwHfZ4hzsSdMplHno/c0qZEnDLbT1WfY+Gq2IE5i+wOi3TqL6AzxCEUnD+TtHTlDcGuU0wpmaOrZGA/Y4RRHcZwFBb+HQTw0k6azOKoFSlF1qXTICFvoLzEtBX9ELgkpLf6X54xUzT3wSFqUZgh5b+UKCyezd9upAzGt+FFE85e/ttIcnadheSqm2uc3zCRvQgyRv59NFEUQnC2ucBduNiMhaHCnw0HnXXVKSxNn67R+hkXV4+G8uZrcaw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=x9BpYJU1q1VVVp9RyKtd/Sa713iezlK0JgA40wwO0EY=;
- b=XeVduyeeJn3nmTcgJIgHp6vOUWPFfvr2nZ+HwaQ/+uE1lRXn3JUenefUHx/3hzOvzAiIHpyQ+6iBEIggn0kXI/C28PlkB7BSLwZ/+4QuuqTCGELmGjUcEvhqlhAz8LvJOwjfkBZyQz9lJEp/Jq+aa9oqSOPVGsqsH3P2Fx/p4f5o9iruxF9cHFKi6rX9Dyh5pIdr5/rCr0GtzPfrDtjE+hrcJK4NQoHE/mN3vwnd1g8gVc5Vjp7HoBvHlKUK45vfTrNVflltSL2sjSkoSKuQIin/yraUu3bzfbCzLY+Zyi5Fyo89s9b9HpDHj3UI9TpVP4lfOZl/tYOiF73MaQr4pA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=x9BpYJU1q1VVVp9RyKtd/Sa713iezlK0JgA40wwO0EY=;
- b=LCS9QAOaqsmvX1iJ8MKZO5jDfkc1pQLnHo1RLUgkoN4Ybu39ZRweFejEhOlbCt0txkm3lDPD6QaUcgBDY1tgiE/VEAOtzKG6rQP8anjP17ByEXCsh2pWkcMA+OwRYEEsTKPbA0IoA9WrG7d2bZJ7ZDCVLD3A6sUqdFv/RLOfMtZcnyUqZjgFgWCbKvtGfNFKizvDH8+xPFZHgX15zqZF5JHyHdNMm6T5ABsmAIlwgwNqEO1YIzInCmpR9RVgfcNHEcyGyOdC42bZJtAxXLI2eV81LBJpK9Od8bISlqYB9GholBZv33FAXbw6yOE2RfPA+cnsB4sAsqb9IYpdhv+Eqw==
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by LV8PR12MB9109.namprd12.prod.outlook.com (2603:10b6:408:18a::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.15; Thu, 7 Aug
- 2025 00:02:09 +0000
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.9009.013; Thu, 7 Aug 2025
- 00:02:08 +0000
-Date: Wed, 6 Aug 2025 21:02:07 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Alex Williamson <alex.williamson@redhat.com>
-Cc: Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>,
+	bh=q0KN+bbWjd2o2NhRHtjgfHoCWzJ1yJkPPPNjFvjPl+E=;
+	b=SZtCGopdoXvpvDnOXHwTQNjNbrTOKVO1ngwonEAPdSMQhi9qcWL2DrkBn9ziYvsKph7Ewe
+	keAPvLaOckoOBBWQdXrJL5SSFHyZrAKkqIqMt4cu0UGlN14tBluCzjLhFe4hiUwxz1I1K6
+	rGp8ZWeJcqjwIeWWY4ahfF2mUQ3NeHE=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BWMHD7WA;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754525969; a=rsa-sha256;
+	cv=none;
+	b=gGA+Alr3S0EvDfcUzI1XrbQ8Ks0kZyJyTE67Lkkqh1qS8tc0bimed8wzDQOHwhcM5gXU8T
+	M5ZqAEKAjL51DG1nV1CKz36RsMGFeyg+R7+/4sYq8mCSV9lQIzbP9gzFqOSppx9GMIZlGr
+	J2dYjrVfEG2uKjmmKZjJNOvck9pL4I8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3D566601FD;
+	Thu,  7 Aug 2025 00:19:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 777F1C4CEE7;
+	Thu,  7 Aug 2025 00:19:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754525967;
+	bh=d+AthCl+27uwwUegwgI7OVtC0RLeunbYLIjyUmAKL5g=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=BWMHD7WA2fsa31FPyzFfAtSSQPM+Ofdy+XivkqkQTv+Ems0ieAI6rvQbRIUNDdj41
+	 /CMZRn00i57EZLpXjRIBLBG92352EKss7kA9djfBnAlLjGL0sg0fCtAJKBpNXKKbgW
+	 +n3CyD4SvX5+l8G3maitFejW/syN1n2XJ1IG4zwOS10Vj0mAYPvlVLF9+OEaWWZ5th
+	 R7pf2bboXgjXpBJt5UB773Y0xZSfg3BQGIG2HjYJZZTRdzEaahRqQjzfvQFiJ2e6qY
+	 j49i2htRnrnPezr+kVcbzpPnpo3rQQ/2db3TKC2H9+oG2hhcbUkMASp78CoBbqPMOW
+	 w0VKJC+g8zhsQ==
+From: SeongJae Park <sj@kernel.org>
+To: Bijan Tabatabai <bijan311@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	Christoph Hellwig <hch@lst.de>, dri-devel@lists.freedesktop.org,
-	iommu@lists.linux.dev, Jens Axboe <axboe@kernel.dk>,
-	Joerg Roedel <joro@8bytes.org>, kvm@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v1 04/10] PCI/P2PDMA: Refactor to separate core P2P
- functionality from memory allocation
-Message-ID: <20250807000207.GE184255@nvidia.com>
-References: <cover.1754311439.git.leon@kernel.org>
- <cab5f1bfd64becafcc887107bb4386f2c8630ef3.1754311439.git.leon@kernel.org>
- <20250806154214.1c2618e8.alex.williamson@redhat.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250806154214.1c2618e8.alex.williamson@redhat.com>
-X-ClientProxiedBy: YT3PR01CA0121.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:83::27) To CH3PR12MB8659.namprd12.prod.outlook.com
- (2603:10b6:610:17c::13)
+	Bijan Tabatabai <bijantabatab@micron.com>
+Subject: Re: [PATCH v2] mm/damon/core: skip needless update of damon_attrs in damon_commit_ctx()
+Date: Wed,  6 Aug 2025 17:19:24 -0700
+Message-Id: <20250807001924.76275-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250806234254.10572-1-bijan311@gmail.com>
+References: 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|LV8PR12MB9109:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8cbc89e3-d490-4494-247e-08ddd545a6f0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?OXo7GkDC2PvcuLcpWxpUmMCBklvVDMllEtIh6M/0IaVrAKwpnqkItAHSyNnQ?=
- =?us-ascii?Q?qOb1RJubV1NApWhapU5C5BWLmniml+DljGBCTcnS/b7mRruB+mi1kDbapZT1?=
- =?us-ascii?Q?QrfTZeNkp5CaZfH0tSbq/sHTIahh+LbYR8UaMYWceSTjVWRM/BzM8jPShMwF?=
- =?us-ascii?Q?Q9c/W4su5xZh37TcCXox7ixpjADCQd8ggawHRiFVXrH/xnyc7QIB6qqF7tDS?=
- =?us-ascii?Q?YoL+ht9BSM/aQtAf3f0WGwZIrExlP8sXXQ+E4hKO7l9g3kvv97IuUl0Ijgxq?=
- =?us-ascii?Q?5Ui/Pqa7zlyIInRGGvW4GQi6W3zLKj+pn2htg7spmHFdqL9Ho0cb4hDDP6xq?=
- =?us-ascii?Q?QQ6YcsPHoYTAMENXSK2429GmGUL53iMiA3zDf7zLllDMu6vH/CQtPLjz8si8?=
- =?us-ascii?Q?greSqlMhHacl7KDGHpwbnJNOkf2hcwVlAsFmC9VGreG4l3tRo25eJB7vghVh?=
- =?us-ascii?Q?aXEeiC/9PBpjHVPHD0ZBkrP7Vg0SDweSkyeOpi//CtQH2exjTj6OjDa8l8gy?=
- =?us-ascii?Q?po8nF41aYjo+I7FizxXhRslbnsDST0wAr1KgEPFlV+GB72R67CkGAU4WmC9+?=
- =?us-ascii?Q?G8Tf1M705ue/VvgAl/BD/XxhkBA7YiSli8YRgDLUXvpc0wM5sjC17wUp69fP?=
- =?us-ascii?Q?Bqih7+N4oh6Q7A8TA2SPVWvdnwcfbjdzDW+fpSbH2wweR0sEGD+jGzQZSJeS?=
- =?us-ascii?Q?HaZSqkP0pMRCPKdUp4ukytQvN+BqBIFNNd0udhpNHjsLxYSN/ZomnIdoXrU6?=
- =?us-ascii?Q?AY6hoxwWXuaic8eOuMtAy+hV7x5STwo+htv0JGvIs7KThkfFYxg2GXAP3Byj?=
- =?us-ascii?Q?8UdSvk2wDzzk6Mty/zyoV50zyRuZbCLuic0T09yuq4pXdzFSX8RL11vjloO7?=
- =?us-ascii?Q?9ZOEkB43sSHKJFszxhQLEhjRcw7oLckcP9bxEQBcxWgsrMvctKhiRwVNxKX6?=
- =?us-ascii?Q?FxZHu5i3WcjbHHPu8WDfsIGw5AYPbSaprmRw+Mm6qEUyCu/HVrQC66idI+lr?=
- =?us-ascii?Q?+rLn2iMeyf5RypJOhsGMU4n3tUsgKcfCVSEL3+vuGswzzPw3OtTzC9/bHV10?=
- =?us-ascii?Q?a8bebS3hbI1aOJED0+uefHYi4q6FHjt0PxQQdH6oA1+FXFTGSdCnR1ueWejv?=
- =?us-ascii?Q?+gSQl7GdFMsHtshQXyYW32kpBP53Cz+J75KsypctnIoV7fsgHxmufk+JMQS7?=
- =?us-ascii?Q?xYLXLmP9RABgbw9Q3vwZD1tU6YASAaYcUtsVvx9hwetbvH3G0lPAPtPTjz9C?=
- =?us-ascii?Q?EcjraV0OWUBHAzxnR6S5j2djTi+HOLwODy5IpYkRU4/tnPvz+HwjW4znMHe7?=
- =?us-ascii?Q?XB54W0tJZjCNEPpoRpIWlD2tSc7fgeAbbwq5HLiJEAXQ9kg3UgldzYcgrdCR?=
- =?us-ascii?Q?kHQbL2wAEy5OMF3iXPmDJIrrxLFx/El6hFRoGHlL5D5O/nFbFQQ1Chd7OgQ0?=
- =?us-ascii?Q?We/D5Enm1SU=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?07yU9u29SbbgDgbaa0s0BYhIsGM65Ty9jp+rLP6Nr4LfE9StweDQ5iuoOx38?=
- =?us-ascii?Q?V3oKnFAXmpcw4PTSreyAi0DJFyu/th2tyA9Vh1rWmr//C1Btw2xWJ4nPJmQr?=
- =?us-ascii?Q?CCeXvMUWN+xmda4p7cAh7IZhMg5aSkz2GYZpwKs9JqSlYXASDLS7xcW6Lwdq?=
- =?us-ascii?Q?xnsxAq3MoG7FOhqUhU3htJMyMl0jN+CeDkP7RzjaLnPXMTZPHH/8JQvpyr1k?=
- =?us-ascii?Q?gJL03/fKQdYY4mTZPx0z8CF1YFLD2AhLDMdM3aR2ATNyizdNRaSr9WgWDskr?=
- =?us-ascii?Q?EAATlkLmB8wBXjkSXABpKgoSvCugeJI8WgH7DJ2TXWmLUQm9YNqs4t+/0ov0?=
- =?us-ascii?Q?azEE7C6d05ioj9Ch4drJ0aZac8ApxMKk3CmVfPY3awh0bk/AtWpt4dKN00uP?=
- =?us-ascii?Q?ioeOxsPAR5ZVcV/3STEptQ5tI87uwbhM2Vhqi5qfXEAVdLnHhcl/MMBSpjs9?=
- =?us-ascii?Q?DaCxMOPKb7Zw2MXR9TR7Ku591wYPNKFO8lzeHXUtlyZCq4b4Q5Ed1vlpUFwl?=
- =?us-ascii?Q?QNu0LgXYZ70sz5PUF4GdElCxJLMbLhQIS7SVZeYWt25oAqsgeGWhZADUGIK3?=
- =?us-ascii?Q?Q/BND8jrZQfZJS0pAv3cSEjGCmRgKPXec10y/2dtms/+aWbP0H+gYMjQbMM/?=
- =?us-ascii?Q?A/nJc/1UPVLK8L4urgQj6g3huFXUJnmL1u9rtIuDjA+2TBgDwxtZxvU6bAkw?=
- =?us-ascii?Q?h5ijcVTBTvwvKwrddj+j2W+U90FzQVxmoZE+4mUP6Vo+ApRfAXGVH1po9lmN?=
- =?us-ascii?Q?RTJe4Ihu32la0UGEDJoicfMSB9oSL60hHFmzgNnxLYChOM/jlIau/jfdUlFt?=
- =?us-ascii?Q?ivXwAw8vBciUoHuxGAEW9ajI0RqD8G9QwsEo7Q5glvqwFyQ3JM6G3r5Tj8kZ?=
- =?us-ascii?Q?MTKOKMf/jx9R9sls5xuPnwHeMUzNhshlhVAqUk0U4iwNhxg2QbCNSE1AwrJS?=
- =?us-ascii?Q?fIQ5VjI5m5R19b/YVhbTSWS+3q+JvwJZm/aeMYeXu1tqoYVW5d3JAw1UqUQh?=
- =?us-ascii?Q?lcxsPZTcV9H+8gYmeJGVtp+RgppGkMbAjEGJq/ZMGUfqn6pNrj1S/2SgvJMD?=
- =?us-ascii?Q?aIUyvvQRcdtfUgjMACmloXk9udLoKSCsJY33pi69iIpg+9JFPw1N9lPKo8ZY?=
- =?us-ascii?Q?b8Z/dSOIepgcXBf4KMzRvapkh5VUpFVi42jnBGbLhEQMeNHFQL/YLLsGAsj/?=
- =?us-ascii?Q?BownYATT+Re7AIQDYpPu8GN/9upzHedV/uqq8uhkZMebaFS1S6q5SSTT0URf?=
- =?us-ascii?Q?dEumJ5bmYm2cZ6C4XyQfeyAFO+f4PPqoRFGnRUx6WuGDNu/ytEE+o8DVNZ1k?=
- =?us-ascii?Q?x64T2xlIckT+WVHxPcXI83eANxCZ41CJOlnYmntwtGATHKnE4rUwj9XWj8tv?=
- =?us-ascii?Q?OA4HZiGvYtDWSKLe+ZYSYp3dgA2UEbOgHQ2fdvDmI1n5SmH7r8GVsbpBcL/C?=
- =?us-ascii?Q?p3SsKfT7XLfNXnsHOX5t5o+JTeMpAUKy7ktXxvmVrX+wppGawroV8c+QMHT0?=
- =?us-ascii?Q?e/4ZTOK5zDqVl2Ha/2Zhuq5KeoO6laKtnAD/KCnR5ne7WJj9qpH12eMWcTOv?=
- =?us-ascii?Q?TV6xg+1MVqF+Y79Kujk=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8cbc89e3-d490-4494-247e-08ddd545a6f0
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2025 00:02:08.8420
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2bhw1jjqSaLhKRrNCTkgHjJXt5dzSnnelSSf7LezGHuUX7YA071SoA1P6o+3ExZQ
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9109
-X-Stat-Signature: ttm3p5rizkiff396nwzyztxoyweoofm8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 3w4mk89kn8u9pfhk518aubstkdu4aopr
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: EDB8640006
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 217AF40013
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1754524932-363515
-X-HE-Meta: U2FsdGVkX19K+lp/VmvlNBoiBLv6/l+EMABl19GGm+bX0lE73dQbVkkGcyrkji2n5/r2CJzBwqMM5y0Ux0sk86518mLaBQx1cV94kYzKyzkYeC4Vsud1d/qD/YXxRn/o/Sj3t6S3/F4zs62igXYMv6TwydK8+SzBs1H52qIe5TCTdRYzPRM9EquIYB/pYNYzy+ahmQvK1zAKgnxjv0Rf4uGMFOK7v3aAHzmpAbR2/y4G9Bq9DkiWBUyl+/1D+o4jhYX2/Lavb9KQK3ciQYjs2fEjGnVxjoi6I0dyRVFUNmhq1rhFIwItNaWcRATckjH2f3vmOgnSNBrWlXziKQJAbedK5bGj9u3c7l34xxvZ6ccEaCUke44yhMDJnUZiG6UiooGryd4Y67RW2LMX9amF4mNZ3Axs166cx+3JjyPTQAQVyx16VDJA9AoJNTLlKnXS1YA3DXLLzwoCnK5BgCT4sHrzBAdnwUp1lsUJIk6DoW5sJAtOJpuTtqrDlHrqBN68zcFmjZMl6czR5GhPUel46+839eSAMysdHXW8hV750HE/kA4O+O1LmOSjNF2TGwCoKV9yj316N94yF1iCH9lj3Tmmf5O1IjebFOB7B+EzSehahn3TNGGNdaInE6p+tupXbjfp+G0Z431xvL7BBo98mov7uYRjXIh3Ks1YMYPLkjpesg5v9zp5u6Ql/0QDy4PnKPTRdoJTDv+s4WJxjT8URdWkCm3IJP9dBhnwwhH36s33wNTzb2mhQQnGQEfW207TSxzQphEQZWmzqMqstrvwr0CNyy23NbUA2oasWpAHwPY7MWN3LT2e4ClgEPatdjdL8Ol0OkjDVd76+W70ZGB11F5VI9FGFX6C1Pjwi3W60VOdXZSsX4kRWVa5GsfDH7CqBa2Ja9YnRPy+skv6SVV6dCvXGPXfHMG1nv2BwWBMhxZXYx7KBjblDv4VCG44rbqwHjfshO+nlkFGaNJYPQL
- 7IULG1Ic
- L9XWlw0nJCefqqIrYyS63YczKpAEOrskQViRKeeZV0MZV/pAxkV5PtKi6PWRssHFyMJ5ZR/V0RELn9mu+Xj91JpPPXdvkQ1OO35AYxTUHMspRb2SjoyTMFsmf/5On+7FSNQr9VGxQGXUuOUqqRORvFDS9e9FtufQcu1m9A4A/uM0QALz90nhlMkfwdrXlADsvs6Rf4d6aQmRED5oHjDcaVwbLqPPoPh+FgTN9TlxbC4qICHmusaKUWIhpYCAFVoQkGwMxwHok0Fbi8LbyomC91WfpWXSqMS6VpNfPER0WMY+lTrVoCd+UruLPRMxK+cl6iYg1NB2drMgFFhrW1xlpglez/pLddLo+63Ykpd6W6mXM58bQ86EJsZpxSQL7Eu/HCVJMXby9MnXv5KNASOc9LwhZDLkDg+jnP/TEdf8O4lHTS5n9iAFFEZaXzbUw9DWyiBx6b91kcA5yD00O6JboiQTYX6kIzseWUVXNj7Oc0yLV6JVO2Em0AzcLZOeJdGnG33LGNAmE18HUDGXRo0tpX2HvkA==
+X-HE-Tag: 1754525968-579801
+X-HE-Meta: U2FsdGVkX19tKtUgaL1iFHjT6SZT3NtbXsLNP1WmrybyFafA6SYGJ4ZftIzhQyqc7HJiUw4KQ4o22DOy6tqHiKdT+iY0LauFw3nlDVl+pDjbNMZPujGvKAphgoBwEbT1rQZCPHTVVE94X5uC78QbwWCdBC/UD9rCwwQdaJUfGYLCVgBJlb0RO+bFN4DrTVlpMK1GmqW2gB1R78f3HjmukpQa/mCTEG93luSTWWVs9rbn3asS7zKYmQad4umcguGC/PfCJciBnns5R3WMPUOi0rCZ2TlbgkdrIuRBvkmZyg7X+mmAumGkZfnxATJbsvJoEZQpP/Z5uSUw/uow+vNPqYp55HR0ClfcEW0Ta/S+jIRCLYW2ESwiVDXEYVsyORoM9wScONFSPYv1sMo85qImEinX6xh792J2TJtLGcqoUbi6oNacE3aCV5Ir9/2txzSpSBLmjLPonXd6S+vBQDNCA/9+cg0B1vO2mb1kYM7SXN0sfNlO7H29xoET93ox8ndB4Rx9+pfQjNunMOdPPSV1OKp7KM9vY9pttONlvtsrJ9LoomHEetnvX+5uGvV880x0aNk5yryay1tmSFW6jdttAnLwxnU2gYUSmHUDk6G30KV/W7Q3mdlU8C80Vt9JLn9XILeRzl+NSRrDFtO/qrAH9GfhHEotRIEWIbuWnrClJGjkk7kxSkB8tkL6XXekUH0dAp1n+JLkoobKEiNdZWI23prL6Oii1bi79nicdR6zg3k8dvDMMVjuESAKRThmG0w3SqY4hoppkeAfAJCdM+EVOSD9soo93Rzke+6EIlcKQNo/mfFUL5GRza+arC/JkAtXBJvBslR6U0oOGUcCgAgjENt/1bUQE5bsaiWcIizMjBUA0ctd+o9xs535DujU5Lb7v20AEPPRovcTnDc5BZB72MbcKiHRUVl95zkpUTNGiRMK/PMxA9NjzURedzJCgK/2zg2asplIJLlyN59aSj0
+ 6HjG/6YB
+ whFwHU5uLBZpfcXCpp86jBilCpUZLIJQ2wavr+m/7ZaKa9NyjSLNJrGJjXNY1PxUL0OiH9om2goSpdJXrcvDJq3f8ydUY4iLAmlXgQbrmCfIcmpaKx3w+XHsvfi4NOuk6pNxazYbubEaAkX6XxCTxQz6PKFmVfPNKespDsHyMrwv7mCRspA6HNClclKMJ7ivZqCKQ1u8zHO5Sb45plwCgc+DjsVDepjEcNRehZcXtYGDH+VC+KRMud10m+GejpkFQSX4FHdjOU4ydvEu8TKer7SkJa2sF0aWWcNH9HDeVzlfogT9B660raOJ6CtqXVH8G+93AjIm/cx/WUG+fk5TVNdrX71h/9jniWv4QGru6PDkJF4g=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -194,32 +93,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 06, 2025 at 03:42:14PM -0600, Alex Williamson wrote:
-> > +	p2p->mem.owner = &pdev->dev;
-> > +	/* On all p2p platforms bus_offset is the same for all BARs */
-> > +	p2p->mem.bus_offset =
-> > +		pci_bus_address(pdev, 0) - pci_resource_start(pdev, 0);
+On Wed,  6 Aug 2025 18:42:54 -0500 Bijan Tabatabai <bijan311@gmail.com> wrote:
+
+> From: Bijan Tabatabai <bijantabatab@micron.com>
 > 
-> But not all devices implement BAR0, nor is BAR0 necessarily in the
-> memory space, wouldn't this calculation be wrong if BAR0 were
-> unimplemented or an IO BAR?  
+> Currently, damon_commit_ctx() always calls damon_set_attrs() even if the
+> attributes have not been changed. This can be problematic when the DAMON
+> state is committed relatively frequently because damon_set_attrs() resets
+> ctx->next_{aggregation,ops_update}_sis, causing aggregation and ops
+> update operations to be needlessly delayed.
+> 
+> This patch avoids this by only calling damon_set_attrs() in
+> damon_commit_ctx when the attributes have been changed.
+> 
+> Cc: Bijan Tabatabai <bijan311@gmail.com>
 
-I think you are correct about this.
+Maybe above line is added by a mistake?
 
-> Even within memory BARs I can imagine different translations for 32
-> vs 64 bit, prefetch vs non-prefetch, but per the comment I guess
-> we're excluding those.  Thanks,
+> Signed-off-by: Bijan Tabatabai <bijantabatab@micron.com>
 
-Humm, I had thought it was consistent for the device, but I guess not:
+Reviewed-by: SeongJae Park <sj@kernel.org>
 
-	resource_list_for_each_entry(window, &bridge->windows) {
-		if (resource_contains(window->res, res)) {
-			offset = window->offset;
+I have a trivial comment below, though.
 
-Seems like each window can have its own offset.
+> ---
+> Changes from v1[1]:
+>   - Compare entirety of struct damon_attrs
+>   - Apply logic in damon_commit_ctx() instead of damon_set_attrs()
 
-So the p2p should be made per-bar, and hold the bar index from the
-constructor..
+Thank you for doing this!
 
-Jason
+> 
+> [1] https://lore.kernel.org/all/20250806164316.5728-1-bijan311@gmail.com/
+> ---
+>  mm/damon/core.c | 26 +++++++++++++++++++++++---
+>  1 file changed, 23 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index 6a2fe1f2c952..80aaeb876bf2 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -570,6 +570,24 @@ void damon_destroy_ctx(struct damon_ctx *ctx)
+>  	kfree(ctx);
+>  }
+>  
+> +static bool damon_attrs_equals(const struct damon_attrs *attrs1,
+> +		const struct damon_attrs *attrs2)
+> +{
+> +	const struct damon_intervals_goal *ig1 = &attrs1->intervals_goal;
+> +	const struct damon_intervals_goal *ig2 = &attrs2->intervals_goal;
+> +
+> +	return attrs1->sample_interval == attrs2->sample_interval &&
+> +		attrs1->aggr_interval == attrs2->aggr_interval &&
+> +		attrs1->ops_update_interval == attrs2->ops_update_interval &&
+> +		attrs1->min_nr_regions == attrs2->min_nr_regions &&
+> +		attrs1->max_nr_regions == attrs2->max_nr_regions &&
+> +		ig1->access_bp == ig2->access_bp &&
+> +		ig1->aggrs == ig2->aggrs &&
+> +		ig1->min_sample_us == ig2->min_sample_us &&
+> +		ig1->max_sample_us == ig2->max_sample_us;
+> +
+
+Unnecessary blank line?
+
+> +}
+> +
+>  static unsigned int damon_age_for_new_attrs(unsigned int age,
+>  		struct damon_attrs *old_attrs, struct damon_attrs *new_attrs)
+>  {
+> @@ -1198,9 +1216,11 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
+>  	 * 2. ops update should be done after pid handling is done (target
+>  	 *    committing require putting pids).
+>  	 */
+> -	err = damon_set_attrs(dst, &src->attrs);
+> -	if (err)
+> -		return err;
+> +	if (!damon_attrs_equals(&dst->attrs, &src->attrs)) {
+> +		err = damon_set_attrs(dst, &src->attrs);
+> +		if (err)
+> +			return err;
+> +	}
+>  	dst->ops = src->ops;
+>  
+>  	return 0;
+> -- 
+> 2.43.0
+
+Other than the above trivial things, looks good to me.  Thank you again!
+
+Andrew, I assume you would prefer resolving the above nits (removing
+unnecessary cc and blank line) on your own?  Pleae let us know if not. :)
+
+
+Thanks,
+SJ
 
