@@ -2,99 +2,90 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A4CEC87FD2
-	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 05:34:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 660EBC87FD2
+	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 05:43:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFD6E8E0006; Thu,  7 Aug 2025 01:34:34 -0400 (EDT)
+	id E1F1F8E0002; Thu,  7 Aug 2025 01:43:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAD118E0001; Thu,  7 Aug 2025 01:34:34 -0400 (EDT)
+	id DF7058E0001; Thu,  7 Aug 2025 01:43:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 99C328E0006; Thu,  7 Aug 2025 01:34:34 -0400 (EDT)
+	id D34868E0002; Thu,  7 Aug 2025 01:43:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 88E688E0001
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 01:34:34 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 37AB9BB895
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 05:34:34 +0000 (UTC)
-X-FDA: 83748846468.12.54A6C61
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 57C3EC000A
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 05:34:32 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CtgUymzN;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of chrisl@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C1BF78E0001
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 01:43:55 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 66A6E1369DA
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 05:43:55 +0000 (UTC)
+X-FDA: 83748870030.19.75264E9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id C6C1E80009
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 05:43:53 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hb3nLQ3r;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754544872;
+	s=arc-20220608; t=1754545433;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0q8hUrFupG27i8HWsQxxW/0Vdf5AjjEm/LYkQBdQCMY=;
-	b=0P3FF4WL1whh61j/cGf6aN+4bBc+HctqPSZVYFBFwTovPkTCWqPrpLe2wngNiV6g7JRFRS
-	xkpiPntxzKsOVhHp5Vnk4PN7wAOtkU1shjbXlZ5kdtSJO9LuIoa/ArsxhIGEVslcf7lSQ/
-	YbkUoNJD1F+fAtyW8RnMhnPuy9tfENM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754544872; a=rsa-sha256;
+	bh=h324Kx/T3q9Wb/zKqNsCFHN3yCBJiJ5d6XlCkNfYf4E=;
+	b=oknVi6unX92Libk58xykEwa7v2zeFzOmT08UkzxmcmNWmKckFKs0skUBzbJeJboJ5laoGR
+	dWdpLtFJAE6eew8uHh48WzTDCgSq/Ad3JNmBqecSKiNglvpbRupodguoRWyQnitcOUNaAa
+	tZ2qOx4XSEl/BTliF1n/ZCxeQXqhhag=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754545433; a=rsa-sha256;
 	cv=none;
-	b=tWTTllvsXhg2NQtC9TL4Z+lGq37Y+7tQlx/iR7AaYc6bvEdDxVguzTMukSRBTQ1bMFjzbP
-	pDcnjDY4KaI6hbSf+pvWZbMzNKytoDz50NKyikHu/zyIA6LjNuyiqHD1zZmoSVyuMrp32Q
-	2tWnUeOK8cYRDyfntWIFmz10so3sbTo=
+	b=hO6f6i6HkzzS9hxe3ftkRmpqn0JFTanbGU/I6pojJ++UH/Yy/lLvNSjL8An9GNHdWG5RI7
+	Mn8BXMlc+RVkNH+bF5S8daXeapEBL9qjx/03vsIy8WCTdCEwk/bOdyB8ioOsGutf8yX6uj
+	yV+8SrWs9dRBd0r4ORsdIGDL/+TbvBU=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CtgUymzN;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of chrisl@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hb3nLQ3r;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id B77D2A55367
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 05:34:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67844C4AF0D
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 05:34:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8702941A41;
+	Thu,  7 Aug 2025 05:43:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45990C4CEEB;
+	Thu,  7 Aug 2025 05:43:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754544871;
-	bh=RiUS7KSgyHes9dhNZkvcCRdWhBjwo7hlSmrC0k9Zo6A=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=CtgUymzNh53kTukKYdQFncA2wzaaMlLvuoVQAf2wIuGou/soT396FVrzmfhXXfvu5
-	 orf4Qea/PZy9rPI9+lXK2rp9QMUCYvtcewMbyfsA5zVjKM8x8ipRIIDj7TJzY4Gg3b
-	 3aq7JIqUEuD348XKwscYCJc8CThXe0bTSSIfDT8BIMzpxjcumrK6qLzpWzux7h6Lxe
-	 NHEXItQYbcio3/JqynER49PHFu3tqodFDQMZMO2kvXgstq7G3ztIv8UvqfqXsVrawK
-	 iP1y6YZJTypg1+KR8NQ8YPSsyqzzrmWNuk8XvpPYqMtddGpEXej/3OOajy08fwvuHK
-	 PvGCFeQ5QF82w==
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-458bf57a4e7so29635e9.1
-        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 22:34:31 -0700 (PDT)
-X-Gm-Message-State: AOJu0YyyQIY+YpYi+Ow8WRXKNsP7BsNlqyUaQ7q2yzFB6eEnzZ2sbEco
-	M1paD1Gga0eCOPq1e4juVq8kCyerQxZgCGciXd/FYnt+qSPftbYVNWOMqt16e2con9fI1n/oiiV
-	ugRV3osCOr+ahwmHn/M9D5Q6+48oSk5/e9UtOgyut
-X-Google-Smtp-Source: AGHT+IFIrjsa3bqiUdILHj0K82UG+gs0VXdeHKXr68Tr9yha8S6Xfrc88nTWNYBeV/BoCilZCd/fft4sfMojVba1RW0=
-X-Received: by 2002:a05:600c:3148:b0:456:4607:b193 with SMTP id
- 5b1f17b1804b1-459f0357255mr303415e9.7.1754544870120; Wed, 06 Aug 2025
- 22:34:30 -0700 (PDT)
+	s=k20201202; t=1754545432;
+	bh=Y8PwWxG6NhZ4hx+lZSLdvTGtrL3od2PF9xFFQ+W+ihI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=hb3nLQ3rI+rQrDxsVy0fNAVqVVRPuh3IOBNbQwQffaCLHEyOmxW8ajOFndvk0C6k3
+	 corApiL0Kw+Pe3p6j9f/AmG1AxjvmfuPzCOARahUqs5WCBN2LdleqYnugw5upmy6eB
+	 2IARW757ZEPxsssBqjj5cTaFlnBdp0upaftcymIlBIeDS/ctjUQTJzPslcg6Mtcm6P
+	 bA+NzrFlVseYBOkAdSbnBe9XhUyKq3S8ZqOhJFvXP8VLR3H7IdkxECGfD22lWVoMlW
+	 fkp+jn4vf5sQxDI1dE7yH6DR2u18JLOe8anofFgEmSEwWeTf9MuvULRaV0BkOp1E9y
+	 losb5z6b1LiTA==
+From: SeongJae Park <sj@kernel.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	oe-kbuild-all@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: [sj:mm-new 42/45] ERROR: modpost: __ex_table+0x1584 references non-executable section '.rodata.spk_ttyio_synth_probe.str1.4'
+Date: Wed,  6 Aug 2025 22:43:49 -0700
+Message-Id: <20250807054349.21561-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <81fedf44-83dd-4f2b-9a2b-2f3d7ba4f922@lucifer.local>
+References: 
 MIME-Version: 1.0
-References: <20250806161748.76651-1-ryncsn@gmail.com> <20250806161748.76651-3-ryncsn@gmail.com>
-In-Reply-To: <20250806161748.76651-3-ryncsn@gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Wed, 6 Aug 2025 22:34:19 -0700
-X-Gmail-Original-Message-ID: <CAF8kJuMxnMP67GT9poH2eopOSJaXcnior47rEQGipmDCPuc5eQ@mail.gmail.com>
-X-Gm-Features: Ac12FXwJ1IgtZ56cqLlvklOoOtpKEXAtVQDzpJTF-FJ8utQN16JVaoRrM7ujyB0
-Message-ID: <CAF8kJuMxnMP67GT9poH2eopOSJaXcnior47rEQGipmDCPuc5eQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] mm, swap: remove fragment clusters counter
-To: Kairui Song <kasong@tencent.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	"Huang, Ying" <ying.huang@linux.alibaba.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: eagoqe5msopb8ssju86d6hpsdk53zxfn
-X-Rspamd-Queue-Id: 57C3EC000A
-X-Rspamd-Server: rspam10
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: C6C1E80009
+X-Stat-Signature: cydmqrk3n16cpmghhj7pcbnxp4diutgz
 X-Rspam-User: 
-X-HE-Tag: 1754544872-552567
-X-HE-Meta: U2FsdGVkX1/a8CVQdt72N3abPeNOkh64enFrty6vhAXRgiiFUieXjrNtsFfxdQ1ceUcYNKP6cwgPtD0c0PGJaefqKaUTbZGd3dOcPcyuF8Gvm7FILreyo/d6FgUQX0seN+wxniGAcy1EVd5QQsoXb4XHCC2zfzJoKUzBwFzR1hlYHFQkCPl5CJlEGMWUej1fi4O/N+NMT2sTm9GvbsyZyVTTickxEWGCq1j2XyJFdmfUy9W90dk4SzaGR1VWC1RcN29RgqPuhHVb4WbmC1e1UpHvdtVEYfypOFnOk4e7sun+jrrLcDK+M4RyJh6WBDU2DP/5VS5bboAxKNMHS4WBqJX1kvity1KRuuVWMvtTgKqP3FOpKglCMGk+9A8wx7Y2mT+BKNdCV23jA7ytoJL3k8aws3FCSFfR8r+3mcTcWYeCzp669UtVXGbrntOZrauKYn6pwoVbbAv/by4kuQOp7MoDaGi0AgTM3hBG0TA5atMsjn3Mi75s16SY+kNfYTKkcfdlH8eEUuTxpprL0m2/dW59K3E1Dg7KK/617lbVgBKKn2nVOJ1qHWBVMFE+IIUsAMnTv3dUWUvqn554p9Rt53axiL0b/zVaZtuK1Htbz0YjGw3sqaxdO+W2dbiiXjSlBOoggOARdudeYGJoN4KBFCExWH/wf/5s97YpwH8tWgtPllZVFkwH9TBWnpvoJcw2sZz+A9MSTnAOs0Ue75hrZu2mwze5kAh0jvcPLhcvI74PYh4CZY3rQ35fehfPzGTt2VKgXE4x3mndz5Wbp2Jv2GnNHbbfu4K5aicFAQunb8R0uUhK3cfhNJWWS5suZs9sxcLVqYSo5bKSkZ9R/GgCsJfFLAPVW5sssxPBOuRNRSQ+u6MQ9TWEw3UZg7kx+2LCWFARHCtwOMVjNIwr+0isRrpEqg+U5Rpco/QhYShQU8ueQYl0yeU4XWaewGL3EThmTfZq4leeZetXWWXdNEH
- HmtGS16V
- SZYkcMI9zYXpMnSWuhAzd8GSQHRIouLD8kjH4yJNjf8cYqseGWdsbn0PXwAtdBofFpPp6l7BolahzkfS9dK490Kzz9hK8kLquxVz5PqTPD0OTeRhEdUJVxbq/xw8Ahehos3RK2JWsJfUcK6J1PWh+GpdqWHzatGROQ09MEwzvqcfA0qxgn+2+sULec1i5aGk1qTM7UHxCiWHflgp9iEIOOr4aPlNEZA39Iojfzdrv+K3StBWAcSyw2Kl/4fpyGCD9dWFIcgXxY6xbTyiYX+6OcCN/qto2uqKgta2dZde02D2fKPnmoQ/uOLezL2rOLgAok7lrEJDrHFBlbD2535gRu2j6utlMxsK10zWGg537SvUfvoYUob54iQ33/4f3MY/b0TFY
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1754545433-302953
+X-HE-Meta: U2FsdGVkX18lnWz68joHtzMtkDOJeQShQoMdcLwkF6ns+ZKc6KibS3ME0bF13+6LOyUFl4h8nDd7zf9//ZAvRL8qEo/Vk16IJqxXbUl+RXQSaLLaUlhqFE5rchNMgVelFYXGLTPHRJlhaE77aiS9n31K2d+/xjovrReth3ifYD8hs06yCoZGIq48wb/vTdl/nwnOYl0NnwgGKMDtytohwNfm7O9OWjMQpa5WfXUhCJ/gB3p8Pj5BEgHgiWw8cvGcrpvNSbVXn35tmMQys2hM5Y7VZ4/XIQGY28/3dOz32HK5YPJUGzkTy+k9JG5zXvxp3AsAMYTQvn3SRmZ/gg1I6wf8TpTUG/RZTLiPoIXq2WrQnW16Y0L1Q5miAXDqkUm+9LItPebqXTTYlpG3Sk1dyJ5BHIMjFiVAi+zaQ35ANXK3L+9PqkWsx42x8FHzhOirhtRgxLI4tH/qaCznwcxDhOHe9nVFUAnpX69fzIdmoVGmHgsNMG8+d3HpqW1ojtmKG8QI2vPkm/e9B3yHcbrPLVlIDA4jjWGeW9cAYMkMA99hB71zoGpywVJqCSTqwdfD6PqPYzEIi2va/7QPSqLgZ7w4EnWbKKwmPi2YQWv3HysmWDrERN9ZW7pNCsm1C7/lRFSlFGmLDI/tJtOXE+s/mljpwqe0svpFYsudhw57DhQ5E5ulFMwRsg1LjCsSn6RnROYcl6mXYD64lSHgdwXf+lKBCvPOrVA7X5ojFGSva1ZK8bl+np3+FsqK9uS/cmkLA2d16J60Rk2iSLJltdjiwoknQo231h1e4RnMsvcHRWX02Zh3rWHmTetPgZdvr/ctl4q425ui1mqpmq/n7m+8AGjYzDqkp2DaPl5M+7FYVT82ymbjue7c0yX3qvx7vo2UW0jlMRA7JFuomhBvEpDq2RUtIScvh+5LaFOV0poerAB6S1nzel6qh73J7kuy4X8wmrNL2Qk5aCMwkung4Ig
+ FfrNcH0n
+ gJIX3YGHRC9Cl2DQaPoTfZUbUvySO5xLXGxSsQnqIWdnSAQSjNkUOxi/FCEXNTnVQgqr+h7aewfJtRk3mGm11ArI1yLo8v+NCgAZ7htyHZry4gvwRb0wtaIpOefLUNqtSZnY1wc5s62DzISfTnapUKUbtTFFTZhHepyY8FI6e8x2uoWUQ1pFq0ZtAKLh9zfMARYVDew8dzFWWSZLhCS3gd7PpyU9QbN2G1FdEuWNHtBeuDlf2w5qlpsJH+lG/WSzmRbh5jvkVoY7/6aTb/AoepzPUJv76hJt9kibAjVgXkdW1Dsk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,95 +94,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Acked-by: Chris Li <chrisl@kernel.org>
+On Thu, 7 Aug 2025 06:31:25 +0100 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
 
-Chris
+> +cc SJ, as his tree :)
 
-On Wed, Aug 6, 2025 at 9:18=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrote=
-:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> It was used for calculating the iteration number when the swap allocator
-> wants to scan the whole fragment list. Now the allocator only scans one
-> fragment cluster at a time, so no one uses this counter anymore.
->
-> Remove it as a cleanup; the performance change is marginal:
->
-> Build linux kernel using 10G ZRAM, make -j96, defconfig with 2G cgroup
-> memory limit, on top of tmpfs, 64kB mTHP enabled:
->
-> Before:  sys time: 6278.45s
-> After:   sys time: 6176.34s
->
-> Change to 8G ZRAM:
->
-> Before:  sys time: 5572.85s
-> After:   sys time: 5531.49s
->
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->  include/linux/swap.h | 1 -
->  mm/swapfile.c        | 7 -------
->  2 files changed, 8 deletions(-)
->
-> diff --git a/include/linux/swap.h b/include/linux/swap.h
-> index 2fe6ed2cc3fd..a060d102e0d1 100644
-> --- a/include/linux/swap.h
-> +++ b/include/linux/swap.h
-> @@ -310,7 +310,6 @@ struct swap_info_struct {
->                                         /* list of cluster that contains =
-at least one free slot */
->         struct list_head frag_clusters[SWAP_NR_ORDERS];
->                                         /* list of cluster that are fragm=
-ented or contented */
-> -       atomic_long_t frag_cluster_nr[SWAP_NR_ORDERS];
->         unsigned int pages;             /* total of usable pages of swap =
-*/
->         atomic_long_t inuse_pages;      /* number of those currently in u=
-se */
->         struct swap_sequential_cluster *global_cluster; /* Use one global=
- cluster for rotating device */
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 1f1110e37f68..5fdb3cb2b8b7 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -470,11 +470,6 @@ static void move_cluster(struct swap_info_struct *si=
-,
->         else
->                 list_move_tail(&ci->list, list);
->         spin_unlock(&si->lock);
-> -
-> -       if (ci->flags =3D=3D CLUSTER_FLAG_FRAG)
-> -               atomic_long_dec(&si->frag_cluster_nr[ci->order]);
-> -       else if (new_flags =3D=3D CLUSTER_FLAG_FRAG)
-> -               atomic_long_inc(&si->frag_cluster_nr[ci->order]);
->         ci->flags =3D new_flags;
->  }
->
-> @@ -965,7 +960,6 @@ static unsigned long cluster_alloc_swap_entry(struct =
-swap_info_struct *si, int o
->                  * allocation, but reclaim may drop si->lock and race wit=
-h another user.
->                  */
->                 while ((ci =3D isolate_lock_cluster(si, &si->frag_cluster=
-s[o]))) {
-> -                       atomic_long_dec(&si->frag_cluster_nr[o]);
->                         found =3D alloc_swap_scan_cluster(si, ci, cluster=
-_offset(si, ci),
->                                                         0, usage);
->                         if (found)
-> @@ -3217,7 +3211,6 @@ static struct swap_cluster_info *setup_clusters(str=
-uct swap_info_struct *si,
->         for (i =3D 0; i < SWAP_NR_ORDERS; i++) {
->                 INIT_LIST_HEAD(&si->nonfull_clusters[i]);
->                 INIT_LIST_HEAD(&si->frag_clusters[i]);
-> -               atomic_long_set(&si->frag_cluster_nr[i], 0);
->         }
->
->         /*
-> --
-> 2.50.1
->
->
+Thank you, Lorenzo!
+
+> 
+> On Thu, Aug 07, 2025 at 12:03:03PM +0800, kernel test robot wrote:
+> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/sj/linux.git mm-new
+> 
+> Not sure why SJ isn't cc'd when it's his tree?
+> 
+> Not sure how easy it would be for the scripts to figure this out.
+
+As people might already realized, it is Andrew's mm-new branch.  I started
+pushing Andrew's mm-{new,unstable,stable} branches to my tree for backup
+purpose, since DAMON development branch (damon/next) is using mm-new as its
+baseline.  Seems it caused confusion to kernel test robot and other people.
+Sorry about that.
+
+kernel test robot, is there a way to mark mm-{new,unstable,stable} branches on
+my tree be ignored from your tests?  If there is no good way, I can remove the
+branches from my tree.
+
+
+Thanks,
+SJ
+
+[...]
 
