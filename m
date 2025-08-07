@@ -2,117 +2,111 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 69779C87FCF
-	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 12:21:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 599E5C87FCF
+	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 12:28:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE4B46B0093; Thu,  7 Aug 2025 08:21:48 -0400 (EDT)
+	id 838686B0088; Thu,  7 Aug 2025 08:28:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BACB26B00A0; Thu,  7 Aug 2025 08:21:48 -0400 (EDT)
+	id 7E8FB6B009A; Thu,  7 Aug 2025 08:28:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE7D86B00A6; Thu,  7 Aug 2025 08:21:48 -0400 (EDT)
+	id 6D78F6B00D0; Thu,  7 Aug 2025 08:28:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E5336B0093
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 08:21:48 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5D5C3B9E79
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 12:21:48 +0000 (UTC)
-X-FDA: 83749872696.28.0D18623
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 94CF212000D
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 12:21:46 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="yrEShFG/";
-	spf=pass (imf29.hostedemail.com: domain of hughd@google.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 5ADD46B0088
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 08:28:53 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0D967137352
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 12:28:53 +0000 (UTC)
+X-FDA: 83749890546.03.75D29A9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 3F04FA000E
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 12:28:51 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="QfRz8/lo";
+	spf=pass (imf25.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754569306;
+	s=arc-20220608; t=1754569731;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=73iH4wasKzrXgaNXIqRiPRT+SR9a1gFj9x2fb3CS49Y=;
-	b=D7ieHnTmTw9H8UqQvQbiZAKAsfk5hXYB2Tr7fC0dfiI6NYWzCAOpxWcEiBgBlIGeXs85bD
-	EUG3q+TcNKW8nLqoIHH45e2KVb+68Xiy0Yn+obIlxm9XSghJ4IK7NBmhsBXoMBjP+F8kii
-	WXSTb+aV8Xx6G+8paUaE+wR1j9TKdj8=
+	 in-reply-to:in-reply-to:references:references:list-id:dkim-signature;
+	bh=FS8LDzpDJlqPdTLqVGQK4lqYAcLt0fX/OvZqXi8lDqQ=;
+	b=ZmWo8QrHWtCXKN/0FTImbJkEjBrbCKbHiYXbS5i4uMaFFBTfFeIcqAk1XDcucfTuIdXRY0
+	Mp1gZoTyXLDqfuPczukm/oORMJbyCZOMRJ4GeBWMp05snEI1jJ5evdJT/AnkPxBu7kfhWC
+	SHlqRxIpMBq0R2q0ciHISdz7VwpgUx8=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="yrEShFG/";
-	spf=pass (imf29.hostedemail.com: domain of hughd@google.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754569306; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="QfRz8/lo";
+	spf=pass (imf25.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754569731; a=rsa-sha256;
 	cv=none;
-	b=lLot+RaOQ3l4ZarOL7It3b34QMzahgX6wqi4EF/4Q7klnltogwuqxSVCQgra6LZhwAb2T5
-	QXp9VhFSMHjUA5jjqsSoKlmKJ92Pr+kKbmrgPPi7RPf2fqBc8Hh9g34F2UCk6c9x0hRoge
-	BBvSfmJuBeSoBgmqy6UKquAMQgkZChQ=
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-708d90aa8f9so9293737b3.3
-        for <linux-mm@kvack.org>; Thu, 07 Aug 2025 05:21:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754569305; x=1755174105; darn=kvack.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=73iH4wasKzrXgaNXIqRiPRT+SR9a1gFj9x2fb3CS49Y=;
-        b=yrEShFG/u/6ooIvugnyi9sM8MPoCapExptC8lbrW3inDqhMjHfc+Tv70FrNHG92t6E
-         wIOdpIHwfIckKeE2+7Lr/YdboUANdZIfdxhEN0xEF6Ap/OTsga+iGTASZO+ifwRWgOrF
-         kz+XcmKtWaD/Yx0maN8Y10wrmRQ1qoq7SpL1jgH0SaTVenoPRshRKzK8UocClajIQhcL
-         ekhFYXtlgutjNUx3HZcDr16nvGqEnMKD5EEGK7QwDFrbp2amzf7R6YNAuAfXhNdPkFb1
-         MqMWaodrS7PCng6RUHhH1utWjEd2Dmfp+vEzGDi2WNpGmJINhtiSoFoRZFaz276SqfmH
-         iM6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754569305; x=1755174105;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=73iH4wasKzrXgaNXIqRiPRT+SR9a1gFj9x2fb3CS49Y=;
-        b=NTdMk/CnFkaKAQKBBSh7AGltsJx/Q6HO388JaD14vkOz3Ff6zLgYiOKI7xbHwOjwB5
-         69Ie/XDGQTzkM7p4JOlkmsGvzGugJAzp37pLJRTsr2ukDF9/7KeekXYX4soMPkIE6qdC
-         VIaoPA+qgbwAYJDN0aPzmMVxzaMOod4ZagOPBH4Fi7pnnQwWkxVr5j0ktzQ486QD7tEK
-         HhVOL7OiPl93AfWMNPhYDeWR1EuzhSkM1Dt2jRSfCVWborfP9RKayL6DpzGAu+tiK56H
-         pSw9jlyTT6GfgWSeCZlyikgnDyHUrFN2Hx8dCcFPwSdCp+qnHuYPkVbr+0qsNU0Z3MHO
-         Lagw==
-X-Forwarded-Encrypted: i=1; AJvYcCV4KdY0Q8E/9DqcOe1duPZUDZhtU2uQmIWRl+9qLflI3BQAz2Yfku0hVTAPybkcWyi38rQONj8x7Q==@kvack.org
-X-Gm-Message-State: AOJu0Yz2yDvlQ4G3PdvtaLX3sTKSWrLLb2W32y4GoIECS5/medQQPAVZ
-	WeUkUrYuWSM00BvcUP21Tt8L8cCBh44h+oZLBvfSWxBLUOGEPfINv0L3CvOgvfUBvg==
-X-Gm-Gg: ASbGncsAMfR+q9DAWuhc25y2jQjoZ77g6SdEUReCREoTX4v6kMbY83jluglfGcIv55U
-	Jkh1Gd9yBK0IsZsF3kEFvAy0OZkGcHWVj+4CY2zJc5kI5xVoCP055Von53VDn+EDxY6pP37pPHA
-	Nl3P1YSj24xYqamJtG/6cV4H83FoBw8RlGstI9pVt7kx91EfdiWKWVxHdVX8xDsHnTtgMkRr+xb
-	mNjzem3sS7dyfa78y3C/L8vPRAyXYmjDNZhh/T3Owv9+2C3rOV8EGqHUqWdsFgYmKsIQOLNeqmv
-	0JdDGPRDq8pv7jbm+0T8fJq5l4MtIytLmQ/eNVO8596Zla7KyKEkXhjGPhgJbyUUhAh8GoExUCI
-	wyrJ+1LKduWp8MgRcLitLJVE+6Z2Ak7u7oa2H2+xoCwgIMU2XHsMNcAzn1Fk8CqM3gM/nYF39zI
-	UzORhRv+g=
-X-Google-Smtp-Source: AGHT+IFeyMuWjhDETChRuvVfNLHPQN/zNP6Vl7YFSjffHqjMAZtfUTwYyCDFmjGyWYSS5kkc6h/9Og==
-X-Received: by 2002:a05:690c:498e:b0:71a:906:2874 with SMTP id 00721157ae682-71bc971a07fmr92320687b3.17.1754569305215;
-        Thu, 07 Aug 2025 05:21:45 -0700 (PDT)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-71bd6af0fddsm7484467b3.11.2025.08.07.05.21.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Aug 2025 05:21:43 -0700 (PDT)
-Date: Thu, 7 Aug 2025 05:21:29 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-cc: Alexander Krabler <Alexander.Krabler@kuka.com>, 
-    Frank van der Linden <fvdl@google.com>, Mike Galbraith <efault@gmx.de>, 
-    Hugh Dickins <hughd@google.com>, 
-    "linux-rt-users@vger.kernel.org" <linux-rt-users@vger.kernel.org>, 
-    "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-    Dennis Schimmel <Dennis.Schimmel@kuka.com>, 
-    Daniel Braunwarth <Daniel.Braunwarth@kuka.com>
-Subject: Re: Realtime threads delayed due to kcompactd0
-In-Reply-To: <33275585-f2db-4779-89f0-3ae24b455a67@suse.cz>
-Message-ID: <771a8fc0-8195-44cc-55ed-c3573d497d2d@google.com>
-References: <DU0PR01MB10385345F7153F334100981888259A@DU0PR01MB10385.eurprd01.prod.exchangelabs.com> <CAPTztWYf82p6hq=Q2mVq6_9WTjRaQiH81z4idZL6MZ1PXufPwQ@mail.gmail.com> <71df781c-3ef3-4b26-9ba8-93fc7d4f9eec@suse.cz> <026de9fcd4f0ed17c2df95c4f7c56b878a844012.camel@gmx.de>
- <25ba0d77-eb61-4efc-b2fc-73878cbd85c1@suse.cz> <DU0PR01MB103857873A56FD121984568148226A@DU0PR01MB10385.eurprd01.prod.exchangelabs.com> <c48f2877-4d37-4310-995e-fc5c2ae9a366@suse.cz> <DU0PR01MB10385C08C119276D99A234D978226A@DU0PR01MB10385.eurprd01.prod.exchangelabs.com>
- <33275585-f2db-4779-89f0-3ae24b455a67@suse.cz>
+	b=I+guTYt0cgOO4sJELgeBkdQwgFBk8s0K/uXEkby/gbANWdRMAgzhOOFr9nPJyT2hau1KaU
+	vcTvAdITNJMbgJs9IcIDMHB82mHNPIhwb1gisLZ4+7vK7B5VrE6pd3B6rYgkeyR8emmK2t
+	8ySwTOr+FnMxIFiMm9zpLEvgej+E+Ac=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id E2F4B4130B;
+	Thu,  7 Aug 2025 12:28:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB578C4CEEB;
+	Thu,  7 Aug 2025 12:28:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754569729;
+	bh=kUH5cN8R6K2VxLTJzE/eGBwS7eFdgy3gZa8/khg7FMc=;
+	h=Date:From:List-Id:To:Cc:Subject:References:In-Reply-To:From;
+	b=QfRz8/lokPQVbrBLQdFUg7Zb/pO83LwtQj6QWEu50ZIIRiNZFCedBiyH1vPKdZCmn
+	 sd6EpNnPi3l2PXkuxCii2LHjBXBHhb8dMe7F02R3uXDPg+W0NEArdn2LzuNZWk4n4C
+	 /Sx0iu7o5KWBtcGI3LpmP5Ug+gPg6/SSSMluaZMDVq7o8iEupbbo1t+inLw6H7xOEs
+	 jqbuylhW2q93qMf3JwvCe+wxRi2FEEeMt64N6gLqFXR4huwOVfenuJMDp6TjvScCLC
+	 7UWGcPsoYmI5swp1B3/noAXrQ9FI+wP3dI6JCb6TOGkWKhf2Oy8Cic2ZCTYFeNZEkL
+	 7GwpI5SHcfNkg==
+Date: Thu, 7 Aug 2025 13:28:36 +0100
+From: Mark Brown <broonie@kernel.org>
+List-Id: <linux-riscv.lore.kernel.org>
+To: patchwork-bot+linux-riscv@kernel.org
+Cc: Deepak Gupta <debug@rivosinc.com>, linux-riscv@lists.infradead.org,
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+	akpm@linux-foundation.org, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	lorenzo.stoakes@oracle.com, paul.walmsley@sifive.com,
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, conor@kernel.org,
+	robh@kernel.org, krzk+dt@kernel.org, arnd@arndb.de,
+	brauner@kernel.org, peterz@infradead.org, oleg@redhat.com,
+	ebiederm@xmission.com, kees@kernel.org, corbet@lwn.net,
+	shuah@kernel.org, jannh@google.com, conor+dt@kernel.org,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org,
+	aliceryhl@google.com, tmgross@umich.edu, lossin@kernel.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, devicetree@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com,
+	richard.henderson@linaro.org, jim.shu@sifive.com,
+	andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com,
+	atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com,
+	alexghiti@rivosinc.com, samitolvanen@google.com,
+	rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org,
+	zong.li@sifive.com, david@redhat.com
+Subject: Re: [PATCH v19 00/27] riscv control-flow integrity for usermode
+Message-ID: <db4eb976-693c-426c-a867-66cadd3dd7d8@sirena.org.uk>
+References: <20250731-v5_user_cfi_series-v19-0-09b468d7beab@rivosinc.com>
+ <175450053775.2863135.11568399057706626223.git-patchwork-notify@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Stat-Signature: sjkwb4ndix89a9z78rdak7zximtygdg9
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 94CF212000D
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="8Jovl+rM+g+rY2Z6"
+Content-Disposition: inline
+In-Reply-To: <175450053775.2863135.11568399057706626223.git-patchwork-notify@kernel.org>
+X-Cookie: Real Users hate Real Programmers.
 X-Rspam-User: 
-X-HE-Tag: 1754569306-488828
-X-HE-Meta: U2FsdGVkX19HWQVhevdgt+ollmdtH8AEdPq1UmNWMNlzhtnFwON9k8KQwCKJry+K88KFRUXdH7sAi1Sqpp6kqGdPvvKmBtgU+ZA9gijnM6iovfwhUTK/+IJBQkCRSkmIUGwps0X8QyEODrA9yBB8ARBQLm0FLyh2xUcOf2jK9m30iC4TfD29cXa4sBEwxkc+H2WxDXs+vSOzBImcSo70UNe0OvyRYIWTQ02S91eM4OS/Ym21k3QiwkpukbFB1SJaqPU59vZijgZZGxyYsojFZkQG/b+CSBppEzocvZPlOVmDShsp/oCjA9xwIqGYhVBG4Fib37Xi5Zk/G+KjWkN86XAHLkOkVzw8kiIHlpq3fnpLfTPiA5rHl4oXWbT2Es3kaPAwQW1FA0N4zy4ocOT9fIGi8gpQv4FIqF2l+JW5taNTIVSFn1MG2mOUno3B9q3Z3fcV1AiK9J9B78oKA4010bf1jsvoCgLQPqdh4ucieaX2QgDMQafiBNm+ykV7eSTIX6zoxyzw4n8gzCuj9sM6CInzbjQx7GBpGEtyfRn/jBSRTE+fkdbR4igB5QXcr1fzBZpq/GYrAWSyFTN/BXkhY5IV+GEEd7eYavOe/ZUbkxARRZznnBHTsCKuks7AoENSgcXWsV9yNMXY3JTHSTXD0HArxgZMUT1lK4ACfzobh+Qlck7G4Ve7gIWWgVJyXpsijdyPxC4NoUZaF7yuyXMygloCYPR+iy431daBMJYTcksfuCS76erEzcFKijjC/tlklnBIjWND8t+mfI9k1Tgb0u3YebmD/vibJlKs5cFIzUJcxtQGDLjFyBm8mBCnzwbnKHWfXn/4YmrYDZnfByJEb6CoHAG+t3e7vF5a1f/LOnWAyqW05TJGDCH6utXUmgXk3FONmh46sRCMRDhr5tfeCbJHEigzvUGqOElWa7VosRbQ6hacQs3NX+e1ShAQ9CmCwEDSDN0/PanMhLT+okB
- DwtHtNu8
- B9PyVeUU+UWInXAVh9LYxVYIP3kaCRLOpGaRFaRrn0izKinFXH6vTho7yfk/ZG2ph9itvs0DjIT/yzvJHFfq9RteURdo9C8gJpzAVYuEUHqe/wzOvTwXIZh92i5cYD6gSzoc2M2IiL4oBnJc1T5whF9fDNIja+VVyr2FFUsARVjyWyRzy3Efup9Wv2QgEoIPdNxKgdyir5f9yD8w5k8TcZWm5yKhIVeNyDtfJhmdbsAlbZjyh+Azy81oRily6H0QZEWaFiN38V5/KHjTMqXPxFVLmlL8lWUSXG4A7/NQp3elhgX1cp0UFV0XO/sbwtl+emcCcn1lZHCe0vtltJgb52yBCt7QV6GCvmkeHqGYgclrKuZotwTsN/cnNCt5Midyt8scbMbm1ftWo2nkKyljAdYtbd1X5dx9tMTTtcJmvaBIYtQAOA/8dlsPD2Ga3AN/Yrp7EClbZ1vR8OucXcOyznWIoDN+pGtGuYhiJXektJg1wxHMG01zC5FMfVakfT4TPbss5PCPeCkYnvDs=
+X-Rspamd-Queue-Id: 3F04FA000E
+X-Rspamd-Server: rspam06
+X-Stat-Signature: ozm3q1kdsg76acqno7pru144y3njridk
+X-HE-Bulk: true
+X-HE-Tag: 1754569731-434494
+X-HE-Meta: U2FsdGVkX18sKr1J+L3M0gdqmFVIvEi7Bz047wmJv6uWuGVUj8ebYiu5zAP/QcRwCQKpGtC17cY4zzkD8EPBryYWtJALzxtQ4NGikhEWc2JgOuh1+6KpaVSvN2xpZyIzU9cdIyhiL4Yp88KM9ZXmgv55OVYcDINBbwAU6EeTUHBcscRvV2nlGcnhIdY4SQXxbKDum0zhBgVqHUn0ZfCsjsL0xIS381LuerIlOvyIJB19CqS+h3503dlgpp6/t/inblbG3R0ASZlAsW0haxY/2Nt05EbANm9oQLKeQ12Aw2gEVaFu3LYxN/2kd7uUwKrgihvTVr+SWxJrRx49yW0tES3n5bjTYK31MDUkcrCgni4Mi/nqe380mRStz58NY8DNpzJJcjuRaTlv1CEjZ4/IormqTBnGIeOpZqcEqa40gkogkFfoLEM+XE5pxzRYrP3MT5ieYspGERqgOnT6HbarmWQywRmyMehYAgBrWH0zB48QN1GcIMQ2mfi79T9nkcPsMD3sDi1EHdIGBAGct+QtNBTLHLEyDsYFInoexc9oBa/1l4M5KnQEkLZ6G8stOPi4CpkJ1itv1KaKd/aSDfh5PmTIKQBaY7UXFzMdpjPuN7e1XfZXEfug3iXvHC39eiady6CKpPPEJNGRwmQ0kPBXHmaw9ot5TE8EBWD/Vl+9b8srDaxDYjhdlvvAcJ21fcQm/QBkov3g107FwS/LuWUZno+4PiAYBGoJudIBhk1DSd7N9Jcwy7GLlJvoQRoaWbY8lRc5PDGQK7ED7B4H5qzQeTKGw084XSqzUFPdJVPVEj/2A5YTGQcfcNa5jBgM3Cw9YOwSDNZN8ePpViD1JOy8gF6WxClzIyFRuwGoJ/BulcxoKdRfOKNdUz9EYcBV9R6hxuDufFNQFlGnFJlM8f8H+FxlJsyjfqqlJk0ugLv8xXuiTwenFFEogC74i2b/8ZF4Pe+SUFn+QhSG/8mb2Bw
+ mc2Gtltj
+ IFEgOEi/SRlJgb2qXeHxoFBleF2cFuh4YylGTjM4OZONj0WA+LfLq2XM57m/En1mnmJ2xoclY/xYgZY20A+1ZZcUVQdK4B4qbuRiVVXw6b7XVf9IS8RqK3JU5rG4ai+8YMYh/tO9K+iEbHSuyEZkqmCKBYcffAoPDUBSEEVCA/35WX0+PzcKQgoK7QxW8X8n0J+8ts9EXmbJ+LurBj5MeyGGuud6oF6L01Ldv8z501+q6N2RMB5SD9o4trL4xfEZ/kLNNGajAXtVFA5CtULruSsfrrdbB67sBxq4LdLnAgFHGbsVdmJQDhX1ihADqKUWAFNOVAsGHw8JHT/1aQWnX5CWpF+tIhTbXom8CapxKN6umqecq/DUuOBPhP7pwaqmxrsrA3Fk0svuvAIQCahcvc2cHimwSIfwRw5seXUov15ymcBFVzVV7rBKrOfOKgll+DUT7mQgh0DWCTVfRv696M1zmah7fgqOyjIiLg8SmHYZDSbk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,42 +115,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 7 Aug 2025, Vlastimil Babka wrote:
-> On 8/1/25 15:40, Alexander Krabler wrote:
-> > On 8/1/25 14:57, Vlastimil Babka wrote:
-> >> Hm that means something isn't working as intended. Do the pages have also
-> >> the unevictable flag?
-> >
-> > I have checked /proc/<pid>/smaps.
-> > Neither the manpage
-> (https://www.man7.org/linux/man-pages/man5/proc_pid_smaps.5.html)
-> > nor kernel source code (fs/proc/task_mmu.c show_smap_vma_flags) tells me
-> about unevictable flag.
-> Ah ok, you checked /proc/pid/smaps. Since you said "pages" I thought you
-> meant individual pages which would be from /proc/kpageflags
-> 
-> But IIRC getting a page in a state where it has an mlock flag but (not yet)
-> the unevictable flag should be rare so I would be surprised if that was the
-> problem here.
 
-Agreed.
+--8Jovl+rM+g+rY2Z6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> 
-> Hm or maybe it's actually that the error can happen only in the other
-> direction - page is unevictable (on unevictable list) while not mlocked, at
-> least the counters such as UNEVICTABLE_PGRESCUED suggest that.
-> 
-> Hugh knows this code the best. Do you think we should e.g. test the mlocked
-> flag instead/in addition to unevictable flag in compaction to avoid
-> violating vm.compact_unevictable_allowed = 0?
+On Wed, Aug 06, 2025 at 05:15:37PM +0000, patchwork-bot+linux-riscv@kernel.org wrote:
 
-No, checking for unevictable should be sufficient.
+> This series was applied to riscv/linux.git (for-next)
+> by Alexandre Ghiti <alexghiti@rivosinc.com>:
 
-But another idea has just this moment occurred to me: anon THP splitting
-is another user of migration entries.  Is it possible that kcompactd is
-not actually the cause of Alexander's issue, but that his RT tasks have
-(bad news! shouldn't be allowed) got anon THPs in them?
+>   - [v19,11/27] riscv/shstk: If needed allocate a new shadow stack on clone
+>     https://git.kernel.org/riscv/c/9c72a71321a6
+>   - [v19,12/27] riscv: Implements arch agnostic shadow stack prctls
+>     https://git.kernel.org/riscv/c/52eff0ab5f8e
 
-Back to bed,
-Hugh
+Congratulations Deepak!  Do you have an update for my clone3() shadow
+stack series that I could roll in for when I repost that after the merge
+window, and/or instructions for how to run this stuff for RISC-V on some
+emulated platform?
+
+--8Jovl+rM+g+rY2Z6
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmiUm/QACgkQJNaLcl1U
+h9BDYgf/Ty4Hzzi0OZOuIjqMAO+hAw56Z5Cp+NT+3TWGYWAJtxuukMORT3mrkWI4
++lKrRIDqhecWHSZ3jeKvFjPvxTcPu/kwjG7GsseqGj7HJGoOufVlruKUj79xtdKS
+4V/WwyvqakZ4h3F0zy+bCyIrkBkQNbC3TTJVey1+4t0WNSj2uK4ZXespwXt+omY7
+MOsfSOj3AY1ueunPYkofK1g6VWYe4HSldfLRvwJMeUadPJ49XFhfpi41NsqdfhBB
+I8rdBWPSCS47tFoalL0R2oB+Dp78k8LmZhqKIRpPwAhMHIg3sI/kBMK4neka58L2
+d0MPk00RRPiLdsDKGHuaAWzwtLHXaA==
+=viF/
+-----END PGP SIGNATURE-----
+
+--8Jovl+rM+g+rY2Z6--
 
