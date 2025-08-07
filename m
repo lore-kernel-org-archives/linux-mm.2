@@ -2,98 +2,95 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7CC09C87FCF
-	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 20:52:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 68AF5C87FCA
+	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 20:53:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D169C8E0002; Thu,  7 Aug 2025 16:52:52 -0400 (EDT)
+	id EC6E28E0005; Thu,  7 Aug 2025 16:53:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEE7A8E0001; Thu,  7 Aug 2025 16:52:52 -0400 (EDT)
+	id E9E098E0001; Thu,  7 Aug 2025 16:53:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C04A78E0002; Thu,  7 Aug 2025 16:52:52 -0400 (EDT)
+	id DB4278E0005; Thu,  7 Aug 2025 16:53:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AE8718E0001
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 16:52:52 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 36F07C0A9E
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 20:52:52 +0000 (UTC)
-X-FDA: 83751160584.05.43694A3
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 23F6E20005
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 20:52:49 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Cv+2G9TS;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754599970; a=rsa-sha256;
-	cv=none;
-	b=0MzcuCycs67rhcBpTsIAoS6jEp0neuXhK+t8US0ylT/2j73/+kQ3qxqxkO/MtAqPvw3OVP
-	pxrE/YenwmwROMF99gj3Xf63fkUlExhmsqXcHRbJDmMZtkfM6m/pmkVutF8HIJGU183zmG
-	EeYel+uJXXCoR7VK2IfNdwoWFJCbyH4=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Cv+2G9TS;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C65458E0001
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 16:53:41 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 70531160ABE
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 20:53:41 +0000 (UTC)
+X-FDA: 83751162642.24.32C4D42
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	by imf25.hostedemail.com (Postfix) with ESMTP id E4A51A0002
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 20:53:38 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=f09YjgYu;
+	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754599970;
+	s=arc-20220608; t=1754600019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vOPUpSlPIiZZc2oV/h1m7LERhF2i5s7DpFEXBoy92xw=;
-	b=FwmxYKSy13QJg6ytIO74EfZL7JeAdYXW/zzIVbiPYG1nLVYQniMFYN+27a6eZ4LYblJSFR
-	/NItmwkuDpsjo9v2c19CiwOC81szhH8IW0rUFSiilWJe7q7ohurqU2rzvvJZHPwXjUqZMw
-	UoLgBCHBQqsNc3XNt0UiMI3irWiHtXc=
-Date: Thu, 7 Aug 2025 13:52:39 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1754599967;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vOPUpSlPIiZZc2oV/h1m7LERhF2i5s7DpFEXBoy92xw=;
-	b=Cv+2G9TS/mizvM7tGRu57w71x5ym/SU6RYjfXnEqPUY6X3fa1F5zCW/NAMWE1gHtrmjqgq
-	v/jXuwxYX0Y6ACEqaL4ydjvAtqxb76JAAOUFrtO06qMgpWW9hjJ0WkDTz1I93VKLwXj8kL
-	+lcikozCwODHKJSSghRHUhxds3NKhAo=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Daniel Sedlak <daniel.sedlak@cdn77.com>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Neal Cardwell <ncardwell@google.com>, 
-	David Ahern <dsahern@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org, netdev@vger.kernel.org, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org, 
-	Tejun Heo <tj@kernel.org>, Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Matyas Hurtik <matyas.hurtik@cdn77.com>
-Subject: Re: [PATCH v4] memcg: expose socket memory pressure in a cgroup
-Message-ID: <qsncixzj7s7jd7f3l2erjjs7cx3fanmlbkh4auaapsvon45rx3@62o2nqwrb43e>
-References: <20250805064429.77876-1-daniel.sedlak@cdn77.com>
- <fcnlbvljynxu5qlzmnjeagll7nf5mje7rwkimbqok6doso37gl@lwepk3ztjga7>
- <CAAVpQUBrNTFw34Kkh=b2bpa8aKd4XSnZUa6a18zkMjVrBqNHWw@mail.gmail.com>
- <nju55eqv56g6gkmxuavc2z2pcr26qhpmgrt76jt5dte5g4trxs@tjxld2iwdc5c>
- <CAAVpQUCCg-7kvzMeSSsKp3+Fu8pvvE5U-H5wkt=xMryNmnF5CA@mail.gmail.com>
- <chb7znbpkbsf7pftnzdzkum63gt7cajft2lqiqqfx7zol3ftre@7cdg4czr5k4j>
- <0f6a8c37-95e0-4009-a13b-99ce0e25ea47@cdn77.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0f6a8c37-95e0-4009-a13b-99ce0e25ea47@cdn77.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 23F6E20005
-X-Stat-Signature: jnow8j6ec7da98kegzsn73jdn3d8zjxb
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=o6Fn8aYbebz1lNGYqmMQi/fS8daIOoNvSdS0aKB5ExU=;
+	b=kk61+eEti+HC2MHncJCRQPayDIYNHcvXvC6U+mTBAQu6e4NG0o7iKFaO1d834W6V64sfO/
+	GVIcr+yegt8gf8fKHO7X8jcTM27k1jkMJJhVi/TMK6yW1uL/+/nU3RUPWVo1NszKB6s2M9
+	qKiooV+mXGZ8N/beQrjmbRLMLJ073+g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754600019; a=rsa-sha256;
+	cv=none;
+	b=nRFXnWpsEzkgrZteiAz96Wzgn3pn2ldHVA0quHyjdwIflrOPC1q4A760m5sZcH7nF27hyL
+	cGpNWU5tsLXw8pmgEBc1sZyNvfq50TRIOCGB9JBp8eBfMwKH1Ra1ozTnFgBmEnZ5T4Vuyk
+	txC/JmOb+IQMmGKHQjoy0Dw7zsSotD0=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=f09YjgYu;
+	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754600019; x=1786136019;
+  h=date:from:to:cc:subject:message-id;
+  bh=7isrgvFhEJRtfbWksoZDMk7bgsIO2VijkJGp5d3lTX0=;
+  b=f09YjgYu09ja+UrglaQQPHg/UOFh2krQvokZtrP6c09/JLLEUCtL0PkL
+   QUSlxSiUBND9sYlC0Hdl1ddkts7XR6OMyjd4rKc43o6l3bgbFIbcCrkkY
+   7v5FvYhZOHjSym1M72uL5kL0PRbwOjwLMY4J4P+eUwbMjlHxBAtT9nU92
+   ovq7IinUmdeGgSawT+LX0FyZyIDWyD74FuVBPFYoqD8rTLG8ifpBifmhG
+   AD+q8ztIoS0/RidZWeX2lS82cB8W/g0+omZmTaqy4NmuGvS0uNDs5pQZR
+   7yZU2umS2OZMu/LBBQJH/YPEXm6W/0YNY9j/kEDXZq2amWtCofbKDDuym
+   Q==;
+X-CSE-ConnectionGUID: Iwi3UUCVTX+/QiC3Iiuacw==
+X-CSE-MsgGUID: Klz8oOOMTyaKgCIhXfVdtQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11514"; a="67642310"
+X-IronPort-AV: E=Sophos;i="6.17,274,1747724400"; 
+   d="scan'208";a="67642310"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Aug 2025 13:53:37 -0700
+X-CSE-ConnectionGUID: tEmHbozJSZCLHPJ+AZDWlg==
+X-CSE-MsgGUID: YCobihCOQ2mwmmdCSPl2zw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,274,1747724400"; 
+   d="scan'208";a="195993775"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by fmviesa001.fm.intel.com with ESMTP; 07 Aug 2025 13:53:36 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uk7cD-0003Du-2a;
+	Thu, 07 Aug 2025 20:53:33 +0000
+Date: Fri, 08 Aug 2025 04:52:49 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linux Memory Management List <linux-mm@kvack.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ 442d93313caebc8ccd6d53f4572c50732a95bc48
+Message-ID: <202508080427.fZufSF7z-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Rspamd-Queue-Id: E4A51A0002
+X-Stat-Signature: nh35rqrneck1y8wce7by5ucddg3u4ff7
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1754599969-670566
-X-HE-Meta: U2FsdGVkX18C8vw/5/RUbjq94o9E/OsWJPZ0X6R2tOyKp61cxsHaJuIxCRzZGM8clUWS7w2soxEZLUWAtAVDSu9ugSbt9UaabFsC0h1TLFwXdmkQHJZtxDfIPGW3Ws9JsZUfbrOhGWd04YQ2vB5k10H0hHv4hRsVyMtCc9icOtzPkPTs1jUSBUrv0Icwl4bvz8LC+fICM71iwzYfYltGIJnRSSHnz8diXS10zODPYl6oz9NyxU9qJzSPtC6kjC8J3i5v+G+q0dCFf4VJvghhzR2p3+7jFPDLZWaTof3SXIf30A17PJ15pT4teaOPXA7N6wQ/btxM1QouPK1Bd3/tTK+F/x2Ssw8ve7MxUrzBsRvumZLtrG3kfxAnPy+GLCIPBxONbSwyP0mrytkYGHo67At+UCPPMcgPXzauWrQcGYE1lqK74R0rCtWBxX0WklhjlyjizfqcFjSP3XK4kI5jeHfSj2/cyUD1Suf60AMOtC+ohmS5Au+ofjm4m6t2OoUyybYjnRnl2dCTE7IlybUKtakjgM3ZMcl92S0tAo0umOHGo0pv+yeYJ6baPd4mqx4zCamGTgvfrrUuEmYPDhZTA3MOJh7wHwyaXy2pGaYuIsv2Z7pLVWVhyLhNCi0w1gzyVKr62cYvUzRXsjDOmkXb9BW/sXsH7y1/SXNZhWlUc5gDcZp6l7L+AgM/0AlaaaXvYvyZNyBg1S0s8BqvXpujHfBL/dsdE6poufvmMjzlxZJB4CD4dvlKdXeAhZ7vVEaTN3bntcZYpkVGsfmhPeVnsKHsrXfeHiWNZr7XFlyIv8PEXiRSaymsnKUOZASI7gQqA/IYUZl7QkF74HjD7u9ydOzHxy86/BAWl/xe3uNLOkd1Zbu6ayb+yu8XDgp+OgmaRvpShASvGWzqswwcdXPlFOfp/7KT2/HRfXHOpxhLwuTeD71zBbmg621lWKCmDql/ZI5TDEfTGq9GnMQpmGD
- E7mwzhIe
- KndyVSfwkbxyvYrGm7mQIeVRYN5VaxbY2zo+0+bDMv3ei8BBKT7URYbuJfh7Agz8N5VUV4vdYsV8XeAt1Om7d7AFvFp+O/FCLCgiT/0FsRxa8Qrd2m/rlyD4tpQkUh3HvpyxsvOI8RqnPop58G5l+OsMcljrbCX1LGUmLQMiODqLojaZV8uJLejyGtDjVs+7bZVuPOAbtPdIjrWKFhfZbAeoMWfkz9WwF3eeLXADNdfHUyhQ=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1754600018-174407
+X-HE-Meta: U2FsdGVkX1+xjGzILgmblDEEv7gEf0YSVokFveT0gueMXFLTJHFmYX/vle03eb/UNurlcsO+804lj691uzmcVNnvbNO0IwzIHpiIy+VvXUicVJOzyOcg+9LnSz0GD21ZbKWw1/RHnONAWc5MDQbexqai1UuzrS5hVAlIki2qDDIj1FCJwUl4eM0+pEvU8yqgIr2kuLMwf9/0pEI3hyRH+Xmw8GrAhCSMCOjM4uzn0vq/OHEgVmJrbLmIQHKmgW/tCZjhkz81xEBrigs+eSBU+zPWkTj9PF3qAH09GgbAsFqdBBkGkuho2rsVRn+CIhXp/Z2QXZm51NR7hrsbxAiOprHzJr2hqBq1AlGufwWUCOEVt3Ut5wFu36dDHw0txwo8JHwWKSAgo9+0fb7zBJBKZ/aHMJCNCP5OsZV+2B8yckwcv6qszhTG0NAC1DRkDJcoGpAJqIuMjY2cAEkp3CMI7zJ3aRaFM+z9549EXlilZR/YDGqA2h9O1cInyrjHPQAzqGHVNPd5BhoqTqyBJ1TSkjhYBR/N++ip0dLQLAF1Hlh+2xwCNOntbUkWBaBEg0qLUYBp4NQTInpls00KrZl2habixohITXnQIWjcAvI9mjqRpxWHFLLp7kfifgQ9jXdXzjym0xDgdDjgL5gSFhd/MM9H9WeWKnkTYsM5Xu3lwRsRUo9miZpFUq/jL262HF7rWOTu+KiqfUHZzMN+72wFgH9AFLKIk9CyHKS5MLUbgWFlqKXC2NEvfM5lhasuLBYogfHqrZnKgzm3NRGVo/W8S5yO7L+BrrSBTIx3Yu3pCIh9BXbdFWSnfSbLjyozU2+tC8fJ6o5jx/DKtLpFXxjGPGz4KP/Qd+HzNfMhOX2JiyXQ6txV4DpFR90pX2EqBTqyYBiU5H9sUMxIET4vNpQZlWxk83xyg6Z+344y3ep8A4+85fShPPkaAY+g4vw/JFUSOseZsNwPYDjjLhWEydX
+ f2EQ3B56
+ muRtgvWfU2SOaTiZZzsIDtluaQGnWJv3iqyyYmbFDDH9SxJ+mh/M7a0roe1tyI7Bh6eKqpYppwLttRLsL0KjYvcbdzsqNbRyH0g8HchqRT9ooHjBhfwqNFjyEusnpxBIztQOb+m8KlBDkvDjOug6LLnrwU34/LGfw5gzNEazuOsoofJKJPF9H7yjaDw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,85 +99,332 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 07, 2025 at 12:22:01PM +0200, Daniel Sedlak wrote:
-> On 8/7/25 1:34 AM, Shakeel Butt wrote:
-> > On Wed, Aug 06, 2025 at 03:01:44PM -0700, Kuniyuki Iwashima wrote:
-> > > On Wed, Aug 6, 2025 at 2:54 PM Shakeel Butt <shakeel.butt@linux.dev> wrote:
-> > > > 
-> > > > On Wed, Aug 06, 2025 at 12:20:25PM -0700, Kuniyuki Iwashima wrote:
-> > > > > > > -                     WRITE_ONCE(memcg->socket_pressure, jiffies + HZ);
-> > > > > > > +                     socket_pressure = jiffies + HZ;
-> > > > > > > +
-> > > > > > > +                     jiffies_diff = min(socket_pressure - READ_ONCE(memcg->socket_pressure), HZ);
-> > > > > > > +                     memcg->socket_pressure_duration += jiffies_to_usecs(jiffies_diff);
-> > > > > > 
-> > > > > > KCSAN will complain about this. I think we can use atomic_long_add() and
-> > > > > > don't need the one with strict ordering.
-> 
-> Thanks for the KCSAN recommendation, I didn't know about this sanitizer.
-> 
-> > > > > 
-> > > > > Assuming from atomic_ that vmpressure() could be called concurrently
-> > > > > for the same memcg, should we protect socket_pressure and duration
-> > > > > within the same lock instead of mixing WRITE/READ_ONCE() and
-> > > > > atomic?  Otherwise jiffies_diff could be incorrect (the error is smaller
-> > > > > than HZ though).
-> > > > > 
-> > > > 
-> > > > Yeah good point. Also this field needs to be hierarchical. So, with lock
-> > > > something like following is needed:
-> 
-> Thanks for the snippet, will incorporate it.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 442d93313caebc8ccd6d53f4572c50732a95bc48  Add linux-next specific files for 20250807
 
-Cool though that is just like a pseudo code, so be careful in using it.
+Error/Warning (recently discovered and may have been fixed):
 
-> 
-> > > > 
-> > > >          if (!spin_trylock(memcg->net_pressure_lock))
-> > > >                  return;
-> > > > 
-> > > >          socket_pressure = jiffies + HZ;
-> > > >          diff = min(socket_pressure - READ_ONCE(memcg->socket_pressure), HZ);
-> > > 
-> > > READ_ONCE() should be unnecessary here.
-> > > 
-> > > > 
-> > > >          if (diff) {
-> > > >                  WRITE_ONCE(memcg->socket_pressure, socket_pressure);
-> > > >                  // mod_memcg_state(memcg, MEMCG_NET_PRESSURE, diff);
-> > > >                  // OR
-> > > >                  // while (memcg) {
-> > > >                  //      memcg->sk_pressure_duration += diff;
-> > > >                  //      memcg = parent_mem_cgroup(memcg);
-> > > 
-> > > The parents' sk_pressure_duration is not protected by the lock
-> > > taken by trylock.  Maybe we need another global mutex if we want
-> > > the hierarchy ?
-> > 
-> > We don't really need lock protection for sk_pressure_duration. The lock
-> 
-> By this you mean that we don't need the possible new global lock or the
-> local memcg->net_pressure_lock?
+    https://lore.kernel.org/oe-kbuild-all/202507142044.IrnmDHo3-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202507180503.nfyD9uRv-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202507212020.72nw9OIi-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202507220802.0Iz9U37j-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202507220927.C6zNUJt7-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202507271211.hvhQM36m-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202508071840.SzIzxq5q-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202508072107.qZvP2rOb-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild/202507090913.B5udTYGY-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild/202507191110.FWkwuVJQ-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild/202507301209.hFc4VENm-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild/202508020200.mf738OTo-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild/202508061925.bEevCphN-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild/202508072327.FmSUD5jl-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild/202508080201.nCHDEECD-lkp@intel.com
 
-We definitely don't need a global lock. For memcg->net_pressure_lock, we
-need to be very clear why we need this lock. Basically we are doing RMW
-on memcg->socket_pressure and we want known 'consistently' how much
-further we are pushing memcg->socket_pressure. In other words the
-consistent value of diff. The lock is one way to get that consistent
-diff. We can also play some atomic ops trick to get the consistent value
-without lock but I don't think that complexity is worth it. Third option
-might be to remove our consistency requirement for diff as the error is
-bound to HZ (as mentioned by Kuniyuki) but I think this code path is not
-performance critical to make this option worth it. So, option 1 of
-simple memcg->net_pressure_lock is good enough.
+    ERROR: modpost: __ex_table+0x153c references non-executable section '.data.rel.local.f2fs_attr_sb_compression'
+    ERROR: modpost: __ex_table+0x1560 references non-executable section '.data.rel.local.f2fs_attr_sb_encryption'
+    ERROR: modpost: __ex_table+0x1560 references non-executable section '.data.rel.local.f2fs_attr_sb_sb_checksum'
+    ERROR: modpost: __ex_table+0x1564 references non-executable section '.data.rel.local.f2fs_attr_sb_flexible_inline_xattr'
+    ERROR: modpost: __ex_table+0x156c references non-executable section '.data.rel.local.f2fs_attr_sb_inode_crtime'
+    ERROR: modpost: __ex_table+0x1570 references non-executable section '.data.rel.local.f2fs_attr_sb_project_quota'
+    ERROR: modpost: __ex_table+0x1570 references non-executable section '.data.rel.local.f2fs_attr_unusable'
+    ERROR: modpost: __ex_table+0x1578 references non-executable section '.data.rel.local.f2fs_attrs'
+    ERROR: modpost: __ex_table+0x1588 references non-executable section '.data.rel.local.f2fs_base_attr_encryption'
+    arch/arm/boot/dts/nvidia/tegra30-asus-p1801-t.dtb: pmic@2d (ti,tps65911): 'pmic-sleep-hog', 'wakeup-source' do not match any of the regexes: '^(vcc(io|[1-7])-supply)$', '^pinctrl-[0-9]+$'
+    arch/arm/boot/dts/nvidia/tegra30-asus-p1801-t.dtb: pmic@2d (ti,tps65911): regulators:vddctrl: Unevaluated properties are not allowed ('nvidia,tegra-cpu-regulator' was unexpected)
+    kismet: WARNING: unmet direct dependencies detected for QCS_GCC_615 when selected by QCS_GPUCC_615
+    kismet: WARNING: unmet direct dependencies detected for QCS_GCC_615 when selected by QCS_VIDEOCC_615
+    kismet: WARNING: unmet direct dependencies detected for SM_GCC_6350 when selected by SM_VIDEOCC_6350
 
-We don't need memcg->net_pressure_lock's protection for
-sk_pressure_duration of the memcg and its ancestors if additions to
-sk_pressure_duration are atomic.
+Unverified Error/Warning (likely false positive, kindly check if interested):
 
-Someone might notice that we are doing upward traversal for
-memcg->sk_pressure_duration but not for memcg->socket_pressure. We can
-do that if we decide to optimize mem_cgroup_under_socket_pressure().
-However that is orthogonal work. Also the consistency requirement will
-change.
+    ERROR: modpost: __ex_table+0x1498 references non-executable section '.data.rel.local.f2fs_attr_reserved_blocks'
+    ERROR: modpost: __ex_table+0x14a0 references non-executable section '.data.rel.local.f2fs_attr_reserved_segments'
+    ERROR: modpost: __ex_table+0x14f4 references non-executable section '.data.rel.local.f2fs_attr_readdir_ra'
+    ERROR: modpost: __ex_table+0x14f4 references non-executable section '.data.rel.local.f2fs_base_attr_casefold'
+    ERROR: modpost: __ex_table+0x150c references non-executable section '.data.rel.local.f2fs_attr_sb_block_zoned'
+    ERROR: modpost: __ex_table+0x1518 references non-executable section '.data.rel.local.f2fs_base_attr_lost_found'
+    ERROR: modpost: __ex_table+0x151c references non-executable section '.data.rel.local.f2fs_base_attr_project_quota'
+    ERROR: modpost: __ex_table+0x1530 references non-executable section '.data.rel.local.f2fs_base_attr_verity'
+    ERROR: modpost: __ex_table+0x153c references non-executable section '.data.rel.local.f2fs_feat_groups'
+    ERROR: modpost: __ex_table+0x1540 references non-executable section '.data.rel.local.f2fs_attr_seq_file_ra_mul'
+    ERROR: modpost: __ex_table+0x1540 references non-executable section '.data.rel.local.f2fs_kset'
+    ERROR: modpost: __ex_table+0x1548 references non-executable section '.data.rel.local.f2fs_sb_feat_groups'
+    ERROR: modpost: __ex_table+0x154c references non-executable section '.data.rel.local.f2fs_stat_groups'
+    ERROR: modpost: __ex_table+0x1554 references non-executable section '.data.rel.local.f2fs_tune_attrs'
+    ERROR: modpost: __ex_table+0x1560 references non-executable section '.data.rel.ro.local.f2fs_feat_attr_ops'
+    ERROR: modpost: __ex_table+0x1564 references non-executable section '.data.rel.ro.local.f2fs_feat_ktype'
+    ERROR: modpost: __ex_table+0x156c references non-executable section '.data.rel.local.f2fs_base_attr_inode_checksum'
+    ERROR: modpost: __ex_table+0x156c references non-executable section '.data.rel.ro.local.f2fs_feature_list_ktype'
+    ERROR: modpost: __ex_table+0x1570 references non-executable section '.data.rel.ro.local.f2fs_ktype'
+    ERROR: modpost: __ex_table+0x1578 references non-executable section '.data.rel.ro.local.f2fs_sb_ktype'
+    ERROR: modpost: __ex_table+0x1584 references non-executable section '.data.rel.local.f2fs_base_attr_readonly'
+    ERROR: modpost: __ex_table+0x1584 references non-executable section '.data.rel.ro.local.f2fs_stat_ktype'
+    ERROR: modpost: __ex_table+0x1588 references non-executable section '.data.rel.local.f2fs_base_attr_sb_checksum'
+    ERROR: modpost: __ex_table+0x1588 references non-executable section '.data.rel.ro.local.f2fs_tune_group'
+    ERROR: modpost: __ex_table+0x1590 references non-executable section '.data.print_fmt_devres'
+    ERROR: modpost: __ex_table+0x1594 references non-executable section '.data.rel.local.event_devres_log'
+    arch/x86/kernel/crash.c:205 elf_header_exclude_ranges() warn: we never enter this loop
+    arch/x86/kernel/crash.c:387 crash_setup_memmap_entries() warn: we never enter this loop
+    clang: error: clang frontend command failed with exit code 139 (use -v to see invocation)
+    drivers/gpu/drm/xe/xe_pt.c:2487 xe_pt_update_ops_run() error: uninitialized symbol 'ifence'.
+    drivers/gpu/drm/xe/xe_pt.c:2492 xe_pt_update_ops_run() error: uninitialized symbol 'mfence'.
+    drivers/net/ethernet/wangxun/libwx/wx_vf_common.c:101 wx_request_msix_irqs_vf() warn: why call request_threaded_irq() with a NULL thread
+    drivers/net/ethernet/wangxun/libwx/wx_vf_common.c:117 wx_request_msix_irqs_vf() warn: 'entry->vector' from request_irq() not released on lines: 117.
+    fs/bcachefs/fsck.c:187 lookup_lostfound() error: uninitialized symbol 'subvolid'.
+
+Error/Warning ids grouped by kconfigs:
+
+recent_errors
+|-- arm-allnoconfig
+|   |-- kismet:WARNING:unmet-direct-dependencies-detected-for-QCS_GCC_615-when-selected-by-QCS_GPUCC_615
+|   |-- kismet:WARNING:unmet-direct-dependencies-detected-for-QCS_GCC_615-when-selected-by-QCS_VIDEOCC_615
+|   `-- kismet:WARNING:unmet-direct-dependencies-detected-for-SM_GCC_6350-when-selected-by-SM_VIDEOCC_6350
+|-- arm-randconfig-051-20250807
+|   |-- arch-arm-boot-dts-nvidia-tegra30-asus-p1801-t.dtb:pmic-2d-(ti-tps65911):pmic-sleep-hog-wakeup-source-do-not-match-any-of-the-regexes:(vcc(io-)-supply)-pinctrl
+|   `-- arch-arm-boot-dts-nvidia-tegra30-asus-p1801-t.dtb:pmic-2d-(ti-tps65911):regulators:vddctrl:Unevaluated-properties-are-not-allowed-(-nvidia-tegra-cpu-regulator-was-unexpected)
+|-- arm-randconfig-052-20250807
+|   |-- arch-arm-boot-dts-nvidia-tegra30-asus-p1801-t.dtb:pmic-2d-(ti-tps65911):pmic-sleep-hog-wakeup-source-do-not-match-any-of-the-regexes:(vcc(io-)-supply)-pinctrl
+|   `-- arch-arm-boot-dts-nvidia-tegra30-asus-p1801-t.dtb:pmic-2d-(ti-tps65911):regulators:vddctrl:Unevaluated-properties-are-not-allowed-(-nvidia-tegra-cpu-regulator-was-unexpected)
+|-- arm-randconfig-053-20250807
+|   |-- arch-arm-boot-dts-nvidia-tegra30-asus-p1801-t.dtb:pmic-2d-(ti-tps65911):pmic-sleep-hog-wakeup-source-do-not-match-any-of-the-regexes:(vcc(io-)-supply)-pinctrl
+|   `-- arch-arm-boot-dts-nvidia-tegra30-asus-p1801-t.dtb:pmic-2d-(ti-tps65911):regulators:vddctrl:Unevaluated-properties-are-not-allowed-(-nvidia-tegra-cpu-regulator-was-unexpected)
+|-- arm-randconfig-054-20250807
+|   |-- arch-arm-boot-dts-nvidia-tegra30-asus-p1801-t.dtb:pmic-2d-(ti-tps65911):pmic-sleep-hog-wakeup-source-do-not-match-any-of-the-regexes:(vcc(io-)-supply)-pinctrl
+|   `-- arch-arm-boot-dts-nvidia-tegra30-asus-p1801-t.dtb:pmic-2d-(ti-tps65911):regulators:vddctrl:Unevaluated-properties-are-not-allowed-(-nvidia-tegra-cpu-regulator-was-unexpected)
+|-- arm-randconfig-055-20250807
+|   |-- arch-arm-boot-dts-nvidia-tegra30-asus-p1801-t.dtb:pmic-2d-(ti-tps65911):pmic-sleep-hog-wakeup-source-do-not-match-any-of-the-regexes:(vcc(io-)-supply)-pinctrl
+|   `-- arch-arm-boot-dts-nvidia-tegra30-asus-p1801-t.dtb:pmic-2d-(ti-tps65911):regulators:vddctrl:Unevaluated-properties-are-not-allowed-(-nvidia-tegra-cpu-regulator-was-unexpected)
+|-- arm64-allmodconfig
+|   `-- clang:error:clang-frontend-command-failed-with-exit-code-(use-v-to-see-invocation)
+|-- arm64-randconfig-r112-20250807
+|   `-- drivers-gpu-drm-sitronix-st7571-i2c.c:sparse:sparse:symbol-st7567_config-was-not-declared.-Should-it-be-static
+|-- arm64-randconfig-r121-20250807
+|   |-- include-trace-events-dma_fence.h:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-char-const-str-got-char-const-noderef-__rcu
+|   |-- include-trace-events-dma_fence.h:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-void-const-driver_ptr_-got-char-const-noderef-__rcu
+|   `-- include-trace-events-dma_fence.h:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-void-const-timeline_ptr_-got-char-const-noderef-__rcu
+|-- arm64-randconfig-r132-20250807
+|   |-- drivers-gpu-drm-sitronix-st7571-i2c.c:sparse:sparse:symbol-st7567_config-was-not-declared.-Should-it-be-static
+|   |-- include-trace-events-dma_fence.h:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-char-const-str-got-char-const-noderef-__rcu
+|   |-- include-trace-events-dma_fence.h:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-void-const-driver_ptr_-got-char-const-noderef-__rcu
+|   `-- include-trace-events-dma_fence.h:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-void-const-timeline_ptr_-got-char-const-noderef-__rcu
+|-- i386-randconfig-141-20250807
+|   |-- drivers-gpu-drm-xe-xe_pt.c-xe_pt_update_ops_run()-error:uninitialized-symbol-ifence-.
+|   |-- drivers-gpu-drm-xe-xe_pt.c-xe_pt_update_ops_run()-error:uninitialized-symbol-mfence-.
+|   |-- drivers-net-ethernet-wangxun-libwx-wx_vf_common.c-wx_request_msix_irqs_vf()-warn:entry-vector-from-request_irq()-not-released-on-lines:.
+|   |-- drivers-net-ethernet-wangxun-libwx-wx_vf_common.c-wx_request_msix_irqs_vf()-warn:why-call-request_threaded_irq()-with-a-NULL-thread
+|   `-- fs-bcachefs-fsck.c-lookup_lostfound()-error:uninitialized-symbol-subvolid-.
+|-- i386-randconfig-r131-20250807
+|   |-- drivers-gpu-drm-sitronix-st7571-i2c.c:sparse:sparse:symbol-st7567_config-was-not-declared.-Should-it-be-static
+|   |-- include-trace-events-dma_fence.h:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-char-const-str-got-char-const-noderef-__rcu
+|   |-- include-trace-events-dma_fence.h:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-void-const-driver_ptr_-got-char-const-noderef-__rcu
+|   `-- include-trace-events-dma_fence.h:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-void-const-timeline_ptr_-got-char-const-noderef-__rcu
+|-- loongarch-allmodconfig
+|   `-- clang:error:clang-frontend-command-failed-with-exit-code-(use-v-to-see-invocation)
+|-- loongarch-randconfig-r113-20250807
+|   |-- drivers-gpu-drm-sitronix-st7571-i2c.c:sparse:sparse:symbol-st7567_config-was-not-declared.-Should-it-be-static
+|   |-- include-trace-events-dma_fence.h:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-char-const-str-got-char-const-noderef-__rcu
+|   |-- include-trace-events-dma_fence.h:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-void-const-driver_ptr_-got-char-const-noderef-__rcu
+|   `-- include-trace-events-dma_fence.h:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-void-const-timeline_ptr_-got-char-const-noderef-__rcu
+|-- mips-allyesconfig
+|   |-- (.head.text):relocation-truncated-to-fit:R_MIPS_26-against-kernel_entry
+|   `-- (.ref.text):relocation-truncated-to-fit:R_MIPS_26-against-start_secondary
+|-- mips-randconfig-r111-20250807
+|   |-- include-trace-events-dma_fence.h:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-char-const-str-got-char-const-noderef-__rcu
+|   |-- include-trace-events-dma_fence.h:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-void-const-driver_ptr_-got-char-const-noderef-__rcu
+|   `-- include-trace-events-dma_fence.h:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-void-const-timeline_ptr_-got-char-const-noderef-__rcu
+|-- powerpc-randconfig-r123-20250807
+|   `-- drivers-gpu-drm-sitronix-st7571-i2c.c:sparse:sparse:symbol-st7567_config-was-not-declared.-Should-it-be-static
+|-- powerpc-randconfig-r133-20250807
+|   |-- drivers-gpu-drm-sitronix-st7571-i2c.c:sparse:sparse:symbol-st7567_config-was-not-declared.-Should-it-be-static
+|   |-- include-trace-events-dma_fence.h:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-char-const-str-got-char-const-noderef-__rcu
+|   |-- include-trace-events-dma_fence.h:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-void-const-driver_ptr_-got-char-const-noderef-__rcu
+|   `-- include-trace-events-dma_fence.h:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-void-const-timeline_ptr_-got-char-const-noderef-__rcu
+|-- powerpc64-randconfig-r122-20250807
+|   |-- include-trace-events-dma_fence.h:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-char-const-str-got-char-const-noderef-__rcu
+|   |-- include-trace-events-dma_fence.h:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-void-const-driver_ptr_-got-char-const-noderef-__rcu
+|   `-- include-trace-events-dma_fence.h:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-void-const-timeline_ptr_-got-char-const-noderef-__rcu
+|-- riscv-randconfig-002-20250807
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.print_fmt_devres
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.local.event_devres_log
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.local.f2fs_attr_readdir_ra
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.local.f2fs_attr_reserved_blocks
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.local.f2fs_attr_reserved_segments
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.local.f2fs_attr_sb_block_zoned
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.local.f2fs_attr_sb_compression
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.local.f2fs_attr_sb_encryption
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.local.f2fs_attr_sb_flexible_inline_xattr
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.local.f2fs_attr_sb_inode_crtime
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.local.f2fs_attr_sb_project_quota
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.local.f2fs_attr_sb_sb_checksum
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.local.f2fs_attr_seq_file_ra_mul
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.local.f2fs_attr_unusable
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.local.f2fs_attrs
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.local.f2fs_base_attr_casefold
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.local.f2fs_base_attr_encryption
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.local.f2fs_base_attr_inode_checksum
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.local.f2fs_base_attr_lost_found
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.local.f2fs_base_attr_project_quota
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.local.f2fs_base_attr_readonly
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.local.f2fs_base_attr_sb_checksum
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.local.f2fs_base_attr_verity
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.local.f2fs_feat_groups
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.local.f2fs_kset
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.local.f2fs_sb_feat_groups
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.local.f2fs_stat_groups
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.local.f2fs_tune_attrs
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.ro.local.f2fs_feat_attr_ops
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.ro.local.f2fs_feat_ktype
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.ro.local.f2fs_feature_list_ktype
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.ro.local.f2fs_ktype
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.ro.local.f2fs_sb_ktype
+|   |-- ERROR:__ex_table-references-non-executable-section-.data.rel.ro.local.f2fs_stat_ktype
+|   `-- ERROR:__ex_table-references-non-executable-section-.data.rel.ro.local.f2fs_tune_group
+|-- um-allmodconfig
+|   `-- clang:error:clang-frontend-command-failed-with-exit-code-(use-v-to-see-invocation)
+`-- x86_64-randconfig-161-20250807
+    |-- arch-x86-kernel-crash.c-crash_setup_memmap_entries()-warn:we-never-enter-this-loop
+    `-- arch-x86-kernel-crash.c-elf_header_exclude_ranges()-warn:we-never-enter-this-loop
+
+elapsed time: 871m
+
+configs tested: 132
+configs skipped: 6
+
+tested configs:
+alpha                             allnoconfig    gcc-15.1.0
+alpha                            allyesconfig    gcc-15.1.0
+alpha                               defconfig    gcc-15.1.0
+arc                              allmodconfig    gcc-15.1.0
+arc                               allnoconfig    gcc-15.1.0
+arc                              allyesconfig    gcc-15.1.0
+arc                                 defconfig    gcc-15.1.0
+arc                   randconfig-001-20250807    gcc-13.4.0
+arc                   randconfig-002-20250807    gcc-12.5.0
+arm                              allmodconfig    gcc-15.1.0
+arm                               allnoconfig    clang-22
+arm                              allyesconfig    gcc-15.1.0
+arm                         axm55xx_defconfig    clang-22
+arm                                 defconfig    clang-22
+arm                      jornada720_defconfig    clang-22
+arm                   randconfig-001-20250807    clang-22
+arm                   randconfig-002-20250807    gcc-10.5.0
+arm                   randconfig-003-20250807    clang-22
+arm                   randconfig-004-20250807    gcc-8.5.0
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-15.1.0
+arm64                               defconfig    gcc-15.1.0
+arm64                 randconfig-001-20250807    gcc-8.5.0
+arm64                 randconfig-002-20250807    gcc-8.5.0
+arm64                 randconfig-003-20250807    clang-22
+arm64                 randconfig-004-20250807    gcc-14.3.0
+csky                              allnoconfig    gcc-15.1.0
+csky                                defconfig    gcc-15.1.0
+csky                  randconfig-001-20250807    gcc-15.1.0
+csky                  randconfig-002-20250807    gcc-15.1.0
+hexagon                          allmodconfig    clang-17
+hexagon                           allnoconfig    clang-22
+hexagon                          allyesconfig    clang-22
+hexagon                             defconfig    clang-22
+hexagon               randconfig-001-20250807    clang-22
+hexagon               randconfig-002-20250807    clang-22
+i386                              allnoconfig    gcc-12
+i386                             allyesconfig    gcc-12
+i386        buildonly-randconfig-001-20250807    clang-20
+i386        buildonly-randconfig-002-20250807    clang-20
+i386        buildonly-randconfig-003-20250807    gcc-12
+i386        buildonly-randconfig-004-20250807    gcc-11
+i386        buildonly-randconfig-005-20250807    gcc-12
+i386        buildonly-randconfig-006-20250807    gcc-12
+i386                                defconfig    clang-20
+loongarch                        allmodconfig    clang-19
+loongarch                         allnoconfig    clang-22
+loongarch                           defconfig    clang-19
+loongarch             randconfig-001-20250807    clang-22
+loongarch             randconfig-002-20250807    gcc-15.1.0
+m68k                             allmodconfig    gcc-15.1.0
+m68k                              allnoconfig    gcc-15.1.0
+m68k                             allyesconfig    gcc-15.1.0
+m68k                                defconfig    gcc-15.1.0
+microblaze                       allmodconfig    gcc-15.1.0
+microblaze                        allnoconfig    gcc-15.1.0
+microblaze                       allyesconfig    gcc-15.1.0
+microblaze                          defconfig    gcc-15.1.0
+mips                              allnoconfig    gcc-15.1.0
+nios2                            alldefconfig    gcc-11.5.0
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-001-20250807    gcc-11.5.0
+nios2                 randconfig-002-20250807    gcc-8.5.0
+openrisc                          allnoconfig    gcc-15.1.0
+openrisc                         allyesconfig    gcc-15.1.0
+openrisc                            defconfig    gcc-15.1.0
+parisc                            allnoconfig    gcc-15.1.0
+parisc                           allyesconfig    gcc-15.1.0
+parisc                              defconfig    gcc-15.1.0
+parisc                randconfig-001-20250807    gcc-8.5.0
+parisc                randconfig-002-20250807    gcc-11.5.0
+parisc64                            defconfig    gcc-15.1.0
+powerpc                           allnoconfig    gcc-15.1.0
+powerpc                          allyesconfig    clang-22
+powerpc                    amigaone_defconfig    gcc-15.1.0
+powerpc                       ppc64_defconfig    clang-22
+powerpc               randconfig-001-20250807    gcc-12.5.0
+powerpc               randconfig-002-20250807    gcc-10.5.0
+powerpc               randconfig-003-20250807    gcc-11.5.0
+powerpc64             randconfig-001-20250807    gcc-11.5.0
+powerpc64             randconfig-002-20250807    clang-22
+powerpc64             randconfig-003-20250807    gcc-13.4.0
+riscv                            allmodconfig    clang-22
+riscv                             allnoconfig    gcc-15.1.0
+riscv                            allyesconfig    clang-16
+riscv                               defconfig    clang-22
+riscv                    nommu_virt_defconfig    clang-22
+riscv                 randconfig-001-20250807    gcc-12.5.0
+riscv                 randconfig-002-20250807    gcc-8.5.0
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-22
+s390                             allyesconfig    gcc-15.1.0
+s390                                defconfig    clang-22
+s390                  randconfig-001-20250807    clang-22
+s390                  randconfig-002-20250807    clang-22
+sh                               allmodconfig    gcc-15.1.0
+sh                                allnoconfig    gcc-15.1.0
+sh                               allyesconfig    gcc-15.1.0
+sh                                  defconfig    gcc-15.1.0
+sh                    randconfig-001-20250807    gcc-14.3.0
+sh                    randconfig-002-20250807    gcc-9.5.0
+sh                           se7721_defconfig    gcc-15.1.0
+sparc                            allmodconfig    gcc-15.1.0
+sparc                             allnoconfig    gcc-15.1.0
+sparc                               defconfig    gcc-15.1.0
+sparc                 randconfig-001-20250807    gcc-14.3.0
+sparc                 randconfig-002-20250807    gcc-15.1.0
+sparc64                             defconfig    clang-20
+sparc64               randconfig-001-20250807    clang-22
+sparc64               randconfig-002-20250807    clang-22
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-22
+um                               allyesconfig    gcc-12
+um                                  defconfig    clang-22
+um                             i386_defconfig    gcc-12
+um                    randconfig-001-20250807    gcc-12
+um                    randconfig-002-20250807    gcc-11
+um                           x86_64_defconfig    clang-22
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20250807    clang-20
+x86_64      buildonly-randconfig-002-20250807    gcc-12
+x86_64      buildonly-randconfig-003-20250807    clang-20
+x86_64      buildonly-randconfig-004-20250807    clang-20
+x86_64      buildonly-randconfig-005-20250807    gcc-11
+x86_64      buildonly-randconfig-006-20250807    gcc-12
+x86_64                              defconfig    gcc-11
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    gcc-15.1.0
+xtensa                randconfig-001-20250807    gcc-15.1.0
+xtensa                randconfig-002-20250807    gcc-8.5.0
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
