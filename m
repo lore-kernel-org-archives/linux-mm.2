@@ -2,93 +2,93 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 56DC7C87FCB
-	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 01:45:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7386FC87FCB
+	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 01:46:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 154CA6B00AD; Wed,  6 Aug 2025 21:45:17 -0400 (EDT)
+	id 2DC036B00AE; Wed,  6 Aug 2025 21:45:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1058A6B00AE; Wed,  6 Aug 2025 21:45:17 -0400 (EDT)
+	id 28B8A6B00AF; Wed,  6 Aug 2025 21:45:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE7996B00AF; Wed,  6 Aug 2025 21:45:16 -0400 (EDT)
+	id 12CA06B00B0; Wed,  6 Aug 2025 21:45:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D9B076B00AD
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 21:45:16 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B6C62BB98D
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 01:45:16 +0000 (UTC)
-X-FDA: 83748268632.30.B24DF6F
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	by imf28.hostedemail.com (Postfix) with ESMTP id EDAFEC0007
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 01:45:14 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=We3AyZ2z;
-	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EFC4A6B00AE
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 21:45:19 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A150A5B85B
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 01:45:19 +0000 (UTC)
+X-FDA: 83748268758.23.9AFEB04
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+	by imf05.hostedemail.com (Postfix) with ESMTP id D4F35100006
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 01:45:17 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=P1QCwemr;
+	spf=pass (imf05.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.45 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754531117; a=rsa-sha256;
+	cv=none;
+	b=L4QXWUKd0Mu+sjqh2Y6v6Og1KlR8UhknFnZ7eIvKvx9h26krpSqrKqfkC3FEPHnDK3CFKf
+	VVuJF/3qEdpc2rmS5qxqnyelsrKnt16dZ+i7WT/8Jo8K3pmw+w/xhUQHnvsCmwuOe66LyL
+	4VIqrvEVcAfihHtYbNBzekupbzfBV0U=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=P1QCwemr;
+	spf=pass (imf05.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.45 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754531115;
+	s=arc-20220608; t=1754531117;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8hwgDrFusb37owy5fF2KCZv/M9EocMOsOhnKlUYr6eI=;
-	b=hGRFq/55AvICHMPF9Ls73qwrZDe3VX/9rXUKJ7EHvWfl7JXbA30jbnFtiTX2w2N2N+Do1B
-	i/Fn7t4xSdilYOL0gzY9EoKqSZErBgvpoxpkHaOzvQ1Qqe5t9Oggn+GTLaLoaMEb5RfSlY
-	jGvCP0tS/feDlPUfNy6jEYn0pstelrg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754531115; a=rsa-sha256;
-	cv=none;
-	b=549TYsfJjnIDvN+pBuZMClEVTI9V7DqSeYc901zCzUlhxGNbUje4a8NtZi37IgJ5Y17bwm
-	tJ2YYycDPaqaf/figsivc4FxQ5kA1743nUaViRzk/x6TSjtcH0mPmcu85iJYTUIS8iEKSW
-	l5Vi7gb4ogz+qzdhY/YCMgnXxRzFXLk=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=We3AyZ2z;
-	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4af14096b9eso7600271cf.3
-        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 18:45:14 -0700 (PDT)
+	bh=WtKfUzOgupFaYotRf3a7eOnx1rqlnB537wzbb8Z3Bb4=;
+	b=6joDLIlo98Kr0GsodtXvLsI6iL/zvIU6mj/pohUvmCF1NoJsgdJtxpV3ddCH9BqhpOSIOM
+	LUn7vK297umU3cLlROv5kHTtgybk6LU3GSvYaNa08hKZexUZWNZeDHggcxufykjia56gyw
+	yqs2/hVqMmLf8g4yXqWvrxcStPjfqTU=
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-7074a74248dso5529406d6.3
+        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 18:45:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1754531114; x=1755135914; darn=kvack.org;
+        d=soleen.com; s=google; t=1754531117; x=1755135917; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=8hwgDrFusb37owy5fF2KCZv/M9EocMOsOhnKlUYr6eI=;
-        b=We3AyZ2znv8EWHxjX+9JJt1PMU1BsBC4JkEe4GqYGT0BjvSvq+iM7G5ptFc5W0OA95
-         EdWbZFgWA8y6MX1HVEH7Ma59sJucCgjV86r0d3xvTEBYduPARd1XSVCF6phuVIwGY3V6
-         yF14Fv0aeE8yOv4h7zKknG5gtDVUHsU/kQyxvH7YZyBjWKy19YbcfLNh8CAI/zWMVEr3
-         SZWCkaWrRFQu4ErXUKwggUIBhqpZvEBBtsC6IhqDHD5ZdD29QLvCqC3K/lXGrkYPzx/u
-         FTYwLIkCOgS6Xgl/W/C4My6H4JziuWwFujmOnhCQJ35A2sXJ2WcJBFNgmgYRd9NEmCP3
-         qXDA==
+        bh=WtKfUzOgupFaYotRf3a7eOnx1rqlnB537wzbb8Z3Bb4=;
+        b=P1QCwemrDhdEtk11fE5mvT1TK3Cn2iO1miQh5HGjXBeZXQYMDGUjxmDhJvMPf97XHI
+         TdUzVu6+n53vy9dP61Rdk3Wbu1h5ArV3jxsqx7q/sTzCuj3KKbWNLX149PEmVeMJ17vH
+         9zoCki4OSHiaRceoqHHHPpXXPtKb2xHAn3NZpWmU77iWfrYYppRa55G28ILc+rGiciDh
+         mq2mw6J4wpyuxJ78P7YvPG/oDon1+3fblCH952uE5JXr4/anHoFcj8I3KDmNNkWoRZGS
+         eDVo0UyCWemzt/y21ekAInz2o68kHI9e32G3IJAEWBsrYS6pcc/Br4awlnY9/N1jeSRG
+         ftJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754531114; x=1755135914;
+        d=1e100.net; s=20230601; t=1754531117; x=1755135917;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8hwgDrFusb37owy5fF2KCZv/M9EocMOsOhnKlUYr6eI=;
-        b=rOGpWBol3aFVcnE3jt2qsCnV/d5+VwgaGMaMD8sSCsjZgOJahbyBBnWVT700hNU7eW
-         1EoTk62FZ5ZtfXbFs938VeZHJdNvOLGSIcCLDIwPydkQDHo1ItqVRC8RyaYaxJcGvJTf
-         U2BoRSn0uF7XoDTJI5Ow11vxyKIFXjJwZqVL9JiQPt05TF98dT77LTYCyhuDQvVGd//8
-         uHNDAlDuQEo7AJNGDcQtphUhtRdp2qFbHsY3oQQ5YaeEgtth4TXuASmANEonAJ50/8U2
-         +QMGTvg35LvRmHjgZc9uiOvMO5bsPbbKEEvuwAMsEbzEgvysbpJ9b8HYGfHPS0NhUHiZ
-         aLBg==
-X-Forwarded-Encrypted: i=1; AJvYcCU4bpYwwCkMo9dMgKI1xsmxopnyJlWmovNGW8Qbr1tblLbPGEuqQd3Im3oQt18jHUV4kHolzUD+qA==@kvack.org
-X-Gm-Message-State: AOJu0YwT9k7yP22u/j3oF1zXCmrLk/kn7sTbnTACL7In2QSDUlksC7Ip
-	y3zS01BpfBVjj6+/DlZphafqV86an5mALzgA72wS0f4JPOrjEsoL6WgXyokX0y5d1fM=
-X-Gm-Gg: ASbGncvSOEjO2srgx/37P8e2zhtANoE30zjt7poDrQY08NhLxTeL9ujUn91Hu5nYwdt
-	UWjXtof9EesH8450FHdSZUHNcYiElb4utPdv46FvSeFEsFsdybOaCINIxwAeSWCeCn4r1gQzYrY
-	f7aTHxS10wCjrUrocUyN5X/uErnb+vcPKaDkidERNatJpy0+XDYFV60i1rm2ZbOFQrhN+TUCrGW
-	8ktOaGzrD4rcFhG2LHFOYRvDU+i+qsNPh03o+unxdKCcNhAZVJ6GBj/29YdKzjVrttQxxt16QgW
-	rBFSqILwo72vTfoALbrLPd5xHmJ+nnVeo3bC3AU3LF1r0dKhGC4Kj+5ktn1Z2/dAWOs5y0IsBaB
-	zgRV9QZfV1kcGVTm7kvAsPsOvf4Ap4qBMI6IPm8Z7XAIglFDHkmZSgkYR1U79b3oq+CgpXZfPA8
-	77mlqgKcyjgXiF
-X-Google-Smtp-Source: AGHT+IH4YzyGG4XPLy7NZ5fSOZd1AAebDYYOaRO7tsFemVfq331RBpfgGYjTHTH3NPqkKUhiEWNpgA==
-X-Received: by 2002:a05:622a:1211:b0:4b0:6965:dd97 with SMTP id d75a77b69052e-4b0915b344bmr63492861cf.44.1754531113855;
-        Wed, 06 Aug 2025 18:45:13 -0700 (PDT)
+        bh=WtKfUzOgupFaYotRf3a7eOnx1rqlnB537wzbb8Z3Bb4=;
+        b=vCZc4sToyZLMhHLLiSFL9QHjdxnnf18r2xPdfvJMwhu09ZwKEVJcfvjWlkiQ43/nYw
+         sQdWpolYUTB8s6g2Y/xeIyjLEYzt6heiUJj8z6rZW0BxTDGDfLrEbzHGaOPExckSomvX
+         derg0DEaEnqrbHKSHGFuLUEsMBE9WZIxIJd80e5La7wD40CgeuHO1ejKYE7A2vobugnF
+         SvrmSa4W5XjMygAEvRUH97U2YUVMae/sSQMFyyREgcXmyEwAGI6i3dfJpZB8MQjWF+mr
+         oQ9Aatr4wIM+HyabrX3RjzEm0/+RbzbT890kopX0HQEzJPorczUYVT9G8mrfLtPO/tHV
+         OJzw==
+X-Forwarded-Encrypted: i=1; AJvYcCU6/wqNPxgYCRtx6aKZCgGr6iy8jjDLl8MF9GGkjEYyNuvAiwOWK20hN9cnOnewChaglhK8YXoHmw==@kvack.org
+X-Gm-Message-State: AOJu0YwTbtEqXS6LjgvVsP/9sh7Pr9ZZWreWs6bjpekErk+GI+QcSCmc
+	YHUSlFRV5R/gtxk7BQuefxvSg5xgt4pG1w694gMeLtEIcg7LL3dtLeT+437pbOFOLpE=
+X-Gm-Gg: ASbGnctBebFgLClwA31No9wDPT7ZcCvSAciMveGxp+ESgQp4BL3yl1ePpWrFJX1jaxW
+	QZnZGR5fTZAlly2bYg5Eq4U2YtifKo5aFj+E/jPMIKZgGCEASUWFcCfg7R9MWEUxSUimBLU3l/Z
+	cD8N+62fJv3MpAFxfdodxYV6boRj3j6SsWvrYkYNa3709LmWJK83ddL4i3MBombEsGvFnHBKLIP
+	UNmwTqwNUMuRBmMPcj47qi4vKxeMWLhdZ8nwUayLe5d7UwhiPjjCP79Mjv3a0mHc3M3iWe8G56K
+	Qyvk60AuJTvbkgqwY275X+ylzoqxeZedEVlKk2qbQTzRPWHA0i508VSLKYmsG7hgHUd/vPYlP9M
+	XQWTGe7Zg3EfgeoRGLDvAnfGso+FsjVbuhGDAwncfD+7dzFHNyE5ok+6Bdonr/Wbx7OYCqcYjwn
+	co1KTFZxYxfk+J
+X-Google-Smtp-Source: AGHT+IHDHBBqboi0c0b6rcDIt/ymD1qcIlODHNQyebDLYVOHVLNPjCPlRPjhkhoVVjwmxNLgx8k5ag==
+X-Received: by 2002:a05:6214:300f:b0:707:29f9:3bd1 with SMTP id 6a1803df08f44-7097964ce99mr76346136d6.46.1754531116814;
+        Wed, 06 Aug 2025 18:45:16 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (235.247.85.34.bc.googleusercontent.com. [34.85.247.235])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-7077cde5a01sm92969046d6.70.2025.08.06.18.45.12
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-7077cde5a01sm92969046d6.70.2025.08.06.18.45.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Aug 2025 18:45:13 -0700 (PDT)
+        Wed, 06 Aug 2025 18:45:16 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: pratyush@kernel.org,
 	jasonmiu@google.com,
@@ -162,22 +162,22 @@ To: pratyush@kernel.org,
 	parav@nvidia.com,
 	leonro@nvidia.com,
 	witu@nvidia.com
-Subject: [PATCH v3 18/30] liveupdate: luo_files: luo_ioctl: Add ioctls for per-file state management
-Date: Thu,  7 Aug 2025 01:44:24 +0000
-Message-ID: <20250807014442.3829950-19-pasha.tatashin@soleen.com>
+Subject: [PATCH v3 20/30] reboot: call liveupdate_reboot() before kexec
+Date: Thu,  7 Aug 2025 01:44:26 +0000
+Message-ID: <20250807014442.3829950-21-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.50.1.565.gc32cd1483b-goog
 In-Reply-To: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
 References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: EDAFEC0007
-X-Stat-Signature: sjy8mkrrj98tppskq3jypmq5scmu6mkc
 X-Rspam-User: 
-X-HE-Tag: 1754531114-846544
-X-HE-Meta: U2FsdGVkX1+4156tI3os6wN2cyn8cnkwiqCMdinF0CCfJYzgT07T4L+bwY1zb0Ax7G7aILfXr70wcVZRWoNJ7gnEIAx1LJ6sApSBpWC2/2m4Y16Da0XcythUMNhJwQCRSZCiOC/faQ8mjTy4RX/cGKfxHX6yJYCsFWOWrxuN52nAAvNaRtpzprA1DnSkzHiTurGkaYW0S7QSFD8LiiIlTZ3lPZlHxz8fp1dFkoLvvgtvdmfcEddnGtIi12FfvpDT0h0Gz/5a9rfvPgPoQ7HDwzsAJFbALOUHkyPedsZrduZATFhcHdCFEWx1cwIloi+6vH5AtV0SNKYSLEIr78vTkBbBYk6ekhXgbM/WvGjKl+YlzR1iO9DViN7RlM7ohOzvqWqEBRRdjLVlszgdvNrM57MKsqjEQULrx/DXhcDihz40kWD1Gv+w3UgthRfifFUrrPBCYgrnWnH8XJN+7BCKth6ga7Gp9SFOYdNuaEyiBAfbWxFKS2EiL7oimnh/Rtt7BHcBG+OXM4/S2YOaUteZ4wYlniqQEVOCvu+FXngBd6ox54dZAmWh7kif7U7TXbkAoy7Q9mx2l0Tw14kzK88IE43D+IUyd1LiIW4fss96G9NOv+VQTPc5+PNvGC0yi1+IFM8genn3K8RI3+r9TgxYztNTWdR4JYiUbXivhMYJVgFglCBjjOU4D8W60qXhMCqfH9HrgA9f1aRh/JDF6OOZi6cWvHCpyYsKbKcBA9e6XBjulaS9KmUTKAgjFWPL7VgiHa6prQkwGD9EL8JUSVGOA5vxwohn0lV8E3LQaRqRpo8lWawUXGxrZPJfjxXlpSGnL2mUtqwg4UQdd9ePmLfVXmcIiAVY5/pQalhiYuVaxWmvLIaZ9E0E8i22ssW2DexubO8D59jOP3GbbQ35VZXLYDmhT5EnKBVWaZV3SyfHyx5N2jx1GzIO7+n5xbzXISmEhZntgbplM9m6BtVSQ0h
- vrGiKBo5
- 3xdaUuuIm1Kx36zhXQEUZux8HFx2A9aOMxBu1lrzxpDWBJ3hr7FpqyzXrOl2cxw5zt3ngNkPYRLee3i6r559LSWA8HkQLcyBDIpR/aS0bleZJJfSYXRjfmaWBOLFhh4yObypawAolzNGIkivluuOFNi+Ir1Ap7zdn881VWemtjcembtVr4k71jCVFEDGSDmRMz43aKoN/9cB688v30q8glrAQv1Gg0sJ7+Hb4CXraABNz6aaIHspaodsBInjMmyA2AIu4DnEVdd7vJJISZStl+AuI1PpQ2zf5LQjFnb54xwiVcIfgaIpT7AgETVAwSn7Q3WxjHtKpkjOBsPM1EkDunYyrz0SiRqWO4Sh0lHuRoxr/lo/JnjT04cCy1sLifgO6Mb9N6ZfM/ijnqQ4EJ8O8aPmjH7pnOfmSnj61ozS18F5VDArL9iT1gJ25cn9ByJJsgzy/
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D4F35100006
+X-Stat-Signature: ncaobrtsdu365ybt6d7dygtkpxmtrgyi
+X-HE-Tag: 1754531117-94172
+X-HE-Meta: U2FsdGVkX18+NDhUDD9+yLDl0C+iozLh/gN/Ypda2DJkgZzeMH3gwe36Z9Im7TO16Gs4KTEH7kw/a8phALDsVPgOKGVFHVptk3SdlCKVaNNbM6goB5D0QOioM5uYJgnc/NBYUuA3qW1b9pIhNZ4VLYi4DRXX8Dg3hqz+yjQiGFDZGaYLzx2/girKhlTBkmBmNad/oQVy758iOVQu7+heOLM1pRhgWLqO5t9IyDsKY4aFw8O3sPc73xJpbsWEIqako/8Odr+1woOObAF/ZzRbPy7gCbrAHRfP37tQ7dQNhFienoOouDMlwcsEqdqQdxD0YjULZMtY5byT1fiDp6pKkjR+JInWfAz+lrSxtIns4wHXwNNhMnc645oIqIcdyaGoiY3S+6kS5bGyn58ajBdS9JHYDID+8Fft9wjW6iZkRxLumlTFCCvi7usae/hBQf9mJzuwELduV3VpmPhgF/hYLQMnRNEKH5UvUPffHrB192XvCznpOv7WkWsFhk3yWbDyDn6/92sWttaUVGe1aKORLt9xQwX64yueBqJo/cRqNhmXEYqAfHAb46Y8a2SKBRFhljf3mzqTsXIhUaCfpEV7J1BHm65+9mu4U/7kpKrwS3rIFUYp4hswQjFKJOvbEuBulw0WmtezYYblzWBbfkPDb4BYaXEJ9vVyKNCHxCm10LexUdrejANNdFV4IhkqmJpws6k/ktzuVE7MWN+OB33YSfw3vYvwesPH/L0V8jXxhynIj5WIDxZ6r1/kdXnxxLh20mA4EoAFAamyzmRJ94fsNBYB9adzp/DzYPgqEoJ8trFbUqItQpoDTUNWKe/XF5he2rJdVGYRrYCJzY1yxKiZCjk9CqIGhrDZ7rLK5DYB4ztp9nQCQEp5q8HLMPkN3I8DQUc+WD1ciIMhdc4Y/cVu8Q6YLXw9Si3fHfY6+egNTaErdXsreAEqvE8rbWsRZ8a7PXrAwgN1SWKak75rq0d
+ wVKZrFJu
+ sQgm3Mw38l3RajKjv7sWul08mccFl3jnbOyytEcN6b3V/Mc2D+q8KgjJrnaKfi81rWPlyvIEbrd0xb6uensh0i8AUudm0eqxVNEJw+gjsRgo7/PXl4iGXa+L1p2twoefKmPt2ZhjxZY5ybCNninRNoD9rWLwuLccnrBQRxO3KTBiaE7ILHNDOPMpGu4423fw1ekOm5wToPh2xCBmx5sDfCj1OdnXnNjSrqkSWqMdZfodj+6+zJ0HGL1VXZrBzmOg+hTyfHbLkI7N4fzzKpSS/3fDtHcWmnsgnRS35VV4Tdb/X5MDapYrRyadKw4Ea6yLT1MwEZejYFQfPeN6rr3/cqNXxAfUB/V8gdR1OLlmyGatZGN/dfEIfDTuLI+rh/WW11Qzgv81vbbiH0haPSYVz9Xe6h/5donQp7vDHwlGrNZqS90OQpX3gsz78i2/lUfnf2tYhTaTuLXm5a2uUkvgUTa5lCFMBHyHYE0C02yFm65mYuQrrGcPp5DMnlnuYB9fkj59CUAb9/dAU1Y0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,367 +186,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce a set of new ioctls to allow a userspace agent to query and
-control the live update state of individual file descriptors that have
-been registered for preservation.
+Modify the reboot() syscall handler in kernel/reboot.c to call
+liveupdate_reboot() when processing the LINUX_REBOOT_CMD_KEXEC
+command.
 
-Previously, state transitions (prepare, freeze, finish) were handled
-globally for all registered resources by the main LUO state machine.
-This patch provides a more granular interface, enabling a controlling
-agent to manage the lifecycle of specific FDs independently, which is
-useful for performance reasons.
+This ensures that the Live Update Orchestrator is notified just
+before the kernel executes the kexec jump. The liveupdate_reboot()
+function triggers the final LIVEUPDATE_FREEZE event, allowing
+participating subsystems to perform last-minute state saving within
+the blackout window, and transitions the LUO state machine to FROZEN.
 
--   Adds LIVEUPDATE_IOCTL_GET_FD_STATE to query the current state
-    (e.g., NORMAL, PREPARED, FROZEN) of a file identified by its token.
--   Adds LIVEUPDATE_IOCTL_SET_FD_EVENT to trigger state transitions
-    (PREPARE, FREEZE, CANCEL, FINISH) for a single file.
+The call is placed immediately before kernel_kexec() to ensure LUO
+finalization happens at the latest possible moment before the kernel
+transition.
+
+If liveupdate_reboot() returns an error (indicating a failure during
+LUO finalization), the kexec operation is aborted to prevent proceeding
+with an inconsistent state.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- include/uapi/linux/liveupdate.h  |  62 +++++++++++++
- kernel/liveupdate/luo_files.c    | 152 +++++++++++++++++++++++++++++++
- kernel/liveupdate/luo_internal.h |   8 ++
- kernel/liveupdate/luo_ioctl.c    |  48 ++++++++++
- 4 files changed, 270 insertions(+)
+ kernel/reboot.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/uapi/linux/liveupdate.h b/include/uapi/linux/liveupdate.h
-index 37ec5656443b..833da5a8c064 100644
---- a/include/uapi/linux/liveupdate.h
-+++ b/include/uapi/linux/liveupdate.h
-@@ -128,6 +128,8 @@ enum {
- 	LIVEUPDATE_CMD_FD_RESTORE = 0x02,
- 	LIVEUPDATE_CMD_GET_STATE = 0x03,
- 	LIVEUPDATE_CMD_SET_EVENT = 0x04,
-+	LIVEUPDATE_CMD_GET_FD_STATE = 0x05,
-+	LIVEUPDATE_CMD_SET_FD_EVENT = 0x06,
- };
+diff --git a/kernel/reboot.c b/kernel/reboot.c
+index ec087827c85c..bdeb04a773db 100644
+--- a/kernel/reboot.c
++++ b/kernel/reboot.c
+@@ -13,6 +13,7 @@
+ #include <linux/kexec.h>
+ #include <linux/kmod.h>
+ #include <linux/kmsg_dump.h>
++#include <linux/liveupdate.h>
+ #include <linux/reboot.h>
+ #include <linux/suspend.h>
+ #include <linux/syscalls.h>
+@@ -797,6 +798,9 @@ SYSCALL_DEFINE4(reboot, int, magic1, int, magic2, unsigned int, cmd,
  
- /**
-@@ -334,4 +336,64 @@ struct liveupdate_ioctl_set_event {
- #define LIVEUPDATE_IOCTL_SET_EVENT					\
- 	_IO(LIVEUPDATE_IOCTL_TYPE, LIVEUPDATE_CMD_SET_EVENT)
- 
-+/**
-+ * struct liveupdate_ioctl_get_fd_state - ioctl(LIVEUPDATE_IOCTL_GET_FD_STATE)
-+ * @size:     Input; sizeof(struct liveupdate_ioctl_get_fd_state)
-+ * @incoming: Input; If 1, query the state of a restored file from the incoming
-+ *            (previous kernel's) set. If 0, query a file being prepared for
-+ *            preservation in the current set.
-+ * @token:    Input; Token of FD for which to get state.
-+ * @state:    Output; The live update state of this FD.
-+ *
-+ * Query the current live update state of a specific preserved file descriptor.
-+ *
-+ * - %LIVEUPDATE_STATE_NORMAL:   Default state
-+ * - %LIVEUPDATE_STATE_PREPARED: Prepare callback has been performed on this FD.
-+ * - %LIVEUPDATE_STATE_FROZEN:   Freeze callback ahs been performed on this FD.
-+ * - %LIVEUPDATE_STATE_UPDATED:  The system has successfully rebooted into the
-+ *                               new kernel.
-+ *
-+ * See the definition of &enum liveupdate_state for more details on each state.
-+ *
-+ * Return: 0 on success, negative error code on failure.
-+ */
-+struct liveupdate_ioctl_get_fd_state {
-+	__u32		size;
-+	__u8		incoming;
-+	__aligned_u64	token;
-+	__u32		state;
-+};
-+
-+#define LIVEUPDATE_IOCTL_GET_FD_STATE					\
-+	_IO(LIVEUPDATE_IOCTL_TYPE, LIVEUPDATE_CMD_GET_FD_STATE)
-+
-+/**
-+ * struct liveupdate_ioctl_set_fd_event - ioctl(LIVEUPDATE_IOCTL_SET_FD_EVENT)
-+ * @size:  Input; sizeof(struct liveupdate_ioctl_set_fd_event)
-+ * @event: Input; The live update event.
-+ * @token: Input; Token of FD for which to set the provided event.
-+ *
-+ * Notify a specific preserved file descriptor of an event, that causes a state
-+ * transition for that file descriptor.
-+ *
-+ * Event, can be one of the following:
-+ *
-+ * - %LIVEUPDATE_PREPARE: Initiates the FD live update preparation phase.
-+ * - %LIVEUPDATE_FREEZE:  Initiates the FD live update freeze phase.
-+ * - %LIVEUPDATE_CANCEL:  Cancel the FD preparation or freeze phase.
-+ * - %LIVEUPDATE_FINISH:  FD Restoration completion and trigger cleanup.
-+ *
-+ * See the definition of &enum liveupdate_event for more details on each state.
-+ *
-+ * Return: 0 on success, negative error code on failure.
-+ */
-+struct liveupdate_ioctl_set_fd_event {
-+	__u32		size;
-+	__u32		event;
-+	__aligned_u64	token;
-+};
-+
-+#define LIVEUPDATE_IOCTL_SET_FD_EVENT					\
-+	_IO(LIVEUPDATE_IOCTL_TYPE, LIVEUPDATE_CMD_SET_FD_EVENT)
-+
- #endif /* _UAPI_LIVEUPDATE_H */
-diff --git a/kernel/liveupdate/luo_files.c b/kernel/liveupdate/luo_files.c
-index 63f8b086b785..0d68d0c8c45e 100644
---- a/kernel/liveupdate/luo_files.c
-+++ b/kernel/liveupdate/luo_files.c
-@@ -740,6 +740,158 @@ void luo_unregister_all_files(void)
- 	WARN_ON_ONCE(atomic64_read(&luo_files_count) != 0);
- }
- 
-+/**
-+ * luo_file_get_state - Get the preservation state of a specific file.
-+ * @token: The token of the file to query.
-+ * @statep: Output pointer to store the file's current live update state.
-+ * @incoming: If true, query the state of a restored file from the incoming
-+ *            (previous kernel's) set. If false, query a file being prepared
-+ *            for preservation in the current set.
-+ *
-+ * Finds the file associated with the given @token in either the incoming
-+ * or outgoing tracking arrays and returns its current LUO state
-+ * (NORMAL, PREPARED, FROZEN, UPDATED).
-+ *
-+ * Return: 0 on success, -ENOENT if the token is not found.
-+ */
-+int luo_file_get_state(u64 token, enum liveupdate_state *statep, bool incoming)
-+{
-+	struct luo_file *luo_file;
-+	struct xarray *target_xa;
-+	int ret = 0;
-+
-+	luo_state_read_enter();
-+
-+	target_xa = incoming ? &luo_files_xa_in : &luo_files_xa_out;
-+	luo_file = xa_load(target_xa, token);
-+
-+	if (!luo_file) {
-+		ret = -ENOENT;
-+		goto out_unlock;
-+	}
-+
-+	scoped_guard(mutex, &luo_file->mutex)
-+		*statep = luo_file->state;
-+
-+out_unlock:
-+	luo_state_read_exit();
-+	return ret;
-+}
-+
-+/**
-+ * luo_file_prepare - Prepare a single registered file for live update.
-+ * @token: The token of the file to prepare.
-+ *
-+ * Finds the file associated with @token and transitions it to the PREPARED
-+ * state by invoking its handler's ->prepare() callback. This allows for
-+ * granular, per-file preparation before the global LUO PREPARE event.
-+ *
-+ * Return: 0 on success, negative error code on failure.
-+ */
-+int luo_file_prepare(u64 token)
-+{
-+	struct luo_file *luo_file;
-+	int ret;
-+
-+	luo_state_read_enter();
-+	luo_file = xa_load(&luo_files_xa_out, token);
-+	if (!luo_file) {
-+		ret = -ENOENT;
-+		goto out_unlock;
-+	}
-+
-+	ret = luo_files_prepare_one(luo_file);
-+out_unlock:
-+	luo_state_read_exit();
-+	return ret;
-+}
-+
-+/**
-+ * luo_file_freeze - Freeze a single prepared file for live update.
-+ * @token: The token of the file to freeze.
-+ *
-+ * Finds the file associated with @token and transitions it from the PREPARED
-+ * to the FROZEN state by invoking its handler's ->freeze() callback. This is
-+ * typically used for final, "blackout window" state saving for a specific
-+ * file.
-+ *
-+ * Return: 0 on success, negative error code on failure.
-+ */
-+int luo_file_freeze(u64 token)
-+{
-+	struct luo_file *luo_file;
-+	int ret;
-+
-+	luo_state_read_enter();
-+	luo_file = xa_load(&luo_files_xa_out, token);
-+	if (!luo_file) {
-+		ret = -ENOENT;
-+		goto out_unlock;
-+	}
-+
-+	ret = luo_files_freeze_one(luo_file);
-+out_unlock:
-+	luo_state_read_exit();
-+	return ret;
-+}
-+
-+int luo_file_cancel(u64 token)
-+{
-+	struct luo_file *luo_file;
-+	int ret = 0;
-+
-+	luo_state_read_enter();
-+	luo_file = xa_load(&luo_files_xa_out, token);
-+	if (!luo_file) {
-+		ret = -ENOENT;
-+		goto out_unlock;
-+	}
-+
-+	luo_files_cancel_one(luo_file);
-+out_unlock:
-+	luo_state_read_exit();
-+	return ret;
-+}
-+
-+/**
-+ * luo_file_finish - Clean-up a single restored file after live update.
-+ * @token: The token of the file to finalize.
-+ *
-+ * This function is called in the new kernel after a live update, typically
-+ * after a file has been restored via luo_retrieve_file() and is no longer
-+ * needed by the userspace agent in its preserved state. It invokes the
-+ * handler's ->finish() callback, allowing for any final cleanup of the
-+ * preserved state associated with this specific file.
-+ *
-+ * This must be called when LUO is in the UPDATED state.
-+ *
-+ * Return: 0 on success, -ENOENT if the token is not found, -EBUSY if not
-+ *         in the UPDATED state.
-+ */
-+int luo_file_finish(u64 token)
-+{
-+	struct luo_file *luo_file;
-+	int ret = 0;
-+
-+	luo_state_read_enter();
-+	if (!liveupdate_state_updated()) {
-+		pr_warn("finish can only be done in UPDATED state\n");
-+		ret = -EBUSY;
-+		goto out_unlock;
-+	}
-+
-+	luo_file = xa_load(&luo_files_xa_in, token);
-+	if (!luo_file) {
-+		ret = -ENOENT;
-+		goto out_unlock;
-+	}
-+
-+	luo_files_finish_one(luo_file);
-+out_unlock:
-+	luo_state_read_exit();
-+	return ret;
-+}
-+
- /**
-  * luo_retrieve_file - Find a registered file instance by its token.
-  * @token: The unique token of the file instance to retrieve.
-diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
-index 189e032d7738..01bd0d3b023b 100644
---- a/kernel/liveupdate/luo_internal.h
-+++ b/kernel/liveupdate/luo_internal.h
-@@ -8,6 +8,8 @@
- #ifndef _LINUX_LUO_INTERNAL_H
- #define _LINUX_LUO_INTERNAL_H
- 
-+#include <uapi/linux/liveupdate.h>
-+
- /*
-  * Handles a deserialization failure: devices and memory is in unpredictable
-  * state.
-@@ -39,4 +41,10 @@ int luo_register_file(u64 token, int fd);
- int luo_unregister_file(u64 token);
- void luo_unregister_all_files(void);
- 
-+int luo_file_get_state(u64 token, enum liveupdate_state *statep, bool incoming);
-+int luo_file_prepare(u64 token);
-+int luo_file_freeze(u64 token);
-+int luo_file_cancel(u64 token);
-+int luo_file_finish(u64 token);
-+
- #endif /* _LINUX_LUO_INTERNAL_H */
-diff --git a/kernel/liveupdate/luo_ioctl.c b/kernel/liveupdate/luo_ioctl.c
-index 7ca33d1c868f..4c0f6708e411 100644
---- a/kernel/liveupdate/luo_ioctl.c
-+++ b/kernel/liveupdate/luo_ioctl.c
-@@ -127,6 +127,48 @@ static int luo_ioctl_set_event(struct luo_ucmd *ucmd)
- 	return ret;
- }
- 
-+static int luo_ioctl_get_fd_state(struct luo_ucmd *ucmd)
-+{
-+	struct liveupdate_ioctl_get_fd_state *argp = ucmd->cmd;
-+	enum liveupdate_state state;
-+	int ret;
-+
-+	ret = luo_file_get_state(argp->token, &state, !!argp->incoming);
-+	if (ret)
-+		return ret;
-+
-+	argp->state = state;
-+	if (copy_to_user(ucmd->ubuffer, argp, ucmd->user_size))
-+		return -EFAULT;
-+
-+	return 0;
-+}
-+
-+static int luo_ioctl_set_fd_event(struct luo_ucmd *ucmd)
-+{
-+	struct liveupdate_ioctl_set_fd_event *argp = ucmd->cmd;
-+	int ret;
-+
-+	switch (argp->event) {
-+	case LIVEUPDATE_PREPARE:
-+		ret = luo_file_prepare(argp->token);
-+		break;
-+	case LIVEUPDATE_FREEZE:
-+		ret = luo_file_freeze(argp->token);
-+		break;
-+	case LIVEUPDATE_FINISH:
-+		ret = luo_file_finish(argp->token);
-+		break;
-+	case LIVEUPDATE_CANCEL:
-+		ret = luo_file_cancel(argp->token);
-+		break;
-+	default:
-+		ret = -EINVAL;
-+	}
-+
-+	return ret;
-+}
-+
- static int luo_open(struct inode *inodep, struct file *filep)
- {
- 	if (atomic_cmpxchg(&luo_device_in_use, 0, 1))
-@@ -149,6 +191,8 @@ union ucmd_buffer {
- 	struct liveupdate_ioctl_fd_restore	restore;
- 	struct liveupdate_ioctl_get_state	state;
- 	struct liveupdate_ioctl_set_event	event;
-+	struct liveupdate_ioctl_get_fd_state	fd_state;
-+	struct liveupdate_ioctl_set_fd_event	fd_event;
- };
- 
- struct luo_ioctl_op {
-@@ -179,6 +223,10 @@ static const struct luo_ioctl_op luo_ioctl_ops[] = {
- 		 struct liveupdate_ioctl_get_state, state),
- 	IOCTL_OP(LIVEUPDATE_IOCTL_SET_EVENT, luo_ioctl_set_event,
- 		 struct liveupdate_ioctl_set_event, event),
-+	IOCTL_OP(LIVEUPDATE_IOCTL_GET_FD_STATE, luo_ioctl_get_fd_state,
-+		 struct liveupdate_ioctl_get_fd_state, token),
-+	IOCTL_OP(LIVEUPDATE_IOCTL_SET_FD_EVENT, luo_ioctl_set_fd_event,
-+		 struct liveupdate_ioctl_set_fd_event, token),
- };
- 
- static long luo_ioctl(struct file *filep, unsigned int cmd, unsigned long arg)
+ #ifdef CONFIG_KEXEC_CORE
+ 	case LINUX_REBOOT_CMD_KEXEC:
++		ret = liveupdate_reboot();
++		if (ret)
++			break;
+ 		ret = kernel_kexec();
+ 		break;
+ #endif
 -- 
 2.50.1.565.gc32cd1483b-goog
 
