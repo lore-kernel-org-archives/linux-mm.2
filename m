@@ -2,173 +2,104 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1404AC87FCF
-	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 10:31:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2EE23C87FCF
+	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 10:39:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A59D96B00AA; Thu,  7 Aug 2025 06:31:07 -0400 (EDT)
+	id BF11D8E0002; Thu,  7 Aug 2025 06:39:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A09196B00AC; Thu,  7 Aug 2025 06:31:07 -0400 (EDT)
+	id B7B9D8E0001; Thu,  7 Aug 2025 06:39:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D1F56B00B1; Thu,  7 Aug 2025 06:31:07 -0400 (EDT)
+	id A1C3F8E0002; Thu,  7 Aug 2025 06:39:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7BEC56B00AA
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 06:31:07 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0F1A85C2F1
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 10:31:07 +0000 (UTC)
-X-FDA: 83749593774.22.05BB94D
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A4DBD40014
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 10:31:04 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hfDRaaRs;
-	spf=pass (imf27.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C5C68E0001
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 06:39:12 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CE7EDC0AE8
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 10:39:11 +0000 (UTC)
+X-FDA: 83749614102.23.7639542
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 2665A160003
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 10:39:09 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=07vtl+Mo;
+	spf=pass (imf08.hostedemail.com: domain of 3TYKUaAsKCO4beaUiXWYThQWeeWbU.SecbYdkn-ccalQSa.ehW@flex--lokeshgidra.bounces.google.com designates 209.85.128.201 as permitted sender) smtp.mailfrom=3TYKUaAsKCO4beaUiXWYThQWeeWbU.SecbYdkn-ccalQSa.ehW@flex--lokeshgidra.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754562664;
+	s=arc-20220608; t=1754563150;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+qVW9cLOj54YF0xIaj0lWIjiH/j6vomCG3o/DXozcQc=;
-	b=XhMEu5NjYtcszXIVv475UDwnIdHNo+byMRmhSOFskj54U3kjkvhpcVcsGYS/nmJueVlBGw
-	2xnZk+IHGfVBT0OUuqApuGCz8juRnCVPXHhAIAugZRj9wN+83AlpZBimQGGLln/5Iw4Vs4
-	20iJ8etaUGVQzrVsBt3ugyuR+w10jwY=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hfDRaaRs;
-	spf=pass (imf27.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754562664; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=QMhp8lv0NawhZpAecC0XDc0j7rj3CAoHpWDf4sgDMnc=;
+	b=nvITxGk36fxL7iuMvw8pzF16nWaz/zlgDzEXS0SzXb+l1rZajxWgFrcTO4wqhwQJyRrPco
+	eJ68pph//drw/2O8Hu8llHGPh4HhS0kDuHuXqyAjys1jiHGuS+zsb1gzynSQSKlZ/aG5M4
+	59FJaqY/nxDgfwi6esEKzpB9O60filQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754563150; a=rsa-sha256;
 	cv=none;
-	b=uKo5zHEbvh93IIxDOcmwUCtDtWhMRxerin0j56j6lXtV7a16G7qKEMd67JlJNEpxvE4FL9
-	jdT0RazoWumcNY6CbFUtaGUX/cAC99W3TeeSj1ROPEt2Aa+QCOe45AAFnsK+sZ1pkocX6P
-	EzXGMQx4EiN1cspZLuNF138K9MZHzr0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754562663;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=+qVW9cLOj54YF0xIaj0lWIjiH/j6vomCG3o/DXozcQc=;
-	b=hfDRaaRsjKFL3HmVG6aWrXzs9HrMXiszjYyz/BsHRlkxeD26fROrUCGML16Me9hmHsTsnD
-	7o2VU6GWBc5ro+DqY9s5yEx81pfuHLoLTvZzN878UfZm3ew9k+R/JTZe8sUD+/HcTFc+SS
-	cuAHaQEm6IyXT0UUKBMt9Ow5U1L6ob8=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-655-Vrs09F-1PbiJVRFOv-VNlg-1; Thu, 07 Aug 2025 06:31:02 -0400
-X-MC-Unique: Vrs09F-1PbiJVRFOv-VNlg-1
-X-Mimecast-MFC-AGG-ID: Vrs09F-1PbiJVRFOv-VNlg_1754562661
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3b7889c8d2bso381364f8f.3
-        for <linux-mm@kvack.org>; Thu, 07 Aug 2025 03:31:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754562661; x=1755167461;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+	b=BNXHhiXRITgGuN+6VdPt4w1l7BVo100OwldFD4pk/Ldd1d4sfp1gqx5tzhYsDa3phVsklU
+	3o+CPjjKz3/j9plnoMv2diCIacxD3xvSSIbfCpsDjv63gtun+5cQdsCJjn5BxJvDSlLerV
+	w2zw84XGbFc1Y2APp/cBJIq5v+puvNc=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=07vtl+Mo;
+	spf=pass (imf08.hostedemail.com: domain of 3TYKUaAsKCO4beaUiXWYThQWeeWbU.SecbYdkn-ccalQSa.ehW@flex--lokeshgidra.bounces.google.com designates 209.85.128.201 as permitted sender) smtp.mailfrom=3TYKUaAsKCO4beaUiXWYThQWeeWbU.SecbYdkn-ccalQSa.ehW@flex--lokeshgidra.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-71a29921b1dso11711567b3.2
+        for <linux-mm@kvack.org>; Thu, 07 Aug 2025 03:39:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1754563149; x=1755167949; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=+qVW9cLOj54YF0xIaj0lWIjiH/j6vomCG3o/DXozcQc=;
-        b=kgrcUpjaU06wxP1sm/Wmzfa0Mfp4PpxYk6wfkBUIflAelnIT2VfyqMcrZ+Xk0A3woO
-         9CMPV9q6hVDFJbk+r29dDcPLixZ1TH8BUFcS46a1q71mJR+Ob2t8hMbxx0NQzgeqkE4M
-         nXMCEpgzMBxDZ2f2IQtcJnYxCSj9R2Kv1yvtQDr7xvhjzykaiRmPBtQSbzBZzIMBSEya
-         EJzksh86m2eAdoisw2QdOAhX6pANsWWiLJ17JL035Szltk/CVOqMBVPEvEbPbReehXr7
-         alZUGASpIlG44qcA1C8arwl9VFH59hMKLd4bXwRXg6ZBUV7ZYysPzLsjC6rVXHXcmPts
-         3Htg==
-X-Forwarded-Encrypted: i=1; AJvYcCU6KAE7EW4T+de15PByAKHajcSTtWlcVhCdMcMRxsGwgBgudFQUV+cJhRzzvd9QmsFMOJcvGag3DQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw4Q4S4GH/i+vLtpUbF5yBpNh04wM0ftO2WPjzzZ3cqdpPm9a/Q
-	CNf+fLjQdesHImI5zfhAKtwm2Hc3eapEpHghHhq6sx3QbffwL5B10D8kx8bMMTAJSlJ7iaeKgWc
-	bYj/V7+s3BZEEZF2ykrj2wUDnpVymL2nNbjrIhtf6ACvUtN5kMW/n
-X-Gm-Gg: ASbGnctHfBR9NhPwnrYc3muPShmWBHkvuE91B7ZL4WztSO5RTRGYIZa1ZdSEwJH7x8n
-	PlxYegrRte2ZYTz8U+hQj6+GEScdO3y6wc5Px9qI7ovrwtTUrEO4BfmeJslx/3XM+qEVscSRzHm
-	boCk9GRuuzPw+nbePTk2EUMtl0IwmH3SrejUYdVOcKsHrkGSskXF+3qJjDM4p9D4Fie+NW1zJvc
-	mFbbwwrpHiJyuLJYFWRAnE1ja4P0hsrsLx+/sJGCHd4tInC2kYqAg0DU+JD2PVoPjUb5Hbwmjni
-	DNYk1YYjisFjbj5wyYIZneo2STfNJx+XkTVGtCNQtDKidiZcV/I8wv5c/Pe/Ksmjw7dO2PC81bn
-	Sx07+cb1u/8YiceyOzpud/MZqDWCOGR4QW5c1lDh9koSHmaXapuh6tIjedFlBeWEZE7w=
-X-Received: by 2002:a05:6000:188e:b0:3b7:8473:31bd with SMTP id ffacd0b85a97d-3b8f414c4a7mr5352826f8f.0.1754562661277;
-        Thu, 07 Aug 2025 03:31:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGVvmP83x7UutNKzV8FG/fdk3ibG+3w7boHxmbnZj/SXv3iUKT38lto02D3K+S+RQXWyX0Mbg==
-X-Received: by 2002:a05:6000:188e:b0:3b7:8473:31bd with SMTP id ffacd0b85a97d-3b8f414c4a7mr5352785f8f.0.1754562660784;
-        Thu, 07 Aug 2025 03:31:00 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f49:bc00:12fa:1681:c754:1630? (p200300d82f49bc0012fa1681c7541630.dip0.t-ipconnect.de. [2003:d8:2f49:bc00:12fa:1681:c754:1630])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c3b95f4sm26154427f8f.23.2025.08.07.03.30.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 Aug 2025 03:31:00 -0700 (PDT)
-Message-ID: <3eba855a-740c-4423-b2ed-24d622af29a5@redhat.com>
-Date: Thu, 7 Aug 2025 12:30:59 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/1] userfaultfd: fix a crash in UFFDIO_MOVE when PMD
- is a migration entry
-To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
-Cc: peterx@redhat.com, aarcange@redhat.com, lokeshgidra@google.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com, stable@vger.kernel.org
-References: <20250806220022.926763-1-surenb@google.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- g3eXuA==
-Organization: Red Hat
-In-Reply-To: <20250806220022.926763-1-surenb@google.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: K0VunzDr7RJmyHXIWm1sNd-mtBD7prgJm2OyIFd1m5Q_1754562661
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: unepbtadz1iennitb4yb9tktpa7t3bbr
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A4DBD40014
+        bh=QMhp8lv0NawhZpAecC0XDc0j7rj3CAoHpWDf4sgDMnc=;
+        b=07vtl+MomQSfbAmgWwqJgmX1vo/udM0Yj6A5CgF3QFQTc0n5VRUOAR7gGjs9F4feXa
+         KjBnpJVcFX2ewuD0sxZtQ/iTVy+y7KDI8mSr0geCl6pjmaYdTyKpgnWtbF9npDXhiNkl
+         eBD0MTh8Gp++ss4VHR1K+eI9zTEu+Hu+Schy14xn3hYIgkF6uuo/kn8B+09mFiKNmnKg
+         zT0QIHbjR0MboN0oZDqjEsYz9ubJJpt/vuVzeqG4yuUktEqN1GOMBPt/EhXSNbmuK7Vb
+         oNa5jkQ7Mukjyo/18vV3sU8kEHHB/dSxdOSIJgcmSGGWzp3so0X6Qu+l61hDFMFvoEQk
+         IwcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754563149; x=1755167949;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QMhp8lv0NawhZpAecC0XDc0j7rj3CAoHpWDf4sgDMnc=;
+        b=ZJRoxiec5tlODXYvQxx+aXkNRMIUik07rxNko0iF3xFYZkWAu3r0gqYsbofQ79unzZ
+         VhLJtCKNz1fuQOqY/yMptaqy1kD2ijQorJSbtBdNDTdOVKtNH+TveqxfImKKYZ1FQgl5
+         sJ34Q5jKUjfEaJDL4vAYiHvFZTYpUuJmEBLbpzTS/b8ZiZb7+RoXJRHhUsq5WKeYNe3r
+         ue6UBVPQUf4jvbKvQ+BcUoAzN+JneoxsTptgY4hTWjBi2+Ttmu7xZLhuRdVej6juT3d6
+         o0S6xIDfbBa8dFex8cSbf0YFxJLfF/mCoYyYnhUW3kUW50Rpvpm8iaLFq+up6C4QzuwM
+         AoDw==
+X-Forwarded-Encrypted: i=1; AJvYcCXyQZeCWhud59cxwQIFFt51zmeFMo51X6f7r2/Z0TxkfILOUTIJK2ceTcl2y0TYnww+NPWJzRzgfQ==@kvack.org
+X-Gm-Message-State: AOJu0YxkTRDksvpf7LY/uHZ8St4moifZkfDzZFagW85rch919jf9eRpG
+	tuRXKgGTbbBtlveYKNeDfUfSAOgAj7hkltgfbsDbL7L2uNwra8aGV0E3D45RAD1hwinSdyjP0Z1
+	6FUdevDwt0eBDr2lIa2r0AQKUHw==
+X-Google-Smtp-Source: AGHT+IFygKfhqzlRbf1LnnYZ11Ya4RsFggPGNdRjmlB+hO6r7aW1ZTzxIcjlYSCcRn/pfcMxLmzIJovOA/8i0Pfwng==
+X-Received: from ywf19.prod.google.com ([2002:a05:690c:9693:b0:71a:3c31:55fb])
+ (user=lokeshgidra job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:690c:61c1:b0:71a:34bb:4277 with SMTP id 00721157ae682-71bdbbb573bmr32678997b3.18.1754563149083;
+ Thu, 07 Aug 2025 03:39:09 -0700 (PDT)
+Date: Thu,  7 Aug 2025 03:39:02 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.50.1.565.gc32cd1483b-goog
+Message-ID: <20250807103902.2242717-1-lokeshgidra@google.com>
+Subject: [PATCH v3] userfaultfd: opportunistic TLB-flush batching for present
+ pages in MOVE
+From: Lokesh Gidra <lokeshgidra@google.com>
+To: akpm@linux-foundation.org
+Cc: aarcange@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	21cnbao@gmail.com, ngeoffray@google.com, 
+	Lokesh Gidra <lokeshgidra@google.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Kalesh Singh <kaleshsingh@google.com>, Barry Song <v-songbaohua@oppo.com>, 
+	David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 2665A160003
+X-Stat-Signature: zf1gsjpue43bs6z9y46hcrgdhxr9eryi
 X-Rspam-User: 
-X-HE-Tag: 1754562664-234907
-X-HE-Meta: U2FsdGVkX18vjSK7qT60io37O4py7PCqn6x6+HLDAEIKfXE+fYAgZ60vqCs1bktijej/ciDhv/DdyzWVBzoQgVYsaujU+k5Cc8fe8UQ/d4ehP2Y1lgeu1447hwEFmLXDqqPBuWB0LFloq2Yjk387TWErtlYayxcsNbqUEyabb2Wqc8pG5mCVko4jco1WSEEKpvUXstwAAB9DxEjrLZe3Wk/iwKqKep4EJFBiVv6uw084s9MSOBEoc8IKSd8av5rFWfdU3xytMrjk62wnoPDOg6vF8/Wg4E/NOm0OHxscsS3xxbJ/JH675BhEZp8OV9WnZLTsjsFUtSD5csJChjdVx1KEFWZzBtCCddX+bzzJru8UHtExzM3MsxwrzXEODqXp9IyZ3jgGZWVnXApefaS8xDYZ2aP8eLrKNjWfRZ3F7CDRoSUttMCSXjkmqAMZmeEZBk3/CbZYVebDtf9rC3k5DevNIHEPk2KDG/domMHNEhpb6/aVq2gJpUDhxi13osYVTW689rXI/5xHOiYkMD7ZYaEKKqpi1CK+TEKCbNlrw2vgiaG6x9uAmpvDVx4Rc931/a6fzmO4/0mzkyM6ZCDoBwOISEuXNFLPRlrb+TwIexnRQGn3QXREODgC1wAEPF+/f/6Y5Djy/Yei6DsGTNU+0sfJfkwl/egml/e3XiV/96W/2Qkbwvg1Xj1Yt6lGdGxwV9N+9/Y+p2botmhiU2t4S1fx7yA2a9CM9fw8cj80JOGUE4DcwI2HWymABcyVhgcBTVODsYX82/2ZR7IPHiPvlI0jwokxzmTqd262wtWfYSRQ1nAT+ZBn845+ewATI+uXTSzxDmB2YOqh0F5apFAFlZByMqqcXKaDF6vJo8kRPlFjrtkb5eGuF+XBcxEgaetJi8k6rXOmbn27132EpKm5l+OVX5GO2jHNEz6G4gO/b+MUOc8o7bzICuicCnjb2rCxhtfQXw8G8GDg8dAbPEg
- ytiO+nL9
- 2cnvcKKoeIbqzpytCoPw8Dwlk8smYeKdY6D2sKplLv2zpBYUwqRnLBXgk+GSRm3FK+962bgRETZfmcGSftZg+EgcHbxZiZ39ha74kmAcdxAOmfJWxfFyUaGqziybgsnZ5uAjpR5tkxcfwnNPrmiA5NS0Kexx6QdFFqgJbvuqleHYd6ZSWB654V/W97TV+04a5EMZW3ONsSo7AOaW+/p5SC2tA54s7BmbLTfKVtj7SVsfNABu4vaNbA2OcCN/6gktZ8ssTFGuI548wnjNwjz07Qe5SyjNpOwxKUmgozwijGNJayCTRDyFo6pGJO+lbRmwhaZUWGcGxcLT6B7bVsUnYYLCPfoEO28xD6M+GPk1EvgHBHtolpOLZDyJtGBXryuTHEBOXe1RYc2gEu+39EgkK/DL3ijB5J2/OY3/J0DrkSNGMyp6GNxlz2J8TfeCunwZ79o092KGDMuV29AqrozhjK3YBnL7MOV62li9h7h217esKFpEaJ/2FKOsqlsq33a600QYLFeEyJdPVh51IRUdl0M11OFvaspa5G6IMUsiuBdXluaU3xL8gcZmXqdn+lzGuzYWUDbLaG8Kh3fnfMI8dIomufI7d4298hBjBU4kJuhCuKn3/mkAk1cUmdFld5eIpH2D+fKFPTT99GNaW8F9Hza/FWJkqMLXTBn3noF5ZrJ9OrSeVIMF53bMovg==
+X-HE-Tag: 1754563149-227986
+X-HE-Meta: U2FsdGVkX19NQtMsLlExajhCsU0Cd1RWMUyanC1MDPKTTgKYEFGPGcc/nV+7d7mc4aroEsh8aoaXj0jq2+duq/lLiYhqPOCIjhLfEhVcsZdWCGFMWNwqSgzYpGxJfiMvzvZ6AugDy1tIhLkVDKFEKpXF/JzR7DcRZOeVdXjai+Ct1x1/oroyTiscwHFoUBBpvDstutKGN6XJ2hi1C8BI+khBi+61QqboV4EKkG67dBoRAfiBygSc6bPi6bih5Vf/Yfnke9iha9Y+amCS6KJWH7D0cxO6DWdLR0blHtYhXJcKQRqt58VrgrmyM6ByLasdDkj042lI5kUr/dv5AfHBdCNiynt9n5y3jDoFXXk4+PS2wyNN4/pqWiNAFO9SchMpncjcOvRV9XPzR/+cbJnhljYtRsx3JjUJp0j1Yc6WmN9RMjuDaJaJZK09xiw3KePK9T67VOgP9O/FSrWhcOwNiMyCh7Bk38IbeJF+me2wHJgq0mSOynK6ITVcDCEd+CxCU2DS6Kfk+bWpt+aht0cpjE/+TXHxY+we2RXBcefXnpjfBjds6FZ0azds2ooVvlK6oeOY0Wt19Y7xX3hqAG2Ae1kNTRXwJIMRdG23qw+SdZAdLHraietb3NpP/g2W4hg9n2P8WIWV3AvLChJqzR1pnqClP6zKlaQ4ud5x34ELWXMdzSmRyFA85pD3oFKshrWvsG6j5xEPJc3zX7zRoJcmsQe7r9zw9OpLpmtXWT8ippBZqJe/EIL7SS+lnW3v9vAAOsfdscUMGSRqLIpXPBZKiv16RbJopEbxVn+saZavYxmvPXtOzl1OdeY1zapSNzmHZVv3wD6NsCG4NNlwAAjK5BPbPL89Rg1Peembcubsoxfj0mcSL/QxXnV5WxmzELsa7CLjqirr5BN1xpuX+P0SR1sYhiyoY6IRi9xqoK1O8ZNG5FaCTZdrGq8Eu92DDSLXDAHPgWTWollTmzhoFTq
+ PdnjMZKv
+ jQlxZUy2vLPoR5peyzhHmcjGFZJQwLKaOsxzOiTqTUWIMAZMOjj79K9f+hz4EpKM15Zs0aej6hlZEsDOdUwOOufZDJytvVn5lBhPiUpPyICl11gFflswUgY3TgoNmsat24A2kjb+5BW5aOazpDiTWIRUGnucRFExybRM82arbVDdUzCJUpS9I6BK9m2qzg8KOeEsZaKOaSqfVEN42niRtyWNWlST5ZLDYrF9vB1xqosdPeL0sHRv5W3r8CE6AcSdD4EWXslr27xfoNvA0wVjAQ4IBPP5Pp3M8dW/629sBJ46mddH1sV+cRdkQRDktZii6j+q+v/RaRJ6BLpkLTbXn/BMotaeKDjgS+GLksks/Gu63cnOgerAxFJ2g2j2kmGalQzhz4UnKF6CvALvM32nflDjPpuxYM3NLRXlumHFav925wege4S0oOayCdl+khfko0CBGSpjKIR+iUocwZgwBaj3thpZNpHjfj5wm3KzB8snvPc1niShJXdhdHAKgI0FL5VTk1fZPn1jzmCqdLbc9Ex8QBFaH3W3zYoq/JBZZlgrRc+VQ7eA96SQnrIzQ1K/qTCdK2d3R1Y9bCXgIaLkY+d6xNRZDFXgeSnkgnImfDLi0jGMuroEytfWMXY3TCInYqjlo1rGCngSCMJD68zn3vSC1H3IiKzaHB0WVXQ49cy/x+U4y6Ykyk2RxsA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -177,56 +108,327 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 07.08.25 00:00, Suren Baghdasaryan wrote:
-> When UFFDIO_MOVE encounters a migration PMD entry, it proceeds with
-> obtaining a folio and accessing it even though the entry is swp_entry_t.
-> Add the missing check and let split_huge_pmd() handle migration entries.
-> 
-> Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-> Reported-by: syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/all/68794b5c.a70a0220.693ce.0050.GAE@google.com/
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> Reviewed-by: Peter Xu <peterx@redhat.com>
-> Cc: stable@vger.kernel.org
-> ---
-> Changes since v3 [1]
-> - Updated the title and changelog, per Peter Xu
-> - Added Reviewed-by: per Peter Xu
-> 
-> [1] https://lore.kernel.org/all/20250806154015.769024-1-surenb@google.com/
-> 
->   mm/userfaultfd.c | 17 ++++++++++-------
->   1 file changed, 10 insertions(+), 7 deletions(-)
-> 
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index 5431c9dd7fd7..116481606be8 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> @@ -1826,13 +1826,16 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
->   			/* Check if we can move the pmd without splitting it. */
->   			if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
->   			    !pmd_none(dst_pmdval)) {
-> -				struct folio *folio = pmd_folio(*src_pmd);
-> -
-> -				if (!folio || (!is_huge_zero_folio(folio) &&
-> -					       !PageAnonExclusive(&folio->page))) {
-> -					spin_unlock(ptl);
-> -					err = -EBUSY;
-> -					break;
-> +				/* Can be a migration entry */
-> +				if (pmd_present(*src_pmd)) {
-> +					struct folio *folio = pmd_folio(*src_pmd);
-> +
-> +					if (!folio
+MOVE ioctl's runtime is dominated by TLB-flush cost, which is required
+for moving present pages. Mitigate this cost by opportunistically
+batching present contiguous pages for TLB flushing.
 
+Without batching, in our testing on an arm64 Android device with UFFD GC,
+which uses MOVE ioctl for compaction, we observed that out of the total
+time spent in move_pages_pte(), over 40% is in ptep_clear_flush(), and
+~20% in vm_normal_folio().
 
-How could you get !folio here? That only makes sense when calling 
-vm_normal_folio_pmd(), no?
+With batching, the proportion of vm_normal_folio() increases to over
+70% of move_pages_pte() without any changes to vm_normal_folio().
+Furthermore, time spent within move_pages_pte() is only ~20%, which
+includes TLB-flush overhead.
 
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Kalesh Singh <kaleshsingh@google.com>
+Cc: Barry Song <v-songbaohua@oppo.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>
+Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
+---
+Changes since v2 [1]
+- Addressed VM_WARN_ON failure, per Lorenzo Stoakes
+- Added check to ensure all batched pages share the same anon_vma
 
+Changes since v1 [2]
+- Removed flush_tlb_batched_pending(), per Barry Song
+- Unified single and multi page case, per Barry Song
+
+[1] https://lore.kernel.org/all/20250805121410.1658418-1-lokeshgidra@google.com/
+[2] https://lore.kernel.org/all/20250731104726.103071-1-lokeshgidra@google.com/
+
+ mm/userfaultfd.c | 179 +++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 128 insertions(+), 51 deletions(-)
+
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index cbed91b09640..78c732100aec 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -1026,18 +1026,64 @@ static inline bool is_pte_pages_stable(pte_t *dst_pte, pte_t *src_pte,
+ 	       pmd_same(dst_pmdval, pmdp_get_lockless(dst_pmd));
+ }
+ 
+-static int move_present_pte(struct mm_struct *mm,
+-			    struct vm_area_struct *dst_vma,
+-			    struct vm_area_struct *src_vma,
+-			    unsigned long dst_addr, unsigned long src_addr,
+-			    pte_t *dst_pte, pte_t *src_pte,
+-			    pte_t orig_dst_pte, pte_t orig_src_pte,
+-			    pmd_t *dst_pmd, pmd_t dst_pmdval,
+-			    spinlock_t *dst_ptl, spinlock_t *src_ptl,
+-			    struct folio *src_folio)
++/*
++ * Checks if the two ptes and the corresponding folio are eligible for batched
++ * move. If so, then returns pointer to the folio, after locking it. Otherwise,
++ * returns NULL.
++ */
++static struct folio *check_ptes_for_batched_move(struct vm_area_struct *src_vma,
++						 unsigned long src_addr,
++						 pte_t *src_pte, pte_t *dst_pte,
++						 struct anon_vma *src_anon_vma)
++{
++	pte_t orig_dst_pte, orig_src_pte;
++	struct folio *folio;
++
++	orig_dst_pte = ptep_get(dst_pte);
++	if (!pte_none(orig_dst_pte))
++		return NULL;
++
++	orig_src_pte = ptep_get(src_pte);
++	if (pte_none(orig_src_pte) || !pte_present(orig_src_pte) ||
++	    is_zero_pfn(pte_pfn(orig_src_pte)))
++		return NULL;
++
++	folio = vm_normal_folio(src_vma, src_addr, orig_src_pte);
++	if (!folio || !folio_trylock(folio))
++		return NULL;
++	if (!PageAnonExclusive(&folio->page) || folio_test_large(folio) ||
++	    folio_anon_vma(folio) != src_anon_vma) {
++		folio_unlock(folio);
++		return NULL;
++	}
++	return folio;
++}
++
++static long move_present_ptes(struct mm_struct *mm,
++			      struct vm_area_struct *dst_vma,
++			      struct vm_area_struct *src_vma,
++			      unsigned long dst_addr, unsigned long src_addr,
++			      pte_t *dst_pte, pte_t *src_pte,
++			      pte_t orig_dst_pte, pte_t orig_src_pte,
++			      pmd_t *dst_pmd, pmd_t dst_pmdval,
++			      spinlock_t *dst_ptl, spinlock_t *src_ptl,
++			      struct folio *src_folio, unsigned long len,
++			      struct anon_vma *src_anon_vma)
+ {
+ 	int err = 0;
++	unsigned long src_start = src_addr;
++	unsigned long addr_end;
+ 
++	if (len > PAGE_SIZE) {
++		addr_end = (dst_addr + PMD_SIZE) & PMD_MASK;
++		if (dst_addr + len > addr_end)
++			len = addr_end - dst_addr;
++
++		addr_end = (src_addr + PMD_SIZE) & PMD_MASK;
++		if (src_addr + len > addr_end)
++			len = addr_end - src_addr;
++	}
++	flush_cache_range(src_vma, src_addr, src_addr + len);
+ 	double_pt_lock(dst_ptl, src_ptl);
+ 
+ 	if (!is_pte_pages_stable(dst_pte, src_pte, orig_dst_pte, orig_src_pte,
+@@ -1051,31 +1097,54 @@ static int move_present_pte(struct mm_struct *mm,
+ 		err = -EBUSY;
+ 		goto out;
+ 	}
++	arch_enter_lazy_mmu_mode();
++
++	addr_end = src_start + len;
++	while (true) {
++		orig_src_pte = ptep_get_and_clear(mm, src_addr, src_pte);
++		/* Folio got pinned from under us. Put it back and fail the move. */
++		if (folio_maybe_dma_pinned(src_folio)) {
++			set_pte_at(mm, src_addr, src_pte, orig_src_pte);
++			err = -EBUSY;
++			break;
++		}
+ 
+-	orig_src_pte = ptep_clear_flush(src_vma, src_addr, src_pte);
+-	/* Folio got pinned from under us. Put it back and fail the move. */
+-	if (folio_maybe_dma_pinned(src_folio)) {
+-		set_pte_at(mm, src_addr, src_pte, orig_src_pte);
+-		err = -EBUSY;
+-		goto out;
+-	}
+-
+-	folio_move_anon_rmap(src_folio, dst_vma);
+-	src_folio->index = linear_page_index(dst_vma, dst_addr);
++		folio_move_anon_rmap(src_folio, dst_vma);
++		src_folio->index = linear_page_index(dst_vma, dst_addr);
+ 
+-	orig_dst_pte = folio_mk_pte(src_folio, dst_vma->vm_page_prot);
+-	/* Set soft dirty bit so userspace can notice the pte was moved */
++		orig_dst_pte = folio_mk_pte(src_folio, dst_vma->vm_page_prot);
++		/* Set soft dirty bit so userspace can notice the pte was moved */
+ #ifdef CONFIG_MEM_SOFT_DIRTY
+-	orig_dst_pte = pte_mksoft_dirty(orig_dst_pte);
++		orig_dst_pte = pte_mksoft_dirty(orig_dst_pte);
+ #endif
+-	if (pte_dirty(orig_src_pte))
+-		orig_dst_pte = pte_mkdirty(orig_dst_pte);
+-	orig_dst_pte = pte_mkwrite(orig_dst_pte, dst_vma);
++		if (pte_dirty(orig_src_pte))
++			orig_dst_pte = pte_mkdirty(orig_dst_pte);
++		orig_dst_pte = pte_mkwrite(orig_dst_pte, dst_vma);
++		set_pte_at(mm, dst_addr, dst_pte, orig_dst_pte);
++
++		src_addr += PAGE_SIZE;
++		if (src_addr == addr_end)
++			break;
++		src_pte++;
++		dst_pte++;
++
++		folio_unlock(src_folio);
++		src_folio = check_ptes_for_batched_move(src_vma, src_addr, src_pte,
++							dst_pte, src_anon_vma);
++		if (!src_folio)
++			break;
++		dst_addr += PAGE_SIZE;
++	}
++
++	arch_leave_lazy_mmu_mode();
++	if (src_addr > src_start)
++		flush_tlb_range(src_vma, src_start, src_addr);
+ 
+-	set_pte_at(mm, dst_addr, dst_pte, orig_dst_pte);
+ out:
+ 	double_pt_unlock(dst_ptl, src_ptl);
+-	return err;
++	if (src_folio)
++		folio_unlock(src_folio);
++	return src_addr > src_start ? src_addr - src_start : err;
+ }
+ 
+ static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *dst_vma,
+@@ -1140,7 +1209,7 @@ static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *dst_vma,
+ 	set_pte_at(mm, dst_addr, dst_pte, orig_src_pte);
+ 	double_pt_unlock(dst_ptl, src_ptl);
+ 
+-	return 0;
++	return PAGE_SIZE;
+ }
+ 
+ static int move_zeropage_pte(struct mm_struct *mm,
+@@ -1154,6 +1223,7 @@ static int move_zeropage_pte(struct mm_struct *mm,
+ {
+ 	pte_t zero_pte;
+ 
++	flush_cache_range(src_vma, src_addr, src_addr + PAGE_SIZE);
+ 	double_pt_lock(dst_ptl, src_ptl);
+ 	if (!is_pte_pages_stable(dst_pte, src_pte, orig_dst_pte, orig_src_pte,
+ 				 dst_pmd, dst_pmdval)) {
+@@ -1167,20 +1237,19 @@ static int move_zeropage_pte(struct mm_struct *mm,
+ 	set_pte_at(mm, dst_addr, dst_pte, zero_pte);
+ 	double_pt_unlock(dst_ptl, src_ptl);
+ 
+-	return 0;
++	return PAGE_SIZE;
+ }
+ 
+ 
+ /*
+- * The mmap_lock for reading is held by the caller. Just move the page
+- * from src_pmd to dst_pmd if possible, and return true if succeeded
+- * in moving the page.
++ * The mmap_lock for reading is held by the caller. Just move the page(s)
++ * from src_pmd to dst_pmd if possible, and return number of bytes moved.
+  */
+-static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+-			  struct vm_area_struct *dst_vma,
+-			  struct vm_area_struct *src_vma,
+-			  unsigned long dst_addr, unsigned long src_addr,
+-			  __u64 mode)
++static long move_pages_ptes(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
++			    struct vm_area_struct *dst_vma,
++			    struct vm_area_struct *src_vma,
++			    unsigned long dst_addr, unsigned long src_addr,
++			    unsigned long len, __u64 mode)
+ {
+ 	swp_entry_t entry;
+ 	struct swap_info_struct *si = NULL;
+@@ -1196,9 +1265,8 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+ 	struct mmu_notifier_range range;
+ 	int err = 0;
+ 
+-	flush_cache_range(src_vma, src_addr, src_addr + PAGE_SIZE);
+ 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm,
+-				src_addr, src_addr + PAGE_SIZE);
++				src_addr, src_addr + len);
+ 	mmu_notifier_invalidate_range_start(&range);
+ retry:
+ 	/*
+@@ -1257,7 +1325,7 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+ 		if (!(mode & UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES))
+ 			err = -ENOENT;
+ 		else /* nothing to do to move a hole */
+-			err = 0;
++			err = PAGE_SIZE;
+ 		goto out;
+ 	}
+ 
+@@ -1375,10 +1443,14 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+ 			}
+ 		}
+ 
+-		err = move_present_pte(mm,  dst_vma, src_vma,
+-				       dst_addr, src_addr, dst_pte, src_pte,
+-				       orig_dst_pte, orig_src_pte, dst_pmd,
+-				       dst_pmdval, dst_ptl, src_ptl, src_folio);
++		err = move_present_ptes(mm, dst_vma, src_vma,
++					dst_addr, src_addr, dst_pte, src_pte,
++					orig_dst_pte, orig_src_pte, dst_pmd,
++					dst_pmdval, dst_ptl, src_ptl, src_folio,
++					len, src_anon_vma);
++		/* folio is already unlocked by move_present_ptes() */
++		folio_put(src_folio);
++		src_folio = NULL;
+ 	} else {
+ 		struct folio *folio = NULL;
+ 
+@@ -1732,7 +1804,7 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+ {
+ 	struct mm_struct *mm = ctx->mm;
+ 	struct vm_area_struct *src_vma, *dst_vma;
+-	unsigned long src_addr, dst_addr;
++	unsigned long src_addr, dst_addr, src_end;
+ 	pmd_t *src_pmd, *dst_pmd;
+ 	long err = -EINVAL;
+ 	ssize_t moved = 0;
+@@ -1775,8 +1847,8 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+ 	if (err)
+ 		goto out_unlock;
+ 
+-	for (src_addr = src_start, dst_addr = dst_start;
+-	     src_addr < src_start + len;) {
++	for (src_addr = src_start, dst_addr = dst_start, src_end = src_start + len;
++	     src_addr < src_end;) {
+ 		spinlock_t *ptl;
+ 		pmd_t dst_pmdval;
+ 		unsigned long step_size;
+@@ -1841,6 +1913,8 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+ 						  dst_addr, src_addr);
+ 			step_size = HPAGE_PMD_SIZE;
+ 		} else {
++			long ret;
++
+ 			if (pmd_none(*src_pmd)) {
+ 				if (!(mode & UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES)) {
+ 					err = -ENOENT;
+@@ -1857,10 +1931,13 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+ 				break;
+ 			}
+ 
+-			err = move_pages_pte(mm, dst_pmd, src_pmd,
+-					     dst_vma, src_vma,
+-					     dst_addr, src_addr, mode);
+-			step_size = PAGE_SIZE;
++			ret = move_pages_ptes(mm, dst_pmd, src_pmd,
++					      dst_vma, src_vma, dst_addr,
++					      src_addr, src_end - src_addr, mode);
++			if (ret > 0)
++				step_size = ret;
++			else
++				err = ret;
+ 		}
+ 
+ 		cond_resched();
+
+base-commit: 6e64f4580381e32c06ee146ca807c555b8f73e24
 -- 
-Cheers,
-
-David / dhildenb
+2.50.1.565.gc32cd1483b-goog
 
 
