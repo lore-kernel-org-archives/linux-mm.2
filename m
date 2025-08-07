@@ -2,89 +2,89 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 50642C87FCF
-	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 07:58:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D07DC87FCF
+	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 07:58:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 694E98E0001; Thu,  7 Aug 2025 03:58:18 -0400 (EDT)
+	id 81E878E0005; Thu,  7 Aug 2025 03:58:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 61C5A8E0006; Thu,  7 Aug 2025 03:58:18 -0400 (EDT)
+	id 7CB4D8E0007; Thu,  7 Aug 2025 03:58:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50ADD8E0005; Thu,  7 Aug 2025 03:58:18 -0400 (EDT)
+	id 693518E0005; Thu,  7 Aug 2025 03:58:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FDB08E0001
+	by kanga.kvack.org (Postfix) with ESMTP id 57E878E0001
 	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 03:58:18 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0464F116289
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 07:58:17 +0000 (UTC)
-X-FDA: 83749208676.12.B0B15DA
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 217C2140006
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 07:58:15 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KTfFx1tM;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=urezki@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754553496; a=rsa-sha256;
-	cv=none;
-	b=aPoR3eIMruyMZGDuxqVDMuvRBDxwEw6GiP5C+p/m6tVDQum9DOzbBaTzfcTHoF+PNdy1gm
-	rtyStcq+4y1x0NJjC1S9G1mQqv1ow34F4s/ej+z5rOJKbw5ok5gcK40v1q6wkMKi7ZWm8y
-	1WWZvFp8XZVPusvnqQVqCwN6kYQmIQ8=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KTfFx1tM;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=urezki@gmail.com
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2FDF1140880
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 07:58:18 +0000 (UTC)
+X-FDA: 83749208676.07.A5ABA77
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 4ADF640007
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 07:58:16 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=bWUiUGmU;
+	spf=pass (imf12.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1754553496;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h92qlRGpNpOttoa5peB/v55STRwn9jHtqjasT4/y+5w=;
-	b=suY9IUbPhcr0Ib4sfWxKdn7iRlzMdUOPGZ/LedL2/fcScmLX9hpuZyG360j+GJyFRYYBei
-	07XghFgpcQU2ADauA/iYJtZ70cVv5nRlBGpILHn9CpthnH7FGbE812lmfzHE2QwciNcr3Q
-	NKzK36iPIoEPCzr01raOMvAlNozIMvI=
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-55b7e35a452so775479e87.2
+	bh=KDFnf8EI4upo742I8wxwbr7SIwCoz9KqQtqWzVuCI6Y=;
+	b=vVBHiIV9ftW5Sgw7AVsekQuHeLjtDR4PbNm9pt9e6BSBMoFVmKeplRaY+6LaLq7fL/XXEj
+	XdI/eKtJNFKehOHLqcTXTqUyvIc6nGjHckhH+T60tTpxmRPFf7OD0O3cAq31LKJnpKnaJZ
+	4d9hCenOwduvyUySama1hn9djESGYsI=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=bWUiUGmU;
+	spf=pass (imf12.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754553496; a=rsa-sha256;
+	cv=none;
+	b=GVALRbxC1p0iY53AyJzMqmX7FL4HzzVDreZqduKzTt3kY38AhTw3ftVSvnC9DEcPRi68WB
+	chJgK/t7pAAD3q8PFA6jE9clUpsXAubbGcw9RClpiIB99t4i3FwB2lnQHgPrNice5+el8o
+	MGhjCm8S7hx5OuBQ1tKMz4VIn8YLoUY=
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-55b797ad392so799327e87.3
         for <linux-mm@kvack.org>; Thu, 07 Aug 2025 00:58:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754553494; x=1755158294; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1754553495; x=1755158295; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=h92qlRGpNpOttoa5peB/v55STRwn9jHtqjasT4/y+5w=;
-        b=KTfFx1tMJHz0FRt5wyVy3dOuZlOMEoyO3YFlOhG2SCo8TJ8JGYhG+tQs+Za5um1R43
-         yTs9PwHGRMO+g7cqrveHrSg30mCu4XdhZnDKnvEGNREILxK22PaEq6YqIyqwDFGyPO/0
-         eWEZouVBwyEH13zthUKcYGQZ8DjzJn5sfIpCztcvKVEdjq3KTuS4np2Y523zv5y4Ijdr
-         eJaA36zEgf8tgMNPLYqNpvhvmAi7+GFMolTLII6Td6ks24PdoS39J0R/x3041mz+iqSS
-         BlTyaXQT4AtQDnettI2MrMvtAIVoafbxCPtK7GE+Y94zH8cKzQk5T7T5ait/4YP6SdYW
-         BZ1g==
+        bh=KDFnf8EI4upo742I8wxwbr7SIwCoz9KqQtqWzVuCI6Y=;
+        b=bWUiUGmUn6ak3I8Nleju8c6ntI8qv7XKXEIeyhHd/NFwB/ntq9fOI6bE8C2cALTID8
+         LTswqkX8LXdTHv29bUiWNzRr0oP+wio/hPbjYMRGeRmXDycBHkwj9KilV9t3+RKCNoNR
+         mB4TbixKNlcJwMxcSN7Whr6Gb3MMP1tlOLl98araotwz2euk4otBiReZs1IADSwrm519
+         4h19fnP0WwrzAqfl26Eq1BRISwva/Ed5zLvCuvmwE8oqijqJn3nj6KyMJQdgFqMxD3eZ
+         QXabjk15A8NYpVgiNgq5SjpJBIZGej+fW8ecfhDe8Ru8tsmd2I1Ig8yIW7wlJlT/NREo
+         mNcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754553494; x=1755158294;
+        d=1e100.net; s=20230601; t=1754553495; x=1755158295;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=h92qlRGpNpOttoa5peB/v55STRwn9jHtqjasT4/y+5w=;
-        b=hm0v6g0CjDakPXmL247sGn9gPxXbAbz8rOSH1NDZh0aK45mvRZtdCJtV9oGOrGt8eq
-         O9+bpOv+r7Qu50ofM9u6eExdosLlDl9YPr4Hd81VN8teSsPxOHrDLzNnZiXWQP86iXh8
-         2v8vLo6yOPpcTydhZd8uY1hFl/KkE6gFc4KS68XIKQm9lHuyuh9GMbCGMDjm4db132oR
-         fSrUdHaXJVjj6a27o4HhWI7CSBz/kPeRz9oRs1t2Z5ICTq4o1gW/XLFcQ6wIfDfgsP31
-         jRo5r4JisejuSyvBmf8liq7vk2sR3OD+DihHDWg2KkK2wWM+w1VMfn28C/9MFGZToFwi
-         dCKA==
-X-Gm-Message-State: AOJu0Yxv0IdfJhtYdP7fQ5uK9L9ph7uoDwIaSktHFbSuz4/rhVmiefiy
-	bJbHDLYZaFBt6eaRxk2qWP9jHH8+Bwzs5yXA3ma8LFj2LqN/lSw+RWze7ammFg==
-X-Gm-Gg: ASbGncs7VINRov24M04TMnsq3E0FAGnpHPvqxEn0i2chD+DdKZHQn30ln74j7/Aob7v
-	KlNbK+HyOByoP3sULRY6fmuzfzMbKjQ/jbyJ4s+vkJliQR0YSX3G3ykQq3WZWYW86nwWRaZGNiR
-	/hYinIeUDHNMkj897eVkExrGrdZtoVv4tbb9gt8meEUHUsq5NNJ/oQFMdn1z9UXlkINaxhtY4Cu
-	ldggw0yXYoxt0cjoZYtylPQoF/M3TXZlDqJirST76eoGhow35HKOrfl30K0YG1IS3msaKHmkbjL
-	z4PWtwUP268PiDoBY4O+KPiO+G75fpyPVdTYtrERRanKj74jinzqehGzXcHAAsjzRZ+PAMGfsgZ
-	+kB4pXLdE8JvOHpkTAA==
-X-Google-Smtp-Source: AGHT+IFA0xGtyd8TAvISAHbUul+I0DeGj6jXQhulf4UCTriFlDW6HXVuVy6Cp/dIwNbD/wOAFCuoYg==
-X-Received: by 2002:a05:6512:3e08:b0:55b:7345:8386 with SMTP id 2adb3069b0e04-55cb674cc53mr612797e87.17.1754553493585;
-        Thu, 07 Aug 2025 00:58:13 -0700 (PDT)
+        bh=KDFnf8EI4upo742I8wxwbr7SIwCoz9KqQtqWzVuCI6Y=;
+        b=vsnK+DIjESrC/koivNkP/pA0UF4Coj9w17oqsgopDqcCObZ/r6IC4pUuE1cpEE0B5N
+         vSrb6CFaHEssNctw1CFQ+Huppj1Fg9tvQXafPnPngfayBH3UFGKEkfCtZlRwkK3blb+c
+         g59d/nkk84bRs+mR/Hg1AjqJ4DowBELTVLzPSjVUvqldzHYYrRQcbEQIj8seOFoB4Ryn
+         9xfbgwI1jqgTxrOQwbSs84q2H1OqvSaU+eZ+3JRIwbu+4mX3eb8O3k7gqq50Q5TnfNgw
+         HtRXky3d1/lNNvKdWirZ9iGUic+DktO6xcFLcFxiwVMBMf8fPtJEwuNmDSMvvkhq2kae
+         sIWg==
+X-Gm-Message-State: AOJu0Yyu1fmHZSAGIuBn8vQxNI+blfBFACN/kBZm53DnI1PYRCf5wTjs
+	3+Ho5bkqDoYmKFsSHoi/DP77Oc7wRh4SBd87UqQr/KIuO/7eLAkWjC5cf2KR5w==
+X-Gm-Gg: ASbGncv2mnXOuM+dalkfTEnAywzxMvBXt447B9Y5jt/oUY3hNgxlLBjuInRqB7il+d6
+	9vdtruBbTlfbOU1DADmUZT9NJEVqybN9A8OdkZ+DaLFD4TjWTZ+z/y7tbevTpE99t25u1vQAOi4
+	TwqdfnGYr2Na6tSj2MZuqL03oDhQnND+hx9dHQuAIGOaUXq6Q54lNZrM2IsE68nEO8zqtMl5kqa
+	haeDQf21HI8RWRS8AkuMSUkiI1EbOLT/9l22aiOTesCZzKFZ5kzb9LeNlyrjdn4+KPdlvGwK/WV
+	VA3mMIUgW2jD6TcV2YmHUwYnADUG7MHgI2b3GLKT6OxyRxNNkx5wni72EP0w35fNwoFDgwAQD+s
+	syyosKA3gIzkRAilPgQ==
+X-Google-Smtp-Source: AGHT+IGLrJfn07j+Z/Q1+AZhXJEZJx78Z7HhlZXmk3MvvjRB0pkrjJdAKWHTqR2XcogNuGRLnleTog==
+X-Received: by 2002:a05:6512:3da2:b0:55b:8056:626 with SMTP id 2adb3069b0e04-55caf5fda96mr2199121e87.38.1754553494378;
+        Thu, 07 Aug 2025 00:58:14 -0700 (PDT)
 Received: from pc638.lan ([2001:9b1:d5a0:a500:2d8:61ff:fec9:d743])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55b88c9b1fesm2501995e87.96.2025.08.07.00.58.12
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55b88c9b1fesm2501995e87.96.2025.08.07.00.58.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Thu, 07 Aug 2025 00:58:13 -0700 (PDT)
 From: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
@@ -95,22 +95,22 @@ Cc: Vlastimil Babka <vbabka@suse.cz>,
 	Baoquan He <bhe@redhat.com>,
 	LKML <linux-kernel@vger.kernel.org>,
 	Uladzislau Rezki <urezki@gmail.com>
-Subject: [PATCH 1/8] lib/test_vmalloc: add no_block_alloc_test case
-Date: Thu,  7 Aug 2025 09:58:03 +0200
-Message-Id: <20250807075810.358714-2-urezki@gmail.com>
+Subject: [PATCH 2/8] lib/test_vmalloc: Remove xfail condition check
+Date: Thu,  7 Aug 2025 09:58:04 +0200
+Message-Id: <20250807075810.358714-3-urezki@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250807075810.358714-1-urezki@gmail.com>
 References: <20250807075810.358714-1-urezki@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 3c1mhhqs8zgoox9u9tiotsjb5dygjmad
+X-Stat-Signature: q8gn5xqphoy1eeex6ush6q1a6yhqiab4
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4ADF640007
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 217C2140006
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1754553495-51946
-X-HE-Meta: U2FsdGVkX183dkrkPLToTBY4WfEVLb4tUFC9MdTzZPPFKJyw8rknZpgIH/bxNi2qBGxG8RWf5EhYy6AJJP7LqVC+tdpsMGYvcQscyeYny4sqJIi7NcR8ZN2Ncx51L3ODKqm0lrz0jr73eJdmqhhkSrqnUn6mVqzs0pQx2DBKHDpb7VurhMYmgPhVTINRXQJbC+bq3e9AIpw83kxsYQ+gGyKbK/PkLftuEKu/KMRL2g5Ry/d5lDXHXAn/b++vxLMrx3WJ+u8qg5MRtIvNtf5YHo3/3L3j9cQSlDkFnWlfEf+XLgWFIAkM8EL05eoZRzxjRiTAOIySsxFCDGWuJssoLaUtU1g4I/dB8evzjVHJ7eF4lumhqrx7RjIixPCdZ255DJ4QAc8LXghrm3OdVIJcR5wb0nCtgSjOCtcrtN3kHsXXaizkOkoPVaKy2e/nlb+fQZ4qsGDqVCGkiZNXrRYJQZisXEBpWctbT6soJFOq/IBaR6AsrKUlSd0mJiXw6x1xUYa3hVicbi8+3CT5A/XrP3MZHz02Sd/r9N6ZOVaaKf3xljBkI4MRyO06ThGeOpxwXAbV7yWelnVZO+DbJo0oS0LOSc4khhkSXdnDRXj0UexTqNLldXq+ap7sdFYd6/US8w7MmagVUtJE7IgLh4fA0O4w+02GClW74MmLjjU8Kg7SomNLFF+X+8WK49pXyAsDD37qgi6htZUhNX1DmfurcBMwLRrkMAco2iY5XPI3c13sYOERLgqlwz8tj0vHZjdp/j2kJrEITY3HRcXMH3i/JR5PDGqh+5fHG9aznTcWpVYaKdv5Hx12q6QmPvfoUYdzvi25dFjgiHdPqZqLNFUiMl98FEL+aOSZIBDRiIMjfEnedio9lOQGY8nYeyZX15mRFyl+mzP1HJteuJlZ6Fa3bGP3l1Rce2SQ0/m/kK4ZGxuBLDYTwccVH+LwCbKHHzxuJnj733wOS58azGpP4/a
- Edk0AvlV
- BQhlxs2q0Q4bMtsAOC9Dq9jfGjI6MeKJObAAUc5HiFlv+eilcU5HdnqIEwHWTfu3bFOdECRKPIfrpWxZzWpgmsL2sUbtjJNemprjBatbxkp1bZHaEsOl/51aRfvjYAwp/neqytY7o5m5r9Fji+4ij4I1nm33QT88LU5kKCwX2LdvWuWoETxbe3bSbfJd+uXeztV1zfzeVuSTijAjnJ46TXJ5jjbm8hdb1Xo6kjasp0TbKPqyADTzOoAKbyR4rqfXiKKyvl0OEMFzbG3Eyc9pko5gaKSR1CVePJk7o9oL2mJeQtJZcrDUN1DAFZ6fUK2ZHVQSeW79idFWUpsdExObAT9Iqg64sF7yeBRq7Dr6uwbVxdQPgpHTwBpg9lzvS68/v1kXsTDNbqzBbYuM3cfyPW9YfZA40wdGYljaf7PVcXPSNoKPVcdwXNKP79lRF3HGsXPEndgFqsQq0MGvHzg27/VRSbING3NarE45aiKsMKSgi2z+kqpPVBpL4Og==
+X-HE-Tag: 1754553496-15675
+X-HE-Meta: U2FsdGVkX1+QjuzGqLhiy2oOqLitBYHvOYgQyBEFz3cPR2dzPeKM85IQUwgtd8m5qlr8I0aBu3bjziu+dYC3NjM/Ggg9SY3Rm1758h/zgjoV3cGZwjNF7rLchElUsyDofeS/2GJTBVwVKYxgnIqmTmFM3B/xXlq55hCfH5hscFUj/Gdh6xfU4Xal1AOfDNLuvZUxWa6Dd8B3gNs5jTJEW+8+Vv6/lGoAc2FL24Kg1uxzzxvNvBdY4UgrlUnnLid0Bv/3smt2O28PAg8Xs7It79B+IxlTJYERvG1p8si5XUe5GvCDoImkTLtwC8KRCN9Ur0yVsnna1aRaIyWAAKU6i1W1SR9fY+9klU5W6ISqVTvkYRo5L0QuoNA0CACmOwdlw5b4tZdICznx+a6pLALpUwtzqV/gGSG6Dwt5KRNCUzG9UkkvwIymkc5jzGb1aunrHu/5jthlrQIHerxlT7vyiS7NmRNTvcbRD84h4LmOKF8mpNG+vDUqg/E5Bi4D3TlOhml7Y2H/Qofx5p4Xsqkk/8NqEWJrwDHfhxrlErLTuMFarRyJBbtdDk60WrjbeGg+ONuP/mr+pXsNvRvWbu8tOyigd5mKj2LGUxMg3m+EZq3yhheztIuRsyptzYZ/VDP9J5D4epV+xRtYjUUQMFaqNV48wfsxHpY/uyKctiW59wNQpw9GzXIX2tSBj4b/fT2kHFTHAxL+X4gKG3ucboYKhRQbL4KpJTy2/3IQLQuJdNQazLUjtkOxx5jbx6cfltQyQGFhV+hHlaILZZoARQxGmWVtTG3B4Z9oE0c0WmzTgTVbailrZ7JhNHLOzcysT12RneQGr8lKzCQen4Ji399ym2mvTkLhKgtHBzCdYFaoaSTH/8Ew1UoymejZBTkDChJwSIb72wTk1eFZRsT9ebhXbFsqJHggf3SC4WOKI+jJb96B/0nWSAOBTtKE/tehswXvEo8XAS6iSxt4iTgEQts
+ EdJNcPKq
+ LTfJCkhmqw4t7mHrBNtenOyiZVfnNayUieUVJc/PaN5A31KcQfPwyxbSky4723B9R2Vvk/THJAcFdR0fJKnwXRh78JTAsR+pMsINY3JOr1t1WrxucmTIawTrgIDsSNEDhNx7QJuriDxMupeEp3CF4TjcKwtvb3xXV+9adGOdRl6mF9sfHz/jrU5iSDgdOpSLyHbuRMYhbYF3IADLzwQzK50+ms323akXJZSySKeapvu96BvpqhfVz6Z2ODuMj2rq2EhNdD2UFQEqh/XGQvWOV4E5jAXDDoi7gryhtugdfOZRFGcV6y4sVuPGjRSG4UOyacWJpFxUce12kL4irgqZv/uTHcKNtaC1XbJekn00nRDimsqlFaSYnoCDzgmnlDYmLvsi0p+T5SRTk+93ogZMb68MpQ0zfv+E5HjzKVAeREdVjP5Vr4DgU3OPUOd5/AhzLs9SdQaAXlOm4Zo5MUQqKkBMTWzCDnFcGKkomaCEaeBFVoLAdniknMxmCcQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,71 +119,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce a new test case "no_block_alloc_test" that verifies
-non-blocking allocations using __vmalloc() with GFP_ATOMIC and
-GFP_NOWAIT flags.
-
-It is recommended to build kernel with CONFIG_DEBUG_ATOMIC_SLEEP
-enabled to help catch "sleeping while atomic" issues. This test
-ensures that memory allocation logic under atomic constraints
-does not inadvertently sleep.
+A test marked with "xfail = true" is expected to fail but that
+does not mean it is predetermined to fail. Remove "xfail" condition
+check for tests which pass successfully.
 
 Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 ---
- lib/test_vmalloc.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ lib/test_vmalloc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/lib/test_vmalloc.c b/lib/test_vmalloc.c
-index 2815658ccc37..aae5f4910aff 100644
+index aae5f4910aff..6521c05c7816 100644
 --- a/lib/test_vmalloc.c
 +++ b/lib/test_vmalloc.c
-@@ -54,6 +54,7 @@ __param(int, run_test_mask, 7,
- 		"\t\tid: 256,  name: kvfree_rcu_1_arg_vmalloc_test\n"
- 		"\t\tid: 512,  name: kvfree_rcu_2_arg_vmalloc_test\n"
- 		"\t\tid: 1024, name: vm_map_ram_test\n"
-+		"\t\tid: 2048, name: no_block_alloc_test\n"
- 		/* Add a new test case description here. */
- );
+@@ -500,7 +500,7 @@ static int test_func(void *private)
+ 		for (j = 0; j < test_repeat_count; j++) {
+ 			ret = test_case_array[index].test_func();
  
-@@ -283,6 +284,30 @@ static int fix_size_alloc_test(void)
- 	return 0;
- }
- 
-+static int no_block_alloc_test(void)
-+{
-+	void *ptr;
-+	int i;
-+
-+	for (i = 0; i < test_loop_count; i++) {
-+		bool use_atomic = !!(get_random_u8() % 2);
-+		gfp_t gfp = use_atomic ? GFP_ATOMIC : GFP_NOWAIT;
-+		unsigned long size = (nr_pages > 0 ? nr_pages : 1) * PAGE_SIZE;
-+
-+		preempt_disable();
-+		ptr = __vmalloc(size, gfp);
-+		preempt_enable();
-+
-+		if (!ptr)
-+			return -1;
-+
-+		*((__u8 *)ptr) = 0;
-+		vfree(ptr);
-+	}
-+
-+	return 0;
-+}
-+
- static int
- pcpu_alloc_test(void)
- {
-@@ -411,6 +436,7 @@ static struct test_case_desc test_case_array[] = {
- 	{ "kvfree_rcu_1_arg_vmalloc_test", kvfree_rcu_1_arg_vmalloc_test, },
- 	{ "kvfree_rcu_2_arg_vmalloc_test", kvfree_rcu_2_arg_vmalloc_test, },
- 	{ "vm_map_ram_test", vm_map_ram_test, },
-+	{ "no_block_alloc_test", no_block_alloc_test, true },
- 	/* Add a new test case here. */
- };
- 
+-			if (!ret && !test_case_array[index].xfail)
++			if (!ret)
+ 				t->data[index].test_passed++;
+ 			else if (ret && test_case_array[index].xfail)
+ 				t->data[index].test_xfailed++;
 -- 
 2.39.5
 
