@@ -2,101 +2,109 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B0D8C87FD2
-	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 04:03:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4B4EFC87FD2
+	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 04:58:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B68FE6B00BF; Thu,  7 Aug 2025 00:03:57 -0400 (EDT)
+	id A36B18E0002; Thu,  7 Aug 2025 00:58:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B18656B00C0; Thu,  7 Aug 2025 00:03:57 -0400 (EDT)
+	id 9E80A8E0001; Thu,  7 Aug 2025 00:58:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E07C6B00C1; Thu,  7 Aug 2025 00:03:57 -0400 (EDT)
+	id 8D5C98E0002; Thu,  7 Aug 2025 00:58:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 81A086B00BF
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 00:03:57 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E318BC0791
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 04:03:56 +0000 (UTC)
-X-FDA: 83748618072.26.BCA445F
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 11A2CA000D
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 04:03:53 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=X+Zd4IcD;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754539435; a=rsa-sha256;
-	cv=none;
-	b=SZwOHAfrD0MEChui/vG7qXHl4Wu/8ANH1RGYpTXEjKDQgKb25B4mKKvL3eM43egk1OOd+s
-	1NwifyFFc/rFKfjR21XRVLCvLed9asyf6b1q4eq9qvKQcWO4aY1MwdGbjzIs1c9Z0lyJwW
-	7gYQD/RcxEfrpcXfacIssHp8rdmm6fc=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=X+Zd4IcD;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 76E428E0001
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 00:58:50 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2A315115FD5
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 04:58:50 +0000 (UTC)
+X-FDA: 83748756420.07.9808AF5
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 25FE81C0003
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 04:58:44 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	spf=pass (imf21.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754539435;
+	s=arc-20220608; t=1754542728;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=mqWakfc4W6AZTaVXx0jb9hwZPLg9HJn1XBuR/BcBi9U=;
-	b=Y8aR4n9Jc5AwsU4XAPyMCzFnhziREd1Ci70vQF+XJxtCDKY5uH1QIa0Wxu6ZtzdlpfNJLD
-	nxjmqMSEk0Ui8jSriKGhQynhCgXYUWBPDbLXrAqE1ziWJIXALPwjfD7+VrKdMg1HLsDb+E
-	S88p/d71M67CCWfTVanzYayLjD3MJcw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754539434; x=1786075434;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=+kfs2B0V8kGGIabF8VUSuYRS9Iu07MUf+/+GIV7koRA=;
-  b=X+Zd4IcD8jRKn/OrbS3XcsCI5AdI7c9QZU9B3aJKrWtcPDwYPWAgqond
-   aDry5jgUrAZKL9SDqXiVJlqRhdq+9GN1ZGPc6/nVGerfR2+oUAs2GphHL
-   QrNHqUNYZHyAzUIqIuF/hVzdr2LmEmqXNOIwpN04w18QtqbJhImYPhSTY
-   eeEoeEorvFDiRQ2NetIEYpEx2SruPnpwg9W7htYSkI5jSokoM0rwSOEnc
-   OWZcP4qHXdRxsNxMowZ77ZF5Q2EmOnGGDVwLB3i5F75CxOdMOlCY6RXfy
-   Z/Lq/kDGO6mIoioftelsfx5ol4KlxXxg626bBZthk3vy1XDymyguDg1/T
-   w==;
-X-CSE-ConnectionGUID: oT/3Y0yQQ+iVWdWG+/UlTg==
-X-CSE-MsgGUID: Huokc5oJTHSd3WyKamH/dg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11514"; a="55901998"
-X-IronPort-AV: E=Sophos;i="6.17,271,1747724400"; 
-   d="scan'208";a="55901998"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2025 21:03:51 -0700
-X-CSE-ConnectionGUID: vbwi7i1TS0qxAaomV3YqeA==
-X-CSE-MsgGUID: YqBgIi/BQEKoE6PPygPDNA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,271,1747724400"; 
-   d="scan'208";a="164849413"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by fmviesa006.fm.intel.com with ESMTP; 06 Aug 2025 21:03:49 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1ujrr1-0002Lw-0N;
-	Thu, 07 Aug 2025 04:03:47 +0000
-Date: Thu, 7 Aug 2025 12:03:03 +0800
-From: kernel test robot <lkp@intel.com>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: [sj:mm-new 42/45] ERROR: modpost: __ex_table+0x1584 references
- non-executable section '.rodata.spk_ttyio_synth_probe.str1.4'
-Message-ID: <202508071131.KsUs9Est-lkp@intel.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iyzFtcad5nma0msdF/Pzcl7V0dSmnCE1mwaOvuyKCkQ=;
+	b=Zz9NJaK/+AZfh+jUO0pceI8Vp5yCV/xIlLe6chR8mvnde8xMUPMKZST/LlTPsqq/P1aDjg
+	r6tyuf9RRw78FjrBYnoYphzZdHljYhVYMR03S9Wc1Y/OFWBEKGShI6FJG86MhNnateECxR
+	EizLEwFUQI67Hn63uzGmKTy3VtZPu0g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754542728; a=rsa-sha256;
+	cv=none;
+	b=LIMwkb+Oc3Qbywb/qMe3oan4RotuwShwJtTpLCNiY+53cW2xf6/Hrf9cx93qZhn7NUE+D3
+	k0T+oXULvJ8G3eGF9NLExHlTMJ9uufPhQmqzu6uRJDfmoHsA267Tvrdpzk3qC35WzbtgwU
+	JbhdO6U8DSEglqdS2acXPLDh8d1vTIE=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.235])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4byFL90zwDzYQv9W
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 12:58:41 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id C18461A07F1
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 12:58:39 +0800 (CST)
+Received: from [10.174.179.80] (unknown [10.174.179.80])
+	by APP4 (Coremail) with SMTP id gCh0CgBHwhJ+MpRoadZjCw--.39810S3;
+	Thu, 07 Aug 2025 12:58:39 +0800 (CST)
+Message-ID: <81db99c8-e0bb-478a-b75f-84e352a970e0@huaweicloud.com>
+Date: Thu, 7 Aug 2025 12:58:37 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Stat-Signature: m3td6pkbptuf337d5nygkpnumnhe1n4j
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/7] iomap: optional zero range dirty folio processing
+To: Brian Foster <bfoster@redhat.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org,
+ linux-mm@kvack.org, hch@infradead.org, willy@infradead.org,
+ "Darrick J. Wong" <djwong@kernel.org>,
+ Ext4 Developers List <linux-ext4@vger.kernel.org>
+References: <20250714204122.349582-1-bfoster@redhat.com>
+ <20250714204122.349582-4-bfoster@redhat.com>
+ <20250715052259.GO2672049@frogsfrogsfrogs>
+ <e6333d2d-cc30-44d3-8f23-6a6c5ea0134d@huaweicloud.com>
+ <aHpQxq6mDyLL1Nfj@bfoster>
+ <09b7c1cf-7bfa-4798-b9de-f49620046664@huaweicloud.com>
+ <aIobh49Bb0Vqz10I@bfoster>
+ <c12ae271-63ba-4028-8da1-131d95727764@huaweicloud.com>
+ <aJICOpY5FU1vHZvm@bfoster>
+ <9c09377d-5a88-4935-9d28-5683a8263de5@huaweicloud.com>
+ <aJNXwvp87THRLtpf@bfoster>
+Content-Language: en-US
+From: Zhang Yi <yi.zhang@huaweicloud.com>
+In-Reply-To: <aJNXwvp87THRLtpf@bfoster>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:gCh0CgBHwhJ+MpRoadZjCw--.39810S3
+X-Coremail-Antispam: 1UD129KBjvAXoWfur1fCw1fCF13uFW7CF4rZrb_yoW8tr18Wo
+	WfJw4xJF48trn8AF1UC34DJryUW3Z8Cr18JrWUZr4YqF90q34UCw48JwsrJay7JrWUCr4U
+	J348J3Z8ArW7XF1fn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
+	AaLaJ3UjIYCTnIWjp_UUU5M7kC6x804xWl14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK
+	8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4
+	AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF
+	7I0E14v26r4UJVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7
+	CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8C
+	rVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4
+	IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0E
+	wIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E74
+	80Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0
+	I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04
+	k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7Cj
+	xVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1veHDUUUUU==
+X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
+X-Rspamd-Queue-Id: 25FE81C0003
+X-Stat-Signature: zf3nh3ai9orc4xb64qu7jimx871a8tpk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 11A2CA000D
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1754539433-8350
-X-HE-Meta: U2FsdGVkX1+UpkPj5183QeqfD9W5Dsghg7Ygkoo/cXixVhUfX4l6DQjZ8Hf8Hpy6mPJZmhLJjWjlKivCmSTIobFfGM6qL63tlpIej6C/m3Ip+7W8ywRTJVDLv1GWV+0gCAUz8nbEDNGg9lBz4IV52CFP5ZUWjf+TJeqqjhFX4Vh0vb7rPvkpkdeGhaIfbzV5Pa5v+rOHbgg2TfydpjDvTrGhbu86rmQGuCxB6oLvmgoUM85x0hs/tjK91zrO3iu0WQ4u3wn3RlAL6IjH66wv/TRFVd7qz7B3NvoUvk0BtBg2oBJ3Py9Yim0C6DYSmfI3bHEfbzpgAQQQ6vCd+vihf3iY/hBXkC9GBUk4cM5NJC7nfiLWUJ4etvtTYFt2piaUfMRHi9DJTX7R8M6NGIUwQ8j7ZN1O75XrpnSp7JgdPwF5mx1oPDgGI78nDN6hwoANQQmL2rViH9hWb8HI73wqNaG4Yn6MGyGhyWevO08/NsglV156PZGxtnxD00LDtpJfkQmwFlFloRYwjy+qOQVUM77tyyPOcxbk3PY/vrFnUPZ0AgGbt1aL9lkcNURIIx79AZWUbN7VDq7tO4Y3HysJxcuhIbNTE1POtGPVFat3QM52MalsRI/ikrl+5smRZHirWjGdsiSU5sPSy0xNRQ7xxvV4rmlRUW1C7/n4lA1zzOe9jjMU/bwFsgan5NpG5oDQbSMSYrsvEMD/SMS6Epbchv9ofxEfHbBkPZmSaziHynaTzGfb0yOP/es4RMG/7z0rLgKAKP/o+YYWLmIgw0JpyB4ozXoryWOW3L5lxWG/Oasvd/WuIEKV1/WiZErlS+mKdtPGzBhgIFAj31I2gVATWa/5ZdTh5/lim47VPa4Kh8ioRGfEcxPZYdNpPMFNMqBV5mNOjKiO74JcsjXjgArIa69dUJdQIOOIbUyeBAOpHz7NncdhK0FvE08qwL06fdCgIqJnQNJEyCTSVT37kIB
- hgYrYVnd
- 30Nkpn4DesJBQa3/ZeuD0ARhmP6gCIip4CBUu/IlZMbxCnVmsNKzoqINDWmG8IvF15cMCAMj1NNB+RjCv8tLegFO9Vflo372ZFHo1cH6lUOoFj25ukVPEHhhXYAtc/8Z2skTU6xp5Z/NGZgjlEZt5DX4/OsCMQxIX0BGLnr2LjHliMuufiQXHvgwoQhwABBtNo3snItYZQeLea/DX7zSs3OMqmsOuUW/Si55/3IUh5jc0fmwrw6sb+mMJ6cd39cIE1c4QMcazImRM6bsp9ckY0oYjmkoqHx/Lsa10TbyDPwcXJ2MPZyYnJsngysniZYVKfAfEJibX65jaQAVyu3XrqXCWFSe9zC8M3lJ4qL14jC1+bW83QL3EEniKw9VBrfqfoj5drwkYH8L+G8lsI80A4BDJTQ==
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1754542724-590035
+X-HE-Meta: U2FsdGVkX19+5o0VEbrIO6iy9yxwyIrfNbqYP571PvOouaJZ8lFwx451xqHXWKjB0CEHI924amP8+7j5p4IcbfgxUxqjOTAHLdYxJkl1YMgvunfU0xzXCDkDwN1ZI3St2QkBtSF9R71qy215knOVmP12UBrBwd1IplVDc4k296im9ZTKMTK14Zwrw1E+ARJpboJqaqusICkTY2VCJ3uNjJPjJZ7sNBdFUfpYspdgom7Ydb4+Sls8LWcaW1XPpK3kVWUAyAorMIT9uVTnppvQd/jxA+IQpiqHuxjrxHjuoMbsi9D+rky/h31s7B6rKLvu6NbFNCPyXhDWnrQDfWRRAhZ9g4uyTHvQ+5xGccjZwFwSdYl1vzNFXDsl64uUnjLhITB/yHFOr06roCjqC0xhqgZB5+QuAnTlFLw56YTfsWEx2MLYpFZuBrA7GyHXVaGcMhMPDAhiAReAXK6lXEw5IpI8yqXanLrumkH+bIuUYkxKWrmJZ0sSbh1vzGf64ShxdRW196Ls4cakK8x1MU1MilOqLsOu5E5k5omeBeDPAkehGYp+KcSZTdmfm+x7mGqRn7HmBYBhFioowfxiPgoQVf+B8BnAPZnNB6oKQTMn72MnKmgmFFwB+QM3qXoJokj+lKTANFqKlnOfoKT901gQA5+W0oY9N/LxE1hNjJ5U3obtP2/n/lOJNJKSV+MOs6B7wlokl0VOtS1K3hAOWJuxR1jX8nQ9PGaumDoFxIeK6vMVBi/PTLjDsgaDFNp/kJCqZSAN0bVPUYQLw1gIBvRPzfSHbREXlL7a0BGtmXPQ89bqeBWGMph3Zn997GY2ENhdW1ozpqtK+vI5InoYvF7h68MoiPY0t83neNY1Xe6GIx/lQT+ozBfz3X2xN3J0N9kOa/3wWCaZbccmjcQorpDQwQiJQus8Elu0F0zcwuMuXI0KnSjzWj9xMrPT+rHUiEK7pf/v9rdmt+MoFxWMKzS
+ FGqRu1ya
+ m8PPSeFI2BCA293bhvpStLpXind3vvmnU8txfImHkw8nTtesuafAnyKvTQwvLMtNwVn8FJ0m5F4OJH5A0LhczsW8rKQmmm7s46hoOAGi+iRnIxEEcgA0WrqY2ZWrA6PstkpCocwXg9JCIEm6xOfLTvuMfg/inC5we/Abv
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,229 +113,467 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/sj/linux.git mm-new
-head:   b2a4beca30ba51331a16d7bb84387a70b692a66d
-commit: 607a455e2f3d528b71be200e1e18e578273a602e [42/45] mm: change vma_start_read() to drop RCU lock on failure
-config: riscv-randconfig-002-20250807 (https://download.01.org/0day-ci/archive/20250807/202508071131.KsUs9Est-lkp@intel.com/config)
-compiler: riscv32-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250807/202508071131.KsUs9Est-lkp@intel.com/reproduce)
+On 2025/8/6 21:25, Brian Foster wrote:
+> On Wed, Aug 06, 2025 at 11:10:30AM +0800, Zhang Yi wrote:
+>> On 2025/8/5 21:08, Brian Foster wrote:
+>>> On Sat, Aug 02, 2025 at 03:19:54PM +0800, Zhang Yi wrote:
+>>>> On 2025/7/30 21:17, Brian Foster wrote:
+>>>>> On Sat, Jul 19, 2025 at 07:07:43PM +0800, Zhang Yi wrote:
+>>>>>> On 2025/7/18 21:48, Brian Foster wrote:
+>>>>>>> On Fri, Jul 18, 2025 at 07:30:10PM +0800, Zhang Yi wrote:
+>>>>>>>> On 2025/7/15 13:22, Darrick J. Wong wrote:
+>>>>>>>>> On Mon, Jul 14, 2025 at 04:41:18PM -0400, Brian Foster wrote:
+>>>>>>>>>> The only way zero range can currently process unwritten mappings
+>>>>>>>>>> with dirty pagecache is to check whether the range is dirty before
+>>>>>>>>>> mapping lookup and then flush when at least one underlying mapping
+>>>>>>>>>> is unwritten. This ordering is required to prevent iomap lookup from
+>>>>>>>>>> racing with folio writeback and reclaim.
+>>>>>>>>>>
+>>>>>>>>>> Since zero range can skip ranges of unwritten mappings that are
+>>>>>>>>>> clean in cache, this operation can be improved by allowing the
+>>>>>>>>>> filesystem to provide a set of dirty folios that require zeroing. In
+>>>>>>>>>> turn, rather than flush or iterate file offsets, zero range can
+>>>>>>>>>> iterate on folios in the batch and advance over clean or uncached
+>>>>>>>>>> ranges in between.
+>>>>>>>>>>
+>>>>>>>>>> Add a folio_batch in struct iomap and provide a helper for fs' to
+>>>>>>>>>
+>>>>>>>>> /me confused by the single quote; is this supposed to read:
+>>>>>>>>>
+>>>>>>>>> "...for the fs to populate..."?
+>>>>>>>>>
+>>>>>>>>> Either way the code changes look like a reasonable thing to do for the
+>>>>>>>>> pagecache (try to grab a bunch of dirty folios while XFS holds the
+>>>>>>>>> mapping lock) so
+>>>>>>>>>
+>>>>>>>>> Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+>>>>>>>>>
+>>>>>>>>> --D
+>>>>>>>>>
+>>>>>>>>>
+>>>>>>>>>> populate the batch at lookup time. Update the folio lookup path to
+>>>>>>>>>> return the next folio in the batch, if provided, and advance the
+>>>>>>>>>> iter if the folio starts beyond the current offset.
+>>>>>>>>>>
+>>>>>>>>>> Signed-off-by: Brian Foster <bfoster@redhat.com>
+>>>>>>>>>> Reviewed-by: Christoph Hellwig <hch@lst.de>
+>>>>>>>>>> ---
+>>>>>>>>>>  fs/iomap/buffered-io.c | 89 +++++++++++++++++++++++++++++++++++++++---
+>>>>>>>>>>  fs/iomap/iter.c        |  6 +++
+>>>>>>>>>>  include/linux/iomap.h  |  4 ++
+>>>>>>>>>>  3 files changed, 94 insertions(+), 5 deletions(-)
+>>>>>>>>>>
+>>>>>>>>>> diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+>>>>>>>>>> index 38da2fa6e6b0..194e3cc0857f 100644
+>>>>>>>>>> --- a/fs/iomap/buffered-io.c
+>>>>>>>>>> +++ b/fs/iomap/buffered-io.c
+>>>>>>>> [...]
+>>>>>>>>>> @@ -1398,6 +1452,26 @@ static int iomap_zero_iter(struct iomap_iter *iter, bool *did_zero)
+>>>>>>>>>>  	return status;
+>>>>>>>>>>  }
+>>>>>>>>>>  
+>>>>>>>>>> +loff_t
+>>>>>>>>>> +iomap_fill_dirty_folios(
+>>>>>>>>>> +	struct iomap_iter	*iter,
+>>>>>>>>>> +	loff_t			offset,
+>>>>>>>>>> +	loff_t			length)
+>>>>>>>>>> +{
+>>>>>>>>>> +	struct address_space	*mapping = iter->inode->i_mapping;
+>>>>>>>>>> +	pgoff_t			start = offset >> PAGE_SHIFT;
+>>>>>>>>>> +	pgoff_t			end = (offset + length - 1) >> PAGE_SHIFT;
+>>>>>>>>>> +
+>>>>>>>>>> +	iter->fbatch = kmalloc(sizeof(struct folio_batch), GFP_KERNEL);
+>>>>>>>>>> +	if (!iter->fbatch)
+>>>>>>>>
+>>>>>>>> Hi, Brian!
+>>>>>>>>
+>>>>>>>> I think ext4 needs to be aware of this failure after it converts to use
+>>>>>>>> iomap infrastructure. It is because if we fail to add dirty folios to the
+>>>>>>>> fbatch, iomap_zero_range() will flush those unwritten and dirty range.
+>>>>>>>> This could potentially lead to a deadlock, as most calls to
+>>>>>>>> ext4_block_zero_page_range() occur under an active journal handle.
+>>>>>>>> Writeback operations under an active journal handle may result in circular
+>>>>>>>> waiting within journal transactions. So please return this error code, and
+>>>>>>>> then ext4 can interrupt zero operations to prevent deadlock.
+>>>>>>>>
+>>>>>>>
+>>>>>>> Hi Yi,
+>>>>>>>
+>>>>>>> Thanks for looking at this.
+>>>>>>>
+>>>>>>> Huh.. so the reason for falling back like this here is just that this
+>>>>>>> was considered an optional optimization, with the flush in
+>>>>>>> iomap_zero_range() being default fallback behavior. IIUC, what you're
+>>>>>>> saying means that the current zero range behavior without this series is
+>>>>>>> problematic for ext4-on-iomap..? 
+>>>>>>
+>>>>>> Yes.
+>>>>>>
+>>>>>>> If so, have you observed issues you can share details about?
+>>>>>>
+>>>>>> Sure.
+>>>>>>
+>>>>>> Before delving into the specific details of this issue, I would like
+>>>>>> to provide some background information on the rule that ext4 cannot
+>>>>>> wait for writeback in an active journal handle. If you are aware of
+>>>>>> this background, please skip this paragraph. During ext4 writing back
+>>>>>> the page cache, it may start a new journal handle to allocate blocks,
+>>>>>> update the disksize, and convert unwritten extents after the I/O is
+>>>>>> completed. When starting this new journal handle, if the current
+>>>>>> running journal transaction is in the process of being submitted or
+>>>>>> if the journal space is insufficient, it must wait for the ongoing
+>>>>>> transaction to be completed, but the prerequisite for this is that all
+>>>>>> currently running handles must be terminated. However, if we flush the
+>>>>>> page cache under an active journal handle, we cannot stop it, which
+>>>>>> may lead to a deadlock.
+>>>>>>
+>>>>>
+>>>>> Ok, makes sense.
+>>>>>
+>>>>>> Now, the issue I have observed occurs when I attempt to use
+>>>>>> iomap_zero_range() within ext4_block_zero_page_range(). My current
+>>>>>> implementation are below(based on the latest fs-next).
+>>>>>>
+>>>>>> diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+>>>>>> index 28547663e4fd..1a21667f3f7c 100644
+>>>>>> --- a/fs/ext4/inode.c
+>>>>>> +++ b/fs/ext4/inode.c
+>>>>>> @@ -4147,6 +4147,53 @@ static int ext4_iomap_buffered_da_write_end(struct inode *inode, loff_t offset,
+>>>>>>  	return 0;
+>>>>>>  }
+>>>>>>
+>>>>>> +static int ext4_iomap_buffered_zero_begin(struct inode *inode, loff_t offset,
+>>>>>> +			loff_t length, unsigned int flags, struct iomap *iomap,
+>>>>>> +			struct iomap *srcmap)
+>>>>>> +{
+>>>>>> +	struct iomap_iter *iter = container_of(iomap, struct iomap_iter, iomap);
+>>>>>> +	struct ext4_map_blocks map;
+>>>>>> +	u8 blkbits = inode->i_blkbits;
+>>>>>> +	int ret;
+>>>>>> +
+>>>>>> +	ret = ext4_emergency_state(inode->i_sb);
+>>>>>> +	if (unlikely(ret))
+>>>>>> +		return ret;
+>>>>>> +
+>>>>>> +	if ((offset >> blkbits) > EXT4_MAX_LOGICAL_BLOCK)
+>>>>>> +		return -EINVAL;
+>>>>>> +
+>>>>>> +	/* Calculate the first and last logical blocks respectively. */
+>>>>>> +	map.m_lblk = offset >> blkbits;
+>>>>>> +	map.m_len = min_t(loff_t, (offset + length - 1) >> blkbits,
+>>>>>> +			  EXT4_MAX_LOGICAL_BLOCK) - map.m_lblk + 1;
+>>>>>> +
+>>>>>> +	ret = ext4_map_blocks(NULL, inode, &map, 0);
+>>>>>> +	if (ret < 0)
+>>>>>> +		return ret;
+>>>>>> +
+>>>>>> +	/*
+>>>>>> +	 * Look up dirty folios for unwritten mappings within EOF. Providing
+>>>>>> +	 * this bypasses the flush iomap uses to trigger extent conversion
+>>>>>> +	 * when unwritten mappings have dirty pagecache in need of zeroing.
+>>>>>> +	 */
+>>>>>> +	if ((map.m_flags & EXT4_MAP_UNWRITTEN) &&
+>>>>>> +	    map.m_lblk < EXT4_B_TO_LBLK(inode, i_size_read(inode))) {
+>>>>>> +		loff_t end;
+>>>>>> +
+>>>>>> +		end = iomap_fill_dirty_folios(iter, map.m_lblk << blkbits,
+>>>>>> +					      map.m_len << blkbits);
+>>>>>> +		if ((end >> blkbits) < map.m_lblk + map.m_len)
+>>>>>> +			map.m_len = (end >> blkbits) - map.m_lblk;
+>>>>>> +	}
+>>>>>> +
+>>>>>> +	ext4_set_iomap(inode, iomap, &map, offset, length, flags);
+>>>>>> +	return 0;
+>>>>>> +}
+>>>>>> +
+>>>>>> +const struct iomap_ops ext4_iomap_buffered_zero_ops = {
+>>>>>> +	.iomap_begin = ext4_iomap_buffered_zero_begin,
+>>>>>> +};
+>>>>>>
+>>>>>>  const struct iomap_ops ext4_iomap_buffered_write_ops = {
+>>>>>>  	.iomap_begin = ext4_iomap_buffered_write_begin,
+>>>>>> @@ -4611,6 +4658,17 @@ static int __ext4_block_zero_page_range(handle_t *handle,
+>>>>>>  	return err;
+>>>>>>  }
+>>>>>>
+>>>>>> +static inline int ext4_iomap_zero_range(struct inode *inode, loff_t from,
+>>>>>> +					loff_t length)
+>>>>>> +{
+>>>>>> +	WARN_ON_ONCE(!inode_is_locked(inode) &&
+>>>>>> +		     !rwsem_is_locked(&inode->i_mapping->invalidate_lock));
+>>>>>> +
+>>>>>> +	return iomap_zero_range(inode, from, length, NULL,
+>>>>>> +				&ext4_iomap_buffered_zero_ops,
+>>>>>> +				&ext4_iomap_write_ops, NULL);
+>>>>>> +}
+>>>>>> +
+>>>>>>  /*
+>>>>>>   * ext4_block_zero_page_range() zeros out a mapping of length 'length'
+>>>>>>   * starting from file offset 'from'.  The range to be zero'd must
+>>>>>> @@ -4636,6 +4694,8 @@ static int ext4_block_zero_page_range(handle_t *handle,
+>>>>>>  	if (IS_DAX(inode)) {
+>>>>>>  		return dax_zero_range(inode, from, length, NULL,
+>>>>>>  				      &ext4_iomap_ops);
+>>>>>> +	} else if (ext4_test_inode_state(inode, EXT4_STATE_BUFFERED_IOMAP)) {
+>>>>>> +		return ext4_iomap_zero_range(inode, from, length);
+>>>>>>  	}
+>>>>>>  	return __ext4_block_zero_page_range(handle, mapping, from, length);
+>>>>>>  }
+>>>>>>
+>>>>>> The problem is most calls to ext4_block_zero_page_range() occur under
+>>>>>> an active journal handle, so I can reproduce the deadlock issue easily
+>>>>>> without this series.
+>>>>>>
+>>>>>>>
+>>>>>>> FWIW, I think your suggestion is reasonable, but I'm also curious what
+>>>>>>> the error handling would look like in ext4. Do you expect to the fail
+>>>>>>> the higher level operation, for example? Cycle locks and retry, etc.?
+>>>>>>
+>>>>>> Originally, I wanted ext4_block_zero_page_range() to return a failure
+>>>>>> to the higher level operation. However, unfortunately, after my testing
+>>>>>> today, I discovered that even though we implement this, this series still
+>>>>>> cannot resolve the issue. The corner case is:
+>>>>>>
+>>>>>> Assume we have a dirty folio covers both hole and unwritten mappings.
+>>>>>>
+>>>>>>    |- dirty folio  -|
+>>>>>>    [hhhhhhhhuuuuuuuu]                h:hole, u:unwrtten
+>>>>>>
+>>>>>> If we punch the range of the hole, ext4_punch_hole()->
+>>>>>> ext4_zero_partial_blocks() will zero out the first half of the dirty folio.
+>>>>>> Then, ext4_iomap_buffered_zero_begin() will skip adding this dirty folio
+>>>>>> since the target range is a hole. Finally, iomap_zero_range() will still
+>>>>>> flush this whole folio and lead to deadlock during writeback the latter
+>>>>>> half of the folio.
+>>>>>>
+>>>>>
+>>>>> Hmm.. Ok. So it seems there are at least a couple ways around this
+>>>>> particular quirk. I suspect one is that you could just call the fill
+>>>>> helper in the hole case as well, but that's kind of a hack and not
+>>>>> really intended use.
+>>>>>
+>>>>> The other way goes back to the fact that the flush for the hole case was
+>>>>> kind of a corner case hack in the first place. The original comment for
+>>>>> that seems to have been dropped, but see commit 7d9b474ee4cc ("iomap:
+>>>>> make zero range flush conditional on unwritten mappings") for reference
+>>>>> to the original intent.
+>>>>>
+>>>>> I'd have to go back and investigate if something regresses with that
+>>>>> taken out, but my recollection is that was something that needed proper
+>>>>> fixing eventually anyways. I'm particularly wondering if that is no
+>>>>> longer an issue now that pagecache_isize_extended() handles the post-eof
+>>>>> zeroing (the caveat being we might just need to call it in some
+>>>>> additional size extension cases besides just setattr/truncate).
+>>>>
+>>>> Yeah, I agree with you. I suppose the post-EOF partial folio zeroing in
+>>>> pagecache_isize_extended() should work.
+>>>>
+>>>
+>>> Ok..
+>>>
+>>>>>
+>>>>>>>
+>>>>>>> The reason I ask is because the folio_batch handling has come up through
+>>>>>>> discussions on this series. My position so far has been to keep it as a
+>>>>>>> separate allocation and to keep things simple since it is currently
+>>>>>>> isolated to zero range, but that may change if the usage spills over to
+>>>>>>> other operations (which seems expected at this point). I suspect that if
+>>>>>>> a filesystem actually depends on this for correct behavior, that is
+>>>>>>> another data point worth considering on that topic.
+>>>>>>>
+>>>>>>> So that has me wondering if it would be better/easier here to perhaps
+>>>>>>> embed the batch in iomap_iter, or maybe as an incremental step put it on
+>>>>>>> the stack in iomap_zero_range() and initialize the iomap_iter pointer
+>>>>>>> there instead of doing the dynamic allocation (then the fill helper
+>>>>>>> would set a flag to indicate the fs did pagecache lookup). Thoughts on
+>>>>>>> something like that?
+>>>>>>>
+>>>>>>> Also IIUC ext4-on-iomap is still a WIP and review on this series seems
+>>>>>>> to have mostly wound down. Any objection if the fix for that comes along
+>>>>>>> as a followup patch rather than a rework of this series?
+>>>>>>
+>>>>>> It seems that we don't need to modify this series, we need to consider
+>>>>>> other solutions to resolve this deadlock issue.
+>>>>>>
+>>>>>> In my v1 ext4-on-iomap series [1], I resolved this issue by moving all
+>>>>>> instances of ext4_block_zero_page_range() out of the running journal
+>>>>>> handle(please see patch 19-21). But I don't think this is a good solution
+>>>>>> since it's complex and fragile. Besides, after commit c7fc0366c6562
+>>>>>> ("ext4: partial zero eof block on unaligned inode size extension"), you
+>>>>>> added more invocations of ext4_zero_partial_blocks(), and the situation
+>>>>>> has become more complicated (Althrough I think the calls in the three
+>>>>>> write_end callbacks can be removed).
+>>>>>>
+>>>>>> Besides, IIUC, it seems that ext4 doesn't need to flush dirty folios
+>>>>>> over unwritten mappings before zeroing partial blocks. This is because
+>>>>>> ext4 always zeroes the in-memory page cache before zeroing(e.g, in
+>>>>>> ext4_setattr() and ext4_punch_hole()), it means if the target range is
+>>>>>> still dirty and unwritten when calling ext4_block_zero_page_range(), it
+>>>>>> must has already been zeroed. Was I missing something? Therefore, I was
+>>>>>> wondering if there are any ways to prevent flushing in
+>>>>>> iomap_zero_range()? Any ideas?
+>>>>>
+>>>>> It's certainly possible that the quirk fixed by the flush the hole case
+>>>>> was never a problem on ext4, if that's what you mean. Most of the
+>>>>> testing for this was on XFS since ext4 hadn't used iomap for buffered
+>>>>> writes.
+>>>>>
+>>>>> At the end of the day, the batch mechanism is intended to facilitate
+>>>>> avoiding the flush entirely. I'm still paging things back in here.. but
+>>>>> if we had two smallish changes to this code path to 1. eliminate the
+>>>>> dynamic folio_batch allocation and 2. drop the flush on hole mapping
+>>>>> case, would that address the issues with iomap zero range for ext4?
+>>>>>
+>>>>
+>>>> Thank you for looking at this!
+>>>>
+>>>> I made a simple modification to the iomap_zero_range() function based
+>>>> on the second solution you mentioned, then tested it using kvm-xfstests
+>>>> these days. This solution works fine on ext4 and I don't find any other
+>>>> risks by now. (Since my testing environment has sufficient memory, I
+>>>> have not yet handled the case of memory allocation failure).
+>>>>
+>>>
+>>> Great, thanks for evaluating that. I've been playing around with the
+>>> exact same change the past few days. As it turns out, this still breaks
+>>> something with XFS. I've narrowed it down to an interaction between a
+>>> large eof folio that fails to split on truncate due to being dirty, COW
+>>> prealloc and insert range racing with writeback in such a way that this
+>>> results in a mapped post-eof block on the file. Technically that isn't
+>>> the end of the world so long as it is zeroed, but a subsequent zero
+>>> range can warn if the folio is reclaimed and we now end up with a new
+>>> one that starts beyond EOF, because those folios don't write back.
+>>>
+>>> I have a mix of hacks that seems to address the generic/363 failure, but
+>>> it still needs further testing and analysis to unwind my mess of various
+>>> experiments and whatnot. ;P
+>>
+>> OK, thanks for debugging and analyzing this.
+>>
+>>>
+>>>> --- a/fs/iomap/buffered-io.c
+>>>> +++ b/fs/iomap/buffered-io.c
+>>>> @@ -1520,7 +1520,7 @@ iomap_zero_range(struct inode *inode, loff_t pos, loff_t len, bool *did_zero,
+>>>> 		     srcmap->type == IOMAP_UNWRITTEN)) {
+>>>> 			s64 status;
+>>>>
+>>>> -			if (range_dirty) {
+>>>> +			if (range_dirty && srcmap->type == IOMAP_UNWRITTEN) {
+>>>> 				range_dirty = false;
+>>>> 				status = iomap_zero_iter_flush_and_stale(&iter);
+>>>> 			} else {
+>>>>
+>>>> Another thing I want to mention (although there are no real issues at
+>>>> the moment, I still want to mention it) is that there appears to be
+>>>> no consistency guarantee between the lookup of the mapping and the
+>>>> follo_batch. For example, assume we have a file which contains two
+>>>> dirty folio and two unwritten extents, one folio corresponds to one
+>>>> extent. We zero out these two folios.
+>>>>
+>>>>     | dirty folio 1  || dirty folio 2   |
+>>>>     [uuuuuuuuuuuuuuuu][uuuuuuuuuuuuuuuuu]
+>>>>
+>>>> In the first call to ->iomap_begin(), we get the unwritten extent 1.
+>>>> At the same time, another thread writes back folio 1 and clears this
+>>>> folio, so this folio will not be added to the follo_batch. Then
+>>>> iomap_zero_range() will still flush those two folios. When flushing
+>>>> the second folio, there is still a risk of deadlock due to changes in
+>>>> metadata.
+>>>>
+>>>
+>>> Hmm.. not sure I follow the example. The folio batch should include the
+>>> folio in any case other than where it can look up, lock it and confirm
+>>> it is clean. If the folio is clean and thus not included, the iomap
+>>> logic should still see the empty folio batch and skip over the mapping
+>>> if unwritten. (I want to replace this with a flag to address your memory
+>>> allocation concern, but that is orthogonal to this logic.)
+>>>
+>>> Of course this should happen under appropriate fs locks such that iomap
+>>> either sees the folio in dirty/writeback state where the mapping is
+>>> unwritten, or if the folio has been cleaned, the mapping is reported as
+>>> written.
+>>>
+>>> If I'm still missing something with your example above, can you
+>>> elaborate a bit further? Thanks.
+>>>
+>>
+>> Sorry for not make things clear. The race condition is the following,
+>>
+>> zero range                            sync_file_range
+>> iomap_zero_range() //folio 1+2
+>>  range_dirty = filemap_range_needs_writeback()
+>>  //range_dirty is set to 'ture'
+>>  iomap_iter()
+>>    ext4_iomap_buffer_zero_begin()
+>>      ext4_map_blocks()
+>>      //get unwritten extent 1
+>>                                       sync_file_range() //folio 1
+>>                                         iomap_writepages()
+>>                                         ...
+>>                                         iomap_finish_ioend()
+>>                                           folio_end_writeback()
+>>                                           //clear folio 1, and
+>>                                           //extent 1 becomes written
+>>      iomap_fill_dirty_folios()
+>>      //do not add folio 1 to batch
+> 
+> I think the issue here is that this needs serialization between the
+> lookups and extent conversion. I.e., XFS handles this by doing the folio
+> lookup under the same locks used for looking up the extent. So in this
+> scenario, that ensures that the only way we don't add the folio to the
+> batch is if the mapping has already been converted by writeback
+> completion..
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508071131.KsUs9Est-lkp@intel.com/
+Yeah, XFS serializes this using ip->i_lock. It performs mapping and
+folio lookup under XFS_ILOCK_EXCL, and the writeback conversion should
+also take this lock. Therefore, this race condition cannot happen in
+XFS.
 
-All errors (new ones prefixed by >>, old ones prefixed by <<):
+However, ext4 currently does not have such a lock that can provide this
+serialization. Perhaps we could reuse EXT4_I(inode)->i_data_sem but we
+need further analysis. At the moment, this case should not occur and
+does not cause any real issues, so we don't need to address it now. We
+can consider solutions when it becomes truly necessary in the future.
 
-WARNING: modpost: vmlinux: section mismatch in reference: node_get+0x3a (section: .text.node_get) -> wm8994_i2c_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: qrtr_ns_worker+0x30 (section: .text.qrtr_ns_worker) -> wm8994_i2c_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: qrtr_ns_worker+0x110 (section: .text.qrtr_ns_worker) -> wm8994_i2c_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: qrtr_ns_worker+0x312 (section: .text.qrtr_ns_worker) -> wm8994_i2c_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: qrtr_tun_open+0xe (section: .text.qrtr_tun_open) -> wm8994_i2c_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: xdp_put_umem+0x54 (section: .text.xdp_put_umem) -> soc_bus_register (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: xdp_put_umem+0x68 (section: .text.xdp_put_umem) -> register_cpufreq_notifier (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: xdp_umem_create+0x1c (section: .text.xdp_umem_create) -> wm8994_i2c_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: xdp_umem_create+0x244 (section: .text.xdp_umem_create) -> register_cpufreq_notifier (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: xdp_umem_create+0x25a (section: .text.xdp_umem_create) -> soc_bus_register (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: xskq_create+0xe (section: .text.xskq_create) -> wm8994_i2c_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: xp_dma_map+0x5c (section: .text.xp_dma_map) -> wm8994_i2c_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: ida_alloc_range+0x98 (section: .text.ida_alloc_range) -> wm8994_i2c_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: ida_alloc_range+0x316 (section: .text.ida_alloc_range) -> wm8994_i2c_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: kset_create_and_add+0x10 (section: .text.kset_create_and_add) -> wm8994_i2c_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: kobject_create_and_add+0xe (section: .text.kobject_create_and_add) -> wm8994_i2c_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: uevent_net_init+0xe (section: .text.uevent_net_init) -> wm8994_i2c_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: kobject_uevent_env+0x72 (section: .text.kobject_uevent_env) -> wm8994_i2c_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: kobject_uevent_env+0x324 (section: .text.kobject_uevent_env) -> .LVL169 (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: kobject_uevent_env+0x32c (section: .text.kobject_uevent_env) -> .LVL171 (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: kobject_uevent_env+0x360 (section: .text.kobject_uevent_env) -> .LVL170 (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: kobject_synth_uevent+0x106 (section: .text.kobject_synth_uevent) -> wm8994_i2c_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_get_slot+0x1a (section: .text.mas_get_slot) -> bh1770_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_get_slot+0x22 (section: .text.mas_get_slot) -> apds990x_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_get_slot+0x3a (section: .text.mas_get_slot) -> apds990x_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_get_slot+0x50 (section: .text.mas_get_slot) -> apds990x_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_get_slot+0x60 (section: .text.mas_get_slot) -> apds990x_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_get_slot+0x6a (section: .text.mas_get_slot) -> apds990x_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_get_slot+0x74 (section: .text.mas_get_slot) -> apds990x_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_get_slot+0x80 (section: .text.mas_get_slot) -> bh1770_driver_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_get_slot+0x9a (section: .text.mas_get_slot) -> apds990x_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_get_slot+0xb8 (section: .text.mas_get_slot) -> apds990x_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_get_slot+0xc0 (section: .text.mas_get_slot) -> apds990x_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_get_slot+0xd4 (section: .text.mas_get_slot) -> apds990x_driver_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_empty_area_rev+0xf2 (section: .text.mas_empty_area_rev) -> apds990x_driver_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mt_validate+0x156 (section: .text.mt_validate) -> bh1770_driver_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mt_validate+0x1a2 (section: .text.mt_validate) -> bh1770_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mt_validate+0x230 (section: .text.mt_validate) -> bh1770_driver_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mt_validate+0x238 (section: .text.mt_validate) -> bh1770_driver_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mt_validate+0x240 (section: .text.mt_validate) -> apds990x_driver_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mt_validate+0x30c (section: .text.mt_validate) -> bh1770_driver_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mt_validate+0x314 (section: .text.mt_validate) -> bh1770_driver_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mt_validate+0x65e (section: .text.mt_validate) -> bh1770_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mt_validate+0x6bc (section: .text.mt_validate) -> bh1770_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mt_validate+0x6d0 (section: .text.mt_validate) -> apds990x_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_spanning_rebalance+0x4ae (section: .text.mas_spanning_rebalance) -> bh1770_driver_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_spanning_rebalance+0x4c6 (section: .text.mas_spanning_rebalance) -> apds990x_driver_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_spanning_rebalance+0x586 (section: .text.mas_spanning_rebalance) -> bh1770_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_spanning_rebalance+0x590 (section: .text.mas_spanning_rebalance) -> apds990x_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_spanning_rebalance+0x852 (section: .text.mas_spanning_rebalance) -> apds990x_driver_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_spanning_rebalance+0x87c (section: .text.mas_spanning_rebalance) -> bh1770_driver_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_spanning_rebalance+0x916 (section: .text.mas_spanning_rebalance) -> apds990x_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_spanning_rebalance+0x968 (section: .text.mas_spanning_rebalance) -> bh1770_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_spanning_rebalance+0xa3e (section: .text.mas_spanning_rebalance) -> bh1770_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_spanning_rebalance+0xa46 (section: .text.mas_spanning_rebalance) -> bh1770_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_spanning_rebalance+0xaa2 (section: .text.mas_spanning_rebalance) -> bh1770_driver_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_spanning_rebalance+0xaa6 (section: .text.mas_spanning_rebalance) -> apds990x_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_wr_spanning_store.isra.63+0x15c (section: .text.mas_wr_spanning_store.isra.63) -> apds990x_driver_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_wr_spanning_store.isra.63+0x2a2 (section: .text.mas_wr_spanning_store.isra.63) -> apds990x_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_wr_bnode+0x46 (section: .text.mas_wr_bnode) -> apds990x_driver_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: mas_wr_bnode+0x60e (section: .text.mas_wr_bnode) -> apds990x_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: seq_buf_path+0x44 (section: .text.seq_buf_path) -> wcd934x_slim_driver_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: number+0x76 (section: .text.number) -> tps6594_pfsm_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: number+0x98 (section: .text.number) -> tps6594_pfsm_driver_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: number+0x9c (section: .text.number) -> tps6594_pfsm_driver_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: number+0xa2 (section: .text.number) -> virtio_nsm_driver_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: number+0xbc (section: .text.number) -> tps6594_pfsm_driver_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: resource_string.isra.12+0xd0 (section: .text.resource_string.isra.12) -> tps6594_pfsm_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: resource_string.isra.12+0xda (section: .text.resource_string.isra.12) -> virtio_nsm_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: resource_string.isra.12+0x158 (section: .text.resource_string.isra.12) -> virtio_nsm_driver_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: resource_string.isra.12+0x1ce (section: .text.resource_string.isra.12) -> tps6594_pfsm_driver_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: resource_string.isra.12+0x252 (section: .text.resource_string.isra.12) -> tps6594_pfsm_driver_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: resource_string.isra.12+0x2bc (section: .text.resource_string.isra.12) -> tps6594_pfsm_driver_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: resource_string.isra.12+0x2ec (section: .text.resource_string.isra.12) -> virtio_nsm_driver_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: clock.isra.14+0x28 (section: .text.clock.isra.14) -> virtio_nsm_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: dentry_name+0x46 (section: .text.dentry_name) -> tps6594_pfsm_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: dentry_name+0x70 (section: .text.dentry_name) -> virtio_nsm_driver_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: dentry_name+0x1d4 (section: .text.dentry_name) -> virtio_nsm_driver_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: dentry_name+0x21e (section: .text.dentry_name) -> virtio_nsm_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: pointer+0x8a (section: .text.pointer) -> virtio_nsm_driver_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: xas_store+0xa4 (section: .text.xas_store) -> pm860x_i2c_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: xas_store+0x5be (section: .text.xas_store) -> pm860x_i2c_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: __xa_alloc_cyclic+0x9e (section: .text.__xa_alloc_cyclic) -> pm860x_i2c_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: __xa_insert+0x16 (section: .text.__xa_insert) -> pm860x_i2c_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: __xa_insert+0x3e (section: .text.__xa_insert) -> pm860x_i2c_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: __xa_insert+0x46 (section: .text.__xa_insert) -> pm860x_i2c_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: __xa_insert+0x54 (section: .text.__xa_insert) -> pm800_i2c_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: __xa_insert+0x62 (section: .text.__xa_insert) -> pm800_i2c_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: __xa_insert+0x7a (section: .text.__xa_insert) -> pm800_i2c_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: __xa_insert+0x84 (section: .text.__xa_insert) -> pm800_i2c_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: __xa_insert+0x90 (section: .text.__xa_insert) -> pm800_i2c_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: __xa_insert+0x9a (section: .text.__xa_insert) -> pm800_i2c_init (section: .init.text)
-WARNING: modpost: vmlinux: section mismatch in reference: xa_extract+0x564 (section: .text.xa_extract) -> pm860x_i2c_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: xa_load+0x38 (section: .text.xa_load) -> pm860x_i2c_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: xa_load+0x3c (section: .text.xa_load) -> pm860x_i2c_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: xa_load+0x4e (section: .text.xa_load) -> pm800_i2c_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: xa_load+0xaa (section: .text.xa_load) -> pm800_i2c_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: __efistub_.L0 +0x0 (section: .init.text.efi_parse_options) -> stmpe_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: __efistub_.L0 +0x4 (section: .init.text.efi_parse_options) -> stmpe_exit (section: .exit.text)
-WARNING: modpost: vmlinux: section mismatch in reference: 0x1584 (section: __ex_table) -> 0x0 (section: .rodata.spk_ttyio_synth_probe.str1.4)
->> ERROR: modpost: __ex_table+0x1584 references non-executable section '.rodata.spk_ttyio_synth_probe.str1.4'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x1588 (section: __ex_table) -> 0x0 (section: .rodata.spk_synth_is_alive_restart.str1.4)
->> ERROR: modpost: __ex_table+0x1588 references non-executable section '.rodata.spk_synth_is_alive_restart.str1.4'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x1590 (section: __ex_table) -> 0x0 (section: .rodata.spk_set_num_var)
->> ERROR: modpost: __ex_table+0x1590 references non-executable section '.rodata.spk_set_num_var'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x1594 (section: __ex_table) -> 0x0 (section: .rodata.spk_get_var.str1.4)
->> ERROR: modpost: __ex_table+0x1594 references non-executable section '.rodata.spk_get_var.str1.4'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x159c (section: __ex_table) -> __func__ (section: .rodata.__func__.53540)
-ERROR: modpost: __ex_table+0x159c references non-executable section '.rodata.__func__.53540'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x15a0 (section: __ex_table) -> 0x0 (section: .rodata.spk_get_var.str1.4)
-ERROR: modpost: __ex_table+0x15a0 references non-executable section '.rodata.spk_get_var.str1.4'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x15a8 (section: __ex_table) -> .LASF4598 (section: .debug_str)
-ERROR: modpost: __ex_table+0x15a8 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x15ac (section: __ex_table) -> .LASF4600 (section: .debug_str)
-ERROR: modpost: __ex_table+0x15ac references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x15b4 (section: __ex_table) -> .LASF4602 (section: .debug_str)
-ERROR: modpost: __ex_table+0x15b4 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x15b8 (section: __ex_table) -> .LASF4604 (section: .debug_str)
-ERROR: modpost: __ex_table+0x15b8 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x15c0 (section: __ex_table) -> .LASF4606 (section: .debug_str)
-ERROR: modpost: __ex_table+0x15c0 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x15c4 (section: __ex_table) -> .LASF4608 (section: .debug_str)
-ERROR: modpost: __ex_table+0x15c4 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x15cc (section: __ex_table) -> .LASF4610 (section: .debug_str)
-ERROR: modpost: __ex_table+0x15cc references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x15d0 (section: __ex_table) -> .LASF4608 (section: .debug_str)
-ERROR: modpost: __ex_table+0x15d0 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x15d8 (section: __ex_table) -> .LASF4613 (section: .debug_str)
-ERROR: modpost: __ex_table+0x15d8 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x15dc (section: __ex_table) -> .LASF4608 (section: .debug_str)
-ERROR: modpost: __ex_table+0x15dc references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x1668 (section: __ex_table) -> .LASF762 (section: .debug_str)
-ERROR: modpost: __ex_table+0x1668 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x166c (section: __ex_table) -> .LASF764 (section: .debug_str)
-ERROR: modpost: __ex_table+0x166c references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x1674 (section: __ex_table) -> .LASF766 (section: .debug_str)
-ERROR: modpost: __ex_table+0x1674 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x1678 (section: __ex_table) -> .LASF768 (section: .debug_str)
-ERROR: modpost: __ex_table+0x1678 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x1680 (section: __ex_table) -> .LASF770 (section: .debug_str)
-ERROR: modpost: __ex_table+0x1680 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x1684 (section: __ex_table) -> .LASF772 (section: .debug_str)
-ERROR: modpost: __ex_table+0x1684 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x168c (section: __ex_table) -> .LASF774 (section: .debug_str)
-ERROR: modpost: __ex_table+0x168c references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x1690 (section: __ex_table) -> .LASF768 (section: .debug_str)
-ERROR: modpost: __ex_table+0x1690 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x1698 (section: __ex_table) -> .LASF777 (section: .debug_str)
-ERROR: modpost: __ex_table+0x1698 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x169c (section: __ex_table) -> .LASF768 (section: .debug_str)
-ERROR: modpost: __ex_table+0x169c references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x16a4 (section: __ex_table) -> .LASF780 (section: .debug_str)
-ERROR: modpost: __ex_table+0x16a4 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x16a8 (section: __ex_table) -> .LASF782 (section: .debug_str)
-ERROR: modpost: __ex_table+0x16a8 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x16b0 (section: __ex_table) -> printk_trace (section: .data.rel.local.printk_trace)
-ERROR: modpost: __ex_table+0x16b0 references non-executable section '.data.rel.local.printk_trace'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x16b4 (section: __ex_table) -> trace_die_notifier (section: .data.rel.local.trace_die_notifier)
-ERROR: modpost: __ex_table+0x16b4 references non-executable section '.data.rel.local.trace_die_notifier'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x16bc (section: __ex_table) -> trace_panic_notifier (section: .data.rel.local.trace_panic_notifier)
-ERROR: modpost: __ex_table+0x16bc references non-executable section '.data.rel.local.trace_panic_notifier'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x16c0 (section: __ex_table) -> tracepoint_printk_mutex (section: .data.rel.local.tracepoint_printk_mutex)
-ERROR: modpost: __ex_table+0x16c0 references non-executable section '.data.rel.local.tracepoint_printk_mutex'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x180c (section: __ex_table) -> .LASF3916 (section: .debug_str)
-ERROR: modpost: __ex_table+0x180c references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x1818 (section: __ex_table) -> .LASF3917 (section: .debug_str)
-ERROR: modpost: __ex_table+0x1818 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x1824 (section: __ex_table) -> .LLST172 (section: .debug_loc)
-ERROR: modpost: __ex_table+0x1824 references non-executable section '.debug_loc'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x1848 (section: __ex_table) -> .LASF3922 (section: .debug_str)
-ERROR: modpost: __ex_table+0x1848 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x1854 (section: __ex_table) -> .LLST161 (section: .debug_loc)
-ERROR: modpost: __ex_table+0x1854 references non-executable section '.debug_loc'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x1858 (section: __ex_table) -> .LASF3923 (section: .debug_str)
-ERROR: modpost: __ex_table+0x1858 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x1860 (section: __ex_table) -> .LASF78 (section: .debug_str)
-ERROR: modpost: __ex_table+0x1860 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x1864 (section: __ex_table) -> .LASF80 (section: .debug_str)
-ERROR: modpost: __ex_table+0x1864 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x186c (section: __ex_table) -> .LASF82 (section: .debug_str)
-ERROR: modpost: __ex_table+0x186c references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x1870 (section: __ex_table) -> .LASF84 (section: .debug_str)
-ERROR: modpost: __ex_table+0x1870 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x1878 (section: __ex_table) -> .LASF86 (section: .debug_str)
-ERROR: modpost: __ex_table+0x1878 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x187c (section: __ex_table) -> .LASF88 (section: .debug_str)
-ERROR: modpost: __ex_table+0x187c references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x1884 (section: __ex_table) -> .LASF90 (section: .debug_str)
-ERROR: modpost: __ex_table+0x1884 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x1888 (section: __ex_table) -> .LASF92 (section: .debug_str)
-ERROR: modpost: __ex_table+0x1888 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x1890 (section: __ex_table) -> .LASF94 (section: .debug_str)
-ERROR: modpost: __ex_table+0x1890 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x1894 (section: __ex_table) -> .LASF96 (section: .debug_str)
-ERROR: modpost: __ex_table+0x1894 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x189c (section: __ex_table) -> .LASF98 (section: .debug_str)
-ERROR: modpost: __ex_table+0x189c references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x18a0 (section: __ex_table) -> .LASF100 (section: .debug_str)
-ERROR: modpost: __ex_table+0x18a0 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x18a8 (section: __ex_table) -> .LASF102 (section: .debug_str)
-ERROR: modpost: __ex_table+0x18a8 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x18ac (section: __ex_table) -> .LASF104 (section: .debug_str)
-ERROR: modpost: __ex_table+0x18ac references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x18b4 (section: __ex_table) -> .LASF106 (section: .debug_str)
-ERROR: modpost: __ex_table+0x18b4 references non-executable section '.debug_str'
-WARNING: modpost: vmlinux: section mismatch in reference: 0x18b8 (section: __ex_table) -> .LASF104 (section: .debug_str)
-ERROR: modpost: __ex_table+0x18b8 references non-executable section '.debug_str'
+> 
+>>   iomap_zero_iter_flush_and_stale()
+>>   //!fbatch && IOMAP_UNWRITTEN && range_dirty
+>>   //flush folio 1+2, folio 2 is still dirty, then deadlock
+>>
+> 
+> I also think the failure characteristic here is different. In this case
+> you'd see an empty fbatch because at least on the lookup side the
+> mapping is presumed to be unwritten. So that means we still wouldn't
+> flush, but the zeroing would probably race with writeback such that it
+> skips zeroing the blocks when it shouldn't.
+> 
+>> Besides, if the range of folio 1 is initially clean and unwritten
+>> (folio 2 is still dirty), the flush can also be triggered without the
+>> concurrent sync_file_range.
+>>
+>> The problem is that we initially checked `range_dirty` only once, and
+>> if was done for the entire zero range, instead of checking it each
+>> iteration, and there is no fs lock can prevent a concurrent write-back.
+>> Perhaps we need to check 'dirty_range' for each iteration?
+>>
+> 
+> I don't think this needs to prevent writeback, but is there not any
+> locking to protect extent lookups vs. extent conversion (via writeback)?
+> 
+> FWIW, I think it's a little hard to reason about some of these
+> interactions because of the pending tweaks that aren't implemented yet.
+> What I'd like to do is get another version of this posted (mostly as
+> is), hopefully get it landed into -next or whatever, then get another
+> series going with this handful of tweaks we're discussing to prepare for
+> ext4 on iomap. From there we can work out any remaining details on
+> things that might need to change on either side. Sound Ok?
+> 
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Yeah, it looks good to me. We should expedite merging of this series as
+soon as possible to allow us to continue advancing the work on ext4 on
+iomap.
+
+Thanks,
+Yi.
+
 
