@@ -2,88 +2,88 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 23A2DC87FCF
-	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 11:06:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 659E7C87FCF
+	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 11:13:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A146D6B00B7; Thu,  7 Aug 2025 07:06:45 -0400 (EDT)
+	id E91906B00BB; Thu,  7 Aug 2025 07:13:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99CEC6B00BB; Thu,  7 Aug 2025 07:06:45 -0400 (EDT)
+	id E43B66B00BC; Thu,  7 Aug 2025 07:13:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 88D636B00BC; Thu,  7 Aug 2025 07:06:45 -0400 (EDT)
+	id D31136B00BD; Thu,  7 Aug 2025 07:13:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 731326B00B7
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 07:06:45 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 25AFB5C8BA
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 11:06:45 +0000 (UTC)
-X-FDA: 83749683570.25.58C413D
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 3C7311A000E
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 11:06:41 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C1A086B00BB
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 07:13:48 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 694D11371EB
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 11:13:48 +0000 (UTC)
+X-FDA: 83749701336.11.9C33A43
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	by imf15.hostedemail.com (Postfix) with ESMTP id AD27FA000D
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 11:13:45 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
 	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of tujinjiang@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	spf=pass (imf15.hostedemail.com: domain of tujinjiang@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754565226; a=rsa-sha256;
+	cv=none;
+	b=fu3Sw6LZEx0rQiYasKB4rZ+DLmRnq68zS4Nz+TKR3zZjEhwOvJsQQ32N3oOqdIBExUsnDR
+	BTQi2L3dZXa2mBR/eL9xzLZwcneSU5FuaqrGd0iGqTiE8A4FgFt4GbNQt46b2ur896ToEI
+	NQW2O/79zHHeli9TTTbuEIQw//C+Ly8=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=none;
+	spf=pass (imf15.hostedemail.com: domain of tujinjiang@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754564803;
+	s=arc-20220608; t=1754565226;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3ZU3vmfThu556jKZjCZjroOITyD9dOVOE9K0Dd9X7ho=;
-	b=ii8YXYXl6+a/QtckKTe0g+ZEksF9I5+xs24jsPgEE751nhsi1CC0J+sz9Uh6dbtydRzsf3
-	mYIl0uH3ndK0ZckrbAV8nMgs6Gpxj1OMmk42D/e/anpx9EwSPjvrQ0cRdtbioeZAiciu0H
-	SsWdi8zhEOwtSEDI5fFijffs9eYXaUk=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of tujinjiang@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754564803; a=rsa-sha256;
-	cv=none;
-	b=1z5TZT7yf4HN+t7wJIbzfwoUlnxBCta8EzSwM1OBWYf4tVR2fP47E0z4AdXcP154KA+3qs
-	iGGZUtiUVZMAjE0PbbJnwPj6DpEnbRpRGqt+qJlxUDnYNoNCr1vSI34UXV8uZ0VTZD5Q36
-	Tivg0dtJnqYJB1J1KYjrx7C4J1yB9j8=
-Received: from mail.maildlp.com (unknown [172.19.163.17])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4byPWw6DG8z2YPj9;
-	Thu,  7 Aug 2025 19:07:40 +0800 (CST)
+	bh=gGSTI6myYQl0XUavZkP9NOKulH5P4RiptcezoqKtUsw=;
+	b=wAzqr42+Mqg4XBvI+ff58rIqFWEFDZd+cLKrmt2fJqcJIEMh1jl85upVzxMoRucAdH1nNa
+	PRsNWEvl0VXYR73Vtm2Tr0eLadnp8TgVRXNpHXhG+cK2Dntd5FlWCEHMhO9Q9Ek8seJF2t
+	+IcFVbzHtzCIh70nZMI4VSs+dZKaZtE=
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4byPbx1336z23jjv;
+	Thu,  7 Aug 2025 19:11:09 +0800 (CST)
 Received: from kwepemo200002.china.huawei.com (unknown [7.202.195.209])
-	by mail.maildlp.com (Postfix) with ESMTPS id D90231A0188;
-	Thu,  7 Aug 2025 19:06:37 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 44B591A016C;
+	Thu,  7 Aug 2025 19:13:41 +0800 (CST)
 Received: from [10.174.178.49] (10.174.178.49) by
  kwepemo200002.china.huawei.com (7.202.195.209) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 7 Aug 2025 19:06:37 +0800
-Message-ID: <14abf20d-d3d0-46fe-8184-6dbc97a4e5ab@huawei.com>
-Date: Thu, 7 Aug 2025 19:06:36 +0800
+ 15.2.1544.11; Thu, 7 Aug 2025 19:13:40 +0800
+Content-Type: multipart/alternative;
+	boundary="------------0H0DgfAur0r4YpThmTah9uO2"
+Message-ID: <156267ef-f834-4bea-9dc0-c8ad32d066b0@huawei.com>
+Date: Thu, 7 Aug 2025 19:13:39 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm/memory-failure: fix infinite UCE for VM_PFNMAP pfn
-To: David Hildenbrand <david@redhat.com>, <linmiaohe@huawei.com>,
-	<nao.horiguchi@gmail.com>, <akpm@linux-foundation.org>,
-	<xueshuai@linux.alibaba.com>, <ziy@nvidia.com>, <osalvador@suse.de>,
-	<linux-mm@kvack.org>
-CC: <wangkefeng.wang@huawei.com>
+To: David Hildenbrand <david@redhat.com>, Miaohe Lin <linmiaohe@huawei.com>
+CC: <wangkefeng.wang@huawei.com>, <nao.horiguchi@gmail.com>,
+	<akpm@linux-foundation.org>, <xueshuai@linux.alibaba.com>, <ziy@nvidia.com>,
+	<osalvador@suse.de>, <linux-mm@kvack.org>
 References: <20250806020520.631203-1-tujinjiang@huawei.com>
- <1a4df59e-e734-4ff5-b1b0-0a754afb6f67@redhat.com>
+ <1e63c37f-8eb2-865d-d3f4-9ef928f1a959@huawei.com>
+ <35e24029-d58c-47e8-b5fe-e182f143ebff@huawei.com>
+ <c5567040-6f1b-46d1-890e-7dc6b0b46703@redhat.com>
 From: Jinjiang Tu <tujinjiang@huawei.com>
-In-Reply-To: <1a4df59e-e734-4ff5-b1b0-0a754afb6f67@redhat.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <c5567040-6f1b-46d1-890e-7dc6b0b46703@redhat.com>
 X-Originating-IP: [10.174.178.49]
 X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
  kwepemo200002.china.huawei.com (7.202.195.209)
-X-Stat-Signature: bozxrd6cstbgdxa7w7zx9gsrjyy9wdm9
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 3C7311A000E
 X-Rspam-User: 
-X-HE-Tag: 1754564801-875087
-X-HE-Meta: U2FsdGVkX1/4CJvDPLj/JfOwEBbPZCiwL+WsFUlyG8lIwxGIs0rHKvPShZeuN8i37Gvo+wHqSgPwpim5xs6q4ObGhdmi9Xy3omeRVaB/bSlQI55oQ2KMo20lsLIZRfuJ9GU8c6hT1rq5mqqPsS+uXqusTuajAQZ7+i/6A8jGq+lV0WlubxE0di5LmJxoin3Op7zSuekRsar2JAXAKFcrsL2d/elY/+oC/j4A8BgkFFutVOK3ejvM1e6HfC6fGN+QhQZOyNyeuG5o57jprBYiShzo6EBRwhFxM8YM1xARbEoZM0aUDJ85sAL2r7bVYk7nrK0mDKW5tjNhy2ncvZ3oJGptdV4oi7zFF7xlO6XGDQt9H3kO22S1xhB+dmOrQBD5YwKIcQfS9QHltBQyiB59WezWSnro1dmRftOMsrT3cSfSmoWL6t69habF/XPXkG2w64jKUQw8SYJru6JZByjyOcHg0sa8xv+5Yy4Fy67dB5YNNLY7+eA786Feh7rvindOaXW6wbYbsQeK+W7VwDjEgYpgFt/CyqoEE/ibYb1sUbwQ8BqoprbA4yONF+9Qa9UTzYl2yfODr9SjLaBnHIQcqTS3I8sFq8eTLYnCvsBVCEGK1Kx8pQqCpKJiX4MPwPvd58rxQ9C7x431bhh/3XT8kzQe9v180rwsrGxImdK+LLYXr1h8x3K249An8jF64z8sTXKc2xpGn4GlrvUpyzlRD9AoQ5CX/LUHBhpmKVq6ThHtkeVY1gN5i7O9stpOSxmWbVfjmdEJ9pmsxb60F9dxKk/ldleKbTqNRVERAtFhMcWP23UImiSewg25TLyS2xmWCpI0b3joJtqbNKPgpiKdAUA3sK4N02P/QpmF3445EbNjSbIdRXXnt+tuzRcsZIDsXgA0WbhKbQTMTaPvZ2pTjuL77yUrSxYc4Km0epjHC88EmA+WVEVmoapLhpduXKyU70WzX+NiZuJ7Nba88gF
- UauAVcMG
- CRfEbqOkfW/6VaGA+4S7/XrUN8sihSwksSN5/+XnlgClzM9ipa+Nz2vUEriAE8R0RQyIEmxMIIZbLTO7VK1HMsDf7km4VC381KGTDfi4kRO6XbWu7mn51DXbwdMv0NwQqxc+KhsITkkq500EkZN5DP8w8+qOfU5GTXZSi0dW5sjOGjWkUFKdSVweuF8FckuWgmUAYQ9acadlG0jD3Ubvu87lcvyH2pkfh4zVm+doJjdqei4UP6LYWpa1gmBkJPOZ3N0bzPR4pUgUpw4P4XxmLBXr2wEkA+UXho8WE5zuHrjGMcx197AaFw6fyFRRkWmfQaZAIGJUiYPel9PGuq0XDKfBbrG2CwyLU5ifk
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: AD27FA000D
+X-Stat-Signature: 83jq7fb85bzxwazqrewhs5bz7rjuy6my
+X-HE-Tag: 1754565225-368712
+X-HE-Meta: U2FsdGVkX18+Agrl8aazSxf1FkSHV0N7VYcjPPx8SRL+W5se2+3MgkzcpfOk4aFJ82WOQQk9kzoxdGd/t2umPSGBkLvBrz7O596KM5lWOjdCJlXJcb0Fme7KPQ5a1AIdDWU/3ev8p8V8f9spFA7kbt8rW1iQc0WWfUo1/n4/ywoBON8yGDjMdr3vefSV5Wl8X05QYq1g4Tp4ftP54P7nTH+mdZzNur0hp9BDEkFdtaOcn5hB1XZK4ggILKVeGFZnlVjuuhzRqKB5p9YgNnQhy1CMVItXdCo/sjMeMXexY95SCtKRVjTN1fuN2pTswgFHx33IXa0oMkjDinL3Uz2LS8toFl3ZIm8wEHjyrVNEwlcWVbCKQB89+LcyDdHy1HdSp/Kht7TYu56OyXOH2r00cWg7Odp/Kqcz0i3C/7SlTdp5jyRcFP6huGmkAjRkpOL5fTBOUW988Or5wf+wylQLK6R/6CXmj77s/4nxhOrUIDg2BvI+9JEh9jIrHO4UlFD2HdLZfRPWDN56x6XAGi08aoFD6IH06Qtt1Z5dsuHN4M5HiJQjzS5+k8+InB/Zq2QeKas9IghTQTBE2SWs5S0P0N0RvxRu+W04vNaPadsqMYc/2RHZz7pqenZrnA7x5UV94ymHD+F7U4qhNSb84hkwaz9rw1KVXULlu2YxmN0RjZytn7gZwkfgjE+D2b4DdvJXpG8B/YkBvbacWtBDhse0/5KfXGxECh0zmhepB1UlTeCd0nPe+8gyWOa/Lh2vA8/nioCN8kNxx3+qnFYJ7PJ2wjekB54Aei4KQi1c+/7vy00vmsZUtQASU8prUM3H8WmqAJxnvzU/le65L3OunS05Wk6LKb9LImKY5OVBDO6tSGcny2RvN3xTsve/W/MZTCMh3m4fYMWMN4KT9Qf8lwZVbe3P5APZX099v8giJvypthjEufjsZmFq7MYoSp7BzOHUR58ECG5yfkwc/xk00Is
+ uCkl5/0K
+ 438Cx68jVNnMGIZVJF1zUU9tFbZD/RTPzaFSBd0IX7B/NE46m8fM/AE8XHnyHnWtJkF98N4keGD9dMX6rJ89mqM7Mn4idbP6lWFscbbgrnTP91KHewQwu/FNWhvvByW66HgL/WrZFwvIrGTgXYySaBFuxQ58VDF3EqTxfnAz6p5BBqEZFC6TLiu1bL4h8+f7JT+Qrj60aTHFYuYw2PihccGIoqq7J9vX31c+F/jp4rTsVWlVjNVkJJ4MARAOEyisAsdq74VZ6DmxezKwVKw8ILgWVAwzscJkELsgadnDO9+zsJbW46mEPpTfh7UhpZmcPGuvPM5RYHnHd7CXM+cAsBvNOkeRVgh1B+08I4YHSHdi0HUgH2qK9IvTYqga4MJ5NKlwnJRWHWjsby+pkp6C+IjrjjB2EMuETCNIC6kCZo4V2DQVktZKb5ETuMhc79irNG9BLFLwb6NTf4WG8kkExZG+8c27ZIdUyDK02
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,20 +92,170 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+--------------0H0DgfAur0r4YpThmTah9uO2
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 
-在 2025/8/6 20:39, David Hildenbrand 写道:
-> On 06.08.25 04:05, Jinjiang Tu wrote:
->> When memory_failure() is called for a already hwpoisoned pfn,
->> kill_accessing_process() will be called to kill current task. 
->> However, if
->> the vma of the accessing vaddr is VM_PFNMAP, walk_page_range() will skip
->> the vma in walk_page_test() and return 0.
+
+在 2025/8/6 20:41, David Hildenbrand 写道:
+> On 06.08.25 05:24, Jinjiang Tu wrote:
+>>
+>> 在 2025/8/6 11:05, Miaohe Lin 写道:
+>>> On 2025/8/6 10:05, Jinjiang Tu wrote:
+>>>> When memory_failure() is called for a already hwpoisoned pfn,
+>>>> kill_accessing_process() will be called to kill current task. 
+>>>> However, if
+>>> Thanks for your patch.
+>>>
+>>>> the vma of the accessing vaddr is VM_PFNMAP, walk_page_range() will 
+>>>> skip
+>>>> the vma in walk_page_test() and return 0.
+>>>>
+>>>> Before commit aaf99ac2ceb7 ("mm/hwpoison: do not send SIGBUS to 
+>>>> processes
+>>>> with recovered clean pages"), kill_accessing_process() will return 
+>>>> EFAULT.
+>>> I'm not sure but pfn_to_online_page should return NULL for VM_PFNMAP 
+>>> pages?
+>>> So memory_failure_dev_pagemap should handle these pages?
+>>
+>> We could call remap_pfn_range() for those pfns with struct page. 
+>> IIUC, VM_PFNMAP
+>> means we should assume the pfn doesn't have struct page, but it can 
+>> have.
+>>
+>>>> For x86, the current task will be killed in kill_me_maybe().
+>>>>
+>>>> However, after this commit, kill_accessing_process() simplies 
+>>>> return 0,
+>>>> that means UCE is handled properly, but it doesn't actually. In 
+>>>> such case,
+>>>> the user task will trigger UCE infinitely.
+>>> Did you ever trigger this loop?
+>>
+>> Yes. Our test is as follow steps:
+>> 1) create a user task allocates a clean anonymous page, wihout 
+>> accessing it.
+>> 2) use einj to inject UCE for the page
+>> 3) create task devmem to use /dev/mem to map the pfn and keep 
+>> accessing it.
 >
-> That check is dubious and it's on my todo list to revisit that, 
-> because it doesn't make sense for COW VM_PFNMAP mappings.
+> What is the use case for that? It sounds extremely questionable.
 >
-> But I am curious, is this about having an anon page in a COW 
-> VM_PFNMAP, or on "what kidn of page" do you get the fault?
-The pfn is RAM pfn, which is mapped with remap_pfn_range(). There is no 
-COW.
+This case is only for test, and is strange indeed.
+
+But considering another case, a driver may map same RAM pfn to several processes with remap_pfn_range().
+If the first task triggers UCE when accessing the pfn, the task will be killed. But the other tasks couldn't be killed
+and triggers UCE infinitely.
+
+
+
+--------------0H0DgfAur0r4YpThmTah9uO2
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">在 2025/8/6 20:41, David Hildenbrand 写道:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:c5567040-6f1b-46d1-890e-7dc6b0b46703@redhat.com">On
+      06.08.25 05:24, Jinjiang Tu wrote:
+      <br>
+      <blockquote type="cite">
+        <br>
+        在 2025/8/6 11:05, Miaohe Lin 写道:
+        <br>
+        <blockquote type="cite">On 2025/8/6 10:05, Jinjiang Tu wrote:
+          <br>
+          <blockquote type="cite">When memory_failure() is called for a
+            already hwpoisoned pfn,
+            <br>
+            kill_accessing_process() will be called to kill current
+            task. However, if
+            <br>
+          </blockquote>
+          Thanks for your patch.
+          <br>
+          <br>
+          <blockquote type="cite">the vma of the accessing vaddr is
+            VM_PFNMAP, walk_page_range() will skip
+            <br>
+            the vma in walk_page_test() and return 0.
+            <br>
+            <br>
+            Before commit aaf99ac2ceb7 ("mm/hwpoison: do not send SIGBUS
+            to processes
+            <br>
+            with recovered clean pages"), kill_accessing_process() will
+            return EFAULT.
+            <br>
+          </blockquote>
+          I'm not sure but pfn_to_online_page should return NULL for
+          VM_PFNMAP pages?
+          <br>
+          So memory_failure_dev_pagemap should handle these pages?
+          <br>
+        </blockquote>
+        <br>
+        We could call remap_pfn_range() for those pfns with struct page.
+        IIUC, VM_PFNMAP
+        <br>
+        means we should assume the pfn doesn't have struct page, but it
+        can have.
+        <br>
+        <br>
+        <blockquote type="cite">
+          <blockquote type="cite">For x86, the current task will be
+            killed in kill_me_maybe().
+            <br>
+            <br>
+            However, after this commit, kill_accessing_process()
+            simplies return 0,
+            <br>
+            that means UCE is handled properly, but it doesn't actually.
+            In such case,
+            <br>
+            the user task will trigger UCE infinitely.
+            <br>
+          </blockquote>
+          Did you ever trigger this loop?
+          <br>
+        </blockquote>
+        <br>
+        Yes. Our test is as follow steps:
+        <br>
+        1) create a user task allocates a clean anonymous page, wihout
+        accessing it.
+        <br>
+        2) use einj to inject UCE for the page
+        <br>
+        3) create task devmem to use /dev/mem to map the pfn and keep
+        accessing it.
+        <br>
+      </blockquote>
+      <br>
+      What is the use case for that? It sounds extremely questionable. <br>
+      <br>
+    </blockquote>
+    <pre>This case is only for test, and is strange indeed.</pre>
+    <pre>But considering another case, a driver may map same RAM pfn to several processes with remap_pfn_range().
+If the first task triggers UCE when accessing the pfn, the task will be killed. But the other tasks couldn't be killed
+and triggers UCE infinitely.
+
+</pre>
+    <p><br>
+    </p>
+    <p><br>
+    </p>
+  </body>
+</html>
+
+--------------0H0DgfAur0r4YpThmTah9uO2--
 
