@@ -2,93 +2,93 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 81283C87FCB
-	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 01:45:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A2A1C87FCB
+	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 01:45:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AF1466B00A8; Wed,  6 Aug 2025 21:45:12 -0400 (EDT)
+	id B18B96B00A9; Wed,  6 Aug 2025 21:45:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A7BED6B00A9; Wed,  6 Aug 2025 21:45:12 -0400 (EDT)
+	id AC92B6B00AA; Wed,  6 Aug 2025 21:45:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91C9B6B00AA; Wed,  6 Aug 2025 21:45:12 -0400 (EDT)
+	id 96A4E6B00AB; Wed,  6 Aug 2025 21:45:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 809A36B00A8
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 21:45:12 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4D7261DD575
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 01:45:12 +0000 (UTC)
-X-FDA: 83748268464.10.B1F9F6D
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 6D993140008
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 01:45:10 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=bLiSHa3n;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 81FAF6B00A9
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 21:45:14 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0A1631A0828
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 01:45:14 +0000 (UTC)
+X-FDA: 83748268548.11.C6EC384
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 279B220007
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 01:45:11 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=IY9Os+F5;
 	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf23.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.47 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754531110; a=rsa-sha256;
+	spf=pass (imf03.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.43 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754531112; a=rsa-sha256;
 	cv=none;
-	b=5owYMhzOFOygRFgfnHgpX9pFTDCFvz1A/+Lgk0vUnIzNZc179ZEA/d7D14tq41pp6zNVgT
-	F/kbhLzujcf6QvtHjT+h4I2rmVu2XZNAsMYv96V6SRKXeAYBdi/ycoPjItzsaFq8hUClS6
-	L1hOvZxukHetmIMQhnZwL1EFW3T+zVo=
+	b=I9OPbPxGt7zJXFMZEm8OlgaDKPDkUKX3qyVHj9F7gZvlRCYHWO7O6P1YuOJHwyiTt+vqu7
+	mMiR7M+ORbDfiswedfLnKTjYuqnJTAryhkHZMfWrWzHNB9y6I8kDXIrKQ67ddi90fMvRia
+	AXxgctqJAqsbgEaDYpoIiKXKCS8yvfc=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=bLiSHa3n;
+	imf03.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=IY9Os+F5;
 	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf23.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.47 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	spf=pass (imf03.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.43 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754531110;
+	s=arc-20220608; t=1754531112;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=535Ba2NCPms4/9++qm2Yq8lWENY5QwuViLFiaBWBL/o=;
-	b=6x+jHJSkMqjSEA4n2zHes4oHyiJ7NRL9AyrfDh+BEpGUMD8AaqKpcxki8GbOIaPjVd3rdR
-	EBSXu7vKeFbmN3rQQjoi6fMrAQCSPH2xZMZXQB5impOHKpPhYjTxzc5M4QTcCDWbB27oW7
-	MCZAdiPy+8G9627oZtP/7DmYnCYR3zQ=
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-70884da4b55so6135696d6.3
-        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 18:45:10 -0700 (PDT)
+	bh=M8Pc86FlLRtwRUzQGSvmjZcMELF/5Imt71S8yXJrUQE=;
+	b=NShlvvQ7tByBVninkE+RClDhL5zrVWqlW3Qyx+KEpCHSFLktYFs6ZR3+0g2hIc/P8a8bT9
+	j0veoXE2OuSg3ULE6qxN1iwuEpYdstsbam+PEKPcBCQ5jDKjbKlPOnuGFAGl43TFKic/hU
+	Ie7pM4dy5Ke19qgJim+2KwWmXE9/nuY=
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-7077a1563b5so5303476d6.1
+        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 18:45:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1754531109; x=1755135909; darn=kvack.org;
+        d=soleen.com; s=google; t=1754531111; x=1755135911; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=535Ba2NCPms4/9++qm2Yq8lWENY5QwuViLFiaBWBL/o=;
-        b=bLiSHa3nfKrchx9AQbWjUJruF+h/6VmXO1yJ/W4OAdc/EqfiNHkSRZYbQkwezIM8kk
-         TPugYvFt6kTrFmTc7WKk+MXRhYWwfJofVEx0Yivbt+UoRaiSW+TY/bLPE4o/vxJBQsao
-         5DuHR7KhTMlQOjlzaF0O0wHiRaVc1zQvr2QwVyhFYvYx+v3+aYldujMSU0LJ/mCkk0pR
-         Zw2cD1GkvvvCOOD4NcBAJmK38B+FuFWqdHxD5muwzettsuemH3bDjx4+jpIfGe7mJBAi
-         pczjHcQCfvZWHSxqKFZJeE5ITvNnhmmAQzRWhXeoXrOl4rXaAbH1XXDyEcYdNb3JagUx
-         Vxmw==
+        bh=M8Pc86FlLRtwRUzQGSvmjZcMELF/5Imt71S8yXJrUQE=;
+        b=IY9Os+F5tgQiywQOixHqhBw7HcBI2CCTI9KQ0MA91r4XZg/d0hd+iK13MvJ/ezec/C
+         IBdObDYNO4nE7e5C6N/O4axywwhQpQTYQazposacBJCdjuuuqogeXuVTPKIlgIJQDBV/
+         rR2FTqxcvXCm++EmeJMS3nOG4XODjsp0ea0RuqyFh/EfUsQyWy3wcvmSTkFVrRzSMDa0
+         6QsKAWqR/Cx0DvnofnePuDw6u9udWhyzpajlJXKsL7t13DsfRm71QLtdqD4RNn65bo2v
+         ziKV/hVgWjZyvTbZKsn9WH7ub3RrhFaXjR3h3IVQc+oSEUzF+si1qSJDlrUXUgD0LpMc
+         w1BA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754531109; x=1755135909;
+        d=1e100.net; s=20230601; t=1754531111; x=1755135911;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=535Ba2NCPms4/9++qm2Yq8lWENY5QwuViLFiaBWBL/o=;
-        b=bfTRrL2PCzjL/o0IudrMMIKOh9AuyPyFepef/+hfp0qfQuNuvbfcKTxVR/7ZY7JyUL
-         21eHjBfrVx2Z7bwdSJgHlZceJ5YNYsHD0ZCL/adqMR8fvcbY9aDbabWT16WeqJDmoDQN
-         T/KeDUyAU/4GTzRLPO2om+XTB+psqJ0Q2pDWvPz1Zyk4HTlbTZoxo8C1tk8hYQpSJvQg
-         EbJ5L/LeuUi5+5hiVYW04VcPz7se4R38fY3l0IHrkDLa+s4V+uKkm21uohIlrdMLaAZW
-         z5gaN/xyv8M1jLqD+Deo2elVjgmyYf8Oj7hn3Bv39Z0Lcs/1tuvOCZiLYPImRU9Xpj0B
-         kjfg==
-X-Forwarded-Encrypted: i=1; AJvYcCUrX0jHBb8N2gshZFNzUyueyThR0xQLzm6VokjBvQttXFTO8TnyIrr72KuiE2ZziHT4+sviR7125g==@kvack.org
-X-Gm-Message-State: AOJu0Yy1Ld3jy19bKPishKk2y0so244JQxNJY3zr4YfTop8T4XuWW3B5
-	H+6tfTG9wmh80BuVbxbnNs/EluIUMuw0FcUYJCKGa84xt7w7aox5VGkT5n6BO4+n8iY=
-X-Gm-Gg: ASbGncspyHzToKwCXG3arGYSBGoaIEgv7XTN3ql/zHcjK/GYAYM8W5I7TQPQFhFw4Ji
-	saDEly5TvGEgu5/vt3Rhog9U8y3AKVQF0PeSJlQ8lgCm7Lqhr4TGsGKJPAbzm8RKr6Ko0UmgY8z
-	MUBwrUKvHJzDqIZCtQD033yPldvnenRbXFGITC3z72sKSpB0RLw64hcjip2svY/Dd5b3CZmifpn
-	nKmWPEyYVfgxiGCBBGtYTnIpqcnngCorNQDCMW4gisPYciiQzyK6CzU5UjKIWq29nJBIc8fTCCy
-	+pcNvXSO5CRmoZk/lQcLNP9Zel2z4Q926S0x0cHemzGTzzX6g4fYBeVz/IhnilkMFbhvC/l9HJ7
-	zMbWYXjQqtQ/lYGiCj/vQE9T/Ix317WHOdSjNy/9oLUcgkpHAbzUOu9XHTnf1sLpA1M7kNlsFQS
-	PtvfThO2iwCmHK
-X-Google-Smtp-Source: AGHT+IEnMynjbrA/1kdM8QRErdkzAIa+G9lVVTQo0MaHEEKIMvABCbjhv49oP3YEo2mCQBJF30aYNA==
-X-Received: by 2002:a05:6214:246f:b0:707:7cee:4fd with SMTP id 6a1803df08f44-7097ae10932mr70070696d6.3.1754531109452;
-        Wed, 06 Aug 2025 18:45:09 -0700 (PDT)
+        bh=M8Pc86FlLRtwRUzQGSvmjZcMELF/5Imt71S8yXJrUQE=;
+        b=e8qzIXkQsiFwRwwudPDWtj02FwORH59/WMxTwPujRX1ZuYoHvbBMWT2OYA6KTMaVhE
+         zVPTNN1Pz04797t8a17luaLiArOdE7S51+ivDclH7X04KwLnMsaNVs6aGuscQWzvZFIm
+         r8mJWR2FygSznK3BfJnoyl5cxEB+OFmwywDLD4bzxZWwhOweY9qHnvPyVKPHb4MR+Qev
+         H5PPxzvvi95rohNgfoPzzNN4NK7XJlvV6LGtzJNK+B3WoKgYzva4qoCjmh9ZXLQBT14h
+         xHLNC2bNR0T5jyc3cDK9qcfC7z7pC1I+7Pni8SNKcRfurwgmoMstF+pwT1RGzbnrQPNE
+         Be6w==
+X-Forwarded-Encrypted: i=1; AJvYcCWuquI4p7HYqOmodsCk8z1Ddwo+b5BPe1KoWljJ3jgiimKSmOqg7EoRUKFc672EBXsm3AFf2bITag==@kvack.org
+X-Gm-Message-State: AOJu0YzYF7s539zVxOqCidmzoPnssBydcpOqmmdRf9fd9OD0LgOBQY5Q
+	BQo3zz4FrE9Ni91p8yzSMBQzxUSdvjiUuiCh123iKyVkE6zX6HaBYVSmLKk+F7OFYo8=
+X-Gm-Gg: ASbGnctBFyUIwN/Nhhh2WKRabvEWxNd8L5X1XLU6BRHAQWbv1SafF/Zhr7qQjqDqNZA
+	apFysgRY4uGIKg+7FJk3OM8Eu3KPftb7ZPCqQm7q5oz0yivGNCifq2yLLnOg/WZ9WLzVpP3v6aO
+	ZVTv1FP9nZaByN8J+rW6oA9E1MZe4giVFfvvhj5E24ISHHLTcSsoJVh3oJX7nSGUgQcE4KUv1OM
+	0nsEloWLUp5HCFYxOzkaucRooTqTjJEVjp/2mGKQ+V7W6pcP6+TqTcaT3rgCDtSunyRIa14eDve
+	4CJMbkW/O7Y+EGgvdDmXzIKm6C+eYb/yGrHCxLVkKuFfGxRdoWpsE79bZYF0euuWAJbjFxOji5m
+	pjoHLNjiRx8OOi4kCPabbYgMvPsB4uJZvCUwGB/I2MySo64FfjW1b+B1uHesl2BeeqDx+4GJGpz
+	vuE/abdcrENkTx
+X-Google-Smtp-Source: AGHT+IEhA0QesCBs9Rro7SuewSiUGU8rDS7yvn1okysx9FgcI1M1Z0UadP+fhEkBUH9Ofl09bYq+0A==
+X-Received: by 2002:a05:6214:4013:b0:707:5986:8963 with SMTP id 6a1803df08f44-7098a801aeemr17644456d6.33.1754531110843;
+        Wed, 06 Aug 2025 18:45:10 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (235.247.85.34.bc.googleusercontent.com. [34.85.247.235])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-7077cde5a01sm92969046d6.70.2025.08.06.18.45.07
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-7077cde5a01sm92969046d6.70.2025.08.06.18.45.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Aug 2025 18:45:08 -0700 (PDT)
+        Wed, 06 Aug 2025 18:45:10 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: pratyush@kernel.org,
 	jasonmiu@google.com,
@@ -162,22 +162,22 @@ To: pratyush@kernel.org,
 	parav@nvidia.com,
 	leonro@nvidia.com,
 	witu@nvidia.com
-Subject: [PATCH v3 15/30] liveupdate: luo_files: implement file systems callbacks
-Date: Thu,  7 Aug 2025 01:44:21 +0000
-Message-ID: <20250807014442.3829950-16-pasha.tatashin@soleen.com>
+Subject: [PATCH v3 16/30] liveupdate: luo_ioctl: add userpsace interface
+Date: Thu,  7 Aug 2025 01:44:22 +0000
+Message-ID: <20250807014442.3829950-17-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.50.1.565.gc32cd1483b-goog
 In-Reply-To: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
 References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6D993140008
-X-Stat-Signature: q3eman4y5bcx9ifrurgq6msa6w79yakc
+X-Stat-Signature: 8no198kb8je9gyyu6s5fo4sr776x8ub9
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1754531110-827026
-X-HE-Meta: U2FsdGVkX18/vyzZBfRvncLLylUo3TSNvsl8l7dnNK/V7Z0JTUV5YLphXmhksMGwdnmMpcoJ8nOhf9V1k0ffsRRvienevigiF8/1ONjTgaiHNtzHhkbBrVUVtdSp6nZW8ROmp/s3AgGStsPzoDV8XiO81fLMRbK8lc+u72TrEoD5HDduP20nyyTsv+JyBib/OULLdUfB/QdQW3KNDJryYnZ1hMEhFfz+pkN9o19yAHW7h4LA82jHlUDjyImOxuj7E8hzNpXXrO59kjIo5iQOowPMHDoCgDka1Zaem8h2pmkA3njyc2ZvIGfrKLb1Wff1yQSNO0I31Ct6Wemdi+TcWupXWE1tC8JJbuCykyEW+PQx4hoooADAe0Zb5vFasIBFEF+vgAR13JlAXse5FDeheJ+n6EYNLCZdF3wdoPmwiIoakGg9/L2ADE9tsMUXrllnWLEJUXToaaEMVt0b086Ih0geUcJdgyqZiPTJLanazfQKPBi+2WzSH9APoFgVXBDveXD1wJZHgb3PoFJUpSZVhF35t0g1AgJkgluAOQDM56BpKcJ+MixcCPey7AskWMaFtHi/20Dpi11hrtYxg0vA8qhaTdPef6nmKIxZKhoVcLSXlMaHx/Q5XOQDnOrOBcm6byyJP4dC8Df4LHO5byqXz4chDnPa2xLQeX4SGa24smFOjfsYm7uGCpebmLxMxt8ScGK6r2PP6RHacqjptyvX8YJkbf6T61mH/y9bLgpHR1mWTPUNaYAsq3ncVQbesEmqW1WnJn7ZxULd1jUTKszTHF7ixxpG9O9Wlyz51lvE4JXFnSmJyXQWAxdbL2F+Oy7nJcsYZ8su1WVR12c/OI2Eb4++13X+l+0dSPmRyc2ezP8zqbU4p/NwWkI2TV0ij5BUtaEbU/1PaTxeEV0Rx6Tv48r767ocXmjaKmvGHkEFSN/HJw17lqhyoGK2aL73gYTL0K+cxD31ltVhl6+KBKG
- xeuCrFgs
- 4lOHlSwoRiGgmgJp/eAf/KP5lz5yan0BAiqiltzGFTT3ugK4a6slxywBI/aDlQNc76FmKQJ+y1N74Jw22Eei+SeYXXurP8ehzQA+ZifOlPWk8uziuGJ5EQL9M/NzqbzMQT3m4qZ5vPs57K+fBpyln+n/5mRGj6OcYvqirEor28n6xAnUB1orKvr2oZ7wnpwfSoFeYfHdK+P49Yf34d7hmZ+JUeLEg7JVYrSIp/GMGEaOA1mdLDgV5uR6FVOP/Khlw7OltMMJeVNN0DS7UBq+S7yiQGzPtT6d7DW/DJCgK3DPgEjeYfHKI1MsUN7OZLWrkYHMOdGrqBg83A0Qo9Se7VY2MuhAtKG57oiUjMpLe7LUbKyRPOYSt/R96diiML7B4fSrFaCMNSG1fGHumd6gnwaFm9XGOoGTvFnGuHCQPgSPDDgtwsvVIog5YNmbsIXPDraOi
+X-Rspamd-Queue-Id: 279B220007
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1754531111-933883
+X-HE-Meta: U2FsdGVkX1963WZ9F07HdJjrJCd2VHjuxl5B62O36N+Q+9dofAU2ZQpxKwpsiHYWY0IaS8F8GSFbKmDzleX9neFzj4LwDXcjCXFcvApuDV12mePoj6Yf92cpP9Auw1gXndBFKe7BEkZAilxH/gE+dqobgRMGOdWgJwibxLMEPI5pde0qyVMEkhsmUBYOHWGGi8T/AiAkOs1sySl+MPjdqrX8+pDgInicAn6f0HILmNNGNSCwtCpPL6dj0bBJjiKymyK9KkvTOFZuTHlz1c8Ss7dfSUJUQ9/m6r91UAdc8KGBwuHOOWq4CfG49kTXOcXRk9p85y1v+PQYinQopiIjwvhOvNLwfZXBXceToR6asYGI1HHPWYwvllzxdD+iLDLd/J3gGbxu83XldtIMP5HqE0kQ/z1dYDdir4VYXaXqi8wuHhfYlkh52e42rnmxMNA6iHSaleSccc3/Lu53zYurovoG4wqH+SVe+toOa7EJl/YLEtnQJilsEWOOdWgEfZCOFJEZYP771iGrrU+F2pUSzL9YYp2um1VJclXKQ9007OYtt2RDD6UnlBdK59eyQIIVefR2O/Nt4viGNCDCgeS3ZkySMr+x3oUrgBoNi5q/iNsgkqMl8pcd9P/iqTZ8SvIUSpijrXsgErk7Fb9N4rE28ptJ8XHKQjilIFUFcrRAI8HgRx0EwVjt5kCLsfrJb1euPPSNX55xnMIWbwbGnRRt8ubfg4A//wy+CidAZwYapkGulEdGpp6+OG0muKh+zHtVJHfz4Tjg0PS558WcFXNNMM8K1dt2bIqH6jACeNBXLeMBRjIpUYoj4h8Cpwvp2RkaN8pHraPWClDdpOn41vXi3alDlDJNyr9DEa9Gc/fXL6mHTOSurU8mP07h4+16b1Ri4CdMmF/Bxck40tNGNNlf1M/EhoIiD/XeOcHNc0YrL9dlhfacfWdoIMASK0jWzHxbXNTbHUywsdqcYcONDAw
+ DdSV0Aw4
+ KRaofEeAN9PN0SNYU7bk2XoASTs5v/63QP1WCTBX9tPdOuYOoz12b0pR1F+Td2FGvq8OM73gfgcet7sEwPOyQE8iSeXyZWd6fsprersn9my+pRO0GjYOg5naRSIvTSapvoIX8v0L3uMhU4PIizV7cUvfrJ8OhgBDkL4t50MoBaiCvthLc3iEclf8LALic0/B88smGnR+RTWbe9KRUJILvz2br4uQDuejII3YlHDjT8ptXBrSxgc4qoP4+DM3j5XUNOBFUfnz8HiWnm4UGC8EbVmQGlyY8SvdgoZalu/ZCYKxGSy3A0/7Ss7u6MtDZfkTP/tARc7NZGCGWCXCh3t9+N9oLCdkApMvhkXKMhqrs7u6x6+jyAdI1Vq3d3aQgFEnkS5+oGJ4wCgpJxl1l7CSu51YbvlCwvGcG84yoaXbTzU1o1dcmIIZ9K/xOQBSgcZXvyT9J
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,259 +186,499 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Implements the core logic within luo_files.c to invoke the prepare,
-reboot, finish, and cancel callbacks for preserved file instances,
-replacing the previous stub implementations. It also handles
-the persistence and retrieval of the u64 data payload associated with
-each file via the LUO FDT.
+Introduce the user-space interface for the Live Update Orchestrator
+via ioctl commands, enabling external control over the live update
+process and management of preserved resources.
 
-This completes the core mechanism enabling registered files handlers to actively
-manage file state across the live update transition using the LUO framework.
+The idea is that there is going to be a single userspace agent driving
+the live update, therefore, only a single process can ever hold this
+device opened at a time.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- kernel/liveupdate/luo_files.c | 191 +++++++++++++++++++++++++++++++++-
- 1 file changed, 188 insertions(+), 3 deletions(-)
+ include/uapi/linux/liveupdate.h | 243 ++++++++++++++++++++++++++++++++
+ kernel/liveupdate/luo_ioctl.c   | 200 ++++++++++++++++++++++++++
+ 2 files changed, 443 insertions(+)
 
-diff --git a/kernel/liveupdate/luo_files.c b/kernel/liveupdate/luo_files.c
-index 4b7568d0f0f0..33577c9e9a64 100644
---- a/kernel/liveupdate/luo_files.c
-+++ b/kernel/liveupdate/luo_files.c
-@@ -326,32 +326,190 @@ static int luo_files_fdt_setup(void)
- 	return ret;
- }
+diff --git a/include/uapi/linux/liveupdate.h b/include/uapi/linux/liveupdate.h
+index 3cb09b2c4353..37ec5656443b 100644
+--- a/include/uapi/linux/liveupdate.h
++++ b/include/uapi/linux/liveupdate.h
+@@ -14,6 +14,32 @@
+ #include <linux/ioctl.h>
+ #include <linux/types.h>
  
-+static int luo_files_prepare_one(struct luo_file *h)
++/**
++ * DOC: General ioctl format
++ *
++ * The ioctl interface follows a general format to allow for extensibility. Each
++ * ioctl is passed in a structure pointer as the argument providing the size of
++ * the structure in the first u32. The kernel checks that any structure space
++ * beyond what it understands is 0. This allows userspace to use the backward
++ * compatible portion while consistently using the newer, larger, structures.
++ *
++ * ioctls use a standard meaning for common errnos:
++ *
++ *  - ENOTTY: The IOCTL number itself is not supported at all
++ *  - E2BIG: The IOCTL number is supported, but the provided structure has
++ *    non-zero in a part the kernel does not understand.
++ *  - EOPNOTSUPP: The IOCTL number is supported, and the structure is
++ *    understood, however a known field has a value the kernel does not
++ *    understand or support.
++ *  - EINVAL: Everything about the IOCTL was understood, but a field is not
++ *    correct.
++ *  - ENOENT: An ID or IOVA provided does not exist.
++ *  - ENOMEM: Out of memory.
++ *  - EOVERFLOW: Mathematics overflowed.
++ *
++ * As well as additional errnos, within specific ioctls.
++ */
++
+ /**
+  * enum liveupdate_state - Defines the possible states of the live update
+  * orchestrator.
+@@ -91,4 +117,221 @@ enum liveupdate_event {
+ 	LIVEUPDATE_CANCEL = 3,
+ };
+ 
++/* The ioctl type, documented in ioctl-number.rst */
++#define LIVEUPDATE_IOCTL_TYPE		0xBA
++
++/* The ioctl commands */
++enum {
++	LIVEUPDATE_CMD_BASE = 0x00,
++	LIVEUPDATE_CMD_FD_PRESERVE = LIVEUPDATE_CMD_BASE,
++	LIVEUPDATE_CMD_FD_UNPRESERVE = 0x01,
++	LIVEUPDATE_CMD_FD_RESTORE = 0x02,
++	LIVEUPDATE_CMD_GET_STATE = 0x03,
++	LIVEUPDATE_CMD_SET_EVENT = 0x04,
++};
++
++/**
++ * struct liveupdate_ioctl_fd_preserve - ioctl(LIVEUPDATE_IOCTL_FD_PRESERVE)
++ * @size:  Input; sizeof(struct liveupdate_ioctl_fd_preserve)
++ * @fd:    Input; The user-space file descriptor to be preserved.
++ * @token: Input; An opaque, unique token for preserved resource.
++ *
++ * Holds parameters for preserving Validate and initiate preservation for a file
++ * descriptor.
++ *
++ * User sets the @fd field identifying the file descriptor to preserve
++ * (e.g., memfd, kvm, iommufd, VFIO). The kernel validates if this FD type
++ * and its dependencies are supported for preservation. If validation passes,
++ * the kernel marks the FD internally and *initiates the process* of preparing
++ * its state for saving. The actual snapshotting of the state typically occurs
++ * during the subsequent %LIVEUPDATE_IOCTL_PREPARE execution phase, though
++ * some finalization might occur during freeze.
++ * On successful validation and initiation, the kernel uses the @token
++ * field with an opaque identifier representing the resource being preserved.
++ * This token confirms the FD is targeted for preservation and is required for
++ * the subsequent %LIVEUPDATE_IOCTL_FD_RESTORE call after the live update.
++ *
++ * Return: 0 on success (validation passed, preservation initiated), negative
++ * error code on failure (e.g., unsupported FD type, dependency issue,
++ * validation failed).
++ */
++struct liveupdate_ioctl_fd_preserve {
++	__u32		size;
++	__s32		fd;
++	__aligned_u64	token;
++};
++
++#define LIVEUPDATE_IOCTL_FD_PRESERVE					\
++	_IO(LIVEUPDATE_IOCTL_TYPE, LIVEUPDATE_CMD_FD_PRESERVE)
++
++/**
++ * struct liveupdate_ioctl_fd_unpreserve - ioctl(LIVEUPDATE_IOCTL_FD_UNPRESERVE)
++ * @size:  Input; sizeof(struct liveupdate_ioctl_fd_unpreserve)
++ * @token: Input; A token for resource to be unpreserved.
++ *
++ * Remove a file descriptor from the preservation list.
++ *
++ * Allows user space to explicitly remove a file descriptor from the set of
++ * items marked as potentially preservable. User space provides a @token that
++ * was previously used by a successful %LIVEUPDATE_IOCTL_FD_PRESERVE call
++ * (potentially from a prior, possibly cancelled, live update attempt). The
++ * kernel reads the token value from the provided user-space address.
++ *
++ * On success, the kernel removes the corresponding entry (identified by the
++ * token value read from the user pointer) from its internal preservation list.
++ * The provided @token (representing the now-removed entry) becomes invalid
++ * after this call.
++ *
++ * Return: 0 on success, negative error code on failure (e.g., -EBUSY or -EINVAL
++ * if bad address provided, invalid token value read, token not found).
++ */
++struct liveupdate_ioctl_fd_unpreserve {
++	__u32		size;
++	__aligned_u64	token;
++};
++
++#define LIVEUPDATE_IOCTL_FD_UNPRESERVE					\
++	_IO(LIVEUPDATE_IOCTL_TYPE, LIVEUPDATE_CMD_FD_UNPRESERVE)
++
++/**
++ * struct liveupdate_ioctl_fd_restore - ioctl(LIVEUPDATE_IOCTL_FD_RESTORE)
++ * @size:  Input; sizeof(struct liveupdate_ioctl_fd_restore)
++ * @fd:    Output; The new file descriptor representing the fully restored
++ *         kernel resource.
++ * @token: Input; An opaque, token that was used to preserve the resource.
++ *
++ * Restore a previously preserved file descriptor.
++ *
++ * User sets the @token field to the value obtained from a successful
++ * %LIVEUPDATE_IOCTL_FD_PRESERVE call before the live update. On success,
++ * the kernel restores the state (saved during the PREPARE/FREEZE phases)
++ * associated with the token and populates the @fd field with a new file
++ * descriptor referencing the restored resource in the current (new) kernel.
++ * This operation must be performed *before* signaling completion via
++ * %LIVEUPDATE_IOCTL_FINISH.
++ *
++ * Return: 0 on success, negative error code on failure (e.g., invalid token).
++ */
++struct liveupdate_ioctl_fd_restore {
++	__u32		size;
++	__s32		fd;
++	__aligned_u64	token;
++};
++
++#define LIVEUPDATE_IOCTL_FD_RESTORE					\
++	_IO(LIVEUPDATE_IOCTL_TYPE, LIVEUPDATE_CMD_FD_RESTORE)
++
++/**
++ * struct liveupdate_ioctl_get_state - ioctl(LIVEUPDATE_IOCTL_GET_STATE)
++ * @size:  Input; sizeof(struct liveupdate_ioctl_get_state)
++ * @state: Output; The current live update state.
++ *
++ * Query the current state of the live update orchestrator.
++ *
++ * The kernel fills the @state with the current
++ * state of the live update subsystem. Possible states are:
++ *
++ * - %LIVEUPDATE_STATE_NORMAL:   Default state; no live update operation is
++ *                               currently in progress.
++ * - %LIVEUPDATE_STATE_PREPARED: The preparation phase (triggered by
++ *                               %LIVEUPDATE_PREPARE) has completed
++ *                               successfully. The system is ready for the
++ *                               reboot transition. Note that some
++ *                               device operations (e.g., unbinding, new DMA
++ *                               mappings) might be restricted in this state.
++ * - %LIVEUPDATE_STATE_UPDATED:  The system has successfully rebooted into the
++ *                               new kernel via live update. It is now running
++ *                               the new kernel code and is awaiting the
++ *                               completion signal from user space via
++ *                               %LIVEUPDATE_FINISH after restoration tasks are
++ *                               done.
++ *
++ * See the definition of &enum liveupdate_state for more details on each state.
++ *
++ * Return: 0 on success, negative error code on failure.
++ */
++struct liveupdate_ioctl_get_state {
++	__u32	size;
++	__u32	state;
++};
++
++#define LIVEUPDATE_IOCTL_GET_STATE					\
++	_IO(LIVEUPDATE_IOCTL_TYPE, LIVEUPDATE_CMD_GET_STATE)
++
++/**
++ * struct liveupdate_ioctl_set_event - ioctl(LIVEUPDATE_IOCTL_SET_EVENT)
++ * @size:  Input; sizeof(struct liveupdate_ioctl_set_event)
++ * @event: Input; The live update event.
++ *
++ * Notify live update orchestrator about global event, that causes a state
++ * transition.
++ *
++ * Event, can be one of the following:
++ *
++ * - %LIVEUPDATE_PREPARE: Initiates the live update preparation phase. This
++ *                        typically triggers the saving process for items marked
++ *                        via the PRESERVE ioctls. This typically occurs
++ *                        *before* the "blackout window", while user
++ *                        applications (e.g., VMs) may still be running. Kernel
++ *                        subsystems receiving the %LIVEUPDATE_PREPARE event
++ *                        should serialize necessary state. This command does
++ *                        not transfer data.
++ * - %LIVEUPDATE_FINISH:  Signal restoration completion and triggercleanup.
++ *
++ *                        Signals that user space has completed all necessary
++ *                        restoration actions in the new kernel (after a live
++ *                        update reboot). Calling this ioctl triggers the
++ *                        cleanup phase: any resources that were successfully
++ *                        preserved but were *not* subsequently restored
++ *                        (reclaimed) via the RESTORE ioctls will have their
++ *                        preserved state discarded and associated kernel
++ *                        resources released. Involved devices may be reset. All
++ *                        desired restorations *must* be completed *before*
++ *                        this. Kernel callbacks for the %LIVEUPDATE_FINISH
++ *                        event must not fail. Successfully completing this
++ *                        phase transitions the system state from
++ *                        %LIVEUPDATE_STATE_UPDATED back to
++ *                        %LIVEUPDATE_STATE_NORMAL. This command does
++ *                        not transfer data.
++ * - %LIVEUPDATE_CANCEL:  Cancel the live update preparation phase.
++ *
++ *                        Notifies the live update subsystem to abort the
++ *                        preparation sequence potentially initiated by
++ *                        %LIVEUPDATE_PREPARE event.
++ *
++ *                        When triggered, subsystems receiving the
++ *                        %LIVEUPDATE_CANCEL event should revert any state
++ *                        changes or actions taken specifically for the aborted
++ *                        prepare phase (e.g., discard partially serialized
++ *                        state). The kernel releases resources allocated
++ *                        specifically for this *aborted preparation attempt*.
++ *
++ *                        This operation cancels the current *attempt* to
++ *                        prepare for a live update but does **not** remove
++ *                        previously validated items from the internal list
++ *                        of potentially preservable resources. Consequently,
++ *                        preservation tokens previously used by successful
++ *                        %LIVEUPDATE_IOCTL_FD_PRESERVE or calls **remain
++ *                        valid** as identifiers for those potentially
++ *                        preservable resources. However, since the system state
++ *                        returns towards %LIVEUPDATE_STATE_NORMAL, user space
++ *                        must initiate a new live update sequence (starting
++ *                        with %LIVEUPDATE_PREPARE) to proceed with an update
++ *                        using these (or other) tokens.
++ *
++ *                        This command does not transfer data. Kernel callbacks
++ *                        for the %LIVEUPDATE_CANCEL event must not fail.
++ *
++ * See the definition of &enum liveupdate_event for more details on each state.
++ *
++ * Return: 0 on success, negative error code on failure.
++ */
++struct liveupdate_ioctl_set_event {
++	__u32	size;
++	__u32	event;
++};
++
++#define LIVEUPDATE_IOCTL_SET_EVENT					\
++	_IO(LIVEUPDATE_IOCTL_TYPE, LIVEUPDATE_CMD_SET_EVENT)
++
+ #endif /* _UAPI_LIVEUPDATE_H */
+diff --git a/kernel/liveupdate/luo_ioctl.c b/kernel/liveupdate/luo_ioctl.c
+index 3df1ec9fbe57..6f61569c94e8 100644
+--- a/kernel/liveupdate/luo_ioctl.c
++++ b/kernel/liveupdate/luo_ioctl.c
+@@ -5,6 +5,25 @@
+  * Pasha Tatashin <pasha.tatashin@soleen.com>
+  */
+ 
++/**
++ * DOC: LUO ioctl Interface
++ *
++ * The IOCTL user-space control interface for the LUO subsystem.
++ * It registers a character device, typically found at ``/dev/liveupdate``,
++ * which allows a userspace agent to manage the LUO state machine and its
++ * associated resources, such as preservable file descriptors.
++ *
++ * To ensure that the state machine is controlled by a single entity, access
++ * to this device is exclusive: only one process is permitted to have
++ * ``/dev/liveupdate`` open at any given time. Subsequent open attempts will
++ * fail with -EBUSY until the first process closes its file descriptor.
++ * This singleton model simplifies state management by preventing conflicting
++ * commands from multiple userspace agents.
++ */
++
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++
++#include <linux/atomic.h>
+ #include <linux/errno.h>
+ #include <linux/file.h>
+ #include <linux/fs.h>
+@@ -17,8 +36,189 @@
+ #include <uapi/linux/liveupdate.h>
+ #include "luo_internal.h"
+ 
++static atomic_t luo_device_in_use = ATOMIC_INIT(0);
++
++struct luo_ucmd {
++	void __user *ubuffer;
++	u32 user_size;
++	void *cmd;
++};
++
++static int luo_ioctl_fd_preserve(struct luo_ucmd *ucmd)
 +{
-+	int ret = 0;
-+
-+	guard(mutex)(&h->mutex);
-+	if (h->state == LIVEUPDATE_STATE_NORMAL) {
-+		if (h->fh->ops->prepare) {
-+			ret = h->fh->ops->prepare(h->fh, h->file,
-+						  &h->private_data);
-+		}
-+		if (!ret)
-+			h->state = LIVEUPDATE_STATE_PREPARED;
-+	} else {
-+		WARN_ON_ONCE(h->state != LIVEUPDATE_STATE_PREPARED &&
-+			     h->state != LIVEUPDATE_STATE_FROZEN);
-+	}
-+
-+	return ret;
-+}
-+
-+static int luo_files_freeze_one(struct luo_file *h)
-+{
-+	int ret = 0;
-+
-+	guard(mutex)(&h->mutex);
-+	if (h->state == LIVEUPDATE_STATE_PREPARED) {
-+		if (h->fh->ops->freeze) {
-+			ret = h->fh->ops->freeze(h->fh, h->file,
-+						 &h->private_data);
-+		}
-+		if (!ret)
-+			h->state = LIVEUPDATE_STATE_FROZEN;
-+	} else {
-+		WARN_ON_ONCE(h->state != LIVEUPDATE_STATE_FROZEN);
-+	}
-+
-+	return ret;
-+}
-+
-+static void luo_files_finish_one(struct luo_file *h)
-+{
-+	guard(mutex)(&h->mutex);
-+	if (h->state == LIVEUPDATE_STATE_UPDATED) {
-+		if (h->fh->ops->finish) {
-+			h->fh->ops->finish(h->fh, h->file, h->private_data,
-+					   h->reclaimed);
-+		}
-+		h->state = LIVEUPDATE_STATE_NORMAL;
-+	} else {
-+		WARN_ON_ONCE(h->state != LIVEUPDATE_STATE_NORMAL);
-+	}
-+}
-+
-+static void luo_files_cancel_one(struct luo_file *h)
-+{
++	struct liveupdate_ioctl_fd_preserve *argp = ucmd->cmd;
 +	int ret;
 +
-+	guard(mutex)(&h->mutex);
-+	if (h->state == LIVEUPDATE_STATE_NORMAL)
-+		return;
++	ret = luo_register_file(argp->token, argp->fd);
++	if (!ret)
++		return ret;
 +
-+	ret = WARN_ON_ONCE(h->state != LIVEUPDATE_STATE_PREPARED &&
-+			   h->state != LIVEUPDATE_STATE_FROZEN);
-+	if (ret)
-+		return;
-+
-+	if (h->fh->ops->cancel)
-+		h->fh->ops->cancel(h->fh, h->file, h->private_data);
-+	h->private_data = 0;
-+	h->state = LIVEUPDATE_STATE_NORMAL;
-+}
-+
-+static void __luo_files_cancel(struct luo_file *boundary_file)
-+{
-+	unsigned long token;
-+	struct luo_file *h;
-+
-+	xa_for_each(&luo_files_xa_out, token, h) {
-+		if (h == boundary_file)
-+			break;
-+
-+		luo_files_cancel_one(h);
-+	}
-+	luo_files_fdt_cleanup();
-+}
-+
-+static int luo_files_commit_data_to_fdt(void)
-+{
-+	int node_offset, ret;
-+	unsigned long token;
-+	char token_str[19];
-+	struct luo_file *h;
-+
-+	guard(rwsem_read)(&luo_file_fdt_rwsem);
-+	xa_for_each(&luo_files_xa_out, token, h) {
-+		snprintf(token_str, sizeof(token_str), "%#0llx", (u64)token);
-+		node_offset = fdt_subnode_offset(luo_file_fdt_out,
-+						 0,
-+						 token_str);
-+		ret = fdt_setprop(luo_file_fdt_out, node_offset, "data",
-+				  &h->private_data, sizeof(h->private_data));
-+		if (ret < 0) {
-+			pr_err("Failed to set data property for token %s: %s\n",
-+			       token_str, fdt_strerror(ret));
-+			return -ENOSPC;
-+		}
-+	}
++	if (copy_to_user(ucmd->ubuffer, argp, ucmd->user_size))
++		return -EFAULT;
 +
 +	return 0;
 +}
 +
- static int luo_files_prepare(struct liveupdate_subsystem *h, u64 *data)
- {
-+	unsigned long token;
-+	struct luo_file *luo_file;
- 	int ret;
- 
- 	ret = luo_files_fdt_setup();
- 	if (ret)
- 		return ret;
- 
--	scoped_guard(rwsem_read, &luo_file_fdt_rwsem)
--		*data = __pa(luo_file_fdt_out);
-+	xa_for_each(&luo_files_xa_out, token, luo_file) {
-+		ret = luo_files_prepare_one(luo_file);
-+		if (ret < 0) {
-+			pr_err("Prepare failed for file token %#0llx handler '%s' [%d]\n",
-+			       (u64)token, luo_file->fh->compatible, ret);
-+			__luo_files_cancel(luo_file);
-+
-+			return ret;
-+		}
-+	}
-+
-+	ret = luo_files_commit_data_to_fdt();
-+	if (ret) {
-+		__luo_files_cancel(NULL);
-+	} else {
-+		scoped_guard(rwsem_read, &luo_file_fdt_rwsem)
-+			*data = __pa(luo_file_fdt_out);
-+	}
- 
- 	return ret;
- }
- 
- static int luo_files_freeze(struct liveupdate_subsystem *h, u64 *data)
- {
--	return 0;
-+	unsigned long token;
-+	struct luo_file *luo_file;
-+	int ret;
-+
-+	xa_for_each(&luo_files_xa_out, token, luo_file) {
-+		ret = luo_files_freeze_one(luo_file);
-+		if (ret < 0) {
-+			pr_err("Freeze callback failed for file token %#0llx handler '%s' [%d]\n",
-+			       (u64)token, luo_file->fh->compatible, ret);
-+			__luo_files_cancel(luo_file);
-+
-+			return ret;
-+		}
-+	}
-+
-+	ret = luo_files_commit_data_to_fdt();
-+	if (ret)
-+		__luo_files_cancel(NULL);
-+
-+	return ret;
- }
- 
- static void luo_files_finish(struct liveupdate_subsystem *h, u64 data)
- {
-+	unsigned long token;
-+	struct luo_file *luo_file;
-+
- 	luo_files_recreate_luo_files_xa_in();
-+	xa_for_each(&luo_files_xa_in, token, luo_file) {
-+		luo_files_finish_one(luo_file);
-+		mutex_destroy(&luo_file->mutex);
-+		kfree(luo_file);
-+	}
-+	xa_destroy(&luo_files_xa_in);
- }
- 
- static void luo_files_cancel(struct liveupdate_subsystem *h, u64 data)
- {
-+	__luo_files_cancel(NULL);
- }
- 
- static void luo_files_boot(struct liveupdate_subsystem *h, u64 fdt_pa)
-@@ -484,6 +642,27 @@ int luo_register_file(u64 token, int fd)
- 	return ret;
- }
- 
-+static void luo_files_fdt_remove_node(u64 token)
++static int luo_ioctl_fd_unpreserve(struct luo_ucmd *ucmd)
 +{
-+	char token_str[19];
-+	int offset, ret;
++	struct liveupdate_ioctl_fd_unpreserve *argp = ucmd->cmd;
 +
-+	guard(rwsem_write)(&luo_file_fdt_rwsem);
-+	if (!luo_file_fdt_out)
-+		return;
-+
-+	snprintf(token_str, sizeof(token_str), "%#0llx", token);
-+	offset = fdt_subnode_offset(luo_file_fdt_out, 0, token_str);
-+	if (offset < 0)
-+		return;
-+
-+	ret = fdt_del_node(luo_file_fdt_out, offset);
-+	if (ret < 0) {
-+		pr_warn("LUO Files: Failed to delete FDT node for token %s: %s\n",
-+			token_str, fdt_strerror(ret));
-+	}
++	return luo_unregister_file(argp->token);
 +}
 +
- static int __luo_unregister_file(u64 token)
- {
- 	struct luo_file *luo_file;
-@@ -492,6 +671,12 @@ static int __luo_unregister_file(u64 token)
- 	if (!luo_file)
- 		return -ENOENT;
- 
-+	if (luo_file->state == LIVEUPDATE_STATE_FROZEN ||
-+	    luo_file->state == LIVEUPDATE_STATE_PREPARED) {
-+		luo_files_cancel_one(luo_file);
-+		luo_files_fdt_remove_node(token);
++static int luo_ioctl_fd_restore(struct luo_ucmd *ucmd)
++{
++	struct liveupdate_ioctl_fd_restore *argp = ucmd->cmd;
++	struct file *file;
++	int ret;
++
++	argp->fd = get_unused_fd_flags(O_CLOEXEC);
++	if (argp->fd < 0) {
++		pr_err("Failed to allocate new fd: %d\n", argp->fd);
++		return argp->fd;
 +	}
 +
- 	fput(luo_file->file);
- 	mutex_destroy(&luo_file->mutex);
- 	kfree(luo_file);
++	ret = luo_retrieve_file(argp->token, &file);
++	if (ret < 0) {
++		put_unused_fd(argp->fd);
++
++		return ret;
++	}
++
++	fd_install(argp->fd, file);
++
++	if (copy_to_user(ucmd->ubuffer, argp, ucmd->user_size))
++		return -EFAULT;
++
++	return 0;
++}
++
++static int luo_ioctl_get_state(struct luo_ucmd *ucmd)
++{
++	struct liveupdate_ioctl_get_state *argp = ucmd->cmd;
++
++	argp->state = liveupdate_get_state();
++
++	if (copy_to_user(ucmd->ubuffer, argp, ucmd->user_size))
++		return -EFAULT;
++
++	return 0;
++}
++
++static int luo_ioctl_set_event(struct luo_ucmd *ucmd)
++{
++	struct liveupdate_ioctl_set_event *argp = ucmd->cmd;
++	int ret;
++
++	switch (argp->event) {
++	case LIVEUPDATE_PREPARE:
++		ret = luo_prepare();
++		break;
++	case LIVEUPDATE_FINISH:
++		ret = luo_finish();
++		break;
++	case LIVEUPDATE_CANCEL:
++		ret = luo_cancel();
++		break;
++	default:
++		ret = -EINVAL;
++	}
++
++	return ret;
++}
++
++static int luo_open(struct inode *inodep, struct file *filep)
++{
++	if (atomic_cmpxchg(&luo_device_in_use, 0, 1))
++		return -EBUSY;
++
++	return 0;
++}
++
++static int luo_release(struct inode *inodep, struct file *filep)
++{
++	atomic_set(&luo_device_in_use, 0);
++
++	return 0;
++}
++
++union ucmd_buffer {
++	struct liveupdate_ioctl_fd_preserve	preserve;
++	struct liveupdate_ioctl_fd_unpreserve	unpreserve;
++	struct liveupdate_ioctl_fd_restore	restore;
++	struct liveupdate_ioctl_get_state	state;
++	struct liveupdate_ioctl_set_event	event;
++};
++
++struct luo_ioctl_op {
++	unsigned int size;
++	unsigned int min_size;
++	unsigned int ioctl_num;
++	int (*execute)(struct luo_ucmd *ucmd);
++};
++
++#define IOCTL_OP(_ioctl, _fn, _struct, _last)                                  \
++	[_IOC_NR(_ioctl) - LIVEUPDATE_CMD_BASE] = {                            \
++		.size = sizeof(_struct) +                                      \
++			BUILD_BUG_ON_ZERO(sizeof(union ucmd_buffer) <          \
++					  sizeof(_struct)),                    \
++		.min_size = offsetofend(_struct, _last),                       \
++		.ioctl_num = _ioctl,                                           \
++		.execute = _fn,                                                \
++	}
++
++static const struct luo_ioctl_op luo_ioctl_ops[] = {
++	IOCTL_OP(LIVEUPDATE_IOCTL_FD_PRESERVE, luo_ioctl_fd_preserve,
++		 struct liveupdate_ioctl_fd_preserve, token),
++	IOCTL_OP(LIVEUPDATE_IOCTL_FD_UNPRESERVE, luo_ioctl_fd_unpreserve,
++		 struct liveupdate_ioctl_fd_unpreserve, token),
++	IOCTL_OP(LIVEUPDATE_IOCTL_FD_RESTORE, luo_ioctl_fd_restore,
++		 struct liveupdate_ioctl_fd_restore, token),
++	IOCTL_OP(LIVEUPDATE_IOCTL_GET_STATE, luo_ioctl_get_state,
++		 struct liveupdate_ioctl_get_state, state),
++	IOCTL_OP(LIVEUPDATE_IOCTL_SET_EVENT, luo_ioctl_set_event,
++		 struct liveupdate_ioctl_set_event, event),
++};
++
++static long luo_ioctl(struct file *filep, unsigned int cmd, unsigned long arg)
++{
++	const struct luo_ioctl_op *op;
++	struct luo_ucmd ucmd = {};
++	union ucmd_buffer buf;
++	unsigned int nr;
++	int ret;
++
++	nr = _IOC_NR(cmd);
++	if (nr < LIVEUPDATE_CMD_BASE ||
++	    (nr - LIVEUPDATE_CMD_BASE) >= ARRAY_SIZE(luo_ioctl_ops)) {
++		return -EINVAL;
++	}
++
++	ucmd.ubuffer = (void __user *)arg;
++	ret = get_user(ucmd.user_size, (u32 __user *)ucmd.ubuffer);
++	if (ret)
++		return ret;
++
++	op = &luo_ioctl_ops[nr - LIVEUPDATE_CMD_BASE];
++	if (op->ioctl_num != cmd)
++		return -ENOIOCTLCMD;
++	if (ucmd.user_size < op->min_size)
++		return -EINVAL;
++
++	ucmd.cmd = &buf;
++	ret = copy_struct_from_user(ucmd.cmd, op->size, ucmd.ubuffer,
++				    ucmd.user_size);
++	if (ret)
++		return ret;
++
++	return op->execute(&ucmd);
++}
++
+ static const struct file_operations fops = {
+ 	.owner		= THIS_MODULE,
++	.open		= luo_open,
++	.release	= luo_release,
++	.unlocked_ioctl	= luo_ioctl,
+ };
+ 
+ static struct miscdevice liveupdate_miscdev = {
 -- 
 2.50.1.565.gc32cd1483b-goog
 
