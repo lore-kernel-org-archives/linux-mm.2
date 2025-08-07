@@ -2,93 +2,93 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 075FDC87FD3
-	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 01:44:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ADA46C87FD3
+	for <linux-mm@archiver.kernel.org>; Thu,  7 Aug 2025 01:44:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC6B46B0092; Wed,  6 Aug 2025 21:44:53 -0400 (EDT)
+	id C022E6B0095; Wed,  6 Aug 2025 21:44:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C771B6B0095; Wed,  6 Aug 2025 21:44:53 -0400 (EDT)
+	id BB4156B0096; Wed,  6 Aug 2025 21:44:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3DC86B0096; Wed,  6 Aug 2025 21:44:53 -0400 (EDT)
+	id A7A376B0098; Wed,  6 Aug 2025 21:44:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A14826B0092
-	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 21:44:53 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 26A8B116212
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 01:44:53 +0000 (UTC)
-X-FDA: 83748267666.14.B577D51
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 4CCA716000D
-	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 01:44:51 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=jF4rXkot;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf08.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.49 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754531091; a=rsa-sha256;
-	cv=none;
-	b=vdafbntgZ6GlXAREZu/M/ra8Hmso+gFC0LYtfD8brfrK05vaxnJlmAtYmWy0rmsvBaQN7F
-	uZHMM33xeQx2Umy99DAM73C+7t3XBYV4n1mxfdSsLLhzDnPWp6W0Z4HeFZkpKU+QhxQ9rx
-	9mICV6Z4mL/YxJFR1QNF0tisKyjq4IU=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=jF4rXkot;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf08.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.49 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 96AF36B0095
+	for <linux-mm@kvack.org>; Wed,  6 Aug 2025 21:44:54 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5DD161DD534
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 01:44:54 +0000 (UTC)
+X-FDA: 83748267708.07.CF97D9F
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	by imf02.hostedemail.com (Postfix) with ESMTP id CA57280008
+	for <linux-mm@kvack.org>; Thu,  7 Aug 2025 01:44:52 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=XO7wNdo0;
+	spf=pass (imf02.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754531091;
+	s=arc-20220608; t=1754531092;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zshHU08ID0A8NXQB//otilnse1ea1iiCCRjsJeEREns=;
-	b=ju4YYw9f6pLNPXLPjQs7gvrVFfgVHamuuPc5v9YrN137FMQaNJSGVwEQ2yDnYeFNpq0jW3
-	cq4em7y2BNygeT2XRsmE6ubtWnjxv7Zqw68To8XhpXn6kHSQI91bfKc6Ml8m7p4BxfXn2M
-	e5NSAzAfEiUTHSe6TlYkBuM/xjzerI8=
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-70749d4c598so5101926d6.0
-        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 18:44:51 -0700 (PDT)
+	bh=kaESzk2f6ioxFaB+zOVCWa3oEolQrGNRo6YQh6Uj768=;
+	b=X7coXFkwLUxY39LjGseTnJTzd+GVeuBUMxyKwx7WPxiOWG70QMvTfWU9TacyWiaXiVhvXx
+	NEwmeEEakiiMG44CaCfpmbsG+hcscKUfDKkhHnUVmRA9+LeYPicnqw5FPwxLNwpoErx8mo
+	rBGKQkEoc63iM+7x/VFB/jFG2170Y1Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754531092; a=rsa-sha256;
+	cv=none;
+	b=8X4GUwYPcFaQRwzQBVGatmm5CNnSgRHGHh2k++78monV4TYCcb6RbDUSu+wvt3Mi8G04Xd
+	VCW9iS4l4UjMNgJnzl0sDHNAT4oRM6xrjWtxVnVc/iPrtN50xma6vjnaUyJmPtumkFS9Bq
+	942S4tP9/ti5VYGOatcKnM+sTZf4LQo=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=XO7wNdo0;
+	spf=pass (imf02.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-707453b0306so5567786d6.2
+        for <linux-mm@kvack.org>; Wed, 06 Aug 2025 18:44:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1754531090; x=1755135890; darn=kvack.org;
+        d=soleen.com; s=google; t=1754531092; x=1755135892; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=zshHU08ID0A8NXQB//otilnse1ea1iiCCRjsJeEREns=;
-        b=jF4rXkotrAH/cjg4269N5Aa7SGjnELhEWY6STrvwTx3s1XCPM9mwMc3cuKnU0VCpCa
-         VlML7tzhNcWy5b2SFsHF4kYpK+Q1qDzhQPxNesVvDGU/LdCqM5vds+kV1K0T+tidgV1a
-         QEF8IRIRPjVnlpuNUqx9qZ1ups1wifnWQm/RKChiCD7R9GFsC5XV+5u4p0rRePShL8Nt
-         zhwzN1UK6GsetsMrIrWee5VFhpVjhxxUqt4WbbJ7AuE6p+6RsaXSofanGWeJJNnp9UFd
-         X0O49OJnFKh4PEiLExuKZo30WhT/cu921fFfEKAb2QHqvpMJN5BUP8ghAAcqvBMhzpGN
-         yRsw==
+        bh=kaESzk2f6ioxFaB+zOVCWa3oEolQrGNRo6YQh6Uj768=;
+        b=XO7wNdo0xUIILU9XqUJfwu6KRSHEtYvbjmLaE6uwZH912yf29Ci5bEyjjN5cp1QCC/
+         cYv1bK8g2hR8kbWMgHf9QfqNHdHnk4dFY/82iTvGJGQwdwWLiX6/au15SKyqpRqy50bQ
+         amlWIkShiDt+7o+B6c17zxmIA6z61qyPWpL+30j5sbxnTW+n1ih8YhiP4MPNkBJzm3/K
+         pIXio2IYq6c/Zi6lZXPcIMFc6wZpn8ciKDDmGbBMIulXGHIodVvt5fpunhOMd/5f9B1o
+         +jwjZriZCaIWTA78SX6r2+u9j948war48wYxhSb+5huhoPYidnyb9kaDvpHZZydlO2vZ
+         aBEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754531090; x=1755135890;
+        d=1e100.net; s=20230601; t=1754531092; x=1755135892;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=zshHU08ID0A8NXQB//otilnse1ea1iiCCRjsJeEREns=;
-        b=ZrtcRbtpeOmY6ll17XAHub635+F6sC0Hk/wnjGmXjfFyDKIMmUWYu4KIkn06vyB4YG
-         bSrsL8SXg4pHmNyHd3m+VHrc0JlMSWwNQYzRYHdEkiu2HahspYgmbCwMZwPyg9acYRFA
-         SCr5g2YW92f3MpPNK9Ib0VqCDJYvR6+eH+swBlwpU7meAYTZSw0Bj8zsRZxAhdvk1J8j
-         k8rUfciuK/Yd33ptVqaLMNbrnX2lDi+HeOEJSZcD/MNr0BJCwGwy6gsdPXoybQ9SiQVn
-         gadL89jYQ6oMy3AyiCBNaiKnyy1lNmtGPjJH3YOnVvBptJZdsop1wwVKytSUpxntSJfC
-         F3Uw==
-X-Forwarded-Encrypted: i=1; AJvYcCX4ci6x5RiVkKOHbGAxOF4E1kAhMpDWTJaY2dn/dBDmc+FChd997WOMq1GP6lVbygV07Yy+7XOF5A==@kvack.org
-X-Gm-Message-State: AOJu0Ywuu1BicMTD0eUr85mRv1XkWqMQkLnfEY2SQP6atWDQ4Hzn6I54
-	QAOvVFAPcqqKTwZzk8kZmFY2m5lGO73tF7q1Sz58H0MpMYlETUPhX2+ZqoYVxUNkFMo=
-X-Gm-Gg: ASbGnctRoDU3Yf9hEShhen9Ae384rVgiZjTAPdsay6pudyplowEBvOcAEt7ps2tlR/h
-	GC5iI9r+qGufbqVxFJoFF68FDh3kX/TVI0ENpJU35FCLtlZe0tbBiodF7VfFZGMPNhMti8gp5Ik
-	Qwx2HFhAZEGy1kpBLEwH7x04WXU88hsMG8w6bQLRZG9/VS0aopkUVY8ta9Ipl6yJzJR5mfydu6I
-	Gt0QaFVEobnH6/v13EeIbi+uzZmUfLx98PXU1k5mcLNgDgX8nMkMksgRlvk+QE5FMLnIai48ISN
-	0q7aGLzvOHVl1VTqdWRxDDTqLhrJtUTk3+b6fu0WfJRCmKcEiFPW558LkpnJSK2uOHy8wgz7tyg
-	Nv5QSLa8q80ROt4WBTDFbIrMRy1GVnhiefEoDoW7ptyfAIXeHbyWHU1hXa7rjupUlJygqSDNNbO
-	LG6g+rHnjy5KqK
-X-Google-Smtp-Source: AGHT+IHnmZoVOKyFNNYjLIT5+3p7MrntTaDtd4zF5EXEXaUvK/PtJPkVc+qy8Wy9N2jknjRUu/0o0g==
-X-Received: by 2002:a05:6214:300f:b0:707:29f9:3bd1 with SMTP id 6a1803df08f44-7097964ce99mr76335266d6.46.1754531090257;
-        Wed, 06 Aug 2025 18:44:50 -0700 (PDT)
+        bh=kaESzk2f6ioxFaB+zOVCWa3oEolQrGNRo6YQh6Uj768=;
+        b=lDZWP+WYZMpixbS1A/W35YxXTHs0EmwSX9SoyhLjHwRGN3L6UxmiYGf5h4+jvBAWqG
+         rGXdYs6d/e7etvG/x+2fwZoDXCu6Q6DJLygi+F1lgiIrpGAI4PLhSpTTEG3NGbfAx6qd
+         +c5vRz7I3k3610Y9P2YOtG1sjLAvnOcIC63trnJMd+1oZ/rFN6K8cYJ843O8XXGU8vM3
+         jsFdXDr19De9AlZbTKwBuiZWf8HBAG20jOnC1JJl5hhs18nxmd2TrczCkJgSM2T7foBU
+         70POXivU9PoAWSt2gwl/WJqSqK2dIf8bnwjyjSb/tyxmwu6aQg8p5JIQC1sTZssL550K
+         +aWg==
+X-Forwarded-Encrypted: i=1; AJvYcCX+8upOR2jFg1RWgdGixXn/GYUxythxtvCB0e9Dlcl5bi5d2xtU1Y2EdWMMvcEeNRkieQlD0uMGnQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx6mC4Mv/C/KbwBH1D8F46OWJcfF1DWRsNne801YOTIzRQdiDmq
+	xkOCtI0wEWV5WOmsTFhwLfDfCN4vsRqxze/7bPhzs+f21J+ttlU7UF+13ykMKNElE6s=
+X-Gm-Gg: ASbGncs3me6e5ukgpplOd++rQ2FzZgQykZTCSutPm7UcDIl/w0MitPOAXLYtCE5I4u1
+	hoIW+8yyp42qMJL0SqWLIu+FaqRninkn3WzKrHgOf6JjcWYCgcJkc8bkhLq+lTJNnUs3rtLGyxA
+	pKC9LWSGdnh0VsZXlTxILfTnKl5fMb6SooT09ZfGmxJ9iWs8IfanQzUJ7lUkLFGiw3Qohk1Krpu
+	RjYMffJrWJZkjm/GkpZHn12V3wOo884AFYcWReriAvQhfW6iS4JQ8VX//jbfKma96Ao+ij2W/HB
+	dQcivTdUlr9i2gJxE/V41PlBO5At1fOUSJ4Xtzn82r18cO1FJYXtB9SIrvAeCvdtmGNybUYbAZz
+	N8RnYRu8CMMe2EiRbceBOAdLCSKx7Keqh7ESsCnKbZVjsP+4s7xescnotmAOi4X03g51Nb00eaT
+	VowSpSg0xSVBJv
+X-Google-Smtp-Source: AGHT+IEyWMvTBlOM62kNmVMKSSB8JNc55ip6AvkaRw6dwIN2X5ATQTWFGGBA3z7kK5RTd9pgC648bw==
+X-Received: by 2002:ad4:5f8f:0:b0:707:4daf:637 with SMTP id 6a1803df08f44-7097af1440bmr64537216d6.29.1754531091759;
+        Wed, 06 Aug 2025 18:44:51 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (235.247.85.34.bc.googleusercontent.com. [34.85.247.235])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-7077cde5a01sm92969046d6.70.2025.08.06.18.44.48
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-7077cde5a01sm92969046d6.70.2025.08.06.18.44.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Aug 2025 18:44:49 -0700 (PDT)
+        Wed, 06 Aug 2025 18:44:51 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: pratyush@kernel.org,
 	jasonmiu@google.com,
@@ -162,22 +162,22 @@ To: pratyush@kernel.org,
 	parav@nvidia.com,
 	leonro@nvidia.com,
 	witu@nvidia.com
-Subject: [PATCH v3 02/30] kho: mm: Don't allow deferred struct page with KHO
-Date: Thu,  7 Aug 2025 01:44:08 +0000
-Message-ID: <20250807014442.3829950-3-pasha.tatashin@soleen.com>
+Subject: [PATCH v3 03/30] kho: warn if KHO is disabled due to an error
+Date: Thu,  7 Aug 2025 01:44:09 +0000
+Message-ID: <20250807014442.3829950-4-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.50.1.565.gc32cd1483b-goog
 In-Reply-To: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
 References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: toa9cxry71cnswe7ci9816e11kj5umsx
+X-Rspamd-Queue-Id: CA57280008
+X-Stat-Signature: 6eerx9r53ojte4ynj5z6o8r6njw8c49n
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4CCA716000D
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1754531091-495167
-X-HE-Meta: U2FsdGVkX19cIbvLEhgqzhCd/d/EZq5/nIS2O2mGkpYuWMeR3eFzoo0gr9beaHKvUsLRVfvj4WUVt4EXn7SU34XiI/hB/xYGoEcsg/dABYZdgd5WVt7hhziLaRJpxlnWvPI+ExXyt5mH5mxVG8A010BMgAi4m/2oh1vP3BFlhc8RR4+KlqbfVuDEjoRQ7VdOhNWxL2Pufa9Fo3LI0Okpol6rClmaWiD0zoqoNSWOVUO/gyaQv5371b8kUaxefRcjXt8939kXIqb6z9ZSEqQIOdDLJp9DT+F6CrsDksgfcYl6fTWZx/OpqC4CrpCgXrKtwXBcTtUI+aYV9AXoBp9/eXi396CyoPIh+buDBURdJqN4kSNpvWekOVHvByloYZhOqTka0z59nefYoDQibSBMfYsI63LZkTFEPdGKW83M0Gkj8zR2sSCuVY/RJE6jm8hxoPzcl31sxsJ+XMkv4YaTbBIk03Crke2aZyEseqvBd5y6r0uJQmyby/pmO5o45H8TrG3v+4w5BeK86hi9kTH0RdfhvtllRLR70wFN9FuYQvhCHohQoHRXD6MZnxzZ/ylPL8gwjML93M15AlseGnqPl31nBIcueXZTyJo6tUHkgHjoZMwyii9i7EDH3hOWIa4ej8i3s2mEF7jIJB+n78JPHeOQux5mRHzbcIgNRJtNa1w6BsBUsxTgSjK0QwHgVBqSgQyb5POtSp4lipH52VqfdygYItX47Wws++HjagAuWW4pTOCYENaXx0uxzh0yZx5ozpJN8UnGSArP8faB+6Fwfe1BxGEWScvia+t0EoO7Zc8IfMArs22IY1M5ub10YSSjf01fsz57COFSoM78N1Bu+Nc2hyCeH6tzml6caolfZYw7cUNDAZJa+9sd6rhIOTL23wrsnoM7WUqkI3+ozr/V8/8pKYU+Vosd/XKDltJFDYyQ8GUihYX3ofuRoCA9FNKSmqhx4bIbHxhsXviArAr
- a9Akg7yg
- r7dMFUl6NtlkhWTz84GnF7lIAczpwVUmQ0t3/sdJwZSH3Y/c2z7h+nwzemizUWMnyDghOmkSyX/LLeezdxSNoklQB8HYqzhQXv1m/TnZLXH33GuG8dJTjGFDvcR8kVnXuKbM7GADcmhk+Y5lDoqvcvKdCk6aDl81qPzGQE97Sz6URxhqZOedKHCCaNbLXwwNzf5WG+78Vc9bpPTJ1scYKUa2upsTykXmR7vfUpdANe4o3J93nwMjoTV6X2v2YvKJjpe58TMXquvKYOJtcOppm0nmj4Qy9qqigCnyXqueWpg+Hm62Q/YqH8yp1oh/NKC83QN+qu8G0KpZR601n2IdA+g3vjiu5tdnlpPcA/74wrOZuv6/rm3+RmAzruS92GKkKLegw
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1754531092-136088
+X-HE-Meta: U2FsdGVkX1960tNQp8K/XfOaKApFVy4w6jR8yGwhzrgQRxa3UVZPsmGfM+pbl/gDSbtN7zcEmMDMAW2f++yGMT+QhnFJzyg3Xb618OtSTDG2MgCOjJotj12WgRla8XSymAY4RbSwl4C4SV8hE+Rr40C/d2k+iGu0RLRbh0zzNFgxrS7RsjoBPwN7hgBjDfsJv9HUdOaqQA7R7VNtUVjKxdjDcr9nwiqBz/kxdpZjTA65h/HS9FlAfjChsDJUC4H99eak3XcOFKAgrQ4JosB3GXHWVUFWR/uYrPCEckZPhPznuvz+B75AXV3xzAQKDJx6h0/2Z69w/Q8jE62VVHEy1E29qZfeUToVi3EICO427UctJZhiKI4yhH61o4oVEAD3Vzv7Z0AbUQlZnJS6yc0TyVTSqoFNz+cLejAEy7XaGIX2ix9OeR/YNiFyR+NbQrMZYcY0olQHWXGu+Uv4qA4QtOfkDNDwYTM2E4yaFKw3eeO/JAuyeN4ctADT2q6X0F416kl8xPPb3UBzUzLayzt+1LuGY+UjHMJv8M/Kdr03GeGZZkLllr/WGpqb4fIfWPe7s+PrUBncdgXh5QGUpUFmVqWfBvkMMaFXJTqaTYUAD3B77BV6xdjKaF4W0fUD9dLr+Mc6CsHUOspSVNoXpR+9gQmyeCa2Lgy2nV2ltBVAaJZehkLvOYcd3A/bpCZ6WN01EDr+4/nlvTpSThR+IYfnCDlhEdv5wZpzihPhNaMYQFcRbvejoMKWRPVVC60gsPfNiiKmeIaVOEDJSU3xlF+LbhtQZjpkr++brUQjdyUapJLQePogyiqVOE9ifpue3yYSPaqSXWFJAT9wg6k81D6QTA61hJngYHNOF4L7aNh1WZObf3CVagrbzE6T+6gSGm7g6S0mLQ8JDzaWGwBoNuR3lnK/JaYj9YsB06shcqnF85AqLcmtnIwf91JxcJymfqoKiUPzO7x0UfZdE2AYOEM
+ 3m34pxv0
+ gygJ+CzzkDZE5MKxjZGED+Q9rrLxOp9ZS/FWGx+0FnFzyQKqKPl/gX+YkOLkMMaNwTjRL3rwiDCtghw6JAo1uf/pv7z9NgnDpp1wmYWmpqHjVV1slm41jdK3XjQb2Utpg9sVC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,37 +186,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-KHO uses struct pages for the preserved memory early in boot, however,
-with deferred struct page initialization, only a small portion of
-memory has properly initialized struct pages.
-
-This problem was detected where vmemmap is poisoned, and illegal flag
-combinations are detected.
-
-Don't allow them to be enabled together, and later we will have to
-teach KHO to work properly with deferred struct page init kernel
-feature.
-
-Fixes: 990a950fe8fd ("kexec: add config option for KHO")
+During boot scratch area is allocated based on command line
+parameters or auto calculated. However, scratch area may fail
+to allocate, and in that case KHO is disabled. Currently,
+no warning is printed that KHO is disabled, which makes it
+confusing for the end user to figure out why KHO is not
+available. Add the missing warning message.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- kernel/Kconfig.kexec | 1 +
+ kernel/kexec_handover.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/kernel/Kconfig.kexec b/kernel/Kconfig.kexec
-index 2ee603a98813..1224dd937df0 100644
---- a/kernel/Kconfig.kexec
-+++ b/kernel/Kconfig.kexec
-@@ -97,6 +97,7 @@ config KEXEC_JUMP
- config KEXEC_HANDOVER
- 	bool "kexec handover"
- 	depends on ARCH_SUPPORTS_KEXEC_HANDOVER && ARCH_SUPPORTS_KEXEC_FILE
-+	depends on !DEFERRED_STRUCT_PAGE_INIT
- 	select MEMBLOCK_KHO_SCRATCH
- 	select KEXEC_FILE
- 	select DEBUG_FS
+diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
+index 6240bc38305b..c2b7e8b86db0 100644
+--- a/kernel/kexec_handover.c
++++ b/kernel/kexec_handover.c
+@@ -565,6 +565,7 @@ static void __init kho_reserve_scratch(void)
+ err_free_scratch_desc:
+ 	memblock_free(kho_scratch, kho_scratch_cnt * sizeof(*kho_scratch));
+ err_disable_kho:
++	pr_warn("Failed to reserve scratch area, disabling kexec handover\n");
+ 	kho_enable = false;
+ }
+ 
 -- 
 2.50.1.565.gc32cd1483b-goog
 
