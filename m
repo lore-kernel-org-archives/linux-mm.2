@@ -2,91 +2,91 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C1E21C87FDA
-	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 15:29:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A99D7C87FD2
+	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 15:29:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C4A58E0003; Fri,  8 Aug 2025 11:29:01 -0400 (EDT)
+	id 5D19E8E0005; Fri,  8 Aug 2025 11:29:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 226A98E0001; Fri,  8 Aug 2025 11:29:01 -0400 (EDT)
+	id 587568E0001; Fri,  8 Aug 2025 11:29:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 115138E0003; Fri,  8 Aug 2025 11:29:01 -0400 (EDT)
+	id 449EA8E0005; Fri,  8 Aug 2025 11:29:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EFC338E0001
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 11:29:00 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C1EF081517
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 296378E0001
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 11:29:03 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C8C7B58455
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 15:29:02 +0000 (UTC)
+X-FDA: 83753973324.14.FBA8603
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	by imf27.hostedemail.com (Postfix) with ESMTP id E9F1B4000E
 	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 15:29:00 +0000 (UTC)
-X-FDA: 83753973240.27.3B55A5D
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	by imf02.hostedemail.com (Postfix) with ESMTP id F29A680008
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 15:28:58 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=mlU6IYQr;
-	spf=pass (imf02.hostedemail.com: domain of 3uReWaAYKCIw8A7u3rw44w1u.s421y3AD-220Bqs0.47w@flex--surenb.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3uReWaAYKCIw8A7u3rw44w1u.s421y3AD-220Bqs0.47w@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=waWTeod6;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf27.hostedemail.com: domain of 3uxeWaAYKCI4AC9w5ty66y3w.u64305CF-442Dsu2.69y@flex--surenb.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3uxeWaAYKCI4AC9w5ty66y3w.u64305CF-442Dsu2.69y@flex--surenb.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754666941; a=rsa-sha256;
+	cv=none;
+	b=nAvAgdfVVPQ48jyzEWF8z3penvmtg08lWFtDFXSCoFYSkDPurKycmvASvwkTw4wUtDKkfw
+	3mGviUJJkSbuJT6aKR6nibG739Ia/hD92nyabIZMgttmDPxgmFqDtcSDYxumruatxFQwxn
+	K+7DV1AJE+jYbaepouY2vt25coEiJtU=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=waWTeod6;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf27.hostedemail.com: domain of 3uxeWaAYKCI4AC9w5ty66y3w.u64305CF-442Dsu2.69y@flex--surenb.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3uxeWaAYKCI4AC9w5ty66y3w.u64305CF-442Dsu2.69y@flex--surenb.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754666939;
+	s=arc-20220608; t=1754666941;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oaaNxrFIYW8u5Zqt1umxh8jF3epFz2+2Ag+pI49sCxs=;
-	b=AHSxcePTP3EMmoNFXplUGC9Nm2a04EvWO5JZwPE3Md4nK8GTLBgF9+Vq+KxNgw2Gy6F0b6
-	tksfgCz5Vtdd+7TA7GZyCS4Kyimpgh5of6PYTBBFNYNEqNMlihPrqazCaDlXiqa/lQtnds
-	/LiyxurWm1sIWnCRb4bQ5yZjTYm/SwM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754666939; a=rsa-sha256;
-	cv=none;
-	b=d8FCEIt6rMVlWakb8TOSDCD3Or+5dFe0YVlbAV3FjD2Cz6lYKauB4toJ4FZBwGe9ZRU8qm
-	lAWTfsD8GEGLP93ZsLIiA2HjmqAch3uIjM+qJxzwFCx+3J+PTwGUZrEIXCZddNu30UHGq6
-	GUOO0PTkVd/lQLD488ESgjgvTZGZxAE=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=mlU6IYQr;
-	spf=pass (imf02.hostedemail.com: domain of 3uReWaAYKCIw8A7u3rw44w1u.s421y3AD-220Bqs0.47w@flex--surenb.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3uReWaAYKCIw8A7u3rw44w1u.s421y3AD-220Bqs0.47w@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-23fe98c50daso19002625ad.3
-        for <linux-mm@kvack.org>; Fri, 08 Aug 2025 08:28:58 -0700 (PDT)
+	bh=5qaVRp5+Q87psp1cSnwtcdG7GaGDDk1FPXSJsj5vDHc=;
+	b=3NnsZPEsmfaLWom7r8uLGU1jhKekEu452HbUKJnvnY55IsKVZ5RaTBIfBYGjlwdrs5m4JQ
+	9ypsm98PaJHC0fpIARIEMBsky707Hcb+x7W4/ClIo/Q3PLmkKfECHQu+y9ktjHsq2v2ZIW
+	WVpi0g9j6ST3PBqPnK0QrM/PAsMRk2U=
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3217aae3f90so1864276a91.0
+        for <linux-mm@kvack.org>; Fri, 08 Aug 2025 08:29:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754666938; x=1755271738; darn=kvack.org;
+        d=google.com; s=20230601; t=1754666940; x=1755271740; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=oaaNxrFIYW8u5Zqt1umxh8jF3epFz2+2Ag+pI49sCxs=;
-        b=mlU6IYQraRh59vEeDntkvBjhSkRk0tPOcRmVQ9icDh1PibzZ6jTRobsrOtuzSzN1OJ
-         /EUv8nLIAiDCq2oqzliLRT+SuxuELB4qcgpuwvJaZzunUw2jTGscp1KJvmcIZIkkelEh
-         vTzyeIQ5MgdVi+hBGHJqPE/kxUFH8LiD/2BRQfQt/G08VSRnA5OTjG+ENTq7/CSVM5jn
-         t6BQQ7GFIItGnZIgTcK73DIF+SAuJI65czoa5DkBxp9CsdDzDWVrIBz2Z8188IPWORwU
-         SjmIAmMq4A0iJKDghSeqTx2hthS55uHv12UBUymfPqv/c/V0CW0pF/+aLjiYYjsJSjdK
-         MyOQ==
+        bh=5qaVRp5+Q87psp1cSnwtcdG7GaGDDk1FPXSJsj5vDHc=;
+        b=waWTeod6tNQopBtrQ7L5TxEyOWgq4FKUGDrezSnkN+YbHErCPgLZECmzvGIJ4AnnQ2
+         A6fc/yfOwq3BwSRkTLkfoJ59qMJvZw1pqg2hSfTHTRJgDPMjlcBFEkSkeC7437J4CwNj
+         xnJlnjJ33RyCIictXvDghodEKDtgSAT+OF5820xtpl7zIQpbJ/zBfN+MFvmsw+DzIVjV
+         ccQBvjY01ahtNexM7b7VvuFz1L39VxjYdpiCai0krA/Hmd1cX4uIAHVa84w//FThWaxm
+         5L/xyy5Rq7w8b9KCvH+Pqf9IJ8endXj5DyaoeLGUvY1JIc5YBJbJtlk+KTf//p6rKWIJ
+         ISIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754666938; x=1755271738;
+        d=1e100.net; s=20230601; t=1754666940; x=1755271740;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oaaNxrFIYW8u5Zqt1umxh8jF3epFz2+2Ag+pI49sCxs=;
-        b=gY8dvkzp8Xtyv0Z1880cOXz+O5QgexIqbSDw8lWn8Vz4c8yTY1QkaddGYt31dSV/SL
-         Fg8Aj9syuF96n9R6sy9wv6a6Gl53YadCEwJufCatNtuF6He8qtHw3rmd+lr6OUWRVZML
-         LGqHMjeVeSl4QoTKzhW6nGIDFW3PEBssMGZdUmuoJp88L1iPHHuXNcmI7uIf8xpU+ffB
-         xCjoWqOwv2LqdLk/ktOpCW9kA03fb7B6ylDUjr2pb8XEnde7h5fNe743V4OhIdX6m3G+
-         XR4XH2G3esLuSy1ZnrTMERWW11OO/48aqebiYV6fcBdywDXk4dSa1WvQNt4EyYVcoDHo
-         ZvLA==
-X-Forwarded-Encrypted: i=1; AJvYcCWk7qRJWGq1NCz80eTt+JPwNHShkHESorChAIYdjpae/gPdGQZRblzgxEqThL1FQD3KDbIEdPgPhg==@kvack.org
-X-Gm-Message-State: AOJu0YwkZ0DgW/Wvc0SmO7BL10+AZwJsOYuu5CslZJqov/eJlD2GfrYv
-	mF4SilX0gLGvVJkpkIW3JF8wol66pvPXxhA/Rl3m26QggzMvo6BRvX/FzZRVUdGMFxM/XdCTy2O
-	qWHgB+w==
-X-Google-Smtp-Source: AGHT+IHE0hHtw1Xg0PUR8LXW1OvNYnxaIuDbWWkKp1lBoeFA09FI3YbrJczkDR7Cbe5a+Wuqw/7opjyJj9c=
-X-Received: from pjqs17.prod.google.com ([2002:a17:90a:ad91:b0:31e:eff2:4575])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f64a:b0:240:3f39:2c73
- with SMTP id d9443c01a7336-242c19ac4f0mr49253725ad.0.1754666937755; Fri, 08
- Aug 2025 08:28:57 -0700 (PDT)
-Date: Fri,  8 Aug 2025 08:28:48 -0700
+        bh=5qaVRp5+Q87psp1cSnwtcdG7GaGDDk1FPXSJsj5vDHc=;
+        b=e/JPXGp8n28fNS/H2LQFlzlarQJlhoptZ0CVP7aUK2n0J5ESj0U/omdofN9DOAqYDc
+         dmrv/h6SxOzV8YG2IdewsSWSvqiahhyDMxcjxPZASB2E1kK5HhoYgbpinFX+ivKL9HPF
+         MWNhakTc1Q2ScKoeCAGzoO34j6gsDfhYmN+zMqTDnGte0LtkC/qA5TFKz7Vh3/9D1haa
+         cBlJmHWFrjkzhoqPve9S88vHe3XoEVsDIyNJWQBzHcTJWM4+gHfY49c38jZISaAo3kDf
+         sxC1oZGrVclOTT/IxxyyPQLcLuCkYdKnM3XBhigDbZISbR+VD39z6WlSyuGgjtcncfvp
+         tyag==
+X-Forwarded-Encrypted: i=1; AJvYcCXf6sjKPCxd/QX+qk/XViOXsLtSk2y1ZLFd44TzWM/AhuodzYYBnN14z5kLFPa43vwU0qwXWNi9jg==@kvack.org
+X-Gm-Message-State: AOJu0YyKTX0PRR4im0sTHdpGVQMSoUbB3cANd3791pc0JZfYBcPxiANG
+	1dNugGnj+md7Z4s90htvdK4aQ8ZwYoB5nXr7sv3U7fqo5ftyf9pWbKb3ipUJmvEd0bljbDLbS3c
+	nIkUGag==
+X-Google-Smtp-Source: AGHT+IGfHbSuaYkDvkzFDZll/OyuLjbjmWu+3tdj38KsO6i2Mr+NdU7aQQPpEiVzAfcHA2GS7b/edCdIm5g=
+X-Received: from pjboe9.prod.google.com ([2002:a17:90b:3949:b0:321:9285:be8])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3e4b:b0:316:3972:b9d0
+ with SMTP id 98e67ed59e1d1-321838a7672mr5733158a91.0.1754666939750; Fri, 08
+ Aug 2025 08:28:59 -0700 (PDT)
+Date: Fri,  8 Aug 2025 08:28:49 -0700
 In-Reply-To: <20250808152850.2580887-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20250808152850.2580887-1-surenb@google.com>
 X-Mailer: git-send-email 2.50.1.703.g449372360f-goog
-Message-ID: <20250808152850.2580887-3-surenb@google.com>
-Subject: [PATCH v4 2/3] fs/proc/task_mmu: factor out proc_maps_private fields
- used by PROCMAP_QUERY
+Message-ID: <20250808152850.2580887-4-surenb@google.com>
+Subject: [PATCH v4 3/3] fs/proc/task_mmu: execute PROCMAP_QUERY ioctl under
+ per-vma locks
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Cc: Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com, david@redhat.com, 
@@ -100,14 +100,14 @@ Cc: Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com, david@redhat.com,
 	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, surenb@google.com, 
 	SeongJae Park <sj@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: F29A680008
-X-Stat-Signature: wmtf1wfcqd6d5stwqsuhah9q17otbecb
 X-Rspam-User: 
-X-HE-Tag: 1754666938-491161
-X-HE-Meta: U2FsdGVkX1/Xi85+tRPWYbX/T6S6JF8y3hf0wcOrkf/7elvt4pmKUSH8ua9g9j7Jkk9nU4YqmtL4mgXo7W4jTbyY0gzEb+2JB7qLd+L7FQlywE5jCUbT1ERNU70722TEUE066RW7hBLali2LUSBwGkdiTl7EKys5quhe7XpsPB2/HpDgxRHM2pzHuCRSryNBcaefJ3DOxnjpoziyuXd7TgXbAgWIWxwQZyJahX1c+xliO84WwBLTtXuLyYUL58kk1Z59RtoVFydakrKCYb6/WL4GiLIUoNpWN6TQjmktvAXFo07vrT2Sgs4LmZTZ8nIclECIUXjXShyHbQvJZzx0Lve8PRu+ocVO4oXJfzxqVq82eE9eFSx8Ul9lbWQghP4y0e4m25VdkSZu3qu07BRV3U/Os/5QOiabE/F6e/WJ+zcFiuLKCZkZpbvO5QykRthKoA5AkbxC55c9dm9tKgL9T99+D5l1f34yjSno0SEEp2lFVtXAEpQPPoJ+34YRgbELWEoPNPTB64aP39t0z5RQDtVoOCUB9R7HA7wUYemThBb6WbfYMDDWs7hQF18uR0415eAM8D3UmaXNEySD1lgqBX01AdncTWJhFrDqUoOnFBjvdXnAQo7y+XtgsT7188HgL6PddfZwgS0O6ZEQh9vxIMLHhKTHp8sPbpDio1IoJKi1LFNO4u/Qv+jigS+BBp4baYh7eZ+u1sKoaHgGpi4wn4C4StstB+DQArHsZtinwpShbT5lAJjRKuRdvCiha97D6BBSY74pE3hvwLoFYEuA3ofn5RPDeDf6l3Pm2vc+nH4a+6iV/tsQQgh90XQYSC1E8pdQ+qFkib8MVfvpIaIRPPvZktu/ccoxlZvA0WuMIeNvtI3s2mggHO3PkgpqxitDKswM5IPAkiFxGmAj6R5gz9Vi2G50QXcZ9/bDC2L4zv+1OACWST0Dc4XXrdRBpPdTod8yuzrEL4vIEBlRAwc
- 7ZMX+XON
- OAuTmNkD0nkSkJyo86UiynR5TArhfOfilDhvYagtgcuRXaBUBiUrMXtDKQJ+g+/8rhhmOsZyWB1ZakCA/lliANKu4AeTrNDz5gKU1yNvf21FZqwPm5Y1ahN3CQGya0iVHBrAcxYyxT4crby1KqnAB7AYUXcV2P98eVQ1mLimUwmDLwvZnVm/Z+rh3AN8pRq/+4PC0Gm3KgQdDiCSOV526crTyOBJ/jHByAMBP+0ZmCSIOW26Yg4MxLADivFYgYck4xi6rF6Psrt7I4WcfpDSrUTL8DWDW7WU0Q6kb8+6a/+4elWsOmceqPGzgntDMU/NCbXDZqwwzq1O+fnc5hA+ilUKxMzO0UlKceEosRmRPLiZarC3cXSDnm7jPooCwuB5gTorIhapEb/igU6O2EbeevgrBkLjfwqVHKqLcsYFI8vvbR6qEbIiRJog9ueFexAV0sPT4gieLOzeFe2r8s9hnKCAb7AaNuRMUBpbso8+klI9ezRAQQWBDSVaz2ouJGXc/YbbQBzv8u8jNuuYB8Fin5XA9a/8+6gVoJRJTSopu2cYldXL+ra3ETlMxT5VZffObMlM/syXkEop0MQqiZcDEPs0+cu5IVqV72e1U9D6ksUabquEKCFRDN4tBo5koHPvhCssc7KG4Jczcl+w=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E9F1B4000E
+X-Stat-Signature: 3u5mppfor36ijjhdprpybzg5estrf1aw
+X-HE-Tag: 1754666940-991692
+X-HE-Meta: U2FsdGVkX1+RDkfAmHy70xrYtE7eT5DCCd69tGm49Pyg7Ghj1tQpJzXwKv78m0ZmKPRQYT39//y7xz+ciFnZuIskTqWv+XV5RSGnbX+FNeh6OAXi+aTf4xplFhCNrSWAatFFmAB8UHMny0KPnK8efyUEqfCOfcdlopEPh/vvrt1dbkJGiqbqNbC9ViZehmJwwmMUL2P3HEmCHRspTVEyo8TCEx37aB6fV1mgxxXkrc5woGI8GuISXrIa/e62XmFBWHKw9bg2fxn6kmcYzGyrSPerifN/HBe+xpAlHHgLQHZ0g77eIOYl6dTEeBtl+14WZ/rFQA4YNlNWK8l0vqtVglM4kWRDvPc4Bp8ZrVgIcTc+xFxjfESmyeljhZftlnSTH9WNniCJLxo9vCPlV5BnGyKtocERgrlaYDKMdt00zJlerd7iDc2Ku1fEPm34uByZK+nvLbCLeWxYTB7NovO+ahg4vbcf3gMX93d7z80FRWx5X2xfaSeWxHPqoHX2IPA/7ygOKW7g76e1IuFHZKyp8/pp0AtoBUtXDh2L0ao75RgHAYs+tg3wotOsQINXISYvc87l+JYj4pBP8QwJEg1mwokWzIXNUD2nBbfY2Ifi9k86EJHNvxWtXz2l9gBYcIoHfwvBXcqA3GTmpxbK/aC6dDd7l/q6usx7wJcroesxfkorJA4lMTBWsLhocYpfclmXgGW+3pVov48E3KTzmsF1EPH3kMKq05nximieNqrT5U7xuFYiEK6xojSt47fUbNq+Hjba5yTZufMswWHdNGjweVR0KExvHcgzFjQQJF2zb+Y3VdKz8+kdCDvI5pNJsM7lTX1cQwG1taY09jAoe85JTtpMoxec7bZVkV6J4YiqB3Tw57QM7k3zPE67nixs2ZgTTOs9lk1Ms8nh04XMnH88UFVkWymZiwRjloOJW2XgzMXXgsNdkAShdupzfgKTgrktW3TqqAYsmw13f7PsZTO
+ BeWEeBkQ
+ IFJbGkpxksDnGmbwXSaOIeGkS5bJJNVm6qCBO/5gHuXnsJ7wJERniRxRzFBrjZSRJNaqS7BTBMxL+UU7a0NEDC2FdCdar8qju8WikUOmX204YQdb+gGkD5N1GhN1xZATmnFg62XGzTbXMutppoxvQ+tV7SSiK775HAlTCDAmXqv1G2r/vtFwViXW3K7F5u4P6mNVSTYwfCbONsfmYUDdMqFfGyH74Oz7v3ZeykvH7ipKBnyMV5FzBte11txKI+BqFzephHG/iGHaNYfVLcXROvbp7iI92ZoWyziSoNpwo8bYT/tn4TS29KmS7rJZ4iLvqcfWElJFVtL728BXWtJus/p1vnlyZE4uis8vJpBBMGu0emH5aEgpbk7Pxmbvwc9bPR+EEwztOBjFGEFHCqsEFlCtIX3cvACPdHTGm9CchbW6d4KQWKe11RLE5RuX0lEcidDe5bEPc9ZZjkJOcmGnmQvw7Ab4jCmioKulfVPuUenaunkSHNKW4GuBea5FYf+KyUJdUj7z4fX2expJaKDk+oQhoaKBzRY9iNzKXf2DF3sztkbphrecpOwUDWgziXMkk+ZughI7/aZBaccVlwwyKMeyDGWAWwhk+BJP4rg9wz/LFA5sl3SllMLEJ8cjfrSHxovtPI0zkcli414D44KnBnmf/kg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,339 +116,210 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Refactor struct proc_maps_private so that the fields used by PROCMAP_QUERY
-ioctl are moved into a separate structure. In the next patch this allows
-ioctl to reuse some of the functions used for reading /proc/pid/maps
-without using file->private_data. This prevents concurrent modification
-of file->private_data members by ioctl and /proc/pid/maps readers.
+Utilize per-vma locks to stabilize vma after lookup without taking
+mmap_lock during PROCMAP_QUERY ioctl execution. If vma lock is
+contended, we fall back to mmap_lock but take it only momentarily
+to lock the vma and release the mmap_lock. In a very unlikely case
+of vm_refcnt overflow, this fall back path will fail and ioctl is
+done under mmap_lock protection.
 
-The change is pure code refactoring and has no functional changes.
+This change is designed to reduce mmap_lock contention and prevent
+PROCMAP_QUERY ioctl calls from blocking address space updates.
 
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 Acked-by: SeongJae Park <sj@kernel.org>
 ---
- fs/proc/internal.h   | 15 +++++---
- fs/proc/task_mmu.c   | 87 +++++++++++++++++++++++---------------------
- fs/proc/task_nommu.c | 14 +++----
- 3 files changed, 63 insertions(+), 53 deletions(-)
+ fs/proc/task_mmu.c | 103 +++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 85 insertions(+), 18 deletions(-)
 
-diff --git a/fs/proc/internal.h b/fs/proc/internal.h
-index e737401d7383..d1598576506c 100644
---- a/fs/proc/internal.h
-+++ b/fs/proc/internal.h
-@@ -378,16 +378,21 @@ extern void proc_self_init(void);
-  * task_[no]mmu.c
-  */
- struct mem_size_stats;
--struct proc_maps_private {
--	struct inode *inode;
--	struct task_struct *task;
-+
-+struct proc_maps_locking_ctx {
- 	struct mm_struct *mm;
--	struct vma_iterator iter;
--	loff_t last_pos;
- #ifdef CONFIG_PER_VMA_LOCK
- 	bool mmap_locked;
- 	struct vm_area_struct *locked_vma;
- #endif
-+};
-+
-+struct proc_maps_private {
-+	struct inode *inode;
-+	struct task_struct *task;
-+	struct vma_iterator iter;
-+	loff_t last_pos;
-+	struct proc_maps_locking_ctx lock_ctx;
- #ifdef CONFIG_NUMA
- 	struct mempolicy *task_mempolicy;
- #endif
 diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index 29cca0e6d0ff..c0968d293b61 100644
+index c0968d293b61..e64cf40ce9c4 100644
 --- a/fs/proc/task_mmu.c
 +++ b/fs/proc/task_mmu.c
-@@ -132,18 +132,18 @@ static void release_task_mempolicy(struct proc_maps_private *priv)
+@@ -132,6 +132,12 @@ static void release_task_mempolicy(struct proc_maps_private *priv)
  
  #ifdef CONFIG_PER_VMA_LOCK
  
--static void unlock_vma(struct proc_maps_private *priv)
-+static void unlock_ctx_vma(struct proc_maps_locking_ctx *lock_ctx)
++static void reset_lock_ctx(struct proc_maps_locking_ctx *lock_ctx)
++{
++	lock_ctx->locked_vma = NULL;
++	lock_ctx->mmap_locked = false;
++}
++
+ static void unlock_ctx_vma(struct proc_maps_locking_ctx *lock_ctx)
  {
--	if (priv->locked_vma) {
--		vma_end_read(priv->locked_vma);
--		priv->locked_vma = NULL;
-+	if (lock_ctx->locked_vma) {
-+		vma_end_read(lock_ctx->locked_vma);
-+		lock_ctx->locked_vma = NULL;
- 	}
- }
- 
- static const struct seq_operations proc_pid_maps_op;
- 
- static inline bool lock_vma_range(struct seq_file *m,
--				  struct proc_maps_private *priv)
-+				  struct proc_maps_locking_ctx *lock_ctx)
- {
- 	/*
- 	 * smaps and numa_maps perform page table walk, therefore require
-@@ -151,25 +151,25 @@ static inline bool lock_vma_range(struct seq_file *m,
- 	 * walking the vma tree under rcu read protection.
- 	 */
- 	if (m->op != &proc_pid_maps_op) {
--		if (mmap_read_lock_killable(priv->mm))
-+		if (mmap_read_lock_killable(lock_ctx->mm))
- 			return false;
- 
--		priv->mmap_locked = true;
-+		lock_ctx->mmap_locked = true;
+ 	if (lock_ctx->locked_vma) {
+@@ -157,8 +163,7 @@ static inline bool lock_vma_range(struct seq_file *m,
+ 		lock_ctx->mmap_locked = true;
  	} else {
  		rcu_read_lock();
--		priv->locked_vma = NULL;
--		priv->mmap_locked = false;
-+		lock_ctx->locked_vma = NULL;
-+		lock_ctx->mmap_locked = false;
+-		lock_ctx->locked_vma = NULL;
+-		lock_ctx->mmap_locked = false;
++		reset_lock_ctx(lock_ctx);
  	}
  
  	return true;
+@@ -522,28 +527,90 @@ static int pid_maps_open(struct inode *inode, struct file *file)
+ 		PROCMAP_QUERY_VMA_FLAGS				\
+ )
+ 
+-static int query_vma_setup(struct mm_struct *mm)
++#ifdef CONFIG_PER_VMA_LOCK
++
++static int query_vma_setup(struct proc_maps_locking_ctx *lock_ctx)
+ {
+-	return mmap_read_lock_killable(mm);
++	reset_lock_ctx(lock_ctx);
++
++	return 0;
  }
  
--static inline void unlock_vma_range(struct proc_maps_private *priv)
-+static inline void unlock_vma_range(struct proc_maps_locking_ctx *lock_ctx)
+-static void query_vma_teardown(struct mm_struct *mm, struct vm_area_struct *vma)
++static void query_vma_teardown(struct proc_maps_locking_ctx *lock_ctx)
  {
--	if (priv->mmap_locked) {
--		mmap_read_unlock(priv->mm);
+-	mmap_read_unlock(mm);
 +	if (lock_ctx->mmap_locked) {
 +		mmap_read_unlock(lock_ctx->mm);
- 	} else {
--		unlock_vma(priv);
++		lock_ctx->mmap_locked = false;
++	} else {
 +		unlock_ctx_vma(lock_ctx);
- 		rcu_read_unlock();
- 	}
- }
-@@ -177,15 +177,16 @@ static inline void unlock_vma_range(struct proc_maps_private *priv)
- static struct vm_area_struct *get_next_vma(struct proc_maps_private *priv,
- 					   loff_t last_pos)
- {
-+	struct proc_maps_locking_ctx *lock_ctx = &priv->lock_ctx;
- 	struct vm_area_struct *vma;
- 
--	if (priv->mmap_locked)
-+	if (lock_ctx->mmap_locked)
- 		return vma_next(&priv->iter);
- 
--	unlock_vma(priv);
--	vma = lock_next_vma(priv->mm, &priv->iter, last_pos);
-+	unlock_ctx_vma(lock_ctx);
-+	vma = lock_next_vma(lock_ctx->mm, &priv->iter, last_pos);
- 	if (!IS_ERR_OR_NULL(vma))
--		priv->locked_vma = vma;
-+		lock_ctx->locked_vma = vma;
- 
- 	return vma;
- }
-@@ -193,14 +194,16 @@ static struct vm_area_struct *get_next_vma(struct proc_maps_private *priv,
- static inline bool fallback_to_mmap_lock(struct proc_maps_private *priv,
- 					 loff_t pos)
- {
--	if (priv->mmap_locked)
-+	struct proc_maps_locking_ctx *lock_ctx = &priv->lock_ctx;
++	}
++}
++
++static struct vm_area_struct *query_vma_find_by_addr(struct proc_maps_locking_ctx *lock_ctx,
++						     unsigned long addr)
++{
++	struct mm_struct *mm = lock_ctx->mm;
++	struct vm_area_struct *vma;
++	struct vma_iterator vmi;
 +
 +	if (lock_ctx->mmap_locked)
- 		return false;
- 
- 	rcu_read_unlock();
--	mmap_read_lock(priv->mm);
-+	mmap_read_lock(lock_ctx->mm);
- 	/* Reinitialize the iterator after taking mmap_lock */
- 	vma_iter_set(&priv->iter, pos);
--	priv->mmap_locked = true;
-+	lock_ctx->mmap_locked = true;
- 
- 	return true;
++		return find_vma(mm, addr);
++
++	/* Unlock previously locked VMA and find the next one under RCU */
++	unlock_ctx_vma(lock_ctx);
++	rcu_read_lock();
++	vma_iter_init(&vmi, mm, addr);
++	vma = lock_next_vma(mm, &vmi, addr);
++	rcu_read_unlock();
++
++	if (!vma)
++		return NULL;
++
++	if (!IS_ERR(vma)) {
++		lock_ctx->locked_vma = vma;
++		return vma;
++	}
++
++	if (PTR_ERR(vma) == -EAGAIN) {
++		/* Fallback to mmap_lock on vma->vm_refcnt overflow */
++		mmap_read_lock(mm);
++		vma = find_vma(mm, addr);
++		lock_ctx->mmap_locked = true;
++	}
++
++	return vma;
  }
-@@ -208,14 +211,14 @@ static inline bool fallback_to_mmap_lock(struct proc_maps_private *priv,
- #else /* CONFIG_PER_VMA_LOCK */
  
- static inline bool lock_vma_range(struct seq_file *m,
--				  struct proc_maps_private *priv)
-+				  struct proc_maps_locking_ctx *lock_ctx)
- {
--	return mmap_read_lock_killable(priv->mm) == 0;
-+	return mmap_read_lock_killable(lock_ctx->mm) == 0;
- }
- 
--static inline void unlock_vma_range(struct proc_maps_private *priv)
-+static inline void unlock_vma_range(struct proc_maps_locking_ctx *lock_ctx)
- {
--	mmap_read_unlock(priv->mm);
+-static struct vm_area_struct *query_vma_find_by_addr(struct mm_struct *mm, unsigned long addr)
++#else /* CONFIG_PER_VMA_LOCK */
++
++static int query_vma_setup(struct proc_maps_locking_ctx *lock_ctx)
++{
++	return mmap_read_lock_killable(lock_ctx->mm);
++}
++
++static void query_vma_teardown(struct proc_maps_locking_ctx *lock_ctx)
++{
 +	mmap_read_unlock(lock_ctx->mm);
++}
++
++static struct vm_area_struct *query_vma_find_by_addr(struct proc_maps_locking_ctx *lock_ctx,
++						     unsigned long addr)
+ {
+-	return find_vma(mm, addr);
++	return find_vma(lock_ctx->mm, addr);
  }
  
- static struct vm_area_struct *get_next_vma(struct proc_maps_private *priv,
-@@ -258,7 +261,7 @@ static struct vm_area_struct *proc_get_vma(struct seq_file *m, loff_t *ppos)
- 		*ppos = vma->vm_end;
- 	} else {
- 		*ppos = SENTINEL_VMA_GATE;
--		vma = get_gate_vma(priv->mm);
-+		vma = get_gate_vma(priv->lock_ctx.mm);
- 	}
- 
- 	return vma;
-@@ -267,6 +270,7 @@ static struct vm_area_struct *proc_get_vma(struct seq_file *m, loff_t *ppos)
- static void *m_start(struct seq_file *m, loff_t *ppos)
+-static struct vm_area_struct *query_matching_vma(struct mm_struct *mm,
++#endif  /* CONFIG_PER_VMA_LOCK */
++
++static struct vm_area_struct *query_matching_vma(struct proc_maps_locking_ctx *lock_ctx,
+ 						 unsigned long addr, u32 flags)
  {
- 	struct proc_maps_private *priv = m->private;
-+	struct proc_maps_locking_ctx *lock_ctx;
- 	loff_t last_addr = *ppos;
- 	struct mm_struct *mm;
+ 	struct vm_area_struct *vma;
  
-@@ -278,14 +282,15 @@ static void *m_start(struct seq_file *m, loff_t *ppos)
- 	if (!priv->task)
- 		return ERR_PTR(-ESRCH);
+ next_vma:
+-	vma = query_vma_find_by_addr(mm, addr);
++	vma = query_vma_find_by_addr(lock_ctx, addr);
++	if (IS_ERR(vma))
++		return vma;
++
+ 	if (!vma)
+ 		goto no_vma;
  
--	mm = priv->mm;
-+	lock_ctx = &priv->lock_ctx;
-+	mm = lock_ctx->mm;
- 	if (!mm || !mmget_not_zero(mm)) {
- 		put_task_struct(priv->task);
- 		priv->task = NULL;
- 		return NULL;
- 	}
- 
--	if (!lock_vma_range(m, priv)) {
-+	if (!lock_vma_range(m, lock_ctx)) {
- 		mmput(mm);
- 		put_task_struct(priv->task);
- 		priv->task = NULL;
-@@ -318,13 +323,13 @@ static void *m_next(struct seq_file *m, void *v, loff_t *ppos)
- static void m_stop(struct seq_file *m, void *v)
- {
- 	struct proc_maps_private *priv = m->private;
--	struct mm_struct *mm = priv->mm;
-+	struct mm_struct *mm = priv->lock_ctx.mm;
- 
- 	if (!priv->task)
- 		return;
- 
- 	release_task_mempolicy(priv);
--	unlock_vma_range(priv);
-+	unlock_vma_range(&priv->lock_ctx);
- 	mmput(mm);
- 	put_task_struct(priv->task);
- 	priv->task = NULL;
-@@ -339,9 +344,9 @@ static int proc_maps_open(struct inode *inode, struct file *file,
- 		return -ENOMEM;
- 
- 	priv->inode = inode;
--	priv->mm = proc_mem_open(inode, PTRACE_MODE_READ);
--	if (IS_ERR(priv->mm)) {
--		int err = PTR_ERR(priv->mm);
-+	priv->lock_ctx.mm = proc_mem_open(inode, PTRACE_MODE_READ);
-+	if (IS_ERR(priv->lock_ctx.mm)) {
-+		int err = PTR_ERR(priv->lock_ctx.mm);
- 
- 		seq_release_private(inode, file);
- 		return err;
-@@ -355,8 +360,8 @@ static int proc_map_release(struct inode *inode, struct file *file)
- 	struct seq_file *seq = file->private_data;
- 	struct proc_maps_private *priv = seq->private;
- 
--	if (priv->mm)
--		mmdrop(priv->mm);
-+	if (priv->lock_ctx.mm)
-+		mmdrop(priv->lock_ctx.mm);
- 
- 	return seq_release_private(inode, file);
+@@ -584,11 +651,11 @@ static struct vm_area_struct *query_matching_vma(struct mm_struct *mm,
+ 	return ERR_PTR(-ENOENT);
  }
-@@ -610,7 +615,7 @@ static int do_procmap_query(struct proc_maps_private *priv, void __user *uarg)
+ 
+-static int do_procmap_query(struct proc_maps_private *priv, void __user *uarg)
++static int do_procmap_query(struct mm_struct *mm, void __user *uarg)
+ {
++	struct proc_maps_locking_ctx lock_ctx = { .mm = mm };
+ 	struct procmap_query karg;
+ 	struct vm_area_struct *vma;
+-	struct mm_struct *mm;
+ 	const char *name = NULL;
+ 	char build_id_buf[BUILD_ID_SIZE_MAX], *name_buf = NULL;
+ 	__u64 usize;
+@@ -615,17 +682,16 @@ static int do_procmap_query(struct proc_maps_private *priv, void __user *uarg)
  	if (!!karg.build_id_size != !!karg.build_id_addr)
  		return -EINVAL;
  
--	mm = priv->mm;
-+	mm = priv->lock_ctx.mm;
+-	mm = priv->lock_ctx.mm;
  	if (!mm || !mmget_not_zero(mm))
  		return -ESRCH;
  
-@@ -1311,7 +1316,7 @@ static int show_smaps_rollup(struct seq_file *m, void *v)
- {
- 	struct proc_maps_private *priv = m->private;
- 	struct mem_size_stats mss = {};
--	struct mm_struct *mm = priv->mm;
-+	struct mm_struct *mm = priv->lock_ctx.mm;
- 	struct vm_area_struct *vma;
- 	unsigned long vma_start = 0, last_vma_end = 0;
- 	int ret = 0;
-@@ -1456,9 +1461,9 @@ static int smaps_rollup_open(struct inode *inode, struct file *file)
- 		goto out_free;
- 
- 	priv->inode = inode;
--	priv->mm = proc_mem_open(inode, PTRACE_MODE_READ);
--	if (IS_ERR_OR_NULL(priv->mm)) {
--		ret = priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
-+	priv->lock_ctx.mm = proc_mem_open(inode, PTRACE_MODE_READ);
-+	if (IS_ERR_OR_NULL(priv->lock_ctx.mm)) {
-+		ret = priv->lock_ctx.mm ? PTR_ERR(priv->lock_ctx.mm) : -ESRCH;
- 
- 		single_release(inode, file);
- 		goto out_free;
-@@ -1476,8 +1481,8 @@ static int smaps_rollup_release(struct inode *inode, struct file *file)
- 	struct seq_file *seq = file->private_data;
- 	struct proc_maps_private *priv = seq->private;
- 
--	if (priv->mm)
--		mmdrop(priv->mm);
-+	if (priv->lock_ctx.mm)
-+		mmdrop(priv->lock_ctx.mm);
- 
- 	kfree(priv);
- 	return single_release(inode, file);
-diff --git a/fs/proc/task_nommu.c b/fs/proc/task_nommu.c
-index 59bfd61d653a..d362919f4f68 100644
---- a/fs/proc/task_nommu.c
-+++ b/fs/proc/task_nommu.c
-@@ -204,7 +204,7 @@ static void *m_start(struct seq_file *m, loff_t *ppos)
- 	if (!priv->task)
- 		return ERR_PTR(-ESRCH);
- 
--	mm = priv->mm;
-+	mm = priv->lock_ctx.mm;
- 	if (!mm || !mmget_not_zero(mm)) {
- 		put_task_struct(priv->task);
- 		priv->task = NULL;
-@@ -226,7 +226,7 @@ static void *m_start(struct seq_file *m, loff_t *ppos)
- static void m_stop(struct seq_file *m, void *v)
- {
- 	struct proc_maps_private *priv = m->private;
--	struct mm_struct *mm = priv->mm;
-+	struct mm_struct *mm = priv->lock_ctx.mm;
- 
- 	if (!priv->task)
- 		return;
-@@ -259,9 +259,9 @@ static int maps_open(struct inode *inode, struct file *file,
- 		return -ENOMEM;
- 
- 	priv->inode = inode;
--	priv->mm = proc_mem_open(inode, PTRACE_MODE_READ);
--	if (IS_ERR_OR_NULL(priv->mm)) {
--		int err = priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
-+	priv->lock_ctx.mm = proc_mem_open(inode, PTRACE_MODE_READ);
-+	if (IS_ERR_OR_NULL(priv->lock_ctx.mm)) {
-+		int err = priv->lock_ctx.mm ? PTR_ERR(priv->lock_ctx.mm) : -ESRCH;
- 
- 		seq_release_private(inode, file);
+-	err = query_vma_setup(mm);
++	err = query_vma_setup(&lock_ctx);
+ 	if (err) {
+ 		mmput(mm);
  		return err;
-@@ -276,8 +276,8 @@ static int map_release(struct inode *inode, struct file *file)
- 	struct seq_file *seq = file->private_data;
- 	struct proc_maps_private *priv = seq->private;
+ 	}
  
--	if (priv->mm)
--		mmdrop(priv->mm);
-+	if (priv->lock_ctx.mm)
-+		mmdrop(priv->lock_ctx.mm);
+-	vma = query_matching_vma(mm, karg.query_addr, karg.query_flags);
++	vma = query_matching_vma(&lock_ctx, karg.query_addr, karg.query_flags);
+ 	if (IS_ERR(vma)) {
+ 		err = PTR_ERR(vma);
+ 		vma = NULL;
+@@ -710,7 +776,7 @@ static int do_procmap_query(struct proc_maps_private *priv, void __user *uarg)
+ 	}
  
- 	return seq_release_private(inode, file);
- }
+ 	/* unlock vma or mmap_lock, and put mm_struct before copying data to user */
+-	query_vma_teardown(mm, vma);
++	query_vma_teardown(&lock_ctx);
+ 	mmput(mm);
+ 
+ 	if (karg.vma_name_size && copy_to_user(u64_to_user_ptr(karg.vma_name_addr),
+@@ -730,7 +796,7 @@ static int do_procmap_query(struct proc_maps_private *priv, void __user *uarg)
+ 	return 0;
+ 
+ out:
+-	query_vma_teardown(mm, vma);
++	query_vma_teardown(&lock_ctx);
+ 	mmput(mm);
+ 	kfree(name_buf);
+ 	return err;
+@@ -743,7 +809,8 @@ static long procfs_procmap_ioctl(struct file *file, unsigned int cmd, unsigned l
+ 
+ 	switch (cmd) {
+ 	case PROCMAP_QUERY:
+-		return do_procmap_query(priv, (void __user *)arg);
++		/* priv->lock_ctx.mm is set during file open operation */
++		return do_procmap_query(priv->lock_ctx.mm, (void __user *)arg);
+ 	default:
+ 		return -ENOIOCTLCMD;
+ 	}
 -- 
 2.50.1.703.g449372360f-goog
 
