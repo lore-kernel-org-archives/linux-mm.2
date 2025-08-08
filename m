@@ -2,176 +2,134 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7CEB0C87FD2
-	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 08:22:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 452AAC87FD3
+	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 08:23:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F0D796B007B; Fri,  8 Aug 2025 04:22:13 -0400 (EDT)
+	id B66586B0089; Fri,  8 Aug 2025 04:23:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EBE566B0088; Fri,  8 Aug 2025 04:22:13 -0400 (EDT)
+	id B3E116B008A; Fri,  8 Aug 2025 04:23:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D859B6B0089; Fri,  8 Aug 2025 04:22:13 -0400 (EDT)
+	id A54206B008C; Fri,  8 Aug 2025 04:23:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C0FE76B007B
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 04:22:13 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F395C1616A6
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 08:22:12 +0000 (UTC)
-X-FDA: 83752897704.23.7DBB876
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 834C1160011
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 08:22:10 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="d0/90xtl";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf08.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754641330; a=rsa-sha256;
-	cv=none;
-	b=3PphVyiyJ0bMoF4waE/ax5U1Ef5k1ps97/Vy3y1VW1QFPJVaL6kfOKzGkl3ijKEtDPVzSM
-	qO1xRtoYv/YTif36OM1OR/YJLV2gaWas8PXBvPMydgOk6t4/p8+hHpjcta8zKvT1NQHf4T
-	IGGpJEmqEOx+clIww9xLo1zwlxux7vI=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="d0/90xtl";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf08.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 93A7F6B0089
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 04:23:23 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 508D1138580
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 08:23:22 +0000 (UTC)
+X-FDA: 83752900644.20.5FC57E5
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5569840004
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 08:23:20 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=rivosinc.com header.s=google header.b=dfI10oFa;
+	spf=pass (imf01.hostedemail.com: domain of debug@rivosinc.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754641330;
+	s=arc-20220608; t=1754641400;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=asuk224/PPNMuhgjRnxBWNPkkI+xuhI/SaO3IblWFFc=;
-	b=V+2tg2Ihu4pytjqq/BtQ3iW0HmjpqNG/3OxFPLI8VyIPbvJbRSf49Zlx8CKDg9lL4UkCsF
-	qtd+4y9r4noqiMRBhys/lBCMbTz4I+4EHBlSON590M64NElfmGyl+Y4ulUeTng4nAzxvPp
-	Zsco0VRpJFYQN1wIXvyr+IhhAQDWSIs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754641329;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=asuk224/PPNMuhgjRnxBWNPkkI+xuhI/SaO3IblWFFc=;
-	b=d0/90xtl9fhMUsVvPqufZy1O4OraUPLqql/bAtJQ7Y+qn/yeAg6g89HUC/xRPft+HElmQB
-	+WJOziqQ8nIvhIlAJLs0WRi5SqrntD0sMCuAudPaTyta13Ns3H3Z7qJ4ajPyiQcTGRhDHV
-	6pqvNMDuupLlgvMIZf4wQrKMnjDfP+U=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-45-6K3J7JpHORyedGfAKms8Tw-1; Fri, 08 Aug 2025 04:22:04 -0400
-X-MC-Unique: 6K3J7JpHORyedGfAKms8Tw-1
-X-Mimecast-MFC-AGG-ID: 6K3J7JpHORyedGfAKms8Tw_1754641320
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3b79ad7b8a5so1118934f8f.3
-        for <linux-mm@kvack.org>; Fri, 08 Aug 2025 01:22:04 -0700 (PDT)
+	bh=rqclBjlpReb8Zh2xzaAy1Tthw4Ak4Apujt4wspR+yjo=;
+	b=XRXWe39BB3f3hi61+zRK5H2v5i9khDSUbv50sczS2kIrk8pHTGHDF9DcBZOH8hgrViGXms
+	EbU7B7mfyHGZqpHlQ/6yyC80PKkuomJ0keAAww2Ks7txrsRSl6Rmd7A1v6yNmpgeEW0NWf
+	H/YeyUIzUw2+NIaHumh5Upl4H697T8A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754641400; a=rsa-sha256;
+	cv=none;
+	b=gyM77mJ5S8TDMIw01i36h2QrCgTVAxjp86DOD8E4C+tmqMHu5hW3ab3y0bMYzUbtO+tYqD
+	l07kpSjzalSE9Ks90XEL9f21Q7Z712RaF/AeoyqubgJJ1uzv8fzBBmTCGbUKjeliPTAGSM
+	XC3FqhuRz8GzTtmGFxZ8MESt/RU/pAc=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=rivosinc.com header.s=google header.b=dfI10oFa;
+	spf=pass (imf01.hostedemail.com: domain of debug@rivosinc.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
+	dmarc=none
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-24049d1643aso14217205ad.3
+        for <linux-mm@kvack.org>; Fri, 08 Aug 2025 01:23:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc.com; s=google; t=1754641399; x=1755246199; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=rqclBjlpReb8Zh2xzaAy1Tthw4Ak4Apujt4wspR+yjo=;
+        b=dfI10oFaOXFPkZMynGvnByPSq1bRL3K6ozSyIpEztuQ8c4kGRkdyQaRvw93vshp90s
+         gbE0iLhR3Xua2FRTCsUEI/kqoaRSnouwWF15NyhAPjPHoiMBtEcUhNd2qC0PoCNtFN0s
+         yKFlKWaxHWeyZRNNvpdu0k7cSzQgeFgD5rGil3vdJjfyKTSEBWseIAXn0d9lB3GXqwc+
+         9Bt07/KKx7g4aw+vlyd9t6yCUy1kvHjTxXqt+AI+CNh7VN7K0oWgU68oif2octhdq43N
+         S6Pr885ePX2rtyDK0GZmwOuoNs80AJoTyDiCBSA8i/qDnnBCoA0WxJG2stDhgvlr/I2j
+         SyjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754641320; x=1755246120;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=asuk224/PPNMuhgjRnxBWNPkkI+xuhI/SaO3IblWFFc=;
-        b=OM6POpnjgPW2c+6aiog/fDpeAmxTVW/pggLqoUC3o9vlixCk6ucky6TCAlfz3sKmvp
-         sBUXNAmGeHtp/4Ha7MRZ+Icg2cftrHS1ozbxoBMBXXYSJo0XuPIupOimgCZpQLs7JHQ+
-         tYH/UclYYd185Vs5EoarOFRtTLfIHKV0BM0d+LK/AbliqLTdR7UyaIV//mWi4B0l42ER
-         b8L75zk74VEpylDtNPcYkz4Nn2Ahqe8z1ImQgQDybEZe63QL0H+EVKjUg7aUlKd9ws0A
-         rXCKtneYhoWOlN7OS1wSeCJB5XRVSTWr5/Q2Pk93ghsgZPa0xRU7ArR6caqt6Yknmmjg
-         KFlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUJTUTR+wImBGMVd0UMaN6Y1+0efy0H2cpYX2HHoQ/25NcrLTZBuNAAo/AsD9lnbitYMqkoNH1oLw==@kvack.org
-X-Gm-Message-State: AOJu0Yy08Y4aC/FRPb33L103uZgX1L+5aga88EntmBPMUZE2RRdS8AII
-	xThp82smYkXMIIa/LzKZ1YWTScmE5j2Ki+X9xj3r2uhhDZiugArLeW+r3aT5Fw9EqHCJvRcAZr5
-	6yVCX6SArhsJ4DgkApPp94HHeC48QiH2B3f9uoVAWRN76iVC2HoYu
-X-Gm-Gg: ASbGnctXECxDFU0H77klt6ySv+ok3f4qCLwhzwqpt5ljgnbROK8BOnWbi2XSEB0SJRR
-	R8M9gFRAuWVy23Y5hvkwJVilcMR0hlWzKSObhMqCu+X4ENjpQmTg658Ek1C5y/E3YDN9ztD/7HS
-	Hq83wsaHoyp6I9ZqPT3T0O/h2k04qWD4m0m6of5haD2ZPpZqSisVsE1EjFlBi4rJcgETOnoacs0
-	VijvUjboqDt4nzZEGC82tWR00q/2Nx+xplYVqmRG+l/U6dZhjekUpVaDwJVzbDAg3kKtzesTdzr
-	n2Y4BHBnyhY2uMomMU+Lt8mYsJgxwBouW/nfqvjZXCUtrlQqA8u+LSLBg3TN/04K5au/PFUY+/7
-	bpTxM+kcIkqOdV6j6U4iiCeT5NnkCyy1CA6hMvnqASeMUcBngJbaB42TDZxYvOpUN
-X-Received: by 2002:a05:6000:40de:b0:3a4:e7d3:bd9c with SMTP id ffacd0b85a97d-3b900b4d2f8mr1814273f8f.17.1754641320144;
-        Fri, 08 Aug 2025 01:22:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEG+1+z04MT4xAJEOP1A95xJRXKBLxpjZfGOz86i2ZXSuEMm1GH6Dnop2f24Zu0tNAkaU5Mow==
-X-Received: by 2002:a05:6000:40de:b0:3a4:e7d3:bd9c with SMTP id ffacd0b85a97d-3b900b4d2f8mr1814221f8f.17.1754641319358;
-        Fri, 08 Aug 2025 01:21:59 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f25:900:2e1e:d717:2543:c4d6? (p200300d82f2509002e1ed7172543c4d6.dip0.t-ipconnect.de. [2003:d8:2f25:900:2e1e:d717:2543:c4d6])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-459e58554f2sm123323195e9.12.2025.08.08.01.21.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 08 Aug 2025 01:21:58 -0700 (PDT)
-Message-ID: <864f2ef6-51bd-42f3-9988-16b5e94f05d9@redhat.com>
-Date: Fri, 8 Aug 2025 10:21:57 +0200
+        d=1e100.net; s=20230601; t=1754641399; x=1755246199;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rqclBjlpReb8Zh2xzaAy1Tthw4Ak4Apujt4wspR+yjo=;
+        b=T1fqb2kvGX2ensr+AKeW0m8pjVwaE7ip3at/JZ6UaJlf6nvjNTEOM27LMFRz7YgTL5
+         mQL6jAD4P8Hv9nMsVfL6F4dy4+kDL73VgkiNIOqfCNRjR/W8dpfS7S8M0FZmozx8VvTg
+         jj190CuHi0nRs72rC6zOWkthg8zVC1GnwzQCwN+yZk43r24f6Jg+1iPRvhHA3RuEJtsy
+         T004yHnfIemmaCPmzAdcUxMFRWfxbefL1CsmM/L6zZl7IcpAHXi75E/hmztbFpCpu1SO
+         20hRW1rR5FJrPUTZuptUXSD7nPFjjlnyp7n8/IjyeCe/pk4T0mb8ZX37X5RbolZK2l4v
+         Gx2A==
+X-Forwarded-Encrypted: i=1; AJvYcCW6bIuCdrO26Qt4re4CBC81cjVUS32j0yrWUwg1yz4i7eiPTTeC7wxdmr5X2fgy5B6Drop2onK9+g==@kvack.org
+X-Gm-Message-State: AOJu0YxLDHGP0etkwiepQgAE6yv3EAvpP+aufn13/5BuWCV7Gnv4uFMc
+	0n1pwDtPyyuqBzO0WqIDiyyagTDvMIDUPRw/AQY92aycY6fjpYGTrXRdcAf2IRLwwkA=
+X-Gm-Gg: ASbGncsTtr5aPkR8q8w1U+qZSYzc2+rrpcpHTVUJhp6vEy/Lw1bpXZSy+DCYuREGEEE
+	rr7cCU3EGF7LTFsgNxGlvKqugocvIaEwZ7J2F8ldu4jvCdkulOp1uO05QGsydFQFlGFjhrqrMoA
+	3PsfTnxJttPJLjYSLxlC55IKDAd9y1gRnNNKkteJYqOL5Wta7Zl0HsxI6CZgKI+N6iibtSAKhpD
+	UsYZhtpkXRBj3spM45AaZqeFl6nggoRQMzNnT8l0GHdi2I5cJiugEoIkHsoQXb3kgEPhiwC905q
+	1oFIooJtl7EbaaDmpcbXa8ma5farIPQ3O61jwA3lydcW1ItWLAFiBDPkpq2PHX/U7RiW746wmJ1
+	U0l6EmVok3BkrNI4WKiaaTgjzQY59o+XWpHIxTsh/Gls=
+X-Google-Smtp-Source: AGHT+IFzkjQpJ+CBSP5FDKaUMlIyJFyzXkrgnGdlTX6xXb/Zh2Ht/mDaf4SC0H4gKEAF5ZgXVLVJMA==
+X-Received: by 2002:a17:903:1207:b0:23f:f6ca:6a3 with SMTP id d9443c01a7336-242c2245139mr30852795ad.43.1754641399054;
+        Fri, 08 Aug 2025 01:23:19 -0700 (PDT)
+Received: from debug.ba.rivosinc.com ([64.71.180.162])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241d1ef5934sm202807465ad.21.2025.08.08.01.23.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Aug 2025 01:23:18 -0700 (PDT)
+Date: Fri, 8 Aug 2025 01:23:15 -0700
+From: Deepak Gupta <debug@rivosinc.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: patchwork-bot+linux-riscv@kernel.org, linux-riscv@lists.infradead.org,
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+	akpm@linux-foundation.org, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	lorenzo.stoakes@oracle.com, paul.walmsley@sifive.com,
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, conor@kernel.org,
+	robh@kernel.org, krzk+dt@kernel.org, arnd@arndb.de,
+	brauner@kernel.org, peterz@infradead.org, oleg@redhat.com,
+	ebiederm@xmission.com, kees@kernel.org, corbet@lwn.net,
+	shuah@kernel.org, jannh@google.com, conor+dt@kernel.org,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org,
+	aliceryhl@google.com, tmgross@umich.edu, lossin@kernel.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, devicetree@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com,
+	richard.henderson@linaro.org, jim.shu@sifive.com,
+	andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com,
+	atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com,
+	alexghiti@rivosinc.com, samitolvanen@google.com,
+	rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org,
+	zong.li@sifive.com, david@redhat.com
+Subject: Re: [PATCH v19 00/27] riscv control-flow integrity for usermode
+Message-ID: <aJWz82F21pVTSVJi@debug.ba.rivosinc.com>
+References: <20250731-v5_user_cfi_series-v19-0-09b468d7beab@rivosinc.com>
+ <175450053775.2863135.11568399057706626223.git-patchwork-notify@kernel.org>
+ <db4eb976-693c-426c-a867-66cadd3dd7d8@sirena.org.uk>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/memory-failure: fix infinite UCE for VM_PFNMAP pfn
-To: Jinjiang Tu <tujinjiang@huawei.com>, Miaohe Lin <linmiaohe@huawei.com>
-Cc: wangkefeng.wang@huawei.com, nao.horiguchi@gmail.com,
- akpm@linux-foundation.org, xueshuai@linux.alibaba.com, ziy@nvidia.com,
- osalvador@suse.de, linux-mm@kvack.org
-References: <20250806020520.631203-1-tujinjiang@huawei.com>
- <1e63c37f-8eb2-865d-d3f4-9ef928f1a959@huawei.com>
- <35e24029-d58c-47e8-b5fe-e182f143ebff@huawei.com>
- <c5567040-6f1b-46d1-890e-7dc6b0b46703@redhat.com>
- <156267ef-f834-4bea-9dc0-c8ad32d066b0@huawei.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- g3eXuA==
-Organization: Red Hat
-In-Reply-To: <156267ef-f834-4bea-9dc0-c8ad32d066b0@huawei.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: QiFvh8JMSbmP-lWRnGFt7Y3mdiNPEX924Z1GesbgLxw_1754641320
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: u8thhbdr1ymuwoxgpnq9e8kbw4r3x6wq
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <db4eb976-693c-426c-a867-66cadd3dd7d8@sirena.org.uk>
+X-Rspamd-Queue-Id: 5569840004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 834C1160011
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1754641330-661635
-X-HE-Meta: U2FsdGVkX1/jGGWoTbxc6BZZ0KQ4JbNkX04Tslh+WHmcSqyeBzg4OETcNLqSosm9vWJvhYogR7xNp3Ja4w2omNuXafcqveo/SSRf6ZKSZrxrAgeHaDCH+GZtcE6vo2A21OFtpa2gKbRVUOBeEBdvLcBapC/onOw8T7lwGBt+InKST8X4+/GwoOw32jSCXSyNa3D9JSN2bYc93KeK9K1KopJedTf2811jZD1ybg6vVwVNSwDoet8/4dKHxQKaYOT9xvYxxIceKkSugzzoQDycYci88I/KdQ1IGHxoJ8dJH6OUv30NxmVDO3zLOwR/sHe4vi8QWjX8UIbNpCrUIQAq3k352GwIkkuvCopb+jNcnGuDjN1bffxiBGyTHTlTukLWONfCik3sYBq7IUAj8sBJ7hI6l/WFiru/LVi3ABKykeS4nefkcHq2jA75TJAi8vgVydyqar9zNRAp/bK8RJV6EgpS4aiXTAQ+h32WvKdHsGs4AuquPd1Mg8lcyB2xu6Fj22VnlieTraJs0AW1pE/LNQblLeZKj4R2SrtarNVojxmeUDuxLYOqt3RRXe4MRkFvyxapJMKM0KKOM6jEVAZfcWBQhltUOk68TMKeyNVlKzRlzAyDKblMIOuo0/F0dNa0ks/1CPP71IXDG8UpTOf6QxhmgHgHNg6wP+UYuI4FsJADv1c70Aezhb4lpMyYO0hvKXygEef8/9m/pB/F8+M69O1MveK9HLLTSjNSR8YkEVLfm15EItNr7jlVqJ7TSYFoz97nlO3uXkpihD99u6eCA/jdLejowcXUhVKFqoFYeJUC0FP0baJkwPEyp/qe2hwtu+j/ZL80hTKYfIHe9GFfVz92WluCiZWHaIm+YbHr9WdGlNUs6kZQ0hHNsDPRiG+x1RQMxeAVS3yFN+C5F2EvZRIBPbpCYzPvcFZO/4pCBX2qd9iU+TNnHs82jQPuzlrn0ZJ2NSnhGJJoDP1/iLg
- yPpBadD+
- dr0WozU9E1tjBsrg65zeCYOxE6ahqmC6DwgJpJs2VRlkSh/WOT0dLvosOEFmHZ0C2ug0FkZIgH8Ezj2x6J5FkuVtsT2DHSd8OA95bhu2Qe4daGaFX0IlSH4/tlJDaedTM4fy97hk+Ewh9e7tH4d/j/uhrAEOfKC3XeV+XGl6+irG1G1OksY71dm7FRyFBSO51zA7l
+X-Rspamd-Server: rspam09
+X-Stat-Signature: f64zwih8dwj1ddwurpnrqb1zqw4ozjeo
+X-HE-Tag: 1754641400-315939
+X-HE-Meta: U2FsdGVkX18tLgNDZ7vQnfDT3jPdo5FSDglN+lqtLWHi/z+LdAat03jF3GX6/X7IFp5JCf6wK/qu6gMWWHOn85SmDUgMY4Yti9wLxysnCMecLYa3J6s+DZOxy+ly+oKrqx8tkifjak0z/TQgdO/D2vzhunI83P2FiDWqqhplSRE8jhGOrRTGhw07AMopIh1CWfg6cE9iYxYq5AnCPfQ+nfcGvD4zhrQFZ08FuK1hTMBhJbSLAdNhW88E0kjcr/cvKw38vyIHwzhrES85bFEhFKrU5Eh6n5ubiNKmVOmDCXqNJI4YL8E7R5gXrJwQeBJ8DLhicUr6LsxMVnDpt8DUPCIl0rDYEY+APNkH/zYWbJ0ZevkAQxMxUo0BijVFiNSQ0YUp4DkJBnejTY532TevXMpTY0Qmtqto2/675P/V6MQf43E67QfpaqC7HcyESG9DwMZsdlOaPRYA0qq4VHLh0/iASddyXxFpuDmAfQhiVmwAXcuHvfojduMJUjFQkXlY0BSulgInZH5s+QtmQEl6kg9lRAnUE5MErl6Aks5GzWeyA8NDpp6yyYvTg5neE7E/UgTcT9L6expyHidnvE3jngVKtzfkTpsCkZumCdhVtw01Ub7IyXRgzOPzJHPR+lUvqBgBlRb35x8QKmKyvqgIpRkDQWVbSgKMLuE4YAaBI8acMXZud/u98C41wnRI/ZwNwzlqquhClxN4ONrCDt2kERDl5h6b4ZEHp4Bw6f65exn3mdCIpna1bQyw0jHSUdIJxji2Hlo+quNWiGIx0S6/Iu44UVKk5rkq+P5jeQyCXHQV6/VhqNXpX6+dMzlzr6cTaeqVLssigtOssN10iIIfAIUgZnHWosoO/8uRUXkeaYC6vRH3MptTynuyxewAhkdB/wHRuoaYMG/7gQWql8T2X56bLlBruqrvJtxLmz/EQIMZnhVoZTGMlbg+GSuXDXRHTf6dwa5w5Cd78PXXDK0
+ ggrjvK7p
+ DFOI0nXdvk1U2fM/d6TyWmD9cs83mCUbebVYh/EAczq0fOuHFeQx0XKGoWcbOYvQo+/gLqMJbYggd/nfAWTiJN+cyGgAGxF4iH1tsEgdhLOjQF5sF383sp1Tyi0gmz6OVDSeBhNANH2Cue50G826BYNHEu2EE5g/2bW1KhGUtsz6D0jwgidCJQbuCnDBU07K6zZvjQ/X4BigCOlYJ3eVA7wXL7wddnHdEluYsYFzdbk3Vy4Wt09R2/GMaokmaIiS7zKeLx5vm7iuCdh0HGtTve4iebPXqVm26oOQhRANeAi03YmCUto+tp1jXhS7Q70yq8Aty/XHf3m3aRhcOYTKPZ8+nP5IVPS2BpTO/Ywm8KyZSWqz58zwTMsQyjp861yIducKh5Ya/ETTkV3xdjjHOMZ5FHFEXGe3t+ssZQHUxBChcbyyZ5D8EeTKCDvxcn3pXywT7eEOpRJUDrIi3LHLZOlXT9dmWYjMfTw/i
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -180,103 +138,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 07.08.25 13:13, Jinjiang Tu wrote:
-> 
-> 在 2025/8/6 20:41, David Hildenbrand 写道:
->> On 06.08.25 05:24, Jinjiang Tu wrote:
->>>
->>> 在 2025/8/6 11:05, Miaohe Lin 写道:
->>>> On 2025/8/6 10:05, Jinjiang Tu wrote:
->>>>> When memory_failure() is called for a already hwpoisoned pfn,
->>>>> kill_accessing_process() will be called to kill current task. 
->>>>> However, if
->>>> Thanks for your patch.
->>>>
->>>>> the vma of the accessing vaddr is VM_PFNMAP, walk_page_range() will 
->>>>> skip
->>>>> the vma in walk_page_test() and return 0.
->>>>>
->>>>> Before commit aaf99ac2ceb7 ("mm/hwpoison: do not send SIGBUS to 
->>>>> processes
->>>>> with recovered clean pages"), kill_accessing_process() will return 
->>>>> EFAULT.
->>>> I'm not sure but pfn_to_online_page should return NULL for VM_PFNMAP 
->>>> pages?
->>>> So memory_failure_dev_pagemap should handle these pages?
->>>
->>> We could call remap_pfn_range() for those pfns with struct page. 
->>> IIUC, VM_PFNMAP
->>> means we should assume the pfn doesn't have struct page, but it can 
->>> have.
->>>
->>>>> For x86, the current task will be killed in kill_me_maybe().
->>>>>
->>>>> However, after this commit, kill_accessing_process() simplies 
->>>>> return 0,
->>>>> that means UCE is handled properly, but it doesn't actually. In 
->>>>> such case,
->>>>> the user task will trigger UCE infinitely.
->>>> Did you ever trigger this loop?
->>>
->>> Yes. Our test is as follow steps:
->>> 1) create a user task allocates a clean anonymous page, wihout 
->>> accessing it.
->>> 2) use einj to inject UCE for the page
->>> 3) create task devmem to use /dev/mem to map the pfn and keep 
->>> accessing it.
->>
->> What is the use case for that? It sounds extremely questionable.
->>
-> This case is only for test, and is strange indeed.
-> 
-> But considering another case, a driver may map same RAM pfn to several processes with remap_pfn_range().
-> If the first task triggers UCE when accessing the pfn, the task will be killed. But the other tasks couldn't be killed
-> and triggers UCE infinitely.
+On Thu, Aug 07, 2025 at 01:28:36PM +0100, Mark Brown wrote:
+>On Wed, Aug 06, 2025 at 05:15:37PM +0000, patchwork-bot+linux-riscv@kernel.org wrote:
+>
+>> This series was applied to riscv/linux.git (for-next)
+>> by Alexandre Ghiti <alexghiti@rivosinc.com>:
+>
+>>   - [v19,11/27] riscv/shstk: If needed allocate a new shadow stack on clone
+>>     https://git.kernel.org/riscv/c/9c72a71321a6
+>>   - [v19,12/27] riscv: Implements arch agnostic shadow stack prctls
+>>     https://git.kernel.org/riscv/c/52eff0ab5f8e
+>
+>Congratulations Deepak!  
 
-Yes, the "anon page" example is confusing though. We really just want to 
-test here if the PFN is mapped. And I would agree that your patch is 
-correct in that case.
+Thank you. Happy that its going in.
 
-For memory poisoning handling you really need a "struct page". 
-struct-less memory is only handled in special ways for DAX (see 
-pfn_to_online_page() logic in memory_failure()).
+> Do you have an update for my clone3() shadow
+No I don't.
 
-So what you describe here really only works when a process uses 
-remap_pfn_range() to VM_PFNMAP a struct-page-backed PFN.
+>stack series that I could roll in for when I repost that after the merge
+>window, and/or instructions for how to run this stuff for RISC-V on some
+>emulated platform?
+I would want to write-up instructions. But I don't want you to go through
+a lot of hassle of building toolchain and bunch of other stuff.
+Let me see how I can make it easy for you. Will report back.
 
+-Deepak
 
-Likely your patch description should be:
-
-"
-mm/memory-failure: fix infinite UCE for VM_PFNMAP'ed page
-
-When memory_failure() is called for an already hardware poisoned page,
-kill_accessing_process() will conditionally send a SIGBUS to the current 
-(triggering) process if it still maps the page.
-
-However, in case the page is not ordinarily mapped, but was mapped 
-through remap_pfn_range(), kill_accessing_process() would not identify 
-it as mapped even though hwpoison_pte_range() would be prepared to 
-handle it, because walk_page_range() will skip VM_PFNMAP as default in 
-walk_page_test().
-
-walk_page_range() will return 0, assuming "not mapped" and the SIGBUS 
-will be skipped. In this case, the user task will trigger UCE infinitely 
-because it will not receive a SIGBUS on access and simply retry.
-
-
-Before commit aaf99ac2ceb7 ("mm/hwpoison: do not send SIGBUS to 
-processes with recovered clean pages"), kill_accessing_process() would 
-return EFAULT in that case, and on x86, the current task would be killed 
-in kill_me_maybe().
-
-Let's fix it by adding our custom .test_walk callback that will also
-process VM_PFNMAP VMAs.
-"
-
--- 
-Cheers,
-
-David / dhildenb
 
 
