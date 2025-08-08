@@ -2,119 +2,104 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D9E7C87FDA
-	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 16:56:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 52E54C87FCB
+	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 17:04:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 13C186B0096; Fri,  8 Aug 2025 12:56:33 -0400 (EDT)
+	id 8C6AE8E0003; Fri,  8 Aug 2025 13:04:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 113D06B0099; Fri,  8 Aug 2025 12:56:33 -0400 (EDT)
+	id 877A58E0001; Fri,  8 Aug 2025 13:04:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0501C6B009A; Fri,  8 Aug 2025 12:56:33 -0400 (EDT)
+	id 73F1D8E0003; Fri,  8 Aug 2025 13:04:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id EAF576B0096
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 12:56:32 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8F04C58AE7
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 16:56:32 +0000 (UTC)
-X-FDA: 83754193824.10.532C7BC
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9261620011
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 16:56:30 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=IJc33oXE;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=urezki@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754672190; a=rsa-sha256;
-	cv=none;
-	b=iCOu336aAxzXg3S32hnX5pG1ke882k3GINr8nD0qAxr+OTK9QHTMrgHCxmdR8Mar+vdJdc
-	SvyrwHYm2MkD5/k6w00ZBjtGQTgddqDNNSH2ZlxIOdMdElOHsx1uSAnY5PgXRTyq+AtB1U
-	b7a7wPAQy0uJV1HlH2Kt5cWbPJFaF/A=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=IJc33oXE;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=urezki@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 572708E0001
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 13:04:01 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C7D1111551E
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 17:04:00 +0000 (UTC)
+X-FDA: 83754212640.09.3800D41
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 815EE1C0008
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 17:03:58 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
+	spf=pass (imf20.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754672190;
+	s=arc-20220608; t=1754672638;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7LBLfDTvzbGx3yFmcXI/cuVRKB9os7wxht5tPJbty3k=;
-	b=XAffaZpWW0XQbo8CZ7zM+ntGMoV76pMhmqlOoFXvMEeIbORrNLOzgWfvDlwTQn3VELB3Bh
-	HQF/2Oxdzv06lYSXai+pT4d2MwLNYgqXz13Byexicj3qJ4TpL8zKMZEXJ1Oci0BawQi37a
-	UPpNFFkOZAgCvZibP6e5TUcTU5tbCfs=
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-55b8736b1d6so2414928e87.1
-        for <linux-mm@kvack.org>; Fri, 08 Aug 2025 09:56:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754672189; x=1755276989; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7LBLfDTvzbGx3yFmcXI/cuVRKB9os7wxht5tPJbty3k=;
-        b=IJc33oXEpkXdQt8VEGbMENcc3ON33b6HQd5Gf0YkINSC35ng93i+ZM1IrcjOZnA3Ea
-         2h3zMf6H0h1T8rh4Qn95+ctoAMeb8iUVTLIeBzzHoYgcPa0A0Vi+Knara3Ggnj5/I7gt
-         TgTioRQWmlaq36INHL2Ir2yg6iJGIF96i1QPh+yyfuyTDSmkKFgAfLKT4VVYhAm/WB/y
-         EpIZChEmIq7o3+20Nlm1DRdJxM6FI4OLVJrM5NOZ37u9zLi9Ezd/q3Kgg1RCW+rfH+mW
-         xB63XASzoRoULZj4gUd7waN2qoCpcS8kPMb3vLvbuM5rcr4G0HT/vitm4n6nkCSP/PsY
-         yF3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754672189; x=1755276989;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7LBLfDTvzbGx3yFmcXI/cuVRKB9os7wxht5tPJbty3k=;
-        b=YFFUX1J8wWxW1mkKYWOJknjIjm4pse8ZXbsBIvZ1YRek5MlWLqloQ0gKsSJlVi8kcM
-         yi8p5pDts0mDiOVbZXfdEsTfZ2yGIsNVqTYs3S15K61QuNU3y/6IlOrJx47mOmxp68XB
-         zoWuLfOinA2Bh3uon0P+MnyMD/ZA5w3z0KMWt778w6uozLVMCNkjGCEKFQQxjNTTRuna
-         gAtP8F1+/PPm5IKwPtZiGo+ABDptULgOCvPG/t0DgvsN/NCiiQeTIVT3pYrF3T62BvBJ
-         h+50WclSuu4GUtn3+PVwmtbb98GwMHD2Zqn/4Wn7EdPTzuyw7Xd1FOCZuV2tBp5hopqe
-         9GTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU0N5J0fLPcyQvSSmJRaQeAGI/rJHYXid54N94egJs8KziCuN3sv8XXlPDSngrm3E6STMchr0Hs7w==@kvack.org
-X-Gm-Message-State: AOJu0YyYMwp2zApH1q4SaCcPf7i1qr+dsan6WKRdDxRYsAOklgkDxrJ4
-	hc/GCD9NwhjS/VQeNxVd6OoE7lP8NvjYQdddHQ8TOpj6AnXNcVkl3oJ3
-X-Gm-Gg: ASbGncuYNugaIoDp6vI8jvDxfsuMiMR2cj8nYw/1RoQGoGEyCTcUHDeZ+X23D/91fK5
-	5NIQPfqNEW7XarNZcg/cTlwEWY6+0BqoBRxmOKj5QWSoYuUCd4iTBfVtqXMghNPya2MvW31+lDy
-	uCdY+ksmoozJtT6ntKb8dP1KC5bQGszDOdAyW04kMEHnlAPewtJAZQRMdlAA7gLlL1LGlsQ0LF1
-	mP7Q1LNYFUziG+MeKVYyuY4gdlqCHuJQBlN9rte2E8VKRnFeTUtBv+bXrdkZ+1mIEkzC+xSa7nJ
-	gdcSnC5GRT0r4ZahTgkRm0WCxUownLRAFD33AOYz79RcPXt7sg2hrWZM51UcfEuyqON481BjeDN
-	KydckMJX62ZsQyo+O5YVN4oxEgauqFY/+L+a/cX03jqGlWWoNog==
-X-Google-Smtp-Source: AGHT+IFdThAy+vd4lzX1BCpXC1ZlUiH5NrUOgca2mq23ylMZkZXKQZwttX8IRO0lbgeUS7mg2X1dzA==
-X-Received: by 2002:a05:6512:3a81:b0:55b:82cd:71ff with SMTP id 2adb3069b0e04-55cc010e021mr1064169e87.37.1754672188569;
-        Fri, 08 Aug 2025 09:56:28 -0700 (PDT)
-Received: from pc636 (host-90-233-217-11.mobileonline.telia.com. [90.233.217.11])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55b88cabb8asm3154101e87.145.2025.08.08.09.56.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Aug 2025 09:56:27 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Fri, 8 Aug 2025 18:56:25 +0200
-To: Michal Hocko <mhocko@suse.com>
-Cc: Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>, Baoquan He <bhe@redhat.com>,
-	LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 8/8] mm: Drop __GFP_DIRECT_RECLAIM flag if PF_MEMALLOC is
- set
-Message-ID: <aJYsOe3nxP6Nuwsz@pc636>
-References: <20250807075810.358714-1-urezki@gmail.com>
- <20250807075810.358714-9-urezki@gmail.com>
- <aJSU3O-pUnTnl_wP@tiehlicka>
- <aJX3zbr8QsIs1LOw@pc636>
- <aJYGpPoaZwYZZ3Ze@tiehlicka>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bro5Z1PL2eLig5Q2ncFtimJM/b9sdMd4TeRUxnnShL0=;
+	b=dzx6O+thZJDmhLuGwSHXitjqv1uW3g9DWsIKM7qgcshFCUbwldCwcuy8YAB5ps5QbfFSB+
+	lYCRaWAK1fxHQFY96w2lC/mOYXH6IwpDKmR1iotnBHBN74AYWqgNbOD+dSBwaJR42Nu7bJ
+	2sesz5NgvxM8dmZHpVVvyhah02uvn/g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754672638; a=rsa-sha256;
+	cv=none;
+	b=ea//ua3R5mJotgEbUlJIW6D5gR5+2Gkw6UTjtU5Y3drqzoe1C6+QBWGYn0DtGghKzr0auI
+	5MpIBFOi15JfAfNnKXN5P9VXGxk2cucRQ7p5JlV2c73c0dk4WxTQxp7t+tKDVcgEonFPt2
+	5JwdhY9iqIj/V8F/HF3SjOrZzVOf2T0=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
+	spf=pass (imf20.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4bz9NX4Hmyz9sSb;
+	Fri,  8 Aug 2025 19:03:56 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 4LtEzBBocysS; Fri,  8 Aug 2025 19:03:56 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4bz9NX36z3z9sSZ;
+	Fri,  8 Aug 2025 19:03:56 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 55AF68B770;
+	Fri,  8 Aug 2025 19:03:56 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id Z2c0fwWGRIPg; Fri,  8 Aug 2025 19:03:56 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 20F878B763;
+	Fri,  8 Aug 2025 19:03:55 +0200 (CEST)
+Message-ID: <af677847-e625-43d7-8750-b2ce4ba9626c@csgroup.eu>
+Date: Fri, 8 Aug 2025 19:03:54 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aJYGpPoaZwYZZ3Ze@tiehlicka>
-X-Stat-Signature: jp1c939814s6h1ktnwdzmyziw9rngyde
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/2] kasan: introduce ARCH_DEFER_KASAN and unify static
+ key across modes
+To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+Cc: ryabinin.a.a@gmail.com, bhe@redhat.com, hca@linux.ibm.com,
+ andreyknvl@gmail.com, akpm@linux-foundation.org, zhangqing@loongson.cn,
+ chenhuacai@loongson.cn, davidgow@google.co, glider@google.com,
+ dvyukov@google.com, alex@ghiti.fr, agordeev@linux.ibm.com,
+ vincenzo.frascino@arm.com, elver@google.com, kasan-dev@googlegroups.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-um@lists.infradead.org, linux-mm@kvack.org
+References: <20250807194012.631367-1-snovitoll@gmail.com>
+ <20250807194012.631367-2-snovitoll@gmail.com>
+ <22872a3f-85dc-4740-b605-ba80b5a3b1bc@csgroup.eu>
+ <CACzwLxjnofD0EsxrtgbG3svXHL+TpYcio4B67SCY9Mi3C-jdsQ@mail.gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <CACzwLxjnofD0EsxrtgbG3svXHL+TpYcio4B67SCY9Mi3C-jdsQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 815EE1C0008
+X-Stat-Signature: z6cs5ji53fyuutqgmeo3r9gyznckpsau
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9261620011
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1754672190-435472
-X-HE-Meta: U2FsdGVkX1+oa6tGnvn6Jmkmstt0Egz+ue5jwbTOM66dNpFe5XElJFiY3RBhSn+sH8J4EL/m8Zv/2ZgDZu0TJwGlmrt0uNpDPuMh5pTxjB/Zbz83wEaCDVu1q+QaIwXzTJk+NPFGe20w8unBvxUteyGVPtV2N45pgP27pfyeNG3WAB5pJKt1A2nkYhQibeUMKRuaASLFZrJEnc3B+mmCyRmk6VFAECWkvjTdsq2PAmpgXbLlsfwlntyqhxqX1sKvFT+ICjkOftQw1ALe6qF81PzTAuQNwr5sjqDAqT/7n279102sG1oy+x6LiMPYkfKosLWk/P6Mh7ENvfYx5REDikShFYbwooJaRvGvFL+KHZ/EJh7NtlRPrEddeeIvfHTxMS1yowYYkZARVn6WoPPU8lROzH9p3MX8z1OZ6ZShGUHjpePTAJVo2a6ooRnIl1T9HMhQmeI23eZd3ZZE8ovwNuDaCt94I8r20eQuyc3stDtHLcwjzFVPwUqJdvNzAtiCS8FURH2rzvVN8//87MzaWetBkAIXFZ3XWQdBfo0RdEifTNF/c9jiNoeWTu6skf461PGUhvJp6LGsuECBTmzIM0JqsFxvkl+dvbL2xQDId1rAqKKTbSrKYwQ/2Wy+U0dTeCpVkpLgdi7HTUG326BEmLQthLOGpC0Cw9g4lF2yT2JS0PCPd+UWbOru7RDMO7Rp8ciqfRfbZIRb/pEhNcISfrPIIwVgxYg35TiwdkgpWCKITzHBCeVqckel5qnB4AaVkVMHFugQxbpFzB1m8dTzPP9op3JYENb1XlNQ2GpzMgmlJOSE1YLYq12+t+1Kms96WudGi2F5JDW1tL5yMCzvbrPm8s/+XSkQVDbsBbS1ueQ9a89jWCvd4JvWtEmHtbfrG3RXpHWF9sDgMF82MqDPUm1X2okQ2M50e54TIev/pStJwh1pS9NYprd03/IZ0i7s+8L+H/6djgoX+NkSfbX
- OkPQCnmJ
- gJivZkqiu/JZjVmQNyQzxYzMq6C85xU7xo7aIPsNKzAcqguklF5IMzTYxTe9b3TIjHNC6+9FkYz7tpH84ap/zZQcTT4Q2ARsUS2ZlAb32/a6D/ZSOWgrx586p8GIO+zqg1okACZfrF+gGbbR3A6AipeVbEaNNFgsCFSg62Io1CL1EROjFSf++gEmeaFWEFIiXHus+LGkJesoU2HWEZX7ZXLkms1lYAtyXDlOShBYNipqu9ghETIWtDhmHsK1CDhTa6h1t2MzzfjKZ1qP2MgJFCZj4wViezn/4YWa4ro1xOgmXGgCcZlZoGP8FZYM9yxSRDRli5xOSJA7Z2ujv/HG/3KLY8tKg6NVTS8BAO1ZwwhQzBqDlvEnh2JvNK3IMwnfFYRrW4TUCdmn9WJe1Of4iSs5YNsNTV0Tr/yDND3L7vrie+HUWEyur0AjjtqDS2Z1WWtWgRW9t52V/hnTvbf8s3VUWClOb3Q1q2YZq
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1754672638-779746
+X-HE-Meta: U2FsdGVkX1+XoEhqfNS1a30hOym54XPeQc1ZwvE9P6Rf/agjqI54vJ0CVzCx8X1U560F+3dWswtXYt88rs/kBo4z4MRYd/52yhVNqE92Nu884B8PAtgi9YUskrvth+wKamfhfVOHwgvd7sva44SdbfA5cz1xWju3Dm73nnynR4Qd6Tjy2b5K62c9tCowa8y1eLiE9yjf8vO3kNAtal5UwqzGJ26krUxRwNHHQXBO5IZrnT0z7zp3FgYTXdF8OpQaV1FR9356tlNcShhhoV+3knuW2k/XZ8sUmCCJZsDK8jl8SOsKEZx8DKW/312tvfc9OcSGMQjQaOA+M5B0LGg/sxSMY3ymGW84pjMBSVEZdTF4q00drKQt+IF4Kbta58rfnHCy/dz86OMc1A6iQ/hyrbY4wNxyGdhLMW6i3pxjpILqVEyCxwJzxRRjXZg0GhlxzVh61uo5C1oXml+PsYVFdTMjUncI9UDcfTAgkgQG9x0Ju3BrRyc+wASP1/WyWXs3dwaCTbdQzqaEqRj3JZr0o1+0tlSPD8xj03pdSnZJ+YuWef+llGcXQErK+A4wecXxNaHIkKJm6ZQioNe4CVG6i2kkG0jv+JcOJCZi+SHWf6fxB6uTGrkEe4zy88ffRWFIk4soMnS+p18kI7b//N2Z7Onj4pus1PVCY577zXIcSXgkdP1JoVz84fkiwJmCiCjkBq1hxVyu8w+hmm1QKs/H29e8nsYnANixeMtWLIZCjDz38me5uRHjuNfyDJIzBo+4S7FTyDlAu5Jq3U9AmJiHHbOKnx+XNkewb/zjQdjs5nCOkQWZhBoHFsUlZgYASRcYudNFMGpk0d5AXsg3U68oZRHRDNVGsrKMo7EqpZkBe//xLDTxSUrET6BXU3T4cHWDvL8m+ZC2sT9iGLzbNVD6ZoxdaLapSjyLYFqrh0dXrBDwcNsI3pweJ0CJvsuXSslGueEIy8rZH15072kBN4t
+ gigdudsc
+ os4heEpQO380hh3uRve0m4PUYWYmrmNM4jBhSvMZGcD5SOdEWMf2z2CHMPuDZWdeOkPAytNjVFKO2T47Oaa9BKQB8JY9Q28wL+A/5OVjME/VEWYo1MW5COR/nO1bjSPQsRZVBdxG4RULGDmoRcXh3roAQU0kJnjTOhA/nvGk1YkYwjnZ+fyLZBz4PW9fCVo18RlBXTNr9rTiKB3Ue103pyLhBO/xHiu63CbVUq3IPnzzd50DVos+2VoOg1BM8F3r3hMRX9NI1LNO8QyF6ZJvoWIIQMlpNR+jcfwjvD4MuSveczORz6YtzTxMDgOoyQQGZA9Gq3XEt7f4iX5+GuSTAM6PjCinMdxUjDoKkk5U4W1Os02kvIrtJHoULVCZ5pAp9lnKtqU9eU0aNotGWjwElEQRQOSbw+Fpp2KsRGkyRoLPFoLgA35TrzT6z6A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,58 +108,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 08, 2025 at 04:16:04PM +0200, Michal Hocko wrote:
-> On Fri 08-08-25 15:12:45, Uladzislau Rezki wrote:
-> > On Thu, Aug 07, 2025 at 01:58:20PM +0200, Michal Hocko wrote:
-> > > On Thu 07-08-25 09:58:10, Uladzislau Rezki wrote:
-> > > > The memory allocator already avoids reclaim when PF_MEMALLOC is set.
-> > > > Clear __GFP_DIRECT_RECLAIM explicitly to suppress might_alloc() warnings
-> > > > to make more correct behavior.
-> > > 
-> > > Rather than chaning the gfp mask would it make more sense to update
-> > > might_alloc instead?
-> > > 
-> > Hm.. I was thinking about it but decided to drop the __GFP_DIRECT_RECLAIM
-> > instead just to guarantee a no-reclaim behaviour, as it is written now to
-> > the flag.
-> > 
-> > >From the other hand after this patch we would have some unneeded/dead
-> > checks(if i do not missing anything). For example:
-> > 
-> > [1]
-> >     WARN_ON_ONCE(!can_direct_reclaim);
-> >     /*
-> >      * PF_MEMALLOC request from this context is rather bizarre
-> >      * because we cannot reclaim anything and only can loop waiting
-> >      * for somebody to do a work for us.
-> >      */
-> >     WARN_ON_ONCE(current->flags & PF_MEMALLOC);
-> > [2]
-> >     /* no reclaim without waiting on it */
-> >     if (!(gfp_mask & __GFP_DIRECT_RECLAIM))
-> >         return false;
-> > 
-> >     /* this guy won't enter reclaim */
-> >     if (current->flags & PF_MEMALLOC)
-> >         return false;
-> > 
-> > [3]
-> >     /* Caller is not willing to reclaim, we can't balance anything */
-> >     if (!can_direct_reclaim)
-> >         goto nopage;
-> > 
-> >     /* Avoid recursion of direct reclaim */
-> >     if (current->flags & PF_MEMALLOC)
-> >         goto nopage;
-> > etc.
-> > 
-> > But, yes, might_alloc() can be modified also.
-> 
-> I do not have a _strong_ preference but my slight preference would be to
-> deal with this in might_alloc. Not sure what other think.
-> 
-No problem, that i can easily switch to.
 
---
-Uladzisau Rezki
+
+Le 08/08/2025 à 17:33, Sabyrzhan Tasbolatov a écrit :
+> On Fri, Aug 8, 2025 at 10:03 AM Christophe Leroy
+> <christophe.leroy@csgroup.eu> wrote:
+>>
+>>
+>>
+>> Le 07/08/2025 à 21:40, Sabyrzhan Tasbolatov a écrit :
+>>> Introduce CONFIG_ARCH_DEFER_KASAN to identify architectures [1] that need
+>>> to defer KASAN initialization until shadow memory is properly set up,
+>>> and unify the static key infrastructure across all KASAN modes.
+>>
+>> That probably desserves more details, maybe copy in informations from
+>> the top of cover letter.
+>>
+>> I think there should also be some exeplanations about
+>> kasan_arch_is_ready() becoming kasan_enabled(), and also why
+>> kasan_arch_is_ready() completely disappear from mm/kasan/common.c
+>> without being replaced by kasan_enabled().
+>>
+>>>
+>>> [1] PowerPC, UML, LoongArch selects ARCH_DEFER_KASAN.
+>>>
+>>> Closes: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fbugzilla.kernel.org%2Fshow_bug.cgi%3Fid%3D217049&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7Cfe4f5a759ad6452b047408ddd691024a%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638902640503259176%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=UM4uvQihJdeWwcC6DIiJXbn4wGsrijjRcHc55uCMErI%3D&reserved=0
+>>> Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+>>> ---
+>>> Changes in v5:
+>>> - Unified patches where arch (powerpc, UML, loongarch) selects
+>>>     ARCH_DEFER_KASAN in the first patch not to break
+>>>     bisectability
+>>> - Removed kasan_arch_is_ready completely as there is no user
+>>> - Removed __wrappers in v4, left only those where it's necessary
+>>>     due to different implementations
+>>>
+>>> Changes in v4:
+>>> - Fixed HW_TAGS static key functionality (was broken in v3)
+>>> - Merged configuration and implementation for atomicity
+>>> ---
+>>>    arch/loongarch/Kconfig                 |  1 +
+>>>    arch/loongarch/include/asm/kasan.h     |  7 ------
+>>>    arch/loongarch/mm/kasan_init.c         |  8 +++----
+>>>    arch/powerpc/Kconfig                   |  1 +
+>>>    arch/powerpc/include/asm/kasan.h       | 12 ----------
+>>>    arch/powerpc/mm/kasan/init_32.c        |  2 +-
+>>>    arch/powerpc/mm/kasan/init_book3e_64.c |  2 +-
+>>>    arch/powerpc/mm/kasan/init_book3s_64.c |  6 +----
+>>>    arch/um/Kconfig                        |  1 +
+>>>    arch/um/include/asm/kasan.h            |  5 ++--
+>>>    arch/um/kernel/mem.c                   | 10 ++++++--
+>>>    include/linux/kasan-enabled.h          | 32 ++++++++++++++++++--------
+>>>    include/linux/kasan.h                  |  6 +++++
+>>>    lib/Kconfig.kasan                      |  8 +++++++
+>>>    mm/kasan/common.c                      | 17 ++++++++++----
+>>>    mm/kasan/generic.c                     | 19 +++++++++++----
+>>>    mm/kasan/hw_tags.c                     |  9 +-------
+>>>    mm/kasan/kasan.h                       |  8 ++++++-
+>>>    mm/kasan/shadow.c                      | 12 +++++-----
+>>>    mm/kasan/sw_tags.c                     |  1 +
+>>>    mm/kasan/tags.c                        |  2 +-
+>>>    21 files changed, 100 insertions(+), 69 deletions(-)
+>>>
+>>> diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
+>>> index f0abc38c40a..cd64b2bc12d 100644
+>>> --- a/arch/loongarch/Kconfig
+>>> +++ b/arch/loongarch/Kconfig
+>>> @@ -9,6 +9,7 @@ config LOONGARCH
+>>>        select ACPI_PPTT if ACPI
+>>>        select ACPI_SYSTEM_POWER_STATES_SUPPORT if ACPI
+>>>        select ARCH_BINFMT_ELF_STATE
+>>> +     select ARCH_DEFER_KASAN if KASAN
+>>
+>> Instead of adding 'if KASAN' in all users, you could do in two steps:
+>>
+>> Add a symbol ARCH_NEEDS_DEFER_KASAN.
+>>
+>> +config ARCH_NEEDS_DEFER_KASAN
+>> +       bool
+>>
+>> And then:
+>>
+>> +config ARCH_DEFER_KASAN
+>> +       def_bool
+>> +       depends on KASAN
+>> +       depends on ARCH_DEFER_KASAN
+>> +       help
+>> +         Architectures should select this if they need to defer KASAN
+>> +         initialization until shadow memory is properly set up. This
+>> +         enables runtime control via static keys. Otherwise, KASAN uses
+>> +         compile-time constants for better performance.
+>>
+> 
+> Actually, I don't see the benefits from this option. Sorry, have just
+> revisited this again.
+> With the new symbol, arch (PowerPC, UML, LoongArch) still needs select
+> 2 options:
+> 
+> select ARCH_NEEDS_DEFER_KASAN
+> select ARCH_DEFER_KASAN
+
+Sorry, my mistake, ARCH_DEFER_KASAN has to be 'def_bool y'. Missing the 
+'y'. That way it is automatically set to 'y' as long as KASAN and 
+ARCH_NEEDS_DEFER_KASAN are selected. Should be:
+
+config ARCH_DEFER_KASAN
+	def_bool y
+	depends on KASAN
+	depends on ARCH_NEEDS_DEFER_KASAN
+
+
+> 
+> and the oneline with `if` condition is cleaner.
+> select ARCH_DEFER_KASAN if KASAN
+> 
+
+I don't think so because it requires all architectures to add 'if KASAN' 
+which is not convenient.
+
+Christophe
 
