@@ -2,113 +2,96 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 61F63C87FD2
-	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 15:54:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F322AC87FD2
+	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 15:55:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 065616B009B; Fri,  8 Aug 2025 11:54:39 -0400 (EDT)
+	id 7E1B36B00A1; Fri,  8 Aug 2025 11:55:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03CC86B009C; Fri,  8 Aug 2025 11:54:38 -0400 (EDT)
+	id 7B9D66B00A2; Fri,  8 Aug 2025 11:55:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E95316B009E; Fri,  8 Aug 2025 11:54:38 -0400 (EDT)
+	id 6CFB56B00A3; Fri,  8 Aug 2025 11:55:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DAE356B009B
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 11:54:38 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9C9AE1DBEB0
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 15:54:38 +0000 (UTC)
-X-FDA: 83754037836.01.CDB6D0E
-Received: from m.syntacore.com (m.syntacore.com [178.249.69.228])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 03297100012
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 15:54:35 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=syntacore.com header.s=m header.b=cY1qxj6u;
-	dmarc=pass (policy=none) header.from=syntacore.com;
-	spf=pass (imf05.hostedemail.com: domain of svetlana.parfenova@syntacore.com designates 178.249.69.228 as permitted sender) smtp.mailfrom=svetlana.parfenova@syntacore.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754668476; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C5B46B00A1
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 11:55:54 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 23B9A115959
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 15:55:54 +0000 (UTC)
+X-FDA: 83754041028.10.957311C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 894FB20003
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 15:55:52 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bIBm+3A0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754668552; a=rsa-sha256;
 	cv=none;
-	b=GNO1cURMxca/7P/+Kf8RJpx82rqYzKi25LDqkp07uZXAznbrbz7sNysROJbFm+qLOnuJjt
-	qL+cX7MD0fpI4m0jWDYGh5nlgil/3guU6lnDQnVjaVYHYkVFHa4hPNeRL7DnejUW52e2Jo
-	LQuDhOVKCSRk5xDycYR7+7IodzsDAjM=
+	b=Xg+/NQWcyMP+GUF2xMd4GI5TN+vcdTxzybUFwul4vY7w/+VZyzxJQqELOVrk7yQ/nz+WYT
+	ZoIYNDz8A76r/vIbVozeKHjnfv0ozJK8io7Yb76KhKh4oSIAIxCZuc7w2XuzE2kHv1N5fh
+	saTwU7bConGjFovymEZhdsqzpplTYUA=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=syntacore.com header.s=m header.b=cY1qxj6u;
-	dmarc=pass (policy=none) header.from=syntacore.com;
-	spf=pass (imf05.hostedemail.com: domain of svetlana.parfenova@syntacore.com designates 178.249.69.228 as permitted sender) smtp.mailfrom=svetlana.parfenova@syntacore.com
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bIBm+3A0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754668476;
+	s=arc-20220608; t=1754668552;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kc+rXQkjUIWlJHfTJTdiMVQq7J3K3zY9PQJSj6n1aPY=;
-	b=spltDUwvxYECbF+yaYoDmL3mR1LGy2JzFJbNitf1b+cUmP8+Env5CH6HzlPXscj96plzfp
-	BzZ0Vxaa9bOOjKuYc9pycCmKQW7WwNayy9Qic0GVfh7m6r+wiBdcBZxfDIQPffckNVRU+4
-	fDYpYHlqFfW03iKa0YUqdWiUHpf+Kv0=
-Received: from MRN-SC-KSMG-01.corp.syntacore.com (localhost [127.0.0.1])
-	by m.syntacore.com (Postfix) with ESMTP id 6A5741A0005;
-	Fri,  8 Aug 2025 15:54:34 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 m.syntacore.com 6A5741A0005
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com; s=m;
-	t=1754668474; bh=Kc+rXQkjUIWlJHfTJTdiMVQq7J3K3zY9PQJSj6n1aPY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:From;
-	b=cY1qxj6ujcXBoiuVPCl+xltzfS9Mli+br7NY1LQ7Y90FmKAMBaild5S9xJtD1UwL3
-	 rCeoJBbLFG6tWSxbNwIEr/UWXAS9aERBN6cNQ9DOM8DMmxkdygcC+s5udB4H03T4Ma
-	 zHqVGkbJEFzMaTmNqi4SfXObpMVNU9c1ib4KMChRBPLZ36JSZlnEqDN4vi4vSyFGP6
-	 mq58f6e+axpHdDFRM9z4jWo1T5WSoVHBmSujkERo0l/0zui/ydNGuFpQZlU7jUQk9Y
-	 CXQkXjJJDUGknP8UkGrSGa2p+SQEmXSlDCuOkMr0kkdIYNWVBcHfLlp39csWrHwJ/v
-	 /j8jBVf745PtA==
-Received: from S-SC-EXCH-01.corp.syntacore.com (exchange.syntacore.com [10.76.202.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by m.syntacore.com (Postfix) with ESMTPS;
-	Fri,  8 Aug 2025 15:54:32 +0000 (UTC)
-Received: from [10.178.118.36] (10.178.118.36) by
- S-SC-EXCH-01.corp.syntacore.com (10.76.202.20) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 8 Aug 2025 18:53:53 +0300
-Message-ID: <2c196c3f-4d49-494c-898e-8a1f6249ce24@syntacore.com>
-Date: Fri, 8 Aug 2025 21:54:30 +0600
+	bh=qprk79rAX7DsdQZEG0BjTWwEshvWc03Sj1P9nLRIia4=;
+	b=qedmrntikSTphpUq6WDdlLnqvTwhoA+0OHHJ5idIeczI+WBboniVBded7jwmDnJBYa70QV
+	SxtuCKTZXYnXgeR6pdEJdM5Skq5A95jPXEuXKAr928q8pa1yKHHGad4MfRKMktKo+d7rwc
+	lFvwlKp2so+LIkEhAjOBU3k4qxnzWp4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B1E9A601ED;
+	Fri,  8 Aug 2025 15:55:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28054C4CEED;
+	Fri,  8 Aug 2025 15:55:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754668551;
+	bh=OcaDToPvu/EEOBIvyPIc8Gm5Mu+wySbfvpWzqrlXL+s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bIBm+3A0Klj5Sv82WBkHb1TqKpq3M+wIq+lrWhvnofEF4mnMJQK9E1iVE3clQxS0P
+	 9vmPwj+SQV7+4YUTsz3LJam4wh9+Vr9X0onjpO5PLxD04uTwL96IfcnRMFD//eYmhO
+	 ULtzLOlIDMgFQ0r3M42O8QMHmo4Ed9gZrbIUrqRmhnhafepNQ8IiiQNOb7UunVsTMy
+	 fuMi0LAVkhA7/K3iYRtCcdUU4ksvSKq0g0OyoGaqBqgGrEkxR1nD2Mz5l806nENWSp
+	 n4Dk98zSKYakyYQsXgclRWUOaznM7r49o6rP32FS04CnknpBSlEZCrV4ez9rX1qjSg
+	 TfNj9ppmTL5GQ==
+Date: Fri, 8 Aug 2025 11:55:49 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: David Hildenbrand <david@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, peterx@redhat.com,
+	aarcange@redhat.com, surenb@google.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/userfaultfd: fix missing PTE unmap for non-migration
+ entries
+Message-ID: <aJYeBbkHsDECexWN@lappy>
+References: <a4d8b292-154a-4d14-90e4-6c822acf1cfb@redhat.com>
+ <aG06QBVeBJgluSqP@lappy>
+ <a8f863b1-ea06-4396-b4da-4dca41e3d9a5@redhat.com>
+ <aItjffoR7molh3QF@lappy>
+ <214e78a0-7774-4b1e-8d85-9a66d2384744@redhat.com>
+ <aIzAj9xUOPCsmZEG@lappy>
+ <593b222e-1a62-475c-9502-76e128d3625d@redhat.com>
+ <aIzPPWTaf_88i8-a@lappy>
+ <aJUDqqjCycGDn1Wg@lappy>
+ <5b9c775c-35a1-4cd6-8387-00198e768b9a@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC RESEND] binfmt_elf: preserve original ELF e_flags in core
- dumps
-To: Kees Cook <kees@kernel.org>
-CC: <linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <viro@zeniv.linux.org.uk>,
-	<brauner@kernel.org>, <jack@suse.cz>, <akpm@linux-foundation.org>,
-	<david@redhat.com>, <lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>,
-	<vbabka@suse.cz>, <rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>
-References: <20250806161814.607668-1-svetlana.parfenova@syntacore.com>
- <202508061152.6B26BDC6FB@keescook>
- <e9990237-bc83-4cbb-bab8-013b939a61fb@syntacore.com>
- <202508071414.5A5AB6B2@keescook>
-Content-Language: en-US
-From: Svetlana Parfenova <svetlana.parfenova@syntacore.com>
-In-Reply-To: <202508071414.5A5AB6B2@keescook>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.178.118.36]
-X-ClientProxiedBy: S-SC-EXCH-01.corp.syntacore.com (10.76.202.20) To
- S-SC-EXCH-01.corp.syntacore.com (10.76.202.20)
-X-KSMG-AntiPhishing: not scanned, disabled by settings
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/08/08 08:14:00 #27646097
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 5
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 03297100012
-X-Stat-Signature: o3kzsmi4876x4sfk8kgjjybyjttedip7
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <5b9c775c-35a1-4cd6-8387-00198e768b9a@redhat.com>
+X-Stat-Signature: f7k53qk6sqce6si8eaucxgtf3y45w8t3
 X-Rspam-User: 
-X-HE-Tag: 1754668475-589735
-X-HE-Meta: U2FsdGVkX18XvSx1zE/1lwHXn1mx3qy/6/PUdD49td/U5KWsZ1svgj8J1nlo0KZibBrv/oE7n/eHmneZWPzLg4+a+XXwczRqz+UV0FJZOMbZYBMyCcZJI43tLY2ygOABuu/OeGC2KfnCF3BUbooURBrItyYttOPm3tbLgi/+M1gPwwzlnC4MkqVem2zmMhHL5Pc5HUCdPwaOaDjfJC1lkzSFiBsLwXkV5uoc+DrTFgheqca8l80KQeJ62f0g8FyHs+Krnzzgo2nc7J+VS8Pij6wmHPLa+UfYfw6aueQy4f6sRl68LSDdDrxaZDr6zez5DnPYO6wjVFWWN0GgiCoqJvvTiX0hy8dfsQhagrnko3Zry4SX+TXUYMZdkdBqx7Ss6hpMhveFwlxOZUfOb+lmvbyQ/zTI3AHYjyKgSY3yBAqZG4/qhpHaWjVZ30MkahzeHcQIXjy2ORbFr4kj8klU3rrpzWFtIOWs1gv76dDhwK4pvnJUsuj3k3SAV0dpBcliHat++/T8FH7JRzphthKxFeD8GlUodUckM0q+5pAM1R5LPpvv//e6QAyo6FgQ3qmfiWaH4FJl3f3pSaquvOJpaT1V0sRUikNTjKB1qfxN9pemnw9U1JfJmWJtng0/jYP2s/1JAKa9DItNNqk8mVl2yKT0/ogXznNkbjjxg9D5SLzw2DF2TVRV00pvppsuvC3KUjHH8+veW12ypWPyjBYiy28T8bjQO433EcbQ0HyC4eDdr41Oix7pjCgmsdOtXIAWwmehcSuF4YsQWUc/SCTN68wrZc2grHjShVr81mwAbXKEm7263COLnl9JqPB7hCF0Q7aOGpPRFso+hvtazQcMXOVjnQQ7GDqeBenFYiO5EkbMn+dZ7lowvw8hDh7H6zg6EeXoZZzkQJjOQTy/QA2GKfR0A253JSnVkZFCsP+d1tPCueVk3KqfHsnkdpYkdCBPIrb23upidP92TlqtiBb
- FEdSraYn
- yHl2RXs/YK/7Iko848YTukqiKr5fOHc0nUsn+orjjKAxAGn6pxYQiFwfYyQxISfeRklOHnd38xeFU84WCUydbqeD5hq1oAN3B6JpQXhoYOR+1dkiXFxQzCGw7pY72qdq4qD7b5EM/QkvihMhwtWcvK/c0FMOCy3CbAITmvHVEtVngWHhIysnPoMX7ho39wsEVOMjp+I2PWEbRBfNHJPWB2qiYuVh5fKDVHJUK+dOT4173m8sAglMkkC4gDEoslhPGjht+HXiF7Vwpd4r2Rjx1d0MP6+t3GwqVLgCZXSA/6GeCcdPTuSyp3oi5gfXCIiggJecv5vSw01XjFvHjUzc/Z2laIdin9w0myzNdjMUqWWFhf9vkibhSnzxHDHUVpHEzBWg0FNMoWpRl5vHjlvwBHJGYXbF7FPiDH+Cx2+B3Q9SaDCWw0YaEjfegBjLOgivo26BxLSKDEwOluLYy0jIgyu8nQ3BsTdxCxPMc
+X-Rspamd-Queue-Id: 894FB20003
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1754668552-207396
+X-HE-Meta: U2FsdGVkX187xGH1XLZ4DAQDV13JxaKVYbNibi1gLScwjv1EEflv5+Hk0JTexC8Eh08iqpx2rsJES9V1dGJS0muKNrSreryzbpsov3bhKzDovuIAutimaQuoeVFIr870dzlQRs96ab8+aFo/WP/b4iRYDGobRz/F+2L+E8APuBhGmRLWbHbrH/CTPRv10U6pPMX1vOOVQv4irqTsWI3gYoCCGaotsIDYLqjxR5q4Bdc+dpBV+6LivcO2h3EA5GVs3AYPt1oS8vpIFpeTMJdS058I4MKffeF1QbgNpx+AVhaGmKN4M3S4tzVqCX0vI5FoVpJzLuTE+OZWxvz/QHuGP8g4iLlpUI8vJcj3+AuklSSeZ927Qx31v7xRKbUAlFLFcrgFpvWZuIm5Q73x2UPUIJYvQ4KrauXUDZSfH4uJ73abDy3NIQBOl7Is32/o7X+Vgep+A/KSpjLObB35vyuPbmNodz7m+FWex1ou/xCQPbQnXWOY/rXoSV2oqfCjdF3f+gf0A7Jy1BvEGUHL2MLnnclJiU6eLhE8kV/UwlLI/7NIxb4q+CmEqkcF/W9t9ZYohdtjhy9GN+3XA0R/J2woQZDIYjCc8sdXER/o6XBD3yckY9+p63qZwdBrEoMVGPkp1sVusVyZnK/e2TuW3vXlP0gfKID21QaLZRv0W14bGFvFR7QeAyN7TzQZmz3ugMb9L2Y44I1b4EEEahOAm2FL3V90wd6iXtdTdhdLsQZJiAd7tSP+zzvPehJZ9ZwGSa/ZLrXNqLectCpu1kQu1HBhyAI+bso0GphNC3vgB76gdZoBefQ3kg+/LL6iiGVi0WOzAKjVa7U1xkihfKjw63ooPCaWwY7XouUYM30DIK28BR3BA5e7z3y4G6/lVoxgTwKqK7TTssVnelCWNoHX14oLIjOV8nyOijBa5/XJH+I8a1dHjGQAcTh1lOWc5+8MWRDhg1rGDMmLwfa5gmAR3Yt
+ qstnqLe2
+ byih++HWpHrKC4ZethkAiWyglR00VebYNc+ZSENMw2QLy/RZ7DFrd+VHzKVRNHuDY1hOyNUxlhI1zBzMI4OBMxYOcIUFxHLIPGgZBmmfFyB3USpHpEhYZtVQMB8Ge46roBrKeN8lEyb4WqMH1NKkrzVW5hhhAtWyRDaP/hN5itwLgH8P8PKlbdKRGG3zQSeZcUxINycOOgEh1H2jaZL14vAW75B5lLWQ6nqNC5h0JfT2Y9UK+7lHJ439SbRXHMgXo7G7GCyuMIFrfq8ao/G9XGTI8wg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,69 +100,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08/08/2025 03.14, Kees Cook wrote:
-> On Thu, Aug 07, 2025 at 07:13:50PM +0600, Svetlana Parfenova wrote:
->> On 07/08/2025 00.57, Kees Cook wrote:
->>> On Wed, Aug 06, 2025 at 10:18:14PM +0600, Svetlana Parfenova
->>> wrote:
->>>> Preserve the original ELF e_flags from the executable in the
->>>> core dump header instead of relying on compile-time defaults
->>>> (ELF_CORE_EFLAGS or value from the regset view). This ensures
->>>> that ABI-specific flags in the dump file match the actual
->>>> binary being executed.
->>>> 
->>>> Save the e_flags field during ELF binary loading (in
->>>> load_elf_binary()) into the mm_struct, and later retrieve it
->>>> during core dump generation (in fill_note_info()). Use this
->>>> saved value to populate the e_flags in the core dump ELF
->>>> header.
->>>> 
->>>> Add a new Kconfig option, CONFIG_CORE_DUMP_USE_PROCESS_EFLAGS,
->>>> to guard this behavior. Although motivated by a RISC-V use
->>>> case, the mechanism is generic and can be applied to all
->>>> architectures.
->>> 
->>> In the general case, is e_flags mismatched? i.e. why hide this
->>> behind a Kconfig? Put another way, if I enabled this Kconfig and
->>> dumped core from some regular x86_64 process, will e_flags be
->>> different?
->>> 
->> 
->> The Kconfig option is currently restricted to the RISC-V
->> architecture because it's not clear to me whether other
->> architectures need actual e_flags value from ELF header. If this
->> option is disabled, the core dump will always use a compile time
->> value for e_flags, regardless of which method is selected:
->> ELF_CORE_EFLAGS or CORE_DUMP_USE_REGSET. And this constant does 
->> not necessarily reflect the actual e_flags of the running process
->> (at least on RISC-V), which can vary depending on how the binary
->> was compiled. Thus, I made a third method to obtain e_flags that
->> reflects the real value. And it is gated behind a Kconfig option,
->> as not all users may need it.
-> 
-> Can you check if the ELF e_flags and the hard-coded e_flags actually 
-> differ on other architectures? I'd rather avoid using the Kconfig so
-> we can have a common execution path for all architectures.
-> 
+On Fri, Aug 08, 2025 at 10:02:08AM +0200, David Hildenbrand wrote:
+>On 07.08.25 21:51, Sasha Levin wrote:
+>>On Fri, Aug 01, 2025 at 10:29:17AM -0400, Sasha Levin wrote:
+>>>On Fri, Aug 01, 2025 at 04:06:14PM +0200, David Hildenbrand wrote:
+>>>>Sure, if it's prechecked by you no problem.
+>>>
+>>>Yup. Though I definitely learned a thing or two about Coccinelle patches
+>>>during this experiment.
+>>
+>>Appologies if it isn't the case, but the two patches were attached to
+>>the previous mail and I suspect they might have been missed :)
+>
+>Whoop's not used to reviewing attachments. I'll focus on the loongarch patch.
 
-I checked various architectures, and most don’t use e_flags in core
-dumps - just zero value. For x86 this is valid since it doesn’t define
-values for e_flags. However, architectures like ARM do have meaningful
-e_flags, yet still they are set to zero in core dumps. I guess the real
-question isn't about core dump correctness, but whether tools like GDB
-actually rely on e_flags to provide debug information. Seems like most
-architectures either don’t use it or can operate without it. RISC-V
-looks like black sheep here ... GDB relies on e_flags to determine the
-ABI and interpret the core dump correctly.
+Thank you for the review!
 
-What if I rework my patch the following way:
-- remove Kconfig option;
-- add function/macro that would override e_flags with value taken from
-process, but it would only be applied if architecture specifies that.
+>From a547687db03ecfe13ddc74e452357df78f880255 Mon Sep 17 00:00:00 2001
+>From: Sasha Levin <sashal@kernel.org>
+>Date: Fri, 1 Aug 2025 09:17:04 -0400
+>Subject: [PATCH 2/2] LoongArch: fix kmap_local_page() LIFO ordering in
+> copy_user_highpage()
+>
+>The current implementation violates kmap_local_page()'s LIFO ordering
+>requirement by unmapping the pages in the same order they were mapped.
+>
+>This was introduced by commit 477a0ebec101 ("LoongArch: Replace
+>kmap_atomic() with kmap_local_page() in copy_user_highpage()") when
+>converting from kmap_atomic() to kmap_local_page(). The original code
+>correctly unmapped in reverse order, but the conversion swapped the
+>mapping order while keeping the unmapping order unchanged, resulting
+>in a LIFO violation.
+>
+>kmap_local_page() requires unmapping to be done in reverse order
+>(Last-In-First-Out). Currently we map vfrom and then vto, but unmap
+>vfrom and then vto, which is incorrect. This patch corrects it to
+>unmap vto first, then vfrom.
+>
+>This issue was detected by the kmap_local_lifo.cocci semantic patch.
+>
+>Fixes: 477a0ebec101 ("LoongArch: Replace kmap_atomic() with kmap_local_page() in copy_user_highpage()")
+>Co-developed-by: Claude claude-opus-4-20250514
+>Signed-off-by: Sasha Levin <sashal@kernel.org>
+>---
+> arch/loongarch/mm/init.c | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+>diff --git a/arch/loongarch/mm/init.c b/arch/loongarch/mm/init.c
+>index c3e4586a7975..01c43f455486 100644
+>--- a/arch/loongarch/mm/init.c
+>+++ b/arch/loongarch/mm/init.c
+>@@ -47,8 +47,8 @@ void copy_user_highpage(struct page *to, struct page *from,
+> 	vfrom = kmap_local_page(from);
+> 	vto = kmap_local_page(to);
+> 	copy_page(vto, vfrom);
+>-	kunmap_local(vfrom);
+> 	kunmap_local(vto);
+>+	kunmap_local(vfrom);
+> 	/* Make sure this page is cleared on other CPU's too before using it */
+> 	smp_wmb();
+> }
+>-- 
+>2.39.5
+>
+>
+>So, loongarch neither supports
+>
+>a) Highmem
+>
+>nor
+>
+>b) ARCH_SUPPORTS_KMAP_LOCAL_FORCE_MAP, disabling DEBUG_KMAP_LOCAL_FORCE_MAP
+>
+>Consequently __kmap_local_page_prot() will not do anything:
+>
+>	if (!IS_ENABLED(CONFIG_DEBUG_KMAP_LOCAL_FORCE_MAP) && !PageHighMem(page))
+>		return page_address(page);
+>
+>
+>So there isn't anything to fix here and the whole patch subject+description should be
+>rewritten to focus on this being purely a cleanup -- unless I am missing
+>something important.
+>
+>Also, please reduce the description to the absolute minimum, nobody wants to read the
+>same thing 4 times using slightly different words.
+>
+>"LIFO ordering", "LIFO ordering", "unmapped in reverse order ... LIFO violation" ...
+>"reverse order (Last-In-First-Out)"
 
-Would that be a better approach?
+How about something like:
+
+     LoongArch: cleanup kmap_local_page() usage in copy_user_highpage()
+     
+     Unmap kmap_local_page() mappings in reverse order to follow the
+     function's LIFO specification. While LoongArch doesn't support
+     highmem and these operations are no-ops, code should still adhere
+     to the API requirements.
+     
+     Detected by kmap_local_lifo.cocci.
+     
+     Fixes: 477a0ebec101 ("LoongArch: Replace kmap_atomic() with kmap_local_page() in copy_user_highpage()")
+     Signed-off-by: Sasha Levin <sashal@kernel.org>
+
+>More importantly: is the LIFO semantics clearly documented somewhere? I read
+>Documentation/mm/highmem.rst
+>
+>  Nesting kmap_local_page() and kmap_atomic() mappings is allowed to a certain
+>  extent (up to KMAP_TYPE_NR) but their invocations have to be strictly ordered
+>  because the map implementation is stack based. See kmap_local_page() kdocs
+>  (included in the "Functions" section) for details on how to manage nested
+>  mappings.
+>
+>and that kind-of spells that out (strictly order -> stack based). I think one could
+>have clarified that a bit further.
+>
+>Also, I would expect this to be mentioned in the docs of the relevant kmap functions,
+>and the pte map / unmap functions.
+>
+>Did I miss that part or could we extend the function docs to spell that out?
+
+The docs for kmap_local_page() seem to cover it better, and give the
+concrete example we're trying to fix here:
+
+  * Requires careful handling when nesting multiple mappings because the map
+  * management is stack based. The unmap has to be in the reverse order of
+  * the map operation:
+  *
+  * addr1 = kmap_local_page(page1);
+  * addr2 = kmap_local_page(page2);
+  * ...
+  * kunmap_local(addr2);
+  * kunmap_local(addr1);
+  *
+  * Unmapping addr1 before addr2 is invalid and causes malfunction.
 
 -- 
-Best regards,
-Svetlana Parfenova
+Thanks,
+Sasha
 
