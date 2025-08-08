@@ -2,150 +2,111 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 360F1C87FD2
-	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 12:12:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F92AC87FD2
+	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 12:24:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CFA666B009F; Fri,  8 Aug 2025 08:12:43 -0400 (EDT)
+	id 01D1C6B008C; Fri,  8 Aug 2025 08:24:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAAC76B00A0; Fri,  8 Aug 2025 08:12:43 -0400 (EDT)
+	id F100C6B0096; Fri,  8 Aug 2025 08:24:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4BD46B00A1; Fri,  8 Aug 2025 08:12:43 -0400 (EDT)
+	id DFECF6B0099; Fri,  8 Aug 2025 08:24:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BFFE6B009F
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 08:12:43 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 22D6C55CBC
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 12:12:43 +0000 (UTC)
-X-FDA: 83753478606.16.F82E688
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 4564818000F
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 12:12:40 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b="b/e3xPUX";
-	spf=pass (imf06.hostedemail.com: domain of pratyush.brahma@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=pratyush.brahma@oss.qualcomm.com;
-	dmarc=pass (policy=reject) header.from=qualcomm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CD1FE6B008C
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 08:24:54 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 80CD0114D8C
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 12:24:54 +0000 (UTC)
+X-FDA: 83753509308.27.0CBC890
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	by imf01.hostedemail.com (Postfix) with ESMTP id C7A8C40016
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 12:24:52 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CMRCOSJ4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of pratyush@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754655160;
+	s=arc-20220608; t=1754655892;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=S5yNMiVryFwGG2xAA8XVh2ZWIiCVa+aa/y2M/HZeZ14=;
-	b=nbUVRmO0rDpYgvr5YqGwjADSJBopygY+z6qHYzMct3AsTT/OmjBwMRRFQa1ThbanhOI89m
-	KZ1S7iEdwt8CI7FDSj2AvnN0Nv1AGP6lQh8aVQ1HooEO7pBOb1YJiK5m5TZAZ7Gs1vHnIk
-	KwWpUqyTRSXIG/T1LAetbhXRjGnqcmY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754655160; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OEH5ic4ky5ee5B7QixIcxNTvQ97iOSZmqG70xMACvJk=;
+	b=6aCcB9phayubCLj4xAxx+hF4ZaP3kuVQ0L3uPE72vm1XpnCwlnN6yTC1HmByutg36n+Fyj
+	ABMTUopPxyxbBoeAzCSwmzW3/vqdF1dJ/9o3wDE2i0Rqi8xRlFps3AJsHWy7AsbYVwhCWE
+	gjUiZvl0nzAbSgja3141cWe3ZmW2Qi4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754655892; a=rsa-sha256;
 	cv=none;
-	b=zC3zkv7/Fxnkiw+9o5FdIPeSbQt/cPtmokAWXX/cAaWR+wO1foZ9gUPd25WwnujxvGi7Gd
-	5Lxb31JnRqpIlJ1PKCDjVr46D3DYoNGipq1gQhv10J3tcqusiLjmtNAfmXdOZbbfitjPfG
-	2swsSgxU8haNQPVZw2JuY6eH7gnWrRo=
+	b=H/qs2q+4+66kf/RpPwPkG6AfoC3y4Gt5C9VWdgVtazQL+q6HU4aB8feIEhcffYZu3Vs3x+
+	zmL16+Y7ZRHOixHToLcSyHCVh7e8BsP7c2xuwcu9mVdqMzGtkhmKsA1o+14ml6xAP5lnyR
+	Umw/qZgWSMh+Q8nW/Nv14f3UP5B1mxg=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b="b/e3xPUX";
-	spf=pass (imf06.hostedemail.com: domain of pratyush.brahma@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=pratyush.brahma@oss.qualcomm.com;
-	dmarc=pass (policy=reject) header.from=qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5787SM77003404
-	for <linux-mm@kvack.org>; Fri, 8 Aug 2025 12:12:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=S5yNMiVryFwGG2xAA8XVh2
-	ZWIiCVa+aa/y2M/HZeZ14=; b=b/e3xPUXUOnAbhnufsKKYJ1E7vSZty4jmz1Npl
-	yvqbL10R/O8GcZ1vmx10uhaUtjh0Ef2u7C9c0sLszSfcxrE6B4ry+37+wzD++xUn
-	1+iE3QrUEJ1sxKPsUdNMGtMaD+3wfuxfFJ2uzp6t383XXQ8duKfHLdRfENdwqGHB
-	M4czaAP8+nKbp46G9tfuAlLdZyCh6o+ZegDVIHkP12TGz+SzQKjlT9h5vQH5unL5
-	NdGDod3EzJ7S1kQA63qHoK7XEX5X9gPSdQT23Zt/PWJlP5ntTI5/Tq+QwFij+KIW
-	QtA1CbWmCSX6ZQM3eiVyR+lmor4RiZ2M8QuhR+6NNTPk9CrQ==
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48bpw025k2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Fri, 08 Aug 2025 12:12:39 +0000 (GMT)
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2400cbd4241so32406035ad.3
-        for <linux-mm@kvack.org>; Fri, 08 Aug 2025 05:12:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754655158; x=1755259958;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=S5yNMiVryFwGG2xAA8XVh2ZWIiCVa+aa/y2M/HZeZ14=;
-        b=Lt+r3WrPcEzpMWMKANXzZe7PMW0/AwVSqDqV2B3mJVbLumPQw5zcVBheLtxOgwsGwI
-         r97TrkWhPSdBl8Hmo49jAzcOwNn74y3b7Vz/sCBfE3tQy5utysNdyuXZPvEEb14apze9
-         4c8zI4fqpsdWjJo/WX4+2omxMMJHHiG9+zhVSEF8muWzcrZ7nfxrCZWr8Kp6ZV50S7Cl
-         0gLMxcJQeUcWa/qEx0gJJk5CtQ4eELOcnM1wdJXZEQIOqRH0+T8/8gE0/8Qh/Yz57oUn
-         ugUYQP86j16PD9W2MfEwZWZ1TWoLm78oAdP2RX/filMLBG0ByG8ViO62wAETZYe5Glhr
-         RXBQ==
-X-Gm-Message-State: AOJu0YxU6ybrP1lB3dJTUUW6p5FpZIk/qUsPGacMkuxmJilMdG4AivLJ
-	jRi0ShSXSIcPjeQbbJojn8ZMAe0r8+5Fh0ju/RhuQRDQmKECzkFeihWhn1d8EFlg9VMJXCupOe7
-	ed7BP0JyzTSb8ANFYFPkBnOBi4pmTCH86NVww5rRZJi933KjYoGaps2/0QOwhjbBC0Qo=
-X-Gm-Gg: ASbGncucolRC1KAXUKtwFivSnWGYmdaHlZph89kniGLJ5Sl9i3+VJHhbHMItGbVAp6x
-	zPXWp/HgMRTisqD7ZMsB3LlhgINWNON+XVUpnSavIyJU3GMwmbzGDPZDbS24LReeMWf9qiPuynK
-	tEtKsH9fVwooJgPJkW5DBsGybEFdxTLvMD0VT1TOOBC6zfCy8g/mq69m4zb65EDPfjpv5tBjlPG
-	Tq9sdzDq8Wd8+CU3jxNniUxPCvAeXXaEQZtnOJuCk8f8mOcekVOH/Ortkjl0ZxZd4jrnp42IdJp
-	RbzckZ0qPBBi5GFvCBImWqYNrRH4
-X-Received: by 2002:a17:902:f543:b0:240:6406:c471 with SMTP id d9443c01a7336-242c1fdc70fmr36226985ad.10.1754655157663;
-        Fri, 08 Aug 2025 05:12:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IECpKQ/v5JKdeVcyVVibX/xqzvIzneVnVstvg/MXM27SuAFO3gMxlFTqtbF7/tvuRIckv++ww==
-X-Received: by 2002:a17:902:f543:b0:240:6406:c471 with SMTP id d9443c01a7336-242c1fdc70fmr36226525ad.10.1754655157181;
-        Fri, 08 Aug 2025 05:12:37 -0700 (PDT)
-Received: from hu-pbrahma-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241e899aaecsm209622995ad.119.2025.08.08.05.12.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Aug 2025 05:12:36 -0700 (PDT)
-From: pratyush.brahma@oss.qualcomm.com
-X-Google-Original-From: Pratyush
-Date: Fri, 08 Aug 2025 17:42:22 +0530
-Subject: [PATCH] mm/numa_memblks: Use pr_debug instead of
- printk(KERN_DEBUG)
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CMRCOSJ4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of pratyush@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 9CB9A5C5A81;
+	Fri,  8 Aug 2025 12:24:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01115C4CEED;
+	Fri,  8 Aug 2025 12:24:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754655891;
+	bh=qRjvtQepeMwWQ1iZeyP+WXdo3DOPw4yY3tm/2Jj3ro8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=CMRCOSJ4OD4BgEV43QFUeLjx//tVMPcvn1zUTdkz9AEdPWvxToF3CTtrJ1JY/j7FQ
+	 Wafqp+mkl4F+RrKLdpvFkCtYorEJs9Tt6axGTHlEr587xP5Xo0loGlmK2qV8cF6d9p
+	 NmSBZDjZycBiXzMSQy1zA1Ob1jgfjGybkU/W7UHhsItAXGLuyJQCcvBbRVKaPo+3oj
+	 HvW4FB4JncGBNWmwmBjkKKNhjw+tydQpk4wQrQ7Sc5vXhwrwqPZpgVhJgUazpVAPKt
+	 nCXk1XTmrY1dMOqyD13Z5jOxKdhUOOsLFfOP/zTIiXCQhWc3Q9/8G9+QB5lLT2QKeT
+	 MhrbCEVrZ3BPA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: David Hildenbrand <david@redhat.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  pratyush@kernel.org,
+  jasonmiu@google.com,  graf@amazon.com,  changyuanl@google.com,
+  rppt@kernel.org,  dmatlack@google.com,  rientjes@google.com,
+  corbet@lwn.net,  rdunlap@infradead.org,  ilpo.jarvinen@linux.intel.com,
+  kanie@linux.alibaba.com,  ojeda@kernel.org,  aliceryhl@google.com,
+  masahiroy@kernel.org,  akpm@linux-foundation.org,  tj@kernel.org,
+  yoann.congal@smile.fr,  mmaurer@google.com,  roman.gushchin@linux.dev,
+  chenridong@huawei.com,  axboe@kernel.dk,  mark.rutland@arm.com,
+  jannh@google.com,  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
+  dan.j.williams@intel.com,  joel.granados@kernel.org,
+  rostedt@goodmis.org,  anna.schumaker@oracle.com,  song@kernel.org,
+  zhangguopeng@kylinos.cn,  linux@weissschuh.net,
+  linux-kernel@vger.kernel.org,  linux-doc@vger.kernel.org,
+  linux-mm@kvack.org,  gregkh@linuxfoundation.org,  tglx@linutronix.de,
+  mingo@redhat.com,  bp@alien8.de,  dave.hansen@linux.intel.com,
+  x86@kernel.org,  hpa@zytor.com,  rafael@kernel.org,  dakr@kernel.org,
+  bartosz.golaszewski@linaro.org,  cw00.choi@samsung.com,
+  myungjoo.ham@samsung.com,  yesanishhere@gmail.com,
+  Jonathan.Cameron@huawei.com,  quic_zijuhu@quicinc.com,
+  aleksander.lobakin@intel.com,  ira.weiny@intel.com,
+  andriy.shevchenko@linux.intel.com,  leon@kernel.org,  lukas@wunner.de,
+  bhelgaas@google.com,  wagi@kernel.org,  djeffery@redhat.com,
+  stuart.w.hayes@gmail.com,  lennart@poettering.net,  brauner@kernel.org,
+  linux-api@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
+  saeedm@nvidia.com,  ajayachandra@nvidia.com,  jgg@nvidia.com,
+  parav@nvidia.com,  leonro@nvidia.com,  witu@nvidia.com, Hugh Dickins
+ <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>
+Subject: Re: [PATCH v3 00/30] Live Update Orchestrator
+In-Reply-To: <b227482a-31ec-4c92-a856-bd19f72217b7@redhat.com>
+References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
+	<b227482a-31ec-4c92-a856-bd19f72217b7@redhat.com>
+Date: Fri, 08 Aug 2025 14:24:40 +0200
+Message-ID: <mafs07bzeatmf.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250808-numa-dbg-v1-1-2ddd1ec634aa@oss.qualcomm.com>
-X-B4-Tracking: v=1; b=H4sIAKXplWgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDCwML3bzS3ETdlKR0XTOjRIskIwNLo2RTMyWg8oKi1LTMCrBR0bG1tQC
- djrgsWgAAAA==
-X-Change-ID: 20250808-numa-dbg-62a8b2092c56
-To: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1754655154; l=997;
- i=pratyush.brahma@oss.qualcomm.com; s=20250808; h=from:subject:message-id;
- bh=5Qo1LK7YyFgDdROrB8rkJMFFqZAABRTthFwmSEfDAhw=;
- b=64IXFmUg2VveMuqLjbn9i7qwNPt1EejsJDYTe3JlpxUWb5ZbSTuVFgcpoyH4bo1CprNNdbXO6
- tXmVM5kgSUoB79yXLpnYbnw0kcRJ4w7+HeyFc+dzbMOskoQrLATN4xG
-X-Developer-Key: i=pratyush.brahma@oss.qualcomm.com; a=ed25519;
- pk=ZeXF1N8hxU6j3G/ajMI+du/TVXMZQaXDwnJyznB69ms=
-X-Proofpoint-GUID: jLbNAVp0opRkZJTv705-S1i6z3O_HnA8
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA2MDAwOSBTYWx0ZWRfXwzYyKL/K2bzU
- 7j+oj/sHXh+oVj9h9Xs1Hdv0rYeLuduX4XtEN5RNCxtwy0zRN+wb457lmWZ9gWt2Kt3XAMFnJTo
- GUxpC8Ms/OVr6m5KLK+1jCTKcGDxIe6RSmhWXtxPweVqimTm01VO/w/4uyDVNaHf2JHSXhuONFW
- z5c7ZFIsHAamAfO5ZO4b0LinjiKd3UTwiwLzAl9oJXyuZaS7Ykmq7iAJEa9qKqZFZS/GabMJRzj
- /N5wRk9me+mzq4h2OoeJQ00DzICLWYxbjn2Q/wEWRbymYklt72PPhpBFvassvyKnMsp7wUS278R
- ThIGFILMZb9Xx1Cq9CZYfDYVXKuaLlRmApm9NRm8kdeGHSfhwf4sVhXRs7oCAXbJJMnk6hwCF5X
- Yl+2CO7T
-X-Proofpoint-ORIG-GUID: jLbNAVp0opRkZJTv705-S1i6z3O_HnA8
-X-Authority-Analysis: v=2.4 cv=NsLRc9dJ c=1 sm=1 tr=0 ts=6895e9b7 cx=c_pps
- a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=EUspDBNiAAAA:8 a=IjtafaaC1MEc7PSuPL8A:9
- a=QEXdDO2ut3YA:10 a=GvdueXVYPmCkWapjIL-Q:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-08_03,2025-08-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 priorityscore=1501 impostorscore=0 bulkscore=0 phishscore=0
- adultscore=0 malwarescore=0 spamscore=0 suspectscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508060009
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4564818000F
-X-Stat-Signature: upn7gipz1j4zgkfhbdbqs7hys1ea6idd
+Content-Type: text/plain
+X-Stat-Signature: 6h5zky46pod8b1ogsuufdtqsryoc8t94
+X-Rspamd-Queue-Id: C7A8C40016
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1754655160-624264
-X-HE-Meta: U2FsdGVkX19nZS6Gt6PwypyfcZ+r72zALH/+RYw25JAMsNJims4d/ayciN7AObqipwtCG5dRMgHBfqpAWeocTVC2YXLET2Dy3MpIyNF1RYJgdB5z4GCQepanoaAVbJv7Zwy2ChKTSwSxs5qWg7S0aUlBOLpgLVS9/BcaZAiHwOkyToYG79R1QTnSTkvgagUFDbbmIKDAFxzXtO7JMrVmGDnPdmVZKzvYahImYFp2bEzq82kIxZt3snAGzNUckXmPV+lVZvx0l6yF5Nlj6/26Fz0HvI4MtMT2+B7IM0fSGc1Eb3c+Ltc2L2ECsahV1Wz/ovD6q0l6HLjbYM/o2KlRq2CWHd5GXXcKbk9T7fssed37yeWC6flO6GVNAKqwJPmGyzxui/jxUW+KaJcerHO0Q/48xlRFKoB+kqyoVMKzf1EGcG0el11WhC25Wk9/vMZg8z8YcVifSLzz63bS6yraS7qJXYpOlOAp3D7CsWeSeLhOZQRrSRHBpEZ4yb9PhA18kXyht9vfLdAHAs5Dhib8yHPJMccyvas6nvrU6e+SEQnvYBn3INrS1qccI8wxc91VFbihx6uEgKELYsACoMBsnkKzmHvZ6b8u+GNJTvktxlF8eu6K/q5Fl7mxmEbducPUDkfhoF07ZeXVQXb7UPu5dDxFZ5TzCriXCO1EIdmVE8bk6qKMx0d9OPzInvWwsOVSWl7Nfc06AEzbwmzH4NJ5BQry2ujwh152aZ4V43dxA2YnMC6oeHrf62QagXf0q8TMl7c/Wx4c1uvV5c/q6ueUUWXP2bfXkACztbTiVjgkYaPwpt0XOKLtVBw3O+JpzVMXvbXpLiYBdAOpMFU+DtFjpKAyN/0DzMdIvLEY4T9ITHkgkiskwGq7KbeSrdYyUKCX7I2a9144XEtciIxYvGSGL7lSpHJVy40MkH5n+9OnRDHsXxihILwAfl+ZqILjZUz4YuP/T1G1s6G86rMAYOO
- m6xxGUQm
- qLwJ/lRvD0RYTZ5zHkrxWMiyqL+rkMrf55SgYWup7C2+nLi06vGsg7vajQeh5RpYZtBxt3lGr111AXGnX73fZ43XoKDUTFv8y229/lVgB/CI9H0W7UyRMBgsheqQIeBRqf6vm0WMLqZAoKbn0s6bLBLIn/Ajpr76NAhO6c9hfXrpGiyyE0XKrZtRwTf37iSuKOxI6Vmd0h1tYpkAvyMGoW/gEhISzBQNjb2E6s8DG7pZh6iJG9Z/deq/XQuO62Sadd8HjT1hcQMGmIIpGOeoGYIymCGIFfyUlmxVlc4KihMerDVOx62/S7O1ELtnzApb9aL5piJ1QdZvdndeFJNvs4TUVMcWSHqAsYQAUO330qbfljglSzRnjirSiELweMHtwqsguNSY9xTcKAbY=
+X-HE-Tag: 1754655892-53990
+X-HE-Meta: U2FsdGVkX1++hMCBSVEVE/jg72n5on71l3kodyROdDTX9REK1tP0FpLbbTi5q/5p9sfyVnVloF1S0AYNtV6r9AkaqmD572HqMnSVLerb0QxbO68cXxGMJ8FtAJqB/kyIK5McN8Anv7LtcOsJ5ITj9+3u7toKi4ddCRg09n75ejvMpE8VwhaSUxyCZLOXR+Ha8RiZ0dzO9lmkzUD/tq2XnBXy1OD6Y59H+64MQGu9Jg84/1CuVsAQXG3ajPetuwxHZ6Zr+dyQVN6QMHRwBlcJVO8trwAkNFS5A9xvFtXqX8fsAHpa5LSDndSIr/HAyUiaV3d4WOgQ+gTmqCLXibwQFadiGozSaLaas4mLaJKjAi50CmPkerenSB716wSsWD4JPBilQK73j2JTaTkgbGP1eicnTeGpIZkzVLXyJkcaPyPwYXj1qcV3occ9W6ExC7qCuldbduMIozBPXWKaJrfbxWYy/8oMF5EqcI4HaU6rgQ7nhrFxjzllZkvNrS9tSjd1SRXcpWLjiFeOUKjFIRdofgigFB89uDaEE88L8D89K4iVuAFL4ob1jNmvJmd1zVcyKPxk8ROCRJ/6itDi+U3S1giPvWOGbJW+sjYBGAmC5tfS0OCHwlTA6fq87SOtNPS1SV0OqcOFoK4QQPL3JGJsk2ia0WLgIi7w/O/4CvhtnYJjAATU9wi+Qz1Uz1xgKLq5AiPDmwANPf7RIh1aZOgCr8AjKqfhfVixyaYrX5/fxxtRB/ev0aubeaTDOQ/xD983Cf9vTeXR/P4hD90AAATpFO01hf3off0BqnXm6kFJy4VtZj1fWw0xVC+iqCDELtgbVGRYA+5gSFBbMLAdyitB4fBdHQ1mcdQtXZm8S+3U2gGS1iR0NSkIOzpOnlGZUJzItk1jMTYVYOHRmsC6Jsf+n/JYQ+6I3tFQA1uS8xEozN7A36SJcVM2kgWR1tlRllziZ3x3SnQKuVsg6OWmWTN
+ Oz9mRLJO
+ thsJ1mXlTzjlQlji4mcFVxu9ybmm3cCoCSLLR5Hw8eZ5TH4o5J9ASxgntpzgG/OQVZyoyMcFbKrS8agpfPDlwtNN6v2VliZJlzTCADQ5sy+tTZVwH//QXms4JqZB9p9SnN7rgVq3hjyCQGgbGIefB4rabjAAkBWDMHDsyQO7Z1s+LZPOfgf+FrKauwGfWANnj06eczSrld58XmIzLXPuqVVNF8tpJWS81o10HPtpTKjwdXWXRLRbdcMHqP/Aa7obxDNRNyP4EBFDu0L7gNmXdRNqqfJSxm+cmNwLsMVbqBz7dUj3++ztYGrQ/dMF3vY2RfSr7aMKzITR81F+/7H3868HSm9S7Z2pAYsdC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -154,36 +115,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
+On Fri, Aug 08 2025, David Hildenbrand wrote:
 
-Replace the direct usage of printk(KERN_DEBUG ...) with pr_debug(...) to
-align with the consistent `pr_*` API usage within the file.
+> On 07.08.25 03:44, Pasha Tatashin wrote:
+>> This series introduces the LUO, a kernel subsystem designed to
+>> facilitate live kernel updates with minimal downtime,
+>> particularly in cloud delplyoments aiming to update without fully
+>> disrupting running virtual machines.
+>> This series builds upon KHO framework by adding programmatic
+>> control over KHO's lifecycle and leveraging KHO for persisting LUO's
+>> own metadata across the kexec boundary. The git branch for this series
+>> can be found at:
+>> https://github.com/googleprodkernel/linux-liveupdate/tree/luo/v3
+>> Changelog from v2:
+>> - Addressed comments from Mike Rapoport and Jason Gunthorpe
+>> - Only one user agent (LiveupdateD) can open /dev/liveupdate
+>> - Release all preserved resources if /dev/liveupdate closes
+>>    before reboot.
+>> - With the above changes, sessions are not needed, and should be
+>>    maintained by the user-agent itself, so removed support for
+>>    sessions.
+>> - Added support for changing per-FD state (i.e. some FDs can be
+>>    prepared or finished before the global transition.
+>> - All IOCTLs now follow iommufd/fwctl extendable design.
+>> - Replaced locks with guards
+>> - Added a callback for registered subsystems to be notified
+>>    during boot: ops->boot().
+>> - Removed args from callbacks, instead use container_of() to
+>>    carry context specific data (see luo_selftests.c for example).
+>> - removed patches for luolib, they are going to be introduced in
+>>    a separate repository.
+>> What is Live Update?
+>> Live Update is a kexec based reboot process where selected kernel
+>> resources (memory, file descriptors, and eventually devices) are kept
+>> operational or their state preserved across a kernel transition. For
+>> certain resources, DMA and interrupt activity might continue with
+>> minimal interruption during the kernel reboot.
+>> LUO provides a framework for coordinating live updates. It features:
+>> State Machine: Manages the live update process through states:
+>> NORMAL, PREPARED, FROZEN, UPDATED.
+>> KHO Integration:
+>> LUO programmatically drives KHO's finalization and abort sequences.
+>> KHO's debugfs interface is now optional configured via
+>> CONFIG_KEXEC_HANDOVER_DEBUG.
+>> LUO preserves its own metadata via KHO's kho_add_subtree and
+>> kho_preserve_phys() mechanisms.
+>> Subsystem Participation: A callback API liveupdate_register_subsystem()
+>> allows kernel subsystems (e.g., KVM, IOMMU, VFIO, PCI) to register
+>> handlers for LUO events (PREPARE, FREEZE, FINISH, CANCEL) and persist a
+>> u64 payload via the LUO FDT.
+>> File Descriptor Preservation: Infrastructure
+>> liveupdate_register_filesystem, luo_register_file, luo_retrieve_file to
+>> allow specific types of file descriptors (e.g., memfd, vfio) to be
+>> preserved and restored.
+>> Handlers for specific file types can be registered to manage their
+>> preservation and restoration, storing a u64 payload in the LUO FDT.
+>> User-space Interface:
+>> ioctl (/dev/liveupdate): The primary control interface for
+>> triggering LUO state transitions (prepare, freeze, finish, cancel)
+>> and managing the preservation/restoration of file descriptors.
+>> Access requires CAP_SYS_ADMIN.
+>> sysfs (/sys/kernel/liveupdate/state): A read-only interface for
+>> monitoring the current LUO state. This allows userspace services to
+>> track progress and coordinate actions.
+>> Selftests: Includes kernel-side hooks and userspace selftests to
+>> verify core LUO functionality, particularly subsystem registration and
+>> basic state transitions.
+>> LUO State Machine and Events:
+>> NORMAL:   Default operational state.
+>> PREPARED: Initial preparation complete after LIVEUPDATE_PREPARE
+>>            event. Subsystems have saved initial state.
+>> FROZEN:   Final "blackout window" state after LIVEUPDATE_FREEZE
+>>            event, just before kexec. Workloads must be suspended.
+>> UPDATED:  Next kernel has booted via live update. Awaiting restoration
+>>            and LIVEUPDATE_FINISH.
+>> Events:
+>> LIVEUPDATE_PREPARE: Prepare for reboot, serialize state.
+>> LIVEUPDATE_FREEZE:  Final opportunity to save state before kexec.
+>> LIVEUPDATE_FINISH:  Post-reboot cleanup in the next kernel.
+>> LIVEUPDATE_CANCEL:  Abort prepare or freeze, revert changes.
+>> v2:
+>> https://lore.kernel.org/all/20250723144649.1696299-1-pasha.tatashin@soleen.com
+>> v1: https://lore.kernel.org/all/20250625231838.1897085-1-pasha.tatashin@soleen.com
+>> RFC v2: https://lore.kernel.org/all/20250515182322.117840-1-pasha.tatashin@soleen.com
+>> RFC v1: https://lore.kernel.org/all/20250320024011.2995837-1-pasha.tatashin@soleen.com
+>> Changyuan Lyu (1):
+>>    kho: add interfaces to unpreserve folios and physical memory ranges
+>> Mike Rapoport (Microsoft) (1):
+>>    kho: drop notifiers
+>> Pasha Tatashin (23):
+>>    kho: init new_physxa->phys_bits to fix lockdep
+>>    kho: mm: Don't allow deferred struct page with KHO
+>>    kho: warn if KHO is disabled due to an error
+>>    kho: allow to drive kho from within kernel
+>>    kho: make debugfs interface optional
+>>    kho: don't unpreserve memory during abort
+>>    liveupdate: kho: move to kernel/liveupdate
+>>    liveupdate: luo_core: luo_ioctl: Live Update Orchestrator
+>>    liveupdate: luo_core: integrate with KHO
+>>    liveupdate: luo_subsystems: add subsystem registration
+>>    liveupdate: luo_subsystems: implement subsystem callbacks
+>>    liveupdate: luo_files: add infrastructure for FDs
+>>    liveupdate: luo_files: implement file systems callbacks
+>>    liveupdate: luo_ioctl: add userpsace interface
+>>    liveupdate: luo_files: luo_ioctl: Unregister all FDs on device close
+>>    liveupdate: luo_files: luo_ioctl: Add ioctls for per-file state
+>>      management
+>>    liveupdate: luo_sysfs: add sysfs state monitoring
+>>    reboot: call liveupdate_reboot() before kexec
+>>    kho: move kho debugfs directory to liveupdate
+>>    liveupdate: add selftests for subsystems un/registration
+>>    selftests/liveupdate: add subsystem/state tests
+>>    docs: add luo documentation
+>>    MAINTAINERS: add liveupdate entry
+>> Pratyush Yadav (5):
+>>    mm: shmem: use SHMEM_F_* flags instead of VM_* flags
+>>    mm: shmem: allow freezing inode mapping
+>>    mm: shmem: export some functions to internal.h
+>>    luo: allow preserving memfd
+>>    docs: add documentation for memfd preservation via LUO
+>
+> It's not clear from the description why these mm shmem changes are buried in
+> this patch set. It's not even described above in the patch description.
 
-Signed-off-by: Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
----
- mm/numa_memblks.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Patches 26-30 describe the shmem changes in more detail, but you're
+right, it should be mentioned in the cover as well.
 
-diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
-index 541a99c4071a67e5b0ef66f4136dee268a880003..de626525a87c3ed54d31695e86f18c980c084558 100644
---- a/mm/numa_memblks.c
-+++ b/mm/numa_memblks.c
-@@ -76,7 +76,7 @@ static int __init numa_alloc_distance(void)
- 		for (j = 0; j < cnt; j++)
- 			numa_distance[i * cnt + j] = i == j ?
- 				LOCAL_DISTANCE : REMOTE_DISTANCE;
--	printk(KERN_DEBUG "NUMA: Initialized distance table, cnt=%d\n", cnt);
-+	pr_debug("NUMA: Initialized distance table, cnt=%d\n", cnt);
- 
- 	return 0;
- }
+The idea is, LUO is used to preserve kernel resources across kexec. One
+of the most fundamental resources the kernel has is memory. Since LUO
+does preservation based on file descriptors, memfd is the way to attach
+a FD to memory. So we went with memfd as the first user of LUO. memfd
+can be backed by shmem or hugetlb, but currently only shmem is
+supported. We do plan to support hugetlb as well in the future.
 
----
-base-commit: 479058002c32b77acac43e883b92174e22c4be2d
-change-id: 20250808-numa-dbg-62a8b2092c56
+The idea is to keep the serialization/live update logic out of the way
+of the main subsystem. So we decided to keep the logic out in a separate
+file.
 
-Best regards,
+>
+> I suggest sending that part out separately, so Hugh actually spots this.
+> (is he even CC'ed?)
+
+Hmm, none of the shmem maintainers are included. I wonder why. The
+patches do touch shmem.c and shmem_fs.h so the MAINTAINERS entry for
+"TMPFS (SHMEM FILESYSTEM)" should have been hit. My guess is that the
+shmem changes weren't part of the original RFC so perhaps Pasha forgot
+to update the To/Cc list since then?
+
+Either way, I've added Hugh and Baolin to this email. Hugh, Baolin, you
+can find the shmem related patches at [0][1][2][3][4].
+
+Pasha, can you please add them for later versions as well?
+
+And now that I think about it, I suppose patch 29 should also add
+memfd_luo.c under the SHMEM MAINTAINERS entry.
+
+[0] https://lore.kernel.org/lkml/20250807014442.3829950-27-pasha.tatashin@soleen.com/
+[1] https://lore.kernel.org/lkml/20250807014442.3829950-28-pasha.tatashin@soleen.com/
+[2] https://lore.kernel.org/lkml/20250807014442.3829950-29-pasha.tatashin@soleen.com/
+[3] https://lore.kernel.org/lkml/20250807014442.3829950-30-pasha.tatashin@soleen.com/
+[4] https://lore.kernel.org/lkml/20250807014442.3829950-31-pasha.tatashin@soleen.com/
+
 -- 
-Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
-
+Regards,
+Pratyush Yadav
 
