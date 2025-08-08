@@ -2,131 +2,112 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BFF27C87FDA
-	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 19:51:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C999C87FDA
+	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 19:52:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DEAAA6B0088; Fri,  8 Aug 2025 15:51:42 -0400 (EDT)
+	id 7354D6B008A; Fri,  8 Aug 2025 15:52:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC2786B0089; Fri,  8 Aug 2025 15:51:42 -0400 (EDT)
+	id 70D866B008C; Fri,  8 Aug 2025 15:52:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD7E76B008A; Fri,  8 Aug 2025 15:51:42 -0400 (EDT)
+	id 623686B0093; Fri,  8 Aug 2025 15:52:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AFEF66B0088
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 15:51:42 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4815A1369DC
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 19:51:42 +0000 (UTC)
-X-FDA: 83754635244.21.3593FCE
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 952A31C0011
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 19:51:40 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=kKoQ2f2e;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf21.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754682700; a=rsa-sha256;
-	cv=none;
-	b=YMlYPEE+WLf9Ha6KQxRmtlZabzQEz4JSh9OCsjNW+oz8278AHAgXFR08UoCs10+TAmlCNJ
-	WiYVEJEFVfKUBlIyFzoQVKQNZqscGtjhlS9evqNEaAt1wZTR5cK8CaMnSEEYowdGJSoyyj
-	oihV/fA0xpF6d7PH/+sW9bCkkSq7XCc=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=kKoQ2f2e;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf21.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 45D1A6B008A
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 15:52:30 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E89A61A046F
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 19:52:29 +0000 (UTC)
+X-FDA: 83754637218.20.E57B348
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 0AD7A180006
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 19:52:27 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SmEZGEja;
+	spf=pass (imf16.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.175 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754682700;
+	s=arc-20220608; t=1754682748;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZI3NF4nmF87wkVHXd95sZzslTewp5Rg+7HCCf5M8kbU=;
-	b=ywcAh7Y+JAGoos1ng7Y9jQdle90lzwprcSxdVkDoh4Iyq8mYo41YDQgkZwmWtF2UJwQkgb
-	jzP1WOR11vcqAf/bv+yPpQ5moMnHlo8+wtgad7WdBPBTdhgOb58lfVe1qOPnJnjWlC6kiW
-	2LH7gB7mxd8kGQEhmh5o0qd1/LXvzC8=
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4b07d777d5bso27308001cf.2
-        for <linux-mm@kvack.org>; Fri, 08 Aug 2025 12:51:40 -0700 (PDT)
+	bh=TOksUUkmNUo1gJjXyzVJ9JNirYCmT1mcW6HEbUxRrvk=;
+	b=EBGn5Yx+Y9+VFoFlU3CUcllQlVpk/sIkCmOYtl3VvWW+kvNjUqmWbk146Mxq63QCv2btdV
+	CP0I/3NAnB1AV75DKvpypYy3gG5mDLia/bi34whu22mznAd2MVbf9mcO/TcY7dYboPgUrc
+	GONwWqf2bjRghyVq48EtAdHWjzGnVq8=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SmEZGEja;
+	spf=pass (imf16.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.175 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754682748; a=rsa-sha256;
+	cv=none;
+	b=8FxYBFUtPlJmw02zHWVwJknlDJe0tRSrwpJBfWcHS+BarkqXoKqkL+fSMUfV6gBCQjJpsX
+	PqDhXHXhBPoqFyLcZfbhuqZfppFIJ25GH97vzwEr2rHXnYQHcz7wwuIuSJUJ6bWjh+WeBd
+	FmGMadudEh4Xn+vqZtcOhNffULj7joQ=
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-3322d10e29dso20073181fa.0
+        for <linux-mm@kvack.org>; Fri, 08 Aug 2025 12:52:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1754682699; x=1755287499; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZI3NF4nmF87wkVHXd95sZzslTewp5Rg+7HCCf5M8kbU=;
-        b=kKoQ2f2elyiBQO2hcd8/0y6Oxqt7eX4pcVlFH8xTNCuf8My94gOhxFKe0AmbS6bZTb
-         spq3z2QjACkSMfJf1Cku7CMlWHxr/hzt7L0pRiEzHLMOBRP8uQriUQd6HtF35R6mqcew
-         kBFR3/pAmDLi2yMwMO41QeRuJ0ccr8p665LGGj0LxOV4QvF6qhMct8WONln/kd6CmPRo
-         TwS2QEkpfR5SglTm/8l59D+ZCCLOWjZvWo4AjM2ZK5BjPJOoZ+XMTvwbrlkeAAMCh0uF
-         REfKkT/BogTBFHpGnWzUNZ73tm8g2nY3lH3LYS0iaqiucvzEPAiu44CsnViocKqR5xN9
-         2Djw==
+        d=gmail.com; s=20230601; t=1754682746; x=1755287546; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TOksUUkmNUo1gJjXyzVJ9JNirYCmT1mcW6HEbUxRrvk=;
+        b=SmEZGEjan1OirgWuU25In8WTX/NfshBTHNQwHPMwKg7Qb/BSojdR5lBPUOsv1qsqi9
+         gQ01ii+qPpjuVCojmjvDTneE2lPjvuPs81kIenE92GSHae7eOKwkw4tLZEOJP5X6rXXC
+         ECtsn0J3FAcE69t/w1SZWoMV+dUFiFvhW+wfPJMa2Y1tDcj+l0gSkZe+pY8kOuiqtKBS
+         zOABogvuKMdjMsj3cF9uH/tPFasFPQz0JLqzRrtz0NA+ITe+0nZ5oHfzE41bY/jlo8KB
+         rdq+CFfIHGUQOb4/NUaxsRFJOHD6rKK5HCcuZxU0D2Jq1lLyrhXMV1YiLU50uDszeloV
+         FzIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754682699; x=1755287499;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZI3NF4nmF87wkVHXd95sZzslTewp5Rg+7HCCf5M8kbU=;
-        b=s6HUEYZQdT7R691E4Q5FPcCckz65nVMmiE2rUXtL3RRi4KaTCKOsU9JFZmjKh7+px/
-         P4RXCJlii3B/xJ4HSg76Cnz2iBDtOq5e29b+j9F36r4qBNHsy/zPQZLJitWXlfoSQ13s
-         My25yghINpK4YAzLWbbzCRRXUiA21waIUGSIrtmSWK/tDqfHmnczjtcOCRastmATgh4p
-         UgkVwL+qlAGxi9gKVENFGAFMiED+Jxz+BPyJuRx4O0FG9zQRZjLkiy9WdhR6CFClO50n
-         JUFMS//Qgf2ew4yuulFBz+4XmmfG8/AbSdfdTclO3eSUgFNRUeTQb3vKHKEIV3CejmjS
-         Yj0A==
-X-Forwarded-Encrypted: i=1; AJvYcCUDqEN6/DieYN1vgjCE0ho+aOpN6LgKXc0eG7Bh/mYCbapIG2iBNPe35y6BPr8KF9vBY/pQhZDdqw==@kvack.org
-X-Gm-Message-State: AOJu0Yw0a3xazdcAR0+awhR5F1rMiZawI6HC7IQU6kB40mjws7e2g7LJ
-	4d8MBGlUVM9FbCrwvjJliUNPiDNLPoPlKgAWcdMu9PhUmsmtFDL+hlBbujRvmJOdybdUxaaFLAJ
-	249CUDD96HZrql7ST958EGVRSrYmNFBKirz/3UDp80w==
-X-Gm-Gg: ASbGncuz4sWJd+zbFk6g++n7Au5arTaP79gwI6RKUw6HibcMJfWtFsVZ1d4XLuU77/R
-	f9cgqaqDR7d3IXvtOo6rwCBkxdprNtotVqtvweG+UL4hzRup/zoxRSuzoAslb/3ZcGmllgc3SyJ
-	b4SmVcWWEVUq5DkBkHm8jNhEF8PsnhKZHWIWwb4RV2pzh5n6MvcAt9nULinbxRK58FgqpdyrnoN
-	exQ
-X-Google-Smtp-Source: AGHT+IHCcrYg7/jG4VG+Cw86KyymKHrjmDEsAzQfWB1gMcCPUUW3z00Eo/TfCPxNGcOawpm+qrN8GOrYgzTiH++NeZ4=
-X-Received: by 2002:ac8:58d1:0:b0:4b0:82ee:f732 with SMTP id
- d75a77b69052e-4b0aee3b087mr66564781cf.53.1754682699519; Fri, 08 Aug 2025
- 12:51:39 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1754682746; x=1755287546;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TOksUUkmNUo1gJjXyzVJ9JNirYCmT1mcW6HEbUxRrvk=;
+        b=KgLf+PmJ6CUr/zR4+S7KaaJcfy5XqnUu79Sne0Kx7mUk9MPfdCg/UzsnhAHitOS7YM
+         r8d2GlbYCakEDnC4/bwXwzk168KSPX5KHxaXf+vnOxAoCZKNB4a8PjeOeLcy/t2piANx
+         +qIPr7nGIE7tgqWYhNvFUkXworge0tD0jmivTNdHS9YmKOFMPzczwvpniFfi1F3pWmmd
+         RTHN6yWDmTAcnhX887xYrX928u7KSwKNLu+h3dvEzyuWm65t7nMa+tSr9kjpR6vrGdME
+         Ot/DSWh6tArggJlLwb1u8ZBLFLWCRy27w28FoUzclyFl7/rAaycuvGqbBfDlUaVRKtI8
+         CDdA==
+X-Forwarded-Encrypted: i=1; AJvYcCXUpoNzPHqKs97CnD3SVlmrj1vhpIV7+w0/h1Mpq6TXIDXggexZ8Lmyku2zpW6+Zd6s08ArYUNlqQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw8BCgZurkCRCkgrtfhUD4VgiHj6hVcTiCQiFKNc6Ze3UaFWtFb
+	53nV0AUxbt9arHzaP8nt4WUBq5XCVfuLcxyA300jUi7jQr2fC6kw7/ylwZvKvdjr0f8XH6616ci
+	/3yvEoVe8mJpTyPmj1fvLjE5JGK+brvE=
+X-Gm-Gg: ASbGncsup363Y9KOn7ZLXQfIww+txIKh5ICwhddUGK28Tqw9dbXzIwKu3+a4QyOt18E
+	ez4wMPrKHniZJMmGbtBolPvIbScW1ZxL6QTx6rDmdTeStE7c+pf0yLxCxL5cJXVkHr9g0SQxoxJ
+	nzmtWQOML68NOH3f8eYA8Bbvm17XU3lC+1g8ZOOFvZPvczJycmXX5nprvx9iJzgvSHEeIvCvXn8
+	LUxAUQ=
+X-Google-Smtp-Source: AGHT+IHJmhdxrLLs3Pqi9sJOtvva6r1zJo7sfa30BJij0hWkFOlPr3jdMn4zGmXgBA8eCsIvOKwFBRQ4mJSUnJTY95E=
+X-Received: by 2002:a2e:a99e:0:b0:332:3a1c:beca with SMTP id
+ 38308e7fff4ca-333a2144a1amr10160591fa.7.1754682745742; Fri, 08 Aug 2025
+ 12:52:25 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
- <20250807014442.3829950-2-pasha.tatashin@soleen.com> <mafs0o6sqavkx.fsf@kernel.org>
- <mafs0bjoqav4j.fsf@kernel.org> <CA+CK2bBoMNEfyFKgvKR0JvECpZrGKP1mEbC_fo8SqystEBAQUA@mail.gmail.com>
- <20250808120616.40842e9a9fdc056c9eb74123@linux-foundation.org>
-In-Reply-To: <20250808120616.40842e9a9fdc056c9eb74123@linux-foundation.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Fri, 8 Aug 2025 19:51:01 +0000
-X-Gm-Features: Ac12FXzwr7BB3_YD7FWm0iRwopXjM6LILZ73ll6nomRu2PpALziQgUA6db3Oe8A
-Message-ID: <CA+CK2bCVziiUZzdGaEabmPSB4Dq41QZe7gVxtgwy4pWmpo=D_w@mail.gmail.com>
-Subject: Re: [PATCH v3 01/30] kho: init new_physxa->phys_bits to fix lockdep
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Pratyush Yadav <pratyush@kernel.org>, jasonmiu@google.com, graf@amazon.com, 
-	changyuanl@google.com, rppt@kernel.org, dmatlack@google.com, 
-	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org, 
-	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, ojeda@kernel.org, 
-	aliceryhl@google.com, masahiroy@kernel.org, tj@kernel.org, 
-	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev, 
-	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com, 
-	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org, 
-	dan.j.williams@intel.com, david@redhat.com, joel.granados@kernel.org, 
-	rostedt@goodmis.org, anna.schumaker@oracle.com, song@kernel.org, 
-	zhangguopeng@kylinos.cn, linux@weissschuh.net, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-mm@kvack.org, gregkh@linuxfoundation.org, 
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, rafael@kernel.org, 
-	dakr@kernel.org, bartosz.golaszewski@linaro.org, cw00.choi@samsung.com, 
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com, Jonathan.Cameron@huawei.com, 
-	quic_zijuhu@quicinc.com, aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, lennart@poettering.net, brauner@kernel.org, 
-	linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, saeedm@nvidia.com, 
-	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, leonro@nvidia.com, 
-	witu@nvidia.com
+References: <20250808-swap-scan-list-v2-1-d50e4758ecee@kernel.org>
+In-Reply-To: <20250808-swap-scan-list-v2-1-d50e4758ecee@kernel.org>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Sat, 9 Aug 2025 03:51:48 +0800
+X-Gm-Features: Ac12FXyUrPb8BcGkWY_t-4KAtxH6S2b_tPnxlwBGo-VQL9EFvWOu6cwFLsZK38s
+Message-ID: <CAMgjq7DnniGUdpQQA0YF+LuMuL9+FCLQJP2Q04G_Hsd1sztv9A@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/swapfile.c: introduce function alloc_swap_scan_list()
+To: Chris Li <chrisl@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	"Huang, Ying" <ying.huang@linux.alibaba.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 952A31C0011
-X-Stat-Signature: q69kdfkrd56tynisp7obbp7sq6j1g9f4
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1754682700-390175
-X-HE-Meta: U2FsdGVkX1+iUk8HjMEAH72pn1KSBKdTKzXCoq0gXet/qVFrJgbFXZ8lZFRNqgm9sslk+mRfvjbL7eBsb9sO6Ree80F67JzKCv7QfBNW1N8FaSGN8xnaXQsx//DmaRtvLtqqA7wq26z693NWs8ZsNX91xADb6NgfRyWL2RkQH8yc3e+jtbDOTqzHjQ650Eycnry6agLXice+RvobdfWUEN3SPBRdX4++IRUMO//u8IVPW2WR49IAxMdFjTFcD3/undNVdU2acqbJAeNk/JfyfBTg3pLVLXPifgXLCfRAOlZ2MvLs/+aLB/XFLiNRLr/splDZmblk9+Coq8bjBI6mL0hx2k2le2yJWXjCn+242Bq7VBqShQe1A8TnMNUm1dG7sucLmjdqh0H7FofPqet2Idsft6ZaAPlJec9pU0JthI+hj7+ed3Sf9uxQeTQQpFie3Qhd9DEEp4K1/rn2WrA6wqL3ZIgfHpgI5eQUjCIY+N6wkOogdpL3PQyjax0B472Y2+D8Ii/vfUIuY+sjgWHTOJP0+yPsMARZExyeOOfh04qluN7nZ9Z1+znATrZXElnky/w/WoUHlEXgn8oY3IuYXza3meANGurmiSWX3Qt8E0jscqAM5lEN6hQRI0665/zUM4fxpL3ql1zSLGeCyfTNdAE5u+kE3Ogl6XiYKMYqhxFIBsCf6FLu5u+eMJhZp7uX854eQzLVkPZzW7v/QOpZYy6yL1Bae66h4+AsDCNyffhPewWhFNMZwzM5eZZGi34GES5vAAMkzqFwllWoUwiLCWJIgOl9UbZzahtSft6y52n27CQLfO/iTmFqkODHw42luu6SK5wyPOvcTprvE1XUM44v+vQgL40k0yni5jAkc8KKxCyuyw+V/xaY2jfF7Bw7VGuMNjNoRldxQA1+Q2QNG+meg3r2TuMih6QCHEMyrKWaPXMPRlNmqYcrDeejFbHfuULx91oJCFmb6XWDbsT
- DzDNV0c0
- oU5nwYnEECtTM8uz8tEBUG+Crwwxmzqc28mPzN8XF2otXqDAjEGo9dayGQA==
+X-Rspamd-Queue-Id: 0AD7A180006
+X-Rspamd-Server: rspam06
+X-Stat-Signature: gkgtn9end4ax478os1c8fbj4qtg4crmj
+X-HE-Tag: 1754682747-858810
+X-HE-Meta: U2FsdGVkX1/JLoDui25R48wNyhf3y2kijNhg29wYeA9Fl9UWxJdgLAxii4UqyST6I9OXAe9+2VYqhYG7IRT+lqTIIH6j1NbjOzFtE7T8F9EOtnlf6UWpFdlygAqTKQnt1HPQMPrxTMNLBP+Sa7Y+6zOHI69uus3ZWq0CzXeC1Df3hmzJ+s0Jio543qvPE+HLOQDrpPeMvd3OmbdqnXhG+bJ4kFmsuj2PwOMpd6A7mCrPmJp2GehBo2N/GA9Eh3RcFDWNv23SN4zNK1nDZtsVn1q+9ScEjCwYs1KBudHAT+Qg9rFfEPpEUzsFMCcoBml8oa8Hy7s0WH2JvPz9T9wHIF78vzTimS4sTVx2b8O7hglCgrLfen8c0gnBpuI49iToIuLnKh7xvDsaYZAI9V/01uOrzVQIpsZdRT60a3jCQSCdvFeDfF0Kyc6/XEHZz3OugO+6jZiD9qTFti5emxa0POcdA4XL2anMInngWTQw5N2Md+ixZR+6h2ZIKXrlqmbzXsA2Wmm6d1GJgF1kNHZsqfz5L5KI1nDzmLNuJgWaYRi3UBmtPxuAt6JGqfJF5BbLYcBFy+2bGUcdX+EAgLuGQ+k+ofNUJ2UhQDIVTmdi0P63ikxXBhSOB7zyjDrDSQ8nkj9dWrCI+Rp+u72gMd+L90zR8j3cmVSVgrRKfgU8boUO67LPwIAwzgOW6X+mKnYJqzNXQB2s7qStHt0gthINIOETnJoAK55PU/2qMg+aaOHMmOi7r1BwaMlR+va06WBEXpZP+YqCVRdIKX+sgRlAfpGK39FquSpUCcUMyszxAGzdE3PhrpZIoMOnLiQVD8XZZZH/Zb3Jj49EbDrx872JbSOCCH0r0mBxFpU2mEQaRzEjNC+cA8xcC69D5fcRdmDRVYihAzTpt5DfilXpVDNHR61sSO0O8WOEaLlg0vGu6GgJtSYjCDF+GY51rd7br/9B5S/EFGPtR9pdelj+xmV
+ g+6xqKt4
+ Zwlkl/H/OfYbZ/C/75KfUTRehyjw0sC266sz5k1veUQdBcT2D3uhSGyrTyhl/Z4rGpbUyfUXMxemM0MZFat4Xf+xc6GXx3YvIWO+9JExRJtK7fy+ipy1F9mxxCiVXB5clxj+XW9WTYNDgvncFasrCIx9Lt49YZRUNbgcVAdo7k2UNWwqPLS87+WpmpssaQh0uM3I3aj27Nue3Z7kFTBn7CWgpi4hfWi35Ml18K2DxYf2Vz4Sj/nPNqMPKudUHq6ez4fEdPw6HDu8dM1ycflMnF+nRAAkFOdEe6/Umi4gO0v1rQcMwgjYIoZ9Q+ic5VDQlelZhWxYnLI+dqNP3TkkxC/72PBhJMtw0lQm/0xjibBVzSKShyXXXktaE8lYrDmxD9D4HqtAUAmqIR1d7tTslPs6eJZSUoK01blyJPWru0n6bTw42gLEntqbTxj4TFwFLWtFd
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,21 +116,205 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > Thanks Pratyush, I will make this simplification change if Andrew does
-> > not take this patch in before the next revision.
-> >
+On Fri, Aug 8, 2025 at 3:48=E2=80=AFPM Chris Li <chrisl@kernel.org> wrote:
 >
-> Yes please on the simplification - the original has an irritating
-> amount of kinda duplication of things from other places.  Perhaps a bit
-> of a redo of these functions would clean things up.  But later.
+> This the alloc_swap_scan_list() will scan the whole list or the first
+> cluster.
+
+Hi Chris,
+
+This sentence reads strange to me, but English is not my native
+language so I'm not very sure about it.
+
 >
-> Can we please have this as a standalone hotfix patch with a cc:stable?
-> As Pratyush helpfully suggested in
-> https://lkml.kernel.org/r/mafs0sei2aw80.fsf@kernel.org.
+> This reduces the repeat patterns of isolating a cluster then scanning
+> that cluster. As a result, cluster_alloc_swap_entry() is shorter and shal=
+lower.
+>
+> No functional change.
+>
+> Signed-off-by: Chris Li <chrisl@kernel.org>
+> ---
+> This patch goes on top of Kairui's swap improve cluster scan series:
+> https://lore.kernel.org/linux-mm/20250806161748.76651-1-ryncsn@gmail.com/
+> ---
+> Changes in v2:
+> - Adjust change base on Andrew's feedback on int type and break out of
+>   loop.
+> - Link to v1: https://lore.kernel.org/r/20250806-swap-scan-list-v1-1-a5fe=
+2d9340a2@kernel.org
+> ---
+>  mm/swapfile.c | 86 ++++++++++++++++++++++++++++++++---------------------=
+------
+>  1 file changed, 47 insertions(+), 39 deletions(-)
+>
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 4a0cf4fb348d..f26678d68874 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -820,6 +820,29 @@ static unsigned int alloc_swap_scan_cluster(struct s=
+wap_info_struct *si,
+>         return found;
+>  }
+>
+> +static unsigned int alloc_swap_scan_list(struct swap_info_struct *si,
+> +                                        struct list_head *list,
+> +                                        unsigned int order,
+> +                                        unsigned char usage,
+> +                                        bool scan_all)
+> +{
+> +       unsigned int found =3D SWAP_ENTRY_INVALID;
+> +
+> +       do {
+> +               struct swap_cluster_info *ci =3D isolate_lock_cluster(si,=
+ list);
+> +               unsigned long offset;
+> +
+> +               if (!ci)
+> +                       break;
+> +               offset =3D cluster_offset(si, ci);
+> +               found =3D alloc_swap_scan_cluster(si, ci, offset, order, =
+usage);
+> +               if (found)
+> +                       break;
+> +       } while (scan_all);
+> +
+> +       return found;
+> +}
+> +
+>  static void swap_reclaim_full_clusters(struct swap_info_struct *si, bool=
+ force)
+>  {
+>         long to_scan =3D 1;
+> @@ -913,32 +936,24 @@ static unsigned long cluster_alloc_swap_entry(struc=
+t swap_info_struct *si, int o
+>          * to spread out the writes.
+>          */
+>         if (si->flags & SWP_PAGE_DISCARD) {
+> -               ci =3D isolate_lock_cluster(si, &si->free_clusters);
+> -               if (ci) {
+> -                       found =3D alloc_swap_scan_cluster(si, ci, cluster=
+_offset(si, ci),
+> -                                                       order, usage);
+> -                       if (found)
+> -                               goto done;
+> -               }
+> +               found =3D alloc_swap_scan_list(si, &si->free_clusters, or=
+der, usage,
+> +                                            false);
+> +               if (found)
+> +                       goto done;
+>         }
+>
+>         if (order < PMD_ORDER) {
+> -               while ((ci =3D isolate_lock_cluster(si, &si->nonfull_clus=
+ters[order]))) {
+> -                       found =3D alloc_swap_scan_cluster(si, ci, cluster=
+_offset(si, ci),
+> -                                                       order, usage);
+> -                       if (found)
+> -                               goto done;
+> -               }
+> +               found =3D alloc_swap_scan_list(si, &si->nonfull_clusters[=
+order],
+> +                                            order, usage, 0);
 
-I think we should take the first three patches as hotfixes.
+All other alloc_swap_scan_list calls use `false`/`true` but this one
+uses `0` for `scan_all`.
+And it should be `true`, right?
 
-Let me send them as a separate series in the next 15 minutes.
+> +               if (found)
+> +                       goto done;
+>         }
+>
+>         if (!(si->flags & SWP_PAGE_DISCARD)) {
+> -               ci =3D isolate_lock_cluster(si, &si->free_clusters);
+> -               if (ci) {
+> -                       found =3D alloc_swap_scan_cluster(si, ci, cluster=
+_offset(si, ci),
+> -                                                       order, usage);
+> -                       if (found)
+> -                               goto done;
+> -               }
+> +               found =3D alloc_swap_scan_list(si, &si->free_clusters, or=
+der, usage,
+> +                                            false);
+> +               if (found)
+> +                       goto done;
+>         }
+>
+>         /* Try reclaim full clusters if free and nonfull lists are draine=
+d */
+> @@ -952,13 +967,10 @@ static unsigned long cluster_alloc_swap_entry(struc=
+t swap_info_struct *si, int o
+>                  * failure is not critical. Scanning one cluster still
+>                  * keeps the list rotated and reclaimed (for HAS_CACHE).
+>                  */
+> -               ci =3D isolate_lock_cluster(si, &si->frag_clusters[order]=
+);
+> -               if (ci) {
+> -                       found =3D alloc_swap_scan_cluster(si, ci, cluster=
+_offset(si, ci),
+> -                                                       order, usage);
+> -                       if (found)
+> -                               goto done;
+> -               }
+> +               found =3D alloc_swap_scan_list(si, &si->frag_clusters[ord=
+er], order,
+> +                                            usage, true);
 
-Pasha
+And it should be `false` here.
+
+> +               if (found)
+> +                       goto done;
+>         }
+>
+>         /*
+> @@ -977,19 +989,15 @@ static unsigned long cluster_alloc_swap_entry(struc=
+t swap_info_struct *si, int o
+>                  * Clusters here have at least one usable slots and can't=
+ fail order 0
+>                  * allocation, but reclaim may drop si->lock and race wit=
+h another user.
+>                  */
+> -               while ((ci =3D isolate_lock_cluster(si, &si->frag_cluster=
+s[o]))) {
+> -                       found =3D alloc_swap_scan_cluster(si, ci, cluster=
+_offset(si, ci),
+> -                                                       0, usage);
+> -                       if (found)
+> -                               goto done;
+> -               }
+> +               found =3D alloc_swap_scan_list(si, &si->frag_clusters[o],
+> +                                            0, usage, true);
+> +               if (found)
+> +                       goto done;
+>
+> -               while ((ci =3D isolate_lock_cluster(si, &si->nonfull_clus=
+ters[o]))) {
+> -                       found =3D alloc_swap_scan_cluster(si, ci, cluster=
+_offset(si, ci),
+> -                                                       0, usage);
+> -                       if (found)
+> -                               goto done;
+> -               }
+> +               found =3D alloc_swap_scan_list(si, &si->nonfull_clusters[=
+o],
+> +                                            0, usage, true);
+> +               if (found)
+> +                       goto done;
+>         }
+>  done:
+>         if (!(si->flags & SWP_SOLIDSTATE))
+>
+> ---
+> base-commit: f89484324d5876ee10765fa61da0332899fa1a6a
+> change-id: 20250806-swap-scan-list-2b89e3424b0a
+>
+> Best regards,
+> --
+> Chris Li <chrisl@kernel.org>
+>
+
+This makes the code much cleaner, thanks!
 
