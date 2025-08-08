@@ -2,92 +2,118 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E451C87FD3
-	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 07:48:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EF14BC87FD3
+	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 07:52:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 26D8E6B0093; Fri,  8 Aug 2025 03:48:26 -0400 (EDT)
+	id 7C6D16B008C; Fri,  8 Aug 2025 03:52:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2177B6B0095; Fri,  8 Aug 2025 03:48:26 -0400 (EDT)
+	id 777726B0093; Fri,  8 Aug 2025 03:52:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1068B6B0096; Fri,  8 Aug 2025 03:48:26 -0400 (EDT)
+	id 666786B0096; Fri,  8 Aug 2025 03:52:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F03756B0093
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 03:48:25 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7B18F11775B
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 07:48:25 +0000 (UTC)
-X-FDA: 83752812570.22.4BE6F2A
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	by imf18.hostedemail.com (Postfix) with ESMTP id E209F1C000C
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 07:48:23 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DKmjlGP4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of chrisl@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754639303; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 52C3A6B008C
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 03:52:52 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2A949161621
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 07:52:52 +0000 (UTC)
+X-FDA: 83752823784.17.C8FC82A
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf04.hostedemail.com (Postfix) with ESMTP id C7B1440009
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 07:52:48 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	spf=pass (imf04.hostedemail.com: domain of zhangzihuan@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zhangzihuan@kylinos.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754639570; a=rsa-sha256;
 	cv=none;
-	b=UCyU7rcjfE0rdFvwJcB1DWW+uuS2iSS1ipoR48Ic7Q18rr2dXd2joDTrdOq0tv39HqdlQs
-	5Sa1r8b2LQgCqyK/qbG+sQx3Ku/c2qzmFebZvci+lNX+zlaQ97d3tb8H0+1jv7xCFM4pUW
-	SzugMNYmO7Ibch2JwWcKO1OjC66pxCo=
+	b=bj7h32lHGzAUJjIVIj8C7qjSNHafEVaBA88aw93wodZf3VOSeJ2cftQIT4b4d/gLd/vFNJ
+	FFYAUYSxxhjivo7Vfhe3Y0VrmCi7a+ykaMpU1wnZg5mLDCm0yyoDYd648Qfigy8aavL9Ok
+	gYNe+XFA7CHijjSozLOP9c1AGJB5u78=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DKmjlGP4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of chrisl@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+	imf04.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf04.hostedemail.com: domain of zhangzihuan@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zhangzihuan@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754639303;
+	s=arc-20220608; t=1754639570;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=hO8wXyP2SvDmKZlOFr7nvKpnoyrKp7m9+JT2eu+lX6s=;
-	b=GkQLUu8iMsMCPFkIcpjM9aO3NgLtiNlPWLgx3+USz/Z/8WHKTJs+DDRj3VIRnTYcHzfPCf
-	YdvsNsWjkIBUV+5ndYbdyF+UR0bE6PXLWvTzaFVkajMmGBdh/C7Wc+sUYkLrfjdtQErVNj
-	vVcpXERDuFDF0tTpHOVYls0qlhwUl7E=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 27DF6A55813;
-	Fri,  8 Aug 2025 07:48:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80CB1C4CEED;
-	Fri,  8 Aug 2025 07:48:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754639302;
-	bh=BZTS7frkKfJe2pCWHUR6QsakG7KU7hU/moSvHgaur8c=;
-	h=From:Date:Subject:To:Cc:From;
-	b=DKmjlGP4PMaY9KwqezPx/6JgMyFPINxmOPo89ZH3FEh8W2kzW9iHe5AE8IBbhHnwY
-	 LgjcDN1pRkJaKpEH+vpGOzfwgp+3Ei2UI6meqfVBY6sfLGH064+dS4RLxZjHF6J4Zt
-	 M9DnV38O61FK9gLNJnj5oSF3kzGs8/W/CGdH7B2DJIwM/QBBYDn5F/z4dqjp5E/17S
-	 p8HXM586tUa9DWMqV5Wsj97I1hMDZyi5XnMRVU1bhZfAbJiNFKK4lDZZQ0wp/U+upY
-	 1CKvQchEAlhY4KTIwEGb8AllGWjFbFIP54Ke7olLshkj14lcFBiBaY8ntGJ5Ajk+01
-	 dbWE2P3f08aog==
-From: Chris Li <chrisl@kernel.org>
-Date: Fri, 08 Aug 2025 00:48:19 -0700
-Subject: [PATCH v2] mm/swapfile.c: introduce function
- alloc_swap_scan_list()
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/2dZhq2Qy2sSATJbAU+7gVHKsPZccvnLlqFS5AqLg3s=;
+	b=hzTsPruy2Urfl+04m+ACHaHSxHzhb/1sSR7kb6oC8e0DLz5Pk/GEbCO//Xy650h1e3CuJZ
+	SijDmZtkrfewrSkipz+33PTi9tVcp8uS+IeFNpnf/5W+6JfpfD5o+No2a2ZrrLPfVN4QBt
+	hvIpiKzXI7HgEnoRa6ZB1s2WaQdOBjY=
+X-UUID: a8e010ba742c11f0b29709d653e92f7d-20250808
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:906a0f65-2426-4900-802a-89dc3ba00924,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:12be9df259196fe631b2eedfa1e50959,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
+	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
+	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 1,FCT|NGT
+X-CID-BAS: 1,FCT|NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: a8e010ba742c11f0b29709d653e92f7d-20250808
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 931304093; Fri, 08 Aug 2025 15:52:40 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id A013BE0000B0;
+	Fri,  8 Aug 2025 15:52:39 +0800 (CST)
+X-ns-mid: postfix-6895ACC7-490838455
+Received: from [172.25.120.24] (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 9AF52E01A759;
+	Fri,  8 Aug 2025 15:52:31 +0800 (CST)
+Message-ID: <ba9c23c4-cd95-4dba-9359-61565195d7be@kylinos.cn>
+Date: Fri, 8 Aug 2025 15:52:31 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250808-swap-scan-list-v2-1-d50e4758ecee@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAMKrlWgC/3WMQQ6CMBBFr0Jm7ZgyFAOuvIdhUWCAiaQlraka0
- rtb2bt8P/+9HQJ74QDXYgfPUYI4m4FOBQyLsTOjjJmBFNWqURcML7NhGIzFVcITqW9arjTpXhn
- I0uZ5kvcRvHeZl3xy/nP0Y/lb/6ZiiSWaemIa20orQ7cHe8vr2fkZupTSFxKlv9KtAAAA
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, 
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
- Barry Song <baohua@kernel.org>, 
- "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Chris Li <chrisl@kernel.org>
-X-Mailer: b4 0.13.0
-X-Stat-Signature: r6cago3txunsgramxe31gwru8t4zoqdm
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v1 0/9] freezer: Introduce freeze priority model to
+ address process dependency issues
+To: Michal Hocko <mhocko@suse.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+ Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+ len brown <len.brown@intel.com>, pavel machek <pavel@kernel.org>,
+ Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Nico Pache <npache@redhat.com>,
+ xu xin <xu.xin16@zte.com.cn>, wangfushuai <wangfushuai@baidu.com>,
+ Andrii Nakryiko <andrii@kernel.org>, Christian Brauner <brauner@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Jeff Layton <jlayton@kernel.org>,
+ Al Viro <viro@zeniv.linux.org.uk>, Adrian Ratiu
+ <adrian.ratiu@collabora.com>, linux-pm@vger.kernel.org, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250807121418.139765-1-zhangzihuan@kylinos.cn>
+ <aJSpTpB9_jijiO6m@tiehlicka>
+ <4c46250f-eb0f-4e12-8951-89431c195b46@kylinos.cn>
+ <aJWglTo1xpXXEqEM@tiehlicka>
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+In-Reply-To: <aJWglTo1xpXXEqEM@tiehlicka>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: wmmthjus4un8yczhdbyg1463ck9ywukb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E209F1C000C
+X-Rspamd-Queue-Id: C7B1440009
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1754639303-542276
-X-HE-Meta: U2FsdGVkX1+BdfaGWQrVLZt6erNQ86Z5lHWjKtH1AmV2X+ZyNoERXPCkrQ1hHWA5wBolSUp8iunYEaBRIOTuwW2C91x3WFHResah5lD7ZJwvo8VaSFRbIm80vQHYxi5Upit65n63hTrC/sw0/jJzvLk4Z2zYFLBdVA8le06fKBMG7DoIh4SIgcNC9iOyLDL8vs3NXmdY5jsFuqi1S1XSbHe00W2UkjNmuemaABii/l5C5t3SV97bDmNNI0dyTy5s59wGkwYnAYOqgaCOKe1s3tQcaJMvL0vA0kBsvm7Z6ufXQJoCfHM4FFsmlMd6lJ4GSFkoalCJ3rbCwi3TFY1ltlU/P0xMYluPjYt4LRblty3KceQX7TEo73emJDYa5KoAyOaHA7XsS8RtpLvDI4O1HVftzkc4j9wjzirzK8c1jluAvRiRpZitWcIHwkZ20fovE7eog5EWwkik6XzkvoG4rl8L67GbvtK4eQNKB2flrqKfRInXxg9olryjX8K3GsoK3oV3byhHz/qmF3P3ggJigv0HOO1PH9w0F6rHOA62ANemj+4f1vVvWiZTtPdpuij3TqFfYIEhqKHH+9B2L2qZJMtzrRWGr7nzWZElzsXxAI0D/vpiOSu26OK7q3vLCOdogRCAs+iP3tkICOfkx7jtsfn61nVgEkE2wUWGWZiwLwmyXQGmDG9qwYjhEJgWtN660l/RL8B+u67bM7vSnys+5xB8IqDhXJBV3s5CwFmi3mhyVBm7SC5BFGU8szbAnjteJ7BlKkGa/tJVi51LPzOEn3LHc5QjCG6Rc8mR6jpRu4aCsu8WLISW9hnSxAOEHKVgy5DxbU9b2eg4kEjO3UW8ij9tly08QyCOAIgRo7j0nFdjr8wm+am6mKMtCFCEg6y7QH+xYarP0VnzQf36nTz4EGiz7yEHHvOGebjFgGMiMddvFSYo+f0nt3b0mxT7uXTyVeBfXL/vNddKP1lTyjI
- bH9GfKWR
- yi6sYBl+bzjq60SpaIBCxHRZYwVA6+vcnd8qDnwz/PoqNGk7/X4Rg2dKFLphpG/URqGcH+oVqrMZ9WWNwthYHJI1lg4dALwwszFUr7IIopy9ywHqxzlxVRJKlzaJQI0+1N6xKHQ9bTcLoHiGWc+9Ny4PP0KFHOlcPNgJs8CQCirT/in3MO9ZChUSJk4U+pk+ck2CoUFtcx5TYBln0Hs13KL7CVaFhgY11XUOouPhw1CjzQcxRNKaa5/h4MtIWD+pgzvTlinwyoc46Vqrr6qFdiTpmeLHFAKpi++7M49lA7GtN+bTc8qczlDd8Fg==
+X-HE-Tag: 1754639568-695474
+X-HE-Meta: U2FsdGVkX18K7w+Bfg3xKelivk/Km5uvbHf1sx5ENZ8CpX93apWRl78mS0SdI4nRlIxg+UgDrGxQltU2JFkZeHT8IawJfw0xjshUXHxHHiRwdEpZiKYLxDLWGmbTapslDCzVV6eXVy4McHbHW31OBLd8kMbErk+dptE/PgRT4jxQ2MYCI5W9ra8G0oqdaMOZBm5x4ifonrItsZ8oAd3ShUWLSzNBSfdgKMI/WuA5vesS0U9YFfd0itvRomgh0R3Lmz5MZXb45zSITOHDBunnpO/DCQxS1sOaWyoYZvtQhEDPHdLtCSKs6RvzXU8dFesDCquOuWFLuXu9nS8huSJrCTt8s3E3cBpkrQsvkmcBlTkAmfLBd8xfPUcUtW5nLsGDPXM0nQb/DvIoB5dgU/BW2JivRexHZB+nC+d0FJs5ghaedQVaOg3P3uWeMHIytYKicXy1KhLk8x4Y/SP5s3Zd4Lx/VjkEcnAsYkmuFtTA2ldwsx0cw5zHASkD4zRjYOy0U/hGKduLUvBFbZCUZoBSRwfsrvDmedDJ8hZyELRHYcxENtZGVRB2P7saKUzCMUppzzR5YJCADI9sgCThs4tvCbrQFNr2m0VbiPFq7fDfd/U2V3nA1HlyqUZ9kCF/WNkWwpPepOdQDA/940xMV8T+PappiQcJnxiVUUchcb2T55iMbSfnXm8A9GlWdiNAXj0iYr29Xw5I2hpK8JjSb+KVk66d6V1CA7nKOqUnn437s4iYggTPPHDneu/lyz5/Z34DllcogDFk0AkIwblcMfNXdhBUa7ggRlyo8wzhN9C9kOyAWADnEYoU97P4JO/6XhS/61+ZQ3OrjQpbCUzPGVr4MKyTauHK5LUBoSLaD1EWz+O0icS95gDLf5Cyi++Yuen6U8jT9FIwWy/i5tHsfdonD0AB+uNx9WzebH6aElNmD9MM++HSqOl7upEzP6/uvRKEKddb3XSOdklU1/Cxn7d
+ gYxFJZ2E
+ n2pqgDlTgPiCt4tboljpIEx2Ptda5omAk3D3cobP8MjGUMnSCdg7xNcpgLpHJ0CfHZdV6amZ2VLg6a3323WyoFJKH+N+xAISbAET4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,159 +122,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This the alloc_swap_scan_list() will scan the whole list or the first
-cluster.
 
-This reduces the repeat patterns of isolating a cluster then scanning
-that cluster. As a result, cluster_alloc_swap_entry() is shorter and shallower.
+=E5=9C=A8 2025/8/8 15:00, Michal Hocko =E5=86=99=E9=81=93:
+> On Fri 08-08-25 09:13:30, Zihuan Zhang wrote:
+> [...]
+>> However, in practice, we=E2=80=99ve observed cases where tasks appear =
+stuck in
+>> uninterruptible sleep (D state) during the freeze phase=C2=A0 =E2=80=94=
+ and thus cannot
+>> respond to signals or enter the refrigerator. These tasks are technica=
+lly
+>> TASK_FREEZABLE, but due to the nature of their sleep state, they don=E2=
+=80=99t
+>> freeze promptly, and may require multiple retry rounds, or cause the e=
+ntire
+>> suspend to fail.
+> Right, but that is an inherent problem of the freezer implemenatation.
+> It is not really clear to me how priorities or layers improve on that.
+> Could you please elaborate on that?
 
-No functional change.
+Thanks for the follow-up.
 
-Signed-off-by: Chris Li <chrisl@kernel.org>
----
-This patch goes on top of Kairui's swap improve cluster scan series:
-https://lore.kernel.org/linux-mm/20250806161748.76651-1-ryncsn@gmail.com/
----
-Changes in v2:
-- Adjust change base on Andrew's feedback on int type and break out of
-  loop.
-- Link to v1: https://lore.kernel.org/r/20250806-swap-scan-list-v1-1-a5fe2d9340a2@kernel.org
----
- mm/swapfile.c | 86 ++++++++++++++++++++++++++++++++---------------------------
- 1 file changed, 47 insertions(+), 39 deletions(-)
+ From our observations, we=E2=80=99ve seen processes like Xorg that are i=
+n a=20
+normal state before freezing begins, but enter D state during the freeze=20
+window. Upon investigation,
 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 4a0cf4fb348d..f26678d68874 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -820,6 +820,29 @@ static unsigned int alloc_swap_scan_cluster(struct swap_info_struct *si,
- 	return found;
- }
- 
-+static unsigned int alloc_swap_scan_list(struct swap_info_struct *si,
-+					 struct list_head *list,
-+					 unsigned int order,
-+					 unsigned char usage,
-+					 bool scan_all)
-+{
-+	unsigned int found = SWAP_ENTRY_INVALID;
-+
-+	do {
-+		struct swap_cluster_info *ci = isolate_lock_cluster(si, list);
-+		unsigned long offset;
-+
-+		if (!ci)
-+			break;
-+		offset = cluster_offset(si, ci);
-+		found = alloc_swap_scan_cluster(si, ci, offset, order, usage);
-+		if (found)
-+			break;
-+	} while (scan_all);
-+
-+	return found;
-+}
-+
- static void swap_reclaim_full_clusters(struct swap_info_struct *si, bool force)
- {
- 	long to_scan = 1;
-@@ -913,32 +936,24 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si, int o
- 	 * to spread out the writes.
- 	 */
- 	if (si->flags & SWP_PAGE_DISCARD) {
--		ci = isolate_lock_cluster(si, &si->free_clusters);
--		if (ci) {
--			found = alloc_swap_scan_cluster(si, ci, cluster_offset(si, ci),
--							order, usage);
--			if (found)
--				goto done;
--		}
-+		found = alloc_swap_scan_list(si, &si->free_clusters, order, usage,
-+					     false);
-+		if (found)
-+			goto done;
- 	}
- 
- 	if (order < PMD_ORDER) {
--		while ((ci = isolate_lock_cluster(si, &si->nonfull_clusters[order]))) {
--			found = alloc_swap_scan_cluster(si, ci, cluster_offset(si, ci),
--							order, usage);
--			if (found)
--				goto done;
--		}
-+		found = alloc_swap_scan_list(si, &si->nonfull_clusters[order],
-+					     order, usage, 0);
-+		if (found)
-+			goto done;
- 	}
- 
- 	if (!(si->flags & SWP_PAGE_DISCARD)) {
--		ci = isolate_lock_cluster(si, &si->free_clusters);
--		if (ci) {
--			found = alloc_swap_scan_cluster(si, ci, cluster_offset(si, ci),
--							order, usage);
--			if (found)
--				goto done;
--		}
-+		found = alloc_swap_scan_list(si, &si->free_clusters, order, usage,
-+					     false);
-+		if (found)
-+			goto done;
- 	}
- 
- 	/* Try reclaim full clusters if free and nonfull lists are drained */
-@@ -952,13 +967,10 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si, int o
- 		 * failure is not critical. Scanning one cluster still
- 		 * keeps the list rotated and reclaimed (for HAS_CACHE).
- 		 */
--		ci = isolate_lock_cluster(si, &si->frag_clusters[order]);
--		if (ci) {
--			found = alloc_swap_scan_cluster(si, ci, cluster_offset(si, ci),
--							order, usage);
--			if (found)
--				goto done;
--		}
-+		found = alloc_swap_scan_list(si, &si->frag_clusters[order], order,
-+					     usage, true);
-+		if (found)
-+			goto done;
- 	}
- 
- 	/*
-@@ -977,19 +989,15 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si, int o
- 		 * Clusters here have at least one usable slots and can't fail order 0
- 		 * allocation, but reclaim may drop si->lock and race with another user.
- 		 */
--		while ((ci = isolate_lock_cluster(si, &si->frag_clusters[o]))) {
--			found = alloc_swap_scan_cluster(si, ci, cluster_offset(si, ci),
--							0, usage);
--			if (found)
--				goto done;
--		}
-+		found = alloc_swap_scan_list(si, &si->frag_clusters[o],
-+					     0, usage, true);
-+		if (found)
-+			goto done;
- 
--		while ((ci = isolate_lock_cluster(si, &si->nonfull_clusters[o]))) {
--			found = alloc_swap_scan_cluster(si, ci, cluster_offset(si, ci),
--							0, usage);
--			if (found)
--				goto done;
--		}
-+		found = alloc_swap_scan_list(si, &si->nonfull_clusters[o],
-+					     0, usage, true);
-+		if (found)
-+			goto done;
- 	}
- done:
- 	if (!(si->flags & SWP_SOLIDSTATE))
+we found that these processes often depend on other user processes=20
+(e.g., I/O helpers or system services), and when those dependencies are=20
+frozen first, the dependent process (like Xorg) gets stuck and can=E2=80=99=
+t be=20
+frozen itself.
 
----
-base-commit: f89484324d5876ee10765fa61da0332899fa1a6a
-change-id: 20250806-swap-scan-list-2b89e3424b0a
+This led us to treat such processes as =E2=80=9Chard to freeze=E2=80=9D t=
+asks =E2=80=94 not=20
+because they=E2=80=99re inherently unfreezable, but because they are more=
+ likely=20
+to become problematic if not frozen early enough.
 
-Best regards,
--- 
-Chris Li <chrisl@kernel.org>
+So our model works as follows:
+ =C2=A0 =C2=A0 =E2=80=A2=C2=A0 =C2=A0 By default, freezer tries to freeze=
+ all freezable tasks in=20
+each round.
+ =C2=A0 =C2=A0 =E2=80=A2=C2=A0 =C2=A0 With our approach, we only attempt =
+to freeze tasks whose=20
+freeze_priority is less than or equal to the current round number.
+ =C2=A0 =C2=A0 =E2=80=A2=C2=A0 =C2=A0 This ensures that higher-priority (=
+i.e., harder-to-freeze)=20
+tasks are attempted earlier, increasing the chance that they freeze=20
+before being blocked by others.
+
+Since we cannot know in advance which tasks will be difficult to freeze,=20
+we use heuristics:
+ =C2=A0 =C2=A0 =E2=80=A2=C2=A0 =C2=A0 Any task that causes freeze failure=
+ or is found in D state=20
+during the freeze window is treated as hard-to-freeze in the next=20
+attempt and its priority is increased.
+ =C2=A0 =C2=A0 =E2=80=A2=C2=A0 =C2=A0 Additionally, users can manually ra=
+ise/reduce the freeze=20
+priority of known problematic tasks via an exposed sysfs interface,=20
+giving them fine-grained control.
+
+This doesn=E2=80=99t change the fundamental logic of the freezer =E2=80=94=
+ it still=20
+retries until all tasks are frozen =E2=80=94 but by adjusting the travers=
+al order,
+
+ =C2=A0we=E2=80=99ve observed significantly fewer retries and more reliab=
+le success=20
+in scenarios where these D state transitions occur.
 
 
