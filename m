@@ -2,115 +2,133 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 30DF1C87FD3
-	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 12:04:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 372A1C87FD3
+	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 12:07:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B2A66B007B; Fri,  8 Aug 2025 08:04:17 -0400 (EDT)
+	id CC7436B008C; Fri,  8 Aug 2025 08:07:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 98AAD6B008A; Fri,  8 Aug 2025 08:04:17 -0400 (EDT)
+	id C9E4D6B0093; Fri,  8 Aug 2025 08:07:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A02C6B008C; Fri,  8 Aug 2025 08:04:17 -0400 (EDT)
+	id B8DA56B0095; Fri,  8 Aug 2025 08:07:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E2986B007B
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 08:04:17 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0A99EB639D
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 12:04:17 +0000 (UTC)
-X-FDA: 83753457354.11.1870645
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A525A6B008C
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 08:07:16 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6836E1DA050
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 12:07:16 +0000 (UTC)
+X-FDA: 83753464872.25.DC74340
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 6F6AD1C0015
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 12:04:14 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bekLsMhc;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf20.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	by imf22.hostedemail.com (Postfix) with ESMTP id DB86AC0011
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 12:07:13 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Xkfiswvk;
+	spf=pass (imf22.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754654654;
+	s=arc-20220608; t=1754654834;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zwu6G7Ii5QU8d8/PJEe2bFkrnM3wNVgvTkgXDIIA24U=;
-	b=l85uuySciYLxRKnQmx5Qx8hAn2hQuJZKHid53cggpS+GovsRvywsd5jtxy1zFjLtm+/XFJ
-	CxILeoddHdF1VVjzk1qaTmSiDt2lsAxzCzNc+d2R/063m72BSt+TR99zzU0pWh5IQa6f89
-	U88ssAVyLjbBQlpDl0GBIaEwsLEqUi0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754654654; a=rsa-sha256;
-	cv=none;
-	b=BUGoyoYwT5sBT4ARIOqCLnxlJ6AU3gCbqdBU0i4o/E8nJ3oNewEJ3UJ3Gu+X76Q2xQYgrw
-	14Lc1+QSf7q4k6+rYJ05i5Y4kv7XaQ4Zb7x/ompRwC1UVYAl028rh8HN9BWqFteP9C4Reo
-	nravtvSkGShsqp+vt/wZcvJ+aJfrjI8=
+	bh=K7PR6T97DOesrUgpBgIw/sUP2uRXqCEaIUlSEoZ9FG0=;
+	b=O/QgP6BPGTbwBJH3wZD4tzMKLLC+PE0cWV3Q5DKQf84qBjqCJhtRMxjPHWwNGuN8gNdw1c
+	EunUFcqDqxgv9fRPTITzMqN1Ukn0Bkr+NFvB4tggxyrAHEcXDIvEw0y3cDGoMFNfItUuMd
+	b503jUuCM5Eq4UbSNG5ADLACbClrwqw=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bekLsMhc;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf20.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Xkfiswvk;
+	spf=pass (imf22.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754654834; a=rsa-sha256;
+	cv=none;
+	b=tb2Zc+n3QXi/MtPLCeUAQ0DkyQxBKdOXWQJdAhgo/jbVkjwM0Y5ZDtxmTATgl6v7A171m/
+	94DQeMQySmV8rolh+Ftl8cRgO7fFwBbhlNuDxMIuHicCvWRlJdGuFe647ald31dmnH4RmC
+	bdsTMJVxR3oljsFV+RGC34Z+GpjZFYc=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754654653;
+	s=mimecast20190719; t=1754654833;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Zwu6G7Ii5QU8d8/PJEe2bFkrnM3wNVgvTkgXDIIA24U=;
-	b=bekLsMhcEvIu4aW7eV93m8uzPjpjX2hwxGN4rk24SZYdfDimiAZtDDn2RlppqLfQtYwNwN
-	Zs2un8tiJgiApbsgyh6wZoazrkVVjUtNCvOsxjPU+HL0/pfhbz0ZE71lwkOHDT3MobKoEy
-	or1SxoPFrHUSjVrBxkytfMOOeXK8Ock=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=K7PR6T97DOesrUgpBgIw/sUP2uRXqCEaIUlSEoZ9FG0=;
+	b=Xkfiswvk/8AoN2HhcZVephyCsQPVddD4nRnonab9JVMLVZeWbfqE5q6I+XN7dHcbK75Qft
+	opobyfA6ZakgWkAH3VrhNzj8j9AT0jAvLyqBiQ7Q42y+SuClP5Xj+xtuVPhvk3MLzmpUoA
+	LwOkq1sdnQvJFEMtHezXIQfxJPftMuY=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-496-6m9kaiZrN8qPaXxLO2AQaA-1; Fri, 08 Aug 2025 08:04:12 -0400
-X-MC-Unique: 6m9kaiZrN8qPaXxLO2AQaA-1
-X-Mimecast-MFC-AGG-ID: 6m9kaiZrN8qPaXxLO2AQaA_1754654651
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3b78b88ecfeso1114564f8f.3
-        for <linux-mm@kvack.org>; Fri, 08 Aug 2025 05:04:12 -0700 (PDT)
+ us-mta-632-zjZpdcKxNbyCq-sp8gxW9g-1; Fri, 08 Aug 2025 08:07:12 -0400
+X-MC-Unique: zjZpdcKxNbyCq-sp8gxW9g-1
+X-Mimecast-MFC-AGG-ID: zjZpdcKxNbyCq-sp8gxW9g_1754654831
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3b782c29be3so1016445f8f.0
+        for <linux-mm@kvack.org>; Fri, 08 Aug 2025 05:07:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754654651; x=1755259451;
+        d=1e100.net; s=20230601; t=1754654831; x=1755259631;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:from:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Zwu6G7Ii5QU8d8/PJEe2bFkrnM3wNVgvTkgXDIIA24U=;
-        b=s5vYjRAofnBW5jnZkaiSORukIy2llMn65T1HdLiitJ4dsIBwTZPZPJmmLkP2TSAVMT
-         s9mF5pW6LwMY6BsUqXAImvy78jPzXlSfL3W83VUviMFNK87qNBE+Gw4BvJocbLamsc9K
-         Vo7+a5LX0Idxy8yOyel7kIzSYQA0cis32T6S/Euta+RoeYgUHPIDxSCh2fYsxV8hEa0A
-         /9CVvTMGQW/GkgJplrB3fCvndH3nxttkMabJorVEXTyNAoApgUQJhjfKp/C6y88DhIHB
-         3Mr4V33+EVD/ZloRMTtEMzjcBNX6B1HOXasws0gb+PDrfeWmiLHg0qewDcBoxGdhtdhq
-         UCjg==
-X-Gm-Message-State: AOJu0YyHQR5LOpDVJNMoFRVbjeJNuJh7pHR7oD+Whk4Y5WYKPs37QD3x
-	DQgLROR0M5/1iCEckq/75bgW6EpN6s+hYaZClO14x5nY0AthPCHbFdqTL3tl1odLnUFbALd4y86
-	8GgxXEdTAdSpZL+KwLSnn8H/rfaGYjl9RVNj7Oic3qSGbXOmp4nNc
-X-Gm-Gg: ASbGncsQgtWh1EAKjemohMSMxmQhTaSzg5C5JV3igHRwvypH/2rYhLn4JyfjLptRc9X
-	QPWfKVFDbjy8xvop0F3wIBv8+wrv9C/g/4qBsr9LeqRo8MHSyqN14Ex6frlWwZmENjcRPNKlpLX
-	p/fMs93RsmUKtCsl6yyswovVOFWz3rl2AJmZdKoPM+Qa8y3B827P3sKJVdwvaZNmxXJsdZhc74L
-	1wZ95f7HrjWJ9pCBigCpbyOR131Zs+BTvrc6hFblvdjubQLNMsE+lpfe/jem5VzVYPNXUhd13JA
-	npxK0KnNFBCK5694BJPBp/UKHDThR8XilID+o8SXbc4QY9MxBJsKC8qMrVf6eANTVJm+7/9nZ60
-	mVlDvIh6QNP9c0F+4caNY/T/o46NThZUQyA4JNNJSnTMZQj+uA3KzIFsTu892MPbK
-X-Received: by 2002:a5d:584c:0:b0:3ab:27f9:e51 with SMTP id ffacd0b85a97d-3b900b7372dmr2231286f8f.31.1754654651296;
-        Fri, 08 Aug 2025 05:04:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGqRYrS+0vMhQvwrqWQ1DB5e6E6G0Sh4yj3+7JQX/SujKga6eU3I3HwTB9e6wBtYZ/R8Wh/Ng==
-X-Received: by 2002:a5d:584c:0:b0:3ab:27f9:e51 with SMTP id ffacd0b85a97d-3b900b7372dmr2231236f8f.31.1754654650483;
-        Fri, 08 Aug 2025 05:04:10 -0700 (PDT)
+         :content-language:from:references:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=K7PR6T97DOesrUgpBgIw/sUP2uRXqCEaIUlSEoZ9FG0=;
+        b=rKTZr+tYSvrmAEeIJLN+P5J4DOV+7U8/j6PyVpLfTemINM0f5SOCgLiu07+k/6fVGv
+         YQzlOIwm5p5k0Z8P8zRoTExiXAvqKxHYGI/zWx4URz52eSefoK0sF/sZf8kLqr4MMbyw
+         o+ohVzc7XHmmzJTE9GJ7ZyG5BDnfp9xk4Qtbq6FRF+no9tXhWpGlAGCtDy9w3cIz5PGY
+         KMUj62lcxZMOWZanqyavdtAw6O6INWiv2SI9TI5nMAr1RChUgFfTTcrbJ0IsicouKLuj
+         T9A/cNUrBr5KeGw6o2TXDsfhGKxpt4mCw1idSDLq56C9WiDl+nd32Uh5yqXchL85WsUJ
+         lw/w==
+X-Forwarded-Encrypted: i=1; AJvYcCUJFM7BX/iTkABhMsopoHJYENoPuX5Z2UpHwfwy0JffZ/gU68sANh0zSoW0oWkRcntXxR72Vmge0g==@kvack.org
+X-Gm-Message-State: AOJu0YwcDzXqKDLdg6ek5X0HmxSFflfAddkb0uOrNlJXHmZEobjTnjI3
+	xXtIrVOMOhFHLQ6EbfoAWkUsXy9rZ3xG6YdzdprXDkAQ9mT/ZKgRE+3SiIFWenfKmXhY9ZOxq6p
+	vpVwHgo0lOOyuZN+UeVvfAW3C16uF2FaWRTswJkT0CsTE2zKeyWSQ
+X-Gm-Gg: ASbGnctth52+k2jrnHhyIzpS1UsQVb1+UXz0Xoe/COBBOJcMJRgFRmTAWxLc+ROoiwp
+	1hBQ3rajZd3HEQKQoou1vscKl27GSv7lKkkxMyDcXQGSP/79K5uKJocQqamHmmuqZfFkSBjQq1H
+	NVCcrXfoz8uNfugbxlOXVKEtf2iH7a3vI690X3pCaG92dJRudlGa3NHXELlxW32yTai+EU+IOpG
+	3GTa5csutP1Y18tFDu8uOXpxiPPfZtrCHifD3In3FCrBElc5eq3uZzIw80N5x+RPf6noGRQb7+m
+	ueQ6UZPqWWey30HElUeY1oCBS0utlhuXTfLEMvVu03uJ2wu3svQ4nkCdnd2E0IJuyYhKE8I8tRb
+	/10dBS81jtNUxlYKsapMxs1CYZjKWS01NO1dM9Ico0vmRw9na26S2OS28zV4tRbCj
+X-Received: by 2002:a05:6000:2484:b0:3b8:d337:cc12 with SMTP id ffacd0b85a97d-3b900b4d924mr2273635f8f.22.1754654830657;
+        Fri, 08 Aug 2025 05:07:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH14f3A03P48yToZyIcUNv01ynSHfX3vD/oHZeYFhlLUXHLzUbXXwmKjcQ9PjsfRXvFv0UdEw==
+X-Received: by 2002:a05:6000:2484:b0:3b8:d337:cc12 with SMTP id ffacd0b85a97d-3b900b4d924mr2273586f8f.22.1754654830032;
+        Fri, 08 Aug 2025 05:07:10 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f25:900:2e1e:d717:2543:c4d6? (p200300d82f2509002e1ed7172543c4d6.dip0.t-ipconnect.de. [2003:d8:2f25:900:2e1e:d717:2543:c4d6])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b8f5ca8ab7sm9095974f8f.59.2025.08.08.05.04.09
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c47c516sm30387111f8f.62.2025.08.08.05.07.07
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 08 Aug 2025 05:04:10 -0700 (PDT)
-Message-ID: <f008107a-2741-476d-9e32-ae9fc0f81838@redhat.com>
-Date: Fri, 8 Aug 2025 14:04:08 +0200
+        Fri, 08 Aug 2025 05:07:09 -0700 (PDT)
+Message-ID: <b227482a-31ec-4c92-a856-bd19f72217b7@redhat.com>
+Date: Fri, 8 Aug 2025 14:07:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: swap: check for xa_zero_entry() on vma in swapoff
- path
+Subject: Re: [PATCH v3 00/30] Live Update Orchestrator
+To: Pasha Tatashin <pasha.tatashin@soleen.com>, pratyush@kernel.org,
+ jasonmiu@google.com, graf@amazon.com, changyuanl@google.com,
+ rppt@kernel.org, dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
+ rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
+ kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
+ masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
+ yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
+ chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
+ jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
+ dan.j.williams@intel.com, joel.granados@kernel.org, rostedt@goodmis.org,
+ anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn,
+ linux@weissschuh.net, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-mm@kvack.org, gregkh@linuxfoundation.org,
+ tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org,
+ cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com,
+ Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
+ aleksander.lobakin@intel.com, ira.weiny@intel.com,
+ andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
+ bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
+ stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
+ brauner@kernel.org, linux-api@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, saeedm@nvidia.com, ajayachandra@nvidia.com,
+ jgg@nvidia.com, parav@nvidia.com, leonro@nvidia.com, witu@nvidia.com
+References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
 From: David Hildenbrand <david@redhat.com>
-To: Charan Teja Kalla <quic_charante@quicinc.com>, akpm@linux-foundation.org,
- shikemeng@huaweicloud.com, kasong@tencent.com, nphamcs@gmail.com,
- bhe@redhat.com, baohua@kernel.org, chrisl@kernel.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- "Liam R. Howlett" <Liam.Howlett@Oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-References: <20250808092156.1918973-1-quic_charante@quicinc.com>
- <dedf7436-9afa-47f6-b676-88f2dd8b638b@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
  dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
@@ -156,21 +174,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  WBe5lqcozu9LpNDH/brVSzHCSb7vjNGvvSVESDuoiHK8gNlf0v+epy5WYd7CGAgODPvDShGN
  g3eXuA==
 Organization: Red Hat
-In-Reply-To: <dedf7436-9afa-47f6-b676-88f2dd8b638b@redhat.com>
+In-Reply-To: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 4_a3fs_QAAcddZ9HsHa5E36UaDRVfzT4Ow6_A2kVzJQ_1754654651
+X-Mimecast-MFC-PROC-ID: 9cVzhlvC_L4Ax9kaIPChcaJpsQAGhFqqxQIccTMIMBY_1754654831
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6F6AD1C0015
-X-Stat-Signature: r9bett8dp38c6941qtjozwp78x6gnbnw
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1754654654-990837
-X-HE-Meta: U2FsdGVkX18QQZ5dSGFvMBNXAlZLZuRWMuraawdlpdcomxxOOte3LB1UIR289J39bbtuTL5haSAXJWwRym37PI8aBPKgEwxZ31W40hO3yHBBVkR0MjWzoQpvyfukUtsBIk0BpojvL25aBI/Fo7U8J0+cH9GmXdaG8hg1b/5vZ5bycom3BmKnSx0eN9gb0x54xDiRYOUTpnwvPTj7i8maoD22knA1hwTTM8o3qKd34DrzYs0QGKMekmK1P623T609Q9V6P9Eu2WH2Bd6mJHvANZ9zJEF1Vz7C+8vVpLSNfMCdPxeB8X2KlUd9cQsJ3KVwtqODYG0I5K+Pyzw0/07qywOWl8ckPoqLswnLCgRjv+70RG1DkEyf9Bz2FcRTDDPEUqKtvnyytVFx7dJpcSDcknxMWqP6ZvVEVHvxNMNyewGo7DDW/kKtK1ib0LGAekKmMtGptRjXA0seQITCarxaPjYI6993brJelALellcM0krRM/iVUPr5pJ+WhazY/J2eShRrrz/Y+bASS9UpQ6S7/2ScaNlZvGrtO4nrg5JaZLom3QKmBScsajbSbTww50r21KBI+fh839NH2pTf2mYx+4kSTorXP7v78my1yT29Er5cqpPm6sB40nehfChGhnEdDk5Crc2dR6hovBoCgB40LgpP3eoNroRgpriarwwd7A1MQaHzySt72DMgWbuGKJrAWbGkgGc5rX+tgGFzMOKdcyYFBSw/HxcMnBM+42q5KDoSAC6hJM8FurAPRGNl6744+EL+rf+uMVSjXFyTRmPozfOToOw8yIViP3qR0Q29rZYEt8I84cgQD3wNnaKI2Mr8Tq6NXG9FXU0Dif7DpJOuSfirHaStC1gAJC7A/sux8xB0GoZz8HK47v2zPqrtGEGCaS6esVpWjn7LgN6CzBG0Sv7obWvbZ0hutcez5e3x/TpyV8ZioGVvvbcn9DIuSTY8uVNRmOoiwgBLJqcs9CQ
- D+FJqSDu
- NzPVVd/Ih/nyUH7WpSqfkmU5QDOHhME2TuNwxtDKcjm75bmfCz4VXDX7DK1rqbAmqkJtmxFKbdtFAZWsoAnXh7mail4q5i9/qopkp8PenKrzqn0yT9TvOpqEG29reNYNvCXxEEmvfqlALK17Aa7O7xE3wj24cO0JngRy0IaI3lamUxOCxv3jDB6Scva4MsQNXhCKFi1ZP7eN/RUs377D+c6F22cPL8RD6cnVMX4jbGHzkWFt04LP0QO2sJCwxBuIcgLiEP1vVLfwMKt3yQ8uwLtSN9pf//d7xaO60B4BxL3LboTf2tloarj4CaF/xhOhsaLLvbZ/+Qd9ujPiBLZuRy4PUgIdkJC8ifYKlvpqFAl/J29LU2Zm54AbPuLIqZi5PeM0he1WPdOKap4sxsA/07SEewCfpdB3c/QRrt3K977haQZAvTQEbSYU1FzRvVFwlcODbTyASIroRTkAbd1N3QVTc3c71886lnC+P0mx09wtim4gX0f3Fc26s7XDSSOAcoXsDoarPVERBnfM=
+X-Rspamd-Queue-Id: DB86AC0011
+X-Rspamd-Server: rspam06
+X-Stat-Signature: sw65oaarxom4qxqbjzwnks6xb7h9rjth
+X-HE-Tag: 1754654833-709555
+X-HE-Meta: U2FsdGVkX1/4tpj0BvW+MPss5rfyQT6zeXSni4EBhLrhS4b2MQFrf14MnABKomJ8XILSo7YUgTDiPkcKSvEgTUrTmqXWAXjUoEMKO7OdDYznSOuxTv9mVIPCPfr/FBC54jkLXl40in0SeitX0jq/2dKEtWemrIH42l1lex9DAtLVUW/zveYi9FdruXwgcTmhtBPGlrUm5Mt3WqRfbT8Dhoqo8xjL4mfxW6+fw7e2HcM3EiPmsXJfSa/cPZu1I3PBTTrB9erSVlU/84Rrxkc6bkWQPDetWA8dRzCsl/aoP/ZjJDb8eT3yyqOj3Ci4pRg5fIGOsUbTea06yTuL1jwbTPVhevPIh3L4wGUKyeAWeSoAArkY8+YJRr/vO6OoVjssBU1m9zri+RsiOQ5cAlJyU53tIadAxoyvgD3/mitBcbzi9mxgC3JL7TbG2a2K9QB5gi4oJMEhzgG8h4GWFxqCzpMpeLVokBjDi0AbFhD/WV3PBeNEldG2XHr38YfrVn0o0IX+tCOinesRde+5b+aK0zgxwqNT9o4pn8OEAcO76PEv1lUC8dkJhipRyJQ17P048SGXRKW1RsKonNi4nQkgjFJlulhD0gZXkRFELZcq92RB90dL3is3GS4xo7Bno+eD3aOR/cMjJGbxE5tgKD3mBBYhRsR35TaYYuRuLd4jRn5iQVhOQPpjvxzzDniUPsuXRlO6QywCK6jxVB7t5Y8WqakVfuUrn4ikBQLfNVBixmxhCUSRoirlgF1ImqkylZ3QeupSa4iSHf7B5/FcPfYZkntBf+wlSbC4rMvmQ3ND5N6Gkm6GstPVtURvyYfyGPXDel0gvTDpAQSNOHA+Hhspk+Fu4eV2g+26BsYmhSDMSSio3MZQOeA+169o8pI19yW7teqP+9s1gbOtHPYE53ST2EfBFK69LMHT5jCwWCLfY0hilHG9iQHBO04ivUWjMg1mtoBxeXvh3tPSCG0xeoI
+ 0+GS9ChJ
+ 7JvyetEh1UDHd9n1b+gFnj/XNFhOsttha8WW4wqGk06R/f5RczVgAJL+LCXMuxRXbYIhJM7ZdYgYF1bihSfzo62+FL4KIiGFdTh3vnj3qkBEaLuvMnMMhz9NFsaHTO8Nz8MwEPdn4PrdNOwPH/r3kCWWqYPCfB4hAwAtHDKATx1xo2bzEudZDhQIQyvaX+wbGFu4P6Kf9kUE3+U9yBcpy4Xz2LMllTyCX7FasKH3zzNt+4hcr0MUHpFsyCdBvwOMSDHrXy8sLYyqulURdX1PF8G6EFaejlfbOOEqaTcA0jF4i47zTwaHDEHhIFCs/3YodgxUTpvKPOQuZCnWIF8BrOffVibYrAHuS3XTZbOrFDUrx75HuOXUjUg3vczMTdCQ/RWZDy6P2eSJ4TMqSDj6oXrgl4JqegA9FLfvdrNmV2kjaRigVE2joaO2AeVxBr0zzRfUyKMmDh+0DX1phK0DBmYeUam60r7pN6aOqjd5eQ+Z/VGV2zlxPkpjISNK1ajSimntG64W3YL2cmJuZeWNbb0uvHkKv+/G4Qf8MtIK6dOuTfgy4csA/KSqXZoMaS6/ufGQCeNsr0EV599qdq/vXlfw9Bsn3JM1Q00GuYYdq1BS62a72jh5eIgku1nRVJs+thgg5KazJAQdpb/k=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -179,86 +197,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08.08.25 14:01, David Hildenbrand wrote:
-> On 08.08.25 11:21, Charan Teja Kalla wrote:
->> It is possible to hit a zero entry while traversing the vmas in
->> unuse_mm(), called from the swapoff path. Not checking the zero entry
->> can result into operating on it as vma which leads into oops.
->>
->> The issue is manifested from the below race between the fork() on a
->> process and swapoff:
->> fork(dup_mmap())			swapoff(unuse_mm)
->> ---------------                         -----------------
->> 1) Identical mtree is built using
->>      __mt_dup().
->>
->> 2) copy_pte_range()-->
->> 	copy_nonpresent_pte():
->>          The dst mm is added into the
->>       mmlist to be visible to the
->>       swapoff operation.
->>
->> 3) Fatal signal is sent to the parent
->> process(which is the current during the
->> fork) thus skip the duplication of the
->> vmas and mark the vma range with
->> XA_ZERO_ENTRY as a marker for this process
->> that helps during exit_mmap().
->>
->> 				     4) swapoff is tried on the
->> 					'mm' added to the 'mmlist' as
->> 					part of the 2.
->>
->> 				     5) unuse_mm(), that iterates
->> 					through the vma's of this 'mm'
->> 					will hit the non-NULL zero entry
->> 					and operating on this zero entry
->> 					as a vma is resulting into the
->> 					oops.
->>
+On 07.08.25 03:44, Pasha Tatashin wrote:
+> This series introduces the LUO, a kernel subsystem designed to
+> facilitate live kernel updates with minimal downtime,
+> particularly in cloud delplyoments aiming to update without fully
+> disrupting running virtual machines.
 > 
-> That looks like something Liam or Lorenzo could help with reviewing.
-> I suspect a proper fix would be around not exposing this
-> partially-valid tree to others when droping the mmap lock ...
+> This series builds upon KHO framework by adding programmatic
+> control over KHO's lifecycle and leveraging KHO for persisting LUO's
+> own metadata across the kexec boundary. The git branch for this series
+> can be found at:
 > 
-> While we dup the mm, the new process MM is write-locked -- see
-> dup_mmap() -- and unuse_mm() will read-lock the mmap_lock. So
-> in that period everything is fine.
+> https://github.com/googleprodkernel/linux-liveupdate/tree/luo/v3
 > 
-> I guess the culprit is in dup_mmap() when we do on error:
+> Changelog from v2:
+> - Addressed comments from Mike Rapoport and Jason Gunthorpe
+> - Only one user agent (LiveupdateD) can open /dev/liveupdate
+> - Release all preserved resources if /dev/liveupdate closes
+>    before reboot.
+> - With the above changes, sessions are not needed, and should be
+>    maintained by the user-agent itself, so removed support for
+>    sessions.
+> - Added support for changing per-FD state (i.e. some FDs can be
+>    prepared or finished before the global transition.
+> - All IOCTLs now follow iommufd/fwctl extendable design.
+> - Replaced locks with guards
+> - Added a callback for registered subsystems to be notified
+>    during boot: ops->boot().
+> - Removed args from callbacks, instead use container_of() to
+>    carry context specific data (see luo_selftests.c for example).
+> - removed patches for luolib, they are going to be introduced in
+>    a separate repository.
 > 
-> 	} else {
+> What is Live Update?
+> Live Update is a kexec based reboot process where selected kernel
+> resources (memory, file descriptors, and eventually devices) are kept
+> operational or their state preserved across a kernel transition. For
+> certain resources, DMA and interrupt activity might continue with
+> minimal interruption during the kernel reboot.
 > 
-> 		/*
-> 		 * The entire maple tree has already been duplicated. If the
-> 		 * mmap duplication fails, mark the failure point with
-> 		 * XA_ZERO_ENTRY. In exit_mmap(), if this marker is encountered,
-> 		 * stop releasing VMAs that have not been duplicated after this
-> 		 * point.
-> 		 */
-> 		if (mpnt) {
-> 			mas_set_range(&vmi.mas, mpnt->vm_start, mpnt->vm_end - 1);
-> 			mas_store(&vmi.mas, XA_ZERO_ENTRY);
-> 			/* Avoid OOM iterating a broken tree */
-> 			set_bit(MMF_OOM_SKIP, &mm->flags);
-> 		}
-> 		/*
-> 		 * The mm_struct is going to exit, but the locks will be dropped
-> 		 * first.  Set the mm_struct as unstable is advisable as it is
-> 		 * not fully initialised.
-> 		 */
-> 		set_bit(MMF_UNSTABLE, &mm->flags);
-> 	}
+> LUO provides a framework for coordinating live updates. It features:
+> State Machine: Manages the live update process through states:
+> NORMAL, PREPARED, FROZEN, UPDATED.
 > 
-> Shouldn't we just remove anything from the tree here that was not copied
-> immediately?
+> KHO Integration:
+> 
+> LUO programmatically drives KHO's finalization and abort sequences.
+> KHO's debugfs interface is now optional configured via
+> CONFIG_KEXEC_HANDOVER_DEBUG.
+> 
+> LUO preserves its own metadata via KHO's kho_add_subtree and
+> kho_preserve_phys() mechanisms.
+> 
+> Subsystem Participation: A callback API liveupdate_register_subsystem()
+> allows kernel subsystems (e.g., KVM, IOMMU, VFIO, PCI) to register
+> handlers for LUO events (PREPARE, FREEZE, FINISH, CANCEL) and persist a
+> u64 payload via the LUO FDT.
+> 
+> File Descriptor Preservation: Infrastructure
+> liveupdate_register_filesystem, luo_register_file, luo_retrieve_file to
+> allow specific types of file descriptors (e.g., memfd, vfio) to be
+> preserved and restored.
+> 
+> Handlers for specific file types can be registered to manage their
+> preservation and restoration, storing a u64 payload in the LUO FDT.
+> 
+> User-space Interface:
+> 
+> ioctl (/dev/liveupdate): The primary control interface for
+> triggering LUO state transitions (prepare, freeze, finish, cancel)
+> and managing the preservation/restoration of file descriptors.
+> Access requires CAP_SYS_ADMIN.
+> 
+> sysfs (/sys/kernel/liveupdate/state): A read-only interface for
+> monitoring the current LUO state. This allows userspace services to
+> track progress and coordinate actions.
+> 
+> Selftests: Includes kernel-side hooks and userspace selftests to
+> verify core LUO functionality, particularly subsystem registration and
+> basic state transitions.
+> 
+> LUO State Machine and Events:
+> 
+> NORMAL:   Default operational state.
+> PREPARED: Initial preparation complete after LIVEUPDATE_PREPARE
+>            event. Subsystems have saved initial state.
+> FROZEN:   Final "blackout window" state after LIVEUPDATE_FREEZE
+>            event, just before kexec. Workloads must be suspended.
+> UPDATED:  Next kernel has booted via live update. Awaiting restoration
+>            and LIVEUPDATE_FINISH.
+> 
+> Events:
+> LIVEUPDATE_PREPARE: Prepare for reboot, serialize state.
+> LIVEUPDATE_FREEZE:  Final opportunity to save state before kexec.
+> LIVEUPDATE_FINISH:  Post-reboot cleanup in the next kernel.
+> LIVEUPDATE_CANCEL:  Abort prepare or freeze, revert changes.
+> 
+> v2: https://lore.kernel.org/all/20250723144649.1696299-1-pasha.tatashin@soleen.com
+> v1: https://lore.kernel.org/all/20250625231838.1897085-1-pasha.tatashin@soleen.com
+> RFC v2: https://lore.kernel.org/all/20250515182322.117840-1-pasha.tatashin@soleen.com
+> RFC v1: https://lore.kernel.org/all/20250320024011.2995837-1-pasha.tatashin@soleen.com
+> 
+> Changyuan Lyu (1):
+>    kho: add interfaces to unpreserve folios and physical memory ranges
+> 
+> Mike Rapoport (Microsoft) (1):
+>    kho: drop notifiers
+> 
+> Pasha Tatashin (23):
+>    kho: init new_physxa->phys_bits to fix lockdep
+>    kho: mm: Don't allow deferred struct page with KHO
+>    kho: warn if KHO is disabled due to an error
+>    kho: allow to drive kho from within kernel
+>    kho: make debugfs interface optional
+>    kho: don't unpreserve memory during abort
+>    liveupdate: kho: move to kernel/liveupdate
+>    liveupdate: luo_core: luo_ioctl: Live Update Orchestrator
+>    liveupdate: luo_core: integrate with KHO
+>    liveupdate: luo_subsystems: add subsystem registration
+>    liveupdate: luo_subsystems: implement subsystem callbacks
+>    liveupdate: luo_files: add infrastructure for FDs
+>    liveupdate: luo_files: implement file systems callbacks
+>    liveupdate: luo_ioctl: add userpsace interface
+>    liveupdate: luo_files: luo_ioctl: Unregister all FDs on device close
+>    liveupdate: luo_files: luo_ioctl: Add ioctls for per-file state
+>      management
+>    liveupdate: luo_sysfs: add sysfs state monitoring
+>    reboot: call liveupdate_reboot() before kexec
+>    kho: move kho debugfs directory to liveupdate
+>    liveupdate: add selftests for subsystems un/registration
+>    selftests/liveupdate: add subsystem/state tests
+>    docs: add luo documentation
+>    MAINTAINERS: add liveupdate entry
+> 
+> Pratyush Yadav (5):
+>    mm: shmem: use SHMEM_F_* flags instead of VM_* flags
+>    mm: shmem: allow freezing inode mapping
+>    mm: shmem: export some functions to internal.h
+>    luo: allow preserving memfd
+>    docs: add documentation for memfd preservation via LUO
 
-Another fix would be to just check MMF_UNSTABLE in unuse_mm(). But 
-having these MMF_UNSTABLE checks all over the place feels a bit like 
-whack-a-mole.
+It's not clear from the description why these mm shmem changes are 
+buried in this patch set. It's not even described above in the patch 
+description.
 
-Is there anything preventing us from just leaving a proper tree that 
-reflects reality in place before we drop the write lock?
+I suggest sending that part out separately, so Hugh actually spots this.
+(is he even CC'ed?)
 
 -- 
 Cheers,
