@@ -2,99 +2,100 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D07CC87FD3
-	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 12:55:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E1588C87FD2
+	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 13:01:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2CD316B0096; Fri,  8 Aug 2025 08:55:09 -0400 (EDT)
+	id 7708B6B0089; Fri,  8 Aug 2025 09:01:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 27E556B009B; Fri,  8 Aug 2025 08:55:09 -0400 (EDT)
+	id 748836B008C; Fri,  8 Aug 2025 09:01:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BB1F6B009D; Fri,  8 Aug 2025 08:55:09 -0400 (EDT)
+	id 685656B0092; Fri,  8 Aug 2025 09:01:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0BE656B0096
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 08:55:09 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C1062B6E29
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 12:55:08 +0000 (UTC)
-X-FDA: 83753585496.20.75065D3
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 5ACA66B0089
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 09:01:56 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 08B1DB6D12
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 13:01:56 +0000 (UTC)
+X-FDA: 83753602632.02.32EB0AE
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D0B301C000C
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 12:55:06 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="cmnGV/jm";
-	spf=pass (imf18.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	by imf05.hostedemail.com (Postfix) with ESMTP id EAF8B100010
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 13:01:53 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=C3SeBB8H;
+	spf=pass (imf05.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754657707;
+	s=arc-20220608; t=1754658114;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=735MKqTpVsLiwF08r9eYm/WhPdFnfobFmT9GhcsZRXQ=;
-	b=M7HdmpSSW8OcS3c2sT2K6Bd/HJxdAZy9QmwypIXt5duwv0DLnBUu90CbtDJE9P/JXRjWoo
-	L44VbRcQjMvycuo3g6VTfB9EmfHHYZHQHB9SvuHgeQoeGFF3t7lRNdS8Psvi8vcDCxS3+a
-	9b6gBeeeodhsma+Chh47N8QeX3GCB4c=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754657707; a=rsa-sha256;
-	cv=none;
-	b=OTyGJj769xZHSJ0gstn6A2WnxcOtNXwFbhDYWlvB3RabqXfsVo0PbLyRHcNYm9zDm5rWch
-	8bm81St6ZjR1+OdMWm5Aqvdt49WsgQpOX9KyTjXE/PeTElJEpW/EV93eE5d4BxxcMYRwm6
-	lHW4ITnTuP7sXmK2gtuVtsxAC9j160A=
+	bh=GIqJ6f/aDwqAFbRn5MC1kbdMPJMwUfUOc/srLwo7ZjI=;
+	b=VUwQ/GV1kmSmRuUtfvs+W1/JG6DnzNq25bTs3ouqMNJx3NPvs+ar5CpsjC3MsT6ojyl0nK
+	S8XStIhye1wXHxVOWo9rig+a9Ph/WGxQWc1gMPMU6C/4hUxGrK/2KVLsN+KEaou0HGf9JM
+	4EtLGu5XCV0nOrcvMBaLLtseLpSalvc=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="cmnGV/jm";
-	spf=pass (imf18.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=C3SeBB8H;
+	spf=pass (imf05.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754658114; a=rsa-sha256;
+	cv=none;
+	b=PxC8Yb6CSJzjK6htlXnBYIMo/2GSg1j26ssHCLRQoux12mvO1qmO96AUiTdQBXGv57QhDj
+	o7GOl9v7xKIEAMuFbfCvyq7ZAvKc/Kx6sOcdzpeEHNvGyerbFrMjl+NiKYjI5DLmvj9u+W
+	lJjBnwZm/UXROPQ0zzlDZCgAVZ9nTM0=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754657706;
+	s=mimecast20190719; t=1754658113;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=735MKqTpVsLiwF08r9eYm/WhPdFnfobFmT9GhcsZRXQ=;
-	b=cmnGV/jmk9UCFiG5+6S51y5D+5ad80oAOOpPxLo9QD0lo/8B3UaggaKxTTHZlimd2/+cae
-	M3H5/pTff//5SRii6VwP0W73oQ7Wvvt6mLk1zs1YfJAss64Ko2EuJ0f7rQG4vILZj25pzV
-	z21mKEtUi09XwM4Cm//wbbqmEAo2Wtc=
+	bh=GIqJ6f/aDwqAFbRn5MC1kbdMPJMwUfUOc/srLwo7ZjI=;
+	b=C3SeBB8HD1gNrtdvPrLscqvKV5oH6LxctUA3n+l8plXHcv7yMfuOOjfF1Pz9jggFaHdrz+
+	N8lmZuAK6nsB7zAKYyDs/APysMEZ8vhVnyII96bUjUqaK0t8NkkpeUNHkGTGOQeoh9ljki
+	NbTsRs/kLjv8OwPnUMwy6Nt3Pb2l+kc=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-686-JSQNINiVOQuzqBr7vxM5Mg-1; Fri,
- 08 Aug 2025 08:55:02 -0400
-X-MC-Unique: JSQNINiVOQuzqBr7vxM5Mg-1
-X-Mimecast-MFC-AGG-ID: JSQNINiVOQuzqBr7vxM5Mg_1754657700
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-124-CU-roWnKMwqBdKpO_Vmcog-1; Fri,
+ 08 Aug 2025 09:01:49 -0400
+X-MC-Unique: CU-roWnKMwqBdKpO_Vmcog-1
+X-Mimecast-MFC-AGG-ID: CU-roWnKMwqBdKpO_Vmcog_1754658103
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5804B180036E;
-	Fri,  8 Aug 2025 12:55:00 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1812F180034D;
+	Fri,  8 Aug 2025 13:01:43 +0000 (UTC)
 Received: from localhost (unknown [10.72.112.126])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A3F3B180047F;
-	Fri,  8 Aug 2025 12:54:57 +0000 (UTC)
-Date: Fri, 8 Aug 2025 20:54:53 +0800
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7BBB61800297;
+	Fri,  8 Aug 2025 13:01:41 +0000 (UTC)
+Date: Fri, 8 Aug 2025 21:01:37 +0800
 From: Baoquan He <bhe@redhat.com>
-To: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: linux-mm@kvack.org, glider@google.com, andreyknvl@gmail.com,
-	dvyukov@google.com, vincenzo.frascino@arm.com,
+To: Marco Elver <elver@google.com>
+Cc: linux-mm@kvack.org, ryabinin.a.a@gmail.com, glider@google.com,
+	andreyknvl@gmail.com, dvyukov@google.com, vincenzo.frascino@arm.com,
 	akpm@linux-foundation.org, kasan-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org, kexec@lists.infradead.org
-Subject: Re: [PATCH 0/4] mm/kasan: make kasan=on|off work for all three modes
-Message-ID: <aJXznYlO7dpY+p7D@MiWiFi-R3L-srv>
+Subject: Re: [PATCH 2/4] mm/kasan: move kasan= code to common place
+Message-ID: <aJX1Mcc1QrkUgi89@MiWiFi-R3L-srv>
 References: <20250805062333.121553-1-bhe@redhat.com>
- <69b4f07d-b83d-4ead-b3f1-1e42b2dca9c2@gmail.com>
+ <20250805062333.121553-3-bhe@redhat.com>
+ <CANpmjNNr7e6DXQrZva8k46jELr1JSkjExWvQOyrkY5VD8mOadw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <69b4f07d-b83d-4ead-b3f1-1e42b2dca9c2@gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Rspamd-Queue-Id: D0B301C000C
+In-Reply-To: <CANpmjNNr7e6DXQrZva8k46jELr1JSkjExWvQOyrkY5VD8mOadw@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Stat-Signature: db5yyege6kpyr4inu846iseok4d6z7a1
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: EAF8B100010
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: zxgqqtbza8m6rim91s18k5r4sgbgeq9s
-X-HE-Tag: 1754657706-30584
-X-HE-Meta: U2FsdGVkX18tvqUOxVtO5usgz3mAkyiQg9tBKPMs195TTwvzmnp3EvpeSrQPIEFd+isV8YytDsJ6XpuvqrjQ7aT8pIIWQtG3PICF8UG8hYPvn7vK8qdn7zAnoUmO7UYdBhiAOtd/xQeBT6z/6sfpEWmuFoVqNcXWDF7oxF207aYqFOVaI5nlb5Jm5WBJP+2SnA771/50EAFkqTtPK7tSAMKN26JSmW/qz60Mv0J1mPerXyA9BT6wvSoUX2grIF3elFfXoHyrlYRvBhPX0jO3KCr+bypdRy2iD286epiis5rlPbIKZSzgiDmF+yxvFoiow6z1U8vUrp2OC8Zhg97QhnKShMVCxBTWWxQ8kei/lZFBcd+hR/g7V5l95bvn9SADM/vhVNGC8Oz1KmMz7A95sFGW7xnYiZdZhXmaaiE5R9I11QfFjTwAbsuPFlK0feLiPEJZNy4iKj8l6TaLSrAXirbgEwg00bhOAd4yBGfFLPIrEVqZyT3v9xKPv48AcSRpj2PuvyNS7eQCno+HW+f83AoG4bv4T3phdk2wuP1t6KBgP9dF5wiEYgLsaDWYrv4pgsJjCXbKn/zKwbP+RISL45RPIwKBxtubmqdWkgFHAKYE3WZFE1efBWsdKxQtWOJlNC3+lykx0WHQ3eNRlLHXW2tqtYYCF6jDyzrI4fUrifkWFOCw0mhkiKHVy7AR7dLjh3b+SnQXh24GZWMK77GaM799tUMHow9SriUS1tJXrfayEH8GWkGZgX+gpveaCR/Bq96FwHl2KnCtxqleffWeuHmt5vwNfWErocopijevudrIx5qMYxte8O1kC1JxhycCY68KORUbLtTiQJb5iqnH73tuiBS1LwaPI3iZ1MLTWuLCAHWNY/jbUhT8d89o/NifKtVc3NQUIGAkB2Omirv5bCkOe6n0uz1WHzEpijRjrpD7jbAUhy3Hqj3VoEzTp+vbvN8gT/QVOU2n4ggPHVm
- QcpWForj
- dn4IB0ux8T71MF1dFCDJSozciRj+y8enQ5AyJmQ59PGNUX1CkNqC9qL9AgNsL144+k7kQ7JWEjuhzgrG02MhsNPn3QmgpvHrCFcLmhVeleZxA8cHuHVjdYl1X7sJnSuG7niVgl/t8J3ZMLWaLsFDgGWpDCpXd+q5zYU+3k/fhbqSfeaaeLz6jERT195xv3auEwH629EqBS8ilGCmFADH68FpA4iX3kgNfcgwxSpcX2nyWaHidonEM/X3ILP9YeQ0+xqdb68ads9gPqtEb+RVjmGsy70eXpmSluZwrS4B2qUp9d5gw6/lJL2pxuzMKVZ2b1aq+U+PuQX7INxjuIsohcrngo/Y0sNpe7DENc2UeNf3M9UhgtJECBekMHk12fVKFukXEc/NbJIMhHJjcLeI9S4yCBlAWdKW7xyCwCH8zaeMoCFI+06XWC/DBO/xpn7WwHG4rrtn0t8JddFC1fWZ1RnjjQXk0H5nu680a
+X-HE-Tag: 1754658113-728018
+X-HE-Meta: U2FsdGVkX1/xqWn0FvtnxAea7jaNw4t305C1osJonUZhfe0VuFKp5ZvAejKh7hXhxHn04y74OLSCRo36JX+isJRWLjY691ZB7INV9z5h3/vnisRvLOX/PskwEs8LnPLjWF8Ox+jGRVI0UVfNFlZ0oF0HYOf9KcuwM4ZTrrfEWgPGR1XKhb6LMRCCdQ+Ea8UwnjqzqtMbg3EZXTP69g5BO+QVEMOLwbXVmyFdOqKKhvV9fuoqbgfjle7MyFRpdLTCVS0LhdtwBe5Nfb9GGlkQ5i4aACCgf4xBcJuw9GHgPQ6qrgU2ssw7p8TSf+5QIe/l8nTmK7QbEzfAhV90Er9ZZPPYHpNUqZvGEdfplwsy/FC2IK2IswC3VmceIi08wUfcFSVRnJ3JxU21AbRyP5DkwEzXOxJEaHASlAI8rrFdCyw2Khqk3rRHm/qjC3k7RKrtZP1dbkjK7p5Stoqtc+D0H/wD2ERNUIIIcp4SQooUi1FWR1AfKgr0ODzsUwb7mMw6qMWBvGCjen1Og/Y8Np4DrMkOH8ujEazFhWAsHN+GZPej01gNGabfo7Ff1gk4S98gTbo7XSXI/o54Yrt4ejd4Yr7rVX7kD1SYIfVrus4zGjFmYXTgJEiRYQoa2B6YbSntYShb9i0mlbTFCb57TyPU1+qlSToWjkmsETGAr+Qve1lDll8JPjpGNXQ50u+/SDajU5C5tZzAjM/JCSi8nKLPRHRerkgQj6g0dpJkRddLr/MMZnTLtqWHIcrys5avotzFWoym88ICbi07XUghXa59QfR6NE0/aDCkCxavauPKl3OlN2WSN+CkB3g2Fu2kGTG0bmUapMvL86Es/KsHIxWAnkHEKrMHXeZJSc5+T9DANRPHPnnjOV39XXX1WsisG/rF49mMLfZz1q2tyULg4d+Etf0EEKQc59tx7VLPWJcb8kus/xsPZ1RrbeoBMr65UmUEcdkyIlrYa/nBNzLdSrT
+ flNWGg0Y
+ kdPtxuNTP9xJV6tVbb0uDObTO+oSCbpd67/1NZ3zy9tRepGv7iQvtU5IASPeqe7m983ZHFPAh1CJzzX9bjek4Wo9XEeEUrOE7jk49gMtFWfHGscnDN80UYO8cWQjv36rah872dVIEU5WTs8vtm1T5l3/KgdESxlOeggNvNeMADXW1JcV9mc/1cnIcY+mIsvFhzR0E+z5fNoFCV3r2TNGtWnMHemHxiNnTKoNhY0K0L7ajkpl3grdU3xxbkonVp70DsMHq1394JPWDjWPrkzy//8VDT+nTVALQb1iKmyz4Guteb8pMiMcdE+ENfV6CrR1BPysNt/DHW7X8a/O3TjYxnwC0jYjBNrV1XZB6Qco8m4wtflulmVvp9scyC+DLauosXHxh1Bw9db9Zg1p0jQYNMc/HYsjf+v86lGOSinJfPL1/CDQFLCKwe6DP3UU22PCAnop6JjIRPAoN2l3RAwbL9FiDP/kYCa0QVQ/HIKDSGt9h4nI5X217ZW963GeQdPHttqXp25/H3EcEpF2X2r1yxkLXUpZC23UVzOsE3JKOWQsrAuJ1FoTlAoWTbQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,99 +104,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08/07/25 at 06:34pm, Andrey Ryabinin wrote:
+On 08/06/25 at 09:11am, Marco Elver wrote:
+> On Tue, 5 Aug 2025 at 08:24, 'Baoquan He' via kasan-dev
+> <kasan-dev@googlegroups.com> wrote:
+> >
+> > This allows generic and sw_tags to be set in kernel cmdline too.
+> >
+> > When at it, rename 'kasan_arg' to 'kasan_arg_disabled' as a bool
+> > variable. And expose 'kasan_flag_enabled' to kasan common place
+> > too.
+> >
+> > This is prepared for later adding kernel parameter kasan=on|off for
+> > all kasan modes.
+> >
+> > Signed-off-by: Baoquan He <bhe@redhat.com>
+> > ---
+> >  include/linux/kasan-enabled.h |  4 +++-
+> >  mm/kasan/common.c             | 27 +++++++++++++++++++++++++++
+> >  mm/kasan/hw_tags.c            | 35 ++---------------------------------
+> >  3 files changed, 32 insertions(+), 34 deletions(-)
+> >
+> > diff --git a/include/linux/kasan-enabled.h b/include/linux/kasan-enabled.h
+> > index 6f612d69ea0c..32f2d19f599f 100644
+> > --- a/include/linux/kasan-enabled.h
+> > +++ b/include/linux/kasan-enabled.h
+> > @@ -4,10 +4,12 @@
+> >
+> >  #include <linux/static_key.h>
+> >
+> > -#ifdef CONFIG_KASAN_HW_TAGS
+> > +extern bool kasan_arg_disabled;
+> >
+> >  DECLARE_STATIC_KEY_FALSE(kasan_flag_enabled);
+> >
+> > +#ifdef CONFIG_KASAN_HW_TAGS
+> > +
+> >  static __always_inline bool kasan_enabled(void)
+> >  {
+> >         return static_branch_likely(&kasan_flag_enabled);
+> > diff --git a/mm/kasan/common.c b/mm/kasan/common.c
+> > index ed4873e18c75..fe6937654203 100644
+> > --- a/mm/kasan/common.c
+> > +++ b/mm/kasan/common.c
+> > @@ -32,6 +32,33 @@
+> >  #include "kasan.h"
+> >  #include "../slab.h"
+> >
+> > +/*
+> > + * Whether KASAN is enabled at all.
+> > + * The value remains false until KASAN is initialized.
+> > + */
+> > +DEFINE_STATIC_KEY_FALSE(kasan_flag_enabled);
+> > +EXPORT_SYMBOL(kasan_flag_enabled);
+> > +
+> > +bool kasan_arg_disabled;
 > 
-> 
-> On 8/5/25 8:23 AM, Baoquan He wrote:
-> > Currently only hw_tags mode of kasan can be enabled or disabled with
-> > kernel parameter kasan=on|off for built kernel. For kasan generic and
-> > sw_tags mode, there's no way to disable them once kernel is built. 
-> > This is not convenient sometime, e.g in system kdump is configured.
-> > When the 1st kernel has KASAN enabled and crash triggered to switch to
-> > kdump kernel, the generic or sw_tags mode will cost much extra memory
-> > for kasan shadow while in fact it's meaningless to have kasan in kdump
-> > kernel.
-> > 
-> 
-> Ideally this problem should be solved by having kdump kernel with different
-> config. Because if we want only reliably collect crash dumps, than we probably
-> don't want other debug features, e.g. like VM_BUG_ON() crashing our kdump kernel.
+> You lost __ro_after_init
 
-Yeah, we have done that in Redhat's internal CI testing. While we still
-want to switch back to let kdump take the same kernel as the 1st kernel.
-Like this, we have chance to test debug kernel for vmcore dumping. In
-this case, KASAN is the main barrier. For other debug features,
-VM_BUG_ON() should be captured in 1st kernel's running, we won't wait to
-run kdump kernel to catch it. I am planning to check and adding feature
-switch for kdump to disable if it's not needed in kdump kernel. E.g I
-have done in ima=on|off, and the existing 'kfence.sample_interval=0' for
-kfence.
+Right, thanks for careful reviewing.
 
-And the public kasan=on|off kernel parameter can make kasan feature more
-flexible. It can be used in production environment with kasan=off, and
-can switch to the same kernel to catch issues easily by stripping the
-cmdline setting. As adding a cmdline is much easier than setting kernel
-config and rebuild kernel.
+> 
+> > +/* kasan=off/on */
+> > +static int __init early_kasan_flag(char *arg)
+> > +{
+> > +       if (!arg)
+> > +               return -EINVAL;
+> > +
+> > +       if (!strcmp(arg, "off"))
+> > +               kasan_arg_disabled = true;
+> > +       else if (!strcmp(arg, "on"))
+> > +               kasan_arg_disabled = false;
+> > +       else
+> > +               return -EINVAL;
+> > +
+> > +       return 0;
+> > +}
+> > +early_param("kasan", early_kasan_flag);
+> > +
+> > +
+> > +
+> 
+> Why extra blank lines?
 
-Besides, based on this patchset, we can easily remove
-kasan_arch_is_ready() by detecting the arch's support and disable
-kasan_flag_enabled. And when I testing generic/sw_tags/hw_tags on arm64,
-I feel if adding a kernel parameter for choosing different KASAN mode is
-much more convenient than changing kernel config and rebuild. If we
-choose to KASAN_OUTLINE, this even doesn't impact much in production
-environment. I would like to hear your suggestion.
-
-Thanks
-Baoquan
-> 
-> 
-> > So this patchset moves the kasan=on|off out of hw_tags scope and into
-> > common code to make it visible in generic and sw_tags mode too. Then we
-> > can add kasan=off in kdump kernel to reduce the unneeded meomry cost for
-> > kasan.
-> > 
-> > Test:
-> > =====
-> > I only took test on x86_64 for generic mode, and on arm64 for
-> > generic, sw_tags and hw_tags mode. All of them works well.
-> > 
-> > However when I tested sw_tags on a HPE apollo arm64 machine, it always
-> > breaks kernel with a KASAN bug. Even w/o this patchset applied, the bug 
-> > can always be seen too.
-> > 
-> > "BUG: KASAN: invalid-access in pcpu_alloc_noprof+0x42c/0x9a8"
-> > 
-> > I haven't got root cause of the bug, will report the bug later in
-> > another thread.
-> > ====
-> > 
-> > Baoquan He (4):
-> >   mm/kasan: add conditional checks in functions to return directly if
-> >     kasan is disabled
-> >   mm/kasan: move kasan= code to common place
-> >   mm/kasan: don't initialize kasan if it's disabled
-> >   mm/kasan: make kasan=on|off take effect for all three modes
-> > 
-> >  arch/arm/mm/kasan_init.c               |  6 +++++
-> >  arch/arm64/mm/kasan_init.c             |  7 ++++++
-> >  arch/loongarch/mm/kasan_init.c         |  5 ++++
-> >  arch/powerpc/mm/kasan/init_32.c        |  8 +++++-
-> >  arch/powerpc/mm/kasan/init_book3e_64.c |  6 +++++
-> >  arch/powerpc/mm/kasan/init_book3s_64.c |  6 +++++
-> >  arch/riscv/mm/kasan_init.c             |  6 +++++
-> >  arch/um/kernel/mem.c                   |  6 +++++
-> >  arch/x86/mm/kasan_init_64.c            |  6 +++++
-> >  arch/xtensa/mm/kasan_init.c            |  6 +++++
-> >  include/linux/kasan-enabled.h          | 11 ++------
-> >  mm/kasan/common.c                      | 27 ++++++++++++++++++++
-> >  mm/kasan/generic.c                     | 20 +++++++++++++--
-> >  mm/kasan/hw_tags.c                     | 35 ++------------------------
-> >  mm/kasan/init.c                        |  6 +++++
-> >  mm/kasan/quarantine.c                  |  3 +++
-> >  mm/kasan/shadow.c                      | 23 ++++++++++++++++-
-> >  mm/kasan/sw_tags.c                     |  9 +++++++
-> >  18 files changed, 150 insertions(+), 46 deletions(-)
-> > 
-> 
+Good catch, will remove it in v2. Thanks.
 
 
