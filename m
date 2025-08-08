@@ -2,102 +2,117 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C68FC87FD3
-	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 13:08:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 96891C87FDA
+	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 13:12:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8432F6B009A; Fri,  8 Aug 2025 09:08:50 -0400 (EDT)
+	id 3437B6B0089; Fri,  8 Aug 2025 09:12:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F4186B009B; Fri,  8 Aug 2025 09:08:50 -0400 (EDT)
+	id 2F46D6B0096; Fri,  8 Aug 2025 09:12:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E2386B009D; Fri,  8 Aug 2025 09:08:50 -0400 (EDT)
+	id 1E3396B009D; Fri,  8 Aug 2025 09:12:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B62C6B009A
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 09:08:50 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 10F98115200
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 13:08:50 +0000 (UTC)
-X-FDA: 83753620020.02.4147F9D
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 0CFB01C0011
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 13:08:47 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eOug1dTC;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf18.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754658528; a=rsa-sha256;
-	cv=none;
-	b=HgmHA/x8lrCul34zbArroQN0fSZUp7sfaBCUxMuGzpU2YsBEnfnHBnT4aVV/vYAqMFs7L2
-	UYawtuyb9elqiQxhkQF1Bb5XIDLAe0mTjVUEnM3TpLoTXSEJYajKgYxMk9Xh4AJPjY2O1W
-	hMVDsgCmC0lLM2KBiKHzjTyTK9hGjWQ=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eOug1dTC;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf18.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 0C1926B0089
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 09:12:53 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8508DC021B
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 13:12:52 +0000 (UTC)
+X-FDA: 83753630184.14.CA5A0A2
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 940CA80009
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 13:12:50 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AxAW2KtM;
+	spf=pass (imf02.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.182 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754658528;
+	s=arc-20220608; t=1754658770;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M0UiEs4Rh6Bq7jrDzS2r+cL0UHOZ82z9RlYdz/rMI4Q=;
-	b=sXy9+UOTT4wls2AXWEuUWQbfSV7rKKfYCKjw2J5GDTwIfHl3IST/N3WxLsBnglNGnClP+J
-	f6t1feRt5Up1qC9Oj/WkLNIE4cPaDnz1K++MwGdXuotFMeDL9hTZKNTJVZvpKX+C0s8Pq9
-	qPfQDiN2mqmloey+EfWsa3f+g7JEdso=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754658527;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=M0UiEs4Rh6Bq7jrDzS2r+cL0UHOZ82z9RlYdz/rMI4Q=;
-	b=eOug1dTC6it8n8wYx3lwF4SjTLLQZaR5+6iBNAbH7pfkNjgeeNk3wpTqgxCk8izfZQvPmR
-	jHsOiKQMTx+4Cv1G+v2UuY6xQo19I0S0X/eXr1DFH/k3hRXqBvS3D3CCoYZea4njtHdZfU
-	qK36HanQtazl6yv+2yhFkI1oFEmbZyo=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-228-46aA9S8HOqitMnE-iqR_lg-1; Fri,
- 08 Aug 2025 09:08:44 -0400
-X-MC-Unique: 46aA9S8HOqitMnE-iqR_lg-1
-X-Mimecast-MFC-AGG-ID: 46aA9S8HOqitMnE-iqR_lg_1754658522
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 03A801956086;
-	Fri,  8 Aug 2025 13:08:42 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.126])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1A81B19560AD;
-	Fri,  8 Aug 2025 13:08:39 +0000 (UTC)
-Date: Fri, 8 Aug 2025 21:08:35 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: SeongJae Park <sj@kernel.org>, linux-mm@kvack.org,
-	ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com,
-	dvyukov@google.com, vincenzo.frascino@arm.com,
-	akpm@linux-foundation.org, kasan-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org
-Subject: Re: [PATCH 4/4] mm/kasan: make kasan=on|off take effect for all
- three modes
-Message-ID: <aJX20/iccc/LL42B@MiWiFi-R3L-srv>
-References: <20250805062333.121553-5-bhe@redhat.com>
- <20250806052231.619715-1-sj@kernel.org>
- <9ca2790c-1214-47a0-abdc-212ee3ea5e18@lucifer.local>
+	bh=ttVrBE0Ue08luLt7PutqjyPNAQbrHDVeznsyVuSrlxg=;
+	b=Otpigk/iyC7ZOHfkg8gju9QQ5ry5XddzmVrfbi2+CkXLb+49VfGbM4Fm14h8HjGVL5hcyP
+	s4j5xkUu3vqkKaICYyjWu7THpyg4xdVz2wh6OC4gWnb0OTsZD80OcFTFxlTXWYePV4uXby
+	b2uwGzegDkuPWv1JLANkHaJ8fv9YJpY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754658770; a=rsa-sha256;
+	cv=none;
+	b=DZna2BqzHimHlDeirHRQXoQodV5J16aUH4OO0o/mkl/17TnWgoeCjHyx3GvbFeRXJUqwIh
+	SIRsSkqwS7p90EnV/+QaWI1dVQaYSArzn0StDiTkqgMo89SGoDLeZODVxTrG+YHXBqKE5s
+	0bkNDDOCLqzirqtSblN/8yehTds3ug0=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AxAW2KtM;
+	spf=pass (imf02.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.182 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-33245e653bbso15103961fa.1
+        for <linux-mm@kvack.org>; Fri, 08 Aug 2025 06:12:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754658769; x=1755263569; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ttVrBE0Ue08luLt7PutqjyPNAQbrHDVeznsyVuSrlxg=;
+        b=AxAW2KtMjp4HuAZeLoDRnaV9y53MQZxKHf/mOtaaa4D6R+4mLiVvb5lyig/rJkglm9
+         qH6whpy6yfkDIvzXK3MBs2YkEvIZOa11iGft7baPH6SKqPIlGpSiU+RKDCp48slv/QNo
+         Ox8t6xnXzw1Y3BGAm+ZxKlwTJkj8uwIZ5aVMdeYcrL8/EseF+yycTLkSjyOmpPjAe8sl
+         d10AjVVB9AXdyVVCojhS8Fc2FWs8z7kepPXXojU61XL5GU+jCcCyfbhN+8K8TOC8axVp
+         Rc7wWOgRg6wQgOAH2V5t3vB/4RQYTa5ZakW+pHTdJlrC3c8tZbTwKM1qHhFO5R9xehjG
+         nwKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754658769; x=1755263569;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ttVrBE0Ue08luLt7PutqjyPNAQbrHDVeznsyVuSrlxg=;
+        b=TJp3vJjZ3Mi7JsMEzTrux0Br/qh3AgNFt7Dp70MUh6KQKXmNg5GKcYFsoAq4hX0aa+
+         BpO2jEvIZSheDoXkG9/gm+bBHey4o9jrP0cV50/KlK0imZtQ42Dk8RXteKDilNGbMSj9
+         wjoU/9Sjlaw46HSBRvH+xSjTg4r71ni0cM3sEPTV0Z6E19rQ0Tw2fXgtbz/I7ESGInBx
+         Ih7x68Um4Eie3WhP4O67WZENPGXZnio2ATro4mreN/P59Bp7jtveM/RHhHeJbntSOfu6
+         whBN21NHiVoH2E6KXHNuDvqAjhv9AvV3csr6I86aWpRFUtN2LFbZyUhRtTz1GT8YK/yb
+         oz+A==
+X-Forwarded-Encrypted: i=1; AJvYcCWe1DpBNzOjXYQWqA7pP3rLp7DtH34gExglywJK2wZ6DvLoSnkAmvoOrrM7j6XDUZAh88YCmfvcrg==@kvack.org
+X-Gm-Message-State: AOJu0YzjOrQESCa3JdXg8pAOohBF/Rktnxxr1HcGN44r9OHoV20IpOo+
+	LpJD4kqFhqradEtP5KNs9ffqI9jvnlifToUF/aGcejJWseBQDc4CFJww
+X-Gm-Gg: ASbGncvkeDCtaM3GZuMcrD1q7i4pK3oB5srfTh+YRkJDpvq6EIlZvgf/iI0IAR7CmvV
+	nilMlQ5VeHkYj9w+rJj0WHE6S8TzJC3BRkCbDwQcDSc4746L1if61kx1pSqvl5b6Ps8bCuqgKnR
+	BJdbgaPfwwdVZs8QhoKrOYUTSEw9L+1q1g7z5if7V6SPFfTM+XgoOJb6nc+J5UgffOMtNSSBHmU
+	j0asINDAFR1a0vVO/g9GkCzDAHnZGn+SDo4wzYLf5hK33covRaIu9L4j2MKISfdwFvFuLWymj0j
+	FX1O6oZm1RDj1XfH0Sq9SwvMVegcrXyuLSNKDH77HjaOMo/nosqTTvOikPlCRdVuW/mePmiFz+e
+	Odtu8/YjNChrv85ieFe5EL2AKfflfjxyhyIHpsbV1DdrBZPUDVQ==
+X-Google-Smtp-Source: AGHT+IFo5CmOaefgqERYR5w2etAP0DixW0V4maBkIDaveu9VDAFqJz7lV8siIMn1mI1paEnDDReD4w==
+X-Received: by 2002:a05:651c:410f:b0:32a:6b16:3a27 with SMTP id 38308e7fff4ca-333a225c879mr4486721fa.35.1754658768325;
+        Fri, 08 Aug 2025 06:12:48 -0700 (PDT)
+Received: from pc636 (host-90-233-217-11.mobileonline.telia.com. [90.233.217.11])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-33238272944sm28012901fa.13.2025.08.08.06.12.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Aug 2025 06:12:47 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Fri, 8 Aug 2025 15:12:45 +0200
+To: Michal Hocko <mhocko@suse.com>
+Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>, linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>, Baoquan He <bhe@redhat.com>,
+	LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 8/8] mm: Drop __GFP_DIRECT_RECLAIM flag if PF_MEMALLOC is
+ set
+Message-ID: <aJX3zbr8QsIs1LOw@pc636>
+References: <20250807075810.358714-1-urezki@gmail.com>
+ <20250807075810.358714-9-urezki@gmail.com>
+ <aJSU3O-pUnTnl_wP@tiehlicka>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9ca2790c-1214-47a0-abdc-212ee3ea5e18@lucifer.local>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 0CFB01C0011
-X-Stat-Signature: bp3ncg18mzujrj4emtfahxt9kgbbxgru
+In-Reply-To: <aJSU3O-pUnTnl_wP@tiehlicka>
+X-Rspamd-Queue-Id: 940CA80009
+X-Stat-Signature: 4wt8uccyzw796fqdh46b6q5nh35ommbu
 X-Rspam-User: 
-X-HE-Tag: 1754658527-375705
-X-HE-Meta: U2FsdGVkX1/xKDQzMLdfRDvRkpjL8H7tXmpRM3RrglBV3zGY6fcMdTBiPnMARW8uCQ2mXtzji5AG5hytEqHkpwD0OFfWsi191MCA/bcDFi4kRX1MkNIVI5+OVr2QlhiaQKQ8cOiz245G5JoexuSfiDxD8+el1SJ/5FdRdHWio5dQzGa9pcDHRfB+rSRpJGtqbAo9r3dpcMzsEEZjLIPwwxnDYRlUIdf+UfGs0lvwHQw9wU8QlFSGLcpm7qN49pY4VNwlLOTMPzsjosSalXAwzjVNegEBupaMuLEac9MN2B5R8fI8QnMq0ICplJS/uAmvE4U+YnQ3zRrOaiWiir9hjgyP8Q4RjZF14fVa6qjdYRERRL5oDXQsAoaVmLymoc8sk3rMGOAJmBw6csmoaglR5PdMtODUctmUw8Klue4mTI575l1OOA2M+C0oM8M04bUf/IjEL222TkIgrizdljFQ/nsr3J8/Bbwj1+X0IQp/aWL5liPsI/yoejUPoZdgwIY0tczhCEamU8fNU+B/2Ur9JxSRj0DlHaLlXse/XfhjlpPd9//DnyO7MH8CI80hMNklTo/bNdgAOzH7JRNCLYyYjGn8uRwQ/vbctNCiR6BM68/lDyO3VN9pvah1fxqiqaWu023IYTqMNEKD0EwdS3VVK4pSzm2JZDs9Isy5gjsQNhvpLw3FO94/nOsa6IXMsLR94tpKy9o+su51y+YWWt67x7jlWASyA6vei2B5DEzOl1aVFdK5cP7E0O4Vcy7E+cU3BLSd87juRgde1Ro3ceXxCDfPSNUJMDCSUeszcc0SlRMba6I8dJGj8qpny+Ot+IbKRc3F5xqlyNO0MjW1m5WA11a9RxJGI1Lq/KzhSodQIDHOrqmbPcvWAoE99ovSlNxVGxjWv5AHFA9f4QabTYECIMTKh8wNGRwrpycGgk1Y6xa+NOSVHr8hmuuzZqi+1WdqEaP6+f6naRQo2bm6iD8
- JmEgpImX
- b/NEYWkr9i0BCeOi8KY4jCDIDHEgvdvyrDHjxc1YJT79vrv3sRlNzDcO0wKCiAjcXPIADCHAplNGe2GjtzUa3K7YvNONJ7/AGsh/riqv7vdRQXmKixJcYAeGmLIijQvDnYukBvDNItfJXRbG+Zw9mrL/2CsVATXqddeeBUOG5EEWasvIjYJoTn0W+zwA72+kKJjuEHCP5i/9RJYLhjitWvaWEiAfSujIIpMhSvY3dd37cjGsTqkh+Ri4GOzMF9D5a4p5UYdb6L+iS1y9518vFaUpFLPKP0Ltv0AdBUaXTFxAXNMbD+MRHgWpImNXrXqyEB98E7K0vAQ3CzfcVEwkIOmgsPac9Z4KAmWG4FVucEJ1yYyn1a82OFlPF4hpToBTtl6D6dVPAoPBhoRz5uH3x1ti2dKQB7BD4xcT8UjjDITVY1ngLdXQ1p5g0uj38fIq2kkFUNZgqi+7wYiMjav3qhnw/HQxZukZNuSI0r8vDFW6yYMVjxbCLqjUPow==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1754658770-649469
+X-HE-Meta: U2FsdGVkX1//CM3OqOTPDoJ1LT527L9zNwm/Li+xh2UZAhK7sLVFRa5gSXn/xKSe7/bnJYa9Qhjo6tJh+A+2W4kO33//osTNOBLgW8OG0/f6OipEcvG+dzA3sB6kwjYkWHohd66J6PwF0jCHEcjAtud4X3tT43IIsUhl4vS44zh8kOe8SsaYmIU5iuaOLxWtevdOK2sgEf0uU3lzSQhNiy7Q/7P5gGqWR4h6X0g1PL4o6iil7+dPD0V6LcRb4Gz5soyRVhVSFVqjnRdDT1HAM6HI70IswLrvVIRnDCzZKKj1V8w+qZpSMfgbOcXPIoOkT3poFjm/en4H4Ye6Oq6sAgm9xhjeY3KKmQRZydLzDc2K2m7xlrF18FfVx/USPgpDEWY7GMLHP3T2g81yMZnjAgVmVGVAP2t52j4WZInrkBCjIOqGxBfNtgxkoo7f1+FtoDB1JVenFzNKwxbe45+zOpjUo+v9P6dIwswuflPXWfncGTgYWuhumJI0aUBj1xftHNleST8w89wiSi97lJXNhHe04fHQ50DDRdrDEW/9FnCgGbSOukcsaTV6TTcxNGedxZCt3R8EBFwB7/S1Y+jofLZXTG0U45dv41/iomMdq1SG008pNcBNck3ULeuxmrsT6VDnV9eWH6J1QFUypB1+8lClBOVdRfAtKLby+D3YitMrdWjxpO76b3oqeGc8qu8v+avTlPOVM9bNW9fsHbBzTipOSXM1ZwIWmCKe1OuWMXnQLdiHACMbrDlsRCDbVpuFA809sDAZNKzwC5Dl+QkK86BPK/MSRTgW1T/nl2s2NQqV9QQTAOumA2G1T9wFdbSoeQ3X1rpULDajX5g4/G2aYR/WkscOb6caH/qT/FLj8Amf1KOzQ/HZQesz6WM1O/6yQGyI4CaQiEFXhQnPFPlyXK+AC6DnSfKkMgJA+BYJs9t37YAwBKV/DzWM4kx6RRPCy++bP54ixLpYpR2FjHf
+ cRKYTSTe
+ z5JOO9WFe82lMhU3DSK/EyI4ZOFbiFlA5dxg6Whldpi6p539+0ml67Nt5CvJ7i5oD9AZZ9WkLQ0//7DwI+KWOz8jrVbWXXe+RSLAKGYf2Gnwgtv1UlMg9kuHh+me3zWw5xRZI1porCRxZSCNw5IN+rIvgzCXke+LsZtElRQM7iDbKEqw+HUSqSSL+kFQ9TNO1k+19i6uUGYvemy3RSlCjFa0xxBooC2WSxvpVGoVHtJDkZN3xMWt2o7GkHt07NxLryBD0q6OJbOvthsqUxZ2Qip7oA7UnJ9qSKBCwUS/blCWTaVizvxVXYP61+IF1YLSibBzAMRahVJM4UgCO97Z9Pyrl7KkjuBEtEXHDJxRJ3DAWhvGHRLtewcq46APN7T8xsztaYwLUe2RmtFYOaqgmPyZNh/VBDeAwPzazOSW4ACN/CyPuTreCmv4ByKV5X9/mnYDEkfXZtpOLLC8W5YTESjCsI5r2IkTfGmwl
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,101 +121,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08/06/25 at 05:26pm, Lorenzo Stoakes wrote:
-> On Tue, Aug 05, 2025 at 10:22:31PM -0700, SeongJae Park wrote:
-> > Hello Baoqua,
-> >
-> > On Tue,  5 Aug 2025 14:23:33 +0800 Baoquan He <bhe@redhat.com> wrote:
-> >
-> > > Now everything is ready, set kasan=off can disable kasan for all
-> > > three modes.
-> > >
-> > > Signed-off-by: Baoquan He <bhe@redhat.com>
-> > > ---
-> > >  include/linux/kasan-enabled.h | 11 +----------
-> > >  1 file changed, 1 insertion(+), 10 deletions(-)
-> > >
-> > > diff --git a/include/linux/kasan-enabled.h b/include/linux/kasan-enabled.h
-> > > index 32f2d19f599f..b5857e15ef14 100644
-> > > --- a/include/linux/kasan-enabled.h
-> > > +++ b/include/linux/kasan-enabled.h
-> > > @@ -8,30 +8,21 @@ extern bool kasan_arg_disabled;
-> > >
-> > >  DECLARE_STATIC_KEY_FALSE(kasan_flag_enabled);
-> > >
-> > > -#ifdef CONFIG_KASAN_HW_TAGS
-> > > -
-> > >  static __always_inline bool kasan_enabled(void)
-> > >  {
-> > >  	return static_branch_likely(&kasan_flag_enabled);
-> > >  }
-> >
-> > I found mm-new build fails when CONFIG_KASAN is unset as below, and 'git
-> > bisect' points this patch.
+On Thu, Aug 07, 2025 at 01:58:20PM +0200, Michal Hocko wrote:
+> On Thu 07-08-25 09:58:10, Uladzislau Rezki wrote:
+> > The memory allocator already avoids reclaim when PF_MEMALLOC is set.
+> > Clear __GFP_DIRECT_RECLAIM explicitly to suppress might_alloc() warnings
+> > to make more correct behavior.
 > 
-> Yup just hit this + bisected here.
+> Rather than chaning the gfp mask would it make more sense to update
+> might_alloc instead?
+> 
+Hm.. I was thinking about it but decided to drop the __GFP_DIRECT_RECLAIM
+instead just to guarantee a no-reclaim behaviour, as it is written now to
+the flag.
 
-Sorry for the trouble and thanks for reporting.
+From the other hand after this patch we would have some unneeded/dead
+checks(if i do not missing anything). For example:
 
-> 
-> >
-> >       LD      .tmp_vmlinux1
-> >     ld: lib/stackdepot.o:(__jump_table+0x8): undefined reference to `kasan_flag_enabled'
-> >
-> > Since kasna_flag_enabled is defined in mm/kasan/common.c, I confirmed diff like
-> > below fixes this.  I think it may not be a correct fix though, since I didn't
-> > read this patchset thoroughly.
-> >
-> > diff --git a/include/linux/kasan-enabled.h b/include/linux/kasan-enabled.h
-> > index b5857e15ef14..a53d112b1020 100644
-> > --- a/include/linux/kasan-enabled.h
-> > +++ b/include/linux/kasan-enabled.h
-> > @@ -8,11 +8,22 @@ extern bool kasan_arg_disabled;
-> >
-> >  DECLARE_STATIC_KEY_FALSE(kasan_flag_enabled);
-> >
-> > +#ifdef CONFIG_KASAN
-> > +
-> 
-> Shouldn't we put this above the static key declaration?
-> 
-> Feels like the whole header should be included really.
+[1]
+    WARN_ON_ONCE(!can_direct_reclaim);
+    /*
+     * PF_MEMALLOC request from this context is rather bizarre
+     * because we cannot reclaim anything and only can loop waiting
+     * for somebody to do a work for us.
+     */
+    WARN_ON_ONCE(current->flags & PF_MEMALLOC);
+[2]
+    /* no reclaim without waiting on it */
+    if (!(gfp_mask & __GFP_DIRECT_RECLAIM))
+        return false;
 
-You are right, kasan_flag_enabled should be included in CONFIG_KASAN
-ifdeffery scope.
+    /* this guy won't enter reclaim */
+    if (current->flags & PF_MEMALLOC)
+        return false;
 
-Since CONFIG_KASAN_HW_TAGS depends on CONFIG_KASAN, we may not need
-include below CONFIG_KASAN_HW_TAGS ifdeffery into CONFIG_KASAN ifdeffery
-scope. Not sure if this is incorrect.
+[3]
+    /* Caller is not willing to reclaim, we can't balance anything */
+    if (!can_direct_reclaim)
+        goto nopage;
 
-Thanks a lot for checking this.
-> 
-> >  static __always_inline bool kasan_enabled(void)
-> >  {
-> >  	return static_branch_likely(&kasan_flag_enabled);
-> >  }
-> >
-> > +#else /* CONFIG_KASAN */
-> > +
-> > +static inline bool kasan_enabled(void)
-> > +{
-> > +	return false;
-> > +}
-> > +
-> > +#endif
-> > +
-> >  #ifdef CONFIG_KASAN_HW_TAGS
-> >  static inline bool kasan_hw_tags_enabled(void)
-> >  {
-> >
-> >
-> > [...]
-> >
-> > Thanks,
-> > SJ
-> >
-> 
-> Cheers, Lorenzo
-> 
+    /* Avoid recursion of direct reclaim */
+    if (current->flags & PF_MEMALLOC)
+        goto nopage;
+etc.
 
+But, yes, might_alloc() can be modified also.
+
+--
+Uladzislau Rezki
 
