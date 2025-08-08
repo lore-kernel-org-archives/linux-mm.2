@@ -2,124 +2,134 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D79FC87FCB
-	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 20:18:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 52A72C87FCB
+	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 20:20:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 944A16B009A; Fri,  8 Aug 2025 16:18:14 -0400 (EDT)
+	id EA0F66B008C; Fri,  8 Aug 2025 16:20:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F6B96B009B; Fri,  8 Aug 2025 16:18:14 -0400 (EDT)
+	id E78CA6B009D; Fri,  8 Aug 2025 16:20:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76F3C6B009C; Fri,  8 Aug 2025 16:18:14 -0400 (EDT)
+	id D8E3E6B009E; Fri,  8 Aug 2025 16:20:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 581926B009A
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 16:18:14 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 19DDF1A04A0
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 20:18:14 +0000 (UTC)
-X-FDA: 83754702108.22.3169B43
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 57C6340003
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 20:18:12 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=hZvnlGui;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B9ECE6B008C
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 16:20:38 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 456BF11614E
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 20:20:38 +0000 (UTC)
+X-FDA: 83754708156.28.D186762
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 6C2DAA000E
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 20:20:36 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=iyZ86THk;
 	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754684292; a=rsa-sha256;
+	spf=pass (imf15.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754684436; a=rsa-sha256;
 	cv=none;
-	b=lNRo34vqtOR/vk+KPhi9d36quzJ/3alOQE1yMX0cZgETdvbSdpJtkOC77HsGf06moP7ScR
-	z3TbDwW6vnPtM5F0jc/UjgAqzHvs/37MxjjSz/ITonrPbXSXFtrSEWK2xxQw8X/zVc0Dcf
-	/XgSwfxHe5sLm6nVm9/f00JSehZEwy8=
+	b=hOvgCWjPgrvAob5jBF+4Pe/wvBq+00cFkaO4JmrEiDJJvnmoiHf4LcNG/gQ6v6Blf0ZCJi
+	1OhS5ZaBVMfp2/Rt8MjGuVOksGf47BWBgUp2+glhB2h6668VGJGQ1LfpOk4yghstAsw3lh
+	hRhNir7Bg3MdcVrcpi3S97O3Dvb84Vw=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=hZvnlGui;
+	imf15.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=iyZ86THk;
 	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	spf=pass (imf15.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754684292;
+	s=arc-20220608; t=1754684436;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yc1Ft/b3qye0Nn2AQUyZWguJ2koiO3eAJtJCginIFUo=;
-	b=hQ3PO8Rp/TqyvzJPtmjMSrBA9ZPWMIJ6b6b/vJgY8l0QaFLgdJ51JAwD81sMHewhtoESoQ
-	NlpVBAJS12VfATBZzq0nJpNYXxDC9xTBIaLlHWOSiw8CNgQQ7v5R7lC37W6EabSQQUnipA
-	jPWBR3RFbAVcEpcsr5UgRFQgQetgmMA=
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4b062b6d51aso29203871cf.2
-        for <linux-mm@kvack.org>; Fri, 08 Aug 2025 13:18:12 -0700 (PDT)
+	bh=pQYa91kkeSfQG6Jm1FdT+mkrUk8mk+nsXZw2Gvf2uBM=;
+	b=L9zmjSG9W7PbUN1bPEzF38hTeoJHrBjn7DmnZAvrdZNWJ0YaCZXx1zl49IZBEZdeJ3kB3z
+	oIiA9VjhbMkoPQg3Y0At34eKZffb0LzcIOQZPph4yG/3o6OWWUg5kFV+u+vjDQ3B5nyr2r
+	XQoZU0Kb8hLWCSv7jNzFqdv7F1j/Xjw=
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-4b06d6cb45fso31336281cf.1
+        for <linux-mm@kvack.org>; Fri, 08 Aug 2025 13:20:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1754684291; x=1755289091; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yc1Ft/b3qye0Nn2AQUyZWguJ2koiO3eAJtJCginIFUo=;
-        b=hZvnlGuiGTOKsyTdGp3QuW+J3mHAP5xknq3mdQMbbHVPA+VeZW2HT8/2IGz2PNZH1O
-         xEB0rk1OV8FGgiZGhAiYWSdImbhPVQhcCw0ahmhrlp/sxge2S4uz/C8AqOQRkEFnKI7i
-         oJFj4Jhh+P3kv0MTdQSKNwkosMIFufYtoUtJY0b20ySYCulEaI066KTPuC8cCANPQw6V
-         llZKWzx0iPPMmVmAI6cs6eNM04HCWkb00K5s4x5Vc2vQ4HHM0u7oQcEvnGRTawv1izEP
-         nsWyk1D/LmzAIxoJpwbaV3ivreKA6tCS2mWD2R1556KU0svLtb3+NCed/ToRAj9BTEn1
-         ML6Q==
+        d=soleen.com; s=google; t=1754684435; x=1755289235; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pQYa91kkeSfQG6Jm1FdT+mkrUk8mk+nsXZw2Gvf2uBM=;
+        b=iyZ86THkx1Vb+tZGkIXbScM4Buyb1UtJAjJEsFpmQqkybbVJUd+iZxjg9Bjqw6oDc5
+         mF5axWSJBxQK39sjvg8mkdGXFALcclDwXWbFR4z6vpgXvTb6j3Bi2l2bSdLU5WWLHnfQ
+         AXYRHc8S7sRpt8OvQxHicUG0kznlvg+fD9kKq+M7j0F+r1FVRotPFv/2UDLMEOAErxX0
+         oK3WrRg7944bkgcvESmUhLX3dZzmyRKD31ttNWoB5ypPcOzoympm28eYVbHbhvTtf8Kr
+         e3fawtDwaBn+cY5W6gi5CJB7HCdVwB1fGJSEWN3hKxqw169z/X8sXhIQOQEU1b65iVdm
+         1Q5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754684291; x=1755289091;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1754684435; x=1755289235;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=yc1Ft/b3qye0Nn2AQUyZWguJ2koiO3eAJtJCginIFUo=;
-        b=MB/0jFedORLWgEMUga6/fNZ4e2H/D3rFmDIuQIVDgLTl+a65jT/EOOXslXwViGXJzU
-         3f1ksgP6etrONjwc6gL9f2OlMPJN08c71fJrBqIcb+iKL6TWgcYRmelz2w3oFCDj5FsS
-         ytrveTm4Z11+FTve8aanmMEQT7f/ObvNLdAVywX2DTiDMkrvDbB/3r3XvYvlNOZ+Ukyp
-         5YXBrAqddZoXw8we+u2FUorew4OdI20XKXRoQBN2FBVnavyRf9/VGD8hrfs8cURPinIO
-         Mp+nJjYfO4Vc1ibkdSncFfllRuO1s9C44U/KRKQ8hxy9q0bvPC1j+fnRp8+fnX/68AhU
-         pkEA==
-X-Forwarded-Encrypted: i=1; AJvYcCV59SWBzhqb8Dob80t+J2pyjqHfhPXADcavmdtrvFFFYf2g5r6r1xTRO2lWRg77x0NtMOrzxFdX3Q==@kvack.org
-X-Gm-Message-State: AOJu0YypI8cQ5KeyUOvLmD8hrC9Ka0N5MfvQRG70qlEF63Y6voSZtr8b
-	q43QjqfmO4yPL8HKr8Mksz47Xp4QICDXb5jd/EnmsulpflZuG5vpll3q++2kqjw7GlM=
-X-Gm-Gg: ASbGncsSDVb5QpY2D7u7uFbnUTlr4PvAyPQqa8+mfs34WSWxn+j1MsD03c1GlsFZV9d
-	I84kS+KjrtmFigtRpsNfKxMHW4DGASDEZ1zVZoP4EOEjfbgT/qp3mfZKypzwBgoil9W1krcyP6M
-	zErOlAd+dO0QnAp0V9/s18uqjyoGdVe4FgZ3yF2XOMCA428Dte8knH+snI9lUcPFMOIejNWiiJT
-	bBjen1pRGYwG9qL83YggQca2Z00Xqq7LMncuJ+HN6ATMMdo/6eKbW0oaQWw5avTna4/ZGts5Tyv
-	/VJeUoxtQdtUEVpCMOf07PU67JVDbVYvDXIqSJ7ume0tUNw1ccgrNNMkD/1tWwyRItNe5nHq3XS
-	gNPBtsKvF3y3hbODXeU0I5unPXCrOt8y0tLyF/5bdThH1kFKIODfXLUgzDioVxa+lKke+z+MDB2
-	6tEP1+d1saTjPiurQHhqUK9Do=
-X-Google-Smtp-Source: AGHT+IEe17+1VnFzVVxjjjvnJD4w9EO7qMdCyqSXThf7XuoxHsa6VF4qQAx4towsxC8CogahdlN4Jw==
-X-Received: by 2002:ac8:58c5:0:b0:4b0:8773:9b0f with SMTP id d75a77b69052e-4b0aed0f079mr63563811cf.10.1754684291399;
-        Fri, 08 Aug 2025 13:18:11 -0700 (PDT)
-Received: from soleen.c.googlers.com.com (235.247.85.34.bc.googleusercontent.com. [34.85.247.235])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b07c80ddbbsm59490131cf.57.2025.08.08.13.18.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Aug 2025 13:18:10 -0700 (PDT)
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: akpm@linux-foundation.org,
-	bhe@redhat.com,
-	pasha.tatashin@soleen.com,
-	rppt@kernel.org,
-	arnd@arndb.de,
-	coxu@redhat.com,
-	dave@vasilevsky.ca,
-	ebiggers@google.com,
-	graf@amazon.com,
-	changyuanl@google.com,
-	kees@kernel.org,
-	linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org,
-	linux-mm@kvack.org
-Subject: [PATCH v3 3/3] kho: warn if KHO is disabled due to an error
-Date: Fri,  8 Aug 2025 20:18:04 +0000
-Message-ID: <20250808201804.772010-4-pasha.tatashin@soleen.com>
-X-Mailer: git-send-email 2.50.1.703.g449372360f-goog
-In-Reply-To: <20250808201804.772010-1-pasha.tatashin@soleen.com>
-References: <20250808201804.772010-1-pasha.tatashin@soleen.com>
+        bh=pQYa91kkeSfQG6Jm1FdT+mkrUk8mk+nsXZw2Gvf2uBM=;
+        b=whudAERCANxN3MDgCAQE14tINBR27x8xWZiVoSME3bmw+L13Bo4RWQCzmSzyj/AYTY
+         6IFCugC1x0tJDCw1jy1OrHSu9pe48ZXlJ84Py8oE7plHMv1dTTDgtF/Tc9buB2KPNzhV
+         +2qWxVfqo5z6Cv2+3kJEOmgzO/rx61/6g1AHwQpo1eKgtlBu+dVIb3OBJ+2TcD3x0WDV
+         FAWolVS5AnGHhifEYVnY8YBPC1S67KJs9BtQKd+jWqBhssLiHuFSnnJGHjMGADOPtWuk
+         mVwKwl5EBX75YYo/+M4vnyyU6gFymngehW8zyHmcUelCoqijqXrYCZo53BLZN90JolTG
+         jpCA==
+X-Forwarded-Encrypted: i=1; AJvYcCX3+rzeZ3zG5FZFko1jloxxrOJ3yd7zrKbKlSMvbKgj+v2GftPMR77NoJp5hzwFDSF+9Byn4ytcUA==@kvack.org
+X-Gm-Message-State: AOJu0YyXQuFyaNmWHjqWU43AoSxcJ8ibHjGMBBu7tOvsR4UJtbeGCz0g
+	aEb8MVd7ex8Z8aP4cI1wpIP2jfkQOTPBRo4YHOh6UEWpgYHTOPGC8zl8tw+2nsuYb1/nBkKPs9o
+	Lt8FTLlKXi+DIJgTiRk3PR32Maa9SvkIBdQeB0INw3g==
+X-Gm-Gg: ASbGnctzDNiWOwAoDebFXds1aV85v/MIWqn/Suoo02tvEooAI8bwYb/uf2OihlOWsr2
+	tU7wHsNIZvJJ33Et3b8chASZdbUTfws5luxpTIu7Z7UujMKVPEx7keptJisY5f4FtiR42gNWCs3
+	5EaNZun4pRLZqctofHfj5YW18lCMloLgMJInisnlmo1jv25D1xstGmYm1SjB9TeODdjUMraF8+w
+	37e
+X-Google-Smtp-Source: AGHT+IEo3U6rdysgoF2C0xCMhrgpG0Agqof6n2ba9uwRUTWht+9WRzi5tte7RjhfTHV9iSsZvxQedOnK/ZZyoy8est4=
+X-Received: by 2002:a05:622a:1a0a:b0:4b0:6cef:19d2 with SMTP id
+ d75a77b69052e-4b0aed031fcmr51001501cf.8.1754684435323; Fri, 08 Aug 2025
+ 13:20:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: gr1khozdtm1np9odmhcmkhbxcmgho8j5
+References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
+ <20250807014442.3829950-2-pasha.tatashin@soleen.com> <mafs0o6sqavkx.fsf@kernel.org>
+ <mafs0bjoqav4j.fsf@kernel.org> <CA+CK2bBoMNEfyFKgvKR0JvECpZrGKP1mEbC_fo8SqystEBAQUA@mail.gmail.com>
+ <20250808120616.40842e9a9fdc056c9eb74123@linux-foundation.org> <CA+CK2bCVziiUZzdGaEabmPSB4Dq41QZe7gVxtgwy4pWmpo=D_w@mail.gmail.com>
+In-Reply-To: <CA+CK2bCVziiUZzdGaEabmPSB4Dq41QZe7gVxtgwy4pWmpo=D_w@mail.gmail.com>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Fri, 8 Aug 2025 20:19:58 +0000
+X-Gm-Features: Ac12FXymO_RsH5GAn7D-2QfHaIXjJtVjSwQOC9gpco0na8ETzrHiY720l5D8Qt8
+Message-ID: <CA+CK2bBjpZLiqK_63L-o+vxotz5fTUMpO4NgUaJ=sEV72qGyqg@mail.gmail.com>
+Subject: Re: [PATCH v3 01/30] kho: init new_physxa->phys_bits to fix lockdep
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Pratyush Yadav <pratyush@kernel.org>, jasonmiu@google.com, graf@amazon.com, 
+	changyuanl@google.com, rppt@kernel.org, dmatlack@google.com, 
+	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org, 
+	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, ojeda@kernel.org, 
+	aliceryhl@google.com, masahiroy@kernel.org, tj@kernel.org, 
+	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev, 
+	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com, 
+	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org, 
+	dan.j.williams@intel.com, david@redhat.com, joel.granados@kernel.org, 
+	rostedt@goodmis.org, anna.schumaker@oracle.com, song@kernel.org, 
+	zhangguopeng@kylinos.cn, linux@weissschuh.net, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-mm@kvack.org, gregkh@linuxfoundation.org, 
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, rafael@kernel.org, 
+	dakr@kernel.org, bartosz.golaszewski@linaro.org, cw00.choi@samsung.com, 
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com, Jonathan.Cameron@huawei.com, 
+	quic_zijuhu@quicinc.com, aleksander.lobakin@intel.com, ira.weiny@intel.com, 
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
+	stuart.w.hayes@gmail.com, lennart@poettering.net, brauner@kernel.org, 
+	linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, saeedm@nvidia.com, 
+	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, leonro@nvidia.com, 
+	witu@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: owrnfjmq79zy3dmnk5x3psdnfty6tj4h
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 57C6340003
+X-Rspamd-Queue-Id: 6C2DAA000E
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1754684292-752040
-X-HE-Meta: U2FsdGVkX1+q96QwQs3/oeSZ01b4vBS+4XldnlO6mFSKehvTeMqecPUdIBTAKRUcMpcpgdRLVBi8pBO+dqsqLrqoRNVHmLuoX0ufWjqGhO8zTdQ5CX3e1ul0KuMK+PfJrU/7sz5+ThWRx9ggi2Rb/HrkEagu9re7IKIk2fbUajCXG86pMO69uzPp3MI+7O0srwVLD6HBr5TcMGE7TER6Ir4gWijCm9DcF1vY54KWMXHi7C9ucJqQjg3rvpz6qSvVw/cOQPFruArRch9H5gtbRjzlrS3ZrQBUcynIV6XLxQuY31CkF53YSAN3LARd1ioTq0NGWT8pWmQJ0SZ4BUzf7eJ+aULllMMe7ldLA+uqvSrQJL5DWuD3+Un4yi8tX7H4NbwquSZdAUM6tMuO6KsLKREVYch1imyomHt+Q+vos7mbTz35cCdYLu7LvwP5c/Ec87kMwOIz97Eye5p1KqjT0/E3hIo2s31ABQ0NtfcF1xdlImLRMV2V7nqGMxkAw13/1eUuiz6WXBTN3hRUjtPUC/2IRbr52i1FqWN/zJFZL/ZQR+IqSnZnIikvBtNuOfqrDw0fLWdKJU6vikdJa/xklV5dMSmMAfDaUg8bqS3atwy0+rNviGvAgT6TVSx/l/pUo04WXAlb5ckZPtp5GvVVAFtMzlGWVmva4q5CaomECyIHyUOgmRJealIzLI/l6ZbLAse2ZLyDO1ZBXcLN9mPEwKxa6ZIo5XRU9TSihF+UtGyGboYSnJ5gYA3qyaB0UKdu+gJdGrWLjllQ4V4hxz1Ft53QeCSKMPt4Xrlbs9PGmXXJEAI3dSdzvlsgmpdSbCJbKY5+hDYw21tHtF1XUWx/129SFrbLS7Inv3yK627LeHGcMc90z4xbVPiB8yDsxpfRMRhyQ1cdOtb+2T0BHzFvhDmaRZURFuyYKPMZaOFpZBeG4LImMRCWyLsXAArTdK2MIzVd5hS2R/KznEjhVJb
- 9h7YnwVX
- NJykxXkbkq+FBpXWuOwPnBCKYBz21i2T5pdXKrYY+4mGwrz/Wf8Cwhn39ngAzSTy251Qx4807pQq6APb8R40vgC8pmLwHvxDeupiNcBlTiL8Q3wZTG4+7G/2Qr61tYTN5AEYvBmvponNTxjTybEqgliLC7x833ikP3q6SRdr8AhPDyHWh15255rGD5Aw9ua92fjbo2LlkeohZUlCATk5DkkkD95Jfth7ijnY30b1YoRMlRtUu1rjy1m9g1GmWVdbBtjQ7spxiWFtGyaakKQnUOERw2MFofNo5CtH9pqQTBjVqjIPz3KeTaF0xdvTCckPQU6DNP/RFluxYDqT88iwvieBaWyxiT1r/Zmp/a5pGxFc7KX8m5v3eEYKK7rJNjS2rBp8G
+X-HE-Tag: 1754684436-900059
+X-HE-Meta: U2FsdGVkX19fTdxOa+sF87rFgSWQ4aCxKo2LOUj1KDN5PGz8F7dM/OQ9q0dUKo9dOrA492F1/8Dcrx3NdnrXgxAHPeTzxvsQsVQ8TO0Plx0cED0AHrHKwJ0WH20n1LXivU7PllMKb5Rrr6hxsWrO58aIH7m0TEsYPRwiid/GU/NxZJaF22e34yR7KsXijBG68niZbQw9I1nhDc/ayAShzm8kD2nJKrk9r/ck8TxsK+n8mqf+y4JC7+OnGeYkTU+CV4lFn1dc6NSg5R1oC09t9Zefs71FhIHFP+w0uLeRH80wWHOHYVaYcSk59demkP0qtjT0R1xnzsgXdUIYJP0UC0Kzk5/fcJPR28gZi++uKxrAkEMQFvq5KlIrszlhYrYYmGuS9UK0IVDri8xtTazx9ONuIwkzpmbasvOpqoCi0ATrZClFCvB+wQD/ubpgEzfxuV5K/NjnBebirZfxMSokYuwSflRE8EhwYR4W2ic/LBqbG9qiOu2CVMKZRpzh3wdik8QzWHHMABTbm7qi+BLAT0YsAzGpZ2d7/xO23j5bzdjrdV4JLosKDahGc+cB7nvRkpFGoqiGN6TDPbsgl0URXUryRn9wYboLUmnhAs8LM3ByMig9R1sguhcyY2OjZLytFRE62qRHgUtN2aq4WhFRe3KWJxnt0FSjO9piF2WQsc0VdyshQaRWc9J4SkB6vYe8TYYZ6kN5SzT2/9TymUPYDIKKlyw1ZT3qH5hWZE/s5j81MKHzA+e+hko/4kB3usmnUVjByDEa1nq7cKrF/uqmugmXcNnQrcSXcpLTcwOJvHB3FY0txW24ezpGvK+Ike9kHbw1LGgT/dRiHD50QA6V+CypY3uFi+XgG9jhD6RvIS6orp9lucpZNsCUX0rDbxBnPj2Q3R8v1FWhExZFqnfWXar8W0atNBuXrtHfLX7VBO/Ubv+iG9Z3DeCniN36OoHGjRvFxn2tDuOobyxcOZd
+ /9gDbUZc
+ HbdMD/oQe5HyzuZRyQxSYPnaTc63iTzQV+pPlAPsC0dcKTuUDHb9FEjUyfkbP+AkByGRr/x16xkVnP7OS6XU/VfWXZx/DwXR9CRoT2rWU4b0hqh31sjBoDOSG3RlYgBDxE5O4u+FRZIWaz2Lng6rR/NNjEsutCvXPpf/4132Mf911Z2aeGT4b4WuxJBYtPTsmGwPf9qhn9q+5X6ix+/Vw7KNzgyFNAY8O/Ww+howKDETafgGaGpDvHMSkhyxRIaqjXi3GRT1D9xph9lBbof24OekyV2ZkB2wZwby/At4d9cIbOP70Y5nBxQuWQBHyd30HFsk9HpwEUa1Z/FXUovtJ4yBX2rldmhHJfW7/nbX3QgztmG9LyaVCypPsCwgK2U6U5VxS/gI9Kis1i0c=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,34 +138,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-During boot scratch area is allocated based on command line
-parameters or auto calculated. However, scratch area may fail
-to allocate, and in that case KHO is disabled. Currently,
-no warning is printed that KHO is disabled, which makes it
-confusing for the end user to figure out why KHO is not
-available. Add the missing warning message.
+On Fri, Aug 8, 2025 at 7:51=E2=80=AFPM Pasha Tatashin <pasha.tatashin@solee=
+n.com> wrote:
+>
+> > > Thanks Pratyush, I will make this simplification change if Andrew doe=
+s
+> > > not take this patch in before the next revision.
+> > >
+> >
+> > Yes please on the simplification - the original has an irritating
+> > amount of kinda duplication of things from other places.  Perhaps a bit
+> > of a redo of these functions would clean things up.  But later.
+> >
+> > Can we please have this as a standalone hotfix patch with a cc:stable?
 
-Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Acked-by: Pratyush Yadav <pratyush@kernel.org>
-Cc: stable@vger.kernel.org
----
- kernel/kexec_handover.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
-index 65145972d6d6..ecd1ac210dbd 100644
---- a/kernel/kexec_handover.c
-+++ b/kernel/kexec_handover.c
-@@ -564,6 +564,7 @@ static void __init kho_reserve_scratch(void)
- err_free_scratch_desc:
- 	memblock_free(kho_scratch, kho_scratch_cnt * sizeof(*kho_scratch));
- err_disable_kho:
-+	pr_warn("Failed to reserve scratch area, disabling kexec handover\n");
- 	kho_enable = false;
- }
- 
--- 
-2.50.1.703.g449372360f-goog
-
+Done:
+https://lore.kernel.org/all/20250808201804.772010-1-pasha.tatashin@soleen.c=
+om
 
