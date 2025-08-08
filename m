@@ -2,176 +2,175 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B2A2DC87FD3
-	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 14:19:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5F760C87FD3
+	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 14:24:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 55E5F6B0093; Fri,  8 Aug 2025 10:19:14 -0400 (EDT)
+	id D0A1C6B009B; Fri,  8 Aug 2025 10:24:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5359E6B0095; Fri,  8 Aug 2025 10:19:14 -0400 (EDT)
+	id CE18B6B009C; Fri,  8 Aug 2025 10:24:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4245C6B0096; Fri,  8 Aug 2025 10:19:14 -0400 (EDT)
+	id BF6FD6B009D; Fri,  8 Aug 2025 10:24:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 33EAF6B0093
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 10:19:14 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CE02D16022E
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 14:19:13 +0000 (UTC)
-X-FDA: 83753797386.23.5F3C896
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 6123114000F
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 14:19:11 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yTD960BM;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=WynrgH2g;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yTD960BM;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=WynrgH2g;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B11D96B009B
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 10:24:01 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 33FE6B696C
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 14:24:00 +0000 (UTC)
+X-FDA: 83753809440.07.99858AA
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 81420A0003
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 14:23:57 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eB7Nd1JZ;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf15.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754662751;
+	s=arc-20220608; t=1754663037;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1GRMQSPxhTZ+osWx629SSW9svJoXEBjayeIwedE8efI=;
-	b=jbkvgEJuZBFbF6jep9PLOthYCV4kXeK0U+Vg+VF9mYRZ21rpp8Z5tnWLtAN2s9KPNAMmvp
-	AsppBgXNOWBX/DoiapFuUuXY3i89HNUXLhq5pEDVqY6/kgj7h3DV1VaGtHTBSrC+rephsv
-	54/wt4y+Y8ZesdmZUZ9J1guKxlMW+mQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754662751; a=rsa-sha256;
+	bh=XoatM0Ku2K5SI5xfNAI9cK1iS0HhuHQQ3g0x13YtE24=;
+	b=2cAuH3QFPrifwpZy6Yvky0Qiy//qhC7y1eHM13ThUMIOBaPHJPkxgbepF4Pl3BRFloL69l
+	RKIVIziz9tW6h9dHgS0eWYS6p3DZckbJymemjWhhoPHFVqkpwHwQM+VK8qQr69JA2P78UT
+	JlMT2t0YDQrDf3Z92vje4fF7wgsaxZg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754663037; a=rsa-sha256;
 	cv=none;
-	b=Lny90G0l7EniRCcG75LfQPazqJtORJ2cVtiM7nxZmLHrwDx71bVpZmWEmIFHfVWdJi/a3p
-	XVTVuZsYYZ1oRtwlS4NHHzvuQl025O8sql9FPNYxVoxk0+aZLyIjrsK3NjjpCleAitjven
-	ulyK9u+AodGKIeq+G4IiuROCTUq5pAo=
+	b=8Kn6nmRWEib2KrimXjZvoyHHHWLfTVeRFUj4X7tH2hu/MhITJ88aUhkbfW3QyU/IuYScP3
+	11ffsaZenNXFDb4ks9rv0H9tJRYBo7Vz35ACkEi80IUe53zLR3TDVI3X6GYFVbViiPqw0G
+	poX2Qcur4e3XcXU11RrtBljx8TV7lXc=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yTD960BM;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=WynrgH2g;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yTD960BM;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=WynrgH2g;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A7983225DD;
-	Fri,  8 Aug 2025 14:19:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1754662749; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eB7Nd1JZ;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf15.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1754663036;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=1GRMQSPxhTZ+osWx629SSW9svJoXEBjayeIwedE8efI=;
-	b=yTD960BMWvZFl65pKovXWnG9Sr86Zaq7tPpCLYrHqUOyEPLjyBsOrQBfa50FDk3GSzyX92
-	dA4DTboTrPktvecX+PtxwGslST1rMYjBi1KI9btKiKS1hEokNpbB3dJisd8pb48VlfZEJ1
-	+8kQxkZeBWaRREEso9j2GRpqrgFd8j8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1754662749;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=1GRMQSPxhTZ+osWx629SSW9svJoXEBjayeIwedE8efI=;
-	b=WynrgH2g+K8FPi5dEzooNNv9te2KjW3x8Ytg5C/Hhy+kSvnwe3xEfu8tgFhxYFRKG6fKxY
-	kPh8XokrUUjbEQCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1754662749; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=1GRMQSPxhTZ+osWx629SSW9svJoXEBjayeIwedE8efI=;
-	b=yTD960BMWvZFl65pKovXWnG9Sr86Zaq7tPpCLYrHqUOyEPLjyBsOrQBfa50FDk3GSzyX92
-	dA4DTboTrPktvecX+PtxwGslST1rMYjBi1KI9btKiKS1hEokNpbB3dJisd8pb48VlfZEJ1
-	+8kQxkZeBWaRREEso9j2GRpqrgFd8j8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1754662749;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=1GRMQSPxhTZ+osWx629SSW9svJoXEBjayeIwedE8efI=;
-	b=WynrgH2g+K8FPi5dEzooNNv9te2KjW3x8Ytg5C/Hhy+kSvnwe3xEfu8tgFhxYFRKG6fKxY
-	kPh8XokrUUjbEQCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8CED31392A;
-	Fri,  8 Aug 2025 14:19:09 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id FdIAIl0HlmghMgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 08 Aug 2025 14:19:09 +0000
-Message-ID: <571c0a24-6bdf-47cd-b336-efff34f48010@suse.cz>
-Date: Fri, 8 Aug 2025 16:19:09 +0200
+	bh=XoatM0Ku2K5SI5xfNAI9cK1iS0HhuHQQ3g0x13YtE24=;
+	b=eB7Nd1JZNxGQywr+SaC9TFxwe5wn4FfFrGoTvMio1e18lS0CSudZvzpW/pQMQOIpU7MhzE
+	etRhUbkh7M2qJaMr+YHT5jlEIYM97/NTx4vuW6pk6+3dnoB0ngH7Hu1q3B8M9MZskKM/pa
+	l9ftKYMhj5wbZq+ghfdLnRcAnjANYVg=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-203-L7Eq4etjP9Omb-bJImnGrQ-1; Fri, 08 Aug 2025 10:23:55 -0400
+X-MC-Unique: L7Eq4etjP9Omb-bJImnGrQ-1
+X-Mimecast-MFC-AGG-ID: L7Eq4etjP9Omb-bJImnGrQ_1754663034
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3b7892c42b7so1458336f8f.0
+        for <linux-mm@kvack.org>; Fri, 08 Aug 2025 07:23:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754663034; x=1755267834;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=XoatM0Ku2K5SI5xfNAI9cK1iS0HhuHQQ3g0x13YtE24=;
+        b=ZQEP2LZ6r7DId73gzgkv+vcLRKnpHbW0Hknw3NwDa2IpflSUqiFGF8bR19x9/vdO3Z
+         17ExDW//woqFd6vew7fm4Wy1ug/F5/CpsBI+LxT57+dZkTa9tTd85BY+VNJbaqMFkKzl
+         Ibj5bTG82gPfjeFgLFs9i0zx1kptmm1wtGissykRjCD8fMjU9+3c5HfAtEnm+6olQgWs
+         t5VgGMkHlUS7ttzElVqi2jWTIfWrCf+5El0FTZbpvwXKJfiIGTXOjBz3nkKdOCE/Ge70
+         uk48ahRWLj0nbLTAeZwcS938EZ8EYKNvUvl8QLyK6Atzx4cD9PIUi8J3Dus/r4267Ugp
+         2B2g==
+X-Forwarded-Encrypted: i=1; AJvYcCUxI1qNInGO/hT+GjyfiV5EhKRtZj6VguRAzHxiZraa4wL10PgNbLrf8lf84/bqHoJwTPgJSaLsAw==@kvack.org
+X-Gm-Message-State: AOJu0Yz5DUHOcCMwGkdLELjgq6cwmkpw/LeVaNu7ZaOB87bDZWkUl4tb
+	vg6wpKIZCIF9irZ+y9lCYCMJSLLG2HwU7SPVKVQGUwCo1E5fXvgNKQnkUYgULMVCzFTLzmy4HvP
+	4leSd3sCUb/jaYbCxLRA5Qh8tWVMswKBcPlffEIOi7XUCzBGrH6jk
+X-Gm-Gg: ASbGncsH6x+6zmGtLtEIJBQ1EgkqDygyT9tpo+0jTOgibCwJc86BusAajBytHE3HPMG
+	/yMMfDzbkTU7LvpsBPpkX8Wm9maKxNrpQauYYym8EFFm4/CfpVZWXeCuTrws1msceI3xGIz0OD2
+	1pdpJH7yo2mqBas0atVo7jAUVoE3+60zi0zr8/PzZZrp4dhtmQrqTkmYTNjhvrdhfwRtFI90GkL
+	XNPhLWKl4aFHPSTRY4dvvZp71CkvJTgAFbh5fA5cGz6+ieyU+WRJQihJDXOSlh0+h+0y388NpuJ
+	fFPAzL1BsJgCh8Wt+TWiCIkHeKJwd491VwAixQKUWeUWqfjTxpCIve7v4k2koynSxA8eNQ1KwKx
+	ppinJCn/a8C34I0/0BWb9B5UQpsb5e3KyclzvvRWa5LZhQgKcnyBn7H/fk4BOtvWF
+X-Received: by 2002:a05:6000:2f84:b0:3b7:9dc1:74a9 with SMTP id ffacd0b85a97d-3b900b7aea4mr2535161f8f.42.1754663034455;
+        Fri, 08 Aug 2025 07:23:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEePpZjK2UFX8XfHhLL2C/dDb4Nzd1zVHG6VBTgVmPIHVSFXe9BgmOEmO8a7NQY0B0WsA+mWQ==
+X-Received: by 2002:a05:6000:2f84:b0:3b7:9dc1:74a9 with SMTP id ffacd0b85a97d-3b900b7aea4mr2535140f8f.42.1754663033969;
+        Fri, 08 Aug 2025 07:23:53 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f25:900:2e1e:d717:2543:c4d6? (p200300d82f2509002e1ed7172543c4d6.dip0.t-ipconnect.de. [2003:d8:2f25:900:2e1e:d717:2543:c4d6])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b8fc28a830sm6142600f8f.16.2025.08.08.07.23.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 08 Aug 2025 07:23:53 -0700 (PDT)
+Message-ID: <687b556e-0196-4a38-986a-2e7b0308e03d@redhat.com>
+Date: Fri, 8 Aug 2025 16:23:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.17 2/3] mm/mremap: catch invalid multi VMA moves earlier
+Subject: Re: [PATCH v4] mm: fix accounting of memmap pages
+To: Sumanth Korikkar <sumanthk@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm <linux-mm@kvack.org>,
+ LKML <linux-kernel@vger.kernel.org>, richard.weiyang@gmail.com
+Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ linux-s390 <linux-s390@vger.kernel.org>
+References: <20250807183545.1424509-1-sumanthk@linux.ibm.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ g3eXuA==
+Organization: Red Hat
+In-Reply-To: <20250807183545.1424509-1-sumanthk@linux.ibm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: dy-kiu53ntMAjx-VBgvWahPiaRuXlSj4YLHbDXbrsMw_1754663034
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>, Jann Horn
- <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- David Hildenbrand <david@redhat.com>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <cover.1754218667.git.lorenzo.stoakes@oracle.com>
- <2b5aad5681573be85b5b8fac61399af6fb6b68b6.1754218667.git.lorenzo.stoakes@oracle.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <2b5aad5681573be85b5b8fac61399af6fb6b68b6.1754218667.git.lorenzo.stoakes@oracle.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 6123114000F
-X-Stat-Signature: np1huw8nupxo19jxrfnouiji9iakreib
+X-Stat-Signature: 6aazqt7or67195r5t3a4n9xrysmft69s
+X-Rspamd-Queue-Id: 81420A0003
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1754662751-17732
-X-HE-Meta: U2FsdGVkX1/bAo9SntWT44UPX/BD8b1QpBFvGtLC98CkWGeIj91ZRc+Y7wriUdjseJvk8fth+6qcyprMaLUoMSV/tVQzycBDwAkemy55K0c1p7TXPDJ9zKbmsVbHKGP6+G7vPoUU5zASQdkf6D0/56LtNZd7wJnqB3RbybItdTq9lJ34pY9LMgyyBAM5bIECtAGa6QmX7JItQXgl7SxUwNnd5iKUmWGYQxrX8RkTskOL9ADdY7BRJZ4xBceXH2nY4171V5/C+N9QWVMu8bAhMa/0J3lQT3ezWWFGpuRnKczGjNKsLj9MynWoEDo7iKTMyMkHOhtQ2+ST7u6iU/8tyueynGCT4i66lbXhrtOQIFumSY1aDqO/iPtO2J4mfIKuhA4H2O9fSz0bmcVvCt4x3ULv/wE/CIyeqMsNO7YGEtZLz6jVvGjVr2milGmnoQJ1yqyA+D1A6KWdtTtGDsQuIfJ2R4SMcW8gtHdN0dAJix4TtIm2BniuxVzPpCgdm4rg2gjvSgpdIKVqnEaqb0TIGG+kJo6L/R8hP2uX4dAKhE68pBxWjjaJMQ+s4q2+Ei9hx0XxbW1VDEEp1phf+sF4CxgpmPTUsnQ8yt9tJWkHlejFfL88RokOL1xo39ojSsBdfHBjkcj+JKDjrN+5UgzAIcfchTFaDVR7zCGgE9K5rHga4s0H52HJ9t5SNJb/de8G+enJ9iIAayUO/rdBp4uF64xqu7XmZUCdhO9dCE7JGAjtVpDGyPJVz33o8eLMrx24XT2HRFMpxlzsWAyRv3Bv82W2a0VZuhDAzTksLg5mJOahIcJ01cLyMKNM6vmYNSrsxW51L4aE9WgZoqwfpyafIZG7SQKhsF3XVkZZqoOruv2TR+WMg3oPf8o0TJmv1e77NM2xPqeq6qEi8S3rZ3zDhrNLCx/L5eBzIP4Vg6k2hUWACfdkHFzx81BB36l2Q5q5ZOz2QvHNoLuW1tiqgHv
- NGgxhEly
- yi0tE9ly+njf1dRwLr2vaMZzDStPcyBYwLQ6ucl6nr6LUZjxSGpt1SkiKXBJwgUuaUj8db61qnAOHDn2AMlZkDYec/DAWCh4AWy40A9dPPBqNhIzbsliTNWo6xinWdqD34icGKvDnHSS4TgWmWfYC8f6j3NSZM/FlqQDKuCCFdpLar2Z4k4rSiH1pn2SrppvGc+wL56p2705Wfcc/eytPBpANiwGERTeZN1eDcwkruPsnuVEhgl+JYZwaAKTG3I0BPzuFf3tdCtQdRlWbcGGdBBStV38t8LdWNnAn6kyDCMYlDea/CE0gbRvbIA==
+X-HE-Tag: 1754663037-98813
+X-HE-Meta: U2FsdGVkX18QDxMJLSMvbQYXjPhK6O1QFeqPiLiDrhyzYHLcmdMxvbSMUmeCdWxOg4URV6jstR2KJT0ETmQwsM5xq8viELUkVvPfGZ3b1lBiKso39JjKSzHaOzMM2qB0tF1BgGQwRKyHqDRVkqemWLQdimE7uExDJjoQLQmcIOZgbuA+wHJGF5/g6n02mrjiZH9CeZDUuKzVhhngkLN4HQnnoDt15YrqVm1BcsJ4uPmUi63E3E3+s/CxdVNyDSiouoA8dsYuO1Hu5vdQswpKkXrW22Bc+kLXGM93IpImOXJ+/JXZF+VIo4ZTyByGloyeBubMmkw5YzGhiEOwcjfQT0W50f+xdTVkWcRShlQZs1wgeu36I3L7aPtKtwKO4VbrfwcPzBpNbE3lDF8vR7hz1+JMlufuWKhbwqIfgzcIhd41HNr39G4lqPQuH0C9ayhQ4I07VfDC2WrtqcvhRxOgojAnKV3u/BGlWIA9xFfKQwyfhtt87XWk9TA2nD2CrjVuASh4cnPYUDKBXDMtp/8XQMIPI113/zvJwd+ihjDzFEP0Toc6xdG8B9RS0Jr/x+pSplVYxfqeWxn3y/9BSUlSvztLEqcphFF3HIveiRqaRGdjyqjx6ZlQNgms8rb8Uygr2aF0478gFMDKh/b0+fUFe8EYgM8Fs8PoOPxlSXZiHQjjuLLS+xjdoVpgboJk/tu0ZqUYjcDM8oQKvHO2EScmIyKnt7PvkuJU5JHobH0qrcqr+9w9WL252AeS7AOqmNOlemdN3GLUKaF0NN4D1+obXoil/yOvwBHjwFXyO3b8LqOpgrU/Kc6jqbRKtuVa0SMGXJc0l/0EAQ9Ig/h2raxrvozYUHAERsw9PWUPpu2Bn2Q5h/5fefLf7h5jq6QNJbjE6cCa4zH23wdAbSnZSYd07Ji0ZTyXKO96+vfZQ/coxyQIAdUL06XBcWHtBWU0gc6AC2J1F6mWfVetkvHDFfa
+ Q+BXa6VY
+ Fgd5nurpGSilayJjNpBsL/qF0aa/ofm3NPlfM6fSNn7TABnqSH/ec/bTTBKf9LndWh2s/o7m3j3NTpvXM2xQjtp5iqMG8Gg7O/YPJkecJporwnQ+C4EtJVyEuwyyP0idFjM8cE4TadSLQlmuyN8md+yvHUx3gAZSUr9jEjfVw3jXaQyh1YXbWoKhHLX/P9rTX5VH7oeuZPCTvfCN37yU2w0qjzYbC38kq300gcwOAiRS/6KFX4aGfNAKKhpttdJ/HxYKg7O3QCii7SlQJO9Xw7acz/vxL9Ty/RLciTkUAVX5aCCzrK1ttg3gme9LWJaDQ/fnch+yTZd+x75DaHJGUvbiML1rNNe840tBLAT10DW3xnse4M64tFQQjD2Q3vT31bOE18FaQ6S5ekW/WtNou7g+b5X5XfN8WR+zalMyUVBzeoOsZMvRmIbqJ0mnMN7XkA4D27FuXNnUT0vryR4FVW1qkWsUPb1rvwMoQHRKN1ptYGw4PZ5wf7C1qRorJ0tzJ5BS7M8v1n5cOeFqhI4wqUqZqkA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -180,108 +179,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/3/25 13:11, Lorenzo Stoakes wrote:
-> In remap_move() we must account for both a single VMA case, where we are
-> permitted to move a single VMA regardless of multi-VMA move eligiblity, and
-> multiple VMAs which, of course, must be eligible for such an operation.
+On 07.08.25 20:35, Sumanth Korikkar wrote:
+> For !CONFIG_SPARSEMEM_VMEMMAP, memmap page accounting is currently done
+> upfront in sparse_buffer_init(). However, sparse_buffer_alloc() may
+> return NULL in failure scenario.
 > 
-> We determine this via vma_multi_allowed().
+> Also, memmap pages may be allocated either from the memblock allocator
+> during early boot or from the buddy allocator. When removed via
+> arch_remove_memory(), accounting of memmap pages must reflect the
+> original allocation source.
 > 
-> Currently, if the first VMA is not eligible, but others are, we will move
-> the first then return an error. This is not ideal, as we are performing an
-> operation which we don't need to do which has an impact on the memory
-> mapping.
+> To ensure correctness:
+> * Account memmap pages after successful allocation in sparse_init_nid()
+>    and section_activate().
+> * Account memmap pages in section_deactivate() based on allocation
+>    source.
 > 
-> We can very easily determine if this is a multi VMA move prior to the move
-> of the first VMA, by checking vma->vm_end vs. the specified end address.
-> 
-> Therefore this patch does so, and as a result eliminates unnecessary logic
-> around tracking whether the first VMA was permitted or not.
-> 
-> This is most useful for cases where a user attempts to erroneously move
-> mutliple VMAs which are not eligible for non-transient reasons - for
-> instance, UFFD-armed VMAs, or file-backed VMAs backed by a file system or
-> driver which specifies a custom f_op->get_unmapped_area.
-> 
-> In the less likely instance of a failure due to transient issues such as
-> out of memory or mapping limits being hit, the issue is already likely
-> fatal and so the fact the operation may be partially complete is
-> acceptable.
-> 
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: stable@vger.kernel.org
+> Fixes: 15995a352474 ("mm: report per-page metadata information")
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
 > ---
->  mm/mremap.c | 20 ++++++++++++--------
->  1 file changed, 12 insertions(+), 8 deletions(-)
+> v4:
+> * Add fixes and suggested-by.
 > 
-> diff --git a/mm/mremap.c b/mm/mremap.c
-> index 46f9f3160dff..f61a9ea0b244 100644
-> --- a/mm/mremap.c
-> +++ b/mm/mremap.c
-> @@ -1816,10 +1816,11 @@ static unsigned long remap_move(struct vma_remap_struct *vrm)
->  	unsigned long start = vrm->addr;
->  	unsigned long end = vrm->addr + vrm->old_len;
->  	unsigned long new_addr = vrm->new_addr;
-> -	bool allowed = true, seen_vma = false;
->  	unsigned long target_addr = new_addr;
->  	unsigned long res = -EFAULT;
->  	unsigned long last_end;
-> +	bool seen_vma = false;
-> +
->  	VMA_ITERATOR(vmi, current->mm, start);
->  
->  	/*
-> @@ -1833,9 +1834,6 @@ static unsigned long remap_move(struct vma_remap_struct *vrm)
->  		unsigned long len = min(end, vma->vm_end) - addr;
->  		unsigned long offset, res_vma;
->  
-> -		if (!allowed)
-> -			return -EFAULT;
+> v3:
+> * Account memmap pages for !CONFIG_SPARSEMEM_VMEMMAP and only when memmap
+>    allocation succeeds. Thanks Wei Yang.
+> 
+> v2:
+> * Account memmap pages for  !CONFIG_SPARSEMEM_VMEMMAP in
+>    section_deactivate().  Thanks David.
+> * https://lore.kernel.org/all/20250804151328.2326642-1-sumanthk@linux.ibm.com/
+> 
+> v1:
+> * Account memmap pages for early sections.
+> * https://lore.kernel.org/all/20250804084015.270570-1-sumanthk@linux.ibm.com/
+> 
+>   mm/sparse-vmemmap.c |  5 -----
+>   mm/sparse.c         | 15 +++++++++------
+>   2 files changed, 9 insertions(+), 11 deletions(-)
+> 
+> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+> index fd2ab5118e13..41aa0493eb03 100644
+> --- a/mm/sparse-vmemmap.c
+> +++ b/mm/sparse-vmemmap.c
+> @@ -578,11 +578,6 @@ struct page * __meminit __populate_section_memmap(unsigned long pfn,
+>   	if (r < 0)
+>   		return NULL;
+>   
+> -	if (system_state == SYSTEM_BOOTING)
+> -		memmap_boot_pages_add(DIV_ROUND_UP(end - start, PAGE_SIZE));
+> -	else
+> -		memmap_pages_add(DIV_ROUND_UP(end - start, PAGE_SIZE));
 > -
->  		/* No gap permitted at the start of the range. */
->  		if (!seen_vma && start < vma->vm_start)
->  			return -EFAULT;
-> @@ -1863,9 +1861,14 @@ static unsigned long remap_move(struct vma_remap_struct *vrm)
->  		vrm->new_addr = target_addr + offset;
->  		vrm->old_len = vrm->new_len = len;
->  
-> -		allowed = vma_multi_allowed(vma);
-> -		if (seen_vma && !allowed)
-> -			return -EFAULT;
-> +		if (!vma_multi_allowed(vma)) {
-> +			/* This is not the first VMA, abort immediately. */
-> +			if (seen_vma)
-> +				return -EFAULT;
-> +			/* This is the first, but there are more, abort. */
-> +			if (vma->vm_end < end)
-> +				return -EFAULT;
+>   	return pfn_to_page(pfn);
+>   }
+>   
+> diff --git a/mm/sparse.c b/mm/sparse.c
+> index 066cbf82acb8..24323122f6cb 100644
+> --- a/mm/sparse.c
+> +++ b/mm/sparse.c
+> @@ -454,9 +454,6 @@ static void __init sparse_buffer_init(unsigned long size, int nid)
+>   	 */
+>   	sparsemap_buf = memmap_alloc(size, section_map_size(), addr, nid, true);
+>   	sparsemap_buf_end = sparsemap_buf + size;
+> -#ifndef CONFIG_SPARSEMEM_VMEMMAP
+> -	memmap_boot_pages_add(DIV_ROUND_UP(size, PAGE_SIZE));
+> -#endif
+>   }
+>   
+>   static void __init sparse_buffer_fini(void)
+> @@ -567,6 +564,8 @@ static void __init sparse_init_nid(int nid, unsigned long pnum_begin,
+>   				sparse_buffer_fini();
+>   				goto failed;
+>   			}
+> +			memmap_boot_pages_add(DIV_ROUND_UP(PAGES_PER_SECTION * sizeof(struct page),
+> +							   PAGE_SIZE));
 
-Hm there can just also be a gap, and we permit gaps at the end (unlike at
-the start), right?
+IIRC, we can have partially populated boot sections, where only some 
+subsections actually have a memmap ... so this calculation is possibly 
+wrong in some cases.
 
-So we might be denying a multi vma mremap for !vma_multi_allowed() reasons
-even if it's a single vma and a gap.
+-- 
+Cheers,
 
-AFAICS this is not regressing the behavior prior to d23cb648e365
-("mm/mremap: permit mremap() move of multiple VMAs") as such mremap() would
-be denied anyway by the "/* We can't remap across vm area boundaries */"
-check in check_prep_vma().
-
-So the question is just if we want this odd corner case to behave like this,
-and if yes then be more explicit about it perhaps.
-
-> +		}
->  
->  		res_vma = check_prep_vma(vrm);
->  		if (!res_vma)
-> @@ -1874,7 +1877,8 @@ static unsigned long remap_move(struct vma_remap_struct *vrm)
->  			return res_vma;
->  
->  		if (!seen_vma) {
-> -			VM_WARN_ON_ONCE(allowed && res_vma != new_addr);
-> +			VM_WARN_ON_ONCE(vma_multi_allowed(vma) &&
-> +					res_vma != new_addr);
->  			res = res_vma;
->  		}
->  
+David / dhildenb
 
 
