@@ -2,90 +2,131 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C41BC87FD2
-	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 07:57:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 57CCBC87FD3
+	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 07:59:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CBA26B0088; Fri,  8 Aug 2025 03:57:03 -0400 (EDT)
+	id EB2AB6B008C; Fri,  8 Aug 2025 03:59:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A35C6B0089; Fri,  8 Aug 2025 03:57:03 -0400 (EDT)
+	id E65546B0093; Fri,  8 Aug 2025 03:59:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DFB46B0093; Fri,  8 Aug 2025 03:57:03 -0400 (EDT)
+	id D798C6B0095; Fri,  8 Aug 2025 03:59:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EEC06B0088
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 03:57:03 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 34F9D1DEE5D
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 07:57:03 +0000 (UTC)
-X-FDA: 83752834326.26.6896CBB
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 69BD140008
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 07:57:01 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754639821; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C74DB6B008C
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 03:59:35 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 83DBDC1590
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 07:59:35 +0000 (UTC)
+X-FDA: 83752840710.15.042944C
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 82D66A0004
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 07:59:33 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=L2XJKYr9;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf25.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754639973; a=rsa-sha256;
 	cv=none;
-	b=mHsElM0lH4iSQLQi1uEd9f8s0VDU01Vr/vX5rdM+VMUcZFbs/LE6RZLsa8hdlekZan4wdp
-	Lychx6DuCA14RN5lAh/qh8u5O0mMQPULLvZHphqCj3TPW16xGpkOUC2KwSRtEXxceDp8Rf
-	TvP04t2bbCnRdB0+Qfusp+c6ovKPY+E=
+	b=2EUyPRrGE2heXKS20c5FgabtKqJl+Cp6QbrsHGu2W2sv9XN/OSIxd+B+wbmt37p3TmnuGK
+	UraosH/IFbfkVmZN2GdKtHu5qVduTXditK3pPt1Xk4g3le6kqEhsig3Dxnh0/xdi4XLfZc
+	hPFbEmcILT2PdnAIOtfYshL+DaHq3IQ=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=L2XJKYr9;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf25.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754639821;
+	s=arc-20220608; t=1754639973;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=aV0E+W7TpF7ScFUrIhlu67F3pDF1bA8Hd4KFXigqUCs=;
+	b=UY7fmngzNmGibBfpzQx3fKD8r9ItkLmuf9tYU4zt4SKmhK9LYn4GdquuZ+q80G6gd+rDZ7
+	isrbE5yi2kmG62yxxSk0deeKZCed+goBxRRwe5hnjnhB/FkA2O33KuEpk8DZsJy3T8/RUp
+	Lv98Nb/ppvj/sEFISf5GKF9NZ1csVi4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1754639972;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=h2hWN46nCgI1fh+v1S+lgdTjz+PlfGcgFVExXXoasGo=;
-	b=P+RoqliSLqBPd1Cm2333FivCimr3SDXISgVZd3vcKTXCkOF1SSQ4ZrW+8uTyLQ969fkJJC
-	I5PYqSZjSG6SAiiX6fo5nXUeSphs80fdK19ewykalXnPUfOgTRHkGmhZhyFbQSyX11OA9k
-	nrZoZ3alcYUGTQH4XSTc7rvMdbVoN28=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8F3F016F8;
-	Fri,  8 Aug 2025 00:56:52 -0700 (PDT)
-Received: from [10.57.88.69] (unknown [10.57.88.69])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8F18B3F738;
-	Fri,  8 Aug 2025 00:56:58 -0700 (PDT)
-Message-ID: <8391c672-1123-4499-8d28-a731f2d88a9e@arm.com>
-Date: Fri, 8 Aug 2025 08:56:56 +0100
+	bh=aV0E+W7TpF7ScFUrIhlu67F3pDF1bA8Hd4KFXigqUCs=;
+	b=L2XJKYr9JdWfQZN69A68Tf3d9LOtxv2DaPdBdleAU/WzRXFOiYNa5fzuhLTxNmX8jWwknX
+	9mp5icIT+Sv136lOSLkJz9chYgF6t2akUPDY5E5Cq3QbIoBJaSeHcGjbLzg3kGCHTYY92S
+	tZ+9vubNmF6MaASbfYvvXsRzwd5i9zE=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-682-UNIuuF62OhurBbbx6qeMxQ-1; Fri,
+ 08 Aug 2025 03:59:29 -0400
+X-MC-Unique: UNIuuF62OhurBbbx6qeMxQ-1
+X-Mimecast-MFC-AGG-ID: UNIuuF62OhurBbbx6qeMxQ_1754639965
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7991C1800446;
+	Fri,  8 Aug 2025 07:59:23 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.225.117])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 24BB41954185;
+	Fri,  8 Aug 2025 07:59:06 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Fri,  8 Aug 2025 09:58:12 +0200 (CEST)
+Date: Fri, 8 Aug 2025 09:57:54 +0200
+From: Oleg Nesterov <oleg@redhat.com>
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Cc: Michal Hocko <mhocko@suse.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	David Hildenbrand <david@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>, Ingo Molnar <mingo@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	len brown <len.brown@intel.com>, pavel machek <pavel@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Nico Pache <npache@redhat.com>, xu xin <xu.xin16@zte.com.cn>,
+	wangfushuai <wangfushuai@baidu.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Jeff Layton <jlayton@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
+	Adrian Ratiu <adrian.ratiu@collabora.com>, linux-pm@vger.kernel.org,
+	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v1 0/9] freezer: Introduce freeze priority model to
+ address process dependency issues
+Message-ID: <20250808075753.GB29612@redhat.com>
+References: <20250807121418.139765-1-zhangzihuan@kylinos.cn>
+ <aJSpTpB9_jijiO6m@tiehlicka>
+ <4c46250f-eb0f-4e12-8951-89431c195b46@kylinos.cn>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH HOTFIX 6.17] mm/mremap: avoid expensive folio lookup on
- mremap folio pte batch
-Content-Language: en-GB
-To: David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Barry Song <baohua@kernel.org>,
- Dev Jain <dev.jain@arm.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20250807185819.199865-1-lorenzo.stoakes@oracle.com>
- <158e6422-fc82-4d6c-a442-2ebe956a66da@redhat.com>
- <3fc75720-8da7-4f6c-bdce-1e1280b8e28f@lucifer.local>
- <6870e24f-dda6-421c-8df8-58294927b62d@arm.com>
- <ae01c6bc-019a-4263-8083-8ab073e72729@lucifer.local>
- <303b1764-6471-421f-b4c3-6a2585cee2ae@arm.com>
- <b0d257a4-a37d-41da-92f9-4d1c0a11c30c@redhat.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <b0d257a4-a37d-41da-92f9-4d1c0a11c30c@redhat.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <4c46250f-eb0f-4e12-8951-89431c195b46@kylinos.cn>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Stat-Signature: y6aawzbij6xrp6ixwmgudppyu8uk3b5u
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 69BD140008
-X-Stat-Signature: p8jkiuh18pbnowmu88ra5oj1o7gpg6p6
-X-HE-Tag: 1754639821-73284
-X-HE-Meta: U2FsdGVkX1/nfjJuLAseKeIH/QiazcPSoTe6hN0QPEPM6r1O2ljzIX24hyhbft1ihkqIGiJ9rOZeEOfJHBb1VIvf6sr/08mX1terssgakBnDsLF4UFGgfZczsyOJiQVvSX/lMNK7CGm2bJTOnS2d0xs2wlhqFAkq3LL+1gm5VbC6DbQEIzKcAR+v6sa2tjQJnzdbMyjXByrPhytZF7xz0VKzQMhKGfVnVlq/obqop+58nMrs1aSnFsmgpWHM02lfHfpafKa8/rhvD950ME20DJX+VG2V58ODXNScUFC+kpyVpsXfoBpX6DuP1LsUfbZlIQRw3eNT57pCzoyjZuVTwn9fSOP+twOtkp2LoZLAjqLrOXY+1wMWtXFmXmmlwMorc6jiHtQZQBb8oT40nUDnGSPeS6ghbbd2HVjikGAp2C/p1LoEQ311GbZQwliWGNPdjcBPh7h6BUx7Jdh5wlYsafPFuSu5nAdAW/jWFLUaIGFv6IWrbRBK5ZbZSnZOqxHARWQGql+F/pHhNFTRMFK57zvJW78lJASeTKM3k/Ly4SmBYP9t1m1FVrOJ5YxB7AVqQ2Q4lz/OHucgrmreGkTET7ewQHqPWqiLOB2Pr82sJIcoz4ql5Gb7PXTguXfPn4siIEe7T8j/4HQD91DsmTigvyrAwlpilBn/cs7xAvkbx1W+DenjNKjNCssW+z5hS6bWDbxwJCCYqOd/1Tjl8nmkzVwr660P/WwG382vgt5doMUcdS5pdZ8UEodsV9lfP/jKXeSkX7VBgpJawOr6vzgGh1heocYnahqh3BSljQMoIsDOYe4P0DsuibpVWputwb0QMDx1E/naF2jXDnKNqRMFec/SrrQET0XZIYrOS7E4fNKAajfREgWRVyeLfpi7APIvilEtOpsPdiUx5CZccGlp9qAOja4+ObRE+Tr0/3FhXnKEKmdYuQeWXQzfbtxClAfByRYQWVihcJWFNls+jAe
- V1ahEwRs
- JGvfeP28R6YWGl3qaARvVCQ3kHgUv3S8Mtocz10Tsy47fJqGY35dUWyVZU4ZHYYQzHuVLs8jKavLwTtmLl131EU1/Fc2ZuIukxyUy5Zd8HlIrCoOpk29zKmqjptGPEzccj2S4vjJFzZSqcnl6ZpCTvTs3hoxRBIuxRe1QO4XBakFQjjI=
+X-Rspamd-Queue-Id: 82D66A0004
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1754639973-103437
+X-HE-Meta: U2FsdGVkX18AFlZy9H9DAD+KY/n0WdeZ7zHjIBGk46obypHJXdsnEfxOj3MgElwD/TXYH9e44dszFsD5BNlhmg2ix06zbsbL098fwC/3QEM4g3Jr9GG6hD4AG5Yc1cSKoG2jeWiKwwZyuAYE0sDBWLkNsG67llA7LnwW7gI/oRJYVpzR6sTsR+2HkmIu1hCqFXI8Yxodyo3g7WEmf4JeH5rxDai5hDij6a8OS6Wwwts2onjj850zCP9I9dUu90ChZMn8f77kASmRMPv5xTxDZT/wuNFiCabe0vWmE2cGtUcSrlE0IfRLAJaq6plqYYQ4XcsUtgpYbrsy/CJNz4yvoq0pTDvLIRLNrjVYTorhT8JZQjCBh4tyBE09Rx63mS7eIk7HbIZSd8PpCgQEsLT5ZXsOQDxBgpHuTK9bSxdBlCQwLCKi2uND+OX2yP2ITPnEO0yZA9hH5wUt/ixNhBaNnkFLb2o2IV5+0I3aMg2a66/G8iVEdqQHus+N55BZbwppP+yJvFDZw9VOjx/irUI3jh5WIJSMTPsqxUlL8k3Bs+B8leMbxMiCk5c7Nv4RIehOxObTT6lCgAgs1hwtpcxmgn1015vX5m4vnULuSKrlC4DcPLqo6PcLgMFhjd6ICZsWn+GBS3nPLHxCV5ObSC/gIHVQW4pburVtElkk2S2TAYM+YEZnZK8weKZJ5Fyi+fesKMlVySeO5kSCOhE+8CSR7lY+i9kbwMtpQMUQ1HjBI1waMrw8gZStIPIlT+faqLH/Va9Z7j7XnIJbVGpg4UkTYUGpvKuuINnD6yPrMkQ8df+xSnMwZA7iekXy+ROhaU0Yi1qtAMRlIj80rT24O22Fiy55O3PKyUtBxaOhHmRcKUBYR32WcFPx1z2X/PaldlqbnxLQc8xKA7RUhOQfU1PDG6NaP8f1HkIeaudDiBNzjgAbl9GLN9q56PTRFTrRxL6V6Ec3rMAhfU4io78n6Zs
+ 4bOgz1Rm
+ IN40jtm/lC+9pjHj6FkmT+nS5I3PYZINnoidjaV0ACy2v9XCkUDUdAEw0wk/QGXbgz5vUVuOK9u7JQdaFoekjE7uAIEXMwH6KxRi3py0V75pexKm6Jz9RdyD53FbCGbxJrLVsNKdRKNELdIVUGIX1I+cydMg0GQqyEpXSqEHjDKGxbxi44ysoEgynG88kLIFGqPL1ILpvCAlX19Kk98dtyOF9W+Erc101vDjCoE+YDjcrY3GcoAbUfyf4ecb0gWvwCqnUmXue3bk081xTplJqAnrF2QFAwIP+DBLVdeAOlldqDHuJcLQ21w0kh7SfBKCT699wF+DqFf1YWgWttMCeObyorw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,99 +135,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08/08/2025 08:45, David Hildenbrand wrote:
->>
->> Not sure if some sleep has changed your mind on what "hint" means? I'm pretty
->> sure David named this function, but for me the name makes sense. The arch is
->> saying "I know that the pte batch is at least N ptes. It's up to you if you use
->> that information. I'll still work correctly if you ignore it".
-> 
-> The last one is the important bit I think.
-> 
->>
->> For me, your interpretation of 'the most number of PTEs that _might_ coalesce'
->> would be a guess, not a hint.
-> 
-> I'm not a native speaker, so I'll let both of you figure that out. To me it
-> makes sense as well ... but well, I was involved when creating that function. :)
-> 
->>
->>>
->>> I understand the con PTE bit is a 'hint' but as I recall you saying at
->>> LSF/MM 'modern CPUs take the hint'. Which presumably is where this comes
->>> from, but that's kinda deceptive.
->>>
->>> Anyway the reason I was emphatic here is on the basis that I believe I had
->>> this explained to met his way, which obviously I or whoever it was (don't
->>> recall) must have misunderstood. Or perhaps I hallucinated it... :)
->>
->> FWIW, this is the documentation for the function:
->>
->> /**
->>   * pte_batch_hint - Number of pages that can be added to batch without scanning.
->>   * @ptep: Page table pointer for the entry.
->>   * @pte: Page table entry.
->>   *
->>   * Some architectures know that a set of contiguous ptes all map the same
->>   * contiguous memory with the same permissions. In this case, it can provide a
->>   * hint to aid pte batching without the core code needing to scan every pte.
->>   *
->>   * An architecture implementation may ignore the PTE accessed state. Further,
->>   * the dirty state must apply atomically to all the PTEs described by the hint.
->>   *
->>   * May be overridden by the architecture, else pte_batch_hint is always 1.
->>   */
-> 
-> It's actually ... surprisingly good after reading it again after at least a year.
-> 
->>
->>>
->>> I see that folio_pte_batch() can get _more_, is this on the basis of there
->>> being adjacent, physically contiguous contPTE entries that can also be
->>> batched up?
-> 
-> [...]
-> 
->>>>>
->>>>>>
->>>>>>
->>>>>> Not sure if that was discussed at some point before we went into the
->>>>>> direction of using folios. But there really doesn't seem to be anything
->>>>>> gained for other architectures here (as raised by Jann).
->>>>>
->>>>> Yup... I wonder about the other instances of this... ruh roh.
->>>>
->>>> IIRC prior to Dev's mprotect and mremap optimizations, I believe all sites
->>>> already needed the folio. I haven't actually looked at how mprotect ended up,
->>>> but maybe worth checking to see if it should protect with pte_batch_hint() too.
->>>
->>> mprotect didn't? I mean let's check.
->>
->> I think for mprotect, the folio was only previously needed for the numa case. I
->> have a vague memory that either Dev of I proposed wrapping folio_pte_batch() to
->> only get the folio and call it if the next PTE had an adjacent PFN (or something
->> like that). But it was deemed to complex. I might be misremembering... could
->> have been an internal conversation. I'll chat with Dev about it and revisit.
->>
-> 
-> I am probably to blame here, because I think I rejected early to have arm64-only
-> optimization, assuming other arch could benefit here as well with batching. But
-> as it seems, batching in mremap() code really only serves the cont-pte managing
-> code, and the folio_pte_batch() is really entirely unnecessary.
-> 
-> In case of mprotect(), I think really only (a) NUMA and (b) anon-folio write-
-> upgrade required the folio. So it's a bit more tricky than mremap() here
-> where ... the folio is entirely irrelevant.
-> 
-> One could detect the "anon write-upgrade possible" case early as well, and only
-> lookup the folio in that case, otherwise use the straight pte hint.
-> 
-> So I think there is some room for further improvement.
+On 08/08, Zihuan Zhang wrote:
+>
+> 在 2025/8/7 21:25, Michal Hocko 写道:
+> >If they are running in the userspace and e.g. sleeping while not
+> >TASK_FREEZABLE then priority simply makes no difference. And if they are
+> >TASK_FREEZABLE then the priority doens't matter either.
+> >
+> >What am I missing?
 
-ACK; Dev, perhaps you can take another look at this and work up a patch to more
-agressively avoid vm_normal_folio() for mprotect?
+I too do not understand how can this series improve the freezer.
 
-Thanks,
-Ryan
+> under ideal conditions, if a userspace task is TASK_FREEZABLE, receives the
+> freezing() signal, and enters the refrigerator in a timely manner,
+
+Note that __freeze_task() won't even send a signal to a sleeping
+TASK_FREEZABLE task, __freeze_task() will just change its state to
+TASK_FROZEN.
+
+Oleg.
 
 
