@@ -2,132 +2,115 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9CBC4C87FD3
-	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 14:01:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A267BC87FD2
+	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 14:16:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3FF018E0002; Fri,  8 Aug 2025 10:01:54 -0400 (EDT)
+	id 2BFAB6B0098; Fri,  8 Aug 2025 10:16:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3AFA68E0001; Fri,  8 Aug 2025 10:01:54 -0400 (EDT)
+	id 297686B009A; Fri,  8 Aug 2025 10:16:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 29EE78E0002; Fri,  8 Aug 2025 10:01:54 -0400 (EDT)
+	id 185C26B009B; Fri,  8 Aug 2025 10:16:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 154FF8E0001
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 10:01:54 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 090341602BF
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 14:01:53 +0000 (UTC)
-X-FDA: 83753753706.27.8E3DA96
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 25DDA4001A
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 14:01:50 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=iCmYGGKC;
-	spf=pass (imf11.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 091DD6B0098
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 10:16:10 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BDD59B78C6
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 14:16:09 +0000 (UTC)
+X-FDA: 83753789658.20.BF426EF
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 846091A000C
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 14:16:07 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="T1xv/Fl7";
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf19.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754661711;
+	s=arc-20220608; t=1754662567;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Cgf3Gf6pf2QyMmdIpvCgXWMeWxUvQmvcME2UoQnjQWw=;
-	b=J9QttrSVl9Dl+O/rk+5PeCWn4myTayDohrIZeKIFqgULX79gYNI23/nZc9TDcMA2Vr07o1
-	B4BfHGsA3fp4F/MMS9Sd0aFDgGUWjkLiVnpSCgpsfVpGEyczmexPHbj3b5Lsw/xh6Ds0/7
-	ZSeo9hxmeEa/4zwACQ00lyQTET5WRgQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754661711; a=rsa-sha256;
+	bh=VG/jc3uK17nl75KdjjSPz9XyI79UN0Loip6e0tTXadc=;
+	b=Bb2FWr9uH6p/ya1u3Vw1mV5Ekzo16mS7miEPp2Fh08JzUOst/CukfR5t55E3Vt6JxIiAMw
+	il/TLksBxHgiAAA8nTFj4HdbyXAkOml8aL8Rb36tVLZRdoygJDIgCHu9FqUPfMu8bcsMar
+	FCpKqOnm5Bg/XX6sG1Ku5uCkhdCk9e0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754662567; a=rsa-sha256;
 	cv=none;
-	b=Qj/PCFVllQfA43l4qQnx77Amr4/u5J0jQQsHiIFGO/5VWEOiacZj/aURKD92WhoruMZp1h
-	RhmZQ/As6+G4tCEGj5/nssYAn3KiBNfPO2iQanPWX7IFVzm7kyWoRM5GmVkd4nTMm8WEoH
-	HHgqDnCWUy/Atk4qJ4CJvyDe2ZZBTGI=
+	b=kE8xBa49hu79/ybDxDKcuDCP6RFM6kgsx5XMZ+akXEdhOclsdcEDmMW+fkweV3FOj7uTfg
+	v07FWTthvLctSTOKYk23LDAgtsmR7703z2F1oeL9Vtq++kH9dxiuc3bJztiTl1vy2aeqfa
+	aiIKUOQewJ8AarVluAHGMNxkKgmJsf4=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=iCmYGGKC;
-	spf=pass (imf11.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-4b07275e0a4so25427221cf.3
-        for <linux-mm@kvack.org>; Fri, 08 Aug 2025 07:01:50 -0700 (PDT)
+	imf19.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="T1xv/Fl7";
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf19.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3b78315ff04so1807110f8f.0
+        for <linux-mm@kvack.org>; Fri, 08 Aug 2025 07:16:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1754661710; x=1755266510; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Cgf3Gf6pf2QyMmdIpvCgXWMeWxUvQmvcME2UoQnjQWw=;
-        b=iCmYGGKC0NLb4Hc+CVxPVHTsg9WPiCp493KjSdcR9UTjCJrUxPAd7gEQiVQjCAaOnG
-         rSSOJuUaXQjYuY13voytT4JDQ/Jv1F0TmfFHFKva5v/W64tCNSqaW9FLc340/caOrzDp
-         RyMkRp8+BwEL18SaxEWJLHh2+8i0/Lv96XKA4BK/QzemKjU8TOZD3LQVFN6WILJlVOmK
-         49S/CT5ZwDNxzt6P/mEZxbmae9hrJQn10ntKDfVXfCXzr+GYZ6xCCF2FkmWIjkmv0xRk
-         oQw9orOdPpHGAF6PqfM5neony8/bAE7eEuyXVSAIbiHlssvHJsjPugacJqHT64EJ71pr
-         m9Hg==
+        d=suse.com; s=google; t=1754662566; x=1755267366; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=VG/jc3uK17nl75KdjjSPz9XyI79UN0Loip6e0tTXadc=;
+        b=T1xv/Fl7P9XN2bQuGO4bBI06jtpgUx9sIKqUxRNMLd7JdmrVW8ONCjrcETjVY1CuUP
+         +LPQaepk3vvJIpxW/hPkeMr0Snwk0reLMt+c0fBYRUm4jtmadMpPKFa/iT5yL1tYGMe0
+         HLm5gc1fX+2s7zlzn3D1EP6vlHXD8DbVPRC6J7Yx0Wo+3HV/cxPDMFS5N74bEMGA8r8D
+         O1SKuGBd/FZDzIrm+MMfrk16oGC4Vuwz4rYNyFPKUDor7jeoXyeR2Smvq5gA2ZfCK8jH
+         F5a/KI4aCaH0dpLTM0Pa2gwSECcuiemFqHSX7XVVFTW86xfLAEh3JadeS2tTOLpCC6DK
+         S2BA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754661710; x=1755266510;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Cgf3Gf6pf2QyMmdIpvCgXWMeWxUvQmvcME2UoQnjQWw=;
-        b=WJXWvCTareUX+87eW3KqmZZA4CPK7xJNDCCYYEHTwm8NTOEAxRv3B+ocO7yyJky2DN
-         J1Swxb9qp0gh0jixFX74ABU+T0Ne9Krs1nf56o0o+EWrvEwQLimydCeaRDZ/A5PPPpDR
-         EQaXByLog18iEv+c59UI/Wjzxu0M6/OeDPovFWHe1ci8Ru9KIVaJJXX+yLFfQwmwBIG8
-         +IrNunV5/xIrZX8ps9Q8yxlSgEsWQIr7vJnisTh7YOjwG6zYJTYns1vrPHS0pWXE/qI2
-         VHuUS9PhpivZ6cxx/xwOlSnG31lCZLG4RJZWC08SkgYxOKC4WOgpuiL0nR+en52HmL6V
-         +zPg==
-X-Forwarded-Encrypted: i=1; AJvYcCWq5tZAPgzoMsbsv/bkyidCjqT7VsxSJsEk+cpbC1bPltkVUaJcuI1LYGCn8cqXGn/LaX+E/r+sxg==@kvack.org
-X-Gm-Message-State: AOJu0Yw55hrwWEN7Jm3xwGx6gJJpsFNONthAz36SnI+YaKgV5evHWGao
-	xnx9TPfvfms/zrOcquUIA+SQGKPOlyTyxwFCI0+AiLJYK1e3uxF6MlJC6bMn6COBiwjLSbf+hYj
-	DoZpOkpzjC5vw/7MNgKm1TR+9M7loBFnfg+cQ5fX4og==
-X-Gm-Gg: ASbGnctiNHNVwJmOAMmR5RHbIqfADMnrC/vwCKS5MyMQyLKLcuAYae+FBtLJf8iLrbU
-	2z3gldjeoqVV1+LVsXvWal+V83Y3h2J3mu2m+FU56Zsg4lA+Z5VsqgPa4c21WUiBQ7SdCg9uo4d
-	L1F8IBJblTUBfbJBFlxrcyjBiadTgObtUfaMvxoiGnMcc+GrUFsGAL9vwg50E6fn6+tfwG+ERL8
-	Onm
-X-Google-Smtp-Source: AGHT+IEH1BqMSX1yIRX4eK9XjBPS6pkTO1kxH3JapIOH8TKb2ESrqoA/iZRqQ2exr79E4dgeMXF8CiLL82TWwqJhOYQ=
-X-Received: by 2002:a05:622a:258e:b0:4ae:cc75:4703 with SMTP id
- d75a77b69052e-4b0aee5afb9mr42782921cf.58.1754661709835; Fri, 08 Aug 2025
- 07:01:49 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1754662566; x=1755267366;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VG/jc3uK17nl75KdjjSPz9XyI79UN0Loip6e0tTXadc=;
+        b=nv493jwqgIHRAmUYi2c95uJmy7DXCAo8cLAklJ/ceYVoxLAmXux9USt8XrU0z0rpCn
+         SR1pKbwfg25HL12zhJAkkwZ33mJNxXuy4QC0MYlKIxdssysubLLk4aXrNw8JLlzpjCji
+         HGf4h97gMYJ7EP4rU0OiJso3x4U+Xfn3x4b+U5/Qo+Mqm+4yj05t/FDZ6PKDfdxYiLH0
+         2UqKqUdWn3YpvS034R/H5VWBQcwAmMQ7GRvIWnQ2N5kK1KMqUSs2NXBANWwL2Wcz2D+9
+         MbINh/ZRm0qlsTVR3zI0eIk9ndC9WSHcqyi4XXxxsiTpZr6tzt8ctF/YdA4jykD6S0lo
+         JpQQ==
+X-Gm-Message-State: AOJu0Yx8SuYsXh4hM4xZKFwv5hChGgU8aq3GixbxKl0O4l+JFy1NvgU9
+	YnUD2i2PJbK0gVniiv46kHyUKH4HaY+6iVPlpgZ6WQG4nwbUftfClhGojVb0GWAo1Ko=
+X-Gm-Gg: ASbGnct9bfJ/rYhECAXRTAa9edwTxw0UhndE4TOTlSGbA3dOhL/om0Ngivobgrcv5Sf
+	l5o60VQaVuA1WmNW+jyjTwjNcK07cONpcbo8w+hp60qDa6Yrrgle1CPb+heSG+pd9P2T0TRk66W
+	YB7CckvNsaIrVPlurd3E8SXnNGMjCSLdiPo8/TZ/7iX5yMXeM7rQDQvON6AH3JZCLG0+8FMBq+U
+	kBYwQgLRZ+b6hnHmgCri72R6LEMlKirZnmVO7Tn9znfuekUDvEdNYSMeunOPxKHEsFQfAh8uz2J
+	SWhYhzttwcWfRt/FtgRTrAVm5SEx4dCkOLYAbdkF1IjwR53fQkoK4xFYtzuWIKZo4WP6Z57UYxl
+	CQg2dDENj3g0Ii0OI+mhUrK9h2g+R+pm4u8I=
+X-Google-Smtp-Source: AGHT+IGxfeBVNh4/aUszACoEq3XC4D6RxS7RyhP9MWdnuW1tiNhead0J00S+ncEYW0u2MGjwZKQcBQ==
+X-Received: by 2002:a05:6000:188e:b0:3b8:d271:cdc5 with SMTP id ffacd0b85a97d-3b900b72d90mr2675104f8f.34.1754662565959;
+        Fri, 08 Aug 2025 07:16:05 -0700 (PDT)
+Received: from localhost (109-81-80-221.rct.o2.cz. [109.81.80.221])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b79c3ad803sm30258751f8f.6.2025.08.08.07.16.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Aug 2025 07:16:05 -0700 (PDT)
+Date: Fri, 8 Aug 2025 16:16:04 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>, Baoquan He <bhe@redhat.com>,
+	LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 8/8] mm: Drop __GFP_DIRECT_RECLAIM flag if PF_MEMALLOC is
+ set
+Message-ID: <aJYGpPoaZwYZZ3Ze@tiehlicka>
+References: <20250807075810.358714-1-urezki@gmail.com>
+ <20250807075810.358714-9-urezki@gmail.com>
+ <aJSU3O-pUnTnl_wP@tiehlicka>
+ <aJX3zbr8QsIs1LOw@pc636>
 MIME-Version: 1.0
-References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
- <20250807014442.3829950-3-pasha.tatashin@soleen.com> <mafs0jz3eavci.fsf@kernel.org>
-In-Reply-To: <mafs0jz3eavci.fsf@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Fri, 8 Aug 2025 14:01:13 +0000
-X-Gm-Features: Ac12FXzfZzUeYL8qqgO-oYE8dxdNMTs6gp9itdpmGem1pHDL8sFl_NAXG2JwrAk
-Message-ID: <CA+CK2bCqos=z0q+YsmFK_kFQ8PLyLQw32TkJB5SK2y4Y1kVErg@mail.gmail.com>
-Subject: Re: [PATCH v3 02/30] kho: mm: Don't allow deferred struct page with KHO
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: jasonmiu@google.com, graf@amazon.com, changyuanl@google.com, 
-	rppt@kernel.org, dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
-	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
-	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
-	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
-	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
-	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
-	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
-	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn, 
-	linux@weissschuh.net, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
-	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org, 
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com, 
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com, Jonathan.Cameron@huawei.com, 
-	quic_zijuhu@quicinc.com, aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, lennart@poettering.net, brauner@kernel.org, 
-	linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, saeedm@nvidia.com, 
-	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, leonro@nvidia.com, 
-	witu@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 25DDA4001A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aJX3zbr8QsIs1LOw@pc636>
+X-Rspamd-Queue-Id: 846091A000C
+X-Stat-Signature: hnds4rzbw4f6n1hs1d98zmdn737stgp6
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: i5sd1jtn56p5f661he5kst49jxyydwga
-X-HE-Tag: 1754661710-882426
-X-HE-Meta: U2FsdGVkX18AId+4Dsrq/etku/Fc0ikkT0Oq634iXzJIuf+XcH4hi59tMUVsRzQQfasjZugFgI6QSPx0f7yLmu+oStB+MzUOf95nTwK+JU0CinNaF56G7KBt13r92AzaJ6Vp9Zv1XCzD6oPf2bb3SNUPjYptz2EW87tu8kOndcYBEvKqduMdT2dfHZjriH7vqIlnykkc2XSqZ8u0xJdWmVgY45iJK1EJfMniapWvVlQfhrAdxXGaRYaICe+xr3NI53l4JCQydGFCequPj6Ie1o1djPLiLUJlUpq+4KPMSrdMNFNf7E1AMXU4PyReEhqpAYhhhI0UaQOZPutWnJEmafrRuFq2JJur894aQnNMvv5kaH55abycWWCKKnUxwoMu4PIGrWs+ynr1khdyyigADgrc4Pcv1YhJWCbR5s46AlABIE+9NOUllmMfsuPCPwiFPBzHM1+kAstvmy3eUyZKKko19CZPKsbZfNL/wGzHYXBi20wb6QspvX8ibpoAV6ZKsxm4MkWZPEGkABvEbfFwF2H07CzjMLDe/lINNqJLRzfR0bZ01JVZC8uj5Rl3t5uezMAs6U575W9znfHDSEyN/GmFj3n0M2oBoRfjyBitRTvfZ4rTKJRYyJM0wpoKSBk2V0n7KJDM766OTgohZ7/bQ0YlxUgofQayPAp/sMwzm2Z5tB3wmmP0sHkuz1IQeEFzBg9t6h8Qau7FIDpHl0NMGjjjtem8oduIDSxmCLt5WrDstwMlQPiV3UqCcgruw7zZIygWwTP9giumTKzm7rw8mS5smocldZL2I05smZCqFNUK8NJcqFWmXsx7IygAmL5d6PR2GTa9ZpcSV8s/9NLcYIeHNHesXFbLOhaaHflXy69VfluYXTUSSoJJzS884o3kjTsXYpD4rLf2cZ+eKfYwmQBSwPOalfyuk8qnLTdH9A1n8gzDmTYEIW4W9Gs1MpEhk5tExFwz7CigswNZbip
- zBYP7aRx
- cRyO4YwKhzRs65LPBb9OskojxFU2w1WFo57co3KFvwFPRIOJJrbXRSfhXKUWxj43wiy6c63n0gwgjZiLP4q2wTQw5LRcxr5r7iIosFcSGbnqYu9wGrpwH07acMKo55t+rbynyNx6NMCaq65U7Iq6T1chQPo8OYNgxG80i4IgFF6PDcSVa5KUiCkUTI9zKmVXMQWt8n4ioWGK45TpuifbUDA9yeZLj193Vc/wt3naRpdbMD0SM8TgziEbTH4bqNIDZQWR2tDMpOlf0kgH5fgxyFnkrlzf9lvAqypvVswrtfOUEKVCA08lWP+aww2uYTKdEGdLxWDCbPAz2BBUQv+dZS5BYjQ==
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1754662567-409163
+X-HE-Meta: U2FsdGVkX1/GUrmhnNUO614O5SwOE3YPPwdDzmO4qIIWpW+vBZFoaN0JGChQT2LBTqHItZV7TKmvUPZMGAUMTi7VsLAJsuP8ocfTqUd9PKLbLEGnAXuN+IJhQrT/p+JoNsoDVoGq0PwsiEPXrwqLVBgG/JiYwUxNAHvVx205ho66kZBAeuoj4a9G7IZhvD3BPpQfHmCu6zaySGOMUJKR4DBoxJHjh+nxrtdKlm37opBitUaHOoTghxtj9FfqIya7Sfi8+dvkrlxWun1wSYoLC2g4j5GJfj1mMsPrnrBm/OPyDa5w2j2MGEx3b32C3Pi54av3KI9RowemeNcpURI91fMP9vPjfPnqjLSZqyATiTyfWyPPE9wOa0WZAZ+nq8yk0+0h+nyoXa0Gx7UyLk6m/M6YaexAQ7ovKwHzMZQTDvOV/pWm7sJr19WlSGUstw0ss4k8wmmUo8S54d7l+OnbuQ67bH+gQbi/dqrFEaMvwOZEN9qfFquVEz3yolttPHyQ58BpQqcejiDqh0RujoTkRBd3rRXZyoGJC3nALQwUxTUdeNTVPMgw0nJn1RJHDot8BQ/lTkNQl6ybc03P/pIFidumddoq4duKkK69D5otP7k8NRwPRRphKLyl+K8pz48nUijWuY0QnWJdIJUHSfeWVzShyqL8hXq7LmK7CjnBheGquSpsjlsZsGL3mHMGTPCMNiIVx9q1XfmGHxB53lBSUuMAAMnnMJzp65IujCmYv0PxPhu1AzPGuPmL7KMSi+QNU+xLM8ff2sKSGKTwCl5xTGtb0bQnVcZKmjBG3RLoPZSQpKP3ijiG+IyqHgtoC3L0z36Y7ijFuDMMBocU6slX4siv5X6Z3RM5KILpMqgP5ENM1HP0BdZ0m83NIMeCl5UXJ3UgAcNKfO0/D5QRqePaLTpuP8svgoHGZLlFZk1gq8diKwTR9RctAvGGc8Vm4QT3gCSlkKQbg2xA1U2yNGW
+ TKArBBlL
+ s3T4/kanfzW0QPHkFgKpGJW6ZryKgfu4pw2ynQRoc3fp4c8I6wN8j2prJYnoyUO60BQEOSJkjZJf0HQCUtk+IPytOAFGStUPEhetif1lp5qTR9Mj2JQc/t6+VqrQ7sytMjDO4Lm8Lsmt/U2lulEjK+O3oeCZhynaQFJpq9MqHOnr9XdZLVq+9T+XG7CbuvyoYUT0bwI2EzQtLRJJKKOhenS7JsdMMBj2XULuxusbTOAdFsDXxiaWiceVEjcoaaG5cCViSx9bs6vdhHoNbcOkX0tABaeYkFIXwXWCigTPjHI7iPeDP6O7S0SQlKxrADmH7oZGVoryZpsAHT7F67Di/XhHcCI2d/47C/3AfiHXm3ifhXAw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,64 +119,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 8, 2025 at 11:47=E2=80=AFAM Pratyush Yadav <pratyush@kernel.org=
-> wrote:
->
-> On Thu, Aug 07 2025, Pasha Tatashin wrote:
->
-> > KHO uses struct pages for the preserved memory early in boot, however,
-> > with deferred struct page initialization, only a small portion of
-> > memory has properly initialized struct pages.
-> >
-> > This problem was detected where vmemmap is poisoned, and illegal flag
-> > combinations are detected.
-> >
-> > Don't allow them to be enabled together, and later we will have to
-> > teach KHO to work properly with deferred struct page init kernel
-> > feature.
-> >
-> > Fixes: 990a950fe8fd ("kexec: add config option for KHO")
-> >
-> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
->
-> Nit: Drop the blank line before fixes. git interpret-trailers doesn't
+On Fri 08-08-25 15:12:45, Uladzislau Rezki wrote:
+> On Thu, Aug 07, 2025 at 01:58:20PM +0200, Michal Hocko wrote:
+> > On Thu 07-08-25 09:58:10, Uladzislau Rezki wrote:
+> > > The memory allocator already avoids reclaim when PF_MEMALLOC is set.
+> > > Clear __GFP_DIRECT_RECLAIM explicitly to suppress might_alloc() warnings
+> > > to make more correct behavior.
+> > 
+> > Rather than chaning the gfp mask would it make more sense to update
+> > might_alloc instead?
+> > 
+> Hm.. I was thinking about it but decided to drop the __GFP_DIRECT_RECLAIM
+> instead just to guarantee a no-reclaim behaviour, as it is written now to
+> the flag.
+> 
+> >From the other hand after this patch we would have some unneeded/dead
+> checks(if i do not missing anything). For example:
+> 
+> [1]
+>     WARN_ON_ONCE(!can_direct_reclaim);
+>     /*
+>      * PF_MEMALLOC request from this context is rather bizarre
+>      * because we cannot reclaim anything and only can loop waiting
+>      * for somebody to do a work for us.
+>      */
+>     WARN_ON_ONCE(current->flags & PF_MEMALLOC);
+> [2]
+>     /* no reclaim without waiting on it */
+>     if (!(gfp_mask & __GFP_DIRECT_RECLAIM))
+>         return false;
+> 
+>     /* this guy won't enter reclaim */
+>     if (current->flags & PF_MEMALLOC)
+>         return false;
+> 
+> [3]
+>     /* Caller is not willing to reclaim, we can't balance anything */
+>     if (!can_direct_reclaim)
+>         goto nopage;
+> 
+>     /* Avoid recursion of direct reclaim */
+>     if (current->flags & PF_MEMALLOC)
+>         goto nopage;
+> etc.
+> 
+> But, yes, might_alloc() can be modified also.
 
-Makes sense.
+I do not have a _strong_ preference but my slight preference would be to
+deal with this in might_alloc. Not sure what other think.
 
-> seem to recognize the fixes otherwise, so this may break some tooling.
-> Try it yourself:
->
->     $ git interpret-trailers --parse commit_message.txt
->
-> Other than this,
->
-> Acked-by: Pratyush Yadav <pratyush@kernel.org>
-
-Thank you for the review.
-
-Pasha
-
->
-> > Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > ---
-> >  kernel/Kconfig.kexec | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/kernel/Kconfig.kexec b/kernel/Kconfig.kexec
-> > index 2ee603a98813..1224dd937df0 100644
-> > --- a/kernel/Kconfig.kexec
-> > +++ b/kernel/Kconfig.kexec
-> > @@ -97,6 +97,7 @@ config KEXEC_JUMP
-> >  config KEXEC_HANDOVER
-> >       bool "kexec handover"
-> >       depends on ARCH_SUPPORTS_KEXEC_HANDOVER && ARCH_SUPPORTS_KEXEC_FI=
-LE
-> > +     depends on !DEFERRED_STRUCT_PAGE_INIT
-> >       select MEMBLOCK_KHO_SCRATCH
-> >       select KEXEC_FILE
-> >       select DEBUG_FS
->
-> --
-> Regards,
-> Pratyush Yadav
+-- 
+Michal Hocko
+SUSE Labs
 
