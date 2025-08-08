@@ -2,136 +2,180 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 42EDAC87FDA
-	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 17:20:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 08C2FC87FCB
+	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 17:46:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D7F416B009D; Fri,  8 Aug 2025 13:20:25 -0400 (EDT)
+	id 57B986B0099; Fri,  8 Aug 2025 13:46:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D570B6B009E; Fri,  8 Aug 2025 13:20:25 -0400 (EDT)
+	id 52C846B009A; Fri,  8 Aug 2025 13:46:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6CF16B009F; Fri,  8 Aug 2025 13:20:25 -0400 (EDT)
+	id 3F48F6B009B; Fri,  8 Aug 2025 13:46:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B666C6B009D
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 13:20:25 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5D620115C9F
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 17:20:25 +0000 (UTC)
-X-FDA: 83754254010.21.F78FB41
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 9A87F4000A
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 17:20:23 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=rivosinc.com header.s=google header.b=Pt7orO2+;
-	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of debug@rivosinc.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=debug@rivosinc.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754673623; a=rsa-sha256;
-	cv=none;
-	b=1X/Q9pxqHmv4XtzTBnkk/s1U1PtA7dD1T01p/AYV6/28Vs9NEiOd10+wMuselrnY2MGHEt
-	Du5gK2PPmkpjkusBL5de2CjrTaaEBud/oqfIAqbmKmtM7J7U8NCDRPtspSMk9nTC+JTke3
-	N/0nEtVe2q07iZNENfV9iCRfpX1PU4o=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=rivosinc.com header.s=google header.b=Pt7orO2+;
-	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of debug@rivosinc.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=debug@rivosinc.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FC0A6B0099
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 13:46:08 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B58EB115D4D
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 17:46:07 +0000 (UTC)
+X-FDA: 83754318774.22.583ACC9
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4D23940002
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 17:46:05 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hnTsNRSV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=QisqGGgW;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hnTsNRSV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=QisqGGgW;
+	spf=pass (imf07.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754673623;
+	s=arc-20220608; t=1754675165;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e5KtmNZscqY46KvhQCHs24ev6RrXWd+1XTPfyk6qu6o=;
-	b=igoLMbsMrZqGrf3f5xCLPMiRQaawc85ADxbXQo2eRvR7kuA5MUZViuCd9xDuI0LtV/JR/H
-	cfXn/JTl4JM58lemjtUyRXkP937fSlF7jKfTGUD32gMLxZElM4s7jYjCxQil5Zv06sceGM
-	SEX+SmljvUuhebGzIe8cezILSxiyWrw=
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-76bdce2ee10so2156998b3a.2
-        for <linux-mm@kvack.org>; Fri, 08 Aug 2025 10:20:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc.com; s=google; t=1754673622; x=1755278422; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=e5KtmNZscqY46KvhQCHs24ev6RrXWd+1XTPfyk6qu6o=;
-        b=Pt7orO2+DTz8LkdiHLIrruqQ2kZuvgSnK0Z8T35dlrUYm5jq1AJ8vBhxT++FMI3dEz
-         u+TY0FRO8+3pfrAkEoVu592gl6fhctdGUc3vUBn71J4kGDnHDNJ1WcBeLMOOg+QovRGz
-         SFs8bsYakON7mzjnTJ5GOYXtTy49OqgPlOvbEgpzxD9x/DgX9853s5hfDLk5tyLrffcX
-         kdhRItJJn3jE+euVuchBtzolAt/ud6zHxbW5M6csdHCzv2gSr5nyK3IU6rJ4HASGVEmP
-         P89Z31qnb/ya+cZX6i3X2PLCzl/JbJoHoHX74dMkCcXRpCjThsDCKG8Bk+QU9NxnNC//
-         Gklg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754673622; x=1755278422;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=e5KtmNZscqY46KvhQCHs24ev6RrXWd+1XTPfyk6qu6o=;
-        b=xU9HBiCFHQzZFWVJrwXPfQM/t5wQLaQ+jAToZ8MR9LPrwMhMwSl3x3utMKyRmYCMZl
-         DDuOm5mHQYHN04y0PF6Q2fBwR+FWKG1PZoYoIx1S7YtqBIslGwTk2QzhiVM93wBF7qOl
-         hqD4iw7GhZXjXBw4gIeb88aXpEhpV5XMbx1qKt0KJcR3ABYDUvtULLqsArZznBZIoJ8w
-         eCNHpKJSD4MPr4+HWBTmEVmg3UzkbdzUV+WgVkoMmPiG4O8JFCmJyl6OGtET0scc5Mq3
-         YLbKlDJ06bWzJwFKJGWxHT9A18Smk59y2/5OWAycMRnzRz8dZqfIZR05pg9PBYvfFf84
-         dlCg==
-X-Forwarded-Encrypted: i=1; AJvYcCXmS4Yu2ImqZ+T86saVWmUCtgixd8uC2gspiy3DKM/TpF5i+Xla+tzpFSjN802Q9P0jxlCWKClR3Q==@kvack.org
-X-Gm-Message-State: AOJu0YxqXeUlN2CSZB/c+pwVrPEWCCJsu4LusRrP8ga0zvMhmv6Y7PRa
-	z4iT7okbCp6mMNeFhkj9GnUdwki9rFw4T5+SIJTXfm599GXjvph45hCPjO/qsdSum3s=
-X-Gm-Gg: ASbGncvu8AcEGndl0PSBwPTUJvZMBLm5UOI+MfY42mNZWrotFHJEE2BRYRQBWSszQmR
-	gakUKP6TEP6O9uh+GSevFboCSu047JCYg/B0aDe363R6D0hDVL/aBY3eDF+Nvj0ZGx5nOMCj9YA
-	bg93aCkIW/qCz3hP8bI749bLXTwNV5IVz5srpZxwOv8voquCw27MYtRf2oOoXGKj2tfWIig5X3b
-	KfN0El8njFIez5mribyHHwZaXCAUuBTXMlTd5BXC1ksO2FTPs+1SFtdfa5CV8h06XTXPBKNLfB1
-	BzDbKBpgW+9+DqubnklOEY6hXJ32D0LQEpFy5i6iZRBUg/rwyx2xc4DtHmkEZ0/CoQZOwelO3Gp
-	5P7i/9GvsLHt+yhdleD+saJLrbSS93M/ZjDAb+xib6HA=
-X-Google-Smtp-Source: AGHT+IEbXOfCcMMF+EKLeMi8xU3SNI8Lg4qkWBu83GI5zB4sNqf//XXj2WJssysLa22zlDPxSEkl6g==
-X-Received: by 2002:a17:902:da82:b0:240:c678:c1ee with SMTP id d9443c01a7336-242c1ffb211mr57743355ad.11.1754673622272;
-        Fri, 08 Aug 2025 10:20:22 -0700 (PDT)
-Received: from debug.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241e8aafa77sm213263625ad.174.2025.08.08.10.20.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Aug 2025 10:20:21 -0700 (PDT)
-Date: Fri, 8 Aug 2025 10:20:17 -0700
-From: Deepak Gupta <debug@rivosinc.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: patchwork-bot+linux-riscv@kernel.org, linux-riscv@lists.infradead.org,
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-	akpm@linux-foundation.org, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	lorenzo.stoakes@oracle.com, paul.walmsley@sifive.com,
-	palmer@dabbelt.com, aou@eecs.berkeley.edu, conor@kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, arnd@arndb.de,
-	brauner@kernel.org, peterz@infradead.org, oleg@redhat.com,
-	ebiederm@xmission.com, kees@kernel.org, corbet@lwn.net,
-	shuah@kernel.org, jannh@google.com, conor+dt@kernel.org,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org,
-	aliceryhl@google.com, tmgross@umich.edu, lossin@kernel.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, devicetree@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com,
-	richard.henderson@linaro.org, jim.shu@sifive.com,
-	andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com,
-	atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com,
-	alexghiti@rivosinc.com, samitolvanen@google.com,
-	rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org,
-	zong.li@sifive.com, david@redhat.com
-Subject: Re: [PATCH v19 00/27] riscv control-flow integrity for usermode
-Message-ID: <aJYx0Yi3rQcdY6se@debug.ba.rivosinc.com>
-References: <20250731-v5_user_cfi_series-v19-0-09b468d7beab@rivosinc.com>
- <175450053775.2863135.11568399057706626223.git-patchwork-notify@kernel.org>
- <db4eb976-693c-426c-a867-66cadd3dd7d8@sirena.org.uk>
- <aJWz82F21pVTSVJi@debug.ba.rivosinc.com>
- <09081487-89ac-4f8d-b9fc-e563f09726d2@sirena.org.uk>
+	bh=OgUmwY6RCC9p9/dfYsN5D7uMh1db1LsUhnXQ6lTp2CU=;
+	b=gZYjdAcf7zJ5PfjdrWRBAo5743kRErJo/TYAkH5GobSc/L6VB+d0LuplNU7Jhr9yHUf6eE
+	ob/pUbh9uYvZxEKTvaGVSNFht0XKFWYtdy1alRsSKCslqZ7RgbuTeSwXl/myQr2Q16MGJd
+	0fdanaBtNCss5je3iDSNbq6lKNHsqI8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754675165; a=rsa-sha256;
+	cv=none;
+	b=63S3R/uQkLKYMpj3ADVW98oXMj+arV7TFuRK/cfHXfoiN/yCgjmhNRKC1Cc+nFOuY0K4iA
+	rzLv/Izczdx64EKQGKCnqgQjvFNbsUW2ppIgZTt44I/NsxgDEZCF2lDwSFo8G33iCWW/Aq
+	ola6G99VZZy+GdX7bz8H4ikGOp0cujc=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hnTsNRSV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=QisqGGgW;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hnTsNRSV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=QisqGGgW;
+	spf=pass (imf07.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 3427433E3F;
+	Fri,  8 Aug 2025 17:46:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1754675163; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=OgUmwY6RCC9p9/dfYsN5D7uMh1db1LsUhnXQ6lTp2CU=;
+	b=hnTsNRSVcXZvncuMw3nnw3vQDVI1iiWEAHLrfxWgbwFzht9b+UyUTUYYy/aNFqBcXY4CUT
+	nbIZqT+2hRwWPzxv67SfrKgnuvM6erLL7LbqDtgg4hXLicK3kl/GuKMW6FZaqCmX6an7mc
+	UsSjNdn48T5GOfWzuuoH75CNj62gJHU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1754675163;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=OgUmwY6RCC9p9/dfYsN5D7uMh1db1LsUhnXQ6lTp2CU=;
+	b=QisqGGgWGb0XheLsmWyq31VQkNt7/VLiJP9Kc/6q7GiK1lg5QFvTGDBPmuzglkgYPiHmnV
+	n37q4/fG28qVkmBg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1754675163; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=OgUmwY6RCC9p9/dfYsN5D7uMh1db1LsUhnXQ6lTp2CU=;
+	b=hnTsNRSVcXZvncuMw3nnw3vQDVI1iiWEAHLrfxWgbwFzht9b+UyUTUYYy/aNFqBcXY4CUT
+	nbIZqT+2hRwWPzxv67SfrKgnuvM6erLL7LbqDtgg4hXLicK3kl/GuKMW6FZaqCmX6an7mc
+	UsSjNdn48T5GOfWzuuoH75CNj62gJHU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1754675163;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=OgUmwY6RCC9p9/dfYsN5D7uMh1db1LsUhnXQ6lTp2CU=;
+	b=QisqGGgWGb0XheLsmWyq31VQkNt7/VLiJP9Kc/6q7GiK1lg5QFvTGDBPmuzglkgYPiHmnV
+	n37q4/fG28qVkmBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EF51F1392A;
+	Fri,  8 Aug 2025 17:46:02 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 6GkKOto3lmjUaAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 08 Aug 2025 17:46:02 +0000
+Message-ID: <2a53f01c-db74-4298-bb9e-36b770e4fcd0@suse.cz>
+Date: Fri, 8 Aug 2025 19:46:02 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <09081487-89ac-4f8d-b9fc-e563f09726d2@sirena.org.uk>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9A87F4000A
-X-Stat-Signature: tza1k9u9wd313a7mfxjczxjaf3fko9h9
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/3] fs/proc/task_mmu: execute PROCMAP_QUERY ioctl
+ under per-vma locks
+Content-Language: en-US
+To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
+Cc: Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com, david@redhat.com,
+ peterx@redhat.com, jannh@google.com, hannes@cmpxchg.org, mhocko@kernel.org,
+ paulmck@kernel.org, shuah@kernel.org, adobriyan@gmail.com,
+ brauner@kernel.org, josef@toxicpanda.com, yebin10@huawei.com,
+ linux@weissschuh.net, willy@infradead.org, osalvador@suse.de,
+ andrii@kernel.org, ryan.roberts@arm.com, christophe.leroy@csgroup.eu,
+ tjmercier@google.com, kaleshsingh@google.com, aha310510@gmail.com,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ SeongJae Park <sj@kernel.org>
+References: <20250808152850.2580887-1-surenb@google.com>
+ <20250808152850.2580887-4-surenb@google.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20250808152850.2580887-4-surenb@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 4D23940002
+X-Stat-Signature: ha659ecyicqqq1dd3o63mpzpoirj7xwb
 X-Rspam-User: 
-X-HE-Tag: 1754673623-355228
-X-HE-Meta: U2FsdGVkX18ZSdk8uv+gaPXnYb7CiRA5LNNk82cbbgmBz+nGvVP6i1/+5C+BbQVce3V09IjjT9YMHACbNvIyuJitZNVWvFaEOFD9jO+/I0UvZNPzthRxlht6NJAuy7/r1tV2RBlw25E5AXqPhLUfqimlDVOh+40hMaDpz2QtE92o3a9WXbjzyFjCMBcgn8g6N+9oUAn6c6QM7sZjLN6/2oDhAmx9zELPWy6K33NGaHnl8+fbDmt8B22bykW0cIMsuemBD+avLy1yrx3UGPx9XTxpzl/7QKIIrRWHRYJWTLchcBDAiQ2M2paJamnPlfuh1xVSkYpY3Z6LBS023Wh1Y2tL08dGjfa9507OgYPr7tKz65RhBCRBLbByUctV0Gn3ImqV77UPsgM6HEw4JHv4C1NSe48eK6yZ+V8v2uaphRHnOFc3ovr05+EpH5BitJRsawJkwsyULtkEz1fRqC60A0sJbHbx90W8aFk1ymAfaTj8dNGE3qg9LBhPwi3Ch3bwOGNEYXoEXzQot1u5r4CQMJS3HoMx9zGoowfGgQuktgoHOr+IqlwyNZc5zaz2evq1B4tnwJ3GiSgp3A3BJwiRGYr5Tu6MMqhU0aoIfelpoqeGwc3GS8lb1HzPWhi39yqm87to4eVW/6j0mn5pxXHFvhDN0pbpi7+cqc3qNj5cL+yCX8frctYVH1QVPCsWwSVg0nJwUM/GLIXedBMB0CLKZupHoYBRYi+9g9LlujGtb4c2Io+rkW2nU4vZni2VqL5afh9TSkhciP/1MmsnVRgaUSU0GgGOEl16xYj+Cvy75X2IJaFzM731iOQdwKpKCEj3VqAXwv1mgSL7ZH4VCscG5sG5Dt+MFn6lYlWUCLnP5NTSLgQoLNo5MyHYj7bMCMmsdST1x4txzQQRmSDZQDwdgHrVM4UrmJlNAhqaH5N2fbRlrq/aR3EcgzUVcFPwbCnYxHYaPRN8lfxqDnCkVo4
- R2KL6Ph4
- GlXI92WldCdM594kgGoHmi6YOjBM/mVn2g6MyJUL7IQ3D0sMrA4qbPJAyF5hkW9ve8DFvzQkLXPebAjdZpBptfrrnCK9uSEjoK3LL
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1754675165-158558
+X-HE-Meta: U2FsdGVkX18KGVWGVxBcwDjw55E5u/pye+JyIfX+hkrgFM6t3/54vWRQrKh0zNW1gMzjUGBrcgX96O0lfhJGRVtyFObg/eyfCZgsucjrBmoGW404MbQ/7DR+P0e4H7xpHu3Xmbz+kW1kyxavcx8Yravgt7p0R1CiBWuGMjri6RpHuro70UB5jPIFknyTvGGTeXzQGzvni8ZChkTrH57lNAvcvChsAT7oTimrEG3rJ5M6anHbpbitlaR7PwuZ0lKqh7dEnzQi030e6j3c5TbmaOp2pp89SxTOWeAdmj1GsUWr6hq74QcGgDYXEAI9B+mvggHEm7Kih/te/VasefQMUwHNyse+AV2VPZ23Udj0Wy7ODdKxoI/o4FUEJ0kLVo/G3P8CVrW06kl967oP8xOLu9LmtcDsoDW1LIq4EsoKY/KsVvRYWaezBn8ACyCt1U/bA9LLSkSbz0Xj2/MO1cVqiEkHB69ZO8OXN+RyGX4eM9VpkT8BFF7NkgO5U7TGYLS1ykzpggFMGzkuGdpP+V1pPug3Q6luG96Wc3/Cp3ziidVASRUTs733mOGtoWmJ5jeSi7Fs3IY1MPnJzNvPb0iY9er0cgIRAQbaiTMz/7ERxjr5Tb4DyYaomCRmsnX88w/gVr9L66Q4MpuSGULnRxkSkiHwNOoPMSN355XT0hJNbllOqUDvGwC2rpGv88gHANaonOmWmW6dx5iVdhYeYpa3apdnO3cdy/4cZft7Iax0f5lvXWtylzWTJlMcEnoJ9A4B9ss2YQF9Z+51qy4WXNgWqA8aYf8SboFr6/KgGMu2WvzAqchwoJ97wflsSnCde8YPIhv2rJ2eP7e4/tb1ZDDkBsqtbZNCcn/yAD+0JmWeYt6PkTdetQGrVQr7PbLrIXwgak5qca+QraDRiLzqkQi76xleIrbOxonKxyB6g9/BirPnYeAxVgrXZQbcpUAaBxt81CK3AHBn9JaOeeuBolZ
+ OsBew96a
+ x+YCQtLBnHvB6f+T4cuknGKYvg1WqDpMaWlcW3EC54FK9q7fUH0GaHrb21wSv1oC9OevyfAfQ3IXNI/frZ0s+C4ufgXpL4Z1BQyRDcgjCHG+CN9Cnm28aL1EglD7mqdbtTZ4d0Xn5A/QaTFOY4vIEmtaRjk/z65iYCe9yINcGxw96yfkTTSiwdrWy8YWkaL4OUeeMCc74SmSOtHZizMQcRDhDRGroyZSOY0/jF0TO72ST1waISvItLrGj0GGbqPx+ymSuVerd8MVwSL1aCZHBxDZbnkq2wEh2jH5mxayfzZYV7WXJ3Scig2GvXTn3xW8HWH7DN7k6hBKByJZVlA0M83qAjnMQSKvro+c59/izoD1ph7LEXOu3hkzWkTuqK1oIbDrL
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,36 +184,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 08, 2025 at 12:48:31PM +0100, Mark Brown wrote:
->On Fri, Aug 08, 2025 at 01:23:15AM -0700, Deepak Gupta wrote:
->> On Thu, Aug 07, 2025 at 01:28:36PM +0100, Mark Brown wrote:
->
->> > Do you have an update for my clone3() shadow
->
->> No I don't.
->
->> > stack series that I could roll in for when I repost that after the merge
->> > window, and/or instructions for how to run this stuff for RISC-V on some
->> > emulated platform?
->
->> I would want to write-up instructions. But I don't want you to go through
->> a lot of hassle of building toolchain and bunch of other stuff.
->> Let me see how I can make it easy for you. Will report back.
->
->Thanks.  FWIW I should already be sorted for the kernel build, unless
->there's a super new or specialist toolchain required for this feature
+On 8/8/25 17:28, Suren Baghdasaryan wrote:
+> Utilize per-vma locks to stabilize vma after lookup without taking
+> mmap_lock during PROCMAP_QUERY ioctl execution. If vma lock is
+> contended, we fall back to mmap_lock but take it only momentarily
+> to lock the vma and release the mmap_lock. In a very unlikely case
+> of vm_refcnt overflow, this fall back path will fail and ioctl is
+> done under mmap_lock protection.
+> 
+> This change is designed to reduce mmap_lock contention and prevent
+> PROCMAP_QUERY ioctl calls from blocking address space updates.
+> 
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> Acked-by: SeongJae Park <sj@kernel.org>
 
-Unlike x86 shadow stack and arm's GCS, push on RISC-V shadow stack is done
-using dedicated `sspush` instruction and pop is done using instruction
-`sspopchk`. RISC-V vDSO has certain `C` files and they would need shadow stack
-push and pop (along with landing pad on them). So that's why kernel compile
-would require the toolchain. I'll point you to it.
-
->(I'd guess I should be fine for the shadow stacks bit?) - it's userspace
->and emulation for the extension I'm missing.
-
-Qemu changes are upstream. I'll provide the command line option.
-On userspace, I'll point you to something pre-compiled rootfs.
-
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
 
