@@ -2,103 +2,92 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B1554C87FCB
-	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 07:33:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A4AFC87FCB
+	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 07:34:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 37F836B0089; Fri,  8 Aug 2025 03:33:52 -0400 (EDT)
+	id 0C1F66B0093; Fri,  8 Aug 2025 03:34:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 357DF6B008C; Fri,  8 Aug 2025 03:33:52 -0400 (EDT)
+	id 099F46B0095; Fri,  8 Aug 2025 03:34:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 294256B0093; Fri,  8 Aug 2025 03:33:52 -0400 (EDT)
+	id F19186B0096; Fri,  8 Aug 2025 03:34:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1853F6B0089
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 03:33:52 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 277A5BEF79
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 07:33:51 +0000 (UTC)
-X-FDA: 83752775862.06.97F2135
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 10B0AC0005
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 07:33:48 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
-	spf=pass (imf22.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E19AB6B0093
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 03:34:42 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8E0671A144D
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 07:34:42 +0000 (UTC)
+X-FDA: 83752778004.07.C2D7B8F
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+	by imf01.hostedemail.com (Postfix) with ESMTP id D68AA40003
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 07:34:39 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=krfOrPBr;
+	spf=pass (imf01.hostedemail.com: domain of fffsqian@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=fffsqian@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754638429;
+	s=arc-20220608; t=1754638480;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MYY170L5/j8gQmCV0i0KP9yMXLZ9vOW8yjQXrZqWtaY=;
-	b=am8qZO1vStF/K+VGaaqiq9hakClOni/doFEoVJLN6YNxuVinwgarHB0PsuqrenQsRfZkji
-	i6Y3PTtjidUwYnsX0x9MDy48a8K6+oC5DXIWX5ixNOTUKYdnNrIWfBOImorYtRSZERJNHr
-	f8RqNC5r7E9JLwflh4XOz8s6Gxmm3Oc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754638429; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=bWqffEK1j65V+npFFXubrmYzyYXvK3w8H6N6TmUJh1I=;
+	b=E93Yb6U9WEFMD8DWLP1UcZgQGDC3r7Yp8Ir/VglnQSly8qPlQYjMsuAyJEaeAMH6OO0lGw
+	BSLV8fB0qLtFiPv7NiGSAmBIOlLLXKXsdTntff8TNP3N+rp9F8hDMpyG9JdJ1XeiCeevKI
+	4jn7HwVb8Wdw2J7CLTaLM22SPSuOFPM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754638480; a=rsa-sha256;
 	cv=none;
-	b=jd6LzAhdiv9Ou66d2C4Dzk0Fd6d37jZmOgWvcGQyYFd+azUD+pVdq+enBAdB8H/r4DZNAl
-	gqCibKd3N9k0mC27vpemxo6zAKuAY+oBqgM5D+IbN0w0+6kg2HCao3qcIYFq2p/xrlIiA/
-	6h8TsMSgZ6Zm1z2gbISchCmgxIaU45Q=
+	b=LRGN/8gVQQovJIMGyZ4Kk1/WR4rQGaDX4AzPP78NcZD8jeZsryD6jI1DF33miVDk80mMF5
+	XT5s9Dvjov3QDsCYgzN7Iop5tTAL2gzCcPE934jl01/GlmO/WfgSCPabN99f1GqLqKMjsY
+	O/KEorU+LE9CaaKQb6MtH52HVWi/i34=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
-	spf=pass (imf22.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4bywkg3Mhqz9sS7;
-	Fri,  8 Aug 2025 09:33:47 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 6-UTSoBBRo41; Fri,  8 Aug 2025 09:33:47 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4bywkg2Vk1z9sRy;
-	Fri,  8 Aug 2025 09:33:47 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 3F40D8B770;
-	Fri,  8 Aug 2025 09:33:47 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id UAt1KEdP_5VW; Fri,  8 Aug 2025 09:33:47 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 1F8218B763;
-	Fri,  8 Aug 2025 09:33:46 +0200 (CEST)
-Message-ID: <59ce87be-0a0a-4f6b-b439-bc7a4a037fc2@csgroup.eu>
-Date: Fri, 8 Aug 2025 09:33:45 +0200
+	imf01.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=krfOrPBr;
+	spf=pass (imf01.hostedemail.com: domain of fffsqian@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=fffsqian@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
+	Content-Type; bh=bWqffEK1j65V+npFFXubrmYzyYXvK3w8H6N6TmUJh1I=;
+	b=krfOrPBruaBySPEdh3nNVpS53n9/+fql/Yi5VfqGv5mnq8IEkwSPwJXbPSHBt8
+	e6V0UddHh99v8ExRQkKRXs/F/c2faenQ5cabhSTy1oa71BZC9il4wKCWZRYWUYMO
+	y7Dnfsju8NDQPM+qHias/SpuC1sFCAo05zm8JDSdDIHQI=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id PigvCgC3P8BzqJVodqFcAQ--.4545S2;
+	Fri, 08 Aug 2025 15:34:12 +0800 (CST)
+From: Qingshuang Fu <fffsqian@163.com>
+To: akpm@linux-foundation.org,
+	hannes@cmpxchg.org
+Cc: david@redhat.com,
+	mhocko@kernel.org,
+	zhengqi.arch@bytedance.com,
+	shakeel.butt@linux.dev,
+	lorenzo.stoakes@oracle.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Qingshuang Fu <fuqingshuang@kylinos.cn>
+Subject: [PATCH] Fix the data type inconsistency issue of min (tier, MAX_CR_TIERS-1) in read_ctrl_pos
+Date: Fri,  8 Aug 2025 15:34:08 +0800
+Message-Id: <20250808073408.154247-1-fffsqian@163.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/2] kasan: introduce ARCH_DEFER_KASAN and unify static
- key across modes
-To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>, ryabinin.a.a@gmail.com
-Cc: bhe@redhat.com, hca@linux.ibm.com, andreyknvl@gmail.com,
- akpm@linux-foundation.org, zhangqing@loongson.cn, chenhuacai@loongson.cn,
- davidgow@google.co, glider@google.com, dvyukov@google.com, alex@ghiti.fr,
- agordeev@linux.ibm.com, vincenzo.frascino@arm.com, elver@google.com,
- kasan-dev@googlegroups.com, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-um@lists.infradead.org, linux-mm@kvack.org
-References: <20250807194012.631367-1-snovitoll@gmail.com>
- <20250807194012.631367-2-snovitoll@gmail.com>
- <22872a3f-85dc-4740-b605-ba80b5a3b1bc@csgroup.eu>
- <CACzwLxiVURgamkv2ws5sK9BQVMz7VPSWGy_aQb+MT8jtv03d3Q@mail.gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <CACzwLxiVURgamkv2ws5sK9BQVMz7VPSWGy_aQb+MT8jtv03d3Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 10B0AC0005
-X-Stat-Signature: z14nie88itpj3oibyckp711z5g34udys
+X-CM-TRANSID:PigvCgC3P8BzqJVodqFcAQ--.4545S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7uw4rtw43KFWfAr43CFW3Jrb_yoW8Gr4Dpa
+	93C3yqk39xtwn7Kw1qvrWfAw1xWr1vkFW7JFy7KF10k3ZrGFykta1YgwnxKrW2yFWxX3Wa
+	v34IkFW3K3WDZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jUnYwUUUUU=
+X-Originating-IP: [116.128.244.169]
+X-CM-SenderInfo: 5iii21xldqqiywtou0bp/1tbiMRmjymiVo1GsMAAAsS
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D68AA40003
+X-Stat-Signature: f4atgibmqe1c7sgz778ri854mgume9eb
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1754638428-244499
-X-HE-Meta: U2FsdGVkX18rAaAXLOayYct3SqG4J4PLsvhfCalTMG1eIiqCgfl4EGoe7nNlCAqi0AfQ094aAKxbnC8T776diiMfg+ZElchM7ztXac/E5YnNuKmm2mj4o3EobAX79ofzFjhyAp8E01rR18Bw53VsuKXY4fUAqk7k1k5gsFh9bm4SMXA0lduNBlVmsF4yYU5EiFLS23AiY/tunGzIDj6Pmfn4QMWAc9sgNqlw9XSiVLvlEQ7WPJcds1LveUq6Obcq8wKHIj/zqyFUyYKBr34hAqd2+O3fYCg5g16U6EG1bmz/Z5cxIiGvRSPFt6fvEXc5UWuIAxhXPACsv4nnkEP2GClrjkSTLUJu7mWnagSB32iSb3eDOm8MNlr942dNZL725VtmJeOQdNemHDQ7ocLxpT++USDxV+AG5SodKT7t5qXb9c/lQ348/yA5R0iy9RO+dYgALvsYVHQpxHxnevixLPptTfkkjA/3w3oiYYO3y94ZER9iaRXgeM7iiwmF2WnQIP2eUswiJre8/sDz8+VV5TI5BjUlZ7gzdxEpaffSzgcjsJVDFp9WsP6hiHHdxkMKEXgp8/2TCpec5PSERy4xcTe7hoN98pTRDLe3CzNX5b3Mhv2prRMP9eCkOr+NldGgI6PCWD5jagIV/AFBTllIsX2zpehnGvCeN4Cm1XL/1sKkNOejfT34jJJD/Wn618Fu4z6iNzVE56AjmALnHoS5ox7qEgPn/zP04djUWmpWtgCQlhZfu3P/ykSbONWJXv2eNdvM3Z1SdrW6ekKg7/JPswH0hmIt9F2WwChXtic1M/tGNAqbxlx372LmwxQWB6n6QXYswdGAZADFSceN5EnP1x62B8sbt8oqaRPLc08n9iwP2N7Bm3slQ1xKWAzZpJsKTIf5wOnm2Cr3Ix2o3Aeg+pvwRpbp9KYXZauxBory2zRuEB6FR8AXJALuZ6aW2HWt4YPzNGc+Bkvrgrjr53M
- u1Ws9TR2
- okp3gO2jmtYS/de6GJDuPAz3f4tFfRbOvnXit5FROVw4fSOg0uHMxAEJ8Gry3TnwhkT479lP+OI2eyNtSPz1q4KW3BMsSZKLs3s6gZFLZS3y5/1bdqcFrG/xwugdOYCcmnVdfVaGlNGR9ZeJnSt/ZSUi39qXZMRVoAccvhMIF6kZfvHeYdIENk///pDMs9NEvXmdRFuBrnUa/CI8P8wMuVB9owgLfm1na/tx6qTbuIs/VOAs1anPy/k2Zs5EjAeMLDxWrLYUUt3hTbi+nMGxDoMaOyxBuE70uqcs/Lm6ykVwXnjWopTAWuUUcJhxIqT+EzPOKFVwk+thnD2POeEUQTCn9sQADxRw+2lHPyHZ8RugJykAvcFwZdDANIw==
+X-HE-Tag: 1754638479-944349
+X-HE-Meta: U2FsdGVkX1+5gnS7cakBgNBof9oXmnyL9tTGmWYKQ/IE9huKJbby69RRrF/jy99IVUEtIxe6qZuRGj19Omg1/nGC5Jy+IUe0Bw4UeWrm4s0a+HU7BQTe0vxIj3RphHBxQu7Jh7pWVwRgocBkpo23u2F1pMDNzNkt5VvzjmN3IH6pH72f3g6KN6+TXWWlkyvO+LlYtWWjIM9+FdASBZ5ODL6q1LZwZiLJpuRNNGQV+zTrXGoMn2q7Az9TihRkOyviRfGnhA6M+SyQ+6lKsAn8/ntsZDzmmx6g7sCJu67lYtNqjmX65s/y6O4qNfjCbO0V5U86FAwiFrQQtdCkfyHcj3L2RgPCeOJodhkhcQwWizrltMgXJ+fDE3/+pYWrSPRIV+4Zn+kiPyU6rx7Fz3KsZo4jadNSE+hx7FjrlYWvKHO8rFk4FRadfLokMP9YjHh6LAA+283Gh2VZIqtZ77V0z+chPhggMHqyiVoxs2EfutXJ/ddOpEEcfsf38nrZgsTVmW0KPHXueqszJAbeHcofYroO1xiokNIV+x5QNhQlpxp7IH1wS/TTN9W0RtLr8c3gpJ9kbv5mQJRswInEmDYn3wxwWIiYJupjsvwzTkEYHsolkdXaXfJhqr4WJBW63Y/mJJNq+D2pEMmEdojHylzbN2prCklR1JsbErc2ZF+9fbHFKNPS+PBQPIoQskLjqiDHHGR5hH1sfxWm1P+Sc6wLQKND+pRo7nTn9QuTSBaaTPm0I4c0GiDHq6BKHwFbbi1UklLWVcjQJyWDTx3yb7dHJvArQoD7jYLFsqvMBwdjfdPIvskNnb4e3+R6RMqx5K80ztZ6LWaYSC6htF4OOj31ct31fE1XZSE4zjPPTSIsW9iwhw3l1jnZTN7d0PBOVcNu0O3QNFCGwoPkwUMWqSOqwXEsSzXY0iH/98N4schvy9hdl7DCdqUg5ls2NSgOm5+PjJHKeLU6p0A4augwdje
+ erebT+0B
+ zh2j2g08Vv9OooSBN8MDzwVPg4c0AMrtKXjZoKFvYYinAvusM7rhiBgtLDeU4QNxTBKRUn12KoPDLe3fEIJMnDq6RyVR3alw9yRpprAu0os+Q102vq2U6XxfPqU/aF9DAev/5P50wKuyVQ6ySzmGgjed5fs0NGw83jqp+AWiHCBF+DIIAma301K19mcoq6hWGOTR4mkNMXi8iUW9kCoNc/ADz0jPnQh460iCqIcMcM3NcO139eX/ONi4qEK5/PYJgSROITQPugsnTVm/rFJc5eH0lLszPhQMigR4hOPCZm5DMnoOVpnQ74Clk0lP3E46yGKlX5SD43pz2wPXOlSHVtE7Ei7GPr3ZxHazTY+wz1npTzsdMgRnoMIw7YPnZwWA8odwOIEf5MD1aY8UBsYo/l1fTahyvpGN5MJZKvBJrT9+ddm9jvhpFJP0yKe2WrSqb+Prk4M52xqkVSjwMj2xBz1NleKU+J9aLENUm
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,44 +96,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Qingshuang Fu <fuqingshuang@kylinos.cn>
 
+Due to the fact that the tier data type in min (tier, MAX_CR_TIERS -1)
+is int,but MAX_CR_TIERS is an unsigned type, directly using
+the min function for comparison will result in an error:
+from mm/vmscan.c:15:
+mm/vmscan.c: In function ‘read_ctrl_pos’:
+./include/linux/build_bug.h:78:41: error: static assertion failed:
+"min(tier, 4U - 1) signedness error, fix types or
+consider umin() before min_t()"
+And MAX_CR_TIERS is a macro definition defined as 4U,
+so min_t can be used to convert it to int type before
+performing the minimum value operation.
 
-Le 08/08/2025 à 09:26, Sabyrzhan Tasbolatov a écrit :
-> On Fri, Aug 8, 2025 at 10:03 AM Christophe Leroy
-> <christophe.leroy@csgroup.eu> wrote:
->>> diff --git a/arch/um/Kconfig b/arch/um/Kconfig
->>> index 9083bfdb773..a12cc072ab1 100644
->>> --- a/arch/um/Kconfig
->>> +++ b/arch/um/Kconfig
->>> @@ -5,6 +5,7 @@ menu "UML-specific options"
->>>    config UML
->>>        bool
->>>        default y
->>> +     select ARCH_DEFER_KASAN if STATIC_LINK
->>
->> No need to also verify KASAN here like powerpc and loongarch ?
-> 
-> Sorry, I didn't quite understand the question.
-> I've verified powerpc with KASAN enabled which selects KASAN_OUTLINE,
-> as far as I remember, and GENERIC mode.
+Signed-off-by: Qingshuang Fu <fuqingshuang@kylinos.cn>
+---
+ mm/vmscan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The question is whether:
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 7de11524a936..f991196fd8e5 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -3194,7 +3194,7 @@ static void read_ctrl_pos(struct lruvec *lruvec, int type, int tier, int gain,
+ 	pos->gain = gain;
+ 	pos->refaulted = pos->total = 0;
+ 
+-	for (i = tier % MAX_NR_TIERS; i <= min(tier, MAX_NR_TIERS - 1); i++) {
++	for (i = tier % MAX_NR_TIERS; i <= min_t(int, tier, MAX_NR_TIERS - 1); i++) {
+ 		pos->refaulted += lrugen->avg_refaulted[type][i] +
+ 				  atomic_long_read(&lrugen->refaulted[hist][type][i]);
+ 		pos->total += lrugen->avg_total[type][i] +
+-- 
+2.25.1
 
-	select ARCH_DEFER_KASAN if STATIC_LINK
-
-is enough ? Shouldn't it be:
-
-	select ARCH_DEFER_KASAN if KASAN && STATIC_LINK
-
-Like for powerpc and loongarch ?
-
-
-> 
-> I haven't tested LoongArch booting via QEMU, only tested compilation.
-> I guess, I need to test the boot, will try to learn how to do it for
-> qemu-system-loongarch64. Would be helpful LoongArch devs in CC can
-> assist as well.
-> 
-> STATIC_LINK is defined for UML only.
-> 
 
