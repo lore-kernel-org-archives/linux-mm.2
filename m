@@ -2,91 +2,91 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A96C3C87FCB
-	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 07:21:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3703DC87FD3
+	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 07:21:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EEFD6B0089; Fri,  8 Aug 2025 03:21:36 -0400 (EDT)
+	id 75C066B008C; Fri,  8 Aug 2025 03:21:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C6F66B008A; Fri,  8 Aug 2025 03:21:36 -0400 (EDT)
+	id 733DC6B0093; Fri,  8 Aug 2025 03:21:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DC686B008C; Fri,  8 Aug 2025 03:21:36 -0400 (EDT)
+	id 670C76B0095; Fri,  8 Aug 2025 03:21:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 109296B0089
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 03:21:36 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B1C791DED80
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 07:21:35 +0000 (UTC)
-X-FDA: 83752744950.07.D6727CB
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	by imf11.hostedemail.com (Postfix) with ESMTP id ABF6F40006
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 07:21:32 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b="A/LmYE1L";
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf11.hostedemail.com: domain of fffsqian@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=fffsqian@163.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A5D36B008C
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 03:21:43 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 053015F863
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 07:21:42 +0000 (UTC)
+X-FDA: 83752745286.02.E0E3D7D
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C6C358000D
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 07:21:40 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	spf=pass (imf30.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.196 as permitted sender) smtp.mailfrom=alex@ghiti.fr
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754637694;
+	s=arc-20220608; t=1754637701;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=bWqffEK1j65V+npFFXubrmYzyYXvK3w8H6N6TmUJh1I=;
-	b=hRTpNXlQEVo23oyHx61juyhbym9V6Oado0BizhwAnXdT6gcn13ykrqvQ/ZR0RDcKDuCXhG
-	AG+Xin4SUFrTIzEGQyEuKAz3BLFqbGgObYCNZ2xKmr9O48MMqOy6nouuHObKiwEGUgmMMA
-	V/aAbqa9A2/Mxi+FznrWDOHvPz51zdY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754637694; a=rsa-sha256;
-	cv=none;
-	b=1KDdZUrw5usQFCU0tuFv4Qsq5kgc+5m1mMXTcoyeY8FQCUKGIgxs/Wn5fXRDH5P3UJ6ttV
-	N35AiUVQRRORGFIgKEYHLJepAYa6U2gdo/7Oyb9xMYn/vs4GjefkA3WRzr8mELB34PswGE
-	Ghgo5BFmFBg+Qs7tB/q3HqDaRxpPd5g=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4/QklETFhE/HaMV63Zcte41AoyA4FbhUpoG+hqiHyGs=;
+	b=lSV4dDsdG3RoFMAVfscRLbF5S+RRyOxHJuVd9GXHdlD/4bxMU070tpcsJtuyto5xf/Phpl
+	yx2Ml+lpyQsZ5jiPcs+0Vs1KI7DybMRlInrYyq+aQ07WPI5WTaHjnC4ZzcnMipL/rb2QGB
+	6hFHkM38XmC0Nz3fXzK10UrRGj2OiuA=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b="A/LmYE1L";
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf11.hostedemail.com: domain of fffsqian@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=fffsqian@163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
-	Content-Type; bh=bWqffEK1j65V+npFFXubrmYzyYXvK3w8H6N6TmUJh1I=;
-	b=A/LmYE1Lr2AH/EPbHWBzPuUJBPAXBA2e2qlaL5dWvk4nk+awljuVwXmnecXeo/
-	rfpWREg7fjgJv0dq9ZfRVOXJuXHepgiphXDko21Fpw87IKOctVLLXK545orIEsc0
-	rjEtJrOA9rLkh1Bn2AQICjAW+F0XMbuG06omDyO0WUzh0=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wD3_9NlpZVoS4MlAg--.6902S2;
-	Fri, 08 Aug 2025 15:21:10 +0800 (CST)
-From: Qingshuang Fu <fffsqian@163.com>
-To: akpm@linux-foundation.org,
-	hannes@cmpxchg.org
-Cc: david@redhat.com,
-	mhocko@kernel.org,
-	zhengqi.arch@bytedance.com,
-	lorenzo.stoakes@oracle.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Qingshuang Fu <fuqingshuang@kylinos.cn>
-Subject: [PATCH] Fix the data type inconsistency issue of min (tier, MAX_CR_TIERS-1) in read_ctrl_pos
-Date: Fri,  8 Aug 2025 15:21:06 +0800
-Message-Id: <20250808072106.153449-1-fffsqian@163.com>
-X-Mailer: git-send-email 2.25.1
+	imf30.hostedemail.com;
+	dkim=none;
+	spf=pass (imf30.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.196 as permitted sender) smtp.mailfrom=alex@ghiti.fr;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754637701; a=rsa-sha256;
+	cv=none;
+	b=I1g7GTojfKUH6qdAovsH0aYY39fnmBljXzzxqiQRskSkOXwaGBCyVmOHfLX1dZXS/k5Lxw
+	MeQGYqxmRWsa/fvHwfy0IKD3SeTDD+ZXRTXdeNpy2ZS2qL+CxyKuhgbq53Gg4PCibxCe0m
+	ZcsEeNoxbHP2Z7BT6nB4zBFzS95etFA=
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 37190443D6;
+	Fri,  8 Aug 2025 07:21:33 +0000 (UTC)
+Message-ID: <7487516c-3eb1-46fa-aed5-6dc72600c952@ghiti.fr>
+Date: Fri, 8 Aug 2025 09:21:32 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/2] kasan: call kasan_init_generic in kasan_init
+To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: ryabinin.a.a@gmail.com, bhe@redhat.com, hca@linux.ibm.com,
+ andreyknvl@gmail.com, akpm@linux-foundation.org, zhangqing@loongson.cn,
+ chenhuacai@loongson.cn, davidgow@google.co, glider@google.com,
+ dvyukov@google.com, agordeev@linux.ibm.com, vincenzo.frascino@arm.com,
+ elver@google.com, kasan-dev@googlegroups.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-um@lists.infradead.org, linux-mm@kvack.org,
+ Alexandre Ghiti <alexghiti@rivosinc.com>
+References: <20250807194012.631367-1-snovitoll@gmail.com>
+ <20250807194012.631367-3-snovitoll@gmail.com>
+ <07ffb27c-3416-43c9-a50a-164a76e5ab60@csgroup.eu>
+ <CACzwLxhahYWfRc5xKshayniV6SuFFnMT0NfHttippcASzZgtRw@mail.gmail.com>
+Content-Language: en-US
+From: Alexandre Ghiti <alex@ghiti.fr>
+In-Reply-To: <CACzwLxhahYWfRc5xKshayniV6SuFFnMT0NfHttippcASzZgtRw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3_9NlpZVoS4MlAg--.6902S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7uw4rtw43KFWfAr43CFW3Jrb_yoW8Gr4Dpa
-	93C3yqk39xtwn7Kw1qvrWfAw1xWr1vkFW7JFy7KF10k3ZrGFykta1YgwnxKrW2yFWxX3Wa
-	v34IkFW3K3WDZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jUeOJUUUUU=
-X-Originating-IP: [116.128.244.169]
-X-CM-SenderInfo: 5iii21xldqqiywtou0bp/1tbiORSjymiVozZI1wAAsz
-X-Stat-Signature: f4atgibmqe1c7sgz778ri854mgume9eb
-X-Rspamd-Queue-Id: ABF6F40006
-X-Rspamd-Server: rspam10
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduvdefudelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthekredttddvjeenucfhrhhomheptehlvgigrghnughrvgcuifhhihhtihcuoegrlhgvgiesghhhihhtihdrfhhrqeenucggtffrrghtthgvrhhnpeduffeugedvtdegleeuhfeuteetueegfeefkefhheffvdduhfegvdehuddukeffgeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdhinhhfrhgruggvrggurdhorhhgnecukfhppeduleefrdeffedrheejrdduleelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelfedrfeefrdehjedrudelledphhgvlhhopegludelvddrudeikedrvddvrddutddungdpmhgrihhlfhhrohhmpegrlhgvgiesghhhihhtihdrfhhrpdhnsggprhgtphhtthhopedvhedprhgtphhtthhopehsnhhovhhithholhhlsehgmhgrihhlrdgtohhmpdhrtghpthhtoheptghhrhhishhtohhphhgvrdhlvghrohihsegtshhgrhhouhhprdgvuhdprhgtphhtthhopehrhigrsghinhhinhdrrgdrrgesghhmrghilhdrtghomhdprhgtphhtthhopegshhgvsehrvgguhhgrthdrtghomhdprhgtphhtthhopehhtggrsehli
+ hhnuhigr
+ dhisghmrdgtohhmpdhrtghpthhtoheprghnughrvgihkhhnvhhlsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopeiihhgrnhhgqhhinhhgsehlohhonhhgshhonhdrtghn
+X-GND-Sasl: alex@ghiti.fr
+X-Stat-Signature: ouxyq8hpkrdwz83agrhayawqr9bs4354
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C6C358000D
 X-Rspam-User: 
-X-HE-Tag: 1754637692-526892
-X-HE-Meta: U2FsdGVkX19/CYW7oN7hFj+zl5p5rEWue3QYTkn4ZtZV5KjePjjGmjMoqXrC8qUlauVunpoGCHS4Gc3mjYC0aTHj3CJSh03p1PjbcRlvUt/0BN02+lIyzNBN+nsGOiE3IKS020sdUhDSgZ1kFx7XmNnW6sH7RXMuYZFSiOnn2F0fol+Tmmus+hYV8GfWpbg7gPR1d8pCM1XkSM7ECJH1WAlFV5wbgWvROS92NcCa/kpk+xs+EbIiJN3510L6VwTjZQprEyIpLUxKgXEAR9d4EAJjdhm9Ggj+uUbwvq8TMLiUZvr3bmKNmSXGXqOblYqckrf89F9atxvkOsh4+1c18yI5LVD4Os7cYhIMz3uYOR6XbSZggfFjEojP/HY4lbrSPYc0yhGnHWx2H6p9MNh1PSXF41Pi2YE0xc8Cug6GeSQJBxeLui8PNeXkATzICxXiQpsk9thPIh0g/pewe+AjYQZ1Resq/xRxbL7DDsS0/IBzOiFUpT5VPm9o4Jn/8BZXlQk43OqSl/SDgNUdbo0QxxL5xTq7eRv9zhDLljN/8AwBZoCH70JarLTaDsky4kC4WEOCJZCmgfpkfu42TXaeCDLard2BkpWDAelbuV3oNhe1pfJdqDvDXk1E0u2O+T41tN4U3NM8MUUuQPQz+dIJ5fYtbiTjyA3hZ8UmPulqTW/R+WEbV6p2enEhfPcB07mcbDeKJDm2VJp1eMsqQRa1lObcozyGFt2OxV7Wb/FkeuYMaIeFDO0gd4K+RSk6z3LHPwNq+/ZNzYVMRhDPMvMcb3fsgHFWC4Koyxj9JzByo6B2lRiTZYRgczPbgsqyjK3Kld0ONAj/C2EZz9P8ReaWF4uB1T3teGKTLT12XKAnHQpn0DPmnGZNR/EUcNZ6FbSQyigDzcbhmCClkYgLeIKaBtxOCGJeP9izleGBuIUJ+k+yThotBwfin1NDTYkDEyhtREEb1LOymc4xUpeD62q
- TaBxz9DM
- WHqSRI8VM42E0D+/+XeNAvFaOzWNts93F2keYht2IjIPOMSv+z2T47yxrKkzJ8IxXxggFSqL+TJBk7S806kPoxtP+J+kW/XjJbu2r9ksMnSgwMVcgvCIbF3F8WBMFnK//46cH8rcSUjbpmZwfRBsaeFAbv6ltp9eQlApjF4GrFciyFgbVXydN0y9kbyDvcKHlmmeyYseB9/jwLr50PGrYF3yoNDajRLfu6VQ4Ktno1YxXSl7qtZP1dXCZDJy6XR0umfde6fSRnPG+9GRNEwEWKyQRkbbmUN7kykGO/2/yssi3HIpJa9MvRzpRSqsGI5q1QiX6bZHJDFs+WpJyqLjmMWBQ3M8KAaS0MxXGLKALkl/6b7i4z3yxF1cUwQAcIIrmcOSfgkXgF4gb1skXhMgm1aUSV0XLWY6gM+Q+8uMna6RsBuWCvYJbDfPSxf22xW72f2KEEgK0JVBs3eF8li4TSIEuqF6QlIlDk+d6
+X-HE-Tag: 1754637700-388598
+X-HE-Meta: U2FsdGVkX1/3S0R6Ls8+NWZq8Lz2j/MyfwXyJx4IZYhYTBWPlFtSOjtYUH/tn0FUZ+OqbHQojilMtU2WkTEjrLtSUsV1GyAlKk6Zf4p2E7lev9p6+Idp31ZxOeVS/94hK8wcIDG43t6b/FDTbsUB3aje+yU98cdb5IKGokPjREEg3J3OAXQp4QTJHNAPw1hMdQ6xoqlIQphbI5fopcscqyTr29jouQoZ+JV2SF0TLTIGUyGcwF8AQ98heEiS9NW8VFjNaRrUCoWJrDP0LMOOmyLs+jVUE9h04V8KwSUbPCXxcO1fIHiZP4ze7NcLzHjauzsxM66BCOyxzCWUnjIwwxRpAfHJI6wWsQbQsJClR7EwpJZk/VPUpu1JYhVR8m1x9Vgix6xFl4hkVAh15R4UJr/7trlmteOZXIYsPeqKlhUqYxmDmLmqXROcpHHgVCKURbUi/mY012GtuQ1n9I1nUfhYQx3n6z8K1wxQuF9y/qHP0Qe18LZTR+3ZqFgeAVm+lvSvTUetdT1X7sx64JRDrFYWLWggciMJXlnV5QCbEQrs5LVAb6SxHZGttMpZYlvn3r+e3eOIzY1ancpHlFPoX7POkN8XveHZmVMHm1yq6NfJWrOBaE7u3rdJ3SGJfwLyILtDIoS7gqA8l3mT27KzGq7O2AzBy1Yro3FljgmauLCHOfuB8Yv25jhxmvCFO+e110eYSPYQsqOWu0RTgBnVTfoeOne+A+97kn9rvpIj/l6Z2LfZakb5H9ijq/vaJTbpkoryP/TH/RsLaOTnc9TN5guVVGnts4gkZRoLZv4QHKpGaYhJjNNG3vuqUITTqwVtH3IYs2YW4feVQMagefBHW8FmPJM5XKibfVtkJfik2pTDyjW6L7/nkX2KLyOjl1ggSC4D0O7Iqhl8IK75GWpw/1D+fYT0fRXw/rEb1+/fC0iGjTJG5XAgkwmTnmI6PNgI5WSDixJZ6rD3GoXpXGa
+ Mfk4QQZK
+ FmTfACHONZyqpPl8ueC29WhjJ40mnyMFWKIGPvpYHv7leN358iel8Jqlp9/Bdr7sDQcafjb6OwtYIMWcJ5ecRTOqmfn8MDe93denl+EwHZmh63AerjfL8/8oaHy0HBLaLO0jMn1HekG/Z/hFVLCHE8maYmGAXKkGW1v0p+NiW6uxjYRQyFjuhN3F1ZdL21LmEyKiE8BukRbOjPxuApL1hZIn5KJtNDk1+n7mwl7FxDePkHDMTKa5rzD46stpfxDfuDjlUb38LbH28g/zFY5ierNwtMm974HyAVpV5sSjp31d6yCgQkKPM1nbq0Do0g0sV+OQDtoAzfYqjTZho+WxzLdrMd+ByvfbCW4MUJf5JvxvP5X/3YsBvccBPWzva8W5hmJQz39hNLfuoyd/vMgK+nv4XrbClv9ngRytQNs1m/fWQcz9/3RfrsN5bf1ddCDSm+v3A
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,39 +95,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Qingshuang Fu <fuqingshuang@kylinos.cn>
 
-Due to the fact that the tier data type in min (tier, MAX_CR_TIERS -1)
-is int,but MAX_CR_TIERS is an unsigned type, directly using
-the min function for comparison will result in an error:
-from mm/vmscan.c:15:
-mm/vmscan.c: In function ‘read_ctrl_pos’:
-./include/linux/build_bug.h:78:41: error: static assertion failed:
-"min(tier, 4U - 1) signedness error, fix types or
-consider umin() before min_t()"
-And MAX_CR_TIERS is a macro definition defined as 4U,
-so min_t can be used to convert it to int type before
-performing the minimum value operation.
+On 8/8/25 08:44, Sabyrzhan Tasbolatov wrote:
+> On Fri, Aug 8, 2025 at 10:07 AM Christophe Leroy
+> <christophe.leroy@csgroup.eu> wrote:
+>>
+>>
+>> Le 07/08/2025 à 21:40, Sabyrzhan Tasbolatov a écrit :
+>>> Call kasan_init_generic() which handles Generic KASAN initialization.
+>>> For architectures that do not select ARCH_DEFER_KASAN,
+>>> this will be a no-op for the runtime flag but will
+>>> print the initialization banner.
+>>>
+>>> For SW_TAGS and HW_TAGS modes, their respective init functions will
+>>> handle the flag enabling, if they are enabled/implemented.
+>>>
+>>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217049
+>>> Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+>>> Tested-by: Alexandre Ghiti <alexghiti@rivosinc.com> # riscv
+>>> Acked-by: Alexander Gordeev <agordeev@linux.ibm.com> # s390
+>>> ---
+>>> Changes in v5:
+>>> - Unified arch patches into a single one, where we just call
+>>>        kasan_init_generic()
+>>> - Added Tested-by tag for riscv (tested the same change in v4)
+>>> - Added Acked-by tag for s390 (tested the same change in v4)
+>>> ---
+>>>    arch/arm/mm/kasan_init.c    | 2 +-
+>>>    arch/arm64/mm/kasan_init.c  | 4 +---
+>>>    arch/riscv/mm/kasan_init.c  | 1 +
+>>>    arch/s390/kernel/early.c    | 3 ++-
+>>>    arch/x86/mm/kasan_init_64.c | 2 +-
+>>>    arch/xtensa/mm/kasan_init.c | 2 +-
+>>>    6 files changed, 7 insertions(+), 7 deletions(-)
+>>>
+>>> diff --git a/arch/arm/mm/kasan_init.c b/arch/arm/mm/kasan_init.c
+>>> index 111d4f70313..c6625e808bf 100644
+>>> --- a/arch/arm/mm/kasan_init.c
+>>> +++ b/arch/arm/mm/kasan_init.c
+>>> @@ -300,6 +300,6 @@ void __init kasan_init(void)
+>>>        local_flush_tlb_all();
+>>>
+>>>        memset(kasan_early_shadow_page, 0, PAGE_SIZE);
+>>> -     pr_info("Kernel address sanitizer initialized\n");
+>>>        init_task.kasan_depth = 0;
+>>> +     kasan_init_generic();
+>>>    }
+>>> diff --git a/arch/arm64/mm/kasan_init.c b/arch/arm64/mm/kasan_init.c
+>>> index d541ce45dae..abeb81bf6eb 100644
+>>> --- a/arch/arm64/mm/kasan_init.c
+>>> +++ b/arch/arm64/mm/kasan_init.c
+>>> @@ -399,14 +399,12 @@ void __init kasan_init(void)
+>>>    {
+>>>        kasan_init_shadow();
+>>>        kasan_init_depth();
+>>> -#if defined(CONFIG_KASAN_GENERIC)
+>>> +     kasan_init_generic();
+>>>        /*
+>>>         * Generic KASAN is now fully initialized.
+>>>         * Software and Hardware Tag-Based modes still require
+>>>         * kasan_init_sw_tags() and kasan_init_hw_tags() correspondingly.
+>>>         */
+>>> -     pr_info("KernelAddressSanitizer initialized (generic)\n");
+>>> -#endif
+>>>    }
+>>>
+>>>    #endif /* CONFIG_KASAN_GENERIC || CONFIG_KASAN_SW_TAGS */
+>>> diff --git a/arch/riscv/mm/kasan_init.c b/arch/riscv/mm/kasan_init.c
+>>> index 41c635d6aca..ba2709b1eec 100644
+>>> --- a/arch/riscv/mm/kasan_init.c
+>>> +++ b/arch/riscv/mm/kasan_init.c
+>>> @@ -530,6 +530,7 @@ void __init kasan_init(void)
+>>>
+>>>        memset(kasan_early_shadow_page, KASAN_SHADOW_INIT, PAGE_SIZE);
+>>>        init_task.kasan_depth = 0;
+>>> +     kasan_init_generic();
+>> I understood KASAN is really ready to function only once the csr_write()
+>> and local_flush_tlb_all() below are done. Shouldn't kasan_init_generic()
+>> be called after it ?
+> I will try to test this in v6:
+>
+>          csr_write(CSR_SATP, PFN_DOWN(__pa(swapper_pg_dir)) | satp_mode);
+>          local_flush_tlb_all();
+>          kasan_init_generic();
 
-Signed-off-by: Qingshuang Fu <fuqingshuang@kylinos.cn>
----
- mm/vmscan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 7de11524a936..f991196fd8e5 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -3194,7 +3194,7 @@ static void read_ctrl_pos(struct lruvec *lruvec, int type, int tier, int gain,
- 	pos->gain = gain;
- 	pos->refaulted = pos->total = 0;
- 
--	for (i = tier % MAX_NR_TIERS; i <= min(tier, MAX_NR_TIERS - 1); i++) {
-+	for (i = tier % MAX_NR_TIERS; i <= min_t(int, tier, MAX_NR_TIERS - 1); i++) {
- 		pos->refaulted += lrugen->avg_refaulted[type][i] +
- 				  atomic_long_read(&lrugen->refaulted[hist][type][i]);
- 		pos->total += lrugen->avg_total[type][i] +
--- 
-2.25.1
+Before setting the final kasan mapping, we still have the early one so 
+we won't trap or anything on some kasan accesses. But if there is a v6, 
+I agree it will be cleaner to do it this ^ way.
 
+Thanks,
+
+Alex
+
+
+>
+> Alexandre Ghiti said [1] it was not a problem, but I will check.
+>
+> [1] https://lore.kernel.org/all/20c1e656-512e-4424-9d4e-176af18bb7d6@ghiti.fr/
+>
+>>>        csr_write(CSR_SATP, PFN_DOWN(__pa(swapper_pg_dir)) | satp_mode);
+>>>        local_flush_tlb_all();
+>>> diff --git a/arch/s390/kernel/early.c b/arch/s390/kernel/early.c
+>>> index 9adfbdd377d..544e5403dd9 100644
+>>> --- a/arch/s390/kernel/early.c
+>>> +++ b/arch/s390/kernel/early.c
+>>> @@ -21,6 +21,7 @@
+>>>    #include <linux/kernel.h>
+>>>    #include <asm/asm-extable.h>
+>>>    #include <linux/memblock.h>
+>>> +#include <linux/kasan.h>
+>>>    #include <asm/access-regs.h>
+>>>    #include <asm/asm-offsets.h>
+>>>    #include <asm/machine.h>
+>>> @@ -65,7 +66,7 @@ static void __init kasan_early_init(void)
+>>>    {
+>>>    #ifdef CONFIG_KASAN
+>>>        init_task.kasan_depth = 0;
+>>> -     pr_info("KernelAddressSanitizer initialized\n");
+>>> +     kasan_init_generic();
+>>>    #endif
+>>>    }
+>>>
+>>> diff --git a/arch/x86/mm/kasan_init_64.c b/arch/x86/mm/kasan_init_64.c
+>>> index 0539efd0d21..998b6010d6d 100644
+>>> --- a/arch/x86/mm/kasan_init_64.c
+>>> +++ b/arch/x86/mm/kasan_init_64.c
+>>> @@ -451,5 +451,5 @@ void __init kasan_init(void)
+>>>        __flush_tlb_all();
+>>>
+>>>        init_task.kasan_depth = 0;
+>>> -     pr_info("KernelAddressSanitizer initialized\n");
+>>> +     kasan_init_generic();
+>>>    }
+>>> diff --git a/arch/xtensa/mm/kasan_init.c b/arch/xtensa/mm/kasan_init.c
+>>> index f39c4d83173..0524b9ed5e6 100644
+>>> --- a/arch/xtensa/mm/kasan_init.c
+>>> +++ b/arch/xtensa/mm/kasan_init.c
+>>> @@ -94,5 +94,5 @@ void __init kasan_init(void)
+>>>
+>>>        /* At this point kasan is fully initialized. Enable error messages. */
+>>>        current->kasan_depth = 0;
+>>> -     pr_info("KernelAddressSanitizer initialized\n");
+>>> +     kasan_init_generic();
+>>>    }
+> _______________________________________________
+> linux-riscv mailing list
+> linux-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-riscv
 
