@@ -2,114 +2,119 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C37FC87FCB
-	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 16:41:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D9E7C87FDA
+	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 16:56:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F3466B0099; Fri,  8 Aug 2025 12:41:44 -0400 (EDT)
+	id 13C186B0096; Fri,  8 Aug 2025 12:56:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A43B6B009A; Fri,  8 Aug 2025 12:41:44 -0400 (EDT)
+	id 113D06B0099; Fri,  8 Aug 2025 12:56:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED5136B009B; Fri,  8 Aug 2025 12:41:43 -0400 (EDT)
+	id 0501C6B009A; Fri,  8 Aug 2025 12:56:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D99616B0099
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 12:41:43 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7F905C022C
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 16:41:43 +0000 (UTC)
-X-FDA: 83754156486.06.E44C95E
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 8F5391C000C
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 16:41:41 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=FhW6W7li;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf21.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=lokeshgidra@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754671301; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EAF576B0096
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 12:56:32 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8F04C58AE7
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 16:56:32 +0000 (UTC)
+X-FDA: 83754193824.10.532C7BC
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 9261620011
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 16:56:30 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IJc33oXE;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=urezki@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754672190; a=rsa-sha256;
 	cv=none;
-	b=b0bbCfNN/mCKXP50LZZ0wUwTrIUSl2PtBL70obF8rh9P318hFBX2XRXQmqE4oYMG2O45rU
-	Jf37c4WchZVbCGuitUCmBhsaxzYv+c/z1aEQ3hK2xWhyyv5CadxJ3cEm4nrhRZMOXBmDqj
-	L7ae07bdaEGdTSZjlumMvm3+6hEjLlI=
+	b=iCOu336aAxzXg3S32hnX5pG1ke882k3GINr8nD0qAxr+OTK9QHTMrgHCxmdR8Mar+vdJdc
+	SvyrwHYm2MkD5/k6w00ZBjtGQTgddqDNNSH2ZlxIOdMdElOHsx1uSAnY5PgXRTyq+AtB1U
+	b7a7wPAQy0uJV1HlH2Kt5cWbPJFaF/A=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=FhW6W7li;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf21.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=lokeshgidra@google.com
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IJc33oXE;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=urezki@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754671301;
+	s=arc-20220608; t=1754672190;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dfdUfMqWlDOmJex++lFk1qO6nnIBP0OFGSpkvrWBx0w=;
-	b=Ksx4uiT/uPJW2dAcG12Fd9vGELh4GUzSiftj/Q5Emkmj2/SyGaPgsC0PhvcWozFvJ0BNG6
-	A5UfBIyRXQKMTYsJIm/mY+kxjLePDD5og7H7xm2RWgGIlfNWsE5p/3rufeTa0+W+wgtwXV
-	B6XcJ/JEyHhsZw/gd+X21mKBW9Uh19Q=
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6156c3301ccso16a12.1
-        for <linux-mm@kvack.org>; Fri, 08 Aug 2025 09:41:41 -0700 (PDT)
+	bh=7LBLfDTvzbGx3yFmcXI/cuVRKB9os7wxht5tPJbty3k=;
+	b=XAffaZpWW0XQbo8CZ7zM+ntGMoV76pMhmqlOoFXvMEeIbORrNLOzgWfvDlwTQn3VELB3Bh
+	HQF/2Oxdzv06lYSXai+pT4d2MwLNYgqXz13Byexicj3qJ4TpL8zKMZEXJ1Oci0BawQi37a
+	UPpNFFkOZAgCvZibP6e5TUcTU5tbCfs=
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-55b8736b1d6so2414928e87.1
+        for <linux-mm@kvack.org>; Fri, 08 Aug 2025 09:56:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754671300; x=1755276100; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dfdUfMqWlDOmJex++lFk1qO6nnIBP0OFGSpkvrWBx0w=;
-        b=FhW6W7li741HGm4YHr52JWGv/aNxBWBE+mOid3Y/kmQzzK+j0+Vd960L5mFx6DvlfO
-         vEmXs3GA9VEp8l5DkbfSSxl/FSN2LJnOPovwkDekYJ683eESSsGWzTLzqNQkIO8u+kEb
-         mXhaUiLUujtJW5650VfTsLWBqfAjdVYUwq69iSLOcDUeswRp27MM+azIyNxeWL9wRQbW
-         GWqkRJg9mTOI7Rsd7GMM0uvz8ZInvpDsvuIvo8Rx2A8PTQgNfLdlwxMiLQEcOGbEXLVZ
-         Quly1zwlKwiSWvoCsHdYql/m39Q1ij1XDqtbg2VpMHKQawTwT+6HklXLC/ThvhEvDX/n
-         7KCQ==
+        d=gmail.com; s=20230601; t=1754672189; x=1755276989; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7LBLfDTvzbGx3yFmcXI/cuVRKB9os7wxht5tPJbty3k=;
+        b=IJc33oXEpkXdQt8VEGbMENcc3ON33b6HQd5Gf0YkINSC35ng93i+ZM1IrcjOZnA3Ea
+         2h3zMf6H0h1T8rh4Qn95+ctoAMeb8iUVTLIeBzzHoYgcPa0A0Vi+Knara3Ggnj5/I7gt
+         TgTioRQWmlaq36INHL2Ir2yg6iJGIF96i1QPh+yyfuyTDSmkKFgAfLKT4VVYhAm/WB/y
+         EpIZChEmIq7o3+20Nlm1DRdJxM6FI4OLVJrM5NOZ37u9zLi9Ezd/q3Kgg1RCW+rfH+mW
+         xB63XASzoRoULZj4gUd7waN2qoCpcS8kPMb3vLvbuM5rcr4G0HT/vitm4n6nkCSP/PsY
+         yF3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754671300; x=1755276100;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dfdUfMqWlDOmJex++lFk1qO6nnIBP0OFGSpkvrWBx0w=;
-        b=iVWY9tLgbM/AFPhW9TckeYP/GTACdH9XYfs+lzzdpmW6ftgvKjjAwnhdMTDTT4jwUf
-         dDjdjvsS/XG/jgLEsbIPLsYStycAFKIKymzj8nakK2ZPIxdEGJ/lTAujodW7VSgPKUZk
-         vz7Key3T5RgmHEqdtfeAVZzdgU/bp+V61OKVTPCVuBoxmr/5yYv7tj/+JKIlbM+l0xNN
-         NIpo3DEjsrhYonyUMJBeyvri9BHDHDojAfrnTCTdc2/8CA2UeICI0NTExucB/+/apap1
-         4Yvxx1PTrcrTYRKAwxvn7fa8K9iGYoHVtqGJnQGJGx5lt67dVDjIJFCArKyTlxRb4jQd
-         vWAg==
-X-Forwarded-Encrypted: i=1; AJvYcCVU2X/M332gC1p8Bohnco68a+lmRsgk368EIej6RIIZkEPNDGGt7PBb1+U0uxKs9XHTW75HsyazQg==@kvack.org
-X-Gm-Message-State: AOJu0YzqHfSaVZ7pDh0Qz2qB/Wn/czBLB4lcraCRWx9CSJylAcGv9gCl
-	VQCa6pIef7IypUoyW8ofUFuQ7DX3ZOFBgeww1GghxMCpCelidBEYagJ0JVryWhnA2+G2Q4x8IGL
-	XsTHJol3NL0nnfI00B+OJ+1gQqbqxOsGcQRB6HIqR
-X-Gm-Gg: ASbGncv01z8SW8/5XIUH2i134N7zA2GFUwwr6mlnJl2pfI6Sgk8r/VdOr54U9BRld0E
-	1znpZmF5kgVPWBq2413n8x3oNOS2HuWj8+v02pMso+2+PMi5BO5lFPVu1YidQa84mBZIA9PccAz
-	FkEVBtSOl6jxfy374853ZPo8LBCqO0KSg9Ib1zYTSqXxgscE8e3s8sKLQPF61T7ASkghzkW5xCT
-	VbCkpxYuMnlHgpyS2En4yY5MRDd4Lfy7nmo9ADgsA==
-X-Google-Smtp-Source: AGHT+IGcT1Fa1wAmQd/OSoCSWiqxxrHCCt8PYFL+Ygdztx19r9wleJKk1M6kSna+PxJBsaxfyKbUlyZTlO/6NquFBsE=
-X-Received: by 2002:a50:d516:0:b0:617:9274:5bb0 with SMTP id
- 4fb4d7f45d1cf-617e48fefe6mr91904a12.3.1754671299708; Fri, 08 Aug 2025
- 09:41:39 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1754672189; x=1755276989;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7LBLfDTvzbGx3yFmcXI/cuVRKB9os7wxht5tPJbty3k=;
+        b=YFFUX1J8wWxW1mkKYWOJknjIjm4pse8ZXbsBIvZ1YRek5MlWLqloQ0gKsSJlVi8kcM
+         yi8p5pDts0mDiOVbZXfdEsTfZ2yGIsNVqTYs3S15K61QuNU3y/6IlOrJx47mOmxp68XB
+         zoWuLfOinA2Bh3uon0P+MnyMD/ZA5w3z0KMWt778w6uozLVMCNkjGCEKFQQxjNTTRuna
+         gAtP8F1+/PPm5IKwPtZiGo+ABDptULgOCvPG/t0DgvsN/NCiiQeTIVT3pYrF3T62BvBJ
+         h+50WclSuu4GUtn3+PVwmtbb98GwMHD2Zqn/4Wn7EdPTzuyw7Xd1FOCZuV2tBp5hopqe
+         9GTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU0N5J0fLPcyQvSSmJRaQeAGI/rJHYXid54N94egJs8KziCuN3sv8XXlPDSngrm3E6STMchr0Hs7w==@kvack.org
+X-Gm-Message-State: AOJu0YyYMwp2zApH1q4SaCcPf7i1qr+dsan6WKRdDxRYsAOklgkDxrJ4
+	hc/GCD9NwhjS/VQeNxVd6OoE7lP8NvjYQdddHQ8TOpj6AnXNcVkl3oJ3
+X-Gm-Gg: ASbGncuYNugaIoDp6vI8jvDxfsuMiMR2cj8nYw/1RoQGoGEyCTcUHDeZ+X23D/91fK5
+	5NIQPfqNEW7XarNZcg/cTlwEWY6+0BqoBRxmOKj5QWSoYuUCd4iTBfVtqXMghNPya2MvW31+lDy
+	uCdY+ksmoozJtT6ntKb8dP1KC5bQGszDOdAyW04kMEHnlAPewtJAZQRMdlAA7gLlL1LGlsQ0LF1
+	mP7Q1LNYFUziG+MeKVYyuY4gdlqCHuJQBlN9rte2E8VKRnFeTUtBv+bXrdkZ+1mIEkzC+xSa7nJ
+	gdcSnC5GRT0r4ZahTgkRm0WCxUownLRAFD33AOYz79RcPXt7sg2hrWZM51UcfEuyqON481BjeDN
+	KydckMJX62ZsQyo+O5YVN4oxEgauqFY/+L+a/cX03jqGlWWoNog==
+X-Google-Smtp-Source: AGHT+IFdThAy+vd4lzX1BCpXC1ZlUiH5NrUOgca2mq23ylMZkZXKQZwttX8IRO0lbgeUS7mg2X1dzA==
+X-Received: by 2002:a05:6512:3a81:b0:55b:82cd:71ff with SMTP id 2adb3069b0e04-55cc010e021mr1064169e87.37.1754672188569;
+        Fri, 08 Aug 2025 09:56:28 -0700 (PDT)
+Received: from pc636 (host-90-233-217-11.mobileonline.telia.com. [90.233.217.11])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55b88cabb8asm3154101e87.145.2025.08.08.09.56.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Aug 2025 09:56:27 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Fri, 8 Aug 2025 18:56:25 +0200
+To: Michal Hocko <mhocko@suse.com>
+Cc: Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>, Baoquan He <bhe@redhat.com>,
+	LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 8/8] mm: Drop __GFP_DIRECT_RECLAIM flag if PF_MEMALLOC is
+ set
+Message-ID: <aJYsOe3nxP6Nuwsz@pc636>
+References: <20250807075810.358714-1-urezki@gmail.com>
+ <20250807075810.358714-9-urezki@gmail.com>
+ <aJSU3O-pUnTnl_wP@tiehlicka>
+ <aJX3zbr8QsIs1LOw@pc636>
+ <aJYGpPoaZwYZZ3Ze@tiehlicka>
 MIME-Version: 1.0
-References: <20250807103902.2242717-1-lokeshgidra@google.com>
- <aJT7qQzEs_p36yfI@x1.local> <20250807155401.683c77b0d0cb5c9ec88089e6@linux-foundation.org>
-In-Reply-To: <20250807155401.683c77b0d0cb5c9ec88089e6@linux-foundation.org>
-From: Lokesh Gidra <lokeshgidra@google.com>
-Date: Fri, 8 Aug 2025 09:41:26 -0700
-X-Gm-Features: Ac12FXyfe3klaRIC0BNFV6P8qrkr_FZHrNFM2dPy8TEb4JRfxMOXo149i-LIVQQ
-Message-ID: <CA+EESO4zWAo=AwohgsGdHNmuLOiuPs1C-FOg4FHrtqiUTdY84g@mail.gmail.com>
-Subject: Re: [PATCH v3] userfaultfd: opportunistic TLB-flush batching for
- present pages in MOVE
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Peter Xu <peterx@redhat.com>, aarcange@redhat.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, 21cnbao@gmail.com, ngeoffray@google.com, 
-	Suren Baghdasaryan <surenb@google.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	Barry Song <v-songbaohua@oppo.com>, David Hildenbrand <david@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 8F5391C000C
-X-Stat-Signature: 5pc893szw4kz7rsgrio9kum5pfpbadnc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aJYGpPoaZwYZZ3Ze@tiehlicka>
+X-Stat-Signature: jp1c939814s6h1ktnwdzmyziw9rngyde
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1754671301-670265
-X-HE-Meta: U2FsdGVkX1+Y7QQ7FEeJhMYqTlPjqcjjEKalP/fWKU0TUbXPApwzwlpTFSRb+y4p9p/f+6NL1Jvq86Fm8+1f9fLBwf5AHWRS4czXqNaSMSChWqtxrfjXmf0ZNhCy3oex4kh1C8FQZODDFpkdvvU8E4GfqVV5MvrvoUV+/NLcedxdjdH0muynQQo1EIxDbnOyHccR4YMkOFYoxIYDK88KIqZhsJHuYpmVKz2arJE+myydpXpwrArBLOPy1Lcq7cW060wLkSWLF1b1SuUiezYbbR0eJg/MjiX2twNO1PqNVIzbnuegSKQetC6oxoE+Z/pFf+TXkOiBAiPgvLcihz4Zz1vozY2ufd2m3jVP4FlIINhylNMn610V70YfZ5Xvgwm9jCFAUiL5tXZSvThYN1C1XcRBMPmAYoa2pzrM/UcpOIYFk5zRkmydchTNIlZQs2MOujtYBZw+yUvv8WDhXiuVHLJOmvqUCbpihWz7l5qW7mGYApPi5fWLcb2RiLUTpdrECkxTLZ0e4sqeuUusB1fyoMKARyLwU+GzxQC99KNsvAqYtOQJw4uylhZ0gnEMuG5WPxD7FqLsIx5hoj37bl/RV630o1IPuXTXDB3hRldHZQGth5xjlffivB31tO313x+Z3Lcf6voYqGx/cES3hDz9lvS/FAvj/emFeWRbZAzBG18oC6GVn/OnZIkVbFOxIky2TV1tn4YcQRMDAe90+yUkO1EdorefOqwBaafHvGtYVdMrMhzI6YLrpFhUjm6+VfJXybl3Lhh6ywA6YbTUD7A2Vc004vtfUDcHl6AVZvGGFcL0W23Fba69QjUeoch1AjpHxs4NGWjGc2Wn2JTqPlXbcEzUkQQ7IN17ORDlwa0zxBUe6dRwm0Eg46SzepdiM6dabs+9T619cUieHmrQ9RvmiET5sjEbrYC6hQSp9xtxh3/q/CiaZJVaMbjE4cV+z+XGircJr5lGStpPm1YB8qi
- X4CV6HKo
- NBsigF5IJV2ZBPh9cgqDn/U/3PGtLsuF52vgtmq+eYYxmLxXC1M1Ph2tO1Aat6mSKDQlWtzYNv5wEtaQB952lkk6FjTM9OZ1PcPQxYeHq38fsIwhZ1t6I5Ea/A06aA286T1OtAyQmKkiLBZIEnKxCKIvmCEJDid07nImHvNE2abH6oV2IxzhpojPBHzhMYCh597f9koh2ZUy7xlt/DstziCujkM2nakSPjSY6xYN+oko+sSgP72YLCxvj3anzlvlBYr2tvwOqBNtNTKbSilyF+Omeb5TKXUmbHoFf
+X-Rspamd-Queue-Id: 9261620011
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1754672190-435472
+X-HE-Meta: U2FsdGVkX1+oa6tGnvn6Jmkmstt0Egz+ue5jwbTOM66dNpFe5XElJFiY3RBhSn+sH8J4EL/m8Zv/2ZgDZu0TJwGlmrt0uNpDPuMh5pTxjB/Zbz83wEaCDVu1q+QaIwXzTJk+NPFGe20w8unBvxUteyGVPtV2N45pgP27pfyeNG3WAB5pJKt1A2nkYhQibeUMKRuaASLFZrJEnc3B+mmCyRmk6VFAECWkvjTdsq2PAmpgXbLlsfwlntyqhxqX1sKvFT+ICjkOftQw1ALe6qF81PzTAuQNwr5sjqDAqT/7n279102sG1oy+x6LiMPYkfKosLWk/P6Mh7ENvfYx5REDikShFYbwooJaRvGvFL+KHZ/EJh7NtlRPrEddeeIvfHTxMS1yowYYkZARVn6WoPPU8lROzH9p3MX8z1OZ6ZShGUHjpePTAJVo2a6ooRnIl1T9HMhQmeI23eZd3ZZE8ovwNuDaCt94I8r20eQuyc3stDtHLcwjzFVPwUqJdvNzAtiCS8FURH2rzvVN8//87MzaWetBkAIXFZ3XWQdBfo0RdEifTNF/c9jiNoeWTu6skf461PGUhvJp6LGsuECBTmzIM0JqsFxvkl+dvbL2xQDId1rAqKKTbSrKYwQ/2Wy+U0dTeCpVkpLgdi7HTUG326BEmLQthLOGpC0Cw9g4lF2yT2JS0PCPd+UWbOru7RDMO7Rp8ciqfRfbZIRb/pEhNcISfrPIIwVgxYg35TiwdkgpWCKITzHBCeVqckel5qnB4AaVkVMHFugQxbpFzB1m8dTzPP9op3JYENb1XlNQ2GpzMgmlJOSE1YLYq12+t+1Kms96WudGi2F5JDW1tL5yMCzvbrPm8s/+XSkQVDbsBbS1ueQ9a89jWCvd4JvWtEmHtbfrG3RXpHWF9sDgMF82MqDPUm1X2okQ2M50e54TIev/pStJwh1pS9NYprd03/IZ0i7s+8L+H/6djgoX+NkSfbX
+ OkPQCnmJ
+ gJivZkqiu/JZjVmQNyQzxYzMq6C85xU7xo7aIPsNKzAcqguklF5IMzTYxTe9b3TIjHNC6+9FkYz7tpH84ap/zZQcTT4Q2ARsUS2ZlAb32/a6D/ZSOWgrx586p8GIO+zqg1okACZfrF+gGbbR3A6AipeVbEaNNFgsCFSg62Io1CL1EROjFSf++gEmeaFWEFIiXHus+LGkJesoU2HWEZX7ZXLkms1lYAtyXDlOShBYNipqu9ghETIWtDhmHsK1CDhTa6h1t2MzzfjKZ1qP2MgJFCZj4wViezn/4YWa4ro1xOgmXGgCcZlZoGP8FZYM9yxSRDRli5xOSJA7Z2ujv/HG/3KLY8tKg6NVTS8BAO1ZwwhQzBqDlvEnh2JvNK3IMwnfFYRrW4TUCdmn9WJe1Of4iSs5YNsNTV0Tr/yDND3L7vrie+HUWEyur0AjjtqDS2Z1WWtWgRW9t52V/hnTvbf8s3VUWClOb3Q1q2YZq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,40 +123,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 7, 2025 at 3:54=E2=80=AFPM Andrew Morton <akpm@linux-foundation=
-.org> wrote:
->
-> On Thu, 7 Aug 2025 15:16:57 -0400 Peter Xu <peterx@redhat.com> wrote:
->
-> > Hi, Lokesh,
-> >
-> > On Thu, Aug 07, 2025 at 03:39:02AM -0700, Lokesh Gidra wrote:
-> > > MOVE ioctl's runtime is dominated by TLB-flush cost, which is require=
-d
-> > > for moving present pages. Mitigate this cost by opportunistically
-> > > batching present contiguous pages for TLB flushing.
-> > >
-> > > Without batching, in our testing on an arm64 Android device with UFFD=
- GC,
-> > > which uses MOVE ioctl for compaction, we observed that out of the tot=
-al
-> > > time spent in move_pages_pte(), over 40% is in ptep_clear_flush(), an=
-d
-> > > ~20% in vm_normal_folio().
-> > >
-> > > With batching, the proportion of vm_normal_folio() increases to over
-> > > 70% of move_pages_pte() without any changes to vm_normal_folio().
-> >
-> > Do you know why vm_normal_folio() could be expensive? I still see quite
-> > some other things this path needs to do.
->
-> Maybe as explained here?
-> https://lkml.kernel.org/r/20250807185819.199865-1-lorenzo.stoakes@oracle.=
-com
->
-Thanks for sharing this, Andrew. IMHO, this seems like the most likely
-reason to me. There is nothing there other than a cold access to the
-page struct.
+On Fri, Aug 08, 2025 at 04:16:04PM +0200, Michal Hocko wrote:
+> On Fri 08-08-25 15:12:45, Uladzislau Rezki wrote:
+> > On Thu, Aug 07, 2025 at 01:58:20PM +0200, Michal Hocko wrote:
+> > > On Thu 07-08-25 09:58:10, Uladzislau Rezki wrote:
+> > > > The memory allocator already avoids reclaim when PF_MEMALLOC is set.
+> > > > Clear __GFP_DIRECT_RECLAIM explicitly to suppress might_alloc() warnings
+> > > > to make more correct behavior.
+> > > 
+> > > Rather than chaning the gfp mask would it make more sense to update
+> > > might_alloc instead?
+> > > 
+> > Hm.. I was thinking about it but decided to drop the __GFP_DIRECT_RECLAIM
+> > instead just to guarantee a no-reclaim behaviour, as it is written now to
+> > the flag.
+> > 
+> > >From the other hand after this patch we would have some unneeded/dead
+> > checks(if i do not missing anything). For example:
+> > 
+> > [1]
+> >     WARN_ON_ONCE(!can_direct_reclaim);
+> >     /*
+> >      * PF_MEMALLOC request from this context is rather bizarre
+> >      * because we cannot reclaim anything and only can loop waiting
+> >      * for somebody to do a work for us.
+> >      */
+> >     WARN_ON_ONCE(current->flags & PF_MEMALLOC);
+> > [2]
+> >     /* no reclaim without waiting on it */
+> >     if (!(gfp_mask & __GFP_DIRECT_RECLAIM))
+> >         return false;
+> > 
+> >     /* this guy won't enter reclaim */
+> >     if (current->flags & PF_MEMALLOC)
+> >         return false;
+> > 
+> > [3]
+> >     /* Caller is not willing to reclaim, we can't balance anything */
+> >     if (!can_direct_reclaim)
+> >         goto nopage;
+> > 
+> >     /* Avoid recursion of direct reclaim */
+> >     if (current->flags & PF_MEMALLOC)
+> >         goto nopage;
+> > etc.
+> > 
+> > But, yes, might_alloc() can be modified also.
+> 
+> I do not have a _strong_ preference but my slight preference would be to
+> deal with this in might_alloc. Not sure what other think.
+> 
+No problem, that i can easily switch to.
 
->
+--
+Uladzisau Rezki
 
