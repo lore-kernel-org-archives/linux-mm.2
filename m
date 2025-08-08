@@ -2,116 +2,189 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 14E4FC87FCB
-	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 18:51:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D34AC87FDA
+	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 19:02:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4FE0F6B0096; Fri,  8 Aug 2025 14:51:21 -0400 (EDT)
+	id EDA276B0099; Fri,  8 Aug 2025 15:02:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 487F96B0099; Fri,  8 Aug 2025 14:51:21 -0400 (EDT)
+	id EB1E46B009A; Fri,  8 Aug 2025 15:02:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34F4C6B009A; Fri,  8 Aug 2025 14:51:21 -0400 (EDT)
+	id D79B86B009B; Fri,  8 Aug 2025 15:02:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 119E66B0096
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 14:51:21 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 85C13C0417
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 18:51:19 +0000 (UTC)
-X-FDA: 83754483078.14.CFAAF4B
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B930FC0005
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 18:51:16 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=WGyqUFMD;
-	spf=pass (imf28.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754679077; a=rsa-sha256;
-	cv=none;
-	b=yJPlDX/ijOOCnSs76i1V/RKrqbGwkvMZjyuBDs9YtJ1+5+UsoUUWk3UgsuBMsunN+HCIxj
-	9+6i/wvqpq65Ev/jmFmjem9sjLOpLLJdUijQopXt4es1pSkOWHAWcSDhLpHwioF+DhiCg+
-	0pRzO+oviEzfrL1Cy9b0DrW8xh8IfYw=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=WGyqUFMD;
-	spf=pass (imf28.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754679077;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BAFCD6B0099
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 15:02:04 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 386D9115D30
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 19:02:04 +0000 (UTC)
+X-FDA: 83754510168.06.1AD7F1D
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2044.outbound.protection.outlook.com [40.107.223.44])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 8B04B4000F
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 19:02:01 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=OylgqMeN;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf27.hostedemail.com: domain of ziy@nvidia.com designates 40.107.223.44 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754679721; a=rsa-sha256;
+	cv=pass;
+	b=tug4FIobAEaLWgXyTpMSoj0umfuXqOQl5nN6VZIVhonhYgHA7BAceMWN2Se5aYoGsR4+4N
+	7FAvol53C5Log3TS+tgpQrpbm0JkHAJITCeo2O/OnQTrCXyIr07STb0TCQeosnvrWcJWf7
+	0Kb6vf0s/fOnucA+ilRX0vSQ+GvzJAU=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=OylgqMeN;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf27.hostedemail.com: domain of ziy@nvidia.com designates 40.107.223.44 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754679721;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eZMpLLPpWLfEcYOqjTqa6+eB/bqRZJ+BbYqsgnnPbkY=;
-	b=KGncuWCrGb29pSLud0UlDeGOcru/9qGbYrK6wpQNTwM4vygT6QtrNKHZUscLa7NaEFCISI
-	LXaoOdy25kx7cMhwaCE9GNwdixZIDjEscUURuia7dn+EMEiS3gTlXe2YvwHHnvLXSIcp1r
-	9NclWvfgWSugP0vAdWO2TAc9gTjEdLg=
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250808185114euoutp0162c911292defe8bfee54f2309b1e8171~Z31I7WGpl0720707207euoutp01Y;
-	Fri,  8 Aug 2025 18:51:14 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250808185114euoutp0162c911292defe8bfee54f2309b1e8171~Z31I7WGpl0720707207euoutp01Y
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1754679074;
-	bh=eZMpLLPpWLfEcYOqjTqa6+eB/bqRZJ+BbYqsgnnPbkY=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=WGyqUFMDFBBsAtsI8xiD1Ayr7WYuZYdyBJMCoPCRGfrVxwAdMcl3GCV7Qwkcc4nI/
-	 gnDfUeRP8iiJIUgEStFM4TfVVnoq/LDogKUpBA2D+NmwrtJRryBOG1ru2ITf74oehS
-	 IO287BU42jFk8ZARXzvIDO/cRSfPjtUJVNlWylGo=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20250808185112eucas1p285bfbeb3352a16df0b5c8f262fadbf2f~Z31Hzuzfc1555715557eucas1p2H;
-	Fri,  8 Aug 2025 18:51:12 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20250808185109eusmtip1cf791168d581e5b5b824a27d8cdd9069~Z31ElK-rK1126511265eusmtip1F;
-	Fri,  8 Aug 2025 18:51:09 +0000 (GMT)
-Message-ID: <a154e058-c0e6-4208-9f52-57cec22eaf7d@samsung.com>
-Date: Fri, 8 Aug 2025 20:51:08 +0200
-MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH v1 00/16] dma-mapping: migrate to physical address-based
- API
-To: Jason Gunthorpe <jgg@nvidia.com>, Leon Romanovsky <leon@kernel.org>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>, Alexander Potapenko
-	<glider@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Christoph Hellwig <hch@lst.de>, Danilo
-	Krummrich <dakr@kernel.org>, iommu@lists.linux.dev, Jason Wang
-	<jasowang@redhat.com>, Jens Axboe <axboe@kernel.dk>, Joerg Roedel
-	<joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>, Juergen Gross
-	<jgross@suse.com>, kasan-dev@googlegroups.com, Keith Busch
-	<kbusch@kernel.org>, linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-trace-kernel@vger.kernel.org, Madhavan Srinivasan
-	<maddy@linux.ibm.com>, Masami Hiramatsu <mhiramat@kernel.org>, Michael
-	Ellerman <mpe@ellerman.id.au>, "Michael S. Tsirkin" <mst@redhat.com>, Miguel
-	Ojeda <ojeda@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	rust-for-linux@vger.kernel.org, Sagi Grimberg <sagi@grimberg.me>, Stefano
-	Stabellini <sstabellini@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <20250807141929.GN184255@nvidia.com>
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=BJKspbixPPXsmP8d50C2hsdP4k+fNidziJpBCD5eP5E=;
+	b=c6MRMDHnVRCJxsS4SYCUryYVFycOa1T3sbS7GNmLdAwgZBxQWh0+ns55FmOy6zgKD7dCYa
+	ZtWHk9JOqi3D5jUs2hnZMaXLxJUgVd1M6GlDQXh0p4i4dVLSz8VKQdJjEVNsfV0mUXncxV
+	gcZQl9pezUIJbEVR7AW4tre/ArnyHpw=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=y/tYmqgC9K5ckU0R4ginLRmNYlnv1HTQ2GZYgX+o0VMcGJiIiRElwZVl64MM0Nq+wh4JVfIF1V+2AJhQvLAA/fzJPtn3aIL3zQJUSeNNTKBEHixVhf1YlX+BktNxpvx/mtwrjNwFTIfmtxENSAK634f9DJdLXOIwbgsQwpNfyP58VL1a63CDOzasHOPH5QdSfFrH3e3tZn7HAPO5DCVDXBPKZ9nN4z5HyhRo4K8WOmOXnNTjRtwwTm3FnDl4ibBSFAvBawz35gCYQfs4F6iE03k29ShzW8sStTPjserxFHEjPi3S48eT97Q9bIp/p8AqifI7r1IHxtBLC5zTLvbnAA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BJKspbixPPXsmP8d50C2hsdP4k+fNidziJpBCD5eP5E=;
+ b=T0XWMlTE8D0wtIHzApmeCs0TPa2mWgmSkhLTpUrQ+1oJO5xemtXP+vei8xonNiWHcyIQinqrBtevVYC/GMOtFqKuKHjZmqFNXEL6hBheGHultCXolrvXPrsJBKGTFuCbPgVeEYTWe/GZagQlGJDlkWzbaMyDK3Zpbm4kdRWIkSHls1ktdvw1MnqqUkj87YU5rRoFzZVRRkuh6qgNCb5Uraf81nFHTpBvavEgOeYoFySUwjojXuRPFwGKtMK62tprJLM/zViWa/0XaVbxc+Z26ddalYl6/pqoat5yN5Dze9syKpghCAwJ5K+OVr+gNZkfnZrE+Ae5Ze8RB/zEnPGZLw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BJKspbixPPXsmP8d50C2hsdP4k+fNidziJpBCD5eP5E=;
+ b=OylgqMeNTdRrg9vTWRIdiVgB8XPOTvt7H2hjDIH7CTFI94XUzWlXBh8N3c6kGTWWS0wm//muE0jHGafl0mJYAttJ8I3Og/XL6Rey+O5RRR1TDI3NcqDMPCU6pJsWslE49+ZyrOryadhzovMlIKXp0Q9HXzcko0G3nIUkL9E4d9k8zFyOyORoy5S7EOejqXHal9GbgrmVYGj7mGoYdV07RFpRFGKRgoP6yvzpnNdg+VMxr4S/4Q6okk8CeGMOyXnq0fvGuTcQ+ED0f5TI5AclPLwfpLanN9z5StT9xnzvr38BAOHw2IKtG6R3z3+A7eTiXb6J8CCIiM+w/8AcYRgURA==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ SA3PR12MB9090.namprd12.prod.outlook.com (2603:10b6:806:397::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.18; Fri, 8 Aug
+ 2025 19:01:56 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a%6]) with mapi id 15.20.9009.017; Fri, 8 Aug 2025
+ 19:01:56 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Wei Yang <richard.weiyang@gmail.com>,
+	wang lian <lianux.mm@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@redhat.com>,
+	linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Zi Yan <ziy@nvidia.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH v2 0/3] Better split_huge_page_test result check
+Date: Fri,  8 Aug 2025 15:01:41 -0400
+Message-ID: <20250808190144.797076-1-ziy@nvidia.com>
+X-Mailer: git-send-email 2.47.2
 Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20250808185112eucas1p285bfbeb3352a16df0b5c8f262fadbf2f
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250807141938eucas1p2319a0526b25db120b3c9aeb49f69cce1
-X-EPHeader: CA
-X-CMS-RootMailID: 20250807141938eucas1p2319a0526b25db120b3c9aeb49f69cce1
-References: <cover.1754292567.git.leon@kernel.org>
-	<CGME20250807141938eucas1p2319a0526b25db120b3c9aeb49f69cce1@eucas1p2.samsung.com>
-	<20250807141929.GN184255@nvidia.com>
+Content-Type: text/plain
+X-ClientProxiedBy: BLAPR05CA0013.namprd05.prod.outlook.com
+ (2603:10b6:208:36e::28) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|SA3PR12MB9090:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4e09dc71-409f-4c2b-b16e-08ddd6ae0b8d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?rWCKwLUNwh1tq5UnknGWiJBP+QmHAmKAoQ+u5ca52GM0md0KsgGTcPgg4Aig?=
+ =?us-ascii?Q?vpdpS+FrG8q6G2X7w7K9XU/pWJgZfIquymq+Wxw490V6jRe4m3tS31YHu/ph?=
+ =?us-ascii?Q?MR/UCWqyaOWdaQ0oem75rnTUP2kq6NlBZkxeLQ52Tjujp30Iwvi/Cdu9rgth?=
+ =?us-ascii?Q?pKfT3LH8AIhRpRvqKCHyEA57dAi7bRa4RHadKEIzRiXWF5pOCQy1PqiS/LA0?=
+ =?us-ascii?Q?XBGPadZiDRTkMiQWwrUocK5oIPrsCJE6ZaZu7K4L/xZRQGAZ4KunBZVqCosG?=
+ =?us-ascii?Q?UYpaJmjmA1AsA+lwMGtfgTaA1o2+Dgh2shF6y90FBgcw90YPyjc4WVzmX1sL?=
+ =?us-ascii?Q?KrpudV5TLNvfCt6oRtDWFRfYyhAm3fXaHGJ4lX2u5JsMcHjNg6EeYTblREnh?=
+ =?us-ascii?Q?AD1TQCXakSwj9qFO8n34oufzz7xp7LjeaaLT8TczL4JPbmFbNAuO+3WYsmHY?=
+ =?us-ascii?Q?NqM+U5KMzhDkqM0MGXPtI9s0mqdWMgWEbAoeB7yG8yS67d3plUGuz93IPhnp?=
+ =?us-ascii?Q?CNkseftq/rYDY9J8oIi2T1W6VkYgfChjx5Oea6PBBcMLNkNdO2fYbfCGG+Ax?=
+ =?us-ascii?Q?r0AheTDvxjv1LZVwEOGFaoqFMWOaBCZVC0/xMKFy37w0NqGYoDsPNZb97o0r?=
+ =?us-ascii?Q?SmIK1QcdoTLiFxmHcB3gO1TzTw5xe4gwrmLcWTZSeWfCVaPFGoOOCy77u3Gl?=
+ =?us-ascii?Q?7up3Cj0mtw9ZREVvJ+Y8UYP812znQ+BU+hPut9f+bj0tR+3XNWEwF1kLM+LO?=
+ =?us-ascii?Q?VJh3Nd0GoptnWN0d0i2phjIIE1/nWHKFtM/S7v7evQpOQjLpHGkgexR3nsDA?=
+ =?us-ascii?Q?sKZCtGJKlt2uJ2VUHEDHq9teeaMLGbZyYCEcSfb3mYYIZUJKZJ/Eo2NL+Qyh?=
+ =?us-ascii?Q?j4ZZbVGVdqBG4gMfcTuLAni6sRdgpRlQzS1gJzuJ13JLse3aTBs7A656CXl9?=
+ =?us-ascii?Q?q8lwrtC1ULdKoHbPIa0kFcvV2FLCyE6ejEVdj0FCagOycrrVEu0jPBihcypf?=
+ =?us-ascii?Q?PRyrHqR5Emkosz06nLJHd3MMHCw2+GIWdEN9RQV8i1PvC9QraACLfnYdMeUS?=
+ =?us-ascii?Q?E/tarPcxTiDKHhZ3zpokCxcGNgvjtTIjxVvLuVWLFVeqSIg1mhqgfNNqSs1s?=
+ =?us-ascii?Q?9QIRLC5qhTsV1Ur7KP8BCk81bF9xTGo9lR6tigm0E65Uj4oPCVerQa9PxEDV?=
+ =?us-ascii?Q?hZKiPMZOZexa2sMWc613YtQJ48rEls2IrhusRhpVhs2TRubggonguy250n9u?=
+ =?us-ascii?Q?zzUISgOVtmZRYZFWG05zvoa4OQ6vjZixZXADlpuoBYLbKDeGP52g2LFeQbtq?=
+ =?us-ascii?Q?O/0ZXmENaUxGH7CLkB3q6362NcVVUWA6x2tVlnucNChHVMCqTpQk0/VOhELz?=
+ =?us-ascii?Q?qtOTAgLvMIfzPetjXhrLuspDEUU3XcJq687N4xKwIr6W6oJXpBue7+fpqgB0?=
+ =?us-ascii?Q?DxiKZNsX9Vg=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?0d77mHUp6qqpCwTaBx3Y3iB5DheGk4x0mXkiFwAbgSq3J1S9ZwnpRIsKjp8R?=
+ =?us-ascii?Q?TdU+sXk8yuRr7zVRCIOZkpZZtI9RbN7tbibjS562IfsgBPrv9xduUBZw5+pC?=
+ =?us-ascii?Q?AKx4kp6JJkTXul9M/uY9c7+6hwcTZT6JT14DrFAo+snjx3MrCTq3Tjui9bvL?=
+ =?us-ascii?Q?9FZRAIwQByVJ1rYQhcE6MLtGBEQ9ArI0eMHJQ/NsSVqAtbEteS+43vYwaNY+?=
+ =?us-ascii?Q?lc8+vInU5FEjE+FD2pgJx0HTYFm5hkB6MYuL2iHyZhuTI0ypFX5mSrtS6GTx?=
+ =?us-ascii?Q?3htkritUNnBG7XoYe3fCNmlMQDcMOr4YmCugY6NW2YgOShXCVCT1bf/GyI8Y?=
+ =?us-ascii?Q?NRWJASFzGATYzNcTAgRcMfgvVbR2MfN9k72qR2nDMGMTeaTxsclN2jIQZRrm?=
+ =?us-ascii?Q?/vsYh5WzFUO9dceEh8010vJogoen0eFGbwWuSwk/4IGdqhlrfgi1nAvs2wR/?=
+ =?us-ascii?Q?RWbu0uPAbLYushNxnWHLJzao4yOoT2niCvzruImEpXaBZy1pVoFqTJ8qeSe1?=
+ =?us-ascii?Q?VGnwmkMIT32IP0xC//w70v1wyU8z4jU0a09P3Ijdi56OmUD4QuOXGPOHYOOv?=
+ =?us-ascii?Q?cZ232tNkIX2swleg5fvohiBq086/Uu89TSmY6BYJDo1ISObRlqfTvQDLzEmU?=
+ =?us-ascii?Q?WGL267xLM7hpeBqDAM70dxdlrxWeX4oDDQH4JaPJNtX3NtLwp+Irrs2eenjP?=
+ =?us-ascii?Q?WWwHnQBqpA1Jyi1XP2bbJv1SYhKZr3hwmWg+v/AFFE5dhjhfEuKAVdTnZUcV?=
+ =?us-ascii?Q?mU8ik3nUI5LJmUSjaiKSMFmfyByeoLnhmMafiW5UzpEPqz5CFfU+0ShC8n0g?=
+ =?us-ascii?Q?pvPPgjXgjLrI2CaORRlZqaLBSsEvaOYK9UKEekm8JxYdbF9mJ2mw4oaaIGFv?=
+ =?us-ascii?Q?H1CQ/1TueCLJfVIT/8Ol3n3beneQK0/3CpfWpa6niHZZyQwo0gShkKxBfEyk?=
+ =?us-ascii?Q?KzCbhhDcZaA2Qdsf+RcL1mouJgiyzq2S9RU7B4808VyqtOe2IAnItqzKmJ/e?=
+ =?us-ascii?Q?/6LXvgu3VTkBFHQg6lztr2aiQgjZzGfo6xhGLRO59uudxmn9IOwjG29Ktq7k?=
+ =?us-ascii?Q?p9cNUXcO4tr0Sy/RBdnzYxo5wSDG+kJZg0B+aux61oKtepiwjDNdnWnaRgO6?=
+ =?us-ascii?Q?bEzm66lDESnSEtj5uu2ayX3nEfxNgK7WB1HERuxyOIjK2RPJ/Dt9X6j078bs?=
+ =?us-ascii?Q?/ITzi/RDWm9tsZOIbbliR1fVGNXRdoC3C2DuonGORQzCQnumMLWM/1zkRQgq?=
+ =?us-ascii?Q?QQeDkjENST8I82RIITgAqcd0g5UsmhLAQSYuf2wQ38LI4mxft5EtjMkfPqIr?=
+ =?us-ascii?Q?8i4zZsx27Po/+4wTW/t82XUeJBYfI+iVjJz3If4B1iZ2qvzctQo4dzqK4MgW?=
+ =?us-ascii?Q?FRuknrx7IL4Fsrk52tHL9oLsKRo3WFUOf0yd1mLq2him84eIFY/jLUi3cQsL?=
+ =?us-ascii?Q?3ve0C6BCAiNgFLIo1+lwdelfiTS6rnq2WM9YBDe0Ok9ZuXDF3Ae2VAo3Zp5o?=
+ =?us-ascii?Q?lGp1zTAqH8G4jd6MpeUz5LOYuxIGxGNc8P2giDW2vdME9HHM7vwndBtxH3eh?=
+ =?us-ascii?Q?RB2xhxZ1eBTwIWRx5pyCytzC9N4NgvoG2mcgyk5I?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4e09dc71-409f-4c2b-b16e-08ddd6ae0b8d
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Aug 2025 19:01:56.4274
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: LgQbHIMX4HNY3mz5ydyQkI7LjQjsK6ESTNpnLJ624NQ+2HdMN2m8Wl95Xrp4BXjL
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB9090
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B930FC0005
-X-Stat-Signature: q83kn5u6q76e317samwsum9k3naekjy3
-X-HE-Tag: 1754679076-484698
-X-HE-Meta: U2FsdGVkX183tkM3R3wWnos+OUkiIPtCdkkq1ldgs6PDT20WQQ2/IGTAOhAg8GtRjAeN4u30iyF1z2Vq7K8TyYBEQQ485fr/4hbVrtM03iBZykVqGcRSmugl7elFbdkwF+dininTANdRsvowy0AFidrRGZObx//JaI5A75KFauBDhso6LuQlc0s+2Pl4/cN1jQ9eMpCYHgcLHs+GKNkyDiratKhwo3nizzRY6dpP3s+4zkSNyBmfVfRh36RSKYz8ar8cn6HwrpNS54ixQauYSq0p/lx2GvHRPiRlTiQBoNHMpe7nN/4q7kkpDinHz/Z0LsDG5cqsV2DMp92d5DlmvRUpfByjxiNe369NdLxWFAzvIPN5iMN2IpedEwxcFGyn1wPdk6q4+L4MthMB4basB8wGBVpQOKKn7H1WwVj/W6dLzXQGNNoXvaUGqq41/7PhQPfReY39Kz/6Z+cuJ9+fPCfNwuvdB/hKimhak6lrI4gvAf9PfS+zXk0Qj5sYl7PWU/lsNRvb5qR9X0Vp5CE/YP3OqrNoxP53cu/5sdVo+TluOr7BQXdLN5xzMLRcnzxW6DmDVt6ZLnutTat5zGebTGjzX6dGPeOX/dn4AaySdugFs16+9WKReO3dg8NN3equzcUVINMHDBByGYdfZvALEavnRO6913VUBogOzhs1lkMXQ09K+XJvfrsmes8ySrLBqlD8eygYpJEVdFbXDuGvPdc8B+b1oDonztZBMnSiyWZ94FoPLEgipsqmE9AN5X+TgHtTIP8+fKIdxIHwAWoOZ02D88ejLoUNRbhMkcACiWruuAUmKliVjVg2G4AzWKfhqKq++2U/q0r1A3szvTXjZ/S7aO+Er7E8ydA+70piqZIjrGAHdnhtiN19Rrpt29/EQ/sapChZzuIMoRaxhB65Z0kne1klqTJcYivZgs/coOlcR0B8rCnWLCABejH8MPqruj0kfWYmzGYbOqZnBUr
- DUrVj0K4
- q5MgnMT++k3D6J/gHG+u0RelfpcAxOqBUt4lMRyeszaHdf5Pren749ixKLdKMivP6D14i0n79FSk4wobCV7d6Wpk3cGz39RXlOcM+WetxPARVed5eAsKcv/QPvTbaymST/aV9
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 8B04B4000F
+X-Stat-Signature: af9913gsduokipbwna9wac93r4m5o7n9
+X-HE-Tag: 1754679721-154716
+X-HE-Meta: U2FsdGVkX1+x3PwsqIqaAbit8sBIWxu9uV+GQUjkKLYTm45+NOuvRc+qcGiCVp6fvRrgjMfWio9XTS7Vj/sMuAENAR0fxJpDkMFBMq0JBDTMc8BtVy2dRkrbu2hlfsPJCDGh22FXVa1fxXdPwdp3d0pU9Z78D0qN6f6dq3QLhdysRyAWjy3qBUA14YXWYRSzVjyKgpM9BIRkld2QfZHmZWlycYFMYOSPBargHL7KoZdp3sDtjiFPkY0yQbY6652SDpTikH/LLfzpZMR4z2ULmHI44m1YitCl5gF3/KstM/6PBhAN+Vnn7kuiaYx1RT4SVdyokPzqE7MzbaXh9KKX4ovi2+gtJKSrQA/2zm7PdE344zDuKSPibdprtfz8dt30GzdmHi8ucYzKw4zckrgLkGdH1EclHug8cJfyIjB9PsjlBQQ+9jYouOy0RpmOdQd3/9aaC6SNDGFs05bNWX3wKZRRcrgp2kJBel+zei0Ti7GQWxlkys0SyB9rqldWXQ2TuEGuN+JJq6uhmDdP1ewOsItiwjy+MvdiNDDYAPSeOvKHVFL2jTYI7SInSgs9myA322r6mnQ2NIwlZQ2fWEjN5+Liov4jr+4P4WQ35TQvYq7CR+W0muKEA7l3Y6vT2OzZPDtCLmdxHt/67Z6PZ8WLVBksQOUH2WhfjsPeQSZ10t72NiE05FC+2CBeg6wZBbGcAatD6UqJpvjaI5nn9bZ5hpi5aBNhMaV017sJUevr8Jqiw/CVUjm5UmkAcGVHqC6agYRM/Uif+LNFJUU2Pw8JrbG+eHR2v/lzodefwU4lFRq8TG7QsceII4VuCxt8zkmXWgyKNNOxMVK8U0UHpEY3s3LfU3VHYDyg6p5JMs/UydVUzWR7ajiXn3bdIcfO0PRksk0aB+8CB160eEKahAmUvY8d8K24VhvZ//PmUAYlHgG8AvyVmeOX9BpwVYssMkZ+LixxKFR4p5Q+/c5LUua
+ ovlHSIaB
+ bADuosVCXHi6Njv4pipz92+zmT53ISZRqXU0tZ4lqh6Y/tWLk+v+Dp2FknRr/R82Ogla8/pmVflZQUvMdP1a8iqRUpg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,110 +193,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 07.08.2025 16:19, Jason Gunthorpe wrote:
-> On Mon, Aug 04, 2025 at 03:42:34PM +0300, Leon Romanovsky wrote:
->> Changelog:
->> v1:
->>   * Added new DMA_ATTR_MMIO attribute to indicate
->>     PCI_P2PDMA_MAP_THRU_HOST_BRIDGE path.
->>   * Rewrote dma_map_* functions to use thus new attribute
->> v0: https://lore.kernel.org/all/cover.1750854543.git.leon@kernel.org/
->> ------------------------------------------------------------------------
->>
->> This series refactors the DMA mapping to use physical addresses
->> as the primary interface instead of page+offset parameters. This
->> change aligns the DMA API with the underlying hardware reality where
->> DMA operations work with physical addresses, not page structures.
-> Lets elaborate this as Robin asked:
->
-> This series refactors the DMA mapping API to provide a phys_addr_t
-> based, and struct-page free, external API that can handle all the
-> mapping cases we want in modern systems:
->
->   - struct page based cachable DRAM
->   - struct page MEMORY_DEVICE_PCI_P2PDMA PCI peer to peer non-cachable MMIO
->   - struct page-less PCI peer to peer non-cachable MMIO
->   - struct page-less "resource" MMIO
->
-> Overall this gets much closer to Matthew's long term wish for
-> struct-pageless IO to cachable DRAM. The remaining primary work would
-> be in the mm side to allow kmap_local_pfn()/phys_to_virt() to work on
-> phys_addr_t without a struct page.
->
-> The general design is to remove struct page usage entirely from the
-> DMA API inner layers. For flows that need to have a KVA for the
-> physical address they can use kmap_local_pfn() or phys_to_virt(). This
-> isolates the struct page requirements to MM code only. Long term all
-> removals of struct page usage are supporting Matthew's memdesc
-> project which seeks to substantially transform how struct page works.
->
-> Instead make the DMA API internals work on phys_addr_t. Internally
-> there are still dedicated 'page' and 'resource' flows, except they are
-> now distinguished by a new DMA_ATTR_MMIO instead of by callchain. Both
-> flows use the same phys_addr_t.
->
-> When DMA_ATTR_MMIO is specified things work similar to the existing
-> 'resource' flow. kmap_local_pfn(), phys_to_virt(), phys_to_page(),
-> pfn_valid(), etc are never called on the phys_addr_t. This requires
-> rejecting any configuration that would need swiotlb. CPU cache
-> flushing is not required, and avoided, as ATTR_MMIO also indicates the
-> address have no cachable mappings. This effectively removes any
-> DMA API side requirement to have struct page when DMA_ATTR_MMIO is
-> used.
->
-> In the !DMA_ATTR_MMIO mode things work similarly to the 'page' flow,
-> except on the common path of no cache flush, no swiotlb it never
-> touches a struct page. When cache flushing or swiotlb copying
-> kmap_local_pfn()/phys_to_virt() are used to get a KVA for CPU
-> usage. This was already the case on the unmap side, now the map side
-> is symmetric.
->
-> Callers are adjusted to set DMA_ATTR_MMIO. Existing 'resource' users
-> must set it. The existing struct page based MEMORY_DEVICE_PCI_P2PDMA
-> path must also set it. This corrects some existing bugs where iommu
-> mappings for P2P MMIO were improperly marked IOMMU_CACHE.
->
-> Since ATTR_MMIO is made to work with all the existing DMA map entry
-> points, particularly dma_iova_link(), this finally allows a way to use
-> the new DMA API to map PCI P2P MMIO without creating struct page. The
-> VFIO DMABUF series demonstrates how this works. This is intended to
-> replace the incorrect driver use of dma_map_resource() on PCI BAR
-> addresses.
->
-> This series does the core code and modern flows. A followup series
-> will give the same treatement to the legacy dma_ops implementation.
+This patchset uses kpageflags to get after-split folio orders for a better
+split_huge_page_test result check[1]. The added gather_folio_orders() scans
+through a VPN range and collects the numbers of folios at different orders.
+check_folio_orders() compares the result of gather_folio_orders() to
+a given list of numbers of different orders.
 
-Thanks for the elaborate description, that's something that was missing 
-in the previous attempt. I read again all the previous discussion and 
-this explanation and there are still two things that imho needs more 
-clarification.
+This patchset also added new order and in folio offset to the split huge
+page debugfs's pr_debug()s;
+
+Changelog
+===
+From V1[2]:
+1. Dropped split_huge_pages_pid() for loop step change to avoid messing
+   up with PTE-mapped THP handling. split_huge_page_test.c is changed to
+   perform split at [addr, addr + pagesize) range to limit one
+   folio_split() per folio.
+2. Moved pr_debug changes in Patch 2 to Patch 1.
+3. Moved KPF_* to vm_util.h and used PAGEMAP_PFN instead of local PFN_MASK.
+4. Used pagemap_get_pfn() helper.
+5. Used char *vaddr and size_t len as inputs to gather_folio_orders() and
+   check_folio_orders() instead of vpn and nr_pages.
+6. Removed variable length variables and used malloc instead.
+
+[1] https://lore.kernel.org/linux-mm/e2f32bdb-e4a4-447c-867c-31405cbba151@redhat.com/
+[2] https://lore.kernel.org/linux-mm/20250806022045.342824-1-ziy@nvidia.com/
 
 
-First - basing the API on the phys_addr_t.
+Zi Yan (3):
+  mm/huge_memory: add new_order and offset to split_huge_pages*()
+    pr_debug.
+  selftests/mm: add check_folio_orders() helper.
+  selftests/mm: check after-split folio orders in split_huge_page_test.
 
-Page based API had the advantage that it was really hard to abuse it and 
-call for something that is not 'a normal RAM'. I initially though that 
-phys_addr_t based API will somehow simplify arch specific 
-implementation, as some of them indeed rely on phys_addr_t internally, 
-but I missed other things pointed by Robin. Do we have here any 
-alternative?
+ mm/huge_memory.c                              |   8 +-
+ .../selftests/mm/split_huge_page_test.c       | 102 ++++++++++----
+ tools/testing/selftests/mm/vm_util.c          | 133 ++++++++++++++++++
+ tools/testing/selftests/mm/vm_util.h          |   7 +
+ 4 files changed, 217 insertions(+), 33 deletions(-)
 
-
-Second - making dma_map_phys() a single API to handle all cases.
-
-Do we really need such single function to handle all cases? To handle 
-P2P case, the caller already must pass DMA_ATTR_MMIO, so it must somehow 
-keep such information internally. Cannot it just call existing 
-dma_map_resource(), so there will be clear distinction between these 2 
-cases (DMA to RAM and P2P DMA)? Do we need additional check for 
-DMA_ATTR_MMIO for every typical DMA user? I know that branching is 
-cheap, but this will probably increase code size for most of the typical 
-users for no reason.
-
-
-Best regards
 -- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+2.47.2
 
 
