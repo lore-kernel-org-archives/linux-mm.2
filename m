@@ -2,92 +2,87 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C1245C87FCB
-	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 21:54:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E917C87FCB
+	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 22:05:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4EC596B009B; Fri,  8 Aug 2025 17:54:35 -0400 (EDT)
+	id 2C0DA6B00A0; Fri,  8 Aug 2025 18:05:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C3F06B009C; Fri,  8 Aug 2025 17:54:35 -0400 (EDT)
+	id 26AC36B00A1; Fri,  8 Aug 2025 18:05:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D9F86B009D; Fri,  8 Aug 2025 17:54:35 -0400 (EDT)
+	id 15A146B00A2; Fri,  8 Aug 2025 18:05:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 261996B009B
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 17:54:35 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D2071593B4
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 21:54:34 +0000 (UTC)
-X-FDA: 83754944868.08.6031DE1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 3EA9B140007
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 21:54:33 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FVVTUjxC;
-	spf=pass (imf23.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id EC03B6B00A0
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 18:05:32 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7DC845957B
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 22:05:32 +0000 (UTC)
+X-FDA: 83754972504.04.DEB7351
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	by imf01.hostedemail.com (Postfix) with ESMTP id B7E2040005
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 22:05:30 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eGcZUE1n;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754690730; a=rsa-sha256;
+	cv=none;
+	b=ETlUHzYGQQHj7pCCjs5+clJ7YftCA5E8/eghKby+1gPiVvvw6yGUu1zIpE1rgFqGVZkRKu
+	cgDUHVfJ+7d3Cvq3jm0/epBb/8wfa7xXCDYrtOnZTOV91Yqv53lAuDahe9NC/hsOgKtOo9
+	egPPfvGmUOcOut2TaZLNTNWZwWxQQxU=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eGcZUE1n;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 147.75.193.91 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754690073;
+	s=arc-20220608; t=1754690730;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Sk0RhaleF2RIU09BBqLOrUl5UPl07KM3dUhbhqtgkag=;
-	b=scGDXMotVW90F8cxVkPMGsxqzfKcU+06q6VUUBu4Qpxpk9YGBQxV/iiaP9FMx55pa7O+G/
-	UPeeat/7Ct51jyO95ynGLiZ5wC9758yI+VQuMo14/WmIQmRtb32/t5LWPqHJDpRa0mY7mv
-	pk/Vb/K+pLZ/PsD2Xd+dwLF/nZOkfXk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754690073; a=rsa-sha256;
-	cv=none;
-	b=YipQfnxNMcePB1VOhShdK9xziY8nxY6aot5STcI7k2aVbsjIxbZJvVnVw0KWFhZnnhtJfG
-	E07LUVK1s+Lr/frnBc9NtbKAAfdWUZylNKvnRpG5sOq7Ow2VGrrTdnCasOc0u1Rb3aEcj8
-	WvAUpdb9DqguVs3z8+8u/VS84wBrwak=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FVVTUjxC;
-	spf=pass (imf23.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=oYKYT7GKQlNFHwOwuSERUF1tTW8vMfmqHjrjAdxBcwI=;
+	b=wRNvnFpKpaJ+LwihFRQhVoGoxyMu3tigjnY8dGBKviAAOCljzDomnHnw17o11W8R+8Q7cV
+	u2FULVD9vJujV3eWBX9Ouwiz+mAjvIK45B0ceVgCocMhWJvMnBXT7DL0TL0h1c7LeoLoa1
+	fpf0/uo8d8CJIdzTRUWHOqS2CAq1W54=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7724D6144C;
-	Fri,  8 Aug 2025 21:54:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 000A4C4CEED;
-	Fri,  8 Aug 2025 21:54:31 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 02E0AA56BAA;
+	Fri,  8 Aug 2025 22:05:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 742AFC4CEED;
+	Fri,  8 Aug 2025 22:05:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754690072;
-	bh=Sk0RhaleF2RIU09BBqLOrUl5UPl07KM3dUhbhqtgkag=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=FVVTUjxCNz77vH66MSZoU+W7PXOPNb+1m/0XKTr2fwBbmvDyORIHe0M3rrJaUFFEe
-	 7Usf7CjO0FS1cPleSpveZNoNbMjtbo+e+pPL413HRY8q7yt2zceJF2K+VmzkURiN4B
-	 JIf2PtnjPkq0DWX6672gNEpvi6+HwrdTr4pFa+2LkPs8p9VI6z3lA0MFtNztWoA/aj
-	 d3gZtjUJqKIWtmJOCzL6S9TGMc/LgzzvjFvqBN70pYe58h/EsYOOAVJeoMRnje0xHZ
-	 t5sNDtTe/pVozca+LgqopzDPVyu5zaleFqDZG7vigEj3okac4+Fiai+1253xcD8OUN
-	 svLXA+KH8rm0Q==
-Date: Fri, 08 Aug 2025 14:54:32 -0700
-From: Kees Cook <kees@kernel.org>
-To: Svetlana Parfenova <svetlana.parfenova@syntacore.com>
-CC: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org,
- jack@suse.cz, akpm@linux-foundation.org, david@redhat.com,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com
-Subject: =?US-ASCII?Q?Re=3A_=5BRFC_RESEND=5D_binfmt=5Felf=3A_preserv?=
- =?US-ASCII?Q?e_original_ELF_e=5Fflags_in_core_dumps?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <2c196c3f-4d49-494c-898e-8a1f6249ce24@syntacore.com>
-References: <20250806161814.607668-1-svetlana.parfenova@syntacore.com> <202508061152.6B26BDC6FB@keescook> <e9990237-bc83-4cbb-bab8-013b939a61fb@syntacore.com> <202508071414.5A5AB6B2@keescook> <2c196c3f-4d49-494c-898e-8a1f6249ce24@syntacore.com>
-Message-ID: <86553D38-36C1-4EBB-9732-A2C593A76260@kernel.org>
+	s=k20201202; t=1754690729;
+	bh=pfGP4YkhAWdDQXnzRb1X7+xSMsz+/BM3ycyTOCBEH4w=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=eGcZUE1nNXn4BoM/oCYk/+0Bz2/6DINZSYVTNOQOTFZhbHe6KYaYn/Q3pDv+siVbA
+	 mq1oW27vdPPEaUhAp3JGEzqYEpDq35bkYKyBq06V9PTdIh2p0Y3+QGRiDx9LTkr9Zb
+	 /zgIbv1H5g+fVM2a77BlvwflfNNSPV16SlGLZ6oRPT0SaJG3dFVi9cQmeZtuQMwiWV
+	 KAXoRx2yp+joRKfqCIAKu6ctb7RUZB8ma/bM6OYPgOFHxTigs35+mgdgqpbh4yU5Ek
+	 hjybFPukDZ0fuua4v201yCkgzO7PPuINYj6iyntVPr/GZ/AbQ8RRVkXWhu9iYW8DZF
+	 dcuUPAC05IFHQ==
+From: SeongJae Park <sj@kernel.org>
+To: Sang-Heon Jeon <ekffu200098@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	honggyu.kim@sk.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 1/2] selftests/damon: test no-op commit broke DAMON status
+Date: Fri,  8 Aug 2025 15:05:26 -0700
+Message-Id: <20250808220526.49546-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250808195518.563053-2-ekffu200098@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 3EA9B140007
-X-Stat-Signature: t6jmkdp5kniouepmdc9iqf7zgbgptoki
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: xt93ogzw3rn9ah3w1hhm6byjicgbiqxb
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1754690073-363146
-X-HE-Meta: U2FsdGVkX19W5HE+sthKwJ0EM9ppbjXPzmwJkwBKJHSJZmFN8+3CObnnxdSeJXxPdfa/qPVnCkFwk3NjjmzomDDf1mGuQ/x0XWHDeX8WWf+eTd+a9EUBOAGdDUXm/Mx8RQZ2ttjgkOvJ+9lNLl4g9T5dPTF91BKJZm78rEkeoLq5Oqlw0xxFotIZR4saHr27Ffu08sBCnM9uteLIKMv8lW1kZ8gqxpQXd13mJdQ/bHLji9pxywOs7+7eOGRw6wXyoTd9901KLdNW8xHAEQ3vFZbAlJb75oc5SXPdBkDrk2kbcYoZU8+i+k0Ubg1OmLGpeBOq4vIfCvaThZu5gnw34K1zWj1Jor0f6FcdV5leJ/fIJf6/xqzfab0Ci4vt5utltOUATQzqQdHYgDiwTkSMUGFFsGGlnEQdQLjeLm/dbsRl7NDDBkh1qe31cTcaOi0/qDV5Ul7uGPTGwx0xtKMvL7iiM/tfEWDAWyH125Mlv2nD9+H9+S8SzYABBP2JykRmnQXxDTH0Eja/+KHW2lMMuQlxeoHx2FvuM5m06MXrUFYsvFaIctMA9GjNx1izX8mrVYWR7I5JjeJhQFAhIQO9oLcxsS0LriYB5fyZkbXekyZHIw61skXabVcg0Q6Jw6KaRGrqK73IgODyUw9km4LDeNTu0lbCOU7BF8/NMRHhFLIgAmmT1yT6QNwPkWiNVyhcqldnDpURX01K5HfzgSoZEn149P/hRvih0ItcT+QRj6zzpRbK7VPrJWh7V0Bo3CnGieO0axf+eh7M1EFMInEjo+Q35VHSOEEJUNNZf94qVTKIhmEBx6AO4VJFdpq5lbBsms+XH9VKR/7bbc/IxyBcgBdWA22ALa6Canyw28QQL3tOFDrbC25S/A019C6Q292b6vTILB/YXEUmp8CXIAW4KNjo47+8lHlIwbaogce1HqThDXvedP9mg/27IYkOcupWl8Ez2cqRQnRG8z8SJar
- oa/+auyA
- iSBV2tk+v548jRxEoMBBMR9YKwtvpmdiIl/2jd1iQIeDCoWq81FjTVdCX59yEjp+qG+9851IppsBD6FFFdgzmSimLKBBANMvRumDJZ8HOrch7yYvyc1w9uzZrdE5BnZHA8+Yzzet2+7LMr+EJTS/N5ZDp1WVJopZK2gkLLknnmn5G6RQIFAOQJATlD8FTosQFQS8LmQp0W1oIdl27NGLfiROS7G28CF0rgi5GCASzIleO8FCccVrxl6XOOO6fklVBLibI6JGHXR52Zw0BiWpnbFPIuuskyqI60EPGmMHidoaAosqylzki5U1aTbWvmKXM3Bi8hcUqKbvRxPoH8foDmGaPIo0/opk3tkjaWdNR3Dc8+TC7mcSW7m7yJGxg7RABJo1F
+X-Rspamd-Queue-Id: B7E2040005
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1754690730-377656
+X-HE-Meta: U2FsdGVkX18oVrjfIWqwDinVeTfAYh6Jzgxa7GDqo3QXLMl9NfnlODVhF68bxfX2uHJ9a2WBi0IHNSjG3SUEwVaC/n7OEDX9Dr6EOId4DOCfHshMLEiX2wp0UleKzAJ9/0o8lzLZi2NYXBh7C3ZJeqXvUBkYgBa6e8wNKW0z824nSs1OHVLZEEYCgOpMF1ZjHOl3pAq30IZdBQXs7N0zNX8dpHt97xLcYKEjBKwoo16WdmKpvwhRN2899rBbdMgt5LZqROqOlp3PrlpIYO31z5zyiWUDB1g/VHmZyKv+Ikmh9VFaNuSGDTcZQVfwiiNi5cMVeiN2r9/MLXJPZTdPMZHbOSTlUrCUX0f+9QE6UXN3DeF3WfeuNbh2e2ta3TvFqa1Cc0CCVl+iaLiU91AtXH5MoNT1G5S5ELJ67bstuL4PlPUzMbrHXpd3GK8MVQpHXY/GnxHQaYiZAadqdi1cpivlrjHGJ1MdOTpx9i9ecrJV/I3EV9/hkoa1In5iRfGFn2C1uC2PNWDItBAeVPVAIYX1EDQOtFjQGk3iaaOdVrX2CqRHdDYjYdrXEhV5gNgA2wARJEAIFmBGGjndSVOxz0e+4sL2/Do0SPOJulN++cZ7pze7A3YrGIAHvPRnlX2GdDSxysuEYjdPVeooccFVwh1d4lmO+wHhl59baChbmSabW7naKol4qXIYwjt6Xx7BgJBpklq6RSCKXoFVOhK1/aTwKoNQfUI6BHZBEaRGPZLrRYUMcIVUVmplCW4lQwkI1xaKOcmsZBmBPw8UIrFWtJ2+Zx7sQDZNpYsntVh8wTocjt0scsVDMqcMLjtF9psEc2YDMmgzHOZAr/Up249dlFY1DFBtT0myXbdPyih6ySBHMe6jiIrX79gtnjycXhw3HeFC6WpGMBBk7lgZNvOWd3otL/LwagBHBhVogtkcTeA7sC9BWuDyivalxx2m2Qq30MhfWcjSGdPwfUKxiy3
+ RVTt+XVx
+ 0ZWhWQ4dah1+FzmloM0dzi8/m6X6Qr5UsaG/ROgImMs5IHdMOBLKIot/lP/NmwKzvcBSChNTdkkL09AUHrRxxGk/Alo2NEv/FpVqGTrMB8UyS0jqG+OdrXDK9n/zEQZnZcgmnWbdLow+iXDqDuwJUO28fEh0/WbvHFGVlWhgJVNH00RRQoryn2+n4YuNXAryZr6rjE+M1Qi81V1bxFTS3IQBmM/aw4y268aUZWpeZVRN+WUs/ow90+EMpOoYr6gfcqKZg0bdH+EawFM3jRWNzrFHkDA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,79 +91,177 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hello Sang-Heon,
+
+On Sat,  9 Aug 2025 04:55:17 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
+
+> Add test to verify that DAMON status is not changed after a no-op
+> commit.
+
+Thank you for this patch!  I have some comments below, though.
+
+> Currently, it is failing. but after fix the bug it should be
+> success.
+
+To keep bisecting goes smoothly, let's introduce failing tests _after_ their
+fixes are landed.
+
+> 
+> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> ---
+>  tools/testing/selftests/damon/Makefile        |  1 +
+>  .../damon/sysfs_no_op_commit_break.py         | 78 +++++++++++++++++++
+>  2 files changed, 79 insertions(+)
+>  create mode 100755 tools/testing/selftests/damon/sysfs_no_op_commit_break.py
+> 
+> diff --git a/tools/testing/selftests/damon/Makefile b/tools/testing/selftests/damon/Makefile
+> index 5b230deb19e8..44a4a819df55 100644
+> --- a/tools/testing/selftests/damon/Makefile
+> +++ b/tools/testing/selftests/damon/Makefile
+> @@ -17,6 +17,7 @@ TEST_PROGS += reclaim.sh lru_sort.sh
+>  TEST_PROGS += sysfs_update_removed_scheme_dir.sh
+>  TEST_PROGS += sysfs_update_schemes_tried_regions_hang.py
+>  TEST_PROGS += sysfs_memcg_path_leak.sh
+> +TEST_PROGS += sysfs_no_op_commit_break.py
+>  
+>  EXTRA_CLEAN = __pycache__
+>  
+> diff --git a/tools/testing/selftests/damon/sysfs_no_op_commit_break.py b/tools/testing/selftests/damon/sysfs_no_op_commit_break.py
+> new file mode 100755
+> index 000000000000..300cdbaa7eda
+> --- /dev/null
+> +++ b/tools/testing/selftests/damon/sysfs_no_op_commit_break.py
+> @@ -0,0 +1,78 @@
+> +#!/usr/bin/env python3
+> +# SPDX-License-Identifier: GPL-2.0
+> +
+> +import json
+> +import os
+> +import subprocess
+> +import sys
+> +
+> +import _damon_sysfs
+> +
+> +def dump_damon_status_dict(pid):
+> +    try:
+> +        subprocess.check_output(['which', 'drgn'], stderr=subprocess.DEVNULL)
+> +    except:
+> +        return None, 'drgn not found'
+> +    file_dir = os.path.dirname(os.path.abspath(__file__))
+> +    dump_script = os.path.join(file_dir, 'drgn_dump_damon_status.py')
+> +    rc = subprocess.call(['drgn', dump_script, pid, 'damon_dump_output'],
+> +        stderr=subprocess.DEVNULL)
+> +
+> +    if rc != 0:
+> +        return None, f'drgn fail : return code({rc})'
+
+Let's not add a space before ':', for the consistency.
+
+> +    try:
+> +        with open('damon_dump_output', 'r') as f:
+> +            return json.load(f), None
+> +    except Exception as e:
+> +        return None, 'json.load fail (%s)' % e
+> +
+> +def main():
+> +    # We can extend this test to change only the Given and reuse the When/Then.
+
+Above comment seems unnecessary to me, since that's obvious.
+
+> +
+> +    # Given : setup filter with allow = True
+
+Again, I don't think the above comment is necessary.  And this looks like a
+pseudo code more than a formal comment.  If you think it is necessary, please
+use more formal tone.
+
+Also let's not add a space before ':', for consistency.
+
+> +    proc = subprocess.Popen(['sleep', '10'])
+> +    kdamonds = _damon_sysfs.Kdamonds(
+> +        [_damon_sysfs.Kdamond(
+> +            contexts=[_damon_sysfs.DamonCtx(
+> +                targets=[_damon_sysfs.DamonTarget(pid=proc.pid)],
+
+Can't we start this kdamond with paddr ops, and drop the 'sleep' process
+invocation?
+
+> +                schemes=[_damon_sysfs.Damos(
+> +                    ops_filters=[
+> +                        _damon_sysfs.DamosFilter(type_='anon', matching=True, allow=True)
+
+Let's keep 80 columns limit[1].
+
+> +                    ]
+> +                )],
+> +            )])]
+> +    )
+> +
+> +    err = kdamonds.start()
+> +    if err is not None:
+> +        print('kdamond start failed: %s' % err)
+> +        exit(1)
+> +
+> +    before_commit_status, err = dump_damon_status_dict(kdamonds.kdamonds[0].pid)
+> +    if err is not None:
+> +        print(err)
+> +        exit(1)
+> +
+> +    # When : No-op commit, it should not break anything
+
+Again, I don't think the above comment is necessary.  And this looks like a
+pseudo code more than a formal comment.  If you think it is necessary, please
+use more formal tone.
+
+Also let's not add a space before ':', for consistency.
+
+> +    kdamonds.kdamonds[0].commit()
+> +
+> +    # Then : Check value with drgn
+
+Again, I don't think the above comment is necessary.  And this looks like a
+pseudo code more than a formal comment.  If you think it is necessary, please
+use more formal tone.
+
+Also let's not add a space before ':', for consistency.
+
+> +    after_commit_status, err = dump_damon_status_dict(kdamonds.kdamonds[0].pid)
+> +    if err is not None:
+> +        print(err)
+> +        exit(1)
+> +
+> +    before_commit_dump = json.dumps(before_commit_status, sort_keys=True, indent=2)
+> +    after_commit_dump = json.dumps(after_commit_status, sort_keys=True, indent=2)
+
+Let's keep 80 columns limit[1].
+
+> +    if before_commit_dump != after_commit_dump:
+
+Can't we jsut compare before_commit_status and after_commit_status?
+
+> +        print("[TEST FAILED] : no-op commit break damon status")
+
+Let's not add a space before ':', for consistency.  In this case, I think ':'
+is not necessary at all.  Actually, since this test is for the single test
+case, and kselftest framework will say this failed, I think the above print()
+is not necessary at all?
+
+> +        print("===== before_commit =====")
+> +        print(before_commit_dump)
+> +        print("===== after_commit =====")
+> +        print(after_commit_dump)
+> +        exit(1)
+> +
+> +    kdamonds.stop()
+> +
+> +if __name__ == '__main__':
+> +    main()
+> -- 
+> 2.43.0
+
+[1] https://docs.kernel.org/process/coding-style.html#breaking-long-lines-and-strings
 
 
-On August 8, 2025 8:54:30 AM PDT, Svetlana Parfenova <svetlana=2Eparfenova=
-@syntacore=2Ecom> wrote:
->On 08/08/2025 03=2E14, Kees Cook wrote:
->> On Thu, Aug 07, 2025 at 07:13:50PM +0600, Svetlana Parfenova wrote:
->>> On 07/08/2025 00=2E57, Kees Cook wrote:
->>>> On Wed, Aug 06, 2025 at 10:18:14PM +0600, Svetlana Parfenova
->>>> wrote:
->>>>> Preserve the original ELF e_flags from the executable in the
->>>>> core dump header instead of relying on compile-time defaults
->>>>> (ELF_CORE_EFLAGS or value from the regset view)=2E This ensures
->>>>> that ABI-specific flags in the dump file match the actual
->>>>> binary being executed=2E
->>>>>=20
->>>>> Save the e_flags field during ELF binary loading (in
->>>>> load_elf_binary()) into the mm_struct, and later retrieve it
->>>>> during core dump generation (in fill_note_info())=2E Use this
->>>>> saved value to populate the e_flags in the core dump ELF
->>>>> header=2E
->>>>>=20
->>>>> Add a new Kconfig option, CONFIG_CORE_DUMP_USE_PROCESS_EFLAGS,
->>>>> to guard this behavior=2E Although motivated by a RISC-V use
->>>>> case, the mechanism is generic and can be applied to all
->>>>> architectures=2E
->>>>=20
->>>> In the general case, is e_flags mismatched? i=2Ee=2E why hide this
->>>> behind a Kconfig? Put another way, if I enabled this Kconfig and
->>>> dumped core from some regular x86_64 process, will e_flags be
->>>> different?
->>>>=20
->>>=20
->>> The Kconfig option is currently restricted to the RISC-V
->>> architecture because it's not clear to me whether other
->>> architectures need actual e_flags value from ELF header=2E If this
->>> option is disabled, the core dump will always use a compile time
->>> value for e_flags, regardless of which method is selected:
->>> ELF_CORE_EFLAGS or CORE_DUMP_USE_REGSET=2E And this constant does not =
-necessarily reflect the actual e_flags of the running process
->>> (at least on RISC-V), which can vary depending on how the binary
->>> was compiled=2E Thus, I made a third method to obtain e_flags that
->>> reflects the real value=2E And it is gated behind a Kconfig option,
->>> as not all users may need it=2E
->>=20
->> Can you check if the ELF e_flags and the hard-coded e_flags actually di=
-ffer on other architectures? I'd rather avoid using the Kconfig so
->> we can have a common execution path for all architectures=2E
->>=20
->
->I checked various architectures, and most don=E2=80=99t use e_flags in co=
-re
->dumps - just zero value=2E For x86 this is valid since it doesn=E2=80=99t=
- define
->values for e_flags=2E However, architectures like ARM do have meaningful
->e_flags, yet still they are set to zero in core dumps=2E I guess the real
->question isn't about core dump correctness, but whether tools like GDB
->actually rely on e_flags to provide debug information=2E Seems like most
->architectures either don=E2=80=99t use it or can operate without it=2E RI=
-SC-V
->looks like black sheep here =2E=2E=2E GDB relies on e_flags to determine =
-the
->ABI and interpret the core dump correctly=2E
->
->What if I rework my patch the following way:
->- remove Kconfig option;
->- add function/macro that would override e_flags with value taken from
->process, but it would only be applied if architecture specifies that=2E
->
->Would that be a better approach?
-
-Yeah! Let's see what that looks like=2E :)
-
-
---=20
-Kees Cook
+Thanks,
+SJ
 
