@@ -2,178 +2,104 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 03232C87FD2
-	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 16:01:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B3DE4C87FD2
+	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 16:10:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 999DB8E0005; Fri,  8 Aug 2025 12:01:58 -0400 (EDT)
+	id 5B1EA6B0093; Fri,  8 Aug 2025 12:10:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94A778E0001; Fri,  8 Aug 2025 12:01:58 -0400 (EDT)
+	id 589F76B009C; Fri,  8 Aug 2025 12:10:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 811DD8E0005; Fri,  8 Aug 2025 12:01:58 -0400 (EDT)
+	id 4C6D76B009D; Fri,  8 Aug 2025 12:10:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 707D38E0001
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 12:01:58 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2EF815887A
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 16:01:58 +0000 (UTC)
-X-FDA: 83754056316.03.23A3F90
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2054.outbound.protection.outlook.com [40.107.102.54])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 36B9040005
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 16:01:54 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="rF/ZuVz/";
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf12.hostedemail.com: domain of ziy@nvidia.com designates 40.107.102.54 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754668915; a=rsa-sha256;
-	cv=pass;
-	b=QOX8xqCRnggagapM8OEG6OzMxlqfXAEzeD4nQa3z5qkN3QaqL2KGCU9JOWWAIxUGidCXn6
-	bzkh0OJbArp/4milYiyUXuanaLBU1uLJIJAQK6ZrTbZqxOF3GNTvB3SqDq9aMT8v5+uKKg
-	r5msx04k70uYJf3637DmKh3tT7L81Xc=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="rF/ZuVz/";
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf12.hostedemail.com: domain of ziy@nvidia.com designates 40.107.102.54 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754668915;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D2C16B0093
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 12:10:02 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 10636587CD
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 16:10:02 +0000 (UTC)
+X-FDA: 83754076644.18.ADE3C32
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 598811C000B
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 16:09:59 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dQaGhtxe;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754669400;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2Oda9w8kA7GWDhc2tUWpjQ2bzULUNTYeKKbAthP7v34=;
-	b=Tx5qK5PmdZ5oAxIPGYykZQdYj1UYDFxSjozbrbw3CScHgWt5solB+2LlBYHf/6KrIptVSr
-	rTtICzrnixeUZ4+zgsrb4Rk3fugpC07r9DzRL10Z+BjKa3gMrWxQLqKJ+o0CgQuKptn9ht
-	ERbSgFJNJjx5kjmyC56Bgne8puMVxds=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=u5yP/fuWBFWRuqsRNzzH0COlVkmr8atHTe7SALc0mQbH6AO4me4ksS/jTeCcAuZFHvZkEa1vdff/ac1WAUlNSCC8nmGnQnvRplU37u8uH9rXWi19IPQ9MHrPVcHyN/skYRBbPPE4fNMxe5QtkT141CDUJ6atc64maay1iPPqpb0FFiVRwZjYLKG2eBFw8k5bNy2XAo5n3I33SXdKX57xZBiuvtzZqnDX1yM9U9rTaDMUJ1s0OP1xUwnx4zLAziXQnn0xOzoQ+CjOIMZxRfabG6CcxidmAVXf6K7422+JoPYlgUkG8xDQLB9DgbzxY6Z+8CkjfxjUHsd/otAf59buwg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2Oda9w8kA7GWDhc2tUWpjQ2bzULUNTYeKKbAthP7v34=;
- b=urvi2ci1d3XFvIX2kY4HqkscylMVYdILoYSNv02PscHHTnUNYfM2j0yX/1F6kCNvyigo73PjZpTTr/HkTYTPXuF6g0P5Hf4yTOhixTukBRvA4c7egOkaX1jQwuegdBcolcFYePhx/bGux7xdIc39odAzSfgD/iuJNzxWkpxl+o7U+tXKS13PA5IdmpxR6/IJXvdBVYAzqjMo8FI1wG31ZSihhmfhslt28svnAovbMjv0c5YAsDBdL7N14eq00YNWCroiEpZxXUZZNoRB/WDoJsjNh5IYt7qe0850598BYjeFEIrX8SOjx1eKVU5eX3ftr7azbsFR80FSRsGzPka1iw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2Oda9w8kA7GWDhc2tUWpjQ2bzULUNTYeKKbAthP7v34=;
- b=rF/ZuVz/kiuTLYf2zuRFQfzcVsgCzoIAvl21IXZ6kXxNKwI04FBkUxgiKU2r2yCiNmGxiJPTNk8KUacd7ZHc2cln5Chy1DsatE5BNg2XMYSmFY7QesYINWJ9+EoFyYJ2umDHQMDycZW5fAO/9DrmDRDEYzPCB9kUNHlPMWp+qqV74tuNpheBL/GwhRPo8HeQWdXJ6aRG3eYkhIOXrZ9Egfacml/WlGBMTfxHLlh0r7YkFOtwpYCzRrCclcVovBuZ0zj7OF62Pr/a/Yb40aEjrfU9UDlpI11g+g/Kklv/s0QbYzi9Ib9QJ6byrZTsyS/5th7rpIjvIN7nn7jCagapqg==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- IA1PR12MB7541.namprd12.prod.outlook.com (2603:10b6:208:42f::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.18; Fri, 8 Aug
- 2025 16:01:49 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%6]) with mapi id 15.20.9009.017; Fri, 8 Aug 2025
- 16:01:49 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Wei Yang <richard.weiyang@gmail.com>, <akpm@linux-foundation.org>
-Cc: <david@redhat.com>, <lorenzo.stoakes@oracle.com>, <dev.jain@arm.com>,
- <linux-mm@kvack.org>, <linux-kselftest@vger.kernel.org>
-Subject: Re: [PATCH] selftests/mm: do check_huge_anon() with a number been
- passed in
-Date: Fri, 08 Aug 2025 12:01:47 -0400
-X-Mailer: MailMate (2.0r6272)
-Message-ID: <13D32FD8-FAC8-468A-9C92-23A1B61610C3@nvidia.com>
-In-Reply-To: <207BD61A-5561-4E8C-B867-D1CFCAD37509@nvidia.com>
-References: <20250807082707.30647-1-richard.weiyang@gmail.com>
- <0467FDBA-A2CF-4CF0-ACCD-760ECD30BA8A@nvidia.com>
- <207BD61A-5561-4E8C-B867-D1CFCAD37509@nvidia.com>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BL1P223CA0037.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:208:5b6::14) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Ztwa3E6zBXFgmIFx5dajTfpolgmMbhkThODF1dOX7/c=;
+	b=6TrPEbBx7LTx14OdlXZoAP3gk6/9T+zYXurBy6JzlyHTpba38IbI2ASDB/ZLc0aOjwOE9H
+	Fhsjz/T6ph0UKcZyFKbObHPLPFHzqrHuZaUWh2vxFtJ48l5SzChxN3jF6y6C2Q5MMcW5fS
+	XUISRctQN4N4V+WBrsvHvst0054Isos=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754669400; a=rsa-sha256;
+	cv=none;
+	b=X/F1Dpht/VQDSdaCXBNjEG/w2o9YR5NDjInwq50zXxxRBQGodPipEgtahvxzHHha5B7IxA
+	vgfUZ3NZwW518yngHFUvSVTfgwkeB8lks/SDXDCTUWV92TjbwE8lTCbGVPJGnfSGzmn8mF
+	WIsy2uGOjR3s2UEsppGbrYFXIVDtsn8=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dQaGhtxe;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754669399; x=1786205399;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=1gA6fLbXCVZ/IsZpo3OVj8n+DPFkUUUcn+HUBENLZIU=;
+  b=dQaGhtxegQ/Sjs9WjoEDjVIq/t1qBON5OzZt6csivpBqAX3al4W5Jcwc
+   vRcz8LRw6tvvQWpwcXqtKuZ1J4tb4hOI6iMeYdUwNeQc7kPzPkbiMqHgW
+   YHTBnxoRzPToLkr0SiAA4d5fuvMPouug86vC6y8+0FzbHW2SEkKImiYRU
+   lZFkuvqPMpYiE47L2/cSunAwxVHccEhKIgAerf6RD5h1jyJGFys5hhrhy
+   uzexIPEbTRlppzM+C7d4T9TK6eenr08g4TlKiGlswrrAYm1Nm8dhkO/RK
+   vSFlq9X5DYhxSaHA9Jg677TEmqP2EQ61xGIL9MGHATX0za2w0Za+moCWI
+   g==;
+X-CSE-ConnectionGUID: ZqeZkfF5Sk279+JNAKDZsg==
+X-CSE-MsgGUID: 02wD3vl1R0+kE2DUdj1Lgw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11515"; a="74469728"
+X-IronPort-AV: E=Sophos;i="6.17,274,1747724400"; 
+   d="scan'208";a="74469728"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2025 09:09:58 -0700
+X-CSE-ConnectionGUID: rlnIml0bRuCRxUvRwhvJbA==
+X-CSE-MsgGUID: SmC7fKTqRZ2jYJGXHTSUzw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,274,1747724400"; 
+   d="scan'208";a="165732140"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by fmviesa009.fm.intel.com with ESMTP; 08 Aug 2025 09:09:55 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ukPfF-000466-0k;
+	Fri, 08 Aug 2025 16:09:53 +0000
+Date: Sat, 9 Aug 2025 00:09:05 +0800
+From: kernel test robot <lkp@intel.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Pedro Falcato <pfalcato@suse.de>, Kees Cook <kees@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>
+Subject: ld.lld: error: Function Import: link error: linking module flags
+ 'Code Model': IDs have conflicting values: 'i32 3' from vmlinux.a(init.o at
+ 1229286), and 'i32 1' from vmlinux.a(vma_exec.o at 1246866)
+Message-ID: <202508082339.sjRnzZrX-lkp@intel.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|IA1PR12MB7541:EE_
-X-MS-Office365-Filtering-Correlation-Id: ebfb068c-adbc-4a79-800b-08ddd694e218
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?GfgbBdJsaxruQcUtE4WHcb0eugnOrOt57soBI0MfdfVSLQtTtH0gs8j+L2D0?=
- =?us-ascii?Q?2f25VlwIqjlgPuscWmCsRPScB6odzH9cMsqD93U3PUgR4mK0tksdFPJcwmDS?=
- =?us-ascii?Q?G5U0iu2uHW8bznWazYHn0gAlRXk+1gAsir1pe/xP0RwnX2I2shkV8Qjuk/sX?=
- =?us-ascii?Q?nwimiZmqAccyb6B5Fru8oCxuLtwIsvuR0RfFeh9Kd7sjMAAWCgHe0pRKkFrA?=
- =?us-ascii?Q?beskYnNfXek9jWDBpCnw3G/slCCbU49MFl/9EhJ1ZQ5bkVU4yHqc9uRIkRcw?=
- =?us-ascii?Q?oTLY8WVuRSvM53045A775RqHBwqbT7TmGXbCdk5COqpynP9A7lQ4roIf1tOn?=
- =?us-ascii?Q?JbEWgHPCw2/d4XMQqGlKq6NFK5wFW5+eDxYrzdKvLbGMkCOZg4wwLbVz7JAP?=
- =?us-ascii?Q?YHHxHmhoQ8djZoLvEsnuW83qM+IPkcrR8U3tdyiEUcAGssdFSV3PRXUy3rwt?=
- =?us-ascii?Q?9slLtqUgesYTJqMvdqBwwogAL1S3Uzh/+v+BRL819lhU2nRmr49WMKK0pYEB?=
- =?us-ascii?Q?Ro2GFbhec0t40KOup0sQGqv+WwUomMcMrzoA03cf2/w1Z+A6PWUx59OVIqhA?=
- =?us-ascii?Q?tNHUBnNMGaBiGAaXE48wNKtwJqPe8PgUJMIGAqiJteuPKxuxWER1JcsTKBY1?=
- =?us-ascii?Q?Ky/ztTw+f1JnoerB5ojw0tRfwVMlqPTnFv2mls/2DIa56Uat5KbgrlXj8Mti?=
- =?us-ascii?Q?Ut9ShOMKQRiiGmSQCKEdGWVoDk/9MUeDpJezz6UCJYwzbmfw/vzGOGP87pbS?=
- =?us-ascii?Q?glkGtN46/6CigGuKfbKPWi5sUe+7wD+N9PepY6AiRVOEABU9KpYRvZmFlsTy?=
- =?us-ascii?Q?g/IVZY24NEG6Yezl/itUrkZjBRb/RZ0xPyq41IZe9vQgrFNksVEDk8ZG4bnv?=
- =?us-ascii?Q?LPBh0v3Azaob84PtpkyidIJEGWINHVg9EZYL8qXmzmS94J9G5Ca1TeTnOsxq?=
- =?us-ascii?Q?l3Zx7JPTjjNpWmqZErENlVk9IwLiZ5m7xIXzcbXwnn537TXRQxPrYlZBstNw?=
- =?us-ascii?Q?OqmHLfEdRbGa6PsG3AJX+RTnK+co61ltQheQuc70ZO/4rmynDpQC4uc5KrSn?=
- =?us-ascii?Q?RQA4cg9cPF8ic0zjomB3HROlk9DwuHiW2/Teue0RYYwJLNCOsal9u4AAjET6?=
- =?us-ascii?Q?3Y76A/dBAqV4i1mwMEimWCFT1adQSPGHVNG9hcwwWtJ3UVGHMD6q0aiQHtOj?=
- =?us-ascii?Q?pAuWNz8lEPdUQRHxVK+nJcGpo4KFeUS14t1e8OV6a7/bLy3XzKl4M/Ta8cOz?=
- =?us-ascii?Q?E48Ykrn7dTTWOup4DDV3yQomjqVpxVWhrIxJGibzTV0XKL7S/qec9vQHFN2F?=
- =?us-ascii?Q?dqLxLhQ5AGw+P3S5oPpuReC/lHooYWtQEjgezYrVh/thnaZgdfu7N15ziOqL?=
- =?us-ascii?Q?0rdvWStQkSD9q+/cNicZtjqtkHpa/zJd4hXdRfGl5x5PmgSSDGB7blvpq7hH?=
- =?us-ascii?Q?OYsvk1LvMSQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?3SImCmPTt9oQvTdRpkJ15VH5RoNh9ZMma2fJdwu9KdJduDN9o+pTzlBpK5u7?=
- =?us-ascii?Q?mXD6QoWYPUykGlLL5VKKugow6OhOwk5EK4XPxbZykHMNBKdqNKf+9be+WJIc?=
- =?us-ascii?Q?FXuFIuzZS/yheCSNZifL6Ampi5cz9bfZY8BqlcepO7nqk1qN81gq43LfRLa6?=
- =?us-ascii?Q?zdFLGpkUNEchrzYxX9PZs18S7eMs631/cFPnD2+55rnQroLmZi7rUiYTumKa?=
- =?us-ascii?Q?6fV3d9LXsxSXn5WIv7kz5ptum8Kay+LxLTh8a2REzbEOOvnJO8JOlEP6a8hh?=
- =?us-ascii?Q?UDRoiZ9/YlvuM2YreQED817JAqU7N8s0fH/EqAVqrTDU0QyXBGN9CWqm+nA1?=
- =?us-ascii?Q?dxdgJkfUUSQUNChlflsXdsPigJCHfDdSaB852VgUOWw08uCt5Z5yw29fzStc?=
- =?us-ascii?Q?VcZ4ecvUuCNCB8d0qJX37O3Zs8NY148uqboxSbUvTL1MN/go0/ZXs3dGOoi9?=
- =?us-ascii?Q?V/hZ76sHbINStZE4HL6F14QBQIqcpX6TAMng0pli9HEOoWVKU+Ty0NI066bF?=
- =?us-ascii?Q?1KJaOpe/aihaZZ8TvHJ2R0oLRCuPoD8E5sclsT3026w8ScprGxLFPbFBUynb?=
- =?us-ascii?Q?udxx6hZltYa4ltZjIfF1XhCOfUFBRqY0bi0jVCv1tj8rUWBZHWEiElIZhbY8?=
- =?us-ascii?Q?g6L60xi021mNAzUxZUh/eEVI0qiBVmmk2DrtZksuPncfzGODl/JkloE7QLmW?=
- =?us-ascii?Q?ZhDrwP79OmCQ6WUmlgpgHLXpAFqXSVX8kPMFz27g8xkTnmBiD6ILFDT8MuxW?=
- =?us-ascii?Q?iWmIzIPoI/2PanFpTZdCbra1Y7sRfTXJpe4iNT4hORO0suJJM5dmSF3PMnsa?=
- =?us-ascii?Q?stEIaeFWJJOfzpsfSGm1t9c+RGOW9le5iffuSYFByzBg+OWa+JtEwUXcfdbg?=
- =?us-ascii?Q?vvytNTV68W7P2KfYhP46oU2KTr/5OF/3GeCFRby/EXs+FJuUSyqVvJw8fjkU?=
- =?us-ascii?Q?WhOs6k1ZRHL0CRS/o0l4+3GYrNXnBg7cEvEV06wDz5VhuiObmqocvEQoXiA7?=
- =?us-ascii?Q?5vpIpPkPBo+OxeMf3JXrcPmTP21jwuPWEXFuZ51x4QxVxoS6/O/4dRzxyUWl?=
- =?us-ascii?Q?iGFy8oKWGb5O1cwFHbqHZWU1C5grBwwJrguRNcEISs2ktwbby0VoA4os9aEn?=
- =?us-ascii?Q?KiOYTQ9bcUcjZDmd3WzxbLHb6EsPupJhz78jxtGhTIoyfQiBbbxx5+j++qQA?=
- =?us-ascii?Q?OkDKySXhfcmAw0DCWumeIggf1eh1GW9Ox1S7nEbrntBNUfSD42YHttXBfzdB?=
- =?us-ascii?Q?Za3hiM8seXU7IsMeRquPM2t+40ECi6/JePVtHKTdjMl4V4AEFvAF9EnckoZZ?=
- =?us-ascii?Q?wlmpazj6HqlLVqjZJTmKGCo6jE1HMvP+gvQ/99rPyrD4TzfUBBbvDMjDxzjp?=
- =?us-ascii?Q?rCpv2VBlMnZ9y4NzTBMGC158vQ80bOjmfCNupFnWZQbPDiFrhZb1HgPc935i?=
- =?us-ascii?Q?GAre9QCPegPOvujQQCrFkDXHRuRPMq2WI91c6XyLgIwUfsf5r60M189RdwwZ?=
- =?us-ascii?Q?0+r2O3VOPi6LEhGwSrn9eN9aGEq7Zvh5eGMYng1ZfV3pM5ThoifNAUPGQk7F?=
- =?us-ascii?Q?8D4eeM241gp7wMHE/1f5okHFcIvb8motA5bqFg3g?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ebfb068c-adbc-4a79-800b-08ddd694e218
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Aug 2025 16:01:49.4207
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Zkyl9G5IDyUnSUERMzmRWikln82EJ6Ft4/COR2hRk4VWlrJA/DDgPE4CqsoPiXpX
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7541
-X-Stat-Signature: 957hdzfd3xmj1tstcaigpc9wo934eu5x
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Queue-Id: 598811C000B
+X-Stat-Signature: meftf9wqjkai68jbf63pgfwrrrgmc5xn
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 36B9040005
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1754668914-237317
-X-HE-Meta: U2FsdGVkX19f0Ptt21WQ+HtP7i+XkbXtvQALLr/wuaJHxP7sEo34yLvZdisXIoceie1DTxByOvf7yt6HAUckhhNHh0meJFdlcUzmK3tAK55xfGDDp4cUck/yEgZCDoZUa681+E32Mi9I8VnFtPhPUKe/Zn5ZzaNYZCqXI2lntBzBexmVIfELIX+2smFrdOFqWfwkoGAxZ/OhCVjLO/gaPxVNj+gcH/mHOIiGLhhYUqpD+MMpgH+GJbzTd/5xLEneVbh+hReoHcQyJTLMe3pQM6OOg+XApjaqbJ1At7OEbE1dyBBwLOQrBb5Y7KjnbTe5nKp11yHvlDxDcVqEHrTjcTd/Llb4U+bM/gh/tMfrthUOgYKkobE4+Wnmv6h+zb9DgAVa5RhDFwfqn72MKxIS80U8iBXY71tMK7Th7j32Z22zzUfXcwFpXfudM+esSjrlst7tKu4VKbtRDPro3gaLVNAYpYV3JkCb8vEIs0mBwsVW0Lrtbh66oAFF7s8MJXy3Ijd9rngpHlZFfPVo8LFStl3eZeULKR12/FkQJhQa8CZdpCB87FzuU5Yeauebu5qfy8ADhyAF0t8ZVcd+OyqGLS9aUnt79PFPm6qugiijaNoSRz+nbMG9wZgbdZB1AicBL60rV7zoT/+LeQNJ71xcLQgWv7lzuDxz25jJlq06Q9x1edELC2H8FUS2WvQvffdqYH/cO4IErpjbQYWVhrxKN2efIAdBtwm92QOScGenIyCoskO0jiksbuu16J7WH47KGjsEowgWpHL/bE1Fo3n33jCTvFvdkH52FSyg8mcyb0O3hv5LfCfzA/rstrvbIoXyzEP6ErxclO2OQQ9Diw+/mz1/4hfLAUmgXpL70Cep59qmuEc/i0F071nAu+JBY6Tyf3wtA+97wyjDKl8EV9Aw0OviBvKl7TsqBxhJr1GpjwwAEleb799Ips2toa6C/Y9Z1n8R2KJiZAPNJKiaBDl
- tJA51sRd
- qLw/UQBjJznHBID6uCA2xlJSq4aA+aVx4pisBlDcltTDQ1bfaaOFY29TFaoRiFUeRXtGxqTYf2+V9+x3A1RD1mBTzFyGuNa/UabVOgBcd9EJPFNkItmMoSyjRNW1jO1TcUEJzLal1QuYAhNPw92GF6bdhSSoetGcGRK08dkJiw6TD7UUmoAiF4DhLRHsMuo959zzqjrlwwEf/jlrEJFUOCOZCog8pxmd+fRz3dBb0UNQ9zbMKZMCqr4PqSW3aTC1R1zplxtoMDmKSp05aTmpjYxJtAd7VgfhT7d9tRQLv7h/rfSIuXO6p5wQzu0gwKD2az2vAyXgAu6twukne3RUcN+nRMOjiRGe+ZZOvXzGU+y4JgcsgmoVqe72CSTqE+xx4QNsYP9wH5uhEPNRSDANUUiXSkdc53dxt7il527L0CQ/uLAHNs89+zextEUgbdYDwxI12muVO+Q5GamjA0piwCiJzlaSGFQMsmEx0tFM11NGL+Ft59bXWHbRdIJxN8ESccTY8ovPQ6CQRKEISi5z3X4N0wAPzeUEqI7y5DYzwGkVFc2zX8qqh4RweWARAxa39QtuaBlSeEhySBDhpK1azrApqkZJIKbEjsx//QM45ig8MSWPQoJEOVPfiDnkCMyigE+xK8PDwYJDceeKdJa1z7caHKwisAUQF/XLz/vVHXlkIG4k=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1754669399-910519
+X-HE-Meta: U2FsdGVkX192srM1yo9XptE6iY4FGepWcPHXgmmmvytOgAjRzcTJqCg4T386QNbhobhcgyC+CZu8Y7wbTxpugCg8kZ0rAkNE42NomlWW7t7p1XtEaaO9ZndTUS1RjZVjeIqFlDPXmr0e/1EOmEKBCUeqeHVN92Q6/a1d1sSv+0+A6IRfTOcgCkhMOugQj8QDaDMHJxzl74UfPvpUh05qeSFkZ6acRNBGPshywOBbv0trVnK0wdrF2hsZNHf2cWL4qMbkyfecP+YbMHKqk1SYJMerZ5AqBX0XnFe5AIYJSSXI4UfJsHJ6nqtvegAhZqDKDd2P43pLKDv0hmDZYitk27Fo+F0T8wJtIdStgGPjWvhB7iYaqvN5w61KJScTK2MjmgD2GwIEIcFE8qwaIcj21YQVOYmGMMQNRXzOky3GRVLnrjEqlRkxPYhQIZFdWfzaISZTTcy1Y4eZtIo4dQtQStub4ruetFHCtFVTtzhLOpztKZXS8V0U0FqtpEwrQzKbasQHxZ7lIrlcA9ibFa4RMzw/gMeYQD8q9U+KurQGZBMBQQENgFY8e1pAicfxZKMSY4cWTAtXybf5KKpOvNaqVaYClJqPU2ur0DCLX8r0JrFCPXp2LYBUV4F7r8aS1s0OmRxnZxr3XfCtIy0uhiUPhWqT+yaieXOkF69NMYEG72C7I15E+zRWqDHtiF2lD8UQw1V78ESTkT6Ybm10/9OsYenlnjd2GS/UXZiRRem48YizF+y6rxWNVht7j803ozKoAETBP8B0txXAsBWPlNuTZy3WxP++dH+7oHL+LKkZzCtvr0E459jhaBhZVZTR5OuxhOmR6HTPMPk5tvaxfT3lIPF+Y4GPsZTrH8wU5mIgrxZY1ham0zpdxThUv2f5GpgUN4Muuu9vZ2TECYQ9YsvKQLA8ttQAyMRLJBp50/Y7F1W0gHFPnCDz1PY5tbpwQSN18fS92pf2Nb6nYKS0nuE
+ SzH1cRpU
+ 4LakpqCUAKvFItP3NiRHKc8rbuiAQfnZn4p2+QMpMrGq6l/Zcc7jwOVZ0xY+hXXxPBMetmJrY0rRyJdEP7UZPD8gDZKGcVmOU2011Gy92LMZc6m+clxyCUkRLBMysC1VQuRXbq5ZD2MjVApCLo8r/zspMNrLkFA1/NxIPcSAx0bzG0+1zsaBsw4Jq9qPYwntrXJ0LfmLCpzj/888KGnEM0fMoqu96aA32WNVBuPv6R0wnLXsBSKiCQ2nk9hJJd/TH2Yl/9rMxFDjIfw4oEYTHLF+DB4rmUazN2+a8My0M1sqn5+7IH4G7IPy0q+t/qTJQhbRHa/pSZDMC/AHilm/aVdtRnn3duCr3VwqCJ5gJ36f9MExdOLx1/2F1LEEhNKrhFsSti2OUshos+zlzlMcPtLsd1wnbDmG2G6HOhojlIxi9xPEtc1UmwV9SJ028yJ0k4PD3IwQob/VA5XmC5KijrC5exQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,69 +108,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8 Aug 2025, at 11:59, Zi Yan wrote:
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+head:   37816488247ddddbc3de113c78c83572274b1e2e
+commit: dd7a6246f4fd6e8a6dcb08f1f51c899f3e0d3b83 mm: abstract initial stack setup to mm subsystem
+date:   3 months ago
+config: riscv-randconfig-r071-20250729 (https://download.01.org/0day-ci/archive/20250808/202508082339.sjRnzZrX-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 1b4db78d2eaa070b3f364a2d2b2b826a5439b892)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250808/202508082339.sjRnzZrX-lkp@intel.com/reproduce)
 
-> On 8 Aug 2025, at 11:56, Zi Yan wrote:
->
->> On 7 Aug 2025, at 4:27, Wei Yang wrote:
->>
->>> Currently it hard coded the number of hugepage to check for
->>> check_huge_anon(), but we already have the number passed in.
->>>
->>> Do the check based on the number of hugepage passed in is more
->>> reasonable.
->>>
->>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->>> ---
->>>  tools/testing/selftests/mm/split_huge_page_test.c | 2 +-
->>>  1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tool=
-s/testing/selftests/mm/split_huge_page_test.c
->>> index 44a3f8a58806..bf40e6b121ab 100644
->>> --- a/tools/testing/selftests/mm/split_huge_page_test.c
->>> +++ b/tools/testing/selftests/mm/split_huge_page_test.c
->>> @@ -111,7 +111,7 @@ static void verify_rss_anon_split_huge_page_all_z=
-eroes(char *one_page, int nr_hp
->>>  	unsigned long rss_anon_before, rss_anon_after;
->>>  	size_t i;
->>>
->>> -	if (!check_huge_anon(one_page, 4, pmd_pagesize))
->>> +	if (!check_huge_anon(one_page, nr_hpages, pmd_pagesize))
->>>  		ksft_exit_fail_msg("No THP is allocated\n");
->>>
->>>  	rss_anon_before =3D rss_anon();
->>
->> Which commit is this patch based on?
->>
->> In mm-new[1], verify_rss_anon_split_huge_page_all_zeroes() accepts
->> char *one_page and size_t len but no nr_hpages. This breaks
->> split_huge_page_test.c compilation.
->>
->> Are you forgetting some cleanup patches before this one?
->>
->> [1] https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git/tree/t=
-ools/testing/selftests/mm/split_huge_page_test.c?h=3Dmm-new#n110
->>
->>
->> Hi Andrew,
->>
->> Can you drop this one for now? Thanks.
->
-> Wait. It seems that mm-new is different from Linus' tree[1]. I wonder
-> what is going on.
->
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/=
-tree/tools/testing/selftests/mm/split_huge_page_test.c?h=3Dv6.16#n109
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508082339.sjRnzZrX-lkp@intel.com/
 
-Wei, it seems that you lost the race to Muhammad Usama Anjum's cleanup pa=
-tch[1].
-You might need to add nr_hpages back.
+All errors (new ones prefixed by >>):
 
-[1] https://lore.kernel.org/all/20250731160132.1795351-6-usama.anjum@coll=
-abora.com/T/#u
+   ld.lld: error: Function Import: link error: linking module flags 'Code Model': IDs have conflicting values: 'i32 3' from vmlinux.a(init.o at 1229286), and 'i32 1' from vmlinux.a(core.o at 1243626)
+   ld.lld: error: Function Import: link error: linking module flags 'Code Model': IDs have conflicting values: 'i32 3' from vmlinux.a(init.o at 1229286), and 'i32 1' from vmlinux.a(ring_buffer.o at 1239546)
+   ld.lld: error: Function Import: link error: linking module flags 'Code Model': IDs have conflicting values: 'i32 3' from vmlinux.a(init.o at 1229286), and 'i32 1' from vmlinux.a(vmalloc.o at 1246746)
+   ld.lld: error: Function Import: link error: linking module flags 'Code Model': IDs have conflicting values: 'i32 3' from vmlinux.a(init.o at 1229286), and 'i32 1' from vmlinux.a(memory.o at 1246026)
+   ld.lld: error: Function Import: link error: linking module flags 'Code Model': IDs have conflicting values: 'i32 3' from vmlinux.a(init.o at 1229286), and 'i32 1' from vmlinux.a(main.o at 1225686)
+   ld.lld: error: Function Import: link error: linking module flags 'Code Model': IDs have conflicting values: 'i32 3' from vmlinux.a(init.o at 1229286), and 'i32 1' from vmlinux.a(output.o at 1404306)
+   ld.lld: error: Function Import: link error: linking module flags 'Code Model': IDs have conflicting values: 'i32 3' from vmlinux.a(init.o at 1229286), and 'i32 1' from vmlinux.a(mmap.o at 1246206)
+   ld.lld: error: Function Import: link error: linking module flags 'Code Model': IDs have conflicting values: 'i32 3' from vmlinux.a(init.o at 1229286), and 'i32 1' from vmlinux.a(vma.o at 1246806)
+   ld.lld: error: Function Import: link error: linking module flags 'Code Model': IDs have conflicting values: 'i32 3' from vmlinux.a(init.o at 1229286), and 'i32 1' from vmlinux.a(drm_gem.o at 1315866)
+   ld.lld: error: Function Import: link error: linking module flags 'Code Model': IDs have conflicting values: 'i32 3' from vmlinux.a(init.o at 1229286), and 'i32 1' from vmlinux.a(drm_gem_shmem_helper.o at 1317846)
+   ld.lld: error: Function Import: link error: linking module flags 'Code Model': IDs have conflicting values: 'i32 3' from vmlinux.a(init.o at 1229286), and 'i32 1' from vmlinux.a(virtgpu_vram.o at 1327806)
+   ld.lld: error: Function Import: link error: linking module flags 'Code Model': IDs have conflicting values: 'i32 1' from vmlinux.a(alternative.o at 1226286), and 'i32 3' from vmlinux.a(init.o at 1229286)
+   ld.lld: error: Function Import: link error: linking module flags 'Code Model': IDs have conflicting values: 'i32 3' from vmlinux.a(init.o at 1229286), and 'i32 1' from vmlinux.a(direct-io.o at 1251666)
+   ld.lld: error: Function Import: link error: linking module flags 'Code Model': IDs have conflicting values: 'i32 3' from vmlinux.a(init.o at 1229286), and 'i32 1' from vmlinux.a(debug_vm_pgtable.o at 1247886)
+   ld.lld: error: Function Import: link error: linking module flags 'Code Model': IDs have conflicting values: 'i32 3' from vmlinux.a(init.o at 1229286), and 'i32 1' from vmlinux.a(drm_gem_dma_helper.o at 1317726)
+   ld.lld: error: Function Import: link error: linking module flags 'Code Model': IDs have conflicting values: 'i32 3' from vmlinux.a(init.o at 1229286), and 'i32 1' from vmlinux.a(blk-lib.o at 1282566)
+>> ld.lld: error: Function Import: link error: linking module flags 'Code Model': IDs have conflicting values: 'i32 3' from vmlinux.a(init.o at 1229286), and 'i32 1' from vmlinux.a(vma_exec.o at 1246866)
+   ld.lld: error: Function Import: link error: linking module flags 'Code Model': IDs have conflicting values: 'i32 3' from vmlinux.a(init.o at 1229286), and 'i32 1' from vmlinux.a(context.o at 1229706)
+   ld.lld: error: Function Import: link error: linking module flags 'Code Model': IDs have conflicting values: 'i32 3' from vmlinux.a(init.o at 1229286), and 'i32 1' from vmlinux.a(setup.o at 1226826)
+   ld.lld: error: Function Import: link error: linking module flags 'Code Model': IDs have conflicting values: 'i32 3' from vmlinux.a(init.o at 1229286), and 'i32 1' from vmlinux.a(physaddr.o at 1229886)
+   ld.lld: error: too many errors emitted, stopping now (use --error-limit=0 to see all errors)
 
---
-Best Regards,
-Yan, Zi
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
