@@ -2,113 +2,208 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 36A8AC87FDA
-	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 16:30:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B67C6C87FCB
+	for <linux-mm@archiver.kernel.org>; Fri,  8 Aug 2025 16:39:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A2396B0095; Fri,  8 Aug 2025 12:30:17 -0400 (EDT)
+	id 5A9148E0003; Fri,  8 Aug 2025 12:39:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 879A46B0096; Fri,  8 Aug 2025 12:30:17 -0400 (EDT)
+	id 533068E0001; Fri,  8 Aug 2025 12:39:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78F696B0099; Fri,  8 Aug 2025 12:30:17 -0400 (EDT)
+	id 3ACBE8E0003; Fri,  8 Aug 2025 12:39:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6526C6B0095
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 12:30:17 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BBD7D115B1F
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 16:30:16 +0000 (UTC)
-X-FDA: 83754127632.30.08AC08A
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A5BB540004
-	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 16:30:14 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 259118E0001
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 12:39:39 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9C8C1140372
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 16:39:38 +0000 (UTC)
+X-FDA: 83754151236.25.13CC1B8
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11022082.outbound.protection.outlook.com [52.101.53.82])
+	by imf27.hostedemail.com (Postfix) with ESMTP id ABC6940006
+	for <linux-mm@kvack.org>; Fri,  8 Aug 2025 16:39:35 +0000 (UTC)
 Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=DedCgHKf;
-	spf=pass (imf27.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=lokeshgidra@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754670614;
+	dkim=pass header.d=os.amperecomputing.com header.s=selector2 header.b="D5vyp/EK";
+	dmarc=pass (policy=quarantine) header.from=amperecomputing.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf27.hostedemail.com: domain of danielf@os.amperecomputing.com designates 52.101.53.82 as permitted sender) smtp.mailfrom=danielf@os.amperecomputing.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1754671175; a=rsa-sha256;
+	cv=pass;
+	b=UxWd7HBfCiVqAMcBywC0jXndQeDmxJLe3yXPtYl98vhb/3lE3oyvk4IGCb8M9wNo+bTZjJ
+	efNn+70CecLhe+aTIcwZsvTChvYHOZ5UxR+9Yt+gGKkaQtflhPVaNA4cMTS6VPcBV3LU3a
+	dd0VuRKrHFVr2NQOZ0PeWPIwiPER1PA=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=os.amperecomputing.com header.s=selector2 header.b="D5vyp/EK";
+	dmarc=pass (policy=quarantine) header.from=amperecomputing.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf27.hostedemail.com: domain of danielf@os.amperecomputing.com designates 52.101.53.82 as permitted sender) smtp.mailfrom=danielf@os.amperecomputing.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1754671175;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XWV9QwkXPZK1Qghst1uCIV4QuYfeCzvomcNngf/dKhQ=;
-	b=wIXQGTsNi561BsZGXyuUX6Ak0EGDv/UwI2GPWWRMNWNfQUuHdFII6pmppQKtAfsVVHZEfb
-	8FOP/ngd+RU011fYKzs0wRUfCZ58ii6Qfsj4Qz8S1E9yNH0eRWOqzcE2Oar61J+zJe8zIK
-	tOy09fic5hN7dJ9pVfuMmuwSqDGpdN4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754670614; a=rsa-sha256;
-	cv=none;
-	b=nliWqn9stY6kb+NZzT1/vNpMNC+reWSvM1Gb1l/vW9TvU2EQ4kmVYVloPWILWKkmFTbu2O
-	Zi8GHiCdHnMa3Wj9jxgafVsLLDLy8KsVj0+MbYpiwwOtx+bOJelb/mA3bsYUruTOW5l1RS
-	s8tjf2c9a8+YOnv/4Og68F7tWKc+0Bk=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=DedCgHKf;
-	spf=pass (imf27.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=lokeshgidra@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-617ff2c8e5dso63a12.0
-        for <linux-mm@kvack.org>; Fri, 08 Aug 2025 09:30:14 -0700 (PDT)
+	bh=d279khdE/zWZahOMhe44zD4NA2hyGTCnYw8wAHjLDdk=;
+	b=XxwR9qfnFAb4uispMLvB+cE30Y4z1dXTSKcmsqtZWqOuW9Qbvifd4Qm1/9B/NmIi2jH1lm
+	9ZNH3X7WYprmu3bbOMurNWBbZTW3r7v8W5NpXKl7qp0XBLzn1YiEPvrsiGqhFvulETNgU5
+	nWsuwo1WexXX96NASTzPf7wMnXrREwU=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xcJhCVjW6DW9qob8XdxU0EziyhZqsJggZ0SGuFOCiUrLa73JU5csfxfbc7c0fSmurAhYYlkvEf/ahhuAIMpW39donb0FYd6YgGytQ1X9BMl7Br5LMZmxMvQUsx9Mll9RyTECYoe4/vYrkXKmvUxUGa+qt0l8c5PUbEC9PwlbmMTQP/GWwHue5RkfnHE6N/gMxFRZnCZPLBtYpZV2rXFUE/LvKuU4P8N/NyCVtpmN90wQ+QbY2Ql8PSUg25OCB5VFiyIGKyoER3WqbZbStkmlVG/MWfZEg00dDdg6FJ2mxTpKpOrOv+dB8PUPT2rMtfk+G+febO01v2lucqSaj1OGGw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=d279khdE/zWZahOMhe44zD4NA2hyGTCnYw8wAHjLDdk=;
+ b=pTPKjKoDl4gKWqzCC8L3A8DGZ1Ql04MtZUmdZLhKNJmURh0NYtqDfKIOTyS1fYIT/SgQEz6MiqZQkYYrVGCdAOQiShDUuqtDSx6fzFj3g0LvAhThBwg9/nzj1gb11TIjpuQC+6Ftxz/n8aEXLsUGm21JzHlWOQUBcyvrF4cbb97/fBcPvtqtjYUopCcKdqGkqLRQebiOyl1PFdeRS09AZWI3yTfpRaBL3SZyqu4Pb0B7H/cOf69fHZ6IeIOxP97V84VZMRdCvBLztjlZcI8N+3Q0eRmEEZd3+HU8CwMpUqxiBGgOR51UzzezPc4Hkg2u0LZAQZvAWSjpf6jWiDXU4g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
+ header.from=os.amperecomputing.com; dkim=pass
+ header.d=os.amperecomputing.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754670613; x=1755275413; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XWV9QwkXPZK1Qghst1uCIV4QuYfeCzvomcNngf/dKhQ=;
-        b=DedCgHKft+VJh21CAv+aluYP2YDedVwmnK2ooyKjdt5ksrX5NtCasm0zphD9ePSC5P
-         uSPrJ0OAyk7Ucu2J52KFlEmToPdqt3IHZpwLL0oqvoGYx0J4CWuA/rD+PTsA6mQwKUgy
-         JWU6Lwh6Bhmv0YyKheG6K+RIyjdpmi44vf64dEe3dAvxB9O3wpPTRHkuvLdStMBJzgw4
-         HAFoKZEbEycjv8bKf0z6FDbGa9Wa6PFm5ZsguTaRGrXa1+VMCQXqVUArcEW1+eDHrS/M
-         5VDSbcx3apgquvGZSdRVHM+voO9wf/gSUQm0z02XSnxPifiyx+3g8fH5jiPRHYhpxA+L
-         iSqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754670613; x=1755275413;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XWV9QwkXPZK1Qghst1uCIV4QuYfeCzvomcNngf/dKhQ=;
-        b=fA9qC4tL5XJBijabNYaTciiwJO08UiyG2rmZF6TdcBjRba6FPD/8wh0/K4Dp2rrkUa
-         /CffGpZD/ld3DyHbonbCU89N0aMq3ST1j1BQLwltKHSF1IY91inSQMsq/PAwA97LterP
-         x5kQazy1uI19JeeyXNqNYm8+WiQU1UIvD1ukv0eKa3NyMP6OyPrcT9dtbiaYpIglEM/A
-         w0OVXVUmG2EoxuMQbLfgUFp++TpYFsHox7XvpxxlQK/MsWSCqsniLiYBeNt1DQNFTiGY
-         NtbaDm6Eavqr0xTcOvUEMckDippeDclLMIpgVjghqo8u09oXOFzg5IEPStvXxiDB6AY+
-         5ToQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVtlFYqyncaOBmLCW+f/76W1Mlh8Lh5BWtNqclr9MnINHkB8SnphoHT/IS6ZxlixV5AWvIXS0NUHg==@kvack.org
-X-Gm-Message-State: AOJu0YxUnuTea/gyu3VqxDlJFRSFgyLXa8YRiJAoHPmTvyPFnvw4EGSc
-	H6hwycdTk48TjrO6pMoJLPCNkkpX8lXfvLtw/UFQky1DvnvESCvbvtkal79a3X03qCsPKdB3V9X
-	uZJ2gnxvFUnvz+nfWLbi9JUHhD1nG9Y2pi4XQ3W9S
-X-Gm-Gg: ASbGncu2eQoGOqGSXdUbVf9JAC2sNmrvc4sNdd8kfQo5CHRYODi8yDy/waUjUdl7MN/
-	QFGrv/21qgj6EHwHHtVoMxS+sokyB63undcFp8qALlHhONZoEcsBP4F0RpYV4qfaT2shzocVIWL
-	586s67L61lArxGU+w0KDOAj8LbmXOGccs9JwSqodoikhckWy5oPRApuaXhlVH3vXDFXvyruR0i5
-	VoTmmMYjMlKC7Nx+cCE3/0ZacGA5RYl3HUXCmZplg==
-X-Google-Smtp-Source: AGHT+IHdaRzqv6KSEiv7U1HgWpOv1AKdGvvGjyCHn8b0cDtVtz+uvaVh4JfUcQLJcE6lfwfpxVea51BO8uxympmKKog=
-X-Received: by 2002:a05:6402:454c:b0:615:8f13:631c with SMTP id
- 4fb4d7f45d1cf-617f97cd75dmr21044a12.6.1754670612646; Fri, 08 Aug 2025
- 09:30:12 -0700 (PDT)
+ d=os.amperecomputing.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=d279khdE/zWZahOMhe44zD4NA2hyGTCnYw8wAHjLDdk=;
+ b=D5vyp/EKEq3srrJc40Y/RvHrlgHeil49QbNg29t87vpTaVy3WjZR3AOqChclMoxsk1bFCiU4TyVImC4xRCx21j0V7f8Vdo4r6ajHnBUDLuB4+Vx/iQ2L1A3z3pxv8mkjwLETSlULdf3HNjmAolSDYOq92SDwvEOp1DF9UICH5+k=
+Received: from SA3PR01MB8473.prod.exchangelabs.com (2603:10b6:806:397::12) by
+ CH5PR01MB8837.prod.exchangelabs.com (2603:10b6:610:20f::15) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9009.17; Fri, 8 Aug 2025 16:39:33 +0000
+Received: from SA3PR01MB8473.prod.exchangelabs.com
+ ([fe80::46d7:1d3a:dc9c:69c3]) by SA3PR01MB8473.prod.exchangelabs.com
+ ([fe80::46d7:1d3a:dc9c:69c3%6]) with mapi id 15.20.9009.013; Fri, 8 Aug 2025
+ 16:39:32 +0000
+Message-ID: <f5b28977-0b80-4c39-929b-cf02ab1efb97@os.amperecomputing.com>
+Date: Fri, 8 Aug 2025 09:39:28 -0700
+User-Agent: Mozilla Thunderbird
+From: Daniel Ferguson <danielf@os.amperecomputing.com>
+Subject: Re: [PATCH v10 0/3] ACPI: Add support for ACPI RAS2 feature table
+To: shiju.jose@huawei.com, rafael@kernel.org, bp@alien8.de,
+ akpm@linux-foundation.org, rppt@kernel.org, dferguson@amperecomputing.com,
+ linux-edac@vger.kernel.org, linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, tony.luck@intel.com, lenb@kernel.org,
+ leo.duran@amd.com, Yazen.Ghannam@amd.com, mchehab@kernel.org
+Cc: jonathan.cameron@huawei.com, linuxarm@huawei.com, rientjes@google.com,
+ jiaqiyan@google.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
+ naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
+ somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
+ duenwen@google.com, gthelen@google.com, wschwartz@amperecomputing.com,
+ wbs@os.amperecomputing.com, nifan.cxl@gmail.com, tanxiaofei@huawei.com,
+ prime.zeng@hisilicon.com, roberto.sassu@huawei.com,
+ kangkang.shen@futurewei.com, wanghuiqiang@huawei.com
+References: <20250801172040.2175-1-shiju.jose@huawei.com>
+Content-Language: en-US
+In-Reply-To: <20250801172040.2175-1-shiju.jose@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4PR04CA0323.namprd04.prod.outlook.com
+ (2603:10b6:303:82::28) To SA3PR01MB8473.prod.exchangelabs.com
+ (2603:10b6:806:397::12)
 MIME-Version: 1.0
-References: <20250807103902.2242717-1-lokeshgidra@google.com> <aJT7qQzEs_p36yfI@x1.local>
-In-Reply-To: <aJT7qQzEs_p36yfI@x1.local>
-From: Lokesh Gidra <lokeshgidra@google.com>
-Date: Fri, 8 Aug 2025 09:29:58 -0700
-X-Gm-Features: Ac12FXzqRi15F68wnnO-I1R5kEwpb0zFIawNui9NvknJboGfTBscByADew0UZGU
-Message-ID: <CA+EESO64MOZaJHyY_mTy6Gqvaz=CkPLHgc-UZ1rg8FXcPyh0aA@mail.gmail.com>
-Subject: Re: [PATCH v3] userfaultfd: opportunistic TLB-flush batching for
- present pages in MOVE
-To: Peter Xu <peterx@redhat.com>
-Cc: akpm@linux-foundation.org, aarcange@redhat.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, 21cnbao@gmail.com, ngeoffray@google.com, 
-	Suren Baghdasaryan <surenb@google.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	Barry Song <v-songbaohua@oppo.com>, David Hildenbrand <david@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: A5BB540004
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR01MB8473:EE_|CH5PR01MB8837:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6fef074a-3f1d-4df7-782e-08ddd69a26fd
+X-MS-Exchange-AtpMessageProperties: SA
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|1800799024|7416014|376014|52116014|366016|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RjVFbU9nVUE0T3g5ZmhrdS9tUlN1UDFuSWZqckx2SWJsQ284ODR4aXRXWHFN?=
+ =?utf-8?B?M2lZdC9zcG82bDRlaEVYLytWSU1FUkpXMDdCSUxiSlZGd1dRWVVkUmhydTNj?=
+ =?utf-8?B?Ump0UzYwWWF1bC9GS2laL0NKczRHVTdCcWFnMG9zczh3YlZZekFDYm9DNE9n?=
+ =?utf-8?B?Nm84VEpHRXNIWXNxaGU4KzJEQnQ3SGREOWJ5UXg2SXVPSUFodkljcVFyaW1U?=
+ =?utf-8?B?anMvRnpqY25qcGlFWnpZUXgyNlFML1hIUEdrb2N5RGNjUkdmeGFoUnNxRnRy?=
+ =?utf-8?B?ck1MZk1qSVRSZCtjcGZxbGpla25nQmZBV3lIMmdmLzltSmo2Tlo5a3c3WXFv?=
+ =?utf-8?B?NnVsN3BaRHU5bmlScmhYUUxwcWl5WEY1ZVRnWExrOU45eHYzOVI4cHJqWlpq?=
+ =?utf-8?B?aFVXZnFzQ3o3QmZzckpoK3dZaEJkYVF2bDZ2ZDFFUjVHV3VaaGNaNHd5MEhl?=
+ =?utf-8?B?QjVzbUdEaWtQN041TG8yKzBUWUZBQmlHeE03bWlPU3drL0JQMmhCVGVCZnNt?=
+ =?utf-8?B?S0lmOHkzZ3pISUN3a2pkL2NSaDBqcVRSc2NwazkrR0NUTjBwZkxyQW5RdXVQ?=
+ =?utf-8?B?MHVrTXB2Zzk5ZE9teUhNY003eTFnMGMvSCtneG9oTVVzaEFjNkxqRG5Cdm1I?=
+ =?utf-8?B?aU83NGpLbEpoMGh2aTRUVmM0aC8vL3FROGZ5TndOVnZUS0JRZ3J5eGtyZG1B?=
+ =?utf-8?B?eE1TWG1DRUg2QUE4SjRjOUtiMmd5RHIvUnJ2WlZqOUl0R3pYTlJoek9HOURM?=
+ =?utf-8?B?ZHBjd3Q3Yjhqa3VWTWQ2UFNEdnFtMjRGUnFKWno2OUFDY2hRallabnJVVUd6?=
+ =?utf-8?B?MzBOaEQ5RlBwaW9ackRKVThTMjBNSFUzS2NOY1ZNSVpKUW5GMnZnNTMvMTZ1?=
+ =?utf-8?B?TGZWNHZRRUVEd1J1M3RUVitHcHlZclZiZzlyQWZyZTE4M1VmWTFEc2tSY2RF?=
+ =?utf-8?B?cFdEUW10a00rTG9uV2dScWs0TkZqNEJIZ09vQTdrYldIcXpvMXZLQ1doSnlX?=
+ =?utf-8?B?RGxINXhCMWFRWEFNY3BQUlI5c1BVVE5XWFQ5L0JnNnh4S0htNjFoaExLMkdP?=
+ =?utf-8?B?VEZKczZlYkNRMnlqVkFNUnkxcm9rNVVLblZlUXFvdDNlMEJDUmV4RCsyQkZx?=
+ =?utf-8?B?TEVBQ3FjR2hHQ0tsV0ZFd05YZ2JiK3IvYzRDUTBFUGRjWkVTNlk1Zm9Ib3hV?=
+ =?utf-8?B?SytqNHFtM2cvWTVhNEhrdXQ0WVJFK1JoZEtDdEdqS0JKVTczOHprOVdIZ3Mw?=
+ =?utf-8?B?WmNrOHF4K3RIdzVLZXpwbUF6b010Q2ZUYm15T1lhOTM4c1V0c3d2QU52a0Rh?=
+ =?utf-8?B?TGlRekRBMDZUSHk4VU9IekhiekdhOVFzeFpQTVhjdis0WmFmWHM4aDlwRVQ5?=
+ =?utf-8?B?dWFiK1hpam44ZHdobFE1WkQzUEYwWFFOZHZodTRsMUczRkJXSWNVTkdvWll2?=
+ =?utf-8?B?L29QNm5WQk5sbUhueWZ0VEpaOXFJSWR6a2lSQlNzWFlibmI0ckExaEdDeXFF?=
+ =?utf-8?B?amh4QlMvNVNtUU8zOTViSzczZkRDOStHTlV4MDV4SFJmZkMyMmE3RXJrUnN3?=
+ =?utf-8?B?RGVPMWdVWDl1dXdET0tBU29EdEhLVjQ5S050eWZ5KytCU0dyZENUWjFtMFM4?=
+ =?utf-8?B?ZWljdjVrZTFBUFBpc1hSWDFzK0pNK2hGM09Pb3NzSEc4M2I3QXpHbXZubC9J?=
+ =?utf-8?B?R1lYd0hVclBYMWpUTDA5VEtja1lIYXB3VC9Zd09SR1VMUGxXTFF0ZEt3eGFh?=
+ =?utf-8?B?RkpKTGxpMk5VdWdUdExTT3UzcVhDUXMyWDdVTmdVMkFPeGpSK0lCOGhWWW5z?=
+ =?utf-8?B?YkJTcTByV1pDR2JidlVPVmRXSm5DVmtUZnJyRmo5VU9mYVgxQ0FTQlgzemlR?=
+ =?utf-8?B?c1k1T1RPQXFFOVNQOWthZWNCaGhYS05HdlZkeWlpa2JHcFl5UGxKVjUvUkRR?=
+ =?utf-8?B?RzBTMURPQzR3NVBGUnhPYVpIVGt5Z1k3Z1dUZzhRZmd3UEdlUktYajZkWkxr?=
+ =?utf-8?B?SS8rSWR2V1dBPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR01MB8473.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(7416014)(376014)(52116014)(366016)(921020);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZUQ0SXNZTFAyTnV2VnBwN1FBbVNNRUcxeU1DS0NQa3RrZS9Eek4rQXp2aE5X?=
+ =?utf-8?B?SjJib2JQT0tCTmU0UW41cXBubHJwcEcyK25Bc2Z0VW16TTVYaVhINkd4ZHN0?=
+ =?utf-8?B?VklwK3AwWDdVektVMjZqVm5QZnlpSU50aUE0ODA0VExyNWM3MTM0a0h4L1l3?=
+ =?utf-8?B?NlowM2NOVWVmQS9ZajYyQzE5emZKNjVlUWU2UFV6YWNaZDlOcHZDc1hieEV6?=
+ =?utf-8?B?OVk1bDVGaEFyUWVyTmJhTmRiV21ZTFZuSjU4dzdMVEFIeDZSQmk4NkZlY2Fk?=
+ =?utf-8?B?dUJEOUFkSWhhblMvTURlTE9BT3UvZC80eUlnKzl0N2syNCtsb0xHNzd2VXhX?=
+ =?utf-8?B?L0pNSHVVVXpsMkp5VFp5R0hMZGFNRVFLR21CMnA5eEZRMTRQSFEvUnBaU3Rz?=
+ =?utf-8?B?Q3Vydk1Mb3BxaTg1eWdOOHRJM2RXSzl4ZmpDOVozTDJHamhUejJablFxcFJo?=
+ =?utf-8?B?QjFpRlZHckJLR3hqRnZKZzB0MVl5Um10SWZSWnpXS256RkNnUDlGVDQyTlJk?=
+ =?utf-8?B?K3dYY2ZFYUNtbm1ZbHdXRHVnT0prM3MybmQydUFxQ1ZDcjlPMEZ1YWRSYmto?=
+ =?utf-8?B?ekt2aEx1b3FUTkpGV3JkSENBTkhsQ2hNRzNaamRKZ2h5WjljdWwwOGkxREQw?=
+ =?utf-8?B?dk1BMmFrQm1HY3NiUWc3dkMvWndRVVFTaVlneSswcUVaU25IeHRMa3hIcCtR?=
+ =?utf-8?B?WnFjR3Bpalc2UHRFSWt3Ui9aYnNDV3BUdEF2Y0Ixc21PLzRSVXBHRmlDRVd4?=
+ =?utf-8?B?ZktIekJlaTJzSlpjWEFLcEVUeDNOUC9vamxpcnRsRW1jTm82Vk1WWmcveGNv?=
+ =?utf-8?B?V0d0VVo3eWFPZTFYdUFEM3hrQTFRcmR5Um14RVlOanZ0MlRwYk1yaGlvd3JO?=
+ =?utf-8?B?SzlXOU9sNlVYQzBvNWhpa3dQclFNdjlpd2dlMkZSbnZkT1ZOUVQzS2dRVVp5?=
+ =?utf-8?B?S1Y5QTlQV09wQlEwcmg4djFRK1NUNW1Gdm5haUdaNzN2aW4xVlhzMnJpQjFm?=
+ =?utf-8?B?V3RVUXQ3MWJJeEJhT1VqZFJkTSs5RVM5OGc5K3FvYjhxU1JlRENXczNlUHN1?=
+ =?utf-8?B?RzJvVHNidzQrV1BsQWpkYy85UVF1bHJTUEZrd3lNeWhPbytOaXIxeFh2VDV6?=
+ =?utf-8?B?RzArS3hLMHNaaytEVURKSHM0SEtDNHNwWGhyblNPQ3ZtbjZ3Q3BDRUhYQkpZ?=
+ =?utf-8?B?c2orS2VIYkVuenVZNitpbnlhOU5XcHExTzEwR25rUEQxd3l1bUYvQmd2aWFD?=
+ =?utf-8?B?S01Kcm9yZi9UVjNhMVlIZkZteFlFb0hwOGVQb05WdG0xS3lQZm1MQ2pQek1n?=
+ =?utf-8?B?K2drREhwbk1DTldlcENrQnRFYkhHanNUcmFoZnRHalp6bEpzNXU1YkZsWWJz?=
+ =?utf-8?B?KzFaQXRmbjJUSWl2MVNlUmtmRE1VdXgyWUE2WUVhQW5lajd3TGt2Umx2RWhU?=
+ =?utf-8?B?d2paSzdreWhnbEhRcUdIeXhqMkQvZm9xcGgrUk1kZHg4cU8xbDRLRUdjTEdI?=
+ =?utf-8?B?UGlkdkpBcG1SNithUzArQWp3a0N6T3RQWk95VXRYQ2tBZytOc2xTM3Vjalpq?=
+ =?utf-8?B?Q0JJMnFwYlRZY051QmVNNUw3UkpJcjVJWWpwcUsyTUxsYi9oNFVkUmNCcmtl?=
+ =?utf-8?B?ejA3enJEWm9rMnRoTFczaXU4c1ZMcXJRaVZyZ21uU2llNEE4VGxqZ1Y5Z29H?=
+ =?utf-8?B?bzI5SkZmd3FzK05JdW41WVZLRlByU2VrMXNBaWExWDZjbW04K0Jtc3R1SU9X?=
+ =?utf-8?B?d0RpOWdhMEFaS29qQTc2aEcrNVJ6VmxGbDc5TDdwRGpBMG5UQXpzb0VTZjJY?=
+ =?utf-8?B?NHk1b3VRamYyckNKaWkvK2pVVUo2bEdUWE5BeHlLVzlKNmZkcDJ4MzMxSG9G?=
+ =?utf-8?B?eWhMUUNVNFFlYU1vR0pRS0RlaW16VFNCL2o1OXVWbktXbnNiSWEwM3JjdW9q?=
+ =?utf-8?B?WjIxSlAyNWVJNHFnSGplS1pPajFiZFJQbVhwcGhMbElCOWU0anVrZGJiUHpN?=
+ =?utf-8?B?dnA4QVZBWEF1MkpYb2Zrei95MkZiLzJxOFJMbk4ydDd5dDJ6eElNcWwwZTQ1?=
+ =?utf-8?B?TjRmd0FEd3BwbnZoOWNhUXFxWDJGV3hMaUZTeWRZbnVTWW1HQWRrbTlGNnFx?=
+ =?utf-8?B?YzE0d2dZUUt1RFQySzNEYzBkN2YrbXBOZGlhL2ttZTEwMGtVVWxCemRiZEtU?=
+ =?utf-8?B?WXkyZ1hXWjBTMmFOVy9hbThsbDVmLzNZSXJGQkRmUkdDd01sUno5dWZDeFhy?=
+ =?utf-8?Q?XL4BerFdbNGjGz1U7urrRIeBkJsBTiTX2ACGDkep1k=3D?=
+X-OriginatorOrg: os.amperecomputing.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6fef074a-3f1d-4df7-782e-08ddd69a26fd
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR01MB8473.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Aug 2025 16:39:32.6630
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1Qb8YNeqHjLHT7/BVn+Hm0WRgldDPl23y6wtdPXhSQqH0NPZsmfH7fz/U0PEtUTT66S/3oyI3tuJvgBdKO3w1aW3pWprj7nSC652GBmdLq/gYzAlyByKlZWgeBdC2N74
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH5PR01MB8837
+X-Stat-Signature: 7ux7zny1y8w4h51amescwcqu7j5qezby
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: rbjnrzucm17d6ym8kozercqxc8xsihqm
-X-HE-Tag: 1754670614-930582
-X-HE-Meta: U2FsdGVkX1+LwHDbsBvbVjB7gDW0hhdjVf1Awk2iRKyF3Tqtqst0ElxYEQB3tNWT4ZSSCXeb8U5l03NjSexT+C5njFTvwXr2GXdCtpxpPl3Y+K9AcQZ7SwOZhmvJhpXBm1DszsNzTxytVWF9fMypfb17CWA1poCGn/k/PYsjAFUGzlkckf+bJdh7HDfimR+Di7uY08gSXR7RLXSKBVKCaOX3tUOx6toPNoQKrmMmuZcvaWYfuuaYoLrfzLnD3Rdvh9MCU2FPPUkIWowqTKNMc4V2fkDN7sWDPwdJpxPS9LCd34Wf5lh+U4eHTDPXXVWIhuMhPs6nB8K0ZOMImviIeQeny8ldyjuK5vvAhZ73ozgeDOQeS6eIUFy60d0TRwnHMPpXfHZY9UB9EtY9ReAE0zUJ///FAhwifBK/Wq+7L7aAIWLeBNXr6nwJptSQem5XqJdVXtq8BniX+bXeyIbPP/ihOvOr6ptm8P0UvFJdUEkZX0/YjAiuSOEhnX7ddge7NEkDyKgSpeMo/A/PwULWLduuJdrCEag25YgkMwmomWBw9I2lyT3OnyN+XhxuoVWSdC9JCetTVicPTd40f0GzhzBstw4LRv7RwL7KHwnX485ujV2rdw6CLj3KNQSc108fKidOx7m4pl27o6LYt+GZLnZSAEw3W7Mi3rWUUU+y8DQkCsrgDOahBRIEiEvjCXQw9JciHgGoDZhWvoAiX+UEu2jNiugxcxpwqUBmql/9Q4O0gCIW97q8T9FQGvhzP4HRYkblzN695tYK18ELMDPV29hJCbP5wT4f97ycTjS2a7rpvYcH1ujYubKyARuG/Mid3HRxKY24nO9UtMnwfZ6/h++s772Tyik6tYhLriUVnpL35Fye8oY8kar7QSb11WtE3Tz1i789TRjju11T5iax1DUSkIntqysUEiX2mrgVd2/uoW+BoBNHJZSxnlA5gwa38id1peKMMQpAFthahoB
- SzKlotTm
- 0gVDoepn1q/ESXxVJV++bOtZw4EzbjUhuAwM3uQeh7HLq49zWmF+dSdHC2yHB8Aa5xfmN9Z9Bc1bAolbVCUoUignCB7xI6C6/SIcxg+zcHwJrGBon8T5HQjh3tKD4g4c6N/ZodDwCp/KuDog9cqkbNLW7H+ObMl9uor5AtjgjdkUOmcb31n4w4fAzbOJ31Fs/797P+K9wemy32oe1KheiQ6ghfPHfAUg49uDPm09oEDg8uTAoAoO1jBnlimq9PyT9+s4urUgM1ee5/+rOKiA3HyxhSJq3fEGOxApr
+X-Rspamd-Queue-Id: ABC6940006
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1754671175-928694
+X-HE-Meta: U2FsdGVkX1+ZJDrZTpjzKXM/IuCRxqk0xKHqTZXpEvo+UUlVXSlyU3p8ss55Uf/4OMUu7lOe3aEEDtMxhNIV2Z9b8wrv9wGuFYrTLCrW7uOp50imX6gaLfnRf5WQTQcGf61VPUYBvw9gwNycExgme6UedmPt7QjLcllZssqPR3TiNiwsh2o5j6q0X0yIFRyVPoWzTpvfdXgLKrZbn8xLPspyqdvOjPnDJUUsBOaaYViW5rTGwHHp07OI05DvD7PyzoaEuJxfAPis3KGFU/K6tM4HKv0o0j0qGjPizkl0Rf3I0KBc6q59eAqIGs3UAbecdZAYiTnDRycIquzIOIPnNgsnK4uakrLdSp/Aq+YqiUHLIwVGotEZRXRuHLrFtELPgvOvGMOtsiSTeUaM8Vm1Z/Qr4qoWACIQHob/79W1xdMcKeDVpLPSJEX+m5z7fVhFCs3Ff8phetGWXISpWEvjXfzBbaLZgAr8CECtyJw4JEgbpPI/Pga/vdk5JBCyPfe7mSlPz17bm9+fFZppAT7CphWyEvs5ijRMoJt/fvF1ULC6bqzUagPPilFIG2dKd+gL48HdJtBk6whugAU0hlk2v9tL3ah7zpXlI7fBqkEbydg3lOrQPOr+xoFt+yaD0yF12vdM1AqeSqQfu9tMyQ8X83dXjMRrXjP4wcQ69ZRRegXqirJw3Uk5a2kYEDWWEM6PLcXz7PuYXrfEToaCY9wIuaAYyxKa8qLE2YQV2ewbfavlsOno85Mj62i/Xe5cMaN6L61CI6ivHnV/2od/JxqZCxbnnO8konirb3RCebrUpKWZfdYv+tx3IDJpz1H4bYPymYmoNAdkqiGxlwxm1CD8TGbVhwse2pvtYPlVz1qy3eC0RxcHNzY6trjb7YeUn+59Tiq8eoV3wgqLRev4pFrvltKK6j1xFWrzi9cLX0QUqRGoV1oCchOA1px75ViU66zR/ZbmDkDPPBNt29+7BT+
+ cZ3ZXS0H
+ 026iQ5WITwJEPMtRhaYlbc22W4ivAUwnRr3nsJ+5DBvjetxBZc28HHmCV70tlnSqiBfp71rGkHriXcZKTsLv5ajU2x6tZ2hE/5VK5HZNqAq1QS2lkAZKIAoBEhEzZi84AX7DnKNWuTXJt4a7kh4Z0a+qZ+x5PxfMRYSYBW9kP+5cswPwonemayHvEOgFTnCRtibHFbApgHklrlXQxBwyXs00GdXSsgmHO1zLlwTYHG7LHXj1qs5CQJfO4wdGWt/lXtvArV3xjtvrPIwiQFrsvw6qlTNA/n4fa+DTI/w2oJgmZnaRjQjJ/tmsoqsp038rICRn7ZmxP1bBNDdGQZ/SG3++b+ik4RGMFNuvslNprYd9D9WQSQ8PffHMpuR1xKJ4gcroUZvN9Zo7FlVUJ9wFUwsYPaPHFpp0cbL1Av4Hl95yanSHFFU7jKS/+dIg9e8/ds7LULDn1DjgMSlGtR55Io+5xvglgvhQ4LWViPjL5Zab7xpOL9qdGYmM/w+Ji074h2U/fAgIbuseUWoo2ZHnkwE17JhtFf/YXiX429uYLMarYriUQI/V0oYxFroUUK8ziHuZRqUcbMM3pWAb8s/9BCQAJoym3ndA3WG758KvgQDxNR6+fkHkKF/GBpftTOOt1dPa89XtkocY5zJk/Xm490VOZIxgsOimi4m3eC6kkQ28mouIytEIYfhPURHQ7bHQNj21I5/YnwwbEruoXIBiS0desrQ2jUw+ACiKaOb4z4xItytoBMePftEDupA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,471 +212,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 7, 2025 at 12:17=E2=80=AFPM Peter Xu <peterx@redhat.com> wrote:
->
-> Hi, Lokesh,
->
-> On Thu, Aug 07, 2025 at 03:39:02AM -0700, Lokesh Gidra wrote:
-> > MOVE ioctl's runtime is dominated by TLB-flush cost, which is required
-> > for moving present pages. Mitigate this cost by opportunistically
-> > batching present contiguous pages for TLB flushing.
-> >
-> > Without batching, in our testing on an arm64 Android device with UFFD G=
-C,
-> > which uses MOVE ioctl for compaction, we observed that out of the total
-> > time spent in move_pages_pte(), over 40% is in ptep_clear_flush(), and
-> > ~20% in vm_normal_folio().
-> >
-> > With batching, the proportion of vm_normal_folio() increases to over
-> > 70% of move_pages_pte() without any changes to vm_normal_folio().
->
-> Do you know why vm_normal_folio() could be expensive? I still see quite
-> some other things this path needs to do.
->
-Let's discuss this in Andrew's reply thread.
+> Changes
+> =======
+> v9 -> v10:
+> 1. Use pcc_chan->shmem instead of 
+>    acpi_os_ioremap(pcc_chan->shmem_base_addr,...) as it was
+>    acpi_os_ioremap internally by the PCC driver to pcc_chan->shmem.
+>    
+> 2. Changes required for the Ampere Computing system where uses a single
+>    PCC channel for RAS2 memory features across all NUMA domains. Based on the
+>    requirements from by Daniel on V9
+>    https://lore.kernel.org/all/547ed8fb-d6b7-4b6b-a38b-bf13223971b1@os.amperecomputing.com/
+>    and discussion with Jonathan.
+> 2.1 Add node_to_range lookup facility to numa_memblks. This is to retrieve the lowest
+>     physical continuous memory range of the memory associated with a NUMA domain.
+> 2.2. Set requested addr range to the memory region's base addr and size
+>    while send RAS2 cmd GET_PATROL_PARAMETER 
+>    in functions ras2_update_patrol_scrub_params_cache() &
+>    ras2_get_patrol_scrub_running().
+> 2.3. Split struct ras2_mem_ctx into struct ras2_mem_ctx_hdr and struct ras2_pxm_domain
+>    to support cases, uses a single PCC channel for RAS2 scrubbers across all NUMA
+>    domains and PCC channel per RAS2 scrub instance. Provided ACPI spec define single
+>    memory scrub per NUMA domain.
+> 2.4. EDAC feature sysfs folder for RAS2 changed from "acpi_ras_memX" to  "acpi_ras_mem_idX"
+>    because memory scrub instances across all NUMA domains would present under
+>    "acpi_ras_mem_id0" when a system uses a single PCC channel for RAS2 scrubbers across
+>    all NUMA domains etc.
+> 2.5. Removed Acked-by: Rafael from patch [2], because of the several above changes from v9.
 
-> > Furthermore, time spent within move_pages_pte() is only ~20%, which
-> > includes TLB-flush overhead.
->
-> Indeed this should already prove the optimization, I'm just curious wheth=
-er
-> you've run some benchmark on the GC app to show the real world benefit.
->
-I did! The same benchmark through which I gathered these numbers, when
-run on cuttlefish (qemu android instance on x86_64), the completion
-time of the benchmark went down from ~45mins to ~20mins. The benchmark
-is very GC intensive and the overhead of IPI on vCPUs seems to be
-enormous leading to this drastic improvement.
+A) We have tested the changes you have made, and they work. Thank you.
 
-In another instance, system_server, one of the most critical system
-processes on android, saw over 50% reduction in GC compaction time on
-an arm64 android device.
+B) In the early days of this patch series, as we began developing our firmware
+to keep pace with your development of this driver, we indeed only had one PCC
+channel shared across all proximity domains. Since then, we have evolved our
+firmware to have a PCC channel per proximity domain. It didn't seem important to
+mention this to you since the supporting code was minimal. However, with this
+latest update (v10), it has become apparent that you have taken extra efforts to
+preserve this accommodation. So, now I'm obliged to say that we no longer need
+this accommodation. If it would help make things cleaner, and require less
+explanation, we support the removal of this legacy, non-compliant accommodation.
 
-> >
-> > Cc: Suren Baghdasaryan <surenb@google.com>
-> > Cc: Kalesh Singh <kaleshsingh@google.com>
-> > Cc: Barry Song <v-songbaohua@oppo.com>
-> > Cc: David Hildenbrand <david@redhat.com>
-> > Cc: Peter Xu <peterx@redhat.com>
-> > Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
-> > ---
-> > Changes since v2 [1]
-> > - Addressed VM_WARN_ON failure, per Lorenzo Stoakes
-> > - Added check to ensure all batched pages share the same anon_vma
-> >
-> > Changes since v1 [2]
-> > - Removed flush_tlb_batched_pending(), per Barry Song
-> > - Unified single and multi page case, per Barry Song
-> >
-> > [1] https://lore.kernel.org/all/20250805121410.1658418-1-lokeshgidra@go=
-ogle.com/
-> > [2] https://lore.kernel.org/all/20250731104726.103071-1-lokeshgidra@goo=
-gle.com/
-> >
-> >  mm/userfaultfd.c | 179 +++++++++++++++++++++++++++++++++--------------
-> >  1 file changed, 128 insertions(+), 51 deletions(-)
-> >
-> > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> > index cbed91b09640..78c732100aec 100644
-> > --- a/mm/userfaultfd.c
-> > +++ b/mm/userfaultfd.c
-> > @@ -1026,18 +1026,64 @@ static inline bool is_pte_pages_stable(pte_t *d=
-st_pte, pte_t *src_pte,
-> >              pmd_same(dst_pmdval, pmdp_get_lockless(dst_pmd));
-> >  }
-> >
-> > -static int move_present_pte(struct mm_struct *mm,
-> > -                         struct vm_area_struct *dst_vma,
-> > -                         struct vm_area_struct *src_vma,
-> > -                         unsigned long dst_addr, unsigned long src_add=
-r,
-> > -                         pte_t *dst_pte, pte_t *src_pte,
-> > -                         pte_t orig_dst_pte, pte_t orig_src_pte,
-> > -                         pmd_t *dst_pmd, pmd_t dst_pmdval,
-> > -                         spinlock_t *dst_ptl, spinlock_t *src_ptl,
-> > -                         struct folio *src_folio)
-> > +/*
-> > + * Checks if the two ptes and the corresponding folio are eligible for=
- batched
-> > + * move. If so, then returns pointer to the folio, after locking it. O=
-therwise,
-> > + * returns NULL.
-> > + */
-> > +static struct folio *check_ptes_for_batched_move(struct vm_area_struct=
- *src_vma,
-> > +                                              unsigned long src_addr,
-> > +                                              pte_t *src_pte, pte_t *d=
-st_pte,
-> > +                                              struct anon_vma *src_ano=
-n_vma)
-> > +{
-> > +     pte_t orig_dst_pte, orig_src_pte;
-> > +     struct folio *folio;
-> > +
-> > +     orig_dst_pte =3D ptep_get(dst_pte);
-> > +     if (!pte_none(orig_dst_pte))
-> > +             return NULL;
-> > +
-> > +     orig_src_pte =3D ptep_get(src_pte);
-> > +     if (pte_none(orig_src_pte) || !pte_present(orig_src_pte) ||
->
-> pte_none() check could be removed - the pte_present() check should make
-> sure it's !none.
->
-Makes sense. I'll make the change in the next version of the patch.
+Respectfully,
+~Daniel
 
-> > +         is_zero_pfn(pte_pfn(orig_src_pte)))
-> > +             return NULL;
-> > +
-> > +     folio =3D vm_normal_folio(src_vma, src_addr, orig_src_pte);
-> > +     if (!folio || !folio_trylock(folio))
-> > +             return NULL;
->
-> So here we don't take a refcount anymore, while the 1st folio that got
-> passed in will still has the refcount boosted.  IMHO it would still be
-> better to keep the behavior the same on the 1st and continuous folios..
->
-> Or if this is intentional, maybe worth some comment.  More below on this.=
-.
->
-This is indeed intentional, and I'll add a comment in the next
-version. But let me explain:
 
-The first folio needed the refcount as we need to pin the page before
-releasing the src ptl. Also, because split_folio(), if called, expects
-the caller to hold the lock as well as reference on the folio.
 
-The subsequent folios in the batch are always within the ptl critical
-section and neither the splits are required. Therefore, I didn't want
-to unnecessarily increase the work done within the critical section.
-But, please correct me if I'm misunderstanding something.
 
-> > +     if (!PageAnonExclusive(&folio->page) || folio_test_large(folio) |=
-|
-> > +         folio_anon_vma(folio) !=3D src_anon_vma) {
-> > +             folio_unlock(folio);
-> > +             return NULL;
-> > +     }
-> > +     return folio;
-> > +}
-> > +
-> > +static long move_present_ptes(struct mm_struct *mm,
-> > +                           struct vm_area_struct *dst_vma,
-> > +                           struct vm_area_struct *src_vma,
-> > +                           unsigned long dst_addr, unsigned long src_a=
-ddr,
-> > +                           pte_t *dst_pte, pte_t *src_pte,
-> > +                           pte_t orig_dst_pte, pte_t orig_src_pte,
-> > +                           pmd_t *dst_pmd, pmd_t dst_pmdval,
-> > +                           spinlock_t *dst_ptl, spinlock_t *src_ptl,
-> > +                           struct folio *src_folio, unsigned long len,
-> > +                           struct anon_vma *src_anon_vma)
->
-> (Not an immediate concern, but this function has potential to win the
->  max-num-of-parameters kernel function.. :)
-
-I noticed the same when I made the change :) Maybe in a subsequent
-patch if we inline is_pte_pages_stable() and PTL acquire/release in
-move_pages_ptes(), then quite a few parameters can be reduced. But
-then, IMO, even move_pages_ptes() refactoring is required as well.
->
-> >  {
-> >       int err =3D 0;
-> > +     unsigned long src_start =3D src_addr;
-> > +     unsigned long addr_end;
-> >
-> > +     if (len > PAGE_SIZE) {
-> > +             addr_end =3D (dst_addr + PMD_SIZE) & PMD_MASK;
-> > +             if (dst_addr + len > addr_end)
-> > +                     len =3D addr_end - dst_addr;
->
-> Use something like ALIGN() and MIN()?
-
-Will do in the next version.
->
-> > +
-> > +             addr_end =3D (src_addr + PMD_SIZE) & PMD_MASK;
-> > +             if (src_addr + len > addr_end)
-> > +                     len =3D addr_end - src_addr;
->
-> Same here.
->
-Will do.
-
-> > +     }
-> > +     flush_cache_range(src_vma, src_addr, src_addr + len);
-> >       double_pt_lock(dst_ptl, src_ptl);
-> >
-> >       if (!is_pte_pages_stable(dst_pte, src_pte, orig_dst_pte, orig_src=
-_pte,
-> > @@ -1051,31 +1097,54 @@ static int move_present_pte(struct mm_struct *m=
-m,
-> >               err =3D -EBUSY;
-> >               goto out;
-> >       }
-> > +     arch_enter_lazy_mmu_mode();
-> > +
-> > +     addr_end =3D src_start + len;
-> > +     while (true) {
-> > +             orig_src_pte =3D ptep_get_and_clear(mm, src_addr, src_pte=
-);
-> > +             /* Folio got pinned from under us. Put it back and fail t=
-he move. */
-> > +             if (folio_maybe_dma_pinned(src_folio)) {
-> > +                     set_pte_at(mm, src_addr, src_pte, orig_src_pte);
-> > +                     err =3D -EBUSY;
-> > +                     break;
-> > +             }
-> >
-> > -     orig_src_pte =3D ptep_clear_flush(src_vma, src_addr, src_pte);
-> > -     /* Folio got pinned from under us. Put it back and fail the move.=
- */
-> > -     if (folio_maybe_dma_pinned(src_folio)) {
-> > -             set_pte_at(mm, src_addr, src_pte, orig_src_pte);
-> > -             err =3D -EBUSY;
-> > -             goto out;
-> > -     }
-> > -
-> > -     folio_move_anon_rmap(src_folio, dst_vma);
-> > -     src_folio->index =3D linear_page_index(dst_vma, dst_addr);
-> > +             folio_move_anon_rmap(src_folio, dst_vma);
-> > +             src_folio->index =3D linear_page_index(dst_vma, dst_addr)=
-;
-> >
-> > -     orig_dst_pte =3D folio_mk_pte(src_folio, dst_vma->vm_page_prot);
-> > -     /* Set soft dirty bit so userspace can notice the pte was moved *=
-/
-> > +             orig_dst_pte =3D folio_mk_pte(src_folio, dst_vma->vm_page=
-_prot);
-> > +             /* Set soft dirty bit so userspace can notice the pte was=
- moved */
-> >  #ifdef CONFIG_MEM_SOFT_DIRTY
-> > -     orig_dst_pte =3D pte_mksoft_dirty(orig_dst_pte);
-> > +             orig_dst_pte =3D pte_mksoft_dirty(orig_dst_pte);
-> >  #endif
-> > -     if (pte_dirty(orig_src_pte))
-> > -             orig_dst_pte =3D pte_mkdirty(orig_dst_pte);
-> > -     orig_dst_pte =3D pte_mkwrite(orig_dst_pte, dst_vma);
-> > +             if (pte_dirty(orig_src_pte))
-> > +                     orig_dst_pte =3D pte_mkdirty(orig_dst_pte);
-> > +             orig_dst_pte =3D pte_mkwrite(orig_dst_pte, dst_vma);
-> > +             set_pte_at(mm, dst_addr, dst_pte, orig_dst_pte);
-> > +
-> > +             src_addr +=3D PAGE_SIZE;
-> > +             if (src_addr =3D=3D addr_end)
-> > +                     break;
-> > +             src_pte++;
-> > +             dst_pte++;
-> > +
-> > +             folio_unlock(src_folio);
-> > +             src_folio =3D check_ptes_for_batched_move(src_vma, src_ad=
-dr, src_pte,
-> > +                                                     dst_pte, src_anon=
-_vma);
-> > +             if (!src_folio)
-> > +                     break;
-> > +             dst_addr +=3D PAGE_SIZE;
-> > +     }
-> > +
-> > +     arch_leave_lazy_mmu_mode();
-> > +     if (src_addr > src_start)
-> > +             flush_tlb_range(src_vma, src_start, src_addr);
-> >
-> > -     set_pte_at(mm, dst_addr, dst_pte, orig_dst_pte);
-> >  out:
-> >       double_pt_unlock(dst_ptl, src_ptl);
-> > -     return err;
-> > +     if (src_folio)
-> > +             folio_unlock(src_folio);
-> > +     return src_addr > src_start ? src_addr - src_start : err;
-> >  }
-> >
-> >  static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *=
-dst_vma,
-> > @@ -1140,7 +1209,7 @@ static int move_swap_pte(struct mm_struct *mm, st=
-ruct vm_area_struct *dst_vma,
-> >       set_pte_at(mm, dst_addr, dst_pte, orig_src_pte);
-> >       double_pt_unlock(dst_ptl, src_ptl);
-> >
-> > -     return 0;
-> > +     return PAGE_SIZE;
-> >  }
-> >
-> >  static int move_zeropage_pte(struct mm_struct *mm,
-> > @@ -1154,6 +1223,7 @@ static int move_zeropage_pte(struct mm_struct *mm=
-,
-> >  {
-> >       pte_t zero_pte;
-> >
-> > +     flush_cache_range(src_vma, src_addr, src_addr + PAGE_SIZE);
->
-> If it's a zero page hence not writtable, do we still need to flush cache =
-at
-> all?  Looks harmless, but looks like not needed either.
->
-I just realized when reading your comment that it is indeed not
-required. There is no cacheline to be flushed for the zero-page :)
-
-> >       double_pt_lock(dst_ptl, src_ptl);
-> >       if (!is_pte_pages_stable(dst_pte, src_pte, orig_dst_pte, orig_src=
-_pte,
-> >                                dst_pmd, dst_pmdval)) {
-> > @@ -1167,20 +1237,19 @@ static int move_zeropage_pte(struct mm_struct *=
-mm,
-> >       set_pte_at(mm, dst_addr, dst_pte, zero_pte);
-> >       double_pt_unlock(dst_ptl, src_ptl);
-> >
-> > -     return 0;
-> > +     return PAGE_SIZE;
-> >  }
-> >
-> >
-> >  /*
-> > - * The mmap_lock for reading is held by the caller. Just move the page
-> > - * from src_pmd to dst_pmd if possible, and return true if succeeded
-> > - * in moving the page.
-> > + * The mmap_lock for reading is held by the caller. Just move the page=
-(s)
-> > + * from src_pmd to dst_pmd if possible, and return number of bytes mov=
-ed.
-> >   */
-> > -static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t =
-*src_pmd,
-> > -                       struct vm_area_struct *dst_vma,
-> > -                       struct vm_area_struct *src_vma,
-> > -                       unsigned long dst_addr, unsigned long src_addr,
-> > -                       __u64 mode)
-> > +static long move_pages_ptes(struct mm_struct *mm, pmd_t *dst_pmd, pmd_=
-t *src_pmd,
-> > +                         struct vm_area_struct *dst_vma,
-> > +                         struct vm_area_struct *src_vma,
-> > +                         unsigned long dst_addr, unsigned long src_add=
-r,
-> > +                         unsigned long len, __u64 mode)
-> >  {
-> >       swp_entry_t entry;
-> >       struct swap_info_struct *si =3D NULL;
-> > @@ -1196,9 +1265,8 @@ static int move_pages_pte(struct mm_struct *mm, p=
-md_t *dst_pmd, pmd_t *src_pmd,
-> >       struct mmu_notifier_range range;
-> >       int err =3D 0;
-> >
-> > -     flush_cache_range(src_vma, src_addr, src_addr + PAGE_SIZE);
-> >       mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm,
-> > -                             src_addr, src_addr + PAGE_SIZE);
-> > +                             src_addr, src_addr + len);
-> >       mmu_notifier_invalidate_range_start(&range);
-> >  retry:
-> >       /*
-> > @@ -1257,7 +1325,7 @@ static int move_pages_pte(struct mm_struct *mm, p=
-md_t *dst_pmd, pmd_t *src_pmd,
-> >               if (!(mode & UFFDIO_MOVE_MODE_ALLOW_SRC_HOLES))
-> >                       err =3D -ENOENT;
-> >               else /* nothing to do to move a hole */
-> > -                     err =3D 0;
-> > +                     err =3D PAGE_SIZE;
-> >               goto out;
-> >       }
-> >
-> > @@ -1375,10 +1443,14 @@ static int move_pages_pte(struct mm_struct *mm,=
- pmd_t *dst_pmd, pmd_t *src_pmd,
-> >                       }
-> >               }
-> >
-> > -             err =3D move_present_pte(mm,  dst_vma, src_vma,
-> > -                                    dst_addr, src_addr, dst_pte, src_p=
-te,
-> > -                                    orig_dst_pte, orig_src_pte, dst_pm=
-d,
-> > -                                    dst_pmdval, dst_ptl, src_ptl, src_=
-folio);
-> > +             err =3D move_present_ptes(mm, dst_vma, src_vma,
-> > +                                     dst_addr, src_addr, dst_pte, src_=
-pte,
-> > +                                     orig_dst_pte, orig_src_pte, dst_p=
-md,
-> > +                                     dst_pmdval, dst_ptl, src_ptl, src=
-_folio,
-> > +                                     len, src_anon_vma);
-> > +             /* folio is already unlocked by move_present_ptes() */
-> > +             folio_put(src_folio);
-> > +             src_folio =3D NULL;
->
-> So the function above now can move multiple folios but keep holding the
-> 1st's refcount..  This still smells error prone, sooner or later.
->
-> Would it be slightly better if we take a folio pointer in
-> move_present_ptes(), and releae everything there (including reset the
-> pointer)?
->
-Yeah this seems cleaner. I'll do so in the next version.
-
-> Thanks,
->
-> >       } else {
-> >               struct folio *folio =3D NULL;
-> >
-> > @@ -1732,7 +1804,7 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, u=
-nsigned long dst_start,
-> >  {
-> >       struct mm_struct *mm =3D ctx->mm;
-> >       struct vm_area_struct *src_vma, *dst_vma;
-> > -     unsigned long src_addr, dst_addr;
-> > +     unsigned long src_addr, dst_addr, src_end;
-> >       pmd_t *src_pmd, *dst_pmd;
-> >       long err =3D -EINVAL;
-> >       ssize_t moved =3D 0;
-> > @@ -1775,8 +1847,8 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, u=
-nsigned long dst_start,
-> >       if (err)
-> >               goto out_unlock;
-> >
-> > -     for (src_addr =3D src_start, dst_addr =3D dst_start;
-> > -          src_addr < src_start + len;) {
-> > +     for (src_addr =3D src_start, dst_addr =3D dst_start, src_end =3D =
-src_start + len;
-> > +          src_addr < src_end;) {
-> >               spinlock_t *ptl;
-> >               pmd_t dst_pmdval;
-> >               unsigned long step_size;
-> > @@ -1841,6 +1913,8 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, u=
-nsigned long dst_start,
-> >                                                 dst_addr, src_addr);
-> >                       step_size =3D HPAGE_PMD_SIZE;
-> >               } else {
-> > +                     long ret;
-> > +
-> >                       if (pmd_none(*src_pmd)) {
-> >                               if (!(mode & UFFDIO_MOVE_MODE_ALLOW_SRC_H=
-OLES)) {
-> >                                       err =3D -ENOENT;
-> > @@ -1857,10 +1931,13 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx,=
- unsigned long dst_start,
-> >                               break;
-> >                       }
-> >
-> > -                     err =3D move_pages_pte(mm, dst_pmd, src_pmd,
-> > -                                          dst_vma, src_vma,
-> > -                                          dst_addr, src_addr, mode);
-> > -                     step_size =3D PAGE_SIZE;
-> > +                     ret =3D move_pages_ptes(mm, dst_pmd, src_pmd,
-> > +                                           dst_vma, src_vma, dst_addr,
-> > +                                           src_addr, src_end - src_add=
-r, mode);
-> > +                     if (ret > 0)
-> > +                             step_size =3D ret;
-> > +                     else
-> > +                             err =3D ret;
-> >               }
-> >
-> >               cond_resched();
-> >
-> > base-commit: 6e64f4580381e32c06ee146ca807c555b8f73e24
-> > --
-> > 2.50.1.565.gc32cd1483b-goog
-> >
->
-> --
-> Peter Xu
->
 
