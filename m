@@ -2,125 +2,92 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AF2C7C87FCF
-	for <linux-mm@archiver.kernel.org>; Sat,  9 Aug 2025 20:18:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C457C87FCF
+	for <linux-mm@archiver.kernel.org>; Sat,  9 Aug 2025 20:36:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ACAAC6B009D; Sat,  9 Aug 2025 16:18:41 -0400 (EDT)
+	id 4B1716B0092; Sat,  9 Aug 2025 16:36:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA2B26B009E; Sat,  9 Aug 2025 16:18:41 -0400 (EDT)
+	id 4892E6B0099; Sat,  9 Aug 2025 16:36:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B87C6B009F; Sat,  9 Aug 2025 16:18:41 -0400 (EDT)
+	id 39F8A6B009B; Sat,  9 Aug 2025 16:36:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D9556B009D
-	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 16:18:41 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EAB6F1A0296
-	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 20:18:40 +0000 (UTC)
-X-FDA: 83758332000.18.FE83DD1
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	by imf15.hostedemail.com (Postfix) with ESMTP id EE71FA0007
-	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 20:18:38 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=QYAT1Eg7;
-	spf=pass (imf15.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 263206B0092
+	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 16:36:41 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id ADED51DAD6A
+	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 20:36:40 +0000 (UTC)
+X-FDA: 83758377360.30.FA24B7C
+Received: from mail-io1-f77.google.com (mail-io1-f77.google.com [209.85.166.77])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 10B5380014
+	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 20:36:38 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=none;
+	spf=pass (imf30.hostedemail.com: domain of 3VrGXaAkbAGMTZaLBMMFSBQQJE.HPPHMFVTFSDPOUFOU.DPN@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.77 as permitted sender) smtp.mailfrom=3VrGXaAkbAGMTZaLBMMFSBQQJE.HPPHMFVTFSDPOUFOU.DPN@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754770719;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fpOW6oYqvSq8dY4Sy6tlydo2R85SL2NbZNGCMBO2JGo=;
-	b=4yHeN4mRhNQnIaFPYo/VsiqbEUGARivebqfHGtmCP00gxoAsCLdjLwo6Ua+/06MUvL4sqP
-	/qEgBzjj6w3ch8qoNrNo2a7Mdy6CMlbInkOojW4Pvko8mIGrjlclsIiaAlcHTfd/jmyy/C
-	uBuxtZlJwGyq5dhfVVWNjGy6CqEpwpM=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=QYAT1Eg7;
-	spf=pass (imf15.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754770719; a=rsa-sha256;
+	s=arc-20220608; t=1754771799;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=nDf+bc2+oc3YTV8U7966QRgfXOKnldRn94ktsfY5qq8=;
+	b=di9VZnDqQ2unFuo3zcnJAg5dF/TXsS+t21yZRtraudaQOGODDuj5PHP8imCgI6Ev/lyfMb
+	G+ohLUZMnhpNSo9PL6GZ3EhduX4/vWc/RDtIohtuWE2rVFZ56hMTFg8dP9UwEQvCOi4Yec
+	EYkj3fD5F7cnOTxwqeV7RgIYZIj8WcE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754771799; a=rsa-sha256;
 	cv=none;
-	b=b7wU1jadAuwRPpEO7xkfcSJLE3oDj7AeuLJwa5hSSWWiD2lfi37bcS7R8YTKfa/+ucMOax
-	PU2M+LgtSukCBBJ3CT1NCNykUbV5JhmMj4RFlNYRGJzHFEp7wJI5xb7GcYMCI7Zg2xwQ/9
-	hHnlraoiWmxpOYmSI5XAR+/Rm+Ui/fo=
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-61530559887so5130213a12.1
-        for <linux-mm@kvack.org>; Sat, 09 Aug 2025 13:18:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754770717; x=1755375517; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fpOW6oYqvSq8dY4Sy6tlydo2R85SL2NbZNGCMBO2JGo=;
-        b=QYAT1Eg7JOJas+rjVBhBTfGJh154qsMFLQmfYo5WqEe6Ce2FiF4p2TzKzva48gIznX
-         mRvh/gehbBeLav6jXWFkMiHOT49q+Cn7+GoVJn53w3G5j49zXiquCXvcxIUOJbgPTk+3
-         Lmggx8SIIygo8dk7fSM3N//6Sv1rvwhD6vcK534rsE6XUn1h1wwOxyiVx67fY8hRf+4J
-         YpFP0YbcpydEg+0/Olrtj5XFYzARvxBQfzSGrORwMloROWV8FWHI3r6uJsyZiy7d0Alk
-         BKGXorE/KH+my1RxCqpSFw7VzlPqheHsrW7Ofy1kGxsGza5ZNaLgqwHCTURdgnaNQNap
-         +72g==
+	b=Qir5oizMLigV2VAYr2rFBBjJSueZue7ODjQ30uc10OjM61POLjzBE5edFZayUn4/ZcVbZ/
+	kwoux8NY2bzp0pH2FN2/pXnuN+vm7AunzVCDI59DpnKuc6pjpNUSqvNEQiLEBTb1Mp8IDb
+	/Q+OG5kTfSugB44tANiMXsrQc/GOZ8U=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=none;
+	spf=pass (imf30.hostedemail.com: domain of 3VrGXaAkbAGMTZaLBMMFSBQQJE.HPPHMFVTFSDPOUFOU.DPN@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.77 as permitted sender) smtp.mailfrom=3VrGXaAkbAGMTZaLBMMFSBQQJE.HPPHMFVTFSDPOUFOU.DPN@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: by mail-io1-f77.google.com with SMTP id ca18e2360f4ac-88178b5ce3aso288423539f.2
+        for <linux-mm@kvack.org>; Sat, 09 Aug 2025 13:36:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754770717; x=1755375517;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=fpOW6oYqvSq8dY4Sy6tlydo2R85SL2NbZNGCMBO2JGo=;
-        b=OAQYkwk/3L69xRMnD2wqw/2CAB0693W80G692viqzbS1qSfzpYPUxfRUshQvImwqX2
-         oohUfY/608DaxY7q7vEHx5ew7MEPlXINtfV90uq+iDD4+wvGxrIaOziydEjkSpjyRcHr
-         y5mQ73j+UvPB5vLYi5jIo9anfrvWbKL5zp/9AXjVvxi3sE1Ty7+edMIfjC/IncwumE4a
-         PwWw75PAlFeqSijLotV+vG13l1NEagrS0o8j/dR2xbHEgph9tLI4QNielgfSyuObqdXc
-         dEpv4tJIdT81z+v/NcoRXa9w5I5usw/spG+UabwBJzUn5qWvUbA5sJCTeKLaNUDKfG4Z
-         oPtg==
-X-Forwarded-Encrypted: i=1; AJvYcCXKSTGY8EWwC/HO+cOqknqVxKJka+E2IzCnk0AH/SCQybsw4waifbajQCAbmeqWeJHf8FuVTCRrzA==@kvack.org
-X-Gm-Message-State: AOJu0YyTHr0ceAiJXlNuPf5GOuOIgeRYROoJoiCfwSW4Iq6wkSOGvbJp
-	xl2HhUtKd8KddWzqcwqt/8H+4qAkgtFxbmWAv8bkxDVae0vDTuLJhCXY
-X-Gm-Gg: ASbGnctmKG9gCLvHXz6piJmwso3qar3APYGzD22poA3v9Gi/pd4n2qLx5Ir3sJJ2LNB
-	JAvXMGK85s8O4U9kW1Jwaw8mq0euqfcyJdx5k5tBGpsEwrqSFqOPyX9Uiynd+4zQIdWzc1/oKsM
-	GcCt5HxntcQh0XL2LbTBVJB5CZ5JvjWw5hdOLeoSQoq5OfrYJD/8S8jMY8jVXkLamlqM3sZQsds
-	VQNRBUkMN+8os0dEf6fwcEvaNfMxk9kqXUN/qIKAej1FO5O58u3oSlUzO87PICFbQ6FxQ5nq2KK
-	4SP8oOGq8ssIpy7/ZyGld+MYO5FNRRQXzUDg1IgCS2mqOxt+kSoIlcO4pBlN+w0Ezxgda2tuC3l
-	EIR/y1kCLmzDif5jDt4ZofA==
-X-Google-Smtp-Source: AGHT+IGoIF4TzpsGbw98vDMoE6TA6To8S/rOi5El7EFY9c81/pe07BFvjZIzYcHEsO4A8H/7IkNSjw==
-X-Received: by 2002:a50:c310:0:b0:615:c5a9:4cab with SMTP id 4fb4d7f45d1cf-617e2bc49a1mr4617374a12.13.1754770717056;
-        Sat, 09 Aug 2025 13:18:37 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6180ce5b9e3sm1250045a12.9.2025.08.09.13.18.36
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 09 Aug 2025 13:18:36 -0700 (PDT)
-Date: Sat, 9 Aug 2025 20:18:36 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, wang lian <lianux.mm@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@redhat.com>, linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] selftests/mm: add check_folio_orders() helper.
-Message-ID: <20250809201836.jegaanplfcjak44f@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20250808190144.797076-1-ziy@nvidia.com>
- <20250808190144.797076-3-ziy@nvidia.com>
+        d=1e100.net; s=20230601; t=1754771798; x=1755376598;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nDf+bc2+oc3YTV8U7966QRgfXOKnldRn94ktsfY5qq8=;
+        b=GwlnGmKBsowGEV39a2ah8pZKLdyj2O4UyfhMWprHmwZtFzfpn4tw39RCA/hLQkVHxf
+         NQsq+Ok6YjWLZKAGLq1BRkncKVlkp/ch+liLQZfC/wkso4E9tu6xz29dwtp64m+COmDO
+         SRxudEsUpzP0XGvitU8QzBZ3F9XarmXeahX6hR3nFkHV4l0i3qOEzSElwuAnN00D4Evm
+         r/Lpka3WYuwDgP0goo/po51JsXHFhJIRWxK5aH31ykwUvATvNMnZ0XNtPs6LkRu3z2fv
+         e1ghIAl073/CiH3Dj7FTNsGTFTDjUyT8/XepfdQKF2jqn1mZaG3BS7qSDGWi9F2J/xqL
+         rbEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWlqtvM5pp79CVusz3w85h+AIivh21aaewD9wZV17BgcrRQ5pNAbcBNc96jHpIMz6Dm5ubeFlDrsA==@kvack.org
+X-Gm-Message-State: AOJu0Yz+YKuTQ94FETfO/sdpq55lI5N5Ucd+Sgf9NxslGBH6OInriGqJ
+	IBwuJQ6aeTx3Y122eRCqM3muK25vx/VU2OZqG5iYVIdHYkXSE/c1KjwwoOXHkHldz3hrmxNoNSg
+	ti79FU3ux4dQB41qOeeYU3b3DgYywo135XPcwMtdLUvrxbKp+fjZmp2xu1EQ=
+X-Google-Smtp-Source: AGHT+IHQFSE7PgibGZc4mzG1dSdRxoqjCvuZgmSib2uDKcmIvOxU725MhB6gux796mLIQFLeNrEgF5YK72ntKpk+dtHeTPBYqXIC
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250808190144.797076-3-ziy@nvidia.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Stat-Signature: nphj5gq1jprafhzc4uhq6sdndmkx6fcg
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: EE71FA0007
+X-Received: by 2002:a05:6602:21ce:b0:86a:84f:7a45 with SMTP id
+ ca18e2360f4ac-883f11ee752mr1129689239f.8.1754771798098; Sat, 09 Aug 2025
+ 13:36:38 -0700 (PDT)
+Date: Sat, 09 Aug 2025 13:36:38 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6897b156.050a0220.51d73.0082.GAE@google.com>
+Subject: [syzbot] [mm?] WARNING in try_to_migrate_one (3)
+From: syzbot <syzbot+63859a31071a369082b1@syzkaller.appspotmail.com>
+To: Liam.Howlett@oracle.com, akpm@linux-foundation.org, david@redhat.com, 
+	harry.yoo@oracle.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	lorenzo.stoakes@oracle.com, riel@surriel.com, syzkaller-bugs@googlegroups.com, 
+	vbabka@suse.cz
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 10B5380014
+X-Stat-Signature: j1yy5mmiuiifsiotbmcmg418fcjdsnkk
 X-Rspam-User: 
-X-HE-Tag: 1754770718-525372
-X-HE-Meta: U2FsdGVkX18x29yT/nVnAgj7cBSD/S6PUMuYZm8es8ceBx3jBWQCVt1RUB8el4TA55xw6zfUEN09oDKVhMtr2XtirVgO2/Qnfzy/0Jik+eCe7lp8Ubp4jcADXe15ok/obOUwhA66o+kDIw4VwF/5rI3WtEIkaID2IgbHLSGgZeARRGC6otNf9oF09XtoQDfTYZ8v7kBJ3ZLCMo+O7ZokU0iBj5N5+qnqipRR5HK+azNOVmS5iT0agsYL6SSaRw/AnzxbhbePC+gvgDhrDKFkd1/ztyLMoBhWv6/y+TCjWiy4yK+Pn8aZNNfSpqn1m60PX3l3pHeil4A7+t1ZvYojiNsKE1+wo44yGPHLSgZYrnPGRhVB6WOm/g2T8IaW6YmMiHao9AvM7+a4Ju9KltuKml/vkgsw6+SgA2eZfEMYqYaepP3G/SUrB3JMwQYtiyriRbvJkvGhrctpReBsXBXTEEp7P4B/SSbhsqpVuqqgXUoqXSsd7SYiFzK/spuFmIo8z67lyBtmImIUcAOlMh82+kPkdwWP6WjkM2fJjky52VtCcbj249kMpc1YEXR6sx0Sjr/1DcAb54ElY9jg/oJP4KqbLJUlzAhePOnO3CZCYtyUFI3iYK3Fdc7nDyulPMG+ei5iJZFmS9I9r5jreyAEHEi5omxDsfAuozgcAOCSnRlhy06dphRwvT0ArsqxjxrHCnODYzdXiG43UUxsEwLnWf2bHwjgM4Sq/UlLFLYQlVpZGyC5++KgWvmFcQJxmd8CczBMwuFEuD4MfqIAVqlsDdxeZlaKAXMv62XSQFm35x3HOCmG/Q0A85p0j9Prnsx7Vq/tqeH8X5V9b+EXRudbpqmTBWJHRnoZOykudOmy8OGcve4G9wUz7vVNGZoL5QeNSbqPDYRiQynjpwBtlyeBan4o7zzLYYwIQgtAEuxU3AXVRs9cAzvXUAAeX/8nwDjQD+jDTJVwRu27O/SIzph
- AqlOYcOl
- 6LFkU2G+ohYHv5v4WXO82dWHKJKchGozzgi3EJ/V3NWgEVWc8OJ4k04L8Ab3XRHjtgWI9oaJ5RtlSrzAKLuvH50+LzSCHGKylz500GydaYNlJfdI+fQTxmNLXW/wpNrlzWqhZOWusrl/D4Xo1yX0W2Nmeg78AwUw10yzCmClJgxPShdqJc/eMk76Jbzu3Emqo2oy0kPJhTNvS0x2baPCN51YrPPSczD2ZpmKfs3IT8HKRo9eAcFsV1WOU/cy/jm6xn1uclv6BIGZC5bXH+9iG696knptko8IkWPvLm7a03oCdJ9d4kFqWan/gzv/sQPGtU32fojVO51LoNartVCuchapcXbHWnMed2mOaqibYE0BC6agNTKRen7R9BUbummsMRt29GRXDNng76/+Nhyegf0IEAXu71M74iGGf6OP4LMHuqi4p5nZTZn0IP+9Iu/f/sNPKsQFVTJFBWXZqEjf5H9cymg7gSTImjJXZ8H/i3UoirnugkhoA66H74MZxP5lXj6Wx778dex9epx29E8toyDPdDaL7Zz3+8kaYsh5eQQYRGsz7R5ZlxBa4ehwFgvNBNY7WGx3cyTSjJluvUmYKBN/xT3DC6FnQurzmy2v+JsZh3RMBwTtaXVw/KhI1s3JW0DmtV74rWxcvLUw4r+IrVxKl+UCdhsTR63MW2/qseo8Pb0uUkDS/RCm+M4eWVsEuuO/mvYDH2oCW6djDe4QPnssPxJkmxy8rUZbThl4nKZasVQFQuyjoyqV0vOsefORNSiZc2s4xdKZNRwvjrk6cSWIKhQ==
+X-HE-Tag: 1754771798-638598
+X-HE-Meta: U2FsdGVkX18qCrd9617SnQwqhqKfh3kU8PgRixlhxYQGKN009m6/ZL/1x9Pwqh81DMWUXgbFgELBQbdfw2O4PpZ09WI0oUgofVUJ1KPqA9EPiPt39xkgpI4AFcczDT8et7fYFpvdV3jPc4XbiEuJ8nCdkWGJFuk73ayVTO1ZH7HA4HYKpbceMc6IONFjGtam+vbjxNkYBaH1brIIFN8E2cSxSN2uCh9DNauUsFe87evApy9n7Hhmv6inbOasILKDTUtgvaCfhA3hsp60Mbd/p901cGzRJDCgUGNAeTX2CdBdqxRo7NckHIRhrtMcJn6wBMSNn2X8YR7T2L4DIB5Fg04jG3P4vVCC/sxvGiHnKYjD8OlEHRDzgCLOkevKXsEIMW6RW3zh1hWy3pccGjvSXRGTJ0knuhfIROIL6X9UKBWJb/Ex8ZcTgqc1r0/m1aIGwEQj3jM6ZxyuEoOpSyXfzwmJGIzssQ8znjYiGI1Gyc9K6m11C8RDx9qni+yOlh/nUAKcAlr/tZotPyMpazxp9PrZRRC6uv9Im7Uk+9IpbjLbVsMwmo6T/UhE9UFqdKOAqj6r1RfIEh5IYMboNZ86T0zWF9PttCwS5Xdt04BUqU+LoLRAScz/lCNu3cq9XttrIUkPxItSL/muo7UGXLMVXOPWeteqd5hMNpnY6lKVIrOPobEkYzehm4sqMAjO9eeMX6I4pbsAp5EufItuu9BUTQA07XB8ZOjXuaPk4xR4KmDHlEA0Da8O1qF05zXqeAXWLKMyJkIYWHVLmddBHVcdtStxJUlkupM2PAhlMP39ocUfrJc214gPlTB99A5HJjfudguuIdNvNQoSe75jGcDO7rXJEzEWG9Up9N8wbT4hyd5UEMLjCqp9nrp/iuBPuE0hXiNlaKoifSvf1eUqnyCVLN0VwSbF7K2TetyBI5r5AzqU29mDzobsobMkqjFrfT+aO+Mn8QJIMCrvo2TxfBP
+ /nmciiP6
+ tuDt+gmXpUQZrbp4FEnzze2Ei2Pz9cwRZJdlOE7iiJ3ZWLTyaATR9TGjXkEYKhvHI9w0sbjPZxJpKWuVsWUBya+wReJxDfx/LpNjIoaF0el5AQ7Pf0AxOav0uZcg95p4yKyCcRF/7akS3Xu6bhxWWXaiThtfkv3u2zTpwVwV59IB1SRXXulmf1Dad5kJIGYillkgvcM1kZbkOiGK2xfYzjcqq1g4G4gqUp9qtaQgGY3ddwrBST1FN6X+QwAOyt8iXVag27TZWssvn4zLG0oYAt4/EAfHjcb+cEH3jDV46thPf4fhAf0PuMLOSdStmWEDM9Kc0Ww4MduJfsbezhySRUFnEALrT8P1yV5jDmAVGdJ39m9qiCFx0Brdt52TBcKHNvLhBL2kR8dQyT0yrdMO4R8F8Bnhfr/9yEJWFOyx8bnaQu98ZW9Ao5XIrnOtj4VqME/Wza9Bq4ATOeOA3Wk6iBJLJzMzM4jYRewfK82deaZyH5Vx9i2/9wAPGRhKrvxBce94q4vNTc9EH25JAac6ca6VJd0qHgD9AJ6kAXaK6hPtvC9y+gyOGXr78qqLdKkWFi0tg/iynSlaS8hv3+gMLwiLBYDCpFMcIzXJ67qi6BWHJE1cIPHefHFpE7rTI5Ol7tuZXeB/uUMWHWYOt7fLmZx6UuU83h2LFpYZKfw/kR+K5ZLG1DGarhwZkc/nM8wj1E264fEZ9hyzYwxvY+XMV3d+hQZi0L5WoYVbwVyeMW5AwfH4RIUcxRZh9sRf8mRBW/TeHNIW/x/TqoRgXkULybH/7MX/YBCAiDLjYMXDOakL+Ewo4f8FVjSEGv/8LiAZVJ5N2At1x9IJXwGOdNPdtuQTpRtznSUgfBs+bwHHwtQiCKkcS1elc8Q50HV0yKkVJZWDHCGwV52Tgt3sf8JdlA+/TrAv5ST45V+2gJKV+Xal2LKpe6H0U54cvQsIPTVDSa3Aeb7P3y/F94hCsz9X1LFzQBAeG
+ Qqoj7uWA
+ 2er/6D0aV084+osPxKVVqTRt33amu0mP6lbvn0ElOsi7x0wKEeI3eSYiGZaxQ+IhldsN2DVCEQX2KxVYlbzHBQFAZVD3koM24UcUcdv176XFl2WLWfnM7QjG9IaWAgCmsFXw8kgUwBG1JikVs9GS4NS566HwXfNhERQELqxScUihU2hMmsmQyfshQs/PERtgKFiETZzZ99a+1WvTWNVAdGHgR+0G38ftv4Die2x5JuvNaYssjnS0512qP2unQB/FzSHSbwWIefCMg3tt74CFhQZlGH4f+X91Ud1E0peZE18C/o18bhRylkaiMRwji2Hi/ETUcbscXJTHkGTQyWqexDLhIPVqFg7GCMs24yc2js+W8Ym2ZAzKYqbsMk9/sTvN7XxWk7JzzSgiR5gD92TEQ0TNz+xsYarJr/3wCyZEXC8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,248 +96,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 08, 2025 at 03:01:43PM -0400, Zi Yan wrote:
->The helper gathers an folio order statistics of folios within a virtual
->address range and checks it against a given order list. It aims to provide
->a more precise folio order check instead of just checking the existence of
->PMD folios.
->
->Signed-off-by: Zi Yan <ziy@nvidia.com>
->---
-> .../selftests/mm/split_huge_page_test.c       |   4 +-
-> tools/testing/selftests/mm/vm_util.c          | 133 ++++++++++++++++++
-> tools/testing/selftests/mm/vm_util.h          |   7 +
-> 3 files changed, 141 insertions(+), 3 deletions(-)
->
->diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
->index cb364c5670c6..5ab488fab1cd 100644
->--- a/tools/testing/selftests/mm/split_huge_page_test.c
->+++ b/tools/testing/selftests/mm/split_huge_page_test.c
->@@ -34,8 +34,6 @@ uint64_t pmd_pagesize;
-> #define PID_FMT_OFFSET "%d,0x%lx,0x%lx,%d,%d"
-> #define PATH_FMT "%s,0x%lx,0x%lx,%d"
-> 
->-#define PFN_MASK     ((1UL<<55)-1)
->-#define KPF_THP      (1UL<<22)
-> #define GET_ORDER(nr_pages)    (31 - __builtin_clz(nr_pages))
-> 
-> int is_backed_by_thp(char *vaddr, int pagemap_file, int kpageflags_file)
->@@ -49,7 +47,7 @@ int is_backed_by_thp(char *vaddr, int pagemap_file, int kpageflags_file)
-> 
-> 		if (kpageflags_file) {
-> 			pread(kpageflags_file, &page_flags, sizeof(page_flags),
->-				(paddr & PFN_MASK) * sizeof(page_flags));
->+				PAGEMAP_PFN(paddr) * sizeof(page_flags));
-> 
+Hello,
 
-is_backed_by_thp() shares similar logic as get_page_flags(), I am thinking we can
-leverage get_page_flags() here.
+syzbot found the following issue on:
 
-> 			return !!(page_flags & KPF_THP);
-> 		}
->diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
->index 6a239aa413e2..41d50b74b2f6 100644
->--- a/tools/testing/selftests/mm/vm_util.c
->+++ b/tools/testing/selftests/mm/vm_util.c
->@@ -338,6 +338,139 @@ int detect_hugetlb_page_sizes(size_t sizes[], int max)
-> 	return count;
-> }
-> 
->+static int get_page_flags(char *vaddr, int pagemap_file, int kpageflags_file,
->+			  uint64_t *flags)
->+{
+HEAD commit:    0227b49b5027 Merge tag 'gpio-updates-for-v6.17-rc1-part2' ..
+git tree:       upstream
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=1422d434580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=2ae1da3a7f4a6ba4
+dashboard link: https://syzkaller.appspot.com/bug?extid=63859a31071a369082b1
+compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=117c72f0580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17ab7ea2580000
 
-Nit.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/d0d0622733f6/disk-0227b49b.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/6a993871f113/vmlinux-0227b49b.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/0f07823c6782/bzImage-0227b49b.xz
 
-In vm_util.c, we usually name the file descriptor as xxx_fd.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+63859a31071a369082b1@syzkaller.appspotmail.com
 
->+	unsigned long pfn;
->+	size_t count;
->+
->+	pfn = pagemap_get_pfn(pagemap_file, vaddr);
->+	/*
->+	 * Treat non-present page as a page without any flag, so that
->+	 * gather_folio_orders() just record the current folio order.
->+	 */
->+	if (pfn == -1UL) {
->+		*flags = 0;
->+		return 0;
->+	}
->+
->+	count = pread(kpageflags_file, flags, sizeof(*flags),
->+		      pfn * sizeof(*flags));
->+
->+	if (count != sizeof(*flags))
->+		return -1;
->+
->+	return 0;
->+}
->+
+ do_initcall_level+0x104/0x190 init/main.c:1331
+ do_initcalls+0x59/0xa0 init/main.c:1347
+ kernel_init_freeable+0x334/0x4b0 init/main.c:1579
+ kernel_init+0x1d/0x1d0 init/main.c:1469
+ ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 5866 at mm/rmap.c:2452 try_to_migrate_one+0xf27/0x34d0 mm/rmap.c:2451
+Modules linked in:
+CPU: 0 UID: 0 PID: 5866 Comm: syz-executor265 Not tainted 6.16.0-syzkaller-12187-g0227b49b5027 #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
+RIP: 0010:try_to_migrate_one+0xf27/0x34d0 mm/rmap.c:2451
+Code: fb 00 00 00 f4 0f 84 35 0e 00 00 e8 f3 41 ae ff e9 73 f8 ff ff e8 e9 41 ae ff 4c 89 e7 48 c7 c6 00 79 96 8b e8 0a 92 16 ff 90 <0f> 0b 90 e9 60 ff ff ff e8 cc 41 ae ff 49 ff cf e9 3e fb ff ff e8
+RSP: 0000:ffffc9000401f120 EFLAGS: 00010246
+RAX: c3d51769d0dbd500 RBX: 0400000000000000 RCX: c3d51769d0dbd500
+RDX: 0000000000000003 RSI: ffffffff8dba5e25 RDI: ffff8880115dda00
+RBP: ffffc9000401f370 R08: ffff8880b8624253 R09: 1ffff110170c484a
+R10: dffffc0000000000 R11: ffffed10170c484b R12: ffffea0001cd8000
+R13: 0000000073603867 R14: dffffc0000000000 R15: ffffea0001cd8018
+FS:  0000555590a54380(0000) GS:ffff888125c1c000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000000045ad50 CR3: 00000000743ea000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ rmap_walk_anon+0x550/0x730 mm/rmap.c:2842
+ rmap_walk_locked mm/rmap.c:2958 [inline]
+ try_to_migrate+0x3f5/0x670 mm/rmap.c:2619
+ unmap_folio+0x191/0x1f0 mm/huge_memory.c:3137
+ __folio_split+0x90d/0x1c60 mm/huge_memory.c:3711
+ try_split_folio+0x13f/0x310 mm/migrate.c:1550
+ migrate_pages_batch+0x653/0x3620 mm/migrate.c:1819
+ migrate_pages_sync mm/migrate.c:1974 [inline]
+ migrate_pages+0x1bcc/0x2930 mm/migrate.c:2083
+ do_mbind mm/mempolicy.c:1539 [inline]
+ kernel_mbind mm/mempolicy.c:1682 [inline]
+ __do_sys_mbind mm/mempolicy.c:1756 [inline]
+ __se_sys_mbind+0xa3e/0xc30 mm/mempolicy.c:1752
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fb95004e539
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 c1 17 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fffa7b144d8 EFLAGS: 00000246 ORIG_RAX: 00000000000000ed
+RAX: ffffffffffffffda RBX: 0000200000000000 RCX: 00007fb95004e539
+RDX: 0000000000000001 RSI: 0000000000600000 RDI: 0000200000000000
+RBP: 00007fb9500c15f0 R08: 0000000000000000 R09: 0000000000000002
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
+R13: 431bde82d7b634db R14: 0000000000000001 R15: 0000000000000001
+ </TASK>
 
-Maybe a simple document here would be helpful.
 
->+static int gather_folio_orders(char *vaddr_start, size_t len,
->+			       int pagemap_file, int kpageflags_file,
->+			       int orders[], int nr_orders)
->+{
->+	uint64_t page_flags = 0;
->+	int cur_order = -1;
->+	char *vaddr;
->+
->+	if (!pagemap_file || !kpageflags_file)
->+		return -1;
->+	if (nr_orders <= 0)
->+		return -1;
->+
->+	for (vaddr = vaddr_start; vaddr < vaddr_start + len; ) {
->+		char *next_folio_vaddr;
->+		int status;
->+
->+		if (get_page_flags(vaddr, pagemap_file, kpageflags_file, &page_flags))
->+			return -1;
->+
->+		/* all order-0 pages with possible false postive (non folio) */
->+		if (!(page_flags & (KPF_COMPOUND_HEAD | KPF_COMPOUND_TAIL))) {
->+			orders[0]++;
->+			vaddr += psize();
->+			continue;
->+		}
->+
->+		/* skip non thp compound pages */
->+		if (!(page_flags & KPF_THP)) {
->+			vaddr += psize();
->+			continue;
->+		}
->+
->+		/* vpn points to part of a THP at this point */
->+		if (page_flags & KPF_COMPOUND_HEAD)
->+			cur_order = 1;
->+		else {
->+			/* not a head nor a tail in a THP? */
->+			if (!(page_flags & KPF_COMPOUND_TAIL))
->+				return -1;
->+			continue;
->+		}
->+
->+		next_folio_vaddr = vaddr + (1UL << (cur_order + pshift()));
->+
->+		if (next_folio_vaddr >= vaddr_start + len)
->+			break;
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-Would we skip order 1 folio at the last position?
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-For example, vaddr_start is 0x2000, len is 0x2000 and the folio at vaddr_start
-is an order 1 folio, whose size is exactly 0x2000.
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-Then we will get next_folio_vaddr == vaddr_start + len.
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
-Could that happen?
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
 
->+
->+		while (!(status = get_page_flags(next_folio_vaddr, pagemap_file,
->+						 kpageflags_file,
->+						 &page_flags))) {
->+			/* next compound head page or order-0 page */
->+			if ((page_flags & KPF_COMPOUND_HEAD) ||
->+			    !(page_flags & (KPF_COMPOUND_HEAD |
->+			      KPF_COMPOUND_TAIL))) {
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
 
-Maybe we can put them into one line.
-
->+				if (cur_order < nr_orders) {
->+					orders[cur_order]++;
->+					cur_order = -1;
->+					vaddr = next_folio_vaddr;
->+				}
->+				break;
->+			}
->+
->+			/* not a head nor a tail in a THP? */
->+			if (!(page_flags & KPF_COMPOUND_TAIL))
->+				return -1;
->+
->+			cur_order++;
->+			next_folio_vaddr = vaddr + (1UL << (cur_order + pshift()));
->+		}
-
-The while loop share similar logic as the outer for loop. Is it possible
-reduce some duplication?
-
->+
->+		if (status)
->+			return status;
->+	}
->+	if (cur_order > 0 && cur_order < nr_orders)
->+		orders[cur_order]++;
->+	return 0;
->+}
->+
->+int check_folio_orders(char *vaddr_start, size_t len, int pagemap_file,
->+			int kpageflags_file, int orders[], int nr_orders)
->+{
->+	int *vaddr_orders;
->+	int status;
->+	int i;
->+
->+	vaddr_orders = (int *)malloc(sizeof(int) * nr_orders);
->+
-
-I took a look into thp_setting.h, where defines an array with NR_ORDERS
-element which is 20. Maybe we can leverage it here, since we don't expect the
-order to be larger.
-
->+	if (!vaddr_orders)
->+		ksft_exit_fail_msg("Cannot allocate memory for vaddr_orders");
->+
->+	memset(vaddr_orders, 0, sizeof(int) * nr_orders);
->+	status = gather_folio_orders(vaddr_start, len, pagemap_file,
->+				     kpageflags_file, vaddr_orders, nr_orders);
->+	if (status)
->+		return status;
->+
->+	status = 0;
->+	for (i = 0; i < nr_orders; i++)
->+		if (vaddr_orders[i] != orders[i]) {
->+			ksft_print_msg("order %d: expected: %d got %d\n", i,
->+				       orders[i], vaddr_orders[i]);
->+			status = -1;
->+		}
->+
->+	return status;
->+}
->+
-> /* If `ioctls' non-NULL, the allowed ioctls will be returned into the var */
-> int uffd_register_with_ioctls(int uffd, void *addr, uint64_t len,
-> 			      bool miss, bool wp, bool minor, uint64_t *ioctls)
->diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
->index 1843ad48d32b..02e3f1e7065b 100644
->--- a/tools/testing/selftests/mm/vm_util.h
->+++ b/tools/testing/selftests/mm/vm_util.h
->@@ -18,6 +18,11 @@
-> #define PM_SWAP                       BIT_ULL(62)
-> #define PM_PRESENT                    BIT_ULL(63)
-> 
->+#define KPF_COMPOUND_HEAD             BIT_ULL(15)
->+#define KPF_COMPOUND_TAIL             BIT_ULL(16)
->+#define KPF_THP                       BIT_ULL(22)
->+
->+
-> /*
->  * Ignore the checkpatch warning, we must read from x but don't want to do
->  * anything with it in order to trigger a read page fault. We therefore must use
->@@ -85,6 +90,8 @@ bool check_huge_shmem(void *addr, int nr_hpages, uint64_t hpage_size);
-> int64_t allocate_transhuge(void *ptr, int pagemap_fd);
-> unsigned long default_huge_page_size(void);
-> int detect_hugetlb_page_sizes(size_t sizes[], int max);
->+int check_folio_orders(char *vaddr_start, size_t len, int pagemap_file,
->+			int kpageflags_file, int orders[], int nr_orders);
-> 
-> int uffd_register(int uffd, void *addr, uint64_t len,
-> 		  bool miss, bool wp, bool minor);
->-- 
->2.47.2
-
--- 
-Wei Yang
-Help you, Help me
+If you want to undo deduplication, reply with:
+#syz undup
 
