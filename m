@@ -2,66 +2,66 @@ Return-Path: <owner-linux-mm@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 65746C87FCF
-	for <linux-mm@archiver.kernel.org>; Sat,  9 Aug 2025 14:25:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2BD4DC87FCB
+	for <linux-mm@archiver.kernel.org>; Sat,  9 Aug 2025 14:33:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8EA3A6B0099; Sat,  9 Aug 2025 10:25:31 -0400 (EDT)
+	id C2FD46B009E; Sat,  9 Aug 2025 10:33:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C1F56B009B; Sat,  9 Aug 2025 10:25:31 -0400 (EDT)
+	id C07746B009F; Sat,  9 Aug 2025 10:33:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FE8A6B009D; Sat,  9 Aug 2025 10:25:31 -0400 (EDT)
+	id B43ED6B00A1; Sat,  9 Aug 2025 10:33:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 705D66B0099
-	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 10:25:31 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 20852140217
-	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 14:25:31 +0000 (UTC)
-X-FDA: 83757442062.04.AF24E74
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A232D6B009E
+	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 10:33:24 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0DA77B7A41
+	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 14:33:24 +0000 (UTC)
+X-FDA: 83757461928.24.8377230
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 5AA1040005
-	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 14:25:29 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lhPiH1Jl;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 55095A0002
+	for <linux-mm@kvack.org>; Sat,  9 Aug 2025 14:33:22 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qtPq82xb;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of alx@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=alx@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of alx@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=alx@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754750002; a=rsa-sha256;
+	cv=none;
+	b=MBJKr5Wrd5kMbilme7Bys6AZR0KlUDkx6p0eeyjZpL2tXi3z/eTLVMUIMgGQKBFJNAaMoG
+	5kJGkZXlLqHXxZMczaOJnB2t32z+YR1lNhk/qJrCksouCz8pn538zhutYyO1A4zkAHaW1C
+	mZoFxSTG44+Ra8FSAEzoJAz63x3+9XY=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qtPq82xb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of alx@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=alx@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1754749529;
+	s=arc-20220608; t=1754750002;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=32DhQrFt/hngoROswc7KNboedmkff/cIdzZcWhIU/nI=;
-	b=0qAnBbEB9OKF+zC1jbs/ZCro0MPn7ZUyB3Dv+dlSKYbqgkOMpLXAeawJ+tUYFrj+bOkWzC
-	6C5inn3LCT29WgI6qbpQT7VjCFjbnRSQ3XbsmazFQbiaFQpHa36bIXbOfzdp4jxrB8sdNc
-	yt5q4VjidG4ESt96uag/fNSb/XJhEBA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1754749529; a=rsa-sha256;
-	cv=none;
-	b=kMWDVO0obXG/j/4QpBF7LWlJGSs7ihvHcracaUxe2ROI6jguatihNdIt5nnYRVXUFHjWlU
-	Gkv8clZHCWlrlXE5KdQW0Zv55KmdYJr3ir0o9hi4f0q2vx75P/ofSoMUlDvATl2WNGoY1H
-	oKP4QFpIgrbksS9AtOp41ze0rKmseVA=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lhPiH1Jl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of alx@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=alx@kernel.org
+	bh=rsFWNVaE6ffxoK1ZXuEHtb5qszhbnJFL1sNcUiw4Bnw=;
+	b=oStBpT2ogqzCpExv+6vyaxzTI+UTe7caF9U1c8nFCfO6jnnL8MMIBQAg9JdoYcrzqWk4xQ
+	HP/L9wHYvCdnS7pYxYEzZXj90ZwdhoO9NZKI9o7lH66GRvyk4wN24NscXGygiTDRddk7+q
+	2OULc567VuTzDnwXtDCTGhEAQQ7xt1k=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 1CBCD5C53EE;
-	Sat,  9 Aug 2025 14:25:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D81FCC4CEE7;
-	Sat,  9 Aug 2025 14:25:21 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 654075C547E;
+	Sat,  9 Aug 2025 14:33:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0613C4CEE7;
+	Sat,  9 Aug 2025 14:33:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754749527;
-	bh=oITAnnL4pXbTCRefVuC52zFet+7k9cZryAFVCd68ykQ=;
+	s=k20201202; t=1754750001;
+	bh=yxUe45wSeV1/d5Z1NivZkyntB8zfOPdyKAKqdYx4Urg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lhPiH1JlOayaV8jMajfbPXRp+PJT0K/tDMTHVy9FlsjaNitJUKSthITV+aMSgYQ7Y
-	 Cm4vBNyRSPvvlbsEnkFIT0XabcKcbSexsKdVA8fXH0Q3pmHeiS+xWHV/tVPtC1wDzq
-	 b4FAHduYiEb083Q8qAIKcLacAdSmSpMUQH4njEd3m9wArAA9tngZcQbmj74hwKYiau
-	 U9caVv1ZEwjE5U2CWoMJ9pWiqzN6AcQXgFfynGOmOIrnXjxyZslWo9Tm56nsBV2kyX
-	 XaHV10+Q8M7jQt2LfxnHEjw31K//sCZzjfDL5DFMQHdPy1eSYe19MN29u5l4nyLoEN
-	 CQth0XyUDiU1A==
-Date: Sat, 9 Aug 2025 16:25:18 +0200
+	b=qtPq82xbmmWMVaE9JNo73+i7g+5l4ZqaB82Piz/xpwHC/5wGCQi4gy1Dq0woHh9b2
+	 pu6vPwS0qgJjjyzoOtvU5IshuHToi3//HzTtPR9fp3gqGaNyRCMDx8Hd4n0SjFqv5W
+	 0uKGIFTKsPdHpbPomIZkHnG2wzEY9/LTOyN5aLjXuqk9pWPDZ2oRcTXSrp6PRAoRG7
+	 4RgsvqlFg/ENi/3ZxYV7UiIhIryh/hPD9//D9AOge8ftYvweKpLyp5CDz8oCKQXF54
+	 YDiksSn+1bNX0NWAmEMd7AEZ/Zr+At/rzLZFiMm2PCfcwz2IQ3xwTeNCBrX7KRuwQF
+	 w40v+2ExNkrpA==
+Date: Sat, 9 Aug 2025 16:33:12 +0200
 From: Alejandro Colomar <alx@kernel.org>
 To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Cc: linux-man@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
@@ -70,23 +70,24 @@ Cc: linux-man@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
 	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, 
 	Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] man/man2/mremap.2: describe multiple mapping move
-Message-ID: <ekjakm6zburrawhk34smm3fd43zufzguisfean4hmv7vyjp7fq@uvy6n47qbydl>
+Subject: Re: [PATCH v4 2/2] man/man2/mremap.2: describe previously
+ undocumented shrink behaviour
+Message-ID: <iolucvrp6is43yjulbluchhw5wy6urq2gtwmcelg5atwuv63se@ovzuthfrup26>
 References: <cover.1754414738.git.lorenzo.stoakes@oracle.com>
- <53e4284ffe80a63260c957369ccacea8f5c16adc.1754414738.git.lorenzo.stoakes@oracle.com>
+ <c7ba8ba09b1c0b015134c54824788ef4aa47fd46.1754414738.git.lorenzo.stoakes@oracle.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="5xmbayfvgezef2h2"
+	protocol="application/pgp-signature"; boundary="yb7p3rwhyim56fmd"
 Content-Disposition: inline
-In-Reply-To: <53e4284ffe80a63260c957369ccacea8f5c16adc.1754414738.git.lorenzo.stoakes@oracle.com>
-X-Rspamd-Queue-Id: 5AA1040005
-X-Stat-Signature: rduafc5neab8kehhx3jcfmrr7dtu9uin
+In-Reply-To: <c7ba8ba09b1c0b015134c54824788ef4aa47fd46.1754414738.git.lorenzo.stoakes@oracle.com>
+X-Stat-Signature: aiq1e7hosw5e6n3k7qrs6rewihzxfmoz
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1754749529-189530
-X-HE-Meta: U2FsdGVkX1+gIcS+WGahGHvTXHmD8Rp8QPwOcTjkTKLFo8P98JwCIYISmdzw5kt/MtpNjOCqwqtZ8NAkhaauZN3v6UNWbIV9ugluMpR6mLy/dWD4qr+m0TjFh6kgpZYjOMG+G1k6zEU52rpxMxAAkwhT+CQJDw14O8MFoKgbL29bsMWo6IpyTAo9v+7fgg4yyOscuDJgsun297NOOZDQ4JfCXQrN5KVI2n5oq045JAlKsWHMDIc5qT2Uv7JH5pHjJXMyuoZUMn1iKamkcCquASpY/6oe2iNgvjjrgdIXXR9WX1a98PwyXuqwh9SjxrFAgOxWtDe2EW+CojTfSmem1ThuT1Bn5HqecNmT+z0+zrHnoYuOTh9LzSpiu0tKSwc7sR0Q05S0GlP4LVawbazupNqsNgxTBVduT0kL9AFAXqxhnzxGpWKNh7JBWP2fbECbq3iiEtJEXUsO/EnLRti13vxE7Py3L+mfMUlTgSvAE+U5zR12CHLiocHgrEPa7bHPSyCedyCMj9fD1FFEjcqVvI0W1oqpiwrXiYlh8d3O7z6WQNa2Ly4rdC9s2c9EA7m4QhqQEK4oaTuMP9cHsBEIrGybDWK47ic+30NMzkcOjs80AteLle+V6Lj55lRS1snA9aLxa9934YrMVvvFhRP3K2Tf4NwulzU174TxFMNkeFAFwb7AyW+pjSAb7iHV+M6nQiVtV2Nk+dXJ1kVM7mClBm02DJMZ/dWzXX5TrjEnU4BZB7Nfwv7HNeKkYI4MK9CHclIR6+aVC6NbVDrPpEdcqzwV7cyX/oQzYau9dIuslyBfkUmyWTucgx0ruLwUKu406mCzGBAmccveMzGOD7sU6nApov+KjA4bf9tbZHuJjI758U6kjxqbnrtL/godUwIBNZL7B9v8YXecRwfSFoqT8/GiNoF/zFnSB9bcKqJ6IGZM5CqfMGXQcdWFSvMvmhu4rtOs1MDxHBjzgtATKaC
- JM/5a4s5
- FtuF64JAblNTGk5VjB3hZclF9lEmKbefmgLmHN/Z5BKzROfbLUncGPhFSICOtRNrkzHBR9BKNtMqMNvuZ9FhvyOdpWF/WHnOCS8HEPJQB2uNxs+dEasaorFV7QSqbDGY+h0QGquYVVrxEBAqg3lnz+l6iJRGqAhG7UFIxF0dWceuQOwU6jb0tqq2ui4dyG9Iw7uycI7kG8lhsNBz92gpPa1KoNUQg2IohMh8Kg7dbinQZ1oxz4Bo+LYbFwapV77IjhIkDeHBvHyiVj2VVgak2lJXvPBVlBfjweHwyWVDvqjjvia3R2hmgA6crxnQRYU+UtdBKuoe2No4TzS7tKLMSna1iTUdBHlWo40oSd/yUZwoJgR40s7SIFmMwzNlVAsGguuHPqFD9DTcgHkicdywCvPc/zVvwD+SgCaGvAhPwWJAo34Iprk0Cjg1pxw==
+X-Rspamd-Queue-Id: 55095A0002
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1754750002-839435
+X-HE-Meta: U2FsdGVkX19nzhwLcr7zwLEyjHeVSahsvJWY9JwdaDtrQxBvl0Ql74Jo+7usEyyqt5wXwILLai7iLpRAYhebhJCq0BQzQKwjzQBOmBRBTkdbP8uJ9MOvPSOPe0OCXfrknF+YzKIDGWxx/yBcDH2HjG063inR03cLAfBL28PGwrfvrLTJWTiWXyrHA/TKTCNHiD6WSxcPN+6E+IIFlOKtswiH384x/vU0+2d03H9os5WRW33KWAt6IjgDZ2YjJmHTn1NW+9Unpw09ZLg/bjaHVeHtJKZ6eSMyBsJl7PVJsy4s2VmN7ja4eRsZrqrxzFW3sPlOLZKWqPNaGlDh7FtEXV2L21AwxTuOEwrpIDD4xTjLAmK2vV5q8H0CRzeeBLu9+AtQu+MOy953s7wGH85PlYBzUlHDgmeps5aW5+H7mG52w9ukuh69ZWevdpWXQ+11WFLyd/FfGKBnbuxzBtp2EHdDFLNL6oWjWNJ/1m5M7AmgnULXV8TPryursLT9QHyCHH9dY9GjVMHhDIO/8BVgJ7vcoZxaK9pUcVqdSfAZB3HZpY87GlPO9Sm/69VAne5DE8zELYeMAbDtGcSniBmHfj48M09f8bqUJJVt1gQVKxYk/j6xDfWxP/icMRHbg9eF98yY5B347L5mFlFS5exiJvQYn8H1VsD+42tsBk0fOwccse4tXU771nY2I1zxmLzD/ECRWdhybnY5OzYV02gkb5xMTYkdoTRt2skKns7E9mL/UkBLzuT74ekVc3jCJFcA27NKr7UIpkre8uFSRtudqaGbfM4hYuh3nKqFvPhTjSDzagJM8/0KhyBrA/69d/IkiAocY6pOuX8piA+PSiujamU5gyp7Obe8F7BmaKhQ1xZJ0jngFGVBcfnfonyj3qthWaeti1ED+bNbopHltjUiIihVYYIFcqWiNdjuVUXuFxX681jx1j/MdUytsZwDRdEAXodS3xDLgtxGG4IMuxR
+ LPdPKRX0
+ 3Rw1R4+8EHtOGF1T/DQZOZxYxna3hHVx8bmFQBAmdALczhmLkNY3glwJUKeVeT+rdRaBh7ERk8nsv+NvrKScTkzrXV/yN/kjPHedGQGuaG098WsXuW9ylEYUcc0jMFKKyn39ZlDNOuoOVHh3UWT1KsqpVsBoXMogJbSn7Vp9W0oLrWbXFdjyH0h+xY3KQUy/aTST+NU24x1PGov1qSSCwQF6ivRbzIE5UZPWobiv7zI3cK9gd6yiSuDJyk4QSlCb6VtGXjvB4mIooTCAcG2Da6cXBpojjR9Xw1iNv6glQrcfVvnpoueJtLoKN7tPJGwbr7miz63dUc0yNDhaZCOmlmJpo7iDAD0xx0agaEPCfpuRKrV+ftn7aT3ng7ngJLCZLsBD84RR9QVi0UbiufeYy5JKHPYNAEB7u9263njse3LQz2ENVblr9a8Jmjw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,7 +97,7 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
---5xmbayfvgezef2h2
+--yb7p3rwhyim56fmd
 Content-Type: text/plain; protected-headers=v1; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
@@ -108,215 +109,93 @@ Cc: linux-man@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
 	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, 
 	Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] man/man2/mremap.2: describe multiple mapping move
+Subject: Re: [PATCH v4 2/2] man/man2/mremap.2: describe previously
+ undocumented shrink behaviour
 References: <cover.1754414738.git.lorenzo.stoakes@oracle.com>
- <53e4284ffe80a63260c957369ccacea8f5c16adc.1754414738.git.lorenzo.stoakes@oracle.com>
+ <c7ba8ba09b1c0b015134c54824788ef4aa47fd46.1754414738.git.lorenzo.stoakes@oracle.com>
 MIME-Version: 1.0
-In-Reply-To: <53e4284ffe80a63260c957369ccacea8f5c16adc.1754414738.git.lorenzo.stoakes@oracle.com>
+In-Reply-To: <c7ba8ba09b1c0b015134c54824788ef4aa47fd46.1754414738.git.lorenzo.stoakes@oracle.com>
 
 Hi Lorenzo,
 
-On Tue, Aug 05, 2025 at 06:31:55PM +0100, Lorenzo Stoakes wrote:
-> Document the new behaviour introduced in Linux 6.17 whereby it is now
-> possible to move multiple mappings in a single operation, as long as the
-> operation is purely a move, that is old_size is equal to new_size and
-> MREMAP_FIXED is specified.
+On Tue, Aug 05, 2025 at 06:31:56PM +0100, Lorenzo Stoakes wrote:
+> There is pre-existing logic that appears to be undocumented for an mremap=
+()
+> shrink operation, where it turns out that the usual 'input range must span
+> a single mapping' requirement no longer applies.
 >=20
-> To make things clearer, also describe this 'pure move' operation, before
-> expanding upon it to describe the newly introduced behaviour.
-
-Can we split this further into two commits?
-
+> In fact, it turns out that the input range specified by [old_address,
+> old_address + old_size) may span any number of mappings.
 >=20
-> This change also explains the limitations of of this method and the
-> possibility of partial failure.
+> If shrinking in-place (that is, neither the MREMAP_FIXED nor
+> MREMAP_DONTUNMAP flags are specified), then the new span may also span any
+> number of VMAs - [old_address, old_address + new_size).
 >=20
-> Finally, we pluralise language where it makes sense to so the documentati=
-on
-> does not contradict either this new capability nor the pre-existing edge
-> case.
+> If shrinking and moving, the range specified by [old_address, old_address=
+ +
+> new_size) must span a single VMA.
 >=20
-> Example code is enclosed below demonstrating the behaviour which is now
-> possible:
+> There must be at least one VMA contained within the [old_address,
+> old_address + old_size) range, and old_address must be within the range of
+> a VMA.
 >=20
-> int main(void)
-> {
-> 	unsigned long page_size =3D sysconf(_SC_PAGESIZE);
-> 	void *ptr =3D mmap(NULL, 10 * page_size, PROT_READ | PROT_WRITE,
-> 			 MAP_ANON | MAP_PRIVATE, -1, 0);
-> 	void *tgt_ptr =3D mmap(NULL, 10 * page_size, PROT_NONE,
-> 			     MAP_ANON | MAP_PRIVATE, -1, 0);
-> 	int i;
->=20
-> 	if (ptr =3D=3D MAP_FAILED || tgt_ptr =3D=3D MAP_FAILED) {
-> 		perror("mmap");
-> 		return EXIT_FAILURE;
-> 	}
->=20
-> 	/* Unmap every other page. */
-> 	for (i =3D 1; i < 10; i +=3D 2)
-> 		munmap(ptr + i * page_size, page_size);
->=20
-> 	/* Now move all 5 distinct mappings to tgt_ptr. */
-> 	ptr =3D mremap(ptr, 10 * page_size, 10 * page_size,
-> 		     MREMAP_MAYMOVE | MREMAP_FIXED, tgt_ptr);
-> 	if (ptr =3D=3D MAP_FAILED) {
-> 		perror("mremap");
-> 		return EXIT_FAILURE;
-> 	}
->=20
-> 	return EXIT_SUCCESS;
-> }
+> Explicitly document this.
 >=20
 > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> ---
->  man/man2/mremap.2 | 84 ++++++++++++++++++++++++++++++++++++++++-------
->  1 file changed, 73 insertions(+), 11 deletions(-)
->=20
-> diff --git a/man/man2/mremap.2 b/man/man2/mremap.2
-> index 2168ca728..6ba51310c 100644
-> --- a/man/man2/mremap.2
-> +++ b/man/man2/mremap.2
-> @@ -25,18 +25,47 @@ moving it at the same time (controlled by the
->  argument and
->  the available virtual address space).
->  .P
-> +Mappings can also simply be moved
-> +(without any resizing)
-> +by specifying equal
-> +.I old_size
-> +and
-> +.I new_size
-> +and using the
-> +.B MREMAP_FIXED
-> +flag
-> +(see below).
-> +Since Linux 6.17,
-> +while
-> +.I old_address
-> +must reside within a mapping,
 
-I don't understand this.  What does it mean that old_address must reside
-within a mapping?  It's a point, not a size, so I'm not sure I
-understand it.
-
-> +.I old_size
-> +may span multiple mappings
-> +which do not have to be
-> +adjacent to one another when
-> +performing a move like this.
-> +The
-> +.B MREMAP_DONTUNMAP
-> +flag may be specified.
-> +.P
-> +If the operation is not
-> +simply moving mappings,
-> +then
-> +.I old_size
-> +must span only a single mapping.
-> +.P
->  .I old_address
-> -is the old address of the virtual memory block that you
-> -want to expand (or shrink).
-> +is the old address of the first virtual memory block that you
-> +want to expand, shrink, and/or move.
->  Note that
->  .I old_address
->  has to be page aligned.
->  .I old_size
-> -is the old size of the
-> -virtual memory block.
-> +is the size of the range containing
-> +virtual memory blocks to be manipulated.
->  .I new_size
->  is the requested size of the
-> -virtual memory block after the resize.
-> +virtual memory blocks after the resize.
->  An optional fifth argument,
->  .IR new_address ,
->  may be provided; see the description of
-> @@ -105,13 +134,43 @@ If
->  is specified, then
->  .B MREMAP_MAYMOVE
->  must also be specified.
-> +.IP
-> +Since Linux 6.17,
-> +if
-> +.I old_size
-> +is equal to
-> +.I new_size
-> +and
-> +.B MREMAP_FIXED
-> +is specified, then
-> +.I old_size
-> +may span beyond the mapping in which
-> +.I old_address
-> +resides.
-> +In this case,
-> +gaps between mappings in the original range
-> +are maintained in the new range.
-> +The whole operation is performed atomically
-> +unless an error arises,
-> +in which case the operation may be partially
-> +completed,
-> +that is,
-> +some mappings may be moved and others not.
-> +.IP
-> +
-
-Why this blank?
+Since this is documenting old behavior, could we have this patch before
+the patch documenting new behavior?  Or do you prefer it in this order?
 
 
 Cheers,
 Alex
 
-> +Moving multiple mappings is not permitted if
-> +any of those mappings have either
-> +been registered with
-> +.BR userfaultfd (2) ,
-> +or map drivers that
-> +specify their own custom address mapping logic.
->  .TP
->  .BR MREMAP_DONTUNMAP " (since Linux 5.7)"
->  .\" commit e346b3813067d4b17383f975f197a9aa28a3b077
->  This flag, which must be used in conjunction with
->  .BR MREMAP_MAYMOVE ,
-> -remaps a mapping to a new address but does not unmap the mapping at
-> -.IR old_address .
-> +remaps mappings to a new address but does not unmap them
-> +from their original address.
->  .IP
->  The
+> ---
+>  man/man2/mremap.2 | 31 +++++++++++++++++++++++++++++--
+>  1 file changed, 29 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/man/man2/mremap.2 b/man/man2/mremap.2
+> index 6ba51310c..631c835b8 100644
+> --- a/man/man2/mremap.2
+> +++ b/man/man2/mremap.2
+> @@ -48,8 +48,35 @@ The
 >  .B MREMAP_DONTUNMAP
-> @@ -149,13 +208,13 @@ mapped.
->  See NOTES for some possible applications of
->  .BR MREMAP_DONTUNMAP .
+>  flag may be specified.
 >  .P
-> -If the memory segment specified by
-> +If the memory segments specified by
->  .I old_address
->  and
+> -If the operation is not
+> -simply moving mappings,
+> +Equally, if the operation performs a shrink,
+> +that is if
+> +.I old_size
+> +is greater than
+> +.IR new_size ,
+> +then
+> +.I old_size
+> +may also span multiple mappings
+> +which do not have to be
+> +adjacent to one another.
+> +If this shrink is performed
+> +in-place,
+> +that is,
+> +neither
+> +.BR MREMAP_FIXED ,
+> +nor
+> +.B MREMAP_DONTUNMAP
+> +are specified,
+> +.I new_size
+> +may also span multiple VMAs.
+> +However, if the range is moved,
+> +then
+> +.I new_size
+> +must span only a single mapping.
+> +.P
+> +If the operation is neither a
+> +.B MREMAP_FIXED
+> +move
+> +nor a shrink,
+>  then
 >  .I old_size
-> -is locked (using
-> +are locked (using
->  .BR mlock (2)
-> -or similar), then this lock is maintained when the segment is
-> +or similar), then this lock is maintained when the segments are
->  resized and/or relocated.
->  As a consequence, the amount of memory locked by the process may change.
->  .SH RETURN VALUE
-> @@ -188,7 +247,10 @@ virtual memory address for this process.
->  You can also get
->  .B EFAULT
->  even if there exist mappings that cover the
-> -whole address space requested, but those mappings are of different types.
-> +whole address space requested, but those mappings are of different types,
-> +and the
-> +.BR mremap ()
-> +operation being performed does not support this.
->  .TP
->  .B EINVAL
->  An invalid argument was given.
+>  must span only a single mapping.
 > --=20
 > 2.50.1
 >=20
@@ -324,25 +203,25 @@ Alex
 --=20
 <https://www.alejandro-colomar.es/>
 
---5xmbayfvgezef2h2
+--yb7p3rwhyim56fmd
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEES7Jt9u9GbmlWADAi64mZXMKQwqkFAmiXWjcACgkQ64mZXMKQ
-wqklGg//SF0JLJ2EiiXam+d6ODgH9lopFyhItyfqL3G5G4HQc19RtfHsy4v2T2MD
-ewK8cwOkg2e/u/ejOUi2L+/AGO8hc4ykHSxM74eivyf4O8AJs9mSB1ywZ4CJ18S1
-GU/ZApYIFSExfIgY6PAywvn/Dv3PQdPfO8gG2tK9FflCfsmbSJbpN7ADVfCrA9pW
-ZfeqA949CLLAiGoDTMx3K309dJeT7qTr7IQqlSJQzvrVCnukaqmoUowCvlwJdr/0
-ffjCt7aTU/JCoafEg5gJOrPvunUKwd6mRbj6+wCdfe215Lw/s1MWtGURJp1qGl1T
-XoNkSBO0z2+noPkEoD9N1mU7tlZRf7QLRSf3nZX8fXiIrPBk2lhhfhwoEKXGDI2F
-PkFIas97LQ3XXauEmM85GGGl420Jl62VnS0lRiVHNp2c6Y71ADGi5QhbhlWIl78x
-eQPmjkJJxCgCi+OeSCyUFgvrvA7VFOIaS/U2aC95yu00V+B1i3X+61z6I3snAkTI
-JLV7pTNtrrY92U1f4LRHcO7d8xF1F6vL4nuH+mb97bLyWzuLIEbC1sBhtJiDNxbT
-n7XMQA1v4g68Dcc0IQEgx9YlbewR14KZSm6p43kILDjM5z3CtvoORAi3wgYs+dw6
-+UEfBqtc989H3Vg6QrYhdNslpgv7HIZGEEItTWHs1JGW+PEBEHQ=
-=oKUk
+iQIzBAABCgAdFiEES7Jt9u9GbmlWADAi64mZXMKQwqkFAmiXXCgACgkQ64mZXMKQ
+wqnwUg//Zbci7enPjyN3lLEYaDN/+ol7gyRscha0V1VRpTj9tJMgsD1tqcoLTIO3
+gU0Zg9yvwAiJEEYHPLeK25iP2ck1PV4kDShUZa7PkFwc7gatNYdDm3n2rry48YS3
+DP11MHUlCvM/hEgGAl/FPLSKqIsZgcgvx8cFQu1dRFfQSn9tSht/9dkZZk9LLKxv
+drKGY9tdoUWlZn29GSkPnVPfQT4ZnvgxHebPBsm2x/ROZlGpUD6EjgxiXsqSyK6r
+OneW3vfmujiQK2fXCp6GmlaM1jQswtgOFBPkYsjpV3vaxR2yhha49u7uWAb2tkDD
+cN5sKZhOdC+9gupdXuqBYik38SLPTBoi4eJAFw7Z8HqEe+OhKsWWqs6k6ARReVPC
+QteP+jP8bOwTjeVi/F03buaa5skPAaq/DAd639WI6285yIk7jpzpGahgpScuW4d7
+lRaekYBGNEX+ixWoRsJJdmOfmne47uscG/AnRvyWECNg/Asy8KiQ6dSsqmoSro0D
+EIfjCzTmggQmhepkftKTOZnH8U5KsBtJmYAnnrGGVuwxLXH7rO+uCxu22oa9OLPf
+eNhuQh5PaWN1YZkPPg83v84iDj/s3i3NNFH/iYesgMRAYXQqpoxohEkYjmxt9GGK
+dAWrdWPj2cpimiU04ghm6HXsYKJaPZNT7tTv62s0zKa2lekBxiU=
+=p3CN
 -----END PGP SIGNATURE-----
 
---5xmbayfvgezef2h2--
+--yb7p3rwhyim56fmd--
 
